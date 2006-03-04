@@ -408,12 +408,12 @@ void feed_parse(feedParserCtxtPtr ctxt, gboolean autodiscover) {
 				download_request_free(request);
 			} else {
 				debug0(DEBUG_UPDATE, "no feed link found!");
-				feed_set_available(ctxt->feed, FALSE);
+				ctxt->feed->available = FALSE;
 				addToHTMLBuffer(&(ctxt->feed->parseErrors), _("<p>The URL you want Liferea to subscribe to points to a webpage and the auto discovery found no feeds on this page. Maybe this webpage just does not support feed auto discovery.</p>"));
 			}
 		} else {
 			debug0(DEBUG_UPDATE, "neither a known feed type nor a HTML document!");
-			feed_set_available(ctxt->feed, FALSE);
+			ctxt->feed->available = FALSE;
 			addToHTMLBuffer(&(ctxt->feed->parseErrors), _("<p>Could not determine the feed type. Please check that it is a <a href=\"http://feedvalidator.org\">valid</a> type and listed in the <a href=\"http://liferea.sourceforge.net/supported_formats.htm\">supported formats</a>.</p>"));
 		}
 	} else {
@@ -475,11 +475,11 @@ void feed_save_to_cache(nodePtr node) {
 			xmlNewTextChild(feedNode, NULL, "feedUpdateInterval", tmp);
 			g_free(tmp);
 			
-			tmp = g_strdup_printf("%d", (TRUE == feed_get_available(feed))?1:0);
+			tmp = g_strdup_printf("%d", (TRUE == feed->available)?1:0);
 			xmlNewTextChild(feedNode, NULL, "feedStatus", tmp);
 			g_free(tmp);
 			
-			tmp = g_strdup_printf("%d", (TRUE == feed_get_discontinued(feed))?1:0);
+			tmp = g_strdup_printf("%d", (TRUE == feed->discontinued)?1:0);
 			xmlNewTextChild(feedNode, NULL, "feedDiscontinued", tmp);
 			g_free(tmp);
 			
@@ -608,10 +608,10 @@ itemSetPtr feed_load_from_cache(nodePtr node) {
 					feed_set_image_url(feed, tmp);
 					
 				else if(!xmlStrcmp(cur->name, BAD_CAST"feedStatus")) 
-					feed_set_available(feed, (0 == atoi(tmp))?FALSE:TRUE);
+					feed->available = (0 == atoi(tmp))?FALSE:TRUE;
 					
 				else if(!xmlStrcmp(cur->name, BAD_CAST"feedDiscontinued")) 
-					feed_set_discontinued(feed, (0 == atoi(tmp))?FALSE:TRUE);
+					feed->discontinued = (0 == atoi(tmp))?FALSE:TRUE;
 					
 				else if(!xmlStrcmp(cur->name, BAD_CAST"feedLastModified")) 
 					feed_set_lastmodified(feed, tmp);
@@ -655,7 +655,7 @@ gboolean feed_can_be_updated(nodePtr node) {
 		return FALSE;
 	}
 	
-	if(feed_get_discontinued(feed)) {
+	if(feed->discontinued) {
 		ui_mainwindow_set_status_bar(_("The feed \"%s\" was discontinued. Liferea won't update it anymore!"), node_get_title(node));
 		return FALSE;
 	}
@@ -801,12 +801,12 @@ gboolean feed_merge_check(itemSetPtr sp, itemPtr new_ip) {
 /* feed attributes encapsulation						*/
 /* ---------------------------------------------------------------------------- */
 
-gint feed_get_default_update_interval(feedPtr fp) { return fp->defaultInterval; }
-void feed_set_default_update_interval(feedPtr fp, gint interval) { fp->defaultInterval = interval; }
+gint feed_get_default_update_interval(feedPtr feed) { return feed->defaultInterval; }
+void feed_set_default_update_interval(feedPtr feed, gint interval) { feed->defaultInterval = interval; }
 
 gint feed_get_update_interval(feedPtr fp) { return fp->updateInterval; }
 
-void feed_set_update_interval(feedPtr fp, gint interval) {
+void feed_set_update_interval(feedPtr feed, gint interval) {
 	
 	if(0 == interval) {
 		interval = -1;	/* This is evil, I know, but when this method
@@ -816,41 +816,30 @@ void feed_set_update_interval(feedPtr fp, gint interval) {
 				   updating according to the global update
 				   interval... */
 	}
-	fp->updateInterval = interval;
+	feed->updateInterval = interval;
 	feedlist_schedule_save();
 }
 
-feedHandlerPtr feed_get_fhp(feedPtr fp) {
-	return fp->fhp;
+feedHandlerPtr feed_get_fhp(feedPtr feed) {
+	return feed->fhp;
 }
 
-void feed_set_available(feedPtr fp, gboolean available) { fp->available = available; }
-
-gboolean feed_get_available(feedPtr fp) { return fp->available; }
-
-void feed_set_discontinued(feedPtr fp, gboolean discontinued) { fp->discontinued = discontinued; }
-
-gboolean feed_get_discontinued(feedPtr fp) { return fp->discontinued; }
-
 /* Returns a HTML string describing the last retrieval error 
-   of this feed. Should only be called when feed_get_available
-   returns FALSE. Caller must free returned string! */
-gchar * feed_get_error_description(feedPtr fp) { 
+   of this feed. Should only be called when feed->available
+   is FALSE. Caller must free returned string! */
+gchar * feed_get_error_description(feedPtr feed) { 
 	gchar	*tmp1 = NULL;
 
-	if(feed_get_discontinued(fp)) {
+	if(feed->discontinued) {
 		addToHTMLBufferFast(&tmp1, UPDATE_ERROR_START);
 		addToHTMLBufferFast(&tmp1, HTTP410_ERROR_TEXT);
 		addToHTMLBufferFast(&tmp1, UPDATE_ERROR_END);
 	}
-	addToHTMLBuffer(&tmp1, fp->errorDescription);
+	addToHTMLBuffer(&tmp1, feed->errorDescription);
 	return tmp1; 
 }
 
-time_t feed_get_time(feedPtr fp) { return (fp != NULL ? fp->time : 0); }
-void feed_set_time(feedPtr fp, const time_t t) { fp->time = t; }
-
-const gchar * feed_get_description(feedPtr fp) { return fp->description; }
+const gchar * feed_get_description(feedPtr feed) { return feed->description; }
 void feed_set_description(feedPtr fp, const gchar *description) {
 	g_free(fp->description);
 	if (description != NULL)
@@ -1100,16 +1089,13 @@ void feed_process_update_result(struct request *request) {
 	/* no matter what the result of the update is we need to save update
 	   status and the last update time to cache */
 	node->needsCacheSave = TRUE;
-	
-	feed_set_available(feed, TRUE);
+	feed->available = FALSE;
 
 	if(401 == request->httpstatus) { /* unauthorized */
-		feed_set_available(feed, FALSE);
 		if(request->flags & FEED_REQ_AUTH_DIALOG)
 			ui_feed_authdialog_new(node, request->flags);
 	} else if(410 == request->httpstatus) { /* gone */
-		feed_set_available(feed, FALSE);
-		feed_set_discontinued(feed, TRUE);
+		feed->discontinued = TRUE;
 		ui_mainwindow_set_status_bar(_("\"%s\" is discontinued. Liferea won't updated it anymore!"), node_get_title(node));
 	} else if(304 == request->httpstatus) {
 		ui_mainwindow_set_status_bar(_("\"%s\" has not changed since last update"), node_get_title(node));
@@ -1137,7 +1123,6 @@ void feed_process_update_result(struct request *request) {
 		feed_parse(ctxt, request->flags & FEED_REQ_AUTO_DISCOVER);
 
 		if(ctxt->failed) {
-			feed_set_available(feed, FALSE);
 			feed->parseErrors = g_strdup_printf(_("<p>Could not detect the type of this feed! Please check if the source really points to a resource provided in one of the supported syndication formats!</p>%s"), feed->parseErrors);
 		} else {
 			/* merge the resulting items into the node's item set */
@@ -1164,12 +1149,13 @@ void feed_process_update_result(struct request *request) {
 			
 			if(request->flags & FEED_REQ_SHOW_PROPDIALOG)
 				ui_feed_propdialog_new(node);
+
+			feed->available = TRUE;
 		}
 
 		feed_free_parser_ctxt(ctxt);
 	} else {	
 		ui_mainwindow_set_status_bar(_("\"%s\" is not available"), node_get_title(node));
-		feed_set_available(feed, FALSE);
 	}
 	
 	feed_set_error_description(feed, request->httpstatus, request->returncode, request->filterErrors);
@@ -1263,6 +1249,7 @@ static void feed_initial_load(nodePtr node) {
 	feed_load(node);
 	vfolder_check_node(node);	/* copy items to matching vfolders */
 	feed_unload(node);
+	ui_node_update(node);
 }
 
 static void feed_reset_update_counter(nodePtr node) {
@@ -1339,7 +1326,6 @@ static void feed_mark_all_read(nodePtr node) {
 
 	feed_load(node);
 	itemlist_mark_all_read(node->itemSet);
-	ui_node_update(node);
 	feed_unload(node);
 }
 

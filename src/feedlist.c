@@ -156,36 +156,35 @@ static enum scanStateType scanState = UNREAD_SCAN_INIT;
    selected feed). If there are no such feeds the 
    search is restarted for all feeds. */
 static nodePtr feedlist_unread_scan(nodePtr folder) {
-	nodePtr			np, childNode, selectedNode;
-	GSList			*iter, *selectedIter = NULL;
+	nodePtr		childNode, selectedNode;
+	GSList		*selectedIter = NULL;
 
-	if(selectedNode = feedlist_get_selected()) {
+	if(selectedNode = feedlist_get_selected())
 		selectedIter = g_slist_find(selectedNode->parent->children, selectedNode);
-	} else {
+	else
 		scanState = UNREAD_SCAN_SECOND_PASS;
-	}
 
-	iter = folder->children;
+	GSList *iter = folder->children;
 	while(iter) {
-		np = iter->data;
+		nodePtr node = iter->data;
 
-		if(np == selectedNode)
+		if(node == selectedNode)
 			scanState = UNREAD_SCAN_FOUND_SELECTED;
 
 		/* feed match if beyond the selected feed or in second pass... */
-		if((scanState != UNREAD_SCAN_INIT) && (np->unreadCount > 0) &&
-		   ((FST_FEED == np->type) || (FST_PLUGIN == np->type))) {
-		       return np;
+		if((scanState != UNREAD_SCAN_INIT) && (node->unreadCount > 0) &&
+		   ((FST_FEED == node->type) || (FST_PLUGIN == node->type))) {
+		       return node;
 		}
 
 		/* folder traversal if we are searching the selected feed
 		   which might be a descendant of the folder and if we
 		   are beyond the selected feed and the folder contains
 		   feeds with unread items... */
-		if((FST_FOLDER == np->type) &&
-		   (((scanState != UNREAD_SCAN_INIT) && (np->unreadCount > 0)) ||
-		    ((NULL != selectedIter) && (node_is_ancestor(np, selectedNode))))) {
-		       if(NULL != (childNode = feedlist_unread_scan(np)))
+		if((FST_FOLDER == node->type) &&
+		   (((scanState != UNREAD_SCAN_INIT) && (node->unreadCount > 0)) ||
+		    (selectedIter && (node_is_ancestor(node, selectedNode))))) {
+		       if(childNode = feedlist_unread_scan(node))
 				return childNode;
 		} /* Directories are never checked */
 
@@ -341,9 +340,12 @@ void feedlist_save(void) {
 	feedlist_schedule_save_cb(NULL);
 }
 
-static void feedlist_initial_load(nodePtr node) { 
-	
-	NODE(node)->initial_load(node); 
+/* This method is needed to update the vfolder count
+   in the GUI after the initial feed loading is done. */
+static void feedlist_update_vfolder_count(nodePtr node) {
+
+	if(FST_VFOLDER == node->type) 
+		ui_node_update(node);
 }
 
 void feedlist_init(void) {
@@ -371,8 +373,8 @@ void feedlist_init(void) {
 
 	/* 4. Sequentially load and unload all feeds and by doing so 
 	   automatically load all vfolders */
-	feedlist_foreach(feedlist_initial_load);
-	feedlist_foreach(ui_node_update);
+	feedlist_foreach(node_initial_load);
+	feedlist_foreach(feedlist_update_vfolder_count);
 
 	/* 5. Check if feeds do need updating. */
 	switch(getNumericConfValue(STARTUP_FEED_ACTION)) {
