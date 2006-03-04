@@ -253,17 +253,17 @@ void ui_node_remove_node(nodePtr np) {
 }
 
 /** determines the feeds favicon or default icon */
-static GdkPixbuf* ui_node_get_icon(nodePtr np) {
+static GdkPixbuf* ui_node_get_icon(nodePtr node) {
 	gpointer	favicon;
-	feedPtr		fp;
+	feedPtr		feed;
 
-	favicon = np->icon;
+	favicon = node->icon;
 
-	if(NULL == favicon)
+	if(!favicon)
 		favicon = icons[ICON_AVAILABLE];
 
 	/* special icons */
-	switch(np->type) {
+	switch(node->type) {
 		case FST_FOLDER:
 			favicon = icons[ICON_FOLDER];
 			break;
@@ -271,13 +271,13 @@ static GdkPixbuf* ui_node_get_icon(nodePtr np) {
 			favicon = icons[ICON_VFOLDER];
 			break;
 		case FST_FEED:
-			fp = (feedPtr)np->data;
-		
-			if(!feed_get_available(fp))
+			feed = (feedPtr)node->data;
+
+			if(!feed->available)
 				favicon = icons[ICON_UNAVAILABLE];
 
-			if((favicon == NULL) && (fp->fhp != NULL) && (fp->fhp->icon != 0))
-				favicon = icons[fp->fhp->icon];
+			if(!favicon && feed->fhp && (feed->fhp->icon != 0))
+				favicon = icons[feed->fhp->icon];
 
 			break;
 	}
@@ -290,7 +290,7 @@ void ui_node_update(nodePtr np) {
 	gchar		*label;
 
 	iter = ui_node_to_iter(np);
-	if(iter == NULL)
+	if(!iter)
 		return;
 
 	gint count = node_get_unread_count(np);
