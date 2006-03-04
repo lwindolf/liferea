@@ -1,7 +1,7 @@
 /**
  * @file rule.c feed/vfolder rule handling
  *
- * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -149,6 +149,11 @@ static gboolean rule_item_is_flagged(rulePtr rp, itemPtr ip) {
 	return ip->flagStatus;
 }
 
+static gboolean rule_item_was_updated(rulePtr rp, itemPtr ip) {
+
+	return ip->updateStatus;
+}
+
 /* rule initialization */
 
 static void rule_add(ruleCheckFuncPtr func, gchar *ruleId, gchar *title, gchar *positive, gchar *negative, gboolean needsParameter) {
@@ -175,6 +180,7 @@ void rule_init(void) {
 	rule_add(rule_feed_title_match,		"feed_title",			_("Feed title"),	_("does match"),	_("does not match"),	TRUE);
 	rule_add(rule_item_is_unread,		"unread",			_("Read status"),	_("is unread"),		_("is read"),		FALSE);
 	rule_add(rule_item_is_flagged,		"flagged",			_("Flag status"),	_("is flagged"),	_("is unflagged"),	FALSE);
+	rule_add(rule_item_was_updated,		"updated",			_("Update status"),	_("was updated"),	_("was not updated"),	FALSE);
 
 	debug_exit("rule_init");
 }
