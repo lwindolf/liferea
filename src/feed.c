@@ -1011,7 +1011,7 @@ void feed_set_error_description(feedPtr fp, gint httpstatus, gint resultcode, gc
 		addToHTMLBuffer(&buffer, tmp1);
 		if (feed_get_source(fp) != NULL && (NULL != strstr(feed_get_source(fp), "://"))) {
 			xmlChar *escsource;
-			addToHTMLBufferFast(&buffer,_("<br>You may want to validate the feed using "
+			addToHTMLBufferFast(&buffer,_("<br/>You may want to validate the feed using "
 			                              "<a href=\"http://feedvalidator.org/check.cgi?url="));
 			escsource = xmlURIEscapeStr(feed_get_source(fp),NULL);
 			addToHTMLBufferFast(&buffer,escsource);
@@ -1413,7 +1413,7 @@ static gchar * feed_render(nodePtr node) {
 	if(NULL != feed_get_image_url(fp)) {
 		addToHTMLBufferFast(&buffer, "<img class=\"feed\" src=\"");
 		addToHTMLBufferFast(&buffer, feed_get_image_url(fp));
-		addToHTMLBufferFast(&buffer, "\"><br>");
+		addToHTMLBufferFast(&buffer, "\" /><br/>");
 	}
 
 	/* Body */

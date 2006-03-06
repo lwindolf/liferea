@@ -223,7 +223,7 @@ static void ui_htmlview_write_css(gchar **buffer, gboolean twoPane) {
 	gchar	*styleSheetFile, *defaultStyleSheetFile, *adblockStyleSheetFile;
     
 	addToHTMLBuffer(buffer,	"<style type=\"text/css\">\n"
-				 "<!--\n");
+				 "<![CDATA[\n");
 	
 	/* font configuration support */
 	font = getStringConfValue(USER_FONT);
@@ -290,18 +290,19 @@ static void ui_htmlview_write_css(gchar **buffer, gboolean twoPane) {
 	
 	g_free(adblockStyleSheetFile);
 
-	addToHTMLBuffer(buffer, "\n//-->\n</style>\n");
+	addToHTMLBuffer(buffer, "\n]]>\n</style>\n");
 }
 
 void ui_htmlview_start_output(gchar **buffer, const gchar *base, gboolean twoPane) { 
 	
-	addToHTMLBuffer(buffer, "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n<html>\n");
+	addToHTMLBuffer(buffer, "<?xml version=\"1.0\" encoding=\"utf-8\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n");
+	addToHTMLBuffer(buffer, "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n");
+	addToHTMLBuffer(buffer, "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n");
 	addToHTMLBuffer(buffer, "<head>\n<title></title>");
-	addToHTMLBuffer(buffer, "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n");
 	if(NULL != base) {
 		addToHTMLBuffer(buffer, "<base href=\"");
 		addToHTMLBuffer(buffer, base);
-		addToHTMLBuffer(buffer, "\">\n");
+		addToHTMLBuffer(buffer, "\" />\n");
 	}
 
 	ui_htmlview_write_css(buffer, twoPane);
@@ -335,10 +336,10 @@ void ui_htmlview_write(GtkWidget *htmlview, const gchar *string, const gchar *ba
 		
 		/* to prevent crashes inside the browser */
 		buffer = utf8_fix(buffer);
-		(htmlviewInfo->write)(htmlview, buffer, strlen(buffer), baseURL, "text/html");
+		(htmlviewInfo->write)(htmlview, buffer, strlen(buffer), baseURL, "application/xhtml+xml");
 		g_free(buffer);
 	} else
-		(htmlviewInfo->write)(htmlview, string, strlen(string), baseURL, "text/html");
+		(htmlviewInfo->write)(htmlview, string, strlen(string), baseURL, "application/xhtml+xml");
 
 	/* wait a short while and reset focus */
 	if(0 != refocusTimeout)

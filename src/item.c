@@ -188,11 +188,11 @@ gchar *item_render(itemPtr ip) {
 	/*  -- Item line */
 	if(NULL != np->icon) {
 		tmp2 = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", np->id, "png");
-		tmp = g_strdup_printf("<a href=\"%s\"><img class=\"favicon\" src=\"file://%s\"></a>", htmlurl, tmp2);
+		tmp = g_strdup_printf("<a href=\"%s\"><img class=\"favicon\" src=\"file://%s\" /></a>", htmlurl, tmp2);
 		g_free(tmp2);
 	} else {
 		tmp2 = g_strdup(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "available.png");
-		tmp = g_strdup_printf("<a href=\"%s\"><img class=\"favicon\" src=\"file://%s\"></a>", htmlurl, tmp2);
+		tmp = g_strdup_printf("<a href=\"%s\"><img class=\"favicon\" src=\"file://%s\" /></a>", htmlurl, tmp2);
 		g_free(tmp2);
 	}
 	tmp3 = g_markup_escape_text((item_get_title(ip) != NULL)?item_get_title(ip):_("[No title]"), -1);
@@ -240,7 +240,7 @@ gchar *item_render(itemPtr ip) {
 	/*if(NULL != feed_get_image_url(ip->fp)) {
 		addToHTMLBufferFast(&buffer, "<img class=\"feed\" src=\"");
 		addToHTMLBufferFast(&buffer, feed_get_image_url(ip->fp));
-		addToHTMLBufferFast(&buffer, "\"><br>");
+		addToHTMLBufferFast(&buffer, "\"><br/>");
 	}*/
 
 	if(displayset.body != NULL) {

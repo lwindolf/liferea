@@ -416,10 +416,16 @@ gchar *common_html_to_xhtml(const gchar *html, gint len) {
 	g_assert(html != NULL);
 	g_assert(len >= 0);
 	
+	
 	ctxt = htmlCreateMemoryParserCtxt(html, len);
 	if (!ctxt) return NULL;
-	
-	if (htmlParseDocument(ctxt) < 0) goto error;
+
+	/* Note: NONET is not implemented so it will return an error
+	   because it doesn't know how to handle NONET. But, it might
+	   learn in the future. */
+	ctxt->html = 1;
+	htmlCtxtUseOptions(ctxt, HTML_PARSE_RECOVER | HTML_PARSE_NONET);
+	htmlParseDocument(ctxt);
 	
 	xpathCtxt = xmlXPathNewContext(ctxt->myDoc);
 	if(!xpathCtxt) goto error;
@@ -434,8 +440,8 @@ gchar *common_html_to_xhtml(const gchar *html, gint len) {
 	if (xpathCtxt) xmlXPathFreeContext(xpathCtxt);
 	if (ctxt->myDoc)
 		xmlFreeDoc(ctxt->myDoc);
-	htmlFreeParserCtxt(ctxt);
-	
+	if (ctxt)
+		htmlFreeParserCtxt(ctxt);
 	return out;
 }
 

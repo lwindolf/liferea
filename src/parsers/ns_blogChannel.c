@@ -124,7 +124,7 @@ static void ns_blogChannel_download_request_cb(struct request *request) {
 					while(cur != NULL) {
 						if(!xmlStrcmp(cur->name, BAD_CAST"outline")) {
 							addToHTMLBuffer(&buffer, tmp = getOutlineContents(cur));
-							addToHTMLBuffer(&buffer, "<br>");
+							addToHTMLBuffer(&buffer, "<br />");
 							g_free(tmp);
 						}
 						cur = cur->next;

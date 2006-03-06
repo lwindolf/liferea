@@ -35,7 +35,7 @@
 
 /* HTML definitions used for standard metadata rendering */
 #define	IMG_START	"<img class=\"feed\" src=\""
-#define IMG_END		"\"><br>"
+#define IMG_END		"\" /><br />"
 
 static GHashTable *strtoattrib;
 

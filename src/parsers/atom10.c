@@ -112,7 +112,7 @@ static gchar* atom10_parse_content_construct(xmlNodePtr cur) {
 		}
 	} else {
 		gchar *type;
-		gboolean escapeAsText, includeChildTags;
+		gboolean escapeAsText, includeChildTags, convertToXHTML;
 		xmlChar *baseURL = NULL;
 
 		/* determine encoding mode */
@@ -122,14 +122,17 @@ static gchar* atom10_parse_content_construct(xmlNodePtr cur) {
 		if (type != NULL && (g_str_equal(type,"html") || !g_strcasecmp(type, "text/html"))) {
 			escapeAsText = FALSE;
 			includeChildTags = FALSE;
+			convertToXHTML=TRUE;
 			baseURL = xmlNodeGetBase(cur->doc, cur);
 		} else if (NULL == type || !strcmp(type, "text") || !strncasecmp(type, "text/",5)) {
 			/* Assume that "text/ *" files can be directly displayed.. kinda stated in the RFC */
 			escapeAsText = TRUE;
 			includeChildTags = FALSE;
+			convertToXHTML=FALSE;
 		} else if (!strcmp(type,"xhtml") || !strcasecmp(type, "application/xhtml+xml")) {
 			escapeAsText = FALSE;
 			includeChildTags = TRUE;
+			convertToXHTML=FALSE;
 			/* The spec says to only show the contents of the div tag that MUST be present */
 			cur = cur->children;
 			while (cur != NULL) {
@@ -165,6 +168,11 @@ static gchar* atom10_parse_content_construct(xmlNodePtr cur) {
 			g_free(ret);
 			ret = tmp;
 		}
+		if (convertToXHTML) {
+			gchar *tmp = common_html_to_xhtml(ret, strlen(ret));
+			g_free(ret);
+			ret = tmp;
+		}
 		if (baseURL) {
 			gchar *tmp = g_strdup_printf("<div xml:base=\"%s\">%s</div>", baseURL, ret);
 			g_free(ret);
@@ -173,7 +181,7 @@ static gchar* atom10_parse_content_construct(xmlNodePtr cur) {
 		xmlFree(baseURL);
 		g_free(type);
 	}
-	
+	printf("%s\n",ret);
 	return ret;
 }
 
