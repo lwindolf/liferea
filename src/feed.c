@@ -1433,7 +1433,7 @@ static gchar * feed_render(nodePtr node) {
 	if(displayset.foottable) {
 		addToHTMLBufferFast(&buffer, FEED_FOOT_TABLE_START);
 		addToHTMLBufferFast(&buffer, displayset.foottable);
-		addToHTMLBufferFast(&buffer, FEED_FOOT_TABLE_START);
+		addToHTMLBufferFast(&buffer, FEED_FOOT_TABLE_END);
 		g_free(displayset.foottable);
 	}
 
