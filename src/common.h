@@ -45,6 +45,14 @@ gchar * convertToHTML(gchar * string);
 gchar * unhtmlize(gchar *string);
 
 gchar * unxmlize(gchar *string);
+
+/**
+ * This converts an HTML string into an XHTML fragment and passes it
+ * through some validity checks.
+ * @return XHTML string, or NULL if conversion fails.
+ */
+gchar *common_html_to_xhtml(const gchar *html, gint len);
+
 /* parses a XML node and returns its contents as a string */
 /* gchar * parseHTML(htmlNodePtr cur); */
 

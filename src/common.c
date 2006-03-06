@@ -39,6 +39,7 @@
 #include <libxml/parser.h>
 #include <libxml/entities.h>
 #include <libxml/HTMLparser.h>
+#include <libxml/xpath.h>
 #include <glib.h>
 #include <sys/stat.h>
 #include <string.h>
@@ -387,6 +388,55 @@ xmlDocPtr parseBuffer(gchar *data, size_t dataLength, gchar **errormsg) {
 	xmlFreeParserCtxt(ctxt);
 	
 	return doc;
+}
+
+static gchar *serialize_node_tree(xmlNodePtr node) {
+	xmlBufferPtr buf;
+	gchar *result = NULL;
+	
+	buf = xmlBufferCreate();
+	node = node->xmlChildrenNode;
+	while(node != NULL) {
+		xmlNodeDump(buf, node->doc, node, 0, 0);
+		node = node->next;
+	}
+	if(xmlBufferLength(buf) > 0)
+		result = xmlCharStrdup(xmlBufferContent(buf));
+	
+	xmlBufferFree(buf);
+	return result;
+}
+
+gchar *common_html_to_xhtml(const gchar *html, gint len) {
+	htmlParserCtxtPtr ctxt;
+	xmlXPathContextPtr xpathCtxt = NULL;
+	xmlXPathObjectPtr xpathObj = NULL;
+	gchar *out = NULL;
+	
+	g_assert(html != NULL);
+	g_assert(len >= 0);
+	
+	ctxt = htmlCreateMemoryParserCtxt(html, len);
+	if (!ctxt) return NULL;
+	
+	if (htmlParseDocument(ctxt) < 0) goto error;
+	
+	xpathCtxt = xmlXPathNewContext(ctxt->myDoc);
+	if(!xpathCtxt) goto error;
+
+	xpathObj = xmlXPathEvalExpression("/html/body", xpathCtxt);
+	if(!xpathObj) goto error;
+	if(!xpathObj->nodesetval->nodeMax) goto error;
+
+	out = serialize_node_tree(xpathObj->nodesetval->nodeTab[0]);
+ error:
+	if (xpathObj) xmlXPathFreeObject(xpathObj);
+	if (xpathCtxt) xmlXPathFreeContext(xpathCtxt);
+	if (ctxt->myDoc)
+		xmlFreeDoc(ctxt->myDoc);
+	htmlFreeParserCtxt(ctxt);
+	
+	return out;
 }
 
 /* converts a ISO 8601 time string to a time_t value */
