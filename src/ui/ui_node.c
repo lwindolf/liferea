@@ -264,7 +264,7 @@ static GdkPixbuf* ui_node_get_icon(nodePtr node) {
 	favicon = node->icon;
 
 	if(!favicon)
-		favicon = icons[ICON_AVAILABLE];
+		favicon = icons[ICON_DEFAULT];
 
 	/* special icons */
 	switch(node->type) {

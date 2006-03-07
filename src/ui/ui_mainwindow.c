@@ -63,6 +63,7 @@ static gchar *iconNames[] = {	"read.xpm",		/* ICON_READ */
 				"available.png",	/* ICON_AVAILABLE */
 				"available_offline.png",	/* ICON_AVAILABLE_OFFLINE */
 				NULL,			/* ICON_UNAVAILABLE */
+				"default.png",		/* ICON_DEFAULT */
 				"ocs.png",		/* ICON_OCS */
 				"directory.png",	/* ICON_FOLDER */
 				"vfolder.png",		/* ICON_VFOLDER */
