@@ -1418,7 +1418,9 @@ static gchar * feed_render(nodePtr node) {
 
 	/* Body */
 	if(displayset.body) {
+		addToHTMLBufferFast(&buffer, "<div class='content'>");
 		addToHTMLBufferFast(&buffer, displayset.body);
+		addToHTMLBufferFast(&buffer, "</div>");
 		g_free(displayset.body);
 	}
 

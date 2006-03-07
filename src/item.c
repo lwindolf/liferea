@@ -244,7 +244,9 @@ gchar *item_render(itemPtr ip) {
 	}*/
 
 	if(displayset.body != NULL) {
+		addToHTMLBufferFast(&buffer, "<div class='content'>");
 		addToHTMLBufferFast(&buffer, displayset.body);
+		addToHTMLBufferFast(&buffer, "</div>");
 		g_free(displayset.body);
 	}
 

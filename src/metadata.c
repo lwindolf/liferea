@@ -294,7 +294,10 @@ static void attribs_render_image(gpointer data, struct displayset *displayset, g
 }
 
 static void attribs_render_foot_text(gpointer data, struct displayset *displayset, gpointer user_data) {
+
+	addToHTMLBufferFast(&(displayset->foot), "<div class='foottext'>");
 	addToHTMLBufferFast(&(displayset->foot), (gchar*)data);
+	addToHTMLBufferFast(&(displayset->foot), "</div>");
 }
 
 static void attribs_render_comments_uri(gpointer data, struct displayset *displayset, gpointer user_data) {

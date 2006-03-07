@@ -1,7 +1,7 @@
 /*
  * Liferea HTML view default stylesheet (three pane mode)
  *
- * (C) 2004,2005 Lars Linder <lars.lindner@gmx.net>
+ * (C) 2004-2006 Lars Linder <lars.lindner@gmx.net>
  * (C) 2004 delusional <delusional@dx13.co.uk>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -33,6 +33,8 @@
 body {
 	background: white;
 	color: black;
+	padding:0;
+	margin:0;
 }
 
 blockquote {
@@ -51,10 +53,11 @@ dd {
 /* styles for the item description (currently also used for
    the feed description) */
 table.itemhead {
-	margin-bottom:10px;
+	margin:0;
 	width:100%;
 	background-color:#DDD;
-	border: 1px solid black;
+	border:0;
+	border-bottom: 1px solid #888;
 	clear:both;
 }
 
@@ -66,6 +69,14 @@ td.headleft {
 
 td.headright {
 	padding:2px 5px;
+}
+
+div.content {
+	padding:12px 6px 0px 6px;
+}
+
+div.foottext {
+	padding:6px 6px 0px 6px;
 }
 
 img {
@@ -121,6 +132,7 @@ tr.feedfoot {
 
 td.feedfootname {
 	width:30%;
+	padding-left: 5px;
 }
 
 span.feedfootname {
@@ -141,6 +153,8 @@ span.feedfootvalue {
 /* channel images */
 img.feed {
 	margin-bottom:10px;
+	padding-left: 5px;
+	padding-right: 5px;
 }
 
 /* OCS specific styles */
@@ -230,11 +244,12 @@ div.itemunshaded {
 /* style for the HTTP error box at the beginning
    of the feed description */
 table.httperror {
-	margin-bottom:5px;
 	width:100%;
-	background:#E06060;
-	border-width:1px;
-	border-style:solid;
+	//background:#E06060;
+	background:#FF9;
+	border:0;
+	border-bottom:1px solid black;
+	margin:0;
 }
 
 td.httperror {
@@ -277,15 +292,15 @@ img.freshmeat {
 }
 
 table.slash {
-	margin-bottom:5px;	/* must not be in td.slash to work with Mozilla */
+	margin:0 5px 0 0;	/* must not be in td.slash to work with Mozilla */
 	width:100%;
 }
 
 td.slash {
-	border-width:1px;
-	border-style:solid;
-	border-color:black;
-	background:#408060;
+	border:0;
+	border-bottom:1px solid black;
+	border-top:1px solid black;
+	background:#60A080;
 	width:100%;
 	font-size:0.8em;
 	color:black;
@@ -312,6 +327,7 @@ div.photoheader {
 
 div.technorati {
 	text-align:right;
+	padding-right:5px;
 }
 
 table.enclosure {
