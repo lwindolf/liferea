@@ -303,7 +303,7 @@ static void attribs_render_foot_text(gpointer data, struct displayset *displayse
 static void attribs_render_comments_uri(gpointer data, struct displayset *displayset, gpointer user_data) {
 	gchar *tmp;
 	
-	tmp = g_strdup_printf("<div style=\"margin-top:5px;margin-bottom:5px;\">(<a href=\"%s\">%s</a>)</div>", 
+	tmp = g_strdup_printf("<div class='commentlink' style=\"margin-top:5px;margin-bottom:5px;\">(<a href=\"%s\">%s</a>)</div>", 
 	                      (gchar*)data, _("comments"));
 	
 	addToHTMLBufferFast(&(displayset->foot), tmp);

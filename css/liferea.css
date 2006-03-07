@@ -54,6 +54,7 @@ dd {
    the feed description) */
 table.itemhead {
 	margin:0;
+	padding: 2px 0 2px 0;
 	width:100%;
 	background-color:#DDD;
 	border:0;
@@ -73,6 +74,10 @@ td.headright {
 
 div.content {
 	padding:12px 6px 0px 6px;
+}
+
+div.commentlink {
+	padding:0px 6px 0px 6px;
 }
 
 div.foottext {
