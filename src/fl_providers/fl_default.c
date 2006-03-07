@@ -124,7 +124,7 @@ ui_feedlist_dbus_subscribe (DBusConnection *connection, DBusMessage *message) {
 	dbus_error_free(&error);
 
 	/* Subscribe the feed */
-	node_request_automatic_add(s, NULL, FEED_REQ_SHOW_PROPDIALOG | FEED_REQ_RESET_TITLE | FEED_REQ_RESET_UPDATE_INT);
+	node_request_automatic_add(s, NULL, NULL, FEED_REQ_SHOW_PROPDIALOG | FEED_REQ_RESET_TITLE | FEED_REQ_RESET_UPDATE_INT);
 
 	/* Acknowledge the new feed by returning true */
 	reply = dbus_message_new_method_return (message);
