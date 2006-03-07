@@ -40,7 +40,7 @@ void node_register_type(nodeTypePtr nodeType, guint type) {
 	if(!nodeTypes)
 		nodeTypes = g_hash_table_new(NULL, NULL);
 
-	g_hash_table_insert(nodeTypes, GINT_TO_POINTER(type), (gpointer)nodeType);
+	g_hash_table_insert(nodeTypes, GUINT_TO_POINTER(type), (gpointer)nodeType);
 }
 
 /* returns a unique node id */
@@ -82,7 +82,7 @@ void node_add_data(nodePtr node, guint type, gpointer data) {
 
 	node->data = data;
 	node->type = type;
-	node->nodeType = g_hash_table_lookup(nodeTypes, GINT_TO_POINTER(type));
+	node->nodeType = g_hash_table_lookup(nodeTypes, GUINT_TO_POINTER(type));
 	g_assert(NULL != node->nodeType);
 
 	/* Vfolders are not handled by the node
@@ -119,13 +119,14 @@ void node_free(nodePtr node) {
 
 void node_update_counters(nodePtr node) {
 	gint	unreadDiff, newDiff;
+	GList	*iter;
 
 	newDiff = -1 * node->newCount;
 	unreadDiff = -1 * node->unreadCount;
 	node->newCount = 0;
 	node->unreadCount = 0;
 
-	GList *iter = node->itemSet->items;
+	iter = node->itemSet->items;
 	while(iter) {
 		itemPtr item = (itemPtr)iter->data;
 		if(!item->readStatus)
@@ -247,60 +248,56 @@ guint node_str_to_type(const gchar *str) {
 	return FST_INVALID;
 }
 
-static void node_add(nodePtr node, nodePtr parent) {
-	gint		pos = 0;
+/* To be called by node type implementations to add nodes */
+void node_add(nodePtr node, nodePtr parent, gint pos, guint flags) {
 
-	if(!parent) {
-		parent = feedlist_get_selected_parent();
-		ui_feedlist_get_target_folder(&pos);
-	}
+	debug1(DEBUG_GUI, "new node will be added to folder \"%s\"", node_get_title(parent));
+
+	ui_feedlist_get_target_folder(&pos);
+
+	node->handler = parent->handler;
+	feedlist_add_node(parent, node, pos);
+
+	node_schedule_update(node, flags);
+}
+
+/* Interactive node adding (e.g. feed menu->new subscription) */
+void node_request_interactive_add(guint type) {
+	nodeTypePtr	nodeType;
+	nodePtr		parent;
+
+	parent = feedlist_get_selected_parent();
 
 	if(0 == (FL_PLUGIN(parent)->capabilities & FL_PLUGIN_CAPABILITY_ADD))
 		return;
 
-	debug1(DEBUG_GUI, "new node will be added to folder \"%s\"", node_get_title(parent));
-
-	node->handler = parent->handler;
-	feedlist_add_node(parent, node, pos);
-}
-
-/* Interactive node adding (e.g. feed menu->new subscription), 
-   launches some dialog that upon success calls 
-   node_request_automatic_add() to add feeds or an own
-   method to add other node types. */
-void node_request_interactive_add(guint type) {
-	nodePtr		node;
-
-	debug_enter("node_request_interactive_add");
-
-	node = node_new();
-	node_set_title(node, _("New Subscription"));
-	node_add_data(node, FST_FEED, NULL);
-	node_add(node, NULL);
-
-	debug_exit("node_request_interactive_add");
+	nodeType = g_hash_table_lookup(nodeTypes, GUINT_TO_POINTER(type));
+	nodeType->request_add(parent);
 }
 
 /* Automatic subscription adding (e.g. URL DnD), creates a new node
    or reuses the given one and creates a new feed without any user 
-   interaction and finally calls node_add(). */
-void node_request_automatic_add(nodePtr node, const gchar *source, const gchar *title, const gchar *filter, gint flags) {
-
-	debug_enter("node_request_automatic_add");
-
+   interaction. */
+void node_request_automatic_add(gchar *source, gchar *title, gchar *filter, gint flags) {
+	nodePtr		node, parent;
+	gint		pos;
 
 	g_assert(NULL != source);
 
-	if(!node) 
-		node = node_new();
+	parent = feedlist_get_selected_parent();
 
+	if(0 == (FL_PLUGIN(parent)->capabilities & FL_PLUGIN_CAPABILITY_ADD))
+		return;
+
+	node = node_new();
+	node->handler = parent->handler;
 	node_set_title(node, title?title:_("New Subscription"));
 	node_add_data(node, FST_FEED, feed_new(source, filter));
-	node_add(node, node->parent);
+
+	ui_feedlist_get_target_folder(&pos);
+	feedlist_add_node(parent, node, pos);
 
 	node_schedule_update(node, flags);
-
-	debug_exit("node_request_automatic_add");
 }
 
 /* wrapper for node type interface */
@@ -322,6 +319,7 @@ void node_unload(nodePtr node) {
 }
 
 void node_remove(nodePtr node) {
+	GSList	*iter;
 
 	debug_enter("node_remove");
 
@@ -337,7 +335,7 @@ void node_remove(nodePtr node) {
 		node->updateRequest->callback = NULL;
 	
 	/* same goes for other requests */
-	GSList *iter = node->requests;
+	iter = node->requests;
 	while(NULL != iter) {
 		((struct request *)iter->data)->callback = NULL;
 		iter = g_slist_next(iter);

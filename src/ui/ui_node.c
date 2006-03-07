@@ -46,15 +46,15 @@ GtkTreeIter * ui_node_to_iter(nodePtr node) {
 /* new/change/remove folder dialog callbacks 					*/
 /*------------------------------------------------------------------------------*/
 
-void ui_folder_newdialog(nodePtr np) {
+void ui_folder_newdialog(nodePtr parent) {
 	GtkWidget	*foldernameentry;
 	
-	if(NULL == newfolderdialog || !G_IS_OBJECT(newfolderdialog))
+	if(!newfolderdialog || !G_IS_OBJECT(newfolderdialog))
 		newfolderdialog = create_newfolderdialog();
 
 	foldernameentry = lookup_widget(newfolderdialog, "foldertitleentry");
 	gtk_entry_set_text(GTK_ENTRY(foldernameentry), "");
-	gtk_object_set_data(GTK_OBJECT(newfolderdialog), "folder", np);
+	gtk_object_set_data(GTK_OBJECT(newfolderdialog), "parent", parent);
 		
 	gtk_widget_show(newfolderdialog);
 }
@@ -70,7 +70,11 @@ void on_newfolderbtn_clicked(GtkButton *button, gpointer user_data) {
 	foldertitleentry = lookup_widget(newfolderdialog, "foldertitleentry");
 	foldertitle = (gchar *)gtk_entry_get_text(GTK_ENTRY(foldertitleentry));
 
-	folder = (nodePtr)gtk_object_get_data(GTK_OBJECT(newfolderdialog), "folder");
+	parentNode = (nodePtr)gtk_object_get_data(GTK_OBJECT(newfolderdialog), "parent");
+
+	/* create folder node */
+	folder = node_new();
+	folder->handler = parentNode->handler;
 	node_set_title(folder, foldertitle);
 	node_add_data(folder, FST_FOLDER, NULL);
 

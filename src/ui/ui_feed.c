@@ -176,7 +176,14 @@ static void on_newdialog_response(GtkDialog *dialog, gint response_id, gpointer 
 		   !strcmp(filter,"")) { /* Maybe this should be a test to see if the file exists? */
 			filter = NULL;
 		} 
-		ui_feed_add(ui_data->np, source, filter, FEED_REQ_SHOW_PROPDIALOG | FEED_REQ_RESET_TITLE | FEED_REQ_RESET_UPDATE_INT | FEED_REQ_AUTO_DISCOVER);
+		node_request_automatic_add(source, NULL, filter,
+		                           FEED_REQ_SHOW_PROPDIALOG | 
+					   FEED_REQ_RESET_TITLE | 
+					   FEED_REQ_RESET_UPDATE_INT | 
+					   FEED_REQ_AUTO_DISCOVER | 
+					   FEED_REQ_PRIORITY_HIGH | 
+					   FEED_REQ_DOWNLOAD_FAVICON | 
+					   FEED_REQ_AUTH_DIALOG);
 		g_free(source);
 	}
 
@@ -399,12 +406,12 @@ GtkWidget* ui_feed_authdialog_new(nodePtr np, gint flags) {
 	return authdialog;
 }
 
-void ui_feed_newdialog(nodePtr np) {
-	GtkWidget *newdialog;
-	struct fp_prop_ui_data *ui_data;
+void ui_feed_newdialog(nodePtr parent) {
+	GtkWidget		*newdialog;
+	struct fp_prop_ui_data	*ui_data;
 
 	ui_data = g_new0(struct fp_prop_ui_data, 1);
-	ui_data->np = np;
+	ui_data->np = parent;
 
 	/* Create the dialog */
 	ui_data->dialog = newdialog = create_newdialog();
@@ -604,6 +611,5 @@ GtkWidget* ui_feed_propdialog_new(nodePtr np) {
 /* used by fl_default_node_add but also from ui_search.c and ui_dnd.c! */
 void ui_feed_add(nodePtr np, const gchar *source, const gchar *filter, gint flags) {
 	
-	node_request_automatic_add(np, source, NULL, filter ,flags | FEED_REQ_PRIORITY_HIGH | FEED_REQ_DOWNLOAD_FAVICON | FEED_REQ_AUTH_DIALOG);
 }
 

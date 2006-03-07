@@ -137,8 +137,7 @@ static void ui_dnd_URL_received(GtkWidget *widget, GdkDragContext *context, gint
 		freeme = tmp1 = g_strdup(data->data);
 		while((tmp2 = strsep(&tmp1, "\n\r"))) {
 			if(strlen(tmp2))
-				node_request_automatic_add(NULL,
-				                           g_strdup(tmp2),
+				node_request_automatic_add(g_strdup(tmp2),
 					                   NULL,
 				                           NULL, 
 					                   FEED_REQ_SHOW_PROPDIALOG | 

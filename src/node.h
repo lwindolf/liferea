@@ -93,6 +93,7 @@ typedef struct nodeType {
 	void	(*remove)		(nodePtr node);
 	void 	(*mark_all_read)	(nodePtr node);
 	gchar * (*render)		(nodePtr node);
+	void	(*request_add)		(nodePtr parent);
 } *nodeTypePtr;
 
 #define NODE(node)	(node->nodeType)
@@ -123,17 +124,15 @@ nodePtr node_new(void);
 void node_request_interactive_add(guint type);
 
 /**
- * Automatic subscription adding (e.g. URL DnD), creates a new node
- * or reuses the given one and creates a new feed without any user 
- * interaction.
+ * Automatic subscription adding (e.g. URL DnD), creates a new feed
+ * node and creates a new feed without any user interaction.
  *
- * @param node		NULL or a node to reuse
  * @param source	the subscriptions source URL
  * @param title		NULL or the node title
  * @param filter	NULL or the filter for the subscription
  * @param flags		download request flags
  */
-void node_request_automatic_add(nodePtr node, const gchar *source, const gchar *title, const gchar *filter, gint flags);
+void node_request_automatic_add(gchar *source, gchar *title, gchar *filter, gint flags);
 	
 /**
  * Removes the given node from the feed list.

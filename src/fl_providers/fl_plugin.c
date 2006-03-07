@@ -150,7 +150,7 @@ static void on_fl_plugin_type_selected(GtkDialog *dialog, gint response_id, gpoi
 	GtkTreeSelection	*selection;
 	GtkTreeModel		*model;
 	GtkTreeIter		iter;
-	nodePtr 		node = (nodePtr)user_data;
+	nodePtr 		parent = (nodePtr)user_data;
 	flPluginPtr		flPlugin;
 
 	if(response_id == GTK_RESPONSE_OK) {
@@ -158,13 +158,13 @@ static void on_fl_plugin_type_selected(GtkDialog *dialog, gint response_id, gpoi
 		g_assert(NULL != selection);
 		gtk_tree_selection_get_selected(selection, &model, &iter);
 		gtk_tree_model_get(model, &iter, 1, &flPlugin, -1);
-		flPlugin->handler_new(node);
+		flPlugin->handler_new(parent);
 	}
 	
 	gtk_widget_destroy(GTK_WIDGET(dialog));
 }
 
-void ui_fl_plugin_type_dialog(nodePtr node) {
+void ui_fl_plugin_type_dialog(nodePtr parent) {
 	GtkWidget 		*dialog, *treeview;
 	GtkTreeStore		*treestore;
 	GtkCellRenderer		*renderer;
@@ -208,7 +208,7 @@ void ui_fl_plugin_type_dialog(nodePtr node) {
 
 	g_signal_connect(G_OBJECT(dialog), "response",
 			 G_CALLBACK(on_fl_plugin_type_selected), 
-			 (gpointer)node);
+			 (gpointer)parent);
 
 	gtk_widget_show_all(dialog);
 }
@@ -257,6 +257,7 @@ nodeTypePtr fl_plugin_get_node_type(void) {
 	nodeType->schedule_update	= fl_plugin_schedule_update;
 	nodeType->remove		= fl_plugin_remove;
 	nodeType->render		= fl_plugin_render;
+	nodeType->request_add		= ui_fl_plugin_type_dialog;
 
 	return nodeType; 
 }

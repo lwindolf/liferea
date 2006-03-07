@@ -85,6 +85,7 @@ static void itemlist_check_for_deferred_removal(void) {
 void itemlist_merge_itemset(itemSetPtr itemSet) {
 	gboolean	loadReadItems = TRUE;
 	gchar		*buffer = NULL;
+	GList		*iter;
 
 	debug_enter("itemlist_merge_itemset");
 	
@@ -104,7 +105,7 @@ void itemlist_merge_itemset(itemSetPtr itemSet) {
 	}
 
 	/* update item list tree view */	
-	GList *iter = g_list_last(displayed_itemSet->items);
+	iter = g_list_last(displayed_itemSet->items);
 	while(iter) {
 		itemPtr item = iter->data;
 		g_assert(NULL != item);
@@ -415,6 +416,7 @@ void itemlist_mark_all_read(itemSetPtr itemSet) {
 
 /* mouse/keyboard interaction callbacks */
 void itemlist_selection_changed(itemPtr item) {
+	gchar 	*buffer;
 
 	debug_enter("itemlist_selection_changed");
 	
@@ -431,7 +433,7 @@ void itemlist_selection_changed(itemPtr item) {
 			itemlist_set_read_status(item, TRUE);
 			itemlist_set_update_status(item, FALSE);
 
-			gchar *buffer = itemset_render_item(item->itemSet, item);
+			buffer = itemset_render_item(item->itemSet, item);
 			ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, itemset_get_base_url(item->itemSet));
 			g_free(buffer);
 		}

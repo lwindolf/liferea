@@ -1453,7 +1453,8 @@ static struct nodeType nti = {
 	feed_schedule_update,
 	feed_remove,
 	feed_mark_all_read,
-	feed_render
+	feed_render,
+	ui_feed_newdialog
 };
 
 nodeTypePtr feed_get_node_type(void) { return &nti; }

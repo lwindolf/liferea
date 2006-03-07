@@ -240,9 +240,12 @@ void feedlist_selection_changed(nodePtr node) {
 
 		/* Load items of new selected node. */
 		selectedNode = node;
-
-		node_load(selectedNode);
-		itemlist_load(selectedNode->itemSet);
+		if(selectedNode) {
+			node_load(selectedNode);
+			itemlist_load(selectedNode->itemSet);
+		} else {
+			ui_htmlview_clear(ui_mainwindow_get_active_htmlview());
+		}
 	}
 
 	debug_exit("feedlist_selection_changed");

@@ -74,12 +74,13 @@ gchar * itemset_render_item(itemSetPtr itemSet, itemPtr item) {
 gchar * itemset_render_all(itemSetPtr itemSet) {
 	gchar		*tmp, *buffer = NULL;
 	const gchar	*baseUrl;
+	GList		*iter;
 
 	debug_enter("itemset_render_all");
 
 	ui_htmlview_start_output(&buffer, itemset_get_base_url(itemSet), FALSE);
 
-	GList *iter = itemSet->items;
+	iter = itemSet->items;
 	while(iter) {	
 		itemPtr item = (itemPtr)iter->data;
 

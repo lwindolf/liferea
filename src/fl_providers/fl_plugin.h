@@ -74,10 +74,10 @@ typedef struct flPlugin {
 	/**
 	 * This OPTIONAL callback is used to create an instance
 	 * of the implemented plugin type. It is to be called by 
-	 * the parent plugin's node_add() implementation. 
+	 * the parent plugin's node_request_add_*() implementation. 
 	 * Mandatory for all plugin's except the root provider plugin.
 	 */
-	void 		(*handler_new)(nodePtr np);
+	void 		(*handler_new)(nodePtr parent);
 
 	/**
 	 * This OPTIONAL callback is used to delete an instance

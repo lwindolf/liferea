@@ -100,35 +100,12 @@ static void fl_default_handler_export(nodePtr node) {
 	debug_exit("fl_default_handler_export");
 }
 
-// FIXME: remove me!
-static void fl_default_node_add(nodePtr np) {
-
-	switch(np->type) {
-		case FST_FEED:
-			ui_feed_newdialog(np);
-			break;
-		case FST_FOLDER:
-			ui_folder_newdialog(np);
-			break;
-		case FST_VFOLDER:
-			g_warning("adding vfolder: implement me!");
-			break;
-		case FST_PLUGIN:
-			ui_fl_plugin_type_dialog(np);
-			break;
-		default:
-			g_warning("adding unsupported type node!");
-			break;
-	}
-}
-
 /* DBUS support for new subscriptions */
 
 #ifdef USE_DBUS
 
 static DBusHandlerResult
-ui_feedlist_dbus_subscribe (DBusConnection *connection, DBusMessage *message)
-{
+ui_feedlist_dbus_subscribe (DBusConnection *connection, DBusMessage *message) {
 	DBusError error;
 	DBusMessage *reply;
 	char *s;
@@ -136,8 +113,7 @@ ui_feedlist_dbus_subscribe (DBusConnection *connection, DBusMessage *message)
 	
 	/* Retreive the dbus message arguments (the new feed url) */	
 	dbus_error_init (&error);
-	if (!dbus_message_get_args (message, &error, DBUS_TYPE_STRING, &s, DBUS_TYPE_INVALID))
-	{
+	if(!dbus_message_get_args (message, &error, DBUS_TYPE_STRING, &s, DBUS_TYPE_INVALID)) {
 		fprintf (stderr, "*** ui_feedlist.c: Error while retreiving message parameter, expecting a string url: %s | %s\n", error.name,  error.message);
 		reply = dbus_message_new_error (message, error.name, error.message);
 		dbus_connection_send (connection, reply, NULL);
@@ -147,15 +123,12 @@ ui_feedlist_dbus_subscribe (DBusConnection *connection, DBusMessage *message)
 	}
 	dbus_error_free(&error);
 
-	// FIXME: parameters of ui_feed_add() are wrong, we need a new node structure
-
 	/* Subscribe the feed */
-	ui_feed_add(NULL,s, NULL, FEED_REQ_SHOW_PROPDIALOG | FEED_REQ_RESET_TITLE | FEED_REQ_RESET_UPDATE_INT);
+	node_request_automatic_add(s, NULL, FEED_REQ_SHOW_PROPDIALOG | FEED_REQ_RESET_TITLE | FEED_REQ_RESET_UPDATE_INT);
 
 	/* Acknowledge the new feed by returning true */
 	reply = dbus_message_new_method_return (message);
-	if (reply != NULL)
-	{
+	if(reply) {
 #if (DBUS_VERSION == 1)
 		dbus_message_append_args (reply, DBUS_TYPE_BOOLEAN, done,DBUS_TYPE_INVALID);
 #elif (DBUS_VERSION == 2)
@@ -164,9 +137,9 @@ ui_feedlist_dbus_subscribe (DBusConnection *connection, DBusMessage *message)
 		dbus_connection_send (connection, reply, NULL);
 		dbus_message_unref (reply);
 		return DBUS_HANDLER_RESULT_HANDLED;
-	}
-	else
+	} else {
 		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+	}
 }
 
 

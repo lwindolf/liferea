@@ -65,9 +65,9 @@ static void fl_opml_handler_export(nodePtr node) {
 	   cannot be changed by the user */
 }
 
-static void fl_opml_handler_new(nodePtr node) {
+static void fl_opml_handler_new(nodePtr parent) {
 
-	ui_fl_opml_get_handler_source(node);
+	ui_fl_opml_get_handler_source(parent);
 }
 
 static void fl_opml_handler_remove(nodePtr node) {
