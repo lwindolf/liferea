@@ -299,6 +299,7 @@ void ui_htmlview_start_output(gchar **buffer, const gchar *base, gboolean twoPan
 	addToHTMLBuffer(buffer, "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n");
 	addToHTMLBuffer(buffer, "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n");
 	addToHTMLBuffer(buffer, "<head>\n<title></title>");
+	addToHTMLBuffer(buffer, "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />");
 	if(NULL != base) {
 		addToHTMLBuffer(buffer, "<base href=\"");
 		addToHTMLBuffer(buffer, base);
