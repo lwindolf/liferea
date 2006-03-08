@@ -29,8 +29,11 @@
 #include "interface.h"
 #include "itemlist.h"
 #include "support.h"
-#include "ui_itemlist.h"
-#include "ui_vfolder.h"
+#include "ui/ui_itemlist.h"
+#include "ui/ui_feedlist.h"
+#include "ui/ui_vfolder.h"
+
+extern GtkWidget *mainwindow;
 
 struct fp_vfolder_ui_data {
 	nodePtr		np;
@@ -252,22 +255,22 @@ static void on_addrulebtn_clicked(GtkButton *button, gpointer user_data) {
 	ui_vfolder_add_rule(ui_data, NULL);
 }
 
-GtkWidget* ui_vfolder_propdialog_new(GtkWindow *parent, nodePtr np) {
+void ui_vfolder_properties(nodePtr node) {
 	GtkWidget			*vfolderdialog;
 	GSList				*iter;
 	struct fp_vfolder_ui_data	*ui_data;
 
 	ui_data = g_new0(struct fp_vfolder_ui_data, 1);
-	ui_data->vp = (vfolderPtr)np->data;
-	ui_data->np = np;
+	ui_data->vp = (vfolderPtr)node->data;
+	ui_data->np = node;
 	
 	/* Create the dialog */
 	ui_data->dialog = vfolderdialog = create_vfolderdialog();
-	gtk_window_set_transient_for(GTK_WINDOW(vfolderdialog), GTK_WINDOW(parent));
+	gtk_window_set_transient_for(GTK_WINDOW(vfolderdialog), GTK_WINDOW(mainwindow));
 
 	/* Setup feed name */
 	ui_data->feedNameEntry = lookup_widget(vfolderdialog,"feedNameEntry");
-	gtk_entry_set_text(GTK_ENTRY(ui_data->feedNameEntry), node_get_title(np));
+	gtk_entry_set_text(GTK_ENTRY(ui_data->feedNameEntry), node_get_title(node));
 	
 	/* Set up rule list vbox */
 	ui_data->ruleVBox = gtk_vbox_new(FALSE, 0);
@@ -275,7 +278,7 @@ GtkWidget* ui_vfolder_propdialog_new(GtkWindow *parent, nodePtr np) {
 	
 	/* load rules into dialog */	
 	iter = ui_data->vp->rules;
-	while(NULL != iter) {
+	while(iter) {
 		ui_vfolder_add_rule(ui_data, (rulePtr)(iter->data));
 		iter = g_slist_next(iter);
 	}
@@ -285,6 +288,22 @@ GtkWidget* ui_vfolder_propdialog_new(GtkWindow *parent, nodePtr np) {
 	g_signal_connect(G_OBJECT(vfolderdialog), "response", G_CALLBACK(on_propdialog_response), ui_data);
 	
 	gtk_widget_show_all(vfolderdialog);	
+}
+
+void ui_vfolder_add(nodePtr parent) {
+	gint		pos;
+	vfolderPtr	vfolder;
+	nodePtr		node, folder = NULL;
 	
-	return vfolderdialog;
+	vfolder = vfolder_new();
+	vfolder_set_title(vfolder, _("New VFolder"));
+
+	node = node_new();
+	node_set_title(node, vfolder_get_title(vfolder));
+	node_add_data(node, FST_VFOLDER, (gpointer)vfolder);
+
+	folder = ui_feedlist_get_target_folder(&pos);
+	feedlist_add_node(folder, node, pos);
+	ui_feedlist_select(node);
+	ui_vfolder_properties(node);
 }

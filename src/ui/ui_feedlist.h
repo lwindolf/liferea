@@ -115,9 +115,8 @@ void on_popup_mark_as_read(gpointer callback_data,
                            guint callback_action,
                            GtkWidget *widget);
 
-void on_popup_prop_selected(gpointer callback_data,
-					   guint callback_action,
-					   GtkWidget *widget);
+void on_popup_properties(gpointer callback_data, guint callback_action, GtkWidget *widget);
+
 void on_newbtn_clicked(GtkButton *button, gpointer user_data);
 
 void on_fileselect_clicked(GtkButton *button, gpointer user_data);

@@ -31,6 +31,7 @@
 #include "itemlist.h"
 #include "node.h"
 #include "vfolder.h"
+#include "ui/ui_vfolder.h"
 
 /**
  * The list of all existing vfolders. Used for updating vfolder
@@ -534,11 +535,6 @@ static gchar * vfolder_render(nodePtr node) {
 	return g_strdup("Implement me: vfolder_render()");
 }
 
-static ui_vfolder_dummy_add(nodePtr node) {
-
-	g_warning("ui_vfolder_dummy_add(): implement me!");
-}
-
 static struct nodeType nti = {
 	vfolder_initial_load,
 	vfolder_load,
@@ -551,7 +547,8 @@ static struct nodeType nti = {
 	vfolder_remove,
 	vfolder_mark_all_read,
 	vfolder_render,
-	ui_vfolder_dummy_add
+	ui_vfolder_add,
+	ui_vfolder_properties
 };
 
 nodeTypePtr vfolder_get_node_type(void) { return &nti; }

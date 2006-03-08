@@ -30,6 +30,7 @@
 #include "fl_providers/fl_plugin-ui.h"
 #include "ui/ui_node.h"
 #include "ui/ui_notification.h"
+
 flPluginPtr fl_plugins_get_root(void) {
 	gboolean	found = FALSE;
 	flPluginPtr	flPlugin;
@@ -234,16 +235,21 @@ static void fl_plugin_schedule_update(nodePtr node, guint flags) {
 	// FIXME:
 }
 
-static void fl_plugin_remove(nodePtr np) {
+static void fl_plugin_remove(nodePtr node) {
 
-	ui_notification_remove_feed(np);
-	ui_node_remove_node(np);
-	node_remove(np);
+	ui_notification_remove_feed(node);
+	ui_node_remove_node(node);
+	node_remove(node);
 }
 
-static gchar * fl_plugin_render(nodePtr np) {
+static gchar * fl_plugin_render(nodePtr node) {
 
 	return g_strdup("Implement me: plugin_render()");
+}
+
+static void ui_fl_plugin_dummy_properties(nodePtr node) {
+
+	g_warning("Not supported!");
 }
 
 nodeTypePtr fl_plugin_get_node_type(void) {
@@ -258,6 +264,7 @@ nodeTypePtr fl_plugin_get_node_type(void) {
 	nodeType->remove		= fl_plugin_remove;
 	nodeType->render		= fl_plugin_render;
 	nodeType->request_add		= ui_fl_plugin_type_dialog;
+	nodeType->request_properties	= ui_fl_plugin_dummy_properties;
 
 	return nodeType; 
 }

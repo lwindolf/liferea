@@ -1148,7 +1148,7 @@ void feed_process_update_result(struct request *request) {
 			itemlist_merge_itemset(node->itemSet);
 			
 			if(request->flags & FEED_REQ_SHOW_PROPDIALOG)
-				ui_feed_propdialog_new(node);
+				ui_feed_properties(node);
 
 			feed->available = TRUE;
 		}
@@ -1456,7 +1456,8 @@ static struct nodeType nti = {
 	feed_remove,
 	feed_mark_all_read,
 	feed_render,
-	ui_feed_newdialog
+	ui_feed_add,
+	ui_feed_properties
 };
 
 nodeTypePtr feed_get_node_type(void) { return &nti; }

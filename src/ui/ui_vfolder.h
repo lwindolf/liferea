@@ -1,7 +1,7 @@
 /**
  * @file ui_vfolder.h  vfolder dialogs handling
  * 
- * Copyright (C) 2004-2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2006 Lars Lindner <lars.lindner@gmx.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,9 +21,20 @@
 #ifndef _UI_VFOLDER_H
 #define _UI_VFOLDER_H
 
-#include <gtk/gtk.h>
+#include "node.h"
  
-/* sets up a vfolder properties dialog */
-GtkWidget* ui_vfolder_propdialog_new(GtkWindow *parent, nodePtr np);
+/**
+ * Sets up a vfolder properties dialog 
+ *
+ * @param node		the node whose properties to load
+ */
+void ui_vfolder_properties(nodePtr node);
+
+/** 
+ * Interactively add a new vfolder to the given parent node.
+ *
+ * @param parent	the parent node
+ */
+void ui_vfolder_add(nodePtr parent);
 
 #endif

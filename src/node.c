@@ -375,50 +375,54 @@ void node_schedule_update(nodePtr node, guint flags) {
 	NODE(node)->schedule_update(node, flags);
 }
 
+void node_request_properties(nodePtr node) {
+	NODE(node)->request_properties(node);
+}
+
 /* node attributes encapsulation */
 
-itemSetPtr node_get_itemset(nodePtr np) { return np->itemSet; }
+itemSetPtr node_get_itemset(nodePtr node) { return node->itemSet; }
 
-void node_set_itemset(nodePtr np, itemSetPtr sp) {
+void node_set_itemset(nodePtr node, itemSetPtr itemSet) {
 
-	g_assert(ITEMSET_TYPE_INVALID != sp->type);
-	np->itemSet = sp;
-	sp->node = np;
-	node_update_counters(np);
+	g_assert(ITEMSET_TYPE_INVALID != itemSet->type);
+	node->itemSet = itemSet;
+	itemSet->node = node;
+	node_update_counters(node);
 }
 
-void node_set_title(nodePtr np, const gchar *title) {
+void node_set_title(nodePtr node, const gchar *title) {
 
-	g_free(np->title);
-	np->title = g_strdup(title);
+	g_free(node->title);
+	node->title = g_strdup(title);
 }
 
-const gchar * node_get_title(nodePtr np) { return np->title; }
+const gchar * node_get_title(nodePtr node) { return node->title; }
 
-void node_update_unread_count(nodePtr np, gint diff) {
+void node_update_unread_count(nodePtr node, gint diff) {
 
-	np->unreadCount += diff;
+	node->unreadCount += diff;
 
 	/* vfolder unread counts are not interesting
 	   in the following propagation handling */
-	if(FST_VFOLDER == np->type)
+	if(FST_VFOLDER == node->type)
 		return;
 
 	/* update parent node unread counters */
-	if(NULL != np->parent)
-		node_update_unread_count(np->parent, diff);
+	if(NULL != node->parent)
+		node_update_unread_count(node->parent, diff);
 
 	/* update global feed list statistic */
 	feedlist_update_counters(diff, 0);
 }
 
-void node_update_new_count(nodePtr np, gint diff) {
+void node_update_new_count(nodePtr node, gint diff) {
 
-	np->newCount += diff;
+	node->newCount += diff;
 
 	/* vfolder new counts are not interesting
 	   in the following propagation handling */
-	if(FST_VFOLDER == np->type)
+	if(FST_VFOLDER == node->type)
 		return;
 
 	/* no parent node propagation necessary */
@@ -427,29 +431,29 @@ void node_update_new_count(nodePtr np, gint diff) {
 	feedlist_update_counters(0, diff);
 }
 
-guint node_get_unread_count(nodePtr np) { 
+guint node_get_unread_count(nodePtr node) { 
 	
-	return np->unreadCount; 
+	return node->unreadCount; 
 }
 
-void node_set_id(nodePtr np, const gchar *id) {
+void node_set_id(nodePtr node, const gchar *id) {
 
-	g_free(np->id);
-	np->id = g_strdup(id);
+	g_free(node->id);
+	node->id = g_strdup(id);
 }
 
-const gchar *node_get_id(nodePtr np) { return np->id; }
+const gchar *node_get_id(nodePtr node) { return node->id; }
 
-void node_set_sort_column(nodePtr np, gint sortColumn, gboolean reversed) {
+void node_set_sort_column(nodePtr node, gint sortColumn, gboolean reversed) {
 
-	np->sortColumn = sortColumn;
-	np->sortReversed = reversed;
+	node->sortColumn = sortColumn;
+	node->sortReversed = reversed;
 	feedlist_schedule_save();
 }
 
-void node_set_two_pane_mode(nodePtr np, gboolean newMode) { np->twoPane = newMode; }
+void node_set_two_pane_mode(nodePtr node, gboolean newMode) { node->twoPane = newMode; }
 
-gboolean node_get_two_pane_mode(nodePtr np) { return np->twoPane; }
+gboolean node_get_two_pane_mode(nodePtr node) { return node->twoPane; }
 
 /* node children iterating interface */
 

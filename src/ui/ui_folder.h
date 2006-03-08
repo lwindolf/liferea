@@ -1,9 +1,9 @@
 /**
- * @file ui_feed.h	UI actions concerning a single feed
- *
- * Copyright (C) 2004-2006 Lars Lindner <lars.lindner@gmx.net>
+ * @file ui_folder.h GUI folder handling
+ * 
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- *
+ * Copyright (C) 2004-2006 Lars Lindner <lars.lindner@gmx.net>
+ * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -16,35 +16,29 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
+ 
+#ifndef _UI_NODE_H
+#define _UI_NODE_H
 
-#ifndef _UI_FEED_H
-#define _UI_FEED_H
-
-#include "feed.h"
+#include <gtk/gtk.h>
+#include "node.h"
 
 /**
- * Start interaction to gather authentication
- * infos for a given feed node.
+ * Start interaction to create a new sub folder
+ * attached to the given parent node.
  *
- * @param node		the node
+ * @param parent	the node
  */
-void ui_feed_authdialog_new(nodePtr node, gint flags);
+void ui_folder_add(nodePtr parent);
 
 /**
- * Open feed properties dialog for the given node.
+ * Start interaction to change the properties of 
+ * the given folder node.
  *
- * @param node		the node
+ * @param folder	the node
  */
-void ui_feed_properties(nodePtr node);
+void ui_folder_properties(nodePtr folder);
 
-/**
- * Start interaction to create a feed attached to
- * the given node.
- *
- * @param node		the node
- */
-void ui_feed_add(nodePtr node);
-
-#endif /* _UI_FEED_H */
+#endif

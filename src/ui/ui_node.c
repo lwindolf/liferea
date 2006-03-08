@@ -1,8 +1,8 @@
 /**
- * @file ui_folder.c GUI folder handling
+ * @file ui_node.c GUI folder handling
  * 
- * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2004-2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2004-2006 Lars Lindner <lars.lindner@gmx.net>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,89 +29,14 @@
 #include "callbacks.h"
 #include "conf.h"
 #include "debug.h"
-#include "ui_feedlist.h"
-#include "ui_node.h"
-
-static GtkWidget	*newfolderdialog = NULL;
-static GtkWidget	*foldernamedialog = NULL;
+#include "ui/ui_feedlist.h"
+#include "ui/ui_node.h"
 
 extern GHashTable 	*flIterHash;
 
 GtkTreeIter * ui_node_to_iter(nodePtr node) {
 
 	return (GtkTreeIter *)g_hash_table_lookup(flIterHash, (gpointer)node);
-}
-
-/*------------------------------------------------------------------------------*/
-/* new/change/remove folder dialog callbacks 					*/
-/*------------------------------------------------------------------------------*/
-
-void ui_folder_newdialog(nodePtr parent) {
-	GtkWidget	*foldernameentry;
-	
-	if(!newfolderdialog || !G_IS_OBJECT(newfolderdialog))
-		newfolderdialog = create_newfolderdialog();
-
-	foldernameentry = lookup_widget(newfolderdialog, "foldertitleentry");
-	gtk_entry_set_text(GTK_ENTRY(foldernameentry), "");
-	gtk_object_set_data(GTK_OBJECT(newfolderdialog), "parent", parent);
-		
-	gtk_widget_show(newfolderdialog);
-}
-
-void on_newfolderbtn_clicked(GtkButton *button, gpointer user_data) {
-	GtkWidget	*foldertitleentry;
-	gchar		*foldertitle;
-	nodePtr		folder, parentNode;
-	int		pos;
-	
-	g_assert(newfolderdialog != NULL);
-	
-	foldertitleentry = lookup_widget(newfolderdialog, "foldertitleentry");
-	foldertitle = (gchar *)gtk_entry_get_text(GTK_ENTRY(foldertitleentry));
-
-	parentNode = (nodePtr)gtk_object_get_data(GTK_OBJECT(newfolderdialog), "parent");
-
-	/* create folder node */
-	folder = node_new();
-	folder->handler = parentNode->handler;
-	node_set_title(folder, foldertitle);
-	node_add_data(folder, FST_FOLDER, NULL);
-
-	/* add the new folder to the model */
-	parentNode = ui_feedlist_get_target_folder(&pos);
-	feedlist_add_node(parentNode, folder, pos);
-	ui_feedlist_select(folder);
-}
-
-void on_popup_foldername_selected(gpointer callback_data, guint callback_action, GtkWidget *widget) {
-	nodePtr	folder = (nodePtr)callback_data;
-	GtkWidget	*foldernameentry;
-	
-	if((NULL == folder) || (FST_FOLDER != folder->type)) {
-		ui_show_error_box(_("A folder must be selected."));
-		return;
-	}
-	
-	if(NULL == foldernamedialog || !G_IS_OBJECT(foldernamedialog))
-		foldernamedialog = create_foldernamedialog();
-	
-	foldernameentry = lookup_widget(foldernamedialog, "foldernameentry");
-	gtk_entry_set_text(GTK_ENTRY(foldernameentry), node_get_title(folder));
-	gtk_object_set_data(GTK_OBJECT(foldernamedialog), "folder", folder);
-
-	gtk_widget_show(foldernamedialog);
-}
-
-void on_foldernamechangebtn_clicked(GtkButton *button, gpointer user_data) {
-	nodePtr		folder;
-	GtkWidget	*foldernameentry;
-	
-	folder = (nodePtr)gtk_object_get_data(GTK_OBJECT(foldernamedialog), "folder");
-	foldernameentry = lookup_widget(foldernamedialog, "foldernameentry");
-	node_set_title(folder, (gchar *)gtk_entry_get_text(GTK_ENTRY(foldernameentry)));
-	ui_node_update(folder);
-	gtk_widget_hide(foldernamedialog);
 }
 
 /*

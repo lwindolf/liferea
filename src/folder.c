@@ -23,7 +23,7 @@
 #include "conf.h"
 #include "debug.h"
 #include "support.h"
-#include "ui/ui_node.h"
+#include "ui/ui_folder.h"
 #include "ui/ui_htmlview.h"
 
 static void folder_initial_load(nodePtr node) {
@@ -145,7 +145,8 @@ static struct nodeType nti = {
 	folder_remove,
 	folder_mark_all_read,
 	folder_render,
-	ui_folder_newdialog
+	ui_folder_add,
+	ui_folder_properties
 };
 
 nodeTypePtr folder_get_node_type(void) { return &nti; }

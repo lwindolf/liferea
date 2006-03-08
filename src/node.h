@@ -94,6 +94,7 @@ typedef struct nodeType {
 	void 	(*mark_all_read)	(nodePtr node);
 	gchar * (*render)		(nodePtr node);
 	void	(*request_add)		(nodePtr parent);
+	void	(*request_properties)	(nodePtr node);
 } *nodeTypePtr;
 
 #define NODE(node)	(node->nodeType)
@@ -341,6 +342,13 @@ void node_request_update(nodePtr node, guint flags);
  * @param flags		update handling flags
  */
 void node_schedule_update(nodePtr node, guint flags);
+
+/**
+ * Request opening a properties dialog for the given node.
+ *
+ * @param node		the node
+ */
+void node_request_properties(nodePtr node);
 
 /**
  * Called when updating favicons is requested.

@@ -1,7 +1,8 @@
 /**
  * @file ui_popup.c popup menus
  *
- * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,9 +31,10 @@
 #include "support.h"
 #include "callbacks.h"
 #include "update.h"
-#include "ui_popup.h"
-#include "ui_mainwindow.h"
-#include "ui_enclosure.h"
+#include "ui/ui_popup.h"
+#include "ui/ui_mainwindow.h"
+#include "ui/ui_enclosure.h"
+#include "ui/ui_feedlist.h"
 
 /*------------------------------------------------------------------------------*/
 /* popup menu callbacks 							*/
@@ -88,6 +90,8 @@ static void addPopupOption(GtkItemFactoryEntry **menu, gint *menu_len, gchar *pa
 /* prepares the popup menues */
 void ui_popup_setup_menues(void) {
 
+	// FIXME: fix all the invalid callback parameters, maybe update to 2.4 menu system
+
 	/* feed list menues */
 	node_menu_items = NULL;
 	node_menu_len = 0;
@@ -98,7 +102,7 @@ void ui_popup_setup_menues(void) {
 	addPopupOption(&node_menu_items, &node_menu_len, _("/_New/New F_older..."), 		NULL, on_popup_newfolder_selected, 	0, NULL, 0);
 	addPopupOption(&node_menu_items, &node_menu_len, _("/_New/New _VFolder..."), 		NULL, on_new_vfolder_activate, 		0, NULL, 0);
 	addPopupOption(&node_menu_items, &node_menu_len, _("/_New/New _Plugin..."), 		NULL, on_new_plugin_activate, 		0, NULL, 0);
-	addPopupOption(&node_menu_items, &node_menu_len, _("/_Properties..."),			NULL, on_popup_prop_selected, 		0, "<StockItem>", GTK_STOCK_PROPERTIES );
+	addPopupOption(&node_menu_items, &node_menu_len, _("/_Properties..."),			NULL, on_popup_properties, 		0, "<StockItem>", GTK_STOCK_PROPERTIES );
 	addPopupOption(&node_menu_items, &node_menu_len, _("/_Delete"),				NULL, on_popup_delete,			0, "<StockItem>", GTK_STOCK_DELETE);
 
 	folder_menu_items = NULL;
@@ -110,7 +114,7 @@ void ui_popup_setup_menues(void) {
 	addPopupOption(&folder_menu_items, &folder_menu_len, _("/_New/New F_older..."), 	NULL, on_popup_newfolder_selected, 	0, NULL, 0);
 	addPopupOption(&folder_menu_items, &folder_menu_len, _("/_New/New _VFolder..."), 	NULL, on_new_vfolder_activate, 		0, NULL, 0);
 	addPopupOption(&folder_menu_items, &folder_menu_len, _("/_New/New _Plugin..."), 	NULL, on_new_plugin_activate, 		0, NULL, 0);
-	addPopupOption(&folder_menu_items, &folder_menu_len, _("/_Rename Folder..."),		NULL, on_popup_foldername_selected, 	0, "<StockItem>", GTK_STOCK_PROPERTIES);
+	addPopupOption(&folder_menu_items, &folder_menu_len, _("/_Rename Folder..."),		NULL, on_popup_properties,	 	0, "<StockItem>", GTK_STOCK_PROPERTIES);
 	addPopupOption(&folder_menu_items, &folder_menu_len, _("/_Delete Folder"), 		NULL, on_popup_delete,			0, "<StockItem>", GTK_STOCK_DELETE);
 
 	vfolder_menu_items = NULL;
@@ -121,7 +125,7 @@ void ui_popup_setup_menues(void) {
 	addPopupOption(&vfolder_menu_items, &vfolder_menu_len, _("/_New/New F_older..."), 	NULL, on_popup_newfolder_selected, 	0, NULL, 0);
 	addPopupOption(&vfolder_menu_items, &vfolder_menu_len, _("/_New/New _VFolder..."), 	NULL, on_new_vfolder_activate, 		0, NULL, 0);
 	addPopupOption(&vfolder_menu_items, &vfolder_menu_len, _("/_New/New _Plugin..."), 	NULL, on_new_plugin_activate, 		0, NULL, 0);
-	addPopupOption(&vfolder_menu_items, &vfolder_menu_len, _("/_Properties..."),		NULL, on_popup_prop_selected, 		0, "<StockItem>", GTK_STOCK_PROPERTIES );
+	addPopupOption(&vfolder_menu_items, &vfolder_menu_len, _("/_Properties..."),		NULL, on_popup_properties, 		0, "<StockItem>", GTK_STOCK_PROPERTIES );
 	addPopupOption(&vfolder_menu_items, &vfolder_menu_len, _("/_Delete"),			NULL, on_popup_delete,			0, "<StockItem>", GTK_STOCK_DELETE);
 
 	default_menu_items = NULL;

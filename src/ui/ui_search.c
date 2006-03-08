@@ -146,23 +146,9 @@ void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 }
 
 void on_new_vfolder_activate(GtkMenuItem *menuitem, gpointer user_data) {
-	gint			pos;
-	vfolderPtr		vp;
-	nodePtr			np, folder = NULL;
-	
-	vp = vfolder_new();
-	vfolder_set_title(vp, _("New VFolder"));
 
-	np = node_new();
-	node_set_title(np, vfolder_get_title(vp));
-	node_add_data(np, FST_VFOLDER, (gpointer)vp);
-
-	folder = ui_feedlist_get_target_folder(&pos);
-	feedlist_add_node(folder, np, pos);
-	ui_feedlist_select(np);
-	ui_vfolder_propdialog_new(GTK_WINDOW(mainwindow), np);
+	node_request_interactive_add(FST_VFOLDER);
 }
-
 
 /*------------------------------------------------------------------------------*/
 /* feedster support								*/

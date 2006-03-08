@@ -369,46 +369,15 @@ void ui_feedlist_delete_prompt(nodePtr np) {
 	                 G_CALLBACK(ui_feedlist_delete_response_cb), np);
 }
 
-/*------------------------------------------------------------------------------*/
-/* property dialog callbacks 							*/
-/*------------------------------------------------------------------------------*/
-
-void on_popup_prop_selected(gpointer callback_data, guint callback_action, GtkWidget *widget) {
-	nodePtr		np = (nodePtr)callback_data;
-	
-	if(NULL != np) {
-		if(FST_FEED == np->type) {
-			/* loading/unloading the feed because the cache 
-			   properties might be changed */
-			node_load(np);
-			ui_feed_propdialog_new(np);
-			node_unload(np);
-			return;
-		} 
-		if(FST_VFOLDER == np->type) {
-			ui_vfolder_propdialog_new(GTK_WINDOW(mainwindow), np);
-			return;
-		}
-	}
-	g_message(_("You must select a feed entry."));
-	ui_show_error_box(_("You must select a feed entry."));
-}
-
 void on_menu_properties(GtkMenuItem *menuitem, gpointer user_data) {
-	nodePtr ptr = feedlist_get_selected();
-	
-	if((ptr != NULL) && (FST_FOLDER == ptr->type)) {
-		on_popup_foldername_selected((gpointer)ptr, 0, NULL);
-	} else if((ptr != NULL) && (FST_FEED == ptr->type)) {
-		on_popup_prop_selected((gpointer)ptr, 0, NULL);
-	} else {
-		g_warning("You have found a bug in Liferea. You must select a node in the feedlist to do what you just did.");
-	}
+
+	node_request_properties(feedlist_get_selected());
 }
 
-/*------------------------------------------------------------------------------*/
-/* new entry dialog callbacks 							*/
-/*------------------------------------------------------------------------------*/
+void on_popup_properties(gpointer callback_data, guint callback_action, GtkWidget *widget) {
+
+	node_request_properties(feedlist_get_selected());
+}
 
 void on_newbtn_clicked(GtkButton *button, gpointer user_data) {	
 

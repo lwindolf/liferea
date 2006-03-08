@@ -1,8 +1,8 @@
 /**
  * @file ui_node.h GUI folder handling
  * 
- * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2004-2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2004-2006 Lars Lindner <lars.lindner@gmx.net>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,14 +25,12 @@
 #include <gtk/gtk.h>
 #include "node.h"
 
-void ui_folder_newdialog(nodePtr np);
-
 /**
  * Determines the tree iter of a given node.
  *
- * @param np	the node
+ * @param node	the node
  */
-GtkTreeIter * ui_node_to_iter(nodePtr np);
+GtkTreeIter * ui_node_to_iter(nodePtr node);
 
 /**
  * Add a node to the feedlist
@@ -48,16 +46,16 @@ void ui_node_add(nodePtr parent, nodePtr node, gint position);
 /**
  * Remove a node from the feedlist and free its ui_data.
  *
- * @param np	the node to free
+ * @param node	the node to free
  */
-void ui_node_remove_node(nodePtr np);
+void ui_node_remove_node(nodePtr node);
 
 /**
  * Updates the tree view iter of the given node.
  *
- * @param np	the node
+ * @param node	the node
  */
-void ui_node_update(nodePtr np);
+void ui_node_update(nodePtr node);
 
 gboolean ui_node_is_folder_expanded(nodePtr folder);
 
