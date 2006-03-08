@@ -94,10 +94,6 @@ static gchar* atom10_parse_content_construct(xmlNodePtr cur, feedParserCtxtPtr c
 	g_assert(NULL != cur);
 	ret = NULL;
 	
-	if(ctxt->feed->htmlUrl != NULL && ctxt->feed->htmlUrl[0] != '|' &&
-	   strstr(ctxt->feed->htmlUrl, "://") != NULL)
-		defaultBase = ctxt->feed->htmlUrl;
-	
 	if (xmlHasNsProp(cur, BAD_CAST"src", NULL )) {
 		xmlChar *src = xmlGetNsProp(cur, BAD_CAST"src", NULL);
 		
@@ -122,7 +118,7 @@ static gchar* atom10_parse_content_construct(xmlNodePtr cur, feedParserCtxtPtr c
 		
 		/* This that need to be de-encoded and should not contain sub-tags.*/
 		if (type != NULL && (g_str_equal(type,"html") || !g_strcasecmp(type, "text/html"))) {
-			ret = utf8_fix(extractHTMLNode(cur, 0, defaultBase));
+			ret = utf8_fix(extractHTMLNode(cur, 0, NULL));
 		} else if (NULL == type || !strcmp(type, "text") || !strncasecmp(type, "text/",5)) {
 			gchar *tmp;
 			/* Assume that "text/ *" files can be directly displayed.. kinda stated in the RFC */
@@ -138,7 +134,7 @@ static gchar* atom10_parse_content_construct(xmlNodePtr cur, feedParserCtxtPtr c
 			ret = tmp;
 		} else if (!strcmp(type,"xhtml") || !strcasecmp(type, "application/xhtml+xml")) {
 			/* The spec says to only show the contents of the div tag that MUST be present */
-			ret = utf8_fix(extractHTMLNode(cur, 2, defaultBase));
+			ret = utf8_fix(extractHTMLNode(cur, 2, NULL));
 		} else {
 			/* Unknown type... lets bail? */
 			g_free(type);
@@ -147,7 +143,7 @@ static gchar* atom10_parse_content_construct(xmlNodePtr cur, feedParserCtxtPtr c
 		
 		g_free(type);
 	}
-	printf("%s\n",ret);
+	
 	return ret;
 }
 
@@ -177,23 +173,12 @@ static gchar* atom10_parse_text_construct(xmlNodePtr cur, gboolean htmlified) {
 			ret = tmp;
 		}
 	} else if (!strcmp(type, "html")) {
-		ret = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+		ret = utf8_fix(utf8_fix(extractHTMLNode(cur, 0, NULL)));
 		if (!htmlified)
 			ret = unhtmlize(unxmlize(ret));
 	} else if(!strcmp(type, "xhtml")) {
-		/* The spec says to only show the contents of the div tag that MUST be present */
-		
-		cur = cur->children;
-		while (cur != NULL) {
-			if (cur->type == XML_ELEMENT_NODE && cur->name != NULL && xmlStrEqual(cur->name, BAD_CAST"div"))
-				break;
-			cur = cur->next;
-		}
-		
-		if (cur == NULL)
-			ret = g_strdup(_("This item's content is invalid."));
-		else
-			ret = utf8_fix(extractHTMLNode(cur, 2, NULL));
+		/* The spec says to show the contents of the div tag that MUST be present */
+		ret = utf8_fix(extractHTMLNode(cur, 2, NULL));
 		
 		if (!htmlified)
 			ret = unhtmlize(ret);
@@ -542,6 +527,9 @@ static void atom10_parse_feed_link(xmlNodePtr cur, feedParserCtxtPtr ctxt, itemP
 	gchar *href = atom10_parse_link(cur, ctxt, ip, state);
 	if(href) {
 		feed_set_html_url(ctxt->feed, href);
+		/* Set the default base to the feed's HTML URL if not set yet */
+		if (xmlNodeGetBase(cur->doc, xmlDocGetRootElement(cur->doc)) == NULL)
+			xmlNodeSetBase(xmlDocGetRootElement(cur->doc), href);
 		g_free(href);
 	}
 }

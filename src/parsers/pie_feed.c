@@ -62,12 +62,12 @@ gchar* pie_parse_content_construct(xmlNodePtr cur) {
 	   does not exist in the newer IETF drafts.*/
 	if(NULL != mode) {
 		if(!strcmp(mode, "escaped")) {
-			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+			tmp = utf8_fix(utf8_fix(extractHTMLNode(cur, 0, NULL)));
 			if(NULL != tmp)
 				ret = tmp;
 			
 		} else if(!strcmp(mode, "xml")) {
-			ret = extractHTMLNode(cur, 1,"http://default.base.com/");
+			ret = extractHTMLNode(cur, 1,NULL);
 			
 		} else if(!strcmp(mode, "base64")) {
 			g_warning("Base64 encoded <content> in Atom feeds not supported!\n");
@@ -83,18 +83,20 @@ gchar* pie_parse_content_construct(xmlNodePtr cur) {
 		/* not sure what MIME types are necessary... */
 
 		/* This that need to be de-encoded and should not contain sub-tags.*/
-		if (NULL == type || (
-						 !strcmp(type, "TEXT") ||
-						 !strcmp(type, "text/plain") ||
-						 !strcmp(type, "HTML") ||
-						 !strcmp(type, "text/html"))) {
-			ret = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+		if (NULL == type ||
+			!strcmp(type, "TEXT") ||
+			!strcmp(type, "text/plain")) {
+			gchar *tmp;
+			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+			ret = g_markup_printf_escaped("<div xmlns=\"http://www.w3.org/1999/xhtml\"><pre>%s</pre></div>", tmp);
+			g_free(tmp);
 			/* Next are things that contain subttags */
-		} else if((NULL == type) ||
-				/* HTML types */
-				!strcmp(type, "XHTML") ||
-				!strcmp(type, "application/xhtml+xml")) {
-			/* Text types */
+		} else if(!strcmp(type, "HTML") ||
+				  !strcmp(type, "text/html")) {
+			ret = extractHTMLNode(cur, 0,"http://default.base.com/");
+		} else if(/* HTML types */
+				  !strcmp(type, "XHTML") ||
+				  !strcmp(type, "application/xhtml+xml")) {
 			ret = extractHTMLNode(cur, 1,"http://default.base.com/");
 		}
 	}
@@ -103,11 +105,6 @@ gchar* pie_parse_content_construct(xmlNodePtr cur) {
 	   default type MUST be considered to be text/plain. The type tag
 	   is required in 0.2.... */
 	//if (ret != NULL && (type == NULL || !strcmp(type, "text/plain") || !strcmp(type,"TEXT")))) {
-	if((ret != NULL) && (type != NULL) && (!strcmp(type, "text/plain") || !strcmp(type,"TEXT"))) {
-		gchar *tmp = g_markup_printf_escaped("<pre>%s</pre>", ret);
-		g_free(ret);
-		ret = tmp;
-	}
 	g_free(type);
 	
 	return ret;

@@ -197,43 +197,34 @@ static xmlNodePtr common_html_doc_find_body(xmlDocPtr doc) {
 gchar * extractHTMLNode(xmlNodePtr cur, gint xhtmlMode, const gchar *defaultBase) {
 	xmlBufferPtr	buf;
 	gchar		*result = NULL;
-	xmlDocPtr newDoc = xmlNewDoc( BAD_CAST "1.0" );
+
+	/* Create the new document and add the div tag*/
+	xmlDocPtr newDoc = xmlNewDoc( BAD_CAST "1.0" );;
+	xmlNodePtr divNode = xmlNewNode(NULL, BAD_CAST "div");;
+	xmlDocSetRootElement( newDoc, divNode );
+	xmlNewNs(divNode, BAD_CAST "http://www.w3.org/1999/xhtml", NULL);
+
+	/* Set the xml:base  of the div tag */
+	if(xmlNodeGetBase(cur->doc, cur))
+		xmlNodeSetBase( divNode, xmlNodeGetBase(cur->doc, cur) );
+	else if (defaultBase)
+		xmlNodeSetBase( divNode, defaultBase);
 	
 	if(xhtmlMode == 0) { /* Read escaped HTML and convert to XHTML, placing in a div tag */
 		xmlDocPtr oldDoc;
-		xmlNodePtr divNode, copiedNodes;
+		xmlNodePtr copiedNodes;
 		xmlChar *escapedhtml;
 		/* Parse the HTML into oldDoc*/
 		escapedhtml = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);//xmlNodeDump(tmpBuf, cur->doc, cur, 0, 0);
 		oldDoc = common_parse_html(escapedhtml, strlen(escapedhtml));
-		/* Create the new document and add the div tag*/
-		divNode = xmlNewNode(NULL, BAD_CAST "div");
-		xmlNewProp(divNode, BAD_CAST "xmlns", BAD_CAST "http://www.w3.org/1999/xhtml");
-		xmlDocSetRootElement( newDoc, divNode );
-		if(xmlNodeGetBase(cur->doc, cur))
-			xmlNodeSetBase( divNode, xmlNodeGetBase(cur->doc, cur) );
-		else if (defaultBase)
-			xmlNodeSetBase( divNode, defaultBase);
 		/* Copy in the html tags */
 		copiedNodes = xmlDocCopyNodeList( newDoc, common_html_doc_find_body(oldDoc)->xmlChildrenNode);
 		xmlAddChildList(divNode, copiedNodes);
 		xmlFreeDoc(oldDoc);
-	} else if (xhtmlMode == 1 || xhtmlMode == 2){
-		/* This will create a div tag that contains the default base,
-		   and then embed all the children of the passed node within
-		   it. */
-		xmlNodePtr divNode, copiedNodes;
-		/* Create the new document and add the div tag*/
-		divNode = xmlNewNode(NULL, BAD_CAST "div");
-		xmlNewProp(divNode, BAD_CAST "xmlns", BAD_CAST "http://www.w3.org/1999/xhtml");
-		xmlDocSetRootElement( newDoc, divNode );
-		if( defaultBase && !( xmlNodeGetBase( newDoc, cur)))
-			xmlNodeSetBase( divNode, defaultBase );
-		/* Copy in the html tags */
-		copiedNodes = xmlDocCopyNodeList( newDoc, cur->xmlChildrenNode);
+		xmlFree(escapedhtml);
+	} else if (xhtmlMode == 1 || xhtmlMode == 2){ /* Read multiple XHTML tags and embed in div tag */
+		xmlNodePtr copiedNodes = xmlDocCopyNodeList( newDoc, cur->xmlChildrenNode);
 		xmlAddChildList(divNode, copiedNodes);
-	} else if (xhtmlMode == 2){
-		/* This one is for well-formed atom feeds that contain ONE div tag */
 	}
 	
 	buf = xmlBufferCreate();
