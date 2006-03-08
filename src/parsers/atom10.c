@@ -88,11 +88,15 @@ gchar* atom10_mark_up_text_content(gchar* content) {
  * @returns g_strduped string which must be freed by the caller.
  */
 
-static gchar* atom10_parse_content_construct(xmlNodePtr cur) {
+static gchar* atom10_parse_content_construct(xmlNodePtr cur, feedParserCtxtPtr ctxt) {
 	gchar *ret;
-
+	const gchar *defaultBase;
 	g_assert(NULL != cur);
 	ret = NULL;
+	
+	if(ctxt->feed->htmlUrl != NULL && ctxt->feed->htmlUrl[0] != '|' &&
+	   strstr(ctxt->feed->htmlUrl, "://") != NULL)
+		defaultBase = ctxt->feed->htmlUrl;
 	
 	if (xmlHasNsProp(cur, BAD_CAST"src", NULL )) {
 		xmlChar *src = xmlGetNsProp(cur, BAD_CAST"src", NULL);
@@ -112,73 +116,35 @@ static gchar* atom10_parse_content_construct(xmlNodePtr cur) {
 		}
 	} else {
 		gchar *type;
-		gboolean escapeAsText, includeChildTags, convertToXHTML;
-		xmlChar *baseURL = NULL;
 
 		/* determine encoding mode */
 		type = xmlGetNsProp(cur, BAD_CAST"type", NULL);
 		
 		/* This that need to be de-encoded and should not contain sub-tags.*/
 		if (type != NULL && (g_str_equal(type,"html") || !g_strcasecmp(type, "text/html"))) {
-			escapeAsText = FALSE;
-			includeChildTags = FALSE;
-			convertToXHTML=TRUE;
-			baseURL = xmlNodeGetBase(cur->doc, cur);
+			ret = utf8_fix(extractHTMLNode(cur, 0, defaultBase));
 		} else if (NULL == type || !strcmp(type, "text") || !strncasecmp(type, "text/",5)) {
-			/* Assume that "text/ *" files can be directly displayed.. kinda stated in the RFC */
-			escapeAsText = TRUE;
-			includeChildTags = FALSE;
-			convertToXHTML=FALSE;
-		} else if (!strcmp(type,"xhtml") || !strcasecmp(type, "application/xhtml+xml")) {
-			escapeAsText = FALSE;
-			includeChildTags = TRUE;
-			convertToXHTML=FALSE;
-			/* The spec says to only show the contents of the div tag that MUST be present */
-			cur = cur->children;
-			while (cur != NULL) {
-				if (cur->type == XML_ELEMENT_NODE && cur->name != NULL && xmlStrEqual(cur->name, BAD_CAST"div"))
-					break;
-				cur = cur->next;
-			}
-			if (cur == NULL) {
-				g_free(type);
-				return g_strdup(_("This item's content is invalid."));
-			}
-			baseURL = xmlNodeGetBase(cur->doc, cur);
-		} else {
-			/* Unknown type... lets bail? */
-			g_free(type);
-			return g_strdup(_("This item's content is invalid."));
-		}
-			
-		if (includeChildTags)
-			ret = utf8_fix(extractHTMLNode(cur, TRUE));
-		else
-			ret = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-		
-		if (escapeAsText) {
 			gchar *tmp;
-
+			/* Assume that "text/ *" files can be directly displayed.. kinda stated in the RFC */
+			ret = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+			
 			g_strchug(g_strchomp(ret));
-
+			
 			if (type != NULL && !strcasecmp(type, "text/plain"))
 				tmp = atom10_mark_up_text_content(ret);
 			else
 				tmp = g_markup_printf_escaped("<pre>%s</pre>", ret);
 			g_free(ret);
 			ret = tmp;
+		} else if (!strcmp(type,"xhtml") || !strcasecmp(type, "application/xhtml+xml")) {
+			/* The spec says to only show the contents of the div tag that MUST be present */
+			ret = utf8_fix(extractHTMLNode(cur, 2, defaultBase));
+		} else {
+			/* Unknown type... lets bail? */
+			g_free(type);
+			return g_strdup(_("This item's content is invalid."));
 		}
-		if (convertToXHTML) {
-			gchar *tmp = common_html_to_xhtml(ret, strlen(ret));
-			g_free(ret);
-			ret = tmp;
-		}
-		if (baseURL) {
-			gchar *tmp = g_strdup_printf("<div xml:base=\"%s\">%s</div>", baseURL, ret);
-			g_free(ret);
-			ret = tmp;
-		}
-		xmlFree(baseURL);
+		
 		g_free(type);
 	}
 	printf("%s\n",ret);
@@ -227,7 +193,7 @@ static gchar* atom10_parse_text_construct(xmlNodePtr cur, gboolean htmlified) {
 		if (cur == NULL)
 			ret = g_strdup(_("This item's content is invalid."));
 		else
-			ret = utf8_fix(extractHTMLNode(cur, TRUE));
+			ret = utf8_fix(extractHTMLNode(cur, 2, NULL));
 		
 		if (!htmlified)
 			ret = unhtmlize(ret);
@@ -356,7 +322,7 @@ static void atom10_parse_entry_category(xmlNodePtr cur, feedParserCtxtPtr ctxt, 
 }
 
 static void atom10_parse_entry_content(xmlNodePtr cur, feedParserCtxtPtr ctxt, itemPtr ip, struct atom10ParserState *state) {
-	gchar *content = atom10_parse_content_construct(cur);
+	gchar *content = atom10_parse_content_construct(cur, ctxt);
 	if(content != NULL)
 		item_set_description(ip, content);
 	g_free(content);

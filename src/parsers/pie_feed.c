@@ -67,7 +67,7 @@ gchar* pie_parse_content_construct(xmlNodePtr cur) {
 				ret = tmp;
 			
 		} else if(!strcmp(mode, "xml")) {
-			ret = extractHTMLNode(cur, TRUE);
+			ret = extractHTMLNode(cur, 1,"http://default.base.com/");
 			
 		} else if(!strcmp(mode, "base64")) {
 			g_warning("Base64 encoded <content> in Atom feeds not supported!\n");
@@ -95,7 +95,7 @@ gchar* pie_parse_content_construct(xmlNodePtr cur) {
 				!strcmp(type, "XHTML") ||
 				!strcmp(type, "application/xhtml+xml")) {
 			/* Text types */
-			ret = extractHTMLNode(cur, TRUE);
+			ret = extractHTMLNode(cur, 1,"http://default.base.com/");
 		}
 	}
 	/* If the type was text, everything must be now escaped and

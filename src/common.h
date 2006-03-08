@@ -46,19 +46,19 @@ gchar * unhtmlize(gchar *string);
 
 gchar * unxmlize(gchar *string);
 
-/**
- * This converts an HTML string into an XHTML fragment and passes it
- * through some validity checks.
- * @return XHTML string, or NULL if conversion fails.
- */
-gchar *common_html_to_xhtml(const gchar *html, gint len);
-
 /* parses a XML node and returns its contents as a string */
 /* gchar * parseHTML(htmlNodePtr cur); */
 
-/** to extract not escaped XHTML from a node
- * @param only extract the children of the passed node */
-gchar * extractHTMLNode(xmlNodePtr cur, gboolean children);
+/** to extract XHTML from the children of the passed node
+ *
+ * @param cur         parent of the nodes that will be returned
+ * @param xhtmlMode   If 0, reads escaped HTML.
+ *                    If 1, reads XHTML nodes as children, and wrap in div tag
+ *                    If 2, Find a div tag, and return it as a string
+ * @param defaultBase 
+ * @returns XHTML version of children of passed node
+ */
+gchar * extractHTMLNode(xmlNodePtr cur, gint xhtmlMode, const gchar *defaultBase);
 
 void	addToHTMLBufferFast(gchar **buffer, const gchar *string);
 void	addToHTMLBuffer(gchar **buffer, const gchar *string);

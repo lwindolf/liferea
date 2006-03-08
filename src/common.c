@@ -153,25 +153,97 @@ gchar * utf8_fix(xmlChar *string) {
 	return string;
 }
 
-gchar * extractHTMLNode(xmlNodePtr cur, gboolean children) {
+static xmlDocPtr common_parse_html(const gchar *html, gint len) {
+	htmlParserCtxtPtr ctxt;
+	xmlDocPtr out = NULL;
+	
+	g_assert(html != NULL);
+	g_assert(len >= 0);
+	
+	ctxt = htmlCreateMemoryParserCtxt(html, len);
+	if (!ctxt) return NULL;
+
+	/* Note: NONET is not implemented so it will return an error
+	   because it doesn't know how to handle NONET. But, it might
+	   learn in the future. */
+	ctxt->html = 1;
+	htmlCtxtUseOptions(ctxt, HTML_PARSE_RECOVER | HTML_PARSE_NONET);
+	htmlParseDocument(ctxt);
+	
+	out = ctxt->myDoc;
+	ctxt->myDoc = NULL;
+	htmlFreeParserCtxt(ctxt);
+	return out;
+}
+
+static xmlNodePtr common_html_doc_find_body(xmlDocPtr doc) {
+	xmlXPathContextPtr xpathCtxt = NULL;
+	xmlXPathObjectPtr xpathObj = NULL;
+	xmlNodePtr node;
+	xpathCtxt = xmlXPathNewContext(doc);
+	if(!xpathCtxt) goto error;
+
+	xpathObj = xmlXPathEvalExpression("/html/body", xpathCtxt);
+	if(!xpathObj) goto error;
+	if(!xpathObj->nodesetval->nodeMax) goto error;
+	
+	node = xpathObj->nodesetval->nodeTab[0];
+ error:
+	if (xpathObj) xmlXPathFreeObject(xpathObj);
+	if (xpathCtxt) xmlXPathFreeContext(xpathCtxt);
+	return node;
+}
+
+gchar * extractHTMLNode(xmlNodePtr cur, gint xhtmlMode, const gchar *defaultBase) {
 	xmlBufferPtr	buf;
 	gchar		*result = NULL;
-
-	buf = xmlBufferCreate();
-	if(children) {
-		cur = cur->xmlChildrenNode;
-		while (cur != NULL) {
-			xmlNodeDump(buf, cur->doc, cur, 0, 0);
-			cur = cur->next;
-		}
-	} else {
-		xmlNodeDump(buf, cur->doc, cur, 0, 0);
+	xmlDocPtr newDoc = xmlNewDoc( BAD_CAST "1.0" );
+	
+	if(xhtmlMode == 0) { /* Read escaped HTML and convert to XHTML, placing in a div tag */
+		xmlDocPtr oldDoc;
+		xmlNodePtr divNode, copiedNodes;
+		xmlChar *escapedhtml;
+		/* Parse the HTML into oldDoc*/
+		escapedhtml = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);//xmlNodeDump(tmpBuf, cur->doc, cur, 0, 0);
+		oldDoc = common_parse_html(escapedhtml, strlen(escapedhtml));
+		/* Create the new document and add the div tag*/
+		divNode = xmlNewNode(NULL, BAD_CAST "div");
+		xmlNewProp(divNode, BAD_CAST "xmlns", BAD_CAST "http://www.w3.org/1999/xhtml");
+		xmlDocSetRootElement( newDoc, divNode );
+		if(xmlNodeGetBase(cur->doc, cur))
+			xmlNodeSetBase( divNode, xmlNodeGetBase(cur->doc, cur) );
+		else if (defaultBase)
+			xmlNodeSetBase( divNode, defaultBase);
+		/* Copy in the html tags */
+		copiedNodes = xmlDocCopyNodeList( newDoc, common_html_doc_find_body(oldDoc)->xmlChildrenNode);
+		xmlAddChildList(divNode, copiedNodes);
+		xmlFreeDoc(oldDoc);
+	} else if (xhtmlMode == 1 || xhtmlMode == 2){
+		/* This will create a div tag that contains the default base,
+		   and then embed all the children of the passed node within
+		   it. */
+		xmlNodePtr divNode, copiedNodes;
+		/* Create the new document and add the div tag*/
+		divNode = xmlNewNode(NULL, BAD_CAST "div");
+		xmlNewProp(divNode, BAD_CAST "xmlns", BAD_CAST "http://www.w3.org/1999/xhtml");
+		xmlDocSetRootElement( newDoc, divNode );
+		if( defaultBase && !( xmlNodeGetBase( newDoc, cur)))
+			xmlNodeSetBase( divNode, defaultBase );
+		/* Copy in the html tags */
+		copiedNodes = xmlDocCopyNodeList( newDoc, cur->xmlChildrenNode);
+		xmlAddChildList(divNode, copiedNodes);
+	} else if (xhtmlMode == 2){
+		/* This one is for well-formed atom feeds that contain ONE div tag */
 	}
+	
+	buf = xmlBufferCreate();
+	xmlNodeDump( buf, newDoc, xmlDocGetRootElement(newDoc), 0, 0 );
+	
 	if(xmlBufferLength(buf) > 0)
 		result = xmlCharStrdup(xmlBufferContent(buf));
 
 	xmlBufferFree(buf);
-	
+	xmlFreeDoc(newDoc);
 	return result;
 }
 
@@ -388,61 +460,6 @@ xmlDocPtr parseBuffer(gchar *data, size_t dataLength, gchar **errormsg) {
 	xmlFreeParserCtxt(ctxt);
 	
 	return doc;
-}
-
-static gchar *serialize_node_tree(xmlNodePtr node) {
-	xmlBufferPtr buf;
-	gchar *result = NULL;
-	
-	buf = xmlBufferCreate();
-	node = node->xmlChildrenNode;
-	while(node != NULL) {
-		xmlNodeDump(buf, node->doc, node, 0, 0);
-		node = node->next;
-	}
-	if(xmlBufferLength(buf) > 0)
-		result = xmlCharStrdup(xmlBufferContent(buf));
-	
-	xmlBufferFree(buf);
-	return result;
-}
-
-gchar *common_html_to_xhtml(const gchar *html, gint len) {
-	htmlParserCtxtPtr ctxt;
-	xmlXPathContextPtr xpathCtxt = NULL;
-	xmlXPathObjectPtr xpathObj = NULL;
-	gchar *out = NULL;
-	
-	g_assert(html != NULL);
-	g_assert(len >= 0);
-	
-	
-	ctxt = htmlCreateMemoryParserCtxt(html, len);
-	if (!ctxt) return NULL;
-
-	/* Note: NONET is not implemented so it will return an error
-	   because it doesn't know how to handle NONET. But, it might
-	   learn in the future. */
-	ctxt->html = 1;
-	htmlCtxtUseOptions(ctxt, HTML_PARSE_RECOVER | HTML_PARSE_NONET);
-	htmlParseDocument(ctxt);
-	
-	xpathCtxt = xmlXPathNewContext(ctxt->myDoc);
-	if(!xpathCtxt) goto error;
-
-	xpathObj = xmlXPathEvalExpression("/html/body", xpathCtxt);
-	if(!xpathObj) goto error;
-	if(!xpathObj->nodesetval->nodeMax) goto error;
-
-	out = serialize_node_tree(xpathObj->nodesetval->nodeTab[0]);
- error:
-	if (xpathObj) xmlXPathFreeObject(xpathObj);
-	if (xpathCtxt) xmlXPathFreeContext(xpathCtxt);
-	if (ctxt->myDoc)
-		xmlFreeDoc(ctxt->myDoc);
-	if (ctxt)
-		htmlFreeParserCtxt(ctxt);
-	return out;
 }
 
 /* converts a ISO 8601 time string to a time_t value */
