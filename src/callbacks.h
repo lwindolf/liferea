@@ -1,7 +1,7 @@
 /**
  * @file callbacks.h misc UI stuff
  *
- * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@
 #include "ui/ui_feedlist.h"
 #include "ui/ui_itemlist.h"
 #include "ui/ui_node.h"
+#include "ui/ui_folder.h"
 #include "ui/ui_search.h"
 #include "ui/ui_popup.h"
 #include "ui/ui_prefs.h"

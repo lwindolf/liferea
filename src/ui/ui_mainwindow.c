@@ -178,7 +178,7 @@ gboolean on_mainwindow_key_press_event(GtkWidget *widget, GdkEventKey *event, gp
 					return TRUE;
 					break;
 				case GDK_r:
-					on_popup_allread_selected();
+					on_menu_allread(NULL, NULL);
 					return TRUE;
 					break;
 				case GDK_t:
@@ -190,7 +190,7 @@ gboolean on_mainwindow_key_press_event(GtkWidget *widget, GdkEventKey *event, gp
 					return TRUE;
 					break;
 				case GDK_a:
-					on_refreshbtn_clicked(NULL, NULL);
+					on_menu_update_all(NULL, NULL);
 					return TRUE;
 					break;
 				case GDK_f:
@@ -754,9 +754,9 @@ static GtkActionEntry ui_mainwindow_action_entries[] = {
 
 	{"FeedsMenu", NULL, N_("_Feeds")},
 	{"UpdateAll", "gtk-refresh", N_("Update _All"), "<control>A", N_("Updates all subscriptions. This does not update OCS directories."),
-	 G_CALLBACK(on_refreshbtn_clicked)},
+	 G_CALLBACK(on_menu_update_all)},
 	{"MarkAllFeedsAsRead", "gtk-apply", N_("Mark All As _Read"), NULL, N_("Marks read every item of every subscription."),
-	 G_CALLBACK(on_popup_allfeedsread_selected)},
+	 G_CALLBACK(on_menu_allfeedsread)},
 	{"NewSubscription", "gtk-add", N_("_New Subscription..."), NULL, N_("Add a subscription to the feed list."),
 	 G_CALLBACK(on_menu_feed_new)},
 	{"NewFolder", "gtk-new", N_("New _Folder..."), NULL, N_("Add a folder to the feed list."), G_CALLBACK(on_menu_folder_new)},
@@ -798,7 +798,7 @@ static GtkActionEntry ui_mainwindow_action_entries[] = {
 
 static GtkActionEntry ui_mainwindow_feed_action_entries[] = {
 	{"MarkFeedAsRead", "gtk-apply", N_("_Mark Selected As Read"), "<control>R", N_("Marks all items of the selected subscription or of all subscriptions of the selected folder as read."), 
-	 G_CALLBACK(on_popup_allread_selected)},
+	 G_CALLBACK(on_menu_allread)},
 	{"UpdateSelected", "gtk-refresh", N_("Update _Selected"), NULL, N_("Updates the selected subscription or all subscriptions of the selected folder."),
 	 G_CALLBACK(on_menu_update)},
 	{"Properties", "gtk-properties", N_("_Properties..."), NULL, N_("Opens the property dialog for the selected subscription."), G_CALLBACK(on_menu_properties)},

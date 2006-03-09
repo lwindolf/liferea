@@ -374,11 +374,6 @@ void on_menu_properties(GtkMenuItem *menuitem, gpointer user_data) {
 	node_request_properties(feedlist_get_selected());
 }
 
-void on_popup_properties(gpointer callback_data, guint callback_action, GtkWidget *widget) {
-
-	node_request_properties(feedlist_get_selected());
-}
-
 void on_newbtn_clicked(GtkButton *button, gpointer user_data) {	
 
 	node_request_interactive_add(FST_FEED);
@@ -392,11 +387,6 @@ void on_menu_feed_new(GtkMenuItem *menuitem, gpointer user_data) {
 void on_new_plugin_activate(GtkMenuItem *menuitem, gpointer user_data) {
 
 	node_request_interactive_add(FST_PLUGIN);
-}
-
-void on_popup_newfolder_selected(void) {
-
-	node_request_interactive_add(FST_FOLDER);
 }
 
 void on_menu_folder_new(GtkMenuItem *menuitem, gpointer user_data) {

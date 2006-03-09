@@ -119,16 +119,13 @@ void feedlist_selection_changed(nodePtr np);
  */
 nodePtr	feedlist_find_unread_feed(nodePtr folder);
 
-/* direct user callbacks */
-void on_menu_delete(GtkMenuItem *menuitem, gpointer user_data);
-void on_menu_update(GtkMenuItem *menuitem, gpointer user_data);
-void on_menu_folder_delete(GtkMenuItem *menuitem, gpointer user_data);
+/* menu callbacks */
+void on_menu_delete(GtkWidget *widget, gpointer user_data);
 
-void on_popup_refresh_selected(gpointer callback_data, guint callback_action, GtkWidget *widget);
-void on_popup_allread_selected(void);
-void on_popup_allfeedsread_selected(void);
-void on_popup_delete(gpointer callback_data, guint callback_action, GtkWidget *widget);
+void on_menu_update(GtkWidget *widget, gpointer user_data);
+void on_menu_update_all(GtkWidget *widget, gpointer user_data);
 
-void on_refreshbtn_clicked(GtkButton *button, gpointer user_data);
+void on_menu_allread(GtkWidget *widget, gpointer user_data);
+void on_menu_allfeedsread(GtkWidget *widget, gpointer user_data);
 
 #endif

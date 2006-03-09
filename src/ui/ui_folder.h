@@ -19,8 +19,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
  
-#ifndef _UI_NODE_H
-#define _UI_NODE_H
+#ifndef _UI_FOLDER_H
+#define _UI_FOLDER_H
 
 #include <gtk/gtk.h>
 #include "node.h"
@@ -40,5 +40,9 @@ void ui_folder_add(nodePtr parent);
  * @param folder	the node
  */
 void ui_folder_properties(nodePtr folder);
+
+/* menu callbacks */
+void on_newfolderbtn_clicked(GtkButton *button, gpointer user_data);
+void on_foldernamechangebtn_clicked(GtkButton *button, gpointer user_data);
 
 #endif

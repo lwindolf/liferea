@@ -251,26 +251,26 @@ void feedlist_selection_changed(nodePtr node) {
 	debug_exit("feedlist_selection_changed");
 }
 
-void on_menu_delete(GtkMenuItem *menuitem, gpointer user_data) {
+/* menu callbacks */
 
+void on_menu_delete(GtkWidget *widget, gpointer user_data) {
 	ui_feedlist_delete_prompt(selectedNode);
 }
 
-void on_popup_refresh_selected(gpointer callback_data, guint callback_action, GtkWidget *widget) {
-	nodePtr node = (nodePtr)callback_data;
+void on_menu_update(GtkWidget *widget, gpointer user_data) {
 
-	if(!node) {
+	if(!selectedNode) {
 		ui_show_error_box(_("You have to select a feed entry"));
 		return;
 	}
 
 	if(download_is_online()) 
-		node_request_update(node, FEED_REQ_PRIORITY_HIGH);
+		node_request_update(selectedNode, FEED_REQ_PRIORITY_HIGH);
 	else
 		ui_mainwindow_set_status_bar(_("Liferea is in offline mode. No update possible."));
 }
 
-void on_refreshbtn_clicked(GtkButton *button, gpointer user_data) { 
+void on_menu_update_all(GtkWidget *widget, gpointer user_data) { 
 
 	if(download_is_online()) 
 		// FIXME: int -> pointer
@@ -279,39 +279,17 @@ void on_refreshbtn_clicked(GtkButton *button, gpointer user_data) {
 		ui_mainwindow_set_status_bar(_("Liferea is in offline mode. No update possible."));
 }
 
-void on_menu_feed_update(GtkMenuItem *menuitem, gpointer user_data) {
-
-	on_popup_refresh_selected((gpointer)selectedNode, 0, NULL);
-}
-
-void on_menu_update(GtkMenuItem *menuitem, gpointer user_data) {
-	
-	if(selectedNode)
-		on_popup_refresh_selected((gpointer)selectedNode, 0, NULL);
-	else
-		g_warning("You have found a bug in Liferea. You must select a node in the feedlist to do what you just did.");
-}
-
-void on_popup_allread_selected(void) {
+void on_menu_allread(GtkWidget *widget, gpointer user_data) {
 	
 	if(selectedNode)
 		node_mark_all_read(selectedNode);
 }
 
-void on_popup_allfeedsread_selected(void) {
-
+void on_menu_allfeedsread(GtkWidget *widget, gpointer user_data) {
 	node_foreach_child(feedlist_get_root(), node_mark_all_read);
 }
 
-void on_popup_mark_as_read(gpointer callback_data, guint callback_action, GtkWidget *widget) {
-
-	on_popup_allread_selected();
-}
-
-void on_popup_delete(gpointer callback_data, guint callback_action, GtkWidget *widget) {
-	
-	ui_feedlist_delete_prompt((nodePtr)callback_data);
-}
+/* feedlist saving */
 
 static gboolean feedlist_schedule_save_cb(gpointer user_data) {
 

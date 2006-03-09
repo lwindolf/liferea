@@ -68,15 +68,12 @@ gboolean ui_node_is_folder_expanded(nodePtr folder);
  */
 void ui_node_check_if_folder_is_empty(nodePtr folder);
 
-/* expansion/collapsing */
+/**
+ * Change the expansion/collapsing of the given folder node.
+ *
+ * @param folder	the folder node
+ * @param expanded	new expansion state
+ */
 void ui_node_set_expansion(nodePtr folder, gboolean expanded);
-
-/* Callbacks */
-void on_popup_newfolder_selected(void);
-void on_newfolderbtn_clicked(GtkButton *button, gpointer user_data);
-void on_popup_foldername_selected(gpointer callback_data, guint callback_action, GtkWidget *widget);
-void on_foldername_activate(GtkMenuItem *menuitem, gpointer user_data);
-void on_foldernamechangebtn_clicked(GtkButton *button, gpointer user_data);
-void on_popup_removefolder_selected(gpointer callback_data, guint callback_action, GtkWidget *widget);
 
 #endif
