@@ -123,13 +123,17 @@ static gchar * folder_render(nodePtr node) {
 
 	addToHTMLBufferFast(&buffer, HEAD_END);
 
-	tmp = g_strdup_printf(getBooleanConfValue(FOLDER_DISPLAY_HIDE_READ)?
-	                      _("Contains %d unread items\n"):
-	                      _("Contains %d items\n"), 
-	                      g_list_length(node->itemSet->items));
+	addToHTMLBufferFast(&buffer, "<div class='content'>");
+
+	tmp = g_strdup_printf(_("<b>%d</b> childs with <b>%d</b> items \n"), 
+			      g_slist_length(node->children),
+	                      g_list_length(node->itemSet->items)); 
 	addToHTMLBufferFast(&buffer, tmp);
 	g_free(tmp);
 
+	addToHTMLBufferFast(&buffer, "</div>");
+
+	ui_htmlview_finish_output(&buffer);
 	return buffer;
 }
 
