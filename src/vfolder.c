@@ -531,8 +531,29 @@ static void vfolder_mark_all_read(nodePtr node) {
 }
 
 static gchar * vfolder_render(nodePtr node) {
+	gchar	*tmp, *buffer = NULL;
 
-	return g_strdup("Implement me: vfolder_render()");
+	ui_htmlview_start_output(&buffer, NULL, TRUE);
+
+	addToHTMLBufferFast(&buffer, HEAD_START);
+
+	tmp = g_strdup_printf(HEAD_LINE, _("VFolder:"), node_get_title(node));
+	addToHTMLBufferFast(&buffer, tmp);
+	g_free(tmp);
+
+	addToHTMLBufferFast(&buffer, HEAD_END);
+
+	addToHTMLBufferFast(&buffer, "<div class='content'>");
+
+	tmp = g_strdup_printf(_("<b>%d</b> items \n"), 
+	                      g_list_length(node->itemSet->items)); 
+	addToHTMLBufferFast(&buffer, tmp);
+	g_free(tmp);
+
+	addToHTMLBufferFast(&buffer, "</div>");
+
+	ui_htmlview_finish_output(&buffer);
+	return buffer;
 }
 
 static struct nodeType nti = {
