@@ -30,6 +30,12 @@
    decisions with comments!  
  */
 
+/* redefinition of link style necessary to prevent
+   GtkHTML2 to use the theme color for links */
+a:link { 	color:blue; }
+a:visited { 	color:#00007F; }
+a:active { 	color:#FF00FF; }
+
 body {
 	background: white;
 	color: black;
