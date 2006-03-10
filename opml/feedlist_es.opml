@@ -6,7 +6,7 @@
   <body>
      <outline text="Fuentes de ejemplo (castellano)">
       <outline text="OSS">
-        <outline text="Hispalinux" htmlUrl="http://www.hispalinux.es/" xmlUrl="http://www.hispalinux.es/rss" />
+        <outline text="Hispalinux" htmlUrl="http://www.hispalinux.es/" xmlUrl="http://www.hispalinux.es/node/feed" />
 	<outline text="Libertonia" htmlUrl="http://libertonia.escomposlinux.org/" xmlUrl="http://libertonia.escomposlinux.org/backend.rdf" />
 	<outline text="Diarios de Libertonia" htmlUrl="http://libertonia.escomposlinux.org//section/Diary" xmlUrl="http://libertonia.escomposlinux.org/diary.rdf" />
 	<outline text="Barrapunto" htmlUrl="http://barrapunto.com/" xmlUrl="http://backends.barrapunto.com/barrapunto.rss" />
