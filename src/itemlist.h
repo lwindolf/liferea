@@ -95,6 +95,14 @@ void itemlist_change_two_pane_mode(gboolean newMode);
  */
 gboolean itemlist_get_two_pane_mode(void);
 
+/**
+ * Menu callback that toggles the two pane mode
+ *
+ * @param menuitem	the clicked menu item
+ * @param user_data	unused
+ */
+void on_toggle_condensed_view_activate(GtkToggleAction *menuitem, gpointer user_data);
+
 /* item handling functions */
 
 void itemlist_update_item(itemPtr ip);

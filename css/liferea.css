@@ -79,7 +79,7 @@ td.headright {
 }
 
 div.content {
-	padding:12px 6px 0px 12px;
+	padding:8px 6px 0px 12px;
 }
 
 div.commentlink {
@@ -163,9 +163,7 @@ span.feedfootvalue {
 
 /* channel images */
 img.feed {
-	margin-bottom:10px;
-	padding-left: 5px;
-	padding-right: 5px;
+	margin:6px 6px 0 6px;
 }
 
 /* OCS specific styles */
@@ -299,7 +297,7 @@ div.blogchanneltitle {
 }
 
 img.freshmeat {
-	margin-top:10px;
+	margin:6px 6px 6px 12px;
 }
 
 table.slash {

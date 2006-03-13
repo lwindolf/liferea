@@ -249,7 +249,7 @@ gboolean on_mainwindow_key_press_event(GtkWidget *widget, GdkEventKey *event, gp
 	return FALSE;
 }
 
-void ui_mainwindow_three_pane_mode_changed(gboolean threePane) {
+void ui_mainwindow_set_browser_panes(gboolean twoPane) {
 		
 	if(!htmlview) {
 		htmlview = ui_htmlview_new(FALSE);
@@ -259,16 +259,19 @@ void ui_mainwindow_three_pane_mode_changed(gboolean threePane) {
 	
 	ui_htmlview_clear(htmlview);
 
-	debug1(DEBUG_GUI, "Setting threePane mode: %s", threePane?"on":"off");
-	if(threePane == TRUE) {
-		gtk_notebook_set_current_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "itemtabs")), 0);
-		gtk_widget_reparent(GTK_WIDGET(htmlview), lookup_widget(mainwindow, "viewportThreePaneHtml"));
-	} else {
+	debug1(DEBUG_GUI, "Setting twoPane mode: %s", twoPane?"on":"off");
+	if(twoPane) {
 		gtk_notebook_set_current_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "itemtabs")), 1);
 		gtk_widget_reparent(GTK_WIDGET(htmlview), lookup_widget(mainwindow, "viewportTwoPaneHtml"));
+	} else {
+		gtk_notebook_set_current_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "itemtabs")), 0);
+		gtk_widget_reparent(GTK_WIDGET(htmlview), lookup_widget(mainwindow, "viewportThreePaneHtml"));
 	}
-	gtk_toggle_action_set_active(GTK_TOGGLE_ACTION(gtk_action_group_get_action(mw_global_fixme->generalActions,"ToggleCondensedMode")),!threePane);
+}
 
+void ui_mainwindow_set_two_pane_toggle(gboolean twoPane) {
+
+	gtk_toggle_action_set_active(GTK_TOGGLE_ACTION(gtk_action_group_get_action(mw_global_fixme->generalActions,"ToggleCondensedMode")),twoPane);
 }
 
 void ui_mainwindow_set_toolbar_style(struct mainwindow *mw, const gchar *toolbar_style) {
@@ -412,7 +415,7 @@ void ui_mainwindow_init(int mainwindowState) {
 	/*   For some reason, this causes the first item to be selected and then
 	     unselected... strange. */
 	ui_feedlist_select(NULL);
-	ui_mainwindow_three_pane_mode_changed(FALSE);  /* Initialize the UI with respect to the viewing mode */
+	/* Initialize the UI with respect to the viewing mode */
 	itemlist_set_two_pane_mode(TRUE);
 	
 	/* set zooming properties */	
@@ -611,29 +614,8 @@ static void ui_mainwindow_restore_position(GtkWidget *window) {
 }
 
 /*
- * Feed menu callbacks
+ * Main menu and tray icon callbacks
  */
-
-/**
- * Menu callback that toggles the two pane mode
- *
- * @param meunitem	the clicked menu item
- * @param user_data	unused
- */
-static void on_toggle_condensed_view_activate(GtkToggleAction *menuitem, gpointer user_data) { 
-	nodePtr		np;
-	
-	itemlist_change_two_pane_mode(gtk_toggle_action_get_active(menuitem));
-
-	if(NULL != (np = feedlist_get_selected())) {
-		/* grab necessary to force HTML widget update (display must
-		   change from feed description to list of items and vica 
-		   versa */
-		gtk_widget_grab_focus(lookup_widget(mainwindow, "feedlist"));
-		itemlist_load(np->itemSet);
-	}
-}
-
 
 static gboolean on_close(GtkWidget *widget, GdkEvent *event, struct mainwindow *mw) {
 	

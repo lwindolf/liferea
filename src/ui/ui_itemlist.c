@@ -612,12 +612,6 @@ gboolean on_itemlist_button_press_event(GtkWidget *treeview, GdkEventButton *eve
 	return FALSE;
 }
 
-/* two/three pane mode setting */
-void ui_itemlist_set_two_pane_mode(gboolean new_mode) {
-
-	ui_mainwindow_three_pane_mode_changed(!new_mode);
-}
-
 void on_popup_copy_URL_clipboard(void) {
 	itemPtr         ip;
 

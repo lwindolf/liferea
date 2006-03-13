@@ -159,7 +159,10 @@ void itemlist_load(itemSetPtr itemSet) {
 	if((ITEMSET_TYPE_FOLDER == itemSet->type) && 
 	   (0 == getNumericConfValue(FOLDER_DISPLAY_MODE)))
 			return;
-	
+
+	ui_mainwindow_set_two_pane_toggle(node_get_two_pane_mode(itemSet->node));
+	ui_mainwindow_set_browser_panes(node_get_two_pane_mode(itemSet->node));
+
 	/* 2. Clear item list and disable sorting for performance reasons */
 
 	/* Free the old itemstore and create a new one; this is the only way to disable sorting */
@@ -450,18 +453,25 @@ void itemlist_selection_changed(itemPtr item) {
 
 void itemlist_set_two_pane_mode(gboolean newMode) {
 
-	ui_itemlist_set_two_pane_mode(newMode);
+	ui_mainwindow_set_browser_panes(newMode);
 	twoPaneMode = newMode;
 }
 
-void itemlist_change_two_pane_mode(gboolean newMode) {
+gboolean itemlist_get_two_pane_mode(void) { return twoPaneMode; }
 
-	if(newMode != twoPaneMode) {
-		if(displayed_itemSet && displayed_itemSet->node) 
-			node_set_two_pane_mode(displayed_itemSet->node, newMode);
+void on_toggle_condensed_view_activate(GtkToggleAction *menuitem, gpointer user_data) { 
+	nodePtr		node;
+	
+	twoPaneMode = gtk_toggle_action_get_active(menuitem);
 
-		itemlist_set_two_pane_mode(newMode);
+	if(node = itemlist_get_displayed_node()) {
+		node_set_two_pane_mode(node, twoPaneMode);
+		ui_mainwindow_set_browser_panes(twoPaneMode);
+
+		/* grab necessary to force HTML widget update (display must
+		   change from feed description to list of items and vica 
+		   versa */
+		gtk_widget_grab_focus(lookup_widget(mainwindow, "feedlist"));
+		itemlist_load(node->itemSet);
 	}
 }
-
-gboolean itemlist_get_two_pane_mode(void) { return twoPaneMode; }
