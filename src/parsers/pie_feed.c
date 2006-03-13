@@ -62,7 +62,7 @@ gchar* pie_parse_content_construct(xmlNodePtr cur) {
 	   does not exist in the newer IETF drafts.*/
 	if(NULL != mode) {
 		if(!strcmp(mode, "escaped")) {
-			tmp = utf8_fix(utf8_fix(extractHTMLNode(cur, 0, NULL)));
+			tmp = utf8_fix(extractHTMLNode(cur, 0, NULL));
 			if(NULL != tmp)
 				ret = tmp;
 			

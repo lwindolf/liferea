@@ -131,7 +131,7 @@ static void parseChannel(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 			}
 		}
 		else if(!xmlStrcmp(cur->name, BAD_CAST"description")) {
- 			tmp = convertToHTML(utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE)));
+ 			tmp = utf8_fix(extractHTMLNode(cur, 0, NULL));
  			if(NULL != tmp) {
 				feed_set_description(ctxt->feed, tmp);
 				g_free(tmp);

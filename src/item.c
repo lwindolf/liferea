@@ -147,6 +147,7 @@ void item_free(itemPtr ip) {
 
 gchar *item_render(itemPtr ip) {
 	struct displayset	displayset;
+	gchar			*escapedSrc;
 	gchar			*buffer = NULL;
 	const gchar		*htmlurl = NULL;
 	gchar			*tmp, *tmp2;
@@ -160,6 +161,9 @@ gchar *item_render(itemPtr ip) {
 	displayset.foottable = NULL;
 	
 	metadata_list_render(ip->metadata, &displayset);	
+	
+	escapedSrc = g_markup_escape_text(item_get_source(ip), -1);
+
 	/* Head table */
 	addToHTMLBufferFast(&buffer, HEAD_START);
 
@@ -173,53 +177,52 @@ gchar *item_render(itemPtr ip) {
 		htmlurl = feed_get_html_url((feedPtr)np->data);
 
 	/*  -- Feed line */
-	if(NULL != htmlurl)
+	if(htmlurl)
 		tmp = g_markup_printf_escaped("<span class=\"feedlink\"><a href=\"%s\">%s</a></span>",
 		                              htmlurl, node_get_title(np));
 	else
 		tmp = g_markup_printf_escaped("<span class=\"feedlink\">%s</span>",
 		                              node_get_title(np));
 
-	tmp2 = g_strdup_printf(HEAD_LINE, _("Feed:"), tmp);
+	tmp2 = g_strdup_printf(HEAD_LINE, _("Feed"), tmp);
 	g_free(tmp);
 	addToHTMLBufferFast(&buffer, tmp2);
 	g_free(tmp2);
 
 	/*  -- Item line */
-	if(NULL != np->icon) {
+	if(np->icon) {
 		tmp2 = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", np->id, "png");
-		tmp = g_strdup_printf("<a href=\"%s\"><img class=\"favicon\" src=\"file://%s\" /></a>", htmlurl, tmp2);
+		tmp = g_markup_printf_escaped("<a href=\"%s\"><img class=\"favicon\" src=\"file://%s\" /></a>", htmlurl, tmp2);
 		g_free(tmp2);
 	} else {
 		tmp2 = g_strdup(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "available.png");
-		tmp = g_strdup_printf("<a href=\"%s\"><img class=\"favicon\" src=\"file://%s\" /></a>", htmlurl, tmp2);
+		tmp = g_markup_printf_escaped("<a href=\"%s\"><img class=\"favicon\" src=\"file://%s\" /></a>", htmlurl, tmp2);
 		g_free(tmp2);
 	}
-	tmp3 = g_markup_escape_text((item_get_title(ip) != NULL)?item_get_title(ip):_("[No title]"), -1);
-	if(item_get_source(ip) != NULL)
+	tmp3 = g_markup_escape_text(item_get_title(ip)?item_get_title(ip):_("[No title]"), -1);
+	if(item_get_source(ip))
 		tmp2 = g_strdup_printf("<span class=\"itemtitle\">%s<a href=\"%s\">%s</a></span>",
-							   tmp, item_get_source(ip), tmp3);
+		                       tmp, escapedSrc, tmp3);
 	else
-		tmp2 = g_strdup_printf("<span class=\"itemtitle\">%s%s</span>", tmp,tmp3);
+		tmp2 = g_strdup_printf("<span class=\"itemtitle\">%s%s</span>", tmp, tmp3);
 	g_free(tmp);
 	g_free(tmp3);
 	
-	tmp = g_strdup_printf(HEAD_LINE, _("Item:"), tmp2);
-	g_free(tmp2);
+	tmp = g_strdup_printf(HEAD_LINE, _("Item"), tmp2);
 	addToHTMLBufferFast(&buffer, tmp);
 	g_free(tmp);
 
 	/*  -- real source line */
 	tmp = NULL;
-	if(item_get_real_source_url(ip) != NULL)
+	if(item_get_real_source_url(ip))
 		tmp = g_markup_printf_escaped("<span class=\"itemsource\"><a href=\"%s\">%s</a></span>",
 			              item_get_real_source_url(ip),
-			              (item_get_real_source_title(ip) != NULL)? item_get_real_source_title(ip) : _("[No title]"));
+			              item_get_real_source_title(ip)? item_get_real_source_title(ip) : _("[No title]"));
 	else if(item_get_real_source_title(ip) != NULL)
 		tmp = g_markup_printf_escaped("<span class=\"itemsource\">%s</span>",
 			              item_get_real_source_title(ip));
 
-	if(NULL != tmp) {
+	if(tmp) {
 		tmp2 = g_strdup_printf(HEAD_LINE, _("Source:"), tmp);
 		g_free(tmp);
 		addToHTMLBufferFast(&buffer, tmp2);
@@ -231,32 +234,25 @@ gchar *item_render(itemPtr ip) {
 	addToHTMLBufferFast(&buffer, HEAD_END);
 
 	/* Head */
-	if(displayset.head != NULL) {
+	if(displayset.head) {
 		addToHTMLBufferFast(&buffer, displayset.head);
 		g_free(displayset.head);
 	}
 
-	/* feed/channel image */
-	/*if(NULL != feed_get_image_url(ip->fp)) {
-		addToHTMLBufferFast(&buffer, "<img class=\"feed\" src=\"");
-		addToHTMLBufferFast(&buffer, feed_get_image_url(ip->fp));
-		addToHTMLBufferFast(&buffer, "\"><br/>");
-	}*/
-
-	if(displayset.body != NULL) {
+	if(displayset.body) {
 		addToHTMLBufferFast(&buffer, "<div class='content'>");
 		addToHTMLBufferFast(&buffer, displayset.body);
 		addToHTMLBufferFast(&buffer, "</div>");
 		g_free(displayset.body);
 	}
 
-	if(displayset.foot != NULL) {
+	if(displayset.foot) {
 		addToHTMLBufferFast(&buffer, displayset.foot);
 		g_free(displayset.foot);
 	}
 
 	/* add technorati link */
-	tmp3 = common_uri_escape(item_get_source(ip));
+	tmp3 = common_uri_escape(escapedSrc);
 	tmp2 = g_strdup("file://" PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "technorati.png");
 	tmp = g_strdup_printf(TECHNORATI_LINK, tmp3, tmp2);
 	addToHTMLBufferFast(&buffer, tmp);
@@ -278,6 +274,8 @@ gchar *item_render(itemPtr ip) {
 	addToHTMLBufferFast(&buffer, displayset.foottable);
 	addToHTMLBufferFast(&buffer, FEED_FOOT_TABLE_END);
 	g_free(displayset.foottable);
+
+	g_free(escapedSrc);
 
 	return buffer;
 }

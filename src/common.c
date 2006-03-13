@@ -2,7 +2,7 @@
  * @file common.c common routines for Liferea
  * 
  * Copyright (C) 2003-2005  Lars Lindner <lars.lindner@gmx.net>
- * Copyright (C) 2004,2005  Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2004-2006  Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2004       Karl Soderstrom <ks@xanadunet.net>
  *
  * parts of the RFC822 timezone decoding were taken from the gmime 
@@ -51,7 +51,6 @@
 #include "common.h"
 #include "conf.h"
 #include "support.h"
-#include "feed.h"
 #include "debug.h"
 
 static gchar *standard_encoding = { "UTF-8" };
