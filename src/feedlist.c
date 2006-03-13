@@ -121,7 +121,7 @@ void feedlist_remove_node(nodePtr node) {
 		ui_feedlist_select(NULL);
 	}
 
-	node_remove(node);
+	node_request_remove(node);
 
 	debug_exit("feedlist_remove_node");
 }

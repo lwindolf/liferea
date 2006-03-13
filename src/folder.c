@@ -19,6 +19,7 @@
  */
 
 #include "folder.h"
+#include "node.h"
 #include "common.h"
 #include "conf.h"
 #include "debug.h"
@@ -102,7 +103,7 @@ static void folder_schedule_update(nodePtr node, guint flags) {
 static void folder_remove(nodePtr node) {
 
 	/* remove all children */
-	node_foreach_child(node, node_remove);
+	node_foreach_child(node, node_request_remove);
 }
 
 static void folder_mark_all_read(nodePtr node) {

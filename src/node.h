@@ -140,7 +140,7 @@ void node_request_automatic_add(gchar *source, gchar *title, gchar *filter, gint
  *
  * @param parent	the node
  */
-void node_remove(nodePtr node);
+void node_request_remove(nodePtr node);
 
 /**
  * Attaches a data structure to the given node.
@@ -279,6 +279,13 @@ void node_save(nodePtr node);
  * @param node	the node
  */
 void node_unload(nodePtr node);
+
+/**
+ * Removes the given node.
+ *
+ * @param node	the node
+ */
+void node_remove(nodePtr node);
 
 /**
  * Resets the update interval for a given node.

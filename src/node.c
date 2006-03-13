@@ -109,8 +109,31 @@ gboolean node_is_ancestor(nodePtr node1, nodePtr node2) {
 }
 
 void node_free(nodePtr node) {
+	GSList	*iter;
 
-	g_assert(0 == node->loaded);
+	g_assert(NULL == node->children);
+
+	if(node->loaded) {
+		g_list_free(node->itemSet->items);
+		g_free(node->itemSet);
+		node->itemSet = NULL;
+	}
+
+	/* Don't free active feed requests here, because they might still
+	   be processed in the update queues! Abandoned requests are
+	   free'd automatically. They must be freed in the main thread
+	   for locking reasons. */
+	if(node->updateRequest)
+		node->updateRequest->callback = NULL;
+	
+	/* same goes for other requests */
+	iter = node->requests;
+	while(NULL != iter) {
+		((struct request *)iter->data)->callback = NULL;
+		iter = g_slist_next(iter);
+	}
+	g_slist_free(node->requests);
+
 	g_free(node->icon);
 	g_free(node->title);
 	g_free(node->id);
@@ -300,6 +323,17 @@ void node_request_automatic_add(gchar *source, gchar *title, gchar *filter, gint
 	node_schedule_update(node, flags);
 }
 
+void node_request_remove(nodePtr node) {
+
+	g_assert(0 != (FL_PLUGIN(node)->capabilities & FL_PLUGIN_CAPABILITY_REMOVE));
+
+	node_remove(node);
+
+	node->parent->children = g_slist_remove(node->parent->children, node);
+
+	node_free(node);
+}
+
 /* wrapper for node type interface */
 
 void node_initial_load(nodePtr node) {
@@ -319,34 +353,7 @@ void node_unload(nodePtr node) {
 }
 
 void node_remove(nodePtr node) {
-	GSList	*iter;
-
-	debug_enter("node_remove");
-
-	g_assert(0 != (FL_PLUGIN(node)->capabilities & FL_PLUGIN_CAPABILITY_REMOVE));
-
-	node->parent->children = g_slist_remove(node->parent->children, node);
-
-	/* Don't free active feed requests here, because they might still
-	   be processed in the update queues! Abandoned requests are
-	   free'd in feed_process. They must be freed in the main thread
-	   for locking reasons. */
-	if(node->updateRequest)
-		node->updateRequest->callback = NULL;
-	
-	/* same goes for other requests */
-	iter = node->requests;
-	while(NULL != iter) {
-		((struct request *)iter->data)->callback = NULL;
-		iter = g_slist_next(iter);
-	}
-	g_slist_free(node->requests);
-
-	node_unload(node);
 	NODE(node)->remove(node);
-	node_free(node);
-
-	debug_exit("node_remove");
 }
 
 void node_mark_all_read(nodePtr node) {

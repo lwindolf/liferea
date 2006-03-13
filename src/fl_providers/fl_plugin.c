@@ -237,9 +237,11 @@ static void fl_plugin_schedule_update(nodePtr node, guint flags) {
 
 static void fl_plugin_remove(nodePtr node) {
 
+	/* remove all children */
+	node_foreach_child(node, node_remove);
+
 	ui_notification_remove_feed(node);
 	ui_node_remove_node(node);
-	node_remove(node);
 }
 
 static gchar * fl_plugin_render(nodePtr node) {
