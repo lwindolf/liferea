@@ -145,7 +145,7 @@ itemPtr parseRSSItem(feedPtr fp, xmlNodePtr cur) {
 			}
 		}
 		else if(!xmlStrcmp(cur->name, BAD_CAST"description")) {
- 			tmp = convertToHTML(utf8_fix(extractHTMLNode(cur, 0, NULL)));
+ 			tmp = utf8_fix(extractHTMLNode(cur, 0, NULL));
  			if(NULL != tmp) {
 				/* don't overwrite content:encoded descriptions... */
 				if(NULL == item_get_description(ip))

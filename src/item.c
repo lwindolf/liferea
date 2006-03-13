@@ -184,7 +184,7 @@ gchar *item_render(itemPtr ip) {
 		tmp = g_markup_printf_escaped("<span class=\"feedlink\">%s</span>",
 		                              node_get_title(np));
 
-	tmp2 = g_strdup_printf(HEAD_LINE, _("Feed"), tmp);
+	tmp2 = g_strdup_printf(HEAD_LINE, _("Feed:"), tmp);
 	g_free(tmp);
 	addToHTMLBufferFast(&buffer, tmp2);
 	g_free(tmp2);
@@ -208,7 +208,7 @@ gchar *item_render(itemPtr ip) {
 	g_free(tmp);
 	g_free(tmp3);
 	
-	tmp = g_strdup_printf(HEAD_LINE, _("Item"), tmp2);
+	tmp = g_strdup_printf(HEAD_LINE, _("Item:"), tmp2);
 	addToHTMLBufferFast(&buffer, tmp);
 	g_free(tmp);
 
