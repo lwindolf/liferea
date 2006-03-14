@@ -324,7 +324,7 @@ static void attribs_render_enclosure(gpointer data, struct displayset *displayse
 	                      "<a href=\"liferea-enclosure://load?%s\">"
 	                      "<img border=\"0\" class=\"enclosurebtn\" src=\"file://" 
 			       PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S 
-			       "pixmaps" G_DIR_SEPARATOR_S "arrow.png\"></a></td><td>"
+			       "pixmaps" G_DIR_SEPARATOR_S "arrow.png\"/></a></td><td>"
 			       "&nbsp;<a class=\"enclosure\" href=\"%s\">%s</a>"
 			       "</td></tr></table>", escaped, (gchar *)data, filename);
 	addToHTMLBufferFast(&(displayset->head), tmp);
