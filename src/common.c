@@ -1,7 +1,7 @@
 /**
  * @file common.c common routines for Liferea
  * 
- * Copyright (C) 2003-2005  Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2006  Lars Lindner <lars.lindner@gmx.net>
  * Copyright (C) 2004-2006  Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2004       Karl Soderstrom <ks@xanadunet.net>
  *
@@ -215,7 +215,8 @@ gchar * extractHTMLNode(xmlNodePtr cur, gint xhtmlMode, const gchar *defaultBase
 		xmlChar *escapedhtml;
 		/* Parse the HTML into oldDoc*/
 		escapedhtml = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);//xmlNodeDump(tmpBuf, cur->doc, cur, 0, 0);
-		if(escapedhtml) {
+		escapedhtml = g_strstrip(escapedhtml);	/* stripping whitespaces to make empty string detection easier */
+		if(escapedhtml && *escapedhtml) {	/* never process empty content */
 			oldDoc = common_parse_html(escapedhtml, strlen(escapedhtml));
 			/* Copy in the html tags */
 			copiedNodes = xmlDocCopyNodeList( newDoc, common_html_doc_find_body(oldDoc)->xmlChildrenNode);
@@ -856,7 +857,7 @@ char *liferea_strcasestr (const char *phaystack, const char *pneedle)
 
 	b = tolower(*needle);
 	if (b != '\0') {
-		haystack--;                               /* possible ANSI violation */
+		haystack--;             /* possible ANSI violation */
 		do {
 			c = *++haystack;
 			if (c == '\0')
