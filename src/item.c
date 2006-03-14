@@ -209,6 +209,7 @@ gchar *item_render(itemPtr ip) {
 	g_free(tmp3);
 	
 	tmp = g_strdup_printf(HEAD_LINE, _("Item:"), tmp2);
+	g_free(tmp2);
 	addToHTMLBufferFast(&buffer, tmp);
 	g_free(tmp);
 
