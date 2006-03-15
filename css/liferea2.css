@@ -39,6 +39,8 @@ a:active {      color:#FF00FF; }
 body {
 	background: white;
 	color: black;
+	padding:0;
+	margin:0;
 }
 
 blockquote {
@@ -57,44 +59,58 @@ dd {
 /* styles for the item description (currently also used for
    the feed description) */
 table.itemhead {
+	margin:0;
+	padding: 2px 2px 2px 2px;
 	width:100%;
-	margin-bottom:2px;
+	background-color:#DDD;
+	border:0;
+	border-bottom: 1px solid #AAA;
 	clear:both;
+}
+
+table.itemhead tr:first-child {
+	display:none;
 }
 
 td.headleft {
 	display:none;
 }
 
-/*td.headright {
-}*/
+td.headright {
+	padding:2px 5px;
+}
+
+div.content {
+	padding:8px 6px 0px 12px;
+}
+
+div.commentlink {
+	padding:8px 6px 0px 6px;
+}
 
 img {
 	margin-top: 2px;
 	margin-bottom: 2px;
 }
 
-img.favicon {
+a.favicon img {
 	height:16px;
 	border:0;
 	margin-right:5px;
 }
 
-td.headright a {
-	text-decoration:none;
-	color:black;
-}
-
-span.feedlink {
+span.feedtitle {
 	display:none;
 }
 
 span.itemtitle {
-	font-size:1.3em;
-	border-bottom-style:solid;
-	border-bottom-color:gray;
-	border-bottom-width:1px;
+	font-size:1.2em;
 	display:block;
+}
+
+span.itemtitle a {
+	color:black;
+	text-decoration:none;
 }
 
 /* styles to display generic namespace augmentation in the 
@@ -106,12 +122,13 @@ div.feedfoottitle {
 }
 
 table.feedfoot {
-	width:100%;
+	display:none;
+/*	width:100%;
 	border-width:1px;
 	border-top-style:solid;
 	border-color:#D0D0D0;
 	margin-bottom:5px;
-	border-collapse:collapse;	/* needed for footer with Mozilla */
+	border-collapse:collapse;*/	/* needed for footer with Mozilla */
 	clear:both;
 }
 
@@ -225,19 +242,22 @@ li.opmllistitem {
 }
 
 /* styles to realize shading of new items in condensed mode */
-div.itemshaded {
-	background-color:#fffde8;
-	border-color:#ede8a8;
-	border-style:solid;
-	border-width:1px;
-	padding:5px;
-	margin-bottom:15px;
+div.itemshaded { display:inline; }
+div.itemshaded * td.headright:before {
+float:left;
+	content:"U N R E A D";
+	background:yellow;
+}
+div.itemshaded:after {
+float:right;
+	content:"U N R E A D";
+	width:15px;
+	justify:center;
+	color:blue;
+	background:yellow;
 }
 
-div.itemunshaded {
-	padding:5px;
-	margin-bottom:15px;
-}
+div.itemunshaded { }
 
 /* style for the HTTP error box at the beginning
    of the feed description */
@@ -303,6 +323,7 @@ div.photoheader {
 
 div.technorati {
 	text-align:right;
+	padding-right:5px;
 }
 
 

@@ -83,7 +83,7 @@ div.content {
 }
 
 div.commentlink {
-	padding:0px 6px 0px 6px;
+	padding:8px 6px 0px 6px;
 }
 
 div.foottext {
@@ -95,16 +95,13 @@ img {
 	margin-bottom:2px;
 }
 
-img.favicon {
+a.favicon {
 	display:none;
 }
 
 /*
-span.feedlink {
-}
-
-span.itemtitle {
-}
+span.feedtitle { }
+span.itemtitle { }
 */
 
 /* styles to display generic namespace augmentation in the 
@@ -236,19 +233,11 @@ li.opmllistitem {
 }
 
 /* styles to realize shading of new items in condensed mode */
-div.itemshaded {
-	background-color:#fffde8;
-	border-color:#ede8a8;
-	border-style:solid;
-	border-width:1px;
-	padding:5px;
-	margin-bottom:15px;
+/*div.itemshaded {
 }
 
 div.itemunshaded {
-	padding:5px;
-	margin-bottom:15px;
-}
+}*/
 
 /* style for the HTTP error box at the beginning
    of the feed description */
