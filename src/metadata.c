@@ -254,31 +254,33 @@ struct str_attrib {
 };
 
 static void attribs_render_str(gpointer data, struct displayset *displayset, gpointer user_data) {
-	struct str_attrib *props = (struct str_attrib*)user_data;
-	gchar *str;
+	struct str_attrib	*props = (struct str_attrib*)user_data;
+	gchar			*tmp, *escapedStr;
 	
+	escapedStr = g_markup_escape_text((gchar*)data, -1);
 	switch(props->pos) {
 		case POS_HEADTABLE:
-			str = g_strdup_printf(HEAD_LINE, props->prompt, (gchar*)data);;
-			addToHTMLBufferFast(&(displayset->headtable), str);
-			g_free(str);
+			tmp = g_strdup_printf(HEAD_LINE, props->prompt, escapedStr);;
+			addToHTMLBufferFast(&(displayset->headtable), tmp);
+			g_free(tmp);
 			break;
 		case POS_HEAD:
-			addToHTMLBufferFast(&(displayset->head), (gchar*)data);
+			addToHTMLBufferFast(&(displayset->head), escapedStr);
 			break;
 		case POS_BODY:
-			addToHTMLBufferFast(&(displayset->body), (gchar*)data);
+			addToHTMLBufferFast(&(displayset->body), escapedStr);
 			break;
 		case POS_FOOTTABLE:
-			FEED_FOOT_WRITE(displayset->foottable, props->prompt, (gchar*)data);
+			FEED_FOOT_WRITE(displayset->foottable, props->prompt, escapedStr);
 			break;
 	}
+	g_free(escapedStr);
 }
 
 static void attribs_render_image(gpointer data, struct displayset *displayset, gpointer user_data) {
 	gchar *tmp;
 	
-	tmp = g_strdup_printf("<p>" IMG_START "%s" IMG_END "</p>", (gchar*)data);	
+	tmp = g_markup_printf_escaped("<p>" IMG_START "%s" IMG_END "</p>", (gchar*)data);	
 	switch(GPOINTER_TO_INT(user_data)) {
 		case POS_HEAD:
 			addToHTMLBufferFast(&(displayset->head), tmp);
@@ -294,24 +296,25 @@ static void attribs_render_image(gpointer data, struct displayset *displayset, g
 }
 
 static void attribs_render_foot_text(gpointer data, struct displayset *displayset, gpointer user_data) {
+	gchar	*tmp;
 
-	addToHTMLBufferFast(&(displayset->foot), "<div class='foottext'>");
-	addToHTMLBufferFast(&(displayset->foot), (gchar*)data);
-	addToHTMLBufferFast(&(displayset->foot), "</div>");
+	tmp = g_markup_printf_escaped("<div class='foottext'>%s</div>", (gchar *)data);
+	addToHTMLBufferFast(&(displayset->foot), tmp);
+	g_free(tmp);
 }
 
 static void attribs_render_comments_uri(gpointer data, struct displayset *displayset, gpointer user_data) {
 	gchar *tmp;
 	
-	tmp = g_strdup_printf("<div class='commentlink' style=\"margin-top:5px;margin-bottom:5px;\">(<a href=\"%s\">%s</a>)</div>", 
-	                      (gchar*)data, _("comments"));
+	tmp = g_markup_printf_escaped("<div class='commentlink' style=\"margin-top:5px;margin-bottom:5px;\">(<a href=\"%s\">%s</a>)</div>", 
+	                              (gchar*)data, _("comments"));
 	
 	addToHTMLBufferFast(&(displayset->foot), tmp);
 	g_free(tmp);
 }
 
 static void attribs_render_enclosure(gpointer data, struct displayset *displayset, gpointer user_data) {
-	gchar *tmp, *escaped, *filename; 
+	gchar *tmp, *escapedLink, *filename; 
 	
 	filename = strrchr((char *)data, '/');
 	if(filename != NULL)
@@ -319,21 +322,21 @@ static void attribs_render_enclosure(gpointer data, struct displayset *displayse
 	else
 		filename = data;
 
-	escaped = encode_uri_string(g_strdup((gchar *)data));
-	tmp = g_strdup_printf("<table class=\"enclosure\" cellspacing=\"0\"><tr><td>"
-	                      "<a href=\"liferea-enclosure://load?%s\">"
-	                      "<img border=\"0\" class=\"enclosurebtn\" src=\"file://" 
-			       PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S 
-			       "pixmaps" G_DIR_SEPARATOR_S "arrow.png\"/></a></td><td>"
-			       "&nbsp;<a class=\"enclosure\" href=\"%s\">%s</a>"
-			       "</td></tr></table>", escaped, (gchar *)data, filename);
+	escapedLink = encode_uri_string(g_strdup((gchar *)data));
+	tmp = g_markup_printf_escaped("<table class=\"enclosure\" cellspacing=\"0\"><tr><td>"
+	                              "<a href=\"liferea-enclosure://load?%s\">"
+	                              "<img border=\"0\" class=\"enclosurebtn\" src=\"file://" 
+		        	       PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S 
+		        	       "pixmaps" G_DIR_SEPARATOR_S "arrow.png\"/></a></td><td>"
+		        	       "&nbsp;<a class=\"enclosure\" href=\"%s\">%s</a>"
+		        	       "</td></tr></table>", escapedLink, (gchar *)data, filename);
 	addToHTMLBufferFast(&(displayset->head), tmp);
-	g_free(escaped);
+	g_free(escapedLink);
 	g_free(tmp);
 }
 
 static void attribs_render_feedgenerator_uri(gpointer data, struct displayset *displayset, gpointer user_data) {
-	gchar *tmp = g_strdup_printf("<a href=\"%s\">%s</a>", (gchar*)data, (gchar*)data);
+	gchar *tmp = g_markup_printf_escaped("<a href=\"%s\">%s</a>", (gchar*)data, (gchar*)data);
 	FEED_FOOT_WRITE(displayset->foottable, _("feed generator"), tmp);
 	g_free(tmp);
 }
