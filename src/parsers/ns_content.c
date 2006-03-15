@@ -38,7 +38,7 @@ static void parse_item_tag(itemPtr ip, xmlNodePtr cur) {
 	gchar *tmp;
 
   	if(!xmlStrcmp(cur->name, "encoded")) {
-		tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+		tmp = utf8_fix(extractHTMLNode(cur, 0, NULL));
 		if(tmp != NULL)
 			item_set_description(ip, tmp);
 		g_free(tmp);
