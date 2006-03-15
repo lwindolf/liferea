@@ -206,14 +206,16 @@ gchar * extractHTMLNode(xmlNodePtr cur, gint xhtmlMode, const gchar *defaultBase
 		xmlChar *escapedhtml;
 		/* Parse the HTML into oldDoc*/
 		escapedhtml = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);//xmlNodeDump(tmpBuf, cur->doc, cur, 0, 0);
-		escapedhtml = g_strstrip(escapedhtml);	/* stripping whitespaces to make empty string detection easier */
-		if(escapedhtml && *escapedhtml) {	/* never process empty content */
-			oldDoc = common_parse_html(escapedhtml, strlen(escapedhtml));
-			/* Copy in the html tags */
-			copiedNodes = xmlDocCopyNodeList( newDoc, common_html_doc_find_body(oldDoc)->xmlChildrenNode);
-			xmlAddChildList(divNode, copiedNodes);
-			xmlFreeDoc(oldDoc);
-			xmlFree(escapedhtml);
+		if(escapedhtml) {
+			escapedhtml = g_strstrip(escapedhtml);	/* stripping whitespaces to make empty string detection easier */
+			if(*escapedhtml) {			/* never process empty content, xmlDocCopy() doesn't like it... */
+				oldDoc = common_parse_html(escapedhtml, strlen(escapedhtml));
+				/* Copy in the html tags */
+				copiedNodes = xmlDocCopyNodeList( newDoc, common_html_doc_find_body(oldDoc)->xmlChildrenNode);
+				xmlAddChildList(divNode, copiedNodes);
+				xmlFreeDoc(oldDoc);
+				xmlFree(escapedhtml);
+			}
 		}
 	} else if(xhtmlMode == 1 || xhtmlMode == 2){ /* Read multiple XHTML tags and embed in div tag */
 		xmlNodePtr copiedNodes = xmlDocCopyNodeList( newDoc, cur->xmlChildrenNode);
