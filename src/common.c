@@ -153,25 +153,16 @@ gchar * utf8_fix(xmlChar *string) {
 }
 
 static xmlDocPtr common_parse_html(const gchar *html, gint len) {
-	htmlParserCtxtPtr ctxt;
 	xmlDocPtr out = NULL;
 	
 	g_assert(html != NULL);
 	g_assert(len >= 0);
 	
-	ctxt = htmlCreateMemoryParserCtxt(html, len);
-	if (!ctxt) return NULL;
 
 	/* Note: NONET is not implemented so it will return an error
 	   because it doesn't know how to handle NONET. But, it might
 	   learn in the future. */
-	ctxt->html = 1;
-	htmlCtxtUseOptions(ctxt, HTML_PARSE_RECOVER | HTML_PARSE_NONET);
-	htmlParseDocument(ctxt);
-	
-	out = ctxt->myDoc;
-	ctxt->myDoc = NULL;
-	htmlFreeParserCtxt(ctxt);
+	out = htmlReadMemory(html,len,NULL,"utf-8", HTML_PARSE_RECOVER | HTML_PARSE_NONET);
 	return out;
 }
 
