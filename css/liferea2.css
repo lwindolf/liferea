@@ -242,20 +242,7 @@ li.opmllistitem {
 }
 
 /* styles to realize shading of new items in condensed mode */
-div.itemshaded { display:inline; }
-div.itemshaded * td.headright:before {
-float:left;
-	content:"U N R E A D";
-	background:yellow;
-}
-div.itemshaded:after {
-float:right;
-	content:"U N R E A D";
-	width:15px;
-	justify:center;
-	color:blue;
-	background:yellow;
-}
+div.itemshaded { }
 
 div.itemunshaded { }
 
