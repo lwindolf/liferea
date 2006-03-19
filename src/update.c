@@ -150,9 +150,14 @@ void download_process(struct request *request) {
 		}
 	} else {
 		gchar *filename = request->source;
-		if (!strncmp(request->source, "file://",7))
-			filename = &(filename[7]);
+		gchar *anchor;
+
+		if(!strncmp(filename, "file://",7))
+			filename += 7;
 		
+		if(anchor = strchr(filename, '#'))
+			*anchor = 0;	 /* strip anchors from filenames */
+
 		if(g_file_test(filename, G_FILE_TEST_EXISTS)) {
 			/* we have a file... */
 			if((!g_file_get_contents(filename, &(request->data), &(request->size), NULL)) || (request->data[0] == '\0')) {
