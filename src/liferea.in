@@ -16,8 +16,6 @@ run_with_mozilla() {
 		LD_LIBRARY_PATH=$MOZILLA_HOME:$LD_LIBRARY_PATH
 		export LD_LIBRARY_PATH
 
-		MOZILLA_FIVE_HOME=$MOZILLA_HOME
-		export MOZILLA_FIVE_HOME
 		exec "$dist_bin/liferea-bin" $params
 	fi
 }
@@ -42,6 +40,7 @@ fi
 
 @MOZILLA_LIB_DIR_SEARCH@
 look_for_mozilla "/usr/lib/mozilla*/chrome/comm.jar"
+look_for_mozilla "/usr/lib64/mozilla*/chrome/comm.jar"
 look_for_mozilla "/usr/local/mozilla*/chrome/comm.jar"
 look_for_mozilla "/opt/mozilla/chrome/comm.jar"
 look_for_mozilla "/opt/mozilla/lib/chrome/comm.jar"
