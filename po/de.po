@@ -24,7 +24,7 @@ msgstr "http://liferea.sf.net"
 
 #: src/callbacks.c:241
 msgid "topics_en.html"
-msgstr "topics_en.html"
+msgstr "topics_de.html"
 
 #: src/callbacks.c:242
 msgid "Help Topics"
@@ -32,7 +32,7 @@ msgstr "Hilfe Themen"
 
 #: src/callbacks.c:248
 msgid "reference_en.html"
-msgstr "reference_en.html"
+msgstr "reference_de.html"
 
 #: src/callbacks.c:249
 msgid "Quick Reference"
