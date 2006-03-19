@@ -1,0 +1,232 @@
+<html>
+<head>
+	<title>&Auml;ndern der Einstellungen</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" type="text/css" href="reference.css">
+</head>
+<body>
+
+	<!-- navigation header start -->
+	<table width="100%">
+	   <tr>
+	      <!-- back --><td width="50px"><a href="updating_de.html">Zurück</a></td>
+	      <!-- home --><td style="text-align:center;"><b>Ändern der Einstellungen</b></td>
+	      <!-- next --><td width="50px;" style="text-align:right;"><a href="searching_de.html">Vor</a></td>
+	   </tr>
+	</table>
+	<hr />
+	<!-- navigation header end -->
+
+	<h3>Ändern der Einstellungen</h3>
+
+	<p>Der Einstellungen-Dialog kann über den Menüpunkt
+	"Einstellungen" im "Programm" Menü aufgerufen werden.
+	Der Dialog ist in sieben Registerkarten unterteilt
+	die im Folgenden beschrieben sind.</p>
+
+	<h4>Abonnement Einstellungen</h4>
+
+	<p align="center">
+	<img src="help_prefs_feeds_1.0.0.png">
+	</p>
+	<ul>
+	
+	<li>
+	<b>Caching von Abonnements:</b> Hier kann die Default-Anzahl
+	zu sichernder Schlagzeilen konfiguriert werden. Diese 
+	Einstellung kann jedoch für jedes Abonnement einzeln in den
+	Eigenschaften des Abonnements überschrieben werden.
+	</li>
+	
+	<li>
+	<b>Aktualisierung von Abonnements:</b> Hier kann das 
+	Default-Aktualisierungsintervall konfiguriert werden.
+	Der Wert 0 deaktiviert die automatische Aktualisierung.
+	Diese Einstellung kann jedoch für jedes Abonnement einzeln in den
+	Eigenschaften des Abonnements überschrieben werden.
+	<br>
+	Im Auswahlmenü "Beim Start" können drei verschiedene 
+	Verhaltensweisen beim Programmstart ausgewählt werden:
+	<ul>
+	<li>Alle fälligen Abonnements aktualisieren.</li>
+	<li>Alle aktualisieren.</li>
+	<li>Kein Update fälliger Abonnements.</li>
+	</ul>
+	</li>
+	
+	<li>
+	<b>Laden von Abonnments:</b> Mit dieser Option kann die
+	Speichernutzung von Liferea gesteuert werden. Der Nutzer kann
+	entscheiden ob alle Abonnements im Speicher (für 
+	Geschwindigkeit optimieren) oder auf der Festplatte 
+	gehalten werden sollen (für Geschwindigkeit optimieren).
+	</li>
+	</ul>
+	
+	<h4>Ordner Einstellungen</h4>
+
+	<p align="center">
+	<img src="help_prefs_folders_1.0.0.png">
+	</p>
+		
+	<ul>
+	<li>
+	<b>Anzeigen von Ordnern:</b> Ist diese Option aktiviert wird
+	Liferea beim Anklicken eines Ordern die Schlagzeilen aller in
+	diesem enthaltenen Abonnements anzeigen.
+	Das Standardverhalten ist es keine Schlagzeilen anzuzeigen.
+	</li>
+	
+	<li>
+	<b>Abonnement Icons (Favicons):</b> Dieser Button erlaubt
+	die Aktualisierung aller Favions.
+	</li>	
+	</ul>
+	
+	<h4>Schlagzeilen Einstellungen</h4>
+
+	<p align="center">
+	<img src="help_prefs_headlines_1.0.0.png">
+	</p>
+	
+	<ul>
+	<li>
+	<b>Schlagzeilen anzeigen:</b> Hier kann der Hotkey zum
+	Auswählen der nächsten ungelesenen Schlagzeilen eingestellt
+	werden.
+	</li>
+	
+	<li>
+	<b>Datumsanzeige:</b> Hier kann das Format der Datumsspalte
+	der Schlagzeilenliste verändert werden. Für die Benutzung
+	eines benutzerdefinierten Formates muß man die entsprechenden
+	Formatcodes kennen (nur für fortgeschrittene Benutzer: die
+	Formatcodes findet man in der strftime() Manpage).
+	</li>
+	</ul>
+	
+	<a name="browser">
+	<h4>Browser Einstellungen</h4>
+
+	<p align="center">
+	<img src="help_prefs_browser_1.0.0.png">
+	</p>
+	
+	<ul>
+	<li>
+	<b>Einstellungen für internen Browser:</b> Hier können drei
+	verschiedene Dinge konfiguriert werden. Erstens das Browsermodul,
+	daß Liferea verwenden soll. Zweitens kann eingestellt werden
+	ob Liferea angeforderte Links im internen oder externen Browser
+	laden soll. Und drittens ob für den internen Browser und die
+	Schlagzeilenanzeige Javascript aktiviert sein soll.
+	</li>
+
+	<li>
+	<b>Externe Browser Einstellungen:</b> Werden Links im zur 
+	Anzeige im externen Browser angefordert startet Liferea ein
+	Browser Kommando, das hier konfiguriert werden kann.
+	Im ersten Auswahlmenü kann der zu verwendende Browser verändert
+	werden oder mit "Manuell" ein benutzerspezifisches Kommando
+	eingestellt werden. Mit dem zweiten Auswahlmenü kann eingestellt
+	werden wie der Link im eingestellten Browser geöffnet werden
+	soll.<br>
+	<br>
+	Nur wenn "Manuell" im ersten Auswahlmenü eingestellt ist wird
+	das Kommadoeingabefeld auswählbar. Bei der Angabe eines Kommando
+	darf ein <i>"%s"</i> das später durch die URL ersetzt wird
+	nicht fehlen. Der Platzhalter sollte doppelt gequoted werden
+	um Shellprobleme z.B. mit dem #-Zeichen in URLs zu vermeiden.
+	</li>
+	</ul>
+
+	<h4>GUI Einstellungen</h4>
+
+	<p align="center">
+	<img src="help_prefs_gui_1.0.0.png">
+	</p>
+
+	<ul>
+	<li>
+	<b>Benachrichtigung:</b> Aktiviert man die erste Option 
+	zeigt Liferea ein sogenanntes Tray Icon im Benachrichtungsfeld
+	(verfügbar z.B. in GNOME und KDE). Das Icon ändert sich sobald
+	neue Schlagzeilen heruntergeladen wurden und wird wieder
+	zurückgesetzt wenn die Schlagzeilen gelesen werden. Das Icon 
+	kann auch benutzt werden um das Programmfenster zu verstecken
+	und wieder hervorzubringen.<br>
+	<br>
+	Die zweite Option aktiviert Benachrichtungs-Popupfenster.
+	Nach dem Herunterladen neuer Schlagzeilen wird dann ein
+	Popupfenster mit den Titeln der neuen Schlagzeilen angezeigt.
+	</li>
+	
+	<li>
+	<b>Menü-Einstellungen:</b> Hier kann eingestellt werden, ob
+	Liferea nur das Hauptmenü oder nur die Werkzeugleiste oder
+	aber beide anzeigt.
+	</li>	
+	</ul>
+	
+	<h4>Proxy Einstellungen</h4>
+
+	<p align="center">
+	<img src="help_prefs_proxy_1.0.0.png">
+	</p>
+	
+	<ul>
+	<li>
+	<b>HTTP-Proxy-Server:</b> Mit dieser Registerkarte kann ein
+	HTTP-Proxy konfiguriert werden, den Liferea zum Herunterladen
+	von Feeds benutzt. GNOME-Benutzer sollten hier keine Einstellungen
+	vornehmen sondern den Proxy in der GNOME-Konfiguration einrichten
+	(sofern das nicht bereits geschehen). Liferea wird dann die
+	GNOME-Proxy-Einstellungen automatisch übernehmen.<br>
+	<br>
+ 	Zur Zeit erlaubt Liferea keine Angabe von Rechnern für
+	die die Proxy-Einstellungen ignoriert werden soll.
+	</li>
+	</ul>
+
+	<h4>Anhänge Einstellungen</h4>
+
+	<p align="center">
+	<img src="help_prefs_enclosures_1.0.0.png">
+	</p>
+
+	<p>
+	Diese Registerkarte erlaubt die Konfiguration des
+	Enclosure-Handlings von Liferea. Mehr über Enclosures im
+	Abschnitt <a href="enclosures_de.html">Enclosures/Podcasting</a>.
+	</p>
+
+	<a name="enclosures">
+
+	<ul>
+	<li>
+	<b>Herunterladen von Anhängen:</b> Hier kann angegeben werden
+	welches Tool Liferea zum Herunterladen von Enclosures nutzen 
+	soll und in welchem Pfad die Dateien gespeichert werden sollen.
+	</li>
+	<li>
+	<b>Öffnen von Anhängen:</b> Mit dem "Eigenschaften" und "Löschen"
+	Button kann die Liste der bekannten Enclosure-Programmverknüpfungen
+	verändert werden. Dies ist nützlich wenn man eine Verknüpfung
+	entfernen oder gezielt ändern will. Neue Verknüpfungen müssen
+	nicht manuell angelegt werden, weil Liferea beim ersten Download
+	eines unbekannten Typs nachfragt mit welchem Programm dieser
+	geöffnet werden soll.
+	</ul>
+	
+	<!-- navigation footer start -->
+	<hr />
+	<table width="100%">
+	   <tr>
+	      <!-- back --><td width="50px"><a href="updating_de.html">Zurück</a></td>
+	      <!-- home --><td style="text-align:center;"><a href="topics_de.html">Inhalt</a></td>
+	      <!-- next --><td width="50px;" style="text-align:right;"><a href="searching_de.html">Vor</a></td>
+	   </tr>
+	</table>
+	<!-- navigation footer end -->
+</body>
+</html>

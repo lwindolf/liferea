@@ -16,6 +16,18 @@ html_doc_ja =	reference_ja.html \
 
 html_doc_nl =	reference_nl.html
 
+html_doc_de =	about_de.html \
+		folders_de.html \
+		headlines_de.html \
+		preferences_de.html \
+		reference_de.html \
+		searching_de.html \
+		subscriptions_de.html \
+		topics_de.html \
+		updating_de.html \
+		enclosures_de.html \
+		faq_de.html
+
 html_doc_pictures_en =	help_feed_available.png \
 			help_feed_error.png \
 			help_feed_ocs.png \
@@ -39,6 +51,7 @@ html_doc_pictures_en =	help_feed_available.png \
 EXTRA_DIST =	$(html_doc_en) \
 		$(html_doc_ja) \
 		$(html_doc_nl) \
+		$(html_doc_de) \
 		$(html_doc_pictures_en) \
 		reference.css
 
@@ -46,6 +59,7 @@ EXTRA_DIST =	$(html_doc_en) \
 htmldoc_DATA =	$(html_doc_en) \
 		$(html_doc_ja) \
 		$(html_doc_nl) \
+		$(html_doc_de) \
 		$(html_doc_pictures_en) \
 		reference.css
 

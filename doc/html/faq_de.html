@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+   	<title>Liferea FAQ</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" type="text/css" href="reference.css">
+	<style type="text/css">
+		ul {margin-left: 0; margin-right: 4px; padding: 5px}
+		li {margin-left: 15px;padding:2px;}
+		dl.faq dt { font-weight: bold; padding: 1em;}
+		dl.faq dd {padding-bottom: 2em;}
+		span.code {font-family: courier, monospaced; padding-left: 1ex; padding-right: 1ex;}
+	</style>
+</head>
+<body>
+
+<!-- navigation header start -->
+<table width="100%">
+   <tr>
+ 	      <!-- back --><td width="50px"></td>
+      	      <!-- home --><td style="text-align:center;"><b>Liferea - Frequently Asked Questions</b></td>
+      	      <!-- next --><td width="50px;" style="text-align:right;"></td>
+   </tr>
+</table>
+<hr />
+<!-- navigation header end -->
+
+<p>
+Hinweis: Diese FAQ ist auch <a href="http://liferea.sf.net/faq.htm">
+online verfügbar</a>.
+</p>
+
+<dl class="faq">
+
+<dt>Q: Wo finde ich die neueste Liferea-Version?</dt>
+<dd>
+A: Der einfachste Weg ist es das neueste Binär- oder Quellpaket von der
+<a href="http://sourceforge.net/project/showfiles.php?group_id=87005">SourceForge Projekt Homepage</a> herunterzuladen.
+Noch besser ist es aber Liferea-Pakete der eigenen Linux-Distribution zu verwenden. Eine Liste der Distributionen mit eigene Liferea-Paketen 
+gibt es <a href="/install.htm">hier</a>.
+
+</dd>
+
+<dt>Q: Sicherheit und Liferea</dt>
+<dd>A: 
+Liferea mag funktional das richtige Programm sein, ist aber nicht notwendigerweise die beste Lösung für sicherheitskritische Anwendung. Hier einige zu beachtende Einschränkungen:
+<ul>
+<li>Wird HTTP- oder Proxy-Authentifikation benutzt werden die Benutzernamen und Paßwörter unverschlüsselt in ~/.liferea/feedlist.opml abgespeichert. Diese Datei hat die Zugriffsberechtigung: 0600.</li>
+<li>Abhängig von den umask Einstellungen kann das ~/.liferea Verzeichnis für jederman lesbar sein.</li>
+<li>Das Cache-Verzeichnis in dem die Abonnement-Inhalte gespeichert werden ist ausschließlich für den Besitzer lesbar, die Inhalte werden allerdings im Klartext in XML abgelegt.</li>
+<li>Das von Liferea benutzte Mozilla-Profil wird entsprechend der umask Einstellungen angelegt. Dies gilt ebenso für alle anderen temporär angelegten Dateien.</li>
+<li><b>Das von Liferea benutzte Mozilla-Profil wird beim ersten Start des Programmes erstellt und ist ein praktisch unkonfiguriertes Mozilla-Profil! Das kann ein signifikantes Sicherheitsproblem darstellen (Javascript, Software Installation, Plugins...). Das kann umgangen werden, wenn es durch ein bereits konfiguriertes Profil z.B. eine existierenden Mozilla-Installation ersetzt wird.</b></li>
+
+<li>Diese Liste ist sicher nicht komplett!</li>
+</ul>
+</dd>
+<dt>Q: Benutzt man Lifere mit dem Mozilla Rendering Modul wandert der Eingabe-Fokus immer zum HTML Widget. Das stört!</dt>
+<dd>A: 
+In der Tat ist das ein Mozilla-Verhalten und kein Fehler von Liferea. In Bugzilla kann man dazu für die Behebung dieser Fehler votieren: #210373 und #226708.
+</dd>
+<dt>Q: Liferea ist fehlerhaft! Es beendet sich nicht wenn ich den Schließen-Button des Fenstermanagers anklicke und das Trayicon aktiviert ist.</dt>
+<dd>A: 
+Wir sehen das als sinnvolles Verhalten und nicht als Fehler. Die Idee ist das die GUI aus zwei visuellen Schnittstellen für zwei verschiedene Benutzungsmodi besteht. Soll eine dieser beiden auf Benutzeranfrage hin geschlossen werden bedeutet das nicht, daß das Ganze - das Programm - beendet werden soll. "Schließen" des Hauptfenster meint das Schließen diese Fensters als solches. "Schließen des Fensters" heißt nicht "Beenden der Applikation".
+<br><br>
+Es gibt eine Reihe weitere Programme die auch diesem Ansatz folgen:
+MS Outlook, licq, akregator, gaim, mail notification...
+<br><br>
+Um dieses Verhalten zu unterbinden kann das Trayicon im Einstellungen Dialog deaktiviert werden.
+</dd>
+
+<dt>Q: I will Cookies!
+
+</dt>
+<dd>A: 
+Liferea unterstützt Cookies wenn diese in Form einer Textdatei unter ~/.liferea/cookies.txt vorliegen. Diese Datei sollte dem Netscape Cookie Format entsprechen. Der leichteste Weg eine solche zu erstellen ist die Cookies erzeugenden Seite mit einer Mozilla-Installation zu besuchen und dann die Cookie-Datei aus dem Mozilla-Profil in das Liferea-Verzeichnis zu kopieren.
+</dd>
+
+<dt>Q: Ich mag die HTML Styles von Liferea nicht!
+</dt>
+<dd>A: Jeder kann eigene Stylesheets anlegen. Dazu muß ein liferea.css (für die 2 Spalten Ansicht) oder/und ein liferea2.css (für die Mail-Ansicht) in ~/.liferea hinterlegt werden. Wenn vorhanden werden diese zusätzlich zu den programmeigenen Stylesheets geladen. Auf diese Weise kann man die Style teilweise oder ganz anpassen. Um mehr über die benutzten CSS Klassen zu erfahren
+einfach in den Default-Stylesheet in &lt;install root&gt;/share/liferea/css nachsehen.
+</dd>
+
+<dt>Q: Wie kann ich ein Abonnement meiner Gmail Inbox anlegen?
+</dt>
+<dd>A: Google bietet ein Atom Feed mit einer Liste aller neuen Nachrichten  unter https://mail.google.com/mail/feed/atom. Da dieses Feed über HTTPS erreichbar ist kann Liferea 1.0 es nicht direkt nutzen. Daher muß ein externes Download-Tool benutzt werden (z.B. curl oder wget). Um dies zu konfigurieren muß im Neues Abonnement Dialog "Kommado" als Quelltyp ausgewählt werden und z.B. das folgende Kommando eingetragen werden: 
+<br><br>
+<tt>curl -s -u username:password https://mail.google.com/mail/feed/atom</tt>
+
+<br><br>
+Dabei sind username und password mit den Gmail Login-Informationen zu ersetzen.
+
+</dd>
+<dt>Q: I muß unbedingt HTTPS Feeds abonnieren! Aber Liferea unterstützt das einfach nicht!.</dt>
+<dd>A: Liferea 1.0 unterstützt kein HTTPS (geplant für 1.1). 
+Wenn trotzdem ein nur über HTTPS erreichbares Abonnement eingerichtet werden soll hilft folgender Trick. Dazu muß im Neues Abonnement Dialog der Quelltyp "Kommando" ausgewählt werden ohne jedoch etwas in das Quellfeld einzutragen. Zusätzlich muß die "Benutze Konvertierungsfilter" Option angeschaltet und als Konvertierunsfilter "curl &lt;your-HTTPS-URL&gt;" angegeben werden. Damit das funktioniert muß natürlich curl oder ein ähnliches Programm installiert sein, daß die heruntergeladenen Daten auf stdout ausgibt. Dieser Idee stammt von Norbert Kiesel.
+</dd>
+
+<dt>Q: Das Mozilla Browser Modul funktioniert nicht!</dt>
+<dd>A: Folgende Punkte sind zu beachten:
+<ul>
+<!-- first item updated by Carlos Fenollosa, please check spelling! -->
+<li>Um das Mozilla Browser Module zu benutzen ist eine vollständige Mozilla Installation notwendig. Mit Firefox funktioniert es meist nicht. Hinweis: man kann beide installiert haben, Firefox zum Surfen benutzen und Mozilla einfach nur als Liferea's Browser Module nutzen.</li>
+
+<li>Die Mozilla Installation muß die Datei <tt>libgtkembedmoz.so</tt>enthalten. Ohne diese Library geht es nicht.</li>
+
+<li>Mehr Informationen geben die Debugging-Ausgaben von Liferea (Aufruf mit --debug-all). Wird <tt>libgtkembedmoz.so: cannot open shared object file</tt> ausgeben, kann Liferea die Bibliothek nicht finden. Durch das Setzen von <tt>MOZILLA_FIVE_HOME</tt> kann Liferea auf ungewöhnliche Mozilla Installationspfade hingewiesen werden. Ist Mozilla z.B. in <tt>/usr/local/mozilla-1.7</tt> installiert und wird die Bash verwendet hilft ein <tt>export MOZILLA_FIVE_HOME=/usr/local/mozilla-1.7</tt> in der <tt>.profile</tt>.</li>
+
+<li>Das Mozilla Browser Modul kann nur benutzt werden wenn Liferea mit Mozilla Unterstützung kompiliert wurde. Wer selbst kompiliert sieht die Konfigurationsoptionen am Ende der Ausgaben des <tt>configure</tt> Skriptes. Hinweis: manche Distributionen wie z.B. Debian haben Liferea in mehrere Pakete aufgeteilt. Um Liferea mit Mozilla unter Debian zu nutzen werden z.B. die Pakete <tt>liferea</tt> und <tt>liferea-mozilla</tt> benötigt.</li>
+</ul>
+Wenn keiner der obigen Hinweise geholfen hat sollte versucht werden eine andere Mozilla Version zu verwenden. Zwischen manchen Mozilla Versionen gibt es Symbol Inkompatibilitäten. Die letzte Möglichkeit ist es GtkHTML2 zu verwenden. Bei Abstürzen und Problemen einfach eine Mail an <a href="mailto:liferea-devel@lists.sourceforge.net">die Mailingliste</a> schicken.
+</dd>
+
+<dt>Q: Wie kann ich die friends-only Posts von LiveJournal Abonnements sehen?</dt>
+<dd>A: Dazu muß das LiveJournal RSS Feed mit Authentifikation benutzt werden. Z.B.
+
+<a href="http://www.livejournal.com/users/pigrew/data/rss?auth=digest">
+http://www.livejournal.com/users/pigrew/data/rss?auth=digest</a>.
+
+In den Abonnement-Eigenschaften muß zusätzlich noch Username und Paßwort des LiveJournal Accounts angegeben werden.
+</dd>
+
+<dt>Q: Was ist der Unterschied zwischen Ordnern und Directories?</dt>
+
+<dd>A: Ordner werden zur Gruppierung von Abonnements benutzt. Directories sind meist Listen von Feeds die abonniert werden können und ansonsten wie normale Abonnements behandelt werden. Directories liegen üblicherweise im OCS oder OPML Format vor.</dd>
+
+<dt>Q: Warum werden manche Schlagzeilen immer wieder als ungelesen angezeigt?</dt>
+<dd>A: Meistens sind fehlerhafte Feeds mit z.B. nicht eindeutigen oder fehlenden Schlagzeilen-Ids der Grund. Im Zweifelsfall kann die Korrektheit von Feeds mit einem Feed-Validator wie z.B. <a href="http://feedvalidator.org/">feedvalidator.org</a> überprüft werden. Sollte der Validator keine Fehler finden ist es vielleicht ein Problem in Liferea. In diesem Fall lohnt es sich einen Bug Report über die URL und den Inhalt des problematischen Feeds im
+<a href="http://sourceforge.net/tracker/?atid=581684&group_id=87005">Liferea
+Bug Tracker</a> anzulegen.<br>
+
+<br/>
+Hinweis: Dieses Problem haben viele Planet Feeds, die einfach nur die gesammelten Schlagzeilen der aggregierten Feeds anbieten, ohne für eindeutige Schlagzeilen-Ids zu sorgen. In solchen Fällen hat Liferea keine Möglichkeit die Schlagzeilen korrekt zu unterscheiden.</dd>
+
+<dt>Q: Liferea stürzt laufend ab.</dt>
+
+<dd>A: Das hören wir oft. Um wirklich helfen zu können benötigen wir aber detaillierte Beschreibungen über die Absturzursache. Stürzt Liferea reproduzierbar ab wollen wir das natürlich unbedingt wissen. Zum Debugging brauchen wir die Ausgaben eines Aufrufes mit dem Schalter "--debug-all" und wenn möglich einem Backtrace. Um einen Backtrace zu erzeugen einfach ein Terminal öffnen und die folgenden zwei Kommandos absetzen: <span
+class="code">ulimit -c unlimited</span> und dann <span
+class="code">liferea</span>. So aufgerufen wird Liferea beim Absturz eine core-Datei erzeugen. Diese kann dann mit <span class="code">gdb liferea-bin core</span> geöffnet werden. Gibt man in der gdb Eingabeaufforderung dann <span class="code">bt</span> ein wird der Backtrace des Absturzes ausgegeben.</dd>
+
+<dt>Q: Warum fehlt Liferea das Feature X?</dt>
+<dd>A: Feature Requests bitte im <a href="http://sourceforge.net/tracker/?group_id=87005&atid=581687">RFE Tracker</a> der SourceForge Projektseite in Englisch eintragen!</dd>
+
+</dl>
+
+</body>
+</html>
