@@ -1,47 +1,81 @@
+# translation of sv.po to Swedish
 # Swedish translation of Liferea.
 # Copyright (C) 2005 THE Liferea'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the Liferea package.
-# Sergej Kotliar <sigge@hystrix.se>, 2005.
-# , fuzzy
-# 
-# 
+#
+# Sergej Kotliar <sigge@hystrix.se>, 2005, 2006.
 msgid ""
 msgstr ""
-"Project-Id-Version: Liferea 1.0 RC1\n"
+"Project-Id-Version: sv\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-11-04 22:29+0100\n"
-"PO-Revision-Date: 2005-11-12 20:18+0100\n"
+"POT-Creation-Date: 2006-03-05 22:20+0100\n"
+"PO-Revision-Date: 2006-03-09 23:46+0100\n"
 "Last-Translator: Sergej Kotliar <sigge@hystrix.se>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: KBabel 1.11.1\n"
+
+#: src/atom10.c:100
+msgid "Liferea is unable to display this item's contents."
+msgstr "Liferea kan inte visa artikelns innehåll."
+
+#: src/atom10.c:106
+#, c-format
+msgid "<p><a href=\"%s\">View this item's contents.</a></p>"
+msgstr "<p><a href=\"%s\">Visa artikelns innehåll</a></p>"
+
+#: src/atom10.c:141 src/atom10.c:147 src/atom10.c:220
+msgid "This item's contents is invalid."
+msgstr "Artikelns innehåll är ogiltigt."
+
+#: src/atom10.c:279
+msgid "Invalid Atom feed: unknown author"
+msgstr "Ogiltig Atom-kanal: okänd skapare"
+
+#: src/atom10.c:638
+msgid "<p>Could not find Atom 1.0 header!</p>"
+msgstr "<p>Kunde inte hitta Atom 1.0-huvud!</p>"
+
+#: src/atom10.c:692 src/ocs_dir.c:506 src/opml.c:245 src/pie_feed.c:296
+#: src/rss_channel.c:328 src/ui_htmlview.h:98
+msgid "There were errors while parsing this feed!"
+msgstr "Fel inträffade under inläsning av denna kanal!"
 
 #. launch the homepage when button in about dialog is pressed
-#: src/callbacks.c:237
+#: src/callbacks.c:246
 msgid "http://liferea.sf.net"
 msgstr "http://liferea.sf.net"
 
-#: src/callbacks.c:241
+#: src/callbacks.c:250
 msgid "topics_en.html"
 msgstr "topics_en.html"
 
-#: src/callbacks.c:242
+#: src/callbacks.c:251
 msgid "Help Topics"
 msgstr "Hjälpavsnitt"
 
-#: src/callbacks.c:248
+#: src/callbacks.c:257
 msgid "reference_en.html"
 msgstr "reference_en.html"
 
-#: src/callbacks.c:249
+#: src/callbacks.c:258
 msgid "Quick Reference"
 msgstr "Snabbreferens"
 
+#: src/callbacks.c:263
+msgid "faq_en.html"
+msgstr "faq_en.html"
+
+#: src/callbacks.c:264
+msgid "FAQ"
+msgstr "Vanliga frågor"
+
 #: src/common.c:295
 msgid "[Parser error output was truncated!]"
-msgstr "[Läsarfel. Utmatningen var förkortad!]"
+msgstr "[Tolkarfelets utdata förkortades!]"
 
 #: src/common.c:373
 #, c-format
@@ -49,10 +83,10 @@ msgid ""
 "xmlReadMemory(): Could not parse document:\n"
 "%s%s"
 msgstr ""
-"xmlReadMemory(): Kunde inte läsa dokumentet:\n"
+"xmlReadMemory(): Kunde inte tolka dokumentet:\n"
 "%s%s"
 
-#: src/common.c:450 src/common.c:561
+#: src/common.c:450 src/common.c:567
 msgid "internal error! time conversion error! mktime failed!\n"
 msgstr "internt fel! Tidskonverteringsfel! mktime misslyckades!\n"
 
@@ -60,25 +94,25 @@ msgstr "internt fel! Tidskonverteringsfel! mktime misslyckades!\n"
 msgid "Invalid ISO8601 date format! Ignoring <dc:date> information!\n"
 msgstr "Ogiltigt ISO8601 datum-format! Ignorerar <dc:date> information!\n"
 
-#: src/common.c:575 src/common.c:582 src/common.c:588 src/common.c:595
+#: src/common.c:581 src/common.c:588 src/common.c:594 src/common.c:601
 #, c-format
 msgid "Cannot create cache directory %s!"
 msgstr "Kan inte skapa cache-katalog %s!"
 
-#: src/common.c:665
+#: src/common.c:671
 msgid ""
 "Unexpected end of character sequence or corrupt UTF-8 encoding! Some "
 "characters were dropped!"
 msgstr ""
 "Oväntad teckenslutssekvens eller korrupt UTF-8-kodning! Vissa tecken "
-"försvann."
+"togs bort."
 
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
-#: src/conf.c:253
+#: src/conf.c:244
 msgid "feedlist.opml"
 msgstr "feedlist.opml"
 
-#: src/conf.c:272
+#: src/conf.c:263
 #, c-format
 msgid "Error renaming %s to %s\n"
 msgstr "Kunde inte döpa om %s till %s\n"
@@ -91,261 +125,260 @@ msgstr "Orientering"
 msgid "The orientation of the tray."
 msgstr "Brickans orientering"
 
-#: src/export.c:499 src/export.c:501
+#: src/export.c:502 src/export.c:504
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
 msgstr "XML-fel under läsning av cache fil! Kunde inte importera \"%s\"!"
 
-#: src/export.c:505 src/export.c:507
+#: src/export.c:508 src/export.c:510
 #, c-format
-msgid ""
-"Empty document! OPML document \"%s\" should not be empty when importing."
+msgid "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr "Tomt dokument! OPML-dokument \"%s\" ska inte vara tomma vid import."
 
-#: src/export.c:515 src/export.c:517
+#: src/export.c:518 src/export.c:520
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 "\"%s\" är inte ett giltigt OPML-dokument! Liferea kan inte importera denna "
 "fil!"
 
-#: src/export.c:539
+#: src/export.c:542
 msgid "Imported feed list"
-msgstr "Importerad lista med källor"
+msgstr "Importerad kanallista"
 
-#: src/export.c:550
+#: src/export.c:553
 msgid "Import Feed List"
-msgstr "Importera lista med källor"
+msgstr "Importera kanallista"
 
-#: src/export.c:550
+#: src/export.c:553
 msgid "Import"
 msgstr "Importera"
 
-#: src/export.c:560
+#: src/export.c:563
 msgid "Error while exporting feed list!"
-msgstr "Fel under export av lista med källor!"
+msgstr "Fel under export av kanallista!"
 
-#: src/export.c:562
+#: src/export.c:565
 msgid "Feed List exported!"
-msgstr "Lista med källor exporterad!"
+msgstr "Kanallista exporterad!"
 
-#: src/export.c:569
+#: src/export.c:572
 msgid "Export Feed List"
-msgstr "Exportera lista med källor"
+msgstr "Exportera kanallista"
 
-#: src/export.c:569
+#: src/export.c:572
 msgid "Export"
 msgstr "Exportera"
 
 #: src/favicon.c:282
 #, c-format
 msgid "Updating feed icon for \"%s\""
-msgstr "Uppdaterar ikon för källan \"%s\""
+msgstr "Uppdaterar kanalikonen för \"%s\""
 
-#: src/feed.c:151
+#: src/feed.c:152
 #, c-format
 msgid "<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"
-msgstr "<p>XML-fel vid läsning av källa! Källan \"%s\" kunde inte laddas!</p>"
+msgstr "<p>XML-fel vid läsning av kanal! Kanalen \"%s\" kunde inte laddas!</p>"
 
-#: src/feed.c:157 src/feed.c:394
+#: src/feed.c:158 src/feed.c:395
 msgid "<p>Empty document!</p>"
 msgstr "<p>Tomt dokument!</p>"
 
-#: src/feed.c:164
+#: src/feed.c:165
 msgid "<p>Invalid XML!</p>"
 msgstr "<p>Ogiltig XML!</p>"
 
-#: src/feed.c:228
+#: src/feed.c:229
 msgid ""
 "<p>The URL you want Liferea to subscribe to points to a webpage and the auto "
 "discovery found no feeds on this page. Maybe this webpage just does not "
 "support feed auto discovery.</p>"
 msgstr ""
 "<p>Webbadressen du vill att Liferea ska prenumerare på pekar på en webbsida, "
-"och auto-igenkänning av RSS-källor hittade inga källor på denna sida. "
-"Webbsidan kanske inte stödjer auto-igenkänning av RSS-källor.</p>"
+"och auto-igenkänning av RSS-kanaler hittade inga kanaler på denna sida. "
+"Webbsidan kanske inte stödjer auto-igenkänning av RSS-kanaler.</p>"
 
-#: src/feed.c:233
+#: src/feed.c:234
 msgid ""
 "<p>Could not determine the feed type. Please check that it is <a href="
 "\"http://feedvalidator.org\">valid</a> and in a <a href=\"http://liferea."
 "sourceforge.net/supported_formats.htm\">supported format</a>.</p>"
 msgstr ""
-"<p>Kunde inte avgöra källans typ. Vänligen kontrollera att den är <a href="
+"<p>Kunde inte avgöra kanalens typ. Vänligen kontrollera att den är <a href="
 "\"http://feedvalidator.org\">giltig</a> och i ett av <a href=\"http://"
 "liferea.sourceforge.net/supported_formats.htm\">de stödda formaten</a>.</p>"
 
-#: src/feed.c:374
+#: src/feed.c:375
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
 msgstr "Fel vid läsning av cache-filen \"%s\" ! Cache filen kunde inte laddas!"
 
-#: src/feed.c:386
+#: src/feed.c:387
 #, c-format
 msgid ""
 "<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
 "loaded!</p>"
 msgstr ""
-"<p>XML-fel vid läsning av cache-fil! Källans cache-fil \"%s\" kunde inte "
+"<p>XML-fel vid läsning av cache-fil! Kanalens cache-fil \"%s\" kunde inte "
 "laddas!</p>"
 
-#: src/feed.c:405
+#: src/feed.c:406
 #, c-format
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 msgstr "<p>\"%s\" är inte en giltig cache-fil! Kan inte läsa cache-filen!</p>"
 
-#: src/feed.c:459
+#: src/feed.c:460
 #, c-format
 msgid "There were errors while parsing cache file \"%s\""
 msgstr "Fel inträffade vid läsning av cache-filen \"%s\""
 
-#: src/feed.c:522
+#: src/feed.c:523
 #, c-format
 msgid "This feed \"%s\" is already being updated!"
-msgstr "Källan \"%s\" håller redan på att uppdateras!"
+msgstr "Kanalen \"%s\" håller redan på att uppdateras!"
 
-#: src/feed.c:527
+#: src/feed.c:528
 msgid "The feed was discontinued. Liferea won't update it anymore!"
-msgstr "Denna källa har stängts. Liferea kommer inte att uppdatera den mer!"
+msgstr "Denna kanal har stängts. Liferea kommer inte att uppdatera den mer!"
 
-#: src/feed.c:531
+#: src/feed.c:532
 #, c-format
 msgid "Updating \"%s\""
 msgstr "Uppdaterar \"%s\""
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:1067 src/item.c:244 src/metadata.c:346 src/ocs_dir.c:144
+#: src/feed.c:1068 src/item.c:244 src/metadata.c:346 src/ocs_dir.c:144
 #: src/opml.c:218
 msgid "Feed:"
-msgstr "Källa:"
+msgstr "Kanal:"
 
-#: src/feed.c:1067 src/interface.c:3749
+#: src/feed.c:1068 src/interface.c:3778
 msgid "VFolder"
 msgstr "Sökmapp"
 
-#: src/feed.c:1075
+#: src/feed.c:1076
 msgid "user defined command"
 msgstr "användardefinierat kommando"
 
-#: src/feed.c:1098 src/interface.c:1414 src/item.c:291 src/metadata.c:348
-#: src/metadata.c:349 src/ocs_dir.c:150 src/opml.c:224
+#: src/feed.c:1099 src/item.c:291 src/metadata.c:348 src/metadata.c:349
+#: src/ocs_dir.c:150 src/opml.c:224
 msgid "Source:"
 msgstr "Plats:"
 
-#: src/feedlist.c:246
+#: src/feedlist.c:247
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box."
 msgstr ""
-"Du har inte tillstånd att ladda ner denna källa. Vänligen uppdatera ditt "
-"användarnamn och lösenord i källans egenskaper."
-
-#: src/feedlist.c:248
-msgid "Payment Required"
-msgstr "Betalning Krävs"
+"Du har inte tillstånd att ladda ner denna kanal. Vänligen uppdatera ditt "
+"användarnamn och lösenord i kanalens egenskaper."
 
 #: src/feedlist.c:249
-msgid "Access Forbidden"
-msgstr "Tillträde Förbjudet"
+msgid "Payment Required"
+msgstr "Betalning krävs"
 
 #: src/feedlist.c:250
-msgid "Resource Not Found"
-msgstr "Objektet Kunde Inte Hittas"
+msgid "Access Forbidden"
+msgstr "Tillträde förbjudet"
 
 #: src/feedlist.c:251
-msgid "Method Not Allowed"
-msgstr "Metoden Inte Tillåten"
+msgid "Resource Not Found"
+msgstr "Objektet kunde inte hittas"
 
 #: src/feedlist.c:252
-msgid "Not Acceptable"
-msgstr "Inte Acceptabelt"
+msgid "Method Not Allowed"
+msgstr "Metoden inte tillåten"
 
 #: src/feedlist.c:253
-msgid "Proxy Authentication Required"
-msgstr "Proxy-Autentisering Krävs"
+msgid "Not Acceptable"
+msgstr "Inte acceptabelt"
 
 #: src/feedlist.c:254
+msgid "Proxy Authentication Required"
+msgstr "Proxy-autentisering krävs"
+
+#: src/feedlist.c:255
 msgid "Request Time-Out"
 msgstr "Anropet fick time-out"
 
-#: src/feedlist.c:255
+#: src/feedlist.c:256
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "Borta. Föremålet existerar inte. Var god och avprenumerera!"
 
-#: src/feedlist.c:260
+#: src/feedlist.c:261
 msgid "URL is invalid"
 msgstr "URL:en är ogiltig"
 
-#: src/feedlist.c:261
+#: src/feedlist.c:262
 msgid "Unsupported network protocol"
 msgstr "Ej stött nätverksprotokoll"
 
-#: src/feedlist.c:264
+#: src/feedlist.c:265
 msgid "Error connecting to remote host"
 msgstr "Fel vid anslutning till fjärrvärd"
 
-#: src/feedlist.c:265
+#: src/feedlist.c:266
 msgid "Hostname could not be found"
 msgstr "Värdnamnet kunde inte hittas"
 
-#: src/feedlist.c:266
+#: src/feedlist.c:267
 msgid "Network connection was refused by the remote host"
 msgstr "Nätverksanslutning nekades av fjärrvärden"
 
-#: src/feedlist.c:267
+#: src/feedlist.c:268
 msgid "Remote host did not finish sending data"
 msgstr "Fjärrvärden hann inte avsluta skickandet av data"
 
 #. Transfer errors
-#: src/feedlist.c:269
+#: src/feedlist.c:270
 msgid "Too many HTTP redirects were encountered"
 msgstr "För många HTTP-vidareskickningar inträffade"
 
-#: src/feedlist.c:272
+#: src/feedlist.c:273
 msgid "Remote host sent an invalid response"
 msgstr "Fjärrvärden skickade ett ogiltigt svar"
 
-#: src/feedlist.c:279
+#: src/feedlist.c:280
 msgid "Authentication failed"
 msgstr "Autentisering misslyckades"
 
-#: src/feedlist.c:281
+#: src/feedlist.c:282
 msgid "Webserver's authentication method incompatible with Liferea"
 msgstr "Webbservern's autentiseringsmetod är inte kompatibel med Liferea"
 
-#: src/feedlist.c:287
-msgid "Feed not available: Server requested unsupported redirection!"
-msgstr "Källan inte tillgänglig: Servern begärde en icke stödd vidarekoppling!"
-
 #: src/feedlist.c:288
+msgid "Feed not available: Server requested unsupported redirection!"
+msgstr "Kanalen är inte tillgänglig: Servern begärde en icke stödd vidarekoppling!"
+
+#: src/feedlist.c:289
 msgid "Client Error"
 msgstr "Klientfel"
 
-#: src/feedlist.c:289
+#: src/feedlist.c:290
 msgid "Server Error"
 msgstr "Serverfel"
 
-#: src/feedlist.c:290
+#: src/feedlist.c:291
 msgid "(unknown networking error happened)"
 msgstr "(okänt närverksfel inträffade)"
 
-#: src/feedlist.c:303 src/feedlist.c:312
+#: src/feedlist.c:304 src/feedlist.c:313
 msgid "Show Details"
 msgstr "Visa detaljer"
 
-#: src/feedlist.c:317
+#: src/feedlist.c:318
 msgid ""
 "<br>You may want to validate the feed using <a href=\"http://feedvalidator."
 "org/check.cgi?url="
 msgstr ""
-"<br>Du kanske vill validera källan med hjälp av <a href=\"http://"
+"<br>Du kanske vill validera kanalen med hjälp av <a href=\"http://"
 "feedvalidator.org/check.cgi?url="
 
-#: src/feedlist.c:322
+#: src/feedlist.c:323
 msgid "\">FeedValidator</a>."
 msgstr "\">FeedValidator</a>."
 
-#: src/feedlist.c:330
+#: src/feedlist.c:331
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
@@ -353,74 +386,78 @@ msgstr ""
 "Ett problem inträffade under läsning av prenumerationen. Vänligen "
 "kontrollera URL:en och utmatningen i konsollen."
 
-#: src/feedlist.c:363
+#: src/feedlist.c:364
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr "\"%s\" är stängd. Liferea kommer inte att uppdatera den mer!"
 
-#: src/feedlist.c:365
+#: src/feedlist.c:366
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\" har inte förändrats från förra uppdateringen"
 
-#: src/feedlist.c:373
+#: src/feedlist.c:374
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "URL:en för \"%s\" har ändrats permanent och blev uppdaterad"
 
-#: src/feedlist.c:385
+#: src/feedlist.c:386
 #, c-format
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!</"
 "p>%s"
 msgstr ""
-"<p>Kunde inte avgöra källans typ! Vänligen kontrollera om adressen verkligen "
+"<p>Kunde inte avgöra kanalens typ! Vänligen kontrollera om adressen verkligen "
 "syftar på ett objekt i ett av de stödda synkningsformaten!</p>%s"
 
-#: src/feedlist.c:404
+#: src/feedlist.c:405
 #, c-format
 msgid "\"%s\" updated..."
-msgstr "\"%s\" uppdaterades..."
+msgstr "\"%s\" har uppdaterats"
 
-#: src/feedlist.c:412
+#: src/feedlist.c:413
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" är inte tillgänglig"
 
-#: src/feedlist.c:453
+#: src/feedlist.c:454
 msgid "You have to select a feed entry"
-msgstr "Du måste markera en källa"
+msgstr "Du måste markera en kanal"
 
-#: src/feedlist.c:463
+#: src/feedlist.c:464
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea är i frånkopplat läge. Inga uppdateringar är möjliga."
 
 #: src/html.c:148
 msgid "Feed link auto discovery failed! No feed links found!"
-msgstr "Auto-igenkänning av RSS-källor misslyckades! Inga källor hittade!"
+msgstr "Auto-igenkänning av RSS-kanaler misslyckades! Inga kanaler hittade!"
 
-#: src/interface.c:132
+#: src/interface.c:134
 msgid "Liferea"
 msgstr "Liferea"
 
-#: src/interface.c:149
+#: src/interface.c:151
 msgid "_Program"
 msgstr "_Program"
 
-#: src/interface.c:165
+#: src/interface.c:167
 msgid "_Work Offline"
 msgstr "_Arbeta frånkopplat"
 
-#: src/interface.c:178
-msgid "_Feeds"
-msgstr "_Källor"
+#: src/interface.c:170
+msgid "This option allows you to disable subscription updating."
+msgstr "Detta alternativ låter dig stänga av prenumerationsuppdatering."
 
-#: src/interface.c:185
-msgid "Update _Selected"
-msgstr "Uppdatera _källan"
+#: src/interface.c:181
+msgid "_Feeds"
+msgstr "_Kanaler"
 
 #: src/interface.c:188
+msgid "Update _Selected"
+msgstr "Uppdatera _kanalen"
+
+#: src/interface.c:191
 msgid ""
 "Updates the selected subscription or all subscriptions of the selected "
 "folder."
@@ -428,507 +465,521 @@ msgstr ""
 "Uppdaterar den valda prenumerationen eller alla prenumerationer i den valda "
 "mappen."
 
-#: src/interface.c:194
+#: src/interface.c:197
 msgid "Update _All"
-msgstr "Uppdatera _alla källor"
+msgstr "Uppdatera _alla kanaler"
 
-#: src/interface.c:197 src/ui_mainwindow.c:305
+#: src/interface.c:200 src/ui_mainwindow.c:316
 msgid "Updates all subscriptions. This does not update OCS directories."
-msgstr "Uppdaterar alla prenumerationer. Detta uppdaterar inte OCS-kataloger."
-
-#: src/interface.c:206
-msgid "_Mark Selected As Read"
-msgstr "_Markera källan som läst"
+msgstr "Uppdatera alla prenumerationer. Detta uppdaterar inte OCS-kataloger."
 
 #: src/interface.c:209
+msgid "_Mark Selected As Read"
+msgstr "_Markera kanalen som läst"
+
+#: src/interface.c:212 src/ui_mainwindow.c:315
 msgid ""
-"Marks all items of the current selected subscription or all of subscriptions "
-"of the selected folder as read."
-msgstr ""
-"Markerar alla artiklar i den valda prenumerationen eller alla "
-"prenumerationer i den valda mappen som lästa."
+"Marks all items of the selected subscription or of all subscriptions of the "
+"selected folder as read."
+msgstr "Markera alla artiklar i den valda prenumerationen eller mappen som lästa."
 
-#: src/interface.c:218
+#: src/interface.c:221
 msgid "Mark All As _Read"
-msgstr "Markera alla källor som _lästa"
+msgstr "Markera alla kanaler som _lästa"
 
-#: src/interface.c:231
+#: src/interface.c:224
+msgid "Marks read every item of every subscription."
+msgstr "Markera alla artiklar i alla prenumerationer som lästa."
+
+#: src/interface.c:235
 msgid "_New Subscription..."
 msgstr "_Ny prenumeration..."
 
-#: src/interface.c:239
+#: src/interface.c:238
+msgid "Add a subscription to the feed list."
+msgstr "Lägg till en ny prenumeration"
+
+#: src/interface.c:244
 msgid "New _Folder..."
 msgstr "Ny _mapp..."
 
 #: src/interface.c:247
+msgid "Add a folder to the feed list."
+msgstr "Skapa mapp"
+
+#: src/interface.c:253
 msgid "New _VFolder..."
 msgstr "Ny _sökmapp"
 
 #: src/interface.c:256
+msgid "Add a new VFolder to the feed list."
+msgstr "Lägg till en ny sökmapp i kanallistan"
+
+#: src/interface.c:263
 msgid "_Properties..."
 msgstr "_Egenskaper..."
 
-#: src/interface.c:259
+#: src/interface.c:266
 msgid "Opens the property dialog for the selected subscription."
 msgstr "Öppnar fönstret \"Egenskaper\" för den valda prenumerationen"
 
-#: src/interface.c:265
+#: src/interface.c:272
 msgid "_Delete Selected"
-msgstr "_Ta bort källan"
+msgstr "_Ta bort kanalen"
 
-#: src/interface.c:268
+#: src/interface.c:275
 msgid "Removes the selected subscription."
-msgstr "Tar bort den valda prenumerationen."
+msgstr "Tar bort den markerade prenumerationen."
 
-#: src/interface.c:279
+#: src/interface.c:286
 msgid "_Import Feed List..."
-msgstr "_Importera lista med källor..."
+msgstr "_Importera kanallista..."
 
-#: src/interface.c:282
+#: src/interface.c:289
 msgid "Imports an OPML feed list."
-msgstr "Importerar en lista med källor i OPML-format."
+msgstr "Importerar en lista med kanaler i OPML-format."
 
-#: src/interface.c:288
+#: src/interface.c:295
 msgid "_Export Feed List..."
-msgstr "_Exportera lista med källor..."
+msgstr "_Exportera kanallista..."
 
-#: src/interface.c:291
+#: src/interface.c:298
 msgid "Exports the feed list as OPML."
-msgstr "Exporterar listan med källor i OPML-format."
+msgstr "Exporterar kanallistan i OPML-format."
 
-#: src/interface.c:297
+#: src/interface.c:304
 msgid "_Items"
 msgstr "_Artiklar"
 
-#: src/interface.c:304
+#: src/interface.c:311
 msgid "_Next Unread Item"
 msgstr "_Nästa olästa"
 
-#: src/interface.c:307 src/ui_mainwindow.c:303
+#: src/interface.c:314 src/ui_mainwindow.c:314
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
 msgstr ""
-"Hoppar till nästa olästa artikel. Om det behövs väljer den först nästa källa "
+"Hoppa till nästa olästa artikel. Om det behövs markeras först nästa kanal "
 "med olästa artiklar."
 
-#: src/interface.c:321
+#: src/interface.c:328
 msgid "Toggle _Read Status"
 msgstr "Växla _läst/oläst"
 
-#: src/interface.c:324
+#: src/interface.c:331
 msgid "Toggles the read status of the selected item."
-msgstr "Markerar olästa artiklar som lästa och lästa som olästa"
+msgstr "Ändrar markerad artikel från läst till oläst och vice versa."
 
-#: src/interface.c:333
+#: src/interface.c:340
 msgid "Toggle Item _Flag"
 msgstr "Sätt _flagga"
 
-#: src/interface.c:336
-msgid "Toggles the item flag."
-msgstr "Sätter och tar bort flagga från artikeln."
+#: src/interface.c:343
+msgid "Toggles the flag status of the selected item."
+msgstr "Sätter och tar bort flagga för den valda artikeln"
 
-#: src/interface.c:341
+#: src/interface.c:348
 msgid "Remove _Selected"
 msgstr "Ta bort _vald artikel"
 
-#: src/interface.c:344
+#: src/interface.c:351
 msgid "Removes the selected item."
 msgstr "Tar bort den valda artikeln."
 
-#: src/interface.c:350
+#: src/interface.c:357
 msgid "Remove _All"
 msgstr "Ta bort _alla artiklar"
 
-#: src/interface.c:353
+#: src/interface.c:360
 msgid "Removes all items of the currently selected feed."
-msgstr "Tar bort alla artiklar i den valda källan."
+msgstr "Tar bort alla artiklar i den valda kanalen."
 
-#: src/interface.c:364
+#: src/interface.c:371
 msgid "_Launch In Browser"
 msgstr "_Öppna i webbläsare"
 
-#: src/interface.c:367
+#: src/interface.c:374
 msgid "Launches the item's link in the configured browser."
 msgstr "Öppnar artikelns länk i den inställda webbläsaren."
 
-#: src/interface.c:369
+#: src/interface.c:376
 msgid "_View"
 msgstr "_Visa"
 
-#: src/interface.c:376
+#: src/interface.c:383
 msgid "_Increase Text Size"
 msgstr "_Större textstorlek"
 
-#: src/interface.c:379
+#: src/interface.c:386
 msgid "Increases the text size of the item view."
 msgstr "Ökar storleken på texten i artiklarna."
 
-#: src/interface.c:388
+#: src/interface.c:395
 msgid "_Decrease Text Size"
 msgstr "_Mindre textstorlek"
 
-#: src/interface.c:391
+#: src/interface.c:398
 msgid "Decreases the text size of the item view."
 msgstr "Minskar storleken på texten i artiklarna."
 
-#: src/interface.c:405
+#: src/interface.c:412
 msgid "Toggle _Condensed View"
 msgstr "Aktivera ihopdragen visning"
 
-#: src/interface.c:408
+#: src/interface.c:415
 msgid "Toggles the item list mode between condensed and normal mode."
 msgstr ""
 "Ändrar mellan att visa alla artiklar för sig och alla tillsammans på rad "
 "efter varandra."
 
-#: src/interface.c:410
+#: src/interface.c:417
 msgid "_Search"
 msgstr "_Sök"
 
-#: src/interface.c:417 src/interface.c:3695
+#: src/interface.c:424 src/interface.c:3724
 msgid "Search All Feeds"
-msgstr "Sök i alla källor"
+msgstr "Sök i alla kanaler"
 
-#: src/interface.c:420
+#: src/interface.c:427
 msgid "Shows or hides the search box."
 msgstr "Visar eller döljer sökrutan."
 
-#: src/interface.c:429
+#: src/interface.c:436
 msgid "Search With _Feedster..."
 msgstr "Sök med _Feedster"
 
-#: src/interface.c:432
+#: src/interface.c:439
 msgid "Creates a Feedster search feed."
-msgstr "Skapar en Feedster-sökningskälla."
+msgstr "Skapar en kanal av en Feedster-sökning."
 
-#: src/interface.c:438
+#: src/interface.c:445
 msgid "_Help"
 msgstr "_Hjälp"
 
-#: src/interface.c:445
+#: src/interface.c:452
 msgid "_Contents"
 msgstr "_Innehåll"
 
-#: src/interface.c:448
+#: src/interface.c:455
 msgid "View help for this application."
 msgstr "Visa hjälp för detta program."
 
-#: src/interface.c:454
+#: src/interface.c:461
 msgid "_Quick Reference"
 msgstr "_Snabbreferens"
 
-#: src/interface.c:457
+#: src/interface.c:464
 msgid "View a list of all Liferea shortcuts."
 msgstr "Visa en lista på alla Lifereas genvägar."
 
-#: src/interface.c:464
+#: src/interface.c:466
+msgid "_FAQ"
+msgstr "_FAQ"
+
+#: src/interface.c:469
+msgid "View the FAQ for this application."
+msgstr "Visa de vanligast ställda frågorna och svaren."
+
+#: src/interface.c:476
 msgid "_About"
 msgstr "_Om"
 
-#: src/interface.c:467
+#: src/interface.c:479
 msgid "Shows an about dialog."
 msgstr "Visar en \"Om\"-dialog."
 
-#: src/interface.c:528
+#: src/interface.c:545
 msgid "single item view"
 msgstr "enkel-artikel-visning"
 
-#: src/interface.c:536
+#: src/interface.c:553
 msgid "label133"
-msgstr ""
+msgstr "label133"
 
-#: src/interface.c:540 src/interface.c:2065
+#: src/interface.c:557 src/interface.c:2090
 msgid "Headlines"
 msgstr "Rubriker"
 
-#: src/interface.c:857
+#: src/interface.c:879
 msgid "Subscription Properties"
 msgstr "Prenumerationsegenskaper"
 
-#: src/interface.c:880
+#: src/interface.c:902
 msgid "<span weight=\"bold\">Feed Name</span>"
 msgstr "<span weight=\"bold\">Namn</span>"
 
-#: src/interface.c:895
+#: src/interface.c:917
 msgid "Feed _Name:"
-msgstr "Källans _namn:"
+msgstr "Kanalens _namn:"
 
-#: src/interface.c:908
+#: src/interface.c:930
 msgid "<span weight=\"bold\">Update Interval</span>"
 msgstr "<span weight=\"bold\">Intervall för uppdatering</span>"
 
-#: src/interface.c:923
+#: src/interface.c:945
 msgid "_Use global default update interval."
 msgstr "_Använd programmets inställda uppdateringsintervall."
 
-#: src/interface.c:933
+#: src/interface.c:955
 msgid "_Feed specific update interval of"
-msgstr "_Uppdatera denna källa varje "
+msgstr "_Uppdatera denna kanal varje "
 
-#: src/interface.c:948 src/interface.c:1842
+#: src/interface.c:970 src/interface.c:1867
 msgid "minutes."
 msgstr "minuter."
 
-#: src/interface.c:952
+#: src/interface.c:974
 msgid "_Don't update this feed automatically."
-msgstr "Uppdatera _inte denna källa automatiskt."
+msgstr "Uppdatera _inte denna kanal automatiskt."
 
-#: src/interface.c:958
+#: src/interface.c:980
 msgid " "
 msgstr "."
 
-#: src/interface.c:962
+#: src/interface.c:984
 #, c-format
 msgid "This feed provider suggests an update interval of %d minutes."
-msgstr ""
-"Denna källas skapare rekommenderar ett uppdateringsintervall på %d minuter."
+msgstr "Denna kanals skapare rekommenderar ett uppdateringsintervall på %d minuter."
 
-#: src/interface.c:969
+#: src/interface.c:991
 msgid "General"
 msgstr "Allmänt"
 
-#: src/interface.c:982 src/interface.c:1388
+#: src/interface.c:1004 src/interface.c:1410
 msgid "<b>Feed Source</b>"
-msgstr "<b>Källa</b>"
+msgstr "<b>Kanal</b>"
 
-#: src/interface.c:1015 src/interface.c:1427
+#: src/interface.c:1037 src/interface.c:1449
 msgid "_URL"
 msgstr "_URL"
 
-#: src/interface.c:1021 src/interface.c:1433
+#: src/interface.c:1043 src/interface.c:1455
 msgid "_Command"
 msgstr "_Kommando"
 
-#: src/interface.c:1031 src/interface.c:1443
-msgid "Local _File"
-msgstr "Lokal _fil"
+#: src/interface.c:1053 src/interface.c:1465
+msgid "_Local File"
+msgstr "_Lokal fil"
 
-#: src/interface.c:1037 src/interface.c:1398 src/interface.c:1449
-#: src/interface.c:1471 src/interface.c:1482 src/interface.c:1500
+#: src/interface.c:1059 src/interface.c:1420 src/interface.c:1471
+#: src/interface.c:1493 src/interface.c:1504 src/interface.c:1522
 msgid "    "
 msgstr "    "
 
-#: src/interface.c:1041 src/interface.c:1453
-msgid "_Select File..."
-msgstr "_Välj fil..."
+#: src/interface.c:1063 src/interface.c:1120 src/interface.c:1475
+#: src/interface.c:1534
+msgid "Select File..."
+msgstr "Välj fil..."
 
-#: src/interface.c:1045
+#: src/interface.c:1067 src/interface.c:1436
 msgid "_Source:"
 msgstr "_Plats:"
 
-#: src/interface.c:1052 src/interface.c:1457
+#: src/interface.c:1074 src/interface.c:1479
 msgid "Source Type:"
 msgstr "Typ:"
 
-#: src/interface.c:1063 src/interface.c:1475
-msgid "Use conversion filter"
-msgstr "Använd konverteringsfilter"
+#: src/interface.c:1085 src/interface.c:1497
+msgid "Use conversion _filter"
+msgstr "Använd konverterings_filter"
 
-#: src/interface.c:1076 src/interface.c:1490
+#: src/interface.c:1098 src/interface.c:1512
 msgid ""
 "Liferea can use external filter plugins in order to access feeds and "
 "directories in non-supported formats.  See the documentation for more "
 "information."
 msgstr ""
-"Liferea kan använda interna filtertillägg för att läsa källor i format som "
+"Liferea kan använda interna filtertillägg för att läsa kanaler i format som "
 "inte stöds. Se dokumentationen för mer information."
 
-#: src/interface.c:1086
+#: src/interface.c:1108 src/interface.c:1526
 msgid "Convert _using:"
 msgstr "_Konvertera med hjälp av:"
 
-#: src/interface.c:1098 src/interface.c:1512
-msgid "Select File..."
-msgstr "Välj fil..."
-
-#: src/interface.c:1102
+#: src/interface.c:1124
 msgid "Feed Source"
 msgstr "Plats"
 
-#: src/interface.c:1111
+#: src/interface.c:1133
 msgid ""
 "The cache setting controls if the contents of feeds are saved when Liferea "
 "exits. Marked items are always saved to the cache."
 msgstr ""
-"Cache-inställningen avgör om källornas innehåll ska sparas när Liferea "
+"Cache-inställningen avgör om kanalernas innehåll ska sparas när Liferea "
 "avslutas. Markerade artiklar sparas alltid till cache."
 
-#: src/interface.c:1118
+#: src/interface.c:1140
 msgid "_Default cache settings"
 msgstr "_Standardinställningar för cache"
 
-#: src/interface.c:1124
+#: src/interface.c:1146
 msgid "Di_sable cache"
 msgstr "_Stäng av cache"
 
-#: src/interface.c:1130
+#: src/interface.c:1152
 msgid "_Unlimited cache"
 msgstr "_Obegränsat cache-utrymme"
 
-#: src/interface.c:1140
+#: src/interface.c:1162
 msgid "_Limit cache to"
 msgstr "_Begränsa cache-utrymmet till"
 
-#: src/interface.c:1153
+#: src/interface.c:1175
 msgid "items."
 msgstr "artiklar."
 
-#: src/interface.c:1157
+#: src/interface.c:1179
 msgid "Feed Cache"
 msgstr "Cache"
 
-#: src/interface.c:1166
+#: src/interface.c:1188
 msgid "Use HTTP _authentication"
 msgstr "Använd HTTP-autentisering"
 
-#: src/interface.c:1181 src/interface.c:3358
+#: src/interface.c:1203 src/interface.c:3387
 msgid "User_name:"
 msgstr "Användar_namn:"
 
-#: src/interface.c:1188 src/interface.c:3365
+#: src/interface.c:1210 src/interface.c:3394
 msgid "_Password:"
 msgstr "_Lösenord:"
 
-#: src/interface.c:1208 src/interface.c:3333
+#: src/interface.c:1230 src/interface.c:3362
 msgid "Authentication"
 msgstr "Autentisering"
 
-#: src/interface.c:1217
+#: src/interface.c:1239
 msgid "_Automatically download all enclosures of this feed."
-msgstr "Ladda _automatiskt ner alla källans bilagor."
+msgstr "Ladda _automatiskt ner alla kanalens bilagor."
 
-#: src/interface.c:1221 src/interface.c:2576
+#: src/interface.c:1243 src/interface.c:2603
 msgid "Enclosures"
 msgstr "Bilagor"
 
-#: src/interface.c:1368
+#: src/interface.c:1390
 msgid "New Subscription"
 msgstr "Ny prenumeration"
 
-#: src/interface.c:1504
-msgid "Convert using:"
-msgstr "Konvertera med hjälp av:"
-
-#: src/interface.c:1752
+#: src/interface.c:1777
 msgid "Liferea Preferences"
 msgstr "Inställningar för Liferea"
 
-#: src/interface.c:1778
+#: src/interface.c:1803
 msgid "<span weight=\"bold\">Feed Cache Handling</span>"
 msgstr "<span weight=\"bold\">Cache-minne</span>"
 
-#: src/interface.c:1793
-msgid "Default number of items per feed to save:"
-msgstr "Antal artiklar per källa att spara som standard:"
+#: src/interface.c:1818
+msgid "Default _number of items per feed to save:"
+msgstr "_Antal artiklar per kanal att spara som standard:"
 
-#: src/interface.c:1809
+#: src/interface.c:1834
 msgid "<span weight=\"bold\">Feed Update Settings</span>"
 msgstr "<span weight=\"bold\">Uppdatering</span>"
 
-#: src/interface.c:1828
+#: src/interface.c:1853
 msgid "Default Feed Refresh _Interval:"
-msgstr "Intervall för uppdatering av källor (som standard):"
+msgstr "Intervall för uppdatering av kanaler (som standard):"
 
-#: src/interface.c:1846
+#: src/interface.c:1871
 msgid ""
 "Note: <i>Please remember to set a reasonable refresh time. It is not desired "
 "to poll daily updated feeds every 15 minutes. To disable auto-updating per "
 "default set the interval to 0 minutes.</i>"
 msgstr ""
-"Notera: <i>Vänligen sätt en rimlig uppdateringstid. Det är inte önskvärt att "
-"var 15:e minut anropa källor som uppdateras dagligen. För att stänga av "
+"<i>Vänligen sätt en rimlig uppdateringstid. Det är inte önskvärt att var 15:"
+"e minut anropa kanaler som uppdateras en gång om dagen. För att stänga av "
 "autouppdatering som standard sätt intervallet till 0 minuter.</i>"
 
-#: src/interface.c:1857
+#: src/interface.c:1882
 msgid "At _startup:"
 msgstr "Vid _start:"
 
-#: src/interface.c:1869
+#: src/interface.c:1894
 msgid "<span weight=\"bold\">Feed Loading Settings</span>"
 msgstr "<span weight=\"bold\">Laddning</span>"
 
-#: src/interface.c:1884
+#: src/interface.c:1909
 msgid "Optimize for reduced _memory usage."
 msgstr "Optimera för minimal _minnesförbrukning."
 
-#: src/interface.c:1891
+#: src/interface.c:1916
 msgid "Optimize for _speed."
 msgstr "Optimera för _snabbhet."
 
-#: src/interface.c:1897
+#: src/interface.c:1922
 msgid "Feeds"
-msgstr "Källor"
+msgstr "Kanaler"
 
-#: src/interface.c:1910
+#: src/interface.c:1935
 msgid "<span weight=\"bold\">Folder Display Settings</span>"
 msgstr "<span weight=\"bold\">Visning</span>"
 
-#: src/interface.c:1925
+#: src/interface.c:1950
 msgid "_Show the items of all child feeds when a folder is selected."
-msgstr "_Visa artiklar i alla källor i mappen när en mapp är markerad."
+msgstr "_Visa artiklar i alla kanaler i mappen när en mapp är markerad."
 
-#: src/interface.c:1929
+#: src/interface.c:1954
 msgid ""
 "<i>This option can cause significant delays when loading folders containing "
 "many feeds.</i>"
 msgstr ""
 "<i>Denna inställning kan orsaka rejäla fördröjningar vid laddning av mappar "
-"med många källor i.</i>"
+"med många kanaler i.</i>"
 
-#: src/interface.c:1937
+#: src/interface.c:1962
 msgid "_Hide read items."
 msgstr "_Dölj lästa artiklar."
 
-#: src/interface.c:1945
+#: src/interface.c:1970
 msgid "<span weight=\"bold\">Feed Icons (Favicons)</span>"
-msgstr "<span weight=\"bold\">Källikoner (Favicons)</span>"
+msgstr "<span weight=\"bold\">Kanalikoner (Favicons)</span>"
 
-#: src/interface.c:1960
+#: src/interface.c:1985
 msgid "_Update all favicons now"
-msgstr "_Uppdatera alla källikoner nu"
+msgstr "_Uppdatera alla kanalikoner nu"
 
-#: src/interface.c:1964
+#: src/interface.c:1989
 msgid "Folders"
 msgstr "Mappar"
 
-#: src/interface.c:1979
+#: src/interface.c:2004
 msgid "<span weight=\"bold\">Reading Headlines</span>"
 msgstr "<span weight=\"bold\">Läsa rubriker</span>"
 
-#: src/interface.c:1994
+#: src/interface.c:2019
 msgid "_Skim through articles with:"
 msgstr "_Bläddra igenom artiklar med "
 
-#: src/interface.c:2004
+#: src/interface.c:2029
 msgid "Space"
 msgstr "Mellanslag"
 
-#: src/interface.c:2008
+#: src/interface.c:2033
 msgid "<Ctrl> Space"
 msgstr "<Ctrl> Mellanslag"
 
-#: src/interface.c:2012
+#: src/interface.c:2037
 msgid "<Alt> Space"
 msgstr "<Alt> Mellanslag"
 
-#: src/interface.c:2022
+#: src/interface.c:2047
 msgid "<span weight=\"bold\">Date Column Settings</span>"
 msgstr "<span weight=\"bold\">Datumkolumnen</span>"
 
-#: src/interface.c:2037
-msgid "Display only time"
-msgstr "Visa endast tid"
-
-#: src/interface.c:2043
-msgid "Display date and time"
-msgstr "Visa datum och tid"
-
-#: src/interface.c:2053
-msgid "User defined format:"
-msgstr "Användardefinierat format:"
-
 #: src/interface.c:2062
+msgid "Display only _time"
+msgstr "Visa endast _tid"
+
+#: src/interface.c:2068
+msgid "Display _date and time"
+msgstr "Visa _datum och tid"
+
+#: src/interface.c:2078
+msgid "_User defined format:"
+msgstr "_Användardefinierat format:"
+
+#: src/interface.c:2087
 msgid ""
 "for expert users: specify a time format string, consult the strftime() "
 "manpage for the format codes"
@@ -936,36 +987,35 @@ msgstr ""
 "för avancerade användare: ange en tidsformatsträng, kolla i man-sidan för "
 "kommandot strftime() för giltiga formatkoder."
 
-#: src/interface.c:2082
+#: src/interface.c:2107
 msgid "<span weight=\"bold\">Internal Browser Settings</span>"
 msgstr "<span weight=\"bold\">Intern webbläsare</span>"
 
-#: src/interface.c:2101
-msgid "View Headlines With"
-msgstr "Visa rubriker med"
+#: src/interface.c:2126
+msgid "_View Headlines With"
+msgstr "_Visa rubriker med"
 
-#: src/interface.c:2113
+#: src/interface.c:2138
 msgid "<i>Please restart Liferea for changes to take effect.</i>"
-msgstr ""
-"<i>Liferea måste startas om för att förändringarna ska få effekt.</i>"
+msgstr "<i>Liferea måste startas om för att förändringarna ska få effekt.</i>"
 
-#: src/interface.c:2119
+#: src/interface.c:2144
 msgid "Open links in Liferea's _window."
 msgstr "Öppna länkar i Lifereas _fönster."
 
-#: src/interface.c:2123
+#: src/interface.c:2148
 msgid "_Disable Javascript."
 msgstr "_Stäng av Javascript."
 
-#: src/interface.c:2131
+#: src/interface.c:2156
 msgid "<span weight=\"bold\">External Browser Settings</span>"
 msgstr "<span weight=\"bold\">Extern webbläsare</span>"
 
-#: src/interface.c:2148
+#: src/interface.c:2173
 msgid "_Browser:"
 msgstr "_Webbläsare:"
 
-#: src/interface.c:2155
+#: src/interface.c:2180
 #, c-format
 msgid ""
 "_Manual:\n"
@@ -974,75 +1024,75 @@ msgstr ""
 "_Manuellt:\n"
 "(%s för URL)"
 
-#: src/interface.c:2169
+#: src/interface.c:2194
 msgid "_Open link in:"
 msgstr "_Öppna länkar i:"
 
-#: src/interface.c:2192
+#: src/interface.c:2217
 msgid "Browser"
 msgstr "Webbläsare"
 
-#: src/interface.c:2205
+#: src/interface.c:2230
 msgid "<span weight=\"bold\">Notification Settings</span>"
 msgstr "<span weight=\"bold\">Notifiering</span>"
 
-#: src/interface.c:2220
+#: src/interface.c:2245
 msgid "Show a status _icon in the notification area (system tray)."
 msgstr "Visa en ikon i status-fältet (systembrickan)."
 
-#: src/interface.c:2228
+#: src/interface.c:2253
 msgid "Show a _popup window with new headlines."
 msgstr "Visa ett _popup-fönster med de nya rubrikerna."
 
-#: src/interface.c:2236
+#: src/interface.c:2261
 msgid "         "
 msgstr "         "
 
-#: src/interface.c:2252
+#: src/interface.c:2277
 msgid "Lower Right"
 msgstr "Nedre högra hörnet"
 
-#: src/interface.c:2260
+#: src/interface.c:2285
 msgid "Upper Right"
 msgstr "Övre högra hörnet"
 
-#: src/interface.c:2268
+#: src/interface.c:2293
 msgid "Upper Left"
 msgstr "Övre vänstra hörnet"
 
-#: src/interface.c:2276
+#: src/interface.c:2301
 msgid "Lower Left"
 msgstr "Nedre vänstra hörnet"
 
-#: src/interface.c:2284
+#: src/interface.c:2309
 msgid "<b>Popup Placement</b>"
 msgstr "<b>Popup-fönstrets placering</b>"
 
-#: src/interface.c:2295
+#: src/interface.c:2320
 msgid "<span weight=\"bold\">Menu Settings</span>"
 msgstr "<span weight=\"bold\">Meny</span>"
 
-#: src/interface.c:2310
+#: src/interface.c:2335
 msgid "Show Menu _And Toolbar"
 msgstr "Vis_a meny och verktygsfält"
 
-#: src/interface.c:2316
+#: src/interface.c:2341
 msgid "Show _Menu Only"
 msgstr "Visa endast _meny"
 
-#: src/interface.c:2322
+#: src/interface.c:2347
 msgid "Show _Toolbar Only"
 msgstr "Visa endast _verktygsfält"
 
-#: src/interface.c:2328
+#: src/interface.c:2353
 msgid "GUI"
 msgstr "Gränssnitt"
 
-#: src/interface.c:2345
+#: src/interface.c:2370
 msgid "<span weight=\"bold\">HTTP Proxy Server</span>"
 msgstr "<span weight=\"bold\">HTTP-Proxy-server</span>"
 
-#: src/interface.c:2360
+#: src/interface.c:2385
 msgid ""
 "<i>Liferea reuses the GNOME proxy settings. If you use GNOME you can change "
 "these settings in the GNOME Control Center.</i>"
@@ -1050,83 +1100,83 @@ msgstr ""
 "<i>Liferea använder GNOME:s proxy-inställningar. Om du använder GNOME kan du "
 "ändra dessa inställningar i GNOME:s inställningar</i>"
 
-#: src/interface.c:2371
+#: src/interface.c:2396
 msgid "_Enable Proxy"
 msgstr "_Aktivera proxy"
 
-#: src/interface.c:2390
+#: src/interface.c:2415
 msgid "Proxy _Host:"
 msgstr "_Värd:"
 
-#: src/interface.c:2411
+#: src/interface.c:2436
 msgid "Proxy _Port:"
 msgstr "Port:"
 
-#: src/interface.c:2418
+#: src/interface.c:2443
 msgid "Use Proxy _Authentication"
 msgstr "Använd proxy-autentisering"
 
-#: src/interface.c:2433
+#: src/interface.c:2458
 msgid "Proxy _Username:"
 msgstr "Användarnamn"
 
-#: src/interface.c:2455
+#: src/interface.c:2480
 msgid "Proxy Pass_word:"
 msgstr "_Lösenord:"
 
-#: src/interface.c:2462
+#: src/interface.c:2487
 msgid "Proxy"
 msgstr "Proxy"
 
-#: src/interface.c:2475
+#: src/interface.c:2500
 msgid "<span weight=\"bold\">Downloading Enclosures</span>"
 msgstr "<span weight=\"bold\">Nedladdning av bilagor</span>"
 
-#: src/interface.c:2492
-msgid "Download using"
-msgstr "Ladda ner med"
+#: src/interface.c:2517
+msgid "_Download using"
+msgstr "_Ladda ner med"
 
-#: src/interface.c:2499
-msgid "Save downloads in"
-msgstr "Spara nedladdade filer i"
+#: src/interface.c:2524
+msgid "_Save downloads in"
+msgstr "_Spara nedladdade filer i"
 
-#: src/interface.c:2530
-msgid "Browse"
-msgstr "Bläddra"
+#: src/interface.c:2557 src/interface.c:3656
+msgid "_Browse"
+msgstr "_Bläddra"
 
-#: src/interface.c:2538
+#: src/interface.c:2565
 msgid "<span weight=\"bold\">Opening Enclosures</span>"
 msgstr "<span weight=\"bold\">Öppning av bilagor</span>"
 
-#: src/interface.c:2891
+#: src/interface.c:2920
 msgid "New Folder"
 msgstr "Ny mapp"
 
-#: src/interface.c:2909 src/interface.c:2991
+#: src/interface.c:2938 src/interface.c:3020
 msgid "_Folder name:"
 msgstr "_Namn:"
 
-#: src/interface.c:2977
+#: src/interface.c:3006
 msgid "Rename Folder"
 msgstr "Byt namn på mapp"
 
-#: src/interface.c:3063
+#: src/interface.c:3092
 msgid "Feedster Search"
 msgstr "Feedster-sökning"
 
-#: src/interface.c:3080 src/interface.c:3712
+#: src/interface.c:3109 src/interface.c:3741
 msgid "_Search for:"
 msgstr "_Sök efter:"
 
-#: src/interface.c:3087
+#: src/interface.c:3116
 msgid "enter any search string you want"
 msgstr "fyll i en valfri söksträng"
 
-#: src/interface.c:3094
+#: src/interface.c:3123
 msgid "Maximal _Number Of Result Items:"
 msgstr "_Maximalt antal resultat-artiklar:"
 
-#: src/interface.c:3103
+#: src/interface.c:3132
 msgid ""
 "Note: Liferea will generate a feed subscription which is used to query the "
 "Feedster results for the specified search string. You can keep this feed "
@@ -1136,19 +1186,19 @@ msgstr ""
 "Feedster och leta efter den angivna söksträngen. Du kan behålla denna "
 "prenumeration och uppdatera den som alla andra prenumerationer.  "
 
-#: src/interface.c:3183 src/interface.c:3228
+#: src/interface.c:3212 src/interface.c:3257
 msgid "About"
 msgstr "Om"
 
-#: src/interface.c:3207
+#: src/interface.c:3236
 msgid "Liferea is a news aggregator for GTK+"
 msgstr "Liferea är en nyhetsläsare för GTK+"
 
-#: src/interface.c:3217
+#: src/interface.c:3246
 msgid "<span color=\"blue\" underline=\"single\">Liferea Homepage</span>"
 msgstr "<span color=\"blue\" underline=\"single\">Lifereas hemsida</span>"
 
-#: src/interface.c:3222
+#: src/interface.c:3251
 msgid ""
 "Copyright (c) 2003-2005\n"
 "Lars Lindner <lars.lindner@gmx.net> and \n"
@@ -1158,7 +1208,7 @@ msgstr ""
 "Lars Lindner <lars.lindner@gmx.net> och \n"
 "Nathan J. Conrad <t98502@users.sourceforge.net>\n"
 
-#: src/interface.c:3242
+#: src/interface.c:3271
 msgid ""
 "Code, Patches, Debugging\n"
 "\n"
@@ -1191,60 +1241,58 @@ msgid ""
 "Kristian Rietveld <kris@gtk.org> (GtkTreeModelFilter)"
 msgstr ""
 
-#: src/interface.c:3248
+#: src/interface.c:3277
 msgid "Contributors"
 msgstr "Bidragsgivare"
 
-#: src/interface.c:3268
+#: src/interface.c:3297
 msgid "Translation"
 msgstr "Översättning"
 
-#: src/interface.c:3346 src/ui_feed.c:422
+#: src/interface.c:3375 src/ui_feed.c:422
 #, c-format
 msgid "Enter the username and password for \"%s\" (%s):"
 msgstr "Ange användarnamn och lösenord för \"%s\"-(%s):"
 
-#: src/interface.c:3387
+#: src/interface.c:3416
 msgid ""
 "Note: <i>The username and password will be saved to your Liferea feedlist "
 "file without using encryption.</i>"
-msgstr ""
-"Notera: <i>Användarnamnet och lösenordet kommer att sparas till din lista på "
-"källor utan någon kryptering.</i>"
+msgstr "Notera: <i>Användarnamnet och lösenordet kommer att sparas till din kanallista utan någon kryptering.</i>"
 
-#: src/interface.c:3455
+#: src/interface.c:3484
 msgid "VFolder Properties"
 msgstr "Inställningar för sökmapp"
 
-#: src/interface.c:3472
+#: src/interface.c:3501
 msgid "_Name:"
 msgstr "_Namn:"
 
-#: src/interface.c:3484
+#: src/interface.c:3513
 msgid "<b>Rule</b>"
 msgstr "<b>Regel</b>"
 
-#: src/interface.c:3512
+#: src/interface.c:3541
 msgid ""
-"Note: Items are added to the vfolder if at least one additive rule\n"
+"Note: Items are added to the VFolder if at least one additive rule\n"
 "matches. They are removed if at least one removing rule matches."
 msgstr ""
 "Notera: Artiklar läggs till sökmappen om minst en additiv regel\n"
 "träffar. De tas bort om minst en subtraktiv regel träffar."
 
-#: src/interface.c:3585
+#: src/interface.c:3614
 msgid "Downloading Enclosure"
 msgstr "Nedladdning av bilaga"
 
-#: src/interface.c:3602
+#: src/interface.c:3631
 msgid "Downloading an enclosure of type:"
 msgstr "Nedladdning av bilaga av typen:"
 
-#: src/interface.c:3607
+#: src/interface.c:3636
 msgid "<b>text/plain</b>"
 msgstr "<b>text/plain</b>"
 
-#: src/interface.c:3613
+#: src/interface.c:3642
 msgid ""
 "What should Liferea do with this enclosure? Please enter the command you "
 "want to be executed below. The downloaded file will be supplied as an "
@@ -1254,15 +1302,11 @@ msgstr ""
 "nedan. Den nedladdade filen kommer att skickas med som ett argument till "
 "kommandot:"
 
-#: src/interface.c:3627
-msgid "_Browse"
-msgstr "_Bläddra"
-
-#: src/interface.c:3631
+#: src/interface.c:3660
 msgid "_Do this automatically for files like this from now on."
 msgstr "_Gör detta automatiskt för denna typ av filer från och med nu."
 
-#: src/interface.c:3719
+#: src/interface.c:3748
 msgid ""
 "Enter a search string Liferea should find either in a items title or in its "
 "content."
@@ -1270,17 +1314,16 @@ msgstr ""
 "Ange en söksträng som Liferea ska leta efter antingen i en artikels rubrik "
 "eller i dess innehåll."
 
-#: src/interface.c:3735
+#: src/interface.c:3764
 msgid "Saves this search as a VFolder, which will appear in the feed list."
-msgstr ""
-"Sparar denna sökning som en sökmapp, som kommer att synas i käll-listan."
+msgstr "Sparar denna sökning som en sökmapp, som kommer att synas i kanallistan."
 
-#: src/interface.c:3758
+#: src/interface.c:3787
 msgid ""
 "Starts searching for the specified text in all feeds. The search result will "
 "appear in the item list."
 msgstr ""
-"Börjar söka efter den angivna texten i alla källor. Resultatet kommer att "
+"Börjar söka efter den angivna texten i alla kanaler. Resultatet kommer att "
 "dyka upp i artikel-listan."
 
 #: src/item.c:266 src/item.c:285 src/ui_itemlist.c:246
@@ -1295,77 +1338,76 @@ msgstr "Artikel:"
 msgid "date"
 msgstr "datum"
 
-#: src/main.c:67
+#: src/main.c:65
 msgid "  --version        Print version information and exit"
-msgstr ""
+msgstr "  --version         Skriv ut versionsinformation och avsluta"
+
+#: src/main.c:66
+msgid "  --help           Print this help and exit"
+msgstr "  --help           Visa detta meddelande och avsluta"
+
+#: src/main.c:67
+msgid "  --mainwindow-state=STATE"
+msgstr "  --mainwindow-state=LÄGE"
 
 #: src/main.c:68
-msgid "  --help           Print this help and exit"
-msgstr ""
+msgid "                   Start Liferea with its main window in STATE."
+msgstr "                   Starta Liferea med huvudfönstret i läget LÄGE"
 
 #: src/main.c:69
-msgid "  --mainwindow-state=STATE"
+msgid "                   STATE may be `shown', `iconified', or `hidden'"
 msgstr ""
-
-#: src/main.c:70
-msgid "                   Start Liferea with its main window in STATE."
-msgstr ""
+"                   LÄGE kan vara `shown' - visat, `iconified' - ikonifierat, "
+"eller `hidden' -dolt"
 
 #: src/main.c:71
-msgid "                   STATE may be `shown', `iconified', or `hidden'"
+msgid "  --debug-cache    Print debugging messages for the cache handling"
+msgstr "  --debug-cache    Print debugging messages for the cache handling"
+
+#: src/main.c:72
+msgid "  --debug-conf     Print debugging messages of the configuration handling"
 msgstr ""
 
 #: src/main.c:73
-msgid "  --debug-cache    Print debugging messages for the cache handling"
+msgid "  --debug-update   Print debugging messages of the feed update processing"
 msgstr ""
 
 #: src/main.c:74
-msgid ""
-"  --debug-conf     Print debugging messages of the configuration handling"
-msgstr ""
-
-#: src/main.c:75
-msgid ""
-"  --debug-update   Print debugging messages of the feed update processing"
-msgstr ""
-
-#: src/main.c:76
 msgid "  --debug-parsing  Print debugging messages of all parsing functions"
 msgstr ""
 
-#: src/main.c:77
+#: src/main.c:75
 msgid "  --debug-gui      Print debugging messages of all GUI functions"
 msgstr ""
 
-#: src/main.c:78
-msgid ""
-"  --debug-trace    Print debugging messages when entering/leaving functions"
+#: src/main.c:76
+msgid "  --debug-trace    Print debugging messages when entering/leaving functions"
 msgstr ""
 
-#: src/main.c:79
+#: src/main.c:77
 msgid "  --debug-all      Print debugging messages of all types"
 msgstr ""
 
-#: src/main.c:80
+#: src/main.c:78
 msgid "  --debug-verbose  Print verbose debugging messages"
 msgstr ""
 
-#: src/main.c:232
+#: src/main.c:233
 #, c-format
 msgid "The --mainwindow-state argument must be given a parameter.\n"
 msgstr ""
 
-#: src/main.c:240
+#: src/main.c:241
 #, c-format
 msgid "The --session argument must be given a parameter.\n"
 msgstr ""
 
-#: src/main.c:243
+#: src/main.c:244
 #, c-format
 msgid "Liferea encountered an unknown argument: %s\n"
 msgstr "Liferea stötte på ett okänt argument: %s\n"
 
-#: src/main.c:257
+#: src/main.c:256
 msgid ""
 "Another copy of Liferea was found to be running. Please use it instead. If "
 "there is no other copy of Liferea running, please delete the \"~/.liferea/"
@@ -1401,7 +1443,7 @@ msgstr "språk"
 
 #: src/metadata.c:354
 msgid "feed published on"
-msgstr "källa publicerades"
+msgstr "kanal publicerades"
 
 #: src/metadata.c:355
 msgid "content last updated"
@@ -1427,7 +1469,7 @@ msgstr "anmäl fel till"
 #. types for aggregation
 #: src/metadata.c:370
 msgid "original source"
-msgstr "ursprunglig källa"
+msgstr "ursprunglig kanal"
 
 #: src/metadata.c:371
 msgid "original time"
@@ -1461,7 +1503,7 @@ msgstr "identifierare"
 
 #: src/metadata.c:385
 msgid "source"
-msgstr "källa"
+msgstr "kanal"
 
 #: src/metadata.c:386
 msgid "coverage"
@@ -1484,21 +1526,16 @@ msgstr "inkluderat foto"
 
 #: src/ocs_dir.c:100
 msgid "Feed"
-msgstr "Källa"
+msgstr "Kanal"
 
 #: src/ocs_dir.c:201 src/ocs_dir.c:246 src/ocs_dir.c:361 src/ocs_dir.c:431
 #, c-format
 msgid "no namespace handler for <%s:%s>!\n"
-msgstr ""
+msgstr "ingen namnrymdshanterare för <%s:%s>!\n"
 
 #: src/ocs_dir.c:459
 msgid "<p>Could not find RDF header!</p>"
 msgstr "<p>Kunde inte hitta RDF-huvud!</p>"
-
-#: src/ocs_dir.c:506 src/opml.c:245 src/pie_feed.c:296 src/rss_channel.c:328
-#: src/ui_htmlview.h:98
-msgid "There were errors while parsing this feed!"
-msgstr "Fel inträffade under läsning av denna källa!"
 
 #: src/opml.c:151
 msgid "<p>Could not find OPML header!</p>"
@@ -1542,7 +1579,7 @@ msgstr "Artikelns innehåll"
 
 #: src/rule.c:172
 msgid "Feed title"
-msgstr "Källans namn"
+msgstr "Kanalens namn"
 
 #: src/rule.c:173
 msgid "Read status"
@@ -1578,16 +1615,16 @@ msgstr "Kunde inte hitta pixmap-filen: %s"
 msgid "\"%s\" is not a valid enclosure type config file!"
 msgstr "\"%s\" är inte en giltig bilagetypsinställningsfil!"
 
-#: src/ui_enclosure.c:231 src/ui_enclosure.c:394 src/ui_feed.c:364
+#: src/ui_enclosure.c:227 src/ui_enclosure.c:389 src/ui_feed.c:364
 msgid "Choose File"
 msgstr "Välj fil"
 
-#: src/ui_enclosure.c:286
+#: src/ui_enclosure.c:282
 #, c-format
 msgid "<b>File Extension .%s</b>"
 msgstr "<b>Filnamnstillägg .%s</b>"
 
-#: src/ui_enclosure.c:288
+#: src/ui_enclosure.c:284
 #, c-format
 msgid "<b>%s</b>"
 msgstr "<b>%s</b>"
@@ -1599,43 +1636,43 @@ msgstr "Okänd källa"
 #: src/ui_feed.c:525
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minutes."
-msgstr "Källans skapare rekommenderar ett uppdateringsintervall på %d minuter."
+msgstr "Kanalens skapare rekommenderar ett uppdateringsintervall på %d minuter."
 
 #: src/ui_feed.c:527
 msgid "This feed specifies no default update interval."
-msgstr "Denna källa anger inget rekommenderat uppdateringsintervall."
+msgstr "Denna kanal anger inget rekommenderat uppdateringsintervall."
 
-#: src/ui_feedlist.c:496
+#: src/ui_feedlist.c:495
 msgid "Note: Using the subscriptions filter disables drag & drop"
 msgstr "Notera: Användande av prenumerationsfilter stänger av drag- och släpp."
 
-#: src/ui_feedlist.c:530 src/ui_feedlist.c:533
+#: src/ui_feedlist.c:529 src/ui_feedlist.c:532
 msgid "Deleting entry"
 msgstr "Tar bort inlägg"
 
-#: src/ui_feedlist.c:531
+#: src/ui_feedlist.c:530
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "Är du säker på att du vill ta bort \"%s\" och allt dess innehåll?"
 
-#: src/ui_feedlist.c:534
+#: src/ui_feedlist.c:533
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Är du säker på att du vill ta bort \"%s\"?"
 
-#: src/ui_feedlist.c:542
+#: src/ui_feedlist.c:541
 msgid "Deletion Confirmation"
 msgstr "Bekräftelse av borttagning"
 
-#: src/ui_feedlist.c:576
+#: src/ui_feedlist.c:575
 msgid "You must select a feed entry"
-msgstr "Du måste välja en källa"
+msgstr "Du måste välja en kanal"
 
-#: src/ui_feedlist.c:577
+#: src/ui_feedlist.c:576
 msgid "You must select a feed entry."
-msgstr "Du måste välja en källa"
+msgstr "Du måste välja en kanal"
 
-#: src/ui_feedlist.c:635
+#: src/ui_feedlist.c:634
 msgid "New subscription"
 msgstr "Ny prenumeration"
 
@@ -1727,20 +1764,19 @@ msgstr ""
 msgid "This item does not have a link assigned!"
 msgstr "Artikeln har ingen angiven länk!"
 
-#: src/ui_htmlview.c:431 src/ui_htmlview.c:454
+#: src/ui_htmlview.c:437 src/ui_htmlview.c:460
 #, c-format
 msgid "Browser command failed: %s"
 msgstr "Webbläsarkommandot misslyckades: %s"
 
-#: src/ui_htmlview.c:457
+#: src/ui_htmlview.c:463
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Startar: \"%s\""
 
 #: src/ui_htmlview.h:96
 #, c-format
-msgid ""
-"The last update of this subscription failed!<br><b>HTTP error code %d: %s</b>"
+msgid "The last update of this subscription failed!<br><b>HTTP error code %d: %s</b>"
 msgstr ""
 "Senaste uppdateringen av prenumerationen misslyckades!<br><b>HTTP-felkod %d: "
 "%s</b>"
@@ -1748,144 +1784,110 @@ msgstr ""
 #. explicitly no </span> at the end!
 #: src/ui_htmlview.h:101
 msgid "There were errors while filtering this feed!"
-msgstr "Fel inträffade under filtreringen av denna källa!"
+msgstr "Fel inträffade under filtreringen av denna kanal!"
 
 #: src/ui_htmlview.h:104
 msgid ""
 "This feed is discontinued. It's no longer available. Liferea won't update it "
 "anymore but you can still access the cached headlines."
 msgstr ""
-"Denna källa är avslutad. Den är inte längre tillgänglig. Liferea kommer inte "
-"att uppdatera den med, men du kan fortfarande få tillgång till de lagrade "
+"Denna kanal är avslutad. Den är inte längre tillgänglig. Liferea kommer inte "
+"att uppdatera den mer, men du kan fortfarande få tillgång till de lagrade "
 "rubrikerna."
 
 #: src/ui_itemlist.c:331
 msgid "Date"
 msgstr "Datum"
 
-#: src/ui_itemlist.c:342
+#: src/ui_itemlist.c:341
 msgid "Headline"
 msgstr "Rubrik"
 
-#: src/ui_itemlist.c:533 src/ui_itemlist.c:546 src/ui_itemlist.c:595
-#: src/ui_itemlist.c:807
+#: src/ui_itemlist.c:535 src/ui_itemlist.c:548 src/ui_itemlist.c:605
+#: src/ui_itemlist.c:832
 msgid "No item has been selected"
 msgstr "Ingen artikel har markerats"
 
-#: src/ui_itemlist.c:544
+#: src/ui_itemlist.c:546
 msgid "This item has no link specified!"
 msgstr "Denna artikel har ingen länk angiven!"
 
-#: src/ui_itemlist.c:581
+#: src/ui_itemlist.c:583
 msgid "You must select a feed to delete its items!"
-msgstr "Du måste markera en källa för att ta bort dess artiklar!"
+msgstr "Du måste markera en kanal för att ta bort dess artiklar!"
 
 #. if we don't find a feed with unread items do nothing
-#: src/ui_itemlist.c:703
+#: src/ui_itemlist.c:713
 msgid "There are no unread items "
 msgstr "Det finns inga olästa artiklar "
 
-#: src/ui_mainwindow.c:302
+#: src/ui_mainwindow.c:313
 msgid "New Feed"
 msgstr "Ny prenumeration"
 
-#: src/ui_mainwindow.c:302
+#: src/ui_mainwindow.c:313
 msgid "Add a new subscription."
 msgstr "Lägg till ny prenumeration"
 
-#: src/ui_mainwindow.c:303
+#: src/ui_mainwindow.c:314
 msgid "Next Unread"
 msgstr "Nästa olästa"
 
-#: src/ui_mainwindow.c:304
+#: src/ui_mainwindow.c:315
 msgid "Mark As Read"
 msgstr "Markera som läst"
 
-#: src/ui_mainwindow.c:304
-msgid ""
-"Mark all items of the selected subscription or of all subscriptions of the "
-"selected folder as read."
-msgstr ""
-"Markera alla artiklar i den valda prenumerationen eller i alla "
-"prenumerationer i den valda mappen som lästa."
-
-#: src/ui_mainwindow.c:305
+#: src/ui_mainwindow.c:316
 msgid "Update All"
 msgstr "Uppdatera alla"
 
-#: src/ui_mainwindow.c:306
+#: src/ui_mainwindow.c:317
 msgid "Search"
 msgstr "Sök"
 
-#: src/ui_mainwindow.c:306
+#: src/ui_mainwindow.c:317
 msgid "Search all feeds."
-msgstr "Sök alla källor"
+msgstr "Sök i alla kanaler"
 
-#: src/ui_mainwindow.c:307
+#: src/ui_mainwindow.c:318
+msgid "Viewing Mode"
+msgstr "Visningsläge"
+
+#: src/ui_mainwindow.c:318
+msgid "Switches between 2 and 3 pane mode."
+msgstr "Växla mellan att visa artiklar var för sig eller i ihopdraget läge."
+
+#: src/ui_mainwindow.c:319
 msgid "Preferences"
 msgstr "Inställningar"
 
-#: src/ui_mainwindow.c:307
+#: src/ui_mainwindow.c:319
 msgid "Edit preferences."
 msgstr "Ändra inställningar"
 
-#. addToHTMLBuffer(&buffer, _("<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black\">"
-#. "When Liferea starts for the first time it loads a localized default "
-#. "feed list. There are already default lists for English, French, German "
-#. "and Spanish. If you think you know a good set of default feeds for your "
-#. "language please post them (maybe as OPML) on the <a href=\"mailto:liferea-devel@lists.sourceforge.net\">mailing list</a> "
-#. "and it will be included in the next release!</div>"));
-#: src/ui_mainwindow.c:349
-msgid ""
-"<h2>Welcome to Liferea</h2><p>The left pane contains the feed list where you "
-"can add new subscriptions and select subscriptions to read their headlines. "
-"The right side either displays a list of the headlines of the selected "
-"subscription and a pane to view the selected headline or all headlines at "
-"once if condensed mode is selected.</p><h3>Basic Actions</"
-"h3><ul><li><p><b>Add Subscription</b> - Creates a new subscription in the "
-"selected folder. To create a new subscription enter the feed URL or if you "
-"don't know it the URL of the website which provides the feed.</p></"
-"li><li><p><b>Update Subscription</b> - This will update the subscription you "
-"selected. You may want to do this if you want to immediately check a "
-"subscription for updates. Usually it is adequate to rely on the auto "
-"updating according to the update interval of the subscription.</p></"
-"li><li><p><b>Update All</b> - This will update all your subscriptions at "
-"once. Again usually it is adequate to rely on the auto updating.</"
-"li><li><p><b>Edit Subscription Properties</b> - Sometimes you might want to "
-"change the update interval, title, authentication or caching properties of a "
-"subscription.</p></li></ul><p>To learn more about Liferea you should read "
-"the documentation provided in the help feed or in the <a href=\"http://"
-"liferea.sourceforge.net/faq.htm\">FAQ</a> available at the <a href=\"http://"
-"liferea.sf.net\">project homepage</a>.</p>"
-msgstr ""
-"<h2>Välkommen till Liferea</h2><p>Den vänstra panelen innehåller listan i "
-"vilken du kan lägga till nya prenumerationer och välja prenumerationer för "
-"att läsa dem. Den högra sidan visar antingen en lista på rubrikerna i den "
-"valda prenumerationen eller alla rubrikerna i prenumerationen ihoplänkat, om "
-"ihopdraget läge är aktiverat.</p><h3>Grundläggande Instruktioner</"
-"h3><ul><li><p><b>Lägg till Prenumeration</b> - Skapar en ny prenumeration i "
-"den valda mappen. För att skapa en ny prenumeration ange källans URL, eller "
-"om du inte känner till den, ange URL:en för webbsidan som publicerar källan. "
-"</p></li><li><p><b>Uppdatera Prenumeration</b> - Detta kommer att uppdatera "
-"prenumerationen du markerat. Du kan vilja göra detta om du genast vill "
-"kontrollera om något nytt publicerats i den källan. Normalt räcker det att "
-"förlita sig på den automatiska uppdateringsfunktionen som uppdaterar "
-"prenumerationerna enligt deras angivna uppdateringsintervall.</p></"
-"li><li><p><b>Uppdatera Alla</b> - Detta alternativ kommer att uppdatera alla "
-"dina prenumerationer. Återigen - oftast räcker det att förlita sig på den "
-"automatiska uppdateringsfunktionen.</li><li><p><b>Redigera "
-"Prenumerationsinställningar</b> - Ibland kanske du vill ändra "
-"uppdateringsintervallet, titeln, eller cache-inställningarna för någon "
-"prenumeration.</p></li></ul><p>För att lära dig mer om Liferea kan du läsa "
-"dokumentationen i källan \"hjälp\" eller i <a href=\"http://liferea."
-"sourceforge.net/faq.htm\">vår FAQ</a> som är tillgänglig på <a href=\"http://"
-"liferea.sf.net\">projektets hemsida</a>.</p>"
+#: src/ui_mainwindow.c:361
+msgid "Liferea - Linux Feed Reader"
+msgstr "Liferea - Linux Feed Reader"
 
-#: src/ui_mainwindow.c:427
+#: src/ui_mainwindow.c:363
+msgid ""
+"<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news "
+"feeds.</p><p>The left pane contains the list of your subscriptions. To add a "
+"subscription select <tt>Feeds -&gt; New Subscription</tt>. To browse the "
+"headlines of a feed select it in the feed list and the headlines will be "
+"loaded into the right pane.</p>"
+msgstr ""
+"<p>Välkommen till <b>Liferea</b>, ett nyhetsläsningsverktyg för nyhetskanaler "
+"online. Den vänstra panelen innehåller listan på dina prenumerationer.</"
+"p><p>För att lägga till en prenumeration, välj <tt>Kanaler -&gt; Ny "
+"Prenumeration</tt>. För att bläddra bland rubrikerna i en nyhetskanal, "
+"markera den i vänsterpanelen, så visas rubrikerna i högerpanelen.</p>"
+
+#: src/ui_mainwindow.c:426
 msgid "Liferea is now online"
 msgstr "Liferea är nu anslutet till internet"
 
-#: src/ui_mainwindow.c:430
+#: src/ui_mainwindow.c:429
 msgid "Liferea is now offline"
 msgstr "Liferea är nu frånkopplat från internet"
 
@@ -1897,127 +1899,127 @@ msgstr "Namnlös"
 msgid "Liferea notification"
 msgstr "Notifiering"
 
-#: src/ui_popup.c:91
+#: src/ui_popup.c:93
 msgid "/_Update"
 msgstr "/_Uppdatera"
 
-#: src/ui_popup.c:92 src/ui_popup.c:103 src/ui_popup.c:113
+#: src/ui_popup.c:94 src/ui_popup.c:105 src/ui_popup.c:115
 msgid "/_Mark All As Read"
 msgstr "/_Markera som läst"
 
-#: src/ui_popup.c:93 src/ui_popup.c:104 src/ui_popup.c:114 src/ui_popup.c:123
+#: src/ui_popup.c:95 src/ui_popup.c:106 src/ui_popup.c:116 src/ui_popup.c:125
 msgid "/_New"
 msgstr "/_Ny"
 
-#: src/ui_popup.c:94 src/ui_popup.c:105 src/ui_popup.c:115 src/ui_popup.c:124
+#: src/ui_popup.c:96 src/ui_popup.c:107 src/ui_popup.c:117 src/ui_popup.c:126
 msgid "/_New/New _Subscription..."
 msgstr "/_Ny/Ny _prenumeration..."
 
-#: src/ui_popup.c:95 src/ui_popup.c:106 src/ui_popup.c:116 src/ui_popup.c:125
+#: src/ui_popup.c:97 src/ui_popup.c:108 src/ui_popup.c:118 src/ui_popup.c:127
 msgid "/_New/New F_older..."
 msgstr "/_Ny/Ny _mapp"
 
-#: src/ui_popup.c:96 src/ui_popup.c:107 src/ui_popup.c:117
+#: src/ui_popup.c:98 src/ui_popup.c:109 src/ui_popup.c:119
 msgid "/_New/New _VFolder..."
 msgstr "/_Ny/Ny _sökmapp"
 
-#: src/ui_popup.c:97 src/ui_popup.c:118
+#: src/ui_popup.c:99 src/ui_popup.c:120
 msgid "/_Properties..."
 msgstr "/_Egenskaper..."
 
-#: src/ui_popup.c:98 src/ui_popup.c:119
+#: src/ui_popup.c:100 src/ui_popup.c:121
 msgid "/_Delete"
 msgstr "/_Ta bort"
 
-#: src/ui_popup.c:102
+#: src/ui_popup.c:104
 msgid "/_Update Folder"
 msgstr "/_Uppdatera mapp"
 
-#: src/ui_popup.c:108
+#: src/ui_popup.c:110
 msgid "/_Rename Folder..."
 msgstr "/_Byt namn på mapp"
 
-#: src/ui_popup.c:109
+#: src/ui_popup.c:111
 msgid "/_Delete Folder"
 msgstr "/_Ta bort mapp"
 
-#: src/ui_popup.c:130
+#: src/ui_popup.c:132
 msgid "/Toggle _Read Status"
 msgstr "/Växla _läst\\/oläst"
 
-#: src/ui_popup.c:131
+#: src/ui_popup.c:133
 msgid "/Toggle Item _Flag"
 msgstr "/Sätt _flagga"
 
-#: src/ui_popup.c:132
+#: src/ui_popup.c:134
 msgid "/R_emove Item"
 msgstr "/_Ta bort"
 
-#: src/ui_popup.c:134
+#: src/ui_popup.c:136
 msgid "/_Next Unread Item"
 msgstr "/_Nästa olästa"
 
-#: src/ui_popup.c:136
+#: src/ui_popup.c:138
 msgid "/Copy Item _URL to Clipboard"
 msgstr "/Kopiera _länkadress"
 
-#: src/ui_popup.c:137
+#: src/ui_popup.c:139
 msgid "/Launch Item In _Tab"
 msgstr "/Öppna i ny _flik"
 
-#: src/ui_popup.c:138
+#: src/ui_popup.c:140
 msgid "/_Launch Item In Browser"
 msgstr "/Öppna i _webbläsare"
 
-#: src/ui_popup.c:143
+#: src/ui_popup.c:145
 msgid "/_Increase Text Size"
 msgstr "/_Större textstorlek"
 
-#: src/ui_popup.c:144
+#: src/ui_popup.c:146
 msgid "/_Decrease Text Size"
 msgstr "/_Mindre textstorlek"
 
-#: src/ui_popup.c:148
+#: src/ui_popup.c:150
 msgid "/Launch Link In _Tab"
 msgstr "/Öppna länk i ny _flik"
 
-#: src/ui_popup.c:149
+#: src/ui_popup.c:151
 msgid "/_Launch Link In Browser"
 msgstr "/Öppna länk i _webbläsare"
 
-#: src/ui_popup.c:151
+#: src/ui_popup.c:153
 msgid "/_Copy Link Location"
 msgstr "/_Kopiera länkadress"
 
-#: src/ui_popup.c:153
+#: src/ui_popup.c:155
 msgid "/_Subscribe..."
 msgstr "/_Prenumerera"
 
-#: src/ui_popup.c:158
+#: src/ui_popup.c:160
 msgid "/Toggle _Online|Offline"
 msgstr "/Växla mellan _online\\/offline"
 
-#: src/ui_popup.c:159
+#: src/ui_popup.c:161
 msgid "/_Update All"
-msgstr "/_Uppdatera alla"
+msgstr "/_Uppdatera alla kanaler"
 
-#: src/ui_popup.c:160
+#: src/ui_popup.c:162
 msgid "/_Preferences..."
 msgstr "/_Inställningar"
 
-#: src/ui_popup.c:162
+#: src/ui_popup.c:164
 msgid "/_Show Window"
-msgstr "/_Visa programfönstret"
+msgstr "/_Visa huvudfönstret"
 
-#: src/ui_popup.c:163
+#: src/ui_popup.c:165
 msgid "/_Quit"
 msgstr "/_Avsluta"
 
-#: src/ui_popup.c:168
+#: src/ui_popup.c:170
 msgid "/Open Enclosure..."
 msgstr "/Öppna bilaga"
 
-#: src/ui_popup.c:169
+#: src/ui_popup.c:171
 msgid "/Save As..."
 msgstr "/Spara som..."
 
@@ -2038,21 +2040,22 @@ msgstr "Existerande fönster"
 msgid "New window"
 msgstr "Nytt fönster"
 
-#: src/ui_prefs.c:258
+#: src/ui_prefs.c:258 src/ui_tabs.c:86 src/ui_tabs.c:89 src/ui_tabs.c:108
+#: src/ui_tabs.c:215
 msgid "New tab"
 msgstr "Ny flik"
 
 #: src/ui_prefs.c:268
 msgid "Update only feeds scheduled for updates"
-msgstr "Uppdatera endast källor som det blivit dags att uppdatera"
+msgstr "Uppdatera endast kanaler som det blivit dags att uppdatera"
 
 #: src/ui_prefs.c:273
 msgid "Update all feeds"
-msgstr "Uppdatera alla källor"
+msgstr "Uppdatera alla kanaler"
 
 #: src/ui_prefs.c:278
 msgid "Reset feed update timers (Update no feeds)"
-msgstr "Starta om källornas uppdateringstimers (Utan att uppdatera)"
+msgstr "Starta om kanalernas uppdateringstimers (Utan att uppdatera)"
 
 #: src/ui_prefs.c:523
 msgid "Type"
@@ -2082,7 +2085,7 @@ msgstr ""
 "%s<h2>%d Sökresultat för \"%s\"</h2><p>Artikellistan innehåller nu alla "
 "artiklar som matchade den angivna söksträngen. Om du vill spara denna "
 "sökning permanent kan du klicka på knappen Sökmapp i sökfönstret, så skapar "
-"Liferea en sökmapp med sökresultateni din källista.</h2>"
+"Liferea en sökmapp med sökresultateni din kanallista.</h2>"
 
 #: src/ui_search.c:133
 msgid "Please do a search first!"
@@ -2092,35 +2095,37 @@ msgstr "Vänligen gör en sökning först!"
 msgid "New VFolder"
 msgstr "Ny sökmapp"
 
-#: src/ui_tabs.c:107
+#: src/ui_tabs.c:120
 msgid "URL"
 msgstr "URL"
 
-#: src/ui_tray.c:104
+#: src/ui_tray.c:106
 #, c-format
 msgid "%d new item"
 msgid_plural "%d new items"
 msgstr[0] "%d ny artikel"
 msgstr[1] "%d nya artiklar"
 
-#: src/ui_tray.c:107
+#: src/ui_tray.c:110
 msgid "No new items"
 msgstr "Inga nya artiklar"
 
-#: src/ui_tray.c:111
+#: src/ui_tray.c:114
 #, c-format
 msgid ""
 "%s\n"
 "%d unread item"
+msgid_plural ""
 "%s\n"
 "%d unread items"
-msgstr ""
+msgstr[0] ""
 "%s\n"
-"%d oläst artikel"
+"Inga olästa artiklar"
+msgstr[1] ""
 "%s\n"
-"%d olästa artiklar"
+"Inga olästa artiklar"
 
-#: src/ui_tray.c:113
+#: src/ui_tray.c:116
 #, c-format
 msgid ""
 "%s\n"
@@ -2129,42 +2134,37 @@ msgstr ""
 "%s\n"
 "Inga olästa artiklar"
 
-#: src/update.c:70
+#: src/update.c:69
 #, c-format
 msgid "Error opening temp file %s to use for filtering!"
 msgstr "Fel vid öppning av temporär fil %s för filtrering!"
 
-#: src/update.c:93
+#: src/update.c:92
 #, c-format
 msgid "%s exited with status %d"
 msgstr "%s avslutades med status %d"
 
-#: src/update.c:99 src/update.c:100 src/update.c:136
+#: src/update.c:98 src/update.c:99 src/update.c:135
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "Fel: Kunde inte öppna rör \"%s\""
 
 #. FIXME: maybe setting request->returncode would be better
-#: src/update.c:156
+#: src/update.c:155
 #, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr "Fel: Kunde inte öppna fil \"%s\""
 
-#: src/update.c:162
+#: src/update.c:161
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "Fel: Filen \"%s\" finns inte"
 
-#: src/gtkhtml2/gtkhtml2.c:232
+#: src/gtkhtml2/gtkhtml2.c:231
 msgid ""
 "The included HTML <object> tag is not supported with GtkHTML2.\n"
 "Included Plugins might not be displayed."
 msgstr ""
-"Det inkluderade HTML-taggen <object> stöds inte av GtkHTML2.\n"
+"Den inkluderade HTML-taggen <object> stöds inte av GtkHTML2.\n"
 "Inkluderade tillägg kommer kanske inte att visas."
 
-#~ msgid "Rules"
-#~ msgstr "Regler"
-
-#~ msgid "Search for"
-#~ msgstr "SÃƒÂ¶k efter"

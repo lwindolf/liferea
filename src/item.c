@@ -145,6 +145,14 @@ void item_free(itemPtr ip) {
 	g_free(ip);
 }
 
+const gchar * item_get_base_url(itemPtr item) {
+
+	if(item->sourceNode && (FST_FEED == item->sourceNode->type))
+		return feed_get_html_url((feedPtr)item->sourceNode->data);
+	else
+		return itemset_get_base_url(item->itemSet);
+}
+
 gchar *item_render(itemPtr ip) {
 	struct displayset	displayset;
 	gchar			*escapedSrc;
@@ -178,10 +186,10 @@ gchar *item_render(itemPtr ip) {
 
 	/*  -- Feed line */
 	if(htmlurl)
-		tmp = g_markup_printf_escaped("<span class=\"feedlink\"><a href=\"%s\">%s</a></span>",
+		tmp = g_markup_printf_escaped("<span class=\"feedtitle\"><a href=\"%s\">%s</a></span>",
 		                              htmlurl, node_get_title(np));
 	else
-		tmp = g_markup_printf_escaped("<span class=\"feedlink\">%s</span>",
+		tmp = g_markup_printf_escaped("<span class=\"feedtitle\">%s</span>",
 		                              node_get_title(np));
 
 	tmp2 = g_strdup_printf(HEAD_LINE, _("Feed:"), tmp);
@@ -192,11 +200,11 @@ gchar *item_render(itemPtr ip) {
 	/*  -- Item line */
 	if(np->icon) {
 		tmp2 = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", np->id, "png");
-		tmp = g_markup_printf_escaped("<a href=\"%s\"><img class=\"favicon\" src=\"file://%s\" /></a>", htmlurl, tmp2);
+		tmp = g_markup_printf_escaped("<a class=\"favicon\" href=\"%s\"><img src=\"file://%s\" /></a>", htmlurl, tmp2);
 		g_free(tmp2);
 	} else {
 		tmp2 = g_strdup(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "available.png");
-		tmp = g_markup_printf_escaped("<a href=\"%s\"><img class=\"favicon\" src=\"file://%s\" /></a>", htmlurl, tmp2);
+		tmp = g_markup_printf_escaped("<a class=\"favicon\" href=\"%s\"><img src=\"file://%s\" /></a>", htmlurl, tmp2);
 		g_free(tmp2);
 	}
 	tmp3 = g_markup_escape_text(item_get_title(ip)?item_get_title(ip):_("[No title]"), -1);

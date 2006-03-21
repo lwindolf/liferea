@@ -53,15 +53,26 @@ const gchar * itemset_get_base_url(itemSetPtr itemSet) {
 
 gchar * itemset_render_item(itemSetPtr itemSet, itemPtr item) {
 	gchar		*tmp, *buffer = NULL;
+	const gchar	*baseUrl;
 
 	debug_enter("itemset_render_item");
 
-	ui_htmlview_start_output(&buffer, itemset_get_base_url(itemSet), TRUE);
+	baseUrl = itemset_get_base_url(itemSet);
+	ui_htmlview_start_output(&buffer, baseUrl, TRUE);
 
 	if(item) {
+		if(baseUrl) {
+			addToHTMLBufferFast(&buffer, "<div href='");
+			addToHTMLBufferFast(&buffer, itemset_get_base_url(itemSet));
+			addToHTMLBufferFast(&buffer, "'>");
+		}
+
 		tmp = item_render(item);
 		addToHTMLBufferFast(&buffer, tmp);
 		g_free(tmp);
+
+		if(baseUrl)
+			addToHTMLBufferFast(&buffer, "</div>");
 	}
 
 	ui_htmlview_finish_output(&buffer);
@@ -83,6 +94,13 @@ gchar * itemset_render_all(itemSetPtr itemSet) {
 	iter = itemSet->items;
 	while(iter) {	
 		itemPtr item = (itemPtr)iter->data;
+		baseUrl = item_get_base_url(item);
+
+		if(baseUrl) {
+			addToHTMLBufferFast(&buffer, "<div href='");
+			addToHTMLBufferFast(&buffer, baseUrl);
+			addToHTMLBufferFast(&buffer, "'>");
+		}
 
 		if(item->readStatus) 
 			addToHTMLBuffer(&buffer, UNSHADED_START);
@@ -99,6 +117,9 @@ gchar * itemset_render_all(itemSetPtr itemSet) {
 			addToHTMLBuffer(&buffer, UNSHADED_END);
 		else
 			addToHTMLBuffer(&buffer, SHADED_END);
+
+		if(baseUrl)
+			addToHTMLBufferFast(&buffer, "</div>");
 
 		iter = g_list_next(iter);
 	}

@@ -78,6 +78,15 @@ itemPtr 	item_new(void);
 itemPtr		item_copy(itemPtr ip);
 
 /**
+ * Returns the base URL for the given item.
+ *
+ * @param item	the item
+ *
+ * @returns base URL
+ */
+const gchar * item_get_base_url(itemPtr item);
+
+/**
  * Returns a HTML string with a representation of the item
  * @param ip the item to render
  */

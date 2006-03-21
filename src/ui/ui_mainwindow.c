@@ -424,7 +424,8 @@ void ui_mainwindow_init(int mainwindowState) {
 	
 	/* create welcome text */
 	ui_htmlview_start_output(&buffer, NULL, FALSE);
-	addToHTMLBuffer(&buffer, _("<div style=\"background-color:#eee;padding:5px;border:solid 1px #aaa\">"
+	addToHTMLBuffer(&buffer, _("<div style=\"padding:8px\">"
+	                           "<div style=\"background-color:#eee;padding:5px;border:solid 1px #aaa\">"
 				   "<table border=\"0\" cellpadding=\"5px\"><tr><td>"
 				   // add application icon
 				   "<img src=\""
@@ -450,7 +451,7 @@ void ui_mainwindow_init(int mainwindowState) {
 				   "</div>"));
 
 	addToHTMLBuffer(&buffer, _("<iframe src=\"http://liferea.sf.net/11progress.htm\" width=\"100%\" height=\"150px\">"
-				   "</iframe>"));
+				   "</iframe></div>"));
 				   
 	ui_htmlview_finish_output(&buffer);
 	ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, NULL);
