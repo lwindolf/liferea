@@ -304,7 +304,7 @@ feedParserCtxtPtr feed_create_parser_ctxt(void) {
 void feed_free_parser_ctxt(feedParserCtxtPtr ctxt) {
 
 	/* Don't free the itemset! */
-	g_free(ctxt->tmpdata);
+	g_hash_table_destroy(ctxt->tmpdata);
 	g_free(ctxt);
 }
 
