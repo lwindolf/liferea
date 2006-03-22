@@ -1207,6 +1207,7 @@ static void feed_save(nodePtr node) {
 
 static void feed_unload(nodePtr node) {
 	feedPtr feed = (feedPtr)node->data;
+	GList	*iter;
 
 	debug2(DEBUG_CACHE, "+ node_unload (%s, ref count=%d)", node_get_title(node), node->loaded);
 
@@ -1225,6 +1226,11 @@ static void feed_unload(nodePtr node) {
 			} else {
 				debug1(DEBUG_CACHE, "unloading node (%s)", node_get_title(node));
 				g_assert(NULL != node->itemSet);
+				iter = node->itemSet->items;
+				while(iter) {
+					item_free((itemPtr)iter->data);
+					iter = g_list_next(iter);
+				}
 				g_list_free(node->itemSet->items);
 				g_free(node->itemSet);
 				node->itemSet = NULL;	
