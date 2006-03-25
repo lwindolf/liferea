@@ -171,6 +171,14 @@ static void main_unlock() {
 	g_free(filename);
 }
 
+static void signal_handler(int sig) {
+
+	on_quit(NULL, NULL, NULL);
+
+	signal(sig, SIG_DFL);
+	raise(sig);
+}
+
 int main(int argc, char *argv[]) {	
 	gulong		debug_flags = 0;
 	const char 	*arg;
@@ -282,6 +290,7 @@ int main(int argc, char *argv[]) {
 		session_init(BIN_DIR G_DIR_SEPARATOR_S "liferea", opt_session_arg);
 		session_set_cmd(NULL, mainwindowState);
 #endif
+		signal(SIGTERM, signal_handler);
 		
 		/* Note: we explicitely do not use the gdk_thread_*
 		   locking in Liferea because it freezes the program
@@ -338,3 +347,4 @@ gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 	
 	return FALSE;
 }
+

@@ -16,6 +16,8 @@
 	  not after HTTP errors. (Thomas de Grenier de Latour)
 	* New vfolder rule to match the update status
 	  of headlines
+	* Liferea now catches SIGTERM and saves the feed list
+	  when terminated without using the session manager.
 
 
 2005-12-23  Lars Lindner  <lars.lindner@gmail.com>
