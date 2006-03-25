@@ -106,6 +106,8 @@ static void folder_remove(nodePtr node) {
 
 	/* remove the folder */
 	node->parent->children = g_slist_remove(node->parent->children, node);
+	g_slist_free(node->children);
+	node->children = NULL;
 	ui_node_remove_node(node);
 }
 
