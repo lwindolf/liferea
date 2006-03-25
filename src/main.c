@@ -291,6 +291,7 @@ int main(int argc, char *argv[]) {
 		session_set_cmd(NULL, mainwindowState);
 #endif
 		signal(SIGTERM, signal_handler);
+		signal(SIGINT, signal_handler);
 		
 		/* Note: we explicitely do not use the gdk_thread_*
 		   locking in Liferea because it freezes the program
