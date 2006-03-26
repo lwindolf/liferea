@@ -175,19 +175,30 @@ static void favicon_download_request_favicon_cb(struct request *request) {
 	debug2(DEBUG_UPDATE, "icon download processing (%s, %d bytes)", request->source, request->size);
 	node->requests = g_slist_remove(node->requests, request);
 	
-	if(NULL != request->data && request->size > 0) {
+	if(request->data && request->size > 0) {
 		GdkPixbufLoader *loader = gdk_pixbuf_loader_new();
 		GdkPixbuf *pixbuf;
-		tmp = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", node_get_id(node), "png");
 		if(gdk_pixbuf_loader_write(loader, (guchar *)request->data, request->size, &err)) {
-			if(pixbuf = gdk_pixbuf_loader_get_pixbuf(loader)) {
-				debug1(DEBUG_UPDATE, "saving icon as %s", tmp);
-				if(FALSE == (gdk_pixbuf_save(pixbuf, tmp, "png", &err, NULL))) {
-					g_warning("favicon saving error!");
+			if(gdk_pixbuf_loader_close(loader, &err)) {
+				if(pixbuf = gdk_pixbuf_loader_get_pixbuf(loader)) {
+					tmp = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", node_get_id(node), "png");
+					debug1(DEBUG_UPDATE, "saving icon as %s", tmp);
+					if(!gdk_pixbuf_save(pixbuf, tmp, "png", &err, NULL)) {
+						g_warning("favicon saving error!");
+					} else {
+						success = TRUE;
+						favicon_load(node);
+					}
+					g_free(tmp);
+				} else {
+					debug0(DEBUG_UPDATE, "gdk_pixbuf_loader_get_pixbuf() failed!");
 				}
-				success = TRUE;
-				favicon_load(node);
+			} else {
+				debug0(DEBUG_UPDATE, "gdk_pixbuf_loader_close() failed!");
 			}
+		} else {
+			debug0(DEBUG_UPDATE, "gdk_pixbuf_loader_write() failed!");
+			gdk_pixbuf_loader_close(loader, NULL);
 		}
 
 		if(err) {
@@ -195,10 +206,10 @@ static void favicon_download_request_favicon_cb(struct request *request) {
 			g_error_free(err);
 		}
 
-		gdk_pixbuf_loader_close(loader, NULL);
 		g_object_unref(loader);
-		g_free(tmp);
 		ui_node_update(node);
+	} else {
+		debug0(DEBUG_UPDATE, "No data in download result!");
 	}
 	
 	if(!success) {
@@ -219,20 +230,20 @@ static void favicon_download_html_request_cb(struct request *request) {
 	
 	node->requests = g_slist_remove(node->requests, request);
 		
-	if(request->size > 0 && request->data != NULL) {
+	if(request->size > 0 && request->data) {
 		iconUri = html_discover_favicon(request->data, request->source);
 		if(iconUri) {
 			request2 = download_request_new(NULL);
 			request2->source = iconUri;
 			request2->callback = &favicon_download_request_favicon_cb;
 			request2->user_data = node;
-			request2->flags++;
+			request2->flags = request->flags + 1;
 			node->requests = g_slist_append(node->requests, request2);
 			download_queue(request2);
 		}
 	}
 
-	if(request2) {
+	if(!request2) {
 		if(request->flags == 0)
 			favicon_download_html(node, 2);
 		else /* flags == 2 */
