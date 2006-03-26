@@ -762,21 +762,17 @@ gboolean feed_merge_check(itemSetPtr sp, itemPtr new_ip) {
 		   is enabled we start the download. Enclosures added
 		   by updated items are not supported. */
 
-		// FIXME: doesn't work at this place...
-		// it is a task to be decided at feed parsing
-		// time and not on itemset merging time...
+		if((TRUE == ((feedPtr)(sp->node->data))->encAutoDownload) &&
+		   (TRUE == new_ip->newStatus)) {
+			GSList *iter = metadata_list_get(new_ip->metadata, "enclosure");
+			while(iter) {
+				debug1(DEBUG_UPDATE, "download enclosure (%s)", (gchar *)iter->data);
+				ui_enclosure_save(NULL, g_strdup(iter->data), NULL);
+				iter = g_slist_next(iter);
+			}
+		}
 		
-		//if((TRUE == fp->encAutoDownload) &&
-		//   (TRUE == new_ip->newStatus)) {
-	//		iter = enclosures = metadata_list_get(new_ip->metadata, "enclosure");
-	//		while(NULL != iter) {
-	//			debug1(DEBUG_UPDATE, "download enclosure (%s)", (gchar *)iter->data);
-	//			ui_enclosure_save(NULL, g_strdup(iter->data), NULL);
-	//			iter = g_slist_next(iter);
-	//		}
-	//	}
-		
-		debug0(DEBUG_VERBOSE, "-> item added to feed itemlist");
+		debug0(DEBUG_VERBOSE, "-> item is to be added");
 	} else {
 		/* if the item was found but has other contents -> update contents */
 		if(!equal) {
