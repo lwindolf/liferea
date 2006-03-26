@@ -104,13 +104,6 @@ void feedlist_reset_new_item_count(void) {
 	}
 }
 
-void feedlist_add_node(nodePtr parent, nodePtr node, gint position) {
-
-	parent->children = g_slist_append(parent->children, node);
-	ui_node_add(parent, node, position);	
-	ui_node_update(node);
-}
-
 void feedlist_remove_node(nodePtr node) {
 
 	debug_enter("feedlist_remove_node");

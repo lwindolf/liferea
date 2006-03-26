@@ -266,7 +266,7 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, flNodeHandl
 
 	node_add_data(np, type, data);
 	favicon_load(np);
-	feedlist_add_node(parentNode, np, -1);
+	node_add_child(parentNode, np, -1);
 
 	if(FST_FOLDER == type) {
 		if(NULL != xmlHasProp(cur, BAD_CAST"expanded"))
@@ -376,7 +376,7 @@ void on_import_activate_cb(const gchar *filename, gpointer user_data) {
 		node_add_data(np, FST_FOLDER, NULL);
 		
 		/* add the new folder to the model */
-		feedlist_add_node(NULL, np, -1);
+		node_add_child(NULL, np, -1);
 		
 		import_OPML_feedlist(filename, np, np->handler, TRUE, FALSE);
 	}

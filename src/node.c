@@ -271,6 +271,14 @@ guint node_str_to_type(const gchar *str) {
 	return FST_INVALID;
 }
 
+void node_add_child(nodePtr parent, nodePtr node, gint position) {
+
+	parent->children = g_slist_append(parent->children, node);
+	node->parent = parent;
+	ui_node_add(parent, node, position);	
+	ui_node_update(node);
+}
+
 /* To be called by node type implementations to add nodes */
 void node_add(nodePtr node, nodePtr parent, gint pos, guint flags) {
 
@@ -279,8 +287,7 @@ void node_add(nodePtr node, nodePtr parent, gint pos, guint flags) {
 	ui_feedlist_get_target_folder(&pos);
 
 	node->handler = parent->handler;
-	feedlist_add_node(parent, node, pos);
-
+	node_add_child(parent, node, pos);
 	node_schedule_update(node, flags);
 }
 
@@ -318,8 +325,7 @@ void node_request_automatic_add(gchar *source, gchar *title, gchar *filter, gint
 	node_add_data(node, FST_FEED, feed_new(source, filter));
 
 	ui_feedlist_get_target_folder(&pos);
-	feedlist_add_node(parent, node, pos);
-
+	node_add_child(parent, node, pos);
 	node_schedule_update(node, flags);
 }
 

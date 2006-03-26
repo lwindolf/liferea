@@ -303,7 +303,7 @@ void ui_vfolder_add(nodePtr parent) {
 	node_add_data(node, FST_VFOLDER, (gpointer)vfolder);
 
 	folder = ui_feedlist_get_target_folder(&pos);
-	feedlist_add_node(folder, node, pos);
+	node_add_child(folder, node, pos);
 	ui_feedlist_select(node);
 	ui_vfolder_properties(node);
 }

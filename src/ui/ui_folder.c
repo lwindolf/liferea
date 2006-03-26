@@ -67,7 +67,7 @@ void on_newfolderbtn_clicked(GtkButton *button, gpointer user_data) {
 
 	/* add the new folder to the model */
 	parentNode = ui_feedlist_get_target_folder(&pos);
-	feedlist_add_node(parentNode, folder, pos);
+	node_add_child(parentNode, folder, pos);
 	ui_feedlist_select(folder);
 }
 

@@ -116,6 +116,15 @@ void node_register_type(nodeTypePtr nodeType, guint type);
 nodePtr node_new(void);
 
 /**
+ * Sets a nodes parent and updates the feed list.
+ *
+ * @param parent	the parent node
+ * @param node		the node
+ * @param position	insert position
+ */
+void node_add_child(nodePtr parent, nodePtr node, gint position);
+
+/**
  * Interactive node adding (e.g. feed menu->new subscription), 
  * launches some dialog that upon success adds a feed of the
  * given type.

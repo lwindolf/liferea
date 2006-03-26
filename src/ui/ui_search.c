@@ -138,7 +138,7 @@ void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 		node = searchResult;
 		searchResult = NULL;
 		folder = ui_feedlist_get_target_folder(&pos);
-		feedlist_add_node(folder, node, pos);
+		node_add_child(folder, node, pos);
 		ui_feedlist_select(node);
 	} else {
 		ui_show_info_box(_("Please do a search first!"));
