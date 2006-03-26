@@ -271,8 +271,10 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, flNodeHandl
 	if(FST_FOLDER == type) {
 		if(NULL != xmlHasProp(cur, BAD_CAST"expanded"))
 			ui_node_set_expansion(np, TRUE);
-		if(NULL != xmlHasProp(cur, BAD_CAST"collapsed"))
+		else if(NULL != xmlHasProp(cur, BAD_CAST"collapsed"))
 			ui_node_set_expansion(np, FALSE);
+		else 
+			ui_node_set_expansion(np, TRUE);
 	}
 
 	/* import recursion */
