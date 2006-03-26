@@ -273,7 +273,7 @@ guint node_str_to_type(const gchar *str) {
 
 void node_add_child(nodePtr parent, nodePtr node, gint position) {
 
-	parent->children = g_slist_append(parent->children, node);
+	parent->children = g_slist_insert(parent->children, node, position);
 	node->parent = parent;
 	ui_node_add(parent, node, position);	
 	ui_node_update(node);
