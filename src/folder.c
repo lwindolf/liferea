@@ -102,7 +102,7 @@ static void folder_schedule_update(nodePtr node, guint flags) {
 static void folder_remove(nodePtr node) {
 
 	/* remove all children */
-	node_foreach_child(node, node_remove);
+	node_foreach_child(node, node_request_remove);
 
 	/* remove the folder */
 	node->parent->children = g_slist_remove(node->parent->children, node);

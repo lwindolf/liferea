@@ -113,8 +113,8 @@ void node_free(nodePtr node) {
 
 	g_assert(NULL == node->children);
 
-	if(node->loaded) {
-		g_list_free(node->itemSet->items);
+	if(node->loaded)  {
+		itemset_remove_items(node->itemSet);
 		g_free(node->itemSet);
 		node->itemSet = NULL;
 	}
@@ -128,7 +128,7 @@ void node_free(nodePtr node) {
 	
 	/* same goes for other requests */
 	iter = node->requests;
-	while(NULL != iter) {
+	while(iter) {
 		((struct request *)iter->data)->callback = NULL;
 		iter = g_slist_next(iter);
 	}

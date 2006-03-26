@@ -212,7 +212,7 @@ gpointer download_request_new() {
 void download_request_free(struct request *request) {
 	
 	debug_enter("update_request_free");
-	if(NULL != request) {
+	if(request) {
 		g_free(request->source);
 		g_free(request->filtercmd);
 		g_free(request->filterErrors);
@@ -294,7 +294,7 @@ static void *download_thread_main(void *data) {
 void download_queue(struct request *new_request) {
 
 	g_assert(NULL != new_request);
-	
+
 	if(new_request->priority == 1)
 		g_async_queue_push(requests_high_prio, new_request);
 	else
@@ -326,7 +326,7 @@ static gboolean download_dequeuer(gpointer user_data) {
 		if(request->callback == NULL) {
 			debug1(DEBUG_UPDATE, "freeing cancelled request (%s)", request->source);
 			download_request_free(request);
-		} else if (!(download_retry(request))) {
+		} else if(!(download_retry(request))) {
 			(request->callback)(request);
 			download_request_free(request);
 		}
@@ -338,7 +338,8 @@ static gboolean download_dequeuer(gpointer user_data) {
 /* Wrapper around download_requeue, for convenient call from g_timeout */
 gboolean download_requeue(gpointer data) {
 	struct request* request = (struct request*)data;
-	if (request->callback == NULL) {
+	
+	if(request->callback == NULL) {
 		debug2(DEBUG_UPDATE, "Freeing request of cancelled retry #%d for \"%s\"", request->retriesCount, request->source);
 		download_request_free(request);
 	} else {
@@ -388,7 +389,8 @@ gboolean download_retry(struct request *request) {
 }
 
 gboolean download_cancel_retry(struct request *request) {
-	if (0 < request->retriesCount) {
+
+	if(0 < request->retriesCount) {
 		request->callback = NULL;
 		debug2(DEBUG_UPDATE, "Cancelled retry #%d for request \"%s\". It should be freed soon.", request->retriesCount, request->source);
 		return TRUE;

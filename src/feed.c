@@ -1313,14 +1313,14 @@ static void feed_request_auto_update(nodePtr node) {
 
 static void feed_remove(nodePtr node) {
 
-	if(NULL != node->icon) {
+	if(node->icon) {
 		g_object_unref(node->icon);
 		favicon_remove(node);
 	}
 
 	ui_notification_remove_feed(node);
 	ui_node_remove_node(node);
-
+	
 	feed_remove_from_cache(node);
 }
 
