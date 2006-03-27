@@ -242,7 +242,7 @@ li.opmllistitem {
 }
 
 /* styles to realize shading of new items in condensed mode */
-div.itemshaded { }
+div.itemshaded { background:#ffe;}
 
 div.itemunshaded { }
 
