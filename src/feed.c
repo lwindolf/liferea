@@ -1092,8 +1092,10 @@ void feed_process_update_result(struct request *request) {
 			ui_feed_authdialog_new(node, request->flags);
 	} else if(410 == request->httpstatus) { /* gone */
 		feed->discontinued = TRUE;
+		feed->available = TRUE;
 		ui_mainwindow_set_status_bar(_("\"%s\" is discontinued. Liferea won't updated it anymore!"), node_get_title(node));
 	} else if(304 == request->httpstatus) {
+		feed->available = TRUE;
 		ui_mainwindow_set_status_bar(_("\"%s\" has not changed since last update"), node_get_title(node));
 	} else if(NULL != request->data) {
 		feed_set_lastmodified(feed, request->lastmodified);
