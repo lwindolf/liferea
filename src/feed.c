@@ -640,7 +640,6 @@ itemSetPtr feed_load_from_cache(nodePtr node) {
 	return itemSet;
 }
 
-// FIXME: does this belong to node.c?
 void feed_cancel_retry(nodePtr node) {
 
 	if(node->updateRequest && download_cancel_retry(node->updateRequest))

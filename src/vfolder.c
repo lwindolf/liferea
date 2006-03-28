@@ -200,6 +200,10 @@ static void vfolder_add_item(vfolderPtr vp, itemPtr ip) {
 	}
 
 	/* add an item copy to the vfolder */	
+	
+	if(!ip->readStatus)
+		vp->node->unreadCount++;
+	
 	itemset_prepend_item(vp->node->itemSet, item_copy(ip));
 	itemlist_update_vfolder(vp);		/* update the itemlist if this vfolder is selected */
 }
@@ -237,6 +241,9 @@ static void vfolder_remove_matching_item_copy(vfolderPtr vp, itemPtr ip) {
 		   pointer to the original item */
 		tmp->sourceNode = NULL;
 		tmp->sourceNr = -1;
+		
+		if(!tmp->readStatus)
+			vp->node->unreadCount--;
 		
 		/* we call itemlist_remove_item to prevent removing
 		   an item copy selected in the GUI... */
@@ -413,6 +420,14 @@ void vfolder_update_item(itemPtr ip) {
 					rule = g_slist_next(rule);
 				}
 				
+				/* update vfolder unread count */
+				if(tmp->readStatus != ip->readStatus) {
+					if(ip->readStatus)
+						vp->node->unreadCount--;
+					else
+						vp->node->unreadCount++;
+				}
+				
 				/* always update the item... funny? Maybe, but necessary so that with 
 				   deferred removal items have correct state until really removed */
 				tmp->readStatus = ip->readStatus;
@@ -430,9 +445,6 @@ void vfolder_update_item(itemPtr ip) {
 			}
 			items = g_list_next(items);
 		}
-		
-		/* second step: update vfolder unread count */
-		node_update_counters(vp->node);
 		
 		itemlist_update_vfolder(vp);		/* update the itemlist if this vfolder is selected */
 
@@ -527,7 +539,7 @@ static void vfolder_remove(nodePtr node) {
 
 static void vfolder_mark_all_read(nodePtr node) {
 
-	// FIXME: do we need to do something here?
+	itemlist_mark_all_read(node->itemSet);
 }
 
 static gchar * vfolder_render(nodePtr node) {
