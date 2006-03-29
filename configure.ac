@@ -366,6 +366,7 @@ src/gtkhtml2/Makefile
 src/net/Makefile
 src/parsers/Makefile
 src/fl_providers/Makefile
+src/notification/Makefile
 src/ui/Makefile
 src/liferea
 doc/Makefile

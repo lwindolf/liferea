@@ -22,6 +22,11 @@
 #ifndef _NOTIF_PLUGIN_H
 #define _NOTIF_PLUGIN_H
 
+#include <glib.h>
+#include <gmodule.h>
+#include "node.h"
+#include "item.h"
+
 #define NOTIFICATION_PLUGIN_API_VERSION 1
 
 typedef struct notificationPlugin {
@@ -33,12 +38,12 @@ typedef struct notificationPlugin {
 	 * added to the list of the available 
 	 * notification plugins.
 	 */
-	gboolean notification_init(void);
+	gboolean (*plugin_init)(void);
 	
 	/**
 	 * Called upon program shutdown.
 	 */
-	gboolean notification_deinit(void);
+	void	(*plugin_deinit)(void);
 	
 	/**
 	 * Called after startup when notifications are
@@ -71,7 +76,7 @@ typedef struct notificationPlugin {
 	void	(*node_removed)(nodePtr node);
 	
 	// void 	(*new_item_downloaded)(itemPtr item);
-}
+} *notificationPluginPtr;
 
 /** Notification plugins are to be declared with this macro. */
 #define DECLARE_NOTIFICATION_PLUGIN(notificationPlugin) \

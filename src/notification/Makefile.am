@@ -15,4 +15,10 @@ liblinotification_a_SOURCES = notif_plugin.c notif_plugin.h
 
 liblinotification_a_CFLAGS = $(PACKAGE_FLAGS)
 
+# mini popup plugin
+liblinotifpopup_la_LIBADD = $(PACKAGE_LIBS)
+liblinotifpopup_la_CFLAGS = $(PACKAGE_FLAGS)
+liblinotifpopup_la_SOURCES = notif_popup.c notif_popup.h
 
+
+pkglib_LTLIBRARIES = liblinotifpopup.la

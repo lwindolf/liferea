@@ -8,7 +8,7 @@ if WITH_MOZILLA
 MOZILLA = mozilla
 endif
 
-SUBDIRS = net parsers fl_providers ui . $(GTKHTML2) $(MOZILLA)
+SUBDIRS = net parsers fl_providers notification ui . $(GTKHTML2) $(MOZILLA)
 
 AM_CPPFLAGS = \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \

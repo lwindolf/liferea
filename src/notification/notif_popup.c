@@ -31,7 +31,9 @@
 #include "item.h"
 #include "callbacks.h"
 #include "support.h"
-#include "ui_feedlist.h"
+#include "plugin.h"
+#include "ui/ui_feedlist.h"
+#include "notification/notif_plugin.h"
 
 #define NOTIF_WIN_WIDTH 350
 #define NOTIF_WIN_HEIGHT -1
@@ -66,7 +68,6 @@ static void notifAddFeedNotif(feedNotif_t *feedNotif_p);
 static void notifRemoveFeedNotif(feedNotif_t *feedNotif_p);
 static GtkWidget *notifCreateWin(void);
 static gint feedNotifTimeoutCallback(gpointer data);
-static void notifRemoveWin();
 static gboolean onNotificationButtonPressed(GtkWidget *widget, GdkEventButton *event, gpointer user_data);
 static gboolean notifDeleteWinCb (GtkWidget *widget, GdkEvent *event, gpointer user_data);
 
@@ -379,14 +380,14 @@ static void notif_popup_disable(void) {
 	}
 }
 
-static void notif_popup_init(void) { }
+static gboolean notif_popup_init(void) { }
 
 static void notif_popup_deinit(void) { }
 
 /* notification plugin definition */
 
 static struct notificationPlugin npi = {
-	_PLUGIN_API_VERSION,
+	NOTIFICATION_PLUGIN_API_VERSION,
 	notif_popup_init,
 	notif_popup_deinit,
 	notif_popup_enable,

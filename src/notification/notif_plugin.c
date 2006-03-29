@@ -25,6 +25,7 @@
 #include "node.h"
 #include "plugin.h"
 #include "support.h"
+#include "notification/notif_plugin.h"
 
 
 typedef	notificationPluginPtr (*infoFunc)();
@@ -41,18 +42,18 @@ void notification_plugin_load(pluginPtr plugin, GModule *handle) {
 
 	/* check notification provider plugin version */
 	if(NOTIFICATION_PLUGIN_API_VERSION != notificationPlugin->api_version) {
-		debug3(DEBUG_PLUGINS, "notification API version mismatch: \"%s\" has version %d should be %d\n", notificationPlugin->name, notificationPlugin->api_version, NOTIFICATION_PLUGIN_API_VERSION);
+		debug3(DEBUG_PLUGINS, "notification API version mismatch: \"%s\" has version %d should be %d\n", plugin->name, notificationPlugin->api_version, NOTIFICATION_PLUGIN_API_VERSION);
 		return;
 	} 
 
 	/* check if all mandatory symbols are provided */
 	if(!(notificationPlugin->plugin_init &&
 	     notificationPlugin->plugin_deinit)) {
-		debug1(DEBUG_PLUGINS, "mandatory symbols missing: \"%s\"\n", notificationPlugin->name);
+		debug1(DEBUG_PLUGINS, "mandatory symbols missing: \"%s\"\n", plugin->name);
 		return;
 	}
 
-	debug1(DEBUG_PLUGINS, "found notification plugin: %s", notificationPlugin->name);
+	debug1(DEBUG_PLUGINS, "found notification plugin: %s", plugin->name);
 
 	/* allow the plugin to initialize */
 	(*notificationPlugin->plugin_init)();
