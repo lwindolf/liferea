@@ -313,9 +313,13 @@ static gboolean on_notebook_scroll_event_null_cb (GtkWidget *widget, GdkEventScr
 
 
 static struct mainwindow *ui_mainwindow_new(void) {
-	GtkWidget *window = create_mainwindow();
-	gchar *toolbar_style = getStringConfValue("/desktop/gnome/interface/toolbar_style");
-	struct mainwindow *mw = malloc(sizeof(struct mainwindow));
+	GtkWidget		*window;
+	gchar			*toolbar_style;
+	struct mainwindow	*mw;
+	
+	window = create_mainwindow();
+	toolbar_style = getStringConfValue("/desktop/gnome/interface/toolbar_style")
+	mv = g_new0(struct mainwindow, 1);
 	
 	mw_global_fixme = mw;
 
@@ -356,6 +360,7 @@ void ui_mainwindow_init(int mainwindowState) {
 	int		i;
 	gchar		*buffer = NULL;
 	struct mainwindow *mw;
+	
 	debug_enter("ui_mainwindow_init");
 
 	mw = ui_mainwindow_new();
@@ -489,7 +494,7 @@ void ui_mainwindow_update_menubar(void) {
 
 void ui_mainwindow_online_status_changed(int online) {
 	GtkWidget	*widget;
-	printf("changing mode to %d\n",online);
+
 	widget = lookup_widget(mainwindow, "onlineimage");
 	
 	if(online) {
@@ -500,8 +505,8 @@ void ui_mainwindow_online_status_changed(int online) {
 		gtk_image_set_from_pixbuf(GTK_IMAGE(widget), icons[ICON_OFFLINE]);
 	}
 	gtk_toggle_action_set_active(
-							 GTK_TOGGLE_ACTION(gtk_action_group_get_action(mw_global_fixme->generalActions,"ToggleOfflineMode")),
-							 !online);
+	    GTK_TOGGLE_ACTION(gtk_action_group_get_action(mw_global_fixme->generalActions,"ToggleOfflineMode")),
+	    !online);
 }
 
 void on_onlinebtn_clicked(GtkButton *button, gpointer user_data) {
