@@ -318,8 +318,8 @@ static struct mainwindow *ui_mainwindow_new(void) {
 	struct mainwindow	*mw;
 	
 	window = create_mainwindow();
-	toolbar_style = getStringConfValue("/desktop/gnome/interface/toolbar_style")
-	mv = g_new0(struct mainwindow, 1);
+	toolbar_style = getStringConfValue("/desktop/gnome/interface/toolbar_style");
+	mw = g_new0(struct mainwindow, 1);
 	
 	mw_global_fixme = mw;
 
