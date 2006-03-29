@@ -134,7 +134,7 @@ void node_free(nodePtr node) {
 	}
 	g_slist_free(node->requests);
 
-	g_free(node->icon);
+	g_object_unref(node->icon);
 	g_free(node->title);
 	g_free(node->id);
 	g_free(node);
