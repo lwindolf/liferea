@@ -280,9 +280,7 @@ table.slash {
 }
 
 td.slash {
-	border-width:1px;
-	border-style:solid;
-	border-color:black;
+	border:0;
 	background:#408060;
 	width:100%;
 	font-size:0.8em;

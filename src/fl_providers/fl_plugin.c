@@ -166,6 +166,7 @@ static void on_fl_plugin_type_selected(GtkDialog *dialog, gint response_id, gpoi
 }
 
 void ui_fl_plugin_type_dialog(nodePtr parent) {
+	GSList 			*iter;
 	GtkWidget 		*dialog, *treeview;
 	GtkTreeStore		*treestore;
 	GtkCellRenderer		*renderer;
@@ -174,12 +175,17 @@ void ui_fl_plugin_type_dialog(nodePtr parent) {
 	flPluginPtr	flPlugin;
 	pluginPtr	plugin;
 
+	if(NULL == (iter = plugin_mgmt_get_list())) {
+		ui_show_error_box(_("No feed list provider plugins found!"));
+		return;
+	}		
+
 	/* set up the dialog */
 	dialog = create_fl_plugin_type_dialog();
 
 	treestore = gtk_tree_store_new(2, G_TYPE_STRING, G_TYPE_POINTER);
 	/* add available feed list plugins to treestore */
-	GSList *iter = plugin_mgmt_get_list();
+
 	while(iter) {
 		plugin = (pluginPtr)iter->data;
 		flPlugin = plugin->symbols;
