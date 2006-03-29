@@ -32,16 +32,16 @@ typedef struct notificationPlugin {
 	 * node was updated and contains new items (items
 	 * with newStatus set to TRUE.
 	 */
-	void 	node_has_new_items(nodePtr node);
+	void 	(*node_has_new_items)(nodePtr node);
 	
 	/**
 	 * This callback notifies the plugin that the given
 	 * node was removed and should not be listed in any
 	 * notification anymore.
 	 */
-	void	node_removed(nodePtr node);
+	void	(*node_removed)(nodePtr node);
 	
-	// void 	new_item_downloaded(itemPtr item);
+	// void 	(*new_item_downloaded)(itemPtr item);
 }
 
 /** Notification plugins are to be declared with this macro. */
