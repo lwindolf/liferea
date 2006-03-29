@@ -27,6 +27,7 @@
 #include "support.h"
 #include "notification/notif_plugin.h"
 
+static GSList *notificationPlugins = NULL;
 
 typedef	notificationPluginPtr (*infoFunc)();
 
@@ -53,12 +54,52 @@ void notification_plugin_load(pluginPtr plugin, GModule *handle) {
 		return;
 	}
 
-	debug1(DEBUG_PLUGINS, "found notification plugin: %s", plugin->name);
-
-	/* allow the plugin to initialize */
-	(*notificationPlugin->plugin_init)();
-
-	/* assign the symbols so the caller will accept the plugin */
-	plugin->symbols = notificationPlugin;
+	/* Allow the plugin to initialize */
+	if((*notificationPlugin->plugin_init)()) {
+		debug1(DEBUG_PLUGINS, "found notification plugin: %s", plugin->name);
+		
+		/* assign the symbols so the caller will accept the plugin */
+		plugin->symbols = notificationPlugin;
+		
+		/* add plugin to notification plugin instance list */
+		notificationPlugins = g_slist_append(notificationPlugins, plugin);
+	} else {
+		debug1(DEBUG_PLUGINS, "notification plugin \"%s\" did not load succesfully", plugin->name);
+	}
 }
 
+void notification_enable(gboolean enabled) {
+	notificationPluginPtr	plugin;
+	GSList 			*iter;
+	
+	iter = notificationPlugins;
+	while(iter) {
+		plugin = ((pluginPtr)iter->data)->symbols;
+		(*plugin->notification_enable)(enabled);
+		iter = g_slist_next(iter);
+	}
+}
+
+void notification_node_has_new_items(nodePtr node) { 
+	notificationPluginPtr	plugin;
+	GSList 			*iter;
+	
+	iter = notificationPlugins;
+	while(iter) {
+		plugin = ((pluginPtr)iter->data)->symbols;
+		(*plugin->node_has_new_items)(node);
+		iter = g_slist_next(iter);
+	}
+}
+
+void notification_node_removed(nodePtr node) { 
+	notificationPluginPtr	plugin;
+	GSList 			*iter;
+	
+	iter = notificationPlugins;
+	while(iter) {
+		plugin = ((pluginPtr)iter->data)->symbols;
+		(*plugin->node_removed)(node);
+		iter = g_slist_next(iter);
+	}
+}

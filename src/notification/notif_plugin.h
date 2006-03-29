@@ -51,7 +51,7 @@ typedef struct notificationPlugin {
 	 * begin or after notifications are reenabled from
 	 * the program preferences.
 	 */
-	void	(*notification_enable)(void);
+	void	(*notification_enable)(gboolean enabled);
 	
 	/**
 	 * Called after notifications were disabled in the
@@ -84,12 +84,34 @@ typedef struct notificationPlugin {
                 return &notificationPlugin; \
         }
 
+/*
+ * Plugin event wrappers. Each forwards the
+ * event to all active notification plugins.
+ */
+ 
 /**
- * Plugin event wrapper. Forwards event to all 
- * active notification plugins.
+ * Notification enable/disable callback.
+ *
+ * @param enabled   TRUE=enable notifications
+ */
+void notification_enable(gboolean enabled);
+ 
+/**
+ * "New items" event callback.
  *
  * @param node	the node that has new items
  */
 void notification_node_has_new_items(nodePtr node);
+
+/**
+ * "Node removed" event callback
+ *
+ * @param node	the node that was removed.
+ */
+void notification_node_removed(nodePtr node);
+
+/* Plugin loading interface */
+
+void notification_plugin_load(pluginPtr plugin, GModule *handle);
 
 #endif
