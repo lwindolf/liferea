@@ -28,6 +28,35 @@ typedef struct notificationPlugin {
 	unsigned int	api_version;
 	
 	/**
+	 * Called once during plugin initialization.
+	 * If the plugin returns FALSE it won't be
+	 * added to the list of the available 
+	 * notification plugins.
+	 */
+	gboolean notification_init(void);
+	
+	/**
+	 * Called upon program shutdown.
+	 */
+	gboolean notification_deinit(void);
+	
+	/**
+	 * Called after startup when notifications are
+	 * enabled and when displaying notifications should
+	 * begin or after notifications are reenabled from
+	 * the program preferences.
+	 */
+	void	(*notification_enable)(void);
+	
+	/**
+	 * Called after notifications were disabled in the
+	 * program preferences. The plugin should not display
+	 * further notifications and may destroy currently
+	 * displayed ones.
+	 */
+	void	(*notification_disable)(void);
+	
+	/**
 	 * This callback notifies the plugin that the given
 	 * node was updated and contains new items (items
 	 * with newStatus set to TRUE.
