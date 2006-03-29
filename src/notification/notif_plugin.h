@@ -22,13 +22,26 @@
 #ifndef _NOTIF_PLUGIN_H
 #define _NOTIF_PLUGIN_H
 
-#define NOTIF_PLUGIN_API_VERSION 1
+#define NOTIFICATION_PLUGIN_API_VERSION 1
 
 typedef struct notificationPlugin {
 	unsigned int	api_version;
 	
+	/**
+	 * This callback notifies the plugin that the given
+	 * node was updated and contains new items (items
+	 * with newStatus set to TRUE.
+	 */
 	void 	node_has_new_items(nodePtr node);
-	void 	new_item_downloaded(itemPtr item);
+	
+	/**
+	 * This callback notifies the plugin that the given
+	 * node was removed and should not be listed in any
+	 * notification anymore.
+	 */
+	void	node_removed(nodePtr node);
+	
+	// void 	new_item_downloaded(itemPtr item);
 }
 
 /** Notification plugins are to be declared with this macro. */
