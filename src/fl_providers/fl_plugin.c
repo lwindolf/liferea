@@ -51,8 +51,8 @@ flPluginPtr fl_plugins_get_root(void) {
 				found = TRUE;
 				break;
 			}
-			iter = g_slist_next(iter);
 		}
+		iter = g_slist_next(iter);
 	}
 	
 	if(FALSE == found) 
