@@ -33,6 +33,7 @@ AC_ARG_ENABLE(gtkhtml2,AS_HELP_STRING([--disable-gtkhtml2],[don't compile the gt
 AC_ARG_ENABLE(gecko,   AS_HELP_STRING([--disable-gecko],[don't compile the Gecko backend]),,enable_gecko=yes)
 AC_ARG_ENABLE(gecko,   AS_HELP_STRING([--enable-gecko=ARG],[specify which Gecko provider to use ("mozilla" or "firefox")]),,enable_gecko=yes)
 AC_ARG_ENABLE(gnutls,  AS_HELP_STRING([--enable-gnutls],[Attempt to use GNUTLS for SSL support @<:@default=yes@:>@]),,enable_gnutls=yes)
+AC_ARG_ENABLE(libnotify,AS_HELP_STRING([--disable-libnotify],[don't compile the libnotify plugin]),,enable_libnotify=yes)
 
 AC_CHECK_FUNCS([strsep getaddrinfo])
 
@@ -94,6 +95,21 @@ else
 fi
 
 AM_CONDITIONAL(WITH_GTKHTML2, test "x$enable_gtkhtml2" = "xyes")
+
+dnl *********
+dnl libnotify
+dnl *********
+
+if test "x$enable_libnotify" = "xyes"; then
+   dnl AC_MSG_CHECKING([for libnotify support])
+   PKG_CHECK_MODULES([LIBNOTIFY], libnotify >= 0.3.2,enable_libnotify=yes,enable_libnotify=no)
+   AC_SUBST(LIBNOTIFY_CFLAGS)
+   AC_SUBST(LIBNOTIFY_LIBS)
+else
+   enable_libnotify=no
+fi
+
+AM_CONDITIONAL(WITH_LIBNOTIFY, test "x$enable_libnotify" = "xyes")
 
 dnl *******
 dnl Mozilla
