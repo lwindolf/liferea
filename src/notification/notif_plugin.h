@@ -26,6 +26,7 @@
 #include <gmodule.h>
 #include "node.h"
 #include "item.h"
+#include "plugin.h"
 
 #define NOTIFICATION_PLUGIN_API_VERSION 1
 
@@ -51,7 +52,7 @@ typedef struct notificationPlugin {
 	 * begin or after notifications are reenabled from
 	 * the program preferences.
 	 */
-	void	(*notification_enable)(gboolean enabled);
+	void	(*notification_enable)(void);
 	
 	/**
 	 * Called after notifications were disabled in the

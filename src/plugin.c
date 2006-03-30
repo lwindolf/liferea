@@ -26,6 +26,7 @@
 #include "node.h"
 #include "plugin.h"
 #include "fl_providers/fl_plugin.h"
+#include "notification/notif_plugin.h"
 
 /* plugin managment */
 
@@ -81,6 +82,9 @@ static pluginPtr plugin_mgmt_load(const gchar * filename) {
 		switch(plugin->type) {
 			case PLUGIN_TYPE_FEEDLIST_PROVIDER:
 				fl_plugin_load(plugin, handle);
+				break;
+			case PLUGIN_TYPE_NOTIFICATION:
+				notification_plugin_load(plugin, handle);
 				break;
 			default:
 				debug3(DEBUG_PLUGINS, "Unknown or unsupported plugin type: %s (%s, type=%d)", plugin->name, filename, plugin->type);

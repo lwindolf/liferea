@@ -75,7 +75,7 @@ void notification_enable(gboolean enabled) {
 	iter = notificationPlugins;
 	while(iter) {
 		plugin = ((pluginPtr)iter->data)->symbols;
-		(*plugin->notification_enable)(enabled);
+		(*plugin->notification_enable)();
 		iter = g_slist_next(iter);
 	}
 }

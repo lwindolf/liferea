@@ -55,6 +55,7 @@
 #include "ui/ui_enclosure.h"
 #include "ui/ui_htmlview.h"
 #include "ui/ui_mainwindow.h"
+#include "notification/notif_plugin.h"
 
 /* auto detection lookup table */
 static GSList *feedhandlers = NULL;
@@ -1163,7 +1164,7 @@ void feed_process_update_result(struct request *request) {
 		favicon_download(node);
 
 	ui_node_update(node);
-	ui_notification_update(node);
+	notification_node_has_new_items(node);
 	node_unload(node);
 
 	debug_exit("ui_feed_process_update_result");
@@ -1319,7 +1320,7 @@ static void feed_remove(nodePtr node) {
 		favicon_remove(node);
 	}
 
-	ui_notification_remove_feed(node);
+	notification_node_removed(node);
 	ui_node_remove_node(node);
 	
 	feed_remove_from_cache(node);

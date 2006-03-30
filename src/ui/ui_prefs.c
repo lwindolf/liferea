@@ -560,6 +560,7 @@ void on_popupwindowsoptionbtn_clicked(GtkButton *button, gpointer user_data) {
 
 	gboolean enabled = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button));
 	setBooleanConfValue(SHOW_POPUP_WINDOWS, enabled);
+	notification_enable(getBooleanConfValue(SHOW_POPUP_WINDOWS));
 	gtk_widget_set_sensitive(lookup_widget(prefdialog, "placement_options"), enabled);
 }
 

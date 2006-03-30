@@ -49,7 +49,12 @@ liferea_bin_SOURCES = \
 	update.c update.h \
 	vfolder.c vfolder.h 
 
-liferea_bin_LDADD =  net/liblinet.a parsers/libliparsers.a fl_providers/libliflprovider.a ui/libliui.a $(PACKAGE_LIBS) $(X_LIBS) $(X_PRE_LIBS) -lX11 $(X_EXTRA_LIBS) $(DBUS_LIBS) $(INTLLIBS)  $(GNUTLS_LIBS)
+liferea_bin_LDADD =	net/liblinet.a \
+			parsers/libliparsers.a \
+			fl_providers/libliflprovider.a \
+			notification/liblinotification.a \
+			ui/libliui.a \
+			$(PACKAGE_LIBS) $(X_LIBS) $(X_PRE_LIBS) -lX11 $(X_EXTRA_LIBS) $(DBUS_LIBS) $(INTLLIBS)  $(GNUTLS_LIBS)
 
 if PLATFORM_WIN32
 

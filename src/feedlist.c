@@ -33,11 +33,11 @@
 #include "callbacks.h"
 #include "ui/ui_mainwindow.h"
 #include "ui/ui_feedlist.h"
-#include "ui/ui_notification.h"
 #include "ui/ui_tray.h"
 #include "ui/ui_feed.h"
 #include "ui/ui_node.h"
 #include "fl_providers/fl_plugin.h"
+#include "notification/notif_plugin.h"
 
 static guint unreadCount = 0;
 static guint newCount = 0;
@@ -349,6 +349,8 @@ void feedlist_init(void) {
 	   automatically load all vfolders */
 	feedlist_foreach(node_initial_load);
 	feedlist_foreach(feedlist_update_vfolder_count);
+	
+	notification_enable(getBooleanConfValue(SHOW_POPUP_WINDOWS));
 
 	/* 5. Check if feeds do need updating. */
 	switch(getNumericConfValue(STARTUP_FEED_ACTION)) {

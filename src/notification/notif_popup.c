@@ -68,6 +68,7 @@ static void notifAddFeedNotif(feedNotif_t *feedNotif_p);
 static void notifRemoveFeedNotif(feedNotif_t *feedNotif_p);
 static GtkWidget *notifCreateWin(void);
 static gint feedNotifTimeoutCallback(gpointer data);
+static void notifRemoveWin();
 static gboolean onNotificationButtonPressed(GtkWidget *widget, GdkEventButton *event, gpointer user_data);
 static gboolean notifDeleteWinCb (GtkWidget *widget, GdkEvent *event, gpointer user_data);
 
@@ -358,9 +359,7 @@ static gboolean notifDeleteWinCb (GtkWidget *widget, GdkEvent *event, gpointer u
 	return FALSE;
 }
 
-static void notif_popup_enable(void) { }
-
-static void notif_popup_disable(void) {
+void notifRemoveWin(void) {
 
 	if(notifWin_p != NULL) {
 		GtkWidget *container_p;
@@ -378,6 +377,16 @@ static void notif_popup_disable(void) {
 			}
 		}
 	}
+}
+
+static void notif_popup_enable(void) { 
+
+	g_print("popups enabled\n");
+}
+
+static void notif_popup_disable(void) {
+	g_print("popups disabled\n");
+	notifRemoveWin();
 }
 
 static gboolean notif_popup_init(void) { }

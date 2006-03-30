@@ -22,7 +22,6 @@ libliui_a_SOURCES = \
 	ui_itemlist.c ui_itemlist.h \
 	ui_mainwindow.c ui_mainwindow.h \
 	ui_node.c ui_node.h \
-	ui_notification.c ui_notification.h \
 	ui_popup.c ui_popup.h \
 	ui_prefs.c ui_prefs.h \
 	ui_search.c ui_search.h \
