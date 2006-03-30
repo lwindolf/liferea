@@ -407,6 +407,8 @@ else
 fi
 echo "Build GtkHTML Plugin............ : $enable_gtkhtml2"
 echo 
+echo "Build libnotify Plugin.......... : $enable_libnotify"
+echo 
 echo "Use X Session Management........ : $enable_sm"
 echo "Use DBUS........................ : $enable_dbus"
 echo "GNUTLS SSL/HTTPS Support........ : $enable_gnutls"
