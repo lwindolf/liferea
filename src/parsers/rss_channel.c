@@ -50,8 +50,8 @@
 /* HTML output strings */
 #define TEXT_INPUT_FORM_START	"<form class=\"rssform\" method=\"GET\" ACTION=\""
 #define TEXT_INPUT_TEXT_FIELD	"\"><input class=\"rssformtext\" type=\"text\" value=\"\" name=\""
-#define TEXT_INPUT_SUBMIT	"\"><input class=\"rssformsubmit\" type=\"submit\" value=\""
-#define TEXT_INPUT_FORM_END	"\"></form>"
+#define TEXT_INPUT_SUBMIT	"\" /><input class=\"rssformsubmit\" type=\"submit\" value=\""
+#define TEXT_INPUT_FORM_END	"\" /></form>"
 
 GHashTable *RssToMetadataMapping = NULL;
 
@@ -147,24 +147,20 @@ static gchar* parseTextInput(xmlNodePtr cur) {
 	g_assert(NULL != cur);
 
 	cur = cur->xmlChildrenNode;
-	while(cur != NULL) {
-		if (cur->type == XML_ELEMENT_NODE) {
-			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-			if(NULL != tmp) {
-				if(!xmlStrcmp(cur->name, BAD_CAST"title")) {
-					g_free(tiTitle);
-					tiTitle = tmp;
-				} else if(!xmlStrcmp(cur->name, BAD_CAST"description")) {
-					g_free(tiDescription);
-					tiDescription = tmp;
-				} else if(!xmlStrcmp(cur->name, BAD_CAST"name")) {
-					g_free(tiName);
-					tiName = tmp;
-				} else if(!xmlStrcmp(cur->name, BAD_CAST"link")) {
-					g_free(tiLink);
-					tiLink = tmp;
-				} else
-					g_free(tmp);
+	while(cur) {
+		if(cur->type == XML_ELEMENT_NODE) {
+			if(!xmlStrcmp(cur->name, BAD_CAST"title")) {
+				g_free(tiTitle);
+				tiTitle = extractHTMLNode(cur, 0, NULL);
+			} else if(!xmlStrcmp(cur->name, BAD_CAST"description")) {
+				g_free(tiDescription);
+				tiDescription = extractHTMLNode(cur, 0, NULL);
+			} else if(!xmlStrcmp(cur->name, BAD_CAST"name")) {
+				g_free(tiName);
+				tiName = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+			} else if(!xmlStrcmp(cur->name, BAD_CAST"link")) {
+				g_free(tiLink);
+				tiLink = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 			}
 		}
 		cur = cur->next;
@@ -173,9 +169,8 @@ static gchar* parseTextInput(xmlNodePtr cur) {
 	/* some postprocessing */
 	tiTitle = unhtmlize(tiTitle);
 	tiDescription = unhtmlize(tiDescription);
-
-	if((NULL != tiLink) && (NULL != tiName) && 
-	   (NULL != tiDescription) && (NULL != tiTitle)) {
+	
+	if(tiLink && tiName && tiDescription && tiTitle) {
 		addToHTMLBufferFast(&buffer, "<p>");
 		addToHTMLBufferFast(&buffer, tiDescription);
 		addToHTMLBufferFast(&buffer, TEXT_INPUT_FORM_START);

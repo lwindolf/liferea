@@ -298,7 +298,7 @@ static void attribs_render_image(gpointer data, struct displayset *displayset, g
 static void attribs_render_foot_text(gpointer data, struct displayset *displayset, gpointer user_data) {
 	gchar	*tmp;
 
-	tmp = g_markup_printf_escaped("<div class='foottext'>%s</div>", (gchar *)data);
+	tmp = g_strdup_printf("<div class='foottext'>%s</div>", (gchar *)data);
 	addToHTMLBufferFast(&(displayset->foot), tmp);
 	g_free(tmp);
 }
