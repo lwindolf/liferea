@@ -80,12 +80,8 @@ td.headright {
 	padding:2px 5px;
 }
 
-div.content {
+div.content, div.commentlink {
 	padding:8px 6px 0px 12px;
-}
-
-div.commentlink {
-	padding:8px 6px 0px 6px;
 }
 
 img {
