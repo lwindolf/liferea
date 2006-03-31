@@ -264,6 +264,11 @@ static gboolean itemlist_find_unread_item(void) {
 	
 	if(!displayed_itemSet)
 		return;
+		
+	if(ITEMSET_TYPE_FOLDER == displayed_itemSet->type) {
+		feedlist_find_unread_feed(displayed_itemSet->node);
+		return;
+	}
 
 	/* first look for unread items after the currently selected item */
 	if(displayed_item) {
