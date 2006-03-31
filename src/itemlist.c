@@ -117,7 +117,8 @@ void itemlist_merge_itemset(itemSetPtr itemSet) {
 	}
 
 	/* update HTML view according to mode */
-	if(TRUE == itemlist_get_two_pane_mode()) {
+	if((ITEMSET_TYPE_FOLDER != displayed_itemSet->type) &&
+	   (TRUE == itemlist_get_two_pane_mode())) {
 		/* in 2 pane mode all items are shown at once
 		   so after merging it needs to be redisplayed */
 		buffer = itemset_render_all(displayed_itemSet);
