@@ -41,8 +41,6 @@
 /* List of all the current notifications */
 static GSList *notifications_p = NULL;
 
-/* Function prototypes */
-
 static void notif_libnotify_callback_open ( NotifyNotification *n, const char *action ) {
 	g_assert(action != NULL);
 	g_assert(strcmp(action, "open") == 0);
@@ -69,7 +67,9 @@ static gboolean notif_libnotify_init(void) {
 		
 }
 
-static void notif_libnotify_deinit(void) { }
+static void notif_libnotify_deinit(void) {
+	notify_uninit();
+}
 
 static void notif_libnotify_enable(void) { }
 
@@ -79,48 +79,73 @@ static void notif_libnotify_disable(void) { }
 	The feed has new items - so iterate threw the feed and create a notification
 	containing all update news header lines
 */
-static void notif_libnotify_node_has_new_items(nodePtr node) {
-//	GSList *list_p = NULL;
+static void notif_libnotify_node_has_new_items(nodePtr node_p) {
+
+	GList *list_p;
+	itemPtr item_p;
+
+	gchar *labelText_p;
+	gchar *labelText_now_p;
+	gchar *labelText_prev_p;
+
+	gchar *labelHeadline_p;
+	gchar *labelURL_p;
+
+	labelText_now_p = g_strdup_printf ("");
+
+	/* Gather the new feed's headlines */
+	list_p = node_p->itemSet->items;
+	while(list_p != NULL) {
+		item_p = list_p->data;
+		if( item_p->popupStatus == TRUE) {
+			item_p->popupStatus = FALSE;
+
+			labelHeadline_p = g_strdup_printf (item_get_title(item_p));
+			if (labelHeadline_p == NULL ) {
+				labelHeadline_p = g_strdup_printf ("This news entry has no headline" );
+			}
+
+			labelURL_p = item_get_base_url(item_p);
+			if (labelURL_p != NULL ) {
+				labelText_p = g_strdup_printf ("- %s <a href='%s'>Visit</a>\n", labelHeadline_p, labelURL_p );
+			} else {
+				labelText_p = g_strdup_printf ("- %s\n", labelHeadline_p );
+			}
+
+			labelText_prev_p = labelText_now_p;
+			labelText_now_p = g_strconcat( labelText_now_p, labelText_p, NULL);
+
+			g_free(labelHeadline_p);
+			g_free(labelText_p);
+			g_free(labelText_prev_p);
+		}
+		list_p = g_list_next(list_p);
+	}
 
 	NotifyNotification *n;
 
-	n = notify_notification_new ("Feed \"Liferea\" has been updated", 
-                                     "<b>Libnotify support</b> Today libnotify support has been added [...]<br>"
-		                             "<a href='http://liferea.sf.net'>Visit</a>\nNext headline test",
-                                     "stock_news", NULL);
-	notify_notification_set_timeout (n, NOTIFY_EXPIRES_DEFAULT);
+	n = notify_notification_new (node_get_title(node_p), labelText_now_p, NULL, NULL);
 
-//	notify_notification_set_category (n, "feed");
-
-
-/*	braucht eventuell dbus
-	DBusConnection *conn;
-
-	conn = dbus_bus_get(DBUS_BUS_SESSION, NULL);
-#	loop = g_main_loop_new(NULL, FALSE);
-	dbus_connection_setup_with_g_main(conn, NULL);
+	if ( node_p->icon != NULL ) {
+		notify_notification_set_icon_from_pixbuf (n,node_p->icon);
+	}
+	notify_notification_set_timeout (n, NOTIFY_EXPIRES_NEVER);
 
 	notify_notification_add_action(n, "open", "Open feed",
 								   (NotifyActionCallback)notif_libnotify_callback_open,
 								   NULL, NULL);
-
-	notify_notification_add_action(n, "mark_read", "Mark as read",
+	notify_notification_add_action(n, "mark_read", "Mark all as read",
 								   (NotifyActionCallback)notif_libnotify_callback_mark_read,
 								   NULL, NULL);
-*/
+//	notify_notification_set_category (n, "feed");
+
 
 	if (!notify_notification_show (n, NULL)) {
-		fprintf(stderr, "failed to send notification via libnotify\n");
+		fprintf(stderr, "PLUGIN:libnotify - failed to send notification via libnotify\n");
 	}
 
+	g_free(labelText_now_p);
 	g_object_unref(G_OBJECT(n));
-
-/*	NotifyNotification *n = notify_notification_new ( "Feed has new / updated topcis", notification, GTK_STOCK_DIALOG_INFO, NULL );
-	notify_notification_add_action (n, "open", N_("Open feed"),
-		notif_libnotify_callback, NULL, NULL);
-	notify_notification_set_timeout (n, 10000);
-	notify_notification_show(n, NULL);
-*/
 }
 	
 static void notif_libnotify_node_removed(nodePtr node) {
