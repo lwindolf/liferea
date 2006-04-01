@@ -27,6 +27,9 @@
 
 #include <gtk/gtk.h>
 #include <glib.h>
+
+#include <libnotify/notify.h>
+
 #include "conf.h"
 #include "node.h"
 #include "item.h"
@@ -34,37 +37,39 @@
 #include "support.h"
 #include "plugin.h"
 #include "ui/ui_feedlist.h"
+#include "ui/ui_node.h"
 #include "notification/notif_plugin.h"
 
-#include <libnotify/notify.h>
-
-/* List of all the current notifications */
-static GSList *notifications_p = NULL;
-
-static void notif_libnotify_callback_open ( NotifyNotification *n, const char *action ) {
+static void notif_libnotify_callback_open ( NotifyNotification *n, const gchar *action, gpointer user_data ) {
 	g_assert(action != NULL);
 	g_assert(strcmp(action, "open") == 0);
 
-//	...
+	fprintf(stderr, "PLUGIN:libnotify - callback\n");
+
+	nodePtr node_p = user_data;
+	ui_feedlist_select(node_p);
 
 	notify_notification_close(n, NULL);
 }
 
-static void notif_libnotify_callback_mark_read ( NotifyNotification *n, const char *action ) {
+static void notif_libnotify_callback_mark_read ( NotifyNotification *n, const char *action, gpointer user_data ) {
 	g_assert(action != NULL);
 	g_assert(strcmp(action, "mark_read") == 0);
 
-//	...
+	nodePtr node_p = user_data;
+	node_mark_all_read(node_p);
 
 	notify_notification_close(n, NULL);
 }
 
 static gboolean notif_libnotify_init(void) {
-	if (notify_init ("liferea"))
+	if (notify_init ("liferea")) {
 		return TRUE;
-	else
+}
+	else {
+		fprintf(stderr, "PLUGIN:notif_libnotify.c : notify_init failed" );
 		return FALSE;
-		
+	}
 }
 
 static void notif_libnotify_deinit(void) {
@@ -91,6 +96,8 @@ static void notif_libnotify_node_has_new_items(nodePtr node_p) {
 	gchar *labelHeadline_p;
 	gchar *labelURL_p;
 
+	gint item_count = 0;
+
 	labelText_now_p = g_strdup_printf ("");
 
 	/* Gather the new feed's headlines */
@@ -99,6 +106,7 @@ static void notif_libnotify_node_has_new_items(nodePtr node_p) {
 		item_p = list_p->data;
 		if( item_p->popupStatus == TRUE) {
 			item_p->popupStatus = FALSE;
+			item_count += 1;
 
 			labelHeadline_p = g_strdup_printf (item_get_title(item_p));
 			if (labelHeadline_p == NULL ) {
@@ -107,9 +115,9 @@ static void notif_libnotify_node_has_new_items(nodePtr node_p) {
 
 			labelURL_p = item_get_base_url(item_p);
 			if (labelURL_p != NULL ) {
-				labelText_p = g_strdup_printf ("- %s <a href='%s'>Visit</a>\n", labelHeadline_p, labelURL_p );
+				labelText_p = g_strdup_printf ("%s <a href='%s'>Visit</a>\n", labelHeadline_p, labelURL_p );
 			} else {
-				labelText_p = g_strdup_printf ("- %s\n", labelHeadline_p );
+				labelText_p = g_strdup_printf ("%s\n", labelHeadline_p );
 			}
 
 			labelText_prev_p = labelText_now_p;
@@ -129,14 +137,18 @@ static void notif_libnotify_node_has_new_items(nodePtr node_p) {
 	if ( node_p->icon != NULL ) {
 		notify_notification_set_icon_from_pixbuf (n,node_p->icon);
 	}
-	notify_notification_set_timeout (n, NOTIFY_EXPIRES_NEVER);
+
+/*
+	Give the user a second for every headline before notification disappears
+*/
+	notify_notification_set_timeout (n, item_count * 1000 );
 
 	notify_notification_add_action(n, "open", "Open feed",
-								   (NotifyActionCallback)notif_libnotify_callback_open,
-								   NULL, NULL);
+									(NotifyActionCallback)notif_libnotify_callback_open,
+									node_p, NULL);
 	notify_notification_add_action(n, "mark_read", "Mark all as read",
-								   (NotifyActionCallback)notif_libnotify_callback_mark_read,
-								   NULL, NULL);
+									(NotifyActionCallback)notif_libnotify_callback_mark_read,
+									node_p, NULL);
 //	notify_notification_set_category (n, "feed");
 
 
@@ -145,7 +157,6 @@ static void notif_libnotify_node_has_new_items(nodePtr node_p) {
 	}
 
 	g_free(labelText_now_p);
-	g_object_unref(G_OBJECT(n));
 }
 	
 static void notif_libnotify_node_removed(nodePtr node) {
