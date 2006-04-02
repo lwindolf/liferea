@@ -183,6 +183,10 @@ static void notif_libnotify_node_has_new_items(nodePtr node_p) {
 	itemPtr item_p;
 	gint item_count;
 
+	if(!getBooleanConfValue(SHOW_POPUP_WINDOWS)) {
+		return;
+	}
+
 	/* Count updated feeds */
 	item_count = 0;
 	list_p = node_p->itemSet->items;
