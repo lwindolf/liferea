@@ -214,3 +214,15 @@ void ui_tray_enable(gboolean enabled) {
 int ui_tray_get_count() {
 	return trayCount;
 }
+
+gboolean ui_tray_get_origin(gint *x, gint *y) {
+	if ( tray_icon == NULL ) {
+		return FALSE;
+	}
+	gdk_window_get_origin (GTK_WIDGET (tray_icon)->window, x, y);	
+	return TRUE;
+}
+
+void ui_tray_size_request (GtkRequisition *requisition) {
+	gtk_widget_size_request ( GTK_WIDGET (tray_icon), requisition);
+}

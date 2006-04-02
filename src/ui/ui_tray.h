@@ -41,3 +41,18 @@ void ui_tray_enable(gboolean enabled);
  * @returns the current number of enabled systray icons
  */
 int ui_tray_get_count();
+
+/**
+ * Determine position of tray icon ( libnotify )
+ *
+ * @param x horizontal position
+ * @param y vertical position
+ */
+gboolean ui_tray_get_origin(gint *x, gint *y);
+
+/**
+ * Determine size of tray icon ( libnotify )
+ *
+ * @param requisition requisition
+ */
+void ui_tray_size_request (GtkRequisition *requisition);
