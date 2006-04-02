@@ -81,10 +81,16 @@ void ui_mainwindow_tray_add();
 
 void ui_mainwindow_tray_remove();
 
+/**
+ * Function to present the main window
+ */
+void ui_mainwindow_show();
+
 /* GUI callbacks */
 void on_onlinebtn_clicked(GtkButton *button, gpointer user_data);
 
 void ui_mainwindow_toggle_visibility(GtkMenuItem *menuitem, gpointer data);
+
 
 typedef void (*fileChoosenCallback) (const gchar *title, gpointer user_data);
 

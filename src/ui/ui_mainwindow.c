@@ -619,6 +619,17 @@ static void ui_mainwindow_restore_position(GtkWidget *window) {
 
 }
 
+/**
+ * Function to present the main window
+ */
+void ui_mainwindow_show() {
+
+	if((gdk_window_get_state(GTK_WIDGET(mainwindow)->window) & GDK_WINDOW_STATE_ICONIFIED) || !GTK_WIDGET_VISIBLE(mainwindow)) {
+		ui_mainwindow_restore_position(mainwindow);
+	}
+	gtk_window_present (GTK_WINDOW(mainwindow));
+}
+
 /*
  * Main menu and tray icon callbacks
  */
