@@ -76,4 +76,12 @@ void ui_node_check_if_folder_is_empty(nodePtr folder);
  */
 void ui_node_set_expansion(nodePtr folder, gboolean expanded);
 
+/**
+ * Returns the associated pixbuf of a node
+ *
+ * @param node	the node
+ * @returns pixbuf
+ */
+GdkPixbuf* ui_node_get_icon(nodePtr node);
+
 #endif

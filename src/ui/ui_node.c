@@ -182,7 +182,7 @@ void ui_node_remove_node(nodePtr np) {
 }
 
 /** determines the feeds favicon or default icon */
-static GdkPixbuf* ui_node_get_icon(nodePtr node) {
+GdkPixbuf* ui_node_get_icon(nodePtr node) {
 	gpointer	favicon;
 	feedPtr		feed;
 
