@@ -1048,17 +1048,14 @@ static void feed_free(feedPtr feed) {
 	g_free(feed);
 }
 
-/* method to totally erase a feed, remove it from the config, etc.... */
+/* method to totally erase the cache file of a given feed.... */
 static void feed_remove_from_cache(nodePtr node) {
 	gchar		*filename = NULL;
 	
 	if(node->id && node->id[0] != '\0')
 		filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", node->id, NULL);
-	
-	/* FIXME: Move this to a better place. The cache file does not
-	   need to always be deleted, for example when freeing a
-	   feedstruct used for updating. */
-	if(NULL != filename) {
+
+	if(filename) {
 		if(0 != unlink(filename)) {
 			/* Oh well.... Can't do anything about it. 99% of the time,
 		   	this is spam anyway. */;

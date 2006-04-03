@@ -96,7 +96,7 @@ static void folder_request_auto_update(nodePtr node) {
 
 static void folder_schedule_update(nodePtr node, guint flags) {
 
-	// FIXME ???
+	/* nothing to do */
 }
 
 static void folder_remove(nodePtr node) {
