@@ -4,7 +4,7 @@ to Liferea. It's more a credits file...
 Coding
 ======
 
-Lars Lindner <lars.lindner@gmx.net>
+Lars Lindner <lars.lindner@gmail.com>
 Nathan J. Conrad <t98502@users.sourceforge.net>
 
 
@@ -47,6 +47,12 @@ Amit D. Chaudhary <amitc@users.sourceforge.net>	patch to update all favicons
 Christoph Hohmann <reboot@users.sourceforge.net>	patch for IPv6
 
 Raphaël Slinckx <raphael@slinckx.net>		new subscriptions over DBUS
+
+Bjorn Mommens <newsletters@pczone.be>		hiding read items from folders
+
+Aristotle Pagaltzis <pagaltzis@gmx.de>		Atom 1.0 support
+
+Norman Jonas <liferea.sf.net@devport.codepilot.net>	libnotify notification
 
 
 Packaging

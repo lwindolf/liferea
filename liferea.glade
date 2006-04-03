@@ -5984,35 +5984,37 @@ Nathan J. Conrad &lt;t98502@users.sourceforge.net&gt;
 		  <child>
 		    <widget class="GtkLabel" id="label62">
 		      <property name="visible">True</property>
-		      <property name="label" translatable="yes">Code, Patches, Debugging
+		      <property name="label" translatable="yes" comments="I removed the email addresses. Looks much cleaner.">Code, Patches, Debugging
 
-James Doherty &lt;...&gt;
-Jeremy Messenger &lt;mezz7@cox.net&gt;
-John McKnight &lt;...&gt;
-Tomasz Maka &lt;pasp@ll.pl&gt;
-Karl Soderstrom &lt;ks@debian.org&gt;	
-Christophe Barbe &lt;christophe.barbe@ufies.org&gt;
-Juho Snellman &lt;jsnell@users.sourceforge.net&gt;
-Roshan Revankar &lt;roshweb@users.sourceforge.net&gt;
-Oliver Feiler &lt;kiza@kcore.de&gt;
-Niklas Morberg &lt;morberg@users.sourceforge.net&gt;
-Johannes Schlueter &lt;joscherl@users.sourceforge.net&gt;
-Pierre Phaneuf &lt;pp@ludusdesign.com&gt;
-ahmed el-helw &lt;ahmedre@cc.gatech.edu&gt;
-James Bowes &lt;bowes@cs.dal.ca&gt;
+James Doherty
+Jeremy Messenger
+John McKnight
+Tomasz Maka
+Karl Soderstrom
+Christophe Barbe
+Juho Snellman
+Roshan Revankar
+Oliver Feiler
+Niklas Morberg
+Johannes Schlueter
+Pierre Phaneuf
+ahmed el-helw
+James Bowes
 Marc Deslauriers
-Amit D. Chaudhary &lt;amitc@users.sourceforge.net&gt;
-Christoph Hohmann &lt;reboot@users.sourceforge.net&gt;
-Raphael Slinckx &lt;raphael@slinckx.net&gt;
-Bjorn Monnens &lt;newsletters@pczone.de&gt;
+Amit D. Chaudhary
+Christoph Hohmann
+Raphael Slinckx
+Bjorn Monnens
+Aristotle Pagaltzis
+Norman Jonas
 and many more...
 
 Code from other projects
 
-Anders Carlsson &lt;andersca@gnu.org&gt; (tray icon support)
+Anders Carlsson (tray icon support)
 Philippe Martin, Brion Vibber (favicon support)
-Jonathan Blandford &lt;jrb@redhat.com&gt; (GtkTreeModelFilter)
-Kristian Rietveld &lt;kris@gtk.org&gt; (GtkTreeModelFilter)</property>
+Jonathan Blandford (GtkTreeModelFilter)
+Kristian Rietveld (GtkTreeModelFilter)</property>
 		      <property name="use_underline">False</property>
 		      <property name="use_markup">False</property>
 		      <property name="justify">GTK_JUSTIFY_LEFT</property>
