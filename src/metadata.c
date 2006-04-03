@@ -37,14 +37,19 @@
 #define	IMG_START	"<img class=\"feed\" src=\""
 #define IMG_END		"\" /><br />"
 
+/** rendering method lookup hash */
 static GHashTable *strtoattrib;
 
+/** metadata rendering method registration structure */
 struct attribute {
-	gchar *strid;
+	gchar		*strid;		/** metadata type id */
 	
-	renderHTMLFunc renderhtmlfunc;
+	renderHTMLFunc	renderhtmlfunc;	/** function pointer to rendering function */
+	gpointer	user_data;	/** user data passed to rendering function */
 	
-	gpointer user_data;
+	gboolean	collapse;	/** if TRUE the rendering function will be called
+					    once for all values, if FALSE it will be called
+					    once for each value */
 };
 
 struct pair {
@@ -60,17 +65,18 @@ void metadata_init() {
 	attribs_init();
 }
 
-void metadata_register_renderer(const gchar *strid, renderHTMLFunc renderfunc, gpointer user_data) {
+void metadata_register_renderer(const gchar *strid, renderHTMLFunc renderfunc, gboolean collapse, gpointer user_data) {
 	struct attribute *attrib = g_new(struct attribute, 1);
 	
-	if (g_hash_table_lookup(strtoattrib, strid) != NULL) {
+	if(g_hash_table_lookup(strtoattrib, strid)) {
 		g_warning("Duplicate attribute was attempted to be registered: %s", strid);
 		return;
 	}
 
-	attrib->strid = g_strdup(strid);
-	attrib->renderhtmlfunc = renderfunc;
-	attrib->user_data = user_data;
+	attrib->strid		= g_strdup(strid);
+	attrib->renderhtmlfunc	= renderfunc;
+	attrib->collapse	= collapse;
+	attrib->user_data	= user_data;
 	
 	g_hash_table_insert(strtoattrib, attrib->strid, attrib);
 }
@@ -154,10 +160,16 @@ void metadata_list_render(GSList *metadata, struct displayset *displayset) {
 	
 	while(list != NULL) {
 		struct pair *p = (struct pair*)list->data; 
-		GSList *list2 = p->data;
-		while(list2 != NULL) {
-			metadata_render(p->attrib, displayset, (gchar*)list2->data);
-			list2 = list2->next;
+		if(p->attrib->collapse) {
+			/* render all values at once */
+			metadata_render(p->attrib, displayset, p->data);
+		} else {
+			/* render each value independently */
+			GSList *list2 = p->data;
+			while(list2 != NULL) {
+				metadata_render(p->attrib, displayset, (gchar*)list2->data);
+				list2 = list2->next;
+			}
 		}
 		list = list->next;
 	}
@@ -295,6 +307,18 @@ static void attribs_render_image(gpointer data, struct displayset *displayset, g
 	g_free(tmp);
 }
 
+static void attribs_render_categories(gpointer data, struct displayset *displayset, gpointer user_data) {
+	GSList	*categories = (GSList *)data;
+	gchar	*escapedStr = NULL;
+	
+	while(categories) {
+		addToHTMLBufferFast(&escapedStr, (gchar *)categories->data);
+		if(categories = g_slist_next(categories))
+			addToHTMLBufferFast(&escapedStr, ",");
+	}
+	FEED_FOOT_WRITE(displayset->foottable, _("categories"), escapedStr);
+}
+
 static void attribs_render_foot_text(gpointer data, struct displayset *displayset, gpointer user_data) {
 	gchar	*tmp;
 
@@ -342,10 +366,10 @@ static void attribs_render_feedgenerator_uri(gpointer data, struct displayset *d
 }
 
 #define REGISTER_SIMPLE_ATTRIBUTE(position, strid, promptStr) do { \
- struct str_attrib *props = g_new(struct str_attrib, 1); \
- props->pos = (position); \
- props->prompt = (promptStr); \
- metadata_register_renderer(strid, attribs_render_str, props); \
+	struct str_attrib *props = g_new(struct str_attrib, 1); \
+	props->pos = (position); \
+	props->prompt = (promptStr); \
+	metadata_register_renderer(strid, attribs_render_str, FALSE, props); \
 } while (0);
 
 static void attribs_init() {
@@ -363,23 +387,23 @@ static void attribs_init() {
 	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "contentUpdateDate", _("content last updated"));
 	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "managingEditor", _("managing editor"));
 	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "webmaster", _("webmaster"));
-	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "category", _("category"));
+	metadata_register_renderer("category",	attribs_render_categories, TRUE, NULL);
 	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "feedgenerator", _("feed generator"));
-	metadata_register_renderer("imageUrl", attribs_render_image, GINT_TO_POINTER(POS_HEAD));
-	metadata_register_renderer("textInput", attribs_render_foot_text, NULL);
-	metadata_register_renderer("commentsUri", attribs_render_comments_uri, NULL);
-	metadata_register_renderer("enclosure", attribs_render_enclosure, NULL);
+	metadata_register_renderer("imageUrl",	attribs_render_image, FALSE, GINT_TO_POINTER(POS_HEAD));
+	metadata_register_renderer("textInput",	attribs_render_foot_text, FALSE, NULL);
+	metadata_register_renderer("commentsUri", attribs_render_comments_uri, FALSE, NULL);
+	metadata_register_renderer("enclosure",	attribs_render_enclosure, FALSE, NULL);
 	
 	/* types for admin */
 	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "errorReportsTo", _("report errors to"));
-	metadata_register_renderer("feedgeneratorUri", attribs_render_feedgenerator_uri, NULL);
+	metadata_register_renderer("feedgeneratorUri", attribs_render_feedgenerator_uri, FALSE, NULL);
 	
 	/* types for aggregation */
 	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "agSource", _("original source"));
 	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "agTimestamp", _("original time"));
 
 	/* types for blog channel */
-	metadata_register_renderer("blogChannel", attribs_render_foot_text, NULL);
+	metadata_register_renderer("blogChannel", attribs_render_foot_text, FALSE, NULL);
 	
 	/* types for creative commons */
 	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "license", _("license"));
@@ -394,13 +418,13 @@ static void attribs_init() {
 	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "coverage", _("coverage"));
 	
 	/* types for freshmeat */
-	metadata_register_renderer("fmScreenshot", attribs_render_image, GINT_TO_POINTER(POS_BODY));
+	metadata_register_renderer("fmScreenshot", attribs_render_image, FALSE, GINT_TO_POINTER(POS_BODY));
 	
 	/* types for photo blogs */
-	metadata_register_renderer("photo", ns_photo_render, NULL);
+	metadata_register_renderer("photo", ns_photo_render, FALSE, NULL);
 
 	/* types for slash */
-	metadata_register_renderer("slash", ns_slash_render, NULL);	 /* This one should only be set, not appended */
+	metadata_register_renderer("slash", ns_slash_render, FALSE, NULL);	 /* This one should only be set, not appended */
 }
 
 static void attribs_register_default_renderer(const gchar *strid) {
