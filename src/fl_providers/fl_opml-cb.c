@@ -18,7 +18,10 @@
 
 extern GtkWidget *mainwindow;
 
+extern flPluginPtr fl_plugin_get_info();
+
 static void fl_opml_initial_download_cb(struct request *request) {
+	flPluginPtr	plugin;
 	nodePtr		np = (nodePtr)request->user_data;
 	gchar		*filename;
 
@@ -26,7 +29,9 @@ static void fl_opml_initial_download_cb(struct request *request) {
 	debug2(DEBUG_UPDATE, "initial OPML download finished (%s) data=%d", filename, request->data);
 	g_file_set_contents(filename, request->data, -1, NULL);
 	g_free(filename);
-	fl_opml_handler_initial_load(np);
+	
+	plugin = fl_plugin_get_info();
+	plugin->handler_import(np);
 }
 
 static void on_fl_opml_source_selected(GtkDialog *dialog, gint response_id, gpointer user_data) {
@@ -45,7 +50,7 @@ static void on_fl_opml_source_selected(GtkDialog *dialog, gint response_id, gpoi
 		node_set_title(node, _("New OPML Subscription"));
 		node_add_data(node, FST_PLUGIN, NULL);
 		parent = ui_feedlist_get_target_folder(&pos);
-		feedlist_add_node(parent, node, pos);
+		node_add_child(parent, node, pos);
 
 		/* initial download */
 		request = download_request_new();
