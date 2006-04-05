@@ -153,13 +153,13 @@ void itemlist_load(itemSetPtr itemSet) {
 
 	debug1(DEBUG_GUI, "loading item list with node \"%s\"\n", node_get_title(itemSet->node));
 
-	itemlistLoading = 1;
-
 	/* 1. Don't continue if folder is selected and no
 	   folder viewing is configured. */
 	if((ITEMSET_TYPE_FOLDER == itemSet->type) && 
 	   (0 == getNumericConfValue(FOLDER_DISPLAY_MODE)))
 			return;
+
+	itemlistLoading = 1;
 
 	ui_mainwindow_set_two_pane_toggle(node_get_two_pane_mode(itemSet->node));
 	ui_mainwindow_set_browser_panes(node_get_two_pane_mode(itemSet->node));
@@ -204,21 +204,12 @@ void itemlist_unload(void) {
 		/* 1. Postprocessing for previously selected node, this is necessary
 		   to realize reliable read marking when using condensed mode. It's
 		   important to do this only when the selection really changed. */
-		switch(displayed_itemSet->type) {
-			case ITEMSET_TYPE_FEED:
-			case ITEMSET_TYPE_VFOLDER:
-				if((TRUE == node_get_two_pane_mode(displayed_itemSet->node)))
-					itemset_mark_all_read(displayed_itemSet);
-				break;
-			case ITEMSET_TYPE_FOLDER:
-				// Nothing to do?
-				break;
-		}
+		if((TRUE == node_get_two_pane_mode(displayed_itemSet->node)))
+			itemset_mark_all_read(displayed_itemSet);
 
 		itemlist_check_for_deferred_removal();
 		ui_itemlist_clear();
 	}
-
 
 	displayed_item = NULL;
 	displayed_itemSet = NULL;
