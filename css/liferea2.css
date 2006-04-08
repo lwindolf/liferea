@@ -242,6 +242,25 @@ div.itemshaded { background:#ffe;}
 
 div.itemunshaded { }
 
+li.summaryshaded, li.summaryunshaded { 
+	padding-bottom:6px; 
+}
+
+li.summaryshaded a {
+	display:block;
+	background:#ffe;
+	text-decoration:none;
+	color:black;
+	padding:4px 8px;
+}
+
+li.summaryunshaded a {
+	display:block;
+	text-decoration:none;
+	color:black;
+	padding:4px 8px;
+}
+
 /* style for the HTTP error box at the beginning
    of the feed description */
 table.httperror {
@@ -310,9 +329,11 @@ div.technorati {
 
 table.enclosure {
 	background:#F0F0F0;
-	border:#C0C0C0 solid 1px;
-	margin-bottom:5px;
 	width:100%;
+	margin:0;
+	border:0;
+	border-bottom:#C0C0C0 solid 1px;
+	padding-left:4px;
 }
 
 a.enclosure {

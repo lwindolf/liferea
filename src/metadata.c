@@ -347,7 +347,7 @@ static void attribs_render_enclosure(gpointer data, struct displayset *displayse
 		filename = data;
 
 	escapedLink = encode_uri_string(g_strdup((gchar *)data));
-	tmp = g_markup_printf_escaped("<table class=\"enclosure\" cellspacing=\"0\"><tr><td>"
+	tmp = g_markup_printf_escaped("<table class=\"enclosure\" cellpadding=\"0\" cellspacing=\"0\"><tr><td>"
 	                              "<a href=\"liferea-enclosure://load?%s\">"
 	                              "<img border=\"0\" class=\"enclosurebtn\" src=\"file://" 
 		        	       PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S 

@@ -320,9 +320,11 @@ div.technorati {
 
 table.enclosure {
 	background:#F0F0F0;
-	border:#C0C0C0 solid 1px;
-	margin-bottom:5px;
 	width:100%;
+	margin:0;
+	border:0;
+	border-bottom:#C0C0C0 solid 1px;
+	padding-left:9px;
 }
 
 a.enclosure {

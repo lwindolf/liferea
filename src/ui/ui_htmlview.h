@@ -90,6 +90,13 @@ struct displayset {
 #define UNSHADED_START	"<div class=\"itemunshaded\">"
 #define UNSHADED_END	"</div>"
 
+/* condensed mode summary listings */
+
+#define SUMMARY_START		"<ul class=\"summary\">"
+#define SUMMARY_LINE_SHADED	"<li class=\"summaryshaded\"><b><a href=\"%s\">%s</a></b></li>"
+#define SUMMARY_LINE_UNSHADED	"<li class=\"summaryunshaded\"><a href=\"%s\">%s</a></li>"
+#define SUMMARY_END		"</ul>"
+
 /* HTTP and parsing error text */
 
 #define UPDATE_ERROR_START	"<table cellspacing=\"0\" class=\"httperror\"><tr><td class=\"httperror\">"

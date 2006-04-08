@@ -19,6 +19,8 @@
  *
  */
 
+iframe[src="kanoodle"],
+*[src*="imageads.google"],
 *[href*="doubleclick"] img, *[src*="doubleclick"],
 *[href*="feedstermedia.com/feedster/adclick.php?bannerid="]
 { display:none !important }
