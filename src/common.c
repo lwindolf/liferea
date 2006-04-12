@@ -50,6 +50,7 @@
 #include "support.h"
 #include "common.h"
 #include "conf.h"
+#include "feed.h"
 #include "support.h"
 #include "debug.h"
 
@@ -323,7 +324,7 @@ typedef struct errorCtxt {
  * @param	ctxt	error context
  * @param	msg	printf like format string 
  */
-static void bufferParseError(void *ctxt, const gchar * msg, ...) {
+static void common_buffer_parse_error(void *ctxt, const gchar * msg, ...) {
 	va_list		params;
 	errorCtxtPtr	errors = (errorCtxtPtr)ctxt;
 	gchar		*newmsg;
@@ -392,48 +393,31 @@ xmlEntityPtr common_process_entities(void *ctxt, const xmlChar *name) {
 	return entity;
 }
 
-/**
- * Common function to create a XML DOM object from a given
- * XML buffer. This function sets up a parser context,
- * enables recovery mode and sets up the error handler.
- * 
- * The function returns a XML document pointer or NULL
- * if the document could not be read. It also sets 
- * errormsg to the last error messages on parsing
- * errors. 
- *
- * @param data		XML source
- * @param dataLength the length of the data string in bytes
- * @param errormsg	error buffer
- *
- * @return XML document
- */
-xmlDocPtr parseBuffer(gchar *data, size_t dataLength, gchar **errormsg) {
+xmlDocPtr common_parse_xml_feed(feedParserCtxtPtr fpc) {
 	xmlParserCtxtPtr	ctxt;
 	errorCtxtPtr		errors;
-	xmlDocPtr               doc;
 	
-	g_assert(NULL != data);
+	g_assert(NULL != fpc->data);
 	
 	/* we don't like no data */
-	if(0 == dataLength) {
-		g_warning("parseBuffer(): Empty input!\n");
-		*errormsg = g_strdup("parseBuffer(): Empty input!\n");
+	if(0 == fpc->dataLength) {
+		g_warning("common_parse_xml_feed(): Empty input while parsing \"%s\"!", fpc->node->title);
+		fpc->feed->parseErrors = g_strdup("Empty input!\n");
 		return NULL;
 	}
 	
 	errors = g_new0(struct errorCtxt, 1);
-	xmlSetGenericErrorFunc(errors, (xmlGenericErrorFunc)bufferParseError);
+	xmlSetGenericErrorFunc(errors, (xmlGenericErrorFunc)common_buffer_parse_error);
 	ctxt = xmlNewParserCtxt();
 	ctxt->sax->getEntity = common_process_entities;
-	doc = xmlSAXParseMemory(ctxt->sax, data, dataLength, /* recovery = */ TRUE);
-	if (doc == NULL) {
+	fpc->doc = xmlSAXParseMemory(ctxt->sax, fpc->data, fpc->dataLength, /* recovery = */ TRUE);
+	if(!fpc->doc) {
 		g_warning("xmlReadMemory: Could not parse document!\n");
-		*errormsg = g_strdup_printf(_("xmlReadMemory(): Could not parse document:\n%s%s"), 
+		fpc->feed->parseErrors = g_strdup_printf(_("xmlReadMemory(): Could not parse document:\n%s%s"), 
 		                            errors->buffer != NULL ? errors->buffer : "",
 		                            errors->buffer != NULL ? "\n" : "");
 		g_free(errors->buffer);
-		errors->buffer = *errormsg;
+		errors->buffer = fpc->feed->parseErrors;
 	}
 	
 	/* This seems to reset the errorfunc to its default, so that the
@@ -441,11 +425,12 @@ xmlDocPtr parseBuffer(gchar *data, size_t dataLength, gchar **errormsg) {
 	   errorfunc on occasion. */
 	xmlSetGenericErrorFunc(NULL, NULL);
 
-	*errormsg = errors->buffer;
+	fpc->valid = (NULL == errors->buffer);
+	fpc->feed->parseErrors = errors->buffer;
 	g_free(errors);
 	xmlFreeParserCtxt(ctxt);
 	
-	return doc;
+	return fpc->doc;
 }
 
 /* converts a ISO 8601 time string to a time_t value */

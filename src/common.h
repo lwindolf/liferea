@@ -1,8 +1,8 @@
 /**
  * @file common.h common routines
  *
- * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
- * Copyright (C) 2004,2005 Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 #include <glib.h>
+#include "feed.h"
 
 #define htmlToCDATA(buffer) g_strdup_printf("<![CDATA[%s]]>", buffer)
 
@@ -63,27 +64,52 @@ gchar * extractHTMLNode(xmlNodePtr cur, gint xhtmlMode, const gchar *defaultBase
 void	addToHTMLBufferFast(gchar **buffer, const gchar *string);
 void	addToHTMLBuffer(gchar **buffer, const gchar *string);
 
-/** Common function to create a XML DOM object from a given
-   XML buffer. This function sets up a parser context,
-   enables recovery mode and sets up the error handler.
-   
-   The function returns a XML document and (if errors)
-   occur sets the errormsg to the last error message. */
-xmlDocPtr parseBuffer(gchar *data, size_t dataLength, gchar **errormsg);
+/**
+ * Common function to create a XML DOM object from a given
+ * XML buffer. This function sets up a parser context,
+ * enables recovery mode and sets up the error handler.
+ * 
+ * The function returns a XML document pointer or NULL
+ * if the document could not be read. It also sets 
+ * errormsg to the last error messages on parsing
+ * errors. 
+ *
+ * @param fc	feed parsing context with valid data
+ *
+ * @return XML document
+ */
+xmlDocPtr common_parse_xml_feed(feedParserCtxtPtr fpc);
 
+/**
+ * Parses a ISO8601 date.
+ *
+ * @returns timestamp
+ */
 time_t 	parseISO8601Date(gchar *date);
+
 /**
  * Parses a RFC822 format date. This FAILS if a timezone string is
  * specified such as EDT or EST and that timezone is in daylight
  * savings time.
  *
- * @returns UNIX time (GMT, no daylight savings time)
+ * @returns timestamp (GMT, no daylight savings time)
  */
 time_t 	parseRFC822Date(gchar *date);
+
+/**
+ * Creates a date string from the given timestamp.
+ *
+ * @param time	pointer to timestamp
+ *
+ * @returns time as string
+ */
 gchar *createRFC822Date(const time_t *time);
-/* FIXME: formatDate used by several functions not only
-   to format date column, don't use always date column format!!!
-   maybe gchar * formatDate(time_t, gchar *format) */
+
+/**
+ * FIXME: formatDate used by several functions not only
+ * to format date column, don't use always date column format!!!
+ * maybe gchar * formatDate(time_t, gchar *format) 
+ */
 gchar * formatDate(time_t t);
 
 /**
