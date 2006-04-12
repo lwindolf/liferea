@@ -327,7 +327,9 @@ static htmlviewPluginInfo mozillaInfo = {
 	mozilla_get_zoom,
 	mozilla_set_zoom,
 	mozilla_scroll_pagedown,
-	mozilla_set_proxy
+	mozilla_set_proxy,
+	mozilla_set_offline_mode
 };
 
 DECLARE_HTMLVIEW_PLUGIN(mozillaInfo);
+

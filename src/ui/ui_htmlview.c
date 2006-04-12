@@ -404,7 +404,7 @@ void ui_htmlview_set_zoom(GtkWidget *htmlview, gfloat diff) {
 
 gfloat ui_htmlview_get_zoom(GtkWidget *htmlview) {
 
-	return htmlviewInfo->zoomLevelGet(htmlview);
+	return (htmlviewInfo->zoomLevelGet)(htmlview);
 }
 
 static gboolean ui_htmlview_external_browser_execute(const gchar *cmd, const gchar *uri, gboolean sync) {
@@ -497,14 +497,21 @@ gboolean ui_htmlview_launch_in_external_browser(const gchar *uri) {
 	return done;
 }
 
-gboolean ui_htmlview_scroll() {
+gboolean ui_htmlview_scroll(void) {
 
-	return htmlviewInfo->scrollPagedown(ui_mainwindow_get_active_htmlview());
+	return (htmlviewInfo->scrollPagedown)(ui_mainwindow_get_active_htmlview());
 }
 
 void ui_htmlview_set_proxy(gchar *hostname, int port, gchar *username, gchar *password) {
-	if (htmlviewInfo != NULL && htmlviewInfo->setProxy != NULL)
-		htmlviewInfo->setProxy(hostname, port, username, password);
+
+	if(htmlviewInfo && htmlviewInfo->setProxy)
+		(htmlviewInfo->setProxy)(hostname, port, username, password);
+}
+
+void ui_htmlview_online_status_changed(gboolean online) {
+
+	if(htmlviewInfo && htmlviewInfo->setOffLine)
+		(htmlviewInfo->setOffLine)(!online);
 }
 
 /* -------------------------------------------------------------------- */

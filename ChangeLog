@@ -18,6 +18,9 @@
 	  of headlines
 	* Liferea now catches SIGTERM and saves the feed list
 	  when terminated without using the session manager.
+	* The Mozilla rendering module now respects the 
+	  offline mode of Liferea. This way offline browsing
+	  works correctly. (patch from Don Malcom)
 
 
 2005-12-23  Lars Lindner  <lars.lindner@gmail.com>

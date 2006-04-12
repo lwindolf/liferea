@@ -50,6 +50,8 @@
 #include "nsIDOMWindow.h"
 #include "nsIPrefService.h"
 #include "nsIServiceManager.h"
+#include "nsIIOService.h"
+#include "necko/nsNetCID.h"
 
 extern "C" {
 #include "../callbacks.h"
@@ -258,3 +260,21 @@ mozilla_preference_set_int (const char *preference_name, int new_int_value)
 
 	return FALSE;
 }
+
+/**
+ * Set Mozilla caching to on or off line mode
+ */
+extern "C" gboolean
+mozilla_set_offline_mode (gboolean offline)
+{
+	nsresult rv;
+
+	nsCOMPtr<nsIIOService> io = do_GetService(NS_IOSERVICE_CONTRACTID, &rv);
+	if (NS_SUCCEEDED(rv))
+	{
+		rv = io->SetOffline(offline);
+		if (NS_SUCCEEDED(rv)) return TRUE;
+	}
+	return FALSE;
+}
+

@@ -302,13 +302,17 @@ void download_queue(struct request *new_request) {
 }
 
 void download_set_online(gboolean mode) {
-	if (online != mode) {
-		if((online = mode)) {
+
+	if(online != mode) {
+		online = mode;
+		if(online) {
 			g_mutex_lock(cond_mutex);
 			g_cond_signal(offline_cond);
 			g_mutex_unlock(cond_mutex);
 		}
+		debug1(DEBUG_UPDATE, "Changing online mode to %s", mode?"online":"offline");
 		ui_mainwindow_online_status_changed(mode);
+		ui_htmlview_online_status_changed(mode);
 		ui_tray_update();
 	}
 }

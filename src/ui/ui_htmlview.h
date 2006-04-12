@@ -113,7 +113,7 @@ struct displayset {
 
 /*@}*/
 
-#define HTMLVIEW_API_VERSION 7
+#define HTMLVIEW_API_VERSION 8
 
 typedef struct htmlviewPluginInfo_ htmlviewPluginInfo;
 
@@ -132,7 +132,8 @@ struct htmlviewPluginInfo_ {
 	gfloat		(*zoomLevelGet)		(GtkWidget *widget);
 	void		(*zoomLevelSet)		(GtkWidget *widget, gfloat zoom);
 	gboolean	(*scrollPagedown)	(GtkWidget *widget);
-	void (*setProxy) (gchar *hostname, int port, gchar *username, gchar *password);
+	void		(*setProxy)		(gchar *hostname, int port, gchar *username, gchar *password);
+	void		(*setOffLine)		(gboolean offline);
 };
 
 /* Use this macro to declare a html rendering plugin. */
@@ -266,15 +267,21 @@ gboolean ui_htmlview_launch_in_external_browser(const gchar *uri);
 gboolean ui_htmlview_scroll(void);
 
 /**
- * Function alerts the htmlview that the selected proxy has
- * changed.
+ * Callback for proxy setting changes.
  *
- * @param hostname proxy hostname, or NULL to disable the proxy
- * @param port proxy port
- * @param username proxy authentication username
- * @param password proxy authentication password
+ * @param hostname	proxy hostname, or NULL to disable the proxy
+ * @param port		proxy port
+ * @param username	proxy authentication username
+ * @param password	proxy authentication password
  */
 void ui_htmlview_set_proxy(gchar *hostname, int port, gchar *username, gchar *password);
+
+/**
+ * Callback for online state changes.
+ *
+ * @param online	the new online state
+ */
+void ui_htmlview_change_online_status(gboolean online);
 
 /* interface.c callbacks */
 void on_popup_launch_link_selected(gpointer callback_data, guint callback_action, GtkWidget *widget);

@@ -46,6 +46,7 @@ gboolean mozilla_preference_set_boolean (const char *preference_name,
 					 gboolean  new_boolean_value);
 gboolean mozilla_preference_set_int (const char *preference_name,
 				     int new_int_value);
+gboolean mozilla_set_offline_mode (gboolean offline);
 #ifdef __cplusplus
 }
 #endif 
