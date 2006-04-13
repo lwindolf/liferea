@@ -51,6 +51,7 @@ typedef struct itemSet {
 	GList		*items;		/**< the list of items */
 	struct node	*node;		/**< the node this item set belongs to */
 
+	gboolean	valid;		/**< FALSE if libxml2 recovery mode was used to create this item set*/
 	gulong		lastItemNr;	/**< internal counter used to uniqely assign item id's. */
 } *itemSetPtr;
 
@@ -95,16 +96,6 @@ gchar * itemset_render_all(itemSetPtr itemSet);
  * @returns NULL or the first found item
  */
 itemPtr itemset_lookup_item(itemSetPtr itemSet, struct node *node, gulong nr);
-
-/**
- * Determine wether a given item is to be merged
- * into the itemset or if it was already added.
- *
- * @param itemSet	the itemset
- * @param item		the item to check
- * @returns TRUE if the item is to be merged
- */
-gboolean itemset_merge_check(itemSetPtr itemSet, itemPtr item);
 
 /**
  * Prepends a single item to the given itemset.

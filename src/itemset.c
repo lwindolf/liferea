@@ -196,23 +196,6 @@ itemPtr itemset_lookup_item(itemSetPtr itemSet, nodePtr node, gulong nr) {
 	return NULL;
 }
 
-gboolean itemset_merge_check(itemSetPtr itemSet, itemPtr item) {
-	gboolean toBeMerged = FALSE;
-
-	switch(itemSet->type) {
-		case ITEMSET_TYPE_FEED:
-			toBeMerged = feed_merge_check(itemSet, item);
-			break;
-		case ITEMSET_TYPE_FOLDER:
-		case ITEMSET_TYPE_VFOLDER:
-		default:
-			g_warning("itemset_merge_check(): If this happens something is wrong!");
-			break;
-	}
-
-	return toBeMerged;
-}
-
 void itemset_prepend_item(itemSetPtr itemSet, itemPtr item) {
 
 	item->itemSet = itemSet;

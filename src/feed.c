@@ -298,8 +298,8 @@ feedParserCtxtPtr feed_create_parser_ctxt(void) {
 
 	ctxt = g_new0(struct feedParserCtxt, 1);
 	ctxt->itemSet = (itemSetPtr)g_new0(struct itemSet, 1);
+	ctxt->itemSet->valid = TRUE;
 	ctxt->tmpdata = g_hash_table_new_full(g_str_hash, g_str_equal, NULL, g_free);
-	ctxt->valid = TRUE;
 	return ctxt;
 }
 
@@ -333,7 +333,6 @@ void feed_parse(feedParserCtxtPtr ctxt, gboolean autodiscover) {
 
 	/* try to parse buffer with XML and to create a DOM tree */	
 	do {
-		//if(NULL == (ctxt->doc = parseBuffer(ctxt->data, ctxt->dataLength, &(ctxt->feed->parseErrors)))) {
 		if(NULL == common_parse_xml_feed(ctxt)) {
 			gchar *msg = g_strdup_printf(_("<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"), ctxt->feed->source);
 			addToHTMLBuffer(&(ctxt->feed->parseErrors), msg);
@@ -543,9 +542,9 @@ itemSetPtr feed_load_from_cache(nodePtr node) {
 	ctxt->feed = feed;
 	ctxt->node = node;
 	
-	itemSet = g_new0(struct itemSet, 1);
+	itemSet = ctxt->itemSet;
 	itemSet->type = ITEMSET_TYPE_FEED;
-
+	
 	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", node->id, NULL);
 	debug2(DEBUG_CACHE, "loading cache file \"%s\" (feed \"%s\")", filename, feed_get_source(feed));
 	
@@ -781,15 +780,19 @@ gboolean feed_merge_check(itemSetPtr sp, itemPtr new_ip) {
 	} else {
 		/* if the item was found but has other contents -> update contents */
 		if(!equal) {
-			/* no item_set_new_status() - we don't treat changed items as new items! */
-			item_set_title(old_ip, item_get_title(new_ip));
-			item_set_description(old_ip, item_get_description(new_ip));
-			item_set_time(old_ip, item_get_time(new_ip));
-			old_ip->updateStatus = TRUE;
-			metadata_list_free(old_ip->metadata);
-			old_ip->metadata = new_ip->metadata;
-			vfolder_update_item(old_ip);
-			debug0(DEBUG_VERBOSE, "-> item already existing and was updated");
+			if(new_ip->itemSet->valid) {	
+				/* no item_set_new_status() - we don't treat changed items as new items! */
+				item_set_title(old_ip, item_get_title(new_ip));
+				item_set_description(old_ip, item_get_description(new_ip));
+				item_set_time(old_ip, item_get_time(new_ip));
+				old_ip->updateStatus = TRUE;
+				metadata_list_free(old_ip->metadata);
+				old_ip->metadata = new_ip->metadata;
+				vfolder_update_item(old_ip);
+				debug0(DEBUG_VERBOSE, "-> item already existing and was updated");
+			} else {
+				debug0(DEBUG_VERBOSE, "-> item updates not merged because of parser errors");
+			}
 		} else {
 			debug0(DEBUG_VERBOSE, "-> item already exists");
 		}

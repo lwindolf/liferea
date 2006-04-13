@@ -176,12 +176,32 @@ void node_update_counters(nodePtr node) {
 
 /* generic node item set merging functions */
 
+/**
+ * Determine wether a given item is to be merged
+ * into the itemset or if it was already added.
+ */
+static gboolean node_merge_check(itemSetPtr itemSet, itemPtr item) {
+
+	switch(itemSet->type) {
+		case ITEMSET_TYPE_FEED:
+			return feed_merge_check(itemSet, item);
+			break;
+		case ITEMSET_TYPE_FOLDER:
+		case ITEMSET_TYPE_VFOLDER:
+		default:
+			g_warning("node_merge_check(): If this happens something is wrong!");
+			break;
+	}
+	
+	return FALSE;
+}
+
 static void node_merge_item(nodePtr np, itemPtr ip) {
 
 	debug3(DEBUG_UPDATE, "merging \"%s\" (id=%d) to node \"%s\"", item_get_title(ip), ip->nr, node_get_title(np));
 
 	/* step 1: merge into node type internal data structures */
-	if(itemset_merge_check(np->itemSet, ip)) {
+	if(node_merge_check(np->itemSet, ip)) {
 		debug2(DEBUG_UPDATE, "adding \"%s\" to node \"%s\"...", item_get_title(ip), node_get_title(np));
 
 		/* step 1: add to itemset */

@@ -69,7 +69,6 @@ typedef struct feedParserCtxt {
 	gint		dataLength;	/**< length of the data buffer */
 
 	xmlDocPtr	doc;		/**< the parsed data buffer */
-	gboolean	valid;		/**< FALSE if libxml2 recovery mode was used */
 	gboolean	failed;		/**< TRUE if parsing failed because feed type could not be detected */
 } *feedParserCtxtPtr;
 

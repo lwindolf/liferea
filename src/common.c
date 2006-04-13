@@ -398,6 +398,8 @@ xmlDocPtr common_parse_xml_feed(feedParserCtxtPtr fpc) {
 	errorCtxtPtr		errors;
 	
 	g_assert(NULL != fpc->data);
+	g_assert(NULL != fpc->feed);
+	g_assert(NULL != fpc->itemSet);
 	
 	/* we don't like no data */
 	if(0 == fpc->dataLength) {
@@ -425,7 +427,7 @@ xmlDocPtr common_parse_xml_feed(feedParserCtxtPtr fpc) {
 	   errorfunc on occasion. */
 	xmlSetGenericErrorFunc(NULL, NULL);
 
-	fpc->valid = (NULL == errors->buffer);
+	fpc->itemSet->valid = (NULL == errors->buffer);
 	fpc->feed->parseErrors = errors->buffer;
 	g_free(errors);
 	xmlFreeParserCtxt(ctxt);

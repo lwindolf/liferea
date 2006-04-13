@@ -58,7 +58,7 @@ typedef struct item {
 	time_t		time;			/**< Item's modified date */
 	
 	gulong		nr;			/**< Internal unique item id */
-	struct itemSet	*itemSet;		/**< Pointer to the node containing this item  */
+	struct itemSet	*itemSet;		/**< Pointer to the item set containing this item  */
 	gulong 		sourceNr;		/**< internal unique item number this item was derived from (used for searches and vfolders) */
 	struct node	*sourceNode;		/**< Pointer to the source node from which this item was copied */
 
