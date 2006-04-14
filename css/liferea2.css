@@ -60,7 +60,7 @@ dd {
    the feed description) */
 table.itemhead {
 	margin:0;
-	padding: 2px 2px 2px 2px;
+	padding:0;
 	width:100%;
 	background-color:#DDD;
 	border:0;
