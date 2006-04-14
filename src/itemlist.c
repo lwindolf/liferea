@@ -204,8 +204,8 @@ void itemlist_unload(void) {
 		/* 1. Postprocessing for previously selected node, this is necessary
 		   to realize reliable read marking when using condensed mode. It's
 		   important to do this only when the selection really changed. */
-		if((TRUE == node_get_two_pane_mode(displayed_itemSet->node)))
-			itemset_mark_all_read(displayed_itemSet);
+		if((TRUE == node_get_two_pane_mode(displayed_itemSet->node))) 
+			itemlist_mark_all_read(displayed_itemSet);
 
 		itemlist_check_for_deferred_removal();
 		ui_itemlist_clear();
