@@ -90,7 +90,7 @@ img {
 }
 
 a.favicon img {
-	height:16px;
+	width:16px;
 	border:0;
 	margin-right:5px;
 }
