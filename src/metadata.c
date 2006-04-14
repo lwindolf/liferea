@@ -309,14 +309,17 @@ static void attribs_render_image(gpointer data, struct displayset *displayset, g
 
 static void attribs_render_categories(gpointer data, struct displayset *displayset, gpointer user_data) {
 	GSList	*categories = (GSList *)data;
-	gchar	*escapedStr = NULL;
+	gchar	*escapedStr, *tmp = NULL;
 	
 	while(categories) {
-		addToHTMLBufferFast(&escapedStr, (gchar *)categories->data);
+		addToHTMLBufferFast(&tmp, (gchar *)categories->data);
 		if(categories = g_slist_next(categories))
-			addToHTMLBufferFast(&escapedStr, ",");
+			addToHTMLBufferFast(&tmp, ",");
 	}
+	escapedStr = g_markup_escape_text(tmp, -1);
 	FEED_FOOT_WRITE(displayset->foottable, _("categories"), escapedStr);
+	g_free(escapedStr);
+	g_free(tmp);
 }
 
 static void attribs_render_foot_text(gpointer data, struct displayset *displayset, gpointer user_data) {
