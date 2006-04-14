@@ -32,8 +32,8 @@ struct NsHandler;
 
 /** definition of various namespace tag handler */
 typedef void	(*registerNsFunc) (struct NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash);
-typedef void	(*parseChannelTagFunc)	(feedPtr fp, xmlNodePtr cur);
-typedef void	(*parseItemTagFunc)	(itemPtr ip, xmlNodePtr cur);
+typedef void	(*parseChannelTagFunc)	(feedParserCtxtPtr ctxt, xmlNodePtr cur);
+typedef void	(*parseItemTagFunc)	(feedParserCtxtPtr ctxt, xmlNodePtr cur);
 
 /** struct used to register namespace handler */
 typedef struct NsHandler {
@@ -93,6 +93,6 @@ void metadata_list_free(GSList *metadata);
 
 void metadata_add_xml_nodes(GSList *metadata, xmlNodePtr parentNode);
 
-GSList * metadata_parse_xml_nodes(xmlDocPtr, xmlNodePtr cur);
+GSList * metadata_parse_xml_nodes(xmlDocPtr doc, xmlNodePtr cur);
 
 #endif

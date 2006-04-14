@@ -1,7 +1,7 @@
 /**
  * @file ns_content.c content namespace support
  *
- * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,14 +34,14 @@
    
 */
 
-static void parse_item_tag(itemPtr ip, xmlNodePtr cur) {
+static void parse_item_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 	gchar *tmp;
 
   	if(!xmlStrcmp(cur->name, "encoded")) {
-		tmp = utf8_fix(extractHTMLNode(cur, 0, NULL));
-		if(tmp != NULL)
-			item_set_description(ip, tmp);
-		g_free(tmp);
+		if(tmp = utf8_fix(extractHTMLNode(cur, 0, NULL))) {
+			item_set_description(ctxt->item, tmp);
+			g_free(tmp);
+		}
 	}
 }
 

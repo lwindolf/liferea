@@ -1,7 +1,7 @@
 /**
  * @file ns_cC.c creativeCommon RSS namespace support
  * 
- * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -58,7 +58,7 @@ gchar * parse_tag(xmlNodePtr cur) {
 	gchar	*tmp;
 	
  	if(!xmlStrcmp("license", cur->name)) {
- 		if(NULL != (tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)))) {
+ 		if(tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))) {
 			/* RSS 2.0 module handling */
 			addToHTMLBuffer(&buffer, "<a href=\"");
 			addToHTMLBuffer(&buffer, tmp);
@@ -74,14 +74,14 @@ gchar * parse_tag(xmlNodePtr cur) {
 	return buffer;
 }
 
-static void parse_channel_tag(feedPtr fp, xmlNodePtr cur) {
+static void parse_channel_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 
-	metadata_list_set(&(fp->metadata), "license", parse_tag(cur));
+	metadata_list_set(&(ctxt->feed->metadata), "license", parse_tag(cur));
 }
 
-static void parse_item_tag(itemPtr ip, xmlNodePtr cur) {
+static void parse_item_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 
-	metadata_list_set(&(ip->metadata), "license", parse_tag(cur));
+	metadata_list_set(&(ctxt->item->metadata), "license", parse_tag(cur));
 }
 
 static void ns_cC_register_ns(NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash) {

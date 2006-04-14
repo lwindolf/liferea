@@ -320,8 +320,8 @@ void feed_free_parser_ctxt(feedParserCtxtPtr ctxt) {
  * @param autodiscover	TRUE if auto discovery should be possible
  */
 void feed_parse(feedParserCtxtPtr ctxt, gboolean autodiscover) {
-	gchar			*source;
-	xmlNodePtr 		cur;
+	xmlNodePtr	cur;
+	gchar		*source;
 
 	debug_enter("feed_parse");
 
@@ -339,24 +339,29 @@ void feed_parse(feedParserCtxtPtr ctxt, gboolean autodiscover) {
 			g_free(msg);
 			break;
 		}
+		
 		if(NULL == (cur = xmlDocGetRootElement(ctxt->doc))) {
 			addToHTMLBuffer(&(ctxt->feed->parseErrors), _("<p>Empty document!</p>"));
 			break;
 		}
+		
 		while(cur && xmlIsBlankNode(cur)) {
 			cur = cur->next;
 		}
-		if(NULL == cur->name) {
+		
+		if(!cur->name) {
 			addToHTMLBuffer(&(ctxt->feed->parseErrors), _("<p>Invalid XML!</p>"));
 			break;
 		}
 		
+		if(!cur)
+			break;
+			
 		/* determine the syndication format */
 		GSList *handlerIter = feedhandlers;
 		while(handlerIter) {
 			feedHandlerPtr handler = (feedHandlerPtr)(handlerIter->data);
 			if(handler && handler->checkFormat && (*(handler->checkFormat))(ctxt->doc, cur)) {
-			
 				/* free old temp. parsing data, don't free right after parsing because
 				   it can be used until the last feed request is finished, move me 
 				   to the place where the last request in list otherRequests is 
@@ -422,7 +427,7 @@ void feed_parse(feedParserCtxtPtr ctxt, gboolean autodiscover) {
 		debug1(DEBUG_UPDATE, "discovered feed format: %s", feed_type_fhp_to_str(ctxt->feed->fhp));
 	}
 	
-	if(ctxt->doc != NULL) {
+	if(ctxt->doc) {
 		xmlFreeDoc(ctxt->doc);
 		ctxt->doc = NULL;
 	}

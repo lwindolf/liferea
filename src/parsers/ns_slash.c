@@ -1,7 +1,7 @@
 /**
  * @file ns_slash.c slash namespace support
  *
- * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -52,23 +52,24 @@
 
 */
 
-static void parse_item_tag(itemPtr ip, xmlNodePtr cur) {
+static void parse_item_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 	gchar	*tmp = NULL, *section, *department;
 	
 	if(!xmlStrcmp(BAD_CAST"section", cur->name)) {
-		if(NULL != (tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))))
- 			g_hash_table_insert(ip->tmpdata, "slash:section", tmp);
+		if(tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)))
+ 			g_hash_table_insert(ctxt->item->tmpdata, "slash:section", tmp);
+			
 	} else if(!xmlStrcmp(BAD_CAST"department", cur->name)) {
-		if(NULL != (tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))))
- 			g_hash_table_insert(ip->tmpdata, "slash:department", tmp);
+		if(tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)))
+ 			g_hash_table_insert(ctxt->item->tmpdata, "slash:department", tmp);
 	}
 	
-	if(NULL != tmp) {
-		section = g_hash_table_lookup(ip->tmpdata, "slash:section");
-		department = g_hash_table_lookup(ip->tmpdata, "slash:department");
-		tmp = g_strdup_printf("%s,%s", section != NULL ? section : "",
-						  department != NULL ? department : "" );
-		metadata_list_set(&(ip->metadata), "slash", tmp);
+	if(tmp) {
+		section = g_hash_table_lookup(ctxt->item->tmpdata, "slash:section");
+		department = g_hash_table_lookup(ctxt->item->tmpdata, "slash:department");
+		tmp = g_strdup_printf("%s,%s", section ? section : "",
+		                               department ? department : "" );
+		metadata_list_set(&(ctxt->item->metadata), "slash", tmp);
 		g_free(tmp);
 	}
 }
@@ -112,8 +113,8 @@ NsHandler *ns_slash_getRSSNsHandler(void) {
 	
 	nsh = g_new0(NsHandler, 1);
 	nsh->registerNs		= ns_slash_register_ns;
-	nsh->prefix			= "slash";
-	nsh->parseItemTag		= parse_item_tag;
+	nsh->prefix		= "slash";
+	nsh->parseItemTag	= parse_item_tag;
 
 	return nsh;
 }

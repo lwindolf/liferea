@@ -69,21 +69,18 @@ static void parseChannel(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 	g_assert(NULL != cur);
 			
 	cur = cur->xmlChildrenNode;
-	while(cur != NULL) {
+	while(cur) {
 		if(cur->type != XML_ELEMENT_NODE || cur->name == NULL) {
 			cur = cur->next;
 			continue;
 		}
 		
 		/* check namespace of this tag */
-		if(NULL != cur->ns) {
-			if(((cur->ns->href != NULL) &&
-			    NULL != (nsh = (NsHandler *)g_hash_table_lookup(ns_rss_ns_uri_table, (gpointer)cur->ns->href))) ||
-			   ((cur->ns->prefix != NULL) &&
-			    NULL != (nsh = (NsHandler *)g_hash_table_lookup(rss_nstable, (gpointer)cur->ns->prefix)))) {
-				pf = nsh->parseChannelTag;
-				if(NULL != pf)
-					(*pf)(ctxt->feed, cur);
+		if(cur->ns) {
+			if((cur->ns->href && (nsh = (NsHandler *)g_hash_table_lookup(ns_rss_ns_uri_table, (gpointer)cur->ns->href))) ||
+			   (cur->ns->prefix && (nsh = (NsHandler *)g_hash_table_lookup(rss_nstable, (gpointer)cur->ns->prefix)))) {
+				if(pf = nsh->parseChannelTag)
+					(*pf)(ctxt, cur);
 				cur = cur->next;
 				continue;
 			} else {
@@ -92,51 +89,46 @@ static void parseChannel(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 		} /* explicitly no following else !!! */
 			
 		/* Check for metadata tags */
-		if((tmp2 = g_hash_table_lookup(RssToMetadataMapping, cur->name)) != NULL) {
-			tmp3 = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE));
-			if(tmp3 != NULL) {
+		if(tmp2 = g_hash_table_lookup(RssToMetadataMapping, cur->name)) {
+			if(tmp3 = utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE))) {
 				ctxt->feed->metadata = metadata_list_append(ctxt->feed->metadata, tmp2, tmp3);
 				g_free(tmp3);
 			}
 		}	
 		/* check for specific tags */
 		else if(!xmlStrcmp(cur->name, BAD_CAST"pubDate")) {
- 			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-			if(NULL != tmp) {
+ 			if(tmp = utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1))) {
 				ctxt->feed->metadata = metadata_list_append(ctxt->feed->metadata, "pubDate", tmp);
 				ctxt->feed->time = parseRFC822Date(tmp);
 				g_free(tmp);
 			}
 		} 
 		else if(!xmlStrcmp(cur->name, BAD_CAST"ttl")) {
- 			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE));
- 			if(NULL != tmp) {
+ 			if(tmp = utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE))) {
 				feed_set_default_update_interval(ctxt->feed, atoi(tmp));
 				feed_set_update_interval(ctxt->feed, atoi(tmp));
 				g_free(tmp);
 			}
 		}
 		else if(!xmlStrcmp(cur->name, BAD_CAST"title")) {
- 			tmp = unhtmlize(utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE)));
- 			if(NULL != tmp) {
+ 			if(tmp = unhtmlize(utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE)))) {
 				node_set_title(ctxt->node, tmp);
 				g_free(tmp);
 			}
 		}
 		else if(!xmlStrcmp(cur->name, BAD_CAST"link")) {
- 			tmp = unhtmlize(utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE)));
- 			if(NULL != tmp) {
+ 			if(tmp = unhtmlize(utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE)))) {
 				feed_set_html_url(ctxt->feed, tmp);
 				g_free(tmp);
 			}
 		}
 		else if(!xmlStrcmp(cur->name, BAD_CAST"description")) {
- 			tmp = utf8_fix(extractHTMLNode(cur, 0, NULL));
- 			if(NULL != tmp) {
+ 			if(tmp = utf8_fix(extractHTMLNode(cur, 0, NULL))) {
 				feed_set_description(ctxt->feed, tmp);
 				g_free(tmp);
 			}
 		}
+		
 		cur = cur->next;
 	}
 }
@@ -216,8 +208,6 @@ static gchar* parseImage(xmlNodePtr cur) {
  * @param cur		the root node of the XML document
  */
 static void rss_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
-	xmlNodePtr	item;
-	itemPtr 	ip;
 	gchar		*tmp;
 	short 		rdf = 0;
 	int 		error = 0;
@@ -245,13 +235,15 @@ static void rss_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 		}
 		
 		while(cur) {
-			if(!cur->name) 
+			if(!cur->name) {
+				g_warning("invalid XML: parser returns NULL value -> tag ignored!");
+				cur = cur->next;
 				continue;
+			}
 
 			if((!xmlStrcmp(cur->name, BAD_CAST"channel")) || 
 			   (!xmlStrcmp(cur->name, BAD_CAST"Channel"))) {
 				parseChannel(ctxt, cur);
-				g_assert(NULL != cur);
 				if(0 == rdf)
 					cur = cur->xmlChildrenNode;
 				break;
@@ -272,35 +264,37 @@ static void rss_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 
 			/* save link to channel image */
 			if((!xmlStrcmp(cur->name, BAD_CAST"image"))) {
-				tmp = parseImage(cur);
-				feed_set_image_url(ctxt->feed, tmp);
-				g_free(tmp);
+				if(tmp = parseImage(cur)) {
+					feed_set_image_url(ctxt->feed, tmp);
+					g_free(tmp);
+				}
 				
 			} else if((!xmlStrcmp(cur->name, BAD_CAST"textinput")) ||
 			          (!xmlStrcmp(cur->name, BAD_CAST"textInput"))) {
 				/* no matter if we parse Userland or Netscape, there should be
 				   only one text[iI]nput per channel and parsing the rdf:ressource
 				   one should not harm */
-				if(NULL != (tmp = parseTextInput(cur)))
+				if(tmp = parseTextInput(cur)) {
 					ctxt->feed->metadata = metadata_list_append(ctxt->feed->metadata, "textInput", tmp);
-				g_free(tmp);
+					g_free(tmp);
+				}
 				
 			} else if((!xmlStrcmp(cur->name, BAD_CAST"items"))) { /* RSS 1.1 */
-				item = cur->xmlChildrenNode;
+				xmlNodePtr item = cur->xmlChildrenNode;
 				while(item) {
-					if(ip = parseRSSItem(ctxt->feed, item)) {
-						if(0 == item_get_time(ip))
-							item_set_time(ip, ctxt->feed->time);
-						itemset_append_item(ctxt->itemSet, ip);
+					if(ctxt->item = parseRSSItem(ctxt, cur)) {
+						if(0 == item_get_time(ctxt->item))
+							item_set_time(ctxt->item, ctxt->feed->time);
+						itemset_append_item(ctxt->itemSet, ctxt->item);
 					}
 					item = item->next;
 				}
 			} else if((!xmlStrcmp(cur->name, BAD_CAST"item"))) { /* RSS 1.0, 2.0 */
 				/* collect channel items */
-				if(ip = parseRSSItem(ctxt->feed, cur)) {
-					if(0 == item_get_time(ip))
-						item_set_time(ip, ctxt->feed->time);
-					itemset_append_item(ctxt->itemSet, ip);
+				if(ctxt->item = parseRSSItem(ctxt, cur)) {
+					if(0 == item_get_time(ctxt->item))
+						item_set_time(ctxt->item, ctxt->feed->time);
+					itemset_append_item(ctxt->itemSet, ctxt->item);
 				}
 				
 			}

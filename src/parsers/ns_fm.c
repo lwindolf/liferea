@@ -1,7 +1,7 @@
 /**
  * @file ns_fm.c freshmeat namespace support
  *
- * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,14 +31,13 @@
   output as a HTML image in the item view footer
 */
 
-static void parse_item_tag(itemPtr ip, xmlNodePtr cur) {
+static void parse_item_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 	gchar	*tmp;
 	
 	if(!xmlStrcmp("screenshot_url", cur->name)) {
- 		tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-		if(NULL != tmp) {
+ 		if(tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))) {
 			if(g_utf8_strlen(tmp, -1) > 0)
-				metadata_list_set(&(ip->metadata), "fmScreenshot", tmp);
+				metadata_list_set(&(ctxt->item->metadata), "fmScreenshot", tmp);
 			g_free(tmp);
 		}
 	}
@@ -54,8 +53,8 @@ NsHandler *ns_fm_getRSSNsHandler(void) {
 	
 	nsh = g_new0(NsHandler, 1);
 	nsh->registerNs		= ns_fm_register_ns;
-	nsh->prefix			= "fm";
-	nsh->parseItemTag		= parse_item_tag;
+	nsh->prefix		= "fm";
+	nsh->parseItemTag	= parse_item_tag;
 
 	return nsh;
 }

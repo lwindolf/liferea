@@ -1,7 +1,7 @@
 /*
    mod_aggregation support
    
-   Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
+   Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -41,35 +41,35 @@
   feed info view footer
 */
 
-static void parse_item_tag(itemPtr ip, xmlNodePtr cur) {
+static void parse_item_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 	gchar		*date, *source, *sourceURL, *tmp;
 	gboolean	sourceTag = FALSE;
 	
 	if(!xmlStrcmp("source", cur->name)) {
 		sourceTag = TRUE;
-		g_hash_table_insert(ip->tmpdata, g_strdup("ag:source"), utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
+		g_hash_table_insert(ctxt->item->tmpdata, g_strdup("ag:source"), utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
+		
 	} else if(!xmlStrcmp("sourceURL", cur->name)) {  
 		sourceTag = TRUE;
-		g_hash_table_insert(ip->tmpdata, g_strdup("ag:sourceURL"), utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));	
+		g_hash_table_insert(ctxt->item->tmpdata, g_strdup("ag:sourceURL"), utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));	
 	}
 	
 	if(sourceTag) {
-		source = g_hash_table_lookup(ip->tmpdata, "ag:source");
-		sourceURL = g_hash_table_lookup(ip->tmpdata, "ag:sourceURL");
+		source = g_hash_table_lookup(ctxt->item->tmpdata, "ag:source");
+		sourceURL = g_hash_table_lookup(ctxt->item->tmpdata, "ag:sourceURL");
 		
-		if((NULL != source) && (NULL != sourceURL))
+		if(source && sourceURL)
 			tmp = g_strdup_printf("<a href=\"%s\">%s</a>", sourceURL, source);
 		else if(NULL == source)
 			tmp = g_strdup_printf("<a href=\"%s\">%s</a>", sourceURL, sourceURL);
 		else
 			tmp = g_strdup(source);
 	
-		metadata_list_set(&(ip->metadata), "agSource", tmp);
+		metadata_list_set(&(ctxt->item->metadata), "agSource", tmp);
 	} else if(!xmlStrcmp("timestamp", cur->name)) {
-		tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-		if(NULL != tmp) {
+		if(tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))) {
 			date = ui_itemlist_format_date(parseISO8601Date(tmp));
-			metadata_list_set(&(ip->metadata), "agTimestamp", date);
+			metadata_list_set(&(ctxt->item->metadata), "agTimestamp", date);
 			g_free(date);
 			g_free(tmp);
 		}

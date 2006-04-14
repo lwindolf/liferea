@@ -339,8 +339,9 @@ void ui_htmlview_write(GtkWidget *htmlview, const gchar *string, const gchar *ba
 		buffer = utf8_fix(buffer);
 		(htmlviewInfo->write)(htmlview, buffer, strlen(buffer), baseURL, "application/xhtml+xml");
 		g_free(buffer);
-	} else
+	} else {
 		(htmlviewInfo->write)(htmlview, string, strlen(string), baseURL, "application/xhtml+xml");
+	}
 
 	/* wait a short while and reset focus */
 	if(0 != refocusTimeout)

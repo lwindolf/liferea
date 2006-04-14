@@ -465,8 +465,8 @@ static void ocs_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 			cur = cur->next;
 		}
 		
-		while(cur != NULL) {
-			if(NULL == cur->name) {
+		while(cur) {
+			if(!cur->name) {
 				g_warning("invalid XML: parser returns NULL value -> tag ignored!");
 				cur = cur->next;
 				continue;

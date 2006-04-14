@@ -60,6 +60,7 @@ typedef struct feedParserCtxt {
 	struct feed	*feed;		/**< the feed to be parsed */
 	struct node	*node;		/**< the node the feed belongs to */
 	struct itemSet	*itemSet;	/**< the item set to fill */
+	struct item	*item;		/**< the item currently parsed (or NULL) */
 
 	GHashTable	*tmpdata;	/**< tmp data hash used during stateful parsing */
 

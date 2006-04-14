@@ -1,7 +1,7 @@
 /**
  * @file ns_syn.c syndication namespace support
  * 
- * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -27,7 +27,7 @@
 #include "ns_syn.h"
 
 /* you can find the syn module documentation at
-   http://web.resource.org/rss/1.0/modules/synndication/
+   http://web.resource.org/rss/1.0/modules/syndication/
 
    the tag list
    -------------------------------------------------------
@@ -37,14 +37,14 @@
    -------------------------------------------------------
 */
 
-static void ns_syn_parse_tag(feedPtr fp, xmlNodePtr cur) {
+static void ns_syn_parse_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 	xmlChar	*tmp;
 	gint	period;
 	gint	frequency = 1;
 	
-	period = feed_get_default_update_interval(fp);
+	period = feed_get_default_update_interval(ctxt->feed);
 	if(!xmlStrcmp(cur->name, BAD_CAST"updatePeriod")) {
-		if(NULL != (tmp = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))) {
+		if(tmp = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)) {
 
 			if(!xmlStrcmp(tmp, BAD_CAST"hourly"))
 				period = 60;
@@ -61,7 +61,7 @@ static void ns_syn_parse_tag(feedPtr fp, xmlNodePtr cur) {
 			xmlFree(tmp);
 		}
 	} else if(!xmlStrcmp(cur->name, BAD_CAST"updateFrequency")) {
-		if(NULL != (tmp = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))) {
+		if(tmp = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)) {
 			frequency = atoi(tmp);
 			xmlFree(tmp);
 		}
@@ -71,7 +71,7 @@ static void ns_syn_parse_tag(feedPtr fp, xmlNodePtr cur) {
 	if(0 != frequency)
 		period /= frequency;
 
-	feed_set_default_update_interval(fp, period);
+	feed_set_default_update_interval(ctxt->feed, period);
 }
 
 static void ns_syn_register_ns(NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash) {
@@ -84,8 +84,8 @@ NsHandler *ns_syn_getRSSNsHandler(void) {
 	
 	nsh = g_new0(NsHandler, 1);
 	nsh->registerNs		= ns_syn_register_ns;
-	nsh->prefix			= "syn";
-	nsh->parseChannelTag		= ns_syn_parse_tag;
+	nsh->prefix		= "syn";
+	nsh->parseChannelTag	= ns_syn_parse_tag;
 
 	return nsh;
 }

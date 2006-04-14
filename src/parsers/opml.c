@@ -137,11 +137,9 @@ static gchar * getOutlineContents(xmlNodePtr cur) {
  * Parses given data as an OPML directory
  *
  * @param ctxt		the feed parser context
- * @param cur		the root node of the XML document
  */
 static void opml_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 	xmlNodePtr	child;
-	itemPtr		ip;
 	gchar		*buffer, *line, *tmp;
 	gchar		*headTags[OPML_MAX_TAG];
 	int 		i, error = 0;
@@ -154,26 +152,25 @@ static void opml_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 		   	/* nothing */
 		} else {
 			addToHTMLBuffer(&(ctxt->feed->parseErrors), _("<p>Could not find OPML header!</p>"));
-			xmlFreeDoc(ctxt->doc);
+			xmlFreeDoc(cur->doc);
 			error = 1;
 			break;			
 		}
 
 		cur = cur->xmlChildrenNode;
-		while (cur && xmlIsBlankNode(cur)) {
+		while(cur && xmlIsBlankNode(cur)) {
 			cur = cur->next;
 		}
 
 		memset(headTags, 0, sizeof(gchar *)*OPML_MAX_TAG);		
-		while (cur != NULL) {
+		while(cur) {
 			if(!xmlStrcmp(cur->name, BAD_CAST"head")) {
 				/* check for <head> tags */
 				child = cur->xmlChildrenNode;
-				while(child != NULL) {
+				while(child) {
 					for(i = 0; i < OPML_MAX_TAG; i++) {
 						if(!xmlStrcmp(child->name, (const xmlChar *)opmlTagList[i])) {
-							tmp = utf8_fix(xmlNodeListGetString(ctxt->doc, child->xmlChildrenNode, 1));
-							if(NULL != tmp) {
+							if(tmp = utf8_fix(xmlNodeListGetString(cur->doc, child->xmlChildrenNode, 1))) {
 								g_free(headTags[i]);
 								headTags[i] = tmp;
 							}
@@ -186,21 +183,21 @@ static void opml_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 			if(!xmlStrcmp(cur->name, BAD_CAST"body")) {
 				/* process all <outline> tags */
 				child = cur->xmlChildrenNode;
-				while(child != NULL) {
+				while(child) {
 					if(!xmlStrcmp(child->name, BAD_CAST"outline")) {
 						buffer = NULL;
 						addToHTMLBuffer(&buffer, tmp = getOutlineContents(child));
 						g_free(tmp);
 						
-						ip = item_new();
+						ctxt->item = item_new();
 						if(NULL == (tmp = utf8_fix(xmlGetProp(child, BAD_CAST"text"))))
 							tmp = utf8_fix(xmlGetProp(child, BAD_CAST"title"));
-						item_set_title(ip, tmp);
+						item_set_title(ctxt->item, tmp);
 						g_free(tmp);
-						item_set_description(ip, buffer);
+						item_set_description(ctxt->item, buffer);
 						g_free(buffer);
-						ip->readStatus = TRUE;
-						itemset_append_item(ctxt->itemSet, ip);
+						ctxt->item->readStatus = TRUE;
+						itemset_append_item(ctxt->itemSet, ctxt->item);
 					}
 					child = child->next;
 				}

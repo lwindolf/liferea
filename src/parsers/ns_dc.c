@@ -1,7 +1,7 @@
 /**
  * @file ns_dc.c Dublin Core support for RSS, Atom and OCS
  *
- * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -205,22 +205,17 @@ static void parseOCSChannelTag(gpointer cp, xmlNodePtr cur)	{ parseOCSTag(TYPE_C
 static void parseOCSFormatTag(gpointer fp, xmlNodePtr cur)	{ parseOCSTag(TYPE_FORMAT, fp, cur); }
 
 /* generic tag parsing (used for RSS and Atom) */
-static void parse_tag(gpointer obj, xmlNodePtr cur, gboolean isFeedTag) {
-	feedPtr		fp = (feedPtr)obj;
-	itemPtr		ip = (itemPtr)obj;
+static void parse_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur, gboolean isFeedTag) {
 	int 		i, j;
 	gchar		*date, *mapping, *value, *tmp;
 	gboolean	isNotEmpty;
 	
-	g_assert(NULL != cur);
-
 	/* special handling for the ISO 8601 date item tags */
 	if(!isFeedTag) {
 		if(!xmlStrcmp((const xmlChar *)"date", cur->name)) {
- 			date = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
- 			if(NULL != date) {
+ 			if(date = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))) {
 				i = parseISO8601Date(date);
-				ip->time = i;
+				ctxt->item->time = i;
 				g_free(date);
 			}
 			return;
@@ -242,12 +237,12 @@ static void parse_tag(gpointer obj, xmlNodePtr cur, gboolean isFeedTag) {
 				}
 
 				if(isNotEmpty) {
-					if(TRUE == isFeedTag) {
-						if(NULL != (mapping = mapToFeedMetadata[i]))
-							fp->metadata = metadata_list_append(fp->metadata, mapping, value);
+					if(isFeedTag) {
+						if(mapping = mapToFeedMetadata[i])
+							ctxt->feed->metadata = metadata_list_append(ctxt->feed->metadata, mapping, value);
 					} else {
-						if(NULL != (mapping = mapToItemMetadata[i]))
-							ip->metadata = metadata_list_append(ip->metadata, mapping, value);
+						if(mapping = mapToItemMetadata[i])
+							ctxt->item->metadata = metadata_list_append(ctxt->item->metadata, mapping, value);
 					}
 				} 
 				g_free(value);
@@ -257,8 +252,8 @@ static void parse_tag(gpointer obj, xmlNodePtr cur, gboolean isFeedTag) {
 	}
 }
 
-static void parse_channel_tag(feedPtr fp, xmlNodePtr cur)	{ parse_tag((gpointer)fp, cur, TRUE); }
-static void parse_item_tag(itemPtr ip, xmlNodePtr cur)		{ parse_tag((gpointer)ip, cur, FALSE); }
+static void parse_channel_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur)	{ parse_tag(ctxt, cur, TRUE); }
+static void parse_item_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur)	{ parse_tag(ctxt, cur, FALSE); }
 
 static void ns_dc_register_ns(NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash) {
 	g_hash_table_insert(prefixhash, "dc", nsh);

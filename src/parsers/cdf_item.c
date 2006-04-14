@@ -1,7 +1,7 @@
 /**
  * @file cdf_item.c CDF item parsing 
  *
- * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,14 +37,8 @@ static GHashTable *CDFToMetadataMapping = NULL;
    use... The spec says to use 'A' instead. */
 
 /* method to parse standard tags for each item element */
-itemPtr parseCDFItem(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur) {
+itemPtr parseCDFItem(feedParserCtxtPtr ctxt, xmlNodePtr cur, CDFChannelPtr cp) {
 	gchar		*tmp = NULL, *tmp2, *tmp3;
-	itemPtr		ip;
-
-	if((NULL == cur) || (NULL == doc)) {
-		g_warning("internal error: XML document pointer NULL! This should not happen!\n");
-		return NULL;
-	}
 
 	if(CDFToMetadataMapping == NULL) {
 		CDFToMetadataMapping = g_hash_table_new(g_str_hash, g_str_equal);
@@ -52,72 +46,69 @@ itemPtr parseCDFItem(feedPtr fp, CDFChannelPtr cp, xmlDocPtr doc, xmlNodePtr cur
 		g_hash_table_insert(CDFToMetadataMapping, "category", "category");
 	}
 		
-	ip = item_new();
+	ctxt->item = item_new();
 	
 	/* save the item link */
-	tmp = utf8_fix(xmlGetProp(cur, BAD_CAST"href"));
-	if(tmp == NULL)
+	if(!(tmp = utf8_fix(xmlGetProp(cur, BAD_CAST"href"))))
 		tmp = utf8_fix(xmlGetProp(cur, BAD_CAST"HREF"));
-	if(tmp != NULL)
-		item_set_source(ip, tmp);
-	g_free(tmp);
+	if(tmp) {
+		item_set_source(ctxt->item, tmp);
+		g_free(tmp);
+	}
 	
 	cur = cur->xmlChildrenNode;
-	while(cur != NULL) {
+	while(cur) {
 
-		if(NULL == cur->name || cur->type != XML_ELEMENT_NODE) {
+		if(!cur->name || cur->type != XML_ELEMENT_NODE) {
 			cur = cur->next;
 			continue;
 		}
 		
 		/* save first link to a channel image */
-		tmp = g_ascii_strdown(cur->name, -1);
-		if((tmp2 = g_hash_table_lookup(CDFToMetadataMapping, tmp)) != NULL) {
-			tmp3 = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE));
-			if(tmp3 != NULL) {
-				ip->metadata = metadata_list_append(ip->metadata, tmp2, tmp3);
-				g_free(tmp3);
+		if(tmp = g_ascii_strdown(cur->name, -1)) {
+			if(tmp2 = g_hash_table_lookup(CDFToMetadataMapping, tmp)) {
+				if(tmp3 = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE))) {
+					ctxt->item->metadata = metadata_list_append(ctxt->item->metadata, tmp2, tmp3);
+					g_free(tmp3);
+				}
 			}
+			g_free(tmp);
 		}
-		g_free(tmp);
 		
 		if((!xmlStrcasecmp(cur->name, BAD_CAST"logo"))) {
 			
-			tmp = utf8_fix(xmlGetProp(cur, BAD_CAST"href"));
-			if (tmp == NULL)
+			if(!(tmp = utf8_fix(xmlGetProp(cur, BAD_CAST"href"))))
 				tmp = utf8_fix(xmlGetProp(cur, BAD_CAST"HREF"));
-			if (tmp != NULL)
-				ip->metadata = metadata_list_append(ip->metadata, "imageUrl", tmp);
-			g_free(tmp);
-		} else
-		if((!xmlStrcasecmp(cur->name, BAD_CAST"title"))) {
-			tmp = unhtmlize(utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
-			if (tmp != NULL)
-				item_set_title(ip, tmp);
-			g_free(tmp);
-		} else
-		if((!xmlStrcasecmp(cur->name, BAD_CAST"abstract"))) {
-			tmp = convertToHTML(utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
-			if (tmp != NULL)
-				item_set_description(ip, tmp);
-			g_free(tmp);
-		} else
-		if((!xmlStrcasecmp(cur->name, BAD_CAST"a"))) {
-			tmp = utf8_fix(xmlGetProp(cur, BAD_CAST"href"));
-			if (tmp == NULL)
+			if(tmp) {
+				ctxt->item->metadata = metadata_list_append(ctxt->item->metadata, "imageUrl", tmp);
+				g_free(tmp);
+			}
+			
+		} else if((!xmlStrcasecmp(cur->name, BAD_CAST"title"))) {
+			if(tmp = unhtmlize(utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)))) {
+				item_set_title(ctxt->item, tmp);
+				g_free(tmp);
+			}
+			
+		} else if((!xmlStrcasecmp(cur->name, BAD_CAST"abstract"))) {
+			if(tmp = convertToHTML(utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)))) {
+				item_set_description(ctxt->item, tmp);
+				g_free(tmp);
+			}
+			
+		} else if((!xmlStrcasecmp(cur->name, BAD_CAST"a"))) {
+			if(!(tmp = utf8_fix(xmlGetProp(cur, BAD_CAST"href"))))
 				tmp = utf8_fix(xmlGetProp(cur, BAD_CAST"HREF"));
-			if (tmp != NULL)
-				item_set_source(ip, tmp);
-			g_free(tmp);
+			if(tmp) {
+				item_set_source(ctxt->item, tmp);
+				g_free(tmp);
+			}
 		}
 		
 		cur = cur->next;
 	}
-	
-	/* FIXME: Where is i->time set? */
-	/*item_set_time(ip, i->time);*/
 
-	ip->readStatus = FALSE;
+	ctxt->item->readStatus = FALSE;
 	
-	return ip;
+	return ctxt->item;
 }

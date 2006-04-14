@@ -1,7 +1,7 @@
 /**
  * @file ns_photo.c photo blog namespace support
  *
- * Copyright (C) 2004 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2006 Lars Lindner <lars.lindner@gmx.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -56,34 +56,32 @@ void ns_photo_render(gpointer data, struct displayset *displayset, gpointer user
 	g_free(thumbnail);
 }
 
-static void parse_item_tag(itemPtr ip, xmlNodePtr cur) {
+static void parse_item_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 	gchar	*tmp, *thumbnail, *imgsrc;
 	
 	if(!xmlStrcmp("thumbnail", cur->name) || !xmlStrcmp("thumb", cur->name)) {
- 		tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-		if(NULL != tmp) {
+ 		if(tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))) {
 			if(g_utf8_strlen(tmp, -1) > 0)
-	 			g_hash_table_insert(ip->tmpdata, "photo:thumbnail", tmp);
+	 			g_hash_table_insert(ctxt->item->tmpdata, "photo:thumbnail", tmp);
 			else
 				g_free(tmp);
 		}
 	} else if(!xmlStrcmp("imgsrc", cur->name)) {
- 		tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-		if(NULL != tmp) {
+ 		if(tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))) {
 			if(g_utf8_strlen(tmp, -1) > 0)
-	 			g_hash_table_insert(ip->tmpdata, "photo:imgsrc", tmp);				
+	 			g_hash_table_insert(ctxt->item->tmpdata, "photo:imgsrc", tmp);				
 			else
 				g_free(tmp);
 		}
 	}
 	
-	thumbnail = g_hash_table_lookup(ip->tmpdata, "photo:thumbnail");
-	imgsrc = g_hash_table_lookup(ip->tmpdata, "photo:imgsrc");
-	if(NULL == thumbnail) {
+	thumbnail = g_hash_table_lookup(ctxt->item->tmpdata, "photo:thumbnail");
+	imgsrc = g_hash_table_lookup(ctxt->item->tmpdata, "photo:imgsrc");
+	if(!thumbnail) {
 		/* we do nothing */
 	} else {
-		tmp = g_strdup_printf("%s,%s", thumbnail, (NULL != imgsrc)?imgsrc:"");
-		metadata_list_set(&(ip->metadata), "photo", tmp);
+		tmp = g_strdup_printf("%s,%s", thumbnail, imgsrc?imgsrc:"");
+		metadata_list_set(&(ctxt->item->metadata), "photo", tmp);
 		g_free(tmp);
 	}
 }

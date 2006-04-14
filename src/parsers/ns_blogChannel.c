@@ -218,7 +218,7 @@ static void parse_channel_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 		g_free(output);
 	}
 
-	if(NULL != string)
+	if(string)
 		xmlFree(string);
 }
 
@@ -232,9 +232,9 @@ NsHandler *ns_bC_getRSSNsHandler(void) {
 	NsHandler 	*nsh;
 	
 	nsh = g_new0(NsHandler, 1);
-	nsh->registerNs = ns_blogChannel_register_ns;
-	nsh->prefix			= "blogChannel";
-	nsh->parseChannelTag		= parse_channel_tag;
+	nsh->registerNs 	= ns_blogChannel_register_ns;
+	nsh->prefix		= "blogChannel";
+	nsh->parseChannelTag	= parse_channel_tag;
 
 	return nsh;
 }
