@@ -32,6 +32,7 @@ AC_ARG_ENABLE(dbus,    AS_HELP_STRING([--disable-dbus],[compile without DBUS sup
 AC_ARG_ENABLE(gtkhtml2,AS_HELP_STRING([--disable-gtkhtml2],[don't compile the gtkhtml2 backend]),,enable_gtkhtml2=yes)
 AC_ARG_ENABLE(gecko,   AS_HELP_STRING([--disable-gecko],[don't compile the Gecko backend]),,enable_gecko=yes)
 AC_ARG_ENABLE(gecko,   AS_HELP_STRING([--enable-gecko=ARG],[specify which Gecko provider to use ("mozilla" or "firefox")]),,enable_gecko=yes)
+dnl AC_ARG_ENABLE(gecko,   AS_HELP_STRING([--enable-gecko=ARG],[specify which Gecko provider to use ("mozilla", "firefox" or "xulrunner")]),,enable_gecko=yes)
 AC_ARG_ENABLE(gnutls,  AS_HELP_STRING([--enable-gnutls],[Attempt to use GNUTLS for SSL support @<:@default=yes@:>@]),,enable_gnutls=yes)
 AC_ARG_ENABLE(libnotify,AS_HELP_STRING([--disable-libnotify],[don't compile the libnotify plugin]),,enable_libnotify=yes)
 
@@ -125,6 +126,12 @@ if test "x$enable_mozilla" != "xyes" -a \( "x$enable_gecko" = "xyes" -o "x$enabl
    PKG_CHECK_MODULES(MOZILLA, $gecko_provider-gtkmozembed, enable_mozilla=yes, enable_mozilla=no)
    AC_MSG_RESULT($gecko_provider: $enable_mozilla)
 fi
+dnl if test "x$enable_mozilla" != "xyes" -a \( "x$enable_gecko" = "xyes" -o "x$enable_gecko" = "xxulrunner" \) ; then
+dnl    gecko_provider=xulrunner
+dnl    PKG_CHECK_MODULES(MOZILLA, $gecko_provider-gtkmozembed, enable_mozilla=yes, enable_mozilla=no)
+dnl    AC_MSG_RESULT($gecko_provider: $enable_mozilla)
+dnl fi
+
 
 AM_CONDITIONAL(WITH_MOZILLA, test "x$enable_mozilla" = "xyes")
 MOZILLA_LIB_DIR_SEARCH=
