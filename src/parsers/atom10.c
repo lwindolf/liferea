@@ -453,7 +453,7 @@ static itemPtr atom10_parse_entry(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 		
 		
 		if(0 != xmlStrcmp(cur->ns->href, ATOM10_NS)) {
-			g_warning("unknown namespace found in feed");
+			g_warning("unknown namespace %s found in atom feed %s", cur->ns->href, node_get_title(ctxt->node));
 			cur = cur->next;
 			continue;
 		}
@@ -657,7 +657,7 @@ static void atom10_parse_feed(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 			}
 
 			if(xmlStrcmp(cur->ns->href, ATOM10_NS)) {
-				g_warning("unknown namespace found in feed\n");
+				g_warning("unknown namespace %s found in atom feed %s", cur->ns->href, node_get_title(ctxt->node));
 				cur = cur->next;
 				continue;
 			}
