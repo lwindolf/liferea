@@ -93,6 +93,14 @@ void metadata_list_free(GSList *metadata);
 
 void metadata_add_xml_nodes(GSList *metadata, xmlNodePtr parentNode);
 
-GSList * metadata_parse_xml_nodes(xmlDocPtr doc, xmlNodePtr cur);
+/**
+ * Parses the given XML node and returns a new metadata
+ * attribute value list.
+ *
+ * @param cur	the XML node to parse
+ *
+ * @returns list of values
+ */
+GSList * metadata_parse_xml_nodes(xmlNodePtr cur);
 
 #endif

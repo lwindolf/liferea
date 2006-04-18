@@ -185,6 +185,7 @@ static xmlNodePtr common_html_doc_find_body(xmlDocPtr doc) {
 	return node;
 }
 
+/* Extract XHTML from the children of the passed node. */
 gchar * extractHTMLNode(xmlNodePtr cur, gint xhtmlMode, const gchar *defaultBase) {
 	xmlBufferPtr	buf;
 	gchar		*result = NULL;
@@ -231,6 +232,36 @@ gchar * extractHTMLNode(xmlNodePtr cur, gint xhtmlMode, const gchar *defaultBase
 
 	xmlBufferFree(buf);
 	xmlFreeDoc(newDoc);
+	return result;
+}
+
+/* Convert the given string to proper XHTML content.*/
+gchar * common_text_to_xhtml(const gchar *text) {
+	gchar		*result = NULL;
+	xmlDocPtr	doc = NULL;
+	xmlBufferPtr	buf;
+	
+	if(!text)
+		return g_strdup("");
+	
+	text = g_strstrip(text);	/* stripping whitespaces to make empty string detection easier */
+	if(*text) {
+		doc = common_parse_html(text, strlen(text));
+		
+		buf = xmlBufferCreate();
+		xmlNodeDump(buf, doc, xmlDocGetRootElement(doc), 0, 0 );
+
+		if(xmlBufferLength(buf) > 0)
+			result = xmlCharStrdup(xmlBufferContent(buf));
+		else
+			result = g_strdup("");
+
+		xmlBufferFree(buf);
+		xmlFreeDoc(doc);
+	} else {
+		result = g_strdup(text);
+	}
+	
 	return result;
 }
 

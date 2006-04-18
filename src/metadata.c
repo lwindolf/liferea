@@ -217,10 +217,10 @@ void metadata_add_xml_nodes(GSList *metadata, xmlNodePtr parentNode) {
 	xmlNodePtr attribute;
 	xmlNodePtr metadataNode = xmlNewChild(parentNode, NULL, "attributes", NULL);
 	
-	while(list != NULL) {
+	while(list) {
 		struct pair *p = (struct pair*)list->data; 
 		GSList *list2 = p->data;
-		while (list2 != NULL) {
+		while(list2) {
 			attribute = xmlNewTextChild(metadataNode, NULL, "attribute", list2->data);
 			xmlNewProp(attribute, "name", p->attrib->strid);
 			list2 = list2->next;
@@ -229,17 +229,17 @@ void metadata_add_xml_nodes(GSList *metadata, xmlNodePtr parentNode) {
 	}
 }
 
-GSList * metadata_parse_xml_nodes(xmlDocPtr doc, xmlNodePtr cur) {
+GSList * metadata_parse_xml_nodes(xmlNodePtr cur) {
 	xmlNodePtr	attribute = cur->xmlChildrenNode;
 	GSList 		*metadata = NULL;
 	
-	while(attribute != NULL) {
-		if (attribute->type == XML_ELEMENT_NODE &&
+	while(attribute) {
+		if(attribute->type == XML_ELEMENT_NODE &&
 		    !xmlStrcmp(attribute->name, BAD_CAST"attribute")) {
-			xmlChar *name = xmlGetProp(attribute, "name");
-			if (name != NULL) {
-				gchar *value = xmlNodeListGetString(doc, attribute->xmlChildrenNode, TRUE);
-				if(value != NULL) {
+			xmlChar *name = xmlGetProp(attribute, BAD_CAST"name");
+			if(name) {
+				gchar *value = xmlNodeListGetString(cur->doc, attribute->xmlChildrenNode, TRUE);
+				if(value) {
 					metadata = metadata_list_append(metadata, name, value);
 					xmlFree(value);
 				}

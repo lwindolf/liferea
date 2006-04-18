@@ -50,7 +50,8 @@ gchar * unxmlize(gchar *string);
 /* parses a XML node and returns its contents as a string */
 /* gchar * parseHTML(htmlNodePtr cur); */
 
-/** to extract XHTML from the children of the passed node
+/** 
+ * Extract XHTML from the children of the passed node.
  *
  * @param cur         parent of the nodes that will be returned
  * @param xhtmlMode   If 0, reads escaped HTML.
@@ -61,6 +62,18 @@ gchar * unxmlize(gchar *string);
  */
 gchar * extractHTMLNode(xmlNodePtr cur, gint xhtmlMode, const gchar *defaultBase);
 
+/**
+ * Convert the given string to proper XHTML content.
+ * Note: this function does not respect relative URLs
+ * and is to be used for cache migration 1.0 -> 1.1 only!
+ *
+ * @param text	    usually an entity escaped HTML string
+ *
+ * @returns a new valid XHTML string
+ */
+gchar * common_text_to_xhtml(const gchar *text);
+
+/** simple concatention helper functions */
 void	addToHTMLBufferFast(gchar **buffer, const gchar *string);
 void	addToHTMLBuffer(gchar **buffer, const gchar *string);
 

@@ -57,6 +57,9 @@
 #include "ui/ui_mainwindow.h"
 #include "notification/notif_plugin.h"
 
+/** used for migration purposes: 1.0.x didn't specify a version */
+#define FEED_CACHE_VERSION	"1.1"
+
 /* auto detection lookup table */
 static GSList *feedhandlers = NULL;
 
@@ -155,7 +158,7 @@ gpointer feed_import(nodePtr node, const gchar *typeStr, xmlNodePtr cur, gboolea
 	if(NULL == (source = xmlGetProp(cur, BAD_CAST"xmlUrl")))
 		source = xmlGetProp(cur, BAD_CAST"xmlurl");	/* e.g. for AmphetaDesk */
 	
-	if(NULL != source) {
+	if(source) {
 		fp = feed_new(NULL, NULL);
 		fp->fhp = feed_type_str_to_fhp(typeStr);
 
@@ -188,7 +191,7 @@ gpointer feed_import(nodePtr node, const gchar *typeStr, xmlNodePtr cur, gboolea
 		xmlFree(intervalStr);
 
 		title = xmlGetProp(cur, BAD_CAST"title");
-		if(title == NULL || !xmlStrcmp(title, BAD_CAST"")) {
+		if(!title || !xmlStrcmp(title, BAD_CAST"")) {
 			if(title)
 				xmlFree(title);
 			title = xmlGetProp(cur, BAD_CAST"text");
@@ -199,20 +202,20 @@ gpointer feed_import(nodePtr node, const gchar *typeStr, xmlNodePtr cur, gboolea
 
 		/* Set the feed cache limit */
 		cacheLimitStr = xmlGetProp(cur, BAD_CAST"cacheLimit");
-		if(cacheLimitStr != NULL && !xmlStrcmp(cacheLimitStr, "unlimited")) {
+		if(cacheLimitStr && !xmlStrcmp(cacheLimitStr, "unlimited"))
 			fp->cacheLimit = CACHE_UNLIMITED;
-		} else
+		else
 			fp->cacheLimit = parse_integer(cacheLimitStr, CACHE_DEFAULT);
 		xmlFree(cacheLimitStr);
 	
 		/* Obtain the htmlUrl */
 		htmlUrlStr = xmlGetProp(cur, BAD_CAST"htmlUrl");
-		if(htmlUrlStr != NULL && 0 != xmlStrcmp(htmlUrlStr, ""))
+		if(htmlUrlStr && !xmlStrcmp(htmlUrlStr, ""))
 			feed_set_html_url(fp, htmlUrlStr);
 		xmlFree(htmlUrlStr);
 	
 		tmp = xmlGetProp(cur, BAD_CAST"noIncremental");
-		if(NULL != tmp && !xmlStrcmp(tmp, BAD_CAST"true"))
+		if(tmp && !xmlStrcmp(tmp, BAD_CAST"true"))
 			fp->noIncremental = TRUE;
 		xmlFree(tmp);
 	
@@ -220,20 +223,20 @@ gpointer feed_import(nodePtr node, const gchar *typeStr, xmlNodePtr cur, gboolea
 		lastPollStr = xmlGetProp(cur, BAD_CAST"lastPollTime");
 		fp->lastPoll.tv_sec = parse_long(lastPollStr, 0L);
 		fp->lastPoll.tv_usec = 0L;
-		if(lastPollStr != NULL)
+		if(lastPollStr)
 			xmlFree(lastPollStr);
 	
 		lastPollStr = xmlGetProp(cur, BAD_CAST"lastFaviconPollTime");
 		fp->lastFaviconPoll.tv_sec = parse_long(lastPollStr, 0L);
 		fp->lastFaviconPoll.tv_usec = 0L;
-		if(lastPollStr != NULL)
+		if(lastPollStr)
 			xmlFree(lastPollStr);
 
 		/* enclosure auto download flag */
 		tmp = xmlGetProp(cur, BAD_CAST"encAutoDownload");
-		if(NULL != tmp && !xmlStrcmp(tmp, BAD_CAST"true"))
+		if(tmp && !xmlStrcmp(tmp, BAD_CAST"true"))
 			fp->encAutoDownload = TRUE;
-		if(tmp != NULL)
+		if(tmp)
 			xmlFree(tmp);
 
 		debug5(DEBUG_CACHE, "import feed: title=%s source=%s typeStr=%s interval=%d lastpoll=%ld", 
@@ -468,6 +471,7 @@ void feed_save_to_cache(nodePtr node) {
 	if(NULL != (doc = xmlNewDoc("1.0"))) {	
 		if(NULL != (feedNode = xmlNewDocNode(doc, NULL, "feed", NULL))) {
 			xmlDocSetRootElement(doc, feedNode);
+			xmlNewProp(feedNode, "version", BAD_CAST FEED_CACHE_VERSION);
 
 			xmlNewTextChild(feedNode, NULL, "feedTitle", node_get_title(node));
 			xmlNewTextChild(feedNode, NULL, "feedSource", feed_get_source(feed));
@@ -538,6 +542,7 @@ itemSetPtr feed_load_from_cache(nodePtr node) {
 	feedParserCtxtPtr	ctxt;
 	feedPtr			feed = (feedPtr)(node->data);
 	itemSetPtr		itemSet;
+	gboolean		migrateCache = TRUE;
 	gchar			*filename, *tmp;
 	int			error = 0;
 
@@ -584,7 +589,13 @@ itemSetPtr feed_load_from_cache(nodePtr node) {
 		while(cur && xmlIsBlankNode(cur))
 			cur = cur->next;
 
-		if(xmlStrcmp(cur->name, BAD_CAST"feed")) {
+		if(!xmlStrcmp(cur->name, BAD_CAST"feed")) {
+			xmlChar *version;			
+			if(version = xmlGetProp(cur, BAD_CAST"version")) {
+				migrateCache = xmlStrcmp(BAD_CAST FEED_CACHE_VERSION, version);
+				xmlFree(version);
+			}
+		} else {
 			g_free(feed->parseErrors);
 			feed->parseErrors = NULL;
 			addToHTMLBuffer(&(feed->parseErrors), g_strdup_printf(_("<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"), filename));
@@ -626,15 +637,21 @@ itemSetPtr feed_load_from_cache(nodePtr node) {
 				feed_set_lastmodified(feed, tmp);
 
 			else if(!xmlStrcmp(cur->name, BAD_CAST"item")) 
-				itemset_append_item(itemSet, item_parse_cache(ctxt->doc, cur));
+				itemset_append_item(itemSet, item_parse_cache(cur, migrateCache));
 
 			else if(!xmlStrcmp(cur->name, BAD_CAST"attributes")) 
-				feed->metadata = metadata_parse_xml_nodes(ctxt->doc, cur);
+				feed->metadata = metadata_parse_xml_nodes(cur);
 
 			g_free(tmp);	
 			cur = cur->next;
 		}
 	} while(FALSE);
+	
+	if(migrateCache) {
+		node->needsCacheSave = TRUE;
+		g_print("enabling cache migration from 1.0 for feed \"%s\"\n", node_get_title(node));	
+		feed_set_description(feed, common_text_to_xhtml(feed_get_description(feed)));
+	}
 
 	if(0 != error)
 		ui_mainwindow_set_status_bar(_("There were errors while parsing cache file \"%s\""), filename);

@@ -1,8 +1,8 @@
 /**
  * @file item.h common item handling
  * 
- * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
- * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -132,15 +132,23 @@ void		item_set_time(itemPtr ip, const time_t time);
 void		item_set_id(itemPtr ip, const gchar * id);
 
 /**
- * Parse an xml tree and return a new itempointer generated 
+ * Parse an xml tree and return a new item generated 
  * from the current node's information.
+ *
+ * @param cur		the XML node to parse
+ * @param migrateCache	TRUE if cache migration requested
+ *
+ * @returns a new item structure
  */
-itemPtr item_parse_cache(xmlDocPtr doc, xmlNodePtr cur);
+itemPtr item_parse_cache(xmlNodePtr cur, gboolean migrateCache);
 
 /**
  * Does the opposite of item_parse_cache. Generates a XML node
  * to be saved into the feeds cache document. 
+ *
+ * @param item		the item to save to cache
+ * @param feedNode	the XML node write to
  */
-void item_save(itemPtr ip, xmlNodePtr feedNode);
+void item_save(itemPtr item, xmlNodePtr feedNode);
 
 #endif

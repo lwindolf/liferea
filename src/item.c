@@ -289,70 +289,73 @@ gchar *item_render(itemPtr ip) {
 	return buffer;
 }
 
-itemPtr item_parse_cache(xmlDocPtr doc, xmlNodePtr cur) {
-	itemPtr 	ip;
+itemPtr item_parse_cache(xmlNodePtr cur, gboolean migrateCache) {
+	itemPtr 	item;
 	gchar		*tmp;
 	
-	g_assert(NULL != doc);
 	g_assert(NULL != cur);
 	
-	ip = item_new();
-	ip->popupStatus = FALSE;
-	ip->newStatus = FALSE;
+	item = item_new();
+	item->popupStatus = FALSE;
+	item->newStatus = FALSE;
 	
 	cur = cur->xmlChildrenNode;
-	while(cur != NULL) {
+	while(cur) {
 		
 		if(cur->type != XML_ELEMENT_NODE ||
-		   NULL == (tmp = utf8_fix(xmlNodeListGetString(doc, cur->xmlChildrenNode, 1)))) {
+		   NULL == (tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)))) {
 			cur = cur->next;
 			continue;
 		}
 		
 		if(!xmlStrcmp(cur->name, BAD_CAST"title"))
-			item_set_title(ip, tmp);
+			item_set_title(item, tmp);
 			
 		else if(!xmlStrcmp(cur->name, BAD_CAST"description"))
-			item_set_description(ip, tmp);
+			item_set_description(item, tmp);
 			
 		else if(!xmlStrcmp(cur->name, BAD_CAST"source"))
-			item_set_source(ip, tmp);
+			item_set_source(item, tmp);
 			
 		else if(!xmlStrcmp(cur->name, BAD_CAST"real_source_url"))
-			item_set_real_source_url(ip, tmp);
+			item_set_real_source_url(item, tmp);
 			
 		else if(!xmlStrcmp(cur->name, BAD_CAST"real_source_title"))
-			item_set_real_source_title(ip, tmp);
+			item_set_real_source_title(item, tmp);
 			
 		else if(!xmlStrcmp(cur->name, BAD_CAST"id"))
-			item_set_id(ip, tmp);
+			item_set_id(item, tmp);
 			
 		else if(!xmlStrcmp(cur->name, BAD_CAST"nr"))
-			ip->nr = atol(tmp);
+			item->nr = atol(tmp);
 
 		else if(!xmlStrcmp(cur->name, BAD_CAST"newStatus"))
-			ip->newStatus = (0 == atoi(tmp))?FALSE:TRUE;
+			item->newStatus = (0 == atoi(tmp))?FALSE:TRUE;
 			
 		else if(!xmlStrcmp(cur->name, BAD_CAST"readStatus"))
-			ip->readStatus = (0 == atoi(tmp))?FALSE:TRUE;
+			item->readStatus = (0 == atoi(tmp))?FALSE:TRUE;
 			
 		else if(!xmlStrcmp(cur->name, BAD_CAST"updateStatus"))
-			ip->updateStatus = (0 == atoi(tmp))?FALSE:TRUE;
+			item->updateStatus = (0 == atoi(tmp))?FALSE:TRUE;
 
 		else if(!xmlStrcmp(cur->name, BAD_CAST"mark")) 
-			ip->flagStatus = (1 == atoi(tmp))?TRUE:FALSE;
+			item->flagStatus = (1 == atoi(tmp))?TRUE:FALSE;
 			
 		else if(!xmlStrcmp(cur->name, BAD_CAST"time"))
-			item_set_time(ip, atol(tmp));
+			item_set_time(item, atol(tmp));
 			
 		else if(!xmlStrcmp(cur->name, BAD_CAST"attributes"))
-			ip->metadata = metadata_parse_xml_nodes(doc, cur);
+			item->metadata = metadata_parse_xml_nodes(cur);
 		
 		g_free(tmp);	
 		cur = cur->next;
 	}
+	
+	if(migrateCache) {
+		item_set_description(item, common_text_to_xhtml(item_get_description(item)));
+	}
 
-	return ip;
+	return item;
 }
 
 void item_save(itemPtr ip, xmlNodePtr feedNode) {
