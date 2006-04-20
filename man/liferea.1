@@ -1,4 +1,4 @@
-.TH LIFEREA "1" "February 1, 2005"
+.TH LIFEREA "1" "April 20, 2006"
 .SH NAME
 Liferea \- RSS/RDF and Atom news aggregator
 
@@ -22,26 +22,34 @@ display a option overview and exit
 .B \-\-mainwindow\-state=\fISTATE\fR
 Start Liferea with its mainwindow in STATE: shown, iconified, hidden
 .TP
+.B \-\-debug\-all
+Print debugging messages of all types
+.TP
 .B \-\-debug\-cache
 Print debugging messages for the cache handling
 .TP
 .B \-\-debug\-conf
 Print debugging messages of the configuration handling
 .TP
-.B \-\-debug\-update
-Print debugging messages of the feed update processing
+.B \-\-debug\-gui
+Print debugging messages of all GUI functions
+.TP
+.B \-\-debug\-html
+Enables HTML rendering debugging. Each time Liferea
+renders HTML output it will also dump the generated
+HTML into ~/.liferea_1.1/output.xhtml.
 .TP
 .B \-\-debug\-parsing
 Print debugging messages of all parsing functions
 .TP
-.B \-\-debug\-gui
-Print debugging messages of all GUI functions
+.B \-\-debug\-plugins
+Print debugging messages for the plugin loading
 .TP
 .B \-\-debug\-trace
 Print debugging messages when entering/leaving functions
 .TP
-.B \-\-debug\-all
-Print debugging messages of all types
+.B \-\-debug\-update
+Print debugging messages of the feed update processing
 .TP
 .B \-\-debug\-verbose
 Print verbose debugging messages
@@ -64,7 +72,7 @@ Contains stylesheets for feed display
 /usr/share/liferea/opml/
 Contains default feedlists
 .TP
-~/.liferea/
+~/.liferea_1.1/
 Contains user feedlist and feed cache
 .SH AUTHOR
-This manual page was written by Lars Lindner <lars.lindner@gmx.net>.
+This manual page was written by Lars Lindner <lars.lindner@gmail.com>.
