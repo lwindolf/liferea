@@ -2,7 +2,7 @@
  * @file ui_htmlview.h common interface for browser module implementations
  * and module loading functions
  *
- * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,7 +51,7 @@ struct displayset {
 /* RSS feed/item output definitions (some are used by OCS too!) */
 
 #define HEAD_START		"<table cellspacing=\"0\" class=\"itemhead\">"
-#define HEAD_LINE		"<tr><td valign=\"center\" class=\"headleft\"><b>%s</b></td><td class=\"headright\" valign=\"center\" width=\"100%\">%s</td></tr>"
+#define HEAD_LINE		"<tr><td valign=\"middle\" class=\"headleft\"><b>%s</b></td><td class=\"headright\" valign=\"middle\" width=\"100%\">%s</td></tr>"
 #define HEAD_END		"</table>"
 
 #define FEED_FOOT_TABLE_START	"<table class=\"feedfoot\">"
@@ -69,7 +69,7 @@ struct displayset {
 						}
 
 #define	IMG_START	"<img class=\"feed\" src=\""
-#define IMG_END		"\" /><br />"
+#define IMG_END		"\" alt=\"\"/><br />"
 
 #define TECHNORATI_LINK	"<div class=\"technorati\"><a href=\"http://www.technorati.com/cosmos/search.html?url=%s\"><img src=\"%s\" border=\"0\" alt=\"[Technorati]\" /></a></div>"
 
