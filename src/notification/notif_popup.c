@@ -27,6 +27,7 @@
 #include <gtk/gtk.h>
 #include <glib.h>
 #include "conf.h"
+#include "debug.h"
 #include "node.h"
 #include "item.h"
 #include "callbacks.h"
@@ -381,11 +382,12 @@ void notifRemoveWin(void) {
 
 static void notif_popup_enable(void) { 
 
-	g_print("popups enabled\n");
+	debug0(DEBUG_GUI, "simple popups enabled");
 }
 
 static void notif_popup_disable(void) {
-	g_print("popups disabled\n");
+
+	debug0(DEBUG_GUI, "simple popups disabled");
 	notifRemoveWin();
 }
 
