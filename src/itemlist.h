@@ -66,9 +66,11 @@ void itemlist_load(itemSetPtr sp);
 
 /**
  * Clears the item list. Unsets the currently
- * displayed item set.
+ * displayed item set. Optionally marks every item read.
+ *
+ * @param markRead	if TRUE all items are marked as read
  */
-void itemlist_unload(void);
+void itemlist_unload(gboolean markRead);
 
 /**
  * Changes the 2/3-pane mode property of the item list.

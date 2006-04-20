@@ -449,8 +449,7 @@ void ui_mainwindow_init(int mainwindowState) {
 				   "</div>"));
 
 	addToHTMLBuffer(&buffer, _("<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black;margin: 5px 0 5px 0\">"
-	                           "This is a highly unstable version of Liferea 1.1. This code might "
-				   "be in an unusable state. It should be used by developers only! "
+	                           "This is an unstable version of Liferea 1.1. It should not be used for production yet! "
 				   "If you want to use Liferea regularily please download the last "
 				   "stable version from SourceForge!"
 				   "</div>"));

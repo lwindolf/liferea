@@ -49,7 +49,7 @@ void on_feedlist_drag_end(GtkWidget *widget, GdkDragContext  *drag_context, gpoi
 	feedlist_foreach(ui_node_update);
 	ui_node_check_if_folder_is_empty(NULL);
 	feedlist_schedule_save();
-	ui_itemlist_prefocus();
+	//ui_itemlist_prefocus();
 }
 
 /* ---------------------------------------------------------------------------- */

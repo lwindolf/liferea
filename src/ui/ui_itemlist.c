@@ -395,7 +395,7 @@ void ui_itemlist_prefocus(void) {
 	/* prevent marking as unread before focussing, which leads to a selection */
 	gtk_widget_grab_focus(itemlist);
 
-	if(NULL != (itemselection = gtk_tree_view_get_selection(GTK_TREE_VIEW(itemlist))))
+	if(itemselection = gtk_tree_view_get_selection(GTK_TREE_VIEW(itemlist)))
 		gtk_tree_selection_unselect_all(itemselection);
 
 	gtk_widget_grab_focus(focus_widget);		
@@ -624,12 +624,13 @@ void on_popup_copy_URL_clipboard(void) {
 void on_itemlist_selection_changed(GtkTreeSelection *selection, gpointer data) {
 	GtkTreeIter 	iter;
 	GtkTreeModel	*model;
-	itemPtr		ip = NULL;
+	itemPtr		item = NULL;
 
 	if(gtk_tree_selection_get_selected(selection, &model, &iter))
-		ip = ui_itemlist_get_item_from_iter(&iter);
+		item = ui_itemlist_get_item_from_iter(&iter);
 
-	itemlist_selection_changed(ip);
+	if(item)
+		itemlist_selection_changed(item);
 }
 
 void itemlist_sort_column_changed_cb(GtkTreeSortable *treesortable, gpointer user_data) {

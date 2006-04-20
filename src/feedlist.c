@@ -110,7 +110,7 @@ void feedlist_remove_node(nodePtr node) {
 
 	if(node == selectedNode) {
 		ui_htmlview_clear(ui_mainwindow_get_active_htmlview());
-		itemlist_unload();
+		itemlist_unload(FALSE);
 		ui_feedlist_select(NULL);
 	}
 
@@ -225,7 +225,7 @@ void feedlist_selection_changed(nodePtr node) {
 			feedlist_reset_new_item_count();
 
 		/* Unload visible items. */
-		itemlist_unload();
+		itemlist_unload(TRUE);
 
 		/* Unload previously displayed node. */
 		if(displayed_node)

@@ -21,6 +21,7 @@
 
 #include "itemset.h"
 #include <string.h>
+#include "conf.h"
 #include "debug.h"
 #include "node.h"
 #include "feed.h"
@@ -87,83 +88,103 @@ gchar * itemset_render_all(itemSetPtr itemSet) {
 	gchar		*buffer = NULL;
 	gchar		*summary = NULL;
 	guint		missingContent = 0;
-	gboolean	summaryNeeded = FALSE;
+	gboolean	summaryNeeded;
+	gboolean	loadReadItems;
 	GList		*iter;
-
 
 	debug_enter("itemset_render_all");
 
+	/* determine wether we want to filter read items */
+	switch(itemSet->type) {
+		ITEMSET_TYPE_FOLDER:
+			loadReadItems = !getBooleanConfValue(FOLDER_DISPLAY_HIDE_READ);
+			break;
+		default:
+			loadReadItems = TRUE;
+			break;
+	}
+	
+	/* for future: here we could apply an item list filter... */
+
 	ui_htmlview_start_output(&buffer, itemset_get_base_url(itemSet), FALSE);
 
-	for(iter = itemSet->items; NULL != iter; iter = g_list_next(iter)) {
-		gchar *desc = ((itemPtr)iter->data)->description;
-		if(!desc || (0 == strlen(desc)))
-			missingContent++;
-	}
-	
-	if(missingContent > 3) {
-		gchar *tmp, *tmp2;
-		const gchar *htmlurl = itemset_get_base_url(itemSet);
-		
-		summaryNeeded = TRUE;
-		addToHTMLBufferFast(&summary, HEAD_START);
-		
-		/* -- empty feed line */
-		addToHTMLBufferFast(&summary, HEAD_LINE);
-	
-		/* -- item title line (with the feed as title) */
-		if(htmlurl)
-			tmp = g_markup_printf_escaped("<span class=\"itemtitle\"><a href=\"%s\">%s</a></span>",
-		                		      htmlurl, node_get_title(itemSet->node));
-		else
-			tmp = g_markup_printf_escaped("<span class=\"itemtitle\">%s</span>",
-		                		      node_get_title(itemSet->node));
+	if(ITEMSET_TYPE_FOLDER != itemSet->type) {
+		/* Output optimization for feeds without item content */
+		for(iter = itemSet->items; NULL != iter; iter = g_list_next(iter)) {
+			gchar *desc = ((itemPtr)iter->data)->description;
+			if(!desc || (0 == strlen(desc)))
+				missingContent++;
+		}
 
-		tmp2 = g_strdup_printf(HEAD_LINE, _("Feed:"), tmp);
-		g_free(tmp);
-		addToHTMLBufferFast(&summary, tmp2);
-		g_free(tmp2);		
-		addToHTMLBufferFast(&summary, HEAD_END);
-		addToHTMLBufferFast(&summary, SUMMARY_START);
+		if(missingContent > 3) {
+			gchar *tmp, *tmp2;
+			const gchar *htmlurl = itemset_get_base_url(itemSet);
+
+			summaryNeeded = TRUE;
+			addToHTMLBufferFast(&summary, HEAD_START);
+
+			/* -- empty feed line */
+			addToHTMLBufferFast(&summary, HEAD_LINE);
+
+			/* -- item title line (with the feed as title) */
+			if(htmlurl)
+				tmp = g_markup_printf_escaped("<span class=\"itemtitle\"><a href=\"%s\">%s</a></span>",
+		                			      htmlurl, node_get_title(itemSet->node));
+			else
+				tmp = g_markup_printf_escaped("<span class=\"itemtitle\">%s</span>",
+		                			      node_get_title(itemSet->node));
+
+			tmp2 = g_strdup_printf(HEAD_LINE, _("Feed:"), tmp);
+			g_free(tmp);
+			addToHTMLBufferFast(&summary, tmp2);
+			g_free(tmp2);		
+			addToHTMLBufferFast(&summary, HEAD_END);
+			addToHTMLBufferFast(&summary, SUMMARY_START);
+		} else {
+			summaryNeeded = FALSE;
+		}
 	}
-		
+	
 	iter = itemSet->items;
 	while(iter) {	
 		itemPtr item = (itemPtr)iter->data;
-		const gchar *baseUrl = item_get_base_url(item);
-		gchar *tmp;
-
-		if(item->description && (0 < strlen(item->description))) {
 		
-			/* do detailed output */		
-			if(baseUrl) {
-				addToHTMLBufferFast(&buffer, "<div href='");
-				addToHTMLBufferFast(&buffer, baseUrl);
-				addToHTMLBufferFast(&buffer, "'>");
+		if((FALSE == item->readStatus) || (TRUE == loadReadItems)) {
+			const gchar *baseUrl = item_get_base_url(item);
+			gchar *tmp;
+
+			if(item->description && (0 < strlen(item->description))) {
+
+				/* do detailed output */		
+				if(baseUrl) {
+					addToHTMLBufferFast(&buffer, "<div href='");
+					addToHTMLBufferFast(&buffer, baseUrl);
+					addToHTMLBufferFast(&buffer, "'>");
+				}
+
+				if(item->readStatus) 
+					addToHTMLBuffer(&buffer, UNSHADED_START);
+				else
+					addToHTMLBuffer(&buffer, SHADED_START);
+
+				tmp = item_render(item);			
+				addToHTMLBuffer(&buffer, tmp);
+				g_free(tmp);
+
+				if(item->readStatus)
+					addToHTMLBuffer(&buffer, UNSHADED_END);
+				else
+					addToHTMLBuffer(&buffer, SHADED_END);
+
+				if(baseUrl)
+					addToHTMLBufferFast(&buffer, "</div>");
+			} else {
+				/* do summary output */
+				tmp = g_markup_printf_escaped(item->readStatus?SUMMARY_LINE_UNSHADED:SUMMARY_LINE_SHADED, 
+			                        	      item_get_source(item), item_get_title(item));
+				addToHTMLBuffer(&summary, tmp);
+				g_free(tmp);
 			}
-
-			if(item->readStatus) 
-				addToHTMLBuffer(&buffer, UNSHADED_START);
-			else
-				addToHTMLBuffer(&buffer, SHADED_START);
-
-			tmp = item_render(item);			
-			addToHTMLBuffer(&buffer, tmp);
-			g_free(tmp);
-
-			if(item->readStatus)
-				addToHTMLBuffer(&buffer, UNSHADED_END);
-			else
-				addToHTMLBuffer(&buffer, SHADED_END);
-
-			if(baseUrl)
-				addToHTMLBufferFast(&buffer, "</div>");
-		} else {
-			/* do summary output */
-			tmp = g_markup_printf_escaped(item->readStatus?SUMMARY_LINE_UNSHADED:SUMMARY_LINE_SHADED, 
-			                              item_get_source(item), item_get_title(item));
-			addToHTMLBuffer(&summary, tmp);
-			g_free(tmp);
 		}
 
 		iter = g_list_next(iter);

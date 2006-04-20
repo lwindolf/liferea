@@ -117,8 +117,7 @@ void itemlist_merge_itemset(itemSetPtr itemSet) {
 	}
 
 	/* update HTML view according to mode */
-	if((ITEMSET_TYPE_FOLDER != displayed_itemSet->type) &&
-	   (TRUE == itemlist_get_two_pane_mode())) {
+	if(TRUE == itemlist_get_two_pane_mode()) {
 		/* in 2 pane mode all items are shown at once
 		   so after merging it needs to be redisplayed */
 		buffer = itemset_render_all(displayed_itemSet);
@@ -198,13 +197,13 @@ void itemlist_load(itemSetPtr itemSet) {
 	debug_exit("itemlist_load");
 }
 
-void itemlist_unload(void) {
+void itemlist_unload(gboolean markRead) {
 
 	if(displayed_itemSet) {
 		/* 1. Postprocessing for previously selected node, this is necessary
 		   to realize reliable read marking when using condensed mode. It's
 		   important to do this only when the selection really changed. */
-		if((TRUE == node_get_two_pane_mode(displayed_itemSet->node))) 
+		if(markRead && (TRUE == node_get_two_pane_mode(displayed_itemSet->node))) 
 			itemlist_mark_all_read(displayed_itemSet);
 
 		itemlist_check_for_deferred_removal();
@@ -458,6 +457,8 @@ gboolean itemlist_get_two_pane_mode(void) { return twoPaneMode; }
 
 void on_toggle_condensed_view_activate(GtkToggleAction *menuitem, gpointer user_data) { 
 	nodePtr		node;
+
+	displayed_item = NULL;	/* important because it influences rendering and unread marking */
 	
 	twoPaneMode = gtk_toggle_action_get_active(menuitem);
 
@@ -469,6 +470,7 @@ void on_toggle_condensed_view_activate(GtkToggleAction *menuitem, gpointer user_
 		   change from feed description to list of items and vica 
 		   versa */
 		gtk_widget_grab_focus(lookup_widget(mainwindow, "feedlist"));
+		itemlist_unload(FALSE);
 		itemlist_load(node->itemSet);
 	}
 }

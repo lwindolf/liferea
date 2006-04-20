@@ -298,7 +298,7 @@ void ui_feedlist_select(nodePtr np) {
 		/* The code to clear the itemlist when something is
 		   unselected is disabled... so we must clear the itemlist
 		   explicitly here*/
-		itemlist_unload();
+		itemlist_unload(TRUE);
 	}
 	
 	gtk_window_set_focus(GTK_WINDOW(mainwindow), focused);
