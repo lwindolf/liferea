@@ -74,8 +74,9 @@ gchar * extractHTMLNode(xmlNodePtr cur, gint xhtmlMode, const gchar *defaultBase
 gchar * common_text_to_xhtml(const gchar *text);
 
 /** simple concatention helper functions */
-void	addToHTMLBufferFast(gchar **buffer, const gchar *string);
+//void	addToHTMLBufferFast(gchar **buffer, const gchar *string);
 void	addToHTMLBuffer(gchar **buffer, const gchar *string);
+#define addToHTMLBufferFast addToHTMLBuffer
 
 /**
  * Common function to create a XML DOM object from a given

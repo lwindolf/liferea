@@ -327,7 +327,11 @@ void ui_htmlview_write(GtkWidget *htmlview, const gchar *string, const gchar *ba
 	if(baseURL == NULL)
 		baseURL = "file:///";
 
-	g_assert(htmlview != NULL);
+	if(debug_level & DEBUG_HTML) {
+		gchar *filename = common_create_cache_filename(NULL, "output", "xhtml");
+		g_file_set_contents(filename, string, -1, NULL);
+		g_free(filename);
+	}
 	
 	if(!g_utf8_validate(string, -1, NULL)) {
 		gchar *buffer = g_strdup(string);

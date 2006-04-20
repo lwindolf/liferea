@@ -59,7 +59,7 @@ void notification_plugin_load(pluginPtr plugin, GModule *handle) {
 	iter = notificationPlugins;
 	while(iter) {
 		notificationPluginPtr tmp = ((pluginPtr)iter->data)->symbols;
-		g_print("type old:%d new:%d\n", tmp->type,notificationPlugin->type);
+
 		if(tmp->type == notificationPlugin->type) {
 			if(tmp->priority < notificationPlugin->priority) {
 				debug0(DEBUG_PLUGINS, "plugin is not better than already loaded one, dropping it...");

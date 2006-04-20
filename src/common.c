@@ -60,21 +60,24 @@ static gchar *lifereaUserPath = NULL;
 
 gchar * convertCharSet(gchar * from_encoding, gchar * to_encoding, gchar * string);
 
-void addToHTMLBufferFast(gchar **buffer, const gchar *string) {
-	
-	if(NULL == string)
-		return;
-	
-	if(NULL != *buffer) {
-		gulong oldlength = strlen(*buffer);
-		gulong newlength = strlen(string);
-		gulong allocsize = (((oldlength+newlength+1L)/512L)+1L)*512L; /* Round up to nearest 512 KB */
-		*buffer = g_realloc(*buffer, allocsize);
-		g_memmove(&((*buffer)[oldlength]), string, newlength+1L );
-	} else {
-		*buffer = g_strdup(string);
-	}
-}
+// Do we really need these functions? What about g_string_append()
+//void addToHTMLBufferFast(gchar **buffer, const gchar *string) {
+//	
+//	if(NULL == string)
+//		return;
+//	
+//	if(NULL != *buffer) {
+//		gulong oldlength = strlen(*buffer);
+//		gulong newlength = strlen(string);
+//		gulong allocsize = (((oldlength+newlength+1L)/512L)+1L)*512L; /* Round up to nearest 512 KB */
+//		*buffer = g_realloc(*buffer, allocsize);
+//		g_memmove(&((*buffer)[oldlength]), string, newlength+1L );
+//	} else {
+//		*buffer = g_strdup(string);
+//	}
+//}
+
+#define addToHTMLBufferFast addToHTMLBuffer
 
 void addToHTMLBuffer(gchar **buffer, const gchar *string) {
 	
