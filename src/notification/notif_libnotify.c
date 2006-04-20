@@ -246,6 +246,8 @@ static void notif_libnotify_node_removed(nodePtr node) {
 
 static struct notificationPlugin npi = {
 	NOTIFICATION_PLUGIN_API_VERSION,
+	NOTIFICATION_TYPE_POPUP,
+	10,
 	notif_libnotify_init,
 	notif_libnotify_deinit,
 	notif_libnotify_enable,

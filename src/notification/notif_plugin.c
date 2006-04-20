@@ -34,6 +34,7 @@ typedef	notificationPluginPtr (*infoFunc)();
 void notification_plugin_load(pluginPtr plugin, GModule *handle) {
 	notificationPluginPtr	notificationPlugin;
 	infoFunc		notification_plugin_get_info;
+	GSList 			*iter;
 
 	if(g_module_symbol(handle, "notification_plugin_get_info", (void*)&notification_plugin_get_info)) {
 		/* load notification provider plugin info */
@@ -53,11 +54,30 @@ void notification_plugin_load(pluginPtr plugin, GModule *handle) {
 		debug1(DEBUG_PLUGINS, "mandatory symbols missing: \"%s\"\n", plugin->name);
 		return;
 	}
+	
+	/* Check for already loaded plugin of same type and with higher priority */
+	iter = notificationPlugins;
+	while(iter) {
+		notificationPluginPtr tmp = ((pluginPtr)iter->data)->symbols;
+		g_print("type old:%d new:%d\n", tmp->type,notificationPlugin->type);
+		if(tmp->type == notificationPlugin->type) {
+			if(tmp->priority < notificationPlugin->priority) {
+				debug0(DEBUG_PLUGINS, "plugin is not better than already loaded one, dropping it...");
+				return;
+			} else {
+				debug0(DEBUG_PLUGINS, "plugin is better, dropping already loaded one");
+				break;
+			}
+		}
+		iter = g_slist_next(iter);
+	}
+
+	if(iter)	
+		notificationPlugins = g_slist_remove(notificationPlugins, iter->data);
 
 	/* Allow the plugin to initialize */
 	if((*notificationPlugin->plugin_init)()) {
-		debug1(DEBUG_PLUGINS, "found notification plugin: %s", plugin->name);
-		
+	
 		/* assign the symbols so the caller will accept the plugin */
 		plugin->symbols = notificationPlugin;
 		

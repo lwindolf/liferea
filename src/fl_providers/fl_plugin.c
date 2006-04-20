@@ -88,8 +88,6 @@ void fl_plugin_load(pluginPtr plugin, GModule *handle) {
 		return;
 	}
 
-	debug1(DEBUG_PLUGINS, "found feed list plugin: %s", flPlugin->name);
-
 	/* allow the plugin to initialize */
 	(*flPlugin->plugin_init)();
 

@@ -28,10 +28,28 @@
 #include "item.h"
 #include "plugin.h"
 
-#define NOTIFICATION_PLUGIN_API_VERSION 1
+enum {
+	NOTIFICATION_TYPE_POPUP,
+	NOTIFICATION_TYPE_TRAY,
+};
+
+#define NOTIFICATION_PLUGIN_API_VERSION 2
 
 typedef struct notificationPlugin {
 	unsigned int	api_version;
+	
+	/** 
+	 * The notification type. The type/priority
+	 * combination is used to solve conflicts between 
+	 * alternative notification plugins providing the	 
+	 * same functionality.
+	 */
+	unsigned int	type;
+	
+	/**
+	 * The priority of the plugin. Higher means more suited.
+	 */
+	unsigned int	priority;
 	
 	/**
 	 * Called once during plugin initialization.

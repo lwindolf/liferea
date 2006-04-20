@@ -399,6 +399,8 @@ static void notif_popup_deinit(void) { }
 
 static struct notificationPlugin npi = {
 	NOTIFICATION_PLUGIN_API_VERSION,
+	NOTIFICATION_TYPE_POPUP,
+	1,
 	notif_popup_init,
 	notif_popup_deinit,
 	notif_popup_enable,
