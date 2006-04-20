@@ -33,10 +33,6 @@
 #include "parsers/ns_photo.h"
 #include "ui/ui_htmlview.h"
 
-/* HTML definitions used for standard metadata rendering */
-#define	IMG_START	"<img class=\"feed\" src=\""
-#define IMG_END		"\" /><br />"
-
 /** rendering method lookup hash */
 static GHashTable *strtoattrib;
 
@@ -354,7 +350,7 @@ static void attribs_render_enclosure(gpointer data, struct displayset *displayse
 	                              "<a href=\"liferea-enclosure://load?%s\">"
 	                              "<img border=\"0\" class=\"enclosurebtn\" src=\"file://" 
 		        	       PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S 
-		        	       "pixmaps" G_DIR_SEPARATOR_S "arrow.png\"/></a></td><td>"
+		        	       "pixmaps" G_DIR_SEPARATOR_S "arrow.png\" alt=\"\" /></a></td><td>"
 		        	       "&nbsp;<a class=\"enclosure\" href=\"%s\">%s</a>"
 		        	       "</td></tr></table>", escapedLink, (gchar *)data, filename);
 	addToHTMLBufferFast(&(displayset->head), tmp);

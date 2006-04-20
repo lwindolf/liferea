@@ -200,7 +200,7 @@ gchar *item_render(itemPtr ip) {
 	/*  -- Item line */
 	if(np->icon) {
 		tmp2 = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", np->id, "png");
-		tmp = g_markup_printf_escaped("<a class=\"favicon\" href=\"%s\"><img src=\"file://%s\" alt=\"\"/></a>", htmlurl, tmp2);
+		tmp = g_markup_printf_escaped("<a class=\"favicon\" href=\"%s\"><img src=\"file://%s\" alt=\"\" /></a>", htmlurl, tmp2);
 		g_free(tmp2);
 	} else {
 		tmp2 = g_strdup(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "available.png");
