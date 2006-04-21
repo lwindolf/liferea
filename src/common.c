@@ -840,9 +840,8 @@ char* strsep (char **stringp, const char *delim) {
 #endif /*HAVE_STRSEP*/
 
 /* Taken from gaim 24 June 2004, copyrighted by the gaim developers
-   under the GPL, etc.... */
-gchar *strreplace(const char *string, const char *delimiter,
-			   const char *replacement) {
+   under the GPL, etc.... It was slightly modified to free the passed string */
+gchar *strreplace(gchar *string, const gchar *delimiter, const gchar *replacement) {
 	gchar **split;
 	gchar *ret;
 
@@ -853,6 +852,7 @@ gchar *strreplace(const char *string, const char *delimiter,
 	split = g_strsplit(string, delimiter, 0);
 	ret = g_strjoinv(replacement, split);
 	g_strfreev(split);
+	g_free(string);
 
 	return ret;
 }

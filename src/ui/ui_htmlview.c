@@ -423,48 +423,41 @@ static gboolean ui_htmlview_external_browser_execute(const gchar *cmd, const gch
   
 	/* If the command is using the X remote API we must
 	   escaped all ',' in the URL */
-	if(NULL != strstr(cmd, "-remote"))
-		tmpUri = strreplace(uri, ",", "%2C");
-	else
-		tmpUri = g_strdup(uri);
+	tmpUri = strreplace(g_strdup(uri), ",", "%2C");
 
 	/* If there is no %s in the command, then just append %s */
-	if(NULL == strstr(cmd, "%s"))
-		tmp = g_strdup_printf("%s %%s", cmd);
-	else
+	if(strstr(cmd, "%s"))
 		tmp = g_strdup(cmd);
-
+	else
+		tmp = g_strdup_printf("%s %%s", cmd);
   
 	/* Parse and substitute the %s in the command */
 	g_shell_parse_argv(tmp, &argc, &argv, &error);
 	g_free(tmp);
-	if((NULL != error) && (0 != error->code)) {
+	if(error && (0 != error->code)) {
 		ui_mainwindow_set_status_bar(_("Browser command failed: %s"), error->message);
 		debug2(DEBUG_GUI, "Browser command failed: %s : %s", tmp, error->message);
 		g_error_free(error);
 		return FALSE;
 	}
   
-	if (argv != NULL) {
-		for(iter = argv; *iter != NULL; iter++) {
-			tmp = strreplace(*iter, "%s", tmpUri);
-			g_free(*iter);
-			*iter = tmp;
-		}
+	if(argv) {
+		for(iter = argv; *iter != NULL; iter++)
+			*iter = strreplace(*iter, "%s", tmpUri);
 	}
 
 	tmp = g_strjoinv(" ", argv);
 	debug2(DEBUG_GUI, "Running the browser-remote %s command '%s'", sync ? "sync" : "async", tmp);
-	if (sync)
+	if(sync)
 		g_spawn_sync(NULL, argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, NULL, &status, &error);
 	else
 		g_spawn_async(NULL, argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, &error);
   
-	if((NULL != error) && (0 != error->code)) {
+	if(error && (0 != error->code)) {
 		debug2(DEBUG_GUI, "Browser command failed: %s : %s", tmp, error->message);
 		ui_mainwindow_set_status_bar(_("Browser command failed: %s"), error->message);
 		g_error_free(error);
-	} else if (status == 0) {
+	} else if(status == 0) {
 		ui_mainwindow_set_status_bar(_("Starting: \"%s\""), tmp);
 		done = TRUE;
 	}

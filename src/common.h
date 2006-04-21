@@ -185,8 +185,16 @@ xmlChar * common_build_url(const gchar *url, const gchar *baseURL);
 char *strsep (char **stringp, const char *delim);
 #endif
 
-gchar *strreplace(const char *string, const char *delimiter,
-			   const char *replacement);
+/**
+ * Replaces delimiter in string with a replacement string.
+ *
+ * @param string	original string (will be freed)
+ * @param delimiter	match string
+ * @param replacement	replacement string
+ *
+ * @returns a new modified string
+ */
+gchar *strreplace(gchar *string, const gchar *delimiter, const gchar *replacement);
 
 char * liferea_strcasestr (const char *phaystack, const char *pneedle);
 

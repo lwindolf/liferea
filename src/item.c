@@ -162,9 +162,15 @@ gchar *item_render(itemPtr ip) {
 	xmlChar			*tmp3;
 	nodePtr			np;
 	
+	/* remove some nasty DHTML stuff from the items HTML content */
+	if(tmp = g_strdup(item_get_description(ip))) {
+		tmp = strreplace(tmp, " onload=", " noonload=");
+		tmp = strreplace(tmp, "script>", "noscript>");		
+	}
+	
 	displayset.headtable = NULL;
 	displayset.head = NULL;
-	displayset.body = g_strdup(item_get_description(ip));
+	displayset.body = tmp;
 	displayset.foot = NULL;
 	displayset.foottable = NULL;
 	
