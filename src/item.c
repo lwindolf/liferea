@@ -164,8 +164,8 @@ gchar *item_render(itemPtr ip) {
 	
 	/* remove some nasty DHTML stuff from the items HTML content */
 	if(tmp = g_strdup(item_get_description(ip))) {
-		tmp = strreplace(tmp, " onload=", " noonload=");
-		tmp = strreplace(tmp, "script>", "noscript>");		
+		tmp = strreplace(tmp, " onload=", " no_onload=");
+		tmp = strreplace(tmp, "script>", "no_script>");		
 	}
 	
 	displayset.headtable = NULL;
