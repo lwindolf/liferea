@@ -166,7 +166,8 @@ static xmlDocPtr common_parse_html(const gchar *html, gint len) {
 	/* Note: NONET is not implemented so it will return an error
 	   because it doesn't know how to handle NONET. But, it might
 	   learn in the future. */
-	out = htmlReadMemory(html,len,NULL,"utf-8", HTML_PARSE_RECOVER | HTML_PARSE_NONET);
+	out = htmlReadMemory(html, len, NULL, "utf-8", HTML_PARSE_RECOVER | HTML_PARSE_NONET |
+	                     ((debug_level & DEBUG_HTML)?0:(HTML_PARSE_NOERROR | HTML_PARSE_NOWARNING)));
 	return out;
 }
 
