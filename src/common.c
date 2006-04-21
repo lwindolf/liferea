@@ -252,7 +252,7 @@ gchar * common_text_to_xhtml(const gchar *text) {
 		doc = common_parse_html(text, strlen(text));
 		
 		buf = xmlBufferCreate();
-		xmlNodeDump(buf, doc, xmlDocGetRootElement(doc), 0, 0 );
+		xmlNodeDump(buf, doc, common_html_doc_find_body(doc)->xmlChildrenNode, 0, 0 );
 
 		if(xmlBufferLength(buf) > 0)
 			result = xmlCharStrdup(xmlBufferContent(buf));

@@ -88,7 +88,7 @@ gchar * itemset_render_all(itemSetPtr itemSet) {
 	gchar		*buffer = NULL;
 	gchar		*summary = NULL;
 	guint		missingContent = 0;
-	gboolean	summaryNeeded;
+	gboolean	summaryNeeded = FALSE;
 	gboolean	loadReadItems;
 	GList		*iter;
 

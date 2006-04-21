@@ -650,7 +650,9 @@ itemSetPtr feed_load_from_cache(nodePtr node) {
 	if(migrateCache) {
 		node->needsCacheSave = TRUE;
 		g_print("enabling cache migration from 1.0 for feed \"%s\"\n", node_get_title(node));	
-		feed_set_description(feed, common_text_to_xhtml(feed_get_description(feed)));
+		
+		if(feed->description)
+			feed_set_description(feed, common_text_to_xhtml(feed->description));
 	}
 
 	if(0 != error)

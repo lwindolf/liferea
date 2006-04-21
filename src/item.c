@@ -204,7 +204,7 @@ gchar *item_render(itemPtr ip) {
 		g_free(tmp2);
 	} else {
 		tmp2 = g_strdup(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "available.png");
-		tmp = g_markup_printf_escaped("<a class=\"favicon\" href=\"%s\"><img src=\"file://%s\" /></a>", htmlurl, tmp2);
+		tmp = g_markup_printf_escaped("<a class=\"favicon\" href=\"%s\"><img src=\"file://%s\" alt=\"\" /></a>", htmlurl, tmp2);
 		g_free(tmp2);
 	}
 	tmp3 = g_markup_escape_text(item_get_title(ip)?item_get_title(ip):_("[No title]"), -1);
@@ -351,9 +351,8 @@ itemPtr item_parse_cache(xmlNodePtr cur, gboolean migrateCache) {
 		cur = cur->next;
 	}
 	
-	if(migrateCache) {
-		item_set_description(item, common_text_to_xhtml(item_get_description(item)));
-	}
+	if(migrateCache && item->description)
+		item_set_description(item, common_text_to_xhtml(item->description));
 
 	return item;
 }
