@@ -96,7 +96,7 @@ gchar * itemset_render_all(itemSetPtr itemSet) {
 
 	/* determine wether we want to filter read items */
 	switch(itemSet->type) {
-		ITEMSET_TYPE_FOLDER:
+		case ITEMSET_TYPE_FOLDER:
 			loadReadItems = !getBooleanConfValue(FOLDER_DISPLAY_HIDE_READ);
 			break;
 		default:
