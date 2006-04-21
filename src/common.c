@@ -528,10 +528,10 @@ time_t parseISO8601Date(gchar *date) {
 			
 			return t;
 		} else {
-			g_message(_("internal error! time conversion error! mktime failed!\n"));
+			debug0(DEBUG_PARSING, "internal error! time conversion error! mktime failed!\n");
 		}
 	} else {
-		g_message(_("Invalid ISO8601 date format! Ignoring <dc:date> information!\n"));
+		debug0(DEBUG_PARSING, "Invalid ISO8601 date format! Ignoring <dc:date> information!\n");
 	}
 	
 	return 0;
@@ -645,7 +645,7 @@ time_t parseRFC822Date(gchar *date) {
 			t = t - (t2 - t);
 			return t;
 		} else
-			g_warning(_("internal error! time conversion error! mktime failed!\n"));
+			debug0(DEBUG_PARSING, "internal error! time conversion error! mktime failed!\n");
 	}
 	
 	return 0;
