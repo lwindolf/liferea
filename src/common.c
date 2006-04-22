@@ -607,7 +607,7 @@ time_t parseRFC822Date(gchar *date) {
 	   the most specific format we expect:  "Fri, 03 Dec 12 01:38:34 CET"
 	 */
 	/* skip day of week */
-	if(NULL != (pos = g_utf8_strchr(date, -1, ',')))
+	if(pos = g_utf8_strchr(date, -1, ','))
 		date = ++pos;
 
 	/* we expect English month names, so we set the locale */
@@ -615,27 +615,27 @@ time_t parseRFC822Date(gchar *date) {
 	setlocale(LC_TIME, "C");
 	
 	/* standard format with seconds and 4 digit year */
-	if(NULL != (pos = strptime((const char *)date, " %d %b %Y %T", &tm)))
+	if(pos = strptime((const char *)date, " %d %b %Y %T", &tm))
 		success = TRUE;
 	/* non-standard format without seconds and 4 digit year */
-	if(NULL != (pos = strptime((const char *)date, " %d %b %Y %H:%M", &tm)))
+	else if(pos = strptime((const char *)date, " %d %b %Y %H:%M", &tm))
 		success = TRUE;
 	/* non-standard format with seconds and 2 digit year */
-	else if(NULL != (pos = strptime((const char *)date, " %d %b %y %T", &tm)))
+	else if(pos = strptime((const char *)date, " %d %b %y %T", &tm))
 		success = TRUE;
 	/* non-standard format without seconds 2 digit year */
-	else if(NULL != (pos = strptime((const char *)date, " %d %b %y %H:%M", &tm)))
+	else if(pos = strptime((const char *)date, " %d %b %y %H:%M", &tm))
 		success = TRUE;
 	
-	while(pos != NULL && *pos != '\0' && isspace((int)*pos))       /* skip whitespaces before timezone */
+	while(pos && *pos != '\0' && isspace((int)*pos))       /* skip whitespaces before timezone */
 		pos++;
 	
-	if(NULL != oldlocale) {
+	if(oldlocale) {
 		setlocale(LC_TIME, oldlocale);	/* and reset it again */
 		g_free(oldlocale);
 	}
 	
-	if(TRUE == success) {
+	if(success) {
 		if((time_t)(-1) != (t = mktime(&tm))) {
 			/* GMT time, with no daylight savings time
 			   correction. (Usually, there is no daylight savings
@@ -644,8 +644,9 @@ time_t parseRFC822Date(gchar *date) {
 			t2 = mktime(gmtime(&t));
 			t = t - (t2 - t);
 			return t;
-		} else
+		} else {
 			debug0(DEBUG_PARSING, "internal error! time conversion error! mktime failed!\n");
+		}
 	}
 	
 	return 0;
