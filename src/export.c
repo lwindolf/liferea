@@ -76,6 +76,8 @@ static void append_node_tag(nodePtr np, gpointer userdata) {
 			xmlNewProp(childNode, BAD_CAST"sortColumn", BAD_CAST"title");
 		if(np->sortColumn == IS_TIME)
 			xmlNewProp(childNode, BAD_CAST"sortColumn", BAD_CAST"time");
+		if(np->sortColumn == IS_PARENT)
+			xmlNewProp(childNode, BAD_CAST"sortColumn", BAD_CAST"parent");
 
 		if(FALSE == np->sortReversed)
 			xmlNewProp(childNode, BAD_CAST"sortReversed", BAD_CAST"false");
@@ -215,6 +217,8 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, flNodeHandl
 			np->sortColumn = IS_LABEL;
 		else if(!xmlStrcmp(sortStr, "time"))
 			np->sortColumn = IS_TIME;
+		else if(!xmlStrcmp(sortStr, "parent"))
+			np->sortColumn = IS_PARENT;
 		xmlFree(sortStr);
 	}
 	sortStr = xmlGetProp(cur, BAD_CAST"sortReversed");

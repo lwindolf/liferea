@@ -70,13 +70,10 @@ static GtkTreeIter * ui_item_to_iter(itemPtr item) {
 }
 
 /* sort function for the item list date column */
-static gint timeCompFunc(GtkTreeModel *model, GtkTreeIter *a, GtkTreeIter *b, gpointer user_data) {
+static gint ui_itemlist_date_sort_func(GtkTreeModel *model, GtkTreeIter *a, GtkTreeIter *b, gpointer user_data) {
 	time_t	timea, timeb;
 	double diff;
-	
-	g_assert(model != NULL);
-	g_assert(a != NULL);
-	g_assert(b != NULL);
+
 	gtk_tree_model_get(model, a, IS_TIME, &timea, -1);
 	gtk_tree_model_get(model, b, IS_TIME, &timeb, -1);
 	diff = difftime(timeb,timea);
@@ -87,6 +84,18 @@ static gint timeCompFunc(GtkTreeModel *model, GtkTreeIter *a, GtkTreeIter *b, gp
 		return -1;
 	else
 		return 0;
+}
+
+static gint ui_itemlist_icon_sort_func(GtkTreeModel *model, GtkTreeIter *a, GtkTreeIter *b, gpointer user_data) {
+	nodePtr	node1, node2;
+	
+	gtk_tree_model_get(model, a, IS_PARENT, &node1, -1);
+	gtk_tree_model_get(model, b, IS_PARENT, &node2, -1);
+	
+	if(!node1->id || !node2->id)
+		return 0;
+		
+	return strcmp(node1->id, node2->id);
 }
 
 extern gint disableSortingSaving;
@@ -131,7 +140,8 @@ GtkTreeStore * ui_itemlist_get_tree_store(void) {
 		                               G_TYPE_ULONG,
 					       G_TYPE_POINTER,
 		                               GDK_TYPE_PIXBUF);
-		gtk_tree_sortable_set_sort_func(GTK_TREE_SORTABLE(itemstore), IS_TIME, timeCompFunc, NULL, NULL);
+		gtk_tree_sortable_set_sort_func(GTK_TREE_SORTABLE(itemstore), IS_TIME, ui_itemlist_date_sort_func, NULL, NULL);
+		gtk_tree_sortable_set_sort_func(GTK_TREE_SORTABLE(itemstore), IS_PARENT, ui_itemlist_icon_sort_func, NULL, NULL);
 		g_signal_connect(G_OBJECT(itemstore), "sort-column-changed", G_CALLBACK(itemlist_sort_column_changed_cb), NULL);
 	} else {
 		itemstore = GTK_TREE_STORE(model);
@@ -340,8 +350,7 @@ GtkWidget* ui_itemlist_new() {
 	renderer = gtk_cell_renderer_pixbuf_new();
 	column = gtk_tree_view_column_new_with_attributes("", renderer, "pixbuf", IS_ICON, NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(itemlist), column);
-	/*gtk_tree_view_column_set_sort_column_id(column, IS_STATE); ...leads to segfaults on tab-bing through 
-	 Also might be a bad idea because when an item is clicked, it will immediatly change the sorting order */
+	/* No sorting because when an item is clicked, it would immediatly change the sorting order */
 
 	renderer = gtk_cell_renderer_text_new();
 	column = gtk_tree_view_column_new_with_attributes(_("Date"), renderer, "markup", IS_TIME_STR, NULL);
@@ -351,6 +360,7 @@ GtkWidget* ui_itemlist_new() {
 	
 	renderer = gtk_cell_renderer_pixbuf_new();
 	column = gtk_tree_view_column_new_with_attributes("", renderer, "pixbuf", IS_ICON2, NULL);
+	gtk_tree_view_column_set_sort_column_id(column, IS_PARENT);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(itemlist), column);
 	
 	renderer = gtk_cell_renderer_text_new();	
