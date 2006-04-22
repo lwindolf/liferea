@@ -4011,7 +4011,8 @@
 
 			      <child>
 				<widget class="GtkHBox" id="hbox85">
-				  <property name="visible">True</property>
+				  <property name="height_request">0</property>
+				  <property name="sensitive">False</property>
 				  <property name="homogeneous">False</property>
 				  <property name="spacing">0</property>
 

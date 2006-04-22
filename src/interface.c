@@ -1640,8 +1640,9 @@ create_prefdialog (void)
   gtk_box_pack_start (GTK_BOX (vbox256), popupwindowsoptionbtn, FALSE, FALSE, 0);
 
   hbox85 = gtk_hbox_new (FALSE, 0);
-  gtk_widget_show (hbox85);
   gtk_box_pack_start (GTK_BOX (vbox256), hbox85, TRUE, TRUE, 0);
+  gtk_widget_set_size_request (hbox85, -1, 0);
+  gtk_widget_set_sensitive (hbox85, FALSE);
 
   label195 = gtk_label_new (_("         "));
   gtk_widget_show (label195);
