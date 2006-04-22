@@ -424,8 +424,13 @@ void ui_mainwindow_init(int mainwindowState) {
 	itemlist_set_two_pane_mode(TRUE);
 	
 	/* set zooming properties */	
-	zoom = getNumericConfValue(LAST_ZOOMLEVEL)/100.;
-	ui_htmlview_set_zoom(htmlview, zoom);
+	zoom = getNumericConfValue(LAST_ZOOMLEVEL);
+
+	if(0 == zoom) {	/* workaround for scheme problem with the last releases */
+		zoom = 100;
+		setNumericConfValue(LAST_ZOOMLEVEL, 100);
+	}
+	ui_htmlview_set_zoom(htmlview, zoom/100.);
 	
 	/* create welcome text */
 	ui_htmlview_start_output(&buffer, NULL, FALSE);

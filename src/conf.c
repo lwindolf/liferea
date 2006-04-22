@@ -224,7 +224,7 @@ gboolean getBooleanConfValue(gchar *valuename) {
 
 	g_assert(valuename != NULL);
 
-	value = gconf_client_get_without_default(client, valuename, NULL);
+	value = gconf_client_get(client, valuename, NULL);
 	if(NULL == value) {
 		setBooleanConfValue(valuename, FALSE);
 		result = FALSE;
@@ -255,7 +255,7 @@ gchar * getStringConfValue(gchar *valuename) {
 
 	g_assert(valuename != NULL);
 		
-	value = gconf_client_get_without_default(client, valuename, NULL);
+	value = gconf_client_get(client, valuename, NULL);
 	if(NULL == value) {
 		result = g_strdup("");
 	} else {
@@ -285,7 +285,7 @@ gint getNumericConfValue(gchar *valuename) {
 
 	g_assert(valuename != NULL);
 		
-	value = gconf_client_get_without_default(client, valuename, NULL);
+	value = gconf_client_get(client, valuename, NULL);
 	if(NULL != value) {
 		result = gconf_value_get_int(value);
 		gconf_value_free(value);
