@@ -293,8 +293,17 @@ guint node_str_to_type(const gchar *str) {
 
 void node_add_child(nodePtr parent, nodePtr node, gint position) {
 
+	if(!parent)
+		parent = ui_feedlist_get_target_folder(&position);	
+
 	parent->children = g_slist_insert(parent->children, node, position);
 	node->parent = parent;
+	
+	/* new node may be provided by another feed list handler, if 
+	   not they are handled by the parents handler */
+	if(!node->handler)
+		node->handler = parent->handler;
+	
 	ui_node_add(parent, node, position);	
 	ui_node_update(node);
 }
@@ -306,7 +315,6 @@ void node_add(nodePtr node, nodePtr parent, gint pos, guint flags) {
 
 	ui_feedlist_get_target_folder(&pos);
 
-	node->handler = parent->handler;
 	node_add_child(parent, node, pos);
 	node_schedule_update(node, flags);
 }
@@ -340,7 +348,6 @@ void node_request_automatic_add(gchar *source, gchar *title, gchar *filter, gint
 		return;
 
 	node = node_new();
-	node->handler = parent->handler;
 	node_set_title(node, title?title:_("New Subscription"));
 	node_add_data(node, FST_FEED, feed_new(source, filter));
 

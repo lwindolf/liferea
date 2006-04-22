@@ -126,22 +126,17 @@ void on_searchentry_changed(GtkEditable *editable, gpointer user_data) {
 	
 	/* just to disable the start search button when search string is empty... */
 	searchtext = gtk_editable_get_chars(editable,0,-1);
-	gtk_widget_set_sensitive(lookup_widget(searchdialog, "searchstartbtn"), (NULL != searchtext) && (0 < strlen(searchtext)));
+	gtk_widget_set_sensitive(lookup_widget(searchdialog, "searchstartbtn"), searchtext && (0 < strlen(searchtext)));
 		
 }
 
 void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
-	gint			pos;
-	nodePtr			node, folder;
 	
-	if(NULL != searchResult) {
-		node = searchResult;
+	if(searchResult) {
+		nodePtr node = searchResult;
 		searchResult = NULL;
-		folder = ui_feedlist_get_target_folder(&pos);
-		node_add_child(folder, node, pos);
+		node_add_child(NULL, node, 0);
 		ui_feedlist_select(node);
-	} else {
-		ui_show_info_box(_("Please do a search first!"));
 	}
 }
 

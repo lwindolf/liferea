@@ -291,9 +291,8 @@ void ui_vfolder_properties(nodePtr node) {
 }
 
 void ui_vfolder_add(nodePtr parent) {
-	gint		pos;
 	vfolderPtr	vfolder;
-	nodePtr		node, folder = NULL;
+	nodePtr		node;
 	
 	vfolder = vfolder_new();
 	vfolder_set_title(vfolder, _("New VFolder"));
@@ -302,8 +301,7 @@ void ui_vfolder_add(nodePtr parent) {
 	node_set_title(node, vfolder_get_title(vfolder));
 	node_add_data(node, FST_VFOLDER, (gpointer)vfolder);
 
-	folder = ui_feedlist_get_target_folder(&pos);
-	node_add_child(folder, node, pos);
+	node_add_child(NULL, node, 0);
 	ui_feedlist_select(node);
 	ui_vfolder_properties(node);
 }

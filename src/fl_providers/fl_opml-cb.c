@@ -35,10 +35,9 @@ static void fl_opml_initial_download_cb(struct request *request) {
 }
 
 static void on_fl_opml_source_selected(GtkDialog *dialog, gint response_id, gpointer user_data) {
-	nodePtr		node, parent = (nodePtr)user_data;
+	nodePtr		node;
 	struct request	*request;
 	const gchar	*source;
-	gint		pos;
 
 	if(response_id == GTK_RESPONSE_OK) {
 		source = gtk_entry_get_text(GTK_ENTRY(lookup_widget(GTK_WIDGET(dialog), "location_entry")));
@@ -46,11 +45,9 @@ static void on_fl_opml_source_selected(GtkDialog *dialog, gint response_id, gpoi
 		/* add new node to feed list */
 		node = node_new();
 		node->icon = create_pixbuf("fl_opml.png");	// FIXME: correct place?
-		node->handler = parent->handler;
 		node_set_title(node, _("New OPML Subscription"));
 		node_add_data(node, FST_PLUGIN, NULL);
-		parent = ui_feedlist_get_target_folder(&pos);
-		node_add_child(parent, node, pos);
+		node_add_child(NULL, node, 0);
 
 		/* initial download */
 		request = download_request_new();

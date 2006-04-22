@@ -374,17 +374,16 @@ void import_OPML_feedlist(const gchar *filename, nodePtr parentNode, flNodeHandl
 /* UI stuff */
 
 void on_import_activate_cb(const gchar *filename, gpointer user_data) {
-	nodePtr		np;
 	
-	if(filename != NULL) {
-		np = node_new();
-		node_set_title(np, _("Imported feed list"));
-		node_add_data(np, FST_FOLDER, NULL);
+	if(filename) {
+		nodePtr node = node_new();
+		node_set_title(node, _("Imported feed list"));
+		node_add_data(node, FST_FOLDER, NULL);
 		
 		/* add the new folder to the model */
-		node_add_child(NULL, np, -1);
+		node_add_child(NULL, node, 0);
 		
-		import_OPML_feedlist(filename, np, np->handler, TRUE, FALSE);
+		import_OPML_feedlist(filename, node, node->handler, TRUE /* show errors */, FALSE /* not trusted */);
 	}
 }
 

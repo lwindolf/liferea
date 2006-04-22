@@ -41,49 +41,31 @@ void ui_folder_add(nodePtr parent) {
 
 	foldernameentry = lookup_widget(newfolderdialog, "foldertitleentry");
 	gtk_entry_set_text(GTK_ENTRY(foldernameentry), "");
-	gtk_object_set_data(GTK_OBJECT(newfolderdialog), "parent", parent);
 		
 	gtk_widget_show(newfolderdialog);
 }
 
 void on_newfolderbtn_clicked(GtkButton *button, gpointer user_data) {
-	GtkWidget	*foldertitleentry;
-	gchar		*foldertitle;
-	nodePtr		folder, parentNode;
-	int		pos;
+	nodePtr		folder;
 	
-	g_assert(newfolderdialog != NULL);
-	
-	foldertitleentry = lookup_widget(newfolderdialog, "foldertitleentry");
-	foldertitle = (gchar *)gtk_entry_get_text(GTK_ENTRY(foldertitleentry));
-
-	parentNode = (nodePtr)gtk_object_get_data(GTK_OBJECT(newfolderdialog), "parent");
-
 	/* create folder node */
 	folder = node_new();
-	folder->handler = parentNode->handler;
-	node_set_title(folder, foldertitle);
+	node_set_title(folder, (gchar *)gtk_entry_get_text(GTK_ENTRY(lookup_widget(newfolderdialog, "foldertitleentry"))));
 	node_add_data(folder, FST_FOLDER, NULL);
 
 	/* add the new folder to the model */
-	parentNode = ui_feedlist_get_target_folder(&pos);
-	node_add_child(parentNode, folder, pos);
+	node_add_child(NULL, folder, 0);
 	ui_feedlist_select(folder);
 }
 
 void ui_folder_properties(nodePtr folder) {
-	GtkWidget	*foldernameentry;
 	
-	if(!folder || (FST_FOLDER != folder->type)) {
-		ui_show_error_box(_("A folder must be selected."));
-		return;
-	}
+	g_assert(!folder || (FST_FOLDER != folder->type));
 	
 	if(!foldernamedialog || !G_IS_OBJECT(foldernamedialog))
 		foldernamedialog = create_foldernamedialog();
 	
-	foldernameentry = lookup_widget(foldernamedialog, "foldernameentry");
-	gtk_entry_set_text(GTK_ENTRY(foldernameentry), node_get_title(folder));
+	gtk_entry_set_text(GTK_ENTRY(lookup_widget(foldernamedialog, "foldernameentry")), node_get_title(folder));
 	gtk_object_set_data(GTK_OBJECT(foldernamedialog), "folder", folder);
 
 	gtk_widget_show(foldernamedialog);
@@ -91,11 +73,9 @@ void ui_folder_properties(nodePtr folder) {
 
 void on_foldernamechangebtn_clicked(GtkButton *button, gpointer user_data) {
 	nodePtr		folder;
-	GtkWidget	*foldernameentry;
 	
 	folder = (nodePtr)gtk_object_get_data(GTK_OBJECT(foldernamedialog), "folder");
-	foldernameentry = lookup_widget(foldernamedialog, "foldernameentry");
-	node_set_title(folder, (gchar *)gtk_entry_get_text(GTK_ENTRY(foldernameentry)));
+	node_set_title(folder, (gchar *)gtk_entry_get_text(GTK_ENTRY(lookup_widget(foldernamedialog, "foldernameentry"))));
 	ui_node_update(folder);
 	gtk_widget_hide(foldernamedialog);
 }

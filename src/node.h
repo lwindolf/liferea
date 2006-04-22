@@ -116,11 +116,13 @@ void node_register_type(nodeTypePtr nodeType, guint type);
 nodePtr node_new(void);
 
 /**
- * Sets a nodes parent and updates the feed list.
+ * Sets a nodes parent and updates the feed list. If no
+ * parent node is given the parent node of the currently
+ * selected feed or the selected folder will be used.
  *
- * @param parent	the parent node
+ * @param parent	the parent node (optional can be NULL)
  * @param node		the node
- * @param position	insert position
+ * @param position	insert position (optional can be 0)
  */
 void node_add_child(nodePtr parent, nodePtr node, gint position);
 
