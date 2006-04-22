@@ -43,17 +43,31 @@
 
 extern GdkPixbuf	*icons[];
 
-static GHashTable 	*ilIterHash = NULL;	/* hash table used for fast item->tree iter lookup */
-static GtkWidget *itemlist_global_fixme;
+static GHashTable 	*item_to_iter = NULL;	/** hash table used for fast item->tree iter lookup */
+
+static GtkWidget 	*itemlist_treeview = NULL;
 
 gint			itemlist_loading;	/* freaky workaround for item list focussing problem */
-
-// FIXME: remove this
-extern itemSetPtr	displayed_itemSet;
 
 #define	TIMESTRLEN	256
 
 static gchar 		*date_format = NULL;	/* date formatting string */
+
+/* helper functions for item <-> iter conversion */
+
+static itemPtr ui_iter_to_item(GtkTreeIter *iter) {
+	nodePtr		node;
+	guint		nr;
+	
+	gtk_tree_model_get(GTK_TREE_MODEL(ui_itemlist_get_tree_store()), 
+	                   iter, IS_PARENT, &node, IS_NR, &nr, -1);
+	return itemset_lookup_item(node->itemSet, node, nr);
+}
+
+static GtkTreeIter * ui_item_to_iter(itemPtr item) {
+
+	return (GtkTreeIter *)g_hash_table_lookup(item_to_iter, (gpointer)item);
+}
 
 /* sort function for the item list date column */
 static gint timeCompFunc(GtkTreeModel *model, GtkTreeIter *a, GtkTreeIter *b, gpointer user_data) {
@@ -75,11 +89,6 @@ static gint timeCompFunc(GtkTreeModel *model, GtkTreeIter *a, GtkTreeIter *b, gp
 		return 0;
 }
 
-GtkTreeIter * ui_item_to_iter(itemPtr ip) {
-
-	return (GtkTreeIter *)g_hash_table_lookup(ilIterHash, (gpointer)ip);
-}
-
 extern gint disableSortingSaving;
 
 void ui_itemlist_reset_tree_store() {
@@ -90,11 +99,11 @@ void ui_itemlist_reset_tree_store() {
 
 	ui_itemlist_clear();
 
-	model = gtk_tree_view_get_model(GTK_TREE_VIEW(itemlist_global_fixme));
-	gtk_tree_view_set_model(GTK_TREE_VIEW(itemlist_global_fixme), NULL);
+	model = gtk_tree_view_get_model(GTK_TREE_VIEW(itemlist_treeview));
+	gtk_tree_view_set_model(GTK_TREE_VIEW(itemlist_treeview), NULL);
 	
 	g_object_unref(model);
-	gtk_tree_view_set_model(GTK_TREE_VIEW(itemlist_global_fixme), GTK_TREE_MODEL(ui_itemlist_get_tree_store()));
+	gtk_tree_view_set_model(GTK_TREE_VIEW(itemlist_treeview), GTK_TREE_MODEL(ui_itemlist_get_tree_store()));
 
 	ui_itemlist_prefocus();
 }
@@ -103,7 +112,7 @@ GtkTreeStore * ui_itemlist_get_tree_store(void) {
 	GtkTreeModel	*model;
 	GtkTreeStore	*itemstore;
 	
-	model = gtk_tree_view_get_model(GTK_TREE_VIEW(itemlist_global_fixme));
+	model = gtk_tree_view_get_model(GTK_TREE_VIEW(itemlist_treeview));
 	if(NULL == model) {
 		/* set up a store of these attributes: 
 		 	- item creation time
@@ -178,13 +187,13 @@ void ui_itemlist_reset_date_format(void) {
 	date_format = NULL;
 }
 
-void ui_itemlist_remove_item(itemPtr ip) {
+void ui_itemlist_remove_item(itemPtr item) {
 	GtkTreeIter	*iter;
 
-	g_assert(NULL != ip);
-	if(NULL != (iter = ui_item_to_iter(ip))) {
+	g_assert(NULL != item);
+	if(iter = ui_item_to_iter(item)) {
+		g_hash_table_remove(item_to_iter, (gpointer)item);
 		gtk_tree_store_remove(ui_itemlist_get_tree_store(), iter);
-		g_hash_table_remove(ilIterHash, (gpointer)ip);
 	} else {
 		/*g_warning("item to be removed not found in tree iter lookup hash!");*/
 	}
@@ -197,7 +206,7 @@ void ui_itemlist_clear(void) {
 	GtkTreeView		*treeview;
 	GtkTreeStore		*itemstore = ui_itemlist_get_tree_store();
 
-	treeview = GTK_TREE_VIEW(itemlist_global_fixme);
+	treeview = GTK_TREE_VIEW(itemlist_treeview);
 
 	/* unselecting all items is important to remove items
 	   whose removal is deferred until unselecting */
@@ -207,12 +216,12 @@ void ui_itemlist_clear(void) {
 	gtk_adjustment_set_value(adj, 0.0);
 	gtk_tree_view_set_vadjustment(treeview, adj);
 
-	if(NULL != itemstore)
+	if(itemstore)
 		gtk_tree_store_clear(itemstore);
-	if(NULL != ilIterHash)
-		g_hash_table_destroy(ilIterHash);
+	if(item_to_iter)
+		g_hash_table_destroy(item_to_iter);
 	
-	ilIterHash = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, g_free);
+	item_to_iter = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, g_free);
 }
 
 void ui_itemlist_update_item(itemPtr ip) {
@@ -267,7 +276,7 @@ void ui_itemlist_update_item(itemPtr ip) {
 		icon = icons[ICON_FLAG];
 
 	/* Finish 'em... */
-	if(NULL != (iter = ui_item_to_iter(ip))) {
+	if(iter = ui_item_to_iter(ip)) {
 		gtk_tree_store_set(ui_itemlist_get_tree_store(), iter,
 					    IS_LABEL, label,
 					    IS_TIME_STR, time_str,
@@ -289,7 +298,7 @@ static void ui_itemlist_update_foreach(gpointer key, gpointer value, gpointer da
 /* update all item list entries */
 void ui_itemlist_update(void) {
  
-	g_hash_table_foreach(ilIterHash, ui_itemlist_update_foreach, NULL);
+	g_hash_table_foreach(item_to_iter, ui_itemlist_update_foreach, NULL);
 }
 
 static gboolean ui_itemlist_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer data) {
@@ -315,13 +324,13 @@ GtkWidget* ui_itemlist_new() {
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (ilscrolledwindow), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
 	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (ilscrolledwindow), GTK_SHADOW_IN);
 
-	itemlist_global_fixme = itemlist = gtk_tree_view_new ();
+	itemlist_treeview = itemlist = gtk_tree_view_new ();
 	gtk_container_add (GTK_CONTAINER (ilscrolledwindow), itemlist);
 	gtk_widget_show (itemlist);
 	gtk_widget_set_name(itemlist, "itemlist");
 	gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (itemlist), TRUE);
 
-	ilIterHash = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, g_free);
+	item_to_iter = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, g_free);
 
 	itemstore = ui_itemlist_get_tree_store();
 
@@ -387,7 +396,7 @@ void ui_itemlist_prefocus(void) {
 	   generate two selection-change events (one for the clicked and
 	   one for the selected item)!!! */
 
-	itemlist = itemlist_global_fixme;
+	itemlist = itemlist_treeview;
 	
 	/* we need to restore the focus after we temporarily select the itemlist */
 	focus_widget = gtk_window_get_focus(GTK_WINDOW(mainwindow));
@@ -405,18 +414,18 @@ void ui_itemlist_add_item(itemPtr ip, gboolean merge) {
 	GtkTreeStore	*itemstore = ui_itemlist_get_tree_store();
 	GtkTreeIter	*iter = NULL;
 	
-	if((TRUE == merge) && (NULL != (iter = ui_item_to_iter(ip)))) {
-		/* g_print("found iter for item %p\n", ip); */
-	}
+	/*if(merge && (iter = ui_item_to_iter(ip))) {
+		g_print("found iter for item %p\n", ip); 
+	}*/
 	
-	if((NULL != iter) && (FALSE == ip->newStatus)) {
+	if(iter && (FALSE == ip->newStatus)) {
 		/* nothing to do */
 		/* g_print("nothing to do for iter %p\n", ip); */
 	} else {
-		if(NULL == iter) {
+		if(!iter) {
 			iter = g_new0(GtkTreeIter, 1);
 			gtk_tree_store_prepend(itemstore, iter, NULL);
-			g_hash_table_insert(ilIterHash, (gpointer)ip, (gpointer)iter);
+			g_hash_table_insert(item_to_iter, (gpointer)ip, (gpointer)iter);
 		}	
 		gtk_tree_store_set(itemstore, iter,
 		                	      IS_NR, ip->nr,
@@ -432,7 +441,7 @@ void ui_itemlist_enable_favicon_column(gboolean enabled) {
 	/* we depend on the fact that the third column is the favicon column!!! 
 	   if we are in search mode (or have a vfolder) we show the favicon 
 	   column to give a hint where the item comes from ... */
-	gtk_tree_view_column_set_visible(gtk_tree_view_get_column(GTK_TREE_VIEW(itemlist_global_fixme), 2), enabled);
+	gtk_tree_view_column_set_visible(gtk_tree_view_get_column(GTK_TREE_VIEW(itemlist_treeview), 2), enabled);
 }
 
 void on_popup_launchitem_selected(void) {
@@ -507,7 +516,7 @@ void on_remove_item_activate(GtkMenuItem *menuitem, gpointer user_data) {
 		/* 3. But 2. might not be enough, e.g. if ip was the
 		      last item and is still selected (not removed) */
 		if(itemlist_get_selected() == ip) {
-			selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(itemlist_global_fixme));
+			selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(itemlist_treeview));
 			gtk_tree_selection_unselect_all(selection);
 		}
 	} else {
@@ -529,13 +538,67 @@ void ui_itemlist_select(itemPtr ip) {
 	iter = ui_item_to_iter(ip);
 	g_return_if_fail(NULL != iter);
 
-	treeview = itemlist_global_fixme;
+	treeview = itemlist_treeview;
 	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
 
 	path = gtk_tree_model_get_path(GTK_TREE_MODEL(itemstore), iter);
 	gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(treeview), path, NULL, FALSE, 0.0, 0.0);
 	gtk_tree_view_set_cursor(GTK_TREE_VIEW(treeview), path, NULL, FALSE);
 	gtk_tree_path_free(path);
+}
+
+/* checks if a given item is unread and selects it if necessary */
+static gboolean itemlist_check_if_unread(itemPtr item) {
+	
+	if(!item->readStatus) {
+		if(itemlist_get_two_pane_mode()) {
+			itemset_mark_all_read(item->itemSet);
+		} else {
+			ui_itemlist_select(item);
+			itemlist_set_read_status(item, TRUE);	/* needed when no selection happens (e.g. when the item is already selected) */
+		}
+		return TRUE;
+	}
+	return FALSE;
+}
+
+static gboolean ui_itemlist_find_unread_item_from_iter(GtkTreeIter *iter) {
+	itemPtr	item;
+	
+	if(item = ui_iter_to_item(iter)) {
+		if(!item->readStatus) {
+			if(!itemlist_get_two_pane_mode()) {
+				ui_itemlist_select(item);
+				itemlist_set_read_status(item, TRUE);	/* needed when no selection happens (e.g. when the item is already selected) */
+			} else {
+				itemset_mark_all_read(item->itemSet);
+			}
+			return TRUE;
+		}
+	}
+	return FALSE;
+}
+
+gboolean ui_itemlist_find_unread_item(itemPtr start) {
+	GtkTreeView		*treeview;
+	GtkTreeStore		*itemstore;
+	GtkTreeIter		*iter;
+	gboolean		valid = TRUE;
+
+	itemstore = ui_itemlist_get_tree_store();
+	
+	if(start)
+		iter = ui_item_to_iter(start);
+	else
+		valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(itemstore), iter);
+	
+	while(valid) {
+		if(ui_itemlist_find_unread_item_from_iter(iter))
+			return TRUE;
+		valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(itemstore), iter);
+	}
+
+	return FALSE;
 }
 
 void on_next_unread_item_activate(GtkMenuItem *menuitem, gpointer user_data) {
@@ -551,22 +614,6 @@ void on_popup_next_unread_item_selected(gpointer callback_data, guint callback_a
 void on_nextbtn_clicked(GtkButton *button, gpointer user_data) {
 
 	itemlist_select_next_unread();
-}
-
-// FIXME: get rid of this method
-static itemPtr ui_itemlist_get_item_from_iter(GtkTreeIter *iter) {
-	itemPtr		ip;
-	nodePtr		np;
-	gulong		nr;
-	
-	gtk_tree_model_get(GTK_TREE_MODEL(ui_itemlist_get_tree_store()), 
-	                   iter, 
-			   IS_NR, &nr, 
-			   IS_PARENT, &np, 
-			   -1);
-	ip = itemset_lookup_item(displayed_itemSet, np, nr);
-	g_assert(ip != NULL);
-	return ip;
 }
 
 gboolean on_itemlist_button_press_event(GtkWidget *treeview, GdkEventButton *event, gpointer user_data) {
@@ -585,7 +632,7 @@ gboolean on_itemlist_button_press_event(GtkWidget *treeview, GdkEventButton *eve
 	gtk_tree_model_get_iter(GTK_TREE_MODEL(ui_itemlist_get_tree_store()), &iter, path);
 	gtk_tree_path_free(path);
 	
-	ip = ui_itemlist_get_item_from_iter(&iter);
+	ip = ui_iter_to_item(&iter);
 
 	eb = (GdkEventButton*)event; 
 	switch(eb->button) {
@@ -627,7 +674,7 @@ void on_itemlist_selection_changed(GtkTreeSelection *selection, gpointer data) {
 	itemPtr		item = NULL;
 
 	if(gtk_tree_selection_get_selected(selection, &model, &iter))
-		item = ui_itemlist_get_item_from_iter(&iter);
+		item = ui_iter_to_item(&iter);
 
 	if(item)
 		itemlist_selection_changed(item);
@@ -652,10 +699,10 @@ void ui_itemlist_scroll_left() {
 	GtkTreePath		*path;
 
 	if (FALSE == itemlist_get_two_pane_mode()) {
-		gtk_tree_view_get_cursor(GTK_TREE_VIEW(itemlist_global_fixme), &path, &column);
+		gtk_tree_view_get_cursor(GTK_TREE_VIEW(itemlist_treeview), &path, &column);
 		if(path) {
-			column = gtk_tree_view_get_column(GTK_TREE_VIEW(itemlist_global_fixme), 1);
-			gtk_tree_view_set_cursor(GTK_TREE_VIEW(itemlist_global_fixme), path, column, FALSE);
+			column = gtk_tree_view_get_column(GTK_TREE_VIEW(itemlist_treeview), 1);
+			gtk_tree_view_set_cursor(GTK_TREE_VIEW(itemlist_treeview), path, column, FALSE);
 			gtk_tree_path_free(path);
 		}
 	}

@@ -234,51 +234,25 @@ void itemlist_reset_date_format(void) {
 
 /* next unread selection logic */
 
-/* checks if a given item is unread and selects it if necessary */
-static gboolean itemlist_check_if_unread(itemPtr item) {
-	
-	if(!item->readStatus) {
-		if(itemlist_get_two_pane_mode()) {
-			itemset_mark_all_read(item->itemSet);
-		} else {
-			ui_itemlist_select(item);
-			itemlist_set_read_status(item, TRUE);	/* needed when no selection happens (e.g. when the item is already selected) */
-		}
-		return TRUE;
-	}
-	return FALSE;
-}
-
-/* tries to find unread item in current item list */
 static gboolean itemlist_find_unread_item(void) {
 	GList	*iter, *selected = NULL;
 	
 	if(!displayed_itemSet)
-		return;
+		return FALSE;
 		
 	if(ITEMSET_TYPE_FOLDER == displayed_itemSet->type) {
 		feedlist_find_unread_feed(displayed_itemSet->node);
-		return;
+		return FALSE;
 	}
 
-	/* first look for unread items after the currently selected item */
-	if(displayed_item) {
-		selected = iter = g_list_find(displayed_itemSet->items, displayed_item);
-		while(iter) {
-			if(itemlist_check_if_unread((itemPtr)iter->data))
-				return TRUE;
-			iter = g_list_next(iter);
-		} 
-	}
+	/* Note: to select in sorting order we need to do it in the GUI code
+	   otherwise we would have to sort the item list here... */
 	
-	/* No match from cursor, restart from the first. */
-	iter = displayed_itemSet->items;
-	while(iter && (iter != selected)) {
-		if(itemlist_check_if_unread((itemPtr)iter->data))
-			return TRUE;
-		iter = g_list_next(iter);
-	}
-
+	if(!displayed_item || !ui_itemlist_find_unread_item(displayed_item))
+		return ui_itemlist_find_unread_item(NULL);
+	else
+		return TRUE;
+	
 	return FALSE;
 }
 
