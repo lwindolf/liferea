@@ -127,7 +127,7 @@ static gchar* atom10_parse_content_construct(xmlNodePtr cur, feedParserCtxtPtr c
 			
 			g_strchug(g_strchomp(ret));
 			
-			if(type && !strcasecmp(type, "text/plain"))
+			if(!type || !strcasecmp(type, "text"))
 				tmp = atom10_mark_up_text_content(ret);
 			else
 				tmp = g_markup_printf_escaped("<pre>%s</pre>", ret);
