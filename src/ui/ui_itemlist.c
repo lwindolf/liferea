@@ -64,9 +64,16 @@ static itemPtr ui_iter_to_item(GtkTreeIter *iter) {
 	return itemset_lookup_item(node->itemSet, node, nr);
 }
 
-static GtkTreeIter * ui_item_to_iter(itemPtr item) {
+static gboolean ui_item_to_iter(itemPtr item, GtkTreeIter *iter) {
+	GtkTreeIter *old_iter;
 
-	return (GtkTreeIter *)g_hash_table_lookup(item_to_iter, (gpointer)item);
+	old_iter = g_hash_table_lookup(item_to_iter, (gpointer)item);
+	if (!old_iter)
+		return FALSE;
+	else {
+		*iter = *old_iter;
+		return TRUE;
+	}
 }
 
 /* sort function for the item list date column */
@@ -201,9 +208,9 @@ void ui_itemlist_remove_item(itemPtr item) {
 	GtkTreeIter	*iter;
 
 	g_assert(NULL != item);
-	if(iter = ui_item_to_iter(item)) {
-		g_hash_table_remove(item_to_iter, (gpointer)item);
+	if(iter = g_hash_table_lookup(item_to_iter, (gpointer)item)) {
 		gtk_tree_store_remove(ui_itemlist_get_tree_store(), iter);
+		g_hash_table_remove(item_to_iter, (gpointer)item);
 	} else {
 		/*g_warning("item to be removed not found in tree iter lookup hash!");*/
 	}
@@ -235,7 +242,7 @@ void ui_itemlist_clear(void) {
 }
 
 void ui_itemlist_update_item(itemPtr ip) {
-	GtkTreeIter	*iter;
+	GtkTreeIter	iter;
 	gchar		*title, *label, *time_str, *esc_title, *esc_time_str, *tmp;
 	GdkPixbuf	*icon = NULL, *favicon;
 
@@ -286,8 +293,8 @@ void ui_itemlist_update_item(itemPtr ip) {
 		icon = icons[ICON_FLAG];
 
 	/* Finish 'em... */
-	if(iter = ui_item_to_iter(ip)) {
-		gtk_tree_store_set(ui_itemlist_get_tree_store(), iter,
+	if(ui_item_to_iter(ip, &iter)) {
+		gtk_tree_store_set(ui_itemlist_get_tree_store(), &iter,
 					    IS_LABEL, label,
 					    IS_TIME_STR, time_str,
 					    IS_ICON, icon,
@@ -540,18 +547,17 @@ void ui_itemlist_select(itemPtr ip) {
 	GtkTreeStore		*itemstore = ui_itemlist_get_tree_store();
 	GtkWidget		*treeview;
 	GtkTreeSelection	*selection;
-	GtkTreeIter		*iter;
+	GtkTreeIter		iter;
 	GtkTreePath		*path;
 
 	g_assert(NULL != ip);
 
-	iter = ui_item_to_iter(ip);
-	g_return_if_fail(NULL != iter);
+	g_return_if_fail(ui_item_to_iter(ip, &iter));
 
 	treeview = itemlist_treeview;
 	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
 
-	path = gtk_tree_model_get_path(GTK_TREE_MODEL(itemstore), iter);
+	path = gtk_tree_model_get_path(GTK_TREE_MODEL(itemstore), &iter);
 	gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(treeview), path, NULL, FALSE, 0.0, 0.0);
 	gtk_tree_view_set_cursor(GTK_TREE_VIEW(treeview), path, NULL, FALSE);
 	gtk_tree_path_free(path);
@@ -592,20 +598,20 @@ static gboolean ui_itemlist_find_unread_item_from_iter(GtkTreeIter *iter) {
 gboolean ui_itemlist_find_unread_item(itemPtr start) {
 	GtkTreeView		*treeview;
 	GtkTreeStore		*itemstore;
-	GtkTreeIter		*iter;
+	GtkTreeIter		iter;
 	gboolean		valid = TRUE;
 
 	itemstore = ui_itemlist_get_tree_store();
 	
 	if(start)
-		iter = ui_item_to_iter(start);
+		valid = ui_item_to_iter(start, &iter);
 	else
-		valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(itemstore), iter);
+		valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(itemstore), &iter);
 	
 	while(valid) {
-		if(ui_itemlist_find_unread_item_from_iter(iter))
+		if(ui_itemlist_find_unread_item_from_iter(&iter))
 			return TRUE;
-		valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(itemstore), iter);
+		valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(itemstore), &iter);
 	}
 
 	return FALSE;
