@@ -260,7 +260,8 @@ void feed_export(feedPtr fp, xmlNodePtr cur, gboolean internal) {
 	else
 		xmlNewProp(cur, BAD_CAST"htmlUrl", BAD_CAST "");
 	xmlNewProp(cur, BAD_CAST"xmlUrl", BAD_CAST feed_get_source(fp));
-	xmlNewProp(cur, BAD_CAST"updateInterval", BAD_CAST interval);
+	if(internal)
+		xmlNewProp(cur, BAD_CAST"updateInterval", BAD_CAST interval);
 
 	if(fp->cacheLimit >= 0)
 		cacheLimit = g_strdup_printf("%d", fp->cacheLimit);
@@ -424,7 +425,7 @@ void feed_parse(feedParserCtxtPtr ctxt, gboolean autodiscover) {
 		} else {
 			debug0(DEBUG_UPDATE, "neither a known feed type nor a HTML document!");
 			ctxt->feed->available = FALSE;
-			addToHTMLBuffer(&(ctxt->feed->parseErrors), _("<p>Could not determine the feed type. Please check that it is a <a href=\"http://feedvalidator.org\">valid</a> type and listed in the <a href=\"http://liferea.sourceforge.net/supported_formats.htm\">supported formats</a>.</p>"));
+			addToHTMLBuffer(&(ctxt->feed->parseErrors), _("<p>Could not determine the feed type. Please check that it is a <a href=\"http://feedvalidator.org\">valid feed</a>.</p>"));
 		}
 	} else {
 		debug1(DEBUG_UPDATE, "discovered feed format: %s", feed_type_fhp_to_str(ctxt->feed->fhp));
@@ -1034,12 +1035,12 @@ void feed_set_error_description(feedPtr fp, gint httpstatus, gint resultcode, gc
 	/* add parsing error messages */
 	if(NULL != fp->parseErrors) {
 		errorFound = TRUE;
-		tmp1 = g_strdup_printf(PARSE_ERROR_TEXT2, _("Show Details"), fp->parseErrors);
+		tmp1 = g_strdup_printf(PARSE_ERROR_TEXT2, _("Show Details"), _("Details:"), fp->parseErrors);
 		addToHTMLBuffer(&buffer, PARSE_ERROR_TEXT);
 		addToHTMLBuffer(&buffer, tmp1);
 		if (feed_get_source(fp) != NULL && (NULL != strstr(feed_get_source(fp), "://"))) {
 			xmlChar *escsource;
-			addToHTMLBufferFast(&buffer,_("<br/>You may want to validate the feed using "
+			addToHTMLBufferFast(&buffer,_("<br />You may want to validate the feed using "
 			                              "<a href=\"http://feedvalidator.org/check.cgi?url="));
 			escsource = xmlURIEscapeStr(feed_get_source(fp),NULL);
 			addToHTMLBufferFast(&buffer,escsource);
@@ -1150,7 +1151,8 @@ void feed_process_update_result(struct request *request) {
 		feed_parse(ctxt, request->flags & FEED_REQ_AUTO_DISCOVER);
 
 		if(ctxt->failed) {
-			feed->parseErrors = g_strdup_printf(_("<p>Could not detect the type of this feed! Please check if the source really points to a resource provided in one of the supported syndication formats!</p>%s"), feed->parseErrors);
+			feed->parseErrors = g_strdup_printf(_("<p>Could not detect the type of this feed! Please check if the source really points to a resource provided in one of the supported syndication formats!</p>"
+			                                      "XML Parser Output:<br /><div class='xmlparseroutput'>%s</div>"), feed->parseErrors);
 		} else {
 			/* merge the resulting items into the node's item set */
 			node_merge_items(node, ctxt->itemSet->items);
