@@ -11,6 +11,7 @@ schemadir   = @GCONF_SCHEMA_FILE_DIR@
 schema_DATA = liferea.schemas
 
 EXTRA_DIST = \
+	feedbag.xpi \
 	liferea.glade \
 	liferea.gladep \
 	liferea.spec \
