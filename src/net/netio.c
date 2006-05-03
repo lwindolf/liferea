@@ -186,13 +186,14 @@ int NetPoll (struct feed_request * cur_ptr, int my_socket, int rw) {
 }
 
 /* This assumes that a line of the header will be no longer than half the receive buffer */
-static int NetReadHeaderLine(int my_socket, void *proto_data, enum netio_proto proto, struct feed_request * cur_ptr, 
-							 char *recvbuf, size_t recvbuflen, size_t *recvbufused, char **nextstr, char *headerline) {
+static int NetReadHeaderLine(int my_socket, void *proto_data, enum netio_proto proto,
+							 struct feed_request * cur_ptr, char *recvbuf, size_t recvbuflen,
+							 size_t *recvbufused, char **nextstr, char *headerline) {
 	int i;
 	char *ci;
 	/* Look for line ending */
 	if (*recvbufused > 0) {
-		for(ci=*nextstr; ci < recvbuf+*recvbufused; ci++) {
+		for(ci=*nextstr; ci <= recvbuf+*recvbufused-2; ci++) {
 			if (ci[0] == '\r' && ci[1] == '\n' ) {
 				strncpy(headerline, *nextstr, 2+(ci-*nextstr));
 				headerline[2+(ci-*nextstr)] = '\0';
@@ -546,7 +547,7 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, char * aut
 	char *tmpstring;			/* Temp pointers. */
 	char *freeme, *freeme2, *nextstr;
 	char *redirecttarget;
-	char headerline[4096];
+	char headerline[8192];
 	int retval;
 	int handled;
 	int tmphttpstatus;
