@@ -6,7 +6,7 @@ for Linux or require many extra libraries to be installed. Liferea
 tries to fill this gap by creating a fast, easy to use, easy to
 install news aggregator for GTK/GNOME.
 
-This documentation was last updated for Liferea version 0.9.5.
+This documentation was last updated for Liferea version 1.0.
 
 Installation
 ============
@@ -39,7 +39,8 @@ SuSE:		Until 0.6.0 Harry Auschner built SuSE RPMs available at the
 		available via APT. The packages can be found at:
 		
 		http://ftp.gwdg.de/pub/linux/misc/suser-guru/rpm/packages/Network/liferea/
-		
+
+		Since 10.1 SuSE seems to have an own Liferea package.
 
 Gentoo:		There is an ebuild available at:
 
@@ -61,6 +62,22 @@ Solaris		Since 0.9.2 there are Solaris packages built
                 be Jeremy Teo. This package was built to work 
                 with the Solaris gtk2,libxml2,gconf2 and 
                 libgtkhtml packages from blastwave.org.
+
+Browser Integration
+===================
+
+Liferea allows direct subscriptions from Firefox 1.5+
+and Epiphany. Epiphany provides a standard plugin that
+allows adding subscription directly to Liferea.
+
+If you want to subscribe from within Firefox you need
+to install an extension manually. Although there are
+several extensions that might do the task one called
+"FeedBag" is supplied with the source tarball. To
+install it open feedbag.xpi from the source root
+directory with Firefox. This should start the 
+installation procedure. Once installed clicking the
+live bookmark icon should add subscriptions to Liferea.
 	
 
 Compiling from Source
@@ -69,7 +86,7 @@ Compiling from Source
 If you want you can compile Liferea. Download the tarball from 
 the SourcForge project page and extract with: 
 
-   tar zxvf liferea-0.9.5.tar.gz 
+   tar zxvf liferea-1.0.tar.gz 
 
 Of course you should adjust the filename. After unpacking 
 run the standard autotools commands: 
@@ -79,37 +96,16 @@ run the standard autotools commands:
    make install		
 
 
-Upgrading to newer versions
-===========================
-
-When upgrading to 0.4.8 the cache directory structure and the save 
-mechanism of the feed list will be changed. After the automatic
-conversion older versions of Liferea cannot read the cache anymore
-and the won't see the converted feed list anymore. To be prepared
-for problems please export the feed list using the older version
-of Liferea! In case of problems you can reinstall the older version
-and import the backup feed list.
-
-When upgrading to 0.5.1 the favicon format and location changes. When
-downgrading you will loose all icons.
-
-When upgrading to 0.5.2 the feed cache format was changed. When you
-downgrade you will loose metadata information (the stuff displayed
-in the footer).
-
 Dependencies
 ============
 
-The library dependencies for gtk2, gconf2, gtkhtml2, libxml2 and 
-others are all set to 2.0.0. Maybe they could be more specific...
-
-There is a special issue with RedHat based distributions: you 
-have to install at least libxml2 2.5.10 or you will occur 
-random segfaults.
+The library dependencies for Liferea are: gtk2, gconf2, libxml2
+and either libgtkembedmoz or gtkhtml2.
 
 If you want to use the Mozilla browser module you need a Mozilla
 installation containing libgtkembedmoz.so. Every up-to-date Firefox
 should bring it.
+
 
 Help Wanted
 ===========
@@ -121,10 +117,11 @@ we discuss new tasks to be done. Just join the discussion!
 If you want to do a translation write a mail to the mailing list
 or just upload the translation as a patch to SourceForge.
 
+
 Known Problems
 ==============
 
-Please check the bug list on SourceForge for known problems! If you 
+Please check the bug tracker on SourceForge for known problems! If you 
 don't find your problem please make a report (forum, bugs...) on 
-the SourceForge project page (http://liferea.sf.net) or send emails 
+the SourceForge project page (http://liferea.sf.net) or send a email
 to the project mailing list (liferea-devel@lists.sourceforge.net).
