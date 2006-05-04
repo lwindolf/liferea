@@ -63,6 +63,15 @@ gchar * unxmlize(gchar *string);
 gchar * extractHTMLNode(xmlNodePtr cur, gint xhtmlMode, const gchar *defaultBase);
 
 /**
+ * Strips some DHTML constructs from the given HTML string.
+ *
+ * @param html	some HTML content
+ *
+ * @return newly allocated stripped HTML string
+ */
+gchar * common_strip_dhtml(const gchar *html);
+
+/**
  * Convert the given string to proper XHTML content.
  * Note: this function does not respect relative URLs
  * and is to be used for cache migration 1.0 -> 1.1 only!

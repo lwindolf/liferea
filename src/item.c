@@ -162,16 +162,9 @@ gchar *item_render(itemPtr ip) {
 	xmlChar			*tmp3;
 	nodePtr			np;
 	
-	/* remove some nasty DHTML stuff from the items HTML content */
-	if(tmp = g_strdup(item_get_description(ip))) {
-		tmp = strreplace(tmp, " onload=", " no_onload=");
-		tmp = strreplace(tmp, "script>", "no_script>");		
-		tmp = strreplace(tmp, "<script ", "<no_script ");		
-	}
-	
 	displayset.headtable = NULL;
 	displayset.head = NULL;
-	displayset.body = tmp;
+	displayset.body = common_strip_dhtml(item_get_description(ip));
 	displayset.foot = NULL;
 	displayset.foottable = NULL;
 	

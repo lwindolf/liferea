@@ -239,6 +239,19 @@ gchar * extractHTMLNode(xmlNodePtr cur, gint xhtmlMode, const gchar *defaultBase
 	return result;
 }
 
+gchar * common_strip_dhtml(const gchar *html) {
+	gchar *tmp;
+	
+	/* remove some nasty DHTML stuff from the given HTML content */
+	if(tmp = g_strdup(html)) {
+		tmp = strreplace(tmp, " onload=", " no_onload=");
+		tmp = strreplace(tmp, "script>", "no_script>");		
+		tmp = strreplace(tmp, "<script ", "<no_script ");		
+	}
+	
+	return tmp;
+}
+
 /* Convert the given string to proper XHTML content.*/
 gchar * common_text_to_xhtml(const gchar *text) {
 	gchar		*result = NULL;
