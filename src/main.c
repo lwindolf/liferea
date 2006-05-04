@@ -202,6 +202,10 @@ int main(int argc, char *argv[]) {
 	g_thread_init(NULL);
 	gtk_init(&argc, &argv);
 	
+	/* GTK theme support */
+	g_set_application_name(_("Liferea"));
+	gtk_window_set_default_icon_name("liferea");
+	
 	/* parse arguments  */
 	debug_flags = 0;
 	for(i = 1; i < argc; ++i) {
