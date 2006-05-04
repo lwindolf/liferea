@@ -27,3 +27,14 @@ lifereadistpix_DATA = available.png  directory.png  empty.png  flag.png  \
 
 distpixmapdir = $(datadir)/pixmaps
 distpixmap_DATA = liferea.png
+
+gtk_update_icon_cache = gtk-update-icon-cache -f -t $(datadir)/pixmaps
+
+install-data-hook:
+	@-if test -z "$(DESTDIR)"; then \
+	        echo "Updating Gtk icon cache."; \
+	        $(gtk_update_icon_cache); \
+	else \
+	        echo "*** Icon cache not updated.  After install, run this:"; \
+	        echo "***   $(gtk_update_icon_cache)"; \
+	fi
