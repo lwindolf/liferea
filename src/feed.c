@@ -260,20 +260,20 @@ void feed_export(feedPtr fp, xmlNodePtr cur, gboolean internal) {
 	else
 		xmlNewProp(cur, BAD_CAST"htmlUrl", BAD_CAST "");
 	xmlNewProp(cur, BAD_CAST"xmlUrl", BAD_CAST feed_get_source(fp));
-	if(internal)
-		xmlNewProp(cur, BAD_CAST"updateInterval", BAD_CAST interval);
-
-	if(fp->cacheLimit >= 0)
-		cacheLimit = g_strdup_printf("%d", fp->cacheLimit);
-	if(fp->cacheLimit == CACHE_UNLIMITED)
-		cacheLimit = g_strdup("unlimited");
-	if(cacheLimit != NULL)
-		xmlNewProp(cur, BAD_CAST"cacheLimit", BAD_CAST cacheLimit);
 
 	if(feed_get_filter(fp) != NULL)
 		xmlNewProp(cur, BAD_CAST"filtercmd", BAD_CAST feed_get_filter(fp));
 
 	if(internal) {
+		xmlNewProp(cur, BAD_CAST"updateInterval", BAD_CAST interval);
+		
+		if(fp->cacheLimit >= 0)
+			cacheLimit = g_strdup_printf("%d", fp->cacheLimit);
+		if(fp->cacheLimit == CACHE_UNLIMITED)
+			cacheLimit = g_strdup("unlimited");
+		if(cacheLimit != NULL)
+			xmlNewProp(cur, BAD_CAST"cacheLimit", BAD_CAST cacheLimit);
+
 		if(fp->noIncremental)
 			xmlNewProp(cur, BAD_CAST"noIncremental", BAD_CAST"true");
 			
@@ -425,7 +425,7 @@ void feed_parse(feedParserCtxtPtr ctxt, gboolean autodiscover) {
 		} else {
 			debug0(DEBUG_UPDATE, "neither a known feed type nor a HTML document!");
 			ctxt->feed->available = FALSE;
-			addToHTMLBuffer(&(ctxt->feed->parseErrors), _("<p>Could not determine the feed type. Please check that it is a <a href=\"http://feedvalidator.org\">valid feed</a>.</p>"));
+			addToHTMLBuffer(&(ctxt->feed->parseErrors), _("<p>Could not determine the feed type.</p>"));
 		}
 	} else {
 		debug1(DEBUG_UPDATE, "discovered feed format: %s", feed_type_fhp_to_str(ctxt->feed->fhp));
@@ -1026,8 +1026,7 @@ void feed_set_error_description(feedPtr fp, gint httpstatus, gint resultcode, gc
 	/* add filtering error messages */
 	if(NULL != filterErrors) {	
 		errorFound = TRUE;
-		tmp1 = g_markup_printf_escaped(FILTER_ERROR_TEXT2, _("Show Details"), filterErrors);
-		addToHTMLBuffer(&buffer, FILTER_ERROR_TEXT);
+		tmp1 = g_markup_printf_escaped(FILTER_ERROR_TEXT2, FILTER_ERROR_TEXT, _("Show Details"), filterErrors);
 		addToHTMLBuffer(&buffer, tmp1);
 		g_free(tmp1);
 	}
@@ -1035,8 +1034,7 @@ void feed_set_error_description(feedPtr fp, gint httpstatus, gint resultcode, gc
 	/* add parsing error messages */
 	if(NULL != fp->parseErrors) {
 		errorFound = TRUE;
-		tmp1 = g_strdup_printf(PARSE_ERROR_TEXT2, _("Show Details"), _("Details:"), fp->parseErrors);
-		addToHTMLBuffer(&buffer, PARSE_ERROR_TEXT);
+		tmp1 = g_strdup_printf(PARSE_ERROR_TEXT2, PARSE_ERROR_TEXT, _("Show Details"), _("Error Details:"), fp->parseErrors);
 		addToHTMLBuffer(&buffer, tmp1);
 		if (feed_get_source(fp) != NULL && (NULL != strstr(feed_get_source(fp), "://"))) {
 			xmlChar *escsource;

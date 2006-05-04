@@ -235,17 +235,20 @@ div.itemunshaded {
    of the feed description */
 table.httperror {
 	width:100%;
-	//background:#E06060;
-	background:#FF9;
 	border:0;
 	border-bottom:1px solid black;
 	margin:0;
+	background:#ffa;
 }
 
 td.httperror {
-	padding:2px;
-	padding-left:5px;
-	padding-right:5px;
+}
+
+div.xmlparseroutput {
+	margin:10px 0px 10px 15px;
+	padding:5px;
+	border:2px solid black;
+	background:white;
 }
 
 span.details, span.detaillink {
@@ -254,13 +257,8 @@ span.details, span.detaillink {
 }
 
 span.details {
-	background:#D55;
-	margin:5px;
-	margin-left:15px;
 	padding:5px;
-	padding-left:15px;
-	border-left:3px solid #911;
-	font-size:80%;
+	margin:15px;
 }
 
 span.showmore {

@@ -146,6 +146,7 @@ tr.feedfoot {
 
 td.feedfootname {
 	width:30%;
+	padding-left: 5px;
 }
 
 span.feedfootname {
@@ -286,11 +287,11 @@ div.blogchanneltitle {
 }
 
 img.freshmeat {
-	margin-top:10px;
+	margin:6px 6px 6px 12px;
 }
 
 table.slash {
-	margin-bottom:5px;	/* must not be in td.slash to work with Mozilla */
+	margin:0 5px 0 0;	/* must not be in td.slash to work with Mozilla */
 	width:100%;
 }
 
@@ -349,9 +350,6 @@ img.enclosurebtn {
 	padding:2px;
 	margin-left:2px;
 }
-
-/* preventing freezes due to any plugins */
-embed { display:none !important }
 
 del {
 	text-decoration: overline;

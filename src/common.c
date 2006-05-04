@@ -387,7 +387,7 @@ static void common_buffer_parse_error(void *ctxt, const gchar * msg, ...) {
 	}
 	
 	if(MAX_PARSE_ERROR_LINES == errors->errorCount) {
-		newmsg = g_strdup_printf("%s<br/>%s", errors->buffer, _("[Parser error output was truncated!]"));
+		newmsg = g_strdup_printf("%s<br />%s", errors->buffer, _("[There were more errors. Output was truncated!]"));
 		g_free(errors->buffer);
 		errors->buffer = newmsg;
 	}
