@@ -43,9 +43,32 @@ static struct flPlugin fpi;
 
 static void ui_feedlist_dbus_connect ();
 
+static void fl_default_copy_dir(gchar *subdir) {
+	gchar *dirname10, *dirname11;
+	gchar *srcfile, *destfile;
+   	GDir *dir;
+		
+	dirname10 = g_strdup_printf("%s" G_DIR_SEPARATOR_S ".liferea"     G_DIR_SEPARATOR_S "%s", g_get_home_dir(), subdir);
+	dirname11 = g_strdup_printf("%s" G_DIR_SEPARATOR_S ".liferea_1.1" G_DIR_SEPARATOR_S "%s", g_get_home_dir(), subdir);
+	dir = g_dir_open(dirname10, 0, NULL);
+	while(srcfile = (gchar *)g_dir_read_name(dir)) {
+		gchar	*content;
+		gsize	length;
+		destfile = g_strdup_printf("%s" G_DIR_SEPARATOR_S "%s", dirname11, srcfile);
+		srcfile = g_strdup_printf("%s" G_DIR_SEPARATOR_S "%s", dirname10, srcfile);
+		g_print("copying %s to %s\n", srcfile, destfile);
+		if(g_file_get_contents(srcfile, &content, &length, NULL))
+			g_file_set_contents(destfile, content, length, NULL);
+		g_free(content);
+		g_free(destfile);
+		g_free(srcfile);
+	}
+	g_dir_close(dir);
+}
+
 static void fl_default_handler_import(nodePtr node) {
 	flNodeHandler	*handler;
-	gchar		*filename;
+	gchar		*filename10, *filename11;
 
 	debug_enter("fl_default_handler_import");
 
@@ -57,15 +80,39 @@ static void fl_default_handler_import(nodePtr node) {
 
 	/* start the import */
 	feedlistImport = TRUE;
-	filename = common_create_cache_filename(NULL, "feedlist", "opml");
-	if(!g_file_test(filename, G_FILE_TEST_EXISTS)) {
-		/* if there is no feedlist.opml we provide a default feed list */
-		g_free(filename);
-		/* "feedlist.opml" is translatable so that translators can provide a localized default feed list */
-		filename = g_strdup_printf(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "opml" G_DIR_SEPARATOR_S "%s", _("feedlist.opml"));
+
+	/* check for 1.0->1.1 migration */
+	filename10 = g_strdup_printf("%s" G_DIR_SEPARATOR_S ".liferea/feedlist.opml", g_get_home_dir()); /* 1.0 path dir */
+	filename11 = common_create_cache_filename(NULL, "feedlist", "opml");	
+		
+	if(!g_file_test(filename11, G_FILE_TEST_EXISTS) &&
+	   g_file_test(filename10, G_FILE_TEST_EXISTS)) {
+		
+		g_print("starting 1.0->1.1 cache migration...\n");
+		
+		/* Note: because v1.1 uses a new cache format we
+		   do a cache migration. v1.1 uses $HOME/.liferea_1.1
+		   instead of $HOME/.liferea as it's cache directory */
+
+		/* copy old cache files to new cache dir */
+		fl_default_copy_dir("cache" G_DIR_SEPARATOR_S "feeds");
+		fl_default_copy_dir("cache" G_DIR_SEPARATOR_S "favicons");
+		
+		/* point feedlist.opml to the old 1.0 file */
+		g_free(filename11);
+		filename11 = g_strdup(filename10);
 	}
-	import_OPML_feedlist(filename, node, handler, FALSE, TRUE);
-	g_free(filename);
+	g_free(filename10);
+
+	/* check for default feed list import */
+	if(!g_file_test(filename11, G_FILE_TEST_EXISTS)) {
+		/* if there is no feedlist.opml we provide a default feed list */
+		g_free(filename11);
+		/* "feedlist.opml" is translatable so that translators can provide a localized default feed list */
+		filename11 = g_strdup_printf(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "opml" G_DIR_SEPARATOR_S "%s", _("feedlist.opml"));
+	}
+	import_OPML_feedlist(filename11, node, handler, FALSE, TRUE);
+	g_free(filename11);
 	feedlistImport = FALSE;
 
 #ifdef USE_DBUS

@@ -655,14 +655,14 @@ time_t parseRFC822Date(gchar *date) {
 static void common_check_dir(gchar *path) {
 
 	if(!g_file_test(path, G_FILE_TEST_IS_DIR)) {
-		if(0 != mkdir(path, S_IRUSR | S_IWUSR | S_IXUSR)) {
+		if(0 != g_mkdir_with_parents(path, S_IRUSR | S_IWUSR | S_IXUSR)) {
 			g_error(_("Cannot create cache directory \"%s\"!"), path);
 		}
 	}
 	g_free(path);
 }
 
-void initCachePath(void) {
+static void common_init_cache_path(void) {
 	gchar *cachePath;
 
 	/* until the 1.1 code stabilizes let's use a parallel cache storage */
@@ -681,8 +681,8 @@ void initCachePath(void) {
 
 gchar * common_get_cache_path(void) {
 	
-	if(NULL == lifereaUserPath)
-		initCachePath();
+	if(!lifereaUserPath)
+		common_init_cache_path();
 		
 	return lifereaUserPath;
 }
