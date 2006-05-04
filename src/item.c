@@ -166,6 +166,7 @@ gchar *item_render(itemPtr ip) {
 	if(tmp = g_strdup(item_get_description(ip))) {
 		tmp = strreplace(tmp, " onload=", " no_onload=");
 		tmp = strreplace(tmp, "script>", "no_script>");		
+		tmp = strreplace(tmp, "<script ", "<no_script ");		
 	}
 	
 	displayset.headtable = NULL;
