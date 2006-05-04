@@ -264,7 +264,7 @@ mozilla_preference_set_int (const char *preference_name, int new_int_value)
 /**
  * Set Mozilla caching to on or off line mode
  */
-extern "C" gboolean
+extern "C" void
 mozilla_set_offline_mode (gboolean offline)
 {
 	nsresult rv;
@@ -273,8 +273,8 @@ mozilla_set_offline_mode (gboolean offline)
 	if (NS_SUCCEEDED(rv))
 	{
 		rv = io->SetOffline(offline);
-		if (NS_SUCCEEDED(rv)) return TRUE;
+		//if (NS_SUCCEEDED(rv)) return TRUE;
 	}
-	return FALSE;
+	//return FALSE;
 }
 
