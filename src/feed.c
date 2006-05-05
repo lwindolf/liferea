@@ -1408,7 +1408,7 @@ static gchar * feed_render(nodePtr node) {
 		if(feed_get_source(fp)[0] == '|') {
 			tmp = g_strdup(_("user defined command"));
 		} else if(feed_get_source(fp)[0] == '/') {
-				tmp = g_strdup_printf("<a href=\"file://%s\">%s</a>", /* file names should be safe to display.... */
+				tmp = g_markup_printf_escaped("<a href=\"file://%s\">%s</a>", /* file names should be safe to display.... */
 								  escapedSrc,
 								  escapedSrc);			
 		} else {
@@ -1417,13 +1417,13 @@ static gchar * feed_render(nodePtr node) {
 				g_free(uri->user);
 				uri->user = NULL;
 				tmp2 = xmlSaveUri(uri);
-				tmp = g_strdup_printf("<a href=\"%s\">%s</a>",
+				tmp = g_markup_printf_escaped("<a href=\"%s\">%s</a>",
 								  tmp2,
 								  tmp2);
 				xmlFree(tmp2);
 				xmlFreeURI(uri);
 			} else {
-				tmp = g_strdup_printf("<a href=\"%s\">%s</a>",
+				tmp = g_markup_printf_escaped("<a href=\"%s\">%s</a>",
 								  escapedSrc,
 								  escapedSrc);			
 			}
