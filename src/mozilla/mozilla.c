@@ -1,5 +1,5 @@
 /**
- * @file mozembed.c a browser module implementation using gtkmozembed.
+ * @file mozilla.c a Mozilla/Firefox browser module implementation
  *   
  * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>   
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>

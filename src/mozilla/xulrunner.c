@@ -1,5 +1,5 @@
 /**
- * @file mozembed.c a xulrunner browser module implementation.
+ * @file xulrunner.c a xulrunner browser module implementation.
  *   
  * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>   
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
