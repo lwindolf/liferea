@@ -45,7 +45,9 @@
 #include "parsers/ocs_dir.h"
 #include "parsers/opml.h"
 #include "vfolder.h"
+#include "favicon.h"
 #include "feed.h"
+#include "feedlist.h"
 #include "node.h"
 #include "net/cookies.h"
 #include "update.h"
@@ -55,6 +57,7 @@
 #include "ui/ui_enclosure.h"
 #include "ui/ui_htmlview.h"
 #include "ui/ui_mainwindow.h"
+#include "ui/ui_node.h"
 #include "notification/notif_plugin.h"
 
 /** used for migration purposes: 1.0.x didn't specify a version */
@@ -173,7 +176,7 @@ gpointer feed_import(nodePtr node, const gchar *typeStr, xmlNodePtr cur, gboolea
 		feed_set_source(fp, source);
 		xmlFree(source);
 
-		if(filter = xmlGetProp(cur, BAD_CAST"filtercmd")) {
+		if((filter = xmlGetProp(cur, BAD_CAST"filtercmd"))) {
 			if(!trusted) {
 				/* FIXME: Display warning dialog asking if the command
 				   is safe? */
@@ -396,7 +399,7 @@ void feed_parse(feedParserCtxtPtr ctxt, gboolean autodiscover) {
 		    strstr(ctxt->data, "<html ") || strstr(ctxt->data, "<HTML "))) {
 			/* if yes we should scan for links */
 			debug1(DEBUG_UPDATE, "HTML detected, starting feed auto discovery (%s)", feed_get_source(ctxt->feed));
-			if(source = html_auto_discover_feed(ctxt->data, feed_get_source(ctxt->feed))) {
+			if((source = html_auto_discover_feed(ctxt->data, feed_get_source(ctxt->feed)))) {
 				/* now download the first feed link found */
 				struct request *request = download_request_new(NULL);
 				debug1(DEBUG_UPDATE, "feed link found: %s", source);
@@ -592,7 +595,7 @@ itemSetPtr feed_load_from_cache(nodePtr node) {
 
 		if(!xmlStrcmp(cur->name, BAD_CAST"feed")) {
 			xmlChar *version;			
-			if(version = xmlGetProp(cur, BAD_CAST"version")) {
+			if((version = xmlGetProp(cur, BAD_CAST"version"))) {
 				migrateCache = xmlStrcmp(BAD_CAST FEED_CACHE_VERSION, version);
 				xmlFree(version);
 			}
@@ -1383,7 +1386,7 @@ static gchar * feed_render(nodePtr node) {
 	escapedSrc = g_markup_escape_text(feed_get_source(fp), -1);
 
 	/* Error description */
-	if(tmp = feed_get_error_description(fp)) {
+	if((tmp = feed_get_error_description(fp))) {
 		addToHTMLBufferFast(&buffer, tmp);
 		g_free(tmp);
 	}
@@ -1413,7 +1416,7 @@ static gchar * feed_render(nodePtr node) {
 								  escapedSrc);			
 		} else {
 			/* remove user and password from URL ... */
-			if(uri = xmlParseURI(escapedSrc)) {
+			if((uri = xmlParseURI(escapedSrc))) {
 				g_free(uri->user);
 				uri->user = NULL;
 				tmp2 = xmlSaveUri(uri);

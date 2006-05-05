@@ -182,7 +182,7 @@ GtkMenu *ui_popup_make_enclosure_menu(const gchar *url) {
 	GtkMenu		*menu;
 	xmlChar		*enclosure_url;
 
-	if(enclosure_url = xmlURIUnescapeString(url + strlen(ENCLOSURE_PROTOCOL "load?"), 0, NULL)) {
+	if((enclosure_url = xmlURIUnescapeString(url + strlen(ENCLOSURE_PROTOCOL "load?"), 0, NULL))) {
 		menu = make_menu(enclosure_menu_items, enclosure_menu_len, g_strdup(enclosure_url)); 
 		xmlFree(enclosure_url);
 		return menu;

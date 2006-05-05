@@ -51,7 +51,7 @@ struct displayset {
 /* RSS feed/item output definitions (some are used by OCS too!) */
 
 #define HEAD_START		"<table cellspacing=\"0\" class=\"itemhead\">"
-#define HEAD_LINE		"<tr><td valign=\"middle\" class=\"headleft\"><b>%s</b></td><td class=\"headright\" valign=\"middle\" width=\"100%\">%s</td></tr>"
+#define HEAD_LINE		"<tr><td valign=\"middle\" class=\"headleft\"><b>%s</b></td><td class=\"headright\" valign=\"middle\" width=\"100%%\">%s</td></tr>"
 #define HEAD_END		"</table>"
 
 #define FEED_FOOT_TABLE_START	"<table class=\"feedfoot\">"
