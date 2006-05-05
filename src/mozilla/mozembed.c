@@ -262,9 +262,10 @@ static void mozilla_init() {
 	/* some GtkMozEmbed initialization taken from embed.c from the Galeon sources */
 	
 	/* init mozilla home */
-	g_unsetenv("MOZILLA_FIVE_HOME");
-	gtk_moz_embed_set_comp_path(NULL);
-
+	g_assert(g_thread_supported());
+	
+	gtk_moz_embed_set_comp_path(MOZILLA_HOME);
+	
 	/* set a path for the profile */
 	profile = g_build_filename(g_get_home_dir(), ".liferea/mozilla", NULL);
 
@@ -286,7 +287,7 @@ static void mozilla_init() {
 	/* prevent typahead finding to allow Liferea keyboard navigation */
 	mozilla_preference_set_boolean("accessibility.typeaheadfind", FALSE);
 	mozilla_preference_set_boolean("accessibility.typeaheadfind.autostart", FALSE);
-
+	
 	mozilla_save_prefs();
 }
 
@@ -316,19 +317,19 @@ static void mozilla_set_proxy(gchar *hostname, int port, gchar *username, gchar 
 }
 
 static htmlviewPluginInfo mozillaInfo = {
-	HTMLVIEW_API_VERSION,
-	"Mozilla",
-	mozilla_init,
-	mozilla_deinit,
-	mozilla_create,
-	mozilla_write,
-	launch_url,
-	launch_inside_possible,
-	mozilla_get_zoom,
-	mozilla_set_zoom,
-	mozilla_scroll_pagedown,
-	mozilla_set_proxy,
-	mozilla_set_offline_mode
+	.api_version = HTMLVIEW_API_VERSION,
+	.name = "Mozilla",
+	.init = mozilla_init,
+	.deinit = mozilla_deinit,
+	.create = mozilla_create,
+	.write = mozilla_write,
+	.launch = launch_url,
+	.launchInsidePossible = launch_inside_possible,
+	.zoomLevelGet = mozilla_get_zoom,
+	.zoomLevelSet = mozilla_set_zoom,
+	.scrollPagedown = mozilla_scroll_pagedown,
+	.setProxy = mozilla_set_proxy,
+	.setOffLine = mozilla_set_offline_mode
 };
 
 DECLARE_HTMLVIEW_PLUGIN(mozillaInfo);

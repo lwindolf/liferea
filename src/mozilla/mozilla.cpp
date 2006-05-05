@@ -35,18 +35,10 @@
 #include <gtk/gtk.h>
 #include <gtkmozembed.h>
 #include <gtkmozembed_internal.h>
-#include "nsIDocument.h"
-#include "nsIDocShell.h"
-#include "nsIDocShellTreeItem.h"
-#include "nsIDocShellTreeNode.h"
-#include "nsIDocShellTreeOwner.h"
+
 #include "nsIWebBrowser.h"
-#include "nsIDeviceContext.h"
-#include "nsIContentViewer.h"
-#include "nsIMarkupDocumentViewer.h"
-#include "nsIDOMNSEvent.h"
 #include "nsIDOMMouseEvent.h"
-#include "nsIDOMKeyEvent.h"
+#include "dom/nsIDOMKeyEvent.h"
 #include "nsIDOMWindow.h"
 #include "nsIPrefService.h"
 #include "nsIServiceManager.h"
@@ -113,10 +105,10 @@ gint mozilla_get_mouse_event_button(gpointer event) {
 }
 
 extern "C" void
-mozilla_set_zoom (GtkWidget *embed, float aZoom) {
+mozilla_set_zoom (GtkWidget *embed, gfloat aZoom) {
 	nsCOMPtr<nsIWebBrowser>		mWebBrowser;	
 	nsCOMPtr<nsIDOMWindow> 		mDOMWindow;
-		
+	
 	gtk_moz_embed_get_nsIWebBrowser(GTK_MOZ_EMBED(embed), getter_AddRefs(mWebBrowser));
 	mWebBrowser->GetContentDOMWindow(getter_AddRefs(mDOMWindow));	
 	if(NULL == mDOMWindow) {
