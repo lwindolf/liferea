@@ -27,13 +27,14 @@ AC_PROG_LN_S
 AC_PROG_MAKE_SET
 AC_SYS_LARGEFILE
 
-AC_ARG_ENABLE(sm,      AS_HELP_STRING([--disable-sm],[compile without X session management support]),,enable_sm=yes)
-AC_ARG_ENABLE(dbus,    AS_HELP_STRING([--disable-dbus],[compile without DBUS support]),,enable_dbus=yes)
-AC_ARG_ENABLE(gtkhtml2,AS_HELP_STRING([--disable-gtkhtml2],[don't compile the gtkhtml2 backend]),,enable_gtkhtml2=yes)
-AC_ARG_ENABLE(gecko,   AS_HELP_STRING([--disable-gecko],[don't compile the Gecko backend]),,enable_gecko=yes)
-AC_ARG_ENABLE(gecko,   AS_HELP_STRING([--enable-gecko=ARG],[specify which Gecko provider to use ("mozilla", "firefox" or "xulrunner")]),,enable_gecko=yes)
-AC_ARG_ENABLE(gnutls,  AS_HELP_STRING([--enable-gnutls],[Attempt to use GNUTLS for SSL support @<:@default=yes@:>@]),,enable_gnutls=yes)
-AC_ARG_ENABLE(libnotify,AS_HELP_STRING([--disable-libnotify],[don't compile the libnotify plugin]),,enable_libnotify=yes)
+AC_ARG_ENABLE(sm,        AS_HELP_STRING([--disable-sm],[compile without X session management support]),,enable_sm=yes)
+AC_ARG_ENABLE(dbus,      AS_HELP_STRING([--disable-dbus],[compile without DBUS support]),,enable_dbus=yes)
+AC_ARG_ENABLE(gtkhtml2,  AS_HELP_STRING([--disable-gtkhtml2],[don't compile the gtkhtml2 backend]),,enable_gtkhtml2=yes)
+AC_ARG_ENABLE(xulrunner, AS_HELP_STRING([--disable-xulrunner],[don't compile the xulrunner backend]),,enable_xulrunner=yes)
+AC_ARG_ENABLE(gecko,     AS_HELP_STRING([--disable-gecko],[don't compile the Gecko backend]),,enable_gecko=yes)
+AC_ARG_ENABLE(gecko,     AS_HELP_STRING([--enable-gecko=ARG],[specify which Gecko provider to use ("mozilla" or "firefox")]),,enable_gecko=yes)
+AC_ARG_ENABLE(gnutls,    AS_HELP_STRING([--enable-gnutls],[Attempt to use GNUTLS for SSL support @<:@default=yes@:>@]),,enable_gnutls=yes)
+AC_ARG_ENABLE(libnotify, AS_HELP_STRING([--disable-libnotify],[don't compile the libnotify plugin]),,enable_libnotify=yes)
 
 AC_CHECK_FUNCS([strsep getaddrinfo])
 
@@ -83,19 +84,6 @@ AC_SUBST(CURL_LIBS)
 
 PKG_PROG_PKG_CONFIG()
 
-html_modules=
-
-if test "x$enable_gtkhtml2" = "xyes"; then
-   dnl AC_MSG_CHECKING([for GtkHTML2 support])
-   PKG_CHECK_MODULES([GTKHTML2], libgtkhtml-2.0 >= 2.0.0,enable_gtkhtml2=yes,enable_gtkhtml2=no)
-   AC_SUBST(GTKHTML2_CFLAGS)
-   AC_SUBST(GTKHTML2_LIBS)
-else
-   enable_gtkhmtl2=no
-fi
-
-AM_CONDITIONAL(WITH_GTKHTML2, test "x$enable_gtkhtml2" = "xyes")
-
 dnl *********
 dnl libnotify
 dnl *********
@@ -111,15 +99,41 @@ fi
 
 AM_CONDITIONAL(WITH_LIBNOTIFY, test "x$enable_libnotify" = "xyes")
 
+
+html_modules=
+
+dnl ********
+dnl GtkHTML2
+dnl ********
+
+if test "x$enable_gtkhtml2" = "xyes"; then
+   dnl AC_MSG_CHECKING([for GtkHTML2 support])
+   PKG_CHECK_MODULES([GTKHTML2], libgtkhtml-2.0 >= 2.0.0,enable_gtkhtml2=yes,enable_gtkhtml2=no)
+   AC_SUBST(GTKHTML2_CFLAGS)
+   AC_SUBST(GTKHTML2_LIBS)
+else
+   enable_gtkhmtl2=no
+fi
+
+AM_CONDITIONAL(WITH_GTKHTML2, test "x$enable_gtkhtml2" = "xyes")
+
+dnl *********
+dnl XulRunner
+dnl *********
+
+if test "x$enable_xulrunner" = "xyes" ; then
+   dnl AC_MSG_CHECKING([for XulRunner support])
+   PKG_CHECK_MODULES(XULRUNNER, xulrunner-gtkmozembed, enable_xulrunner=yes, enable_xulrunner=no)
+   XULRUNNER_HOME="`$PKG_CONFIG --variable=libdir xulrunner-gtkmozembed`"
+   AC_SUBST([XULRUNNER_HOME])
+   AC_SUBST(XULRUNNER_CFLAGS)
+   AC_SUBST(XULRUNNER_LIBS)
+fi
+
 dnl *******
 dnl Mozilla
 dnl *******
 
-if test "x$enable_mozilla" != "xyes" -a \( "x$enable_gecko" = "xyes" -o "x$enable_gecko" = "xxulrunner" \) ; then
-   gecko_provider=xulrunner
-   PKG_CHECK_MODULES(MOZILLA, $gecko_provider-gtkmozembed, enable_mozilla=yes, enable_mozilla=no)
-   AC_MSG_RESULT($gecko_provider: $enable_mozilla)
-fi
 if test "x$enable_gecko" = "xyes" -o "x$enable_gecko" = "xmozilla" ; then
    gecko_provider=mozilla
    PKG_CHECK_MODULES(MOZILLA, $gecko_provider-gtkmozembed, enable_mozilla=yes, enable_mozilla=no)
@@ -206,10 +220,10 @@ else
 fi
 
 dnl For now, require GtkHTML2 or Mozilla. GtkHTML3 should not be used!
-if test "x$enable_mozilla" != "xyes" -a "x$enable_gtkhtml2" != "xyes" ; then
+if test "x$enable_mozilla" != "xyes" -a "x$enable_gtkhtml2" != "xyes" -a "x$enable_xulrunner" != "xyes" ; then
 	AC_MSG_ERROR([
-*** You must have either the GtkHTML2 or the Mozilla development
-*** libraries installed in order to build Liferea!
+*** You must have either the GtkHTML2, XulRunner or the Mozilla 
+*** development libraries installed in order to build Liferea!
 ])
 fi
 
@@ -412,6 +426,7 @@ if test "x$enable_mozilla" = "xyes"; then
 else
    echo "Build Mozilla Plugin............ : $enable_mozilla"
 fi
+echo "Build XulRunner Plugin.......... : $enable_xulrunner"
 echo "Build GtkHTML Plugin............ : $enable_gtkhtml2"
 echo 
 echo "Build libnotify Plugin.......... : $enable_libnotify"

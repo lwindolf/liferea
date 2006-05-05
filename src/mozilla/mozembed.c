@@ -1,8 +1,8 @@
 /**
- * @file mozembed.c a browser module implementation using gtkmozembed.
+ * @file mozembed.c common gtkmozembed handling.
  *   
- * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>   
- * Copyright (C) 2004 Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>   
+ * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * Contains code from the Galeon sources
  *
@@ -38,7 +38,6 @@
 #include "debug.h"
 #include "ui/ui_popup.h"
 #include "ui/ui_tabs.h"
-#include "mozilla.h"
 
 /* points to the URL actually under the mouse pointer or is NULL */
 static gchar		*selectedURL = NULL;
@@ -46,7 +45,7 @@ static gchar		*selectedURL = NULL;
 /* -------------------------------------------------------------------- */
 
 /* function to write HTML source into the widget */
-static void mozilla_write(GtkWidget *widget, const gchar *string, guint length, const gchar *base, const gchar *contentType) {
+void mozembed_write(GtkWidget *widget, const gchar *string, guint length, const gchar *base, const gchar *contentType) {
 
 	g_assert(NULL != widget);
 	
@@ -74,7 +73,7 @@ static void mozilla_write(GtkWidget *widget, const gchar *string, guint length, 
 	} else
 		gtk_moz_embed_render_data(GTK_MOZ_EMBED(widget), EMPTY, strlen(EMPTY), base, "text/html");
 		
-	mozilla_scroll_to_top(widget);
+	mozsupport_scroll_to_top(widget);
 }
 
 /* -------------------------------------------------------------------- */
@@ -102,9 +101,9 @@ static void mozembed_new_window_cb(GtkMozEmbed *embed, GtkMozEmbed **newEmbed, g
 	}
 }
 
-static void mozembed_title_changed_cb (GtkMozEmbed *embed, gpointer user_data)
-{
+static void mozembed_title_changed_cb (GtkMozEmbed *embed, gpointer user_data) {
 	char *newTitle;
+	
 	newTitle = gtk_moz_embed_get_title(embed);
 	if (newTitle) {
 		ui_tabs_set_title(GTK_WIDGET(user_data), newTitle);
@@ -121,10 +120,9 @@ static void mozembed_location_changed_cb (GtkMozEmbed *embed, gpointer user_data
 	g_free(newLocation);
 }
 
-void mozembed_destroy_brsr_cb(GtkMozEmbed *embed, gpointer user_data) {
+static void mozembed_destroy_brsr_cb(GtkMozEmbed *embed, gpointer user_data) {
 	ui_tabs_close_tab(GTK_WIDGET(embed));
 }
-
 
 /**
  * mozembed_link_message_cb: GTKMOZEMBED SIGNAL, emitted when the 
@@ -146,7 +144,7 @@ static void mozembed_link_message_cb(GtkMozEmbed *dummy, gpointer embed) {
 }
 
 static gint mozembed_dom_key_press_cb (GtkMozEmbed *dummy, gpointer dom_event, gpointer embed) {
-	return mozilla_key_press_cb(embed, dom_event);
+	return mozsupport_key_press_cb(embed, dom_event);
 }
 
 /**
@@ -156,7 +154,7 @@ static gint mozembed_dom_key_press_cb (GtkMozEmbed *dummy, gpointer dom_event, g
 static gint mozembed_dom_mouse_click_cb (GtkMozEmbed *dummy, gpointer dom_event, gpointer embed) {
 	gint	button;
 
-	if(-1 == (button = mozilla_get_mouse_event_button(dom_event))) {
+	if(-1 == (button = mozsupport_get_mouse_event_button(dom_event))) {
 		g_warning("Cannot determine mouse button!\n");
 		return FALSE;
 	}
@@ -205,7 +203,7 @@ static gint mozembed_open_uri_cb (GtkMozEmbed *embed, const char *uri, gpointer 
 
 /* Sets up a html view widget using GtkMozEmbed.
    The signal setting was derived from the Galeon source. */
-static GtkWidget * mozilla_create(gboolean forceInternalBrowsing) {
+GtkWidget * mozembed_create(gboolean forceInternalBrowsing) {
 	GtkWidget	*widget;
 	int		i;
 	
@@ -256,15 +254,13 @@ static GtkWidget * mozilla_create(gboolean forceInternalBrowsing) {
 	return widget;
 }
 
-static void mozilla_init() {
+void mozembed_init(void) {
 	gchar	*profile;
 	
 	/* some GtkMozEmbed initialization taken from embed.c from the Galeon sources */
 	
 	/* init mozilla home */
 	g_assert(g_thread_supported());
-	
-	gtk_moz_embed_set_comp_path(MOZILLA_HOME);
 	
 	/* set a path for the profile */
 	profile = g_build_filename(g_get_home_dir(), ".liferea/mozilla", NULL);
@@ -276,61 +272,43 @@ static void mozilla_init() {
 	/* startup done */
 	gtk_moz_embed_push_startup();
 	
-	mozilla_preference_set_boolean("javascript.enabled", !getBooleanConfValue(DISABLE_JAVASCRIPT));
-	mozilla_preference_set_boolean("plugin.default_plugin_disabled", FALSE);
-	mozilla_preference_set_boolean("xpinstall.enabled", FALSE);
-	mozilla_preference_set_boolean("mozilla.widget.raise-on-setfocus", FALSE);
+	mozsupport_preference_set_boolean("javascript.enabled", !getBooleanConfValue(DISABLE_JAVASCRIPT));
+	mozsupport_preference_set_boolean("plugin.default_plugin_disabled", FALSE);
+	mozsupport_preference_set_boolean("xpinstall.enabled", FALSE);
+	mozsupport_preference_set_boolean("mozilla.widget.raise-on-setfocus", FALSE);
 
 	/* this prevents popup dialogs and gives IE-like HTML error pages instead */
-	mozilla_preference_set_boolean("browser.xul.error_pages.enabled", TRUE);
+	mozsupport_preference_set_boolean("browser.xul.error_pages.enabled", TRUE);
 
 	/* prevent typahead finding to allow Liferea keyboard navigation */
-	mozilla_preference_set_boolean("accessibility.typeaheadfind", FALSE);
-	mozilla_preference_set_boolean("accessibility.typeaheadfind.autostart", FALSE);
+	mozsupport_preference_set_boolean("accessibility.typeaheadfind", FALSE);
+	mozsupport_preference_set_boolean("accessibility.typeaheadfind.autostart", FALSE);
 	
-	mozilla_save_prefs();
+	mozsupport_save_prefs();
 }
 
-static void mozilla_deinit() {
+void mozembed_deinit(void) {
 	gtk_moz_embed_pop_startup();
 }
 
 /* launches the specified URL */
-static void launch_url(GtkWidget *widget, const gchar *url) {
+void mozembed_launch_url(GtkWidget *widget, const gchar *url) {
 
 	gtk_moz_embed_load_url(GTK_MOZ_EMBED(widget), url); 
 }
 
-static gboolean launch_inside_possible(void) { return TRUE; }
+gboolean mozembed_launch_inside_possible(void) { return TRUE; }
 
-static void mozilla_set_proxy(gchar *hostname, int port, gchar *username, gchar *password) {
-	if(NULL != hostname) {
+void mozembed_set_proxy(gchar *hostname, int port, gchar *username, gchar *password) {
+
+	if(hostname) {
 		debug0(DEBUG_GUI, "setting proxy for Mozilla");
-		mozilla_preference_set("network.proxy.http", hostname);
-		mozilla_preference_set_int("network.proxy.http_port", port);
-		mozilla_preference_set_int("network.proxy.type", 1);
+		mozsupport_preference_set("network.proxy.http", hostname);
+		mozsupport_preference_set_int("network.proxy.http_port", port);
+		mozsupport_preference_set_int("network.proxy.type", 1);
 	} else {
-		mozilla_preference_set_int("network.proxy.type", 0);
+		mozsupport_preference_set_int("network.proxy.type", 0);
 	}
 	
-	mozilla_save_prefs();
+	mozsupport_save_prefs();
 }
-
-static htmlviewPluginInfo mozillaInfo = {
-	.api_version = HTMLVIEW_API_VERSION,
-	.name = "Mozilla",
-	.init = mozilla_init,
-	.deinit = mozilla_deinit,
-	.create = mozilla_create,
-	.write = mozilla_write,
-	.launch = launch_url,
-	.launchInsidePossible = launch_inside_possible,
-	.zoomLevelGet = mozilla_get_zoom,
-	.zoomLevelSet = mozilla_set_zoom,
-	.scrollPagedown = mozilla_scroll_pagedown,
-	.setProxy = mozilla_set_proxy,
-	.setOffLine = mozilla_set_offline_mode
-};
-
-DECLARE_HTMLVIEW_PLUGIN(mozillaInfo);
-
