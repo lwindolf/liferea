@@ -32,6 +32,10 @@
 #include "mozembed.h"
 
 static void mozilla_init(void) {
+
+	/* Avoid influencing the component loading by $MOZILLA_FIVE_HOME */
+	g_unsetenv("MOZILLA_FIVE_HOME");
+
 	
 	/* It is important to call gtk_moz_embed_set_comp_path()
 	   with NULL. If we would set a hard coded component
