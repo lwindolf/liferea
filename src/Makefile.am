@@ -4,11 +4,7 @@ if WITH_GTKHTML2
 GTKHTML2 = gtkhtml2
 endif
 
-if WITH_MOZILLA
-MOZILLA_DIR = mozilla
-endif
-
-SUBDIRS = net parsers fl_providers notification ui . $(GTKHTML2) $(MOZILLA_DIR)
+SUBDIRS = net parsers fl_providers notification ui . $(GTKHTML2) mozilla
 
 AM_CPPFLAGS = \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \

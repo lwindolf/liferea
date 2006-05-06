@@ -68,11 +68,8 @@ static gboolean ui_htmlview_load_symbols(gchar *libname, gboolean testmode) {
 	gchar		*filename;
 	
 	/* print some warnings concerning Mozilla */
-#ifndef __CYGWIN__
-	if((0 == strncmp(libname, "liblihtmlm", 10)) && !testmode) {
-#else
-	if((0 == strncmp(libname, "cyglihtmlm", 10)) && !testmode) {
-#endif
+	if(strstr(libname, "lihtmlm") && !testmode) {
+
 		debug0(DEBUG_GUI, _("\nTrying to load the Mozilla browser module... Note that this\n"
 		                  "might not work with every Mozilla version. If you have problems\n"
 		                  "and Liferea does not start, try to set MOZILLA_FIVE_HOME to\n"
