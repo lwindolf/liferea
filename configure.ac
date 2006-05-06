@@ -112,7 +112,7 @@ if test "x$enable_gtkhtml2" = "xyes"; then
    AC_SUBST(GTKHTML2_CFLAGS)
    AC_SUBST(GTKHTML2_LIBS)
 else
-   enable_gtkhmtl2=no
+   enable_gtkhtml2=no
 fi
 
 AM_CONDITIONAL(WITH_GTKHTML2, test "x$enable_gtkhtml2" = "xyes")
@@ -128,7 +128,12 @@ if test "x$enable_xulrunner" = "xyes" ; then
    AC_SUBST([XULRUNNER_HOME])
    AC_SUBST(XULRUNNER_CFLAGS)
    AC_SUBST(XULRUNNER_LIBS)
+   
+   dnl the Mozilla XPCOM access means C++
+   AC_PROG_CXX
 fi
+
+AM_CONDITIONAL(WITH_XULRUNNER, test "x$enable_xulrunner" = "xyes")
 
 dnl *******
 dnl Mozilla
@@ -219,7 +224,7 @@ else
    enable_mozilla=no
 fi
 
-dnl For now, require GtkHTML2 or Mozilla. GtkHTML3 should not be used!
+dnl For now, require GtkHTML2, Mozilla or XulRunner.
 if test "x$enable_mozilla" != "xyes" -a "x$enable_gtkhtml2" != "xyes" -a "x$enable_xulrunner" != "xyes" ; then
 	AC_MSG_ERROR([
 *** You must have either the GtkHTML2, XulRunner or the Mozilla 

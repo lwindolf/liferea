@@ -2,9 +2,15 @@
 
 AM_CPPFLAGS = -I$(top_srcdir)/src $(PACKAGE_CFLAGS) $(DBUS_CFLAGS)
 
-pkglib_LTLIBRARIES = liblihtmlm.la \
-                     liblihtmlx.la
+if WITH_MOZILLA
+MOZILLA = liblihtmlm.la
+endif
 
+if WITH_XULRUNNER
+XULRUNNER = liblihtmlx.la
+endif
+
+pkglib_LTLIBRARIES = $(MOZILLA) $(XULRUNNER)
 
 ## the Mozilla/Firefox support module
 
