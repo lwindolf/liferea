@@ -31,7 +31,8 @@
 #include <string.h>
 #include <errno.h>
 #include <glib.h>
-#include <gtkmozembed.h>
+#include "gtkmozembed.h"
+#include "mozilla/mozsupport.h"
 #include "ui/ui_htmlview.h"
 #include "conf.h"
 #include "support.h"

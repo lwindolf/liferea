@@ -1367,7 +1367,6 @@ static void feed_mark_all_read(nodePtr node) {
 
 static gchar * feed_render(nodePtr node) {
 	feedPtr			fp = (feedPtr)node->data;
-	gchar			*escapedSrc;
 	struct displayset	displayset;
 	gchar			*buffer = NULL;
 	gchar			*tmp, *tmp2;
@@ -1383,8 +1382,6 @@ static gchar * feed_render(nodePtr node) {
 
 	metadata_list_render(fp->metadata, &displayset);
 	
-	escapedSrc = g_markup_escape_text(feed_get_source(fp), -1);
-
 	/* Error description */
 	if((tmp = feed_get_error_description(fp))) {
 		addToHTMLBufferFast(&buffer, tmp);
@@ -1412,11 +1409,11 @@ static gchar * feed_render(nodePtr node) {
 			tmp = g_strdup(_("user defined command"));
 		} else if(feed_get_source(fp)[0] == '/') {
 				tmp = g_markup_printf_escaped("<a href=\"file://%s\">%s</a>", /* file names should be safe to display.... */
-								  escapedSrc,
-								  escapedSrc);			
+											  feed_get_source(fp),
+											  feed_get_source(fp));
 		} else {
 			/* remove user and password from URL ... */
-			if((uri = xmlParseURI(escapedSrc))) {
+			if((uri = xmlParseURI(feed_get_source(fp)))) {
 				g_free(uri->user);
 				uri->user = NULL;
 				tmp2 = xmlSaveUri(uri);
@@ -1427,11 +1424,11 @@ static gchar * feed_render(nodePtr node) {
 				xmlFreeURI(uri);
 			} else {
 				tmp = g_markup_printf_escaped("<a href=\"%s\">%s</a>",
-								  escapedSrc,
-								  escapedSrc);			
+											  feed_get_source(fp),
+											  feed_get_source(fp));
 			}
 		}
-
+		
 		tmp2 = g_strdup_printf(HEAD_LINE, _("Source:"), tmp);
 		g_free(tmp);
 		addToHTMLBufferFast(&buffer, tmp2);
