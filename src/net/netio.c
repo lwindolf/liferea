@@ -66,7 +66,7 @@
 #include <pthread.h>
 
 GCRY_THREAD_OPTION_PTHREAD_IMPL;
-#undef HAVE_GETADDRINFO
+
 static gnutls_certificate_client_credentials xcred;
 
 #endif
