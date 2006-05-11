@@ -56,6 +56,9 @@
 #include <assert.h>
 
 #include <libxml/uri.h>
+#include <arpa/nameser.h>
+#include <resolv.h>
+
 
 #ifdef HAVE_GNUTLS
 #include <gnutls/gnutls.h>
@@ -63,7 +66,7 @@
 #include <pthread.h>
 
 GCRY_THREAD_OPTION_PTHREAD_IMPL;
-
+#undef HAVE_GETADDRINFO
 static gnutls_certificate_client_credentials xcred;
 
 #endif
@@ -283,6 +286,8 @@ static int NetConnect (int * my_socket, char * host, struct feed_request * cur_p
 	int ret;
 	struct addrinfo hints;
 	struct addrinfo *res = NULL, *ai;
+	char *realhost;
+	char port_str[9];
 	
 	/*
 	if (!suppressoutput) {
@@ -309,8 +314,6 @@ static int NetConnect (int * my_socket, char * host, struct feed_request * cur_p
 	hints.ai_socktype = SOCK_STREAM;
 	hints.ai_protocol = IPPROTO_TCP;
 	if (proxyport == 0) {
-		char *realhost, port_str[9];
-
 		realhost = strdup(host);
 		if (sscanf (host, "%[^:]:%8s", realhost, port_str) != 2) {
 			if (proto == NETIO_PROTO_HTTPS)
@@ -318,21 +321,27 @@ static int NetConnect (int * my_socket, char * host, struct feed_request * cur_p
 			else 
 				strcpy(port_str, "80");				
 		}
-		ret = getaddrinfo(realhost, port_str, &hints, &res);
-		free(realhost);
 	} else {
-		char port_str[6];
-		
 		snprintf(port_str, sizeof(port_str), "%d", proxyport);
-		ret = getaddrinfo(proxyname, port_str, &hints, &res);
+		realhost = strdup(proxyname);
 	}
+	
+	ret = getaddrinfo(realhost, port_str, &hints, &res);
 	
 	if (ret != 0 || res == NULL) {
 		if (res != NULL)
 			freeaddrinfo(res);
-		cur_ptr->netio_error = NET_ERR_HOST_NOT_FOUND;
-		return -1;
+		res_init(); /* Reset the resolver */
+		ret = getaddrinfo(realhost, port_str, &hints, &res);
+		if (ret != 0 || res == NULL) {
+			if (res != NULL)
+				freeaddrinfo(res);
+			cur_ptr->netio_error = NET_ERR_HOST_NOT_FOUND;
+			free(realhost);
+			return -1;
+		}
 	}
+	free(realhost);
 	
 	for (ai = res; ai != NULL; ai = ai->ai_next) {
 		/* Create a socket. */
@@ -417,54 +426,11 @@ static int NetConnect (int * my_socket, char * host, struct feed_request * cur_p
 	
 	/* If proxyport is 0 we didn't execute the if http_proxy statement in main
 	   so there is no proxy. On any other value of proxyport do proxyrequests instead. */
-	if (proxyport == 0) {
-		/* Lookup remote IP. */
-		remotehost = gethostbyname (realhost);
-		if (remotehost == NULL) {
-			close (*my_socket);
-			free (realhost);
-			cur_ptr->netio_error = NET_ERR_HOST_NOT_FOUND;
-			return -1;
-		}
-		
-		/* Set the remote address. */
-		address.sin_family = AF_INET;
-		address.sin_port = htons(port);
-		memcpy (&address.sin_addr.s_addr, remotehost->h_addr_list[0], remotehost->h_length);
-			
-		/* Connect socket. */
-		cur_ptr->connectresult = connect (*my_socket, (struct sockaddr *) &address, sizeof(address));
-		
-		/* Check if we're already connected.
-		   BSDs will return 0 on connect even in nonblock if connect was fast enough. */
-		if (cur_ptr->connectresult != 0) {
-			/* If errno is not EINPROGRESS, the connect went wrong. */
-			if (errno != EINPROGRESS) {
-				close (*my_socket);
-				free (realhost);
-				cur_ptr->netio_error = NET_ERR_CONN_REFUSED;
-				return -1;
-			}
-			
-			if ((NetPoll (cur_ptr, my_socket, NET_WRITE)) == -1) {
-				close (*my_socket);
-				free (realhost);
-				return -1;
-			}
-			
-			/* We get errno of connect back via getsockopt SO_ERROR (into connectresult). */
-			len = sizeof(cur_ptr->connectresult);
-			getsockopt(*my_socket, SOL_SOCKET, SO_ERROR, &cur_ptr->connectresult, &len);
-			
-			if (cur_ptr->connectresult != 0) {
-				close (*my_socket);
-				free (realhost);
-				cur_ptr->netio_error = NET_ERR_CONN_FAILED;	/* ->strerror(cur_ptr->connectresult) */
-				return -1;
-			}
-		}
-	} else {
-		/* Lookup proxyserver IP. */
+	remotehost = gethostbyname (proxyport?proxyname:realhost);
+	
+	/* Lookup remote IP. */
+	if (remotehost == NULL) {
+		res_init(); /* Reset resolver & force reread of resolv.conf */
 		remotehost = gethostbyname (proxyname);
 		if (remotehost == NULL) {
 			close (*my_socket);
@@ -472,43 +438,42 @@ static int NetConnect (int * my_socket, char * host, struct feed_request * cur_p
 			cur_ptr->netio_error = NET_ERR_HOST_NOT_FOUND;
 			return -1;
 		}
+	}
+	/* Set the remote address. */
+	address.sin_family = AF_INET;
+	address.sin_port = htons(proxyport?proxyport:port);
+	memcpy (&address.sin_addr.s_addr, remotehost->h_addr_list[0], remotehost->h_length);
+	
+	/* Connect socket. */
+	cur_ptr->connectresult = connect (*my_socket, (struct sockaddr *) &address, sizeof(address));
+	
+	/* Check if we're already connected.
+	   BSDs will return 0 on connect even in nonblock if connect was fast enough. */
+	if (cur_ptr->connectresult != 0) {
+		if (errno != EINPROGRESS) {
+			close (*my_socket);
+			free (realhost);
+			cur_ptr->netio_error = NET_ERR_CONN_REFUSED;
+			return -1;
+		}
 		
-		/* Set the remote address. */
-		address.sin_family = AF_INET;
-		address.sin_port = htons(proxyport);
-		memcpy (&address.sin_addr.s_addr, remotehost->h_addr_list[0], remotehost->h_length);
+		if ((NetPoll (cur_ptr, my_socket, NET_WRITE)) == -1) {
+			close (*my_socket);
+			free (realhost);
+			return -1;
+		}
 		
-		/* Connect socket. */
-		cur_ptr->connectresult = connect (*my_socket, (struct sockaddr *) &address, sizeof(address));
+		len = sizeof(cur_ptr->connectresult);
+		getsockopt(*my_socket, SOL_SOCKET, SO_ERROR, &cur_ptr->connectresult, &len);
 		
-		/* Check if we're already connected.
-		   BSDs will return 0 on connect even in nonblock if connect was fast enough. */
 		if (cur_ptr->connectresult != 0) {
-			if (errno != EINPROGRESS) {
-				close (*my_socket);
-				free (realhost);
-				cur_ptr->netio_error = NET_ERR_CONN_REFUSED;
-				return -1;
-			}
-		
-			if ((NetPoll (cur_ptr, my_socket, NET_WRITE)) == -1) {
-				close (*my_socket);
-				free (realhost);
-				return -1;
-			}
-			
-			len = sizeof(cur_ptr->connectresult);
-			getsockopt(*my_socket, SOL_SOCKET, SO_ERROR, &cur_ptr->connectresult, &len);
-			
-			if (cur_ptr->connectresult != 0) {
-				close (*my_socket);
-				free (realhost);
-				cur_ptr->netio_error = NET_ERR_CONN_FAILED;	/* ->strerror(cur_ptr->connectresult) */
-				return -1;
-			}
+			close (*my_socket);
+			free (realhost);
+			cur_ptr->netio_error = NET_ERR_CONN_FAILED;	/* ->strerror(cur_ptr->connectresult) */
+			return -1;
 		}
 	}
-
+	
 	free(realhost);
 #endif /* HAVE_GETADDRINFO */
 #ifdef HAVE_GNUTLS
