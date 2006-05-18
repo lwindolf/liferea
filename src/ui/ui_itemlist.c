@@ -564,21 +564,6 @@ void ui_itemlist_select(itemPtr ip) {
 	gtk_tree_path_free(path);
 }
 
-/* checks if a given item is unread and selects it if necessary */
-static gboolean itemlist_check_if_unread(itemPtr item) {
-	
-	if(!item->readStatus) {
-		if(itemlist_get_two_pane_mode()) {
-			itemset_mark_all_read(item->itemSet);
-		} else {
-			ui_itemlist_select(item);
-			itemlist_set_read_status(item, TRUE);	/* needed when no selection happens (e.g. when the item is already selected) */
-		}
-		return TRUE;
-	}
-	return FALSE;
-}
-
 static gboolean ui_itemlist_find_unread_item_from_iter(GtkTreeIter *iter) {
 	itemPtr	item;
 	
