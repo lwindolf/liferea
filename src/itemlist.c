@@ -382,7 +382,6 @@ void itemlist_remove_items(itemSetPtr itemSet) {
 void itemlist_mark_all_read(itemSetPtr itemSet) {
 
 	itemset_mark_all_read(itemSet);
-	itemSet->node->needsCacheSave = TRUE;
 	ui_itemlist_update();
 	ui_node_update(itemSet->node);
 }
