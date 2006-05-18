@@ -423,8 +423,9 @@ void ui_itemlist_prefocus(void) {
 
 	if(itemselection = gtk_tree_view_get_selection(GTK_TREE_VIEW(itemlist)))
 		gtk_tree_selection_unselect_all(itemselection);
-
-	gtk_widget_grab_focus(focus_widget);		
+	
+	if(focus_widget)
+		gtk_widget_grab_focus(focus_widget);		
 }
 
 void ui_itemlist_add_item(itemPtr ip, gboolean merge) {
