@@ -159,9 +159,9 @@ void itemlist_load(itemSetPtr itemSet) {
 			return;
 
 	itemlistLoading = 1;
-
-	ui_mainwindow_set_two_pane_toggle(node_get_two_pane_mode(itemSet->node));
-	ui_mainwindow_set_browser_panes(node_get_two_pane_mode(itemSet->node));
+	twoPaneMode = node_get_two_pane_mode(itemSet->node);
+	ui_mainwindow_set_two_pane_toggle(twoPaneMode);
+	ui_mainwindow_set_browser_panes(twoPaneMode);
 
 	/* 2. Clear item list and disable sorting for performance reasons */
 
