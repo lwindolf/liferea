@@ -213,7 +213,7 @@ gpointer feed_import(nodePtr node, const gchar *typeStr, xmlNodePtr cur, gboolea
 	
 		/* Obtain the htmlUrl */
 		htmlUrlStr = xmlGetProp(cur, BAD_CAST"htmlUrl");
-		if(htmlUrlStr && !xmlStrcmp(htmlUrlStr, ""))
+		if(htmlUrlStr && xmlStrcmp(htmlUrlStr, ""))
 			feed_set_html_url(fp, htmlUrlStr);
 		xmlFree(htmlUrlStr);
 	
@@ -258,13 +258,13 @@ void feed_export(feedPtr fp, xmlNodePtr cur, gboolean internal) {
 	gchar *interval = g_strdup_printf("%d",feed_get_update_interval(fp));
 	gchar *cacheLimit = NULL;
 
-	if(feed_get_html_url(fp) != NULL)
+	if(feed_get_html_url(fp))
 		xmlNewProp(cur, BAD_CAST"htmlUrl", BAD_CAST feed_get_html_url(fp));
 	else
 		xmlNewProp(cur, BAD_CAST"htmlUrl", BAD_CAST "");
 	xmlNewProp(cur, BAD_CAST"xmlUrl", BAD_CAST feed_get_source(fp));
 
-	if(feed_get_filter(fp) != NULL)
+	if(feed_get_filter(fp))
 		xmlNewProp(cur, BAD_CAST"filtercmd", BAD_CAST feed_get_filter(fp));
 
 	if(internal) {
@@ -274,7 +274,7 @@ void feed_export(feedPtr fp, xmlNodePtr cur, gboolean internal) {
 			cacheLimit = g_strdup_printf("%d", fp->cacheLimit);
 		if(fp->cacheLimit == CACHE_UNLIMITED)
 			cacheLimit = g_strdup("unlimited");
-		if(cacheLimit != NULL)
+		if(cacheLimit)
 			xmlNewProp(cur, BAD_CAST"cacheLimit", BAD_CAST cacheLimit);
 
 		if(fp->noIncremental)
@@ -285,13 +285,13 @@ void feed_export(feedPtr fp, xmlNodePtr cur, gboolean internal) {
 			xmlNewProp(cur, BAD_CAST"lastPollTime", BAD_CAST lastPoll);
 			g_free(lastPoll);
 		}
-	if(fp->lastFaviconPoll.tv_sec > 0) {
-		gchar *lastPoll = g_strdup_printf("%ld", fp->lastFaviconPoll.tv_sec);
-		xmlNewProp(cur, BAD_CAST"lastFaviconPollTime", BAD_CAST lastPoll);
-		g_free(lastPoll);
-	}
-	if(TRUE == fp->encAutoDownload)
-		xmlNewProp(cur, BAD_CAST"encAutoDownload", BAD_CAST"true");
+		if(fp->lastFaviconPoll.tv_sec > 0) {
+			gchar *lastPoll = g_strdup_printf("%ld", fp->lastFaviconPoll.tv_sec);
+			xmlNewProp(cur, BAD_CAST"lastFaviconPollTime", BAD_CAST lastPoll);
+			g_free(lastPoll);
+		}
+		if(TRUE == fp->encAutoDownload)
+			xmlNewProp(cur, BAD_CAST"encAutoDownload", BAD_CAST"true");
 	}
 	debug3(DEBUG_CACHE, "adding feed: source=%s interval=%s cacheLimit=%s", feed_get_source(fp), interval, cacheLimit);
 	g_free(cacheLimit);
@@ -909,7 +909,7 @@ const gchar * feed_get_html_url(feedPtr fp) { return fp->htmlUrl; };
 void feed_set_html_url(feedPtr fp, const gchar *htmlUrl) {
 
 	g_free(fp->htmlUrl);
-	if(htmlUrl != NULL)
+	if(htmlUrl)
 		fp->htmlUrl = g_strchomp(g_strdup(htmlUrl));
 	else
 		fp->htmlUrl = NULL;
