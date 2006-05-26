@@ -247,10 +247,8 @@ void ui_itemlist_update_item(itemPtr ip) {
 	GdkPixbuf	*icon = NULL, *favicon;
 
 	/* favicon for feed icon column (visible in folders/vfolders/searches) */
-	if(NULL != ip->sourceNode)
-		favicon = ip->sourceNode->icon;
-	else
-		favicon = ip->itemSet->node->icon;
+	g_assert(ip->sourceNode);
+	favicon = ip->sourceNode->icon;
 
 	/* Time */
 	if(0 != ip->time) {

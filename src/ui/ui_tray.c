@@ -147,7 +147,6 @@ static gboolean ui_tray_create_cb() {
 
 static void ui_tray_embedded_cb(GtkWidget *widget, void *data) {
 
-	trayCount++;
 	ui_mainwindow_tray_add();
 }
 
@@ -184,6 +183,7 @@ static void installTrayIcon(void) {
 	
 	tray_icon_tips = gtk_tooltips_new();
 	ui_tray_update();
+	trayCount++;
 }
 
 static void removeTrayIcon() {

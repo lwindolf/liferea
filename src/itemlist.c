@@ -29,6 +29,7 @@
 #include "feedlist.h"
 #include "node.h"
 #include "support.h"
+#include "rule.h"
 #include "vfolder.h"
 #include "itemset.h"
 #include "ui/ui_itemlist.h"
@@ -36,17 +37,34 @@
 #include "ui/ui_mainwindow.h"
 
 /* This is a simple controller implementation for itemlist handling. 
-   It manages the currently displayed itemset and provides synchronisation
-   for backend and GUI access to this itemset.  
-   
-   Bypass only for read-only item access! */
+   It manages the currently displayed itemset, realizes filtering
+   and provides synchronisation for backend and GUI access to this 
+   itemset.  
+
+   Bypass only for read-only item access!   
+
+   For the data structure the itemlist holds a item reference list,
+   which is loaded from an itemset passed to itemlist_load(). Each
+   reference according to the current filtering rules has a 
+   visibility state.
+ */
 
 itemSetPtr	displayed_itemSet = NULL;
-static itemPtr	displayed_item = NULL;		/* displayed item = selected item */
 
 /* internal item list states */
-static gboolean twoPaneMode = FALSE;	/* TRUE if two pane mode is active */
-static gboolean itemlistLoading;	/* TRUE to prevent selection effects when loading the item list */
+
+typedef struct itemRef {
+	gboolean	visible;	/* the filtering result */
+	itemPtr		item;		/* the referrenced item */
+} itemRefPtr;
+
+static GList * itemlist = NULL;		/* list of loaded item references */
+static rulePtr itemlist_filter = NULL;	/* currently active filter rule */
+
+static itemPtr	displayed_item = NULL;	/* displayed item = selected item */
+
+static gboolean twoPaneMode = FALSE;	/* set to TRUE if two pane mode is active */
+static gboolean itemlistLoading;	/* set to TRUE to prevent selection effects when loading the item list */
 gint disableSortingSaving;		/* set in ui_itemlist.c to disable sort-changed callback */
 
 static gboolean deferred_item_remove = FALSE;	/* TRUE if selected item needs to be removed on unselecting */
@@ -58,21 +76,27 @@ itemPtr itemlist_get_selected(void) {
 
 nodePtr itemlist_get_displayed_node(void) {
 
-	if(NULL != displayed_itemSet)
+	if(displayed_itemSet)
 		return displayed_itemSet->node;
 	else
 		return NULL;
 }
 
 static void itemlist_check_for_deferred_removal(void) {
-	itemPtr ip;
+	itemPtr item;
 
-	if(NULL != displayed_item) {
-		ip = displayed_item;
+	if(displayed_item) {
+		item = displayed_item;
 		displayed_item = NULL;
-		if(TRUE == deferred_item_remove) {
+		
+		/* check for removals caused by itemlist filter rule */
+		if(itemlist_filter && !rule_check_item(itemlist_filter, item))
+			ui_itemlist_remove_item(item);
+		
+		/* check for removals caused by vfolder rules */
+		if(deferred_item_remove) {
 			deferred_item_remove = FALSE;
-			itemlist_remove_item(ip);
+			itemlist_remove_item(item);
 		}
 	}
 }
@@ -97,20 +121,16 @@ void itemlist_merge_itemset(itemSetPtr itemSet) {
 
 	debug1(DEBUG_GUI, "reloading item list with node \"%s\"", node_get_title(itemSet->node));
 
-	if(ITEMSET_TYPE_FOLDER == displayed_itemSet->type) {
-		if(0 == getNumericConfValue(FOLDER_DISPLAY_MODE))
+	if((ITEMSET_TYPE_FOLDER == displayed_itemSet->type) && 
+	   (0 == getNumericConfValue(FOLDER_DISPLAY_MODE)))
 			return;
-	
-		loadReadItems = !getBooleanConfValue(FOLDER_DISPLAY_HIDE_READ);
-	}
 
 	/* update item list tree view */	
 	iter = g_list_last(displayed_itemSet->items);
 	while(iter) {
 		itemPtr item = iter->data;
-		g_assert(NULL != item);
 
-		if((FALSE == item->readStatus) || (TRUE == loadReadItems))
+		if(!(itemlist_filter && !rule_check_item(itemlist_filter, item)))
 			ui_itemlist_add_item(item, TRUE);
 
 		iter = g_list_previous(iter);
@@ -152,11 +172,20 @@ void itemlist_load(itemSetPtr itemSet) {
 
 	debug1(DEBUG_GUI, "loading item list with node \"%s\"\n", node_get_title(itemSet->node));
 
-	/* 1. Don't continue if folder is selected and no
-	   folder viewing is configured. */
-	if((ITEMSET_TYPE_FOLDER == itemSet->type) && 
-	   (0 == getNumericConfValue(FOLDER_DISPLAY_MODE)))
+	/* 1. Filter check. Don't continue if folder is selected and 
+	   no folder viewing is configured. If folder viewing is enabled
+	   set up a "unread items only" rule. */	
+	   
+	g_free(itemlist_filter);
+	itemlist_filter = NULL;
+	   
+	if(ITEMSET_TYPE_FOLDER == itemSet->type) {
+		if(0 == getNumericConfValue(FOLDER_DISPLAY_MODE))
 			return;
+	
+		if(getBooleanConfValue(FOLDER_DISPLAY_HIDE_READ))
+			itemlist_filter = rule_new(NULL, "unread", "", TRUE);		
+	}
 
 	itemlistLoading = 1;
 	twoPaneMode = node_get_two_pane_mode(itemSet->node);
@@ -349,8 +378,11 @@ void itemlist_set_update_status(itemPtr item, const gboolean newStatus) {
 }
 
 void itemlist_update_item(itemPtr item) {
-	
-	ui_itemlist_update_item(item);
+
+	if(itemlist_filter && !rule_check_item(itemlist_filter, item))
+		itemlist_remove_item(item);
+	else
+		ui_itemlist_update_item(item);
 }
 
 void itemlist_remove_item(itemPtr item) {

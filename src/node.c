@@ -196,36 +196,39 @@ static gboolean node_merge_check(itemSetPtr itemSet, itemPtr item) {
 	return FALSE;
 }
 
-static void node_merge_item(nodePtr np, itemPtr ip) {
+static void node_merge_item(nodePtr node, itemPtr item) {
 
-	debug3(DEBUG_UPDATE, "merging \"%s\" (id=%d) to node \"%s\"", item_get_title(ip), ip->nr, node_get_title(np));
+	debug3(DEBUG_UPDATE, "merging \"%s\" (id=%d) to node \"%s\"", item_get_title(item), item->nr, node_get_title(node));
 
 	/* step 1: merge into node type internal data structures */
-	if(node_merge_check(np->itemSet, ip)) {
-		debug2(DEBUG_UPDATE, "adding \"%s\" to node \"%s\"...", item_get_title(ip), node_get_title(np));
+	if(node_merge_check(node->itemSet, item)) {
+		debug2(DEBUG_UPDATE, "adding \"%s\" to node \"%s\"...", item_get_title(item), node_get_title(node));
 
 		/* step 1: add to itemset */
-		itemset_prepend_item(np->itemSet, ip);
+		itemset_prepend_item(node->itemSet, item);
 
 		/* step 2: check for matching vfolders */
-		vfolder_check_item(ip);
+		vfolder_check_item(item);
 
 		/* step 3: update feed list statistics */
 
 		/* Never update the overall feed list statistic 
 		   for folders and vfolders (because these are item
 		   list types with item copies or references)! */
-		if((FST_FOLDER != np->type) && (FST_VFOLDER != np->type))
-			feedlist_update_counters(ip->readStatus?0:1,
-						 ip->newStatus?1:0);
+		if((FST_FOLDER != node->type) && (FST_VFOLDER != node->type))
+			feedlist_update_counters(item->readStatus?0:1,
+						 item->newStatus?1:0);
+						 
+		if(!item->sourceNode)
+			item->sourceNode = node;
 	} else {
-		debug2(DEBUG_UPDATE, "not adding \"%s\" to node \"%s\"...", item_get_title(ip), node_get_title(np));
+		debug2(DEBUG_UPDATE, "not adding \"%s\" to node \"%s\"...", item_get_title(item), node_get_title(node));
 	}
 }
 
 /**
  * This method can be used to merge an ordered list of items
- * into the item list of the given item set.
+ * into the item list of the nodes item set.
  */
 void node_merge_items(nodePtr np, GList *list) {
 	GList	*iter;
@@ -235,7 +238,7 @@ void node_merge_items(nodePtr np, GList *list) {
 	   their order in the merged list, so merging needs
 	   to be done bottom to top. */
 	iter = g_list_last(list);
-	while(iter != NULL) {
+	while(iter) {
 		node_merge_item(np, ((itemPtr)iter->data));
 		iter = g_list_previous(iter);
 	}
@@ -424,10 +427,27 @@ void node_request_properties(nodePtr node) {
 itemSetPtr node_get_itemset(nodePtr node) { return node->itemSet; }
 
 void node_set_itemset(nodePtr node, itemSetPtr itemSet) {
-
+	GList	*iter;
+	
 	g_assert(ITEMSET_TYPE_INVALID != itemSet->type);
 	node->itemSet = itemSet;
 	itemSet->node = node;
+	
+	iter = itemSet->items;
+	while(iter) {
+		itemPtr	item = (itemPtr)(iter->data);
+		
+		/* When the item has no source node yet (after
+		   loading a feed from cache) it will be set here.
+		   If node_set_itemset() is called for folders
+		   and vfolders the items already should have a 
+		   sourceNode. */
+		if(!item->sourceNode)
+			item->sourceNode = node;
+			
+		iter = g_list_next(iter);
+	}
+	
 	node_update_counters(node);
 }
 
