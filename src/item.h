@@ -36,9 +36,14 @@
 /* item interface						*/
 /* ------------------------------------------------------------ */
 
-struct feed;
+struct feed;	/* see feed.h */
 
-/** An item stores a particular entry in a feed or a search */
+/** An item stores a particular entry in a feed or a search.
+    Each item belongs to an item set. An itemset is a collection
+    of items. There are different item set types (e.g. feed,
+    folder,vfolder or plugin). Each item has a source node.
+    The item set node and the item source node is different
+    for folders and vfolders. */
 typedef struct item {
 	/* those fields should not be accessed directly. Accessors are provided. */
 	gboolean 	readStatus;		/**< TRUE if the item has been read */
@@ -53,14 +58,14 @@ typedef struct item {
 	gchar		*description;		/**< HTML string containing the item's description */
 	gchar		*id;			/**< "Unique" syndication item identifier, for example <guid> in RSS */
 	
-	GSList		*metadata;		/**< metadata of this item */
-	GHashTable	*tmpdata;		/**< tmp data hash used during stateful parsing */
+	GSList		*metadata;		/**< Metadata of this item */
+	GHashTable	*tmpdata;		/**< Temporary data hash used during stateful parsing */
 	time_t		time;			/**< Item's modified date */
 	
 	gulong		nr;			/**< Internal unique item id */
 	struct itemSet	*itemSet;		/**< Pointer to the item set containing this item  */
-	gulong 		sourceNr;		/**< internal unique item number this item was derived from (used for searches and vfolders) */
-	struct node	*sourceNode;		/**< Pointer to the source node from which this item was copied */
+	gulong 		sourceNr;		/**< Internal unique item number this item was derived from (used for searches and vfolders) */
+	struct node	*sourceNode;		/**< Pointer to the source node of this item */
 
 } *itemPtr;
 

@@ -382,10 +382,8 @@ void itemset_mark_all_read(itemSetPtr itemSet) {
 	iter = items;
 	while(iter) {
 		item = (itemPtr)iter->data;
-		if(!item->readStatus) {
-			item->itemSet->node->needsCacheSave = TRUE;
+		if(!item->readStatus)
 			itemset_set_item_read_status(itemSet, item, TRUE);
-		}
 		iter = g_list_next(iter);
 	}
 	g_list_free(items);
@@ -394,10 +392,8 @@ void itemset_mark_all_read(itemSetPtr itemSet) {
 	iter = items;
 	while(iter) {	
 		item = (itemPtr)iter->data;
-		if(item->updateStatus) {
-			item->itemSet->node->needsCacheSave = TRUE;
+		if(item->updateStatus)
 			itemset_set_item_update_status(itemSet, item, FALSE);
-		}
 		iter = g_list_next(iter);
 	}
 	g_list_free(items);

@@ -175,11 +175,8 @@ gchar *item_render(itemPtr ip) {
 	/* Head table */
 	addToHTMLBufferFast(&buffer, HEAD_START);
 
-	/* the following ensure to use the real parent mode */
-	if(NULL == ip->sourceNode)
-		np = ip->itemSet->node;
-	else
-		np = ip->sourceNode;
+	g_assert(ip->sourceNode);
+	np = ip->sourceNode;
 	
 	if(FST_FEED == np->type)
 		htmlurl = feed_get_html_url((feedPtr)np->data);
@@ -236,6 +233,12 @@ gchar *item_render(itemPtr ip) {
 		g_free(tmp);
 		addToHTMLBufferFast(&buffer, tmp2);
 		g_free(tmp2);	
+	}
+	
+	/* -- author line */
+	tmp = NULL;
+	if(metadata_list_get(ip->metadata, "author")) {
+		// FIXME:
 	}
 
 	addToHTMLBufferFast(&buffer, displayset.headtable);
