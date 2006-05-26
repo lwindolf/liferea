@@ -228,8 +228,7 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, flNodeHandl
 		xmlFree(sortStr);
 	
 	tmp = xmlGetProp(cur, BAD_CAST"twoPane");
-	if(tmp && !xmlStrcmp(tmp, BAD_CAST"true"))
-		node_set_two_pane_mode(np, TRUE);
+	node_set_two_pane_mode(np, (tmp && !xmlStrcmp(tmp, BAD_CAST"true")));
 	if(tmp)
 		xmlFree(tmp);
 
@@ -254,6 +253,7 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, flNodeHandl
 		case FST_FEED:
 			data = feed_import(np, typeStr, cur, trusted);
 			break;
+		default:
 		case FST_FOLDER:
 			data = NULL;
 			break;

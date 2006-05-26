@@ -428,17 +428,16 @@ void ui_itemlist_prefocus(void) {
 
 void ui_itemlist_add_item(itemPtr ip, gboolean merge) {
 	GtkTreeStore	*itemstore = ui_itemlist_get_tree_store();
-	GtkTreeIter	*iter = NULL;
+	GtkTreeIter	old_iter;
+	gboolean	exists;
+
+	exists = ui_item_to_iter(ip, &old_iter);
 	
-	/*if(merge && (iter = ui_item_to_iter(ip))) {
-		g_print("found iter for item %p\n", ip); 
-	}*/
-	
-	if(iter && (FALSE == ip->newStatus)) {
+	if(exists && !ip->newStatus) {
 		/* nothing to do */
-		/* g_print("nothing to do for iter %p\n", ip); */
 	} else {
-		if(!iter) {
+		GtkTreeIter *iter = &old_iter;
+		if(!exists) {
 			iter = g_new0(GtkTreeIter, 1);
 			gtk_tree_store_prepend(itemstore, iter, NULL);
 			g_hash_table_insert(item_to_iter, (gpointer)ip, (gpointer)iter);

@@ -446,7 +446,7 @@ void vfolder_update_item(itemPtr ip) {
 			items = g_list_next(items);
 		}
 		
-		itemlist_update_vfolder(vp);		/* update the itemlist if this vfolder is selected */
+		ui_node_update(vp->node);	/* update the feedlist */
 
 		iter = g_slist_next(iter);
 	}

@@ -16,6 +16,8 @@ src/feed.c
 src/feed.h
 src/feedlist.c
 src/feedlist.h
+src/folder.c
+src/folder.h
 src/html.c
 src/html.h
 src/interface.c
@@ -125,8 +127,11 @@ src/fl_providers/fl_opml.h
 src/fl_providers/fl_plugin.c
 src/fl_providers/fl_plugin.h
 src/mozilla/mozembed.c
-src/mozilla/mozilla.cpp
-src/mozilla/mozilla.h
+src/mozilla/mozembed.h
+src/mozilla/mozsupport.cpp
+src/mozilla/mozsupport.h
+src/mozilla/mozilla.c
+src/mozilla/xulrunner.c
 src/gtkhtml2/gtkhtml2.c
 src/net/compat.h
 src/net/conversions.c
