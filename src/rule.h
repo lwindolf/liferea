@@ -57,19 +57,18 @@ void rule_init(void);
  * @param ruleId	id string for this rule type
  * @param value		argument string for this rule
  * @param additive	indicates positive or negative logic
+ *
+ * @returns a new rule structure
  */
 rulePtr rule_new(struct vfolder *vp, const gchar *ruleId, const gchar *value, gboolean additive);
 
 /**
- * Checks a new item against all additive rules of all feeds
- * except the addition rules of the parent feed. In the second
- * step the function checks wether there are parent feed rules,
- * which do exclude this item. If there is such a rule the 
- * function returns FALSE, otherwise TRUE to signalize if 
- * this new item should be added. 
+ * Checks an item against a given rule.
  *
  * @param rp	rule to check against
  * @param ip	item to check
+ *
+ * @returns TRUE if the item matches the rule
  */
 gboolean rule_check_item(rulePtr rp, itemPtr ip);
 

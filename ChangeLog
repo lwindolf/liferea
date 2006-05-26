@@ -22,6 +22,9 @@
 	  offline mode of Liferea. This way offline browsing
 	  works correctly. (patch from Don Malcom)
 	* Added optional libnotify support. (Norman Jonas)
+	* Now read items are instantly removed after 
+	  unselecting when browsing folder with "hide read
+          items" enabled.
 
 
 2005-12-23  Lars Lindner  <lars.lindner@gmail.com>

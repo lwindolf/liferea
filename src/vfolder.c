@@ -185,13 +185,13 @@ static void vfolder_add_item(vfolderPtr vp, itemPtr ip) {
 	/* need to check for vfolder items because the
 	   rule checking can be called on item copies of
 	   the same vfolder, */
-	if(NULL != ip->sourceNode)
+	if(ip->itemSet->type == ITEMSET_TYPE_VFOLDER)
 		return;
 
 	/* check if the item was already added */
 	g_assert(NULL != vp->node->itemSet);
 	iter = vp->node->itemSet->items;
-	while(NULL != iter) {
+	while(iter) {
 		tmp = iter->data;
 		if((ip->nr == tmp->sourceNr) && 
 		   (ip->itemSet->node == tmp->sourceNode))
@@ -258,12 +258,12 @@ static void vfolder_remove_matching_item_copy(vfolderPtr vp, itemPtr ip) {
 void vfolder_remove_item(itemPtr ip) {
 	GSList		*iter;
 
-	g_assert(NULL == ip->sourceNode);
+	g_assert(ip->itemSet->type != ITEMSET_TYPE_VFOLDER);
 
 	debug_enter("vfolder_remove_item");
 
 	iter = vfolders;
-	while(NULL != iter) {
+	while(iter) {
 		vfolder_remove_matching_item_copy((vfolderPtr)iter->data, ip);
 		iter = g_slist_next(iter);
 	}
@@ -376,7 +376,7 @@ void vfolder_update_item(itemPtr ip) {
 	debug_enter("vfolder_update_item");
 
 	/* never process vfolder items! */
-	g_assert(NULL == ip->sourceNode);
+	g_assert(ip->itemSet->type != ITEMSET_TYPE_VFOLDER);
 	
 	iter = vfolders;
 	while(NULL != iter) {
