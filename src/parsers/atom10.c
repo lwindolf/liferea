@@ -133,7 +133,7 @@ static gchar* atom10_parse_content_construct(xmlNodePtr cur, feedParserCtxtPtr c
 				tmp = g_markup_printf_escaped("<pre>%s</pre>", ret);
 			g_free(ret);
 			ret = tmp;
-		} else if(!strcmp(type,"xhtml") || !strcasecmp(type, "application/xhtml+xml")) {
+		} else if(!strcmp(type,"xhtml") || !g_strcasecmp(type, "application/xhtml+xml")) {
 			/* The spec says to only show the contents of the div tag that MUST be present */
 			ret = utf8_fix(extractHTMLNode(cur, 2, NULL));
 		} else {

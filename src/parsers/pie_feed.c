@@ -84,20 +84,20 @@ gchar* pie_parse_content_construct(xmlNodePtr cur) {
 		/* not sure what MIME types are necessary... */
 
 		/* This that need to be de-encoded and should not contain sub-tags.*/
-		if (NULL == type ||
-			!strcmp(type, "TEXT") ||
+		if(NULL == type ||
+			!g_strcasecmp(type, "TEXT") ||
 			!strcmp(type, "text/plain")) {
 			gchar *tmp;
 			tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 			ret = g_markup_printf_escaped("<div xmlns=\"http://www.w3.org/1999/xhtml\"><pre>%s</pre></div>", tmp);
 			g_free(tmp);
 			/* Next are things that contain subttags */
-		} else if(!strcmp(type, "HTML") ||
-				  !strcmp(type, "text/html")) {
+		} else if(!g_strcasecmp(type, "HTML") ||
+		          !strcmp(type, "text/html")) {
 			ret = extractHTMLNode(cur, 0,"http://default.base.com/");
 		} else if(/* HTML types */
-				  !strcmp(type, "XHTML") ||
-				  !strcmp(type, "application/xhtml+xml")) {
+		          !g_strcasecmp(type, "xhtml") ||
+		          !strcmp(type, "application/xhtml+xml")) {
 			ret = extractHTMLNode(cur, 1,"http://default.base.com/");
 		}
 	}
