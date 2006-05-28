@@ -178,33 +178,34 @@ void vfolder_remove_rule(vfolderPtr vp, rulePtr rp) {
  * Adds an item to this VFolder, this method is called
  * when any rule of the vfolder matched 
  */
-static void vfolder_add_item(vfolderPtr vp, itemPtr ip) {
+static void vfolder_add_item(vfolderPtr vp, itemPtr item) {
 	GList		*iter;
 	itemPtr		tmp;
 	
 	/* need to check for vfolder items because the
 	   rule checking can be called on item copies of
 	   the same vfolder, */
-	if(ip->itemSet->type == ITEMSET_TYPE_VFOLDER)
+	if(item->itemSet->type == ITEMSET_TYPE_VFOLDER)
 		return;
-
+	
 	/* check if the item was already added */
-	g_assert(NULL != vp->node->itemSet);
+	g_assert(vp->node->itemSet);
 	iter = vp->node->itemSet->items;
 	while(iter) {
 		tmp = iter->data;
-		if((ip->nr == tmp->sourceNr) && 
-		   (ip->itemSet->node == tmp->sourceNode))
+		if((item->sourceNr == tmp->sourceNr) && 
+		   (item->sourceNode == tmp->sourceNode))
 			return;
 		iter = g_list_next(iter);
 	}
 
 	/* add an item copy to the vfolder */	
 	
-	if(!ip->readStatus)
+	if(!item->readStatus)
 		vp->node->unreadCount++;
 	
-	itemset_prepend_item(vp->node->itemSet, item_copy(ip));
+	tmp = item_copy(item);
+	itemset_prepend_item(vp->node->itemSet, tmp);
 	itemlist_update_vfolder(vp);		/* update the itemlist if this vfolder is selected */
 }
 
@@ -362,7 +363,7 @@ void vfolder_refresh(vfolderPtr vp) {
 }
 
 /**
- * Method to be called when a feed item was updated. This maybe
+ * Method to be called when an item was updated. Maybe called
  * after user interaction or updated item contents.
  */
 void vfolder_update_item(itemPtr ip) {
@@ -468,6 +469,9 @@ gboolean vfolder_check_item(itemPtr item) {
 	gboolean	added = FALSE;
 
 	debug_enter("vfolder_check_item");
+	
+	g_assert(item->nr == item->sourceNr);
+	g_assert(item->itemSet->node == item->sourceNode);
 
 	iter = vfolders;
 	while(iter) {

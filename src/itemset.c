@@ -205,7 +205,7 @@ gchar * itemset_render_all(itemSetPtr itemSet) {
 }
 
 itemPtr itemset_lookup_item(itemSetPtr itemSet, nodePtr node, gulong nr) {
-		
+
 	GList *iter = itemSet->items;
 	while(iter) {
 		itemPtr item = (itemPtr)(iter->data);
@@ -213,21 +213,32 @@ itemPtr itemset_lookup_item(itemSetPtr itemSet, nodePtr node, gulong nr) {
 			return item;
 		iter = g_list_next(iter);
 	}
-	
+
 	return NULL;
 }
+
+#define CHECK_NR(item)		if(0 == item->nr) \
+					item->nr = ++(itemSet->lastItemNr);
+					
+#define CHECK_SOURCE_NR(item)	if(item->sourceNode == itemSet->node) \
+					item->sourceNr = item->nr;
+					
+
 
 void itemset_prepend_item(itemSetPtr itemSet, itemPtr item) {
 
 	item->itemSet = itemSet;
-	item->nr = ++(itemSet->lastItemNr);
+	CHECK_NR(item);
+	CHECK_SOURCE_NR(item);
 	itemSet->items = g_list_prepend(itemSet->items, item);
+
 }
 
 void itemset_append_item(itemSetPtr itemSet, itemPtr item) {
 
 	item->itemSet = itemSet;
-	item->nr = ++(itemSet->lastItemNr);
+	CHECK_NR(item);
+	CHECK_SOURCE_NR(item);
 	itemSet->items = g_list_append(itemSet->items, item);
 }
 
@@ -290,16 +301,15 @@ void itemset_set_item_flag(itemSetPtr itemSet, itemPtr item, gboolean newFlagSta
 
 	item->flagStatus = newFlagStatus;
 
+	/* if this item belongs to a vfolder update the source feed */
 	if(ITEMSET_TYPE_VFOLDER == itemSet->type) {
-		/* if this item belongs to a vfolder update the source feed */
-		if(item->sourceNode) {
-			/* propagate change to source feed, this indirectly updates us... */
-			sourceNode = item->sourceNode;	/* keep feed pointer because ip might be free'd */
-			node_load(sourceNode);
-			if(sourceItem = itemset_lookup_item(sourceNode->itemSet, sourceNode, item->sourceNr))
-				itemlist_set_flag(sourceItem, newFlagStatus);
-			node_unload(sourceNode);
-		}
+		g_assert(item->sourceNode);
+		/* propagate change to source feed, this indirectly updates us... */
+		sourceNode = item->sourceNode;	/* keep feed pointer because ip might be free'd */
+		node_load(sourceNode);
+		if(sourceItem = itemset_lookup_item(sourceNode->itemSet, sourceNode, item->sourceNr))
+			itemlist_set_flag(sourceItem, newFlagStatus);
+		node_unload(sourceNode);
 	} else {
 		vfolder_update_item(item);	/* there might be vfolders using this item */
 		vfolder_check_item(item);	/* and check if now a rule matches */
@@ -317,17 +327,16 @@ void itemset_set_item_read_status(itemSetPtr itemSet, itemPtr item, gboolean new
 	/* Note: unread count updates must be done through the node
 	   interface to allow recursive node unread count updates */
 	node_update_unread_count(itemSet->node, newReadStatus?-1:1);
-	
+
+	/* if this item belongs to a vfolder update the source feed */	
 	if(ITEMSET_TYPE_VFOLDER == itemSet->type) {
-		/* if this item belongs to a vfolder update the source feed */
-		if(item->sourceNode) {
-			/* propagate change to source feed, this indirectly updates us... */
-			sourceNode = item->sourceNode;	/* keep feed pointer because ip might be free'd */
-			node_load(sourceNode);
-			if(sourceItem = itemset_lookup_item(sourceNode->itemSet, sourceNode, item->sourceNr))
-				itemlist_set_read_status(sourceItem, newReadStatus);
-			node_unload(sourceNode);
-		} 
+		g_assert(item->sourceNode);
+		/* propagate change to source feed, this indirectly updates us... */
+		sourceNode = item->sourceNode;	/* keep feed pointer because item might be free'd */
+		node_load(sourceNode);
+		if(sourceItem = itemset_lookup_item(sourceNode->itemSet, sourceNode, item->sourceNr))
+			itemlist_set_read_status(sourceItem, newReadStatus);
+		node_unload(sourceNode);
 	} else {		
 		vfolder_update_item(item);	/* there might be vfolders using this item */
 		vfolder_check_item(item);	/* and check if now a rule matches */
@@ -342,16 +351,15 @@ void itemset_set_item_update_status(itemSetPtr itemSet, itemPtr item, gboolean n
 
 	item->updateStatus = newUpdateStatus;
 
+	/* if this item belongs to a vfolder update the source feed */
 	if(ITEMSET_TYPE_VFOLDER == itemSet->type) {	
-		/* if this item belongs to a vfolder update the source feed */
-		if(item->sourceNode) {
-			/* propagate change to source feed, this indirectly updates us... */
-			sourceNode = item->sourceNode;	/* keep feed pointer because ip might be free'd */
-			node_load(sourceNode);
-			if(sourceItem = itemset_lookup_item(sourceNode->itemSet, sourceNode, item->sourceNr))
-				itemlist_set_update_status(sourceItem, newUpdateStatus);
-			node_unload(sourceNode);
-		}
+		g_assert(item->sourceNode);
+		/* propagate change to source feed, this indirectly updates us... */
+		sourceNode = item->sourceNode;	/* keep feed pointer because ip might be free'd */
+		node_load(sourceNode);
+		if(sourceItem = itemset_lookup_item(sourceNode->itemSet, sourceNode, item->sourceNr))
+			itemlist_set_update_status(sourceItem, newUpdateStatus);
+		node_unload(sourceNode);
 	} else {
 		vfolder_update_item(item);	/* there might be vfolders using this item */
 		vfolder_check_item(item);	/* and check if now a rule matches */

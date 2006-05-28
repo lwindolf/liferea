@@ -204,9 +204,12 @@ static void node_merge_item(nodePtr node, itemPtr item) {
 	if(node_merge_check(node->itemSet, item)) {
 		debug2(DEBUG_UPDATE, "adding \"%s\" to node \"%s\"...", item_get_title(item), node_get_title(node));
 
+		g_assert(!item->sourceNode);
+		item->sourceNode = node;
+		
 		/* step 1: add to itemset */
 		itemset_prepend_item(node->itemSet, item);
-
+		
 		/* step 2: check for matching vfolders */
 		vfolder_check_item(item);
 
@@ -218,9 +221,6 @@ static void node_merge_item(nodePtr node, itemPtr item) {
 		if((FST_FOLDER != node->type) && (FST_VFOLDER != node->type))
 			feedlist_update_counters(item->readStatus?0:1,
 						 item->newStatus?1:0);
-						 
-		if(!item->sourceNode)
-			item->sourceNode = node;
 	} else {
 		debug2(DEBUG_UPDATE, "not adding \"%s\" to node \"%s\"...", item_get_title(item), node_get_title(node));
 	}

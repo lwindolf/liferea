@@ -88,11 +88,11 @@ static void itemlist_check_for_deferred_removal(void) {
 	if(displayed_item) {
 		item = displayed_item;
 		displayed_item = NULL;
-		
+
 		/* check for removals caused by itemlist filter rule */
 		if(itemlist_filter && !rule_check_item(itemlist_filter, item))
 			ui_itemlist_remove_item(item);
-		
+
 		/* check for removals caused by vfolder rules */
 		if(deferred_item_remove) {
 			deferred_item_remove = FALSE;
@@ -345,7 +345,7 @@ void itemlist_set_read_status(itemPtr item, gboolean newStatus) {
 		/* 3. updated feed list unread counters */
 		node_update_counters(item->itemSet->node);
 		ui_node_update(item->itemSet->node);
-		if(item->sourceNode)
+		if(item->sourceNode != item->itemSet->node)
 			ui_node_update(item->sourceNode);
 
 		/* 4. update notification statistics */
@@ -425,8 +425,8 @@ void itemlist_selection_changed(itemPtr item) {
 	debug_enter("itemlist_selection_changed");
 	
 	if(!itemlistLoading && (FALSE == itemlist_get_two_pane_mode())) {
-		/* vfolder postprocessing to remove unselected items not
-		   more matching the rules because they have changed state */
+		/* folder&vfolder postprocessing to remove unselected items no
+		   more matching the display rules because they have changed state */
 		itemlist_check_for_deferred_removal();
 	
 		debug1(DEBUG_GUI, "item list selection changed to \"%s\"", item_get_title(item));

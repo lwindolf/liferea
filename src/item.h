@@ -62,9 +62,9 @@ typedef struct item {
 	GHashTable	*tmpdata;		/**< Temporary data hash used during stateful parsing */
 	time_t		time;			/**< Item's modified date */
 	
-	gulong		nr;			/**< Internal unique item id */
+	gulong		nr;			/**< Per item list unique item id */
 	struct itemSet	*itemSet;		/**< Pointer to the item set containing this item  */
-	gulong 		sourceNr;		/**< Internal unique item number this item was derived from (used for searches and vfolders) */
+	gulong 		sourceNr;		/**< Like nr but the number in the sourceNode item set (used for searches and vfolders) */
 	struct node	*sourceNode;		/**< Pointer to the source node of this item */
 
 } *itemPtr;
