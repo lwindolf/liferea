@@ -412,9 +412,12 @@ void ui_mainwindow_init(int mainwindowState) {
 		/* Needed so that the window structure can be
 		   accessed... otherwise will GTK warning when window is
 		   shown by clicking on notification icon. */
-		gtk_widget_realize(GTK_WIDGET(mainwindow)); 
+		// gtk_widget_realize(GTK_WIDGET(mainwindow)); 
+		// Does not work with gtkmozembed...
+		
+		gtk_widget_show(mainwindow);
+		gtk_widget_hide(mainwindow);
 	}
-
 
 	/* force two pane mode */
 	/*   For some reason, this causes the first item to be selected and then
