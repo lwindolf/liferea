@@ -17,6 +17,7 @@ EXTRA_DIST = \
 	liferea.spec \
 	liferea-SuSE.spec \
 	src/liferea \
+	src/liferea-add-feed \
 	$(desktop_files) \
 	$(schema_DATA)
 

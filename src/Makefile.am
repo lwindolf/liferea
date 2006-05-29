@@ -19,7 +19,7 @@ AM_CPPFLAGS = \
 
 
 bin_PROGRAMS = liferea-bin 
-bin_SCRIPTS = liferea
+bin_SCRIPTS = liferea liferea-add-feed
 
 liferea_bin_SOURCES = \
 	callbacks.c callbacks.h \

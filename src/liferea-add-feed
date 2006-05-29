@@ -1,0 +1,31 @@
+#!/bin/sh
+
+
+# This script can be used to automatically add 
+# subscriptions to Liferea. Just supply a valid
+# and correctly escaped feed URL as parameter.
+
+if [ $# -ne 1 ]; then
+	echo "Wrong parameter count!"
+	echo ""
+	echo "Syntax: $0 <feed URL>"
+	echo ""
+	exit 1
+fi
+
+URL=$1
+
+if ! which dbus-send >/dev/null 2>&1; then
+	echo "Unable to locate the 'dbus-send' tool."
+	echo "You need to have DBUS installed!"
+	exit 1
+fi
+
+if pgrep liferea >/dev/null 2>&1; then
+	if ! pgrep liferea-bin >/dev/null 2>&1; then
+		echo "Liferea is not running! You need to start it first."
+		exit 1
+	fi
+fi
+
+dbus-send --session --dest=org.gnome.feed.Reader /org/gnome/feed/Reader org.gnome.feed.Reader.Subscribe string:$URL
