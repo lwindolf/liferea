@@ -101,7 +101,7 @@ static void fl_opml_deinit(void) {
 static struct flPlugin fpi = {
 	FL_PLUGIN_API_VERSION,
 	"fl_opml",
-	"Planet/OPML Plugin",
+	"Planet/BlogRoll/OPML",
 	FL_PLUGIN_CAPABILITY_DYNAMIC_CREATION,
 	fl_opml_init,
 	fl_opml_deinit,
@@ -113,7 +113,7 @@ static struct flPlugin fpi = {
 
 static struct plugin pi = {
 	PLUGIN_API_VERSION,
-	"Planet/OPML Plugin",
+	"OPML Feed List Plugin",
 	PLUGIN_TYPE_FEEDLIST_PROVIDER,
 	//"Default feed list provider. Allows users to add/remove/reorder subscriptions.",
 	&fpi

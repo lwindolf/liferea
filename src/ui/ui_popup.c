@@ -213,7 +213,7 @@ static void ui_popup_add_vfolder(gpointer callback_data, guint callback_action, 
 	node_request_interactive_add(FST_VFOLDER);
 }
 
-static void ui_popup_add_plugin(gpointer callback_data, guint callback_action, GtkWidget *widget) {
+static void ui_popup_add_source(gpointer callback_data, guint callback_action, GtkWidget *widget) {
 	node_request_interactive_add(FST_PLUGIN);
 }
 
@@ -248,7 +248,7 @@ static GtkMenu *ui_popup_node_menu(nodePtr node, gboolean validSelection) {
 		addPopupOption(&menu_items, &menu_len, _("/_New/New _Subscription..."),	NULL, ui_popup_add_feed, 	0, NULL, 0);
 		addPopupOption(&menu_items, &menu_len, _("/_New/New F_older..."),	NULL, ui_popup_add_folder, 	0, NULL, 0);
 		addPopupOption(&menu_items, &menu_len, _("/_New/New _VFolder..."), 	NULL, ui_popup_add_vfolder,	0, NULL, 0);
-		addPopupOption(&menu_items, &menu_len, _("/_New/New _Plugin..."), 	NULL, ui_popup_add_plugin, 	0, NULL, 0);
+		addPopupOption(&menu_items, &menu_len, _("/_New/New S_ource..."), 	NULL, ui_popup_add_source, 	0, NULL, 0);
 	}
 
 	if(validSelection) {
