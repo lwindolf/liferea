@@ -175,17 +175,27 @@ static void ns_blogChannel_download_request_cb(struct request *request) {
 		
 		node_unload(requestData->ctxt->node);
 	}
+	g_free(requestData->ctxt->itemSet);
+	feed_free_parser_ctxt(requestData->ctxt);
 	g_free(requestData);
 }
 
-static void getOutlineList(struct requestData *requestData, gchar *url) {
+static void getOutlineList(feedParserCtxtPtr ctxt, guint tag, char *url) {
+	struct requestData 	*requestData;
 	struct request		*request;
+
+	requestData = g_new0(struct requestData, 1);
+	requestData->ctxt = feed_create_parser_ctxt();	
+	requestData->ctxt->node = ctxt->node;
+	requestData->ctxt->feed = ctxt->feed;
+	requestData->tag = tag;
 
 	request = download_request_new();
 	request->source = g_strdup(url);
 	request->callback = ns_blogChannel_download_request_cb;
 	request->user_data = requestData;
-	requestData->ctxt->node->requests = g_slist_append(requestData->ctxt->node->requests, request);
+	
+	ctxt->node->requests = g_slist_append(requestData->ctxt->node->requests, request);
 	download_queue(request);
 }
 
@@ -193,20 +203,15 @@ static void parse_channel_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 	xmlChar			*string;
 	gchar			*buffer = NULL;
 	gchar			*output, *tmp;
-	struct requestData	*requestData;
 	
 	string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
 
 	if(!xmlStrcmp("blogRoll", cur->name)) {	
-		requestData = g_new0(struct requestData, 1);
-		requestData->ctxt = ctxt;
-		requestData->tag = TAG_BLOGROLL;
-		getOutlineList(requestData, string);
+		getOutlineList(ctxt, TAG_BLOGROLL, string);
+		
 	} else if(!xmlStrcmp("mySubscriptions", cur->name)) {
-		requestData = g_new0(struct requestData, 1);
-		requestData->ctxt = ctxt;
-		requestData->tag = TAG_MYSUBSCRIPTIONS;
-		getOutlineList(requestData, string);
+		getOutlineList(ctxt, TAG_MYSUBSCRIPTIONS, string);
+		
 	} else if(!xmlStrcmp("blink", cur->name)) {
 		tmp = utf8_fix(string);
 		string = NULL;
