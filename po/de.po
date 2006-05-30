@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 0.9.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-05-05 20:45+0200\n"
+"POT-Creation-Date: 2006-05-29 03:07+0200\n"
 "PO-Revision-Date: 2006-04-04 21:51+0100\n"
 "Last-Translator: Lars Lindner <lars.lindner@gmx.net>\n"
 "Language-Team: German\n"
@@ -125,22 +125,22 @@ msgstr "Export"
 msgid "Updating feed icon for \"%s\""
 msgstr "Aktualisiere Icon für Abonnement \"%s\""
 
-#: src/feed.c:341
+#: src/feed.c:344
 #, c-format
 msgid "<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"
 msgstr ""
 "<p>XML-Fehler beim Lesen des Feeds! Feed \"%s\" konnte nicht geladen werden!"
 "</p>"
 
-#: src/feed.c:348 src/feed.c:585
+#: src/feed.c:351 src/feed.c:588
 msgid "<p>Empty document!</p>"
 msgstr "<p>Leeres Dokument!</p>"
 
-#: src/feed.c:357
+#: src/feed.c:360
 msgid "<p>Invalid XML!</p>"
 msgstr "<p>Ungültiges XML!</p>"
 
-#: src/feed.c:423
+#: src/feed.c:426
 msgid ""
 "<p>The URL you want Liferea to subscribe to points to a webpage and the auto "
 "discovery found no feeds on this page. Maybe this webpage just does not "
@@ -150,19 +150,19 @@ msgstr ""
 "automatische Feed-Erkennung hat keine Feeds gefunden. Möglicherweise "
 "unterstützt die Webseite die automatische Feed-Erkennung nicht.</p>"
 
-#: src/feed.c:428
+#: src/feed.c:431
 #, fuzzy
 msgid "<p>Could not determine the feed type.</p>"
 msgstr "<p>Konnte RDF-Header nicht finden!</p>"
 
-#: src/feed.c:564
+#: src/feed.c:567
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
 msgstr ""
 "Fehler beim Lesen der Cache-Datei \"%s\"! Cache-Datei konnte nicht geladen "
 "werden!"
 
-#: src/feed.c:577
+#: src/feed.c:580
 #, c-format
 msgid ""
 "<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
@@ -171,30 +171,30 @@ msgstr ""
 "<p>XML-Fehler beim Lesen der Cache-Datei \"%s\"! Cache-Datei konnte nicht "
 "geladen werden!</p>"
 
-#: src/feed.c:602
+#: src/feed.c:605
 #, c-format
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 msgstr ""
 "<p>\"%s\" ist keine gültige Cache-Datei! Konnte Cache-Datei nicht lesen!</p>"
 
-#: src/feed.c:660
+#: src/feed.c:663
 #, c-format
 msgid "There were errors while parsing cache file \"%s\""
 msgstr "Es gab Fehler beim Parsen der Cachedatei  \"%s\"!"
 
-#: src/feed.c:683
+#: src/feed.c:686
 #, c-format
 msgid "This feed \"%s\" is already being updated!"
 msgstr "Das Abonnement \"%s\" wird bereits aktualisiert!"
 
-#: src/feed.c:688
+#: src/feed.c:691
 #, c-format
 msgid "The feed \"%s\" was discontinued. Liferea won't update it anymore!"
 msgstr ""
 "Das Abonnement \"%s\" wurde eingestellt. Liferea wird es nicht mehr "
 "aktualisieren!"
 
-#: src/feed.c:972
+#: src/feed.c:975
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box."
@@ -203,108 +203,108 @@ msgstr ""
 "aktualisieren Sie Passwort und Benutzernamen in den Eigenschaften des "
 "Abonnements."
 
-#: src/feed.c:974
+#: src/feed.c:977
 msgid "Payment Required"
 msgstr "Bezahlung erforderlich"
 
-#: src/feed.c:975
+#: src/feed.c:978
 msgid "Access Forbidden"
 msgstr "Zugriff verweigert"
 
-#: src/feed.c:976
+#: src/feed.c:979
 msgid "Resource Not Found"
 msgstr "Ressource nicht gefunden."
 
-#: src/feed.c:977
+#: src/feed.c:980
 msgid "Method Not Allowed"
 msgstr "Methode nicht erlaubt"
 
-#: src/feed.c:978
+#: src/feed.c:981
 msgid "Not Acceptable"
 msgstr "Ungültig"
 
-#: src/feed.c:979
+#: src/feed.c:982
 msgid "Proxy Authentication Required"
 msgstr "Proxy-Authentifizierung nötig"
 
-#: src/feed.c:980
+#: src/feed.c:983
 msgid "Request Time-Out"
 msgstr "Antwortzeit überschritten"
 
-#: src/feed.c:981
+#: src/feed.c:984
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr ""
 "Dieses Feed existiert nicht (mehr). Bitte entfernen Sie das Abonnement!"
 
-#: src/feed.c:986
+#: src/feed.c:989
 msgid "URL is invalid"
 msgstr "URL ist ungültig"
 
-#: src/feed.c:987
+#: src/feed.c:990
 msgid "Unsupported network protocol"
 msgstr "Nicht unterstütztes Netzwerkprotokoll"
 
-#: src/feed.c:990
+#: src/feed.c:993
 msgid "Error connecting to remote host"
 msgstr "Fehler beim Kontaktieren des Servers"
 
-#: src/feed.c:991
+#: src/feed.c:994
 msgid "Hostname could not be found"
 msgstr "Hostname nicht gefunden"
 
-#: src/feed.c:992
+#: src/feed.c:995
 msgid "Network connection was refused by the remote host"
 msgstr "Netzwerkverbindung wurde von Server abgewiesen"
 
-#: src/feed.c:993
+#: src/feed.c:996
 msgid "Remote host did not finish sending data"
 msgstr "Server hat Datenübertragung nicht korrekt beendet"
 
 #. Transfer errors
-#: src/feed.c:995
+#: src/feed.c:998
 msgid "Too many HTTP redirects were encountered"
 msgstr "Zu viele HTTP-Umleitungen! Abbruch."
 
-#: src/feed.c:998
+#: src/feed.c:1001
 msgid "Remote host sent an invalid response"
 msgstr "Der Webserver lieferte eine ungültige Antwort"
 
-#: src/feed.c:1005
+#: src/feed.c:1008
 msgid "Authentication failed"
 msgstr "Authentifizierung fehlgeschlagen"
 
-#: src/feed.c:1007
+#: src/feed.c:1010
 msgid "Webserver's authentication method incompatible with Liferea"
 msgstr "Webserver-Authentifikationsmethode nicht von Liferea unterstützt"
 
-#: src/feed.c:1013
+#: src/feed.c:1016
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "Auf den Feed kann nicht zugegriffen werden: der Server gab eine nicht "
 "unterstützte Weiterleitung zurück!"
 
-#: src/feed.c:1014
+#: src/feed.c:1017
 msgid "Client Error"
 msgstr "Client Fehler"
 
-#: src/feed.c:1015
+#: src/feed.c:1018
 msgid "Server Error"
 msgstr "Server Fehler"
 
-#: src/feed.c:1016
+#: src/feed.c:1019
 msgid "(unknown networking error happened)"
 msgstr "(unbekannte Netzwerkfehler aufgetreten)"
 
-#: src/feed.c:1029 src/feed.c:1037
+#: src/feed.c:1032 src/feed.c:1040
 msgid "Show Details"
 msgstr "Details zeigen"
 
-#: src/feed.c:1037
+#: src/feed.c:1040
 #, fuzzy
 msgid "Error Details:"
 msgstr "Details zeigen"
 
-#: src/feed.c:1041
+#: src/feed.c:1044
 #, fuzzy
 msgid ""
 "<br />You may want to validate the feed using <a href=\"http://feedvalidator."
@@ -313,11 +313,11 @@ msgstr ""
 "<br/>Sie können den Feed mit <a href=\"http://feedvalidator.org/check.cgi?"
 "url="
 
-#: src/feed.c:1046
+#: src/feed.c:1049
 msgid "\">FeedValidator</a>."
 msgstr "\">FeedValidator</a> prüfen."
 
-#: src/feed.c:1054
+#: src/feed.c:1057
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
@@ -325,23 +325,23 @@ msgstr ""
 "Es trat ein Fehler beim Einlesen des Abonnements auf. Bitte überprüfen Sie "
 "die URL und die Ausgabe auf der Konsole."
 
-#: src/feed.c:1124
+#: src/feed.c:1127
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr "\"%s\" ist eingestellt. Liferea wird es nicht mehr aktualisieren."
 
-#: src/feed.c:1127
+#: src/feed.c:1130
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\" hat sich seit dem letzten Update nicht verändert"
 
-#: src/feed.c:1135
+#: src/feed.c:1138
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr ""
 "Die URL von \"%s\" hat sich dauerhaft verändert und wurde aktualisiert. "
 
-#: src/feed.c:1152
+#: src/feed.c:1155
 #, fuzzy, c-format
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
@@ -351,23 +351,23 @@ msgstr ""
 "<p>Konnte Feedtyp nicht bestimmen! Bitte überprüfen Sie, ob die URL wirklich "
 "auf eine Datei in einem der unterstützten Formate zeigt!</p>%s"
 
-#: src/feed.c:1173
+#: src/feed.c:1176
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" aktualisiert.."
 
-#: src/feed.c:1185
+#: src/feed.c:1188
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" ist nicht verfügbar! "
 
-#: src/feed.c:1301
+#: src/feed.c:1304
 #, c-format
 msgid "Updating \"%s\""
 msgstr "Aktualisiere \"%s\""
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:1401 src/item.c:195 src/itemset.c:137 src/metadata.c:377
+#: src/feed.c:1401 src/item.c:192 src/itemset.c:137 src/metadata.c:377
 #: src/parsers/ocs_dir.c:144 src/parsers/opml.c:219
 msgid "Feed:"
 msgstr "Abonnement:"
@@ -376,7 +376,7 @@ msgstr "Abonnement:"
 msgid "user defined command"
 msgstr "benutzerdefiniertes Kommando"
 
-#: src/feed.c:1432 src/item.c:235 src/metadata.c:379 src/metadata.c:380
+#: src/feed.c:1432 src/item.c:232 src/metadata.c:379 src/metadata.c:380
 #: src/parsers/ocs_dir.c:150 src/parsers/opml.c:225
 msgid "Source:"
 msgstr "Quelle:"
@@ -579,7 +579,7 @@ msgstr "_Automatisches Downloaden aller Anhänge dieses Abonnements."
 msgid "Enclosures"
 msgstr "Anhänge"
 
-#: src/interface.c:775 src/node.c:351
+#: src/interface.c:775 src/node.c:354
 msgid "New Subscription"
 msgstr "Neues Abonnement"
 
@@ -1068,7 +1068,7 @@ msgstr ""
 msgid "_Do this automatically for files like this from now on."
 msgstr "_Tue dies von nun an automatisch für Dateien dieses Types."
 
-#: src/interface.c:3111 src/ui/ui_mainwindow.c:791
+#: src/interface.c:3111 src/ui/ui_mainwindow.c:794
 msgid "Search All Feeds"
 msgstr "Alle Abonnements durchsuchen"
 
@@ -1098,20 +1098,20 @@ msgstr ""
 "Startet die Suche nach dem angegebenen Text in allen Abonnements. Alle "
 "Treffer werden in der Liste der Schlagzeilen angezeigt."
 
-#: src/item.c:210 src/item.c:229 src/ui/ui_itemlist.c:269
+#: src/item.c:207 src/item.c:226 src/ui/ui_itemlist.c:267
 msgid "[No title]"
 msgstr "[Kein Titel]"
 
-#: src/item.c:219 src/metadata.c:378 src/parsers/ocs_dir.c:105
+#: src/item.c:216 src/metadata.c:378 src/parsers/ocs_dir.c:105
 msgid "Item:"
 msgstr "Schlagzeile:"
 
-#: src/item.c:276
+#: src/item.c:279
 msgid "date"
 msgstr "Datum"
 
 #. if we don't find a feed with unread items do nothing
-#: src/itemlist.c:277
+#: src/itemlist.c:306
 msgid "There are no unread items "
 msgstr "Es gibt keine ungelesenen Schlagzeilen."
 
@@ -1419,20 +1419,20 @@ msgstr "Kann \"%s\" nicht herunterladen. Versuche es wieder in %d Sekunden."
 msgid "vfolder"
 msgstr "VOrdner"
 
-#: src/vfolder.c:552
+#: src/vfolder.c:556
 msgid "VFolder:"
 msgstr "VOrdner:"
 
-#: src/vfolder.c:560
+#: src/vfolder.c:564
 #, c-format
 msgid "<b>%d</b> items \n"
 msgstr "<b>%d</b> Schlagzeilen \n"
 
-#: src/ui/eggtrayicon.c:127
+#: src/ui/eggtrayicon.c:133
 msgid "Orientation"
 msgstr "Orientierung"
 
-#: src/ui/eggtrayicon.c:128
+#: src/ui/eggtrayicon.c:134
 msgid "The orientation of the tray."
 msgstr "Die Orientierung des Tray."
 
@@ -1498,7 +1498,7 @@ msgstr "Sind Sie sicher, dass Sie \"%s\" löschen wollen?"
 msgid "Deletion Confirmation"
 msgstr "Lösch-Bestätigung"
 
-#: src/ui/ui_htmlview.c:76
+#: src/ui/ui_htmlview.c:73
 msgid ""
 "\n"
 "Trying to load the Mozilla browser module... Note that this\n"
@@ -1519,7 +1519,7 @@ msgstr ""
 "Konfiguration zu löschen.\n"
 "\n"
 
-#: src/ui/ui_htmlview.c:92
+#: src/ui/ui_htmlview.c:89
 #, c-format
 msgid ""
 "Failed to open HTML widget module (%s) specified in configuration!\n"
@@ -1528,11 +1528,11 @@ msgstr ""
 "Konnte HTML-Widget-Modul (%s) aus Konfiguration nicht öffnen!\n"
 "%s\n"
 
-#: src/ui/ui_htmlview.c:104
+#: src/ui/ui_htmlview.c:101
 msgid "Htmlview API mismatch!"
 msgstr "Htmlview-API-Version passt nicht!"
 
-#: src/ui/ui_htmlview.c:112
+#: src/ui/ui_htmlview.c:109
 msgid "Detected module is not a valid htmlview module!"
 msgstr "Gefundenes Modul ist kein gültiges Htmlview-Modul!"
 
@@ -1540,26 +1540,26 @@ msgstr "Gefundenes Modul ist kein gültiges Htmlview-Modul!"
 #. to present in the preferences dialog and to load
 #. one just in case there was no configured module
 #. or it did not load when trying...
-#: src/ui/ui_htmlview.c:136
+#: src/ui/ui_htmlview.c:133
 #, c-format
 msgid "Available browser modules (%s):\n"
 msgstr "Verfügbare Browser-Module (%s):\n"
 
-#: src/ui/ui_htmlview.c:175
+#: src/ui/ui_htmlview.c:172
 #, c-format
 msgid "Loading configured browser module (%s)!\n"
 msgstr "Eingestelltes HTML-Modul (%s) wird geladen!\n"
 
-#: src/ui/ui_htmlview.c:178
+#: src/ui/ui_htmlview.c:175
 msgid "No browser module configured!\n"
 msgstr "Es ist kein HTML-Modul eingestellt!\n"
 
-#: src/ui/ui_htmlview.c:186
+#: src/ui/ui_htmlview.c:183
 #, c-format
 msgid "trying to load browser module %s (%s)\n"
 msgstr "Es wird versucht, das HTML-Modul %s (%s) zu laden\n"
 
-#: src/ui/ui_htmlview.c:197
+#: src/ui/ui_htmlview.c:194
 msgid ""
 "Sorry, I was not able to load any installed browser modules! Try the --debug-"
 "all option to get debug information!"
@@ -1568,16 +1568,16 @@ msgstr ""
 "debug-all\"-Befehlsschalter, um Informationen zur Fehlersuche zu erhalten."
 
 #. FIXME: bad because this is not only used for item links!
-#: src/ui/ui_htmlview.c:382
+#: src/ui/ui_htmlview.c:379
 msgid "This item does not have a link assigned!"
 msgstr "Diese Schlagzeile hat keinen Link!"
 
-#: src/ui/ui_htmlview.c:438 src/ui/ui_htmlview.c:458
+#: src/ui/ui_htmlview.c:435 src/ui/ui_htmlview.c:455
 #, c-format
 msgid "Browser command failed: %s"
 msgstr "Aufruf des Browsers fehlgeschlagen: %s"
 
-#: src/ui/ui_htmlview.c:461
+#: src/ui/ui_htmlview.c:458
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Starte: \"%s\""
@@ -1611,39 +1611,39 @@ msgstr ""
 "wird es nicht mehr aktualieren. Die alten Schlagzeilen sind jedoch weiter "
 "verfügbar."
 
-#: src/ui/ui_itemlist.c:363
+#: src/ui/ui_itemlist.c:361
 msgid "Date"
 msgstr "Datum"
 
-#: src/ui/ui_itemlist.c:374
+#: src/ui/ui_itemlist.c:372
 msgid "Headline"
 msgstr "Schlagzeile"
 
-#: src/ui/ui_itemlist.c:470 src/ui/ui_itemlist.c:483 src/ui/ui_itemlist.c:540
-#: src/ui/ui_itemlist.c:684
+#: src/ui/ui_itemlist.c:468 src/ui/ui_itemlist.c:481 src/ui/ui_itemlist.c:538
+#: src/ui/ui_itemlist.c:667
 msgid "No item has been selected"
 msgstr "Es wurde keine Schlagzeile ausgewählt."
 
-#: src/ui/ui_itemlist.c:481
+#: src/ui/ui_itemlist.c:479
 msgid "This item has no link specified!"
 msgstr "Diese Schlagzeile hat keinen Link!"
 
-#: src/ui/ui_itemlist.c:518
+#: src/ui/ui_itemlist.c:516
 msgid "You must select a feed to delete its items!"
 msgstr "Zum Löschen von Schlagzeilen muss ein Abonnement ausgewählt werden!"
 
-#: src/ui/ui_mainwindow.c:437
+#: src/ui/ui_mainwindow.c:440
 msgid ""
 "<div style=\"padding:8px\"><div style=\"background-color:#eee;padding:5px;"
 "border:solid 1px #aaa\"><table border=\"0\" cellpadding=\"5px\"><tr><td><img "
 "src=\""
 msgstr ""
 
-#: src/ui/ui_mainwindow.c:442
+#: src/ui/ui_mainwindow.c:445
 msgid "pixmaps"
 msgstr ""
 
-#: src/ui/ui_mainwindow.c:443
+#: src/ui/ui_mainwindow.c:446
 msgid ""
 "liferea.png\" /></td><td><h3>Liferea - Linux Feed Reader</h3></td></"
 "tr><tr><td colspan=\"2\"><p>Welcome to <b>Liferea</b>, a desktop news "
@@ -1661,7 +1661,7 @@ msgstr ""
 "Abonnement links auswählen. Die Schlagzeilen werden dann in der rechten "
 "Fensterhälfte geladen.</p></td></tr></table></div>"
 
-#: src/ui/ui_mainwindow.c:456
+#: src/ui/ui_mainwindow.c:459
 msgid ""
 "<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black;"
 "margin: 5px 0 5px 0\">This is an unstable version of Liferea 1.1. It should "
@@ -1669,111 +1669,111 @@ msgid ""
 "download the last stable version from SourceForge!</div>"
 msgstr ""
 
-#: src/ui/ui_mainwindow.c:462
+#: src/ui/ui_mainwindow.c:465
 msgid ""
 "<iframe src=\"http://liferea.sf.net/11progress.htm\" width=\"100%\" height="
 "\"150px\"></iframe></div>"
 msgstr ""
 
-#: src/ui/ui_mainwindow.c:505
+#: src/ui/ui_mainwindow.c:508
 msgid "Liferea is now online"
 msgstr "Liferea ist jetzt online"
 
-#: src/ui/ui_mainwindow.c:508
+#: src/ui/ui_mainwindow.c:511
 msgid "Liferea is now offline"
 msgstr "Liferea ist jetzt offline."
 
-#: src/ui/ui_mainwindow.c:753
+#: src/ui/ui_mainwindow.c:756
 msgid "_Program"
 msgstr "_Programm"
 
-#: src/ui/ui_mainwindow.c:754
+#: src/ui/ui_mainwindow.c:757
 msgid "_Preferences"
 msgstr "_Einstellungen"
 
-#: src/ui/ui_mainwindow.c:754
+#: src/ui/ui_mainwindow.c:757
 msgid "Edit Preferences."
 msgstr "Einstellungen ändern."
 
-#: src/ui/ui_mainwindow.c:756
+#: src/ui/ui_mainwindow.c:759
 msgid "_Quit"
 msgstr "_Beenden"
 
-#: src/ui/ui_mainwindow.c:758
+#: src/ui/ui_mainwindow.c:761
 msgid "_Feeds"
 msgstr "_Abonnements"
 
-#: src/ui/ui_mainwindow.c:759
+#: src/ui/ui_mainwindow.c:762
 msgid "Update _All"
 msgstr "_Alle aktualisieren"
 
-#: src/ui/ui_mainwindow.c:759
+#: src/ui/ui_mainwindow.c:762
 msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr ""
 "Aktualisiert alle Abonnements. Aktualisiert jedoch keine OCS-Verzeichnisse."
 
-#: src/ui/ui_mainwindow.c:761
+#: src/ui/ui_mainwindow.c:764
 msgid "Mark All As _Read"
 msgstr "Alle als gelesen markieren"
 
-#: src/ui/ui_mainwindow.c:761
+#: src/ui/ui_mainwindow.c:764
 msgid "Marks read every item of every subscription."
 msgstr "Markiert alle Schlagzeilen des Abonnements als gelesen."
 
-#: src/ui/ui_mainwindow.c:763
+#: src/ui/ui_mainwindow.c:766
 msgid "_New Subscription..."
 msgstr "_Neues Abonnement..."
 
-#: src/ui/ui_mainwindow.c:763
+#: src/ui/ui_mainwindow.c:766
 msgid "Add a subscription to the feed list."
 msgstr "Neues Abonnement hinzufügen."
 
-#: src/ui/ui_mainwindow.c:765
+#: src/ui/ui_mainwindow.c:768
 msgid "New _Folder..."
 msgstr "Neuer _Ordner..."
 
-#: src/ui/ui_mainwindow.c:765
+#: src/ui/ui_mainwindow.c:768
 msgid "Add a folder to the feed list."
 msgstr "Einen Ordner der Liste der Abonnements hinzufügen."
 
-#: src/ui/ui_mainwindow.c:766
+#: src/ui/ui_mainwindow.c:769
 msgid "New _VFolder..."
 msgstr "Neuer _VOrdner..."
 
-#: src/ui/ui_mainwindow.c:766
+#: src/ui/ui_mainwindow.c:769
 msgid "Add a new vfolder to the feed list."
 msgstr "Einen neuen VOrdner zur Liste der Abonnements hinzufügen."
 
-#: src/ui/ui_mainwindow.c:767
+#: src/ui/ui_mainwindow.c:770
 msgid "New P_lugin"
 msgstr "Neues P_lugin"
 
-#: src/ui/ui_mainwindow.c:767
+#: src/ui/ui_mainwindow.c:770
 msgid "Adds a new plugin instance to the feed list."
 msgstr "Eine neue Plugin Instanz der Liste der Abonnements hinzufügen."
 
-#: src/ui/ui_mainwindow.c:768
+#: src/ui/ui_mainwindow.c:771
 msgid "_Import Feed List..."
 msgstr "Feed-Liste _importieren..."
 
-#: src/ui/ui_mainwindow.c:768
+#: src/ui/ui_mainwindow.c:771
 msgid "Imports an OPML feed list."
 msgstr "Importiert eine Feed-Liste aus einer OPML Datei."
 
-#: src/ui/ui_mainwindow.c:769
+#: src/ui/ui_mainwindow.c:772
 msgid "_Export Feed List..."
 msgstr "Feed-Liste _exportieren..."
 
-#: src/ui/ui_mainwindow.c:769
+#: src/ui/ui_mainwindow.c:772
 #, fuzzy
 msgid ">Exports the feed list as OPML."
 msgstr "Exportiert die Feed-Liste als OPML Datei."
 
-#: src/ui/ui_mainwindow.c:772
+#: src/ui/ui_mainwindow.c:775
 msgid "_Next Unread Item"
 msgstr "Nächste _Ungelesene"
 
-#: src/ui/ui_mainwindow.c:772
+#: src/ui/ui_mainwindow.c:775
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -1781,124 +1781,124 @@ msgstr ""
 "Springt zur nächsten ungelesenen Schlagzeile, wenn nötig wird das nächste "
 "Abonnement mit ungelesenen Schlagzeilen angewählt."
 
-#: src/ui/ui_mainwindow.c:774
+#: src/ui/ui_mainwindow.c:777
 msgid "Toggle _Read Status"
 msgstr "Lesestatus ändern"
 
-#: src/ui/ui_mainwindow.c:774
+#: src/ui/ui_mainwindow.c:777
 msgid "Toggles the read status of the selected item."
 msgstr "Ändert den Lesestatus der gewählten Schlagzeile."
 
-#: src/ui/ui_mainwindow.c:776
+#: src/ui/ui_mainwindow.c:779
 msgid "Toggle Item _Flag"
 msgstr "_Flagge setzen"
 
-#: src/ui/ui_mainwindow.c:776
+#: src/ui/ui_mainwindow.c:779
 msgid "Toggles the flag status of the selected item."
 msgstr "Ändert den Flaggenstatus der gewählten Schlagzeile."
 
-#: src/ui/ui_mainwindow.c:778
+#: src/ui/ui_mainwindow.c:781
 msgid "Remove _Selected"
 msgstr "Ausgewählte _löschen"
 
-#: src/ui/ui_mainwindow.c:778
+#: src/ui/ui_mainwindow.c:781
 msgid "Removes the selected item."
 msgstr "Entfernt die ausgewählte Schlagzeile."
 
-#: src/ui/ui_mainwindow.c:780
+#: src/ui/ui_mainwindow.c:783
 msgid "Remove _All"
 msgstr "Lösche _alle Schlagzeilen"
 
-#: src/ui/ui_mainwindow.c:780
+#: src/ui/ui_mainwindow.c:783
 msgid "Removes all items of the currently selected feed."
 msgstr "Löscht alle Schlagzeilen des ausgewählten Abonnements."
 
-#: src/ui/ui_mainwindow.c:782
+#: src/ui/ui_mainwindow.c:785
 msgid "_Launch In Browser"
 msgstr "Im _Browser öffnen"
 
-#: src/ui/ui_mainwindow.c:782
+#: src/ui/ui_mainwindow.c:785
 msgid "Launches the item's link in the configured browser."
 msgstr ""
 "Öffnet den Link der ausgewählten Schlagzeile im konfigurierten Browser."
 
-#: src/ui/ui_mainwindow.c:785
+#: src/ui/ui_mainwindow.c:788
 msgid "_View"
 msgstr "_Ansicht"
 
-#: src/ui/ui_mainwindow.c:786
+#: src/ui/ui_mainwindow.c:789
 msgid "_Increase Text Size"
 msgstr "Schriftgrad ver_größern"
 
-#: src/ui/ui_mainwindow.c:786
+#: src/ui/ui_mainwindow.c:789
 msgid "Increases the text size of the item view."
 msgstr "Vergrößern der Textgröße der Schlagzeilenansicht."
 
-#: src/ui/ui_mainwindow.c:788
+#: src/ui/ui_mainwindow.c:791
 msgid "_Decrease Text Size"
 msgstr "Schriftgrad ver_kleinern"
 
-#: src/ui/ui_mainwindow.c:788
+#: src/ui/ui_mainwindow.c:791
 msgid "Decreases the text size of the item view."
 msgstr "Verkleinern der Textgröße der Schlagzeilenansicht."
 
-#: src/ui/ui_mainwindow.c:790
+#: src/ui/ui_mainwindow.c:793
 msgid "_Search"
 msgstr "_Suche"
 
-#: src/ui/ui_mainwindow.c:791
+#: src/ui/ui_mainwindow.c:794
 msgid "Show the search dialog."
 msgstr "Öffnen des Suchdialogs."
 
-#: src/ui/ui_mainwindow.c:792
+#: src/ui/ui_mainwindow.c:795
 msgid "Search With _Feedster..."
 msgstr "Suche mit _Feedster..."
 
-#: src/ui/ui_mainwindow.c:792
+#: src/ui/ui_mainwindow.c:795
 msgid "Creates a Feedster search feed."
 msgstr "Anlegen einer Feedster-Suche."
 
-#: src/ui/ui_mainwindow.c:793
+#: src/ui/ui_mainwindow.c:796
 msgid "_Help"
 msgstr "_Hilfe"
 
-#: src/ui/ui_mainwindow.c:794
+#: src/ui/ui_mainwindow.c:797
 msgid "_Contents"
 msgstr "_Inhalt"
 
-#: src/ui/ui_mainwindow.c:794
+#: src/ui/ui_mainwindow.c:797
 msgid "View help for this application."
 msgstr "Die Hilfe für diese Anwendung anzeigen."
 
-#: src/ui/ui_mainwindow.c:795
+#: src/ui/ui_mainwindow.c:798
 msgid "_Quick Reference"
 msgstr "_Kurzreferenz"
 
-#: src/ui/ui_mainwindow.c:795
+#: src/ui/ui_mainwindow.c:798
 msgid "View a list of all Liferea shortcuts."
 msgstr "Eine Liste aller Tastaturkürzel zeigen."
 
-#: src/ui/ui_mainwindow.c:797
+#: src/ui/ui_mainwindow.c:800
 msgid "_FAQ"
 msgstr "_FAQ"
 
-#: src/ui/ui_mainwindow.c:797
+#: src/ui/ui_mainwindow.c:800
 msgid "View the FAQ for this application."
 msgstr "Die FAQ für diese Anwendung anzeigen."
 
-#: src/ui/ui_mainwindow.c:798
+#: src/ui/ui_mainwindow.c:801
 msgid "_About"
 msgstr "_Info"
 
-#: src/ui/ui_mainwindow.c:798
+#: src/ui/ui_mainwindow.c:801
 msgid "Shows an about dialog."
 msgstr "Anzeigen \"Über\"-Dialog."
 
-#: src/ui/ui_mainwindow.c:803
+#: src/ui/ui_mainwindow.c:806
 msgid "_Mark Selected As Read"
 msgstr "Ausgewählte als _gelesen markieren"
 
-#: src/ui/ui_mainwindow.c:803
+#: src/ui/ui_mainwindow.c:806
 msgid ""
 "Marks all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
@@ -1906,11 +1906,11 @@ msgstr ""
 "Markiert alle Schlagzeilen des ausgewählten Abonnement oder aller "
 "Abonnements des ausgewählten Ordners als gelesen."
 
-#: src/ui/ui_mainwindow.c:805
+#: src/ui/ui_mainwindow.c:808
 msgid "Update _Selected"
 msgstr "Au_sgewählte aktualisieren"
 
-#: src/ui/ui_mainwindow.c:805
+#: src/ui/ui_mainwindow.c:808
 msgid ""
 "Updates the selected subscription or all subscriptions of the selected "
 "folder."
@@ -1918,35 +1918,35 @@ msgstr ""
 "Aktualisiert das ausgewählte Abonnement oder alle Abonnements des "
 "ausgewählten Ordners."
 
-#: src/ui/ui_mainwindow.c:807
+#: src/ui/ui_mainwindow.c:810
 msgid "_Properties..."
 msgstr "_Eigenschaften..."
 
-#: src/ui/ui_mainwindow.c:807
+#: src/ui/ui_mainwindow.c:810
 msgid "Opens the property dialog for the selected subscription."
 msgstr "Öffnet den Eigenschaften-Dialog für das ausgewählte Abonnement."
 
-#: src/ui/ui_mainwindow.c:808
+#: src/ui/ui_mainwindow.c:811
 msgid "_Delete Selected"
 msgstr "Ausgewählte _löschen"
 
-#: src/ui/ui_mainwindow.c:808
+#: src/ui/ui_mainwindow.c:811
 msgid "Removes the selected subscription."
 msgstr "Entfernt das ausgewählte Abonnement."
 
-#: src/ui/ui_mainwindow.c:813
+#: src/ui/ui_mainwindow.c:816
 msgid "_Work Offline"
 msgstr "_Offline arbeiten"
 
-#: src/ui/ui_mainwindow.c:813
+#: src/ui/ui_mainwindow.c:816
 msgid "This option allows you to disable subscription updating."
 msgstr "Diese Option deaktiviert das Aktualisieren von Abonnements."
 
-#: src/ui/ui_mainwindow.c:815
+#: src/ui/ui_mainwindow.c:818
 msgid "Toggle _Condensed View"
 msgstr "_Zusammenfassung an/aus"
 
-#: src/ui/ui_mainwindow.c:815
+#: src/ui/ui_mainwindow.c:818
 msgid "Toggles the item list mode between condensed and normal mode."
 msgstr ""
 "Umschalten der Schlagzeilenansicht zwischen normal und zusammengefasst."

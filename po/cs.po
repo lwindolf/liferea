@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 0.9.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-05-05 20:45+0200\n"
+"POT-Creation-Date: 2006-05-29 03:07+0200\n"
 "PO-Revision-Date: 2005-05-14 09:11+0200\n"
 "Last-Translator: Juraj Kubelka <Juraj.Kubelka@email.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
@@ -127,38 +127,38 @@ msgstr "Export"
 msgid "Updating feed icon for \"%s\""
 msgstr "Obnovuji ikonu zdroje \"%s\""
 
-#: src/feed.c:341
+#: src/feed.c:344
 #, c-format
 msgid "<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"
 msgstr "<p>XML chyba při čtení zdroje! Zdroj \"%s\" nemůže být nahrán!</p>"
 
-#: src/feed.c:348 src/feed.c:585
+#: src/feed.c:351 src/feed.c:588
 msgid "<p>Empty document!</p>"
 msgstr "<p>Prázdný dokument!</p>"
 
-#: src/feed.c:357
+#: src/feed.c:360
 msgid "<p>Invalid XML!</p>"
 msgstr "<p>Nesprávné XML!</p>"
 
-#: src/feed.c:423
+#: src/feed.c:426
 msgid ""
 "<p>The URL you want Liferea to subscribe to points to a webpage and the auto "
 "discovery found no feeds on this page. Maybe this webpage just does not "
 "support feed auto discovery.</p>"
 msgstr ""
 
-#: src/feed.c:428
+#: src/feed.c:431
 #, fuzzy
 msgid "<p>Could not determine the feed type.</p>"
 msgstr "<p>Nemohu najít RDF hlavičku!</p>"
 
-#: src/feed.c:564
+#: src/feed.c:567
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
 msgstr ""
 "Chyba při čtení dočasného souboru \"%s\"! Dočasný soubor nemůže být nahrán!"
 
-#: src/feed.c:577
+#: src/feed.c:580
 #, c-format
 msgid ""
 "<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
@@ -167,30 +167,30 @@ msgstr ""
 "<p>XML chyba při analýze dočasného souboru! Dočasný soubor \"%s\" nemůže být "
 "nahrán!</p>"
 
-#: src/feed.c:602
+#: src/feed.c:605
 #, c-format
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 msgstr ""
 "<p>\"%s\" není správný dočasný soubor! Nemohu přečíst tento dočasný soubor!</"
 "p>"
 
-#: src/feed.c:660
+#: src/feed.c:663
 #, c-format
 msgid "There were errors while parsing cache file \"%s\""
 msgstr "Při analýze dočasného souboru \"%s\" se vyskytly chyby"
 
-#: src/feed.c:683
+#: src/feed.c:686
 #, c-format
 msgid "This feed \"%s\" is already being updated!"
 msgstr "Tento zdroj \"%s\" se již aktualizuje!"
 
-#: src/feed.c:688
+#: src/feed.c:691
 #, fuzzy, c-format
 msgid "The feed \"%s\" was discontinued. Liferea won't update it anymore!"
 msgstr ""
 "Tento zdroj byl přerušen! Program Liferea již nemůže zdroj aktualizovat!"
 
-#: src/feed.c:972
+#: src/feed.c:975
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box."
@@ -198,105 +198,105 @@ msgstr ""
 "Nemáte oprávněný přístup k stáhnutí tohoto zdroje. Prosím aktualizujte svoje "
 "jméno a heslo v dialogu nastavení zdroje."
 
-#: src/feed.c:974
+#: src/feed.c:977
 msgid "Payment Required"
 msgstr "Požadována platba"
 
-#: src/feed.c:975
+#: src/feed.c:978
 msgid "Access Forbidden"
 msgstr "Přístup odepřen"
 
-#: src/feed.c:976
+#: src/feed.c:979
 msgid "Resource Not Found"
 msgstr "Zdroj nenalezen"
 
-#: src/feed.c:977
+#: src/feed.c:980
 msgid "Method Not Allowed"
 msgstr "Metoda není povolena"
 
-#: src/feed.c:978
+#: src/feed.c:981
 msgid "Not Acceptable"
 msgstr "Nepřípustné"
 
-#: src/feed.c:979
+#: src/feed.c:982
 msgid "Proxy Authentication Required"
 msgstr "Vyžadována proxy autorizace"
 
-#: src/feed.c:980
+#: src/feed.c:983
 msgid "Request Time-Out"
 msgstr "Čas na požadavek vypršel"
 
-#: src/feed.c:981
+#: src/feed.c:984
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "Hotovo. Zdroj neexistuje. Prosím zrušte ho!"
 
-#: src/feed.c:986
+#: src/feed.c:989
 msgid "URL is invalid"
 msgstr "URL adresa je neplatná"
 
-#: src/feed.c:987
+#: src/feed.c:990
 msgid "Unsupported network protocol"
 msgstr ""
 
-#: src/feed.c:990
+#: src/feed.c:993
 msgid "Error connecting to remote host"
 msgstr "Chyba spojení ke vzdálenému počítači"
 
-#: src/feed.c:991
+#: src/feed.c:994
 msgid "Hostname could not be found"
 msgstr "Jméno počítače nemůže být nalezeno"
 
-#: src/feed.c:992
+#: src/feed.c:995
 msgid "Network connection was refused by the remote host"
 msgstr "Síťové spojení bylo zamítnuto vzdáleným počítačem"
 
-#: src/feed.c:993
+#: src/feed.c:996
 msgid "Remote host did not finish sending data"
 msgstr "Vzdálený počítač nemohl dokončit přenesení dat"
 
 #. Transfer errors
-#: src/feed.c:995
+#: src/feed.c:998
 msgid "Too many HTTP redirects were encountered"
 msgstr "Vyskytnulo se příliš mnoho HTTP přesměrování"
 
-#: src/feed.c:998
+#: src/feed.c:1001
 msgid "Remote host sent an invalid response"
 msgstr "Vzdálený počítač poslal neplatnou odpověď"
 
-#: src/feed.c:1005
+#: src/feed.c:1008
 msgid "Authentication failed"
 msgstr "Ověření údajů selhalo"
 
-#: src/feed.c:1007
+#: src/feed.c:1010
 msgid "Webserver's authentication method incompatible with Liferea"
 msgstr ""
 "Metoda ověření údajů webového serveru není kompatibilní s programem Liferea"
 
-#: src/feed.c:1013
+#: src/feed.c:1016
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr "Zdroj není dostupný: Server požadoval nepodporované přesměrování!"
 
-#: src/feed.c:1014
+#: src/feed.c:1017
 msgid "Client Error"
 msgstr "Chyba klienta"
 
-#: src/feed.c:1015
+#: src/feed.c:1018
 msgid "Server Error"
 msgstr "Chyba serveru"
 
-#: src/feed.c:1016
+#: src/feed.c:1019
 msgid "(unknown networking error happened)"
 msgstr "(neznámý druh chyby síťového spojení)"
 
-#: src/feed.c:1029 src/feed.c:1037
+#: src/feed.c:1032 src/feed.c:1040
 msgid "Show Details"
 msgstr ""
 
-#: src/feed.c:1037
+#: src/feed.c:1040
 msgid "Error Details:"
 msgstr ""
 
-#: src/feed.c:1041
+#: src/feed.c:1044
 #, fuzzy
 msgid ""
 "<br />You may want to validate the feed using <a href=\"http://feedvalidator."
@@ -305,11 +305,11 @@ msgstr ""
 "<br>Možná budete chtít ověřit zdroj použitím <a href=\"http://feedvalidator."
 "org/check.cgi?url="
 
-#: src/feed.c:1046
+#: src/feed.c:1049
 msgid "\">FeedValidator</a>."
 msgstr "\">FeedValidatoru</a>."
 
-#: src/feed.c:1054
+#: src/feed.c:1057
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
@@ -317,22 +317,22 @@ msgstr ""
 "Nastal problém při čtení tohoto zdroje. Prosím zkontrolujte adresu a výstup "
 "na konzoli."
 
-#: src/feed.c:1124
+#: src/feed.c:1127
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr "\"%s\" je přerušen! Program Liferea to již nemůže aktualizovat!"
 
-#: src/feed.c:1127
+#: src/feed.c:1130
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\" nebyl od poslední aktualizace změněn"
 
-#: src/feed.c:1135
+#: src/feed.c:1138
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "Adresa \"%s\" byla trvale změněna a aktualizována"
 
-#: src/feed.c:1152
+#: src/feed.c:1155
 #, fuzzy, c-format
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
@@ -342,23 +342,23 @@ msgstr ""
 "<p>Nemohu zjistit typ tohoto zdroje! Prosím zkontrolujte, zda adresa opravdu "
 "ukazuje na místo, které poskytuje některý z podporovaných formátů!</p>%s"
 
-#: src/feed.c:1173
+#: src/feed.c:1176
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" je aktualizován..."
 
-#: src/feed.c:1185
+#: src/feed.c:1188
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" není dostupný"
 
-#: src/feed.c:1301
+#: src/feed.c:1304
 #, c-format
 msgid "Updating \"%s\""
 msgstr "Obnovuji \"%s\""
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:1401 src/item.c:195 src/itemset.c:137 src/metadata.c:377
+#: src/feed.c:1401 src/item.c:192 src/itemset.c:137 src/metadata.c:377
 #: src/parsers/ocs_dir.c:144 src/parsers/opml.c:219
 msgid "Feed:"
 msgstr "Zdroj:"
@@ -367,7 +367,7 @@ msgstr "Zdroj:"
 msgid "user defined command"
 msgstr "uživatelem definovaný příkaz"
 
-#: src/feed.c:1432 src/item.c:235 src/metadata.c:379 src/metadata.c:380
+#: src/feed.c:1432 src/item.c:232 src/metadata.c:379 src/metadata.c:380
 #: src/parsers/ocs_dir.c:150 src/parsers/opml.c:225
 msgid "Source:"
 msgstr "Adresa:"
@@ -573,7 +573,7 @@ msgstr ""
 msgid "Enclosures"
 msgstr "Přílohy"
 
-#: src/interface.c:775 src/node.c:351
+#: src/interface.c:775 src/node.c:354
 msgid "New Subscription"
 msgstr "Nový zdroj"
 
@@ -1081,7 +1081,7 @@ msgid "_Do this automatically for files like this from now on."
 msgstr "_Automaticky vykonávat tuto činnost pro tento typ souborů."
 
 # Chyba, divny
-#: src/interface.c:3111 src/ui/ui_mainwindow.c:791
+#: src/interface.c:3111 src/ui/ui_mainwindow.c:794
 msgid "Search All Feeds"
 msgstr "Hledat ve všech zdrojích"
 
@@ -1109,20 +1109,20 @@ msgstr ""
 "Začít hledat text ve všech zdrojích. Výsledky hledání se objeví v\n"
 "seznamu článků."
 
-#: src/item.c:210 src/item.c:229 src/ui/ui_itemlist.c:269
+#: src/item.c:207 src/item.c:226 src/ui/ui_itemlist.c:267
 msgid "[No title]"
 msgstr "[Žádný název]"
 
-#: src/item.c:219 src/metadata.c:378 src/parsers/ocs_dir.c:105
+#: src/item.c:216 src/metadata.c:378 src/parsers/ocs_dir.c:105
 msgid "Item:"
 msgstr "Článek:"
 
-#: src/item.c:276
+#: src/item.c:279
 msgid "date"
 msgstr "datum"
 
 #. if we don't find a feed with unread items do nothing
-#: src/itemlist.c:277
+#: src/itemlist.c:306
 msgid "There are no unread items "
 msgstr "Zde nejsou nepřečtené články "
 
@@ -1437,22 +1437,22 @@ msgstr ""
 msgid "vfolder"
 msgstr "V-složka"
 
-#: src/vfolder.c:552
+#: src/vfolder.c:556
 #, fuzzy
 msgid "VFolder:"
 msgstr "V-složka"
 
-#: src/vfolder.c:560
+#: src/vfolder.c:564
 #, c-format
 msgid "<b>%d</b> items \n"
 msgstr ""
 
-#: src/ui/eggtrayicon.c:127
+#: src/ui/eggtrayicon.c:133
 #, fuzzy
 msgid "Orientation"
 msgstr "Ověření údajů"
 
-#: src/ui/eggtrayicon.c:128
+#: src/ui/eggtrayicon.c:134
 msgid "The orientation of the tray."
 msgstr ""
 
@@ -1519,7 +1519,7 @@ msgstr "Jste si jist, že chcete smazat \"%s\"?"
 msgid "Deletion Confirmation"
 msgstr "Potvrzení smazání"
 
-#: src/ui/ui_htmlview.c:76
+#: src/ui/ui_htmlview.c:73
 msgid ""
 "\n"
 "Trying to load the Mozilla browser module... Note that this\n"
@@ -1537,7 +1537,7 @@ msgstr ""
 "klíč /apps/liferea/browser-module!\n"
 "\n"
 
-#: src/ui/ui_htmlview.c:92
+#: src/ui/ui_htmlview.c:89
 #, c-format
 msgid ""
 "Failed to open HTML widget module (%s) specified in configuration!\n"
@@ -1546,11 +1546,11 @@ msgstr ""
 "Selhalo otevření HTML modulu (%s) určeného v konfiguraci!\n"
 "%s\n"
 
-#: src/ui/ui_htmlview.c:104
+#: src/ui/ui_htmlview.c:101
 msgid "Htmlview API mismatch!"
 msgstr "Htmlview API nesouhlasí!"
 
-#: src/ui/ui_htmlview.c:112
+#: src/ui/ui_htmlview.c:109
 msgid "Detected module is not a valid htmlview module!"
 msgstr "Zjištěný modul není platný htmlview modul!"
 
@@ -1558,26 +1558,26 @@ msgstr "Zjištěný modul není platný htmlview modul!"
 #. to present in the preferences dialog and to load
 #. one just in case there was no configured module
 #. or it did not load when trying...
-#: src/ui/ui_htmlview.c:136
+#: src/ui/ui_htmlview.c:133
 #, c-format
 msgid "Available browser modules (%s):\n"
 msgstr "Dostupné moduly prohlížeče (%s):\n"
 
-#: src/ui/ui_htmlview.c:175
+#: src/ui/ui_htmlview.c:172
 #, c-format
 msgid "Loading configured browser module (%s)!\n"
 msgstr "Nahrávám zkonfigurovaný modul prohlížeče (%s)!\n"
 
-#: src/ui/ui_htmlview.c:178
+#: src/ui/ui_htmlview.c:175
 msgid "No browser module configured!\n"
 msgstr "Modul prohlížeče není zkonfigurován!\n"
 
-#: src/ui/ui_htmlview.c:186
+#: src/ui/ui_htmlview.c:183
 #, c-format
 msgid "trying to load browser module %s (%s)\n"
 msgstr "Zkouším nahrát modul prohlížeče %s (%s)\n"
 
-#: src/ui/ui_htmlview.c:197
+#: src/ui/ui_htmlview.c:194
 msgid ""
 "Sorry, I was not able to load any installed browser modules! Try the --debug-"
 "all option to get debug information!"
@@ -1586,16 +1586,16 @@ msgstr ""
 "Zkus --debug-all volbu k získání více informací!"
 
 #. FIXME: bad because this is not only used for item links!
-#: src/ui/ui_htmlview.c:382
+#: src/ui/ui_htmlview.c:379
 msgid "This item does not have a link assigned!"
 msgstr "K tomuto článku není přiřazen odkaz!"
 
-#: src/ui/ui_htmlview.c:438 src/ui/ui_htmlview.c:458
+#: src/ui/ui_htmlview.c:435 src/ui/ui_htmlview.c:455
 #, c-format
 msgid "Browser command failed: %s"
 msgstr "Příkaz prohlížeče neuspěl: %s"
 
-#: src/ui/ui_htmlview.c:461
+#: src/ui/ui_htmlview.c:458
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Startuji: \"%s\""
@@ -1628,40 +1628,40 @@ msgstr ""
 "Tento zdroj je přerušen. Už není dostupný. Program Liferea již nemůže tento "
 "zdroj obnovit. Stále je možné si prohlížet uschované titulky."
 
-#: src/ui/ui_itemlist.c:363
+#: src/ui/ui_itemlist.c:361
 msgid "Date"
 msgstr "Datum"
 
-#: src/ui/ui_itemlist.c:374
+#: src/ui/ui_itemlist.c:372
 msgid "Headline"
 msgstr "Titulek"
 
-#: src/ui/ui_itemlist.c:470 src/ui/ui_itemlist.c:483 src/ui/ui_itemlist.c:540
-#: src/ui/ui_itemlist.c:684
+#: src/ui/ui_itemlist.c:468 src/ui/ui_itemlist.c:481 src/ui/ui_itemlist.c:538
+#: src/ui/ui_itemlist.c:667
 msgid "No item has been selected"
 msgstr "Článek nebyl vybrán"
 
-#: src/ui/ui_itemlist.c:481
+#: src/ui/ui_itemlist.c:479
 #, fuzzy
 msgid "This item has no link specified!"
 msgstr "K tomuto článku není přiřazen odkaz!"
 
-#: src/ui/ui_itemlist.c:518
+#: src/ui/ui_itemlist.c:516
 msgid "You must select a feed to delete its items!"
 msgstr "Musíte vybrat zdroj, pokud chcete smazat jeho články!"
 
-#: src/ui/ui_mainwindow.c:437
+#: src/ui/ui_mainwindow.c:440
 msgid ""
 "<div style=\"padding:8px\"><div style=\"background-color:#eee;padding:5px;"
 "border:solid 1px #aaa\"><table border=\"0\" cellpadding=\"5px\"><tr><td><img "
 "src=\""
 msgstr ""
 
-#: src/ui/ui_mainwindow.c:442
+#: src/ui/ui_mainwindow.c:445
 msgid "pixmaps"
 msgstr ""
 
-#: src/ui/ui_mainwindow.c:443
+#: src/ui/ui_mainwindow.c:446
 msgid ""
 "liferea.png\" /></td><td><h3>Liferea - Linux Feed Reader</h3></td></"
 "tr><tr><td colspan=\"2\"><p>Welcome to <b>Liferea</b>, a desktop news "
@@ -1672,7 +1672,7 @@ msgid ""
 "div>"
 msgstr ""
 
-#: src/ui/ui_mainwindow.c:456
+#: src/ui/ui_mainwindow.c:459
 msgid ""
 "<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black;"
 "margin: 5px 0 5px 0\">This is an unstable version of Liferea 1.1. It should "
@@ -1680,116 +1680,116 @@ msgid ""
 "download the last stable version from SourceForge!</div>"
 msgstr ""
 
-#: src/ui/ui_mainwindow.c:462
+#: src/ui/ui_mainwindow.c:465
 msgid ""
 "<iframe src=\"http://liferea.sf.net/11progress.htm\" width=\"100%\" height="
 "\"150px\"></iframe></div>"
 msgstr ""
 
-#: src/ui/ui_mainwindow.c:505
+#: src/ui/ui_mainwindow.c:508
 msgid "Liferea is now online"
 msgstr "Program Liferea je nyní připojen"
 
-#: src/ui/ui_mainwindow.c:508
+#: src/ui/ui_mainwindow.c:511
 msgid "Liferea is now offline"
 msgstr "Program Liferea je nyní odpojen"
 
-#: src/ui/ui_mainwindow.c:753
+#: src/ui/ui_mainwindow.c:756
 msgid "_Program"
 msgstr "_Program"
 
-#: src/ui/ui_mainwindow.c:754
+#: src/ui/ui_mainwindow.c:757
 #, fuzzy
 msgid "_Preferences"
 msgstr "Nastavení"
 
-#: src/ui/ui_mainwindow.c:754
+#: src/ui/ui_mainwindow.c:757
 #, fuzzy
 msgid "Edit Preferences."
 msgstr "Změnit nastavení."
 
-#: src/ui/ui_mainwindow.c:756
+#: src/ui/ui_mainwindow.c:759
 #, fuzzy
 msgid "_Quit"
 msgstr "/_Konec"
 
-#: src/ui/ui_mainwindow.c:758
+#: src/ui/ui_mainwindow.c:761
 msgid "_Feeds"
 msgstr "Z_droje"
 
-#: src/ui/ui_mainwindow.c:759
+#: src/ui/ui_mainwindow.c:762
 msgid "Update _All"
 msgstr "Obnovit _vše"
 
-#: src/ui/ui_mainwindow.c:759
+#: src/ui/ui_mainwindow.c:762
 msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr "Obnovení všech zdrojů. Neobnoví OCS adresáře."
 
-#: src/ui/ui_mainwindow.c:761
+#: src/ui/ui_mainwindow.c:764
 msgid "Mark All As _Read"
 msgstr "Označit vše _jako přečtené"
 
-#: src/ui/ui_mainwindow.c:761
+#: src/ui/ui_mainwindow.c:764
 msgid "Marks read every item of every subscription."
 msgstr ""
 
-#: src/ui/ui_mainwindow.c:763
+#: src/ui/ui_mainwindow.c:766
 msgid "_New Subscription..."
 msgstr "_Nový zdroj..."
 
-#: src/ui/ui_mainwindow.c:763
+#: src/ui/ui_mainwindow.c:766
 #, fuzzy
 msgid "Add a subscription to the feed list."
 msgstr "Přidat nový zdroj."
 
-#: src/ui/ui_mainwindow.c:765
+#: src/ui/ui_mainwindow.c:768
 msgid "New _Folder..."
 msgstr "Nová _složka..."
 
-#: src/ui/ui_mainwindow.c:765
+#: src/ui/ui_mainwindow.c:768
 #, fuzzy
 msgid "Add a folder to the feed list."
 msgstr "Přidat do seznamu zdroj s nápovědou při startu programu."
 
-#: src/ui/ui_mainwindow.c:766
+#: src/ui/ui_mainwindow.c:769
 msgid "New _VFolder..."
 msgstr "Nová _V-složka..."
 
-#: src/ui/ui_mainwindow.c:766
+#: src/ui/ui_mainwindow.c:769
 #, fuzzy
 msgid "Add a new vfolder to the feed list."
 msgstr "Přidat do seznamu zdroj s nápovědou při startu programu."
 
-#: src/ui/ui_mainwindow.c:767
+#: src/ui/ui_mainwindow.c:770
 msgid "New P_lugin"
 msgstr ""
 
-#: src/ui/ui_mainwindow.c:767
+#: src/ui/ui_mainwindow.c:770
 msgid "Adds a new plugin instance to the feed list."
 msgstr ""
 
-#: src/ui/ui_mainwindow.c:768
+#: src/ui/ui_mainwindow.c:771
 msgid "_Import Feed List..."
 msgstr "_Importovat seznam zdrojů..."
 
-#: src/ui/ui_mainwindow.c:768
+#: src/ui/ui_mainwindow.c:771
 msgid "Imports an OPML feed list."
 msgstr "Importovat OPML list zdrojů."
 
-#: src/ui/ui_mainwindow.c:769
+#: src/ui/ui_mainwindow.c:772
 msgid "_Export Feed List..."
 msgstr "_Exportovat seznam zdrojů..."
 
-#: src/ui/ui_mainwindow.c:769
+#: src/ui/ui_mainwindow.c:772
 #, fuzzy
 msgid ">Exports the feed list as OPML."
 msgstr "Exportovat seznam zdrojů jako OPML."
 
-#: src/ui/ui_mainwindow.c:772
+#: src/ui/ui_mainwindow.c:775
 msgid "_Next Unread Item"
 msgstr "_Další nepřečtený článek"
 
-#: src/ui/ui_mainwindow.c:772
+#: src/ui/ui_mainwindow.c:775
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -1797,130 +1797,130 @@ msgstr ""
 "Přeskočit na další nepřečtený článek. V případě potřeby vyber další zdroj s "
 "nepřečtenými články."
 
-#: src/ui/ui_mainwindow.c:774
+#: src/ui/ui_mainwindow.c:777
 msgid "Toggle _Read Status"
 msgstr "Přepnout status _přečtení"
 
-#: src/ui/ui_mainwindow.c:774
+#: src/ui/ui_mainwindow.c:777
 msgid "Toggles the read status of the selected item."
 msgstr "Změnit status přečtení vybraného článku."
 
-#: src/ui/ui_mainwindow.c:776
+#: src/ui/ui_mainwindow.c:779
 msgid "Toggle Item _Flag"
 msgstr "Přepnout _označení článku"
 
-#: src/ui/ui_mainwindow.c:776
+#: src/ui/ui_mainwindow.c:779
 #, fuzzy
 msgid "Toggles the flag status of the selected item."
 msgstr "Změnit status přečtení vybraného článku."
 
-#: src/ui/ui_mainwindow.c:778
+#: src/ui/ui_mainwindow.c:781
 #, fuzzy
 msgid "Remove _Selected"
 msgstr "Smazat vybrané"
 
-#: src/ui/ui_mainwindow.c:778
+#: src/ui/ui_mainwindow.c:781
 msgid "Removes the selected item."
 msgstr "Smaže vybraný zdroj."
 
-#: src/ui/ui_mainwindow.c:780
+#: src/ui/ui_mainwindow.c:783
 #, fuzzy
 msgid "Remove _All"
 msgstr "Smazat vše"
 
-#: src/ui/ui_mainwindow.c:780
+#: src/ui/ui_mainwindow.c:783
 msgid "Removes all items of the currently selected feed."
 msgstr "Smazat všechny články vybraného zdroje."
 
-#: src/ui/ui_mainwindow.c:782
+#: src/ui/ui_mainwindow.c:785
 msgid "_Launch In Browser"
 msgstr "Zobrazit v _prohlížeči"
 
-#: src/ui/ui_mainwindow.c:782
+#: src/ui/ui_mainwindow.c:785
 msgid "Launches the item's link in the configured browser."
 msgstr "Zobrazit článek v prohlížeči."
 
-#: src/ui/ui_mainwindow.c:785
+#: src/ui/ui_mainwindow.c:788
 msgid "_View"
 msgstr "_Zobrazení"
 
-#: src/ui/ui_mainwindow.c:786
+#: src/ui/ui_mainwindow.c:789
 msgid "_Increase Text Size"
 msgstr "_Zvětšit velikost textu"
 
-#: src/ui/ui_mainwindow.c:786
+#: src/ui/ui_mainwindow.c:789
 msgid "Increases the text size of the item view."
 msgstr "Zvětšit velikost textu zobrazeného článku."
 
-#: src/ui/ui_mainwindow.c:788
+#: src/ui/ui_mainwindow.c:791
 msgid "_Decrease Text Size"
 msgstr "Z_menšit velikost textu"
 
-#: src/ui/ui_mainwindow.c:788
+#: src/ui/ui_mainwindow.c:791
 msgid "Decreases the text size of the item view."
 msgstr "Zmenšit velikost textu zobrazeného článku."
 
-#: src/ui/ui_mainwindow.c:790
+#: src/ui/ui_mainwindow.c:793
 msgid "_Search"
 msgstr "_Hledat"
 
-#: src/ui/ui_mainwindow.c:791
+#: src/ui/ui_mainwindow.c:794
 #, fuzzy
 msgid "Show the search dialog."
 msgstr "Zobrazit nebo schovat dialog vyhledávání."
 
-#: src/ui/ui_mainwindow.c:792
+#: src/ui/ui_mainwindow.c:795
 #, fuzzy
 msgid "Search With _Feedster..."
 msgstr "Hledat vyhledávačem Feedster..."
 
-#: src/ui/ui_mainwindow.c:792
+#: src/ui/ui_mainwindow.c:795
 msgid "Creates a Feedster search feed."
 msgstr "Vytvořit zdroj vyhledávače Feedster."
 
-#: src/ui/ui_mainwindow.c:793
+#: src/ui/ui_mainwindow.c:796
 msgid "_Help"
 msgstr "_Nápověda"
 
-#: src/ui/ui_mainwindow.c:794
+#: src/ui/ui_mainwindow.c:797
 msgid "_Contents"
 msgstr ""
 
-#: src/ui/ui_mainwindow.c:794
+#: src/ui/ui_mainwindow.c:797
 msgid "View help for this application."
 msgstr ""
 
-#: src/ui/ui_mainwindow.c:795
+#: src/ui/ui_mainwindow.c:798
 #, fuzzy
 msgid "_Quick Reference"
 msgstr "Změnit nastavení."
 
-#: src/ui/ui_mainwindow.c:795
+#: src/ui/ui_mainwindow.c:798
 msgid "View a list of all Liferea shortcuts."
 msgstr ""
 
-#: src/ui/ui_mainwindow.c:797
+#: src/ui/ui_mainwindow.c:800
 msgid "_FAQ"
 msgstr ""
 
-#: src/ui/ui_mainwindow.c:797
+#: src/ui/ui_mainwindow.c:800
 msgid "View the FAQ for this application."
 msgstr ""
 
-#: src/ui/ui_mainwindow.c:798
+#: src/ui/ui_mainwindow.c:801
 #, fuzzy
 msgid "_About"
 msgstr "O programu"
 
-#: src/ui/ui_mainwindow.c:798
+#: src/ui/ui_mainwindow.c:801
 msgid "Shows an about dialog."
 msgstr "Zobrazit informace o programu."
 
-#: src/ui/ui_mainwindow.c:803
+#: src/ui/ui_mainwindow.c:806
 msgid "_Mark Selected As Read"
 msgstr "Označit vybrané _jako přečtené"
 
-#: src/ui/ui_mainwindow.c:803
+#: src/ui/ui_mainwindow.c:806
 #, fuzzy
 msgid ""
 "Marks all items of the selected subscription or of all subscriptions of the "
@@ -1929,46 +1929,46 @@ msgstr ""
 "Označit všechny články vybraného zdroje nebo všechny zdroje vybraného "
 "adresáře jako přečtené."
 
-#: src/ui/ui_mainwindow.c:805
+#: src/ui/ui_mainwindow.c:808
 msgid "Update _Selected"
 msgstr "Obnovit _vybrané"
 
-#: src/ui/ui_mainwindow.c:805
+#: src/ui/ui_mainwindow.c:808
 msgid ""
 "Updates the selected subscription or all subscriptions of the selected "
 "folder."
 msgstr "Obnovení vybraných zdrojů nebo všech vybraných adresářů."
 
-#: src/ui/ui_mainwindow.c:807
+#: src/ui/ui_mainwindow.c:810
 msgid "_Properties..."
 msgstr "_Nastavení..."
 
-#: src/ui/ui_mainwindow.c:807
+#: src/ui/ui_mainwindow.c:810
 msgid "Opens the property dialog for the selected subscription."
 msgstr "Otevře dialog vlastností pro vybraný zdroj."
 
-#: src/ui/ui_mainwindow.c:808
+#: src/ui/ui_mainwindow.c:811
 msgid "_Delete Selected"
 msgstr "_Smazat vybrané"
 
-#: src/ui/ui_mainwindow.c:808
+#: src/ui/ui_mainwindow.c:811
 msgid "Removes the selected subscription."
 msgstr "Smaže všechny vybrané zdroje."
 
-#: src/ui/ui_mainwindow.c:813
+#: src/ui/ui_mainwindow.c:816
 #, fuzzy
 msgid "_Work Offline"
 msgstr "Pracovat při odpojení"
 
-#: src/ui/ui_mainwindow.c:813
+#: src/ui/ui_mainwindow.c:816
 msgid "This option allows you to disable subscription updating."
 msgstr ""
 
-#: src/ui/ui_mainwindow.c:815
+#: src/ui/ui_mainwindow.c:818
 msgid "Toggle _Condensed View"
 msgstr "_Přepnout zhuštěný pohled"
 
-#: src/ui/ui_mainwindow.c:815
+#: src/ui/ui_mainwindow.c:818
 msgid "Toggles the item list mode between condensed and normal mode."
 msgstr "Přepnout zobrazení článků mezi zhuštěným a normálním režimem."
 

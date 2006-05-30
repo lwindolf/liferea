@@ -25,10 +25,10 @@ lifereadistpix_DATA = available.png  directory.png  empty.png  flag.png  \
 	available_offline.png empty_offline.png \
 	fl_opml.png
 
-distpixmapdir = $(datadir)/pixmaps
+distpixmapdir = $(datadir)/icons/hicolor/48x48
 distpixmap_DATA = liferea.png
 
-gtk_update_icon_cache = gtk-update-icon-cache -f -t $(datadir)/pixmaps
+gtk_update_icon_cache = gtk-update-icon-cache -f -t $(datadir)/icons/hicolor/48x48
 
 install-data-hook:
 	@-if test -z "$(DESTDIR)"; then \

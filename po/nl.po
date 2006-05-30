@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 1.0.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-05-05 20:45+0200\n"
+"POT-Creation-Date: 2006-05-29 03:07+0200\n"
 "PO-Revision-Date: 2006-02-20 00:18+0100\n"
 "Last-Translator: Patrick Bos <kikkum@hotmail.com>\n"
 "Language-Team: Dutch <nl@li.org>\n"
@@ -127,22 +127,22 @@ msgstr "Exporteer"
 msgid "Updating feed icon for \"%s\""
 msgstr "Bezig met updaten van feed icoon van \"%s\""
 
-#: src/feed.c:341
+#: src/feed.c:344
 #, c-format
 msgid "<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"
 msgstr ""
 "<p>XML error bij het lezen van de feed! Feed \"%s\" kon niet worden geladen!"
 "</p>"
 
-#: src/feed.c:348 src/feed.c:585
+#: src/feed.c:351 src/feed.c:588
 msgid "<p>Empty document!</p>"
 msgstr "<p>Leeg document!</p>"
 
-#: src/feed.c:357
+#: src/feed.c:360
 msgid "<p>Invalid XML!</p>"
 msgstr "<p>Ongeldige XML!</p>"
 
-#: src/feed.c:423
+#: src/feed.c:426
 msgid ""
 "<p>The URL you want Liferea to subscribe to points to a webpage and the auto "
 "discovery found no feeds on this page. Maybe this webpage just does not "
@@ -152,19 +152,19 @@ msgstr ""
 "dezepagina geen feeds gevonden. Misschien ondersteunt de pagina geen "
 "automatische detectie van feeds.</p>"
 
-#: src/feed.c:428
+#: src/feed.c:431
 #, fuzzy
 msgid "<p>Could not determine the feed type.</p>"
 msgstr "<p>RDF header niet gevonden!</p>"
 
-#: src/feed.c:564
+#: src/feed.c:567
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
 msgstr ""
 "Fout bij het lezen van cache bestand \"%s\" ! Cache bestand kon niet worden "
 "geladen!"
 
-#: src/feed.c:577
+#: src/feed.c:580
 #, c-format
 msgid ""
 "<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
@@ -173,28 +173,28 @@ msgstr ""
 "<p>XML fout bij het inlezen van cache bestand! Feed cache bestand \"%s\"kon "
 "niet worden geladen!</p>"
 
-#: src/feed.c:602
+#: src/feed.c:605
 #, c-format
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 msgstr ""
 "<p>\"%s\" is geen geldig cache bestand! Kan cache bestand niet lezen!</p>"
 
-#: src/feed.c:660
+#: src/feed.c:663
 #, c-format
 msgid "There were errors while parsing cache file \"%s\""
 msgstr "Er zijn fouten opgetreden bij het inlezen van cache bestand \"%s\""
 
-#: src/feed.c:683
+#: src/feed.c:686
 #, c-format
 msgid "This feed \"%s\" is already being updated!"
 msgstr "De feed \"%s\" wordt al geüpdate!"
 
-#: src/feed.c:688
+#: src/feed.c:691
 #, fuzzy, c-format
 msgid "The feed \"%s\" was discontinued. Liferea won't update it anymore!"
 msgstr "Deze feed is ermee opgehouden. Liferea zal hem niet meer updaten!"
 
-#: src/feed.c:972
+#: src/feed.c:975
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box."
@@ -202,106 +202,106 @@ msgstr ""
 "U heeft geen toestemming deze feed te downloaden. Voer de juiste "
 "gebruikersnaamen het wachtwoord in bij de feed eigenschappen."
 
-#: src/feed.c:974
+#: src/feed.c:977
 msgid "Payment Required"
 msgstr "Betaling Vereist"
 
-#: src/feed.c:975
+#: src/feed.c:978
 msgid "Access Forbidden"
 msgstr "Toegang Verboden"
 
-#: src/feed.c:976
+#: src/feed.c:979
 msgid "Resource Not Found"
 msgstr "Bron niet gevonden"
 
-#: src/feed.c:977
+#: src/feed.c:980
 msgid "Method Not Allowed"
 msgstr "Methode Niet Toegestaan"
 
-#: src/feed.c:978
+#: src/feed.c:981
 msgid "Not Acceptable"
 msgstr "Niet Aanvaardbaar"
 
-#: src/feed.c:979
+#: src/feed.c:982
 msgid "Proxy Authentication Required"
 msgstr "Proxy Aanmelding Vereist"
 
-#: src/feed.c:980
+#: src/feed.c:983
 msgid "Request Time-Out"
 msgstr "Aanvraag Time-Out"
 
-#: src/feed.c:981
+#: src/feed.c:984
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "Verdwenen; bron bestaat niet. Meld u zich af!"
 
-#: src/feed.c:986
+#: src/feed.c:989
 msgid "URL is invalid"
 msgstr "URL is ongeldig"
 
-#: src/feed.c:987
+#: src/feed.c:990
 msgid "Unsupported network protocol"
 msgstr "Niet ondersteund netwerk protocol"
 
-#: src/feed.c:990
+#: src/feed.c:993
 msgid "Error connecting to remote host"
 msgstr "Fout bij verbinden met host op afstand"
 
-#: src/feed.c:991
+#: src/feed.c:994
 msgid "Hostname could not be found"
 msgstr "Hostnaam kon niet worden gevonden"
 
-#: src/feed.c:992
+#: src/feed.c:995
 msgid "Network connection was refused by the remote host"
 msgstr "Netwerk verbinding is geweigerd door host op afstand"
 
-#: src/feed.c:993
+#: src/feed.c:996
 msgid "Remote host did not finish sending data"
 msgstr "Host heeft het sturen van data niet afgemaakt"
 
 #. Transfer errors
-#: src/feed.c:995
+#: src/feed.c:998
 msgid "Too many HTTP redirects were encountered"
 msgstr "Er zijn te veel HTTP redirects aangetroffen"
 
-#: src/feed.c:998
+#: src/feed.c:1001
 msgid "Remote host sent an invalid response"
 msgstr "Host heeft een ongeldige reactie gestuurd"
 
-#: src/feed.c:1005
+#: src/feed.c:1008
 msgid "Authentication failed"
 msgstr "Aanmelding mislukt"
 
-#: src/feed.c:1007
+#: src/feed.c:1010
 msgid "Webserver's authentication method incompatible with Liferea"
 msgstr "Aanmeldingsmethode van webserver niet ondersteund door Liferea"
 
-#: src/feed.c:1013
+#: src/feed.c:1016
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "Feed niet bereikbaar: Niet ondersteunde omleiding aangevraagd door server!"
 
-#: src/feed.c:1014
+#: src/feed.c:1017
 msgid "Client Error"
 msgstr "Cliënt Fout"
 
-#: src/feed.c:1015
+#: src/feed.c:1018
 msgid "Server Error"
 msgstr "Server Fout"
 
-#: src/feed.c:1016
+#: src/feed.c:1019
 msgid "(unknown networking error happened)"
 msgstr "(een onbekende netwerk fout is opgetreden)"
 
-#: src/feed.c:1029 src/feed.c:1037
+#: src/feed.c:1032 src/feed.c:1040
 msgid "Show Details"
 msgstr "Laat Details Zien"
 
-#: src/feed.c:1037
+#: src/feed.c:1040
 #, fuzzy
 msgid "Error Details:"
 msgstr "Laat Details Zien"
 
-#: src/feed.c:1041
+#: src/feed.c:1044
 #, fuzzy
 msgid ""
 "<br />You may want to validate the feed using <a href=\"http://feedvalidator."
@@ -310,11 +310,11 @@ msgstr ""
 "<br>Wellicht is het verstandig de feed te valideren met <a href=\"http://"
 "feedvalidator.org/check.cgi?url="
 
-#: src/feed.c:1046
+#: src/feed.c:1049
 msgid "\">FeedValidator</a>."
 msgstr "\">FeedValidator</a>."
 
-#: src/feed.c:1054
+#: src/feed.c:1057
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
@@ -322,22 +322,22 @@ msgstr ""
 "Er is een probleem met het lezen van deze feed. Controleer de URL en de "
 "console uitvoer."
 
-#: src/feed.c:1124
+#: src/feed.c:1127
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr "\"%s\" is er mee opgehouden. Liferea zal hem niet meer updaten!"
 
-#: src/feed.c:1127
+#: src/feed.c:1130
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\" is niet veranderd sinds de laatste update"
 
-#: src/feed.c:1135
+#: src/feed.c:1138
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "De URL van \"%s\" is permanent veranderd en is geüpdate"
 
-#: src/feed.c:1152
+#: src/feed.c:1155
 #, fuzzy, c-format
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
@@ -347,23 +347,23 @@ msgstr ""
 "<p>Het type van deze feed kon niet worden gedetecteerd! Controleer of er wel "
 "naar een door Liferea ondersteund feed formaat wordt verwezen!</p>%s"
 
-#: src/feed.c:1173
+#: src/feed.c:1176
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" geüpdate..."
 
-#: src/feed.c:1185
+#: src/feed.c:1188
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" is niet beschikbaar"
 
-#: src/feed.c:1301
+#: src/feed.c:1304
 #, c-format
 msgid "Updating \"%s\""
 msgstr "Bezig \"%s\" up te daten"
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:1401 src/item.c:195 src/itemset.c:137 src/metadata.c:377
+#: src/feed.c:1401 src/item.c:192 src/itemset.c:137 src/metadata.c:377
 #: src/parsers/ocs_dir.c:144 src/parsers/opml.c:219
 msgid "Feed:"
 msgstr "Feed:"
@@ -372,7 +372,7 @@ msgstr "Feed:"
 msgid "user defined command"
 msgstr "door gebruiker gedefinieerd commando"
 
-#: src/feed.c:1432 src/item.c:235 src/metadata.c:379 src/metadata.c:380
+#: src/feed.c:1432 src/item.c:232 src/metadata.c:379 src/metadata.c:380
 #: src/parsers/ocs_dir.c:150 src/parsers/opml.c:225
 msgid "Source:"
 msgstr "Bron:"
@@ -575,7 +575,7 @@ msgstr "_Automatisch alle bijlagen van deze feed downloaden."
 msgid "Enclosures"
 msgstr "Bijlagen"
 
-#: src/interface.c:775 src/node.c:351
+#: src/interface.c:775 src/node.c:354
 msgid "New Subscription"
 msgstr "Nieuwe feed"
 
@@ -1064,7 +1064,7 @@ msgstr ""
 msgid "_Do this automatically for files like this from now on."
 msgstr "_Doe dit voortaan automatisch voor bestanden van dit type."
 
-#: src/interface.c:3111 src/ui/ui_mainwindow.c:791
+#: src/interface.c:3111 src/ui/ui_mainwindow.c:794
 msgid "Search All Feeds"
 msgstr "Zoek in alle feeds"
 
@@ -1094,20 +1094,20 @@ msgstr ""
 "Start de zoekopdracht naar de ingevoerde tekst in alle feeds. Het resultaat "
 "verschijnt in de item lijst."
 
-#: src/item.c:210 src/item.c:229 src/ui/ui_itemlist.c:269
+#: src/item.c:207 src/item.c:226 src/ui/ui_itemlist.c:267
 msgid "[No title]"
 msgstr "[Geen titel]"
 
-#: src/item.c:219 src/metadata.c:378 src/parsers/ocs_dir.c:105
+#: src/item.c:216 src/metadata.c:378 src/parsers/ocs_dir.c:105
 msgid "Item:"
 msgstr "Item:"
 
-#: src/item.c:276
+#: src/item.c:279
 msgid "date"
 msgstr "datum"
 
 #. if we don't find a feed with unread items do nothing
-#: src/itemlist.c:277
+#: src/itemlist.c:306
 msgid "There are no unread items "
 msgstr "Er zijn geen ongelezen items "
 
@@ -1423,21 +1423,21 @@ msgstr ""
 msgid "vfolder"
 msgstr "VFolder"
 
-#: src/vfolder.c:552
+#: src/vfolder.c:556
 #, fuzzy
 msgid "VFolder:"
 msgstr "VFolder"
 
-#: src/vfolder.c:560
+#: src/vfolder.c:564
 #, fuzzy, c-format
 msgid "<b>%d</b> items \n"
 msgstr "<b>%s</b>"
 
-#: src/ui/eggtrayicon.c:127
+#: src/ui/eggtrayicon.c:133
 msgid "Orientation"
 msgstr "Oriëntatie"
 
-#: src/ui/eggtrayicon.c:128
+#: src/ui/eggtrayicon.c:134
 msgid "The orientation of the tray."
 msgstr "De oriëntatie van de tray"
 
@@ -1503,7 +1503,7 @@ msgstr "Weet je zeker dat je \"%s\" wilt verwijderen?"
 msgid "Deletion Confirmation"
 msgstr "Bevestig verwijderen"
 
-#: src/ui/ui_htmlview.c:76
+#: src/ui/ui_htmlview.c:73
 msgid ""
 "\n"
 "Trying to load the Mozilla browser module... Note that this\n"
@@ -1521,7 +1521,7 @@ msgstr ""
 "configuratie sleutel /apps/liferea/browser-module!\n"
 "\n"
 
-#: src/ui/ui_htmlview.c:92
+#: src/ui/ui_htmlview.c:89
 #, c-format
 msgid ""
 "Failed to open HTML widget module (%s) specified in configuration!\n"
@@ -1530,11 +1530,11 @@ msgstr ""
 "Openen van HTML widget module (%s) opgegeven in configuratie\n"
 "mislukt! %s\n"
 
-#: src/ui/ui_htmlview.c:104
+#: src/ui/ui_htmlview.c:101
 msgid "Htmlview API mismatch!"
 msgstr "Htmlview API komt niet overeen!"
 
-#: src/ui/ui_htmlview.c:112
+#: src/ui/ui_htmlview.c:109
 msgid "Detected module is not a valid htmlview module!"
 msgstr "Gedetecteerde module is geen geldige htmlview module!"
 
@@ -1542,26 +1542,26 @@ msgstr "Gedetecteerde module is geen geldige htmlview module!"
 #. to present in the preferences dialog and to load
 #. one just in case there was no configured module
 #. or it did not load when trying...
-#: src/ui/ui_htmlview.c:136
+#: src/ui/ui_htmlview.c:133
 #, c-format
 msgid "Available browser modules (%s):\n"
 msgstr "Beschikbare browser modules (%s):\n"
 
-#: src/ui/ui_htmlview.c:175
+#: src/ui/ui_htmlview.c:172
 #, c-format
 msgid "Loading configured browser module (%s)!\n"
 msgstr "Bezig met laden van ingestelde browser module (%s)!\n"
 
-#: src/ui/ui_htmlview.c:178
+#: src/ui/ui_htmlview.c:175
 msgid "No browser module configured!\n"
 msgstr "Geen browser module ingesteld!\n"
 
-#: src/ui/ui_htmlview.c:186
+#: src/ui/ui_htmlview.c:183
 #, c-format
 msgid "trying to load browser module %s (%s)\n"
 msgstr "bezig met laden van browser module %s (%s)\n"
 
-#: src/ui/ui_htmlview.c:197
+#: src/ui/ui_htmlview.c:194
 msgid ""
 "Sorry, I was not able to load any installed browser modules! Try the --debug-"
 "all option to get debug information!"
@@ -1570,16 +1570,16 @@ msgstr ""
 "Probeer de --debug-all optie uit om debug informatie te krijgen!"
 
 #. FIXME: bad because this is not only used for item links!
-#: src/ui/ui_htmlview.c:382
+#: src/ui/ui_htmlview.c:379
 msgid "This item does not have a link assigned!"
 msgstr "Dit item heeft geen link!"
 
-#: src/ui/ui_htmlview.c:438 src/ui/ui_htmlview.c:458
+#: src/ui/ui_htmlview.c:435 src/ui/ui_htmlview.c:455
 #, c-format
 msgid "Browser command failed: %s"
 msgstr "Browser commando mislukt: %s"
 
-#: src/ui/ui_htmlview.c:461
+#: src/ui/ui_htmlview.c:458
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Open: \"%s\""
@@ -1611,39 +1611,39 @@ msgstr ""
 "Deze feed is ermee opgehouden. Liferea zal hem niet meer updaten, maar je "
 "kunt nog wel de koppen in de cache bekijken."
 
-#: src/ui/ui_itemlist.c:363
+#: src/ui/ui_itemlist.c:361
 msgid "Date"
 msgstr "Datum"
 
-#: src/ui/ui_itemlist.c:374
+#: src/ui/ui_itemlist.c:372
 msgid "Headline"
 msgstr "Kop"
 
-#: src/ui/ui_itemlist.c:470 src/ui/ui_itemlist.c:483 src/ui/ui_itemlist.c:540
-#: src/ui/ui_itemlist.c:684
+#: src/ui/ui_itemlist.c:468 src/ui/ui_itemlist.c:481 src/ui/ui_itemlist.c:538
+#: src/ui/ui_itemlist.c:667
 msgid "No item has been selected"
 msgstr "Er is geen item geselecteerd"
 
-#: src/ui/ui_itemlist.c:481
+#: src/ui/ui_itemlist.c:479
 msgid "This item has no link specified!"
 msgstr "Dit item heeft geen link!"
 
-#: src/ui/ui_itemlist.c:518
+#: src/ui/ui_itemlist.c:516
 msgid "You must select a feed to delete its items!"
 msgstr "Selecteer een feed om zijn items te verwijderen!"
 
-#: src/ui/ui_mainwindow.c:437
+#: src/ui/ui_mainwindow.c:440
 msgid ""
 "<div style=\"padding:8px\"><div style=\"background-color:#eee;padding:5px;"
 "border:solid 1px #aaa\"><table border=\"0\" cellpadding=\"5px\"><tr><td><img "
 "src=\""
 msgstr ""
 
-#: src/ui/ui_mainwindow.c:442
+#: src/ui/ui_mainwindow.c:445
 msgid "pixmaps"
 msgstr ""
 
-#: src/ui/ui_mainwindow.c:443
+#: src/ui/ui_mainwindow.c:446
 #, fuzzy
 msgid ""
 "liferea.png\" /></td><td><h3>Liferea - Linux Feed Reader</h3></td></"
@@ -1660,7 +1660,7 @@ msgstr ""
 "van een feed te bladeren selecteer je de feed in de lijst. De koppen worden "
 "dan in het rechter paneel geladen.</p>"
 
-#: src/ui/ui_mainwindow.c:456
+#: src/ui/ui_mainwindow.c:459
 msgid ""
 "<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black;"
 "margin: 5px 0 5px 0\">This is an unstable version of Liferea 1.1. It should "
@@ -1668,115 +1668,115 @@ msgid ""
 "download the last stable version from SourceForge!</div>"
 msgstr ""
 
-#: src/ui/ui_mainwindow.c:462
+#: src/ui/ui_mainwindow.c:465
 msgid ""
 "<iframe src=\"http://liferea.sf.net/11progress.htm\" width=\"100%\" height="
 "\"150px\"></iframe></div>"
 msgstr ""
 
-#: src/ui/ui_mainwindow.c:505
+#: src/ui/ui_mainwindow.c:508
 msgid "Liferea is now online"
 msgstr "Liferea staat nu in online modus"
 
-#: src/ui/ui_mainwindow.c:508
+#: src/ui/ui_mainwindow.c:511
 msgid "Liferea is now offline"
 msgstr "Liferea staat nu in offline modus"
 
-#: src/ui/ui_mainwindow.c:753
+#: src/ui/ui_mainwindow.c:756
 msgid "_Program"
 msgstr "_Programma"
 
-#: src/ui/ui_mainwindow.c:754
+#: src/ui/ui_mainwindow.c:757
 #, fuzzy
 msgid "_Preferences"
 msgstr "Voorkeuren"
 
-#: src/ui/ui_mainwindow.c:754
+#: src/ui/ui_mainwindow.c:757
 #, fuzzy
 msgid "Edit Preferences."
 msgstr "Pas de voorkeuren aan."
 
-#: src/ui/ui_mainwindow.c:756
+#: src/ui/ui_mainwindow.c:759
 #, fuzzy
 msgid "_Quit"
 msgstr "/_Afsluiten"
 
-#: src/ui/ui_mainwindow.c:758
+#: src/ui/ui_mainwindow.c:761
 msgid "_Feeds"
 msgstr "_Feeds"
 
-#: src/ui/ui_mainwindow.c:759
+#: src/ui/ui_mainwindow.c:762
 msgid "Update _All"
 msgstr "_Alle feeds updaten"
 
-#: src/ui/ui_mainwindow.c:759
+#: src/ui/ui_mainwindow.c:762
 msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr "Alle feeds updaten. Hiermee worden OCS directories niet geüpdate."
 
-#: src/ui/ui_mainwindow.c:761
+#: src/ui/ui_mainwindow.c:764
 msgid "Mark All As _Read"
 msgstr "Markeer alles als ge_lezen"
 
-#: src/ui/ui_mainwindow.c:761
+#: src/ui/ui_mainwindow.c:764
 msgid "Marks read every item of every subscription."
 msgstr "Markeert elk item van elke feed als gelezen."
 
-#: src/ui/ui_mainwindow.c:763
+#: src/ui/ui_mainwindow.c:766
 msgid "_New Subscription..."
 msgstr "_Nieuwe feed..."
 
-#: src/ui/ui_mainwindow.c:763
+#: src/ui/ui_mainwindow.c:766
 msgid "Add a subscription to the feed list."
 msgstr "Voeg een feed aan de feed lijst toe."
 
-#: src/ui/ui_mainwindow.c:765
+#: src/ui/ui_mainwindow.c:768
 msgid "New _Folder..."
 msgstr "Nieuwe ma_p..."
 
-#: src/ui/ui_mainwindow.c:765
+#: src/ui/ui_mainwindow.c:768
 msgid "Add a folder to the feed list."
 msgstr "Voeg een map aan de feed lijst toe."
 
-#: src/ui/ui_mainwindow.c:766
+#: src/ui/ui_mainwindow.c:769
 msgid "New _VFolder..."
 msgstr "Nieuwe _VFolder..."
 
-#: src/ui/ui_mainwindow.c:766
+#: src/ui/ui_mainwindow.c:769
 #, fuzzy
 msgid "Add a new vfolder to the feed list."
 msgstr "Voeg een nieuwe VFolder (virtuele map) aan de feed lijst toe."
 
-#: src/ui/ui_mainwindow.c:767
+#: src/ui/ui_mainwindow.c:770
 msgid "New P_lugin"
 msgstr ""
 
-#: src/ui/ui_mainwindow.c:767
+#: src/ui/ui_mainwindow.c:770
 #, fuzzy
 msgid "Adds a new plugin instance to the feed list."
 msgstr "Voeg een nieuwe VFolder (virtuele map) aan de feed lijst toe."
 
-#: src/ui/ui_mainwindow.c:768
+#: src/ui/ui_mainwindow.c:771
 msgid "_Import Feed List..."
 msgstr "_Importeer feed lijst..."
 
-#: src/ui/ui_mainwindow.c:768
+#: src/ui/ui_mainwindow.c:771
 msgid "Imports an OPML feed list."
 msgstr "Importeert een OPML feed lijst."
 
-#: src/ui/ui_mainwindow.c:769
+#: src/ui/ui_mainwindow.c:772
 msgid "_Export Feed List..."
 msgstr "E_xporteer feed lijst..."
 
-#: src/ui/ui_mainwindow.c:769
+#: src/ui/ui_mainwindow.c:772
 #, fuzzy
 msgid ">Exports the feed list as OPML."
 msgstr "Exporteert de feed lijst naar OPML formaat."
 
-#: src/ui/ui_mainwindow.c:772
+#: src/ui/ui_mainwindow.c:775
 msgid "_Next Unread Item"
 msgstr "_Volgende ongelezen item"
 
-#: src/ui/ui_mainwindow.c:772
+#: src/ui/ui_mainwindow.c:775
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -1784,128 +1784,128 @@ msgstr ""
 "Verspringt naar het volgende ongelezen item. Indien nodig selecteert het de "
 "volgende feed met ongelezen items."
 
-#: src/ui/ui_mainwindow.c:774
+#: src/ui/ui_mainwindow.c:777
 msgid "Toggle _Read Status"
 msgstr "Item _gelezen aan/uit"
 
-#: src/ui/ui_mainwindow.c:774
+#: src/ui/ui_mainwindow.c:777
 msgid "Toggles the read status of the selected item."
 msgstr ""
 "Markeert het geselecteerde item als gelezen als hij als ongelezen staat "
 "gemarkeerd en andersom."
 
-#: src/ui/ui_mainwindow.c:776
+#: src/ui/ui_mainwindow.c:779
 msgid "Toggle Item _Flag"
 msgstr "Item _markering aan/uit"
 
-#: src/ui/ui_mainwindow.c:776
+#: src/ui/ui_mainwindow.c:779
 msgid "Toggles the flag status of the selected item."
 msgstr ""
 "Markeert het item met een vlaggetje en zet de markering van een gemarkeerd "
 "item uit."
 
-#: src/ui/ui_mainwindow.c:778
+#: src/ui/ui_mainwindow.c:781
 msgid "Remove _Selected"
 msgstr "Verwijder _selectie"
 
-#: src/ui/ui_mainwindow.c:778
+#: src/ui/ui_mainwindow.c:781
 msgid "Removes the selected item."
 msgstr "Verwijdert het geselecteerde item."
 
-#: src/ui/ui_mainwindow.c:780
+#: src/ui/ui_mainwindow.c:783
 msgid "Remove _All"
 msgstr "Verwijder _alles"
 
-#: src/ui/ui_mainwindow.c:780
+#: src/ui/ui_mainwindow.c:783
 msgid "Removes all items of the currently selected feed."
 msgstr "Verwijdert alle items in de op dit moment geselecteerde feed."
 
-#: src/ui/ui_mainwindow.c:782
+#: src/ui/ui_mainwindow.c:785
 msgid "_Launch In Browser"
 msgstr "_Open in browser"
 
-#: src/ui/ui_mainwindow.c:782
+#: src/ui/ui_mainwindow.c:785
 msgid "Launches the item's link in the configured browser."
 msgstr "Opent de link van het item in de ingestelde browser."
 
-#: src/ui/ui_mainwindow.c:785
+#: src/ui/ui_mainwindow.c:788
 msgid "_View"
 msgstr "_Beeld"
 
-#: src/ui/ui_mainwindow.c:786
+#: src/ui/ui_mainwindow.c:789
 msgid "_Increase Text Size"
 msgstr "Tekst ver_groten"
 
-#: src/ui/ui_mainwindow.c:786
+#: src/ui/ui_mainwindow.c:789
 msgid "Increases the text size of the item view."
 msgstr "Vergroot de tekst van de items."
 
-#: src/ui/ui_mainwindow.c:788
+#: src/ui/ui_mainwindow.c:791
 msgid "_Decrease Text Size"
 msgstr "Tekst ver_kleinen"
 
-#: src/ui/ui_mainwindow.c:788
+#: src/ui/ui_mainwindow.c:791
 msgid "Decreases the text size of the item view."
 msgstr "Verkleint de tekst van de items."
 
-#: src/ui/ui_mainwindow.c:790
+#: src/ui/ui_mainwindow.c:793
 msgid "_Search"
 msgstr "_Zoeken"
 
-#: src/ui/ui_mainwindow.c:791
+#: src/ui/ui_mainwindow.c:794
 #, fuzzy
 msgid "Show the search dialog."
 msgstr "Toont of verbergt het zoekscherm."
 
-#: src/ui/ui_mainwindow.c:792
+#: src/ui/ui_mainwindow.c:795
 msgid "Search With _Feedster..."
 msgstr "Zoek met _Feedster..."
 
-#: src/ui/ui_mainwindow.c:792
+#: src/ui/ui_mainwindow.c:795
 msgid "Creates a Feedster search feed."
 msgstr "Maakt een \"Feedster search feed\" aan."
 
-#: src/ui/ui_mainwindow.c:793
+#: src/ui/ui_mainwindow.c:796
 msgid "_Help"
 msgstr "_Hulp"
 
-#: src/ui/ui_mainwindow.c:794
+#: src/ui/ui_mainwindow.c:797
 msgid "_Contents"
 msgstr "_Inhoud"
 
-#: src/ui/ui_mainwindow.c:794
+#: src/ui/ui_mainwindow.c:797
 msgid "View help for this application."
 msgstr "Bekijk de hulp onderwerpen van dit programma."
 
-#: src/ui/ui_mainwindow.c:795
+#: src/ui/ui_mainwindow.c:798
 msgid "_Quick Reference"
 msgstr "_Sneltoetsen"
 
-#: src/ui/ui_mainwindow.c:795
+#: src/ui/ui_mainwindow.c:798
 msgid "View a list of all Liferea shortcuts."
 msgstr "Bekijk een lijst met Liferea sneltoetsen."
 
-#: src/ui/ui_mainwindow.c:797
+#: src/ui/ui_mainwindow.c:800
 msgid "_FAQ"
 msgstr "_FAQ"
 
-#: src/ui/ui_mainwindow.c:797
+#: src/ui/ui_mainwindow.c:800
 msgid "View the FAQ for this application."
 msgstr "Bekijk de FAQ (meest gestelde vragen) van dit programma."
 
-#: src/ui/ui_mainwindow.c:798
+#: src/ui/ui_mainwindow.c:801
 msgid "_About"
 msgstr "_Info"
 
-#: src/ui/ui_mainwindow.c:798
+#: src/ui/ui_mainwindow.c:801
 msgid "Shows an about dialog."
 msgstr "Info over het programma en de makers."
 
-#: src/ui/ui_mainwindow.c:803
+#: src/ui/ui_mainwindow.c:806
 msgid "_Mark Selected As Read"
 msgstr "_Markeer selectie als gelezen"
 
-#: src/ui/ui_mainwindow.c:803
+#: src/ui/ui_mainwindow.c:806
 msgid ""
 "Marks all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
@@ -1913,45 +1913,45 @@ msgstr ""
 "Markeert alle items van de geselecteerde feed of van alle feeds in de "
 "geselecteerde map als gelezen."
 
-#: src/ui/ui_mainwindow.c:805
+#: src/ui/ui_mainwindow.c:808
 msgid "Update _Selected"
 msgstr "Ge_selecteerde feeds updaten"
 
-#: src/ui/ui_mainwindow.c:805
+#: src/ui/ui_mainwindow.c:808
 msgid ""
 "Updates the selected subscription or all subscriptions of the selected "
 "folder."
 msgstr "Update de geselecteerde feeds of alle feeds in de geselecteerde map."
 
-#: src/ui/ui_mainwindow.c:807
+#: src/ui/ui_mainwindow.c:810
 msgid "_Properties..."
 msgstr "_Eigenschappen..."
 
-#: src/ui/ui_mainwindow.c:807
+#: src/ui/ui_mainwindow.c:810
 msgid "Opens the property dialog for the selected subscription."
 msgstr "Opent het eigenschappen venster van de geselecteerde feed."
 
-#: src/ui/ui_mainwindow.c:808
+#: src/ui/ui_mainwindow.c:811
 msgid "_Delete Selected"
 msgstr "Ver_wijder geselecteerde"
 
-#: src/ui/ui_mainwindow.c:808
+#: src/ui/ui_mainwindow.c:811
 msgid "Removes the selected subscription."
 msgstr "Verwijdert de geselecteerde feed."
 
-#: src/ui/ui_mainwindow.c:813
+#: src/ui/ui_mainwindow.c:816
 msgid "_Work Offline"
 msgstr "_Offline modus"
 
-#: src/ui/ui_mainwindow.c:813
+#: src/ui/ui_mainwindow.c:816
 msgid "This option allows you to disable subscription updating."
 msgstr "Deze optie schakelt het updaten van feeds uit."
 
-#: src/ui/ui_mainwindow.c:815
+#: src/ui/ui_mainwindow.c:818
 msgid "Toggle _Condensed View"
 msgstr "_Samengestelde modus aan/uit"
 
-#: src/ui/ui_mainwindow.c:815
+#: src/ui/ui_mainwindow.c:818
 msgid "Toggles the item list mode between condensed and normal mode."
 msgstr "Zet de item lijst in samengestelde of normale modus."
 

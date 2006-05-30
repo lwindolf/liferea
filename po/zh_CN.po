@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-05-05 20:45+0200\n"
+"POT-Creation-Date: 2006-05-29 03:07+0200\n"
 "PO-Revision-Date: 2005-08-12 21:32+0800\n"
 "Last-Translator: Guanglei Xiong <xgl99@mails.tsinghua.edu.cn>\n"
 "Language-Team: Chinese/Simplified \n"
@@ -119,20 +119,20 @@ msgstr "导出"
 msgid "Updating feed icon for \"%s\""
 msgstr "更新feed \"%s\" 的图标"
 
-#: src/feed.c:341
+#: src/feed.c:344
 #, c-format
 msgid "<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"
 msgstr "<p>读入feed时出现 XML 错误! Feed \"%s\" 无法载入!</p>"
 
-#: src/feed.c:348 src/feed.c:585
+#: src/feed.c:351 src/feed.c:588
 msgid "<p>Empty document!</p>"
 msgstr "<p>空文档!</p>"
 
-#: src/feed.c:357
+#: src/feed.c:360
 msgid "<p>Invalid XML!</p>"
 msgstr "<p>无效 XML!</p>"
 
-#: src/feed.c:423
+#: src/feed.c:426
 msgid ""
 "<p>The URL you want Liferea to subscribe to points to a webpage and the auto "
 "discovery found no feeds on this page. Maybe this webpage just does not "
@@ -141,148 +141,148 @@ msgstr ""
 "<p>你让 Liferea 订阅的网址指向一个网页，但是自动发现在该页上没有找到feed。可"
 "能该页不支持feed自动发现。</p>"
 
-#: src/feed.c:428
+#: src/feed.c:431
 #, fuzzy
 msgid "<p>Could not determine the feed type.</p>"
 msgstr "<p>无法找到 RDF 头!</p>"
 
-#: src/feed.c:564
+#: src/feed.c:567
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
 msgstr "读入缓存文件 \"%s\"时发生错误! 无法载入缓存文件!"
 
-#: src/feed.c:577
+#: src/feed.c:580
 #, c-format
 msgid ""
 "<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
 "loaded!</p>"
 msgstr "<p>解析缓存文件时发生 XML 错误! 无法载入缓存文件 \"%s\"!</p>"
 
-#: src/feed.c:602
+#: src/feed.c:605
 #, c-format
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 msgstr "<p>\"%s\" 是无效的缓存文件! 无法读取缓存文件!</p>"
 
-#: src/feed.c:660
+#: src/feed.c:663
 #, c-format
 msgid "There were errors while parsing cache file \"%s\""
 msgstr "解析缓存文件 \"%s\" 时出现错误!"
 
-#: src/feed.c:683
+#: src/feed.c:686
 #, c-format
 msgid "This feed \"%s\" is already being updated!"
 msgstr "此feed \"%s\" 已经更新!"
 
-#: src/feed.c:688
+#: src/feed.c:691
 #, fuzzy, c-format
 msgid "The feed \"%s\" was discontinued. Liferea won't update it anymore!"
 msgstr "Feed已经失效。Liferea 将不会再更新它。"
 
-#: src/feed.c:972
+#: src/feed.c:975
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box."
 msgstr "你无权下载此feed。请在feed属性对话框中更新你的帐号与密码。"
 
-#: src/feed.c:974
+#: src/feed.c:977
 msgid "Payment Required"
 msgstr "需要付费"
 
-#: src/feed.c:975
+#: src/feed.c:978
 msgid "Access Forbidden"
 msgstr "访问被禁止"
 
-#: src/feed.c:976
+#: src/feed.c:979
 msgid "Resource Not Found"
 msgstr "资源未找到"
 
-#: src/feed.c:977
+#: src/feed.c:980
 msgid "Method Not Allowed"
 msgstr "方法不允许"
 
-#: src/feed.c:978
+#: src/feed.c:981
 msgid "Not Acceptable"
 msgstr "无法接受"
 
-#: src/feed.c:979
+#: src/feed.c:982
 msgid "Proxy Authentication Required"
 msgstr "代理服务器需要认证"
 
-#: src/feed.c:980
+#: src/feed.c:983
 msgid "Request Time-Out"
 msgstr "读取超时"
 
-#: src/feed.c:981
+#: src/feed.c:984
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "完了。资源不存在。请取消订阅!"
 
-#: src/feed.c:986
+#: src/feed.c:989
 msgid "URL is invalid"
 msgstr "URL 不合法"
 
-#: src/feed.c:987
+#: src/feed.c:990
 msgid "Unsupported network protocol"
 msgstr ""
 
-#: src/feed.c:990
+#: src/feed.c:993
 msgid "Error connecting to remote host"
 msgstr "无法联接到远端主机"
 
-#: src/feed.c:991
+#: src/feed.c:994
 msgid "Hostname could not be found"
 msgstr "无法找到服务器名称"
 
-#: src/feed.c:992
+#: src/feed.c:995
 msgid "Network connection was refused by the remote host"
 msgstr "远端主机拒绝网路联接"
 
-#: src/feed.c:993
+#: src/feed.c:996
 msgid "Remote host did not finish sending data"
 msgstr "远端主机并未完成传送数据"
 
 #. Transfer errors
-#: src/feed.c:995
+#: src/feed.c:998
 msgid "Too many HTTP redirects were encountered"
 msgstr "遇到太多 HTTP 重定向!"
 
-#: src/feed.c:998
+#: src/feed.c:1001
 msgid "Remote host sent an invalid response"
 msgstr "网站服务器传送了一个无效的回应"
 
-#: src/feed.c:1005
+#: src/feed.c:1008
 msgid "Authentication failed"
 msgstr "认证失败！"
 
-#: src/feed.c:1007
+#: src/feed.c:1010
 msgid "Webserver's authentication method incompatible with Liferea"
 msgstr "网站服务器的认证方法与 Lifera 不兼容"
 
-#: src/feed.c:1013
+#: src/feed.c:1016
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr "Feed无法使用: 服务器使用未支持的重定向!"
 
-#: src/feed.c:1014
+#: src/feed.c:1017
 msgid "Client Error"
 msgstr "客户端错误"
 
-#: src/feed.c:1015
+#: src/feed.c:1018
 msgid "Server Error"
 msgstr "服务器端错误"
 
-#: src/feed.c:1016
+#: src/feed.c:1019
 msgid "(unknown networking error happened)"
 msgstr "(发生未知的网路错误)"
 
-#: src/feed.c:1029 src/feed.c:1037
+#: src/feed.c:1032 src/feed.c:1040
 msgid "Show Details"
 msgstr "显示详细信息"
 
-#: src/feed.c:1037
+#: src/feed.c:1040
 #, fuzzy
 msgid "Error Details:"
 msgstr "显示详细信息"
 
-#: src/feed.c:1041
+#: src/feed.c:1044
 #, fuzzy
 msgid ""
 "<br />You may want to validate the feed using <a href=\"http://feedvalidator."
@@ -291,32 +291,32 @@ msgstr ""
 "<br> 你可能需要验证该feed，使用<a href=\"http://feedvalidator.org/check.cgi?"
 "url="
 
-#: src/feed.c:1046
+#: src/feed.c:1049
 msgid "\">FeedValidator</a>."
 msgstr "\">FeedValidator</a>。"
 
-#: src/feed.c:1054
+#: src/feed.c:1057
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
 msgstr "读取此订阅时出现问题，请检查网址和终端输出。"
 
-#: src/feed.c:1124
+#: src/feed.c:1127
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr "\"%s\" 终止更新。Liferea 将不会再更新它！"
 
-#: src/feed.c:1127
+#: src/feed.c:1130
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\" 自上次更新后没有改变"
 
-#: src/feed.c:1135
+#: src/feed.c:1138
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "\"%s\" 的地址已经永久改变，已被更新。"
 
-#: src/feed.c:1152
+#: src/feed.c:1155
 #, fuzzy, c-format
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
@@ -324,23 +324,23 @@ msgid ""
 "p>XML Parser Output:<br /><div class='xmlparseroutput'>%s</div>"
 msgstr "<p>无法探测此feed类型! 请确认网址指向已支持的正确feed来源!</p>%s"
 
-#: src/feed.c:1173
+#: src/feed.c:1176
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" 已更新..."
 
-#: src/feed.c:1185
+#: src/feed.c:1188
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" 不可用"
 
-#: src/feed.c:1301
+#: src/feed.c:1304
 #, c-format
 msgid "Updating \"%s\""
 msgstr "更新: \"%s\""
 
 #. attributes resulting from general feed parsing
-#: src/feed.c:1401 src/item.c:195 src/itemset.c:137 src/metadata.c:377
+#: src/feed.c:1401 src/item.c:192 src/itemset.c:137 src/metadata.c:377
 #: src/parsers/ocs_dir.c:144 src/parsers/opml.c:219
 msgid "Feed:"
 msgstr "Feed:"
@@ -349,7 +349,7 @@ msgstr "Feed:"
 msgid "user defined command"
 msgstr "使用自定义命令"
 
-#: src/feed.c:1432 src/item.c:235 src/metadata.c:379 src/metadata.c:380
+#: src/feed.c:1432 src/item.c:232 src/metadata.c:379 src/metadata.c:380
 #: src/parsers/ocs_dir.c:150 src/parsers/opml.c:225
 msgid "Source:"
 msgstr "来源:"
@@ -553,7 +553,7 @@ msgstr ""
 msgid "Enclosures"
 msgstr "附件"
 
-#: src/interface.c:775 src/node.c:351
+#: src/interface.c:775 src/node.c:354
 msgid "New Subscription"
 msgstr "新增订阅"
 
@@ -1012,7 +1012,7 @@ msgstr ""
 msgid "_Do this automatically for files like this from now on."
 msgstr "从现在开始自动替文件作同样的处理(_D)"
 
-#: src/interface.c:3111 src/ui/ui_mainwindow.c:791
+#: src/interface.c:3111 src/ui/ui_mainwindow.c:794
 msgid "Search All Feeds"
 msgstr "搜索所有Feed"
 
@@ -1036,20 +1036,20 @@ msgid ""
 "appear in the item list."
 msgstr "开始在所有feed中搜索该文本，结果会出现在条目列表中。"
 
-#: src/item.c:210 src/item.c:229 src/ui/ui_itemlist.c:269
+#: src/item.c:207 src/item.c:226 src/ui/ui_itemlist.c:267
 msgid "[No title]"
 msgstr "[无标题]"
 
-#: src/item.c:219 src/metadata.c:378 src/parsers/ocs_dir.c:105
+#: src/item.c:216 src/metadata.c:378 src/parsers/ocs_dir.c:105
 msgid "Item:"
 msgstr "条目:"
 
-#: src/item.c:276
+#: src/item.c:279
 msgid "date"
 msgstr "日期"
 
 #. if we don't find a feed with unread items do nothing
-#: src/itemlist.c:277
+#: src/itemlist.c:306
 msgid "There are no unread items "
 msgstr "没有未读条目 "
 
@@ -1358,21 +1358,21 @@ msgstr ""
 msgid "vfolder"
 msgstr "虚拟目录"
 
-#: src/vfolder.c:552
+#: src/vfolder.c:556
 #, fuzzy
 msgid "VFolder:"
 msgstr "虚拟目录"
 
-#: src/vfolder.c:560
+#: src/vfolder.c:564
 #, fuzzy, c-format
 msgid "<b>%d</b> items \n"
 msgstr "<b>%s</b>"
 
-#: src/ui/eggtrayicon.c:127
+#: src/ui/eggtrayicon.c:133
 msgid "Orientation"
 msgstr "方位"
 
-#: src/ui/eggtrayicon.c:128
+#: src/ui/eggtrayicon.c:134
 msgid "The orientation of the tray."
 msgstr "系统托盘的方位。"
 
@@ -1436,7 +1436,7 @@ msgstr "你确定要删除 %s 吗 ？"
 msgid "Deletion Confirmation"
 msgstr "删除确认"
 
-#: src/ui/ui_htmlview.c:76
+#: src/ui/ui_htmlview.c:73
 msgid ""
 "\n"
 "Trying to load the Mozilla browser module... Note that this\n"
@@ -1453,7 +1453,7 @@ msgstr ""
 "配置中的键 /apps/liferea/browser-module!\n"
 "\n"
 
-#: src/ui/ui_htmlview.c:92
+#: src/ui/ui_htmlview.c:89
 #, c-format
 msgid ""
 "Failed to open HTML widget module (%s) specified in configuration!\n"
@@ -1462,11 +1462,11 @@ msgstr ""
 "无法开启配置中设定的 HTML widget 模块 (%s)!\n"
 "%s\n"
 
-#: src/ui/ui_htmlview.c:104
+#: src/ui/ui_htmlview.c:101
 msgid "Htmlview API mismatch!"
 msgstr "Htmlview API 版本不一致!"
 
-#: src/ui/ui_htmlview.c:112
+#: src/ui/ui_htmlview.c:109
 msgid "Detected module is not a valid htmlview module!"
 msgstr "探测到的模块并非有效的 htmlview 模块!"
 
@@ -1474,42 +1474,42 @@ msgstr "探测到的模块并非有效的 htmlview 模块!"
 #. to present in the preferences dialog and to load
 #. one just in case there was no configured module
 #. or it did not load when trying...
-#: src/ui/ui_htmlview.c:136
+#: src/ui/ui_htmlview.c:133
 #, c-format
 msgid "Available browser modules (%s):\n"
 msgstr "可用的浏览器模块 (%s)\n"
 
-#: src/ui/ui_htmlview.c:175
+#: src/ui/ui_htmlview.c:172
 #, c-format
 msgid "Loading configured browser module (%s)!\n"
 msgstr "载入已设定浏览器模块(%s)!\n"
 
-#: src/ui/ui_htmlview.c:178
+#: src/ui/ui_htmlview.c:175
 msgid "No browser module configured!\n"
 msgstr "浏览器模块未设定!\n"
 
-#: src/ui/ui_htmlview.c:186
+#: src/ui/ui_htmlview.c:183
 #, c-format
 msgid "trying to load browser module %s (%s)\n"
 msgstr "尝试载入浏览器模块 %s (%s)\n"
 
-#: src/ui/ui_htmlview.c:197
+#: src/ui/ui_htmlview.c:194
 msgid ""
 "Sorry, I was not able to load any installed browser modules! Try the --debug-"
 "all option to get debug information!"
 msgstr "抱歉, 无法载入任何浏览器模块! 请用 --debug-all 选项来获取调试信息!"
 
 #. FIXME: bad because this is not only used for item links!
-#: src/ui/ui_htmlview.c:382
+#: src/ui/ui_htmlview.c:379
 msgid "This item does not have a link assigned!"
 msgstr "此条目没有分配的链接!"
 
-#: src/ui/ui_htmlview.c:438 src/ui/ui_htmlview.c:458
+#: src/ui/ui_htmlview.c:435 src/ui/ui_htmlview.c:455
 #, c-format
 msgid "Browser command failed: %s"
 msgstr "浏览器命令失败: %s"
 
-#: src/ui/ui_htmlview.c:461
+#: src/ui/ui_htmlview.c:458
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "启动: \"%s\""
@@ -1539,39 +1539,39 @@ msgid ""
 msgstr ""
 "此feed已失效，将不再更新。Liferea 将不会更新它，但是你可以继续读取暂存标题。"
 
-#: src/ui/ui_itemlist.c:363
+#: src/ui/ui_itemlist.c:361
 msgid "Date"
 msgstr "日期"
 
-#: src/ui/ui_itemlist.c:374
+#: src/ui/ui_itemlist.c:372
 msgid "Headline"
 msgstr "标题"
 
-#: src/ui/ui_itemlist.c:470 src/ui/ui_itemlist.c:483 src/ui/ui_itemlist.c:540
-#: src/ui/ui_itemlist.c:684
+#: src/ui/ui_itemlist.c:468 src/ui/ui_itemlist.c:481 src/ui/ui_itemlist.c:538
+#: src/ui/ui_itemlist.c:667
 msgid "No item has been selected"
 msgstr "未选择条目!"
 
-#: src/ui/ui_itemlist.c:481
+#: src/ui/ui_itemlist.c:479
 msgid "This item has no link specified!"
 msgstr "此条目没有指定链接!"
 
-#: src/ui/ui_itemlist.c:518
+#: src/ui/ui_itemlist.c:516
 msgid "You must select a feed to delete its items!"
 msgstr "你必须先选择一个feed才能删除条目!"
 
-#: src/ui/ui_mainwindow.c:437
+#: src/ui/ui_mainwindow.c:440
 msgid ""
 "<div style=\"padding:8px\"><div style=\"background-color:#eee;padding:5px;"
 "border:solid 1px #aaa\"><table border=\"0\" cellpadding=\"5px\"><tr><td><img "
 "src=\""
 msgstr ""
 
-#: src/ui/ui_mainwindow.c:442
+#: src/ui/ui_mainwindow.c:445
 msgid "pixmaps"
 msgstr ""
 
-#: src/ui/ui_mainwindow.c:443
+#: src/ui/ui_mainwindow.c:446
 msgid ""
 "liferea.png\" /></td><td><h3>Liferea - Linux Feed Reader</h3></td></"
 "tr><tr><td colspan=\"2\"><p>Welcome to <b>Liferea</b>, a desktop news "
@@ -1582,7 +1582,7 @@ msgid ""
 "div>"
 msgstr ""
 
-#: src/ui/ui_mainwindow.c:456
+#: src/ui/ui_mainwindow.c:459
 msgid ""
 "<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black;"
 "margin: 5px 0 5px 0\">This is an unstable version of Liferea 1.1. It should "
@@ -1590,289 +1590,289 @@ msgid ""
 "download the last stable version from SourceForge!</div>"
 msgstr ""
 
-#: src/ui/ui_mainwindow.c:462
+#: src/ui/ui_mainwindow.c:465
 msgid ""
 "<iframe src=\"http://liferea.sf.net/11progress.htm\" width=\"100%\" height="
 "\"150px\"></iframe></div>"
 msgstr ""
 
-#: src/ui/ui_mainwindow.c:505
+#: src/ui/ui_mainwindow.c:508
 msgid "Liferea is now online"
 msgstr "Liferea 现为在线模式。"
 
-#: src/ui/ui_mainwindow.c:508
+#: src/ui/ui_mainwindow.c:511
 msgid "Liferea is now offline"
 msgstr "Lifeare 现为离线模式"
 
-#: src/ui/ui_mainwindow.c:753
+#: src/ui/ui_mainwindow.c:756
 msgid "_Program"
 msgstr "程序(_P)"
 
-#: src/ui/ui_mainwindow.c:754
+#: src/ui/ui_mainwindow.c:757
 #, fuzzy
 msgid "_Preferences"
 msgstr "首选项"
 
-#: src/ui/ui_mainwindow.c:754
+#: src/ui/ui_mainwindow.c:757
 #, fuzzy
 msgid "Edit Preferences."
 msgstr "编辑首选项。"
 
-#: src/ui/ui_mainwindow.c:756
+#: src/ui/ui_mainwindow.c:759
 #, fuzzy
 msgid "_Quit"
 msgstr "/退出(_Q)"
 
-#: src/ui/ui_mainwindow.c:758
+#: src/ui/ui_mainwindow.c:761
 msgid "_Feeds"
 msgstr "Feed(_F)"
 
-#: src/ui/ui_mainwindow.c:759
+#: src/ui/ui_mainwindow.c:762
 msgid "Update _All"
 msgstr "更新全部(_A)"
 
-#: src/ui/ui_mainwindow.c:759
+#: src/ui/ui_mainwindow.c:762
 msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr "立即更新所有订阅，不包括 OCS 目录。"
 
-#: src/ui/ui_mainwindow.c:761
+#: src/ui/ui_mainwindow.c:764
 msgid "Mark All As _Read"
 msgstr "全部标记为已读(_R)"
 
-#: src/ui/ui_mainwindow.c:761
+#: src/ui/ui_mainwindow.c:764
 msgid "Marks read every item of every subscription."
 msgstr ""
 
-#: src/ui/ui_mainwindow.c:763
+#: src/ui/ui_mainwindow.c:766
 msgid "_New Subscription..."
 msgstr "新增订阅(_N)..."
 
-#: src/ui/ui_mainwindow.c:763
+#: src/ui/ui_mainwindow.c:766
 #, fuzzy
 msgid "Add a subscription to the feed list."
 msgstr "新增订阅。"
 
-#: src/ui/ui_mainwindow.c:765
+#: src/ui/ui_mainwindow.c:768
 msgid "New _Folder..."
 msgstr "新目录(_F)..."
 
-#: src/ui/ui_mainwindow.c:765
+#: src/ui/ui_mainwindow.c:768
 #, fuzzy
 msgid "Add a folder to the feed list."
 msgstr "必须选择一个目录。"
 
-#: src/ui/ui_mainwindow.c:766
+#: src/ui/ui_mainwindow.c:769
 msgid "New _VFolder..."
 msgstr "新虚拟目录(_V)..."
 
-#: src/ui/ui_mainwindow.c:766
+#: src/ui/ui_mainwindow.c:769
 msgid "Add a new vfolder to the feed list."
 msgstr ""
 
-#: src/ui/ui_mainwindow.c:767
+#: src/ui/ui_mainwindow.c:770
 msgid "New P_lugin"
 msgstr ""
 
-#: src/ui/ui_mainwindow.c:767
+#: src/ui/ui_mainwindow.c:770
 msgid "Adds a new plugin instance to the feed list."
 msgstr ""
 
-#: src/ui/ui_mainwindow.c:768
+#: src/ui/ui_mainwindow.c:771
 msgid "_Import Feed List..."
 msgstr "导入Feed列表(_I)..."
 
-#: src/ui/ui_mainwindow.c:768
+#: src/ui/ui_mainwindow.c:771
 msgid "Imports an OPML feed list."
 msgstr "导入 OPML 格式feed列表。"
 
-#: src/ui/ui_mainwindow.c:769
+#: src/ui/ui_mainwindow.c:772
 msgid "_Export Feed List..."
 msgstr "导出Feed列表(_E)..."
 
-#: src/ui/ui_mainwindow.c:769
+#: src/ui/ui_mainwindow.c:772
 #, fuzzy
 msgid ">Exports the feed list as OPML."
 msgstr "导出 OPML 格式feed列表。"
 
-#: src/ui/ui_mainwindow.c:772
+#: src/ui/ui_mainwindow.c:775
 msgid "_Next Unread Item"
 msgstr "下一个未读条目(_N)"
 
-#: src/ui/ui_mainwindow.c:772
+#: src/ui/ui_mainwindow.c:775
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
 msgstr "跳到下一个未读条目，必要时会跳到下一个feed中的未读条目。"
 
-#: src/ui/ui_mainwindow.c:774
+#: src/ui/ui_mainwindow.c:777
 msgid "Toggle _Read Status"
 msgstr "切换阅读状态(_R)"
 
-#: src/ui/ui_mainwindow.c:774
+#: src/ui/ui_mainwindow.c:777
 msgid "Toggles the read status of the selected item."
 msgstr "切换选定条目的阅读状态。"
 
-#: src/ui/ui_mainwindow.c:776
+#: src/ui/ui_mainwindow.c:779
 msgid "Toggle Item _Flag"
 msgstr "切换条目标签(_F)"
 
-#: src/ui/ui_mainwindow.c:776
+#: src/ui/ui_mainwindow.c:779
 #, fuzzy
 msgid "Toggles the flag status of the selected item."
 msgstr "切换选定条目的阅读状态。"
 
-#: src/ui/ui_mainwindow.c:778
+#: src/ui/ui_mainwindow.c:781
 #, fuzzy
 msgid "Remove _Selected"
 msgstr "删除选定的(_S)"
 
-#: src/ui/ui_mainwindow.c:778
+#: src/ui/ui_mainwindow.c:781
 msgid "Removes the selected item."
 msgstr "删除选定的条目。"
 
-#: src/ui/ui_mainwindow.c:780
+#: src/ui/ui_mainwindow.c:783
 #, fuzzy
 msgid "Remove _All"
 msgstr "删除所有条目(_A)"
 
-#: src/ui/ui_mainwindow.c:780
+#: src/ui/ui_mainwindow.c:783
 msgid "Removes all items of the currently selected feed."
 msgstr "删除现选定feed的所有条目。"
 
-#: src/ui/ui_mainwindow.c:782
+#: src/ui/ui_mainwindow.c:785
 msgid "_Launch In Browser"
 msgstr "载入浏览器(_L)"
 
-#: src/ui/ui_mainwindow.c:782
+#: src/ui/ui_mainwindow.c:785
 msgid "Launches the item's link in the configured browser."
 msgstr "在设定浏览器中载入此条目链接。"
 
-#: src/ui/ui_mainwindow.c:785
+#: src/ui/ui_mainwindow.c:788
 msgid "_View"
 msgstr "视图(_V)"
 
-#: src/ui/ui_mainwindow.c:786
+#: src/ui/ui_mainwindow.c:789
 msgid "_Increase Text Size"
 msgstr "放大字体(_I)"
 
-#: src/ui/ui_mainwindow.c:786
+#: src/ui/ui_mainwindow.c:789
 msgid "Increases the text size of the item view."
 msgstr "放大条目显示窗口字体大小。"
 
-#: src/ui/ui_mainwindow.c:788
+#: src/ui/ui_mainwindow.c:791
 msgid "_Decrease Text Size"
 msgstr "缩小字体(_D)"
 
-#: src/ui/ui_mainwindow.c:788
+#: src/ui/ui_mainwindow.c:791
 msgid "Decreases the text size of the item view."
 msgstr "缩小条目显示窗口字体大小。"
 
-#: src/ui/ui_mainwindow.c:790
+#: src/ui/ui_mainwindow.c:793
 msgid "_Search"
 msgstr "搜索(_S)"
 
-#: src/ui/ui_mainwindow.c:791
+#: src/ui/ui_mainwindow.c:794
 #, fuzzy
 msgid "Show the search dialog."
 msgstr "显示或隐藏搜索窗口。"
 
-#: src/ui/ui_mainwindow.c:792
+#: src/ui/ui_mainwindow.c:795
 #, fuzzy
 msgid "Search With _Feedster..."
 msgstr "使用 Feedster 搜索(_F)..."
 
-#: src/ui/ui_mainwindow.c:792
+#: src/ui/ui_mainwindow.c:795
 msgid "Creates a Feedster search feed."
 msgstr "创造一个 Feedster 搜索feed。"
 
-#: src/ui/ui_mainwindow.c:793
+#: src/ui/ui_mainwindow.c:796
 msgid "_Help"
 msgstr "帮助(_H)"
 
-#: src/ui/ui_mainwindow.c:794
+#: src/ui/ui_mainwindow.c:797
 msgid "_Contents"
 msgstr "目录(_C)"
 
-#: src/ui/ui_mainwindow.c:794
+#: src/ui/ui_mainwindow.c:797
 msgid "View help for this application."
 msgstr "查看该程序的帮助。"
 
-#: src/ui/ui_mainwindow.c:795
+#: src/ui/ui_mainwindow.c:798
 msgid "_Quick Reference"
 msgstr "快速参考(_Q)"
 
-#: src/ui/ui_mainwindow.c:795
+#: src/ui/ui_mainwindow.c:798
 msgid "View a list of all Liferea shortcuts."
 msgstr "查看所有快捷键列表。"
 
-#: src/ui/ui_mainwindow.c:797
+#: src/ui/ui_mainwindow.c:800
 msgid "_FAQ"
 msgstr ""
 
-#: src/ui/ui_mainwindow.c:797
+#: src/ui/ui_mainwindow.c:800
 #, fuzzy
 msgid "View the FAQ for this application."
 msgstr "查看该程序的帮助。"
 
-#: src/ui/ui_mainwindow.c:798
+#: src/ui/ui_mainwindow.c:801
 msgid "_About"
 msgstr "关于(_A)"
 
-#: src/ui/ui_mainwindow.c:798
+#: src/ui/ui_mainwindow.c:801
 msgid "Shows an about dialog."
 msgstr "显示关于对话框。"
 
-#: src/ui/ui_mainwindow.c:803
+#: src/ui/ui_mainwindow.c:806
 msgid "_Mark Selected As Read"
 msgstr "标记选定的为已读(_M)"
 
-#: src/ui/ui_mainwindow.c:803
+#: src/ui/ui_mainwindow.c:806
 #, fuzzy
 msgid ""
 "Marks all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
 msgstr "标记所有选定订阅下的所有条目或选定目录下的所有订阅为已读。"
 
-#: src/ui/ui_mainwindow.c:805
+#: src/ui/ui_mainwindow.c:808
 msgid "Update _Selected"
 msgstr "更新选定的(_S)"
 
-#: src/ui/ui_mainwindow.c:805
+#: src/ui/ui_mainwindow.c:808
 msgid ""
 "Updates the selected subscription or all subscriptions of the selected "
 "folder."
 msgstr "更新选定的订阅项或目录下的所有订阅项目。"
 
-#: src/ui/ui_mainwindow.c:807
+#: src/ui/ui_mainwindow.c:810
 msgid "_Properties..."
 msgstr "属性(_P)..."
 
-#: src/ui/ui_mainwindow.c:807
+#: src/ui/ui_mainwindow.c:810
 msgid "Opens the property dialog for the selected subscription."
 msgstr "开启选定订阅的属性对话框。"
 
-#: src/ui/ui_mainwindow.c:808
+#: src/ui/ui_mainwindow.c:811
 msgid "_Delete Selected"
 msgstr "删除选定的(_D)"
 
-#: src/ui/ui_mainwindow.c:808
+#: src/ui/ui_mainwindow.c:811
 msgid "Removes the selected subscription."
 msgstr "删除选定的订阅项。"
 
-#: src/ui/ui_mainwindow.c:813
+#: src/ui/ui_mainwindow.c:816
 #, fuzzy
 msgid "_Work Offline"
 msgstr "离线浏览(_W)"
 
-#: src/ui/ui_mainwindow.c:813
+#: src/ui/ui_mainwindow.c:816
 msgid "This option allows you to disable subscription updating."
 msgstr ""
 
-#: src/ui/ui_mainwindow.c:815
+#: src/ui/ui_mainwindow.c:818
 msgid "Toggle _Condensed View"
 msgstr "启动摘要模式(_C)"
 
-#: src/ui/ui_mainwindow.c:815
+#: src/ui/ui_mainwindow.c:818
 msgid "Toggles the item list mode between condensed and normal mode."
 msgstr "切换条目显示模式为摘要模式或一般模式。"
 
