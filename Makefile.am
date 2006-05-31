@@ -2,10 +2,11 @@
 
 SUBDIRS = doc man opml pixmaps po src
 
-desktop_files=liferea.desktop
-
-Applicationsdir = $(datadir)/applications
-Applications_DATA = $(desktop_files)
+desktop_in_files = liferea.desktop.in
+desktop_files = $(desktop_in_files:.desktop.in=.desktop)
+desktopdir = $(datadir)/applications
+desktop_DATA = $(desktop_files)
+@INTLTOOL_DESKTOP_RULE@
 
 schemadir   = @GCONF_SCHEMA_FILE_DIR@
 schema_DATA = liferea.schemas
@@ -18,8 +19,11 @@ EXTRA_DIST = \
 	liferea-SuSE.spec \
 	src/liferea \
 	src/liferea-add-feed \
-	$(desktop_files) \
-	$(schema_DATA)
+	$(desktop_DATA) \
+	$(schema_DATA) \
+	intltool-extract.in \
+	intltool-merge.in \
+	intltool-update.in
 
 install-data-local:
 if GCONF_SCHEMAS_INSTALL

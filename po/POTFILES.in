@@ -1,5 +1,6 @@
 # List of source files containing translatable strings.
 
+liferea.desktop.in
 src/callbacks.c
 src/callbacks.h
 src/common.c

@@ -17,6 +17,7 @@ dnl Work around libtool bug (fixed in the version 1.5a?)
 AC_DEFUN([AC_PROVIDE_AC_LIBTOOL_DLOPEN], )
 AC_LIBTOOL_DLOPEN
 AC_PROG_LIBTOOL
+AC_PROG_INTLTOOL
 
 AC_ISC_POSIX
 AC_PROG_CC
