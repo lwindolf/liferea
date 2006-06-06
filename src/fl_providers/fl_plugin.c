@@ -259,6 +259,10 @@ static void ui_fl_plugin_dummy_properties(nodePtr node) {
 	g_warning("Not supported!");
 }
 
+static void fl_plugin_save(nodePtr node) {
+g_warning("implement save!");
+}
+
 nodeTypePtr fl_plugin_get_node_type(void) {
 	nodeTypePtr	nodeType;
 
@@ -268,6 +272,7 @@ nodeTypePtr fl_plugin_get_node_type(void) {
 	nodeType->request_update	= fl_plugin_request_update;
 	nodeType->request_auto_update	= fl_plugin_request_auto_update;
 	nodeType->schedule_update	= fl_plugin_schedule_update;
+	nodeType->save			= fl_plugin_save;
 	nodeType->remove		= fl_plugin_remove;
 	nodeType->render		= fl_plugin_render;
 	nodeType->request_add		= ui_fl_plugin_type_dialog;

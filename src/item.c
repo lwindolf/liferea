@@ -330,7 +330,7 @@ itemPtr item_parse_cache(xmlNodePtr cur, gboolean migrateCache) {
 			item_set_id(item, tmp);
 			
 		else if(!xmlStrcmp(cur->name, BAD_CAST"nr"))
-			item->nr = atol(tmp);
+			item->nr = item->sourceNr = atol(tmp);
 
 		else if(!xmlStrcmp(cur->name, BAD_CAST"newStatus"))
 			item->newStatus = (0 == atoi(tmp))?FALSE:TRUE;

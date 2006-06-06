@@ -217,28 +217,45 @@ itemPtr itemset_lookup_item(itemSetPtr itemSet, nodePtr node, gulong nr) {
 	return NULL;
 }
 
-#define CHECK_NR(item)		if(0 == item->nr) \
-					item->nr = ++(itemSet->lastItemNr);
-					
-#define CHECK_SOURCE_NR(item)	if(item->sourceNode == itemSet->node) \
-					item->sourceNr = item->nr;
-					
+static void itemset_prepare_item(itemSetPtr itemSet, itemPtr item) {
 
+	g_assert(item->itemSet != itemSet);
+	item->itemSet = itemSet;
+
+	/* when adding items after loading cache they have
+	   no source node and nr, so we set it... */
+	if(!item->sourceNode) {
+		item->sourceNode = itemSet->node;
+		item->sourceNr = ++(itemSet->lastItemNr);
+		item->nr = item->sourceNr;
+	}
+
+	// FIXME: really needed?
+	if(0 == item->nr)
+		item->nr = ++(item->itemSet->lastItemNr);
+		
+	/* sanity check, should never be triggered... */
+	if(itemset_lookup_item(itemSet, item->sourceNode, item->nr)) {
+		g_warning("fatal: non-unique item nr! (nr=%d, node=%p, %s)", item->nr, item->sourceNode, item->title); \
+		item->nr = ++(itemSet->lastItemNr);
+		item->sourceNode->needsCacheSave = TRUE;
+	}
+	
+	// FIXME: really needed?
+	if(item->sourceNode == itemSet->node)
+		item->sourceNr = item->nr;
+}
+				
 
 void itemset_prepend_item(itemSetPtr itemSet, itemPtr item) {
 
-	item->itemSet = itemSet;
-	CHECK_NR(item);
-	CHECK_SOURCE_NR(item);
+	itemset_prepare_item(itemSet, item);
 	itemSet->items = g_list_prepend(itemSet->items, item);
-
 }
 
 void itemset_append_item(itemSetPtr itemSet, itemPtr item) {
 
-	item->itemSet = itemSet;
-	CHECK_NR(item);
-	CHECK_SOURCE_NR(item);
+	itemset_prepare_item(itemSet, item);
 	itemSet->items = g_list_append(itemSet->items, item);
 }
 

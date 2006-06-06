@@ -557,6 +557,7 @@ itemSetPtr feed_load_from_cache(nodePtr node) {
 	ctxt->node = node;
 	
 	itemSet = ctxt->itemSet;
+	itemSet->node = node;
 	itemSet->type = ITEMSET_TYPE_FEED;
 	
 	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", node->id, NULL);
