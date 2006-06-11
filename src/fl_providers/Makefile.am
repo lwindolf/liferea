@@ -12,7 +12,8 @@ INCLUDES = \
 noinst_LIBRARIES = libliflprovider.a
 
 libliflprovider_a_SOURCES = fl_plugin.c fl_plugin.h \
-                            fl_plugin-ui.c fl_plugin-ui.h
+                            fl_plugin-ui.c fl_plugin-ui.h \
+			    .fl_plugin-cb.c .fl_plugin-cb.h
 
 libliflprovider_a_CFLAGS = $(PACKAGE_FLAGS)
 
