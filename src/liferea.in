@@ -58,5 +58,4 @@ look_for_mozilla "/opt/firefox/lib/chrome/comm.jar"
 # for FreeBSD 6:
 look_for_mozilla "/usr/X11R6/lib/mozilla/chrome.jar"
 
-echo 'Neither Mozilla nor Firefox is available...'
 exec "$dist_bin/liferea-bin" $params
