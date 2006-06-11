@@ -226,13 +226,11 @@ static void itemset_prepare_item(itemSetPtr itemSet, itemPtr item) {
 	   no source node and nr, so we set it... */
 	if(!item->sourceNode) {
 		item->sourceNode = itemSet->node;
-		item->sourceNr = ++(itemSet->lastItemNr);
 		item->nr = item->sourceNr;
 	}
 
-	// FIXME: really needed?
-	if(0 == item->nr)
-		item->nr = ++(item->itemSet->lastItemNr);
+	/* to be sure we always assign a new unique item number... */
+	item->nr = ++(item->itemSet->lastItemNr);
 		
 	/* sanity check, should never be triggered... */
 	if(itemset_lookup_item(itemSet, item->sourceNode, item->nr)) {
