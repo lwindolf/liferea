@@ -132,36 +132,43 @@ char * ConstructDigestAuth (char * username, char * password, char * url, char *
 		}
 	}
 	
-	DigestCalcHA1 ("md5", username, realm, password, nonce, cnonce, HA1);
-	DigestCalcResponse(HA1, nonce, szNonceCount, cnonce, "auth", "GET", url, HA2, Response);
+	if(username && realm && password && nonce && cnonce) {
+		DigestCalcHA1 ("md5", username, realm, password, nonce, cnonce, HA1);
+		DigestCalcResponse(HA1, nonce, szNonceCount, cnonce, "auth", "GET", url, HA2, Response);
 
-	/* Determine length of Authorize header.
-	 *
-	 * Authorization: Digest username="(username)", realm="(realm)",
-	 * nonce="(nonce)", uri="(url)", algorithm=MD5, response="(Response)",
-	 * qop=(auth), nc=(szNonceCount), cnonce="deadbeef"
-	 */
-	if (opaque == NULL)
-		len = 32 + strlen(username) + 10 + strlen(realm) + 10 + strlen(nonce) + 8 + strlen(url) + 28 + strlen(Response) + 16 + strlen(szNonceCount) + 10 + strlen(cnonce) + 4 ;
-	else
-		len = 32 + strlen(username) + 10 + strlen(realm) + 10 + strlen(nonce) + 8 + strlen(url) + 28 + strlen(Response) + 16 + strlen(szNonceCount) + 10 + strlen(cnonce) + 10 + strlen(opaque) + 4;
+		/* Determine length of Authorize header.
+		 *
+		 * Authorization: Digest username="(username)", realm="(realm)",
+		 * nonce="(nonce)", uri="(url)", algorithm=MD5, response="(Response)",
+		 * qop=(auth), nc=(szNonceCount), cnonce="deadbeef"
+		 */
+		if (opaque == NULL)
+			len = 32 + strlen(username) + 10 + strlen(realm) + 10 + strlen(nonce) + 8 + strlen(url) + 28 + strlen(Response) + 16 + strlen(szNonceCount) + 10 + strlen(cnonce) + 4 ;
+		else
+			len = 32 + strlen(username) + 10 + strlen(realm) + 10 + strlen(nonce) + 8 + strlen(url) + 28 + strlen(Response) + 16 + strlen(szNonceCount) + 10 + strlen(cnonce) + 10 + strlen(opaque) + 4;
 
-	authinfo = malloc (len);
-	
-	if (opaque == NULL) {
-		snprintf (authinfo, len, "Authorization: Digest username=\"%s\", realm=\"%s\", nonce=\"%s\", uri=\"%s\", algorithm=MD5, response=\"%s\", qop=auth, nc=%s, cnonce=\"%s\"\r\n",
-			username, realm, nonce, url, Response, szNonceCount, cnonce);
-	} else {
-		snprintf (authinfo, len, "Authorization: Digest username=\"%s\", realm=\"%s\", nonce=\"%s\", uri=\"%s\", algorithm=MD5, response=\"%s\", qop=auth, nc=%s, cnonce=\"%s\", opaque=\"%s\"\r\n",
-			username, realm, nonce, url, Response, szNonceCount, cnonce, opaque);
+		authinfo = malloc (len);
+
+		if (opaque == NULL) {
+			snprintf (authinfo, len, "Authorization: Digest username=\"%s\", realm=\"%s\", nonce=\"%s\", uri=\"%s\", algorithm=MD5, response=\"%s\", qop=auth, nc=%s, cnonce=\"%s\"\r\n",
+				username, realm, nonce, url, Response, szNonceCount, cnonce);
+		} else {
+			snprintf (authinfo, len, "Authorization: Digest username=\"%s\", realm=\"%s\", nonce=\"%s\", uri=\"%s\", algorithm=MD5, response=\"%s\", qop=auth, nc=%s, cnonce=\"%s\", opaque=\"%s\"\r\n",
+				username, realm, nonce, url, Response, szNonceCount, cnonce, opaque);
+		}
+
 	}
-	
-	free (realm);
-	free (qop);
-	free (nonce);
+
+	if(realm)
+		free (realm);
+	if(qop)
+		free (qop);
+	if(nonce)
+		free (nonce);
 	free (cnonce);
-	free (opaque);
-	
+	if(opaque)
+		free (opaque);
+		
 	return authinfo;
 }
 
