@@ -49,6 +49,7 @@ struct mainwindow {
 	GtkWidget *menubar;
 	GtkWidget *toolbar;
 	GtkWidget *itemlist;
+	GtkWidget *statusbar_feedsinfo;
 	GtkActionGroup *generalActions;
 	GtkActionGroup *feedActions;
 } *mw_global_fixme; /* FIXME: I'd like to get rid of this global at some point. */
@@ -314,6 +315,7 @@ static gboolean on_notebook_scroll_event_null_cb (GtkWidget *widget, GdkEventScr
 
 static struct mainwindow *ui_mainwindow_new(void) {
 	GtkWidget		*window;
+	GtkWidget		*statusbar;
 	gchar			*toolbar_style;
 	struct mainwindow	*mw;
 	
@@ -350,6 +352,11 @@ static struct mainwindow *ui_mainwindow_new(void) {
 	g_signal_connect(mw->window, "window_state_event", G_CALLBACK(on_mainwindow_window_state_event), mw);
 	g_signal_connect(mw->window, "key_press_event", G_CALLBACK(on_mainwindow_key_press_event), mw);
 	
+	statusbar = lookup_widget(window, "statusbar");
+	mw->statusbar_feedsinfo = gtk_label_new("XXX");
+	gtk_widget_show(mw->statusbar_feedsinfo);
+	gtk_box_pack_start(GTK_BOX(statusbar), mw->statusbar_feedsinfo, FALSE, FALSE, 5);
+
 	ui_mainwindow_restore_position(window);
 	
 	return mw;
@@ -922,3 +929,32 @@ static void ui_mainwindow_create_menus(struct mainwindow *mw) {
 	mw->menubar = gtk_ui_manager_get_widget (ui_manager, "/MainwindowMenubar");
 	mw->toolbar = gtk_ui_manager_get_widget (ui_manager, "/maintoolbar");
 }
+
+void ui_mainwindow_update_feedsinfo()
+{
+	gint	new_items, unread_items;
+	gchar	*msg, *tmp;
+
+	if (mainwindow == NULL)
+		return;
+	
+	new_items = feedlist_get_new_item_count();
+	unread_items = feedlist_get_unread_item_count();
+
+	if (new_items != 0) {
+		msg = g_strdup_printf(ngettext("%d new item", "%d new items", new_items), new_items);
+	} else {
+		msg = g_strdup(_("No new items"));
+	}
+		
+	if(unread_items != 0) {
+		tmp = g_strdup_printf(ngettext("%s - %d unread item", "%s - %d unread items", unread_items), msg, unread_items);
+	} else {
+		tmp = g_strdup_printf(_("%s\nNo unread items"), msg);
+	}
+
+	gtk_label_set_text(GTK_LABEL(mw_global_fixme->statusbar_feedsinfo), tmp);
+	g_free(tmp);
+	g_free(msg);
+}
+

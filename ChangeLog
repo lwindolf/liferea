@@ -25,6 +25,8 @@
 	* Now read items are instantly removed after 
 	  unselecting when browsing folder with "hide read
           items" enabled.
+	* The status bar now presents the number of new and
+	  unread headlines (Frederic Peter).
 
 
 2005-12-23  Lars Lindner  <lars.lindner@gmail.com>

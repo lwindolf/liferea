@@ -82,8 +82,10 @@ void feedlist_update_counters(gint unreadDiff, gint newDiff) {
 	unreadCount += unreadDiff;
 	newCount += newDiff;
 
-	if((0 != newDiff) || (0 != unreadDiff))
+	if((0 != newDiff) || (0 != unreadDiff)) {
 		ui_tray_update();
+		ui_mainwindow_update_feedsinfo();
+	}
 }
 
 static void feedlist_unset_new_items(nodePtr node) {
@@ -101,6 +103,7 @@ void feedlist_reset_new_item_count(void) {
 		feedlist_foreach(feedlist_unset_new_items);
 		newCount = 0;
 		ui_tray_update();
+		ui_mainwindow_update_feedsinfo();
 	}
 }
 

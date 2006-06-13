@@ -66,6 +66,8 @@ void ui_mainwindow_update_menubar();
  */
 void ui_mainwindow_set_status_bar(const char *format, ...);
 
+void ui_mainwindow_update_feedsinfo();
+
 void ui_mainwindow_online_status_changed();
 
 /* don't save off-screen positioning */
