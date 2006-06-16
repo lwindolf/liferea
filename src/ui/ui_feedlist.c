@@ -57,6 +57,14 @@ GtkTreeStore		*feedstore = NULL;
 /* flag to enable/disable the GtkTreeModel filter */
 gboolean filter_feeds_without_unread_headlines = FALSE;
 
+static void ui_feedlist_row_changed_cb(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter) {
+	nodePtr node;
+	
+	gtk_tree_model_get(model, iter, FS_PTR, &node, -1);
+	if(NULL != node)
+		ui_node_update_iter(node, iter);
+}
+
 nodePtr ui_feedlist_get_target_folder(int *pos) {
 	nodePtr		np;
 	GtkTreeIter	*iter;
@@ -195,6 +203,7 @@ void ui_feedlist_set_model(GtkTreeView *feedview, GtkTreeStore *feedstore, gbool
 		model = GTK_TREE_MODEL(feedstore);
 	}
 	gtk_tree_view_set_model(GTK_TREE_VIEW(feedview), model);
+	g_signal_connect(G_OBJECT(feedstore), "row-changed", G_CALLBACK(ui_feedlist_row_changed_cb), NULL);
 }
 
 /* sets up the entry list store and connects it to the entry list

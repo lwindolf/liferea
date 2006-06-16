@@ -85,7 +85,7 @@ ui_dnd_feed_drop_possible(GtkTreeDragDest *drag_dest, GtkTreePath *dest_path, Gt
 	GtkTreeIter	iter;
 	
 	debug1(DEBUG_GUI, "DnD check if dropping is possible (%d)", dest_path);
-
+	feedlist_foreach(ui_node_update);
 	/* The only situation when we don't want to drop is when a
 	   feed was selected (note you can select drop targets between
 	   feeds/folders, a folder or a feed). Dropping onto a feed

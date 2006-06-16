@@ -33,6 +33,14 @@
 GtkTreeIter * ui_node_to_iter(nodePtr node);
 
 /**
+ * Updates the tree iter of a given node.
+ *
+ * @param node	the node
+ * @param iter	the new iter
+ */
+void ui_node_update_iter(nodePtr node, GtkTreeIter *iter);
+
+/**
  * Add a node to the feedlist
  *
  * @param parent	the parent of the new folder, or NULL to 

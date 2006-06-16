@@ -39,6 +39,13 @@ GtkTreeIter * ui_node_to_iter(nodePtr node) {
 	return (GtkTreeIter *)g_hash_table_lookup(flIterHash, (gpointer)node);
 }
 
+void ui_node_update_iter(nodePtr node, GtkTreeIter *iter) {
+	GtkTreeIter *old;
+	
+	if(old = (GtkTreeIter *)g_hash_table_lookup(flIterHash, (gpointer)node))
+		*old = *iter;
+}
+
 /*
  * Expansion & Collapsing
  */
@@ -171,6 +178,7 @@ void ui_node_remove_node(nodePtr np) {
 	
 	gtk_tree_store_remove(feedstore, iter);
 	g_hash_table_remove(flIterHash, iter);
+	g_free(iter);
 	
 	if(np->parent) {
 		ui_node_check_if_folder_is_empty(np->parent);
