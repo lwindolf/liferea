@@ -6,7 +6,7 @@ for Linux or require many extra libraries to be installed. Liferea
 tries to fill this gap by creating a fast, easy to use, easy to
 install news aggregator for GTK/GNOME.
 
-This documentation was last updated for Liferea version 1.0.
+This documentation was last updated for Liferea version 1.1.
 
 Installation
 ============
@@ -17,10 +17,8 @@ from the Source Tarball. In the following you will find
 short hints for several platforms. See below to find
 how to compile the tarball.
 
-Debian:		Beginning with version 0.4.3 there are officially
-		build packages maintained by Christophe Barbe. With
-		0.6.1 David Moreno Garza is the new Debian maintainer.
-		To install Liferea run:
+Debian:		There are official Debian packages maintained
+		by David Moreno Garza. To install Liferea run:
 
 		   apt-get install liferea
 
@@ -32,15 +30,10 @@ Fedora:		Extras repositories. Just run:
 		Dag Wieers provides packages for both Fedora which
 		can be found at http://dag.wieers.com/packages/liferea/.
 		
-SuSE:		Until 0.6.0 Harry Auschner built SuSE RPMs available at the 
-                SourceForge project page. For newer releases please visit this 
-		package repository maintained by Pascal Bleser. There you will 
-		find packages for SuSE 9.2, 9.1, 9.0 and 8.2. It is also 
-		available via APT. The packages can be found at:
+SuSE:		Since SuSE 10.1 there are official Liferea package.
+		Older packages can be found at:
 		
 		http://ftp.gwdg.de/pub/linux/misc/suser-guru/rpm/packages/Network/liferea/
-
-		Since 10.1 SuSE seems to have an own Liferea package.
 
 Gentoo:		There is an ebuild available at:
 
@@ -54,10 +47,6 @@ Fink		The Fink project also supports Liferea:
 
 		http://fink.sourceforge.net/pdb/package.php/liferea
 		
-Slackware	Since 0.4.7 Dario Conigliaro builds Slackwares
-		tarballs. These are available from the SourceForge
-		project page.
-
 Solaris		Since 0.9.2 there are Solaris packages built
                 be Jeremy Teo. This package was built to work 
                 with the Solaris gtk2,libxml2,gconf2 and 
@@ -86,7 +75,7 @@ Compiling from Source
 If you want you can compile Liferea. Download the tarball from 
 the SourcForge project page and extract with: 
 
-   tar zxvf liferea-1.0.tar.gz 
+   tar zxvf liferea-1.1.tar.gz 
 
 Of course you should adjust the filename. After unpacking 
 run the standard autotools commands: 
@@ -96,11 +85,33 @@ run the standard autotools commands:
    make install		
 
 
+Compiling from SVN
+==================
+
+To anonymously check out a source copy execute this:
+
+   svn co https://svn.sourceforge.net/svnroot/liferea/trunk .
+
+More information about using SVN with Liferea can be
+found at http://sourceforge.net/svn/?group_id=87005
+
+After checking out a source copy you need to prepare the
+compile environment. Executing the following commands should
+do the trick:
+
+   autoreconf -i
+   automake -a
+   intltoolize
+
+If everything went well you can continue with configure
+as described in the previous section.
+
+
 Dependencies
 ============
 
 The library dependencies for Liferea are: gtk2, gconf2, libxml2
-and either libgtkembedmoz or gtkhtml2.
+and either libgtkembedmoz, libxul or gtkhtml2.
 
 If you want to use the Mozilla browser module you need a Mozilla
 installation containing libgtkembedmoz.so. Every up-to-date Firefox
