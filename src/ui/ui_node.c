@@ -148,7 +148,7 @@ void ui_node_add(nodePtr parent, nodePtr node, gint position) {
 	
 	if(!(parent->type == FST_ROOT))
 		parentIter = ui_node_to_iter(parent);
-	
+
 	if(position < 0)
 		gtk_tree_store_append(feedstore, iter, parentIter);
 	else
