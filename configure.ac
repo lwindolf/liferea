@@ -17,7 +17,7 @@ dnl Work around libtool bug (fixed in the version 1.5a?)
 AC_DEFUN([AC_PROVIDE_AC_LIBTOOL_DLOPEN], )
 AC_LIBTOOL_DLOPEN
 AC_PROG_LIBTOOL
-AC_PROG_INTLTOOL
+IT_PROG_INTLTOOL([0.35.0])
 
 AC_ISC_POSIX
 AC_PROG_CC
@@ -281,8 +281,6 @@ AC_DEFINE_UNQUOTED(OS, $uname, [defines a OS version string, used for OS specifi
 AC_DEFINE_UNQUOTED(OSNAME, "$uname", [defines a OS version string, used for the user agent string])
 AC_MSG_RESULT(user agent OS = $uname)
 
-dnl Add the languages which your application supports here.
-ALL_LINGUAS="bg ca cs de es fi fr it ja ko mk nl pl pt_BR ro ru sk sv zh_CN zh_TW"
 AM_GLIB_GNU_GETTEXT
 
 GETTEXT_PACKAGE=liferea

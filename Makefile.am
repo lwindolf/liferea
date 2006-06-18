@@ -5,7 +5,7 @@ SUBDIRS = doc man opml pixmaps po src
 desktop_in_files = liferea.desktop.in
 desktop_files = $(desktop_in_files:.desktop.in=.desktop)
 desktopdir = $(datadir)/applications
-desktop_DATA = $(desktop_files)
+desktop_DATA = $(desktop_in_files) $(desktop_files)
 @INTLTOOL_DESKTOP_RULE@
 
 schemadir   = @GCONF_SCHEMA_FILE_DIR@

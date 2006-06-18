@@ -62,8 +62,6 @@ src/ui/ui_mainwindow.c
 src/ui/ui_mainwindow.h
 src/ui/ui_node.c
 src/ui/ui_node.h
-src/ui/ui_notification.c
-src/ui/ui_notification.h
 src/ui/ui_popup.c
 src/ui/ui_popup.h
 src/ui/ui_prefs.c
@@ -119,8 +117,6 @@ src/parsers/rss_channel.c
 src/parsers/rss_channel.h
 src/parsers/rss_item.c
 src/parsers/rss_item.h
-src/fl_providers/fl_bloglines.c
-src/fl_providers/fl_bloglines.h
 src/fl_providers/fl_default.c
 src/fl_providers/fl_default.h
 src/fl_providers/fl_opml.c
@@ -152,3 +148,9 @@ src/net/os-support.c
 src/net/os-support.h
 src/net/zlib_interface.c
 src/net/zlib_interface.h
+src/notification/notif_libnotify.c
+src/notification/notif_libnotify.h
+src/notification/notif_plugin.c
+src/notification/notif_plugin.h
+src/notification/notif_popup.c
+src/notification/notif_popup.h
