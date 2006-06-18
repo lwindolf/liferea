@@ -100,7 +100,6 @@ compile environment. Executing the following commands should
 do the trick:
 
    autoreconf -i
-   automake -a
    intltoolize
 
 If everything went well you can continue with configure
