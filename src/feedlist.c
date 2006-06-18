@@ -92,7 +92,7 @@ static void feedlist_unset_new_items(nodePtr node) {
 	
 	if(0 != node->newCount) {
 		node_load(node);
-		itemset_mark_all_old(node->itemSet);
+		itemlist_mark_all_old(node->itemSet);
 		node_unload(node);
 	}
 }

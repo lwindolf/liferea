@@ -418,11 +418,62 @@ void itemlist_remove_items(itemSetPtr itemSet) {
 }
 
 void itemlist_mark_all_read(itemSetPtr itemSet) {
+	GList	*iter, *items;
+	itemPtr	item;
 
-	itemset_mark_all_read(itemSet);
+	/* two loops on list copies because the itemlist_set_* 
+	   methods may modify the original item list (e.g.
+	   if the displayed item set is a vfolder) */
+
+	items = g_list_copy(itemSet->items);
+	iter = items;
+	while(iter) {
+		item = (itemPtr)iter->data;
+		if(!item->readStatus) {
+			itemset_set_item_read_status(itemSet, item, TRUE);
+			itemlist_update_item(item);
+		}
+		iter = g_list_next(iter);
+	}
+	g_list_free(items);
+
+	items = g_list_copy(itemSet->items);
+	iter = items;
+	while(iter) {	
+		item = (itemPtr)iter->data;
+		if(item->updateStatus) {
+			itemset_set_item_update_status(itemSet, item, FALSE);
+			itemlist_update_item(item);
+		}
+		iter = g_list_next(iter);
+	}
+	g_list_free(items);
+	
+	itemSet->node->needsCacheSave = TRUE;
+	
+	/* GUI updating */	
 	itemlist_render();
-	ui_itemlist_update();
 	ui_node_update(itemSet->node);
+}
+
+void itemlist_mark_all_old(itemSetPtr itemSet) {
+
+	/* loop on list copy because the itemlist_set_* 
+	   methods may modify the original item list */
+
+	GList *items = g_list_copy(itemSet->items);
+	GList *iter = items;
+	while(iter) {
+		itemPtr item = (itemPtr)iter->data;
+		if(item->newStatus) {
+			itemset_set_item_new_status(itemSet, item, FALSE);
+			itemlist_update_item(item);
+		}
+		iter = g_list_next(iter);
+	}
+	g_list_free(items);
+	
+	/* No GUI updating necessary... */
 }
 
 /* mouse/keyboard interaction callbacks */

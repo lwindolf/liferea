@@ -570,7 +570,7 @@ static gboolean ui_itemlist_find_unread_item_from_iter(GtkTreeIter *iter) {
 				ui_itemlist_select(item);
 				itemlist_set_read_status(item, TRUE);	/* needed when no selection happens (e.g. when the item is already selected) */
 			} else {
-				itemset_mark_all_read(item->itemSet);
+				itemlist_mark_all_read(item->itemSet);
 			}
 			return TRUE;
 		}

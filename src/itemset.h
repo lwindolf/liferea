@@ -155,18 +155,4 @@ void itemset_set_item_read_status(itemSetPtr itemSet, itemPtr item, gboolean new
  */
 void itemset_set_item_update_status(itemSetPtr itemSet, itemPtr item, gboolean newStatus);
 
-/**
- * Marks all items of the item set as read.
- *
- * @param itemSet	the itemset
- */
-void itemset_mark_all_read(itemSetPtr itemSet);
-
-/**
- * Resets the new flag for all items of the given item set.
- *
- * @param itemSet	the itemset
- */
-void itemset_mark_all_old(itemSetPtr itemSet);
-
 #endif

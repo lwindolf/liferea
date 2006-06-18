@@ -129,10 +129,18 @@ void itemlist_toggle_read_status(itemPtr ip);
 void itemlist_set_read_status(itemPtr ip, gboolean newStatus);
 
 /**
- * Unsets bot the unread and update flag for all items
- * of the given feed.
+ * Marks all items of the item set as read.
+ *
+ * @param itemSet	the itemset
  */
-void itemlist_mark_all_read(itemSetPtr sp);
+void itemlist_mark_all_read(itemSetPtr itemSet);
+
+/**
+ * Resets the new flag for all items of the given item set.
+ *
+ * @param itemSet	the itemset
+ */
+void itemlist_mark_all_old(itemSetPtr itemSet);
 
 void itemlist_update_vfolder(vfolderPtr vp);
 
