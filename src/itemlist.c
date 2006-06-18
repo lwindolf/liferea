@@ -101,6 +101,31 @@ static void itemlist_check_for_deferred_removal(void) {
 	}
 }
 
+/* Responsible for rendering 2 pane view and node description */
+static void itemlist_render(void) {
+	gchar		*buffer = NULL;
+	
+	/* update HTML view according to mode */
+	if(TRUE == itemlist_get_two_pane_mode()) {
+		/* in 2 pane mode all items are shown at once
+		   so after merging it needs to be redisplayed */
+		buffer = itemset_render_all(displayed_itemSet);
+	} else {
+		/* in 3 pane mode we don't update the HTML view
+		   except when no item is selected (when loading
+		   the items for the first time) then we show
+		   the nodes description */
+		if(!displayed_item) 
+			buffer = node_render(displayed_itemSet->node);
+	}
+
+	if(buffer) {
+		ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, 
+				  itemset_get_base_url(displayed_itemSet));
+		g_free(buffer);
+	}
+}
+
 /**
  * To be called whenever an itemset was updated. If it is the
  * displayed itemset it will be merged against the item list
@@ -108,7 +133,6 @@ static void itemlist_check_for_deferred_removal(void) {
  */
 void itemlist_merge_itemset(itemSetPtr itemSet) {
 	gboolean	loadReadItems = TRUE;
-	gchar		*buffer = NULL;
 	GList		*iter;
 
 	debug_enter("itemlist_merge_itemset");
@@ -136,25 +160,7 @@ void itemlist_merge_itemset(itemSetPtr itemSet) {
 		iter = g_list_previous(iter);
 	}
 
-	/* update HTML view according to mode */
-	if(TRUE == itemlist_get_two_pane_mode()) {
-		/* in 2 pane mode all items are shown at once
-		   so after merging it needs to be redisplayed */
-		buffer = itemset_render_all(displayed_itemSet);
-	} else {
-		/* in 3 pane mode we don't update the HTML view
-		   except when no item is selected (when loading
-		   the items for the first time) then we show
-		   the nodes description */
-		if(!displayed_item) 
-			buffer = node_render(displayed_itemSet->node);
-	}
-
-	if(buffer) {
-		ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, 
-				  itemset_get_base_url(displayed_itemSet));
-		g_free(buffer);
-	}
+	itemlist_render();
 
 	debug_exit("itemlist_merge_itemset");
 }
@@ -406,14 +412,15 @@ void itemlist_remove_item(itemPtr item) {
 void itemlist_remove_items(itemSetPtr itemSet) {
 
 	ui_itemlist_clear();
-	ui_htmlview_clear(ui_mainwindow_get_active_htmlview());
 	itemset_remove_items(itemSet);
+	itemlist_render();
 	ui_node_update(itemSet->node);
 }
 
 void itemlist_mark_all_read(itemSetPtr itemSet) {
 
 	itemset_mark_all_read(itemSet);
+	itemlist_render();
 	ui_itemlist_update();
 	ui_node_update(itemSet->node);
 }

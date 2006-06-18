@@ -28,6 +28,12 @@
 	* The status bar now presents the number of new and
 	  unread headlines (Frederic Peter).
 
+	Bugfixes
+
+	* Fixes SF #1504203 (reported by John Lee), now the
+	  2 pane mode HTML view is updated after selecting
+	  "mark all read".
+
 
 2005-12-23  Lars Lindner  <lars.lindner@gmail.com>
 
