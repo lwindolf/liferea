@@ -28,6 +28,12 @@
 #include "fl_providers/fl_plugin.h"
 #include "notification/notif_plugin.h"
 
+#ifndef __CYGWIN__
+#define LIBPREFIX	"lib"
+#else
+#define	LIBPREFIX	"cyg"
+#endif
+
 /* plugin managment */
 
 /** list of all loaded plugins */
@@ -114,7 +120,7 @@ GSList * plugin_mgmt_get_list(void) {
 		if(!error) {
 			/* The expected library name syntax: 
 
-			       libli<type><name>.<library extension> 
+			       <LIBPREFIX>li<type><name>.<library extension> 
 			       
 			   Examples:  liblihtmlg.so
 			              liblihtmlm.so
@@ -125,7 +131,7 @@ GSList * plugin_mgmt_get_list(void) {
 			filename = (gchar *)g_dir_read_name(dir);
 			while(NULL != filename) {
 				debug1(DEBUG_VERBOSE, "testing %s...", filename);
-				if((filenamelen < strlen(filename)) && (0 == strncmp("libli", filename, 5))) {	
+				if((filenamelen < strlen(filename)) && (0 == strncmp(LIBPREFIX "li", filename, 5))) {	
 				   	/* now lets filter the files with correct library suffix */
 					if(0 == strncmp(G_MODULE_SUFFIX, filename + strlen(filename) - strlen(G_MODULE_SUFFIX), strlen(G_MODULE_SUFFIX))) {
 						/* If we find one, try to load plugin info and if this

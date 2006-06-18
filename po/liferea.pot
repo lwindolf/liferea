@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-06-18 22:55+0200\n"
+"POT-Creation-Date: 2006-06-19 00:39+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1002,7 +1002,7 @@ msgid "date"
 msgstr ""
 
 #. if we don't find a feed with unread items do nothing
-#: src/itemlist.c:306
+#: src/itemlist.c:312
 msgid "There are no unread items "
 msgstr ""
 
