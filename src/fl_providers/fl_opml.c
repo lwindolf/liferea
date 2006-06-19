@@ -61,8 +61,15 @@ static void fl_opml_handler_import(nodePtr node) {
 
 static void fl_opml_handler_export(nodePtr node) {
 
-	/* Nothing to do because the OPML source
-	   cannot be changed by the user */
+	debug_enter("fl_opml_handler_export");
+
+	/* Although the OPML structure won't change, it needs to
+	   be saved so that the feed ids are saved to disk after
+	   the first import or updates of the source OPML. */
+	   
+	// FIXME
+	
+	debug_exit("fl_opml_handler_export");
 }
 
 static void fl_opml_handler_new(nodePtr parent) {
