@@ -49,7 +49,7 @@ enum fts_columns {
 	FTS_LEN
 };
 
-extern GSList *availableBrowserModules;
+extern GSList *htmlviewPlugins;
 
 static GtkWidget *prefdialog = NULL;
 
@@ -206,7 +206,9 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	GtkTreeStore		*treestore;
 	GtkTreeViewColumn 	*column;
 	GSList			*list;
-	gchar			*widgetname, *proxyport, *libname;
+	gchar			*widgetname, *proxyport;
+	gchar			*configuredPluginName;
+	gchar			*configuredBrowser;
 	gboolean		enabled, enabled2;
 	int			tmp, i;
 	static int		manual;
@@ -364,21 +366,23 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 		/* set up the internal browser module option menu */
 		tmp = i = 0;
 		widget = gtk_menu_new();
-		list = availableBrowserModules;
-		libname = getStringConfValue(BROWSER_MODULE);
-		while(NULL != list) {
+		list = htmlviewPlugins;
+		configuredPluginName = getStringConfValue(BROWSER_MODULE);
+		while(list) {		
 			g_assert(NULL != list->data);
-			entry = gtk_menu_item_new_with_label(((struct browserModule *)list->data)->description);
+			gchar	*pluginName = ((htmlviewPluginPtr)((pluginPtr)list->data)->symbols)->name;
+			entry = gtk_menu_item_new_with_label(pluginName);
 			gtk_widget_show(entry);
 			gtk_container_add(GTK_CONTAINER(widget), entry);
-			gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_browsermodule_changed), ((struct browserModule *)list->data)->libname);
-			if(0 == strcmp(libname, ((struct browserModule *)list->data)->libname))
+			gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_browsermodule_changed), pluginName);
+			if(!strcmp(configuredPluginName, pluginName))
 				tmp = i;
 			i++;
 			list = g_slist_next(list);
 		}
 		gtk_menu_set_active(GTK_MENU(widget), tmp);
 		gtk_option_menu_set_menu(GTK_OPTION_MENU(lookup_widget(prefdialog, "htmlviewoptionmenu")), widget);
+		g_free(configuredPluginName);
 
 		/* set the inside browsing flag */
 		widget = lookup_widget(prefdialog, "browseinwindow");
@@ -389,17 +393,17 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), getBooleanConfValue(DISABLE_JAVASCRIPT));
 
 		tmp = 0;
-		libname = getStringConfValue(BROWSER_ID);
+		configuredBrowser = getStringConfValue(BROWSER_ID);
 
-		if (!strcmp(libname, "manual"))
+		if(!strcmp(configuredBrowser, "manual"))
 			tmp = manual;
 		else
 			for(i=0, iter = browsers; iter->id != NULL; iter++, i++)
-				if (!strcmp(libname, iter->id))
+				if(!strcmp(configuredBrowser, iter->id))
 					tmp = i;
 
 		gtk_option_menu_set_history(GTK_OPTION_MENU(lookup_widget(prefdialog, "browserpopup")), tmp);
-		g_free(libname);
+		g_free(configuredBrowser);
 
 		gtk_option_menu_set_history(GTK_OPTION_MENU(lookup_widget(prefdialog, "browserlocpopup")), getNumericConfValue(BROWSER_PLACE));
 

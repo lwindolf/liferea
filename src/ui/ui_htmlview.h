@@ -25,6 +25,7 @@
 #include <glib.h>
 #include <gmodule.h>
 #include <gtk/gtk.h>
+#include "plugin.h"
 
 struct displayset {
 	gchar *headtable;
@@ -113,16 +114,15 @@ struct displayset {
 
 /*@}*/
 
-#define HTMLVIEW_API_VERSION 8
+#define HTMLVIEW_PLUGIN_API_VERSION 9
 
-typedef struct htmlviewPluginInfo_ htmlviewPluginInfo;
-
-struct htmlviewPluginInfo_ {
+typedef struct htmlviewPlugin {
 	unsigned int 	api_version;
 	char 		*name;
 	
-	void 		(*init)			(void);
-	void 		(*deinit) 		(void);
+	/* plugin loading and unloading methods */
+	void 		(*plugin_init)		(void);
+	void 		(*plugin_deinit) 	(void);
 	
 	GtkWidget*	(*create)		(gboolean forceInternalBrowsing);
 	/*void		(*destroy)		(GtkWidget *widget);*/
@@ -134,19 +134,13 @@ struct htmlviewPluginInfo_ {
 	gboolean	(*scrollPagedown)	(GtkWidget *widget);
 	void		(*setProxy)		(gchar *hostname, int port, gchar *username, gchar *password);
 	void		(*setOffLine)		(gboolean offline);
-};
+} *htmlviewPluginPtr;
 
 /* Use this macro to declare a html rendering plugin. */
-#define DECLARE_HTMLVIEW_PLUGIN(plugininfo) \
-        G_MODULE_EXPORT htmlviewPluginInfo* htmlview_plugin_getinfo() { \
-                return &plugininfo; \
+#define DECLARE_HTMLVIEW_PLUGIN(plugin) \
+        G_MODULE_EXPORT htmlviewPluginPtr htmlview_plugin_get_info() { \
+                return &plugin; \
         }
-
-/** list type to provide a list of available modules for the preferences dialog */
-struct browserModule {
-	gchar	*description;
-	gchar	*libname;
-};
 
 /** 
  * This function searches the html browser module directory
@@ -162,6 +156,14 @@ void	ui_htmlview_init(void);
  * was called.
  */
 void	ui_htmlview_deinit();
+
+/**
+ * Loads a feed list provider plugin.
+ *
+ * @param plugin	plugin info structure
+ * @param handle	GModule handle
+ */
+void	ui_htmlview_plugin_load(pluginPtr plugin, GModule *handle);
 
 /** 
  * Function to set up the html view widget for the three

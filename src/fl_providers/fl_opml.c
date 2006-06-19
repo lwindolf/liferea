@@ -115,7 +115,6 @@ static struct plugin pi = {
 	PLUGIN_API_VERSION,
 	"OPML Feed List Plugin",
 	PLUGIN_TYPE_FEEDLIST_PROVIDER,
-	//"Default feed list provider. Allows users to add/remove/reorder subscriptions.",
 	&fpi
 };
 

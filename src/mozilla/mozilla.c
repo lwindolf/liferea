@@ -30,6 +30,7 @@
 #include <gtkmozembed.h>
 #include "ui/ui_htmlview.h"
 #include "mozembed.h"
+#include "plugin.h"
 
 static void mozilla_init(void) {
 
@@ -47,11 +48,11 @@ static void mozilla_init(void) {
 	mozembed_init();	
 }
 
-static htmlviewPluginInfo mozillaInfo = {
-	.api_version	= HTMLVIEW_API_VERSION,
+static struct htmlviewPlugin mozillaInfo = {
+	.api_version	= HTMLVIEW_PLUGIN_API_VERSION,
 	.name		= "Mozilla",
-	.init		= mozilla_init,
-	.deinit		= mozembed_deinit,
+	.plugin_init	= mozilla_init,
+	.plugin_deinit	= mozembed_deinit,
 	.create		= mozembed_create,
 	.write		= mozembed_write,
 	.launch		= mozembed_launch_url,
@@ -63,5 +64,13 @@ static htmlviewPluginInfo mozillaInfo = {
 	.setOffLine	= mozsupport_set_offline_mode
 };
 
+static struct plugin pi = {
+	PLUGIN_API_VERSION,
+	"Mozilla Rendering Plugin",
+	PLUGIN_TYPE_HTML_RENDERER,
+	&mozillaInfo
+};
+
+DECLARE_PLUGIN(pi);
 DECLARE_HTMLVIEW_PLUGIN(mozillaInfo);
 

@@ -1,8 +1,8 @@
 /**
  * @file gtkhtml2.c GtkHTML2 browser module implementation for Liferea
  *
- * Copyright (C) 2004 Nathan Conrad <conrad@bungled.net>
- * Copyright (C) 2003,2004 Lars Lindner <lars.lindner@gmx.net>  
+ * Copyright (C) 2004-2006 Nathan Conrad <conrad@bungled.net>
+ * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>  
  * Copyright (C) 2004 Juho Snellman <jsnell@users.sourceforge.net>
  * 
  * Note large portions of this code (callbacks and html widget
@@ -37,12 +37,12 @@
 #include <string.h>
 #include <glib.h>
 #include <errno.h>
-#include "../common.h"
-#include "../ui/ui_htmlview.h"
-#include "../support.h"
-#include "../callbacks.h"
-#include "../update.h"
-#include "../debug.h"
+#include "common.h"
+#include "ui/ui_htmlview.h"
+#include "support.h"
+#include "callbacks.h"
+#include "update.h"
+#include "debug.h"
 
 #define BUFFER_SIZE 8192
 
@@ -274,13 +274,13 @@ static void gtkhtml2_title_changed(HtmlDocument *doc, const gchar *new_title, gp
 /* ---------------------------------------------------------------------------- */
 
 /* adds a differences diff to the actual zoom level */
-static void change_zoom_level(GtkWidget *scrollpane, gfloat zoomLevel) {
+static void gtkhtml2_change_zoom_level(GtkWidget *scrollpane, gfloat zoomLevel) {
 	GtkWidget *htmlwidget = gtk_bin_get_child(GTK_BIN(scrollpane));
 	html_view_set_magnification(HTML_VIEW(htmlwidget), zoomLevel);
 }
 
 /* returns the currently set zoom level */
-static gfloat get_zoom_level(GtkWidget *scrollpane) {
+static gfloat gtkhtml2_get_zoom_level(GtkWidget *scrollpane) {
 	GtkWidget *htmlwidget = gtk_bin_get_child(GTK_BIN(scrollpane));
 	
 	return html_view_get_magnification(HTML_VIEW(htmlwidget));
@@ -289,7 +289,7 @@ static gfloat get_zoom_level(GtkWidget *scrollpane) {
 /* function to write HTML source given as a UTF-8 string. Note: Originally
    the same doc object was reused over and over. To avoid any problems 
    with this now a new one for each output is created... */
-static void write_html(GtkWidget *scrollpane, const gchar *string, guint length,  const gchar *base, const gchar *contentType) {
+static void gtkhtml2_write_html(GtkWidget *scrollpane, const gchar *string, guint length,  const gchar *base, const gchar *contentType) {
 	
 	GtkWidget *htmlwidget = gtk_bin_get_child(GTK_BIN(scrollpane));
 	HtmlDocument	*doc = HTML_VIEW(htmlwidget)->document;
@@ -337,7 +337,7 @@ static void write_html(GtkWidget *scrollpane, const gchar *string, guint length,
 	
 	html_document_close_stream(doc);
 
-	change_zoom_level(scrollpane, get_zoom_level(scrollpane));	/* to enforce applying of changed zoom levels */
+	gtkhtml2_change_zoom_level(scrollpane, gtkhtml2_get_zoom_level(scrollpane));	/* to enforce applying of changed zoom levels */
 	gtkhtml2_scroll_to_top(scrollpane);
 }
 
@@ -355,7 +355,7 @@ static GtkWidget* gtkhtml2_new(gboolean forceInternalBrowsing) {
 	/* create html widget and pack it into the scrolled window */
 	htmlwidget = html_view_new();
 	gtk_container_add (GTK_CONTAINER (scrollpane), GTK_WIDGET(htmlwidget));
-	write_html(scrollpane, NULL, 0, "file:///", NULL);
+	gtkhtml2_write_html(scrollpane, NULL, 0, "file:///", NULL);
 	
 	g_object_set_data(G_OBJECT(scrollpane), "internal_browsing", GINT_TO_POINTER(forceInternalBrowsing));
 	handler = g_signal_connect(G_OBJECT(htmlwidget), "on_url", G_CALLBACK(on_url), NULL);
@@ -392,10 +392,10 @@ static void gtkhtml2_html_received(struct request *r) {
 		return; /* This should nicely exit.... */
 	}
 	ui_tabs_set_location(GTK_WIDGET(r->user_data), r->source);
-	write_html(GTK_WIDGET(r->user_data), r->data, r->size,  r->source, r->contentType);
+	gtkhtml2_write_html(GTK_WIDGET(r->user_data), r->data, r->size,  r->source, r->contentType);
 }
 
-static void launch_url(GtkWidget *scrollpane, const gchar *url) { 
+static void gtkhtml2_launch_url(GtkWidget *scrollpane, const gchar *url) { 
 	struct request *r;
 	
 	kill_old_connections(scrollpane);
@@ -409,7 +409,7 @@ static void launch_url(GtkWidget *scrollpane, const gchar *url) {
 	download_queue(r);
 }
 
-static gboolean launch_inside_possible(void) { return TRUE; }
+static gboolean gtkhtml2_launch_inside_possible(void) { return TRUE; }
 
 /* -------------------------------------------------------------------- */
 /* other functions... 							*/
@@ -457,21 +457,28 @@ static gboolean gtkhtml2_scroll_pagedown(GtkWidget *scrollpane) {
 	return (new_value > old_value);
 }
 
-
-static htmlviewPluginInfo gtkhtml2Info = {
-	HTMLVIEW_API_VERSION,
+static struct htmlviewPlugin gtkhtml2Info = {
+	HTMLVIEW_PLUGIN_API_VERSION,
 	"GtkHTML2",
 	gtkhtml2_init,
 	gtkhtml2_deinit,
 	gtkhtml2_new,
-	write_html,
-	launch_url,
-	launch_inside_possible,
-	get_zoom_level,
-	change_zoom_level,
+	gtkhtml2_write_html,
+	gtkhtml2_launch_url,
+	gtkhtml2_launch_inside_possible,
+	gtkhtml2_get_zoom_level,
+	gtkhtml2_change_zoom_level,
 	gtkhtml2_scroll_pagedown,
 	/* setProxy = */ NULL,
 	/* set_offline_mode */ NULL
 };
 
+static struct plugin pi = {
+	PLUGIN_API_VERSION,
+	"GtkHTML2 Rendering Plugin",
+	PLUGIN_TYPE_HTML_RENDERER,
+	&gtkhtml2Info
+};
+
+DECLARE_PLUGIN(pi);
 DECLARE_HTMLVIEW_PLUGIN(gtkhtml2Info);

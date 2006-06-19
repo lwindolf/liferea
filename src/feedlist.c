@@ -341,8 +341,8 @@ void feedlist_init(void) {
 	rootNode->title = g_strdup("root");
 	rootNode->type = FST_ROOT;
 
-	/* 3. Initialize list of plugins and find root provider
-	   plugin. Creating an instance of this plugin. This 
+	/* 3. Initialize list of feed list plugins and find root 
+	   provider plugin. Creating an instance of this plugin. This 
 	   will load the feed list and all attached plugin 
 	   handlers. */
 	rootPlugin = fl_plugins_get_root();

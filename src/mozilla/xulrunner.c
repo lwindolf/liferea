@@ -26,6 +26,7 @@
 #include <gtkmozembed.h>
 #include "ui/ui_htmlview.h"
 #include "mozembed.h"
+#include "plugin.h"
 
 static void xulrunner_init(void) {
 	
@@ -37,11 +38,11 @@ static void xulrunner_init(void) {
 	mozembed_init();	
 }
 
-static htmlviewPluginInfo xulrunnerInfo = {
-	.api_version	= HTMLVIEW_API_VERSION,
+static struct htmlviewPlugin xulrunnerInfo = {
+	.api_version	= HTMLVIEW_PLUGIN_API_VERSION,
 	.name		= "XulRunner",
-	.init		= xulrunner_init,
-	.deinit		= mozembed_deinit,
+	.plugin_init	= xulrunner_init,
+	.plugin_deinit	= mozembed_deinit,
 	.create		= mozembed_create,
 	.write		= mozembed_write,
 	.launch		= mozembed_launch_url,
@@ -53,5 +54,12 @@ static htmlviewPluginInfo xulrunnerInfo = {
 	.setOffLine	= mozsupport_set_offline_mode
 };
 
-DECLARE_HTMLVIEW_PLUGIN(xulrunnerInfo);
+static struct plugin pi = {
+	PLUGIN_API_VERSION,
+	"XulRunner Rendering Plugin",
+	PLUGIN_TYPE_HTML_RENDERER,
+	&mozillaInfo
+};
 
+DECLARE_PLUGIN(pi);
+DECLARE_HTMLVIEW_PLUGIN(xulrunnerInfo);

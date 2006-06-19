@@ -39,17 +39,6 @@
 /** list of all loaded plugins */
 static GSList *plugins = NULL;
 
-void plugin_mgmt_init(void) {
-
-	if(!g_module_supported())
-		g_error(_("Modules not supported! (%s)"), g_module_error());
-	
-}
-
-void plugin_mgmt_deinit(void) {
-	// FIXME
-}
-
 typedef	pluginPtr (*infoFunc)();
 
 static pluginPtr plugin_mgmt_load(const gchar * filename) {
@@ -92,6 +81,9 @@ static pluginPtr plugin_mgmt_load(const gchar * filename) {
 			case PLUGIN_TYPE_NOTIFICATION:
 				notification_plugin_load(plugin, handle);
 				break;
+			case PLUGIN_TYPE_HTML_RENDERER:
+				ui_htmlview_plugin_load(plugin, handle);
+				break;
 			default:
 				debug3(DEBUG_PLUGINS, "Unknown or unsupported plugin type: %s (%s, type=%d)", plugin->name, filename, plugin->type);
 				return NULL;
@@ -105,67 +97,72 @@ static pluginPtr plugin_mgmt_load(const gchar * filename) {
 	return plugin;
 }
 
-GSList * plugin_mgmt_get_list(void) {
+void plugin_mgmt_init(void) {
 	guint		filenamelen;
 	gchar		*filename;
 	pluginPtr	plugin = NULL;
 	GError		*error  = NULL;
 	GDir		*dir;
 
-	debug_enter("plugin_mgmt_get_list");
+	debug_enter("plugin_mgmt_get_init");
 
-	if(NULL == plugins) {
-		debug1(DEBUG_PLUGINS, _("Scanning for plugins (%s):"), PACKAGE_LIB_DIR);
-		dir = g_dir_open(PACKAGE_LIB_DIR, 0, &error);
-		if(!error) {
-			/* The expected library name syntax: 
+	if(!g_module_supported())
+		g_error(_("Modules not supported! (%s)"), g_module_error());
 
-			       <LIBPREFIX>li<type><name>.<library extension> 
-			       
-			   Examples:  liblihtmlg.so
-			              liblihtmlm.so
-				      liblifldefault.so
-				      libliflopml.so
-				      ...  */	
-			filenamelen = 5 + strlen(G_MODULE_SUFFIX);
-			filename = (gchar *)g_dir_read_name(dir);
-			while(NULL != filename) {
-				debug1(DEBUG_VERBOSE, "testing %s...", filename);
-				if((filenamelen < strlen(filename)) && (0 == strncmp(LIBPREFIX "li", filename, 5))) {	
-				   	/* now lets filter the files with correct library suffix */
-					if(0 == strncmp(G_MODULE_SUFFIX, filename + strlen(filename) - strlen(G_MODULE_SUFFIX), strlen(G_MODULE_SUFFIX))) {
-						/* If we find one, try to load plugin info and if this
-						   was successful try to invoke the specific plugin
-						   type loader. If the second loading went well add
-						   the plugin to the plugin list. */
-						if(!(plugin = plugin_mgmt_load(filename))) {
-							debug1(DEBUG_VERBOSE, "-> %s no valid plugin!", filename);
-						} else {
-							debug3(DEBUG_PLUGINS, "-> %s (%s, type=%d)", plugin->name, filename, plugin->type);
-							plugins = g_slist_append(plugins, plugin);
-						}
+	debug1(DEBUG_PLUGINS, _("Scanning for plugins (%s):"), PACKAGE_LIB_DIR);
+	dir = g_dir_open(PACKAGE_LIB_DIR, 0, &error);
+	if(!error) {
+		/* The expected library name syntax: 
+
+		       <LIBPREFIX>li<type><name>.<library extension> 
+
+		   Examples:  liblihtmlg.so
+			      liblihtmlm.so
+			      liblifldefault.so
+			      libliflopml.so
+			      ...  */	
+		filenamelen = 5 + strlen(G_MODULE_SUFFIX);
+		filename = (gchar *)g_dir_read_name(dir);
+		while(filename) {
+			debug1(DEBUG_VERBOSE, "testing %s...", filename);
+			if((filenamelen < strlen(filename)) && (0 == strncmp(LIBPREFIX "li", filename, 5))) {	
+				/* now lets filter the files with correct library suffix */
+				if(!strncmp(G_MODULE_SUFFIX, filename + strlen(filename) - strlen(G_MODULE_SUFFIX), strlen(G_MODULE_SUFFIX))) {
+					/* If we find one, try to load plugin info and if this
+					   was successful try to invoke the specific plugin
+					   type loader. If the second loading went well add
+					   the plugin to the plugin list. */
+					if(!(plugin = plugin_mgmt_load(filename))) {
+						debug1(DEBUG_VERBOSE, "-> %s no valid plugin!", filename);
 					} else {
-						debug0(DEBUG_VERBOSE, "-> no library suffix");
+						debug3(DEBUG_PLUGINS, "-> %s (%s, type=%d)", plugin->name, filename, plugin->type);
+						plugins = g_slist_append(plugins, plugin);
 					}
 				} else {
-					debug0(DEBUG_VERBOSE, "-> prefix does not match");
+					debug0(DEBUG_VERBOSE, "-> no library suffix");
 				}
-				filename = (gchar *)g_dir_read_name(dir);
+			} else {
+				debug0(DEBUG_VERBOSE, "-> prefix does not match");
 			}
-			g_dir_close(dir);
-		} else 	{
-			g_warning("g_dir_open(%s) failed. Reason: %s\n", PACKAGE_LIB_DIR, error->message );
-			g_error_free(error);
-			error = NULL;
+			filename = (gchar *)g_dir_read_name(dir);
 		}
+		g_dir_close(dir);
+	} else 	{
+		g_warning("g_dir_open(%s) failed. Reason: %s\n", PACKAGE_LIB_DIR, error->message );
+		g_error_free(error);
+		error = NULL;
 	}
 
 	g_assert(NULL != plugins);
 
-	debug_exit("plugin_mgmt_get_list");
-
-	return plugins;
+	debug_exit("plugin_mgmt_init");
 }
+
+void plugin_mgmt_deinit(void) {
+	// FIXME
+}
+
+GSList * plugin_mgmt_get_list(void) { return plugins; }
 
 /* common plugin methods */
 

@@ -282,8 +282,9 @@ int main(int argc, char *argv[]) {
 	} else {
 		/* order is important! */
 		conf_init();			/* initialize gconf */
+		download_init();		/* initialize the download subsystem */
+		plugin_mgmt_init();		/* get list of plugins and initialize them */
 		ui_htmlview_init();		/* setup HTML widgets */
-		download_init();		/* Initialize the download subsystem */
 		metadata_init();
 		feed_init();			/* register feed types */
 		vfolder_init();			/* register vfolder rules */

@@ -92,7 +92,7 @@ GtkWidget *ui_mainwindow_get_active_htmlview(void) {
 	return htmlview;
 }
 
-extern htmlviewPluginInfo *htmlviewInfo;
+extern htmlviewPluginPtr htmlviewPlugin;
 
 /*------------------------------------------------------------------------------*/
 /* keyboard navigation	 							*/
@@ -146,7 +146,7 @@ gboolean on_mainwindow_key_press_event(GtkWidget *widget, GdkEventKey *event, gp
 					default:
 					case 1:
 						modifier_matches = ((event->state & default_modifiers) == 0);
-						if(!strcmp(htmlviewInfo->name, "Mozilla")) /* Hack to make space handled in the module */
+						if(!strcmp(htmlviewPlugin->name, "Mozilla")) /* Hack to make space handled in the module */
 							return FALSE;
 						break;
 					case 2:

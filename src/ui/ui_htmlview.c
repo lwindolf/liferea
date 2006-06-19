@@ -39,12 +39,10 @@
 #include "ui/ui_enclosure.h"
 
 /* function types for the imported symbols */
-typedef htmlviewPluginInfo* (*infoFunction)();
-htmlviewPluginInfo *htmlviewInfo;
+typedef htmlviewPluginPtr (*infoFunction)();
+htmlviewPluginPtr htmlviewPlugin;
 
-GSList *availableBrowserModules = NULL;
-
-static GModule *handle;
+GSList *htmlviewPlugins = NULL;
 
 extern GtkWidget *mainwindow;
 
@@ -53,152 +51,69 @@ extern char	*proxyusername;
 extern char	*proxypassword;
 extern int	proxyport;
 
-static guint 	refocusTimeout;
-
 /* -------------------------------------------------------------------- */
 /* module loading and initialisation					*/
 /* -------------------------------------------------------------------- */
 
-/* Method which tries to load the functions listed in the array
-   symbols from the specified module name libname.  If testmode
-   is true no error messages are issued. The function returns
-   TRUE on success. */
-static gboolean ui_htmlview_load_symbols(gchar *libname, gboolean testmode) {
-	infoFunction	ptr;
-	gchar		*filename;
-	
-	/* print some warnings concerning Mozilla */
-	if(strstr(libname, "lihtmlm") && !testmode) {
-
-		debug0(DEBUG_GUI, _("\nTrying to load the Mozilla browser module... Note that this\n"
-		                  "might not work with every Mozilla version. If you have problems\n"
-		                  "and Liferea does not start, try to set MOZILLA_FIVE_HOME to\n"
-		                  "another Mozilla installation or delete the gconf configuration\n"
-		                  "key /apps/liferea/browser-module!\n\n"));
-	}
-	
-	filename = g_strdup_printf("%s%s%s", PACKAGE_LIB_DIR, G_DIR_SEPARATOR_S, libname);
-	/*g_print(_("loading HTML widget module (%s)\n"), filename);*/
-	
-#if GLIB_CHECK_VERSION(2,3,3)
-	if((handle = g_module_open(filename, G_MODULE_BIND_LOCAL)) == NULL) {
-#else
-	if((handle = g_module_open(filename, 0)) == NULL) {
-#endif
-		if(!testmode)
-			g_warning(_("Failed to open HTML widget module (%s) specified in configuration!\n%s\n"), filename, g_module_error());
-		else
-			debug2(DEBUG_GUI, "Failed to open HTML widget module (%s) specified in configuration!\n%s\n", filename, g_module_error());
-		g_free(filename);
-		return FALSE;
-	}
-	g_free(filename);
-	
-	if(g_module_symbol(handle, "htmlview_plugin_getinfo", (void*)&ptr)) {
-		htmlviewInfo = (*ptr)();
-		if (htmlviewInfo->api_version != HTMLVIEW_API_VERSION) {
-			if(!testmode)
-				g_warning(_("Htmlview API mismatch!"));
-			else
-				debug0(DEBUG_GUI, "Htmlview API mismatch!");
-			g_module_close(handle);
-			return FALSE;
-		}
-	} else {
-		if(!testmode)
-			g_warning(_("Detected module is not a valid htmlview module!"));
-		else
-			debug0(DEBUG_GUI, "Detected module is not a valid htmlview module!");
-		g_module_close(handle);
-		return FALSE;
-	}
-
-	return TRUE;
-}
-
-/* function to load the module specified by module */
 void ui_htmlview_init(void) {
-	gboolean		success = FALSE;
-	guint			filenamelen;
-	gchar			*filename;
-	struct browserModule	*info;
-	GSList			*tmp;
-	GError			*error  = NULL;
-	GDir			*dir;
-
-	/* now we determine a list of all available modules
-	   to present in the preferences dialog and to load
-	   one just in case there was no configured module
-	   or it did not load when trying... */	
-	debug1(DEBUG_GUI, _("Available browser modules (%s):\n"), PACKAGE_LIB_DIR);
-	dir = g_dir_open(PACKAGE_LIB_DIR, 0, &error);
-	if(!error) {
-		/* maybe no good solution, library name syntax: 
-		   liblihtml<one letter code>.<library extension> */	
-		filenamelen = 11 + strlen(G_MODULE_SUFFIX);
-		filename = (gchar *)g_dir_read_name(dir);
-		while(NULL != filename) {
-#ifndef __CYGWIN__
-			if((filenamelen == strlen(filename)) && (0 == strncmp("liblihtml", filename, 9))) {	
-#else
-			if((filenamelen == strlen(filename)) && (0 == strncmp("cyglihtml", filename, 9))) {	
-#endif
-			   	/* now lets filter the files with correct library suffix */
-				if(0 == strncmp(G_MODULE_SUFFIX, filename + 11, strlen(G_MODULE_SUFFIX))) {
-					/* if we find one, try to load all symbols and if successful
-					   add it to the available module list */
-					if(TRUE == ui_htmlview_load_symbols(filename, TRUE)) {
-						info = g_new0(struct browserModule, 1);
-						info->libname = g_strdup(filename);
-						info->description = g_strdup(htmlviewInfo->name);
-						availableBrowserModules = g_slist_append(availableBrowserModules, (gpointer)info);
-						debug2(DEBUG_GUI, "-> %s (%s)\n", info->description, info->libname);
-						g_module_close(handle);
-					}
-				}
-			}
-			filename = (gchar *)g_dir_read_name(dir);
-		}
-		g_dir_close(dir);
-	} else {
-		g_warning("g_dir_open(%s) failed. Reason: %s\n", PACKAGE_LIB_DIR, error->message );
-		g_error_free(error);
-		error = NULL;
-	}
-
-	/* load configured module, we get a empty string if nothing is configured */
-	filename = getStringConfValue(BROWSER_MODULE);
-	if(0 != strlen(filename)) {
-		debug1(DEBUG_GUI, _("Loading configured browser module (%s)!\n"), filename);
-		success = ui_htmlview_load_symbols(filename, FALSE);
-	} else {
-		g_print(_("No browser module configured!\n"));
-	}
-	g_free(filename);
-	if(!success) {
-		/* try to load one of the available modules */
-		tmp = availableBrowserModules;
-		while(NULL != tmp) {
-			info = (struct browserModule *)tmp->data;
-			g_print(_("trying to load browser module %s (%s)\n"), info->description, info->libname);
-			if(TRUE == (success = ui_htmlview_load_symbols(info->libname, FALSE)))
-				break;
-			tmp = g_slist_next(tmp);
-		}
+	GSList		*iter;
+	gchar		*name;
+	gboolean	found = FALSE;
+		
+	name = getStringConfValue(BROWSER_MODULE);
+	
+	/* Try to find configured plugin */
+	iter = htmlviewPlugins;
+	while(iter) {
+		htmlviewPlugin = ((pluginPtr)iter->data)->symbols;
+		if(found = !strcmp(htmlviewPlugin->name, name))
+			break;
+		iter = g_slist_next(iter);
 	}
 	
-	if(success) {
-		htmlviewInfo->init();
+	if(!found)
+		debug2(DEBUG_PLUGINS, "Could not find configured browser plugin (%s), using plugin (%s) instead\n", name, htmlviewPlugin->name);
+		
+	g_free(name);
+	
+	if(htmlviewPlugin) {
+		htmlviewPlugin->plugin_init();
 		ui_htmlview_set_proxy(proxyname, proxyport, proxyusername, proxypassword);
 	} else {
-		g_error(_("Sorry, I was not able to load any installed browser modules! Try the --debug-all option to get debug information!"));
+		g_error(_("Sorry, I was not able to load any installed browser plugin! Try the --debug-plugins option to get debug information!"));
 	}
-	
-	refocusTimeout = getNumericConfValue(REFOCUS_TIMEOUT);
 }
 
 void ui_htmlview_deinit() {
-	(htmlviewInfo->deinit)();
+	(htmlviewPlugin->plugin_deinit)();
+}
+
+void ui_htmlview_plugin_load(pluginPtr plugin, GModule *handle) {
+	infoFunction		htmlview_plugin_get_info;
+
+	if(g_module_symbol(handle, "htmlview_plugin_get_info", (void*)&htmlview_plugin_get_info)) {
+		/* load feed list provider plugin info */
+		if(NULL == (htmlviewPlugin = (*htmlview_plugin_get_info)()))
+			return;
+	}
+
+	/* check feed list provider plugin version */
+	if(HTMLVIEW_PLUGIN_API_VERSION != htmlviewPlugin->api_version) {
+		debug3(DEBUG_PLUGINS, "html view API version mismatch: \"%s\" has version %d should be %d\n", htmlviewPlugin->name, htmlviewPlugin->api_version, HTMLVIEW_PLUGIN_API_VERSION);
+		return;
+	} 
+
+	/* check if all mandatory symbols are provided */
+	if(!(htmlviewPlugin->plugin_init &&
+	     htmlviewPlugin->plugin_deinit)) {
+		debug1(DEBUG_PLUGINS, "mandatory symbols missing: \"%s\"\n", htmlviewPlugin->name);
+		return;
+	}
+
+	/* assign the symbols so the caller will accept the plugin */
+	plugin->symbols = htmlviewPlugin;
+
+	htmlviewPlugins = g_slist_append(htmlviewPlugins, plugin);
 }
 
 /* -------------------------------------------------------------------- */
@@ -206,7 +121,7 @@ void ui_htmlview_deinit() {
 /* -------------------------------------------------------------------- */
 
 GtkWidget *ui_htmlview_new(gboolean forceInternalBrowsing) {
-	GtkWidget *htmlview = htmlviewInfo->create(forceInternalBrowsing);
+	GtkWidget *htmlview = htmlviewPlugin->create(forceInternalBrowsing);
 	
 	ui_htmlview_clear(htmlview);
 	
@@ -338,15 +253,11 @@ void ui_htmlview_write(GtkWidget *htmlview, const gchar *string, const gchar *ba
 		
 		/* to prevent crashes inside the browser */
 		buffer = utf8_fix(buffer);
-		(htmlviewInfo->write)(htmlview, buffer, strlen(buffer), baseURL, "application/xhtml+xml");
+		(htmlviewPlugin->write)(htmlview, buffer, strlen(buffer), baseURL, "application/xhtml+xml");
 		g_free(buffer);
 	} else {
-		(htmlviewInfo->write)(htmlview, string, strlen(string), baseURL, "application/xhtml+xml");
+		(htmlviewPlugin->write)(htmlview, string, strlen(string), baseURL, "application/xhtml+xml");
 	}
-
-	/* wait a short while and reset focus */
-	if(0 != refocusTimeout)
-		(void)g_timeout_add(refocusTimeout, ui_htmlview_restore_focus_cb, widget);
 }
 
 void ui_htmlview_finish_output(gchar **buffer) {
@@ -381,7 +292,7 @@ void ui_htmlview_launch_URL(GtkWidget *htmlview, gchar *url, gint launchType) {
 	}
 	
 	debug3(DEBUG_GUI, "launch URL: %s  %s %d\n", getBooleanConfValue(BROWSE_INSIDE_APPLICATION)?"true":"false",
-		  (htmlviewInfo->launchInsidePossible)()?"true":"false",
+		  (htmlviewPlugin->launchInsidePossible)()?"true":"false",
 		  launchType);
 		  
 	/* first catch all links with special URLs... */
@@ -391,9 +302,9 @@ void ui_htmlview_launch_URL(GtkWidget *htmlview, gchar *url, gint launchType) {
 	}
 	
 	if((launchType == UI_HTMLVIEW_LAUNCH_INTERNAL || getBooleanConfValue(BROWSE_INSIDE_APPLICATION)) &&
-	   (htmlviewInfo->launchInsidePossible)() &&
+	   (htmlviewPlugin->launchInsidePossible)() &&
 	   (launchType != UI_HTMLVIEW_LAUNCH_EXTERNAL)) {
-		(htmlviewInfo->launch)(htmlview, url);
+		(htmlviewPlugin->launch)(htmlview, url);
 	} else {
 		(void)ui_htmlview_launch_in_external_browser(url);
 	}
@@ -401,12 +312,12 @@ void ui_htmlview_launch_URL(GtkWidget *htmlview, gchar *url, gint launchType) {
 
 void ui_htmlview_set_zoom(GtkWidget *htmlview, gfloat diff) {
 
-	(htmlviewInfo->zoomLevelSet)(htmlview, diff); 
+	(htmlviewPlugin->zoomLevelSet)(htmlview, diff); 
 }
 
 gfloat ui_htmlview_get_zoom(GtkWidget *htmlview) {
 
-	return (htmlviewInfo->zoomLevelGet)(htmlview);
+	return (htmlviewPlugin->zoomLevelGet)(htmlview);
 }
 
 static gboolean ui_htmlview_external_browser_execute(const gchar *cmd, const gchar *uri, gboolean sync) {
@@ -494,19 +405,19 @@ gboolean ui_htmlview_launch_in_external_browser(const gchar *uri) {
 
 gboolean ui_htmlview_scroll(void) {
 
-	return (htmlviewInfo->scrollPagedown)(ui_mainwindow_get_active_htmlview());
+	return (htmlviewPlugin->scrollPagedown)(ui_mainwindow_get_active_htmlview());
 }
 
 void ui_htmlview_set_proxy(gchar *hostname, int port, gchar *username, gchar *password) {
 
-	if(htmlviewInfo && htmlviewInfo->setProxy)
-		(htmlviewInfo->setProxy)(hostname, port, username, password);
+	if(htmlviewPlugin && htmlviewPlugin->setProxy)
+		(htmlviewPlugin->setProxy)(hostname, port, username, password);
 }
 
 void ui_htmlview_online_status_changed(gboolean online) {
 
-	if(htmlviewInfo && htmlviewInfo->setOffLine)
-		(htmlviewInfo->setOffLine)(!online);
+	if(htmlviewPlugin && htmlviewPlugin->setOffLine)
+		(htmlviewPlugin->setOffLine)(!online);
 }
 
 /* -------------------------------------------------------------------- */
