@@ -40,7 +40,7 @@ create_fl_plugin_type_dialog (void)
   GtkWidget *ok_button;
 
   fl_plugin_type_dialog = gtk_dialog_new ();
-  gtk_window_set_title (GTK_WINDOW (fl_plugin_type_dialog), _("Plugin Type Selection"));
+  gtk_window_set_title (GTK_WINDOW (fl_plugin_type_dialog), _("Source Selection"));
   gtk_window_set_modal (GTK_WINDOW (fl_plugin_type_dialog), TRUE);
   gtk_window_set_default_size (GTK_WINDOW (fl_plugin_type_dialog), 300, 200);
   gtk_window_set_destroy_with_parent (GTK_WINDOW (fl_plugin_type_dialog), TRUE);
@@ -54,7 +54,7 @@ create_fl_plugin_type_dialog (void)
   gtk_box_pack_start (GTK_BOX (dialog_vbox1), vbox1, TRUE, TRUE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (vbox1), 6);
 
-  label2 = gtk_label_new (_("Select the plugin type you want to add..."));
+  label2 = gtk_label_new (_("Select the source type you want to add..."));
   gtk_widget_show (label2);
   gtk_box_pack_start (GTK_BOX (vbox1), label2, FALSE, FALSE, 0);
   gtk_misc_set_alignment (GTK_MISC (label2), 0, 0.5);

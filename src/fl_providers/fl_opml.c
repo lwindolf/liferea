@@ -101,7 +101,7 @@ static void fl_opml_deinit(void) {
 static struct flPlugin fpi = {
 	FL_PLUGIN_API_VERSION,
 	"fl_opml",
-	"Planet/BlogRoll/OPML",
+	"Planet, BlogRoll, OPML",
 	FL_PLUGIN_CAPABILITY_DYNAMIC_CREATION,
 	fl_opml_init,
 	fl_opml_deinit,

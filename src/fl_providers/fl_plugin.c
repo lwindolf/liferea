@@ -174,7 +174,7 @@ void ui_fl_plugin_type_dialog(nodePtr parent) {
 	pluginPtr	plugin;
 
 	if(NULL == (iter = plugin_mgmt_get_list())) {
-		ui_show_error_box(_("No feed list provider plugins found!"));
+		ui_show_error_box(_("No feed list source plugins found!"));
 		return;
 	}		
 
@@ -192,7 +192,7 @@ void ui_fl_plugin_type_dialog(nodePtr parent) {
 
 			gtk_tree_store_append(treestore, &treeiter, NULL);
 			gtk_tree_store_set(treestore, &treeiter, 
-			                              0, plugin->name, 
+			                              0, flPlugin->name, 
 			                              1, flPlugin,
 						      -1);
 		}
@@ -204,7 +204,7 @@ void ui_fl_plugin_type_dialog(nodePtr parent) {
 
 	column = gtk_tree_view_column_new();
 	renderer = gtk_cell_renderer_text_new();
-	gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(treeview), -1, "Plugin Type", renderer, "text", 0, NULL);
+	gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(treeview), -1, _("Source Type"), renderer, "text", 0, NULL);
 	gtk_tree_view_set_model(GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(treestore));
 	g_object_unref(treestore);
 

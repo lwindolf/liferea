@@ -5,7 +5,7 @@
 
 <widget class="GtkDialog" id="fl_plugin_type_dialog">
   <property name="visible">True</property>
-  <property name="title" translatable="yes">Plugin Type Selection</property>
+  <property name="title" translatable="yes">Source Selection</property>
   <property name="type">GTK_WINDOW_TOPLEVEL</property>
   <property name="window_position">GTK_WIN_POS_NONE</property>
   <property name="modal">True</property>
@@ -19,6 +19,7 @@
   <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
   <property name="focus_on_map">True</property>
+  <property name="urgency_hint">False</property>
   <property name="has_separator">True</property>
 
   <child internal-child="vbox">
@@ -77,7 +78,7 @@
 	  <child>
 	    <widget class="GtkLabel" id="label2">
 	      <property name="visible">True</property>
-	      <property name="label" translatable="yes">Select the plugin type you want to add...</property>
+	      <property name="label" translatable="yes">Select the source type you want to add...</property>
 	      <property name="use_underline">False</property>
 	      <property name="use_markup">False</property>
 	      <property name="justify">GTK_JUSTIFY_LEFT</property>
