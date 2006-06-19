@@ -397,9 +397,7 @@ void node_remove(nodePtr node) {
 }
 
 void node_mark_all_read(nodePtr node) {
-
-	if(0 != node->unreadCount)
-		NODE(node)->mark_all_read(node);
+	NODE(node)->mark_all_read(node);
 }
 
 gchar * node_render(nodePtr node) {
