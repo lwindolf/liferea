@@ -36,8 +36,8 @@
    all other node plugin instance at their insertion nodes in
    the feed list.
 
-   Each plugin has to able to server user requests and is 
-   responsible for keeping its feed list nodes states up-to-date.
+   Each plugin has to able to serve user requests and is 
+   responsible for keeping its feed list node's states up-to-date.
    A plugin can omit all callbacks marked as optional. */
 
 

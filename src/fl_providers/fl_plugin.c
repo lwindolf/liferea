@@ -119,6 +119,7 @@ void fl_plugin_import(nodePtr node, xmlNodePtr cur) {
 					node->handler = NULL;	/* not handled by parent plugin */
 					flPlugin->handler_import(node);
 					found = TRUE;
+					break;
 				}
 				iter = g_slist_next(iter);
 			}
@@ -220,6 +221,10 @@ void ui_fl_plugin_type_dialog(nodePtr parent) {
 
 /* implementation of the node type interface */
 
+static void fl_plugin_initial_load(nodePtr node) {
+	node_foreach_child(node, node_initial_load);
+}
+
 static void fl_plugin_request_update(nodePtr node, guint flags) {
 
 	// FIXME:
@@ -259,7 +264,8 @@ static void ui_fl_plugin_dummy_properties(nodePtr node) {
 }
 
 static void fl_plugin_save(nodePtr node) {
-g_warning("implement save!");
+
+	node_foreach_child(node, node_save);
 }
 
 nodeTypePtr fl_plugin_get_node_type(void) {
@@ -268,6 +274,7 @@ nodeTypePtr fl_plugin_get_node_type(void) {
 	/* derive the plugin node type from the folder node type */
 	nodeType = (nodeTypePtr)g_new0(struct nodeType, 1);
 	memcpy(nodeType, folder_get_node_type, sizeof(struct nodeType));
+	nodeType->initial_load		= fl_plugin_initial_load;
 	nodeType->request_update	= fl_plugin_request_update;
 	nodeType->request_auto_update	= fl_plugin_request_auto_update;
 	nodeType->schedule_update	= fl_plugin_schedule_update;
