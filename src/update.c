@@ -371,9 +371,17 @@ gboolean download_retry(struct request *request) {
 		default: return FALSE;
 	}
 
-	/* There should have been no received data, hence nothing to free. */
-	g_assert(request->data == NULL);
-	g_assert(request->contentType == NULL);
+	/* Normally there should have been no received data, 
+	   hence nothing to free. But this is not always the case... */
+	if(request->data) {
+		g_free(request->data);
+		request->data = NULL;
+	}
+	if(request->contentType) {
+		g_free(request->contentType);
+		request->contentType = NULL;
+	}
+	
 	/* Note: in case of permanent HTTP redirection leading to a network
 	 * error, retries will be done on the redirected request->source. */
 
