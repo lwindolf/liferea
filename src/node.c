@@ -327,9 +327,7 @@ void node_request_interactive_add(guint type) {
 	nodeTypePtr	nodeType;
 	nodePtr		parent;
 
-	parent = feedlist_get_selected();
-	if(FST_FOLDER != parent->type)
-		parent = parent->parent;
+	parent = feedlist_get_insertion_point();
 
 	if(0 == (FL_PLUGIN(parent)->capabilities & FL_PLUGIN_CAPABILITY_ADD))
 		return;
@@ -347,9 +345,7 @@ void node_request_automatic_add(gchar *source, gchar *title, gchar *filter, gint
 
 	g_assert(NULL != source);
 
-	parent = feedlist_get_selected();
-	if(FST_FOLDER != parent->type)
-		parent = feedlist_get_selected_parent();
+	parent = feedlist_get_insertion_point();
 
 	if(0 == (FL_PLUGIN(parent)->capabilities & FL_PLUGIN_CAPABILITY_ADD))
 		return;

@@ -71,11 +71,12 @@ nodePtr ui_feedlist_get_target_folder(int *pos) {
 	GtkTreePath 	*path;
 	gint		*indices;
 
-	if(NULL != pos)
-		*pos = -1;
+	g_assert(NULL != pos);
+	
+	*pos = -1;
 	
 	if(NULL == (np = feedlist_get_selected()))
-		return NULL;
+		return feedlist_get_root();
 	
 
 	if(filter_feeds_without_unread_headlines) {

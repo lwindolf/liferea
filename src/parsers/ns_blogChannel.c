@@ -190,13 +190,13 @@ static void getOutlineList(feedParserCtxtPtr ctxt, guint tag, char *url) {
 	requestData->ctxt->feed = ctxt->feed;
 	requestData->tag = tag;
 
-	request = download_request_new();
+	request = update_request_new();
 	request->source = g_strdup(url);
 	request->callback = ns_blogChannel_download_request_cb;
 	request->user_data = requestData;
 	
 	ctxt->node->requests = g_slist_append(requestData->ctxt->node->requests, request);
-	download_queue(request);
+	update_execute_request(request);
 }
 
 static void parse_channel_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur) {

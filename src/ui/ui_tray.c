@@ -101,11 +101,11 @@ void ui_tray_update(void) {
 	unreadItems = feedlist_get_unread_item_count();
 		
 	if(newItems != 0) {
-		if(download_is_online()) ui_tray_icon_set(icons[ICON_AVAILABLE]);
+		if(update_is_online()) ui_tray_icon_set(icons[ICON_AVAILABLE]);
 		else ui_tray_icon_set(icons[ICON_AVAILABLE_OFFLINE]);
 		msg = g_strdup_printf(ngettext("%d new item", "%d new items", newItems), newItems);
 	} else {
-		if(download_is_online()) ui_tray_icon_set(icons[ICON_EMPTY]);
+		if(update_is_online()) ui_tray_icon_set(icons[ICON_EMPTY]);
 		else ui_tray_icon_set(icons[ICON_EMPTY_OFFLINE]);
 		msg = g_strdup(_("No new items"));
 	}

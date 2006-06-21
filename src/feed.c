@@ -401,10 +401,10 @@ void feed_parse(feedParserCtxtPtr ctxt, gboolean autodiscover) {
 			debug1(DEBUG_UPDATE, "HTML detected, starting feed auto discovery (%s)", feed_get_source(ctxt->feed));
 			if((source = html_auto_discover_feed(ctxt->data, feed_get_source(ctxt->feed)))) {
 				/* now download the first feed link found */
-				struct request *request = download_request_new(NULL);
+				struct request *request = update_request_new();
 				debug1(DEBUG_UPDATE, "feed link found: %s", source);
 				request->source = g_strdup(source);
-				download_process(request);
+				update_execute_request_sync(request);
 				if(NULL != request->data) {
 					debug0(DEBUG_UPDATE, "feed link download successful!");
 					feed_set_source(ctxt->feed, source);
@@ -419,7 +419,7 @@ void feed_parse(feedParserCtxtPtr ctxt, gboolean autodiscover) {
 					debug0(DEBUG_UPDATE, "feed link download failed!");
 				}
 				g_free(source);
-				download_request_free(request);
+				update_request_free(request);
 			} else {
 				debug0(DEBUG_UPDATE, "no feed link found!");
 				ctxt->feed->available = FALSE;
@@ -676,7 +676,7 @@ itemSetPtr feed_load_from_cache(nodePtr node) {
 
 void feed_cancel_retry(nodePtr node) {
 
-	if(node->updateRequest && download_cancel_retry(node->updateRequest))
+	if(node->updateRequest && update_request_cancel_retry(node->updateRequest))
 		node->updateRequest = NULL;
 }
 
@@ -1298,19 +1298,20 @@ static void feed_schedule_update(nodePtr node, guint flags) {
 	feedPtr			feed = (feedPtr)node->data;
 	struct request		*request;
 	
-	debug1(DEBUG_CONF, "Scheduling %s to be updated", node_get_title(node));
+	debug1(DEBUG_UPDATE, "Scheduling %s to be updated", node_get_title(node));
 
-	feed_cancel_retry(node);
+	/* Retries that might have long timeouts must be 
+	   cancelled to immediately execute the user request. */
+	update_request_cancel_retry(node);
+	
 	if(feed_can_be_updated(node)) {
 		ui_mainwindow_set_status_bar(_("Updating \"%s\""), node_get_title(node));
-		request = download_request_new();
+		request = update_request_new();
 		request->user_data = node;
 		request->callback = feed_process_update_result;
 		feed_prepare_request(feed, request, flags);
 		node->updateRequest = request;
-		download_queue(request);
-	} else {
-		debug0(DEBUG_CONF, "Update cancelled");
+		update_execute_request(request);
 	}
 }
 

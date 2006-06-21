@@ -59,17 +59,20 @@ nodePtr feedlist_get_root(void) { return rootNode; }
 
 nodePtr feedlist_get_selected(void) { return selectedNode; }
 
-nodePtr feedlist_get_selected_parent(void) { 
+nodePtr feedlist_get_insertion_point(void) { 
 
 	g_assert(NULL != rootNode);
 
 	if(!selectedNode)
 		return rootNode;
 	
-	if(!selectedNode->parent) 
-		return rootNode;
-	else
+	if(FST_FOLDER == selectedNode->type)
+		return selectedNode;
+	
+	if(selectedNode->parent) 
 		return selectedNode->parent;
+	else
+		return rootNode;
 }
 
 /* statistic handling methods */
@@ -115,6 +118,7 @@ void feedlist_remove_node(nodePtr node) {
 		ui_htmlview_clear(ui_mainwindow_get_active_htmlview());
 		itemlist_unload(FALSE);
 		ui_feedlist_select(NULL);
+		selectedNode = NULL;
 	}
 
 	node_request_remove(node);
@@ -126,7 +130,7 @@ static gboolean feedlist_auto_update(void *data) {
 
 	debug_enter("feedlist_auto_update");
 
-	if(download_is_online())
+	if(update_is_online())
 		feedlist_foreach(node_request_auto_update);
 	else
 		debug0(DEBUG_UPDATE, "no update processing because we are offline!");
@@ -260,7 +264,7 @@ void on_menu_update(GtkWidget *widget, gpointer user_data) {
 		return;
 	}
 
-	if(download_is_online()) 
+	if(update_is_online()) 
 		node_request_update(selectedNode, FEED_REQ_PRIORITY_HIGH);
 	else
 		ui_mainwindow_set_status_bar(_("Liferea is in offline mode. No update possible."));
@@ -268,7 +272,7 @@ void on_menu_update(GtkWidget *widget, gpointer user_data) {
 
 void on_menu_update_all(GtkWidget *widget, gpointer user_data) { 
 
-	if(download_is_online()) 
+	if(update_is_online()) 
 		// FIXME: int -> pointer
 		feedlist_foreach_data(node_request_update, (gpointer)FEED_REQ_PRIORITY_HIGH);
 	else

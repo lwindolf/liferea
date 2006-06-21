@@ -282,7 +282,7 @@ int main(int argc, char *argv[]) {
 	} else {
 		/* order is important! */
 		conf_init();			/* initialize gconf */
-		download_init();		/* initialize the download subsystem */
+		update_init();			/* initialize the download subsystem */
 		plugin_mgmt_init();		/* get list of plugins and initialize them */
 		ui_htmlview_init();		/* setup HTML widgets */
 		metadata_init();

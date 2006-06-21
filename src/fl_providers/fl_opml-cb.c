@@ -50,13 +50,13 @@ static void on_fl_opml_source_selected(GtkDialog *dialog, gint response_id, gpoi
 		node_add_child(NULL, node, 0);
 
 		/* initial download */
-		request = download_request_new();
+		request = update_request_new();
 		request->source = g_strdup(source);
 		request->priority = 1;
 		request->callback = fl_opml_initial_download_cb;
 		request->user_data = node;
 		debug1(DEBUG_UPDATE, "starting initial OPML download (%s.opml)", node->id);
-		download_queue(request);
+		update_execute_request(request);
 	}
 
 	gtk_widget_destroy(GTK_WIDGET(dialog));

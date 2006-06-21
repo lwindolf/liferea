@@ -124,7 +124,7 @@ static void favicon_download_5(nodePtr node) {
 		tmp += 3;
 		if(tmp = strchr(tmp, '/')) {
 			*tmp = 0;
-			request = download_request_new(NULL);
+			request = update_request_new();
 			request->source = g_strdup_printf("%s/favicon.ico", baseurl);
 			
 			request->callback = &favicon_download_request_favicon_cb;
@@ -134,7 +134,7 @@ static void favicon_download_5(nodePtr node) {
 			
 			debug1(DEBUG_UPDATE, "trying to download server root favicon.ico for \"%s\"\n", request->source);
 			
-			download_queue(request);
+			update_execute_request(request);
 		}
 	}
 	g_free(baseurl);
@@ -151,7 +151,7 @@ static void favicon_download_4(nodePtr node) {
 		if(tmp = strrchr(tmp, '/')) {
 			*tmp = 0;
 			
-			request = download_request_new(NULL);
+			request = update_request_new();
 			request->source = g_strdup_printf("%s/favicon.ico", baseurl);
 			request->callback = &favicon_download_request_favicon_cb;
 			request->user_data = node;
@@ -160,7 +160,7 @@ static void favicon_download_4(nodePtr node) {
 			
 			debug1(DEBUG_UPDATE, "trying to download favicon.ico for \"%s\"\n", request->source);
 			
-			download_queue(request);
+			update_execute_request(request);
 		}
 	}
 	g_free(baseurl);
@@ -233,13 +233,13 @@ static void favicon_download_html_request_cb(struct request *request) {
 	if(request->size > 0 && request->data) {
 		iconUri = html_discover_favicon(request->data, request->source);
 		if(iconUri) {
-			request2 = download_request_new(NULL);
+			request2 = update_request_new();
 			request2->source = iconUri;
 			request2->callback = &favicon_download_request_favicon_cb;
 			request2->user_data = node;
 			request2->flags = request->flags + 1;
 			node->requests = g_slist_append(node->requests, request2);
-			download_queue(request2);
+			update_execute_request(request2);
 		}
 	}
 
@@ -272,13 +272,13 @@ static void favicon_download_html(nodePtr node, int phase) {
 		}
 	}
 	
-	request = download_request_new(NULL);
+	request = update_request_new();
 	request->source = htmlurl;
 	request->callback = &favicon_download_html_request_cb;
 	request->user_data = node;
 	request->flags = phase;
 	node->requests = g_slist_append(node->requests, request);	
-	download_queue(request);
+	update_execute_request(request);
 	
 	debug_exit("favicon_download");
 }

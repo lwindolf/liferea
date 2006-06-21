@@ -400,7 +400,7 @@ void ui_mainwindow_init(int mainwindowState) {
 	
 	ui_mainwindow_update_toolbar(mw);
 	ui_mainwindow_update_menubar();
-	ui_mainwindow_online_status_changed(download_is_online());
+	ui_mainwindow_online_status_changed(update_is_online());
 	
 	ui_tray_enable(getBooleanConfValue(SHOW_TRAY_ICON));			/* init tray icon */
 	ui_dnd_setup_URL_receiver(mainwindow);	/* setup URL dropping support */
@@ -525,12 +525,12 @@ void ui_mainwindow_online_status_changed(int online) {
 
 void on_onlinebtn_clicked(GtkButton *button, gpointer user_data) {
 	
-	download_set_online(!download_is_online());
+	update_set_online(!update_is_online());
 }
 
 static void on_work_offline_activate(GtkToggleAction *menuitem, gpointer user_data) {
 	
-	download_set_online(!gtk_toggle_action_get_active(menuitem));
+	update_set_online(!gtk_toggle_action_get_active(menuitem));
 }
 
 /* Set the main window status bar to the text given as 

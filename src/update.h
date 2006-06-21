@@ -1,8 +1,8 @@
 /**
  * @file update.h  feed update request processing
  *
- * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
- * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -105,18 +105,17 @@ struct request {
 	gushort retriesCount;	/**< Count how many retries have been done */
 };
 
-/** Initialises the download subsystem, including its thread(s). */
-void download_init(); 
+/**
+ * Initialises the download subsystem, including its thread(s). 
+ */
+void update_init(); 
 
 /** 
- * Creates a new request structure and sets the feed the
- * request belongs to with fp. If there is no assigned
- * feed fp may be NULL.
- *
- * @param fp	feed pointer
- * @return pointer to new request structure
+ * Creates a new request structure.
+ * 
+ * @returns a new request
  */
-gpointer download_request_new();
+gpointer update_request_new();
 
 /**
  * Used to free a request structure. Frees all members, including data.
@@ -140,22 +139,19 @@ void download_set_online(gboolean mode);
 gboolean download_is_online(void);
 
 /**
- * Function to pass a request to the update request
- * processing thread. This request will be queued if;
- * other requests are pending. If it was processed 
- * successfully a result will be added to the result 
- * queue.
+ * Executes the given request. The request might be
+ * delayed if other requests are pending. 
  *
- * @param new_request	pointer to a request structure
+ * @param request	the request to execute
  */
-void download_queue(struct request *new_request);
+void update_execute_request(struct request *request);
 
 /**
- * Process a download request, and pass it to the URL handler, if
- * needed. This should not be used very often because it will block.
+ * Executes the given request. Will block.
+ *
+ * @param request	the request to execute
  */
-
-void download_process(struct request *request);
+void update_execute_request_sync(struct request *request);
 
 /**
  * Cancel a request if it is waiting to be retried.
@@ -163,7 +159,8 @@ void download_process(struct request *request);
  * so it is safe to just forget about it.
  * 
  * @param request	pointer to a request structure
- * @return	TRUE if successfully cancelled the request
+ * @return TRUE if successfully cancelled the request
  */
-gboolean download_cancel_retry(struct request *request);
+gboolean update_request_cancel_retry(struct request *request);
+
 #endif

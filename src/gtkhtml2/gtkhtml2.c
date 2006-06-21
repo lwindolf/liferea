@@ -190,12 +190,12 @@ static void url_request(HtmlDocument *doc, const gchar *url, HtmlStream *stream,
 		sd->doc = doc;
 		sd->stream = stream;
 
-		r = download_request_new();
+		r = update_request_new();
 		r->source = g_strdup(absURL);
 		r->callback = gtkhtml2_url_request_received_cb;
 		r->user_data = sd;
 		r->priority = 1;
-		download_queue(r);
+		update_execute_request(r);
 		html_stream_set_cancel_func (stream, stream_cancel, r);
 		g_free(absURL);
 
@@ -400,13 +400,13 @@ static void gtkhtml2_launch_url(GtkWidget *scrollpane, const gchar *url) {
 	
 	kill_old_connections(scrollpane);
 	
-	r = download_request_new();
+	r = update_request_new();
 	r->source = g_strdup(url);
 	r->callback = gtkhtml2_html_received;
 	r->user_data = scrollpane;
 	r->priority = 1;
 	g_object_set_data(G_OBJECT(scrollpane), "html_request", r);
-	download_queue(r);
+	update_execute_request(r);
 }
 
 static gboolean gtkhtml2_launch_inside_possible(void) { return TRUE; }

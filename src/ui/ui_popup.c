@@ -142,7 +142,7 @@ static GtkMenu *make_menu(GtkItemFactoryEntry *menu_items, gint nmenu_items, gpo
 	/* set toggled state for work offline and show window buttons in 
 	   the tray popup menu */
 	if(NULL != (toggle = gtk_item_factory_get_widget(item_factory, TOGGLE_WORK_OFFLINE)))
-		GTK_CHECK_MENU_ITEM(toggle)->active = !download_is_online();
+		GTK_CHECK_MENU_ITEM(toggle)->active = !update_is_online();
 	if(NULL != (toggle = gtk_item_factory_get_widget(item_factory, TOGGLE_SHOW_WINDOW)))
 		GTK_CHECK_MENU_ITEM(toggle)->active = 
 			!(gdk_window_get_state(GTK_WIDGET(mainwindow)->window) & GDK_WINDOW_STATE_ICONIFIED) && GTK_WIDGET_VISIBLE(mainwindow);
@@ -293,15 +293,20 @@ gboolean on_mainfeedlist_button_press_event(GtkWidget *widget,
 
 	if(!gtk_tree_view_get_path_at_pos(GTK_TREE_VIEW(lookup_widget(mainwindow, "feedlist")), event->x, event->y, &path, NULL, NULL, NULL)) {
 		selected=FALSE;
+		node = feedlist_get_root();
 	} else {
 		model = gtk_tree_view_get_model(GTK_TREE_VIEW(lookup_widget(mainwindow, "feedlist")));
 		gtk_tree_model_get_iter(model, &iter, path);
-		gtk_tree_model_get(model, &iter, FS_PTR, &node, -1);
-		if(node != NULL)
-			ui_feedlist_select(node);
-		else /* This happens when an "empty" node is clicked */
-			selected=FALSE;
 		gtk_tree_path_free(path);
+		gtk_tree_model_get(model, &iter, FS_PTR, &node, -1);
+		
+		if(node) {
+			ui_feedlist_select(node);
+		} else {
+			/* This happens when an "empty" node or nothing (feed list root) is clicked */
+			selected = FALSE;
+			node = feedlist_get_root();
+		}
 	}
 
 	gtk_menu_popup(ui_popup_node_menu(node, selected), NULL, NULL, NULL, NULL, eb->button, eb->time);

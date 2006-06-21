@@ -121,8 +121,8 @@ void fl_plugin_import(nodePtr node, xmlNodePtr cur) {
 					found = TRUE;
 					break;
 				}
-				iter = g_slist_next(iter);
 			}
+			iter = g_slist_next(iter);
 		}
 
 		if(!found)

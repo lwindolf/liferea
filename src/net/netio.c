@@ -1182,7 +1182,11 @@ void downloadlib_init() {
 void downloadlib_process_url(struct request *request) {
 	struct feed_request cur_ptr;
 	gchar *oldurl = g_strdup(request->source);
+	
 	debug1(DEBUG_UPDATE, "downloading %s", request->source);
+	
+	g_assert(request->data == NULL);
+	g_assert(request->contentType == NULL);
 
 	cur_ptr.feedurl = request->source;
 
