@@ -1170,9 +1170,6 @@ void feed_process_update_result(struct request *request) {
 				feed_set_update_interval(feed, feed_get_default_update_interval(feed));
 			else
 				feed_set_update_interval(feed, old_update_interval);
-				
-			g_free(old_title);
-			g_free(old_source);
 
 			ui_mainwindow_set_status_bar(_("\"%s\" updated..."), node_get_title(node));
 
@@ -1183,6 +1180,9 @@ void feed_process_update_result(struct request *request) {
 
 			feed->available = TRUE;
 		}
+				
+		g_free(old_title);
+		g_free(old_source);
 
 		feed_free_parser_ctxt(ctxt);
 	} else {	
