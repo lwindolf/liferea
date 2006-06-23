@@ -1153,8 +1153,10 @@ void feed_process_update_result(struct request *request) {
 		feed_parse(ctxt, request->flags & FEED_REQ_AUTO_DISCOVER);
 
 		if(ctxt->failed) {
+			gchar	*tmp = feed->parseErrors;
 			feed->parseErrors = g_strdup_printf(_("<p>Could not detect the type of this feed! Please check if the source really points to a resource provided in one of the supported syndication formats!</p>"
 			                                      "XML Parser Output:<br /><div class='xmlparseroutput'>%s</div>"), feed->parseErrors);
+			g_free(tmp);
 		} else {
 			/* merge the resulting items into the node's item set */
 			node_merge_items(node, ctxt->itemSet->items);
