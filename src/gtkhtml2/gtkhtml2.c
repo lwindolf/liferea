@@ -276,6 +276,12 @@ static void gtkhtml2_title_changed(HtmlDocument *doc, const gchar *new_title, gp
 /* adds a differences diff to the actual zoom level */
 static void gtkhtml2_change_zoom_level(GtkWidget *scrollpane, gfloat zoomLevel) {
 	GtkWidget *htmlwidget = gtk_bin_get_child(GTK_BIN(scrollpane));
+	
+	/* Clearing the selection is a workaround to avoid 
+	   crashes when changing the zoomlevel as reported
+	   in SF #1509741 */
+	html_selection_clear(HTML_VIEW(htmlwidget));
+	
 	html_view_set_magnification(HTML_VIEW(htmlwidget), zoomLevel);
 }
 
