@@ -817,6 +817,7 @@ gboolean feed_merge_check(itemSetPtr sp, itemPtr new_ip) {
 				old_ip->updateStatus = TRUE;
 				metadata_list_free(old_ip->metadata);
 				old_ip->metadata = new_ip->metadata;
+				new_ip->metadata = NULL;
 				vfolder_update_item(old_ip);
 				debug0(DEBUG_VERBOSE, "-> item already existing and was updated");
 			} else {

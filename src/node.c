@@ -223,6 +223,7 @@ static void node_merge_item(nodePtr node, itemPtr item) {
 						 item->newStatus?1:0);
 	} else {
 		debug2(DEBUG_UPDATE, "not adding \"%s\" to node \"%s\"...", item_get_title(item), node_get_title(node));
+		item_free(item);
 	}
 }
 
