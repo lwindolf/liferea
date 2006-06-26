@@ -221,10 +221,6 @@ void ui_fl_plugin_type_dialog(nodePtr parent) {
 
 /* implementation of the node type interface */
 
-static void fl_plugin_initial_load(nodePtr node) {
-	node_foreach_child(node, node_initial_load);
-}
-
 static void fl_plugin_request_update(nodePtr node, guint flags) {
 
 	// FIXME:
@@ -273,13 +269,16 @@ nodeTypePtr fl_plugin_get_node_type(void) {
 
 	/* derive the plugin node type from the folder node type */
 	nodeType = (nodeTypePtr)g_new0(struct nodeType, 1);
-	memcpy(nodeType, folder_get_node_type, sizeof(struct nodeType));
-	nodeType->initial_load		= fl_plugin_initial_load;
+	nodeType->initial_load		= folder_get_node_type()->initial_load;
+	nodeType->load			= folder_get_node_type()->load;
+	nodeType->save			= fl_plugin_save;
+	nodeType->unload		= folder_get_node_type()->unload;
+	nodeType->reset_update_counter	= folder_get_node_type()->reset_update_counter;
 	nodeType->request_update	= fl_plugin_request_update;
 	nodeType->request_auto_update	= fl_plugin_request_auto_update;
 	nodeType->schedule_update	= fl_plugin_schedule_update;
-	nodeType->save			= fl_plugin_save;
 	nodeType->remove		= fl_plugin_remove;
+	nodeType->mark_all_read		= folder_get_node_type()->mark_all_read;
 	nodeType->render		= fl_plugin_render;
 	nodeType->request_add		= ui_fl_plugin_type_dialog;
 	nodeType->request_properties	= ui_fl_plugin_dummy_properties;
