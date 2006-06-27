@@ -494,7 +494,7 @@ void ui_mainwindow_update_toolbar(struct mainwindow *mw) {
 }
 
 void ui_mainwindow_update_feed_menu(gint type) {
-	gboolean enabled = (FST_FEED == type) || (FST_FOLDER == type) || (FST_VFOLDER == type);
+	gboolean enabled = (FST_FEED == type) || (FST_FOLDER == type) || (FST_VFOLDER == type) || (FST_PLUGIN == type);
 	
 	gtk_action_group_set_sensitive(mw_global_fixme->feedActions, enabled);
 }
