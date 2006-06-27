@@ -244,7 +244,7 @@ div.itemshaded { background:#ffe;}
 div.itemunshaded { }
 
 li.summaryshaded, li.summaryunshaded { 
-	padding-bottom:6px; 
+	padding:0px 6px; 
 }
 
 li.summaryshaded a {
@@ -252,14 +252,14 @@ li.summaryshaded a {
 	background:#ffe;
 	text-decoration:none;
 	color:black;
-	padding:4px 8px;
+	padding:4px 0px;
 }
 
 li.summaryunshaded a {
 	display:block;
 	text-decoration:none;
 	color:black;
-	padding:4px 8px;
+	padding:4px 0px;
 }
 
 /* style for the HTTP error box at the beginning

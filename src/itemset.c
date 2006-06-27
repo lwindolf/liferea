@@ -87,8 +87,7 @@ gchar * itemset_render_item(itemSetPtr itemSet, itemPtr item) {
 gchar * itemset_render_all(itemSetPtr itemSet) {
 	gchar		*buffer = NULL;
 	gchar		*summary = NULL;
-	guint		missingContent = 0;
-	gboolean	summaryNeeded = FALSE;
+	gboolean	summaryMode = FALSE;
 	gboolean	loadReadItems;
 	GList		*iter;
 
@@ -109,18 +108,26 @@ gchar * itemset_render_all(itemSetPtr itemSet) {
 	ui_htmlview_start_output(&buffer, itemset_get_base_url(itemSet), FALSE);
 
 	if(ITEMSET_TYPE_FOLDER != itemSet->type) {
-		/* Output optimization for feeds without item content */
+		guint missingContent = 0;	
+		
+		/* Output optimization for feeds without item content. This
+		   is not done for folders, because we only support all items
+		   in summary mode or all in detailed mode. With folder item 
+		   sets displaying everything in summary because of only a
+		   single feed without item descriptions would make no sense. */
+		   
 		for(iter = itemSet->items; NULL != iter; iter = g_list_next(iter)) {
 			gchar *desc = ((itemPtr)iter->data)->description;
 			if(!desc || (0 == strlen(desc)))
 				missingContent++;
 		}
 
-		if(missingContent > 3) {
+		summaryMode = (missingContent > 3);
+		
+		if(summaryMode) {
 			gchar *tmp, *tmp2;
 			const gchar *htmlurl = itemset_get_base_url(itemSet);
 
-			summaryNeeded = TRUE;
 			addToHTMLBufferFast(&summary, HEAD_START);
 
 			/* -- empty feed line */
@@ -140,8 +147,6 @@ gchar * itemset_render_all(itemSetPtr itemSet) {
 			g_free(tmp2);		
 			addToHTMLBufferFast(&summary, HEAD_END);
 			addToHTMLBufferFast(&summary, SUMMARY_START);
-		} else {
-			summaryNeeded = FALSE;
 		}
 	}
 	
@@ -153,7 +158,7 @@ gchar * itemset_render_all(itemSetPtr itemSet) {
 			const gchar *baseUrl = item_get_base_url(item);
 			gchar *tmp;
 
-			if(item->description && (0 < strlen(item->description))) {
+			if(FALSE == summaryMode) {
 
 				/* do detailed output */		
 				if(baseUrl) {
@@ -179,10 +184,18 @@ gchar * itemset_render_all(itemSetPtr itemSet) {
 				if(baseUrl)
 					addToHTMLBufferFast(&buffer, "</div>");
 			} else {
-				/* do summary output */
-				tmp = g_markup_printf_escaped(item->readStatus?SUMMARY_LINE_UNSHADED:SUMMARY_LINE_SHADED, 
+				/* Do summary output */
+				tmp = g_markup_printf_escaped(item->readStatus?SUMMARY_LINE_START_UNSHADED:SUMMARY_LINE_START_SHADED, 
 			                        	      item_get_source(item), item_get_title(item));
 				addToHTMLBuffer(&summary, tmp);
+				
+				/* If we are in summary mode, some items might still have
+				   description and those should be presented. To do so we
+				   simply add this content right after the title. */
+				if(item->description && (0 < strlen(item->description)))
+					addToHTMLBuffer(&summary, item->description);
+
+				addToHTMLBuffer(&summary, SUMMARY_LINE_END);
 				g_free(tmp);
 			}
 		}
@@ -190,8 +203,8 @@ gchar * itemset_render_all(itemSetPtr itemSet) {
 		iter = g_list_next(iter);
 	}
 	
-	/* output summary of headlines without description */
-	if(summaryNeeded) {
+	if(summaryMode) {
+		/* output summary of headlines without description */
 		addToHTMLBufferFast(&summary, SUMMARY_END);
 		addToHTMLBufferFast(&buffer, summary);
 		g_free(summary);

@@ -93,10 +93,11 @@ struct displayset {
 
 /* condensed mode summary listings */
 
-#define SUMMARY_START		"<ul class=\"summary\">"
-#define SUMMARY_LINE_SHADED	"<li class=\"summaryshaded\"><b><a href=\"%s\">%s</a></b></li>"
-#define SUMMARY_LINE_UNSHADED	"<li class=\"summaryunshaded\"><a href=\"%s\">%s</a></li>"
-#define SUMMARY_END		"</ul>"
+#define SUMMARY_START			"<ul class=\"summary\">"
+#define SUMMARY_LINE_START_SHADED	"<li class=\"summaryshaded\"><b><a href=\"%s\">%s</a></b>"
+#define SUMMARY_LINE_START_UNSHADED	"<li class=\"summaryunshaded\"><a href=\"%s\">%s</a>"
+#define SUMMARY_LINE_END        	"</li>"
+#define SUMMARY_END			"</ul>"
 
 /* HTTP and parsing error text */
 
