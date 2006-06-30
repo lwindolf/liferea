@@ -67,7 +67,8 @@ static gboolean twoPaneMode = FALSE;	/* set to TRUE if two pane mode is active *
 static gboolean itemlistLoading;	/* set to TRUE to prevent selection effects when loading the item list */
 gint disableSortingSaving;		/* set in ui_itemlist.c to disable sort-changed callback */
 
-static gboolean deferred_item_remove = FALSE;	/* TRUE if selected item needs to be removed on unselecting */
+static gboolean deferred_item_remove = FALSE;	/* TRUE if selected item needs to be removed from cache on unselecting */
+static gboolean deferred_item_filter = FALSE;	/* TRUE if selected item needs to be filtered on unselecting */
 
 itemPtr itemlist_get_selected(void) {
 
@@ -82,7 +83,8 @@ nodePtr itemlist_get_displayed_node(void) {
 		return NULL;
 }
 
-static void itemlist_check_for_deferred_removal(void) {
+/* called when unselecting the item or unloading the item list */
+static void itemlist_check_for_deferred_action(void) {
 	itemPtr item;
 
 	if(displayed_item) {
@@ -90,8 +92,11 @@ static void itemlist_check_for_deferred_removal(void) {
 		displayed_item = NULL;
 
 		/* check for removals caused by itemlist filter rule */
-		if(itemlist_filter && !rule_check_item(itemlist_filter, item))
+		if(deferred_item_filter) {
+			deferred_item_filter = FALSE;
 			ui_itemlist_remove_item(item);
+			ui_node_update(item->sourceNode);
+		}
 
 		/* check for removals caused by vfolder rules */
 		if(deferred_item_remove) {
@@ -241,7 +246,7 @@ void itemlist_unload(gboolean markRead) {
 		if(markRead && (TRUE == node_get_two_pane_mode(displayed_itemSet->node))) 
 			itemlist_mark_all_read(displayed_itemSet);
 
-		itemlist_check_for_deferred_removal();
+		itemlist_check_for_deferred_action();
 		ui_itemlist_clear();
 	}
 
@@ -346,7 +351,7 @@ void itemlist_set_read_status(itemPtr item, gboolean newStatus) {
 		itemset_set_item_read_status(item->itemSet, item, newStatus);
 
 		/* 2. update item list GUI state */
-		ui_itemlist_update_item(item);
+		itemlist_update_item(item);
 
 		/* 3. updated feed list unread counters */
 		node_update_counters(item->itemSet->node);
@@ -373,7 +378,7 @@ void itemlist_set_update_status(itemPtr item, const gboolean newStatus) {
 		itemset_set_item_update_status(item->itemSet, item, newStatus);
 
 		/* 2. update item list GUI state */
-		ui_itemlist_update_item(item);	
+		itemlist_update_item(item);	
 
 		/* 3. no update of feed list necessary... */
 		node_update_counters(item->itemSet->node);
@@ -383,29 +388,36 @@ void itemlist_set_update_status(itemPtr item, const gboolean newStatus) {
 	}
 }
 
-void itemlist_update_item(itemPtr item) {
+static void itemlist_hide_item(itemPtr item) {
 
-	if(itemlist_filter && !rule_check_item(itemlist_filter, item))
-		itemlist_remove_item(item);
-	else
+	/* if the currently selected item should be removed we
+	   don't do it and set a flag to do it when unselecting */
+	if(displayed_item != item) {
+		ui_itemlist_remove_item(item);
+		ui_node_update(item->itemSet->node);
+	} else {
+		deferred_item_filter = TRUE;
+		/* update the item to show new state that forces
+		   later removal */
 		ui_itemlist_update_item(item);
+	}
 }
 
 void itemlist_remove_item(itemPtr item) {
 	
-	if(itemset_lookup_item(item->itemSet, item->itemSet->node, item->nr)) {
-		/* if the currently selected item should be removed we
-		   don't do it and set a flag to do it when unselecting */
-		if(displayed_item != item) {
-			ui_itemlist_remove_item(item);
-			itemset_remove_item(item->itemSet, item);
-			ui_node_update(item->itemSet->node);
-		} else {
-			deferred_item_remove = TRUE;
-			/* update the item to show new state that forces
-			   later removal */
-			ui_itemlist_update_item(item);
-		}
+	g_assert(NULL != itemset_lookup_item(item->itemSet, item->itemSet->node, item->nr));
+
+	/* if the currently selected item should be removed we
+	   don't do it and set a flag to do it when unselecting */
+	if(displayed_item != item) {
+		ui_itemlist_remove_item(item);
+		itemset_remove_item(item->itemSet, item);
+		ui_node_update(item->itemSet->node);
+	} else {
+		deferred_item_remove = TRUE;
+		/* update the item to show new state that forces
+		   later removal */
+		ui_itemlist_update_item(item);
 	}
 }
 
@@ -415,6 +427,14 @@ void itemlist_remove_items(itemSetPtr itemSet) {
 	itemset_remove_items(itemSet);
 	itemlist_render();
 	ui_node_update(itemSet->node);
+}
+
+void itemlist_update_item(itemPtr item) {
+
+	if(itemlist_filter && !rule_check_item(itemlist_filter, item))
+		itemlist_hide_item(item);
+	else
+		ui_itemlist_update_item(item);
 }
 
 void itemlist_mark_all_read(itemSetPtr itemSet) {
@@ -483,9 +503,9 @@ void itemlist_selection_changed(itemPtr item) {
 	debug_enter("itemlist_selection_changed");
 	
 	if(!itemlistLoading && (FALSE == itemlist_get_two_pane_mode())) {
-		/* folder&vfolder postprocessing to remove unselected items no
+		/* folder&vfolder postprocessing to remove/filter unselected items no
 		   more matching the display rules because they have changed state */
-		itemlist_check_for_deferred_removal();
+		itemlist_check_for_deferred_action();
 	
 		debug1(DEBUG_GUI, "item list selection changed to \"%s\"", item_get_title(item));
 		displayed_item = item;
