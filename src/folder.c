@@ -22,9 +22,9 @@
 #include "common.h"
 #include "conf.h"
 #include "debug.h"
+#include "render.h"
 #include "support.h"
 #include "ui/ui_folder.h"
-#include "ui/ui_htmlview.h"
 
 static void folder_initial_load(nodePtr node) {
 	node_foreach_child(node, node_initial_load);
@@ -123,30 +123,16 @@ static void folder_mark_all_read(nodePtr node) {
 }
 
 static gchar * folder_render(nodePtr node) {
-	gchar	*tmp, *buffer = NULL;
+	gchar	*result, *filename, **params = NULL;
 
-	ui_htmlview_start_output(&buffer, NULL, TRUE);
-
-	addToHTMLBufferFast(&buffer, HEAD_START);
-
-	tmp = g_strdup_printf(HEAD_LINE, _("Folder:"), node_get_title(node));
-	addToHTMLBufferFast(&buffer, tmp);
-	g_free(tmp);
-
-	addToHTMLBufferFast(&buffer, HEAD_END);
-
-	addToHTMLBufferFast(&buffer, "<div class='content'>");
-
-	tmp = g_strdup_printf(_("<b>%d</b> childs with <b>%d</b> items \n"), 
-			      g_slist_length(node->children),
-	                      g_list_length(node->itemSet->items)); 
-	addToHTMLBufferFast(&buffer, tmp);
-	g_free(tmp);
-
-	addToHTMLBufferFast(&buffer, "</div>");
-
-	ui_htmlview_finish_output(&buffer);
-	return buffer;
+	params = render_add_parameter(params, "id='%s'", node->id);
+	params = render_add_parameter(params, "headlineCount='%d'", g_list_length(node->itemSet->items));
+	filename = common_create_cache_filename(NULL, "feedlist", "opml");
+	result = render_file(filename, "folder", params);
+	g_free(filename);
+	g_strfreev(params);
+	
+	return result;
 }
 
 static struct nodeType nti = {

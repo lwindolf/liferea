@@ -26,6 +26,7 @@
 #include "node.h"
 #include "folder.h"
 #include "plugin.h"
+#include "render.h"
 #include "support.h"
 #include "fl_providers/fl_plugin.h"
 #include "fl_providers/fl_plugin-ui.h"
@@ -251,10 +252,12 @@ static void fl_plugin_remove(nodePtr node) {
 }
 
 static gchar * fl_plugin_render(nodePtr node) {
-	gchar	*result, **params;
+	gchar	*result, *filename, **params = NULL;
 
-	params = g_strsplit(g_strjoin(NULL,"id,'", node->id ,"'", NULL),",",0);
-	result = render_file(common_create_cache_filename(NULL, "feedlist", "opml"), "fl_plugin", params);
+	params = render_add_parameter(params, "headlineCount='%d'", g_list_length(node->itemSet->items));
+	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "plugins", node->id, "opml");
+	result = render_file(filename, "fl_plugin", params);
+	g_free(filename);
 	g_strfreev(params);
 	
 	return result;

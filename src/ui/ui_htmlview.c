@@ -30,9 +30,10 @@
 #include "common.h"
 #include "conf.h"
 #include "callbacks.h"
-#include "support.h"
 #include "debug.h"
 #include "plugin.h"
+#include "support.h"
+#include "render.h"
 #include "ui/ui_htmlview.h"
 #include "ui/ui_tabs.h"
 #include "ui/ui_prefs.h"
@@ -128,84 +129,8 @@ GtkWidget *ui_htmlview_new(gboolean forceInternalBrowsing) {
 	return htmlview;
 }
 
-static void ui_htmlview_write_css(gchar **buffer, gboolean twoPane) {
-	gchar	*font = NULL;
-	gchar	*fontsize = NULL;
-	gchar	*tmp;
-	gchar	*styleSheetFile, *defaultStyleSheetFile, *adblockStyleSheetFile;
-    
-	addToHTMLBuffer(buffer,	"<style type=\"text/css\">\n"
-				 "<![CDATA[\n");
-	
-	/* font configuration support */
-	font = getStringConfValue(USER_FONT);
-	if(0 == strlen(font)) {
-		g_free(font);
-		font = getStringConfValue(DEFAULT_FONT);
-	}
-
-	if(NULL != font) {
-		fontsize = font;
-		/* the GTK2/GNOME font name format is <font name>,<font size in point>
-		 Or it can also be "Font Name size*/
-		strsep(&fontsize, ",");
-		if (fontsize == NULL) {
-			if (NULL != (fontsize = strrchr(font, ' '))) {
-				*fontsize = '\0';
-				fontsize++;
-			}
-		}
-		addToHTMLBuffer(buffer, "body, table, div {");
-
-		addToHTMLBuffer(buffer, "font-family:");
-		addToHTMLBuffer(buffer, font);
-		addToHTMLBuffer(buffer, ";\n");
-		
-		if(NULL != fontsize) {
-			addToHTMLBuffer(buffer, "font-size:");
-			addToHTMLBuffer(buffer, fontsize);
-			addToHTMLBuffer(buffer, "pt;\n");
-		}		
-		
-		g_free(font);
-		addToHTMLBuffer(buffer, "}\n");
-	}	
-
-	if(!twoPane) {
-		addToHTMLBuffer(buffer, "body { style=\"padding:0px;\" }\n");
-		defaultStyleSheetFile = g_strdup(PACKAGE_DATA_DIR "/" PACKAGE "/css/liferea2.css");
-		styleSheetFile = g_strdup_printf("%s/liferea2.css", common_get_cache_path());
-	} else {
-		defaultStyleSheetFile = g_strdup(PACKAGE_DATA_DIR "/" PACKAGE "/css/liferea.css");
-		styleSheetFile = g_strdup_printf("%s/liferea.css", common_get_cache_path());
-	}
-	
-	if(g_file_get_contents(defaultStyleSheetFile, &tmp, NULL, NULL)) {
-		addToHTMLBuffer(buffer, tmp);
-		g_free(tmp);
-	}
-
-	if(g_file_get_contents(styleSheetFile, &tmp, NULL, NULL)) {
-		addToHTMLBuffer(buffer, tmp);
-		g_free(tmp);
-	}
-	
-	g_free(defaultStyleSheetFile);
-	g_free(styleSheetFile);
-	
-	adblockStyleSheetFile = g_strdup(PACKAGE_DATA_DIR "/" PACKAGE "/css/adblock.css");
-	
-	if(g_file_get_contents(adblockStyleSheetFile, &tmp, NULL, NULL)) {
-		addToHTMLBuffer(buffer, tmp);
-		g_free(tmp);
-	}
-	
-	g_free(adblockStyleSheetFile);
-
-	addToHTMLBuffer(buffer, "\n]]>\n</style>\n");
-}
-
 void ui_htmlview_start_output(gchar **buffer, const gchar *base, gboolean twoPane) { 
+	GString	*css;
 	
 	addToHTMLBuffer(buffer, "<?xml version=\"1.0\" encoding=\"utf-8\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n");
 	addToHTMLBuffer(buffer, "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n");
@@ -218,7 +143,9 @@ void ui_htmlview_start_output(gchar **buffer, const gchar *base, gboolean twoPan
 		addToHTMLBuffer(buffer, "\" />\n");
 	}
 
-	ui_htmlview_write_css(buffer, twoPane);
+	css = render_get_css(!twoPane);	/* for some reason twoPane is inverted here! */
+	addToHTMLBuffer(buffer, css->str);
+	g_string_free(css, TRUE);
 	
 	addToHTMLBuffer(buffer, "</head>\n<body>");
 }
@@ -331,7 +258,7 @@ static gboolean ui_htmlview_external_browser_execute(const gchar *cmd, const gch
   
 	/* If the command is using the X remote API we must
 	   escaped all ',' in the URL */
-	tmpUri = strreplace(g_strdup(uri), ",", "%2C");
+	tmpUri = common_strreplace(g_strdup(uri), ",", "%2C");
 
 	/* If there is no %s in the command, then just append %s */
 	if(strstr(cmd, "%s"))
@@ -351,7 +278,7 @@ static gboolean ui_htmlview_external_browser_execute(const gchar *cmd, const gch
   
 	if(argv) {
 		for(iter = argv; *iter != NULL; iter++)
-			*iter = strreplace(*iter, "%s", tmpUri);
+			*iter = common_strreplace(*iter, "%s", tmpUri);
 	}
 
 	tmp = g_strjoinv(" ", argv);

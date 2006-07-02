@@ -43,4 +43,16 @@ gchar * render_file(const gchar *filename, const gchar *xsltName, const gchar **
  */
 gchar * render_xml(xmlDocPtr doc, const gchar *xsltName, const gchar **params);
 
+/**
+ * Helper function to add a rendering parameter to the given parameter list.
+ *
+ * @param params	the old parameter list (will be freed)
+ *
+ * @returns a new parameter list
+ */
+gchar ** render_add_parameter(gchar **params, const gchar *fmt, ...);
+
+// FIXME: remove me once ui_htmlview.c doesn't do rendering anymore
+GString * render_get_css(gboolean twoPane);
+
 #endif

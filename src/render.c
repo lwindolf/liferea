@@ -30,6 +30,8 @@
 #include <libxslt/xsltutils.h>
 #include <locale.h>
 
+#include "conf.h"
+#include "common.h"
 #include "render.h"
 
 static gchar		**langParams = NULL;	/* the current locale settings */
@@ -43,9 +45,8 @@ static void render_init(void) {
 	lang = g_strsplit(g_strdup(setlocale(LC_ALL, NULL)), "@", 0);
 	shortlang = g_strsplit(g_strdup(setlocale(LC_ALL, NULL)), "_", 0);
 	
-	langParams = g_strsplit(g_strjoin(NULL,"lang,'",lang[0],"',",
-	                                       "shortlang,'",shortlang[0],"'",
-	                                       NULL),",",0);
+	langParams = render_add_parameter(langParams, "lang='%s'", lang[0]);
+	langParams = render_add_parameter(langParams, "shortlang='%s'", shortlang[0]);
 
 	g_strfreev(shortlang);
 	g_strfreev(lang);
@@ -69,13 +70,13 @@ xsltStylesheetPtr render_load_stylesheet(const gchar *xsltName) {
 	/* or load and translate it... */
 	
 	/* 1. load localization stylesheet */
-	if(NULL == (i18n_filter = xsltParseStylesheetFile(PACKAGE_DATA_DIR "/" PACKAGE "/xslt/i18n-filter.xslt"))) {
+	if(NULL == (i18n_filter = xsltParseStylesheetFile(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "xslt" G_DIR_SEPARATOR_S "i18n-filter.xslt"))) {
 		g_warning("fatal: could not load localization stylesheet!");
 		return NULL;
 	}
 	
 	/* 2. load and localize the rendering stylesheet */
-	filename = g_strjoin(NULL, PACKAGE_DATA_DIR "/" PACKAGE "/xslt/", xsltName, ".xml", NULL);
+	filename = g_strjoin(NULL, PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "xslt" G_DIR_SEPARATOR_S, xsltName, ".xml", NULL);
 	
 	if(NULL == (xsltDoc = xmlParseFile(filename)))
 		g_warning("fatal: could not load rendering stylesheet (%s)!", xsltName);
@@ -98,8 +99,81 @@ xsltStylesheetPtr render_load_stylesheet(const gchar *xsltName) {
 	return xslt;
 }
 
+GString * render_get_css(gboolean twoPane) {
+	GString	*buffer;
+	gchar	*font = NULL;
+	gchar	*fontsize = NULL;
+	gchar	*tmp;
+	gchar	*styleSheetFile, *defaultStyleSheetFile, *adblockStyleSheetFile;
+    
+    	buffer = g_string_new("<style type=\"text/css\">\n<![CDATA[\n");
+	
+	/* font configuration support */
+	font = getStringConfValue(USER_FONT);
+	if(0 == strlen(font)) {
+		g_free(font);
+		font = getStringConfValue(DEFAULT_FONT);
+	}
+
+	if(font) {
+		fontsize = font;
+		/* the GTK2/GNOME font name format is <font name>,<font size in point>
+		 Or it can also be "Font Name size*/
+		strsep(&fontsize, ",");
+		if(fontsize == NULL) {
+			if(fontsize = strrchr(font, ' ')) {
+				*fontsize = '\0';
+				fontsize++;
+			}
+		}
+		g_string_append(buffer, "body, table, div {");
+		g_string_append_printf(buffer, "font-family: %s;\n", font);
+		
+		if(fontsize)
+			g_string_append_printf(buffer, "font-size: %spt;\n", fontsize);
+		
+		g_free(font);
+		g_string_append(buffer, "}\n");
+	}	
+
+	if(twoPane) {
+		g_string_append(buffer, "body { style=\"padding:0px;\" }\n");
+		defaultStyleSheetFile = g_strdup(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "css" G_DIR_SEPARATOR_S "liferea2.css");
+		styleSheetFile = g_strdup_printf("%s" G_DIR_SEPARATOR_S "liferea2.css", common_get_cache_path());
+	} else {
+		defaultStyleSheetFile = g_strdup(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "css" G_DIR_SEPARATOR_S "liferea.css");
+		styleSheetFile = g_strdup_printf("%s" G_DIR_SEPARATOR_S "liferea.css", common_get_cache_path());
+	}
+	
+	if(g_file_get_contents(defaultStyleSheetFile, &tmp, NULL, NULL)) {
+		g_string_append(buffer, tmp);
+		g_free(tmp);
+	}
+
+	if(g_file_get_contents(styleSheetFile, &tmp, NULL, NULL)) {
+		g_string_append(buffer, tmp);
+		g_free(tmp);
+	}
+	
+	g_free(defaultStyleSheetFile);
+	g_free(styleSheetFile);
+	
+	adblockStyleSheetFile = g_strdup(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "css" G_DIR_SEPARATOR_S "adblock.css");
+	
+	if(g_file_get_contents(adblockStyleSheetFile, &tmp, NULL, NULL)) {
+		g_string_append(buffer, tmp);
+		g_free(tmp);
+	}
+	
+	g_free(adblockStyleSheetFile);
+
+	g_string_append(buffer, "\n]]>\n</style>\n");
+	return buffer;
+}
+
 gchar * render_xml(xmlDocPtr doc, const gchar *xsltName, const gchar **params) {
 	gchar			*output = NULL;
+	GString			*css;
 	xmlDocPtr		resDoc;
 	xsltStylesheetPtr	xslt;
 	xmlOutputBufferPtr	buf;
@@ -107,7 +181,7 @@ gchar * render_xml(xmlDocPtr doc, const gchar *xsltName, const gchar **params) {
 	if(NULL == (xslt = render_load_stylesheet(xsltName)))
 		return NULL;
 		
-	if(NULL == (resDoc = xsltApplyStylesheet(xslt, doc, NULL))) {
+	if(NULL == (resDoc = xsltApplyStylesheet(xslt, doc, params))) {
 		g_warning("fatal: applying rendering stylesheet (%s) failed!", xsltName);
 		return NULL;
 	}
@@ -125,6 +199,11 @@ gchar * render_xml(xmlDocPtr doc, const gchar *xsltName, const gchar **params) {
 	xmlOutputBufferClose(buf);
 	xmlFreeDoc(resDoc);
 	
+	
+	css = render_get_css(FALSE);	// FIXME: 2pane mode
+	output = common_strreplace(output, "##STYLE_INSERT##", css->str);
+	g_string_free(css, TRUE);
+	
 	return output;
 }
 
@@ -141,4 +220,30 @@ gchar * render_file(const gchar *filename, const gchar *xsltName, const gchar **
 	xmlFreeDoc(srcDoc);
 
 	return output;
+}
+
+gchar ** render_add_parameter(gchar **params, const gchar *fmt, ...) {
+	gchar	*old, *new, *merged;
+	gchar	**newParams;
+	va_list args;
+	
+	va_start (args, fmt);
+	new = g_strdup_vprintf (fmt, args);
+	va_end (args);
+	
+	if(params) {
+		old = g_strjoinv(",", params);
+		merged = g_strjoin(",", old, new, NULL);
+		g_free(old);
+		g_strfreev(params);
+	} else {
+		merged = g_strdup(new);
+	}
+		
+	newParams = g_strsplit_set(merged, ",=", 0);
+	
+	g_free(merged);
+	g_free(new);
+	
+	return newParams;
 }
