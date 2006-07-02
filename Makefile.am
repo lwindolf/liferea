@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-SUBDIRS = doc man opml pixmaps po src
+SUBDIRS = doc man opml pixmaps po src xslt
 
 desktop_in_files = liferea.desktop.in
 desktop_files = $(desktop_in_files:.desktop.in=.desktop)

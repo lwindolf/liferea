@@ -40,6 +40,7 @@ liferea_bin_SOURCES = \
 	metadata.c metadata.h \
 	node.c node.h \
 	plugin.c plugin.h \
+	render.c render.h \
 	rule.c rule.h \
 	support.c support.h \
 	update.c update.h \

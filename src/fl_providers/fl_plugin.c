@@ -21,6 +21,7 @@
 #include <gmodule.h>
 #include <gtk/gtk.h>
 #include <string.h>
+#include "common.h"
 #include "debug.h"
 #include "node.h"
 #include "folder.h"
@@ -250,8 +251,13 @@ static void fl_plugin_remove(nodePtr node) {
 }
 
 static gchar * fl_plugin_render(nodePtr node) {
+	gchar	*result, **params;
 
-	return g_strdup("Implement me: plugin_render()");
+	params = g_strsplit(g_strjoin(NULL,"id,'", node->id ,"'", NULL),",",0);
+	result = render_file(common_create_cache_filename(NULL, "feedlist", "opml"), "fl_plugin", params);
+	g_strfreev(params);
+	
+	return result;
 }
 
 static void ui_fl_plugin_dummy_properties(nodePtr node) {

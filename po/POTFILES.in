@@ -1,6 +1,7 @@
 # List of source files containing translatable strings.
 
 liferea.desktop.in
+xslt/fl_plugin.xml.in
 src/callbacks.c
 src/callbacks.h
 src/common.c
@@ -36,6 +37,8 @@ src/node.c
 src/node.h
 src/plugin.c
 src/plugin.h
+src/render.c
+src/render.h
 src/rule.c
 src/rule.h
 src/support.c

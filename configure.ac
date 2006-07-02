@@ -244,7 +244,8 @@ AM_GCONF_SOURCE_2
 
 pkg_modules="	gtk+-2.0 >= 2.4.0 
 		gconf-2.0 >= 1.1.9 
-		libxml-2.0 >= 2.4.1 
+		libxml-2.0 >= 2.4.1
+		libxslt
 		gmodule-2.0 >= 2.0.0"
 
 PKG_CHECK_MODULES(PACKAGE, [$pkg_modules])
@@ -412,6 +413,7 @@ src/ui/Makefile
 src/liferea
 doc/Makefile
 doc/html/Makefile
+xslt/Makefile
 man/Makefile
 man/pl/Makefile
 pixmaps/Makefile
