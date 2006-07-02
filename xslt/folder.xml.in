@@ -25,6 +25,8 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"
                 xmlns="http://www.w3.org/1999/xhtml">
 
+<xsl:output method="xml" version="1.0" encoding="iso-8859-1" indent="yes"/>
+
 <!-- node id of the folder in feedlist.opml -->
 <xsl:param name="id"/>   
 <!-- number of headlines of all child nodes -->
@@ -33,6 +35,8 @@
 <xsl:template match="/opml/body">
 	<xsl:apply-templates select="node()"/>
 </xsl:template>
+
+<xsl:preserve-space elements="//*"/>
 
 <xsl:template match="/opml/head" />
 
@@ -56,7 +60,9 @@
 </table>
 
 <div class='content'>
-   <b><xsl:value-of select="count(*[@xmlUrl])"/></b> <_span>Subscriptions with</_span> <b>316</b> <_span>Headlines</_span> 
+   <b><xsl:value-of select="count(*[@xmlUrl])"/></b>
+   <_span>Subscriptions with</_span> <b>316</b>
+   <_span>Headlines</_span> 
 </div>
 
 </body>

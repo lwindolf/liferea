@@ -199,8 +199,11 @@ gchar * render_xml(xmlDocPtr doc, const gchar *xsltName, const gchar **params) {
 	xmlOutputBufferClose(buf);
 	xmlFreeDoc(resDoc);
 	
-	
-	css = render_get_css(FALSE);	// FIXME: 2pane mode
+	/* Note: we need to do CSS insertion because GtkHTML2 does
+	   not support  @import url(...) in <style> tags. Do not
+	   add referenced CSS to the rendering stylesheets! */
+	   
+	css = render_get_css(itemlist_get_two_pane_mode());
 	output = common_strreplace(output, "##STYLE_INSERT##", css->str);
 	g_string_free(css, TRUE);
 	
