@@ -180,7 +180,7 @@ gchar * render_xml(xmlDocPtr doc, const gchar *xsltName, const gchar **params) {
 	
 	if(NULL == (xslt = render_load_stylesheet(xsltName)))
 		return NULL;
-		
+
 	if(NULL == (resDoc = xsltApplyStylesheet(xslt, doc, params))) {
 		g_warning("fatal: applying rendering stylesheet (%s) failed!", xsltName);
 		return NULL;

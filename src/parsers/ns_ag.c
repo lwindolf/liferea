@@ -22,10 +22,11 @@
 #  include <config.h>
 #endif
 
-#include "ns_ag.h"
 #include "common.h"
-#include "ui/ui_itemlist.h"
 #include "metadata.h"
+#include "ns_ag.h"
+#include "support.h"
+#include "ui/ui_itemlist.h"
 
 /* you can find an aggregation namespace spec at:
    http://web.resource.org/rss/1.0/modules/aggregation/
@@ -68,7 +69,7 @@ static void parse_item_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 		metadata_list_set(&(ctxt->item->metadata), "agSource", tmp);
 	} else if(!xmlStrcmp("timestamp", cur->name)) {
 		if(tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))) {
-			date = ui_itemlist_format_date(parseISO8601Date(tmp));
+			date = common_format_date(parseISO8601Date(tmp), _("%b %d %H:%M"));
 			metadata_list_set(&(ctxt->item->metadata), "agTimestamp", date);
 			g_free(date);
 			g_free(tmp);

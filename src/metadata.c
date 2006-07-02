@@ -318,6 +318,7 @@ static void attribs_render_categories(gpointer data, struct displayset *displays
 	g_free(tmp);
 }
 
+// FIXME: remove me
 static void attribs_render_foot_text(gpointer data, struct displayset *displayset, gpointer user_data) {
 	gchar	*tmp;
 
@@ -326,6 +327,7 @@ static void attribs_render_foot_text(gpointer data, struct displayset *displayse
 	g_free(tmp);
 }
 
+// FIXME: remove me
 static void attribs_render_comments_uri(gpointer data, struct displayset *displayset, gpointer user_data) {
 	gchar *tmp;
 	
@@ -336,6 +338,7 @@ static void attribs_render_comments_uri(gpointer data, struct displayset *displa
 	g_free(tmp);
 }
 
+// FIXME: remove me
 static void attribs_render_enclosure(gpointer data, struct displayset *displayset, gpointer user_data) {
 	gchar *tmp, *escapedLink, *filename; 
 	

@@ -148,12 +148,12 @@ void		item_set_id(itemPtr ip, const gchar * id);
 itemPtr item_parse_cache(xmlNodePtr cur, gboolean migrateCache);
 
 /**
- * Does the opposite of item_parse_cache. Generates a XML node
- * to be saved into the feeds cache document. 
+ * Does the opposite of item_parse_cache. Adds an XML node
+ * to the given feed item list node. 
  *
  * @param item		the item to save to cache
- * @param feedNode	the XML node write to
+ * @param feedNode	the XML node to add to
  */
-void item_save(itemPtr item, xmlNodePtr feedNode);
+void item_to_xml(itemPtr item, xmlNodePtr feedNode);
 
 #endif

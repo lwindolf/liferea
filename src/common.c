@@ -483,6 +483,16 @@ xmlDocPtr common_parse_xml_feed(feedParserCtxtPtr fpc) {
 	return fpc->doc;
 }
 
+#define	TIMESTRLEN	256
+
+gchar * common_format_date(time_t t, const gchar *date_format) {
+	gchar	*result;
+	
+	result = g_new0(gchar, TIMESTRLEN+1);
+	strftime(result, TIMESTRLEN, date_format, localtime(&t));
+	return result;
+}
+
 /* converts a ISO 8601 time string to a time_t value */
 time_t parseISO8601Date(gchar *date) {
 	struct tm	tm;

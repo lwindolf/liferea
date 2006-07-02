@@ -104,6 +104,16 @@ void	addToHTMLBuffer(gchar **buffer, const gchar *string);
 xmlDocPtr common_parse_xml_feed(feedParserCtxtPtr fpc);
 
 /**
+ * Returns a formatted date string for the given timestamp.
+ *
+ * @param t		the timestamp
+ * @param date_format	a strptime format string
+ *
+ * @returns a new formatted date string
+ */
+gchar * common_format_date(time_t t, const gchar *date_format);
+
+/**
  * Parses a ISO8601 date.
  *
  * @returns timestamp

@@ -53,6 +53,7 @@ const gchar * itemset_get_base_url(itemSetPtr itemSet) {
 	return baseUrl;
 }
 
+// FIXME: remove me!
 gchar * itemset_render_item(itemSetPtr itemSet, itemPtr item) {
 	gchar		*tmp, *buffer = NULL;
 	const gchar	*baseUrl;

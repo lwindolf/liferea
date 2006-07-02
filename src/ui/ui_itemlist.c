@@ -49,8 +49,6 @@ static GtkWidget 	*itemlist_treeview = NULL;
 
 gint			itemlist_loading;	/* freaky workaround for item list focussing problem */
 
-#define	TIMESTRLEN	256
-
 static gchar 		*date_format = NULL;	/* date formatting string */
 
 /* helper functions for item <-> iter conversion */
@@ -157,7 +155,7 @@ GtkTreeStore * ui_itemlist_get_tree_store(void) {
 	return itemstore;
 }
 
-gchar * ui_itemlist_format_date(time_t t) {
+static gchar * ui_itemlist_format_date(time_t t) {
 	gchar		*tmp;
 	gchar		*timestr;
 
@@ -190,8 +188,7 @@ gchar * ui_itemlist_format_date(time_t t) {
 		}
 	}
 	
-	tmp = g_new0(gchar, TIMESTRLEN+1);
-	strftime(tmp, TIMESTRLEN, date_format, localtime(&t));
+	tmp = common_format_date(t, date_format);
 	timestr = g_locale_to_utf8(tmp, -1, NULL, NULL, NULL);
 	g_free(tmp);
 	

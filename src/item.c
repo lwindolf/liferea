@@ -29,15 +29,16 @@
 #include <stdlib.h>
 #include <libxml/uri.h>
 
-#include "vfolder.h"
-#include "item.h"
-#include "support.h"
-#include "common.h"
-#include "ui/ui_htmlview.h"
 #include "callbacks.h"
-#include "ui/ui_tray.h"
-#include "metadata.h"
+#include "common.h"
 #include "debug.h"
+#include "item.h"
+#include "metadata.h"
+#include "render.h"
+#include "support.h"
+#include "vfolder.h"
+#include "ui/ui_htmlview.h"
+#include "ui/ui_tray.h"
 
 /* function to create a new feed structure */
 itemPtr item_new(void) {
@@ -153,6 +154,20 @@ const gchar * item_get_base_url(itemPtr item) {
 		return itemset_get_base_url(item->itemSet);
 }
 
+gchar *item_render_single(itemPtr ip) {
+	gchar		**params = NULL, *output = NULL;
+	xmlDocPtr	doc;
+
+	if(doc = feed_to_xml(ip->sourceNode)) {
+		item_to_xml(ip, xmlDocGetRootElement(doc));
+		params = render_add_parameter(params, "pixmapsDir='file://" PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "'");
+		output = render_xml(doc, "item", params);
+		g_strfreev(params);
+		xmlFree(doc);
+	}
+	return output;
+}
+
 gchar *item_render(itemPtr ip) {
 	struct displayset	displayset;
 	gchar			*escapedSrc;
@@ -235,12 +250,6 @@ gchar *item_render(itemPtr ip) {
 		g_free(tmp2);	
 	}
 	
-	/* -- author line */
-	tmp = NULL;
-	if(metadata_list_get(ip->metadata, "author")) {
-		// FIXME:
-	}
-
 	addToHTMLBufferFast(&buffer, displayset.headtable);
 	g_free(displayset.headtable);
 	addToHTMLBufferFast(&buffer, HEAD_END);
@@ -278,7 +287,7 @@ gchar *item_render(itemPtr ip) {
 	addToHTMLBufferFast(&buffer, FEED_FOOT_FIRSTTD);
 	addToHTMLBufferFast(&buffer, _("date"));
 	addToHTMLBufferFast(&buffer, FEED_FOOT_NEXTTD);
-	tmp = ui_itemlist_format_date(ip->time);
+	tmp = common_format_date(ip->time, _("%m/%d %H:%M"));
 	addToHTMLBufferFast(&buffer, tmp);
 	g_free(tmp);
 	addToHTMLBufferFast(&buffer, FEED_FOOT_LASTTD);
@@ -360,7 +369,7 @@ itemPtr item_parse_cache(xmlNodePtr cur, gboolean migrateCache) {
 	return item;
 }
 
-void item_save(itemPtr ip, xmlNodePtr feedNode) {
+void item_to_xml(itemPtr ip, xmlNodePtr feedNode) {
 	xmlNodePtr	itemNode;
 	gchar		*tmp;
 	
@@ -409,6 +418,13 @@ void item_save(itemPtr ip, xmlNodePtr feedNode) {
 		tmp = g_strdup_printf("%ld", item_get_time(ip));
 		xmlNewTextChild(itemNode, NULL, "time", tmp);
 		g_free(tmp);
+		
+		/* @translators: localize this format string to change the 
+		   date format in HTML output */
+		tmp = common_format_date(item_get_time(ip), _("%b %d %H:%M"));
+		xmlNewTextChild(itemNode, NULL, "timestr", tmp);
+		g_free(tmp);
+		
 
 		metadata_add_xml_nodes(ip->metadata, itemNode);
 

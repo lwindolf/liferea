@@ -442,38 +442,14 @@ void feed_parse(feedParserCtxtPtr ctxt, gboolean autodiscover) {
 	debug_exit("feed_parse");
 }
 
-/*
- * Feeds caches are marked to be saved at a few different places:
- * (1) Inside whe feed_set_* functions where an item is marked or made read or unread
- * (2) Inside of feed_process_result
- * (3) The callback where items are removed from the itemlist
- *
- * This method really saves the feed to disk.
- */
-void feed_save_to_cache(nodePtr node) {
+xmlDocPtr feed_to_xml(nodePtr node) {
 	feedPtr		feed = (feedPtr)node->data;
 	xmlDocPtr 	doc;
 	xmlNodePtr 	feedNode;
-	GList		*itemlist, *iter;
-	gchar		*filename, *tmpfilename;
 	gchar		*tmp;
-	itemPtr		ip;
-	gint		saveCount = 0;
-	gint		saveMaxCount;
-			
-	debug_enter("feed_save_to_cache");
 	
-	debug2(DEBUG_CACHE, "saving feed: %s (id=%s)", feed->source, node->id);
-
-	saveMaxCount = feed->cacheLimit;
-	if(saveMaxCount == CACHE_DEFAULT)
-		saveMaxCount = getNumericConfValue(DEFAULT_MAX_ITEMS);
-	
-	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", node->id, NULL);
-	tmpfilename = g_strdup_printf("%s~", filename);
-	
-	if(NULL != (doc = xmlNewDoc("1.0"))) {	
-		if(NULL != (feedNode = xmlNewDocNode(doc, NULL, "feed", NULL))) {
+	if(doc = xmlNewDoc("1.0")) {	
+		if(feedNode = xmlNewDocNode(doc, NULL, "feed", NULL)) {
 			xmlDocSetRootElement(doc, feedNode);
 			xmlNewProp(feedNode, "version", BAD_CAST FEED_CACHE_VERSION);
 
@@ -490,11 +466,11 @@ void feed_save_to_cache(nodePtr node) {
 			xmlNewTextChild(feedNode, NULL, "feedUpdateInterval", tmp);
 			g_free(tmp);
 			
-			tmp = g_strdup_printf("%d", (TRUE == feed->available)?1:0);
+			tmp = g_strdup_printf("%d", feed->available?1:0);
 			xmlNewTextChild(feedNode, NULL, "feedStatus", tmp);
 			g_free(tmp);
 			
-			tmp = g_strdup_printf("%d", (TRUE == feed->discontinued)?1:0);
+			tmp = g_strdup_printf("%d", feed->discontinued?1:0);
 			xmlNewTextChild(feedNode, NULL, "feedDiscontinued", tmp);
 			g_free(tmp);
 			
@@ -502,38 +478,75 @@ void feed_save_to_cache(nodePtr node) {
 				xmlNewTextChild(feedNode, NULL, "feedLastModified", feed_get_lastmodified(feed));
 			
 			metadata_add_xml_nodes(feed->metadata, feedNode);
-
-			itemlist = g_list_copy(node->itemSet->items);
-			for(iter = itemlist; iter != NULL; iter = g_list_next(iter)) {
-				ip = iter->data;
-				g_assert(NULL != ip);
-				
-				if(saveMaxCount == CACHE_DISABLE)
-					continue;
-
-				if((saveMaxCount != CACHE_UNLIMITED) &&
-				   (saveCount >= saveMaxCount) &&
-				   (feed->fhp == NULL || feed->fhp->directory == FALSE) &&
-				   ! ip->flagStatus) {
-				   	itemlist_remove_item(ip);
-				} else {
-					item_save(ip, feedNode);
-					saveCount++;
-				}
-			}
-			g_list_free(itemlist);
 		} else {
 			g_warning("could not create XML feed node for feed cache document!");
 		}
+	} else {
+		g_warning("could not create XML document!");
+	}
+	
+	return doc;
+}
+
+/*
+ * Feeds caches are marked to be saved at a few different places:
+ * (1) Inside whe feed_set_* functions where an item is marked or made read or unread
+ * (2) Inside of feed_process_result
+ * (3) The callback where items are removed from the itemlist
+ *
+ * This method really saves the feed to disk.
+ */
+static void feed_save_to_cache(nodePtr node) {
+	feedPtr		feed = (feedPtr)node->data;
+	gchar		*filename, *tmpfilename;
+	gint		saveCount = 0;
+	gint		saveMaxCount;
+	GList		*iter, *itemlist;
+	xmlDocPtr 	doc;
+			
+	debug_enter("feed_save_to_cache");	
+
+	debug2(DEBUG_CACHE, "saving feed: %s (id=%s)", feed->source, node->id);
+
+	saveMaxCount = feed->cacheLimit;
+	if(saveMaxCount == CACHE_DEFAULT)
+		saveMaxCount = getNumericConfValue(DEFAULT_MAX_ITEMS);
+
+	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", node->id, NULL);
+	tmpfilename = g_strdup_printf("%s~", filename);
+	
+	/* Create the feed XML document */
+	if(doc = feed_to_xml(node)) {
+		xmlNodePtr feedNode = xmlDocGetRootElement(doc);
+
+		/* If necessary drop items according to cache settings
+		   otherwise add them to the feed XML document */		
+		itemlist = g_list_copy(node->itemSet->items);
+		for(iter = itemlist; iter != NULL; iter = g_list_next(iter)) {
+			itemPtr ip = iter->data;
+			
+			if(saveMaxCount == CACHE_DISABLE)
+				continue;
+
+			if((saveMaxCount != CACHE_UNLIMITED) &&
+			   (saveCount >= saveMaxCount) &&
+			   (feed->fhp == NULL || feed->fhp->directory == FALSE) &&
+			   ! ip->flagStatus) {
+				itemlist_remove_item(ip);
+			} else {
+				item_to_xml(ip, feedNode);
+				saveCount++;
+			}
+		}
+		g_list_free(itemlist);
+			
 		if(xmlSaveFormatFile(tmpfilename, doc,1) == -1) {
 			g_warning("Error attempting to save feed cache file \"%s\"!", tmpfilename);
 		} else {
-			if (rename(tmpfilename, filename) == -1)
+			if(rename(tmpfilename, filename) == -1)
 				perror("Error overwriting old cache file"); /* Nothing else can be done... probably the disk is going bad */
 		}
 		xmlFreeDoc(doc);
-	} else {
-		g_warning("could not create XML document!");
 	}
 	
 	g_free(tmpfilename);
@@ -674,12 +687,14 @@ itemSetPtr feed_load_from_cache(nodePtr node) {
 	return itemSet;
 }
 
+// FIXME: needed?
 void feed_cancel_retry(nodePtr node) {
 
 	if(node->updateRequest && update_request_cancel_retry(node->updateRequest))
 		node->updateRequest = NULL;
 }
 
+/* Checks wether updating a feed makes sense. */
 gboolean feed_can_be_updated(nodePtr node) {
 	feedPtr		feed = (feedPtr)node->data;
 

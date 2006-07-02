@@ -169,6 +169,15 @@ gpointer feed_import(nodePtr node, const gchar *typeStr, xmlNodePtr cur, gboolea
  */
 void feed_export(feedPtr fp, xmlNodePtr cur, gboolean internal);
 
+/**
+ * Serialization helper function for rendering and caching purposes.
+ *
+ * @param node		the feed node to serialize
+ * 
+ * @returns a new XML document
+ */
+xmlDocPtr feed_to_xml(nodePtr node);
+
 /* feed parsing */
 
 /**
@@ -187,31 +196,11 @@ feedParserCtxtPtr feed_create_parser_ctxt(void);
 void feed_free_parser_ctxt(feedParserCtxtPtr ctxt);
 
 /**
- * General feed source parsing function. Parses the passed feed source
- * and tries to determine the source type. If the type is HTML and 
- * autodiscover is TRUE the function tries to find a feed, tries to
- * download it and parse the feed's source instead of the passed source.
- *
- * @param ctxt		the feed parsing context
- * @param autodiscover	TRUE if auto discovery should be possible
- */
-void feed_parse(feedParserCtxtPtr ctxt, gboolean autodiscover);
-
-/**
  * Cancel feed request waiting to be retried, if any.
  *
  * @param node	the feed node
  */
 void feed_cancel_retry(nodePtr node);
-
-/**
- * Checks wether updating a feed makes sense.
- *
- * @param node	the feed node
- *
- * @returns TRUE if the feed can be updated.
- */
-gboolean feed_can_be_updated(nodePtr node);
 
 /**
  * Merging implementation for the feed itemset type.
@@ -223,11 +212,6 @@ gboolean feed_can_be_updated(nodePtr node);
  */
 gboolean feed_merge_check(itemSetPtr sp, itemPtr ip);
 
-/** 
- * To lookup an item given by it's unique item nr 
- */
-itemPtr feed_lookup_item(feedPtr fp, gulong nr);
-
 /* ------------------------------------------------------------ */
 /* feed property get/set 					*/
 /* ------------------------------------------------------------ */
@@ -237,19 +221,6 @@ itemPtr feed_lookup_item(feedPtr fp, gulong nr);
  */
 feedHandlerPtr feed_type_str_to_fhp(const gchar *str);
 const gchar *feed_type_fhp_to_str(feedHandlerPtr fhp);
-
-void feed_increase_unread_counter(feedPtr fp);
-void feed_decrease_unread_counter(feedPtr fp);
-gint feed_get_unread_counter(feedPtr fp);
-
-void feed_increase_popup_counter(feedPtr fp);
-void feed_decrease_popup_counter(feedPtr fp);
-gint feed_get_popup_counter(feedPtr fp);
-
-void feed_increase_new_counter(feedPtr fp);
-void feed_decrease_new_counter(feedPtr fp);
-gint feed_get_new_counter(feedPtr fp);
-
 
 gint feed_get_default_update_interval(feedPtr fp);
 void feed_set_default_update_interval(feedPtr fp, gint interval);
@@ -275,6 +246,7 @@ void feed_set_discontinued(feedPtr fp, gboolean discontinued);
  * @param resultcode the update code's return code (see update.h)
  */
 void feed_set_error_description(feedPtr fp, gint httpstatus, gint resultcode, gchar *filterErrors);
+
 /**
  * Returns a HTML string describing the last retrieval error 
  * of this feed. Should only be called when getFeedAvailable
@@ -284,9 +256,6 @@ void feed_set_error_description(feedPtr fp, gint httpstatus, gint resultcode, gc
  * @return HTML error description
  */
 gchar * feed_get_error_description(feedPtr fp);
-
-const gchar *feed_get_id(feedPtr fp);
-void feed_set_id(feedPtr fp, const gchar *id);
 
 time_t feed_get_time(feedPtr fp);
 void feed_set_time(feedPtr fp, time_t time);

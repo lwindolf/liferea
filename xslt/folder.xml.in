@@ -2,7 +2,7 @@
 
 <!--
 /**
- * Rendering stylesheet for Liferea
+ * Rendering stylesheet for Liferea (folder description view)
  *
  * Copyright (C) 2006 Lars Lindner <lars.lindner@gmx.net>
  *
@@ -25,7 +25,7 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"
                 xmlns="http://www.w3.org/1999/xhtml">
 
-<xsl:output method="xml" version="1.0" encoding="iso-8859-1" indent="yes"/>
+<xsl:output method="xml" version="1.0" indent="yes"/>
 
 <!-- node id of the folder in feedlist.opml -->
 <xsl:param name="id"/>   
@@ -51,7 +51,7 @@
 <table class="itemhead" cellspacing="0">
 <tr>
   <td valign="middle" class="headleft">
-    <b><_span>Source:</_span></b>
+    <b><_span>Folder:</_span></b>
   </td>
   <td width="100%" valign="middle" class="headright">
      <xsl:value-of select="@title"/>
@@ -61,7 +61,8 @@
 
 <div class='content'>
    <b><xsl:value-of select="count(*[@xmlUrl])"/></b>
-   <_span>Subscriptions with</_span> <b>316</b>
+   <_span>Subscriptions with</_span> 
+   <b><xsl:value-of select="$headlineCount"/></b>
    <_span>Headlines</_span> 
 </div>
 

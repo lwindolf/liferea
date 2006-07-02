@@ -2,7 +2,7 @@
 
 <!--
 /**
- * Rendering stylesheet for Liferea
+ * Rendering stylesheet for Liferea (feed list plugin description view)
  *
  * Copyright (C) 2006 Lars Lindner <lars.lindner@gmx.net>
  *
@@ -25,7 +25,7 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"
                 xmlns="http://www.w3.org/1999/xhtml">
 
-<xsl:output method="xml" version="1.0" encoding="iso-8859-1" indent="yes"/>
+<xsl:output method="xml" version="1.0" indent="yes"/>
 
 <!-- number of headlines of all child nodes -->
 <xsl:param name="headlineCount"/>
@@ -51,7 +51,8 @@
 <div class='content'>
    <b><xsl:value-of select="count(/opml/body//outline[@xmlUrl])"/></b>
    <_span>Subscriptions with</_span>
-   <b><xsl:value-of select="$headlineCount"/></b> <_span>Headlines</_span> 
+   <b><xsl:value-of select="$headlineCount"/></b> 
+   <_span>Headlines</_span> 
 </div>
 
 </body>
