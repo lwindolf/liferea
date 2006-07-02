@@ -141,7 +141,7 @@ gchar * formatDate(time_t t);
  *
  * @returns the path
  */
-gchar *	common_get_cache_path(void);
+const gchar *	common_get_cache_path(void);
 
 /**
  * Method to build cache file names.
@@ -149,34 +149,28 @@ gchar *	common_get_cache_path(void);
  * @param folder	a subfolder in the cache dir (optional)
  * @param filename	the cache filename
  * @param extension	the cache filename extension
+ *
+ * @returns a newly allocated filename string
  */
 gchar * common_create_cache_filename(const gchar *folder, const gchar *filename, const gchar *extension);
 
 /**
  * Encodes all non URI conformant characters in the passed
- * string to be included in a HTTP URI. The original string
- * is freed.
+ * string to be included in a HTTP URI.
  *
- * @param string	string to be URI-escaped
+ * @param string	string to be URI-escaped (will be freed)
+ *
  * @returns new string that can be inserted into a HTTP URI
  */
-gchar * encode_uri_string(gchar *string);
-
-/**
- * Encodes all non URI conformant characters in the passed
- * string and returns a valid HTTP URI. The original string
- * is freed.
- *
- * @param uri_string	string to be URI-escaped
- * @returns valid HTTP URI
- */
-gchar * encode_uri(gchar *uri_string);
+gchar * common_encode_uri_string(gchar *string);
 
 /**
  * Takes an URL and returns a new string containing
  * the escaped URL.
  *
- * @param url		the URL to escape
+ * @param url		the URL to escape (not freed)
+ *
+ * @returns new escaped URL string
  */
 xmlChar * common_uri_escape(const xmlChar *url);
 
@@ -186,12 +180,14 @@ xmlChar * common_uri_escape(const xmlChar *url);
  *
  * @param url		relative URL
  * @param baseURL	base URL
- * @returns resulting absolute URL
+ *
+ * @returns new string with resulting absolute URL
  */
 xmlChar * common_build_url(const gchar *url, const gchar *baseURL);
 
 #ifndef HAVE_STRSEP
-char *strsep (char **stringp, const char *delim);
+char * common_strsep(char **stringp, const char *delim);
+#define strsep(a,b) common_strsep(a,b)
 #endif
 
 /**
@@ -203,8 +199,16 @@ char *strsep (char **stringp, const char *delim);
  *
  * @returns a new modified string
  */
-gchar *strreplace(gchar *string, const gchar *delimiter, const gchar *replacement);
+gchar *common_strreplace(gchar *string, const gchar *delimiter, const gchar *replacement);
 
-char * liferea_strcasestr (const char *phaystack, const char *pneedle);
+/**
+ * Case sensitive strstr() like searching.
+ *
+ * @param pneedle	a string to find
+ * @param phaystack	the string to search in
+ *
+ * @returns first found position or NULL 
+ */
+char * common_strcasestr(const char *phaystack, const char *pneedle);
 
 #endif

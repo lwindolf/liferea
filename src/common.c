@@ -244,9 +244,9 @@ gchar * common_strip_dhtml(const gchar *html) {
 	
 	/* remove some nasty DHTML stuff from the given HTML content */
 	if(tmp = g_strdup(html)) {
-		tmp = strreplace(tmp, " onload=", " no_onload=");
-		tmp = strreplace(tmp, "script>", "no_script>");		
-		tmp = strreplace(tmp, "<script ", "<no_script ");		
+		tmp = common_strreplace(tmp, " onload=", " no_onload=");
+		tmp = common_strreplace(tmp, "script>", "no_script>");		
+		tmp = common_strreplace(tmp, "<script ", "<no_script ");		
 	}
 	
 	return tmp;
@@ -692,7 +692,7 @@ static void common_init_cache_path(void) {
 	/* lifereaUserPath reused globally */
 }
 
-gchar * common_get_cache_path(void) {
+const gchar * common_get_cache_path(void) {
 	
 	if(!lifereaUserPath)
 		common_init_cache_path();
@@ -720,7 +720,7 @@ static gchar * byte_to_hex(unsigned char nr) {
 	return result;
 }
 
-gchar * encode_uri_string(gchar *string) {
+gchar * common_encode_uri_string(gchar *string) {
 	gchar		*newURIString;
 	gchar		*hex, *tmp = NULL;
 	int		i, j, len, bytes;
@@ -789,8 +789,7 @@ xmlChar * common_uri_escape(const xmlChar *url) {
 	return result;	
 }
 
-/* to correctly escape and expand URLs, does not touch the
-   passed strings */
+/* to correctly escape and expand URLs */
 xmlChar * common_build_url(const gchar *url, const gchar *baseURL) {
 	xmlChar	*escapedURL, *absURL, *escapedBaseURL;
 
@@ -808,9 +807,8 @@ xmlChar * common_build_url(const gchar *url, const gchar *baseURL) {
 	return absURL;
 }
 
-#ifndef HAVE_STRSEP
 /* code taken from glibc-2.2.1/sysdeps/generic/strsep.c */
-char* strsep (char **stringp, const char *delim) {
+char * common_strsep (char **stringp, const char *delim) {
 	char *begin, *end;
 
 	begin = *stringp;
@@ -851,11 +849,10 @@ char* strsep (char **stringp, const char *delim) {
 		*stringp = NULL;
 	return begin;
 }
-#endif /*HAVE_STRSEP*/
 
 /* Taken from gaim 24 June 2004, copyrighted by the gaim developers
    under the GPL, etc.... It was slightly modified to free the passed string */
-gchar *strreplace(gchar *string, const gchar *delimiter, const gchar *replacement) {
+gchar * common_strreplace(gchar *string, const gchar *delimiter, const gchar *replacement) {
 	gchar **split;
 	gchar *ret;
 
@@ -876,7 +873,7 @@ typedef unsigned chartype;
 /* strcasestr is Copyright (C) 1994, 1996-2000, 2004 Free Software
    Foundation, Inc.  It was taken from the GNU C Library, which is
    licenced under the GPL v2.1 or (at your option) newer version. */
-char *liferea_strcasestr (const char *phaystack, const char *pneedle)
+char *common_strcasestr (const char *phaystack, const char *pneedle)
 {
 	register const unsigned char *haystack, *needle;
 	register chartype b, c;
