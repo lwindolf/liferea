@@ -27,12 +27,10 @@
 
 <xsl:output method="xml" version="1.0" indent="yes"/>
 
-<!-- the local pixmap directory (e.g. /usr/share/liferea/pixmaps) -->
-<xsl:param name="pixmapsDir"/>   
-
-<xsl:template match="/opml/body">
-	<xsl:apply-templates select="node()"/>
-</xsl:template>
+<!-- the local pixmap directory (e.g. /usr/share/liferea/pixmaps/) -->
+<xsl:param name="pixmapsDir"/>
+<!-- the icon cache directory (e.g. /home/joe/.liferea_1.1/cache/favicon/) -->
+<xsl:param name="iconCacheDir"/>
 
 <xsl:template match="/feed/*"/>
 
@@ -40,6 +38,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
 ##STYLE_INSERT##
 </head>
 <body>
@@ -51,28 +50,24 @@
 </xsl:attribute>
 
 <!-- header table -->
-<table class="itemhead" cellspacing="0">
+<table class="itemhead" cellspacing="0" cellpadding="0">
 <tr>
   <td valign="middle" class="headleft">
-    <b><_span>Abonnement:</_span></b>
-  </td>
-  <td class="headright" valign="middle" width="100%">
-    <!-- Feed title as link -->
+    <!-- Feed link as favicon -->
     <xsl:element name="a">
+      <xsl:attribute name="class">favicon</xsl:attribute>
       <xsl:attribute name="href">
-        <xsl:value-of select="/feed/feedSource"/>
+        <xsl:value-of select="/feed/feedLink"/>
       </xsl:attribute>
-      <xsl:value-of select="/feed/feedTitle"/>
+      <xsl:element name="img">
+        <xsl:attribute name="src"><xsl:value-of select="$iconCacheDir"/><xsl:value-of select="/feed/feedId"/>.png</xsl:attribute>
+      </xsl:element>
     </xsl:element>
-  </td>
-</tr>
-<tr>
-  <td valign="middle" class="headleft">
-    <b><_span>Headline:</_span></b>
   </td>
   <td width="100%" valign="middle" class="headright">
     <!-- Item title as link -->
     <xsl:element name="a">
+      <xsl:attribute name="class">itemhead</xsl:attribute>
       <xsl:attribute name="href">
         <xsl:value-of select="source"/>
       </xsl:attribute>
@@ -96,7 +91,7 @@
       </xsl:element>
     </xsl:element>
   </td>
-  <td>
+  <td width="99%">
     <xsl:element name="a">
       <xsl:attribute name="class">enclosure</xsl:attribute>
       <xsl:attribute name="href"><xsl:value-of select="."/></xsl:attribute>
@@ -111,10 +106,10 @@
 </xsl:for-each>
 
 <!-- header metadata (author + categories + date) -->
-<table id='headmeta' width="100%" cellspacing="0" cellpadding="0">
+<table id='headmeta' cellspacing="0" cellpadding="0">
+<xsl:if test="attributes/attribute[ @name = 'category' ]">
 <tr>
  <td valign="top">
-  <xsl:if test="attributes/attribute[ @name = 'category' ]">
      <_span id='categories_in'>Filed under</_span>  
      <span id='categories'>
        <xsl:for-each select="attributes/attribute[ @name = 'category' ]">
@@ -122,18 +117,22 @@
          <xsl:value-of select="."/>
        </xsl:for-each>
      </span>
-  </xsl:if>
-  <xsl:if test="attributes/attribute[ @name = 'author' ]">
-     <_span id='author_by'>by</_span>
+ </td>
+</tr>
+</xsl:if>
+<xsl:if test="attributes/attribute[ @name = 'author' ]">
+<tr>
+ <td valign="top"> 
+     <_span id='author_by'>Author</_span>
      <span id='author'>
        <xsl:value-of select="attributes/attribute[ @name = 'author' ]"/>
      </span>
-  </xsl:if>
  </td>
  <!--<td valign="top">
   <span><div id='date'><xsl:value-of select="timestr"/></div></span>
  </td>-->
 </tr>
+</xsl:if>
 </table>
 
 <div class='content'>
@@ -144,7 +143,7 @@
 <table class="feedfoot"><tr class="feedfoot"><td class="feedfootname"><span class="feedfootname">Datum</span></td><td class="feedfootvalue"><span class="feedfootvalue">02.07. - 10:31</span></td></tr><tr class="feedfoot"><td class="feedfootname"><span class="feedfootname">Kategorien</span></td><td class="feedfootvalue"><span class="feedfootvalue">Wirtschaft</span></td></tr></table>-->
 
 <!-- table below footer for comment link and search engine link -->
-<table width="100%" style="margin-top:5px;margin-bottom:5px;">
+<table width="100%" id="commentlink">
 <tr>
 <td>
 

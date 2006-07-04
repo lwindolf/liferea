@@ -59,10 +59,10 @@ dd {
 /* styles for the item description (currently also used for
    the feed description) */
 table.itemhead {
-	margin:0;
-	padding: 2px 2px 2px 2px;
-	width:100%;
 	background-color:#DDD;
+	margin:0;
+	padding: 2px;
+	width:100%;
 	border:0;
 	border-bottom: 1px solid #888;
 	clear:both;
@@ -79,19 +79,20 @@ td.headright {
 }
 
 #headmeta {
+	background:#F0F0F0;
+	width:100%;
+	border-top:#FFF solid 1px;
+	border-bottom:#C0C0C0 solid 1px;
 	padding:3px 6px 3px 12px;
 	font-size:0.8em;
+	margin:0;
 }
 
 #author, #categories {
         padding:0;
 	margin-left:0;
         margin-right:12px;
-	color:#444
-}
-
-#author_by, #categories_in {
-	color:#aaa;
+	font-weight:bold;
 }
 
 #date {
@@ -104,13 +105,21 @@ div.content, div.foottext {
 	padding:2px 6px 0px 12px;
 }
 
-img {
-	margin-top:2px;
-	margin-bottom:2px;
+#commentlink {
+	padding-left:9px;
+	margin-top:5px;
+	margin-bottom:5px;
 }
 
-a.favicon {
-	display:none;
+img {
+	margin:2px;
+}
+
+a.favicon img {
+	width:16px;
+
+	border:0;
+	margin:0;
 }
 
 /*
@@ -343,6 +352,7 @@ table.enclosure {
 	width:100%;
 	margin:0;
 	border:0;
+	border-top:#FFF solid 1px;
 	border-bottom:#C0C0C0 solid 1px;
 	padding-left:9px;
 }

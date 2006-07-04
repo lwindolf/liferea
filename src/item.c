@@ -161,6 +161,7 @@ gchar *item_render_single(itemPtr ip) {
 	if(doc = feed_to_xml(ip->sourceNode)) {
 		item_to_xml(ip, xmlDocGetRootElement(doc));
 		params = render_add_parameter(params, "pixmapsDir='file://" PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "'");
+		params = render_add_parameter(params, "iconCacheDir='file://%s%s'", common_get_cache_path(), G_DIR_SEPARATOR_S "cache" G_DIR_SEPARATOR_S "favicons" G_DIR_SEPARATOR_S);
 		output = render_xml(doc, "item", params);
 		g_strfreev(params);
 		xmlFree(doc);

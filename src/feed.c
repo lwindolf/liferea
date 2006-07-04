@@ -453,6 +453,7 @@ xmlDocPtr feed_to_xml(nodePtr node) {
 			xmlDocSetRootElement(doc, feedNode);
 			xmlNewProp(feedNode, "version", BAD_CAST FEED_CACHE_VERSION);
 
+			xmlNewTextChild(feedNode, NULL, "feedId", node_get_id(node));
 			xmlNewTextChild(feedNode, NULL, "feedTitle", node_get_title(node));
 			xmlNewTextChild(feedNode, NULL, "feedSource", feed_get_source(feed));
 			
