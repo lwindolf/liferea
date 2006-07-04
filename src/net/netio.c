@@ -255,7 +255,8 @@ void *NetConnectGnutls(int *fd) {
 	gnutls_session session = NULL;
 	static const int cert_type_priority[2] = { GNUTLS_CRT_X509, 0 };
 	int ret;
-	
+
+	gnutls_init(&session, GNUTLS_CLIENT);	
 	gnutls_set_default_priority(session);
 	gnutls_certificate_type_set_priority(session, cert_type_priority);
 	gnutls_credentials_set(session, GNUTLS_CRD_CERTIFICATE, xcred);
