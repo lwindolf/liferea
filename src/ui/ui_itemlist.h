@@ -1,7 +1,7 @@
 /**
  * @file ui_itemlist.h item list/view handling
  *
- * Copyright (C) 2004-2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2006 Lars Lindner <lars.lindner@gmx.net>
  * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
  *	      
  * This library is free software; you can redistribute it and/or
@@ -58,9 +58,6 @@ GtkTreeStore * ui_itemlist_get_tree_store(void);
  * date format changes.
  */
 void ui_itemlist_reset_date_format(void);
-
-/* methods needs to but should not be exposed... */
-gchar * ui_itemlist_format_date(time_t t);
 
 /**
  * Unselect all items in the list and scroll to top. This is typically
