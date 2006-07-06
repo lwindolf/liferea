@@ -4,6 +4,8 @@ liferea.desktop.in
 xslt/fl_plugin.xml.in
 xslt/folder.xml.in
 xslt/item.xml.in
+xslt/itemset.xml.in
+xslt/summary.xml.in
 src/callbacks.c
 src/callbacks.h
 src/common.c

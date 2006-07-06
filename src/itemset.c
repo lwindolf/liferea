@@ -22,14 +22,13 @@
 #include "itemset.h"
 #include <string.h>
 #include "conf.h"
-#include "debug.h"
-#include "node.h"
-#include "feed.h"
-#include "vfolder.h"
 #include "common.h"
+#include "debug.h"
+#include "feed.h"
+#include "node.h"
+#include "render.h"
 #include "support.h"
-#include "ui/ui_htmlview.h"
-#include "ui/ui_mainwindow.h"
+#include "vfolder.h"
 
 const gchar * itemset_get_base_url(itemSetPtr itemSet) {
 	const gchar 	*baseUrl = NULL;
@@ -53,47 +52,15 @@ const gchar * itemset_get_base_url(itemSetPtr itemSet) {
 	return baseUrl;
 }
 
-// FIXME: remove me!
-gchar * itemset_render_item(itemSetPtr itemSet, itemPtr item) {
-	gchar		*tmp, *buffer = NULL;
-	const gchar	*baseUrl;
-
-	debug_enter("itemset_render_item");
-
-	baseUrl = itemset_get_base_url(itemSet);
-	ui_htmlview_start_output(&buffer, baseUrl, TRUE);
-
-	if(item) {
-		if(baseUrl) {
-			addToHTMLBufferFast(&buffer, "<div href='");
-			addToHTMLBufferFast(&buffer, itemset_get_base_url(itemSet));
-			addToHTMLBufferFast(&buffer, "'>");
-		}
-
-		tmp = item_render(item);
-		addToHTMLBufferFast(&buffer, tmp);
-		g_free(tmp);
-
-		if(baseUrl)
-			addToHTMLBufferFast(&buffer, "</div>");
-	}
-
-	ui_htmlview_finish_output(&buffer);
-
-	debug_exit("itemset_render_item");
-
-	return buffer;
-}
-
 gchar * itemset_render_all(itemSetPtr itemSet) {
-	gchar		*buffer = NULL;
-	gchar		*summary = NULL;
+	gchar		**params = NULL, *output = NULL;
 	gboolean	summaryMode = FALSE;
 	gboolean	loadReadItems;
 	GList		*iter;
+	xmlDocPtr	doc;
 
 	debug_enter("itemset_render_all");
-
+	
 	/* determine wether we want to filter read items */
 	switch(itemSet->type) {
 		case ITEMSET_TYPE_FOLDER:
@@ -105,9 +72,7 @@ gchar * itemset_render_all(itemSetPtr itemSet) {
 	}
 	
 	/* for future: here we could apply an item list filter... */
-
-	ui_htmlview_start_output(&buffer, itemset_get_base_url(itemSet), FALSE);
-
+	
 	if(ITEMSET_TYPE_FOLDER != itemSet->type) {
 		guint missingContent = 0;	
 		
@@ -117,105 +82,36 @@ gchar * itemset_render_all(itemSetPtr itemSet) {
 		   sets displaying everything in summary because of only a
 		   single feed without item descriptions would make no sense. */
 		   
-		for(iter = itemSet->items; NULL != iter; iter = g_list_next(iter)) {
+		iter = itemSet->items;
+		while(iter) {
 			gchar *desc = ((itemPtr)iter->data)->description;
 			if(!desc || (0 == strlen(desc)))
 				missingContent++;
-		}
-
-		summaryMode = (missingContent > 3);
-		
-		if(summaryMode) {
-			gchar *tmp, *tmp2;
-			const gchar *htmlurl = itemset_get_base_url(itemSet);
-
-			addToHTMLBufferFast(&summary, HEAD_START);
-
-			/* -- empty feed line */
-			addToHTMLBufferFast(&summary, HEAD_LINE);
-
-			/* -- item title line (with the feed as title) */
-			if(htmlurl)
-				tmp = g_markup_printf_escaped("<span class=\"itemtitle\"><a href=\"%s\">%s</a></span>",
-		                			      htmlurl, node_get_title(itemSet->node));
-			else
-				tmp = g_markup_printf_escaped("<span class=\"itemtitle\">%s</span>",
-		                			      node_get_title(itemSet->node));
-
-			tmp2 = g_strdup_printf(HEAD_LINE, _("Feed:"), tmp);
-			g_free(tmp);
-			addToHTMLBufferFast(&summary, tmp2);
-			g_free(tmp2);		
-			addToHTMLBufferFast(&summary, HEAD_END);
-			addToHTMLBufferFast(&summary, SUMMARY_START);
-		}
+				
+			if(summaryMode = (missingContent > 3))
+				break;
+				
+			iter = g_list_next(iter);
+		}		
 	}
+	
+	/* do the XML serialization */
+	doc = feed_to_xml(itemSet->node, TRUE);
 	
 	iter = itemSet->items;
-	while(iter) {	
-		itemPtr item = (itemPtr)iter->data;
-		
-		if((FALSE == item->readStatus) || (TRUE == loadReadItems)) {
-			const gchar *baseUrl = item_get_base_url(item);
-			gchar *tmp;
-
-			if(FALSE == summaryMode) {
-
-				/* do detailed output */		
-				if(baseUrl) {
-					addToHTMLBufferFast(&buffer, "<div href='");
-					addToHTMLBufferFast(&buffer, baseUrl);
-					addToHTMLBufferFast(&buffer, "'>");
-				}
-
-				if(item->readStatus) 
-					addToHTMLBuffer(&buffer, UNSHADED_START);
-				else
-					addToHTMLBuffer(&buffer, SHADED_START);
-
-				tmp = item_render(item);			
-				addToHTMLBuffer(&buffer, tmp);
-				g_free(tmp);
-
-				if(item->readStatus)
-					addToHTMLBuffer(&buffer, UNSHADED_END);
-				else
-					addToHTMLBuffer(&buffer, SHADED_END);
-
-				if(baseUrl)
-					addToHTMLBufferFast(&buffer, "</div>");
-			} else {
-				/* Do summary output */
-				tmp = g_markup_printf_escaped(item->readStatus?SUMMARY_LINE_START_UNSHADED:SUMMARY_LINE_START_SHADED, 
-			                        	      item_get_source(item), item_get_title(item));
-				addToHTMLBuffer(&summary, tmp);
-				
-				/* If we are in summary mode, some items might still have
-				   description and those should be presented. To do so we
-				   simply add this content right after the title. */
-				if(item->description && (0 < strlen(item->description)))
-					addToHTMLBuffer(&summary, item->description);
-
-				addToHTMLBuffer(&summary, SUMMARY_LINE_END);
-				g_free(tmp);
-			}
-		}
-
+	while(iter) {
+		item_to_xml((itemPtr)iter->data, xmlDocGetRootElement(doc), TRUE);
 		iter = g_list_next(iter);
 	}
-	
-	if(summaryMode) {
-		/* output summary of headlines without description */
-		addToHTMLBufferFast(&summary, SUMMARY_END);
-		addToHTMLBufferFast(&buffer, summary);
-		g_free(summary);
-	}
+		
+	/* and finally the XSLT rendering transformation */
+	params = render_add_parameter(params, "pixmapsDir='file://" PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "'");
+	params = render_add_parameter(params, "baseUrl='%s'", itemset_get_base_url(itemSet));
+	output = render_xml(doc, summaryMode?"summary":"itemset", params);
+	g_strfreev(params);
+	xmlFree(doc);
 
-	ui_htmlview_finish_output(&buffer);
-
-	debug_exit("itemset_render_all");
-
-	return buffer;
+	return output;
 }
 
 itemPtr itemset_lookup_item(itemSetPtr itemSet, nodePtr node, gulong nr) {

@@ -72,6 +72,7 @@ typedef struct item {
 
 /**
  * Allocates a new item structure.
+ *
  * @returns the new structure
  */
 itemPtr 	item_new(void);
@@ -81,7 +82,7 @@ itemPtr 	item_new(void);
  * linked to the original item to allow state update
  * propagation (to be used with vfolders).
  */
-itemPtr		item_copy(itemPtr ip);
+itemPtr		item_copy(itemPtr item);
 
 /**
  * Returns the base URL for the given item.
@@ -93,10 +94,13 @@ itemPtr		item_copy(itemPtr ip);
 const gchar * item_get_base_url(itemPtr item);
 
 /**
- * Returns a HTML string with a representation of the item
- * @param ip the item to render
+ * Returns a XHTML string with a representation of the item.
+ *
+ * @param item	the item to render
+ *
+ * @returns XHTML string
  */
-gchar *item_render(itemPtr ip);
+gchar *item_render_single(itemPtr item);
 
 /**
  * Free the memory used by an itempointer. The item needs to be
@@ -104,34 +108,34 @@ gchar *item_render(itemPtr ip);
  *
  * @param ip the item to remove
  */
-void	item_free(itemPtr ip);
+void	item_free(itemPtr item);
 
 /* methods to access properties */
-/** Returns the id of ip. */
-const gchar *	item_get_id(itemPtr ip);
-/** Returns the title of ip. */
-const gchar *	item_get_title(itemPtr ip);
-/** Returns the description of ip. */
-const gchar *	item_get_description(itemPtr ip);
-/** Returns the source of ip. */
-const gchar *	item_get_source(itemPtr ip);
-/** Returns the real source of ip. */
-const gchar *	item_get_real_source_url(itemPtr ip);
-/** Returns the real source title of ip. */
-const gchar *	item_get_real_source_title(itemPtr ip);
+/** Returns the id of item. */
+const gchar *	item_get_id(itemPtr item);
+/** Returns the title of item. */
+const gchar *	item_get_title(itemPtr item);
+/** Returns the description of item. */
+const gchar *	item_get_description(itemPtr item);
+/** Returns the source of item. */
+const gchar *	item_get_source(itemPtr item);
+/** Returns the real source of item. */
+const gchar *	item_get_real_source_url(itemPtr item);
+/** Returns the real source title of item. */
+const gchar *	item_get_real_source_title(itemPtr item);
 
-/** Sets the ip's title */
-void		item_set_title(itemPtr ip, const gchar * title);
-/** Sets the ip's description */
-void		item_set_description(itemPtr ip, const gchar * description);
-/** Sets the ip's source */
-void		item_set_source(itemPtr ip, const gchar * source);
-/** Sets the ip's real source */
-void		item_set_real_source_url(itemPtr ip, const gchar * source);
-/** Sets the ip's real source title */
-void		item_set_real_source_title(itemPtr ip, const gchar * source);
-/** Sets the ip's id */
-void		item_set_id(itemPtr ip, const gchar * id);
+/** Sets the item title */
+void		item_set_title(itemPtr item, const gchar * title);
+/** Sets the item description */
+void		item_set_description(itemPtr item, const gchar * description);
+/** Sets the item source */
+void		item_set_source(itemPtr item, const gchar * source);
+/** Sets the item real source */
+void		item_set_real_source_url(itemPtr item, const gchar * source);
+/** Sets the item real source title */
+void		item_set_real_source_title(itemPtr item, const gchar * source);
+/** Sets the item id */
+void		item_set_id(itemPtr item, const gchar * id);
 
 /**
  * Parse an xml tree and return a new item generated 

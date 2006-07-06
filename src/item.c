@@ -151,151 +151,17 @@ const gchar * item_get_base_url(itemPtr item) {
 		return itemset_get_base_url(item->itemSet);
 }
 
-gchar *item_render_single(itemPtr ip) {
+gchar *item_render_single(itemPtr item) {
 	gchar		**params = NULL, *output = NULL;
 	xmlDocPtr	doc;
 
-	if(doc = feed_to_xml(ip->sourceNode, TRUE)) {
-		item_to_xml(ip, xmlDocGetRootElement(doc), TRUE);
-		params = render_add_parameter(params, "pixmapsDir='file://" PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "'");
-		output = render_xml(doc, "item", params);
-		g_strfreev(params);
-		xmlFree(doc);
-	}
+	doc = feed_to_xml(item->sourceNode, TRUE);
+	item_to_xml(item, xmlDocGetRootElement(doc), TRUE);
+	params = render_add_parameter(params, "pixmapsDir='file://" PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "'");
+	output = render_xml(doc, "item", params);
+	xmlFree(doc);
+
 	return output;
-}
-
-gchar *item_render(itemPtr ip) {
-	struct displayset	displayset;
-	gchar			*escapedSrc;
-	gchar			*buffer = NULL;
-	const gchar		*htmlurl = NULL;
-	gchar			*tmp, *tmp2;
-	xmlChar			*tmp3;
-	nodePtr			np;
-	
-	displayset.headtable = NULL;
-	displayset.head = NULL;
-	displayset.body = common_strip_dhtml(item_get_description(ip));
-	displayset.foot = NULL;
-	displayset.foottable = NULL;
-	
-	metadata_list_render(ip->metadata, &displayset);	
-	
-	escapedSrc = g_markup_escape_text(item_get_source(ip), -1);
-
-	/* Head table */
-	addToHTMLBufferFast(&buffer, HEAD_START);
-
-	g_assert(ip->sourceNode);
-	np = ip->sourceNode;
-	
-	if(FST_FEED == np->type)
-		htmlurl = feed_get_html_url((feedPtr)np->data);
-
-	/*  -- Feed line */
-	if(htmlurl)
-		tmp = g_markup_printf_escaped("<span class=\"feedtitle\"><a href=\"%s\">%s</a></span>",
-		                              htmlurl, node_get_title(np));
-	else
-		tmp = g_markup_printf_escaped("<span class=\"feedtitle\">%s</span>",
-		                              node_get_title(np));
-
-	tmp2 = g_strdup_printf(HEAD_LINE, _("Feed:"), tmp);
-	g_free(tmp);
-	addToHTMLBufferFast(&buffer, tmp2);
-	g_free(tmp2);
-
-	/*  -- Item line */
-	if(np->icon) {
-		tmp2 = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", np->id, "png");
-		tmp = g_markup_printf_escaped("<a class=\"favicon\" href=\"%s\"><img src=\"file://%s\" alt=\"\" /></a>", htmlurl, tmp2);
-		g_free(tmp2);
-	} else {
-		tmp2 = g_strdup(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "available.png");
-		tmp = g_markup_printf_escaped("<a class=\"favicon\" href=\"%s\"><img src=\"file://%s\" alt=\"\" /></a>", htmlurl, tmp2);
-		g_free(tmp2);
-	}
-	tmp3 = g_markup_escape_text(item_get_title(ip)?item_get_title(ip):_("[No title]"), -1);
-	if(item_get_source(ip))
-		tmp2 = g_strdup_printf("<span class=\"itemtitle\">%s<a href=\"%s\">%s</a></span>",
-		                       tmp, escapedSrc, tmp3);
-	else
-		tmp2 = g_strdup_printf("<span class=\"itemtitle\">%s%s</span>", tmp, tmp3);
-	g_free(tmp);
-	g_free(tmp3);
-	
-	tmp = g_strdup_printf(HEAD_LINE, _("Item:"), tmp2);
-	g_free(tmp2);
-	addToHTMLBufferFast(&buffer, tmp);
-	g_free(tmp);
-
-	/*  -- real source line */
-	tmp = NULL;
-	if(item_get_real_source_url(ip))
-		tmp = g_markup_printf_escaped("<span class=\"itemsource\"><a href=\"%s\">%s</a></span>",
-			              item_get_real_source_url(ip),
-			              item_get_real_source_title(ip)? item_get_real_source_title(ip) : _("[No title]"));
-	else if(item_get_real_source_title(ip) != NULL)
-		tmp = g_markup_printf_escaped("<span class=\"itemsource\">%s</span>",
-			              item_get_real_source_title(ip));
-
-	if(tmp) {
-		tmp2 = g_strdup_printf(HEAD_LINE, _("Source:"), tmp);
-		g_free(tmp);
-		addToHTMLBufferFast(&buffer, tmp2);
-		g_free(tmp2);	
-	}
-	
-	addToHTMLBufferFast(&buffer, displayset.headtable);
-	g_free(displayset.headtable);
-	addToHTMLBufferFast(&buffer, HEAD_END);
-
-	/* Head */
-	if(displayset.head) {
-		addToHTMLBufferFast(&buffer, displayset.head);
-		g_free(displayset.head);
-	}
-
-	if(displayset.body) {
-		addToHTMLBufferFast(&buffer, "<div class='content'>");
-		addToHTMLBufferFast(&buffer, displayset.body);
-		addToHTMLBufferFast(&buffer, "</div>");
-		g_free(displayset.body);
-	}
-
-	if(displayset.foot) {
-		addToHTMLBufferFast(&buffer, displayset.foot);
-		g_free(displayset.foot);
-	}
-
-	/* add technorati link */
-	tmp3 = common_uri_escape(escapedSrc);
-	tmp2 = g_strdup("file://" PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "technorati.png");
-	tmp = g_strdup_printf(TECHNORATI_LINK, tmp3, tmp2);
-	addToHTMLBufferFast(&buffer, tmp);
-	xmlFree(tmp3);
-	g_free(tmp2);
-	g_free(tmp);
-
-	addToHTMLBufferFast(&buffer, FEED_FOOT_TABLE_START);
-		
-	/* add the date before the other meta-data */
-	addToHTMLBufferFast(&buffer, FEED_FOOT_FIRSTTD);
-	addToHTMLBufferFast(&buffer, _("date"));
-	addToHTMLBufferFast(&buffer, FEED_FOOT_NEXTTD);
-	tmp = common_format_date(ip->time, _("%m/%d %H:%M"));
-	addToHTMLBufferFast(&buffer, tmp);
-	g_free(tmp);
-	addToHTMLBufferFast(&buffer, FEED_FOOT_LASTTD);
-		
-	addToHTMLBufferFast(&buffer, displayset.foottable);
-	addToHTMLBufferFast(&buffer, FEED_FOOT_TABLE_END);
-	g_free(displayset.foottable);
-
-	g_free(escapedSrc);
-
-	return buffer;
 }
 
 itemPtr item_parse_cache(xmlNodePtr cur, gboolean migrateCache) {

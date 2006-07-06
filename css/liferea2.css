@@ -59,114 +59,72 @@ dd {
 /* styles for the item description (currently also used for
    the feed description) */
 table.itemhead {
-	margin:0;
-	padding:0;
-	width:100%;
 	background-color:#DDD;
+	margin:0;
+	padding: 2px;
+	width:100%;
 	border:0;
-	border-bottom: 1px solid #AAA;
+	border-bottom: 1px solid #888;
 	clear:both;
 }
 
-table.itemhead tr:first-child {
-	display:none;
+table.itemhead * a {
+	text-decoration:none;
+	color:black;
 }
 
 td.headleft {
-	display:none;
+	padding:2px 2px;
+	text-align:right;
+	white-space:nowrap;	/* workaround to prevent buggy gtkhtml2 word wrappings */
 }
 
 td.headright {
 	padding:2px 5px;
 }
 
-div.content, div.commentlink {
-	padding:8px 6px 0px 12px;
+#headmeta {
+	background:#F0F0F0;
+	width:100%;
+	border-top:#FFF solid 1px;
+	border-bottom:#C0C0C0 solid 1px;
+	padding:3px 6px 3px 12px;
+	font-size:0.8em;
+	margin:0;
+}
+
+#author, #categories, #source {
+        padding:0;
+	margin-left:0;
+        margin-right:12px;
+	font-weight:bold;
+}
+
+#date {
+	white-space:nowrap;
+	text-align:right;
+	padding-right:5px;
+}
+
+div.content, div.foottext {
+	padding:2px 6px 0px 12px;
+}
+
+#commentlink {
+	padding-left:9px;
+	margin-top:5px;
+	margin-bottom:5px;
 }
 
 img {
-	margin-top: 2px;
-	margin-bottom: 2px;
+	margin:2px;
 }
 
 a.favicon img {
 	width:16px;
+
 	border:0;
-	margin-right:5px;
-}
-
-span.feedtitle {
-	display:none;
-}
-
-span.itemtitle {
-	font-size:1.2em;
-	display:block;
-}
-
-span.itemtitle a {
-	color:black;
-	text-decoration:none;
-}
-
-/* styles to display generic namespace augmentation in the 
-   item/feed description footer */
-   
-div.feedfoottitle {
-	font-size:0.7em;
-	color:#888;
-}
-
-table.feedfoot {
-	display:none;
-/*	width:100%;
-	border-width:1px;
-	border-top-style:solid;
-	border-color:#D0D0D0;
-	margin-bottom:5px;
-	border-collapse:collapse;*/	/* needed for footer with Mozilla */
-	clear:both;
-}
-
-table.addfoot {	/* used for namespace additions (admin, ag,...) */
-	width:100%;
-	border-width:1px;
-	border-top-style:solid;
-	border-color:#D0D0D0;
-	margin-bottom:5px;
-	border-collapse:collapse;	/* needed for footer with Mozilla */
-}
-
-tr.feedfoot {
-	border-width:0;
-	border-bottom-width:1px;
-	border-style:dashed;
-	border-color:#D0D0D0;
-}
-
-td.feedfootname {
-	width:30%;
-	padding-left: 5px;
-}
-
-span.feedfootname {
-	font-size:0.8em;
-	color:#888;
-}
-
-/* 
-td.feedfootvalue {
-}
-*/
-
-span.feedfootvalue {
-	font-size:0.8em;
-	color:#888;
-}
-
-/* channel images */
-img.feed {
-	display:none;
+	margin:0;
 }
 
 /* OCS specific styles */
@@ -253,6 +211,7 @@ li.summaryshaded a {
 	text-decoration:none;
 	color:black;
 	padding:4px 0px;
+	font-weight:bold;
 }
 
 li.summaryunshaded a {

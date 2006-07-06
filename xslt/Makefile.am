@@ -1,7 +1,10 @@
 
 xslt_in_files = item.xml.in \
+                itemset.xml.in \
                 fl_plugin.xml.in \
-                folder.xml.in
+                folder.xml.in \
+                summary.xml.in
+
 xslt_files = $(xslt_in_files:.xml.in=.xml) i18n-filter.xslt
 xsltdir = $(pkgdatadir)/xslt
 xslt_DATA = $(xslt_in_files) $(xslt_files)

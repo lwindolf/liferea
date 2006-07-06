@@ -122,65 +122,6 @@ a.favicon img {
 	margin:0;
 }
 
-/*
-span.feedtitle { }
-span.itemtitle { }
-*/
-
-/* styles to display generic namespace augmentation in the 
-   item/feed description footer */
-   
-div.feedfoottitle {
-	font-size:0.7em;
-	color:#888;
-}
-
-table.feedfoot {
-	width:100%;
-	border-width:1px;
-	border-top-style:solid;
-	border-color:#D0D0D0;
-	margin-bottom:5px;
-	border-collapse:collapse;	/* needed for footer with Mozilla */
-	clear:both;
-}
-
-table.addfoot {	/* used for namespace additions (admin, ag,...) */
-	width:100%;
-	border-width:1px;
-	border-top-style:solid;
-	border-color:#D0D0D0;
-	margin-bottom:5px;
-	border-collapse:collapse;	/* needed for footer with Mozilla */
-}
-
-tr.feedfoot {
-	border-width:0;
-	border-bottom-width:1px;
-	border-style:dashed;
-	border-color:#D0D0D0;
-}
-
-td.feedfootname {
-	width:30%;
-	padding-left: 5px;
-}
-
-span.feedfootname {
-	font-size:0.8em;
-	color:#888;
-}
-
-/* 
-td.feedfootvalue {
-}
-*/
-
-span.feedfootvalue {
-	font-size:0.8em;
-	color:#888;
-}
-
 /* channel images */
 img.feed {
 	margin:6px 6px 0 6px;

@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+/**
+ * Rendering stylesheet for Liferea (multi headline view)
+ *
+ * Copyright (C) 2006 Lars Lindner <lars.lindner@gmx.net>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version. 
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+--> 
+
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"
+                xmlns="http://www.w3.org/1999/xhtml">
+
+<xsl:output method="xml" version="1.0" indent="yes"/>
+
+<!-- the local pixmap directory (e.g. /usr/share/liferea/pixmaps/) -->
+<xsl:param name="pixmapsDir"/>
+<!-- the base URL of the rendered item set -->
+<xsl:param name="baseUrl"/>
+
+<xsl:template match="/feed">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+##STYLE_INSERT##
+</head>
+<body>
+
+<!-- base URL of the itemset -->
+<xsl:element name="div">
+<xsl:attribute name="href">
+   <xsl:value-of select="$baseUrl"/>
+</xsl:attribute>
+
+<xsl:for-each select="item">
+  <xsl:call-template name="item"/>
+</xsl:for-each>
+
+</xsl:element> <!-- end of base URL div -->
+
+</body>
+</html>
+
+</xsl:template>
+
+<xsl:template name="item">
+
+<!-- header table -->
+<table class="itemhead" cellspacing="0" cellpadding="0">
+<tr>
+  <td valign="middle" class="headleft">
+    <!-- Feed link as favicon -->
+    <xsl:element name="a">
+      <xsl:attribute name="class">favicon</xsl:attribute>
+      <xsl:attribute name="href">
+        <xsl:value-of select="/feed/feedLink"/>
+      </xsl:attribute>
+      <xsl:element name="img">
+        <xsl:attribute name="src">
+          <xsl:choose>
+            <xsl:when test="not(sourceFavicon)">
+              <xsl:value-of select="/feed/favicon"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="sourceFavicon"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:attribute>
+      </xsl:element>
+    </xsl:element>
+  </td>
+  <td width="100%" valign="middle" class="headright">
+    <!-- Item title as link -->
+    <xsl:element name="a">
+      <xsl:attribute name="class">itemhead</xsl:attribute>
+      <xsl:attribute name="href">
+        <xsl:value-of select="source"/>
+      </xsl:attribute>
+      <xsl:value-of select="title"/>
+    </xsl:element>
+  </td>
+</tr>
+</table>
+
+<!-- enclosures -->
+<xsl:for-each select="attributes/attribute[ @name = 'enclosure' ]">
+<table class="enclosure" cellpadding="0" cellspacing="0">
+<tr>
+  <td>
+    <xsl:element name="a">
+      <xsl:attribute name="href">liferea-enclosure://load?<xsl:value-of select="."/></xsl:attribute>
+      <xsl:element name="img">
+        <xsl:attribute name="border">0</xsl:attribute>
+        <xsl:attribute name="class">enclosurebtn</xsl:attribute>
+	<xsl:attribute name="src"><xsl:value-of select="$pixmapsDir"/>arrow.png</xsl:attribute>
+      </xsl:element>
+    </xsl:element>
+  </td>
+  <td width="99%">
+    <xsl:element name="a">
+      <xsl:attribute name="class">enclosure</xsl:attribute>
+      <xsl:attribute name="href"><xsl:value-of select="."/></xsl:attribute>
+      <xsl:call-template name="substring-after-last">
+        <xsl:with-param name="input"  select="." />
+        <xsl:with-param name="substr" select="'/'" />
+      </xsl:call-template>
+    </xsl:element>
+  </td>
+</tr>
+</table>
+</xsl:for-each>
+
+<!-- header metadata (author + categories + date) -->
+<table id='headmeta' cellspacing="0" cellpadding="0">
+<xsl:if test="attributes/attribute[ @name = 'category' ]">
+<tr>
+ <td valign="top">
+     <_span id='categories_in'>Filed under</_span>  
+     <span id='categories'>
+       <xsl:for-each select="attributes/attribute[ @name = 'category' ]">
+         <xsl:if test="position() != 1">, </xsl:if>
+         <xsl:value-of select="."/>
+       </xsl:for-each>
+     </span>
+ </td>
+</tr>
+</xsl:if>
+<xsl:if test="attributes/attribute[ @name = 'author' ]">
+<tr>
+ <td valign="top"> 
+     <_span id='author_by'>Author</_span>
+     <span id='author'>
+       <xsl:value-of select="attributes/attribute[ @name = 'author' ]"/>
+     </span>
+ </td>
+ <!--<td valign="top">
+  <span><div id='date'><xsl:value-of select="timestr"/></div></span>
+ </td>-->
+</tr>
+</xsl:if>
+<xsl:if test="real_source_url">
+<tr>
+ <td valign="top"> 
+     <_span id='source_from'>Source</_span>
+     <span id='source'>
+       <xsl:element name="a">
+         <xsl:attribute name="href">
+           <xsl:value-of select="real_source_url"/>
+         </xsl:attribute>
+         <xsl:value-of select="real_source_title"/>
+       </xsl:element>
+     </span>
+ </td>
+</tr>
+</xsl:if>
+</table>
+
+<div class='content'>
+   <xsl:value-of select="description" disable-output-escaping='yes'/>
+</div>
+
+<!-- FIXME footer!!!
+<table class="feedfoot"><tr class="feedfoot"><td class="feedfootname"><span class="feedfootname">Datum</span></td><td class="feedfootvalue"><span class="feedfootvalue">02.07. - 10:31</span></td></tr><tr class="feedfoot"><td class="feedfootname"><span class="feedfootname">Kategorien</span></td><td class="feedfootvalue"><span class="feedfootvalue">Wirtschaft</span></td></tr></table>-->
+
+<!-- table below footer for comment link and search engine link -->
+<table width="100%" id="commentlink">
+<tr>
+<td>
+
+<!-- Comments link -->
+<xsl:if test="attributes/attribute[ @name = 'commentsUri' ]">
+  <div class='commentlink'>
+    (<xsl:element name="a">
+       <xsl:attribute name="href">
+         <xsl:value-of select="attributes/attribute[ @name = 'commentsUri' ]"/>
+       </xsl:attribute>
+       <_span>comments</_span>
+     </xsl:element>)
+  </div>
+</xsl:if>
+
+</td>
+<td>
+
+<!-- Technorati link -->
+<div class="technorati">
+<xsl:element name="a">
+  <xsl:attribute name="href">http://www.technorati.com/cosmos/search.html?url=<xsl:value-of select="source"/>
+  </xsl:attribute>
+  <xsl:element name="img">
+    <xsl:attribute name="border">0</xsl:attribute>
+    <xsl:attribute name="alt">[Technorati]</xsl:attribute>
+    <xsl:attribute name="src"><xsl:value-of select="$pixmapsDir"/>technorati.png</xsl:attribute>
+  </xsl:element>
+</xsl:element>
+</div>
+
+</td>
+</tr>
+</table> <!-- end of comment and search engine link table -->
+
+</xsl:template>
+
+<!-- substring after last occurance also from "XSLT Cookbook"...-->
+<xsl:template name="substring-after-last">
+    <xsl:param name="input" />
+    <xsl:param name="substr" />
+    
+    <!-- Extract the string which comes after the first occurence -->
+    <xsl:variable name="temp" select="substring-after($input,$substr)"/>
+    
+    <xsl:choose>
+      <!-- If it still contains the search string then recursively process -->
+      <xsl:when test="$substr and contains($temp,$substr)">
+        <xsl:call-template name="substring-after-last">
+          <xsl:with-param name="input"  select="$temp" />
+          <xsl:with-param name="substr" select="$substr" />
+        </xsl:call-template>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="$temp" />
+      </xsl:otherwise>
+    </xsl:choose>
+</xsl:template>
+
+</xsl:stylesheet>

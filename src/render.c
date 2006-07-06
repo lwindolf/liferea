@@ -138,7 +138,6 @@ GString * render_get_css(gboolean twoPane) {
 	}	
 
 	if(twoPane) {
-		g_string_append(buffer, "body { style=\"padding:0px;\" }\n");
 		defaultStyleSheetFile = g_strdup(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "css" G_DIR_SEPARATOR_S "liferea2.css");
 		styleSheetFile = g_strdup_printf("%s" G_DIR_SEPARATOR_S "liferea2.css", common_get_cache_path());
 	} else {
