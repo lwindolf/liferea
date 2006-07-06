@@ -114,7 +114,8 @@ static void itemlist_render(void) {
 	if(TRUE == itemlist_get_two_pane_mode()) {
 		/* in 2 pane mode all items are shown at once
 		   so after merging it needs to be redisplayed */
-		buffer = itemset_render_all(displayed_itemSet);
+		if(displayed_itemSet)
+			buffer = itemset_render_all(displayed_itemSet);
 	} else {
 		/* in 3 pane mode we don't update the HTML view
 		   except when no item is selected (when loading
