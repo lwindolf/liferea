@@ -442,7 +442,7 @@ void feed_parse(feedParserCtxtPtr ctxt, gboolean autodiscover) {
 	debug_exit("feed_parse");
 }
 
-xmlDocPtr feed_to_xml(nodePtr node) {
+xmlDocPtr feed_to_xml(nodePtr node, gboolean rendering) {
 	feedPtr		feed = (feedPtr)node->data;
 	xmlDocPtr 	doc;
 	xmlNodePtr 	feedNode;
@@ -477,6 +477,10 @@ xmlDocPtr feed_to_xml(nodePtr node) {
 			
 			if(feed_get_lastmodified(feed)) 
 				xmlNewTextChild(feedNode, NULL, "feedLastModified", feed_get_lastmodified(feed));
+				
+			if(rendering) {
+				xmlNewTextChild(feedNode, NULL, "favicon", node_get_favicon_file(node));
+			}
 			
 			metadata_add_xml_nodes(feed->metadata, feedNode);
 		} else {
@@ -517,7 +521,7 @@ static void feed_save_to_cache(nodePtr node) {
 	tmpfilename = g_strdup_printf("%s~", filename);
 	
 	/* Create the feed XML document */
-	if(doc = feed_to_xml(node)) {
+	if(doc = feed_to_xml(node, FALSE)) {
 		xmlNodePtr feedNode = xmlDocGetRootElement(doc);
 
 		/* If necessary drop items according to cache settings
@@ -535,7 +539,7 @@ static void feed_save_to_cache(nodePtr node) {
 			   ! ip->flagStatus) {
 				itemlist_remove_item(ip);
 			} else {
-				item_to_xml(ip, feedNode);
+				item_to_xml(ip, feedNode, FALSE);
 				saveCount++;
 			}
 		}
@@ -829,7 +833,7 @@ gboolean feed_merge_check(itemSetPtr sp, itemPtr new_ip) {
 				/* no item_set_new_status() - we don't treat changed items as new items! */
 				item_set_title(old_ip, item_get_title(new_ip));
 				item_set_description(old_ip, item_get_description(new_ip));
-				item_set_time(old_ip, item_get_time(new_ip));
+				old_ip->time = new_ip->time;
 				old_ip->updateStatus = TRUE;
 				metadata_list_free(old_ip->metadata);
 				old_ip->metadata = new_ip->metadata;

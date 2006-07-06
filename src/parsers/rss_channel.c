@@ -283,8 +283,8 @@ static void rss_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 				xmlNodePtr item = cur->xmlChildrenNode;
 				while(item) {
 					if(ctxt->item = parseRSSItem(ctxt, cur)) {
-						if(0 == item_get_time(ctxt->item))
-							item_set_time(ctxt->item, ctxt->feed->time);
+						if(0 == ctxt->item->time)
+							ctxt->item->time = ctxt->feed->time;
 						itemset_append_item(ctxt->itemSet, ctxt->item);
 					}
 					item = item->next;
@@ -292,8 +292,8 @@ static void rss_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 			} else if((!xmlStrcmp(cur->name, BAD_CAST"item"))) { /* RSS 1.0, 2.0 */
 				/* collect channel items */
 				if(ctxt->item = parseRSSItem(ctxt, cur)) {
-					if(0 == item_get_time(ctxt->item))
-						item_set_time(ctxt->item, ctxt->feed->time);
+					if(0 == ctxt->item->time)
+						ctxt->item->time = ctxt->feed->time;
 					itemset_append_item(ctxt->itemSet, ctxt->item);
 				}
 				

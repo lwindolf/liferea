@@ -41,6 +41,13 @@ nodePtr feedlist_get_root(void);
  */
 nodePtr feedlist_get_selected(void);
 
+/**
+ * Get the node insertion point for new subscriptions. 
+ *
+ * @returns a parent node for new subscriptions
+ */
+nodePtr feedlist_get_insertion_point(void);
+
 /** 
  * Get the parent node of the currently 
  * selected node. Can be used to determine

@@ -71,8 +71,8 @@ static void parseCDFChannel(feedParserCtxtPtr ctxt, xmlNodePtr cur, CDFChannelPt
 
 		} else if((!xmlStrcasecmp(cur->name, BAD_CAST"item"))) {
 			if(ctxt->item = parseCDFItem(ctxt, cur, cp)) {
-				if(0 == item_get_time(ctxt->item))
-					item_set_time(ctxt->item, cp->time);
+				if(0 == ctxt->item->time)
+					ctxt->item->time = cp->time;
 				itemset_append_item(ctxt->itemSet, ctxt->item);
 			}
 

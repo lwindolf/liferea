@@ -88,7 +88,7 @@ itemPtr parseRSSItem(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 		/* check for specific tags */
 		else if(!xmlStrcmp(cur->name, BAD_CAST"pubDate")) {
  			if(tmp = utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1))) {
-				item_set_time(ctxt->item, parseRFC822Date(tmp));
+				ctxt->item->time = parseRFC822Date(tmp);
 				g_free(tmp);
 			}
 		} 

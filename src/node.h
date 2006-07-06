@@ -54,7 +54,8 @@ typedef struct node {
 
 	struct request		*updateRequest;	/**< update request structure used when downloading content (is not to be listed in the requests list!) */
 	GSList			*requests;	/**< list of other active download requests attached belonging to this node */
-
+	
+	gchar			*iconFile;	/**< the path of the favicon file */
 
 	/* feed list state properties of this node */
 	struct node		*parent;	/**< the parent node (or NULL if at root level) */
@@ -213,6 +214,31 @@ void node_update_unread_count(nodePtr node, gint diff);
  * @param node	the node to process
  */
 void node_mark_all_read(nodePtr node);
+
+/**
+ * Assigns a new pixmaps as the favicon representing this node.
+ *
+ * @param node		the node
+ * @param icon		a pixmap or NULL
+ */
+void node_set_icon(nodePtr node, gpointer icon);
+
+/**
+ * Returns the favicon pixmaps of the given node.
+ *
+ * @returns a pixmap or NULL
+ */
+gpointer node_get_icon(nodePtr node);
+
+/**
+ * Returns the name of the favicon cache file for the given node.
+ * If there is no favicon a default icon file name will be returned.
+ *
+ * @param node		the node
+ *
+ * @return a file name
+ */
+const gchar * node_get_favicon_file(nodePtr node);
 
 /**
  * Returns a new unique node id.

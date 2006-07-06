@@ -173,10 +173,12 @@ void feed_export(feedPtr fp, xmlNodePtr cur, gboolean internal);
  * Serialization helper function for rendering and caching purposes.
  *
  * @param node		the feed node to serialize
+ * @param rendering	TRUE if XML output is to be used
+ *                  	for rendering (adds some more tags)
  * 
  * @returns a new XML document
  */
-xmlDocPtr feed_to_xml(nodePtr node);
+xmlDocPtr feed_to_xml(nodePtr node, gboolean rendering);
 
 /* feed parsing */
 

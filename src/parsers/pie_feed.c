@@ -268,8 +268,8 @@ static void pie_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 				
 			} else if((!xmlStrcmp(cur->name, BAD_CAST"entry"))) {
 				if(ctxt->item = parseEntry(ctxt, cur)) {
-					if(0 == item_get_time(ctxt->item))
-						item_set_time(ctxt->item, ctxt->feed->time);
+					if(0 == ctxt->item->time)
+						ctxt->item->time = ctxt->feed->time;
 					itemset_append_item(ctxt->itemSet, ctxt->item);
 				}
 			}

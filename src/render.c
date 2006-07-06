@@ -99,6 +99,7 @@ xsltStylesheetPtr render_load_stylesheet(const gchar *xsltName) {
 	return xslt;
 }
 
+// FIXME: keep CSS in memory
 GString * render_get_css(gboolean twoPane) {
 	GString	*buffer;
 	gchar	*font = NULL;

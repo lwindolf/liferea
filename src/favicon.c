@@ -42,7 +42,7 @@
 #include "ui/ui_feed.h"
 #include "ui/ui_node.h"
 
-void favicon_load(nodePtr np) {
+void favicon_load(nodePtr node) {
 	struct stat	statinfo;
 	GTimeVal	now;
 	gchar		*filename;
@@ -52,14 +52,12 @@ void favicon_load(nodePtr np) {
 	debug_enter("favicon_load");
 	
 	/* try to load a saved favicon */
-	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", node_get_id(np), "png");
+	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", node_get_id(node), "png");
 	
 	if(0 == stat((const char*)filename, &statinfo)) {
 		pixbuf = gdk_pixbuf_new_from_file(filename, &error);
-		if(pixbuf != NULL) {
-			if(np->icon != NULL)
-				g_object_unref(np->icon);
-			np->icon = gdk_pixbuf_scale_simple(pixbuf, 16, 16, GDK_INTERP_BILINEAR);
+		if(pixbuf) {
+			node_set_icon(node, gdk_pixbuf_scale_simple(pixbuf, 16, 16, GDK_INTERP_BILINEAR));
 			g_object_unref(pixbuf);
 		} else { /* Error */
 			fprintf(stderr, "Failed to load pixbuf file: %s: %s\n",
@@ -69,9 +67,9 @@ void favicon_load(nodePtr np) {
 		
 		/* check creation date and update favicon if older than one month */
 		g_get_current_time(&now);
-		if(now.tv_sec > (((feedPtr)(np->data))->lastFaviconPoll.tv_sec + 60*60*24*31)) {
+		if(now.tv_sec > (((feedPtr)(node->data))->lastFaviconPoll.tv_sec + 60*60*24*31)) {
 			debug1(DEBUG_UPDATE, "updating favicon %s\n", filename);
-			favicon_download(np);
+			favicon_download(node);
 		}
 	}
 	g_free(filename);	

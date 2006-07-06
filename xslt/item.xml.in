@@ -29,8 +29,6 @@
 
 <!-- the local pixmap directory (e.g. /usr/share/liferea/pixmaps/) -->
 <xsl:param name="pixmapsDir"/>
-<!-- the icon cache directory (e.g. /home/joe/.liferea_1.1/cache/favicon/) -->
-<xsl:param name="iconCacheDir"/>
 
 <xsl:template match="/feed/*"/>
 
@@ -60,7 +58,16 @@
         <xsl:value-of select="/feed/feedLink"/>
       </xsl:attribute>
       <xsl:element name="img">
-        <xsl:attribute name="src"><xsl:value-of select="$iconCacheDir"/><xsl:value-of select="/feed/feedId"/>.png</xsl:attribute>
+        <xsl:attribute name="src">
+          <xsl:choose>
+            <xsl:when test="not(sourceFavicon)">
+              <xsl:value-of select="/feed/favicon"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="sourceFavicon"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:attribute>
       </xsl:element>
     </xsl:element>
   </td>

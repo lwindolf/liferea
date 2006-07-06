@@ -38,12 +38,13 @@
 
 struct feed;	/* see feed.h */
 
-/** An item stores a particular entry in a feed or a search.
-    Each item belongs to an item set. An itemset is a collection
-    of items. There are different item set types (e.g. feed,
-    folder,vfolder or plugin). Each item has a source node.
-    The item set node and the item source node is different
-    for folders and vfolders. */
+/**
+ * An item stores a particular entry in a feed or a search.
+ *  Each item belongs to an item set. An itemset is a collection
+ *  of items. There are different item set types (e.g. feed,
+ *  folder,vfolder or plugin). Each item has a source node.
+ *  The item set node and the item source node is different
+ *  for folders and vfolders. */
 typedef struct item {
 	/* those fields should not be accessed directly. Accessors are provided. */
 	gboolean 	readStatus;		/**< TRUE if the item has been read */
@@ -51,16 +52,16 @@ typedef struct item {
 	gboolean	popupStatus;		/**< TRUE if the item was downloaded and is yet to be displayed by the popup notification feature */
 	gboolean	updateStatus;		/**< TRUE if the item content was updated */
 	gboolean 	flagStatus;		/**< TRUE if the item has been flagged */
-	gchar		*title;			/**< item title */
-	gchar		*source;		/**< URL to the item */
-	gchar		*real_source_url;	/**< (optional) URL of the real source */
+	gchar		*title;			/**< Title */
+	gchar		*source;		/**< URL to the post online */
+	gchar		*real_source_url;	/**< (optional) URL of the real source (e.g. if listed in search engine result) */
 	gchar		*real_source_title;	/**< (optional) title of the real source */
-	gchar		*description;		/**< HTML string containing the item's description */
+	gchar		*description;		/**< XHTML string containing the item's description */
 	gchar		*id;			/**< "Unique" syndication item identifier, for example <guid> in RSS */
 	
 	GSList		*metadata;		/**< Metadata of this item */
 	GHashTable	*tmpdata;		/**< Temporary data hash used during stateful parsing */
-	time_t		time;			/**< Item's modified date */
+	time_t		time;			/**< Last modified date of the headline */
 	
 	gulong		nr;			/**< Per item set unique item id */
 	struct itemSet	*itemSet;		/**< Pointer to the item set containing this item  */
@@ -118,8 +119,6 @@ const gchar *	item_get_source(itemPtr ip);
 const gchar *	item_get_real_source_url(itemPtr ip);
 /** Returns the real source title of ip. */
 const gchar *	item_get_real_source_title(itemPtr ip);
-/** Returns the modification time of ip. */
-time_t	item_get_time(itemPtr ip);
 
 /** Sets the ip's title */
 void		item_set_title(itemPtr ip, const gchar * title);
@@ -131,8 +130,6 @@ void		item_set_source(itemPtr ip, const gchar * source);
 void		item_set_real_source_url(itemPtr ip, const gchar * source);
 /** Sets the ip's real source title */
 void		item_set_real_source_title(itemPtr ip, const gchar * source);
-/** Sets the ip's modification time */
-void		item_set_time(itemPtr ip, const time_t time);
 /** Sets the ip's id */
 void		item_set_id(itemPtr ip, const gchar * id);
 
@@ -153,7 +150,9 @@ itemPtr item_parse_cache(xmlNodePtr cur, gboolean migrateCache);
  *
  * @param item		the item to save to cache
  * @param feedNode	the XML node to add to
+ * @param rendering	TRUE if XML output is to be used
+ *                  	for rendering (adds some more tags)
  */
-void item_to_xml(itemPtr item, xmlNodePtr feedNode);
+void item_to_xml(itemPtr item, xmlNodePtr feedNode, gboolean rendering);
 
 #endif

@@ -423,28 +423,28 @@ void ui_itemlist_prefocus(void) {
 		gtk_widget_grab_focus(focus_widget);		
 }
 
-void ui_itemlist_add_item(itemPtr ip, gboolean merge) {
+void ui_itemlist_add_item(itemPtr item, gboolean merge) {
 	GtkTreeStore	*itemstore = ui_itemlist_get_tree_store();
 	GtkTreeIter	old_iter;
 	gboolean	exists;
 
-	exists = ui_item_to_iter(ip, &old_iter);
+	exists = ui_item_to_iter(item, &old_iter);
 	
-	if(exists && !ip->newStatus) {
+	if(exists && !item->newStatus) {
 		/* nothing to do */
 	} else {
 		GtkTreeIter *iter = &old_iter;
 		if(!exists) {
 			iter = g_new0(GtkTreeIter, 1);
 			gtk_tree_store_prepend(itemstore, iter, NULL);
-			g_hash_table_insert(item_to_iter, (gpointer)ip, (gpointer)iter);
+			g_hash_table_insert(item_to_iter, (gpointer)item, (gpointer)iter);
 		}	
 		gtk_tree_store_set(itemstore, iter,
-		                	      IS_NR, ip->nr,
-					      IS_PARENT, ip->itemSet->node,
-		                	      IS_TIME, item_get_time(ip),
+		                	      IS_NR, item->nr,
+					      IS_PARENT, item->itemSet->node,
+		                	      IS_TIME, item->time,
 		                	      -1);
-		ui_itemlist_update_item(ip);
+		ui_itemlist_update_item(item);
 	}
 }
 

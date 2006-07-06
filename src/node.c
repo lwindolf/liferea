@@ -72,6 +72,7 @@ nodePtr node_new() {
 	node->sortReversed = TRUE;	/* default sorting is newest date at top */
 	node->available = FALSE;
 	node->type = FST_INVALID;
+	node_set_icon(node, NULL);	/* initialize favicon file name */
 
 	return node;
 }
@@ -135,6 +136,7 @@ void node_free(nodePtr node) {
 	g_slist_free(node->requests);
 
 	g_object_unref(node->icon);
+	g_free(node->iconFile);
 	g_free(node->title);
 	g_free(node->id);
 	g_free(node);
@@ -494,6 +496,22 @@ guint node_get_unread_count(nodePtr node) {
 	
 	return node->unreadCount; 
 }
+
+void node_set_icon(nodePtr node, gpointer icon) {
+
+	if(node->icon) 
+		g_object_unref(node->icon);
+	node->icon = icon;
+
+	if(node->icon)
+		node->iconFile = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", node->id, "png");
+	else
+		node->iconFile = g_strdup(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "available.png");
+}
+
+gpointer node_get_icon(nodePtr node) { return node->icon; }
+
+const gchar * node_get_favicon_file(nodePtr node) { return node->iconFile; }
 
 void node_set_id(nodePtr node, const gchar *id) {
 

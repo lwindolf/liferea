@@ -93,7 +93,7 @@ void item_set_description(itemPtr ip, const gchar * description) {
 void item_set_source(itemPtr ip, const gchar * source) { 
 
 	g_free(ip->source);
-	if(NULL != source) 
+	if(source) 
 		ip->source = g_strchomp(g_strdup(source));
 	else
 		ip->source = NULL;
@@ -102,7 +102,7 @@ void item_set_source(itemPtr ip, const gchar * source) {
 void item_set_real_source_url(itemPtr ip, const gchar * source) { 
 
 	g_free(ip->real_source_url);
-	if(NULL != source)
+	if(source)
 		ip->real_source_url = g_strchomp(g_strdup(source));
 	else
 		ip->real_source_url = NULL;
@@ -111,26 +111,23 @@ void item_set_real_source_url(itemPtr ip, const gchar * source) {
 void item_set_real_source_title(itemPtr ip, const gchar * source) { 
 
 	g_free(ip->real_source_title);
-	if(NULL != source)
+	if(source)
 		ip->real_source_title = g_strchomp(g_strdup(source));
 	else
 		ip->real_source_title = NULL;
 }
-
-void item_set_time(itemPtr ip, const time_t t) { ip->time = t; }
 
 void item_set_id(itemPtr ip, const gchar * id) {
 	g_free(ip->id);
 	ip->id = g_strdup(id);
 }
 
-const gchar *	item_get_id(itemPtr ip) { return (ip != NULL ? ip->id : NULL); }
-const gchar *	item_get_title(itemPtr ip) {return (ip != NULL ? ip->title : NULL); }
-const gchar *	item_get_description(itemPtr ip) { return (ip != NULL ? ip->description : NULL); }
-const gchar *	item_get_source(itemPtr ip) { return (ip != NULL ? ip->source : NULL); }
-const gchar *	item_get_real_source_url(itemPtr ip) { return (ip != NULL ? ip->real_source_url : NULL); }
-const gchar *	item_get_real_source_title(itemPtr ip) { return (ip != NULL ? ip->real_source_title : NULL); }
-time_t	item_get_time(itemPtr ip) { return (ip != NULL ? ip->time : 0); }
+const gchar *	item_get_id(itemPtr ip) { return ip->id; }
+const gchar *	item_get_title(itemPtr ip) {return ip->title; }
+const gchar *	item_get_description(itemPtr ip) { return ip->description; }
+const gchar *	item_get_source(itemPtr ip) { return ip->source; }
+const gchar *	item_get_real_source_url(itemPtr ip) { return ip->real_source_url; }
+const gchar *	item_get_real_source_title(itemPtr ip) { return ip->real_source_title; }
 
 void item_free(itemPtr ip) {
 
@@ -158,10 +155,9 @@ gchar *item_render_single(itemPtr ip) {
 	gchar		**params = NULL, *output = NULL;
 	xmlDocPtr	doc;
 
-	if(doc = feed_to_xml(ip->sourceNode)) {
-		item_to_xml(ip, xmlDocGetRootElement(doc));
+	if(doc = feed_to_xml(ip->sourceNode, TRUE)) {
+		item_to_xml(ip, xmlDocGetRootElement(doc), TRUE);
 		params = render_add_parameter(params, "pixmapsDir='file://" PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "'");
-		params = render_add_parameter(params, "iconCacheDir='file://%s%s'", common_get_cache_path(), G_DIR_SEPARATOR_S "cache" G_DIR_SEPARATOR_S "favicons" G_DIR_SEPARATOR_S);
 		output = render_xml(doc, "item", params);
 		g_strfreev(params);
 		xmlFree(doc);
@@ -316,7 +312,7 @@ itemPtr item_parse_cache(xmlNodePtr cur, gboolean migrateCache) {
 	while(cur) {
 		
 		if(cur->type != XML_ELEMENT_NODE ||
-		   NULL == (tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)))) {
+		   !(tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)))) {
 			cur = cur->next;
 			continue;
 		}
@@ -355,7 +351,7 @@ itemPtr item_parse_cache(xmlNodePtr cur, gboolean migrateCache) {
 			item->flagStatus = (1 == atoi(tmp))?TRUE:FALSE;
 			
 		else if(!xmlStrcmp(cur->name, BAD_CAST"time"))
-			item_set_time(item, atol(tmp));
+			item->time = atol(tmp);
 			
 		else if(!xmlStrcmp(cur->name, BAD_CAST"attributes"))
 			item->metadata = metadata_parse_xml_nodes(cur);
@@ -370,66 +366,68 @@ itemPtr item_parse_cache(xmlNodePtr cur, gboolean migrateCache) {
 	return item;
 }
 
-void item_to_xml(itemPtr ip, xmlNodePtr feedNode) {
+void item_to_xml(itemPtr item, xmlNodePtr feedNode, gboolean rendering) {
 	xmlNodePtr	itemNode;
 	gchar		*tmp;
 	
-	if(NULL != (itemNode = xmlNewChild(feedNode, NULL, "item", NULL))) {
+	itemNode = xmlNewChild(feedNode, NULL, "item", NULL);
+	g_return_if_fail(itemNode);
 
-		/* should never happen... */
-		if(NULL == item_get_title(ip))
-			item_set_title(ip, "");
-		xmlNewTextChild(itemNode, NULL, "title", item_get_title(ip));
+	if(NULL == item_get_title(item))
+		item_set_title(item, "");
+	xmlNewTextChild(itemNode, NULL, "title", item_get_title(item));
 
-		if(NULL != item_get_description(ip))
-			xmlNewTextChild(itemNode, NULL, "description", item_get_description(ip));
+	if(item_get_description(item))
+		xmlNewTextChild(itemNode, NULL, "description", item_get_description(item));
 
-		if(NULL != item_get_source(ip))
-			xmlNewTextChild(itemNode, NULL, "source", item_get_source(ip));
+	if(item_get_source(item))
+		xmlNewTextChild(itemNode, NULL, "source", item_get_source(item));
 
-		if(NULL != item_get_real_source_title(ip))
-			xmlNewTextChild(itemNode, NULL, "real_source_title", item_get_real_source_title(ip));
+	if(item_get_real_source_title(item))
+		xmlNewTextChild(itemNode, NULL, "real_source_title", item_get_real_source_title(item));
 
-		if(NULL != item_get_real_source_url(ip))
-			xmlNewTextChild(itemNode, NULL, "real_source_url", item_get_real_source_url(ip));
+	if(item_get_real_source_url(item))
+		xmlNewTextChild(itemNode, NULL, "real_source_url", item_get_real_source_url(item));
 
-		if(NULL != item_get_id(ip))
-			xmlNewTextChild(itemNode, NULL, "id", item_get_id(ip));
+	if(item_get_id(item))
+		xmlNewTextChild(itemNode, NULL, "id", item_get_id(item));
 
-		tmp = g_strdup_printf("%ld", ip->nr);
-		xmlNewTextChild(itemNode, NULL, "nr", tmp);
-		g_free(tmp);
+	tmp = g_strdup_printf("%ld", item->nr);
+	xmlNewTextChild(itemNode, NULL, "nr", tmp);
+	g_free(tmp);
 
-		tmp = g_strdup_printf("%d", (TRUE == ip->newStatus)?1:0);
-		xmlNewTextChild(itemNode, NULL, "newStatus", tmp);
-		g_free(tmp);
+	tmp = g_strdup_printf("%d", item->newStatus?1:0);
+	xmlNewTextChild(itemNode, NULL, "newStatus", tmp);
+	g_free(tmp);
 
-		tmp = g_strdup_printf("%d", (TRUE == ip->readStatus)?1:0);
-		xmlNewTextChild(itemNode, NULL, "readStatus", tmp);
-		g_free(tmp);
-		
-		tmp = g_strdup_printf("%d", (TRUE == ip->updateStatus)?1:0);
-		xmlNewTextChild(itemNode, NULL, "updateStatus", tmp);
-		g_free(tmp);
+	tmp = g_strdup_printf("%d", item->readStatus?1:0);
+	xmlNewTextChild(itemNode, NULL, "readStatus", tmp);
+	g_free(tmp);
 
-		tmp = g_strdup_printf("%d", (TRUE == ip->flagStatus)?1:0);
-		xmlNewTextChild(itemNode, NULL, "mark", tmp);
-		g_free(tmp);
+	tmp = g_strdup_printf("%d", item->updateStatus?1:0);
+	xmlNewTextChild(itemNode, NULL, "updateStatus", tmp);
+	g_free(tmp);
 
-		tmp = g_strdup_printf("%ld", item_get_time(ip));
-		xmlNewTextChild(itemNode, NULL, "time", tmp);
-		g_free(tmp);
-		
+	tmp = g_strdup_printf("%d", item->flagStatus?1:0);
+	xmlNewTextChild(itemNode, NULL, "mark", tmp);
+	g_free(tmp);
+
+	tmp = g_strdup_printf("%ld", item->time);
+	xmlNewTextChild(itemNode, NULL, "time", tmp);
+	g_free(tmp);
+
+	if(rendering) {
+
 		/* @translators: localize this format string to change the 
 		   date format in HTML output */
-		tmp = common_format_date(item_get_time(ip), _("%b %d %H:%M"));
+		tmp = common_format_date(item->time, _("%b %d %H:%M"));
 		xmlNewTextChild(itemNode, NULL, "timestr", tmp);
 		g_free(tmp);
 		
+		if(item->sourceNode != item->itemSet->node)
+			xmlNewTextChild(itemNode, NULL, "sourceFavicon", node_get_favicon_file(item->sourceNode));
+		
+	}		
 
-		metadata_add_xml_nodes(ip->metadata, itemNode);
-
-	} else {
-		g_warning("could not write XML item node!\n");
-	}
+	metadata_add_xml_nodes(item->metadata, itemNode);
 }

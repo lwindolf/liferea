@@ -349,7 +349,7 @@ static void atom10_parse_entry_published(xmlNodePtr cur, feedParserCtxtPtr ctxt,
 	gchar *datestr;
 	
 	if(datestr = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))) {
-		item_set_time(ctxt->item, parseISO8601Date(datestr));
+		ctxt->item->time = parseISO8601Date(datestr);
 		ctxt->item->metadata = metadata_list_append(ctxt->item->metadata, "pubDate", datestr);
 		g_free(datestr);
 	}
@@ -391,7 +391,7 @@ static void atom10_parse_entry_updated(xmlNodePtr cur, feedParserCtxtPtr ctxt, s
 	gchar *datestr;
 	
 	if(datestr = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))) {
-		item_set_time(ctxt->item, parseISO8601Date(datestr));
+		ctxt->item->time = parseISO8601Date(datestr);
 		ctxt->item->metadata = metadata_list_append(ctxt->item->metadata, "contentUpdateDate", datestr);
 		g_free(datestr);
 	}
@@ -471,8 +471,8 @@ static itemPtr atom10_parse_entry(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 	/* after parsing we fill the infos into the itemPtr structure */
 	ctxt->item->readStatus = FALSE;
 	
-	if(0 == item_get_time(ctxt->item))
-		item_set_time(ctxt->item, ctxt->feed->time);
+	if(0 == ctxt->item->time)
+		ctxt->item->time = ctxt->feed->time;
 	
 	return ctxt->item;
 }

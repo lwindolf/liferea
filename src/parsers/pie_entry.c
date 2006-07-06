@@ -115,7 +115,7 @@ itemPtr parseEntry(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 		} else if(!xmlStrcmp(cur->name, BAD_CAST"issued")) {
 			/* FIXME: is <modified> or <issued> or <created> the time tag we want to display? */
  			if(tmp = utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1))) {
-				item_set_time(ctxt->item, parseISO8601Date(tmp));
+				ctxt->item->time = parseISO8601Date(tmp);
 				g_free(tmp);
 			}
 		} else if(!xmlStrcmp(cur->name, BAD_CAST"content")) {
