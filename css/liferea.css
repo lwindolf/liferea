@@ -88,7 +88,7 @@ td.headright {
 	margin:0;
 }
 
-#author, #categories {
+#author, #categories, #source {
         padding:0;
 	margin-left:0;
         margin-right:12px;

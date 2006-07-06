@@ -140,6 +140,21 @@
  </td>-->
 </tr>
 </xsl:if>
+<xsl:if test="real_source_url">
+<tr>
+ <td valign="top"> 
+     <_span id='source_from'>Source</_span>
+     <span id='source'>
+       <xsl:element name="a">
+         <xsl:attribute name="href">
+           <xsl:value-of select="real_source_url"/>
+         </xsl:attribute>
+         <xsl:value-of select="real_source_title"/>
+       </xsl:element>
+     </span>
+ </td>
+</tr>
+</xsl:if>
 </table>
 
 <div class='content'>
