@@ -1,6 +1,7 @@
 
 xslt_in_files = item.xml.in \
                 itemset.xml.in \
+                feed.xml.in \
                 fl_plugin.xml.in \
                 folder.xml.in \
                 summary.xml.in

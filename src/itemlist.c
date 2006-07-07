@@ -516,7 +516,7 @@ void itemlist_selection_changed(itemPtr item) {
 			itemlist_set_read_status(item, TRUE);
 			itemlist_set_update_status(item, FALSE);
 
-			buffer = item_render_single(item);
+			buffer = item_render(item);
 			ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, itemset_get_base_url(item->itemSet));
 			g_free(buffer);
 		}

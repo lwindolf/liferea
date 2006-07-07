@@ -35,19 +35,7 @@ struct displayset {
 	gchar *foottable;
 };
 
-/**
- * @{ Common HTML definitions
- *
- * Used styles should be defined in the
- * liferea.css style sheet! For some important HTML literals
- * like the item and feed description headers the styles 
- * are duplicated here just in case the style sheet is 
- * missing. 
- */
-
 #define EMPTY		"<html><body></body></html>"
-
-#define HTML_NEWLINE	"<br />"
 
 /* RSS feed/item output definitions (some are used by OCS too!) */
 
@@ -72,8 +60,6 @@ struct displayset {
 #define	IMG_START	"<img class=\"feed\" src=\""
 #define IMG_END		"\" alt=\"\" /><br />"
 
-#define TECHNORATI_LINK	"<div class=\"technorati\"><a href=\"http://www.technorati.com/cosmos/search.html?url=%s\"><img src=\"%s\" border=\"0\" alt=\"[Technorati]\" /></a></div>"
-
 /* OCS direntry output definitions */
 
 #define FORMAT_START	"<table cellspacing=\"0\" class=\"ocsformats\"><tr><td class=\"ocslink\">"
@@ -83,37 +69,6 @@ struct displayset {
 #define FORMAT_UPDATEFREQUENCY	"</td></tr><tr><td class=\"ocsfrequency\">Update Frequency: "
 #define FORMAT_CONTENTTYPE	"</td></tr><tr><td class=\"ocscontenttype\">Content Type: "
 #define FORMAT_END	"</td></tr></table>"
-
-/* condensed mode shading */
-
-#define SHADED_START	"<div class=\"itemshaded\">"
-#define SHADED_END	"</div>"
-#define UNSHADED_START	"<div class=\"itemunshaded\">"
-#define UNSHADED_END	"</div>"
-
-/* condensed mode summary listings */
-
-#define SUMMARY_START			"<ul class=\"summary\">"
-#define SUMMARY_LINE_START_SHADED	"<li class=\"summaryshaded\"><b><a href=\"%s\">%s</a></b>"
-#define SUMMARY_LINE_START_UNSHADED	"<li class=\"summaryunshaded\"><a href=\"%s\">%s</a>"
-#define SUMMARY_LINE_END        	"</li>"
-#define SUMMARY_END			"</ul>"
-
-/* HTTP and parsing error text */
-
-#define UPDATE_ERROR_START	"<table cellspacing=\"0\" class=\"httperror\"><tr><td class=\"httperror\">"
-#define HTTP_ERROR_TEXT		_("The last update of this subscription failed!<br/><b>HTTP error code %d: %s</b>")
-
-#define PARSE_ERROR_TEXT	_("There were errors while parsing this feed!")
-#define PARSE_ERROR_TEXT2	"<span id=\"pdl\" class=\"detaillink\">%s (<span class=\"showmore\" onclick=\"javascript:document.getElementById('pd').style.visibility='visible';document.getElementById('pd').style.display='block';document.getElementById('pdl').style.visibility='hidden';document.getElementById('pdl').style.display='none';\">%s</span>)</span><span class=\"details\" id='pd'> <b>%s</b><br />%s<script language=\"javascript\" type=\"text/javascript\">document.getElementById('pdl').style.visibility='visible';document.getElementById('pdl').style.display='inline';</script>"	// explicitly no </span> at the end!
-
-#define FILTER_ERROR_TEXT	_("There were errors while filtering this feed!")
-#define FILTER_ERROR_TEXT2	"<span id=\"fdl\" class=\"detaillink\">%s (<span class=\"showmore\" onclick=\"javascript:document.getElementById('fd').style.visibility='visible';document.getElementById('fd').style.display='block';document.getElementById('fdl').style.visibility='hidden';document.getElementById('fdl').style.display='none';\">%s</span>)</span><span class=\"details\" id='fd'> <b>%s</b><br /><pre>%s</pre><script language=\"javascript\" type=\"text/javascript\">document.getElementById('fdl').style.visibility='visible';document.getElementById('fdl').style.display='inline';</script></span>"
-
-#define HTTP410_ERROR_TEXT	_("This feed is discontinued. It's no longer available. Liferea won't update it anymore but you can still access the cached headlines.")
-#define UPDATE_ERROR_END	"</td></tr></table>"
-
-/*@}*/
 
 #define HTMLVIEW_PLUGIN_API_VERSION 9
 

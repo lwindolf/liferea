@@ -78,8 +78,11 @@ typedef struct feed {
 	struct feedHandler *fhp;     		/**< Feed handler saved by the ->typeStr attribute. */
 	
 	gint		defaultInterval;	/**< update interval as specified by the feed */
-	gchar		*parseErrors;		/**< textual/HTML description of parsing errors */
-	gchar		*errorDescription;	/**< textual/HTML description of download/parsing errors */
+	gchar		*parseErrors;		/**< textual description of parsing errors */
+	gchar		*updateError;		/**< textual description of processing errors */
+	gchar		*filterError;		/**< textual description of filter errors */
+	gchar		*httpError;		/**< textual description of HTTP protocol errors */	
+	gint		httpErrorCode;		/**< last HTTP error code */
 
 	time_t		time;			/**< Feeds modified date */
 			
@@ -229,38 +232,6 @@ void feed_set_default_update_interval(feedPtr fp, gint interval);
 
 gint feed_get_update_interval(feedPtr fp);
 void feed_set_update_interval(feedPtr fp, gint interval);
-
-gboolean feed_get_available(feedPtr fp);
-void feed_set_available(feedPtr fp, gboolean available);
-
-gboolean feed_get_discontinued(feedPtr fp);
-void feed_set_discontinued(feedPtr fp, gboolean discontinued);
-
-/**
- * Creates a new error description according to the passed
- * HTTP status and the feeds parser errors. If the HTTP
- * status is a success status and no parser errors occurred
- * no error messages is created. The created error message 
- * can be queried with feed_get_error_description().
- *
- * @param fp		feed
- * @param httpstatus	HTTP status
- * @param resultcode the update code's return code (see update.h)
- */
-void feed_set_error_description(feedPtr fp, gint httpstatus, gint resultcode, gchar *filterErrors);
-
-/**
- * Returns a HTML string describing the last retrieval error 
- * of this feed. Should only be called when getFeedAvailable
- * returns FALSE.
- *
- * @param fp		feed
- * @return HTML error description
- */
-gchar * feed_get_error_description(feedPtr fp);
-
-time_t feed_get_time(feedPtr fp);
-void feed_set_time(feedPtr fp, time_t time);
 
 const gchar * feed_get_title(feedPtr fp);
 void feed_set_title(feedPtr fp, const gchar * title);

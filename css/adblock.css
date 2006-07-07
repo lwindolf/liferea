@@ -23,6 +23,6 @@ iframe[src="kanoodle"],
 *[src*="imageads.google"],
 *[href*="doubleclick"] img, *[src*="doubleclick"],
 *[href*="feedstermedia.com/feedster/adclick.php?bannerid="]
-{ display:none !important }
+{ display:none !important; visibility:hidden; margin:0; }
 
-div.feedflare { display: none !important; }
+div.feedflare { display: none !important; visibility:hidden; margin:0; }

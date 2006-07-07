@@ -100,7 +100,7 @@ const gchar * item_get_base_url(itemPtr item);
  *
  * @returns XHTML string
  */
-gchar *item_render_single(itemPtr item);
+gchar *item_render(itemPtr item);
 
 /**
  * Free the memory used by an itempointer. The item needs to be

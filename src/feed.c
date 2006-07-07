@@ -34,28 +34,27 @@
 
 #include "conf.h"
 #include "common.h"
-
-#include "support.h"
+#include "debug.h"
+#include "favicon.h"
+#include "feed.h"
+#include "feedlist.h"
 #include "html.h"
 #include "itemlist.h"
+#include "metadata.h"
+#include "node.h"
+#include "render.h"
+#include "support.h"
+#include "update.h"
+#include "vfolder.h"
+#include "net/cookies.h"
 #include "parsers/cdf_channel.h"
 #include "parsers/rss_channel.h"
 #include "parsers/atom10.h"
 #include "parsers/pie_feed.h"
 #include "parsers/ocs_dir.h"
 #include "parsers/opml.h"
-#include "vfolder.h"
-#include "favicon.h"
-#include "feed.h"
-#include "feedlist.h"
-#include "node.h"
-#include "net/cookies.h"
-#include "update.h"
-#include "debug.h"
-#include "metadata.h"
 #include "ui/ui_feed.h"
 #include "ui/ui_enclosure.h"
-#include "ui/ui_htmlview.h"
 #include "ui/ui_mainwindow.h"
 #include "ui/ui_node.h"
 #include "notification/notif_plugin.h"
@@ -480,6 +479,15 @@ xmlDocPtr feed_to_xml(nodePtr node, gboolean rendering) {
 				
 			if(rendering) {
 				xmlNewTextChild(feedNode, NULL, "favicon", node_get_favicon_file(node));
+				
+				if(feed->updateError)
+					xmlNewTextChild(feedNode, NULL, "updateError", feed->updateError);
+				if(feed->httpError)
+					xmlNewTextChild(feedNode, NULL, "httpError", feed->httpError);
+				if(feed->filterError)
+					xmlNewTextChild(feedNode, NULL, "filterError", feed->filterError);
+				if(feed->parseErrors)
+					xmlNewTextChild(feedNode, NULL, "parseError", feed->parseErrors);
 			}
 			
 			metadata_add_xml_nodes(feed->metadata, feedNode);
@@ -878,21 +886,6 @@ feedHandlerPtr feed_get_fhp(feedPtr feed) {
 	return feed->fhp;
 }
 
-/* Returns a HTML string describing the last retrieval error 
-   of this feed. Should only be called when feed->available
-   is FALSE. Caller must free returned string! */
-gchar * feed_get_error_description(feedPtr feed) { 
-	gchar	*tmp1 = NULL;
-
-	if(feed->discontinued) {
-		addToHTMLBufferFast(&tmp1, UPDATE_ERROR_START);
-		addToHTMLBufferFast(&tmp1, HTTP410_ERROR_TEXT);
-		addToHTMLBufferFast(&tmp1, UPDATE_ERROR_END);
-	}
-	addToHTMLBuffer(&tmp1, feed->errorDescription);
-	return tmp1; 
-}
-
 const gchar * feed_get_description(feedPtr feed) { return feed->description; }
 void feed_set_description(feedPtr fp, const gchar *description) {
 	g_free(fp->description);
@@ -971,126 +964,98 @@ void feed_set_image_url(feedPtr fp, const gchar *imageUrl) {
  * Creates a new error description according to the passed
  * HTTP status and the feeds parser errors. If the HTTP
  * status is a success status and no parser errors occurred
- * no error messages is created. The created error message 
- * can be queried with feed_get_error_description().
+ * no error messages is created.
  *
  * @param fp		feed
  * @param httpstatus	HTTP status
- * @param resultcode the update code's return code (see update.h)
+ * @param resultcode	the update code's return code (see update.h)
  */
-void feed_set_error_description(feedPtr fp, gint httpstatus, gint resultcode, gchar *filterErrors) {
-	gchar		*tmp1, *tmp2 = NULL, *buffer = NULL;
+static void feed_update_error_status(feedPtr feed, gint httpstatus, gint resultcode, gchar *filterError) {
+	gchar		*tmp = NULL;
 	gboolean	errorFound = FALSE;
 
-	g_assert(NULL != fp);
-	g_free(fp->errorDescription);
-	fp->errorDescription = NULL;
+	if(feed->filterError)
+		g_free(feed->filterError);
+	if(feed->httpError)
+		g_free(feed->httpError);
+	if(feed->updateError)
+		g_free(feed->updateError);
+		
+	feed->filterError = g_strdup(filterError);
+	feed->updateError = NULL;
+	feed->httpError = NULL;
+	feed->httpErrorCode = httpstatus;
 	
 	if(((httpstatus >= 200) && (httpstatus < 400)) && /* HTTP codes starting with 2 and 3 mean no error */
-	   (NULL == filterErrors) && (NULL == fp->parseErrors))
+	   (NULL == feed->filterError))
 		return;
-	addToHTMLBuffer(&buffer, UPDATE_ERROR_START);
 	
 	if((200 != httpstatus) || (resultcode != NET_ERR_OK)) {
 		/* first specific codes */
 		switch(httpstatus) {
-			case 401:tmp2 = g_strdup(_("You are unauthorized to download this feed. Please update your username and "
-			                           "password in the feed properties dialog box."));break;
-			case 402:tmp2 = g_strdup(_("Payment Required"));break;
-			case 403:tmp2 = g_strdup(_("Access Forbidden"));break;
-			case 404:tmp2 = g_strdup(_("Resource Not Found"));break;
-			case 405:tmp2 = g_strdup(_("Method Not Allowed"));break;
-			case 406:tmp2 = g_strdup(_("Not Acceptable"));break;
-			case 407:tmp2 = g_strdup(_("Proxy Authentication Required"));break;
-			case 408:tmp2 = g_strdup(_("Request Time-Out"));break;
-			case 410:tmp2 = g_strdup(_("Gone. Resource doesn't exist. Please unsubscribe!"));break;
+			case 401:tmp = _("You are unauthorized to download this feed. Please update your username and "
+			                 "password in the feed properties dialog box.");break;
+			case 402:tmp = _("Payment Required");break;
+			case 403:tmp = _("Access Forbidden");break;
+			case 404:tmp = _("Resource Not Found");break;
+			case 405:tmp = _("Method Not Allowed");break;
+			case 406:tmp = _("Not Acceptable");break;
+			case 407:tmp = _("Proxy Authentication Required");break;
+			case 408:tmp = _("Request Time-Out");break;
+			case 410:tmp = _("Gone. Resource doesn't exist. Please unsubscribe!");break;
 		}
 		/* Then, netio errors */
-		if(tmp2 == NULL) {
+		if(!NULL) {
 			switch(resultcode) {
-			case NET_ERR_URL_INVALID:    tmp2 = g_strdup(_("URL is invalid")); break;
-			case NET_ERR_PROTO_INVALID:    tmp2 = g_strdup(_("Unsupported network protocol")); break;
-			case NET_ERR_UNKNOWN:
-			case NET_ERR_CONN_FAILED:
-			case NET_ERR_SOCK_ERR:       tmp2 = g_strdup(_("Error connecting to remote host")); break;
-			case NET_ERR_HOST_NOT_FOUND: tmp2 = g_strdup(_("Hostname could not be found")); break;
-			case NET_ERR_CONN_REFUSED:   tmp2 = g_strdup(_("Network connection was refused by the remote host")); break;
-			case NET_ERR_TIMEOUT:        tmp2 = g_strdup(_("Remote host did not finish sending data")); break;
-				/* Transfer errors */
-			case NET_ERR_REDIRECT_COUNT_ERR: tmp2 = g_strdup(_("Too many HTTP redirects were encountered")); break;
-			case NET_ERR_REDIRECT_ERR:
-			case NET_ERR_HTTP_PROTO_ERR: 
-			case NET_ERR_GZIP_ERR:           tmp2 = g_strdup(_("Remote host sent an invalid response")); break;
-				/* These are handled above	
-				   case NET_ERR_HTTP_410:
-				   case NET_ERR_HTTP_404:
-				   case NET_ERR_HTTP_NON_200:
-				*/
-			case NET_ERR_AUTH_FAILED:
-			case NET_ERR_AUTH_NO_AUTHINFO: tmp2 = g_strdup(_("Authentication failed")); break;
-			case NET_ERR_AUTH_GEN_AUTH_ERR:
-			case NET_ERR_AUTH_UNSUPPORTED: tmp2 = g_strdup(_("Webserver's authentication method incompatible with Liferea")); break;
+				case NET_ERR_URL_INVALID:    tmp = _("URL is invalid"); break;
+				case NET_ERR_PROTO_INVALID:  tmp = _("Unsupported network protocol"); break;
+				case NET_ERR_UNKNOWN:
+				case NET_ERR_CONN_FAILED:
+				case NET_ERR_SOCK_ERR:       tmp = _("Error connecting to remote host"); break;
+				case NET_ERR_HOST_NOT_FOUND: tmp = _("Hostname could not be found"); break;
+				case NET_ERR_CONN_REFUSED:   tmp = _("Network connection was refused by the remote host"); break;
+				case NET_ERR_TIMEOUT:        tmp = _("Remote host did not finish sending data"); break;
+					/* Transfer errors */
+				case NET_ERR_REDIRECT_COUNT_ERR: tmp = _("Too many HTTP redirects were encountered"); break;
+				case NET_ERR_REDIRECT_ERR:
+				case NET_ERR_HTTP_PROTO_ERR: 
+				case NET_ERR_GZIP_ERR:           tmp = _("Remote host sent an invalid response"); break;
+					/* These are handled above	
+					   case NET_ERR_HTTP_410:
+					   case NET_ERR_HTTP_404:
+					   case NET_ERR_HTTP_NON_200:
+					*/
+				case NET_ERR_AUTH_FAILED:
+				case NET_ERR_AUTH_NO_AUTHINFO: tmp = _("Authentication failed"); break;
+				case NET_ERR_AUTH_GEN_AUTH_ERR:
+				case NET_ERR_AUTH_UNSUPPORTED: tmp = _("Webserver's authentication method incompatible with Liferea"); break;
 			}
 		}
 		/* And generic messages in the unlikely event that the above didn't work */
-		if(NULL == tmp2) {
+		if(!tmp) {
 			switch(httpstatus / 100) {
-			case 3:tmp2 = g_strdup(_("Feed not available: Server requested unsupported redirection!"));break;
-			case 4:tmp2 = g_strdup(_("Client Error"));break;
-			case 5:tmp2 = g_strdup(_("Server Error"));break;
-			default:tmp2 = g_strdup(_("(unknown networking error happened)"));break;
+				case 3:tmp = _("Feed not available: Server requested unsupported redirection!");break;
+				case 4:tmp = _("Client Error");break;
+				case 5:tmp = _("Server Error");break;
+				default:tmp = _("(unknown networking error happened)");break;
 			}
 		}
 		errorFound = TRUE;
-		tmp1 = g_strdup_printf(HTTP_ERROR_TEXT, httpstatus, tmp2);
-		addToHTMLBuffer(&buffer, tmp1);
-		g_free(tmp1);
-		g_free(tmp2);
-	}
-	
-	/* add filtering error messages */
-	if(NULL != filterErrors) {	
-		errorFound = TRUE;
-		tmp1 = g_markup_printf_escaped(FILTER_ERROR_TEXT2, FILTER_ERROR_TEXT, _("Show Details"), filterErrors);
-		addToHTMLBuffer(&buffer, tmp1);
-		g_free(tmp1);
-	}
-	
-	/* add parsing error messages */
-	if(NULL != fp->parseErrors) {
-		errorFound = TRUE;
-		tmp1 = g_strdup_printf(PARSE_ERROR_TEXT2, PARSE_ERROR_TEXT, _("Show Details"), _("Error Details:"), fp->parseErrors);
-		addToHTMLBuffer(&buffer, tmp1);
-		if (feed_get_source(fp) != NULL && (NULL != strstr(feed_get_source(fp), "://"))) {
-			xmlChar *escsource;
-			addToHTMLBufferFast(&buffer,_("<br />You may want to validate the feed using "
-			                              "<a href=\"http://feedvalidator.org/check.cgi?url="));
-			escsource = xmlURIEscapeStr(feed_get_source(fp),NULL);
-			addToHTMLBufferFast(&buffer,escsource);
-			xmlFree(escsource);
-			addToHTMLBuffer(&buffer,_("\">FeedValidator</a>."));
-		}
-		addToHTMLBuffer(&buffer, "</span>");
-		g_free(tmp1);
+		feed->httpError = g_strdup(tmp);
 	}
 	
 	/* if none of the above error descriptions matched... */
-	if(!errorFound) {
-		tmp1 = g_strdup_printf(_("There was a problem while reading this subscription. Please check the URL and console output."));
-		addToHTMLBuffer(&buffer, tmp1);
-		g_free(tmp1);
-	}
-	
-	addToHTMLBuffer(&buffer, UPDATE_ERROR_END);
-	fp->errorDescription = buffer;
+	if(!errorFound)
+		feed->updateError = g_strdup(_("There was a problem while reading this subscription. Please check the URL and console output."));
 }
-
 
 /* method to free a feed structure and associated request data */
 static void feed_free(feedPtr feed) {
 
 	g_free(feed->parseErrors);
-	g_free(feed->errorDescription);
+	g_free(feed->updateError);
+	g_free(feed->filterError);
+	g_free(feed->httpError);
 	g_free(feed->htmlUrl);
 	g_free(feed->imageUrl);
 	g_free(feed->description);
@@ -1212,7 +1177,7 @@ void feed_process_update_result(struct request *request) {
 		ui_mainwindow_set_status_bar(_("\"%s\" is not available"), node_get_title(node));
 	}
 	
-	feed_set_error_description(feed, request->httpstatus, request->returncode, request->filterErrors);
+	feed_update_error_status(feed, request->httpstatus, request->returncode, request->filterErrors);
 
 	node->updateRequest = NULL; 
 
@@ -1391,118 +1356,15 @@ static void feed_mark_all_read(nodePtr node) {
 }
 
 static gchar * feed_render(nodePtr node) {
-	feedPtr			fp = (feedPtr)node->data;
-	struct displayset	displayset;
-	gchar			*buffer = NULL;
-	gchar			*tmp, *tmp2;
-	xmlURIPtr		uri;
+	gchar		**params = NULL, *output = NULL;
+	xmlDocPtr	doc;
 
-	ui_htmlview_start_output(&buffer, feed_get_html_url(fp), TRUE);
+	doc = feed_to_xml(node, TRUE);
+	params = render_add_parameter(params, "pixmapsDir='file://" PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "'");
+	output = render_xml(doc, "feed", params);
+	xmlFree(doc);
 
-	displayset.headtable = NULL;
-	displayset.head = NULL;
-	displayset.body = common_strip_dhtml(feed_get_description(fp));
-	displayset.foot = NULL;
-	displayset.foottable = NULL;	
-
-	metadata_list_render(fp->metadata, &displayset);
-	
-	/* Error description */
-	if((tmp = feed_get_error_description(fp))) {
-		addToHTMLBufferFast(&buffer, tmp);
-		g_free(tmp);
-	}
-
-	/* Head table */
-	addToHTMLBufferFast(&buffer, HEAD_START);
-	/*  -- Feed line */
-	if(feed_get_html_url(fp))
-		tmp = g_strdup_printf("<a href=\"%s\">%s</a>",
-						  feed_get_html_url(fp),
-						  node_get_title(node));
-	else
-		tmp = g_strdup(node_get_title(node));
-
-	tmp2 = g_strdup_printf(HEAD_LINE, _("Feed:"), tmp);
-	g_free(tmp);
-	addToHTMLBufferFast(&buffer, tmp2);
-	g_free(tmp2);
-
-	/*  -- Source line */
-	if(feed_get_source(fp)) {
-		if(feed_get_source(fp)[0] == '|') {
-			tmp = g_strdup(_("user defined command"));
-		} else if(feed_get_source(fp)[0] == '/') {
-				tmp = g_markup_printf_escaped("<a href=\"file://%s\">%s</a>", /* file names should be safe to display.... */
-											  feed_get_source(fp),
-											  feed_get_source(fp));
-		} else {
-			/* remove user and password from URL ... */
-			if((uri = xmlParseURI(feed_get_source(fp)))) {
-				g_free(uri->user);
-				uri->user = NULL;
-				tmp2 = xmlSaveUri(uri);
-				tmp = g_markup_printf_escaped("<a href=\"%s\">%s</a>",
-								  tmp2,
-								  tmp2);
-				xmlFree(tmp2);
-				xmlFreeURI(uri);
-			} else {
-				tmp = g_markup_printf_escaped("<a href=\"%s\">%s</a>",
-											  feed_get_source(fp),
-											  feed_get_source(fp));
-			}
-		}
-		
-		tmp2 = g_strdup_printf(HEAD_LINE, _("Source:"), tmp);
-		g_free(tmp);
-		addToHTMLBufferFast(&buffer, tmp2);
-		g_free(tmp2);
-	}
-
-	addToHTMLBufferFast(&buffer, displayset.headtable);
-	g_free(displayset.headtable);
-	addToHTMLBufferFast(&buffer, HEAD_END);
-
-	/* Head */
-	if(displayset.head) {
-		addToHTMLBufferFast(&buffer, displayset.head);
-		g_free(displayset.head);
-	}
-
-	/* feed/channel image */
-	if(NULL != feed_get_image_url(fp)) {
-		addToHTMLBufferFast(&buffer, "<img class=\"feed\" src=\"");
-		addToHTMLBufferFast(&buffer, feed_get_image_url(fp));
-		addToHTMLBufferFast(&buffer, "\" /><br/>");
-	}
-
-	/* Body */
-	if(displayset.body) {
-		addToHTMLBufferFast(&buffer, "<div class='content'>");
-		addToHTMLBufferFast(&buffer, displayset.body);
-		addToHTMLBufferFast(&buffer, "</div>");
-		g_free(displayset.body);
-	}
-
-	/* Foot */
-	if(displayset.foot) {
-		addToHTMLBufferFast(&buffer, displayset.foot);
-		g_free(displayset.foot);
-	}
-
-	addToHTMLBufferFast(&buffer, "<br/><br/>");	/* instead of the technorati link image shown for items */
-
-	if(displayset.foottable) {
-		addToHTMLBufferFast(&buffer, FEED_FOOT_TABLE_START);
-		addToHTMLBufferFast(&buffer, displayset.foottable);
-		addToHTMLBufferFast(&buffer, FEED_FOOT_TABLE_END);
-		g_free(displayset.foottable);
-	}
-
-	ui_htmlview_finish_output(&buffer);
-
-	return buffer;
+	return output;
 }
 
 static struct nodeType nti = {

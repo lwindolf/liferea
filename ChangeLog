@@ -27,6 +27,8 @@
           items" enabled.
 	* The status bar now presents the number of new and
 	  unread headlines (Frederic Peter).
+	* Rendering is now done using XSLT. This introduces
+	  a dependency to libxslt.
 
 	Bugfixes
 

@@ -151,7 +151,7 @@ const gchar * item_get_base_url(itemPtr item) {
 		return itemset_get_base_url(item->itemSet);
 }
 
-gchar *item_render_single(itemPtr item) {
+gchar *item_render(itemPtr item) {
 	gchar		**params = NULL, *output = NULL;
 	xmlDocPtr	doc;
 

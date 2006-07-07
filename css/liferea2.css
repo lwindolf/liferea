@@ -45,7 +45,7 @@ body {
 
 blockquote {
         border-left: 2px solid #CCC;
-        background: #EEE;
+        background: #F7F7F7;
         padding: 5px;
         font-style: italic;
         margin: 5px 20px;
@@ -88,7 +88,7 @@ td.headright {
 	width:100%;
 	border-top:#FFF solid 1px;
 	border-bottom:#C0C0C0 solid 1px;
-	padding:3px 6px 3px 12px;
+	padding:1px 6px 1px 12px;
 	font-size:0.8em;
 	margin:0;
 }
@@ -107,13 +107,11 @@ td.headright {
 }
 
 div.content, div.foottext {
-	padding:2px 6px 0px 12px;
+	padding:0px 6px 0px 12px;
 }
 
 #commentlink {
 	padding-left:9px;
-	margin-top:5px;
-	margin-bottom:5px;
 }
 
 img {
@@ -221,22 +219,6 @@ li.summaryunshaded a {
 	padding:4px 0px;
 }
 
-/* style for the HTTP error box at the beginning
-   of the feed description */
-table.httperror {
-	margin-bottom:5px;
-	width:100%;
-	background:#E06060;
-	border-width:1px;
-	border-style:solid;
-}
-
-td.httperror {
-	padding:2px;
-	padding-left:5px;
-	padding-right:5px;
-}
-
 /* namespace specific styles */
 div.blogchanneltitle {
 	padding-left:10px;
@@ -285,7 +267,6 @@ div.technorati {
 	text-align:right;
 	padding-right:5px;
 }
-
 
 table.enclosure {
 	background:#F0F0F0;
