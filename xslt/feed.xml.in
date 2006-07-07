@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+/**
+ * Rendering stylesheet for Liferea (feed description view)
+ *
+ * Copyright (C) 2006 Lars Lindner <lars.lindner@gmx.net>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version. 
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+--> 
+
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"
+                xmlns="http://www.w3.org/1999/xhtml">
+
+<xsl:output method="xml" version="1.0" indent="yes"/>
+
+<xsl:preserve-space elements="//*"/>
+
+<xsl:template match="/feed" >
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+##STYLE_INSERT##
+</head>
+<body>
+
+<!-- error header tables -->
+<xsl:if test="parseError or filterError or updateError or httpError or feedDiscontinued = '1'">
+<div id='errors'>
+
+<xsl:if test="feedDiscontinued = '1'">
+  <div id='updateError'>
+     <_span>This feed is discontinued. It's no longer available. Liferea won't update it anymore but you can still access the cached headlines.</_span>
+  </div>
+</xsl:if>
+
+<xsl:if test="updateError">
+  <div id='updateError'>
+    <xsl:value-of select="updateError"/>
+  </div>
+</xsl:if>
+
+<xsl:if test="httpError">
+  <div id='httpError'>
+    <_span>The last update of this subscription failed!<br/><b>HTTP error code <xsl:value-of select="httpErrorCode"/>: <xsl:value-of select="httpError"/></b></_span>    
+  </div>
+</xsl:if>
+
+<xsl:if test="parseError">
+  <div id='parseError'>
+    <_span>There were errors while parsing this feed!</_span>
+
+    <span id="pdl" class="detaillink">
+      (<span class="showmore" onclick="javascript:document.getElementById('pd').style.visibility='visible';document.getElementById('pd').style.display='block';document.getElementById('pdl').style.visibility='hidden';document.getElementById('pdl').style.display='none';">
+        <_span>Parser Error Details</_span>
+      </span>)
+    </span>
+
+    <span class="details" id='pd'>
+      <b><_span>Details</_span></b><br />
+      <xsl:value-of select="parseError"/>
+      <script language="javascript" type="text/javascript">document.getElementById('pdl').style.visibility='visible';document.getElementById('pdl').style.display='inline';</script>
+
+       <br />You may want to validate the feed using 
+       <xsl:element name="a">
+          <xsl:attribute name="href">http://feedvalidator.org/check.cgi?url=<xsl:value-of select="feedSource"/></xsl:attribute>
+       	  FeedValidator
+       </xsl:element>
+    </span>
+  </div>
+</xsl:if>
+
+<xsl:if test="filterError">
+  <div id='filterError'>
+    <_span>There were errors while filtering this feed!</_span>
+
+    <span id="fdl" class="detaillink">
+      (<span class="showmore" onclick="javascript:document.getElementById('fd').style.visibility='visible';document.getElementById('fd').style.display='block';document.getElementById('fdl').style.visibility='hidden';document.getElementById('fdl').style.display='none';">
+        <_span>Filter Error Details</_span>
+      </span>)
+    </span>
+
+    <span class="details" id='fd'>
+      <b><_span>Details</_span></b><br />
+      <xsl:value-of select="filterError"/>
+      <script language="javascript" type="text/javascript">document.getElementById('fdl').style.visibility='visible';document.getElementById('fdl').style.display='inline';</script>
+    </span>
+  </div>
+</xsl:if>
+
+</div>
+</xsl:if>
+
+<!-- header table -->
+<table class="itemhead" cellspacing="0">
+<tr>
+  <td valign="middle" class="headleft">
+    <b><_span>Feed:</_span></b>
+  </td>
+  <td width="100%" valign="middle" class="headright">
+     <xsl:element name="a">
+        <xsl:attribute name="href">
+          <xsl:value-of select="feedLink"/>
+        </xsl:attribute>
+        <xsl:value-of select="feedTitle"/>
+     </xsl:element>
+  </td>
+</tr>
+<tr>
+  <td valign="middle" class="headleft">
+    <b><_span>Source:</_span></b>
+  </td>
+  <td width="100%" valign="middle" class="headright">
+     <!-- FIXME: hide passwords, special handling for user commands -->
+     <xsl:element name="a">
+        <xsl:attribute name="href">
+          <xsl:value-of select="feedSource"/>
+        </xsl:attribute>
+        <xsl:value-of select="feedSource"/>
+     </xsl:element>
+  </td>
+</tr>
+</table>
+
+<xsl:element name="img">
+  <xsl:attribute name="class">feed</xsl:attribute>
+  <xsl:attribute name="src">
+     <xsl:value-of select="feedImage"/>
+  </xsl:attribute>
+</xsl:element>
+
+<!-- FIXME search formular -->
+
+<div class='content'>
+   <xsl:value-of select="feedDescription" disable-output-escaping='yes'/>
+</div>
+
+</body>
+</html>
+</xsl:template>
+</xsl:stylesheet>
