@@ -1,6 +1,7 @@
 # List of source files containing translatable strings.
 
 liferea.desktop.in
+xslt/feed.xml.in
 xslt/fl_plugin.xml.in
 xslt/folder.xml.in
 xslt/item.xml.in
