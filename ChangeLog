@@ -29,6 +29,7 @@
 	  unread headlines (Frederic Peter).
 	* Rendering is now done using XSLT. This introduces
 	  a dependency to libxslt.
+	* Makefile improvements (Remi Cardona).
 
 	Bugfixes
 
