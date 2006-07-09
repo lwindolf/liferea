@@ -82,7 +82,7 @@ gchar * itemset_render_item(itemSetPtr itemSet, itemPtr item);
  *
  * @returns rendered HTML 
  */
-gchar * itemset_render_all(itemSetPtr itemSet);
+gchar * itemset_render(itemSetPtr itemSet);
 
 /**
  * Scans all item of a given item set for the given item id.

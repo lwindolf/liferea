@@ -32,7 +32,7 @@
 <!-- the base URL of the rendered item set -->
 <xsl:param name="baseUrl"/>
 
-<xsl:template match="/feed">
+<xsl:template match="/itemset">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>

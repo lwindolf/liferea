@@ -52,14 +52,32 @@ const gchar * itemset_get_base_url(itemSetPtr itemSet) {
 	return baseUrl;
 }
 
-gchar * itemset_render_all(itemSetPtr itemSet) {
+static xmlDocPtr itemset_to_xml(itemSetPtr itemSet) {
+	xmlDocPtr 	doc;
+	xmlNodePtr 	itemSetNode;
+	
+	doc = xmlNewDoc("1.0");
+	itemSetNode = xmlNewDocNode(doc, NULL, "itemset", NULL);
+	
+	xmlDocSetRootElement(doc, itemSetNode);
+
+	xmlNewTextChild(itemSetNode, NULL, "favicon", node_get_favicon_file(itemSet->node));
+	xmlNewTextChild(itemSetNode, NULL, "title", node_get_title(itemSet->node));
+
+	if(ITEMSET_TYPE_FEED == itemSet->type)
+	       xmlNewTextChild(itemSetNode, NULL, "source", feed_get_source(itemSet->node->data));
+			
+	return doc;
+}
+
+gchar * itemset_render(itemSetPtr itemSet) {
 	gchar		**params = NULL, *output = NULL;
 	gboolean	summaryMode = FALSE;
 	gboolean	loadReadItems;
 	GList		*iter;
 	xmlDocPtr	doc;
 
-	debug_enter("itemset_render_all");
+	debug_enter("itemset_render");
 	
 	/* determine wether we want to filter read items */
 	switch(itemSet->type) {
@@ -96,7 +114,7 @@ gchar * itemset_render_all(itemSetPtr itemSet) {
 	}
 	
 	/* do the XML serialization */
-	doc = feed_to_xml(itemSet->node, TRUE);
+	doc = itemset_to_xml(itemSet);
 	
 	iter = itemSet->items;
 	while(iter) {
@@ -110,6 +128,8 @@ gchar * itemset_render_all(itemSetPtr itemSet) {
 	output = render_xml(doc, summaryMode?"summary":"itemset", params);
 	g_strfreev(params);
 	xmlFree(doc);
+	
+	debug_exit("itemset_render");
 
 	return output;
 }

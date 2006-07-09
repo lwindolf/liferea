@@ -447,56 +447,50 @@ xmlDocPtr feed_to_xml(nodePtr node, gboolean rendering) {
 	xmlNodePtr 	feedNode;
 	gchar		*tmp;
 	
-	if(doc = xmlNewDoc("1.0")) {	
-		if(feedNode = xmlNewDocNode(doc, NULL, "feed", NULL)) {
-			xmlDocSetRootElement(doc, feedNode);
-			xmlNewProp(feedNode, "version", BAD_CAST FEED_CACHE_VERSION);
+	doc = xmlNewDoc("1.0");
+	feedNode = xmlNewDocNode(doc, NULL, "feed", NULL);
+	xmlDocSetRootElement(doc, feedNode);
+	xmlNewProp(feedNode, "version", BAD_CAST FEED_CACHE_VERSION);
 
-			xmlNewTextChild(feedNode, NULL, "feedId", node_get_id(node));
-			xmlNewTextChild(feedNode, NULL, "feedTitle", node_get_title(node));
-			xmlNewTextChild(feedNode, NULL, "feedSource", feed_get_source(feed));
-			
-			if(feed->description)
-				xmlNewTextChild(feedNode, NULL, "feedDescription", feed->description);
+	xmlNewTextChild(feedNode, NULL, "feedId", node_get_id(node));
+	xmlNewTextChild(feedNode, NULL, "feedTitle", node_get_title(node));
+	xmlNewTextChild(feedNode, NULL, "feedSource", feed_get_source(feed));
 
-			if(feed_get_image_url(feed))
-				xmlNewTextChild(feedNode, NULL, "feedImage", feed_get_image_url(feed));
-	
-			tmp = g_strdup_printf("%d", feed->defaultInterval);
-			xmlNewTextChild(feedNode, NULL, "feedUpdateInterval", tmp);
-			g_free(tmp);
-			
-			tmp = g_strdup_printf("%d", feed->available?1:0);
-			xmlNewTextChild(feedNode, NULL, "feedStatus", tmp);
-			g_free(tmp);
-			
-			tmp = g_strdup_printf("%d", feed->discontinued?1:0);
-			xmlNewTextChild(feedNode, NULL, "feedDiscontinued", tmp);
-			g_free(tmp);
-			
-			if(feed_get_lastmodified(feed)) 
-				xmlNewTextChild(feedNode, NULL, "feedLastModified", feed_get_lastmodified(feed));
-				
-			if(rendering) {
-				xmlNewTextChild(feedNode, NULL, "favicon", node_get_favicon_file(node));
-				
-				if(feed->updateError)
-					xmlNewTextChild(feedNode, NULL, "updateError", feed->updateError);
-				if(feed->httpError)
-					xmlNewTextChild(feedNode, NULL, "httpError", feed->httpError);
-				if(feed->filterError)
-					xmlNewTextChild(feedNode, NULL, "filterError", feed->filterError);
-				if(feed->parseErrors)
-					xmlNewTextChild(feedNode, NULL, "parseError", feed->parseErrors);
-			}
-			
-			metadata_add_xml_nodes(feed->metadata, feedNode);
-		} else {
-			g_warning("could not create XML feed node for feed cache document!");
-		}
-	} else {
-		g_warning("could not create XML document!");
+	if(feed->description)
+		xmlNewTextChild(feedNode, NULL, "feedDescription", feed->description);
+
+	if(feed_get_image_url(feed))
+		xmlNewTextChild(feedNode, NULL, "feedImage", feed_get_image_url(feed));
+
+	tmp = g_strdup_printf("%d", feed->defaultInterval);
+	xmlNewTextChild(feedNode, NULL, "feedUpdateInterval", tmp);
+	g_free(tmp);
+
+	tmp = g_strdup_printf("%d", feed->available?1:0);
+	xmlNewTextChild(feedNode, NULL, "feedStatus", tmp);
+	g_free(tmp);
+
+	tmp = g_strdup_printf("%d", feed->discontinued?1:0);
+	xmlNewTextChild(feedNode, NULL, "feedDiscontinued", tmp);
+	g_free(tmp);
+
+	if(feed_get_lastmodified(feed)) 
+		xmlNewTextChild(feedNode, NULL, "feedLastModified", feed_get_lastmodified(feed));
+
+	if(rendering) {
+		xmlNewTextChild(feedNode, NULL, "favicon", node_get_favicon_file(node));
+
+		if(feed->updateError)
+			xmlNewTextChild(feedNode, NULL, "updateError", feed->updateError);
+		if(feed->httpError)
+			xmlNewTextChild(feedNode, NULL, "httpError", feed->httpError);
+		if(feed->filterError)
+			xmlNewTextChild(feedNode, NULL, "filterError", feed->filterError);
+		if(feed->parseErrors)
+			xmlNewTextChild(feedNode, NULL, "parseError", feed->parseErrors);
 	}
+
+	metadata_add_xml_nodes(feed->metadata, feedNode);
 	
 	return doc;
 }
