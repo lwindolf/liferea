@@ -32,7 +32,7 @@
 <!-- the base URL of the rendered item set -->
 <xsl:param name="baseUrl"/>
 
-<xsl:template match="/feed">
+<xsl:template match="/itemset">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -56,7 +56,7 @@
     <xsl:element name="a">
       <xsl:attribute name="class">favicon</xsl:attribute>
       <xsl:attribute name="href">
-        <xsl:value-of select="feedLink"/>
+        <xsl:value-of select="link"/>
       </xsl:attribute>
       <xsl:element name="img">
         <xsl:attribute name="src">
@@ -71,9 +71,9 @@
     <xsl:element name="a">
       <xsl:attribute name="class">itemhead</xsl:attribute>
       <xsl:attribute name="href">
-        <xsl:value-of select="feedSource"/>
+        <xsl:value-of select="source"/>
       </xsl:attribute>
-      <xsl:value-of select="feedTitle"/>
+      <xsl:value-of select="title"/>
     </xsl:element>
   </td>
 </tr>

@@ -64,8 +64,10 @@ static xmlDocPtr itemset_to_xml(itemSetPtr itemSet) {
 	xmlNewTextChild(itemSetNode, NULL, "favicon", node_get_favicon_file(itemSet->node));
 	xmlNewTextChild(itemSetNode, NULL, "title", node_get_title(itemSet->node));
 
-	if(ITEMSET_TYPE_FEED == itemSet->type)
+	if(ITEMSET_TYPE_FEED == itemSet->type) {
 	       xmlNewTextChild(itemSetNode, NULL, "source", feed_get_source(itemSet->node->data));
+	       xmlNewTextChild(itemSetNode, NULL, "link", feed_get_html_url(itemSet->node->data));
+	}
 			
 	return doc;
 }
