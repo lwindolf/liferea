@@ -482,8 +482,13 @@ xmlDocPtr feed_to_xml(nodePtr node, gboolean rendering) {
 
 		if(feed->updateError)
 			xmlNewTextChild(feedNode, NULL, "updateError", feed->updateError);
-		if(feed->httpError)
+		if(feed->httpError) {
 			xmlNewTextChild(feedNode, NULL, "httpError", feed->httpError);
+			
+			tmp = g_strdup_printf("%d", feed->httpErrorCode);
+			xmlNewTextChild(feedNode, NULL, "httpErrorCode", tmp);
+			g_free(tmp);
+		}
 		if(feed->filterError)
 			xmlNewTextChild(feedNode, NULL, "filterError", feed->filterError);
 		if(feed->parseErrors)
