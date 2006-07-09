@@ -118,7 +118,9 @@ gchar * itemset_render(itemSetPtr itemSet) {
 	
 	iter = itemSet->items;
 	while(iter) {
-		item_to_xml((itemPtr)iter->data, xmlDocGetRootElement(doc), TRUE);
+		itemPtr item = iter->data;
+		if(loadReadItems || FALSE == item->readStatus)
+			item_to_xml(item, xmlDocGetRootElement(doc), TRUE);
 		iter = g_list_next(iter);
 	}
 		

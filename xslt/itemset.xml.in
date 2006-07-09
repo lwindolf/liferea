@@ -73,11 +73,11 @@
       <xsl:element name="img">
         <xsl:attribute name="src">
           <xsl:choose>
-            <xsl:when test="not(sourceFavicon)">
-              <xsl:value-of select="/feed/favicon"/>
+            <xsl:when test="sourceFavicon">
+              <xsl:value-of select="sourceFavicon"/>
             </xsl:when>
             <xsl:otherwise>
-              <xsl:value-of select="sourceFavicon"/>
+              <xsl:value-of select="/feed/favicon"/>
             </xsl:otherwise>
           </xsl:choose>
         </xsl:attribute>

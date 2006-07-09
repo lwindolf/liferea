@@ -290,9 +290,7 @@ void item_to_xml(itemPtr item, xmlNodePtr feedNode, gboolean rendering) {
 		xmlNewTextChild(itemNode, NULL, "timestr", tmp);
 		g_free(tmp);
 		
-		if(item->sourceNode != item->itemSet->node)
-			xmlNewTextChild(itemNode, NULL, "sourceFavicon", node_get_favicon_file(item->sourceNode));
-		
+		xmlNewTextChild(itemNode, NULL, "sourceFavicon", node_get_favicon_file(item->sourceNode));	
 	}		
 
 	metadata_add_xml_nodes(item->metadata, itemNode);
