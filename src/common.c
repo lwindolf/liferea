@@ -174,7 +174,7 @@ static xmlDocPtr common_parse_html(const gchar *html, gint len) {
 static xmlNodePtr common_html_doc_find_body(xmlDocPtr doc) {
 	xmlXPathContextPtr xpathCtxt = NULL;
 	xmlXPathObjectPtr xpathObj = NULL;
-	xmlNodePtr node;
+	xmlNodePtr node = NULL;
 	xpathCtxt = xmlXPathNewContext(doc);
 	if(!xpathCtxt) goto error;
 
@@ -243,7 +243,7 @@ gchar * common_strip_dhtml(const gchar *html) {
 	gchar *tmp;
 	
 	/* remove some nasty DHTML stuff from the given HTML content */
-	if(tmp = g_strdup(html)) {
+	if(NULL != (tmp = g_strdup(html))) {
 		tmp = common_strreplace(tmp, " onload=", " no_onload=");
 		tmp = common_strreplace(tmp, "script>", "no_script>");		
 		tmp = common_strreplace(tmp, "<script ", "<no_script ");		
@@ -253,15 +253,15 @@ gchar * common_strip_dhtml(const gchar *html) {
 }
 
 /* Convert the given string to proper XHTML content.*/
-gchar * common_text_to_xhtml(const gchar *text) {
-	gchar		*result = NULL;
+gchar * common_text_to_xhtml(const gchar *sourceText) {
+	gchar		*text, *result = NULL;
 	xmlDocPtr	doc = NULL;
 	xmlBufferPtr	buf;
 	
-	if(!text)
+	if(!sourceText)
 		return g_strdup("");
 	
-	text = g_strstrip(text);	/* stripping whitespaces to make empty string detection easier */
+	text = g_strstrip(g_strdup(sourceText));	/* stripping whitespaces to make empty string detection easier */
 	if(*text) {
 		doc = common_parse_html(text, strlen(text));
 		
@@ -275,8 +275,9 @@ gchar * common_text_to_xhtml(const gchar *text) {
 
 		xmlBufferFree(buf);
 		xmlFreeDoc(doc);
+		g_free(text);
 	} else {
-		result = g_strdup(text);
+		result = text;
 	}
 	
 	return result;
@@ -287,7 +288,7 @@ typedef struct {
 	gint	length;
 } result_buffer;
 
-void unhtmlizeHandleCharacters (void *user_data, const xmlChar *string, int length) {
+static void unhtmlizeHandleCharacters (void *user_data, const xmlChar *string, int length) {
 	result_buffer	*buffer = (result_buffer *)user_data;
 	gint 		old_length;
 
@@ -299,7 +300,7 @@ void unhtmlizeHandleCharacters (void *user_data, const xmlChar *string, int leng
 
 }
 
-void _unhtmlize(gchar *string, gchar *result, result_buffer *buffer) {
+static void _unhtmlize(gchar *string, result_buffer *buffer) {
 	htmlParserCtxtPtr	ctxt;
 	htmlSAXHandlerPtr	sax_p = g_new0(htmlSAXHandler, 1);
  	sax_p->characters = unhtmlizeHandleCharacters;
@@ -309,7 +310,7 @@ void _unhtmlize(gchar *string, gchar *result, result_buffer *buffer) {
  	g_free(sax_p);
 }
 
-void _unxmlize(gchar *string, gchar *result, result_buffer *buffer) {
+static void _unxmlize(gchar *string, result_buffer *buffer) {
 	xmlParserCtxtPtr	ctxt;
 	xmlSAXHandler	*sax_p = g_new0(xmlSAXHandler, 1);
  	sax_p->characters = unhtmlizeHandleCharacters;
@@ -323,7 +324,7 @@ void _unxmlize(gchar *string, gchar *result, result_buffer *buffer) {
    a string without any entities or tags containing all
    text nodes of the given HTML string. The original 
    string will be freed. */
-static gchar * unmarkupize(gchar *string, void(*parse)(gchar *string, gchar *result, result_buffer *buffer)) {
+static gchar * unmarkupize(gchar *string, void(*parse)(gchar *string, result_buffer *buffer)) {
 	gchar			*result;
 	result_buffer		*buffer;
 	
@@ -337,7 +338,7 @@ static gchar * unmarkupize(gchar *string, void(*parse)(gchar *string, gchar *res
 		return string;
 
 	buffer = g_new0(result_buffer, 1);
-	parse(string, result, buffer);
+	parse(string, buffer);
 	result = buffer->data;
 	g_free(buffer);
  
@@ -630,7 +631,7 @@ time_t parseRFC822Date(gchar *date) {
 	   the most specific format we expect:  "Fri, 03 Dec 12 01:38:34 CET"
 	 */
 	/* skip day of week */
-	if(pos = g_utf8_strchr(date, -1, ','))
+	if(NULL != (pos = g_utf8_strchr(date, -1, ',')))
 		date = ++pos;
 
 	/* we expect English month names, so we set the locale */
@@ -638,16 +639,16 @@ time_t parseRFC822Date(gchar *date) {
 	setlocale(LC_TIME, "C");
 	
 	/* standard format with seconds and 4 digit year */
-	if(pos = strptime((const char *)date, " %d %b %Y %T", &tm))
+	if(NULL != (pos = strptime((const char *)date, " %d %b %Y %T", &tm)))
 		success = TRUE;
 	/* non-standard format without seconds and 4 digit year */
-	else if(pos = strptime((const char *)date, " %d %b %Y %H:%M", &tm))
+	else if(NULL != (pos = strptime((const char *)date, " %d %b %Y %H:%M", &tm)))
 		success = TRUE;
 	/* non-standard format with seconds and 2 digit year */
-	else if(pos = strptime((const char *)date, " %d %b %y %T", &tm))
+	else if(NULL != (pos = strptime((const char *)date, " %d %b %y %T", &tm)))
 		success = TRUE;
 	/* non-standard format without seconds 2 digit year */
-	else if(pos = strptime((const char *)date, " %d %b %y %H:%M", &tm))
+	else if(NULL != (pos = strptime((const char *)date, " %d %b %y %H:%M", &tm)))
 		success = TRUE;
 	
 	while(pos && *pos != '\0' && isspace((int)*pos))       /* skip whitespaces before timezone */

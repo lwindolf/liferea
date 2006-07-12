@@ -122,21 +122,21 @@ gpointer update_request_new();
  *
  * @param request	pointer to a request structure
  */
-void download_request_free(struct request *request);
+void update_request_free(struct request *request);
 
 /**
  * Sets the online status according to mode.
  *
  * @param mode	TRUE for online, FALSE for offline
  */ 
-void download_set_online(gboolean mode);
+void update_set_online(gboolean mode);
 
 /**
  * Queries the online status.
  *
  * @return TRUE if online
  */
-gboolean download_is_online(void);
+gboolean update_is_online(void);
 
 /**
  * Executes the given request. The request might be

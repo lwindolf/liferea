@@ -49,12 +49,6 @@ static GMutex	*cond_mutex = NULL;
 static GCond	*offline_cond = NULL;
 static gboolean	online = TRUE;
 
-/* prototypes */
-static void *download_thread_main(void *data);
-static gboolean update_dequeue(gpointer user_data);
-gboolean download_requeue(gpointer data);
-gboolean download_retry(struct request * request);
-
 /* filter idea (and some of the code) was taken from Snownews */
 static char* update_exec_filter_cmd(gchar *cmd, gchar *data, gchar **errorOutput, size_t *size) {
 	int		fd, status;

@@ -1064,7 +1064,7 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, char * aut
 	/* If inflate==1 we need to decompress the content.. */
 	if (inflate == 1) {
 		/* gzipinflate */
-		if (jg_gzip_uncompress (body, length, (void **)&inflatedbody, &len) != 0) {
+		if (jg_gzip_uncompress (body, length, &inflatedbody, &len) != 0) {
 			free (body);
 			cur_ptr->netio_error = NET_ERR_GZIP_ERR;
 			return NULL;
