@@ -32,25 +32,14 @@
 #include "conf.h"
 #include "ui/ui_node.h"
 #include "ui/ui_dnd.h"
-#include "fl_providers/fl_default.h"
 
-extern GtkTreeStore *feedstore;
-
-static gboolean (*old_drop_possible) (GtkTreeDragDest   *drag_dest,
-							   GtkTreePath       *dest_path,
-							   GtkSelectionData  *selection_data);
-
-/* ---------------------------------------------------------------------------- */
-/* DnD callbacks								*/
-/* ---------------------------------------------------------------------------- */
-
-void on_feedlist_drag_end(GtkWidget *widget, GdkDragContext  *drag_context, gpointer user_data) {
-
-	feedlist_foreach(ui_node_update);
-	ui_node_check_if_folder_is_empty(NULL);
-	feedlist_schedule_save();
-	ui_itemlist_prefocus();
-}
+static gboolean (*old_drop_possible)(GtkTreeDragDest   *drag_dest,
+                                     GtkTreePath       *dest_path,
+                                     GtkSelectionData  *selection_data);
+				     
+static gboolean (*old_drag_data_received)(GtkTreeDragDest *drag_dest,
+                                          GtkTreePath *dest,
+                                          GtkSelectionData *selection_data);
 
 /* ---------------------------------------------------------------------------- */
 /* GtkTreeDragSource/GtkTreeDragDest implementation				*/
@@ -60,15 +49,15 @@ void on_feedlist_drag_end(GtkWidget *widget, GdkDragContext  *drag_context, gpoi
 static gboolean 
 ui_dnd_feed_draggable(GtkTreeDragSource *drag_source, GtkTreePath *path) {
 	GtkTreeIter	iter;
-	nodePtr		np;
+	nodePtr		node;
 	
 	debug1(DEBUG_GUI, "DnD check if dragging is possible (%d)", path);
 
-	if(gtk_tree_model_get_iter(GTK_TREE_MODEL(feedstore), &iter, path)) {
-		gtk_tree_model_get(GTK_TREE_MODEL(feedstore), &iter, FS_PTR, &np, -1);
+	if(gtk_tree_model_get_iter(GTK_TREE_MODEL(drag_source), &iter, path)) {
+		gtk_tree_model_get(GTK_TREE_MODEL(drag_source), &iter, FS_PTR, &node, -1);
 		
 		/* everything besides "empty" entries may be dragged */		
-		if(np == NULL)
+		if(node == NULL)
 			return FALSE;
 		return TRUE;
 	} else {
@@ -80,8 +69,6 @@ ui_dnd_feed_draggable(GtkTreeDragSource *drag_source, GtkTreePath *path) {
 /** decides wether a feed cannot be dropped onto a user selection tree position or not */
 static gboolean 
 ui_dnd_feed_drop_possible(GtkTreeDragDest *drag_dest, GtkTreePath *dest_path, GtkSelectionData *selection_data) {
-	GtkTreeModel	*tree_model;
-	GtkTreeStore	*tree_store;
 	GtkTreeIter	iter;
 	
 	debug1(DEBUG_GUI, "DnD check if dropping is possible (%d)", dest_path);
@@ -92,13 +79,10 @@ ui_dnd_feed_drop_possible(GtkTreeDragDest *drag_dest, GtkTreePath *dest_path, Gt
 	   is not possible with GTK 2.0-2.2 because it disallows to
 	   drops as a children but its possible since GTK 2.4 */
 		   	
-	tree_model = GTK_TREE_MODEL(drag_dest);
-	tree_store = GTK_TREE_STORE(drag_dest);
-
 	if(((old_drop_possible)(drag_dest, dest_path, selection_data)) == FALSE)
 		return FALSE;
 	
-	if(gtk_tree_model_get_iter(tree_model, &iter, dest_path)) {
+	if(gtk_tree_model_get_iter(GTK_TREE_MODEL(drag_dest), &iter, dest_path)) {
 		/* if we get an iterator its either a folder or the feed 
 		   iterator after the insertion point */
 	} else {
@@ -108,17 +92,83 @@ ui_dnd_feed_drop_possible(GtkTreeDragDest *drag_dest, GtkTreePath *dest_path, Gt
 	return TRUE;
 }
 
-void ui_dnd_init(void) {
-	GtkTreeDragSourceIface	*drag_source_iface = NULL;
-	GtkTreeDragDestIface	*drag_dest_iface = NULL;
+static gboolean 
+ui_dnd_drag_data_received(GtkTreeDragDest *drag_dest, GtkTreePath *dest, GtkSelectionData *selection_data) {
+	GtkTreeIter	iter, parentIter;
+	nodePtr		node, oldParent, newParent;
+	gboolean	result, valid;
 
-	if(NULL != (drag_source_iface = GTK_TREE_DRAG_SOURCE_GET_IFACE(GTK_TREE_MODEL(feedstore)))) {
+	if(result = old_drag_data_received(drag_dest, dest, selection_data)) {
+		if(gtk_tree_model_get_iter(GTK_TREE_MODEL(drag_dest), &iter, dest)) {
+			gtk_tree_model_get(GTK_TREE_MODEL(drag_dest), &iter, FS_PTR, &node, -1);
+			
+			/* remove from old parents child list */
+			oldParent = node->parent;
+			oldParent->children = g_slist_remove(oldParent->children, node);
+			
+			if(0 == g_slist_length(oldParent->children))
+				ui_node_add_empty_node(ui_node_to_iter(oldParent));
+			
+			/* and rebuild new parents child list */
+			if(gtk_tree_model_iter_parent(GTK_TREE_MODEL(drag_dest), &parentIter, &iter)) {
+				gtk_tree_model_get(GTK_TREE_MODEL(drag_dest), &parentIter, FS_PTR, &newParent, -1);
+			} else {
+				gtk_tree_model_get_iter_first(GTK_TREE_MODEL(drag_dest), &parentIter);
+				newParent = feedlist_get_root();
+			}
+
+			/* drop old list... */
+			debug2(DEBUG_GUI, "old parent is %s (%d)\n", oldParent->title, g_slist_length(oldParent->children));
+			debug2(DEBUG_GUI, "new parent is %s (%d)\n", newParent->title, g_slist_length(newParent->children));
+			g_slist_free(newParent->children);
+			newParent->children = NULL;
+			node->parent = newParent;
+			node_update_unread_count(oldParent, (-1)*node->unreadCount);
+			node_update_unread_count(newParent, node->unreadCount);
+			ui_node_update(oldParent);
+			ui_node_update(newParent);
+			
+			debug0(DEBUG_GUI, "new new parent child list:\n");
+				
+			/* and rebuild it from the tree model */
+			if(feedlist_get_root() != newParent)
+				valid = gtk_tree_model_iter_children(GTK_TREE_MODEL(drag_dest), &iter, &parentIter);
+			else
+				valid = gtk_tree_model_iter_children(GTK_TREE_MODEL(drag_dest), &iter, NULL);
+				
+			while(valid) {
+				gtk_tree_model_get(GTK_TREE_MODEL(drag_dest), &iter, FS_PTR, &node, -1);
+				if(node) {
+					debug1(DEBUG_GUI, "   -> %s\n", node->title);
+					newParent->children = g_slist_append(newParent->children, node);
+				} else {
+					/* remove possible existing "(empty)" node from newParent */
+					ui_node_remove_empty_node(&parentIter);
+				}
+				valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(drag_dest), &iter);
+			}
+			
+			feedlist_schedule_save();
+			ui_itemlist_prefocus();
+		}
+	}
+						      
+	return result;
+}
+
+void ui_dnd_init(GtkTreeStore *feedstore) {
+	GtkTreeDragSourceIface	*drag_source_iface;
+	GtkTreeDragDestIface	*drag_dest_iface;
+
+	if(drag_source_iface = GTK_TREE_DRAG_SOURCE_GET_IFACE(GTK_TREE_MODEL(feedstore))) {
 		drag_source_iface->row_draggable = ui_dnd_feed_draggable;
 	}
 
-	if(NULL != (drag_dest_iface = GTK_TREE_DRAG_DEST_GET_IFACE(GTK_TREE_MODEL(feedstore)))) {
+	if(drag_dest_iface = GTK_TREE_DRAG_DEST_GET_IFACE(GTK_TREE_MODEL(feedstore))) {
 		old_drop_possible = drag_dest_iface->row_drop_possible;
+		old_drag_data_received = drag_dest_iface->drag_data_received;
 		drag_dest_iface->row_drop_possible = ui_dnd_feed_drop_possible;
+		drag_dest_iface->drag_data_received = ui_dnd_drag_data_received;
 	}
 }
 

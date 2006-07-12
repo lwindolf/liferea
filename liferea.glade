@@ -56,7 +56,6 @@
 		  <property name="hover_selection">False</property>
 		  <property name="hover_expand">False</property>
 		  <signal name="button_press_event" handler="on_mainfeedlist_button_press_event" last_modification_time="Wed, 06 Aug 2003 23:10:51 GMT"/>
-		  <signal name="drag_end" handler="on_feedlist_drag_end" last_modification_time="Sun, 11 Apr 2004 18:05:05 GMT"/>
 		</widget>
 	      </child>
 	    </widget>

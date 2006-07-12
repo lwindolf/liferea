@@ -23,12 +23,9 @@
 #define _UI_DND_H
 
 /** sets up DnD for the feedlist model */
-void ui_dnd_init(void);
+void ui_dnd_init(GtkTreeStore *feedstore);
 
 /** sets up URL DnD support */
 void ui_dnd_setup_URL_receiver(GtkWidget *mainwindow);
-
-/** to catch drag end events and to do some postprocessing in the feedlist */
-void on_feedlist_drag_end(GtkWidget *widget, GdkDragContext  *drag_context, gpointer user_data);
 
 #endif

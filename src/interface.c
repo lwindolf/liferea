@@ -137,9 +137,6 @@ create_mainwindow (void)
   g_signal_connect ((gpointer) feedlist, "button_press_event",
                     G_CALLBACK (on_mainfeedlist_button_press_event),
                     NULL);
-  g_signal_connect ((gpointer) feedlist, "drag_end",
-                    G_CALLBACK (on_feedlist_drag_end),
-                    NULL);
   g_signal_connect ((gpointer) onlinebtn, "clicked",
                     G_CALLBACK (on_onlinebtn_clicked),
                     NULL);
