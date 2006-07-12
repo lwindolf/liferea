@@ -451,7 +451,7 @@ void itemlist_mark_all_read(itemSetPtr itemSet) {
 	while(iter) {
 		item = (itemPtr)iter->data;
 		if(!item->readStatus) {
-			itemset_set_item_read_status(itemSet, item, TRUE);
+			itemlist_set_read_status(item, TRUE);
 			itemlist_update_item(item);
 		}
 		iter = g_list_next(iter);
@@ -463,7 +463,7 @@ void itemlist_mark_all_read(itemSetPtr itemSet) {
 	while(iter) {	
 		item = (itemPtr)iter->data;
 		if(item->updateStatus) {
-			itemset_set_item_update_status(itemSet, item, FALSE);
+			itemlist_set_update_status(item, FALSE);
 			itemlist_update_item(item);
 		}
 		iter = g_list_next(iter);
