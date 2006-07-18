@@ -132,7 +132,7 @@
  <td valign="top"> 
      <_span id='author_by'>Author</_span>
      <span id='author'>
-       <xsl:value-of select="attributes/attribute[ @name = 'author' ]"/>
+       <xsl:value-of select="attributes/attribute[ @name = 'author' ]" disable-output-escaping='yes'/>
      </span>
  </td>
  <!--<td valign="top">

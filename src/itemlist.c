@@ -281,7 +281,7 @@ static gboolean itemlist_find_unread_item(void) {
 	if(!displayed_itemSet)
 		return FALSE;
 		
-	if(ITEMSET_TYPE_FOLDER == displayed_itemSet->type) {
+	if(displayed_itemSet->node->children) {
 		feedlist_find_unread_feed(displayed_itemSet->node);
 		return FALSE;
 	}

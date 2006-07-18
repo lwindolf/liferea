@@ -247,6 +247,11 @@ static void fl_plugin_remove(nodePtr node) {
 	/* remove all children */
 	node_foreach_child(node, node_remove);
 
+	g_slist_free(node->children);
+	node->children = NULL;
+
+	/* remove the plugin node */
+	node->parent->children = g_slist_remove(node->parent->children, node);
 	notification_node_removed(node);
 	ui_node_remove_node(node);
 }

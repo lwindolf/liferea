@@ -200,6 +200,13 @@ void itemset_remove_item(itemSetPtr itemSet, itemPtr item) {
 
 	/* remove item from itemset */
 	itemSet->items = g_list_remove(itemSet->items, item);
+	
+	if(!item->readStatus)
+		itemSet->node->unreadCount--;
+	if(item->newStatus)
+		itemSet->node->newCount--;
+	if(item->popupStatus)
+		itemSet->node->popupCount--;
 
 	/* propagate item removal to itemset type specific implementation */
 	switch(itemSet->type) {
@@ -209,7 +216,7 @@ void itemset_remove_item(itemSetPtr itemSet, itemPtr item) {
 			vfolder_remove_item(item);
 
 			itemSet->node->needsCacheSave = TRUE;
-			
+					
 			/* is this really correct? e.g. if there is no 
 			   unread/important vfolder? then the remove
 			   above would do nothing and decrementing

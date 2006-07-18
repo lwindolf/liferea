@@ -173,7 +173,7 @@ static nodePtr feedlist_unread_scan(nodePtr folder) {
 
 		/* feed match if beyond the selected feed or in second pass... */
 		if((scanState != UNREAD_SCAN_INIT) && (node->unreadCount > 0) &&
-		   ((FST_FEED == node->type) || (FST_PLUGIN == node->type))) {
+		   (NULL == node->children) && (FST_VFOLDER != node->type)) {
 		       return node;
 		}
 
@@ -181,12 +181,12 @@ static nodePtr feedlist_unread_scan(nodePtr folder) {
 		   which might be a descendant of the folder and if we
 		   are beyond the selected feed and the folder contains
 		   feeds with unread items... */
-		if((FST_FOLDER == node->type) &&
+		if(node->children &&
 		   (((scanState != UNREAD_SCAN_INIT) && (node->unreadCount > 0)) ||
 		    (selectedIter && (node_is_ancestor(node, selectedNode))))) {
 		       if(childNode = feedlist_unread_scan(node))
 				return childNode;
-		} /* Directories are never checked */
+		}
 
 		iter = g_slist_next(iter);
 	}
@@ -200,8 +200,7 @@ static nodePtr feedlist_unread_scan(nodePtr folder) {
 			/* or that there are unread items above the selected feed */
 			g_assert(scanState != UNREAD_SCAN_SECOND_PASS);
 			scanState = UNREAD_SCAN_SECOND_PASS;
-			childNode = feedlist_unread_scan(feedlist_get_root());
-			return childNode;
+			return feedlist_unread_scan(feedlist_get_root());
 		}
 	}
 

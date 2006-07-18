@@ -27,6 +27,7 @@
 #include "feed.h"
 #include "feedlist.h"
 #include "folder.h"
+#include "itemset.h"
 #include "vfolder.h"
 #include "update.h"
 #include "debug.h"
@@ -363,8 +364,6 @@ void node_request_automatic_add(gchar *source, gchar *title, gchar *filter, gint
 }
 
 void node_request_remove(nodePtr node) {
-
-	g_assert(0 != (FL_PLUGIN(node)->capabilities & FL_PLUGIN_CAPABILITY_REMOVE));
 
 	node_remove(node);
 

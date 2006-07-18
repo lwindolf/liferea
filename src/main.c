@@ -48,7 +48,6 @@
 #include "callbacks.h"
 #include "feed.h"
 #include "vfolder.h"
-#include "metadata.h"
 #include "conf.h"
 #include "common.h"
 #include "update.h"
@@ -285,7 +284,6 @@ int main(int argc, char *argv[]) {
 		update_init();			/* initialize the download subsystem */
 		plugin_mgmt_init();		/* get list of plugins and initialize them */
 		ui_htmlview_init();		/* setup HTML widgets */
-		metadata_init();
 		feed_init();			/* register feed types */
 		vfolder_init();			/* register vfolder rules */
 		conf_load();			/* load global feed settings */
