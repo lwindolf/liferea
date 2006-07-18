@@ -88,7 +88,7 @@ char * GetRandomBytes (void) {
 }
 
 char * ConstructDigestAuth (char * username, char * password, char * url, char * authdata) {
-	char * authinfo;			/* Authorization header as sent to the server. */
+	char * authinfo = NULL;			/* Authorization header as sent to the server. */
 	char * token;
 	int len;
 	char * realm = NULL;		/* Variables for the overcomplicated and annoying HTTP digest algo. */
