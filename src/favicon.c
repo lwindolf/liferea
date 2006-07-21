@@ -170,10 +170,13 @@ static void favicon_download_request_favicon_cb(struct request *request) {
 	GError		*err = NULL;
 	gboolean	success = FALSE;
 	
-	debug2(DEBUG_UPDATE, "icon download processing (%s, %d bytes)", request->source, request->size);
+	debug2(DEBUG_UPDATE, "icon download processing (%s, %d bytes, content type %s)", request->source, request->size, request->contentType);
 	node->requests = g_slist_remove(node->requests, request);
-	
-	if(request->data && request->size > 0) {
+
+	if(request->data && 
+	   request->size > 0 && 
+	   request->contentType && 
+	   (!strncmp("image", request->contentType, 5))) {
 		GdkPixbufLoader *loader = gdk_pixbuf_loader_new();
 		GdkPixbuf *pixbuf;
 		if(gdk_pixbuf_loader_write(loader, (guchar *)request->data, request->size, &err)) {
