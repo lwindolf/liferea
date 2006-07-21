@@ -170,7 +170,7 @@ static void favicon_download_request_favicon_cb(struct request *request) {
 	GError		*err = NULL;
 	gboolean	success = FALSE;
 	
-	debug2(DEBUG_UPDATE, "icon download processing (%s, %d bytes, content type %s)", request->source, request->size, request->contentType);
+	debug3(DEBUG_UPDATE, "icon download processing (%s, %d bytes, content type %s)", request->source, request->size, request->contentType);
 	node->requests = g_slist_remove(node->requests, request);
 
 	if(request->data && 
