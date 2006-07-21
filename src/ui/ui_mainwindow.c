@@ -473,8 +473,8 @@ void ui_mainwindow_init(int mainwindowState) {
 				   "stable version from SourceForge!"
 				   "</div>"));
 
-	addToHTMLBuffer(&buffer, _("<iframe src=\"http://liferea.sf.net/11progress.htm\" width=\"100%\" height=\"150px\">"
-				   "</iframe></div>"));
+	addToHTMLBuffer(&buffer, _("<div>An up-to-date summary of the current v1.1 progress can be found <a href=\"http://liferea.sf.net/11progress.htm\">here</a>."
+				   "</div>"));
 				   
 	ui_htmlview_finish_output(&buffer);
 	ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, NULL);
