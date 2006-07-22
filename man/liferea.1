@@ -1,4 +1,4 @@
-.TH LIFEREA "1" "April 20, 2006"
+.TH LIFEREA "1" "July 22, 2006"
 .SH NAME
 Liferea \- RSS/RDF and Atom news aggregator
 
@@ -53,6 +53,20 @@ Print debugging messages of the feed update processing
 .TP
 .B \-\-debug\-verbose
 Print verbose debugging messages
+
+.SH DBUS INTERFACE
+To allow integration with other programs \fBLiferea\fP profives a DBUS
+interface for automatic creation of new subscriptions. The script
+\fBliferea-add-feed\fP is a convenient way to use this interface. Just
+pass a valid feed URL as parameter and the feed will be added to the
+feed list. You can also pass non-feed URLs to use feed auto discovery.
+Example:
+
+liferea-add-feed "http://www.newsforge.com/newsforge.rss"
+
+Please note that Liferea needs to be running for \fBliferea-add-feed\fP
+to work.
+
 .SH ENVIRONMENT
 .TP
 .B http_proxy
