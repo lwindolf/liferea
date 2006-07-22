@@ -24,6 +24,7 @@
 #include <libxml/uri.h>
 #include "support.h"
 #include "common.h"
+#include "conf.h"
 #include "feed.h"
 #include "feedlist.h"
 #include "export.h"
@@ -41,7 +42,7 @@ static gboolean feedlistImport = FALSE;
 
 static struct flPlugin fpi;
 
-static void ui_feedlist_dbus_connect ();
+static void fl_default_dbus_connect ();
 
 static void fl_default_copy_dir(gchar *subdir) {
 	gchar *dirname10, *dirname11;
@@ -116,11 +117,15 @@ static void fl_default_handler_import(nodePtr node) {
 	feedlistImport = FALSE;
 
 #ifdef USE_DBUS
-	/* Start listening on the dbus for new subscriptions */
-	debug0(DEBUG_GUI, "Registering with DBUS...");
-	ui_feedlist_dbus_connect();
+	if(!getBooleanConfValue(DISABLE_DBUS)) {
+		/* Start listening on the dbus for new subscriptions */	
+		debug0(DEBUG_GUI, "Registering with DBUS...");
+		fl_default_dbus_connect();
+	} else {
+		g_print("DBUS disabled by user request...");
+	}
 #else
-	debug0(DEBUG_GUI, "No DBUS support active.");
+	debug0(DEBUG_GUI, "Compiled without DBUS support.");
 #endif
 
 	debug_exit("fl_default_handler_import");
@@ -152,7 +157,7 @@ static void fl_default_handler_export(nodePtr node) {
 #ifdef USE_DBUS
 
 static DBusHandlerResult
-ui_feedlist_dbus_subscribe (DBusConnection *connection, DBusMessage *message) {
+fl_default_dbus_subscribe (DBusConnection *connection, DBusMessage *message) {
 	DBusError error;
 	DBusMessage *reply;
 	char *s;
@@ -161,7 +166,7 @@ ui_feedlist_dbus_subscribe (DBusConnection *connection, DBusMessage *message) {
 	/* Retreive the dbus message arguments (the new feed url) */	
 	dbus_error_init (&error);
 	if(!dbus_message_get_args (message, &error, DBUS_TYPE_STRING, &s, DBUS_TYPE_INVALID)) {
-		fprintf (stderr, "*** ui_feedlist.c: Error while retreiving message parameter, expecting a string url: %s | %s\n", error.name,  error.message);
+		g_warning("fl_default_dbus_subscribe(): Error while retreiving message parameter, expecting a string url: %s | %s\n", error.name,  error.message);
 		reply = dbus_message_new_error (message, error.name, error.message);
 		dbus_connection_send (connection, reply, NULL);
 		dbus_message_unref (reply);
@@ -176,11 +181,7 @@ ui_feedlist_dbus_subscribe (DBusConnection *connection, DBusMessage *message) {
 	/* Acknowledge the new feed by returning true */
 	reply = dbus_message_new_method_return (message);
 	if(reply) {
-#if (DBUS_VERSION == 1)
-		dbus_message_append_args (reply, DBUS_TYPE_BOOLEAN, done,DBUS_TYPE_INVALID);
-#elif (DBUS_VERSION == 2)
 		dbus_message_append_args (reply, DBUS_TYPE_BOOLEAN, &done,DBUS_TYPE_INVALID);
-#endif
 		dbus_connection_send (connection, reply, NULL);
 		dbus_message_unref (reply);
 		return DBUS_HANDLER_RESULT_HANDLED;
@@ -191,7 +192,7 @@ ui_feedlist_dbus_subscribe (DBusConnection *connection, DBusMessage *message) {
 
 
 static DBusHandlerResult
-ui_feedlist_dbus_message_handler (DBusConnection *connection, DBusMessage *message, void *user_data)
+fl_default_dbus_message_handler (DBusConnection *connection, DBusMessage *message, void *user_data)
 {
 	const char  *method;
 	
@@ -202,17 +203,17 @@ ui_feedlist_dbus_message_handler (DBusConnection *connection, DBusMessage *messa
 	
 	method = dbus_message_get_member (message);
 	if (strcmp (DBUS_RSS_METHOD, method) == 0)
-		return ui_feedlist_dbus_subscribe (connection, message);
+		return fl_default_dbus_subscribe (connection, message);
 	else
 		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
 }
 
 static void
-ui_feedlist_dbus_connect ()
+fl_default_dbus_connect ()
 {
 	DBusError       error;
 	DBusConnection *connection;
-	DBusObjectPathVTable feedreader_vtable = { NULL, ui_feedlist_dbus_message_handler, NULL};
+	DBusObjectPathVTable feedreader_vtable = { NULL, fl_default_dbus_message_handler, NULL};
 
 	/* Get the Session bus */
 	dbus_error_init (&error);
@@ -230,13 +231,8 @@ ui_feedlist_dbus_connect ()
 	dbus_connection_setup_with_g_main (connection, NULL);
 	    
 	/* Register for the FeedReader service on the bus, so we get method calls */
-#if (DBUS_VERSION == 1)
-	dbus_bus_acquire_service (connection, DBUS_RSS_SERVICE, 0, &error);
-#elif (DBUS_VERSION == 2)
 	dbus_bus_request_name (connection, DBUS_RSS_SERVICE, 0, &error);
-#else
-#error Unknown DBUS version passed to ui_feedlist
-#endif
+
 	if (dbus_error_is_set (&error))
 	{
 		fprintf (stderr, "*** ui_feedlist.c: Failed to get dbus service: %s | %s\n", error.name, error.message);
