@@ -83,6 +83,9 @@
 #define PROXY_USER			"/system/http_proxy/authentication_user"
 #define PROXY_PASSWD			"/system/http_proxy/authentication_password"
 
+/* other settings */
+#define DISABLE_DBUS			"/apps/liferea/disable-dbus"
+
 /* initializing methods */
 void	conf_init(void);
 void	conf_load(void);
