@@ -39,6 +39,12 @@ AC_ARG_ENABLE(libnotify, AS_HELP_STRING([--disable-libnotify],[don't compile the
 
 AC_CHECK_FUNCS([strsep getaddrinfo])
 
+case "$host_os" in
+        *solaris*)
+                AC_CHECK_LIB(resolv, res_init)
+                ;;
+esac
+
 dnl Search for X libraries
 AC_PATH_XTRA
 
