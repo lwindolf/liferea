@@ -116,6 +116,7 @@ static gboolean main_lock() {
 			retval = -2;
 			goto main_lock_out;
 		}
+		memset(tmp, 0, 300);
 		if ((len = readlink(filename2, tmp, 299)) == -1) {
 			retval = -2; /* Unreadable link, or not a link */
 			goto main_lock_out;
