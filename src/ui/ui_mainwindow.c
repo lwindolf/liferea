@@ -474,7 +474,7 @@ void ui_mainwindow_init(int mainwindowState) {
 				   "</div>"));
 
 	addToHTMLBuffer(&buffer, _("<div>An up-to-date summary of the current v1.1 progress can be found <a href=\"http://liferea.sf.net/11progress.htm\">here</a>."
-				   "</div>"));
+				   "</div></div>"));
 				   
 	ui_htmlview_finish_output(&buffer);
 	ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, NULL);
