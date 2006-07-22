@@ -28,6 +28,12 @@
 #  include <config.h>
 #endif
 
+#ifdef USE_DBUS
+#define DBUS_API_SUBJECT_TO_CHANGE
+#include <dbus/dbus.h>
+#include <dbus/dbus-glib.h>
+#endif
+
 #include <gtk/gtk.h>
 #include <locale.h> /* For setlocale */
 
@@ -200,6 +206,9 @@ int main(int argc, char *argv[]) {
 	g_set_prgname("liferea");
 	gtk_set_locale();
 	g_thread_init(NULL);
+#ifdef USE_DBUS
+	dbus_g_thread_init();
+#endif
 	gtk_init(&argc, &argv);
 	
 	/* GTK theme support */
