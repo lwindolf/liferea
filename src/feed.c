@@ -478,7 +478,9 @@ xmlDocPtr feed_to_xml(nodePtr node, gboolean rendering) {
 		xmlNewTextChild(feedNode, NULL, "feedLastModified", feed_get_lastmodified(feed));
 
 	if(rendering) {
-		xmlNewTextChild(feedNode, NULL, "favicon", node_get_favicon_file(node));
+		tmp = g_strdup_printf("file://%s", node_get_favicon_file(node));
+		xmlNewTextChild(feedNode, NULL, "favicon", tmp);
+		g_free(tmp);
 
 		if(feed->updateError)
 			xmlNewTextChild(feedNode, NULL, "updateError", feed->updateError);
