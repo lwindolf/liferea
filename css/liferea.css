@@ -78,7 +78,7 @@ td.headright {
 	padding:2px 5px;
 }
 
-#headmeta {
+.headmeta {
 	background:#F0F0F0;
 	width:100%;
 	border-top:#FFF solid 1px;
@@ -88,14 +88,14 @@ td.headright {
 	margin:0;
 }
 
-#author, #categories, #source {
+.author, .categories, .source {
         padding:0;
 	margin-left:0;
         margin-right:12px;
 	font-weight:bold;
 }
 
-#date {
+.date {
 	white-space:nowrap;
 	text-align:right;
 	padding-right:5px;
@@ -105,7 +105,7 @@ div.content, div.foottext {
 	padding:0px 6px 0px 12px;
 }
 
-#commentlink {
+.commentlink {
 	padding-left:9px;
 }
 
@@ -305,12 +305,18 @@ a.enclosure {
 }
 
 img.enclosurebtn {
-/*	border:#E0E0E0 solid 1px;
-	border-bottom-color:#808080;
-	border-right-color:#808080;
-	background:#D0D0D0;*/
-	padding:2px;
+	border:#FFF solid 1px;
+	border-bottom-color:#D0D0D0;
+	border-right-color:#D0D0D0;
+	background:#F0F0F0;
+	padding-left:1px;
 	margin-left:2px;
+	margin-top:4px;
+}
+
+.enclosure * object {
+	margin-left:5px;
+	margin-top:2px;
 }
 
 del {

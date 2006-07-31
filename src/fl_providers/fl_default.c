@@ -35,7 +35,9 @@
 #include "fl_providers/fl_plugin.h"
 #include "ui/ui_feed.h"
 #include "ui/ui_feedlist.h"
+#include "ui/ui_mainwindow.h"
 #include "ui/ui_node.h"
+#include "ui/ui_tray.h"
 
 /** lock to prevent feed list saving while loading */
 static gboolean feedlistImport = FALSE;
@@ -52,7 +54,7 @@ static void fl_default_copy_dir(gchar *subdir) {
 	dirname10 = g_strdup_printf("%s" G_DIR_SEPARATOR_S ".liferea"     G_DIR_SEPARATOR_S "%s", g_get_home_dir(), subdir);
 	dirname11 = g_strdup_printf("%s" G_DIR_SEPARATOR_S ".liferea_1.1" G_DIR_SEPARATOR_S "%s", g_get_home_dir(), subdir);
 	dir = g_dir_open(dirname10, 0, NULL);
-	while(srcfile = (gchar *)g_dir_read_name(dir)) {
+	while(NULL != (srcfile = (gchar *)g_dir_read_name(dir))) {
 		gchar	*content;
 		gsize	length;
 		destfile = g_strdup_printf("%s" G_DIR_SEPARATOR_S "%s", dirname11, srcfile);
@@ -157,6 +159,43 @@ static void fl_default_handler_export(nodePtr node) {
 #ifdef USE_DBUS
 
 static DBusHandlerResult
+ui_feedlist_dbus_set_online (DBusConnection *connection, DBusMessage *message)
+{
+	DBusError error;
+	DBusMessage *reply;
+	gboolean b;
+	gboolean done = TRUE;
+	
+	/* Retreive the dbus message arguments (the online status) */	
+	dbus_error_init (&error);
+	if (!dbus_message_get_args (message, &error, DBUS_TYPE_BOOLEAN, &b, DBUS_TYPE_INVALID))
+	{
+		fprintf (stderr, "*** ui_feedlist.c: Error while retreiving message parameter, expecting a boolean: %s | %s\n", error.name,  error.message);
+		reply = dbus_message_new_error (message, error.name, error.message);
+		dbus_connection_send (connection, reply, NULL);
+		dbus_message_unref (reply);
+		dbus_error_free(&error);
+		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+	}
+	dbus_error_free(&error);
+
+	/* Set online status */
+	update_set_online(b);
+
+	/* Acknowledge the new feed by returning true */
+	reply = dbus_message_new_method_return (message);
+	if (reply != NULL)
+	{
+		dbus_message_append_args (reply, DBUS_TYPE_BOOLEAN, &done,DBUS_TYPE_INVALID);
+		dbus_connection_send (connection, reply, NULL);
+		dbus_message_unref (reply);
+		return DBUS_HANDLER_RESULT_HANDLED;
+	}
+	else
+		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+}
+
+static DBusHandlerResult
 fl_default_dbus_subscribe (DBusConnection *connection, DBusMessage *message) {
 	DBusError error;
 	DBusMessage *reply;
@@ -204,6 +243,8 @@ fl_default_dbus_message_handler (DBusConnection *connection, DBusMessage *messag
 	method = dbus_message_get_member (message);
 	if (strcmp (DBUS_RSS_METHOD, method) == 0)
 		return fl_default_dbus_subscribe (connection, message);
+	if (strcmp (DBUS_RSS_SET_ONLINE_METHOD, method) == 0)
+		return ui_feedlist_dbus_set_online (connection, message);
 	else
 		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
 }

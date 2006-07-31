@@ -87,6 +87,7 @@
 <!-- enclosures -->
 <xsl:for-each select="attributes/attribute[ @name = 'enclosure' ]">
 <table class="enclosure" cellpadding="0" cellspacing="0">
+
 <tr>
   <td>
     <xsl:element name="a">
@@ -99,26 +100,47 @@
     </xsl:element>
   </td>
   <td width="99%">
-    <xsl:element name="a">
-      <xsl:attribute name="class">enclosure</xsl:attribute>
-      <xsl:attribute name="href"><xsl:value-of select="."/></xsl:attribute>
-      <xsl:call-template name="substring-after-last">
-        <xsl:with-param name="input"  select="." />
-        <xsl:with-param name="substr" select="'/'" />
-      </xsl:call-template>
-    </xsl:element>
+   <xsl:choose>
+    <xsl:when test="contains(.,'mp3') or contains(.,'ogg')">
+      <span class="xspf_player">
+        <xsl:element name="object">
+          <xsl:attribute name="type">application/x-shockwave-flash</xsl:attribute>
+          <xsl:attribute name="width">400</xsl:attribute>
+          <xsl:attribute name="height">15</xsl:attribute>
+          <xsl:attribute name="data"><xsl:value-of select="$pixmapsDir"/>../media/xspf_player_slim.swf?song_title=<xsl:call-template name="substring-after-last">
+            <xsl:with-param name="input"  select="." />
+            <xsl:with-param name="substr" select="'/'" />
+          </xsl:call-template>&amp;song_url=<xsl:value-of select="."/>&amp;player_title=Click+to+play+<xsl:call-template name="substring-after-last">
+            <xsl:with-param name="input"  select="." />
+            <xsl:with-param name="substr" select="'/'" />
+          </xsl:call-template>...</xsl:attribute>
+        </xsl:element>
+      </span>
+     </xsl:when>
+     <xsl:otherwise>
+      <xsl:element name="a">
+        <xsl:attribute name="class">enclosure</xsl:attribute>
+        <xsl:attribute name="href"><xsl:value-of select="."/></xsl:attribute>
+        <xsl:call-template name="substring-after-last">
+          <xsl:with-param name="input"  select="." />
+          <xsl:with-param name="substr" select="'/'" />
+        </xsl:call-template>
+      </xsl:element>
+     </xsl:otherwise> 
+   </xsl:choose>
   </td>
 </tr>
+
 </table>
 </xsl:for-each>
 
 <!-- header metadata (author + categories + date) -->
-<table id='headmeta' cellspacing="0" cellpadding="0">
+<table class='headmeta' cellspacing="0" cellpadding="0">
 <xsl:if test="attributes/attribute[ @name = 'category' ]">
 <tr>
  <td valign="top">
-     <_span id='categories_in'>Filed under</_span>  
-     <span id='categories'>
+     <_span class='categories_in'>Filed under</_span>  
+     <span class='categories'>
        <xsl:for-each select="attributes/attribute[ @name = 'category' ]">
          <xsl:if test="position() != 1">, </xsl:if>
          <xsl:value-of select="."/>
@@ -130,21 +152,21 @@
 <xsl:if test="attributes/attribute[ @name = 'author' ]">
 <tr>
  <td valign="top"> 
-     <_span id='author_by'>Author</_span>
-     <span id='author'>
+     <_span class='author_by'>Author</_span>
+     <span class='author'>
        <xsl:value-of select="attributes/attribute[ @name = 'author' ]" disable-output-escaping='yes'/>
      </span>
  </td>
  <!--<td valign="top">
-  <span><div id='date'><xsl:value-of select="timestr"/></div></span>
+  <span><div class='date'><xsl:value-of select="timestr"/></div></span>
  </td>-->
 </tr>
 </xsl:if>
 <xsl:if test="real_source_url">
 <tr>
  <td valign="top"> 
-     <_span id='source_from'>Source</_span>
-     <span id='source'>
+     <_span class='source_from'>Source</_span>
+     <span class='source'>
        <xsl:element name="a">
          <xsl:attribute name="href">
            <xsl:value-of select="real_source_url"/>
@@ -165,7 +187,7 @@
 <table class="feedfoot"><tr class="feedfoot"><td class="feedfootname"><span class="feedfootname">Datum</span></td><td class="feedfootvalue"><span class="feedfootvalue">02.07. - 10:31</span></td></tr><tr class="feedfoot"><td class="feedfootname"><span class="feedfootname">Kategorien</span></td><td class="feedfootvalue"><span class="feedfootvalue">Wirtschaft</span></td></tr></table>-->
 
 <!-- table below footer for comment link and search engine link -->
-<table width="100%" id="commentlink">
+<table width="100%" class="commentlink">
 <tr>
 <td>
 

@@ -16,6 +16,11 @@ css_DATA = \
 	css/liferea2.css \
 	css/adblock.css
 
+mediadir = $(pkgdatadir)/media
+media_DATA = \
+	media/xspf_player_slim.swf \
+	media/xspf_license.txt
+
 dtddir = $(pkgdatadir)/dtd
 dtd_DATA = dtd/html.ent
 
@@ -32,6 +37,7 @@ EXTRA_DIST = \
 	$(schema_DATA) \
 	$(css_DATA) \
 	$(dtd_DATA) \
+	$(media_DATA) \
 	intltool-extract.in \
 	intltool-merge.in \
 	intltool-update.in

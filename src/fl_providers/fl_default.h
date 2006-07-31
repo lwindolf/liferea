@@ -36,6 +36,7 @@
 #define DBUS_RSS_SERVICE "org.gnome.feed.Reader"
 #define DBUS_RSS_OBJECT  "/org/gnome/feed/Reader"
 #define DBUS_RSS_METHOD  "Subscribe"
+#define DBUS_RSS_SET_ONLINE_METHOD  "SetOnline"
 
 #endif /* USE_DBUS */
 

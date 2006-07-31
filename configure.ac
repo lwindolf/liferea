@@ -299,24 +299,15 @@ dnl ****
 dnl DBUS
 dnl ****
 
-dbusversion=0
 
 if test "x$enable_dbus" = "xyes"; then
    AC_MSG_NOTICE([checking for DBUS >= 0.30])
-   PKG_CHECK_MODULES([DBUS], [dbus-1 >= 0.30 dbus-glib-1 >= 0.30],dbusversion=2,dbusversion=0)
-   if test "x$dbusversion" = "x0"; then
-      AC_MSG_NOTICE([checking for DBUS >= 0.23])
-      PKG_CHECK_MODULES([DBUS], [dbus-1 >= 0.23 dbus-glib-1 >= 0.23],dbusversion=1,dbusversion=0)
-   fi
-   if test "x$dbusversion" != "x0" ; then
-	  AC_DEFINE(USE_DBUS, 1, [Define if we're using DBUS.])
-      enable_dbus=yes
-   else
-      enable_dbus=no
-   fi
+   PKG_CHECK_MODULES([DBUS], [dbus-1 >= 0.30 dbus-glib-1 >= 0.30],enable_dbus=yes,enable_dbus=no)
 fi
 
-AC_DEFINE_UNQUOTED(DBUS_VERSION, [[$dbusversion]], [Version of the DBUS API being used. See configure file for details])
+if test "x$enable_dbus" = "xyes"; then
+  AC_DEFINE(USE_DBUS, 1, [Define if we're using DBUS.])
+fi
 
 AC_SUBST(DBUS_CFLAGS)
 AC_SUBST(DBUS_LIBS)
