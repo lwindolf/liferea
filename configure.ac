@@ -178,7 +178,7 @@ if test "x$enable_mozilla" = "xyes" ; then
    MOZILLA_INCLUDE_ROOT=`$PKG_CONFIG --cflags-only-I $gecko_provider-gtkmozembed | awk '{print $1}' | sed "s/^-I//"`
    MOZILLA_INCLUDE_ROOT=`dirname $MOZILLA_INCLUDE_ROOT`
    MOZILLA_LIB_ROOT=`$PKG_CONFIG --libs-only-L $gecko_provider-gtkmozembed | awk '{print $1}' |  cut -c 3-`
-   MOZILLA_LIB_DIR_SEARCH="look_for_mozilla \"$MOZILLA_LIB_ROOT/chrome/comm.jar\""
+   MOZILLA_LIB_DIR_SEARCH="look_for_mozilla \"$MOZILLA_LIB_ROOT\""
    MOZILLA_HOME="`$PKG_CONFIG --variable=libdir $gecko_provider-gtkmozembed`"
       
    dnl Maybe we don't need all of this...
