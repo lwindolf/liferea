@@ -55,16 +55,18 @@
     <b><_span>Folder:</_span></b>
   </td>
   <td width="100%" valign="middle" class="headright">
-     <xsl:value-of select="@title"/>
+     <b><xsl:value-of select="@title"/></b>
   </td>
 </tr>
 </table>
 
 <div class='content'>
+  <p>
    <b><xsl:value-of select="count(*[@xmlUrl])"/></b>
    <_span>Subscriptions with</_span> 
    <b><xsl:value-of select="$headlineCount"/></b>
    <_span>Headlines</_span> 
+  </p>
 </div>
 
 </body>

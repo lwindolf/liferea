@@ -33,6 +33,7 @@
 #endif
 
 #include <libgtkhtml/gtkhtml.h>
+#include <libgtkhtml/view/htmlselection.h>
 #include <stdlib.h>
 #include <string.h>
 #include <glib.h>
@@ -228,11 +229,12 @@ static void on_url(HtmlView *view, const char *url, gpointer user_data) {
 static gboolean request_object (HtmlView *view, GtkWidget *widget, gpointer user_data) {
 	GtkWidget *label;
 
-	label = gtk_label_new(_("The included HTML <object> tag is not supported with GtkHTML2.\nIncluded Plugins might not be displayed."));
+/*	label = gtk_label_new(_("The included HTML <object> tag is not supported with GtkHTML2.\nIncluded Plugins might not be displayed."));
 	gtk_widget_show(label);
 	gtk_container_add(GTK_CONTAINER (widget), label);
 
-	return TRUE;
+	return TRUE;*/
+	return FALSE;
 }
 
 static void kill_old_connections (GtkWidget *scrollpane) {

@@ -68,6 +68,12 @@ table.itemhead {
 	clear:both;
 }
 
+table.itemhead * a.itemhead {
+	text-decoration:none;
+	color:black;
+	font-weight:bold;
+}
+
 td.headleft {
 	padding:2px 2px;
 	text-align:right;
@@ -106,7 +112,7 @@ div.content, div.foottext {
 }
 
 .commentlink {
-	padding-left:9px;
+	padding-left:4px;
 }
 
 img {

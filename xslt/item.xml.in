@@ -114,6 +114,7 @@
             <xsl:with-param name="input"  select="." />
             <xsl:with-param name="substr" select="'/'" />
           </xsl:call-template>...</xsl:attribute>
+	  No Flash supported!
         </xsl:element>
       </span>
      </xsl:when>
@@ -180,7 +181,9 @@
 </table>
 
 <div class='content'>
-   <xsl:value-of select="description" disable-output-escaping='yes'/>
+  <p>
+    <xsl:value-of select="description" disable-output-escaping='yes'/>
+  </p>
 </div>
 
 <!-- FIXME footer!!!

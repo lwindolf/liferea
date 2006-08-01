@@ -71,6 +71,7 @@ table.itemhead {
 table.itemhead * a {
 	text-decoration:none;
 	color:black;
+	font-weight:bold;
 }
 
 td.headleft {
@@ -111,7 +112,7 @@ div.content, div.foottext {
 }
 
 .commentlink {
-	padding-left:9px;
+	padding-left:4px;
 }
 
 img {

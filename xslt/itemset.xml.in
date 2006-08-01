@@ -191,7 +191,9 @@
 </table>
 
 <div class='content'>
-   <xsl:value-of select="description" disable-output-escaping='yes'/>
+  <p>
+    <xsl:value-of select="description" disable-output-escaping='yes'/>
+  </p>
 </div>
 
 <!-- table below footer for comment link and search engine link -->
