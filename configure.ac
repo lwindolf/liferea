@@ -70,24 +70,6 @@ else
    AC_MSG_RESULT(no)
 fi
 
-dnl libcurl support
-dnl AC_MSG_CHECKING([libcurl])
-dnl if curl-config --libs > /dev/null 2>&1; then
-dnl if false ; then
-dnl 	AC_MSG_RESULT(yes)
-dnl 	AM_CONDITIONAL(USE_LIBCURL, true)
-dnl	CURL_CFLAGS="`curl-config --cflags`"
-dnl	CURL_LIBS="`curl-config --libs`"
-dnl	enable_libcurl=yes
-dnl else
-dnl	enable_libcurl=no
-dnl	AC_MSG_RESULT(no)
-dnl	AM_CONDITIONAL(USE_LIBCURL, false)
-dnl fi
-
-AC_SUBST(CURL_CFLAGS)
-AC_SUBST(CURL_LIBS)
-
 PKG_PROG_PKG_CONFIG()
 
 dnl *********
@@ -140,7 +122,6 @@ if test "x$enable_mozilla" != "xyes" -a \( "x$enable_gecko" = "xyes" -o "x$enabl
 fi
 
 AM_CONDITIONAL(WITH_MOZILLA, test "x$enable_mozilla" = "xyes")
-MOZILLA_LIB_DIR_SEARCH=
 
 if test "x$enable_mozilla" = "xyes" ; then
    dnl AC_MSG_CHECKING([for Mozilla support])
@@ -160,9 +141,7 @@ if test "x$enable_mozilla" = "xyes" ; then
    MOZILLA_INCLUDE_ROOT=`$PKG_CONFIG --cflags-only-I $gecko_provider-gtkmozembed | awk '{print $1}' | sed "s/^-I//"`
    MOZILLA_INCLUDE_ROOT=`dirname $MOZILLA_INCLUDE_ROOT`
    MOZILLA_LIB_ROOT=`$PKG_CONFIG --libs-only-L $gecko_provider-gtkmozembed | awk '{print $1}' |  cut -c 3-`
-   MOZILLA_LIB_DIR_SEARCH="look_for_mozilla \"$MOZILLA_LIB_ROOT\""
-   MOZILLA_HOME="`$PKG_CONFIG --variable=libdir $gecko_provider-gtkmozembed`"
-      
+   
    dnl Maybe we don't need all of this...
    MOZILLA_CFLAGS="$MOZILLA_CFLAGS \
 -I$MOZILLA_INCLUDE_ROOT \
@@ -205,10 +184,10 @@ if test "x$enable_mozilla" = "xyes" ; then
 -I$MOZILLA_INCLUDE_ROOT/xpcom \
 -I$MOZILLA_INCLUDE_ROOT/xpconnect"
 
-   AC_SUBST([MOZILLA_HOME])
    AC_SUBST(MOZILLA_CFLAGS)
    AC_SUBST(MOZILLA_LIBS)   
-   AC_SUBST(MOZILLA_LIB_DIR_SEARCH)
+   AC_SUBST(MOZILLA_LIB_ROOT)
+   AC_DEFINE_UNQUOTED([MOZILLA_LIB_ROOT], ["${MOZILLA_LIB_ROOT}"], [Mozilla component path])
 else
    enable_mozilla=no
 fi
@@ -418,8 +397,6 @@ echo "Use X Session Management........ : $enable_sm"
 echo "Use DBUS........................ : $enable_dbus"
 echo "GNUTLS SSL/HTTPS Support........ : $enable_gnutls"
 echo
-dnl echo Use libcurl download library.... : $enable_libcurl
-dnl echo
 eval eval echo Liferea will be installed in $bindir.
 echo
 echo configure complete, now type \'make\'

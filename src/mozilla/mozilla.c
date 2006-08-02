@@ -37,13 +37,7 @@ static void mozilla_init(void) {
 	/* Avoid influencing the component loading by $MOZILLA_FIVE_HOME */
 	g_unsetenv("MOZILLA_FIVE_HOME");
 
-	
-	/* It is important to call gtk_moz_embed_set_comp_path()
-	   with NULL. If we would set a hard coded component
-	   path here we would run into symbol incompatibilities
-	   when LD_LIBRARY_PATH points Liferea to gtkmozembed.so
-	   different from the one we compiled against */
-	gtk_moz_embed_set_comp_path(NULL);
+	gtk_moz_embed_set_comp_path(MOZILLA_LIB_ROOT);
 
 	mozembed_init();	
 }

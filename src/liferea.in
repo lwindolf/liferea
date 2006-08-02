@@ -1,61 +1,18 @@
 #!/bin/sh
 
 
-# This script is used to find an existing Mozilla
-# instance in your system and to supply its path
-# to Liferea.
+# This script should be used to start Liferea
+# to ensure a running DBUS session.
 
 dist_bin=`dirname $0`
 params="$@"
 
-run_with_mozilla() {
-	MOZILLA_HOME=$1
-
-	if [ -f $MOZILLA_HOME/libgtkembedmoz.so ]; then
-	
-		LD_LIBRARY_PATH=$MOZILLA_HOME:$LD_LIBRARY_PATH
-		export LD_LIBRARY_PATH
-
-		exec "$dist_bin/liferea-bin" $params
-	fi
-}
-
-look_for_mozilla() {
-
-	results=`ls -1d $1 2>/dev/null | sort -n`
-	while [ -n "$results" ]
-	do
-		path=`echo "$results" | tail -n 1`
-		results=`echo "$results" | grep -v $path`
-		path=`dirname $path` 	# strip comm.jar
-		path=`dirname $path`	# strip chrome
-		run_with_mozilla $path
-		
-	done
-}
+LD_LIBRARY_PATH=@MOZILLA_LIB_ROOT@:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH
 
 if [ -z "$DBUS_SESSION_BUS_ADDRESS" ]; then
 	eval `dbus-launch`
 	export DBUS_SESSION_BUS_ADDRESS
 fi
-
-if [ -n "$MOZILLA_FIVE_HOME" ]; then
-	run_with_mozilla $MOZILLA_FIVE_HOME
-fi
-
-@MOZILLA_LIB_DIR_SEARCH@
-look_for_mozilla "/usr/lib/mozilla*/chrome/comm.jar"
-look_for_mozilla "/usr/lib64/mozilla*/chrome/comm.jar"
-look_for_mozilla "/usr/local/mozilla*/chrome/comm.jar"
-look_for_mozilla "/opt/mozilla/chrome/comm.jar"
-look_for_mozilla "/opt/mozilla/lib/chrome/comm.jar"
-look_for_mozilla "/opt/gnome/lib/mozilla/chrome/comm.jar"
-look_for_mozilla "/usr/lib/firefox*/chrome/comm.jar"
-look_for_mozilla "/usr/lib64/firefox*/chrome/comm.jar"
-look_for_mozilla "/usr/local/firefox*/chrome/comm.jar"
-look_for_mozilla "/opt/firefox/chrome/comm.jar"
-look_for_mozilla "/opt/firefox/lib/chrome/comm.jar"
-# for FreeBSD 6:
-look_for_mozilla "/usr/X11R6/lib/mozilla/chrome.jar"
 
 exec "$dist_bin/liferea-bin" $params
