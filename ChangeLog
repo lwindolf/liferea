@@ -30,6 +30,9 @@
 	* Rendering is now done using XSLT. This introduces
 	  a dependency to libxslt.
 	* Makefile improvements (Remi Cardona).
+	* With 1.1 the GtkHTML2 rendering module support
+	  was dropped. The reason were problems when 
+	  rendering XHTML and using Flash applets.
 
 	Bugfixes
 

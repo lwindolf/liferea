@@ -1,10 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-if WITH_GTKHTML2
-GTKHTML2 = gtkhtml2
-endif
-
-SUBDIRS = net parsers fl_providers notification ui . $(GTKHTML2) mozilla
+SUBDIRS = net parsers fl_providers notification ui . mozilla
 
 AM_CPPFLAGS = \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \
