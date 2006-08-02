@@ -1,5 +1,4 @@
-The following sections list people who have contributed
-to Liferea. It's more a credits file...
+The following sections list people who have contributed to Liferea.
 
 Coding
 ======
@@ -97,6 +96,7 @@ Jakub Jozwicki <jakubj@users.sourceforge.net>   Polish
 Guanglei Xiong <xgl99@mails.tsinghua.edu.cn>	Simplified Chinese
 Sigge Kotliar <sigge@hystrix.se>		Swedish
 
+
 Code included from other projects
 =================================
 
@@ -109,3 +109,14 @@ Kristian Rietveld <kris@gtk.org>		GtkTreeModelFilter
 
 If we forgot to list you here, leave us a message on
 the mailing list and we'll include your name and email!
+
+
+Included Software
+=================
+
+The Liferea package includes the XSPF Web Music Player. This Flash
+applet is included in binary form and can be found in the media
+subdirectory which also contains the license of the music player.
+The XSPF Web Music Player was written by Fabricio Zuardi and can be 
+found at http://musicplayer.sourceforge.net.
+
