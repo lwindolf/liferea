@@ -50,10 +50,12 @@
 </table>
 
 <div class='content'>
-   <b><xsl:value-of select="count(/opml/body//outline[@xmlUrl])"/></b>
-   <_span>Subscriptions with</_span>
-   <b><xsl:value-of select="$headlineCount"/></b> 
-   <_span>Headlines</_span> 
+  <p>
+    <b><xsl:value-of select="count(/opml/body//outline[@xmlUrl])"/></b>
+    <_span>Subscriptions with</_span>
+    <b><xsl:value-of select="$headlineCount"/></b> 
+    <_span>Headlines</_span> 
+  </p>
 </div>
 
 </body>

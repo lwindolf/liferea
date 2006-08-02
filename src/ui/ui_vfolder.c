@@ -292,6 +292,7 @@ void ui_vfolder_properties(nodePtr node) {
 
 void ui_vfolder_add(nodePtr parent) {
 	vfolderPtr	vfolder;
+	itemSetPtr	itemSet;
 	nodePtr		node;
 	
 	vfolder = vfolder_new();
@@ -300,6 +301,11 @@ void ui_vfolder_add(nodePtr parent) {
 	node = node_new();
 	node_set_title(node, vfolder_get_title(vfolder));
 	node_add_data(node, FST_VFOLDER, (gpointer)vfolder);
+	vfolder->node = node;
+	
+	itemSet = (itemSetPtr)g_new0(struct itemSet, 1);
+	itemSet->type = ITEMSET_TYPE_VFOLDER;
+	node_set_itemset(node, itemSet);	
 
 	node_add_child(NULL, node, 0);
 	ui_feedlist_select(node);

@@ -126,18 +126,12 @@
             <xsl:with-param name="input"  select="." />
             <xsl:with-param name="substr" select="'/'" />
           </xsl:call-template>...</xsl:attribute>
+          <xsl:call-template name="enclosure"/>
         </xsl:element>
       </span>
      </xsl:when>
      <xsl:otherwise>
-      <xsl:element name="a">
-        <xsl:attribute name="class">enclosure</xsl:attribute>
-        <xsl:attribute name="href"><xsl:value-of select="."/></xsl:attribute>
-        <xsl:call-template name="substring-after-last">
-          <xsl:with-param name="input"  select="." />
-          <xsl:with-param name="substr" select="'/'" />
-        </xsl:call-template>
-      </xsl:element>
+       <xsl:call-template name="enclosure"/>
      </xsl:otherwise> 
    </xsl:choose>
   </td>
@@ -190,11 +184,16 @@
 </xsl:if>
 </table>
 
+<!-- start of content -->
+<xsl:element name="div">
+<xsl:attribute name="class">
+  <xsl:if test="readStatus = '0'">itemshaded</xsl:if>
+  <xsl:if test="readStatus != '0'">itemunshaded</xsl:if>
+</xsl:attribute>
 <div class='content'>
-  <p>
-    <xsl:value-of select="description" disable-output-escaping='yes'/>
-  </p>
-</div>
+<p>
+  <xsl:value-of select="description" disable-output-escaping='yes'/>
+</p>
 
 <!-- table below footer for comment link and search engine link -->
 <table width="100%" class="commentlink">
@@ -233,6 +232,20 @@
 </tr>
 </table> <!-- end of comment and search engine link table -->
 
+</div>
+</xsl:element> <!-- end of content-->
+
+</xsl:template>
+
+<xsl:template name="enclosure">
+  <xsl:element name="a">
+    <xsl:attribute name="class">enclosure</xsl:attribute>
+    <xsl:attribute name="href"><xsl:value-of select="."/></xsl:attribute>
+    <xsl:call-template name="substring-after-last">
+      <xsl:with-param name="input"  select="." />
+      <xsl:with-param name="substr" select="'/'" />
+    </xsl:call-template>
+  </xsl:element>
 </xsl:template>
 
 <!-- substring after last occurance also from "XSLT Cookbook"...-->

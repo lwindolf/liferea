@@ -28,6 +28,7 @@
 #include "item.h"
 #include "rule.h"
 #include "debug.h"
+#include "metadata.h"
 
 #define ITEM_MATCH_RULE_ID		"exact"
 #define ITEM_TITLE_MATCH_RULE_ID	"exact_title"
@@ -154,6 +155,11 @@ static gboolean rule_item_was_updated(rulePtr rp, itemPtr ip) {
 	return ip->updateStatus;
 }
 
+static gboolean rule_item_has_enclosure(rulePtr rp, itemPtr ip) {
+
+	return (NULL != metadata_list_get(ip->metadata, "enclosure"));
+}
+
 /* rule initialization */
 
 static void rule_add(ruleCheckFuncPtr func, gchar *ruleId, gchar *title, gchar *positive, gchar *negative, gboolean needsParameter) {
@@ -181,6 +187,7 @@ void rule_init(void) {
 	rule_add(rule_item_is_unread,		"unread",			_("Read status"),	_("is unread"),		_("is read"),		FALSE);
 	rule_add(rule_item_is_flagged,		"flagged",			_("Flag status"),	_("is flagged"),	_("is unflagged"),	FALSE);
 	rule_add(rule_item_was_updated,		"updated",			_("Update status"),	_("was updated"),	_("was not updated"),	FALSE);
+	rule_add(rule_item_has_enclosure,	"enclosure",			_("Podcast"),		_("included"),		_("not included"),	FALSE);
 
 	debug_exit("rule_init");
 }

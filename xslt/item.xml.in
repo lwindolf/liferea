@@ -114,19 +114,12 @@
             <xsl:with-param name="input"  select="." />
             <xsl:with-param name="substr" select="'/'" />
           </xsl:call-template>...</xsl:attribute>
-	  No Flash supported!
+          <xsl:call-template name="enclosure"/>
         </xsl:element>
       </span>
      </xsl:when>
      <xsl:otherwise>
-      <xsl:element name="a">
-        <xsl:attribute name="class">enclosure</xsl:attribute>
-        <xsl:attribute name="href"><xsl:value-of select="."/></xsl:attribute>
-        <xsl:call-template name="substring-after-last">
-          <xsl:with-param name="input"  select="." />
-          <xsl:with-param name="substr" select="'/'" />
-        </xsl:call-template>
-      </xsl:element>
+       <xsl:call-template name="enclosure"/>
      </xsl:otherwise> 
    </xsl:choose>
   </td>
@@ -231,6 +224,17 @@
 </body>
 </html>
 
+</xsl:template>
+
+<xsl:template name="enclosure">
+  <xsl:element name="a">
+    <xsl:attribute name="class">enclosure</xsl:attribute>
+    <xsl:attribute name="href"><xsl:value-of select="."/></xsl:attribute>
+    <xsl:call-template name="substring-after-last">
+      <xsl:with-param name="input"  select="." />
+      <xsl:with-param name="substr" select="'/'" />
+    </xsl:call-template>
+  </xsl:element>
 </xsl:template>
 
 <!-- substring after last occurance also from "XSLT Cookbook"...-->
