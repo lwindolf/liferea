@@ -26,9 +26,6 @@ libliparsers_a_SOURCES = \
 	ns_photo.c ns_photo.h \
 	ns_slash.c ns_slash.h \
 	ns_syn.c ns_syn.h \
-	ocs_dir.c ocs_dir.h \
-	ocs_ns.h \
-	opml.c opml.h \
 	pie_entry.c pie_entry.h \
 	pie_feed.c pie_feed.h \
 	rss_channel.c rss_channel.h \

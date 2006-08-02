@@ -73,12 +73,10 @@ struct feed_type {
 /* initializing function, only called upon startup */
 void feed_init(void) {
 
-	feedhandlers = g_slist_append(feedhandlers, ocs_init_feed_handler()); /* Must come before RSS/RDF */
 	feedhandlers = g_slist_append(feedhandlers, rss_init_feed_handler());
 	feedhandlers = g_slist_append(feedhandlers, cdf_init_feed_handler());
 	feedhandlers = g_slist_append(feedhandlers, atom10_init_feed_handler());  /* Must be before pie */
 	feedhandlers = g_slist_append(feedhandlers, pie_init_feed_handler());
-	feedhandlers = g_slist_append(feedhandlers, opml_init_feed_handler());
 }
 
 /* function to create a new feed structure */
@@ -530,7 +528,7 @@ static void feed_save_to_cache(nodePtr node) {
 	tmpfilename = g_strdup_printf("%s~", filename);
 	
 	/* Create the feed XML document */
-	if(doc = feed_to_xml(node, FALSE)) {
+	if(NULL != (doc = feed_to_xml(node, FALSE))) {
 		xmlNodePtr feedNode = xmlDocGetRootElement(doc);
 
 		/* If necessary drop items according to cache settings
@@ -1291,7 +1289,8 @@ static void feed_schedule_update(nodePtr node, guint flags) {
 
 	/* Retries that might have long timeouts must be 
 	   cancelled to immediately execute the user request. */
-	update_request_cancel_retry(node);
+	if(node->updateRequest)
+		update_request_cancel_retry(node->updateRequest);
 	
 	if(feed_can_be_updated(node)) {
 		ui_mainwindow_set_status_bar(_("Updating \"%s\""), node_get_title(node));

@@ -30,9 +30,14 @@
 	* Rendering is now done using XSLT. This introduces
 	  a dependency to libxslt.
 	* Makefile improvements (Remi Cardona).
-	* With 1.1 the GtkHTML2 rendering module support
+	* With v1.1 the GtkHTML2 rendering module support
 	  was dropped. The reason were problems when 
 	  rendering XHTML and using Flash applets.
+	* With v1.1 the support for OCS and OPML as feed
+	  sources was dropped. During the initial import
+	  all feeds of this type will be dropped without
+	  further notice. Note: OPML as feed list source for 
+	  import/export still works.
 
 	Bugfixes
 

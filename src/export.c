@@ -122,7 +122,7 @@ int export_OPML_feedlist(const gchar *filename, gboolean internal) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur, opmlNode;
 	gint		error = 0;
-	int		old_umask;
+	int		old_umask = 0;
 
 	debug_enter("export_OPML_feedlist");
 	
@@ -263,48 +263,52 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, flNodeHandl
 		case FST_PLUGIN:
 			data = NULL;
 			break;
+		case FST_INVALID:
+			break;
 	}
 
 	if(typeStr)
 		xmlFree(typeStr);
 
-	node_add_data(np, type, data);
-	favicon_load(np);
-	node_add_child(parentNode, np, -1);
+	if(type != FST_INVALID) {
+		node_add_data(np, type, data);
+		favicon_load(np);
+		node_add_child(parentNode, np, -1);
 
-	if(FST_FOLDER == type) {
-		if(NULL != xmlHasProp(cur, BAD_CAST"expanded"))
-			ui_node_set_expansion(np, TRUE);
-		else if(NULL != xmlHasProp(cur, BAD_CAST"collapsed"))
-			ui_node_set_expansion(np, FALSE);
-		else 
-			ui_node_set_expansion(np, TRUE);
-	}
+		if(FST_FOLDER == type) {
+			if(NULL != xmlHasProp(cur, BAD_CAST"expanded"))
+				ui_node_set_expansion(np, TRUE);
+			else if(NULL != xmlHasProp(cur, BAD_CAST"collapsed"))
+				ui_node_set_expansion(np, FALSE);
+			else 
+				ui_node_set_expansion(np, TRUE);
+		}
 
-	/* import recursion */
-	switch(np->type) {
-		case FST_FOLDER:
-			/* process any children */
-			cur = cur->xmlChildrenNode;
-			while(cur != NULL) {
-				if((!xmlStrcmp(cur->name, BAD_CAST"outline")))
-					import_parse_outline(cur, np, np->handler, trusted);
-				cur = cur->next;				
-			}
-			break;
-		case FST_PLUGIN:
-			fl_plugin_import(np, cur);
-			break;
-		default:
-			/* nothing to do */
-			break;
-	}
+		/* import recursion */
+		switch(np->type) {
+			case FST_FOLDER:
+				/* process any children */
+				cur = cur->xmlChildrenNode;
+				while(cur != NULL) {
+					if((!xmlStrcmp(cur->name, BAD_CAST"outline")))
+						import_parse_outline(cur, np, np->handler, trusted);
+					cur = cur->next;				
+				}
+				break;
+			case FST_PLUGIN:
+				fl_plugin_import(np, cur);
+				break;
+			default:
+				/* nothing to do */
+				break;
+		}
 
-	if(needsUpdate) {
-		debug1(DEBUG_CACHE, "seems to be an import, setting new id: %s and doing first download...", node_get_id(np));
-		node_request_update(np, (xmlHasProp(cur, BAD_CAST"updateInterval") ? 0 : FEED_REQ_RESET_UPDATE_INT)
-			                | FEED_REQ_DOWNLOAD_FAVICON
-			                | FEED_REQ_AUTH_DIALOG);
+		if(needsUpdate) {
+			debug1(DEBUG_CACHE, "seems to be an import, setting new id: %s and doing first download...", node_get_id(np));
+			node_request_update(np, (xmlHasProp(cur, BAD_CAST"updateInterval") ? 0 : FEED_REQ_RESET_UPDATE_INT)
+			        		| FEED_REQ_DOWNLOAD_FAVICON
+			        		| FEED_REQ_AUTH_DIALOG);
+		}
 	}
 	debug_exit("import_parse_outline");
 }
