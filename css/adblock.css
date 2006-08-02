@@ -26,3 +26,5 @@ iframe[src="kanoodle"],
 { display:none !important; visibility:hidden; margin:0; }
 
 div.feedflare { display: none !important; visibility:hidden; margin:0; }
+
+img[width="468"] { display: none !important }
