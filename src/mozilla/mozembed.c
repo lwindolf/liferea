@@ -264,7 +264,7 @@ void mozembed_init(void) {
 	g_assert(g_thread_supported());
 	
 	/* set a path for the profile */
-	profile = g_build_filename(g_get_home_dir(), ".liferea/mozilla", NULL);
+	profile = g_build_filename(g_get_home_dir(), ".liferea_1.1" G_DIR_SEPARATOR_S "mozilla", NULL);
 
 	/* initialize profile */
 	gtk_moz_embed_set_profile_path(profile, "liferea");
