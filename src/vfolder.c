@@ -539,6 +539,7 @@ static void vfolder_schedule_update(nodePtr node, guint flags) { }
 
 static void vfolder_remove(nodePtr node) {
 
+	ui_node_remove_node(node);
 	vfolder_free(node->data);
 }
 
