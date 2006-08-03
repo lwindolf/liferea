@@ -334,18 +334,21 @@ void feed_parse(feedParserCtxtPtr ctxt, gboolean autodiscover) {
 	g_assert(NULL == ctxt->itemSet->items);
 	
 	ctxt->failed = TRUE;	/* reset on success ... */
+	
+	if(ctxt->feed->parseErrors)
+		g_string_truncate(ctxt->feed->parseErrors, 0);
+	else
+		ctxt->feed->parseErrors = g_string_new(NULL);
 
 	/* try to parse buffer with XML and to create a DOM tree */	
 	do {
 		if(NULL == common_parse_xml_feed(ctxt)) {
-			gchar *msg = g_strdup_printf(_("<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"), ctxt->feed->source);
-			addToHTMLBuffer(&(ctxt->feed->parseErrors), msg);
-			g_free(msg);
+			g_string_append_printf(ctxt->feed->parseErrors, _("<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"), ctxt->feed->source);
 			break;
 		}
 		
 		if(NULL == (cur = xmlDocGetRootElement(ctxt->doc))) {
-			addToHTMLBuffer(&(ctxt->feed->parseErrors), _("<p>Empty document!</p>"));
+			g_string_append(ctxt->feed->parseErrors, _("<p>Empty document!</p>"));
 			break;
 		}
 		
@@ -354,7 +357,7 @@ void feed_parse(feedParserCtxtPtr ctxt, gboolean autodiscover) {
 		}
 		
 		if(!cur->name) {
-			addToHTMLBuffer(&(ctxt->feed->parseErrors), _("<p>Invalid XML!</p>"));
+			g_string_append(ctxt->feed->parseErrors, _("<p>Invalid XML!</p>"));
 			break;
 		}
 		
@@ -420,12 +423,12 @@ void feed_parse(feedParserCtxtPtr ctxt, gboolean autodiscover) {
 			} else {
 				debug0(DEBUG_UPDATE, "no feed link found!");
 				ctxt->feed->available = FALSE;
-				addToHTMLBuffer(&(ctxt->feed->parseErrors), _("<p>The URL you want Liferea to subscribe to points to a webpage and the auto discovery found no feeds on this page. Maybe this webpage just does not support feed auto discovery.</p>"));
+				g_string_append(ctxt->feed->parseErrors, _("<p>The URL you want Liferea to subscribe to points to a webpage and the auto discovery found no feeds on this page. Maybe this webpage just does not support feed auto discovery.</p>"));
 			}
 		} else {
 			debug0(DEBUG_UPDATE, "neither a known feed type nor a HTML document!");
 			ctxt->feed->available = FALSE;
-			addToHTMLBuffer(&(ctxt->feed->parseErrors), _("<p>Could not determine the feed type.</p>"));
+			g_string_append(ctxt->feed->parseErrors, _("<p>Could not determine the feed type.</p>"));
 		}
 	} else {
 		debug1(DEBUG_UPDATE, "discovered feed format: %s", feed_type_fhp_to_str(ctxt->feed->fhp));
@@ -491,8 +494,8 @@ xmlDocPtr feed_to_xml(nodePtr node, gboolean rendering) {
 		}
 		if(feed->filterError)
 			xmlNewTextChild(feedNode, NULL, "filterError", feed->filterError);
-		if(feed->parseErrors)
-			xmlNewTextChild(feedNode, NULL, "parseError", feed->parseErrors);
+		if(feed->parseErrors && (strlen(feed->parseErrors->str) > 0))
+			xmlNewTextChild(feedNode, NULL, "parseError", feed->parseErrors->str);
 	}
 
 	metadata_add_xml_nodes(feed->metadata, feedNode);
@@ -576,6 +579,11 @@ itemSetPtr feed_load_from_cache(nodePtr node) {
 	int			error = 0;
 
 	debug_enter("feed_load_from_cache");
+	
+	if(feed->parseErrors)
+		g_string_truncate(feed->parseErrors, 0);
+	else
+		feed->parseErrors = g_string_new(NULL);
 
 	ctxt = feed_create_parser_ctxt();
 	ctxt->feed = feed;
@@ -601,17 +609,13 @@ itemSetPtr feed_load_from_cache(nodePtr node) {
 		g_assert(NULL != ctxt->data);
 
 		if(NULL == common_parse_xml_feed(ctxt)) {
-			g_free(feed->parseErrors);
-			feed->parseErrors = NULL;
-			addToHTMLBuffer(&(feed->parseErrors), g_strdup_printf(_("<p>XML error while parsing cache file! Feed cache file \"%s\" could not be loaded!</p>"), filename));
+			g_string_append_printf(feed->parseErrors, _("<p>XML error while parsing cache file! Feed cache file \"%s\" could not be loaded!</p>"), filename);
 			error = 1;
 			break;
 		} 
 
 		if(NULL == (cur = xmlDocGetRootElement(ctxt->doc))) {
-			g_free(feed->parseErrors);
-			feed->parseErrors = NULL;
-			addToHTMLBuffer(&(feed->parseErrors), _("<p>Empty document!</p>"));
+			g_string_append(feed->parseErrors, _("<p>Empty document!</p>"));
 			error = 1;
 			break;
 		}
@@ -626,9 +630,7 @@ itemSetPtr feed_load_from_cache(nodePtr node) {
 				xmlFree(version);
 			}
 		} else {
-			g_free(feed->parseErrors);
-			feed->parseErrors = NULL;
-			addToHTMLBuffer(&(feed->parseErrors), g_strdup_printf(_("<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"), filename));
+			g_string_append_printf(feed->parseErrors, _("<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"), filename);
 			error = 1;
 			break;		
 		}
@@ -1051,7 +1053,7 @@ static void feed_update_error_status(feedPtr feed, gint httpstatus, gint resultc
 /* method to free a feed structure and associated request data */
 static void feed_free(feedPtr feed) {
 
-	g_free(feed->parseErrors);
+	g_string_free(feed->parseErrors, TRUE);
 	g_free(feed->updateError);
 	g_free(feed->filterError);
 	g_free(feed->httpError);
@@ -1138,10 +1140,9 @@ void feed_process_update_result(struct request *request) {
 		feed_parse(ctxt, request->flags & FEED_REQ_AUTO_DISCOVER);
 
 		if(ctxt->failed) {
-			gchar	*tmp = feed->parseErrors;
-			feed->parseErrors = g_strdup_printf(_("<p>Could not detect the type of this feed! Please check if the source really points to a resource provided in one of the supported syndication formats!</p>"
-			                                      "XML Parser Output:<br /><div class='xmlparseroutput'>%s</div>"), feed->parseErrors);
-			g_free(tmp);
+			g_string_prepend(feed->parseErrors, _("<p>Could not detect the type of this feed! Please check if the source really points to a resource provided in one of the supported syndication formats!</p>"
+			                                      "XML Parser Output:<br /><div class='xmlparseroutput'>"));
+			g_string_append(feed->parseErrors, "</div>");
 		} else {
 			/* merge the resulting items into the node's item set */
 			node_merge_items(node, ctxt->itemSet->items);

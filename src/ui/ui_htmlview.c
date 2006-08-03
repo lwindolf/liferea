@@ -67,7 +67,8 @@ void ui_htmlview_init(void) {
 	iter = htmlviewPlugins;
 	while(iter) {
 		htmlviewPlugin = ((pluginPtr)iter->data)->symbols;
-		if(found = !strcmp(htmlviewPlugin->name, name))
+		found = !strcmp(htmlviewPlugin->name, name);
+		if(found)
 			break;
 		iter = g_slist_next(iter);
 	}
@@ -129,31 +130,25 @@ GtkWidget *ui_htmlview_new(gboolean forceInternalBrowsing) {
 	return htmlview;
 }
 
-void ui_htmlview_start_output(gchar **buffer, const gchar *base, gboolean twoPane) { 
+void ui_htmlview_start_output(GString *buffer, const gchar *base, gboolean twoPane) { 
 	GString	*css;
 	
-	addToHTMLBuffer(buffer, "<?xml version=\"1.0\" encoding=\"utf-8\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n");
-	addToHTMLBuffer(buffer, "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n");
-	addToHTMLBuffer(buffer, "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n");
-	addToHTMLBuffer(buffer, "<head>\n<title></title>");
-	addToHTMLBuffer(buffer, "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />");
+	g_string_append(buffer, "<?xml version=\"1.0\" encoding=\"utf-8\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n");
+	g_string_append(buffer, "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n");
+	g_string_append(buffer, "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n");
+	g_string_append(buffer, "<head>\n<title></title>");
+	g_string_append(buffer, "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />");
 	if(NULL != base) {
-		addToHTMLBuffer(buffer, "<base href=\"");
-		addToHTMLBuffer(buffer, base);
-		addToHTMLBuffer(buffer, "\" />\n");
+		g_string_append(buffer, "<base href=\"");
+		g_string_append(buffer, base);
+		g_string_append(buffer, "\" />\n");
 	}
 
 	css = render_get_css(!twoPane);	/* for some reason twoPane is inverted here! */
-	addToHTMLBuffer(buffer, css->str);
+	g_string_append(buffer, css->str);
 	g_string_free(css, TRUE);
 	
-	addToHTMLBuffer(buffer, "</head>\n<body>");
-}
-
-static gboolean ui_htmlview_restore_focus_cb(gpointer userdata) {
-	
-	gtk_window_set_focus(GTK_WINDOW(mainwindow), GTK_WIDGET(userdata));
-	return FALSE;
+	g_string_append(buffer, "</head>\n<body>");
 }
 
 void ui_htmlview_write(GtkWidget *htmlview, const gchar *string, const gchar *base) { 
@@ -183,18 +178,19 @@ void ui_htmlview_write(GtkWidget *htmlview, const gchar *string, const gchar *ba
 	}
 }
 
-void ui_htmlview_finish_output(gchar **buffer) {
+void ui_htmlview_finish_output(GString *buffer) {
 
-	addToHTMLBuffer(buffer, "</body></html>"); 
+	g_string_append(buffer, "</body></html>"); 
 }
 
 void ui_htmlview_clear(GtkWidget *htmlview) {
-	gchar	*buffer = NULL;
+	GString	*buffer;
 
-	ui_htmlview_start_output(&buffer, NULL, FALSE);
-	ui_htmlview_finish_output(&buffer); 
-	ui_htmlview_write(htmlview, buffer, NULL);
-	g_free(buffer);
+	buffer = g_string_new(NULL);
+	ui_htmlview_start_output(buffer, NULL, FALSE);
+	ui_htmlview_finish_output(buffer); 
+	ui_htmlview_write(htmlview, buffer->str, NULL);
+	g_string_free(buffer, TRUE);
 }
 
 gboolean ui_htmlview_is_special_url(const gchar *url) {

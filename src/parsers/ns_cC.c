@@ -22,8 +22,9 @@
 #  include <config.h>
 #endif
 
-#include "ns_cC.h"
 #include "common.h"
+#include "metadata.h"
+#include "ns_cC.h"
 
 #define RSS1_CC_PREFIX	"cc"
 #define RSS2_CC_PREFIX	"creativeCommons"
@@ -53,18 +54,13 @@
    provide a link to the license
 */
 
-gchar * parse_tag(xmlNodePtr cur) {
-	gchar	*buffer = NULL;
-	gchar	*tmp;
+static gchar * parse_tag(xmlNodePtr cur) {
+	gchar	*buffer = NULL, *tmp;
 	
  	if(!xmlStrcmp("license", cur->name)) {
- 		if(tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))) {
+ 		if(NULL != (tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)))) {
 			/* RSS 2.0 module handling */
-			addToHTMLBuffer(&buffer, "<a href=\"");
-			addToHTMLBuffer(&buffer, tmp);
-			addToHTMLBuffer(&buffer, "\">");
-			addToHTMLBuffer(&buffer, tmp);
-			addToHTMLBuffer(&buffer, "</a>");	
+			buffer = g_strdup_printf("<a href=\"%s\">%s</a>", tmp, tmp);
 			g_free(tmp);
  		} else {
 			/* RSS 1.0 module handling */
@@ -96,7 +92,7 @@ NsHandler *ns_cC_getRSSNsHandler(void) {
 	
 	nsh = g_new0(NsHandler, 1);
 	nsh->prefix 			= RSS1_CC_PREFIX;
-	nsh->registerNs		= ns_cC_register_ns;
+	nsh->registerNs			= ns_cC_register_ns;
 	nsh->parseChannelTag		= parse_channel_tag;
 	nsh->parseItemTag		= parse_item_tag;
 

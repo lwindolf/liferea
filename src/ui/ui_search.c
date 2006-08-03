@@ -75,7 +75,7 @@ void on_searchentry_activate(GtkEntry *entry, gpointer user_data) {
 	/* do not use passed entry because callback is used from a button too */
 	GtkWidget		*searchentry;
 	G_CONST_RETURN gchar	*searchstring;
-	gchar			*buffer = NULL, *tmp;
+	GString			*buffer;
 	vfolderPtr		vp;
 	
 	searchentry = lookup_widget(searchdialog, "searchentry");
@@ -84,7 +84,7 @@ void on_searchentry_activate(GtkEntry *entry, gpointer user_data) {
 
 	/* remove last search */
 	ui_itemlist_clear();
-	if(NULL != searchResult) 
+	if(searchResult) 
 		node_remove(searchResult);
 
 	/* create new search */
@@ -104,18 +104,17 @@ void on_searchentry_activate(GtkEntry *entry, gpointer user_data) {
 	itemlist_set_two_pane_mode(FALSE);
 	itemlist_load(searchResult->itemSet);
 
-	ui_htmlview_start_output(&buffer, NULL, TRUE);
-	tmp = g_strdup_printf(_("%s<h2>%d Search Results for \"%s\"</h2>"
-	                         "<p>The item list now contains all items matching the "
-	                         "specified search pattern. If you want to save this search "
-	                         "result permanently you can click the VFolder button in "
-	                         "the search dialog and Liferea will add a VFolder to your "
-	                         "feed list.</h2>"), buffer, g_list_length(searchResult->itemSet->items), searchstring);
-	addToHTMLBufferFast(&buffer, tmp);
-	g_free(tmp);
-	ui_htmlview_finish_output(&buffer);
-	ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, NULL);
-	g_free(buffer);
+	buffer = g_string_new(NULL);
+	ui_htmlview_start_output(buffer, NULL, TRUE);
+	g_string_append_printf(buffer, _("<h2>%d Search Results for \"%s\"</h2>"
+ 	                                 "<p>The item list now contains all items matching the "
+	                                 "specified search pattern. If you want to save this search "
+	                                 "result permanently you can click the Search Folder button in "
+	                                 "the search dialog and Liferea will add a Search Folder to your "
+	                                 "feed list.</h2>"), g_list_length(searchResult->itemSet->items), searchstring);
+	ui_htmlview_finish_output(buffer);
+	ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer->str, NULL);
+	g_string_free(buffer, TRUE);
 
 	/* enable vfolder add button */	
 	gtk_widget_set_sensitive(lookup_widget(searchdialog, "vfolderaddbtn"), TRUE);

@@ -40,6 +40,8 @@
 #include "ui/ui_popup.h"
 #include "ui/ui_tabs.h"
 
+#define EMPTY "<html><body></body></html>"
+
 /* points to the URL actually under the mouse pointer or is NULL */
 static gchar		*selectedURL = NULL;
 

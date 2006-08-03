@@ -369,7 +369,7 @@ static struct mainwindow *ui_mainwindow_new(void) {
 void ui_mainwindow_init(int mainwindowState) {
 	GtkWidget	*widget;
 	int		i;
-	gchar		*buffer = NULL;
+	GString		*buffer;
 	struct mainwindow *mw;
 	
 	debug_enter("ui_mainwindow_init");
@@ -377,7 +377,7 @@ void ui_mainwindow_init(int mainwindowState) {
 	mw = ui_mainwindow_new();
 	mainwindow = GTK_WIDGET(mw->window);
 	ui_tabs_init();
-
+ 
 	/* load pane proportions */
 	if(0 != getNumericConfValue(LAST_VPANE_POS))
 		gtk_paned_set_position(GTK_PANED(lookup_widget(mainwindow, "leftpane")), getNumericConfValue(LAST_VPANE_POS));
@@ -447,8 +447,9 @@ void ui_mainwindow_init(int mainwindowState) {
 	ui_htmlview_set_zoom(htmlview, zoom/100.);
 	
 	/* create welcome text */
-	ui_htmlview_start_output(&buffer, NULL, FALSE);
-	addToHTMLBuffer(&buffer, _("<div style=\"padding:8px\">"
+	buffer = g_string_new(NULL);
+	ui_htmlview_start_output(buffer, NULL, FALSE);
+	g_string_append(buffer,  _("<div style=\"padding:8px\">"
 	                           "<div style=\"background-color:#eee;padding:5px;border:solid 1px #aaa\">"
 				   "<table border=\"0\" cellpadding=\"5px\"><tr><td>"
 				   // add application icon
@@ -467,18 +468,18 @@ void ui_mainwindow_init(int mainwindowState) {
 				   "</tr></table>"
 				   "</div>"));
 
-	addToHTMLBuffer(&buffer, _("<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black;margin: 5px 0 5px 0\">"
+	g_string_append(buffer,  _("<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black;margin: 5px 0 5px 0\">"
 	                           "This is an unstable version of Liferea 1.1. It should not be used for production yet! "
 				   "If you want to use Liferea regularily please download the last "
 				   "stable version from SourceForge!"
 				   "</div>"));
 
-	addToHTMLBuffer(&buffer, _("<div>An up-to-date summary of the current v1.1 progress can be found <a href=\"http://liferea.sf.net/11progress.htm\">here</a>."
+	g_string_append(buffer,  _("<div>An up-to-date summary of the current v1.1 progress can be found <a href=\"http://liferea.sf.net/11progress.htm\">here</a>."
 				   "</div></div>"));
 				   
-	ui_htmlview_finish_output(&buffer);
-	ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, NULL);
-	g_free(buffer);
+	ui_htmlview_finish_output(buffer);
+	ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer->str, NULL);
+	g_string_free(buffer, TRUE);
 
 	gtk_widget_set_sensitive(GTK_WIDGET(lookup_widget(mainwindow, "feedlist")), TRUE);
 

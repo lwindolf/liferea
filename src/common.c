@@ -60,41 +60,6 @@ static gchar *lifereaUserPath = NULL;
 
 gchar * convertCharSet(gchar * from_encoding, gchar * to_encoding, gchar * string);
 
-// Do we really need these functions? What about g_string_append()
-//void addToHTMLBufferFast(gchar **buffer, const gchar *string) {
-//	
-//	if(NULL == string)
-//		return;
-//	
-//	if(NULL != *buffer) {
-//		gulong oldlength = strlen(*buffer);
-//		gulong newlength = strlen(string);
-//		gulong allocsize = (((oldlength+newlength+1L)/512L)+1L)*512L; /* Round up to nearest 512 KB */
-//		*buffer = g_realloc(*buffer, allocsize);
-//		g_memmove(&((*buffer)[oldlength]), string, newlength+1L );
-//	} else {
-//		*buffer = g_strdup(string);
-//	}
-//}
-
-#define addToHTMLBufferFast addToHTMLBuffer
-
-void addToHTMLBuffer(gchar **buffer, const gchar *string) {
-	
-	if(NULL == string)
-		return;
-	
-	if(NULL != *buffer) {
-		gulong oldlength = strlen(*buffer);
-		gulong newlength = strlen(string);
-		gulong allocsize = (oldlength+newlength+1L);
-		*buffer = g_realloc(*buffer, allocsize);
-		g_memmove(&((*buffer)[oldlength]), string, newlength+1L );
-	} else {
-		*buffer = g_strdup(string);
-	}
-}
-
 /* converts the string string encoded in from_encoding (which
    can be NULL) to to_encoding, frees the original string and 
    returns the result */
@@ -360,8 +325,8 @@ gchar * unxmlize(gchar * string) { return unmarkupize(string, _unxmlize); }
 
 /** used by bufferParseError to keep track of error messages */
 typedef struct errorCtxt {
-	gchar	*buffer;
-	gint	errorCount;
+	feedParserCtxtPtr	fpc;
+	gint			errorCount;
 } *errorCtxtPtr;
 
 /**
@@ -379,8 +344,6 @@ static void common_buffer_parse_error(void *ctxt, const gchar * msg, ...) {
 	gchar		*newmsg;
 	gchar		*tmp;
 
-	g_assert(NULL != errors);
-	
 	if(MAX_PARSE_ERROR_LINES > errors->errorCount++) {
 		
 		va_start(params, msg);
@@ -393,18 +356,12 @@ static void common_buffer_parse_error(void *ctxt, const gchar * msg, ...) {
 		g_free(newmsg);
 		newmsg = tmp;
 	
-		addToHTMLBufferFast(&errors->buffer, "<pre>");
-		addToHTMLBufferFast(&errors->buffer, newmsg);
-		addToHTMLBufferFast(&errors->buffer, "</pre>");
-
+		g_string_append_printf(errors->fpc->feed->parseErrors, "<pre>%s</pre", newmsg);
 		g_free(newmsg);
 	}
 	
-	if(MAX_PARSE_ERROR_LINES == errors->errorCount) {
-		newmsg = g_strdup_printf("%s<br />%s", errors->buffer, _("[There were more errors. Output was truncated!]"));
-		g_free(errors->buffer);
-		errors->buffer = newmsg;
-	}
+	if(MAX_PARSE_ERROR_LINES == errors->errorCount)
+		g_string_append_printf(errors->fpc->feed->parseErrors, "<br />%s", _("[There were more errors. Output was truncated!]"));
 }
 
 static xmlDocPtr entities = NULL;
@@ -450,25 +407,26 @@ xmlDocPtr common_parse_xml_feed(feedParserCtxtPtr fpc) {
 	g_assert(NULL != fpc->feed);
 	g_assert(NULL != fpc->itemSet);
 	
+	fpc->itemSet->valid = FALSE;
+	
 	/* we don't like no data */
 	if(0 == fpc->dataLength) {
 		g_warning("common_parse_xml_feed(): Empty input while parsing \"%s\"!", fpc->node->title);
-		fpc->feed->parseErrors = g_strdup("Empty input!\n");
+		g_string_append(fpc->feed->parseErrors, "Empty input!\n");
 		return NULL;
 	}
 	
 	errors = g_new0(struct errorCtxt, 1);
+	errors->fpc = fpc;
 	xmlSetGenericErrorFunc(errors, (xmlGenericErrorFunc)common_buffer_parse_error);
+	
 	ctxt = xmlNewParserCtxt();
 	ctxt->sax->getEntity = common_process_entities;
 	fpc->doc = xmlSAXParseMemory(ctxt->sax, fpc->data, fpc->dataLength, /* recovery = */ TRUE);
 	if(!fpc->doc) {
 		g_warning("xmlReadMemory: Could not parse document!\n");
-		fpc->feed->parseErrors = g_strdup_printf(_("xmlReadMemory(): Could not parse document:\n%s%s"), 
-		                            errors->buffer != NULL ? errors->buffer : "",
-		                            errors->buffer != NULL ? "\n" : "");
-		g_free(errors->buffer);
-		errors->buffer = fpc->feed->parseErrors;
+		g_string_prepend(fpc->feed->parseErrors, _("xmlReadMemory(): Could not parse document:\n"));
+		g_string_append(fpc->feed->parseErrors, "\n");
 	}
 	
 	/* This seems to reset the errorfunc to its default, so that the
@@ -476,8 +434,7 @@ xmlDocPtr common_parse_xml_feed(feedParserCtxtPtr fpc) {
 	   errorfunc on occasion. */
 	xmlSetGenericErrorFunc(NULL, NULL);
 
-	fpc->itemSet->valid = (NULL == errors->buffer);
-	fpc->feed->parseErrors = errors->buffer;
+	fpc->itemSet->valid = (errors->errorCount > 0);
 	g_free(errors);
 	xmlFreeParserCtxt(ctxt);
 	

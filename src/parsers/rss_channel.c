@@ -79,7 +79,7 @@ static void parseChannel(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 		if(cur->ns) {
 			if((cur->ns->href && (nsh = (NsHandler *)g_hash_table_lookup(ns_rss_ns_uri_table, (gpointer)cur->ns->href))) ||
 			   (cur->ns->prefix && (nsh = (NsHandler *)g_hash_table_lookup(rss_nstable, (gpointer)cur->ns->prefix)))) {
-				if(pf = nsh->parseChannelTag)
+				if(NULL != (pf = nsh->parseChannelTag))
 					(*pf)(ctxt, cur);
 				cur = cur->next;
 				continue;
@@ -89,41 +89,41 @@ static void parseChannel(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 		} /* explicitly no following else !!! */
 			
 		/* Check for metadata tags */
-		if(tmp2 = g_hash_table_lookup(RssToMetadataMapping, cur->name)) {
-			if(tmp3 = utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE))) {
+		if(NULL != (tmp2 = g_hash_table_lookup(RssToMetadataMapping, cur->name))) {
+			if(NULL != (tmp3 = utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE)))) {
 				ctxt->feed->metadata = metadata_list_append(ctxt->feed->metadata, tmp2, tmp3);
 				g_free(tmp3);
 			}
 		}	
 		/* check for specific tags */
 		else if(!xmlStrcmp(cur->name, BAD_CAST"pubDate")) {
- 			if(tmp = utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1))) {
+ 			if(NULL != (tmp = utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1)))) {
 				ctxt->feed->metadata = metadata_list_append(ctxt->feed->metadata, "pubDate", tmp);
 				ctxt->feed->time = parseRFC822Date(tmp);
 				g_free(tmp);
 			}
 		} 
 		else if(!xmlStrcmp(cur->name, BAD_CAST"ttl")) {
- 			if(tmp = utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE))) {
+ 			if(NULL != (tmp = utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE)))) {
 				feed_set_default_update_interval(ctxt->feed, atoi(tmp));
 				feed_set_update_interval(ctxt->feed, atoi(tmp));
 				g_free(tmp);
 			}
 		}
 		else if(!xmlStrcmp(cur->name, BAD_CAST"title")) {
- 			if(tmp = unhtmlize(utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE)))) {
+ 			if(NULL != (tmp = unhtmlize(utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE))))) {
 				node_set_title(ctxt->node, tmp);
 				g_free(tmp);
 			}
 		}
 		else if(!xmlStrcmp(cur->name, BAD_CAST"link")) {
- 			if(tmp = unhtmlize(utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE)))) {
+ 			if(NULL != (tmp = unhtmlize(utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE))))) {
 				feed_set_html_url(ctxt->feed, tmp);
 				g_free(tmp);
 			}
 		}
 		else if(!xmlStrcmp(cur->name, BAD_CAST"description")) {
- 			if(tmp = utf8_fix(extractHTMLNode(cur, 0, NULL))) {
+ 			if(NULL != (tmp = utf8_fix(extractHTMLNode(cur, 0, NULL)))) {
 				feed_set_description(ctxt->feed, tmp);
 				g_free(tmp);
 			}
@@ -134,7 +134,7 @@ static void parseChannel(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 }
 
 static gchar* parseTextInput(xmlNodePtr cur) {
-	gchar	*tmp, *buffer = NULL, *tiLink = NULL, *tiName = NULL, *tiDescription = NULL, *tiTitle = NULL;
+	gchar	*buffer = NULL, *tiLink = NULL, *tiName = NULL, *tiDescription = NULL, *tiTitle = NULL;
 	
 	g_assert(NULL != cur);
 
@@ -163,16 +163,15 @@ static gchar* parseTextInput(xmlNodePtr cur) {
 	tiDescription = unhtmlize(tiDescription);
 	
 	if(tiLink && tiName && tiDescription && tiTitle) {
-		addToHTMLBufferFast(&buffer, "<p>");
-		addToHTMLBufferFast(&buffer, tiDescription);
-		addToHTMLBufferFast(&buffer, TEXT_INPUT_FORM_START);
-		addToHTMLBufferFast(&buffer, tiLink);
-		addToHTMLBufferFast(&buffer, TEXT_INPUT_TEXT_FIELD);
-		addToHTMLBufferFast(&buffer, tiName);
-		addToHTMLBufferFast(&buffer, TEXT_INPUT_SUBMIT);
-		addToHTMLBufferFast(&buffer, tiTitle);
-		addToHTMLBufferFast(&buffer, TEXT_INPUT_FORM_END);
-		addToHTMLBufferFast(&buffer, "</p>");
+		buffer = g_strdup_printf("<p>%s%s%s%s%s%s%s%s</p>",
+		                         tiDescription,
+					 TEXT_INPUT_FORM_START,
+					 tiLink,
+					 TEXT_INPUT_TEXT_FIELD,
+					 tiName,
+					 TEXT_INPUT_SUBMIT,
+					 tiTitle,
+					 TEXT_INPUT_FORM_END);
 	}
 	g_free(tiTitle);
 	g_free(tiDescription);
@@ -225,7 +224,7 @@ static void rss_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 		/* explicitly no "cur = cur->xmlChildrenNode;" ! */
 		rdf = 0;
 	} else {
-		addToHTMLBuffer(&(ctxt->feed->parseErrors), _("<p>Could not find RDF/RSS header!</p>"));
+		g_string_append(ctxt->feed->parseErrors, "<p>Could not find RDF/RSS header!</p>");
 		error = 1;
 	}
 
@@ -264,7 +263,7 @@ static void rss_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 
 			/* save link to channel image */
 			if((!xmlStrcmp(cur->name, BAD_CAST"image"))) {
-				if(tmp = parseImage(cur)) {
+				if(NULL != (tmp = parseImage(cur))) {
 					feed_set_image_url(ctxt->feed, tmp);
 					g_free(tmp);
 				}
@@ -274,7 +273,7 @@ static void rss_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 				/* no matter if we parse Userland or Netscape, there should be
 				   only one text[iI]nput per channel and parsing the rdf:ressource
 				   one should not harm */
-				if(tmp = parseTextInput(cur)) {
+				if(NULL != (tmp = parseTextInput(cur))) {
 					ctxt->feed->metadata = metadata_list_append(ctxt->feed->metadata, "textInput", tmp);
 					g_free(tmp);
 				}
@@ -282,7 +281,7 @@ static void rss_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 			} else if((!xmlStrcmp(cur->name, BAD_CAST"items"))) { /* RSS 1.1 */
 				xmlNodePtr item = cur->xmlChildrenNode;
 				while(item) {
-					if(ctxt->item = parseRSSItem(ctxt, cur)) {
+					if(NULL != (ctxt->item = parseRSSItem(ctxt, cur))) {
 						if(0 == ctxt->item->time)
 							ctxt->item->time = ctxt->feed->time;
 						itemset_append_item(ctxt->itemSet, ctxt->item);
@@ -291,7 +290,7 @@ static void rss_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 				}
 			} else if((!xmlStrcmp(cur->name, BAD_CAST"item"))) { /* RSS 1.0, 2.0 */
 				/* collect channel items */
-				if(ctxt->item = parseRSSItem(ctxt, cur)) {
+				if(NULL != (ctxt->item = parseRSSItem(ctxt, cur))) {
 					if(0 == ctxt->item->time)
 						ctxt->item->time = ctxt->feed->time;
 					itemset_append_item(ctxt->itemSet, ctxt->item);

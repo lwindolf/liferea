@@ -26,14 +26,6 @@
 #include <string.h>
 #include "ns_slash.h"
 #include "common.h"
-#include "ui/ui_htmlview.h"
-
-#define SLASH_START	"<table class=\"slash\" cellpadding=\"0\" cellspacing=\"0\"><tr><td class=\"slash\">"
-#define KEY_START	"<span class=\"slashprop\">"
-#define KEY_END		"</span> "
-#define VALUE_START	"<span class=\"slashvalue\">"
-#define VALUE_END	"</span> "
-#define SLASH_END	"</td></tr></table>"
 
 /* a tag list from http://f3.grp.yahoofs.com/v1/YP40P2oiXvP5CAx4TM6aQw8mDrCtNDwF9_BkMwcvulZHdlhYmCk5cS66_06t9OaIVsubWpwtMUTxYNG7/Modules/Proposed/mod_slash.html
 
@@ -56,11 +48,11 @@ static void parse_item_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 	gchar	*tmp = NULL, *section, *department;
 	
 	if(!xmlStrcmp(BAD_CAST"section", cur->name)) {
-		if(tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)))
+		if(NULL != (tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))))
  			g_hash_table_insert(ctxt->item->tmpdata, "slash:section", tmp);
 			
 	} else if(!xmlStrcmp(BAD_CAST"department", cur->name)) {
-		if(tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)))
+		if(NULL != (tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))))
  			g_hash_table_insert(ctxt->item->tmpdata, "slash:department", tmp);
 	}
 	
@@ -72,35 +64,6 @@ static void parse_item_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 		metadata_list_set(&(ctxt->item->metadata), "slash", tmp);
 		g_free(tmp);
 	}
-}
-void ns_slash_render(gpointer data, struct displayset *displayset, gpointer user_data) {
-	gchar	*section, *department;
-	
-	section = g_strdup((gchar *)data);
-	if(NULL != (department = strchr(section, ','))) {
-		*department = 0;
-		department++;
-		
-		addToHTMLBuffer(&(displayset->head), SLASH_START);		
-		if(section != NULL) {
-			addToHTMLBuffer(&(displayset->head), KEY_START);
-			addToHTMLBuffer(&(displayset->head), "section");
-			addToHTMLBuffer(&(displayset->head), KEY_END);
-			addToHTMLBuffer(&(displayset->head), VALUE_START);	
-			addToHTMLBuffer(&(displayset->head), section);
-			addToHTMLBuffer(&(displayset->head), VALUE_END);
-		}
-		if(department != NULL) {
-			addToHTMLBuffer(&(displayset->head), KEY_START);
-			addToHTMLBuffer(&(displayset->head), "department");
-			addToHTMLBuffer(&(displayset->head), KEY_END);
-			addToHTMLBuffer(&(displayset->head), VALUE_START);	
-			addToHTMLBuffer(&(displayset->head), department);
-			addToHTMLBuffer(&(displayset->head), VALUE_END);
-		}
-		addToHTMLBuffer(&(displayset->head), SLASH_END);
-	}
-	g_free(section);
 }
 
 static void ns_slash_register_ns(NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash) {

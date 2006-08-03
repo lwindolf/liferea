@@ -29,9 +29,11 @@
 #include <libxslt/transform.h>
 #include <libxslt/xsltutils.h>
 #include <locale.h>
+#include <string.h>
 
 #include "conf.h"
 #include "common.h"
+#include "itemlist.h"
 #include "render.h"
 
 static gchar		**langParams = NULL;	/* the current locale settings */
@@ -64,7 +66,8 @@ xsltStylesheetPtr render_load_stylesheet(const gchar *xsltName) {
 		render_init();
 
 	/* try to serve the stylesheet from the cache */	
-	if(xslt = (xsltStylesheetPtr)g_hash_table_lookup(stylesheets, xsltName))
+	xslt = (xsltStylesheetPtr)g_hash_table_lookup(stylesheets, xsltName);
+	if(NULL != xslt)
 		return xslt;
 	
 	/* or load and translate it... */
@@ -83,7 +86,7 @@ xsltStylesheetPtr render_load_stylesheet(const gchar *xsltName) {
 		
 	g_free(filename);
 
-	if(NULL == (resDoc = xsltApplyStylesheet(i18n_filter, xsltDoc, langParams)))
+	if(NULL == (resDoc = xsltApplyStylesheet(i18n_filter, xsltDoc, (const gchar **)langParams)))
 		g_warning("fatal: applying localization stylesheet failed (%s)!", xsltName);
 		
 	//xsltSaveResultToFile(stdout, resDoc, i18n_filter);
@@ -122,7 +125,7 @@ GString * render_get_css(gboolean twoPane) {
 		 Or it can also be "Font Name size*/
 		strsep(&fontsize, ",");
 		if(fontsize == NULL) {
-			if(fontsize = strrchr(font, ' ')) {
+			if(NULL != (fontsize = strrchr(font, ' '))) {
 				*fontsize = '\0';
 				fontsize++;
 			}
@@ -181,7 +184,7 @@ gchar * render_xml(xmlDocPtr doc, const gchar *xsltName, gchar **params) {
 	if(NULL == (xslt = render_load_stylesheet(xsltName)))
 		return NULL;
 
-	if(NULL == (resDoc = xsltApplyStylesheet(xslt, doc, params))) {
+	if(NULL == (resDoc = xsltApplyStylesheet(xslt, doc, (const gchar **)params))) {
 		g_warning("fatal: applying rendering stylesheet (%s) failed!", xsltName);
 		return NULL;
 	}

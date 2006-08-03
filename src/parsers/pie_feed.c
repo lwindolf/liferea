@@ -160,7 +160,7 @@ static void pie_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 	
 	while(TRUE) {
 		if(xmlStrcmp(cur->name, BAD_CAST"feed")) {
-			addToHTMLBuffer(&(ctxt->feed->parseErrors), _("<p>Could not find Atom/Echo/PIE header!</p>"));
+			g_string_append(ctxt->feed->parseErrors, "<p>Could not find Atom/Echo/PIE header!</p>");
 			error = 1;
 			break;			
 		}

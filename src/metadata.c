@@ -29,8 +29,6 @@
 #include "metadata.h"
 #include "common.h"
 #include "debug.h"
-#include "parsers/ns_slash.h"
-#include "parsers/ns_photo.h"
 
 struct pair {
 	gchar		*strid;		/** metadata type id */

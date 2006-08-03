@@ -26,48 +26,19 @@
 #include "support.h"
 #include "common.h"
 #include "ns_photo.h"
-#include "ui/ui_htmlview.h"
-
-void ns_photo_render(gpointer data, struct displayset *displayset, gpointer user_data) {
-	gchar	*thumbnail, *imgsrc;
-
-	thumbnail = g_strdup((gchar *)data);
-	if(NULL != (imgsrc = strchr(thumbnail, ','))) {
-		*imgsrc = 0;
-		imgsrc++;
-		
-		addToHTMLBuffer(&(displayset->body), "<div class=photoheader>");
-		addToHTMLBuffer(&(displayset->body), _("included photo"));
-		addToHTMLBuffer(&(displayset->body), "</div>");
-		if(*imgsrc != 0) {
-			addToHTMLBuffer(&(displayset->body), "<a class=photolink href=\"");
-			addToHTMLBuffer(&(displayset->body), imgsrc);
-			addToHTMLBuffer(&(displayset->body), "\">");
-		}
-		
-		addToHTMLBuffer(&(displayset->body), "<img class=photoimg src=\"");
-		addToHTMLBuffer(&(displayset->body), thumbnail);
-		addToHTMLBuffer(&(displayset->body), "\">");
-		
-		if(*imgsrc != 0) {
-			addToHTMLBuffer(&(displayset->body), "</a>");
-		}
-	}
-	g_free(thumbnail);
-}
 
 static void parse_item_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 	gchar	*tmp, *thumbnail, *imgsrc;
 	
 	if(!xmlStrcmp("thumbnail", cur->name) || !xmlStrcmp("thumb", cur->name)) {
- 		if(tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))) {
+ 		if(NULL != (tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)))) {
 			if(g_utf8_strlen(tmp, -1) > 0)
 	 			g_hash_table_insert(ctxt->item->tmpdata, "photo:thumbnail", tmp);
 			else
 				g_free(tmp);
 		}
 	} else if(!xmlStrcmp("imgsrc", cur->name)) {
- 		if(tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))) {
+ 		if(NULL != (tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)))) {
 			if(g_utf8_strlen(tmp, -1) > 0)
 	 			g_hash_table_insert(ctxt->item->tmpdata, "photo:imgsrc", tmp);				
 			else

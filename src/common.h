@@ -82,11 +82,6 @@ gchar * common_strip_dhtml(const gchar *html);
  */
 gchar * common_text_to_xhtml(const gchar *text);
 
-/** simple concatention helper functions */
-//void	addToHTMLBufferFast(gchar **buffer, const gchar *string);
-void	addToHTMLBuffer(gchar **buffer, const gchar *string);
-#define addToHTMLBufferFast addToHTMLBuffer
-
 /**
  * Common function to create a XML DOM object from a given
  * XML buffer. This function sets up a parser context,

@@ -90,7 +90,6 @@ gchar* atom10_mark_up_text_content(gchar* content) {
  */
 static gchar* atom10_parse_content_construct(xmlNodePtr cur, feedParserCtxtPtr ctxt) {
 	gchar *ret;
-	const gchar *defaultBase;
 
 	g_assert(NULL != cur);
 	ret = NULL;
@@ -627,7 +626,7 @@ static void atom10_parse_feed(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 
 	while(TRUE) {
 		if(xmlStrcmp(cur->name, BAD_CAST"feed")) {
-			addToHTMLBuffer(&(ctxt->feed->parseErrors), _("<p>Could not find Atom 1.0 header!</p>"));
+			g_string_append(ctxt->feed->parseErrors, "<p>Could not find Atom 1.0 header!</p>");
 			error = 1;
 			break;			
 		}

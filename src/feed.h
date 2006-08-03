@@ -78,7 +78,7 @@ typedef struct feed {
 	struct feedHandler *fhp;     		/**< Feed handler saved by the ->typeStr attribute. */
 	
 	gint		defaultInterval;	/**< update interval as specified by the feed */
-	gchar		*parseErrors;		/**< textual description of parsing errors */
+	GString		*parseErrors;		/**< textual description of parsing errors */
 	gchar		*updateError;		/**< textual description of processing errors */
 	gchar		*filterError;		/**< textual description of filter errors */
 	gchar		*httpError;		/**< textual description of HTTP protocol errors */	

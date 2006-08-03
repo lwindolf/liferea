@@ -35,40 +35,7 @@ struct displayset {
 	gchar *foottable;
 };
 
-#define EMPTY		"<html><body></body></html>"
-
-/* RSS feed/item output definitions (some are used by OCS too!) */
-
-#define HEAD_START		"<table cellspacing=\"0\" class=\"itemhead\">"
-#define HEAD_LINE		"<tr><td valign=\"middle\" class=\"headleft\"><b>%s</b></td><td class=\"headright\" valign=\"middle\" width=\"100%%\">%s</td></tr>"
-#define HEAD_END		"</table>"
-
-#define FEED_FOOT_TABLE_START	"<table class=\"feedfoot\">"
-#define FEED_FOOT_FIRSTTD	"<tr class=\"feedfoot\"><td class=\"feedfootname\"><span class=\"feedfootname\">"
-#define FEED_FOOT_NEXTTD	"</span></td><td class=\"feedfootvalue\"><span class=\"feedfootvalue\">"
-#define FEED_FOOT_LASTTD	"</span></td></tr>"
-#define FEED_FOOT_TABLE_END	"</table>"
-
-#define FEED_FOOT_WRITE(buffer, key, value)	if(NULL != value) { \
-							addToHTMLBuffer(&(buffer), FEED_FOOT_FIRSTTD); \
-							addToHTMLBuffer(&(buffer), (gchar *)key); \
-							addToHTMLBuffer(&(buffer), FEED_FOOT_NEXTTD); \
-							addToHTMLBuffer(&(buffer), (gchar *)value); \
-							addToHTMLBuffer(&(buffer), FEED_FOOT_LASTTD); \
-						}
-
-#define	IMG_START	"<img class=\"feed\" src=\""
-#define IMG_END		"\" alt=\"\" /><br />"
-
-/* OCS direntry output definitions */
-
-#define FORMAT_START	"<table cellspacing=\"0\" class=\"ocsformats\"><tr><td class=\"ocslink\">"
-#define FORMAT_LINK	"<b>Format: </b>"
-#define FORMAT_LANGUAGE		"</td></tr><tr><td class=\"ocslanguage\">Language: "
-#define FORMAT_UPDATEPERIOD	"</td></tr><tr><td class=\"ocsinterval\">Update Period: "
-#define FORMAT_UPDATEFREQUENCY	"</td></tr><tr><td class=\"ocsfrequency\">Update Frequency: "
-#define FORMAT_CONTENTTYPE	"</td></tr><tr><td class=\"ocscontenttype\">Content Type: "
-#define FORMAT_END	"</td></tr></table>"
+//#define EMPTY		"<html><body></body></html>"
 
 #define HTMLVIEW_PLUGIN_API_VERSION 9
 
@@ -127,24 +94,28 @@ void	ui_htmlview_plugin_load(pluginPtr plugin, GModule *handle);
  */
 GtkWidget *ui_htmlview_new(gboolean forceInternalBrowsing);
 
-/** loads a emtpy HTML page */
+/** 
+ * Loads a emtpy HTML page 
+ *
+ * @param htmlview	the HTML view widget to clear
+ */
 void	ui_htmlview_clear(GtkWidget *htmlview);
 
 /**
  * Function to add HTML source header to create a valid HTML source.
  *
- * @param buffer	pointer to buffer to add the HTML to
+ * @param buffer	buffer to add the HTML to
  * @param base		base URL of HTML content
  * @param twoPane	TRUE if output is for two pane mode
  */
-void	ui_htmlview_start_output(gchar **buffer, const gchar *base, gboolean twoPane);
+void	ui_htmlview_start_output(GString *buffer, const gchar *base, gboolean twoPane);
 
 /**
  * Function to add HTML source footer to create a valid HTML source.
  *
- * @param buffer	pointer to buffer to add the HTML to
+ * @param buffer	buffer to add the HTML to
  */
-void	ui_htmlview_finish_output(gchar **buffer);
+void	ui_htmlview_finish_output(GString *buffer);
 
 /**
  * Method to display the passed HTML source to the HTML widget.

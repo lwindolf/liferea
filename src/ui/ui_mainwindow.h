@@ -39,15 +39,27 @@ enum mainwindowState {
 struct mainwindow *mw_global_fixme;
 
 /**
- * Create a new main window
+ * Create a new main window with the given display state
+ *
+ * @param mainwindowState	state code MAINWINDOW_*
  */
-void ui_mainwindow_finish(GtkWidget *window);
+void ui_mainwindow_init(int mainwindowState);
 
+/**
+ * To be called whenever the display mode changes.
+ *
+ * @param threePane	TRUE if new display mode is three paned
+ */
 void ui_mainwindow_three_pane_mode_changed(gboolean threePane);
 
+/**
+ * Returns the active HTML view widget 
+ */
 GtkWidget *ui_mainwindow_get_active_htmlview();
 
-/** Sets the toolbar to a particular style
+/**
+ * Sets the toolbar to a particular style
+ *
  * @param window main window containing toolbar
  * @param toolbar_style text string containing the type of style to use
  */
