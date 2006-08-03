@@ -2859,7 +2859,7 @@ create_vfolderdialog (void)
 
   vfolderdialog = gtk_dialog_new ();
   gtk_container_set_border_width (GTK_CONTAINER (vfolderdialog), 5);
-  gtk_window_set_title (GTK_WINDOW (vfolderdialog), _("VFolder Properties"));
+  gtk_window_set_title (GTK_WINDOW (vfolderdialog), _("Search Folder Properties"));
   gtk_window_set_default_size (GTK_WINDOW (vfolderdialog), 350, 250);
   gtk_window_set_type_hint (GTK_WINDOW (vfolderdialog), GDK_WINDOW_TYPE_HINT_DIALOG);
   gtk_dialog_set_has_separator (GTK_DIALOG (vfolderdialog), FALSE);
@@ -2916,7 +2916,7 @@ create_vfolderdialog (void)
   gtk_widget_show (addrulebtn);
   gtk_box_pack_start (GTK_BOX (hbox65), addrulebtn, FALSE, FALSE, 0);
 
-  label154 = gtk_label_new (_("Note: Items are added to the vfolder if at least one additive rule\nmatches. They are removed if at least one removing rule matches."));
+  label154 = gtk_label_new (_("Note: Items are added to the search folder if at least one additive rule\nmatches. They are removed if at least one removing rule matches."));
   gtk_widget_show (label154);
   gtk_box_pack_start (GTK_BOX (hbox65), label154, TRUE, TRUE, 0);
 

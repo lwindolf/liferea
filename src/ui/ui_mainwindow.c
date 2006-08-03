@@ -777,7 +777,7 @@ static GtkActionEntry ui_mainwindow_action_entries[] = {
 	{"NewSubscription", "gtk-add", N_("_New Subscription..."), NULL, N_("Add a subscription to the feed list."),
 	 G_CALLBACK(on_menu_feed_new)},
 	{"NewFolder", "gtk-new", N_("New _Folder..."), NULL, N_("Add a folder to the feed list."), G_CALLBACK(on_menu_folder_new)},
-	{"NewVFolder", NULL, N_("New _VFolder..."), NULL, N_("Add a new vfolder to the feed list."), G_CALLBACK(on_new_vfolder_activate)},
+	{"NewVFolder", NULL, N_("New _Search Folder..."), NULL, N_("Add a new search folder to the feed list."), G_CALLBACK(on_new_vfolder_activate)},
 	{"NewPlugin", NULL, N_("New P_lugin"), NULL, N_("Adds a new plugin instance to the feed list."), G_CALLBACK(on_new_plugin_activate)},
 	{"ImportFeedList", "gtk-open", N_("_Import Feed List..."), NULL, N_("Imports an OPML feed list."), G_CALLBACK(on_import_activate)},
 	{"ExportFeedList", "gtk-save-as", N_("_Export Feed List..."), NULL, N_(">Exports the feed list as OPML."), G_CALLBACK(on_export_activate)},

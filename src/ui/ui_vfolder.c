@@ -296,7 +296,7 @@ void ui_vfolder_add(nodePtr parent) {
 	nodePtr		node;
 	
 	vfolder = vfolder_new();
-	vfolder_set_title(vfolder, _("New VFolder"));
+	vfolder_set_title(vfolder, _("New Search Folder"));
 
 	node = node_new();
 	node_set_title(node, vfolder_get_title(vfolder));

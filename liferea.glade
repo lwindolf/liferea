@@ -6416,7 +6416,7 @@ Sigge Kotliar &lt;sigge@hystrix.se&gt;</property>
 <widget class="GtkDialog" id="vfolderdialog">
   <property name="border_width">5</property>
   <property name="visible">True</property>
-  <property name="title" translatable="yes">VFolder Properties</property>
+  <property name="title" translatable="yes">Search Folder Properties</property>
   <property name="type">GTK_WINDOW_TOPLEVEL</property>
   <property name="window_position">GTK_WIN_POS_NONE</property>
   <property name="modal">False</property>
@@ -6630,7 +6630,7 @@ Sigge Kotliar &lt;sigge@hystrix.se&gt;</property>
 			      <child>
 				<widget class="GtkLabel" id="label154">
 				  <property name="visible">True</property>
-				  <property name="label" translatable="yes">Note: Items are added to the vfolder if at least one additive rule
+				  <property name="label" translatable="yes">Note: Items are added to the search folder if at least one additive rule
 matches. They are removed if at least one removing rule matches.</property>
 				  <property name="use_underline">False</property>
 				  <property name="use_markup">False</property>

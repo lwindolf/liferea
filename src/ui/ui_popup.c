@@ -246,8 +246,8 @@ static GtkMenu *ui_popup_node_menu(nodePtr node, gboolean validSelection) {
 	if(FL_PLUGIN(node)->capabilities & FL_PLUGIN_CAPABILITY_ADD) {
 		addPopupOption(&menu_items, &menu_len, _("/_New"),			NULL, 0, 			0, "<Branch>", 0);
 		addPopupOption(&menu_items, &menu_len, _("/_New/New _Subscription..."),	NULL, ui_popup_add_feed, 	0, NULL, 0);
-		addPopupOption(&menu_items, &menu_len, _("/_New/New F_older..."),	NULL, ui_popup_add_folder, 	0, NULL, 0);
-		addPopupOption(&menu_items, &menu_len, _("/_New/New _VFolder..."), 	NULL, ui_popup_add_vfolder,	0, NULL, 0);
+		addPopupOption(&menu_items, &menu_len, _("/_New/New _Folder..."),	NULL, ui_popup_add_folder, 	0, NULL, 0);
+		addPopupOption(&menu_items, &menu_len, _("/_New/New S_earch Folder..."),NULL, ui_popup_add_vfolder,	0, NULL, 0);
 		addPopupOption(&menu_items, &menu_len, _("/_New/New S_ource..."), 	NULL, ui_popup_add_source, 	0, NULL, 0);
 	}
 

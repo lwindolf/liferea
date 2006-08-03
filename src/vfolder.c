@@ -30,6 +30,7 @@
 #include "itemset.h"
 #include "itemlist.h"
 #include "node.h"
+#include "render.h"
 #include "vfolder.h"
 #include "ui/ui_vfolder.h"
 
@@ -547,29 +548,16 @@ static void vfolder_mark_all_read(nodePtr node) {
 }
 
 static gchar * vfolder_render(nodePtr node) {
-	gchar	*tmp, *buffer = NULL;
+	gchar	*result, *filename, **params = NULL;
 
-	ui_htmlview_start_output(&buffer, NULL, TRUE);
-
-	addToHTMLBufferFast(&buffer, HEAD_START);
-
-	tmp = g_strdup_printf(HEAD_LINE, _("VFolder:"), node_get_title(node));
-	addToHTMLBufferFast(&buffer, tmp);
-	g_free(tmp);
-
-	addToHTMLBufferFast(&buffer, HEAD_END);
-
-	addToHTMLBufferFast(&buffer, "<div class='content'>");
-
-	tmp = g_strdup_printf(_("<b>%d</b> items \n"), 
-	                      g_list_length(node->itemSet->items)); 
-	addToHTMLBufferFast(&buffer, tmp);
-	g_free(tmp);
-
-	addToHTMLBufferFast(&buffer, "</div>");
-
-	ui_htmlview_finish_output(&buffer);
-	return buffer;
+	params = render_add_parameter(params, "id='%s'", node->id);
+	params = render_add_parameter(params, "headlineCount='%d'", g_list_length(node->itemSet->items));
+	filename = common_create_cache_filename(NULL, "feedlist", "opml");
+	result = render_file(filename, "vfolder", params);
+	g_free(filename);
+	g_strfreev(params);
+	
+	return result;
 }
 
 static struct nodeType nti = {

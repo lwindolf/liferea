@@ -171,7 +171,7 @@ GString * render_get_css(gboolean twoPane) {
 	return buffer;
 }
 
-gchar * render_xml(xmlDocPtr doc, const gchar *xsltName, const gchar **params) {
+gchar * render_xml(xmlDocPtr doc, const gchar *xsltName, gchar **params) {
 	gchar			*output = NULL;
 	GString			*css;
 	xmlDocPtr		resDoc;
@@ -210,7 +210,7 @@ gchar * render_xml(xmlDocPtr doc, const gchar *xsltName, const gchar **params) {
 	return output;
 }
 
-gchar * render_file(const gchar *filename, const gchar *xsltName, const gchar **params) {
+gchar * render_file(const gchar *filename, const gchar *xsltName, gchar **params) {
 	xmlDocPtr	srcDoc;
 	gchar		*output;
 	

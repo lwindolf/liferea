@@ -32,7 +32,7 @@
  *
  * @returns rendered XHTML
  */
-gchar * render_file(const gchar *filename, const gchar *xsltName, const gchar **params);
+gchar * render_file(const gchar *filename, const gchar *xsltName, gchar **params);
 
 /**
  * Applies the stylesheet xslt to the given XML document with the given parameters.
@@ -41,7 +41,7 @@ gchar * render_file(const gchar *filename, const gchar *xsltName, const gchar **
  * @param xsltName	name of a stylesheet
  * @param params	comma separated parameter/value list
  */
-gchar * render_xml(xmlDocPtr doc, const gchar *xsltName, const gchar **params);
+gchar * render_xml(xmlDocPtr doc, const gchar *xsltName, gchar **params);
 
 /**
  * Helper function to add a rendering parameter to the given parameter list.
