@@ -317,7 +317,7 @@ static void import_parse_body(xmlNodePtr n, nodePtr parentNode, flNodeHandler *h
 	xmlNodePtr cur;
 	
 	cur = n->xmlChildrenNode;
-	while(cur != NULL) {
+	while(cur) {
 		if((!xmlStrcmp(cur->name, BAD_CAST"outline")))
 			import_parse_outline(cur, parentNode, handler, trusted);
 		cur = cur->next;
@@ -328,7 +328,7 @@ static void import_parse_OPML(xmlNodePtr n, nodePtr parentNode, flNodeHandler *h
 	xmlNodePtr cur;
 	
 	cur = n->xmlChildrenNode;
-	while(cur != NULL) {
+	while(cur) {
 		/* we ignore the head */
 		if((!xmlStrcmp(cur->name, BAD_CAST"body"))) {
 			import_parse_body(cur, parentNode, handler, trusted);
@@ -399,7 +399,7 @@ void on_import_activate(GtkMenuItem *menuitem, gpointer user_data) {
 static void on_export_activate_cb(const gchar *filename, gpointer user_data) {
 	gint error = 0;
 
-	if(filename != NULL) {
+	if(filename) {
 		error = export_OPML_feedlist(filename, FALSE);
 	
 		if(0 != error)

@@ -36,7 +36,6 @@
    with special update propagation and removal handling. */
 
 typedef struct vfolder {
-	gchar		*title;			/**< vfolder title */
 	GSList		*rules;			/**< list of rules if this is a vfolder */
 	struct node	*node;			/**< the node of the vfolder, needed for merging */
 } *vfolderPtr;
@@ -49,18 +48,20 @@ void	vfolder_init(void);
 /**
  * Sets up a new vfolder structure.
  *
+ * @param node 	the feed list node of the vfolder
+ *
  * @returns a new vfolder
  */
-vfolderPtr vfolder_new(void);
+vfolderPtr vfolder_new(struct node *node);
 
 /**
  * Vfolder specific feed list import parsing.
  *
- * @param np	the node to import
+ * @param node	the feed list node to import
  * @param cur	DOM node to parse
  * @returns pointer to resulting plugin
  */
-gpointer vfolder_import(struct node *np, xmlNodePtr cur);
+gpointer vfolder_import(struct node *node, xmlNodePtr cur);
 
 /**
  * Vfolder specific feed list export.

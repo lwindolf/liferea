@@ -76,7 +76,7 @@ void on_searchentry_activate(GtkEntry *entry, gpointer user_data) {
 	GtkWidget		*searchentry;
 	G_CONST_RETURN gchar	*searchstring;
 	GString			*buffer;
-	vfolderPtr		vp;
+	vfolderPtr		vfolder;
 	
 	searchentry = lookup_widget(searchdialog, "searchentry");
 	searchstring = gtk_entry_get_text(GTK_ENTRY(searchentry));
@@ -88,16 +88,14 @@ void on_searchentry_activate(GtkEntry *entry, gpointer user_data) {
 		node_remove(searchResult);
 
 	/* create new search */
-	vp = vfolder_new();
-	vfolder_set_title(vp, searchstring);
-	vfolder_add_rule(vp, "exact", searchstring, TRUE);
-
 	searchResult = node_new();
+	vfolder = vfolder_new(searchResult);
+	
 	node_set_title(searchResult, searchstring);
-	node_add_data(searchResult, FST_VFOLDER, (gpointer)vp);
+	vfolder_add_rule(vfolder, "exact", searchstring, TRUE);
 
 	/* calculate vfolder item set */
-	vfolder_refresh(vp);
+	vfolder_refresh(vfolder);
 
 	/* switch to item list view and inform user in HTML view */
 	ui_feedlist_select(NULL);

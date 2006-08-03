@@ -46,18 +46,26 @@ void vfolder_init(void) {
 }
 
 /* sets up a vfolder feed structure */
-vfolderPtr vfolder_new(void) {
-	vfolderPtr	vp;
+vfolderPtr vfolder_new(nodePtr node) {
+	vfolderPtr	vfolder;
+	itemSetPtr	itemSet;
 
 	debug_enter("vfolder_new");
 
-	vp = g_new0(struct vfolder, 1);
-	vp->title = g_strdup(_("vfolder"));
-	vfolders = g_slist_append(vfolders, vp);
+	vfolder = g_new0(struct vfolder, 1);
+	vfolder->node = node;
+	vfolders = g_slist_append(vfolders, vfolder);
+
+	node_set_title(node, _("New Search Folder"));	/* set default title */
+	node_add_data(node, FST_VFOLDER, (gpointer)vfolder);
+
+	itemSet = (itemSetPtr)g_new0(struct itemSet, 1); /* create empty itemset */
+	itemSet->type = ITEMSET_TYPE_VFOLDER;
+	node_set_itemset(node, itemSet);
 	
 	debug_exit("vfolder_new");
 	
-	return vp;
+	return vfolder;
 }
 
 static void vfolder_import_rules(xmlNodePtr cur, vfolderPtr vp) {
@@ -95,23 +103,21 @@ static void vfolder_import_rules(xmlNodePtr cur, vfolderPtr vp) {
 	}
 }
 
-gpointer vfolder_import(nodePtr np, xmlNodePtr cur) {
-	vfolderPtr vp;
+gpointer vfolder_import(nodePtr node, xmlNodePtr cur) {
+	vfolderPtr vfolder;
 
 	debug_enter("vfolder_import");
 
-	vp = vfolder_new();
+	vfolder = g_new0(struct vfolder, 1);
+	vfolder->node = node;
+	vfolder_import_rules(cur, vfolder);
+	vfolders = g_slist_append(vfolders, vfolder);
 
-	/* Vfolder processing depends on the vfolder knowing
-	   of its node structure... */
-	vp->node = np;
-
-	vfolder_import_rules(cur, vp);
-	debug1(DEBUG_CACHE, "import vfolder: title=%s", node_get_title(np));
+	debug1(DEBUG_CACHE, "import vfolder: title=%s", node_get_title(node));
 
 	debug_exit("vfolder_import");
 
-	return (gpointer)vp;
+	return (gpointer)vfolder;
 }
 
 void vfolder_export(vfolderPtr vp, xmlNodePtr cur) {
@@ -139,14 +145,6 @@ void vfolder_export(vfolderPtr vp, xmlNodePtr cur) {
 
 	debug_exit("vfolder_export");
 }
-
-void vfolder_set_title(vfolderPtr vp, const gchar *title) {
-
-	g_free(vp->title);
-	vp->title = g_strdup(title);
-}
-
-const gchar * vfolder_get_title(vfolderPtr vp) { return vp->title; }
 
 /* Method thats adds a rule to a vfolder. To be used
    on loading time or when creating searching. Does 
