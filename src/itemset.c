@@ -19,12 +19,13 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "itemset.h"
 #include <string.h>
 #include "conf.h"
 #include "common.h"
 #include "debug.h"
 #include "feed.h"
+#include "itemlist.h"
+#include "itemset.h"
 #include "node.h"
 #include "render.h"
 #include "support.h"
@@ -108,7 +109,7 @@ gchar * itemset_render(itemSetPtr itemSet) {
 			if(!desc || (0 == strlen(desc)))
 				missingContent++;
 				
-			if(summaryMode = (missingContent > 3))
+			if(TRUE == (summaryMode = (missingContent > 3)))
 				break;
 				
 			iter = g_list_next(iter);
@@ -168,7 +169,7 @@ static void itemset_prepare_item(itemSetPtr itemSet, itemPtr item) {
 		
 	/* sanity check, should never be triggered... */
 	if(itemset_lookup_item(itemSet, item->sourceNode, item->nr)) {
-		g_warning("fatal: non-unique item nr! (nr=%d, node=%p, %s)", item->nr, item->sourceNode, item->title); \
+		g_warning("fatal: non-unique item nr! (nr=%lu, sourceNode=%s, %s)", item->nr, item->sourceNode->id, item->title);
 		item->nr = ++(itemSet->lastItemNr);
 		item->sourceNode->needsCacheSave = TRUE;
 	}
@@ -202,9 +203,9 @@ void itemset_remove_item(itemSetPtr itemSet, itemPtr item) {
 	itemSet->items = g_list_remove(itemSet->items, item);
 	
 	if(!item->readStatus)
-		itemSet->node->unreadCount--;
+		node_update_unread_count(itemSet->node, -1);
 	if(item->newStatus)
-		itemSet->node->newCount--;
+		node_update_new_count(itemSet->node, -1);
 	if(item->popupStatus)
 		itemSet->node->popupCount--;
 
@@ -216,15 +217,6 @@ void itemset_remove_item(itemSetPtr itemSet, itemPtr item) {
 			vfolder_remove_item(item);
 
 			itemSet->node->needsCacheSave = TRUE;
-					
-			/* is this really correct? e.g. if there is no 
-			   unread/important vfolder? then the remove
-			   above would do nothing and decrementing
-			   the counters would be wrong, the same when
-			   there are multiple vfolders catching an
-			   unread item...  FIXME!!! (Lars) */
-			feedlist_update_counters(item->readStatus?0:-1,	
-						 item->newStatus?-1:0);
 			break;
 		case ITEMSET_TYPE_VFOLDER:
 			/* No propagation */
@@ -263,7 +255,7 @@ void itemset_set_item_flag(itemSetPtr itemSet, itemPtr item, gboolean newFlagSta
 		/* propagate change to source feed, this indirectly updates us... */
 		sourceNode = item->sourceNode;	/* keep feed pointer because ip might be free'd */
 		node_load(sourceNode);
-		if(sourceItem = itemset_lookup_item(sourceNode->itemSet, sourceNode, item->sourceNr))
+		if(NULL != (sourceItem = itemset_lookup_item(sourceNode->itemSet, sourceNode, item->sourceNr)))
 			itemlist_set_flag(sourceItem, newFlagStatus);
 		node_unload(sourceNode);
 	} else {
@@ -290,7 +282,7 @@ void itemset_set_item_read_status(itemSetPtr itemSet, itemPtr item, gboolean new
 		/* propagate change to source feed, this indirectly updates us... */
 		sourceNode = item->sourceNode;	/* keep feed pointer because item might be free'd */
 		node_load(sourceNode);
-		if(sourceItem = itemset_lookup_item(sourceNode->itemSet, sourceNode, item->sourceNr))
+		if(NULL != (sourceItem = itemset_lookup_item(sourceNode->itemSet, sourceNode, item->sourceNr)))
 			itemlist_set_read_status(sourceItem, newReadStatus);
 		node_unload(sourceNode);
 	} else {		
@@ -313,7 +305,7 @@ void itemset_set_item_update_status(itemSetPtr itemSet, itemPtr item, gboolean n
 		/* propagate change to source feed, this indirectly updates us... */
 		sourceNode = item->sourceNode;	/* keep feed pointer because ip might be free'd */
 		node_load(sourceNode);
-		if(sourceItem = itemset_lookup_item(sourceNode->itemSet, sourceNode, item->sourceNr))
+		if(NULL != (sourceItem = itemset_lookup_item(sourceNode->itemSet, sourceNode, item->sourceNr)))
 			itemlist_set_update_status(sourceItem, newUpdateStatus);
 		node_unload(sourceNode);
 	} else {

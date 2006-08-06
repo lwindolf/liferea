@@ -209,6 +209,14 @@ guint node_get_unread_count(nodePtr node);
 void node_update_unread_count(nodePtr node, gint diff);
 
 /**
+ * Update the number of new items of a node.
+ *
+ * @param node	the node
+ * @param diff	the difference to the current unread count
+ */
+void node_update_new_count(nodePtr node, gint diff);
+
+/**
  * Recursively marks all items of the given node as read.
  *
  * @param node	the node to process

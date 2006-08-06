@@ -174,9 +174,48 @@ void node_update_counters(nodePtr node) {
 		node_update_unread_count(node->parent, unreadDiff);
 
 	/* propagate to feed list statistics */
-	feedlist_update_counters(unreadDiff, newDiff);
+	if(FST_FEED == node->type)
+		feedlist_update_counters(unreadDiff, newDiff);		
 }
 
+void node_update_unread_count(nodePtr node, gint diff) {
+
+	node->unreadCount += diff;
+
+	/* vfolder unread counts are not interesting
+	   in the following propagation handling */
+	if(FST_VFOLDER == node->type)
+		return;
+
+	/* update parent node unread counters */
+	if(NULL != node->parent)
+		node_update_unread_count(node->parent, diff);
+
+	/* update global feed list statistic */
+	if(FST_FEED == node->type)
+		feedlist_update_counters(diff, 0);
+}
+
+void node_update_new_count(nodePtr node, gint diff) {
+
+	node->newCount += diff;
+
+	/* vfolder new counts are not interesting
+	   in the following propagation handling */
+	if(FST_VFOLDER == node->type)
+		return;
+
+	/* no parent node propagation necessary */
+
+	/* update global feed list statistic */
+	if(FST_FEED == node->type)
+		feedlist_update_counters(0, diff);	
+}
+
+guint node_get_unread_count(nodePtr node) { 
+	
+	return node->unreadCount; 
+}
 /* generic node item set merging functions */
 
 /**
@@ -199,6 +238,7 @@ static gboolean node_merge_check(itemSetPtr itemSet, itemPtr item) {
 	return FALSE;
 }
 
+/* only to be called by node_merge_items() */
 static void node_merge_item(nodePtr node, itemPtr item) {
 
 	debug3(DEBUG_UPDATE, "merging \"%s\" (id=%d) to node \"%s\"", item_get_title(item), item->nr, node_get_title(node));
@@ -215,15 +255,6 @@ static void node_merge_item(nodePtr node, itemPtr item) {
 		
 		/* step 2: check for matching vfolders */
 		vfolder_check_item(item);
-
-		/* step 3: update feed list statistics */
-
-		/* Never update the overall feed list statistic 
-		   for folders and vfolders (because these are item
-		   list types with item copies or references)! */
-		if((FST_FOLDER != node->type) && (FST_VFOLDER != node->type))
-			feedlist_update_counters(item->readStatus?0:1,
-						 item->newStatus?1:0);
 	} else {
 		debug2(DEBUG_UPDATE, "not adding \"%s\" to node \"%s\"...", item_get_title(item), node_get_title(node));
 		item_free(item);
@@ -234,7 +265,7 @@ static void node_merge_item(nodePtr node, itemPtr item) {
  * This method can be used to merge an ordered list of items
  * into the item list of the nodes item set.
  */
-void node_merge_items(nodePtr np, GList *list) {
+void node_merge_items(nodePtr node, GList *list) {
 	GList	*iter;
 
 	/* Items are given in top to bottom display order. 
@@ -243,20 +274,24 @@ void node_merge_items(nodePtr np, GList *list) {
 	   to be done bottom to top. */
 	iter = g_list_last(list);
 	while(iter) {
-		node_merge_item(np, ((itemPtr)iter->data));
+		node_merge_item(node, ((itemPtr)iter->data));
 		iter = g_list_previous(iter);
 	}
 	g_list_free(list);
-
-	node_update_counters(np);
+	
+	/* Never update the overall feed list statistic 
+	   for folders and vfolders (because these are item
+	   list types with item copies or references)! */
+	if((FST_FOLDER != node->type) && (FST_VFOLDER != node->type))
+		node_update_counters(node);
 }
 
-void node_update_favicon(nodePtr np) {
+void node_update_favicon(nodePtr node) {
 
-	if(FST_FEED != np->type)
+	if(FST_FEED != node->type)
 		return;
 
-	favicon_download(np);
+	favicon_download(node);
 }
 
 /* plugin and import callbacks and helper functions */
@@ -458,43 +493,6 @@ void node_set_title(nodePtr node, const gchar *title) {
 }
 
 const gchar * node_get_title(nodePtr node) { return node->title; }
-
-void node_update_unread_count(nodePtr node, gint diff) {
-
-	node->unreadCount += diff;
-
-	/* vfolder unread counts are not interesting
-	   in the following propagation handling */
-	if(FST_VFOLDER == node->type)
-		return;
-
-	/* update parent node unread counters */
-	if(NULL != node->parent)
-		node_update_unread_count(node->parent, diff);
-
-	/* update global feed list statistic */
-	feedlist_update_counters(diff, 0);
-}
-
-void node_update_new_count(nodePtr node, gint diff) {
-
-	node->newCount += diff;
-
-	/* vfolder new counts are not interesting
-	   in the following propagation handling */
-	if(FST_VFOLDER == node->type)
-		return;
-
-	/* no parent node propagation necessary */
-
-	/* update global feed list statistic */
-	feedlist_update_counters(0, diff);
-}
-
-guint node_get_unread_count(nodePtr node) { 
-	
-	return node->unreadCount; 
-}
 
 void node_set_icon(nodePtr node, gpointer icon) {
 

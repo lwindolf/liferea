@@ -120,15 +120,6 @@ void itemlist_remove_item(itemPtr ip);
 void itemlist_remove_items(itemSetPtr sp);
 
 /**
- * Toggle the flag of the item currently selected in the itemlist
- */
-void itemlist_toggle_flag(itemPtr ip);
-
-void itemlist_toggle_read_status(itemPtr ip);
-
-void itemlist_set_read_status(itemPtr ip, gboolean newStatus);
-
-/**
  * Marks all items of the item set as read.
  *
  * @param itemSet	the itemset
@@ -151,9 +142,48 @@ void itemlist_update_vfolder(vfolderPtr vp);
  */
 void itemlist_selection_changed(itemPtr ip);
 
-/** Force the itemlist to re-create the displayed dates based on the
- *  current date format setting 
+/** 
+ * Force the itemlist to re-create the displayed dates based on the
+ * current date format setting.
  */
 void itemlist_reset_date_format(void);
+
+/**
+ * Sets the flag status of the given item.
+ *
+ * @param item		the item
+ * @param newStatus	new flag status
+ */
+void itemlist_set_flag(itemPtr item, gboolean newStatus);
+
+/**
+ * Sets the read status of the given item.
+ *
+ * @param item		the item
+ * @param newStatus	new read status
+ */
+void itemlist_set_read_status(itemPtr ip, gboolean newStatus);
+
+/**
+ * Sets the update status of the given item.
+ *
+ * @param item		the item
+ * @param newStatus	new update status
+ */
+void itemlist_set_update_status(itemPtr item, const gboolean newStatus);
+
+/**
+ * Toggle the flag of the given item.
+ *
+ * @param item		the item
+ */
+void itemlist_toggle_flag(itemPtr ip);
+
+/**
+ * Toggle the read status of the given item.
+ *
+ * @param item		the item
+ */
+void itemlist_toggle_read_status(itemPtr ip);
 
 #endif
