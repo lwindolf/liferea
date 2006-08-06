@@ -28,6 +28,9 @@
 #include <gdk/gdk.h>
 #include <gdk/gdkkeysyms.h>
 #include <string.h>
+#include <libintl.h>
+
+
 #include "callbacks.h"
 #include "common.h"
 #include "conf.h"
@@ -357,7 +360,7 @@ static struct mainwindow *ui_mainwindow_new(void) {
 	g_signal_connect(mw->window, "key_press_event", G_CALLBACK(on_mainwindow_key_press_event), mw);
 	
 	statusbar = lookup_widget(window, "statusbar");
-	mw->statusbar_feedsinfo = gtk_label_new("XXX");
+	mw->statusbar_feedsinfo = gtk_label_new("");
 	gtk_widget_show(mw->statusbar_feedsinfo);
 	gtk_box_pack_start(GTK_BOX(statusbar), mw->statusbar_feedsinfo, FALSE, FALSE, 5);
 
@@ -935,31 +938,29 @@ static void ui_mainwindow_create_menus(struct mainwindow *mw) {
 	mw->toolbar = gtk_ui_manager_get_widget (ui_manager, "/maintoolbar");
 }
 
-void ui_mainwindow_update_feedsinfo()
-{
+void ui_mainwindow_update_feedsinfo(void) {
 	gint	new_items, unread_items;
 	gchar	*msg, *tmp;
 
-	if (mainwindow == NULL)
+	if(mainwindow == NULL)
 		return;
 	
 	new_items = feedlist_get_new_item_count();
 	unread_items = feedlist_get_unread_item_count();
-
-	if (new_items != 0) {
-		msg = g_strdup_printf(ngettext("%d new item", "%d new items", new_items), new_items);
+	
+	if(new_items != 0) {
+		msg = g_strdup_printf(ngettext(" (%d new)", " (%d new)", new_items), new_items);
 	} else {
-		msg = g_strdup(_("No new items"));
+		msg = g_strdup("");
 	}
 		
 	if(unread_items != 0) {
-		tmp = g_strdup_printf(ngettext("%s - %d unread item", "%s - %d unread items", unread_items), msg, unread_items);
+		tmp = g_strdup_printf(ngettext("%d unread%s", "%d unread%s", unread_items), unread_items, msg);
 	} else {
-		tmp = g_strdup_printf(_("%s\nNo unread items"), msg);
+		tmp = g_strdup("");
 	}
 
 	gtk_label_set_text(GTK_LABEL(mw_global_fixme->statusbar_feedsinfo), tmp);
 	g_free(tmp);
 	g_free(msg);
 }
-
