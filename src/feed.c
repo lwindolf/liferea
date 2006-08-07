@@ -1105,7 +1105,13 @@ void feed_process_update_result(struct request *request) {
 	   status and the last update time to cache */
 	node->needsCacheSave = TRUE;
 	feed->available = FALSE;
-
+	
+	/* note this is to update the feed URL on permanent redirects */
+	if(!strcmp(request->source, feed_get_source(feed))) {
+		feed_set_source(feed, request->source);
+		ui_mainwindow_set_status_bar(_("The URL of \"%s\" has changed permanently and was updated"), node_get_title(node));
+	}
+	
 	if(401 == request->httpstatus) { /* unauthorized */
 		if(request->flags & FEED_REQ_AUTH_DIALOG)
 			ui_feed_authdialog_new(node, request->flags);
@@ -1119,12 +1125,6 @@ void feed_process_update_result(struct request *request) {
 	} else if(NULL != request->data) {
 		feed_set_lastmodified(feed, request->lastmodified);
 		feed_set_etag(feed, request->etag);
-		
-		/* note this is to update the feed URL on permanent redirects */
-		if(!strcmp(request->source, feed_get_source(feed))) {
-			feed_set_source(feed, request->source);
-			ui_mainwindow_set_status_bar(_("The URL of \"%s\" has changed permanently and was updated"), node_get_title(node));
-		}
 		
 		/* we save all properties that should not be overwritten in all cases */
 		old_update_interval = feed_get_update_interval(feed);
