@@ -181,6 +181,7 @@ gboolean on_mainwindow_key_press_event(GtkWidget *widget, GdkEventKey *event, gp
 					on_popup_zoomout_selected(NULL, 0, NULL);
 					return TRUE;
 					break;
+				case GDK_period:
 				case GDK_n:
 					on_next_unread_item_activate(NULL, NULL);
 					return TRUE;
