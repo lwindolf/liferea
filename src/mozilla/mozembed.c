@@ -54,6 +54,9 @@ void mozembed_write(GtkWidget *widget, const gchar *string, guint length, const 
 	
 	if(!GTK_WIDGET_REALIZED(widget)) 
 		return;
+
+	/* prevent meta refresh of last document */
+	gtk_moz_embed_stop_load(GTK_MOZ_EMBED(widget));
 	
 	if((NULL != string) && (length > 0)) {
 		/* Because of a bug in Mozilla, sending the entire string at
