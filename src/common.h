@@ -82,6 +82,26 @@ gchar * common_strip_dhtml(const gchar *html);
  */
 gchar * common_text_to_xhtml(const gchar *text);
 
+/** used to keep track of error messages during feed parsing */
+typedef struct errorCtxt {
+	feedParserCtxtPtr	fpc;
+	gint			errorCount;
+} *errorCtxtPtr;
+
+/**
+ * Common function to create a XML DOM object from a given XML buffer.
+ * 
+ * The function returns a XML document pointer or NULL
+ * if the document could not be read.
+ *
+ * @param data		XML document buffer
+ * @param length	length of buffer
+ * @param errors	parser error context (can be NULL)
+ *
+ * @return XML document
+ */
+xmlDocPtr common_parse_xml(gchar *data, guint length, errorCtxtPtr errors);
+
 /**
  * Common function to create a XML DOM object from a given
  * XML buffer. This function sets up a parser context,
@@ -92,7 +112,7 @@ gchar * common_text_to_xhtml(const gchar *text);
  * errormsg to the last error messages on parsing
  * errors. 
  *
- * @param fc	feed parsing context with valid data
+ * @param fpc	feed parsing context with valid data
  *
  * @return XML document
  */

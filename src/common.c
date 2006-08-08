@@ -323,12 +323,6 @@ gchar * unxmlize(gchar * string) { return unmarkupize(string, _unxmlize); }
 
 #define MAX_PARSE_ERROR_LINES	10
 
-/** used by bufferParseError to keep track of error messages */
-typedef struct errorCtxt {
-	feedParserCtxtPtr	fpc;
-	gint			errorCount;
-} *errorCtxtPtr;
-
 /**
  * Error buffering function to be registered by 
  * xmlSetGenericErrorFunc(). This function is called on
@@ -399,10 +393,25 @@ xmlEntityPtr common_process_entities(void *ctxt, const xmlChar *name) {
 	return entity;
 }
 
-xmlDocPtr common_parse_xml_feed(feedParserCtxtPtr fpc) {
+xmlDocPtr common_parse_xml(gchar *data, guint length, errorCtxtPtr errors) {
 	xmlParserCtxtPtr	ctxt;
-	errorCtxtPtr		errors;
+	xmlDocPtr		doc;
 	
+	g_assert(NULL != data);
+
+	ctxt = xmlNewParserCtxt();
+	ctxt->sax->getEntity = common_process_entities;
+
+	doc = xmlSAXParseMemory(ctxt->sax, data, length, /* recovery = */ TRUE);
+	
+	xmlFreeParserCtxt(ctxt);
+	
+	return doc;
+}
+
+xmlDocPtr common_parse_xml_feed(feedParserCtxtPtr fpc) {
+	errorCtxtPtr		errors;
+		
 	g_assert(NULL != fpc->data);
 	g_assert(NULL != fpc->feed);
 	g_assert(NULL != fpc->itemSet);
@@ -415,20 +424,18 @@ xmlDocPtr common_parse_xml_feed(feedParserCtxtPtr fpc) {
 		g_string_append(fpc->feed->parseErrors, "Empty input!\n");
 		return NULL;
 	}
-	
+
 	errors = g_new0(struct errorCtxt, 1);
 	errors->fpc = fpc;
 	xmlSetGenericErrorFunc(errors, (xmlGenericErrorFunc)common_buffer_parse_error);
 	
-	ctxt = xmlNewParserCtxt();
-	ctxt->sax->getEntity = common_process_entities;
-	fpc->doc = xmlSAXParseMemory(ctxt->sax, fpc->data, fpc->dataLength, /* recovery = */ TRUE);
+	fpc->doc = common_parse_xml(fpc->data, fpc->dataLength, errors);
 	if(!fpc->doc) {
 		g_warning("xmlReadMemory: Could not parse document!\n");
 		g_string_prepend(fpc->feed->parseErrors, _("xmlReadMemory(): Could not parse document:\n"));
 		g_string_append(fpc->feed->parseErrors, "\n");
 	}
-	
+		
 	/* This seems to reset the errorfunc to its default, so that the
 	   GtkHTML2 module is not unhappy because it also tries to call the
 	   errorfunc on occasion. */
@@ -436,7 +443,6 @@ xmlDocPtr common_parse_xml_feed(feedParserCtxtPtr fpc) {
 
 	fpc->itemSet->valid = (errors->errorCount > 0);
 	g_free(errors);
-	xmlFreeParserCtxt(ctxt);
 	
 	return fpc->doc;
 }

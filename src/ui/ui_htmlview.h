@@ -35,9 +35,7 @@ struct displayset {
 	gchar *foottable;
 };
 
-//#define EMPTY		"<html><body></body></html>"
-
-#define HTMLVIEW_PLUGIN_API_VERSION 9
+#define HTMLVIEW_PLUGIN_API_VERSION 10
 
 typedef struct htmlviewPlugin {
 	unsigned int 	api_version;
@@ -210,7 +208,7 @@ void ui_htmlview_set_proxy(gchar *hostname, int port, gchar *username, gchar *pa
  *
  * @param online	the new online state
  */
-void ui_htmlview_change_online_status(gboolean online);
+void ui_htmlview_online_status_changed(gboolean online);
 
 /* interface.c callbacks */
 void on_popup_launch_link_selected(gpointer callback_data, guint callback_action, GtkWidget *widget);

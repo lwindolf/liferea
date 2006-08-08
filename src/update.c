@@ -23,18 +23,26 @@
 #  include <config.h>
 #endif
 
+#include <libxml/parser.h>
+#include <libxslt/xslt.h>
+#include <libxslt/xsltInternals.h>
+#include <libxslt/transform.h>
+#include <libxslt/xsltutils.h>
+
 #include <unistd.h>
 #include <stdio.h>
 #include <sys/wait.h>
 #include <string.h>
+
 #include "common.h"
-#include "support.h"
-#include "debug.h"
-#include "update.h"
 #include "conf.h"
+#include "debug.h"
+#include "support.h"
+#include "update.h"
+#include "ui/ui_htmlview.h"
 #include "ui/ui_mainwindow.h"
-#include "net/downloadlib.h"
 #include "ui/ui_tray.h"
+#include "net/downloadlib.h"
 
 /* must never be smaller than 2, because first thread works exclusivly on high prio requests */
 #define DEFAULT_UPDATE_THREAD_CONCURRENCY	4
@@ -103,29 +111,72 @@ static char* update_exec_filter_cmd(gchar *cmd, gchar *data, gchar **errorOutput
 	return out;
 }
 
+static gchar * update_apply_xslt(struct request *request) {
+	xsltStylesheetPtr	xslt = NULL;
+	xmlOutputBufferPtr	buf;
+	xmlDocPtr		srcDoc = NULL, resDoc = NULL;
+	gchar			*output = NULL;
+
+	do {
+		if(NULL == (srcDoc = common_parse_xml(request->data, request->size, NULL))) {
+			g_warning("fatal: parsing request result XML source failed (%s)!", request->filtercmd);
+			break;
+		}
+
+		/* load localization stylesheet */
+		if(NULL == (xslt = xsltParseStylesheetFile(request->filtercmd))) {
+			g_warning("fatal: could not load filter stylesheet \"%s\"!", request->filtercmd);
+			break;
+		}
+
+		if(NULL == (resDoc = xsltApplyStylesheet(xslt, srcDoc, NULL))) {
+			g_warning("fatal: applying stylesheet \"%s\" failed!", request->filtercmd);
+			break;
+		}
+
+		buf = xmlAllocOutputBuffer(NULL);
+		if(-1 == xsltSaveResultTo(buf, resDoc, xslt)) {
+			g_warning("fatal: retrieving result of filter stylesheet failed (%s)!", request->filtercmd);
+			break;
+		}
+		
+		if(xmlBufferLength(buf->buffer) > 0)
+			output = xmlCharStrdup(xmlBufferContent(buf->buffer));
+
+		xmlOutputBufferClose(buf);
+	} while(FALSE);
+
+	if(srcDoc)
+		xmlFreeDoc(srcDoc);
+	if(resDoc)
+		xmlFreeDoc(resDoc);
+	if(xslt)
+		xsltFreeStylesheet(xslt);
+	
+	return output;
+}
+
 static void update_apply_filter(struct request *request) {
-	gchar	*cmd, *filterResult;
+	gchar	*filterResult;
 	size_t	len;
+
+	g_free(request->filterErrors);
+	request->filterErrors = NULL;
 
 	/* we allow two types of filters: XSLT stylesheets and arbitrary commands */
 	if((strlen(request->filtercmd) > 4) &&
 	   (0 == strcmp(".xsl", request->filtercmd + strlen(request->filtercmd) - 4))) {
-		/* in case of XSLT we call xsltproc */
-		cmd = g_strdup_printf("xsltproc %s -", request->filtercmd);
+		filterResult = update_apply_xslt(request);
+		len = strlen(filterResult);
 	} else {
-		/* otherwise we just keep the given command */
-		cmd = g_strdup(request->filtercmd);
+		filterResult = update_exec_filter_cmd(request->filtercmd, request->data, &(request->filterErrors), &len);
 	}
 
-	g_free(request->filterErrors);
-	request->filterErrors = NULL;
-	if(filterResult = update_exec_filter_cmd(cmd, request->data, &(request->filterErrors), &len)) {
+	if(filterResult) {
 		g_free(request->data);
 		request->data = filterResult;
 		request->size = len;
 	}
-	
-	g_free(cmd);
 }
 
 static void update_exec_cmd(struct request *request) {
@@ -135,7 +186,8 @@ static void update_exec_cmd(struct request *request) {
 		
 	/* if the first char is a | we have a pipe else a file */
 	debug1(DEBUG_UPDATE, "executing command \"%s\"...\n", (request->source) + 1);	
-	if(f = popen((request->source) + 1, "r")) {
+	f = popen((request->source) + 1, "r");
+	if(f) {
 		while(!feof(f) && !ferror(f)) {
 			request->data = g_realloc(request->data, request->size + 1025);
 			len = fread(&request->data[request->size], 1, 1024, f);
@@ -163,7 +215,8 @@ static void update_load_file(struct request *request) {
 	if(!strncmp(filename, "file://",7))
 		filename += 7;
 
-	if(anchor = strchr(filename, '#'))
+	anchor = strchr(filename, '#');
+	if(anchor)
 		*anchor = 0;	 /* strip anchors from filenames */
 
 	if(g_file_test(filename, G_FILE_TEST_EXISTS)) {
@@ -360,7 +413,7 @@ gboolean update_request_cancel_retry(struct request *request) {
 static gboolean update_dequeue_results(gpointer user_data) {
 	struct request	*request;
 	
-	while(request = g_async_queue_try_pop(results)) {
+	while(NULL != (request = g_async_queue_try_pop(results))) {
 
 		/* Handling abandoned requests (e.g. after feed deletion) */
 		if(request->callback == NULL) {	
