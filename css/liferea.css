@@ -309,12 +309,12 @@ div.technorati a {
 }
 
 table.enclosure {
-	background:#F0F0F0;
+	background:#CCC;
 	width:100%;
 	margin:0;
 	border:0;
 	border-top:#FFF solid 1px;
-	border-bottom:#C0C0C0 solid 1px;
+	border-bottom:#777 solid 1px;
 }
 
 table.enclosure * td {
@@ -328,9 +328,9 @@ table.enclosure * a {
 
 img.enclosurebtn {
 	border:#FFF solid 1px;
-	border-bottom-color:#D0D0D0;
-	border-right-color:#D0D0D0;
-	background:#F0F0F0;
+	border-bottom-color:#AAA;
+	border-right-color:#AAA;
+	background:#E0E0E0;
 	padding-left:1px;
 	margin-left:2px;
 	margin-top:4px;
