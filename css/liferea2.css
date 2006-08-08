@@ -288,10 +288,13 @@ table.enclosure {
 	margin:0;
 	border:0;
 	border-bottom:#C0C0C0 solid 1px;
+}
+
+table.enclosure * td {
 	padding-left:4px;
 }
 
-a.enclosure {
+table.enclosure * a {
 	text-decoration:none;
 	color:black;
 }

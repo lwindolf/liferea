@@ -315,10 +315,13 @@ table.enclosure {
 	border:0;
 	border-top:#FFF solid 1px;
 	border-bottom:#C0C0C0 solid 1px;
+}
+
+table.enclosure * td {
 	padding-left:9px;
 }
 
-a.enclosure {
+table.enclosure * a {
 	text-decoration:none;
 	color:black;
 }
