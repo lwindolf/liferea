@@ -61,11 +61,13 @@ dd {
 table.itemhead {
 	background-color:#DDD;
 	margin:0;
-	padding: 2px;
 	width:100%;
 	border:0;
 	border-bottom: 1px solid #888;
-	clear:both;
+}
+
+table.itemhead * td {
+	padding: 2px;
 }
 
 table.itemhead * a.itemhead {
@@ -75,7 +77,6 @@ table.itemhead * a.itemhead {
 }
 
 td.headleft {
-	padding:2px 2px;
 	text-align:right;
 	white-space:nowrap;	/* workaround to prevent buggy gtkhtml2 word wrappings */
 }
@@ -84,14 +85,18 @@ td.headright {
 	padding:2px 5px;
 }
 
-.headmeta {
+table.headmeta {
 	background:#F0F0F0;
 	width:100%;
+	border:0;
 	border-top:#FFF solid 1px;
 	border-bottom:#C0C0C0 solid 1px;
+	margin:0;
+}
+
+table.headmeta td {
 	padding:1px 6px 1px 12px;
 	font-size:0.8em;
-	margin:0;
 }
 
 .author, .categories, .source {
@@ -111,8 +116,16 @@ div.content, div.foottext {
 	padding:0px 6px 0px 12px;
 }
 
+.commentlink {
+	padding-left:4px;
+}
+
 img {
 	margin:2px;
+}
+
+a.favicon {
+	text-decoration:none;
 }
 
 a.favicon img {
@@ -291,14 +304,18 @@ div.technorati {
 	padding-right:5px;
 }
 
+div.technorati a {
+	text-decoration:none;
+}
+
 table.enclosure {
-	background:#CCC;
+	background:#F0F0F0;
 	width:100%;
 	margin:0;
 	border:0;
 	border-top:#FFF solid 1px;
-	border-bottom:#777 solid 1px;
-	padding-left:6px;
+	border-bottom:#C0C0C0 solid 1px;
+	padding-left:9px;
 }
 
 a.enclosure {
@@ -308,16 +325,16 @@ a.enclosure {
 
 img.enclosurebtn {
 	border:#FFF solid 1px;
-	border-bottom-color:#AAA;
-	border-right-color:#AAA;
-	background:#E0E0E0;
+	border-bottom-color:#D0D0D0;
+	border-right-color:#D0D0D0;
+	background:#F0F0F0;
 	padding-left:1px;
 	margin-left:2px;
 	margin-top:4px;
-	margin-right:5px;
 }
 
 .enclosure * object {
+	margin-left:5px;
 	margin-top:2px;
 }
 
