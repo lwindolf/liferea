@@ -121,7 +121,7 @@ static gboolean rule_item_description_match(rulePtr rp, itemPtr ip) {
 
 	if(NULL != (desc = (gchar *)item_get_description(ip))) {
 		desc = g_utf8_casefold(desc, -1);
-		if(NULL != strstr(item_get_description(ip), rp->value))
+		if(NULL != strstr(desc, rp->value))
 			result = TRUE;
 		g_free(desc);
 	}
