@@ -225,7 +225,7 @@ static void notifAddFeedNotif(feedNotif_t *feedNotif_p) {
 	hbox_p = gtk_hbox_new(FALSE, 0);
 	label_p = gtk_label_new(NULL);
 	gtk_label_set_use_markup(GTK_LABEL(label_p), TRUE);
-	labelText_p = g_strdup_printf("<b><u>%s</u></b>", node_get_title(feedNotif_p->node_p));
+	labelText_p = g_strdup_printf("%s<b><u>%s</u></b>", direction_marker, node_get_title(feedNotif_p->node_p));
 	gtk_label_set_markup(GTK_LABEL(label_p), labelText_p);
 	g_free(labelText_p);
 	gtk_misc_set_alignment(GTK_MISC(label_p), 0.0, 0.5);
@@ -246,6 +246,7 @@ static void notifAddFeedNotif(feedNotif_t *feedNotif_p) {
 		item_p = list_p->data;
 		if(TRUE == item_p->popupStatus) {
 			item_p->popupStatus = FALSE;
+			direction_marker = common_get_direction_mark(item_get_title(item_p));
 			labelText_p = g_strdup_printf("%s%s %s", direction_marker, 
 			                                         NOTIF_BULLET, 
 								 item_get_title(item_p) != NULL ? item_get_title(item_p) : _("Untitled"));
