@@ -159,23 +159,17 @@ static void itemset_prepare_item(itemSetPtr itemSet, itemPtr item) {
 
 	/* when adding items after loading cache they have
 	   no source node and nr, so we set it... */
-	if(!item->sourceNode) {
+	if(!item->sourceNode)
 		item->sourceNode = itemSet->node;
-		item->nr = item->sourceNr;
-	}
 
-	/* to be sure we always assign a new unique item number... */
-	item->nr = ++(item->itemSet->lastItemNr);
-		
-	/* sanity check, should never be triggered... */
-	if(itemset_lookup_item(itemSet, item->sourceNode, item->nr)) {
-		g_warning("fatal: non-unique item nr! (nr=%lu, sourceNode=%s, %s)", item->nr, item->sourceNode->id, item->title);
+	/* We prepare for adding the item to the itemset and
+	   have to ensure a unique item id. But we only change
+	   it if necessary. The caller must save the node to
+	   ensure changed item ids to get saved. */
+	if((item->nr == 0) || (NULL != itemset_lookup_item(itemSet, item->sourceNode, item->nr)))
 		item->nr = ++(itemSet->lastItemNr);
-		item->sourceNode->needsCacheSave = TRUE;
-	}
 	
-	// FIXME: really needed?
-	if(item->sourceNode == itemSet->node)
+	if(ITEMSET_TYPE_FEED == itemSet->type)
 		item->sourceNr = item->nr;
 }
 				

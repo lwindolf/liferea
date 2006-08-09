@@ -58,7 +58,6 @@ typedef struct itemRef {
 	itemPtr		item;		/* the referrenced item */
 } itemRefPtr;
 
-static GList * itemlist = NULL;		/* list of loaded item references */
 static rulePtr itemlist_filter = NULL;	/* currently active filter rule */
 
 static itemPtr	displayed_item = NULL;	/* displayed item = selected item */
@@ -138,7 +137,6 @@ static void itemlist_render(void) {
  * tree view.
  */
 void itemlist_merge_itemset(itemSetPtr itemSet) {
-	gboolean	loadReadItems = TRUE;
 	GList		*iter;
 
 	debug_enter("itemlist_merge_itemset");
@@ -276,7 +274,6 @@ void itemlist_reset_date_format(void) {
 /* next unread selection logic */
 
 static gboolean itemlist_find_unread_item(void) {
-	GList	*iter, *selected = NULL;
 	
 	if(!displayed_itemSet)
 		return FALSE;
@@ -306,7 +303,8 @@ void itemlist_select_next_unread(void) {
 		return;
 	
 	/* scan feed list and find first feed with unread items */
-	if(node = feedlist_find_unread_feed(feedlist_get_root())) {
+	node = feedlist_find_unread_feed(feedlist_get_root());
+	if(node) {
 		
 		/* load found feed */
 		ui_feedlist_select(node);
@@ -509,6 +507,7 @@ void itemlist_selection_changed(itemPtr item) {
 		itemlist_check_for_deferred_action();
 	
 		debug1(DEBUG_GUI, "item list selection changed to \"%s\"", item_get_title(item));
+
 		displayed_item = item;
 
 		/* set read and unset update status when selecting */
@@ -543,8 +542,9 @@ void on_toggle_condensed_view_activate(GtkToggleAction *menuitem, gpointer user_
 	nodePtr		node;
 
 	twoPaneMode = gtk_toggle_action_get_active(menuitem);
-
-	if(node = itemlist_get_displayed_node()) {
+	
+	node = itemlist_get_displayed_node();
+	if(node) {
 		itemlist_unload(FALSE);
 		
 		node_set_two_pane_mode(node, twoPaneMode);

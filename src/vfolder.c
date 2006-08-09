@@ -379,7 +379,7 @@ void vfolder_update_item(itemPtr ip) {
 	g_assert(ip->itemSet->type != ITEMSET_TYPE_VFOLDER);
 	
 	iter = vfolders;
-	while(NULL != iter) {
+	while(iter) {
 		vp = (vfolderPtr)iter->data;
 		
 		/* first step: update item copy if found */
@@ -469,8 +469,9 @@ gboolean vfolder_check_item(itemPtr item) {
 
 	debug_enter("vfolder_check_item");
 	
-	g_assert(item->nr == item->sourceNr);
+	g_assert(item->itemSet->type == ITEMSET_TYPE_FEED);
 	g_assert(item->itemSet->node == item->sourceNode);
+	g_assert(item->nr == item->sourceNr);
 
 	iter = vfolders;
 	while(iter) {

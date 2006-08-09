@@ -241,14 +241,13 @@ static gboolean node_merge_check(itemSetPtr itemSet, itemPtr item) {
 /* only to be called by node_merge_items() */
 static void node_merge_item(nodePtr node, itemPtr item) {
 
-	debug3(DEBUG_UPDATE, "merging \"%s\" (id=%d) to node \"%s\"", item_get_title(item), item->nr, node_get_title(node));
+	debug3(DEBUG_UPDATE, "trying to merge \"%s\" (id=%d) to node \"%s\"", item_get_title(item), item->nr, node_get_title(node));
 
 	/* step 1: merge into node type internal data structures */
 	if(node_merge_check(node->itemSet, item)) {
 		debug2(DEBUG_UPDATE, "adding \"%s\" to node \"%s\"...", item_get_title(item), node_get_title(node));
 
 		g_assert(!item->sourceNode);
-		item->sourceNode = node;
 		
 		/* step 1: add to itemset */
 		itemset_prepend_item(node->itemSet, item);
@@ -463,7 +462,7 @@ itemSetPtr node_get_itemset(nodePtr node) { return node->itemSet; }
 
 void node_set_itemset(nodePtr node, itemSetPtr itemSet) {
 	GList	*iter;
-	
+
 	g_assert(ITEMSET_TYPE_INVALID != itemSet->type);
 	node->itemSet = itemSet;
 	itemSet->node = node;
