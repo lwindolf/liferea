@@ -149,6 +149,12 @@ void itemlist_selection_changed(itemPtr ip);
 void itemlist_reset_date_format(void);
 
 /**
+ * Tries to select the next unread item that is currently in the
+ * item list. Or does nothing if there are no unread items left.
+ */
+void itemlist_select_next_unread(void);
+
+/**
  * Sets the flag status of the given item.
  *
  * @param item		the item

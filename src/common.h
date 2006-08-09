@@ -210,6 +210,17 @@ xmlChar * common_uri_escape(const xmlChar *url);
  */
 xmlChar * common_build_url(const gchar *url, const gchar *baseURL);
 
+/**
+ * Analyzes the given string and returns the LTR/RTL
+ * setting that should be used when displaying it in
+ * a GTK tree store.
+ *
+ * @param text		string to analyze
+ *
+ * @returns UTF-8 string with direction mark
+ */
+const gchar * common_get_direction_mark(gchar *text);
+
 #ifndef HAVE_STRSEP
 char * common_strsep(char **stringp, const char *delim);
 #define strsep(a,b) common_strsep(a,b)

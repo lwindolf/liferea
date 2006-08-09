@@ -205,7 +205,7 @@ void ui_itemlist_remove_item(itemPtr item) {
 	GtkTreeIter	*iter;
 
 	g_assert(NULL != item);
-	if(iter = g_hash_table_lookup(item_to_iter, (gpointer)item)) {
+	if(NULL != (iter = g_hash_table_lookup(item_to_iter, (gpointer)item))) {
 		gtk_tree_store_remove(ui_itemlist_get_tree_store(), iter);
 		g_hash_table_remove(item_to_iter, (gpointer)item);
 	} else {
@@ -241,6 +241,7 @@ void ui_itemlist_clear(void) {
 void ui_itemlist_update_item(itemPtr ip) {
 	GtkTreeIter	iter;
 	gchar		*title, *label, *time_str, *esc_title, *esc_time_str, *tmp;
+	const gchar 	*direction_marker;
 	GdkPixbuf	*icon = NULL, *favicon;
 
 	/* favicon for feed icon column (visible in folders/vfolders/searches) */
@@ -268,17 +269,19 @@ void ui_itemlist_update_item(itemPtr ip) {
 	esc_title = g_markup_escape_text(title, -1);
 	esc_title = g_strstrip(esc_title);
 	
+	direction_marker = common_get_direction_mark(esc_title);
+	
 	if(FALSE == ip->readStatus) {
 		time_str = g_strdup_printf("<span weight=\"bold\">%s</span>", esc_time_str);
-		label = g_strdup_printf("<span weight=\"bold\">%s</span>", esc_title);
+		label = g_strdup_printf("%s<span weight=\"bold\">%s</span>", direction_marker, esc_title);
 		icon = icons[ICON_UNREAD];
 	} else if(TRUE == ip->updateStatus) {
 		time_str = g_strdup_printf("<span weight=\"bold\" color=\"#333\">%s</span>", esc_time_str);
-		label = g_strdup_printf("<span weight=\"bold\" color=\"#333\">%s</span>", esc_title);
+		label = g_strdup_printf("%s<span weight=\"bold\" color=\"#333\">%s</span>", direction_marker, esc_title);
 		icon = icons[ICON_UPDATED];
 	} else {
 		time_str = g_strdup(esc_time_str);
-		label = g_strdup(esc_title);
+		label = g_strdup_printf("%s%s", direction_marker, esc_title);
 		icon = icons[ICON_READ];
 	}
 	g_free(esc_title);
@@ -416,7 +419,7 @@ void ui_itemlist_prefocus(void) {
 	/* prevent marking as unread before focussing, which leads to a selection */
 	gtk_widget_grab_focus(itemlist);
 
-	if(itemselection = gtk_tree_view_get_selection(GTK_TREE_VIEW(itemlist)))
+	if(NULL != (itemselection = gtk_tree_view_get_selection(GTK_TREE_VIEW(itemlist))))
 		gtk_tree_selection_unselect_all(itemselection);
 	
 	if(focus_widget)
@@ -561,7 +564,7 @@ void ui_itemlist_select(itemPtr ip) {
 static gboolean ui_itemlist_find_unread_item_from_iter(GtkTreeIter *iter) {
 	itemPtr	item;
 	
-	if(item = ui_iter_to_item(iter)) {
+	if(NULL != (item = ui_iter_to_item(iter))) {
 		if(!item->readStatus) {
 			if(!itemlist_get_two_pane_mode()) {
 				ui_itemlist_select(item);
@@ -576,7 +579,6 @@ static gboolean ui_itemlist_find_unread_item_from_iter(GtkTreeIter *iter) {
 }
 
 gboolean ui_itemlist_find_unread_item(itemPtr start) {
-	GtkTreeView		*treeview;
 	GtkTreeStore		*itemstore;
 	GtkTreeIter		iter;
 	gboolean		valid = TRUE;

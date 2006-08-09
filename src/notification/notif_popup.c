@@ -26,6 +26,7 @@
 
 #include <gtk/gtk.h>
 #include <glib.h>
+#include "common.h"
 #include "conf.h"
 #include "debug.h"
 #include "node.h"
@@ -200,14 +201,17 @@ static void notifCheckFeedNotif(feedNotif_t *feedNotif_p) {
 }
 
 static void notifAddFeedNotif(feedNotif_t *feedNotif_p) {
-	GtkWidget *hbox_p, *icon_p, *label_p = NULL;
-	gchar *labelText_p = NULL;
-	itemPtr item_p = NULL;
-	GList *list_p = NULL;
+	GtkWidget	*hbox_p, *icon_p, *label_p = NULL;
+	const gchar	*direction_marker;
+	gchar		*labelText_p = NULL;
+	itemPtr		item_p = NULL;
+	GList		*list_p = NULL;
 
 	if(feedNotif_p->eventBox_p != NULL) {
 		notifRemoveFeedNotif(feedNotif_p);
 	}
+
+	direction_marker = common_get_direction_mark(feedNotif_p->node_p->title);
 
 	feedNotif_p->eventBox_p = gtk_event_box_new();
 	
@@ -242,7 +246,9 @@ static void notifAddFeedNotif(feedNotif_t *feedNotif_p) {
 		item_p = list_p->data;
 		if(TRUE == item_p->popupStatus) {
 			item_p->popupStatus = FALSE;
-			labelText_p = g_strdup_printf ("%s %s", NOTIF_BULLET, item_get_title(item_p) != NULL ? item_get_title(item_p) : _("Untitled"));
+			labelText_p = g_strdup_printf("%s%s %s", direction_marker, 
+			                                         NOTIF_BULLET, 
+								 item_get_title(item_p) != NULL ? item_get_title(item_p) : _("Untitled"));
 			label_p = gtk_label_new (labelText_p);
 			g_free(labelText_p);
 			gtk_label_set_line_wrap(GTK_LABEL(label_p), TRUE);
@@ -391,7 +397,7 @@ static void notif_popup_disable(void) {
 	notifRemoveWin();
 }
 
-static gboolean notif_popup_init(void) { }
+static gboolean notif_popup_init(void) { return TRUE; }
 
 static void notif_popup_deinit(void) { }
 

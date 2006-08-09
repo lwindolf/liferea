@@ -38,6 +38,8 @@
 	  all feeds of this type will be dropped without
 	  further notice. Note: OPML as feed list source for 
 	  import/export still works.
+	* Filter XSLT stylesheet are now applied using 
+	  libxslt instead of running xsltproc.
 
 	Bugfixes
 

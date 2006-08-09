@@ -126,4 +126,12 @@ void ui_choose_file(gchar *title, GtkWindow *parent, gchar *buttonName, gboolean
  */
 void ui_choose_directory(gchar *title, GtkWindow *parent, gchar *buttonName, fileChoosenCallback callback, const gchar *currentPath, gpointer user_data);
 
+/**
+ * Move cursor to nth next iter in a tree view.
+ *
+ * @param treename	widget name of the tree view
+ * @param step		how many iters to skip
+ */
+void on_treeview_move(char* treename, gint step);
+
 #endif

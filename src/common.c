@@ -41,6 +41,9 @@
 #include <libxml/HTMLparser.h>
 #include <libxml/xpath.h>
 #include <glib.h>
+#include <pango/pango-types.h>
+#include <gtk/gtk.h>
+
 #include <sys/stat.h>
 #include <string.h>
 #include <locale.h>
@@ -779,6 +782,35 @@ xmlChar * common_build_url(const gchar *url, const gchar *baseURL) {
 	}
 
 	return absURL;
+}
+
+const gchar * common_get_direction_mark(gchar *text) {
+	PangoDirection		pango_direction = PANGO_DIRECTION_NEUTRAL;
+	GtkTextDirection	gtk_direction;
+	
+	if(text)
+		pango_direction = pango_find_base_dir(text, -1);
+		
+	switch(pango_direction) {
+		case PANGO_DIRECTION_LTR:
+			gtk_direction = GTK_TEXT_DIR_LTR;
+			break;
+		case PANGO_DIRECTION_RTL:
+			gtk_direction = GTK_TEXT_DIR_RTL;
+			break;
+		default:
+			gtk_direction = gtk_widget_get_default_direction();
+			break;
+	}
+
+	switch(gtk_direction) {
+		case GTK_TEXT_DIR_RTL: 
+			return "\342\200\217"; /* U+200F RIGHT-TO-LEFT MARK */
+		case GTK_TEXT_DIR_LTR: 
+			return "\342\200\216"; /* U+200E LEFT-TO-RIGHT MARK */
+		default:
+			return "";
+	}
 }
 
 /* code taken from glibc-2.2.1/sysdeps/generic/strsep.c */
