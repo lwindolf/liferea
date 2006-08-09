@@ -47,6 +47,8 @@
 
 #define BUFFER_SIZE 8192
 
+#define EMPTY "<html><body></body></html>"
+
 /* points to the URL actually under the mouse pointer or is NULL */
 static gchar		*selectedURL = NULL;
 

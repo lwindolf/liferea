@@ -54,9 +54,7 @@
     <!-- Feed link as favicon -->
     <xsl:element name="a">
       <xsl:attribute name="class">favicon</xsl:attribute>
-      <xsl:attribute name="href">
-        <xsl:value-of select="/feed/feedLink"/>
-      </xsl:attribute>
+      <xsl:attribute name="href"><xsl:value-of select="/feed/feedLink"/></xsl:attribute>
       <xsl:element name="img">
         <xsl:attribute name="src">
           <xsl:choose>

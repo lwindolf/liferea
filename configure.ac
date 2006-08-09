@@ -30,6 +30,7 @@ AC_SYS_LARGEFILE
 
 AC_ARG_ENABLE(sm,        AS_HELP_STRING([--disable-sm],[compile without X session management support]),,enable_sm=yes)
 AC_ARG_ENABLE(dbus,      AS_HELP_STRING([--disable-dbus],[compile without DBUS support]),,enable_dbus=yes)
+AC_ARG_ENABLE(gtkhtml2,  AS_HELP_STRING([--disable-gtkhtml2],[don't compile the gtkhtml2 backend]),,enable_gtkhtml2=yes)
 AC_ARG_ENABLE(xulrunner, AS_HELP_STRING([--disable-xulrunner],[don't compile the xulrunner backend]),,enable_xulrunner=yes)
 AC_ARG_ENABLE(gecko,     AS_HELP_STRING([--disable-gecko],[don't compile the Gecko backend]),,enable_gecko=yes)
 AC_ARG_ENABLE(gecko,     AS_HELP_STRING([--enable-gecko=ARG],[specify which Gecko provider to use ("mozilla" or "firefox")]),,enable_gecko=yes)
@@ -105,6 +106,21 @@ if test "x$enable_xulrunner" = "xyes" ; then
 fi
 
 AM_CONDITIONAL(WITH_XULRUNNER, test "x$enable_xulrunner" = "xyes")
+
+dnl ********
+dnl GtkHTML2
+dnl ********
+ 
+if test "x$enable_gtkhtml2" = "xyes"; then
+   dnl AC_MSG_CHECKING([for GtkHTML2 support])
+   PKG_CHECK_MODULES([GTKHTML2], libgtkhtml-2.0 >= 2.0.0,enable_gtkhtml2=yes,enable_gtkhtml2=no)
+   AC_SUBST(GTKHTML2_CFLAGS)
+   AC_SUBST(GTKHTML2_LIBS)
+else
+   enable_gtkhtml2=no
+fi
+
+AM_CONDITIONAL(WITH_GTKHTML2, test "x$enable_gtkhtml2" = "xyes")
 
 dnl *******
 dnl Mozilla
@@ -193,7 +209,7 @@ else
 fi
 
 dnl For now, require Mozilla or XulRunner.
-if test "x$enable_mozilla" != "xyes" -a "x$enable_xulrunner" != "xyes" ; then
+if test "x$enable_mozilla" != "xyes" -a "x$enable_gtkhtml2" != "xyes" -a "x$enable_xulrunner" != "xyes" ; then
 	AC_MSG_ERROR([
 *** You must have either the GtkHTML2, XulRunner or the Mozilla 
 *** development libraries installed in order to build Liferea!
@@ -361,6 +377,7 @@ AM_CONDITIONAL(USE_GNUTLS, test "x$enable_gnutls" = "xyes")
 AC_CONFIG_FILES([
 Makefile
 src/Makefile
+src/gtkhtml2/Makefile
 src/mozilla/Makefile
 src/net/Makefile
 src/parsers/Makefile
@@ -390,6 +407,7 @@ else
    echo "Build Mozilla Plugin............ : $enable_mozilla"
 fi
 echo "Build XulRunner Plugin.......... : $enable_xulrunner"
+echo "Build GtkHTML Plugin............ : $enable_gtkhtml2"
 echo 
 echo "Build libnotify Plugin.......... : $enable_libnotify"
 echo 
