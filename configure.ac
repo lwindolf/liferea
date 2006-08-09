@@ -33,7 +33,7 @@ AC_ARG_ENABLE(dbus,      AS_HELP_STRING([--disable-dbus],[compile without DBUS s
 AC_ARG_ENABLE(gtkhtml2,  AS_HELP_STRING([--disable-gtkhtml2],[don't compile the gtkhtml2 backend]),,enable_gtkhtml2=yes)
 AC_ARG_ENABLE(xulrunner, AS_HELP_STRING([--disable-xulrunner],[don't compile the xulrunner backend]),,enable_xulrunner=yes)
 AC_ARG_ENABLE(gecko,     AS_HELP_STRING([--disable-gecko],[don't compile the Gecko backend]),,enable_gecko=yes)
-AC_ARG_ENABLE(gecko,     AS_HELP_STRING([--enable-gecko=ARG],[specify which Gecko provider to use ("mozilla" or "firefox")]),,enable_gecko=yes)
+AC_ARG_ENABLE(gecko,     AS_HELP_STRING([--enable-gecko=ARG],[specify which Gecko provider to use ("mozilla", "firefox" or "seamonkey")]),,enable_gecko=yes)
 AC_ARG_ENABLE(gnutls,    AS_HELP_STRING([--enable-gnutls],[Attempt to use GNUTLS for SSL support @<:@default=yes@:>@]),,enable_gnutls=yes)
 AC_ARG_ENABLE(libnotify, AS_HELP_STRING([--disable-libnotify],[don't compile the libnotify plugin]),,enable_libnotify=yes)
 
@@ -164,6 +164,11 @@ if test "x$enable_mozilla" != "xyes" -a \( "x$enable_gecko" = "xyes" -o "x$enabl
    PKG_CHECK_MODULES(MOZILLA, $gecko_provider-gtkmozembed, enable_mozilla=yes, enable_mozilla=no)
    AC_MSG_RESULT($gecko_provider: $enable_mozilla)
 fi
+if test "x$enable_mozilla" != "xyes" -a \( "x$enable_gecko" = "xyes" -o "x$enable_gecko" = "xseamonkey" \) ; then
+   gecko_provider=seamonkey
+   PKG_CHECK_MODULES(MOZILLA, $gecko_provider-gtkmozembed, enable_mozilla=yes, enable_mozilla=no)
+   AC_MSG_RESULT($gecko_provider: $enable_mozilla)
+fi
 
 AM_CONDITIONAL(WITH_MOZILLA, test "x$enable_mozilla" = "xyes")
 
@@ -236,7 +241,7 @@ else
    enable_mozilla=no
 fi
 
-dnl For now, require Mozilla or XulRunner.
+dnl For now, require GtkHTML2, Mozilla or XulRunner.
 if test "x$enable_mozilla" != "xyes" -a "x$enable_gtkhtml2" != "xyes" -a "x$enable_xulrunner" != "xyes" ; then
 	AC_MSG_ERROR([
 *** You must have either the GtkHTML2, XulRunner or the Mozilla 
