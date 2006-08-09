@@ -37,12 +37,40 @@ AC_ARG_ENABLE(gecko,     AS_HELP_STRING([--enable-gecko=ARG],[specify which Geck
 AC_ARG_ENABLE(gnutls,    AS_HELP_STRING([--enable-gnutls],[Attempt to use GNUTLS for SSL support @<:@default=yes@:>@]),,enable_gnutls=yes)
 AC_ARG_ENABLE(libnotify, AS_HELP_STRING([--disable-libnotify],[don't compile the libnotify plugin]),,enable_libnotify=yes)
 
+AC_MSG_CHECKING([for some Win32 platform])
+case "$host" in
+   *-*-cygwin*)
+     platform_win32=yes
+     SO_PREFIX=cyg
+     SO_EXT=.dll
+     ;;
+   *-*-mingw*)
+     platform_win32=yes
+     SO_PREFIX=lib
+     SO_EXT=.dll
+     ;;
+   *)
+     platform_win32=no
+     SO_PREFIX=lib
+     SO_EXT=.so
+     ;;
+esac
+
+AC_MSG_RESULT([$platform_win32])
+AM_CONDITIONAL(PLATFORM_WIN32, test "$platform_win32" = "yes")
+AC_SUBST(SO_PREFIX)
+AC_SUBST(SO_EXT)
+
 AC_CHECK_FUNCS([strsep getaddrinfo])
 
 case "$host_os" in
         *solaris*)
                 AC_CHECK_LIB(resolv, res_init)
                 ;;
+	*cygwin*)
+		AC_CHECK_FUNC(res_init,,[AC_CHECK_LIB(resolv,res_init)])
+		AC_CHECK_LIB(resolv,res_9_init)
+		;;
 esac
 
 dnl Search for X libraries
