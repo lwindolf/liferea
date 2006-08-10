@@ -159,7 +159,7 @@ static nodePtr feedlist_unread_scan(nodePtr folder) {
 	nodePtr		childNode, selectedNode;
 	GSList		*selectedIter = NULL;
 
-	if(selectedNode = feedlist_get_selected())
+	if(NULL != (selectedNode = feedlist_get_selected()))
 		selectedIter = g_slist_find(selectedNode->parent->children, selectedNode);
 	else
 		scanState = UNREAD_SCAN_SECOND_PASS;
@@ -184,7 +184,7 @@ static nodePtr feedlist_unread_scan(nodePtr folder) {
 		if(node->children &&
 		   (((scanState != UNREAD_SCAN_INIT) && (node->unreadCount > 0)) ||
 		    (selectedIter && (node_is_ancestor(node, selectedNode))))) {
-		       if(childNode = feedlist_unread_scan(node))
+		       if(NULL != (childNode = feedlist_unread_scan(node)))
 				return childNode;
 		}
 
@@ -297,7 +297,7 @@ static gboolean feedlist_schedule_save_cb(gpointer user_data) {
 
 	/* step 2: request saving for the root node and thereby
 	   forcing the root plugin to save the feed list structure */
-	FL_PLUGIN(rootNode)->handler_export(rootNode);
+	FL_PLUGIN(rootNode)->source_export(rootNode);
 	
 	feedlist_save_timer = 0;
 	return FALSE;
@@ -349,7 +349,7 @@ void feedlist_init(void) {
 	   will load the feed list and all attached plugin 
 	   handlers. */
 	rootPlugin = fl_plugins_get_root();
-	rootPlugin->handler_import(rootNode);
+	rootPlugin->source_import(rootNode);
 
 	/* 4. Sequentially load and unload all feeds and by doing so 
 	   automatically load all vfolders */

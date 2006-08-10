@@ -1,5 +1,5 @@
 /**
- * @file fl_opml.c default static feedlist provider
+ * @file fl_opml.c OPML Planet/Blogroll feedlist provider
  * 
  * Copyright (C) 2005-2006 Lars Lindner <lars.lindner@gmx.net>
  *
@@ -33,58 +33,73 @@
 
 static struct flPlugin fpi;
 
-static void fl_opml_handler_import(nodePtr node) {
-	flNodeHandler	*handler;
+void fl_opml_source_setup(nodePtr node) {
+
+	node->source = g_new0(struct flNodeSource_, 1);
+	node->source->root = node;
+	node->source->plugin = &fpi;
+	node->icon = create_pixbuf("fl_opml.png");
+}
+
+static gchar * fl_opml_source_get_feedlist(nodePtr node) {
+
+	return common_create_cache_filename("cache" G_DIR_SEPARATOR_S "plugins", node->id, "opml");
+}
+
+static void fl_opml_source_import(nodePtr node) {
 	gchar		*filename;
 
-	debug_enter("fl_opml_handler_import");
+	debug_enter("fl_opml_source_import");
 
 	/* create a new handler structure */
-	handler = g_new0(struct flNodeHandler_, 1);
-	handler->root = node;
-	handler->plugin = &fpi;
-	node->handler = handler;
-	node->icon = create_pixbuf("fl_opml.png");
-
+	fl_opml_source_setup(node);
+	
 	debug1(DEBUG_CACHE, "starting import of opml plugin instance (id=%s)\n", node->id);
-	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "plugins", node->id, "opml");
+	filename = fl_opml_source_get_feedlist(node);
 	if(g_file_test(filename, G_FILE_TEST_EXISTS)) {
-		import_OPML_feedlist(filename, node, node->handler, FALSE, TRUE);
+		import_OPML_feedlist(filename, node, node->source, FALSE, TRUE);
 	} else {
 		g_warning("cannot open \"%s\"", filename);
 		node->available = FALSE;
 	}
 	g_free(filename);
 
-	debug_exit("fl_opml_handler_import");
+	debug_exit("fl_opml_source_import");
 }
 
-static void fl_opml_handler_export(nodePtr node) {
-
-	debug_enter("fl_opml_handler_export");
+static void fl_opml_source_export(nodePtr node) {
+	gchar		*filename;
+	
+	debug_enter("fl_opml_source_export");
 
 	/* Although the OPML structure won't change, it needs to
 	   be saved so that the feed ids are saved to disk after
 	   the first import or updates of the source OPML. */
-	   
-	// FIXME
+
+	g_assert(node == node->source->root);
+
+	filename = fl_opml_source_get_feedlist(node);	   
+	export_OPML_feedlist(filename, node, TRUE);
+	g_free(filename);
 	
-	debug_exit("fl_opml_handler_export");
+	debug_exit("fl_opml_source_export");
 }
 
-static void fl_opml_handler_new(nodePtr parent) {
+static void fl_opml_source_new(nodePtr parent) {
 
-	ui_fl_opml_get_handler_source(parent);
+	ui_fl_opml_get_source_url(parent);
 }
 
-static void fl_opml_handler_remove(nodePtr node) {
+static void fl_opml_source_remove(nodePtr node) {
 	gchar		*filename;
+	
+	g_assert(node == node->source->root);
 
 	/* step 1: delete all feed cache files */
 	node_foreach_child(node, node_remove);
 
 	/* step 2: delete plugin instance OPML cache file */
-	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "plugins", node->id, "opml");
+	filename = fl_opml_source_get_feedlist(node);
 	unlink(filename);
 	g_free(filename);
 }
@@ -112,15 +127,16 @@ static struct flPlugin fpi = {
 	FL_PLUGIN_CAPABILITY_DYNAMIC_CREATION,
 	fl_opml_init,
 	fl_opml_deinit,
-	fl_opml_handler_new,
-	fl_opml_handler_remove,
-	fl_opml_handler_import,
-	fl_opml_handler_export
+	fl_opml_source_new,
+	fl_opml_source_remove,
+	fl_opml_source_import,
+	fl_opml_source_export,
+	fl_opml_source_get_feedlist
 };
 
 static struct plugin pi = {
 	PLUGIN_API_VERSION,
-	"OPML Feed List Plugin",
+	"OPML Feed List Source Plugin",
 	PLUGIN_TYPE_FEEDLIST_PROVIDER,
 	&fpi
 };

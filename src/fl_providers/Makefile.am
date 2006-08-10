@@ -18,6 +18,7 @@ libliflprovider_a_SOURCES = fl_plugin.c fl_plugin.h \
 libliflprovider_a_CFLAGS = $(PACKAGE_FLAGS)
 
 pkglib_LTLIBRARIES = liblifldefault.la \
+                     liblifldummy.la \
                      libliflopml.la
 
 # default feed list plugin
@@ -25,7 +26,12 @@ liblifldefault_la_LIBADD = $(PACKAGE_LIBS)
 liblifldefault_la_CFLAGS = $(PACKAGE_FLAGS)
 liblifldefault_la_SOURCES = fl_default.c fl_default.h 
 
-# OPML/Planet plugin target
+# dummy source plugin
+liblifldummy_la_LIBADD = $(PACKAGE_LIBS)
+liblifldummy_la_CFLAGS = $(PACKAGE_FLAGS)
+liblifldummy_la_SOURCES = fl_dummy.c 
+
+# OPML/Planet source plugin target
 libliflopml_la_LIBADD = $(PACKAGE_LIBS)
 libliflopml_la_CFLAGS = $(PACKAGE_FLAGS)
 libliflopml_la_SOURCES = fl_opml.c fl_opml.h \

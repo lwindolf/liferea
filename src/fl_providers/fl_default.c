@@ -69,24 +69,27 @@ static void fl_default_copy_dir(gchar *subdir) {
 	g_dir_close(dir);
 }
 
-static void fl_default_handler_import(nodePtr node) {
-	flNodeHandler	*handler;
+static gchar * fl_default_source_get_feedlist(nodePtr node) {
+
+	return common_create_cache_filename(NULL, "feedlist", "opml");
+}
+
+static void fl_default_source_import(nodePtr node) {
 	gchar		*filename10, *filename11;
 
-	debug_enter("fl_default_handler_import");
+	debug_enter("fl_default_source_import");
 
 	/* create a new handler structure */
-	handler = g_new0(struct flNodeHandler_, 1);
-	handler->root = node;
-	handler->plugin = &fpi;
-	node->handler = handler;
+	node->source = g_new0(struct flNodeSource_, 1);
+	node->source->root = node;
+	node->source->plugin = &fpi;
 
 	/* start the import */
 	feedlistImport = TRUE;
 
 	/* check for 1.0->1.1 migration */
 	filename10 = g_strdup_printf("%s" G_DIR_SEPARATOR_S ".liferea/feedlist.opml", g_get_home_dir()); /* 1.0 path dir */
-	filename11 = common_create_cache_filename(NULL, "feedlist", "opml");	
+	filename11 = fl_default_source_get_feedlist(node);
 		
 	if(!g_file_test(filename11, G_FILE_TEST_EXISTS) &&
 	   g_file_test(filename10, G_FILE_TEST_EXISTS)) {
@@ -114,7 +117,7 @@ static void fl_default_handler_import(nodePtr node) {
 		/* "feedlist.opml" is translatable so that translators can provide a localized default feed list */
 		filename11 = g_strdup_printf(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "opml" G_DIR_SEPARATOR_S "%s", _("feedlist.opml"));
 	}
-	import_OPML_feedlist(filename11, node, handler, FALSE, TRUE);
+	import_OPML_feedlist(filename11, node, node->source, FALSE, TRUE);
 	g_free(filename11);
 	feedlistImport = FALSE;
 
@@ -130,28 +133,24 @@ static void fl_default_handler_import(nodePtr node) {
 	debug0(DEBUG_GUI, "Compiled without DBUS support.");
 #endif
 
-	debug_exit("fl_default_handler_import");
+	debug_exit("fl_default_source_import");
 }
 
-static void fl_default_handler_export(nodePtr node) {
-	gchar *filename, *filename_real;
+static void fl_default_source_export(nodePtr node) {
+	gchar	*filename;
 	
 	if(feedlistImport)
 		return;
 
-	debug_enter("fl_default_handler_export");
+	debug_enter("fl_default_source_export");
+	
+	g_assert(node->source->root == feedlist_get_root());
 
-	filename = g_strdup_printf("%s" G_DIR_SEPARATOR_S "feedlist.opml~", common_get_cache_path());
-
-	if(0 == export_OPML_feedlist(filename, TRUE)) {
-		filename_real = g_strdup_printf("%s" G_DIR_SEPARATOR_S "feedlist.opml", common_get_cache_path());
-		if(rename(filename, filename_real) < 0)
-			g_warning(_("Error renaming %s to %s\n"), filename, filename_real);
-		g_free(filename_real);
-	}
+	filename = fl_default_source_get_feedlist(node);
+	export_OPML_feedlist(filename, node->source->root, TRUE);
 	g_free(filename);
 
-	debug_exit("fl_default_handler_export");
+	debug_exit("fl_default_source_export");
 }
 
 /* DBUS support for new subscriptions */
@@ -325,13 +324,14 @@ static struct flPlugin fpi = {
 	fl_default_deinit,
 	NULL,
 	NULL,
-	fl_default_handler_import,
-	fl_default_handler_export
+	fl_default_source_import,
+	fl_default_source_export,
+	fl_default_source_get_feedlist
 };
 
 static struct plugin pi = {
 	PLUGIN_API_VERSION,
-	"Static Feed List Plugin",
+	"Static Feed List Source Plugin",
 	PLUGIN_TYPE_FEEDLIST_PROVIDER,
 	//"Default feed list provider. Allows users to add/remove/reorder subscriptions.",
 	&fpi

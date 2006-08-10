@@ -31,28 +31,28 @@ static GSList *notificationPlugins = NULL;
 
 typedef	notificationPluginPtr (*infoFunc)();
 
-void notification_plugin_load(pluginPtr plugin, GModule *handle) {
-	notificationPluginPtr	notificationPlugin;
+gboolean notification_plugin_load(pluginPtr plugin, GModule *handle) {
+	notificationPluginPtr	notificationPlugin = NULL;
 	infoFunc		notification_plugin_get_info;
 	GSList 			*iter;
 
 	if(g_module_symbol(handle, "notification_plugin_get_info", (void*)&notification_plugin_get_info)) {
 		/* load notification provider plugin info */
 		if(NULL == (notificationPlugin = (*notification_plugin_get_info)()))
-			return;
+			return FALSE;
 	}
 
 	/* check notification provider plugin version */
 	if(NOTIFICATION_PLUGIN_API_VERSION != notificationPlugin->api_version) {
 		debug3(DEBUG_PLUGINS, "notification API version mismatch: \"%s\" has version %d should be %d\n", plugin->name, notificationPlugin->api_version, NOTIFICATION_PLUGIN_API_VERSION);
-		return;
+		return FALSE;
 	} 
 
 	/* check if all mandatory symbols are provided */
 	if(!(notificationPlugin->plugin_init &&
 	     notificationPlugin->plugin_deinit)) {
 		debug1(DEBUG_PLUGINS, "mandatory symbols missing: \"%s\"\n", plugin->name);
-		return;
+		return FALSE;
 	}
 	
 	/* Check for already loaded plugin of same type and with higher priority */
@@ -63,7 +63,7 @@ void notification_plugin_load(pluginPtr plugin, GModule *handle) {
 		if(tmp->type == notificationPlugin->type) {
 			if(tmp->priority < notificationPlugin->priority) {
 				debug0(DEBUG_PLUGINS, "plugin is not better than already loaded one, dropping it...");
-				return;
+				return FALSE;
 			} else {
 				debug0(DEBUG_PLUGINS, "plugin is better, dropping already loaded one");
 				break;
@@ -85,7 +85,10 @@ void notification_plugin_load(pluginPtr plugin, GModule *handle) {
 		notificationPlugins = g_slist_append(notificationPlugins, plugin);
 	} else {
 		debug1(DEBUG_PLUGINS, "notification plugin \"%s\" did not load succesfully", plugin->name);
+		return FALSE;
 	}
+	
+	return TRUE;
 }
 
 void notification_enable(gboolean enabled) {

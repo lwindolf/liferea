@@ -131,6 +131,6 @@ void notification_node_removed(nodePtr node);
 
 /* Plugin loading interface */
 
-void notification_plugin_load(pluginPtr plugin, GModule *handle);
+gboolean notification_plugin_load(pluginPtr plugin, GModule *handle);
 
 #endif

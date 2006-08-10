@@ -342,8 +342,8 @@ void node_add_child(nodePtr parent, nodePtr node, gint position) {
 	
 	/* new node may be provided by another feed list handler, if 
 	   not they are handled by the parents handler */
-	if(!node->handler)
-		node->handler = parent->handler;
+	if(!node->source)
+		node->source = parent->source;
 	
 	ui_node_add(parent, node, position);	
 	ui_node_update(node);

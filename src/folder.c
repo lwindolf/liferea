@@ -25,6 +25,8 @@
 #include "render.h"
 #include "support.h"
 #include "ui/ui_folder.h"
+#include "ui/ui_node.h"
+#include "fl_providers/fl_plugin.h"
 
 static void folder_initial_load(nodePtr node) {
 	node_foreach_child(node, node_initial_load);
@@ -127,7 +129,7 @@ static gchar * folder_render(nodePtr node) {
 
 	params = render_add_parameter(params, "id='%s'", node->id);
 	params = render_add_parameter(params, "headlineCount='%d'", g_list_length(node->itemSet->items));
-	filename = common_create_cache_filename(NULL, "feedlist", "opml");
+	filename = FL_PLUGIN(node)->source_get_feedlist(node->source->root);
 	result = render_file(filename, "folder", params);
 	g_free(filename);
 	g_strfreev(params);

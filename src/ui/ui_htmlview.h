@@ -83,8 +83,10 @@ void	ui_htmlview_deinit();
  *
  * @param plugin	plugin info structure
  * @param handle	GModule handle
+ *
+ * @returns TRUE on success
  */
-void	ui_htmlview_plugin_load(pluginPtr plugin, GModule *handle);
+gboolean ui_htmlview_plugin_load(pluginPtr plugin, GModule *handle);
 
 /** 
  * Function to set up the html view widget for the three

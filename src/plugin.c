@@ -25,6 +25,7 @@
 #include "debug.h"
 #include "node.h"
 #include "plugin.h"
+#include "ui/ui_htmlview.h"
 #include "fl_providers/fl_plugin.h"
 #include "notification/notif_plugin.h"
 
@@ -45,6 +46,7 @@ static pluginPtr plugin_mgmt_load(const gchar * filename) {
 	pluginPtr	plugin = NULL;
 	GModule		*handle = NULL;
 	infoFunc	plugin_get_info;
+	gboolean	success = FALSE;
 	gchar		*path;
 
 	path = g_strdup_printf(PACKAGE_LIB_DIR G_DIR_SEPARATOR_S "%s", filename);
@@ -64,36 +66,36 @@ static pluginPtr plugin_mgmt_load(const gchar * filename) {
 
 	if(g_module_symbol(handle, "plugin_get_info", (void*)&plugin_get_info)) {
 		/* load generic plugin info */
-		if(!(plugin = (*plugin_get_info)()))
-			return NULL;
+		if(NULL != (plugin = (*plugin_get_info)())) {
+			/* check plugin version */
+			if(PLUGIN_API_VERSION != plugin->api_version)
+				debug5(DEBUG_PLUGINS, "API version mismatch: \"%s\" (%s, type=%d) has version %d should be %d", plugin->name, filename, plugin->type, plugin->api_version, PLUGIN_API_VERSION);
 
-		/* check plugin version */
-		if(PLUGIN_API_VERSION != plugin->api_version) {
-			debug5(DEBUG_PLUGINS, "API version mismatch: \"%s\" (%s, type=%d) has version %d should be %d", plugin->name, filename, plugin->type, plugin->api_version, PLUGIN_API_VERSION);
-			return NULL;
-		} 
-
-		/* try to load specific plugin type symbols */
-		switch(plugin->type) {
-			case PLUGIN_TYPE_FEEDLIST_PROVIDER:
-				fl_plugin_load(plugin, handle);
-				break;
-			case PLUGIN_TYPE_NOTIFICATION:
-				notification_plugin_load(plugin, handle);
-				break;
-			case PLUGIN_TYPE_HTML_RENDERER:
-				ui_htmlview_plugin_load(plugin, handle);
-				break;
-			default:
-				debug3(DEBUG_PLUGINS, "Unknown or unsupported plugin type: %s (%s, type=%d)", plugin->name, filename, plugin->type);
-				return NULL;
-				break;
+			/* try to load specific plugin type symbols */
+			switch(plugin->type) {
+				case PLUGIN_TYPE_FEEDLIST_PROVIDER:
+					success = fl_plugin_load(plugin, handle);
+					break;
+				case PLUGIN_TYPE_NOTIFICATION:
+					success = notification_plugin_load(plugin, handle);
+					break;
+				case PLUGIN_TYPE_HTML_RENDERER:
+					success = ui_htmlview_plugin_load(plugin, handle);
+					break;
+				default:
+					debug3(DEBUG_PLUGINS, "Unknown or unsupported plugin type: %s (%s, type=%d)", plugin->name, filename, plugin->type);
+					break;
+			}
 		}
 	} else {
 		debug1(DEBUG_PLUGINS, "File %s is no valid Liferea plugin!", filename);
-		g_module_close(handle);
 	}
 	
+	if(!success) {
+		g_module_close(handle);
+		return NULL;
+	}
+		
 	return plugin;
 }
 

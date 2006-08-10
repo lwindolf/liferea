@@ -90,32 +90,34 @@ void ui_htmlview_deinit() {
 	(htmlviewPlugin->plugin_deinit)();
 }
 
-void ui_htmlview_plugin_load(pluginPtr plugin, GModule *handle) {
+gboolean ui_htmlview_plugin_load(pluginPtr plugin, GModule *handle) {
 	infoFunction		htmlview_plugin_get_info;
 
 	if(g_module_symbol(handle, "htmlview_plugin_get_info", (void*)&htmlview_plugin_get_info)) {
 		/* load feed list provider plugin info */
 		if(NULL == (htmlviewPlugin = (*htmlview_plugin_get_info)()))
-			return;
+			return FALSE;
 	}
 
 	/* check feed list provider plugin version */
 	if(HTMLVIEW_PLUGIN_API_VERSION != htmlviewPlugin->api_version) {
 		debug3(DEBUG_PLUGINS, "html view API version mismatch: \"%s\" has version %d should be %d\n", htmlviewPlugin->name, htmlviewPlugin->api_version, HTMLVIEW_PLUGIN_API_VERSION);
-		return;
+		return FALSE;
 	} 
 
 	/* check if all mandatory symbols are provided */
 	if(!(htmlviewPlugin->plugin_init &&
 	     htmlviewPlugin->plugin_deinit)) {
 		debug1(DEBUG_PLUGINS, "mandatory symbols missing: \"%s\"\n", htmlviewPlugin->name);
-		return;
+		return FALSE;
 	}
 
 	/* assign the symbols so the caller will accept the plugin */
 	plugin->symbols = htmlviewPlugin;
 
 	htmlviewPlugins = g_slist_append(htmlviewPlugins, plugin);
+	
+	return TRUE;
 }
 
 /* -------------------------------------------------------------------- */

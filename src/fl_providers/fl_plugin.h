@@ -41,7 +41,7 @@
    A plugin can omit all callbacks marked as optional. */
 
 
-#define FL_PLUGIN_API_VERSION 1
+#define FL_PLUGIN_API_VERSION 2
 
 enum {
 	FL_PLUGIN_CAPABILITY_IS_ROOT		= (1<<0),	/**< only for default feed list provider */
@@ -77,7 +77,7 @@ typedef struct flPlugin {
 	 * the parent plugin's node_request_add_*() implementation. 
 	 * Mandatory for all plugin's except the root provider plugin.
 	 */
-	void 		(*handler_new)(nodePtr parent);
+	void 		(*source_new)(nodePtr parent);
 
 	/**
 	 * This OPTIONAL callback is used to delete an instance
@@ -85,39 +85,49 @@ typedef struct flPlugin {
 	 * by the parent plugin's node_remove() implementation.
 	 * Mandatory for all plugin's except the root provider plugin.
 	 */
-	void 		(*handler_delete)(nodePtr np);
+	void 		(*source_delete)(nodePtr node);
 
 	/**
 	 * This mandatory method is called when the plugin is to
 	 * create the feed list subtree attached to the plugin
 	 * node.
 	 */
-	void 		(*handler_import)(nodePtr np);
+	void 		(*source_import)(nodePtr node);
 
 	/**
 	 * This mandatory method is called when the plugin is to
 	 * save it's feed list subtree (if necessary at all). This
 	 * is not a request to save the data of the attached nodes!
 	 */
-	void 		(*handler_export)(nodePtr np);
+	void 		(*source_export)(nodePtr node);
+	
+	/**
+	 * This method is called to get an OPML representation of
+	 * the feedlist of the given node source. Returns a newly
+	 * allocated filename string that is to be freed by the
+	 * caller.
+	 */
+	gchar *		(*source_get_feedlist)(nodePtr node);
 } *flPluginPtr;
 
-typedef struct flNodeHandler_ flNodeHandler;
+typedef struct flNodeSource_ flNodeSource;
 
-/** feed list node handler (instance of a feed list plugin) */
-struct flNodeHandler_ {
-	flPluginPtr		plugin;	/**< feed list plugin of this handler instance */
+/** feed list node source (instance of a feed list plugin) */
+struct flNodeSource_ {
+	flPluginPtr		plugin;	/**< feed list plugin of this source instance */
 	nodePtr			root;	/**< root node of this plugin instance */
 };
 
 /** Use this to cast plugin instances from a node structure. */
-#define FL_PLUGIN(node) ((flNodeHandler *)(node->handler))->plugin
+#define FL_PLUGIN(node) ((flNodeSource *)(node->source))->plugin
 
 /** Feed list plugins are to be declared with this macro. */
 #define DECLARE_FL_PLUGIN(flPlugin) \
         G_MODULE_EXPORT flPluginPtr fl_plugin_get_info() { \
                 return &flPlugin; \
         }
+
+#define FL_DUMMY_SOURCE_ID	"fl_dummy"
 
 /** 
  * Scans the plugin list for the feed list root provider.
@@ -131,8 +141,10 @@ flPluginPtr fl_plugins_get_root(void);
  *
  * @param plugin	plugin info structure
  * @param handle	GModule handle
+ *
+ * @returns TRUE on success
  */
-void fl_plugin_load(pluginPtr plugin, GModule *handle);
+gboolean fl_plugin_load(pluginPtr plugin, GModule *handle);
 
 /**
  * Plugin specific feed list import parsing.

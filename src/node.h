@@ -50,7 +50,7 @@ typedef struct node {
 	gpointer		data;		/**< node type specific data structure */
 	guint			type;		/**< node type */
 	struct nodeType		*nodeType;	/**< node type implementation */	
-	struct flNodeHandler_	*handler;	/**< the feed list plugin and node type instance handling this node */
+	struct flNodeSource_	*source;	/**< the feed list plugin instance handling this node */
 
 	struct request		*updateRequest;	/**< update request structure used when downloading content (is not to be listed in the requests list!) */
 	GSList			*requests;	/**< list of other active download requests attached belonging to this node */

@@ -1,3 +1,23 @@
+/**
+ * @file fl_opml.h OPML Planet/Blogroll feed list provider
+ * 
+ * Copyright (C) 2005-2006 Lars Lindner <lars.lindner@gmx.net>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version. 
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
 #endif
@@ -13,6 +33,7 @@
 #include "ui/ui_feedlist.h"
 #include "ui/ui_mainwindow.h"
 #include "fl_providers/fl_plugin.h"
+#include "fl_providers/fl_opml.h"
 #include "fl_providers/fl_opml-cb.h"
 #include "fl_providers/fl_opml-ui.h"
 
@@ -22,16 +43,17 @@ extern flPluginPtr fl_plugin_get_info();
 
 static void fl_opml_initial_download_cb(struct request *request) {
 	flPluginPtr	plugin;
-	nodePtr		np = (nodePtr)request->user_data;
+	nodePtr		node = (nodePtr)request->user_data;
 	gchar		*filename;
 
-	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "plugins", np->id, "opml");
+	filename = FL_PLUGIN(node)->source_get_feedlist(node->source->root);
 	debug2(DEBUG_UPDATE, "initial OPML download finished (%s) data=%d", filename, request->data);
 	g_file_set_contents(filename, request->data, -1, NULL);
 	g_free(filename);
 	
 	plugin = fl_plugin_get_info();
-	plugin->handler_import(np);
+	plugin->source_import(node);
+	plugin->source_export(node);	/* immediate export to assign ids to each new feed */
 }
 
 static void on_fl_opml_source_selected(GtkDialog *dialog, gint response_id, gpointer user_data) {
@@ -44,8 +66,8 @@ static void on_fl_opml_source_selected(GtkDialog *dialog, gint response_id, gpoi
 
 		/* add new node to feed list */
 		node = node_new();
-		node->icon = create_pixbuf("fl_opml.png");	// FIXME: correct place?
 		node_set_title(node, _("New OPML Subscription"));
+		fl_opml_source_setup(node);
 		node_add_data(node, FST_PLUGIN, NULL);
 		node_add_child(NULL, node, 0);
 
@@ -62,7 +84,7 @@ static void on_fl_opml_source_selected(GtkDialog *dialog, gint response_id, gpoi
 	gtk_widget_destroy(GTK_WIDGET(dialog));
 }
 
-gchar * ui_fl_opml_get_handler_source(nodePtr np) {
+void ui_fl_opml_get_source_url(nodePtr np) {
 	GtkWidget	*dialog;
 
 	dialog = create_instance_dialog();

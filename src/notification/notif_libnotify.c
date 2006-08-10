@@ -23,6 +23,7 @@
 #  include <config.h>
 #endif
 
+#include <string.h>
 #include <gtk/gtk.h>
 #include <glib.h>
 
@@ -64,7 +65,6 @@ static void notif_libnotify_callback_mark_read ( NotifyNotification *n, const ch
 }
 
 static void notif_libnotify_callback_show_details ( NotifyNotification *n, const gchar *action, gpointer user_data ) {
-
 	nodePtr node_p;
 
 	GList *list_p;
@@ -84,7 +84,7 @@ static void notif_libnotify_callback_show_details ( NotifyNotification *n, const
 
 	node_p = user_data;
 	item_count = 0;
-	labelText_now_p = g_strdup_printf ("");
+	labelText_now_p = g_strdup("");
 
 	/* Gather the feed's headlines */
 	list_p = node_p->itemSet->items;
