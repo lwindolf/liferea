@@ -51,8 +51,6 @@
 #include "parsers/rss_channel.h"
 #include "parsers/atom10.h"
 #include "parsers/pie_feed.h"
-#include "parsers/ocs_dir.h"
-#include "parsers/opml.h"
 #include "ui/ui_feed.h"
 #include "ui/ui_enclosure.h"
 #include "ui/ui_mainwindow.h"
