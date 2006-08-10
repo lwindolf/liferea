@@ -22,9 +22,7 @@
 #define _NS_DC_H
 
 #include "metadata.h"
-#include "ocs_ns.h"
 
 struct NsHandler *ns_dc_getRSSNsHandler(void);
-OCSNsHandler *ns_dc_getOCSNsHandler(void);
 
 #endif

@@ -1,5 +1,5 @@
 /**
- * @file ns_dc.c Dublin Core support for RSS, Atom and OCS
+ * @file ns_dc.c Dublin Core support for RSS and Atom
  *
  * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
  *
@@ -144,64 +144,6 @@ static gchar * mapToItemMetadata[] = {
 				"copyright"		/* rights */
 			  };
 			  
-static gint mapToDP[] = { 	OCS_TITLE,		/* title */ 
-				OCS_CREATOR,		/* creator */
-				OCS_SUBJECT,		/* subject */
-				OCS_DESCRIPTION,	/* description */
-				-1,			/* publisher */
-				-1,			/* contributor */				
-				-1,			/* date (won't be processed...) */
-				-1,			/* type */
-				-1,			/* format */
-				-1,			/* identifier */
-				-1,			/* source */
-				OCS_LANGUAGE,		/* language */
-				-1,			/* coverage */				
-				-1			/* rights */
-			  };
-
-/* common OCS parsing */
-static void parseOCSTag(gint type, gpointer p, xmlNodePtr cur) {
-	directoryPtr	dp = (directoryPtr)p;
-	dirEntryPtr	dep = (dirEntryPtr)p;
-	formatPtr	fp = (formatPtr)p;
-	int 		i;
-	gchar		*value;
-	
-	g_assert(NULL != cur);
-	
-	/* compare with each possible tag name */
-	for(i = 0; taglist[i] != NULL; i++) {
-		if(-1 != mapToDP[i]) {
-			if(!xmlStrcmp((const xmlChar *)taglist[i], cur->name)) {
- 				value = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-
-				g_assert(mapToDP[i] < OCS_MAX_TAG);
-				/* map the value to one of the RSS fields */
-				switch(type) {
-					case TYPE_DIRECTORY:
-						dp->tags[mapToDP[i]] = value;
-						break;
-					case TYPE_CHANNEL:
-						dep->tags[mapToDP[i]] = value;
-						break;
-					case TYPE_FORMAT:
-						fp->tags[mapToDP[i]] = value;
-						break;
-					default:
-						g_error(_("internal OCS namespace parsing error!"));
-						g_free(value);
-						break;
-				}
-				return;
-			}
-		}
-	}
-}
-
-static void parseOCSDirectoryTag(gpointer dp, xmlNodePtr cur)	{ parseOCSTag(TYPE_DIRECTORY, dp, cur); }
-static void parseOCSChannelTag(gpointer cp, xmlNodePtr cur)	{ parseOCSTag(TYPE_CHANNEL, cp, cur); }
-static void parseOCSFormatTag(gpointer fp, xmlNodePtr cur)	{ parseOCSTag(TYPE_FORMAT, fp, cur); }
 
 /* generic tag parsing (used for RSS and Atom) */
 static void parse_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur, gboolean isFeedTag) {
@@ -268,18 +210,6 @@ NsHandler *ns_dc_getRSSNsHandler(void) {
 	nsh->registerNs			= ns_dc_register_ns;
 	nsh->parseChannelTag		= parse_channel_tag;
 	nsh->parseItemTag		= parse_item_tag;
-	
-	return nsh;
-}
-
-OCSNsHandler *ns_dc_getOCSNsHandler(void) {
-	OCSNsHandler 	*nsh;
-	
-	nsh = g_new0(OCSNsHandler, 1);
-	nsh->prefix			= "dc";
-	nsh->parseDirectoryTag		= parseOCSDirectoryTag;
-	nsh->parseDirEntryTag		= parseOCSChannelTag;
-	nsh->parseFormatTag		= parseOCSFormatTag;				
 	
 	return nsh;
 }
