@@ -246,7 +246,6 @@ static void notifAddFeedNotif(feedNotif_t *feedNotif_p) {
 		item_p = list_p->data;
 		if(TRUE == item_p->popupStatus) {
 			item_p->popupStatus = FALSE;
-			direction_marker = common_get_direction_mark(item_get_title(item_p));
 			labelText_p = g_strdup_printf("%s%s %s", direction_marker, 
 			                                         NOTIF_BULLET, 
 								 item_get_title(item_p) != NULL ? item_get_title(item_p) : _("Untitled"));

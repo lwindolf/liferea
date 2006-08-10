@@ -269,7 +269,7 @@ void ui_itemlist_update_item(itemPtr ip) {
 	esc_title = g_markup_escape_text(title, -1);
 	esc_title = g_strstrip(esc_title);
 	
-	direction_marker = common_get_direction_mark(esc_title);
+	direction_marker = common_get_direction_mark(ip->itemSet->node->title);
 	
 	if(FALSE == ip->readStatus) {
 		time_str = g_strdup_printf("<span weight=\"bold\">%s</span>", esc_time_str);
