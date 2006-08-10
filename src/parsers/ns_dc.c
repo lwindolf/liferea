@@ -25,7 +25,6 @@
 
 #define _XOPEN_SOURCE 	/* glibc2 needs this (man strptime) */
 
-#include "ns_ocs.h"
 #include "ns_dc.h"
 #include "conf.h"
 #include "support.h"
