@@ -176,17 +176,23 @@ gchar * extractHTMLNode(xmlNodePtr cur, gint xhtmlMode, const gchar *defaultBase
 	
 	if(xhtmlMode == 0) { /* Read escaped HTML and convert to XHTML, placing in a div tag */
 		xmlDocPtr oldDoc;
-		xmlNodePtr copiedNodes;
+		xmlNodePtr copiedNodes = NULL;
 		xmlChar *escapedhtml;
+		
 		/* Parse the HTML into oldDoc*/
 		escapedhtml = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);//xmlNodeDump(tmpBuf, cur->doc, cur, 0, 0);
 		if(escapedhtml) {
 			escapedhtml = g_strstrip(escapedhtml);	/* stripping whitespaces to make empty string detection easier */
 			if(*escapedhtml) {			/* never process empty content, xmlDocCopy() doesn't like it... */
+				xmlNodePtr body;
 				oldDoc = common_parse_html(escapedhtml, strlen(escapedhtml));
-				/* Copy in the html tags */
-				copiedNodes = xmlDocCopyNodeList( newDoc, common_html_doc_find_body(oldDoc)->xmlChildrenNode);
-				xmlAddChildList(divNode, copiedNodes);
+				body = common_html_doc_find_body(oldDoc);
+
+				if(body) {
+					/* Copy in the html tags */
+					copiedNodes = xmlDocCopyNodeList(newDoc, body->xmlChildrenNode);
+					xmlAddChildList(divNode, copiedNodes);
+				}
 				xmlFreeDoc(oldDoc);
 				xmlFree(escapedhtml);
 			}
@@ -225,16 +231,19 @@ gchar * common_text_to_xhtml(const gchar *sourceText) {
 	gchar		*text, *result = NULL;
 	xmlDocPtr	doc = NULL;
 	xmlBufferPtr	buf;
+	xmlNodePtr 	body;
 	
 	if(!sourceText)
 		return g_strdup("");
 	
 	text = g_strstrip(g_strdup(sourceText));	/* stripping whitespaces to make empty string detection easier */
-	if(*text) {
+	if(*text) {	
 		doc = common_parse_html(text, strlen(text));
 		
 		buf = xmlBufferCreate();
-		xmlNodeDump(buf, doc, common_html_doc_find_body(doc)->xmlChildrenNode, 0, 0 );
+		body = common_html_doc_find_body(doc);
+		if(body)
+			xmlNodeDump(buf, doc, body->xmlChildrenNode, 0, 0 );
 
 		if(xmlBufferLength(buf) > 0)
 			result = xmlCharStrdup(xmlBufferContent(buf));
