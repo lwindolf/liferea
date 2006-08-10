@@ -27,6 +27,7 @@
 #include <langinfo.h>
 #include <string.h>
 #include <gdk/gdkkeysyms.h>
+
 #include "support.h"
 #include "callbacks.h"
 #include "common.h"
@@ -36,10 +37,10 @@
 #include "item.h"
 #include "itemlist.h"
 #include "conf.h"
-#include "ui_htmlview.h"
-#include "ui_itemlist.h"
-#include "ui_mainwindow.h"
-#include "ui_tray.h"
+#include "ui/ui_htmlview.h"
+#include "ui/ui_itemlist.h"
+#include "ui/ui_mainwindow.h"
+#include "ui/ui_tray.h"
 
 extern GdkPixbuf	*icons[];
 
@@ -105,7 +106,7 @@ static gint ui_itemlist_icon_sort_func(GtkTreeModel *model, GtkTreeIter *a, GtkT
 
 extern gint disableSortingSaving;
 
-void ui_itemlist_reset_tree_store() {
+void ui_itemlist_reset_tree_store(void) {
 	GtkTreeModel    *model;
 
 	/* Disable sorting for performance reasons */

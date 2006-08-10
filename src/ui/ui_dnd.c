@@ -98,7 +98,7 @@ ui_dnd_drag_data_received(GtkTreeDragDest *drag_dest, GtkTreePath *dest, GtkSele
 	nodePtr		node, oldParent, newParent;
 	gboolean	result, valid;
 
-	if(result = old_drag_data_received(drag_dest, dest, selection_data)) {
+	if(TRUE == (result = old_drag_data_received(drag_dest, dest, selection_data))) {
 		if(gtk_tree_model_get_iter(GTK_TREE_MODEL(drag_dest), &iter, dest)) {
 			gtk_tree_model_get(GTK_TREE_MODEL(drag_dest), &iter, FS_PTR, &node, -1);
 			
@@ -160,11 +160,11 @@ void ui_dnd_init(GtkTreeStore *feedstore) {
 	GtkTreeDragSourceIface	*drag_source_iface;
 	GtkTreeDragDestIface	*drag_dest_iface;
 
-	if(drag_source_iface = GTK_TREE_DRAG_SOURCE_GET_IFACE(GTK_TREE_MODEL(feedstore))) {
+	if(NULL != (drag_source_iface = GTK_TREE_DRAG_SOURCE_GET_IFACE(GTK_TREE_MODEL(feedstore)))) {
 		drag_source_iface->row_draggable = ui_dnd_feed_draggable;
 	}
 
-	if(drag_dest_iface = GTK_TREE_DRAG_DEST_GET_IFACE(GTK_TREE_MODEL(feedstore))) {
+	if(NULL != (drag_dest_iface = GTK_TREE_DRAG_DEST_GET_IFACE(GTK_TREE_MODEL(feedstore)))) {
 		old_drop_possible = drag_dest_iface->row_drop_possible;
 		old_drag_data_received = drag_dest_iface->drag_data_received;
 		drag_dest_iface->row_drop_possible = ui_dnd_feed_drop_possible;

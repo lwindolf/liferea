@@ -45,6 +45,8 @@ enum is_columns {
  */
 GtkWidget* ui_itemlist_new();
 
+void ui_itemlist_reset_tree_store(void);
+
 /**
  * This returns the GtkTreeStore that is internal to the
  * ui_itemlist. This is currently used for setting and getting the
@@ -206,6 +208,14 @@ void on_remove_items_activate(GtkMenuItem *menuitem, gpointer user_data);
 void on_remove_item_activate(GtkMenuItem *menuitem, gpointer user_data);
 
 void on_popup_remove_selected(gpointer callback_data, guint callback_action, GtkWidget *widget);
+
+/**
+ * Finds and selects the next unread item starting at the given
+ * item in the current item list.
+ *
+ * @returns TRUE if an unread item was find
+ */
+gboolean ui_itemlist_find_unread_item(itemPtr start);
 
 /**
  * Searches the displayed feed and then all feeds for an unread

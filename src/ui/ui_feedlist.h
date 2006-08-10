@@ -41,13 +41,15 @@ typedef struct ui_data {
 
 extern GtkTreeStore	*feedstore;
 
-/* Add/remove/update nodes */
+/**
+ * Selects the given node in the feed list.
+ *
+ * @param node	the node to select
+ */
+void ui_feedlist_select(nodePtr node);
 
-/* Selections */
-void ui_feedlist_select(nodePtr np);
-
-typedef void 	(*nodeActionFunc)	(nodePtr np);
-typedef void 	(*nodeActionDataFunc)	(nodePtr np, gpointer user_data);
+typedef void 	(*nodeActionFunc)	(nodePtr node);
+typedef void 	(*nodeActionDataFunc)	(nodePtr node, gpointer user_data);
 
 /**
  * Initializes the feed list. For example, it creates the various

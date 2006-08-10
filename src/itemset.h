@@ -129,7 +129,7 @@ void itemset_remove_item(itemSetPtr itemSet, itemPtr item);
 void itemset_remove_items(itemSetPtr itemSet);
 
 /**
- * Changes the flag status of a single item of the given itemset.
+ * Changes the "flag" status of a single item of the given itemset.
  *
  * @param itemSet	the itemset
  * @param item		the item to change
@@ -138,7 +138,7 @@ void itemset_remove_items(itemSetPtr itemSet);
 void itemset_set_item_flag(itemSetPtr itemSet, itemPtr item, gboolean newStatus);
 
 /**
- * Changes the read status of a single item of the given itemset.
+ * Changes the "read" status of a single item of the given itemset.
  *
  * @param itemSet	the itemset
  * @param item		the item to change
@@ -147,12 +147,21 @@ void itemset_set_item_flag(itemSetPtr itemSet, itemPtr item, gboolean newStatus)
 void itemset_set_item_read_status(itemSetPtr itemSet, itemPtr item, gboolean newStatus);
 
 /**
- * Changes the update status of a single item of the given itemset.
+ * Changes the "update" status of a single item of the given itemset.
  *
  * @param itemSet	the itemset
  * @param item		the item to change
  * @param newStatus	the new update status
  */
 void itemset_set_item_update_status(itemSetPtr itemSet, itemPtr item, gboolean newStatus);
+
+/**
+ * Changes the "new" status of a single item of the given itemset.
+ *
+ * @param itemSet	the itemset
+ * @param item		the item to change
+ * @param newStatus	the new update status
+ */
+void itemset_set_item_new_status(itemSetPtr itemSet, itemPtr item, gboolean newStatus);
 
 #endif

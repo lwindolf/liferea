@@ -320,6 +320,7 @@ void ui_tabs_close_tab(GtkWidget *child) {
 	if(NULL == (tab = ui_tabs_find_notebook_child(child)))
 		return;
 	
+	n = gtk_notebook_get_current_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")));
 	gtk_notebook_remove_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")), n);
 	
 	/* check if all tabs are closed */

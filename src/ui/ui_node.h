@@ -59,6 +59,20 @@ void ui_node_add(nodePtr parent, nodePtr node, gint position);
 void ui_node_remove_node(nodePtr node);
 
 /**
+ * Adds an "empty" node to the given tree iter.
+ *
+ * @param parent	a tree iter
+ */
+void ui_node_add_empty_node(GtkTreeIter *parent);
+
+/**
+ * Removes an "empty" node from the given tree iter.
+ *
+ * @param parent	a tree iter
+ */
+void ui_node_remove_empty_node(GtkTreeIter *parent);
+
+/**
  * Updates the tree view iter of the given node.
  *
  * @param node	the node
@@ -91,5 +105,12 @@ void ui_node_set_expansion(nodePtr folder, gboolean expanded);
  * @returns pixbuf
  */
 GdkPixbuf* ui_node_get_icon(nodePtr node);
+
+/**
+ * Updates the tree view entry of the given node.
+ *
+ * @param node	the node
+ */
+void ui_node_update(nodePtr node);
 
 #endif

@@ -40,6 +40,7 @@
 #include "ui_enclosure.h"
 #include "ui_tray.h"
 #include "ui_enclosure.h"
+#include "notification/notif_plugin.h"
 
 /* file type tree store column ids */
 enum fts_columns {

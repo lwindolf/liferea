@@ -22,19 +22,22 @@
 #  include <config.h>
 #endif
  
-#include "itemlist.h"
 #include "conf.h"
 #include "debug.h"
 #include "feed.h"
 #include "feedlist.h"
+#include "itemlist.h"
+#include "itemset.h"
 #include "node.h"
 #include "support.h"
 #include "rule.h"
 #include "vfolder.h"
 #include "itemset.h"
+#include "ui/ui_feedlist.h"
 #include "ui/ui_itemlist.h"
 #include "ui/ui_htmlview.h"
 #include "ui/ui_mainwindow.h"
+#include "ui/ui_node.h"
 
 /* This is a simple controller implementation for itemlist handling. 
    It manages the currently displayed itemset, realizes filtering

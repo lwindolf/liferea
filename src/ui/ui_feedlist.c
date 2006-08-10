@@ -67,7 +67,7 @@ static void ui_feedlist_row_changed_cb(GtkTreeModel *model, GtkTreePath *path, G
 
 nodePtr ui_feedlist_get_target_folder(int *pos) {
 	nodePtr		np;
-	GtkTreeIter	*iter;
+	GtkTreeIter	*iter = NULL;
 	GtkTreePath 	*path;
 	gint		*indices;
 

@@ -46,11 +46,18 @@ struct mainwindow *mw_global_fixme;
 void ui_mainwindow_init(int mainwindowState);
 
 /**
+ * To be called whenever the browser panes change.
+ *
+ * @param twoPane	TRUE if new display mode is two paned
+ */
+void ui_mainwindow_set_browser_panes(gboolean twoPane);
+
+/**
  * To be called whenever the display mode changes.
  *
- * @param threePane	TRUE if new display mode is three paned
+ * @param twoPane	TRUE if new display mode is two paned
  */
-void ui_mainwindow_three_pane_mode_changed(gboolean threePane);
+void ui_mainwindow_set_two_pane_toggle(gboolean twoPane);
 
 /**
  * Returns the active HTML view widget 

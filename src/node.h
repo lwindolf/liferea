@@ -297,6 +297,13 @@ guint node_str_to_type(const gchar *str);
 void node_free(nodePtr node);
 
 /**
+ * Refreshes all counters of the given node.
+ *
+ * @param node	node to update
+ */
+void node_update_counters(nodePtr node);
+
+/**
  * Initially loads the given node from cache.
  * To be used during startup (initializes vfolders).
  *
