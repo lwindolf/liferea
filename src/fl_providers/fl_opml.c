@@ -104,6 +104,16 @@ static void fl_opml_source_remove(nodePtr node) {
 	g_free(filename);
 }
 
+static void fl_opml_source_update(nodePtr node) {
+
+	node_foreach_child(node, node_request_update);
+}
+
+static void fl_opml_source_auto_update(nodePtr node) {
+
+	node_foreach_child(node, node_request_auto_update);
+}
+
 static void fl_opml_init(void) {
 
 	debug_enter("fl_opml_init");
@@ -131,7 +141,9 @@ static struct flPlugin fpi = {
 	fl_opml_source_remove,
 	fl_opml_source_import,
 	fl_opml_source_export,
-	fl_opml_source_get_feedlist
+	fl_opml_source_get_feedlist,
+	fl_opml_source_update,
+	fl_opml_source_auto_update
 };
 
 static struct plugin pi = {

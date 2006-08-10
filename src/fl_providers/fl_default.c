@@ -153,6 +153,11 @@ static void fl_default_source_export(nodePtr node) {
 	debug_exit("fl_default_source_export");
 }
 
+static void fl_default_source_auto_update(nodePtr node) {
+
+	node_foreach_child(node, node_request_auto_update);
+}
+
 /* DBUS support for new subscriptions */
 
 #ifdef USE_DBUS
@@ -326,7 +331,9 @@ static struct flPlugin fpi = {
 	NULL,
 	fl_default_source_import,
 	fl_default_source_export,
-	fl_default_source_get_feedlist
+	fl_default_source_get_feedlist,
+	NULL,
+	fl_default_source_auto_update
 };
 
 static struct plugin pi = {

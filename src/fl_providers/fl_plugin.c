@@ -247,21 +247,21 @@ void ui_fl_plugin_type_dialog(nodePtr parent) {
 
 static void fl_plugin_request_update(nodePtr node, guint flags) {
 
-	// FIXME:
-	//if(NULL != FL_PLUGIN(node)->node_update)
-	//	FL_PLUGIN(node)->node_update(node, flags);
+	if(NULL != FL_PLUGIN(node)->source_update)
+		FL_PLUGIN(node)->source_update(node);
 }
 
-static void fl_plugin_request_auto_update(nodePtr np) {
+static void fl_plugin_request_auto_update(nodePtr node) {
 
-	// FIXME:
-	//if(NULL != FL_PLUGIN(node)->node_auto_update)
-	//	FL_PLUGIN(node)->node_auto_update(node);
+	if(NULL != FL_PLUGIN(node)->source_auto_update)
+		FL_PLUGIN(node)->source_auto_update(node);
 }
 
 static void fl_plugin_schedule_update(nodePtr node, guint flags) {
 
 	// FIXME:
+/*	if(NULL != FL_PLUGIN(node)->source_update)
+		FL_PLUGIN(node)->source_update(node);*/
 }
 
 static void fl_plugin_remove(nodePtr node) {
