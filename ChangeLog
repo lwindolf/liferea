@@ -1,6 +1,6 @@
-2005-10-09  ??? <???>
+2006-08-11  Lars Lindner  <lars.lindner@gmail.com>
 
-	Version 1.1.0
+	Version 1.1.0 (Unstable)
 
 	* HTTPS support. (Nathan Conrad)
 	* src/ui/eggtrayicon.[ch]: updated from libegg, to fix 
@@ -46,6 +46,350 @@
 	* Fixes SF #1504203 (reported by John Lee), now the
 	  2 pane mode HTML view is updated after selecting
 	  "mark all read".
+	  
+	Translation
+	
+	* Updated German translation
+
+
+2006-08-10  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.0.21 (Stable)
+
+	* Fixes SF #1266406 which caused vfolder rules
+	  not to match item descriptions correctly.
+	* Fixes the problem that one cannot enter
+	  periods in the URL entry of tabs. This 
+	  problem was introduced with 1.0.19.
+	* Adds a patch from Remi Cardona that allows
+	  building against SeaMonkey.
+	* Adds patch #1294843 from Yaakov Selkowitz
+	  to improve compile support on Cygwin.
+	* Adds a patch for SF #1537325 from Ed Catmur
+	  that improves the text direction of headlines
+	  in the tree views or the notification popups
+	  for mixed text.
+	* Raises Pango dependency to 1.4.0
+
+
+
+2006-08-07  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.0.20
+
+	* The Mozilla rendering plugin now has the Mozilla
+	  library path hard coded to ensure to use the correct
+	  gtkmozembed library. This also means that there is no 
+	  more searching for gtkmozembed by the start script.
+	  This should fix SF #1532011 and SF #1455278.
+	* Fixes SF #1529612 which causes Liferea to ignore
+	  a HTTP 301 redirect if it is followed by a HTTP 304.
+	  (reported by David A. Desrosiers)
+
+
+2006-07-31  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.0.19
+
+	* Fixes a uninitialized value bug in the lock handling.
+	* Adds a DBUS method to change the online state of
+	  Liferea contributed by keizie.
+	* Fixes a possible DBUS crash by correctly initializing
+	  the DBUS thread handling. (SF #1523428 reported by
+	  several Debian and Fedora users, thanks for the hint
+	  from John Palmieri)
+	* Added a patch from Daniel Gryniewicz which solves
+	  three 64bit issue that cause crashes on AMD64
+	  installations.
+	* Fixes some compiler warnings for the Mozilla renderer
+	  plugin.
+	* Bigger update of the manpage.
+
+
+2006-07-22  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.0.18
+
+	* Fixes SF #1526078 which caused crashes when
+	  accessing RSS 2.0 feeds without a channel link.
+	  (reported by Gilles Gravier)
+	* Avoid crashes by checking the content type
+	  of responses before parsing favicon image data
+	  (reported by Carlos Moffat, Debian #378645)
+	* Quoting fix in the liferea start fix to
+	  make it run with Bourne shell SF #1526724.
+	  (reported by Gilles Gravier)
+	* Compile flags fix for Solaris where -lresolv
+	  was missing SF #1526722. 
+	  (reported by Gilles Gravier)
+	* Added a note about the DBUS interface and
+	  wrapper script to the manpage.
+	* Added a gconf key to disable DBUS if 
+	  necessary (/apps/liferea/disable-dbus).
+	* Removed support for DBUS 0.23. Now the
+	  minimal DBUS dependency is 0.30.
+
+
+2006-07-18  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.0.17
+
+	* Added SuSE patches supplied by Christoph Thiel.
+	* Fixes a possible uninitialized value in the network
+	  authentication code.
+	* Partially fixes Debian #378075 reported by Daniel 
+	  Jacobowitz, which caused the unwanted unescaping
+	  of URLs when internally launching links with
+	  the GtkHTML browser module.
+
+
+2006-06-26  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.0.16
+
+	* Workaround for SF #1509741 where GtkHTML2
+	  can cause crashes when reducing the zoomlevel
+	  when multi-line text is selected.
+	  (reported by nagappan)
+	* Fixes a significant memory leak as described
+	  in SF #1498277 reported by several users.
+
+
+2006-06-13  Lars Lindner   <lars.lindner@gmail.com>
+
+	Version 1.0.15
+
+	* Removing confusing output line from starter
+	  script (Debian #372733, reported by Joshua Rodman)
+	* Added patch SF #1504171 that fixes the problem
+	  of the headline states not getting updated
+	  after a feed update.
+	* Added a workaround for SF #1503029 which crashes
+	  when doing HTTP digest authentication without
+	  a "nonce" field in the authentication data.
+	  (reported by Kalle)
+
+
+2006-05-29  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.0.14
+
+	* New wrapper script "liferea-add-feed" for the 
+	  dbus-send command needed to add subscriptions
+	  from the command line.
+	* Fixes full content display for Atom 0.3
+	  feeds (Debian #366822 reported by Marco d'Itri).
+	* Fixes the --mainwindow-state=hidden behaviour.
+	  Until now it had the same effect like
+	  --mainwindow-state=iconified. (reported by
+	  Sebastian Droege)
+
+	Translation:
+
+	* Update of Polish translation (Bart Kreska)
+	* Fixed some links in the German documentation.
+
+
+2006-05-17  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.0.13
+
+	* Added a patch to make the tray icon
+	  respect the GNOME panel transparency
+	  setting. This will only work for the
+	  most recent GNOME versions.
+	  (Sebastian Droege)
+	* Liferea now calls res_init() to 
+	  recover from disconnect situations
+	  where the host was moved to another
+	  network. (Nathan Conrad)
+
+2006-05-07  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.0.12
+
+	* XulRunner support. Liferea now provides
+	  an additional browser module that is
+	  for running with XulRunner. So now it
+	  can work with GtkHTML2, Mozilla/Firefox
+	  and XulRunner. (Nathan Conrad)
+
+
+2006-05-03  Lars Lindner <lars.lindner@gmail.com>
+
+	Version 1.0.11
+
+	* Added "ins" and "del" element styles to CSS.
+	  SF patch #1393105 (Jose Maria Mateos)
+	* The source package now contains a Firefox
+	  extension (feedbag.xpi) that changes the
+	  live bookmarks button so that it will add
+	  add subscriptions directly to Liferea.
+
+	Bugfixes:
+
+	* Fixes a Atom 1.0 parsing bug when parsing
+	  plain text content. (Aristotle Pagaltzis)
+	* Fix for SF #1480051: Avoid adding internal 
+	  feed list properties when exporting the
+	  feed list to OPML. Also always adding a 
+	  text attribute to each outline node.
+	* Fix for SF #1479930: Liferea exited with
+	  assertion when unselecting a vfolder that
+	  was displayed in 2 pane mode.
+
+
+
+2006-04-22  Lars Lindner <lars.lindner@gmail.com>
+
+	Version 1.0.10
+
+	* Added 64bit library path for Firefox
+	  to start script (patch from plblaze)
+	* Added fix a timezone parsing problem
+	  (patch for #1469172 from jimee)
+	* Added a workaround for a problem caused
+	  by installing the gconf schemes from 
+	  earlier Liferea version, which caused
+	  a HTML view zoom level of 0.
+
+
+2006-04-03  Lars Lindner <lars.lindner@gmail.com>
+
+	Version 1.0.9
+
+	Bugfixes:
+
+	* Patch from Sebastian Droege that prevents the
+	  invisible text problem. This happened because the
+	  schema default values (including the one for text
+	  zooming) could not be localised.
+
+	Translations:
+
+	* Update of Italian translation (Dario Coniglario)
+
+
+2006-03-19  Lars Lindner <lars.lindner@gmail.com>
+
+	Version 1.0.8
+
+	* Adaption of style sheets to prevent GtkHTML2
+	  from using the theme color for links.
+	* Fix for a problem that did prevent opening
+	  file:// URLs with anchors in GtkHTML2
+
+	Translations:
+
+	* German translation of the user documentation.
+	* Update of Swedish translation (Sigge Kotliar)
+
+
+2006-03-05  Lars Lindner <lars.lindner@gmail.com>
+
+	Version 1.0.7
+
+	* Fix crashes relating to file selection. (Nathan Conrad)
+	* Improves all GTK 2.0 directory selection dialogs. 
+	  They no longer show the file selection list. It
+	  also fixes an issue with loading the last dirname
+	  part as the filename. (Lars Lindner)
+
+	Translations:
+
+	* New Polish default feed list (Bart Kreska)
+	* Update of Polish translation (Bart Kreska)
+	* Update of Dutch translation (Patrick Bos)
+
+	
+2006-02-25  Lars Lindner <lars.lindner@gmail.com>
+
+	Version 1.0.6
+
+	* The schema documentation was updated to
+	  add all still undocumented gconf keys.
+	* Fixes a mismatch between the schema default
+	  and the preference preselection for the 
+	  item list time column format option.
+
+	Translations:
+
+	* Update of Polish translation (Bart Kreska)
+	* Update of Dutch translation (Patrick Bos)
+	* Added Dutch default feed list (Patrick Bos)
+	* Added Dutch quick reference (Patrick Bos)
+	* Added Japanes quick reference, FAQ & help
+	  topics (Takeshi AIHANA)
+
+
+2006-02-21  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.0.5
+
+	* Added Dutch translation (Patrick Bos)
+	* Update of Brazilian Portugese translation
+	  (Fernando Ike de Oliveira)
+
+
+2006-02-10  Nathan Conrad  <conrad@bungled.net>
+
+	Version 1.0.4
+
+	* Removes GDK locking to avoid freezing the program when a new
+	  browser window is created or a flash plugin is used. Note that
+	  this only effects users of the mozilla renderer and not the
+	  gtkhtml2 renderer.
+	* When browsing the World Wide Web inside of Liferea, tab titles
+	  now change to the title of the HTML page being viewed. Also, a
+	  similar change was made for the location bar.
+	* Fixes a crash in the Atom 1.0 parser.
+	* Tray icon reports if Liferea is in offline or online mode.
+	  (Thomas de Grenier de Latour)
+	* Long headlines are now ellipsized when displayed in the
+	  item list. (Requires GTK+ 2.6 or above)
+	
+	Translations:
+
+	* Update of Spanish translation (Carlos Fenellosa Biesla)
+	* Update of German translation
+
+
+2006-02-01  Lars Lindner <lars.lindner@gmail.com>
+
+        Version 1.0.3
+
+	* Fixes a problem introduced with 1.0.2 that
+	  causes crashes when parsing Atom 1.0 feeds 
+	  without proper type attributes on content
+	  tags. (Nathan Conrad)
+
+
+2006-01-25  Lars Lindner <lars.lindner@gmail.com>
+
+	Version 1.0.2
+
+	* Escapes comma characters in URL so loading
+	  websites with such URLs in external browsers
+	  that use the X remote protocol works.
+	  (SF #1404730)
+	* Atom 1.0 parsing improvements.
+	  (Aristotle Pagaltzis)
+	* Improved zlib decompression support.
+	  (SF #1411596, Nathan Conrad)
+	* Updated mozilla browser module source to
+	  allow compilation against Firefox 1.5.
+
+
+2006-01-17  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.0.1
+
+	* Fixes a compatibility issue with Firefox 1.5
+	  that might cause crashes when running with both
+	  the Mozilla Suite and Firefox are installed.
+	  (Gentoo bug #118700 reported by Ed Katmur)
+	* Removes vfolder nodes when exporting the feed list. 
+	  (SF #1407742 reported by Duilio J. Protti)
 
 
 2005-12-23  Lars Lindner  <lars.lindner@gmail.com>
@@ -90,178 +434,4 @@
 	* Update of Korean translation (Park Ji-In)
 	* Update of Swedish translation (Sigge Kotliar)
 
-
-2005-11-18  Lars Lindner  <lars.lindner@gmx.net>	
-
-	Version 1.0 RC4
-
-	* SF feed removed from all default feed lists.
-	* Updated some default feed lists to include the
-	  standard vfolders.
-	* Adds a lot of missing accelerator keys to 
-	  the different dialogs.
-	* An offline FAQ was added to the program.
-	  There is a new FAQ option in the help menu.
-	* Help contents index extended with links to
-	  online support sites.
-
-	Bugfixes:
-
-	* Fixes a minor problem when downloading favicons
-	  that were at least once downloaded in the past
-	  and are not available online anymore. 
-	* Fixes a bug that prevented using hotkeys with
-	  Mozilla and hidden menu bar.
-	* Fixes a bug about using Ctrl-F with GtkHTML2
-	  (SF #1358949, reported by noltec)
-	* Repaired some broken translation strings.
-	* Fixes several typos.
-
-	
-	Translations:
-
-	* Update of Italian translation (Dario Coniglario)
-	* Update of Bulgarian translation (Vladimir Petkov)
-	* Update of Swedish translation (Sigge Kotliar)
-	* Update of French translation (Vincent Levefre)
-
-
-2005-11-04  Lars Lindner  <lars.lindner@gmx.net> 
-
-	Version 1.0 RC3
-
-	* Display vfolder properties when a vfolder is created.
-	* New preference to hide all read items when viewing
-	  a folder. (Patch from Bjorn Monnens)
-	* Improved GNOME HIG compliance, better dialog padding 
-	  and spacing. (Patch from Christian Persch)
-	* Added Ctrl-F hotkey to open the search dialog.
-
-	Bugfixes:
-
-	* Prevents next unread jumping into a vfolder.
-	  (reported by Sigge Kotliar)
-	* Prevents deferred item removal in the wrong
-	  feed when changing from a "unread" vfolder
-	  to any other feed.
-	* Fixes the bug that all items of a feed were
-	  dropped as soon as "disable cache" was enabled.
-	  (SF #1318391 reported by Matt Brubeck)
-	* Certain favicons are no longer downloaded in an
-	  endless loop.
-	* Fixes a RFC822 date parsing problem on MacOS.
-	  (Patch from Vincent Lefevre)
-	
-	Translations:
-
-	* Update of Spanish translation (Carlos Fennelosa)
-	* Update of Japanese translation (Takeshi AIHANA)
-
-
-2005-10-10  Lars Lindner  <lars.lindner@gmx.net> 
-
-	Version 0.9.9 (1.0 RC2)
-
-	* Maximumization state of mainwindow is now remembered
-	  when the main window is hidden. (Debian bug #330344)
-	* Faster loading of the itemlist after clicking on feeds
-	  and folders. (Nathan Conrad)
-	* Update of the tray icon code from libegg to fix the
-	  extra spacing between icons. (patch from Rodrigo
-	  Moya <rodrigo@novell.com>)
-
-	Bugfixes:
-
-	* Atom parsing bugfix to prevent loosing text constructs.
-	  (patch from Aristotle Pagaltzis)
-
-	Translations:
-
-	* New Swedish translation (Sigge Kotliar)
-
-
-2005-10-02  Lars Lindner  <lars.lindner@gmx.net> 
-
-	Version 0.9.8 (1.0 RC1)
-
-	* The HTTP client timeout with a default of 60s
-	  can be configured via gconf now.
-	* XSLT stylesheets can be specified as feed 
-	  postprocessing filters. If a file with the
-	  extension .xsl is configured xsltproc is called
-	  automatically. (dwpoon, SF #1197414)
-	* New feed property to enable enclosure auto download.
-	* When deleting a subscription Liferea now asks
-	  you to confirm the deletion. (patch from
-	  Ted Percival, SF #1282078)
-	* Now allows Ctrl +/- for zooming with the numeric 
-	  keypad. (SF #1292930)
-	* Liferea can now be built with Cygwin. 
-	  (patch from Yaakov Selkowitz)
-	* Rewritten user documentation.
-
-	Bugfixes:
-
-	* Fixes unnecessary selected node check when
-	  deleting items. Now it is possible to delete
-	  items from folders.  (reported by Michael Bernstein)
-	* Fixes memory leaks in the Mozilla plugin code.
-	  (patch from Christian Persch)
-
-	Translations:
-
-	* Update of Spanish translation (Carlos Fennelosa)
-	* Update of Italian translation (Dario Coniglario)
-	* Update of French translation (Vincent Lefevre)
-	* Update of Brazilian Portugese translation
-	  (Fernando Ike de Oliveira)
-	* Update of German translation
-
-
-2005-09-04  Lars Lindner  <lars.lindner@gmx.net> 
-
-	Version 0.9.7b
-
-	Bugfixes:
-
-	* Fixes the keyboard handling problems with 0.9.7
-	* Now Mozilla errors are shown as HTML pages, so
-	  there are no annoying freezing dialogs anymore.
-	* The per default enabled typeahead find when 
-	  using Firefox for rendering is disabled now.
-
-	Translations:
-
-	* Updated Slovak translation (Tibor Pittich)
-	* Updated Japanese translation (Takeshi AIHANA)
-	* Updated French translation (Vincent Lefèvre)
-
-2005-08-29  Lars Lindner  <lars.lindner@gmx.net> 
-
-	Version 0.9.7
-
-	* Added "copy link location" to item list context
-	  menu. Patch #1175756 from Adam Flanczewski.
-	* Single key navigation patch #1211774 from an 
-	  anonymous contributor. This allows keyboard
-	  navigation (u,d,f,b) when using GtkHTML2, but
-	  due to a focussing problem it is not really 
-	  usable with Mozilla.
-	* Search text box is now automatically focused.
-	  Requested by Rodrigo Couto (#1200297).
-
-	Bugfixes:
-
-	* Closing the search dialog with the window
-	  manager don't causes crashes anymore.
-	* Preference dialog cannot be opened multiple
-	  times anymore.
-	* Fixes missing links in item display with Mozilla
-	  reported by Rich Daley. (SF bug #1255253)
-	* Prevents "next-unread" to select items within
-	  a vfolder, except if a vfolder is selected
-	  reported by Sigge Kotliar. (SF #1252034)
-	* Fixes an auto-discovery bug patched and
-	  reported by Ted Percival (SF #1275007)
-
-[...]
+[truncated]

@@ -10,50 +10,40 @@ Nathan J. Conrad <t98502@users.sourceforge.net>
 Code Contributors
 =================
 
-James Doherty 					dialog design
+Loosely ordered by time of contribution:
 
-Jeremy Messenger <mezz7@cox.net>		search dialog, icons...
-
-John McKnight 					Makefile help
-
-Tomasz Maka <pasp@ll.pl>			window position saving
-
-Karl Soderstrom <ks@debian.org>			heavy debugging, patching
-						memory leak fixing,
-						mini popup support
-						
-Christophe Barbe <christophe.barbe@ufies.org>	patch to count folder items
-						and Debian bug management
-						
-Juho Snellman <jsnell@users.sourceforge.net>	CSS support
-
-Roshan Revankar	<roshweb@users.sourceforge.net>	patch for selection handling
-						
-Johannes Schlueter <joscherl@users.sourceforge.net>	pipe as feed source
-
-Niklas Morberg <morberg@users.sourceforge.net>	debugging and patching
-
-Pierre Phaneuf <pp@ludusdesign.com>		RPM spec update
-
-ahmed el-helw <ahmedre@cc.gatech.edu>		feed link autodiscovery
-
-James Bowes <bowes@cs.dal.ca>			tray icon popup menu
-
-Marc Deslauriers				patch for window state saving
-
-Amit D. Chaudhary <amitc@users.sourceforge.net>	patch to update all favicons
-
-Christoph Hohmann <reboot@users.sourceforge.net>	patch for IPv6
-
-Raphaël Slinckx <raphael@slinckx.net>		new subscriptions over DBUS
-
-Bjorn Mommens <newsletters@pczone.be>		hiding read items from folders
-
-Aristotle Pagaltzis <pagaltzis@gmx.de>		Atom 1.0 support
-
+James Doherty 						dialog design
+Jeremy Messenger <mezz7@cox.net>			search dialog, icons...
+John McKnight 						Makefile help
+Tomasz Maka <pasp@ll.pl>				window position saving
+Karl Soderstrom <ks@debian.org>				heavy debugging, patching
+							memory leak fixing,
+							mini popup support
+Christophe Barbe <christophe.barbe@ufies.org>		patch to count folder items
+							and Debian bug management
+Juho Snellman <jsnell@users.sf.net>			CSS support
+Roshan Revankar	<roshweb@users.sf.net>			patch for selection handling
+Johannes Schlueter <joscherl@users.sf.net>		pipe as feed source
+Niklas Morberg <morberg@users.sf.net>			Debugging and patching
+Pierre Phaneuf <pp@ludusdesign.com>			RPM spec update
+ahmed el-helw <ahmedre@cc.gatech.edu>			feed link autodiscovery
+James Bowes <bowes@cs.dal.ca>				tray icon popup menu
+Marc Deslauriers					patch for window state saving
+Amit D. Chaudhary <amitc@users.sf.net>			patch to update all favicons
+Christoph Hohmann <reboot@users.sf.net>			patch for IPv6
+Raphael Slinckx <raphael@slinckx.net>			New subscriptions over DBUS
+Bjorn Mommens <newsletters@pczone.be>			Hiding read items from folders
+<P@draigBrady.com>					Patch for itemlist updating
+Thomas de Grenier de Latour <thomas_gl@users.sf.net>	Online state in tray icon
+Aristotle Pagaltzis <pagaltzis@gmx.de>			Atom 1.0 support, XSLT rendering
 Norman Jonas <liferea.sf.net@devport.codepilot.net>	libnotify notification
-
-Sebastian Droege <mail@slomosnail.de>		transparent tray icon
+Sebastian Droege <mail@slomosnail.de>			Transparent tray icon
+Daniel Gryniewicz <dang@gentoo.org>			AMD64 fixes
+Remi Cardona <remi2402@free.fr>				Build improvements
+keizue <keizie@gmail.com>				On/offline switching DBUS method
+Frederic Peters <fpeters@0d.be>				Unread/new counter in status bar
+Don Malcolm <p1469023@donmalcolm.com>			Offline Mozilla rendering 
+Ed Catmur <edcatmur@users.sf.net>			RTL item list improvements
 
 
 Packaging

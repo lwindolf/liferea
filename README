@@ -1,8 +1,8 @@
 Liferea is an abbreviation for Linux Feed Reader. It is a news
 aggregator for online news feeds. It supports a number of different
-feed formats including RSS/RDF, CDF, Atom, OCS, and OPML. There are
-many other news readers available, but these others are not available
-for Linux or require many extra libraries to be installed. Liferea
+feed formats including RSS/RDF, CDF and Atom. There are many other
+news readers available, but these others are not available for
+Linux or require many extra libraries to be installed. Liferea
 tries to fill this gap by creating a fast, easy to use, easy to
 install news aggregator for GTK/GNOME.
 
@@ -75,7 +75,7 @@ Compiling from Source
 If you want you can compile Liferea. Download the tarball from 
 the SourcForge project page and extract with: 
 
-   tar zxvf liferea-1.1.tar.gz 
+   tar zxvf liferea-1.1.0.tar.gz 
 
 Of course you should adjust the filename. After unpacking 
 run the standard autotools commands: 
@@ -102,7 +102,7 @@ do the trick:
    autoreconf -i
    intltoolize
 
-If everything went well you can continue with configure
+If everything went well you can continue with "configure"
 as described in the previous section.
 
 
