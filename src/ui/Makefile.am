@@ -28,4 +28,5 @@ libliui_a_SOURCES = \
 	ui_session.c ui_session.h \
 	ui_tabs.c ui_tabs.h \
 	ui_tray.c ui_tray.h \
+	ui_update.c ui_update.h \
 	ui_vfolder.c ui_vfolder.h 

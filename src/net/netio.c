@@ -1181,7 +1181,7 @@ void downloadlib_init() {
 }
 
 void downloadlib_process_url(struct request *request) {
-	struct feed_request cur_ptr;
+	struct feed_request	*netioRequest;
 	gchar *oldurl = g_strdup(request->source);
 	
 	debug1(DEBUG_UPDATE, "downloading %s", request->source);
@@ -1189,37 +1189,44 @@ void downloadlib_process_url(struct request *request) {
 	g_assert(request->data == NULL);
 	g_assert(request->contentType == NULL);
 
-	cur_ptr.feedurl = request->source;
+	netioRequest = g_new0(struct feed_request, 1);
+	netioRequest->feedurl = request->source;
 
-	cur_ptr.lastmodified = request->lastmodified;
-	cur_ptr.etag = request->etag;
+	if(request->updateState) {
+		netioRequest->lastmodified = request->updateState->lastModified;
+		netioRequest->etag = request->updateState->etag;
+		netioRequest->cookies = g_strdup(request->updateState->cookies);
+	}
 		
-	cur_ptr.problem = 0;
-	cur_ptr.netio_error = 0;
-	cur_ptr.content_type = NULL;
-	cur_ptr.contentlength = 0;
-	cur_ptr.cookies = g_strdup(request->cookies);
-	cur_ptr.authinfo = NULL;
-	cur_ptr.servauth = NULL;
-	cur_ptr.lasthttpstatus = 0; /* This might, or might not mean something to someone */
+	netioRequest->problem = 0;
+	netioRequest->netio_error = 0;
+	netioRequest->content_type = NULL;
+	netioRequest->contentlength = 0;
+	netioRequest->authinfo = NULL;
+	netioRequest->servauth = NULL;
+	netioRequest->lasthttpstatus = 0; /* This might, or might not mean something to someone */
 	
-	/* Fixme: assert that it is a http:// URL */
-	
-	request->data = DownloadFeed (oldurl, &cur_ptr, 0);
+	request->data = DownloadFeed (oldurl, netioRequest, 0);
 
 	g_free(oldurl);
-	if (request->data == NULL)
-		cur_ptr.problem = 1;
-	request->size = cur_ptr.contentlength;
-	request->httpstatus = cur_ptr.lasthttpstatus;
-	request->returncode = cur_ptr.netio_error;
-	request->source = cur_ptr.feedurl;
-	request->lastmodified = cur_ptr.lastmodified;
-	request->etag = cur_ptr.etag;
-	request->contentType = cur_ptr.content_type;
-	g_free(cur_ptr.servauth);
-	g_free(cur_ptr.authinfo);
-	g_free(cur_ptr.cookies);
-	debug4(DEBUG_UPDATE, "download result - HTTP status: %d, error: %d, netio error:%d, data: %d", request->httpstatus, cur_ptr.problem, cur_ptr.netio_error, request->data);
+	if(request->data == NULL)
+		netioRequest->problem = 1;
+	request->size = netioRequest->contentlength;
+	request->httpstatus = netioRequest->lasthttpstatus;
+	request->returncode = netioRequest->netio_error;
+	request->source = netioRequest->feedurl;
+	if(request->updateState) {
+		request->updateState->lastModified = netioRequest->lastmodified;
+		request->updateState->etag = netioRequest->etag;
+	}
+	request->contentType = netioRequest->content_type;
+	g_free(netioRequest->servauth);
+	g_free(netioRequest->authinfo);
+	g_free(netioRequest->cookies);
+	debug4(DEBUG_UPDATE, "download result - HTTP status: %d, error: %d, netio error:%d, data: %d",
+	                     request->httpstatus, 
+			     netioRequest->problem, 
+			     netioRequest->netio_error, 
+			     request->data);
 	return;
 }
