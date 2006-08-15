@@ -532,7 +532,7 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 
 		gtk_tree_selection_set_mode(gtk_tree_view_get_selection(GTK_TREE_VIEW(widget)), GTK_SELECTION_SINGLE);
 	}	
-	gtk_widget_show(prefdialog);
+	gtk_window_present(GTK_WINDOW(prefdialog));
 }
 
 /*------------------------------------------------------------------------------*/

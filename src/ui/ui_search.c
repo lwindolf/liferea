@@ -34,7 +34,6 @@
 #include "ui/ui_search.h"
 #include "ui/ui_mainwindow.h"
 #include "ui/ui_vfolder.h"
-#include "fl_providers/fl_default.h"
 
 extern GtkWidget	*mainwindow;
 static GtkWidget	*searchdialog = NULL;

@@ -46,6 +46,7 @@
 #include "ui/ui_htmlview.h"
 #include "ui/ui_itemlist.h"
 #include "ui/ui_session.h"
+#include "ui/ui_update.h"
 
 struct mainwindow {
 	GtkWindow *window;
@@ -772,6 +773,8 @@ static GtkActionEntry ui_mainwindow_action_entries[] = {
 	{"ProgramMenu", NULL, N_("_Program")},
 	{"ShowPreferences", GTK_STOCK_PREFERENCES, N_("_Preferences"), NULL, N_("Edit Preferences."),
 	 G_CALLBACK(on_prefbtn_clicked)},
+	{"ShowUpdateMonitor", NULL, N_("Update Monitor"), NULL, N_("Show a list of all feeds currently in the update queue"),
+	 G_CALLBACK(on_menu_show_update_monitor)},
 	{"Quit",GTK_STOCK_QUIT, N_("_Quit"), "<control>Q", NULL, G_CALLBACK(on_quit)},
 
 	{"FeedsMenu", NULL, N_("_Feeds")},
@@ -840,6 +843,8 @@ static const char *ui_mainwindow_ui_desc =
 "  <menubar name='MainwindowMenubar'>"
 "    <menu action='ProgramMenu'>"
 "      <menuitem action='ShowPreferences'/>"
+"      <separator/>"
+"      <menuitem action='ShowUpdateMonitor'/>"
 "      <separator/>"
 "      <menuitem action='ToggleOfflineMode'/>"
 "      <separator/>"

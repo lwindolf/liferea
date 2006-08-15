@@ -37,7 +37,7 @@
 #include "favicon.h"
 #include "debug.h"
 #include "ui/ui_feed.h"
-#include "fl_providers/fl_default.h"
+#include "fl_sources/fl_default.h"
 
 extern GtkWidget *mainwindow;
 
@@ -150,7 +150,7 @@ static void on_authdialog_response(GtkDialog *dialog, gint response_id, gpointer
 			xmlFree(sourceUrl);
 		}
 
-		node_schedule_update(ui_data->np, ui_data->flags);
+		node_request_update(ui_data->np, ui_data->flags);
 		xmlFreeURI(uri);
 	}
 
@@ -252,7 +252,7 @@ static void on_propdialog_response(GtkDialog *dialog, gint response_id, gpointer
 		ui_node_update(ui_data->np);
 		feedlist_schedule_save();
 		if(needsUpdate)
-			node_schedule_update(ui_data->np, FEED_REQ_AUTH_DIALOG | FEED_REQ_PRIORITY_HIGH);
+			node_request_update(ui_data->np, FEED_REQ_AUTH_DIALOG | FEED_REQ_PRIORITY_HIGH);
 	}
 
 	g_free(ui_data);
