@@ -67,7 +67,7 @@ gchar * convertCharSet(gchar * from_encoding, gchar * to_encoding, gchar * strin
    can be NULL) to to_encoding, frees the original string and 
    returns the result */
 gchar * convertCharSet(gchar * from_encoding, gchar * to_encoding, gchar * string) {
-	gint	bw, br;
+	gsize	bw, br;
 	gchar	*new = NULL;
 	GError *err = NULL;
 

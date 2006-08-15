@@ -94,7 +94,7 @@ static void folder_reset_update_counter(nodePtr node) {
 
 static void folder_request_update(nodePtr node, guint flags) {
 	// FIXME: int -> gpointer
-	node_foreach_child_data(node, node_request_update, (gpointer)flags);
+	node_foreach_child_data(node, node_request_update, GUINT_TO_POINTER(flags));
 }
 
 static void folder_request_auto_update(nodePtr node) {

@@ -368,7 +368,7 @@ void update_request_free(struct request *request) {
 
 static void *update_dequeue_requests(void *data) {
 	struct request	*request;
-	gboolean	high_priority = (gboolean)data;
+	gboolean	high_priority = (gboolean)GPOINTER_TO_INT(data);
 
 	for(;;)	{
 		/* block updating if we are offline */
@@ -557,7 +557,7 @@ void update_init(void) {
 		count = DEFAULT_UPDATE_THREAD_CONCURRENCY;
 	
 	for(i = 0; i < count; i++)
-		g_thread_create(update_dequeue_requests, (void *)(i == 0), FALSE, NULL);
+		g_thread_create(update_dequeue_requests, GINT_TO_POINTER((i == 0)), FALSE, NULL);
 
 	/* setup the processing of feed update results */
 	g_timeout_add_full(G_PRIORITY_DEFAULT_IDLE,

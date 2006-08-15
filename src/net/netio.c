@@ -518,7 +518,8 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, char * aut
 	int handled;
 	int tmphttpstatus;
 	int inflate = 0;			/* Whether feed data needs decompressed with zlib. */
-	int len, recvbufused;
+	int len;
+	size_t recvbufused;
 	void * inflatedbody;
 	int quirksmode = 0;			/* IIS operation mode. */
 	int authfailed = 0;			/* Avoid repeating failed auth requests endlessly. */

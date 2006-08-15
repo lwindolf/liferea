@@ -67,7 +67,7 @@ typedef struct feedParserCtxt {
 	gchar		*title;		/**< resulting feed/channel title */
 
 	gchar		*data;		/**< data buffer to parse */
-	gint		dataLength;	/**< length of the data buffer */
+	gsize		dataLength;	/**< length of the data buffer */
 
 	xmlDocPtr	doc;		/**< the parsed data buffer */
 	gboolean	failed;		/**< TRUE if parsing failed because feed type could not be detected */

@@ -9,19 +9,19 @@ INCLUDES = \
 	$(DBUS_CFLAGS)
 
 # plugin loading code
-noinst_LIBRARIES = libliflprovider.a
+noinst_LIBRARIES = libliflsources.a
 
-libliflprovider_a_SOURCES = fl_plugin.c fl_plugin.h \
+libliflsources_a_SOURCES = fl_plugin.c fl_plugin.h \
                             fl_plugin-ui.c fl_plugin-ui.h \
 			    .fl_plugin-cb.c .fl_plugin-cb.h
 
-libliflprovider_a_CFLAGS = $(PACKAGE_FLAGS)
+libliflsources_a_CFLAGS = $(PACKAGE_FLAGS)
 
 pkglib_LTLIBRARIES = liblifldefault.la \
                      liblifldummy.la \
                      libliflopml.la
 
-# default feed list plugin
+# default feed list source plugin
 liblifldefault_la_LIBADD = $(PACKAGE_LIBS)
 liblifldefault_la_CFLAGS = $(PACKAGE_FLAGS)
 liblifldefault_la_SOURCES = fl_default.c fl_default.h 

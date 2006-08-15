@@ -1,3 +1,15 @@
+2006-08-??  ???   <???>
+
+	Version 1.1.1 (Unstable)
+
+	* Adds a simple feed update monitor available
+	  from the "Program" menu.
+	* Improves the OPML/Blogroll support that now
+	  should correctly update (remove and merge)
+	  feeds when the source OPML was changed.
+	* Added 64bit source patch from Daniel Gryniewicz.
+
+
 2006-08-11  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.1.0 (Unstable)
