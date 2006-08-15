@@ -4,7 +4,7 @@ if WITH_GTKHTML2
 GTKHTML2 = gtkhtml2
 endif
 
-SUBDIRS = net parsers fl_providers notification ui . $(GTKHTML2) mozilla
+SUBDIRS = net parsers fl_sources notification ui . $(GTKHTML2) mozilla
 
 AM_CPPFLAGS = \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \
@@ -48,7 +48,7 @@ liferea_bin_SOURCES = \
 
 liferea_bin_LDADD =	net/liblinet.a \
 			parsers/libliparsers.a \
-			fl_providers/libliflprovider.a \
+			fl_sources/libliflsources.a \
 			notification/liblinotification.a \
 			ui/libliui.a \
 			$(PACKAGE_LIBS) $(X_LIBS) $(X_PRE_LIBS) -lX11 $(X_EXTRA_LIBS) $(DBUS_LIBS) $(INTLLIBS)  $(GNUTLS_LIBS)

@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([liferea],[1.1.0],[liferea-devel@lists.sourceforge.net])
+AC_INIT([liferea],[1.1.1],[liferea-devel@lists.sourceforge.net])
 AC_CANONICAL_TARGET([])
 AC_CONFIG_SRCDIR([src/feedlist.c])
 
@@ -60,6 +60,7 @@ AC_MSG_RESULT([$platform_win32])
 AM_CONDITIONAL(PLATFORM_WIN32, test "$platform_win32" = "yes")
 AC_SUBST(SO_PREFIX)
 AC_SUBST(SO_EXT)
+AC_DEFINE_UNQUOTED(LIBPREFIX, "$SO_PREFIX", [Platform dependent library prefix])
 
 AC_CHECK_FUNCS([strsep getaddrinfo])
 
@@ -415,7 +416,7 @@ src/gtkhtml2/Makefile
 src/mozilla/Makefile
 src/net/Makefile
 src/parsers/Makefile
-src/fl_providers/Makefile
+src/fl_sources/Makefile
 src/notification/Makefile
 src/ui/Makefile
 src/liferea
