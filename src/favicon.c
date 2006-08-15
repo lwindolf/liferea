@@ -67,7 +67,7 @@ void favicon_load(nodePtr node) {
 		
 		/* check creation date and update favicon if older than one month */
 		g_get_current_time(&now);
-		if(now.tv_sec > (((feedPtr)(node->data))->lastFaviconPoll.tv_sec + 60*60*24*31)) {
+		if(now.tv_sec > (((feedPtr)(node->data))->updateState->lastFaviconPoll.tv_sec + 60*60*24*31)) {
 			debug1(DEBUG_UPDATE, "updating favicon %s\n", filename);
 			favicon_download(node);
 		}
@@ -118,9 +118,10 @@ static void favicon_download_5(nodePtr node) {
 	struct request	*request;
 	
 	baseurl = g_strdup(feed_get_source(feed));
-	if(tmp = strstr(baseurl, "://")) {
-		tmp += 3;
-		if(tmp = strchr(tmp, '/')) {
+	tmp = strstr(baseurl, "://");
+	if(tmp) {
+		tmp = strchr(tmp + 3, '/');
+		if(tmp) {
 			*tmp = 0;
 			request = update_request_new();
 			request->source = g_strdup_printf("%s/favicon.ico", baseurl);
@@ -144,9 +145,10 @@ static void favicon_download_4(nodePtr node) {
 	struct request	*request;
 	
 	baseurl = g_strdup(feed_get_source(feed));
-	if(tmp = strstr(baseurl, "://")) {
-		tmp += 3;
-		if(tmp = strrchr(tmp, '/')) {
+	tmp = strstr(baseurl, "://");
+	if(tmp) {
+		tmp = strrchr(tmp + 3, '/');
+		if(tmp) {
 			*tmp = 0;
 			
 			request = update_request_new();
@@ -181,7 +183,8 @@ static void favicon_download_request_favicon_cb(struct request *request) {
 		GdkPixbuf *pixbuf;
 		if(gdk_pixbuf_loader_write(loader, (guchar *)request->data, request->size, &err)) {
 			if(gdk_pixbuf_loader_close(loader, &err)) {
-				if(pixbuf = gdk_pixbuf_loader_get_pixbuf(loader)) {
+				pixbuf = gdk_pixbuf_loader_get_pixbuf(loader);
+				if(pixbuf) {
 					tmp = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", node_get_id(node), "png");
 					debug1(DEBUG_UPDATE, "saving icon as %s", tmp);
 					if(!gdk_pixbuf_save(pixbuf, tmp, "png", &err, NULL)) {
@@ -262,12 +265,11 @@ static void favicon_download_html(nodePtr node, int phase) {
 		htmlurl = g_strdup(feed_get_html_url(feed));
 	} else {
 		htmlurl = g_strdup(feed_get_source(feed));
-		if(tmp = strstr(htmlurl, "://")) {
-			tmp += 3;
+		if(NULL != (tmp = strstr(htmlurl, "://"))) {
 			/* first we try to download a favicon inside the current web path
 			   if the download fails the callback will try to strip parts of
 			   the URL to download a root favicon. */
-			if(tmp = strrchr(tmp, '/')) {
+			if(NULL != (tmp = strrchr(tmp + 3, '/'))) {
 				*tmp = 0;
 			}
 		}
@@ -293,7 +295,7 @@ void favicon_download(nodePtr node) {
 	ui_mainwindow_set_status_bar(_("Updating feed icon for \"%s\""),
 	                             node_get_title(node));
 
-	g_get_current_time(&((feedPtr)node->data)->lastFaviconPoll);
+	g_get_current_time(&((feedPtr)node->data)->updateState->lastFaviconPoll);
 	node->needsCacheSave = TRUE;
 	
 	if(feed_get_html_url(node->data))

@@ -26,7 +26,7 @@
 #include "support.h"
 #include "ui/ui_folder.h"
 #include "ui/ui_node.h"
-#include "fl_providers/fl_plugin.h"
+#include "fl_sources/fl_plugin.h"
 
 static void folder_initial_load(nodePtr node) {
 	node_foreach_child(node, node_initial_load);
@@ -102,11 +102,6 @@ static void folder_request_auto_update(nodePtr node) {
 	node_foreach_child(node, node_request_auto_update);
 }
 
-static void folder_schedule_update(nodePtr node, guint flags) {
-
-	/* nothing to do */
-}
-
 static void folder_remove(nodePtr node) {
 
 	/* remove all children */
@@ -145,7 +140,6 @@ static struct nodeType nti = {
 	folder_reset_update_counter,
 	folder_request_update,
 	folder_request_auto_update,
-	folder_schedule_update,
 	folder_remove,
 	folder_mark_all_read,
 	folder_render,

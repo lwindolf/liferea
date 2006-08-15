@@ -85,7 +85,8 @@ feedPtr feed_new(gchar *source, gchar *filter) {
 
 	/* we don't allocate a request structure this is done
 	   during cache loading or first update! */
-	
+
+	feed->updateState = g_new0(struct updateState, 1);	
 	feed->updateInterval = -1;
 	feed->defaultInterval = -1;
 	feed->cacheLimit = CACHE_DEFAULT;
@@ -135,30 +136,19 @@ static int parse_integer(gchar *str, int def) {
 	return num;
 }
 
-static long parse_long(gchar *str, long def) {
-	long num;
-
-	if(str == NULL)
-		return def;
-	if(0 == (sscanf(str,"%ld",&num)))
-		num = def;
-	
-	return num;
-}
-
 gpointer feed_import(nodePtr node, const gchar *typeStr, xmlNodePtr cur, gboolean trusted) {
 	gchar		*cacheLimitStr, *filter, *intervalStr, *title; 
-	gchar		*lastPollStr, *htmlUrlStr, *source, *tmp; 
-	feedPtr		fp = NULL;
+	gchar		*htmlUrlStr, *source, *tmp; 
+	feedPtr		feed = NULL;
 
 	debug_enter("feed_import");
 
 	if(NULL == (source = xmlGetProp(cur, BAD_CAST"xmlUrl")))
 		source = xmlGetProp(cur, BAD_CAST"xmlurl");	/* e.g. for AmphetaDesk */
-	
+		
 	if(source) {
-		fp = feed_new(NULL, NULL);
-		fp->fhp = feed_type_str_to_fhp(typeStr);
+		feed = feed_new(NULL, NULL);
+		feed->fhp = feed_type_str_to_fhp(typeStr);
 
 		if(!trusted && source[0] == '|') {
 			/* FIXME: Display warning dialog asking if the command
@@ -168,7 +158,7 @@ gpointer feed_import(nodePtr node, const gchar *typeStr, xmlNodePtr cur, gboolea
 			source = tmp;
 		}
 
-		feed_set_source(fp, source);
+		feed_set_source(feed, source);
 		xmlFree(source);
 
 		if((filter = xmlGetProp(cur, BAD_CAST"filtercmd"))) {
@@ -180,12 +170,12 @@ gpointer feed_import(nodePtr node, const gchar *typeStr, xmlNodePtr cur, gboolea
 				filter = tmp;
 			}
 
-			feed_set_filter(fp, filter);
+			feed_set_filter(feed, filter);
 			xmlFree(filter);
 		}
 		
 		intervalStr = xmlGetProp(cur, BAD_CAST"updateInterval");
-		feed_set_update_interval(fp, parse_integer(intervalStr, -1));
+		feed_set_update_interval(feed, parse_integer(intervalStr, -1));
 		xmlFree(intervalStr);
 
 		title = xmlGetProp(cur, BAD_CAST"title");
@@ -201,94 +191,80 @@ gpointer feed_import(nodePtr node, const gchar *typeStr, xmlNodePtr cur, gboolea
 		/* Set the feed cache limit */
 		cacheLimitStr = xmlGetProp(cur, BAD_CAST"cacheLimit");
 		if(cacheLimitStr && !xmlStrcmp(cacheLimitStr, "unlimited"))
-			fp->cacheLimit = CACHE_UNLIMITED;
+			feed->cacheLimit = CACHE_UNLIMITED;
 		else
-			fp->cacheLimit = parse_integer(cacheLimitStr, CACHE_DEFAULT);
+			feed->cacheLimit = parse_integer(cacheLimitStr, CACHE_DEFAULT);
 		xmlFree(cacheLimitStr);
 	
 		/* Obtain the htmlUrl */
 		htmlUrlStr = xmlGetProp(cur, BAD_CAST"htmlUrl");
 		if(htmlUrlStr && xmlStrcmp(htmlUrlStr, ""))
-			feed_set_html_url(fp, htmlUrlStr);
+			feed_set_html_url(feed, htmlUrlStr);
 		xmlFree(htmlUrlStr);
 	
 		tmp = xmlGetProp(cur, BAD_CAST"noIncremental");
 		if(tmp && !xmlStrcmp(tmp, BAD_CAST"true"))
-			fp->noIncremental = TRUE;
+			feed->noIncremental = TRUE;
 		xmlFree(tmp);
 	
-		/* Last poll time*/
-		lastPollStr = xmlGetProp(cur, BAD_CAST"lastPollTime");
-		fp->lastPoll.tv_sec = parse_long(lastPollStr, 0L);
-		fp->lastPoll.tv_usec = 0L;
-		if(lastPollStr)
-			xmlFree(lastPollStr);
-	
-		lastPollStr = xmlGetProp(cur, BAD_CAST"lastFaviconPollTime");
-		fp->lastFaviconPoll.tv_sec = parse_long(lastPollStr, 0L);
-		fp->lastFaviconPoll.tv_usec = 0L;
-		if(lastPollStr)
-			xmlFree(lastPollStr);
-
 		/* enclosure auto download flag */
 		tmp = xmlGetProp(cur, BAD_CAST"encAutoDownload");
 		if(tmp && !xmlStrcmp(tmp, BAD_CAST"true"))
-			fp->encAutoDownload = TRUE;
+			feed->encAutoDownload = TRUE;
 		if(tmp)
 			xmlFree(tmp);
+			
+		update_state_import(cur, feed->updateState);
 
 		debug5(DEBUG_CACHE, "import feed: title=%s source=%s typeStr=%s interval=%d lastpoll=%ld", 
-		       node_get_title(node), feed_get_source(fp), typeStr, feed_get_update_interval(fp), fp->lastPoll.tv_sec);
+		       node_get_title(node), 
+		       feed_get_source(feed), 
+		       typeStr, 
+		       feed_get_update_interval(feed), 
+		       feed->updateState->lastPoll.tv_sec);
 	}
 
 	debug_exit("feed_import");
 
-	return (gpointer)fp;
+	return (gpointer)feed;
 }
 
-void feed_export(feedPtr fp, xmlNodePtr cur, gboolean internal) {
+void feed_export(feedPtr feed, xmlNodePtr cur, gboolean internal) {
 
 	debug_enter("feed_export");
 
-	gchar *interval = g_strdup_printf("%d",feed_get_update_interval(fp));
+	gchar *interval = g_strdup_printf("%d",feed_get_update_interval(feed));
 	gchar *cacheLimit = NULL;
 
-	if(feed_get_html_url(fp))
-		xmlNewProp(cur, BAD_CAST"htmlUrl", BAD_CAST feed_get_html_url(fp));
+	if(feed_get_html_url(feed))
+		xmlNewProp(cur, BAD_CAST"htmlUrl", BAD_CAST feed_get_html_url(feed));
 	else
 		xmlNewProp(cur, BAD_CAST"htmlUrl", BAD_CAST "");
-	xmlNewProp(cur, BAD_CAST"xmlUrl", BAD_CAST feed_get_source(fp));
+	xmlNewProp(cur, BAD_CAST"xmlUrl", BAD_CAST feed_get_source(feed));
 
-	if(feed_get_filter(fp))
-		xmlNewProp(cur, BAD_CAST"filtercmd", BAD_CAST feed_get_filter(fp));
+	if(feed_get_filter(feed))
+		xmlNewProp(cur, BAD_CAST"filtercmd", BAD_CAST feed_get_filter(feed));
 
 	if(internal) {
 		xmlNewProp(cur, BAD_CAST"updateInterval", BAD_CAST interval);
 		
-		if(fp->cacheLimit >= 0)
-			cacheLimit = g_strdup_printf("%d", fp->cacheLimit);
-		if(fp->cacheLimit == CACHE_UNLIMITED)
+		if(feed->cacheLimit >= 0)
+			cacheLimit = g_strdup_printf("%d", feed->cacheLimit);
+		if(feed->cacheLimit == CACHE_UNLIMITED)
 			cacheLimit = g_strdup("unlimited");
 		if(cacheLimit)
 			xmlNewProp(cur, BAD_CAST"cacheLimit", BAD_CAST cacheLimit);
 
-		if(fp->noIncremental)
+		if(feed->noIncremental)
 			xmlNewProp(cur, BAD_CAST"noIncremental", BAD_CAST"true");
 			
-		if(fp->lastPoll.tv_sec > 0) {
-			gchar *lastPoll = g_strdup_printf("%ld", fp->lastPoll.tv_sec);
-			xmlNewProp(cur, BAD_CAST"lastPollTime", BAD_CAST lastPoll);
-			g_free(lastPoll);
-		}
-		if(fp->lastFaviconPoll.tv_sec > 0) {
-			gchar *lastPoll = g_strdup_printf("%ld", fp->lastFaviconPoll.tv_sec);
-			xmlNewProp(cur, BAD_CAST"lastFaviconPollTime", BAD_CAST lastPoll);
-			g_free(lastPoll);
-		}
-		if(TRUE == fp->encAutoDownload)
+		if(TRUE == feed->encAutoDownload)
 			xmlNewProp(cur, BAD_CAST"encAutoDownload", BAD_CAST"true");
 	}
-	debug3(DEBUG_CACHE, "adding feed: source=%s interval=%s cacheLimit=%s", feed_get_source(fp), interval, cacheLimit);
+
+	update_state_export(cur, feed->updateState);
+	
+	debug3(DEBUG_CACHE, "adding feed: source=%s interval=%s cacheLimit=%s", feed_get_source(feed), interval, cacheLimit);
 	g_free(cacheLimit);
 	g_free(interval);
 
@@ -307,9 +283,11 @@ feedParserCtxtPtr feed_create_parser_ctxt(void) {
 
 void feed_free_parser_ctxt(feedParserCtxtPtr ctxt) {
 
-	/* Don't free the itemset! */
-	g_hash_table_destroy(ctxt->tmpdata);
-	g_free(ctxt);
+	if(NULL != ctxt) {
+		/* Don't free the itemset! */
+		g_hash_table_destroy(ctxt->tmpdata);
+		g_free(ctxt);
+	}
 }
 
 /**
@@ -472,9 +450,6 @@ xmlDocPtr feed_to_xml(nodePtr node, gboolean rendering) {
 	tmp = g_strdup_printf("%d", feed->discontinued?1:0);
 	xmlNewTextChild(feedNode, NULL, "feedDiscontinued", tmp);
 	g_free(tmp);
-
-	if(feed_get_lastmodified(feed)) 
-		xmlNewTextChild(feedNode, NULL, "feedLastModified", feed_get_lastmodified(feed));
 
 	if(rendering) {
 		tmp = g_strdup_printf("file://%s", node_get_favicon_file(node));
@@ -663,9 +638,6 @@ itemSetPtr feed_load_from_cache(nodePtr node) {
 			else if(!xmlStrcmp(cur->name, BAD_CAST"feedDiscontinued")) 
 				feed->discontinued = (0 == atoi(tmp))?FALSE:TRUE;
 
-			else if(!xmlStrcmp(cur->name, BAD_CAST"feedLastModified")) 
-				feed_set_lastmodified(feed, tmp);
-
 			else if(!xmlStrcmp(cur->name, BAD_CAST"item")) 
 				itemset_append_item(itemSet, item_parse_cache(cur, migrateCache));
 
@@ -729,9 +701,9 @@ gboolean feed_can_be_updated(nodePtr node) {
 
 static void feed_reset_update_counter_(feedPtr fp) {
 
-	g_get_current_time(&fp->lastPoll);
+	g_get_current_time(&fp->updateState->lastPoll);
 	feedlist_schedule_save();
-	debug1(DEBUG_UPDATE, "Resetting last poll counter to %ld.\n", fp->lastPoll.tv_sec);
+	debug1(DEBUG_UPDATE, "Resetting last poll counter to %ld.\n", fp->updateState->lastPoll.tv_sec);
 }
 
 static void feed_prepare_request(feedPtr feed, struct request *request, guint flags) {
@@ -743,12 +715,7 @@ static void feed_prepare_request(feedPtr feed, struct request *request, guint fl
 	/* prepare request url (strdup because it might be
   	   changed on permanent HTTP redirection in netio.c) */
 	request->source = g_strdup(feed_get_source(feed));
-	request->cookies = feed->cookies;
-
-	if(feed_get_lastmodified(feed))
-		request->lastmodified = g_strdup(feed_get_lastmodified(feed));
-	if(feed_get_etag(feed))
-		request->etag = g_strdup(feed_get_etag(feed));
+	request->updateState = feed->updateState;
 	request->flags = flags;
 	request->priority = (flags & FEED_REQ_PRIORITY_HIGH)? 1 : 0;
 	request->allowRetries = (flags & FEED_REQ_ALLOW_RETRIES)? 1 : 0;
@@ -904,12 +871,12 @@ void feed_set_source(feedPtr fp, const gchar *source) {
 	fp->source = g_strchomp(g_strdup(source));
 	feedlist_schedule_save();
 	
-	g_free(fp->cookies);
+	g_free(fp->updateState->cookies);
 	if('|' != source[0])
 		/* check if we've got matching cookies ... */
-		fp->cookies = cookies_find_matching(source);
+		fp->updateState->cookies = cookies_find_matching(source);
 	else 
-		fp->cookies = NULL;
+		fp->updateState->cookies = NULL;
 }
 
 void feed_set_filter(feedPtr fp, const gchar *filter) {
@@ -927,26 +894,6 @@ void feed_set_html_url(feedPtr fp, const gchar *htmlUrl) {
 		fp->htmlUrl = g_strchomp(g_strdup(htmlUrl));
 	else
 		fp->htmlUrl = NULL;
-}
-
-const gchar * feed_get_lastmodified(feedPtr fp) { return fp->lastModified; };
-void feed_set_lastmodified(feedPtr fp, const gchar *lastmodified) {
-
-	g_free(fp->lastModified);
-	if(lastmodified != NULL)
-		fp->lastModified = g_strdup(lastmodified);
-	else
-		fp->lastModified = NULL;
-}
-
-const gchar * feed_get_etag(feedPtr fp) { return fp->etag; };
-void feed_set_etag(feedPtr fp, const gchar *etag) {
-
-	g_free(fp->etag);
-	if(etag != NULL)
-		fp->etag = g_strdup(etag);
-	else
-		fp->etag = NULL;
 }
 
 const gchar * feed_get_image_url(feedPtr fp) { return fp->imageUrl; };
@@ -1060,10 +1007,8 @@ static void feed_free(feedPtr feed) {
 	g_free(feed->description);
 	g_free(feed->source);
 	g_free(feed->filtercmd);
-	g_free(feed->lastModified);
-	g_free(feed->etag);
-	g_free(feed->cookies);
-	
+
+	update_state_free(feed->updateState);
 	metadata_list_free(feed->metadata);
 	g_free(feed);
 }
@@ -1121,9 +1066,6 @@ void feed_process_update_result(struct request *request) {
 		feed->available = TRUE;
 		ui_mainwindow_set_status_bar(_("\"%s\" has not changed since last update"), node_get_title(node));
 	} else if(NULL != request->data) {
-		feed_set_lastmodified(feed, request->lastmodified);
-		feed_set_etag(feed, request->etag);
-		
 		/* we save all properties that should not be overwritten in all cases */
 		old_update_interval = feed_get_update_interval(feed);
 		old_title = g_strdup(node_get_title(node));
@@ -1326,11 +1268,11 @@ static void feed_request_auto_update(nodePtr node) {
 		flags |= FEED_REQ_ALLOW_RETRIES;
 
 	if(interval > 0)
-		if(feed->lastPoll.tv_sec + interval*60 <= now.tv_sec)
+		if(feed->updateState->lastPoll.tv_sec + interval*60 <= now.tv_sec)
 			feed_schedule_update(node, flags);
 
 	/* And check for favicon updating */
-	if(feed->lastFaviconPoll.tv_sec + 30*24*60*60 <= now.tv_sec)
+	if(feed->updateState->lastFaviconPoll.tv_sec + 30*24*60*60 <= now.tv_sec)
 		favicon_download(node);
 }
 
@@ -1374,7 +1316,6 @@ static struct nodeType nti = {
 	feed_reset_update_counter,
 	feed_request_update,
 	feed_request_auto_update,
-	feed_schedule_update,
 	feed_remove,
 	feed_mark_all_read,
 	feed_render,

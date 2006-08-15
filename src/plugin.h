@@ -72,29 +72,4 @@ void plugin_mgmt_deinit(void);
  */
 GSList * plugin_mgmt_get_list(void);
 
-/* common plugin methods */
-
-/**
- * Enables the plugin with the given id,
- *
- * @param id	plugin id
- */
-void plugin_enable(guint id);
-
-/**
- * Disables the plugin with the given id,
- *
- * @param id	plugin id
- */
-void plugin_disable(guint id);
-
-/**
- * Returns TRUE if the plugin with the given id is active, FALSE if not.
- *
- * @param id	plugin id
- *
- * @return TRUE if plugin is enabled
- */
-gboolean plugin_get_active(guint id);
-
 #endif

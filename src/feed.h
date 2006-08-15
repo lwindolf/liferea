@@ -98,18 +98,11 @@ typedef struct feed {
 	gint		updateInterval;		/**< user defined update interval in minutes */
 	GSList		*metadata;		/**< metadata of this feed */
 	gboolean	encAutoDownload;	/**< enclosure auto download flag */
-
-	/* feed updating state properties */
-	gchar		*lastModified;		/**< Last modified string as sent by the server */
-	gchar		*etag;			/**< E-Tag sent by the server */
-	GTimeVal	lastPoll;		/**< time at which the feed was last updated */
-	GTimeVal	lastFaviconPoll;	/**< time at which the feed was last updated */
-	gchar		*cookies;		/**< cookies to be used */	
 	
 	/* feed cache state properties */
 	gint		cacheLimit;		/**< Amount of cache to save: See the cache_limit enum */
 	gboolean	noIncremental;		/**< Do merging for this feed but drop old items */
-	
+	updateStatePtr	updateState;		/**< update states (etag, last modified, cookies, last polling times...) */	
 } *feedPtr;
 
 /* ------------------------------------------------------------ */

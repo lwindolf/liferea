@@ -37,7 +37,6 @@
 #include "support.h"
 #include "debug.h"
 #include "plugin.h"
-#include "fl_providers/fl_plugin.h"
 #include "ui/ui_node.h"
 #include "ui/ui_feedlist.h"
 
@@ -178,7 +177,10 @@ gboolean export_OPML_feedlist(const gchar *filename, nodePtr node, gboolean inte
 	return error;
 }
 
-static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, flNodeSource *nodeSource, gboolean trusted) {
+void import_parse_update_state(xmlNodePtr cur, updateStatePtr updateState) {
+}
+
+static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, flNodeSourcePtr nodeSource, gboolean trusted) {
 	gchar		*title, *typeStr, *tmp, *sortStr;
 	nodePtr		np = NULL;
 	gpointer	data = NULL;
@@ -321,7 +323,7 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, flNodeSourc
 	debug_exit("import_parse_outline");
 }
 
-static void import_parse_body(xmlNodePtr n, nodePtr parentNode, flNodeSource *nodeSource, gboolean trusted) {
+static void import_parse_body(xmlNodePtr n, nodePtr parentNode, flNodeSourcePtr nodeSource, gboolean trusted) {
 	xmlNodePtr cur;
 	
 	cur = n->xmlChildrenNode;
@@ -332,7 +334,7 @@ static void import_parse_body(xmlNodePtr n, nodePtr parentNode, flNodeSource *no
 	}
 }
 
-static void import_parse_OPML(xmlNodePtr n, nodePtr parentNode, flNodeSource *nodeSource, gboolean trusted) {
+static void import_parse_OPML(xmlNodePtr n, nodePtr parentNode, flNodeSourcePtr nodeSource, gboolean trusted) {
 	xmlNodePtr cur;
 	
 	cur = n->xmlChildrenNode;
@@ -345,7 +347,7 @@ static void import_parse_OPML(xmlNodePtr n, nodePtr parentNode, flNodeSource *no
 	}	
 }
 
-void import_OPML_feedlist(const gchar *filename, nodePtr parentNode, flNodeSource *nodeSource, gboolean showErrors, gboolean trusted) {
+void import_OPML_feedlist(const gchar *filename, nodePtr parentNode, flNodeSourcePtr nodeSource, gboolean showErrors, gboolean trusted) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur;
 	

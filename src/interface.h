@@ -14,3 +14,4 @@ GtkWidget* create_authdialog (void);
 GtkWidget* create_vfolderdialog (void);
 GtkWidget* create_enchandlerdialog (void);
 GtkWidget* create_searchdialog (void);
+GtkWidget* create_updatedialog (void);

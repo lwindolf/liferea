@@ -57,6 +57,91 @@ static GMutex	*cond_mutex = NULL;
 static GCond	*offline_cond = NULL;
 static gboolean	online = TRUE;
 
+/* update state interface */
+
+updateStatePtr update_state_new(void) {
+
+	return g_new0(struct updateState, 1);
+}
+
+const gchar * update_state_get_lastmodified(updateStatePtr updateState) { return updateState->lastModified; };
+void update_state_set_lastmodified(updateStatePtr updateState, const gchar *lastModified) {
+
+	g_free(updateState->lastModified);
+	updateState->lastModified = NULL;
+	if(lastModified)
+		updateState->lastModified = g_strdup(lastModified);
+}
+
+const gchar * update_state_get_etag(updateStatePtr updateState) { return updateState->etag; };
+void update_state_set_etag(updateStatePtr updateState, const gchar *etag) {
+
+	g_free(updateState->etag);
+	updateState->etag = NULL;
+	if(etag)
+		updateState->etag = g_strdup(etag);
+}
+
+void update_state_import(xmlNodePtr cur, updateStatePtr updateState) {
+	xmlChar	*tmp;
+	
+	tmp = xmlGetProp(cur, BAD_CAST"etag");
+	if(tmp) {
+		update_state_set_etag(updateState, tmp);
+		xmlFree(tmp);
+	}
+	
+	tmp = xmlGetProp(cur, BAD_CAST"lastModified");
+	if(tmp) {
+		update_state_set_lastmodified(updateState, tmp);
+		xmlFree(tmp);
+	}
+		
+	/* Last poll time*/
+	tmp = xmlGetProp(cur, BAD_CAST"lastPollTime");
+	updateState->lastPoll.tv_sec = common_parse_long(tmp, 0L);
+	updateState->lastPoll.tv_usec = 0L;
+	if(tmp)
+		xmlFree(tmp);
+
+	tmp = xmlGetProp(cur, BAD_CAST"lastFaviconPollTime");
+	updateState->lastFaviconPoll.tv_sec = common_parse_long(tmp, 0L);
+	updateState->lastFaviconPoll.tv_usec = 0L;
+	if(tmp)
+		xmlFree(tmp);
+}
+
+void update_state_export(xmlNodePtr cur, updateStatePtr updateState) {
+
+	if(update_state_get_etag(updateState)) 
+		xmlNewProp(cur, BAD_CAST"etag", BAD_CAST update_state_get_etag(updateState));
+
+	if(update_state_get_lastmodified(updateState)) 
+		xmlNewProp(cur, BAD_CAST"lastModified", BAD_CAST update_state_get_lastmodified(updateState));
+		
+	if(updateState->lastPoll.tv_sec > 0) {
+		gchar *lastPoll = g_strdup_printf("%ld", updateState->lastPoll.tv_sec);
+		xmlNewProp(cur, BAD_CAST"lastPollTime", BAD_CAST lastPoll);
+		g_free(lastPoll);
+	}
+	
+	if(updateState->lastFaviconPoll.tv_sec > 0) {
+		gchar *lastPoll = g_strdup_printf("%ld", updateState->lastFaviconPoll.tv_sec);
+		xmlNewProp(cur, BAD_CAST"lastFaviconPollTime", BAD_CAST lastPoll);
+		g_free(lastPoll);
+	}
+}
+
+void update_state_free(updateStatePtr updateState) {
+
+	g_free(updateState->etag);
+	g_free(updateState->lastModified);
+	g_free(updateState->cookies);
+	g_free(updateState);
+}
+
+/* update request processing */
+
 /* filter idea (and some of the code) was taken from Snownews */
 static char* update_exec_filter_cmd(gchar *cmd, gchar *data, gchar **errorOutput, size_t *size) {
 	int		fd, status;
@@ -261,11 +346,8 @@ void update_execute_request_sync(struct request *request) {
 gpointer update_request_new() {
 	struct request	*request;
 
-	debug_enter("update_request_new");	
-	   
 	request = g_new0(struct request, 1);
-
-	debug_exit("update_request_new");
+	request->state = REQUEST_STATE_INITIALIZED;
 	
 	return (gpointer)request;
 }
@@ -277,8 +359,6 @@ void update_request_free(struct request *request) {
 	g_free(request->source);
 	g_free(request->filtercmd);
 	g_free(request->filterErrors);
-	g_free(request->lastmodified);
-	g_free(request->etag);
 	g_free(request->data);
 	g_free(request->contentType);
 	g_free(request);
@@ -290,7 +370,7 @@ static void *update_dequeue_requests(void *data) {
 	struct request	*request;
 	gboolean	high_priority = (gboolean)data;
 
-	for(;;)	{	
+	for(;;)	{
 		/* block updating if we are offline */
 		if(!online) {
 			debug0(DEBUG_UPDATE, "now going offline!");
@@ -299,18 +379,25 @@ static void *update_dequeue_requests(void *data) {
 	                g_mutex_unlock(cond_mutex);
 			debug0(DEBUG_UPDATE, "going online again!");
 		}
-
 		
 		/* do update processing */
 		debug0(DEBUG_VERBOSE, "waiting for request...");
 		if(high_priority) {
 			request = g_async_queue_pop(requests_high_prio);
 		} else {
-			request = g_async_queue_try_pop(requests_high_prio);
-			if(NULL == request) 
-				request = g_async_queue_pop(requests_normal_prio);
+			do {
+				request = g_async_queue_try_pop(requests_high_prio);
+				if(!request) {
+					GTimeVal wait;
+					g_get_current_time(&wait);
+					g_time_val_add(&wait, 5000);
+					request = g_async_queue_timed_pop(requests_normal_prio, &wait);
+				}
+			} while(!request);
 		}
 		g_assert(NULL != request);
+		request->state = REQUEST_STATE_PROCESSING;
+
 		debug1(DEBUG_UPDATE, "processing received request (%s)", request->source);
 		if(request->callback == NULL) {
 			debug1(DEBUG_UPDATE, "freeing cancelled request (%s)", request->source);
@@ -327,7 +414,12 @@ static void *update_dequeue_requests(void *data) {
 
 void update_execute_request(struct request *new_request) {
 
-	if(new_request->priority == 1)
+	g_assert(new_request->data == NULL);
+	g_assert(new_request->size == 0);
+	
+	new_request->state = REQUEST_STATE_PENDING;
+
+	if(1 == new_request->priority)
 		g_async_queue_push(requests_high_prio, new_request);
 	else
 		g_async_queue_push(requests_normal_prio, new_request);
@@ -414,6 +506,7 @@ static gboolean update_dequeue_results(gpointer user_data) {
 	struct request	*request;
 	
 	while(NULL != (request = g_async_queue_try_pop(results))) {
+		request->state = REQUEST_STATE_FINISHED;
 
 		/* Handling abandoned requests (e.g. after feed deletion) */
 		if(request->callback == NULL) {	

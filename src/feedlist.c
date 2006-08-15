@@ -36,7 +36,7 @@
 #include "ui/ui_tray.h"
 #include "ui/ui_feed.h"
 #include "ui/ui_node.h"
-#include "fl_providers/fl_plugin.h"
+#include "fl_sources/fl_plugin.h"
 #include "notification/notif_plugin.h"
 
 static guint unreadCount = 0;
@@ -329,7 +329,6 @@ static void feedlist_update_vfolder_count(nodePtr node) {
 }
 
 void feedlist_init(void) {
-	flPluginPtr	rootPlugin;
 
 	debug_enter("feedlist_init");
 	
@@ -344,12 +343,11 @@ void feedlist_init(void) {
 	rootNode->title = g_strdup("root");
 	rootNode->type = FST_ROOT;
 
-	/* 3. Initialize list of feed list plugins and find root 
-	   provider plugin. Creating an instance of this plugin. This 
-	   will load the feed list and all attached plugin 
+	/* 3. Initialize list of feed list plugins, find root 
+	   provider plugin and creating an instance of this plugin. 
+	   This will load the feed list and all attached plugin 
 	   handlers. */
-	rootPlugin = fl_plugins_get_root();
-	rootPlugin->source_import(rootNode);
+	fl_plugins_setup_root(rootNode);
 
 	/* 4. Sequentially load and unload all feeds and by doing so 
 	   automatically load all vfolders */

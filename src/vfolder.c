@@ -534,7 +534,6 @@ static void vfolder_unload(nodePtr node) { }
 static void vfolder_reset_update_counter(nodePtr node) { }
 static void vfolder_request_update(nodePtr node, guint flags) { }
 static void vfolder_request_auto_update(nodePtr node) { }
-static void vfolder_schedule_update(nodePtr node, guint flags) { }
 
 static void vfolder_remove(nodePtr node) {
 
@@ -568,7 +567,6 @@ static struct nodeType nti = {
 	vfolder_reset_update_counter,
 	vfolder_request_update,
 	vfolder_request_auto_update,
-	vfolder_schedule_update,
 	vfolder_remove,
 	vfolder_mark_all_read,
 	vfolder_render,

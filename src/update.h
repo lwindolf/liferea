@@ -25,6 +25,8 @@
 #include <time.h>
 #include <glib.h>
 
+#include <libxml/parser.h>
+
 /* Maximum number of retries that can be done */
 #define REQ_MAX_NUMBER_OF_RETRIES 3
 /* Delay (in seconds) to wait before the first retry.
@@ -33,6 +35,13 @@
 /* Maximum delay (in seconds) beetween two retries. Useful to avoid 
  * stupidly long waits if REQ_MAX_NUMBER_OF_RETRIES is high. */
 #define REQ_MAX_DELAY_FOR_RETRY 500
+
+typedef enum {
+	REQUEST_STATE_INITIALIZED = 0,	/**< request struct newly created */
+	REQUEST_STATE_PENDING,		/**< request added to download queue */
+	REQUEST_STATE_PROCESSING,	/**< request currently in download */
+	REQUEST_STATE_FINISHED		/**< request download finished */
+} request_state;
 
 typedef enum {
 	NET_ERR_OK = 0,
@@ -76,46 +85,91 @@ typedef void (*request_cb)(struct request *request);
  * the SnowNews netio.c code which is displayed in the GUI. 
  */
 
-struct request {
-	
+/** defines all state data an updatable object (e.g. a feed) needs */
+typedef struct updateState {
+	gchar		*lastModified;		/**< Last modified string as sent by the server */
+	gchar		*etag;			/**< E-Tag sent by the server */
+	GTimeVal	lastPoll;		/**< time at which the feed was last updated */
+	GTimeVal	lastFaviconPoll;	/**< time at which the feeds favicon was last updated */
+	gchar		*cookies;		/**< cookies to be used */	
+} *updateStatePtr;
+
+/** structure storing all information about a single update request */
+typedef struct request {	
 	/* Set by requester */
-	gchar *source;		/**< Location of the source. If it starts with
-				     '|', it is a command. If it contains "://",
-				     then it is parsed as a URL, otherwise it is a
-				     filename. Eventually, everything should be a
-				     URL. Use file:// and exec:// */
-	gchar *filtercmd;	/**< Command will filter output of URL */
-	gchar *cookies;		/**< cookies to be used */	
-	request_cb callback;	/**< Function to be called after retreival */
-	gpointer user_data;	/**< Accessed by the callback. Usually contains the feedPtr the download result is for (to be accessed by the callback). */
-	guint32 flags;		/**< Flags to be passed to the callback */
-	gint priority;		/**< priority of the request. Set to 1 for high priority */
+	gchar 		*source;	/**< Location of the source. If it starts with
+					     '|', it is a command. If it contains "://",
+					     then it is parsed as a URL, otherwise it is a
+					     filename. Eventually, everything should be a
+					     URL. Use file:// and exec:// */
+	gchar		*filtercmd;	/**< Command will filter output of URL */
+	request_cb	callback;	/**< Function to be called after retreival */
+	gpointer	user_data;	/**< Accessed by the callback. Usually contains the feedPtr the download result is for (to be accessed by the callback). */
+	guint32		flags;		/**< Flags to be passed to the callback */
+	gint		priority;	/**< priority of the request. Set to 1 for high priority */
 	
 	/* Set by download system*/
-	int returncode;
-	int httpstatus;		/**< HTTP status. Set to 200 for any valid command, file access, etc.... Set to 0 for unknown */
-	gchar *lastmodified;	/**< Time of last modification. Stored in UTC. */
-	gchar *etag;		/**< E-Tag value for download. Set by both requestor and download subsystem */
-	gchar *data;
-	size_t size;
-	gchar *contentType;	/**< Content type of received data */
+	int		returncode;	/**< Download status (0=success, otherwise error) */
+	int		httpstatus;	/**< HTTP status. Set to 200 for any valid command, file access, etc.... Set to 0 for unknown */
+	gint		state;		/**< State of the request (enum request_state) */
+	updateStatePtr	updateState;	/**< Update state of the requested object (etags, last modified...) */
+	gchar		*data;		/**< Downloaded data */
+	size_t		size;		/**< Size of downloaded data */
+	gchar		*contentType;	/**< Content type of received data */
 	 
-	gchar *filterErrors;	/**< Error messages from filter execution */
-	gboolean allowRetries;	/**< Allow download retries on network errors */
-	gushort retriesCount;	/**< Count how many retries have been done */
-};
+	gchar		*filterErrors;	/**< Error messages from filter execution */
+	gboolean	allowRetries;	/**< Allow download retries on network errors */
+	gushort		retriesCount;	/**< Count how many retries have been done */
+} *requestPtr;
+
+/**
+ * Creates a new update state structure 
+ *
+ * @return a newly allocated state structure
+ */
+updateStatePtr update_state_new(void);
+
+/* update state attribute encapsulation */
+const gchar * update_state_get_lastmodified(updateStatePtr updateState);
+void update_state_set_lastmodified(updateStatePtr updateState, const gchar *lastmodified);
+
+const gchar * update_state_get_etag(updateStatePtr updateState);
+void update_state_set_etag(updateStatePtr updateState, const gchar *etag);
+
+/**
+ * Imports an updateState from the given XML node.
+ *
+ * @param cur		the XML node
+ * @param updateState	the update state to set
+ */
+void update_state_import(xmlNodePtr cur, updateStatePtr updateState);
+
+/**
+ * Exports the given updateState. Adds attributes to the given XML node.
+ *
+ * @param cur		the XML node
+ * @param updateState	the update state to export
+ */
+void update_state_export(xmlNodePtr cur, updateStatePtr updateState);
+
+/**
+ * Frees the given update state.
+ *
+ * @param updateState	the update state
+ */
+void update_state_free(updateStatePtr updateState);
 
 /**
  * Initialises the download subsystem, including its thread(s). 
  */
-void update_init(); 
+void update_init(void); 
 
 /** 
  * Creates a new request structure.
  * 
  * @returns a new request
  */
-gpointer update_request_new();
+gpointer update_request_new(void);
 
 /**
  * Used to free a request structure. Frees all members, including data.

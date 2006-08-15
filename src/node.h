@@ -50,7 +50,7 @@ typedef struct node {
 	gpointer		data;		/**< node type specific data structure */
 	guint			type;		/**< node type */
 	struct nodeType		*nodeType;	/**< node type implementation */	
-	struct flNodeSource_	*source;	/**< the feed list plugin instance handling this node */
+	struct flNodeSource	*source;	/**< the feed list plugin instance handling this node */
 
 	struct request		*updateRequest;	/**< update request structure used when downloading content (is not to be listed in the requests list!) */
 	GSList			*requests;	/**< list of other active download requests attached belonging to this node */
@@ -90,7 +90,6 @@ typedef struct nodeType {
 	void	(*reset_update_counter)	(nodePtr node);
 	void	(*request_update)	(nodePtr node, guint flags);
 	void 	(*request_auto_update)	(nodePtr node);
-	void	(*schedule_update)	(nodePtr node, guint flags);
 	void	(*remove)		(nodePtr node);
 	void 	(*mark_all_read)	(nodePtr node);
 	gchar * (*render)		(nodePtr node);
@@ -387,20 +386,14 @@ gchar * node_render(nodePtr node);
 void node_request_auto_update(nodePtr node);
 
 /**
- * Immediate node updating (user requested).
+ * Immediate node updating (user requested). The request might
+ * be ignored in some cases (e.g. when feed is discontinued or 
+ * another request is already running).
  *
  * @param node	the node
  * @param flags	update handling flags
  */
 void node_request_update(nodePtr node, guint flags);
-
-/**
- * Called from plugins to issue download requests.
- *
- * @param node		the node
- * @param flags		update handling flags
- */
-void node_schedule_update(nodePtr node, guint flags);
 
 /**
  * Request opening a properties dialog for the given node.

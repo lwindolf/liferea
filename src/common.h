@@ -39,6 +39,16 @@ extern gboolean lifereaStarted;
    string is returned, the original XML string is freed. */
 gchar * utf8_fix(xmlChar * string);
 
+/**
+ * Parses the given string as a number.
+ *
+ * @param str	the string to parse
+ * @param def	default value to return on parsing error
+ *
+ * @returns result value
+ */
+long common_parse_long(gchar *str, long def);
+
 /* converts a UTF-8 string to HTML (resolves XML entities) */
 gchar * convertToHTML(gchar * string);
 
@@ -76,11 +86,35 @@ gchar * common_strip_dhtml(const gchar *html);
  * Note: this function does not respect relative URLs
  * and is to be used for cache migration 1.0 -> 1.1 only!
  *
- * @param text	    usually an entity escaped HTML string
+ * @param text		usually an entity escaped HTML string
  *
  * @returns a new valid XHTML string
  */
 gchar * common_text_to_xhtml(const gchar *text);
+
+/**
+ * Evaluates an XPath expression and returns TRUE if the result set is not empty.
+ *
+ * @param doc		document to apply the XPath expression to
+ * @param expr		an XPath expression string
+ *
+ * @return TRUE if result set was not empty
+ */
+gboolean common_xpath_match(xmlDocPtr doc, gchar *expr);
+
+/** Function type used by common_xpath_foreach_match() */
+typedef void (*xpathMatchFunc)(xmlNodePtr match, gpointer user_data);
+
+/**
+ * Executes an XPath expression and calls the given function for each matching node.
+ *
+ * @param doc		document to apply the XPath expression to
+ * @param expr		an XPath expression string
+ * @param func		the function to call for each result
+ *
+ * @return TRUE if result set was not empty
+ */
+gboolean common_xpath_foreach_match(xmlDocPtr doc, gchar *expr, xpathMatchFunc func, gpointer user_data);
 
 /** used to keep track of error messages during feed parsing */
 typedef struct errorCtxt {

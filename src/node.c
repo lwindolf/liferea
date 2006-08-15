@@ -32,7 +32,7 @@
 #include "update.h"
 #include "debug.h"
 #include "support.h"
-#include "fl_providers/fl_plugin.h"
+#include "fl_sources/fl_plugin.h"
 
 static GHashTable *nodeTypes = NULL;
 
@@ -64,7 +64,7 @@ gchar * node_new_id() {
 	return id;
 }
 
-nodePtr node_new() {
+nodePtr node_new(void) {
 	nodePtr	node;
 
 	node = (nodePtr)g_new0(struct node, 1);
@@ -357,7 +357,7 @@ void node_add(nodePtr node, nodePtr parent, gint pos, guint flags) {
 	ui_feedlist_get_target_folder(&pos);
 
 	node_add_child(parent, node, pos);
-	node_schedule_update(node, flags);
+	node_request_update(node, flags);
 }
 
 /* Interactive node adding (e.g. feed menu->new subscription) */
@@ -394,7 +394,7 @@ void node_request_automatic_add(gchar *source, gchar *title, gchar *filter, gint
 
 	ui_feedlist_get_target_folder(&pos);
 	node_add_child(parent, node, pos);
-	node_schedule_update(node, flags);
+	node_request_update(node, flags);
 }
 
 void node_request_remove(nodePtr node) {
@@ -446,10 +446,6 @@ void node_request_auto_update(nodePtr node) {
 
 void node_request_update(nodePtr node, guint flags) {
 	NODE(node)->request_update(node, flags);
-}
-
-void node_schedule_update(nodePtr node, guint flags) {
-	NODE(node)->schedule_update(node, flags);
 }
 
 void node_request_properties(nodePtr node) {

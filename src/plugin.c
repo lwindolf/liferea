@@ -18,6 +18,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#else
+#  define LIBPREFIX "lib"
+#endif
+
 #include <gmodule.h>
 #include <string.h>
 #include <libxml/tree.h>
@@ -26,14 +32,8 @@
 #include "node.h"
 #include "plugin.h"
 #include "ui/ui_htmlview.h"
-#include "fl_providers/fl_plugin.h"
+#include "fl_sources/fl_plugin.h"
 #include "notification/notif_plugin.h"
-
-#ifndef __CYGWIN__
-#define LIBPREFIX	"lib"
-#else
-#define	LIBPREFIX	"cyg"
-#endif
 
 /* plugin managment */
 
@@ -109,9 +109,9 @@ void plugin_mgmt_init(void) {
 	debug_enter("plugin_mgmt_get_init");
 
 	if(!g_module_supported())
-		g_error(_("Modules not supported! (%s)"), g_module_error());
+		g_error("Modules not supported! (%s)", g_module_error());
 
-	debug1(DEBUG_PLUGINS, _("Scanning for plugins (%s):"), PACKAGE_LIB_DIR);
+	debug1(DEBUG_PLUGINS, "Scanning for plugins (%s):", PACKAGE_LIB_DIR);
 	dir = g_dir_open(PACKAGE_LIB_DIR, 0, &error);
 	if(!error) {
 		/* The expected library name syntax: 
@@ -160,28 +160,7 @@ void plugin_mgmt_init(void) {
 	debug_exit("plugin_mgmt_init");
 }
 
-void plugin_mgmt_deinit(void) {
-	// FIXME
-}
+void plugin_mgmt_deinit(void) { }
 
 GSList * plugin_mgmt_get_list(void) { return plugins; }
-
-/* common plugin methods */
-
-void plugin_enable(guint id) {
-
-	// FIXME: set gconf key to true
-}
-
-void plugin_disable(guint id) {
-
-	// FIXME: set gconf key to false
-}
-
-gboolean plugin_get_active(guint id) {
-
-	// FIXME: return enabled state from gconf
-	return TRUE;
-}
-
 

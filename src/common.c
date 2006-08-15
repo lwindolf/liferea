@@ -124,6 +124,17 @@ gchar * utf8_fix(xmlChar *string) {
 	return string;
 }
 
+long common_parse_long(gchar *str, long def) {
+	long num;
+
+	if(str == NULL)
+		return def;
+	if(0 == (sscanf(str,"%ld",&num)))
+		num = def;
+	
+	return num;
+}
+
 static xmlDocPtr common_parse_html(const gchar *html, gint len) {
 	xmlDocPtr out = NULL;
 	
@@ -403,6 +414,47 @@ xmlEntityPtr common_process_entities(void *ctxt, const xmlChar *name) {
 		g_print("unsupported entity: %s\n", name);
 	}
 	return entity;
+}
+
+gboolean common_xpath_match(xmlDocPtr doc, gchar *expr) {
+	gboolean	result = FALSE;
+	
+	if(doc) {
+		xmlXPathContextPtr xpathCtxt = NULL;
+		xmlXPathObjectPtr xpathObj = NULL;
+		
+		if(NULL != (xpathCtxt = xmlXPathNewContext(doc)))
+			xpathObj = xmlXPathEvalExpression(expr, xpathCtxt);
+			
+		if(xpathObj && xpathObj->nodesetval->nodeMax)
+			result = (0 < xpathObj->nodesetval->nodeNr);
+		
+		if(xpathObj) xmlXPathFreeObject(xpathObj);
+		if(xpathCtxt) xmlXPathFreeContext(xpathCtxt);
+	}
+	return result;
+}
+
+gboolean common_xpath_foreach_match(xmlDocPtr doc, gchar *expr, xpathMatchFunc func, gpointer user_data) {
+	
+	if(doc) {
+		xmlXPathContextPtr xpathCtxt = NULL;
+		xmlXPathObjectPtr xpathObj = NULL;
+		
+		if(NULL != (xpathCtxt = xmlXPathNewContext(doc)))
+			xpathObj = xmlXPathEvalExpression(expr, xpathCtxt);
+			
+		if(xpathObj && xpathObj->nodesetval->nodeMax) {
+			int	i;
+			for(i = 0; i < xpathObj->nodesetval->nodeNr; i++)
+				(*func)(xpathObj->nodesetval->nodeTab[i], user_data);
+		}
+		
+		if(xpathObj) xmlXPathFreeObject(xpathObj);
+		if(xpathCtxt) xmlXPathFreeContext(xpathCtxt);
+		return TRUE;
+	}
+	return FALSE;
 }
 
 xmlDocPtr common_parse_xml(gchar *data, guint length, errorCtxtPtr errors) {

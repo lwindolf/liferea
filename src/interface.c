@@ -3202,3 +3202,139 @@ create_searchdialog (void)
   return searchdialog;
 }
 
+GtkWidget*
+create_updatedialog (void)
+{
+  GtkWidget *updatedialog;
+  GtkWidget *dialog_vbox18;
+  GtkWidget *table9;
+  GtkWidget *label228;
+  GtkWidget *label229;
+  GtkWidget *scrolledwindow10;
+  GtkWidget *right;
+  GtkWidget *scrolledwindow9;
+  GtkWidget *left;
+  GtkWidget *dialog_action_area18;
+  GtkWidget *button4;
+  GtkWidget *alignment36;
+  GtkWidget *hbox92233;
+  GtkWidget *image2463;
+  GtkWidget *label227;
+  GtkWidget *button5;
+
+  updatedialog = gtk_dialog_new ();
+  gtk_window_set_title (GTK_WINDOW (updatedialog), _("Update Monitor"));
+  gtk_window_set_default_size (GTK_WINDOW (updatedialog), 400, 300);
+  gtk_window_set_destroy_with_parent (GTK_WINDOW (updatedialog), TRUE);
+  gtk_window_set_type_hint (GTK_WINDOW (updatedialog), GDK_WINDOW_TYPE_HINT_DIALOG);
+
+  dialog_vbox18 = GTK_DIALOG (updatedialog)->vbox;
+  gtk_widget_show (dialog_vbox18);
+
+  table9 = gtk_table_new (2, 2, FALSE);
+  gtk_widget_show (table9);
+  gtk_box_pack_start (GTK_BOX (dialog_vbox18), table9, TRUE, TRUE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (table9), 6);
+  gtk_table_set_row_spacings (GTK_TABLE (table9), 6);
+  gtk_table_set_col_spacings (GTK_TABLE (table9), 6);
+
+  label228 = gtk_label_new (_("<b>Downloading Now</b>"));
+  gtk_widget_show (label228);
+  gtk_table_attach (GTK_TABLE (table9), label228, 0, 1, 0, 1,
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (0), 0, 0);
+  gtk_label_set_use_markup (GTK_LABEL (label228), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (label228), 0, 0.5);
+
+  label229 = gtk_label_new (_("<b>Pending Requests</b>"));
+  gtk_widget_show (label229);
+  gtk_table_attach (GTK_TABLE (table9), label229, 1, 2, 0, 1,
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (0), 0, 0);
+  gtk_label_set_use_markup (GTK_LABEL (label229), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (label229), 0, 0.5);
+
+  scrolledwindow10 = gtk_scrolled_window_new (NULL, NULL);
+  gtk_widget_show (scrolledwindow10);
+  gtk_table_attach (GTK_TABLE (table9), scrolledwindow10, 1, 2, 1, 2,
+                    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
+                    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow10), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+  gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolledwindow10), GTK_SHADOW_IN);
+
+  right = gtk_tree_view_new ();
+  gtk_widget_show (right);
+  gtk_container_add (GTK_CONTAINER (scrolledwindow10), right);
+  gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (right), FALSE);
+
+  scrolledwindow9 = gtk_scrolled_window_new (NULL, NULL);
+  gtk_widget_show (scrolledwindow9);
+  gtk_table_attach (GTK_TABLE (table9), scrolledwindow9, 0, 1, 1, 2,
+                    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
+                    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow9), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+  gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolledwindow9), GTK_SHADOW_IN);
+
+  left = gtk_tree_view_new ();
+  gtk_widget_show (left);
+  gtk_container_add (GTK_CONTAINER (scrolledwindow9), left);
+  gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (left), FALSE);
+
+  dialog_action_area18 = GTK_DIALOG (updatedialog)->action_area;
+  gtk_widget_show (dialog_action_area18);
+  gtk_button_box_set_layout (GTK_BUTTON_BOX (dialog_action_area18), GTK_BUTTONBOX_END);
+
+  button4 = gtk_button_new ();
+  gtk_widget_show (button4);
+  gtk_dialog_add_action_widget (GTK_DIALOG (updatedialog), button4, 0);
+  GTK_WIDGET_SET_FLAGS (button4, GTK_CAN_DEFAULT);
+
+  alignment36 = gtk_alignment_new (0.5, 0.5, 0, 0);
+  gtk_widget_show (alignment36);
+  gtk_container_add (GTK_CONTAINER (button4), alignment36);
+
+  hbox92233 = gtk_hbox_new (FALSE, 2);
+  gtk_widget_show (hbox92233);
+  gtk_container_add (GTK_CONTAINER (alignment36), hbox92233);
+
+  image2463 = gtk_image_new_from_stock ("gtk-delete", GTK_ICON_SIZE_BUTTON);
+  gtk_widget_show (image2463);
+  gtk_box_pack_start (GTK_BOX (hbox92233), image2463, FALSE, FALSE, 0);
+
+  label227 = gtk_label_new_with_mnemonic (_("Cancel _All"));
+  gtk_widget_show (label227);
+  gtk_box_pack_start (GTK_BOX (hbox92233), label227, FALSE, FALSE, 0);
+
+  button5 = gtk_button_new_from_stock ("gtk-close");
+  gtk_widget_show (button5);
+  gtk_dialog_add_action_widget (GTK_DIALOG (updatedialog), button5, GTK_RESPONSE_CLOSE);
+  GTK_WIDGET_SET_FLAGS (button5, GTK_CAN_DEFAULT);
+
+  g_signal_connect ((gpointer) button4, "clicked",
+                    G_CALLBACK (on_cancel_all_requests_clicked),
+                    NULL);
+  g_signal_connect ((gpointer) button5, "clicked",
+                    G_CALLBACK (on_close_update_monitor_clicked),
+                    NULL);
+
+  /* Store pointers to all widgets, for use by lookup_widget(). */
+  GLADE_HOOKUP_OBJECT_NO_REF (updatedialog, updatedialog, "updatedialog");
+  GLADE_HOOKUP_OBJECT_NO_REF (updatedialog, dialog_vbox18, "dialog_vbox18");
+  GLADE_HOOKUP_OBJECT (updatedialog, table9, "table9");
+  GLADE_HOOKUP_OBJECT (updatedialog, label228, "label228");
+  GLADE_HOOKUP_OBJECT (updatedialog, label229, "label229");
+  GLADE_HOOKUP_OBJECT (updatedialog, scrolledwindow10, "scrolledwindow10");
+  GLADE_HOOKUP_OBJECT (updatedialog, right, "right");
+  GLADE_HOOKUP_OBJECT (updatedialog, scrolledwindow9, "scrolledwindow9");
+  GLADE_HOOKUP_OBJECT (updatedialog, left, "left");
+  GLADE_HOOKUP_OBJECT_NO_REF (updatedialog, dialog_action_area18, "dialog_action_area18");
+  GLADE_HOOKUP_OBJECT (updatedialog, button4, "button4");
+  GLADE_HOOKUP_OBJECT (updatedialog, alignment36, "alignment36");
+  GLADE_HOOKUP_OBJECT (updatedialog, hbox92233, "hbox92233");
+  GLADE_HOOKUP_OBJECT (updatedialog, image2463, "image2463");
+  GLADE_HOOKUP_OBJECT (updatedialog, label227, "label227");
+  GLADE_HOOKUP_OBJECT (updatedialog, button5, "button5");
+
+  return updatedialog;
+}
+
