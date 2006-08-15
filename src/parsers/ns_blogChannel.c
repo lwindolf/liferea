@@ -159,7 +159,7 @@ static void ns_blogChannel_download_request_cb(struct request *request) {
 				g_hash_table_insert(requestData->ctxt->tmpdata, g_strdup("bC:mySubscriptions"), buffer->str);
 				break;
 		}
-		g_string_free(buffer, TRUE);
+		g_string_free(buffer, FALSE);
 
 		buffer = g_string_new(NULL);
 		g_string_append(buffer, g_hash_table_lookup(requestData->ctxt->tmpdata, "bC:blink"));
