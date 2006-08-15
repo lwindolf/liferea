@@ -1,7 +1,7 @@
 /**
  * @file fl_opml.c OPML Planet/Blogroll feedlist provider
  * 
- * Copyright (C) 2005-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2006 Lars Lindner <lars.lindner@gmx.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include <libxml/xpath.h>
+#include <libxml/parser.h>
+
 #include <unistd.h>
+
 #include "support.h"
 #include "common.h"
 #include "debug.h"
@@ -26,20 +30,15 @@
 #include "node.h"
 #include "export.h"
 #include "ui/ui_feedlist.h"
-#include "fl_providers/fl_opml.h"
-#include "fl_providers/fl_opml-ui.h"
-#include "fl_providers/fl_opml-cb.h"
-#include "fl_providers/fl_plugin.h"
+#include "fl_sources/fl_opml.h"
+#include "fl_sources/fl_opml-ui.h"
+#include "fl_sources/fl_opml-cb.h"
+#include "fl_sources/fl_plugin.h"
+
+/** default OPML update interval = once a day */
+#define OPML_SOURCE_UPDATE_INTERVAL 60*60*24
 
 static struct flPlugin fpi;
-
-void fl_opml_source_setup(nodePtr node) {
-
-	node->source = g_new0(struct flNodeSource_, 1);
-	node->source->root = node;
-	node->source->plugin = &fpi;
-	node->icon = create_pixbuf("fl_opml.png");
-}
 
 static gchar * fl_opml_source_get_feedlist(nodePtr node) {
 
@@ -51,8 +50,7 @@ static void fl_opml_source_import(nodePtr node) {
 
 	debug_enter("fl_opml_source_import");
 
-	/* create a new handler structure */
-	fl_opml_source_setup(node);
+	fl_opml_source_setup(NULL, node);
 	
 	debug1(DEBUG_CACHE, "starting import of opml plugin instance (id=%s)\n", node->id);
 	filename = fl_opml_source_get_feedlist(node);
@@ -104,29 +102,148 @@ static void fl_opml_source_remove(nodePtr node) {
 	g_free(filename);
 }
 
-static void fl_opml_source_update(nodePtr node) {
+typedef struct mergeCtxt {
+	nodePtr		rootNode;
+	xmlDocPtr	oldDoc;
+} *mergeCtxtPtr;
 
+static void fl_opml_source_merge_feed(xmlNodePtr match, gpointer user_data) {
+	mergeCtxtPtr	mergeCtxt = (mergeCtxtPtr)user_data;
+	xmlChar		*url, *title;
+	gchar		*expr;
+	nodePtr		node;
+
+	url = xmlGetProp(match, "xmlUrl");
+	title = xmlGetProp(match, "title");
+	if(!title)
+		title = xmlGetProp(match, "description");
+	if(!title)
+		title = xmlGetProp(match, "text");
+	if(!title && !url)
+		return;
+		
+	if(url)
+		expr = g_strdup_printf("//outline[@xmlUrl = '%s']", url);
+	else			
+		expr = g_strdup_printf("//outline[@title = '%s']", title);
+
+	if(!common_xpath_match(mergeCtxt->oldDoc, expr)) {
+		debug2(DEBUG_UPDATE, "adding %s (%s)\n", title, url);
+		node = node_new();
+		node_set_title(node, title);
+		if(url)
+			node_add_data(node, FST_FEED, feed_new(url, NULL));
+		else
+			node_add_data(node, FST_FOLDER, NULL);
+		node_add_child(mergeCtxt->rootNode, node, -1);
+		node_request_update(node, FEED_REQ_RESET_TITLE);
+	}
+	g_free(expr);
+	xmlFree(title);
+}
+
+static void fl_opml_source_check_for_removal(nodePtr node, gpointer user_data) {
+	feedPtr		feed = node->data;
+	gchar		*expr = NULL;
+
+	switch(node->type) {
+		case FST_FEED:
+			expr = g_strdup_printf("//outline[@xmlUrl = '%s']", feed->source);
+			break;
+		case FST_FOLDER:
+			expr = g_strdup_printf("//outline[@title = '%s']", node->title);
+			break;
+		default:
+			g_warning("fl_opml_source_check_for_removal(): This should never happen...");
+			return;
+			break;
+	}
+		
+	if(!common_xpath_match((xmlDocPtr)user_data, expr)) {
+		debug1(DEBUG_UPDATE, "removing %s...\n", node_get_title(node));
+		node_request_remove(node);
+	} else {
+		debug1(DEBUG_UPDATE, "keeping %s...\n", node_get_title(node));
+	}
+	g_free(expr);
+}
+
+static void fl_opml_process_update_results(struct request *request) {
+	nodePtr		node = (nodePtr)request->user_data;
+	mergeCtxtPtr	mergeCtxt;
+
+	debug1(DEBUG_UPDATE, "OPML download finished data=%d", request->data);
+
+	node->available = FALSE;
+	
+	if(request->data) {
+		xmlDocPtr doc;
+		doc = common_parse_xml(request->data, request->size, NULL);
+		if(doc) {		
+			/* Go through all existing nodes and remove those whose
+			   URLs are not in new feed list. Also removes those URLs
+			   from the list that have corresponding existing nodes. */
+			node_foreach_child_data(node, fl_opml_source_check_for_removal, (gpointer)doc);
+			
+			/* collect up-to-date feed URL list */
+			mergeCtxt = g_new0(struct mergeCtxt, 1);
+			mergeCtxt->rootNode = node;
+			mergeCtxt->oldDoc = xmlParseFile(fl_opml_source_get_feedlist(node));
+			common_xpath_foreach_match(doc, "/opml/body//outline", fl_opml_source_merge_feed, (gpointer)mergeCtxt);
+			g_free(mergeCtxt);
+			
+			xmlFreeDoc(doc);
+			fl_opml_source_export(node);	/* save new feed list tree to disk */		
+			node->available = TRUE;
+		}
+		g_print("new poll time:%ld\n",  node->source->updateState->lastPoll.tv_sec);
+	}
+	
 	node_foreach_child(node, node_request_update);
 }
 
-static void fl_opml_source_auto_update(nodePtr node) {
-
-	node_foreach_child(node, node_request_auto_update);
-}
-
-static void fl_opml_init(void) {
-
-	debug_enter("fl_opml_init");
-
-	debug_exit("fl_opml_init");
-}
-
-static void fl_opml_deinit(void) {
+void fl_opml_source_update(nodePtr node) {
+	requestPtr	request;
 	
-	debug_enter("fl_opml_deinit");
-
-	debug_exit("fl_opml_deinit");
+	if(node->source->url) {
+	g_assert(node->source->updateState);
+		request = update_request_new();
+		request->updateState = node->source->updateState;
+		request->source = g_strdup(node->source->url);
+		request->priority = 1;
+		request->callback = fl_opml_process_update_results;
+		request->user_data = node;
+		debug2(DEBUG_UPDATE, "updating OPML source %s (node id %s)", node->source->url, node->id);
+		update_execute_request(request);
+		g_get_current_time(&request->updateState->lastPoll);	
+	} else {
+		g_warning("Cannot update feed list source %s: missing URL!\n", node->title);
+	}
 }
+
+static void fl_opml_source_auto_update(nodePtr node) {
+	GTimeVal	now;
+	
+	g_get_current_time(&now);
+	
+	if(node->source->updateState->lastPoll.tv_sec + OPML_SOURCE_UPDATE_INTERVAL <= now.tv_sec)
+		fl_opml_source_update(node);	
+}
+
+/** called during import and when subscribing, we will do
+    node_add_child() only when subscribing */
+void fl_opml_source_setup(nodePtr parent, nodePtr node) {
+
+	node->icon = create_pixbuf("fl_opml.png");
+	
+	node_add_data(node, FST_PLUGIN, NULL);
+	if(parent)
+		node_add_child(parent, node, 0);
+}
+
+static void fl_opml_init(void) { }
+
+static void fl_opml_deinit(void) { }
 
 /* feed list provider plugin definition */
 

@@ -21,11 +21,21 @@
 #ifndef _FL_OPML_H
 #define _FL_OPML_H
 
+#include "node.h"
+
 /**
  * Sets up the given node as a OPML source node.
  *
- * @param node	the node
+ * @param parent	parent node (or NULL when importing)
+ * @param node		the node
  */
-void fl_opml_source_setup(nodePtr node);
+void fl_opml_source_setup(nodePtr parent, nodePtr node);
+
+/**
+ * Updates the OPML source of the given node.
+ *
+ * @param node		the node
+ */
+void fl_opml_source_update(nodePtr node);
 
 #endif

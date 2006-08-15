@@ -31,8 +31,8 @@
 #include "debug.h"
 #include "update.h"
 #include "plugin.h"
-#include "fl_providers/fl_default.h"
-#include "fl_providers/fl_plugin.h"
+#include "fl_sources/fl_default.h"
+#include "fl_sources/fl_plugin.h"
 #include "ui/ui_feed.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_mainwindow.h"
@@ -78,11 +78,6 @@ static void fl_default_source_import(nodePtr node) {
 	gchar		*filename10, *filename11;
 
 	debug_enter("fl_default_source_import");
-
-	/* create a new handler structure */
-	node->source = g_new0(struct flNodeSource_, 1);
-	node->source->root = node;
-	node->source->plugin = &fpi;
 
 	/* start the import */
 	feedlistImport = TRUE;

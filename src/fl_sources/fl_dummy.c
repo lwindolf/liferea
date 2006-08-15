@@ -1,7 +1,7 @@
 /**
  * @file fl_default.c dummy feedlist provider
  * 
- * Copyright (C) 2005-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2006 Lars Lindner <lars.lindner@gmx.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 
 #include "callbacks.h"
 #include "plugin.h"
-#include "fl_providers/fl_plugin.h"
+#include "fl_sources/fl_plugin.h"
 
 static struct flPlugin fpi;
 
@@ -28,9 +28,6 @@ static gchar * fl_dummy_source_get_feedlist(nodePtr node) { return NULL; }
 
 static void fl_dummy_source_import(nodePtr node) {
  
-	node->source = g_new0(struct flNodeSource_, 1);
-	node->source->root = node;
-	node->source->plugin = &fpi;
 	node->icon = icons[ICON_UNAVAILABLE];
 }
 

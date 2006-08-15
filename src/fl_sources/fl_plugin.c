@@ -29,40 +29,46 @@
 #include "plugin.h"
 #include "render.h"
 #include "support.h"
-#include "fl_providers/fl_plugin.h"
-#include "fl_providers/fl_plugin-ui.h"
+#include "fl_sources/fl_plugin.h"
+#include "fl_sources/fl_plugin-ui.h"
 #include "notification/notif_plugin.h"
 #include "ui/ui_node.h"
 
-flPluginPtr fl_plugins_get_root(void) {
-	gboolean	found = FALSE;
-	flPluginPtr	flPlugin = NULL;
+static flPluginPtr fl_plugin_find(gchar *typeStr, guint capabilities) {
+	flPluginPtr	flPlugin;
 	pluginPtr	plugin;
-	GSList		*iter;
 
-	debug_enter("fl_plugins_get_root");
-
-	/* scan for root flag and return plugin if found */
-	iter = plugin_mgmt_get_list();
+	GSList *iter = plugin_mgmt_get_list();
 	while(iter) {
 		plugin = (pluginPtr)iter->data;
 		if(plugin->type == PLUGIN_TYPE_FEEDLIST_PROVIDER) {
 			flPlugin = plugin->symbols;
-			debug2(DEBUG_VERBOSE, "%s capabilities=%ld", flPlugin->name, flPlugin->capabilities);
-			if(0 != (flPlugin->capabilities & FL_PLUGIN_CAPABILITY_IS_ROOT)) {
-				found = TRUE;
-				break;
-			}
+			if(((NULL == typeStr) || !strcmp(flPlugin->id, typeStr)) &&
+			   ((0 == capabilities) || (flPlugin->capabilities & capabilities)))
+				return flPlugin;
 		}
 		iter = g_slist_next(iter);
 	}
 	
-	if(FALSE == found) 
+	g_warning("Could not find plugin for source type \"%s\"\n!", typeStr);
+	return NULL;
+}
+
+void fl_plugins_setup_root(nodePtr node) {
+	flPluginPtr	flPlugin;
+	
+	debug_enter("fl_plugins_setup_root");
+
+	flPlugin = fl_plugin_find(NULL, FL_PLUGIN_CAPABILITY_IS_ROOT);
+	if(!flPlugin) 
 		g_error("No root capable feed list provider plugin found!");
-
-	debug_exit("fl_plugins_get_root");
-
-	return flPlugin;
+		
+	node->source = g_new0(struct flNodeSource, 1);
+	node->source->root = node;
+	node->source->plugin = flPlugin;
+	flPlugin->source_import(node);
+	
+	debug_exit("fl_plugins_setup_root");
 }
 
 typedef	flPluginPtr (*infoFunc)();
@@ -99,25 +105,6 @@ gboolean fl_plugin_load(pluginPtr plugin, GModule *handle) {
 	return TRUE;
 }
 
-static flPluginPtr fl_plugin_find(gchar *typeStr) {
-	flPluginPtr	flPlugin;
-	pluginPtr	plugin;
-
-	GSList *iter = plugin_mgmt_get_list();
-	while(iter) {
-		plugin = (pluginPtr)iter->data;
-		if(plugin->type == PLUGIN_TYPE_FEEDLIST_PROVIDER) {
-			flPlugin = plugin->symbols;
-			if(!strcmp(flPlugin->id, typeStr))
-				return flPlugin;
-		}
-		iter = g_slist_next(iter);
-	}
-	
-	g_warning("Could not find plugin for source type \"%s\"\n!", typeStr);
-	return NULL;
-}
-
 void fl_plugin_import(nodePtr node, xmlNodePtr cur) {
 	flPluginPtr	flPlugin;
 	xmlChar		*typeStr = NULL;
@@ -126,11 +113,11 @@ void fl_plugin_import(nodePtr node, xmlNodePtr cur) {
 
 	if(NULL != (typeStr = xmlGetProp(cur, BAD_CAST"pluginType"))) {
 		debug2(DEBUG_CACHE, "creating feed list plugin instance (type=%s,id=%s)\n", typeStr, node->id);
-
+		
 		node->available = FALSE;
 
 		/* scan for matching plugin and create new instance */
-		flPlugin = fl_plugin_find(typeStr);
+		flPlugin = fl_plugin_find(typeStr, 0);
 		
 		if(NULL == flPlugin) {
 			/* Plugin is not available for some reason, but
@@ -138,16 +125,22 @@ void fl_plugin_import(nodePtr node, xmlNodePtr cur) {
 			   node in the feed list. So we load a dummy 
 			   instead and save the real source id in the
 			   unused node's data field */
-			flPlugin = fl_plugin_find(FL_DUMMY_SOURCE_ID);
+			flPlugin = fl_plugin_find(FL_DUMMY_SOURCE_ID, 0);
 			g_assert(NULL != flPlugin);
 			node->data = g_strdup(typeStr);
 		}
-		
+
 		node->type = FST_PLUGIN;
 		node->available = TRUE;
-		node->source = NULL;	/* not handled by parent plugin */
+		node->source = g_new0(struct flNodeSource, 1);
+		node->source->updateState = g_new0(struct updateState, 1);
+		node->source->root = node;
+		node->source->plugin = flPlugin;
+		node->source->url = xmlGetProp(cur, BAD_CAST"xmlUrl");
+		
+		update_state_import(cur, node->source->updateState);
+				
 		flPlugin->source_import(node);
-
 	} else {
 		g_warning("No plugin type given for node \"%s\"", node_get_title(node));
 	}	
@@ -164,8 +157,23 @@ void fl_plugin_export(nodePtr node, xmlNodePtr cur) {
 		xmlNewProp(cur, BAD_CAST"pluginType", BAD_CAST(node->data));
 	else
 		xmlNewProp(cur, BAD_CAST"pluginType", BAD_CAST(FL_PLUGIN(node)->id));
+		
+	if(node->source->url)
+		xmlNewProp(cur, BAD_CAST"xmlUrl", node->source->url);
+		
+	update_state_export(cur, node->source->updateState);
 
 	debug_exit("fl_plugin_export");
+}
+
+void fl_plugin_new_source(nodePtr node, flPluginPtr flPlugin, const gchar *sourceUrl) {
+
+	g_assert(NULL == node->source);
+	node->source = g_new0(struct flNodeSource, 1);
+	node->source->root = node;
+	node->source->plugin = flPlugin;
+	node->source->url = g_strdup(sourceUrl);
+	node->source->updateState = g_new0(struct updateState, 1);
 }
 
 /* plugin instance creation dialog */
@@ -257,13 +265,6 @@ static void fl_plugin_request_auto_update(nodePtr node) {
 		FL_PLUGIN(node)->source_auto_update(node);
 }
 
-static void fl_plugin_schedule_update(nodePtr node, guint flags) {
-
-	// FIXME:
-/*	if(NULL != FL_PLUGIN(node)->source_update)
-		FL_PLUGIN(node)->source_update(node);*/
-}
-
 static void fl_plugin_remove(nodePtr node) {
 
 	/* remove all children */
@@ -312,7 +313,6 @@ nodeTypePtr fl_plugin_get_node_type(void) {
 	nodeType->reset_update_counter	= folder_get_node_type()->reset_update_counter;
 	nodeType->request_update	= fl_plugin_request_update;
 	nodeType->request_auto_update	= fl_plugin_request_auto_update;
-	nodeType->schedule_update	= fl_plugin_schedule_update;
 	nodeType->remove		= fl_plugin_remove;
 	nodeType->mark_all_read		= folder_get_node_type()->mark_all_read;
 	nodeType->render		= fl_plugin_render;

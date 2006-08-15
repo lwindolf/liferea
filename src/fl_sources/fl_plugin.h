@@ -41,7 +41,7 @@
    A plugin can omit all callbacks marked as optional. */
 
 
-#define FL_PLUGIN_API_VERSION 2
+#define FL_PLUGIN_API_VERSION 3
 
 enum {
 	FL_PLUGIN_CAPABILITY_IS_ROOT		= (1<<0),	/**< only for default feed list provider */
@@ -57,15 +57,10 @@ enum {
 /** feed list plugin structure: defines a feed list plugin and it's methods and capabilities */
 typedef struct flPlugin {
 	unsigned int	api_version;
-
-	/** a unique feed list plugin identifier */
-	gchar		*id;
-
-	/** a descriptive plugin name (for preferences and menus) */
-	gchar		*name;
-
-	/* bitmask of possible feed actions */
-	gulong		capabilities;
+	
+	gchar		*id;		/**< a unique feed list source plugin identifier */
+	gchar		*name;		/**< a descriptive plugin name (for preferences and menus) */
+	gulong		capabilities;	/**< bitmask of possible feed actions */
 
 	/* plugin loading and unloading methods */
 	void		(*plugin_init)(void);
@@ -122,16 +117,16 @@ typedef struct flPlugin {
 	void		(*source_auto_update)(nodePtr node);
 } *flPluginPtr;
 
-typedef struct flNodeSource_ flNodeSource;
-
-/** feed list node source (instance of a feed list plugin) */
-struct flNodeSource_ {
-	flPluginPtr		plugin;	/**< feed list plugin of this source instance */
-	nodePtr			root;	/**< root node of this plugin instance */
-};
+/** feed list source instance */
+typedef struct flNodeSource {
+	flPluginPtr	plugin;		/**< feed list plugin of this source instance */
+	updateStatePtr 	updateState;	/**< the update state (etags, last modified, cookies...) of this source */
+	nodePtr		root;		/**< root node of this feed list source instance */
+	gchar		*url;		/**< URL or filename of the feed list source instance */
+} *flNodeSourcePtr;
 
 /** Use this to cast plugin instances from a node structure. */
-#define FL_PLUGIN(node) ((flNodeSource *)(node->source))->plugin
+#define FL_PLUGIN(node) ((flNodeSourcePtr)(node->source))->plugin
 
 /** Feed list plugins are to be declared with this macro. */
 #define DECLARE_FL_PLUGIN(flPlugin) \
@@ -142,11 +137,12 @@ struct flNodeSource_ {
 #define FL_DUMMY_SOURCE_ID	"fl_dummy"
 
 /** 
- * Scans the plugin list for the feed list root provider.
+ * Scans the plugin list for the feed list root source provider.
+ * If found creates a new root source and starts it's import.
  *
- * @returns feed list root provider plugin
+ * @param node		the root node
  */
-flPluginPtr fl_plugins_get_root(void);
+void fl_plugins_setup_root(nodePtr node);
 
 /**
  * Loads a feed list provider plugin.
@@ -175,12 +171,23 @@ void fl_plugin_import(nodePtr node, xmlNodePtr cur);
 void fl_plugin_export(nodePtr node, xmlNodePtr cur); 
 
 /**
+ * Creates a new source and assigns it to the given new node. 
+ * To be used to prepare a source node before adding it to the 
+ * feed list.
+ *
+ * @param node		a newly created node
+ * @param flPlugin	plugin implementing the source
+ * @param sourceUrl	URI of the source
+ */
+void fl_plugin_new_source(nodePtr node, flPluginPtr flPlugin, const gchar *sourceUrl);
+
+/**
  * Launches a plugin creation dialog. The new plugin
  * instance will be added to the given node.
  *
  * @param node	the parent node
  */
-void ui_fl_plugin_type_dialog(nodePtr np);
+void ui_fl_plugin_type_dialog(nodePtr node);
 
 /* implementation of the node type interface */
 nodeTypePtr fl_plugin_get_node_type(void);
