@@ -531,7 +531,7 @@ void node_foreach_child_full(nodePtr node, gpointer func, gint params, gpointer 
 	
 	g_assert(NULL != node);
 
-	/* We need to copy because *func might modify the list */
+	/* We need to copy because func might modify the list */
 	iter = children = g_slist_copy(node->children);
 	while(iter) {
 		nodePtr childNode = (nodePtr)iter->data;

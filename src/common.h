@@ -95,12 +95,12 @@ gchar * common_text_to_xhtml(const gchar *text);
 /**
  * Evaluates an XPath expression and returns TRUE if the result set is not empty.
  *
- * @param doc		document to apply the XPath expression to
+ * @param node		node to apply the XPath expression to
  * @param expr		an XPath expression string
  *
  * @return TRUE if result set was not empty
  */
-gboolean common_xpath_match(xmlDocPtr doc, gchar *expr);
+gboolean common_xpath_match(xmlNodePtr node, gchar *expr);
 
 /** Function type used by common_xpath_foreach_match() */
 typedef void (*xpathMatchFunc)(xmlNodePtr match, gpointer user_data);
@@ -108,13 +108,13 @@ typedef void (*xpathMatchFunc)(xmlNodePtr match, gpointer user_data);
 /**
  * Executes an XPath expression and calls the given function for each matching node.
  *
- * @param doc		document to apply the XPath expression to
+ * @param node		node to apply the XPath expression to
  * @param expr		an XPath expression string
  * @param func		the function to call for each result
  *
  * @return TRUE if result set was not empty
  */
-gboolean common_xpath_foreach_match(xmlDocPtr doc, gchar *expr, xpathMatchFunc func, gpointer user_data);
+gboolean common_xpath_foreach_match(xmlNodePtr node, gchar *expr, xpathMatchFunc func, gpointer user_data);
 
 /** used to keep track of error messages during feed parsing */
 typedef struct errorCtxt {

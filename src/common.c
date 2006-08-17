@@ -416,18 +416,20 @@ xmlEntityPtr common_process_entities(void *ctxt, const xmlChar *name) {
 	return entity;
 }
 
-gboolean common_xpath_match(xmlDocPtr doc, gchar *expr) {
+gboolean common_xpath_match(xmlNodePtr node, gchar *expr) {
 	gboolean	result = FALSE;
 	
-	if(doc) {
+	if(node && node->doc) {
 		xmlXPathContextPtr xpathCtxt = NULL;
 		xmlXPathObjectPtr xpathObj = NULL;
 		
-		if(NULL != (xpathCtxt = xmlXPathNewContext(doc)))
-			xpathObj = xmlXPathEvalExpression(expr, xpathCtxt);
-			
-		if(xpathObj && xpathObj->nodesetval->nodeMax)
-			result = (0 < xpathObj->nodesetval->nodeNr);
+		if(NULL != (xpathCtxt = xmlXPathNewContext(node->doc))) {
+			xpathCtxt->node = node;
+			xpathObj = xmlXPathEval(expr, xpathCtxt);
+		}
+		
+		if(xpathObj)
+			result = !xmlXPathNodeSetIsEmpty(xpathObj->nodesetval);
 		
 		if(xpathObj) xmlXPathFreeObject(xpathObj);
 		if(xpathCtxt) xmlXPathFreeContext(xpathCtxt);
@@ -435,14 +437,16 @@ gboolean common_xpath_match(xmlDocPtr doc, gchar *expr) {
 	return result;
 }
 
-gboolean common_xpath_foreach_match(xmlDocPtr doc, gchar *expr, xpathMatchFunc func, gpointer user_data) {
+gboolean common_xpath_foreach_match(xmlNodePtr node, gchar *expr, xpathMatchFunc func, gpointer user_data) {
 	
-	if(doc) {
+	if(node && node->doc) {
 		xmlXPathContextPtr xpathCtxt = NULL;
 		xmlXPathObjectPtr xpathObj = NULL;
 		
-		if(NULL != (xpathCtxt = xmlXPathNewContext(doc)))
-			xpathObj = xmlXPathEvalExpression(expr, xpathCtxt);
+		if(NULL != (xpathCtxt = xmlXPathNewContext(node->doc))) {
+			xpathCtxt->node = node;
+			xpathObj = xmlXPathEval(expr, xpathCtxt);
+		}
 			
 		if(xpathObj && xpathObj->nodesetval->nodeMax) {
 			int	i;
