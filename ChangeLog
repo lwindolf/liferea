@@ -8,6 +8,8 @@
 	  should correctly update (remove and merge)
 	  feeds when the source OPML was changed.
 	* Added 64bit source patch from Daniel Gryniewicz.
+	* Replaced the OPML source icon with an OPML icon
+	  created by Chris Pirillo.
 
 
 2006-08-11  Lars Lindner  <lars.lindner@gmail.com>
