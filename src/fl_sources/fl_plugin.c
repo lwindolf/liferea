@@ -31,8 +31,6 @@
 #include "support.h"
 #include "fl_sources/fl_plugin.h"
 #include "fl_sources/fl_plugin-ui.h"
-#include "notification/notif_plugin.h"
-#include "ui/ui_node.h"
 
 static flPluginPtr fl_plugin_find(gchar *typeStr, guint capabilities) {
 	flPluginPtr	flPlugin;
@@ -267,14 +265,9 @@ static void fl_plugin_request_auto_update(nodePtr node) {
 
 static void fl_plugin_remove(nodePtr node) {
 
-	/* remove all children */
-	node_foreach_child(node, node_remove);
-
-	g_slist_free(node->children);
-	node->children = NULL;
-
-	/* remove the plugin node */
-	node->parent->children = g_slist_remove(node->parent->children, node);
+	if(NULL != FL_PLUGIN(node)->source_delete)
+		FL_PLUGIN(node)->source_delete(node);
+		
 	notification_node_removed(node);
 	ui_node_remove_node(node);
 }

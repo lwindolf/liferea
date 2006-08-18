@@ -416,8 +416,8 @@ xmlEntityPtr common_process_entities(void *ctxt, const xmlChar *name) {
 	return entity;
 }
 
-gboolean common_xpath_match(xmlNodePtr node, gchar *expr) {
-	gboolean	result = FALSE;
+xmlNodePtr common_xpath_find(xmlNodePtr node, gchar *expr) {
+	xmlNodePtr	result = NULL;
 	
 	if(node && node->doc) {
 		xmlXPathContextPtr xpathCtxt = NULL;
@@ -428,8 +428,8 @@ gboolean common_xpath_match(xmlNodePtr node, gchar *expr) {
 			xpathObj = xmlXPathEval(expr, xpathCtxt);
 		}
 		
-		if(xpathObj)
-			result = !xmlXPathNodeSetIsEmpty(xpathObj->nodesetval);
+		if(xpathObj && !xmlXPathNodeSetIsEmpty(xpathObj->nodesetval))
+			result = xpathObj->nodesetval->nodeTab[0];
 		
 		if(xpathObj) xmlXPathFreeObject(xpathObj);
 		if(xpathCtxt) xmlXPathFreeContext(xpathCtxt);

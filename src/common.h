@@ -93,14 +93,14 @@ gchar * common_strip_dhtml(const gchar *html);
 gchar * common_text_to_xhtml(const gchar *text);
 
 /**
- * Evaluates an XPath expression and returns TRUE if the result set is not empty.
+ * Find the first XML node matching an XPath expression.
  *
  * @param node		node to apply the XPath expression to
  * @param expr		an XPath expression string
  *
- * @return TRUE if result set was not empty
+ * @return first node found that matches expr (or NULL)
  */
-gboolean common_xpath_match(xmlNodePtr node, gchar *expr);
+xmlNodePtr common_xpath_find(xmlNodePtr node, gchar *expr);
 
 /** Function type used by common_xpath_foreach_match() */
 typedef void (*xpathMatchFunc)(xmlNodePtr match, gpointer user_data);
