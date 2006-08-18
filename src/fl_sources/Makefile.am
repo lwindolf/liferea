@@ -7,6 +7,13 @@ INCLUDES = \
 	-I$(top_srcdir)/src \
 	$(PACKAGE_CFLAGS) \
 	$(DBUS_CFLAGS)
+	
+if PLATFORM_WIN32
+DEFAULTLDFLAGS = -avoid-version -module -no-undefined -Wl,$(top_builddir)/src/liferea-bin.a
+DEFAULTDEPENDENCIES = $(top_builddir)/src/liferea-bin$(EXEEXT)
+else
+DEFAULTLDFLAGS = -avoid-version -module
+endif
 
 # plugin loading code
 noinst_LIBRARIES = libliflsources.a
@@ -25,11 +32,15 @@ pkglib_LTLIBRARIES = liblifldefault.la \
 liblifldefault_la_LIBADD = $(PACKAGE_LIBS)
 liblifldefault_la_CFLAGS = $(PACKAGE_FLAGS)
 liblifldefault_la_SOURCES = fl_default.c fl_default.h 
+liblifldefault_la_LDFLAGS = $(DEFAULTLDFLAGS)
+liblifldefault_la_DEPENDENCIES = $(DEFAULTDEPENDENCIES)
 
 # dummy source plugin
 liblifldummy_la_LIBADD = $(PACKAGE_LIBS)
 liblifldummy_la_CFLAGS = $(PACKAGE_FLAGS)
 liblifldummy_la_SOURCES = fl_dummy.c 
+liblifldummy_la_LDFLAGS = $(DEFAULTLDFLAGS)
+liblifldummy_la_DEPENDENCIES = $(DEFAULTDEPENDENCIES)
 
 # OPML/Planet source plugin target
 libliflopml_la_LIBADD = $(PACKAGE_LIBS)
@@ -37,7 +48,8 @@ libliflopml_la_CFLAGS = $(PACKAGE_FLAGS)
 libliflopml_la_SOURCES = fl_opml.c fl_opml.h \
                          fl_opml-ui.c fl_opml-ui.h \
                          fl_opml-cb.c fl_opml-cb.h 
+libliflopml_la_LDFLAGS = $(DEFAULTLDFLAGS)
+libliflopml_la_DEPENDENCIES = $(DEFAULTSDEPENDENCIES)
 
 # FIXME: library targets for:
 #	fl_bloglines.c fl_bloglines.h
-
