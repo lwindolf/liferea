@@ -216,6 +216,7 @@ guint node_get_unread_count(nodePtr node) {
 	
 	return node->unreadCount; 
 }
+
 /* generic node item set merging functions */
 
 /**
@@ -460,6 +461,7 @@ void node_set_itemset(nodePtr node, itemSetPtr itemSet) {
 	GList	*iter;
 
 	g_assert(ITEMSET_TYPE_INVALID != itemSet->type);
+	g_assert(NULL == itemSet->node);
 	node->itemSet = itemSet;
 	itemSet->node = node;
 	

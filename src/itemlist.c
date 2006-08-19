@@ -166,7 +166,7 @@ void itemlist_merge_itemset(itemSetPtr itemSet) {
 
 		iter = g_list_previous(iter);
 	}
-
+	
 	itemlist_render();
 
 	debug_exit("itemlist_merge_itemset");
@@ -216,8 +216,6 @@ void itemlist_load(itemSetPtr itemSet) {
 			ui_itemlist_enable_favicon_column(FALSE);
 			break;
 		case ITEMSET_TYPE_VFOLDER:
-			ui_itemlist_enable_favicon_column(TRUE);
-			break;
 		case ITEMSET_TYPE_FOLDER:
 			ui_itemlist_enable_favicon_column(TRUE);
 			break;

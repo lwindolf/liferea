@@ -26,6 +26,7 @@
 #include <glib.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
+#include <libxml/tree.h>
 #include <libxml/uri.h>
 #include <string.h>
 #include <time.h>
@@ -418,15 +419,10 @@ void feed_parse(feedParserCtxtPtr ctxt, gboolean autodiscover) {
 	debug_exit("feed_parse");
 }
 
-xmlDocPtr feed_to_xml(nodePtr node, gboolean rendering) {
-	feedPtr		feed = (feedPtr)node->data;
-	xmlDocPtr 	doc;
-	xmlNodePtr 	feedNode;
-	gchar		*tmp;
+static void feed_add_xml_attributes(nodePtr node, xmlNodePtr feedNode, gboolean rendering) {
+	feedPtr	feed = (feedPtr)node->data;
+	gchar	*tmp;
 	
-	doc = xmlNewDoc("1.0");
-	feedNode = xmlNewDocNode(doc, NULL, "feed", NULL);
-	xmlDocSetRootElement(doc, feedNode);
 	xmlNewProp(feedNode, "version", BAD_CAST FEED_CACHE_VERSION);
 
 	xmlNewTextChild(feedNode, NULL, "feedId", node_get_id(node));
@@ -455,6 +451,8 @@ xmlDocPtr feed_to_xml(nodePtr node, gboolean rendering) {
 		tmp = g_strdup_printf("file://%s", node_get_favicon_file(node));
 		xmlNewTextChild(feedNode, NULL, "favicon", tmp);
 		g_free(tmp);
+		
+		xmlNewTextChild(feedNode, NULL, "feedLink", feed_get_html_url(feed));
 
 		if(feed->updateError)
 			xmlNewTextChild(feedNode, NULL, "updateError", feed->updateError);
@@ -472,6 +470,18 @@ xmlDocPtr feed_to_xml(nodePtr node, gboolean rendering) {
 	}
 
 	metadata_add_xml_nodes(feed->metadata, feedNode);
+}
+
+xmlDocPtr feed_to_xml(nodePtr node, xmlNodePtr feedNode, gboolean rendering) {
+	xmlDocPtr	doc = NULL;
+	
+	if(!feedNode) {
+		doc = xmlNewDoc("1.0");
+		feedNode = xmlDocGetRootElement(doc);
+		feedNode = xmlNewDocNode(doc, NULL, "feed", NULL);
+		xmlDocSetRootElement(doc, feedNode);
+	}
+	feed_add_xml_attributes(node, feedNode, rendering);
 	
 	return doc;
 }
@@ -504,15 +514,13 @@ static void feed_save_to_cache(nodePtr node) {
 	tmpfilename = g_strdup_printf("%s~", filename);
 	
 	/* Create the feed XML document */
-	if(NULL != (doc = feed_to_xml(node, FALSE))) {
-		xmlNodePtr feedNode = xmlDocGetRootElement(doc);
-
+	if(NULL != (doc = feed_to_xml(node, NULL, FALSE))) {
 		/* If necessary drop items according to cache settings
 		   otherwise add them to the feed XML document */		
 		itemlist = g_list_copy(node->itemSet->items);
 		for(iter = itemlist; iter != NULL; iter = g_list_next(iter)) {
 			itemPtr ip = iter->data;
-			
+
 			if(saveMaxCount == CACHE_DISABLE)
 				continue;
 
@@ -522,12 +530,12 @@ static void feed_save_to_cache(nodePtr node) {
 			   ! ip->flagStatus) {
 				itemlist_remove_item(ip);
 			} else {
-				item_to_xml(ip, feedNode, FALSE);
+				item_to_xml(ip, xmlDocGetRootElement(doc), FALSE);
 				saveCount++;
 			}
 		}
 		g_list_free(itemlist);
-			
+
 		if(xmlSaveFormatFile(tmpfilename, doc,1) == -1) {
 			g_warning("Error attempting to save feed cache file \"%s\"!", tmpfilename);
 		} else {
@@ -535,8 +543,7 @@ static void feed_save_to_cache(nodePtr node) {
 				perror("Error overwriting old cache file"); /* Nothing else can be done... probably the disk is going bad */
 		}
 		xmlFreeDoc(doc);
-	}
-	
+	}	
 	g_free(tmpfilename);
 	g_free(filename);
 
@@ -563,7 +570,6 @@ itemSetPtr feed_load_from_cache(nodePtr node) {
 	ctxt->node = node;
 	
 	itemSet = ctxt->itemSet;
-	itemSet->node = node;
 	itemSet->type = ITEMSET_TYPE_FEED;
 	
 	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", node->id, NULL);
@@ -1300,7 +1306,7 @@ static gchar * feed_render(nodePtr node) {
 	gchar		**params = NULL, *output = NULL;
 	xmlDocPtr	doc;
 
-	doc = feed_to_xml(node, TRUE);
+	doc = feed_to_xml(node, NULL, TRUE);
 	params = render_add_parameter(params, "pixmapsDir='file://" PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "'");
 	output = render_xml(doc, "feed", params);
 	xmlFree(doc);

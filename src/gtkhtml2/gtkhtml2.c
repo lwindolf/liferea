@@ -56,7 +56,6 @@ static GdkCursor	*link_cursor = NULL;
 
 /* prototypes */
 static void link_clicked (HtmlDocument *doc, const gchar *url, gpointer data);
-static void launch_url(GtkWidget *widget, const gchar *url);
 static void gtkhtml2_scroll_to_top(GtkWidget *scrollpane);
 
 static int button_press_event(HtmlView *view, GdkEventButton *event, gpointer userdata) {
@@ -229,13 +228,7 @@ static void on_url(HtmlView *view, const char *url, gpointer user_data) {
 }
 
 static gboolean request_object (HtmlView *view, GtkWidget *widget, gpointer user_data) {
-	GtkWidget *label;
 
-/*	label = gtk_label_new(_("The included HTML <object> tag is not supported with GtkHTML2.\nIncluded Plugins might not be displayed."));
-	gtk_widget_show(label);
-	gtk_container_add(GTK_CONTAINER (widget), label);
-
-	return TRUE;*/
 	return FALSE;
 }
 

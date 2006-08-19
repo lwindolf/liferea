@@ -49,7 +49,7 @@ enum itemSetTypes {
 typedef struct itemSet {
 	guint		type;		/**< the type of the item set */
 	GList		*items;		/**< the list of items */
-	struct node	*node;		/**< the node this item set belongs to */
+	struct node	*node;		/**< the feed list node this item set belongs to */
 
 	gboolean	valid;		/**< FALSE if libxml2 recovery mode was used to create this item set*/
 	gulong		lastItemNr;	/**< internal counter used to uniqely assign item id's. */

@@ -59,7 +59,7 @@
 </xsl:template>
 
 <xsl:template name="item">
-
+<xsl:variable name="sourceId" select="sourceId"/>
 <!-- header table -->
 <table class="itemhead" cellspacing="0" cellpadding="0">
 <tr>
@@ -68,18 +68,11 @@
     <xsl:element name="a">
       <xsl:attribute name="class">favicon</xsl:attribute>
       <xsl:attribute name="href">
-        <xsl:value-of select="/feed/feedLink"/>
+        <xsl:value-of select="/itemset/feeds/feed[feedId = $sourceId]/feedLink"/>
       </xsl:attribute>
       <xsl:element name="img">
         <xsl:attribute name="src">
-          <xsl:choose>
-            <xsl:when test="sourceFavicon">
-              <xsl:value-of select="sourceFavicon"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="/feed/favicon"/>
-            </xsl:otherwise>
-          </xsl:choose>
+          <xsl:value-of select="/itemset/feeds/feed[feedId = $sourceId]/favicon"/>
         </xsl:attribute>
       </xsl:element>
     </xsl:element>
@@ -98,7 +91,7 @@
 </table>
 
 <!-- enclosures -->
-<xsl:for-each select="attributes/attribute[ @name = 'enclosure' ]">
+<xsl:for-each select="attributes/attribute[@name = 'enclosure']">
 <table class="enclosure" cellpadding="0" cellspacing="0">
 <tr>
   <td>

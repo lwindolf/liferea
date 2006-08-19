@@ -61,7 +61,7 @@ static xmlDocPtr itemset_to_xml(itemSetPtr itemSet) {
 	itemSetNode = xmlNewDocNode(doc, NULL, "itemset", NULL);
 	
 	xmlDocSetRootElement(doc, itemSetNode);
-
+	
 	xmlNewTextChild(itemSetNode, NULL, "favicon", node_get_favicon_file(itemSet->node));
 	xmlNewTextChild(itemSetNode, NULL, "title", node_get_title(itemSet->node));
 
@@ -69,7 +69,7 @@ static xmlDocPtr itemset_to_xml(itemSetPtr itemSet) {
 	       xmlNewTextChild(itemSetNode, NULL, "source", feed_get_source(itemSet->node->data));
 	       xmlNewTextChild(itemSetNode, NULL, "link", feed_get_html_url(itemSet->node->data));
 	}
-			
+
 	return doc;
 }
 
@@ -78,7 +78,9 @@ gchar * itemset_render(itemSetPtr itemSet) {
 	gboolean	summaryMode = FALSE;
 	gboolean	loadReadItems;
 	GList		*iter;
+	GSList		*nodes = NULL;
 	xmlDocPtr	doc;
+	xmlNodePtr	feeds;
 
 	debug_enter("itemset_render");
 	
@@ -118,20 +120,32 @@ gchar * itemset_render(itemSetPtr itemSet) {
 	
 	/* do the XML serialization */
 	doc = itemset_to_xml(itemSet);
-	
+	feeds = xmlNewChild(xmlDocGetRootElement(doc), NULL, "feeds", NULL);
+			
 	iter = itemSet->items;
 	while(iter) {
 		itemPtr item = iter->data;
-		if(loadReadItems || FALSE == item->readStatus)
+		if(loadReadItems || FALSE == item->readStatus) {
 			item_to_xml(item, xmlDocGetRootElement(doc), TRUE);
+			
+			if(!g_slist_find(nodes, item->sourceNode) && 
+			   (FST_FEED == item->sourceNode->type)) {
+				xmlNodePtr feed;
+				feed = xmlNewChild(feeds, NULL, "feed", NULL);
+				feed_to_xml(item->sourceNode, feed, TRUE);
+				nodes = g_slist_append(nodes, item->sourceNode);
+			}
+		}
 		iter = g_list_next(iter);
 	}
+	g_slist_free(nodes);
 		
 	/* and finally the XSLT rendering transformation */
 	params = render_add_parameter(params, "pixmapsDir='file://" PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "'");
 	params = render_add_parameter(params, "baseUrl='%s'", itemset_get_base_url(itemSet));
 	output = render_xml(doc, summaryMode?"summary":"itemset", params);
 	g_strfreev(params);
+	xmlSaveFormatFile("/tmp/test.xml", doc,1);
 	xmlFree(doc);
 	
 	debug_exit("itemset_render");

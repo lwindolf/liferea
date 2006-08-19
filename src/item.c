@@ -155,8 +155,9 @@ gchar *item_render(itemPtr item) {
 	gchar		**params = NULL, *output = NULL;
 	xmlDocPtr	doc;
 
-	doc = feed_to_xml(item->sourceNode, TRUE);
+	doc = feed_to_xml(item->sourceNode, NULL, TRUE);
 	item_to_xml(item, xmlDocGetRootElement(doc), TRUE);
+	
 	params = render_add_parameter(params, "pixmapsDir='file://" PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "'");
 	output = render_xml(doc, "item", params);
 	xmlFree(doc);
@@ -290,9 +291,7 @@ void item_to_xml(itemPtr item, xmlNodePtr feedNode, gboolean rendering) {
 		xmlNewTextChild(itemNode, NULL, "timestr", tmp);
 		g_free(tmp);
 		
-		tmp = g_strdup_printf("file://%s", node_get_favicon_file(item->sourceNode));
-		xmlNewTextChild(itemNode, NULL, "sourceFavicon", tmp);
-		g_free(tmp);
+		xmlNewTextChild(itemNode, NULL, "sourceId", item->sourceNode->id);
 	}		
 
 	metadata_add_xml_nodes(item->metadata, itemNode);

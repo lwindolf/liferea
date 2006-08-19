@@ -22,6 +22,7 @@
 #ifndef _FEED_H
 #define _FEED_H
 
+#include <libxml/parser.h>
 #include <glib.h>
 #include "node.h"
 #include "item.h"
@@ -169,12 +170,15 @@ void feed_export(feedPtr fp, xmlNodePtr cur, gboolean internal);
  * Serialization helper function for rendering and caching purposes.
  *
  * @param node		the feed node to serialize
+ * @param feedNode	XML node to add feed attributes to,
+ *                      or NULL if a new XML document is to
+ *                      be created
  * @param rendering	TRUE if XML output is to be used
  *                  	for rendering (adds some more tags)
  * 
- * @returns a new XML document
+ * @returns a new XML document (if feedNode was NULL)
  */
-xmlDocPtr feed_to_xml(nodePtr node, gboolean rendering);
+xmlDocPtr feed_to_xml(nodePtr node, xmlNodePtr feedNode, gboolean rendering);
 
 /* feed parsing */
 
