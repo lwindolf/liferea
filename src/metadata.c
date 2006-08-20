@@ -1,7 +1,7 @@
 /**
  * @file metadata.c Metadata storage API
  *
- * Copyright (C) 2004 Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,33 +30,86 @@
 #include "common.h"
 #include "debug.h"
 
+enum {
+	METADATA_TYPE_ASCII = 1,	/**< metadata can be any character data */
+	METADATA_TYPE_URL = 2,		/**< metadata is an URL and guaranteed to be valid for use in XML */
+	METADATA_TYPE_HTML = 3		/**< metadata is XHTML content and valid to be embedded in XML */
+};
+
+static GHashTable *metadata_types = NULL;
+
 struct pair {
 	gchar		*strid;		/** metadata type id */
 	GSList		*data;		/** list of metadata values */
 };
 
+static void metadata_type_register(const gchar *name, gint type) {
+
+	if(!metadata_types)
+		metadata_types = g_hash_table_new(g_str_hash, g_str_equal);
+		
+	g_hash_table_insert(metadata_types, (gpointer)name, GINT_TO_POINTER(type));
+}
+
+static gint metadata_get_type(const gchar *name) {
+	gint	type;
+
+	type = GPOINTER_TO_INT(g_hash_table_lookup(metadata_types, (gpointer)name));
+	if(0 == type)
+		debug1(DEBUG_PARSING, "unknown metadata type (%s)\n", name);
+	
+	return type;
+}
+
 GSList * metadata_list_append(GSList *metadata, const gchar *strid, const gchar *data) {
-	struct attribute *attrib;
-	GSList	*iter = metadata;
-	struct pair *p;
+	GSList		*iter = metadata;
+	gchar		*checked_data = NULL;
+	struct pair 	*p;
+	
+	/* lookup type and check format */
+	switch(metadata_get_type(strid)) {
+		case METADATA_TYPE_ASCII:
+			/* No check because renderer will process further */
+			checked_data = g_strdup(data);
+			break;
+		case METADATA_TYPE_URL:
+			/* Simple sanity check to see if it doesn't break tags */
+			if(!strchr(data, '<') && !(strchr(data, '>'))) {
+				checked_data = g_strdup(data);
+			} else {
+				checked_data = common_uri_escape(data);
+			}
+			break;
+		default:
+			g_warning("Unknown metadata type \"%s\", this is a program bug! Treating as HTML.", strid);
+		case METADATA_TYPE_HTML:
+			/* Needs to check for proper XHTML */
+			if(common_is_well_formed_xhtml(data)) {
+				checked_data = g_strdup(data);
+			} else {
+				debug1(DEBUG_PARSING, "not well formed HTML: %s\n", data);
+				checked_data = g_markup_escape_text(data, -1);
+				debug1(DEBUG_PARSING, "escaped as: %s\n", checked_data);
+			}
+			break;
+	}
 	
 	while(iter) {
 		p = (struct pair*)iter->data; 
 		if(g_str_equal(p->strid, strid)) {
-			p->data = g_slist_append(p->data, g_strdup(data));
+			p->data = g_slist_append(p->data, checked_data);
 			return metadata;
 		}
 		iter = iter->next;
 	}
 	p = g_new(struct pair, 1);
 	p->strid = g_strdup(strid);
-	p->data = g_slist_append(NULL, g_strdup(data));
+	p->data = g_slist_append(NULL, checked_data);
 	metadata = g_slist_append(metadata, p);
 	return metadata;
 }
 
 void metadata_list_set(GSList **metadata, const gchar *strid, const gchar *data) {
-	struct attribute *attrib;
 	GSList	*iter = *metadata;
 	struct pair *p;
 	
@@ -169,54 +222,55 @@ GSList * metadata_parse_xml_nodes(xmlNodePtr cur) {
 	return metadata;
 }
 
-static void attribs_init() {
+void metadata_init(void) {
+
+	/* register metadata types to check validity on adding */
+	
+	/* generic types */
+	metadata_type_register("author",		METADATA_TYPE_HTML);
+	metadata_type_register("contributor",		METADATA_TYPE_HTML);
+	metadata_type_register("copyright",		METADATA_TYPE_HTML);
+	metadata_type_register("language",		METADATA_TYPE_HTML);
+	metadata_type_register("pubDate",		METADATA_TYPE_ASCII);
+	metadata_type_register("contentUpdateDate",	METADATA_TYPE_ASCII);
+	metadata_type_register("managingEditor",	METADATA_TYPE_HTML);
+	metadata_type_register("webmaster",		METADATA_TYPE_HTML);
+	metadata_type_register("feedgenerator",		METADATA_TYPE_HTML);
+	metadata_type_register("imageUrl",		METADATA_TYPE_URL);
+	metadata_type_register("textInput",		METADATA_TYPE_HTML);
+	metadata_type_register("errorReportsTo",	METADATA_TYPE_HTML);
+	metadata_type_register("feedgeneratorUri",	METADATA_TYPE_URL);
+	metadata_type_register("category",		METADATA_TYPE_HTML);
+	metadata_type_register("enclosure",		METADATA_TYPE_URL);
+	metadata_type_register("commentsUri",		METADATA_TYPE_URL);
+	
+	/* types for aggregation NS */
+	metadata_type_register("agSource",		METADATA_TYPE_URL);
+	metadata_type_register("agTimestamp",		METADATA_TYPE_ASCII);
+
+	/* types for blog channel */
+	metadata_type_register("blogChannel",		METADATA_TYPE_HTML);
+
+	/* types for creative commons */
+	metadata_type_register("license",		METADATA_TYPE_HTML);
+	
+	/* types for Dublin Core (some dc tags are mapped to feed and item metadata types) */
+	metadata_type_register("creator",		METADATA_TYPE_HTML);
+	metadata_type_register("publisher",		METADATA_TYPE_HTML);
+	metadata_type_register("type",			METADATA_TYPE_HTML);
+	metadata_type_register("format",		METADATA_TYPE_HTML);
+	metadata_type_register("identifier",		METADATA_TYPE_HTML);
+	metadata_type_register("source",		METADATA_TYPE_URL);
+	metadata_type_register("coverage",		METADATA_TYPE_HTML);
+
+	/* types for freshmeat */
+	metadata_type_register("fmScreenshot", 		METADATA_TYPE_URL);
+	
+	/* types for photo blogs */
+	metadata_type_register("photo", 		METADATA_TYPE_URL);
+
+	/* types for slash */
+	metadata_type_register("slash",			METADATA_TYPE_HTML);
 
 	return;
-	
-	// FIXME: remove me
-
-	/* attributes resulting from general feed parsing 
-	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "author", _("author"));
-	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "contributor", _("contributors"));
-	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "copyright", _("copyright"));
-	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "language", _("language"));
-	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "pubDate", _("feed published on"));
-	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "contentUpdateDate", _("content last updated"));
-	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "managingEditor", _("managing editor"));
-	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "webmaster", _("webmaster"));
-	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "feedgenerator", _("feed generator"));
-	metadata_register_renderer("imageUrl",	attribs_render_image, FALSE, GINT_TO_POINTER(POS_HEAD));
-	metadata_register_renderer("textInput",	attribs_render_foot_text, FALSE, NULL);
-	
-	/* types for admin 
-	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "errorReportsTo", _("report errors to"));
-	metadata_register_renderer("feedgeneratorUri", attribs_render_feedgenerator_uri, FALSE, NULL);
-	
-	/* types for aggregation 
-	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "agSource", _("original source"));
-	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "agTimestamp", _("original time"));
-
-	/* types for blog channel 
-	metadata_register_renderer("blogChannel", attribs_render_foot_text, FALSE, NULL);
-	
-	/* types for creative commons 
-	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "license", _("license"));
-	
-	/* types for Dublin Core (some dc tags are mapped to feed and item metadata types) 
-	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "creator", _("creator"));	
-	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "publisher", _("publisher"));
-	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "type", _("type"));
-	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "format", _("format"));
-	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "identifier", _("identifier"));
-	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "source", _("source"));
-	REGISTER_SIMPLE_ATTRIBUTE(POS_FOOTTABLE, "coverage", _("coverage"));
-	
-	/* types for freshmeat 
-	metadata_register_renderer("fmScreenshot", attribs_render_image, FALSE, GINT_TO_POINTER(POS_BODY));
-	
-	/* types for photo blogs 
-	metadata_register_renderer("photo", ns_photo_render, FALSE, NULL);
-
-	/* types for slash 
-	metadata_register_renderer("slash", ns_slash_render, FALSE, NULL);	 /* This one should only be set, not appended */
 }

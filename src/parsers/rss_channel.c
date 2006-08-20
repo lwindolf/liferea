@@ -381,6 +381,7 @@ feedHandlerPtr rss_init_feed_handler(void) {
 	fhp->feedParser	= rss_parse;
 	fhp->checkFormat = rss_format_check;
 	fhp->merge = TRUE;
+	fhp->noXML = TRUE; /* FIXME: this should be valid for RSS 0.9x only */
 	
 	return fhp;
 }

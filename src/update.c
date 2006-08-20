@@ -203,7 +203,7 @@ static gchar * update_apply_xslt(struct request *request) {
 	gchar			*output = NULL;
 
 	do {
-		if(NULL == (srcDoc = common_parse_xml(request->data, request->size, NULL))) {
+		if(NULL == (srcDoc = common_parse_xml(request->data, request->size, FALSE, NULL))) {
 			g_warning("fatal: parsing request result XML source failed (%s)!", request->filtercmd);
 			break;
 		}

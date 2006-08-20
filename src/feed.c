@@ -72,6 +72,7 @@ struct feed_type {
 /* initializing function, only called upon startup */
 void feed_init(void) {
 
+	metadata_init();
 	feedhandlers = g_slist_append(feedhandlers, rss_init_feed_handler());
 	feedhandlers = g_slist_append(feedhandlers, cdf_init_feed_handler());
 	feedhandlers = g_slist_append(feedhandlers, atom10_init_feed_handler());  /* Must be before pie */

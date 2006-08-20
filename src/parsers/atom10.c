@@ -32,6 +32,15 @@
 #include "common.h"
 #include "feed.h"
 #include "ns_dc.h"
+#include "ns_fm.h"
+#include "ns_content.h"
+#include "ns_slash.h"
+#include "ns_syn.h"
+#include "ns_admin.h"
+#include "ns_ag.h"
+#include "ns_blogChannel.h"
+#include "ns_cC.h"
+#include "ns_photo.h"
 #include "callbacks.h"
 #include "metadata.h"
 #include "atom10.h"
@@ -707,8 +716,19 @@ feedHandlerPtr atom10_init_feed_handler(void) {
 		atom10_nstable = g_hash_table_new(g_str_hash, g_str_equal);
 		ns_atom10_ns_uri_table = g_hash_table_new(g_str_hash, g_str_equal);
 		
-		/* register RSS name space handlers */
+		/* register RSS name space handlers */		
+		atom10_add_ns_handler(ns_bC_getRSSNsHandler());
 		atom10_add_ns_handler(ns_dc_getRSSNsHandler());
+		atom10_add_ns_handler(ns_fm_getRSSNsHandler());	
+  		atom10_add_ns_handler(ns_slash_getRSSNsHandler());
+		atom10_add_ns_handler(ns_content_getRSSNsHandler());
+		atom10_add_ns_handler(ns_syn_getRSSNsHandler());
+		atom10_add_ns_handler(ns_admin_getRSSNsHandler());
+		atom10_add_ns_handler(ns_ag_getRSSNsHandler());
+		atom10_add_ns_handler(ns_cC_getRSSNsHandler());
+		atom10_add_ns_handler(ns_photo_getRSSNsHandler());
+		atom10_add_ns_handler(ns_pb_getRSSNsHandler());
+
 	}	
 	/* prepare feed handler structure */
 	fhp->typeStr = "pie";

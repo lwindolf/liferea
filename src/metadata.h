@@ -1,7 +1,7 @@
 /**
  * @file metadata.h Metadata storage API
  *
- * Copyright (C) 2004 Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,54 +48,71 @@ typedef struct NsHandler {
 /* interface definitions for namespace rendering handler    */
 /* -------------------------------------------------------- */
 
-struct displayset;
-
-typedef void (*renderHTMLFunc)(gpointer data, struct displayset *displayset, gpointer user_data);
-
-/** Initialize the metadata subsystem */
-void metadata_init();
-
-/** Register a new type of metadata */
-void metadata_register(const gchar *strid, renderHTMLFunc renderfunc, gpointer user_data);
+/** 
+ * Initialize the metadata types to allow format checks.
+ */
+void metadata_init(void);
 
 /** 
  * Appends a value to the value list of a specific metadata type 
  * Don't mix this function with metadata_list_set() !
+ *
+ * @param metadata	the metadata list
+ * @param strid		the metadata type identifier
+ * @param data		data to add
+ *
+ * @returns the changed meta data list
  */
 GSList * metadata_list_append(GSList *metadata, const gchar *strid, const gchar *data);
 
 /** 
  * Sets (and overwrites if necessary) the value of a specific metadata type.
  * Don't mix this function with metadata_list_append() !
+ *
+ * @param metadata	the metadata list
+ * @param strid		the metadata type identifier
+ * @param data		data to add
  */
 void metadata_list_set(GSList **metadata, const gchar *strid, const gchar *data);
 
 /**
  * Returns a list of all values of a given type from a specified metadata list.
  *
+ * @param metadata	the metadata list
+ * @param strid		the metadata type identifier
+ *
  * @returns a list of values
  */
 GSList * metadata_list_get(GSList *metadata, const gchar *strid);
 
-/**
- * Renders the given metadata list into the given display set.
- */
-void metadata_list_render(GSList *metadata, struct displayset *displayset);
-
 /** 
- * Adds all elements from one metadata list to the other.
+ * Creates a copy of a given metadata list.
+ *
+ * @param metadata	the metadata list
  *
  * @returns the new list
  */
 GSList * metadata_list_copy(GSList *list);
 
+/**
+ * Frees all memory allocated by the given metadata list.
+ *
+ * @param metadata	the metadata list
+ */
 void metadata_list_free(GSList *metadata);
 
+/**
+ * Adds the given metadata list to a given XML document node.
+ * To be used for saving feed metadata to cache.
+ *
+ * @param metadata	the metadata list
+ * @param parentNode	the XML node
+ */
 void metadata_add_xml_nodes(GSList *metadata, xmlNodePtr parentNode);
 
 /**
- * Parses the given XML node and returns a new metadata
- * attribute value list.
+ * Parses the given XML node and returns a new metadata attribute 
+ * value list. To be used for feed cache loading.
  *
  * @param cur	the XML node to parse
  *

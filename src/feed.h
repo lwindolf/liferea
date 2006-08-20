@@ -62,6 +62,7 @@ typedef struct feedParserCtxt {
 	struct node	*node;		/**< the node the feed belongs to */
 	struct itemSet	*itemSet;	/**< the item set to fill */
 	struct item	*item;		/**< the item currently parsed (or NULL) */
+	gboolean	recovery;	/**< TRUE if tolerant parsing needed (use only for RSS 0.9x!) */
 
 	GHashTable	*tmpdata;	/**< tmp data hash used during stateful parsing */
 
@@ -120,7 +121,8 @@ typedef struct feedHandler {
 	gboolean	directory;	/**< Determines if a feed should be autoupdated and updated when "update all" is selected */
 	feedParserFunc	feedParser;	/**< feed type parse function */
 	checkFormatFunc	checkFormat;	/**< Parser for the feed type*/
-	gboolean	merge;		/**< flag if feed type supports merging */
+	gboolean	merge;		/**< TRUE if feed type supports merging */
+	gboolean	noXML;		/**< TRUE if feed type isn't guaranteed to be XML */
 	
 } *feedHandlerPtr;
 

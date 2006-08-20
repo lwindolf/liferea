@@ -61,7 +61,7 @@ static gchar *standard_encoding = { "UTF-8" };
 
 static gchar *lifereaUserPath = NULL;
 
-gchar * convertCharSet(gchar * from_encoding, gchar * to_encoding, gchar * string);
+static void common_buffer_parse_error(void *ctxt, const gchar * msg, ...);
 
 /* converts the string string encoded in from_encoding (which
    can be NULL) to to_encoding, frees the original string and 
@@ -271,6 +271,33 @@ gchar * common_text_to_xhtml(const gchar *sourceText) {
 	return result;
 }
 
+gboolean common_is_well_formed_xhtml(const gchar *data) {
+	gchar		*xml;
+	gboolean	result;
+	errorCtxtPtr	errors;
+	xmlDocPtr	doc;
+
+	if(!data)
+		return FALSE;
+	
+	errors = g_new0(struct errorCtxt, 1);
+	errors->msg = g_string_new(NULL);
+	xmlSetGenericErrorFunc(errors, (xmlGenericErrorFunc)common_buffer_parse_error);
+
+	xml = g_strdup_printf("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n<test>%s</test>", data);
+	
+	doc = common_parse_xml(xml, strlen(xml), FALSE, errors);
+	if(doc)
+		xmlFree(doc);
+		
+	g_free(xml);
+	g_string_free(errors->msg, TRUE);
+	result = (0 == errors->errorCount);
+	g_free(errors);
+	
+	return result;
+}
+
 typedef struct {
 	gchar	*data;
 	gint	length;
@@ -373,12 +400,12 @@ static void common_buffer_parse_error(void *ctxt, const gchar * msg, ...) {
 		g_free(newmsg);
 		newmsg = tmp;
 	
-		g_string_append_printf(errors->fpc->feed->parseErrors, "<pre>%s</pre", newmsg);
+		g_string_append_printf(errors->msg, "<pre>%s</pre", newmsg);
 		g_free(newmsg);
 	}
 	
 	if(MAX_PARSE_ERROR_LINES == errors->errorCount)
-		g_string_append_printf(errors->fpc->feed->parseErrors, "<br />%s", _("[There were more errors. Output was truncated!]"));
+		g_string_append_printf(errors->msg, "<br />%s", _("[There were more errors. Output was truncated!]"));
 }
 
 static xmlDocPtr entities = NULL;
@@ -461,7 +488,7 @@ gboolean common_xpath_foreach_match(xmlNodePtr node, gchar *expr, xpathMatchFunc
 	return FALSE;
 }
 
-xmlDocPtr common_parse_xml(gchar *data, guint length, errorCtxtPtr errors) {
+xmlDocPtr common_parse_xml(gchar *data, guint length, gboolean recovery, errorCtxtPtr errors) {
 	xmlParserCtxtPtr	ctxt;
 	xmlDocPtr		doc;
 	
@@ -470,7 +497,7 @@ xmlDocPtr common_parse_xml(gchar *data, guint length, errorCtxtPtr errors) {
 	ctxt = xmlNewParserCtxt();
 	ctxt->sax->getEntity = common_process_entities;
 
-	doc = xmlSAXParseMemory(ctxt->sax, data, length, /* recovery = */ TRUE);
+	doc = xmlSAXParseMemory(ctxt->sax, data, length, /* recovery = */ recovery);
 	
 	xmlFreeParserCtxt(ctxt);
 	
@@ -494,10 +521,10 @@ xmlDocPtr common_parse_xml_feed(feedParserCtxtPtr fpc) {
 	}
 
 	errors = g_new0(struct errorCtxt, 1);
-	errors->fpc = fpc;
+	errors->msg = fpc->feed->parseErrors;
 	xmlSetGenericErrorFunc(errors, (xmlGenericErrorFunc)common_buffer_parse_error);
 	
-	fpc->doc = common_parse_xml(fpc->data, fpc->dataLength, errors);
+	fpc->doc = common_parse_xml(fpc->data, fpc->dataLength, fpc->recovery, errors);
 	if(!fpc->doc) {
 		g_warning("xmlReadMemory: Could not parse document!\n");
 		g_string_prepend(fpc->feed->parseErrors, _("xmlReadMemory(): Could not parse document:\n"));

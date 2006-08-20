@@ -93,6 +93,13 @@ gchar * common_strip_dhtml(const gchar *html);
 gchar * common_text_to_xhtml(const gchar *text);
 
 /**
+ * Checks the given string for XHTML well formedness.
+ *
+ * @returns TRUE if the string is well formed XHTML
+ */
+gboolean common_is_well_formed_xhtml(const gchar *text);
+
+/**
  * Find the first XML node matching an XPath expression.
  *
  * @param node		node to apply the XPath expression to
@@ -116,10 +123,10 @@ typedef void (*xpathMatchFunc)(xmlNodePtr match, gpointer user_data);
  */
 gboolean common_xpath_foreach_match(xmlNodePtr node, gchar *expr, xpathMatchFunc func, gpointer user_data);
 
-/** used to keep track of error messages during feed parsing */
+/** used to keep track of error messages during parsing */
 typedef struct errorCtxt {
-	feedParserCtxtPtr	fpc;
-	gint			errorCount;
+	GString		*msg;		/**< message buffer */
+	gint		errorCount;	/**< error counter */
 } *errorCtxtPtr;
 
 /**
@@ -130,11 +137,12 @@ typedef struct errorCtxt {
  *
  * @param data		XML document buffer
  * @param length	length of buffer
+ * @param recovery	enable tolerant XML parsing (use only for RSS 0.9x!)
  * @param errors	parser error context (can be NULL)
  *
  * @return XML document
  */
-xmlDocPtr common_parse_xml(gchar *data, guint length, errorCtxtPtr errors);
+xmlDocPtr common_parse_xml(gchar *data, guint length, gboolean revocery, errorCtxtPtr errors);
 
 /**
  * Common function to create a XML DOM object from a given

@@ -217,7 +217,7 @@ static void fl_opml_process_update_results(struct request *request) {
 	node->available = FALSE;
 
 	if(request->data) {
-		doc = common_parse_xml(request->data, request->size, NULL);
+		doc = common_parse_xml(request->data, request->size, FALSE, NULL);
 		if(doc) {		
 			/* Go through all existing nodes and remove those whose
 			   URLs are not in new feed list. Also removes those URLs
