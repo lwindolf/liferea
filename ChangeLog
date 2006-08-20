@@ -1,15 +1,21 @@
-2006-08-??  ???   <???>
+2006-08-20  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.1.1 (Unstable)
 
-	* Adds a simple feed update monitor available
-	  from the "Program" menu.
+	* Adds a simple feed update monitor available from
+	  the "Program" menu.
 	* Improves the OPML/Blogroll support that now
 	  should correctly update (remove and merge)
 	  feeds when the source OPML was changed.
 	* Added 64bit source patch from Daniel Gryniewicz.
 	* Replaced the OPML source icon with an OPML icon
 	  created by Chris Pirillo.
+	* Rewrite of the metadata handling. Now the different
+	  metadata types are checked for correct format. This
+	  solves SF #1538875 (reported by Jose M. daLuz).
+	* No lax XML parsing for Atom and OPML anymore.
+	  According Daniel Veillard (libxml2 developer)
+	  the recovery mode is to be dropped in future.
 
 
 2006-08-11  Lars Lindner  <lars.lindner@gmail.com>
