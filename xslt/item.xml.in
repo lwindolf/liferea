@@ -175,13 +175,9 @@
   <p>
     <xsl:value-of select="description" disable-output-escaping='yes'/>
   </p>
-</div>
-
-<!-- FIXME footer!!!
-<table class="feedfoot"><tr class="feedfoot"><td class="feedfootname"><span class="feedfootname">Datum</span></td><td class="feedfootvalue"><span class="feedfootvalue">02.07. - 10:31</span></td></tr><tr class="feedfoot"><td class="feedfootname"><span class="feedfootname">Kategorien</span></td><td class="feedfootvalue"><span class="feedfootvalue">Wirtschaft</span></td></tr></table>-->
 
 <!-- table below footer for comment link and search engine link -->
-<table width="100%" class="commentlink">
+<table width="100%" class="commentlink" cellspacing="0" cellpadding="0">
 <tr>
 <td>
 
@@ -217,6 +213,7 @@
 </tr>
 </table> <!-- end of comment and search engine link table -->
 
+</div>
 </xsl:element> <!-- end of base URL div -->
 
 </body>
