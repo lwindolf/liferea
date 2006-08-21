@@ -51,7 +51,7 @@
 <table class="itemhead" cellspacing="0" cellpadding="0">
 <tr>
   <td valign="middle" class="headleft">
-    <xsl:if test="favicon">
+    <xsl:if test="feeds/feed[1]/favicon">
     <!-- Feed link as favicon -->
     <xsl:element name="a">
       <xsl:attribute name="class">favicon</xsl:attribute>
@@ -60,7 +60,7 @@
       </xsl:attribute>
       <xsl:element name="img">
         <xsl:attribute name="src">
-           <xsl:value-of select="favicon"/>
+           <xsl:value-of select="feeds/feed[1]/favicon"/>
         </xsl:attribute>
       </xsl:element>
     </xsl:element>
@@ -71,7 +71,7 @@
     <xsl:element name="a">
       <xsl:attribute name="class">itemhead</xsl:attribute>
       <xsl:attribute name="href">
-        <xsl:value-of select="source"/>
+        <xsl:value-of select="link"/>
       </xsl:attribute>
       <xsl:value-of select="title"/>
     </xsl:element>
