@@ -226,13 +226,17 @@ gchar * extractHTMLNode(xmlNodePtr cur, gint xhtmlMode, const gchar *defaultBase
 
 gchar * common_strip_dhtml(const gchar *html) {
 	gchar *tmp;
+
+	// FIXME: move to XSLT stylesheet that post processed
+	// generated XHTML. The solution below might break harmless
+	// escaped HTML.
 	
 	/* remove some nasty DHTML stuff from the given HTML content */
-	if(NULL != (tmp = g_strdup(html))) {
-		tmp = common_strreplace(tmp, " onload=", " no_onload=");
-		tmp = common_strreplace(tmp, "script>", "no_script>");		
-		tmp = common_strreplace(tmp, "<script ", "<no_script ");		
-	}
+	tmp = g_strdup(html);
+	tmp = common_strreplace(tmp, " onload=", " no_onload=");
+	tmp = common_strreplace(tmp, " onLoad=", " no_onLoad=");
+	tmp = common_strreplace(tmp, "script>", "no_script>");		
+	tmp = common_strreplace(tmp, "<script ", "<no_script ");		
 	
 	return tmp;
 }

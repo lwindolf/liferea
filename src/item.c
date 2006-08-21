@@ -244,9 +244,16 @@ void item_to_xml(itemPtr item, xmlNodePtr feedNode, gboolean rendering) {
 		item_set_title(item, "");
 	xmlNewTextChild(itemNode, NULL, "title", item_get_title(item));
 
-	if(item_get_description(item))
-		xmlNewTextChild(itemNode, NULL, "description", item_get_description(item));
-
+	if(item_get_description(item)) {
+		if(rendering) {
+			tmp = common_strip_dhtml(item_get_description(item));
+			xmlNewTextChild(itemNode, NULL, "description", tmp);
+			g_free(tmp);
+		} else {
+			xmlNewTextChild(itemNode, NULL, "description", item_get_description(item));
+		}
+	}
+	
 	if(item_get_source(item))
 		xmlNewTextChild(itemNode, NULL, "source", item_get_source(item));
 
