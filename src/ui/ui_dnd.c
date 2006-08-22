@@ -94,7 +94,7 @@ ui_dnd_feed_drop_possible(GtkTreeDragDest *drag_dest, GtkTreePath *dest_path, Gt
 
 static gboolean 
 ui_dnd_drag_data_received(GtkTreeDragDest *drag_dest, GtkTreePath *dest, GtkSelectionData *selection_data) {
-	GtkTreeIter	iter, parentIter;
+	GtkTreeIter	iter, iter2, parentIter;
 	nodePtr		node, oldParent, newParent;
 	gboolean	result, valid;
 
@@ -104,6 +104,7 @@ ui_dnd_drag_data_received(GtkTreeDragDest *drag_dest, GtkTreePath *dest, GtkSele
 			
 			/* remove from old parents child list */
 			oldParent = node->parent;
+			g_assert(oldParent);
 			oldParent->children = g_slist_remove(oldParent->children, node);
 			
 			if(0 == g_slist_length(oldParent->children))
@@ -132,20 +133,25 @@ ui_dnd_drag_data_received(GtkTreeDragDest *drag_dest, GtkTreePath *dest, GtkSele
 				
 			/* and rebuild it from the tree model */
 			if(feedlist_get_root() != newParent)
-				valid = gtk_tree_model_iter_children(GTK_TREE_MODEL(drag_dest), &iter, &parentIter);
+				valid = gtk_tree_model_iter_children(GTK_TREE_MODEL(drag_dest), &iter2, &parentIter);
 			else
-				valid = gtk_tree_model_iter_children(GTK_TREE_MODEL(drag_dest), &iter, NULL);
+				valid = gtk_tree_model_iter_children(GTK_TREE_MODEL(drag_dest), &iter2, NULL);
 				
 			while(valid) {
-				gtk_tree_model_get(GTK_TREE_MODEL(drag_dest), &iter, FS_PTR, &node, -1);
-				if(node) {
-					debug1(DEBUG_GUI, "   -> %s\n", node->title);
-					newParent->children = g_slist_append(newParent->children, node);
+				nodePtr	child;
+				gtk_tree_model_get(GTK_TREE_MODEL(drag_dest), &iter2, FS_PTR, &child, -1);
+				if(child) {
+					if(!strcmp(node->id, child->id) && memcmp(&iter, &iter2, sizeof(GtkTreeIter))) {
+						debug1(DEBUG_GUI, "   -> skipping old %s\n", child->title);
+					} else {
+						debug1(DEBUG_GUI, "   -> adding %s", child->title);
+						newParent->children = g_slist_append(newParent->children, child);
+					}
 				} else {
 					/* remove possible existing "(empty)" node from newParent */
 					ui_node_remove_empty_node(&parentIter);
 				}
-				valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(drag_dest), &iter);
+				valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(drag_dest), &iter2);
 			}
 			
 			feedlist_schedule_save();
