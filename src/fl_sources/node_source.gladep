@@ -1,0 +1,17 @@
+<?xml version="1.0" standalone="no"?> <!--*- mode: xml -*-->
+<!DOCTYPE glade-project SYSTEM "http://glade.gnome.org/glade-project-2.0.dtd">
+
+<glade-project>
+  <name>fl_plugin</name>
+  <program_name>fl_plugin</program_name>
+  <source_directory></source_directory>
+  <pixmaps_directory></pixmaps_directory>
+  <gnome_support>FALSE</gnome_support>
+  <output_main_file>FALSE</output_main_file>
+  <output_support_files>FALSE</output_support_files>
+  <output_build_files>FALSE</output_build_files>
+  <main_source_file>node_source-ui.c</main_source_file>
+  <main_header_file>node_source-ui.h</main_header_file>
+  <handler_source_file>.node_source-cb.c</handler_source_file>
+  <handler_header_file>.node_source-cb.h</handler_header_file>
+</glade-project>
