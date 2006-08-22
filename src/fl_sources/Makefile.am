@@ -8,48 +8,17 @@ INCLUDES = \
 	$(PACKAGE_CFLAGS) \
 	$(DBUS_CFLAGS)
 	
-if PLATFORM_WIN32
-DEFAULTLDFLAGS = -avoid-version -module -no-undefined -Wl,$(top_builddir)/src/liferea-bin.a
-DEFAULTDEPENDENCIES = $(top_builddir)/src/liferea-bin$(EXEEXT)
-else
-DEFAULTLDFLAGS = -avoid-version -module
-endif
-
 # plugin loading code
 noinst_LIBRARIES = libliflsources.a
 
-libliflsources_a_SOURCES = fl_plugin.c fl_plugin.h \
-                            fl_plugin-ui.c fl_plugin-ui.h \
-			    .fl_plugin-cb.c .fl_plugin-cb.h
+libliflsources_a_SOURCES = node_source.c node_source.h \
+                           node_source-ui.c node_source-ui.h \
+			   .node_source-cb.c .node_source-cb.h \
+                           default_source.c default_source.h \
+                           dummy_source.c \
+                           opml_source.c opml_source.h \
+                           opml_source-ui.c opml_source-ui.h \
+                           opml_source-cb.c opml_source-cb.h 
 
 libliflsources_a_CFLAGS = $(PACKAGE_FLAGS)
 
-pkglib_LTLIBRARIES = liblifldefault.la \
-                     liblifldummy.la \
-                     libliflopml.la
-
-# default feed list source plugin
-liblifldefault_la_LIBADD = $(PACKAGE_LIBS)
-liblifldefault_la_CFLAGS = $(PACKAGE_FLAGS)
-liblifldefault_la_SOURCES = fl_default.c fl_default.h 
-liblifldefault_la_LDFLAGS = $(DEFAULTLDFLAGS)
-liblifldefault_la_DEPENDENCIES = $(DEFAULTDEPENDENCIES)
-
-# dummy source plugin
-liblifldummy_la_LIBADD = $(PACKAGE_LIBS)
-liblifldummy_la_CFLAGS = $(PACKAGE_FLAGS)
-liblifldummy_la_SOURCES = fl_dummy.c 
-liblifldummy_la_LDFLAGS = $(DEFAULTLDFLAGS)
-liblifldummy_la_DEPENDENCIES = $(DEFAULTDEPENDENCIES)
-
-# OPML/Planet source plugin target
-libliflopml_la_LIBADD = $(PACKAGE_LIBS)
-libliflopml_la_CFLAGS = $(PACKAGE_FLAGS)
-libliflopml_la_SOURCES = fl_opml.c fl_opml.h \
-                         fl_opml-ui.c fl_opml-ui.h \
-                         fl_opml-cb.c fl_opml-cb.h 
-libliflopml_la_LDFLAGS = $(DEFAULTLDFLAGS)
-libliflopml_la_DEPENDENCIES = $(DEFAULTSDEPENDENCIES)
-
-# FIXME: library targets for:
-#	fl_bloglines.c fl_bloglines.h
