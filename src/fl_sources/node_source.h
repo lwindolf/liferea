@@ -1,5 +1,5 @@
 /**
- * @file fl_plugin.h generic feed list provider interface
+ * @file node_source.h generic feed list provider interface
  * 
  * Copyright (C) 2005-2006 Lars Lindner <lars.lindner@gmx.net>
  *
@@ -18,8 +18,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _FL_PLUGIN_H
-#define _FL_PLUGIN_H
+#ifndef _NODE_SOURCE_H
+#define _NODE_SOURCE_H
 
 #include <glib.h>
 #include <gmodule.h>
@@ -42,7 +42,7 @@
    A source type can omit all callbacks marked as optional. */
 
 
-#define NODE_SOURCE_API_VERSION 4
+#define NODE_SOURCE_TYPE_API_VERSION 4
 
 enum {
 	NODE_SOURCE_CAPABILITY_IS_ROOT			= (1<<0),	/**< flag only for default feed list source */
@@ -123,13 +123,9 @@ typedef struct nodeSource {
 } *nodeSourcePtr;
 
 /** Use this to cast the node source type from a node structure. */
-#define NODE_SOURCE_TYPE(node) ((nodeSourceTypePtr)(node->source))->type
+#define NODE_SOURCE_TYPE(node) ((nodeSourcePtr)(node->source))->type
 
-/** Feed list plugins are to be declared with this macro. */
-#define DECLARE_NODE_SOURCE_PLUGIN(nodeSourceType) \
-        G_MODULE_EXPORT nodeSourceTypePtr node_source_type_get_info() { \
-                return &nodeSourceType; \
-        }
+#define NODE_SOURCE_TYPE_DUMMY_ID "fl_dummy"
 
 /** 
  * Scans the source type list for the root source provider.

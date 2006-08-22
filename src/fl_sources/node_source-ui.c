@@ -15,8 +15,8 @@
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 
-#include ".fl_plugin-cb.h"
-#include "fl_plugin-ui.h"
+#include ".node_source-cb.h"
+#include "node_source-ui.h"
 #include "support.h"
 
 #define GLADE_HOOKUP_OBJECT(component,widget,name) \
@@ -27,26 +27,26 @@
   g_object_set_data (G_OBJECT (component), name, widget)
 
 GtkWidget*
-create_fl_plugin_type_dialog (void)
+create_node_source_type_dialog (void)
 {
-  GtkWidget *fl_plugin_type_dialog;
+  GtkWidget *node_source_type_dialog;
   GtkWidget *dialog_vbox1;
   GtkWidget *vbox1;
   GtkWidget *label2;
   GtkWidget *scrolledwindow1;
-  GtkWidget *plugin_type_list;
+  GtkWidget *type_list;
   GtkWidget *dialog_action_area1;
   GtkWidget *cancelbutton1;
   GtkWidget *ok_button;
 
-  fl_plugin_type_dialog = gtk_dialog_new ();
-  gtk_window_set_title (GTK_WINDOW (fl_plugin_type_dialog), _("Source Selection"));
-  gtk_window_set_modal (GTK_WINDOW (fl_plugin_type_dialog), TRUE);
-  gtk_window_set_default_size (GTK_WINDOW (fl_plugin_type_dialog), 300, 200);
-  gtk_window_set_destroy_with_parent (GTK_WINDOW (fl_plugin_type_dialog), TRUE);
-  gtk_window_set_type_hint (GTK_WINDOW (fl_plugin_type_dialog), GDK_WINDOW_TYPE_HINT_DIALOG);
+  node_source_type_dialog = gtk_dialog_new ();
+  gtk_window_set_title (GTK_WINDOW (node_source_type_dialog), _("Source Selection"));
+  gtk_window_set_modal (GTK_WINDOW (node_source_type_dialog), TRUE);
+  gtk_window_set_default_size (GTK_WINDOW (node_source_type_dialog), 300, 200);
+  gtk_window_set_destroy_with_parent (GTK_WINDOW (node_source_type_dialog), TRUE);
+  gtk_window_set_type_hint (GTK_WINDOW (node_source_type_dialog), GDK_WINDOW_TYPE_HINT_DIALOG);
 
-  dialog_vbox1 = GTK_DIALOG (fl_plugin_type_dialog)->vbox;
+  dialog_vbox1 = GTK_DIALOG (node_source_type_dialog)->vbox;
   gtk_widget_show (dialog_vbox1);
 
   vbox1 = gtk_vbox_new (FALSE, 6);
@@ -65,41 +65,41 @@ create_fl_plugin_type_dialog (void)
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow1), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
   gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolledwindow1), GTK_SHADOW_IN);
 
-  plugin_type_list = gtk_tree_view_new ();
-  gtk_widget_show (plugin_type_list);
-  gtk_container_add (GTK_CONTAINER (scrolledwindow1), plugin_type_list);
-  gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (plugin_type_list), FALSE);
-  gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (plugin_type_list), TRUE);
+  type_list = gtk_tree_view_new ();
+  gtk_widget_show (type_list);
+  gtk_container_add (GTK_CONTAINER (scrolledwindow1), type_list);
+  gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (type_list), FALSE);
+  gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (type_list), TRUE);
 
-  dialog_action_area1 = GTK_DIALOG (fl_plugin_type_dialog)->action_area;
+  dialog_action_area1 = GTK_DIALOG (node_source_type_dialog)->action_area;
   gtk_widget_show (dialog_action_area1);
   gtk_button_box_set_layout (GTK_BUTTON_BOX (dialog_action_area1), GTK_BUTTONBOX_END);
 
   cancelbutton1 = gtk_button_new_from_stock ("gtk-cancel");
   gtk_widget_show (cancelbutton1);
-  gtk_dialog_add_action_widget (GTK_DIALOG (fl_plugin_type_dialog), cancelbutton1, GTK_RESPONSE_CANCEL);
+  gtk_dialog_add_action_widget (GTK_DIALOG (node_source_type_dialog), cancelbutton1, GTK_RESPONSE_CANCEL);
   GTK_WIDGET_SET_FLAGS (cancelbutton1, GTK_CAN_DEFAULT);
 
   ok_button = gtk_button_new_from_stock ("gtk-ok");
   gtk_widget_show (ok_button);
-  gtk_dialog_add_action_widget (GTK_DIALOG (fl_plugin_type_dialog), ok_button, GTK_RESPONSE_OK);
+  gtk_dialog_add_action_widget (GTK_DIALOG (node_source_type_dialog), ok_button, GTK_RESPONSE_OK);
   GTK_WIDGET_SET_FLAGS (ok_button, GTK_CAN_DEFAULT);
 
   g_signal_connect_swapped ((gpointer) cancelbutton1, "clicked",
                             G_CALLBACK (gtk_widget_destroy),
-                            GTK_OBJECT (fl_plugin_type_dialog));
+                            GTK_OBJECT (node_source_type_dialog));
 
   /* Store pointers to all widgets, for use by lookup_widget(). */
-  GLADE_HOOKUP_OBJECT_NO_REF (fl_plugin_type_dialog, fl_plugin_type_dialog, "fl_plugin_type_dialog");
-  GLADE_HOOKUP_OBJECT_NO_REF (fl_plugin_type_dialog, dialog_vbox1, "dialog_vbox1");
-  GLADE_HOOKUP_OBJECT (fl_plugin_type_dialog, vbox1, "vbox1");
-  GLADE_HOOKUP_OBJECT (fl_plugin_type_dialog, label2, "label2");
-  GLADE_HOOKUP_OBJECT (fl_plugin_type_dialog, scrolledwindow1, "scrolledwindow1");
-  GLADE_HOOKUP_OBJECT (fl_plugin_type_dialog, plugin_type_list, "plugin_type_list");
-  GLADE_HOOKUP_OBJECT_NO_REF (fl_plugin_type_dialog, dialog_action_area1, "dialog_action_area1");
-  GLADE_HOOKUP_OBJECT (fl_plugin_type_dialog, cancelbutton1, "cancelbutton1");
-  GLADE_HOOKUP_OBJECT (fl_plugin_type_dialog, ok_button, "ok_button");
+  GLADE_HOOKUP_OBJECT_NO_REF (node_source_type_dialog, node_source_type_dialog, "node_source_type_dialog");
+  GLADE_HOOKUP_OBJECT_NO_REF (node_source_type_dialog, dialog_vbox1, "dialog_vbox1");
+  GLADE_HOOKUP_OBJECT (node_source_type_dialog, vbox1, "vbox1");
+  GLADE_HOOKUP_OBJECT (node_source_type_dialog, label2, "label2");
+  GLADE_HOOKUP_OBJECT (node_source_type_dialog, scrolledwindow1, "scrolledwindow1");
+  GLADE_HOOKUP_OBJECT (node_source_type_dialog, type_list, "type_list");
+  GLADE_HOOKUP_OBJECT_NO_REF (node_source_type_dialog, dialog_action_area1, "dialog_action_area1");
+  GLADE_HOOKUP_OBJECT (node_source_type_dialog, cancelbutton1, "cancelbutton1");
+  GLADE_HOOKUP_OBJECT (node_source_type_dialog, ok_button, "ok_button");
 
-  return fl_plugin_type_dialog;
+  return node_source_type_dialog;
 }
 

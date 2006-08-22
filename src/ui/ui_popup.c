@@ -202,19 +202,19 @@ static void ui_popup_mark_as_read(gpointer callback_data, guint callback_action,
 }
 
 static void ui_popup_add_feed(gpointer callback_data, guint callback_action, GtkWidget *widget) {
-	node_request_interactive_add(FST_FEED);
+	node_request_interactive_add(NODE_TYPE_FEED);
 }
 
 static void ui_popup_add_folder(gpointer callback_data, guint callback_action, GtkWidget *widget) {
-	node_request_interactive_add(FST_FOLDER);
+	node_request_interactive_add(NODE_TYPE_FOLDER);
 }
 
 static void ui_popup_add_vfolder(gpointer callback_data, guint callback_action, GtkWidget *widget) {
-	node_request_interactive_add(FST_VFOLDER);
+	node_request_interactive_add(NODE_TYPE_VFOLDER);
 }
 
 static void ui_popup_add_source(gpointer callback_data, guint callback_action, GtkWidget *widget) {
-	node_request_interactive_add(FST_PLUGIN);
+	node_request_interactive_add(NODE_TYPE_SOURCE);
 }
 
 static void ui_popup_properties(gpointer callback_data, guint callback_action, GtkWidget *widget) {
@@ -234,16 +234,16 @@ static GtkMenu *ui_popup_node_menu(nodePtr node, gboolean validSelection) {
 	gint 			menu_len = 0;
 
 	if(validSelection) {
-		if(node->type == FST_FOLDER)
+		if(node->type == NODE_TYPE_FOLDER)
 			addPopupOption(&menu_items, &menu_len, _("/_Update Folder"), 	NULL, ui_popup_update,		0, "<StockItem>", GTK_STOCK_REFRESH);
 
-		if((node->type != FST_FOLDER) && (node->type != FST_VFOLDER))
+		if((node->type != NODE_TYPE_FOLDER) && (node->type != NODE_TYPE_VFOLDER))
 			addPopupOption(&menu_items, &menu_len, _("/_Update"), 		NULL, ui_popup_update,		0, "<StockItem>", GTK_STOCK_REFRESH);
 
 		addPopupOption(&menu_items, &menu_len, _("/_Mark All As Read"),		NULL, ui_popup_mark_as_read, 	0, "<StockItem>", GTK_STOCK_APPLY);
 	}
 
-	if(FL_PLUGIN(node)->capabilities & FL_PLUGIN_CAPABILITY_ADD) {
+	if(NODE_TYPE(node->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS) {
 		addPopupOption(&menu_items, &menu_len, _("/_New"),			NULL, 0, 			0, "<Branch>", 0);
 		addPopupOption(&menu_items, &menu_len, _("/_New/New _Subscription..."),	NULL, ui_popup_add_feed, 	0, NULL, 0);
 		addPopupOption(&menu_items, &menu_len, _("/_New/New _Folder..."),	NULL, ui_popup_add_folder, 	0, NULL, 0);
@@ -252,11 +252,11 @@ static GtkMenu *ui_popup_node_menu(nodePtr node, gboolean validSelection) {
 	}
 
 	if(validSelection) {
-		if(node->type == FST_FOLDER) {
+		if(node->type == NODE_TYPE_FOLDER) {
 			addPopupOption(&menu_items, &menu_len, _("/_Rename Folder..."),	NULL, ui_popup_properties,	0, "<StockItem>", GTK_STOCK_PROPERTIES);
 			addPopupOption(&menu_items, &menu_len, _("/_Delete Folder"), 	NULL, ui_popup_delete,		0, "<StockItem>", GTK_STOCK_DELETE);
 		}
-		if(node->type != FST_FOLDER) {
+		if(node->type != NODE_TYPE_FOLDER) {
 			addPopupOption(&menu_items, &menu_len, _("/_Properties..."),	NULL, ui_popup_properties, 	0, "<StockItem>", GTK_STOCK_PROPERTIES );
 			addPopupOption(&menu_items, &menu_len, _("/_Delete"),		NULL, ui_popup_delete,		0, "<StockItem>", GTK_STOCK_DELETE);
 		}

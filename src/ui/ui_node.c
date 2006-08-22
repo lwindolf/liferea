@@ -42,7 +42,7 @@ GtkTreeIter * ui_node_to_iter(nodePtr node) {
 void ui_node_update_iter(nodePtr node, GtkTreeIter *iter) {
 	GtkTreeIter *old;
 	
-	if(old = (GtkTreeIter *)g_hash_table_lookup(flIterHash, (gpointer)node))
+	if(NULL != (old = (GtkTreeIter *)g_hash_table_lookup(flIterHash, (gpointer)node)))
 		*old = *iter;
 }
 
@@ -155,7 +155,7 @@ void ui_node_add(nodePtr parent, nodePtr node, gint position) {
 	/* if parent is NULL we have the root folder and don't create a new row! */
 	iter = (GtkTreeIter *)g_new0(GtkTreeIter, 1);
 	
-	if(!(parent->type == FST_ROOT))
+	if(!(parent->type == NODE_TYPE_ROOT))
 		parentIter = ui_node_to_iter(parent);
 
 	if(position < 0)
@@ -168,10 +168,10 @@ void ui_node_add(nodePtr parent, nodePtr node, gint position) {
 
 	ui_node_update(node);
 	
-	if(!(parent->type == FST_ROOT))
+	if(!(parent->type == NODE_TYPE_ROOT))
 		ui_node_check_if_folder_is_empty(parent);
 
-	if(FST_FOLDER == node->type)
+	if(NODE_TYPE_FOLDER == node->type)
 		ui_node_check_if_folder_is_empty(node);
 }
 
@@ -210,13 +210,13 @@ GdkPixbuf* ui_node_get_icon(nodePtr node) {
 
 	/* special icons */
 	switch(node->type) {
-		case FST_FOLDER:
+		case NODE_TYPE_FOLDER:
 			favicon = icons[ICON_FOLDER];
 			break;
-		case FST_VFOLDER:
+		case NODE_TYPE_VFOLDER:
 			favicon = icons[ICON_VFOLDER];
 			break;
-		case FST_FEED:
+		case NODE_TYPE_FEED:
 			feed = (feedPtr)node->data;
 
 			if(!feed->available)

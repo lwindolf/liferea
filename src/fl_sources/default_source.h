@@ -1,5 +1,5 @@
 /**
- * @file fl_default.h default static feedlist provider
+ * @file default_source.h default static feedlist provider
  * 
  * Copyright (C) 2005 Lars Lindner <lars.lindner@gmx.net>
  *
@@ -18,8 +18,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _FL_DEFAULT_H
-#define _FL_DEFAULT_H
+#ifndef _DEFAULT_SOURCE_H
+#define _DEFAULT_SOURCE_H
 
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
@@ -40,4 +40,9 @@
 
 #endif /* USE_DBUS */
 
-#endif /* _FL_DEFAULT_H */
+/**
+ * Returns default source type implementation info.
+ */
+nodeSourceTypePtr default_source_get_type(void);
+
+#endif /* _DEFAULT_SOURCE_H */

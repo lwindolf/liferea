@@ -1,5 +1,5 @@
 /**
- * @file fl_plugin.c generic feedlist provider implementation
+ * @file node_source.c generic feedlist provider implementation
  * 
  * Copyright (C) 2005-2006 Lars Lindner <lars.lindner@gmx.net>
  *
@@ -29,8 +29,8 @@
 #include "plugin.h"
 #include "render.h"
 #include "support.h"
-#include "fl_sources/fl_plugin.h"
-#include "fl_sources/fl_plugin-ui.h"
+#include "fl_sources/node_source.h"
+#include "fl_sources/node_source-ui.h"
 
 static GSList	*nodeSourceTypes = NULL;
 
@@ -54,11 +54,11 @@ void node_source_setup_root(nodePtr node) {
 	
 	debug_enter("node_source_setup_root");
 
-	type = node_source_find(NULL, NODE_SOURCE_TYPE_CAPABILITY_IS_ROOT);
+	type = node_source_type_find(NULL, NODE_SOURCE_CAPABILITY_IS_ROOT);
 	if(!type) 
 		g_error("No root capable node source found!");
 		
-	node->source = g_new0(struct nodeSourceType, 1);
+	node->source = g_new0(struct nodeSource, 1);
 	node->source->root = node;
 	node->source->type = type;
 	type->source_import(node);
@@ -66,25 +66,25 @@ void node_source_setup_root(nodePtr node) {
 	debug_exit("node_source_setup_root");
 }
 
-gboolean node_source_register(nodeSourceTypePtr type) {
+gboolean node_source_type_register(nodeSourceTypePtr type) {
 
 	/* check feed list provider plugin version */
-	if(NODE_SOURCE_API_VERSION != type->api_version) {
-		debug3(DEBUG_PLUGINS, "feed list source API version mismatch: \"%s\" has version %d should be %d\n", source->name, source->api_version, NODE_SOURCE_API_VERSION);
+	if(NODE_SOURCE_TYPE_API_VERSION != type->api_version) {
+		debug3(DEBUG_PLUGINS, "feed list source API version mismatch: \"%s\" has version %d should be %d\n", type->name, type->api_version, NODE_SOURCE_TYPE_API_VERSION);
 		return FALSE;
 	} 
 
-	/* check if all mandatory symbols are provided */
-	if(!(type->source_init &&
-	     type->source_deinit)) {
-		debug1(DEBUG_PLUGINS, "mandatory symbols missing: \"%s\"\n", type->name);
+	/* check if all mandatory functions are provided */
+	if(!(type->source_type_init &&
+	     type->source_type_deinit)) {
+		debug1(DEBUG_PLUGINS, "mandatory functions missing: \"%s\"\n", type->name);
 		return FALSE;
 	}
 
 	/* allow the plugin to initialize */
-	type->source_init();
+	type->source_type_init();
 
-	nodeSourceTypes = g_slist_insert(nodeSourceTypes, type);
+	nodeSourceTypes = g_slist_append(nodeSourceTypes, type);
 	
 	return TRUE;
 }
@@ -105,7 +105,7 @@ void node_source_import(nodePtr node, xmlNodePtr cur) {
 		node->available = FALSE;
 
 		/* scan for matching plugin and create new instance */
-		type = node_source_find(typeStr, 0);
+		type = node_source_type_find(typeStr, 0);
 		
 		if(NULL == type) {
 			/* Source type is not available for some reason, but
@@ -113,14 +113,14 @@ void node_source_import(nodePtr node, xmlNodePtr cur) {
 			   in the feed list. So we load a dummy source type
 			   instead and save the real source id in the
 			   unused node's data field */
-			type = node_type_find(NODE_SOURCE_TYPE_DUMMY_ID, 0);
+			type = node_source_type_find(NODE_SOURCE_TYPE_DUMMY_ID, 0);
 			g_assert(NULL != type);
 			node->data = g_strdup(typeStr);
 		}
 
-		node->type = FST_SOURCE;
+		node->type = NODE_TYPE_SOURCE;
 		node->available = TRUE;
-		node->source = g_new0(struct flNodeSource, 1);
+		node->source = g_new0(struct nodeSource, 1);
 		node->source->updateState = g_new0(struct updateState, 1);
 		node->source->root = node;
 		node->source->type = type;
@@ -157,7 +157,7 @@ void node_source_export(nodePtr node, xmlNodePtr cur) {
 void node_source_new(nodePtr node, nodeSourceTypePtr type, const gchar *sourceUrl) {
 
 	g_assert(NULL == node->source);
-	node->source = g_new0(struct nodeSourceType, 1);
+	node->source = g_new0(struct nodeSource, 1);
 	node->source->root = node;
 	node->source->type = type;
 	node->source->url = g_strdup(sourceUrl);
@@ -205,7 +205,7 @@ void ui_node_source_type_dialog(nodePtr parent) {
 	
 	/* add available feed list source to treestore */
 	while(iter) {
-		type = (nodeSourceType)iter->data;
+		type = (nodeSourceTypePtr)iter->data;
 		if(type->capabilities & NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION) {
 
 			gtk_tree_store_append(treestore, &treeiter, NULL);

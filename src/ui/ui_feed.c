@@ -37,7 +37,6 @@
 #include "favicon.h"
 #include "debug.h"
 #include "ui/ui_feed.h"
-#include "fl_sources/fl_default.h"
 
 extern GtkWidget *mainwindow;
 

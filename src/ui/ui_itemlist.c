@@ -511,7 +511,7 @@ void on_remove_items_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	nodePtr		np;
 	
 	np = feedlist_get_selected();
-	if((NULL != np) && (FST_FEED == np->type))
+	if(np && (NODE_TYPE_FEED == np->type))
 		itemlist_remove_items(np->itemSet);
 	else
 		ui_show_error_box(_("You must select a feed to delete its items!"));

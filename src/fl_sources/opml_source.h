@@ -1,5 +1,5 @@
 /**
- * @file fl_opml.h OPML Planet/Blogroll feed list provider
+ * @file opml_source.h OPML Planet/Blogroll feed list provider
  * 
  * Copyright (C) 2005-2006 Lars Lindner <lars.lindner@gmx.net>
  *
@@ -18,8 +18,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
  
-#ifndef _FL_OPML_H
-#define _FL_OPML_H
+#ifndef _OPML_SOURCE_H
+#define _OPML_SOURCE_H
 
 #include "node.h"
 
@@ -29,13 +29,18 @@
  * @param parent	parent node (or NULL when importing)
  * @param node		the node
  */
-void fl_opml_source_setup(nodePtr parent, nodePtr node);
+void opml_source_setup(nodePtr parent, nodePtr node);
 
 /**
  * Updates the OPML source of the given node.
  *
  * @param node		the node
  */
-void fl_opml_source_update(nodePtr node);
+void opml_source_update(nodePtr node);
+
+/**
+ * Returns OPML source type implementation info.
+ */
+nodeSourceTypePtr opml_source_get_type(void);
 
 #endif

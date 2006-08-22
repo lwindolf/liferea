@@ -1,5 +1,5 @@
 /**
- * @file fl_opml.h OPML Planet/Blogroll feed list provider
+ * @file opml_source-cb.c OPML Planet/Blogroll feed list provider
  * 
  * Copyright (C) 2006 Lars Lindner <lars.lindner@gmx.net>
  *
@@ -32,16 +32,14 @@
 #include "feedlist.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_mainwindow.h"
-#include "fl_sources/fl_plugin.h"
-#include "fl_sources/fl_opml.h"
-#include "fl_sources/fl_opml-cb.h"
-#include "fl_sources/fl_opml-ui.h"
+#include "fl_sources/node_source.h"
+#include "fl_sources/opml_source.h"
+#include "fl_sources/opml_source-cb.h"
+#include "fl_sources/opml_source-ui.h"
 
 extern GtkWidget *mainwindow;
 
-extern flPluginPtr fl_plugin_get_info();
-
-static void on_fl_opml_source_selected(GtkDialog *dialog, gint response_id, gpointer user_data) {
+static void on_opml_source_selected(GtkDialog *dialog, gint response_id, gpointer user_data) {
 	nodePtr		node, parent = (nodePtr)user_data;
 
 	if(response_id != GTK_RESPONSE_OK)
@@ -49,20 +47,20 @@ static void on_fl_opml_source_selected(GtkDialog *dialog, gint response_id, gpoi
 
 	node = node_new();
 	node_set_title(node, _("New OPML Subscription"));
-	fl_plugin_new_source(node, fl_plugin_get_info(), gtk_entry_get_text(GTK_ENTRY(lookup_widget(GTK_WIDGET(dialog), "location_entry"))));
-	fl_opml_source_setup(parent, node);
-	fl_opml_source_update(node);
+	node_source_new(node, opml_source_get_type(), gtk_entry_get_text(GTK_ENTRY(lookup_widget(GTK_WIDGET(dialog), "location_entry"))));
+	opml_source_setup(parent, node);
+	opml_source_update(node);
 
 	gtk_widget_destroy(GTK_WIDGET(dialog));
 }
 
-void ui_fl_opml_get_source_url(nodePtr parent) {
+void ui_opml_source_get_source_url(nodePtr parent) {
 	GtkWidget	*dialog;
 
-	dialog = create_instance_dialog();
+	dialog = create_opml_source_dialog();
 
 	g_signal_connect(G_OBJECT(dialog), "response",
-			 G_CALLBACK(on_fl_opml_source_selected), 
+			 G_CALLBACK(on_opml_source_selected), 
 			 (gpointer)parent);
 
 	gtk_widget_show_all(dialog);

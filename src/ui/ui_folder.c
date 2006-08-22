@@ -51,7 +51,7 @@ void on_newfolderbtn_clicked(GtkButton *button, gpointer user_data) {
 	/* create folder node */
 	folder = node_new();
 	node_set_title(folder, (gchar *)gtk_entry_get_text(GTK_ENTRY(lookup_widget(newfolderdialog, "foldertitleentry"))));
-	node_add_data(folder, FST_FOLDER, NULL);
+	node_add_data(folder, NODE_TYPE_FOLDER, NULL);
 
 	/* add the new folder to the model */
 	node_add_child(NULL, folder, 0);
@@ -60,7 +60,7 @@ void on_newfolderbtn_clicked(GtkButton *button, gpointer user_data) {
 
 void ui_folder_properties(nodePtr folder) {
 	
-	g_assert(!folder || (FST_FOLDER != folder->type));
+	g_assert(!folder || (NODE_TYPE_FOLDER != folder->type));
 	
 	if(!foldernamedialog || !G_IS_OBJECT(foldernamedialog))
 		foldernamedialog = create_foldernamedialog();

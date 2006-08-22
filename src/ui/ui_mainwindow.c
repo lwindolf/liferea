@@ -504,12 +504,13 @@ void ui_mainwindow_update_toolbar(struct mainwindow *mw) {
 }
 
 void ui_mainwindow_update_feed_menu(gint type) {
-	gboolean enabled = (FST_FEED == type) || (FST_FOLDER == type) || (FST_VFOLDER == type) || (FST_PLUGIN == type);
+	gboolean enabled = (NODE_TYPE_FEED == type) || (NODE_TYPE_FOLDER == type) || (NODE_TYPE_VFOLDER == type) || (NODE_TYPE_SOURCE == type);
 	
 	gtk_action_group_set_sensitive(mw_global_fixme->feedActions, enabled);
 }
 
 void ui_mainwindow_update_menubar(void) {
+
 	if(getBooleanConfValue(DISABLE_MENUBAR))
 		gtk_widget_hide(mw_global_fixme->menubar);
 	else

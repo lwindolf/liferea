@@ -138,7 +138,7 @@ void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 
 void on_new_vfolder_activate(GtkMenuItem *menuitem, gpointer user_data) {
 
-	node_request_interactive_add(FST_VFOLDER);
+	node_request_interactive_add(NODE_TYPE_VFOLDER);
 }
 
 /*------------------------------------------------------------------------------*/

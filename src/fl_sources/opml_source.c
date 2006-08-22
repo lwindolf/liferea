@@ -1,5 +1,5 @@
 /**
- * @file fl_opml.c OPML Planet/Blogroll feedlist provider
+ * @file opml_source.c OPML Planet/Blogroll feedlist provider
  * 
  * Copyright (C) 2006 Lars Lindner <lars.lindner@gmx.net>
  *
@@ -33,32 +33,30 @@
 #include "node.h"
 #include "export.h"
 #include "ui/ui_feedlist.h"
-#include "fl_sources/fl_opml.h"
-#include "fl_sources/fl_opml-ui.h"
-#include "fl_sources/fl_opml-cb.h"
-#include "fl_sources/fl_plugin.h"
+#include "fl_sources/opml_source.h"
+#include "fl_sources/opml_source-ui.h"
+#include "fl_sources/opml_source-cb.h"
+#include "fl_sources/node_source.h"
 #include "notification/notif_plugin.h"
 #include "ui/ui_node.h"
 
 /** default OPML update interval = once a day */
 #define OPML_SOURCE_UPDATE_INTERVAL 60*60*24
 
-static struct flPlugin fpi;
-
-static gchar * fl_opml_source_get_feedlist(nodePtr node) {
+static gchar * opml_source_get_feedlist(nodePtr node) {
 
 	return common_create_cache_filename("cache" G_DIR_SEPARATOR_S "plugins", node->id, "opml");
 }
 
-static void fl_opml_source_import(nodePtr node) {
+static void opml_source_import(nodePtr node) {
 	gchar		*filename;
 
-	debug_enter("fl_opml_source_import");
+	debug_enter("opml_source_import");
 
-	fl_opml_source_setup(NULL, node);
+	opml_source_setup(NULL, node);
 	
 	debug1(DEBUG_CACHE, "starting import of opml plugin instance (id=%s)\n", node->id);
-	filename = fl_opml_source_get_feedlist(node);
+	filename = opml_source_get_feedlist(node);
 	if(g_file_test(filename, G_FILE_TEST_EXISTS)) {
 		import_OPML_feedlist(filename, node, node->source, FALSE, TRUE);
 	} else {
@@ -67,13 +65,13 @@ static void fl_opml_source_import(nodePtr node) {
 	}
 	g_free(filename);
 
-	debug_exit("fl_opml_source_import");
+	debug_exit("opml_source_import");
 }
 
-static void fl_opml_source_export(nodePtr node) {
+static void opml_source_export(nodePtr node) {
 	gchar		*filename;
 	
-	debug_enter("fl_opml_source_export");
+	debug_enter("opml_source_export");
 
 	/* Although the OPML structure won't change, it needs to
 	   be saved so that the feed ids are saved to disk after
@@ -81,19 +79,19 @@ static void fl_opml_source_export(nodePtr node) {
 
 	g_assert(node == node->source->root);
 
-	filename = fl_opml_source_get_feedlist(node);	   
+	filename = opml_source_get_feedlist(node);	   
 	export_OPML_feedlist(filename, node, TRUE);
 	g_free(filename);
 	
-	debug_exit("fl_opml_source_export");
+	debug_exit("opml_source_export");
 }
 
-static void fl_opml_source_new(nodePtr parent) {
+static void opml_source_new(nodePtr parent) {
 
-	ui_fl_opml_get_source_url(parent);
+	ui_opml_source_get_source_url(parent);
 }
 
-static void fl_opml_source_remove(nodePtr node) {
+static void opml_source_remove(nodePtr node) {
 	gchar		*filename;
 	
 	g_assert(node == node->source->root);
@@ -103,7 +101,7 @@ static void fl_opml_source_remove(nodePtr node) {
 	g_assert(!node->children);
 	
 	/* step 2: delete plugin instance OPML cache file */
-	filename = fl_opml_source_get_feedlist(node);
+	filename = opml_source_get_feedlist(node);
 	unlink(filename);
 	g_free(filename);
 }
@@ -114,7 +112,7 @@ typedef struct mergeCtxt {
 	xmlNodePtr	xmlNode;	/* currently processed XML node of old OPML doc */
 } *mergeCtxtPtr;
 
-static void fl_opml_source_merge_feed(xmlNodePtr match, gpointer user_data) {
+static void opml_source_merge_feed(xmlNodePtr match, gpointer user_data) {
 	mergeCtxtPtr	mergeCtxt = (mergeCtxtPtr)user_data;
 	xmlChar		*url, *title;
 	gchar		*expr;
@@ -139,9 +137,9 @@ static void fl_opml_source_merge_feed(xmlNodePtr match, gpointer user_data) {
 		node = node_new();
 		node_set_title(node, title);
 		if(url)
-			node_add_data(node, FST_FEED, feed_new(url, NULL));
+			node_add_data(node, NODE_TYPE_FEED, feed_new(url, NULL));
 		else
-			node_add_data(node, FST_FOLDER, NULL);
+			node_add_data(node, NODE_TYPE_FOLDER, NULL);
 		node_add_child(mergeCtxt->parent, node, -1);
 		node_request_update(node, FEED_REQ_RESET_TITLE);
 	}		
@@ -165,10 +163,10 @@ static void fl_opml_source_merge_feed(xmlNodePtr match, gpointer user_data) {
 			mc->rootNode = mergeCtxt->rootNode;
 			mc->parent = node;
 			mc->xmlNode = mergeCtxt->xmlNode;	// FIXME: must be correct child!
-			common_xpath_foreach_match(match, "./outline", fl_opml_source_merge_feed, (gpointer)mc);
+			common_xpath_foreach_match(match, "./outline", opml_source_merge_feed, (gpointer)mc);
 			g_free(mc);
 		} else {
-			g_warning("fl_opml_source_merge_feed(): bad! bad! very bad!");
+			g_warning("opml_source_merge_feed(): bad! bad! very bad!");
 		}
 	}
 
@@ -178,20 +176,20 @@ static void fl_opml_source_merge_feed(xmlNodePtr match, gpointer user_data) {
 }
 
 // FIXME: broken for empty feed lists!
-static void fl_opml_source_check_for_removal(nodePtr node, gpointer user_data) {
+static void opml_source_check_for_removal(nodePtr node, gpointer user_data) {
 	feedPtr		feed = node->data;
 	gchar		*expr = NULL;
 
 	switch(node->type) {
-		case FST_FEED:
+		case NODE_TYPE_FEED:
 			expr = g_strdup_printf("//outline[ @xmlUrl='%s' ]", feed->source);
 			break;
-		case FST_FOLDER:
-			node_foreach_child_data(node, fl_opml_source_check_for_removal, user_data);
+		case NODE_TYPE_FOLDER:
+			node_foreach_child_data(node, opml_source_check_for_removal, user_data);
 			expr = g_strdup_printf("//outline[ (@title='%s') or (@text='%s') or (@description='%s')]", node->title, node->title, node->title);
 			break;
 		default:
-			g_warning("fl_opml_source_check_for_removal(): This should never happen...");
+			g_warning("opml_source_check_for_removal(): This should never happen...");
 			return;
 			break;
 	}
@@ -207,7 +205,7 @@ static void fl_opml_source_check_for_removal(nodePtr node, gpointer user_data) {
 	g_free(expr);
 }
 
-static void fl_opml_process_update_results(struct request *request) {
+static void opml_source_process_update_results(struct request *request) {
 	nodePtr		node = (nodePtr)request->user_data;
 	mergeCtxtPtr	mergeCtxt;
 	xmlDocPtr	doc, oldDoc;
@@ -222,15 +220,15 @@ static void fl_opml_process_update_results(struct request *request) {
 			/* Go through all existing nodes and remove those whose
 			   URLs are not in new feed list. Also removes those URLs
 			   from the list that have corresponding existing nodes. */
-			node_foreach_child_data(node, fl_opml_source_check_for_removal, 
+			node_foreach_child_data(node, opml_source_check_for_removal, 
 			                        (gpointer)xmlDocGetRootElement(doc));
 						
-			fl_opml_source_export(node);	/* save new feed list tree to disk 
+			opml_source_export(node);	/* save new feed list tree to disk 
 			                                   to ensure correct document in 
 							   next step */
 			
 			/* Merge up-to-date OPML feed list. */
-			oldDoc = xmlParseFile(fl_opml_source_get_feedlist(node));
+			oldDoc = xmlParseFile(opml_source_get_feedlist(node));
 			
 			mergeCtxt = g_new0(struct mergeCtxt, 1);
 			mergeCtxt->rootNode = node;
@@ -239,14 +237,14 @@ static void fl_opml_process_update_results(struct request *request) {
 			
 			common_xpath_foreach_match(xmlDocGetRootElement(doc),
 			                           "/opml/body/outline",
-						   fl_opml_source_merge_feed,
+						   opml_source_merge_feed,
 						   (gpointer)mergeCtxt);
 
 			g_free(mergeCtxt);
 			xmlFreeDoc(oldDoc);			
 			xmlFreeDoc(doc);
 			
-			fl_opml_source_export(node);	/* save new feed list tree to disk */
+			opml_source_export(node);	/* save new feed list tree to disk */
 			
 			node->available = TRUE;
 		} else {
@@ -257,7 +255,7 @@ static void fl_opml_process_update_results(struct request *request) {
 	node_foreach_child(node, node_request_update);
 }
 
-void fl_opml_source_update(nodePtr node) {
+void opml_source_update(nodePtr node) {
 	requestPtr	request;
 	
 	if(node->source->url) {
@@ -266,7 +264,7 @@ void fl_opml_source_update(nodePtr node) {
 		request->updateState = node->source->updateState;
 		request->source = g_strdup(node->source->url);
 		request->priority = 1;
-		request->callback = fl_opml_process_update_results;
+		request->callback = opml_source_process_update_results;
 		request->user_data = node;
 		debug2(DEBUG_UPDATE, "updating OPML source %s (node id %s)", node->source->url, node->id);
 		update_execute_request(request);
@@ -276,54 +274,46 @@ void fl_opml_source_update(nodePtr node) {
 	}
 }
 
-static void fl_opml_source_auto_update(nodePtr node) {
+static void opml_source_auto_update(nodePtr node) {
 	GTimeVal	now;
 	
 	g_get_current_time(&now);
 	
 	if(node->source->updateState->lastPoll.tv_sec + OPML_SOURCE_UPDATE_INTERVAL <= now.tv_sec)
-		fl_opml_source_update(node);	
+		opml_source_update(node);	
 }
 
 /** called during import and when subscribing, we will do
     node_add_child() only when subscribing */
-void fl_opml_source_setup(nodePtr parent, nodePtr node) {
+void opml_source_setup(nodePtr parent, nodePtr node) {
 
 	node->icon = create_pixbuf("fl_opml.png");
 	
-	node_add_data(node, FST_PLUGIN, NULL);
+	node_add_data(node, NODE_TYPE_SOURCE, NULL);
 	if(parent)
 		node_add_child(parent, node, 0);
 }
 
-static void fl_opml_init(void) { }
+static void opml_source_init(void) { }
 
-static void fl_opml_deinit(void) { }
+static void opml_source_deinit(void) { }
 
 /* feed list provider plugin definition */
 
-static struct flPlugin fpi = {
-	FL_PLUGIN_API_VERSION,
+static struct nodeSourceType nst = {
+	NODE_SOURCE_TYPE_API_VERSION,
 	"fl_opml",
 	"Planet, BlogRoll, OPML",
-	FL_PLUGIN_CAPABILITY_DYNAMIC_CREATION,
-	fl_opml_init,
-	fl_opml_deinit,
-	fl_opml_source_new,
-	fl_opml_source_remove,
-	fl_opml_source_import,
-	fl_opml_source_export,
-	fl_opml_source_get_feedlist,
-	fl_opml_source_update,
-	fl_opml_source_auto_update
+	NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION,
+	opml_source_init,
+	opml_source_deinit,
+	opml_source_new,
+	opml_source_remove,
+	opml_source_import,
+	opml_source_export,
+	opml_source_get_feedlist,
+	opml_source_update,
+	opml_source_auto_update
 };
 
-static struct plugin pi = {
-	PLUGIN_API_VERSION,
-	"OPML Feed List Source Plugin",
-	PLUGIN_TYPE_FEEDLIST_PROVIDER,
-	&fpi
-};
-
-DECLARE_PLUGIN(pi);
-DECLARE_FL_PLUGIN(fpi);
+nodeSourceTypePtr opml_source_get_type(void) { return &nst; }

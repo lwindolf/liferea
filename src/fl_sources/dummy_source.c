@@ -1,5 +1,5 @@
 /**
- * @file fl_default.c dummy feedlist provider
+ * @file dummy_source.c dummy feedlist provider
  * 
  * Copyright (C) 2006 Lars Lindner <lars.lindner@gmx.net>
  *
@@ -19,47 +19,35 @@
  */
 
 #include "callbacks.h"
-#include "plugin.h"
-#include "fl_sources/fl_plugin.h"
+#include "fl_sources/node_source.h"
 
-static struct flPlugin fpi;
+static gchar * dummy_source_get_feedlist(nodePtr node) { return NULL; }
 
-static gchar * fl_dummy_source_get_feedlist(nodePtr node) { return NULL; }
-
-static void fl_dummy_source_import(nodePtr node) {
+static void dummy_source_import(nodePtr node) {
  
 	node->icon = icons[ICON_UNAVAILABLE];
 }
 
-static void fl_dummy_source_export(nodePtr node) { }
+static void dummy_source_export(nodePtr node) { }
 
-static void fl_dummy_init(void) { }
+static void dummy_source_init(void) { }
 
-static void fl_dummy_deinit(void) { }
+static void dummy_source_deinit(void) { }
 
 /* feed list provider plugin definition */
 
-static struct flPlugin fpi = {
-	FL_PLUGIN_API_VERSION,
-	FL_DUMMY_SOURCE_ID,
+static struct nodeSourceType nst = {
+	NODE_SOURCE_TYPE_API_VERSION,
+	NODE_SOURCE_TYPE_DUMMY_ID,
 	"Dummy Feed List Source",
 	0,
-	fl_dummy_init,
-	fl_dummy_deinit,
+	dummy_source_init,
+	dummy_source_deinit,
 	NULL,
 	NULL,
-	fl_dummy_source_import,
-	fl_dummy_source_export,
-	fl_dummy_source_get_feedlist
+	dummy_source_import,
+	dummy_source_export,
+	dummy_source_get_feedlist
 };
 
-static struct plugin pi = {
-	PLUGIN_API_VERSION,
-	"Dummy Feed List Source Plugin",
-	PLUGIN_TYPE_FEEDLIST_PROVIDER,
-	//"Dummy feed list provider. Used as place holder for plugins that could not be loaded.",
-	&fpi
-};
-
-DECLARE_PLUGIN(pi);
-DECLARE_FL_PLUGIN(fpi);
+nodeSourceTypePtr dummy_source_get_type(void) { return &nst; }

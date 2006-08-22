@@ -85,7 +85,7 @@ nodePtr ui_feedlist_get_target_folder(int *pos) {
 		iter = ui_node_to_iter(np);
 	}
 
-	if(FST_FOLDER == np->type) {
+	if(NODE_TYPE_FOLDER == np->type) {
 		return np;
 	} else {
 		path = gtk_tree_model_get_path(gtk_tree_view_get_model(GTK_TREE_VIEW(lookup_widget(mainwindow, "feedlist"))), iter);
@@ -102,7 +102,7 @@ static void ui_feedlist_selection_changed_cb(GtkTreeSelection *selection, gpoint
 	GtkTreeModel		*model;
 	nodePtr			np;
 	GdkGeometry		geometry;
-	gint			type = FST_INVALID;
+	gint			type = NODE_TYPE_INVALID;
 
 	if(gtk_tree_selection_get_selected(selection, &model, &iter)) {
 		gtk_tree_model_get(model, &iter, FS_PTR, &np, -1);
@@ -112,7 +112,7 @@ static void ui_feedlist_selection_changed_cb(GtkTreeSelection *selection, gpoint
 		debug1(DEBUG_GUI, "feed list selection changed to \"%s\"", node_get_title(np));
 
 		/* make sure thats no grouping iterator */
-		if((FST_FEED == type) || (FST_VFOLDER == type) || (FST_PLUGIN == type)) {
+		if((NODE_TYPE_FEED == type) || (NODE_TYPE_VFOLDER == type) || (NODE_TYPE_SOURCE == type)) {
 			
 			/* FIXME: another workaround to prevent strange window
 			   size increasings after feed selection changing */
@@ -144,7 +144,7 @@ static void ui_feedlist_row_activated_cb(GtkTreeView *tv, GtkTreePath *path, Gtk
 	
 	gtk_tree_model_get_iter(gtk_tree_view_get_model(tv), &iter, path);
 	gtk_tree_model_get(gtk_tree_view_get_model(tv), &iter, FS_PTR, &ptr, -1);
-	if((NULL != ptr) && (FST_FOLDER == ptr->type)) {
+	if((NULL != ptr) && (NODE_TYPE_FOLDER == ptr->type)) {
 		if (gtk_tree_view_row_expanded(tv, path))
 			gtk_tree_view_collapse_row(tv, path);
 		else
@@ -259,7 +259,7 @@ void ui_feedlist_init(GtkWidget *feedview) {
                 	 lookup_widget(mainwindow, "feedlist"));
 	
 	ui_dnd_init(feedstore);			
-	ui_mainwindow_update_feed_menu(FST_INVALID);
+	ui_mainwindow_update_feed_menu(NODE_TYPE_INVALID);
 
 	debug_exit("ui_feedlist_init");
 }
@@ -296,7 +296,7 @@ void ui_feedlist_select(nodePtr np) {
 			path = gtk_tree_model_get_path(GTK_TREE_MODEL(feedstore), ui_node_to_iter(np));
 		}
 	
-		if(FST_FOLDER != np->type)
+		if(NODE_TYPE_FOLDER != np->type)
 			gtk_tree_view_expand_to_path(GTK_TREE_VIEW(treeview), path);
 		gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(treeview), path, NULL, FALSE, 0.0, 0.0);
 		gtk_tree_view_set_cursor(GTK_TREE_VIEW(treeview), path, NULL, FALSE);
@@ -360,7 +360,7 @@ void ui_feedlist_delete_prompt(nodePtr np) {
 	g_assert(np == feedlist_get_selected());
 
 	ui_mainwindow_set_status_bar("%s \"%s\"",_("Deleting entry"), node_get_title(np));
-	text = g_strdup_printf((FST_FOLDER == np->type)?_("Are you sure that you want to delete \"%s\" and its contents?"):_("Are you sure that you want to delete \"%s\"?"), node_get_title(np));
+	text = g_strdup_printf((NODE_TYPE_FOLDER == np->type)?_("Are you sure that you want to delete \"%s\" and its contents?"):_("Are you sure that you want to delete \"%s\"?"), node_get_title(np));
 
 	dialog = gtk_message_dialog_new(GTK_WINDOW(mainwindow),
 	                                GTK_DIALOG_DESTROY_WITH_PARENT | GTK_DIALOG_MODAL,
@@ -386,22 +386,22 @@ void on_menu_properties(GtkMenuItem *menuitem, gpointer user_data) {
 
 void on_newbtn_clicked(GtkButton *button, gpointer user_data) {	
 
-	node_request_interactive_add(FST_FEED);
+	node_request_interactive_add(NODE_TYPE_FEED);
 }
 
 void on_menu_feed_new(GtkMenuItem *menuitem, gpointer user_data) {
 
-	node_request_interactive_add(FST_FEED);
+	node_request_interactive_add(NODE_TYPE_FEED);
 }
 
 void on_new_plugin_activate(GtkMenuItem *menuitem, gpointer user_data) {
 
-	node_request_interactive_add(FST_PLUGIN);
+	node_request_interactive_add(NODE_TYPE_SOURCE);
 }
 
 void on_menu_folder_new(GtkMenuItem *menuitem, gpointer user_data) {
 
-	node_request_interactive_add(FST_FOLDER);
+	node_request_interactive_add(NODE_TYPE_FOLDER);
 }
 
 

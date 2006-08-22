@@ -15,8 +15,8 @@
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 
-#include "fl_opml-cb.h"
-#include "fl_opml-ui.h"
+#include "opml_source-cb.h"
+#include "opml_source-ui.h"
 #include "support.h"
 
 #define GLADE_HOOKUP_OBJECT(component,widget,name) \
@@ -27,9 +27,9 @@
   g_object_set_data (G_OBJECT (component), name, widget)
 
 GtkWidget*
-create_instance_dialog (void)
+create_opml_source_dialog (void)
 {
-  GtkWidget *instance_dialog;
+  GtkWidget *opml_source_dialog;
   GtkWidget *dialog_vbox1;
   GtkWidget *vbox1;
   GtkWidget *label1;
@@ -41,11 +41,11 @@ create_instance_dialog (void)
   GtkWidget *cancelbutton1;
   GtkWidget *okbutton1;
 
-  instance_dialog = gtk_dialog_new ();
-  gtk_window_set_title (GTK_WINDOW (instance_dialog), _("Add OPML/Planet"));
-  gtk_window_set_type_hint (GTK_WINDOW (instance_dialog), GDK_WINDOW_TYPE_HINT_DIALOG);
+  opml_source_dialog = gtk_dialog_new ();
+  gtk_window_set_title (GTK_WINDOW (opml_source_dialog), _("Add OPML/Planet"));
+  gtk_window_set_type_hint (GTK_WINDOW (opml_source_dialog), GDK_WINDOW_TYPE_HINT_DIALOG);
 
-  dialog_vbox1 = GTK_DIALOG (instance_dialog)->vbox;
+  dialog_vbox1 = GTK_DIALOG (opml_source_dialog)->vbox;
   gtk_widget_show (dialog_vbox1);
 
   vbox1 = gtk_vbox_new (FALSE, 12);
@@ -75,39 +75,39 @@ create_instance_dialog (void)
   gtk_widget_show (select_button);
   gtk_box_pack_start (GTK_BOX (hbox1), select_button, FALSE, FALSE, 0);
 
-  dialog_action_area1 = GTK_DIALOG (instance_dialog)->action_area;
+  dialog_action_area1 = GTK_DIALOG (opml_source_dialog)->action_area;
   gtk_widget_show (dialog_action_area1);
   gtk_button_box_set_layout (GTK_BUTTON_BOX (dialog_action_area1), GTK_BUTTONBOX_END);
 
   cancelbutton1 = gtk_button_new_from_stock ("gtk-cancel");
   gtk_widget_show (cancelbutton1);
-  gtk_dialog_add_action_widget (GTK_DIALOG (instance_dialog), cancelbutton1, GTK_RESPONSE_CANCEL);
+  gtk_dialog_add_action_widget (GTK_DIALOG (opml_source_dialog), cancelbutton1, GTK_RESPONSE_CANCEL);
   GTK_WIDGET_SET_FLAGS (cancelbutton1, GTK_CAN_DEFAULT);
 
   okbutton1 = gtk_button_new_from_stock ("gtk-ok");
   gtk_widget_show (okbutton1);
-  gtk_dialog_add_action_widget (GTK_DIALOG (instance_dialog), okbutton1, GTK_RESPONSE_OK);
+  gtk_dialog_add_action_widget (GTK_DIALOG (opml_source_dialog), okbutton1, GTK_RESPONSE_OK);
   GTK_WIDGET_SET_FLAGS (okbutton1, GTK_CAN_DEFAULT);
 
   g_signal_connect_swapped ((gpointer) select_button, "clicked",
                             G_CALLBACK (on_select_button_clicked),
-                            GTK_OBJECT (instance_dialog));
+                            GTK_OBJECT (opml_source_dialog));
 
   gtk_label_set_mnemonic_widget (GTK_LABEL (label2), location_entry);
 
   /* Store pointers to all widgets, for use by lookup_widget(). */
-  GLADE_HOOKUP_OBJECT_NO_REF (instance_dialog, instance_dialog, "instance_dialog");
-  GLADE_HOOKUP_OBJECT_NO_REF (instance_dialog, dialog_vbox1, "dialog_vbox1");
-  GLADE_HOOKUP_OBJECT (instance_dialog, vbox1, "vbox1");
-  GLADE_HOOKUP_OBJECT (instance_dialog, label1, "label1");
-  GLADE_HOOKUP_OBJECT (instance_dialog, hbox1, "hbox1");
-  GLADE_HOOKUP_OBJECT (instance_dialog, label2, "label2");
-  GLADE_HOOKUP_OBJECT (instance_dialog, location_entry, "location_entry");
-  GLADE_HOOKUP_OBJECT (instance_dialog, select_button, "select_button");
-  GLADE_HOOKUP_OBJECT_NO_REF (instance_dialog, dialog_action_area1, "dialog_action_area1");
-  GLADE_HOOKUP_OBJECT (instance_dialog, cancelbutton1, "cancelbutton1");
-  GLADE_HOOKUP_OBJECT (instance_dialog, okbutton1, "okbutton1");
+  GLADE_HOOKUP_OBJECT_NO_REF (opml_source_dialog, opml_source_dialog, "opml_source_dialog");
+  GLADE_HOOKUP_OBJECT_NO_REF (opml_source_dialog, dialog_vbox1, "dialog_vbox1");
+  GLADE_HOOKUP_OBJECT (opml_source_dialog, vbox1, "vbox1");
+  GLADE_HOOKUP_OBJECT (opml_source_dialog, label1, "label1");
+  GLADE_HOOKUP_OBJECT (opml_source_dialog, hbox1, "hbox1");
+  GLADE_HOOKUP_OBJECT (opml_source_dialog, label2, "label2");
+  GLADE_HOOKUP_OBJECT (opml_source_dialog, location_entry, "location_entry");
+  GLADE_HOOKUP_OBJECT (opml_source_dialog, select_button, "select_button");
+  GLADE_HOOKUP_OBJECT_NO_REF (opml_source_dialog, dialog_action_area1, "dialog_action_area1");
+  GLADE_HOOKUP_OBJECT (opml_source_dialog, cancelbutton1, "cancelbutton1");
+  GLADE_HOOKUP_OBJECT (opml_source_dialog, okbutton1, "okbutton1");
 
-  return instance_dialog;
+  return opml_source_dialog;
 }
 

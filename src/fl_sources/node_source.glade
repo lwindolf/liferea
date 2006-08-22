@@ -3,7 +3,7 @@
 
 <glade-interface>
 
-<widget class="GtkDialog" id="fl_plugin_type_dialog">
+<widget class="GtkDialog" id="node_source_type_dialog">
   <property name="visible">True</property>
   <property name="title" translatable="yes">Source Selection</property>
   <property name="type">GTK_WINDOW_TOPLEVEL</property>
@@ -110,7 +110,7 @@
 	      <property name="window_placement">GTK_CORNER_TOP_LEFT</property>
 
 	      <child>
-		<widget class="GtkTreeView" id="plugin_type_list">
+		<widget class="GtkTreeView" id="type_list">
 		  <property name="visible">True</property>
 		  <property name="can_focus">True</property>
 		  <property name="headers_visible">False</property>

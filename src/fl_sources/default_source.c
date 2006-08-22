@@ -1,5 +1,5 @@
 /**
- * @file fl_default.c default static feedlist provider
+ * @file default_source.c default static feedlist provider
  * 
  * Copyright (C) 2005-2006 Lars Lindner <lars.lindner@gmx.net>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
@@ -31,8 +31,8 @@
 #include "debug.h"
 #include "update.h"
 #include "plugin.h"
-#include "fl_sources/fl_default.h"
-#include "fl_sources/fl_plugin.h"
+#include "fl_sources/default_source.h"
+#include "fl_sources/node_source.h"
 #include "ui/ui_feed.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_mainwindow.h"
@@ -42,11 +42,9 @@
 /** lock to prevent feed list saving while loading */
 static gboolean feedlistImport = FALSE;
 
-static struct flPlugin fpi;
+static void default_source_dbus_connect ();
 
-static void fl_default_dbus_connect ();
-
-static void fl_default_copy_dir(gchar *subdir) {
+static void default_source_copy_dir(gchar *subdir) {
 	gchar *dirname10, *dirname11;
 	gchar *srcfile, *destfile;
    	GDir *dir;
@@ -69,22 +67,22 @@ static void fl_default_copy_dir(gchar *subdir) {
 	g_dir_close(dir);
 }
 
-static gchar * fl_default_source_get_feedlist(nodePtr node) {
+static gchar * default_source_source_get_feedlist(nodePtr node) {
 
 	return common_create_cache_filename(NULL, "feedlist", "opml");
 }
 
-static void fl_default_source_import(nodePtr node) {
+static void default_source_source_import(nodePtr node) {
 	gchar		*filename10, *filename11;
 
-	debug_enter("fl_default_source_import");
+	debug_enter("default_source_source_import");
 
 	/* start the import */
 	feedlistImport = TRUE;
 
 	/* check for 1.0->1.1 migration */
 	filename10 = g_strdup_printf("%s" G_DIR_SEPARATOR_S ".liferea/feedlist.opml", g_get_home_dir()); /* 1.0 path dir */
-	filename11 = fl_default_source_get_feedlist(node);
+	filename11 = default_source_source_get_feedlist(node);
 		
 	if(!g_file_test(filename11, G_FILE_TEST_EXISTS) &&
 	   g_file_test(filename10, G_FILE_TEST_EXISTS)) {
@@ -96,8 +94,8 @@ static void fl_default_source_import(nodePtr node) {
 		   instead of $HOME/.liferea as it's cache directory */
 
 		/* copy old cache files to new cache dir */
-		fl_default_copy_dir("cache" G_DIR_SEPARATOR_S "feeds");
-		fl_default_copy_dir("cache" G_DIR_SEPARATOR_S "favicons");
+		default_source_copy_dir("cache" G_DIR_SEPARATOR_S "feeds");
+		default_source_copy_dir("cache" G_DIR_SEPARATOR_S "favicons");
 		
 		/* point feedlist.opml to the old 1.0 file */
 		g_free(filename11);
@@ -120,7 +118,7 @@ static void fl_default_source_import(nodePtr node) {
 	if(!getBooleanConfValue(DISABLE_DBUS)) {
 		/* Start listening on the dbus for new subscriptions */	
 		debug0(DEBUG_GUI, "Registering with DBUS...");
-		fl_default_dbus_connect();
+		default_source_dbus_connect();
 	} else {
 		g_print("DBUS disabled by user request...");
 	}
@@ -128,27 +126,27 @@ static void fl_default_source_import(nodePtr node) {
 	debug0(DEBUG_GUI, "Compiled without DBUS support.");
 #endif
 
-	debug_exit("fl_default_source_import");
+	debug_exit("default_source_source_import");
 }
 
-static void fl_default_source_export(nodePtr node) {
+static void default_source_source_export(nodePtr node) {
 	gchar	*filename;
 	
 	if(feedlistImport)
 		return;
 
-	debug_enter("fl_default_source_export");
+	debug_enter("default_source_source_export");
 	
 	g_assert(node->source->root == feedlist_get_root());
 
-	filename = fl_default_source_get_feedlist(node);
+	filename = default_source_source_get_feedlist(node);
 	export_OPML_feedlist(filename, node->source->root, TRUE);
 	g_free(filename);
 
-	debug_exit("fl_default_source_export");
+	debug_exit("default_source_source_export");
 }
 
-static void fl_default_source_auto_update(nodePtr node) {
+static void default_source_source_auto_update(nodePtr node) {
 
 	node_foreach_child(node, node_request_auto_update);
 }
@@ -195,7 +193,7 @@ ui_feedlist_dbus_set_online (DBusConnection *connection, DBusMessage *message)
 }
 
 static DBusHandlerResult
-fl_default_dbus_subscribe (DBusConnection *connection, DBusMessage *message) {
+default_source_dbus_subscribe (DBusConnection *connection, DBusMessage *message) {
 	DBusError error;
 	DBusMessage *reply;
 	char *s;
@@ -204,7 +202,7 @@ fl_default_dbus_subscribe (DBusConnection *connection, DBusMessage *message) {
 	/* Retreive the dbus message arguments (the new feed url) */	
 	dbus_error_init (&error);
 	if(!dbus_message_get_args (message, &error, DBUS_TYPE_STRING, &s, DBUS_TYPE_INVALID)) {
-		g_warning("fl_default_dbus_subscribe(): Error while retreiving message parameter, expecting a string url: %s | %s\n", error.name,  error.message);
+		g_warning("default_source_dbus_subscribe(): Error while retreiving message parameter, expecting a string url: %s | %s\n", error.name,  error.message);
 		reply = dbus_message_new_error (message, error.name, error.message);
 		dbus_connection_send (connection, reply, NULL);
 		dbus_message_unref (reply);
@@ -230,7 +228,7 @@ fl_default_dbus_subscribe (DBusConnection *connection, DBusMessage *message) {
 
 
 static DBusHandlerResult
-fl_default_dbus_message_handler (DBusConnection *connection, DBusMessage *message, void *user_data)
+default_source_dbus_message_handler (DBusConnection *connection, DBusMessage *message, void *user_data)
 {
 	const char  *method;
 	
@@ -241,7 +239,7 @@ fl_default_dbus_message_handler (DBusConnection *connection, DBusMessage *messag
 	
 	method = dbus_message_get_member (message);
 	if (strcmp (DBUS_RSS_METHOD, method) == 0)
-		return fl_default_dbus_subscribe (connection, message);
+		return default_source_dbus_subscribe (connection, message);
 	if (strcmp (DBUS_RSS_SET_ONLINE_METHOD, method) == 0)
 		return ui_feedlist_dbus_set_online (connection, message);
 	else
@@ -249,11 +247,11 @@ fl_default_dbus_message_handler (DBusConnection *connection, DBusMessage *messag
 }
 
 static void
-fl_default_dbus_connect ()
+default_source_dbus_connect ()
 {
 	DBusError       error;
 	DBusConnection *connection;
-	DBusObjectPathVTable feedreader_vtable = { NULL, fl_default_dbus_message_handler, NULL};
+	DBusObjectPathVTable feedreader_vtable = { NULL, default_source_dbus_message_handler, NULL};
 
 	/* Get the Session bus */
 	dbus_error_init (&error);
@@ -295,45 +293,36 @@ fl_default_dbus_connect ()
 
 /* root node type definition */
 
-static void fl_default_init(void) {
+static void default_source_init(void) {
 
-	debug_enter("fl_default_init");
+	debug_enter("default_source_init");
 
-	debug_exit("fl_default_init");
+	debug_exit("default_source_init");
 }
 
-static void fl_default_deinit(void) {
+static void default_source_deinit(void) {
 	
-	debug_enter("fl_default_deinit");
+	debug_enter("default_source_deinit");
 
-	debug_exit("fl_default_deinit");
+	debug_exit("default_source_deinit");
 }
 
 /* feed list provider plugin definition */
 
-static struct flPlugin fpi = {
-	FL_PLUGIN_API_VERSION,
+static struct nodeSourceType nst = {
+	NODE_SOURCE_TYPE_API_VERSION,
 	"fl_default",
 	"Static Feed List",
-	FL_PLUGIN_CAPABILITY_IS_ROOT,
-	fl_default_init,
-	fl_default_deinit,
+	NODE_SOURCE_CAPABILITY_IS_ROOT,
+	default_source_init,
+	default_source_deinit,
 	NULL,
 	NULL,
-	fl_default_source_import,
-	fl_default_source_export,
-	fl_default_source_get_feedlist,
+	default_source_source_import,
+	default_source_source_export,
+	default_source_source_get_feedlist,
 	NULL,
-	fl_default_source_auto_update
+	default_source_source_auto_update
 };
 
-static struct plugin pi = {
-	PLUGIN_API_VERSION,
-	"Static Feed List Source Plugin",
-	PLUGIN_TYPE_FEEDLIST_PROVIDER,
-	//"Default feed list provider. Allows users to add/remove/reorder subscriptions.",
-	&fpi
-};
-
-DECLARE_PLUGIN(pi);
-DECLARE_FL_PLUGIN(fpi);
+nodeSourceTypePtr default_source_get_type(void) { return &nst; }
