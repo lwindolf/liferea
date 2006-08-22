@@ -1,3 +1,14 @@
+2006-08-??  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.1.2 (Unstable)
+
+	* Fixing the build order to allow building
+	  the fl_sources subdirectory on Cygwin
+	* Fixes a lot of CSS rendering glitches
+	* Fixes a DnD problem which caused duplicate
+	  feeds after restarting the program.
+
+
 2006-08-20  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.1.1 (Unstable)
