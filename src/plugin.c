@@ -32,7 +32,7 @@
 #include "node.h"
 #include "plugin.h"
 #include "ui/ui_htmlview.h"
-#include "fl_sources/fl_plugin.h"
+#include "fl_sources/node_source.h"
 #include "notification/notif_plugin.h"
 
 /* plugin managment */
@@ -74,7 +74,7 @@ static pluginPtr plugin_mgmt_load(const gchar * filename) {
 			/* try to load specific plugin type symbols */
 			switch(plugin->type) {
 				case PLUGIN_TYPE_FEEDLIST_PROVIDER:
-					success = fl_plugin_load(plugin, handle);
+					/* Nothing to do. Plugin has to register itself */
 					break;
 				case PLUGIN_TYPE_NOTIFICATION:
 					success = notification_plugin_load(plugin, handle);

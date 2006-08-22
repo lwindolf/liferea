@@ -57,7 +57,7 @@ vfolderPtr vfolder_new(nodePtr node) {
 	vfolders = g_slist_append(vfolders, vfolder);
 
 	node_set_title(node, _("New Search Folder"));	/* set default title */
-	node_add_data(node, FST_VFOLDER, (gpointer)vfolder);
+	node_add_data(node, NODE_TYPE_VFOLDER, (gpointer)vfolder);
 
 	itemSet = (itemSetPtr)g_new0(struct itemSet, 1); /* create empty itemset */
 	itemSet->type = ITEMSET_TYPE_VFOLDER;
@@ -314,8 +314,8 @@ static void vfolder_apply_rules(nodePtr np, gpointer userdata) {
 	GList		*items;
 
 	/* do not search in vfolders */
-	if((FST_VFOLDER == np->type) ||
-	   (FST_FOLDER == np->type))
+	if((NODE_TYPE_VFOLDER == np->type) ||
+	   (NODE_TYPE_FOLDER == np->type))
 		return;
 
 	debug_enter("vfolder_apply_rules");
@@ -560,6 +560,7 @@ static gchar * vfolder_render(nodePtr node) {
 }
 
 static struct nodeType nti = {
+	0,
 	vfolder_initial_load,
 	vfolder_load,
 	vfolder_save,

@@ -32,11 +32,11 @@
 #include "update.h"
 #include "debug.h"
 #include "support.h"
-#include "fl_sources/fl_plugin.h"
+#include "fl_sources/node_source.h"
 
 static GHashTable *nodeTypes = NULL;
 
-void node_register_type(nodeTypePtr nodeType, guint type) {
+void node_type_register(nodeTypePtr nodeType, guint type) {
 
 	if(!nodeTypes)
 		nodeTypes = g_hash_table_new(NULL, NULL);
@@ -72,7 +72,7 @@ nodePtr node_new(void) {
 	node->sortColumn = IS_TIME;
 	node->sortReversed = TRUE;	/* default sorting is newest date at top */
 	node->available = FALSE;
-	node->type = FST_INVALID;
+	node->type = NODE_TYPE_INVALID;
 	node_set_icon(node, NULL);	/* initialize favicon file name */
 
 	return node;
@@ -91,7 +91,7 @@ void node_add_data(nodePtr node, guint type, gpointer data) {
 	   loading/unloading so the item set must be prepared 
 	   upon folder creation */
 
-	if(FST_VFOLDER == type) {
+	if(NODE_TYPE_VFOLDER == type) {
 		itemSetPtr itemSet = g_new0(struct itemSet, 1);
 		itemSet->type = ITEMSET_TYPE_VFOLDER;
 		node_set_itemset(node, itemSet);
@@ -166,7 +166,7 @@ void node_update_counters(nodePtr node) {
 	newDiff += node->newCount;
 	unreadDiff += node->unreadCount;
 
-	if(FST_VFOLDER == node->type)
+	if(NODE_TYPE_VFOLDER == node->type)
 		return;		/* prevent recursive counting and adding to statistics */
 
 	/* update parent folder */
@@ -174,7 +174,7 @@ void node_update_counters(nodePtr node) {
 		node_update_unread_count(node->parent, unreadDiff);
 
 	/* propagate to feed list statistics */
-	if(FST_FEED == node->type)
+	if(NODE_TYPE_FEED == node->type)
 		feedlist_update_counters(unreadDiff, newDiff);		
 }
 
@@ -184,7 +184,7 @@ void node_update_unread_count(nodePtr node, gint diff) {
 
 	/* vfolder unread counts are not interesting
 	   in the following propagation handling */
-	if(FST_VFOLDER == node->type)
+	if(NODE_TYPE_VFOLDER == node->type)
 		return;
 
 	/* update parent node unread counters */
@@ -192,7 +192,7 @@ void node_update_unread_count(nodePtr node, gint diff) {
 		node_update_unread_count(node->parent, diff);
 
 	/* update global feed list statistic */
-	if(FST_FEED == node->type)
+	if(NODE_TYPE_FEED == node->type)
 		feedlist_update_counters(diff, 0);
 }
 
@@ -202,13 +202,13 @@ void node_update_new_count(nodePtr node, gint diff) {
 
 	/* vfolder new counts are not interesting
 	   in the following propagation handling */
-	if(FST_VFOLDER == node->type)
+	if(NODE_TYPE_VFOLDER == node->type)
 		return;
 
 	/* no parent node propagation necessary */
 
 	/* update global feed list statistic */
-	if(FST_FEED == node->type)
+	if(NODE_TYPE_FEED == node->type)
 		feedlist_update_counters(0, diff);	
 }
 
@@ -282,13 +282,13 @@ void node_merge_items(nodePtr node, GList *list) {
 	/* Never update the overall feed list statistic 
 	   for folders and vfolders (because these are item
 	   list types with item copies or references)! */
-	if((FST_FOLDER != node->type) && (FST_VFOLDER != node->type))
+	if((NODE_TYPE_FOLDER != node->type) && (NODE_TYPE_VFOLDER != node->type))
 		node_update_counters(node);
 }
 
 void node_update_favicon(nodePtr node) {
 
-	if(FST_FEED != node->type)
+	if(NODE_TYPE_FEED != node->type)
 		return;
 
 	favicon_download(node);
@@ -299,14 +299,14 @@ void node_update_favicon(nodePtr node) {
 const gchar *node_type_to_str(nodePtr np) {
 
 	switch(np->type) {
-		case FST_FEED:
+		case NODE_TYPE_FEED:
 			g_assert(NULL != np->data);
 			return feed_type_fhp_to_str(((feedPtr)(np->data))->fhp);
 			break;
-		case FST_VFOLDER:
+		case NODE_TYPE_VFOLDER:
 			return "vfolder";
 			break;
-		case FST_PLUGIN:
+		case NODE_TYPE_SOURCE:
 			return "plugin";
 			break;
 	}
@@ -319,18 +319,18 @@ guint node_str_to_type(const gchar *str) {
 	g_assert(NULL != str);
 
 	if(g_str_equal(str, "vfolder"))
-		return FST_VFOLDER;
+		return NODE_TYPE_VFOLDER;
 
 	if(g_str_equal(str, "plugin"))
-		return FST_PLUGIN;
+		return NODE_TYPE_SOURCE;
 
 	if(g_str_equal(str, ""))	/* type maybe "" if initial download is not yet done */
-		return FST_FEED;
+		return NODE_TYPE_FEED;
 
 	if(NULL != feed_type_str_to_fhp(str))
-		return FST_FEED;
+		return NODE_TYPE_FEED;
 
-	return FST_INVALID;
+	return NODE_TYPE_INVALID;
 }
 
 void node_add_child(nodePtr parent, nodePtr node, gint position) {
@@ -368,7 +368,7 @@ void node_request_interactive_add(guint type) {
 
 	parent = feedlist_get_insertion_point();
 
-	if(0 == (FL_PLUGIN(parent)->capabilities & FL_PLUGIN_CAPABILITY_ADD))
+	if(0 == (NODE_TYPE(parent->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS))
 		return;
 
 	nodeType = g_hash_table_lookup(nodeTypes, GUINT_TO_POINTER(type));
@@ -386,12 +386,12 @@ void node_request_automatic_add(gchar *source, gchar *title, gchar *filter, gint
 
 	parent = feedlist_get_insertion_point();
 
-	if(0 == (FL_PLUGIN(parent)->capabilities & FL_PLUGIN_CAPABILITY_ADD))
+	if(0 == (NODE_SOURCE_TYPE(parent->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS))
 		return;
 
 	node = node_new();
 	node_set_title(node, title?title:_("New Subscription"));
-	node_add_data(node, FST_FEED, feed_new(source, filter));
+	node_add_data(node, NODE_TYPE_FEED, feed_new(source, filter));
 
 	ui_feedlist_get_target_folder(&pos);
 	node_add_child(parent, node, pos);
@@ -410,47 +410,47 @@ void node_request_remove(nodePtr node) {
 /* wrapper for node type interface */
 
 void node_initial_load(nodePtr node) {
-	NODE(node)->initial_load(node);
+	NODE_TYPE(node)->initial_load(node);
 }
 
 void node_load(nodePtr node) {
-	NODE(node)->load(node);
+	NODE_TYPE(node)->load(node);
 }
 
 void node_save(nodePtr node) {
-	NODE(node)->save(node);
+	NODE_TYPE(node)->save(node);
 }
 
 void node_unload(nodePtr node) {
-	NODE(node)->unload(node);
+	NODE_TYPE(node)->unload(node);
 }
 
 void node_remove(nodePtr node) {
-	NODE(node)->remove(node);
+	NODE_TYPE(node)->remove(node);
 }
 
 void node_mark_all_read(nodePtr node) {
-	NODE(node)->mark_all_read(node);
+	NODE_TYPE(node)->mark_all_read(node);
 }
 
 gchar * node_render(nodePtr node) {
-	return NODE(node)->render(node);
+	return NODE_TYPE(node)->render(node);
 }
 
 void node_reset_update_counter(nodePtr node) {
-	NODE(node)->reset_update_counter(node);
+	NODE_TYPE(node)->reset_update_counter(node);
 }
 
 void node_request_auto_update(nodePtr node) {
-	NODE(node)->request_auto_update(node);
+	NODE_TYPE(node)->request_auto_update(node);
 }
 
 void node_request_update(nodePtr node, guint flags) {
-	NODE(node)->request_update(node, flags);
+	NODE_TYPE(node)->request_update(node, flags);
 }
 
 void node_request_properties(nodePtr node) {
-	NODE(node)->request_properties(node);
+	NODE_TYPE(node)->request_properties(node);
 }
 
 /* node attributes encapsulation */

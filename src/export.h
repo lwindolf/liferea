@@ -23,7 +23,7 @@
 
 #include <gtk/gtk.h>
 #include "node.h"
-#include "fl_sources/fl_plugin.h"
+#include "fl_sources/node_source.h"
 
 /**
  * Exports a given feed list tree. Can be used to export
@@ -44,11 +44,11 @@ gboolean export_OPML_feedlist(const gchar *filename, nodePtr node, gboolean inte
  *
  * @param filename	path to file that will be read for importing
  * @param parentNode	node of the parent folder
- * @param nodeSource	the plugin instance to handle the nodes
+ * @param nodeSource	the feed list source instance to handle the nodes
  * @param showErrors	set to TRUE if errors should generate a error dialog
  * @param trusted	set to TRUE if the feedlist is being imported from a trusted source
  */
-void import_OPML_feedlist(const gchar *filename, nodePtr parentNode, flNodeSourcePtr nodeSource, gboolean showErrors, gboolean trusted);
+void import_OPML_feedlist(const gchar *filename, nodePtr parentNode, nodeSourcePtr nodeSource, gboolean showErrors, gboolean trusted);
 
 /* GUI dialog callbacks */
 

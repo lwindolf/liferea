@@ -145,7 +145,7 @@ void item_free(itemPtr ip) {
 
 const gchar * item_get_base_url(itemPtr item) {
 
-	if(item->sourceNode && (FST_FEED == item->sourceNode->type))
+	if(item->sourceNode && (NODE_TYPE_FEED == item->sourceNode->type))
 		return feed_get_html_url((feedPtr)item->sourceNode->data);
 	else
 		return itemset_get_base_url(item->itemSet);

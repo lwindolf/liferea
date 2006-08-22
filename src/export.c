@@ -52,7 +52,7 @@ static void append_node_tag(nodePtr np, gpointer userdata) {
 	xmlNodePtr	childNode;
 	struct exportData data;
 
-	if(!internal && ((FST_PLUGIN == np->type) || (FST_VFOLDER == np->type)))
+	if(!internal && ((NODE_TYPE_SOURCE == np->type) || (NODE_TYPE_VFOLDER == np->type)))
 		return;
 	
 	debug_enter("append_node_tag");
@@ -87,10 +87,10 @@ static void append_node_tag(nodePtr np, gpointer userdata) {
 
 	/* 2. add node type specific stuff */
 	switch(np->type) {
-		case FST_FEED:
+		case NODE_TYPE_FEED:
 			feed_export((feedPtr)np->data, childNode, internal);
 			break;
-		case FST_FOLDER:
+		case NODE_TYPE_FOLDER:
 			/* add folder children */
 			if(internal) {
 				if(ui_node_is_folder_expanded(np))
@@ -103,13 +103,13 @@ static void append_node_tag(nodePtr np, gpointer userdata) {
 			data.internal = internal;
 			node_foreach_child_data(np, append_node_tag, &data);
 			break;
-		case FST_VFOLDER:
+		case NODE_TYPE_VFOLDER:
 			if(internal)
 				vfolder_export((vfolderPtr)np->data, childNode);
 			break;
-		case FST_PLUGIN:
+		case NODE_TYPE_SOURCE:
 			if(internal)
-				fl_plugin_export(np, childNode);
+				node_source_export(np, childNode);
 			break;
 	}
 	
@@ -180,7 +180,7 @@ gboolean export_OPML_feedlist(const gchar *filename, nodePtr node, gboolean inte
 void import_parse_update_state(xmlNodePtr cur, updateStatePtr updateState) {
 }
 
-static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, flNodeSourcePtr nodeSource, gboolean trusted) {
+static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, nodeSourcePtr nodeSource, gboolean trusted) {
 	gchar		*title, *typeStr, *tmp, *sortStr;
 	nodePtr		np = NULL;
 	gpointer	data = NULL;
@@ -247,45 +247,45 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, flNodeSourc
 		type = node_str_to_type(typeStr);
 	} else {
 		/* if the outline has no type it is propably a folder */
-		type = FST_FOLDER;
+		type = NODE_TYPE_FOLDER;
 		/* but we better checked for a source URL */
 		if(NULL == (tmp = xmlGetProp(cur, BAD_CAST"xmlUrl")));
 			tmp = xmlGetProp(cur, BAD_CAST"xmlUrl");
 		
 		if(NULL != tmp) {
-			type = FST_FEED;
+			type = NODE_TYPE_FEED;
 			xmlFree(tmp);
 		}
 	}
 	
 	/* 3. do node type specific parsing */
 	switch(type) {
-		case FST_FEED:
+		case NODE_TYPE_FEED:
 			data = feed_import(np, typeStr, cur, trusted);
 			break;
 		default:
-		case FST_FOLDER:
+		case NODE_TYPE_FOLDER:
 			data = NULL;
 			break;
-		case FST_VFOLDER:
+		case NODE_TYPE_VFOLDER:
 			data = vfolder_import(np, cur);
 			break;
-		case FST_PLUGIN:
+		case NODE_TYPE_SOURCE:
 			data = NULL;
 			break;
-		case FST_INVALID:
+		case NODE_TYPE_INVALID:
 			break;
 	}
 
 	if(typeStr)
 		xmlFree(typeStr);
 
-	if(type != FST_INVALID) {
+	if(type != NODE_TYPE_INVALID) {
 		node_add_data(np, type, data);
 		favicon_load(np);
 		node_add_child(parentNode, np, -1);
 
-		if(FST_FOLDER == type) {
+		if(NODE_TYPE_FOLDER == type) {
 			if(NULL != xmlHasProp(cur, BAD_CAST"expanded"))
 				ui_node_set_expansion(np, TRUE);
 			else if(NULL != xmlHasProp(cur, BAD_CAST"collapsed"))
@@ -296,7 +296,7 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, flNodeSourc
 
 		/* import recursion */
 		switch(np->type) {
-			case FST_FOLDER:
+			case NODE_TYPE_FOLDER:
 				/* process any children */
 				cur = cur->xmlChildrenNode;
 				while(cur != NULL) {
@@ -305,8 +305,8 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, flNodeSourc
 					cur = cur->next;				
 				}
 				break;
-			case FST_PLUGIN:
-				fl_plugin_import(np, cur);
+			case NODE_TYPE_SOURCE:
+				node_source_import(np, cur);
 				break;
 			default:
 				/* nothing to do */
@@ -323,7 +323,7 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, flNodeSourc
 	debug_exit("import_parse_outline");
 }
 
-static void import_parse_body(xmlNodePtr n, nodePtr parentNode, flNodeSourcePtr nodeSource, gboolean trusted) {
+static void import_parse_body(xmlNodePtr n, nodePtr parentNode, nodeSourcePtr nodeSource, gboolean trusted) {
 	xmlNodePtr cur;
 	
 	cur = n->xmlChildrenNode;
@@ -334,7 +334,7 @@ static void import_parse_body(xmlNodePtr n, nodePtr parentNode, flNodeSourcePtr 
 	}
 }
 
-static void import_parse_OPML(xmlNodePtr n, nodePtr parentNode, flNodeSourcePtr nodeSource, gboolean trusted) {
+static void import_parse_OPML(xmlNodePtr n, nodePtr parentNode, nodeSourcePtr nodeSource, gboolean trusted) {
 	xmlNodePtr cur;
 	
 	cur = n->xmlChildrenNode;
@@ -347,7 +347,7 @@ static void import_parse_OPML(xmlNodePtr n, nodePtr parentNode, flNodeSourcePtr 
 	}	
 }
 
-void import_OPML_feedlist(const gchar *filename, nodePtr parentNode, flNodeSourcePtr nodeSource, gboolean showErrors, gboolean trusted) {
+void import_OPML_feedlist(const gchar *filename, nodePtr parentNode, nodeSourcePtr nodeSource, gboolean showErrors, gboolean trusted) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur;
 	
@@ -392,7 +392,7 @@ void on_import_activate_cb(const gchar *filename, gpointer user_data) {
 	if(filename) {
 		nodePtr node = node_new();
 		node_set_title(node, _("Imported feed list"));
-		node_add_data(node, FST_FOLDER, NULL);
+		node_add_data(node, NODE_TYPE_FOLDER, NULL);
 		
 		/* add the new folder to the model */
 		node_add_child(NULL, node, 0);

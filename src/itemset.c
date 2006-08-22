@@ -129,7 +129,7 @@ gchar * itemset_render(itemSetPtr itemSet) {
 			item_to_xml(item, xmlDocGetRootElement(doc), TRUE);
 			
 			if(!g_slist_find(nodes, item->sourceNode) && 
-			   (FST_FEED == item->sourceNode->type)) {
+			   (NODE_TYPE_FEED == item->sourceNode->type)) {
 				xmlNodePtr feed;
 				feed = xmlNewChild(feeds, NULL, "feed", NULL);
 				feed_to_xml(item->sourceNode, feed, TRUE);

@@ -1316,6 +1316,7 @@ static gchar * feed_render(nodePtr node) {
 }
 
 static struct nodeType nti = {
+	0,
 	feed_initial_load,
 	feed_load,
 	feed_save,

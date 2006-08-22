@@ -36,7 +36,10 @@
 #include "ui/ui_tray.h"
 #include "ui/ui_feed.h"
 #include "ui/ui_node.h"
-#include "fl_sources/fl_plugin.h"
+#include "fl_sources/node_source.h"
+#include "fl_sources/opml_source.h"
+#include "fl_sources/default_source.h"
+#include "fl_sources/dummy_source.h"
 #include "notification/notif_plugin.h"
 
 static guint unreadCount = 0;
@@ -66,7 +69,7 @@ nodePtr feedlist_get_insertion_point(void) {
 	if(!selectedNode)
 		return rootNode;
 	
-	if(FST_FOLDER == selectedNode->type)
+	if(NODE_TYPE_FOLDER == selectedNode->type)
 		return selectedNode;
 	
 	if(selectedNode->parent) 
@@ -173,7 +176,7 @@ static nodePtr feedlist_unread_scan(nodePtr folder) {
 
 		/* feed match if beyond the selected feed or in second pass... */
 		if((scanState != UNREAD_SCAN_INIT) && (node->unreadCount > 0) &&
-		   (NULL == node->children) && (FST_VFOLDER != node->type)) {
+		   (NULL == node->children) && (NODE_TYPE_VFOLDER != node->type)) {
 		       return node;
 		}
 
@@ -297,7 +300,7 @@ static gboolean feedlist_schedule_save_cb(gpointer user_data) {
 
 	/* step 2: request saving for the root node and thereby
 	   forcing the root plugin to save the feed list structure */
-	FL_PLUGIN(rootNode)->source_export(rootNode);
+	NODE_SOURCE_TYPE(rootNode)->source_export(rootNode);
 	
 	feedlist_save_timer = 0;
 	return FALSE;
@@ -324,7 +327,7 @@ void feedlist_save(void) {
    in the GUI after the initial feed loading is done. */
 static void feedlist_update_vfolder_count(nodePtr node) {
 
-	if(FST_VFOLDER == node->type) 
+	if(NODE_TYPE_VFOLDER == node->type) 
 		ui_node_update(node);
 }
 
@@ -332,22 +335,26 @@ void feedlist_init(void) {
 
 	debug_enter("feedlist_init");
 	
-	/* 1. Register standard node types */
-	node_register_type(feed_get_node_type(), FST_FEED);
-	node_register_type(folder_get_node_type(), FST_FOLDER);
-	node_register_type(vfolder_get_node_type(), FST_VFOLDER);
-	node_register_type(fl_plugin_get_node_type(), FST_PLUGIN);
+	/* 1. Register standard node and source types */
+	node_type_register(feed_get_node_type(), NODE_TYPE_FEED);
+	node_type_register(folder_get_node_type(), NODE_TYPE_FOLDER);
+	node_type_register(vfolder_get_node_type(), NODE_TYPE_VFOLDER);
+	node_type_register(node_source_get_node_type(), NODE_TYPE_SOURCE);
+	
+	node_source_type_register(default_source_get_type());
+	node_source_type_register(dummy_source_get_type());
+	node_source_type_register(opml_source_get_type());
 
 	/* 2. Set up a root node */
 	rootNode = node_new();
 	rootNode->title = g_strdup("root");
-	rootNode->type = FST_ROOT;
+	rootNode->type = NODE_TYPE_ROOT;
 
 	/* 3. Initialize list of feed list plugins, find root 
 	   provider plugin and creating an instance of this plugin. 
 	   This will load the feed list and all attached plugin 
 	   handlers. */
-	fl_plugins_setup_root(rootNode);
+	node_source_setup_root(rootNode);
 
 	/* 4. Sequentially load and unload all feeds and by doing so 
 	   automatically load all vfolders */

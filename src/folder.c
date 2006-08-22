@@ -26,7 +26,7 @@
 #include "support.h"
 #include "ui/ui_folder.h"
 #include "ui/ui_node.h"
-#include "fl_sources/fl_plugin.h"
+#include "fl_sources/node_source.h"
 
 static void folder_initial_load(nodePtr node) {
 	node_foreach_child(node, node_initial_load);
@@ -39,10 +39,10 @@ static void folder_merge_itemset(nodePtr node, gpointer userdata) {
 	debug1(DEBUG_GUI, "merging items of node \"%s\"", node_get_title(node));
 
 	switch(node->type) {
-		case FST_FOLDER:
+		case NODE_TYPE_FOLDER:
 			node_foreach_child_data(node, folder_merge_itemset, itemSet);
 			break;
-		case FST_VFOLDER:
+		case NODE_TYPE_VFOLDER:
 			return;
 			break;
 		default:
@@ -122,7 +122,7 @@ static gchar * folder_render(nodePtr node) {
 
 	params = render_add_parameter(params, "id='%s'", node->id);
 	params = render_add_parameter(params, "headlineCount='%d'", g_list_length(node->itemSet->items));
-	filename = FL_PLUGIN(node)->source_get_feedlist(node->source->root);
+	filename = NODE_SOURCE_TYPE(node)->source_get_feedlist(node->source->root);
 	result = render_file(filename, "folder", params);
 	g_free(filename);
 	g_strfreev(params);
@@ -131,6 +131,10 @@ static gchar * folder_render(nodePtr node) {
 }
 
 static struct nodeType nti = {
+	NODE_CAPABILITY_ADD_CHILDS |
+	NODE_CAPABILITY_REMOVE_CHILDS |
+	NODE_CAPABILITY_SUBFOLDERS |
+	NODE_CAPABILITY_REORDER,
 	folder_initial_load,
 	folder_load,
 	folder_save,

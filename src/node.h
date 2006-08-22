@@ -35,14 +35,14 @@
    and allows the implementation to change the nodes state. */
 
 /** node types (also used for feed list tree store) */
-enum node_types {
-	FST_INVALID 	= 0,		/**< invalid type */
-	FST_FOLDER 	= 1,		/**< the folder type */
-	FST_ROOT	= 2,		/**< the feed list root type */
+enum {
+	NODE_TYPE_INVALID 	= 0,		/**< invalid type */
+	NODE_TYPE_FOLDER 	= 1,		/**< the folder type */
+	NODE_TYPE_ROOT		= 2,		/**< the feed list root type */
 
-	FST_VFOLDER 	= 9,		/**< special type for VFolders */
-	FST_FEED	= 10,		/**< any type of feed */
-	FST_PLUGIN	= 11		/**< plugin root node */
+	NODE_TYPE_VFOLDER 	= 9,		/**< special type for VFolders */
+	NODE_TYPE_FEED		= 10,		/**< any type of feed */
+	NODE_TYPE_SOURCE	= 11		/**< feed list source root node */
 };
 
 /** generic feed list node structure */
@@ -50,7 +50,7 @@ typedef struct node {
 	gpointer		data;		/**< node type specific data structure */
 	guint			type;		/**< node type */
 	struct nodeType		*nodeType;	/**< node type implementation */	
-	struct flNodeSource	*source;	/**< the feed list plugin instance handling this node */
+	struct nodeSource	*source;	/**< the feed list plugin instance handling this node */
 
 	struct request		*updateRequest;	/**< update request structure used when downloading content (is not to be listed in the requests list!) */
 	GSList			*requests;	/**< list of other active download requests attached belonging to this node */
@@ -80,8 +80,18 @@ typedef struct node {
 
 } *nodePtr;
 
+enum {
+	NODE_CAPABILITY_ADD_CHILDS	= (1<<0),	/**< allows adding new childs */
+	NODE_CAPABILITY_REMOVE_CHILDS	= (1<<1),	/**< allows removing it's childs */
+	NODE_CAPABILITY_SUBFOLDERS	= (1<<2),	/**< allows creating/removing sub folders */
+	NODE_CAPABILITY_REMOVE_ITEMS	= (1<<3),	/**< allows removing of single items */
+	NODE_CAPABILITY_REORDER		= (1<<4)	/**< allows DnD to reorder childs */
+};
+
 /** node type interface */
 typedef struct nodeType {
+	gulong	capabilities;	/**< bitmask of node type capabilities */
+	
 	/* For method documentation see the wrappers defined below! */
 	void	(*initial_load)		(nodePtr node);
 	void	(*load)			(nodePtr node);
@@ -97,7 +107,7 @@ typedef struct nodeType {
 	void	(*request_properties)	(nodePtr node);
 } *nodeTypePtr;
 
-#define NODE(node)	(node->nodeType)
+#define NODE_TYPE(node)	(node->nodeType)
 
 /**
  * Registers a new node type. Can be used by feed list
@@ -106,7 +116,7 @@ typedef struct nodeType {
  * @param nodeType	node type info 
  * @param type		node type constant
  */
-void node_register_type(nodeTypePtr nodeType, guint type);
+void node_type_register(nodeTypePtr nodeType, guint type);
  
 /**
  * Creates a new node structure.
