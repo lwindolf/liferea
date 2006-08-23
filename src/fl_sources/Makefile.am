@@ -13,7 +13,6 @@ noinst_LIBRARIES = libliflsources.a
 
 libliflsources_a_SOURCES = node_source.c node_source.h \
                            node_source-ui.c node_source-ui.h \
-			   .node_source-cb.c .node_source-cb.h \
                            default_source.c default_source.h \
                            dummy_source.c \
                            opml_source.c opml_source.h \
