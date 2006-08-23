@@ -15,7 +15,6 @@
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 
-#include ".node_source-cb.h"
 #include "node_source-ui.h"
 #include "support.h"
 
