@@ -55,7 +55,9 @@ struct mainwindow {
 	GtkWidget *itemlist;
 	GtkWidget *statusbar_feedsinfo;
 	GtkActionGroup *generalActions;
-	GtkActionGroup *feedActions;
+	GtkActionGroup *addActions;		/* all types of "New" options */
+	GtkActionGroup *feedActions;		/* update and mark read */
+	GtkActionGroup *readWriteActions;	/* remove and properties */
 } *mw_global_fixme; /* FIXME: I'd like to get rid of this global at some point. */
 
 /* all used icons */
@@ -503,10 +505,11 @@ void ui_mainwindow_update_toolbar(struct mainwindow *mw) {
 		gtk_widget_show(mw->toolbar);
 }
 
-void ui_mainwindow_update_feed_menu(gint type) {
-	gboolean enabled = (NODE_TYPE_FEED == type) || (NODE_TYPE_FOLDER == type) || (NODE_TYPE_VFOLDER == type) || (NODE_TYPE_SOURCE == type);
+void ui_mainwindow_update_feed_menu(gboolean feedActions, gboolean readWrite) {
 	
-	gtk_action_group_set_sensitive(mw_global_fixme->feedActions, enabled);
+	gtk_action_group_set_sensitive(mw_global_fixme->addActions, readWrite);
+	gtk_action_group_set_sensitive(mw_global_fixme->feedActions, feedActions);
+	gtk_action_group_set_sensitive(mw_global_fixme->readWriteActions, readWrite);
 }
 
 void ui_mainwindow_update_menubar(void) {
@@ -783,11 +786,6 @@ static GtkActionEntry ui_mainwindow_action_entries[] = {
 	 G_CALLBACK(on_menu_update_all)},
 	{"MarkAllFeedsAsRead", "gtk-apply", N_("Mark All As _Read"), NULL, N_("Marks read every item of every subscription."),
 	 G_CALLBACK(on_menu_allfeedsread)},
-	{"NewSubscription", "gtk-add", N_("_New Subscription..."), NULL, N_("Add a subscription to the feed list."),
-	 G_CALLBACK(on_menu_feed_new)},
-	{"NewFolder", "gtk-new", N_("New _Folder..."), NULL, N_("Add a folder to the feed list."), G_CALLBACK(on_menu_folder_new)},
-	{"NewVFolder", NULL, N_("New S_earch Folder..."), NULL, N_("Add a new search folder to the feed list."), G_CALLBACK(on_new_vfolder_activate)},
-	{"NewPlugin", NULL, N_("New _Source..."), NULL, N_("Adds a new feed list source."), G_CALLBACK(on_new_plugin_activate)},
 	{"ImportFeedList", "gtk-open", N_("_Import Feed List..."), NULL, N_("Imports an OPML feed list."), G_CALLBACK(on_import_activate)},
 	{"ExportFeedList", "gtk-save-as", N_("_Export Feed List..."), NULL, N_(">Exports the feed list as OPML."), G_CALLBACK(on_export_activate)},
 
@@ -819,18 +817,27 @@ static GtkActionEntry ui_mainwindow_action_entries[] = {
 	 G_CALLBACK(on_quick_reference_activate)},
 	{"ShowHelpFAQ", NULL, N_("_FAQ"), NULL, N_("View the FAQ for this application."), G_CALLBACK(on_faq_activate)},
 	{"ShowAbout", "gtk-about", N_("_About"), NULL, N_("Shows an about dialog."), G_CALLBACK(on_about_activate)}
+};
 
+static GtkActionEntry ui_mainwindow_add_action_entries[] = {
+	{"NewSubscription", "gtk-add", N_("_New Subscription..."), NULL, N_("Add a subscription to the feed list."),
+	 G_CALLBACK(on_menu_feed_new)},
+	{"NewFolder", "gtk-new", N_("New _Folder..."), NULL, N_("Add a folder to the feed list."), G_CALLBACK(on_menu_folder_new)},
+	{"NewVFolder", NULL, N_("New S_earch Folder..."), NULL, N_("Add a new search folder to the feed list."), G_CALLBACK(on_new_vfolder_activate)},
+	{"NewPlugin", NULL, N_("New _Source..."), NULL, N_("Adds a new feed list source."), G_CALLBACK(on_new_plugin_activate)}
 };
 
 static GtkActionEntry ui_mainwindow_feed_action_entries[] = {
 	{"MarkFeedAsRead", "gtk-apply", N_("_Mark Selected As Read"), "<control>R", N_("Marks all items of the selected subscription or of all subscriptions of the selected folder as read."), 
 	 G_CALLBACK(on_menu_allread)},
 	{"UpdateSelected", "gtk-refresh", N_("Update _Selected"), NULL, N_("Updates the selected subscription or all subscriptions of the selected folder."),
-	 G_CALLBACK(on_menu_update)},
+	 G_CALLBACK(on_menu_update)}
+};
+
+static GtkActionEntry ui_mainwindow_read_write_action_entries[] = {
 	{"Properties", "gtk-properties", N_("_Properties..."), NULL, N_("Opens the property dialog for the selected subscription."), G_CALLBACK(on_menu_properties)},
 	{"DeleteSelected", "gtk-delete", N_("_Delete Selected"), NULL, N_("Removes the selected subscription."), G_CALLBACK(on_menu_delete)}
 };
-
 
 static GtkToggleActionEntry ui_mainwindow_action_toggle_entries[] = {
 	{"ToggleOfflineMode", NULL, N_("_Work Offline"), NULL, N_("This option allows you to disable subscription updating."),
@@ -924,11 +931,21 @@ static void ui_mainwindow_create_menus(struct mainwindow *mw) {
 	gtk_action_group_add_toggle_actions (mw->generalActions, ui_mainwindow_action_toggle_entries, G_N_ELEMENTS (ui_mainwindow_action_toggle_entries), mw);
 	/*gtk_action_group_add_radio_actions (mw->generalActions, radio_entries, G_N_ELEMENTS (radio_entries), 0, radio_action_callback, user_data);*/
 	gtk_ui_manager_insert_action_group (ui_manager, mw->generalActions, 0);
+
+	mw->addActions = gtk_action_group_new ("AddActions");
+	gtk_action_group_set_translation_domain (mw->addActions, PACKAGE);
+	gtk_action_group_add_actions (mw->addActions, ui_mainwindow_add_action_entries, G_N_ELEMENTS (ui_mainwindow_add_action_entries), mw);
+	gtk_ui_manager_insert_action_group (ui_manager, mw->addActions, 0);
 	
 	mw->feedActions = gtk_action_group_new ("FeedActions");
 	gtk_action_group_set_translation_domain (mw->feedActions, PACKAGE);
 	gtk_action_group_add_actions (mw->feedActions, ui_mainwindow_feed_action_entries, G_N_ELEMENTS (ui_mainwindow_feed_action_entries), mw);
 	gtk_ui_manager_insert_action_group (ui_manager, mw->feedActions, 0);
+	
+	mw->readWriteActions = gtk_action_group_new("ReadWriteActions");
+	gtk_action_group_set_translation_domain (mw->readWriteActions, PACKAGE);
+	gtk_action_group_add_actions (mw->readWriteActions, ui_mainwindow_read_write_action_entries, G_N_ELEMENTS (ui_mainwindow_read_write_action_entries), mw);
+	gtk_ui_manager_insert_action_group (ui_manager, mw->readWriteActions, 0);
 
 	accel_group = gtk_ui_manager_get_accel_group (ui_manager);
 	gtk_window_add_accel_group (mw->window, accel_group);

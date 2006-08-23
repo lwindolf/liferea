@@ -313,7 +313,8 @@ static struct nodeSourceType nst = {
 	NODE_SOURCE_TYPE_API_VERSION,
 	"fl_default",
 	"Static Feed List",
-	NODE_SOURCE_CAPABILITY_IS_ROOT,
+	NODE_SOURCE_CAPABILITY_IS_ROOT |
+	NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST,
 	default_source_init,
 	default_source_deinit,
 	NULL,

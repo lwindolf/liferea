@@ -75,8 +75,13 @@ void ui_mainwindow_set_toolbar_style(struct mainwindow *mw, const gchar *toolbar
 /** According to the preferences this function enables/disables the toolbar */
 void ui_mainwindow_update_toolbar();
 
-/** Set the sensitivity of items in the feed menu based on the type of item selected */
-void ui_mainwindow_update_feed_menu(gint type);
+/** 
+ * Set the sensitivity of items in the feed menu based on the type of item selected 
+ *
+ * @param feedActions	TRUE if feed actions are to be enabled
+ * @param readWrite	TRUE if feed list modifying actions are enabled
+ */
+void ui_mainwindow_update_feed_menu(gboolean feedActions, gboolean readWrite);
 
 /** According to the preferences this function enables/disables the menubar */
 void ui_mainwindow_update_menubar();

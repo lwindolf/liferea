@@ -100,16 +100,16 @@ nodePtr ui_feedlist_get_target_folder(int *pos) {
 static void ui_feedlist_selection_changed_cb(GtkTreeSelection *selection, gpointer data) {
 	GtkTreeIter		iter;
 	GtkTreeModel		*model;
-	nodePtr			np;
+	nodePtr			node;
 	GdkGeometry		geometry;
 	gint			type = NODE_TYPE_INVALID;
 
 	if(gtk_tree_selection_get_selected(selection, &model, &iter)) {
-		gtk_tree_model_get(model, &iter, FS_PTR, &np, -1);
-		if(np != NULL) 
-			type = np->type;
+		gtk_tree_model_get(model, &iter, FS_PTR, &node, -1);
+		if(node != NULL) 
+			type = node->type;
 
-		debug1(DEBUG_GUI, "feed list selection changed to \"%s\"", node_get_title(np));
+		debug1(DEBUG_GUI, "feed list selection changed to \"%s\"", node_get_title(node));
 
 		/* make sure thats no grouping iterator */
 		if((NODE_TYPE_FEED == type) || (NODE_TYPE_VFOLDER == type) || (NODE_TYPE_SOURCE == type)) {
@@ -122,7 +122,7 @@ static void ui_feedlist_selection_changed_cb(GtkTreeSelection *selection, gpoint
 			gtk_window_set_geometry_hints(GTK_WINDOW(mainwindow), mainwindow, &geometry, GDK_HINT_MIN_SIZE);
 		
 			ui_tabs_show_headlines();
-			itemlist_set_two_pane_mode(node_get_two_pane_mode(np));
+			itemlist_set_two_pane_mode(node_get_two_pane_mode(node));
 			
 			/* workaround to ensure the feedlist is focussed when we click it
 			   (Mozilla might prevent this, ui_itemlist_display() depends on this */
@@ -130,12 +130,12 @@ static void ui_feedlist_selection_changed_cb(GtkTreeSelection *selection, gpoint
 		}
 		
 		/* update feed list and item list states */
-		feedlist_selection_changed(np);
+		feedlist_selection_changed(node);
 	} else {
 		/* If we cannot get the new selection we keep the old one
 		   this happens when we're doing drag&drop for example. */
 	}
-	ui_mainwindow_update_feed_menu(type);
+	ui_mainwindow_update_feed_menu((type != NODE_TYPE_INVALID), (NODE_SOURCE_TYPE(node->source->root)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST));
 }
 
 static void ui_feedlist_row_activated_cb(GtkTreeView *tv, GtkTreePath *path, GtkTreeViewColumn *col, gpointer data) {
@@ -259,7 +259,7 @@ void ui_feedlist_init(GtkWidget *feedview) {
                 	 lookup_widget(mainwindow, "feedlist"));
 	
 	ui_dnd_init(feedstore);			
-	ui_mainwindow_update_feed_menu(NODE_TYPE_INVALID);
+	ui_mainwindow_update_feed_menu(FALSE, FALSE);
 
 	debug_exit("ui_feedlist_init");
 }
