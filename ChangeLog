@@ -2,11 +2,12 @@
 
 	Version 1.1.2 (Unstable)
 
-	* Fixing the build order to allow building
-	  the fl_sources subdirectory on Cygwin
 	* Fixes a lot of CSS rendering glitches
-	* Fixes a DnD problem which caused duplicate
-	  feeds after restarting the program.
+	* Fixes a DnD problem which caused duplicate feeds after
+	  restarting the program.
+	* Main menu and context menus are now node type sensitive.
+	* Binding 3rd mouse button to "Mark As Read" when used in
+	  the feed list.
 
 
 2006-08-20  Lars Lindner  <lars.lindner@gmail.com>

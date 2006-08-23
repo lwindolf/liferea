@@ -286,9 +286,7 @@ gboolean on_mainfeedlist_button_press_event(GtkWidget *widget,
 
 	eb = (GdkEventButton*)event;
 
-	if(eb->button != 3)
-		return FALSE;
-
+	/* determine node */	
 	if(!gtk_tree_view_get_path_at_pos(GTK_TREE_VIEW(lookup_widget(mainwindow, "feedlist")), event->x, event->y, &path, NULL, NULL, NULL)) {
 		selected=FALSE;
 		node = feedlist_get_root();
@@ -297,17 +295,30 @@ gboolean on_mainfeedlist_button_press_event(GtkWidget *widget,
 		gtk_tree_model_get_iter(model, &iter, path);
 		gtk_tree_path_free(path);
 		gtk_tree_model_get(model, &iter, FS_PTR, &node, -1);
-		
-		if(node) {
-			ui_feedlist_select(node);
-		} else {
-			/* This happens when an "empty" node or nothing (feed list root) is clicked */
-			selected = FALSE;
-			node = feedlist_get_root();
-		}
 	}
+	
+	/* apply action */
+	switch(eb->button) {
+		default:
+			/* Shouldn't happen... */
+			return FALSE;
+			break;
+		case 2:
+			if(node)
+				node_mark_all_read(node);
+			break;
+		case 3:
+			if(node) {
+				ui_feedlist_select(node);
+			} else {
+				/* This happens when an "empty" node or nothing (feed list root) is clicked */
+				selected = FALSE;
+				node = feedlist_get_root();
+			}
 
-	gtk_menu_popup(ui_popup_node_menu(node, selected), NULL, NULL, NULL, NULL, eb->button, eb->time);
-		
+			gtk_menu_popup(ui_popup_node_menu(node, selected), NULL, NULL, NULL, NULL, eb->button, eb->time);
+			break;
+	}
+			
 	return TRUE;
 }
