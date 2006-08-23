@@ -22,7 +22,6 @@
 #ifndef _NODE_H
 #define _NODE_H
 
-#include "item.h"
 #include "itemset.h"
 #include "update.h"
 
@@ -38,7 +37,7 @@
 enum {
 	NODE_TYPE_INVALID 	= 0,		/**< invalid type */
 	NODE_TYPE_FOLDER 	= 1,		/**< the folder type */
-	NODE_TYPE_ROOT		= 2,		/**< the feed list root type */
+	NODE_TYPE_ROOT		= 2,		/**< the feed list root node type */
 
 	NODE_TYPE_VFOLDER 	= 9,		/**< special type for VFolders */
 	NODE_TYPE_FEED		= 10,		/**< any type of feed */

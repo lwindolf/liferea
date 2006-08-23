@@ -31,6 +31,7 @@
 #include "support.h"
 #include "fl_sources/node_source.h"
 #include "fl_sources/node_source-ui.h"
+#include "notification/notif_plugin.h"
 
 static GSList	*nodeSourceTypes = NULL;
 
@@ -49,7 +50,8 @@ static nodeSourceTypePtr node_source_type_find(gchar *typeStr, guint capabilitie
 	return NULL;
 }
 
-void node_source_setup_root(nodePtr node) {
+nodePtr node_source_setup_root(void) {
+	nodePtr	rootNode;
 	nodeSourceTypePtr type;
 	
 	debug_enter("node_source_setup_root");
@@ -58,13 +60,18 @@ void node_source_setup_root(nodePtr node) {
 	if(!type) 
 		g_error("No root capable node source found!");
 		
-	node->source = g_new0(struct nodeSource, 1);
-	node->source->root = node;
-	node->source->type = type;
-	node->nodeType = type;
-	type->source_import(node);
+	rootNode = node_new();
+	rootNode->title = g_strdup("root");
+	rootNode->type = NODE_TYPE_ROOT;
+	rootNode->nodeType = folder_get_node_type();
+	rootNode->source = g_new0(struct nodeSource, 1);
+	rootNode->source->root = rootNode;
+	rootNode->source->type = type;
+	type->source_import(rootNode);
 	
 	debug_exit("node_source_setup_root");
+	
+	return rootNode;
 }
 
 gboolean node_source_type_register(nodeSourceTypePtr type) {

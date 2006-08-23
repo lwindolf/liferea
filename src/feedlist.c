@@ -337,6 +337,7 @@ void feedlist_init(void) {
 	
 	/* 1. Register standard node and source types */
 	node_type_register(feed_get_node_type(), NODE_TYPE_FEED);
+	node_type_register(folder_get_node_type(), NODE_TYPE_ROOT);
 	node_type_register(folder_get_node_type(), NODE_TYPE_FOLDER);
 	node_type_register(vfolder_get_node_type(), NODE_TYPE_VFOLDER);
 	node_type_register(node_source_get_node_type(), NODE_TYPE_SOURCE);
@@ -345,25 +346,17 @@ void feedlist_init(void) {
 	node_source_type_register(dummy_source_get_type());
 	node_source_type_register(opml_source_get_type());
 
-	/* 2. Set up a root node */
-	rootNode = node_new();
-	rootNode->title = g_strdup("root");
-	rootNode->type = NODE_TYPE_ROOT;
+	/* 2. Set up a root node and import the feed list plugins structure. */
+	rootNode = node_source_setup_root();
 
-	/* 3. Initialize list of feed list plugins, find root 
-	   provider plugin and creating an instance of this plugin. 
-	   This will load the feed list and all attached plugin 
-	   handlers. */
-	node_source_setup_root(rootNode);
-
-	/* 4. Sequentially load and unload all feeds and by doing so 
+	/* 3. Sequentially load and unload all feeds and by doing so 
 	   automatically load all vfolders */
 	feedlist_foreach(node_initial_load);
 	feedlist_foreach(feedlist_update_vfolder_count);
 	
 	notification_enable(getBooleanConfValue(SHOW_POPUP_WINDOWS));
 
-	/* 5. Check if feeds do need updating. */
+	/* 4. Check if feeds do need updating. */
 	switch(getNumericConfValue(STARTUP_FEED_ACTION)) {
 		case 1: /* Update all feeds */
 			debug0(DEBUG_UPDATE, "initial update: updating all feeds");
@@ -379,10 +372,10 @@ void feedlist_init(void) {
 			/* default, which is to use the lastPoll times, does not need any actions here. */;
 	}
 
-	/* 6. Start automatic updating */
+	/* 5. Start automatic updating */
  	(void)g_timeout_add(1000, feedlist_auto_update, NULL);
 
-	/* 7. Finally save the new feed list state */
+	/* 6. Finally save the new feed list state */
 	feedlistLoading = FALSE;
 	feedlist_schedule_save();
 	

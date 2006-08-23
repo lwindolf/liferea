@@ -252,14 +252,11 @@ static GtkMenu *ui_popup_node_menu(nodePtr node, gboolean validSelection) {
 	}
 
 	if(validSelection) {
-		if(node->type == NODE_TYPE_FOLDER) {
-			addPopupOption(&menu_items, &menu_len, _("/_Rename Folder..."),	NULL, ui_popup_properties,	0, "<StockItem>", GTK_STOCK_PROPERTIES);
-			addPopupOption(&menu_items, &menu_len, _("/_Delete Folder"), 	NULL, ui_popup_delete,		0, "<StockItem>", GTK_STOCK_DELETE);
-		}
-		if(node->type != NODE_TYPE_FOLDER) {
-			addPopupOption(&menu_items, &menu_len, _("/_Properties..."),	NULL, ui_popup_properties, 	0, "<StockItem>", GTK_STOCK_PROPERTIES );
+		if(NODE_TYPE(node->source->root)->capabilities & NODE_CAPABILITY_REMOVE_CHILDS)
 			addPopupOption(&menu_items, &menu_len, _("/_Delete"),		NULL, ui_popup_delete,		0, "<StockItem>", GTK_STOCK_DELETE);
-		}
+
+		if(NODE_SOURCE_TYPE(node->source->root)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST)
+			addPopupOption(&menu_items, &menu_len, _("/_Properties..."),	NULL, ui_popup_properties, 	0, "<StockItem>", GTK_STOCK_PROPERTIES );
 	}
 
 	return make_menu(menu_items, menu_len, node);

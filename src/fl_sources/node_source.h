@@ -131,9 +131,9 @@ typedef struct nodeSource {
  * Scans the source type list for the root source provider.
  * If found creates a new root source and starts it's import.
  *
- * @param node		the root node
+ * @returns a newly created root node
  */
-void node_source_setup_root(nodePtr node);
+nodePtr node_source_setup_root(void);
 
 /**
  * Registers a node source type.
