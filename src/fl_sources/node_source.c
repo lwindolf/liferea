@@ -61,6 +61,7 @@ void node_source_setup_root(nodePtr node) {
 	node->source = g_new0(struct nodeSource, 1);
 	node->source->root = node;
 	node->source->type = type;
+	node->nodeType = type;
 	type->source_import(node);
 	
 	debug_exit("node_source_setup_root");
