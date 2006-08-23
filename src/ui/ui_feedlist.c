@@ -131,11 +131,12 @@ static void ui_feedlist_selection_changed_cb(GtkTreeSelection *selection, gpoint
 		
 		/* update feed list and item list states */
 		feedlist_selection_changed(node);
+		
+		ui_mainwindow_update_feed_menu((type != NODE_TYPE_INVALID), (NODE_SOURCE_TYPE(node->source->root)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST));
 	} else {
 		/* If we cannot get the new selection we keep the old one
 		   this happens when we're doing drag&drop for example. */
 	}
-	ui_mainwindow_update_feed_menu((type != NODE_TYPE_INVALID), (NODE_SOURCE_TYPE(node->source->root)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST));
 }
 
 static void ui_feedlist_row_activated_cb(GtkTreeView *tv, GtkTreePath *path, GtkTreeViewColumn *col, gpointer data) {
