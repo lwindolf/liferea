@@ -2444,34 +2444,34 @@ create_foldernamedialog (void)
 }
 
 GtkWidget*
-create_feedsterdialog (void)
+create_searchenginedialog (void)
 {
-  GtkWidget *feedsterdialog;
+  GtkWidget *searchenginedialog;
   GtkWidget *dialog_vbox9;
   GtkWidget *vbox224;
   GtkWidget *hbox23;
   GtkWidget *label42;
-  GtkWidget *feedsterkeywords;
+  GtkWidget *searchkeywords;
   GtkWidget *hbox24;
   GtkWidget *label43;
-  GtkObject *feedsterresultcount_adj;
-  GtkWidget *feedsterresultcount;
+  GtkObject *resultcount_adj;
+  GtkWidget *resultcount;
   GtkWidget *label44;
   GtkWidget *dialog_action_area9;
-  GtkWidget *feedstercancelbtn;
-  GtkWidget *feedsterbtn;
+  GtkWidget *searchenginecancelbtn;
+  GtkWidget *searchenginebtn;
   GtkTooltips *tooltips;
 
   tooltips = gtk_tooltips_new ();
 
-  feedsterdialog = gtk_dialog_new ();
-  gtk_container_set_border_width (GTK_CONTAINER (feedsterdialog), 5);
-  gtk_window_set_title (GTK_WINDOW (feedsterdialog), _("Feedster Search"));
-  gtk_window_set_resizable (GTK_WINDOW (feedsterdialog), FALSE);
-  gtk_window_set_type_hint (GTK_WINDOW (feedsterdialog), GDK_WINDOW_TYPE_HINT_DIALOG);
-  gtk_dialog_set_has_separator (GTK_DIALOG (feedsterdialog), FALSE);
+  searchenginedialog = gtk_dialog_new ();
+  gtk_container_set_border_width (GTK_CONTAINER (searchenginedialog), 5);
+  gtk_window_set_title (GTK_WINDOW (searchenginedialog), _("Create Search Engine Feed"));
+  gtk_window_set_resizable (GTK_WINDOW (searchenginedialog), FALSE);
+  gtk_window_set_type_hint (GTK_WINDOW (searchenginedialog), GDK_WINDOW_TYPE_HINT_DIALOG);
+  gtk_dialog_set_has_separator (GTK_DIALOG (searchenginedialog), FALSE);
 
-  dialog_vbox9 = GTK_DIALOG (feedsterdialog)->vbox;
+  dialog_vbox9 = GTK_DIALOG (searchenginedialog)->vbox;
   gtk_widget_show (dialog_vbox9);
 
   vbox224 = gtk_vbox_new (FALSE, 6);
@@ -2487,11 +2487,11 @@ create_feedsterdialog (void)
   gtk_widget_show (label42);
   gtk_box_pack_start (GTK_BOX (hbox23), label42, FALSE, FALSE, 0);
 
-  feedsterkeywords = gtk_entry_new ();
-  gtk_widget_show (feedsterkeywords);
-  gtk_box_pack_start (GTK_BOX (hbox23), feedsterkeywords, TRUE, TRUE, 0);
-  gtk_tooltips_set_tip (tooltips, feedsterkeywords, _("enter any search string you want"), NULL);
-  gtk_entry_set_activates_default (GTK_ENTRY (feedsterkeywords), TRUE);
+  searchkeywords = gtk_entry_new ();
+  gtk_widget_show (searchkeywords);
+  gtk_box_pack_start (GTK_BOX (hbox23), searchkeywords, TRUE, TRUE, 0);
+  gtk_tooltips_set_tip (tooltips, searchkeywords, _("enter any search string you want"), NULL);
+  gtk_entry_set_activates_default (GTK_ENTRY (searchkeywords), TRUE);
 
   hbox24 = gtk_hbox_new (FALSE, 12);
   gtk_widget_show (hbox24);
@@ -2501,63 +2501,63 @@ create_feedsterdialog (void)
   gtk_widget_show (label43);
   gtk_box_pack_start (GTK_BOX (hbox24), label43, FALSE, FALSE, 0);
 
-  feedsterresultcount_adj = gtk_adjustment_new (15, 1, 1000, 1, 10, 10);
-  feedsterresultcount = gtk_spin_button_new (GTK_ADJUSTMENT (feedsterresultcount_adj), 1, 0);
-  gtk_widget_show (feedsterresultcount);
-  gtk_box_pack_start (GTK_BOX (hbox24), feedsterresultcount, TRUE, TRUE, 0);
+  resultcount_adj = gtk_adjustment_new (15, 1, 1000, 1, 10, 10);
+  resultcount = gtk_spin_button_new (GTK_ADJUSTMENT (resultcount_adj), 1, 0);
+  gtk_widget_show (resultcount);
+  gtk_box_pack_start (GTK_BOX (hbox24), resultcount, TRUE, TRUE, 0);
 
-  label44 = gtk_label_new (_("Note: Liferea will generate a feed subscription which is used to query the Feedster results for the specified search string. You can keep this feed permanently and update it like any other subscription.  "));
+  label44 = gtk_label_new (_("Note: Liferea will generate a feed subscription which is used to query the search engine results for the specified search string. You can keep this feed permanently and update it like any other subscription.  "));
   gtk_widget_show (label44);
   gtk_box_pack_start (GTK_BOX (vbox224), label44, FALSE, FALSE, 0);
   gtk_label_set_line_wrap (GTK_LABEL (label44), TRUE);
   gtk_misc_set_alignment (GTK_MISC (label44), 0, 0.5);
 
-  dialog_action_area9 = GTK_DIALOG (feedsterdialog)->action_area;
+  dialog_action_area9 = GTK_DIALOG (searchenginedialog)->action_area;
   gtk_widget_show (dialog_action_area9);
   gtk_button_box_set_layout (GTK_BUTTON_BOX (dialog_action_area9), GTK_BUTTONBOX_END);
 
-  feedstercancelbtn = gtk_button_new_from_stock ("gtk-cancel");
-  gtk_widget_show (feedstercancelbtn);
-  gtk_dialog_add_action_widget (GTK_DIALOG (feedsterdialog), feedstercancelbtn, GTK_RESPONSE_CANCEL);
-  GTK_WIDGET_SET_FLAGS (feedstercancelbtn, GTK_CAN_DEFAULT);
+  searchenginecancelbtn = gtk_button_new_from_stock ("gtk-cancel");
+  gtk_widget_show (searchenginecancelbtn);
+  gtk_dialog_add_action_widget (GTK_DIALOG (searchenginedialog), searchenginecancelbtn, GTK_RESPONSE_CANCEL);
+  GTK_WIDGET_SET_FLAGS (searchenginecancelbtn, GTK_CAN_DEFAULT);
 
-  feedsterbtn = gtk_button_new_from_stock ("gtk-ok");
-  gtk_widget_show (feedsterbtn);
-  gtk_dialog_add_action_widget (GTK_DIALOG (feedsterdialog), feedsterbtn, GTK_RESPONSE_OK);
-  GTK_WIDGET_SET_FLAGS (feedsterbtn, GTK_CAN_DEFAULT);
+  searchenginebtn = gtk_button_new_from_stock ("gtk-ok");
+  gtk_widget_show (searchenginebtn);
+  gtk_dialog_add_action_widget (GTK_DIALOG (searchenginedialog), searchenginebtn, GTK_RESPONSE_OK);
+  GTK_WIDGET_SET_FLAGS (searchenginebtn, GTK_CAN_DEFAULT);
 
-  g_signal_connect_swapped ((gpointer) feedstercancelbtn, "clicked",
+  g_signal_connect_swapped ((gpointer) searchenginecancelbtn, "clicked",
                             G_CALLBACK (gtk_widget_hide),
-                            GTK_OBJECT (feedsterdialog));
-  g_signal_connect ((gpointer) feedsterbtn, "clicked",
-                    G_CALLBACK (on_feedsterbtn_clicked),
+                            GTK_OBJECT (searchenginedialog));
+  g_signal_connect ((gpointer) searchenginebtn, "clicked",
+                    G_CALLBACK (on_search_engine_btn_clicked),
                     NULL);
-  g_signal_connect_data ((gpointer) feedsterbtn, "clicked",
+  g_signal_connect_data ((gpointer) searchenginebtn, "clicked",
                          G_CALLBACK (gtk_widget_hide),
-                         GTK_OBJECT (feedsterdialog),
+                         GTK_OBJECT (searchenginedialog),
                          NULL, G_CONNECT_AFTER | G_CONNECT_SWAPPED);
 
-  gtk_label_set_mnemonic_widget (GTK_LABEL (label42), feedsterkeywords);
-  gtk_label_set_mnemonic_widget (GTK_LABEL (label43), feedsterresultcount);
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label42), searchkeywords);
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label43), resultcount);
 
   /* Store pointers to all widgets, for use by lookup_widget(). */
-  GLADE_HOOKUP_OBJECT_NO_REF (feedsterdialog, feedsterdialog, "feedsterdialog");
-  GLADE_HOOKUP_OBJECT_NO_REF (feedsterdialog, dialog_vbox9, "dialog_vbox9");
-  GLADE_HOOKUP_OBJECT (feedsterdialog, vbox224, "vbox224");
-  GLADE_HOOKUP_OBJECT (feedsterdialog, hbox23, "hbox23");
-  GLADE_HOOKUP_OBJECT (feedsterdialog, label42, "label42");
-  GLADE_HOOKUP_OBJECT (feedsterdialog, feedsterkeywords, "feedsterkeywords");
-  GLADE_HOOKUP_OBJECT (feedsterdialog, hbox24, "hbox24");
-  GLADE_HOOKUP_OBJECT (feedsterdialog, label43, "label43");
-  GLADE_HOOKUP_OBJECT (feedsterdialog, feedsterresultcount, "feedsterresultcount");
-  GLADE_HOOKUP_OBJECT (feedsterdialog, label44, "label44");
-  GLADE_HOOKUP_OBJECT_NO_REF (feedsterdialog, dialog_action_area9, "dialog_action_area9");
-  GLADE_HOOKUP_OBJECT (feedsterdialog, feedstercancelbtn, "feedstercancelbtn");
-  GLADE_HOOKUP_OBJECT (feedsterdialog, feedsterbtn, "feedsterbtn");
-  GLADE_HOOKUP_OBJECT_NO_REF (feedsterdialog, tooltips, "tooltips");
+  GLADE_HOOKUP_OBJECT_NO_REF (searchenginedialog, searchenginedialog, "searchenginedialog");
+  GLADE_HOOKUP_OBJECT_NO_REF (searchenginedialog, dialog_vbox9, "dialog_vbox9");
+  GLADE_HOOKUP_OBJECT (searchenginedialog, vbox224, "vbox224");
+  GLADE_HOOKUP_OBJECT (searchenginedialog, hbox23, "hbox23");
+  GLADE_HOOKUP_OBJECT (searchenginedialog, label42, "label42");
+  GLADE_HOOKUP_OBJECT (searchenginedialog, searchkeywords, "searchkeywords");
+  GLADE_HOOKUP_OBJECT (searchenginedialog, hbox24, "hbox24");
+  GLADE_HOOKUP_OBJECT (searchenginedialog, label43, "label43");
+  GLADE_HOOKUP_OBJECT (searchenginedialog, resultcount, "resultcount");
+  GLADE_HOOKUP_OBJECT (searchenginedialog, label44, "label44");
+  GLADE_HOOKUP_OBJECT_NO_REF (searchenginedialog, dialog_action_area9, "dialog_action_area9");
+  GLADE_HOOKUP_OBJECT (searchenginedialog, searchenginecancelbtn, "searchenginecancelbtn");
+  GLADE_HOOKUP_OBJECT (searchenginedialog, searchenginebtn, "searchenginebtn");
+  GLADE_HOOKUP_OBJECT_NO_REF (searchenginedialog, tooltips, "tooltips");
 
-  gtk_widget_grab_default (feedsterbtn);
-  return feedsterdialog;
+  gtk_widget_grab_default (searchenginebtn);
+  return searchenginedialog;
 }
 
 GtkWidget*

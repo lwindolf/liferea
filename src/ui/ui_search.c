@@ -37,8 +37,15 @@
 
 extern GtkWidget	*mainwindow;
 static GtkWidget	*searchdialog = NULL;
-static GtkWidget 	*feedsterdialog = NULL;
+static GtkWidget 	*searchEngineDialog = NULL;
 static nodePtr		searchResult = NULL;
+
+typedef struct searchEngine {
+	const gchar	*name;		/**< descriptive name for menu options */
+	GCallback	func;		/**< search URI generation function */
+} *searchEnginePtr;
+
+static GSList	*searchEngines = NULL;
 
 /*------------------------------------------------------------------------------*/
 /* search dialog callbacks							*/
@@ -142,24 +149,30 @@ void on_new_vfolder_activate(GtkMenuItem *menuitem, gpointer user_data) {
 }
 
 /*------------------------------------------------------------------------------*/
-/* feedster support								*/
+/* search engine support							*/
 /*------------------------------------------------------------------------------*/
 
-void on_feedsterbtn_clicked(GtkButton *button, gpointer user_data) {
+void on_search_engine_btn_clicked(GtkButton *button, gpointer user_data) {
 	GtkWidget	*keywords, *resultCountButton;
 	GtkAdjustment	*resultCount;
-	gchar		*searchtext;
+	gchar		*searchtext, *searchUri, *uriFmt;
+	gboolean	limitSupported;
+	
+	uriFmt = g_object_get_data(G_OBJECT(searchEngineDialog), "uriFmt");
+	limitSupported = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(searchEngineDialog), "limitSupported"));
 
-	keywords = lookup_widget(feedsterdialog, "feedsterkeywords");
-	resultCountButton = lookup_widget(feedsterdialog, "feedsterresultcount");
+	keywords = lookup_widget(searchEngineDialog, "searchkeywords");
+	resultCountButton = lookup_widget(searchEngineDialog, "resultcount");
 	if((NULL != keywords) && (NULL != resultCountButton)) {
 		resultCount = gtk_spin_button_get_adjustment(GTK_SPIN_BUTTON(resultCountButton));
 		searchtext = (gchar *)g_strdup(gtk_entry_get_text(GTK_ENTRY(keywords)));
 		searchtext = common_encode_uri_string(searchtext);
-		searchtext = g_strdup_printf("http://www.feedster.com/search.php?q=%s&sort=date&type=rss&ie=UTF-8&limit=%d", 
-					    searchtext, (int)gtk_adjustment_get_value(resultCount));
+		if(limitSupported)
+			searchUri = g_strdup_printf(uriFmt, searchtext, (int)gtk_adjustment_get_value(resultCount));
+		else
+			searchUri = g_strdup_printf(uriFmt, searchtext);
 
-		node_request_automatic_add(searchtext, 
+		node_request_automatic_add(searchUri, 
 					   NULL, 
 					   NULL, 
 		                           /*FEED_REQ_SHOW_PROPDIALOG | <- not needed*/
@@ -170,27 +183,119 @@ void on_feedsterbtn_clicked(GtkButton *button, gpointer user_data) {
 					   FEED_REQ_DOWNLOAD_FAVICON |
 					   FEED_REQ_AUTH_DIALOG);
 
-
+		g_free(searchUri);
 		g_free(searchtext);
 	}
 }
 
-static void ui_feedster_destroyed_cb(GtkWidget *widget, void *data) {
+static void ui_search_engine_dialog_destroyed_cb(GtkWidget *widget, void *data) {
 
-	feedsterdialog = NULL;
+	searchEngineDialog = NULL;
 }
 
-void on_search_with_feedster_activate(GtkMenuItem *menuitem, gpointer user_data) {
+void ui_search_engine_new_feed(const gchar *uriFmt, gboolean limitSupported) {
 	GtkWidget	*keywords;
 	
-	if(NULL == feedsterdialog) {
-		feedsterdialog = create_feedsterdialog();
-		gtk_window_set_transient_for(GTK_WINDOW(feedsterdialog), GTK_WINDOW(mainwindow));
-		g_signal_connect(G_OBJECT(feedsterdialog), "destroy", G_CALLBACK(ui_feedster_destroyed_cb), NULL);
+	if(NULL == searchEngineDialog) {
+		searchEngineDialog = create_searchenginedialog();
+		gtk_window_set_transient_for(GTK_WINDOW(searchEngineDialog), GTK_WINDOW(mainwindow));
+		g_signal_connect(G_OBJECT(searchEngineDialog), "destroy", G_CALLBACK(ui_search_engine_dialog_destroyed_cb), NULL);
 	}
 		
-	keywords = lookup_widget(feedsterdialog, "feedsterkeywords");
-	gtk_window_set_focus(GTK_WINDOW(feedsterdialog), keywords);
+	keywords = lookup_widget(searchEngineDialog, "searchkeywords");
+	gtk_window_set_focus(GTK_WINDOW(searchEngineDialog), keywords);
 	gtk_entry_set_text(GTK_ENTRY(keywords), "");
-	gtk_widget_show(feedsterdialog);
+	gtk_widget_show(searchEngineDialog);
+	
+	gtk_widget_set_sensitive(lookup_widget(searchEngineDialog, "resultcount"), limitSupported);
+	
+	g_object_set_data(G_OBJECT(searchEngineDialog), "uriFmt", (gpointer)uriFmt);
+	g_object_set_data(G_OBJECT(searchEngineDialog), "limitSupported", GINT_TO_POINTER(limitSupported));
+}
+
+void ui_search_engines_setup_menu(GtkUIManager *ui_manager) {
+	GtkActionEntry	*entry, *entries = NULL;
+	GSList		*iter = searchEngines;
+	GError		*error = NULL;
+	GString		*uiDesc;
+
+	uiDesc = g_string_new(NULL);
+
+	entries = g_new(GtkActionEntry, g_slist_length(searchEngines));
+	entry = entries;
+	while(iter) {
+		searchEnginePtr searchEngine = (searchEnginePtr)iter->data;
+		entry->name = searchEngine->name;
+		entry->stock_id = NULL;
+		entry->label = searchEngine->name;
+		entry->accelerator = NULL;
+		entry->tooltip = _("Create a new search feed.");
+		entry->callback = searchEngine->func;		
+		g_string_append_printf(uiDesc, "<menuitem action='%s'/>", searchEngine->name);
+		entry++;
+		iter = g_slist_next(iter);
+	}	
+
+
+	g_string_prepend(uiDesc, "<ui>"
+	                         "<menubar name='MainwindowMenubar'>"
+				 "<menu action='SearchMenu'>"
+				 "<menu action='CreateEngineSearch'>");
+	g_string_append(uiDesc, "</menu>"
+	                        "</menu>"
+	                        "</menubar>"
+				"</ui>");
+
+	if(gtk_ui_manager_add_ui_from_string(ui_manager, uiDesc->str, -1, &error)) {
+		GtkActionGroup *ag = gtk_action_group_new("SearchEngineActions");
+		gtk_action_group_set_translation_domain(ag, PACKAGE);
+		gtk_action_group_add_actions(ag, entries, g_slist_length(searchEngines), NULL);
+		gtk_ui_manager_insert_action_group (ui_manager, ag, 0);
+	} else {
+		g_warning("building search engine menus failed: %s", error->message);
+		g_error_free(error);
+	}
+	g_string_free(uiDesc, TRUE);
+	g_free(entries);
+}
+
+static void create_delicious_search_url(void) {
+	ui_search_engine_new_feed("http://del.icio.us/rss/tag/%s", FALSE);
+}
+static void create_feedster_search_url(void) {
+	ui_search_engine_new_feed("http://www.feedster.com/search.php?q=%s&sort=date&type=rss&ie=UTF-8&limit=%d", TRUE);
+}
+static void create_google_blog_search_url(void) {
+	ui_search_engine_new_feed("http://blogsearch.google.com/blogsearch_feeds?hl=en&q=%s&ie=utf-8&num=%d&output=atom", TRUE);
+}
+static void create_icerocket_search_url(void) {
+	ui_search_engine_new_feed("http://www.icerocket.com/search?tab=blog&q=%s&rss=1", FALSE);
+} 
+static void create_reddit_search_url(void) {
+	ui_search_engine_new_feed("http://reddit.com/search.rss?q=%s", FALSE);
+}
+static void create_technorati_search_url(void) {
+	ui_search_engine_new_feed("http://feeds.technorati.com/feed/posts/tag/%s", FALSE);
+}
+static void create_yahoo_search_url(void) {
+	ui_search_engine_new_feed("http://api.search.yahoo.com/WebSearchService/rss/webSearch.xml?appid=yahoosearchwebrss&query=%s&adult_ok=1", FALSE);
+}
+
+static void search_engine_register(const gchar *name, GCallback func) {
+	struct searchEngine *searchEngine;
+	
+	searchEngine = (struct searchEngine *)g_new0(struct searchEngine, 1);
+	searchEngine->name = name;
+	searchEngine->func = func;
+	searchEngines = g_slist_append(searchEngines, searchEngine);	
+}
+
+void ui_search_init(void) {
+	search_engine_register("Del.icio.us",	create_delicious_search_url);
+	search_engine_register("Feedster",	create_feedster_search_url);
+	search_engine_register("Google Blog",	create_google_blog_search_url);
+	search_engine_register("Ice Rocket",	create_icerocket_search_url);
+	search_engine_register("Reddit.com",	create_reddit_search_url);
+	search_engine_register("Technorati",	create_technorati_search_url);
+	search_engine_register("Yahoo",		create_yahoo_search_url);
 }

@@ -8,6 +8,9 @@
 	* Main menu and context menus are now node type sensitive.
 	* Binding 3rd mouse button to "Mark As Read" when used in
 	  the feed list.
+	* Improving the search engine support. Now the search
+	  menu provides Feedster, Ice Rocket, Reddit, Delicious,
+	  Google Blog, Yahoo and Technorati options.
 
 
 2006-08-20  Lars Lindner  <lars.lindner@gmail.com>

@@ -5527,10 +5527,10 @@
   </child>
 </widget>
 
-<widget class="GtkDialog" id="feedsterdialog">
+<widget class="GtkDialog" id="searchenginedialog">
   <property name="border_width">5</property>
   <property name="visible">True</property>
-  <property name="title" translatable="yes">Feedster Search</property>
+  <property name="title" translatable="yes">Create Search Engine Feed</property>
   <property name="type">GTK_WINDOW_TOPLEVEL</property>
   <property name="window_position">GTK_WIN_POS_NONE</property>
   <property name="modal">False</property>
@@ -5557,7 +5557,7 @@
 	  <property name="layout_style">GTK_BUTTONBOX_END</property>
 
 	  <child>
-	    <widget class="GtkButton" id="feedstercancelbtn">
+	    <widget class="GtkButton" id="searchenginecancelbtn">
 	      <property name="visible">True</property>
 	      <property name="can_default">True</property>
 	      <property name="can_focus">True</property>
@@ -5566,12 +5566,12 @@
 	      <property name="relief">GTK_RELIEF_NORMAL</property>
 	      <property name="focus_on_click">True</property>
 	      <property name="response_id">-6</property>
-	      <signal name="clicked" handler="gtk_widget_hide" object="feedsterdialog" last_modification_time="Sun, 23 Nov 2003 18:12:11 GMT"/>
+	      <signal name="clicked" handler="gtk_widget_hide" object="searchenginedialog" last_modification_time="Sun, 23 Nov 2003 18:12:11 GMT"/>
 	    </widget>
 	  </child>
 
 	  <child>
-	    <widget class="GtkButton" id="feedsterbtn">
+	    <widget class="GtkButton" id="searchenginebtn">
 	      <property name="visible">True</property>
 	      <property name="can_default">True</property>
 	      <property name="has_default">True</property>
@@ -5581,8 +5581,8 @@
 	      <property name="relief">GTK_RELIEF_NORMAL</property>
 	      <property name="focus_on_click">True</property>
 	      <property name="response_id">-5</property>
-	      <signal name="clicked" handler="on_feedsterbtn_clicked" last_modification_time="Wed, 12 Nov 2003 00:23:58 GMT"/>
-	      <signal name="clicked" handler="gtk_widget_hide" after="yes" object="feedsterdialog" last_modification_time="Sun, 23 Nov 2003 18:12:34 GMT"/>
+	      <signal name="clicked" handler="on_search_engine_btn_clicked" last_modification_time="Wed, 23 Aug 2006 22:52:36 GMT"/>
+	      <signal name="clicked" handler="gtk_widget_hide" after="yes" object="searchenginedialog" last_modification_time="Sun, 23 Nov 2003 18:12:34 GMT"/>
 	    </widget>
 	  </child>
 	</widget>
@@ -5620,7 +5620,7 @@
 		  <property name="yalign">0.5</property>
 		  <property name="xpad">0</property>
 		  <property name="ypad">0</property>
-		  <property name="mnemonic_widget">feedsterkeywords</property>
+		  <property name="mnemonic_widget">searchkeywords</property>
 		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
 		  <property name="width_chars">-1</property>
 		  <property name="single_line_mode">False</property>
@@ -5634,7 +5634,7 @@
 	      </child>
 
 	      <child>
-		<widget class="GtkEntry" id="feedsterkeywords">
+		<widget class="GtkEntry" id="searchkeywords">
 		  <property name="visible">True</property>
 		  <property name="tooltip" translatable="yes">enter any search string you want</property>
 		  <property name="can_focus">True</property>
@@ -5679,7 +5679,7 @@
 		  <property name="yalign">0.5</property>
 		  <property name="xpad">0</property>
 		  <property name="ypad">0</property>
-		  <property name="mnemonic_widget">feedsterresultcount</property>
+		  <property name="mnemonic_widget">resultcount</property>
 		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
 		  <property name="width_chars">-1</property>
 		  <property name="single_line_mode">False</property>
@@ -5693,7 +5693,7 @@
 	      </child>
 
 	      <child>
-		<widget class="GtkSpinButton" id="feedsterresultcount">
+		<widget class="GtkSpinButton" id="resultcount">
 		  <property name="visible">True</property>
 		  <property name="can_focus">True</property>
 		  <property name="climb_rate">1</property>
@@ -5721,7 +5721,7 @@
 	  <child>
 	    <widget class="GtkLabel" id="label44">
 	      <property name="visible">True</property>
-	      <property name="label" translatable="yes">Note: Liferea will generate a feed subscription which is used to query the Feedster results for the specified search string. You can keep this feed permanently and update it like any other subscription.  </property>
+	      <property name="label" translatable="yes">Note: Liferea will generate a feed subscription which is used to query the search engine results for the specified search string. You can keep this feed permanently and update it like any other subscription.  </property>
 	      <property name="use_underline">False</property>
 	      <property name="use_markup">False</property>
 	      <property name="justify">GTK_JUSTIFY_LEFT</property>

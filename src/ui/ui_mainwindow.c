@@ -380,6 +380,8 @@ void ui_mainwindow_init(int mainwindowState) {
 	struct mainwindow *mw;
 	
 	debug_enter("ui_mainwindow_init");
+	
+	ui_search_init();
 
 	mw = ui_mainwindow_new();
 	mainwindow = GTK_WIDGET(mw->window);
@@ -408,7 +410,7 @@ void ui_mainwindow_init(int mainwindowState) {
 	widget = gtk_button_new();
 	icons[ICON_UNAVAILABLE] = gtk_widget_render_icon(widget, GTK_STOCK_DIALOG_ERROR, GTK_ICON_SIZE_MENU, "");
 	gtk_widget_destroy(widget);
-	
+
 	ui_mainwindow_update_toolbar(mw);
 	ui_mainwindow_update_menubar();
 	ui_mainwindow_online_status_changed(update_is_online());
@@ -417,7 +419,7 @@ void ui_mainwindow_init(int mainwindowState) {
 	ui_dnd_setup_URL_receiver(mainwindow);	/* setup URL dropping support */
 	ui_popup_setup_menues();		/* create popup menues */
 	ui_enclosure_init();
-
+	
 	feedlist_init();
 			
 	if(mainwindowState == MAINWINDOW_ICONIFIED || 
@@ -810,7 +812,7 @@ static GtkActionEntry ui_mainwindow_action_entries[] = {
 	 G_CALLBACK(on_popup_zoomout_selected)},
 	{"SearchMenu", NULL, N_("_Search")},
 	{"SearchFeeds", "gtk-find", N_("Search All Feeds"), "<control>F", N_("Show the search dialog."), G_CALLBACK(on_searchbtn_clicked)},
-	{"SearchFeedster", "gtk-find", N_("Search With _Feedster..."), NULL, N_("Creates a Feedster search feed."), G_CALLBACK(on_search_with_feedster_activate)},
+	{"CreateEngineSearch", NULL, N_("Search With ...")},
 	{"HelpMenu", NULL, N_("_Help")},
 	{"ShowHelpContents", "gtk-help", N_("_Contents"), NULL, N_("View help for this application."), G_CALLBACK(on_topics_activate)},
 	{"ShowHelpQuickReference", NULL, N_("_Quick Reference"), NULL, N_("View a list of all Liferea shortcuts."),
@@ -893,7 +895,7 @@ static const char *ui_mainwindow_ui_desc =
 "    </menu>"
 "    <menu action='SearchMenu'>"
 "      <menuitem action='SearchFeeds'/>"
-"      <menuitem action='SearchFeedster'/>"
+"      <menu action='CreateEngineSearch'/>"
 "    </menu>"
 "    <menu action='HelpMenu'>"
 "      <menuitem action='ShowHelpContents'/>"
@@ -917,9 +919,9 @@ static const char *ui_mainwindow_ui_desc =
 "</ui>";
 
 static void ui_mainwindow_create_menus(struct mainwindow *mw) {
-	GtkUIManager *ui_manager;
-	GtkAccelGroup *accel_group;
-	GError *error;
+	GtkUIManager	*ui_manager;
+	GtkAccelGroup	*accel_group;
+	GError		*error = NULL;
 	
 	//register_my_stock_icons ();
 	//gtk_container_add (GTK_CONTAINER (window), vbox);
@@ -950,13 +952,10 @@ static void ui_mainwindow_create_menus(struct mainwindow *mw) {
 	accel_group = gtk_ui_manager_get_accel_group (ui_manager);
 	gtk_window_add_accel_group (mw->window, accel_group);
 
-	error = NULL;
-	if (!gtk_ui_manager_add_ui_from_string (ui_manager, ui_mainwindow_ui_desc, -1, &error))
-		{
-			g_message ("building menus failed: %s", error->message);
-			g_error_free (error);
-			exit (EXIT_FAILURE);
-		}
+	if(!gtk_ui_manager_add_ui_from_string(ui_manager, ui_mainwindow_ui_desc, -1, &error))
+		g_error("building menus failed: %s", error->message);
+	
+	ui_search_engines_setup_menu(ui_manager);
 
 	mw->menubar = gtk_ui_manager_get_widget (ui_manager, "/MainwindowMenubar");
 	mw->toolbar = gtk_ui_manager_get_widget (ui_manager, "/maintoolbar");

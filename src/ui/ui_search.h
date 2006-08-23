@@ -1,7 +1,7 @@
 /**
  * @file ui_search.h everything about searching
  *
- * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,14 +23,24 @@
 
 #include <gtk/gtk.h>
 
+/**
+ * Search initialization (search engine registration).
+ * Needs to be called before the main menu is created.
+ */
+void ui_search_init(void);
+
+/**
+ * Adds available search engines to the Search menu.
+ *
+ * @param ui_manager	an GTK UI Manager
+ */
+void ui_search_engines_setup_menu(GtkUIManager *ui_manager);
+
 void on_searchbtn_clicked(GtkButton *button, gpointer user_data);
 void on_searchentry_activate(GtkEntry *entry, gpointer user_data);
 void on_searchentry_changed(GtkEditable *editable, gpointer user_data);
 
 void on_hidesearch_clicked(GtkButton *button, gpointer user_data);
-
-void on_feedsterbtn_clicked(GtkButton *button, gpointer user_data);
-void on_search_with_feedster_activate(GtkMenuItem *menuitem, gpointer user_data);
 
 void on_newVFolder_clicked(GtkButton *button, gpointer user_data);
 
