@@ -252,8 +252,8 @@ static GtkMenu *ui_popup_node_menu(nodePtr node, gboolean validSelection) {
 	}
 
 	if(validSelection) {
-		if(NODE_SOURCE_TYPE(node->source->root)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST) {
-			if(NODE_TYPE(node->source->root)->capabilities & NODE_CAPABILITY_REMOVE_CHILDS)
+		if(NODE_SOURCE_TYPE(node->parent->source->root)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST) {
+			if(NODE_TYPE(node->parent)->capabilities & NODE_CAPABILITY_REMOVE_CHILDS)
 				addPopupOption(&menu_items, &menu_len, _("/_Delete"),		NULL, ui_popup_delete,		0, "<StockItem>", GTK_STOCK_DELETE);
 
 			addPopupOption(&menu_items, &menu_len, _("/_Properties..."),	NULL, ui_popup_properties, 	0, "<StockItem>", GTK_STOCK_PROPERTIES );

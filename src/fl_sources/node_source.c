@@ -182,7 +182,7 @@ static void on_node_source_type_selected(GtkDialog *dialog, gint response_id, gp
 	nodeSourceTypePtr	type;
 	
 	if(response_id == GTK_RESPONSE_OK) {
-		selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(lookup_widget(GTK_WIDGET(dialog), "source_type_list")));
+		selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(lookup_widget(GTK_WIDGET(dialog), "type_list")));
 		g_assert(NULL != selection);
 		gtk_tree_selection_get_selected(selection, &model, &iter);
 		gtk_tree_model_get(model, &iter, 1, &type, -1);

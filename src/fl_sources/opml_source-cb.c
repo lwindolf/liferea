@@ -76,4 +76,3 @@ void on_select_button_clicked(GtkButton *button, gpointer user_data) {
 
 	ui_choose_file(_("Choose OPML File"), GTK_WINDOW(mainwindow), GTK_STOCK_OPEN, FALSE, on_file_select_clicked, NULL, NULL, user_data);
 }
-

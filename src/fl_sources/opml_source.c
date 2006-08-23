@@ -86,11 +86,6 @@ static void opml_source_export(nodePtr node) {
 	debug_exit("opml_source_export");
 }
 
-static void opml_source_new(nodePtr parent) {
-
-	ui_opml_source_get_source_url(parent);
-}
-
 static void opml_source_remove(nodePtr node) {
 	gchar		*filename;
 	
@@ -290,8 +285,11 @@ void opml_source_setup(nodePtr parent, nodePtr node) {
 	node->icon = create_pixbuf("fl_opml.png");
 	
 	node_add_data(node, NODE_TYPE_SOURCE, NULL);
-	if(parent)
-		node_add_child(parent, node, 0);
+	if(parent) {
+		gint pos;
+		ui_feedlist_get_target_folder(&pos);
+		node_add_child(parent, node, pos);
+	}
 }
 
 static void opml_source_init(void) { }
@@ -307,7 +305,7 @@ static struct nodeSourceType nst = {
 	NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION,
 	opml_source_init,
 	opml_source_deinit,
-	opml_source_new,
+	ui_opml_source_get_source_url,
 	opml_source_remove,
 	opml_source_import,
 	opml_source_export,

@@ -40,11 +40,11 @@
 #include "update.h"
 #include "favicon.h"
 #include "debug.h"
-#include "ui_feedlist.h"
-#include "ui_mainwindow.h"
-#include "ui_feed.h"
-#include "ui_vfolder.h"
-#include "ui_tabs.h"
+#include "ui/ui_feedlist.h"
+#include "ui/ui_mainwindow.h"
+#include "ui/ui_feed.h"
+#include "ui/ui_vfolder.h"
+#include "ui/ui_tabs.h"
 
 extern GtkWidget	*mainwindow;
 extern GHashTable	*feedHandler;
@@ -61,7 +61,7 @@ static void ui_feedlist_row_changed_cb(GtkTreeModel *model, GtkTreePath *path, G
 	nodePtr node;
 	
 	gtk_tree_model_get(model, iter, FS_PTR, &node, -1);
-	if(NULL != node)
+	if(node)
 		ui_node_update_iter(node, iter);
 }
 
