@@ -39,7 +39,6 @@
 #include "fl_sources/node_source.h"
 #include "fl_sources/opml_source.h"
 #include "fl_sources/default_source.h"
-#include "fl_sources/dummy_source.h"
 #include "notification/notif_plugin.h"
 
 static guint unreadCount = 0;
