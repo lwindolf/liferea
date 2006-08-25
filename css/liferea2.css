@@ -238,7 +238,6 @@ img.enclosurebtn {
 }
 
 .enclosure * object {
-	border:black solid 1px;
 	margin-left:5px;
 	margin-top:2px;
 }
