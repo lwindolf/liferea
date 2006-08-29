@@ -42,6 +42,7 @@ liferea_bin_SOURCES = \
 	plugin.c plugin.h \
 	render.c render.h \
 	rule.c rule.h \
+	social.c social.h \
 	support.c support.h \
 	update.c update.h \
 	vfolder.c vfolder.h 

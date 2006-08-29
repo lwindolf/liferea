@@ -27,6 +27,21 @@
 
 #include <libxml/parser.h>
 
+/* Requests represent feed updates, favicon and enclosure downloads
+   and (if GtkHTML2 is used) HTML browser traffic. A request can be
+   started synchronously or asynchronously. In the latter case it
+   can be cancelled at any time. If the processing of a request is
+   done the request callback will be triggered. 
+   
+   A request can have an update state assigned. This is to support
+   the different bandwidth saving methods. For caching along feeds
+   there are XML (de)serialization functions for the update state. 
+   
+   Finally the request system has an on/offline state. When offline
+   no new network requests are accepted. Filesystem and internal 
+   requests are still processed. Currently running downloads are 
+   not terminated. */
+
 /* Maximum number of retries that can be done */
 #define REQ_MAX_NUMBER_OF_RETRIES 3
 /* Delay (in seconds) to wait before the first retry.
@@ -40,7 +55,8 @@ typedef enum {
 	REQUEST_STATE_INITIALIZED = 0,	/**< request struct newly created */
 	REQUEST_STATE_PENDING,		/**< request added to download queue */
 	REQUEST_STATE_PROCESSING,	/**< request currently in download */
-	REQUEST_STATE_FINISHED		/**< request download finished */
+	REQUEST_STATE_DEQUEUE,		/**< download finished, callback processing */
+	REQUEST_STATE_FINISHED		/**< request processing finished */
 } request_state;
 
 typedef enum {
@@ -72,18 +88,10 @@ typedef enum {
 struct request;
 
 /**
- *  This callback should not free the request structure. It will be
+ *  This callback must not free the request structure. It will be
  *  freed by the download system after the callback returns.
  */
 typedef void (*request_cb)(struct request *request);
-
-/** 
- * The feed request structure is used in two places, on the one
- * hand to put update requests into the request and result queue 
- * between GUI and update thread and on the other hand to 
- * persistently store HTTP status information written by
- * the SnowNews netio.c code which is displayed in the GUI. 
- */
 
 /** defines all state data an updatable object (e.g. a feed) needs */
 typedef struct updateState {
@@ -95,7 +103,7 @@ typedef struct updateState {
 } *updateStatePtr;
 
 /** structure storing all information about a single update request */
-typedef struct request {	
+typedef struct request {
 	/* Set by requester */
 	gchar 		*source;	/**< Location of the source. If it starts with
 					     '|', it is a command. If it contains "://",
@@ -109,6 +117,7 @@ typedef struct request {
 	gint		priority;	/**< priority of the request. Set to 1 for high priority */
 	
 	/* Set by download system*/
+	gpointer	owner;		/**< Pointer to anything used for lookup when cancelling requests */
 	int		returncode;	/**< Download status (0=success, otherwise error) */
 	int		httpstatus;	/**< HTTP status. Set to 200 for any valid command, file access, etc.... Set to 0 for unknown */
 	gint		state;		/**< State of the request (enum request_state) */
@@ -167,9 +176,12 @@ void update_init(void);
 /** 
  * Creates a new request structure.
  * 
+ * @param owner		some pointer identifying the owner
+ *			of the request (used to cancel requests)
+ *
  * @returns a new request
  */
-gpointer update_request_new(void);
+gpointer update_request_new(gpointer owner);
 
 /**
  * Used to free a request structure. Frees all members, including data.
@@ -206,6 +218,13 @@ void update_execute_request(struct request *request);
  * @param request	the request to execute
  */
 void update_execute_request_sync(struct request *request);
+
+/**
+ * Cancel all pending requests for the given owner.
+ *
+ * @param owner		pointer passed in update_request_new()
+ */
+void update_cancel_requests(gpointer owner);
 
 /**
  * Cancel a request if it is waiting to be retried.

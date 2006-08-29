@@ -45,12 +45,15 @@
 #include "net/downloadlib.h"
 
 /* must never be smaller than 2, because first thread works exclusivly on high prio requests */
-#define DEFAULT_UPDATE_THREAD_CONCURRENCY	4
+#define DEFAULT_UPDATE_THREAD_CONCURRENCY	6
+
+/** global request list, used for lookups when cancelling */
+static GSList *requests = NULL;
 
 /* communication queues for requesting updates and sending the results */
-GAsyncQueue	*requests_high_prio = NULL;
-GAsyncQueue	*requests_normal_prio = NULL;
-GAsyncQueue	*results = NULL;
+static GAsyncQueue	*requests_high_prio = NULL;
+static GAsyncQueue	*requests_normal_prio = NULL;
+static GAsyncQueue	*results = NULL;
 
 /* condition mutex for offline mode */
 static GMutex	*cond_mutex = NULL;
@@ -196,7 +199,7 @@ static char* update_exec_filter_cmd(gchar *cmd, gchar *data, gchar **errorOutput
 	return out;
 }
 
-static gchar * update_apply_xslt(struct request *request) {
+static gchar * update_apply_xslt(requestPtr request) {
 	xsltStylesheetPtr	xslt = NULL;
 	xmlOutputBufferPtr	buf;
 	xmlDocPtr		srcDoc = NULL, resDoc = NULL;
@@ -241,7 +244,7 @@ static gchar * update_apply_xslt(struct request *request) {
 	return output;
 }
 
-static void update_apply_filter(struct request *request) {
+static void update_apply_filter(requestPtr request) {
 	gchar	*filterResult;
 	size_t	len;
 
@@ -264,7 +267,7 @@ static void update_apply_filter(struct request *request) {
 	}
 }
 
-static void update_exec_cmd(struct request *request) {
+static void update_exec_cmd(requestPtr request) {
 	FILE	*f;
 	int	status;
 	size_t	len;
@@ -293,7 +296,7 @@ static void update_exec_cmd(struct request *request) {
 	}
 }
 
-static void update_load_file(struct request *request) {
+static void update_load_file(requestPtr request) {
 	gchar *filename = request->source;
 	gchar *anchor;
 
@@ -319,7 +322,7 @@ static void update_load_file(struct request *request) {
 	}
 }
 
-void update_execute_request_sync(struct request *request) {
+void update_execute_request_sync(requestPtr request) {
 
 	g_assert(request->data == NULL);
 	g_assert(request->size == 0);
@@ -343,31 +346,30 @@ void update_execute_request_sync(struct request *request) {
 		update_apply_filter(request);
 }
 
-gpointer update_request_new() {
-	struct request	*request;
+gpointer update_request_new(gpointer owner) {
+	requestPtr	request;
 
 	request = g_new0(struct request, 1);
+	request->owner = owner;
 	request->state = REQUEST_STATE_INITIALIZED;
 	
 	return (gpointer)request;
 }
 
-void update_request_free(struct request *request) {
-	
-	debug_enter("update_request_free");
+void update_request_free(requestPtr request) {
 
+	requests = g_slist_remove(requests, request);
+	
 	g_free(request->source);
 	g_free(request->filtercmd);
 	g_free(request->filterErrors);
 	g_free(request->data);
 	g_free(request->contentType);
 	g_free(request);
-
-	debug_exit("update_request_free");
 }
 
 static void *update_dequeue_requests(void *data) {
-	struct request	*request;
+	requestPtr	request;
 	gboolean	high_priority = (gboolean)GPOINTER_TO_INT(data);
 
 	for(;;)	{
@@ -412,17 +414,31 @@ static void *update_dequeue_requests(void *data) {
 	}
 }
 
-void update_execute_request(struct request *new_request) {
+void update_execute_request(requestPtr new_request) {
 
 	g_assert(new_request->data == NULL);
 	g_assert(new_request->size == 0);
+	g_assert(new_request->callback != NULL);
 	
 	new_request->state = REQUEST_STATE_PENDING;
-
+	
+	requests = g_slist_append(requests, new_request);
+	
 	if(1 == new_request->priority)
 		g_async_queue_push(requests_high_prio, new_request);
 	else
 		g_async_queue_push(requests_normal_prio, new_request);
+}
+
+void update_cancel_requests(gpointer owner) {
+	GSList	*iter = requests;
+
+	while(iter) {
+		requestPtr request = (requestPtr)iter->data;
+		if(request->owner == owner)
+			request->callback = NULL;
+		iter = g_slist_next(iter);
+	}
 }
 
 void update_set_online(gboolean mode) {
@@ -448,7 +464,7 @@ gboolean update_is_online(void) {
 
 /* Wrapper for reenqueuing requests in case of retries, for convenient call from g_timeout */
 static gboolean update_requeue_request(gpointer data) {
-	struct request* request = (struct request*)data;
+	requestPtr request = (requestPtr)data;
 	
 	if(request->callback == NULL) {
 		debug2(DEBUG_UPDATE, "Freeing request of cancelled retry #%d for \"%s\"", request->retriesCount, request->source);
@@ -460,7 +476,7 @@ static gboolean update_requeue_request(gpointer data) {
 }
 
 /* Schedules a retry for the given request */
-static void update_request_retry(struct request *request) {
+static void update_request_retry(requestPtr request) {
 	guint retryDelay;
 	gushort i;	
 
@@ -492,7 +508,7 @@ static void update_request_retry(struct request *request) {
 	ui_mainwindow_set_status_bar(_("Could not download \"%s\". Will retry in %d seconds."), request->source, retryDelay);
 }
 
-gboolean update_request_cancel_retry(struct request *request) {
+gboolean update_request_cancel_retry(requestPtr request) {
 
 	if(0 < request->retriesCount) {
 		request->callback = NULL;
@@ -503,13 +519,15 @@ gboolean update_request_cancel_retry(struct request *request) {
 }
 
 static gboolean update_dequeue_results(gpointer user_data) {
-	struct request	*request;
+	requestPtr	request;
+	request_cb	callback;
 	
 	while(NULL != (request = g_async_queue_try_pop(results))) {
-		request->state = REQUEST_STATE_FINISHED;
+		callback = request->callback;
+		request->state = REQUEST_STATE_DEQUEUE;
 
 		/* Handling abandoned requests (e.g. after feed deletion) */
-		if(request->callback == NULL) {	
+		if(callback == NULL) {	
 			debug1(DEBUG_UPDATE, "freeing cancelled request (%s)", request->source);
 			update_request_free(request);
 			continue;
@@ -527,15 +545,13 @@ static gboolean update_dequeue_results(gpointer user_data) {
 				update_request_retry(request);
 			} else {
 				debug1(DEBUG_UPDATE, "retry count exceeded (%s)", request->source);
-				(request->callback)(request);
-				update_request_free(request);
+				(callback)(request);
 			}
 			continue;
 		}
 		
 		/* Normal result processing */
-		(request->callback)(request);
-		update_request_free(request);
+		(callback)(request);
 	}
 	return TRUE;
 }

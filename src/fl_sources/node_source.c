@@ -274,7 +274,6 @@ static gchar * node_source_render(nodePtr node) {
 	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "plugins", node->id, "opml");
 	result = render_file(filename, "fl_plugin", params);
 	g_free(filename);
-	g_strfreev(params);
 	
 	return result;
 }

@@ -35,25 +35,38 @@
 #include "common.h"
 #include "itemlist.h"
 #include "render.h"
+#include "social.h"
 
-static gchar		**langParams = NULL;	/* the current locale settings */
+static gchar		**langParams = NULL;	/* the current locale settings (for localization stylesheet) */
+static gchar		*defaultParams = NULL;	/* some default parameters (for rendering stylesheets) */
 
-static GHashTable	*stylesheets = NULL;	/* stylesheet cache */
+static GHashTable	*stylesheets = NULL;	/* XSLT stylesheet cache */
 
-static void render_init(void) {
+void render_init(void) {
 	gchar   **shortlang = NULL;	/* e.g. "de" */
 	gchar	**lang = NULL;		/* e.g. "de_AT" */
+	
+	if(langParams)
+		g_strfreev(langParams);
+	if(defaultParams)
+		g_free(defaultParams);
 
+	/* prepare localization parameters */
 	lang = g_strsplit(g_strdup(setlocale(LC_ALL, NULL)), "@", 0);
 	shortlang = g_strsplit(g_strdup(setlocale(LC_ALL, NULL)), "_", 0);
 	
+	langParams = NULL;
 	langParams = render_add_parameter(langParams, "lang='%s'", lang[0]);
 	langParams = render_add_parameter(langParams, "shortlang='%s'", shortlang[0]);
 
 	g_strfreev(shortlang);
 	g_strfreev(lang);
-
-	stylesheets = g_hash_table_new(g_str_hash, g_str_equal);
+	
+	/* prepare rendering default parameters */
+	defaultParams = g_strdup_printf("search_link_enable='%s'", getBooleanConfValue(SEARCH_ENGINE_HIDE_LINK)?"false":"true");
+	
+	if(!stylesheets)
+		stylesheets = g_hash_table_new(g_str_hash, g_str_equal);
 }
 
 xsltStylesheetPtr render_load_stylesheet(const gchar *xsltName) {
@@ -184,11 +197,14 @@ gchar * render_xml(xmlDocPtr doc, const gchar *xsltName, gchar **params) {
 	if(NULL == (xslt = render_load_stylesheet(xsltName)))
 		return NULL;
 
+	params = render_add_parameter(params, defaultParams);	// FIXME: merging would be better
+
 	if(NULL == (resDoc = xsltApplyStylesheet(xslt, doc, (const gchar **)params))) {
 		g_warning("fatal: applying rendering stylesheet (%s) failed!", xsltName);
 		return NULL;
 	}
 	
+	g_strfreev(params);
 	//xsltSaveResultToFile(stdout, resDoc, xslt);
 	
 	/* save results into return string */
@@ -216,12 +232,12 @@ gchar * render_xml(xmlDocPtr doc, const gchar *xsltName, gchar **params) {
 gchar * render_file(const gchar *filename, const gchar *xsltName, gchar **params) {
 	xmlDocPtr	srcDoc;
 	gchar		*output;
-	
+
 	if(NULL == (srcDoc = xmlParseFile(filename))) {
 		g_warning("fatal: loading source XML (%s) failed", filename);
 		return NULL;
 	}
-	
+
 	output = render_xml(srcDoc, xsltName, params);
 	xmlFreeDoc(srcDoc);
 
@@ -232,6 +248,9 @@ gchar ** render_add_parameter(gchar **params, const gchar *fmt, ...) {
 	gchar	*old, *new, *merged;
 	gchar	**newParams;
 	va_list args;
+	
+	if(!fmt)
+		return params;
 	
 	va_start (args, fmt);
 	new = g_strdup_vprintf (fmt, args);
@@ -245,7 +264,7 @@ gchar ** render_add_parameter(gchar **params, const gchar *fmt, ...) {
 	} else {
 		merged = g_strdup(new);
 	}
-		
+
 	newParams = g_strsplit_set(merged, ",=", 0);
 	
 	g_free(merged);

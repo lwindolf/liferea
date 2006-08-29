@@ -24,6 +24,11 @@
 #include <glib.h>
 
 /**
+ * To be called whenever the rendering parameters have changed.
+ */
+void render_update_params(void);
+
+/**
  * Applies the stylesheet xslt to the given file with the given parameters.
  *
  * @param filename	valid absolut source filename

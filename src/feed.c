@@ -217,6 +217,11 @@ gpointer feed_import(nodePtr node, const gchar *typeStr, xmlNodePtr cur, gboolea
 			xmlFree(tmp);
 			
 		update_state_import(cur, feed->updateState);
+		
+		node_set_icon(node, favicon_load_from_cache(node->id));
+		
+		if(favicon_update_needed(node_get_id(node), feed->updateState))
+			node_update_favicon(node);
 
 		debug5(DEBUG_CACHE, "import feed: title=%s source=%s typeStr=%s interval=%d lastpoll=%ld", 
 		       node_get_title(node), 
@@ -379,11 +384,11 @@ void feed_parse(feedParserCtxtPtr ctxt, gboolean autodiscover) {
 			debug1(DEBUG_UPDATE, "HTML detected, starting feed auto discovery (%s)", feed_get_source(ctxt->feed));
 			if((source = html_auto_discover_feed(ctxt->data, feed_get_source(ctxt->feed)))) {
 				/* now download the first feed link found */
-				struct request *request = update_request_new();
+				requestPtr request = update_request_new(ctxt->node);
 				debug1(DEBUG_UPDATE, "feed link found: %s", source);
 				request->source = g_strdup(source);
 				update_execute_request_sync(request);
-				if(NULL != request->data) {
+				if(request->data) {
 					debug0(DEBUG_UPDATE, "feed link download successful!");
 					feed_set_source(ctxt->feed, source);
 					ctxt->data = request->data;
@@ -1038,6 +1043,28 @@ static void feed_remove_from_cache(nodePtr node) {
 	feed_free(node->data);
 }
 
+static void feed_favicon_downloaded(gpointer user_data) {
+	nodePtr	node = (nodePtr)user_data;
+	
+	node_set_icon(node, favicon_load_from_cache(node_get_id(node)));
+	ui_node_update(node);
+}
+
+void feed_update_favicon(nodePtr node) {
+	feedPtr		feed = (feedPtr)node->data;
+	
+	debug1(DEBUG_UPDATE, "trying to download favicon.ico for \"%s\"\n", node_get_title(node));
+	ui_mainwindow_set_status_bar(_("Updating feed icon for \"%s\""), node_get_title(node));
+	node->needsCacheSave = TRUE;
+	g_get_current_time(&feed->updateState->lastFaviconPoll);
+	favicon_download(node->id, 
+	                 feed_get_html_url(feed), 
+			 feed_get_source(feed),
+	                 feed_favicon_downloaded, 
+			 (gpointer)node);
+	
+}
+
 /* implementation of feed node update request processing callback */
 
 void feed_process_update_result(struct request *request) {
@@ -1129,7 +1156,7 @@ void feed_process_update_result(struct request *request) {
 	node->updateRequest = NULL; 
 
 	if(request->flags & FEED_REQ_DOWNLOAD_FAVICON)
-		favicon_download(node);
+		feed_update_favicon(node);
 
 	ui_node_update(node);
 	notification_node_has_new_items(node);
@@ -1242,7 +1269,7 @@ static void feed_schedule_update(nodePtr node, guint flags) {
 	
 	if(feed_can_be_updated(node)) {
 		ui_mainwindow_set_status_bar(_("Updating \"%s\""), node_get_title(node));
-		request = update_request_new();
+		request = update_request_new(node);
 		request->user_data = node;
 		request->callback = feed_process_update_result;
 		feed_prepare_request(feed, request, flags);
@@ -1280,14 +1307,14 @@ static void feed_request_auto_update(nodePtr node) {
 
 	/* And check for favicon updating */
 	if(feed->updateState->lastFaviconPoll.tv_sec + 30*24*60*60 <= now.tv_sec)
-		favicon_download(node);
+		feed_update_favicon(node);
 }
 
 static void feed_remove(nodePtr node) {
 
 	if(node->icon) {
 		g_object_unref(node->icon);
-		favicon_remove(node);
+		favicon_remove_from_cache(node->id);
 	}
 
 	notification_node_removed(node);

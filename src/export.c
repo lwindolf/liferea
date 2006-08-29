@@ -28,7 +28,6 @@
 #include <libxml/tree.h>
 #include <string.h>
 #include "feed.h"
-#include "favicon.h"
 #include "vfolder.h"
 #include "rule.h"
 #include "conf.h"
@@ -182,7 +181,7 @@ void import_parse_update_state(xmlNodePtr cur, updateStatePtr updateState) {
 
 static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, nodeSourcePtr nodeSource, gboolean trusted) {
 	gchar		*title, *typeStr, *tmp, *sortStr;
-	nodePtr		np = NULL;
+	nodePtr		node;
 	gpointer	data = NULL;
 	gboolean	needsUpdate = FALSE;
 	guint		type;
@@ -190,9 +189,9 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, nodeSourceP
 	debug_enter("import_parse_outline");
 
 	/* 1. do general node parsing */	
-	np = node_new();
-	np->source = nodeSource;
-	np->parent = parentNode;
+	node = node_new();
+	node->source = nodeSource;
+	node->parent = parentNode;
 
 	/* The id should only be used from feedlist.opml. Otherwise,
 	   it could cause corruption if the same id was imported
@@ -200,8 +199,8 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, nodeSourceP
 	if(trusted) {
 		gchar *id = NULL;
 		id = xmlGetProp(cur, BAD_CAST"id");
-		if (id) {
-			node_set_id(np, id);
+		if(id) {
+			node_set_id(node, id);
 			xmlFree(id);
 		} else
 			needsUpdate = TRUE;
@@ -215,7 +214,7 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, nodeSourceP
 			xmlFree(title);
 		title = xmlGetProp(cur, BAD_CAST"text");
 	}
-	node_set_title(np, title);
+	node_set_title(node, title);
 
 	if(title)
 		xmlFree(title);
@@ -224,21 +223,21 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, nodeSourceP
 	sortStr = xmlGetProp(cur, BAD_CAST"sortColumn");
 	if(sortStr) {
 		if(!xmlStrcmp(sortStr, "title"))
-			np->sortColumn = IS_LABEL;
+			node->sortColumn = IS_LABEL;
 		else if(!xmlStrcmp(sortStr, "time"))
-			np->sortColumn = IS_TIME;
+			node->sortColumn = IS_TIME;
 		else if(!xmlStrcmp(sortStr, "parent"))
-			np->sortColumn = IS_PARENT;
+			node->sortColumn = IS_PARENT;
 		xmlFree(sortStr);
 	}
 	sortStr = xmlGetProp(cur, BAD_CAST"sortReversed");
 	if(sortStr && !xmlStrcmp(sortStr, BAD_CAST"false"))
-		np->sortReversed = FALSE;
+		node->sortReversed = FALSE;
 	if(sortStr)
 		xmlFree(sortStr);
 	
 	tmp = xmlGetProp(cur, BAD_CAST"twoPane");
-	node_set_two_pane_mode(np, (tmp && !xmlStrcmp(tmp, BAD_CAST"true")));
+	node_set_two_pane_mode(node, (tmp && !xmlStrcmp(tmp, BAD_CAST"true")));
 	if(tmp)
 		xmlFree(tmp);
 
@@ -252,7 +251,7 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, nodeSourceP
 		if(NULL == (tmp = xmlGetProp(cur, BAD_CAST"xmlUrl")));
 			tmp = xmlGetProp(cur, BAD_CAST"xmlUrl");
 		
-		if(NULL != tmp) {
+		if(tmp) {
 			type = NODE_TYPE_FEED;
 			xmlFree(tmp);
 		}
@@ -261,14 +260,14 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, nodeSourceP
 	/* 3. do node type specific parsing */
 	switch(type) {
 		case NODE_TYPE_FEED:
-			data = feed_import(np, typeStr, cur, trusted);
+			data = feed_import(node, typeStr, cur, trusted);
 			break;
 		default:
 		case NODE_TYPE_FOLDER:
 			data = NULL;
 			break;
 		case NODE_TYPE_VFOLDER:
-			data = vfolder_import(np, cur);
+			data = vfolder_import(node, cur);
 			break;
 		case NODE_TYPE_SOURCE:
 			data = NULL;
@@ -281,32 +280,31 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, nodeSourceP
 		xmlFree(typeStr);
 
 	if(type != NODE_TYPE_INVALID) {
-		node_add_data(np, type, data);
-		favicon_load(np);
-		node_add_child(parentNode, np, -1);
+		node_add_data(node, type, data);
+		node_add_child(parentNode, node, -1);
 
 		if(NODE_TYPE_FOLDER == type) {
 			if(NULL != xmlHasProp(cur, BAD_CAST"expanded"))
-				ui_node_set_expansion(np, TRUE);
+				ui_node_set_expansion(node, TRUE);
 			else if(NULL != xmlHasProp(cur, BAD_CAST"collapsed"))
-				ui_node_set_expansion(np, FALSE);
+				ui_node_set_expansion(node, FALSE);
 			else 
-				ui_node_set_expansion(np, TRUE);
+				ui_node_set_expansion(node, TRUE);
 		}
 
 		/* import recursion */
-		switch(np->type) {
+		switch(node->type) {
 			case NODE_TYPE_FOLDER:
 				/* process any children */
 				cur = cur->xmlChildrenNode;
-				while(cur != NULL) {
+				while(cur) {
 					if((!xmlStrcmp(cur->name, BAD_CAST"outline")))
-						import_parse_outline(cur, np, np->source, trusted);
+						import_parse_outline(cur, node, node->source, trusted);
 					cur = cur->next;				
 				}
 				break;
 			case NODE_TYPE_SOURCE:
-				node_source_import(np, cur);
+				node_source_import(node, cur);
 				break;
 			default:
 				/* nothing to do */
@@ -314,10 +312,10 @@ static void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, nodeSourceP
 		}
 
 		if(needsUpdate) {
-			debug1(DEBUG_CACHE, "seems to be an import, setting new id: %s and doing first download...", node_get_id(np));
-			node_request_update(np, (xmlHasProp(cur, BAD_CAST"updateInterval") ? 0 : FEED_REQ_RESET_UPDATE_INT)
-			        		| FEED_REQ_DOWNLOAD_FAVICON
-			        		| FEED_REQ_AUTH_DIALOG);
+			debug1(DEBUG_CACHE, "seems to be an import, setting new id: %s and doing first download...", node_get_id(node));
+			node_request_update(node, (xmlHasProp(cur, BAD_CAST"updateInterval") ? 0 : FEED_REQ_RESET_UPDATE_INT)
+			        		  | FEED_REQ_DOWNLOAD_FAVICON
+			        		  | FEED_REQ_AUTH_DIALOG);
 		}
 	}
 	debug_exit("import_parse_outline");

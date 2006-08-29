@@ -554,7 +554,6 @@ static gchar * vfolder_render(nodePtr node) {
 	filename = common_create_cache_filename(NULL, "feedlist", "opml");
 	result = render_file(filename, "vfolder", params);
 	g_free(filename);
-	g_strfreev(params);
 	
 	return result;
 }

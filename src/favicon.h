@@ -1,7 +1,7 @@
 /**
  * @file favicon.h Liferea favicon handling
  * 
- * Copyright (C) 2004 Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,10 +21,53 @@
 #ifndef _FAVICON_H
 #define _FAVICON_H
 
-#include "node.h"
+#include <glib.h>
+#include <gtk/gtk.h>
+#include "update.h"
 
-void favicon_download(nodePtr np);
-void favicon_load(nodePtr np);
-void favicon_remove(nodePtr np);
+/**
+ * Tries to load a given favicon from cache.
+ *
+ * @param id		the favicon id
+ *
+ * @returns a pixmap (or NULL)
+ */
+GdkPixbuf * favicon_load_from_cache(const gchar *id);
+
+/**
+ * Removes a given favicon from the favicon cache.
+ *
+ * @param id		the favicon id
+ */
+void favicon_remove_from_cache(const gchar *id);
+
+/**
+ * Checks wether a given favicon needs to be updated 
+ *
+ * @param id		the favicon id
+ * @param updateState	update state info of the favicon
+ */
+gboolean favicon_update_needed(const gchar *id, updateStatePtr updateState);
+
+/**
+ * Favicon download callback. Triggered in case of 
+ * successful download only.
+ *
+ * @param user_data	user data for the callback
+ */
+typedef void (*faviconUpdatedCb)(gpointer user_data);
+
+/**
+ * Tries to download a favicon from and relative to a given
+ * feed source URL and an optional feed HTML URL. Can be used
+ * for non-feed related favicon download too.
+ *
+ * @param id		cache id of the favicon (usually = node id)
+ * @param html_url	URL of a website where a favicon could be found (optional)
+ * @param source_url	URL (usually the feed source) where a favicon can be found (mandatory)
+ * @param callback	callback to triggered on success
+ * @param user_data	user data to be passed to callback
+ */
+void favicon_download(const gchar *id, const gchar *html_url, const gchar *source_url, faviconUpdatedCb callback, gpointer user_data);
 
 #endif

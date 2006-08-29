@@ -33,6 +33,7 @@
 #include "callbacks.h"
 #include "favicon.h"
 #include "itemlist.h"
+#include "social.h"
 #include "ui_mainwindow.h"
 #include "ui_itemlist.h"
 #include "ui_prefs.h"
@@ -51,6 +52,7 @@ enum fts_columns {
 };
 
 extern GSList *htmlviewPlugins;
+extern struct socialBookmarkSite socialBookmarkSites[];
 
 static GtkWidget *prefdialog = NULL;
 
@@ -61,6 +63,7 @@ static void on_startup_feed_handler_changed(GtkEditable *editable, gpointer user
 static void on_updateallfavicons_clicked(GtkButton *button, gpointer user_data);
 static void on_enableproxybtn_clicked (GtkButton *button, gpointer user_data);
 static void on_enc_download_tool_changed(GtkEditable *editable, gpointer user_data);
+static void on_socialsite_changed(GtkOptionMenu *optionmenu, gpointer user_data);
 
 struct enclosure_download_tool {
 	gchar	*name;
@@ -209,10 +212,11 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	GSList			*list;
 	gchar			*widgetname, *proxyport;
 	gchar			*configuredPluginName;
-	gchar			*configuredBrowser;
+	gchar			*configuredBrowser, *name;
 	gboolean		enabled, enabled2;
 	int			tmp, i;
 	static int		manual;
+	socialBookmarkSitePtr	siter;
 	struct browser			*iter;
 	struct enclosure_download_tool	*edtool;
 	
@@ -337,6 +341,20 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 		}
 		widget = lookup_widget(prefdialog, "browsekeyoptionmenu");
 		gtk_option_menu_set_history(GTK_OPTION_MENU(widget), tmp);
+		
+		/* Setup social bookmarking list */
+		name = getStringConfValue(SOCIAL_BM_SITE);
+		menu = gtk_menu_new();
+		for(i=0, siter = socialBookmarkSites; siter->name != NULL; siter++, i++) {
+			if(name && !strcmp(siter->name, name))
+				tmp = i;
+			entry = gtk_menu_item_new_with_label(siter->name);
+			gtk_widget_show(entry);
+			gtk_container_add(GTK_CONTAINER(menu), entry);
+			gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_socialsite_changed), (gpointer)siter->name);
+		}
+		gtk_option_menu_set_menu(GTK_OPTION_MENU(lookup_widget(prefdialog, "socialpopup")), menu);
+		gtk_option_menu_set_history(GTK_OPTION_MENU(lookup_widget(prefdialog, "socialpopup")), tmp);
 
 		/* Time format */
 		tmp = getNumericConfValue(TIME_FORMAT_MODE);
@@ -610,6 +628,10 @@ void on_disablejavascript_toggled(GtkToggleButton *togglebutton, gpointer user_d
 	setBooleanConfValue(DISABLE_JAVASCRIPT, gtk_toggle_button_get_active(togglebutton));
 }
 
+void on_socialsite_changed(GtkOptionMenu *optionmenu, gpointer user_data) {
+	social_set_site((gchar *)user_data);
+}
+
 void on_timeformatselection_clicked(GtkButton *button, gpointer user_data) {
 	GtkWidget *editbox = gtk_object_get_data(GTK_OBJECT(button), "entry");
 	int active_button = GPOINTER_TO_INT(gtk_object_get_data(GTK_OBJECT(button),"option_number"));
@@ -637,7 +659,6 @@ void on_default_update_interval_value_changed(GtkSpinButton *spinbutton, gpointe
 	updateInterval = gtk_spin_button_get_adjustment(spinbutton);
 	setNumericConfValue(DEFAULT_UPDATE_INTERVAL, gtk_adjustment_get_value(updateInterval));
 }
-
 
 void on_menuselection_clicked(GtkButton *button, gpointer user_data) {
 	gint		active_button;

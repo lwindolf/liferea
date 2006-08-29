@@ -247,6 +247,10 @@ void ui_itemlist_update(void);
  */
 void on_popup_copy_URL_clipboard(void);
 
+void on_popup_social_bm_item_selected(void);
+
+void on_popup_social_bm_link_selected(gpointer selectedUrl, guint callback_action, GtkWidget *widget);
+
 /*@}*/
 
 #endif

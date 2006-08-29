@@ -71,19 +71,21 @@ static gchar *checkLinkRef(const gchar* str, gint linkType) {
 
 	res = g_strndup(tmp, len);
 
-	if (linkType == LINK_FAVICON) {
-		if((common_strcasestr(str, "shortcut icon")!=NULL ||
-		    common_strcasestr(str, "icon")!=NULL) &&
-		   ((common_strcasestr(str, "image/x-icon")!=NULL)))
+	if(linkType == LINK_FAVICON) {
+		if(((NULL != common_strcasestr(str, "shortcut icon")) ||
+		    (NULL != common_strcasestr(str, "icon"))) &&
+		   ((NULL != common_strcasestr(str, "image/x-icon")) ||
+		    (NULL != common_strcasestr(str, "image/png")) ||
+		    (NULL != common_strcasestr(str, "image/gif"))))
 			return res;
-	} else if (linkType == LINK_RSS_ALTERNATE){
+	} else if(linkType == LINK_RSS_ALTERNATE){
 		if((common_strcasestr(str, "alternate")!=NULL) &&
 		   ((common_strcasestr(str, "text/xml")!=NULL) || 
 		    (common_strcasestr(str, "rss+xml")!=NULL) ||
 		    (common_strcasestr(str, "rdf+xml")!=NULL) ||
 		    (common_strcasestr(str, "atom+xml")!=NULL)))
 			return res;
-	} else if (linkType == LINK_NORMAL_ANCHOR){
+	} else if(linkType == LINK_NORMAL_ANCHOR){
 		if((strstr(res, "rdf")) || (strstr(res, "xml")) ||
 		   (strstr(res, "rss")))
 			return res;

@@ -161,6 +161,7 @@ stream_cancel (HtmlStream *stream, gpointer user_data, gpointer cancel_data)
 	struct request *r = (struct request*)cancel_data;
 
 	debug1(DEBUG_UPDATE, "GtkHTML2: Canceling stream: %s", ((struct request*)user_data)->source);
+	update_cancel_requests((gpointer)stream);
 	
 	request_data_kill(r);
 }
@@ -192,7 +193,7 @@ static void url_request(HtmlDocument *doc, const gchar *url, HtmlStream *stream,
 		sd->doc = doc;
 		sd->stream = stream;
 
-		r = update_request_new();
+		r = update_request_new((gpointer)stream);
 		r->source = g_strdup(absURL);
 		r->callback = gtkhtml2_url_request_received_cb;
 		r->user_data = sd;
@@ -403,7 +404,7 @@ static void gtkhtml2_launch_url(GtkWidget *scrollpane, const gchar *url) {
 	
 	kill_old_connections(scrollpane);
 	
-	r = update_request_new();
+	r = update_request_new(NULL);
 	r->source = g_strdup(url);
 	r->callback = gtkhtml2_html_received;
 	r->user_data = scrollpane;

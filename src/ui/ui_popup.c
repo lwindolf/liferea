@@ -83,15 +83,18 @@ void ui_popup_setup_menues(void) {
 	/* item list menues */
 	item_menu_items = NULL;
 	item_menu_len = 0;
+	addPopupOption(&item_menu_items, &item_menu_len, _("/Launch Item In _Tab"),		NULL, on_popup_launchitem_in_tab_selected,	0, NULL, 0);
+	addPopupOption(&item_menu_items, &item_menu_len, _("/_Launch Item In Browser"), 	NULL, on_popup_launchitem_selected, 		0, NULL, 0);
+	addPopupOption(&item_menu_items, &item_menu_len, "/",					NULL, NULL, 					0, "<Separator>", 0);
+	addPopupOption(&item_menu_items, &item_menu_len, _("/_Next Unread Item"),		NULL, on_popup_next_unread_item_selected,	0, "<StockItem>", GTK_STOCK_GO_FORWARD);
+	addPopupOption(&item_menu_items, &item_menu_len, "/",					NULL, NULL, 					0, "<Separator>", 0);
 	addPopupOption(&item_menu_items, &item_menu_len, _("/Toggle _Read Status"),		NULL, on_popup_toggle_read, 			0, NULL, 0);
 	addPopupOption(&item_menu_items, &item_menu_len, _("/Toggle Item _Flag"),		NULL, on_popup_toggle_flag, 			0, NULL, 0);
 	addPopupOption(&item_menu_items, &item_menu_len, _("/R_emove Item"),			NULL, on_popup_remove_selected,			0, "<StockItem>", GTK_STOCK_DELETE);
 	addPopupOption(&item_menu_items, &item_menu_len, "/",					NULL, NULL, 					0, "<Separator>", 0);
-	addPopupOption(&item_menu_items, &item_menu_len, _("/_Next Unread Item"),		NULL, on_popup_next_unread_item_selected,	0, "<StockItem>", GTK_STOCK_GO_FORWARD);
-	addPopupOption(&item_menu_items, &item_menu_len, "/",					NULL, NULL, 					0, "<Separator>", 0);
+	addPopupOption(&item_menu_items, &item_menu_len, _("/_Bookmark this Item"),		NULL, on_popup_social_bm_item_selected,		0, NULL, 0);
 	addPopupOption(&item_menu_items, &item_menu_len, _("/Copy Item _URL to Clipboard"),     NULL, on_popup_copy_URL_clipboard,     		0, NULL, 0);
-	addPopupOption(&item_menu_items, &item_menu_len, _("/Launch Item In _Tab"),		NULL, on_popup_launchitem_in_tab_selected,	0, NULL, 0);
-	addPopupOption(&item_menu_items, &item_menu_len, _("/_Launch Item In Browser"), 	NULL, on_popup_launchitem_selected, 		0, NULL, 0);
+
 
 	/* HTML view popup menues */
 	html_menu_items = NULL;
@@ -104,6 +107,7 @@ void ui_popup_setup_menues(void) {
 	addPopupOption(&url_menu_items, &url_menu_len, _("/Launch Link In _Tab"),	NULL, on_popup_open_link_in_tab_selected,	0, NULL, 0);
 	addPopupOption(&url_menu_items, &url_menu_len, _("/_Launch Link In Browser"),	NULL, on_popup_launch_link_selected, 		0, NULL, 0);
 	addPopupOption(&url_menu_items, &url_menu_len, "/",				NULL, NULL,		                	0, "<Separator>", 0);
+	addPopupOption(&url_menu_items, &url_menu_len, _("/_Bookmark this Link"),	NULL, on_popup_social_bm_link_selected,  	0, NULL, 0);
 	addPopupOption(&url_menu_items, &url_menu_len, _("/_Copy Link Location"),	NULL, on_popup_copy_url_selected,		0, NULL, 0);
 	addPopupOption(&url_menu_items, &url_menu_len, "/",				NULL, NULL,		                	0, "<Separator>", 0);
 	addPopupOption(&url_menu_items, &url_menu_len, _("/_Subscribe..."),		NULL, on_popup_subscribe_url_selected, 		0, "<StockItem>", GTK_STOCK_ADD);

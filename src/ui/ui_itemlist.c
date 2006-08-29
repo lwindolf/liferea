@@ -31,12 +31,13 @@
 #include "support.h"
 #include "callbacks.h"
 #include "common.h"
+#include "conf.h"
 #include "debug.h"
 #include "feed.h"
 #include "feedlist.h"
 #include "item.h"
 #include "itemlist.h"
-#include "conf.h"
+#include "social.h"
 #include "ui/ui_htmlview.h"
 #include "ui/ui_itemlist.h"
 #include "ui/ui_mainwindow.h"
@@ -665,6 +666,29 @@ void on_popup_copy_URL_clipboard(void) {
 		gtk_clipboard_set_text(gtk_clipboard_get(GDK_SELECTION_CLIPBOARD), item_get_source(ip), -1);
 	else
 		ui_mainwindow_set_status_bar(_("No item has been selected"));
+}
+
+void on_popup_social_bm_item_selected(void) {
+	itemPtr         ip;
+
+	if(NULL != (ip = itemlist_get_selected())) {
+		gchar *url = social_get_url(item_get_source(ip), item_get_title(ip));
+		ui_htmlview_launch_URL(ui_mainwindow_get_active_htmlview(), url, 1);
+		g_free(url);
+	} else {
+		ui_mainwindow_set_status_bar(_("No item has been selected"));
+	}
+}
+
+void on_popup_social_bm_link_selected(gpointer selectedUrl, guint callback_action, GtkWidget *widget) {
+	
+	if(selectedUrl) {
+		gchar *url = social_get_url(selectedUrl, "");
+		ui_htmlview_launch_URL(ui_mainwindow_get_active_htmlview(), url, 1);
+		g_free(url);
+	} else {
+		ui_mainwindow_set_status_bar(_("No link selected!"));
+	}
 }
 
 void on_itemlist_selection_changed(GtkTreeSelection *selection, gpointer data) {

@@ -52,7 +52,6 @@ typedef struct node {
 	struct nodeSource	*source;	/**< the feed list plugin instance handling this node */
 
 	struct request		*updateRequest;	/**< update request structure used when downloading content (is not to be listed in the requests list!) */
-	GSList			*requests;	/**< list of other active download requests attached belonging to this node */
 	
 	gchar			*iconFile;	/**< the path of the favicon file */
 

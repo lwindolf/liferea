@@ -169,14 +169,6 @@ void	ui_htmlview_set_zoom(GtkWidget *htmlview, gfloat zoom);
 gfloat	ui_htmlview_get_zoom(GtkWidget *htmlview);
 
 /**
- * Function to determine the currently selected URL.
- * The string must be freed by the caller.
- *
- * @return currently selected URL string.  
- */
-gchar *	ui_htmlview_get_selected_URL(void);
-
-/**
  * Function to execute the commands needed to open up a URL with the
  * browser specified in the preferences.
  *

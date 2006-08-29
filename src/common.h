@@ -280,7 +280,7 @@ char * common_strsep(char **stringp, const char *delim);
 gchar *common_strreplace(gchar *string, const gchar *delimiter, const gchar *replacement);
 
 /**
- * Case sensitive strstr() like searching.
+ * Case insensitive strstr() like searching.
  *
  * @param pneedle	a string to find
  * @param phaystack	the string to search in

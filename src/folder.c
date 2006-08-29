@@ -125,7 +125,6 @@ static gchar * folder_render(nodePtr node) {
 	filename = NODE_SOURCE_TYPE(node)->source_get_feedlist(node->source->root);
 	result = render_file(filename, "folder", params);
 	g_free(filename);
-	g_strfreev(params);
 	
 	return result;
 }

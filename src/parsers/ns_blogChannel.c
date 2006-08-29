@@ -86,7 +86,7 @@ static GString * getOutlineContents(xmlNodePtr cur) {
 /* simple function to retrieve an OPML document and 
    parse and output all depth 1 outline tags as
    HTML into a buffer */
-static void ns_blogChannel_download_request_cb(struct request *request) {
+static void ns_blogChannel_download_request_cb(requestPtr request) {
 	struct requestData	*requestData = request->user_data;
 	xmlDocPtr 		doc = NULL;
 	xmlNodePtr 		cur;
@@ -174,6 +174,8 @@ static void ns_blogChannel_download_request_cb(struct request *request) {
 	g_free(requestData->ctxt->itemSet);
 	feed_free_parser_ctxt(requestData->ctxt);
 	g_free(requestData);
+	
+	update_request_free(request);
 }
 
 static void getOutlineList(feedParserCtxtPtr ctxt, guint tag, char *url) {
@@ -186,12 +188,11 @@ static void getOutlineList(feedParserCtxtPtr ctxt, guint tag, char *url) {
 	requestData->ctxt->feed = ctxt->feed;
 	requestData->tag = tag;
 
-	request = update_request_new();
+	request = update_request_new(ctxt->node);
 	request->source = g_strdup(url);
 	request->callback = ns_blogChannel_download_request_cb;
 	request->user_data = requestData;
 	
-	ctxt->node->requests = g_slist_append(requestData->ctxt->node->requests, request);
 	update_execute_request(request);
 }
 

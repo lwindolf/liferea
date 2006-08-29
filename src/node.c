@@ -111,30 +111,16 @@ gboolean node_is_ancestor(nodePtr node1, nodePtr node2) {
 }
 
 void node_free(nodePtr node) {
-	GSList	*iter;
 
 	g_assert(NULL == node->children);
+	
+	update_cancel_requests((gpointer)node);
 
 	if(node->loaded)  {
 		itemset_remove_items(node->itemSet);
 		g_free(node->itemSet);
 		node->itemSet = NULL;
 	}
-
-	/* Don't free active feed requests here, because they might still
-	   be processed in the update queues! Abandoned requests are
-	   free'd automatically. They must be freed in the main thread
-	   for locking reasons. */
-	if(node->updateRequest)
-		node->updateRequest->callback = NULL;
-	
-	/* same goes for other requests */
-	iter = node->requests;
-	while(iter) {
-		((struct request *)iter->data)->callback = NULL;
-		iter = g_slist_next(iter);
-	}
-	g_slist_free(node->requests);
 
 	g_object_unref(node->icon);
 	g_free(node->iconFile);
@@ -291,7 +277,8 @@ void node_update_favicon(nodePtr node) {
 	if(NODE_TYPE_FEED != node->type)
 		return;
 
-	favicon_download(node);
+	debug1(DEBUG_UPDATE, "favicon of node %s needs to be updated...", node->title);
+	feed_update_favicon(node);
 }
 
 /* plugin and import callbacks and helper functions */

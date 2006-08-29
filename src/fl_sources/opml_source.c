@@ -200,7 +200,7 @@ static void opml_source_check_for_removal(nodePtr node, gpointer user_data) {
 	g_free(expr);
 }
 
-static void opml_source_process_update_results(struct request *request) {
+static void opml_source_process_update_results(requestPtr request) {
 	nodePtr		node = (nodePtr)request->user_data;
 	mergeCtxtPtr	mergeCtxt;
 	xmlDocPtr	doc, oldDoc;
@@ -248,6 +248,7 @@ static void opml_source_process_update_results(struct request *request) {
 	}
 	
 	node_foreach_child(node, node_request_update);
+	update_request_free(request);
 }
 
 void opml_source_update(nodePtr node) {
@@ -255,7 +256,7 @@ void opml_source_update(nodePtr node) {
 	
 	if(node->source->url) {
 	g_assert(node->source->updateState);
-		request = update_request_new();
+		request = update_request_new(node);
 		request->updateState = node->source->updateState;
 		request->source = g_strdup(node->source->url);
 		request->priority = 1;

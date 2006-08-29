@@ -202,6 +202,8 @@ gchar * extractHTMLNode(xmlNodePtr cur, gint xhtmlMode, const gchar *defaultBase
 				if(body) {
 					/* Copy in the html tags */
 					copiedNodes = xmlDocCopyNodeList(newDoc, body->xmlChildrenNode);
+					// FIXME: is the above correct? Why only operate on the first child node?
+					// It might be unproblematic because all content is wrapped in a <div>...
 					xmlAddChildList(divNode, copiedNodes);
 				}
 				xmlFreeDoc(oldDoc);
@@ -227,7 +229,7 @@ gchar * extractHTMLNode(xmlNodePtr cur, gint xhtmlMode, const gchar *defaultBase
 gchar * common_strip_dhtml(const gchar *html) {
 	gchar *tmp;
 
-	// FIXME: move to XSLT stylesheet that post processed
+	// FIXME: move to XSLT stylesheet that post processes
 	// generated XHTML. The solution below might break harmless
 	// escaped HTML.
 	
@@ -246,7 +248,7 @@ gchar * common_text_to_xhtml(const gchar *sourceText) {
 	gchar		*text, *result = NULL;
 	xmlDocPtr	doc = NULL;
 	xmlBufferPtr	buf;
-	xmlNodePtr 	body;
+	xmlNodePtr 	body, cur;
 	
 	if(!sourceText)
 		return g_strdup("");
@@ -257,8 +259,13 @@ gchar * common_text_to_xhtml(const gchar *sourceText) {
 		
 		buf = xmlBufferCreate();
 		body = common_html_doc_find_body(doc);
-		if(body)
-			xmlNodeDump(buf, doc, body->xmlChildrenNode, 0, 0 );
+		if(body) {
+			cur = body->xmlChildrenNode;
+			while(cur) {
+				xmlNodeDump(buf, doc, cur, 0, 0 );
+				cur = cur->next;
+			}
+		}
 
 		if(xmlBufferLength(buf) > 0)
 			result = xmlCharStrdup(xmlBufferContent(buf));

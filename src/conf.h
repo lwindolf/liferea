@@ -37,6 +37,10 @@
 #define USER_FONT			"/apps/liferea/browser-font"
 #define REFOCUS_TIMEOUT			"/apps/liferea/refocus-timeout"
 #define DISABLE_JAVASCRIPT		"/apps/liferea/disable-javascript"
+#define SOCIAL_BM_SITE			"/apps/liferea/social-bm-site"
+#define SOCIAL_BM_HIDE_LINK		"/apps/liferea/social-bm-hide-link"
+#define SEARCH_ENGINE			"/apps/liferea/search-engine"
+#define SEARCH_ENGINE_HIDE_LINK		"/apps/liferea/search-engine-hide-link"
 
 /* enclosure handling */
 #define ENCLOSURE_DOWNLOAD_TOOL		"/apps/liferea/enclosure-download-tool"

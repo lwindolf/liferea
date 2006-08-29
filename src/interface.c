@@ -1032,6 +1032,16 @@ create_prefdialog (void)
   GtkWidget *space;
   GtkWidget *ctrl_space;
   GtkWidget *alt_space;
+  GtkWidget *vbox2622;
+  GtkWidget *label230;
+  GtkWidget *alignment37;
+  GtkWidget *table10;
+  GtkWidget *socialpopup;
+  GtkWidget *menu5;
+  GtkWidget *searchpopup;
+  GtkWidget *menu6;
+  GtkWidget *label231;
+  GtkWidget *label232;
   GtkWidget *vbox2581;
   GtkWidget *label149;
   GtkWidget *alignment27;
@@ -1416,9 +1426,62 @@ create_prefdialog (void)
 
   gtk_option_menu_set_menu (GTK_OPTION_MENU (browsekeyoptionmenu), browsekeymenu);
 
+  vbox2622 = gtk_vbox_new (FALSE, 6);
+  gtk_widget_show (vbox2622);
+  gtk_box_pack_start (GTK_BOX (vbox222), vbox2622, FALSE, TRUE, 0);
+
+  label230 = gtk_label_new (_("<span weight=\"bold\">Web Integration</span>"));
+  gtk_widget_show (label230);
+  gtk_box_pack_start (GTK_BOX (vbox2622), label230, FALSE, FALSE, 0);
+  gtk_label_set_use_markup (GTK_LABEL (label230), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (label230), 0, 0.5);
+
+  alignment37 = gtk_alignment_new (0.5, 0.5, 1, 1);
+  gtk_widget_show (alignment37);
+  gtk_box_pack_start (GTK_BOX (vbox2622), alignment37, TRUE, TRUE, 0);
+  gtk_alignment_set_padding (GTK_ALIGNMENT (alignment37), 0, 0, 12, 0);
+
+  table10 = gtk_table_new (2, 2, FALSE);
+  gtk_widget_show (table10);
+  gtk_container_add (GTK_CONTAINER (alignment37), table10);
+  gtk_table_set_row_spacings (GTK_TABLE (table10), 6);
+  gtk_table_set_col_spacings (GTK_TABLE (table10), 6);
+
+  socialpopup = gtk_option_menu_new ();
+  gtk_widget_show (socialpopup);
+  gtk_table_attach (GTK_TABLE (table10), socialpopup, 1, 2, 0, 1,
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (0), 0, 0);
+
+  menu5 = gtk_menu_new ();
+
+  gtk_option_menu_set_menu (GTK_OPTION_MENU (socialpopup), menu5);
+
+  searchpopup = gtk_option_menu_new ();
+  gtk_table_attach (GTK_TABLE (table10), searchpopup, 1, 2, 1, 2,
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (0), 0, 0);
+
+  menu6 = gtk_menu_new ();
+
+  gtk_option_menu_set_menu (GTK_OPTION_MENU (searchpopup), menu6);
+
+  label231 = gtk_label_new_with_mnemonic (_("_Post Bookmarks to"));
+  gtk_widget_show (label231);
+  gtk_table_attach (GTK_TABLE (table10), label231, 0, 1, 0, 1,
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (0), 0, 0);
+  gtk_misc_set_alignment (GTK_MISC (label231), 0, 0.5);
+
+  label232 = gtk_label_new_with_mnemonic (_("Search _Link for"));
+  gtk_table_attach (GTK_TABLE (table10), label232, 0, 1, 1, 2,
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (0), 0, 0);
+  gtk_misc_set_alignment (GTK_MISC (label232), 0, 0.5);
+
   vbox2581 = gtk_vbox_new (FALSE, 6);
   gtk_widget_show (vbox2581);
-  gtk_box_pack_start (GTK_BOX (vbox222), vbox2581, FALSE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox222), vbox2581, TRUE, TRUE, 0);
 
   label149 = gtk_label_new (_("<span weight=\"bold\">Date Column Settings</span>"));
   gtk_widget_show (label149);
@@ -2100,6 +2163,8 @@ create_prefdialog (void)
   gtk_label_set_mnemonic_widget (GTK_LABEL (label159), refreshIntervalSpinButton);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label142), startupfeedhandler);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label151), browsekeyoptionmenu);
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label231), socialpopup);
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label232), searchpopup);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label65), htmlviewoptionmenu);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label137), browserpopup);
   gtk_label_set_mnemonic_widget (GTK_LABEL (manuallabel), browsercmd);
@@ -2165,6 +2230,16 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, space, "space");
   GLADE_HOOKUP_OBJECT (prefdialog, ctrl_space, "ctrl_space");
   GLADE_HOOKUP_OBJECT (prefdialog, alt_space, "alt_space");
+  GLADE_HOOKUP_OBJECT (prefdialog, vbox2622, "vbox2622");
+  GLADE_HOOKUP_OBJECT (prefdialog, label230, "label230");
+  GLADE_HOOKUP_OBJECT (prefdialog, alignment37, "alignment37");
+  GLADE_HOOKUP_OBJECT (prefdialog, table10, "table10");
+  GLADE_HOOKUP_OBJECT (prefdialog, socialpopup, "socialpopup");
+  GLADE_HOOKUP_OBJECT (prefdialog, menu5, "menu5");
+  GLADE_HOOKUP_OBJECT (prefdialog, searchpopup, "searchpopup");
+  GLADE_HOOKUP_OBJECT (prefdialog, menu6, "menu6");
+  GLADE_HOOKUP_OBJECT (prefdialog, label231, "label231");
+  GLADE_HOOKUP_OBJECT (prefdialog, label232, "label232");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox2581, "vbox2581");
   GLADE_HOOKUP_OBJECT (prefdialog, label149, "label149");
   GLADE_HOOKUP_OBJECT (prefdialog, alignment27, "alignment27");

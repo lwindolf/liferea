@@ -144,8 +144,7 @@ gchar * itemset_render(itemSetPtr itemSet) {
 	params = render_add_parameter(params, "pixmapsDir='file://" PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "'");
 	params = render_add_parameter(params, "baseUrl='%s'", itemset_get_base_url(itemSet));
 	output = render_xml(doc, summaryMode?"summary":"itemset", params);
-	g_strfreev(params);
-	xmlSaveFormatFile("/tmp/test.xml", doc,1);
+	//xmlSaveFormatFile("/tmp/test.xml", doc,1);
 	xmlFree(doc);
 	
 	debug_exit("itemset_render");
