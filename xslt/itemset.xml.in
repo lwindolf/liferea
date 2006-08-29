@@ -211,8 +211,7 @@
 <!-- Technorati link -->
 <div class="technorati">
 <xsl:element name="a">
-  <xsl:attribute name="href">http://www.technorati.com/cosmos/search.html?url=<xsl:value-of select="source"/>
-  </xsl:attribute>
+  <xsl:attribute name="href">http://www.technorati.com/cosmos/search.html?url=<xsl:value-of select="source"/></xsl:attribute>
   <xsl:element name="img">
     <xsl:attribute name="border">0</xsl:attribute>
     <xsl:attribute name="alt">[Technorati]</xsl:attribute>
