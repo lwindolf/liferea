@@ -46,6 +46,8 @@ src/render.c
 src/render.h
 src/rule.c
 src/rule.h
+src/social.c
+src/social.h
 src/support.c
 src/support.h
 src/update.c

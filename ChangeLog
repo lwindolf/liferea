@@ -1,7 +1,9 @@
-2006-08-??  Lars Lindner  <lars.lindner@gmail.com>
+2006-08-30  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.1.2 (Unstable)
 
+	* Fixes v1.0 cache migration problem that caused HTML
+	  content to be lost (reported by Aristotle Pagaltzis).
 	* Fixes a lot of CSS rendering glitches
 	* Fixes a DnD problem which caused duplicate feeds after
 	  restarting the program.
@@ -11,6 +13,15 @@
 	* Improving the search engine support. Now the search
 	  menu provides Feedster, Ice Rocket, Reddit, Delicious,
 	  Google Blog, Yahoo and Technorati options.
+	* Adds a social bookmarking feature available from the
+	  context menu of the item list and links in the HTML
+	  pane. Supports many social bookmarking services that
+	  can be configured in the preferences.
+	* Improves favicon downloading. Now more favicons types
+	  than before are found (problem reported by Hadmut Danish).
+	* Disabled horizontal scrolling in feed list and enabled
+	  GTK 2.6+ ellipsizing for the feed list node title 
+	  renderer (suggested by Lars Strojny).
 
 
 2006-08-20  Lars Lindner  <lars.lindner@gmail.com>

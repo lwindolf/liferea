@@ -246,6 +246,10 @@ void ui_feedlist_init(GtkWidget *feedview) {
 	
 	gtk_tree_view_column_set_resizable(column, TRUE);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(feedview), column);
+	
+#if GTK_CHECK_VERSION(2,6,0)
+	g_object_set(textRenderer, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
+#endif
 
 	/* And connect signals */
 	g_signal_connect(G_OBJECT(feedview), "row-activated", G_CALLBACK(ui_feedlist_row_activated_cb), NULL);
