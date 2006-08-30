@@ -223,6 +223,7 @@ itemPtr item_parse_cache(xmlNodePtr cur, gboolean migrateCache) {
 			item->metadata = metadata_parse_xml_nodes(cur);
 		
 		g_free(tmp);	
+		tmp = NULL;
 		cur = cur->next;
 	}
 	

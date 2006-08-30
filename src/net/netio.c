@@ -71,6 +71,7 @@ static gnutls_certificate_client_credentials xcred;
 
 #endif
 
+#include "common.h"
 #include "conversions.h"
 #include "net-support.h"
 #include "zlib_interface.h"

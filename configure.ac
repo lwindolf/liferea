@@ -259,7 +259,7 @@ fi
 
 AM_GCONF_SOURCE_2
 
-pkg_modules="	gtk+-2.0 >= 2.4.0 
+pkg_modules="	gtk+-2.0 >= 2.8.0 
 		pango >= 1.4.0
 		gconf-2.0 >= 1.1.9 
 		libxml-2.0 >= 2.4.1

@@ -31,6 +31,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "common.h"
 #include "conversions.h"
 #include "digcalc.h"
 #include "net-support.h"

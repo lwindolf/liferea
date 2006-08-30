@@ -86,8 +86,10 @@ static gchar *checkLinkRef(const gchar* str, gint linkType) {
 		    (common_strcasestr(str, "atom+xml")!=NULL)))
 			return res;
 	} else if(linkType == LINK_NORMAL_ANCHOR){
-		if((strstr(res, "rdf")) || (strstr(res, "xml")) ||
-		   (strstr(res, "rss")))
+		if((strstr(res, "rdf")) || 
+		   (strstr(res, "xml")) ||
+		   (strstr(res, "rss")) ||
+		   (strstr(res, "atom")))
 			return res;
 	}
 	g_free(res);

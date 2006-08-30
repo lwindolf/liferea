@@ -24,6 +24,7 @@
 #endif
 
 #include <string.h>		/* For strncmp */
+#include "common.h"
 #include "net/os-support.h"	/* for strsep */
 #include "support.h"
 #include "callbacks.h"
