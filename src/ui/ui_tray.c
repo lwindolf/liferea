@@ -157,6 +157,7 @@ static void ui_tray_destroyed_cb(GtkWidget *widget, void *data) {
 
 	image = NULL;
 	tray_icon = NULL;
+	currentIcon = NULL;
 	trayCount--;
 	ui_mainwindow_tray_remove();
 	
