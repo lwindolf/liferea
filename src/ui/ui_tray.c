@@ -196,6 +196,7 @@ static void removeTrayIcon() {
 	g_object_unref(G_OBJECT(tray_icon));
 	gtk_object_destroy(GTK_OBJECT (tray_icon));
 	tray_icon = NULL;
+	currentIcon = NULL;
 	trayCount--;
 	ui_mainwindow_tray_remove();
 }
