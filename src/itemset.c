@@ -181,6 +181,11 @@ static void itemset_prepare_item(itemSetPtr itemSet, itemPtr item) {
 	   ensure changed item ids to get saved. */
 	if((item->nr == 0) || (NULL != itemset_lookup_item(itemSet, item->sourceNode, item->nr)))
 		item->nr = ++(itemSet->lastItemNr);
+		
+	/* If the item already had an id we need to ensure
+	   the correct maximum id of the item set */
+	if(itemSet->lastItemNr < item->nr)
+		itemSet->lastItemNr = item->nr;
 	
 	if(ITEMSET_TYPE_FEED == itemSet->type)
 		item->sourceNr = item->nr;

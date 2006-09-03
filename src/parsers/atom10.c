@@ -145,9 +145,8 @@ static gchar* atom10_parse_content_construct(xmlNodePtr cur, feedParserCtxtPtr c
 			/* The spec says to only show the contents of the div tag that MUST be present */
 			ret = utf8_fix(extractHTMLNode(cur, 2, NULL));
 		} else {
-			/* Unknown type... lets bail? */
-			g_free(type);
-			return g_strdup(_("This item's content is invalid."));
+			/* Do nothing on unsupported content types. This allows summaries to be used. */
+			ret = NULL;
 		}
 		
 		g_free(type);

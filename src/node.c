@@ -232,17 +232,17 @@ static void node_merge_item(nodePtr node, itemPtr item) {
 
 	/* step 1: merge into node type internal data structures */
 	if(node_merge_check(node->itemSet, item)) {
-		debug2(DEBUG_UPDATE, "adding \"%s\" to node \"%s\"...", item_get_title(item), node_get_title(node));
-
 		g_assert(!item->sourceNode);
 		
 		/* step 1: add to itemset */
 		itemset_prepend_item(node->itemSet, item);
 		
+		debug3(DEBUG_UPDATE, "-> adding \"%s\" to item set %p with #%d...", item_get_title(item), node->itemSet, item->nr);
+		
 		/* step 2: check for matching vfolders */
 		vfolder_check_item(item);
 	} else {
-		debug2(DEBUG_UPDATE, "not adding \"%s\" to node \"%s\"...", item_get_title(item), node_get_title(node));
+		debug2(DEBUG_UPDATE, "-> not adding \"%s\" to node \"%s\"...", item_get_title(item), node_get_title(node));
 		item_free(item);
 	}
 }
@@ -253,6 +253,16 @@ static void node_merge_item(nodePtr node, itemPtr item) {
  */
 void node_merge_items(nodePtr node, GList *list) {
 	GList	*iter;
+	
+	if(debug_level & DEBUG_UPDATE) {
+		debug4(DEBUG_UPDATE, "old item set %p (lastItemNr=%lu) of \"%s\" (%p):", node->itemSet, node->itemSet->lastItemNr, node_get_title(node), node);
+		iter = node->itemSet->items;
+		while(iter) {
+			itemPtr item = (itemPtr)iter->data;
+			debug2(DEBUG_UPDATE, " -> item #%d \"%s\"", item->nr, item_get_title(item));
+			iter = g_list_next(iter);
+		}
+	}
 
 	/* Items are given in top to bottom display order. 
 	   Adding them in this order would mean to reverse 

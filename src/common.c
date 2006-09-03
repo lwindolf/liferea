@@ -442,7 +442,7 @@ xmlEntityPtr common_process_entities(void *ctxt, const xmlChar *name) {
 			entity = (xmlEntityPtr)g_new0(xmlEntity, 1);
 			entity->type = XML_ENTITY_DECL;
 			entity->name = name;
-			entity->orig = tmp;	/* ??? */
+			entity->orig = NULL;
 			entity->content = tmp;
 			entity->length = g_utf8_strlen(tmp, -1);
 			entity->etype = XML_INTERNAL_PREDEFINED_ENTITY;
