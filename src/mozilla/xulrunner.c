@@ -58,7 +58,7 @@ static struct plugin pi = {
 	PLUGIN_API_VERSION,
 	"XulRunner Rendering Plugin",
 	PLUGIN_TYPE_HTML_RENDERER,
-	&mozillaInfo
+	&xulrunnerInfo
 };
 
 DECLARE_PLUGIN(pi);

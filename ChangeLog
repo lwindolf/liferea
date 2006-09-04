@@ -4,6 +4,10 @@
 	* Raising GTK+ dependency to 2.8.x.
 	* Improved Atom handling on unknown content types.
 	* Fixes merging problems.
+	* Fixes SF #1543848 which aborted Liferea when $LANG
+	  was not set (reported by slackforge and Sergei Butakov).
+	* Fixes SF #1543774 which broke compiling against
+	  XulRunner (reported by Pascal Bleser)
 
 
 2006-08-30  Lars Lindner  <lars.lindner@gmail.com>
