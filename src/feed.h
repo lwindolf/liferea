@@ -144,7 +144,7 @@ void feed_init(void);
  *
  * @returns the new, empty feed
  */
-feedPtr feed_new(gchar *source, gchar *filter);
+feedPtr feed_new(const gchar *source, const gchar *filter);
 
 /**
  * Feed specific feed list import parsing.

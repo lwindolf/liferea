@@ -33,9 +33,9 @@
 
 #include "conf.h"
 #include "common.h"
+#include "debug.h"
 #include "itemlist.h"
 #include "render.h"
-#include "social.h"
 
 static gchar		**langParams = NULL;	/* the current locale settings (for localization stylesheet) */
 static gchar		*defaultParams = NULL;	/* some default parameters (for rendering stylesheets) */
@@ -52,12 +52,14 @@ void render_init(void) {
 		g_free(defaultParams);
 
 	/* prepare localization parameters */
-	lang = g_strsplit(g_strdup(setlocale(LC_ALL, NULL)), "@", 0);
-	shortlang = g_strsplit(g_strdup(setlocale(LC_ALL, NULL)), "_", 0);
+	debug1(DEBUG_HTML, "XSLT localisation: setlocale(LC_MESSAGES, NULL) reports '%s'", setlocale(LC_MESSAGES, NULL));
+	lang = g_strsplit(g_strdup(setlocale(LC_MESSAGES, NULL)), "@", 0);
+	shortlang = g_strsplit(g_strdup(setlocale(LC_MESSAGES, NULL)), "_", 0);
 	
 	langParams = NULL;
 	langParams = render_add_parameter(langParams, "lang='%s'", lang[0]);
 	langParams = render_add_parameter(langParams, "shortlang='%s'", shortlang[0]);
+	debug2(DEBUG_HTML, "XSLT localisation: lang='%s' shortlang='%s'", lang[0], shortlang[0]);
 
 	g_strfreev(shortlang);
 	g_strfreev(lang);

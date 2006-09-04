@@ -152,7 +152,7 @@ void node_request_interactive_add(guint type);
  * @param filter	NULL or the filter for the subscription
  * @param flags		download request flags
  */
-void node_request_automatic_add(gchar *source, gchar *title, gchar *filter, gint flags);
+void node_request_automatic_add(const gchar *source, const gchar *title, const gchar *filter, gint flags);
 	
 /**
  * Removes the given node from the feed list.

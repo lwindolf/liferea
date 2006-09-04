@@ -66,6 +66,8 @@ GSList * metadata_list_append(GSList *metadata, const gchar *strid, const gchar 
 	gchar		*checked_data = NULL;
 	struct pair 	*p;
 	
+	g_assert(NULL != data);
+	
 	/* lookup type and check format */
 	switch(metadata_get_type(strid)) {
 		case METADATA_TYPE_ASCII:

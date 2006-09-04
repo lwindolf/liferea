@@ -36,8 +36,6 @@
 /* item interface						*/
 /* ------------------------------------------------------------ */
 
-struct feed;	/* see feed.h */
-
 /**
  * An item stores a particular entry in a feed or a search.
  *  Each item belongs to an item set. An itemset is a collection

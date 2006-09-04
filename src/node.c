@@ -375,7 +375,7 @@ void node_request_interactive_add(guint type) {
 /* Automatic subscription adding (e.g. URL DnD), creates a new node
    or reuses the given one and creates a new feed without any user 
    interaction. */
-void node_request_automatic_add(gchar *source, gchar *title, gchar *filter, gint flags) {
+void node_request_automatic_add(const gchar *source, const gchar *title, const gchar *filter, gint flags) {
 	nodePtr		node, parent;
 	gint		pos;
 

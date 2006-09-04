@@ -80,7 +80,7 @@ void feed_init(void) {
 }
 
 /* function to create a new feed structure */
-feedPtr feed_new(gchar *source, gchar *filter) {
+feedPtr feed_new(const gchar *source, const gchar *filter) {
 	feedPtr		feed;
 	
 	feed = g_new0(struct feed, 1);
