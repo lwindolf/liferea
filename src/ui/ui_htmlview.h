@@ -27,14 +27,6 @@
 #include <gtk/gtk.h>
 #include "plugin.h"
 
-struct displayset {
-	gchar *headtable;
-	gchar *head;
-	gchar *body;
-	gchar *foot;
-	gchar *foottable;
-};
-
 #define HTMLVIEW_PLUGIN_API_VERSION 10
 
 typedef struct htmlviewPlugin {

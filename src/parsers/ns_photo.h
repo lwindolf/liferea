@@ -1,7 +1,7 @@
 /**
  * @file ns_photo.h photo/ph namespace support
  *
- * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,5 @@
 
 NsHandler *ns_photo_getRSSNsHandler(void);
 NsHandler *ns_pb_getRSSNsHandler(void);
-void ns_photo_render(gpointer data, struct displayset *displayset, gpointer user_data);
 
 #endif

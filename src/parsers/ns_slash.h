@@ -1,7 +1,7 @@
 /**
  * @file ns_slash.h slash namespace support
  *
- * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -25,6 +25,5 @@
 #include "metadata.h"
 
 NsHandler *ns_slash_getRSSNsHandler(void);
-void ns_slash_render(gpointer data, struct displayset *displayset, gpointer user_data);
 
 #endif
