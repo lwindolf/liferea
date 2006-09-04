@@ -1,3 +1,5 @@
+2006-09-05  Lars Lindner  <lars.lindner@gmail.com>
+
 	Version 1.1.3 (Unstable)
 
 	* Adding Solaris compile fixes (patch from Paul Keusemann)
@@ -8,6 +10,7 @@
 	  was not set (reported by slackforge and Sergei Butakov).
 	* Fixes SF #1543774 which broke compiling against
 	  XulRunner (reported by Pascal Bleser)
+	* Added missing files for distclean make target.
 
 
 2006-08-30  Lars Lindner  <lars.lindner@gmail.com>
