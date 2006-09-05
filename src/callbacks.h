@@ -118,11 +118,3 @@ void
 on_faq_activate                        (GtkMenuItem     *menuitem,
                                         gpointer         user_data);
 #endif
-
-void
-on_search_engine_btn_clicked           (GtkButton       *button,
-                                        gpointer         user_data);
-
-void
-on_enablesociallinkbtn_toggled         (GtkToggleButton *togglebutton,
-                                        gpointer         user_data);

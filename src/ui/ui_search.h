@@ -46,4 +46,6 @@ void on_newVFolder_clicked(GtkButton *button, gpointer user_data);
 
 void on_new_vfolder_activate(GtkMenuItem *menuitem, gpointer user_data);
 
+void on_search_engine_btn_clicked(GtkButton *button, gpointer user_data);
+
 #endif

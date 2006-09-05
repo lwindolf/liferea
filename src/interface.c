@@ -3413,3 +3413,104 @@ create_updatedialog (void)
   return updatedialog;
 }
 
+GtkWidget*
+create_simplenewdialog (void)
+{
+  GtkWidget *simplenewdialog;
+  GtkWidget *dialog_vbox19;
+  GtkWidget *vbox2623;
+  GtkWidget *label234;
+  GtkWidget *hbox92235;
+  GtkWidget *label235;
+  GtkWidget *table11;
+  GtkWidget *sourceEntry;
+  GtkWidget *label242;
+  GtkWidget *dialog_action_area19;
+  GtkWidget *cancelbutton5;
+  GtkWidget *advancedbtn;
+  GtkWidget *button6;
+
+  simplenewdialog = gtk_dialog_new ();
+  gtk_window_set_title (GTK_WINDOW (simplenewdialog), _("New Subscription"));
+  gtk_window_set_type_hint (GTK_WINDOW (simplenewdialog), GDK_WINDOW_TYPE_HINT_DIALOG);
+
+  dialog_vbox19 = GTK_DIALOG (simplenewdialog)->vbox;
+  gtk_widget_show (dialog_vbox19);
+
+  vbox2623 = gtk_vbox_new (FALSE, 6);
+  gtk_widget_show (vbox2623);
+  gtk_box_pack_start (GTK_BOX (dialog_vbox19), vbox2623, TRUE, TRUE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox2623), 12);
+
+  label234 = gtk_label_new (_("<b>Feed Source</b>"));
+  gtk_widget_show (label234);
+  gtk_box_pack_start (GTK_BOX (vbox2623), label234, FALSE, FALSE, 0);
+  gtk_label_set_use_markup (GTK_LABEL (label234), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (label234), 0, 0.5);
+
+  hbox92235 = gtk_hbox_new (FALSE, 0);
+  gtk_widget_show (hbox92235);
+  gtk_box_pack_start (GTK_BOX (vbox2623), hbox92235, FALSE, FALSE, 0);
+
+  label235 = gtk_label_new (_("    "));
+  gtk_widget_show (label235);
+  gtk_box_pack_start (GTK_BOX (hbox92235), label235, FALSE, FALSE, 0);
+
+  table11 = gtk_table_new (2, 1, FALSE);
+  gtk_widget_show (table11);
+  gtk_box_pack_start (GTK_BOX (hbox92235), table11, TRUE, TRUE, 0);
+  gtk_table_set_row_spacings (GTK_TABLE (table11), 6);
+  gtk_table_set_col_spacings (GTK_TABLE (table11), 12);
+
+  sourceEntry = gtk_entry_new ();
+  gtk_widget_show (sourceEntry);
+  gtk_table_attach (GTK_TABLE (table11), sourceEntry, 0, 1, 1, 2,
+                    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
+                    (GtkAttachOptions) (0), 0, 0);
+
+  label242 = gtk_label_new (_("Enter a website location to use feed autodiscovery or in case you know it the exact feed location."));
+  gtk_widget_show (label242);
+  gtk_table_attach (GTK_TABLE (table11), label242, 0, 1, 0, 1,
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (0), 0, 0);
+  gtk_label_set_line_wrap (GTK_LABEL (label242), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (label242), 0, 0.5);
+
+  dialog_action_area19 = GTK_DIALOG (simplenewdialog)->action_area;
+  gtk_widget_show (dialog_action_area19);
+  gtk_button_box_set_layout (GTK_BUTTON_BOX (dialog_action_area19), GTK_BUTTONBOX_END);
+
+  cancelbutton5 = gtk_button_new_from_stock ("gtk-cancel");
+  gtk_widget_show (cancelbutton5);
+  gtk_dialog_add_action_widget (GTK_DIALOG (simplenewdialog), cancelbutton5, GTK_RESPONSE_CANCEL);
+  GTK_WIDGET_SET_FLAGS (cancelbutton5, GTK_CAN_DEFAULT);
+
+  advancedbtn = gtk_button_new_with_mnemonic (_("Advanced..."));
+  gtk_widget_show (advancedbtn);
+  gtk_dialog_add_action_widget (GTK_DIALOG (simplenewdialog), advancedbtn, GTK_RESPONSE_APPLY);
+  GTK_WIDGET_SET_FLAGS (advancedbtn, GTK_CAN_DEFAULT);
+
+  button6 = gtk_button_new_from_stock ("gtk-ok");
+  gtk_widget_show (button6);
+  gtk_dialog_add_action_widget (GTK_DIALOG (simplenewdialog), button6, GTK_RESPONSE_OK);
+  GTK_WIDGET_SET_FLAGS (button6, GTK_CAN_DEFAULT);
+
+  /* Store pointers to all widgets, for use by lookup_widget(). */
+  GLADE_HOOKUP_OBJECT_NO_REF (simplenewdialog, simplenewdialog, "simplenewdialog");
+  GLADE_HOOKUP_OBJECT_NO_REF (simplenewdialog, dialog_vbox19, "dialog_vbox19");
+  GLADE_HOOKUP_OBJECT (simplenewdialog, vbox2623, "vbox2623");
+  GLADE_HOOKUP_OBJECT (simplenewdialog, label234, "label234");
+  GLADE_HOOKUP_OBJECT (simplenewdialog, hbox92235, "hbox92235");
+  GLADE_HOOKUP_OBJECT (simplenewdialog, label235, "label235");
+  GLADE_HOOKUP_OBJECT (simplenewdialog, table11, "table11");
+  GLADE_HOOKUP_OBJECT (simplenewdialog, sourceEntry, "sourceEntry");
+  GLADE_HOOKUP_OBJECT (simplenewdialog, label242, "label242");
+  GLADE_HOOKUP_OBJECT_NO_REF (simplenewdialog, dialog_action_area19, "dialog_action_area19");
+  GLADE_HOOKUP_OBJECT (simplenewdialog, cancelbutton5, "cancelbutton5");
+  GLADE_HOOKUP_OBJECT (simplenewdialog, advancedbtn, "advancedbtn");
+  GLADE_HOOKUP_OBJECT (simplenewdialog, button6, "button6");
+
+  gtk_widget_grab_default (button6);
+  return simplenewdialog;
+}
+

@@ -41,8 +41,8 @@
 extern GtkWidget *mainwindow;
 
 /********************************************************************
- * Propdialog                                                       *
- *******************************************************************/
+ * general callbacks for "New" and "Properties" dialog              *
+ ********************************************************************/
 
 struct fp_prop_ui_data {
 	feedPtr fp;
@@ -68,124 +68,67 @@ struct fp_prop_ui_data {
 
 /* dialog callbacks */
 
-static gchar * ui_feed_dialog_decode_source(struct fp_prop_ui_data *ui_data) {
+static gchar * ui_feed_create_url(gchar *url, gboolean auth, const gchar *username, const gchar *password) {
 	gchar	*source = NULL;
+	gchar *str, *tmp2;
+	
+	/* First, strip leading and trailing whitespace */
+	str = g_strstrip(url);
 
-	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->fileRadio))) {
-		source = g_strdup(gtk_entry_get_text(GTK_ENTRY(ui_data->sourceEntry)));
-	} else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->urlRadio))) {
-		gchar *str, *tmp2;
-		/* First, strip leading and trailing whitespace */
-		str = g_strstrip(g_strdup(gtk_entry_get_text(GTK_ENTRY(ui_data->sourceEntry))));
-		
-		/* Add http:// if needed */
-		if (strstr(str, "://") == NULL) {
-			tmp2 = g_strdup_printf("http://%s",str);
-			g_free(str);
-			str = tmp2;
-		}
-		
-		/* Add trailing / if needed */
-		if (strstr(strstr(str, "://") + 3, "/") == NULL) {
-			tmp2 = g_strdup_printf("%s/", str);
-			g_free(str);
-			str = tmp2;
-		}
-
-		/* Use the values in the textboxes if also specified in the URL! */
-		if((NULL != ui_data->authcheckbox) && 
-		   gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->authcheckbox))) {
-			xmlURIPtr uri = xmlParseURI(BAD_CAST str);
-			if (uri != NULL) {
-				xmlChar *sourceUrl;
-				xmlFree(uri->user);
-				uri->user = g_strdup_printf("%s:%s",
-									   gtk_entry_get_text(GTK_ENTRY(ui_data->username)),
-									   gtk_entry_get_text(GTK_ENTRY(ui_data->password)));
-				sourceUrl = xmlSaveUri(uri);
-				source = g_strdup(sourceUrl);
-				g_free(uri->user);
-				uri->user = NULL;
-				xmlFree(sourceUrl);
-				xmlFreeURI(uri);
-			} else
-				source = g_strdup(str);
-		} else {
-			source = g_strdup(str);
-		}
+	/* Add http:// if needed */
+	if (strstr(str, "://") == NULL) {
+		tmp2 = g_strdup_printf("http://%s",str);
 		g_free(str);
-	} else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->cmdRadio))) {
-		source = g_strdup_printf("|%s", gtk_entry_get_text(GTK_ENTRY(ui_data->sourceEntry)));
+		str = tmp2;
 	}
 
+	/* Add trailing / if needed */
+	if (strstr(strstr(str, "://") + 3, "/") == NULL) {
+		tmp2 = g_strdup_printf("%s/", str);
+		g_free(str);
+		str = tmp2;
+	}
+
+	/* Use the values in the textboxes if also specified in the URL! */
+	if(auth) {
+		xmlURIPtr uri = xmlParseURI(BAD_CAST str);
+		if (uri != NULL) {
+			xmlChar *sourceUrl;
+			xmlFree(uri->user);
+			uri->user = g_strdup_printf("%s:%s", username, password);
+			sourceUrl = xmlSaveUri(uri);
+			source = g_strdup(sourceUrl);
+			g_free(uri->user);
+			uri->user = NULL;
+			xmlFree(sourceUrl);
+			xmlFreeURI(uri);
+		} else
+			source = g_strdup(str);
+	} else {
+		source = g_strdup(str);
+	}
+	g_free(str);
+	
 	return source;
 }
 
-static void on_authdialog_response(GtkDialog *dialog, gint response_id, gpointer user_data) {
-	struct fp_prop_ui_data *ui_data = (struct fp_prop_ui_data*)user_data;
+static gchar * ui_feed_dialog_decode_source(struct fp_prop_ui_data *ui_data) {
+	gchar	*source = NULL;
 
-	if(response_id == GTK_RESPONSE_OK) {
-		xmlURIPtr uri;
-		xmlChar *user, *pass, *sourceUrl;
-
-		/* Source */
-		uri = xmlParseURI(BAD_CAST feed_get_source(ui_data->fp));
+	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->fileRadio)))
+		source = g_strdup(gtk_entry_get_text(GTK_ENTRY(ui_data->sourceEntry)));
 		
-		if(!uri) {
-			g_warning("Error when parsing authentication URL! Authentication settings lost.");
-			g_free(ui_data);
-			return;
-		}
-		if(uri->user)
-			xmlFree(uri->user);
+	else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->urlRadio)))
+		source = ui_feed_create_url(g_strdup(gtk_entry_get_text(GTK_ENTRY(ui_data->sourceEntry))),
+		                            ui_data->authcheckbox &&
+		                            gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->authcheckbox)),
+		                            gtk_entry_get_text(GTK_ENTRY(ui_data->username)),
+					    gtk_entry_get_text(GTK_ENTRY(ui_data->password)));
+					    
+	else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->cmdRadio)))
+		source = g_strdup_printf("|%s", gtk_entry_get_text(GTK_ENTRY(ui_data->sourceEntry)));
 
-		user = BAD_CAST gtk_entry_get_text(GTK_ENTRY(ui_data->username));
-		pass = BAD_CAST gtk_entry_get_text(GTK_ENTRY(ui_data->password));
-		uri->user = g_strdup_printf("%s:%s", user, pass);
-
-		sourceUrl = xmlSaveUri(uri);
-		if(sourceUrl) {
-			feed_set_source(ui_data->fp, sourceUrl);
-			xmlFree(sourceUrl);
-		}
-
-		node_request_update(ui_data->np, ui_data->flags);
-		xmlFreeURI(uri);
-	}
-
-	gtk_widget_destroy(GTK_WIDGET(dialog));
-	g_free(ui_data);
-}
-
-static void on_newdialog_response(GtkDialog *dialog, gint response_id, gpointer user_data) {
-	struct fp_prop_ui_data *ui_data = (struct fp_prop_ui_data*)user_data;
-
-	if(response_id == GTK_RESPONSE_OK) {
-		gchar *source = NULL;
-		const gchar *filter = NULL;
-
-		/* Source */
-		source = ui_feed_dialog_decode_source(ui_data);
-
-		/* Filter handling */
-		filter = gtk_entry_get_text(GTK_ENTRY(lookup_widget(ui_data->dialog, "filterEntry")));
-		if(!gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(ui_data->dialog, "filterCheckbox"))) ||
-		   !strcmp(filter,"")) { /* Maybe this should be a test to see if the file exists? */
-			filter = NULL;
-		} 
-		node_request_automatic_add(source, NULL, filter,
-		                           FEED_REQ_SHOW_PROPDIALOG | 
-					   FEED_REQ_RESET_TITLE | 
-					   FEED_REQ_RESET_UPDATE_INT | 
-					   FEED_REQ_AUTO_DISCOVER | 
-					   FEED_REQ_PRIORITY_HIGH | 
-					   FEED_REQ_DOWNLOAD_FAVICON | 
-					   FEED_REQ_AUTH_DIALOG);
-		g_free(source);
-	}
-
-	gtk_widget_destroy(GTK_WIDGET(dialog));
-	g_free(ui_data);
+	return source;
 }
 
 static void on_propdialog_response(GtkDialog *dialog, gint response_id, gpointer user_data) {
@@ -346,7 +289,45 @@ static void on_feed_prop_update_radio(GtkToggleButton *button, gpointer user_dat
 	gtk_widget_set_sensitive(lookup_widget(GTK_WIDGET(ui_data->dialog), "refreshIntervalSpinButton"), limited);
 }
 
-/* dialog preparation */
+/********************************************************************
+ * "HTTP Authentication" dialog                                     *
+ ********************************************************************/
+
+static void on_authdialog_response(GtkDialog *dialog, gint response_id, gpointer user_data) {
+	struct fp_prop_ui_data *ui_data = (struct fp_prop_ui_data*)user_data;
+
+	if(response_id == GTK_RESPONSE_OK) {
+		xmlURIPtr uri;
+		xmlChar *user, *pass, *sourceUrl;
+
+		/* Source */
+		uri = xmlParseURI(BAD_CAST feed_get_source(ui_data->fp));
+		
+		if(!uri) {
+			g_warning("Error when parsing authentication URL! Authentication settings lost.");
+			g_free(ui_data);
+			return;
+		}
+		if(uri->user)
+			xmlFree(uri->user);
+
+		user = BAD_CAST gtk_entry_get_text(GTK_ENTRY(ui_data->username));
+		pass = BAD_CAST gtk_entry_get_text(GTK_ENTRY(ui_data->password));
+		uri->user = g_strdup_printf("%s:%s", user, pass);
+
+		sourceUrl = xmlSaveUri(uri);
+		if(sourceUrl) {
+			feed_set_source(ui_data->fp, sourceUrl);
+			xmlFree(sourceUrl);
+		}
+
+		node_request_update(ui_data->np, ui_data->flags);
+		xmlFreeURI(uri);
+	}
+
+	gtk_widget_destroy(GTK_WIDGET(dialog));
+	g_free(ui_data);
+}
 
 void ui_feed_authdialog_new(nodePtr node, gint flags) {
 	GtkWidget		*authdialog;
@@ -402,12 +383,45 @@ void ui_feed_authdialog_new(nodePtr node, gint flags) {
 	gtk_widget_show_all(authdialog);
 }
 
-void ui_feed_add(nodePtr parent) {
-	GtkWidget		*newdialog;
-	struct fp_prop_ui_data	*ui_data;
+/********************************************************************
+ * complex "New" dialog                                             *
+ ********************************************************************/
 
-	ui_data = g_new0(struct fp_prop_ui_data, 1);
-	ui_data->np = parent;
+static void on_newdialog_response(GtkDialog *dialog, gint response_id, gpointer user_data) {
+	struct fp_prop_ui_data *ui_data = (struct fp_prop_ui_data*)user_data;
+
+	if(response_id == GTK_RESPONSE_OK) {
+		gchar *source = NULL;
+		const gchar *filter = NULL;
+
+		/* Source */
+		source = ui_feed_dialog_decode_source(ui_data);
+
+		/* Filter handling */
+		filter = gtk_entry_get_text(GTK_ENTRY(lookup_widget(ui_data->dialog, "filterEntry")));
+		if(!gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(ui_data->dialog, "filterCheckbox"))) ||
+		   !strcmp(filter,"")) { /* Maybe this should be a test to see if the file exists? */
+			filter = NULL;
+		} 
+		node_request_automatic_add(source, NULL, filter,
+		                           FEED_REQ_SHOW_PROPDIALOG | 
+					   FEED_REQ_RESET_TITLE | 
+					   FEED_REQ_RESET_UPDATE_INT | 
+					   FEED_REQ_AUTO_DISCOVER | 
+					   FEED_REQ_PRIORITY_HIGH | 
+					   FEED_REQ_DOWNLOAD_FAVICON | 
+					   FEED_REQ_AUTH_DIALOG);
+		g_free(source);
+	}
+
+	gtk_widget_destroy(GTK_WIDGET(dialog));
+	g_free(ui_data);
+}
+
+static void on_complex_newdialog(struct fp_prop_ui_data *ui_data) {
+	GtkWidget		*newdialog;
+
+	gtk_widget_destroy(ui_data->dialog);
 
 	/* Create the dialog */
 	ui_data->dialog = newdialog = create_newdialog();
@@ -446,6 +460,63 @@ void ui_feed_add(nodePtr parent) {
 	
 	gtk_widget_show(newdialog);
 }
+
+/********************************************************************
+ * simple "New" dialog                                             *
+ ********************************************************************/
+
+static void on_simple_newdialog_response(GtkDialog *dialog, gint response_id, gpointer user_data) {
+	struct fp_prop_ui_data *ui_data = (struct fp_prop_ui_data*)user_data;
+	gchar *source = NULL;	
+	
+	switch(response_id) {
+		case GTK_RESPONSE_OK:
+			source = ui_feed_create_url(g_strdup(gtk_entry_get_text(GTK_ENTRY(ui_data->sourceEntry))),
+			                            FALSE /* auth */, NULL /* user */, NULL /* passwd */);
+
+			node_request_automatic_add(source, NULL, NULL,
+		                        	   FEED_REQ_SHOW_PROPDIALOG | 
+						   FEED_REQ_RESET_TITLE | 
+						   FEED_REQ_RESET_UPDATE_INT | 
+						   FEED_REQ_AUTO_DISCOVER | 
+						   FEED_REQ_PRIORITY_HIGH | 
+						   FEED_REQ_DOWNLOAD_FAVICON | 
+						   FEED_REQ_AUTH_DIALOG);
+			g_free(source);
+			gtk_widget_destroy(GTK_WIDGET(dialog));
+			g_free(ui_data);
+			break;
+		case GTK_RESPONSE_APPLY: /* misused for "Advanced" */
+			on_complex_newdialog(ui_data);
+			break;
+	}
+}
+
+void ui_feed_add(nodePtr parent) {
+	GtkWidget		*newdialog;
+	struct fp_prop_ui_data	*ui_data;
+
+	ui_data = g_new0(struct fp_prop_ui_data, 1);
+	ui_data->np = parent;
+
+	/* Create the dialog */
+	ui_data->dialog = newdialog = create_simplenewdialog();
+	gtk_window_set_transient_for(GTK_WINDOW(newdialog), GTK_WINDOW(mainwindow));
+	
+	/* Setup source entry */
+	ui_data->sourceEntry = lookup_widget(newdialog,"sourceEntry");
+	gtk_widget_grab_focus(GTK_WIDGET(ui_data->sourceEntry));
+	gtk_entry_set_activates_default(GTK_ENTRY(ui_data->sourceEntry), TRUE);
+
+	g_signal_connect(G_OBJECT(newdialog), "response",
+	                 G_CALLBACK(on_simple_newdialog_response), ui_data);
+	
+	gtk_widget_show(newdialog);
+}
+
+/********************************************************************
+ * "Properties" dialog                                              *
+ ********************************************************************/
 
 void ui_feed_properties(nodePtr node) {
 	GtkWidget		*propdialog;
