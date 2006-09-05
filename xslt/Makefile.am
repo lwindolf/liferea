@@ -15,4 +15,4 @@ xslt_DATA = $(xslt_in_files) $(xslt_files)
 EXTRA_DIST = \
 	$(xslt_DATA)
 
-DISTCLEANFILES = $(xslt_files:.xml.in=.xml)
+DISTCLEANFILES = $(xslt_in_files:.xml.in=.xml)
