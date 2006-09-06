@@ -213,8 +213,13 @@ gpointer feed_import(nodePtr node, const gchar *typeStr, xmlNodePtr cur, gboolea
 		tmp = xmlGetProp(cur, BAD_CAST"encAutoDownload");
 		if(tmp && !xmlStrcmp(tmp, BAD_CAST"true"))
 			feed->encAutoDownload = TRUE;
-		if(tmp)
-			xmlFree(tmp);
+		xmlFree(tmp);
+			
+		/* auto item link loading flag */
+		tmp = xmlGetProp(cur, BAD_CAST"loadItemLink");
+		if(tmp && !xmlStrcmp(tmp, BAD_CAST"true"))
+			feed->loadItemLink = TRUE;
+		xmlFree(tmp);
 			
 		update_state_import(cur, feed->updateState);
 		
@@ -267,6 +272,9 @@ void feed_export(feedPtr feed, xmlNodePtr cur, gboolean internal) {
 			
 		if(TRUE == feed->encAutoDownload)
 			xmlNewProp(cur, BAD_CAST"encAutoDownload", BAD_CAST"true");
+			
+		if(TRUE == feed->loadItemLink)
+			xmlNewProp(cur, BAD_CAST"loadItemLink", BAD_CAST"true");
 	}
 
 	update_state_export(cur, feed->updateState);

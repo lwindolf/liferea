@@ -31,6 +31,18 @@
 #include "support.h"
 #include "vfolder.h"
 
+gboolean itemset_load_link_preferred(itemSetPtr itemSet) {
+
+	switch(itemSet->type) {
+		case ITEMSET_TYPE_FEED:
+			return ((feedPtr)itemSet->node->data)->loadItemLink;
+			break;
+		default:
+			return FALSE;
+			break;
+	}
+}
+
 const gchar * itemset_get_base_url(itemSetPtr itemSet) {
 	const gchar 	*baseUrl = NULL;
 

@@ -56,6 +56,14 @@ typedef struct itemSet {
 } *itemSetPtr;
 
 /**
+ * Allows to check wether an item set requires to load
+ * the item link or the content after selecting an item.
+ *
+ * @returns TRUE if the item link is to be loaded
+ */
+gboolean itemset_load_link_preferred(itemSetPtr itemSet);
+
+/**
  * Returns the base URL for the given item set.
  * If it is a mixed item set NULL will be returned.
  *

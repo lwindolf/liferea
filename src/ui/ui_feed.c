@@ -45,8 +45,8 @@ extern GtkWidget *mainwindow;
  ********************************************************************/
 
 struct fp_prop_ui_data {
-	feedPtr fp;
-	nodePtr np;
+	feedPtr feed;
+	nodePtr node;
 	gint flags; /* Used by the authdialog to know how to request the feed update */
 	gint selector; /* Desiginates which fileselection dialog box is open.
 				   Set to 'u' for source
@@ -135,13 +135,15 @@ static void on_propdialog_response(GtkDialog *dialog, gint response_id, gpointer
 	struct fp_prop_ui_data *ui_data = (struct fp_prop_ui_data*)user_data;
 	
 	if(response_id == GTK_RESPONSE_OK) {
-		gchar *newSource;
-		const gchar *newFilter;
-		gboolean needsUpdate = FALSE;
+		gchar		*newSource;
+		const gchar	*newFilter;
+		gboolean	needsUpdate = FALSE;
+		feedPtr		feed = ui_data->feed;
+		nodePtr		node = ui_data->node;
 		
-		/* General*/
-		node_set_title(ui_data->np, gtk_entry_get_text(GTK_ENTRY(ui_data->feedNameEntry)));
-		feed_set_update_interval(ui_data->fp, gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(ui_data->refreshInterval)));
+		/* "General" */
+		node_set_title(node, gtk_entry_get_text(GTK_ENTRY(ui_data->feedNameEntry)));
+		feed_set_update_interval(feed, gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(ui_data->refreshInterval)));
 		
 		/* Source */
 		newSource = ui_feed_dialog_decode_source(ui_data);
@@ -150,51 +152,52 @@ static void on_propdialog_response(GtkDialog *dialog, gint response_id, gpointer
 		newFilter = gtk_entry_get_text(GTK_ENTRY(lookup_widget(ui_data->dialog, "filterEntry")));
 		if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(ui_data->dialog, "filterCheckbox"))) &&
 		   strcmp(newFilter,"")) { /* Maybe this should be a test to see if the file exists? */
-			if(feed_get_filter(ui_data->fp) == NULL ||
-			   strcmp(newFilter, feed_get_filter(ui_data->fp))) {
-				feed_set_filter(ui_data->fp, newFilter);
+			if(feed_get_filter(feed) == NULL ||
+			   strcmp(newFilter, feed_get_filter(feed))) {
+				feed_set_filter(feed, newFilter);
 				needsUpdate = TRUE;
 			}
 		} else {
-			if(feed_get_filter(ui_data->fp)) {
-				feed_set_filter(ui_data->fp, NULL);
+			if(feed_get_filter(feed)) {
+				feed_set_filter(feed, NULL);
 				needsUpdate = TRUE;
 			}
 		}
 		
 		/* if URL has changed... */
-		if(strcmp(newSource, feed_get_source(ui_data->fp))) {
-			feed_set_source(ui_data->fp, newSource);
+		if(strcmp(newSource, feed_get_source(feed))) {
+			feed_set_source(feed, newSource);
 			needsUpdate = TRUE;
 		}
 		g_free(newSource);
 
 		/* Update interval handling */
 		if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(GTK_WIDGET(dialog), "updateIntervalNever"))))
-			feed_set_update_interval(ui_data->fp, -2);
+			feed_set_update_interval(feed, -2);
 		else if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(GTK_WIDGET(dialog), "updateIntervalDefault"))))
-			feed_set_update_interval(ui_data->fp, -1);
+			feed_set_update_interval(feed, -1);
 		else if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(GTK_WIDGET(dialog), "updateIntervalSpecific"))))
-			feed_set_update_interval(ui_data->fp, gtk_spin_button_get_value(GTK_SPIN_BUTTON(lookup_widget(GTK_WIDGET(dialog), "refreshIntervalSpinButton"))));
+			feed_set_update_interval(feed, gtk_spin_button_get_value(GTK_SPIN_BUTTON(lookup_widget(GTK_WIDGET(dialog), "refreshIntervalSpinButton"))));
 		
 		
-		/* Cache handling */
+		/* "Archive" handling */
 		if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(GTK_WIDGET(dialog), "feedCacheDefault"))))
-			ui_data->fp->cacheLimit = CACHE_DEFAULT;
+			feed->cacheLimit = CACHE_DEFAULT;
 		else if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(GTK_WIDGET(dialog), "feedCacheDisable"))))
-			ui_data->fp->cacheLimit = CACHE_DISABLE;
+			feed->cacheLimit = CACHE_DISABLE;
 		else if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(GTK_WIDGET(dialog), "feedCacheUnlimited"))))
-			ui_data->fp->cacheLimit = CACHE_UNLIMITED;
+			feed->cacheLimit = CACHE_UNLIMITED;
 		else if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(GTK_WIDGET(dialog), "feedCacheLimited"))))
-			ui_data->fp->cacheLimit = gtk_spin_button_get_value(GTK_SPIN_BUTTON(lookup_widget(GTK_WIDGET(dialog), "cacheItemLimit")));
+			feed->cacheLimit = gtk_spin_button_get_value(GTK_SPIN_BUTTON(lookup_widget(GTK_WIDGET(dialog), "cacheItemLimit")));
 
-		/* Enclosures */
-		ui_data->fp->encAutoDownload = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(GTK_WIDGET(dialog), "enclosureDownloadCheck")));
+		/* "Advanced" options */
+		feed->encAutoDownload = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(GTK_WIDGET(dialog), "enclosureDownloadCheck")));
+		feed->loadItemLink = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(GTK_WIDGET(dialog), "loadItemLinkCheck")));
 
-		ui_node_update(ui_data->np);
+		ui_node_update(node);
 		feedlist_schedule_save();
 		if(needsUpdate)
-			node_request_update(ui_data->np, FEED_REQ_AUTH_DIALOG | FEED_REQ_PRIORITY_HIGH);
+			node_request_update(node, FEED_REQ_AUTH_DIALOG | FEED_REQ_PRIORITY_HIGH);
 	}
 
 	g_free(ui_data);
@@ -301,7 +304,7 @@ static void on_authdialog_response(GtkDialog *dialog, gint response_id, gpointer
 		xmlChar *user, *pass, *sourceUrl;
 
 		/* Source */
-		uri = xmlParseURI(BAD_CAST feed_get_source(ui_data->fp));
+		uri = xmlParseURI(BAD_CAST feed_get_source(ui_data->feed));
 		
 		if(!uri) {
 			g_warning("Error when parsing authentication URL! Authentication settings lost.");
@@ -317,11 +320,11 @@ static void on_authdialog_response(GtkDialog *dialog, gint response_id, gpointer
 
 		sourceUrl = xmlSaveUri(uri);
 		if(sourceUrl) {
-			feed_set_source(ui_data->fp, sourceUrl);
+			feed_set_source(ui_data->feed, sourceUrl);
 			xmlFree(sourceUrl);
 		}
 
-		node_request_update(ui_data->np, ui_data->flags);
+		node_request_update(ui_data->node, ui_data->flags);
 		xmlFreeURI(uri);
 	}
 
@@ -340,8 +343,8 @@ void ui_feed_authdialog_new(nodePtr node, gint flags) {
 	
 	/* Create the dialog */
 	ui_data->dialog = authdialog = create_authdialog();
-	ui_data->np = node;
-	ui_data->fp = (feedPtr)node->data;
+	ui_data->node = node;
+	ui_data->feed = (feedPtr)node->data;
 	ui_data->flags = flags;
 	gtk_window_set_transient_for(GTK_WINDOW(authdialog), GTK_WINDOW(mainwindow));
 	
@@ -349,7 +352,7 @@ void ui_feed_authdialog_new(nodePtr node, gint flags) {
 	ui_data->username = lookup_widget(authdialog, "usernameEntry");
 	ui_data->password = lookup_widget(authdialog, "passwordEntry");
 	
-	uri = xmlParseURI(BAD_CAST feed_get_source(ui_data->fp));
+	uri = xmlParseURI(BAD_CAST feed_get_source(ui_data->feed));
 	
 	if(uri) {
 		if(uri->user) {
@@ -497,7 +500,7 @@ void ui_feed_add(nodePtr parent) {
 	struct fp_prop_ui_data	*ui_data;
 
 	ui_data = g_new0(struct fp_prop_ui_data, 1);
-	ui_data->np = parent;
+	ui_data->node = parent;
 
 	/* Create the dialog */
 	ui_data->dialog = newdialog = create_simplenewdialog();
@@ -528,8 +531,8 @@ void ui_feed_properties(nodePtr node) {
 	node_load(node);
 
 	ui_data = g_new0(struct fp_prop_ui_data, 1);
-	ui_data->np = node;
-	ui_data->fp = feed;
+	ui_data->node = node;
+	ui_data->feed = feed;
 	
 	/* Create the dialog */
 	ui_data->dialog = propdialog = create_propdialog();
@@ -537,7 +540,7 @@ void ui_feed_properties(nodePtr node) {
 
 	/***********************************************************************
 	 * General                                                             *
-	 **********************************************************************/
+	 ***********************************************************************/
 
 	/* Setup feed name */
 	ui_data->feedNameEntry = lookup_widget(propdialog,"feedNameEntry");
@@ -575,7 +578,7 @@ void ui_feed_properties(nodePtr node) {
 
 	/***********************************************************************
 	 * Source                                                              *
-	 **********************************************************************/
+	 ***********************************************************************/
 		
 	/* Setup source entry */
 	ui_data->sourceEntry = lookup_widget(propdialog,"sourceEntry");
@@ -645,8 +648,8 @@ void ui_feed_properties(nodePtr node) {
 	g_signal_connect(lookup_widget(propdialog, "filterSelectFile"), "clicked", G_CALLBACK (on_selectfile_pressed), ui_data);
 
 	/***********************************************************************
-	 * Cache                                                               *
-	 **********************************************************************/
+	 * Archive                                                             *
+	 ***********************************************************************/
 
 	/* Cache size radio buttons */
 	if(feed->cacheLimit == CACHE_DISABLE) {
@@ -668,10 +671,11 @@ void ui_feed_properties(nodePtr node) {
 	on_feed_prop_filtercheck(GTK_TOGGLE_BUTTON(lookup_widget(propdialog, "filterCheckbox")), ui_data);
 
 	/***********************************************************************
-	 * Enclosures                                                          *
-	 **********************************************************************/
+	 * Advanced                                                            *
+	 ***********************************************************************/
 	
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(propdialog, "enclosureDownloadCheck")), feed->encAutoDownload);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(propdialog, "loadItemLinkCheck")), feed->loadItemLink);
 
 	gtk_widget_show_all(propdialog);
 

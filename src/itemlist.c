@@ -516,9 +516,14 @@ void itemlist_selection_changed(itemPtr item) {
 			itemlist_set_read_status(item, TRUE);
 			itemlist_set_update_status(item, FALSE);
 
-			buffer = item_render(item);
-			ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, itemset_get_base_url(item->itemSet));
-			g_free(buffer);
+			/* and either render the item or load the item link */
+			if(itemset_load_link_preferred(displayed_itemSet)) {
+				ui_htmlview_launch_URL(ui_mainwindow_get_active_htmlview(), item_get_source(item), 2);
+			} else {
+				buffer = item_render(item);
+				ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, itemset_get_base_url(item->itemSet));
+				g_free(buffer);
+			}
 		}
 
 		ui_node_update(displayed_itemSet->node);

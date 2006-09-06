@@ -2,10 +2,12 @@
 
 	Version 1.1.4 (Unstable)
 
-	* Simplified subscription dialog hides all
-	  filtering and command piping features.
-	* Fixes rendering and function of the broken
-	  search feature. (reported by Sergei Butakov)
+	* Simplified subscription dialog hides all filtering and
+	  command piping features.
+	* Fixes rendering and function of the broken search
+	  feature. (reported by Sergei Butakov)
+	* Added a new feed property that allows to automatically
+	  load the item link instead of the item contents.
 
 
 2006-09-05  Lars Lindner  <lars.lindner@gmail.com>

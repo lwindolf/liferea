@@ -245,6 +245,7 @@ create_propdialog (void)
   GtkWidget *label131;
   GtkWidget *vbox2615;
   GtkWidget *enclosureDownloadCheck;
+  GtkWidget *loadItemLinkCheck;
   GtkWidget *enctablabel;
   GtkWidget *dialog_action_area13;
   GtkWidget *prop_cancel;
@@ -497,7 +498,7 @@ create_propdialog (void)
   gtk_widget_show (filterSelectFile);
   gtk_box_pack_start (GTK_BOX (hbox92231), filterSelectFile, FALSE, FALSE, 0);
 
-  label67 = gtk_label_new (_("Feed Source"));
+  label67 = gtk_label_new (_("Source"));
   gtk_widget_show (label67);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook3), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook3), 1), label67);
 
@@ -552,7 +553,7 @@ create_propdialog (void)
   gtk_widget_show (label84);
   gtk_box_pack_start (GTK_BOX (hbox34), label84, FALSE, FALSE, 0);
 
-  label68 = gtk_label_new (_("Feed Cache"));
+  label68 = gtk_label_new (_("Archive"));
   gtk_widget_show (label68);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook3), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook3), 2), label68);
 
@@ -607,7 +608,7 @@ create_propdialog (void)
   gtk_widget_show (label131);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook3), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook3), 3), label131);
 
-  vbox2615 = gtk_vbox_new (FALSE, 18);
+  vbox2615 = gtk_vbox_new (FALSE, 6);
   gtk_widget_show (vbox2615);
   gtk_container_add (GTK_CONTAINER (notebook3), vbox2615);
   gtk_container_set_border_width (GTK_CONTAINER (vbox2615), 12);
@@ -616,7 +617,11 @@ create_propdialog (void)
   gtk_widget_show (enclosureDownloadCheck);
   gtk_box_pack_start (GTK_BOX (vbox2615), enclosureDownloadCheck, FALSE, FALSE, 0);
 
-  enctablabel = gtk_label_new (_("Enclosures"));
+  loadItemLinkCheck = gtk_check_button_new_with_mnemonic (_("Load the item link in internal browser when reading articles."));
+  gtk_widget_show (loadItemLinkCheck);
+  gtk_box_pack_start (GTK_BOX (vbox2615), loadItemLinkCheck, FALSE, FALSE, 0);
+
+  enctablabel = gtk_label_new (_("Advanced"));
   gtk_widget_show (enctablabel);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook3), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook3), 4), enctablabel);
 
@@ -713,6 +718,7 @@ create_propdialog (void)
   GLADE_HOOKUP_OBJECT (propdialog, label131, "label131");
   GLADE_HOOKUP_OBJECT (propdialog, vbox2615, "vbox2615");
   GLADE_HOOKUP_OBJECT (propdialog, enclosureDownloadCheck, "enclosureDownloadCheck");
+  GLADE_HOOKUP_OBJECT (propdialog, loadItemLinkCheck, "loadItemLinkCheck");
   GLADE_HOOKUP_OBJECT (propdialog, enctablabel, "enctablabel");
   GLADE_HOOKUP_OBJECT_NO_REF (propdialog, dialog_action_area13, "dialog_action_area13");
   GLADE_HOOKUP_OBJECT (propdialog, prop_cancel, "prop_cancel");
@@ -2741,7 +2747,7 @@ create_aboutdialog (void)
   gtk_container_add (GTK_CONTAINER (scrolledwindow6), viewport2);
   gtk_viewport_set_shadow_type (GTK_VIEWPORT (viewport2), GTK_SHADOW_NONE);
 
-  label61 = gtk_label_new ("Tibor Pittich <Tibor.Pittich@phuture.sk>\nAntoine REVERSAT <areversat@TUXFAMILY.ORG>\nVincent Lefevre <vincent@vinc17.org>\nStephane Jourdan <stephane.jourdan@itris.fr>\nTakeshi AIHANA <aihana@gnome.gr.jp>\nPark Ji-In <mithrandir@electrang.net>\nCarlos Fenollosa <topopardo@humorfreak.com>\nJose Maria Mateos <chema@chema.homelinux.org>\nEnrico Genauck <enrico@fanglomerat.de>\nVladimir Petkov <vpetkov@i-space.org>\nTomislav Markovski <tome@set.com.mk>\nDario Conigliaro <djdas@djdas.net>\nRex Tsai <chihchun@users.sourceforge.net>\nAlekseev Vladimir <compress@linux-online.ru>\nJuraj Kubelka <Juraj.Kubelka@email.cz>\nMartin-Eric Racine <q-funk@pp.fishpool.fi>\nJakub W. Jóźwicki <jakubj@users.sourceforge.net>\nPauli Virtanen <pauli.virtanen@hut.fi>\nFernando Ike <fernando@ikenet.com.br>\nSpoial�\203 Cristian <scristian@gmail.com>\nJim Huang <jserv@kaffe.org>\nGuanglei Xiong <xgl99@mails.tsinghua.edu.cn>\nSigge Kotliar <sigge@hystrix.se>");
+  label61 = gtk_label_new ("Tibor Pittich <Tibor.Pittich@phuture.sk>\nAntoine REVERSAT <areversat@TUXFAMILY.ORG>\nVincent Lefevre <vincent@vinc17.org>\nStephane Jourdan <stephane.jourdan@itris.fr>\nTakeshi AIHANA <aihana@gnome.gr.jp>\nPark Ji-In <mithrandir@electrang.net>\nCarlos Fenollosa <topopardo@humorfreak.com>\nJose Maria Mateos <chema@chema.homelinux.org>\nEnrico Genauck <enrico@fanglomerat.de>\nVladimir Petkov <vpetkov@i-space.org>\nTomislav Markovski <tome@set.com.mk>\nDario Conigliaro <djdas@djdas.net>\nRex Tsai <chihchun@users.sourceforge.net>\nAlekseev Vladimir <compress@linux-online.ru>\nJuraj Kubelka <Juraj.Kubelka@email.cz>\nMartin-Eric Racine <q-funk@pp.fishpool.fi>\nJakub W. J\303\263\305\272wicki <jakubj@users.sourceforge.net>\nPauli Virtanen <pauli.virtanen@hut.fi>\nFernando Ike <fernando@ikenet.com.br>\nSpoial\304\203 Cristian <scristian@gmail.com>\nJim Huang <jserv@kaffe.org>\nGuanglei Xiong <xgl99@mails.tsinghua.edu.cn>\nSigge Kotliar <sigge@hystrix.se>");
   gtk_widget_show (label61);
   gtk_container_add (GTK_CONTAINER (viewport2), label61);
   gtk_misc_set_alignment (GTK_MISC (label61), 0, 0.1);

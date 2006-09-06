@@ -811,7 +811,7 @@ static GtkActionEntry ui_mainwindow_action_entries[] = {
 	{"ZoomOut", "gtk-zoom-out", N_("_Decrease Text Size"), "<control>minus", N_("Decreases the text size of the item view."),
 	 G_CALLBACK(on_popup_zoomout_selected)},
 	{"SearchMenu", NULL, N_("_Search")},
-	{"SearchFeeds", "gtk-find", N_("Search All Feeds"), "<control>F", N_("Show the search dialog."), G_CALLBACK(on_searchbtn_clicked)},
+	{"SearchFeeds", "gtk-find", N_("Search All Feeds..."), "<control>F", N_("Show the search dialog."), G_CALLBACK(on_searchbtn_clicked)},
 	{"CreateEngineSearch", NULL, N_("Search With ...")},
 	{"HelpMenu", NULL, N_("_Help")},
 	{"ShowHelpContents", "gtk-help", N_("_Contents"), NULL, N_("View help for this application."), G_CALLBACK(on_topics_activate)},

@@ -100,6 +100,7 @@ typedef struct feed {
 	gint		updateInterval;		/**< user defined update interval in minutes */
 	GSList		*metadata;		/**< metadata of this feed */
 	gboolean	encAutoDownload;	/**< enclosure auto download flag */
+	gboolean	loadItemLink;		/**< automatic item link load flag */
 	
 	/* feed cache state properties */
 	gint		cacheLimit;		/**< Amount of cache to save: See the cache_limit enum */
