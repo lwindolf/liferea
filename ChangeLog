@@ -4,6 +4,8 @@
 
 	* Simplified subscription dialog hides all
 	  filtering and command piping features.
+	* Fixes rendering and function of the broken
+	  search feature. (reported by Sergei Butakov)
 
 
 2006-09-05  Lars Lindner  <lars.lindner@gmail.com>

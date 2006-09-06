@@ -309,29 +309,34 @@ static gboolean vfolder_apply_rules_for_item(vfolderPtr vp, itemPtr ip) {
  * Checks all items of the given feed list node against a vfolder. 
  * Used by vfolder_refresh().
  */
-static void vfolder_apply_rules(nodePtr np, gpointer userdata) {
+static void vfolder_apply_rules(nodePtr node, gpointer userdata) {
 	vfolderPtr	vp = (vfolderPtr)userdata;
 	GList		*items;
 
 	/* do not search in vfolders */
-	if((NODE_TYPE_VFOLDER == np->type) ||
-	   (NODE_TYPE_FOLDER == np->type))
+	if(NODE_TYPE_VFOLDER == node->type)
 		return;
+		
+	if(NODE_TYPE_FOLDER != node->type) {
+		debug_enter("vfolder_apply_rules");
 
-	debug_enter("vfolder_apply_rules");
+		debug1(DEBUG_UPDATE, "applying rules for (%s)", node_get_title(node));
+		node_load(node);
 
-	debug1(DEBUG_UPDATE, "applying rules for (%s)", node_get_title(np));
-	node_load(np);
-
-	/* check all feed items */
-	items = np->itemSet->items;
-	while(NULL != items) {
-		vfolder_apply_rules_for_item(vp, items->data);
-		items = g_list_next(items);
-	}
+		/* check all node items */
+		items = node->itemSet->items;
+		while(NULL != items) {
+			vfolder_apply_rules_for_item(vp, items->data);
+			items = g_list_next(items);
+		}
 	
-	node_unload(np);
-	debug_exit("vfolder_apply_rules");
+		node_unload(node);
+	
+		debug_exit("vfolder_apply_rules");
+	} else  {
+		/* Recursion */
+		node_foreach_child_data(node, vfolder_apply_rules, vp);
+	}
 }
 
 /* Method that applies the rules of the given vfolder to 
