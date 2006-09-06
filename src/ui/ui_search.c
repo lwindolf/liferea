@@ -110,12 +110,12 @@ void on_searchentry_activate(GtkEntry *entry, gpointer user_data) {
 
 	buffer = g_string_new(NULL);
 	ui_htmlview_start_output(buffer, NULL, TRUE);
-	g_string_append_printf(buffer, _("<h2>%d Search Results for \"%s\"</h2>"
+	g_string_append_printf(buffer, _("<div class='content'><h2>%d Search Results for \"%s\"</h2>"
  	                                 "<p>The item list now contains all items matching the "
 	                                 "specified search pattern. If you want to save this search "
 	                                 "result permanently you can click the Search Folder button in "
 	                                 "the search dialog and Liferea will add a Search Folder to your "
-	                                 "feed list.</h2>"), g_list_length(searchResult->itemSet->items), searchstring);
+	                                 "feed list.</p></div>"), g_list_length(searchResult->itemSet->items), searchstring);
 	ui_htmlview_finish_output(buffer);
 	ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer->str, NULL);
 	g_string_free(buffer, TRUE);
