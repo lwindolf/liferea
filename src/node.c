@@ -122,7 +122,8 @@ void node_free(nodePtr node) {
 		node->itemSet = NULL;
 	}
 
-	g_object_unref(node->icon);
+	if(node->icon)
+		g_object_unref(node->icon);
 	g_free(node->iconFile);
 	g_free(node->title);
 	g_free(node->id);
