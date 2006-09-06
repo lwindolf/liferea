@@ -7164,7 +7164,7 @@ matches. They are removed if at least one removing rule matches.</property>
 	    <widget class="GtkButton" id="vfolderaddbtn">
 	      <property name="visible">True</property>
 	      <property name="sensitive">False</property>
-	      <property name="tooltip" translatable="yes">Saves this search as a VFolder, which will appear in the feed list.</property>
+	      <property name="tooltip" translatable="yes">Saves this search as a search folder, which will appear in the feed list.</property>
 	      <property name="can_default">True</property>
 	      <property name="can_focus">True</property>
 	      <property name="relief">GTK_RELIEF_NORMAL</property>
@@ -7210,7 +7210,7 @@ matches. They are removed if at least one removing rule matches.</property>
 		      <child>
 			<widget class="GtkLabel" id="label223">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">VFolder</property>
+			  <property name="label" translatable="yes">Search Folder</property>
 			  <property name="use_underline">True</property>
 			  <property name="use_markup">False</property>
 			  <property name="justify">GTK_JUSTIFY_LEFT</property>

@@ -3214,7 +3214,7 @@ create_searchdialog (void)
   gtk_dialog_add_action_widget (GTK_DIALOG (searchdialog), vfolderaddbtn, GTK_RESPONSE_APPLY);
   gtk_widget_set_sensitive (vfolderaddbtn, FALSE);
   GTK_WIDGET_SET_FLAGS (vfolderaddbtn, GTK_CAN_DEFAULT);
-  gtk_tooltips_set_tip (tooltips, vfolderaddbtn, _("Saves this search as a VFolder, which will appear in the feed list."), NULL);
+  gtk_tooltips_set_tip (tooltips, vfolderaddbtn, _("Saves this search as a search folder, which will appear in the feed list."), NULL);
 
   alignment11 = gtk_alignment_new (0.5, 0.5, 0, 0);
   gtk_widget_show (alignment11);
@@ -3228,7 +3228,7 @@ create_searchdialog (void)
   gtk_widget_show (image2461);
   gtk_box_pack_start (GTK_BOX (hbox92228), image2461, FALSE, FALSE, 0);
 
-  label223 = gtk_label_new_with_mnemonic (_("VFolder"));
+  label223 = gtk_label_new_with_mnemonic (_("Search Folder"));
   gtk_widget_show (label223);
   gtk_box_pack_start (GTK_BOX (hbox92228), label223, FALSE, FALSE, 0);
 
