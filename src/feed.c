@@ -1320,11 +1320,7 @@ static void feed_request_auto_update(nodePtr node) {
 
 static void feed_remove(nodePtr node) {
 
-	if(node->icon) {
-		g_object_unref(node->icon);
-		favicon_remove_from_cache(node->id);
-	}
-
+	favicon_remove_from_cache(node->id);
 	notification_node_removed(node);
 	ui_node_remove_node(node);
 	
