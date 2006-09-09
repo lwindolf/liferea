@@ -22,6 +22,8 @@ bin_PROGRAMS = liferea-bin
 bin_SCRIPTS = liferea liferea-add-feed
 
 liferea_bin_SOURCES = \
+	bacon-message-connection.c \
+	bacon-message-connection.h \
 	callbacks.c callbacks.h \
 	common.c common.h \
 	conf.c conf.h \
