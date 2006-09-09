@@ -1634,8 +1634,8 @@ msgid "_Export Feed List..."
 msgstr "Feed-Liste _exportieren..."
 
 #: ../src/ui/ui_mainwindow.c:792
-msgid ">Exports the feed list as OPML."
-msgstr ">Exportiert die Feed-Liste als OPML Datei."
+msgid "Exports the feed list as OPML."
+msgstr "Exportiert die Feed-Liste als OPML Datei."
 
 #: ../src/ui/ui_mainwindow.c:795
 msgid "_Next Unread Item"
