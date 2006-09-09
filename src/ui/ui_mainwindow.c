@@ -79,6 +79,7 @@ static gchar *iconNames[] = {	"read.xpm",		/* ICON_READ */
 				"online.png",		/* ICON_ONLINE */
 				"offline.png",		/* ICON_OFFLINE */
 				"edit.png",		/* ICON_UPDATED */
+				"attachment.png",	/* ICON_ENCLOSURE */
 				NULL
 				};
 

@@ -50,6 +50,7 @@ typedef struct item {
 	gboolean	popupStatus;		/**< TRUE if the item was downloaded and is yet to be displayed by the popup notification feature */
 	gboolean	updateStatus;		/**< TRUE if the item content was updated */
 	gboolean 	flagStatus;		/**< TRUE if the item has been flagged */
+	gboolean	hasEnclosure;		/**< TRUE if this item has at least one enclosure */
 	gchar		*title;			/**< Title */
 	gchar		*source;		/**< URL to the post online */
 	gchar		*real_source_url;	/**< (optional) URL of the real source (e.g. if listed in search engine result) */

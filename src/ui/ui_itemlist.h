@@ -32,10 +32,12 @@ enum is_columns {
 	IS_TIME,		/**< Time of item creation */ /* This is set to the first item so that default sorting is by time */
 	IS_TIME_STR,		/**< Time of item creation as a string*/
 	IS_LABEL,		/**< Displayed name */
-	IS_ICON,		/**< Pixbuf reference to the item's icon */
+	IS_STATEICON,		/**< Pixbuf reference to the item's state icon */
 	IS_NR,			/**< Item id, to lookup item ptr from parent feed */
 	IS_PARENT,		/**< Parent node pointer */
-	IS_ICON2,		/**< Pixbuf reference to the item's feed's icon */
+	IS_FAVICON,		/**< Pixbuf reference to the item's feed's icon */
+	IS_ENCICON,		/**< Pixbuf reference to the item's enclosure icon */
+	IS_ENCLOSURE,		/**< Flag wether enclosure is attached or not */
 	IS_LEN			/**< Number of columns in the itemstore */
 };
 

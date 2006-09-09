@@ -106,6 +106,7 @@ itemPtr parseRSSItem(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 				}
 		
 				ctxt->item->metadata = metadata_list_append(ctxt->item->metadata, "enclosure", tmp);
+				ctxt->item->hasEnclosure = TRUE;
 				g_free(tmp);
 			}
 		} 

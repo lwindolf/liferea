@@ -93,7 +93,7 @@ static gint ui_itemlist_date_sort_func(GtkTreeModel *model, GtkTreeIter *a, GtkT
 		return 0;
 }
 
-static gint ui_itemlist_icon_sort_func(GtkTreeModel *model, GtkTreeIter *a, GtkTreeIter *b, gpointer user_data) {
+static gint ui_itemlist_favicon_sort_func(GtkTreeModel *model, GtkTreeIter *a, GtkTreeIter *b, gpointer user_data) {
 	nodePtr	node1, node2;
 	
 	gtk_tree_model_get(model, a, IS_PARENT, &node1, -1);
@@ -146,9 +146,11 @@ GtkTreeStore * ui_itemlist_get_tree_store(void) {
 		                               GDK_TYPE_PIXBUF,
 		                               G_TYPE_ULONG,
 					       G_TYPE_POINTER,
-		                               GDK_TYPE_PIXBUF);
+		                               GDK_TYPE_PIXBUF,
+		                               GDK_TYPE_PIXBUF,
+					       G_TYPE_BOOLEAN);
 		gtk_tree_sortable_set_sort_func(GTK_TREE_SORTABLE(itemstore), IS_TIME, ui_itemlist_date_sort_func, NULL, NULL);
-		gtk_tree_sortable_set_sort_func(GTK_TREE_SORTABLE(itemstore), IS_PARENT, ui_itemlist_icon_sort_func, NULL, NULL);
+		gtk_tree_sortable_set_sort_func(GTK_TREE_SORTABLE(itemstore), IS_PARENT, ui_itemlist_favicon_sort_func, NULL, NULL);
 		g_signal_connect(G_OBJECT(itemstore), "sort-column-changed", G_CALLBACK(itemlist_sort_column_changed_cb), NULL);
 	} else {
 		itemstore = GTK_TREE_STORE(model);
@@ -240,19 +242,15 @@ void ui_itemlist_clear(void) {
 	item_to_iter = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, g_free);
 }
 
-void ui_itemlist_update_item(itemPtr ip) {
+void ui_itemlist_update_item(itemPtr item) {
 	GtkTreeIter	iter;
 	gchar		*title, *label, *time_str, *esc_title, *esc_time_str, *tmp;
 	const gchar 	*direction_marker;
-	GdkPixbuf	*icon = NULL, *favicon;
-
-	/* favicon for feed icon column (visible in folders/vfolders/searches) */
-	g_assert(ip->sourceNode);
-	favicon = ip->sourceNode->icon;
+	GdkPixbuf	*icon = NULL;
 
 	/* Time */
-	if(0 != ip->time) {
-		esc_time_str = ui_itemlist_format_date((time_t)ip->time);
+	if(0 != item->time) {
+		esc_time_str = ui_itemlist_format_date((time_t)item->time);
 		/* the time value is no markup, so we escape it... */
 		tmp = g_markup_escape_text(esc_time_str,-1);
 		g_free(esc_time_str);
@@ -262,7 +260,7 @@ void ui_itemlist_update_item(itemPtr ip) {
 	}
 	
 	/* Label and state icon */
-	title = g_strdup(ip->title);
+	title = g_strdup(item->title);
 	if(title == NULL) 
 		title = g_strdup(_("[No title]"));
 		
@@ -271,13 +269,13 @@ void ui_itemlist_update_item(itemPtr ip) {
 	esc_title = g_markup_escape_text(title, -1);
 	esc_title = g_strstrip(esc_title);
 	
-	direction_marker = common_get_direction_mark(ip->itemSet->node->title);
+	direction_marker = common_get_direction_mark(item->itemSet->node->title);
 	
-	if(FALSE == ip->readStatus) {
+	if(FALSE == item->readStatus) {
 		time_str = g_strdup_printf("<span weight=\"bold\">%s</span>", esc_time_str);
 		label = g_strdup_printf("%s<span weight=\"bold\">%s</span>", direction_marker, esc_title);
 		icon = icons[ICON_UNREAD];
-	} else if(TRUE == ip->updateStatus) {
+	} else if(TRUE == item->updateStatus) {
 		time_str = g_strdup_printf("<span weight=\"bold\" color=\"#333\">%s</span>", esc_time_str);
 		label = g_strdup_printf("%s<span weight=\"bold\" color=\"#333\">%s</span>", direction_marker, esc_title);
 		icon = icons[ICON_UPDATED];
@@ -289,17 +287,16 @@ void ui_itemlist_update_item(itemPtr ip) {
 	g_free(esc_title);
 	g_free(esc_time_str);
 	
-	if(TRUE == ip->flagStatus) 
+	if(item->flagStatus) 
 		icon = icons[ICON_FLAG];
 
 	/* Finish 'em... */
-	if(ui_item_to_iter(ip, &iter)) {
+	if(ui_item_to_iter(item, &iter)) {
 		gtk_tree_store_set(ui_itemlist_get_tree_store(), &iter,
-					    IS_LABEL, label,
-					    IS_TIME_STR, time_str,
-					    IS_ICON, icon,
-					    IS_ICON2, favicon,
-					    -1);
+		                   IS_LABEL, label,
+				   IS_TIME_STR, time_str,
+				   IS_STATEICON, icon,
+				   -1);
 	}
 	
 	g_free(time_str);
@@ -333,8 +330,8 @@ GtkWidget* ui_itemlist_new() {
 	GtkTreeViewColumn 	*column;
 	GtkTreeSelection	*select;
 	GtkTreeStore		*itemstore;	
-	GtkWidget 			*itemlist;
-	GtkWidget 			*ilscrolledwindow;
+	GtkWidget 		*itemlist;
+	GtkWidget 		*ilscrolledwindow;
 	
 	ilscrolledwindow = gtk_scrolled_window_new (NULL, NULL);
 	gtk_widget_show (ilscrolledwindow);
@@ -353,11 +350,14 @@ GtkWidget* ui_itemlist_new() {
 
 	gtk_tree_view_set_model(GTK_TREE_VIEW(itemlist), GTK_TREE_MODEL(itemstore));
 
-	/* we only render the state, title and time */
 	renderer = gtk_cell_renderer_pixbuf_new();
-	column = gtk_tree_view_column_new_with_attributes("", renderer, "pixbuf", IS_ICON, NULL);
+	column = gtk_tree_view_column_new_with_attributes("", renderer, "pixbuf", IS_STATEICON, NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(itemlist), column);
 	/* No sorting because when an item is clicked, it would immediatly change the sorting order */
+	
+	renderer = gtk_cell_renderer_pixbuf_new();
+	column = gtk_tree_view_column_new_with_attributes("", renderer, "pixbuf", IS_ENCICON, NULL);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(itemlist), column);
 
 	renderer = gtk_cell_renderer_text_new();
 	column = gtk_tree_view_column_new_with_attributes(_("Date"), renderer, "markup", IS_TIME_STR, NULL);
@@ -366,15 +366,17 @@ GtkWidget* ui_itemlist_new() {
 	g_object_set(column, "resizable", TRUE, NULL);
 	
 	renderer = gtk_cell_renderer_pixbuf_new();
-	column = gtk_tree_view_column_new_with_attributes("", renderer, "pixbuf", IS_ICON2, NULL);
+	column = gtk_tree_view_column_new_with_attributes("", renderer, "pixbuf", IS_FAVICON, NULL);
 	gtk_tree_view_column_set_sort_column_id(column, IS_PARENT);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(itemlist), column);
 	
-	renderer = gtk_cell_renderer_text_new();	
+	column = gtk_tree_view_column_new();
+	gtk_tree_view_column_set_title(column, _("Headline"));
+
+	renderer = gtk_cell_renderer_text_new();
 	column = gtk_tree_view_column_new_with_attributes(_("Headline"), renderer, "markup", IS_LABEL, NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(itemlist), column);
 	gtk_tree_view_column_set_sort_column_id(column, IS_LABEL);
-
 	g_object_set(column, "resizable", TRUE, NULL);
 #if GTK_CHECK_VERSION(2,6,0)
 	g_object_set(renderer, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
@@ -448,6 +450,9 @@ void ui_itemlist_add_item(itemPtr item, gboolean merge) {
 		                	      IS_NR, item->nr,
 					      IS_PARENT, item->itemSet->node,
 		                	      IS_TIME, item->time,
+		                              IS_FAVICON, item->sourceNode->icon,
+		                              IS_ENCICON, item->hasEnclosure?icons[ICON_ENCLOSURE]:NULL,
+					      IS_ENCLOSURE, item->hasEnclosure,
 		                	      -1);
 		ui_itemlist_update_item(item);
 	}
@@ -455,10 +460,16 @@ void ui_itemlist_add_item(itemPtr item, gboolean merge) {
 
 void ui_itemlist_enable_favicon_column(gboolean enabled) {
 
-	/* we depend on the fact that the third column is the favicon column!!! 
-	   if we are in search mode (or have a vfolder) we show the favicon 
+	/* we depend on the fact that the second column is the favicon column!!! 
+	   if we are in search mode or have a folder or vfolder we show the favicon 
 	   column to give a hint where the item comes from ... */
-	gtk_tree_view_column_set_visible(gtk_tree_view_get_column(GTK_TREE_VIEW(itemlist_treeview), 2), enabled);
+	gtk_tree_view_column_set_visible(gtk_tree_view_get_column(GTK_TREE_VIEW(itemlist_treeview), 3), enabled);
+}
+
+void ui_itemlist_enable_encicon_column(gboolean enabled) {
+
+	/* we depend on the fact that the third column is the enclosure icon column!!! */
+	gtk_tree_view_column_set_visible(gtk_tree_view_get_column(GTK_TREE_VIEW(itemlist_treeview), 1), enabled);
 }
 
 void on_popup_launchitem_selected(void) {

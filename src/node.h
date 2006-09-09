@@ -73,7 +73,7 @@ typedef struct node {
 	/* item list state properties of this node */
 	itemSetPtr	itemSet;	/**< The set of items belonging to this node */
 	gboolean	twoPane;	/**< Flag if three pane or condensed mode is set for this feed */
-	gint		sortColumn;	/**< Sorting column. Set to either IS_TITLE, or IS_TIME */
+	gint		sortColumn;	/**< Sorting column. Set to either IS_TITLE, IS_FAVICON, IS_ENCICON or IS_TIME */
 	gboolean	sortReversed;	/**< Sort in the reverse order? */
 
 } *nodePtr;

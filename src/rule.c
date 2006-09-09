@@ -87,13 +87,13 @@ void rule_free(rulePtr rp) {
 /* rule checking implementations					*/
 /* -------------------------------------------------------------------- */
 
-static gboolean rule_feed_title_match(rulePtr rp, itemPtr ip) {
+static gboolean rule_feed_title_match(rulePtr rule, itemPtr item) {
 	gboolean	result = FALSE;
 	gchar 		*title;
 	
-	if(NULL != (title = (gchar *)node_get_title(ip->itemSet->node))) {
+	if(NULL != (title = (gchar *)node_get_title(item->itemSet->node))) {
 		title = g_utf8_casefold(title, -1);
-		if(NULL != strstr(title, rp->value))
+		if(NULL != strstr(title, rule->value))
 			result = TRUE;
 		g_free(title);
 	}
@@ -101,13 +101,13 @@ static gboolean rule_feed_title_match(rulePtr rp, itemPtr ip) {
 	return result;
 }
 
-static gboolean rule_item_title_match(rulePtr rp, itemPtr ip) {
+static gboolean rule_item_title_match(rulePtr rule, itemPtr item) {
 	gboolean	result = FALSE;
 	gchar 		*title;
 	
-	if(NULL != (title = (gchar *)item_get_title(ip))) {
+	if(NULL != (title = (gchar *)item_get_title(item))) {
 		title = g_utf8_casefold(title, -1);
-		if(NULL != strstr(title, rp->value))
+		if(NULL != strstr(title, rule->value))
 			result = TRUE;
 		g_free(title);
 	}
@@ -115,13 +115,13 @@ static gboolean rule_item_title_match(rulePtr rp, itemPtr ip) {
 	return result;
 }
 
-static gboolean rule_item_description_match(rulePtr rp, itemPtr ip) {
+static gboolean rule_item_description_match(rulePtr rule, itemPtr item) {
 	gboolean	result = FALSE;
 	gchar 		*desc;
 
-	if(NULL != (desc = (gchar *)item_get_description(ip))) {
+	if(NULL != (desc = (gchar *)item_get_description(item))) {
 		desc = g_utf8_casefold(desc, -1);
-		if(NULL != strstr(desc, rp->value))
+		if(NULL != strstr(desc, rule->value))
 			result = TRUE;
 		g_free(desc);
 	}
@@ -129,35 +129,35 @@ static gboolean rule_item_description_match(rulePtr rp, itemPtr ip) {
 	return result;
 }
 
-static gboolean rule_item_match(rulePtr rp, itemPtr ip) {
+static gboolean rule_item_match(rulePtr rule, itemPtr item) {
 
-	if(rule_item_title_match(rp, ip))
+	if(rule_item_title_match(rule, item))
 		return TRUE;
 		
-	if(rule_item_description_match(rp, ip))
+	if(rule_item_description_match(rule, item))
 		return TRUE;
 
 	return FALSE;
 }
 
-static gboolean rule_item_is_unread(rulePtr rp, itemPtr ip) {
+static gboolean rule_item_is_unread(rulePtr rule, itemPtr item) {
 
-	return !(ip->readStatus);
+	return !(item->readStatus);
 }
 
-static gboolean rule_item_is_flagged(rulePtr rp, itemPtr ip) {
+static gboolean rule_item_is_flagged(rulePtr rule, itemPtr item) {
 
-	return ip->flagStatus;
+	return item->flagStatus;
 }
 
-static gboolean rule_item_was_updated(rulePtr rp, itemPtr ip) {
+static gboolean rule_item_was_updated(rulePtr rule, itemPtr item) {
 
-	return ip->updateStatus;
+	return item->updateStatus;
 }
 
-static gboolean rule_item_has_enclosure(rulePtr rp, itemPtr ip) {
+static gboolean rule_item_has_enclosure(rulePtr rule, itemPtr item) {
 
-	return (NULL != metadata_list_get(ip->metadata, "enclosure"));
+	return item->hasEnclosure;
 }
 
 /* rule initialization */

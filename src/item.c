@@ -227,6 +227,8 @@ itemPtr item_parse_cache(xmlNodePtr cur, gboolean migrateCache) {
 		cur = cur->next;
 	}
 	
+	item->hasEnclosure = (NULL != metadata_list_get(item->metadata, "enclosure"));
+	
 	if(migrateCache && item->description)
 		item_set_description(item, common_text_to_xhtml(item->description));
 

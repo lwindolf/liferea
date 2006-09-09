@@ -1,4 +1,5 @@
 EXTRA_DIST = \
+	attachment.png	\
 	available.png   \
 	available_offline.png \
 	default.png	\
@@ -19,11 +20,7 @@ EXTRA_DIST = \
 	fl_opml.png
 
 lifereadistpixdir = $(datadir)/$(PACKAGE)/pixmaps
-lifereadistpix_DATA = available.png  directory.png  empty.png  flag.png  \
-	default.png ocs.png read.xpm unread.png online.png offline.png vfolder.png \
-	edit.png technorati.png arrow.png liferea.png \
-	available_offline.png empty_offline.png \
-	fl_opml.png
+lifereadistpix_DATA = $(EXTRA_DIST)
 
 distpixmapdir = $(datadir)/icons/hicolor/48x48/apps
 distpixmap_DATA = liferea.png

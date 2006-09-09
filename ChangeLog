@@ -23,6 +23,14 @@
 	  annoying "lock file found" dialog and just raises
 	  a running instance. Note that this might not work with
 	  multipe X servers and in networked environments.
+	* Replaced the flag icon with the GNOME stock icon for
+	  'important'. Also updated the 'unread' icon from the
+	  GNOME 2.14 stock.
+	* The item list now displays an additional column at the
+	  second position if one of the currently displayed items
+	  has an enclosure. For each item with an enclosure the
+	  'attachment' symbol (copied from GNOME stock) is 
+	  displayed.
 
 	Translations:
 

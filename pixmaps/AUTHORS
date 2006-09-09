@@ -2,15 +2,17 @@ The authorship or origin of the included images:
 
 available.png	taken from feedicons.com (Matt Brett http://feedicons.com)
 
-empty.png/	modified GNOME icon (Lars Lindner <lars.lindner@gmx.net>)
+empty.png/	modified GNOME stock icons (Lars Lindner <lars.lindner@gmx.net>)
 vfolder.png	
 
-updating.png	GNOME stock icon
-directory.png	taken from Nautilus
+updating.png/	GNOME stock icons
+directory.png/	
+attachment.png/
+edit.png/
+unread.png
+
 online.png	taken from GnomeDB
 offline.png	derived from online.png (Lars Lindner <lars.lindner@gmx.net>)
-unread.png	taken from Pan
-edit.png	taken from GNOME stock (generic/stock_edit.png)
 
 liferea.png	(news-reader-48.png) Jakub Steiner <jimmac@ximian.com>
 fl_opml.png	OPML icon (Chris Pirillo <chris@lockergnome.com>)

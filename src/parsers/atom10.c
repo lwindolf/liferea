@@ -273,10 +273,12 @@ static gchar* atom10_parse_link(xmlNodePtr cur, feedParserCtxtPtr ctxt, struct a
 		
 		if(!xmlHasNsProp(cur, BAD_CAST"rel", NULL) || !relation || g_str_equal(relation, BAD_CAST"alternate"))
 			alternate = g_strdup(url);
-		else if(g_str_equal(relation, "enclosure"))
+		else if(g_str_equal(relation, "enclosure")) {
 			ctxt->item->metadata = metadata_list_append(ctxt->item->metadata, "enclosure", url);
-		else
+			ctxt->item->hasEnclosure = TRUE;
+		} else {
 			/* FIXME: Maybe do something with other links such as "related" and add metadata for "via"? */;
+		}
 		xmlFree(title);
 		xmlFree(baseURL);
 		g_free(escTitle);

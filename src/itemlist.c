@@ -141,6 +141,7 @@ static void itemlist_render(void) {
  */
 void itemlist_merge_itemset(itemSetPtr itemSet) {
 	GList		*iter;
+	gboolean	hasEnclosures = FALSE;
 
 	debug_enter("itemlist_merge_itemset");
 	
@@ -161,11 +162,16 @@ void itemlist_merge_itemset(itemSetPtr itemSet) {
 	while(iter) {
 		itemPtr item = iter->data;
 
-		if(!(itemlist_filter && !rule_check_item(itemlist_filter, item)))
+		if(!(itemlist_filter && !rule_check_item(itemlist_filter, item))) {
+			hasEnclosures |= item->hasEnclosure;
 			ui_itemlist_add_item(item, TRUE);
+		}
 
 		iter = g_list_previous(iter);
 	}
+	
+	if(hasEnclosures)
+		ui_itemlist_enable_encicon_column(TRUE);
 	
 	itemlist_render();
 
@@ -210,6 +216,8 @@ void itemlist_load(itemSetPtr itemSet) {
 	/* Free the old itemstore and create a new one; this is the only way to disable sorting */
 	ui_itemlist_reset_tree_store();	 /* this also clears the itemlist. */
 	model = GTK_TREE_MODEL(ui_itemlist_get_tree_store());
+
+	ui_itemlist_enable_encicon_column(FALSE);
 
 	switch(itemSet->type) {
 		case ITEMSET_TYPE_FEED:
