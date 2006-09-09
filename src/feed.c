@@ -442,6 +442,7 @@ static void feed_add_xml_attributes(nodePtr node, xmlNodePtr feedNode, gboolean 
 	xmlNewTextChild(feedNode, NULL, "feedId", node_get_id(node));
 	xmlNewTextChild(feedNode, NULL, "feedTitle", node_get_title(node));
 	xmlNewTextChild(feedNode, NULL, "feedSource", feed_get_source(feed));
+	xmlNewTextChild(feedNode, NULL, "feedOrigSource", feed_get_orig_source(feed));
 
 	if(feed->description)
 		xmlNewTextChild(feedNode, NULL, "feedDescription", feed->description);
@@ -569,7 +570,7 @@ itemSetPtr feed_load_from_cache(nodePtr node) {
 	feedPtr			feed = (feedPtr)(node->data);
 	itemSetPtr		itemSet;
 	gboolean		migrateCache = TRUE;
-	gchar			*filename, *tmp;
+	gchar			*filename;
 	int			error = 0;
 
 	debug_enter("feed_load_from_cache");
@@ -633,15 +634,18 @@ itemSetPtr feed_load_from_cache(nodePtr node) {
 
 		cur = cur->xmlChildrenNode;
 		while(cur) {
-			tmp = utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1));
+			gchar *tmp = utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1));
 
 			if(!tmp) {
 				cur = cur->next;
 				continue;
 			}
 
-			if(!feed->description && !xmlStrcmp(cur->name, BAD_CAST"feedDescription")) 
+			if(!xmlStrcmp(cur->name, BAD_CAST"feedDescription")) 
 				feed_set_description(feed, tmp);
+				
+			if(!xmlStrcmp(cur->name, BAD_CAST"feedOrigSource")) 
+				feed_set_orig_source(feed, tmp);
 
 			else if(!node->title && !xmlStrcmp(cur->name, BAD_CAST"feedTitle")) 
 				node_set_title(node, tmp);
@@ -875,55 +879,66 @@ feedHandlerPtr feed_get_fhp(feedPtr feed) {
 const gchar * feed_get_description(feedPtr feed) { return feed->description; }
 void feed_set_description(feedPtr fp, const gchar *description) {
 	g_free(fp->description);
-	if (description != NULL)
+	if(description != NULL)
 		fp->description = g_strdup(description);
 	else
 		fp->description = NULL;
 }
 
-const gchar * feed_get_source(feedPtr fp) { return fp->source; }
-const gchar * feed_get_filter(feedPtr fp) { return fp->filtercmd; }
+const gchar * feed_get_orig_source(feedPtr feed) { return feed->origSource; }
+const gchar * feed_get_source(feedPtr feed) { return feed->source; }
+const gchar * feed_get_filter(feedPtr feed) { return feed->filtercmd; }
 
-void feed_set_source(feedPtr fp, const gchar *source) {
+void feed_set_orig_source(feedPtr feed, const gchar *source) {
 
-	g_free(fp->source);
+	g_free(feed->origSource);
+	feed->origSource = g_strchomp(g_strdup(source));
+	feedlist_schedule_save();
+}
 
-	fp->source = g_strchomp(g_strdup(source));
+void feed_set_source(feedPtr feed, const gchar *source) {
+
+	g_free(feed->source);
+
+	feed->source = g_strchomp(g_strdup(source));
 	feedlist_schedule_save();
 	
-	g_free(fp->updateState->cookies);
+	g_free(feed->updateState->cookies);
 	if('|' != source[0])
 		/* check if we've got matching cookies ... */
-		fp->updateState->cookies = cookies_find_matching(source);
+		feed->updateState->cookies = cookies_find_matching(source);
 	else 
-		fp->updateState->cookies = NULL;
+		feed->updateState->cookies = NULL;
+	
+	if(NULL == feed_get_orig_source(feed))
+		feed_set_orig_source(feed, source);
 }
 
-void feed_set_filter(feedPtr fp, const gchar *filter) {
-	g_free(fp->filtercmd);
+void feed_set_filter(feedPtr feed, const gchar *filter) {
+	g_free(feed->filtercmd);
 
-	fp->filtercmd = g_strdup(filter);
+	feed->filtercmd = g_strdup(filter);
 	feedlist_schedule_save();
 }
 
-const gchar * feed_get_html_url(feedPtr fp) { return fp->htmlUrl; };
-void feed_set_html_url(feedPtr fp, const gchar *htmlUrl) {
+const gchar * feed_get_html_url(feedPtr feed) { return feed->htmlUrl; };
+void feed_set_html_url(feedPtr feed, const gchar *htmlUrl) {
 
-	g_free(fp->htmlUrl);
+	g_free(feed->htmlUrl);
 	if(htmlUrl)
-		fp->htmlUrl = g_strchomp(g_strdup(htmlUrl));
+		feed->htmlUrl = g_strchomp(g_strdup(htmlUrl));
 	else
-		fp->htmlUrl = NULL;
+		feed->htmlUrl = NULL;
 }
 
-const gchar * feed_get_image_url(feedPtr fp) { return fp->imageUrl; };
-void feed_set_image_url(feedPtr fp, const gchar *imageUrl) {
+const gchar * feed_get_image_url(feedPtr feed) { return feed->imageUrl; };
+void feed_set_image_url(feedPtr feed, const gchar *imageUrl) {
 
-	g_free(fp->imageUrl);
+	g_free(feed->imageUrl);
 	if(imageUrl != NULL)
-		fp->imageUrl = g_strchomp(g_strdup(imageUrl));
+		feed->imageUrl = g_strchomp(g_strdup(imageUrl));
 	else
-		fp->imageUrl = NULL;
+		feed->imageUrl = NULL;
 }
 
 /**

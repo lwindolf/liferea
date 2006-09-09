@@ -95,7 +95,8 @@ typedef struct feed {
 	gchar		*htmlUrl;		/**< URL of HTML version of the feed */
 	gchar		*imageUrl;		/**< URL of the optional feed image */
 	gchar		*description;		/**< HTML string describing the feed */
-	gchar		*source;		/**< feed source */
+	gchar		*source;		/**< current feed source, can be changed by redirects */
+	gchar		*origSource;		/**< the feed source given when creating the subscription */
 	gchar		*filtercmd;		/**< feed filter command */
 	gint		updateInterval;		/**< user defined update interval in minutes */
 	GSList		*metadata;		/**< metadata of this feed */
@@ -112,7 +113,7 @@ typedef struct feed {
 /* feed handler interface					*/
 /* ------------------------------------------------------------ */
 
-/** a function which parses the feed data given with the feed ptr fp */
+/** a function which parses the feed data given with the feed ptr feed */
 typedef void 	(*feedParserFunc)	(feedParserCtxtPtr ctxt, xmlNodePtr cur);
 typedef gboolean (*checkFormatFunc)	(xmlDocPtr doc, xmlNodePtr cur); /**< Returns true if correct format */
 
@@ -162,12 +163,12 @@ gpointer feed_import(nodePtr node, const gchar *typeStr, xmlNodePtr cur, gboolea
 /**
  * Feed specific feed list import parsing.
  *
- * @param fp		the feed to export
+ * @param feed		the feed to export
  * @param cur		DOM node to write to
  * @param internal	feed list saving/export flag
  * @returns pointer to resulting feed
  */
-void feed_export(feedPtr fp, xmlNodePtr cur, gboolean internal);
+void feed_export(feedPtr feed, xmlNodePtr cur, gboolean internal);
 
 /**
  * Serialization helper function for rendering and caching purposes.
@@ -227,37 +228,40 @@ gboolean feed_merge_check(itemSetPtr sp, itemPtr ip);
 feedHandlerPtr feed_type_str_to_fhp(const gchar *str);
 const gchar *feed_type_fhp_to_str(feedHandlerPtr fhp);
 
-gint feed_get_default_update_interval(feedPtr fp);
-void feed_set_default_update_interval(feedPtr fp, gint interval);
+gint feed_get_default_update_interval(feedPtr feed);
+void feed_set_default_update_interval(feedPtr feed, gint interval);
 
-gint feed_get_update_interval(feedPtr fp);
-void feed_set_update_interval(feedPtr fp, gint interval);
+gint feed_get_update_interval(feedPtr feed);
+void feed_set_update_interval(feedPtr feed, gint interval);
 
-const gchar * feed_get_title(feedPtr fp);
-void feed_set_title(feedPtr fp, const gchar * title);
+const gchar * feed_get_title(feedPtr feed);
+void feed_set_title(feedPtr feed, const gchar * title);
 
-const gchar * feed_get_description(feedPtr fp);
-void feed_set_description(feedPtr fp, const gchar *description);
+const gchar * feed_get_description(feedPtr feed);
+void feed_set_description(feedPtr feed, const gchar *description);
 
-const gchar * feed_get_source(feedPtr fp);
-void feed_set_source(feedPtr fp, const gchar *source);
+const gchar * feed_get_source(feedPtr feed);
+void feed_set_source(feedPtr feed, const gchar *source);
 
-const gchar * feed_get_filter(feedPtr fp);
-void feed_set_filter(feedPtr fp, const gchar * filter);
+const gchar * feed_get_orig_source(feedPtr feed);
+void feed_set_orig_source(feedPtr feed, const gchar *source);
 
-const gchar * feed_get_html_url(feedPtr fp);
-void feed_set_html_url(feedPtr fp, const gchar *url);
+const gchar * feed_get_filter(feedPtr feed);
+void feed_set_filter(feedPtr feed, const gchar * filter);
 
-const gchar * feed_get_image_url(feedPtr fp);
-void feed_set_image_url(feedPtr fp, const gchar *url);
+const gchar * feed_get_html_url(feedPtr feed);
+void feed_set_html_url(feedPtr feed, const gchar *url);
 
-const gchar * feed_get_lastmodified(feedPtr fp);
-void feed_set_lastmodified(feedPtr fp, const gchar *lastmodified);
+const gchar * feed_get_image_url(feedPtr feed);
+void feed_set_image_url(feedPtr feed, const gchar *url);
 
-const gchar * feed_get_etag(feedPtr fp);
-void feed_set_etag(feedPtr fp, const gchar *etag);
+const gchar * feed_get_lastmodified(feedPtr feed);
+void feed_set_lastmodified(feedPtr feed, const gchar *lastmodified);
 
-feedHandlerPtr feed_get_fhp(feedPtr fp);
+const gchar * feed_get_etag(feedPtr feed);
+void feed_set_etag(feedPtr feed, const gchar *etag);
+
+feedHandlerPtr feed_get_fhp(feedPtr feed);
 
 /* implementation of feed node update request processing callback */
 
