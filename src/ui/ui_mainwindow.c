@@ -167,10 +167,6 @@ gboolean on_mainwindow_key_press_event(GtkWidget *widget, GdkEventKey *event, gp
 					return TRUE;
 				}
 				break;
-			case GDK_period:
-				on_next_unread_item_activate(NULL, NULL);
-				return TRUE;
-				break;
 		}
 
 		/* menu hotkeys (duplicated so they work with hidden menu */
