@@ -206,6 +206,17 @@ guint node_get_unread_count(nodePtr node) {
 
 /* generic node item set merging functions */
 
+static guint node_get_max_item_count(nodePtr node) {
+
+	switch(node->type) {
+		case NODE_TYPE_FEED:
+			return feed_get_max_item_count(node);
+			break;
+		default:
+			return G_MAXUINT;
+	}
+}
+
 /**
  * Determine wether a given item is to be merged
  * into the itemset or if it was already added.
@@ -254,6 +265,7 @@ static void node_merge_item(nodePtr node, itemPtr item) {
  */
 void node_merge_items(nodePtr node, GList *list) {
 	GList	*iter;
+	guint	max;
 	
 	if(debug_level & DEBUG_UPDATE) {
 		debug4(DEBUG_UPDATE, "old item set %p (lastItemNr=%lu) of \"%s\" (%p):", node->itemSet, node->itemSet->lastItemNr, node_get_title(node), node);
@@ -264,6 +276,29 @@ void node_merge_items(nodePtr node, GList *list) {
 			iter = g_list_next(iter);
 		}
 	}
+	
+	/* Truncate the new itemset if it is longer than
+	   the maximum cache size which could cause items
+	   to be dropped and added again on subsequent 
+	   merges with the same feed content */
+	max = node_get_max_item_count(node);
+	if(g_list_length(list) > max) {
+		debug3(DEBUG_UPDATE, "item list too long (%u, max=%u) when merging into \"%s\"!", g_list_length(list), max, node_get_title(node));
+		guint i = 0;
+		GList *iter, *copy;
+		iter = copy = g_list_copy(list);
+		while(iter) {
+			i++;
+			if(i > max) {
+				itemPtr item = (itemPtr)iter->data;
+				debug2(DEBUG_UPDATE, "ignoring item nr %u (%s)...", i, item_get_title(item));
+				item_free(item);
+				list = g_list_remove(list, item);
+			}
+			iter = g_list_next(iter);
+		}
+		g_list_free(copy);
+	}	   
 
 	/* Items are given in top to bottom display order. 
 	   Adding them in this order would mean to reverse 

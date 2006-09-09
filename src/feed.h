@@ -209,6 +209,15 @@ void feed_free_parser_ctxt(feedParserCtxtPtr ctxt);
 void feed_cancel_retry(nodePtr node);
 
 /**
+ * Returns the feed-specific maximum cache size.
+ * If none is set it returns the global default 
+ * setting.
+ *
+ * @returns max item count
+ */
+guint feed_get_max_item_count(nodePtr node);
+
+/**
  * Merging implementation for the feed itemset type.
  *
  * @param sp	the itemset to merge against

@@ -501,6 +501,17 @@ xmlDocPtr feed_to_xml(nodePtr node, xmlNodePtr feedNode, gboolean rendering) {
 	return doc;
 }
 
+guint feed_get_max_item_count(nodePtr node) {
+	feedPtr	feed = (feedPtr)node->data;
+	guint	max;
+	
+	max = feed->cacheLimit;
+	if(max == CACHE_DEFAULT)
+		max = getNumericConfValue(DEFAULT_MAX_ITEMS);
+		
+	return max;
+}
+
 /*
  * Feeds caches are marked to be saved at a few different places:
  * (1) Inside whe feed_set_* functions where an item is marked or made read or unread
@@ -521,9 +532,7 @@ static void feed_save_to_cache(nodePtr node) {
 
 	debug2(DEBUG_CACHE, "saving feed: %s (id=%s)", feed->source, node->id);
 
-	saveMaxCount = feed->cacheLimit;
-	if(saveMaxCount == CACHE_DEFAULT)
-		saveMaxCount = getNumericConfValue(DEFAULT_MAX_ITEMS);
+	saveMaxCount = feed_get_max_item_count(node);
 
 	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", node->id, NULL);
 	tmpfilename = g_strdup_printf("%s~", filename);

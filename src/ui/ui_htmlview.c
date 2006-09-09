@@ -204,7 +204,7 @@ gboolean ui_htmlview_is_special_url(const gchar *url) {
 	return FALSE;
 }
 
-void ui_htmlview_launch_URL(GtkWidget *htmlview, gchar *url, gint launchType) {
+void ui_htmlview_launch_URL(GtkWidget *htmlview, const gchar *url, gint launchType) {
 	
 	if(NULL == url) {
 		/* FIXME: bad because this is not only used for item links! */

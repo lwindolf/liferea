@@ -13,6 +13,10 @@
 	  could restore it. For migration the current source URL
 	  is used as the original source. Currently there is no
 	  GUI function to restore those URLs.
+	* Fixes SF #1357891 which is about incorrect merging for
+	  feeds that provide more items than the configured cache
+	  size. Now the items to be merged are truncated before
+	  merging. (reported by Rich Daley and others)
 
 	Translations:
 

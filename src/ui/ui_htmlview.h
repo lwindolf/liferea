@@ -137,11 +137,11 @@ gboolean ui_htmlview_is_special_url(const gchar *url);
  * Launches the specified URL in the configured browser or
  * in case of Mozilla inside the HTML widget.
  *
- * @param htmlview		The htmlview widget to be set
- * @param url			URL to launch
- * @param launchType     Type of launch request: 0 = default, 1 = external, 2 = internal
+ * @param htmlview	The htmlview widget to be set
+ * @param url		URL to launch
+ * @param launchType    Type of launch request: 0 = default, 1 = external, 2 = internal
  */
-void	ui_htmlview_launch_URL(GtkWidget *htmlview, gchar *url, gint launchType);
+void	ui_htmlview_launch_URL(GtkWidget *htmlview, const gchar *url, gint launchType);
 
 /**
  * Function to change the zoom level of the HTML widget.
