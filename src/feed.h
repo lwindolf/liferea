@@ -213,6 +213,8 @@ void feed_cancel_retry(nodePtr node);
  * If none is set it returns the global default 
  * setting.
  *
+ * @param node	the feed node
+ *
  * @returns max item count
  */
 guint feed_get_max_item_count(nodePtr node);

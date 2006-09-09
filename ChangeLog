@@ -17,6 +17,12 @@
 	  feeds that provide more items than the configured cache
 	  size. Now the items to be merged are truncated before
 	  merging. (reported by Rich Daley and others)
+	* Fixes entering periods into URL entries in tabs.
+	* Removes the old locking code and replaces it with the
+	  libbacon message connection. This gets rid of the 
+	  annoying "lock file found" dialog and just raises
+	  a running instance. Note that this might not work with
+	  multipe X servers and in networked environments.
 
 	Translations:
 

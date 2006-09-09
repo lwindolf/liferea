@@ -37,15 +37,7 @@
 #include <gtk/gtk.h>
 #include <locale.h> /* For setlocale */
 
-#include <sys/types.h> /* Three includes for open(2). My BSD manual says */
-#include <sys/stat.h>  /* to include only <sys/file.h>. I wonder if this */
-#include <fcntl.h>     /* will break any systems. */
-
-#include <sys/types.h> /* For getpid(2) */
-
-#include <unistd.h> /* For gethostname(), readlink(2) and symlink(2) */
 #include <string.h>
-#include <errno.h>
 #include <string.h>
 #include <stdlib.h>
 #include <signal.h>
@@ -62,6 +54,10 @@
 #include "ui/ui_mainwindow.h"
 #include "ui/ui_htmlview.h"
 #include "ui/ui_session.h"
+
+#include "bacon-message-connection.h"
+
+static BaconMessageConnection *bacon_connection = NULL;
 
 gboolean lifereaStarted = FALSE;
 
@@ -91,92 +87,22 @@ static void show_help(void) {
 	g_print("%s", str->str);
 	g_string_free(str, TRUE);
 }
-/**
- * Tries to create a lock file for Liferea.
- *
- * @returns -1 if the lock failed and is locked by someone else. -2
- * for general failures. -3 if there was a stale lockfile. Some
- * non-negative number means success.
- */
 
-static gboolean main_lock() {
-	gchar *filename, *filename2;
-	gchar hostname[256];
-	gint fd;
-	int retval, len;
-	pid_t pid;
-	gchar tmp[300], *host, *pidstr;
-	
-	if (gethostname(hostname, 256) == -1)
-		return -2; /* Skip locking if this happens, which it should not.... */
-	hostname[255] = '\0';
-	filename = g_strdup_printf("%s" G_DIR_SEPARATOR_S "lock-%s.%d", common_get_cache_path(), hostname, getpid());
-	retval = fd = open(filename, O_CREAT|O_EXCL, S_IRUSR | S_IWUSR);
-	if (fd == -1) {
-		g_free(filename);
-		return -2;
-	}
-	
-	filename2 = g_strdup_printf("%s" G_DIR_SEPARATOR_S "lock", common_get_cache_path());
-	if (-1 == symlink(filename, filename2)) {
-		if (errno != EEXIST) {
-			retval = -2;
-			goto main_lock_out;
-		}
-		memset(tmp, 0, 300);
-		if ((len = readlink(filename2, tmp, 299)) == -1) {
-			retval = -2; /* Unreadable link, or not a link */
-			goto main_lock_out;
-		}
-		host = strrchr(tmp,'/');
-		if (host == NULL) {
-			retval = -3;
-			goto main_lock_out;
-		}
-		host = strstr(host, "lock-");
-		if (host == NULL) { /* Invalid lock file */
-			retval = -3;
-			goto main_lock_out;
-		}
-		host += strlen("lock-");
-		pidstr = strrchr(host,'.');
-		if (pidstr == NULL) { /* Invalid lock file*/
-			retval = -3;
-			goto main_lock_out;
-		}
-		/* Correct lockfile format */
-		*pidstr = '\0';
-		pidstr++;
-		
-		if (!strcmp(hostname, host)) {
-			pid = atoi(pidstr); /* get PID */
-			if (kill(pid, 0) == 0 || errno != ESRCH)
-				retval = -1;
-			else
-				retval = -3;
-		} else
-			retval = -1;
-	}
- main_lock_out:
-	if (retval == -3) { /* Stale lockfile */
-		fprintf(stderr,"A stale lockfile has been found, and was deleted.\n");
-		unlink(filename2);
-		symlink(filename, filename2); /* Hopefully this will work. If not, screw it. */
-	}
-	close(fd);
-	unlink(filename);
-	g_free(filename);
-	g_free(filename2);
-	
-	return retval;
-}
+/* bacon message callback */
+static void on_bacon_message_received(const char *message, gpointer data) {
 
-static void main_unlock() {
-	gchar *filename;
+	debug1(DEBUG_GUI, "bacon message received >>>%s<<<", message);
 	
-	filename = g_strdup_printf("%s" G_DIR_SEPARATOR_S "lock", common_get_cache_path());
-	unlink(filename);
-	g_free(filename);
+	/* Currently we only know a single simple command "raise"
+	   which tells the program to raise the window because
+	   another instance was requested which is not supported */
+	   
+	if(g_str_equal(message, "raise")) {
+		debug0(DEBUG_GUI, "-> raise window requested");
+		gtk_window_present(GTK_WINDOW(mainwindow));
+	} else {
+		g_warning("Received unknown bacon command: >>>%s<<<", message);
+	}
 }
 
 static void signal_handler(int sig) {
@@ -191,7 +117,6 @@ int main(int argc, char *argv[]) {
 	gulong		debug_flags = 0;
 	const char 	*arg;
 	gint		i;
-	GtkWidget	*dialog;
 	int mainwindowState = MAINWINDOW_SHOWN;
 #ifdef USE_SM
 	gchar *opt_session_arg = NULL;
@@ -211,6 +136,27 @@ int main(int argc, char *argv[]) {
 	dbus_g_thread_init();
 #endif
 	gtk_init(&argc, &argv);
+	
+	bacon_connection = bacon_message_connection_new("liferea");
+	if(bacon_connection)	{
+		if(!bacon_message_connection_get_is_server(bacon_connection)) {
+			g_warning(_("Liferea seems to be running already!"));
+			
+		  	debug0(DEBUG_VERBOSE, "Startup as bacon client...");
+			bacon_message_connection_send(bacon_connection, "raise");
+			bacon_message_connection_free(bacon_connection);
+			
+			gdk_notify_startup_complete();
+			exit(0);
+		} else {
+		  	debug0(DEBUG_VERBOSE, "Startup as bacon server...");
+			bacon_message_connection_set_callback(bacon_connection,
+							      on_bacon_message_received,
+							      NULL);
+		}
+	} else {
+		g_warning("Cannot create IPC connection for Liferea!");
+	}
 	
 	/* GTK theme support */
 	g_set_application_name(_("Liferea"));
@@ -278,48 +224,36 @@ int main(int argc, char *argv[]) {
 
 	add_pixmap_directory(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps");
 
-	if(main_lock() == -1) {
-		dialog = gtk_message_dialog_new(GTK_WINDOW(mainwindow),
-								  0,
-								  GTK_MESSAGE_ERROR,
-								  GTK_BUTTONS_OK,
-								  _("Another copy of Liferea was found to be running. Please use it instead. "
-								  "If there is no other copy of Liferea running, please delete the "
-								  "\"~/.liferea/lock\" lock file."));
-		gtk_dialog_run(GTK_DIALOG (dialog));
-		gtk_widget_destroy(dialog);
-
-	} else {
-		/* order is important! */
-		conf_init();			/* initialize gconf */
-		update_init();			/* initialize the download subsystem */
-		plugin_mgmt_init();		/* get list of plugins and initialize them */
-		ui_htmlview_init();		/* setup HTML widgets */
-		feed_init();			/* register feed types */
-		vfolder_init();			/* register vfolder rules */
-		conf_load();			/* load global feed settings */
-		ui_mainwindow_init(mainwindowState);	/* setup mainwindow and initialize gconf configured GUI behaviour */
-		social_init();			/* initialized social bookmarking */
+	/* order is important! */
+	conf_init();			/* initialize gconf */
+	update_init();			/* initialize the download subsystem */
+	plugin_mgmt_init();		/* get list of plugins and initialize them */
+	ui_htmlview_init();		/* setup HTML widgets */
+	feed_init();			/* register feed types */
+	vfolder_init();			/* register vfolder rules */
+	conf_load();			/* load global feed settings */
+	ui_mainwindow_init(mainwindowState);	/* setup mainwindow and initialize gconf configured GUI behaviour */
+	social_init();			/* initialized social bookmarking */
 #ifdef USE_SM
-		/* This must be after feedlist reading because some session
-		   managers will tell Liferea to exit if Liferea does not
-		   respond to SM requests within a minute or two. This starts
-		   the main loop soon after opening the SM connection. */
-		session_init(BIN_DIR G_DIR_SEPARATOR_S "liferea", opt_session_arg);
-		session_set_cmd(NULL, mainwindowState);
+	/* This must be after feedlist reading because some session
+	   managers will tell Liferea to exit if Liferea does not
+	   respond to SM requests within a minute or two. This starts
+	   the main loop soon after opening the SM connection. */
+	session_init(BIN_DIR G_DIR_SEPARATOR_S "liferea", opt_session_arg);
+	session_set_cmd(NULL, mainwindowState);
 #endif
-		signal(SIGTERM, signal_handler);
-		signal(SIGINT, signal_handler);
-		signal(SIGHUP, signal_handler);
+	signal(SIGTERM, signal_handler);
+	signal(SIGINT, signal_handler);
+	signal(SIGHUP, signal_handler);
 		
-		/* Note: we explicitely do not use the gdk_thread_*
-		   locking in Liferea because it freezes the program
-		   when running Flash applets in gtkmozembed */
+	/* Note: we explicitely do not use the gdk_thread_*
+	   locking in Liferea because it freezes the program
+	   when running Flash applets in gtkmozembed */
 
-		lifereaStarted = TRUE;
-		gtk_main();
-	}
-
+	lifereaStarted = TRUE;
+	gtk_main();
+		
+	bacon_message_connection_free(bacon_connection);
 	return 0;
 }
 
@@ -361,10 +295,8 @@ gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 #endif
 	
 	gtk_main_quit();
-	main_unlock();
 	
 	debug_exit("on_quit");
-	
 	return FALSE;
 }
 
