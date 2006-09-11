@@ -18,16 +18,26 @@
  * the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+ 
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif
 
+#ifdef USE_LUA
 #include <lua.h>
 #include <lauxlib.h>
 #include <lualib.h>
+#include "liferea_wrap.h"
+#endif
+
 #include <glib.h>
 #include "common.h"
-#include "liferea_wrap.h"
+#include "debug.h"
 #include "script.h"
 
+#ifdef USE_LUA
 static lua_State *luaVM = NULL;
+#endif
 
 /** hash of the scripts registered for different hooks */
 static GHashTable *scripts = NULL;
@@ -122,7 +132,8 @@ void script_init(void) {
 
 	scripts = g_hash_table_new(g_direct_hash, g_direct_equal);
 	script_config_load();
-	
+
+#ifdef USE_LUA	
 	luaVM = lua_open();
 	
 	luaL_reg lualibs[] = {
@@ -140,19 +151,26 @@ void script_init(void) {
 		lualibs[i].func(luaVM);  /* open library */
 		lua_settop(luaVM, 0);  /* discard any results */
 	}
+#else
+	debug0(DEBUG_PLUGINS, "LUA scripting not supported.");
+#endif
 }
 
 void script_run_cmd(const gchar *cmd) {
 
+#ifdef USE_LUA
 	lua_dostring(luaVM, cmd);
+#endif
 }
 
 void script_run(const gchar *name) {
 	gchar	*filename;
 	
+#ifdef USE_LUA
 	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "scripts", name, "lua");
 	lua_dofile(luaVM, filename);
 	g_free(filename);
+#endif	
 }
 
 void script_run_for_hook(hookType type) {
@@ -194,5 +212,7 @@ void script_deinit(void) {
 	// FIXME: foreach hook free script list
 	g_hash_table_destroy(scripts);
 
+#ifdef USE_LUA
 	lua_close(luaVM);
+#endif
 }

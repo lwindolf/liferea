@@ -233,9 +233,7 @@ int main(int argc, char *argv[]) {
 	feed_init();			/* register feed types */
 	vfolder_init();			/* register vfolder rules */
 	conf_load();			/* load global feed settings */
-#ifdef USE_LUA
-	script_init();
-#endif
+	script_init();			/* setup scripting if supported */
 	ui_mainwindow_init(mainwindowState);	/* setup mainwindow and initialize gconf configured GUI behaviour */
 	social_init();			/* initialized social bookmarking */
 

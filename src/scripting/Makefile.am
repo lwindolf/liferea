@@ -13,12 +13,13 @@ INCLUDES = \
 noinst_LIBRARIES = libliscript.a
 
 libliscript_a_CFLAGS = $(PACKAGE_FLAGS) $(LUA_FLAGS)
-libliscript_a_DEPENDENCIES = liferea_wrap.h
 libliscript_a_SOURCES = \
-	liferea_wrap.h \
 	script.c script.h \
 	ui_script.c ui_script.h
 
+if WITH_LUA
+libliscript_a_DEPENDENCIES = liferea_wrap.h
+
 liferea_wrap.h: liferea.i
 	swig -lua $(PACKAGE_CFLAGS) -o liferea_wrap.h liferea.i
-
+endif

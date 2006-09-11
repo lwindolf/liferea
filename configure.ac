@@ -122,13 +122,16 @@ dnl LUA
 dnl ***
 
 if test "x$enable_lua" = "xyes"; then
-   AC_DEFINE(USE_LUA, 1, [Define if we're supporting LUA scripting.])
    PKG_CHECK_MODULES([LUA], [lua50 lualib50] ,enable_lua=yes,enable_lua=no)
 else
    enable_lua=no
 fi
 
 AM_CONDITIONAL(WITH_LUA, test "x$enable_lua" = "xyes")
+
+if test "x$enable_lua" = "xyes"; then
+   AC_DEFINE(USE_LUA, 1, [Define if we're supporting LUA scripting.])
+fi
 
 dnl *********
 dnl XulRunner
@@ -458,8 +461,8 @@ echo "Build XulRunner Plugin.......... : $enable_xulrunner"
 echo "Build GtkHTML Plugin............ : $enable_gtkhtml2"
 echo 
 echo "Build libnotify Plugin.......... : $enable_libnotify"
-echo "Build LUA scripting Plugin...... : $enable_lua"
 echo 
+echo "Use LUA scripting .............. : $enable_lua"
 echo "Use X Session Management........ : $enable_sm"
 echo "Use DBUS........................ : $enable_dbus"
 echo "GNUTLS SSL/HTTPS Support........ : $enable_gnutls"

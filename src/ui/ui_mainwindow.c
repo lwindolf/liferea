@@ -782,8 +782,10 @@ static GtkActionEntry ui_mainwindow_action_entries[] = {
 	 G_CALLBACK(on_prefbtn_clicked)},
 	{"ShowUpdateMonitor", NULL, N_("Update Monitor"), NULL, N_("Show a list of all feeds currently in the update queue"),
 	 G_CALLBACK(on_menu_show_update_monitor)},
+#ifdef USE_LUA
 	{"ShowScriptManager", NULL, N_("Script Manager"), NULL, N_("Allows to configure and edit LUA hook scripts"),
 	 G_CALLBACK(on_menu_show_script_manager)},
+#endif
 	{"Quit",GTK_STOCK_QUIT, N_("_Quit"), "<control>Q", NULL, G_CALLBACK(on_quit)},
 
 	{"FeedsMenu", NULL, N_("_Feeds")},
@@ -858,7 +860,9 @@ static const char *ui_mainwindow_ui_desc =
 "      <menuitem action='ShowPreferences'/>"
 "      <separator/>"
 "      <menuitem action='ShowUpdateMonitor'/>"
+#ifdef USE_LUA
 "      <menuitem action='ShowScriptManager'/>"
+#endif
 "      <separator/>"
 "      <menuitem action='ToggleOfflineMode'/>"
 "      <separator/>"
