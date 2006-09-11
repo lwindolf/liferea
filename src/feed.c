@@ -222,6 +222,12 @@ gpointer feed_import(nodePtr node, const gchar *typeStr, xmlNodePtr cur, gboolea
 			feed->loadItemLink = TRUE;
 		xmlFree(tmp);
 			
+		/* no proxy flag */
+		tmp = xmlGetProp(cur, BAD_CAST"dontUseProxy");
+		if(tmp && !xmlStrcmp(tmp, BAD_CAST"true"))
+			feed->dontUseProxy = TRUE;
+		xmlFree(tmp);
+					
 		update_state_import(cur, feed->updateState);
 		
 		node_set_icon(node, favicon_load_from_cache(node->id));
@@ -276,6 +282,9 @@ void feed_export(feedPtr feed, xmlNodePtr cur, gboolean internal) {
 			
 		if(TRUE == feed->loadItemLink)
 			xmlNewProp(cur, BAD_CAST"loadItemLink", BAD_CAST"true");
+			
+		if(TRUE == feed->dontUseProxy)
+			xmlNewProp(cur, BAD_CAST"dontUseProxy", BAD_CAST"true");
 	}
 
 	update_state_export(cur, feed->updateState);
