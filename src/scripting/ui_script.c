@@ -21,6 +21,7 @@
 
 #include <string.h>
 #include "ui_script.h"
+#include "callbacks.h"
 #include "common.h"
 #include "interface.h"
 #include "script.h"
@@ -183,6 +184,7 @@ void on_cmdEntry_activate(GtkEntry *entry, gpointer user_data) {
 }
 
 static void on_script_add_dialog_response(GtkDialog *dialog, gint response_id, gpointer user_data) {
+	GSList	*iter;
 
 	if(GTK_RESPONSE_OK == response_id) {	
 		if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(GTK_WIDGET(dialog), "scriptAddNewRadioBtn")))) {
@@ -190,8 +192,24 @@ static void on_script_add_dialog_response(GtkDialog *dialog, gint response_id, g
 			ui_script_add(g_strdup(gtk_entry_get_text(GTK_ENTRY(lookup_widget(GTK_WIDGET(dialog), "scriptAddEntry")))));
 		} else {
 			/* reuse existing */
+			GtkOptionMenu	*optionmenu;
+			GtkWidget	*selected;
+			
+			optionmenu = GTK_OPTION_MENU(lookup_widget(GTK_WIDGET(dialog), "scriptAddMenu"));
+			selected = gtk_menu_get_active(GTK_MENU(gtk_option_menu_get_menu(optionmenu)));
+			if(selected)
+				ui_script_add(g_strdup((gchar *)g_object_get_data(G_OBJECT(selected), "name")));
+			else
+				ui_show_error_box(_("No script selected!"));
 		}
 	}
+	
+	iter = user_data;
+	while(iter) {
+		g_free(iter->data);
+		iter = g_slist_next(iter);
+	}
+	g_slist_free(user_data);
 	gtk_widget_destroy(GTK_WIDGET(dialog));
 }
 
@@ -199,6 +217,7 @@ void on_scriptAddBtn_clicked(GtkButton *button, gpointer user_data) {
 	GtkWidget	*dialog;
 	GtkWidget	*menu, *entry;
 	GDir		*dir;
+	GSList		*filenames = NULL;
 	gchar		*dirname, *file, *tmp;
 	
 	/* setup script add dialog */
@@ -208,15 +227,17 @@ void on_scriptAddBtn_clicked(GtkButton *button, gpointer user_data) {
 	menu = gtk_menu_new();
 	
 	dirname = g_strdup_printf("%s" G_DIR_SEPARATOR_S "cache" G_DIR_SEPARATOR_S "scripts", common_get_cache_path());
-	g_print("%s\n",dirname);
 	dir = g_dir_open(dirname, 0, NULL);
 	while(NULL != (file = (gchar *)g_dir_read_name(dir))) {
+		file = g_strdup(file);
 		tmp = strstr(file, ".lua");
 		if(tmp) {
 			*tmp = 0;
 			entry = gtk_menu_item_new_with_label(file);
 			gtk_widget_show(entry);
-			gtk_container_add(GTK_CONTAINER(menu), entry);		
+			gtk_container_add(GTK_CONTAINER(menu), entry);
+			g_object_set_data(G_OBJECT(entry), "name", file);
+			filenames = g_slist_append(filenames, file);
 		}
 	}
 	g_dir_close(dir);
@@ -224,7 +245,7 @@ void on_scriptAddBtn_clicked(GtkButton *button, gpointer user_data) {
 	
 	gtk_option_menu_set_menu(GTK_OPTION_MENU(lookup_widget(dialog, "scriptAddMenu")), menu);
 	
-	g_signal_connect(G_OBJECT(dialog), "response", G_CALLBACK(on_script_add_dialog_response), NULL);
+	g_signal_connect(G_OBJECT(dialog), "response", G_CALLBACK(on_script_add_dialog_response), filenames);
 	gtk_widget_show(dialog);
 }
 

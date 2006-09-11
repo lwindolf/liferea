@@ -233,11 +233,12 @@ int main(int argc, char *argv[]) {
 	feed_init();			/* register feed types */
 	vfolder_init();			/* register vfolder rules */
 	conf_load();			/* load global feed settings */
-	ui_mainwindow_init(mainwindowState);	/* setup mainwindow and initialize gconf configured GUI behaviour */
-	social_init();			/* initialized social bookmarking */
 #ifdef USE_LUA
 	script_init();
 #endif
+	ui_mainwindow_init(mainwindowState);	/* setup mainwindow and initialize gconf configured GUI behaviour */
+	social_init();			/* initialized social bookmarking */
+
 #ifdef USE_SM
 	/* This must be after feedlist reading because some session
 	   managers will tell Liferea to exit if Liferea does not
