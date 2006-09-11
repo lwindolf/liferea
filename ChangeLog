@@ -1,5 +1,15 @@
 2006-09-??  Lars Lindner  <lars.lindner@gmail.com>
 
+	Version 1.1.5 (Unstable)
+
+	* Experimental scripting support. From the main menu
+	  you can open a "Script Manager" dialog where you
+	  can add LUA scripts for some hook types. This adds
+	  an optional LUA dependency.
+
+
+2006-09-10  Lars Lindner  <lars.lindner@gmail.com>
+
 	Version 1.1.4 (Unstable)
 
 	* Simplified subscription dialog hides all filtering and

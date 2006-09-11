@@ -767,6 +767,7 @@ static void common_init_cache_path(void) {
 	common_check_dir(g_strdup_printf("%s" G_DIR_SEPARATOR_S "feeds", cachePath));
 	common_check_dir(g_strdup_printf("%s" G_DIR_SEPARATOR_S "favicons", cachePath));
 	common_check_dir(g_strdup_printf("%s" G_DIR_SEPARATOR_S "plugins", cachePath));
+	common_check_dir(g_strdup_printf("%s" G_DIR_SEPARATOR_S "scripts", cachePath));
 
 	g_free(cachePath);
 	/* lifereaUserPath reused globally */

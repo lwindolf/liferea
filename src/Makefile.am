@@ -4,7 +4,12 @@ if WITH_GTKHTML2
 GTKHTML2 = gtkhtml2
 endif
 
-SUBDIRS = net parsers notification ui fl_sources . $(GTKHTML2) mozilla
+if WITH_LUA
+SCRIPTING = scripting
+SCRIPTING_LIB = scripting/libliscript.a
+endif
+
+SUBDIRS = net parsers notification ui fl_sources $(SCRIPTING) . $(GTKHTML2) mozilla
 
 AM_CPPFLAGS = \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \
@@ -15,8 +20,8 @@ AM_CPPFLAGS = \
 	$(PACKAGE_CFLAGS) \
 	$(X_CFLAGS) \
 	$(DBUS_CFLAGS) \
-	$(GNUTLS_CFLAGS)
-
+	$(GNUTLS_CFLAGS) \
+	$(LUA_FLAGS) 
 
 bin_PROGRAMS = liferea-bin 
 bin_SCRIPTS = liferea liferea-add-feed
@@ -53,8 +58,9 @@ liferea_bin_LDADD =	net/liblinet.a \
 			parsers/libliparsers.a \
 			fl_sources/libliflsources.a \
 			notification/liblinotification.a \
+			$(SCRIPTING_LIB) \
 			ui/libliui.a \
-			$(PACKAGE_LIBS) $(X_LIBS) $(X_PRE_LIBS) -lX11 $(X_EXTRA_LIBS) $(DBUS_LIBS) $(INTLLIBS)  $(GNUTLS_LIBS)
+			$(PACKAGE_LIBS) $(X_LIBS) $(X_PRE_LIBS) -lX11 $(X_EXTRA_LIBS) $(DBUS_LIBS) $(INTLLIBS) $(GNUTLS_LIBS) $(LUA_LIBS)
 
 if PLATFORM_WIN32
 

@@ -38,6 +38,7 @@
 #include "ui/ui_htmlview.h"
 #include "ui/ui_mainwindow.h"
 #include "ui/ui_node.h"
+#include "scripting/script.h"
 
 /* This is a simple controller implementation for itemlist handling. 
    It manages the currently displayed itemset, realizes filtering
@@ -514,6 +515,8 @@ void itemlist_selection_changed(itemPtr item) {
 		/* folder&vfolder postprocessing to remove/filter unselected items no
 		   more matching the display rules because they have changed state */
 		itemlist_check_for_deferred_action();
+
+		script_run_for_hook(SCRIPT_HOOK_ITEM_UNSELECT);
 	
 		debug1(DEBUG_GUI, "item list selection changed to \"%s\"", item_get_title(item));
 
@@ -537,6 +540,8 @@ void itemlist_selection_changed(itemPtr item) {
 		ui_node_update(displayed_itemSet->node);
 
 		feedlist_reset_new_item_count();
+		
+		script_run_for_hook(SCRIPT_HOOK_ITEM_SELECTED);
 	}
 
 	debug_exit("itemlist_selection_changed");

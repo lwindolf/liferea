@@ -463,7 +463,10 @@ void node_remove(nodePtr node) {
 }
 
 void node_mark_all_read(nodePtr node) {
+
+	node_load(node);
 	NODE_TYPE(node)->mark_all_read(node);
+	node_unload(node);
 }
 
 gchar * node_render(nodePtr node) {

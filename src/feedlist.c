@@ -41,6 +41,7 @@
 #include "fl_sources/default_source.h"
 #include "fl_sources/dummy_source.h"
 #include "notification/notif_plugin.h"
+#include "scripting/script.h"
 
 static guint unreadCount = 0;
 static guint newCount = 0;
@@ -233,13 +234,15 @@ void feedlist_selection_changed(nodePtr node) {
 		if(0 != newCount)
 			feedlist_reset_new_item_count();
 
+		script_run_for_hook(SCRIPT_HOOK_FEED_UNSELECT);
+
 		/* Unload visible items. */
 		itemlist_unload(TRUE);
 
 		/* Unload previously displayed node. */
 		if(displayed_node)
 			node_unload(displayed_node);
-
+			
 		/* Load items of new selected node. */
 		selectedNode = node;
 		if(selectedNode) {
@@ -248,6 +251,8 @@ void feedlist_selection_changed(nodePtr node) {
 		} else {
 			ui_htmlview_clear(ui_mainwindow_get_active_htmlview());
 		}
+		
+		script_run_for_hook(SCRIPT_HOOK_FEED_SELECTED);
 	}
 
 	debug_exit("feedlist_selection_changed");

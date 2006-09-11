@@ -16,3 +16,5 @@ GtkWidget* create_enchandlerdialog (void);
 GtkWidget* create_searchdialog (void);
 GtkWidget* create_updatedialog (void);
 GtkWidget* create_simplenewdialog (void);
+GtkWidget* create_scriptdialog (void);
+GtkWidget* create_scriptadddialog (void);

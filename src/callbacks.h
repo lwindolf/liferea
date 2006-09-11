@@ -34,6 +34,7 @@
 #include "ui/ui_htmlview.h"
 #include "ui/ui_tabs.h"
 #include "ui/ui_update.h"
+#include "scripting/ui_script.h"
 #include "export.h"
 #include "itemlist.h"
 #include "feedlist.h"

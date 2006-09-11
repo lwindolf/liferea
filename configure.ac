@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([liferea],[1.1.3],[liferea-devel@lists.sourceforge.net])
+AC_INIT([liferea],[1.1.5],[liferea-devel@lists.sourceforge.net])
 AC_CANONICAL_TARGET([])
 AC_CONFIG_SRCDIR([src/feedlist.c])
 
@@ -36,6 +36,7 @@ AC_ARG_ENABLE(gecko,     AS_HELP_STRING([--disable-gecko],[don't compile the Gec
 AC_ARG_ENABLE(gecko,     AS_HELP_STRING([--enable-gecko=ARG],[specify which Gecko provider to use ("mozilla", "firefox" or "seamonkey")]),,enable_gecko=yes)
 AC_ARG_ENABLE(gnutls,    AS_HELP_STRING([--enable-gnutls],[Attempt to use GNUTLS for SSL support @<:@default=yes@:>@]),,enable_gnutls=yes)
 AC_ARG_ENABLE(libnotify, AS_HELP_STRING([--disable-libnotify],[don't compile the libnotify plugin]),,enable_libnotify=yes)
+AC_ARG_ENABLE(lua,       AS_HELP_STRING([--disable-lua],[don't compile with LUA scripting support]),,enable_lua=yes)
 
 AC_MSG_CHECKING([for some Win32 platform])
 case "$host" in
@@ -107,7 +108,6 @@ dnl libnotify
 dnl *********
 
 if test "x$enable_libnotify" = "xyes"; then
-   dnl AC_MSG_CHECKING([for libnotify support])
    PKG_CHECK_MODULES([LIBNOTIFY], libnotify >= 0.3.2,enable_libnotify=yes,enable_libnotify=no)
    AC_SUBST(LIBNOTIFY_CFLAGS)
    AC_SUBST(LIBNOTIFY_LIBS)
@@ -117,6 +117,18 @@ fi
 
 AM_CONDITIONAL(WITH_LIBNOTIFY, test "x$enable_libnotify" = "xyes")
 
+dnl ***
+dnl LUA
+dnl ***
+
+if test "x$enable_lua" = "xyes"; then
+   AC_DEFINE(USE_LUA, 1, [Define if we're supporting LUA scripting.])
+   PKG_CHECK_MODULES([LUA], [lua50 lualib50] ,enable_lua=yes,enable_lua=no)
+else
+   enable_lua=no
+fi
+
+AM_CONDITIONAL(WITH_LUA, test "x$enable_lua" = "xyes")
 
 dnl *********
 dnl XulRunner
@@ -418,6 +430,7 @@ src/net/Makefile
 src/parsers/Makefile
 src/fl_sources/Makefile
 src/notification/Makefile
+src/scripting/Makefile
 src/ui/Makefile
 src/liferea
 doc/Makefile
@@ -445,6 +458,7 @@ echo "Build XulRunner Plugin.......... : $enable_xulrunner"
 echo "Build GtkHTML Plugin............ : $enable_gtkhtml2"
 echo 
 echo "Build libnotify Plugin.......... : $enable_libnotify"
+echo "Build LUA scripting Plugin...... : $enable_lua"
 echo 
 echo "Use X Session Management........ : $enable_sm"
 echo "Use DBUS........................ : $enable_dbus"

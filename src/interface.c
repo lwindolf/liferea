@@ -3520,3 +3520,342 @@ create_simplenewdialog (void)
   return simplenewdialog;
 }
 
+GtkWidget*
+create_scriptdialog (void)
+{
+  GtkWidget *scriptdialog;
+  GtkWidget *dialog_vbox20;
+  GtkWidget *vbox2624;
+  GtkWidget *hbox92238;
+  GtkWidget *label243;
+  GtkWidget *scripthooksmenu;
+  GtkWidget *hseparator1;
+  GtkWidget *hpaned1;
+  GtkWidget *vbox2625;
+  GtkWidget *label244;
+  GtkWidget *scrolledwindow12;
+  GtkWidget *scriptlist;
+  GtkWidget *scriptAddBtn;
+  GtkWidget *scriptRemoveBtn;
+  GtkWidget *vbox2626;
+  GtkWidget *label245;
+  GtkWidget *scrolledwindow13;
+  GtkWidget *scriptedit;
+  GtkWidget *alignment38;
+  GtkWidget *hbox92239;
+  GtkWidget *scriptSaveBtn;
+  GtkWidget *alignment40;
+  GtkWidget *hbox92241;
+  GtkWidget *image2465;
+  GtkWidget *label247;
+  GtkWidget *scriptRunBtn;
+  GtkWidget *alignment39;
+  GtkWidget *hbox92240;
+  GtkWidget *image2464;
+  GtkWidget *label246;
+  GtkWidget *hbox92236;
+  GtkWidget *cmdEntry;
+  GtkWidget *scriptCmdExecBtn;
+  GtkWidget *dialog_action_area20;
+  GtkWidget *closebutton3;
+
+  scriptdialog = gtk_dialog_new ();
+  gtk_window_set_title (GTK_WINDOW (scriptdialog), _("Script Manager"));
+  gtk_window_set_default_size (GTK_WINDOW (scriptdialog), 500, 500);
+  gtk_window_set_type_hint (GTK_WINDOW (scriptdialog), GDK_WINDOW_TYPE_HINT_DIALOG);
+
+  dialog_vbox20 = GTK_DIALOG (scriptdialog)->vbox;
+  gtk_widget_show (dialog_vbox20);
+
+  vbox2624 = gtk_vbox_new (FALSE, 6);
+  gtk_widget_show (vbox2624);
+  gtk_box_pack_start (GTK_BOX (dialog_vbox20), vbox2624, TRUE, TRUE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (vbox2624), 12);
+
+  hbox92238 = gtk_hbox_new (FALSE, 6);
+  gtk_widget_show (hbox92238);
+  gtk_box_pack_start (GTK_BOX (vbox2624), hbox92238, FALSE, TRUE, 0);
+
+  label243 = gtk_label_new_with_mnemonic (_("<b>Hook</b>"));
+  gtk_widget_show (label243);
+  gtk_box_pack_start (GTK_BOX (hbox92238), label243, FALSE, FALSE, 0);
+  gtk_label_set_use_markup (GTK_LABEL (label243), TRUE);
+
+  scripthooksmenu = gtk_option_menu_new ();
+  gtk_widget_show (scripthooksmenu);
+  gtk_box_pack_start (GTK_BOX (hbox92238), scripthooksmenu, FALSE, FALSE, 0);
+
+  hseparator1 = gtk_hseparator_new ();
+  gtk_widget_show (hseparator1);
+  gtk_box_pack_start (GTK_BOX (vbox2624), hseparator1, FALSE, TRUE, 0);
+
+  hpaned1 = gtk_hpaned_new ();
+  gtk_widget_show (hpaned1);
+  gtk_box_pack_start (GTK_BOX (vbox2624), hpaned1, TRUE, TRUE, 0);
+  gtk_paned_set_position (GTK_PANED (hpaned1), 130);
+
+  vbox2625 = gtk_vbox_new (FALSE, 6);
+  gtk_widget_show (vbox2625);
+  gtk_paned_pack1 (GTK_PANED (hpaned1), vbox2625, FALSE, TRUE);
+
+  label244 = gtk_label_new (_("<b>Registered Scripts</b>"));
+  gtk_widget_show (label244);
+  gtk_box_pack_start (GTK_BOX (vbox2625), label244, FALSE, FALSE, 0);
+  gtk_label_set_use_markup (GTK_LABEL (label244), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (label244), 0, 0.5);
+
+  scrolledwindow12 = gtk_scrolled_window_new (NULL, NULL);
+  gtk_widget_show (scrolledwindow12);
+  gtk_box_pack_start (GTK_BOX (vbox2625), scrolledwindow12, TRUE, TRUE, 0);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow12), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+  gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolledwindow12), GTK_SHADOW_IN);
+
+  scriptlist = gtk_tree_view_new ();
+  gtk_widget_show (scriptlist);
+  gtk_container_add (GTK_CONTAINER (scrolledwindow12), scriptlist);
+  gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (scriptlist), FALSE);
+
+  scriptAddBtn = gtk_button_new_from_stock ("gtk-add");
+  gtk_widget_show (scriptAddBtn);
+  gtk_box_pack_start (GTK_BOX (vbox2625), scriptAddBtn, FALSE, FALSE, 0);
+
+  scriptRemoveBtn = gtk_button_new_from_stock ("gtk-remove");
+  gtk_widget_show (scriptRemoveBtn);
+  gtk_box_pack_start (GTK_BOX (vbox2625), scriptRemoveBtn, FALSE, FALSE, 0);
+
+  vbox2626 = gtk_vbox_new (FALSE, 6);
+  gtk_widget_show (vbox2626);
+  gtk_paned_pack2 (GTK_PANED (hpaned1), vbox2626, TRUE, TRUE);
+
+  label245 = gtk_label_new (_("<b>Script Code</b>"));
+  gtk_widget_show (label245);
+  gtk_box_pack_start (GTK_BOX (vbox2626), label245, FALSE, FALSE, 0);
+  gtk_label_set_use_markup (GTK_LABEL (label245), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (label245), 0, 0.5);
+
+  scrolledwindow13 = gtk_scrolled_window_new (NULL, NULL);
+  gtk_widget_show (scrolledwindow13);
+  gtk_box_pack_start (GTK_BOX (vbox2626), scrolledwindow13, TRUE, TRUE, 0);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow13), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+  gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolledwindow13), GTK_SHADOW_IN);
+
+  scriptedit = gtk_text_view_new ();
+  gtk_widget_show (scriptedit);
+  gtk_container_add (GTK_CONTAINER (scrolledwindow13), scriptedit);
+
+  alignment38 = gtk_alignment_new (0, 0.5, 1, 1);
+  gtk_widget_show (alignment38);
+  gtk_box_pack_start (GTK_BOX (vbox2626), alignment38, FALSE, TRUE, 0);
+
+  hbox92239 = gtk_hbox_new (FALSE, 0);
+  gtk_widget_show (hbox92239);
+  gtk_container_add (GTK_CONTAINER (alignment38), hbox92239);
+
+  scriptSaveBtn = gtk_button_new ();
+  gtk_widget_show (scriptSaveBtn);
+  gtk_box_pack_start (GTK_BOX (hbox92239), scriptSaveBtn, FALSE, FALSE, 0);
+
+  alignment40 = gtk_alignment_new (0.5, 0.5, 0, 0);
+  gtk_widget_show (alignment40);
+  gtk_container_add (GTK_CONTAINER (scriptSaveBtn), alignment40);
+
+  hbox92241 = gtk_hbox_new (FALSE, 2);
+  gtk_widget_show (hbox92241);
+  gtk_container_add (GTK_CONTAINER (alignment40), hbox92241);
+
+  image2465 = gtk_image_new_from_stock ("gtk-save", GTK_ICON_SIZE_BUTTON);
+  gtk_widget_show (image2465);
+  gtk_box_pack_start (GTK_BOX (hbox92241), image2465, FALSE, FALSE, 0);
+
+  label247 = gtk_label_new_with_mnemonic ("Save Script");
+  gtk_widget_show (label247);
+  gtk_box_pack_start (GTK_BOX (hbox92241), label247, FALSE, FALSE, 0);
+
+  scriptRunBtn = gtk_button_new ();
+  gtk_widget_show (scriptRunBtn);
+  gtk_box_pack_start (GTK_BOX (hbox92239), scriptRunBtn, FALSE, FALSE, 0);
+
+  alignment39 = gtk_alignment_new (0.5, 0.5, 0, 0);
+  gtk_widget_show (alignment39);
+  gtk_container_add (GTK_CONTAINER (scriptRunBtn), alignment39);
+
+  hbox92240 = gtk_hbox_new (FALSE, 2);
+  gtk_widget_show (hbox92240);
+  gtk_container_add (GTK_CONTAINER (alignment39), hbox92240);
+
+  image2464 = gtk_image_new_from_stock ("gtk-execute", GTK_ICON_SIZE_BUTTON);
+  gtk_widget_show (image2464);
+  gtk_box_pack_start (GTK_BOX (hbox92240), image2464, FALSE, FALSE, 0);
+
+  label246 = gtk_label_new_with_mnemonic ("Run Now");
+  gtk_widget_show (label246);
+  gtk_box_pack_start (GTK_BOX (hbox92240), label246, FALSE, FALSE, 0);
+
+  hbox92236 = gtk_hbox_new (FALSE, 0);
+  gtk_widget_show (hbox92236);
+  gtk_box_pack_start (GTK_BOX (vbox2624), hbox92236, FALSE, TRUE, 0);
+
+  cmdEntry = gtk_entry_new ();
+  gtk_widget_show (cmdEntry);
+  gtk_box_pack_start (GTK_BOX (hbox92236), cmdEntry, TRUE, TRUE, 0);
+
+  scriptCmdExecBtn = gtk_button_new_with_mnemonic (_("Exec Command"));
+  gtk_widget_show (scriptCmdExecBtn);
+  gtk_box_pack_start (GTK_BOX (hbox92236), scriptCmdExecBtn, FALSE, FALSE, 0);
+
+  dialog_action_area20 = GTK_DIALOG (scriptdialog)->action_area;
+  gtk_widget_show (dialog_action_area20);
+  gtk_button_box_set_layout (GTK_BUTTON_BOX (dialog_action_area20), GTK_BUTTONBOX_END);
+
+  closebutton3 = gtk_button_new_from_stock ("gtk-close");
+  gtk_widget_show (closebutton3);
+  gtk_dialog_add_action_widget (GTK_DIALOG (scriptdialog), closebutton3, GTK_RESPONSE_CLOSE);
+  GTK_WIDGET_SET_FLAGS (closebutton3, GTK_CAN_DEFAULT);
+
+  g_signal_connect_swapped ((gpointer) scriptAddBtn, "clicked",
+                            G_CALLBACK (on_scriptAddBtn_clicked),
+                            GTK_OBJECT (scriptdialog));
+  g_signal_connect_swapped ((gpointer) scriptRemoveBtn, "clicked",
+                            G_CALLBACK (on_scriptRemoveBtn_clicked),
+                            GTK_OBJECT (scriptdialog));
+  g_signal_connect_swapped ((gpointer) scriptSaveBtn, "clicked",
+                            G_CALLBACK (on_scriptSaveBtn_clicked),
+                            GTK_OBJECT (scriptdialog));
+  g_signal_connect_swapped ((gpointer) scriptRunBtn, "clicked",
+                            G_CALLBACK (on_scriptRunBtn_clicked),
+                            GTK_OBJECT (scriptdialog));
+  g_signal_connect_swapped ((gpointer) cmdEntry, "activate",
+                            G_CALLBACK (on_cmdEntry_activate),
+                            GTK_OBJECT (scriptdialog));
+  g_signal_connect_swapped ((gpointer) scriptCmdExecBtn, "clicked",
+                            G_CALLBACK (on_scriptCmdExecBtn_clicked),
+                            GTK_OBJECT (scriptdialog));
+
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label243), scripthooksmenu);
+
+  /* Store pointers to all widgets, for use by lookup_widget(). */
+  GLADE_HOOKUP_OBJECT_NO_REF (scriptdialog, scriptdialog, "scriptdialog");
+  GLADE_HOOKUP_OBJECT_NO_REF (scriptdialog, dialog_vbox20, "dialog_vbox20");
+  GLADE_HOOKUP_OBJECT (scriptdialog, vbox2624, "vbox2624");
+  GLADE_HOOKUP_OBJECT (scriptdialog, hbox92238, "hbox92238");
+  GLADE_HOOKUP_OBJECT (scriptdialog, label243, "label243");
+  GLADE_HOOKUP_OBJECT (scriptdialog, scripthooksmenu, "scripthooksmenu");
+  GLADE_HOOKUP_OBJECT (scriptdialog, hseparator1, "hseparator1");
+  GLADE_HOOKUP_OBJECT (scriptdialog, hpaned1, "hpaned1");
+  GLADE_HOOKUP_OBJECT (scriptdialog, vbox2625, "vbox2625");
+  GLADE_HOOKUP_OBJECT (scriptdialog, label244, "label244");
+  GLADE_HOOKUP_OBJECT (scriptdialog, scrolledwindow12, "scrolledwindow12");
+  GLADE_HOOKUP_OBJECT (scriptdialog, scriptlist, "scriptlist");
+  GLADE_HOOKUP_OBJECT (scriptdialog, scriptAddBtn, "scriptAddBtn");
+  GLADE_HOOKUP_OBJECT (scriptdialog, scriptRemoveBtn, "scriptRemoveBtn");
+  GLADE_HOOKUP_OBJECT (scriptdialog, vbox2626, "vbox2626");
+  GLADE_HOOKUP_OBJECT (scriptdialog, label245, "label245");
+  GLADE_HOOKUP_OBJECT (scriptdialog, scrolledwindow13, "scrolledwindow13");
+  GLADE_HOOKUP_OBJECT (scriptdialog, scriptedit, "scriptedit");
+  GLADE_HOOKUP_OBJECT (scriptdialog, alignment38, "alignment38");
+  GLADE_HOOKUP_OBJECT (scriptdialog, hbox92239, "hbox92239");
+  GLADE_HOOKUP_OBJECT (scriptdialog, scriptSaveBtn, "scriptSaveBtn");
+  GLADE_HOOKUP_OBJECT (scriptdialog, alignment40, "alignment40");
+  GLADE_HOOKUP_OBJECT (scriptdialog, hbox92241, "hbox92241");
+  GLADE_HOOKUP_OBJECT (scriptdialog, image2465, "image2465");
+  GLADE_HOOKUP_OBJECT (scriptdialog, label247, "label247");
+  GLADE_HOOKUP_OBJECT (scriptdialog, scriptRunBtn, "scriptRunBtn");
+  GLADE_HOOKUP_OBJECT (scriptdialog, alignment39, "alignment39");
+  GLADE_HOOKUP_OBJECT (scriptdialog, hbox92240, "hbox92240");
+  GLADE_HOOKUP_OBJECT (scriptdialog, image2464, "image2464");
+  GLADE_HOOKUP_OBJECT (scriptdialog, label246, "label246");
+  GLADE_HOOKUP_OBJECT (scriptdialog, hbox92236, "hbox92236");
+  GLADE_HOOKUP_OBJECT (scriptdialog, cmdEntry, "cmdEntry");
+  GLADE_HOOKUP_OBJECT (scriptdialog, scriptCmdExecBtn, "scriptCmdExecBtn");
+  GLADE_HOOKUP_OBJECT_NO_REF (scriptdialog, dialog_action_area20, "dialog_action_area20");
+  GLADE_HOOKUP_OBJECT (scriptdialog, closebutton3, "closebutton3");
+
+  return scriptdialog;
+}
+
+GtkWidget*
+create_scriptadddialog (void)
+{
+  GtkWidget *scriptadddialog;
+  GtkWidget *dialog_vbox21;
+  GtkWidget *table12;
+  GtkWidget *scriptAddMenu;
+  GtkWidget *scriptAddEntry;
+  GtkWidget *scriptAddReuseRadioBtn;
+  GSList *scriptAddReuseRadioBtn_group = NULL;
+  GtkWidget *scriptAddNewRadioBtn;
+  GtkWidget *dialog_action_area21;
+  GtkWidget *button7;
+  GtkWidget *button8;
+
+  scriptadddialog = gtk_dialog_new ();
+  gtk_window_set_title (GTK_WINDOW (scriptadddialog), _("Add Script"));
+  gtk_window_set_type_hint (GTK_WINDOW (scriptadddialog), GDK_WINDOW_TYPE_HINT_DIALOG);
+
+  dialog_vbox21 = GTK_DIALOG (scriptadddialog)->vbox;
+  gtk_widget_show (dialog_vbox21);
+
+  table12 = gtk_table_new (2, 2, FALSE);
+  gtk_widget_show (table12);
+  gtk_box_pack_start (GTK_BOX (dialog_vbox21), table12, TRUE, TRUE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (table12), 12);
+  gtk_table_set_row_spacings (GTK_TABLE (table12), 6);
+  gtk_table_set_col_spacings (GTK_TABLE (table12), 6);
+
+  scriptAddMenu = gtk_option_menu_new ();
+  gtk_widget_show (scriptAddMenu);
+  gtk_table_attach (GTK_TABLE (table12), scriptAddMenu, 1, 2, 0, 1,
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (0), 0, 0);
+
+  scriptAddEntry = gtk_entry_new ();
+  gtk_widget_show (scriptAddEntry);
+  gtk_table_attach (GTK_TABLE (table12), scriptAddEntry, 1, 2, 1, 2,
+                    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
+                    (GtkAttachOptions) (0), 0, 0);
+
+  scriptAddReuseRadioBtn = gtk_radio_button_new_with_mnemonic (NULL, _("Reuse existing script"));
+  gtk_widget_show (scriptAddReuseRadioBtn);
+  gtk_table_attach (GTK_TABLE (table12), scriptAddReuseRadioBtn, 0, 1, 0, 1,
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (0), 0, 0);
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (scriptAddReuseRadioBtn), scriptAddReuseRadioBtn_group);
+  scriptAddReuseRadioBtn_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (scriptAddReuseRadioBtn));
+
+  scriptAddNewRadioBtn = gtk_radio_button_new_with_mnemonic (NULL, _("Create new script"));
+  gtk_widget_show (scriptAddNewRadioBtn);
+  gtk_table_attach (GTK_TABLE (table12), scriptAddNewRadioBtn, 0, 1, 1, 2,
+                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (0), 0, 0);
+  gtk_radio_button_set_group (GTK_RADIO_BUTTON (scriptAddNewRadioBtn), scriptAddReuseRadioBtn_group);
+  scriptAddReuseRadioBtn_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (scriptAddNewRadioBtn));
+
+  dialog_action_area21 = GTK_DIALOG (scriptadddialog)->action_area;
+  gtk_widget_show (dialog_action_area21);
+  gtk_button_box_set_layout (GTK_BUTTON_BOX (dialog_action_area21), GTK_BUTTONBOX_END);
+
+  button7 = gtk_button_new_from_stock ("gtk-cancel");
+  gtk_widget_show (button7);
+  gtk_dialog_add_action_widget (GTK_DIALOG (scriptadddialog), button7, GTK_RESPONSE_CANCEL);
+  GTK_WIDGET_SET_FLAGS (button7, GTK_CAN_DEFAULT);
+
+  button8 = gtk_button_new_from_stock ("gtk-ok");
+  gtk_widget_show (button8);
+  gtk_dialog_add_action_widget (GTK_DIALOG (scriptadddialog), button8, GTK_RESPONSE_OK);
+  GTK_WIDGET_SET_FLAGS (button8, GTK_CAN_DEFAULT);
+
+  /* Store pointers to all widgets, for use by lookup_widget(). */
+  GLADE_HOOKUP_OBJECT_NO_REF (scriptadddialog, scriptadddialog, "scriptadddialog");
+  GLADE_HOOKUP_OBJECT_NO_REF (scriptadddialog, dialog_vbox21, "dialog_vbox21");
+  GLADE_HOOKUP_OBJECT (scriptadddialog, table12, "table12");
+  GLADE_HOOKUP_OBJECT (scriptadddialog, scriptAddMenu, "scriptAddMenu");
+  GLADE_HOOKUP_OBJECT (scriptadddialog, scriptAddEntry, "scriptAddEntry");
+  GLADE_HOOKUP_OBJECT (scriptadddialog, scriptAddReuseRadioBtn, "scriptAddReuseRadioBtn");
+  GLADE_HOOKUP_OBJECT (scriptadddialog, scriptAddNewRadioBtn, "scriptAddNewRadioBtn");
+  GLADE_HOOKUP_OBJECT_NO_REF (scriptadddialog, dialog_action_area21, "dialog_action_area21");
+  GLADE_HOOKUP_OBJECT (scriptadddialog, button7, "button7");
+  GLADE_HOOKUP_OBJECT (scriptadddialog, button8, "button8");
+
+  return scriptadddialog;
+}
+

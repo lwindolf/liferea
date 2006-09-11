@@ -598,7 +598,7 @@ void on_browsercmd_changed(GtkEditable *editable, gpointer user_data) {
 }
 
 static void on_browser_changed(GtkOptionMenu *optionmenu, gpointer user_data) {
-	int num = GPOINTER_TO_INT(user_data);
+	gint num = GPOINTER_TO_INT(user_data);
 
 	gtk_widget_set_sensitive(lookup_widget(prefdialog, "browsercmd"), browsers[num].id == NULL);	
 	gtk_widget_set_sensitive(lookup_widget(prefdialog, "manuallabel"), browsers[num].id == NULL);	

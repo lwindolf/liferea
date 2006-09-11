@@ -82,14 +82,6 @@ void itemlist_unload(gboolean markRead);
 void itemlist_set_two_pane_mode(gboolean newMode);
 
 /**
- * Changes the 2/3-pane mode setting of the displayed
- * item set and its node. Uses itemlist_set_two_pane_mode().
- *
- * @param newMode	TRUE for 2-pane
- */
-void itemlist_change_two_pane_mode(gboolean newMode);
-
-/**
  * Returns the two/three pane mode property of the
  * currently displayed item set.
  *

@@ -47,6 +47,8 @@
 #include "ui/ui_itemlist.h"
 #include "ui/ui_session.h"
 #include "ui/ui_update.h"
+#include "scripting/script.h"
+#include "scripting/ui_script.h"
 
 struct mainwindow {
 	GtkWindow *window;
@@ -416,7 +418,7 @@ void ui_mainwindow_init(int mainwindowState) {
 	ui_dnd_setup_URL_receiver(mainwindow);	/* setup URL dropping support */
 	ui_popup_setup_menues();		/* create popup menues */
 	ui_enclosure_init();
-	
+
 	feedlist_init();
 			
 	if(mainwindowState == MAINWINDOW_ICONIFIED || 
@@ -488,6 +490,8 @@ void ui_mainwindow_init(int mainwindowState) {
 	g_string_free(buffer, TRUE);
 
 	gtk_widget_set_sensitive(GTK_WIDGET(lookup_widget(mainwindow, "feedlist")), TRUE);
+	
+	script_run_for_hook(SCRIPT_HOOK_STARTUP);
 
 	debug_exit("ui_mainwindow_init");
 }
@@ -778,6 +782,8 @@ static GtkActionEntry ui_mainwindow_action_entries[] = {
 	 G_CALLBACK(on_prefbtn_clicked)},
 	{"ShowUpdateMonitor", NULL, N_("Update Monitor"), NULL, N_("Show a list of all feeds currently in the update queue"),
 	 G_CALLBACK(on_menu_show_update_monitor)},
+	{"ShowScriptManager", NULL, N_("Script Manager"), NULL, N_("Allows to configure and edit LUA hook scripts"),
+	 G_CALLBACK(on_menu_show_script_manager)},
 	{"Quit",GTK_STOCK_QUIT, N_("_Quit"), "<control>Q", NULL, G_CALLBACK(on_quit)},
 
 	{"FeedsMenu", NULL, N_("_Feeds")},
@@ -852,6 +858,7 @@ static const char *ui_mainwindow_ui_desc =
 "      <menuitem action='ShowPreferences'/>"
 "      <separator/>"
 "      <menuitem action='ShowUpdateMonitor'/>"
+"      <menuitem action='ShowScriptManager'/>"
 "      <separator/>"
 "      <menuitem action='ToggleOfflineMode'/>"
 "      <separator/>"

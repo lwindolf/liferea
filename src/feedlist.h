@@ -48,15 +48,6 @@ nodePtr feedlist_get_selected(void);
  */
 nodePtr feedlist_get_insertion_point(void);
 
-/** 
- * Get the parent node of the currently 
- * selected node. Can be used to determine
- * insertion point when creating new subscriptions.
- *
- * @returns parent folder node (or root node)
- */
-nodePtr feedlist_get_selected_parent(void);
-
 /** statistic counter handling methods */
 int feedlist_get_unread_item_count(void);
 int feedlist_get_new_item_count(void);
@@ -67,7 +58,6 @@ void feedlist_update_counters(gint unreadDiff, gint newDiff);
 
 nodePtr feedlist_get_root(void);
 
-void feedlist_update_node(nodePtr np);
 void feedlist_remove_node(nodePtr np);
 
 /**
@@ -82,13 +72,6 @@ void feedlist_schedule_save(void);
  * synchronously.
  */
 void feedlist_save(void);
-
-/** 
- * Handles completed feed update requests.
- *
- * @param request	the completed request
- */
-void ui_feed_process_update_result(struct request *request);
 
 /* feed list iterating interface */
 

@@ -57,6 +57,7 @@
 #include "ui/ui_mainwindow.h"
 #include "ui/ui_node.h"
 #include "notification/notif_plugin.h"
+#include "scripting/script.h"
 
 /** used for migration purposes: 1.0.x didn't specify a version */
 #define FEED_CACHE_VERSION	"1.1"
@@ -1193,6 +1194,8 @@ void feed_process_update_result(struct request *request) {
 	ui_node_update(node);
 	notification_node_has_new_items(node);
 	node_unload(node);
+	
+	script_run_for_hook(SCRIPT_HOOK_FEED_UPDATED);
 
 	debug_exit("ui_feed_process_update_result");
 }
@@ -1353,9 +1356,7 @@ static void feed_remove(nodePtr node) {
 
 static void feed_mark_all_read(nodePtr node) {
 
-	feed_load(node);
 	itemlist_mark_all_read(node->itemSet);
-	feed_unload(node);
 }
 
 static gchar * feed_render(nodePtr node) {

@@ -102,6 +102,11 @@ void ui_itemlist_remove_item(itemPtr ip);
 void ui_itemlist_enable_favicon_column(gboolean enabled);
 
 /**
+ * Enable the enclosure column of the currently displayed itemlist
+ */
+void ui_itemlist_enable_encicon_column(gboolean enabled);
+
+/**
  * Remove the items from the itemlist.
  */
 void ui_itemlist_clear(void);
