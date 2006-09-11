@@ -242,6 +242,7 @@ create_propdialog (void)
   GtkWidget *label94;
   GtkWidget *usernameEntry;
   GtkWidget *passwordEntry;
+  GtkWidget *dontUseProxyCheck;
   GtkWidget *label131;
   GtkWidget *vbox2615;
   GtkWidget *enclosureDownloadCheck;
@@ -568,7 +569,7 @@ create_propdialog (void)
 
   alignment34 = gtk_alignment_new (0.5, 0.5, 1, 1);
   gtk_widget_show (alignment34);
-  gtk_box_pack_start (GTK_BOX (vbox242), alignment34, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox242), alignment34, FALSE, FALSE, 0);
   gtk_alignment_set_padding (GTK_ALIGNMENT (alignment34), 0, 0, 12, 0);
 
   table4 = gtk_table_new (2, 2, FALSE);
@@ -604,7 +605,11 @@ create_propdialog (void)
                     (GtkAttachOptions) (0), 0, 0);
   gtk_entry_set_visibility (GTK_ENTRY (passwordEntry), FALSE);
 
-  label131 = gtk_label_new (_("Authentication"));
+  dontUseProxyCheck = gtk_check_button_new_with_mnemonic (_("_Don't use proxy for download"));
+  gtk_widget_show (dontUseProxyCheck);
+  gtk_box_pack_start (GTK_BOX (vbox242), dontUseProxyCheck, FALSE, FALSE, 6);
+
+  label131 = gtk_label_new (_("Download"));
   gtk_widget_show (label131);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook3), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook3), 3), label131);
 
@@ -617,7 +622,7 @@ create_propdialog (void)
   gtk_widget_show (enclosureDownloadCheck);
   gtk_box_pack_start (GTK_BOX (vbox2615), enclosureDownloadCheck, FALSE, FALSE, 0);
 
-  loadItemLinkCheck = gtk_check_button_new_with_mnemonic (_("Load the item link in internal browser when reading articles."));
+  loadItemLinkCheck = gtk_check_button_new_with_mnemonic (_("Auto-_load item link in internal browser when reading articles."));
   gtk_widget_show (loadItemLinkCheck);
   gtk_box_pack_start (GTK_BOX (vbox2615), loadItemLinkCheck, FALSE, FALSE, 0);
 
@@ -715,6 +720,7 @@ create_propdialog (void)
   GLADE_HOOKUP_OBJECT (propdialog, label94, "label94");
   GLADE_HOOKUP_OBJECT (propdialog, usernameEntry, "usernameEntry");
   GLADE_HOOKUP_OBJECT (propdialog, passwordEntry, "passwordEntry");
+  GLADE_HOOKUP_OBJECT (propdialog, dontUseProxyCheck, "dontUseProxyCheck");
   GLADE_HOOKUP_OBJECT (propdialog, label131, "label131");
   GLADE_HOOKUP_OBJECT (propdialog, vbox2615, "vbox2615");
   GLADE_HOOKUP_OBJECT (propdialog, enclosureDownloadCheck, "enclosureDownloadCheck");
@@ -750,6 +756,10 @@ create_newdialog (void)
   GtkWidget *label165;
   GtkWidget *selectSourceFileButton;
   GtkWidget *label103;
+  GtkWidget *label249;
+  GtkWidget *hbox92242;
+  GtkWidget *label248;
+  GtkWidget *dontUseProxyCheck;
   GtkWidget *outerfiltervbox;
   GtkWidget *hbox74;
   GtkWidget *label166;
@@ -865,8 +875,26 @@ create_newdialog (void)
                     (GtkAttachOptions) (GTK_FILL), 0, 0);
   gtk_misc_set_alignment (GTK_MISC (label103), 0, 0);
 
+  label249 = gtk_label_new (_("<b>Download / Postprocessing</b>"));
+  gtk_widget_show (label249);
+  gtk_box_pack_start (GTK_BOX (vbox16), label249, FALSE, FALSE, 0);
+  gtk_label_set_use_markup (GTK_LABEL (label249), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (label249), 0, 0.5);
+
+  hbox92242 = gtk_hbox_new (FALSE, 0);
+  gtk_widget_show (hbox92242);
+  gtk_box_pack_start (GTK_BOX (vbox16), hbox92242, TRUE, TRUE, 0);
+
+  label248 = gtk_label_new (_("    "));
+  gtk_widget_show (label248);
+  gtk_box_pack_start (GTK_BOX (hbox92242), label248, FALSE, FALSE, 0);
+
+  dontUseProxyCheck = gtk_check_button_new_with_mnemonic (_("_Dont use proxy for download"));
+  gtk_widget_show (dontUseProxyCheck);
+  gtk_box_pack_start (GTK_BOX (hbox92242), dontUseProxyCheck, FALSE, FALSE, 0);
+
   outerfiltervbox = gtk_vbox_new (FALSE, 6);
-  gtk_box_pack_start (GTK_BOX (vbox16), outerfiltervbox, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox16), outerfiltervbox, TRUE, TRUE, 0);
 
   hbox74 = gtk_hbox_new (FALSE, 0);
   gtk_widget_show (hbox74);
@@ -957,6 +985,10 @@ create_newdialog (void)
   GLADE_HOOKUP_OBJECT (newdialog, label165, "label165");
   GLADE_HOOKUP_OBJECT (newdialog, selectSourceFileButton, "selectSourceFileButton");
   GLADE_HOOKUP_OBJECT (newdialog, label103, "label103");
+  GLADE_HOOKUP_OBJECT (newdialog, label249, "label249");
+  GLADE_HOOKUP_OBJECT (newdialog, hbox92242, "hbox92242");
+  GLADE_HOOKUP_OBJECT (newdialog, label248, "label248");
+  GLADE_HOOKUP_OBJECT (newdialog, dontUseProxyCheck, "dontUseProxyCheck");
   GLADE_HOOKUP_OBJECT (newdialog, outerfiltervbox, "outerfiltervbox");
   GLADE_HOOKUP_OBJECT (newdialog, hbox74, "hbox74");
   GLADE_HOOKUP_OBJECT (newdialog, label166, "label166");

@@ -95,13 +95,16 @@ typedef struct feed {
 	gchar		*htmlUrl;		/**< URL of HTML version of the feed */
 	gchar		*imageUrl;		/**< URL of the optional feed image */
 	gchar		*description;		/**< HTML string describing the feed */
-	gchar		*source;		/**< current feed source, can be changed by redirects */
-	gchar		*origSource;		/**< the feed source given when creating the subscription */
 	gchar		*filtercmd;		/**< feed filter command */
 	gint		updateInterval;		/**< user defined update interval in minutes */
 	GSList		*metadata;		/**< metadata of this feed */
 	gboolean	encAutoDownload;	/**< enclosure auto download flag */
 	gboolean	loadItemLink;		/**< automatic item link load flag */
+
+	/** feed source definition */	
+	gchar		*source;		/**< current feed source, can be changed by redirects */
+	gchar		*origSource;		/**< the feed source given when creating the subscription */
+	gboolean	dontUseProxy;		/**< no proxy flag */
 	
 	/* feed cache state properties */
 	gint		cacheLimit;		/**< Amount of cache to save: See the cache_limit enum */
