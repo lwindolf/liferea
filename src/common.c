@@ -238,7 +238,10 @@ gchar * common_strip_dhtml(const gchar *html) {
 	tmp = common_strreplace(tmp, " onload=", " no_onload=");
 	tmp = common_strreplace(tmp, " onLoad=", " no_onLoad=");
 	tmp = common_strreplace(tmp, "script>", "no_script>");		
-	tmp = common_strreplace(tmp, "<script ", "<no_script ");		
+	tmp = common_strreplace(tmp, "<script ", "<no_script ");
+	tmp = common_strreplace(tmp, "<meta ", "<no_meta ");
+	tmp = common_strreplace(tmp, "<iframe ", "<no_iframe ");
+	tmp = common_strreplace(tmp, "/iframe>", "/no_iframe>");
 	
 	return tmp;
 }
