@@ -419,6 +419,7 @@ void update_execute_request(requestPtr new_request) {
 	g_assert(new_request->data == NULL);
 	g_assert(new_request->size == 0);
 	g_assert(new_request->callback != NULL);
+	g_assert(new_request->options != NULL);
 	
 	new_request->state = REQUEST_STATE_PENDING;
 	

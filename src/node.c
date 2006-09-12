@@ -411,7 +411,7 @@ void node_request_interactive_add(guint type) {
 /* Automatic subscription adding (e.g. URL DnD), creates a new node
    or reuses the given one and creates a new feed without any user 
    interaction. */
-void node_request_automatic_add(const gchar *source, const gchar *title, const gchar *filter, gint flags) {
+void node_request_automatic_add(const gchar *source, const gchar *title, const gchar *filter, updateOptionsPtr options, gint flags) {
 	nodePtr		node, parent;
 	gint		pos;
 
@@ -424,7 +424,7 @@ void node_request_automatic_add(const gchar *source, const gchar *title, const g
 
 	node = node_new();
 	node_set_title(node, title?title:_("New Subscription"));
-	node_add_data(node, NODE_TYPE_FEED, feed_new(source, filter));
+	node_add_data(node, NODE_TYPE_FEED, feed_new(source, filter, options));
 
 	ui_feedlist_get_target_folder(&pos);
 	node_add_child(parent, node, pos);
@@ -481,7 +481,7 @@ void node_request_auto_update(nodePtr node) {
 	NODE_TYPE(node)->request_auto_update(node);
 }
 
-void node_request_update(nodePtr node, guint flags) {
+void node_request_update (nodePtr node, guint flags) {
 	NODE_TYPE(node)->request_update(node, flags);
 }
 

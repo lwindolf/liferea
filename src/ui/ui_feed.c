@@ -190,6 +190,9 @@ static void on_propdialog_response(GtkDialog *dialog, gint response_id, gpointer
 		else if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(GTK_WIDGET(dialog), "feedCacheLimited"))))
 			feed->cacheLimit = gtk_spin_button_get_value(GTK_SPIN_BUTTON(lookup_widget(GTK_WIDGET(dialog), "cacheItemLimit")));
 
+		/* "Download" Options */
+		feed->updateOptions->dontUseProxy = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(GTK_WIDGET(dialog), "dontUseProxyCheck")));
+
 		/* "Advanced" options */
 		feed->encAutoDownload = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(GTK_WIDGET(dialog), "enclosureDownloadCheck")));
 		feed->loadItemLink = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(GTK_WIDGET(dialog), "loadItemLinkCheck")));
@@ -396,6 +399,7 @@ static void on_newdialog_response(GtkDialog *dialog, gint response_id, gpointer 
 	if(response_id == GTK_RESPONSE_OK) {
 		gchar *source = NULL;
 		const gchar *filter = NULL;
+		updateOptionsPtr options;
 
 		/* Source */
 		source = ui_feed_dialog_decode_source(ui_data);
@@ -406,7 +410,11 @@ static void on_newdialog_response(GtkDialog *dialog, gint response_id, gpointer 
 		   !strcmp(filter,"")) { /* Maybe this should be a test to see if the file exists? */
 			filter = NULL;
 		} 
-		node_request_automatic_add(source, NULL, filter,
+		
+		options = g_new0(struct updateOptions, 1);
+		options->dontUseProxy = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(GTK_WIDGET(dialog), "dontUseProxyCheck")));
+		
+		node_request_automatic_add(source, NULL, filter, options,
 		                           FEED_REQ_SHOW_PROPDIALOG | 
 					   FEED_REQ_RESET_TITLE | 
 					   FEED_REQ_RESET_UPDATE_INT | 
@@ -477,7 +485,7 @@ static void on_simple_newdialog_response(GtkDialog *dialog, gint response_id, gp
 			source = ui_feed_create_url(g_strdup(gtk_entry_get_text(GTK_ENTRY(ui_data->sourceEntry))),
 			                            FALSE /* auth */, NULL /* user */, NULL /* passwd */);
 
-			node_request_automatic_add(source, NULL, NULL,
+			node_request_automatic_add(source, NULL, NULL, NULL,
 		                        	   FEED_REQ_SHOW_PROPDIALOG | 
 						   FEED_REQ_RESET_TITLE | 
 						   FEED_REQ_RESET_UPDATE_INT | 
@@ -669,6 +677,11 @@ void ui_feed_properties(nodePtr node) {
 	g_signal_connect(G_OBJECT (propdialog), "response", G_CALLBACK (on_propdialog_response), ui_data);
 
 	on_feed_prop_filtercheck(GTK_TOGGLE_BUTTON(lookup_widget(propdialog, "filterCheckbox")), ui_data);
+	
+	/***********************************************************************
+	 * Download                                                            *
+	 ***********************************************************************/
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(propdialog, "dontUseProxyCheck")), feed->updateOptions->dontUseProxy);
 
 	/***********************************************************************
 	 * Advanced                                                            *

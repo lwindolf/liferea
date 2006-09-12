@@ -129,6 +129,7 @@ void node_source_import(nodePtr node, xmlNodePtr cur) {
 		node->type = NODE_TYPE_SOURCE;
 		node->available = TRUE;
 		node->source = g_new0(struct nodeSource, 1);
+		node->source->updateOptions = g_new0(struct updateOptions, 1);
 		node->source->updateState = g_new0(struct updateState, 1);
 		node->source->root = node;
 		node->source->type = type;
@@ -169,6 +170,7 @@ void node_source_new(nodePtr node, nodeSourceTypePtr type, const gchar *sourceUr
 	node->source->root = node;
 	node->source->type = type;
 	node->source->url = g_strdup(sourceUrl);
+	node->source->updateOptions = g_new0(struct updateOptions, 1);
 	node->source->updateState = g_new0(struct updateState, 1);
 }
 

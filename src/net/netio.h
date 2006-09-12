@@ -30,20 +30,21 @@
 
 struct feed_request {
 	/* Supplied and overwritten/freed */
-	char *feedurl;                                                  /* Non hashified URL */
-	char *lastmodified;                                             /* Content of header as sent by the server. */
+	char *feedurl;                          /* Non hashified URL */
+	char *lastmodified;                     /* Content of header as sent by the server. */
 	char *etag;
 
 	/* Set by netio code */
 	char *content_type;
 	size_t contentlength;
 	int lasthttpstatus;
-	char *cookies;                                                  /* Login cookies for this feed. */
-	char *authinfo;                                                 /* HTTP authinfo string. */
-	char *servauth;                                                 /* Server supplied authorization header. */
-	int problem;                                                    /* Set if there was a problem downloading the feed. */
+	char *cookies;                          /* Login cookies for this feed. */
+	char *authinfo;                         /* HTTP authinfo string. */
+	char *servauth;                         /* Server supplied authorization header. */
+	int problem;                            /* Set if there was a problem downloading the feed. */
 	int netio_error;
 	int connectresult;
+	int no_proxy;				/* 1 = don't use a proxy, 0 = use proxy */
 };
 
 #endif

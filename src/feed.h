@@ -34,15 +34,16 @@
 
 /** Flags used in the request structure */
 enum feed_request_flags {
-	FEED_REQ_SHOW_PROPDIALOG = 1,
-	FEED_REQ_RESET_TITLE = 2,	/**< Feed's title should be reset to default upon update */
-	FEED_REQ_RESET_UPDATE_INT = 4,	/**< Feed's update interval should be reset to default upon update */
-	FEED_REQ_AUTO_DISCOVER = 8,	/**< Feed auto-discovery attempts should be made */
+	FEED_REQ_SHOW_PROPDIALOG	= (1<<0),
+	FEED_REQ_RESET_TITLE		= (1<<1),	/**< Feed's title should be reset to default upon update */
+	FEED_REQ_RESET_UPDATE_INT	= (1<<2),	/**< Feed's update interval should be reset to default upon update */
+	FEED_REQ_AUTO_DISCOVER		= (1<<3),	/**< Feed auto-discovery attempts should be made */
 	
-	FEED_REQ_PRIORITY_HIGH = 16,	/**< set to signal that this is an important user triggered request */
-	FEED_REQ_DOWNLOAD_FAVICON = 32, /**< set to make the favicon be updated after the feed is downloaded */
-	FEED_REQ_AUTH_DIALOG = 64,	/**< set to make an auth request dialog to be created after 401 errors */
-	FEED_REQ_ALLOW_RETRIES = 128	/**< set to allow fetch retries on network errors */
+	FEED_REQ_PRIORITY_HIGH		= (1<<4),	/**< set to signal that this is an important user triggered request */
+	FEED_REQ_DOWNLOAD_FAVICON	= (1<<5),	/**< set to make the favicon be updated after the feed is downloaded */
+	FEED_REQ_AUTH_DIALOG		= (1<<6),	/**< set to make an auth request dialog to be created after 401 errors */
+	FEED_REQ_ALLOW_RETRIES		= (1<<7),	/**< set to allow fetch retries on network errors */
+	FEED_REQ_NO_PROXY		= (1<<8)	/**< sets no proxy flag */
 };
 
 struct feedHandler;
@@ -104,7 +105,7 @@ typedef struct feed {
 	/** feed source definition */	
 	gchar		*source;		/**< current feed source, can be changed by redirects */
 	gchar		*origSource;		/**< the feed source given when creating the subscription */
-	gboolean	dontUseProxy;		/**< no proxy flag */
+	updateOptionsPtr updateOptions;		/**< update options for the feed source */
 	
 	/* feed cache state properties */
 	gint		cacheLimit;		/**< Amount of cache to save: See the cache_limit enum */
@@ -146,10 +147,11 @@ void feed_init(void);
  *
  * @param source	the feed source URL (or NULL)
  * @param filter	a feed filter (or NULL)
+ * @param options	update options (or NULL)
  *
  * @returns the new, empty feed
  */
-feedPtr feed_new(const gchar *source, const gchar *filter);
+feedPtr feed_new(const gchar *source, const gchar *filter, updateOptionsPtr options);
 
 /**
  * Feed specific feed list import parsing.

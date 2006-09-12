@@ -40,6 +40,7 @@
 typedef struct faviconDownloadCtxt {
 	const gchar		*id;		/**< favicon cache id */
 	GSList			*urls;		/**< ordered list of URLs to try */
+	updateOptionsPtr	options;	/**< download options */
 	faviconUpdatedCb	callback;	/**< usually feed_favicon_updated() */
 	gpointer		user_data;	/**< usually the node pointer */
 } *faviconDownloadCtxtPtr;
@@ -182,6 +183,7 @@ static void favicon_download_html_cb(requestPtr request) {
 			update_request_free(request);
 			request = update_request_new(ctxt->user_data);
 			request->source = iconUri;
+			request->options = ctxt->options;
 			request->callback = &favicon_download_icon_cb;
 			request->user_data = ctxt;
 			update_execute_request(request);
@@ -207,6 +209,7 @@ static void favicon_download_run(faviconDownloadCtxtPtr ctxt) {
 
 		request = update_request_new(ctxt->user_data);
 		request->source = url;
+		request->options = ctxt->options;
 		request->user_data = ctxt;
 
 		if(strstr(url, "/favicon.ico"))
@@ -233,7 +236,7 @@ static gint count_slashes(const gchar *str) {
 	return slashes;
 }
 
-void favicon_download(const gchar *id, const gchar *html_url, const gchar *source_url, faviconUpdatedCb callback, gpointer user_data) {
+void favicon_download(const gchar *id, const gchar *html_url, const gchar *source_url, updateOptionsPtr options, faviconUpdatedCb callback, gpointer user_data) {
 	faviconDownloadCtxtPtr	ctxt;
 	gchar			*tmp, *tmp2;
 	
@@ -241,6 +244,7 @@ void favicon_download(const gchar *id, const gchar *html_url, const gchar *sourc
 	
 	ctxt = g_new0(struct faviconDownloadCtxt, 1);
 	ctxt->id = id;
+	ctxt->options = options;
 	ctxt->callback = callback;
 	ctxt->user_data = user_data;
 	

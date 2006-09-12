@@ -65,9 +65,10 @@ typedef void (*faviconUpdatedCb)(gpointer user_data);
  * @param id		cache id of the favicon (usually = node id)
  * @param html_url	URL of a website where a favicon could be found (optional)
  * @param source_url	URL (usually the feed source) where a favicon can be found (mandatory)
+ * @param options	download options 
  * @param callback	callback to triggered on success
  * @param user_data	user data to be passed to callback
  */
-void favicon_download(const gchar *id, const gchar *html_url, const gchar *source_url, faviconUpdatedCb callback, gpointer user_data);
+void favicon_download(const gchar *id, const gchar *html_url, const gchar *source_url, updateOptionsPtr options, faviconUpdatedCb callback, gpointer user_data);
 
 #endif

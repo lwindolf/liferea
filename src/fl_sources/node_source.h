@@ -118,6 +118,7 @@ typedef struct nodeSourceType {
 typedef struct nodeSource {
 	nodeSourceTypePtr	type;		/**< node source type of this source instance */
 	updateStatePtr 		updateState;	/**< the update state (etags, last modified, cookies...) of this source */
+	updateOptionsPtr	updateOptions;	/**< the update options (no proxy, user, pwd) */
 	nodePtr			root;		/**< insertion node of this node source instance */
 	gchar			*url;		/**< URL or filename of the node source instance */
 } *nodeSourcePtr;

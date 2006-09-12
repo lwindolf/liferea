@@ -81,7 +81,7 @@ void feed_init(void) {
 }
 
 /* function to create a new feed structure */
-feedPtr feed_new(const gchar *source, const gchar *filter) {
+feedPtr feed_new(const gchar *source, const gchar *filter, updateOptionsPtr options) {
 	feedPtr		feed;
 	
 	feed = g_new0(struct feed, 1);
@@ -89,6 +89,11 @@ feedPtr feed_new(const gchar *source, const gchar *filter) {
 	/* we don't allocate a request structure this is done
 	   during cache loading or first update! */
 
+	if(options)
+		feed->updateOptions = options;
+	else
+		feed->updateOptions = g_new0(struct updateOptions, 1);
+		
 	feed->updateState = g_new0(struct updateState, 1);	
 	feed->updateInterval = -1;
 	feed->defaultInterval = -1;
@@ -150,7 +155,7 @@ gpointer feed_import(nodePtr node, const gchar *typeStr, xmlNodePtr cur, gboolea
 		source = xmlGetProp(cur, BAD_CAST"xmlurl");	/* e.g. for AmphetaDesk */
 		
 	if(source) {
-		feed = feed_new(NULL, NULL);
+		feed = feed_new(NULL, NULL, NULL);
 		feed->fhp = feed_type_str_to_fhp(typeStr);
 
 		if(!trusted && source[0] == '|') {
@@ -225,7 +230,7 @@ gpointer feed_import(nodePtr node, const gchar *typeStr, xmlNodePtr cur, gboolea
 		/* no proxy flag */
 		tmp = xmlGetProp(cur, BAD_CAST"dontUseProxy");
 		if(tmp && !xmlStrcmp(tmp, BAD_CAST"true"))
-			feed->dontUseProxy = TRUE;
+			feed->updateOptions->dontUseProxy = TRUE;
 		xmlFree(tmp);
 					
 		update_state_import(cur, feed->updateState);
@@ -283,7 +288,7 @@ void feed_export(feedPtr feed, xmlNodePtr cur, gboolean internal) {
 		if(TRUE == feed->loadItemLink)
 			xmlNewProp(cur, BAD_CAST"loadItemLink", BAD_CAST"true");
 			
-		if(TRUE == feed->dontUseProxy)
+		if(TRUE == feed->updateOptions->dontUseProxy)
 			xmlNewProp(cur, BAD_CAST"dontUseProxy", BAD_CAST"true");
 	}
 
@@ -405,6 +410,7 @@ void feed_parse(feedParserCtxtPtr ctxt, gboolean autodiscover) {
 				requestPtr request = update_request_new(ctxt->node);
 				debug1(DEBUG_UPDATE, "feed link found: %s", source);
 				request->source = g_strdup(source);
+				request->options = ctxt->feed->updateOptions;
 				update_execute_request_sync(request);
 				if(request->data) {
 					debug0(DEBUG_UPDATE, "feed link download successful!");
@@ -1062,6 +1068,7 @@ static void feed_free(feedPtr feed) {
 	g_free(feed->source);
 	g_free(feed->filtercmd);
 
+	g_free(feed->updateOptions);
 	update_state_free(feed->updateState);
 	metadata_list_free(feed->metadata);
 	g_free(feed);
@@ -1102,6 +1109,7 @@ void feed_update_favicon(nodePtr node) {
 	favicon_download(node->id, 
 	                 feed_get_html_url(feed), 
 			 feed_get_source(feed),
+			 feed->updateOptions,
 	                 feed_favicon_downloaded, 
 			 (gpointer)node);
 	
@@ -1316,6 +1324,7 @@ static void feed_schedule_update(nodePtr node, guint flags) {
 		request = update_request_new(node);
 		request->user_data = node;
 		request->callback = feed_process_update_result;
+		request->options = feed->updateOptions;
 		feed_prepare_request(feed, request, flags);
 		node->updateRequest = request;
 		update_execute_request(request);

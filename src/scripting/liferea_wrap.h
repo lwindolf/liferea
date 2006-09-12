@@ -1331,13 +1331,15 @@ SWIG_Lua_SetModule(lua_State* L, swig_module_info *module) {
 #define SWIGTYPE_p_nodeType swig_types[24]
 #define SWIGTYPE_p_request swig_types[25]
 #define SWIGTYPE_p_time_t swig_types[26]
-#define SWIGTYPE_p_vfolderPtr swig_types[27]
-#define SWIGTYPE_p_xmlNodePtr swig_types[28]
-#define SWIGTYPE_time_t swig_types[29]
-#define SWIGTYPE_vfolderPtr swig_types[30]
-#define SWIGTYPE_xmlNodePtr swig_types[31]
-static swig_type_info *swig_types[33];
-static swig_module_info swig_module = {swig_types, 32, 0, 0, 0, 0};
+#define SWIGTYPE_p_updateOptionsPtr swig_types[27]
+#define SWIGTYPE_p_vfolderPtr swig_types[28]
+#define SWIGTYPE_p_xmlNodePtr swig_types[29]
+#define SWIGTYPE_time_t swig_types[30]
+#define SWIGTYPE_updateOptionsPtr swig_types[31]
+#define SWIGTYPE_vfolderPtr swig_types[32]
+#define SWIGTYPE_xmlNodePtr swig_types[33]
+static swig_type_info *swig_types[35];
+static swig_module_info swig_module = {swig_types, 34, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -3047,21 +3049,28 @@ static int _wrap_node_request_automatic_add(lua_State* L) {
   char *arg1 = (char *) 0 ;
   char *arg2 = (char *) 0 ;
   char *arg3 = (char *) 0 ;
-  gint arg4 ;
+  updateOptionsPtr arg4 ;
+  gint arg5 ;
   
   if(!lua_isstring(L,1)) SWIG_fail_arg(1);
   if(!lua_isstring(L,2)) SWIG_fail_arg(2);
   if(!lua_isstring(L,3)) SWIG_fail_arg(3);
   if(!lua_isuserdata(L,4)) SWIG_fail_arg(4);
+  if(!lua_isuserdata(L,5)) SWIG_fail_arg(5);
   arg1 = (char*)lua_tostring(L, 1);
   arg2 = (char*)lua_tostring(L, 2);
   arg3 = (char*)lua_tostring(L, 3);
   {
-    gint * argp;
-    if(SWIG_ConvertPtr(L,4,(void**)(&argp),SWIGTYPE_p_gint,0)) SWIG_fail;
+    updateOptionsPtr * argp;
+    if(SWIG_ConvertPtr(L,4,(void**)(&argp),SWIGTYPE_p_updateOptionsPtr,0)) SWIG_fail;
     arg4 = *argp;
   }
-  node_request_automatic_add((char const *)arg1,(char const *)arg2,(char const *)arg3,arg4);
+  {
+    gint * argp;
+    if(SWIG_ConvertPtr(L,5,(void**)(&argp),SWIGTYPE_p_gint,0)) SWIG_fail;
+    arg5 = *argp;
+  }
+  node_request_automatic_add((char const *)arg1,(char const *)arg2,(char const *)arg3,arg4,arg5);
   SWIG_arg=0;
   
   return SWIG_arg;
@@ -6173,9 +6182,11 @@ static swig_type_info _swigt__p_nodeSource = {"_p_nodeSource", "struct nodeSourc
 static swig_type_info _swigt__p_nodeType = {"_p_nodeType", "struct nodeType *|nodeTypePtr", 0, 0, (void*)&_wrap_class_nodeType, 0};
 static swig_type_info _swigt__p_request = {"_p_request", "struct request *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_time_t = {"_p_time_t", "time_t *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_updateOptionsPtr = {"_p_updateOptionsPtr", "updateOptionsPtr *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_vfolderPtr = {"_p_vfolderPtr", "vfolderPtr *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_xmlNodePtr = {"_p_xmlNodePtr", "xmlNodePtr *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__time_t = {"_time_t", "time_t", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__updateOptionsPtr = {"_updateOptionsPtr", "updateOptionsPtr", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__vfolderPtr = {"_vfolderPtr", "vfolderPtr", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__xmlNodePtr = {"_xmlNodePtr", "xmlNodePtr", 0, 0, (void*)0, 0};
 
@@ -6207,9 +6218,11 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_nodeType,
   &_swigt__p_request,
   &_swigt__p_time_t,
+  &_swigt__p_updateOptionsPtr,
   &_swigt__p_vfolderPtr,
   &_swigt__p_xmlNodePtr,
   &_swigt__time_t,
+  &_swigt__updateOptionsPtr,
   &_swigt__vfolderPtr,
   &_swigt__xmlNodePtr,
 };
@@ -6241,9 +6254,11 @@ static swig_cast_info _swigc__p_nodeSource[] = {  {&_swigt__p_nodeSource, 0, 0, 
 static swig_cast_info _swigc__p_nodeType[] = {  {&_swigt__p_nodeType, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_request[] = {  {&_swigt__p_request, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_time_t[] = {  {&_swigt__p_time_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_updateOptionsPtr[] = {  {&_swigt__p_updateOptionsPtr, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_vfolderPtr[] = {  {&_swigt__p_vfolderPtr, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_xmlNodePtr[] = {  {&_swigt__p_xmlNodePtr, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__time_t[] = {  {&_swigt__time_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__updateOptionsPtr[] = {  {&_swigt__updateOptionsPtr, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__vfolderPtr[] = {  {&_swigt__vfolderPtr, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__xmlNodePtr[] = {  {&_swigt__xmlNodePtr, 0, 0, 0},{0, 0, 0, 0}};
 
@@ -6275,9 +6290,11 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_nodeType,
   _swigc__p_request,
   _swigc__p_time_t,
+  _swigc__p_updateOptionsPtr,
   _swigc__p_vfolderPtr,
   _swigc__p_xmlNodePtr,
   _swigc__time_t,
+  _swigc__updateOptionsPtr,
   _swigc__vfolderPtr,
   _swigc__xmlNodePtr,
 };

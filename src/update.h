@@ -44,9 +44,11 @@
 
 /* Maximum number of retries that can be done */
 #define REQ_MAX_NUMBER_OF_RETRIES 3
+
 /* Delay (in seconds) to wait before the first retry.
  * It will then increase for the later ones. */
 #define REQ_MIN_DELAY_FOR_RETRY 30
+
 /* Maximum delay (in seconds) beetween two retries. Useful to avoid 
  * stupidly long waits if REQ_MAX_NUMBER_OF_RETRIES is high. */
 #define REQ_MAX_DELAY_FOR_RETRY 500
@@ -93,6 +95,13 @@ struct request;
  */
 typedef void (*request_cb)(struct request *request);
 
+/** defines update options to be passed to an update request */
+typedef struct updateOptions {
+	gchar		*username;	/**< username for HTTP auth (FIXME: not yet used) */
+	gchar		*password;	/**< password for HTTP auth (FIXME: not yet used) */
+	gboolean	dontUseProxy;	/**< no proxy flag */
+} *updateOptionsPtr;
+
 /** defines all state data an updatable object (e.g. a feed) needs */
 typedef struct updateState {
 	gchar		*lastModified;		/**< Last modified string as sent by the server */
@@ -110,11 +119,13 @@ typedef struct request {
 					     then it is parsed as a URL, otherwise it is a
 					     filename. Eventually, everything should be a
 					     URL. Use file:// and exec:// */
+	updateOptionsPtr options;	/**< Update options for the request */
 	gchar		*filtercmd;	/**< Command will filter output of URL */
 	request_cb	callback;	/**< Function to be called after retreival */
-	gpointer	user_data;	/**< Accessed by the callback. Usually contains the feedPtr the download result is for (to be accessed by the callback). */
+	gpointer	user_data;	/**< Accessed by the callback. Usually contains the nodePtr the download result is for (to be accessed by the callback). */
 	guint32		flags;		/**< Flags to be passed to the callback */
 	gint		priority;	/**< priority of the request. Set to 1 for high priority */
+	gboolean	allowRetries;	/**< Allow download retries on network errors */
 	
 	/* Set by download system*/
 	gpointer	owner;		/**< Pointer to anything used for lookup when cancelling requests */
@@ -125,10 +136,8 @@ typedef struct request {
 	gchar		*data;		/**< Downloaded data */
 	size_t		size;		/**< Size of downloaded data */
 	gchar		*contentType;	/**< Content type of received data */
-	 
+	gushort		retriesCount;	/**< Count how many retries have been done */	 
 	gchar		*filterErrors;	/**< Error messages from filter execution */
-	gboolean	allowRetries;	/**< Allow download retries on network errors */
-	gushort		retriesCount;	/**< Count how many retries have been done */
 } *requestPtr;
 
 /**

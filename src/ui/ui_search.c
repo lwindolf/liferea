@@ -177,6 +177,7 @@ void on_search_engine_btn_clicked(GtkButton *button, gpointer user_data) {
 		node_request_automatic_add(searchUri, 
 					   NULL, 
 					   NULL, 
+					   NULL,
 		                           /*FEED_REQ_SHOW_PROPDIALOG | <- not needed*/
 		                           FEED_REQ_RESET_TITLE |
 		                           FEED_REQ_RESET_UPDATE_INT | 

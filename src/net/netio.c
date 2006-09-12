@@ -275,6 +275,8 @@ void *NetConnectGnutls(int *fd) {
 }
 #endif
 
+#define USE_PROXY ((proxyport != 0) && (cur_ptr->no_proxy != 1))
+
 /* Connect network sockets.
  *
  * Returns
@@ -315,7 +317,7 @@ static int NetConnect (int * my_socket, char * host, struct feed_request * cur_p
 	hints.ai_family = AF_UNSPEC;
 	hints.ai_socktype = SOCK_STREAM;
 	hints.ai_protocol = IPPROTO_TCP;
-	if (proxyport == 0) {
+	if(!USE_PROXY) {
 		realhost = strdup(host);
 		if (sscanf (host, "%[^:]:%8s", realhost, port_str) != 2) {
 			if (proto == NETIO_PROTO_HTTPS)
@@ -428,7 +430,7 @@ static int NetConnect (int * my_socket, char * host, struct feed_request * cur_p
 	
 	/* If proxyport is 0 we didn't execute the if http_proxy statement in main
 	   so there is no proxy. On any other value of proxyport do proxyrequests instead. */
-	remotehost = gethostbyname (proxyport?proxyname:realhost);
+	remotehost = gethostbyname (USE_PROXY?proxyname:realhost);
 	
 	/* Lookup remote IP. */
 	if (remotehost == NULL) {
@@ -443,7 +445,7 @@ static int NetConnect (int * my_socket, char * host, struct feed_request * cur_p
 	}
 	/* Set the remote address. */
 	address.sin_family = AF_INET;
-	address.sin_port = htons(proxyport?proxyport:port);
+	address.sin_port = htons(USE_PROXY?proxyport:port);
 	memcpy (&address.sin_addr.s_addr, remotehost->h_addr_list[0], remotehost->h_length);
 	
 	/* Connect socket. */
@@ -558,10 +560,10 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, char * aut
 	/* Again is proxyport == 0, non proxy mode, otherwise make proxy requests. */
 	/* Request URL from HTTP server. */
 	tmpstring = NULL;
-	if (proxyport != 0 && proxyusername != NULL && proxypassword != NULL && ((proxyusername[0] != '\0') || (proxypassword[0] != '\0')))
+	if (USE_PROXY && proxyusername != NULL && proxypassword != NULL && ((proxyusername[0] != '\0') || (proxypassword[0] != '\0')))
 		/* construct auth function appends \r\n to string */
 		tmpstring = ConstructBasicAuth(proxyusername,proxypassword);
-	snprintf(netbuf, sizeof(netbuf)-1,
+		   snprintf(netbuf, sizeof(netbuf)-1,
 		   "GET %s%s%s HTTP/1.0\r\n"
 		   "Accept-Encoding: gzip\r\n"
 		   "User-Agent: %s\r\n"
@@ -573,8 +575,8 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, char * aut
 		   "%s%s" /* Proxy*/
 		   "%s%s%s" /* etag */
 		   "\r\n",
-		   proxyport != 0 ? "http://" : "",
-		   proxyport != 0 ? host : "",
+		   USE_PROXY ? "http://" : "",
+		   USE_PROXY ? host : "",
 		   url,
 		   useragent,
 		   host,
@@ -1202,6 +1204,7 @@ void downloadlib_process_url(struct request *request) {
 		
 	netioRequest->problem = 0;
 	netioRequest->netio_error = 0;
+	netioRequest->no_proxy = request->options->dontUseProxy?1:0;
 	netioRequest->content_type = NULL;
 	netioRequest->contentlength = 0;
 	netioRequest->authinfo = NULL;

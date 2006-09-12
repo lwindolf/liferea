@@ -364,7 +364,7 @@ void on_popup_copy_url_selected(gpointer url, guint callback_action, GtkWidget *
 
 void on_popup_subscribe_url_selected(gpointer url, guint callback_action, GtkWidget *widget) {
 
-	node_request_automatic_add(url, NULL, NULL, FEED_REQ_SHOW_PROPDIALOG | FEED_REQ_RESET_TITLE | FEED_REQ_RESET_UPDATE_INT);
+	node_request_automatic_add(url, NULL, NULL, NULL, FEED_REQ_SHOW_PROPDIALOG | FEED_REQ_RESET_TITLE | FEED_REQ_RESET_UPDATE_INT);
 	g_free(url);
 }
 

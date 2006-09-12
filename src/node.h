@@ -150,9 +150,10 @@ void node_request_interactive_add(guint type);
  * @param source	the subscriptions source URL
  * @param title		NULL or the node title
  * @param filter	NULL or the filter for the subscription
+ * @param options	NULL or the update options
  * @param flags		download request flags
  */
-void node_request_automatic_add(const gchar *source, const gchar *title, const gchar *filter, gint flags);
+void node_request_automatic_add(const gchar *source, const gchar *title, const gchar *filter, updateOptionsPtr options, gint flags);
 	
 /**
  * Removes the given node from the feed list.

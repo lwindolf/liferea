@@ -6,6 +6,9 @@
 	  you can open a "Script Manager" dialog where you
 	  can add LUA scripts for some hook types. This adds
 	  an optional LUA dependency.
+	* No-Proxy support. Now the feed properties and the
+	  advanced subscription dialog provide a no-proxy
+	  option.
 
 
 2006-09-10  Lars Lindner  <lars.lindner@gmail.com>

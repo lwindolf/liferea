@@ -132,7 +132,7 @@ static void opml_source_merge_feed(xmlNodePtr match, gpointer user_data) {
 		node = node_new();
 		node_set_title(node, title);
 		if(url)
-			node_add_data(node, NODE_TYPE_FEED, feed_new(url, NULL));
+			node_add_data(node, NODE_TYPE_FEED, feed_new(url, NULL, NULL));
 		else
 			node_add_data(node, NODE_TYPE_FOLDER, NULL);
 		node_add_child(mergeCtxt->parent, node, -1);
@@ -257,6 +257,7 @@ void opml_source_update(nodePtr node) {
 	if(node->source->url) {
 	g_assert(node->source->updateState);
 		request = update_request_new(node);
+		request->options = node->source->updateOptions;
 		request->updateState = node->source->updateState;
 		request->source = g_strdup(node->source->url);
 		request->priority = 1;
