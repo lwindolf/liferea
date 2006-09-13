@@ -194,6 +194,9 @@ static void url_request(HtmlDocument *doc, const gchar *url, HtmlStream *stream,
 		sd->stream = stream;
 
 		r = update_request_new((gpointer)stream);
+		r->options = g_new0(struct updateOptions, 1);
+		// FIXME: set no proxy option and HTTP auth properties
+		// of selected node to allow viewing of inline images...
 		r->source = g_strdup(absURL);
 		r->callback = gtkhtml2_url_request_received_cb;
 		r->user_data = sd;
