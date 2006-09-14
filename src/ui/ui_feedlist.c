@@ -122,7 +122,6 @@ static void ui_feedlist_selection_changed_cb(GtkTreeSelection *selection, gpoint
 			gtk_window_set_geometry_hints(GTK_WINDOW(mainwindow), mainwindow, &geometry, GDK_HINT_MIN_SIZE);
 		
 			ui_tabs_show_headlines();
-			itemlist_set_two_pane_mode(node_get_two_pane_mode(node));
 			
 			/* workaround to ensure the feedlist is focussed when we click it
 			   (Mozilla might prevent this, ui_itemlist_display() depends on this */
@@ -163,7 +162,7 @@ static gboolean ui_feedlist_key_press_cb(GtkWidget *widget, GdkEventKey *event, 
 		
 		if(NULL != np) {
 			if(event->state & GDK_SHIFT_MASK)
-				ui_feedlist_remove_node(np);
+				feedlist_remove_node(np);
 			else
 				ui_feedlist_delete_prompt(np);
 			return TRUE;
@@ -310,10 +309,6 @@ void ui_feedlist_select(nodePtr np) {
  	} else {
 		selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
 		gtk_tree_selection_unselect_all(selection);
-		/* The code to clear the itemlist when something is
-		   unselected is disabled... so we must clear the itemlist
-		   explicitly here*/
-		itemlist_unload(TRUE);
 	}
 	
 	gtk_window_set_focus(GTK_WINDOW(mainwindow), focused);
@@ -330,7 +325,6 @@ void on_filter_feeds_without_unread_headlines_activate(GtkMenuItem *menuitem, gp
 	
 	filter_feeds_without_unread_headlines = GTK_CHECK_MENU_ITEM(menuitem)->active;
 	feedview = lookup_widget(mainwindow, "feedlist");
-	g_assert(feedview != NULL);
 	ui_feedlist_set_model(GTK_TREE_VIEW(feedview), feedstore, filter_feeds_without_unread_headlines);
 	
 	if(filter_feeds_without_unread_headlines) {
@@ -347,15 +341,10 @@ static void ui_feedlist_delete_response_cb(GtkDialog *dialog, gint response_id, 
 	
 	switch(response_id) {
 		case GTK_RESPONSE_YES:
-			ui_feedlist_remove_node((nodePtr)user_data);
+			feedlist_remove_node((nodePtr)user_data);
 			break;
 	}
 	gtk_widget_destroy(GTK_WIDGET(dialog));
-}
-
-void ui_feedlist_remove_node(nodePtr node) {
-
-	feedlist_remove_node(node);
 }
 
 void ui_feedlist_delete_prompt(nodePtr np) {

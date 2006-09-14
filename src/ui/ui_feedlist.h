@@ -101,14 +101,6 @@ void ui_feedlist_mark_items_as_unread(GtkTreeIter *iter);
  */
 void ui_feedlist_delete_prompt(nodePtr ptr);
 
-/**
- * Remove a feed without confirmation
- * Compare with ui_feedlist_delete()
- *
- * @param node pointer to the feed node to be deleted.
- */
-void ui_feedlist_remove_node(nodePtr node);
-
 /** 
  * @name menu and dialog callbacks 
  * @{

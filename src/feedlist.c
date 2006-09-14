@@ -247,6 +247,7 @@ void feedlist_selection_changed(nodePtr node) {
 		selectedNode = node;
 		if(selectedNode) {
 			node_load(selectedNode);
+			itemlist_set_two_pane_mode(node_get_two_pane_mode(selectedNode));
 			itemlist_load(selectedNode->itemSet);
 		} else {
 			ui_htmlview_clear(ui_mainwindow_get_active_htmlview());
