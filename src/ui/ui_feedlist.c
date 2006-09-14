@@ -315,25 +315,6 @@ void ui_feedlist_select(nodePtr np) {
 }
 
 /*------------------------------------------------------------------------------*/
-/* feedlist filter [de]activation callback					*/
-/*------------------------------------------------------------------------------*/
-
-void on_filter_feeds_without_unread_headlines_activate(GtkMenuItem *menuitem, gpointer user_data) {
-	GtkWidget	*feedview;
-	
-	ui_feedlist_select(NULL); /* This is needed to make the feed menu update itself correctly */
-	
-	filter_feeds_without_unread_headlines = GTK_CHECK_MENU_ITEM(menuitem)->active;
-	feedview = lookup_widget(mainwindow, "feedlist");
-	ui_feedlist_set_model(GTK_TREE_VIEW(feedview), feedstore, filter_feeds_without_unread_headlines);
-	
-	if(filter_feeds_without_unread_headlines) {
-		ui_mainwindow_set_status_bar(_("Note: Using the subscriptions filter disables drag & drop"));
-		gtk_tree_model_filter_refilter(GTK_TREE_MODEL_FILTER(filter));
-	}
-}
-
-/*------------------------------------------------------------------------------*/
 /* delete entry callbacks 							*/
 /*------------------------------------------------------------------------------*/
 
