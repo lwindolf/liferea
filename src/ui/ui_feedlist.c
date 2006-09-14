@@ -234,12 +234,8 @@ void ui_feedlist_init(GtkWidget *feedview) {
 }
 
 void ui_feedlist_select(nodePtr node) {
-	GtkTreeIter 		iter;
 	GtkWidget		*treeview;
 	GtkWidget		*focused;
-	GtkTreeSelection	*selection;
-	GtkTreePath		*path;
-	gint			count;
 
 	treeview = lookup_widget(mainwindow, "feedlist");
 	
@@ -250,7 +246,7 @@ void ui_feedlist_select(nodePtr node) {
 	gtk_window_set_focus(GTK_WINDOW(mainwindow), treeview);
 	
 	if(node) {
-		path = gtk_tree_model_get_path(GTK_TREE_MODEL(feedstore), ui_node_to_iter(node));
+		GtkTreePath *path = gtk_tree_model_get_path(GTK_TREE_MODEL(feedstore), ui_node_to_iter(node));
 	
 		if(NODE_TYPE_FOLDER != node->type)
 			gtk_tree_view_expand_to_path(GTK_TREE_VIEW(treeview), path);
@@ -259,7 +255,7 @@ void ui_feedlist_select(nodePtr node) {
 		gtk_tree_path_free(path);
 
  	} else {
-		selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
+		GtkTreeSelection *selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
 		gtk_tree_selection_unselect_all(selection);
 	}
 	
