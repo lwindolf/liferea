@@ -54,9 +54,6 @@ GHashTable		*flIterHash = NULL;	/* hash table used for fast feed -> tree iter lo
 GtkTreeModel		*filter;
 GtkTreeStore		*feedstore = NULL;
 
-/* flag to enable/disable the GtkTreeModel filter */
-gboolean filter_feeds_without_unread_headlines = FALSE;
-
 static void ui_feedlist_row_changed_cb(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter) {
 	nodePtr node;
 	
@@ -66,7 +63,7 @@ static void ui_feedlist_row_changed_cb(GtkTreeModel *model, GtkTreePath *path, G
 }
 
 nodePtr ui_feedlist_get_target_folder(int *pos) {
-	nodePtr		np;
+	nodePtr		node;
 	GtkTreeIter	*iter = NULL;
 	GtkTreePath 	*path;
 	gint		*indices;
@@ -75,25 +72,21 @@ nodePtr ui_feedlist_get_target_folder(int *pos) {
 	
 	*pos = -1;
 	
-	if(NULL == (np = feedlist_get_selected()))
+	if(NULL == (node = feedlist_get_selected()))
 		return feedlist_get_root();
 	
 
-	if(filter_feeds_without_unread_headlines) {
-		gtk_tree_model_filter_convert_child_iter_to_iter(GTK_TREE_MODEL_FILTER(filter), iter, ui_node_to_iter(np));
-	} else {
-		iter = ui_node_to_iter(np);
-	}
+	iter = ui_node_to_iter(node);
 
-	if(NODE_TYPE_FOLDER == np->type) {
-		return np;
+	if(NODE_TYPE_FOLDER == node->type) {
+		return node;
 	} else {
 		path = gtk_tree_model_get_path(gtk_tree_view_get_model(GTK_TREE_VIEW(lookup_widget(mainwindow, "feedlist"))), iter);
 		indices = gtk_tree_path_get_indices(path);
 		if(NULL != pos)
 			*pos = indices[gtk_tree_path_get_depth(path)-1] + 1;
 		gtk_tree_path_free(path);
-		return np->parent;
+		return node->parent;
 	}
 }
 
@@ -171,38 +164,10 @@ static gboolean ui_feedlist_key_press_cb(GtkWidget *widget, GdkEventKey *event, 
 	return FALSE;
 }
 
-static gboolean filter_visible_function(GtkTreeModel *model, GtkTreeIter *iter, gpointer data) {
-	gint		count;
-	nodePtr		np;
-
-	if(!filter_feeds_without_unread_headlines)
-		return TRUE;
-		
-	gtk_tree_model_get(model, iter, FS_PTR, &np, FS_UNREAD, &count, -1);
-
-	if(0 != count)
-		return TRUE;
-	else
-		return FALSE;
-}
-
-/* Sets either the unread feeds filter model or the standard
-   GTK tree model. This is necessary because only the standard
-   model supports drag and drop. */
-void ui_feedlist_set_model(GtkTreeView *feedview, GtkTreeStore *feedstore, gboolean filtered) {
+static void ui_feedlist_set_model(GtkTreeView *feedview, GtkTreeStore *feedstore) {
 	GtkTreeModel	*model;
 		
-	if(filtered) {
-		filter = gtk_tree_model_filter_new(GTK_TREE_MODEL(feedstore), NULL);
-
-		gtk_tree_model_filter_set_visible_func(GTK_TREE_MODEL_FILTER(filter),
-	        	                               filter_visible_function,
-	                	                       NULL,
-	                        	               NULL);
-		model = GTK_TREE_MODEL(filter);
-	} else {
-		model = GTK_TREE_MODEL(feedstore);
-	}
+	model = GTK_TREE_MODEL(feedstore);
 	gtk_tree_view_set_model(GTK_TREE_VIEW(feedview), model);
 	g_signal_connect(G_OBJECT(feedstore), "row-changed", G_CALLBACK(ui_feedlist_row_changed_cb), NULL);
 }
@@ -229,7 +194,7 @@ void ui_feedlist_init(GtkWidget *feedview) {
 	                               G_TYPE_POINTER,
 	                               G_TYPE_INT);
 
-	ui_feedlist_set_model(GTK_TREE_VIEW(feedview), feedstore, FALSE);
+	ui_feedlist_set_model(GTK_TREE_VIEW(feedview), feedstore);
 
 	/* we only render the state and title */
 	iconRenderer = gtk_cell_renderer_pixbuf_new();
@@ -268,7 +233,7 @@ void ui_feedlist_init(GtkWidget *feedview) {
 	debug_exit("ui_feedlist_init");
 }
 
-void ui_feedlist_select(nodePtr np) {
+void ui_feedlist_select(nodePtr node) {
 	GtkTreeIter 		iter;
 	GtkWidget		*treeview;
 	GtkWidget		*focused;
@@ -284,23 +249,10 @@ void ui_feedlist_select(nodePtr np) {
 	focused = gtk_window_get_focus(GTK_WINDOW(mainwindow));
 	gtk_window_set_focus(GTK_WINDOW(mainwindow), treeview);
 	
-	if(NULL != np) {
-		if(filter_feeds_without_unread_headlines) {
-			/* check if the node has unread items, if not it is not in 
-			   the filtered model and cannot be selected */
-			gtk_tree_model_get(GTK_TREE_MODEL(feedstore), ui_node_to_iter(np), FS_UNREAD, &count, -1);
-			if(0 == count)
-				return;
-		}
-		
-		if(filter_feeds_without_unread_headlines) {
-			gtk_tree_model_filter_convert_child_iter_to_iter(GTK_TREE_MODEL_FILTER(filter), &iter, ui_node_to_iter(np));
-			path = gtk_tree_model_get_path(GTK_TREE_MODEL(filter), &iter);
-		} else {
-			path = gtk_tree_model_get_path(GTK_TREE_MODEL(feedstore), ui_node_to_iter(np));
-		}
+	if(node) {
+		path = gtk_tree_model_get_path(GTK_TREE_MODEL(feedstore), ui_node_to_iter(node));
 	
-		if(NODE_TYPE_FOLDER != np->type)
+		if(NODE_TYPE_FOLDER != node->type)
 			gtk_tree_view_expand_to_path(GTK_TREE_VIEW(treeview), path);
 		gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(treeview), path, NULL, FALSE, 0.0, 0.0);
 		gtk_tree_view_set_cursor(GTK_TREE_VIEW(treeview), path, NULL, FALSE);
