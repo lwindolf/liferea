@@ -80,6 +80,8 @@ void feed_init(void) {
 	feedhandlers = g_slist_append(feedhandlers, pie_init_feed_handler());
 }
 
+#define FEED_PROTOCOL_PREFIX "feed://"
+
 /* function to create a new feed structure */
 feedPtr feed_new(const gchar *source, const gchar *filter, updateOptionsPtr options) {
 	feedPtr		feed;
@@ -99,8 +101,18 @@ feedPtr feed_new(const gchar *source, const gchar *filter, updateOptionsPtr opti
 	feed->defaultInterval = -1;
 	feed->cacheLimit = CACHE_DEFAULT;
 
-	if(source)
-		feed_set_source(feed, source);
+	if(source) {
+		gchar *tmp = g_strdup(source);
+		g_strstrip(tmp);	/* strip confusing whitespaces */
+		
+		/* strip feed protocol prefix */
+		if(tmp == strstr(tmp, FEED_PROTOCOL_PREFIX))
+			tmp += strlen(FEED_PROTOCOL_PREFIX);
+			
+		feed_set_source(feed, tmp);
+		g_free(tmp);
+	}
+	
 	if(filter)
 		feed_set_filter(feed, filter);
 	
