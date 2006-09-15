@@ -173,12 +173,14 @@ static gchar* atom10_parse_text_construct(xmlNodePtr cur, gboolean htmlified) {
 	/* This that need to be de-encoded and should not contain sub-tags.*/
 	if (NULL == type || !strcmp(type, "text")) {
 		ret = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-		g_strchug(g_strchomp(ret));
-		
-		if (htmlified) {
-			tmp = atom10_mark_up_text_content(ret);
-			g_free(ret);
-			ret = tmp;
+		if(ret) {
+			g_strchug(g_strchomp(ret));
+
+			if (htmlified) {
+				tmp = atom10_mark_up_text_content(ret);
+				g_free(ret);
+				ret = tmp;
+			}
 		}
 	} else if (!strcmp(type, "html")) {
 		ret = utf8_fix(utf8_fix(extractHTMLNode(cur, 0, NULL)));
