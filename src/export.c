@@ -345,9 +345,10 @@ static void import_parse_OPML(xmlNodePtr n, nodePtr parentNode, nodeSourcePtr no
 	}	
 }
 
-void import_OPML_feedlist(const gchar *filename, nodePtr parentNode, nodeSourcePtr nodeSource, gboolean showErrors, gboolean trusted) {
+gboolean import_OPML_feedlist(const gchar *filename, nodePtr parentNode, nodeSourcePtr nodeSource, gboolean showErrors, gboolean trusted) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur;
+	gboolean	error = FALSE;
 	
 	debug1(DEBUG_CACHE, "Importing OPML file: %s", filename);
 	
@@ -357,12 +358,14 @@ void import_OPML_feedlist(const gchar *filename, nodePtr parentNode, nodeSourceP
 			ui_show_error_box(_("XML error while reading cache file! Could not import \"%s\"!"), filename);
 		else
 			g_warning(_("XML error while reading cache file! Could not import \"%s\"!"), filename);
+		error = TRUE;
 	} else {
 		if(NULL == (cur = xmlDocGetRootElement(doc))) {
 			if(showErrors)
 				ui_show_error_box(_("Empty document! OPML document \"%s\" should not be empty when importing."), filename);
 			else
 				g_warning(_("Empty document! OPML document \"%s\" should not be empty when importing."), filename);
+			error = TRUE;
 		} else {
 			while(cur) {
 				if(!xmlIsBlankNode(cur)) {
@@ -380,6 +383,8 @@ void import_OPML_feedlist(const gchar *filename, nodePtr parentNode, nodeSourceP
 		}
 		xmlFreeDoc(doc);
 	}
+	
+	return !error;
 }
 
 

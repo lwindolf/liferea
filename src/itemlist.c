@@ -397,6 +397,7 @@ void itemlist_set_update_status(itemPtr item, const gboolean newStatus) {
 	}
 }
 
+/* function to remove items due to item list filtering */
 static void itemlist_hide_item(itemPtr item) {
 
 	/* if the currently selected item should be removed we
@@ -412,16 +413,26 @@ static void itemlist_hide_item(itemPtr item) {
 	}
 }
 
-void itemlist_remove_item(itemPtr item) {
-	
-	g_assert(NULL != itemset_lookup_item(item->itemSet, item->itemSet->node, item->nr));
+/* functions to remove items on remove requests */
 
+void itemlist_remove_item(itemPtr item) {
+
+	g_assert(NULL != itemset_lookup_item(item->itemSet, item->itemSet->node, item->nr));
+	
+	if(displayed_item == item)
+		ui_itemlist_select(NULL);
+	
+	ui_itemlist_remove_item(item);
+	itemset_remove_item(item->itemSet, item);
+	ui_node_update(item->itemSet->node);
+}
+
+void itemlist_request_remove_item(itemPtr item) {
+	
 	/* if the currently selected item should be removed we
 	   don't do it and set a flag to do it when unselecting */
 	if(displayed_item != item) {
-		ui_itemlist_remove_item(item);
-		itemset_remove_item(item->itemSet, item);
-		ui_node_update(item->itemSet->node);
+		itemlist_remove_item(item);
 	} else {
 		deferred_item_remove = TRUE;
 		/* update the item to show new state that forces

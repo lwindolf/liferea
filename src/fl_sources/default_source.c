@@ -110,7 +110,8 @@ static void default_source_source_import(nodePtr node) {
 		/* "feedlist.opml" is translatable so that translators can provide a localized default feed list */
 		filename11 = g_strdup_printf(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "opml" G_DIR_SEPARATOR_S "%s", _("feedlist.opml"));
 	}
-	import_OPML_feedlist(filename11, node, node->source, FALSE, TRUE);
+	if(!import_OPML_feedlist(filename11, node, node->source, FALSE, TRUE))
+		g_error("Fatal: Feed list import failed!");
 	g_free(filename11);
 	feedlistImport = FALSE;
 

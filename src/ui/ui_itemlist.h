@@ -77,12 +77,6 @@ void ui_itemlist_prefocus(void);
 void ui_itemlist_select(itemPtr ip);
 
 /**
- * Adds content to the htmlview after a new feed has been selected and
- * sets an item as read.
- */
-void ui_itemlist_display(void);
-
-/**
  * Add an item to the itemlist
  *
  * @param ip	the item to add
@@ -187,16 +181,6 @@ void on_popup_toggle_read(gpointer callback_data,
 void on_popup_toggle_flag(gpointer callback_data,
 					 guint callback_action,
 					 GtkWidget *widget);
-
-/**
- * Returns the two pane mode flag (TRUE if active) 
- */
-gboolean ui_itemlist_get_two_pane_mode(void);
-
-/**
- * Sets the two pane mode.
- */
-void ui_itemlist_set_two_pane_mode(gboolean new_mode);
 
 /**
  * Removes all items from the selected feed.

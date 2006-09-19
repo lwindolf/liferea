@@ -47,8 +47,10 @@ gboolean export_OPML_feedlist(const gchar *filename, nodePtr node, gboolean inte
  * @param nodeSource	the feed list source instance to handle the nodes
  * @param showErrors	set to TRUE if errors should generate a error dialog
  * @param trusted	set to TRUE if the feedlist is being imported from a trusted source
+ *
+ * @returns TRUE on success
  */
-void import_OPML_feedlist(const gchar *filename, nodePtr parentNode, nodeSourcePtr nodeSource, gboolean showErrors, gboolean trusted);
+gboolean import_OPML_feedlist(const gchar *filename, nodePtr parentNode, nodeSourcePtr nodeSource, gboolean showErrors, gboolean trusted);
 
 /* GUI dialog callbacks */
 

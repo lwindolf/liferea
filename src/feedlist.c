@@ -219,10 +219,6 @@ nodePtr feedlist_find_unread_feed(nodePtr folder) {
 
 /* selection handling */
 
-// FIXME: implement feedlist_select()
-
-// FIXME: implement feedlist_unselect()
-
 void feedlist_selection_changed(nodePtr node) {
 	nodePtr	displayed_node;
 

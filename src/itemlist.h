@@ -24,7 +24,6 @@
 #include <gtk/gtk.h>
 #include "item.h"
 #include "itemset.h"
-#include "feed.h"
 #include "vfolder.h"
 
 /* This is a simple controller implementation for itemlist handling. 
@@ -53,16 +52,16 @@ itemPtr itemlist_get_selected(void);
  * displayed feed it is loaded this method decides if the
  * and how the item list GUI needs to be updated.
  *
- * @param sp	the item set to be merged
+ * @param itemSet	the item set to be merged
  */
-void itemlist_merge_itemset(itemSetPtr sp);
+void itemlist_merge_itemset(itemSetPtr itemSet);
 
 /** 
  * Loads the passed feeds items into the itemlist.
  *
- * @param sp 	the item set to be loaded
+ * @param itemSet 	the item set to be loaded
  */
-void itemlist_load(itemSetPtr sp);
+void itemlist_load(itemSetPtr itemSet);
 
 /**
  * Clears the item list. Unsets the currently
@@ -99,22 +98,32 @@ void on_toggle_condensed_view_activate(GtkToggleAction *menuitem, gpointer user_
 
 /* item handling functions */
 
-void itemlist_update_item(itemPtr ip);
+void itemlist_update_item(itemPtr item);
 
-void itemlist_remove_item(itemPtr ip);
+void itemlist_request_remove_item(itemPtr item);
+
+/**
+ * To be called whenever the user wants to remove
+ * a single item. If necessary the item will be unselected.
+ * The item will be removed immediately.
+ *
+ * @param item	the item
+ */
+void itemlist_remove_item(itemPtr item);
 
 /**
  * To be called whenever the user wants to remove 
- * all items of a node.
+ * all items of a node. Item list selection will be
+ * resetted. All items are removed immediately.
  *
- * @param np	the node which items should be removed
+ * @param itemSet	the item set whose items should be removed
  */
-void itemlist_remove_items(itemSetPtr sp);
+void itemlist_remove_items(itemSetPtr itemSet);
 
 /**
  * Marks all items of the item set as read.
  *
- * @param itemSet	the itemset
+ * @param itemSet	the item set to be marked read
  */
 void itemlist_mark_all_read(itemSetPtr itemSet);
 
@@ -125,14 +134,14 @@ void itemlist_mark_all_read(itemSetPtr itemSet);
  */
 void itemlist_mark_all_old(itemSetPtr itemSet);
 
-void itemlist_update_vfolder(vfolderPtr vp);
+void itemlist_update_vfolder(vfolderPtr vfolder);
 
 /**
  * Called from GUI when item list selection changes.
  *
- * @param ip	new selected item 
+ * @param item	new selected item 
  */
-void itemlist_selection_changed(itemPtr ip);
+void itemlist_selection_changed(itemPtr item);
 
 /** 
  * Force the itemlist to re-create the displayed dates based on the
@@ -160,7 +169,7 @@ void itemlist_set_flag(itemPtr item, gboolean newStatus);
  * @param item		the item
  * @param newStatus	new read status
  */
-void itemlist_set_read_status(itemPtr ip, gboolean newStatus);
+void itemlist_set_read_status(itemPtr item, gboolean newStatus);
 
 /**
  * Sets the update status of the given item.
@@ -175,13 +184,13 @@ void itemlist_set_update_status(itemPtr item, const gboolean newStatus);
  *
  * @param item		the item
  */
-void itemlist_toggle_flag(itemPtr ip);
+void itemlist_toggle_flag(itemPtr item);
 
 /**
  * Toggle the read status of the given item.
  *
  * @param item		the item
  */
-void itemlist_toggle_read_status(itemPtr ip);
+void itemlist_toggle_read_status(itemPtr item);
 
 #endif

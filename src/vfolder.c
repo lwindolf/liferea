@@ -235,7 +235,7 @@ static void vfolder_remove_matching_item_copy(vfolderPtr vp, itemPtr ip) {
 	if(found) {
 		/*g_print("  removing item copy %d from vfolder %d\n", ip, vp);*/
 
-		/* because itemlist_remove_item might delay the removal
+		/* because itemlist_request_remove_item might delay the removal
 		   the original item may not exist anymore when the 
 		   removal is executed, so we need to remove the
 		   pointer to the original item */
@@ -245,9 +245,9 @@ static void vfolder_remove_matching_item_copy(vfolderPtr vp, itemPtr ip) {
 		if(!tmp->readStatus)
 			vp->node->unreadCount--;
 		
-		/* we call itemlist_remove_item to prevent removing
+		/* we call itemlist_request_remove_item to prevent removing
 		   an item copy selected in the GUI... */
-		itemlist_remove_item(tmp);
+		itemlist_request_remove_item(tmp);
 	}
 }
 
@@ -444,7 +444,7 @@ void vfolder_update_item(itemPtr ip) {
 					itemlist_update_item(tmp);
 				} else {
 					debug2(DEBUG_UPDATE, "item (%s) used in vfolder (%s) does not match anymore -> removing...", item_get_title(ip), node_get_title(vp->node));
-					itemlist_remove_item(tmp);
+					itemlist_request_remove_item(tmp);
 				}
 				break;
 			}

@@ -108,7 +108,7 @@ extern htmlviewPluginPtr htmlviewPlugin;
 /*------------------------------------------------------------------------------*/
 
 /* Set cursor to the first item on a treeview. */
-static void on_treeview_set_first(char* treename) {
+static void on_treeview_set_first(gchar* treename) {
 	GtkTreeView	*treeview;
 	GtkTreePath	*path;
 
@@ -119,7 +119,7 @@ static void on_treeview_set_first(char* treename) {
 }
 
 /* Move treeview cursor up and down. */
-void on_treeview_move(char* treename, gint step) {
+void on_treeview_move(gchar* treename, gint step) {
 	GtkTreeView	*treeview;
 	gboolean	ret;
 
@@ -128,11 +128,11 @@ void on_treeview_move(char* treename, gint step) {
 	g_signal_emit_by_name(treeview, "move-cursor", GTK_MOVEMENT_DISPLAY_LINES, step, &ret);
 }
 
-static void on_treeview_prev(char* treename) {
+static void on_treeview_prev(gchar* treename) {
 	on_treeview_move(treename, -1);
 }
 
-static void on_treeview_next(char* treename) {
+static void on_treeview_next(gchar* treename) {
 	on_treeview_move(treename, 1);
 }
 
@@ -236,21 +236,21 @@ gboolean on_mainwindow_key_press_event(GtkWidget *widget, GdkEventKey *event, gp
 					return TRUE;
 					break;
 				case GDK_f:
-					on_treeview_next("Itemlist");
+					on_treeview_next("itemlist");
 					return TRUE;
 					break;
 				case GDK_b:
-					on_treeview_prev("Itemlist");
+					on_treeview_prev("itemlist");
 					return TRUE;
 					break;
 				case GDK_u:
 					on_treeview_prev("feedlist");
-					on_treeview_set_first("Itemlist");
+					on_treeview_set_first("itemlist");
 					return TRUE;
 					break;
 				case GDK_d:
 					on_treeview_next("feedlist");
-					on_treeview_set_first("Itemlist");
+					on_treeview_set_first("itemlist");
 					return TRUE;
 					break;
 			}

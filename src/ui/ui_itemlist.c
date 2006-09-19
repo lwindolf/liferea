@@ -68,9 +68,9 @@ static gboolean ui_item_to_iter(itemPtr item, GtkTreeIter *iter) {
 	GtkTreeIter *old_iter;
 
 	old_iter = g_hash_table_lookup(item_to_iter, (gpointer)item);
-	if (!old_iter)
+	if(!old_iter) {
 		return FALSE;
-	else {
+	} else {
 		*iter = *old_iter;
 		return TRUE;
 	}
@@ -333,16 +333,19 @@ GtkWidget* ui_itemlist_new() {
 	GtkWidget 		*itemlist;
 	GtkWidget 		*ilscrolledwindow;
 	
-	ilscrolledwindow = gtk_scrolled_window_new (NULL, NULL);
-	gtk_widget_show (ilscrolledwindow);
-	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (ilscrolledwindow), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
-	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (ilscrolledwindow), GTK_SHADOW_IN);
+	ilscrolledwindow = gtk_scrolled_window_new(NULL, NULL);
+	gtk_widget_show(ilscrolledwindow);
+	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW (ilscrolledwindow), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+	gtk_scrolled_window_set_shadow_type(GTK_SCROLLED_WINDOW (ilscrolledwindow), GTK_SHADOW_IN);
 
-	itemlist_treeview = itemlist = gtk_tree_view_new ();
-	gtk_container_add (GTK_CONTAINER (ilscrolledwindow), itemlist);
-	gtk_widget_show (itemlist);
+	itemlist_treeview = itemlist = gtk_tree_view_new();
+	gtk_container_add(GTK_CONTAINER(ilscrolledwindow), itemlist);
+	gtk_widget_show(itemlist);
 	gtk_widget_set_name(itemlist, "itemlist");
-	gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (itemlist), TRUE);
+	gtk_tree_view_set_rules_hint(GTK_TREE_VIEW(itemlist), TRUE);
+
+	/* register name for Glade widget lookup */	
+	g_object_set_data(G_OBJECT(mainwindow), "itemlist", itemlist);
 
 	item_to_iter = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, g_free);
 
@@ -473,20 +476,22 @@ void ui_itemlist_enable_encicon_column(gboolean enabled) {
 }
 
 void on_popup_launchitem_selected(void) {
-	itemPtr		ip;
+	itemPtr		item;
 
-	if(NULL != (ip = itemlist_get_selected()))
-		ui_htmlview_launch_URL(ui_tabs_get_active_htmlview(), (gchar *)item_get_source(ip), UI_HTMLVIEW_LAUNCH_DEFAULT);
+	if(NULL != (item = itemlist_get_selected()))
+		ui_htmlview_launch_URL(ui_tabs_get_active_htmlview(), 
+		                       (gchar *)item_get_source(item), 
+				       UI_HTMLVIEW_LAUNCH_DEFAULT);
 	else
 		ui_mainwindow_set_status_bar(_("No item has been selected"));
 }
 
 void on_popup_launchitem_in_tab_selected(void) {
-	itemPtr		ip;
+	itemPtr		item;
 	const gchar	*link;
 
-	if(NULL != (ip = itemlist_get_selected())) {
-		if(NULL != (link = item_get_source(ip)))
+	if(NULL != (item = itemlist_get_selected())) {
+		if(NULL != (link = item_get_source(item)))
 			ui_tabs_new(link, link, FALSE);
 		else
 			ui_show_error_box(_("This item has no link specified!"));
@@ -502,51 +507,39 @@ void on_Itemlist_row_activated(GtkTreeView *treeview, GtkTreePath *path, GtkTree
 
 /* menu callbacks */					
 void on_toggle_item_flag(GtkMenuItem *menuitem, gpointer user_data) {
-	itemPtr		ip;
+	itemPtr		item;
 	
-	if(NULL != (ip = itemlist_get_selected()))
-		itemlist_toggle_flag(ip);
+	if(NULL != (item = itemlist_get_selected()))
+		itemlist_toggle_flag(item);
 }
 
 void on_popup_toggle_flag(gpointer callback_data, guint callback_action, GtkWidget *widget) { on_toggle_item_flag(NULL, NULL); }
 
 void on_toggle_unread_status(GtkMenuItem *menuitem, gpointer user_data) {
-	itemPtr		ip;
+	itemPtr		item;
 
-	if(NULL != (ip = itemlist_get_selected())) 
-		itemlist_toggle_read_status(ip);
+	if(NULL != (item = itemlist_get_selected())) 
+		itemlist_toggle_read_status(item);
 }
 
 void on_popup_toggle_read(gpointer callback_data, guint callback_action, GtkWidget *widget) { on_toggle_unread_status(NULL, NULL); }
 
 void on_remove_items_activate(GtkMenuItem *menuitem, gpointer user_data) {
-	nodePtr		np;
+	nodePtr		node;
 	
-	np = feedlist_get_selected();
-	if(np && (NODE_TYPE_FEED == np->type))
-		itemlist_remove_items(np->itemSet);
+	node = feedlist_get_selected();
+	if(node && (NODE_TYPE_FEED == node->type))
+		itemlist_remove_items(node->itemSet);
 	else
 		ui_show_error_box(_("You must select a feed to delete its items!"));
 }
 
 void on_remove_item_activate(GtkMenuItem *menuitem, gpointer user_data) {
-	GtkTreeSelection	*selection;
-	itemPtr			ip;
+	itemPtr		item;
 	
-	if(NULL != (ip = itemlist_get_selected())) {
-		/* 1. order is important, first remove then unselect! */
-		itemlist_remove_item(ip);
-
-		/* 2. deferred removal forces us to unselect the item 
-		      One way to do it is to move forward the cursor. */
-		on_treeview_move("Itemlist", 1);
-
-		/* 3. But 2. might not be enough, e.g. if ip was the
-		      last item and is still selected (not removed) */
-		if(itemlist_get_selected() == ip) {
-			selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(itemlist_treeview));
-			gtk_tree_selection_unselect_all(selection);
-		}
+	if(NULL != (item = itemlist_get_selected())) {
+		on_treeview_move("itemlist", 1);
+		itemlist_remove_item(item);
 	} else {
 		ui_mainwindow_set_status_bar(_("No item has been selected"));
 	}
@@ -554,24 +547,27 @@ void on_remove_item_activate(GtkMenuItem *menuitem, gpointer user_data) {
 
 void on_popup_remove_selected(gpointer callback_data, guint callback_action, GtkWidget *widget) { on_remove_item_activate(NULL, NULL); }
 
-void ui_itemlist_select(itemPtr ip) {
-	GtkTreeStore		*itemstore = ui_itemlist_get_tree_store();
-	GtkWidget		*treeview;
-	GtkTreeSelection	*selection;
-	GtkTreeIter		iter;
-	GtkTreePath		*path;
+void ui_itemlist_select(itemPtr item) {
 
-	g_assert(NULL != ip);
+	if(item) {
+		GtkTreeStore		*itemstore = ui_itemlist_get_tree_store();
+		GtkWidget		*treeview;
+		GtkTreeSelection	*selection;
+		GtkTreeIter		iter;
+		GtkTreePath		*path;
+		
+		g_return_if_fail(ui_item_to_iter(item, &iter));
 
-	g_return_if_fail(ui_item_to_iter(ip, &iter));
+		treeview = itemlist_treeview;
+		selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
 
-	treeview = itemlist_treeview;
-	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
-
-	path = gtk_tree_model_get_path(GTK_TREE_MODEL(itemstore), &iter);
-	gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(treeview), path, NULL, FALSE, 0.0, 0.0);
-	gtk_tree_view_set_cursor(GTK_TREE_VIEW(treeview), path, NULL, FALSE);
-	gtk_tree_path_free(path);
+		path = gtk_tree_model_get_path(GTK_TREE_MODEL(itemstore), &iter);
+		gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(treeview), path, NULL, FALSE, 0.0, 0.0);
+		gtk_tree_view_set_cursor(GTK_TREE_VIEW(treeview), path, NULL, FALSE);
+		gtk_tree_path_free(path);
+	} else {
+		gtk_tree_selection_unselect_all(gtk_tree_view_get_selection(GTK_TREE_VIEW(itemlist_treeview)));
+	}
 }
 
 static gboolean ui_itemlist_find_unread_item_from_iter(GtkTreeIter *iter) {

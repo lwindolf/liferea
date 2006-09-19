@@ -2,7 +2,7 @@
  * @file ui_mainwindow.h some functions concerning the main window 
  *
  * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2004-2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2006 Lars Lindner <lars.lindner@gmx.net>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -26,9 +26,6 @@
 #include <gtk/gtk.h>
 
 extern GtkWidget	*mainwindow;
-
-/* 2 or 3 pane mode flag from ui_mainwindow.c */
-extern gboolean 	itemlist_mode;
 
 enum mainwindowState {
 	MAINWINDOW_SHOWN,
@@ -117,19 +114,20 @@ void on_onlinebtn_clicked(GtkButton *button, gpointer user_data);
 
 void ui_mainwindow_toggle_visibility(GtkMenuItem *menuitem, gpointer data);
 
-
+/** Callback to be used with the filename choosing dialog */
 typedef void (*fileChoosenCallback) (const gchar *title, gpointer user_data);
 
 /**
  * Open up a file selector
- * @param title window title
- * @param parent window
- * @param buttonName Text to be used as the name of the accept button
- * @param saving TRUE if saving, FALSE if opening
- * @param callback that will be passed the filename (in the system's locale (NOT UTF-8), and some user data
- * @param currentPath This file or directory will be selected in the chooser
- * @param filename When saving, this is the suggested filename
- * @param user data passed to the callback
+ *
+ * @param title		window title
+ * @param parent	window
+ * @param buttonName	Text to be used as the name of the accept button
+ * @param saving	TRUE if saving, FALSE if opening
+ * @param callback	that will be passed the filename (in the system's locale (NOT UTF-8), and some user data
+ * @param currentPath	This file or directory will be selected in the chooser
+ * @param filename	When saving, this is the suggested filename
+ * @param user_data	user data passed to the callback
  */
 void ui_choose_file(gchar *title, GtkWindow *parent, gchar *buttonName, gboolean saving, fileChoosenCallback callback, const gchar *currentPath, const gchar *defaultFilename, gpointer user_data);
 
@@ -144,6 +142,6 @@ void ui_choose_directory(gchar *title, GtkWindow *parent, gchar *buttonName, fil
  * @param treename	widget name of the tree view
  * @param step		how many iters to skip
  */
-void on_treeview_move(char* treename, gint step);
+void on_treeview_move(gchar* treename, gint step);
 
 #endif

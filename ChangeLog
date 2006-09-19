@@ -9,6 +9,12 @@
 	* No-Proxy support. Now the feed properties and the
 	  advanced subscription dialog provide a no-proxy
 	  option.
+        * Fixes SF #1554534 which prevented creating
+          new subscriptions with feed:// URLs by using
+          the liferea-feed-add wrapper.
+        * Fixes SF #1538838 which caused a problem on
+          Atom feeds with empty text node contents.
+          (reported by Jose M. daLuz)
 
 
 2006-09-10  Lars Lindner  <lars.lindner@gmail.com>

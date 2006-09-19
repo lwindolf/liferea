@@ -57,13 +57,6 @@ typedef void 	(*nodeActionDataFunc)	(nodePtr node, gpointer user_data);
  */
 void ui_feedlist_init(GtkWidget *mainview);
 
-/** 
- * Determines the currently selected feed list iterator.
- *
- * @param iter	pointer to iter structure to return selected iter
- */
-gboolean ui_feedlist_get_iter(GtkTreeIter *iter);
-
 /* Selects the proper destination for a new feed based on which feed
  * is currently selected.
  *
@@ -74,22 +67,6 @@ gboolean ui_feedlist_get_iter(GtkTreeIter *iter);
  * @returns folder into which the feed should be inserted
  */
 nodePtr ui_feedlist_get_target_folder(int *pos);
-
-/**
- * Create a new subscription in the currently selected folder.
- *
- * @param source	feed source URL or local file name or piped command
- * @param filter    filename of the filter to use for the new feed
- * @param flags feed request flags to pass to the update requesting subsystem
- */
-void ui_feedlist_new_subscription(const gchar *source, const gchar *filter, gint flags);
-
-/**
- * marks all items of the feed of the given tree iter as read 
- *
- * @param iter	an iterator of the feed list to be processed
- */
-void ui_feedlist_mark_items_as_unread(GtkTreeIter *iter);
 
 /**
  * Prompt the user for confirmation of a folder or feed, and
@@ -105,18 +82,8 @@ void ui_feedlist_delete_prompt(nodePtr ptr);
  * @name menu and dialog callbacks 
  * @{
  */
-void on_popup_mark_as_read(gpointer callback_data,
-                           guint callback_action,
-                           GtkWidget *widget);
-
-void on_popup_properties(gpointer callback_data, guint callback_action, GtkWidget *widget);
 
 void on_newbtn_clicked(GtkButton *button, gpointer user_data);
-
-void on_fileselect_clicked(GtkButton *button, gpointer user_data);
-void on_localfilebtn_pressed(GtkButton *button, gpointer user_data);
-
-void on_filter_feeds_without_unread_headlines_activate(GtkMenuItem *menuitem, gpointer user_data);
 
 /** Feed properties menu creating callback */
 void on_menu_properties(GtkMenuItem *menuitem, gpointer user_data);
@@ -131,9 +98,5 @@ void on_menu_folder_new(GtkMenuItem *menuitem, gpointer user_data);
 void on_new_plugin_activate(GtkMenuItem *menuitem, gpointer user_data);
 
 /*@}*/
-
-/* UI folder stuff */
-void verify_iter(nodePtr node);
-GtkWidget *ui_feedlist_build_prop_dialog(void);
 
 #endif

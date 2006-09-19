@@ -68,11 +68,6 @@ extern GdkPixbuf *icons[MAX_ICONS];
  */
 void ui_init(gint mainwindowState);
 
-#define ui_redraw_itemlist()	ui_redraw_widget("Itemlist");
-#define ui_redraw_feedlist()	ui_redraw_widget("feedlist");
-
-void ui_redraw_widget(gchar *name);
-
 void ui_show_info_box(const char *format, ...);
 void ui_show_error_box(const char *format, ...);
 
