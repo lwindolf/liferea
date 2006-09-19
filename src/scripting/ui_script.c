@@ -130,6 +130,11 @@ void on_menu_show_script_manager(GtkWidget *widget, gpointer user_data) {
 	GtkTreeViewColumn	*column;
 	GtkCellRenderer		*renderer;
 	hookInfoPtr		hook;
+	
+	if(!script_support_enabled()) {
+		ui_show_error_box(_("Sorry, no scripting support available!"));
+		return;
+	}
 
 	if(!scriptdialog) {
 		scriptdialog = create_scriptdialog();

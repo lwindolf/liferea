@@ -73,9 +73,6 @@ static pluginPtr plugin_mgmt_load(const gchar * filename) {
 
 			/* try to load specific plugin type symbols */
 			switch(plugin->type) {
-				case PLUGIN_TYPE_FEEDLIST_PROVIDER:
-					/* Nothing to do. Plugin has to register itself */
-					break;
 				case PLUGIN_TYPE_NOTIFICATION:
 					success = notification_plugin_load(plugin, handle);
 					break;
@@ -83,7 +80,11 @@ static pluginPtr plugin_mgmt_load(const gchar * filename) {
 					success = ui_htmlview_plugin_load(plugin, handle);
 					break;
 				default:
-					debug3(DEBUG_PLUGINS, "Unknown or unsupported plugin type: %s (%s, type=%d)", plugin->name, filename, plugin->type);
+					if(plugin->type >= PLUGIN_TYPE_MAX) {
+						debug3(DEBUG_PLUGINS, "Unknown or unsupported plugin type: %s (%s, type=%d)", plugin->name, filename, plugin->type);
+					} else {
+						success = TRUE;		/* no special initialization */
+					}
 					break;
 			}
 		}

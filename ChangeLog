@@ -1,4 +1,4 @@
-2006-09-??  Lars Lindner  <lars.lindner@gmail.com>
+2006-09-20  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.1.5 (Unstable)
 
@@ -15,6 +15,10 @@
         * Fixes SF #1538838 which caused a problem on
           Atom feeds with empty text node contents.
           (reported by Jose M. daLuz)
+	* Fixes broken item list keyboard navigation.
+	* Fixes crashes when marking folders as read.
+	* Improved error handling on feed list loading errors
+	  to avoid loss of feed list.
 
 
 2006-09-10  Lars Lindner  <lars.lindner@gmail.com>

@@ -1,5 +1,5 @@
 /**
- * @file script.c scripting support implementation
+ * @file script.c generic scripting support implementation
  *
  * Copyright (C) 2006 Lars Lindner <lars.lindner@gmx.net>
  *
@@ -23,25 +23,18 @@
 #  include <config.h>
 #endif
 
-#ifdef USE_LUA
-#include <lua.h>
-#include <lauxlib.h>
-#include <lualib.h>
-#include "liferea_wrap.h"
-#endif
-
 #include <glib.h>
 #include "common.h"
 #include "debug.h"
+#include "plugin.h"
 #include "script.h"
-
-#ifdef USE_LUA
-static lua_State *luaVM = NULL;
-#endif
 
 /** hash of the scripts registered for different hooks */
 static GHashTable *scripts = NULL;
 static gboolean scriptConfigLoading = FALSE;
+static scriptSupportImplPtr scriptImpl = NULL;
+
+gboolean script_support_enabled(void) { return (scriptImpl != NULL); }
 
 static void script_config_load_hook_script(xmlNodePtr match, gpointer user_data) {
 	gint	type = GPOINTER_TO_INT(user_data);
@@ -128,49 +121,39 @@ static void script_config_save(void) {
 }
 
 void script_init(void) {
-	int i;
+	GSList	*iter;
 
 	scripts = g_hash_table_new(g_direct_hash, g_direct_equal);
 	script_config_load();
 
-#ifdef USE_LUA	
-	luaVM = lua_open();
-	
-	luaL_reg lualibs[] = {
-		{"base",	luaopen_base},
-		{"table",	luaopen_table},
-		{"io",		luaopen_io}, 
-		{"string",	luaopen_string},
-		{"math",	luaopen_math},
-		{"debug",	luaopen_debug},
-		{SWIG_name,	SWIG_init},
-		{NULL,		NULL}
-	};
-	
-	for(i=0; lualibs[i].func != 0 ; i++) {
-		lualibs[i].func(luaVM);  /* open library */
-		lua_settop(luaVM, 0);  /* discard any results */
+	iter = plugin_mgmt_get_list();
+	while(iter) {
+		pluginPtr plugin = (pluginPtr)(iter->data);
+		if(PLUGIN_TYPE_SCRIPT_SUPPORT == plugin->type) {
+			debug1(DEBUG_PLUGINS, "using \"%s\" for scripting...", plugin->name);
+			scriptImpl = plugin->symbols;
+			break;
+		}			
+		iter = g_slist_next(iter);
 	}
-#else
-	debug0(DEBUG_PLUGINS, "LUA scripting not supported.");
-#endif
+
+	if(scriptImpl)
+		scriptImpl->init();
 }
 
 void script_run_cmd(const gchar *cmd) {
 
-#ifdef USE_LUA
-	lua_dostring(luaVM, cmd);
-#endif
+	if(scriptImpl)
+		scriptImpl->run_cmd(cmd);
 }
 
 void script_run(const gchar *name) {
-	gchar	*filename;
 	
-#ifdef USE_LUA
-	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "scripts", name, "lua");
-	lua_dofile(luaVM, filename);
-	g_free(filename);
-#endif	
+	if(scriptImpl) {
+		gchar	*filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "scripts", name, "lua");
+		scriptImpl->run_script(filename);
+		g_free(filename);
+	}
 }
 
 void script_run_for_hook(hookType type) {
@@ -209,10 +192,9 @@ GSList *script_hook_get_list(hookType type) {
 
 void script_deinit(void) {
 
+	if(scriptImpl)
+		scriptImpl->deinit();
+
 	// FIXME: foreach hook free script list
 	g_hash_table_destroy(scripts);
-
-#ifdef USE_LUA
-	lua_close(luaVM);
-#endif
 }

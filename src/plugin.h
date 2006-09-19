@@ -39,11 +39,12 @@ enum {
 	PLUGIN_TYPE_PARSER,
 	PLUGIN_TYPE_FEEDLIST_PROVIDER,
 	PLUGIN_TYPE_NOTIFICATION,
+	PLUGIN_TYPE_SCRIPT_SUPPORT,
 	PLUGIN_TYPE_MAX
 };
 
 typedef struct plugin {
-	unsigned int	api_version;
+	guint		api_version;
 	gchar 		*name;
 	guint		type;			/* plugin type (e.g. renderer, parser or feed list provider) */
 	//gchar		*description;		/* for plugin managment */

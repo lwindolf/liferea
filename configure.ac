@@ -461,8 +461,8 @@ echo "Build XulRunner Plugin.......... : $enable_xulrunner"
 echo "Build GtkHTML Plugin............ : $enable_gtkhtml2"
 echo 
 echo "Build libnotify Plugin.......... : $enable_libnotify"
-echo 
-echo "Use LUA scripting .............. : $enable_lua"
+echo "Build LUA scripting Plugin ..... : $enable_lua"
+echo
 echo "Use X Session Management........ : $enable_sm"
 echo "Use DBUS........................ : $enable_dbus"
 echo "GNUTLS SSL/HTTPS Support........ : $enable_gnutls"

@@ -1,5 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
+EXTRA_DIST = liferea.i 
+
 INCLUDES = \
 	-fno-strict-aliasing \
         -DPACKAGE_DATA_DIR=\""$(datadir)"\" \
@@ -18,8 +20,25 @@ libliscript_a_SOURCES = \
 	ui_script.c ui_script.h
 
 if WITH_LUA
-libliscript_a_DEPENDENCIES = liferea_wrap.h
+
+pkglib_LTLIBRARIES = libliscrlua.la
+libliscrlua_la_SOURCES = lua.c liferea_wrap.h script.h 
+libliscrlua_la_LIBADD = $(PACKAGE_LIBS) $(LUA_LIBS) $(INTLLIBS)
+libliscrlua_la_CFLAGS = $(PACKAGE_CFLAGS) $(LUA_CFLAGS)
+
+if PLATFORM_WIN32
+
+libliscrlua_la_LDFLAGS = -avoid-version -module -no-undefined -Wl,$(top_builddir)/src/liferea-bin.a
+libliscrlua_la_DEPENDENCIES = liferea.i $(top_builddir)/src/liferea-bin$(EXEEXT)
+
+else
+
+libliscrlua_la_LDFLAGS = -avoid-version -module
+libliscrlua_la_DEPENDENCIES = liferea.i
+
+endif
 
 liferea_wrap.h: liferea.i
 	swig -lua $(PACKAGE_CFLAGS) -o liferea_wrap.h liferea.i
+	
 endif

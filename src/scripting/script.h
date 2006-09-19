@@ -24,6 +24,25 @@
 
 #include <gtk/gtk.h>
 
+/** scripting support plugin interface */
+typedef struct scriptSupportImpl {
+	guint		api_version;				/**< API version of scripting support plugin */
+	gchar		*name;					/**< descriptive name of the plugin */
+	void		(*init)		(void);			/**< called on startup */
+	void		(*deinit)	(void);			/**< called on shutdown */
+	void		(*run_cmd)	(const gchar *cmd);	/**< runs the given command */
+	void		(*run_script)	(const gchar *file);	/**< runs the given script */
+} *scriptSupportImplPtr;
+
+#define SCRIPT_SUPPORT_API_VERSION 1
+
+#define DECLARE_SCRIPT_SUPPORT_IMPL(impl) \
+	G_MODULE_EXPORT scriptSupportImplPtr script_support_impl_get_info() { \
+		return &impl; \
+	}
+	
+/* script support interface */
+	
 typedef enum hooks {
 	SCRIPT_HOOK_INVALID = 0,
 	SCRIPT_HOOK_STARTUP,
@@ -35,6 +54,13 @@ typedef enum hooks {
 	SCRIPT_HOOK_ITEM_UNSELECT,
 	SCRIPT_HOOK_FEED_UNSELECT,
 } hookType;
+
+/**
+ * Checks wether scripting support is available and enabled or not.
+ *
+ * @returns TRUE if scripting support is available
+ */
+gboolean script_support_enabled(void);
 
 /**
  * Sets up the scripting engine.

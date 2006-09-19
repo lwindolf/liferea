@@ -15,8 +15,7 @@ AM_CPPFLAGS = \
 	$(PACKAGE_CFLAGS) \
 	$(X_CFLAGS) \
 	$(DBUS_CFLAGS) \
-	$(GNUTLS_CFLAGS) \
-	$(LUA_FLAGS) 
+	$(GNUTLS_CFLAGS) 
 
 bin_PROGRAMS = liferea-bin 
 bin_SCRIPTS = liferea liferea-add-feed
@@ -55,7 +54,7 @@ liferea_bin_LDADD =	net/liblinet.a \
 			notification/liblinotification.a \
 			scripting/libliscript.a \
 			ui/libliui.a \
-			$(PACKAGE_LIBS) $(X_LIBS) $(X_PRE_LIBS) -lX11 $(X_EXTRA_LIBS) $(DBUS_LIBS) $(INTLLIBS) $(GNUTLS_LIBS) $(LUA_LIBS)
+			$(PACKAGE_LIBS) $(X_LIBS) $(X_PRE_LIBS) -lX11 $(X_EXTRA_LIBS) $(DBUS_LIBS) $(INTLLIBS) $(GNUTLS_LIBS) 
 
 if PLATFORM_WIN32
 

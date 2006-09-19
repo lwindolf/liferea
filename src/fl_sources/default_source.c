@@ -42,8 +42,6 @@
 /** lock to prevent feed list saving while loading */
 static gboolean feedlistImport = FALSE;
 
-static void default_source_dbus_connect ();
-
 static void default_source_copy_dir(gchar *subdir) {
 	gchar *dirname10, *dirname11;
 	gchar *srcfile, *destfile;
@@ -156,6 +154,49 @@ static void default_source_source_auto_update(nodePtr node) {
 
 #ifdef USE_DBUS
 
+static void
+default_source_dbus_connect ()
+{
+	DBusError       error;
+	DBusConnection *connection;
+	DBusObjectPathVTable feedreader_vtable = { NULL, default_source_dbus_message_handler, NULL};
+
+	/* Get the Session bus */
+	dbus_error_init (&error);
+	connection = dbus_bus_get (DBUS_BUS_SESSION, &error);
+	if (connection == NULL || dbus_error_is_set (&error))
+	{
+		fprintf (stderr, "*** ui_feedlist.c: Failed get session dbus: %s | %s\n", error.name,  error.message);
+		dbus_error_free (&error);
+     	return;
+	}
+	dbus_error_free (&error);
+    
+	/* Various inits */
+	dbus_connection_set_exit_on_disconnect (connection, FALSE);
+	dbus_connection_setup_with_g_main (connection, NULL);
+	    
+	/* Register for the FeedReader service on the bus, so we get method calls */
+	dbus_bus_request_name (connection, DBUS_RSS_SERVICE, 0, &error);
+
+	if (dbus_error_is_set (&error))
+	{
+		fprintf (stderr, "*** ui_feedlist.c: Failed to get dbus service: %s | %s\n", error.name, error.message);
+		dbus_error_free (&error);
+		return;
+	}
+	dbus_error_free (&error);
+	
+	/* Register the object path so we can receive method calls for that object */
+	if (!dbus_connection_register_object_path (connection, DBUS_RSS_OBJECT, &feedreader_vtable, &error))
+ 	{
+ 		fprintf (stderr, "*** ui_feedlist.c:Failed to register dbus object path: %s | %s\n", error.name, error.message);
+ 		dbus_error_free (&error);
+    	return;
+    }
+    dbus_error_free (&error);
+}
+
 static DBusHandlerResult
 ui_feedlist_dbus_set_online (DBusConnection *connection, DBusMessage *message)
 {
@@ -245,49 +286,6 @@ default_source_dbus_message_handler (DBusConnection *connection, DBusMessage *me
 		return ui_feedlist_dbus_set_online (connection, message);
 	else
 		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-}
-
-static void
-default_source_dbus_connect ()
-{
-	DBusError       error;
-	DBusConnection *connection;
-	DBusObjectPathVTable feedreader_vtable = { NULL, default_source_dbus_message_handler, NULL};
-
-	/* Get the Session bus */
-	dbus_error_init (&error);
-	connection = dbus_bus_get (DBUS_BUS_SESSION, &error);
-	if (connection == NULL || dbus_error_is_set (&error))
-	{
-		fprintf (stderr, "*** ui_feedlist.c: Failed get session dbus: %s | %s\n", error.name,  error.message);
-		dbus_error_free (&error);
-     	return;
-	}
-	dbus_error_free (&error);
-    
-	/* Various inits */
-	dbus_connection_set_exit_on_disconnect (connection, FALSE);
-	dbus_connection_setup_with_g_main (connection, NULL);
-	    
-	/* Register for the FeedReader service on the bus, so we get method calls */
-	dbus_bus_request_name (connection, DBUS_RSS_SERVICE, 0, &error);
-
-	if (dbus_error_is_set (&error))
-	{
-		fprintf (stderr, "*** ui_feedlist.c: Failed to get dbus service: %s | %s\n", error.name, error.message);
-		dbus_error_free (&error);
-		return;
-	}
-	dbus_error_free (&error);
-	
-	/* Register the object path so we can receive method calls for that object */
-	if (!dbus_connection_register_object_path (connection, DBUS_RSS_OBJECT, &feedreader_vtable, &error))
- 	{
- 		fprintf (stderr, "*** ui_feedlist.c:Failed to register dbus object path: %s | %s\n", error.name, error.message);
- 		dbus_error_free (&error);
-    	return;
-    }
-    dbus_error_free (&error);
 }
 
 #endif /* USE_DBUS */
