@@ -46,6 +46,8 @@ static gboolean feedlistImport = FALSE;
 
 #ifdef USE_DBUS
 
+static DBusHandlerResult default_source_dbus_message_handler (DBusConnection *connection, DBusMessage *message, void *user_data);
+
 static void
 default_source_dbus_connect ()
 {
