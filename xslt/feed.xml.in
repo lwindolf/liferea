@@ -127,9 +127,13 @@
      <!-- FIXME: hide passwords, special handling for user commands -->
      <xsl:element name="a">
         <xsl:attribute name="href">
-          <xsl:value-of select="feedSource"/>
+          <xsl:call-template name="strippwd">
+             <xsl:with-param name="string" select="feedSource"/>
+	  </xsl:call-template>
         </xsl:attribute>
-        <xsl:value-of select="feedSource"/>
+        <xsl:call-template name="strippwd">
+           <xsl:with-param name="string" select="feedSource"/>
+        </xsl:call-template>
      </xsl:element>
   </td>
 </tr>
@@ -150,5 +154,13 @@
 
 </body>
 </html>
+</xsl:template>
+
+<xsl:template name="strippwd">
+   <xsl:param name="string"/>
+   <xsl:choose>
+       <xsl:when test="contains($string, '@')"><xsl:value-of select="substring-before($string, '://')"/>://<xsl:value-of select="substring-after($string, '@')"/></xsl:when>
+       <xsl:otherwise><xsl:value-of select="$string"/></xsl:otherwise>
+   </xsl:choose>
 </xsl:template>
 </xsl:stylesheet>
