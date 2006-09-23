@@ -38,7 +38,10 @@ libliscrlua_la_DEPENDENCIES = liferea.i
 
 endif
 
+# Swig doesn't support -pthread...
+LIFEREA_WRAP_CFLAGS=$(PACKAGE_CFLAGS:-pthread=)
+
 liferea_wrap.h: liferea.i
-	swig -lua $(PACKAGE_CFLAGS) -o liferea_wrap.h liferea.i
+	swig -lua $(LIFEREA_WRAP_CFLAGS) -o liferea_wrap.h liferea.i
 	
 endif

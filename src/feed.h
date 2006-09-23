@@ -90,7 +90,6 @@ typedef struct feed {
 	time_t		time;			/**< Feeds modified date */
 			
 	/* feed properties that need to be saved */
-	gboolean	available;		/**< flag to signalize loading errors */
 	gboolean	discontinued;		/**< flag to avoid updating after HTTP 410 */
 
 	gchar		*htmlUrl;		/**< URL of HTML version of the feed */

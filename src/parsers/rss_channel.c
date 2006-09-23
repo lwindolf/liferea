@@ -301,11 +301,8 @@ static void rss_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 		}
 	}
 	
-	if(0 == error) {
-		ctxt->feed->available = TRUE;
-	} else {
-		ui_mainwindow_set_status_bar(_("There were errors while parsing this feed!"));
-	}
+	if(error)
+		ui_mainwindow_set_status_bar(_("There were errors while parsing the feed %s!"), node_get_title(ctxt->node));
 }
 
 static gboolean rss_format_check(xmlDocPtr doc, xmlNodePtr cur) {

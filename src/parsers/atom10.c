@@ -686,11 +686,8 @@ static void atom10_parse_feed(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 		
 		/* FIXME: Maybe check to see that the required information was actually provided (persuant to the RFC). */
 		/* after parsing we fill in the infos into the feedPtr structure */		
-		if(0 == error) {
-			ctxt->feed->available = TRUE;
-		} else {
-			ui_mainwindow_set_status_bar(_("There were errors while parsing this feed!"));
-		}
+		if(error)
+			ui_mainwindow_set_status_bar(_("There were errors while parsing the feed %s!"), node_get_title(ctxt->node));
 		
 		break;
 	}

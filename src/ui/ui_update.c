@@ -60,8 +60,8 @@ static void ui_update_merge_request(nodePtr node, GtkTreeStore *store, GHashTabl
 
 	iter = g_new0(GtkTreeIter, 1);
 	gtk_tree_store_append(store, iter, NULL);
-	gtk_tree_store_set(store, iter, UM_REQUEST_TITLE, node->title, 
-	                                UM_FAVICON, ui_node_get_icon(node),
+	gtk_tree_store_set(store, iter, UM_REQUEST_TITLE, node_get_title(node), 
+	                                UM_FAVICON, node_get_icon(node),
 	                                -1);
 	g_hash_table_insert(hash, (gpointer)node->id, (gpointer)iter);
 }

@@ -94,7 +94,8 @@ enum {
 typedef struct nodeType {
 	gulong		capabilities;	/**< bitmask of node type capabilities */
 	gchar		*id;		/**< type id (used for type attribute in OPML export) */
-	guint		type;		/**< numeric node type */
+	gpointer	icon;		/**< default icon */
+	guint		type;		/**< numeric node type (FIXME: remove me) */
 	
 	/* For method documentation see the wrappers defined below! 
 	   All methods are mandatory for each node type. */
@@ -255,7 +256,10 @@ void node_mark_all_read(nodePtr node);
 void node_set_icon(nodePtr node, gpointer icon);
 
 /**
- * Returns the favicon pixmaps of the given node.
+ * Returns an appropriate icon for the given node. If the node
+ * is unavailable the "unavailable" icon will be returned. If
+ * the node is available an existing favicon or the node type
+ * specific default icon will be returned.
  *
  * @returns a pixmap or NULL
  */

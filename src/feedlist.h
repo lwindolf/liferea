@@ -24,6 +24,30 @@
 #include <gtk/gtk.h>
 #include "node.h"
 
+/* feed list icons */
+enum allicons {
+	ICON_READ,
+	ICON_UNREAD,
+	ICON_FLAG,
+	ICON_AVAILABLE,
+	ICON_AVAILABLE_OFFLINE,
+	ICON_UNAVAILABLE,
+	ICON_DEFAULT,
+	ICON_OCS,
+	ICON_FOLDER,
+	ICON_VFOLDER,
+	ICON_NEWSBIN,
+	ICON_EMPTY,
+	ICON_EMPTY_OFFLINE,
+	ICON_ONLINE,
+	ICON_OFFLINE,
+	ICON_UPDATED,
+	ICON_ENCLOSURE,
+	MAX_ICONS
+};
+
+extern GdkPixbuf *icons[MAX_ICONS];
+
 /** initializes the feed list handling */
 void feedlist_init(void);
 

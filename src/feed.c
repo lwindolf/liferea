@@ -446,12 +446,12 @@ void feed_parse(feedParserCtxtPtr ctxt, gboolean autodiscover) {
 				update_request_free(request);
 			} else {
 				debug0(DEBUG_UPDATE, "no feed link found!");
-				ctxt->feed->available = FALSE;
+				ctxt->node->available = FALSE;
 				g_string_append(ctxt->feed->parseErrors, _("<p>The URL you want Liferea to subscribe to points to a webpage and the auto discovery found no feeds on this page. Maybe this webpage just does not support feed auto discovery.</p>"));
 			}
 		} else {
 			debug0(DEBUG_UPDATE, "neither a known feed type nor a HTML document!");
-			ctxt->feed->available = FALSE;
+			ctxt->node->available = FALSE;
 			g_string_append(ctxt->feed->parseErrors, _("<p>Could not determine the feed type.</p>"));
 		}
 	} else {
@@ -487,7 +487,7 @@ static void feed_add_xml_attributes(nodePtr node, xmlNodePtr feedNode, gboolean 
 	xmlNewTextChild(feedNode, NULL, "feedUpdateInterval", tmp);
 	g_free(tmp);
 
-	tmp = g_strdup_printf("%d", feed->available?1:0);
+	tmp = g_strdup_printf("%d", node->available?1:0);
 	xmlNewTextChild(feedNode, NULL, "feedStatus", tmp);
 	g_free(tmp);
 
@@ -699,7 +699,7 @@ itemSetPtr feed_load_from_cache(nodePtr node) {
 				feed_set_image_url(feed, tmp);
 
 			else if(!xmlStrcmp(cur->name, BAD_CAST"feedStatus")) 
-				feed->available = (0 == atoi(tmp))?FALSE:TRUE;
+				node->available = (0 == atoi(tmp))?FALSE:TRUE;
 
 			else if(!xmlStrcmp(cur->name, BAD_CAST"feedDiscontinued")) 
 				feed->discontinued = (0 == atoi(tmp))?FALSE:TRUE;
@@ -1148,7 +1148,7 @@ void feed_process_update_result(struct request *request) {
 	/* no matter what the result of the update is we need to save update
 	   status and the last update time to cache */
 	node->needsCacheSave = TRUE;
-	feed->available = FALSE;
+	node->available = FALSE;
 	
 	/* note this is to update the feed URL on permanent redirects */
 	if(!strcmp(request->source, feed_get_source(feed))) {
@@ -1161,10 +1161,10 @@ void feed_process_update_result(struct request *request) {
 			ui_feed_authdialog_new(node, request->flags);
 	} else if(410 == request->httpstatus) { /* gone */
 		feed->discontinued = TRUE;
-		feed->available = TRUE;
+		node->available = TRUE;
 		ui_mainwindow_set_status_bar(_("\"%s\" is discontinued. Liferea won't updated it anymore!"), node_get_title(node));
 	} else if(304 == request->httpstatus) {
-		feed->available = TRUE;
+		node->available = TRUE;
 		ui_mainwindow_set_status_bar(_("\"%s\" has not changed since last update"), node_get_title(node));
 	} else if(NULL != request->data) {
 		/* we save all properties that should not be overwritten in all cases */
@@ -1207,7 +1207,7 @@ void feed_process_update_result(struct request *request) {
 			if(request->flags & FEED_REQ_SHOW_PROPDIALOG)
 				ui_feed_properties(node);
 
-			feed->available = TRUE;
+			node->available = TRUE;
 		}
 				
 		g_free(old_title);
@@ -1406,24 +1406,29 @@ static gchar * feed_render(nodePtr node) {
 	return output;
 }
 
-static struct nodeType nti = {
-	0,
-	"feed",	/* not used, feed format ids are used instead */
-	NODE_TYPE_FEED,
-	feed_import,
-	feed_export,
-	feed_initial_load,
-	feed_load,
-	feed_save,
-	feed_unload,
-	feed_reset_update_counter,
-	feed_request_update,
-	feed_request_auto_update,
-	feed_remove,
-	feed_mark_all_read,
-	feed_render,
-	ui_feed_add,
-	ui_feed_properties
-};
+nodeTypePtr feed_get_node_type(void) { 
 
-nodeTypePtr feed_get_node_type(void) { return &nti; }
+	static struct nodeType nti = {
+		0,
+		"feed",		/* not used, feed format ids are used instead */
+		NULL,
+		NODE_TYPE_FEED,
+		feed_import,
+		feed_export,
+		feed_initial_load,
+		feed_load,
+		feed_save,
+		feed_unload,
+		feed_reset_update_counter,
+		feed_request_update,
+		feed_request_auto_update,
+		feed_remove,
+		feed_mark_all_read,
+		feed_render,
+		ui_feed_add,
+		ui_feed_properties
+	};
+	nti.icon = icons[ICON_DEFAULT];
+	
+	return &nti; 
+}

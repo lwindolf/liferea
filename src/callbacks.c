@@ -134,10 +134,3 @@ void on_faq_activate(GtkMenuItem *menuitem, gpointer user_data) {
 }
 
 
-void
-on_newsbinnamechange_clicked           (GtkButton       *button,
-                                        gpointer         user_data)
-{
-
-}
-

@@ -292,26 +292,29 @@ static void node_source_save(nodePtr node) {
 }
 
 nodeTypePtr node_source_get_node_type(void) {
-	nodeTypePtr	nodeType;
+	static nodeTypePtr	nodeType;
 
-	/* derive the plugin node type from the folder node type */
-	nodeType = (nodeTypePtr)g_new0(struct nodeType, 1);
-	nodeType->id			= "source";
-	nodeType->type			= NODE_TYPE_SOURCE;
-	nodeType->import		= node_source_import;
-	nodeType->export		= node_source_export;
-	nodeType->initial_load		= folder_get_node_type()->initial_load;
-	nodeType->load			= folder_get_node_type()->load;
-	nodeType->save			= node_source_save;
-	nodeType->unload		= folder_get_node_type()->unload;
-	nodeType->reset_update_counter	= folder_get_node_type()->reset_update_counter;
-	nodeType->request_update	= node_source_request_update;
-	nodeType->request_auto_update	= node_source_request_auto_update;
-	nodeType->remove		= node_source_remove;
-	nodeType->mark_all_read		= folder_get_node_type()->mark_all_read;
-	nodeType->render		= node_source_render;
-	nodeType->request_add		= ui_node_source_type_dialog;
-	nodeType->request_properties	= ui_node_source_dummy_properties;
+	if(!nodeType) {
+		/* derive the plugin node type from the folder node type */
+		nodeType = (nodeTypePtr)g_new0(struct nodeType, 1);
+		nodeType->id			= "source";
+		nodeType->icon			= icons[ICON_DEFAULT];
+		nodeType->type			= NODE_TYPE_SOURCE;
+		nodeType->import		= node_source_import;
+		nodeType->export		= node_source_export;
+		nodeType->initial_load		= folder_get_node_type()->initial_load;
+		nodeType->load			= folder_get_node_type()->load;
+		nodeType->save			= node_source_save;
+		nodeType->unload		= folder_get_node_type()->unload;
+		nodeType->reset_update_counter	= folder_get_node_type()->reset_update_counter;
+		nodeType->request_update	= node_source_request_update;
+		nodeType->request_auto_update	= node_source_request_auto_update;
+		nodeType->remove		= node_source_remove;
+		nodeType->mark_all_read		= folder_get_node_type()->mark_all_read;
+		nodeType->render		= node_source_render;
+		nodeType->request_add		= ui_node_source_type_dialog;
+		nodeType->request_properties	= ui_node_source_dummy_properties;
+	}
 
 	return nodeType; 
 }

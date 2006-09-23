@@ -138,9 +138,6 @@ static void cdf_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 
 		/* after parsing we fill in the infos into the feedPtr structure */		
 		feed_set_default_update_interval(ctxt->feed, -1);
-
-		if(cur)
-			ctxt->feed->available = TRUE;
 		
 		g_free(cp);
 	} while (FALSE);

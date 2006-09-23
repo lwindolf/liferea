@@ -297,7 +297,6 @@ gboolean common_is_well_formed_xhtml(const gchar *data) {
 	
 	errors = g_new0(struct errorCtxt, 1);
 	errors->msg = g_string_new(NULL);
-	xmlSetGenericErrorFunc(errors, (xmlGenericErrorFunc)common_buffer_parse_error);
 
 	xml = g_strdup_printf("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n<test>%s</test>", data);
 	
@@ -402,7 +401,7 @@ static void common_buffer_parse_error(void *ctxt, const gchar * msg, ...) {
 	errorCtxtPtr	errors = (errorCtxtPtr)ctxt;
 	gchar		*newmsg;
 	gchar		*tmp;
-
+	
 	if(MAX_PARSE_ERROR_LINES > errors->errorCount++) {
 		
 		va_start(params, msg);
@@ -511,7 +510,9 @@ xmlDocPtr common_parse_xml(gchar *data, guint length, gboolean recovery, errorCt
 
 	ctxt = xmlNewParserCtxt();
 	ctxt->sax->getEntity = common_process_entities;
-
+	
+	xmlSetGenericErrorFunc(errors, (xmlGenericErrorFunc)common_buffer_parse_error);
+	
 	doc = xmlSAXParseMemory(ctxt->sax, data, length, /* recovery = */ recovery);
 	
 	xmlFreeParserCtxt(ctxt);
@@ -537,7 +538,6 @@ xmlDocPtr common_parse_xml_feed(feedParserCtxtPtr fpc) {
 
 	errors = g_new0(struct errorCtxt, 1);
 	errors->msg = fpc->feed->parseErrors;
-	xmlSetGenericErrorFunc(errors, (xmlGenericErrorFunc)common_buffer_parse_error);
 	
 	fpc->doc = common_parse_xml(fpc->data, fpc->dataLength, fpc->recovery, errors);
 	if(!fpc->doc) {

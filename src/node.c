@@ -86,7 +86,7 @@ nodePtr node_new(void) {
 	node->id = node_new_id();
 	node->sortColumn = IS_TIME;
 	node->sortReversed = TRUE;	/* default sorting is newest date at top */
-	node->available = FALSE;
+	node->available = TRUE;
 	node->type = NODE_TYPE_INVALID;
 	node_set_icon(node, NULL);	/* initialize favicon file name */
 
@@ -580,7 +580,20 @@ void node_set_icon(nodePtr node, gpointer icon) {
 		node->iconFile = g_strdup(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "default.png");
 }
 
-gpointer node_get_icon(nodePtr node) { return node->icon; }
+/** determines the nodes favicon or default icon */
+gpointer node_get_icon(nodePtr node) { 
+	gpointer icon;
+
+	icon = node->icon;
+
+	if(!icon)
+		icon = NODE_TYPE(node)->icon;
+
+	if(!node->available)
+		icon = icons[ICON_UNAVAILABLE];
+
+	return icon;
+}
 
 const gchar * node_get_favicon_file(nodePtr node) { return node->iconFile; }
 

@@ -3971,6 +3971,7 @@ create_newnewsbindialog (void)
   GLADE_HOOKUP_OBJECT (newnewsbindialog, cancelbutton6, "cancelbutton6");
   GLADE_HOOKUP_OBJECT (newnewsbindialog, newnewsbinbtn, "newnewsbinbtn");
 
+  gtk_widget_grab_default (newnewsbinbtn);
   return newnewsbindialog;
 }
 
@@ -4044,6 +4045,7 @@ create_newsbinnamedialog (void)
   GLADE_HOOKUP_OBJECT (newsbinnamedialog, cancelbutton7, "cancelbutton7");
   GLADE_HOOKUP_OBJECT (newsbinnamedialog, okbutton4, "okbutton4");
 
+  gtk_widget_grab_default (okbutton4);
   return newsbinnamedialog;
 }
 

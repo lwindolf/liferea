@@ -198,62 +198,30 @@ void ui_node_remove_node(nodePtr np) {
 	}
 }
 
-/** determines the feeds favicon or default icon */
-GdkPixbuf* ui_node_get_icon(nodePtr node) {
-	gpointer	favicon;
-	feedPtr		feed;
-
-	favicon = node->icon;
-
-	if(!favicon)
-		favicon = icons[ICON_DEFAULT];
-
-	/* special icons */
-	switch(node->type) {
-		case NODE_TYPE_FOLDER:
-			favicon = icons[ICON_FOLDER];
-			break;
-		case NODE_TYPE_VFOLDER:
-			favicon = icons[ICON_VFOLDER];
-			break;
-		case NODE_TYPE_FEED:
-			feed = (feedPtr)node->data;
-
-			if(!feed->available)
-				favicon = icons[ICON_UNAVAILABLE];
-
-			if(!favicon && feed->fhp && (feed->fhp->icon != 0))
-				favicon = icons[feed->fhp->icon];
-
-			break;
-	}
-
-	return favicon;
-}
-
-void ui_node_update(nodePtr np) {
+void ui_node_update(nodePtr node) {
 	GtkTreeIter	*iter;
 	gchar		*label;
 
-	iter = ui_node_to_iter(np);
+	iter = ui_node_to_iter(node);
 	if(!iter)
 		return;
 
-	gint count = node_get_unread_count(np);
+	gint count = node_get_unread_count(node);
 	
 	if(count > 0)
-		label = g_markup_printf_escaped("<span weight=\"bold\">%s (%d)</span>", node_get_title(np), count);
+		label = g_markup_printf_escaped("<span weight=\"bold\">%s (%d)</span>",
+		                                node_get_title(node), count);
 	else
-		label = g_markup_printf_escaped("%s", node_get_title(np));
+		label = g_markup_printf_escaped("%s", node_get_title(node));
 	
 	gtk_tree_store_set(feedstore, iter, FS_LABEL, label,
 	                                    FS_UNREAD, count,
-	                                    FS_ICON, ui_node_get_icon(np),
+	                                    FS_ICON, node_get_icon(node),
 	                                    -1);
 	g_free(label);
 
 	/* Not sure if it is good to have the parent
 	   folder recursion here... (Lars) */
-	if(np->parent)
-		ui_node_update(np->parent);
+	if(node->parent)
+		ui_node_update(node->parent);
 }

@@ -21,6 +21,7 @@
 #ifndef _NEWSBIN_H
 #define _NEWSBIN_H
 
+#include <gtk/gtk.h>
 #include "node.h"
 
 /** 
@@ -31,5 +32,7 @@ nodeTypePtr newsbin_get_node_type(void);
 /* UI callbacks */
 
 void on_newnewsbinbtn_clicked(GtkButton *button, gpointer user_data);
+
+void on_newsbinnamechange_clicked(GtkButton *button, gpointer user_data);
 
 #endif

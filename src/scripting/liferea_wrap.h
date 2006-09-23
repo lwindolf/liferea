@@ -1311,45 +1311,47 @@ SWIG_Lua_SetModule(lua_State* L, swig_module_info *module) {
 #define SWIGTYPE_p_GHashTable swig_types[4]
 #define SWIGTYPE_p_GList swig_types[5]
 #define SWIGTYPE_p_GSList swig_types[6]
-#define SWIGTYPE_p_GdkPixbuf swig_types[7]
-#define SWIGTYPE_p_GtkButton swig_types[8]
-#define SWIGTYPE_p_GtkMenuItem swig_types[9]
-#define SWIGTYPE_p_GtkToggleAction swig_types[10]
-#define SWIGTYPE_p_GtkTreeIter swig_types[11]
-#define SWIGTYPE_p_GtkTreePath swig_types[12]
-#define SWIGTYPE_p_GtkTreeSelection swig_types[13]
-#define SWIGTYPE_p_GtkTreeSortable swig_types[14]
-#define SWIGTYPE_p_GtkTreeStore swig_types[15]
-#define SWIGTYPE_p_GtkTreeView swig_types[16]
-#define SWIGTYPE_p_GtkTreeViewColumn swig_types[17]
-#define SWIGTYPE_p_GtkWidget swig_types[18]
-#define SWIGTYPE_p_GtkWindow swig_types[19]
-#define SWIGTYPE_p_f_p_q_const__char_gpointer__void swig_types[20]
-#define SWIGTYPE_p_f_p_struct_node__p_char swig_types[21]
-#define SWIGTYPE_p_f_p_struct_node__void swig_types[22]
+#define SWIGTYPE_p_GtkButton swig_types[7]
+#define SWIGTYPE_p_GtkMenuItem swig_types[8]
+#define SWIGTYPE_p_GtkToggleAction swig_types[9]
+#define SWIGTYPE_p_GtkTreeIter swig_types[10]
+#define SWIGTYPE_p_GtkTreePath swig_types[11]
+#define SWIGTYPE_p_GtkTreeSelection swig_types[12]
+#define SWIGTYPE_p_GtkTreeSortable swig_types[13]
+#define SWIGTYPE_p_GtkTreeStore swig_types[14]
+#define SWIGTYPE_p_GtkTreeView swig_types[15]
+#define SWIGTYPE_p_GtkTreeViewColumn swig_types[16]
+#define SWIGTYPE_p_GtkWidget swig_types[17]
+#define SWIGTYPE_p_GtkWindow swig_types[18]
+#define SWIGTYPE_p_f_p_q_const__char_gpointer__void swig_types[19]
+#define SWIGTYPE_p_f_p_struct_node__p_char swig_types[20]
+#define SWIGTYPE_p_f_p_struct_node__void swig_types[21]
+#define SWIGTYPE_p_f_p_struct_node_p_struct_node_xmlNodePtr_int__void swig_types[22]
 #define SWIGTYPE_p_f_p_struct_node_unsigned_int__void swig_types[23]
-#define SWIGTYPE_p_gpointer swig_types[24]
-#define SWIGTYPE_p_gulong swig_types[25]
-#define SWIGTYPE_p_int swig_types[26]
-#define SWIGTYPE_p_item swig_types[27]
-#define SWIGTYPE_p_itemSet swig_types[28]
-#define SWIGTYPE_p_itemSetPtr swig_types[29]
-#define SWIGTYPE_p_mainwindow swig_types[30]
-#define SWIGTYPE_p_node swig_types[31]
-#define SWIGTYPE_p_nodeSource swig_types[32]
-#define SWIGTYPE_p_nodeType swig_types[33]
-#define SWIGTYPE_p_request swig_types[34]
-#define SWIGTYPE_p_time_t swig_types[35]
-#define SWIGTYPE_p_ui_data swig_types[36]
-#define SWIGTYPE_p_updateOptionsPtr swig_types[37]
-#define SWIGTYPE_p_vfolderPtr swig_types[38]
-#define SWIGTYPE_p_xmlNodePtr swig_types[39]
-#define SWIGTYPE_time_t swig_types[40]
-#define SWIGTYPE_updateOptionsPtr swig_types[41]
-#define SWIGTYPE_vfolderPtr swig_types[42]
-#define SWIGTYPE_xmlNodePtr swig_types[43]
-static swig_type_info *swig_types[45];
-static swig_module_info swig_module = {swig_types, 44, 0, 0, 0, 0};
+#define SWIGTYPE_p_f_p_struct_node_xmlNodePtr_int__void swig_types[24]
+#define SWIGTYPE_p_gpointer swig_types[25]
+#define SWIGTYPE_p_gulong swig_types[26]
+#define SWIGTYPE_p_int swig_types[27]
+#define SWIGTYPE_p_item swig_types[28]
+#define SWIGTYPE_p_itemSet swig_types[29]
+#define SWIGTYPE_p_itemSetPtr swig_types[30]
+#define SWIGTYPE_p_mainwindow swig_types[31]
+#define SWIGTYPE_p_node swig_types[32]
+#define SWIGTYPE_p_nodeSource swig_types[33]
+#define SWIGTYPE_p_nodeType swig_types[34]
+#define SWIGTYPE_p_p_GdkPixbuf swig_types[35]
+#define SWIGTYPE_p_request swig_types[36]
+#define SWIGTYPE_p_time_t swig_types[37]
+#define SWIGTYPE_p_ui_data swig_types[38]
+#define SWIGTYPE_p_updateOptionsPtr swig_types[39]
+#define SWIGTYPE_p_vfolderPtr swig_types[40]
+#define SWIGTYPE_p_xmlNodePtr swig_types[41]
+#define SWIGTYPE_time_t swig_types[42]
+#define SWIGTYPE_updateOptionsPtr swig_types[43]
+#define SWIGTYPE_vfolderPtr swig_types[44]
+#define SWIGTYPE_xmlNodePtr swig_types[45]
+static swig_type_info *swig_types[47];
+static swig_module_info swig_module = {swig_types, 46, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -1362,6 +1364,7 @@ static swig_module_info swig_module = {swig_types, 44, 0, 0, 0, 0};
 
 #include "../node.h"
 #include "../feed.h"
+#include "../feedlist.h"
 #include "../item.h"
 #include "../itemlist.h" 
 
@@ -2075,6 +2078,45 @@ fail:
 }
 
 
+static int _wrap_node_expanded_set(lua_State* L) {
+  int SWIG_arg = -1;
+  struct node *arg1 = (struct node *) 0 ;
+  int arg2 ;
+  
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg(1);
+  if(!lua_isnumber(L,2)) SWIG_fail_arg(2);
+  arg1=(struct node *)SWIG_MustGetPtr(L,1,SWIGTYPE_p_node,0,1,"node_expanded_set");
+  arg2 = (int)lua_tonumber(L, 2);
+  if (arg1) (arg1)->expanded = arg2;
+  
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_node_expanded_get(lua_State* L) {
+  int SWIG_arg = -1;
+  struct node *arg1 = (struct node *) 0 ;
+  int result;
+  
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg(1);
+  arg1=(struct node *)SWIG_MustGetPtr(L,1,SWIGTYPE_p_node,0,1,"node_expanded_get");
+  result = (int) ((arg1)->expanded);
+  SWIG_arg=0;
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_node_itemSet_set(lua_State* L) {
   int SWIG_arg = -1;
   struct node *arg1 = (struct node *) 0 ;
@@ -2298,6 +2340,7 @@ static swig_lua_attribute swig_node_attributes[] = {
     { "loaded",_wrap_node_loaded_get, _wrap_node_loaded_set},
     { "available",_wrap_node_available_get, _wrap_node_available_set},
     { "needsCacheSave",_wrap_node_needsCacheSave_get, _wrap_node_needsCacheSave_set},
+    { "expanded",_wrap_node_expanded_get, _wrap_node_expanded_set},
     { "itemSet",_wrap_node_itemSet_get, _wrap_node_itemSet_set},
     { "twoPane",_wrap_node_twoPane_get, _wrap_node_twoPane_set},
     { "sortColumn",_wrap_node_sortColumn_get, _wrap_node_sortColumn_set},
@@ -2401,6 +2444,54 @@ fail:
 }
 
 
+static int _wrap_nodeType_icon_set(lua_State* L) {
+  int SWIG_arg = -1;
+  struct nodeType *arg1 = (struct nodeType *) 0 ;
+  gpointer arg2 ;
+  
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg(1);
+  if(!lua_isuserdata(L,2)) SWIG_fail_arg(2);
+  arg1=(struct nodeType *)SWIG_MustGetPtr(L,1,SWIGTYPE_p_nodeType,0,1,"nodeType_icon_set");
+  {
+    gpointer * argp;
+    if(SWIG_ConvertPtr(L,2,(void**)(&argp),SWIGTYPE_p_gpointer,0)) SWIG_fail;
+    arg2 = *argp;
+  }
+  if (arg1) (arg1)->icon = arg2;
+  
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_nodeType_icon_get(lua_State* L) {
+  int SWIG_arg = -1;
+  struct nodeType *arg1 = (struct nodeType *) 0 ;
+  gpointer result;
+  
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg(1);
+  arg1=(struct nodeType *)SWIG_MustGetPtr(L,1,SWIGTYPE_p_nodeType,0,1,"nodeType_icon_get");
+  result =  ((arg1)->icon);
+  SWIG_arg=0;
+  {
+    gpointer * resultptr;
+    resultptr = (gpointer *) malloc(sizeof(gpointer));
+    memmove(resultptr, &result, sizeof(gpointer));
+    SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_gpointer,1); SWIG_arg++;
+  }
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_nodeType_type_set(lua_State* L) {
   int SWIG_arg = -1;
   struct nodeType *arg1 = (struct nodeType *) 0 ;
@@ -2432,6 +2523,84 @@ static int _wrap_nodeType_type_get(lua_State* L) {
   result = (unsigned int) ((arg1)->type);
   SWIG_arg=0;
   lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_nodeType_import_set(lua_State* L) {
+  int SWIG_arg = -1;
+  struct nodeType *arg1 = (struct nodeType *) 0 ;
+  void (*arg2)(nodePtr,nodePtr,xmlNodePtr,int) = (void (*)(nodePtr,nodePtr,xmlNodePtr,int)) 0 ;
+  
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg(1);
+  if(!lua_isuserdata(L,2)) SWIG_fail_arg(2);
+  arg1=(struct nodeType *)SWIG_MustGetPtr(L,1,SWIGTYPE_p_nodeType,0,1,"nodeType_import_set");
+  arg2=(void (*)(nodePtr,nodePtr,xmlNodePtr,int))SWIG_MustGetPtr(L,2,SWIGTYPE_p_f_p_struct_node_p_struct_node_xmlNodePtr_int__void,0,2,"nodeType_import_set");
+  if (arg1) (arg1)->import = arg2;
+  
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_nodeType_import_get(lua_State* L) {
+  int SWIG_arg = -1;
+  struct nodeType *arg1 = (struct nodeType *) 0 ;
+  void (*result)(nodePtr,nodePtr,xmlNodePtr,int) = 0 ;
+  
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg(1);
+  arg1=(struct nodeType *)SWIG_MustGetPtr(L,1,SWIGTYPE_p_nodeType,0,1,"nodeType_import_get");
+  result = (void (*)(nodePtr,nodePtr,xmlNodePtr,int)) ((arg1)->import);
+  SWIG_arg=0;
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_f_p_struct_node_p_struct_node_xmlNodePtr_int__void,0); SWIG_arg++; 
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_nodeType_export_set(lua_State* L) {
+  int SWIG_arg = -1;
+  struct nodeType *arg1 = (struct nodeType *) 0 ;
+  void (*arg2)(nodePtr,xmlNodePtr,int) = (void (*)(nodePtr,xmlNodePtr,int)) 0 ;
+  
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg(1);
+  if(!lua_isuserdata(L,2)) SWIG_fail_arg(2);
+  arg1=(struct nodeType *)SWIG_MustGetPtr(L,1,SWIGTYPE_p_nodeType,0,1,"nodeType_export_set");
+  arg2=(void (*)(nodePtr,xmlNodePtr,int))SWIG_MustGetPtr(L,2,SWIGTYPE_p_f_p_struct_node_xmlNodePtr_int__void,0,2,"nodeType_export_set");
+  if (arg1) (arg1)->export = arg2;
+  
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_nodeType_export_get(lua_State* L) {
+  int SWIG_arg = -1;
+  struct nodeType *arg1 = (struct nodeType *) 0 ;
+  void (*result)(nodePtr,xmlNodePtr,int) = 0 ;
+  
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg(1);
+  arg1=(struct nodeType *)SWIG_MustGetPtr(L,1,SWIGTYPE_p_nodeType,0,1,"nodeType_export_get");
+  result = (void (*)(nodePtr,xmlNodePtr,int)) ((arg1)->export);
+  SWIG_arg=0;
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_f_p_struct_node_xmlNodePtr_int__void,0); SWIG_arg++; 
   return SWIG_arg;
   
 fail:
@@ -2951,7 +3120,10 @@ static swig_lua_method swig_nodeType_methods[] = {
 static swig_lua_attribute swig_nodeType_attributes[] = {
     { "capabilities",_wrap_nodeType_capabilities_get, _wrap_nodeType_capabilities_set},
     { "id",_wrap_nodeType_id_get, _wrap_nodeType_id_set},
+    { "icon",_wrap_nodeType_icon_get, _wrap_nodeType_icon_set},
     { "type",_wrap_nodeType_type_get, _wrap_nodeType_type_set},
+    { "import",_wrap_nodeType_import_get, _wrap_nodeType_import_set},
+    { "export",_wrap_nodeType_export_get, _wrap_nodeType_export_set},
     { "initial_load",_wrap_nodeType_initial_load_get, _wrap_nodeType_initial_load_set},
     { "load",_wrap_nodeType_load_get, _wrap_nodeType_load_set},
     { "save",_wrap_nodeType_save_get, _wrap_nodeType_save_set},
@@ -3091,23 +3263,40 @@ fail:
 }
 
 
-static int _wrap_node_add_data(lua_State* L) {
+static int _wrap_node_set_type(lua_State* L) {
   int SWIG_arg = -1;
   nodePtr arg1 = (nodePtr) 0 ;
-  unsigned int arg2 ;
-  gpointer arg3 ;
+  nodeTypePtr arg2 = (nodeTypePtr) 0 ;
   
   if(!lua_isuserdata(L,1)) SWIG_fail_arg(1);
-  if(!lua_isnumber(L,2)) SWIG_fail_arg(2);
-  if(!lua_isuserdata(L,3)) SWIG_fail_arg(3);
-  arg1=(nodePtr)SWIG_MustGetPtr(L,1,SWIGTYPE_p_node,0,1,"node_add_data");
-  arg2 = (unsigned int)lua_tonumber(L, 2);
+  if(!lua_isuserdata(L,2)) SWIG_fail_arg(2);
+  arg1=(nodePtr)SWIG_MustGetPtr(L,1,SWIGTYPE_p_node,0,1,"node_set_type");
+  arg2=(nodeTypePtr)SWIG_MustGetPtr(L,2,SWIGTYPE_p_nodeType,0,2,"node_set_type");
+  node_set_type(arg1,arg2);
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_node_set_data(lua_State* L) {
+  int SWIG_arg = -1;
+  nodePtr arg1 = (nodePtr) 0 ;
+  gpointer arg2 ;
+  
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg(1);
+  if(!lua_isuserdata(L,2)) SWIG_fail_arg(2);
+  arg1=(nodePtr)SWIG_MustGetPtr(L,1,SWIGTYPE_p_node,0,1,"node_set_data");
   {
     gpointer * argp;
-    if(SWIG_ConvertPtr(L,3,(void**)(&argp),SWIGTYPE_p_gpointer,0)) SWIG_fail;
-    arg3 = *argp;
+    if(SWIG_ConvertPtr(L,2,(void**)(&argp),SWIGTYPE_p_gpointer,0)) SWIG_fail;
+    arg2 = *argp;
   }
-  node_add_data(arg1,arg2,arg3);
+  node_set_data(arg1,arg2);
   SWIG_arg=0;
   
   return SWIG_arg;
@@ -3391,13 +3580,13 @@ fail:
 static int _wrap_node_str_to_type(lua_State* L) {
   int SWIG_arg = -1;
   char *arg1 = (char *) 0 ;
-  unsigned int result;
+  nodeTypePtr result;
   
   if(!lua_isstring(L,1)) SWIG_fail_arg(1);
   arg1 = (char*)lua_tostring(L, 1);
-  result = (unsigned int)node_str_to_type((char const *)arg1);
+  result = (nodeTypePtr)node_str_to_type((char const *)arg1);
   SWIG_arg=0;
-  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_nodeType,0); SWIG_arg++; 
   return SWIG_arg;
   
 fail:
@@ -3430,6 +3619,63 @@ static int _wrap_node_update_counters(lua_State* L) {
   if(!lua_isuserdata(L,1)) SWIG_fail_arg(1);
   arg1=(nodePtr)SWIG_MustGetPtr(L,1,SWIGTYPE_p_node,0,1,"node_update_counters");
   node_update_counters(arg1);
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_node_import(lua_State* L) {
+  int SWIG_arg = -1;
+  nodePtr arg1 = (nodePtr) 0 ;
+  nodePtr arg2 = (nodePtr) 0 ;
+  xmlNodePtr arg3 ;
+  int arg4 ;
+  
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg(1);
+  if(!lua_isuserdata(L,2)) SWIG_fail_arg(2);
+  if(!lua_isuserdata(L,3)) SWIG_fail_arg(3);
+  if(!lua_isnumber(L,4)) SWIG_fail_arg(4);
+  arg1=(nodePtr)SWIG_MustGetPtr(L,1,SWIGTYPE_p_node,0,1,"node_import");
+  arg2=(nodePtr)SWIG_MustGetPtr(L,2,SWIGTYPE_p_node,0,2,"node_import");
+  {
+    xmlNodePtr * argp;
+    if(SWIG_ConvertPtr(L,3,(void**)(&argp),SWIGTYPE_p_xmlNodePtr,0)) SWIG_fail;
+    arg3 = *argp;
+  }
+  arg4 = (int)lua_tonumber(L, 4);
+  node_import(arg1,arg2,arg3,arg4);
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_node_export(lua_State* L) {
+  int SWIG_arg = -1;
+  nodePtr arg1 = (nodePtr) 0 ;
+  xmlNodePtr arg2 ;
+  int arg3 ;
+  
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg(1);
+  if(!lua_isuserdata(L,2)) SWIG_fail_arg(2);
+  if(!lua_isnumber(L,3)) SWIG_fail_arg(3);
+  arg1=(nodePtr)SWIG_MustGetPtr(L,1,SWIGTYPE_p_node,0,1,"node_export");
+  {
+    xmlNodePtr * argp;
+    if(SWIG_ConvertPtr(L,2,(void**)(&argp),SWIGTYPE_p_xmlNodePtr,0)) SWIG_fail;
+    arg2 = *argp;
+  }
+  arg3 = (int)lua_tonumber(L, 3);
+  node_export(arg1,arg2,arg3);
   SWIG_arg=0;
   
   return SWIG_arg;
@@ -5453,6 +5699,42 @@ fail:
 }
 
 
+static int _wrap_icons_set(lua_State* L) {
+  int SWIG_arg = -1;
+  GdkPixbuf **arg1 ;
+  
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg(1);
+  arg1=(GdkPixbuf **)SWIG_MustGetPtr(L,1,SWIGTYPE_p_p_GdkPixbuf,0,1,"icons_set");
+  {
+    size_t ii;
+    GdkPixbuf * *b = (GdkPixbuf * *) icons;
+    for (ii = 0; ii < (size_t)MAX_ICONS; ii++) b[ii] = *((GdkPixbuf * *) arg1 + ii);
+  }
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_icons_get(lua_State* L) {
+  int SWIG_arg = -1;
+  GdkPixbuf **result = 0 ;
+  
+  result = (GdkPixbuf **)(GdkPixbuf **)icons;
+  SWIG_arg=0;
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_p_GdkPixbuf,0); SWIG_arg++; 
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_feedlist_init(lua_State* L) {
   int SWIG_arg = -1;
   
@@ -7399,24 +7681,6 @@ fail:
 }
 
 
-static int _wrap_ui_node_get_icon(lua_State* L) {
-  int SWIG_arg = -1;
-  nodePtr arg1 = (nodePtr) 0 ;
-  GdkPixbuf *result = 0 ;
-  
-  if(!lua_isuserdata(L,1)) SWIG_fail_arg(1);
-  arg1=(nodePtr)SWIG_MustGetPtr(L,1,SWIGTYPE_p_node,0,1,"ui_node_get_icon");
-  result = (GdkPixbuf *)ui_node_get_icon(arg1);
-  SWIG_arg=0;
-  SWIG_NewPointerObj(L,result,SWIGTYPE_p_GdkPixbuf,0); SWIG_arg++; 
-  return SWIG_arg;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
 #ifdef __cplusplus
 }
 #endif
@@ -7456,6 +7720,8 @@ static const struct luaL_reg swig_commands[] = {
     { "node_available_get", _wrap_node_available_get},
     { "node_needsCacheSave_set", _wrap_node_needsCacheSave_set},
     { "node_needsCacheSave_get", _wrap_node_needsCacheSave_get},
+    { "node_expanded_set", _wrap_node_expanded_set},
+    { "node_expanded_get", _wrap_node_expanded_get},
     { "node_itemSet_set", _wrap_node_itemSet_set},
     { "node_itemSet_get", _wrap_node_itemSet_get},
     { "node_twoPane_set", _wrap_node_twoPane_set},
@@ -7470,8 +7736,14 @@ static const struct luaL_reg swig_commands[] = {
     { "nodeType_capabilities_get", _wrap_nodeType_capabilities_get},
     { "nodeType_id_set", _wrap_nodeType_id_set},
     { "nodeType_id_get", _wrap_nodeType_id_get},
+    { "nodeType_icon_set", _wrap_nodeType_icon_set},
+    { "nodeType_icon_get", _wrap_nodeType_icon_get},
     { "nodeType_type_set", _wrap_nodeType_type_set},
     { "nodeType_type_get", _wrap_nodeType_type_get},
+    { "nodeType_import_set", _wrap_nodeType_import_set},
+    { "nodeType_import_get", _wrap_nodeType_import_get},
+    { "nodeType_export_set", _wrap_nodeType_export_set},
+    { "nodeType_export_get", _wrap_nodeType_export_get},
     { "nodeType_initial_load_set", _wrap_nodeType_initial_load_set},
     { "nodeType_initial_load_get", _wrap_nodeType_initial_load_get},
     { "nodeType_load_set", _wrap_nodeType_load_set},
@@ -7504,7 +7776,8 @@ static const struct luaL_reg swig_commands[] = {
     { "node_request_interactive_add", _wrap_node_request_interactive_add},
     { "node_request_automatic_add", _wrap_node_request_automatic_add},
     { "node_request_remove", _wrap_node_request_remove},
-    { "node_add_data", _wrap_node_add_data},
+    { "node_set_type", _wrap_node_set_type},
+    { "node_set_data", _wrap_node_set_data},
     { "node_is_ancestor", _wrap_node_is_ancestor},
     { "node_get_title", _wrap_node_get_title},
     { "node_set_title", _wrap_node_set_title},
@@ -7522,6 +7795,8 @@ static const struct luaL_reg swig_commands[] = {
     { "node_str_to_type", _wrap_node_str_to_type},
     { "node_free", _wrap_node_free},
     { "node_update_counters", _wrap_node_update_counters},
+    { "node_import", _wrap_node_import},
+    { "node_export", _wrap_node_export},
     { "node_initial_load", _wrap_node_initial_load},
     { "node_load", _wrap_node_load},
     { "node_save", _wrap_node_save},
@@ -7622,6 +7897,8 @@ static const struct luaL_reg swig_commands[] = {
     { "itemlist_set_update_status", _wrap_itemlist_set_update_status},
     { "itemlist_toggle_flag", _wrap_itemlist_toggle_flag},
     { "itemlist_toggle_read_status", _wrap_itemlist_toggle_read_status},
+    { "icons_set", _wrap_icons_set},
+    { "icons_get", _wrap_icons_get},
     { "feedlist_init", _wrap_feedlist_init},
     { "feedlist_get_root", _wrap_feedlist_get_root},
     { "feedlist_get_selected", _wrap_feedlist_get_selected},
@@ -7723,11 +8000,11 @@ static const struct luaL_reg swig_commands[] = {
     { "ui_node_is_folder_expanded", _wrap_ui_node_is_folder_expanded},
     { "ui_node_check_if_folder_is_empty", _wrap_ui_node_check_if_folder_is_empty},
     { "ui_node_set_expansion", _wrap_ui_node_set_expansion},
-    { "ui_node_get_icon", _wrap_ui_node_get_icon},
     {0,0}
 };
 
 static swig_lua_var_info swig_variables[] = {
+    { "icons", _wrap_icons_get, _wrap_icons_set},
     { "feedstore", _wrap_feedstore_get, _wrap_feedstore_set},
     { "mainwindow", _wrap_mainwindow_get, _wrap_mainwindow_set},
     { "mw_global_fixme", _wrap_mw_global_fixme_get, _wrap_mw_global_fixme_set},
@@ -7748,6 +8025,24 @@ static swig_lua_const_info swig_constants[] = {
 { SWIG_LUA_INT,     (char *)"NODE_CAPABILITY_REMOVE_ITEMS", (long) NODE_CAPABILITY_REMOVE_ITEMS, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"NODE_CAPABILITY_RECEIVE_ITEMS", (long) NODE_CAPABILITY_RECEIVE_ITEMS, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"NODE_CAPABILITY_REORDER", (long) NODE_CAPABILITY_REORDER, 0, 0, 0},
+{ SWIG_LUA_INT,     (char *)"ICON_READ", (long) ICON_READ, 0, 0, 0},
+{ SWIG_LUA_INT,     (char *)"ICON_UNREAD", (long) ICON_UNREAD, 0, 0, 0},
+{ SWIG_LUA_INT,     (char *)"ICON_FLAG", (long) ICON_FLAG, 0, 0, 0},
+{ SWIG_LUA_INT,     (char *)"ICON_AVAILABLE", (long) ICON_AVAILABLE, 0, 0, 0},
+{ SWIG_LUA_INT,     (char *)"ICON_AVAILABLE_OFFLINE", (long) ICON_AVAILABLE_OFFLINE, 0, 0, 0},
+{ SWIG_LUA_INT,     (char *)"ICON_UNAVAILABLE", (long) ICON_UNAVAILABLE, 0, 0, 0},
+{ SWIG_LUA_INT,     (char *)"ICON_DEFAULT", (long) ICON_DEFAULT, 0, 0, 0},
+{ SWIG_LUA_INT,     (char *)"ICON_OCS", (long) ICON_OCS, 0, 0, 0},
+{ SWIG_LUA_INT,     (char *)"ICON_FOLDER", (long) ICON_FOLDER, 0, 0, 0},
+{ SWIG_LUA_INT,     (char *)"ICON_VFOLDER", (long) ICON_VFOLDER, 0, 0, 0},
+{ SWIG_LUA_INT,     (char *)"ICON_NEWSBIN", (long) ICON_NEWSBIN, 0, 0, 0},
+{ SWIG_LUA_INT,     (char *)"ICON_EMPTY", (long) ICON_EMPTY, 0, 0, 0},
+{ SWIG_LUA_INT,     (char *)"ICON_EMPTY_OFFLINE", (long) ICON_EMPTY_OFFLINE, 0, 0, 0},
+{ SWIG_LUA_INT,     (char *)"ICON_ONLINE", (long) ICON_ONLINE, 0, 0, 0},
+{ SWIG_LUA_INT,     (char *)"ICON_OFFLINE", (long) ICON_OFFLINE, 0, 0, 0},
+{ SWIG_LUA_INT,     (char *)"ICON_UPDATED", (long) ICON_UPDATED, 0, 0, 0},
+{ SWIG_LUA_INT,     (char *)"ICON_ENCLOSURE", (long) ICON_ENCLOSURE, 0, 0, 0},
+{ SWIG_LUA_INT,     (char *)"MAX_ICONS", (long) MAX_ICONS, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"FS_LABEL", (long) FS_LABEL, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"FS_ICON", (long) FS_ICON, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"FS_PTR", (long) FS_PTR, 0, 0, 0},
@@ -7779,7 +8074,6 @@ static swig_type_info _swigt__itemSetPtr = {"_itemSetPtr", "itemSetPtr", 0, 0, (
 static swig_type_info _swigt__p_GHashTable = {"_p_GHashTable", "GHashTable *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_GList = {"_p_GList", "GList *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_GSList = {"_p_GSList", "GSList *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_GdkPixbuf = {"_p_GdkPixbuf", "GdkPixbuf *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_GtkButton = {"_p_GtkButton", "GtkButton *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_GtkMenuItem = {"_p_GtkMenuItem", "GtkMenuItem *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_GtkToggleAction = {"_p_GtkToggleAction", "GtkToggleAction *", 0, 0, (void*)0, 0};
@@ -7795,7 +8089,9 @@ static swig_type_info _swigt__p_GtkWindow = {"_p_GtkWindow", "GtkWindow *", 0, 0
 static swig_type_info _swigt__p_f_p_q_const__char_gpointer__void = {"_p_f_p_q_const__char_gpointer__void", "void (*)(char const *,gpointer)|fileChoosenCallback", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_f_p_struct_node__p_char = {"_p_f_p_struct_node__p_char", "char *(*)(struct node *)|char *(*)(nodePtr)", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_f_p_struct_node__void = {"_p_f_p_struct_node__void", "void (*)(struct node *)|void (*)(nodePtr)", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_f_p_struct_node_p_struct_node_xmlNodePtr_int__void = {"_p_f_p_struct_node_p_struct_node_xmlNodePtr_int__void", "void (*)(struct node *,struct node *,xmlNodePtr,int)|void (*)(nodePtr,nodePtr,xmlNodePtr,int)", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_f_p_struct_node_unsigned_int__void = {"_p_f_p_struct_node_unsigned_int__void", "void (*)(struct node *,unsigned int)|void (*)(nodePtr,unsigned int)", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_f_p_struct_node_xmlNodePtr_int__void = {"_p_f_p_struct_node_xmlNodePtr_int__void", "void (*)(struct node *,xmlNodePtr,int)|void (*)(nodePtr,xmlNodePtr,int)", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gpointer = {"_p_gpointer", "gpointer *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gulong = {"_p_gulong", "gulong *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_int = {"_p_int", "int *", 0, 0, (void*)0, 0};
@@ -7806,6 +8102,7 @@ static swig_type_info _swigt__p_mainwindow = {"_p_mainwindow", "struct mainwindo
 static swig_type_info _swigt__p_node = {"_p_node", "struct node *|nodePtr", 0, 0, (void*)&_wrap_class_node, 0};
 static swig_type_info _swigt__p_nodeSource = {"_p_nodeSource", "struct nodeSource *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_nodeType = {"_p_nodeType", "struct nodeType *|nodeTypePtr", 0, 0, (void*)&_wrap_class_nodeType, 0};
+static swig_type_info _swigt__p_p_GdkPixbuf = {"_p_p_GdkPixbuf", "GdkPixbuf **", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_request = {"_p_request", "struct request *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_time_t = {"_p_time_t", "time_t *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_ui_data = {"_p_ui_data", "struct ui_data *|ui_data *", 0, 0, (void*)&_wrap_class_ui_data, 0};
@@ -7825,7 +8122,6 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_GHashTable,
   &_swigt__p_GList,
   &_swigt__p_GSList,
-  &_swigt__p_GdkPixbuf,
   &_swigt__p_GtkButton,
   &_swigt__p_GtkMenuItem,
   &_swigt__p_GtkToggleAction,
@@ -7841,7 +8137,9 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_f_p_q_const__char_gpointer__void,
   &_swigt__p_f_p_struct_node__p_char,
   &_swigt__p_f_p_struct_node__void,
+  &_swigt__p_f_p_struct_node_p_struct_node_xmlNodePtr_int__void,
   &_swigt__p_f_p_struct_node_unsigned_int__void,
+  &_swigt__p_f_p_struct_node_xmlNodePtr_int__void,
   &_swigt__p_gpointer,
   &_swigt__p_gulong,
   &_swigt__p_int,
@@ -7852,6 +8150,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_node,
   &_swigt__p_nodeSource,
   &_swigt__p_nodeType,
+  &_swigt__p_p_GdkPixbuf,
   &_swigt__p_request,
   &_swigt__p_time_t,
   &_swigt__p_ui_data,
@@ -7871,7 +8170,6 @@ static swig_cast_info _swigc__itemSetPtr[] = {  {&_swigt__itemSetPtr, 0, 0, 0},{
 static swig_cast_info _swigc__p_GHashTable[] = {  {&_swigt__p_GHashTable, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_GList[] = {  {&_swigt__p_GList, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_GSList[] = {  {&_swigt__p_GSList, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_GdkPixbuf[] = {  {&_swigt__p_GdkPixbuf, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_GtkButton[] = {  {&_swigt__p_GtkButton, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_GtkMenuItem[] = {  {&_swigt__p_GtkMenuItem, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_GtkToggleAction[] = {  {&_swigt__p_GtkToggleAction, 0, 0, 0},{0, 0, 0, 0}};
@@ -7887,7 +8185,9 @@ static swig_cast_info _swigc__p_GtkWindow[] = {  {&_swigt__p_GtkWindow, 0, 0, 0}
 static swig_cast_info _swigc__p_f_p_q_const__char_gpointer__void[] = {  {&_swigt__p_f_p_q_const__char_gpointer__void, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_f_p_struct_node__p_char[] = {  {&_swigt__p_f_p_struct_node__p_char, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_f_p_struct_node__void[] = {  {&_swigt__p_f_p_struct_node__void, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_f_p_struct_node_p_struct_node_xmlNodePtr_int__void[] = {  {&_swigt__p_f_p_struct_node_p_struct_node_xmlNodePtr_int__void, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_f_p_struct_node_unsigned_int__void[] = {  {&_swigt__p_f_p_struct_node_unsigned_int__void, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_f_p_struct_node_xmlNodePtr_int__void[] = {  {&_swigt__p_f_p_struct_node_xmlNodePtr_int__void, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gpointer[] = {  {&_swigt__p_gpointer, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gulong[] = {  {&_swigt__p_gulong, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_int[] = {  {&_swigt__p_int, 0, 0, 0},{0, 0, 0, 0}};
@@ -7898,6 +8198,7 @@ static swig_cast_info _swigc__p_mainwindow[] = {  {&_swigt__p_mainwindow, 0, 0, 
 static swig_cast_info _swigc__p_node[] = {  {&_swigt__p_node, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_nodeSource[] = {  {&_swigt__p_nodeSource, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_nodeType[] = {  {&_swigt__p_nodeType, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_p_GdkPixbuf[] = {  {&_swigt__p_p_GdkPixbuf, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_request[] = {  {&_swigt__p_request, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_time_t[] = {  {&_swigt__p_time_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_ui_data[] = {  {&_swigt__p_ui_data, 0, 0, 0},{0, 0, 0, 0}};
@@ -7917,7 +8218,6 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_GHashTable,
   _swigc__p_GList,
   _swigc__p_GSList,
-  _swigc__p_GdkPixbuf,
   _swigc__p_GtkButton,
   _swigc__p_GtkMenuItem,
   _swigc__p_GtkToggleAction,
@@ -7933,7 +8233,9 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_f_p_q_const__char_gpointer__void,
   _swigc__p_f_p_struct_node__p_char,
   _swigc__p_f_p_struct_node__void,
+  _swigc__p_f_p_struct_node_p_struct_node_xmlNodePtr_int__void,
   _swigc__p_f_p_struct_node_unsigned_int__void,
+  _swigc__p_f_p_struct_node_xmlNodePtr_int__void,
   _swigc__p_gpointer,
   _swigc__p_gulong,
   _swigc__p_int,
@@ -7944,6 +8246,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_node,
   _swigc__p_nodeSource,
   _swigc__p_nodeType,
+  _swigc__p_p_GdkPixbuf,
   _swigc__p_request,
   _swigc__p_time_t,
   _swigc__p_ui_data,

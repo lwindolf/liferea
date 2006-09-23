@@ -43,8 +43,6 @@
 #include "ui/ui_mainwindow.h"
 #include "ui/ui_tray.h"
 
-extern GdkPixbuf	*icons[];
-
 static GHashTable 	*item_to_iter = NULL;	/** hash table used for fast item->tree iter lookup */
 
 static GtkWidget 	*itemlist_treeview = NULL;

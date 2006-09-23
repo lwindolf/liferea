@@ -23,6 +23,7 @@
 #include "conf.h"
 #include "debug.h"
 #include "export.h"
+#include "feedlist.h"
 #include "render.h"
 #include "support.h"
 #include "ui/ui_folder.h"
@@ -155,54 +156,63 @@ static gchar * folder_render(nodePtr node) {
 	return result;
 }
 
-static struct nodeType fnti = {
-	NODE_CAPABILITY_ADD_CHILDS |
-	NODE_CAPABILITY_REMOVE_CHILDS |
-	NODE_CAPABILITY_SUBFOLDERS |
-	NODE_CAPABILITY_REORDER,
-	"folder",
-	NODE_TYPE_FOLDER,
-	folder_import,
-	folder_export,
-	folder_initial_load,
-	folder_load,
-	folder_save,
-	folder_unload,
-	folder_reset_update_counter,
-	folder_request_update,
-	folder_request_auto_update,
-	folder_remove,
-	folder_mark_all_read,
-	folder_render,
-	ui_folder_add,
-	ui_folder_properties
-};
+nodeTypePtr folder_get_node_type(void) { 
 
-nodeTypePtr folder_get_node_type(void) { return &fnti; }
+	static struct nodeType fnti = {
+		NODE_CAPABILITY_ADD_CHILDS |
+		NODE_CAPABILITY_REMOVE_CHILDS |
+		NODE_CAPABILITY_SUBFOLDERS |
+		NODE_CAPABILITY_REORDER,
+		"folder",
+		NULL,
+		NODE_TYPE_FOLDER,
+		folder_import,
+		folder_export,
+		folder_initial_load,
+		folder_load,
+		folder_save,
+		folder_unload,
+		folder_reset_update_counter,
+		folder_request_update,
+		folder_request_auto_update,
+		folder_remove,
+		folder_mark_all_read,
+		folder_render,
+		ui_folder_add,
+		ui_folder_properties
+	};
+	fnti.icon = icons[ICON_FOLDER];
 
-/* the root node is identical to the folder type,
-   just a different node type... */
-static struct nodeType rnti = {
-	NODE_CAPABILITY_ADD_CHILDS |
-	NODE_CAPABILITY_REMOVE_CHILDS |
-	NODE_CAPABILITY_SUBFOLDERS |
-	NODE_CAPABILITY_REORDER,
-	"root",
-	NODE_TYPE_ROOT,
-	folder_import,
-	folder_export,
-	folder_initial_load,
-	folder_load,
-	folder_save,
-	folder_unload,
-	folder_reset_update_counter,
-	folder_request_update,
-	folder_request_auto_update,
-	folder_remove,
-	folder_mark_all_read,
-	folder_render,
-	ui_folder_add,
-	ui_folder_properties
-};
+	return &fnti; 
+}
 
-nodeTypePtr root_get_node_type(void) { return &rnti; }
+nodeTypePtr root_get_node_type(void) { 
+
+	/* the root node is identical to the folder type,
+	   just a different node type... */
+	static struct nodeType rnti = {
+		NODE_CAPABILITY_ADD_CHILDS |
+		NODE_CAPABILITY_REMOVE_CHILDS |
+		NODE_CAPABILITY_SUBFOLDERS |
+		NODE_CAPABILITY_REORDER,
+		"root",
+		NULL,		/* and no need for an icon */
+		NODE_TYPE_ROOT,
+		folder_import,
+		folder_export,
+		folder_initial_load,
+		folder_load,
+		folder_save,
+		folder_unload,
+		folder_reset_update_counter,
+		folder_request_update,
+		folder_request_auto_update,
+		folder_remove,
+		folder_mark_all_read,
+		folder_render,
+		ui_folder_add,
+		ui_folder_properties
+	};
+
+	return &rnti; 
+}

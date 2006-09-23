@@ -4,6 +4,7 @@ xslt_in_files = item.xml.in \
                 feed.xml.in \
                 fl_plugin.xml.in \
                 folder.xml.in \
+		newsbin.xml.in \
                 summary.xml.in \
 		vfolder.xml.in 
 

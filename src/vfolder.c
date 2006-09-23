@@ -569,24 +569,29 @@ static gchar * vfolder_render(nodePtr node) {
 	return result;
 }
 
-static struct nodeType nti = {
-	0,
-	"vfolder",
-	NODE_TYPE_VFOLDER,
-	vfolder_import,
-	vfolder_export,
-	vfolder_initial_load,
-	vfolder_load,
-	vfolder_save,
-	vfolder_unload,
-	vfolder_reset_update_counter,
-	vfolder_request_update,
-	vfolder_request_auto_update,
-	vfolder_remove,
-	vfolder_mark_all_read,
-	vfolder_render,
-	ui_vfolder_add,
-	ui_vfolder_properties
-};
+nodeTypePtr vfolder_get_node_type(void) { 
 
-nodeTypePtr vfolder_get_node_type(void) { return &nti; }
+	static struct nodeType nti = {
+		0,
+		"vfolder",
+		NULL,
+		NODE_TYPE_VFOLDER,
+		vfolder_import,
+		vfolder_export,
+		vfolder_initial_load,
+		vfolder_load,
+		vfolder_save,
+		vfolder_unload,
+		vfolder_reset_update_counter,
+		vfolder_request_update,
+		vfolder_request_auto_update,
+		vfolder_remove,
+		vfolder_mark_all_read,
+		vfolder_render,
+		ui_vfolder_add,
+		ui_vfolder_properties
+	};
+	nti.icon = icons[ICON_VFOLDER];
+
+	return &nti; 
+}

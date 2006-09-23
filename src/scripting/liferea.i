@@ -2,6 +2,7 @@
 %{
 #include "../node.h"
 #include "../feed.h"
+#include "../feedlist.h"
 #include "../item.h"
 #include "../itemlist.h" 
 

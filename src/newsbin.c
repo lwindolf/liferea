@@ -23,15 +23,24 @@
 #include "feedlist.h"
 #include "interface.h"
 #include "newsbin.h"
+#include "render.h"
 #include "support.h"
 #include "ui/ui_feedlist.h"
+#include "ui/ui_node.h"
 
 static GtkWidget *newnewsbindialog = NULL;
 static GtkWidget *newsbinnamedialog = NULL;
 
 static gchar * newsbin_render(nodePtr node) {
-g_warning("newsbin_render()");
-	return g_strdup("FIXME");
+	gchar		**params = NULL, *output = NULL;
+	xmlDocPtr	doc;
+
+	doc = feed_to_xml(node, NULL, TRUE);
+	params = render_add_parameter(params, "pixmapsDir='file://" PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "'");
+	output = render_xml(doc, "newsbin", params);
+	xmlFree(doc);
+
+	return output;
 }
 
 static void ui_newsbin_add(nodePtr parent) {
@@ -68,35 +77,49 @@ static void ui_newsbin_properties(nodePtr node) {
 
 	nameentry = lookup_widget(newsbinnamedialog, "nameentry");
 	gtk_entry_set_text(GTK_ENTRY(nameentry), node_get_title(node));
+	gtk_object_set_data(GTK_OBJECT(newsbinnamedialog), "node", node);
 		
 	gtk_widget_show(newsbinnamedialog);
+}
+
+void on_newsbinnamechange_clicked(GtkButton *button, gpointer user_data) {
+	nodePtr	node;
+
+	node = (nodePtr)gtk_object_get_data(GTK_OBJECT(newsbinnamedialog), "node");
+	node->needsCacheSave = TRUE;
+	node_set_title(node, (gchar *)gtk_entry_get_text(GTK_ENTRY(lookup_widget(newsbinnamedialog, "nameentry"))));
+	ui_node_update(node);
+	feedlist_schedule_save();
 }
 
 void newsbin_request_auto_update_dummy(nodePtr node) { }
 void newsbin_request_update_dummy(nodePtr node, guint flags) { }
 
 nodeTypePtr newsbin_get_node_type(void) {
-	nodeTypePtr	nodeType;
+	static nodeTypePtr	nodeType;
 
-	/* derive the plugin node type from the folder node type */
-	nodeType = (nodeTypePtr)g_new0(struct nodeType, 1);
-	nodeType->capabilities		= NODE_CAPABILITY_RECEIVE_ITEMS;
-	nodeType->id			= "newsbin";
-	nodeType->type			= NODE_TYPE_NEWSBIN;
-	nodeType->import		= feed_get_node_type()->import;
-	nodeType->export		= feed_get_node_type()->export;
-	nodeType->initial_load		= feed_get_node_type()->initial_load;
-	nodeType->load			= feed_get_node_type()->load;
-	nodeType->save			= feed_get_node_type()->save;
-	nodeType->unload		= feed_get_node_type()->unload;
-	nodeType->reset_update_counter	= feed_get_node_type()->reset_update_counter;
-	nodeType->request_update	= newsbin_request_update_dummy;
-	nodeType->request_auto_update	= newsbin_request_auto_update_dummy;
-	nodeType->remove		= feed_get_node_type()->remove;
-	nodeType->mark_all_read		= feed_get_node_type()->mark_all_read;
-	nodeType->render		= newsbin_render;
-	nodeType->request_add		= ui_newsbin_add;
-	nodeType->request_properties	= ui_newsbin_properties;
+	if(!nodeType) {
+		/* derive the plugin node type from the folder node type */
+		nodeType = (nodeTypePtr)g_new0(struct nodeType, 1);
+		nodeType->capabilities		= NODE_CAPABILITY_RECEIVE_ITEMS;
+		nodeType->id			= "newsbin";
+		nodeType->icon			= icons[ICON_NEWSBIN];
+		nodeType->type			= NODE_TYPE_NEWSBIN;
+		nodeType->import		= feed_get_node_type()->import;
+		nodeType->export		= feed_get_node_type()->export;
+		nodeType->initial_load		= feed_get_node_type()->initial_load;
+		nodeType->load			= feed_get_node_type()->load;
+		nodeType->save			= feed_get_node_type()->save;
+		nodeType->unload		= feed_get_node_type()->unload;
+		nodeType->reset_update_counter	= feed_get_node_type()->reset_update_counter;
+		nodeType->request_update	= newsbin_request_update_dummy;
+		nodeType->request_auto_update	= newsbin_request_auto_update_dummy;
+		nodeType->remove		= feed_get_node_type()->remove;
+		nodeType->mark_all_read		= feed_get_node_type()->mark_all_read;
+		nodeType->render		= newsbin_render;
+		nodeType->request_add		= ui_newsbin_add;
+		nodeType->request_properties	= ui_newsbin_properties;
+	}
 
 	return nodeType; 
 }
