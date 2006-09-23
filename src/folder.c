@@ -22,11 +22,37 @@
 #include "common.h"
 #include "conf.h"
 #include "debug.h"
+#include "export.h"
 #include "render.h"
 #include "support.h"
 #include "ui/ui_folder.h"
 #include "ui/ui_node.h"
 #include "fl_sources/node_source.h"
+
+static void folder_import(nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean trusted) {
+	
+	node_set_data(node, NULL);
+	node_add_child(parent, node, -1);
+	
+	cur = cur->xmlChildrenNode;
+	while(cur) {
+		if((!xmlStrcmp(cur->name, BAD_CAST"outline")))
+		import_parse_outline(cur, node, node->source, trusted);
+		cur = cur->next;				
+	}
+}
+
+static void folder_export(nodePtr node, xmlNodePtr cur, gboolean trusted) {
+	
+	if(trusted) {
+		if(ui_node_is_folder_expanded(node))
+			xmlNewProp(cur, BAD_CAST"expanded", BAD_CAST"true");
+		else
+			xmlNewProp(cur, BAD_CAST"collapsed", BAD_CAST"true");
+	}
+
+	export_node_children(node, cur, trusted);
+}
 
 static void folder_initial_load(nodePtr node) {
 	node_foreach_child(node, node_initial_load);
@@ -129,11 +155,15 @@ static gchar * folder_render(nodePtr node) {
 	return result;
 }
 
-static struct nodeType nti = {
+static struct nodeType fnti = {
 	NODE_CAPABILITY_ADD_CHILDS |
 	NODE_CAPABILITY_REMOVE_CHILDS |
 	NODE_CAPABILITY_SUBFOLDERS |
 	NODE_CAPABILITY_REORDER,
+	"folder",
+	NODE_TYPE_FOLDER,
+	folder_import,
+	folder_export,
 	folder_initial_load,
 	folder_load,
 	folder_save,
@@ -148,4 +178,31 @@ static struct nodeType nti = {
 	ui_folder_properties
 };
 
-nodeTypePtr folder_get_node_type(void) { return &nti; }
+nodeTypePtr folder_get_node_type(void) { return &fnti; }
+
+/* the root node is identical to the folder type,
+   just a different node type... */
+static struct nodeType rnti = {
+	NODE_CAPABILITY_ADD_CHILDS |
+	NODE_CAPABILITY_REMOVE_CHILDS |
+	NODE_CAPABILITY_SUBFOLDERS |
+	NODE_CAPABILITY_REORDER,
+	"root",
+	NODE_TYPE_ROOT,
+	folder_import,
+	folder_export,
+	folder_initial_load,
+	folder_load,
+	folder_save,
+	folder_unload,
+	folder_reset_update_counter,
+	folder_request_update,
+	folder_request_auto_update,
+	folder_remove,
+	folder_mark_all_read,
+	folder_render,
+	ui_folder_add,
+	ui_folder_properties
+};
+
+nodeTypePtr root_get_node_type(void) { return &rnti; }

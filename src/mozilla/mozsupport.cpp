@@ -46,8 +46,8 @@
 #include "necko/nsNetCID.h"
 
 extern "C" {
-#include "../callbacks.h"
-#include "../conf.h"
+#include "conf.h"
+#include "ui/ui_itemlist.h"
 }
 
 extern "C" 

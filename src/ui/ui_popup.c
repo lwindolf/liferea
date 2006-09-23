@@ -221,6 +221,10 @@ static void ui_popup_add_source(gpointer callback_data, guint callback_action, G
 	node_request_interactive_add(NODE_TYPE_SOURCE);
 }
 
+static void ui_popup_add_newsbin(gpointer callback_data, guint callback_action, GtkWidget *widget) {
+	node_request_interactive_add(NODE_TYPE_NEWSBIN);
+}
+
 static void ui_popup_properties(gpointer callback_data, guint callback_action, GtkWidget *widget) {
 	node_request_properties((nodePtr)callback_data);
 }
@@ -253,6 +257,7 @@ static GtkMenu *ui_popup_node_menu(nodePtr node, gboolean validSelection) {
 		addPopupOption(&menu_items, &menu_len, _("/_New/New _Folder..."),	NULL, ui_popup_add_folder, 	0, NULL, 0);
 		addPopupOption(&menu_items, &menu_len, _("/_New/New S_earch Folder..."),NULL, ui_popup_add_vfolder,	0, NULL, 0);
 		addPopupOption(&menu_items, &menu_len, _("/_New/New S_ource..."), 	NULL, ui_popup_add_source, 	0, NULL, 0);
+		addPopupOption(&menu_items, &menu_len, _("/_New/New _News Bin..."), 	NULL, ui_popup_add_newsbin, 	0, NULL, 0);
 	}
 
 	if(validSelection) {

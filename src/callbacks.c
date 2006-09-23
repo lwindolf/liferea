@@ -132,3 +132,12 @@ void on_faq_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	ui_tabs_new(filename, _("FAQ"), TRUE);
 	g_free(filename);
 }
+
+
+void
+on_newsbinnamechange_clicked           (GtkButton       *button,
+                                        gpointer         user_data)
+{
+
+}
+

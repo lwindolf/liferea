@@ -25,7 +25,7 @@
 
 #include <gtk/gtk.h>
 #include <time.h>
-#include "feed.h"
+#include "item.h"
 
 /** Enumeration of the columns in the itemstore. */
 enum is_columns {

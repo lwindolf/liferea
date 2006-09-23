@@ -33,6 +33,7 @@
    user interaction to the feed list node type implementation
    and allows the implementation to change the nodes state. */
 
+// FIXME: remove node type ids and use capabilities instead
 /** node types (also used for feed list tree store) */
 enum {
 	NODE_TYPE_INVALID 	= 0,		/**< invalid type */
@@ -40,8 +41,9 @@ enum {
 	NODE_TYPE_ROOT		= 2,		/**< the feed list root node type */
 
 	NODE_TYPE_VFOLDER 	= 9,		/**< special type for VFolders */
-	NODE_TYPE_FEED		= 10,		/**< any type of feed */
-	NODE_TYPE_SOURCE	= 11		/**< feed list source root node */
+	NODE_TYPE_FEED		= 10,		/**< any type of feed node */
+	NODE_TYPE_SOURCE	= 11,		/**< feed list source root node */
+	NODE_TYPE_NEWSBIN	= 12		/**< news bin node */
 };
 
 /** generic feed list node structure */
@@ -69,6 +71,7 @@ typedef struct node {
 	guint			loaded;		/**< counter which is non-zero if items are to be kept in memory */
 	gboolean		available;	/**< availability of this node (usually the last downloading state) */
 	gboolean		needsCacheSave;	/**< flag set when the feed's cache needs to be resaved */
+	gboolean		expanded;	/**< expansion state (for nodes with childs) */
 
 	/* item list state properties of this node */
 	itemSetPtr	itemSet;	/**< The set of items belonging to this node */
@@ -83,14 +86,20 @@ enum {
 	NODE_CAPABILITY_REMOVE_CHILDS	= (1<<1),	/**< allows removing it's childs */
 	NODE_CAPABILITY_SUBFOLDERS	= (1<<2),	/**< allows creating/removing sub folders */
 	NODE_CAPABILITY_REMOVE_ITEMS	= (1<<3),	/**< allows removing of single items */
-	NODE_CAPABILITY_REORDER		= (1<<4)	/**< allows DnD to reorder childs */
+	NODE_CAPABILITY_RECEIVE_ITEMS	= (1<<4),	/**< is a DnD target for item copies */
+	NODE_CAPABILITY_REORDER		= (1<<5)	/**< allows DnD to reorder childs */
 };
 
 /** node type interface */
 typedef struct nodeType {
-	gulong	capabilities;	/**< bitmask of node type capabilities */
+	gulong		capabilities;	/**< bitmask of node type capabilities */
+	gchar		*id;		/**< type id (used for type attribute in OPML export) */
+	guint		type;		/**< numeric node type */
 	
-	/* For method documentation see the wrappers defined below! */
+	/* For method documentation see the wrappers defined below! 
+	   All methods are mandatory for each node type. */
+	void    (*import)		(nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean trusted);
+	void    (*export)		(nodePtr node, xmlNodePtr cur, gboolean trusted);
 	void	(*initial_load)		(nodePtr node);
 	void	(*load)			(nodePtr node);
 	void 	(*save)			(nodePtr node);
@@ -112,9 +121,8 @@ typedef struct nodeType {
  * plugins to register own node types.
  *
  * @param nodeType	node type info 
- * @param type		node type constant
  */
-void node_type_register(nodeTypePtr nodeType, guint type);
+void node_type_register(nodeTypePtr nodeType);
  
 /**
  * Creates a new node structure.
@@ -163,13 +171,20 @@ void node_request_automatic_add(const gchar *source, const gchar *title, const g
 void node_request_remove(nodePtr node);
 
 /**
+ * Changes the node type.
+ *
+ * @param node	the node
+ * @param type	the new type
+ */
+void node_set_type(nodePtr node, nodeTypePtr type);
+
+/**
  * Attaches a data structure to the given node.
  *
  * @param node 	the node to attach to
- * @param type	the structure type
  * @param data	the structure
  */
-void node_add_data(nodePtr node, guint type, gpointer data);
+void node_set_data(nodePtr node, gpointer data);
 
 /**
  * Determines wether node1 is an ancestor of node2
@@ -285,6 +300,7 @@ void node_set_id(nodePtr node, const gchar *id);
  * it maps to the feed type string.
  *
  * @param node	the node 
+ *
  * @returns type string (or NULL if unknown)
  */
 const gchar *node_type_to_str(nodePtr node);
@@ -292,10 +308,11 @@ const gchar *node_type_to_str(nodePtr node);
 /** 
  * Maps node type string to type constant.
  *
- * @param type string	the node type as string
- * @returns node type constant
+ * @param type str	the node type as string
+ *
+ * @returns node type
  */
-guint node_str_to_type(const gchar *str);
+nodeTypePtr node_str_to_type(const gchar *str);
 
 /** 
  * Frees a given node structure.
@@ -310,6 +327,28 @@ void node_free(nodePtr node);
  * @param node	node to update
  */
 void node_update_counters(nodePtr node);
+
+/**
+ * Do import for the given node and import it as a child of 
+ * the given parent node. Used by import_parse_outline() to
+ * do node specific import.
+ *
+ * @param node		the node to import
+ * @param parent	its parent node
+ * @param cur		outline XML node with attributes
+ * @param trusted	set to TRUE if the feedlist is being imported from a trusted source
+ */
+void node_import(nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean trusted);
+
+/**
+ * Do export the given node Used by export_OPML_feedlist() to
+ * do node specific export.
+ *
+ * @param node		the node to import
+ * @param cur		outline XML node with attributes
+ * @param trusted	set to TRUE if the feedlist is being imported from a trusted source
+ */
+void node_export(nodePtr node, xmlNodePtr cur, gboolean trusted);
 
 /**
  * Initially loads the given node from cache.

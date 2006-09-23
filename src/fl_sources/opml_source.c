@@ -30,6 +30,7 @@
 #include "debug.h"
 #include "feed.h"
 #include "feedlist.h"
+#include "folder.h"
 #include "node.h"
 #include "export.h"
 #include "ui/ui_feedlist.h"
@@ -131,10 +132,12 @@ static void opml_source_merge_feed(xmlNodePtr match, gpointer user_data) {
 		debug2(DEBUG_UPDATE, "adding %s (%s)\n", title, url);
 		node = node_new();
 		node_set_title(node, title);
-		if(url)
-			node_add_data(node, NODE_TYPE_FEED, feed_new(url, NULL, NULL));
-		else
-			node_add_data(node, NODE_TYPE_FOLDER, NULL);
+		if(url) {
+			node_set_type(node, feed_get_node_type());
+			node_set_data(node, feed_new(url, NULL, NULL));
+		} else {
+			node_set_type(node, folder_get_node_type());
+		}
 		node_add_child(mergeCtxt->parent, node, -1);
 		node_request_update(node, FEED_REQ_RESET_TITLE);
 	}		
@@ -286,7 +289,7 @@ void opml_source_setup(nodePtr parent, nodePtr node) {
 
 	node->icon = create_pixbuf("fl_opml.png");
 	
-	node_add_data(node, NODE_TYPE_SOURCE, NULL);
+	node_set_type(node, node_source_get_node_type());
 	if(parent) {
 		gint pos;
 		ui_feedlist_get_target_folder(&pos);

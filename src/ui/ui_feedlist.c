@@ -322,6 +322,11 @@ void on_new_plugin_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	node_request_interactive_add(NODE_TYPE_SOURCE);
 }
 
+void on_new_newsbin_activate(GtkMenuItem *menuitem, gpointer user_data) {
+
+	node_request_interactive_add(NODE_TYPE_NEWSBIN);
+}
+
 void on_menu_folder_new(GtkMenuItem *menuitem, gpointer user_data) {
 
 	node_request_interactive_add(NODE_TYPE_FOLDER);

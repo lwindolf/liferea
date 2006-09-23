@@ -97,6 +97,9 @@ void on_menu_folder_new(GtkMenuItem *menuitem, gpointer user_data);
 /** New plugin menu creating callback */
 void on_new_plugin_activate(GtkMenuItem *menuitem, gpointer user_data);
 
+/** New newsbin menu creating callback */
+void on_new_newsbin_activate(GtkMenuItem *menuitem, gpointer user_data);
+
 /*@}*/
 
 #endif

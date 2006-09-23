@@ -38,6 +38,7 @@
 #include "export.h"
 #include "itemlist.h"
 #include "feedlist.h"
+#include "newsbin.h"
 
 /* icon constants */
 enum icons {
@@ -115,3 +116,8 @@ void
 on_faq_activate                        (GtkMenuItem     *menuitem,
                                         gpointer         user_data);
 #endif
+
+
+void
+on_newsbinnamechange_clicked           (GtkButton       *button,
+                                        gpointer         user_data);

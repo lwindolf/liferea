@@ -156,7 +156,7 @@ static int parse_integer(gchar *str, int def) {
 	return num;
 }
 
-gpointer feed_import(nodePtr node, const gchar *typeStr, xmlNodePtr cur, gboolean trusted) {
+static void feed_import(nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean trusted) {
 	gchar		*cacheLimitStr, *filter, *intervalStr, *title; 
 	gchar		*htmlUrlStr, *source, *tmp; 
 	feedPtr		feed = NULL;
@@ -167,8 +167,11 @@ gpointer feed_import(nodePtr node, const gchar *typeStr, xmlNodePtr cur, gboolea
 		source = xmlGetProp(cur, BAD_CAST"xmlurl");	/* e.g. for AmphetaDesk */
 		
 	if(source) {
+		xmlChar	*typeStr = xmlGetProp(cur, BAD_CAST"type");
+		
 		feed = feed_new(NULL, NULL, NULL);
 		feed->fhp = feed_type_str_to_fhp(typeStr);
+		xmlFree(typeStr);
 
 		if(!trusted && source[0] == '|') {
 			/* FIXME: Display warning dialog asking if the command
@@ -258,14 +261,16 @@ gpointer feed_import(nodePtr node, const gchar *typeStr, xmlNodePtr cur, gboolea
 		       typeStr, 
 		       feed_get_update_interval(feed), 
 		       feed->updateState->lastPoll.tv_sec);
+
+		node_set_data(node, feed);
+		node_add_child(parent, node, -1);
 	}
 
 	debug_exit("feed_import");
-
-	return (gpointer)feed;
 }
 
-void feed_export(feedPtr feed, xmlNodePtr cur, gboolean internal) {
+static void feed_export(nodePtr node, xmlNodePtr cur, gboolean trusted) {
+	feedPtr feed = (feedPtr)node->data;
 
 	debug_enter("feed_export");
 
@@ -281,7 +286,7 @@ void feed_export(feedPtr feed, xmlNodePtr cur, gboolean internal) {
 	if(feed_get_filter(feed))
 		xmlNewProp(cur, BAD_CAST"filtercmd", BAD_CAST feed_get_filter(feed));
 
-	if(internal) {
+	if(trusted) {
 		xmlNewProp(cur, BAD_CAST"updateInterval", BAD_CAST interval);
 		
 		if(feed->cacheLimit >= 0)
@@ -1403,6 +1408,10 @@ static gchar * feed_render(nodePtr node) {
 
 static struct nodeType nti = {
 	0,
+	"feed",	/* not used, feed format ids are used instead */
+	NODE_TYPE_FEED,
+	feed_import,
+	feed_export,
 	feed_initial_load,
 	feed_load,
 	feed_save,

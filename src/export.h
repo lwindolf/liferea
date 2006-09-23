@@ -40,6 +40,17 @@
 gboolean export_OPML_feedlist(const gchar *filename, nodePtr node, gboolean internal);
 
 /**
+ * Exports the given node children by calling their node type
+ * specific export methods to add outline tags to the given
+ * XML node.
+ *
+ * @param parentNode	the parent node
+ * @param cur		the outline XML node
+ * @param nodeSource	the node source
+ */
+void export_node_children(nodePtr node, xmlNodePtr cur, gboolean trusted);
+
+/**
  * Reads an OPML file and inserts it into the feedlist.
  *
  * @param filename	path to file that will be read for importing
@@ -51,6 +62,17 @@ gboolean export_OPML_feedlist(const gchar *filename, nodePtr node, gboolean inte
  * @returns TRUE on success
  */
 gboolean import_OPML_feedlist(const gchar *filename, nodePtr parentNode, nodeSourcePtr nodeSource, gboolean showErrors, gboolean trusted);
+
+/**
+ * Parses the given outline XML node and depending on the
+ * node type attribute calls the node specific import method.
+ *
+ * @param cur		the outline XML node
+ * @param parentNode	the parent node
+ * @param nodeSource	the node source
+ * @param trusted	set to TRUE if the feedlist is being imported from a trusted source
+ */
+void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, nodeSourcePtr nodeSource, gboolean trusted);
 
 /* GUI dialog callbacks */
 

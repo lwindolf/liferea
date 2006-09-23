@@ -1,5 +1,5 @@
 /**
- * @file folder.h feed list and plugin callbacks for folders
+ * @file newsbin.h  news bin node type implementation
  * 
  * Copyright (C) 2006 Lars Lindner <lars.lindner@gmx.net>
  *
@@ -18,19 +18,18 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _FOLDER_H
-#define _FOLDER_H
+#ifndef _NEWSBIN_H
+#define _NEWSBIN_H
 
 #include "node.h"
 
-/**
- * Returns the implementation of the folder node type.
+/** 
+ * Returns the news bin node type implementation.
  */
-nodeTypePtr folder_get_node_type(void);
+nodeTypePtr newsbin_get_node_type(void);
 
-/**
- * Returns the implementation of the root node type.
- */
-nodeTypePtr root_get_node_type(void);
+/* UI callbacks */
+
+void on_newnewsbinbtn_clicked(GtkButton *button, gpointer user_data);
 
 #endif

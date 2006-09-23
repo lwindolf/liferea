@@ -2507,7 +2507,7 @@ create_foldernamedialog (void)
   gtk_box_pack_start (GTK_BOX (dialog_vbox7), hbox13, FALSE, FALSE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (hbox13), 5);
 
-  label23 = gtk_label_new_with_mnemonic (_("_Folder name:"));
+  label23 = gtk_label_new_with_mnemonic (_("_Folder Name:"));
   gtk_widget_show (label23);
   gtk_box_pack_start (GTK_BOX (hbox13), label23, FALSE, FALSE, 0);
 
@@ -2536,9 +2536,13 @@ create_foldernamedialog (void)
   g_signal_connect_swapped ((gpointer) cancelbutton1, "clicked",
                             G_CALLBACK (gtk_widget_hide),
                             GTK_OBJECT (foldernamedialog));
-  g_signal_connect ((gpointer) foldernamechangebtn, "clicked",
-                    G_CALLBACK (on_foldernamechangebtn_clicked),
-                    NULL);
+  g_signal_connect_swapped ((gpointer) foldernamechangebtn, "clicked",
+                            G_CALLBACK (on_foldernamechangebtn_clicked),
+                            GTK_OBJECT (foldernamedialog));
+  g_signal_connect_data ((gpointer) foldernamechangebtn, "clicked",
+                         G_CALLBACK (gtk_widget_hide),
+                         GTK_OBJECT (foldernamedialog),
+                         NULL, G_CONNECT_AFTER | G_CONNECT_SWAPPED);
 
   gtk_label_set_mnemonic_widget (GTK_LABEL (label23), foldernameentry);
 
@@ -2779,7 +2783,7 @@ create_aboutdialog (void)
   gtk_container_add (GTK_CONTAINER (scrolledwindow6), viewport2);
   gtk_viewport_set_shadow_type (GTK_VIEWPORT (viewport2), GTK_SHADOW_NONE);
 
-  label61 = gtk_label_new ("Tibor Pittich <Tibor.Pittich@phuture.sk>\nAntoine REVERSAT <areversat@TUXFAMILY.ORG>\nVincent Lefevre <vincent@vinc17.org>\nStephane Jourdan <stephane.jourdan@itris.fr>\nTakeshi AIHANA <aihana@gnome.gr.jp>\nPark Ji-In <mithrandir@electrang.net>\nCarlos Fenollosa <topopardo@humorfreak.com>\nJose Maria Mateos <chema@chema.homelinux.org>\nEnrico Genauck <enrico@fanglomerat.de>\nVladimir Petkov <vpetkov@i-space.org>\nTomislav Markovski <tome@set.com.mk>\nDario Conigliaro <djdas@djdas.net>\nRex Tsai <chihchun@users.sourceforge.net>\nAlekseev Vladimir <compress@linux-online.ru>\nJuraj Kubelka <Juraj.Kubelka@email.cz>\nMartin-Eric Racine <q-funk@pp.fishpool.fi>\nJakub W. J\303\263\305\272wicki <jakubj@users.sourceforge.net>\nPauli Virtanen <pauli.virtanen@hut.fi>\nFernando Ike <fernando@ikenet.com.br>\nSpoial\304\203 Cristian <scristian@gmail.com>\nJim Huang <jserv@kaffe.org>\nGuanglei Xiong <xgl99@mails.tsinghua.edu.cn>\nSigge Kotliar <sigge@hystrix.se>");
+  label61 = gtk_label_new ("Tibor Pittich <Tibor.Pittich@phuture.sk>\nAntoine REVERSAT <areversat@TUXFAMILY.ORG>\nVincent Lefevre <vincent@vinc17.org>\nStephane Jourdan <stephane.jourdan@itris.fr>\nTakeshi AIHANA <aihana@gnome.gr.jp>\nPark Ji-In <mithrandir@electrang.net>\nCarlos Fenollosa <topopardo@humorfreak.com>\nJose Maria Mateos <chema@chema.homelinux.org>\nEnrico Genauck <enrico@fanglomerat.de>\nVladimir Petkov <vpetkov@i-space.org>\nTomislav Markovski <tome@set.com.mk>\nDario Conigliaro <djdas@djdas.net>\nRex Tsai <chihchun@users.sourceforge.net>\nAlekseev Vladimir <compress@linux-online.ru>\nJuraj Kubelka <Juraj.Kubelka@email.cz>\nMartin-Eric Racine <q-funk@pp.fishpool.fi>\nJakub W. Jóźwicki <jakubj@users.sourceforge.net>\nPauli Virtanen <pauli.virtanen@hut.fi>\nFernando Ike <fernando@ikenet.com.br>\nSpoial�\203 Cristian <scristian@gmail.com>\nJim Huang <jserv@kaffe.org>\nGuanglei Xiong <xgl99@mails.tsinghua.edu.cn>\nSigge Kotliar <sigge@hystrix.se>");
   gtk_widget_show (label61);
   gtk_container_add (GTK_CONTAINER (viewport2), label61);
   gtk_misc_set_alignment (GTK_MISC (label61), 0, 0.1);
@@ -3889,5 +3893,157 @@ create_scriptadddialog (void)
   GLADE_HOOKUP_OBJECT (scriptadddialog, button8, "button8");
 
   return scriptadddialog;
+}
+
+GtkWidget*
+create_newnewsbindialog (void)
+{
+  GtkWidget *newnewsbindialog;
+  GtkWidget *dialog_vbox22;
+  GtkWidget *vbox2627;
+  GtkWidget *hbox92243;
+  GtkWidget *label250;
+  GtkWidget *nameentry;
+  GtkWidget *dialog_action_area22;
+  GtkWidget *cancelbutton6;
+  GtkWidget *newnewsbinbtn;
+
+  newnewsbindialog = gtk_dialog_new ();
+  gtk_window_set_title (GTK_WINDOW (newnewsbindialog), _("Create News Bin"));
+  gtk_window_set_type_hint (GTK_WINDOW (newnewsbindialog), GDK_WINDOW_TYPE_HINT_DIALOG);
+
+  dialog_vbox22 = GTK_DIALOG (newnewsbindialog)->vbox;
+  gtk_widget_show (dialog_vbox22);
+
+  vbox2627 = gtk_vbox_new (FALSE, 0);
+  gtk_widget_show (vbox2627);
+  gtk_box_pack_start (GTK_BOX (dialog_vbox22), vbox2627, TRUE, TRUE, 0);
+
+  hbox92243 = gtk_hbox_new (FALSE, 12);
+  gtk_widget_show (hbox92243);
+  gtk_box_pack_start (GTK_BOX (vbox2627), hbox92243, TRUE, TRUE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (hbox92243), 5);
+
+  label250 = gtk_label_new_with_mnemonic (_("_News Bin Name:"));
+  gtk_widget_show (label250);
+  gtk_box_pack_start (GTK_BOX (hbox92243), label250, FALSE, FALSE, 0);
+
+  nameentry = gtk_entry_new ();
+  gtk_widget_show (nameentry);
+  gtk_box_pack_start (GTK_BOX (hbox92243), nameentry, TRUE, TRUE, 0);
+  gtk_entry_set_activates_default (GTK_ENTRY (nameentry), TRUE);
+
+  dialog_action_area22 = GTK_DIALOG (newnewsbindialog)->action_area;
+  gtk_widget_show (dialog_action_area22);
+  gtk_button_box_set_layout (GTK_BUTTON_BOX (dialog_action_area22), GTK_BUTTONBOX_END);
+
+  cancelbutton6 = gtk_button_new_from_stock ("gtk-cancel");
+  gtk_widget_show (cancelbutton6);
+  gtk_dialog_add_action_widget (GTK_DIALOG (newnewsbindialog), cancelbutton6, GTK_RESPONSE_CANCEL);
+  GTK_WIDGET_SET_FLAGS (cancelbutton6, GTK_CAN_DEFAULT);
+
+  newnewsbinbtn = gtk_button_new_from_stock ("gtk-ok");
+  gtk_widget_show (newnewsbinbtn);
+  gtk_dialog_add_action_widget (GTK_DIALOG (newnewsbindialog), newnewsbinbtn, GTK_RESPONSE_OK);
+  GTK_WIDGET_SET_FLAGS (newnewsbinbtn, GTK_CAN_DEFAULT);
+
+  g_signal_connect_swapped ((gpointer) cancelbutton6, "clicked",
+                            G_CALLBACK (gtk_widget_hide),
+                            GTK_OBJECT (newnewsbindialog));
+  g_signal_connect_swapped ((gpointer) newnewsbinbtn, "clicked",
+                            G_CALLBACK (on_newnewsbinbtn_clicked),
+                            GTK_OBJECT (newnewsbindialog));
+  g_signal_connect_data ((gpointer) newnewsbinbtn, "clicked",
+                         G_CALLBACK (gtk_widget_hide),
+                         GTK_OBJECT (newnewsbindialog),
+                         NULL, G_CONNECT_AFTER | G_CONNECT_SWAPPED);
+
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label250), nameentry);
+
+  /* Store pointers to all widgets, for use by lookup_widget(). */
+  GLADE_HOOKUP_OBJECT_NO_REF (newnewsbindialog, newnewsbindialog, "newnewsbindialog");
+  GLADE_HOOKUP_OBJECT_NO_REF (newnewsbindialog, dialog_vbox22, "dialog_vbox22");
+  GLADE_HOOKUP_OBJECT (newnewsbindialog, vbox2627, "vbox2627");
+  GLADE_HOOKUP_OBJECT (newnewsbindialog, hbox92243, "hbox92243");
+  GLADE_HOOKUP_OBJECT (newnewsbindialog, label250, "label250");
+  GLADE_HOOKUP_OBJECT (newnewsbindialog, nameentry, "nameentry");
+  GLADE_HOOKUP_OBJECT_NO_REF (newnewsbindialog, dialog_action_area22, "dialog_action_area22");
+  GLADE_HOOKUP_OBJECT (newnewsbindialog, cancelbutton6, "cancelbutton6");
+  GLADE_HOOKUP_OBJECT (newnewsbindialog, newnewsbinbtn, "newnewsbinbtn");
+
+  return newnewsbindialog;
+}
+
+GtkWidget*
+create_newsbinnamedialog (void)
+{
+  GtkWidget *newsbinnamedialog;
+  GtkWidget *dialog_vbox23;
+  GtkWidget *hbox92244;
+  GtkWidget *label251;
+  GtkWidget *nameentry;
+  GtkWidget *dialog_action_area23;
+  GtkWidget *cancelbutton7;
+  GtkWidget *okbutton4;
+
+  newsbinnamedialog = gtk_dialog_new ();
+  gtk_window_set_title (GTK_WINDOW (newsbinnamedialog), _("Change News Bin Name"));
+  gtk_window_set_type_hint (GTK_WINDOW (newsbinnamedialog), GDK_WINDOW_TYPE_HINT_DIALOG);
+
+  dialog_vbox23 = GTK_DIALOG (newsbinnamedialog)->vbox;
+  gtk_widget_show (dialog_vbox23);
+
+  hbox92244 = gtk_hbox_new (FALSE, 12);
+  gtk_widget_show (hbox92244);
+  gtk_box_pack_start (GTK_BOX (dialog_vbox23), hbox92244, TRUE, TRUE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (hbox92244), 5);
+
+  label251 = gtk_label_new_with_mnemonic (_("_News Bin Name:"));
+  gtk_widget_show (label251);
+  gtk_box_pack_start (GTK_BOX (hbox92244), label251, FALSE, FALSE, 0);
+
+  nameentry = gtk_entry_new ();
+  gtk_widget_show (nameentry);
+  gtk_box_pack_start (GTK_BOX (hbox92244), nameentry, TRUE, TRUE, 0);
+  gtk_entry_set_activates_default (GTK_ENTRY (nameentry), TRUE);
+
+  dialog_action_area23 = GTK_DIALOG (newsbinnamedialog)->action_area;
+  gtk_widget_show (dialog_action_area23);
+  gtk_button_box_set_layout (GTK_BUTTON_BOX (dialog_action_area23), GTK_BUTTONBOX_END);
+
+  cancelbutton7 = gtk_button_new_from_stock ("gtk-cancel");
+  gtk_widget_show (cancelbutton7);
+  gtk_dialog_add_action_widget (GTK_DIALOG (newsbinnamedialog), cancelbutton7, GTK_RESPONSE_CANCEL);
+  GTK_WIDGET_SET_FLAGS (cancelbutton7, GTK_CAN_DEFAULT);
+
+  okbutton4 = gtk_button_new_from_stock ("gtk-ok");
+  gtk_widget_show (okbutton4);
+  gtk_dialog_add_action_widget (GTK_DIALOG (newsbinnamedialog), okbutton4, GTK_RESPONSE_OK);
+  GTK_WIDGET_SET_FLAGS (okbutton4, GTK_CAN_DEFAULT);
+
+  g_signal_connect_swapped ((gpointer) cancelbutton7, "clicked",
+                            G_CALLBACK (gtk_widget_hide),
+                            GTK_OBJECT (newsbinnamedialog));
+  g_signal_connect_swapped ((gpointer) okbutton4, "clicked",
+                            G_CALLBACK (on_newsbinnamechange_clicked),
+                            GTK_OBJECT (newsbinnamedialog));
+  g_signal_connect_data ((gpointer) okbutton4, "clicked",
+                         G_CALLBACK (gtk_widget_hide),
+                         GTK_OBJECT (newsbinnamedialog),
+                         NULL, G_CONNECT_AFTER | G_CONNECT_SWAPPED);
+
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label251), nameentry);
+
+  /* Store pointers to all widgets, for use by lookup_widget(). */
+  GLADE_HOOKUP_OBJECT_NO_REF (newsbinnamedialog, newsbinnamedialog, "newsbinnamedialog");
+  GLADE_HOOKUP_OBJECT_NO_REF (newsbinnamedialog, dialog_vbox23, "dialog_vbox23");
+  GLADE_HOOKUP_OBJECT (newsbinnamedialog, hbox92244, "hbox92244");
+  GLADE_HOOKUP_OBJECT (newsbinnamedialog, label251, "label251");
+  GLADE_HOOKUP_OBJECT (newsbinnamedialog, nameentry, "nameentry");
+  GLADE_HOOKUP_OBJECT_NO_REF (newsbinnamedialog, dialog_action_area23, "dialog_action_area23");
+  GLADE_HOOKUP_OBJECT (newsbinnamedialog, cancelbutton7, "cancelbutton7");
+  GLADE_HOOKUP_OBJECT (newsbinnamedialog, okbutton4, "okbutton4");
+
+  return newsbinnamedialog;
 }
 

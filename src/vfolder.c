@@ -57,7 +57,8 @@ vfolderPtr vfolder_new(nodePtr node) {
 	vfolders = g_slist_append(vfolders, vfolder);
 
 	node_set_title(node, _("New Search Folder"));	/* set default title */
-	node_add_data(node, NODE_TYPE_VFOLDER, (gpointer)vfolder);
+	node_set_type(node, vfolder_get_node_type());
+	node_set_data(node, (gpointer)vfolder);
 
 	itemSet = (itemSetPtr)g_new0(struct itemSet, 1); /* create empty itemset */
 	itemSet->type = ITEMSET_TYPE_VFOLDER;
@@ -103,7 +104,7 @@ static void vfolder_import_rules(xmlNodePtr cur, vfolderPtr vp) {
 	}
 }
 
-gpointer vfolder_import(nodePtr node, xmlNodePtr cur) {
+static void vfolder_import(nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean trusted) {
 	vfolderPtr vfolder;
 
 	debug_enter("vfolder_import");
@@ -114,21 +115,26 @@ gpointer vfolder_import(nodePtr node, xmlNodePtr cur) {
 	vfolders = g_slist_append(vfolders, vfolder);
 
 	debug1(DEBUG_CACHE, "import vfolder: title=%s", node_get_title(node));
+	
+	node_set_type(node, vfolder_get_node_type());
+	node_set_data(node, (gpointer)vfolder);
+	node_add_child(parent, node, -1);
 
 	debug_exit("vfolder_import");
-
-	return (gpointer)vfolder;
 }
 
-void vfolder_export(vfolderPtr vp, xmlNodePtr cur) {
+static void vfolder_export(nodePtr node, xmlNodePtr cur, gboolean trusted) {
+	vfolderPtr	vfolder = (vfolderPtr)node->data;
 	xmlNodePtr	ruleNode;
 	rulePtr		rule;
 	GSList		*iter;
 
 	debug_enter("vfolder_export");
+	
+	g_assert(TRUE == trusted);
 
-	iter = vp->rules;
-	while(NULL != iter) {
+	iter = vfolder->rules;
+	while(iter) {
 		rule = iter->data;
 		ruleNode = xmlNewChild(cur, NULL, BAD_CAST"outline", NULL);
 		xmlNewProp(ruleNode, BAD_CAST"type", BAD_CAST "rule");
@@ -565,6 +571,10 @@ static gchar * vfolder_render(nodePtr node) {
 
 static struct nodeType nti = {
 	0,
+	"vfolder",
+	NODE_TYPE_VFOLDER,
+	vfolder_import,
+	vfolder_export,
 	vfolder_initial_load,
 	vfolder_load,
 	vfolder_save,

@@ -28,6 +28,7 @@
 #include "interface.h"
 #include "callbacks.h"
 #include "debug.h"
+#include "folder.h"
 #include "ui/ui_folder.h"
 
 static GtkWidget	*newfolderdialog = NULL;
@@ -51,7 +52,7 @@ void on_newfolderbtn_clicked(GtkButton *button, gpointer user_data) {
 	/* create folder node */
 	folder = node_new();
 	node_set_title(folder, (gchar *)gtk_entry_get_text(GTK_ENTRY(lookup_widget(newfolderdialog, "foldertitleentry"))));
-	node_add_data(folder, NODE_TYPE_FOLDER, NULL);
+	node_set_type(folder, folder_get_node_type());
 
 	/* add the new folder to the model */
 	node_add_child(NULL, folder, 0);

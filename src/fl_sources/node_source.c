@@ -61,9 +61,8 @@ nodePtr node_source_setup_root(void) {
 		g_error("No root capable node source found!");
 		
 	rootNode = node_new();
+	node_set_type(rootNode, root_get_node_type());
 	rootNode->title = g_strdup("root");
-	rootNode->type = NODE_TYPE_ROOT;
-	rootNode->nodeType = folder_get_node_type();
 	rootNode->source = g_new0(struct nodeSource, 1);
 	rootNode->source->root = rootNode;
 	rootNode->source->type = type;
@@ -97,7 +96,7 @@ gboolean node_source_type_register(nodeSourceTypePtr type) {
 	return TRUE;
 }
 
-void node_source_import(nodePtr node, xmlNodePtr cur) {
+static void node_source_import(nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean trusted) {
 	nodeSourceTypePtr	type;
 	xmlChar			*typeStr = NULL;
 
@@ -106,9 +105,11 @@ void node_source_import(nodePtr node, xmlNodePtr cur) {
 	typeStr = xmlGetProp(cur, BAD_CAST"sourceType");
 	if(!typeStr)
 		typeStr = xmlGetProp(cur, BAD_CAST"pluginType"); /* for migration only */
-		
+
 	if(typeStr) {
 		debug2(DEBUG_CACHE, "creating feed list plugin instance (type=%s,id=%s)\n", typeStr, node->id);
+
+		node_add_child(parent, node, -1);
 		
 		node->available = FALSE;
 
@@ -125,7 +126,7 @@ void node_source_import(nodePtr node, xmlNodePtr cur) {
 			g_assert(NULL != type);
 			node->data = g_strdup(typeStr);
 		}
-
+		
 		node->type = NODE_TYPE_SOURCE;
 		node->available = TRUE;
 		node->source = g_new0(struct nodeSource, 1);
@@ -137,7 +138,7 @@ void node_source_import(nodePtr node, xmlNodePtr cur) {
 		
 		update_state_import(cur, node->source->updateState);
 				
-		type->source_import(node);
+		type->source_import(node);	// FIXME: pass trusted flag?
 	} else {
 		g_warning("No source type given for node \"%s\"", node_get_title(node));
 	}	
@@ -145,7 +146,7 @@ void node_source_import(nodePtr node, xmlNodePtr cur) {
 	debug_exit("node_source_import");
 }
 
-void node_source_export(nodePtr node, xmlNodePtr cur) {
+static void node_source_export(nodePtr node, xmlNodePtr cur, gboolean trusted) {
 
 	debug_enter("node_source_export");
 
@@ -295,6 +296,10 @@ nodeTypePtr node_source_get_node_type(void) {
 
 	/* derive the plugin node type from the folder node type */
 	nodeType = (nodeTypePtr)g_new0(struct nodeType, 1);
+	nodeType->id			= "source";
+	nodeType->type			= NODE_TYPE_SOURCE;
+	nodeType->import		= node_source_import;
+	nodeType->export		= node_source_export;
 	nodeType->initial_load		= folder_get_node_type()->initial_load;
 	nodeType->load			= folder_get_node_type()->load;
 	nodeType->save			= node_source_save;

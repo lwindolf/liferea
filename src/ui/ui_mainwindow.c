@@ -481,9 +481,6 @@ void ui_mainwindow_init(int mainwindowState) {
 				   "If you want to use Liferea regularily please download the last "
 				   "stable version from SourceForge!"
 				   "</div>"));
-
-	g_string_append(buffer,  _("<div>An up-to-date summary of the current v1.1 progress can be found <a href=\"http://liferea.sf.net/11progress.htm\">here</a>."
-				   "</div></div>"));
 				   
 	ui_htmlview_finish_output(buffer);
 	ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer->str, NULL);
@@ -829,7 +826,8 @@ static GtkActionEntry ui_mainwindow_add_action_entries[] = {
 	 G_CALLBACK(on_menu_feed_new)},
 	{"NewFolder", "gtk-new", N_("New _Folder..."), NULL, N_("Add a folder to the feed list."), G_CALLBACK(on_menu_folder_new)},
 	{"NewVFolder", NULL, N_("New S_earch Folder..."), NULL, N_("Add a new search folder to the feed list."), G_CALLBACK(on_new_vfolder_activate)},
-	{"NewPlugin", NULL, N_("New _Source..."), NULL, N_("Adds a new feed list source."), G_CALLBACK(on_new_plugin_activate)}
+	{"NewPlugin", NULL, N_("New _Source..."), NULL, N_("Adds a new feed list source."), G_CALLBACK(on_new_plugin_activate)},
+	{"NewNewsBin", NULL, N_("New _News Bin..."), NULL, N_("Adds a new news bin."), G_CALLBACK(on_new_newsbin_activate)}
 };
 
 static GtkActionEntry ui_mainwindow_feed_action_entries[] = {
@@ -876,6 +874,7 @@ static const char *ui_mainwindow_ui_desc =
 "      <menuitem action='NewFolder'/>"
 "      <menuitem action='NewVFolder'/>"
 "      <menuitem action='NewPlugin'/>"
+"      <menuitem action='NewNewsBin'/>"
 "      <separator/>"
 "      <menuitem action='Properties'/>"
 "      <menuitem action='DeleteSelected'/>"

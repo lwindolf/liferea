@@ -146,22 +146,6 @@ nodePtr node_source_setup_root(void);
 gboolean node_source_type_register(nodeSourceTypePtr type);
 
 /**
- * Source type specific export a given source root node.
- *
- * @param node	the root node of the source to import
- * @param cur	DOM node to parse
- */
-void node_source_import(nodePtr node, xmlNodePtr cur); 
-
-/**
- * Source type specific import a given source root node.
- *
- * @param node	the root node of the source to export
- * @param cur	DOM node to write to
- */
-void node_source_export(nodePtr node, xmlNodePtr cur); 
-
-/**
  * Creates a new source and assigns it to the given new node. 
  * To be used to prepare a source node before adding it to the 
  * feed list.

@@ -154,28 +154,6 @@ void feed_init(void);
 feedPtr feed_new(const gchar *source, const gchar *filter, updateOptionsPtr options);
 
 /**
- * Feed specific feed list import parsing.
- *
- * @param node		the node to import
- * @param typeStr	feed type string
- * @param cur		DOM node to parse
- * @param trusted	allows filter scripts...
- *
- * @returns pointer to resulting feed
- */
-gpointer feed_import(nodePtr node, const gchar *typeStr, xmlNodePtr cur, gboolean trusted);
-
-/**
- * Feed specific feed list import parsing.
- *
- * @param feed		the feed to export
- * @param cur		DOM node to write to
- * @param internal	feed list saving/export flag
- * @returns pointer to resulting feed
- */
-void feed_export(feedPtr feed, xmlNodePtr cur, gboolean internal);
-
-/**
  * Serialization helper function for rendering and caching purposes.
  *
  * @param node		the feed node to serialize

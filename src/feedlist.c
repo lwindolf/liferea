@@ -23,6 +23,7 @@
 #include "support.h"
 #include "feed.h"
 #include "feedlist.h"
+#include "newsbin.h"
 #include "node.h"
 #include "folder.h"
 #include "vfolder.h"
@@ -342,11 +343,12 @@ void feedlist_init(void) {
 	debug_enter("feedlist_init");
 	
 	/* 1. Register standard node and source types */
-	node_type_register(feed_get_node_type(), NODE_TYPE_FEED);
-	node_type_register(folder_get_node_type(), NODE_TYPE_ROOT);
-	node_type_register(folder_get_node_type(), NODE_TYPE_FOLDER);
-	node_type_register(vfolder_get_node_type(), NODE_TYPE_VFOLDER);
-	node_type_register(node_source_get_node_type(), NODE_TYPE_SOURCE);
+	node_type_register(feed_get_node_type());
+	node_type_register(root_get_node_type());
+	node_type_register(folder_get_node_type());
+	node_type_register(vfolder_get_node_type());
+	node_type_register(node_source_get_node_type());
+	node_type_register(newsbin_get_node_type());
 	
 	node_source_type_register(default_source_get_type());
 	node_source_type_register(dummy_source_get_type());

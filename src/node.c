@@ -34,14 +34,29 @@
 #include "support.h"
 #include "fl_sources/node_source.h"
 
-static GHashTable *nodeTypes = NULL;
+static GSList *nodeTypes = NULL;
 
-void node_type_register(nodeTypePtr nodeType, guint type) {
+void node_type_register(nodeTypePtr nodeType) {
 
-	if(!nodeTypes)
-		nodeTypes = g_hash_table_new(NULL, NULL);
-
-	g_hash_table_insert(nodeTypes, GUINT_TO_POINTER(type), (gpointer)nodeType);
+	/* all attributes and methods are mandatory! */
+	g_assert(nodeType->id);
+	g_assert(0 != nodeType->type);
+	g_assert(nodeType->import);
+	g_assert(nodeType->export);
+	g_assert(nodeType->initial_load);
+	g_assert(nodeType->load);
+	g_assert(nodeType->save);
+	g_assert(nodeType->unload);
+	g_assert(nodeType->reset_update_counter);
+	g_assert(nodeType->request_update);
+	g_assert(nodeType->request_auto_update);
+	g_assert(nodeType->remove);
+	g_assert(nodeType->mark_all_read);
+	g_assert(nodeType->render);
+	g_assert(nodeType->request_add);
+	g_assert(nodeType->request_properties);
+	
+	nodeTypes = g_slist_append(nodeTypes, (gpointer)nodeType);
 }
 
 /* returns a unique node id */
@@ -78,20 +93,37 @@ nodePtr node_new(void) {
 	return node;
 }
 
-void node_add_data(nodePtr node, guint type, gpointer data) {
+static nodeTypePtr node_get_type_impl(guint type) {
+	GSList	*iter = nodeTypes;
+	
+	while(iter) {
+		if(type == ((nodeTypePtr)iter->data)->type)
+			return iter->data;		
+		iter = g_slist_next(iter);
+	}
+	
+	g_error("node_get_type_impl(): fatal unknown node type %u", type);
+	return NULL;
+}
+
+void node_set_type(nodePtr node, nodeTypePtr type) {
+
+	node->nodeType = type;
+	node->type = type->type;
+}
+
+void node_set_data(nodePtr node, gpointer data) {
 
 	g_assert(NULL == node->data);
+	g_assert(NULL != node->nodeType);
 
 	node->data = data;
-	node->type = type;
-	node->nodeType = g_hash_table_lookup(nodeTypes, GUINT_TO_POINTER(type));
-	g_assert(NULL != node->nodeType);
 
 	/* Vfolders are not handled by the node
 	   loading/unloading so the item set must be prepared 
 	   upon folder creation */
 
-	if(NODE_TYPE_VFOLDER == type) {
+	if(NODE_TYPE_VFOLDER == NODE_TYPE(node)->type) {
 		itemSetPtr itemSet = g_new0(struct itemSet, 1);
 		itemSet->type = ITEMSET_TYPE_VFOLDER;
 		node_set_itemset(node, itemSet);
@@ -329,41 +361,40 @@ void node_update_favicon(nodePtr node) {
 
 /* plugin and import callbacks and helper functions */
 
-const gchar *node_type_to_str(nodePtr np) {
+const gchar *node_type_to_str(nodePtr node) {
 
-	switch(np->type) {
+	switch(node->type) {
 		case NODE_TYPE_FEED:
-			g_assert(NULL != np->data);
-			return feed_type_fhp_to_str(((feedPtr)(np->data))->fhp);
+			g_assert(NULL != node->data);
+			return feed_type_fhp_to_str(((feedPtr)(node->data))->fhp);
 			break;
-		case NODE_TYPE_VFOLDER:
-			return "vfolder";
-			break;
-		case NODE_TYPE_SOURCE:
-			return "plugin";
+		default:
+			return NODE_TYPE(node)->id;
 			break;
 	}
 
 	return NULL;
 }
 
-guint node_str_to_type(const gchar *str) {
+nodeTypePtr node_str_to_type(const gchar *str) {
+	GSList	*iter = nodeTypes;
 
 	g_assert(NULL != str);
 
-	if(g_str_equal(str, "vfolder"))
-		return NODE_TYPE_VFOLDER;
-
-	if(g_str_equal(str, "plugin"))
-		return NODE_TYPE_SOURCE;
-
 	if(g_str_equal(str, ""))	/* type maybe "" if initial download is not yet done */
-		return NODE_TYPE_FEED;
+		return feed_get_node_type();
 
 	if(NULL != feed_type_str_to_fhp(str))
-		return NODE_TYPE_FEED;
+		return feed_get_node_type();
+		
+	/* check against all node types */
+	while(iter) {
+		if(g_str_equal(str, ((nodeTypePtr)iter->data)->id))
+			return (nodeTypePtr)iter->data;
+		iter = g_slist_next(iter);
+	}
 
-	return NODE_TYPE_INVALID;
+	return NULL;
 }
 
 void node_add_child(nodePtr parent, nodePtr node, gint position) {
@@ -404,13 +435,12 @@ void node_request_interactive_add(guint type) {
 	if(0 == (NODE_TYPE(parent->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS))
 		return;
 
-	nodeType = g_hash_table_lookup(nodeTypes, GUINT_TO_POINTER(type));
+	nodeType = node_get_type_impl(type);
 	nodeType->request_add(parent);
 }
 
-/* Automatic subscription adding (e.g. URL DnD), creates a new node
-   or reuses the given one and creates a new feed without any user 
-   interaction. */
+/* Automatic subscription adding (e.g. URL DnD), creates a new feed node
+   without any user interaction. */
 void node_request_automatic_add(const gchar *source, const gchar *title, const gchar *filter, updateOptionsPtr options, gint flags) {
 	nodePtr		node, parent;
 	gint		pos;
@@ -423,8 +453,9 @@ void node_request_automatic_add(const gchar *source, const gchar *title, const g
 		return;
 
 	node = node_new();
+	node_set_type(node,feed_get_node_type());
 	node_set_title(node, title?title:_("New Subscription"));
-	node_add_data(node, NODE_TYPE_FEED, feed_new(source, filter, options));
+	node_set_data(node, feed_new(source, filter, options));
 
 	ui_feedlist_get_target_folder(&pos);
 	node_add_child(parent, node, pos);
@@ -441,6 +472,14 @@ void node_request_remove(nodePtr node) {
 }
 
 /* wrapper for node type interface */
+
+void node_import(nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean trusted) {
+	NODE_TYPE(node)->import(node, parent, cur, trusted);
+}
+
+void node_export(nodePtr node, xmlNodePtr cur, gboolean trusted) {
+	NODE_TYPE(node)->export(node, cur, trusted);
+}
 
 void node_initial_load(nodePtr node) {
 	NODE_TYPE(node)->initial_load(node);
@@ -483,7 +522,7 @@ void node_request_auto_update(nodePtr node) {
 	NODE_TYPE(node)->request_auto_update(node);
 }
 
-void node_request_update (nodePtr node, guint flags) {
+void node_request_update(nodePtr node, guint flags) {
 	NODE_TYPE(node)->request_update(node, flags);
 }
 
