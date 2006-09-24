@@ -62,7 +62,7 @@ dd {
 
 /* styles for the item description (currently also used for
    the feed description) */
-table.itemhead {
+table.itemhead, table.feedhead {
 	margin:0;
 	width:100%;
 	border:0;
@@ -74,7 +74,7 @@ table.itemhead {
 	background-color:#FAA;
 }
 
-.unflagged {
+.unflagged, .feedhead {
 	background-color:#DDD;
 }
 
@@ -82,7 +82,7 @@ table.itemhead * td {
 	padding: 2px;
 }
 
-table.itemhead * a {
+table.itemhead * a, table.feedhead * a {
 	text-decoration:none;
 	color:black;
 	font-weight:bold;
