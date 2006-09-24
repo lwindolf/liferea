@@ -234,8 +234,8 @@ int main(int argc, char *argv[]) {
 	vfolder_init();			/* register vfolder rules */
 	conf_load();			/* load global feed settings */
 	script_init();			/* setup scripting if supported */
-	ui_mainwindow_init(mainwindowState);	/* setup mainwindow and initialize gconf configured GUI behaviour */
 	social_init();			/* initialized social bookmarking */
+	ui_mainwindow_init(mainwindowState);	/* setup mainwindow and initialize gconf configured GUI behaviour */
 
 #ifdef USE_SM
 	/* This must be after feedlist reading because some session

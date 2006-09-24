@@ -2,6 +2,9 @@
 
 	Version 1.1.6 (Unstable)
 
+	* Simple news bin support. You can create news
+	  bins and add items from the item list context
+	  menu. Items in news bins are kept permanently.
 	* Faster "mark all read" feature.
 
 

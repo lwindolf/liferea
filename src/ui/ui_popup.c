@@ -30,6 +30,7 @@
 #include "node.h"
 #include "support.h"
 #include "callbacks.h"
+#include "social.h"
 #include "update.h"
 #include "ui/ui_popup.h"
 #include "ui/ui_mainwindow.h"
@@ -77,42 +78,84 @@ static void addPopupOption(GtkItemFactoryEntry **menu, gint *menu_len, gchar *pa
 #define TOGGLE_WORK_OFFLINE     "/Work Offline"
 #define TOGGLE_SHOW_WINDOW      "/Show Window"
 
+/* list of dynamically allocated menu paths */
+static GSList *dynamic_menu_items = NULL;
+
+static gchar * ui_popup_create_path(gchar *fmt, ...) {
+	va_list		params;
+	gchar		*path;
+	
+	va_start(params, fmt);
+	path = g_strdup_vprintf(fmt, params);
+	va_end(params);
+	
+	dynamic_menu_items = g_slist_append(dynamic_menu_items, path);
+	return path;
+}
+
 /* prepares the popup menues */
-void ui_popup_setup_menues(void) {
+void ui_popup_update_menues(void) {
+	GSList		*iter = dynamic_menu_items;
+	gchar		*path;
+	int		i = 0;
+	
+	while(iter) {
+		g_free(iter->data);
+		iter = g_slist_next(iter);
+	}
+	g_slist_free(dynamic_menu_items);
+	dynamic_menu_items = NULL;
 
 	/* item list menues */
+	g_free(item_menu_items);
 	item_menu_items = NULL;
 	item_menu_len = 0;
 	addPopupOption(&item_menu_items, &item_menu_len, _("/Launch Item In _Tab"),		NULL, on_popup_launchitem_in_tab_selected,	0, NULL, 0);
 	addPopupOption(&item_menu_items, &item_menu_len, _("/_Launch Item In Browser"), 	NULL, on_popup_launchitem_selected, 		0, NULL, 0);
+
+	iter = newsbin_get_list();
+	if(iter)
+		addPopupOption(&item_menu_items, &item_menu_len, "/",				NULL, NULL, 					0, "<Separator>", 0);
+	while(iter) {
+		nodePtr	node = (nodePtr)iter->data;
+		path = ui_popup_create_path(_("/Copy to News Bin/%s"), node_get_title(node));
+		addPopupOption(&item_menu_items, &item_menu_len, path,				NULL, on_popup_copy_to_newsbin,     		i, NULL, 0);
+		iter = g_slist_next(iter);
+		i++;
+	}
+
+	addPopupOption(&item_menu_items, &item_menu_len, "/",					NULL, NULL, 					0, "<Separator>", 0);	
+	/* menu option for social bookmark creation */
+	path = ui_popup_create_path(_("/_Bookmark Link at %s"), social_get_site());
+	addPopupOption(&item_menu_items, &item_menu_len, path,					NULL, on_popup_social_bm_item_selected,		0, NULL, 0);
+	addPopupOption(&item_menu_items, &item_menu_len, _("/Copy Item _URL to Clipboard"),     NULL, on_popup_copy_URL_clipboard,     		0, NULL, 0);
+	
 	addPopupOption(&item_menu_items, &item_menu_len, "/",					NULL, NULL, 					0, "<Separator>", 0);
-	addPopupOption(&item_menu_items, &item_menu_len, _("/_Next Unread Item"),		NULL, on_popup_next_unread_item_selected,	0, "<StockItem>", GTK_STOCK_GO_FORWARD);
-	addPopupOption(&item_menu_items, &item_menu_len, "/",					NULL, NULL, 					0, "<Separator>", 0);
-	addPopupOption(&item_menu_items, &item_menu_len, _("/Toggle _Read Status"),		NULL, on_popup_toggle_read, 			0, NULL, 0);
 	addPopupOption(&item_menu_items, &item_menu_len, _("/Toggle Item _Flag"),		NULL, on_popup_toggle_flag, 			0, NULL, 0);
 	addPopupOption(&item_menu_items, &item_menu_len, _("/R_emove Item"),			NULL, on_popup_remove_selected,			0, "<StockItem>", GTK_STOCK_DELETE);
-	addPopupOption(&item_menu_items, &item_menu_len, "/",					NULL, NULL, 					0, "<Separator>", 0);
-	addPopupOption(&item_menu_items, &item_menu_len, _("/_Bookmark this Item"),		NULL, on_popup_social_bm_item_selected,		0, NULL, 0);
-	addPopupOption(&item_menu_items, &item_menu_len, _("/Copy Item _URL to Clipboard"),     NULL, on_popup_copy_URL_clipboard,     		0, NULL, 0);
-
 
 	/* HTML view popup menues */
+	g_free(html_menu_items);
 	html_menu_items = NULL;
 	html_menu_len = 0;
 	addPopupOption(&html_menu_items, &html_menu_len, _("/_Increase Text Size"),	NULL, on_popup_zoomin_selected,		0, "<StockItem>", GTK_STOCK_ZOOM_IN);
 	addPopupOption(&html_menu_items, &html_menu_len, _("/_Decrease Text Size"),	NULL, on_popup_zoomout_selected,	0, "<StockItem>", GTK_STOCK_ZOOM_OUT);
 
+	g_free(url_menu_items);
 	url_menu_items = NULL;
 	url_menu_len = 0;
 	addPopupOption(&url_menu_items, &url_menu_len, _("/Launch Link In _Tab"),	NULL, on_popup_open_link_in_tab_selected,	0, NULL, 0);
 	addPopupOption(&url_menu_items, &url_menu_len, _("/_Launch Link In Browser"),	NULL, on_popup_launch_link_selected, 		0, NULL, 0);
 	addPopupOption(&url_menu_items, &url_menu_len, "/",				NULL, NULL,		                	0, "<Separator>", 0);
-	addPopupOption(&url_menu_items, &url_menu_len, _("/_Bookmark this Link"),	NULL, on_popup_social_bm_link_selected,  	0, NULL, 0);
+	/* menu option for social bookmark creation */
+	path = ui_popup_create_path(_("/_Bookmark Link at %s"), social_get_site());
+	addPopupOption(&url_menu_items, &url_menu_len, path,				NULL, on_popup_social_bm_link_selected,  	0, NULL, 0);
 	addPopupOption(&url_menu_items, &url_menu_len, _("/_Copy Link Location"),	NULL, on_popup_copy_url_selected,		0, NULL, 0);
 	addPopupOption(&url_menu_items, &url_menu_len, "/",				NULL, NULL,		                	0, "<Separator>", 0);
 	addPopupOption(&url_menu_items, &url_menu_len, _("/_Subscribe..."),		NULL, on_popup_subscribe_url_selected, 		0, "<StockItem>", GTK_STOCK_ADD);
 
 	/* System tray popup menu */
+	g_free(tray_menu_items);
 	tray_menu_items = NULL;
 	tray_menu_len = 0;
 	addPopupOption(&tray_menu_items, &tray_menu_len, _("/Toggle _Online|Offline"),	NULL, on_onlinebtn_clicked,		0, "<CheckItem>", 0);
@@ -123,6 +166,7 @@ void ui_popup_setup_menues(void) {
 	addPopupOption(&tray_menu_items, &tray_menu_len, _("/_Quit"),	        NULL, on_popup_quit,		                0, "<StockItem>", GTK_STOCK_QUIT);
 	
 	/* System tray popup menu */
+	g_free(enclosure_menu_items);
 	enclosure_menu_items = NULL;
 	enclosure_menu_len = 0;
 	addPopupOption(&enclosure_menu_items, &enclosure_menu_len, _("/Open Enclosure..."),	NULL, on_popup_open_enclosure,		0, NULL, 0);

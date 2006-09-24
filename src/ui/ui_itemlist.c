@@ -400,6 +400,7 @@ GtkWidget* ui_itemlist_new() {
 					  NULL);
 		  
 	ui_itemlist_reset_date_format();
+	//ui_dnd_setup_item_source(itemlist);
 	
 	return ilscrolledwindow;
 }

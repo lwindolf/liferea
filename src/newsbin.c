@@ -22,14 +22,47 @@
 #include "feed.h"
 #include "feedlist.h"
 #include "interface.h"
+#include "itemlist.h"
 #include "newsbin.h"
 #include "render.h"
 #include "support.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_node.h"
+#include "ui/ui_popup.h"
 
 static GtkWidget *newnewsbindialog = NULL;
 static GtkWidget *newsbinnamedialog = NULL;
+static GSList * newsbin_list = NULL;
+
+GSList * newsbin_get_list(void) { return newsbin_list; }
+
+static void newsbin_new(nodePtr node) {
+
+	itemSetPtr itemSet = (itemSetPtr)g_new0(struct itemSet, 1); /* create empty itemset */
+	itemSet->type = ITEMSET_TYPE_FEED;
+	node_set_itemset(node, itemSet);
+	node->needsCacheSave = TRUE;
+	feedlist_schedule_save();
+}
+
+static void newsbin_import(nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean trusted) {
+
+	feed_get_node_type()->import(node, parent, cur, trusted);
+	((feedPtr)node->data)->cacheLimit = CACHE_UNLIMITED;
+}
+
+static void newsbin_initial_load(nodePtr node) {
+
+	newsbin_list = g_slist_append(newsbin_list, node);
+	feed_get_node_type()->initial_load(node);
+}
+
+static void newsbin_remove(nodePtr node) {
+
+	newsbin_list = g_slist_remove(newsbin_list, node);
+	feed_get_node_type()->remove(node);
+	ui_popup_update_menues();
+}
 
 static gchar * newsbin_render(nodePtr node) {
 	gchar		**params = NULL, *output = NULL;
@@ -63,10 +96,14 @@ void on_newnewsbinbtn_clicked(GtkButton *button, gpointer user_data) {
 	node_set_title(newsbin, (gchar *)gtk_entry_get_text(GTK_ENTRY(lookup_widget(newnewsbindialog, "nameentry"))));
 	node_set_type(newsbin, newsbin_get_node_type());
 	node_set_data(newsbin, (gpointer)feed_new("newsbin", NULL, 0));
+	newsbin_new(newsbin);
 
 	ui_feedlist_get_target_folder(&pos);
 	node_add_child(feedlist_get_insertion_point(), newsbin, pos);
 	ui_feedlist_select(newsbin);
+	
+	newsbin_list = g_slist_append(newsbin_list, newsbin);
+	ui_popup_update_menues();
 }
 
 static void ui_newsbin_properties(nodePtr node) {
@@ -88,8 +125,25 @@ void on_newsbinnamechange_clicked(GtkButton *button, gpointer user_data) {
 	node = (nodePtr)gtk_object_get_data(GTK_OBJECT(newsbinnamedialog), "node");
 	node->needsCacheSave = TRUE;
 	node_set_title(node, (gchar *)gtk_entry_get_text(GTK_ENTRY(lookup_widget(newsbinnamedialog, "nameentry"))));
+
 	ui_node_update(node);
 	feedlist_schedule_save();
+	ui_popup_update_menues();
+}
+
+void on_popup_copy_to_newsbin(gpointer user_data, guint callback_action, GtkWidget *widget) {
+	nodePtr		newsbin;
+	itemPtr		item;
+
+	newsbin = g_slist_nth_data(newsbin_list, callback_action);
+	item = itemlist_get_selected();
+	if(item) {
+		node_load(newsbin);
+		itemset_prepend_item(newsbin->itemSet, item_copy(item));
+		newsbin->needsCacheSave = TRUE;
+		ui_node_update(newsbin);
+		node_unload(newsbin);
+	}
 }
 
 void newsbin_request_auto_update_dummy(nodePtr node) { }
@@ -105,16 +159,16 @@ nodeTypePtr newsbin_get_node_type(void) {
 		nodeType->id			= "newsbin";
 		nodeType->icon			= icons[ICON_NEWSBIN];
 		nodeType->type			= NODE_TYPE_NEWSBIN;
-		nodeType->import		= feed_get_node_type()->import;
+		nodeType->import		= newsbin_import;
 		nodeType->export		= feed_get_node_type()->export;
-		nodeType->initial_load		= feed_get_node_type()->initial_load;
+		nodeType->initial_load		= newsbin_initial_load;
 		nodeType->load			= feed_get_node_type()->load;
 		nodeType->save			= feed_get_node_type()->save;
 		nodeType->unload		= feed_get_node_type()->unload;
 		nodeType->reset_update_counter	= feed_get_node_type()->reset_update_counter;
 		nodeType->request_update	= newsbin_request_update_dummy;
 		nodeType->request_auto_update	= newsbin_request_auto_update_dummy;
-		nodeType->remove		= feed_get_node_type()->remove;
+		nodeType->remove		= newsbin_remove;
 		nodeType->mark_all_read		= feed_get_node_type()->mark_all_read;
 		nodeType->render		= newsbin_render;
 		nodeType->request_add		= ui_newsbin_add;

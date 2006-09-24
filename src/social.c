@@ -108,6 +108,8 @@ void social_set_site(const gchar *name) {
 	return siteIcon;
 }*/
 
+const gchar * social_get_site(void) { return site->name; }
+
 gchar * social_get_url(const gchar *link, const gchar *title) { 
 	gchar	*url;
 

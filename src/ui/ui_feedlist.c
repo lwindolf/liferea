@@ -227,7 +227,7 @@ void ui_feedlist_init(GtkWidget *feedview) {
                  	 G_CALLBACK(ui_feedlist_selection_changed_cb),
                 	 lookup_widget(mainwindow, "feedlist"));
 	
-	ui_dnd_init(feedstore);			
+	ui_dnd_setup_feedlist(feedstore);			
 	ui_mainwindow_update_feed_menu(FALSE, FALSE);
 
 	debug_exit("ui_feedlist_init");

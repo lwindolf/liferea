@@ -417,10 +417,11 @@ void ui_mainwindow_init(int mainwindowState) {
 	
 	ui_tray_enable(getBooleanConfValue(SHOW_TRAY_ICON));			/* init tray icon */
 	ui_dnd_setup_URL_receiver(mainwindow);	/* setup URL dropping support */
-	ui_popup_setup_menues();		/* create popup menues */
 	ui_enclosure_init();
 
 	feedlist_init();
+	
+	ui_popup_update_menues();		/* create popup menues */
 			
 	if(mainwindowState == MAINWINDOW_ICONIFIED || 
 	   (mainwindowState == MAINWINDOW_HIDDEN && ui_tray_get_count() == 0)) {
@@ -857,9 +858,7 @@ static const char *ui_mainwindow_ui_desc =
 "      <menuitem action='ShowPreferences'/>"
 "      <separator/>"
 "      <menuitem action='ShowUpdateMonitor'/>"
-#ifdef USE_LUA
 "      <menuitem action='ShowScriptManager'/>"
-#endif
 "      <separator/>"
 "      <menuitem action='ToggleOfflineMode'/>"
 "      <separator/>"

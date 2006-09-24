@@ -50,4 +50,9 @@ gchar * social_get_url(const gchar *link, const gchar *title);
  */
 void social_set_site(const gchar *name);
 
+/**
+ * Returns the name of the currently configured social bookmarking site.
+ */
+const gchar * social_get_site(void);
+
 #endif
