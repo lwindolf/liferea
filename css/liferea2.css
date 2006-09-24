@@ -52,6 +52,10 @@ blockquote {
 	clear:both;	
 }
 
+img {
+	border:0;
+}
+
 dd {
 	padding-left: 30px;
 }
@@ -64,6 +68,7 @@ table.itemhead {
 	width:100%;
 	border:0;
 	border-bottom: 1px solid #888;
+	clear:both;
 }
 
 table.itemhead * td {
@@ -228,10 +233,6 @@ table.enclosure * a {
 }
 
 img.enclosurebtn {
-	border:#FFF solid 1px;
-	border-bottom-color:#AAA;
-	border-right-color:#AAA;
-	background:#CCC;
 	padding-left:1px;
 	margin-left:2px;
 	margin-top:4px;

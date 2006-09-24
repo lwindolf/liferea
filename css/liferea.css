@@ -56,6 +56,10 @@ dd {
 	padding-left: 30px;
 }
 
+img {
+	border:0;
+}
+
 /* styles for the item description (currently also used for
    the feed description) */
 table.itemhead {
@@ -254,10 +258,6 @@ table.enclosure * a {
 }
 
 img.enclosurebtn {
-	border:#FFF solid 1px;
-	border-bottom-color:#AAA;
-	border-right-color:#AAA;
-	background:#E0E0E0;
 	padding-left:1px;
 	margin-left:2px;
 	margin-top:4px;
