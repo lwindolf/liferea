@@ -5,6 +5,11 @@
 	* Simple news bin support. You can create news
 	  bins and add items from the item list context
 	  menu. Items in news bins are kept permanently.
+	* Now removing <script> tags from HTML metadata.
+	  This makes Liferea comply with more of the
+	  snellspace.com aggregator security tests
+	* Empty titles in the HTML view are now replaced
+	  by the item post date.
 	* Faster "mark all read" feature.
 
 

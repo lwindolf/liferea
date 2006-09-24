@@ -85,6 +85,11 @@
         <xsl:value-of select="source"/>
       </xsl:attribute>
       <xsl:value-of select="title"/>
+      <!-- the title added above might be empty, in this 
+           case we add the date of the post -->
+      <xsl:if test="title = ''">
+         <xsl:value-of select="timestr"/> 
+      </xsl:if>
     </xsl:element>
   </td>
 </tr>
