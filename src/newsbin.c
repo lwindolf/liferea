@@ -139,14 +139,28 @@ void on_popup_copy_to_newsbin(gpointer user_data, guint callback_action, GtkWidg
 	item = itemlist_get_selected();
 	if(item) {
 		node_load(newsbin);
+		
 		copy = item_copy(item);
+		copy->sourceNode = newsbin;	/* necessary to become independent of original item */
+		
+		/* To avoid item doubling in vfolders we reset
+		   simple vfolder match attributes */
+		copy->readStatus = TRUE;
+		copy->flagStatus = FALSE;
+		
+		/* To provide a hint in the rendered output what the orginial 
+		   feed was the original website link/title are added */		
 		if(!copy->real_source_url)
 			copy->real_source_url = g_strdup(itemset_get_base_url(item->itemSet));
 		if(!copy->real_source_title)
 			copy->real_source_title = g_strdup(node_get_title(item->itemSet->node));
+		
+		/* do the same as in node_merge_item(s) */
 		itemset_prepend_item(newsbin->itemSet, copy);
+		vfolder_check_item(copy);
 		newsbin->needsCacheSave = TRUE;
 		ui_node_update(newsbin);
+		
 		node_unload(newsbin);
 	}
 }
