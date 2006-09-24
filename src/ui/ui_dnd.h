@@ -22,8 +22,10 @@
 #ifndef _UI_DND_H
 #define _UI_DND_H
 
+#include <gtk/gtk.h>
+
 /** sets up DnD for the feedlist model */
-void ui_dnd_init(GtkTreeStore *feedstore);
+void ui_dnd_setup_feedlist(GtkTreeStore *feedstore);
 
 /** sets up URL DnD support */
 void ui_dnd_setup_URL_receiver(GtkWidget *mainwindow);

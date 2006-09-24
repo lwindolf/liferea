@@ -889,7 +889,7 @@ create_newdialog (void)
   gtk_widget_show (label248);
   gtk_box_pack_start (GTK_BOX (hbox92242), label248, FALSE, FALSE, 0);
 
-  dontUseProxyCheck = gtk_check_button_new_with_mnemonic (_("_Dont use proxy for download"));
+  dontUseProxyCheck = gtk_check_button_new_with_mnemonic (_("_Don't use proxy for download"));
   gtk_widget_show (dontUseProxyCheck);
   gtk_box_pack_start (GTK_BOX (hbox92242), dontUseProxyCheck, FALSE, FALSE, 0);
 

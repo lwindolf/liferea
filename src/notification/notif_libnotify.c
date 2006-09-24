@@ -36,7 +36,6 @@
 #include "support.h"
 #include "plugin.h"
 #include "ui/ui_feedlist.h"
-#include "ui/ui_node.h"
 #include "ui/ui_tray.h"
 
 #include "notification/notif_plugin.h"
@@ -75,7 +74,7 @@ static void notif_libnotify_callback_show_details ( NotifyNotification *n, const
 	gchar *labelText_prev_p;
 
 	gchar *labelHeadline_p;
-	gchar *labelURL_p;
+	const gchar *labelURL_p;
 
 	gint item_count;
 
@@ -127,7 +126,7 @@ static void notif_libnotify_callback_show_details ( NotifyNotification *n, const
 
 	n = notify_notification_new (node_get_title(node_p), labelText_now_p, NULL, NULL);
 
-	notify_notification_set_icon_from_pixbuf (n,ui_node_get_icon(node_p));
+	notify_notification_set_icon_from_pixbuf (n,node_get_icon(node_p));
 
 	notify_notification_set_category (n, "feed");
 
@@ -208,7 +207,7 @@ static void notif_libnotify_node_has_new_items(nodePtr node_p) {
 
 	g_free(labelSummary_p);
 
-	notify_notification_set_icon_from_pixbuf (n,ui_node_get_icon(node_p));
+	notify_notification_set_icon_from_pixbuf (n,node_get_icon(node_p));
 
 	notify_notification_set_timeout (n, NOTIFY_EXPIRES_DEFAULT );
 

@@ -94,6 +94,8 @@ GSList * metadata_list_append(GSList *metadata, const gchar *strid, const gchar 
 				checked_data = g_markup_escape_text(data, -1);
 				debug1(DEBUG_PARSING, "escaped as: %s\n", checked_data);
 			}
+			/* And needs to remove DHTML */
+			checked_data = common_strip_dhtml(checked_data);
 			break;
 	}
 	
