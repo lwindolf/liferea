@@ -155,7 +155,7 @@ void ui_node_add(nodePtr parent, nodePtr node, gint position) {
 	/* if parent is NULL we have the root folder and don't create a new row! */
 	iter = (GtkTreeIter *)g_new0(GtkTreeIter, 1);
 	
-	if(!(parent->type == NODE_TYPE_ROOT))
+	if(parent != feedlist_get_root())
 		parentIter = ui_node_to_iter(parent);
 
 	if(position < 0)
@@ -168,7 +168,7 @@ void ui_node_add(nodePtr parent, nodePtr node, gint position) {
 
 	ui_node_update(node);
 	
-	if(!(parent->type == NODE_TYPE_ROOT))
+	if(parent != feedlist_get_root())
 		ui_node_check_if_folder_is_empty(parent);
 
 	if(NODE_TYPE_FOLDER == node->type)
@@ -201,18 +201,36 @@ void ui_node_remove_node(nodePtr np) {
 void ui_node_update(nodePtr node) {
 	GtkTreeIter	*iter;
 	gchar		*label;
+	guint		count, labeltype;
 
 	iter = ui_node_to_iter(node);
 	if(!iter)
 		return;
 
-	gint count = node_get_unread_count(node);
-	
-	if(count > 0)
-		label = g_markup_printf_escaped("<span weight=\"bold\">%s (%d)</span>",
-		                                node_get_title(node), count);
-	else
-		label = g_markup_printf_escaped("%s", node_get_title(node));
+	count = node_get_unread_count(node);
+
+	labeltype = NODE_TYPE(node)->capabilities;
+	labeltype &= (NODE_CAPABILITY_SHOW_UNREAD_COUNT |
+	              NODE_CAPABILITY_SHOW_ITEM_COUNT);
+
+	if(!count && (labeltype & NODE_CAPABILITY_SHOW_UNREAD_COUNT))
+		labeltype -= NODE_CAPABILITY_SHOW_UNREAD_COUNT;
+
+	switch(labeltype) {
+		case NODE_CAPABILITY_SHOW_UNREAD_COUNT |
+		     NODE_CAPABILITY_SHOW_ITEM_COUNT:
+		     	/* treat like show unread count */
+		case NODE_CAPABILITY_SHOW_UNREAD_COUNT:
+			label = g_markup_printf_escaped("<span weight=\"bold\">%s (%d)</span>",
+				                        node_get_title(node), count);
+			break;
+		case NODE_CAPABILITY_SHOW_ITEM_COUNT:
+			label = g_markup_printf_escaped("%s (%d)", node_get_title(node), g_list_length(node->itemSet->items));
+		     	break;
+		default:
+			label = g_markup_printf_escaped("%s", node_get_title(node));
+			break;
+	}
 	
 	gtk_tree_store_set(feedstore, iter, FS_LABEL, label,
 	                                    FS_UNREAD, count,

@@ -1411,7 +1411,7 @@ nodeTypePtr feed_get_node_type(void) {
 	static struct nodeType nti = {
 		0,
 		"feed",		/* not used, feed format ids are used instead */
-		NULL,
+		NODE_CAPABILITY_SHOW_UNREAD_COUNT,
 		NODE_TYPE_FEED,
 		feed_import,
 		feed_export,

@@ -572,7 +572,8 @@ static gchar * vfolder_render(nodePtr node) {
 nodeTypePtr vfolder_get_node_type(void) { 
 
 	static struct nodeType nti = {
-		0,
+		NODE_CAPABILITY_SHOW_UNREAD_COUNT |
+		NODE_CAPABILITY_SHOW_ITEM_COUNT,
 		"vfolder",
 		NULL,
 		NODE_TYPE_VFOLDER,

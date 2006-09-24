@@ -300,6 +300,7 @@ nodeTypePtr node_source_get_node_type(void) {
 		nodeType->id			= "source";
 		nodeType->icon			= icons[ICON_DEFAULT];
 		nodeType->type			= NODE_TYPE_SOURCE;
+		nodeType->capabilities		= NODE_CAPABILITY_SHOW_UNREAD_COUNT;
 		nodeType->import		= node_source_import;
 		nodeType->export		= node_source_export;
 		nodeType->initial_load		= folder_get_node_type()->initial_load;

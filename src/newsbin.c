@@ -160,7 +160,8 @@ nodeTypePtr newsbin_get_node_type(void) {
 	if(!nodeType) {
 		/* derive the plugin node type from the folder node type */
 		nodeType = (nodeTypePtr)g_new0(struct nodeType, 1);
-		nodeType->capabilities		= NODE_CAPABILITY_RECEIVE_ITEMS;
+		nodeType->capabilities		= NODE_CAPABILITY_RECEIVE_ITEMS |
+		                                  NODE_CAPABILITY_SHOW_UNREAD_COUNT;
 		nodeType->id			= "newsbin";
 		nodeType->icon			= icons[ICON_NEWSBIN];
 		nodeType->type			= NODE_TYPE_NEWSBIN;

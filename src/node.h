@@ -82,12 +82,14 @@ typedef struct node {
 } *nodePtr;
 
 enum {
-	NODE_CAPABILITY_ADD_CHILDS	= (1<<0),	/**< allows adding new childs */
-	NODE_CAPABILITY_REMOVE_CHILDS	= (1<<1),	/**< allows removing it's childs */
-	NODE_CAPABILITY_SUBFOLDERS	= (1<<2),	/**< allows creating/removing sub folders */
-	NODE_CAPABILITY_REMOVE_ITEMS	= (1<<3),	/**< allows removing of single items */
-	NODE_CAPABILITY_RECEIVE_ITEMS	= (1<<4),	/**< is a DnD target for item copies */
-	NODE_CAPABILITY_REORDER		= (1<<5)	/**< allows DnD to reorder childs */
+	NODE_CAPABILITY_ADD_CHILDS		= (1<<0),	/**< allows adding new childs */
+	NODE_CAPABILITY_REMOVE_CHILDS		= (1<<1),	/**< allows removing it's childs */
+	NODE_CAPABILITY_SUBFOLDERS		= (1<<2),	/**< allows creating/removing sub folders */
+	NODE_CAPABILITY_REMOVE_ITEMS		= (1<<3),	/**< allows removing of single items */
+	NODE_CAPABILITY_RECEIVE_ITEMS		= (1<<4),	/**< is a DnD target for item copies */
+	NODE_CAPABILITY_REORDER			= (1<<5),	/**< allows DnD to reorder childs */
+	NODE_CAPABILITY_SHOW_UNREAD_COUNT	= (1<<6),	/**< display the unread item count in the feed list */
+	NODE_CAPABILITY_SHOW_ITEM_COUNT		= (1<<7)	/**< display the absolute item count in the feed list */
 };
 
 /** node type interface */
