@@ -133,13 +133,18 @@ void on_newsbinnamechange_clicked(GtkButton *button, gpointer user_data) {
 
 void on_popup_copy_to_newsbin(gpointer user_data, guint callback_action, GtkWidget *widget) {
 	nodePtr		newsbin;
-	itemPtr		item;
+	itemPtr		item, copy;
 
 	newsbin = g_slist_nth_data(newsbin_list, callback_action);
 	item = itemlist_get_selected();
 	if(item) {
 		node_load(newsbin);
-		itemset_prepend_item(newsbin->itemSet, item_copy(item));
+		copy = item_copy(item);
+		if(!copy->real_source_url)
+			copy->real_source_url = g_strdup(itemset_get_base_url(item->itemSet));
+		if(!copy->real_source_title)
+			copy->real_source_title = g_strdup(node_get_title(item->itemSet->node));
+		itemset_prepend_item(newsbin->itemSet, copy);
 		newsbin->needsCacheSave = TRUE;
 		ui_node_update(newsbin);
 		node_unload(newsbin);
