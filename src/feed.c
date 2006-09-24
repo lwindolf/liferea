@@ -1409,9 +1409,9 @@ static gchar * feed_render(nodePtr node) {
 nodeTypePtr feed_get_node_type(void) { 
 
 	static struct nodeType nti = {
-		0,
-		"feed",		/* not used, feed format ids are used instead */
 		NODE_CAPABILITY_SHOW_UNREAD_COUNT,
+		"feed",		/* not used, feed format ids are used instead */
+		NULL,
 		NODE_TYPE_FEED,
 		feed_import,
 		feed_export,
