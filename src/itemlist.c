@@ -149,7 +149,7 @@ void itemlist_merge_itemset(itemSetPtr itemSet) {
 	if(displayed_itemSet == NULL)
 		return; /* Nothing to do if nothing is displayed */
 	
-	if(itemSet != displayed_itemSet)
+	if((displayed_itemSet != itemSet) && !node_is_ancestor(displayed_itemSet->node, itemSet->node))
 		return;
 
 	debug1(DEBUG_GUI, "reloading item list with node \"%s\"", node_get_title(itemSet->node));
@@ -159,10 +159,9 @@ void itemlist_merge_itemset(itemSetPtr itemSet) {
 			return;
 
 	/* update item list tree view */	
-	iter = g_list_last(displayed_itemSet->items);
+	iter = g_list_last(itemSet->items);
 	while(iter) {
 		itemPtr item = iter->data;
-
 		if(!(itemlist_filter && !rule_check_item(itemlist_filter, item))) {
 			hasEnclosures |= item->hasEnclosure;
 			ui_itemlist_add_item(item, TRUE);
@@ -194,7 +193,7 @@ void itemlist_load(itemSetPtr itemSet) {
 
 	/* 1. Filter check. Don't continue if folder is selected and 
 	   no folder viewing is configured. If folder viewing is enabled
-	   set up a "unread items only" rule. */	
+	   set up a "unread items only" rule depending on the prefences. */	
 	   
 	g_free(itemlist_filter);
 	itemlist_filter = NULL;

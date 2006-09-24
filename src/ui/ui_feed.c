@@ -415,7 +415,6 @@ static void on_newdialog_response(GtkDialog *dialog, gint response_id, gpointer 
 		options->dontUseProxy = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(GTK_WIDGET(dialog), "dontUseProxyCheck")));
 		
 		node_request_automatic_add(source, NULL, filter, options,
-		                           FEED_REQ_SHOW_PROPDIALOG | 
 					   FEED_REQ_RESET_TITLE | 
 					   FEED_REQ_RESET_UPDATE_INT | 
 					   FEED_REQ_AUTO_DISCOVER | 
@@ -486,7 +485,6 @@ static void on_simple_newdialog_response(GtkDialog *dialog, gint response_id, gp
 			                            FALSE /* auth */, NULL /* user */, NULL /* passwd */);
 
 			node_request_automatic_add(source, NULL, NULL, NULL,
-		                        	   FEED_REQ_SHOW_PROPDIALOG | 
 						   FEED_REQ_RESET_TITLE | 
 						   FEED_REQ_RESET_UPDATE_INT | 
 						   FEED_REQ_AUTO_DISCOVER | 

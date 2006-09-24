@@ -10,6 +10,11 @@
 	  snellspace.com aggregator security tests
 	* Empty titles in the HTML view are now replaced
 	  by the item post date.
+	* The feed properties dialog now doesn't open 
+	  automatically anymore when creating a news
+	  subscription.
+	* Flagged items in 2pane mode have now a red colored 
+	  title bar to distinguish the from unflagged items.
 	* Faster "mark all read" feature.
 
 

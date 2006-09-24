@@ -34,16 +34,15 @@
 
 /** Flags used in the request structure */
 enum feed_request_flags {
-	FEED_REQ_SHOW_PROPDIALOG	= (1<<0),
-	FEED_REQ_RESET_TITLE		= (1<<1),	/**< Feed's title should be reset to default upon update */
-	FEED_REQ_RESET_UPDATE_INT	= (1<<2),	/**< Feed's update interval should be reset to default upon update */
-	FEED_REQ_AUTO_DISCOVER		= (1<<3),	/**< Feed auto-discovery attempts should be made */
+	FEED_REQ_RESET_TITLE		= (1<<0),	/**< Feed's title should be reset to default upon update */
+	FEED_REQ_RESET_UPDATE_INT	= (1<<1),	/**< Feed's update interval should be reset to default upon update */
+	FEED_REQ_AUTO_DISCOVER		= (1<<2),	/**< Feed auto-discovery attempts should be made */
 	
-	FEED_REQ_PRIORITY_HIGH		= (1<<4),	/**< set to signal that this is an important user triggered request */
-	FEED_REQ_DOWNLOAD_FAVICON	= (1<<5),	/**< set to make the favicon be updated after the feed is downloaded */
-	FEED_REQ_AUTH_DIALOG		= (1<<6),	/**< set to make an auth request dialog to be created after 401 errors */
-	FEED_REQ_ALLOW_RETRIES		= (1<<7),	/**< set to allow fetch retries on network errors */
-	FEED_REQ_NO_PROXY		= (1<<8)	/**< sets no proxy flag */
+	FEED_REQ_PRIORITY_HIGH		= (1<<3),	/**< set to signal that this is an important user triggered request */
+	FEED_REQ_DOWNLOAD_FAVICON	= (1<<4),	/**< set to make the favicon be updated after the feed is downloaded */
+	FEED_REQ_AUTH_DIALOG		= (1<<5),	/**< set to make an auth request dialog to be created after 401 errors */
+	FEED_REQ_ALLOW_RETRIES		= (1<<6),	/**< set to allow fetch retries on network errors */
+	FEED_REQ_NO_PROXY		= (1<<7)	/**< sets no proxy flag */
 };
 
 struct feedHandler;

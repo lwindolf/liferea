@@ -63,12 +63,19 @@ dd {
 /* styles for the item description (currently also used for
    the feed description) */
 table.itemhead {
-	background-color:#DDD;
 	margin:0;
 	width:100%;
 	border:0;
 	border-bottom: 1px solid #888;
 	clear:both;
+}
+
+.flagged {
+	background-color:#FAA;
+}
+
+.unflagged {
+	background-color:#DDD;
 }
 
 table.itemhead * td {

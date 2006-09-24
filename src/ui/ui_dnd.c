@@ -228,7 +228,6 @@ static void ui_dnd_URL_received(GtkWidget *widget, GdkDragContext *context, gint
 					                   NULL,
 				                           NULL, 
 							   NULL,
-					                   FEED_REQ_SHOW_PROPDIALOG | 
 					                   FEED_REQ_RESET_TITLE |
 			                                   FEED_REQ_RESET_UPDATE_INT | 
 					                   FEED_REQ_AUTO_DISCOVER | 

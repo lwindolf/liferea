@@ -61,7 +61,10 @@
 <xsl:template name="item">
 <xsl:variable name="sourceId" select="sourceId"/>
 <!-- header table -->
-<table class="itemhead" cellspacing="0" cellpadding="0">
+<xsl:element name="table">
+<xsl:attribute name="class">itemhead <xsl:if test="mark = '0'">un</xsl:if>flagged</xsl:attribute>
+<xsl:attribute name="cellspacing">0</xsl:attribute>
+<xsl:attribute name="cellpadding">0</xsl:attribute>
 <tr>
   <td valign="middle" class="headleft">
     <!-- Feed link as favicon -->
@@ -93,7 +96,7 @@
     </xsl:element>
   </td>
 </tr>
-</table>
+</xsl:element>
 
 <!-- enclosures -->
 <xsl:for-each select="attributes/attribute[@name = 'enclosure']">

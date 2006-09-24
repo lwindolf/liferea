@@ -41,105 +41,105 @@
 
 /* function to create a new feed structure */
 itemPtr item_new(void) {
-	itemPtr		ip;
+	itemPtr		item;
 	
-	ip = g_new0(struct item, 1);
-	ip->newStatus = TRUE;
-	ip->popupStatus = TRUE;
+	item = g_new0(struct item, 1);
+	item->newStatus = TRUE;
+	item->popupStatus = TRUE;
 	
-	return ip;
+	return item;
 }
 
-itemPtr item_copy(itemPtr ip) {
+itemPtr item_copy(itemPtr item) {
 	itemPtr copy = item_new();
 
-	item_set_title(copy, ip->title);
-	item_set_source(copy, ip->source);
-	item_set_real_source_url(copy, ip->real_source_url);
-	item_set_real_source_title(copy, ip->real_source_title);
-	item_set_description(copy, ip->description);
-	item_set_id(copy, ip->id);
+	item_set_title(copy, item->title);
+	item_set_source(copy, item->source);
+	item_set_real_source_url(copy, item->real_source_url);
+	item_set_real_source_title(copy, item->real_source_title);
+	item_set_description(copy, item->description);
+	item_set_id(copy, item->id);
 	
-	copy->updateStatus = ip->updateStatus;
-	copy->readStatus = ip->readStatus;
+	copy->updateStatus = item->updateStatus;
+	copy->readStatus = item->readStatus;
 	copy->newStatus = FALSE;
 	copy->popupStatus = FALSE;
-	copy->flagStatus = ip->flagStatus;
-	copy->time = ip->time;
+	copy->flagStatus = item->flagStatus;
+	copy->time = item->time;
 	
 	/* the following line allows state propagation in item.c */
-	copy->sourceNode = ip->itemSet->node;
-	copy->sourceNr = ip->nr;
+	copy->sourceNode = item->itemSet->node;
+	copy->sourceNr = item->nr;
 
 	/* this copies metadata */
-	copy->metadata = metadata_list_copy(ip->metadata);
+	copy->metadata = metadata_list_copy(item->metadata);
 
 	return copy;
 }
 
-void item_set_title(itemPtr ip, const gchar * title) {
+void item_set_title(itemPtr item, const gchar * title) {
 
-	g_free(ip->title);
-	ip->title = g_strdup(title);
+	g_free(item->title);
+	item->title = g_strdup(title);
 }
 
-void item_set_description(itemPtr ip, const gchar * description) {
+void item_set_description(itemPtr item, const gchar * description) {
 
-	g_free(ip->description);
-	ip->description = g_strdup(description);
+	g_free(item->description);
+	item->description = g_strdup(description);
 }
 
-void item_set_source(itemPtr ip, const gchar * source) { 
+void item_set_source(itemPtr item, const gchar * source) { 
 
-	g_free(ip->source);
+	g_free(item->source);
 	if(source) 
-		ip->source = g_strchomp(g_strdup(source));
+		item->source = g_strchomp(g_strdup(source));
 	else
-		ip->source = NULL;
+		item->source = NULL;
 }
 
-void item_set_real_source_url(itemPtr ip, const gchar * source) { 
+void item_set_real_source_url(itemPtr item, const gchar * source) { 
 
-	g_free(ip->real_source_url);
+	g_free(item->real_source_url);
 	if(source)
-		ip->real_source_url = g_strchomp(g_strdup(source));
+		item->real_source_url = g_strchomp(g_strdup(source));
 	else
-		ip->real_source_url = NULL;
+		item->real_source_url = NULL;
 }
 
-void item_set_real_source_title(itemPtr ip, const gchar * source) { 
+void item_set_real_source_title(itemPtr item, const gchar * source) { 
 
-	g_free(ip->real_source_title);
+	g_free(item->real_source_title);
 	if(source)
-		ip->real_source_title = g_strchomp(g_strdup(source));
+		item->real_source_title = g_strchomp(g_strdup(source));
 	else
-		ip->real_source_title = NULL;
+		item->real_source_title = NULL;
 }
 
-void item_set_id(itemPtr ip, const gchar * id) {
-	g_free(ip->id);
-	ip->id = g_strdup(id);
+void item_set_id(itemPtr item, const gchar * id) {
+	g_free(item->id);
+	item->id = g_strdup(id);
 }
 
-const gchar *	item_get_id(itemPtr ip) { return ip->id; }
-const gchar *	item_get_title(itemPtr ip) {return ip->title; }
-const gchar *	item_get_description(itemPtr ip) { return ip->description; }
-const gchar *	item_get_source(itemPtr ip) { return ip->source; }
-const gchar *	item_get_real_source_url(itemPtr ip) { return ip->real_source_url; }
-const gchar *	item_get_real_source_title(itemPtr ip) { return ip->real_source_title; }
+const gchar *	item_get_id(itemPtr item) { return item->id; }
+const gchar *	item_get_title(itemPtr item) {return item->title; }
+const gchar *	item_get_description(itemPtr item) { return item->description; }
+const gchar *	item_get_source(itemPtr item) { return item->source; }
+const gchar *	item_get_real_source_url(itemPtr item) { return item->real_source_url; }
+const gchar *	item_get_real_source_title(itemPtr item) { return item->real_source_title; }
 
-void item_free(itemPtr ip) {
+void item_free(itemPtr item) {
 
-	g_free(ip->title);
-	g_free(ip->source);
-	g_free(ip->real_source_url);
-	g_free(ip->real_source_title);
-	g_free(ip->description);
-	g_free(ip->id);
-	g_assert(NULL == ip->tmpdata);	/* should be free after rendering */
-	metadata_list_free(ip->metadata);
+	g_free(item->title);
+	g_free(item->source);
+	g_free(item->real_source_url);
+	g_free(item->real_source_title);
+	g_free(item->description);
+	g_free(item->id);
+	g_assert(NULL == item->tmpdata);	/* should be free after rendering */
+	metadata_list_free(item->metadata);
 
-	g_free(ip);
+	g_free(item);
 }
 
 const gchar * item_get_base_url(itemPtr item) {
