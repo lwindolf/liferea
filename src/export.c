@@ -224,19 +224,25 @@ void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, nodeSourcePtr node
 	/* 2. determine node type */
 	typeStr = xmlGetProp(cur, BAD_CAST"type");
 	if(typeStr) {
+		debug1(DEBUG_VERBOSE, "-> node type tag found: \"%s\"\n", typeStr);
 		node_set_type(node, node_str_to_type(typeStr));
 		xmlFree(typeStr);
-	} else {
-		/* if the outline has no type it is propably a folder */
-		node_set_type(node, folder_get_node_type());
-		
-		/* but we better checked for a source URL */
+	} 
+	
+	/* if we didn't find a type attribute we use heuristics */
+	if(!node->type) {
+		/* check for a source URL */
 		if(NULL == (tmp = xmlGetProp(cur, BAD_CAST"xmlUrl")));
 			tmp = xmlGetProp(cur, BAD_CAST"xmlUrl");
 		
 		if(tmp) {
+			debug0(DEBUG_VERBOSE, "-> URL found assuming type feed");
 			node_set_type(node, feed_get_node_type());
 			xmlFree(tmp);
+		} else {
+			/* if the outline has no type and URL it just has to be a folder */
+			node_set_type(node, folder_get_node_type());
+			debug0(DEBUG_VERBOSE, "-> must be a folder");
 		}
 	}
 	

@@ -109,7 +109,7 @@ static nodeTypePtr node_get_type_impl(guint type) {
 void node_set_type(nodePtr node, nodeTypePtr type) {
 
 	node->nodeType = type;
-	node->type = type->type;
+	node->type = type?type->type:NODE_TYPE_INVALID;
 }
 
 void node_set_data(nodePtr node, gpointer data) {
