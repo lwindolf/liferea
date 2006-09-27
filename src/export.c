@@ -29,6 +29,7 @@
 #include <string.h>
 #include "folder.h"
 #include "callbacks.h"
+#include "common.h"
 #include "interface.h"
 #include "support.h"
 #include "debug.h"
@@ -306,6 +307,15 @@ gboolean import_OPML_feedlist(const gchar *filename, nodePtr parentNode, nodeSou
 				g_warning(_("Empty document! OPML document \"%s\" should not be empty when importing."), filename);
 			error = TRUE;
 		} else {
+			xmlNodePtr title = common_xpath_find(cur, "/opml/head/title"); 
+			if(title) {
+				xmlChar *titleStr = common_utf8_fix(xmlNodeListGetString(title->doc, title->xmlChildrenNode, 1));
+				if(titleStr) {
+					node_set_title(parentNode, titleStr);
+					xmlFree(titleStr);
+				}
+			}
+		
 			while(cur) {
 				if(!xmlIsBlankNode(cur)) {
 					if(!xmlStrcmp(cur->name, BAD_CAST"opml")) {
