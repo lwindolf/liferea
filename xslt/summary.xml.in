@@ -48,7 +48,7 @@
 </xsl:attribute>
 
 <!-- header table -->
-<table class="itemhead" cellspacing="0" cellpadding="0">
+<table class="feedhead" cellspacing="0" cellpadding="0">
 <tr>
   <td valign="middle" class="headleft">
     <xsl:if test="feeds/feed[1]/favicon">
