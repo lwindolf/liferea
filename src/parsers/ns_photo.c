@@ -31,14 +31,14 @@ static void parse_item_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 	gchar	*tmp, *thumbnail, *imgsrc;
 	
 	if(!xmlStrcmp("thumbnail", cur->name) || !xmlStrcmp("thumb", cur->name)) {
- 		if(NULL != (tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)))) {
+ 		if(NULL != (tmp = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)))) {
 			if(g_utf8_strlen(tmp, -1) > 0)
 	 			g_hash_table_insert(ctxt->item->tmpdata, "photo:thumbnail", tmp);
 			else
 				g_free(tmp);
 		}
 	} else if(!xmlStrcmp("imgsrc", cur->name)) {
- 		if(NULL != (tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)))) {
+ 		if(NULL != (tmp = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)))) {
 			if(g_utf8_strlen(tmp, -1) > 0)
 	 			g_hash_table_insert(ctxt->item->tmpdata, "photo:imgsrc", tmp);				
 			else

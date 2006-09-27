@@ -178,7 +178,7 @@ itemPtr item_parse_cache(xmlNodePtr cur, gboolean migrateCache) {
 	while(cur) {
 		
 		if(cur->type != XML_ELEMENT_NODE ||
-		   !(tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)))) {
+		   !(tmp = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)))) {
 			cur = cur->next;
 			continue;
 		}

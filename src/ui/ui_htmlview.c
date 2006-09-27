@@ -172,7 +172,7 @@ void ui_htmlview_write(GtkWidget *htmlview, const gchar *string, const gchar *ba
 		g_warning("Invalid encoded UTF8 buffer passed to HTML widget!");
 		
 		/* to prevent crashes inside the browser */
-		buffer = utf8_fix(buffer);
+		buffer = common_utf8_fix(buffer);
 		(htmlviewPlugin->write)(htmlview, buffer, strlen(buffer), baseURL, "application/xhtml+xml");
 		g_free(buffer);
 	} else {

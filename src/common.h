@@ -37,7 +37,7 @@ extern gboolean lifereaStarted;
    to ensure proper UTF8. doc points to the xml document and its encoding and
    string is a xmlChar pointer to the read string. The result gchar
    string is returned, the original XML string is freed. */
-gchar * utf8_fix(xmlChar * string);
+gchar * common_utf8_fix(xmlChar * string);
 
 /**
  * Parses the given string as a number.

@@ -207,6 +207,7 @@ static void opml_source_process_update_results(requestPtr request) {
 	nodePtr		node = (nodePtr)request->user_data;
 	mergeCtxtPtr	mergeCtxt;
 	xmlDocPtr	doc, oldDoc;
+	xmlNodePtr	root, title;
 	
 	debug1(DEBUG_UPDATE, "OPML download finished data=%d", request->data);
 
@@ -214,12 +215,13 @@ static void opml_source_process_update_results(requestPtr request) {
 
 	if(request->data) {
 		doc = common_parse_xml(request->data, request->size, FALSE, NULL);
-		if(doc) {		
+		if(doc) {
+			root = xmlDocGetRootElement(doc);
+			
 			/* Go through all existing nodes and remove those whose
 			   URLs are not in new feed list. Also removes those URLs
 			   from the list that have corresponding existing nodes. */
-			node_foreach_child_data(node, opml_source_check_for_removal, 
-			                        (gpointer)xmlDocGetRootElement(doc));
+			node_foreach_child_data(node, opml_source_check_for_removal, (gpointer)root);
 						
 			opml_source_export(node);	/* save new feed list tree to disk 
 			                                   to ensure correct document in 
@@ -233,8 +235,16 @@ static void opml_source_process_update_results(requestPtr request) {
 			mergeCtxt->parent = node;
 			mergeCtxt->xmlNode = xmlDocGetRootElement(oldDoc);
 			
-			common_xpath_foreach_match(xmlDocGetRootElement(doc),
-			                           "/opml/body/outline",
+			title = common_xpath_find(root, "/opml/head/title"); 
+			if(title) {
+				xmlChar *titleStr = common_utf8_fix(xmlNodeListGetString(title->doc, title->xmlChildrenNode, 1));
+				if(titleStr) {
+					node_set_title(node, titleStr);
+					xmlFree(titleStr);
+				}
+			}
+			
+			common_xpath_foreach_match(root, "/opml/body/outline",
 						   opml_source_merge_feed,
 						   (gpointer)mergeCtxt);
 

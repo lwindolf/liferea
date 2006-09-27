@@ -35,7 +35,7 @@ static void parse_item_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 	gchar	*tmp;
 	
 	if(!xmlStrcmp("screenshot_url", cur->name)) {
- 		if(tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))) {
+ 		if(tmp = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))) {
 			if(g_utf8_strlen(tmp, -1) > 0)
 				metadata_list_set(&(ctxt->item->metadata), "fmScreenshot", tmp);
 			g_free(tmp);

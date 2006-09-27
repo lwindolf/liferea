@@ -48,11 +48,11 @@ static void parse_item_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 	
 	if(!xmlStrcmp("source", cur->name)) {
 		sourceTag = TRUE;
-		g_hash_table_insert(ctxt->item->tmpdata, g_strdup("ag:source"), utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
+		g_hash_table_insert(ctxt->item->tmpdata, g_strdup("ag:source"), common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
 		
 	} else if(!xmlStrcmp("sourceURL", cur->name)) {  
 		sourceTag = TRUE;
-		g_hash_table_insert(ctxt->item->tmpdata, g_strdup("ag:sourceURL"), utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));	
+		g_hash_table_insert(ctxt->item->tmpdata, g_strdup("ag:sourceURL"), common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));	
 	}
 	
 	if(sourceTag) {
@@ -68,7 +68,7 @@ static void parse_item_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 	
 		metadata_list_set(&(ctxt->item->metadata), "agSource", tmp);
 	} else if(!xmlStrcmp("timestamp", cur->name)) {
-		if(tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))) {
+		if(tmp = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))) {
 			date = common_format_date(parseISO8601Date(tmp), _("%b %d %H:%M"));
 			metadata_list_set(&(ctxt->item->metadata), "agTimestamp", date);
 			g_free(date);

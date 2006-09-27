@@ -99,7 +99,7 @@ gchar * convertToHTML(gchar * string) { return string; } /* FIXME: BROKEN! retur
    
    The valid or a corrected string is returned. The original XML 
    string is modified (FIXME: not sure if this is good). */
-gchar * utf8_fix(xmlChar *string) {
+gchar * common_utf8_fix(xmlChar *string) {
 	const gchar	*invalid_offset;
 
 	if(NULL == string)
@@ -360,7 +360,7 @@ static gchar * unmarkupize(gchar *string, void(*parse)(gchar *string, result_buf
 	if(NULL == string)
 		return NULL;
 		
-	string = utf8_fix(string);
+	string = common_utf8_fix(string);
 
 	/* only do something if there are any entities or tags */
 	if(NULL == (strpbrk(string, "&<>")))
@@ -409,7 +409,7 @@ static void common_buffer_parse_error(void *ctxt, const gchar * msg, ...) {
 		va_end(params);
 
 		g_assert(NULL != newmsg);
-		newmsg = utf8_fix(newmsg);
+		newmsg = common_utf8_fix(newmsg);
 		tmp = g_markup_escape_text(newmsg, -1);
 		g_free(newmsg);
 		newmsg = tmp;

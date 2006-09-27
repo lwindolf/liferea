@@ -676,7 +676,7 @@ itemSetPtr feed_load_from_cache(nodePtr node) {
 
 		cur = cur->xmlChildrenNode;
 		while(cur) {
-			gchar *tmp = utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1));
+			gchar *tmp = common_utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1));
 
 			if(!tmp) {
 				cur = cur->next;

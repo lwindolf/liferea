@@ -154,7 +154,7 @@ static void parse_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur, gboolean isFeedTag
 	/* special handling for the ISO 8601 date item tags */
 	if(!isFeedTag) {
 		if(!xmlStrcmp((const xmlChar *)"date", cur->name)) {
- 			if(date = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))) {
+ 			if(date = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))) {
 				i = parseISO8601Date(date);
 				ctxt->item->time = i;
 				g_free(date);
@@ -166,7 +166,7 @@ static void parse_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur, gboolean isFeedTag
 	/* compare with each possible tag name */
 	for(i = 0; taglist[i] != NULL; i++) {
 		if(!xmlStrcmp((const xmlChar *)taglist[i], cur->name)) {
- 			value = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+ 			value = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 	 		if(NULL != value) {
 				/* check if value consist of whitespaces only */				
 				for(j = 0, tmp = value, isNotEmpty = FALSE; j < g_utf8_strlen(value, -1); j++) {

@@ -58,7 +58,7 @@ static gchar * parse_tag(xmlNodePtr cur) {
 	gchar	*buffer = NULL, *tmp;
 	
  	if(!xmlStrcmp("license", cur->name)) {
- 		if(NULL != (tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)))) {
+ 		if(NULL != (tmp = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)))) {
 			/* RSS 2.0 module handling */
 			buffer = g_strdup_printf("<a href=\"%s\">%s</a>", tmp, tmp);
 			g_free(tmp);

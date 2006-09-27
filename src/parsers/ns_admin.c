@@ -43,7 +43,7 @@
 static void parse_channel_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 	gchar	*value;
 	
-	value = utf8_fix(xmlGetProp(cur, "resource"));	
+	value = common_utf8_fix(xmlGetProp(cur, "resource"));	
 	
 	if(!xmlStrcmp("errorReportsTo", cur->name))
 		metadata_list_set(&(ctxt->feed->metadata), "errorReportsTo", value);

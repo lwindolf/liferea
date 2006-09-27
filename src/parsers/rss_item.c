@@ -80,21 +80,21 @@ itemPtr parseRSSItem(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 		
 		/* check for metadata tags */
 		if(tmp2 = g_hash_table_lookup(RssToMetadataMapping, cur->name)) {
-			if(tmp3 = utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE))) {
+			if(tmp3 = common_utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE))) {
 				ctxt->item->metadata = metadata_list_append(ctxt->item->metadata, tmp2, tmp3);
 				g_free(tmp3);
 			}
 		}
 		/* check for specific tags */
 		else if(!xmlStrcmp(cur->name, BAD_CAST"pubDate")) {
- 			if(tmp = utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1))) {
+ 			if(tmp = common_utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1))) {
 				ctxt->item->time = parseRFC822Date(tmp);
 				g_free(tmp);
 			}
 		} 
 		else if(!xmlStrcmp(cur->name, BAD_CAST"enclosure")) {
 			/* RSS 0.93 allows multiple enclosures */
-			if(tmp = utf8_fix(xmlGetProp(cur, BAD_CAST"url"))) {
+			if(tmp = common_utf8_fix(xmlGetProp(cur, BAD_CAST"url"))) {
 				if((strstr(tmp, "://") == NULL) &&
 				   (ctxt->feed->htmlUrl != NULL) &&
 				   (ctxt->feed->htmlUrl[0] != '|') &&
@@ -124,19 +124,19 @@ itemPtr parseRSSItem(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 			}
 		}
 		else if(!xmlStrcmp(cur->name, BAD_CAST"title")) {
- 			if(tmp = unhtmlize(utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE)))) {
+ 			if(tmp = unhtmlize(common_utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE)))) {
 				item_set_title(ctxt->item, tmp);
 				g_free(tmp);
 			}
 		}
 		else if(!xmlStrcmp(cur->name, BAD_CAST"link")) {
- 			if(tmp = unhtmlize(utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE)))) {
+ 			if(tmp = unhtmlize(common_utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE)))) {
 				item_set_source(ctxt->item, tmp);
 				g_free(tmp);
 			}
 		}
 		else if(!xmlStrcmp(cur->name, BAD_CAST"description")) {
- 			if(tmp = utf8_fix(extractHTMLNode(cur, 0, NULL))) {
+ 			if(tmp = common_utf8_fix(extractHTMLNode(cur, 0, NULL))) {
 				/* don't overwrite content:encoded descriptions... */
 				if(!item_get_description(ctxt->item))
 					item_set_description(ctxt->item, tmp);
@@ -144,11 +144,11 @@ itemPtr parseRSSItem(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 			}
 		}
 		else if(!xmlStrcmp(cur->name, BAD_CAST"source")) {
-			if(tmp = utf8_fix(xmlGetProp(cur, BAD_CAST"url"))) {
+			if(tmp = common_utf8_fix(xmlGetProp(cur, BAD_CAST"url"))) {
 				item_set_real_source_url(ctxt->item, tmp);
 				g_free(tmp);
 			}
-			if(tmp = unhtmlize(utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1)))) {
+			if(tmp = unhtmlize(common_utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1)))) {
 				item_set_real_source_title(ctxt->item, tmp);
 				g_free(tmp);
 			}

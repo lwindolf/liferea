@@ -48,11 +48,11 @@ static void parse_item_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 	gchar	*tmp = NULL, *section, *department;
 	
 	if(!xmlStrcmp(BAD_CAST"section", cur->name)) {
-		if(NULL != (tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))))
+		if(NULL != (tmp = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))))
  			g_hash_table_insert(ctxt->item->tmpdata, "slash:section", tmp);
 			
 	} else if(!xmlStrcmp(BAD_CAST"department", cur->name)) {
-		if(NULL != (tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))))
+		if(NULL != (tmp = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))))
  			g_hash_table_insert(ctxt->item->tmpdata, "slash:department", tmp);
 	}
 	

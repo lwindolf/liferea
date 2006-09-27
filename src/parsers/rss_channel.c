@@ -90,40 +90,40 @@ static void parseChannel(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 			
 		/* Check for metadata tags */
 		if(NULL != (tmp2 = g_hash_table_lookup(RssToMetadataMapping, cur->name))) {
-			if(NULL != (tmp3 = utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE)))) {
+			if(NULL != (tmp3 = common_utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE)))) {
 				ctxt->feed->metadata = metadata_list_append(ctxt->feed->metadata, tmp2, tmp3);
 				g_free(tmp3);
 			}
 		}	
 		/* check for specific tags */
 		else if(!xmlStrcmp(cur->name, BAD_CAST"pubDate")) {
- 			if(NULL != (tmp = utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1)))) {
+ 			if(NULL != (tmp = common_utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1)))) {
 				ctxt->feed->metadata = metadata_list_append(ctxt->feed->metadata, "pubDate", tmp);
 				ctxt->feed->time = parseRFC822Date(tmp);
 				g_free(tmp);
 			}
 		} 
 		else if(!xmlStrcmp(cur->name, BAD_CAST"ttl")) {
- 			if(NULL != (tmp = utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE)))) {
+ 			if(NULL != (tmp = common_utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE)))) {
 				feed_set_default_update_interval(ctxt->feed, atoi(tmp));
 				feed_set_update_interval(ctxt->feed, atoi(tmp));
 				g_free(tmp);
 			}
 		}
 		else if(!xmlStrcmp(cur->name, BAD_CAST"title")) {
- 			if(NULL != (tmp = unhtmlize(utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE))))) {
+ 			if(NULL != (tmp = unhtmlize(common_utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE))))) {
 				node_set_title(ctxt->node, tmp);
 				g_free(tmp);
 			}
 		}
 		else if(!xmlStrcmp(cur->name, BAD_CAST"link")) {
- 			if(NULL != (tmp = unhtmlize(utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE))))) {
+ 			if(NULL != (tmp = unhtmlize(common_utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE))))) {
 				feed_set_html_url(ctxt->feed, tmp);
 				g_free(tmp);
 			}
 		}
 		else if(!xmlStrcmp(cur->name, BAD_CAST"description")) {
- 			if(NULL != (tmp = utf8_fix(extractHTMLNode(cur, 0, NULL)))) {
+ 			if(NULL != (tmp = common_utf8_fix(extractHTMLNode(cur, 0, NULL)))) {
 				feed_set_description(ctxt->feed, tmp);
 				g_free(tmp);
 			}
@@ -149,10 +149,10 @@ static gchar* parseTextInput(xmlNodePtr cur) {
 				tiDescription = extractHTMLNode(cur, 0, NULL);
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"name")) {
 				g_free(tiName);
-				tiName = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+				tiName = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"link")) {
 				g_free(tiLink);
-				tiLink = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+				tiLink = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 			}
 		}
 		cur = cur->next;
@@ -189,7 +189,7 @@ static gchar* parseImage(xmlNodePtr cur) {
 	while (cur != NULL) {
 		if (cur->type == XML_ELEMENT_NODE) {
 			if (!xmlStrcmp(cur->name, BAD_CAST"url")) {
-				tmp = utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+				tmp = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 				if(NULL != tmp) {
 					return tmp;
 				}

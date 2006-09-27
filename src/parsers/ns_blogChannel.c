@@ -60,22 +60,22 @@ static GString * getOutlineContents(xmlNodePtr cur) {
 	
 	buffer = g_string_new(NULL);
 
-	if(NULL != (value = utf8_fix(xmlGetProp(cur, BAD_CAST"text")))) {
+	if(NULL != (value = common_utf8_fix(xmlGetProp(cur, BAD_CAST"text")))) {
 		g_string_append(buffer, value);
 		g_free(value);
 	}
 	
-	if(NULL != (value = utf8_fix(xmlGetProp(cur, BAD_CAST"url")))) {
+	if(NULL != (value = common_utf8_fix(xmlGetProp(cur, BAD_CAST"url")))) {
 		g_string_append_printf(buffer, "&nbsp;<a href=\"%s\">%s</a>", value, value);
 		g_free(value);
 	}
 
-	if(NULL != (value = utf8_fix(xmlGetProp(cur, BAD_CAST"htmlUrl")))) {
+	if(NULL != (value = common_utf8_fix(xmlGetProp(cur, BAD_CAST"htmlUrl")))) {
 		g_string_append_printf(buffer, "&nbsp;(<a href=\"%s\">HTML</a>)", value);
 		g_free(value);
 	}
 			
-	if(NULL != (value = utf8_fix(xmlGetProp(cur, BAD_CAST"xmlUrl")))) {
+	if(NULL != (value = common_utf8_fix(xmlGetProp(cur, BAD_CAST"xmlUrl")))) {
 		g_string_append_printf(buffer, "&nbsp;(<a href=\"%s\">XML</a>)", value);
 		g_free(value);
 	}		
