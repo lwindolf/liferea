@@ -2607,6 +2607,7 @@ create_searchenginedialog (void)
   searchkeywords = gtk_entry_new ();
   gtk_widget_show (searchkeywords);
   gtk_box_pack_start (GTK_BOX (hbox23), searchkeywords, TRUE, TRUE, 0);
+  GTK_WIDGET_SET_FLAGS (searchkeywords, GTK_CAN_DEFAULT);
   gtk_tooltips_set_tip (tooltips, searchkeywords, _("enter any search string you want"), NULL);
   gtk_entry_set_activates_default (GTK_ENTRY (searchkeywords), TRUE);
 

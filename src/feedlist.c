@@ -338,6 +338,14 @@ static void feedlist_update_vfolder_count(nodePtr node) {
 		ui_node_update(node);
 }
 
+/* This method is used to initially set the expansion
+   state of all nodes in the feed list */
+static void feedlist_expand_folder(nodePtr node) {
+
+	if(node->expanded)
+		ui_node_set_expansion(node, TRUE);
+}
+
 void feedlist_init(void) {
 
 	debug_enter("feedlist_init");
@@ -361,6 +369,7 @@ void feedlist_init(void) {
 	   automatically load all vfolders */
 	feedlist_foreach(node_initial_load);
 	feedlist_foreach(feedlist_update_vfolder_count);
+	feedlist_foreach(feedlist_expand_folder);
 	
 	notification_enable(getBooleanConfValue(SHOW_POPUP_WINDOWS));
 

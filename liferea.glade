@@ -5924,6 +5924,7 @@
 		<widget class="GtkEntry" id="searchkeywords">
 		  <property name="visible">True</property>
 		  <property name="tooltip" translatable="yes">enter any search string you want</property>
+		  <property name="can_default">True</property>
 		  <property name="can_focus">True</property>
 		  <property name="editable">True</property>
 		  <property name="visibility">True</property>
