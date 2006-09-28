@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Liferea 0.9.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-09-20 00:53+0200\n"
-"PO-Revision-Date: 2006-09-24 18:36+0100\n"
+"PO-Revision-Date: 2006-09-28 21:40+0100\n"
 "Last-Translator: Lars Lindner <lars.lindner@gmx.net>\n"
 "Language-Team: German\n"
 "MIME-Version: 1.0\n"
@@ -575,9 +575,8 @@ msgid "_Don't use proxy for download"
 msgstr "_Proxy beim Download nicht nutzen"
 
 #: ../src/interface.c:612
-#, fuzzy
 msgid "Download"
-msgstr "_Herunterladen mit:"
+msgstr "Download"
 
 #: ../src/interface.c:621
 msgid "_Automatically download all enclosures of this feed."
@@ -588,9 +587,8 @@ msgid "Auto-_load item link in internal browser when reading articles."
 msgstr "_Automatisches Laden des Links der ausgewählten Schlagzeile."
 
 #: ../src/interface.c:629
-#, fuzzy
 msgid "Advanced"
-msgstr "Erweitert..."
+msgstr "Advanced"
 
 #: ../src/interface.c:782
 #: ../src/interface.c:3472
@@ -599,9 +597,8 @@ msgid "New Subscription"
 msgstr "Neues Abonnement"
 
 #: ../src/interface.c:878
-#, fuzzy
 msgid "<b>Download / Postprocessing</b>"
-msgstr "<b>In Bearbeitung</b>"
+msgstr "<b>Download / Postprocessing</b>"
 
 #: ../src/interface.c:892
 msgid "_Dont use proxy for download"
@@ -1141,39 +1138,35 @@ msgstr "Erweitert..."
 #: ../src/interface.c:3595
 #: ../src/ui/ui_mainwindow.c:785
 msgid "Script Manager"
-msgstr ""
+msgstr "Script Manager"
 
 #: ../src/interface.c:3611
-#, fuzzy
 msgid "<b>Hook</b>"
-msgstr "<b>%s</b>"
+msgstr "<b>Hook</b>"
 
 #: ../src/interface.c:3633
-#, fuzzy
 msgid "<b>Registered Scripts</b>"
-msgstr "<b>Quelle des Abonnements</b>"
+msgstr "<b>Registrierte Skripte</b>"
 
 #: ../src/interface.c:3662
 msgid "<b>Script Code</b>"
-msgstr ""
+msgstr "<b>Script Code</b>"
 
 #: ../src/interface.c:3734
-#, fuzzy
 msgid "Exec Command"
-msgstr "_Kommando"
+msgstr "Kommando ausführen"
 
 #: ../src/interface.c:3824
 msgid "Add Script"
-msgstr ""
+msgstr "Neues Skript"
 
 #: ../src/interface.c:3849
 msgid "Reuse existing script"
-msgstr ""
+msgstr "Bestehendes Skript nutzen"
 
 #: ../src/interface.c:3857
-#, fuzzy
 msgid "Create new script"
-msgstr "Neues Such-Feed anlegen."
+msgstr "Neues Skript"
 
 #. @translators: localize this format string to change the
 #. date format in HTML output
@@ -1249,7 +1242,7 @@ msgstr "  --debug-verbose  Gibt ausführliche Debug-Meldungen aus"
 
 #: ../src/main.c:144
 msgid "Liferea seems to be running already!"
-msgstr ""
+msgstr "Liferea scheint bereits zu laufen!"
 
 #: ../src/main.c:210
 #, c-format
@@ -1550,7 +1543,7 @@ msgstr "Eine Liste aller zur Zeit laufenden Feed-Updates anzeigen."
 
 #: ../src/ui/ui_mainwindow.c:785
 msgid "Allows to configure and edit LUA hook scripts"
-msgstr ""
+msgstr "Erlaubt das Konfigurieren und Editieren von LUA Hook Scripts"
 
 #: ../src/ui/ui_mainwindow.c:787
 msgid "_Quit"
@@ -1665,9 +1658,8 @@ msgid "_Search"
 msgstr "_Suche"
 
 #: ../src/ui/ui_mainwindow.c:817
-#, fuzzy
 msgid "Search All Feeds..."
-msgstr "Alle Abonnements durchsuchen"
+msgstr "Alle Feeds durchsuchen..."
 
 #: ../src/ui/ui_mainwindow.c:817
 msgid "Show the search dialog."
