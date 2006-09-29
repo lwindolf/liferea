@@ -17,7 +17,7 @@ URL=$1
 
 if ! which dbus-send >/dev/null 2>&1; then
 	echo "Unable to locate the 'dbus-send' tool."
-	echo "You need to have DBUS installed!"
+	echo "You need DBUS installed!"
 	exit 1
 fi
 
