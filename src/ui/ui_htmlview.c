@@ -197,8 +197,9 @@ void ui_htmlview_clear(GtkWidget *htmlview) {
 
 gboolean ui_htmlview_is_special_url(const gchar *url) {
 
-	/* match against all special protocols... */
-	if(url == strstr(url, ENCLOSURE_PROTOCOL))
+	/* match against all special protocols, simple
+	   convention: all have to start with "liferea-" */
+	if(url == strstr(url, "liferea-"))
 		return TRUE;
 	
 	return FALSE;
@@ -217,9 +218,19 @@ void ui_htmlview_launch_URL(GtkWidget *htmlview, const gchar *url, gint launchTy
 		  launchType);
 		  
 	/* first catch all links with special URLs... */
-	if(url == strstr(url, ENCLOSURE_PROTOCOL)) {
-		ui_enclosure_new_popup(url);
-		return;
+	if(url == strstr(url, "liferea-")) {
+		if(url == strstr(url, ENCLOSURE_PROTOCOL)) {
+			ui_enclosure_new_popup(url);
+			return;
+		}
+		if(url == strstr(url, TAG_PROTOCOL)) {
+			// FIXME:
+			return;
+		}
+		if(url == strstr(url, BOOKMARK_PROTOCOL)) {
+			on_html_social_bm_item_selected(url);
+			return;
+		}
 	}
 	
 	if((launchType == UI_HTMLVIEW_LAUNCH_INTERNAL || getBooleanConfValue(BROWSE_INSIDE_APPLICATION)) &&

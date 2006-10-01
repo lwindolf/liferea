@@ -23,8 +23,6 @@
 
 #include <gtk/gtk.h>
  
-#define ENCLOSURE_PROTOCOL "liferea-enclosure://"
-
 typedef struct encType {
 	gchar		*mime;		/* either mime or extension is set */
 	gchar		*extension;

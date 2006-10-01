@@ -279,7 +279,7 @@ static void ui_popup_delete(gpointer callback_data, guint callback_action, GtkWi
 
 /** 
  * Generates popup menus for the feed list depending on the
- * type parameter. The node will be passed as a callback_data.
+ * node type. The node will be passed as a callback_data.
  */
 static GtkMenu *ui_popup_node_menu(nodePtr node, gboolean validSelection) {
 	GtkItemFactoryEntry	*menu_items = NULL;

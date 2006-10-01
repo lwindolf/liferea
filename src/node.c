@@ -34,6 +34,7 @@
 #include "support.h"
 #include "fl_sources/node_source.h"
 
+static GHashTable *nodes = NULL;
 static GSList *nodeTypes = NULL;
 
 void node_type_register(nodeTypePtr nodeType) {
@@ -79,9 +80,15 @@ gchar * node_new_id() {
 	return id;
 }
 
+nodePtr node_from_id(const gchar *id) {
+
+	g_assert(NULL != nodes);
+	return (nodePtr)g_hash_table_lookup(nodes, id);
+}
+
 nodePtr node_new(void) {
 	nodePtr	node;
-
+	
 	node = (nodePtr)g_new0(struct node, 1);
 	node->id = node_new_id();
 	node->sortColumn = IS_TIME;
@@ -89,6 +96,11 @@ nodePtr node_new(void) {
 	node->available = TRUE;
 	node->type = NODE_TYPE_INVALID;
 	node_set_icon(node, NULL);	/* initialize favicon file name */
+	
+	if(!nodes)
+		nodes = g_hash_table_new(g_str_hash, g_str_equal);
+		
+	g_hash_table_insert(nodes, node->id, node);
 
 	return node;
 }
@@ -145,6 +157,8 @@ gboolean node_is_ancestor(nodePtr node1, nodePtr node2) {
 void node_free(nodePtr node) {
 
 	g_assert(NULL == node->children);
+	
+	g_hash_table_remove(nodes, node);
 	
 	update_cancel_requests((gpointer)node);
 

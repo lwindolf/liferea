@@ -27,6 +27,10 @@
 #include <gtk/gtk.h>
 #include "plugin.h"
 
+#define ENCLOSURE_PROTOCOL	"liferea-enclosure://"
+#define TAG_PROTOCOL		"liferea-tag://"
+#define BOOKMARK_PROTOCOL	"liferea-bookmark://"
+
 #define HTMLVIEW_PLUGIN_API_VERSION 10
 
 typedef struct htmlviewPlugin {

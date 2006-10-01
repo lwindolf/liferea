@@ -86,6 +86,8 @@ nodePtr itemlist_get_displayed_node(void) {
 		return NULL;
 }
 
+itemSetPtr itemlist_get_displayed_itemset(void) { return displayed_itemSet; }
+
 /* called when unselecting the item or unloading the item list */
 static void itemlist_check_for_deferred_action(void) {
 	itemPtr item;

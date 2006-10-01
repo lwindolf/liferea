@@ -5,6 +5,9 @@
 	* Simple news bin support. You can create news
 	  bins and add items from the item list context
 	  menu. Items in news bins are kept permanently.
+	* HTML based item menu in combined mode. This
+	  allows social bookmarking from combined mode
+	  too.
 	* Now removing <script> tags from HTML metadata.
 	  This makes Liferea comply with more of the
 	  snellspace.com aggregator security tests

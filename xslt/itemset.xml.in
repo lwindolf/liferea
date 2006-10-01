@@ -65,7 +65,7 @@ function doShowCb(id) {
 function doShow(id) {
 
 	window.clearTimeout(popupTimeout);
-	popupTimeout = window.setTimeout("doShowCb('"+id+"')", 2000);
+	popupTimeout = window.setTimeout("doShowCb('"+id+"')", 1000);
 }
 
 function stopShow() {
@@ -250,7 +250,7 @@ function stopShow() {
 <!-- Tagging link -->
 <xsl:element name="a">
   <xsl:attribute name="class">bookmark</xsl:attribute>
-  <xsl:attribute name="href">liferea-tag://<xsl:value-of select="nr"/></xsl:attribute>
+  <xsl:attribute name="href">liferea-tag://<xsl:value-of select="sourceId"/>-<xsl:value-of select="nr"/></xsl:attribute>
   <xsl:element name="img">
     <xsl:attribute name="border">0</xsl:attribute>
     <xsl:attribute name="class">tagbtn</xsl:attribute>
@@ -262,7 +262,7 @@ function stopShow() {
 <!-- Bookmarking link -->
 <xsl:element name="a">
   <xsl:attribute name="class">bookmark</xsl:attribute>
-  <xsl:attribute name="href">liferea-bookmark://<xsl:value-of select="nr"/></xsl:attribute>
+  <xsl:attribute name="href">liferea-bookmark://<xsl:value-of select="sourceId"/>-<xsl:value-of select="nr"/></xsl:attribute>
   <xsl:element name="img">
     <xsl:attribute name="border">0</xsl:attribute>
     <xsl:attribute name="class">bookmarkbtn</xsl:attribute>

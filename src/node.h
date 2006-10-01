@@ -135,6 +135,13 @@ void node_type_register(nodeTypePtr nodeType);
 nodePtr node_new(void);
 
 /**
+ * Node lookup by node id.
+ *
+ * @returns the node with the given id (or NULL)
+ */
+nodePtr node_from_id(const gchar *id);
+
+/**
  * Sets a nodes parent and updates the feed list. If no
  * parent node is given the parent node of the currently
  * selected feed or the selected folder will be used.

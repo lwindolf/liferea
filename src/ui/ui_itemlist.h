@@ -242,6 +242,8 @@ void on_popup_social_bm_item_selected(void);
 
 void on_popup_social_bm_link_selected(gpointer selectedUrl, guint callback_action, GtkWidget *widget);
 
+void on_html_social_bm_item_selected(const gchar *url);
+
 /*@}*/
 
 #endif

@@ -674,16 +674,43 @@ void on_popup_copy_URL_clipboard(void) {
 		ui_mainwindow_set_status_bar(_("No item has been selected"));
 }
 
-void on_popup_social_bm_item_selected(void) {
-	itemPtr         ip;
+static void ui_itemlist_launch_social_site(itemPtr item) {
 
-	if(NULL != (ip = itemlist_get_selected())) {
-		gchar *url = social_get_url(item_get_source(ip), item_get_title(ip));
+	if(item) {
+		gchar *url = social_get_url(item_get_source(item), item_get_title(item));
 		ui_htmlview_launch_URL(ui_mainwindow_get_active_htmlview(), url, 1);
 		g_free(url);
 	} else {
 		ui_mainwindow_set_status_bar(_("No item has been selected"));
 	}
+}
+
+void on_popup_social_bm_item_selected(void) {
+
+	ui_itemlist_launch_social_site(itemlist_get_selected());
+}
+
+void on_html_social_bm_item_selected(const gchar *url) {
+	itemPtr         item = NULL;
+	gchar		*nodeid, *itemid;
+	
+	nodeid = strstr(url, "://");
+	if(nodeid) {
+		nodeid += 3;
+g_print("nodeid=%s\n", nodeid);
+		itemid = nodeid;
+		itemid = strchr(nodeid, '-');
+		if(itemid) {
+			*itemid = 0;
+			itemid++;
+g_print("nodeid=%s\n", nodeid);
+g_print("itemid=%s\n", itemid);
+			item = itemset_lookup_item(itemlist_get_displayed_itemset(), 
+			                           node_from_id(nodeid), 
+			                           atol(itemid));
+		}
+	}
+	ui_itemlist_launch_social_site(item);	
 }
 
 void on_popup_social_bm_link_selected(gpointer selectedUrl, guint callback_action, GtkWidget *widget) {

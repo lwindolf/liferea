@@ -99,7 +99,7 @@ gchar * itemset_render(itemSetPtr itemSet);
  *
  * @param itemSet	the itemset
  * @param node		the parent node
- * @param nr		the item id
+ * @param nr		the item nr
  *
  * @returns NULL or the first found item
  */
