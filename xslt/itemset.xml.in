@@ -248,25 +248,28 @@ function stopShow() {
 <!-- for comment link and search engine link -->
    
 <!-- Tagging link -->
-<a class="tag" href="liferea-tag://FIXME">
+<xsl:element name="a">
+  <xsl:attribute name="class">bookmark</xsl:attribute>
+  <xsl:attribute name="href">liferea-tag://<xsl:value-of select="nr"/></xsl:attribute>
   <xsl:element name="img">
     <xsl:attribute name="border">0</xsl:attribute>
     <xsl:attribute name="class">tagbtn</xsl:attribute>
     <xsl:attribute name="src"><xsl:value-of select="$pixmapsDir"/>tag.png</xsl:attribute>
   </xsl:element>
   <_span>add tag</_span>
-</a>
-<!-- FIXME show existing tags -->
+</xsl:element>
 
 <!-- Bookmarking link -->
-<a class="bookmark" href="liferea-bookmark://FIXME">
+<xsl:element name="a">
+  <xsl:attribute name="class">bookmark</xsl:attribute>
+  <xsl:attribute name="href">liferea-bookmark://<xsl:value-of select="nr"/></xsl:attribute>
   <xsl:element name="img">
     <xsl:attribute name="border">0</xsl:attribute>
     <xsl:attribute name="class">bookmarkbtn</xsl:attribute>
     <xsl:attribute name="src"><xsl:value-of select="$pixmapsDir"/>bookmark.png</xsl:attribute>
   </xsl:element>
   <_span>bookmark</_span>
-</a>
+</xsl:element>
 
 <!-- Comments link -->
 <xsl:if test="attributes/attribute[ @name = 'commentsUri' ]">
