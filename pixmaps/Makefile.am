@@ -18,7 +18,10 @@ EXTRA_DIST = \
 	arrow.png	\
 	liferea.png	\
 	fl_opml.png	\
-	newsbin.png
+	newsbin.png	\
+	comments.png	\
+	bookmark.png	\
+	tag.png
 
 lifereadistpixdir = $(datadir)/$(PACKAGE)/pixmaps
 lifereadistpix_DATA = $(EXTRA_DIST)

@@ -85,7 +85,9 @@ table.itemhead * td {
 table.itemhead * a, table.feedhead * a {
 	text-decoration:none;
 	color:black;
-	font-weight:bold;
+	font-weight:bold;	
+	position:relative;
+	top:1px;
 }
 
 td.headleft {
@@ -111,6 +113,42 @@ table.headmeta td {
 	font-size:0.8em;
 }
 
+.itemmenutable {
+	visibility:hidden;
+	display:none;
+}
+
+.itemmenu {
+	margin:0;
+	padding:0;
+}
+
+.itemmenu a {
+	text-decoration:none;
+	color:#777;
+}
+
+.itemmenu a:hover {
+	color:#333;
+}
+
+.itemmenu * span {
+	font-size:11px;
+	font-family:sans-serif;
+	padding:0;
+	margin:0;
+	position:relative; 
+	top:-3px;
+}
+
+.itemmenu * img {
+	padding:0;
+	margin:0;
+	height:16px;
+	position:relative; 
+	top:1px;
+}
+
 .author, .categories, .source {
         padding:0;
 	margin-left:0;
@@ -124,7 +162,7 @@ table.headmeta td {
 	padding-right:5px;
 }
 
-div.content, div.foottext {
+div.content {
 	padding:0px 6px 0px 12px;
 }
 
@@ -138,15 +176,17 @@ a.favicon {
 
 a.favicon img {
 	width:16px;
-
 	border:0;
 	margin:0;
+	padding:0;
+	position:relative;
+	top:1px;
 }
 
 /* styles to realize shading of new items in condensed mode */
-.itemshaded { background:#ffe;padding:1px;}
+.itemshaded { background:#ffe; padding:1px; margin:0; }
 
-.itemunshaded { padding:1px;}
+.itemunshaded { padding:1px; margin:0; }
 
 li.summaryshaded, li.summaryunshaded { 
 	padding:0px 6px; 

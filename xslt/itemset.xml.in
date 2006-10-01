@@ -38,6 +38,42 @@
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
 ##STYLE_INSERT##
+
+<script language="javascript" type="text/javascript">
+
+var popupTimeout;
+var lastId;
+
+function doShowCb(id) {
+
+	/* hide last id */
+	var obj = document.getElementById(lastId);
+	if(obj) {
+		obj.style.visibility = "hidden";
+		obj.style.display = "none";
+	}
+	
+	/* show new id */
+	obj = document.getElementById(id);
+	if(obj) {
+		obj.style.visibility = "visible";
+		obj.style.display = "block";
+		lastId = id;
+	}
+}
+
+function doShow(id) {
+
+	window.clearTimeout(popupTimeout);
+	popupTimeout = window.setTimeout("doShowCb('"+id+"')", 2000);
+}
+
+function stopShow() {
+
+	window.clearTimeout(popupTimeout);
+}
+
+</script>
 </head>
 <body>
 
@@ -60,11 +96,26 @@
 
 <xsl:template name="item">
 <xsl:variable name="sourceId" select="sourceId"/>
+
+<!-- the item -->
+<xsl:element name="div">
+
+<!-- entering header starts delayed show of the item menu -->
+<xsl:attribute name="onmouseover">
+<xsl:text disable-output-escaping='yes'>doShow('</xsl:text>
+<xsl:value-of select="sourceId"/>-<xsl:value-of select="nr"/>
+<xsl:text disable-output-escaping='yes'>');</xsl:text>
+</xsl:attribute>
+
+<!-- leaving header stops show counter -->
+<xsl:attribute name="onmouseout">stopShow();</xsl:attribute>
+
 <!-- header table -->
 <xsl:element name="table">
 <xsl:attribute name="class">itemhead <xsl:if test="mark = '0'">un</xsl:if>flagged</xsl:attribute>
 <xsl:attribute name="cellspacing">0</xsl:attribute>
 <xsl:attribute name="cellpadding">0</xsl:attribute>
+
 <tr>
   <td valign="middle" class="headleft">
     <!-- Feed link as favicon -->
@@ -183,57 +234,86 @@
  </td>
 </tr>
 </xsl:if>
-</table>
+</table> <!-- header metadata -->
+
+<xsl:element name="table">
+<!-- construct unique id to allow Javascript showing/hiding of itemmenu -->
+<xsl:attribute name="id"><xsl:value-of select="sourceId"/>-<xsl:value-of select="nr"/></xsl:attribute>
+<xsl:attribute name="class">headmeta itemmenutable</xsl:attribute>
+<xsl:attribute name="cellspacing">0</xsl:attribute>
+<xsl:attribute name="cellpadding">0</xsl:attribute>
+<tr>
+ <td class='itemmenu'> 
+
+<!-- for comment link and search engine link -->
+   
+<!-- Tagging link -->
+<a class="tag" href="liferea-tag://FIXME">
+  <xsl:element name="img">
+    <xsl:attribute name="border">0</xsl:attribute>
+    <xsl:attribute name="class">tagbtn</xsl:attribute>
+    <xsl:attribute name="src"><xsl:value-of select="$pixmapsDir"/>tag.png</xsl:attribute>
+  </xsl:element>
+  <_span>add tag</_span>
+</a>
+<!-- FIXME show existing tags -->
+
+<!-- Bookmarking link -->
+<a class="bookmark" href="liferea-bookmark://FIXME">
+  <xsl:element name="img">
+    <xsl:attribute name="border">0</xsl:attribute>
+    <xsl:attribute name="class">bookmarkbtn</xsl:attribute>
+    <xsl:attribute name="src"><xsl:value-of select="$pixmapsDir"/>bookmark.png</xsl:attribute>
+  </xsl:element>
+  <_span>bookmark</_span>
+</a>
+
+<!-- Comments link -->
+<xsl:if test="attributes/attribute[ @name = 'commentsUri' ]">
+  <xsl:element name="a">
+    <xsl:attribute name="href">
+      <xsl:attribute name="class">comments</xsl:attribute>
+      <xsl:value-of select="attributes/attribute[ @name = 'commentsUri' ]"/>
+    </xsl:attribute>
+    <xsl:element name="img">
+      <xsl:attribute name="border">0</xsl:attribute>
+      <xsl:attribute name="class">commentsbtn</xsl:attribute>
+      <xsl:attribute name="src"><xsl:value-of select="$pixmapsDir"/>comments.png</xsl:attribute>
+    </xsl:element>
+    <_span>comments</_span>
+  </xsl:element>
+</xsl:if>
+
+<!-- Technorati link -->
+<xsl:element name="a">
+  <xsl:attribute name="class">technorati</xsl:attribute>
+  <xsl:attribute name="href">http://www.technorati.com/cosmos/search.html?url=<xsl:value-of select="source"/></xsl:attribute>
+  <xsl:element name="img">
+    <xsl:attribute name="class">technoratibtn</xsl:attribute>
+    <xsl:attribute name="border">0</xsl:attribute>
+    <xsl:attribute name="alt">[Technorati]</xsl:attribute>
+    <xsl:attribute name="src"><xsl:value-of select="$pixmapsDir"/>technorati.png</xsl:attribute>
+  </xsl:element>
+  <_span>search</_span>
+</xsl:element>
+
+ </td><!-- end of comment and search engine link -->
+</tr>
+</xsl:element> <!-- itemmenutable -->
 
 <!-- start of content -->
-<xsl:element name="div">
+<xsl:element name="p">
+
 <xsl:attribute name="class">
   <xsl:if test="readStatus = '0'">itemshaded</xsl:if>
   <xsl:if test="readStatus != '0'">itemunshaded</xsl:if>
 </xsl:attribute>
 <div class='content'>
-<p>
   <xsl:value-of select="description" disable-output-escaping='yes'/>
-</p>
-
-<!-- table below footer for comment link and search engine link -->
-<table width="100%" class="links" cellspacing="0" cellpadding="0">
-<tr>
-<td>
-
-<!-- Comments link -->
-<xsl:if test="attributes/attribute[ @name = 'commentsUri' ]">
-  <div class='commentlink'>
-    (<xsl:element name="a">
-       <xsl:attribute name="href">
-         <xsl:value-of select="attributes/attribute[ @name = 'commentsUri' ]"/>
-       </xsl:attribute>
-       <_span>comments</_span>
-     </xsl:element>)
-  </div>
-</xsl:if>
-
-</td>
-<td>
-
-<!-- Technorati link -->
-<div class="technorati">
-<xsl:element name="a">
-  <xsl:attribute name="href">http://www.technorati.com/cosmos/search.html?url=<xsl:value-of select="source"/></xsl:attribute>
-  <xsl:element name="img">
-    <xsl:attribute name="border">0</xsl:attribute>
-    <xsl:attribute name="alt">[Technorati]</xsl:attribute>
-    <xsl:attribute name="src"><xsl:value-of select="$pixmapsDir"/>technorati.png</xsl:attribute>
-  </xsl:element>
-</xsl:element>
-</div>
-
-</td>
-</tr>
-</table> <!-- end of comment and search engine link table -->
-
 </div>
 </xsl:element> <!-- end of content-->
+
+</xsl:element> <!-- item -->
 
 </xsl:template>
 

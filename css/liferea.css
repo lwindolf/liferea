@@ -58,6 +58,7 @@ dd {
 
 img {
 	border:0;
+	margin:2px;
 }
 
 /* styles for the item description (currently also used for
@@ -78,6 +79,8 @@ table.itemhead * a.itemhead {
 	text-decoration:none;
 	color:black;
 	font-weight:bold;
+	position:relative;
+	top:1px;
 }
 
 td.headleft {
@@ -103,6 +106,42 @@ table.headmeta td {
 	font-size:0.8em;
 }
 
+.itemmenutable {
+	visibility:hidden;
+	display:none;
+}
+
+.itemmenu {
+	margin:0;
+	padding:0;
+}
+
+.itemmenu a {
+	text-decoration:none;
+	color:#777;
+}
+
+.itemmenu a:hover {
+	color:#333;
+}
+
+.itemmenu * span {
+	font-size:11px;
+	font-family:sans-serif;
+	padding:0;
+	margin:0;
+	position:relative; 
+	top:-3px;
+}
+
+.itemmenu * img {
+	padding:0;
+	margin:0;
+	height:16px;
+	position:relative; 
+	top:1px;
+}
+
 .author, .categories, .source {
         padding:0;
 	margin-left:0;
@@ -120,19 +159,17 @@ div.content, div.foottext {
 	padding:0px 6px 0px 12px;
 }
 
-img {
-	margin:2px;
-}
-
 a.favicon {
 	text-decoration:none;
 }
 
 a.favicon img {
 	width:16px;
-
 	border:0;
 	margin:0;
+	padding:0;
+	position:relative;
+	top:2px;
 }
 
 /* channel images */
@@ -228,15 +265,6 @@ div.photoheader {
 	padding-right:10px;
 	background-color:#505050;
 	color:white;
-}
-
-div.technorati {
-	text-align:right;
-	padding-right:5px;
-}
-
-div.technorati a {
-	text-decoration:none;
 }
 
 table.enclosure {
