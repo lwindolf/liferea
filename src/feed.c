@@ -172,6 +172,8 @@ static void feed_import(nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean t
 		feed = feed_new(NULL, NULL, NULL);
 		feed->fhp = feed_type_str_to_fhp(typeStr);
 		xmlFree(typeStr);
+		
+		node_set_data(node, feed);
 
 		if(!trusted && source[0] == '|') {
 			/* FIXME: Display warning dialog asking if the command
@@ -253,7 +255,7 @@ static void feed_import(nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean t
 		node_set_icon(node, favicon_load_from_cache(node->id));
 		
 		if(favicon_update_needed(node_get_id(node), feed->updateState))
-			node_update_favicon(node);
+			feed_update_favicon(node);
 
 		debug5(DEBUG_CACHE, "import feed: title=%s source=%s typeStr=%s interval=%d lastpoll=%ld", 
 		       node_get_title(node), 
@@ -262,7 +264,6 @@ static void feed_import(nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean t
 		       feed_get_update_interval(feed), 
 		       feed->updateState->lastPoll.tv_sec);
 
-		node_set_data(node, feed);
 		node_add_child(parent, node, -1);
 	}
 
