@@ -294,7 +294,6 @@ function stopShow() {
   <xsl:element name="img">
     <xsl:attribute name="class">technoratibtn</xsl:attribute>
     <xsl:attribute name="border">0</xsl:attribute>
-    <xsl:attribute name="alt">[Technorati]</xsl:attribute>
     <xsl:attribute name="src"><xsl:value-of select="$pixmapsDir"/>technorati.png</xsl:attribute>
   </xsl:element>
   <_span>search</_span>
@@ -305,15 +304,16 @@ function stopShow() {
 </xsl:element> <!-- itemmenutable -->
 
 <!-- start of content -->
-<xsl:element name="p">
-
+<xsl:element name="div">
 <xsl:attribute name="class">
   <xsl:if test="readStatus = '0'">itemshaded</xsl:if>
   <xsl:if test="readStatus != '0'">itemunshaded</xsl:if>
 </xsl:attribute>
+<p>
 <div class='content'>
   <xsl:value-of select="description" disable-output-escaping='yes'/>
 </div>
+</p>
 </xsl:element> <!-- end of content-->
 
 </xsl:element> <!-- item -->
