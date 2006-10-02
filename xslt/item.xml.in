@@ -237,7 +237,7 @@ function stopShow() {
 <!-- for comment link and search engine link -->
    
 <!-- Tagging link -->
-<xsl:element name="a">
+<!--<xsl:element name="a">
   <xsl:attribute name="class">bookmark</xsl:attribute>
   <xsl:attribute name="href">liferea-tag://<xsl:value-of select="sourceId"/>-<xsl:value-of select="nr"/></xsl:attribute>
   <xsl:element name="img">
@@ -246,7 +246,7 @@ function stopShow() {
     <xsl:attribute name="src"><xsl:value-of select="$pixmapsDir"/>tag.png</xsl:attribute>
   </xsl:element>
   <_span>add tag</_span>
-</xsl:element>
+</xsl:element>-->
 
 <!-- Bookmarking link -->
 <xsl:element name="a">
