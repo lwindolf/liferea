@@ -461,7 +461,7 @@ static int NetConnect (int * my_socket, char * host, struct feed_request * cur_p
 			return -1;
 		}
 		
-		if ((NetPoll (cur_ptr, my_socket, NET_WRITE)) == -1) {
+		if ((NetPoll (cur_ptr, *my_socket, NET_WRITE)) == -1) {
 			close (*my_socket);
 			free (realhost);
 			return -1;
