@@ -666,51 +666,29 @@ gboolean on_itemlist_button_press_event(GtkWidget *treeview, GdkEventButton *eve
 }
 
 void on_popup_copy_URL_clipboard(void) {
-	itemPtr         ip;
+	itemPtr         item;
 
-	if(NULL != (ip = itemlist_get_selected()))
-		gtk_clipboard_set_text(gtk_clipboard_get(GDK_SELECTION_CLIPBOARD), item_get_source(ip), -1);
+	if(NULL != (item = itemlist_get_selected()))
+		gtk_clipboard_set_text(gtk_clipboard_get(GDK_SELECTION_CLIPBOARD), item_get_source(item), -1);
 	else
 		ui_mainwindow_set_status_bar(_("No item has been selected"));
 }
 
-static void ui_itemlist_launch_social_site(itemPtr item) {
+void ui_itemlist_add_item_bookmark(itemPtr item) {
 
-	if(item) {
-		gchar *url = social_get_url(item_get_source(item), item_get_title(item));
-		ui_htmlview_launch_URL(ui_mainwindow_get_active_htmlview(), url, 1);
-		g_free(url);
-	} else {
-		ui_mainwindow_set_status_bar(_("No item has been selected"));
-	}
+	gchar *url = social_get_url(item_get_source(item), item_get_title(item));
+	ui_htmlview_launch_URL(ui_mainwindow_get_active_htmlview(), url, 1);
+	g_free(url);
 }
 
 void on_popup_social_bm_item_selected(void) {
-
-	ui_itemlist_launch_social_site(itemlist_get_selected());
-}
-
-void on_html_social_bm_item_selected(const gchar *url) {
-	itemPtr         item = NULL;
-	gchar		*nodeid, *itemid;
+	itemPtr	item;
 	
-	nodeid = strstr(url, "://");
-	if(nodeid) {
-		nodeid += 3;
-g_print("nodeid=%s\n", nodeid);
-		itemid = nodeid;
-		itemid = strchr(nodeid, '-');
-		if(itemid) {
-			*itemid = 0;
-			itemid++;
-g_print("nodeid=%s\n", nodeid);
-g_print("itemid=%s\n", itemid);
-			item = itemset_lookup_item(itemlist_get_displayed_itemset(), 
-			                           node_from_id(nodeid), 
-			                           atol(itemid));
-		}
-	}
-	ui_itemlist_launch_social_site(item);	
+	item = itemlist_get_selected();
+	if(item)
+		ui_itemlist_add_item_bookmark(item);
+	else
+		ui_mainwindow_set_status_bar(_("No item has been selected"));
 }
 
 void on_popup_social_bm_link_selected(gpointer selectedUrl, guint callback_action, GtkWidget *widget) {

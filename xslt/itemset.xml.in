@@ -246,7 +246,22 @@ function stopShow() {
  <td class='itemmenu'> 
 
 <!-- for comment link and search engine link -->
-   
+
+<!-- Flagging link -->
+<xsl:element name="a">
+  <xsl:attribute name="class">flag</xsl:attribute>
+  <xsl:attribute name="href">liferea-flag://<xsl:value-of select="sourceId"/>-<xsl:value-of select="nr"/></xsl:attribute>
+  <xsl:element name="img">
+    <xsl:attribute name="border">0</xsl:attribute>
+    <xsl:attribute name="class">flagbtn</xsl:attribute>
+    <xsl:attribute name="src"><xsl:value-of select="$pixmapsDir"/>
+    <xsl:if test="mark = '0'">grayflag.png</xsl:if>
+    <xsl:if test="mark = '1'">flag.png</xsl:if>
+    </xsl:attribute>
+  </xsl:element>
+  <_span>flag</_span>
+</xsl:element>
+
 <!-- Tagging link -->
 <!--<xsl:element name="a">
   <xsl:attribute name="class">bookmark</xsl:attribute>

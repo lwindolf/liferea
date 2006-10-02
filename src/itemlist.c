@@ -47,27 +47,21 @@
 
    Bypass only for read-only item access!   
 
-   For the data structure the itemlist holds a item reference list,
-   which is loaded from an itemset passed to itemlist_load(). Each
-   reference according to the current filtering rules has a 
-   visibility state.
+   For the data structure the item list is assigned an item set by
+   itemlist_load(), which can be updated with itemlist_merge_itemset().
+   All items are filtered using the item list filter.
  */
 
 itemSetPtr	displayed_itemSet = NULL;
 
 /* internal item list states */
 
-typedef struct itemRef {
-	gboolean	visible;	/* the filtering result */
-	itemPtr		item;		/* the referrenced item */
-} itemRefPtr;
-
 static rulePtr itemlist_filter = NULL;	/* currently active filter rule */
 
 static itemPtr	displayed_item = NULL;	/* displayed item = selected item */
 
-static gboolean twoPaneMode = FALSE;	/* set to TRUE if two pane mode is active */
-static gboolean itemlistLoading;	/* set to TRUE to prevent selection effects when loading the item list */
+static gboolean twoPaneMode = FALSE;	/* TRUE if two pane mode is active */
+static gboolean itemlistLoading;	/* if TRUE prevents selection effects when loading the item list */
 gint disableSortingSaving;		/* set in ui_itemlist.c to disable sort-changed callback */
 
 static gboolean deferred_item_remove = FALSE;	/* TRUE if selected item needs to be removed from cache on unselecting */
@@ -338,7 +332,7 @@ void itemlist_set_flag(itemPtr item, gboolean newStatus) {
 		itemset_set_item_flag(item->itemSet, item, newStatus);
 
 		/* 2. update item list GUI state */
-		ui_itemlist_update_item(item);
+		itemlist_update_item(item);
 
 		/* 3. no update of feed list necessary... */
 
@@ -452,10 +446,14 @@ void itemlist_remove_items(itemSetPtr itemSet) {
 
 void itemlist_update_item(itemPtr item) {
 
-	if(itemlist_filter && !rule_check_item(itemlist_filter, item))
+	if(itemlist_filter && !rule_check_item(itemlist_filter, item)) {
 		itemlist_hide_item(item);
-	else
-		ui_itemlist_update_item(item);
+	} else {
+		if(twoPaneMode) 
+			itemlist_render();
+		else
+			ui_itemlist_update_item(item);
+	}
 }
 
 void itemlist_mark_all_read(itemSetPtr itemSet) {

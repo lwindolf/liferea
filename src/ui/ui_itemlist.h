@@ -234,6 +234,13 @@ void ui_itemlist_update_item(itemPtr ip);
 void ui_itemlist_update(void);
 
 /**
+ * Launches the configured social bookmarking site for the given item
+ *
+ * @param item	the item
+ */
+void ui_itemlist_add_item_bookmark(itemPtr item);
+
+/**
  * Copies the selected items URL to the clipboard.
  */
 void on_popup_copy_URL_clipboard(void);

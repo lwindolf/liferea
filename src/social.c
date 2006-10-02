@@ -23,6 +23,7 @@
 #include "favicon.h"
 #include "render.h"
 #include "social.h"
+#include "ui/ui_htmlview.h"
 
 /* The following link collection was spied from http://ekstreme.com/socializer/ */
 struct socialBookmarkSite socialBookmarkSites[] = {

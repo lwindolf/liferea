@@ -32,6 +32,7 @@
 #include "callbacks.h"
 #include "debug.h"
 #include "plugin.h"
+#include "social.h"
 #include "support.h"
 #include "render.h"
 #include "ui/ui_htmlview.h"
@@ -205,7 +206,20 @@ gboolean ui_htmlview_is_special_url(const gchar *url) {
 	return FALSE;
 }
 
+struct internalUriType {
+	gchar	*suffix;
+	void	(*func)(itemPtr item);
+};
+
+static struct internalUriType internalUriTypes[] = {
+	/* { "tag",	FIXME }, */
+	{ "flag",	itemlist_toggle_flag },
+	{ "bookmark",	ui_itemlist_add_item_bookmark },
+	{ NULL,		NULL }
+};
+
 void ui_htmlview_launch_URL(GtkWidget *htmlview, const gchar *url, gint launchType) {
+	struct internalUriType	*uriType;
 	
 	if(NULL == url) {
 		/* FIXME: bad because this is not only used for item links! */
@@ -223,14 +237,34 @@ void ui_htmlview_launch_URL(GtkWidget *htmlview, const gchar *url, gint launchTy
 			ui_enclosure_new_popup(url);
 			return;
 		}
-		if(url == strstr(url, TAG_PROTOCOL)) {
-			// FIXME:
-			return;
+		
+		/* it is a generic item list URI type */		
+		uriType = internalUriTypes;
+		while(uriType->suffix) {
+			if(!strncmp(url + strlen("liferea-"), uriType->suffix, strlen(uriType->suffix))) {
+				gchar *nodeid, *itemid;
+				nodeid = strstr(url, "://");
+				if(nodeid) {
+					nodeid += 3;
+					itemid = nodeid;
+					itemid = strchr(nodeid, '-');
+					if(itemid) {
+						itemPtr item;
+						
+						*itemid = 0;
+						itemid++;
+						item = itemset_lookup_item(itemlist_get_displayed_itemset(), 
+			                        			   node_from_id(nodeid), 
+			                        			   atol(itemid));
+						(*uriType->func)(item);
+						return;
+					}
+				}
+			}
+			uriType++;
 		}
-		if(url == strstr(url, BOOKMARK_PROTOCOL)) {
-			on_html_social_bm_item_selected(url);
-			return;
-		}
+		g_warning("Internal error: unhandled protocol in URL \"%s\"!", url);
+		return;
 	}
 	
 	if((launchType == UI_HTMLVIEW_LAUNCH_INTERNAL || getBooleanConfValue(BROWSE_INSIDE_APPLICATION)) &&
