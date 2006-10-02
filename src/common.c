@@ -502,7 +502,7 @@ gboolean common_xpath_foreach_match(xmlNodePtr node, gchar *expr, xpathMatchFunc
 	return FALSE;
 }
 
-xmlDocPtr common_parse_xml(gchar *data, guint length, gboolean recovery, errorCtxtPtr errors) {
+xmlDocPtr common_parse_xml(gchar *data, guint length, gboolean recovery, errorCtxtPtr errCtx) {
 	xmlParserCtxtPtr	ctxt;
 	xmlDocPtr		doc;
 	
@@ -511,9 +511,15 @@ xmlDocPtr common_parse_xml(gchar *data, guint length, gboolean recovery, errorCt
 	ctxt = xmlNewParserCtxt();
 	ctxt->sax->getEntity = common_process_entities;
 	
-	xmlSetGenericErrorFunc(errors, (xmlGenericErrorFunc)common_buffer_parse_error);
+	if(errCtx)
+		xmlSetGenericErrorFunc(errCtx, (xmlGenericErrorFunc)common_buffer_parse_error);
 	
 	doc = xmlSAXParseMemory(ctxt->sax, data, length, /* recovery = */ recovery);
+	
+	/* This seems to reset the errorfunc to its default, so that the
+	   GtkHTML2 module is not unhappy because it also tries to call the
+	   errorfunc on occasion. */
+	xmlSetGenericErrorFunc(NULL, NULL);
 	
 	xmlFreeParserCtxt(ctxt);
 	
@@ -545,11 +551,6 @@ xmlDocPtr common_parse_xml_feed(feedParserCtxtPtr fpc) {
 		g_string_prepend(fpc->feed->parseErrors, _("xmlReadMemory(): Could not parse document:\n"));
 		g_string_append(fpc->feed->parseErrors, "\n");
 	}
-		
-	/* This seems to reset the errorfunc to its default, so that the
-	   GtkHTML2 module is not unhappy because it also tries to call the
-	   errorfunc on occasion. */
-	xmlSetGenericErrorFunc(NULL, NULL);
 
 	fpc->itemSet->valid = (errors->errorCount > 0);
 	g_free(errors);
