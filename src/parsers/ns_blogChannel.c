@@ -192,6 +192,7 @@ static void getOutlineList(feedParserCtxtPtr ctxt, guint tag, char *url) {
 	request->source = g_strdup(url);
 	request->callback = ns_blogChannel_download_request_cb;
 	request->user_data = requestData;
+	request->options = ctxt->feed->updateOptions;
 	
 	update_execute_request(request);
 }
