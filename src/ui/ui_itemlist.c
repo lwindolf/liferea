@@ -574,7 +574,7 @@ static gboolean ui_itemlist_find_unread_item_from_iter(GtkTreeIter *iter) {
 	
 	if(NULL != (item = ui_iter_to_item(iter))) {
 		if(!item->readStatus) {
-			if(!itemlist_get_two_pane_mode()) {
+			if(2 != itemlist_get_view_mode()) {
 				ui_itemlist_select(item);
 				itemlist_set_read_status(item, TRUE);	/* needed when no selection happens (e.g. when the item is already selected) */
 			} else {
@@ -732,7 +732,7 @@ void ui_itemlist_scroll_left() {
 	GtkTreeViewColumn 	*column;
 	GtkTreePath		*path;
 
-	if (FALSE == itemlist_get_two_pane_mode()) {
+	if(2 != itemlist_get_view_mode()) {
 		gtk_tree_view_get_cursor(GTK_TREE_VIEW(itemlist_treeview), &path, &column);
 		if(path) {
 			column = gtk_tree_view_get_column(GTK_TREE_VIEW(itemlist_treeview), 1);

@@ -91,17 +91,28 @@
 		      <property name="enable_popup">False</property>
 
 		      <child>
-			<widget class="GtkVPaned" id="rightpane">
+			<widget class="GtkVPaned" id="normalViewPane">
 			  <property name="visible">True</property>
 			  <property name="can_focus">True</property>
-			  <property name="position">200</property>
+			  <property name="position">199</property>
 
 			  <child>
-			    <placeholder/>
+			    <widget class="GtkViewport" id="normalViewItems">
+			      <property name="visible">True</property>
+			      <property name="shadow_type">GTK_SHADOW_IN</property>
+
+			      <child>
+				<placeholder/>
+			      </child>
+			    </widget>
+			    <packing>
+			      <property name="shrink">True</property>
+			      <property name="resize">False</property>
+			    </packing>
 			  </child>
 
 			  <child>
-			    <widget class="GtkViewport" id="viewportThreePaneHtml">
+			    <widget class="GtkViewport" id="normalViewHtml">
 			      <property name="visible">True</property>
 			      <property name="shadow_type">GTK_SHADOW_IN</property>
 
@@ -124,7 +135,7 @@
 		      <child>
 			<widget class="GtkLabel" id="label30">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">single item view</property>
+			  <property name="label" translatable="yes">normal view</property>
 			  <property name="use_underline">False</property>
 			  <property name="use_markup">False</property>
 			  <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -145,7 +156,72 @@
 		      </child>
 
 		      <child>
-			<widget class="GtkViewport" id="viewportTwoPaneHtml">
+			<widget class="GtkHPaned" id="wideViewPane">
+			  <property name="visible">True</property>
+			  <property name="can_focus">True</property>
+			  <property name="position">100</property>
+
+			  <child>
+			    <widget class="GtkViewport" id="wideViewItems">
+			      <property name="visible">True</property>
+			      <property name="shadow_type">GTK_SHADOW_IN</property>
+
+			      <child>
+				<placeholder/>
+			      </child>
+			    </widget>
+			    <packing>
+			      <property name="shrink">True</property>
+			      <property name="resize">False</property>
+			    </packing>
+			  </child>
+
+			  <child>
+			    <widget class="GtkViewport" id="wideViewHtml">
+			      <property name="visible">True</property>
+			      <property name="shadow_type">GTK_SHADOW_IN</property>
+
+			      <child>
+				<placeholder/>
+			      </child>
+			    </widget>
+			    <packing>
+			      <property name="shrink">True</property>
+			      <property name="resize">True</property>
+			    </packing>
+			  </child>
+			</widget>
+			<packing>
+			  <property name="tab_expand">False</property>
+			  <property name="tab_fill">True</property>
+			</packing>
+		      </child>
+
+		      <child>
+			<widget class="GtkLabel" id="label252">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">wide view</property>
+			  <property name="use_underline">False</property>
+			  <property name="use_markup">False</property>
+			  <property name="justify">GTK_JUSTIFY_LEFT</property>
+			  <property name="wrap">False</property>
+			  <property name="selectable">False</property>
+			  <property name="xalign">0.5</property>
+			  <property name="yalign">0.5</property>
+			  <property name="xpad">0</property>
+			  <property name="ypad">0</property>
+			  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+			  <property name="width_chars">-1</property>
+			  <property name="single_line_mode">False</property>
+			  <property name="angle">0</property>
+			</widget>
+			<packing>
+			  <property name="type">tab</property>
+			</packing>
+		      </child>
+
+		      <child>
+			<widget class="GtkViewport" id="combinedViewHtml">
 			  <property name="visible">True</property>
 			  <property name="shadow_type">GTK_SHADOW_IN</property>
 
@@ -162,7 +238,7 @@
 		      <child>
 			<widget class="GtkLabel" id="label133">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">label133</property>
+			  <property name="label" translatable="yes">combined view</property>
 			  <property name="use_underline">False</property>
 			  <property name="use_markup">False</property>
 			  <property name="justify">GTK_JUSTIFY_LEFT</property>

@@ -41,9 +41,10 @@ struct exportData {
 
 /* Used for exporting, this adds a folder or feed's node to the XML tree */
 static void export_append_node_tag(nodePtr node, gpointer userdata) {
-	xmlNodePtr 		cur = ((struct exportData*)userdata)->cur;
-	gboolean		internal = ((struct exportData*)userdata)->trusted;
-	xmlNodePtr		childNode;
+	xmlNodePtr 	cur = ((struct exportData*)userdata)->cur;
+	gboolean	internal = ((struct exportData*)userdata)->trusted;
+	xmlNodePtr	childNode;
+	gchar		*tmp;
 
 	// FIXME: use node type capability for this condition
 	if(!internal && ((NODE_TYPE_SOURCE == node->type) || (NODE_TYPE_VFOLDER == node->type)))
@@ -80,8 +81,9 @@ static void export_append_node_tag(nodePtr node, gpointer userdata) {
 		if(FALSE == node->sortReversed)
 			xmlNewProp(childNode, BAD_CAST"sortReversed", BAD_CAST"false");
 			
-		if(TRUE == node_get_two_pane_mode(node))
-			xmlNewProp(childNode, BAD_CAST"twoPane", BAD_CAST"true");
+		tmp = g_strdup_printf("%u", node_get_view_mode(node));
+		xmlNewProp(childNode, BAD_CAST"viewMode", BAD_CAST tmp);
+		g_free(tmp);
 	}
 
 	/* 2. add node type specific stuff */
@@ -209,10 +211,18 @@ void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, nodeSourcePtr node
 	if(sortStr)
 		xmlFree(sortStr);
 	
-	tmp = xmlGetProp(cur, BAD_CAST"twoPane");
-	node_set_two_pane_mode(node, (tmp && !xmlStrcmp(tmp, BAD_CAST"true")));
+	/* viewing mode */
+	tmp = xmlGetProp(cur, BAD_CAST"twoPane");	/* migration for old setting... */
+	if(tmp && !xmlStrcmp(tmp, BAD_CAST"true"))
+		node_set_view_mode(node, 2);
 	if(tmp)
 		xmlFree(tmp);
+		
+	tmp = xmlGetProp(cur, BAD_CAST"viewMode");
+	if(tmp) {
+		node_set_view_mode(node, atoi(tmp));
+		xmlFree(tmp);
+	}
 
 	/* expansion state */		
 	if(xmlHasProp(cur, BAD_CAST"expanded"))

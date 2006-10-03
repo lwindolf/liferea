@@ -107,7 +107,7 @@ void on_searchentry_activate(GtkEntry *entry, gpointer user_data) {
 
 	/* switch to item list view and inform user in HTML view */
 	ui_feedlist_select(NULL);
-	itemlist_set_two_pane_mode(FALSE);
+	itemlist_set_view_mode(0);
 	itemlist_load(searchResult->itemSet);
 
 	buffer = g_string_new(NULL);

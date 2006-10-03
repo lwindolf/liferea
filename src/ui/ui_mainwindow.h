@@ -33,7 +33,6 @@ enum mainwindowState {
 	MAINWINDOW_ICONIFIED,
 	MAINWINDOW_HIDDEN
 };
-struct mainwindow *mw_global_fixme;
 
 /**
  * Create a new main window with the given display state
@@ -43,34 +42,26 @@ struct mainwindow *mw_global_fixme;
 void ui_mainwindow_init(int mainwindowState);
 
 /**
- * To be called whenever the browser panes change.
+ * Switches the mainwindow layout for the given viewing mode.
  *
- * @param twoPane	TRUE if new display mode is two paned
+ * @param newMode	new view mode (0 = normal, 1 = wide, 2 = combined
  */
-void ui_mainwindow_set_browser_panes(gboolean twoPane);
-
-/**
- * To be called whenever the display mode changes.
- *
- * @param twoPane	TRUE if new display mode is two paned
- */
-void ui_mainwindow_set_two_pane_toggle(gboolean twoPane);
+void ui_mainwindow_set_layout(guint newMode);
 
 /**
  * Returns the active HTML view widget 
  */
-GtkWidget *ui_mainwindow_get_active_htmlview();
+GtkWidget *ui_mainwindow_get_active_htmlview(void);
 
 /**
  * Sets the toolbar to a particular style
  *
- * @param window main window containing toolbar
  * @param toolbar_style text string containing the type of style to use
  */
-void ui_mainwindow_set_toolbar_style(struct mainwindow *mw, const gchar *toolbar_style);
+void ui_mainwindow_set_toolbar_style(const gchar *toolbar_style);
 
 /** According to the preferences this function enables/disables the toolbar */
-void ui_mainwindow_update_toolbar();
+void ui_mainwindow_update_toolbar(void);
 
 /** 
  * Set the sensitivity of items in the feed menu based on the type of item selected 
@@ -81,15 +72,20 @@ void ui_mainwindow_update_toolbar();
 void ui_mainwindow_update_feed_menu(gboolean feedActions, gboolean readWrite);
 
 /** According to the preferences this function enables/disables the menubar */
-void ui_mainwindow_update_menubar();
+void ui_mainwindow_update_menubar(void);
 /**
  * Sets the status bar text. Takes printf() like parameters 
  */
 void ui_mainwindow_set_status_bar(const char *format, ...);
 
-void ui_mainwindow_update_feedsinfo();
+void ui_mainwindow_update_feedsinfo(void);
 
-void ui_mainwindow_online_status_changed();
+/**
+ * Changes the online state UI representation.
+ *
+ * @param online	1 = online, 0 = offline
+ */
+void ui_mainwindow_online_status_changed(int online);
 
 /* don't save off-screen positioning */
 
@@ -97,17 +93,17 @@ void ui_mainwindow_online_status_changed();
  * Save the current mainwindow position to gconf, if the window is
  * shown and completely on the screen.
  */
-void ui_mainwindow_save_position();
+void ui_mainwindow_save_position(void);
 
 
-void ui_mainwindow_tray_add();
+void ui_mainwindow_tray_add(void);
 
-void ui_mainwindow_tray_remove();
+void ui_mainwindow_tray_remove(void);
 
 /**
  * Function to present the main window
  */
-void ui_mainwindow_show();
+void ui_mainwindow_show(void);
 
 /* GUI callbacks */
 void on_onlinebtn_clicked(GtkButton *button, gpointer user_data);

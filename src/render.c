@@ -224,7 +224,7 @@ gchar * render_xml(xmlDocPtr doc, const gchar *xsltName, gchar **params) {
 	   not support  @import url(...) in <style> tags. Do not
 	   add referenced CSS to the rendering stylesheets! */
 	   
-	css = render_get_css(itemlist_get_two_pane_mode());
+	css = render_get_css(2 == itemlist_get_view_mode());
 	output = common_strreplace(output, "##STYLE_INSERT##", css->str);
 	g_string_free(css, TRUE);
 	

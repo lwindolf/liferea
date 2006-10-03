@@ -76,6 +76,7 @@
 #define LAST_WINDOW_MAXIMIZED		"/apps/liferea/last-window-maximized"
 #define LAST_VPANE_POS			"/apps/liferea/last-vpane-pos"
 #define LAST_HPANE_POS			"/apps/liferea/last-hpane-pos"
+#define LAST_WPANE_POS			"/apps/liferea/last-wpane-pos"
 #define LAST_ZOOMLEVEL			"/apps/liferea/last-zoomlevel"
 
 /* networking settings */

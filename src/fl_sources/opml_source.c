@@ -1,5 +1,5 @@
 /**
- * @file opml_source.c OPML Planet/Blogroll feedlist provider
+ * @file opml_source.c OPML Planet/Blogroll feed list source
  * 
  * Copyright (C) 2006 Lars Lindner <lars.lindner@gmx.net>
  *
@@ -268,7 +268,6 @@ void opml_source_update(nodePtr node) {
 	requestPtr	request;
 	
 	if(node->source->url) {
-	g_assert(node->source->updateState);
 		request = update_request_new(node);
 		request->options = node->source->updateOptions;
 		request->updateState = node->source->updateState;

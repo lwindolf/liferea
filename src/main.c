@@ -261,34 +261,18 @@ int main(int argc, char *argv[]) {
 }
 
 gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
-	GtkWidget	*pane;
-	gint x, y;
 
 	debug_enter("on_quit");
 
 	ui_mainwindow_save_position();
 	gtk_widget_hide(mainwindow);
 
-	ui_itemlist_clear();	/* to free all item list related data */
-	feedlist_save();	/* should save feedlist and folder states */
+	ui_feedlist_select(NULL);	/* should unload/save selected node and items */
+	feedlist_save();		/* should save feedlist and folder states */
 
 	/* should save all feeds still in memory */	
 	feedlist_foreach(node_unload);
 	
-	/* save pane proportions */
-	if(NULL != (pane = lookup_widget(mainwindow, "leftpane"))) {
-		x = gtk_paned_get_position(GTK_PANED(pane));
-		setNumericConfValue(LAST_VPANE_POS, x);
-	}
-	
-	if(NULL != (pane = lookup_widget(mainwindow, "rightpane"))) {
-		y = gtk_paned_get_position(GTK_PANED(pane));
-		setNumericConfValue(LAST_HPANE_POS, y);
-	}
-	
-	/* save itemlist properties */
-	setNumericConfValue(LAST_ZOOMLEVEL, (gint)(100.*ui_htmlview_get_zoom(ui_mainwindow_get_active_htmlview())));
-
 	gtk_widget_destroy(mainwindow);
 	ui_htmlview_deinit();
 	
@@ -302,4 +286,3 @@ gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 	debug_exit("on_quit");
 	return FALSE;
 }
-

@@ -182,11 +182,6 @@ static GtkMenu *make_menu(GtkItemFactoryEntry *menu_items, gint nmenu_items, gpo
 	gtk_item_factory_create_items(item_factory, nmenu_items, menu_items, cb_data);
 	menu = gtk_item_factory_get_widget(item_factory, "<popup>");
 	
-	/* check if the itemlist toogle option is in the generated menu
-	   and set it appropiately */
-	if(NULL != (toggle = gtk_item_factory_get_item(item_factory, TOGGLE_CONDENSED_VIEW)))
-		gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(toggle), itemlist_get_two_pane_mode());
-
 	/* set toggled state for work offline and show window buttons in 
 	   the tray popup menu */
 	if(NULL != (toggle = gtk_item_factory_get_widget(item_factory, TOGGLE_WORK_OFFLINE)))
@@ -200,13 +195,13 @@ static GtkMenu *make_menu(GtkItemFactoryEntry *menu_items, gint nmenu_items, gpo
 /** function to generate popup menus for the item list depending
    on the list mode given in itemlist_mode */
 
-GtkMenu *make_item_menu(itemPtr ip) {
+GtkMenu *make_item_menu(itemPtr item) {
 	GtkMenu 	*menu;
 
-	if(itemlist_get_two_pane_mode())
-		menu = make_menu(html_menu_items, html_menu_len, ip);
+	if(2 == itemlist_get_view_mode())
+		menu = make_menu(html_menu_items, html_menu_len, item);
 	else
-		menu = make_menu(item_menu_items, item_menu_len, ip);
+		menu = make_menu(item_menu_items, item_menu_len, item);
 
 	return menu;
 }

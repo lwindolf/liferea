@@ -37,10 +37,15 @@ create_mainwindow (void)
   GtkWidget *browsertabs;
   GtkWidget *vbox18;
   GtkWidget *itemtabs;
-  GtkWidget *rightpane;
-  GtkWidget *viewportThreePaneHtml;
+  GtkWidget *normalViewPane;
+  GtkWidget *normalViewItems;
+  GtkWidget *normalViewHtml;
   GtkWidget *label30;
-  GtkWidget *viewportTwoPaneHtml;
+  GtkWidget *wideViewPane;
+  GtkWidget *wideViewItems;
+  GtkWidget *wideViewHtml;
+  GtkWidget *label252;
+  GtkWidget *combinedViewHtml;
   GtkWidget *label133;
   GtkWidget *label162;
   GtkWidget *hbox30;
@@ -91,26 +96,47 @@ create_mainwindow (void)
   gtk_notebook_set_show_tabs (GTK_NOTEBOOK (itemtabs), FALSE);
   gtk_notebook_set_show_border (GTK_NOTEBOOK (itemtabs), FALSE);
 
-  rightpane = gtk_vpaned_new ();
-  gtk_widget_show (rightpane);
-  gtk_container_add (GTK_CONTAINER (itemtabs), rightpane);
-  gtk_paned_set_position (GTK_PANED (rightpane), 200);
+  normalViewPane = gtk_vpaned_new ();
+  gtk_widget_show (normalViewPane);
+  gtk_container_add (GTK_CONTAINER (itemtabs), normalViewPane);
+  gtk_paned_set_position (GTK_PANED (normalViewPane), 199);
 
-  viewportThreePaneHtml = gtk_viewport_new (NULL, NULL);
-  gtk_widget_show (viewportThreePaneHtml);
-  gtk_paned_pack2 (GTK_PANED (rightpane), viewportThreePaneHtml, TRUE, TRUE);
+  normalViewItems = gtk_viewport_new (NULL, NULL);
+  gtk_widget_show (normalViewItems);
+  gtk_paned_pack1 (GTK_PANED (normalViewPane), normalViewItems, FALSE, TRUE);
 
-  label30 = gtk_label_new (_("single item view"));
+  normalViewHtml = gtk_viewport_new (NULL, NULL);
+  gtk_widget_show (normalViewHtml);
+  gtk_paned_pack2 (GTK_PANED (normalViewPane), normalViewHtml, TRUE, TRUE);
+
+  label30 = gtk_label_new (_("normal view"));
   gtk_widget_show (label30);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (itemtabs), gtk_notebook_get_nth_page (GTK_NOTEBOOK (itemtabs), 0), label30);
 
-  viewportTwoPaneHtml = gtk_viewport_new (NULL, NULL);
-  gtk_widget_show (viewportTwoPaneHtml);
-  gtk_container_add (GTK_CONTAINER (itemtabs), viewportTwoPaneHtml);
+  wideViewPane = gtk_hpaned_new ();
+  gtk_widget_show (wideViewPane);
+  gtk_container_add (GTK_CONTAINER (itemtabs), wideViewPane);
+  gtk_paned_set_position (GTK_PANED (wideViewPane), 100);
 
-  label133 = gtk_label_new (_("label133"));
+  wideViewItems = gtk_viewport_new (NULL, NULL);
+  gtk_widget_show (wideViewItems);
+  gtk_paned_pack1 (GTK_PANED (wideViewPane), wideViewItems, FALSE, TRUE);
+
+  wideViewHtml = gtk_viewport_new (NULL, NULL);
+  gtk_widget_show (wideViewHtml);
+  gtk_paned_pack2 (GTK_PANED (wideViewPane), wideViewHtml, TRUE, TRUE);
+
+  label252 = gtk_label_new (_("wide view"));
+  gtk_widget_show (label252);
+  gtk_notebook_set_tab_label (GTK_NOTEBOOK (itemtabs), gtk_notebook_get_nth_page (GTK_NOTEBOOK (itemtabs), 1), label252);
+
+  combinedViewHtml = gtk_viewport_new (NULL, NULL);
+  gtk_widget_show (combinedViewHtml);
+  gtk_container_add (GTK_CONTAINER (itemtabs), combinedViewHtml);
+
+  label133 = gtk_label_new (_("combined view"));
   gtk_widget_show (label133);
-  gtk_notebook_set_tab_label (GTK_NOTEBOOK (itemtabs), gtk_notebook_get_nth_page (GTK_NOTEBOOK (itemtabs), 1), label133);
+  gtk_notebook_set_tab_label (GTK_NOTEBOOK (itemtabs), gtk_notebook_get_nth_page (GTK_NOTEBOOK (itemtabs), 2), label133);
 
   label162 = gtk_label_new (_("Headlines"));
   gtk_widget_show (label162);
@@ -150,10 +176,15 @@ create_mainwindow (void)
   GLADE_HOOKUP_OBJECT (mainwindow, browsertabs, "browsertabs");
   GLADE_HOOKUP_OBJECT (mainwindow, vbox18, "vbox18");
   GLADE_HOOKUP_OBJECT (mainwindow, itemtabs, "itemtabs");
-  GLADE_HOOKUP_OBJECT (mainwindow, rightpane, "rightpane");
-  GLADE_HOOKUP_OBJECT (mainwindow, viewportThreePaneHtml, "viewportThreePaneHtml");
+  GLADE_HOOKUP_OBJECT (mainwindow, normalViewPane, "normalViewPane");
+  GLADE_HOOKUP_OBJECT (mainwindow, normalViewItems, "normalViewItems");
+  GLADE_HOOKUP_OBJECT (mainwindow, normalViewHtml, "normalViewHtml");
   GLADE_HOOKUP_OBJECT (mainwindow, label30, "label30");
-  GLADE_HOOKUP_OBJECT (mainwindow, viewportTwoPaneHtml, "viewportTwoPaneHtml");
+  GLADE_HOOKUP_OBJECT (mainwindow, wideViewPane, "wideViewPane");
+  GLADE_HOOKUP_OBJECT (mainwindow, wideViewItems, "wideViewItems");
+  GLADE_HOOKUP_OBJECT (mainwindow, wideViewHtml, "wideViewHtml");
+  GLADE_HOOKUP_OBJECT (mainwindow, label252, "label252");
+  GLADE_HOOKUP_OBJECT (mainwindow, combinedViewHtml, "combinedViewHtml");
   GLADE_HOOKUP_OBJECT (mainwindow, label133, "label133");
   GLADE_HOOKUP_OBJECT (mainwindow, label162, "label162");
   GLADE_HOOKUP_OBJECT (mainwindow, hbox30, "hbox30");

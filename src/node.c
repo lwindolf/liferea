@@ -626,9 +626,9 @@ void node_set_sort_column(nodePtr node, gint sortColumn, gboolean reversed) {
 	feedlist_schedule_save();
 }
 
-void node_set_two_pane_mode(nodePtr node, gboolean newMode) { node->twoPane = newMode; }
+void node_set_view_mode(nodePtr node, guint newMode) { node->viewMode = newMode; }
 
-gboolean node_get_two_pane_mode(nodePtr node) { return node->twoPane; }
+gboolean node_get_view_mode(nodePtr node) { return node->viewMode; }
 
 /* node children iterating interface */
 

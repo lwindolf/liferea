@@ -80,29 +80,30 @@ void itemlist_load(itemSetPtr itemSet);
 void itemlist_unload(gboolean markRead);
 
 /**
- * Changes the 2/3-pane mode property of the item list.
- * Do not use this method to change the 2/3-pane mode
+ * Changes the viewing mode property of the item list.
+ * Do not use this method to change the viewing mode
  * of a displayed node!
  *
- * @param newMode	TRUE for 2-pane
+ * @param newMode	(0 = normal, 1 = wide, 2 = combined view)
  */
-void itemlist_set_two_pane_mode(gboolean newMode);
+void itemlist_set_view_mode(guint newMode);
 
 /**
- * Returns the two/three pane mode property of the
- * currently displayed item set.
+ * Returns the viewing mode property of the currently displayed item set.
  *
- * @returns TRUE for two pane
+ * @returns viewing mode (0 = normal, 1 = wide, 2 = combined view)
  */
-gboolean itemlist_get_two_pane_mode(void);
+guint itemlist_get_view_mode(void);
 
 /**
- * Menu callback that toggles the two pane mode
+ * Menu callbacks that toggle the different viewing modes
  *
  * @param menuitem	the clicked menu item
  * @param user_data	unused
  */
-void on_toggle_condensed_view_activate(GtkToggleAction *menuitem, gpointer user_data);
+void on_normal_view_activate(GtkToggleAction *menuitem, gpointer user_data);
+void on_wide_view_activate(GtkToggleAction *menuitem, gpointer user_data);
+void on_combined_view_activate(GtkToggleAction *menuitem, gpointer user_data);
 
 /* item handling functions */
 

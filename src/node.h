@@ -75,7 +75,7 @@ typedef struct node {
 
 	/* item list state properties of this node */
 	itemSetPtr	itemSet;	/**< The set of items belonging to this node */
-	gboolean	twoPane;	/**< Flag if three pane or condensed mode is set for this feed */
+	guint		viewMode;	/**< Viewing mode for this feed */
 	gint		sortColumn;	/**< Sorting column. Set to either IS_TITLE, IS_FAVICON, IS_ENCICON or IS_TIME */
 	gboolean	sortReversed;	/**< Sort in the reverse order? */
 
@@ -480,21 +480,21 @@ void node_update_favicon(nodePtr node);
 void node_set_sort_column(nodePtr node, gint sortColumn, gboolean reversed);
 
 /**
- * Change/Set the 2/3 pane mode of a given node.
+ * Change/Set the viewing mode of a given node.
  *
  * @param node		the node
- * @param newMode	TRUE for two pane	
+ * @param newMode	viewing mode (0 = normal, 1 = wide, 2 = combined)
  */
-void node_set_two_pane_mode(nodePtr node, gboolean newMode);
+void node_set_view_mode(nodePtr node, guint newMode);
 
 /**
- * Query the 2/3 pane mode setting of a given mode.
+ * Query the viewing mode setting of a given mode.
  *
  * @param node 	the node
  *
- * @returns TRUE for two pane
+ * @returns viewing mode (0 = normal, 1 = wide, 2 = combined)
  */
-gboolean node_get_two_pane_mode(nodePtr node);
+gboolean node_get_view_mode(nodePtr node);
 
 /* child nodes iterating interface */
 

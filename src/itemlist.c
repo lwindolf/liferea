@@ -60,7 +60,7 @@ static rulePtr itemlist_filter = NULL;	/* currently active filter rule */
 
 static itemPtr	displayed_item = NULL;	/* displayed item = selected item */
 
-static gboolean twoPaneMode = FALSE;	/* TRUE if two pane mode is active */
+static guint viewMode = 0;		/* current viewing mode */
 static gboolean itemlistLoading;	/* if TRUE prevents selection effects when loading the item list */
 gint disableSortingSaving;		/* set in ui_itemlist.c to disable sort-changed callback */
 
@@ -110,7 +110,7 @@ static void itemlist_render(void) {
 	gchar		*buffer = NULL;
 	
 	/* update HTML view according to mode */
-	if(TRUE == itemlist_get_two_pane_mode()) {
+	if(2 == itemlist_get_view_mode()) {
 		/* in 2 pane mode all items are shown at once
 		   so after merging it needs to be redisplayed */
 		if(displayed_itemSet)
@@ -203,9 +203,8 @@ void itemlist_load(itemSetPtr itemSet) {
 	}
 
 	itemlistLoading = 1;
-	twoPaneMode = node_get_two_pane_mode(itemSet->node);
-	ui_mainwindow_set_two_pane_toggle(twoPaneMode);
-	ui_mainwindow_set_browser_panes(twoPaneMode);
+	viewMode = node_get_view_mode(itemSet->node);
+	ui_mainwindow_set_layout(viewMode);
 
 	/* 2. Clear item list and disable sorting for performance reasons */
 
@@ -247,7 +246,7 @@ void itemlist_unload(gboolean markRead) {
 		/* 1. Postprocessing for previously selected node, this is necessary
 		   to realize reliable read marking when using condensed mode. It's
 		   important to do this only when the selection really changed. */
-		if(markRead && (TRUE == node_get_two_pane_mode(displayed_itemSet->node))) 
+		if(markRead && (2 == node_get_view_mode(displayed_itemSet->node))) 
 			itemlist_mark_all_read(displayed_itemSet);
 
 		itemlist_check_for_deferred_action();
@@ -272,7 +271,7 @@ void itemlist_update_vfolder(vfolderPtr vp) {
 void itemlist_reset_date_format(void) {
 	
 	ui_itemlist_reset_date_format();
-	if(!itemlist_get_two_pane_mode())
+	if(2 != itemlist_get_view_mode())
 		ui_itemlist_update();
 }
 
@@ -448,11 +447,14 @@ void itemlist_update_item(itemPtr item) {
 
 	if(itemlist_filter && !rule_check_item(itemlist_filter, item)) {
 		itemlist_hide_item(item);
-	} else {
-		if(twoPaneMode) 
+		return;
+	}
+	
+	if(2 == viewMode) {
+		if(displayed_itemSet == item->itemSet)
 			itemlist_render();
-		else
-			ui_itemlist_update_item(item);
+	} else {
+		ui_itemlist_update_item(item);
 	}
 }
 
@@ -521,7 +523,7 @@ void itemlist_selection_changed(itemPtr item) {
 
 	debug_enter("itemlist_selection_changed");
 	
-	if(!itemlistLoading && (FALSE == itemlist_get_two_pane_mode())) {
+	if(!itemlistLoading && (2 != itemlist_get_view_mode())) {
 		/* folder&vfolder postprocessing to remove/filter unselected items no
 		   more matching the display rules because they have changed state */
 		itemlist_check_for_deferred_action();
@@ -557,33 +559,33 @@ void itemlist_selection_changed(itemPtr item) {
 	debug_exit("itemlist_selection_changed");
 }
 
-/* two/three pane mode callbacks */
+/* viewing mode callbacks */
 
-void itemlist_set_two_pane_mode(gboolean newMode) {
+guint itemlist_get_view_mode(void) { return viewMode; }
 
-	ui_mainwindow_set_browser_panes(newMode);
-	twoPaneMode = newMode;
-}
-
-gboolean itemlist_get_two_pane_mode(void) { return twoPaneMode; }
-
-void on_toggle_condensed_view_activate(GtkToggleAction *menuitem, gpointer user_data) { 
+void itemlist_set_view_mode(guint newMode) { 
 	nodePtr		node;
 
-	twoPaneMode = gtk_toggle_action_get_active(menuitem);
+	viewMode = newMode;
 	
 	node = itemlist_get_displayed_node();
 	if(node) {
 		itemlist_unload(FALSE);
 		
-		node_set_two_pane_mode(node, twoPaneMode);
-		ui_mainwindow_set_browser_panes(twoPaneMode);
-
-		/* grab necessary to force HTML widget update (display must
-		   change from feed description to list of items and vica 
-		   versa */
-		gtk_widget_grab_focus(lookup_widget(mainwindow, "feedlist"));
-		
+		node_set_view_mode(node, viewMode);
+		ui_mainwindow_set_layout(viewMode);
 		itemlist_load(node->itemSet);
 	}
+}
+
+void on_normal_view_activate(GtkToggleAction *menuitem, gpointer user_data) {
+	itemlist_set_view_mode(0);
+}
+
+void on_wide_view_activate(GtkToggleAction *menuitem, gpointer user_data) {
+	itemlist_set_view_mode(1);
+}
+
+void on_combined_view_activate(GtkToggleAction *menuitem, gpointer user_data) {
+	itemlist_set_view_mode(2);
 }
