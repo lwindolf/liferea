@@ -105,4 +105,11 @@ void ui_node_set_expansion(nodePtr folder, gboolean expanded);
  */
 void ui_node_update(nodePtr node);
 
+/**
+ * Open dialog to rename a given node.
+ *
+ * @param node	the node to rename
+ */
+void ui_node_rename(nodePtr node);
+
 #endif

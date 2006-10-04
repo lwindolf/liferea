@@ -317,12 +317,15 @@ gboolean import_OPML_feedlist(const gchar *filename, nodePtr parentNode, nodeSou
 				g_warning(_("Empty document! OPML document \"%s\" should not be empty when importing."), filename);
 			error = TRUE;
 		} else {
-			xmlNodePtr title = common_xpath_find(cur, "/opml/head/title"); 
-			if(title) {
-				xmlChar *titleStr = common_utf8_fix(xmlNodeListGetString(title->doc, title->xmlChildrenNode, 1));
-				if(titleStr) {
-					node_set_title(parentNode, titleStr);
-					xmlFree(titleStr);
+			if(!trusted) {
+				/* set title only when importing as folder and not as OPML source */
+				xmlNodePtr title = common_xpath_find(cur, "/opml/head/title"); 
+				if(title) {
+					xmlChar *titleStr = common_utf8_fix(xmlNodeListGetString(title->doc, title->xmlChildrenNode, 1));
+					if(titleStr) {
+						node_set_title(parentNode, titleStr);
+						xmlFree(titleStr);
+					}
 				}
 			}
 		

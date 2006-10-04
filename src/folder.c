@@ -180,7 +180,7 @@ nodeTypePtr folder_get_node_type(void) {
 		folder_mark_all_read,
 		folder_render,
 		ui_folder_add,
-		ui_folder_properties
+		ui_node_rename
 	};
 	fnti.icon = icons[ICON_FOLDER];
 
@@ -213,7 +213,7 @@ nodeTypePtr root_get_node_type(void) {
 		folder_mark_all_read,
 		folder_render,
 		ui_folder_add,
-		ui_folder_properties
+		ui_node_rename
 	};
 
 	return &rnti; 

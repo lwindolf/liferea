@@ -2511,26 +2511,26 @@ create_newfolderdialog (void)
 }
 
 GtkWidget*
-create_foldernamedialog (void)
+create_nodenamedialog (void)
 {
-  GtkWidget *foldernamedialog;
+  GtkWidget *nodenamedialog;
   GtkWidget *dialog_vbox7;
   GtkWidget *hbox13;
   GtkWidget *label23;
-  GtkWidget *foldernameentry;
+  GtkWidget *nameentry;
   GtkWidget *dialog_action_area7;
   GtkWidget *cancelbutton1;
-  GtkWidget *foldernamechangebtn;
+  GtkWidget *namechangebtn;
 
-  foldernamedialog = gtk_dialog_new ();
-  gtk_container_set_border_width (GTK_CONTAINER (foldernamedialog), 5);
-  gtk_window_set_title (GTK_WINDOW (foldernamedialog), _("Rename Folder"));
-  gtk_window_set_modal (GTK_WINDOW (foldernamedialog), TRUE);
-  gtk_window_set_resizable (GTK_WINDOW (foldernamedialog), FALSE);
-  gtk_window_set_type_hint (GTK_WINDOW (foldernamedialog), GDK_WINDOW_TYPE_HINT_DIALOG);
-  gtk_dialog_set_has_separator (GTK_DIALOG (foldernamedialog), FALSE);
+  nodenamedialog = gtk_dialog_new ();
+  gtk_container_set_border_width (GTK_CONTAINER (nodenamedialog), 5);
+  gtk_window_set_title (GTK_WINDOW (nodenamedialog), _("Rename"));
+  gtk_window_set_modal (GTK_WINDOW (nodenamedialog), TRUE);
+  gtk_window_set_resizable (GTK_WINDOW (nodenamedialog), FALSE);
+  gtk_window_set_type_hint (GTK_WINDOW (nodenamedialog), GDK_WINDOW_TYPE_HINT_DIALOG);
+  gtk_dialog_set_has_separator (GTK_DIALOG (nodenamedialog), FALSE);
 
-  dialog_vbox7 = GTK_DIALOG (foldernamedialog)->vbox;
+  dialog_vbox7 = GTK_DIALOG (nodenamedialog)->vbox;
   gtk_widget_show (dialog_vbox7);
 
   hbox13 = gtk_hbox_new (FALSE, 12);
@@ -2538,57 +2538,50 @@ create_foldernamedialog (void)
   gtk_box_pack_start (GTK_BOX (dialog_vbox7), hbox13, FALSE, FALSE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (hbox13), 5);
 
-  label23 = gtk_label_new_with_mnemonic (_("_Folder Name:"));
+  label23 = gtk_label_new_with_mnemonic (_("_New Name:"));
   gtk_widget_show (label23);
   gtk_box_pack_start (GTK_BOX (hbox13), label23, FALSE, FALSE, 0);
 
-  foldernameentry = gtk_entry_new ();
-  gtk_widget_show (foldernameentry);
-  gtk_box_pack_start (GTK_BOX (hbox13), foldernameentry, TRUE, TRUE, 0);
-  gtk_entry_set_activates_default (GTK_ENTRY (foldernameentry), TRUE);
+  nameentry = gtk_entry_new ();
+  gtk_widget_show (nameentry);
+  gtk_box_pack_start (GTK_BOX (hbox13), nameentry, TRUE, TRUE, 0);
+  gtk_entry_set_activates_default (GTK_ENTRY (nameentry), TRUE);
 
-  dialog_action_area7 = GTK_DIALOG (foldernamedialog)->action_area;
+  dialog_action_area7 = GTK_DIALOG (nodenamedialog)->action_area;
   gtk_widget_show (dialog_action_area7);
   gtk_button_box_set_layout (GTK_BUTTON_BOX (dialog_action_area7), GTK_BUTTONBOX_END);
 
   cancelbutton1 = gtk_button_new_from_stock ("gtk-cancel");
   gtk_widget_show (cancelbutton1);
-  gtk_dialog_add_action_widget (GTK_DIALOG (foldernamedialog), cancelbutton1, 0);
+  gtk_dialog_add_action_widget (GTK_DIALOG (nodenamedialog), cancelbutton1, 0);
   GTK_WIDGET_SET_FLAGS (cancelbutton1, GTK_CAN_DEFAULT);
 
-  foldernamechangebtn = gtk_button_new_from_stock ("gtk-ok");
-  gtk_widget_show (foldernamechangebtn);
-  gtk_dialog_add_action_widget (GTK_DIALOG (foldernamedialog), foldernamechangebtn, 0);
-  GTK_WIDGET_SET_FLAGS (foldernamechangebtn, GTK_CAN_DEFAULT);
+  namechangebtn = gtk_button_new_from_stock ("gtk-ok");
+  gtk_widget_show (namechangebtn);
+  gtk_dialog_add_action_widget (GTK_DIALOG (nodenamedialog), namechangebtn, GTK_RESPONSE_OK);
+  GTK_WIDGET_SET_FLAGS (namechangebtn, GTK_CAN_DEFAULT);
 
-  g_signal_connect_swapped ((gpointer) foldernamedialog, "delete_event",
+  g_signal_connect_swapped ((gpointer) nodenamedialog, "delete_event",
                             G_CALLBACK (gtk_widget_hide),
-                            GTK_OBJECT (foldernamedialog));
+                            GTK_OBJECT (nodenamedialog));
   g_signal_connect_swapped ((gpointer) cancelbutton1, "clicked",
                             G_CALLBACK (gtk_widget_hide),
-                            GTK_OBJECT (foldernamedialog));
-  g_signal_connect_swapped ((gpointer) foldernamechangebtn, "clicked",
-                            G_CALLBACK (on_foldernamechangebtn_clicked),
-                            GTK_OBJECT (foldernamedialog));
-  g_signal_connect_data ((gpointer) foldernamechangebtn, "clicked",
-                         G_CALLBACK (gtk_widget_hide),
-                         GTK_OBJECT (foldernamedialog),
-                         NULL, G_CONNECT_AFTER | G_CONNECT_SWAPPED);
+                            GTK_OBJECT (nodenamedialog));
 
-  gtk_label_set_mnemonic_widget (GTK_LABEL (label23), foldernameentry);
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label23), nameentry);
 
   /* Store pointers to all widgets, for use by lookup_widget(). */
-  GLADE_HOOKUP_OBJECT_NO_REF (foldernamedialog, foldernamedialog, "foldernamedialog");
-  GLADE_HOOKUP_OBJECT_NO_REF (foldernamedialog, dialog_vbox7, "dialog_vbox7");
-  GLADE_HOOKUP_OBJECT (foldernamedialog, hbox13, "hbox13");
-  GLADE_HOOKUP_OBJECT (foldernamedialog, label23, "label23");
-  GLADE_HOOKUP_OBJECT (foldernamedialog, foldernameentry, "foldernameentry");
-  GLADE_HOOKUP_OBJECT_NO_REF (foldernamedialog, dialog_action_area7, "dialog_action_area7");
-  GLADE_HOOKUP_OBJECT (foldernamedialog, cancelbutton1, "cancelbutton1");
-  GLADE_HOOKUP_OBJECT (foldernamedialog, foldernamechangebtn, "foldernamechangebtn");
+  GLADE_HOOKUP_OBJECT_NO_REF (nodenamedialog, nodenamedialog, "nodenamedialog");
+  GLADE_HOOKUP_OBJECT_NO_REF (nodenamedialog, dialog_vbox7, "dialog_vbox7");
+  GLADE_HOOKUP_OBJECT (nodenamedialog, hbox13, "hbox13");
+  GLADE_HOOKUP_OBJECT (nodenamedialog, label23, "label23");
+  GLADE_HOOKUP_OBJECT (nodenamedialog, nameentry, "nameentry");
+  GLADE_HOOKUP_OBJECT_NO_REF (nodenamedialog, dialog_action_area7, "dialog_action_area7");
+  GLADE_HOOKUP_OBJECT (nodenamedialog, cancelbutton1, "cancelbutton1");
+  GLADE_HOOKUP_OBJECT (nodenamedialog, namechangebtn, "namechangebtn");
 
-  gtk_widget_grab_default (foldernamechangebtn);
-  return foldernamedialog;
+  gtk_widget_grab_default (namechangebtn);
+  return nodenamedialog;
 }
 
 GtkWidget*
@@ -4005,79 +3998,5 @@ create_newnewsbindialog (void)
 
   gtk_widget_grab_default (newnewsbinbtn);
   return newnewsbindialog;
-}
-
-GtkWidget*
-create_newsbinnamedialog (void)
-{
-  GtkWidget *newsbinnamedialog;
-  GtkWidget *dialog_vbox23;
-  GtkWidget *hbox92244;
-  GtkWidget *label251;
-  GtkWidget *nameentry;
-  GtkWidget *dialog_action_area23;
-  GtkWidget *cancelbutton7;
-  GtkWidget *okbutton4;
-
-  newsbinnamedialog = gtk_dialog_new ();
-  gtk_window_set_title (GTK_WINDOW (newsbinnamedialog), _("Change News Bin Name"));
-  gtk_window_set_type_hint (GTK_WINDOW (newsbinnamedialog), GDK_WINDOW_TYPE_HINT_DIALOG);
-
-  dialog_vbox23 = GTK_DIALOG (newsbinnamedialog)->vbox;
-  gtk_widget_show (dialog_vbox23);
-
-  hbox92244 = gtk_hbox_new (FALSE, 12);
-  gtk_widget_show (hbox92244);
-  gtk_box_pack_start (GTK_BOX (dialog_vbox23), hbox92244, TRUE, TRUE, 0);
-  gtk_container_set_border_width (GTK_CONTAINER (hbox92244), 5);
-
-  label251 = gtk_label_new_with_mnemonic (_("_News Bin Name:"));
-  gtk_widget_show (label251);
-  gtk_box_pack_start (GTK_BOX (hbox92244), label251, FALSE, FALSE, 0);
-
-  nameentry = gtk_entry_new ();
-  gtk_widget_show (nameentry);
-  gtk_box_pack_start (GTK_BOX (hbox92244), nameentry, TRUE, TRUE, 0);
-  gtk_entry_set_activates_default (GTK_ENTRY (nameentry), TRUE);
-
-  dialog_action_area23 = GTK_DIALOG (newsbinnamedialog)->action_area;
-  gtk_widget_show (dialog_action_area23);
-  gtk_button_box_set_layout (GTK_BUTTON_BOX (dialog_action_area23), GTK_BUTTONBOX_END);
-
-  cancelbutton7 = gtk_button_new_from_stock ("gtk-cancel");
-  gtk_widget_show (cancelbutton7);
-  gtk_dialog_add_action_widget (GTK_DIALOG (newsbinnamedialog), cancelbutton7, GTK_RESPONSE_CANCEL);
-  GTK_WIDGET_SET_FLAGS (cancelbutton7, GTK_CAN_DEFAULT);
-
-  okbutton4 = gtk_button_new_from_stock ("gtk-ok");
-  gtk_widget_show (okbutton4);
-  gtk_dialog_add_action_widget (GTK_DIALOG (newsbinnamedialog), okbutton4, GTK_RESPONSE_OK);
-  GTK_WIDGET_SET_FLAGS (okbutton4, GTK_CAN_DEFAULT);
-
-  g_signal_connect_swapped ((gpointer) cancelbutton7, "clicked",
-                            G_CALLBACK (gtk_widget_hide),
-                            GTK_OBJECT (newsbinnamedialog));
-  g_signal_connect_swapped ((gpointer) okbutton4, "clicked",
-                            G_CALLBACK (on_newsbinnamechange_clicked),
-                            GTK_OBJECT (newsbinnamedialog));
-  g_signal_connect_data ((gpointer) okbutton4, "clicked",
-                         G_CALLBACK (gtk_widget_hide),
-                         GTK_OBJECT (newsbinnamedialog),
-                         NULL, G_CONNECT_AFTER | G_CONNECT_SWAPPED);
-
-  gtk_label_set_mnemonic_widget (GTK_LABEL (label251), nameentry);
-
-  /* Store pointers to all widgets, for use by lookup_widget(). */
-  GLADE_HOOKUP_OBJECT_NO_REF (newsbinnamedialog, newsbinnamedialog, "newsbinnamedialog");
-  GLADE_HOOKUP_OBJECT_NO_REF (newsbinnamedialog, dialog_vbox23, "dialog_vbox23");
-  GLADE_HOOKUP_OBJECT (newsbinnamedialog, hbox92244, "hbox92244");
-  GLADE_HOOKUP_OBJECT (newsbinnamedialog, label251, "label251");
-  GLADE_HOOKUP_OBJECT (newsbinnamedialog, nameentry, "nameentry");
-  GLADE_HOOKUP_OBJECT_NO_REF (newsbinnamedialog, dialog_action_area23, "dialog_action_area23");
-  GLADE_HOOKUP_OBJECT (newsbinnamedialog, cancelbutton7, "cancelbutton7");
-  GLADE_HOOKUP_OBJECT (newsbinnamedialog, okbutton4, "okbutton4");
-
-  gtk_widget_grab_default (okbutton4);
-  return newsbinnamedialog;
 }
 

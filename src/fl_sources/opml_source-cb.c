@@ -46,7 +46,7 @@ static void on_opml_source_selected(GtkDialog *dialog, gint response_id, gpointe
 		return;
 
 	node = node_new();
-	node_set_title(node, _("New OPML Subscription"));
+	node_set_title(node, OPML_SOURCE_DEFAULT_TITLE);
 	node_source_new(node, opml_source_get_type(), gtk_entry_get_text(GTK_ENTRY(lookup_widget(GTK_WIDGET(dialog), "location_entry"))));
 	opml_source_setup(parent, node);
 	opml_source_update(node);

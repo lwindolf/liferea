@@ -235,12 +235,14 @@ static void opml_source_process_update_results(requestPtr request) {
 			mergeCtxt->parent = node;
 			mergeCtxt->xmlNode = xmlDocGetRootElement(oldDoc);
 			
-			title = common_xpath_find(root, "/opml/head/title"); 
-			if(title) {
-				xmlChar *titleStr = common_utf8_fix(xmlNodeListGetString(title->doc, title->xmlChildrenNode, 1));
-				if(titleStr) {
-					node_set_title(node, titleStr);
-					xmlFree(titleStr);
+			if(g_str_equal(node_get_title(node), OPML_SOURCE_DEFAULT_TITLE)) {
+				title = common_xpath_find(root, "/opml/head/title"); 
+				if(title) {
+					xmlChar *titleStr = common_utf8_fix(xmlNodeListGetString(title->doc, title->xmlChildrenNode, 1));
+					if(titleStr) {
+						node_set_title(node, titleStr);
+						xmlFree(titleStr);
+					}
 				}
 			}
 			

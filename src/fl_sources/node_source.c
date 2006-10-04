@@ -281,11 +281,6 @@ static gchar * node_source_render(nodePtr node) {
 	return result;
 }
 
-static void ui_node_source_dummy_properties(nodePtr node) {
-
-	g_warning("Not supported!");
-}
-
 static void node_source_save(nodePtr node) {
 
 	node_foreach_child(node, node_save);
@@ -314,7 +309,7 @@ nodeTypePtr node_source_get_node_type(void) {
 		nodeType->mark_all_read		= folder_get_node_type()->mark_all_read;
 		nodeType->render		= node_source_render;
 		nodeType->request_add		= ui_node_source_type_dialog;
-		nodeType->request_properties	= ui_node_source_dummy_properties;
+		nodeType->request_properties	= ui_node_rename;
 	}
 
 	return nodeType; 

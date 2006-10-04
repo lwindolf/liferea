@@ -33,6 +33,7 @@
 #include "ui/ui_node.h"
 
 extern GHashTable 	*flIterHash;
+static GtkWidget	*nodenamedialog = NULL;
 
 GtkTreeIter * ui_node_to_iter(nodePtr node) {
 
@@ -242,4 +243,34 @@ void ui_node_update(nodePtr node) {
 	   folder recursion here... (Lars) */
 	if(node->parent)
 		ui_node_update(node->parent);
+}
+
+/* node renaming dialog */
+
+static void on_nodenamedialog_response(GtkDialog *dialog, gint response_id, gpointer user_data) {
+	nodePtr	node = (nodePtr)user_data;
+
+	if(response_id == GTK_RESPONSE_OK) {
+		node->needsCacheSave = TRUE;
+		node_set_title(node, (gchar *)gtk_entry_get_text(GTK_ENTRY(lookup_widget(GTK_WIDGET(dialog), "nameentry"))));
+
+		ui_node_update(node);
+		feedlist_schedule_save();
+		ui_popup_update_menues();
+	}
+	
+	gtk_widget_hide(GTK_WIDGET(dialog));
+}
+
+void ui_node_rename(nodePtr node) {
+	GtkWidget	*nameentry;
+	
+	if(!nodenamedialog || !G_IS_OBJECT(nodenamedialog))
+		nodenamedialog = create_nodenamedialog();
+
+	nameentry = lookup_widget(nodenamedialog, "nameentry");
+	gtk_entry_set_text(GTK_ENTRY(nameentry), node_get_title(node));
+	g_signal_connect(G_OBJECT(nodenamedialog), "response", 
+	                 G_CALLBACK(on_nodenamedialog_response), node);
+	gtk_widget_show(nodenamedialog);
 }

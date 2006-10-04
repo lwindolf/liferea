@@ -31,7 +31,6 @@
 #include "ui/ui_popup.h"
 
 static GtkWidget *newnewsbindialog = NULL;
-static GtkWidget *newsbinnamedialog = NULL;
 static GSList * newsbin_list = NULL;
 
 GSList * newsbin_get_list(void) { return newsbin_list; }
@@ -106,31 +105,6 @@ void on_newnewsbinbtn_clicked(GtkButton *button, gpointer user_data) {
 	ui_popup_update_menues();
 }
 
-static void ui_newsbin_properties(nodePtr node) {
-	GtkWidget	*nameentry;
-	
-	if(!newsbinnamedialog || !G_IS_OBJECT(newsbinnamedialog))
-		newsbinnamedialog = create_newsbinnamedialog();
-
-	nameentry = lookup_widget(newsbinnamedialog, "nameentry");
-	gtk_entry_set_text(GTK_ENTRY(nameentry), node_get_title(node));
-	gtk_object_set_data(GTK_OBJECT(newsbinnamedialog), "node", node);
-		
-	gtk_widget_show(newsbinnamedialog);
-}
-
-void on_newsbinnamechange_clicked(GtkButton *button, gpointer user_data) {
-	nodePtr	node;
-
-	node = (nodePtr)gtk_object_get_data(GTK_OBJECT(newsbinnamedialog), "node");
-	node->needsCacheSave = TRUE;
-	node_set_title(node, (gchar *)gtk_entry_get_text(GTK_ENTRY(lookup_widget(newsbinnamedialog, "nameentry"))));
-
-	ui_node_update(node);
-	feedlist_schedule_save();
-	ui_popup_update_menues();
-}
-
 void on_popup_copy_to_newsbin(gpointer user_data, guint callback_action, GtkWidget *widget) {
 	nodePtr		newsbin;
 	itemPtr		item, copy;
@@ -192,7 +166,7 @@ nodeTypePtr newsbin_get_node_type(void) {
 		nodeType->mark_all_read		= feed_get_node_type()->mark_all_read;
 		nodeType->render		= newsbin_render;
 		nodeType->request_add		= ui_newsbin_add;
-		nodeType->request_properties	= ui_newsbin_properties;
+		nodeType->request_properties	= ui_node_rename;
 	}
 
 	return nodeType; 

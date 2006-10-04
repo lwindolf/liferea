@@ -32,7 +32,6 @@
 #include "ui/ui_folder.h"
 
 static GtkWidget	*newfolderdialog = NULL;
-static GtkWidget	*foldernamedialog = NULL;
 
 void ui_folder_add(nodePtr parent) {
 	GtkWidget	*foldernameentry;
@@ -58,26 +57,3 @@ void on_newfolderbtn_clicked(GtkButton *button, gpointer user_data) {
 	node_add_child(NULL, folder, 0);
 	ui_feedlist_select(folder);
 }
-
-void ui_folder_properties(nodePtr folder) {
-	
-	g_assert(!folder || (NODE_TYPE_FOLDER != folder->type));
-	
-	if(!foldernamedialog || !G_IS_OBJECT(foldernamedialog))
-		foldernamedialog = create_foldernamedialog();
-	
-	gtk_entry_set_text(GTK_ENTRY(lookup_widget(foldernamedialog, "foldernameentry")), node_get_title(folder));
-	gtk_object_set_data(GTK_OBJECT(foldernamedialog), "folder", folder);
-
-	gtk_widget_show(foldernamedialog);
-}
-
-void on_foldernamechangebtn_clicked(GtkButton *button, gpointer user_data) {
-	nodePtr		folder;
-	
-	folder = (nodePtr)gtk_object_get_data(GTK_OBJECT(foldernamedialog), "folder");
-	node_set_title(folder, (gchar *)gtk_entry_get_text(GTK_ENTRY(lookup_widget(foldernamedialog, "foldernameentry"))));
-	ui_node_update(folder);
-	gtk_widget_hide(foldernamedialog);
-}
-

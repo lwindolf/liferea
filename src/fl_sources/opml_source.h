@@ -23,6 +23,8 @@
 
 #include "node.h"
 
+#define OPML_SOURCE_DEFAULT_TITLE _("New OPML Subscription")
+
 /**
  * Sets up the given node as a OPML source node.
  *
