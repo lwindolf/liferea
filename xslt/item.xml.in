@@ -141,8 +141,9 @@ function stopShow() {
 <table class="enclosure" cellpadding="0" cellspacing="0">
 
 <tr>
-  <td>
+  <td valign="middle" class="headleft">
     <xsl:element name="a">
+      <xsl:attribute name="class">favicon</xsl:attribute>
       <xsl:attribute name="href">liferea-enclosure://load?<xsl:value-of select="."/></xsl:attribute>
       <xsl:element name="img">
         <xsl:attribute name="border">0</xsl:attribute>
