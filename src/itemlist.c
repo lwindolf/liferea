@@ -451,8 +451,8 @@ void itemlist_update_item(itemPtr item) {
 	}
 	
 	if(2 == viewMode) {
-		if(displayed_itemSet == item->itemSet)
-			itemlist_render();
+		//if(displayed_itemSet == item->itemSet)
+		//	itemlist_render();
 	} else {
 		ui_itemlist_update_item(item);
 	}
