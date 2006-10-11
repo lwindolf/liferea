@@ -123,6 +123,8 @@ dnl ***
 
 if test "x$enable_lua" = "xyes"; then
    PKG_CHECK_MODULES([LUA], [lua50 lualib50] ,enable_lua=yes,enable_lua=no)
+   AC_SUBST(LUA_CFLAGS)
+   AC_SUBST(LUA_LIBS)
 else
    enable_lua=no
 fi
