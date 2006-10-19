@@ -33,10 +33,12 @@ liferea_bin_SOURCES = \
 	feedlist.c feedlist.h \
 	folder.c folder.h \
 	html.c html.h \
+	htmlview.c htmlview.h \
 	interface.c interface.h \
 	item.c item.h \
 	itemset.c itemset.h \
 	itemlist.c itemlist.h \
+	itemview.c itemview.h \
 	main.c \
 	metadata.c metadata.h \
 	newsbin.c newsbin.h \
