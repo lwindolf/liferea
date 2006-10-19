@@ -21,8 +21,9 @@ libliscript_a_SOURCES = \
 
 if WITH_LUA
 
+BUILT_SOURCES = liferea_wrap.h
 pkglib_LTLIBRARIES = libliscrlua.la
-libliscrlua_la_SOURCES = lua.c liferea_wrap.h script.h 
+libliscrlua_la_SOURCES = liferea_wrap.h lua.c script.h 
 libliscrlua_la_LIBADD = $(PACKAGE_LIBS) $(LUA_LIBS) $(INTLLIBS)
 libliscrlua_la_CFLAGS = $(PACKAGE_CFLAGS) $(LUA_CFLAGS)
 
