@@ -51,6 +51,7 @@ create_mainwindow (void)
   GtkWidget *hbox30;
   GtkWidget *onlinebtn;
   GtkWidget *onlineimage;
+  AtkObject *atko;
   GtkWidget *statusbar;
 
   mainwindow = gtk_window_new (GTK_WINDOW_TOPLEVEL);
@@ -166,6 +167,10 @@ create_mainwindow (void)
   g_signal_connect ((gpointer) onlinebtn, "clicked",
                     G_CALLBACK (on_onlinebtn_clicked),
                     NULL);
+
+  atko = gtk_widget_get_accessible (onlineimage);
+  atk_object_set_name (atko, _("Online/Offline Button"));
+
 
   /* Store pointers to all widgets, for use by lookup_widget(). */
   GLADE_HOOKUP_OBJECT_NO_REF (mainwindow, mainwindow, "mainwindow");
