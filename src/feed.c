@@ -102,15 +102,16 @@ feedPtr feed_new(const gchar *source, const gchar *filter, updateOptionsPtr opti
 	feed->cacheLimit = CACHE_DEFAULT;
 
 	if(source) {
-		gchar *tmp = g_strdup(source);
-		g_strstrip(tmp);	/* strip confusing whitespaces */
+		gchar *tmp, *uri = g_strdup(source);
+		g_strstrip(uri);	/* strip confusing whitespaces */
 		
 		/* strip feed protocol prefix */
+		tmp = uri;
 		if(tmp == strstr(tmp, FEED_PROTOCOL_PREFIX))
 			tmp += strlen(FEED_PROTOCOL_PREFIX);
 			
 		feed_set_source(feed, tmp);
-		g_free(tmp);
+		g_free(uri);
 	}
 	
 	if(filter)
