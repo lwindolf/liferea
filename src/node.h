@@ -46,6 +46,13 @@ enum {
 	NODE_TYPE_NEWSBIN	= 12		/**< news bin node */
 };
 
+/** node view mode types */
+enum {
+	NODE_VIEW_MODE_NORMAL	= 0,
+	NODE_VIEW_MODE_WIDE	= 1,
+	NODE_VIEW_MODE_COMBINED	= 2
+};
+
 /** generic feed list node structure */
 typedef struct node {
 	gpointer		data;		/**< node type specific data structure */
@@ -75,7 +82,7 @@ typedef struct node {
 
 	/* item list state properties of this node */
 	itemSetPtr	itemSet;	/**< The set of items belonging to this node */
-	guint		viewMode;	/**< Viewing mode for this feed */
+	guint		viewMode;	/**< Viewing mode for this node (one of NODE_VIEW_MODE_*) */
 	gint		sortColumn;	/**< Sorting column. Set to either IS_TITLE, IS_FAVICON, IS_ENCICON or IS_TIME */
 	gboolean	sortReversed;	/**< Sort in the reverse order? */
 

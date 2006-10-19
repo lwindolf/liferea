@@ -65,7 +65,7 @@ const gchar * itemset_get_base_url(itemSetPtr itemSet) {
 	return baseUrl;
 }
 
-static xmlDocPtr itemset_to_xml(itemSetPtr itemSet) {
+xmlDocPtr itemset_to_xml(itemSetPtr itemSet) {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	itemSetNode;
 	
@@ -83,85 +83,6 @@ static xmlDocPtr itemset_to_xml(itemSetPtr itemSet) {
 	}
 
 	return doc;
-}
-
-gchar * itemset_render(itemSetPtr itemSet) {
-	gchar		**params = NULL, *output = NULL;
-	gboolean	summaryMode = FALSE;
-	gboolean	loadReadItems;
-	GList		*iter;
-	GSList		*nodes = NULL;
-	xmlDocPtr	doc;
-	xmlNodePtr	feeds;
-
-	debug_enter("itemset_render");
-	
-	/* determine wether we want to filter read items */
-	switch(itemSet->type) {
-		case ITEMSET_TYPE_FOLDER:
-			loadReadItems = !getBooleanConfValue(FOLDER_DISPLAY_HIDE_READ);
-			break;
-		default:
-			loadReadItems = TRUE;
-			break;
-	}
-	
-	/* for future: here we could apply an item list filter... */
-	
-	if(ITEMSET_TYPE_FOLDER != itemSet->type) {
-		guint missingContent = 0;	
-		
-		/* Output optimization for feeds without item content. This
-		   is not done for folders, because we only support all items
-		   in summary mode or all in detailed mode. With folder item 
-		   sets displaying everything in summary because of only a
-		   single feed without item descriptions would make no sense. */
-		   
-		iter = itemSet->items;
-		while(iter) {
-			gchar *desc = ((itemPtr)iter->data)->description;
-			if(!desc || (0 == strlen(desc)))
-				missingContent++;
-				
-			if(TRUE == (summaryMode = (missingContent > 3)))
-				break;
-				
-			iter = g_list_next(iter);
-		}		
-	}
-	
-	/* do the XML serialization */
-	doc = itemset_to_xml(itemSet);
-	feeds = xmlNewChild(xmlDocGetRootElement(doc), NULL, "feeds", NULL);
-			
-	iter = itemSet->items;
-	while(iter) {
-		itemPtr item = iter->data;
-		if(loadReadItems || FALSE == item->readStatus) {
-			item_to_xml(item, xmlDocGetRootElement(doc), TRUE);
-			
-			if(!g_slist_find(nodes, item->sourceNode) && 
-			   (NODE_TYPE_FEED == item->sourceNode->type)) {
-				xmlNodePtr feed;
-				feed = xmlNewChild(feeds, NULL, "feed", NULL);
-				feed_to_xml(item->sourceNode, feed, TRUE);
-				nodes = g_slist_append(nodes, item->sourceNode);
-			}
-		}
-		iter = g_list_next(iter);
-	}
-	g_slist_free(nodes);
-		
-	/* and finally the XSLT rendering transformation */
-	params = render_add_parameter(params, "pixmapsDir='file://" PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "'");
-	params = render_add_parameter(params, "baseUrl='%s'", itemset_get_base_url(itemSet));
-	output = render_xml(doc, summaryMode?"summary":"itemset", params);
-	//xmlSaveFormatFile("/tmp/test.xml", doc,1);
-	xmlFree(doc);
-	
-	debug_exit("itemset_render");
-
-	return output;
 }
 
 itemPtr itemset_lookup_item(itemSetPtr itemSet, nodePtr node, gulong nr) {

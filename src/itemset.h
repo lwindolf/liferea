@@ -22,21 +22,22 @@
 #ifndef _ITEMSET_H
 #define _ITEMSET_H
 
+#include <libxml/tree.h>
 #include "item.h"
 
 /**
  * The itemset interface processes item list actions
- * based on the itemset type specified by the node
- * the itemset belongs to.
+ * based on the item set type specified by the node
+ * the item set belongs to.
  *
- * Currently there are three types of itemsets:
+ * Currently there are three types of item sets:
  *   - Feed
  *   - Folder
  *   - VFolder
  *
- * The type of the itemset can be determined from
- * the node type (valid values: FST_FEED, FST_FOLDER
- * and FST_VFOLDER).
+ * The type of the item set can be determined from
+ * the node type (valid values: NODE_TYPE_FEED, 
+ * NODE_TYPE_FOLDER and NODE_TYPE_VFOLDER).
  */
 
 enum itemSetTypes {
@@ -67,37 +68,18 @@ gboolean itemset_load_link_preferred(itemSetPtr itemSet);
  * Returns the base URL for the given item set.
  * If it is a mixed item set NULL will be returned.
  *
- * @param itemSet	the itemset
+ * @param itemSet	the item set
  *
  * @returns base URL
  */
 const gchar * itemset_get_base_url(itemSetPtr itemSet);
 
 /**
- * Renders a single item out of a given itemset.
- *
- * @param itemSet	the itemset
- * @param item		the item to render
- *
- * @returns rendered HTML 
- */
-gchar * itemset_render_item(itemSetPtr itemSet, itemPtr item);
-
-/**
- * Renders all items of a given itemset (condensed mode) 
- *
- * @param itemSet	the itemset
- *
- * @returns rendered HTML 
- */
-gchar * itemset_render(itemSetPtr itemSet);
-
-/**
  * Scans all item of a given item set for the given item id.
  * The node must be also given to correctly extract items from
- * merged itemlists (like folders)
+ * merged item lists (like folders)
  *
- * @param itemSet	the itemset
+ * @param itemSet	the item set
  * @param node		the parent node
  * @param nr		the item nr
  *
@@ -106,40 +88,40 @@ gchar * itemset_render(itemSetPtr itemSet);
 itemPtr itemset_lookup_item(itemSetPtr itemSet, struct node *node, gulong nr);
 
 /**
- * Prepends a single item to the given itemset.
+ * Prepends a single item to the given item set.
  *
- * @param itemSet	the itemset
+ * @param itemSet	the item set
  * @param item		the item to add
  */
 void itemset_prepend_item(itemSetPtr itemSet, itemPtr item);
 
 /**
- * Appends a single item to the given itemset.
+ * Appends a single item to the given item set.
  *
- * @param itemSet	the itemset
+ * @param itemSet	the item set
  * @param item		the item to add
  */
 void itemset_append_item(itemSetPtr itemSet, itemPtr item);
 
 /**
- * Removes a single item of a given itemset.
+ * Removes a single item of a given item set.
  *
- * @param itemSet	the itemset
+ * @param itemSet	the item set
  * @param item		the item to remove
  */
 void itemset_remove_item(itemSetPtr itemSet, itemPtr item);
 
 /**
- * Removes all items of a given itemset.
+ * Removes all items of a given item set.
  *
- * @param itemSet	the itemset
+ * @param itemSet	the item set
  */
 void itemset_remove_items(itemSetPtr itemSet);
 
 /**
  * Changes the "flag" status of a single item of the given itemset.
  *
- * @param itemSet	the itemset
+ * @param itemSet	the item set
  * @param item		the item to change
  * @param newStatus	the new flag status
  */
@@ -148,7 +130,7 @@ void itemset_set_item_flag(itemSetPtr itemSet, itemPtr item, gboolean newStatus)
 /**
  * Changes the "read" status of a single item of the given itemset.
  *
- * @param itemSet	the itemset
+ * @param itemSet	the item set
  * @param item		the item to change
  * @param newStatus	the new read status
  */
@@ -157,7 +139,7 @@ void itemset_set_item_read_status(itemSetPtr itemSet, itemPtr item, gboolean new
 /**
  * Changes the "update" status of a single item of the given itemset.
  *
- * @param itemSet	the itemset
+ * @param itemSet	the item set
  * @param item		the item to change
  * @param newStatus	the new update status
  */
@@ -166,10 +148,18 @@ void itemset_set_item_update_status(itemSetPtr itemSet, itemPtr item, gboolean n
 /**
  * Changes the "new" status of a single item of the given itemset.
  *
- * @param itemSet	the itemset
+ * @param itemSet	the item set
  * @param item		the item to change
  * @param newStatus	the new update status
  */
 void itemset_set_item_new_status(itemSetPtr itemSet, itemPtr item, gboolean newStatus);
+
+/**
+ * Serialize the given item set to XML. Does not serialize items!
+ * It only creates an XML document frame for an item set.
+ *
+ * @param itemSet	the item set to serialize
+ */
+xmlDocPtr itemset_to_xml(itemSetPtr itemSet);
 
 #endif

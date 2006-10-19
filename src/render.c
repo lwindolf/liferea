@@ -34,8 +34,11 @@
 #include "conf.h"
 #include "common.h"
 #include "debug.h"
+#include "item.h"
 #include "itemlist.h"
+#include "itemset.h"
 #include "render.h"
+#include "ui/ui_htmlview.h"
 
 static gchar		**langParams = NULL;	/* the current locale settings (for localization stylesheet) */
 static gchar		*defaultParams = NULL;	/* some default parameters (for rendering stylesheets) */
@@ -117,81 +120,80 @@ xsltStylesheetPtr render_load_stylesheet(const gchar *xsltName) {
 	return xslt;
 }
 
-// FIXME: keep CSS in memory
-GString * render_get_css(gboolean twoPane) {
-	GString	*buffer;
-	gchar	*font = NULL;
-	gchar	*fontsize = NULL;
-	gchar	*tmp;
-	gchar	*styleSheetFile, *defaultStyleSheetFile, *adblockStyleSheetFile;
-    
-    	buffer = g_string_new("<style type=\"text/css\">\n<![CDATA[\n");
+/** cached CSS definitions */
+static GString	*css = NULL;
+
+const gchar * render_get_css(void) {
 	
-	/* font configuration support */
-	font = getStringConfValue(USER_FONT);
-	if(0 == strlen(font)) {
-		g_free(font);
-		font = getStringConfValue(DEFAULT_FONT);
-	}
+	if(!css) {   
+		gchar	*styleSheetFile, *defaultStyleSheetFile, *adblockStyleSheetFile;
+		gchar	*font = NULL;
+		gchar	*fontsize = NULL;
+		gchar	*tmp;
+		
+    		css = g_string_new("<style type=\"text/css\">\n<![CDATA[\n");
 
-	if(font) {
-		fontsize = font;
-		/* the GTK2/GNOME font name format is <font name>,<font size in point>
-		 Or it can also be "Font Name size*/
-		strsep(&fontsize, ",");
-		if(fontsize == NULL) {
-			if(NULL != (fontsize = strrchr(font, ' '))) {
-				*fontsize = '\0';
-				fontsize++;
-			}
+		/* font configuration support */
+		font = getStringConfValue(USER_FONT);
+		if(0 == strlen(font)) {
+			g_free(font);
+			font = getStringConfValue(DEFAULT_FONT);
 		}
-		g_string_append(buffer, "body, table, div {");
-		g_string_append_printf(buffer, "font-family: %s;\n", font);
-		
-		if(fontsize)
-			g_string_append_printf(buffer, "font-size: %spt;\n", fontsize);
-		
-		g_free(font);
-		g_string_append(buffer, "}\n");
-	}	
 
-	if(twoPane) {
-		defaultStyleSheetFile = g_strdup(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "css" G_DIR_SEPARATOR_S "liferea2.css");
-		styleSheetFile = g_strdup_printf("%s" G_DIR_SEPARATOR_S "liferea2.css", common_get_cache_path());
-	} else {
+		if(font) {
+			fontsize = font;
+			/* the GTK2/GNOME font name format is <font name>,<font size in point>
+			 Or it can also be "Font Name size*/
+			strsep(&fontsize, ",");
+			if(fontsize == NULL) {
+				if(NULL != (fontsize = strrchr(font, ' '))) {
+					*fontsize = '\0';
+					fontsize++;
+				}
+			}
+			g_string_append(css, "body, table, div {");
+			g_string_append_printf(css, "font-family: %s;\n", font);
+
+			if(fontsize)
+				g_string_append_printf(css, "font-size: %spt;\n", fontsize);
+
+			g_free(font);
+			g_string_append(css, "}\n");
+		}	
+
 		defaultStyleSheetFile = g_strdup(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "css" G_DIR_SEPARATOR_S "liferea.css");
 		styleSheetFile = g_strdup_printf("%s" G_DIR_SEPARATOR_S "liferea.css", common_get_cache_path());
-	}
-	
-	if(g_file_get_contents(defaultStyleSheetFile, &tmp, NULL, NULL)) {
-		g_string_append(buffer, tmp);
-		g_free(tmp);
-	}
 
-	if(g_file_get_contents(styleSheetFile, &tmp, NULL, NULL)) {
-		g_string_append(buffer, tmp);
-		g_free(tmp);
-	}
-	
-	g_free(defaultStyleSheetFile);
-	g_free(styleSheetFile);
-	
-	adblockStyleSheetFile = g_strdup(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "css" G_DIR_SEPARATOR_S "adblock.css");
-	
-	if(g_file_get_contents(adblockStyleSheetFile, &tmp, NULL, NULL)) {
-		g_string_append(buffer, tmp);
-		g_free(tmp);
-	}
-	
-	g_free(adblockStyleSheetFile);
+		if(g_file_get_contents(defaultStyleSheetFile, &tmp, NULL, NULL)) {
+			g_string_append(css, tmp);
+			g_free(tmp);
+		}
 
-	g_string_append(buffer, "\n]]>\n</style>\n");
-	return buffer;
+		if(g_file_get_contents(styleSheetFile, &tmp, NULL, NULL)) {
+			g_string_append(css, tmp);
+			g_free(tmp);
+		}
+
+		g_free(defaultStyleSheetFile);
+		g_free(styleSheetFile);
+
+		adblockStyleSheetFile = g_strdup(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "css" G_DIR_SEPARATOR_S "adblock.css");
+
+		if(g_file_get_contents(adblockStyleSheetFile, &tmp, NULL, NULL)) {
+			g_string_append(css, tmp);
+			g_free(tmp);
+		}
+
+		g_free(adblockStyleSheetFile);
+
+		g_string_append(css, "\n]]>\n</style>\n");
+	}
+	
+	return css->str;
 }
 
 gchar * render_xml(xmlDocPtr doc, const gchar *xsltName, gchar **params) {
 	gchar			*output = NULL;
-	GString			*css;
 	xmlDocPtr		resDoc;
 	xsltStylesheetPtr	xslt;
 	xmlOutputBufferPtr	buf;
@@ -207,7 +209,7 @@ gchar * render_xml(xmlDocPtr doc, const gchar *xsltName, gchar **params) {
 	}
 	
 	g_strfreev(params);
-	//xsltSaveResultToFile(stdout, resDoc, xslt);
+	/* for debugging use: xsltSaveResultToFile(stdout, resDoc, xslt); */
 	
 	/* save results into return string */
 	buf = xmlAllocOutputBuffer(NULL);
@@ -220,13 +222,16 @@ gchar * render_xml(xmlDocPtr doc, const gchar *xsltName, gchar **params) {
 	xmlOutputBufferClose(buf);
 	xmlFreeDoc(resDoc);
 	
-	/* Note: we need to do CSS insertion because GtkHTML2 does
-	   not support  @import url(...) in <style> tags. Do not
-	   add referenced CSS to the rendering stylesheets! */
-	   
-	css = render_get_css(2 == itemlist_get_view_mode());
-	output = common_strreplace(output, "##STYLE_INSERT##", css->str);
-	g_string_free(css, TRUE);
+	/* Return only the body contents */
+	if(output) {
+		gchar *tmp = strstr(output, "<body>");
+		tmp = g_strdup(tmp + 6);
+		xmlFree(output);
+		output = tmp;
+		tmp = strstr(output, "</body>");
+		if(tmp)
+			*tmp = 0;
+	}
 	
 	return output;
 }
@@ -274,3 +279,5 @@ gchar ** render_add_parameter(gchar **params, const gchar *fmt, ...) {
 	
 	return newParams;
 }
+
+

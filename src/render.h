@@ -21,7 +21,9 @@
 #ifndef _RENDER_H
 #define _RENDER_H
 
-#include <glib.h>
+#include <gtk/gtk.h>
+#include "item.h"
+#include "itemview.h"
 
 /**
  * To be called whenever the rendering parameters have changed.
@@ -57,7 +59,9 @@ gchar * render_xml(xmlDocPtr doc, const gchar *xsltName, gchar **params);
  */
 gchar ** render_add_parameter(gchar **params, const gchar *fmt, ...);
 
-// FIXME: remove me once ui_htmlview.c doesn't do rendering anymore
-GString * render_get_css(gboolean twoPane);
+/**
+ * Returns CSS definitions for inclusion in XHTML output.
+ */
+const gchar * render_get_css(void);
 
 #endif

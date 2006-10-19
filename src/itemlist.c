@@ -28,6 +28,7 @@
 #include "feedlist.h"
 #include "itemlist.h"
 #include "itemset.h"
+#include "itemview.h"
 #include "node.h"
 #include "support.h"
 #include "rule.h"
@@ -93,7 +94,7 @@ static void itemlist_check_for_deferred_action(void) {
 		/* check for removals caused by itemlist filter rule */
 		if(deferred_item_filter) {
 			deferred_item_filter = FALSE;
-			ui_itemlist_remove_item(item);
+			itemview_remove_item(item);
 			ui_node_update(item->sourceNode);
 		}
 
@@ -102,32 +103,6 @@ static void itemlist_check_for_deferred_action(void) {
 			deferred_item_remove = FALSE;
 			itemlist_remove_item(item);
 		}
-	}
-}
-
-/* Responsible for rendering 2 pane view and node description */
-static void itemlist_render(void) {
-	gchar		*buffer = NULL;
-	
-	/* update HTML view according to mode */
-	if(2 == itemlist_get_view_mode()) {
-		/* in 2 pane mode all items are shown at once
-		   so after merging it needs to be redisplayed */
-		if(displayed_itemSet)
-			buffer = itemset_render(displayed_itemSet);
-	} else {
-		/* in 3 pane mode we don't update the HTML view
-		   except when no item is selected (when loading
-		   the items for the first time) then we show
-		   the nodes description */
-		if(!displayed_item) 
-			buffer = node_render(displayed_itemSet->node);
-	}
-
-	if(buffer) {
-		ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, 
-				  itemset_get_base_url(displayed_itemSet));
-		g_free(buffer);
 	}
 }
 
@@ -160,7 +135,7 @@ void itemlist_merge_itemset(itemSetPtr itemSet) {
 		itemPtr item = iter->data;
 		if(!(itemlist_filter && !rule_check_item(itemlist_filter, item))) {
 			hasEnclosures |= item->hasEnclosure;
-			ui_itemlist_add_item(item, TRUE);
+			itemview_add_item(item);
 		}
 
 		iter = g_list_previous(iter);
@@ -169,7 +144,7 @@ void itemlist_merge_itemset(itemSetPtr itemSet) {
 	if(hasEnclosures)
 		ui_itemlist_enable_encicon_column(TRUE);
 	
-	itemlist_render();
+	itemview_update();
 
 	debug_exit("itemlist_merge_itemset");
 }
@@ -205,6 +180,8 @@ void itemlist_load(itemSetPtr itemSet) {
 	itemlistLoading = 1;
 	viewMode = node_get_view_mode(itemSet->node);
 	ui_mainwindow_set_layout(viewMode);
+	
+	// FIXME: move ui_itemlist setup to itemview.c
 
 	/* 2. Clear item list and disable sorting for performance reasons */
 
@@ -233,6 +210,13 @@ void itemlist_load(itemSetPtr itemSet) {
 
 	/* 4. Load the new one... */
 	displayed_itemSet = itemSet;
+	itemview_set_itemset(itemSet);
+
+	if(NODE_VIEW_MODE_COMBINED != node_get_view_mode(itemSet->node))
+		itemview_set_mode(ITEMVIEW_NODE_INFO);
+	else
+		itemview_set_mode(ITEMVIEW_ALL_ITEMS);
+	
 	itemlist_merge_itemset(itemSet);
 
 	itemlistLoading = 0;
@@ -243,6 +227,8 @@ void itemlist_load(itemSetPtr itemSet) {
 void itemlist_unload(gboolean markRead) {
 
 	if(displayed_itemSet) {
+		itemview_clear();
+		
 		/* 1. Postprocessing for previously selected node, this is necessary
 		   to realize reliable read marking when using condensed mode. It's
 		   important to do this only when the selection really changed. */
@@ -250,7 +236,6 @@ void itemlist_unload(gboolean markRead) {
 			itemlist_mark_all_read(displayed_itemSet);
 
 		itemlist_check_for_deferred_action();
-		ui_itemlist_clear();
 	}
 
 	displayed_item = NULL;
@@ -271,8 +256,7 @@ void itemlist_update_vfolder(vfolderPtr vp) {
 void itemlist_reset_date_format(void) {
 	
 	ui_itemlist_reset_date_format();
-	if(2 != itemlist_get_view_mode())
-		ui_itemlist_update();
+	itemview_update();
 }
 
 /* next unread selection logic */
@@ -343,6 +327,7 @@ void itemlist_set_flag(itemPtr item, gboolean newStatus) {
 void itemlist_toggle_flag(itemPtr item) {
 
 	itemlist_set_flag(item, !(item->flagStatus));
+	itemview_update();
 }
 
 void itemlist_set_read_status(itemPtr item, gboolean newStatus) {
@@ -370,6 +355,7 @@ void itemlist_set_read_status(itemPtr item, gboolean newStatus) {
 void itemlist_toggle_read_status(itemPtr item) {
 
 	itemlist_set_read_status(item, !(item->readStatus));
+	itemview_update();
 }
 
 void itemlist_set_update_status(itemPtr item, const gboolean newStatus) { 
@@ -397,13 +383,13 @@ static void itemlist_hide_item(itemPtr item) {
 	/* if the currently selected item should be removed we
 	   don't do it and set a flag to do it when unselecting */
 	if(displayed_item != item) {
-		ui_itemlist_remove_item(item);
+		itemview_remove_item(item);
 		ui_node_update(item->itemSet->node);
 	} else {
 		deferred_item_filter = TRUE;
 		/* update the item to show new state that forces
 		   later removal */
-		ui_itemlist_update_item(item);
+		itemview_update_item(item);
 	}
 }
 
@@ -414,9 +400,8 @@ void itemlist_remove_item(itemPtr item) {
 	g_assert(NULL != itemset_lookup_item(item->itemSet, item->itemSet->node, item->nr));
 	
 	if(displayed_item == item)
-		ui_itemlist_select(NULL);
-	
-	ui_itemlist_remove_item(item);
+		itemview_select_item(NULL);
+	itemview_remove_item(item);
 	itemset_remove_item(item->itemSet, item);
 	ui_node_update(item->itemSet->node);
 }
@@ -431,15 +416,14 @@ void itemlist_request_remove_item(itemPtr item) {
 		deferred_item_remove = TRUE;
 		/* update the item to show new state that forces
 		   later removal */
-		ui_itemlist_update_item(item);
+		itemview_update_item(item);
 	}
 }
 
 void itemlist_remove_items(itemSetPtr itemSet) {
 
-	ui_itemlist_clear();
+	itemview_clear();
 	itemset_remove_items(itemSet);
-	itemlist_render();
 	ui_node_update(itemSet->node);
 }
 
@@ -450,12 +434,7 @@ void itemlist_update_item(itemPtr item) {
 		return;
 	}
 	
-	if(2 == viewMode) {
-		//if(displayed_itemSet == item->itemSet)
-		//	itemlist_render();
-	} else {
-		ui_itemlist_update_item(item);
-	}
+	itemview_update_item(item);
 }
 
 void itemlist_mark_all_read(itemSetPtr itemSet) {
@@ -493,7 +472,7 @@ void itemlist_mark_all_read(itemSetPtr itemSet) {
 	itemSet->node->needsCacheSave = TRUE;
 	
 	/* GUI updating */	
-	itemlist_render();
+	itemview_update();
 	ui_node_update(itemSet->node);
 }
 
@@ -519,41 +498,41 @@ void itemlist_mark_all_old(itemSetPtr itemSet) {
 
 /* mouse/keyboard interaction callbacks */
 void itemlist_selection_changed(itemPtr item) {
-	gchar 	*buffer;
 
 	debug_enter("itemlist_selection_changed");
 	
-	if(!itemlistLoading && (2 != itemlist_get_view_mode())) {
+	if(!itemlistLoading) {
 		/* folder&vfolder postprocessing to remove/filter unselected items no
 		   more matching the display rules because they have changed state */
 		itemlist_check_for_deferred_action();
 
-		script_run_for_hook(SCRIPT_HOOK_ITEM_UNSELECT);
+		if(displayed_item)
+			script_run_for_hook(SCRIPT_HOOK_ITEM_UNSELECT);
 	
 		debug1(DEBUG_GUI, "item list selection changed to \"%s\"", item_get_title(item));
 
 		displayed_item = item;
-
+		
 		/* set read and unset update status when selecting */
 		if(item) {
 			itemlist_set_read_status(item, TRUE);
 			itemlist_set_update_status(item, FALSE);
-
-			/* and either render the item or load the item link */
+			
 			if(itemset_load_link_preferred(displayed_itemSet)) {
-				ui_htmlview_launch_URL(ui_mainwindow_get_active_htmlview(), item_get_source(item), 2);
+				ui_htmlview_launch_URL(ui_mainwindow_get_active_htmlview(), 
+				                       item_get_source(itemlist_get_selected()), 2);
 			} else {
-				buffer = item_render(item);
-				ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer, itemset_get_base_url(item->itemSet));
-				g_free(buffer);
+				itemview_set_mode(ITEMVIEW_SINGLE_ITEM);
+				itemview_update();
 			}
 		}
 
 		ui_node_update(displayed_itemSet->node);
 
 		feedlist_reset_new_item_count();
-		
-		script_run_for_hook(SCRIPT_HOOK_ITEM_SELECTED);
+	
+		if(displayed_item)
+			script_run_for_hook(SCRIPT_HOOK_ITEM_SELECTED);
 	}
 
 	debug_exit("itemlist_selection_changed");

@@ -150,20 +150,6 @@ const gchar * item_get_base_url(itemPtr item) {
 		return itemset_get_base_url(item->itemSet);
 }
 
-gchar *item_render(itemPtr item) {
-	gchar		**params = NULL, *output = NULL;
-	xmlDocPtr	doc;
-
-	doc = feed_to_xml(item->sourceNode, NULL, TRUE);
-	item_to_xml(item, xmlDocGetRootElement(doc), TRUE);
-	
-	params = render_add_parameter(params, "pixmapsDir='file://" PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "'");
-	output = render_xml(doc, "item", params);
-	xmlFree(doc);
-
-	return output;
-}
-
 itemPtr item_parse_cache(xmlNodePtr cur, gboolean migrateCache) {
 	itemPtr 	item;
 	gchar		*tmp;
