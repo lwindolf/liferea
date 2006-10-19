@@ -63,12 +63,20 @@ img {
 
 /* styles for the item description (currently also used for
    the feed description) */
-table.itemhead {
-	background-color:#DDD;
+table.itemhead, table.feedhead {
 	margin:0;
 	width:100%;
 	border:0;
 	border-bottom: 1px solid #888;
+	clear:both;
+}
+
+.flagged {
+	background-color:#FAA;
+}
+
+.unflagged, .feedhead {
+	background-color:#DDD;
 }
 
 table.itemhead * td {
@@ -146,7 +154,6 @@ table.headmeta td {
         padding:0;
 	margin-left:0;
         margin-right:12px;
-	font-weight:bold;
 }
 
 .date {
@@ -172,17 +179,50 @@ a.favicon img {
 	top:2px;
 }
 
-/* channel images */
-img.feed {
-	margin:6px 6px 0 6px;
-}
-
 /* styles to realize shading of new items in condensed mode */
-/*div.itemshaded {
+.itemshaded { background:#ffe; padding:1px; margin:0; }
+
+.itemunshaded { padding:1px; margin:0; }
+
+.summaryshaded, .summaryunshaded { 
+	padding:0px 6px; 
+	margin:0;
 }
 
-div.itemunshaded {
-}*/
+.summaryshaded a {
+	display:block;
+	background:#ffe;
+	text-decoration:none;
+	padding:1px 0px;
+	font-weight:bold;
+}
+
+.summaryunshaded a {
+	display:block;
+	text-decoration:none;
+	padding:1px 0px;
+}
+
+.summarytime {
+	padding-right:15px;
+	white-space:nowrap;
+	color:#999;
+}
+
+.summaryflagged a {
+	color:red;
+}
+
+.summaryunflagged a {
+	color:black;
+}
+
+hr.summary {
+	border:0;
+	padding:0;
+	margin:2px;
+	border-bottom:1px dashed #ddd;
+}
 
 /* style for the HTTP error box at the beginning
    of the feed description */
