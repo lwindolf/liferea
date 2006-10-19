@@ -61,11 +61,11 @@ gboolean notification_plugin_load(pluginPtr plugin, GModule *handle) {
 		notificationPluginPtr tmp = ((pluginPtr)iter->data)->symbols;
 
 		if(tmp->type == notificationPlugin->type) {
-			if(tmp->priority < notificationPlugin->priority) {
-				debug0(DEBUG_PLUGINS, "plugin is not better than already loaded one, dropping it...");
+			if(tmp->priority > notificationPlugin->priority) {
+				debug2(DEBUG_PLUGINS, "plugin \"%s\" is not better than \"%s\", ignoring it...", plugin->name, ((pluginPtr)iter->data)->name);
 				return FALSE;
 			} else {
-				debug0(DEBUG_PLUGINS, "plugin is better, dropping already loaded one");
+				debug2(DEBUG_PLUGINS, "plugin \"%s\" is better, dropping already loaded one \"%s\"", plugin->name, ((pluginPtr)iter->data)->name);
 				break;
 			}
 		}
