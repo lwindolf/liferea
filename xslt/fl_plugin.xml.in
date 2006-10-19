@@ -38,7 +38,7 @@
 </head>
 <body>
 
-<table class="itemhead" cellspacing="0">
+<table class="feedhead" cellspacing="0">
 <tr>
   <td valign="middle" class="headleft">
     <b><_span>Source:</_span></b>

@@ -38,7 +38,7 @@
 <body>
 
 <!-- header table -->
-<table class="itemhead" cellspacing="0">
+<table class="feedhead" cellspacing="0">
 <tr>
   <td valign="middle" class="headleft">
     <b><_span>News Bin:</_span></b>

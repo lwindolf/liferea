@@ -105,7 +105,7 @@
 </xsl:if>
 
 <!-- header table -->
-<table class="itemhead" cellspacing="0">
+<table class="feedhead" cellspacing="0">
 <tr>
   <td valign="middle" class="headleft">
     <b><_span>Feed:</_span></b>
@@ -124,7 +124,6 @@
     <b><_span>Source:</_span></b>
   </td>
   <td width="100%" valign="middle" class="headright">
-     <!-- FIXME: hide passwords, special handling for user commands -->
      <xsl:element name="a">
         <xsl:attribute name="href">
           <xsl:call-template name="strippwd">
@@ -139,17 +138,44 @@
 </tr>
 </table>
 
+<!-- header metadata (author, copyright, language) -->
+<table class='headmeta' cellspacing="0" cellpadding="0">
+<xsl:if test="attributes/attribute[ @name = 'publisher' ]">
+<tr>
+ <td valign="top" class='publisher'>
+     <b><_span>Publisher</_span></b>
+     <span class='publisher'>
+       <xsl:value-of select="attributes/attribute[ @name = 'publisher' ]" disable-output-escaping='yes'/>
+     </span>
+ </td>
+</tr>
+</xsl:if>
+<xsl:if test="attributes/attribute[ @name = 'copyright' ]">
+<tr>
+ <td valign="top" class='copyright'>
+     <b><_span>Copyright</_span></b>
+     <span class='copyright'>
+       <xsl:value-of select="attributes/attribute[ @name = 'copyright' ]" disable-output-escaping='yes'/>
+     </span>
+ </td>
+</tr>
+</xsl:if>
+</table> <!-- end of header metadata -->
+
+<div class='content'>
+
+<p>
 <xsl:element name="img">
   <xsl:attribute name="class">feed</xsl:attribute>
   <xsl:attribute name="src">
      <xsl:value-of select="feedImage"/>
   </xsl:attribute>
 </xsl:element>
+</p>
 
-<!-- FIXME search formular -->
-
-<div class='content'>
    <xsl:value-of select="feedDescription" disable-output-escaping='yes'/>
+
+   <xsl:value-of select="attributes/attribute[@name = 'textInput']" disable-output-escaping='yes'/>
 </div>
 
 </body>

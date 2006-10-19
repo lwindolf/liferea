@@ -2,7 +2,7 @@
 
 <!--
 /**
- * Rendering stylesheet for Liferea (single headline view)
+ * Rendering stylesheet for Liferea (item view: item rendering)
  *
  * Copyright (C) 2006 Lars Lindner <lars.lindner@gmx.net>
  *
@@ -29,58 +29,50 @@
 
 <!-- the local pixmap directory (e.g. /usr/share/liferea/pixmaps/) -->
 <xsl:param name="pixmapsDir"/>
+<xsl:param name="baseUrl"/>
+<xsl:param name="summary"/>
 
-<xsl:template match="/feed/*"/>
-
-<xsl:template match="/feed/item">
+<xsl:template match="/itemset">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
-##STYLE_INSERT##
-
-<script language="javascript" type="text/javascript">
-
-var popupTimeout;
-var lastId;
-
-function doShowCb(id) {
-
-	/* hide last id */
-	var obj = document.getElementById(lastId);
-	if(obj) {
-		obj.style.visibility = "hidden";
-		obj.style.display = "none";
-	}
-	
-	/* show new id */
-	obj = document.getElementById(id);
-	if(obj) {
-		obj.style.visibility = "visible";
-		obj.style.display = "block";
-		lastId = id;
-	}
-}
-
-function doShow(id) {
-
-	window.clearTimeout(popupTimeout);
-	popupTimeout = window.setTimeout("doShowCb('"+id+"')", 1000);
-}
-
-function stopShow() {
-
-	window.clearTimeout(popupTimeout);
-}
-
-</script>
 </head>
 <body>
+
+<!-- base URL of the itemset -->
+<xsl:element name="div">
+<xsl:attribute name="href">
+   <xsl:value-of select="$baseUrl"/>
+</xsl:attribute>
+
+<xsl:for-each select="item">
+  <xsl:choose>
+    <xsl:when test="$summary = '1'">
+      <xsl:call-template name="item_summary"/>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:call-template name="item"/>
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:for-each>
+
+</xsl:element> <!-- end of base URL div -->
+
+</body>
+</html>
+
+</xsl:template>
+
+<!-- ==================================================================== -->
+
+<!---single item detailed mode rendering -->
+<xsl:template name="item">
 
 <!-- base URL of parent feed -->
 <xsl:element name="div">
 <xsl:attribute name="href">
-   <xsl:value-of select="/feed/feedSource"/>
+   <xsl:value-of select="/itemset/feed/feedSource"/>
 </xsl:attribute>
 
 <!-- the item -->
@@ -97,18 +89,22 @@ function stopShow() {
 <xsl:attribute name="onmouseout">stopShow();</xsl:attribute>
 
 <!-- header table -->
-<table class="itemhead" cellspacing="0" cellpadding="0">
+<xsl:element name="table">
+<xsl:attribute name="class">itemhead <xsl:if test="mark = '0'">un</xsl:if>flagged</xsl:attribute>
+<xsl:attribute name="cellspacing">0</xsl:attribute>
+<xsl:attribute name="cellpadding">0</xsl:attribute>
+
 <tr>
   <td valign="middle" class="headleft">
     <!-- Feed link as favicon -->
     <xsl:element name="a">
       <xsl:attribute name="class">favicon</xsl:attribute>
-      <xsl:attribute name="href"><xsl:value-of select="/feed/feedLink"/></xsl:attribute>
+      <xsl:attribute name="href"><xsl:value-of select="/itemset/feed/feedLink"/></xsl:attribute>
       <xsl:element name="img">
         <xsl:attribute name="src">
           <xsl:choose>
             <xsl:when test="not(sourceFavicon)">
-              <xsl:value-of select="/feed/favicon"/>
+              <xsl:value-of select="/itemset/feed/favicon"/>
             </xsl:when>
             <xsl:otherwise>
               <xsl:value-of select="sourceFavicon"/>
@@ -134,7 +130,7 @@ function stopShow() {
     </xsl:element>
   </td>
 </tr>
-</table>
+</xsl:element>
 
 <!-- enclosures -->
 <xsl:for-each select="attributes/attribute[ @name = 'enclosure' ]">
@@ -185,24 +181,24 @@ function stopShow() {
 <table class='headmeta' cellspacing="0" cellpadding="0">
 <xsl:if test="attributes/attribute[ @name = 'category' ]">
 <tr>
- <td valign="top">
-     <_span class='categories_in'>Filed under</_span>  
-     <span class='categories'>
+ <td valign="top" class='categories'>
+     <_span>Filed under</_span>
+     <b><span class='categories'>
        <xsl:for-each select="attributes/attribute[ @name = 'category' ]">
          <xsl:if test="position() != 1">, </xsl:if>
          <xsl:value-of select="." disable-output-escaping='yes'/>
        </xsl:for-each>
-     </span>
+     </span></b>
  </td>
 </tr>
 </xsl:if>
 <xsl:if test="attributes/attribute[ @name = 'author' ]">
  <tr>
-   <td valign="top">
-     <_span class='author_by'>Author</_span>
-     <span class='author'>
+   <td valign="top" class='author'>
+     <_span>Author</_span>
+     <b><span class='author'>
        <xsl:value-of select="attributes/attribute[ @name = 'author' ]" disable-output-escaping='yes'/>
-     </span>
+     </span></b>
    </td>
  <!--<td valign="top">
   <span><div class='date'><xsl:value-of select="timestr"/></div></span>
@@ -211,16 +207,16 @@ function stopShow() {
 </xsl:if>  
 <xsl:if test="real_source_url">
 <tr>
- <td valign="top"> 
-     <_span class='source_from'>Source</_span>
-     <span class='source'>
+ <td valign="top" class='source'> 
+     <_span>Source</_span>
+     <b><span class='source'>
        <xsl:element name="a">
          <xsl:attribute name="href">
            <xsl:value-of select="real_source_url"/>
          </xsl:attribute>
          <xsl:value-of select="real_source_title"/>
        </xsl:element>
-     </span>
+     </span></b>
  </td>
 </tr>
 </xsl:if>
@@ -244,7 +240,10 @@ function stopShow() {
   <xsl:element name="img">
     <xsl:attribute name="border">0</xsl:attribute>
     <xsl:attribute name="class">flagbtn</xsl:attribute>
-    <xsl:attribute name="src"><xsl:value-of select="$pixmapsDir"/>grayflag.png</xsl:attribute>
+    <xsl:attribute name="src"><xsl:value-of select="$pixmapsDir"/>
+    <xsl:if test="mark = '0'">grayflag.png</xsl:if>
+    <xsl:if test="mark = '1'">flag.png</xsl:if>
+    </xsl:attribute>
   </xsl:element>
   <_span>flag</_span>
 </xsl:element>
@@ -315,11 +314,11 @@ function stopShow() {
 
 </xsl:element> <!-- item -->
 
-</body>
-</html>
-
 </xsl:template>
 
+<!-- ==================================================================== -->
+
+<!--- enclosure rendering -->
 <xsl:template name="enclosure">
   <xsl:element name="a">
     <xsl:attribute name="class">enclosure</xsl:attribute>
@@ -331,7 +330,64 @@ function stopShow() {
   </xsl:element>
 </xsl:template>
 
-<!-- substring after last occurance also from "XSLT Cookbook"...-->
+<!-- ==================================================================== -->
+
+<!--- single item summary mode rendering -->
+<xsl:template name="item_summary">
+<xsl:element name="div">
+  <xsl:attribute name="class">
+    <xsl:choose>
+      <xsl:when test="readStatus = '0'">summaryshaded</xsl:when>
+      <xsl:otherwise>summaryunshaded</xsl:otherwise>
+    </xsl:choose>
+    summary<xsl:if test="mark = '0'">un</xsl:if>flagged
+  </xsl:attribute>
+
+  <table cellspacing="0" cellpadding="0" width="100%">
+  <tr>
+    <td class="summarytime" valign="top">
+      <xsl:value-of select="timestr"/>
+    </td>
+    <td width="100%">
+      <!-- Item title as link -->
+      <xsl:element name="a">
+        <xsl:attribute name="href">
+          <xsl:value-of select="source"/>
+        </xsl:attribute>
+        <xsl:value-of select="title"/>
+      </xsl:element>
+
+      <!-- summary mode means most of the items have no description,
+           but lets output them for those who have one... -->
+      <xsl:if test="description">
+        <br/><br/>
+        <xsl:value-of select="description" disable-output-escaping='yes'/>
+      </xsl:if>
+
+      <!-- enclosures -->
+      <xsl:for-each select="attributes/attribute[ @name = 'enclosure' ]">
+        (<xsl:element name="a">
+          <xsl:attribute name="class">enclosure</xsl:attribute>
+          <xsl:attribute name="href"><xsl:value-of select="."/></xsl:attribute>
+          <xsl:call-template name="substring-after-last">
+            <xsl:with-param name="input"  select="." />
+            <xsl:with-param name="substr" select="'/'" />
+          </xsl:call-template>
+        </xsl:element>)
+      </xsl:for-each>
+
+    </td>
+  </tr>
+  </table>
+    
+  <hr class='summary'/>
+
+</xsl:element>
+</xsl:template>
+
+<!-- ==================================================================== -->
+
+<!--- substring after last occurance also from "XSLT Cookbook"... -->
 <xsl:template name="substring-after-last">
     <xsl:param name="input" />
     <xsl:param name="substr" />
