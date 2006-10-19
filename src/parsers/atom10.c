@@ -458,7 +458,7 @@ static itemPtr atom10_parse_entry(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 		/* check namespace of this tag */
 		if(!cur->ns->href) {
 			/* This is an invalid feed... no idea what to do with the current element */
-			g_warning("element with no namespace found!");
+			debug1(DEBUG_PARSING, "element with no namespace found in atom feed %s!", node_get_title(ctxt->node));
 			cur = cur->next;
 			continue;
 		}
@@ -474,7 +474,7 @@ static itemPtr atom10_parse_entry(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 		if(func != NULL) {
 			(*func)(cur, ctxt, NULL);
 		} else {
-			g_warning("unknown entry element \"%s\" found in feed\n", cur->name);
+			debug2(DEBUG_PARSING, "unknown entry element \"%s\" found in atom feed\n", cur->name, node_get_title(ctxt->node));
 		}
 		
 		cur = cur->next;
@@ -663,13 +663,13 @@ static void atom10_parse_feed(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 			/* check namespace of this tag */
 			if(!cur->ns->href) {
 				/* This is an invalid feed... no idea what to do with the current element */
-				g_warning("element with no namespace found!\n");
+				debug1(DEBUG_PARSING, "element with no namespace found in atom feed %s!", node_get_title(ctxt->node));
 				cur = cur->next;
 				continue;
 			}
 
 			if(xmlStrcmp(cur->ns->href, ATOM10_NS)) {
-				g_warning("unknown namespace %s found in atom feed %s", cur->ns->href, node_get_title(ctxt->node));
+				debug2(DEBUG_PARSING, "unknown namespace %s found in atom feed %s", cur->ns->href, node_get_title(ctxt->node));
 				cur = cur->next;
 				continue;
 			}
