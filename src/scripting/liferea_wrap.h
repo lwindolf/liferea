@@ -6571,13 +6571,10 @@ fail:
 static int _wrap_ui_itemlist_add_item(lua_State* L) {
   int SWIG_arg = -1;
   itemPtr arg1 = (itemPtr) 0 ;
-  int arg2 ;
   
   if(!lua_isuserdata(L,1)) SWIG_fail_arg(1);
-  if(!lua_isnumber(L,2)) SWIG_fail_arg(2);
   arg1=(itemPtr)SWIG_MustGetPtr(L,1,SWIGTYPE_p_item,0,1,"ui_itemlist_add_item");
-  arg2 = (int)lua_tonumber(L, 2);
-  ui_itemlist_add_item(arg1,arg2);
+  ui_itemlist_add_item(arg1);
   SWIG_arg=0;
   
   return SWIG_arg;
@@ -7745,6 +7742,23 @@ fail:
 }
 
 
+static int _wrap_ui_node_rename(lua_State* L) {
+  int SWIG_arg = -1;
+  nodePtr arg1 = (nodePtr) 0 ;
+  
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg(1);
+  arg1=(nodePtr)SWIG_MustGetPtr(L,1,SWIGTYPE_p_node,0,1,"ui_node_rename");
+  ui_node_rename(arg1);
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 #ifdef __cplusplus
 }
 #endif
@@ -8067,6 +8081,7 @@ static const struct luaL_reg swig_commands[] = {
     { "ui_node_is_folder_expanded", _wrap_ui_node_is_folder_expanded},
     { "ui_node_check_if_folder_is_empty", _wrap_ui_node_check_if_folder_is_empty},
     { "ui_node_set_expansion", _wrap_ui_node_set_expansion},
+    { "ui_node_rename", _wrap_ui_node_rename},
     {0,0}
 };
 
@@ -8085,6 +8100,9 @@ static swig_lua_const_info swig_constants[] = {
 { SWIG_LUA_INT,     (char *)"NODE_TYPE_FEED", (long) NODE_TYPE_FEED, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"NODE_TYPE_SOURCE", (long) NODE_TYPE_SOURCE, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"NODE_TYPE_NEWSBIN", (long) NODE_TYPE_NEWSBIN, 0, 0, 0},
+{ SWIG_LUA_INT,     (char *)"NODE_VIEW_MODE_NORMAL", (long) NODE_VIEW_MODE_NORMAL, 0, 0, 0},
+{ SWIG_LUA_INT,     (char *)"NODE_VIEW_MODE_WIDE", (long) NODE_VIEW_MODE_WIDE, 0, 0, 0},
+{ SWIG_LUA_INT,     (char *)"NODE_VIEW_MODE_COMBINED", (long) NODE_VIEW_MODE_COMBINED, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"NODE_CAPABILITY_ADD_CHILDS", (long) NODE_CAPABILITY_ADD_CHILDS, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"NODE_CAPABILITY_REMOVE_CHILDS", (long) NODE_CAPABILITY_REMOVE_CHILDS, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"NODE_CAPABILITY_SUBFOLDERS", (long) NODE_CAPABILITY_SUBFOLDERS, 0, 0, 0},
