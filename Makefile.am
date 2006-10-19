@@ -13,7 +13,6 @@ schema_DATA = liferea.schemas
 cssdir = $(pkgdatadir)/css
 css_DATA = \
 	css/liferea.css \
-	css/liferea2.css \
 	css/adblock.css
 
 mediadir = $(pkgdatadir)/media
