@@ -6,6 +6,14 @@
 	* Adds support for wide view (with three
 	  vertical panes) as an alternative to the
 	  email client layout.
+	* Rewrite of the rendering to allow partial
+	  HTML view updates. This should improve
+	  the rendering performance a bit.
+	* Caches CSS now instead of reading from disk.
+	* Adds more metadata rendering to match v1.0
+	  metadata display capabilities.
+	* Improved summary mode output with red title
+	  to indicate flagged items.
 
 
 2006-10-02  Lars Lindner  <lars.lindner@gmail.com>
