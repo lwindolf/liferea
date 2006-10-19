@@ -16,6 +16,13 @@
 	* Drops the CSS stylesheet liferea2.css. Now only 
 	  liferea.css is used for all viewing modes.
 	* Drops the XSLT stylesheets itemset.xml and summary.xml
+	* Fixes SF #1579909 reported by Joshua Rodman: Minor Atom 
+	  parser warnings were printed to stderr.
+	* Fixes SF #1579316 reported by Rich Burridge: the toggle
+	  button for online/offline working has no accessibility
+	  name.
+	* Fixes SF #1573252 that cause crashes when subscribing
+	  to feed:// URLs (Kees Cook)
 
 
 2006-10-02  Lars Lindner  <lars.lindner@gmail.com>
