@@ -45,6 +45,7 @@ Frederic Peters <fpeters@0d.be>				Unread/new counter in status bar
 Don Malcolm <p1469023@donmalcolm.com>		 	Offline Mozilla rendering 
 Ed Catmur <edcatmur@users.sf.net>			RTL item list improvements
 Chris Pirillo <chris@lockergnome.com>			Cool new icon for OPML
+Eric Anderson <ejona86@users.sf.net>			Use icons from gtk theme
 
 
 Packaging

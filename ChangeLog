@@ -5,6 +5,9 @@
 	* Fixes problem in the networking code.
 	* Adds support for wide view (with three vertical panes) 
 	  as an alternative to the email client layout.
+	* Adds support for GTK icon themes. Now the folder,
+	  vfolder, attachment and flag icon match the GTK
+	  icon scheme. (Eric Anderson)
 	* Rewrite of the rendering to allow partial
 	  HTML view updates. This should improve the rendering
 	  performance a bit.
@@ -16,6 +19,9 @@
 	* Drops the CSS stylesheet liferea2.css. Now only 
 	  liferea.css is used for all viewing modes.
 	* Drops the XSLT stylesheets itemset.xml and summary.xml
+
+	Bugfixes:
+
 	* Fixes SF #1579909 reported by Joshua Rodman: Minor Atom 
 	  parser warnings were printed to stderr.
 	* Fixes SF #1579316 reported by Rich Burridge: the toggle
@@ -23,6 +29,8 @@
 	  name.
 	* Fixes SF #1573252 that cause crashes when subscribing
 	  to feed:// URLs (Kees Cook)
+	* Fixes SF #1570402 reported by jmc35894263 that crashes
+	  upon selecting "Properties" for folder nodes.
 
 
 2006-10-02  Lars Lindner  <lars.lindner@gmail.com>

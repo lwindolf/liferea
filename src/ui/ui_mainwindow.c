@@ -68,6 +68,28 @@ static struct mainwindow {
 /* all used icons */
 GdkPixbuf *icons[MAX_ICONS];
 
+/* icon from theme names */
+static const gchar *iconThemeNames[] = {
+				NULL,			/* ICON_READ */
+				NULL,			/* ICON_UNREAD */
+				"emblem-important",	/* ICON_FLAG */
+				NULL,			/* ICON_AVAILABLE */
+				NULL,			/* ICON_AVAILABLE_OFFLINE */
+				NULL,			/* ICON_UNAVAILABLE */
+				NULL,			/* ICON_DEFAULT */
+				NULL,			/* ICON_OCS */
+				"folder",		/* ICON_FOLDER */
+				"folder-saved-search",	/* ICON_VFOLDER */
+				NULL,			/* ICON_NEWSBIN */
+				NULL,			/* ICON_EMPTY */
+				NULL,			/* ICON_EMPTY_OFFLINE */
+				NULL,			/* ICON_ONLINE */
+				NULL,			/* ICON_OFFLINE */
+				NULL,			/* ICON_UPDATED */
+				"mail-attachment",	/* ICON_ENCLOSURE */
+				NULL
+};
+
 /* icon names */
 static gchar *iconNames[] = {	"read.xpm",		/* ICON_READ */
 				"unread.png",		/* ICON_UNREAD */
@@ -392,11 +414,28 @@ static struct mainwindow *ui_mainwindow_new(void) {
 	return mw;
 }
 
+static GdkPixbuf* ui_mainwindow_get_theme_icon(GtkIconTheme *icon_theme, const gchar *name, gint size) {
+	GError *error = NULL;
+	GdkPixbuf *pixbuf;
+
+	pixbuf = gtk_icon_theme_load_icon(icon_theme,
+	                                  name, /* icon name */
+	                                  size, /* size */
+	                                  0,  /* flags */
+	                                  &error);
+	if(!pixbuf) {
+		debug1(DEBUG_GUI, "Couldn't load icon: %s", error->message);
+		g_error_free(error);
+	}
+	return pixbuf;
+}
+
 void ui_mainwindow_init(int mainwindowState) {
 	GtkWidget	*widget;
 	int		i;
 	GString		*buffer;
 	struct mainwindow *mw;
+	GtkIconTheme	*icon_theme;
 	
 	debug_enter("ui_mainwindow_init");
 	
@@ -428,8 +467,16 @@ void ui_mainwindow_init(int mainwindowState) {
 	   and setting the 2/3 pane mode view */
 	gtk_widget_set_sensitive(GTK_WIDGET(lookup_widget(mainwindow, "feedlist")), FALSE);
 
-	for(i = 0;  i < MAX_ICONS; i++)
-		icons[i] = create_pixbuf(iconNames[i]);
+	/* first try to load icons from theme */
+	icon_theme = gtk_icon_theme_get_default();
+	for(i = 0; i < MAX_ICONS; i++)
+		if(iconThemeNames[i] != NULL)
+			icons[i] = ui_mainwindow_get_theme_icon(icon_theme, iconThemeNames[i], 16);
+
+	/* and then load own default icons */
+	for(i = 0; i < MAX_ICONS; i++)
+		if(NULL == icons[i])
+			icons[i] = create_pixbuf(iconNames[i]);
 
 	/* set up icons that are build from stock */
 	widget = gtk_button_new();
@@ -556,9 +603,11 @@ void ui_mainwindow_online_status_changed(int online) {
 	if(online) {
 		ui_mainwindow_set_status_bar(_("Liferea is now online"));
 		gtk_image_set_from_pixbuf(GTK_IMAGE(widget), icons[ICON_ONLINE]);
+		atk_object_set_name(gtk_widget_get_accessible(widget), _("Work Offline"));		
 	} else {
 		ui_mainwindow_set_status_bar(_("Liferea is now offline"));
 		gtk_image_set_from_pixbuf(GTK_IMAGE(widget), icons[ICON_OFFLINE]);
+		atk_object_set_name(gtk_widget_get_accessible(widget), _("Work Online"));	
 	}
 	gtk_toggle_action_set_active(
 	    GTK_TOGGLE_ACTION(gtk_action_group_get_action(mainwindow_priv->generalActions,"ToggleOfflineMode")),
