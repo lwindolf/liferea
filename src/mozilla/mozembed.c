@@ -58,6 +58,9 @@ void mozembed_write(GtkWidget *widget, const gchar *string, guint length, const 
 	/* prevent meta refresh of last document */
 	gtk_moz_embed_stop_load(GTK_MOZ_EMBED(widget));
 	
+	debug1(DEBUG_VERBOSE, "mozilla: HTML string >>>%s<<<", string);
+	debug0(DEBUG_HTML, "mozilla: start writing...");
+	
 	if((NULL != string) && (length > 0)) {
 		/* Because of a bug in Mozilla, sending the entire string at
 		   once causes Mozilla to hang. This seems to avoid that
@@ -69,15 +72,21 @@ void mozembed_write(GtkWidget *widget, const gchar *string, guint length, const 
 		gtk_moz_embed_open_stream(GTK_MOZ_EMBED(widget), "file://", (contentType != NULL) ? contentType : "text/html");
 		while (left > 0) {
 			if (left > 4096) {
+				debug1(DEBUG_HTML, "mozilla: appending 4 kbytes (missing %d)", left-4096);
 				gtk_moz_embed_append_data(GTK_MOZ_EMBED(widget), string, 4096);
 				string += 4096;
-			} else
+			} else {
+				debug1(DEBUG_HTML, "mozilla: appending remaining %d bytes", left);
 				gtk_moz_embed_append_data(GTK_MOZ_EMBED(widget), string, left);
+			}
 			left -=4096;
 		}
 		gtk_moz_embed_close_stream(GTK_MOZ_EMBED(widget));
-	} else
+	} else {
 		gtk_moz_embed_render_data(GTK_MOZ_EMBED(widget), EMPTY, strlen(EMPTY), base, "text/html");
+	}
+	
+	debug0(DEBUG_HTML, "mozilla: writing finished.");
 		
 	mozsupport_scroll_to_top(widget);
 }
