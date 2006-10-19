@@ -302,16 +302,8 @@ void ui_itemlist_update_item(itemPtr item) {
 	g_free(label);
 }
 
-static void ui_itemlist_update_foreach(gpointer key, gpointer value, gpointer data) {
-	
-	ui_itemlist_update_item((itemPtr)key);
-}
-
 /* update all item list entries */
-void ui_itemlist_update(void) {
- 
-	g_hash_table_foreach(item_to_iter, ui_itemlist_update_foreach, NULL);
-}
+void ui_itemlist_update(void) { }
 
 static gboolean ui_itemlist_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer data) {
 
@@ -432,7 +424,7 @@ void ui_itemlist_prefocus(void) {
 		gtk_widget_grab_focus(focus_widget);		
 }
 
-void ui_itemlist_add_item(itemPtr item, gboolean merge) {
+void ui_itemlist_add_item(itemPtr item) {
 	GtkTreeStore	*itemstore = ui_itemlist_get_tree_store();
 	GtkTreeIter	old_iter;
 	gboolean	exists;

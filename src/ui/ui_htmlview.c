@@ -133,27 +133,6 @@ GtkWidget *ui_htmlview_new(gboolean forceInternalBrowsing) {
 	return htmlview;
 }
 
-void ui_htmlview_start_output(GString *buffer, const gchar *base, gboolean twoPane) { 
-	GString	*css;
-	
-	g_string_append(buffer, "<?xml version=\"1.0\" encoding=\"utf-8\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n");
-	g_string_append(buffer, "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n");
-	g_string_append(buffer, "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n");
-	g_string_append(buffer, "<head>\n<title></title>");
-	g_string_append(buffer, "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />");
-	if(NULL != base) {
-		g_string_append(buffer, "<base href=\"");
-		g_string_append(buffer, base);
-		g_string_append(buffer, "\" />\n");
-	}
-
-	css = render_get_css(!twoPane);	/* for some reason twoPane is inverted here! */
-	g_string_append(buffer, css->str);
-	g_string_free(css, TRUE);
-	
-	g_string_append(buffer, "</head>\n<body>");
-}
-
 void ui_htmlview_write(GtkWidget *htmlview, const gchar *string, const gchar *base) { 
 	const gchar	*baseURL = base;
 	
@@ -181,18 +160,13 @@ void ui_htmlview_write(GtkWidget *htmlview, const gchar *string, const gchar *ba
 	}
 }
 
-void ui_htmlview_finish_output(GString *buffer) {
-
-	g_string_append(buffer, "</body></html>"); 
-}
-
-void ui_htmlview_clear(GtkWidget *htmlview) {
+void ui_htmlview_clear(GtkWidget *widget) {
 	GString	*buffer;
 
 	buffer = g_string_new(NULL);
-	ui_htmlview_start_output(buffer, NULL, FALSE);
-	ui_htmlview_finish_output(buffer); 
-	ui_htmlview_write(htmlview, buffer->str, NULL);
+	htmlview_start_output(buffer, NULL, FALSE, FALSE);
+	htmlview_finish_output(buffer); 
+	ui_htmlview_write(widget, buffer->str, NULL);
 	g_string_free(buffer, TRUE);
 }
 
@@ -256,7 +230,10 @@ void ui_htmlview_launch_URL(GtkWidget *htmlview, const gchar *url, gint launchTy
 						item = itemset_lookup_item(itemlist_get_displayed_itemset(), 
 			                        			   node_from_id(nodeid), 
 			                        			   atol(itemid));
-						(*uriType->func)(item);
+						if(item)
+							(*uriType->func)(item);
+						else
+							g_warning("Fatal: no item with id (node=%s, item=%s) found!!!", nodeid, itemid);
 						return;
 					}
 				}

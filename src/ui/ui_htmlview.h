@@ -19,12 +19,13 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _HTMLVIEW_H
-#define _HTMLVIEW_H
+#ifndef _UI_HTMLVIEW_H
+#define _UI_HTMLVIEW_H
 
 #include <glib.h>
 #include <gmodule.h>
 #include <gtk/gtk.h>
+#include "htmlview.h"
 #include "plugin.h"
 
 #define ENCLOSURE_PROTOCOL	"liferea-enclosure://"
@@ -88,28 +89,15 @@ gboolean ui_htmlview_plugin_load(pluginPtr plugin, GModule *handle);
  */
 GtkWidget *ui_htmlview_new(gboolean forceInternalBrowsing);
 
+/* interface for direct HTML writing (item rendering 
+   interface is defined in render.h)... */
+
 /** 
- * Loads a emtpy HTML page 
+ * Loads a emtpy HTML page. Resets any item view state.
  *
  * @param htmlview	the HTML view widget to clear
  */
 void	ui_htmlview_clear(GtkWidget *htmlview);
-
-/**
- * Function to add HTML source header to create a valid HTML source.
- *
- * @param buffer	buffer to add the HTML to
- * @param base		base URL of HTML content
- * @param twoPane	TRUE if output is for two pane mode
- */
-void	ui_htmlview_start_output(GString *buffer, const gchar *base, gboolean twoPane);
-
-/**
- * Function to add HTML source footer to create a valid HTML source.
- *
- * @param buffer	buffer to add the HTML to
- */
-void	ui_htmlview_finish_output(GString *buffer);
 
 /**
  * Method to display the passed HTML source to the HTML widget.

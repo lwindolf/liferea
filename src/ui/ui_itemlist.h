@@ -80,10 +80,8 @@ void ui_itemlist_select(itemPtr ip);
  * Add an item to the itemlist
  *
  * @param ip	the item to add
- * @param merge set to true when the itemlist should be searched for
- * the particular item and the item be updated if necessary.
  */
-void ui_itemlist_add_item(itemPtr ip, gboolean merge);
+void ui_itemlist_add_item(itemPtr item);
 
 /**
  * Remove an item from the itemlist

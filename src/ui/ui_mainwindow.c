@@ -30,12 +30,12 @@
 #include <string.h>
 #include <libintl.h>
 
-
 #include "callbacks.h"
 #include "common.h"
 #include "conf.h"
 #include "debug.h"
 #include "interface.h"
+#include "itemview.h"
 #include "support.h"
 #include "update.h"
 #include "ui/ui_enclosure.h"
@@ -276,15 +276,15 @@ void ui_mainwindow_set_layout(guint newMode) {
 	debug1(DEBUG_GUI, "Setting item list visibility mode: %d", newMode);
 	
 	switch(newMode) {
-		case 0:
+		case NODE_VIEW_MODE_NORMAL:
 			htmlWidgetName = "normalViewHtml";
 			ilWidgetName = "normalViewItems";
 			break;
-		case 1:
+		case NODE_VIEW_MODE_WIDE:
 			htmlWidgetName = "wideViewHtml";
 			ilWidgetName = "wideViewItems";
 			break;
-		case 2:
+		case NODE_VIEW_MODE_COMBINED:
 			htmlWidgetName = "combinedViewHtml";
 			ilWidgetName = "normalViewItems";
 			break;
@@ -422,6 +422,8 @@ void ui_mainwindow_init(int mainwindowState) {
 	   which is later changed in ui_mainwindow_set_layout() */
 	gtk_container_add(GTK_CONTAINER(lookup_widget(mainwindow, "normalViewItems")), mw->itemlist);
 	
+	itemview_init();
+	
 	/* necessary to prevent selection signals when filling the feed list
 	   and setting the 2/3 pane mode view */
 	gtk_widget_set_sensitive(GTK_WIDGET(lookup_widget(mainwindow, "feedlist")), FALSE);
@@ -481,7 +483,7 @@ void ui_mainwindow_init(int mainwindowState) {
 	
 	/* create welcome text */
 	buffer = g_string_new(NULL);
-	ui_htmlview_start_output(buffer, NULL, FALSE);
+	htmlview_start_output(buffer, NULL, TRUE, FALSE);
 	g_string_append(buffer,    "<div style=\"padding:8px\">"
 	                           "<div style=\"background-color:#eee;padding:5px;border:solid 1px #aaa\">"
 				   "<table border=\"0\" cellpadding=\"5px\"><tr><td>"
@@ -508,7 +510,7 @@ void ui_mainwindow_init(int mainwindowState) {
 				   
 	g_string_append(buffer,    "</div>");
 				   
-	ui_htmlview_finish_output(buffer);
+	htmlview_finish_output(buffer);
 	ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer->str, NULL);
 	g_string_free(buffer, TRUE);
 
