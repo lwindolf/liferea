@@ -1795,7 +1795,7 @@ msgstr "Eine neue Quelle zur Feedliste hinzufügen."
 
 #: ../src/ui/ui_mainwindow.c:886
 msgid "New _News Bin..."
-msgstr "/_Neu/Neuer _News Bin..."
+msgstr "Neuer _News Bin..."
 
 #: ../src/ui/ui_mainwindow.c:886
 msgid "Adds a new news bin."
