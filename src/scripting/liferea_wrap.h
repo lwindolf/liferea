@@ -4982,24 +4982,6 @@ fail:
 }
 
 
-static int _wrap_item_render(lua_State* L) {
-  int SWIG_arg = -1;
-  itemPtr arg1 = (itemPtr) 0 ;
-  char *result = 0 ;
-  
-  if(!lua_isuserdata(L,1)) SWIG_fail_arg(1);
-  arg1=(itemPtr)SWIG_MustGetPtr(L,1,SWIGTYPE_p_item,0,1,"item_render");
-  result = (char *)item_render(arg1);
-  SWIG_arg=0;
-  lua_pushstring(L,result); SWIG_arg++;
-  return SWIG_arg;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
 static int _wrap_item_free(lua_State* L) {
   int SWIG_arg = -1;
   itemPtr arg1 = (itemPtr) 0 ;
@@ -7143,23 +7125,6 @@ fail:
 }
 
 
-static int _wrap_on_html_social_bm_item_selected(lua_State* L) {
-  int SWIG_arg = -1;
-  char *arg1 = (char *) 0 ;
-  
-  if(!lua_isstring(L,1)) SWIG_fail_arg(1);
-  arg1 = (char*)lua_tostring(L, 1);
-  on_html_social_bm_item_selected((char const *)arg1);
-  SWIG_arg=0;
-  
-  return SWIG_arg;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
 static int _wrap_mainwindow_set(lua_State* L) {
   int SWIG_arg = -1;
   GtkWidget *arg1 = (GtkWidget *) 0 ;
@@ -7937,7 +7902,6 @@ static const struct luaL_reg swig_commands[] = {
     { "item_new", _wrap_item_new},
     { "item_copy", _wrap_item_copy},
     { "item_get_base_url", _wrap_item_get_base_url},
-    { "item_render", _wrap_item_render},
     { "item_free", _wrap_item_free},
     { "item_get_id", _wrap_item_get_id},
     { "item_get_title", _wrap_item_get_title},
@@ -8049,7 +8013,6 @@ static const struct luaL_reg swig_commands[] = {
     { "on_popup_copy_URL_clipboard", _wrap_on_popup_copy_URL_clipboard},
     { "on_popup_social_bm_item_selected", _wrap_on_popup_social_bm_item_selected},
     { "on_popup_social_bm_link_selected", _wrap_on_popup_social_bm_link_selected},
-    { "on_html_social_bm_item_selected", _wrap_on_html_social_bm_item_selected},
     { "mainwindow_set", _wrap_mainwindow_set},
     { "mainwindow_get", _wrap_mainwindow_get},
     { "ui_mainwindow_init", _wrap_ui_mainwindow_init},

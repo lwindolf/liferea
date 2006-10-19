@@ -93,15 +93,6 @@ itemPtr		item_copy(itemPtr item);
 const gchar * item_get_base_url(itemPtr item);
 
 /**
- * Returns a XHTML string with a representation of the item.
- *
- * @param item	the item to render
- *
- * @returns XHTML string
- */
-gchar *item_render(itemPtr item);
-
-/**
  * Free the memory used by an itempointer. The item needs to be
  * removed from the itemlist before calling this function.
  *
