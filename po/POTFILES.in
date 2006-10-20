@@ -5,8 +5,8 @@ xslt/feed.xml.in
 xslt/fl_plugin.xml.in
 xslt/folder.xml.in
 xslt/item.xml.in
-xslt/itemset.xml.in
-xslt/summary.xml.in
+xslt/newsbin.xml.in
+xslt/vfolder.xml.in
 src/callbacks.c
 src/callbacks.h
 src/common.c
@@ -27,6 +27,8 @@ src/folder.c
 src/folder.h
 src/html.c
 src/html.h
+src/htmlview.c
+src/htmlview.h
 src/interface.c
 src/interface.h
 src/item.c
@@ -157,3 +159,6 @@ src/notification/notif_plugin.c
 src/notification/notif_plugin.h
 src/notification/notif_popup.c
 src/notification/notif_popup.h
+src/scripting/script.c
+src/scripting/script.h
+src/scripting/lua.c
