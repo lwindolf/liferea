@@ -71,7 +71,7 @@ void render_init(void) {
 	defaultParams = g_strdup_printf("search_link_enable='%s'", getBooleanConfValue(SEARCH_ENGINE_HIDE_LINK)?"false":"true");
 	
 	if(!stylesheets)
-		stylesheets = g_hash_table_new(g_str_hash, g_str_equal);
+		stylesheets = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
 }
 
 xsltStylesheetPtr render_load_stylesheet(const gchar *xsltName) {
@@ -116,7 +116,7 @@ xsltStylesheetPtr render_load_stylesheet(const gchar *xsltName) {
 	xmlFreeDoc(xsltDoc);
 	xsltFreeStylesheet(i18n_filter);
 
-	g_hash_table_insert(stylesheets, (gpointer)xsltName, (gpointer)xslt);
+	g_hash_table_insert(stylesheets, g_strdup(xsltName), xslt);
 	return xslt;
 }
 
@@ -225,12 +225,14 @@ gchar * render_xml(xmlDocPtr doc, const gchar *xsltName, gchar **params) {
 	/* Return only the body contents */
 	if(output) {
 		gchar *tmp = strstr(output, "<body>");
-		tmp = g_strdup(tmp + 6);
-		xmlFree(output);
-		output = tmp;
-		tmp = strstr(output, "</body>");
-		if(tmp)
-			*tmp = 0;
+		if(tmp) {
+			tmp = g_strdup(tmp + 6);
+			xmlFree(output);
+			output = tmp;
+			tmp = strstr(output, "</body>");
+			if(tmp)
+				*tmp = 0;
+		}
 	}
 	
 	return output;

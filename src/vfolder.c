@@ -348,26 +348,13 @@ static void vfolder_apply_rules(nodePtr node, gpointer userdata) {
 /* Method that applies the rules of the given vfolder to 
    all existing items. To be used for creating search
    results or new vfolders. Not to be used when loading
-   vfolders from cache. */
-void vfolder_refresh(vfolderPtr vp) {
-	GList		*iter;
+   vfolders from cache! */
+void vfolder_refresh(vfolderPtr vfolder) {
 	
 	debug_enter("vfolder_refresh");
 	
-	/* free vfolder items */
-	g_assert(NULL != vp->node->itemSet);
-	iter = vp->node->itemSet->items;
-	while(NULL != iter) {
-		item_free(iter->data);
-		iter = g_list_next(iter);
-	}
-	g_list_free(vp->node->itemSet->items);
-	vp->node->itemSet->items = NULL;
-	// FIXME: the pointer chain somehow tells me that
-	// this code does not belong here...
-	// Or maybe the structure itself is bad design
-	
-	feedlist_foreach_data(vfolder_apply_rules, vp);
+	itemset_remove_items(vfolder->node->itemSet);
+	feedlist_foreach_data(vfolder_apply_rules, vfolder);
 	
 	debug_exit("vfolder_refresh");
 }
@@ -562,7 +549,7 @@ static gchar * vfolder_render(nodePtr node) {
 
 	params = render_add_parameter(params, "id='%s'", node->id);
 	params = render_add_parameter(params, "headlineCount='%d'", g_list_length(node->itemSet->items));
-	filename = common_create_cache_filename(NULL, "feedlist", "opml");
+	filename = common_create_cache_filename(NULL, "feedlist", "opml");	// FIXME: has to be source specific?
 	result = render_file(filename, "vfolder", params);
 	g_free(filename);
 	
