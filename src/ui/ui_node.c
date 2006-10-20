@@ -259,7 +259,8 @@ static void on_nodenamedialog_response(GtkDialog *dialog, gint response_id, gpoi
 		ui_popup_update_menues();
 	}
 	
-	gtk_widget_hide(GTK_WIDGET(dialog));
+	gtk_widget_destroy(GTK_WIDGET(dialog));
+	nodenamedialog = NULL;
 }
 
 void ui_node_rename(nodePtr node) {

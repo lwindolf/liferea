@@ -78,6 +78,7 @@ static void on_propdialog_response(GtkDialog *dialog, gint response_id, gpointer
 		ui_itemlist_clear();
 		vfolder_refresh(ui_data->vp);
 		itemlist_load(ui_data->np->itemSet);
+		ui_node_update(ui_data->np);
 	}
 	
 	g_free(ui_data);
