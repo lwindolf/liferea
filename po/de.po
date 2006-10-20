@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Liferea 0.9.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-10-20 21:57+0200\n"
-"PO-Revision-Date: 2006-10-20 22:09+0100\n"
+"PO-Revision-Date: 2006-10-20 22:25+0100\n"
 "Last-Translator: Lars Lindner <lars.lindner@gmx.net>\n"
 "Language-Team: German\n"
 "MIME-Version: 1.0\n"
@@ -1444,7 +1444,7 @@ msgstr "Kann \"%s\" nicht herunterladen. Versuche es wieder in %d Sekunden."
 
 #: ../src/vfolder.c:59
 msgid "New Search Folder"
-msgstr "_Neuer Suchordner"
+msgstr "Neuer Suchordner"
 
 #: ../src/ui/eggtrayicon.c:133
 msgid "Orientation"
@@ -2111,10 +2111,10 @@ msgid_plural ""
 "%d unread items"
 msgstr[0] ""
 "%s\n"
-"%d neue Schlagzeile"
+"%d ungelesene Schlagzeile"
 msgstr[1] ""
 "%s\n"
-"%d neue Schlagzeilen"
+"%d ungelesene Schlagzeilen"
 
 #: ../src/ui/ui_tray.c:116
 #, c-format
