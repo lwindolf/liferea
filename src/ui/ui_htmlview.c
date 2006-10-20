@@ -80,6 +80,7 @@ void ui_htmlview_init(void) {
 	g_free(name);
 	
 	if(htmlviewPlugin) {
+		debug1(DEBUG_PLUGINS, "using \"%s\" for HTML rendering...", htmlviewPlugin->name);
 		htmlviewPlugin->plugin_init();
 		ui_htmlview_set_proxy(proxyname, proxyport, proxyusername, proxypassword);
 	} else {
