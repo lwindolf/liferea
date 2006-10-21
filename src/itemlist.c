@@ -373,6 +373,7 @@ void itemlist_remove_item(itemPtr item) {
 	if(displayed_item == item)
 		itemview_select_item(NULL);
 	itemview_remove_item(item);
+	itemview_update();
 	itemset_remove_item(item->itemSet, item);
 	ui_node_update(item->itemSet->node);
 }
@@ -495,6 +496,7 @@ void itemlist_selection_changed(itemPtr item) {
 				                       item_get_source(itemlist_get_selected()), 2);
 			} else {
 				itemview_set_mode(ITEMVIEW_SINGLE_ITEM);
+				itemview_select_item(item);
 				itemview_update();
 			}
 		}

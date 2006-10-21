@@ -118,6 +118,7 @@ void itemview_remove_item(itemPtr item) {
 void itemview_select_item(itemPtr item) {
 
 	ui_itemlist_select(item);
+	itemView_priv.needsUpdate = TRUE;
 }
 
 void itemview_update_item(itemPtr item) {
