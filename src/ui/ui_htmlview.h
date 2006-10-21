@@ -30,7 +30,7 @@
 
 #define ENCLOSURE_PROTOCOL	"liferea-enclosure://"
 
-#define HTMLVIEW_PLUGIN_API_VERSION 10
+#define HTMLVIEW_PLUGIN_API_VERSION 11
 
 typedef struct htmlviewPlugin {
 	unsigned int 	api_version;
@@ -122,6 +122,14 @@ enum {
  * @return		TRUE if it is a special URL
  */
 gboolean ui_htmlview_is_special_url(const gchar *url);
+
+/**
+ * Callback to process on-url events. Depending on the
+ * link type the link will be copied to the status bar.
+ *
+ * @param url		new URL (or empty string)
+ */
+void	ui_htmlview_on_url(const gchar *url);
 
 /**
  * Launches the specified URL in the configured browser or

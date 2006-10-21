@@ -193,6 +193,12 @@ static struct internalUriType internalUriTypes[] = {
 	{ NULL,		NULL }
 };
 
+void ui_htmlview_on_url(const gchar *url) {
+
+	if(!ui_htmlview_is_special_url(url))
+		ui_mainwindow_set_status_bar("%s", url);
+}
+
 void ui_htmlview_launch_URL(GtkWidget *htmlview, const gchar *url, gint launchType) {
 	struct internalUriType	*uriType;
 	

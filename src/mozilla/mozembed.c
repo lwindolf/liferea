@@ -33,10 +33,10 @@
 #include <glib.h>
 #include <gtkmozembed.h>
 #include "mozilla/mozsupport.h"
-#include "ui/ui_htmlview.h"
 #include "conf.h"
 #include "support.h"
 #include "debug.h"
+#include "ui/ui_htmlview.h"
 #include "ui/ui_popup.h"
 #include "ui/ui_tabs.h"
 
@@ -148,7 +148,7 @@ static void mozembed_link_message_cb(GtkMozEmbed *dummy, gpointer embed) {
 	g_free(selectedURL);
 	if(NULL != (selectedURL = gtk_moz_embed_get_link_message(dummy))) {
 		/* overwrite or clear last status line text */
-		ui_mainwindow_set_status_bar(g_strdup(selectedURL));
+		ui_htmlview_on_url(selectedURL);
 		
 		/* mozilla gives us an empty string when no link is selected */
 		if(0 == strlen(selectedURL)) {

@@ -222,7 +222,7 @@ static void on_url(HtmlView *view, const char *url, gpointer user_data) {
 		absURL = common_build_url(url, g_object_get_data(G_OBJECT(HTML_VIEW(view)->document), "liferea-base-uri"));
 		if(absURL != NULL) {
 			selectedURL = g_strdup(absURL);
-			ui_mainwindow_set_status_bar("%s", selectedURL);
+			ui_htmlview_on_url(selectedURL);
 			xmlFree(absURL);
 		}
 	} else {
