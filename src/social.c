@@ -18,96 +18,43 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "common.h"
 #include "conf.h"
-#include "favicon.h"
-#include "render.h"
 #include "social.h"
-#include "ui/ui_htmlview.h"
 
-/* The following link collection was spied from http://ekstreme.com/socializer/ */
-struct socialBookmarkSite socialBookmarkSites[] = {
- 	{ "Backflip",		"http://www.backflip.com/add_page_pop.ihtml?url=%s&title=%s", TRUE, FALSE },
-	{ "BlinkBits",		"http://blinkbits.com/bookmarklets/save.php?v=1&source_url=%s&title=%s", TRUE, FALSE },
-	{ "Blinklist",		"http://www.blinklist.com/index.php?Action=Blink/addblink.php&Title=%s&Url=%s", TRUE, TRUE },
-	{ "blogmarks",		"http://blogmarks.net/my/new.php?mini=1&title=%s&url=%s", TRUE, TRUE },
-	{ "Buddymarks",		"http://buddymarks.com/add_bookmark.php?bookmark_title=%s&bookmark_url=%s", TRUE, TRUE },
-	{ "CiteUlike",		"http://www.citeulike.org/posturl?url=%s&title=%s", TRUE, FALSE },
-	{ "del.icio.us",	"http://del.icio.us/post?url=%s&title=%s", TRUE, FALSE },
-	{ "de.lirio.us",	"http://de.lirio.us/rubric/post?uri=%s&title=%s", TRUE, FALSE },
-	{ "digg",		"http://digg.com/submit?phase=2&url=%s", FALSE, FALSE },
-	{ "ekstreme",		"http://ekstreme.com/socializer/?url=%s&title=%s", TRUE, FALSE },
-	{ "FeedMarker",		"http://www.feedmarker.com/admin.php?do=bookmarklet_mark&url=%s&title=%s", TRUE, FALSE },
-	{ "Feed Me Links!",	"http://feedmelinks.com/categorize?from=toolbar&op=submit&name=%s&url=%s&version=0.7", TRUE, TRUE },
-	{ "Furl",		"http://www.furl.net/storeIt.jsp?t=%s&u=%s", TRUE, TRUE },
-	{ "Give a Link",	"http://www.givealink.org/cgi-pub/bookmarklet/bookmarkletLogin.cgi?&uri=%s&title=%s", TRUE, FALSE },
-	{ "Gravee",		"http://www.gravee.com/account/bookmarkpop?u=%s&t=%s", TRUE, FALSE },
-	{ "Hyperlinkomatic",	"http://www.hyperlinkomatic.com/lm2/add.html?LinkTitle=%s&LinkUrl=%s", TRUE, TRUE },
-	{ "igooi",		"http://www.igooi.com/addnewitem.aspx?self=1&noui=yes&jump=close&url=%s&title=%s", TRUE, FALSE },
-	{ "kinja",		"http://kinja.com/id.knj?url=%s", FALSE, FALSE },
-	{ "Lilisto",		"http://lister.lilisto.com/?t=%s&l=%s", TRUE, TRUE },
-	{ "Linkagogo",		"http://www.linkagogo.com/go/AddNoPopup?title=%s&url=%s", TRUE, TRUE },
-	{ "Linkroll",		"http://www.linkroll.com/index.php?action=insertLink&url=%s&title=%s", TRUE, FALSE },
-	{ "looklater",		"http://api.looklater.com/bookmarks/save?url=%s&title=%s", TRUE, FALSE },
-	{ "Magnolia",		"http://ma.gnolia.com/bookmarklet/add?url=%s&title=%s", TRUE, FALSE },
-	{ "maple",		"http://www.maple.nu/bookmarks/bookmarklet?bookmark[url]=%s&bookmark[name]=%s", TRUE, FALSE },
-	{ "MesFavs",		"http://mesfavs.com/bookmarks.php/?action=add&address=%s&title=%s", TRUE, FALSE },
-	{ "netvouz",		"http://netvouz.com/action/submitBookmark?url=%s&title=%s", TRUE, FALSE },
-	{ "Newsvine",		"http://www.newsvine.com/_wine/save?u=%s&h=%s", TRUE, FALSE },
-	{ "Raw Sugar", 		"http://www.rawsugar.com/tagger/?turl=%s&tttl=%s&editorInitialized=1", TRUE, FALSE },
-	{ "reddit",		"http://reddit.com/submit?url=%s&title=%s", TRUE, FALSE },
-	{ "Rojo",		"http://www.rojo.com/add-subscription/?resource=%s", FALSE, FALSE },
-	{ "Scuttle",		"http://scuttle.org/bookmarks.php/?action=add&address=%s&title=%s", TRUE, FALSE },
-	{ "Segnalo",		"http://segnalo.com/post.html.php?url=%s&title=%s", TRUE, FALSE },
-	{ "Shadows",		"http://www.shadows.com/shadows.aspx?url=%s", FALSE, FALSE },
-	{ "Simpy",		"http://simpy.com/simpy/LinkAdd.do?title=%s&href=%s&v=6&src=bookmarklet", TRUE, TRUE },
-	{ "Spurl",		"http://www.spurl.net/spurl.php?v=3&title=%s&url=%s", TRUE, TRUE },
-	{ "Squidoo",		"http://www.squidoo.com/lensmaster/bookmark?%s", FALSE, FALSE },
-	{ "tagtooga",		"http://www.tagtooga.com/tapp/db.exe?c=jsEntryForm&b=fx&title=%s&url=%s", TRUE, TRUE },
-	{ "Tailrank",		"http://tailrank.com/share/?title=%s&link_href=%s", TRUE, TRUE },
-	{ "Technorati",		"http://technorati.com/faves/?add=%s", FALSE, FALSE },
-	{ "unalog",		"http://unalog.com/my/stack/link?url=%s&title=%s", TRUE, FALSE },
-	{ "Wink",		"http://www.wink.com/_/tag?url=%s&doctitle=%s", TRUE, FALSE },
-	{ "wists",		"http://www.wists.com/r.php?r=%s&title=%s", TRUE, FALSE },
-	{ "Yahoo My Web",	"http://myweb2.search.yahoo.com/myresults/bookmarklet?u=%s&t=%s", TRUE, FALSE },
-	{ "zurpy",		"http://tag.zurpy.com/?box=1&url=%s&title=%s", TRUE, FALSE },
-	{ NULL, NULL, FALSE, FALSE }
-};
+/** list of registered bookmarking sites */
+GSList *socialBookmarkSites = NULL;
 
+/** the currently configured site */
 static socialBookmarkSitePtr site = NULL;
-/*static gchar *siteIcon = NULL;*/
 
-void social_set_site(const gchar *name) {
-	socialBookmarkSitePtr	iter = socialBookmarkSites;
-	
-	/*if(siteIcon)
-		g_free(siteIcon);
-	siteIcon = NULL;*/
-	site = NULL;
+void social_register_site(gchar *name, gchar *url, gboolean title, gboolean titleFirst) {
+	socialBookmarkSitePtr newSite;
 
-	while(iter->name) {
-		if(g_str_equal(iter->name, name)) {
-			setStringConfValue(SOCIAL_BM_SITE, name);
-			/* check if we have favicons for each bookmarking site if not download it... */
-			/*gchar *id = common_strreplace(g_strdup_printf("socialbm_%s", iter->name), " ", "_");
-			siteIcon = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", id, "png");
-			if(!g_file_test(siteIcon, G_FILE_TEST_EXISTS)) {
-				g_print("Doing initial favicon download for %s\n", iter->name);
-				favicon_download(g_strdup(id), NULL, iter->url, NULL, NULL);
-				// FIXME: leaking id...
-			}*/
+	g_assert(name);
+	g_assert(url);	
+	newSite = g_new0(struct socialBookmarkSite, 1);
+	newSite->name = name;
+	newSite->url = url;
+	newSite->title = title;
+	newSite->titleFirst = titleFirst;
 
-			site = iter;
-			break;
-		}
-		iter++;
-	}
+	socialBookmarkSites = g_slist_append(socialBookmarkSites, newSite);
 }
 
-/*const gchar * social_get_icon(void) { 
-
-	return siteIcon;
-}*/
+void social_set_site(const gchar *name) {
+	GSList	*iter = socialBookmarkSites;
+	
+	while(iter) {
+		site = iter->data;
+		if(g_str_equal(site->name, name)) {
+			setStringConfValue(SOCIAL_BM_SITE, name);
+			return;
+		}
+		iter = g_slist_next(iter);
+	}
+	
+	g_warning("Unknown social bookmarking site \"%s\"!", name);
+}
 
 const gchar * social_get_site(void) { return site->name; }
 
@@ -130,6 +77,52 @@ gchar * social_get_url(const gchar *link, const gchar *title) {
 }
 
 void social_init(void) {
+
+	/* The following link collection was derived from http://ekstreme.com/socializer/ */
+ 	social_register_site("Backflip",	"http://www.backflip.com/add_page_pop.ihtml?url=%s&title=%s", TRUE, FALSE);
+	social_register_site("BlinkBits",	"http://blinkbits.com/bookmarklets/save.php?v=1&source_url=%s&title=%s", TRUE, FALSE);
+	social_register_site("Blinklist",	"http://www.blinklist.com/index.php?Action=Blink/addblink.php&Title=%s&Url=%s", TRUE, TRUE);
+	social_register_site("blogmarks",	"http://blogmarks.net/my/new.php?mini=1&title=%s&url=%s", TRUE, TRUE);
+	social_register_site("Buddymarks",	"http://buddymarks.com/add_bookmark.php?bookmark_title=%s&bookmark_url=%s", TRUE, TRUE);
+	social_register_site("CiteUlike",	"http://www.citeulike.org/posturl?url=%s&title=%s", TRUE, FALSE);
+	social_register_site("del.icio.us",	"http://del.icio.us/post?url=%s&title=%s", TRUE, FALSE);
+	social_register_site("de.lirio.us",	"http://de.lirio.us/rubric/post?uri=%s&title=%s", TRUE, FALSE);
+	social_register_site("digg",		"http://digg.com/submit?phase=2&url=%s", FALSE, FALSE);
+	social_register_site("ekstreme",	"http://ekstreme.com/socializer/?url=%s&title=%s", TRUE, FALSE);
+	social_register_site("FeedMarker",	"http://www.feedmarker.com/admin.php?do=bookmarklet_mark&url=%s&title=%s", TRUE, FALSE);
+	social_register_site("Feed Me Links!",	"http://feedmelinks.com/categorize?from=toolbar&op=submit&name=%s&url=%s&version=0.7", TRUE, TRUE);
+	social_register_site("Furl",		"http://www.furl.net/storeIt.jsp?t=%s&u=%s", TRUE, TRUE);
+	social_register_site("Give a Link",	"http://www.givealink.org/cgi-pub/bookmarklet/bookmarkletLogin.cgi?&uri=%s&title=%s", TRUE, FALSE);
+	social_register_site("Gravee",		"http://www.gravee.com/account/bookmarkpop?u=%s&t=%s", TRUE, FALSE);
+	social_register_site("Hyperlinkomatic",	"http://www.hyperlinkomatic.com/lm2/add.html?LinkTitle=%s&LinkUrl=%s", TRUE, TRUE);
+	social_register_site("igooi",		"http://www.igooi.com/addnewitem.aspx?self=1&noui=yes&jump=close&url=%s&title=%s", TRUE, FALSE);
+	social_register_site("kinja",		"http://kinja.com/id.knj?url=%s", FALSE, FALSE);
+	social_register_site("Lilisto",		"http://lister.lilisto.com/?t=%s&l=%s", TRUE, TRUE);
+	social_register_site("Linkagogo",	"http://www.linkagogo.com/go/AddNoPopup?title=%s&url=%s", TRUE, TRUE);
+	social_register_site("Linkroll",	"http://www.linkroll.com/index.php?action=insertLink&url=%s&title=%s", TRUE, FALSE);
+	social_register_site("looklater",	"http://api.looklater.com/bookmarks/save?url=%s&title=%s", TRUE, FALSE);
+	social_register_site("Magnolia",	"http://ma.gnolia.com/bookmarklet/add?url=%s&title=%s", TRUE, FALSE);
+	social_register_site("maple",		"http://www.maple.nu/bookmarks/bookmarklet?bookmark[url]=%s&bookmark[name]=%s", TRUE, FALSE);
+	social_register_site("MesFavs",		"http://mesfavs.com/bookmarks.php/?action=add&address=%s&title=%s", TRUE, FALSE);
+	social_register_site("netvouz",		"http://netvouz.com/action/submitBookmark?url=%s&title=%s", TRUE, FALSE);
+	social_register_site("Newsvine",	"http://www.newsvine.com/_wine/save?u=%s&h=%s", TRUE, FALSE);
+	social_register_site("Raw Sugar", 	"http://www.rawsugar.com/tagger/?turl=%s&tttl=%s&editorInitialized=1", TRUE, FALSE);
+	social_register_site("reddit",		"http://reddit.com/submit?url=%s&title=%s", TRUE, FALSE);
+	social_register_site("Rojo",		"http://www.rojo.com/add-subscription/?resource=%s", FALSE, FALSE);
+	social_register_site("Scuttle",		"http://scuttle.org/bookmarks.php/?action=add&address=%s&title=%s", TRUE, FALSE);
+	social_register_site("Segnalo",		"http://segnalo.com/post.html.php?url=%s&title=%s", TRUE, FALSE);
+	social_register_site("Shadows",		"http://www.shadows.com/shadows.aspx?url=%s", FALSE, FALSE);
+	social_register_site("Simpy",		"http://simpy.com/simpy/LinkAdd.do?title=%s&href=%s&v=6&src=bookmarklet", TRUE, TRUE);
+	social_register_site("Spurl",		"http://www.spurl.net/spurl.php?v=3&title=%s&url=%s", TRUE, TRUE);
+	social_register_site("Squidoo",		"http://www.squidoo.com/lensmaster/bookmark?%s", FALSE, FALSE);
+	social_register_site("tagtooga",	"http://www.tagtooga.com/tapp/db.exe?c=jsEntryForm&b=fx&title=%s&url=%s", TRUE, TRUE);
+	social_register_site("Tailrank",	"http://tailrank.com/share/?title=%s&link_href=%s", TRUE, TRUE);
+	social_register_site("Technorati",	"http://technorati.com/faves/?add=%s", FALSE, FALSE);
+	social_register_site("unalog",		"http://unalog.com/my/stack/link?url=%s&title=%s", TRUE, FALSE);
+	social_register_site("Wink",		"http://www.wink.com/_/tag?url=%s&doctitle=%s", TRUE, FALSE);
+	social_register_site("wists",		"http://www.wists.com/r.php?r=%s&title=%s", TRUE, FALSE);
+	social_register_site("Yahoo My Web",	"http://myweb2.search.yahoo.com/myresults/bookmarklet?u=%s&t=%s", TRUE, FALSE);
+	social_register_site("zurpy",		"http://tag.zurpy.com/?box=1&url=%s&title=%s", TRUE, FALSE);
 
 	social_set_site(getStringConfValue(SOCIAL_BM_SITE));
 	

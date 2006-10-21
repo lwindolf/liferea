@@ -52,7 +52,7 @@ enum fts_columns {
 };
 
 extern GSList *htmlviewPlugins;
-extern struct socialBookmarkSite socialBookmarkSites[];
+extern GSList *socialBookmarkSites;
 
 static GtkWidget *prefdialog = NULL;
 
@@ -216,7 +216,6 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	gboolean		enabled, enabled2;
 	int			tmp, i;
 	static int		manual;
-	socialBookmarkSitePtr	siter;
 	struct browser			*iter;
 	struct enclosure_download_tool	*edtool;
 	
@@ -345,13 +344,16 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 		/* Setup social bookmarking list */
 		name = getStringConfValue(SOCIAL_BM_SITE);
 		menu = gtk_menu_new();
-		for(i=0, siter = socialBookmarkSites; siter->name != NULL; siter++, i++) {
+		list = socialBookmarkSites;
+		while(list) {
+			socialBookmarkSitePtr siter = list->data;
 			if(name && !strcmp(siter->name, name))
 				tmp = i;
 			entry = gtk_menu_item_new_with_label(siter->name);
 			gtk_widget_show(entry);
 			gtk_container_add(GTK_CONTAINER(menu), entry);
 			gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_socialsite_changed), (gpointer)siter->name);
+			list = g_slist_next(list);
 		}
 		gtk_option_menu_set_menu(GTK_OPTION_MENU(lookup_widget(prefdialog, "socialpopup")), menu);
 		gtk_option_menu_set_history(GTK_OPTION_MENU(lookup_widget(prefdialog, "socialpopup")), tmp);

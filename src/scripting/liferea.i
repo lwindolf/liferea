@@ -5,6 +5,7 @@
 #include "../feedlist.h"
 #include "../item.h"
 #include "../itemlist.h" 
+#include "../social.h"
 
 #include "../ui/ui_feedlist.h"
 #include "../ui/ui_itemlist.h"
@@ -21,6 +22,7 @@
 %include "../item.h"
 %include "../itemlist.h"
 %include "../feedlist.h"
+%include "../social.h"
 
 %include "../ui/ui_feedlist.h"
 %include "../ui/ui_itemlist.h"

@@ -1340,17 +1340,18 @@ SWIG_Lua_SetModule(lua_State* L, swig_module_info *module) {
 #define SWIGTYPE_p_nodeType swig_types[33]
 #define SWIGTYPE_p_p_GdkPixbuf swig_types[34]
 #define SWIGTYPE_p_request swig_types[35]
-#define SWIGTYPE_p_time_t swig_types[36]
-#define SWIGTYPE_p_ui_data swig_types[37]
-#define SWIGTYPE_p_updateOptionsPtr swig_types[38]
-#define SWIGTYPE_p_vfolderPtr swig_types[39]
-#define SWIGTYPE_p_xmlNodePtr swig_types[40]
-#define SWIGTYPE_time_t swig_types[41]
-#define SWIGTYPE_updateOptionsPtr swig_types[42]
-#define SWIGTYPE_vfolderPtr swig_types[43]
-#define SWIGTYPE_xmlNodePtr swig_types[44]
-static swig_type_info *swig_types[46];
-static swig_module_info swig_module = {swig_types, 45, 0, 0, 0, 0};
+#define SWIGTYPE_p_socialBookmarkSite swig_types[36]
+#define SWIGTYPE_p_time_t swig_types[37]
+#define SWIGTYPE_p_ui_data swig_types[38]
+#define SWIGTYPE_p_updateOptionsPtr swig_types[39]
+#define SWIGTYPE_p_vfolderPtr swig_types[40]
+#define SWIGTYPE_p_xmlNodePtr swig_types[41]
+#define SWIGTYPE_time_t swig_types[42]
+#define SWIGTYPE_updateOptionsPtr swig_types[43]
+#define SWIGTYPE_vfolderPtr swig_types[44]
+#define SWIGTYPE_xmlNodePtr swig_types[45]
+static swig_type_info *swig_types[47];
+static swig_module_info swig_module = {swig_types, 46, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -1366,6 +1367,7 @@ static swig_module_info swig_module = {swig_types, 45, 0, 0, 0, 0};
 #include "../feedlist.h"
 #include "../item.h"
 #include "../itemlist.h" 
+#include "../social.h"
 
 #include "../ui/ui_feedlist.h"
 #include "../ui/ui_itemlist.h"
@@ -6120,6 +6122,317 @@ fail:
 }
 
 
+static int _wrap_socialBookmarkSite_name_set(lua_State* L) {
+  int SWIG_arg = -1;
+  struct socialBookmarkSite *arg1 = (struct socialBookmarkSite *) 0 ;
+  char *arg2 = (char *) 0 ;
+  
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg(1);
+  if(!lua_isstring(L,2)) SWIG_fail_arg(2);
+  arg1=(struct socialBookmarkSite *)SWIG_MustGetPtr(L,1,SWIGTYPE_p_socialBookmarkSite,0,1,"socialBookmarkSite_name_set");
+  arg2 = (char*)lua_tostring(L, 2);
+  {
+    if (arg2) {
+      arg1->name = (char const *) malloc(strlen(arg2)+1);
+      strcpy((char*)arg1->name,arg2);
+    } else {
+      arg1->name = 0;
+    }
+  }
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_socialBookmarkSite_name_get(lua_State* L) {
+  int SWIG_arg = -1;
+  struct socialBookmarkSite *arg1 = (struct socialBookmarkSite *) 0 ;
+  char *result = 0 ;
+  
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg(1);
+  arg1=(struct socialBookmarkSite *)SWIG_MustGetPtr(L,1,SWIGTYPE_p_socialBookmarkSite,0,1,"socialBookmarkSite_name_get");
+  result = (char *) ((arg1)->name);
+  SWIG_arg=0;
+  lua_pushstring(L,result); SWIG_arg++;
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_socialBookmarkSite_url_set(lua_State* L) {
+  int SWIG_arg = -1;
+  struct socialBookmarkSite *arg1 = (struct socialBookmarkSite *) 0 ;
+  char *arg2 = (char *) 0 ;
+  
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg(1);
+  if(!lua_isstring(L,2)) SWIG_fail_arg(2);
+  arg1=(struct socialBookmarkSite *)SWIG_MustGetPtr(L,1,SWIGTYPE_p_socialBookmarkSite,0,1,"socialBookmarkSite_url_set");
+  arg2 = (char*)lua_tostring(L, 2);
+  {
+    if (arg2) {
+      arg1->url = (char const *) malloc(strlen(arg2)+1);
+      strcpy((char*)arg1->url,arg2);
+    } else {
+      arg1->url = 0;
+    }
+  }
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_socialBookmarkSite_url_get(lua_State* L) {
+  int SWIG_arg = -1;
+  struct socialBookmarkSite *arg1 = (struct socialBookmarkSite *) 0 ;
+  char *result = 0 ;
+  
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg(1);
+  arg1=(struct socialBookmarkSite *)SWIG_MustGetPtr(L,1,SWIGTYPE_p_socialBookmarkSite,0,1,"socialBookmarkSite_url_get");
+  result = (char *) ((arg1)->url);
+  SWIG_arg=0;
+  lua_pushstring(L,result); SWIG_arg++;
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_socialBookmarkSite_title_set(lua_State* L) {
+  int SWIG_arg = -1;
+  struct socialBookmarkSite *arg1 = (struct socialBookmarkSite *) 0 ;
+  int arg2 ;
+  
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg(1);
+  if(!lua_isnumber(L,2)) SWIG_fail_arg(2);
+  arg1=(struct socialBookmarkSite *)SWIG_MustGetPtr(L,1,SWIGTYPE_p_socialBookmarkSite,0,1,"socialBookmarkSite_title_set");
+  arg2 = (int)lua_tonumber(L, 2);
+  if (arg1) (arg1)->title = arg2;
+  
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_socialBookmarkSite_title_get(lua_State* L) {
+  int SWIG_arg = -1;
+  struct socialBookmarkSite *arg1 = (struct socialBookmarkSite *) 0 ;
+  int result;
+  
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg(1);
+  arg1=(struct socialBookmarkSite *)SWIG_MustGetPtr(L,1,SWIGTYPE_p_socialBookmarkSite,0,1,"socialBookmarkSite_title_get");
+  result = (int) ((arg1)->title);
+  SWIG_arg=0;
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_socialBookmarkSite_titleFirst_set(lua_State* L) {
+  int SWIG_arg = -1;
+  struct socialBookmarkSite *arg1 = (struct socialBookmarkSite *) 0 ;
+  int arg2 ;
+  
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg(1);
+  if(!lua_isnumber(L,2)) SWIG_fail_arg(2);
+  arg1=(struct socialBookmarkSite *)SWIG_MustGetPtr(L,1,SWIGTYPE_p_socialBookmarkSite,0,1,"socialBookmarkSite_titleFirst_set");
+  arg2 = (int)lua_tonumber(L, 2);
+  if (arg1) (arg1)->titleFirst = arg2;
+  
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_socialBookmarkSite_titleFirst_get(lua_State* L) {
+  int SWIG_arg = -1;
+  struct socialBookmarkSite *arg1 = (struct socialBookmarkSite *) 0 ;
+  int result;
+  
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg(1);
+  arg1=(struct socialBookmarkSite *)SWIG_MustGetPtr(L,1,SWIGTYPE_p_socialBookmarkSite,0,1,"socialBookmarkSite_titleFirst_get");
+  result = (int) ((arg1)->titleFirst);
+  SWIG_arg=0;
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_new_socialBookmarkSite(lua_State* L) {
+  int SWIG_arg = -1;
+  struct socialBookmarkSite *result = 0 ;
+  
+  result = (struct socialBookmarkSite *)(struct socialBookmarkSite *) calloc(1, sizeof(struct socialBookmarkSite));
+  SWIG_arg=0;
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_socialBookmarkSite,1); SWIG_arg++; 
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_delete_socialBookmarkSite(lua_State* L) {
+  int SWIG_arg = -1;
+  struct socialBookmarkSite *arg1 = (struct socialBookmarkSite *) 0 ;
+  
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg(1);
+  arg1=(struct socialBookmarkSite *)SWIG_MustGetPtr(L,1,SWIGTYPE_p_socialBookmarkSite,0,1,"delete_socialBookmarkSite");
+  free((char *) arg1);
+  
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static void swig_delete_socialBookmarkSite(void *obj) {
+struct socialBookmarkSite *arg1 = (struct socialBookmarkSite *) obj;
+free((char *) arg1);
+}
+static swig_lua_method swig_socialBookmarkSite_methods[] = {
+    {0,0}
+};
+static swig_lua_attribute swig_socialBookmarkSite_attributes[] = {
+    { "name",_wrap_socialBookmarkSite_name_get, _wrap_socialBookmarkSite_name_set},
+    { "url",_wrap_socialBookmarkSite_url_get, _wrap_socialBookmarkSite_url_set},
+    { "title",_wrap_socialBookmarkSite_title_get, _wrap_socialBookmarkSite_title_set},
+    { "titleFirst",_wrap_socialBookmarkSite_titleFirst_get, _wrap_socialBookmarkSite_titleFirst_set},
+    {0,0,0}
+};
+static swig_lua_class *swig_socialBookmarkSite_bases[] = {0};
+swig_lua_class _wrap_class_socialBookmarkSite = { "socialBookmarkSite", &SWIGTYPE_p_socialBookmarkSite,_wrap_new_socialBookmarkSite, swig_delete_socialBookmarkSite, swig_socialBookmarkSite_methods, swig_socialBookmarkSite_attributes, swig_socialBookmarkSite_bases };
+
+static int _wrap_social_init(lua_State* L) {
+  int SWIG_arg = -1;
+  
+  social_init();
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_social_register_site(lua_State* L) {
+  int SWIG_arg = -1;
+  char *arg1 = (char *) 0 ;
+  char *arg2 = (char *) 0 ;
+  int arg3 ;
+  int arg4 ;
+  
+  if(!lua_isstring(L,1)) SWIG_fail_arg(1);
+  if(!lua_isstring(L,2)) SWIG_fail_arg(2);
+  if(!lua_isnumber(L,3)) SWIG_fail_arg(3);
+  if(!lua_isnumber(L,4)) SWIG_fail_arg(4);
+  arg1 = (char*)lua_tostring(L, 1);
+  arg2 = (char*)lua_tostring(L, 2);
+  arg3 = (int)lua_tonumber(L, 3);
+  arg4 = (int)lua_tonumber(L, 4);
+  social_register_site((char const *)arg1,(char const *)arg2,arg3,arg4);
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_social_get_url(lua_State* L) {
+  int SWIG_arg = -1;
+  char *arg1 = (char *) 0 ;
+  char *arg2 = (char *) 0 ;
+  char *result = 0 ;
+  
+  if(!lua_isstring(L,1)) SWIG_fail_arg(1);
+  if(!lua_isstring(L,2)) SWIG_fail_arg(2);
+  arg1 = (char*)lua_tostring(L, 1);
+  arg2 = (char*)lua_tostring(L, 2);
+  result = (char *)social_get_url((char const *)arg1,(char const *)arg2);
+  SWIG_arg=0;
+  lua_pushstring(L,result); SWIG_arg++;
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_social_set_site(lua_State* L) {
+  int SWIG_arg = -1;
+  char *arg1 = (char *) 0 ;
+  
+  if(!lua_isstring(L,1)) SWIG_fail_arg(1);
+  arg1 = (char*)lua_tostring(L, 1);
+  social_set_site((char const *)arg1);
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_social_get_site(lua_State* L) {
+  int SWIG_arg = -1;
+  char *result = 0 ;
+  
+  result = (char *)social_get_site();
+  SWIG_arg=0;
+  lua_pushstring(L,result); SWIG_arg++;
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_ui_data_row_set(lua_State* L) {
   int SWIG_arg = -1;
   ui_data *arg1 = (ui_data *) 0 ;
@@ -7963,6 +8276,21 @@ static const struct luaL_reg swig_commands[] = {
     { "on_menu_update_all", _wrap_on_menu_update_all},
     { "on_menu_allread", _wrap_on_menu_allread},
     { "on_menu_allfeedsread", _wrap_on_menu_allfeedsread},
+    { "socialBookmarkSite_name_set", _wrap_socialBookmarkSite_name_set},
+    { "socialBookmarkSite_name_get", _wrap_socialBookmarkSite_name_get},
+    { "socialBookmarkSite_url_set", _wrap_socialBookmarkSite_url_set},
+    { "socialBookmarkSite_url_get", _wrap_socialBookmarkSite_url_get},
+    { "socialBookmarkSite_title_set", _wrap_socialBookmarkSite_title_set},
+    { "socialBookmarkSite_title_get", _wrap_socialBookmarkSite_title_get},
+    { "socialBookmarkSite_titleFirst_set", _wrap_socialBookmarkSite_titleFirst_set},
+    { "socialBookmarkSite_titleFirst_get", _wrap_socialBookmarkSite_titleFirst_get},
+    { "new_socialBookmarkSite", _wrap_new_socialBookmarkSite},
+    { "delete_socialBookmarkSite", _wrap_delete_socialBookmarkSite},
+    { "social_init", _wrap_social_init},
+    { "social_register_site", _wrap_social_register_site},
+    { "social_get_url", _wrap_social_get_url},
+    { "social_set_site", _wrap_social_set_site},
+    { "social_get_site", _wrap_social_get_site},
     { "ui_data_row_set", _wrap_ui_data_row_set},
     { "ui_data_row_get", _wrap_ui_data_row_get},
     { "new_ui_data", _wrap_new_ui_data},
@@ -8152,6 +8480,7 @@ static swig_type_info _swigt__p_nodeSource = {"_p_nodeSource", "struct nodeSourc
 static swig_type_info _swigt__p_nodeType = {"_p_nodeType", "struct nodeType *|nodeTypePtr", 0, 0, (void*)&_wrap_class_nodeType, 0};
 static swig_type_info _swigt__p_p_GdkPixbuf = {"_p_p_GdkPixbuf", "GdkPixbuf **", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_request = {"_p_request", "struct request *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_socialBookmarkSite = {"_p_socialBookmarkSite", "socialBookmarkSite *", 0, 0, (void*)&_wrap_class_socialBookmarkSite, 0};
 static swig_type_info _swigt__p_time_t = {"_p_time_t", "time_t *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_ui_data = {"_p_ui_data", "struct ui_data *|ui_data *", 0, 0, (void*)&_wrap_class_ui_data, 0};
 static swig_type_info _swigt__p_updateOptionsPtr = {"_p_updateOptionsPtr", "updateOptionsPtr *", 0, 0, (void*)0, 0};
@@ -8199,6 +8528,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_nodeType,
   &_swigt__p_p_GdkPixbuf,
   &_swigt__p_request,
+  &_swigt__p_socialBookmarkSite,
   &_swigt__p_time_t,
   &_swigt__p_ui_data,
   &_swigt__p_updateOptionsPtr,
@@ -8246,6 +8576,7 @@ static swig_cast_info _swigc__p_nodeSource[] = {  {&_swigt__p_nodeSource, 0, 0, 
 static swig_cast_info _swigc__p_nodeType[] = {  {&_swigt__p_nodeType, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_p_GdkPixbuf[] = {  {&_swigt__p_p_GdkPixbuf, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_request[] = {  {&_swigt__p_request, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_socialBookmarkSite[] = {  {&_swigt__p_socialBookmarkSite, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_time_t[] = {  {&_swigt__p_time_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_ui_data[] = {  {&_swigt__p_ui_data, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_updateOptionsPtr[] = {  {&_swigt__p_updateOptionsPtr, 0, 0, 0},{0, 0, 0, 0}};
@@ -8293,6 +8624,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_nodeType,
   _swigc__p_p_GdkPixbuf,
   _swigc__p_request,
+  _swigc__p_socialBookmarkSite,
   _swigc__p_time_t,
   _swigc__p_ui_data,
   _swigc__p_updateOptionsPtr,

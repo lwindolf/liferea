@@ -30,8 +30,20 @@ typedef struct socialBookmarkSite {
 	gboolean	titleFirst;	/**< TRUE if title %s comes first */
 } *socialBookmarkSitePtr;
 
-
+/**
+ * Initialize social bookmarking support.
+ */
 void social_init(void);
+
+/**
+ * Add a new site to the default social bookmark site list.
+ *
+ * @param name		descriptive name
+ * @param url		valid HTTP GET URL with one or two %s format codes
+ * @param title		TRUE if site accepts titles (URL must have two %s format codes!)
+ * @param titleFirst	TRUE if title is first format code (title must be TRUE)
+ */
+void social_register_site(gchar *name, gchar *url, gboolean title, gboolean titleFirst);
 
 /**
  * Returns a social bookmarking link for the configured service
