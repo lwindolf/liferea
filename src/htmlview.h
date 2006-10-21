@@ -30,6 +30,11 @@
 /* interface for item and item set HTML rendering */
 
 /**
+ * Initialize the HTML view 
+ */
+void	htmlview_init(void);
+
+/**
  * To be called to clear the HTML view 
  */
 void	htmlview_clear(void);

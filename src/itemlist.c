@@ -63,7 +63,6 @@ static itemPtr	displayed_item = NULL;	/* displayed item = selected item */
 
 static guint viewMode = 0;		/* current viewing mode */
 static gboolean itemlistLoading;	/* if TRUE prevents selection effects when loading the item list */
-gint disableSortingSaving;		/* set in ui_itemlist.c to disable sort-changed callback */
 
 static gboolean deferred_item_remove = FALSE;	/* TRUE if selected item needs to be removed from cache on unselecting */
 static gboolean deferred_item_filter = FALSE;	/* TRUE if selected item needs to be filtered on unselecting */
@@ -117,17 +116,17 @@ void itemlist_merge_itemset(itemSetPtr itemSet) {
 
 	debug_enter("itemlist_merge_itemset");
 	
-	if(displayed_itemSet == NULL)
+	if(!displayed_itemSet)
 		return; /* Nothing to do if nothing is displayed */
 	
 	if((displayed_itemSet != itemSet) && !node_is_ancestor(displayed_itemSet->node, itemSet->node))
-		return;
-
-	debug1(DEBUG_GUI, "reloading item list with node \"%s\"", node_get_title(itemSet->node));
+		return; /* Nothing to do if the item set does not belong to this node */
 
 	if((ITEMSET_TYPE_FOLDER == displayed_itemSet->type) && 
 	   (0 == getNumericConfValue(FOLDER_DISPLAY_MODE)))
-			return;
+		return; /* Bail out if it is a folder without the recursive display preference set */
+		
+	debug1(DEBUG_GUI, "reloading item list with node \"%s\"", node_get_title(itemSet->node));
 
 	/* update item list tree view */	
 	iter = g_list_last(itemSet->items);
@@ -154,7 +153,6 @@ void itemlist_merge_itemset(itemSetPtr itemSet) {
  * replace the current itemlist.
  */
 void itemlist_load(itemSetPtr itemSet) {
-	GtkTreeModel	*model;
 
 	debug_enter("itemlist_load");
 
@@ -180,35 +178,8 @@ void itemlist_load(itemSetPtr itemSet) {
 	itemlistLoading = 1;
 	viewMode = node_get_view_mode(itemSet->node);
 	ui_mainwindow_set_layout(viewMode);
-	
-	// FIXME: move ui_itemlist setup to itemview.c
 
-	/* 2. Clear item list and disable sorting for performance reasons */
-
-	/* Free the old itemstore and create a new one; this is the only way to disable sorting */
-	ui_itemlist_reset_tree_store();	 /* this also clears the itemlist. */
-	model = GTK_TREE_MODEL(ui_itemlist_get_tree_store());
-
-	ui_itemlist_enable_encicon_column(FALSE);
-
-	switch(itemSet->type) {
-		case ITEMSET_TYPE_FEED:
-			ui_itemlist_enable_favicon_column(FALSE);
-			break;
-		case ITEMSET_TYPE_VFOLDER:
-		case ITEMSET_TYPE_FOLDER:
-			ui_itemlist_enable_favicon_column(TRUE);
-			break;
-	}
-
-	/* 3. Set sorting again... */
-	disableSortingSaving++;
-	gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(model), 
-	                                     itemSet->node->sortColumn, 
-	                                     itemSet->node->sortReversed?GTK_SORT_DESCENDING:GTK_SORT_ASCENDING);
-	disableSortingSaving--;
-
-	/* 4. Load the new one... */
+	/* Set the new item set... */
 	displayed_itemSet = itemSet;
 	itemview_set_itemset(itemSet);
 
@@ -242,15 +213,15 @@ void itemlist_unload(gboolean markRead) {
 	displayed_itemSet = NULL;
 }
 
-void itemlist_update_vfolder(vfolderPtr vp) {
+void itemlist_update_vfolder(vfolderPtr vfolder) {
 
-	if(displayed_itemSet == vp->node->itemSet)
-		/* maybe itemlist_load(vp) would be faster, but
+	if(displayed_itemSet == vfolder->node->itemSet)
+		/* maybe itemlist_load(vfolder) would be faster, but
 		   it unloads all feeds and therefore must not be 
 		   called from here! */		
 		itemlist_merge_itemset(displayed_itemSet);
 	else
-		ui_node_update(vp->node);
+		ui_node_update(vfolder->node);
 }
 
 void itemlist_reset_date_format(void) {
@@ -424,6 +395,7 @@ void itemlist_remove_items(itemSetPtr itemSet) {
 
 	itemview_clear();
 	itemset_remove_items(itemSet);
+	itemview_update();
 	ui_node_update(itemSet->node);
 }
 

@@ -40,7 +40,7 @@
 
 #include "notification/notif_plugin.h"
 
-static void notif_libnotify_callback_open ( NotifyNotification *n, const gchar *action, gpointer user_data ) {
+static void notif_libnotify_callback_open ( NotifyNotification *n, gchar *action, gpointer user_data ) {
 	g_assert(action != NULL);
 	g_assert(strcmp(action, "open") == 0);
 
@@ -53,17 +53,18 @@ static void notif_libnotify_callback_open ( NotifyNotification *n, const gchar *
 
 }
 
-static void notif_libnotify_callback_mark_read ( NotifyNotification *n, const char *action, gpointer user_data ) {
+static void notif_libnotify_callback_mark_read ( NotifyNotification *n, gchar *action, gpointer user_data ) {
 	g_assert(action != NULL);
 	g_assert(strcmp(action, "mark_read") == 0);
 
 	nodePtr node_p = user_data;
+	
 	node_mark_all_read(node_p);
-
+	
 	notify_notification_close(n, NULL);
 }
 
-static void notif_libnotify_callback_show_details ( NotifyNotification *n, const gchar *action, gpointer user_data ) {
+static void notif_libnotify_callback_show_details ( NotifyNotification *n, gchar *action, gpointer user_data ) {
 	nodePtr node_p;
 
 	GList *list_p;
@@ -76,13 +77,13 @@ static void notif_libnotify_callback_show_details ( NotifyNotification *n, const
 	gchar *labelHeadline_p;
 	const gchar *labelURL_p;
 
-	gint item_count;
-
+	gint item_count = 0;
+	
 	g_assert(action != NULL);
 	g_assert(strcmp(action, "show_details") == 0);
-
 	node_p = user_data;
-	item_count = 0;
+	node_load(node_p);
+
 	labelText_now_p = g_strdup("");
 
 	/* Gather the feed's headlines */
@@ -139,6 +140,8 @@ static void notif_libnotify_callback_show_details ( NotifyNotification *n, const
 									(NotifyActionCallback)notif_libnotify_callback_mark_read,
 									node_p, NULL);
 
+	node_unload(node_p);
+
 	getBooleanConfValue(SHOW_TRAY_ICON);
 	if (!notify_notification_show (n, NULL)) {
 		fprintf(stderr, "PLUGIN:notif_libnotify.c - failed to update notification via libnotify\n");
@@ -150,7 +153,7 @@ static void notif_libnotify_callback_show_details ( NotifyNotification *n, const
 static gboolean notif_libnotify_init(void) {
 	if (notify_init ("liferea")) {
 		return TRUE;
-}
+	}
 	else {
 		fprintf(stderr, "PLUGIN:notif_libnotify.c : notify_init failed" );
 		return FALSE;

@@ -63,14 +63,19 @@ void htmlview_set_itemset(itemSetPtr itemSet) {
 void htmlview_add_item(itemPtr item) {
 
 	g_hash_table_insert(htmlView_priv.htmlChunks, item, NULL);
-	
+		
 	if(!item_get_description(item) || (0 == strlen(item_get_description(item))))
-		htmlView_priv.missingContent++;
+		htmlView_priv.missingContent++;	
 }
 
 void htmlview_remove_item(itemPtr item) {
 
 	g_hash_table_remove(htmlView_priv.htmlChunks, item);
+}
+
+void htmlview_update_item(itemPtr item) {
+
+	g_hash_table_insert(htmlView_priv.htmlChunks, item, NULL);
 }
 
 gchar * htmlview_render_item(itemPtr item) {
@@ -113,11 +118,6 @@ gchar * htmlview_render_item(itemPtr item) {
 	debug_exit("htmlview_render_item");
 
 	return output;
-}
-
-void htmlview_update_item(itemPtr item) {
-
-	g_hash_table_insert(htmlView_priv.htmlChunks, item, NULL);
 }
 
 void htmlview_start_output(GString *buffer, const gchar *base, gboolean css, gboolean script) { 
@@ -191,7 +191,7 @@ void htmlview_update(GtkWidget *widget, guint mode) {
 	itemPtr		item = NULL;
 	gchar		*chunk;
 	const gchar	*baseURL = NULL;
-
+	
 	if(!htmlView_priv.itemSet) {
 		debug0(DEBUG_HTML, "clearing HTML view as nothing is selected");
 		ui_htmlview_clear(widget);
