@@ -123,7 +123,7 @@ void itemview_select_item(itemPtr item) {
 
 void itemview_update_item(itemPtr item) {
 
-	if(!itemset_lookup_item(itemView_priv.itemSet, itemView_priv.itemSet->node, item->nr))
+	if(!itemset_lookup_item(itemView_priv.itemSet, item->itemSet->node, item->nr))
 		return;
 		
 	if(ITEMVIEW_ALL_ITEMS != itemView_priv.mode)

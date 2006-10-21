@@ -1,3 +1,12 @@
+2006-10-??  ???  <???>
+
+	Version 1.1.8 (Unstable)
+	
+	* Fixes a bug that prevented changing item state of items
+	  listed in the recursive folder view.
+	* Fixes a bug in the node/item lookup that caused strange
+	  merging and item access problems
+
 2006-10-21  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.1.7 (Unstable)

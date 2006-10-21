@@ -83,25 +83,26 @@ gchar * node_new_id() {
 nodePtr node_from_id(const gchar *id) {
 
 	g_assert(NULL != nodes);
+	if(!g_hash_table_lookup(nodes, id))
+		g_warning("Fatal: no node with id %s found!", id);
 	return (nodePtr)g_hash_table_lookup(nodes, id);
 }
 
 nodePtr node_new(void) {
 	nodePtr	node;
-	
+	gchar	*id;
+
 	node = (nodePtr)g_new0(struct node, 1);
-	node->id = node_new_id();
 	node->sortColumn = IS_TIME;
 	node->sortReversed = TRUE;	/* default sorting is newest date at top */
 	node->available = TRUE;
 	node->type = NODE_TYPE_INVALID;
 	node_set_icon(node, NULL);	/* initialize favicon file name */
-	
-	if(!nodes)
-		nodes = g_hash_table_new(g_str_hash, g_str_equal);
-		
-	g_hash_table_insert(nodes, node->id, node);
 
+	id = node_new_id();
+	node_set_id(node, id);
+	g_free(id);
+	
 	return node;
 }
 
@@ -613,8 +614,16 @@ const gchar * node_get_favicon_file(nodePtr node) { return node->iconFile; }
 
 void node_set_id(nodePtr node, const gchar *id) {
 
-	g_free(node->id);
+	if(!nodes)
+		nodes = g_hash_table_new(g_str_hash, g_str_equal);
+
+	if(node->id) {
+		g_hash_table_remove(nodes, node->id);
+		g_free(node->id);
+	}
 	node->id = g_strdup(id);
+	
+	g_hash_table_insert(nodes, node->id, node);
 }
 
 const gchar *node_get_id(nodePtr node) { return node->id; }
