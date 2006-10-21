@@ -57,8 +57,6 @@
 #include "support.h"
 #include "debug.h"
 
-static gchar *standard_encoding = { "UTF-8" };
-
 static gchar *lifereaUserPath = NULL;
 
 static void common_buffer_parse_error(void *ctxt, const gchar * msg, ...);

@@ -1,4 +1,4 @@
-2006-10-??  Lars Lindner  <lars.lindner@gmail.com>
+2006-10-21  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.1.7 (Unstable)
 
@@ -17,7 +17,7 @@
 	* Improved summary mode output with red title
 	  to indicate flagged items.
 	* Drops the CSS stylesheet liferea2.css. Now only 
-	  liferea.css is used for all viewing modes.
+	  liferea.css is used for all viewing modes!
 	* Drops the XSLT stylesheets itemset.xml and summary.xml
 
 	Bugfixes:
