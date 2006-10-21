@@ -87,6 +87,9 @@ xmlDocPtr itemset_to_xml(itemSetPtr itemSet) {
 
 itemPtr itemset_lookup_item(itemSetPtr itemSet, nodePtr node, gulong nr) {
 
+	if(!itemSet)
+		return NULL;
+		
 	GList *iter = itemSet->items;
 	while(iter) {
 		itemPtr item = (itemPtr)(iter->data);
