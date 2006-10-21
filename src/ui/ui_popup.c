@@ -158,12 +158,12 @@ void ui_popup_update_menues(void) {
 	g_free(tray_menu_items);
 	tray_menu_items = NULL;
 	tray_menu_len = 0;
-	addPopupOption(&tray_menu_items, &tray_menu_len, _("/Toggle _Online|Offline"),	NULL, on_onlinebtn_clicked,		0, "<CheckItem>", 0);
-	addPopupOption(&tray_menu_items, &tray_menu_len, _("/_Update All"),	NULL, on_menu_update_all,		0, "<StockItem>", GTK_STOCK_REFRESH);
-	addPopupOption(&tray_menu_items, &tray_menu_len, _("/_Preferences..."),	NULL, on_prefbtn_clicked,		0, "<StockItem>", GTK_STOCK_PREFERENCES);
-	addPopupOption(&tray_menu_items, &tray_menu_len, "/",	                NULL, NULL,		                0, "<Separator>", 0);
-	addPopupOption(&tray_menu_items, &tray_menu_len, _("/_Show Window"),	NULL, ui_mainwindow_toggle_visibility,		0, "<CheckItem>", 0);
-	addPopupOption(&tray_menu_items, &tray_menu_len, _("/_Quit"),	        NULL, on_popup_quit,		                0, "<StockItem>", GTK_STOCK_QUIT);
+	addPopupOption(&tray_menu_items, &tray_menu_len, _("/Toggle _Online|Offline"),	NULL, on_onlinebtn_clicked,		0, NULL, 0);
+	addPopupOption(&tray_menu_items, &tray_menu_len, _("/_Update All"),		NULL, on_menu_update_all,		0, "<StockItem>", GTK_STOCK_REFRESH);
+	addPopupOption(&tray_menu_items, &tray_menu_len, _("/_Preferences..."),		NULL, on_prefbtn_clicked,		0, "<StockItem>", GTK_STOCK_PREFERENCES);
+	addPopupOption(&tray_menu_items, &tray_menu_len, "/",	                	NULL, NULL,		                0, "<Separator>", 0);
+	addPopupOption(&tray_menu_items, &tray_menu_len, _("/_Show|Hide Window"),	NULL, ui_mainwindow_toggle_visibility,		0, NULL, 0);
+	addPopupOption(&tray_menu_items, &tray_menu_len, _("/_Quit"),	        	NULL, on_popup_quit,		                0, "<StockItem>", GTK_STOCK_QUIT);
 	
 	/* System tray popup menu */
 	g_free(enclosure_menu_items);
