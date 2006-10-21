@@ -49,9 +49,6 @@ gchar * common_utf8_fix(xmlChar * string);
  */
 long common_parse_long(gchar *str, long def);
 
-/* converts a UTF-8 string to HTML (resolves XML entities) */
-gchar * convertToHTML(gchar * string);
-
 /* converts a UTF-8 string containing HTML tags to plain text */
 gchar * unhtmlize(gchar *string);
 

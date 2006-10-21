@@ -85,7 +85,6 @@ static void parseCDFChannel(feedParserCtxtPtr ctxt, xmlNodePtr cur, CDFChannelPt
 			
 		} else if(!xmlStrcasecmp(cur->name, BAD_CAST "abstract")) {
 			if(tmp = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE))) {
-				tmp = convertToHTML(tmp);
 				feed_set_description(ctxt->feed, tmp);
 				xmlFree(tmp);
 			}

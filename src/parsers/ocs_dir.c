@@ -205,12 +205,6 @@ static void parseFormatEntry(formatPtr fep, xmlNodePtr cur) {
 		}
 		cur = cur->next;
 	}
-
-	/* some postprocessing, all format-infos will be displayed in the HTML view */
-	for(i = 0; i < OCS_MAX_TAG; i++)
-		if(NULL != fep->tags[i])
-			fep->tags[i] = convertToHTML(fep->tags[i]);
-
 }
 
 static itemPtr parse05DirectoryEntry(dirEntryPtr dep, xmlNodePtr cur) {
@@ -305,9 +299,6 @@ static itemPtr parse05DirectoryEntry(dirEntryPtr dep, xmlNodePtr cur) {
 	/* some postprocessing */
 	if(NULL != dep->tags[OCS_TITLE])
 		dep->tags[OCS_TITLE] = unhtmlize(dep->tags[OCS_TITLE]);
-		
-	if(NULL != dep->tags[OCS_DESCRIPTION])
-		dep->tags[OCS_DESCRIPTION] = convertToHTML(dep->tags[OCS_DESCRIPTION]);
 
 	item_set_title(ip, dep->tags[OCS_TITLE]);		
 	item_set_description(ip, showDirEntry(dep));
@@ -375,9 +366,6 @@ static itemPtr parse04DirectoryEntry(dirEntryPtr dep, xmlNodePtr cur) {
 	/* some postprocessing */
 	if(NULL != dep->tags[OCS_TITLE])
 		dep->tags[OCS_TITLE] = unhtmlize(dep->tags[OCS_TITLE]);
-		
-	if(NULL != dep->tags[OCS_DESCRIPTION])
-		dep->tags[OCS_DESCRIPTION] = convertToHTML(dep->tags[OCS_DESCRIPTION]);
 
 	item_set_title(ip, dep->tags[OCS_TITLE]);		
 	item_set_description(ip, showDirEntry(dep));
@@ -440,9 +428,6 @@ static void parseDirectory(GList **items, directoryPtr dp, xmlNodePtr cur, gint 
 	/* some postprocessing */
 	if(NULL != dp->tags[OCS_TITLE])
 		dp->tags[OCS_TITLE] = unhtmlize(dp->tags[OCS_TITLE]);
-		
-	if(NULL != dp->tags[OCS_DESCRIPTION])
-		dp->tags[OCS_DESCRIPTION] = convertToHTML(dp->tags[OCS_DESCRIPTION]);
 }
 
 static void ocs_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {

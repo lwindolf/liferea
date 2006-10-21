@@ -218,7 +218,7 @@ static void pie_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 					g_free(tmp);
 				}
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"tagline")) {
-				if(tmp = convertToHTML(common_utf8_fix(pie_parse_content_construct(cur)))) {
+				if(tmp = common_utf8_fix(pie_parse_content_construct(cur))) {
 					feed_set_description(ctxt->feed, tmp);
 					g_free(tmp);				
 				}

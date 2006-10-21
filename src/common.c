@@ -63,36 +63,6 @@ static gchar *lifereaUserPath = NULL;
 
 static void common_buffer_parse_error(void *ctxt, const gchar * msg, ...);
 
-/* converts the string string encoded in from_encoding (which
-   can be NULL) to to_encoding, frees the original string and 
-   returns the result */
-gchar * convertCharSet(gchar * from_encoding, gchar * to_encoding, gchar * string) {
-	gsize	bw, br;
-	gchar	*new = NULL;
-	GError *err = NULL;
-
-	if(NULL == from_encoding)
-		from_encoding = standard_encoding;
-		
-	if(NULL != string) {		
-		new = g_convert(string, strlen(string), to_encoding, from_encoding, &br, &bw, &err);
-		if (err != NULL) {
-			g_warning("error converting character set: %s\n", err->message);
-			g_error_free (err);
-		}
-		if(NULL != new)
-			g_free(string);
-		else
-			new = string;
-	} else {	
-		return g_strdup("");
-	}
-
-	return new;
-}
-
-gchar * convertToHTML(gchar * string) { return string; } /* FIXME: BROKEN! return convertCharSet("UTF-8", "HTML", string); } */
-
 /* Conversion function which should be applied to all read XML strings, 
    to ensure proper UTF8. This is because we use libxml2 in recovery
    mode which can produce invalid UTF-8. 
@@ -537,7 +507,7 @@ xmlDocPtr common_parse_xml_feed(feedParserCtxtPtr fpc) {
 	
 	/* we don't like no data */
 	if(0 == fpc->dataLength) {
-		g_warning("common_parse_xml_feed(): Empty input while parsing \"%s\"!", fpc->node->title);
+		debug1(DEBUG_PARSING, "common_parse_xml_feed(): empty input while parsing \"%s\"!", fpc->node->title);
 		g_string_append(fpc->feed->parseErrors, "Empty input!\n");
 		return NULL;
 	}
@@ -547,8 +517,8 @@ xmlDocPtr common_parse_xml_feed(feedParserCtxtPtr fpc) {
 	
 	fpc->doc = common_parse_xml(fpc->data, fpc->dataLength, fpc->recovery, errors);
 	if(!fpc->doc) {
-		g_warning("xmlReadMemory: Could not parse document!\n");
-		g_string_prepend(fpc->feed->parseErrors, _("xmlReadMemory(): Could not parse document:\n"));
+		debug1(DEBUG_PARSING, "xmlReadMemory: could not parse feed \"%s\"!\n", fpc->node->title);
+		g_string_prepend(fpc->feed->parseErrors, _("XML Parser: Could not parse document:\n"));
 		g_string_append(fpc->feed->parseErrors, "\n");
 	}
 

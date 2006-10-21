@@ -586,7 +586,7 @@ static void atom10_parse_feed_rights(xmlNodePtr cur, feedParserCtxtPtr ctxt, str
 static void atom10_parse_feed_subtitle(xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10ParserState *state) {
 	gchar *subtitle;
 	
-	if(subtitle = convertToHTML(atom10_parse_text_construct(cur, TRUE))) {
+	if(subtitle = atom10_parse_text_construct(cur, TRUE)) {
 		feed_set_description(ctxt->feed, subtitle);
 		g_free(subtitle);
 	}

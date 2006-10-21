@@ -91,7 +91,7 @@ itemPtr parseCDFItem(feedParserCtxtPtr ctxt, xmlNodePtr cur, CDFChannelPtr cp) {
 			}
 			
 		} else if((!xmlStrcasecmp(cur->name, BAD_CAST"abstract"))) {
-			if(tmp = convertToHTML(common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)))) {
+			if(tmp = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))) {
 				item_set_description(ctxt->item, tmp);
 				g_free(tmp);
 			}
