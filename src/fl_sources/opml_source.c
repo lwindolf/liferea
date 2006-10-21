@@ -44,19 +44,19 @@
 /** default OPML update interval = once a day */
 #define OPML_SOURCE_UPDATE_INTERVAL 60*60*24
 
-static gchar * opml_source_get_feedlist(nodePtr node) {
+gchar * opml_source_get_feedlist(nodePtr node) {
 
 	return common_create_cache_filename("cache" G_DIR_SEPARATOR_S "plugins", node->id, "opml");
 }
 
-static void opml_source_import(nodePtr node) {
+void opml_source_import(nodePtr node) {
 	gchar		*filename;
 
 	debug_enter("opml_source_import");
 
 	opml_source_setup(NULL, node);
 	
-	debug1(DEBUG_CACHE, "starting import of opml plugin instance (id=%s)\n", node->id);
+	debug1(DEBUG_CACHE, "starting import of opml source instance (id=%s)\n", node->id);
 	filename = opml_source_get_feedlist(node);
 	if(g_file_test(filename, G_FILE_TEST_EXISTS)) {
 		import_OPML_feedlist(filename, node, node->source, FALSE, TRUE);
@@ -69,7 +69,7 @@ static void opml_source_import(nodePtr node) {
 	debug_exit("opml_source_import");
 }
 
-static void opml_source_export(nodePtr node) {
+void opml_source_export(nodePtr node) {
 	gchar		*filename;
 	
 	debug_enter("opml_source_export");
@@ -87,7 +87,7 @@ static void opml_source_export(nodePtr node) {
 	debug_exit("opml_source_export");
 }
 
-static void opml_source_remove(nodePtr node) {
+void opml_source_remove(nodePtr node) {
 	gchar		*filename;
 	
 	g_assert(node == node->source->root);
@@ -203,7 +203,7 @@ static void opml_source_check_for_removal(nodePtr node, gpointer user_data) {
 	g_free(expr);
 }
 
-static void opml_source_process_update_results(requestPtr request) {
+void opml_source_process_update_results(requestPtr request) {
 	nodePtr		node = (nodePtr)request->user_data;
 	mergeCtxtPtr	mergeCtxt;
 	xmlDocPtr	doc, oldDoc;
@@ -312,12 +312,15 @@ static void opml_source_init(void) { }
 
 static void opml_source_deinit(void) { }
 
-/* feed list provider plugin definition */
+/* node source type definition */
 
 static struct nodeSourceType nst = {
 	NODE_SOURCE_TYPE_API_VERSION,
 	"fl_opml",
 	"Planet, BlogRoll, OPML",
+	"Integrate blogrolls or Planets in your feed list. Liferea will "
+	"automatically add and remove feeds according to the changes of "
+	"the source OPML document",
 	NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION,
 	opml_source_init,
 	opml_source_deinit,

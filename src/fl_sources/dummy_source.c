@@ -40,6 +40,7 @@ static struct nodeSourceType nst = {
 	NODE_SOURCE_TYPE_API_VERSION,
 	NODE_SOURCE_TYPE_DUMMY_ID,
 	"Dummy Feed List Source",
+	"The dummy feed list source. Should never be added manually. If you see this then something went wrong!",
 	0,
 	dummy_source_init,
 	dummy_source_deinit,

@@ -15,6 +15,7 @@
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 
+#include ".node_source-cb.h"
 #include "node_source-ui.h"
 #include "support.h"
 
@@ -47,6 +48,7 @@ create_node_source_type_dialog (void)
 
   dialog_vbox1 = GTK_DIALOG (node_source_type_dialog)->vbox;
   gtk_widget_show (dialog_vbox1);
+  gtk_widget_set_size_request (dialog_vbox1, 450, -1);
 
   vbox1 = gtk_vbox_new (FALSE, 6);
   gtk_widget_show (vbox1);
@@ -67,6 +69,7 @@ create_node_source_type_dialog (void)
   type_list = gtk_tree_view_new ();
   gtk_widget_show (type_list);
   gtk_container_add (GTK_CONTAINER (scrolledwindow1), type_list);
+  gtk_widget_set_size_request (type_list, 400, -1);
   gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (type_list), FALSE);
   gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (type_list), TRUE);
 

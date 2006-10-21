@@ -25,6 +25,38 @@
 
 #define OPML_SOURCE_DEFAULT_TITLE _("New OPML Subscription")
 
+/* General OPML source handling functions */
+
+/**
+ * Determine OPML cache file name.
+ *
+ * @param node		the node of the OPML source
+ *
+ * @returns newly allocated filename 
+ */
+gchar * opml_source_get_feedlist(nodePtr node);
+
+/**
+ * Imports an OPML source.
+ *
+ * @param node		the node of the OPML source
+ */
+void opml_source_import(nodePtr node);
+
+/**
+ * Exports an OPML source.
+ *
+ * @param node		the node of the OPML source
+ */
+void opml_source_export(nodePtr node);
+
+/**
+ * Removes a OPML source.
+ *
+ * @param node		the node of the OPML source
+ */
+void opml_source_remove(nodePtr node);
+
 /**
  * Sets up the given node as a OPML source node.
  *
@@ -32,6 +64,13 @@
  * @param node		the node
  */
 void opml_source_setup(nodePtr parent, nodePtr node);
+
+/**
+ * Request processing callback for OPML source updates.
+ *
+ * @param request	finished requests
+ */
+void opml_source_process_update_results(requestPtr request);
 
 /**
  * Updates the OPML source of the given node.

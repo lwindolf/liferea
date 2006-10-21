@@ -17,7 +17,10 @@ libliflsources_a_SOURCES = node_source.c node_source.h \
                            dummy_source.c dummy_source.h \
                            opml_source.c opml_source.h \
                            opml_source-ui.c opml_source-ui.h \
-                           opml_source-cb.c opml_source-cb.h 
+                           opml_source-cb.c opml_source-cb.h \
+			   bloglines_source.c bloglines_source.h \
+			   bloglines_source-ui.c bloglines_source-ui.h \
+			   bloglines_source-cb.c bloglines_source-cb.h
 
 libliflsources_a_CFLAGS = $(PACKAGE_FLAGS)
 

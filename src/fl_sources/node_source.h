@@ -24,13 +24,12 @@
 #include <glib.h>
 #include <gmodule.h>
 #include "node.h"
-#include "plugin.h"
 
-/* Liferea allows to have different sources for the feed list.
-   Source can but need not to be single instance only. Sources
+/* Liferea allows to have different sources in the feed list.
+   Sources can but do not need to be single instance only. Sources
    provide a subtree of the feed list that can be read-only
    or not. A source might allow or not allow to add sub folders
-   and reorder folder contents.
+   and reorder (DnD) folder contents.
 
    The default node source type must be capable of serving as the root
    node for all other source types. This mean it has to ensure to load
@@ -39,10 +38,10 @@
 
    Each source type has to be able to serve user requests and is 
    responsible for keeping its feed list node's states up-to-date.
-   A source type can omit all callbacks marked as optional. */
+   A source type implementation can omit all callbacks marked as 
+   optional. */
 
-
-#define NODE_SOURCE_TYPE_API_VERSION 4
+#define NODE_SOURCE_TYPE_API_VERSION 5
 
 enum {
 	NODE_SOURCE_CAPABILITY_IS_ROOT			= (1<<0),	/**< flag only for default feed list source */
@@ -55,8 +54,9 @@ enum {
 typedef struct nodeSourceType {
 	unsigned int	api_version;
 	
-	gchar		*id;		/**< a unique feed list source plugin identifier */
-	gchar		*name;		/**< a descriptive plugin name (for preferences and menus) */
+	gchar		*id;		/**< a unique feed list source type identifier */
+	gchar		*name;		/**< a descriptive source name (for preferences and menus) */
+	gchar		*description;	/**< more detailed source type description (up to some sentences) */
 	gulong		capabilities;	/**< bitmask of feed list source capabilities */
 
 	/* source type loading and unloading methods */
@@ -65,9 +65,9 @@ typedef struct nodeSourceType {
 
 	/**
 	 * This OPTIONAL callback is used to create an instance
-	 * of the implemented plugin type. It is to be called by 
-	 * the parent plugin's node_request_add_*() implementation. 
-	 * Mandatory for all plugin's except the root provider plugin.
+	 * of the implemented source type. It is to be called by 
+	 * the parent source node_request_add_*() implementation. 
+	 * Mandatory for all sources except the root source.
 	 */
 	void 		(*source_new)(nodePtr parent);
 
@@ -150,14 +150,14 @@ gboolean node_source_type_register(nodeSourceTypePtr type);
  * To be used to prepare a source node before adding it to the 
  * feed list.
  *
- * @param node		a newly created node
- * @param flPlugin	plugin implementing the source
- * @param sourceUrl	URI of the source
+ * @param node			a newly created node
+ * @param nodeSourceType	the node source type
+ * @param sourceUrl		URI of the source
  */
 void node_source_new(nodePtr node, nodeSourceTypePtr nodeSourceType, const gchar *sourceUrl);
 
 /**
- * Launches a plugin creation dialog. The new plugin
+ * Launches a source creation dialog. The new source
  * instance will be added to the given node.
  *
  * @param node	the parent node

@@ -221,7 +221,8 @@ void ui_node_source_type_dialog(nodePtr parent) {
 
 			gtk_tree_store_append(treestore, &treeiter, NULL);
 			gtk_tree_store_set(treestore, &treeiter, 
-			                              0, type->name, 
+			                              // FIXME: this leaks memory!
+			                              0, g_strdup_printf("<b>%s</b>\n<i>%s</i>", type->name, type->description),
 			                              1, type,
 						      -1);
 		}
@@ -233,7 +234,9 @@ void ui_node_source_type_dialog(nodePtr parent) {
 
 	column = gtk_tree_view_column_new();
 	renderer = gtk_cell_renderer_text_new();
-	gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(treeview), -1, _("Source Type"), renderer, "text", 0, NULL);
+	g_object_set(renderer, "wrap-width", 400, NULL);
+	g_object_set(renderer, "wrap-mode", PANGO_WRAP_WORD, NULL);
+	gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(treeview), -1, _("Source Type"), renderer, "markup", 0, NULL);
 	gtk_tree_view_set_model(GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(treestore));
 	g_object_unref(treestore);
 

@@ -314,6 +314,7 @@ static struct nodeSourceType nst = {
 	NODE_SOURCE_TYPE_API_VERSION,
 	"fl_default",
 	"Static Feed List",
+	"The default feed list source. Should never be added manually. If you see this then something went wrong!",
 	NODE_SOURCE_CAPABILITY_IS_ROOT |
 	NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST,
 	default_source_init,
