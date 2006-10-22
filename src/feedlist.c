@@ -37,10 +37,11 @@
 #include "ui/ui_tray.h"
 #include "ui/ui_feed.h"
 #include "ui/ui_node.h"
-#include "fl_sources/node_source.h"
-#include "fl_sources/opml_source.h"
+#include "fl_sources/bloglines_source.h"
 #include "fl_sources/default_source.h"
 #include "fl_sources/dummy_source.h"
+#include "fl_sources/node_source.h"
+#include "fl_sources/opml_source.h"
 #include "notification/notif_plugin.h"
 #include "scripting/script.h"
 
@@ -361,6 +362,7 @@ void feedlist_init(void) {
 	node_source_type_register(default_source_get_type());
 	node_source_type_register(dummy_source_get_type());
 	node_source_type_register(opml_source_get_type());
+	node_source_type_register(bloglines_source_get_type());
 
 	/* 2. Set up a root node and import the feed list plugins structure. */
 	rootNode = node_source_setup_root();

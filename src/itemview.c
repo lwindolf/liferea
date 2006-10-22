@@ -135,6 +135,9 @@ void itemview_update_item(itemPtr item) {
 
 void itemview_update(void) {
 
+	if(!itemView_priv.itemSet)
+		return;
+
 	if(itemView_priv.needsUpdate) {
 		itemView_priv.needsUpdate = FALSE;
 		

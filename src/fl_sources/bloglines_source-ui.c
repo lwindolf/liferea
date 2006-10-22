@@ -91,6 +91,7 @@ create_bloglines_source_dialog (void)
   gtk_table_attach (GTK_TABLE (table1), passwordEntry, 1, 2, 1, 2,
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
+  gtk_entry_set_visibility (GTK_ENTRY (passwordEntry), FALSE);
 
   dialog_action_area1 = GTK_DIALOG (bloglines_source_dialog)->action_area;
   gtk_widget_show (dialog_action_area1);

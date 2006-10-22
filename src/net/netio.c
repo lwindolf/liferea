@@ -1087,7 +1087,7 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, char * aut
 /* Returns allocated string with body of webserver reply.
    Various status info put into struct feed_request * cur_ptr.
    Set suppressoutput=1 to disable ncurses calls. */
-char * DownloadFeed (char * url, struct feed_request * cur_ptr, int suppressoutput) {
+static char * DownloadFeed (char * url, struct feed_request * cur_ptr, int suppressoutput) {
 	char *host;					/* Needs to freed. */
 	char *tmphost;
 	char *freeme;
@@ -1211,7 +1211,7 @@ void downloadlib_process_url(struct request *request) {
 	netioRequest->servauth = NULL;
 	netioRequest->lasthttpstatus = 0; /* This might, or might not mean something to someone */
 	
-	request->data = DownloadFeed (oldurl, netioRequest, 0);
+	request->data = DownloadFeed(oldurl, netioRequest, 0);
 
 	g_free(oldurl);
 	if(request->data == NULL)
