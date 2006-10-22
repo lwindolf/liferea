@@ -39,7 +39,7 @@ static void bloglines_source_auto_update(nodePtr node) {
 	
 	g_get_current_time(&now);
 	
-	if(node->source->updateState->lastPoll.tv_sec + getNumericConfValue(DEFAULT_UPDATE_INTERVAL) <= now.tv_sec)
+	if(node->source->updateState->lastPoll.tv_sec + getNumericConfValue(DEFAULT_UPDATE_INTERVAL)*60 <= now.tv_sec)
 		opml_source_update(node);	
 }
 
