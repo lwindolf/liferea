@@ -49,7 +49,7 @@ static GtkWidget 	*itemlist_treeview = NULL;
 
 gint			itemlist_loading;	/* freaky workaround for item list focussing problem */
 
-static gchar 		*date_format = NULL;	/* date formatting string */
+static gchar 		*userDefinedDateFmt = NULL;	/* user defined date formatting string */
 
 /* helper functions for item <-> iter conversion */
 
@@ -157,10 +157,30 @@ GtkTreeStore * ui_itemlist_get_tree_store(void) {
 	return itemstore;
 }
 
-static gchar * ui_itemlist_format_date(time_t t) {
-	gchar		*tmp;
-	gchar		*timestr;
+static gchar * ui_itemlist_format_date(time_t date) {
+	gchar		*timestr, *tmp;
 
+	if(userDefinedDateFmt)
+		tmp = common_format_date(date, userDefinedDateFmt);
+	else
+		tmp = common_format_nice_date(date);
+	
+	timestr = g_locale_to_utf8(tmp, -1, NULL, NULL, NULL);
+	g_free(tmp);
+	
+	return timestr;
+}
+
+void ui_itemlist_reset_date_format(void) {
+
+	g_free(userDefinedDateFmt);
+	
+	userDefinedDateFmt = getStringConfValue(DATE_FORMAT);
+	if(userDefinedDateFmt && !strlen(userDefinedDateFmt)) {
+		g_free(userDefinedDateFmt);
+		userDefinedDateFmt = NULL;
+	}
+	
 	/* NOTE: This code is partially broken. In the case of a user
 	   supplied format string, such a string is in UTF-8. The
 	   strftime function expects the user locale as its input, BUT
@@ -172,35 +192,13 @@ static gchar * ui_itemlist_format_date(time_t t) {
 	   string to the user's locale before calling strftime. The
 	   result must be converted back to UTF-8 so that it can be
 	   displayed by the itemlist correctly. */
-	
-	if(NULL == date_format) {	
-		switch(getNumericConfValue(TIME_FORMAT_MODE)) {
-			case 1:
-				date_format = g_strdup_printf("%s", nl_langinfo(T_FMT));
-				break;
-			case 3:
-				tmp = getStringConfValue(TIME_FORMAT);
-				date_format = g_locale_from_utf8(tmp, -1, NULL, NULL, NULL);
-				g_free(tmp);
-				break;
-			case 2:
-			default:
-				date_format = g_strdup_printf("%s %s", nl_langinfo(D_FMT), nl_langinfo(T_FMT));
-				break;
-		}
+
+	if(userDefinedDateFmt) {
+		debug1(DEBUG_GUI, "new user defined date format: >>>%s<<<", userDefinedDateFmt);
+		gchar *tmp = userDefinedDateFmt;
+		userDefinedDateFmt = g_locale_from_utf8(tmp, -1, NULL, NULL, NULL);
+		g_free(tmp);
 	}
-	
-	tmp = common_format_date(t, date_format);
-	timestr = g_locale_to_utf8(tmp, -1, NULL, NULL, NULL);
-	g_free(tmp);
-	
-	return timestr;
-}
-
-void ui_itemlist_reset_date_format(void) {
-
-	g_free(date_format);
-	date_format = NULL;
 }
 
 void ui_itemlist_remove_item(itemPtr item) {

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.1.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-10-20 21:57+0200\n"
+"POT-Creation-Date: 2006-10-22 17:19+0200\n"
 "PO-Revision-Date: 2006-10-20 21:55+0100\n"
 "Last-Translator: Lars Lindner <lars.lindner@gmx.net>\n"
 "Language-Team: Polish\n"
@@ -168,20 +168,48 @@ msgstr "faq_en.html"
 msgid "FAQ"
 msgstr "FAQ"
 
-#: ../src/common.c:422
+#: ../src/common.c:395
 msgid "[There were more errors. Output was truncated!]"
 msgstr "[Wystąpiło więcej błędów. Wydruk został obcięty!]"
 
-#: ../src/common.c:551
-msgid "xmlReadMemory(): Could not parse document:\n"
+#: ../src/common.c:524
+#, fuzzy
+msgid "XML Parser: Could not parse document:\n"
 msgstr "xmlReadMemory(): Nie można przetworzyć dokumentu:\n"
 
-#: ../src/common.c:757
+#. translation hint: date format for today, reorder format codes as necessary
+#: ../src/common.c:578
+msgid "Today %l:%M %p"
+msgstr ""
+
+#. translation hint: date format for yesterday, reorder format codes as necessary
+#: ../src/common.c:589
+msgid "Yesterday %l:%M %p"
+msgstr ""
+
+#. translation hint: date format for dates older than 2 days but not older than a week, reorder format codes as necessary
+#: ../src/common.c:602
+msgid "%a %l:%M %p"
+msgstr ""
+
+#. translation hint: date format for dates older than a week but from this year, reorder format codes as necessary
+#: ../src/common.c:611
+#, fuzzy
+msgid "%b %d %l:%M %p"
+msgstr "%B %d %H:%M"
+
+#. translation hint: date format for dates from the last years, reorder format codes as necessary
+#: ../src/common.c:614
+#, fuzzy
+msgid "%b %d %Y"
+msgstr "%B %d %H:%M"
+
+#: ../src/common.c:812
 #, c-format
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "Nie można utworzyć katalogu dla pamięci podręcznej \"%s\"!"
 
-#: ../src/common.c:841
+#: ../src/common.c:896
 msgid ""
 "Unexpected end of character sequence or corrupt UTF-8 encoding! Some "
 "characters were dropped!"
@@ -463,11 +491,11 @@ msgstr "\"%s\" nie jest dostępne"
 msgid "Updating \"%s\""
 msgstr "Uaktualnianie \"%s\""
 
-#: ../src/feedlist.c:272
+#: ../src/feedlist.c:273
 msgid "You have to select a feed entry"
 msgstr "Musisz zaznaczyć pozycję subskrypcji"
 
-#: ../src/feedlist.c:279 ../src/feedlist.c:288
+#: ../src/feedlist.c:280 ../src/feedlist.c:289
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea działa w trybie offline. Uaktualnienia nie są możliwe."
 
@@ -660,7 +688,7 @@ msgstr ""
 msgid "Advanced"
 msgstr ""
 
-#: ../src/interface.c:818 ../src/interface.c:3506 ../src/node.c:471
+#: ../src/interface.c:818 ../src/interface.c:3506 ../src/node.c:472
 msgid "New Subscription"
 msgstr "Nowa Subskrypcja"
 
@@ -1302,7 +1330,7 @@ msgid "%b %d %H:%M"
 msgstr "%B %d %H:%M"
 
 #. if we don't find a feed with unread items do nothing
-#: ../src/itemlist.c:304
+#: ../src/itemlist.c:275
 msgid "There are no unread items "
 msgstr "Nie ma nie przeczytanych pozycji "
 
@@ -1596,47 +1624,47 @@ msgstr ""
 "przeglądarki! Spróbuj opcji --debug-all aby dowiedzieć się więcej!"
 
 #. FIXME: bad because this is not only used for item links!
-#: ../src/ui/ui_htmlview.c:201
+#: ../src/ui/ui_htmlview.c:207
 msgid "This item does not have a link assigned!"
 msgstr "Ta pozycja nie ma przypisanego odnośnika!"
 
-#: ../src/ui/ui_htmlview.c:290 ../src/ui/ui_htmlview.c:310
+#: ../src/ui/ui_htmlview.c:296 ../src/ui/ui_htmlview.c:316
 #, c-format
 msgid "Browser command failed: %s"
 msgstr "Błąd uruchamiania przeglądarki: %s"
 
-#: ../src/ui/ui_htmlview.c:313
+#: ../src/ui/ui_htmlview.c:319
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Uruchamianie: \"%s\""
 
-#: ../src/ui/ui_itemlist.c:263
+#: ../src/ui/ui_itemlist.c:261
 msgid "[No title]"
 msgstr "[Bez tytułu]"
 
-#: ../src/ui/ui_itemlist.c:356
+#: ../src/ui/ui_itemlist.c:354
 msgid "Date"
 msgstr "Data"
 
-#: ../src/ui/ui_itemlist.c:367 ../src/ui/ui_itemlist.c:370
+#: ../src/ui/ui_itemlist.c:365 ../src/ui/ui_itemlist.c:368
 msgid "Headline"
 msgstr "Artykuł"
 
-#: ../src/ui/ui_itemlist.c:477 ../src/ui/ui_itemlist.c:490
-#: ../src/ui/ui_itemlist.c:535 ../src/ui/ui_itemlist.c:666
-#: ../src/ui/ui_itemlist.c:683
+#: ../src/ui/ui_itemlist.c:475 ../src/ui/ui_itemlist.c:488
+#: ../src/ui/ui_itemlist.c:533 ../src/ui/ui_itemlist.c:664
+#: ../src/ui/ui_itemlist.c:681
 msgid "No item has been selected"
 msgstr "Żadna pozycja nie została zaznaczona"
 
-#: ../src/ui/ui_itemlist.c:488
+#: ../src/ui/ui_itemlist.c:486
 msgid "This item has no link specified!"
 msgstr "Ta pozycja nie ma przypisanego odnośnika!"
 
-#: ../src/ui/ui_itemlist.c:525
+#: ../src/ui/ui_itemlist.c:523
 msgid "You must select a feed to delete its items!"
 msgstr "Musisz zaznaczyć subskrypcję aby usunąć jej pozycje!"
 
-#: ../src/ui/ui_itemlist.c:693
+#: ../src/ui/ui_itemlist.c:691
 msgid "No link selected!"
 msgstr "Żaden odnośnik nie został zaznaczony"
 
@@ -2073,7 +2101,8 @@ msgid "/_Preferences..."
 msgstr "/_Preferencje..."
 
 #: ../src/ui/ui_popup.c:165
-msgid "/_Show Window"
+#, fuzzy
+msgid "/_Show|Hide Window"
 msgstr "/Pokaż ok_no"
 
 #: ../src/ui/ui_popup.c:166
@@ -2133,48 +2162,48 @@ msgid "/_Properties..."
 msgstr "/Właściwośc_i..."
 
 #. This allows the user to choose their own browser by typing in the command.
-#: ../src/ui/ui_prefs.c:238
+#: ../src/ui/ui_prefs.c:237
 msgid "Manual"
 msgstr "Ręczny wybór"
 
-#: ../src/ui/ui_prefs.c:248
+#: ../src/ui/ui_prefs.c:247
 msgid "Browser default"
 msgstr "Domyślne zachowanie"
 
-#: ../src/ui/ui_prefs.c:253
+#: ../src/ui/ui_prefs.c:252
 msgid "Existing window"
 msgstr "Istniejące okno"
 
-#: ../src/ui/ui_prefs.c:258
+#: ../src/ui/ui_prefs.c:257
 msgid "New window"
 msgstr "Nowe okne"
 
-#: ../src/ui/ui_prefs.c:263 ../src/ui/ui_tabs.c:193 ../src/ui/ui_tabs.c:196
+#: ../src/ui/ui_prefs.c:262 ../src/ui/ui_tabs.c:193 ../src/ui/ui_tabs.c:196
 #: ../src/ui/ui_tabs.c:216 ../src/ui/ui_tabs.c:350
 msgid "New tab"
 msgstr "Nowa karta"
 
-#: ../src/ui/ui_prefs.c:273
+#: ../src/ui/ui_prefs.c:272
 msgid "Update only feeds scheduled for updates"
 msgstr "Uaktualnij tylko zaplanowane do aktualizacji subskrypcje"
 
-#: ../src/ui/ui_prefs.c:278
+#: ../src/ui/ui_prefs.c:277
 msgid "Update all feeds"
 msgstr "Uaktualnij wszystkie subskrypcje"
 
-#: ../src/ui/ui_prefs.c:283
+#: ../src/ui/ui_prefs.c:282
 msgid "Reset feed update timers (Update no feeds)"
 msgstr "Zresetuj znaczniki czasu (bez uaktualniania subskrypcji)"
 
-#: ../src/ui/ui_prefs.c:544
+#: ../src/ui/ui_prefs.c:546
 msgid "Type"
 msgstr "Typ"
 
-#: ../src/ui/ui_prefs.c:547
+#: ../src/ui/ui_prefs.c:549
 msgid "Program"
 msgstr "Program"
 
-#: ../src/ui/ui_prefs.c:808
+#: ../src/ui/ui_prefs.c:810
 msgid "Choose download directory"
 msgstr "Wybierz katalog na pobrane pliki"
 
@@ -2271,7 +2300,7 @@ msgstr "Nowa OPML Subskrypcja"
 msgid "No feed list source types found!"
 msgstr "Nie znaleziono typu źródła subskrypcji!"
 
-#: ../src/fl_sources/node_source.c:236
+#: ../src/fl_sources/node_source.c:239
 msgid "Source Type"
 msgstr "Rodzaj źródła:"
 

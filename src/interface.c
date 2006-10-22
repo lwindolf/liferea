@@ -1116,16 +1116,6 @@ create_prefdialog (void)
   GtkWidget *menu6;
   GtkWidget *label231;
   GtkWidget *label232;
-  GtkWidget *vbox2581;
-  GtkWidget *label149;
-  GtkWidget *alignment27;
-  GtkWidget *vbox2582;
-  GtkWidget *timeradiobtn1;
-  GSList *timeradiobtn1_group = NULL;
-  GtkWidget *timeradiobtn2;
-  GtkWidget *hbox62;
-  GtkWidget *timeradiobtn3;
-  GtkWidget *timeformatentry;
   GtkWidget *label39;
   GtkWidget *vbox2577;
   GtkWidget *vbox2601;
@@ -1228,9 +1218,6 @@ create_prefdialog (void)
   GtkWidget *label207;
   GtkWidget *dialog_action_area5;
   GtkWidget *prefclosebtn;
-  GtkTooltips *tooltips;
-
-  tooltips = gtk_tooltips_new ();
 
   prefdialog = gtk_dialog_new ();
   gtk_container_set_border_width (GTK_CONTAINER (prefdialog), 5);
@@ -1552,53 +1539,6 @@ create_prefdialog (void)
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (0), 0, 0);
   gtk_misc_set_alignment (GTK_MISC (label232), 0, 0.5);
-
-  vbox2581 = gtk_vbox_new (FALSE, 6);
-  gtk_widget_show (vbox2581);
-  gtk_box_pack_start (GTK_BOX (vbox222), vbox2581, TRUE, TRUE, 0);
-
-  label149 = gtk_label_new (_("<span weight=\"bold\">Date Column Settings</span>"));
-  gtk_widget_show (label149);
-  gtk_box_pack_start (GTK_BOX (vbox2581), label149, FALSE, FALSE, 0);
-  gtk_label_set_use_markup (GTK_LABEL (label149), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (label149), 0, 0.5);
-
-  alignment27 = gtk_alignment_new (0.5, 0.5, 1, 1);
-  gtk_widget_show (alignment27);
-  gtk_box_pack_start (GTK_BOX (vbox2581), alignment27, TRUE, TRUE, 0);
-  gtk_alignment_set_padding (GTK_ALIGNMENT (alignment27), 0, 0, 12, 0);
-
-  vbox2582 = gtk_vbox_new (FALSE, 6);
-  gtk_widget_show (vbox2582);
-  gtk_container_add (GTK_CONTAINER (alignment27), vbox2582);
-
-  timeradiobtn1 = gtk_radio_button_new_with_mnemonic (NULL, _("Display only _time"));
-  gtk_widget_show (timeradiobtn1);
-  gtk_box_pack_start (GTK_BOX (vbox2582), timeradiobtn1, FALSE, FALSE, 0);
-  gtk_radio_button_set_group (GTK_RADIO_BUTTON (timeradiobtn1), timeradiobtn1_group);
-  timeradiobtn1_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (timeradiobtn1));
-
-  timeradiobtn2 = gtk_radio_button_new_with_mnemonic (NULL, _("Display _date and time"));
-  gtk_widget_show (timeradiobtn2);
-  gtk_box_pack_start (GTK_BOX (vbox2582), timeradiobtn2, FALSE, FALSE, 0);
-  gtk_radio_button_set_group (GTK_RADIO_BUTTON (timeradiobtn2), timeradiobtn1_group);
-  timeradiobtn1_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (timeradiobtn2));
-
-  hbox62 = gtk_hbox_new (FALSE, 12);
-  gtk_widget_show (hbox62);
-  gtk_box_pack_start (GTK_BOX (vbox2582), hbox62, FALSE, FALSE, 0);
-
-  timeradiobtn3 = gtk_radio_button_new_with_mnemonic (NULL, _("_User defined format:"));
-  gtk_widget_show (timeradiobtn3);
-  gtk_box_pack_start (GTK_BOX (hbox62), timeradiobtn3, FALSE, FALSE, 0);
-  gtk_radio_button_set_group (GTK_RADIO_BUTTON (timeradiobtn3), timeradiobtn1_group);
-  timeradiobtn1_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (timeradiobtn3));
-
-  timeformatentry = gtk_entry_new ();
-  gtk_widget_show (timeformatentry);
-  gtk_box_pack_start (GTK_BOX (hbox62), timeformatentry, TRUE, TRUE, 0);
-  gtk_tooltips_set_tip (tooltips, timeformatentry, _("for expert users: specify a time format string, consult the strftime() manpage for the format codes"), NULL);
-  gtk_entry_set_activates_default (GTK_ENTRY (timeformatentry), TRUE);
 
   label39 = gtk_label_new (_("Headlines"));
   gtk_widget_show (label39);
@@ -2157,18 +2097,6 @@ create_prefdialog (void)
   g_signal_connect ((gpointer) alt_space, "activate",
                     G_CALLBACK (on_browsekey_alt_space_activate),
                     NULL);
-  g_signal_connect ((gpointer) timeradiobtn1, "clicked",
-                    G_CALLBACK (on_timeformatselection_clicked),
-                    NULL);
-  g_signal_connect ((gpointer) timeradiobtn2, "clicked",
-                    G_CALLBACK (on_timeformatselection_clicked),
-                    NULL);
-  g_signal_connect ((gpointer) timeradiobtn3, "clicked",
-                    G_CALLBACK (on_timeformatselection_clicked),
-                    NULL);
-  g_signal_connect ((gpointer) timeformatentry, "changed",
-                    G_CALLBACK (on_timeformatentry_changed),
-                    NULL);
   g_signal_connect ((gpointer) browseinwindow, "toggled",
                     G_CALLBACK (on_openlinksinsidebtn_clicked),
                     NULL);
@@ -2314,15 +2242,6 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, menu6, "menu6");
   GLADE_HOOKUP_OBJECT (prefdialog, label231, "label231");
   GLADE_HOOKUP_OBJECT (prefdialog, label232, "label232");
-  GLADE_HOOKUP_OBJECT (prefdialog, vbox2581, "vbox2581");
-  GLADE_HOOKUP_OBJECT (prefdialog, label149, "label149");
-  GLADE_HOOKUP_OBJECT (prefdialog, alignment27, "alignment27");
-  GLADE_HOOKUP_OBJECT (prefdialog, vbox2582, "vbox2582");
-  GLADE_HOOKUP_OBJECT (prefdialog, timeradiobtn1, "timeradiobtn1");
-  GLADE_HOOKUP_OBJECT (prefdialog, timeradiobtn2, "timeradiobtn2");
-  GLADE_HOOKUP_OBJECT (prefdialog, hbox62, "hbox62");
-  GLADE_HOOKUP_OBJECT (prefdialog, timeradiobtn3, "timeradiobtn3");
-  GLADE_HOOKUP_OBJECT (prefdialog, timeformatentry, "timeformatentry");
   GLADE_HOOKUP_OBJECT (prefdialog, label39, "label39");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox2577, "vbox2577");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox2601, "vbox2601");
@@ -2423,7 +2342,6 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, label207, "label207");
   GLADE_HOOKUP_OBJECT_NO_REF (prefdialog, dialog_action_area5, "dialog_action_area5");
   GLADE_HOOKUP_OBJECT (prefdialog, prefclosebtn, "prefclosebtn");
-  GLADE_HOOKUP_OBJECT_NO_REF (prefdialog, tooltips, "tooltips");
 
   return prefdialog;
 }

@@ -47,6 +47,9 @@
 #define ENCLOSURE_DOWNLOAD_PATH		"/apps/liferea/enclosure-download-path"
 
 /* item list settings */
+#define DATE_FORMAT			"/apps/liferea/date-format"
+
+// FIXME: remove me!
 #define TIME_FORMAT			"/apps/liferea/timeformat"
 #define TIME_FORMAT_MODE		"/apps/liferea/timeformatmode"
 

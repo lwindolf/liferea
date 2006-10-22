@@ -161,11 +161,22 @@ xmlDocPtr common_parse_xml_feed(feedParserCtxtPtr fpc);
  * Returns a formatted date string for the given timestamp.
  *
  * @param t		the timestamp
- * @param date_format	a strptime format string
+ * @param date_format	a strptime format string (encoded in user locale!)
  *
- * @returns a new formatted date string
+ * @returns a new formatted date string (encoded in user locale!)
  */
-gchar * common_format_date(time_t t, const gchar *date_format);
+gchar * common_format_date(time_t date, const gchar *date_format);
+
+/**
+ * Returns a formatted date string for the given timestamp.
+ * In difference to common_format_date() it uses different
+ * format string according to the time difference to today.
+ *
+ * @param t		the timestamp
+ *
+ * @returns a new formatted date string (encoded in user locale!)
+ */
+gchar * common_format_nice_date(time_t date);
 
 /**
  * Parses a ISO8601 date.

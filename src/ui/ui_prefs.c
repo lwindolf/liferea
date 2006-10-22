@@ -358,30 +358,6 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 		gtk_option_menu_set_menu(GTK_OPTION_MENU(lookup_widget(prefdialog, "socialpopup")), menu);
 		gtk_option_menu_set_history(GTK_OPTION_MENU(lookup_widget(prefdialog, "socialpopup")), tmp);
 
-		/* Time format */
-		tmp = getNumericConfValue(TIME_FORMAT_MODE);
-		if((tmp > 3) || (tmp < 1)) 
-			tmp = 2;	/* correct configuration if necessary (default is date+time) */
-
-		entry = lookup_widget(prefdialog, "timeformatentry");
-		gtk_entry_set_text(GTK_ENTRY(entry), getStringConfValue(TIME_FORMAT));
-		gtk_widget_set_sensitive(GTK_WIDGET(entry), tmp==3);
-
-		/* Set fields in the radio widgets so that they know their option # and the pref dialog */
-		for(i = 1; i <= 3; i++) {
-			widgetname = g_strdup_printf("%s%d", "timeradiobtn", i);
-			widget = lookup_widget(prefdialog, widgetname);
-			gtk_object_set_data(GTK_OBJECT(widget), "option_number", GINT_TO_POINTER(i));
-			gtk_object_set_data(GTK_OBJECT(widget), "entry", entry);
-			g_free(widgetname);
-		}
-
-		/* select currently active menu option */
-		widgetname = g_strdup_printf("%s%d", "timeradiobtn", tmp);
-		widget = lookup_widget(prefdialog, widgetname);
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), TRUE);
-		g_free(widgetname);
-
 		/* ================== panel 4 "browser" ==================== */
 
 		/* set up the internal browser module option menu */
@@ -632,20 +608,6 @@ void on_disablejavascript_toggled(GtkToggleButton *togglebutton, gpointer user_d
 
 void on_socialsite_changed(GtkOptionMenu *optionmenu, gpointer user_data) {
 	social_set_site((gchar *)user_data);
-}
-
-void on_timeformatselection_clicked(GtkButton *button, gpointer user_data) {
-	GtkWidget *editbox = gtk_object_get_data(GTK_OBJECT(button), "entry");
-	int active_button = GPOINTER_TO_INT(gtk_object_get_data(GTK_OBJECT(button),"option_number"));
-
-	setNumericConfValue(TIME_FORMAT_MODE, active_button);
-	gtk_widget_set_sensitive(GTK_WIDGET(editbox), active_button == 3);
-	itemlist_reset_date_format();
-}
-
-void on_timeformatentry_changed(GtkEditable *editable, gpointer user_data) {
-	setStringConfValue(TIME_FORMAT, gtk_editable_get_chars(editable,0,-1));
-	itemlist_reset_date_format();
 }
 
 void on_itemCountBtn_value_changed(GtkSpinButton *spinbutton, gpointer user_data) {

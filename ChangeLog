@@ -6,6 +6,9 @@
 	  listed in the recursive folder view.
 	* Fixes a bug in the node/item lookup that caused strange
 	  merging and item access problems
+	* New item age dependant date column format as used in
+	  other news/email clients as Evolution.
+	* Removed old date format preference.
 
 2006-10-21  Lars Lindner  <lars.lindner@gmail.com>
 

@@ -80,22 +80,22 @@ typedef struct nodeSourceType {
 	void 		(*source_delete)(nodePtr node);
 
 	/**
-	 * This mandatory method is called when the source is to
+	 * This MANDATORY method is called when the source is to
 	 * create the feed list subtree attached to the source root
 	 * node.
 	 */
 	void 		(*source_import)(nodePtr node);
 
 	/**
-	 * This mandatory method is called when the source is to
+	 * This MANDATORY method is called when the source is to
 	 * save it's feed list subtree (if necessary at all). This
 	 * is not a request to save the data of the attached nodes!
 	 */
 	void 		(*source_export)(nodePtr node);
 	
 	/**
-	 * This method is called to get an OPML representation of
-	 * the feedlist of the given node source. Returns a newly
+	 * This MANDATORY method is called to get an OPML representation
+	 * of the feedlist of the given node source. Returns a newly
 	 * allocated filename string that is to be freed by the
 	 * caller.
 	 */
