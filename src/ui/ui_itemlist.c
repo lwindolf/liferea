@@ -31,7 +31,6 @@
 #include "support.h"
 #include "callbacks.h"
 #include "common.h"
-#include "conf.h"
 #include "debug.h"
 #include "feed.h"
 #include "feedlist.h"
@@ -48,8 +47,6 @@ static GHashTable 	*item_to_iter = NULL;	/** hash table used for fast item->tree
 static GtkWidget 	*itemlist_treeview = NULL;
 
 gint			itemlist_loading;	/* freaky workaround for item list focussing problem */
-
-static gchar 		*userDefinedDateFmt = NULL;	/* user defined date formatting string */
 
 /* helper functions for item <-> iter conversion */
 
@@ -157,50 +154,6 @@ GtkTreeStore * ui_itemlist_get_tree_store(void) {
 	return itemstore;
 }
 
-static gchar * ui_itemlist_format_date(time_t date) {
-	gchar		*timestr, *tmp;
-
-	if(userDefinedDateFmt)
-		tmp = common_format_date(date, userDefinedDateFmt);
-	else
-		tmp = common_format_nice_date(date);
-	
-	timestr = g_locale_to_utf8(tmp, -1, NULL, NULL, NULL);
-	g_free(tmp);
-	
-	return timestr;
-}
-
-void ui_itemlist_reset_date_format(void) {
-
-	g_free(userDefinedDateFmt);
-	
-	userDefinedDateFmt = getStringConfValue(DATE_FORMAT);
-	if(userDefinedDateFmt && !strlen(userDefinedDateFmt)) {
-		g_free(userDefinedDateFmt);
-		userDefinedDateFmt = NULL;
-	}
-	
-	/* NOTE: This code is partially broken. In the case of a user
-	   supplied format string, such a string is in UTF-8. The
-	   strftime function expects the user locale as its input, BUT
-	   the user's locale may have an alternate representation of '%'
-	   (For example UCS16 has 2 byte characters, although this may be
-	   handled by glibc correctly) or may not be able to represent a
-	   character used in the string. We shall hope that the user's
-	   locale has neither of these problems and convert the format
-	   string to the user's locale before calling strftime. The
-	   result must be converted back to UTF-8 so that it can be
-	   displayed by the itemlist correctly. */
-
-	if(userDefinedDateFmt) {
-		debug1(DEBUG_GUI, "new user defined date format: >>>%s<<<", userDefinedDateFmt);
-		gchar *tmp = userDefinedDateFmt;
-		userDefinedDateFmt = g_locale_from_utf8(tmp, -1, NULL, NULL, NULL);
-		g_free(tmp);
-	}
-}
-
 void ui_itemlist_remove_item(itemPtr item) {
 	GtkTreeIter	*iter;
 
@@ -246,7 +199,7 @@ void ui_itemlist_update_item(itemPtr item) {
 
 	/* Time */
 	if(0 != item->time) {
-		esc_time_str = ui_itemlist_format_date((time_t)item->time);
+		esc_time_str = itemview_format_date((time_t)item->time);
 		/* the time value is no markup, so we escape it... */
 		tmp = g_markup_escape_text(esc_time_str,-1);
 		g_free(esc_time_str);
@@ -389,7 +342,6 @@ GtkWidget* ui_itemlist_new() {
 					  G_CALLBACK (on_Itemlist_row_activated),
 					  NULL);
 		  
-	ui_itemlist_reset_date_format();
 	//ui_dnd_setup_item_source(itemlist);
 	
 	return ilscrolledwindow;

@@ -224,12 +224,6 @@ void itemlist_update_vfolder(vfolderPtr vfolder) {
 		ui_node_update(vfolder->node);
 }
 
-void itemlist_reset_date_format(void) {
-	
-	ui_itemlist_reset_date_format();
-	itemview_update();
-}
-
 /* next unread selection logic */
 
 static gboolean itemlist_find_unread_item(void) {

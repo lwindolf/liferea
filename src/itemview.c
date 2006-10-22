@@ -17,7 +17,11 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+#include <string.h>
 
+#include "common.h"
+#include "conf.h"
+#include "debug.h"
 #include "htmlview.h"
 #include "itemview.h"
 #include "node.h"
@@ -27,13 +31,46 @@
 gint disableSortingSaving;		/* set in ui_itemlist.c to disable sort-changed callback */
 
 static struct itemView_priv {
-	gboolean	htmlOnly;	/**< TRUE if HTML only mode */
-	guint		mode;		/**< current item view mode */
-	itemSetPtr	itemSet;	/**< currently item set */
-	gboolean	needsUpdate;	/**< item view needs to be updated */
+	gboolean	htmlOnly;		/**< TRUE if HTML only mode */
+	guint		mode;			/**< current item view mode */
+	itemSetPtr	itemSet;		/**< currently item set */
+	gboolean	needsUpdate;		/**< item view needs to be updated */
+	gchar 		*userDefinedDateFmt;	/**< user defined date formatting string */
 } itemView_priv;
 
 void itemview_init(void) {
+
+	/* Determine date format code */
+	
+	itemView_priv.userDefinedDateFmt = getStringConfValue(DATE_FORMAT);
+	
+	/* We now have an empty string or a format string... */
+	if(itemView_priv.userDefinedDateFmt && !strlen(itemView_priv.userDefinedDateFmt)) {
+	   	/* It's empty and useless... */
+		g_free(itemView_priv.userDefinedDateFmt);
+		itemView_priv.userDefinedDateFmt = NULL;
+	}
+	
+	/* NOTE: This code is partially broken. In the case of a user
+	   supplied format string, such a string is in UTF-8. The
+	   strftime function expects the user locale as its input, BUT
+	   the user's locale may have an alternate representation of '%'
+	   (For example UCS16 has 2 byte characters, although this may be
+	   handled by glibc correctly) or may not be able to represent a
+	   character used in the string. We shall hope that the user's
+	   locale has neither of these problems and convert the format
+	   string to the user's locale before calling strftime. The
+	   result must be converted back to UTF-8 so that it can be
+	   displayed by the itemlist correctly. */
+
+	if(itemView_priv.userDefinedDateFmt) {
+		debug1(DEBUG_GUI, "new user defined date format: >>>%s<<<", itemView_priv.userDefinedDateFmt);
+		gchar *tmp = itemView_priv.userDefinedDateFmt;
+		itemView_priv.userDefinedDateFmt = g_locale_from_utf8(tmp, -1, NULL, NULL, NULL);
+		g_free(tmp);
+	}
+	
+	/* Setup HTML widget */
 
 	htmlview_init();
 }
@@ -145,4 +182,20 @@ void itemview_update(void) {
 			
 		htmlview_update(ui_mainwindow_get_active_htmlview(), itemView_priv.mode);
 	}
+}
+
+/* date format handling (not sure if this is the right place) */
+
+gchar * itemview_format_date(time_t date) {
+	gchar		*timestr, *tmp;
+
+	if(itemView_priv.userDefinedDateFmt)
+		tmp = common_format_date(date, itemView_priv.userDefinedDateFmt);
+	else
+		tmp = common_format_nice_date(date);
+	
+	timestr = g_locale_to_utf8(tmp, -1, NULL, NULL, NULL);
+	g_free(tmp);
+	
+	return timestr;
 }

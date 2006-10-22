@@ -57,13 +57,6 @@ void ui_itemlist_reset_tree_store(void);
 GtkTreeStore * ui_itemlist_get_tree_store(void);
 
 /**
- * Method to reset the format string of the date column.
- * Should be called upon initializaton and each time the
- * date format changes.
- */
-void ui_itemlist_reset_date_format(void);
-
-/**
  * Unselect all items in the list and scroll to top. This is typically
  * called when changing feed.
  */

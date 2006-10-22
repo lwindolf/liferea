@@ -38,6 +38,7 @@
 #include "support.h"
 #include "social.h"
 #include "vfolder.h"
+#include "ui/ui_itemlist.h" // FIXME
 
 /* function to create a new feed structure */
 itemPtr item_new(void) {
@@ -279,9 +280,7 @@ void item_to_xml(itemPtr item, xmlNodePtr feedNode, gboolean rendering) {
 	g_free(tmp);
 
 	if(rendering) {
-		/* @translators: localize this format string to change the 
-		   date format in HTML output */
-		tmp = common_format_date(item->time, _("%b %d %H:%M"));
+		tmp = itemview_format_date(item->time);
 		xmlNewTextChild(itemNode, NULL, "timestr", tmp);
 		g_free(tmp);
 		
