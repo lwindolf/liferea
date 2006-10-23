@@ -154,11 +154,17 @@ void itemview_remove_item(itemPtr item) {
 
 void itemview_select_item(itemPtr item) {
 
+	if(!itemView_priv.itemSet)
+		return;
+
 	ui_itemlist_select(item);
 	itemView_priv.needsUpdate = TRUE;
 }
 
 void itemview_update_item(itemPtr item) {
+
+	if(!itemView_priv.itemSet)
+		return;
 
 	if(!itemset_lookup_item(itemView_priv.itemSet, item->itemSet->node, item->nr))
 		return;
