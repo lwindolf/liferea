@@ -232,7 +232,9 @@ static gboolean itemlist_find_unread_item(void) {
 		return FALSE;
 		
 	if(displayed_itemSet->node->children) {
+		itemlistLoading = 1;	/* prevent unwanted selections */
 		feedlist_find_unread_feed(displayed_itemSet->node);
+		itemlistLoading = 0;
 		return FALSE;
 	}
 
