@@ -252,6 +252,12 @@ static gboolean itemlist_find_unread_item(void) {
 void itemlist_select_next_unread(void) {
 	nodePtr		node;
 	
+	/* If we are in combined mode we have to mark everything
+	   read or else we would never jump to the next feed,
+	   because no item will be selected and marked read... */
+	if(NODE_VIEW_MODE_COMBINED == node_get_view_mode(displayed_itemSet->node))
+		itemlist_mark_all_read(displayed_itemSet);
+	
 	/* before scanning the feed list, we test if there is a unread 
 	   item in the currently selected feed! */
 	if(itemlist_find_unread_item())
@@ -447,11 +453,10 @@ void itemlist_mark_all_read(itemSetPtr itemSet) {
 
 void itemlist_mark_all_old(itemSetPtr itemSet) {
 
-	/* loop on list copy because the itemlist_set_* 
-	   methods may modify the original item list */
+	/* no loop on list copy because the itemset_set_* 
+	   methods MUST NOT modify the original item list */
 
-	GList *items = g_list_copy(itemSet->items);
-	GList *iter = items;
+	GList *iter = itemSet->items;
 	while(iter) {
 		itemPtr item = (itemPtr)iter->data;
 		if(item->newStatus) {
@@ -460,7 +465,24 @@ void itemlist_mark_all_old(itemSetPtr itemSet) {
 		}
 		iter = g_list_next(iter);
 	}
-	g_list_free(items);
+	
+	/* No GUI updating necessary... */
+}
+
+void itemlist_mark_all_popup(itemSetPtr itemSet) {
+
+	/* no loop on list copy because the itemset_set_* 
+	   methods MUST NOT modify the original item list */
+
+	GList *iter = itemSet->items;
+	while(iter) {
+		itemPtr item = (itemPtr)iter->data;
+		if(item->popupStatus) {
+			itemset_set_item_popup_status(itemSet, item, FALSE);
+			itemlist_update_item(item);
+		}
+		iter = g_list_next(iter);
+	}
 	
 	/* No GUI updating necessary... */
 }
