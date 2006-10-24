@@ -190,9 +190,6 @@ itemPtr item_parse_cache(xmlNodePtr cur, gboolean migrateCache) {
 			
 		else if(!xmlStrcmp(cur->name, BAD_CAST"nr"))
 			item->nr = item->sourceNr = atol(tmp);
-
-		else if(!xmlStrcmp(cur->name, BAD_CAST"newStatus"))
-			item->newStatus = (0 == atoi(tmp))?FALSE:TRUE;
 			
 		else if(!xmlStrcmp(cur->name, BAD_CAST"readStatus"))
 			item->readStatus = (0 == atoi(tmp))?FALSE:TRUE;
@@ -257,10 +254,6 @@ void item_to_xml(itemPtr item, xmlNodePtr feedNode, gboolean rendering) {
 
 	tmp = g_strdup_printf("%ld", item->nr);
 	xmlNewTextChild(itemNode, NULL, "nr", tmp);
-	g_free(tmp);
-
-	tmp = g_strdup_printf("%d", item->newStatus?1:0);
-	xmlNewTextChild(itemNode, NULL, "newStatus", tmp);
 	g_free(tmp);
 
 	tmp = g_strdup_printf("%d", item->readStatus?1:0);
