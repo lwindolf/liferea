@@ -46,8 +46,6 @@ static GHashTable 	*item_to_iter = NULL;	/** hash table used for fast item->tree
 
 static GtkWidget 	*itemlist_treeview = NULL;
 
-gint			itemlist_loading;	/* freaky workaround for item list focussing problem */
-
 /* helper functions for item <-> iter conversion */
 
 static itemPtr ui_iter_to_item(GtkTreeIter *iter) {
@@ -56,7 +54,11 @@ static itemPtr ui_iter_to_item(GtkTreeIter *iter) {
 	
 	gtk_tree_model_get(GTK_TREE_MODEL(ui_itemlist_get_tree_store()), 
 	                   iter, IS_PARENT, &node, IS_NR, &nr, -1);
-	return itemset_lookup_item(node->itemSet, node, nr);
+
+	if(node)
+		return itemset_lookup_item(node->itemSet, node, nr);
+	else
+		return NULL;
 }
 
 static gboolean ui_item_to_iter(itemPtr item, GtkTreeIter *iter) {
@@ -342,8 +344,6 @@ GtkWidget* ui_itemlist_new() {
 					  G_CALLBACK (on_Itemlist_row_activated),
 					  NULL);
 		  
-	//ui_dnd_setup_item_source(itemlist);
-	
 	return ilscrolledwindow;
 }
 
@@ -565,11 +565,10 @@ void on_nextbtn_clicked(GtkButton *button, gpointer user_data) {
 }
 
 gboolean on_itemlist_button_press_event(GtkWidget *treeview, GdkEventButton *event, gpointer user_data) {
-	GdkEventButton		*eb;
 	GtkTreeViewColumn	*column;
 	GtkTreePath		*path;
 	GtkTreeIter		iter;
-	itemPtr			ip = NULL;
+	itemPtr			item = NULL;
 	
 	if(event->type != GDK_BUTTON_PRESS)
 		return FALSE;
@@ -580,30 +579,31 @@ gboolean on_itemlist_button_press_event(GtkWidget *treeview, GdkEventButton *eve
 	gtk_tree_model_get_iter(GTK_TREE_MODEL(ui_itemlist_get_tree_store()), &iter, path);
 	gtk_tree_path_free(path);
 	
-	ip = ui_iter_to_item(&iter);
-
-	eb = (GdkEventButton*)event; 
-	switch(eb->button) {
-		case 2:
-			/* depending on the column middle mouse click toggles flag or read status
-			   We depent on the fact that the state column is the first!!! 
-			   code inspired by the GTK+ 2.0 Tree View Tutorial at:
-			   http://scentric.net/tutorial/sec-misc-get-renderer-from-click.html */
-			if(NULL != (column = gtk_tree_view_get_column(GTK_TREE_VIEW(treeview), 0))) {
-				g_assert(NULL != column);
-				if(event->x <= column->width)
-					itemlist_toggle_flag(ip);
-				else
-					itemlist_toggle_read_status(ip);
-			}
-			return TRUE;
-			break;
-		case 3:
-			ui_itemlist_select(ip);
-			gtk_menu_popup(make_item_menu(ip), NULL, NULL, NULL, NULL, eb->button, eb->time);
-			return TRUE;
-			break;
-	}	
+	item = ui_iter_to_item(&iter);
+	if(item) {
+		GdkEventButton *eb = (GdkEventButton*)event; 
+		switch(eb->button) {
+			case 2:
+				/* depending on the column middle mouse click toggles flag or read status
+				   We depent on the fact that the state column is the first!!! 
+				   code inspired by the GTK+ 2.0 Tree View Tutorial at:
+				   http://scentric.net/tutorial/sec-misc-get-renderer-from-click.html */
+				if(NULL != (column = gtk_tree_view_get_column(GTK_TREE_VIEW(treeview), 0))) {
+					g_assert(NULL != column);
+					if(event->x <= column->width)
+						itemlist_toggle_flag(item);
+					else
+						itemlist_toggle_read_status(item);
+				}
+				return TRUE;
+				break;
+			case 3:
+				ui_itemlist_select(item);
+				gtk_menu_popup(make_item_menu(item), NULL, NULL, NULL, NULL, eb->button, eb->time);
+				return TRUE;
+				break;
+		}
+	}
 	return FALSE;
 }
 
