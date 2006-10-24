@@ -576,10 +576,11 @@ gboolean on_itemlist_button_press_event(GtkWidget *treeview, GdkEventButton *eve
 	if(!gtk_tree_view_get_path_at_pos(GTK_TREE_VIEW(treeview), event->x, event->y, &path, NULL, NULL, NULL))
 		return FALSE;
 
-	gtk_tree_model_get_iter(GTK_TREE_MODEL(ui_itemlist_get_tree_store()), &iter, path);
+	if(gtk_tree_model_get_iter(GTK_TREE_MODEL(ui_itemlist_get_tree_store()), &iter, path))
+		item = ui_iter_to_item(&iter);	
+		
 	gtk_tree_path_free(path);
 	
-	item = ui_iter_to_item(&iter);
 	if(item) {
 		GdkEventButton *eb = (GdkEventButton*)event; 
 		switch(eb->button) {
