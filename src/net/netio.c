@@ -957,9 +957,7 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, char * aut
 				headerline[strlen(headerline)-1] = '\0';
 			if (headerline[strlen(headerline)-1] == '\r')
 				headerline[strlen(headerline)-1] = '\0';
-			
-			authfailed++;
-			
+				
 			/* Make a copy of the WWW-Authenticate header. We use it to
 			   reconstruct a new auth reply on every loop. */
 			free (cur_ptr->servauth);
@@ -980,23 +978,22 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, char * aut
 					NetClose (my_socket, proto_data, proto);
 					return NULL;
 					break;
-				case -1:
-					cur_ptr->netio_error = NET_ERR_AUTH_UNSUPPORTED;
-					NetClose (my_socket, proto_data, proto);
-					return NULL;
-					break;
 				default:
 					break;
 			}
 			
-			/* Close current connection and reconnect to server. */
-			NetClose (my_socket, proto_data, proto);
-			if ((NetConnect (&my_socket, host, cur_ptr, proto, suppressoutput, &proto_data)) != 0) {
-				return NULL;
-			}
+			if(-1 != retval) {			
+				authfailed++;
+				
+				/* Close current connection and reconnect to server. */
+				NetClose (my_socket, proto_data, proto);
+				if ((NetConnect (&my_socket, host, cur_ptr, proto, suppressoutput, &proto_data)) != 0) {
+					return NULL;
+				}
 
-			/* Now that we have an authinfo, repeat the current request. */
-			goto tryagain;
+				/* Now that we have an authinfo, repeat the current request. */
+				goto tryagain;
+			}
 		}
 		/* This seems to be optional and probably not worth the effort since we
 		   don't issue a lot of consecutive requests. */
@@ -1009,6 +1006,12 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, char * aut
 		   Accept CRLF and LF line ends in the header field. */
 		if ((strcmp(headerline, "\r\n") == 0) || (strcmp(headerline, "\n") == 0))
 			break;
+	}
+
+	if(cur_ptr->lasthttpstatus == 401) {
+		cur_ptr->netio_error = NET_ERR_AUTH_UNSUPPORTED;
+		NetClose (my_socket, proto_data, proto);
+		return NULL;
 	}
 	
 	/* If the redirectloop was run newhost and newurl were allocated.
