@@ -337,7 +337,7 @@ img.enclosurebtn {
 }
 
 del {
-	text-decoration: overline;
+	text-decoration: line-through;
 }
 
 ins {
