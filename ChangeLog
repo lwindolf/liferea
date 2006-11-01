@@ -1,4 +1,4 @@
-2006-10-??  ???  <???>
+2006-10-31  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.1.8 (Unstable)
 	
@@ -6,6 +6,8 @@
 	  cause the first unread item to be mark read and the 
 	  second unread item to be selected when changing to the
 	  next feed with unread items.
+	* Fixes SF #1582052 which caused authentication failures
+	  when downloading Blogger feeds.
 	* Fixes a bug that prevented changing item state of items
 	  listed in the recursive folder view.
 	* Fixes a bug in the node/item lookup that caused strange
@@ -13,9 +15,12 @@
 	* Fixes a bug that prevented "Next-Unread" to jump out of
 	  feeds with unread items that were displayed in combined
 	  mode.
+	* Fixes wrong new item count displayed right after startup.
 	* New item age dependant date column format as used in
 	  other news/email clients as Evolution.
 	* Removed old date format preference.
+	* Simple Bloglines support with a new feed list source type.
+
 
 2006-10-21  Lars Lindner  <lars.lindner@gmail.com>
 
