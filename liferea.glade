@@ -221,12 +221,147 @@
 		      </child>
 
 		      <child>
-			<widget class="GtkViewport" id="combinedViewHtml">
+			<widget class="GtkVBox" id="vbox2628">
 			  <property name="visible">True</property>
-			  <property name="shadow_type">GTK_SHADOW_IN</property>
+			  <property name="homogeneous">False</property>
+			  <property name="spacing">0</property>
 
 			  <child>
-			    <placeholder/>
+			    <widget class="GtkToolbar" id="toolbar1">
+			      <property name="orientation">GTK_ORIENTATION_HORIZONTAL</property>
+			      <property name="toolbar_style">GTK_TOOLBAR_ICONS</property>
+			      <property name="tooltips">True</property>
+			      <property name="show_arrow">True</property>
+
+			      <child>
+				<widget class="GtkToolItem" id="toolitem1">
+				  <property name="visible">True</property>
+				  <property name="visible_horizontal">True</property>
+				  <property name="visible_vertical">True</property>
+				  <property name="is_important">False</property>
+
+				  <child>
+				    <widget class="GtkButton" id="button9">
+				      <property name="visible">True</property>
+				      <property name="can_focus">True</property>
+				      <property name="label">gtk-go-back</property>
+				      <property name="use_stock">True</property>
+				      <property name="relief">GTK_RELIEF_NORMAL</property>
+				      <property name="focus_on_click">True</property>
+				    </widget>
+				  </child>
+				</widget>
+				<packing>
+				  <property name="expand">False</property>
+				  <property name="homogeneous">False</property>
+				</packing>
+			      </child>
+
+			      <child>
+				<widget class="GtkToolItem" id="toolitem2">
+				  <property name="visible">True</property>
+				  <property name="visible_horizontal">True</property>
+				  <property name="visible_vertical">True</property>
+				  <property name="is_important">False</property>
+
+				  <child>
+				    <widget class="GtkButton" id="button10">
+				      <property name="visible">True</property>
+				      <property name="can_focus">True</property>
+				      <property name="label">gtk-go-forward</property>
+				      <property name="use_stock">True</property>
+				      <property name="relief">GTK_RELIEF_NORMAL</property>
+				      <property name="focus_on_click">True</property>
+				    </widget>
+				  </child>
+				</widget>
+				<packing>
+				  <property name="expand">False</property>
+				  <property name="homogeneous">False</property>
+				</packing>
+			      </child>
+
+			      <child>
+				<widget class="GtkToolItem" id="toolitem3">
+				  <property name="visible">True</property>
+				  <property name="visible_horizontal">True</property>
+				  <property name="visible_vertical">True</property>
+				  <property name="is_important">False</property>
+
+				  <child>
+				    <widget class="GtkSpinButton" id="spinbutton1">
+				      <property name="visible">True</property>
+				      <property name="can_focus">True</property>
+				      <property name="climb_rate">1</property>
+				      <property name="digits">0</property>
+				      <property name="numeric">False</property>
+				      <property name="update_policy">GTK_UPDATE_ALWAYS</property>
+				      <property name="snap_to_ticks">False</property>
+				      <property name="wrap">False</property>
+				      <property name="adjustment">1 0 100 1 10 10</property>
+				    </widget>
+				  </child>
+				</widget>
+				<packing>
+				  <property name="expand">False</property>
+				  <property name="homogeneous">False</property>
+				</packing>
+			      </child>
+
+			      <child>
+				<widget class="GtkToolItem" id="toolitem4">
+				  <property name="visible">True</property>
+				  <property name="visible_horizontal">True</property>
+				  <property name="visible_vertical">True</property>
+				  <property name="is_important">False</property>
+
+				  <child>
+				    <widget class="GtkLabel" id="label253">
+				      <property name="visible">True</property>
+				      <property name="label" translatable="yes">Schlagzeilen anzeigen</property>
+				      <property name="use_underline">False</property>
+				      <property name="use_markup">False</property>
+				      <property name="justify">GTK_JUSTIFY_LEFT</property>
+				      <property name="wrap">False</property>
+				      <property name="selectable">False</property>
+				      <property name="xalign">0.5</property>
+				      <property name="yalign">0.5</property>
+				      <property name="xpad">0</property>
+				      <property name="ypad">0</property>
+				      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+				      <property name="width_chars">-1</property>
+				      <property name="single_line_mode">False</property>
+				      <property name="angle">0</property>
+				    </widget>
+				  </child>
+				</widget>
+				<packing>
+				  <property name="expand">False</property>
+				  <property name="homogeneous">False</property>
+				</packing>
+			      </child>
+			    </widget>
+			    <packing>
+			      <property name="padding">0</property>
+			      <property name="expand">False</property>
+			      <property name="fill">False</property>
+			    </packing>
+			  </child>
+
+			  <child>
+			    <widget class="GtkViewport" id="combinedViewHtml">
+			      <property name="visible">True</property>
+			      <property name="shadow_type">GTK_SHADOW_IN</property>
+
+			      <child>
+				<placeholder/>
+			      </child>
+			    </widget>
+			    <packing>
+			      <property name="padding">0</property>
+			      <property name="expand">True</property>
+			      <property name="fill">True</property>
+			    </packing>
 			  </child>
 			</widget>
 			<packing>

@@ -45,6 +45,18 @@ create_mainwindow (void)
   GtkWidget *wideViewItems;
   GtkWidget *wideViewHtml;
   GtkWidget *label252;
+  GtkWidget *vbox2628;
+  GtkWidget *toolbar1;
+  GtkIconSize tmp_toolbar_icon_size;
+  GtkWidget *toolitem1;
+  GtkWidget *button9;
+  GtkWidget *toolitem2;
+  GtkWidget *button10;
+  GtkWidget *toolitem3;
+  GtkObject *spinbutton1_adj;
+  GtkWidget *spinbutton1;
+  GtkWidget *toolitem4;
+  GtkWidget *label253;
   GtkWidget *combinedViewHtml;
   GtkWidget *label133;
   GtkWidget *label162;
@@ -131,9 +143,51 @@ create_mainwindow (void)
   gtk_widget_show (label252);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (itemtabs), gtk_notebook_get_nth_page (GTK_NOTEBOOK (itemtabs), 1), label252);
 
+  vbox2628 = gtk_vbox_new (FALSE, 0);
+  gtk_widget_show (vbox2628);
+  gtk_container_add (GTK_CONTAINER (itemtabs), vbox2628);
+
+  toolbar1 = gtk_toolbar_new ();
+  gtk_box_pack_start (GTK_BOX (vbox2628), toolbar1, FALSE, FALSE, 0);
+  gtk_toolbar_set_style (GTK_TOOLBAR (toolbar1), GTK_TOOLBAR_ICONS);
+  tmp_toolbar_icon_size = gtk_toolbar_get_icon_size (GTK_TOOLBAR (toolbar1));
+
+  toolitem1 = (GtkWidget*) gtk_tool_item_new ();
+  gtk_widget_show (toolitem1);
+  gtk_container_add (GTK_CONTAINER (toolbar1), toolitem1);
+
+  button9 = gtk_button_new_from_stock ("gtk-go-back");
+  gtk_widget_show (button9);
+  gtk_container_add (GTK_CONTAINER (toolitem1), button9);
+
+  toolitem2 = (GtkWidget*) gtk_tool_item_new ();
+  gtk_widget_show (toolitem2);
+  gtk_container_add (GTK_CONTAINER (toolbar1), toolitem2);
+
+  button10 = gtk_button_new_from_stock ("gtk-go-forward");
+  gtk_widget_show (button10);
+  gtk_container_add (GTK_CONTAINER (toolitem2), button10);
+
+  toolitem3 = (GtkWidget*) gtk_tool_item_new ();
+  gtk_widget_show (toolitem3);
+  gtk_container_add (GTK_CONTAINER (toolbar1), toolitem3);
+
+  spinbutton1_adj = gtk_adjustment_new (1, 0, 100, 1, 10, 10);
+  spinbutton1 = gtk_spin_button_new (GTK_ADJUSTMENT (spinbutton1_adj), 1, 0);
+  gtk_widget_show (spinbutton1);
+  gtk_container_add (GTK_CONTAINER (toolitem3), spinbutton1);
+
+  toolitem4 = (GtkWidget*) gtk_tool_item_new ();
+  gtk_widget_show (toolitem4);
+  gtk_container_add (GTK_CONTAINER (toolbar1), toolitem4);
+
+  label253 = gtk_label_new (_("Schlagzeilen anzeigen"));
+  gtk_widget_show (label253);
+  gtk_container_add (GTK_CONTAINER (toolitem4), label253);
+
   combinedViewHtml = gtk_viewport_new (NULL, NULL);
   gtk_widget_show (combinedViewHtml);
-  gtk_container_add (GTK_CONTAINER (itemtabs), combinedViewHtml);
+  gtk_box_pack_start (GTK_BOX (vbox2628), combinedViewHtml, TRUE, TRUE, 0);
 
   label133 = gtk_label_new (_("combined view"));
   gtk_widget_show (label133);
@@ -189,6 +243,16 @@ create_mainwindow (void)
   GLADE_HOOKUP_OBJECT (mainwindow, wideViewItems, "wideViewItems");
   GLADE_HOOKUP_OBJECT (mainwindow, wideViewHtml, "wideViewHtml");
   GLADE_HOOKUP_OBJECT (mainwindow, label252, "label252");
+  GLADE_HOOKUP_OBJECT (mainwindow, vbox2628, "vbox2628");
+  GLADE_HOOKUP_OBJECT (mainwindow, toolbar1, "toolbar1");
+  GLADE_HOOKUP_OBJECT (mainwindow, toolitem1, "toolitem1");
+  GLADE_HOOKUP_OBJECT (mainwindow, button9, "button9");
+  GLADE_HOOKUP_OBJECT (mainwindow, toolitem2, "toolitem2");
+  GLADE_HOOKUP_OBJECT (mainwindow, button10, "button10");
+  GLADE_HOOKUP_OBJECT (mainwindow, toolitem3, "toolitem3");
+  GLADE_HOOKUP_OBJECT (mainwindow, spinbutton1, "spinbutton1");
+  GLADE_HOOKUP_OBJECT (mainwindow, toolitem4, "toolitem4");
+  GLADE_HOOKUP_OBJECT (mainwindow, label253, "label253");
   GLADE_HOOKUP_OBJECT (mainwindow, combinedViewHtml, "combinedViewHtml");
   GLADE_HOOKUP_OBJECT (mainwindow, label133, "label133");
   GLADE_HOOKUP_OBJECT (mainwindow, label162, "label162");
