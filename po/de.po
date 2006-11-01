@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Liferea 0.9.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-10-22 17:19+0200\n"
-"PO-Revision-Date: 2006-10-22 17:21+0100\n"
+"PO-Revision-Date: 2006-10-25 00:44+0100\n"
 "Last-Translator: Lars Lindner <lars.lindner@gmx.net>\n"
 "Language-Team: German\n"
 "MIME-Version: 1.0\n"
@@ -1907,8 +1907,8 @@ msgstr "Diese Option deaktiviert das Aktualisieren von Abonnements."
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
-msgstr[0] "(%d neu)"
-msgstr[1] "(%d neu)"
+msgstr[0] " (%d neu)"
+msgstr[1] " (%d neu)"
 
 #: ../src/ui/ui_mainwindow.c:1091
 #, c-format
