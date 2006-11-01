@@ -155,6 +155,15 @@ void itemset_set_item_update_status(itemSetPtr itemSet, itemPtr item, gboolean n
 void itemset_set_item_new_status(itemSetPtr itemSet, itemPtr item, gboolean newStatus);
 
 /**
+ * Changes the "popup" status of a single item of the given itemset.
+ *
+ * @param itemSet	the item set
+ * @param item		the item to change
+ * @param newStatus	the new update status
+ */
+void itemset_set_item_popup_status(itemSetPtr itemSet, itemPtr item, gboolean newStatus);
+
+/**
  * Serialize the given item set to XML. Does not serialize items!
  * It only creates an XML document frame for an item set.
  *

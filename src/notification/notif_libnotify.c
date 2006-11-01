@@ -44,8 +44,12 @@ static void notif_libnotify_callback_open ( NotifyNotification *n, gchar *action
 	g_assert(action != NULL);
 	g_assert(strcmp(action, "open") == 0);
 
-	nodePtr node_p = user_data;
-	ui_feedlist_select(node_p);
+	nodePtr node_p = node_from_id(user_data);
+	
+	if(node_p)
+		ui_feedlist_select(node_p);
+	else
+		ui_show_error_box(_("This feed does not exist anymore!"));
 
 	notify_notification_close(n, NULL);
 
@@ -57,9 +61,16 @@ static void notif_libnotify_callback_mark_read ( NotifyNotification *n, gchar *a
 	g_assert(action != NULL);
 	g_assert(strcmp(action, "mark_read") == 0);
 
-	nodePtr node_p = user_data;
+	nodePtr node_p = node_from_id(user_data);
 	
-	node_mark_all_read(node_p);
+	if(node_p) {
+		node_load(node_p);
+		itemlist_mark_all_read(node_p->itemSet);
+		itemlist_mark_all_popup(node_p->itemSet);
+		node_unload(node_p);
+	} else {
+		ui_show_error_box(_("This feed does not exist anymore!"));
+	}
 	
 	notify_notification_close(n, NULL);
 }
@@ -71,7 +82,7 @@ static void notif_libnotify_callback_show_details ( NotifyNotification *n, gchar
 	itemPtr item_p;
 
 	gchar *labelText_p;
-	gchar *labelText_now_p;
+	gchar *labelText_now_p = NULL;
 	gchar *labelText_prev_p;
 
 	gchar *labelHeadline_p;
@@ -81,73 +92,81 @@ static void notif_libnotify_callback_show_details ( NotifyNotification *n, gchar
 	
 	g_assert(action != NULL);
 	g_assert(strcmp(action, "show_details") == 0);
-	node_p = user_data;
-	node_load(node_p);
+	node_p = node_from_id(user_data);
+	
+	if(node_p) {
+		node_load(node_p);
 
-	labelText_now_p = g_strdup("");
+		labelText_now_p = g_strdup("");
 
-	/* Gather the feed's headlines */
-	list_p = node_p->itemSet->items;
-	while(list_p != NULL) {
-		item_p = list_p->data;
-		if( item_p->popupStatus == TRUE) {
-			item_p->popupStatus = FALSE;
-			item_count += 1;
+		/* Gather the feed's headlines */
+		list_p = node_p->itemSet->items;
+		while(list_p != NULL) {
+			item_p = list_p->data;
+			if( item_p->popupStatus == TRUE) {
+				item_p->popupStatus = FALSE;
+				item_count += 1;
 
-			labelHeadline_p = g_strdup_printf (item_get_title(item_p));
-			if (labelHeadline_p == NULL ) {
-				labelHeadline_p = g_strdup_printf ("This news entry has no headline" );
+				labelHeadline_p = g_strdup_printf (item_get_title(item_p));
+				if (labelHeadline_p == NULL ) {
+					labelHeadline_p = g_strdup_printf ("This news entry has no headline" );
+				}
+
+				labelURL_p = item_get_base_url(item_p);
+				if (labelURL_p != NULL ) {
+					labelText_p = g_strdup_printf ("%s <a href='%s'>Visit</a>\n", labelHeadline_p, labelURL_p );
+				} else {
+					labelText_p = g_strdup_printf ("%s\n", labelHeadline_p );
+				}
+
+				labelText_prev_p = labelText_now_p;
+				labelText_now_p = g_strconcat( labelText_now_p, labelText_p, NULL);
+
+				g_free(labelHeadline_p);
+				g_free(labelText_p);
+				g_free(labelText_prev_p);
 			}
-
-			labelURL_p = item_get_base_url(item_p);
-			if (labelURL_p != NULL ) {
-				labelText_p = g_strdup_printf ("%s <a href='%s'>Visit</a>\n", labelHeadline_p, labelURL_p );
-			} else {
-				labelText_p = g_strdup_printf ("%s\n", labelHeadline_p );
-			}
-
-			labelText_prev_p = labelText_now_p;
-			labelText_now_p = g_strconcat( labelText_now_p, labelText_p, NULL);
-
-			g_free(labelHeadline_p);
-			g_free(labelText_p);
-			g_free(labelText_prev_p);
+			list_p = g_list_next(list_p);
 		}
-		list_p = g_list_next(list_p);
-	}
 
-	if ( item_count == 0 ) {
-		g_free(labelText_now_p);
-		return;
+		if ( item_count == 0 ) {
+			g_free(labelText_now_p);
+			return;
+		}
+	} else {
+		ui_show_error_box(_("This feed does not exist anymore!"));
 	}
 
 	notify_notification_close ( n,NULL);
-//	notify_notification_update ( n, node_get_title(node_p), labelText_now_p, NULL);
-//	notify_notification_clear_actions(n);
+	
+	if(node_p) {
+//		notify_notification_update ( n, node_get_title(node_p), labelText_now_p, NULL);
+//		notify_notification_clear_actions(n);
 
-	n = notify_notification_new (node_get_title(node_p), labelText_now_p, NULL, NULL);
+		n = notify_notification_new (node_get_title(node_p), labelText_now_p, NULL, NULL);
 
-	notify_notification_set_icon_from_pixbuf (n,node_get_icon(node_p));
+		notify_notification_set_icon_from_pixbuf (n,node_get_icon(node_p));
 
-	notify_notification_set_category (n, "feed");
+		notify_notification_set_category (n, "feed");
 
-	notify_notification_set_timeout (n, NOTIFY_EXPIRES_NEVER );
+		notify_notification_set_timeout (n, NOTIFY_EXPIRES_NEVER );
 
-	notify_notification_add_action(n, "open", "Open feed",
-									(NotifyActionCallback)notif_libnotify_callback_open,
-									node_p, NULL);
-	notify_notification_add_action(n, "mark_read", "Mark all as read",
-									(NotifyActionCallback)notif_libnotify_callback_mark_read,
-									node_p, NULL);
+		notify_notification_add_action(n, "open", "Open feed",
+										(NotifyActionCallback)notif_libnotify_callback_open,
+										node_p, NULL);
+		notify_notification_add_action(n, "mark_read", "Mark all as read",
+										(NotifyActionCallback)notif_libnotify_callback_mark_read,
+										node_p, NULL);
 
-	node_unload(node_p);
+		node_unload(node_p);
 
-	getBooleanConfValue(SHOW_TRAY_ICON);
-	if (!notify_notification_show (n, NULL)) {
-		fprintf(stderr, "PLUGIN:notif_libnotify.c - failed to update notification via libnotify\n");
+		getBooleanConfValue(SHOW_TRAY_ICON);
+		if (!notify_notification_show (n, NULL)) {
+			fprintf(stderr, "PLUGIN:notif_libnotify.c - failed to update notification via libnotify\n");
+		}
+
+		g_free(labelText_now_p);
 	}
-
-	g_free(labelText_now_p);
 }
 
 static gboolean notif_libnotify_init(void) {
@@ -189,7 +208,7 @@ static void notif_libnotify_node_has_new_items(nodePtr node_p) {
 		return;
 	}
 
-	/* Count updated feeds */
+	/* Count updated feed */
 	item_count = 0;
 	list_p = node_p->itemSet->items;
 	while(list_p != NULL) {
@@ -216,13 +235,13 @@ static void notif_libnotify_node_has_new_items(nodePtr node_p) {
 
 	notify_notification_add_action(n, "show_details", "Show details",
 									(NotifyActionCallback)notif_libnotify_callback_show_details,
-									node_p, NULL);
+									node_p->id, NULL);
 	notify_notification_add_action(n, "open", "Open feed",
 									(NotifyActionCallback)notif_libnotify_callback_open,
-									node_p, NULL);
+									node_p->id, NULL);
 	notify_notification_add_action(n, "mark_read", "Mark all as read",
 									(NotifyActionCallback)notif_libnotify_callback_mark_read,
-									node_p, NULL);
+									node_p->id, NULL);
 	notify_notification_set_category (n, "feed");
 
 	if (ui_tray_get_origin(&x,&y) == TRUE) {

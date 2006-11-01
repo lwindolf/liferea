@@ -274,3 +274,15 @@ void itemset_set_item_new_status(itemSetPtr itemSet, itemPtr item, gboolean newS
 	
 	/* New status is never propagated to vfolders... */
 }
+
+void itemset_set_item_popup_status(itemSetPtr itemSet, itemPtr item, gboolean newPopupStatus) {
+
+	g_assert(newPopupStatus != item->popupStatus);
+
+	item->popupStatus = newPopupStatus;
+
+	/* Currently no node popup counter needed, therefore
+	   no propagation to nodes... */
+	
+	/* Popup status is never propagated to vfolders... */
+}

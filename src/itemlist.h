@@ -143,6 +143,14 @@ void itemlist_mark_all_read(itemSetPtr itemSet);
  */
 void itemlist_mark_all_old(itemSetPtr itemSet);
 
+/**
+ * Resets the popup flag for all items of the given item set.
+ *
+ * @param itemSet	the itemset
+ */
+void itemlist_mark_all_popup(itemSetPtr itemSet);
+
+// FIXME: clearify if method is necessary
 void itemlist_update_vfolder(vfolderPtr vfolder);
 
 /**
@@ -151,12 +159,6 @@ void itemlist_update_vfolder(vfolderPtr vfolder);
  * @param item	new selected item 
  */
 void itemlist_selection_changed(itemPtr item);
-
-/** 
- * Force the itemlist to re-create the displayed dates based on the
- * current date format setting.
- */
-void itemlist_reset_date_format(void);
 
 /**
  * Tries to select the next unread item that is currently in the
