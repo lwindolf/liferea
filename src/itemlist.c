@@ -62,7 +62,7 @@ static rulePtr itemlist_filter = NULL;	/* currently active filter rule */
 static itemPtr	displayed_item = NULL;	/* displayed item = selected item */
 
 static guint viewMode = 0;		/* current viewing mode */
-static gboolean itemlistLoading;	/* if TRUE prevents selection effects when loading the item list */
+static guint itemlistLoading = 0;	/* if >0 prevents selection effects when loading the item list */
 
 static gboolean deferred_item_remove = FALSE;	/* TRUE if selected item needs to be removed from cache on unselecting */
 static gboolean deferred_item_filter = FALSE;	/* TRUE if selected item needs to be filtered on unselecting */
@@ -175,7 +175,7 @@ void itemlist_load(itemSetPtr itemSet) {
 			itemlist_filter = rule_new(NULL, "unread", "", TRUE);		
 	}
 
-	itemlistLoading = 1;
+	itemlistLoading++;
 	viewMode = node_get_view_mode(itemSet->node);
 	ui_mainwindow_set_layout(viewMode);
 
@@ -190,7 +190,7 @@ void itemlist_load(itemSetPtr itemSet) {
 	
 	itemlist_merge_itemset(itemSet);
 
-	itemlistLoading = 0;
+	itemlistLoading--;
 
 	debug_exit("itemlist_load");
 }
@@ -230,11 +230,9 @@ static gboolean itemlist_find_unread_item(void) {
 	
 	if(!displayed_itemSet)
 		return FALSE;
-		
+
 	if(displayed_itemSet->node->children) {
-		itemlistLoading = 1;	/* prevent unwanted selections */
 		feedlist_find_unread_feed(displayed_itemSet->node);
-		itemlistLoading = 0;
 		return FALSE;
 	}
 
@@ -251,31 +249,35 @@ static gboolean itemlist_find_unread_item(void) {
 
 void itemlist_select_next_unread(void) {
 	nodePtr		node;
-	
+
 	/* If we are in combined mode we have to mark everything
 	   read or else we would never jump to the next feed,
 	   because no item will be selected and marked read... */
 	if(NODE_VIEW_MODE_COMBINED == node_get_view_mode(displayed_itemSet->node))
 		itemlist_mark_all_read(displayed_itemSet);
-	
+
+	itemlistLoading++;	/* prevent unwanted selections */
+
 	/* before scanning the feed list, we test if there is a unread 
 	   item in the currently selected feed! */
-	if(itemlist_find_unread_item())
-		return;
-	
-	/* scan feed list and find first feed with unread items */
-	node = feedlist_find_unread_feed(feedlist_get_root());
-	if(node) {
-		
-		/* load found feed */
-		ui_feedlist_select(node);
+	if(!itemlist_find_unread_item()) {
 
-		/* find first unread item */
-		itemlist_find_unread_item();
-	} else {
-		/* if we don't find a feed with unread items do nothing */
-		ui_mainwindow_set_status_bar(_("There are no unread items "));
+		/* scan feed list and find first feed with unread items */
+		node = feedlist_find_unread_feed(feedlist_get_root());
+
+		if(node) {		
+			/* load found feed */
+			ui_feedlist_select(node);
+
+			/* find first unread item */
+			itemlist_find_unread_item();
+		} else {
+			/* if we don't find a feed with unread items do nothing */
+			ui_mainwindow_set_status_bar(_("There are no unread items "));
+		}
 	}
+
+	itemlistLoading--;
 }
 
 /* menu commands */
@@ -492,7 +494,7 @@ void itemlist_selection_changed(itemPtr item) {
 
 	debug_enter("itemlist_selection_changed");
 	
-	if(!itemlistLoading) {
+	if(0 == itemlistLoading) {
 		/* folder&vfolder postprocessing to remove/filter unselected items no
 		   more matching the display rules because they have changed state */
 		itemlist_check_for_deferred_action();
