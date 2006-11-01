@@ -374,8 +374,10 @@ void itemlist_remove_item(itemPtr item) {
 
 	g_assert(NULL != itemset_lookup_item(item->itemSet, item->itemSet->node, item->nr));
 	
-	if(displayed_item == item)
+	if(displayed_item == item) {
+		displayed_item = NULL;
 		itemview_select_item(NULL);
+	}
 	itemview_remove_item(item);
 	itemview_update();
 	itemset_remove_item(item->itemSet, item);

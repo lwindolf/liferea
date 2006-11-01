@@ -8,6 +8,8 @@
 	  second unread item to be selected when changing to the
 	  next feed with unread items. (Solution in 1.1.8 was
 	  not 100% complete)
+	* Fixes SF #1588004: pressing delete in empty item list
+	  causes crash.
 
 
 2006-10-31  Lars Lindner  <lars.lindner@gmail.com>
