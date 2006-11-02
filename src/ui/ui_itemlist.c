@@ -254,9 +254,6 @@ void ui_itemlist_update_item(itemPtr item) {
 	g_free(label);
 }
 
-/* update all item list entries */
-void ui_itemlist_update(void) { }
-
 static gboolean ui_itemlist_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer data) {
 
 	if((event->type == GDK_KEY_PRESS) &&

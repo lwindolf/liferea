@@ -215,14 +215,9 @@ void on_nextbtn_clicked(GtkButton *button, gpointer user_data);
 /**
  * Update a single item of the currently displayed item list .
  *
- * @param ip	item pointer
+ * @param item	the item
  */
-void ui_itemlist_update_item(itemPtr ip);
-
-/**
- * Update all item list entries of the currently displayed item list.
- */
-void ui_itemlist_update(void);
+void ui_itemlist_update_item(itemPtr item);
 
 /**
  * Launches the configured social bookmarking site for the given item

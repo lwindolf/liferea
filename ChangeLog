@@ -12,6 +12,8 @@
 	  causes crash.
 	* Fixes SF #1585843 reported by shizow: error while exporting 
 	  feed list.
+	* Avoid unnecessary item view updates when merging items 
+	  while viewing folders or in combined viewing mode.
 
 
 2006-10-31  Lars Lindner  <lars.lindner@gmail.com>
