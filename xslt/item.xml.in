@@ -236,7 +236,7 @@
 <!-- Flagging link -->
 <xsl:element name="a">
   <xsl:attribute name="class">flag</xsl:attribute>
-  <xsl:attribute name="href">liferea-flag://<xsl:value-of select="sourceId"/>-<xsl:value-of select="nr"/></xsl:attribute>
+  <xsl:attribute name="href">liferea-flag://<xsl:value-of select="sourceId"/>-<xsl:value-of select="sourceNr"/></xsl:attribute>
   <xsl:element name="img">
     <xsl:attribute name="border">0</xsl:attribute>
     <xsl:attribute name="class">flagbtn</xsl:attribute>

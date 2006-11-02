@@ -278,6 +278,10 @@ void item_to_xml(itemPtr item, xmlNodePtr feedNode, gboolean rendering) {
 		g_free(tmp);
 		
 		xmlNewTextChild(itemNode, NULL, "sourceId", item->sourceNode->id);
+		
+		tmp = g_strdup_printf("%ld", item->sourceNr);
+		xmlNewTextChild(itemNode, NULL, "sourceNr", tmp);
+		g_free(tmp);
 	}		
 
 	metadata_add_xml_nodes(item->metadata, itemNode);
