@@ -195,7 +195,7 @@ void ui_itemlist_clear(void) {
 
 void ui_itemlist_update_item(itemPtr item) {
 	GtkTreeIter	iter;
-	gchar		*title, *label, *time_str, *esc_title, *esc_time_str, *tmp;
+	gchar		*label, *time_str, *esc_title, *esc_time_str, *tmp;
 	const gchar 	*direction_marker;
 	GdkPixbuf	*icon = NULL;
 
@@ -211,14 +211,14 @@ void ui_itemlist_update_item(itemPtr item) {
 	}
 	
 	/* Label and state icon */
-	title = g_strdup(item->title);
-	if(title == NULL) 
-		title = g_strdup(_("[No title]"));
-		
-	/* we escape here to use Pango markup (the parsing ensures that
-	   titles never contain escaped HTML) */
-	esc_title = g_markup_escape_text(title, -1);
-	esc_title = g_strstrip(esc_title);
+	if(!item->title || !strlen(item->title)) {
+		esc_title = g_strdup(_("<i>*** No title ***</i>"));
+	} else {
+		/* we escape here to use Pango markup (the parsing ensures that
+		   titles never contain escaped HTML) */
+		esc_title = g_markup_escape_text(item->title, -1);
+		esc_title = g_strstrip(esc_title);
+	}
 	
 	direction_marker = common_get_direction_mark(item->itemSet->node->title);
 	
@@ -251,7 +251,6 @@ void ui_itemlist_update_item(itemPtr item) {
 	}
 	
 	g_free(time_str);
-	g_free(title);
 	g_free(label);
 }
 
