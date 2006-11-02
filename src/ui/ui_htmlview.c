@@ -230,17 +230,27 @@ void ui_htmlview_launch_URL(GtkWidget *htmlview, const gchar *url, gint launchTy
 					itemid = nodeid;
 					itemid = strchr(nodeid, '-');
 					if(itemid) {
+						nodePtr node;
 						itemPtr item;
 						
 						*itemid = 0;
 						itemid++;
-						item = itemset_lookup_item(itemlist_get_displayed_itemset(), 
-			                        			   node_from_id(nodeid), 
-			                        			   atol(itemid));
+						
+						node = node_from_id(nodeid);
+						if(!node) {
+							g_warning("Fatal: no node with id (%s) found!\n", nodeid);
+							return;
+						}
+						
+						node_load(node);
+						
+						item = itemset_lookup_item(node->itemSet, node, atol(itemid));
 						if(item)
 							(*uriType->func)(item);
 						else
 							g_warning("Fatal: no item with id (node=%s, item=%s) found!!!", nodeid, itemid);
+							
+						node_unload(node);
 						return;
 					}
 				}

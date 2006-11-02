@@ -14,6 +14,8 @@
 	  feed list.
 	* Avoid unnecessary item view updates when merging items 
 	  while viewing folders or in combined viewing mode.
+	* Fixes the HTML view item menu to work correctly with folders
+	  and search folders.
 
 
 2006-10-31  Lars Lindner  <lars.lindner@gmail.com>
