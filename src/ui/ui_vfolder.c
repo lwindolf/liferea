@@ -299,6 +299,7 @@ void ui_vfolder_add(nodePtr parent) {
 	vfolder_new(node);
 
 	node_add_child(NULL, node, 0);
+	feedlist_save();
 	ui_feedlist_select(node);
 	ui_vfolder_properties(node);
 }

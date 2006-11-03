@@ -475,6 +475,8 @@ void node_request_automatic_add(const gchar *source, const gchar *title, const g
 	ui_feedlist_get_target_folder(&pos);
 	node_add_child(parent, node, pos);
 	node_request_update(node, flags);
+	feedlist_save();
+	ui_feedlist_select(node);
 }
 
 void node_request_remove(nodePtr node) {

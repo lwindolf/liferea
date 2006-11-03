@@ -492,13 +492,14 @@ static void on_simple_newdialog_response(GtkDialog *dialog, gint response_id, gp
 						   FEED_REQ_DOWNLOAD_FAVICON | 
 						   FEED_REQ_AUTH_DIALOG);
 			g_free(source);
-			gtk_widget_destroy(GTK_WIDGET(dialog));
-			g_free(ui_data);
 			break;
 		case GTK_RESPONSE_APPLY: /* misused for "Advanced" */
 			on_complex_newdialog(ui_data);
+			return;
 			break;
 	}
+	gtk_widget_destroy(GTK_WIDGET(dialog));
+	g_free(ui_data);
 }
 
 void ui_feed_add(nodePtr parent) {

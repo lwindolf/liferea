@@ -16,6 +16,10 @@
 	  while viewing folders or in combined viewing mode.
 	* Fixes the HTML view item menu to work correctly with folders
 	  and search folders.
+	* Fixes a crash when selecting an "empty" node after creating
+	  a new folder (reported by Sergei Butakov)
+	* After feed list node creation there is no more XML error
+	  in the HTML description view.
 
 
 2006-10-31  Lars Lindner  <lars.lindner@gmail.com>

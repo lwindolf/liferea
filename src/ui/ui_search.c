@@ -145,6 +145,7 @@ void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 		nodePtr node = searchResult;
 		searchResult = NULL;
 		node_add_child(NULL, node, 0);
+		feedlist_save();
 		ui_feedlist_select(node);
 	}
 }
