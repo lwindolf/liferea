@@ -1,10 +1,10 @@
-2006-11-??  Lars Lindner  <lars.lindner@gmail.com>
+2006-11-03  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.1.9 (Unstable)
 
 
 	* Fixes SF #1569020 reported by smglchatguru: Next unread
-	  cause the first unread item to be mark read and the 
+	  cause the first unread item to be marked read and the 
 	  second unread item to be selected when changing to the
 	  next feed with unread items. (Solution in 1.1.8 was
 	  not 100% complete)

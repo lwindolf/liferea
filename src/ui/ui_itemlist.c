@@ -507,10 +507,11 @@ void ui_itemlist_select(itemPtr item) {
 	}
 }
 
-static gboolean ui_itemlist_find_unread_item_from_iter(GtkTreeIter *iter) {
+static itemPtr ui_itemlist_find_unread_item_from_iter(GtkTreeIter *iter) {
 	itemPtr	item;
 	
-	if(NULL != (item = ui_iter_to_item(iter))) {
+	item = ui_iter_to_item(iter);
+	if(item) {
 		if(!item->readStatus) {
 			if(2 != itemlist_get_view_mode()) {
 				ui_itemlist_select(item);
@@ -518,13 +519,13 @@ static gboolean ui_itemlist_find_unread_item_from_iter(GtkTreeIter *iter) {
 			} else {
 				itemlist_mark_all_read(item->itemSet);
 			}
-			return TRUE;
+			return item;
 		}
 	}
-	return FALSE;
+	return NULL;
 }
 
-gboolean ui_itemlist_find_unread_item(itemPtr start) {
+itemPtr ui_itemlist_find_unread_item(itemPtr start) {
 	GtkTreeStore		*itemstore;
 	GtkTreeIter		iter;
 	gboolean		valid = TRUE;
@@ -537,12 +538,14 @@ gboolean ui_itemlist_find_unread_item(itemPtr start) {
 		valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(itemstore), &iter);
 	
 	while(valid) {
-		if(ui_itemlist_find_unread_item_from_iter(&iter))
-			return TRUE;
+		itemPtr	item;
+		item = ui_itemlist_find_unread_item_from_iter(&iter);
+		if(item)
+			return item;
 		valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(itemstore), &iter);
 	}
 
-	return FALSE;
+	return NULL;
 }
 
 void on_next_unread_item_activate(GtkMenuItem *menuitem, gpointer user_data) {

@@ -226,29 +226,31 @@ void itemlist_update_vfolder(vfolderPtr vfolder) {
 
 /* next unread selection logic */
 
-static gboolean itemlist_find_unread_item(void) {
+static itemPtr itemlist_find_unread_item(void) {
+	itemPtr	result = NULL;
 	
 	if(!displayed_itemSet)
-		return FALSE;
+		return NULL;
 
 	if(displayed_itemSet->node->children) {
 		feedlist_find_unread_feed(displayed_itemSet->node);
-		return FALSE;
+		return NULL;
 	}
 
 	/* Note: to select in sorting order we need to do it in the GUI code
 	   otherwise we would have to sort the item list here... */
 	
-	if(!displayed_item || !ui_itemlist_find_unread_item(displayed_item))
-		return ui_itemlist_find_unread_item(NULL);
-	else
-		return TRUE;
-	
-	return FALSE;
+	if(displayed_item)
+		result = ui_itemlist_find_unread_item(displayed_item);
+		
+	if(!result)
+		result = ui_itemlist_find_unread_item(NULL);
+
+	return result;
 }
 
 void itemlist_select_next_unread(void) {
-	nodePtr		node;
+	itemPtr	result = NULL;
 
 	/* If we are in combined mode we have to mark everything
 	   read or else we would never jump to the next feed,
@@ -260,8 +262,12 @@ void itemlist_select_next_unread(void) {
 
 	/* before scanning the feed list, we test if there is a unread 
 	   item in the currently selected feed! */
-	if(!itemlist_find_unread_item()) {
-
+	result = itemlist_find_unread_item();
+	
+	/* If none is found we continue searching in the feed list */
+	if(!result) {
+		nodePtr	node;
+		
 		/* scan feed list and find first feed with unread items */
 		node = feedlist_find_unread_feed(feedlist_get_root());
 
@@ -269,8 +275,8 @@ void itemlist_select_next_unread(void) {
 			/* load found feed */
 			ui_feedlist_select(node);
 
-			/* find first unread item */
-			itemlist_find_unread_item();
+			if(NODE_VIEW_MODE_COMBINED != node_get_view_mode(node))
+				result = itemlist_find_unread_item();	/* find first unread item */
 		} else {
 			/* if we don't find a feed with unread items do nothing */
 			ui_mainwindow_set_status_bar(_("There are no unread items "));
@@ -278,6 +284,9 @@ void itemlist_select_next_unread(void) {
 	}
 
 	itemlistLoading--;
+	
+	if(result)
+		itemlist_selection_changed(result);
 }
 
 /* menu commands */

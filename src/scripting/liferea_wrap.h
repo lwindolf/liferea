@@ -5603,6 +5603,27 @@ fail:
 }
 
 
+static int _wrap_itemlist_mark_all_popup(lua_State* L) {
+  int SWIG_arg = -1;
+  itemSetPtr arg1 ;
+  
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg(1);
+  {
+    itemSetPtr * argp;
+    if(SWIG_ConvertPtr(L,1,(void**)(&argp),SWIGTYPE_p_itemSetPtr,0)) SWIG_fail;
+    arg1 = *argp;
+  }
+  itemlist_mark_all_popup(arg1);
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_itemlist_update_vfolder(lua_State* L) {
   int SWIG_arg = -1;
   vfolderPtr arg1 ;
@@ -5631,20 +5652,6 @@ static int _wrap_itemlist_selection_changed(lua_State* L) {
   if(!lua_isuserdata(L,1)) SWIG_fail_arg(1);
   arg1=(itemPtr)SWIG_MustGetPtr(L,1,SWIGTYPE_p_item,0,1,"itemlist_selection_changed");
   itemlist_selection_changed(arg1);
-  SWIG_arg=0;
-  
-  return SWIG_arg;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_itemlist_reset_date_format(lua_State* L) {
-  int SWIG_arg = -1;
-  
-  itemlist_reset_date_format();
   SWIG_arg=0;
   
   return SWIG_arg;
@@ -6132,8 +6139,9 @@ static int _wrap_socialBookmarkSite_name_set(lua_State* L) {
   arg1=(struct socialBookmarkSite *)SWIG_MustGetPtr(L,1,SWIGTYPE_p_socialBookmarkSite,0,1,"socialBookmarkSite_name_set");
   arg2 = (char*)lua_tostring(L, 2);
   {
+    if (arg1->name) free((char*)arg1->name);
     if (arg2) {
-      arg1->name = (char const *) malloc(strlen(arg2)+1);
+      arg1->name = (char *) malloc(strlen(arg2)+1);
       strcpy((char*)arg1->name,arg2);
     } else {
       arg1->name = 0;
@@ -6177,8 +6185,9 @@ static int _wrap_socialBookmarkSite_url_set(lua_State* L) {
   arg1=(struct socialBookmarkSite *)SWIG_MustGetPtr(L,1,SWIGTYPE_p_socialBookmarkSite,0,1,"socialBookmarkSite_url_set");
   arg2 = (char*)lua_tostring(L, 2);
   {
+    if (arg1->url) free((char*)arg1->url);
     if (arg2) {
-      arg1->url = (char const *) malloc(strlen(arg2)+1);
+      arg1->url = (char *) malloc(strlen(arg2)+1);
       strcpy((char*)arg1->url,arg2);
     } else {
       arg1->url = 0;
@@ -6369,7 +6378,7 @@ static int _wrap_social_register_site(lua_State* L) {
   arg2 = (char*)lua_tostring(L, 2);
   arg3 = (int)lua_tonumber(L, 3);
   arg4 = (int)lua_tonumber(L, 4);
-  social_register_site((char const *)arg1,(char const *)arg2,arg3,arg4);
+  social_register_site(arg1,arg2,arg3,arg4);
   SWIG_arg=0;
   
   return SWIG_arg;
@@ -6810,20 +6819,6 @@ static int _wrap_ui_itemlist_get_tree_store(lua_State* L) {
   result = (GtkTreeStore *)ui_itemlist_get_tree_store();
   SWIG_arg=0;
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_GtkTreeStore,0); SWIG_arg++; 
-  return SWIG_arg;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_ui_itemlist_reset_date_format(lua_State* L) {
-  int SWIG_arg = -1;
-  
-  ui_itemlist_reset_date_format();
-  SWIG_arg=0;
-  
   return SWIG_arg;
   
 fail:
@@ -7342,20 +7337,6 @@ static int _wrap_ui_itemlist_update_item(lua_State* L) {
   if(!lua_isuserdata(L,1)) SWIG_fail_arg(1);
   arg1=(itemPtr)SWIG_MustGetPtr(L,1,SWIGTYPE_p_item,0,1,"ui_itemlist_update_item");
   ui_itemlist_update_item(arg1);
-  SWIG_arg=0;
-  
-  return SWIG_arg;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_ui_itemlist_update(lua_State* L) {
-  int SWIG_arg = -1;
-  
-  ui_itemlist_update();
   SWIG_arg=0;
   
   return SWIG_arg;
@@ -8247,9 +8228,9 @@ static const struct luaL_reg swig_commands[] = {
     { "itemlist_remove_items", _wrap_itemlist_remove_items},
     { "itemlist_mark_all_read", _wrap_itemlist_mark_all_read},
     { "itemlist_mark_all_old", _wrap_itemlist_mark_all_old},
+    { "itemlist_mark_all_popup", _wrap_itemlist_mark_all_popup},
     { "itemlist_update_vfolder", _wrap_itemlist_update_vfolder},
     { "itemlist_selection_changed", _wrap_itemlist_selection_changed},
-    { "itemlist_reset_date_format", _wrap_itemlist_reset_date_format},
     { "itemlist_select_next_unread", _wrap_itemlist_select_next_unread},
     { "itemlist_set_flag", _wrap_itemlist_set_flag},
     { "itemlist_set_read_status", _wrap_itemlist_set_read_status},
@@ -8310,7 +8291,6 @@ static const struct luaL_reg swig_commands[] = {
     { "ui_itemlist_new", _wrap_ui_itemlist_new},
     { "ui_itemlist_reset_tree_store", _wrap_ui_itemlist_reset_tree_store},
     { "ui_itemlist_get_tree_store", _wrap_ui_itemlist_get_tree_store},
-    { "ui_itemlist_reset_date_format", _wrap_ui_itemlist_reset_date_format},
     { "ui_itemlist_prefocus", _wrap_ui_itemlist_prefocus},
     { "ui_itemlist_select", _wrap_ui_itemlist_select},
     { "ui_itemlist_add_item", _wrap_ui_itemlist_add_item},
@@ -8336,7 +8316,6 @@ static const struct luaL_reg swig_commands[] = {
     { "on_popup_next_unread_item_selected", _wrap_on_popup_next_unread_item_selected},
     { "on_nextbtn_clicked", _wrap_on_nextbtn_clicked},
     { "ui_itemlist_update_item", _wrap_ui_itemlist_update_item},
-    { "ui_itemlist_update", _wrap_ui_itemlist_update},
     { "ui_itemlist_add_item_bookmark", _wrap_ui_itemlist_add_item_bookmark},
     { "on_popup_copy_URL_clipboard", _wrap_on_popup_copy_URL_clipboard},
     { "on_popup_social_bm_item_selected", _wrap_on_popup_social_bm_item_selected},

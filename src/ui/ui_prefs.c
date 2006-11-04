@@ -342,6 +342,7 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 		gtk_option_menu_set_history(GTK_OPTION_MENU(widget), tmp);
 		
 		/* Setup social bookmarking list */
+		i = 0;
 		name = getStringConfValue(SOCIAL_BM_SITE);
 		menu = gtk_menu_new();
 		list = socialBookmarkSites;
@@ -354,6 +355,7 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 			gtk_container_add(GTK_CONTAINER(menu), entry);
 			gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_socialsite_changed), (gpointer)siter->name);
 			list = g_slist_next(list);
+			i++;
 		}
 		gtk_option_menu_set_menu(GTK_OPTION_MENU(lookup_widget(prefdialog, "socialpopup")), menu);
 		gtk_option_menu_set_history(GTK_OPTION_MENU(lookup_widget(prefdialog, "socialpopup")), tmp);
