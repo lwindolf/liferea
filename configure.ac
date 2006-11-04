@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([liferea],[1.1.9],[liferea-devel@lists.sourceforge.net])
+AC_INIT([liferea],[1.2-RC1],[liferea-devel@lists.sourceforge.net])
 AC_CANONICAL_TARGET([])
 AC_CONFIG_SRCDIR([src/feedlist.c])
 
@@ -388,6 +388,7 @@ if test "x$enable_gnutls" != "xno"; then
                 "x$have_gnutls_includes" != "xno"; then
 
                 LDFLAGS_save="$LDFLAGS"
+                LIBS_save="$LIBS"
 
                 case $with_gnutls_libs in
                         ""|-L*) ;;
@@ -396,9 +397,11 @@ if test "x$enable_gnutls" != "xno"; then
 
                 AC_CACHE_CHECK([for GNUTLS libraries], gnutls_libs,
                 [
-                        LDFLAGS="$LDFLAGS $with_gnutls_libs -lgnutls -lgcrypt"
+                        LDFLAGS="$LDFLAGS $with_gnutls_libs"
+                        LIBS="-lgnutls -lgcrypt"
                         AC_TRY_LINK_FUNC(gnutls_init, gnutls_libs="yes", gnutls_libs="no")
                         LDFLAGS="$LDFLAGS_save"
+                        LIBS="$LIBS_save"
                 ])
 
                 if test "x$gnutls_libs" != "xno"; then
