@@ -6,6 +6,11 @@
 	  GnuTLS support (by Alex Myltsev)
 	* Fixes a crash when unflagging items in vfolder with
 	  matching rule "flagged". (reported by Sergei Butakov)
+	* Updated user documentation
+
+	Translations
+
+	* Added Japanese translation (Takeshi AIHANA)
 
 
 2006-11-03  Lars Lindner  <lars.lindner@gmail.com>
