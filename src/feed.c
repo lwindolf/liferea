@@ -578,7 +578,7 @@ static void feed_save_to_cache(nodePtr node) {
 		   otherwise add them to the feed XML document */		
 		itemlist = g_list_copy(node->itemSet->items);
 		for(iter = itemlist; iter != NULL; iter = g_list_next(iter)) {
-			itemPtr ip = iter->data;
+			itemPtr item = iter->data;
 
 			if(saveMaxCount == CACHE_DISABLE)
 				continue;
@@ -586,10 +586,10 @@ static void feed_save_to_cache(nodePtr node) {
 			if((saveMaxCount != CACHE_UNLIMITED) &&
 			   (saveCount >= saveMaxCount) &&
 			   (feed->fhp == NULL || feed->fhp->directory == FALSE) &&
-			   ! ip->flagStatus) {
-				itemlist_remove_item(ip);
+			   ! item->flagStatus) {
+				itemlist_remove_item(item);
 			} else {
-				item_to_xml(ip, xmlDocGetRootElement(doc), FALSE);
+				item_to_xml(item, xmlDocGetRootElement(doc), FALSE);
 				saveCount++;
 			}
 		}

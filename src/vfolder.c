@@ -245,7 +245,7 @@ static void vfolder_remove_matching_item_copy(vfolderPtr vp, itemPtr ip) {
 		   the original item may not exist anymore when the 
 		   removal is executed, so we need to remove the
 		   pointer to the original item */
-		tmp->sourceNode = NULL;
+		tmp->sourceNode = tmp->itemSet->node;
 		tmp->sourceNr = -1;
 		
 		if(!tmp->readStatus)
