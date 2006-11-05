@@ -15,11 +15,16 @@
 	</table>
 	<hr />
 	<!-- navigation header end -->
+	
+	<p>
+	This section documents all user interaction with headlines. Note: in Liferea
+	headlines are also referred to as items.
+	</p>
 
-	<h3>Working with Headlines</h3>
+	<h3>Available Viewing Modes</h3>
 
 	<p>
-	Liferea knows two display modes:
+	Liferea knows three display modes:
 	</p>
 
 	<table><tr><td width="20px">&nbsp;</td><td>
@@ -35,9 +40,24 @@
 	       </tr>
 	    </table>
 	    </td><td>
-	    <b>Email client like</b> - The upper right pane
+	    <b>Normal View</b> - Email client like: the upper right pane
 	    contains a list of all headlines of the selected feed and the 
 	    selected headline is shown in the lower right pane.</li>
+	    </td></tr></table>
+	</p>
+
+	<p>
+	    <table><tr><td width="60px">
+	    <table cellspacing=0 cellpadding=0 style="border:1px solid black;">
+	       <tr>
+	          <td style="border:1px solid black;" width="18px" height="40px">&nbsp;</td>
+		  <td style="border:1px solid black;background:#ccc;" width="10px" height="20px">&nbsp;</td>
+	          <td style="border:1px solid black;background:#ccc;" width="10px" height="20px">&nbsp;</td>
+	       </tr>
+	    </table>
+	    </td><td>
+	    <b>Wide View</b> - 3 panes: the middle pane contains a list of all headlines 
+	    of the selected feed and the selected headline is shown in the right pane.</li>
 	    </td></tr></table>
 	</p>
 
@@ -50,7 +70,7 @@
 	       </tr>
 	    </table>
 	    </td><td>
-	    <b>Condensed View</b> - The right pane contains
+	    <b>Combined View</b> - 2 panes: the right pane contains
 	    a combined display of all headlines of the selected feed.</li>
 	    </td></tr></table>
 	</p>
@@ -58,10 +78,9 @@
 	</td></tr></table>
 
 	<p>
-	You can change between these modes by selecting "Condensed View" 
-	from either the item lists or the item views context menu. This
+	You can change between these modes in the "View" menu. This
 	is a per-feed settting so you can view each feed in the mode
-	that fits best.
+	that fits best. The default viewing mode is "Normal View".
 	</p>
 	
 	<h4>Launching an Item Link</h4>
@@ -80,36 +99,42 @@
 	
 	<h4>Changing the Read Status</h4>
 	<p>
-	A headline has a read state. Unread items are marked
-	bold. If you click on an item the read status changes
-	to read and the items list entry text style becomes
-	regular. This features also works if you use the keyboard.
+	A headline has a read state. Unread items have bold titles. 
+	If you select an item the read status changes to read and the 
+	item title style becomes regular.
 	</p>
 	<p>
 	Sometimes you may not want to read the headlines of a 
-	subscription. To mark all unread at once select "Mark all as unread"
-	from either the items menu or the context menu of the
-	item list.
+	subscription. To mark all unread at once select "Mark all as Read"
+	from the "Feed" menu or the tool bar. Alternatively you can press
+	the Ctrl-R hotkey.
 	</p>
 	<p>
 	There is also the possibility to change back the item read
 	status. Select "Toggle Read Flag" from the items menu or
 	click the headline with the third mouse button to achieve this.
 	</p>
+	<table cellspacing="10">
+	<tr><td>
+	<img src="help_item_unread.png">
+	</td><td>
+	The icon used to indicate unread items.
+	</td></tr>
+	</table>
 	
 	<h4>Flagging Items</h4>
 	<p>
 	Liferea allows you to mark items with a flag. This is useful
 	to easily find these items and to prevent them from being 
 	dropped from the cache when aging. To do so select "Toggle Flag" 
-	from the item menu or click the icon column of the headline list
+	from the item context menu or click the icon column of the headline list
 	with the third mouse button. 
 	</p>
 	<table cellspacing="10">
 	<tr><td>
 	<img src="help_item_flag.png">
 	</td><td>
-	The icon used for flagging items.
+	The icon used to indicate flagged items.
 	</td></tr>
 	</table>
 	
@@ -133,7 +158,7 @@
 	
 	<h4>Removing Items</h4>
 	<p>
-	By selecting "Remove All Items" from the items menu you can
+	By selecting "Remove All Items" from the "Items" menu you can
 	clear the item cache of the currently selected feed. If you
 	only want to remove a single by choosing the "Remove Selected"
 	option.
