@@ -385,6 +385,8 @@ void itemlist_remove_item(itemPtr item) {
 	
 	if(displayed_item == item) {
 		displayed_item = NULL;
+		deferred_item_filter = FALSE;
+		deferred_item_remove = FALSE;
 		itemview_select_item(NULL);
 	}
 	itemview_remove_item(item);

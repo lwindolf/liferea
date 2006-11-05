@@ -4,6 +4,8 @@
 
 	* Improved library dependencies in build tooling for
 	  GnuTLS support (by Alex Myltsev)
+	* Fixes a crash when unflagging items in vfolder with
+	  matching rule "flagged". (reported by Sergei Butakov)
 
 
 2006-11-03  Lars Lindner  <lars.lindner@gmail.com>
