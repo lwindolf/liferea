@@ -11,7 +11,7 @@
 	<!-- navigation header start -->
 	<table width="100%">
 	   <tr>
-	      <!-- back --><td width="50px"><a href="about_en.html">Prev</a></td>
+	      <!-- back --><td width="50px"><a href="concepts_en.html">Prev</a></td>
 	      <!-- home --><td style="text-align:center;"><b>Managing Subscriptions</b></td>
 	      <!-- next --><td width="50px;" style="text-align:right;"><a href="headlines_en.html">Next</a></td>
 	   </tr>
@@ -20,6 +20,10 @@
 	<!-- navigation header end -->
 
 	<!-- content start --> 
+	<p>
+	This section documents all user interactions necessary to create and maintain subscription.
+	</p>
+	
 	<h3>Subscribing</h3>
 	<p>
 	To create a new subscription select "New Feed" from the feed 
@@ -28,19 +32,32 @@
 	</p>	
 
 	<p align="center">
-	<img src="help_subscribe_1.0.0.png">
+	<img src="help_subscribe_1.2.0.png">
 	</p>
+	
+	<p>
+	For example, to subscribe to Slashdot's news feed enter
+	"<i><a href="http://slashdot.org/index.rss">http://slashdot.org/index.rss</a></i>"
+	into the text box and click "OK".
+	</p>
+	
+	<h3>Creating special subscriptions</h3>
 
 	<p>
-	The data displayed in feeds can be obtained from a variety of
-	different sources including over the Internet using an URL, the
-	output of a locally run command, and by directly reading from a
-	file. Most often, it is desired to subscribe using an URL. After
-	selecting the desired source type, enter the source URL, command
-	name, or filename into the "Source" textbox. For example, to
-	subscribe to Slashdot's RSS feed, select "URL" as the source type
-	and enter "<i><a href="http://slashdot.org/index.rss">http://slashdot.org/index.rss</a></i>"
-	into the "Source" textbox.</p>
+	Liferea supports obtaining feeds from a variety of different sources 
+	including Internet URLs, the output of a locally run command, and by 
+	directly reading from a	file. Most often, it is desired to subscribe 
+	using an URL as described in the previous paragraph. For special 
+	subscription you must select "Advanced" to open the following more
+	complex subscription dialog:</p>
+	
+	<p align="center">
+	<img src="help_subscribe_adv_1.2.0.png">
+	</p>
+	
+	<p>
+	After selecting the desired source type, enter the source URL, command
+	name, or filename into the "Source" textbox. </p>
 	
 	<p>When a command or local file is selected, the command or file
 	can be selected using a file navigation box by clicking "Select
@@ -53,7 +70,7 @@
 	href="http://home.kcore.de/~kiza/software/snownews/snowscripts/">the
 	Snownews and Liferea script repository</a>.</p>
 
-	<p>To use conversion filters, the "Conversion filter" option needs
+	<p>To use conversion filters, the "Use conversion filter" option needs
 	to be activated in the subscription dialog box. The filter is
 	specified by either typing the path of the filter script into the
 	"Convert using" textbox or selecting the filter after clicking the
@@ -64,24 +81,26 @@
 	
 	<h3>Feed Properties</h3>
 
-	<p> The feed properties dialog used to set additional feed
-	  properties will appear after a successful subscription and when
-	  "Properties" is activated in the "Feeds" menu or the context
-	  menu displayed when right-clicking a feed. When creating a new
-	  subscription, the default values are reasonable and often no
-	  changes are made using this dialog.  After selecting "Ok" to
-	  save the feed properties, the new feed should appear below the
-	  currently selected feed or if you had selected a folder, as the
-	  last feed in the selected folder.</p>
+	<p>
+	The feed properties dialog is used to configure additional feed
+	properties and can be activated in the "Feeds" menu or from feed 
+	context menu. After successfully creating a new subscription you 
+	usually don't need to change the feed properties.
+	</p>
+	<p>
+	Only if you want to change the HTTP authentication, the caching behaviour
+	or other feed specific options then you need to use the feed properties
+	dialog.
+	</p>
 	
 	<p>
 	The dialog groups the feed properties into five sets: "General",
-	"Feed Source", "Feed Cache", "Authentication" and "Enclosures":</p>
+	"Source", "Archive", "Download" and "Advanced":</p>
 
 	<h4>General Properties</h4>
 
 	<p align="center">
-	<img src="help_feed_prop_general_1.0.0.png"/>
+	<img src="help_feed_prop_general_1.2.0.png"/>
 	</p>
 	
 	<p>The "General" pane allows you to set feed title and update
@@ -123,25 +142,24 @@
 			for feeds you always want to have only updated manually.</dd>
 	  </dl>
 	</div>
-	<h4>Feed Source Properties</h4>
+	<h4>Source Properties</h4>
 
 	<p align="center">
-	<img src="help_feed_prop_source_1.0.0.png"/>
+	<img src="help_feed_prop_source_1.2.0.png"/>
 	</p>
 	
-	<p>The "Feed Source" pane contains the same fields the "New Feed"
-	dialog provided when subscribing to this feed. You can use these
-	settings to change the feed source (e.g. after a feed's URL has
-	changed).</p>
+	<p>The "Source" pane contains the same fields that the advanced
+	subscription dialog provides. You can use these	settings to change 
+	the feed source (e.g. after a feed's URL has changed).</p>
 
-	<h2>Feed Cache Properties</h2>
+	<h2>Archive Properties</h2>
 
 	<p align="center">
-	<img src="help_feed_prop_cache_1.0.0.png"/>
+	<img src="help_feed_prop_cache_1.2.0.png"/>
 	</p>
 	
-	<p>The third pane, "Feed Cache", controls how many items of
-	a feed are saved when Liferea writes the feeds cache file.
+	<p>The third pane, "Archive", controls how many items of
+	a feed are kept when Liferea saves a feed to disk.
 	Similar to the update interval settings there is a 
 	corresponding global preference which sets a default cache
 	size for all feeds. You should use the feed specific cache
@@ -163,38 +181,43 @@
 	this headline.
 	</p>
 	
-	<h4>Authentication Properties</h4>
+	<h4>Download Properties</h4>
 	
 	<p align="center">
-	<img src="help_feed_prop_auth_1.0.0.png"/>
+	<img src="help_feed_prop_downl_1.2.0.png"/>
 	</p>
 	
 	<p>
-	This tab allows you to enable HTTP authentication when downloading
-	the feed. Enable the checkbox and enter appropriate user and
-	password values to use pasword-protected feeds. Usually you won't
-	need to use these settings because you will be asked username and
-	password when subscribing to the feed that requires
-	authontication.
+	This tab allows you to disable the use of the global proxy setting and
+	to enable HTTP authentication when downloading the feed. Enable the checkbox 
+	and enter appropriate user and password values to use pasword-protected feeds. 
+	Usually you won't need to use these settings because you will be asked username 
+	and password when subscribing to the feed that requires	authentication.
 	</p>
 	
-	<h4>Enclosure Properties</h4>
+	<h4>Advanced Properties</h4>
 	
 	<p align="center">
-	<img src="help_feed_prop_enclosures_1.0.0.png"/>
+	<img src="help_feed_prop_adv_1.2.0.png"/>
 	</p>
 
 	<p>
-	For each feed you can enable <a href="enclosures_en.html">enclosure auto-downloading</a> 
+	In this pane you can enable <a href="enclosures_en.html">enclosure auto-downloading</a> 
 	by enabling the check button in this pane.
 	</p>
 	
+	<p>
+	The second check button allows you to change the item selection behaviour.
+	Per-default Liferea shows the item description in the HTML view pane.
+	When this check box is enabled it will automatically load the item link
+	when the item selection changes.
+	</p>	
 
 	<!-- navigation footer start -->
 	<hr />
 	<table width="100%">
 	   <tr>
-	      <!-- back --><td width="50px"><a href="about_en.html">Prev</a></td>
+	      <!-- back --><td width="50px"><a href="concepts_en.html">Prev</a></td>
 	      <!-- home --><td style="text-align:center;"><a href="topics_en.html">Contents</a></td>
 	      <!-- next --><td width="50px;" style="text-align:right;"><a href="headlines_en.html">Next</a></td>
 	   </tr>
