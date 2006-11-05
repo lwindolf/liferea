@@ -1,4 +1,5 @@
 html_doc_en =	about_en.html \
+		concepts_en.html \
 		folders_en.html \
 		headlines_en.html \
 		preferences_en.html \
@@ -17,6 +18,7 @@ html_doc_ja =	reference_ja.html \
 html_doc_nl =	reference_nl.html
 
 html_doc_de =	about_de.html \
+		concepts_de.html \
 		folders_de.html \
 		headlines_de.html \
 		preferences_de.html \
@@ -28,25 +30,27 @@ html_doc_de =	about_de.html \
 		enclosures_de.html \
 		faq_de.html
 
-html_doc_pictures_en =	help_feed_available.png \
+html_doc_pictures_en =	help_feed_default.png \
 			help_feed_error.png \
-			help_feed_ocs.png \
-			help_feed_prop_auth_1.0.0.png \
-			help_feed_prop_cache_1.0.0.png \
-			help_feed_prop_enclosures_1.0.0.png \
-			help_feed_prop_general_1.0.0.png \
-			help_feed_prop_source_1.0.0.png \
+			help_folder.png \
+			help_opml.png \
+			help_feed_prop_downl_1.2.0.png \
+			help_feed_prop_cache_1.2.0.png \
+			help_feed_prop_adv_1.2.0.png \
+			help_feed_prop_general_1.2.0.png \
+			help_feed_prop_source_1.2.0.png \
 			help_item_flag.png \
-			help_prefs_browser_1.0.0.png \
-			help_prefs_enclosures_1.0.0.png \
-			help_prefs_feeds_1.0.0.png \
-			help_prefs_folders_1.0.0.png \
-			help_prefs_gui_1.0.0.png \
-			help_prefs_headlines_1.0.0.png \
-			help_prefs_proxy_1.0.0.png \
-			help_search_1.0.0.png \
-			help_subscribe_1.0.0.png \
-			help_vfolder_1.0.0.png
+			help_item_unread.png \
+			help_prefs_browser_1.2.0.png \
+			help_prefs_enclosures_1.2.0.png \
+			help_prefs_feeds_1.2.0.png \
+			help_prefs_folders_1.2.0.png \
+			help_prefs_gui_1.2.0.png \
+			help_prefs_headlines_1.2.0.png \
+			help_prefs_proxy_1.2.0.png \
+			help_search_1.2.0.png \
+			help_subscribe_1.2.0.png \
+			help_vfolder_1.2.0.png
 
 EXTRA_DIST =	$(html_doc_en) \
 		$(html_doc_ja) \
