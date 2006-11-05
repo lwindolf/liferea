@@ -1,0 +1,162 @@
+<html>
+<head>
+	<title>Basic Concepts</title>
+	
+	<link rel="stylesheet" type="text/css" href="reference.css">
+</head>
+<body>
+
+	<!-- navigation header start -->
+	<table width="100%">
+	   <tr>
+	      <!-- back --><td width="50px"><a href="about_en.html">Prev</a></td>
+	      <!-- home --><td style="text-align:center;"><b>Basic Concepts</b></td>
+	      <!-- next --><td width="50px;" style="text-align:right;"><a href="subscriptions_en.html">Next</a></td>
+	   </tr>
+	</table>
+	<hr />
+	<!-- navigation header end -->
+
+	<!-- content start --> 
+	<p>
+	This section tries to clarify some of the technical jargon used
+	along with feed readers.
+	</p>
+	
+	<h3>What does "online/offline desktop" news aggregator mean?</h3>
+	<p>
+	Feed readers or news aggregators can be realised as web applications
+	or as desktop applications. The place of execution (your computer
+	vs. some webserver) implies certain advantages and disadvantages.
+	</p>
+	
+	<p>
+	A <b>desktop news aggregator</b> runs on your own PC and stores 
+	aggregated feeds locally. It accesses each news feed and downloads
+	its newest headlines periodically. Note that not all desktop news 
+	aggregators can work offline. Some desktop aggregators retrieve 
+	feeds each time you access them instead of caching them for later
+	use. Liferea as an <b>offline capable</b> desktop aggregator caches
+	feeds and is suitable for use with portable devices (laptops, hand 
+	helds...) that do not have a permanent internet connection.
+	</p>
+	
+	<ul>
+	    <li><b>Disadvantages:</b>
+	         <ul>
+		     <li>No implicit state synchronization when used from different client machines</li>
+		     <li>Higher bandwidth usage compared to online aggregators</li>
+		     <li>Need to be installed on each client machines</li>
+		     <li>OS-dependant</li>
+		 </ul>
+	    </li>
+	    <li><b>Advantages:</b>
+	         <ul>
+		     <li>Your cached feed contents are saved on your own (secure) machine.</li>
+		     <li>Your cached feed contents are searchable locally with other tools (e.g. <a href="http://beagle-project.org/Main_Page">Beagle</a>)</li>
+		     <li>Your feed list is not accessible to 3rd parties</li>
+		     <li>Each feed access are done in private.</li>
+		 </ul>
+	    </li>
+	</ul>
+
+	
+	<p>
+	A <b>online news aggregator</b> (for example <a href="http://bloglines.com">Bloglines</a>)
+	is run on a remote webserver which you can access from everywhere
+	as long as you have network access. When you log in to the online
+	news aggregator it usually doesn't need to fetch the most recent
+	headlines of you feed subscriptions because it implements feed 
+	caching	to save bandwidth.
+	</p>
+	
+	<ul>
+	    <li><b>Disadvantages:</b>
+	         <ul>
+		     <li>You rely on some 3rd party vendor for the news aggregator service.</li>
+		     <li>Often you have to pay for premium features.</li>
+		     <li>No chance to improve/modify/fix the online application.</li>
+		     <li>You need a web browser to access it.</li>
+		 </ul>
+	    </li>
+	    <li><b>Advantages:</b>
+	         <ul>
+		     <li>You get the same feed list and feed states no matter from where you access them.</li>
+		     <li>Practically no bandwidth usage except for the access of the web interface.</li>
+		     <li>Community headline rating systems to categorize content.</li>
+		     <li>Sharing headlines with the community (or specific users).</li>
+		 </ul>
+	    </li>
+	</ul>
+	
+	<h3>What is a Feed?</h3>
+	<p>
+	For a news aggregator a <i>news feed</i> is a distinct information source. A
+	news aggregator usually retrieves <i>news headlines</i> from many news feed <i>subscriptions</i>.
+	The term "news feed" is not very precise as feeds can also provide weblog 
+	postings, podcasts and practically every type of content. The same goes for the
+	term "news headlines": often "article" or "post" would be a
+	better description. Nonetheless the prefix "news" is usually used with the terms
+	"feed", "headline" and "aggregator".
+	</p>
+	<p>
+	When you add a new subscription then you have to specify the source of the 
+	feed so that the news aggregator can initially retrieve it. The feed source
+	is usually a HTTP URL. When updating the news feed the aggregator downloads
+	the document served when accessing this URL. There are several <a href="http://en.wikipedia.org/wiki/Extensible_Markup_Language">XML</a>-based and
+	XML-like syndication standards (<a href="http://en.wikipedia.org/wiki/RSS_%28file_format%29">RSS</a>, <a href="http://en.wikipedia.org/wiki/Atom_%28standard%29">Atom</a>...) that define how a feed must
+	look like so that the aggregator knows how to interpret the document
+	contents.
+	</p>
+	<p>
+	As a user you usually do not have to know about the syndication format.
+	You just need to know the source URL of the feed you want to subscribe.
+	</p>
+	
+	<h3>What is the Feed List?</h3>
+	<p>
+	Typical news aggregators present you with a list of your feed subscription.
+	Following the email client interface paradigm the feed list is often
+	presented in the left pane of the news aggregator interface.
+	</p>
+	<p>
+	Depending on the aggregator you use the feed list might be hierarchically
+	organized using folders or categories.
+	</p>
+	
+	<h3>What is a Headline?</h3>
+	<p>
+	When a news aggregator updates a news feed it download the source document
+	from the source URL of the feed subscription. This source document provides
+	a set of the most recent headlines which then need to be merged against the 
+	current feed cache of the aggregator because the set of headlines provided
+	by the feed source changes over time.
+	</p>
+	<p>
+	Headlines as provided by the feed source are the smallest information
+	unit handled by aggregators.
+	</p>
+	
+	<h3>What is the Item List?</h3>
+	<p>
+	In Liferea headlines are also called <i>items</i> and are presented
+	in the so called <i>item list</i>. Following the email client paradigm
+	the item list is often presented in the upper right pane in the news
+	aggregator interface.
+	</p>
+	
+	<!-- content end --> 
+
+	<!-- navigation footer start -->
+	<hr />
+	<table width="100%">
+	   <tr>
+	      <!-- back --><td width="50px"><a href="about_en.html">Prev</a></td>
+	      <!-- home --><td style="text-align:center;"><a href="topics_en.html">Contents</a></td>
+	      <!-- next --><td width="50px;" style="text-align:right;"><a href="subscriptions_en.html">Next</a></td>
+	   </tr>
+	</table>
+	<!-- navigation footer end -->
+</body>
+</html>
+
