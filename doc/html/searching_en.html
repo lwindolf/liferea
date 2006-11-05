@@ -10,29 +10,21 @@
 	<table width="100%">
 	   <tr>
 	      <!-- back --><td width="50px"><a href="preferences_en.html">Prev</a></td>
-	      <!-- home --><td style="text-align:center;"><b>Searching and VFolders</b></td>
+	      <!-- home --><td style="text-align:center;"><b>Searching and Search Folders</b></td>
 	      <!-- next --><td width="50px;" style="text-align:right;"><a href="enclosures_en.html">Next</a></td>
 	   </tr>
 	</table>
 	<hr />
 	<!-- navigation header end -->
-
-	<h3>Searching and VFolders</h3>
-
-	<h4>Searching for a Feed or Item Title</h4>
-
-	<p>
-	When you are searching for a title you can use the GTK search 
-	function to search within the titles of both the item and the
-	feed list. Press <b>Ctrl-f</b> to activate the search function and 
-	type a search string.
-	</p>
 	
 	<h4>Searching for Feed Content</h4>
 
 	<p>
 	Liferea supports a simple case sensitive text searching in the item
-	content and titles of all your subscriptions. To open the search 
+	content and titles of all your subscriptions.
+	</p>
+	<p>
+	To open the search 
 	dialog click the search button in the toolbar.
 	Enter the string you want to search for and click the "Search" button.
 	Any items containing the string either in their title or their content 
@@ -41,28 +33,28 @@
 	</p>	
 
 	<p align="center">
-	<img src="help_search_1.0.0.png">
+	<img src="help_search_1.2.0.png">
 	</p>
 
 	
-	<h4>Permanent Searching with VFolders</h4>
+	<h4>Permanent Searches with Search Folders</h4>
 
 	<p>
 	If you want to have permanent searches (e.g. all items containing
-	the term "XML") you can create a vfolder which will be added to
+	the term "XML") you can create a search folder which will be added to
 	your feed list and contains all items matching this search rule.
 	To do so enter your search term into the search box and click
-	the search button. After the results appear click the "VFolder"
-	button to create a vfolder from the search results. Now a vfolder
-	should appear in your feed list. If you want you can edit the
-	vfolders title or change its rules by opening the properties
+	the search button. After the results appear click the "Search Folder"
+	button to create a search folder from the search results. Now a search
+	folder should appear in your feed list. If you want you can edit the
+	search folders title or change its rules by opening the properties
 	dialog either from the "Subscriptions" menu or the contextual 
 	menu in the feed list.
 	<!-- FIXME add vfolder icon -->
 	</p>
 
 	<p align="center">
-	<img src="help_vfolder_1.0.0.png">
+	<img src="help_vfolder_1.2.0.png">
 	</p>
 
 	<p>
@@ -70,78 +62,90 @@
 	and their specific meaning.
 	</p>
 
-	<table border=1 style="border:1px solid black;border-collapse:collapse">
+	<table border="1" cellpadding="3" style="border:1px solid black;border-collapse:collapse">
 	<!-- ----------------------------------------- -->
-	<tr><td width="50%">
+	<tr><td style="background:#bfb" width="50%">
 	<b>Item does contain</b>
 	</td><td>
-	<span style="color:green">Adds</span> each item whose title or content matches the given case insensitive string to the vfolder.
+	<b>Adds</b> each item whose title or content matches the given case insensitive string to the vfolder.
 	</td></tr>
 	<!-- ----------------------------------------- -->
-	<tr><td>
+	<tr><td style="background:#fbb">
 	<b>Item does not contain</b>
 	</td><td>
-	<span style="color:red">Removes</span> each item whose title or content matches the given case insensitive string from the vfolder.
+	<b>Removes</b> each item whose title or content matches the given case insensitive string from the vfolder.
 	</td></tr>
 	<!-- ----------------------------------------- -->
-	<tr><td>
+	<tr><td style="background:#bfb">
 	<b>Item title does contain</b>
 	</td><td>
-	<span style="color:green">Adds</span> each item whose item title matches the given case insensitive string to the vfolder.
+	<b>Adds</b> each item whose item title matches the given case insensitive string to the vfolder.
 	</td></tr>
 	<!-- ----------------------------------------- -->
-	<tr><td>
+	<tr><td style="background:#fbb">
 	<b>Item title does not contain</b>
 	</td><td>
-	<span style="color:red">Removes</span> each item whose item title matches the given case insensitive string from the vfolder.
+	<b>Removes</b> each item whose item title matches the given case insensitive string from the vfolder.
 	</td></tr>
 	<!-- ----------------------------------------- -->
-	<tr><td>
+	<tr><td style="background:#bfb">
 	<b>Item body does contain</b>
 	</td><td>
-	<span style="color:green">Adds</span> each item whose item content matches the given case insensitive string to the vfolder.
+	<b>Adds</b> each item whose item content matches the given case insensitive string to the vfolder.
 	</td></tr>
 	<!-- ----------------------------------------- -->
-	<tr><td>
+	<tr><td style="background:#fbb">
 	<b>Item body does not contain</b>
 	</td><td>
-	<span style="color:red">Removes</span> each item whose item body matches the given case insensitive string from the vfolder.
+	<b>Removes</b> each item whose item body matches the given case insensitive string from the vfolder.
 	</td></tr>
 	<!-- ----------------------------------------- -->
-	<tr><td>
+	<tr><td style="background:#bfb">
 	<b>Feed title does contain</b>
 	</td><td>
-	<span style="color:green">Adds</span> each item whose parent feed's title matches the given case insensitive string to the vfolder.
+	<b>Adds</b> each item whose parent feed's title matches the given case insensitive string to the vfolder.
 	</td></tr>
 	<!-- ----------------------------------------- -->
-	<tr><td>
+	<tr><td style="background:#fbb">
 	<b>Feed title does not contain</b>
 	</td><td>
-	<span style="color:red">Removes</span> each item whose parent feed's title matches the given case insensitive string from the vfolder.
+	<b>Removes</b> each item whose parent feed's title matches the given case insensitive string from the vfolder.
 	</td></tr>
 	<!-- ----------------------------------------- -->
-	<tr><td>
+	<tr><td style="background:#bfb">
 	<b>Read status is unread</b>
 	</td><td>
-	<span style="color:green">Adds</span> each unread item to the vfolder.
+	<b>Adds</b> each unread item to the vfolder.
 	</td></tr>
 	<!-- ----------------------------------------- -->
-	<tr><td>
+	<tr><td style="background:#fbb">
 	<b>Read status is read</b>
 	</td><td>
-	<span style="color:red">Removes</span> each unread item from the vfolder.
+	<b>Removes</b> each unread item from the vfolder.
 	</td></tr>
 	<!-- ----------------------------------------- -->
-	<tr><td>
+	<tr><td style="background:#bfb">
 	<b>Flag status is flagged</b>
 	</td><td>
-	<span style="color:green">Adds</span> each flagged item to the vfolder.
+	<b>Adds</b> each flagged item to the vfolder.
 	</td></tr>
 	<!-- ----------------------------------------- -->
-	<tr><td>
+	<tr><td style="background:#fbb">
 	<b>Flag status is unflagged</b>
 	</td><td>
-	<span style="color:red">Removes</span> each flagged item from the vfolder.
+	<b>Removes</b> each flagged item from the vfolder.
+	</td></tr>
+	<!-- ----------------------------------------- -->
+	<tr><td style="background:#bfb">
+	<b>Podcast included</b>
+	</td><td>
+	<b>Adds</b> all items that contain an enclosure to the search vfolder.
+	</td></tr>
+	<!-- ----------------------------------------- -->
+	<tr><td style="background:#fbb">
+	<b>Podcast not included</b>
+	</td><td>
+	<b>Removes</b> all items that do not contain an enclosure from the vfolder.
 	</td></tr>
 	</table>
 
