@@ -68,13 +68,7 @@ from a securily configured Mozilla installation.</b></li>
 <li>This list may not be complete!</li>
 </ul>
 </dd>
-<dt>Q: When using the Mozilla HTML rendering widget the focus
-is always moved to the HTML widget. This is really disturbing!</dt>
-<dd>A: 
-First this is a Mozilla behaviour and no Liferea bug. If you
-want to get this fixed please vote on these Mozilla bugs:
-#210373 and #226708.
-</dd>
+
 <dt>Q: Liferea is buggy! It does not close when I click on the window
 managers close button and the tray icon is activated.</dt>
 <dd>A: 
@@ -90,49 +84,27 @@ MS Outlook, licq, akregator, gaim, mail notification...
 <br><br>
 If you really don't like this behaviour please disable the 
 tray icon.
-
 </dd>
-<dt>Q: I want cookies!
 
-</dt>
+<dt>Q: I want cookies!</dt>
 <dd>A: 
-Liferea supports cookies provided by a text file ~/.liferea/cookies.txt
+Liferea supports cookies provided by a text file ~/.liferea_1.2/cookies.txt
 which contains cookies in Netscape format. The easiest way is to copy
 the file from your Mozilla profile after you created the cookies
 with the browser.
+</dd>
+
 <dt>Q: I don't like the HTML styles Liferea uses!
 </dt>
-<dd>A: You can have your own stylesheets. Just place a liferea.css (for the
-two pane view) or a liferea2.css (for the three pane view) into ~/.liferea.
-These will be loaded additionally to the default stylesheets so you can
+<dd>A: You can have your own stylesheet. Just place a liferea.css into ~/.liferea_1.2/.
+During startup it will be loaded additionally to the default stylesheets so you can
 modify some or all style definitions. To learn about the styles have a 
 look at the default stylesheets in &lt;install root&gt;/share/liferea/css.
-</dd>
-<dt>Q: How can I subscribe to Gmails inbox feed?
-</dt>
-<dd>A: Google provides a Atom feed with a list of all new messages under https://mail.google.com/mail/feed/atom. Because this feed is accessed via HTTPS is not directly supported by Liferea. You need an external download tool (e.g. curl or wget) to subscribe to this feed. To do so open the new subscription dialog select command as source type and enter the following command as feed source: 
-<br><br>
-<tt>curl -s -u username:password https://mail.google.com/mail/feed/atom</tt>
-
-<br><br>
-Substitute username and password with your Gmail login information.
-
-</dd>
-<dt>Q: I really need to subscribe to HTTPS feeds! But Liferea doesn't support this.</dt>
-<dd>A: Liferea does not support HTTPS. Currently there are no plans to do so.
-This won't change as there are almost no feeds using HTTPS out there. But
-if you really need to there is a simple trick to do so. Open the new
-subscription dialog and select the source type "command". Don't enter
-a source but enable the "Use conversion filter" option and enter
-"curl &lt;your-HTTPS-URL&gt;" as conversion command. Obviously to make 
-this work you need curl or any other program which supports downloads 
-with output to stdout. This hint was contributed by Norbert Kiesel.
 </dd>
 
 <dt>Q: The Mozilla browser module doesn't work for me!</dt>
 <dd>A: Please check:
 <ul>
-<!-- first item updated by Carlos Fenollosa, please check spelling! -->
 <li>You need the full Mozilla suite to run the Mozilla module. Firefox doesn't work for that purpose. Note that you can have both installed, browse the web with Firefox and use Mozilla just as Liferea's module</li>
 
 <li>If you have any Mozilla installation containing <tt>libgtkembedmoz.so</tt>. It won't work without this library.</li>
@@ -153,13 +125,6 @@ http://www.livejournal.com/users/pigrew/data/rss?auth=digest</a>. You
 will need to use the feed properties dialog box to set the username
 and password of your LiveJournal account.
 </dd>
-
-<dt>Q: What is the difference between a folder and a directory?</dt>
-
-<dd>A: Folders are used to group feeds in a feedlist. Directories are
-lists of feeds that are added to your feedlist and are treated very
-similar to how feeds are treated. Directories are stored in OCS or
-OPML format.</dd>
 
 <dt>Q: Why do feed items keep being displayed as new?</dt>
 <dd>A: This is usually due to a bad feed which associated a
