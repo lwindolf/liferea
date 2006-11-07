@@ -14,17 +14,15 @@ BuildRequires: 	GConf2-devel
 BuildRequires: 	gettext
 BuildRequires: 	libtool
 BuildRequires: 	pkgconfig
-Requires: 	gtk2 >= 2.4.0, libxml2
+Requires: 	gtk2 >= 2.8.0, libxml2
 Prereq:		GConf2
 
 %description
-Liferea is an abbreviation for Linux Feed Reader. It is a news
-aggregator for online news feeds. It supports a number of different
-feed formats including RSS/RDF, CDF, Atom, OCS, and OPML. There are
-many other news readers available, but these others are not available
-for Linux or require many extra libraries to be installed. Liferea
-tries to fill this gap by creating a fast, easy to use, easy to
-install news aggregator for GTK/GNOME.
+Liferea is an aggregator for online news feeds. There are many
+other news readers available, but these others are not available 
+for Linux or require many extra libraries to be installed. 
+Liferea tries to fill this gap by creating a fast, easy to use, 
+easy to install news aggregator for GTK/GNOME.
 
 %prep
 %setup -q
@@ -65,6 +63,7 @@ gconftool-2 --makefile-uninstall-rule \
 %dir %{_datadir}/%{name}/pixmaps
 %dir %{_datadir}/%{name}/doc
 %dir %{_datadir}/%{name}/doc/html
+%dir %{_datadir}/%{name}/xslt
 %{_datadir}/%{name}/css/*.css
 %{_datadir}/%{name}/dtd/html.ent
 %{_datadir}/%{name}/opml/feedlist*.opml
@@ -73,6 +72,8 @@ gconftool-2 --makefile-uninstall-rule \
 %{_datadir}/%{name}/doc/html/*.html
 %{_datadir}/%{name}/doc/html/*.png
 %{_datadir}/%{name}/doc/html/*.css
+%{_datadir}/%{name}/xslt/*.xml
+%{_datadir}/%{name}/xslt/*.xslt
 %dir %{_libdir}/%{name}
 %{_libdir}/%{name}/*.so
 %exclude %{_libdir}/%{name}/*.la
