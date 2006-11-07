@@ -318,6 +318,7 @@ table.enclosure {
 
 table.enclosure * td {
 	padding-left:9px;
+	overflow:hidden;
 }
 
 table.enclosure * a {

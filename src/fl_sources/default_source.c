@@ -20,6 +20,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include <glib.h>
+#include <glib/gstdio.h>
 #include <string.h>
 #include <libxml/uri.h>
 #include "support.h"
@@ -184,18 +186,19 @@ default_source_dbus_message_handler (DBusConnection *connection, DBusMessage *me
 
 #endif /* USE_DBUS */
 
-static void default_source_copy_dir(gchar *subdir) {
-	gchar *dirname10, *dirname11;
+static void default_source_copy_dir(const gchar *from, const gchar *to, const gchar *subdir) {
+	gchar *dirname10, *dirname12;
 	gchar *srcfile, *destfile;
    	GDir *dir;
 		
-	dirname10 = g_strdup_printf("%s" G_DIR_SEPARATOR_S ".liferea"     G_DIR_SEPARATOR_S "%s", g_get_home_dir(), subdir);
-	dirname11 = g_strdup_printf("%s" G_DIR_SEPARATOR_S ".liferea_1.1" G_DIR_SEPARATOR_S "%s", g_get_home_dir(), subdir);
+	dirname10 = g_strdup_printf("%s" G_DIR_SEPARATOR_S "%s" G_DIR_SEPARATOR_S "%s", g_get_home_dir(), from, subdir);
+	dirname12 = g_strdup_printf("%s" G_DIR_SEPARATOR_S "%s" G_DIR_SEPARATOR_S "%s", g_get_home_dir(), to, subdir);
+	
 	dir = g_dir_open(dirname10, 0, NULL);
 	while(NULL != (srcfile = (gchar *)g_dir_read_name(dir))) {
 		gchar	*content;
 		gsize	length;
-		destfile = g_strdup_printf("%s" G_DIR_SEPARATOR_S "%s", dirname11, srcfile);
+		destfile = g_strdup_printf("%s" G_DIR_SEPARATOR_S "%s", dirname12, srcfile);
 		srcfile = g_strdup_printf("%s" G_DIR_SEPARATOR_S "%s", dirname10, srcfile);
 		g_print("copying %s to %s\n", srcfile, destfile);
 		if(g_file_get_contents(srcfile, &content, &length, NULL))
@@ -205,6 +208,9 @@ static void default_source_copy_dir(gchar *subdir) {
 		g_free(srcfile);
 	}
 	g_dir_close(dir);
+	
+	g_free(dirname10);
+	g_free(dirname12);
 }
 
 static gchar * default_source_source_get_feedlist(nodePtr node) {
@@ -213,46 +219,65 @@ static gchar * default_source_source_get_feedlist(nodePtr node) {
 }
 
 static void default_source_source_import(nodePtr node) {
-	gchar		*filename10, *filename11;
+	gchar		*filename10, *filename11, *filename12;
 
 	debug_enter("default_source_source_import");
 
 	/* start the import */
 	feedlistImport = TRUE;
 
-	/* check for 1.0->1.1 migration */
+	/* build test file names */	
 	filename10 = g_strdup_printf("%s" G_DIR_SEPARATOR_S ".liferea/feedlist.opml", g_get_home_dir()); /* 1.0 path dir */
-	filename11 = default_source_source_get_feedlist(node);
+	filename11 = g_strdup_printf("%s" G_DIR_SEPARATOR_S ".liferea_1.1/feedlist.opml", g_get_home_dir()); /* 1.1 path dir */
+	filename12 = default_source_source_get_feedlist(node);
+	
+	/* check for 1.1->1.2 migration (just directory renaming) */
+	if(g_file_test(filename11, G_FILE_TEST_EXISTS) &&
+	   !g_file_test(filename12, G_FILE_TEST_EXISTS)) {
+
+		g_print("starting 1.1->1.2 cache migration...\n");
 		
-	if(!g_file_test(filename11, G_FILE_TEST_EXISTS) &&
+		/* Note: v1.1 and v1.2 cache formats are equivalent and just needs copying of everything */
+
+		/* copy old cache files to new cache dir */
+		default_source_copy_dir(".liferea_1.1", ".liferea_1.2", "");
+		default_source_copy_dir(".liferea_1.1", ".liferea_1.2", "cache" G_DIR_SEPARATOR_S "feeds");
+		default_source_copy_dir(".liferea_1.1", ".liferea_1.2", "cache" G_DIR_SEPARATOR_S "favicons");
+		default_source_copy_dir(".liferea_1.1", ".liferea_1.2", "cache" G_DIR_SEPARATOR_S "scripts");
+		default_source_copy_dir(".liferea_1.1", ".liferea_1.2", "cache" G_DIR_SEPARATOR_S "plugins");
+	}
+
+	/* check for 1.0->1.2 migration */
+	if(!g_file_test(filename12, G_FILE_TEST_EXISTS) &&
 	   g_file_test(filename10, G_FILE_TEST_EXISTS)) {
 		
-		g_print("starting 1.0->1.1 cache migration...\n");
+		g_print("starting 1.0->1.2 cache migration...\n");
 		
-		/* Note: because v1.1 uses a new cache format we
-		   do a cache migration. v1.1 uses $HOME/.liferea_1.1
+		/* Note: because v1.2 uses a new cache format we
+		   do a cache migration. v1.2 uses $HOME/.liferea_1.2
 		   instead of $HOME/.liferea as it's cache directory */
 
 		/* copy old cache files to new cache dir */
-		default_source_copy_dir("cache" G_DIR_SEPARATOR_S "feeds");
-		default_source_copy_dir("cache" G_DIR_SEPARATOR_S "favicons");
+		default_source_copy_dir(".liferea", ".liferea_1.2", "cache" G_DIR_SEPARATOR_S "feeds");
+		default_source_copy_dir(".liferea", ".liferea_1.2", "cache" G_DIR_SEPARATOR_S "favicons");
 		
-		/* point feedlist.opml to the old 1.0 file */
-		g_free(filename11);
-		filename11 = g_strdup(filename10);
+		/* point feedlist.opml to the old 1.0 file (will be converted implicitely) */
+		g_free(filename12);
+		filename12 = g_strdup(filename10);
 	}
 	g_free(filename10);
+	g_free(filename11);
 
 	/* check for default feed list import */
-	if(!g_file_test(filename11, G_FILE_TEST_EXISTS)) {
+	if(!g_file_test(filename12, G_FILE_TEST_EXISTS)) {
 		/* if there is no feedlist.opml we provide a default feed list */
-		g_free(filename11);
+		g_free(filename12);
 		/* "feedlist.opml" is translatable so that translators can provide a localized default feed list */
-		filename11 = g_strdup_printf(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "opml" G_DIR_SEPARATOR_S "%s", _("feedlist.opml"));
+		filename12 = g_strdup_printf(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "opml" G_DIR_SEPARATOR_S "%s", _("feedlist.opml"));
 	}
-	if(!import_OPML_feedlist(filename11, node, node->source, FALSE, TRUE))
+	if(!import_OPML_feedlist(filename12, node, node->source, FALSE, TRUE))
 		g_error("Fatal: Feed list import failed!");
-	g_free(filename11);
+	g_free(filename12);
 	feedlistImport = FALSE;
 
 #ifdef USE_DBUS

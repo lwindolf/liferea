@@ -818,8 +818,7 @@ static void common_check_dir(gchar *path) {
 static void common_init_cache_path(void) {
 	gchar *cachePath;
 
-	/* until the 1.1 code stabilizes let's use a parallel cache storage */
-	lifereaUserPath = g_strdup_printf("%s" G_DIR_SEPARATOR_S ".liferea_1.1", g_get_home_dir());
+	lifereaUserPath = g_strdup_printf("%s" G_DIR_SEPARATOR_S ".liferea_1.2", g_get_home_dir());
 	cachePath = g_strdup_printf("%s" G_DIR_SEPARATOR_S "cache", lifereaUserPath);
 
 	common_check_dir(g_strdup(lifereaUserPath));

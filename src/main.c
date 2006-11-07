@@ -77,7 +77,7 @@ static void show_help(void) {
 	g_string_append_printf(str, "%s\n", _("  --debug-cache    Print debugging messages for the cache handling"));
 	g_string_append_printf(str, "%s\n", _("  --debug-conf     Print debugging messages of the configuration handling"));
 	g_string_append_printf(str, "%s\n", _("  --debug-gui      Print debugging messages of all GUI functions"));
-	g_string_append_printf(str, "%s\n", _("  --debug-html     Enable HTML debugging (saving to ~/.liferea_1.1/output.xhtml)."));
+	g_string_append_printf(str, "%s\n", _("  --debug-html     Enable HTML debugging (saving to ~/.liferea_1.2/output.xhtml)."));
 	g_string_append_printf(str, "%s\n", _("  --debug-parsing  Print debugging messages of all parsing functions"));
 	g_string_append_printf(str, "%s\n", _("  --debug-plugins  Print debugging messages when loading plugins"));
 	g_string_append_printf(str, "%s\n", _("  --debug-trace    Print debugging messages when entering/leaving functions"));

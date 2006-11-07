@@ -7,6 +7,9 @@
 	* Fixes a crash when unflagging items in vfolder with
 	  matching rule "flagged". (reported by Sergei Butakov)
 	* Fixes the broken unread item shading in combined view.
+	* Changes the cache directory from ~/.liferea_1.1 to
+	  ~/.liferea_1.2. For migration contents will be copied.
+	  Nothing will be deleted.
 	* Updated RPM spec files
 	* Updated user documentation
 
