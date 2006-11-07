@@ -305,11 +305,17 @@
 </tr>
 </xsl:element> <!-- itemmenutable -->
 
+<xsl:element name="div">
+<xsl:attribute name="class">
+  <xsl:if test="readStatus = '0'">itemshaded</xsl:if>
+  <xsl:if test="readStatus != '0'">itemunshaded</xsl:if>
+</xsl:attribute>
 <div class='content'>
   <p>
     <xsl:value-of select="description" disable-output-escaping='yes'/>
   </p>
 </div>
+</xsl:element> <!-- end of shading div -->
 </xsl:element> <!-- end of base URL div -->
 
 </xsl:element> <!-- item -->

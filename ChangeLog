@@ -6,6 +6,7 @@
 	  GnuTLS support (by Alex Myltsev)
 	* Fixes a crash when unflagging items in vfolder with
 	  matching rule "flagged". (reported by Sergei Butakov)
+	* Fixes the broken unread item shading in combined view.
 	* Updated user documentation
 
 	Translations
