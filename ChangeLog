@@ -1,4 +1,4 @@
-2006-11-??  Lars Lindner  <lars.lindner@gmail.com>
+2006-11-10  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.2-RC1 (Unstable)
 
@@ -10,7 +10,10 @@
 	* Changes the cache directory from ~/.liferea_1.1 to
 	  ~/.liferea_1.2. For migration contents will be copied.
 	  Nothing will be deleted.
-	* Enabling StartupNotify in .desktop file.
+	* Enabling StartupNotify in .desktop file (SF #1589488
+	  reported by Sven Arvidsson)
+	* Fixing a liferea-feed-add problem with running program
+	  detection reported by Pierre Gronlier
 	* Updated RPM spec files
 	* Updated user documentation
 
