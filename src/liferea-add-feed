@@ -21,11 +21,9 @@ if ! which dbus-send >/dev/null 2>&1; then
 	exit 1
 fi
 
-if pgrep liferea >/dev/null 2>&1; then
-	if ! pgrep liferea-bin >/dev/null 2>&1; then
-		echo "Liferea is not running! You need to start it first."
-		exit 1
-	fi
+if ! pgrep -x "(liferea|liferea-bin)" >/dev/null 2>&1; then
+	echo "Liferea is not running! You need to start it first."
+	exit 1
 fi
 
 dbus-send --session --dest=org.gnome.feed.Reader /org/gnome/feed/Reader org.gnome.feed.Reader.Subscribe string:$URL
