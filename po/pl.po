@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.1.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-11-05 22:50+0100\n"
+"POT-Creation-Date: 2006-11-12 18:15+0100\n"
 "PO-Revision-Date: 2006-10-20 21:55+0100\n"
 "Last-Translator: Lars Lindner <lars.lindner@gmx.net>\n"
 "Language-Team: Polish\n"
@@ -209,7 +209,7 @@ msgstr "%B %d %H:%M"
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "Nie można utworzyć katalogu dla pamięci podręcznej \"%s\"!"
 
-#: ../src/common.c:896
+#: ../src/common.c:895
 msgid ""
 "Unexpected end of character sequence or corrupt UTF-8 encoding! Some "
 "characters were dropped!"
@@ -1237,7 +1237,7 @@ msgstr ""
 "Rozpoczyna wyszukiwanie tekstu we wszystkich subskrypcjach. Wyniki pojawią "
 "się na liście elementów."
 
-#: ../src/interface.c:3355 ../src/ui/ui_mainwindow.c:877
+#: ../src/interface.c:3355 ../src/ui/ui_mainwindow.c:871
 msgid "Update Monitor"
 msgstr "Monitor _Uaktualniania"
 
@@ -1263,7 +1263,7 @@ msgstr ""
 msgid "Advanced..."
 msgstr ""
 
-#: ../src/interface.c:3611 ../src/ui/ui_mainwindow.c:879
+#: ../src/interface.c:3611 ../src/ui/ui_mainwindow.c:873
 msgid "Script Manager"
 msgstr ""
 
@@ -1350,8 +1350,9 @@ msgstr ""
 "GUI"
 
 #: ../src/main.c:80
+#, fuzzy
 msgid ""
-"  --debug-html     Enable HTML debugging (saving to ~/.liferea_1.1/output."
+"  --debug-html     Enable HTML debugging (saving to ~/.liferea_1.2/output."
 "xhtml)."
 msgstr ""
 "  --debug-html     Włącz debugowanie HTML (zapisuje do ~/.liferea_1.1/output."
@@ -1660,101 +1661,94 @@ msgstr ""
 "a feed select it in the feed list and the headlines will be loaded into the "
 "right pane.</p>"
 
-#: ../src/ui/ui_mainwindow.c:552
-msgid ""
-"<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black;"
-"margin: 5px 0 5px 0\">This is an unstable version of Liferea 1.1. It should "
-"not be used for production yet! If you want to use Liferea regularily please "
-"download the last stable version from SourceForge!</div>"
-msgstr ""
-"<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black;"
-"margin: 5px 0 5px 0\">To jest rozwojowa wersja Liferea 1.1 i nie powinna być "
-"używana w środowisku produkcyjnym. Jeśli chcesz korzystać z Liferea "
-"regularnie, pobierz z SourceForge ostatnią wersję stabilną.</div>"
-
-#: ../src/ui/ui_mainwindow.c:604
+#: ../src/ui/ui_mainwindow.c:598
 msgid "Liferea is now online"
 msgstr "Liferea działa teraz w trybie online"
 
-#: ../src/ui/ui_mainwindow.c:606
+#: ../src/ui/ui_mainwindow.c:600
 msgid "Work Offline"
 msgstr "Tryb Offline"
 
-#: ../src/ui/ui_mainwindow.c:608
+#: ../src/ui/ui_mainwindow.c:602
 msgid "Liferea is now offline"
 msgstr "Liferea działa teraz w trybie offline"
 
-#: ../src/ui/ui_mainwindow.c:610
+#: ../src/ui/ui_mainwindow.c:604
 msgid "Work Online"
 msgstr "Tryb Online"
 
-#: ../src/ui/ui_mainwindow.c:874
+#: ../src/ui/ui_mainwindow.c:868
 msgid "_Program"
 msgstr "_Program"
 
-#: ../src/ui/ui_mainwindow.c:875
+#: ../src/ui/ui_mainwindow.c:869
 msgid "_Preferences"
 msgstr "_Preferencje"
 
-#: ../src/ui/ui_mainwindow.c:875
+#: ../src/ui/ui_mainwindow.c:869
 msgid "Edit Preferences."
 msgstr "Edytuje preferencje."
 
-#: ../src/ui/ui_mainwindow.c:877
+#: ../src/ui/ui_mainwindow.c:871
 msgid "Show a list of all feeds currently in the update queue"
 msgstr "Wyświetl listę subskrypcji oczekujących na uaktualnienie"
 
-#: ../src/ui/ui_mainwindow.c:879
+#: ../src/ui/ui_mainwindow.c:873
 msgid "Allows to configure and edit LUA hook scripts"
 msgstr ""
 
-#: ../src/ui/ui_mainwindow.c:881
+#: ../src/ui/ui_mainwindow.c:875
 msgid "_Quit"
 msgstr "_Wyjście"
 
-#: ../src/ui/ui_mainwindow.c:883
+#: ../src/ui/ui_mainwindow.c:877
 msgid "_Feeds"
 msgstr "Su_bskrypcje"
 
 # Skrócone (toolbar)
-#: ../src/ui/ui_mainwindow.c:884
+#: ../src/ui/ui_mainwindow.c:878
 msgid "Update _All"
 msgstr "Uaktu_alnij"
 
-#: ../src/ui/ui_mainwindow.c:884
+#: ../src/ui/ui_mainwindow.c:878
 msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr "Uaktualnia wszystkie subskrypcje (nie dotyczy katalogów OCS)."
 
-#: ../src/ui/ui_mainwindow.c:886
+#: ../src/ui/ui_mainwindow.c:880
 msgid "Mark All As _Read"
 msgstr "Oznacz _wszystko jako przeczytane"
 
-#: ../src/ui/ui_mainwindow.c:886
+#: ../src/ui/ui_mainwindow.c:880
 msgid "Marks read every item of every subscription."
 msgstr "Oznacza każdy element każdej subskrypcji jako przeczytany."
 
-#: ../src/ui/ui_mainwindow.c:888
+#: ../src/ui/ui_mainwindow.c:882
 msgid "_Import Feed List..."
 msgstr "_Importuj listę subskrypcji..."
 
-#: ../src/ui/ui_mainwindow.c:888
+#: ../src/ui/ui_mainwindow.c:882
 msgid "Imports an OPML feed list."
 msgstr "Importuje listę subskrypcji OPML."
 
-#: ../src/ui/ui_mainwindow.c:889
+#: ../src/ui/ui_mainwindow.c:883
 msgid "_Export Feed List..."
 msgstr "_Eksportuj listę subskrypcji..."
 
-#: ../src/ui/ui_mainwindow.c:889
+#: ../src/ui/ui_mainwindow.c:883
 msgid "Exports the feed list as OPML."
 msgstr "Eksportuje listę subskrypcji jako OPML."
 
+#: ../src/ui/ui_mainwindow.c:885
+#, fuzzy
+msgid "_Items"
+msgstr "Pozycja"
+
 # Skrócone (toolbar)
-#: ../src/ui/ui_mainwindow.c:892
+#: ../src/ui/ui_mainwindow.c:886
 msgid "_Next Unread Item"
 msgstr "_Następna"
 
-#: ../src/ui/ui_mainwindow.c:892
+#: ../src/ui/ui_mainwindow.c:886
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -1762,190 +1756,190 @@ msgstr ""
 "Przechodzi do następnej nie przeczytanej pozycji. Jeśli trzeba, wybiera "
 "następną subskrypcję."
 
-#: ../src/ui/ui_mainwindow.c:894
+#: ../src/ui/ui_mainwindow.c:888
 msgid "Toggle _Read Status"
 msgstr "Status p_rzeczytania"
 
-#: ../src/ui/ui_mainwindow.c:894
+#: ../src/ui/ui_mainwindow.c:888
 msgid "Toggles the read status of the selected item."
 msgstr "Ustawia status przeczytania dla zaznaczonej pozycji."
 
-#: ../src/ui/ui_mainwindow.c:896
+#: ../src/ui/ui_mainwindow.c:890
 msgid "Toggle Item _Flag"
 msgstr "_Flaga pozycji"
 
-#: ../src/ui/ui_mainwindow.c:896
+#: ../src/ui/ui_mainwindow.c:890
 msgid "Toggles the flag status of the selected item."
 msgstr "Ustawia status przeczytania dla zaznaczonej pozycji."
 
-#: ../src/ui/ui_mainwindow.c:898
+#: ../src/ui/ui_mainwindow.c:892
 msgid "Remove _Selected"
 msgstr "Usuń zaznaczone"
 
-#: ../src/ui/ui_mainwindow.c:898
+#: ../src/ui/ui_mainwindow.c:892
 msgid "Removes the selected item."
 msgstr "Usuwa zaznaczone pozycje."
 
-#: ../src/ui/ui_mainwindow.c:900
+#: ../src/ui/ui_mainwindow.c:894
 msgid "Remove _All"
 msgstr "Usuń wszystko"
 
-#: ../src/ui/ui_mainwindow.c:900
+#: ../src/ui/ui_mainwindow.c:894
 msgid "Removes all items of the currently selected feed."
 msgstr "Usuwa wszystkie pozycje zaznaczonej subskrypcji."
 
-#: ../src/ui/ui_mainwindow.c:902
+#: ../src/ui/ui_mainwindow.c:896
 msgid "_Launch In Browser"
 msgstr "Pokaż w przeg_lądarce"
 
-#: ../src/ui/ui_mainwindow.c:902
+#: ../src/ui/ui_mainwindow.c:896
 msgid "Launches the item's link in the configured browser."
 msgstr "Pokazuje odnośnik pozycji w skonfigurowanej przeglądarce."
 
-#: ../src/ui/ui_mainwindow.c:905
+#: ../src/ui/ui_mainwindow.c:899
 msgid "_View"
 msgstr "_Widok"
 
-#: ../src/ui/ui_mainwindow.c:906
+#: ../src/ui/ui_mainwindow.c:900
 msgid "_Increase Text Size"
 msgstr "Zwięks_z rozmiar czcionki"
 
-#: ../src/ui/ui_mainwindow.c:906
+#: ../src/ui/ui_mainwindow.c:900
 msgid "Increases the text size of the item view."
 msgstr "Zwiększa rozmiar tekstu dla oglądanej pozycji."
 
-#: ../src/ui/ui_mainwindow.c:908
+#: ../src/ui/ui_mainwindow.c:902
 msgid "_Decrease Text Size"
 msgstr "Zmniejsz _rozmiar czcionki"
 
-#: ../src/ui/ui_mainwindow.c:908
+#: ../src/ui/ui_mainwindow.c:902
 msgid "Decreases the text size of the item view."
 msgstr "Zmniejsza rozmiar tekstu dla oglądanej pozycji."
 
-#: ../src/ui/ui_mainwindow.c:910
+#: ../src/ui/ui_mainwindow.c:904
 msgid "_Normal View"
 msgstr "_Normal View"
 
-#: ../src/ui/ui_mainwindow.c:910
+#: ../src/ui/ui_mainwindow.c:904
 msgid "Set view mode to mail client mode."
 msgstr ""
 
-#: ../src/ui/ui_mainwindow.c:912
+#: ../src/ui/ui_mainwindow.c:906
 msgid "_Wide View"
 msgstr "_Wide View"
 
-#: ../src/ui/ui_mainwindow.c:912
+#: ../src/ui/ui_mainwindow.c:906
 msgid "Set view mode to use three vertical panes."
 msgstr ""
 
 # Skrócone (toolbar)
-#: ../src/ui/ui_mainwindow.c:914
+#: ../src/ui/ui_mainwindow.c:908
 msgid "_Combined View"
 msgstr "_Combined View"
 
-#: ../src/ui/ui_mainwindow.c:914
+#: ../src/ui/ui_mainwindow.c:908
 msgid "Set view mode to two pane mode."
 msgstr ""
 
-#: ../src/ui/ui_mainwindow.c:917
+#: ../src/ui/ui_mainwindow.c:911
 msgid "_Search"
 msgstr "_Szukaj"
 
 # Skrócone (toolbar)
-#: ../src/ui/ui_mainwindow.c:918
+#: ../src/ui/ui_mainwindow.c:912
 msgid "Search All Feeds..."
 msgstr "Search All Feeds..."
 
-#: ../src/ui/ui_mainwindow.c:918
+#: ../src/ui/ui_mainwindow.c:912
 msgid "Show the search dialog."
 msgstr "Pokazuje pole wyszukiwania."
 
-#: ../src/ui/ui_mainwindow.c:919
+#: ../src/ui/ui_mainwindow.c:913
 msgid "Search With ..."
 msgstr "Szukaj z..."
 
-#: ../src/ui/ui_mainwindow.c:921
+#: ../src/ui/ui_mainwindow.c:915
 msgid "_Help"
 msgstr "_Pomoc"
 
-#: ../src/ui/ui_mainwindow.c:922
+#: ../src/ui/ui_mainwindow.c:916
 msgid "_Contents"
 msgstr "_Zawartość"
 
-#: ../src/ui/ui_mainwindow.c:922
+#: ../src/ui/ui_mainwindow.c:916
 msgid "View help for this application."
 msgstr "Zobacz pomoc dla tej aplikacji."
 
-#: ../src/ui/ui_mainwindow.c:923
+#: ../src/ui/ui_mainwindow.c:917
 msgid "_Quick Reference"
 msgstr "_Streszczenie"
 
-#: ../src/ui/ui_mainwindow.c:923
+#: ../src/ui/ui_mainwindow.c:917
 msgid "View a list of all Liferea shortcuts."
 msgstr "Zobacz listę skrótów klawiszowych Liferea."
 
-#: ../src/ui/ui_mainwindow.c:925
+#: ../src/ui/ui_mainwindow.c:919
 msgid "_FAQ"
 msgstr "_FAQ"
 
-#: ../src/ui/ui_mainwindow.c:925
+#: ../src/ui/ui_mainwindow.c:919
 msgid "View the FAQ for this application."
 msgstr "Zobacz FAQ tej aplikacji."
 
-#: ../src/ui/ui_mainwindow.c:926
+#: ../src/ui/ui_mainwindow.c:920
 msgid "_About"
 msgstr "_O Programie"
 
-#: ../src/ui/ui_mainwindow.c:926
+#: ../src/ui/ui_mainwindow.c:920
 msgid "Shows an about dialog."
 msgstr "Pokazuje okno 'O Programie'."
 
-#: ../src/ui/ui_mainwindow.c:930
+#: ../src/ui/ui_mainwindow.c:924
 msgid "_New Subscription..."
 msgstr "_Nowa Subskrypcja..."
 
-#: ../src/ui/ui_mainwindow.c:930
+#: ../src/ui/ui_mainwindow.c:924
 msgid "Add a subscription to the feed list."
 msgstr "Dodaje nową subskrypcję."
 
-#: ../src/ui/ui_mainwindow.c:932
+#: ../src/ui/ui_mainwindow.c:926
 msgid "New _Folder..."
 msgstr "Nowy _Katalog..."
 
-#: ../src/ui/ui_mainwindow.c:932
+#: ../src/ui/ui_mainwindow.c:926
 msgid "Add a folder to the feed list."
 msgstr "Dodaje katalog do listy subskrypcji."
 
-#: ../src/ui/ui_mainwindow.c:933
+#: ../src/ui/ui_mainwindow.c:927
 msgid "New S_earch Folder..."
 msgstr "Nowy _Katalog Wyników..."
 
-#: ../src/ui/ui_mainwindow.c:933
+#: ../src/ui/ui_mainwindow.c:927
 msgid "Add a new search folder to the feed list."
 msgstr "Dodaje nowy Katalog Wyników do listy subskrypcji."
 
-#: ../src/ui/ui_mainwindow.c:934
+#: ../src/ui/ui_mainwindow.c:928
 msgid "New _Source..."
 msgstr "Nowe Ź_ródło..."
 
-#: ../src/ui/ui_mainwindow.c:934
+#: ../src/ui/ui_mainwindow.c:928
 msgid "Adds a new feed list source."
 msgstr "Dodaje nowe źródło do listy subskrypcji."
 
-#: ../src/ui/ui_mainwindow.c:935
+#: ../src/ui/ui_mainwindow.c:929
 msgid "New _News Bin..."
 msgstr "New _News Bin..."
 
-#: ../src/ui/ui_mainwindow.c:935
+#: ../src/ui/ui_mainwindow.c:929
 msgid "Adds a new news bin."
 msgstr "Adds a new news bin."
 
 # Skrócone (toolbar)
-#: ../src/ui/ui_mainwindow.c:939
+#: ../src/ui/ui_mainwindow.c:933
 msgid "_Mark Selected As Read"
 msgstr "_Przeczytane"
 
-#: ../src/ui/ui_mainwindow.c:939
+#: ../src/ui/ui_mainwindow.c:933
 msgid ""
 "Marks all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
@@ -1953,11 +1947,11 @@ msgstr ""
 "Oznacza wszystkie pozycje zaznaczonej subskrypcji lub cały zaznaczony "
 "katalog jako przeczytane."
 
-#: ../src/ui/ui_mainwindow.c:941
+#: ../src/ui/ui_mainwindow.c:935
 msgid "Update _Selected"
 msgstr "Uaktualnij _zaznaczone"
 
-#: ../src/ui/ui_mainwindow.c:941
+#: ../src/ui/ui_mainwindow.c:935
 msgid ""
 "Updates the selected subscription or all subscriptions of the selected "
 "folder."
@@ -1965,38 +1959,38 @@ msgstr ""
 "Uaktualnia zaznaczone subskrypcje lub wszystkie subskrypcje z zaznaczonego "
 "katalogu."
 
-#: ../src/ui/ui_mainwindow.c:946
+#: ../src/ui/ui_mainwindow.c:940
 msgid "_Properties..."
 msgstr "Właściwośc_i..."
 
-#: ../src/ui/ui_mainwindow.c:946
+#: ../src/ui/ui_mainwindow.c:940
 msgid "Opens the property dialog for the selected subscription."
 msgstr "Otwiera okno właściwości dla zaznaczonej subskrypcji."
 
-#: ../src/ui/ui_mainwindow.c:947
+#: ../src/ui/ui_mainwindow.c:941
 msgid "_Delete Selected"
 msgstr "_Usuń zaznaczone"
 
-#: ../src/ui/ui_mainwindow.c:947
+#: ../src/ui/ui_mainwindow.c:941
 msgid "Removes the selected subscription."
 msgstr "Usuwa zaznaczone subskrypcje."
 
-#: ../src/ui/ui_mainwindow.c:951
+#: ../src/ui/ui_mainwindow.c:945
 msgid "_Work Offline"
 msgstr "Tryb O_ffline"
 
-#: ../src/ui/ui_mainwindow.c:951
+#: ../src/ui/ui_mainwindow.c:945
 msgid "This option allows you to disable subscription updating."
 msgstr "Blokuje uaktualnianie subskrypcji."
 
-#: ../src/ui/ui_mainwindow.c:1085
+#: ../src/ui/ui_mainwindow.c:1079
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
 msgstr[0] "%d nowa"
 msgstr[1] "%d nowych"
 
-#: ../src/ui/ui_mainwindow.c:1091
+#: ../src/ui/ui_mainwindow.c:1085
 #, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
@@ -2266,7 +2260,7 @@ msgid "%b %d %H:%M"
 msgstr "%B %d %H:%M"
 
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
-#: ../src/fl_sources/default_source.c:251
+#: ../src/fl_sources/default_source.c:276
 msgid "feedlist.opml"
 msgstr "feedlist_pl.opml"
 
@@ -2303,6 +2297,17 @@ msgstr "Bez tytułu"
 #: ../src/notification/notif_popup.c:323
 msgid "Liferea notification"
 msgstr "Powiadomienie Liferea"
+
+#~ msgid ""
+#~ "<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black;"
+#~ "margin: 5px 0 5px 0\">This is an unstable version of Liferea 1.1. It "
+#~ "should not be used for production yet! If you want to use Liferea "
+#~ "regularily please download the last stable version from SourceForge!</div>"
+#~ msgstr ""
+#~ "<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black;"
+#~ "margin: 5px 0 5px 0\">To jest rozwojowa wersja Liferea 1.1 i nie powinna "
+#~ "być używana w środowisku produkcyjnym. Jeśli chcesz korzystać z Liferea "
+#~ "regularnie, pobierz z SourceForge ostatnią wersję stabilną.</div>"
 
 #~ msgid "<span weight=\"bold\">Date Column Settings</span>"
 #~ msgstr "<span weight=\"bold\">Ustawienia kolumny z datą</span>"
