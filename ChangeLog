@@ -1,3 +1,11 @@
+2006-11-??  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.2-RC2 (Unstable)
+
+	* Fixes SF #1594994 menu translation problem
+	  (reported by Takeshi AIHANA)
+
+
 2006-11-10  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.2-RC1 (Unstable)

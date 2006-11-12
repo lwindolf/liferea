@@ -882,7 +882,7 @@ static GtkActionEntry ui_mainwindow_action_entries[] = {
 	{"ImportFeedList", "gtk-open", N_("_Import Feed List..."), NULL, N_("Imports an OPML feed list."), G_CALLBACK(on_import_activate)},
 	{"ExportFeedList", "gtk-save-as", N_("_Export Feed List..."), NULL, N_("Exports the feed list as OPML."), G_CALLBACK(on_export_activate)},
 
-	{"ItemsMenu", NULL, "_Items"},
+	{"ItemsMenu", NULL, N_("_Items")},
 	{"NextUnreadItem", GTK_STOCK_GO_FORWARD, N_("_Next Unread Item"), "<control>N", N_("Jumps to the next unread item. If necessary selects the next feed with unread items."),
 	 G_CALLBACK(on_next_unread_item_activate)},
 	{"ToggleItemReadStatus", "gtk-apply", N_("Toggle _Read Status"), "<control>U", N_("Toggles the read status of the selected item."),
