@@ -450,7 +450,6 @@ pixmaps/Makefile
 opml/Makefile
 po/Makefile.in
 liferea.spec
-liferea-SuSE.spec
 ])
 AC_OUTPUT
 
