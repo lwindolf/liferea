@@ -478,7 +478,7 @@ msgid "wide view"
 msgstr "vista allargata"
 
 #: ../src/interface.c:184
-msgid "Schlagzeilen anzeigen"
+msgid "View Headlines"
 msgstr "Mostra testate"
 
 #: ../src/interface.c:192
