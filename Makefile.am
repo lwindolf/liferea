@@ -28,7 +28,6 @@ EXTRA_DIST = \
 	liferea.glade \
 	liferea.gladep \
 	liferea.spec \
-	liferea-SuSE.spec \
 	src/liferea \
 	src/liferea-add-feed \
 	$(desktop_in_files) \
