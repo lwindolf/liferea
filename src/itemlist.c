@@ -255,8 +255,10 @@ void itemlist_select_next_unread(void) {
 	/* If we are in combined mode we have to mark everything
 	   read or else we would never jump to the next feed,
 	   because no item will be selected and marked read... */
-	if(NODE_VIEW_MODE_COMBINED == node_get_view_mode(displayed_itemSet->node))
-		itemlist_mark_all_read(displayed_itemSet);
+	if(displayed_itemSet) {
+		if(NODE_VIEW_MODE_COMBINED == node_get_view_mode(displayed_itemSet->node))
+			itemlist_mark_all_read(displayed_itemSet);
+	}
 
 	itemlistLoading++;	/* prevent unwanted selections */
 

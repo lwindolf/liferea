@@ -4,6 +4,9 @@
 
 	* Fixes SF #1594994 menu translation problem
 	  (reported by Takeshi AIHANA)
+	* Fixes crash when doing Next-Unread with Ctrl-N right
+	  after startup without a selection
+	  (reported by Daniel Gryniewicz)
 
 
 2006-11-10  Lars Lindner  <lars.lindner@gmail.com>
