@@ -91,7 +91,12 @@ void on_searchentry_activate(GtkEntry *entry, gpointer user_data) {
 
 	/* remove last search */
 	ui_itemlist_clear();
+	
 	if(searchResult) {
+		/* Unload from itemlist (necessary on subsequent loads */
+		if(searchResult == itemlist_get_displayed_node())
+			itemlist_unload(searchResult);
+			
 		vfolder_free(searchResult->data);
 		node_free(searchResult);
 	}
