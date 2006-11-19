@@ -48,7 +48,7 @@ endif
 	@$(NORMAL_INSTALL)
 
 
-DISTCLEANFILES = liferea-SuSE.spec \
+DISTCLEANFILES = \
 	liferea.spec \
 	liferea.desktop \
 	intltool-extract \

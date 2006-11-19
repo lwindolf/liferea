@@ -8,6 +8,7 @@
 	  after startup without a selection (reported by Daniel Gryniewicz)
 	* Fixes crash when doing a second search immediately
 	  after the first one (reported by Sergei Butakov)
+	* Dropping SuSE specific spec file.
 
 
 2006-11-10  Lars Lindner  <lars.lindner@gmail.com>
