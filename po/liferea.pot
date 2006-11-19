@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-11-12 18:15+0100\n"
+"POT-Creation-Date: 2006-11-19 18:41+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -479,7 +479,7 @@ msgid "wide view"
 msgstr ""
 
 #: ../src/interface.c:184
-msgid "Schlagzeilen anzeigen"
+msgid "View Headlines"
 msgstr ""
 
 #: ../src/interface.c:192
@@ -1191,7 +1191,7 @@ msgid "_News Bin Name:"
 msgstr ""
 
 #. if we don't find a feed with unread items do nothing
-#: ../src/itemlist.c:282
+#: ../src/itemlist.c:284
 msgid "There are no unread items "
 msgstr ""
 
@@ -2034,12 +2034,12 @@ msgstr ""
 msgid "Searching for \"%s\""
 msgstr ""
 
-#: ../src/ui/ui_search.c:117
+#: ../src/ui/ui_search.c:122
 #, c-format
 msgid "%d Search Results for \"%s\""
 msgstr ""
 
-#: ../src/ui/ui_search.c:119
+#: ../src/ui/ui_search.c:124
 msgid ""
 "The item list now contains all items matching the specified search pattern. "
 "If you want to save this search result permanently you can click the "
@@ -2047,7 +2047,7 @@ msgid ""
 "volder to your feed list."
 msgstr ""
 
-#: ../src/ui/ui_search.c:240
+#: ../src/ui/ui_search.c:245
 msgid "Create a new search feed."
 msgstr ""
 
