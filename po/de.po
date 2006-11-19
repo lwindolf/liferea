@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 0.9.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-11-12 18:15+0100\n"
-"PO-Revision-Date: 2006-10-25 00:44+0100\n"
+"POT-Creation-Date: 2006-11-19 18:41+0100\n"
+"PO-Revision-Date: 2006-11-19 19:20+0100\n"
 "Last-Translator: Lars Lindner <lars.lindner@gmx.net>\n"
 "Language-Team: German\n"
 "MIME-Version: 1.0\n"
@@ -174,9 +174,8 @@ msgid "[There were more errors. Output was truncated!]"
 msgstr "[Es gab weitere Fehler. Fehlerausgabe abgeschnitten!]"
 
 #: ../src/common.c:524
-#, fuzzy
 msgid "XML Parser: Could not parse document:\n"
-msgstr "xmlReadMemory(): Konnte Dokument nicht parsen:\n"
+msgstr "XML Parser: Konnte Dokument nicht parsen:\n"
 
 #. translation hint: date format for today, reorder format codes as necessary
 #: ../src/common.c:578
@@ -517,8 +516,8 @@ msgid "wide view"
 msgstr "Breite Ansicht"
 
 #: ../src/interface.c:184
-msgid "Schlagzeilen anzeigen"
-msgstr ""
+msgid "View Headlines"
+msgstr "Zeige Schlagzeilen"
 
 #: ../src/interface.c:192
 msgid "combined view"
@@ -1317,7 +1316,7 @@ msgid "_News Bin Name:"
 msgstr "_Name des News Bin"
 
 #. if we don't find a feed with unread items do nothing
-#: ../src/itemlist.c:282
+#: ../src/itemlist.c:284
 msgid "There are no unread items "
 msgstr "Es gibt keine ungelesenen Schlagzeilen."
 
@@ -1361,12 +1360,11 @@ msgid "  --debug-gui      Print debugging messages of all GUI functions"
 msgstr "  --debug-gui      Gibt Debug-Meldungen aller GUI-Funktionen aus."
 
 #: ../src/main.c:80
-#, fuzzy
 msgid ""
 "  --debug-html     Enable HTML debugging (saving to ~/.liferea_1.2/output."
 "xhtml)."
 msgstr ""
-"  --debug-html     HTML Debugging aktivieren (sichert nach ~/.liferea_1.1/"
+"  --debug-html     HTML Debugging aktivieren (sichert nach ~/.liferea_1.2/"
 "output.xhtml)."
 
 #: ../src/main.c:81
@@ -1625,7 +1623,7 @@ msgstr "Starte: \"%s\""
 
 #: ../src/ui/ui_itemlist.c:215
 msgid "<i>*** No title ***</i>"
-msgstr ""
+msgstr "<i>*** Kein Titel ***</i>"
 
 #: ../src/ui/ui_itemlist.c:305
 msgid "Date"
@@ -2186,12 +2184,12 @@ msgstr "Auswahl eines Verzeichnisses zum Download"
 msgid "Searching for \"%s\""
 msgstr "Suche nach \"%s\""
 
-#: ../src/ui/ui_search.c:117
+#: ../src/ui/ui_search.c:122
 #, c-format
 msgid "%d Search Results for \"%s\""
 msgstr "%d Sucheergebnisse für \"%s\""
 
-#: ../src/ui/ui_search.c:119
+#: ../src/ui/ui_search.c:124
 msgid ""
 "The item list now contains all items matching the specified search pattern. "
 "If you want to save this search result permanently you can click the "
@@ -2203,7 +2201,7 @@ msgstr ""
 "Sie die Suchordner-Schaltfl&auml;che im Suchdialog an und Liferea wird einen "
 "neuen Suchordner in die Feedliste einf&uuml;gen."
 
-#: ../src/ui/ui_search.c:240
+#: ../src/ui/ui_search.c:245
 msgid "Create a new search feed."
 msgstr "Neues Such-Feed anlegen."
 
@@ -2292,9 +2290,8 @@ msgstr "Cookie für %s ist abgelaufen!"
 #: ../src/notification/notif_libnotify.c:52
 #: ../src/notification/notif_libnotify.c:72
 #: ../src/notification/notif_libnotify.c:137
-#, fuzzy
 msgid "This feed does not exist anymore!"
-msgstr "Diese Schlagzeile hat keinen Link!"
+msgstr "Das gewählte Feed existiert nicht mehr!"
 
 #: ../src/notification/notif_popup.c:251
 msgid "Untitled"

@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea trunk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-11-12 18:15+0100\n"
+"POT-Creation-Date: 2006-11-19 18:41+0100\n"
 "PO-Revision-Date: 2006-11-05 20:52+0900\n"
 "Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -516,8 +516,9 @@ msgid "wide view"
 msgstr "ワイドな表示"
 
 #: ../src/interface.c:184
-msgid "Schlagzeilen anzeigen"
-msgstr "Schlagzeilen anzeigen"
+#, fuzzy
+msgid "View Headlines"
+msgstr "使用する描画エンジン(_V):"
 
 #: ../src/interface.c:192
 msgid "combined view"
@@ -1308,7 +1309,7 @@ msgid "_News Bin Name:"
 msgstr "NewsBin の名前(_N):"
 
 #. if we don't find a feed with unread items do nothing
-#: ../src/itemlist.c:282
+#: ../src/itemlist.c:284
 msgid "There are no unread items "
 msgstr "未読のトピックはありません"
 
@@ -2170,12 +2171,12 @@ msgstr "ダウンロード・フォルダの選択"
 msgid "Searching for \"%s\""
 msgstr "\"%s\" の検索中"
 
-#: ../src/ui/ui_search.c:117
+#: ../src/ui/ui_search.c:122
 #, c-format
 msgid "%d Search Results for \"%s\""
 msgstr "\"%s\" を検索した結果 %d個"
 
-#: ../src/ui/ui_search.c:119
+#: ../src/ui/ui_search.c:124
 msgid ""
 "The item list now contains all items matching the specified search pattern. "
 "If you want to save this search result permanently you can click the "
@@ -2187,7 +2188,7 @@ msgstr ""
 "ボタンをクリックして下さい。すると、この結果が検索フォルダとして一覧に追加さ"
 "れます。"
 
-#: ../src/ui/ui_search.c:240
+#: ../src/ui/ui_search.c:245
 msgid "Create a new search feed."
 msgstr "新しい検索用配信元を生成します"
 
@@ -2282,6 +2283,9 @@ msgstr "名前無し"
 #: ../src/notification/notif_popup.c:323
 msgid "Liferea notification"
 msgstr "Liferea からのお知らせ"
+
+#~ msgid "Schlagzeilen anzeigen"
+#~ msgstr "Schlagzeilen anzeigen"
 
 #~ msgid ""
 #~ "<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black;"

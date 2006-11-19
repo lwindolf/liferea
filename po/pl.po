@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.1.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-11-12 18:15+0100\n"
+"POT-Creation-Date: 2006-11-19 18:41+0100\n"
 "PO-Revision-Date: 2006-10-20 21:55+0100\n"
 "Last-Translator: Lars Lindner <lars.lindner@gmx.net>\n"
 "Language-Team: Polish\n"
@@ -519,8 +519,9 @@ msgid "wide view"
 msgstr ""
 
 #: ../src/interface.c:184
-msgid "Schlagzeilen anzeigen"
-msgstr ""
+#, fuzzy
+msgid "View Headlines"
+msgstr "Prze_glądarka artykułów:"
 
 #: ../src/interface.c:192
 msgid "combined view"
@@ -1304,7 +1305,7 @@ msgid "_News Bin Name:"
 msgstr ""
 
 #. if we don't find a feed with unread items do nothing
-#: ../src/itemlist.c:282
+#: ../src/itemlist.c:284
 msgid "There are no unread items "
 msgstr "Nie ma nie przeczytanych pozycji "
 
@@ -2180,12 +2181,12 @@ msgstr "Wybierz katalog na pobrane pliki"
 msgid "Searching for \"%s\""
 msgstr "Wyszukiwanie \"%s\""
 
-#: ../src/ui/ui_search.c:117
+#: ../src/ui/ui_search.c:122
 #, c-format
 msgid "%d Search Results for \"%s\""
 msgstr "%d Wyszukiwanie \"%s\""
 
-#: ../src/ui/ui_search.c:119
+#: ../src/ui/ui_search.c:124
 msgid ""
 "The item list now contains all items matching the specified search pattern. "
 "If you want to save this search result permanently you can click the "
@@ -2197,7 +2198,7 @@ msgstr ""
 "\"Search Folder\" button in the search dialog and Liferea will add a search "
 "volder to your feed list."
 
-#: ../src/ui/ui_search.c:240
+#: ../src/ui/ui_search.c:245
 msgid "Create a new search feed."
 msgstr "Tworzy subskrypcję wyszukiwania."
 
