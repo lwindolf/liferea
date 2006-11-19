@@ -10,6 +10,12 @@
 	  after the first one (reported by Sergei Butakov)
 	* Dropping SuSE specific spec file.
 
+	Translations
+
+	* Added Italian translation (Dario Conigliaro)
+	* Added Brazilian Portuguese translation (Fernando Ike de Oliveira)
+	* Updated German translation
+
 
 2006-11-10  Lars Lindner  <lars.lindner@gmail.com>
 
