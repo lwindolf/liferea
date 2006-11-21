@@ -3,6 +3,8 @@
 	Version 1.2-RC3 (Unstable)
 
 	* Fixes a possible feed list corruption reported by several users.
+	* Patch from Michel Salim to use the GNOME document font
+	  instead of the GNOME application font for the HTML rendering.
 
 	Translations
 

@@ -33,7 +33,7 @@
 #define BROWSER_MODULE			"/apps/liferea/browser-module"
 #define GNOME_DEFAULT_BROWSER_COMMAND	"gnome-open '%s'"
 #define DEFAULT_BROWSER_COMMAND		"mozilla '%s'"
-#define DEFAULT_FONT			"/desktop/gnome/interface/font_name"
+#define DEFAULT_FONT			"/desktop/gnome/interface/document_font_name"
 #define USER_FONT			"/apps/liferea/browser-font"
 #define REFOCUS_TIMEOUT			"/apps/liferea/refocus-timeout"
 #define DISABLE_JAVASCRIPT		"/apps/liferea/disable-javascript"
