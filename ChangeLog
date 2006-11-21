@@ -2,6 +2,8 @@
 
 	Version 1.2-RC3 (Unstable)
 
+	* Fixes a possible feed list corruption reported by several users.
+
 	Translations
 
 	* Added Spanish translation (Sargate Kanogan)

@@ -142,14 +142,14 @@ gboolean export_OPML_feedlist(const gchar *filename, nodePtr node, gboolean trus
 			umask(old_umask);
 			
 		xmlFreeDoc(doc);
+		
+		if(rename(backupFilename, filename) < 0)
+			g_warning(_("Error renaming %s to %s\n"), backupFilename, filename);
 	} else {
 		g_warning("could not create XML document!");
 		error = FALSE;
 	}
 	
-	if(rename(backupFilename, filename) < 0)
-		g_warning(_("Error renaming %s to %s\n"), backupFilename, filename);
-
 	g_free(backupFilename);
 	
 	debug_exit("export_OPML_feedlist");
