@@ -2795,7 +2795,7 @@ create_aboutdialog (void)
   gtk_container_add (GTK_CONTAINER (scrolledwindow6), viewport2);
   gtk_viewport_set_shadow_type (GTK_VIEWPORT (viewport2), GTK_SHADOW_NONE);
 
-  label61 = gtk_label_new ("Tibor Pittich <Tibor.Pittich@phuture.sk>\nAntoine REVERSAT <areversat@TUXFAMILY.ORG>\nVincent Lefevre <vincent@vinc17.org>\nStephane Jourdan <stephane.jourdan@itris.fr>\nTakeshi AIHANA <aihana@gnome.gr.jp>\nPark Ji-In <mithrandir@electrang.net>\nCarlos Fenollosa <topopardo@humorfreak.com>\nJose Maria Mateos <chema@chema.homelinux.org>\nEnrico Genauck <enrico@fanglomerat.de>\nVladimir Petkov <vpetkov@i-space.org>\nTomislav Markovski <tome@set.com.mk>\nDario Conigliaro <djdas@djdas.net>\nRex Tsai <chihchun@users.sourceforge.net>\nAlekseev Vladimir <compress@linux-online.ru>\nJuraj Kubelka <Juraj.Kubelka@email.cz>\nMartin-Eric Racine <q-funk@pp.fishpool.fi>\nJakub W. J\303\263\305\272wicki <jakubj@users.sourceforge.net>\nPauli Virtanen <pauli.virtanen@hut.fi>\nFernando Ike <fernando@ikenet.com.br>\nSpoial\304\203 Cristian <scristian@gmail.com>\nJim Huang <jserv@kaffe.org>\nGuanglei Xiong <xgl99@mails.tsinghua.edu.cn>\nSigge Kotliar <sigge@hystrix.se>");
+  label61 = gtk_label_new ("Bart Kreska <wytnijto@smlw.pl>\nDario Conigliaro <djdas@djdas.net>\nFernando Ike de Oliveira <fike@midstorm.org>\nSargate Kanogan <sargate@gmail.com>\nTakeshi AIHANA <takeshi.aihana@gmail.com>");
   gtk_widget_show (label61);
   gtk_container_add (GTK_CONTAINER (viewport2), label61);
   gtk_misc_set_alignment (GTK_MISC (label61), 0, 0.1);

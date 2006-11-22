@@ -6434,29 +6434,11 @@ at http://musicplayer.sourceforge.net</property>
 		  <child>
 		    <widget class="GtkLabel" id="label61">
 		      <property name="visible">True</property>
-		      <property name="label">Tibor Pittich &lt;Tibor.Pittich@phuture.sk&gt;
-Antoine REVERSAT &lt;areversat@TUXFAMILY.ORG&gt;
-Vincent Lefevre &lt;vincent@vinc17.org&gt;
-Stephane Jourdan &lt;stephane.jourdan@itris.fr&gt;
-Takeshi AIHANA &lt;aihana@gnome.gr.jp&gt;
-Park Ji-In &lt;mithrandir@electrang.net&gt;
-Carlos Fenollosa &lt;topopardo@humorfreak.com&gt;
-Jose Maria Mateos &lt;chema@chema.homelinux.org&gt;
-Enrico Genauck &lt;enrico@fanglomerat.de&gt;
-Vladimir Petkov &lt;vpetkov@i-space.org&gt;
-Tomislav Markovski &lt;tome@set.com.mk&gt;
+		      <property name="label">Bart Kreska &lt;wytnijto@smlw.pl&gt;
 Dario Conigliaro &lt;djdas@djdas.net&gt;
-Rex Tsai &lt;chihchun@users.sourceforge.net&gt;
-Alekseev Vladimir &lt;compress@linux-online.ru&gt;
-Juraj Kubelka &lt;Juraj.Kubelka@email.cz&gt;
-Martin-Eric Racine &lt;q-funk@pp.fishpool.fi&gt;
-Jakub W. Jóźwicki &lt;jakubj@users.sourceforge.net&gt;
-Pauli Virtanen &lt;pauli.virtanen@hut.fi&gt;
-Fernando Ike &lt;fernando@ikenet.com.br&gt;
-Spoială Cristian &lt;scristian@gmail.com&gt;
-Jim Huang &lt;jserv@kaffe.org&gt;
-Guanglei Xiong &lt;xgl99@mails.tsinghua.edu.cn&gt;
-Sigge Kotliar &lt;sigge@hystrix.se&gt;</property>
+Fernando Ike de Oliveira &lt;fike@midstorm.org&gt;
+Sargate Kanogan &lt;sargate@gmail.com&gt;
+Takeshi AIHANA &lt;takeshi.aihana@gmail.com&gt;</property>
 		      <property name="use_underline">False</property>
 		      <property name="use_markup">False</property>
 		      <property name="justify">GTK_JUSTIFY_LEFT</property>
