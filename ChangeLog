@@ -5,6 +5,7 @@
 	* Fixes a possible feed list corruption reported by several users.
 	* Patch from Michel Salim to use the GNOME document font
 	  instead of the GNOME application font for the HTML rendering.
+	* It is now possible to use "Remove All Items" on news bins.
 
 	Translations
 
