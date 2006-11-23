@@ -48,7 +48,9 @@ enum allicons {
 
 extern GdkPixbuf *icons[MAX_ICONS];
 
-/** initializes the feed list handling */
+/** 
+ * Initializes the feed list handling.
+ */
 void feedlist_init(void);
 
 /**
@@ -80,22 +82,31 @@ int feedlist_get_new_item_count(void);
 void feedlist_reset_new_item_count(void);
 void feedlist_update_counters(gint unreadDiff, gint newDiff);
 
+/**
+ * Helper function to query the feed list root node.
+ *
+ * @returns the feed list root node
+ */
 nodePtr feedlist_get_root(void);
 
-void feedlist_remove_node(nodePtr np);
-
 /**
- * Schedules a save requests for the feed list.
- * Triggers state saving for all feed list plugins.
+ * Removes the given node from the feed list and 
+ * triggers the permanent removal of the node from cache.
+ *
+ * @param node		the node to remove
  */
-void feedlist_schedule_save(void);
+void feedlist_remove_node(nodePtr node);
 
 /**
- * Force immediate save requests for the feed list.
- * Similar to feedlist_schedule_save() but runs
- * synchronously.
+ * Synchronously saves the feed list. Only to be used upon exit!
  */
 void feedlist_save(void);
+
+/**
+ * Schedules a save requests for the feed list within the next 5s.
+ * Triggers state saving for all feed list sources.
+ */
+void feedlist_schedule_save(void);
 
 /* feed list iterating interface */
 
@@ -104,7 +115,7 @@ void feedlist_save(void);
  * nodes in the feed list. This method is just a wrapper for
  * node_foreach_child().
  *
- * @param func	the function to process all found elements
+ * @param func		the function to process all found elements
  */
 #define feedlist_foreach(func) node_foreach_child(feedlist_get_root(), func)
 
@@ -113,22 +124,26 @@ void feedlist_save(void);
  * nodes in the feed list. This method is just a wrapper for
  * node_foreach_child_data().
  *
- * @param func	the function to process all found elements
- * @param user_data specifies the second argument that func should be passed
+ * @param func		the function to process all found elements
+ * @param user_data	specifies the second argument that func should be passed
  */
 #define feedlist_foreach_data(func, user_data) node_foreach_child_data(feedlist_get_root(), func, user_data)
 
 /* UI callbacks */
 
 /**
- * Callback for feed list selection change 
+ * Callback for feed list selection change .
+ *
+ * @param node		the new selected node
  */
-void feedlist_selection_changed(nodePtr np);
+void feedlist_selection_changed(nodePtr node);
 
 /** 
  * Tries to find the first node with an unread item in the given folder.
+ *
+ * @param folder	the folder to search
  * 
- * @return folder pointer or NULL
+ * @return a found node or NULL
  */
 nodePtr	feedlist_find_unread_feed(nodePtr folder);
 

@@ -24,11 +24,12 @@
 
 #include <gtk/gtk.h>
 
-#include "rule.h"
-#include "vfolder.h"
+#include "feedlist.h"
 #include "interface.h"
 #include "itemlist.h"
 #include "support.h"
+#include "rule.h"
+#include "vfolder.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_itemlist.h"
 #include "ui/ui_node.h"
@@ -299,7 +300,7 @@ void ui_vfolder_add(nodePtr parent) {
 	vfolder_new(node);
 
 	node_add_child(NULL, node, 0);
-	feedlist_save();
+	feedlist_schedule_save();
 	ui_feedlist_select(node);
 	ui_vfolder_properties(node);
 }

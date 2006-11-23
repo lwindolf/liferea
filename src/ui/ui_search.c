@@ -95,7 +95,7 @@ void on_searchentry_activate(GtkEntry *entry, gpointer user_data) {
 	if(searchResult) {
 		/* Unload from itemlist (necessary on subsequent loads */
 		if(searchResult == itemlist_get_displayed_node())
-			itemlist_unload(searchResult);
+			itemlist_unload(FALSE);
 			
 		vfolder_free(searchResult->data);
 		node_free(searchResult);
@@ -150,7 +150,7 @@ void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
 		nodePtr node = searchResult;
 		searchResult = NULL;
 		node_add_child(NULL, node, 0);
-		feedlist_save();
+		feedlist_schedule_save();
 		ui_feedlist_select(node);
 	}
 }

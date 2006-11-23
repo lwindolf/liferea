@@ -99,7 +99,7 @@ void on_newnewsbinbtn_clicked(GtkButton *button, gpointer user_data) {
 
 	ui_feedlist_get_target_folder(&pos);
 	node_add_child(feedlist_get_insertion_point(), newsbin, pos);
-	feedlist_save();
+	feedlist_schedule_save();
 	ui_feedlist_select(newsbin);
 	
 	newsbin_list = g_slist_append(newsbin_list, newsbin);

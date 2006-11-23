@@ -299,8 +299,8 @@ void on_menu_allfeedsread(GtkWidget *widget, gpointer user_data) {
 	node_foreach_child(feedlist_get_root(), node_mark_all_read);
 }
 
-/* feedlist saving */
-
+/* Feedlist saving. Do not call directly to avoid threading 
+   problems. Use feedlist_schedule_save() instead! */
 static gboolean feedlist_schedule_save_cb(gpointer user_data) {
 
 	/* step 1: request each node to save its state */
@@ -325,7 +325,7 @@ void feedlist_schedule_save(void) {
 	}
 }
 
-/* Executes immediate save */
+/* This method is only to be used when exiting the program! */
 void feedlist_save(void) {
 
 	feedlist_schedule_save_cb(NULL);
