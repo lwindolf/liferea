@@ -30,7 +30,6 @@
 #include "itemset.h"
 #include "itemlist.h"
 #include "node.h"
-#include "render.h"
 #include "vfolder.h"
 #include "ui/ui_vfolder.h"
 
@@ -544,18 +543,6 @@ static void vfolder_mark_all_read(nodePtr node) {
 	itemlist_mark_all_read(node->itemSet);
 }
 
-static gchar * vfolder_render(nodePtr node) {
-	gchar	*result, *filename, **params = NULL;
-
-	params = render_add_parameter(params, "id='%s'", node->id);
-	params = render_add_parameter(params, "headlineCount='%d'", g_list_length(node->itemSet->items));
-	filename = common_create_cache_filename(NULL, "feedlist", "opml");	// FIXME: has to be source specific?
-	result = render_file(filename, "vfolder", params);
-	g_free(filename);
-	
-	return result;
-}
-
 nodeTypePtr vfolder_get_node_type(void) { 
 
 	static struct nodeType nti = {
@@ -575,7 +562,7 @@ nodeTypePtr vfolder_get_node_type(void) {
 		vfolder_request_auto_update,
 		vfolder_remove,
 		vfolder_mark_all_read,
-		vfolder_render,
+		node_default_render,
 		ui_vfolder_add,
 		ui_vfolder_properties
 	};

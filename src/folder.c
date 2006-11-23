@@ -24,7 +24,6 @@
 #include "debug.h"
 #include "export.h"
 #include "feedlist.h"
-#include "render.h"
 #include "support.h"
 #include "ui/ui_folder.h"
 #include "ui/ui_node.h"
@@ -144,18 +143,6 @@ static void folder_mark_all_read(nodePtr node) {
 	node_foreach_child(node, node_mark_all_read);
 }
 
-static gchar * folder_render(nodePtr node) {
-	gchar	*result, *filename, **params = NULL;
-
-	params = render_add_parameter(params, "id='%s'", node->id);
-	params = render_add_parameter(params, "headlineCount='%d'", g_list_length(node->itemSet->items));
-	filename = NODE_SOURCE_TYPE(node)->source_get_feedlist(node->source->root);
-	result = render_file(filename, "folder", params);
-	g_free(filename);
-	
-	return result;
-}
-
 nodeTypePtr folder_get_node_type(void) { 
 
 	static struct nodeType fnti = {
@@ -178,7 +165,7 @@ nodeTypePtr folder_get_node_type(void) {
 		folder_request_auto_update,
 		folder_remove,
 		folder_mark_all_read,
-		folder_render,
+		node_default_render,
 		ui_folder_add,
 		ui_node_rename
 	};
@@ -211,7 +198,7 @@ nodeTypePtr root_get_node_type(void) {
 		folder_request_auto_update,
 		folder_remove,
 		folder_mark_all_read,
-		folder_render,
+		node_default_render,
 		ui_folder_add,
 		ui_node_rename
 	};

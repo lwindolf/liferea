@@ -23,15 +23,16 @@
 #include "common.h"
 #include "conf.h"
 #include "callbacks.h"
+#include "debug.h"
 #include "favicon.h"
 #include "feed.h"
 #include "feedlist.h"
 #include "folder.h"
 #include "itemset.h"
-#include "vfolder.h"
-#include "update.h"
-#include "debug.h"
+#include "render.h"
 #include "support.h"
+#include "update.h"
+#include "vfolder.h"
 #include "fl_sources/node_source.h"
 
 static GHashTable *nodes = NULL;
@@ -486,6 +487,40 @@ void node_request_remove(nodePtr node) {
 	node->parent->children = g_slist_remove(node->parent->children, node);
 
 	node_free(node);
+}
+
+static xmlDocPtr node_to_xml(nodePtr node) {
+	xmlDocPtr	doc;
+	xmlNodePtr	rootNode;
+	gchar		*tmp;
+	
+	doc = xmlNewDoc("1.0");
+	rootNode = xmlDocGetRootElement(doc);
+	rootNode = xmlNewDocNode(doc, NULL, "node", NULL);
+	xmlDocSetRootElement(doc, rootNode);
+
+	xmlNewTextChild(rootNode, NULL, "title", node_get_title(node));
+	
+	tmp = g_strdup_printf("%u", node->unreadCount);
+	xmlNewTextChild(rootNode, NULL, "unreadCount", tmp);
+	g_free(tmp);
+	
+	tmp = g_strdup_printf("%u", g_slist_length(node->children));
+	xmlNewTextChild(rootNode, NULL, "children", tmp);
+	g_free(tmp);
+	
+	return doc;
+}
+
+gchar * node_default_render(nodePtr node) {
+	gchar		*result, **params = NULL;
+	xmlDocPtr	doc;
+
+	doc = node_to_xml(node);
+	result = render_xml(doc, NODE_TYPE(node)->id, params);	
+	xmlFree(doc);
+		
+	return result;
 }
 
 /* wrapper for node type interface */

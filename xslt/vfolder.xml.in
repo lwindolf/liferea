@@ -27,21 +27,7 @@
 
 <xsl:output method="xml" version="1.0" indent="yes"/>
 
-<!-- node id of the folder in feedlist.opml -->
-<xsl:param name="id"/>   
-<!-- number of headlines of all child nodes -->
-<xsl:param name="headlineCount"/>   
-
-<xsl:template match="/opml/body">
-	<xsl:apply-templates select="node()"/>
-</xsl:template>
-
-<xsl:preserve-space elements="//*"/>
-
-<xsl:template match="/opml/head" />
-
-<xsl:template match="/opml/body//outline">
-<xsl:if test="@id = $id ">
+<xsl:template match="/node">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
@@ -55,23 +41,19 @@
     <b><_span>Search Folder:</_span></b>
   </td>
   <td width="100%" valign="middle" class="headright">
-     <b><xsl:value-of select="@title"/></b>
+     <b><xsl:value-of select="title"/></b>
   </td>
 </tr>
 </table>
 
 <div class='content'>
   <p>
-    <b><xsl:value-of select="$headlineCount"/></b> 
-    <_span>Headlines</_span> 
+   <b><xsl:value-of select="unreadCount"/></b>
+   <_span>unread headlines</_span> 
   </p>
 </div>
 
 </body>
 </html>
-</xsl:if>
-
-<xsl:apply-templates select="outline"/>
-
 </xsl:template>
 </xsl:stylesheet>

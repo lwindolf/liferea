@@ -49,7 +49,7 @@
 <div class='content'>
   <p>
    <b><xsl:value-of select="children"/></b>
-   <_span>childs with</_span> 
+   <_span>children with</_span> 
    <b><xsl:value-of select="unreadCount"/></b>
    <_span>unread headlines</_span> 
   </p>

@@ -349,6 +349,18 @@ void node_free(nodePtr node);
 void node_update_counters(nodePtr node);
 
 /**
+ * Helper function for generic node rendering. Performs
+ * a generic node serialization to XML and passes the
+ * generated XML source document to the XSLT stylesheet
+ * with the same name as the node type id.
+ *
+ * @param node		the node to render
+ *
+ * @returns XHTML string
+ */
+gchar * node_default_render(nodePtr node);
+
+/**
  * Do import for the given node and import it as a child of 
  * the given parent node. Used by import_parse_outline() to
  * do node specific import.
@@ -361,7 +373,7 @@ void node_update_counters(nodePtr node);
 void node_import(nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean trusted);
 
 /**
- * Do export the given node Used by export_OPML_feedlist() to
+ * Do export the given node. Used by export_OPML_feedlist() to
  * do node specific export.
  *
  * @param node		the node to import

@@ -27,7 +27,6 @@
 #include "node.h"
 #include "folder.h"
 #include "plugin.h"
-#include "render.h"
 #include "support.h"
 #include "fl_sources/node_source.h"
 #include "fl_sources/node_source-ui.h"
@@ -273,17 +272,6 @@ static void node_source_remove(nodePtr node) {
 	ui_node_remove_node(node);
 }
 
-static gchar * node_source_render(nodePtr node) {
-	gchar	*result, *filename, **params = NULL;
-
-	params = render_add_parameter(params, "headlineCount='%d'", g_list_length(node->itemSet->items));
-	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "plugins", node->id, "opml");
-	result = render_file(filename, "fl_plugin", params);
-	g_free(filename);
-	
-	return result;
-}
-
 static void node_source_save(nodePtr node) {
 
 	node_foreach_child(node, node_save);
@@ -310,7 +298,7 @@ nodeTypePtr node_source_get_node_type(void) {
 		nodeType->request_auto_update	= node_source_request_auto_update;
 		nodeType->remove		= node_source_remove;
 		nodeType->mark_all_read		= folder_get_node_type()->mark_all_read;
-		nodeType->render		= node_source_render;
+		nodeType->render		= node_default_render;
 		nodeType->request_add		= ui_node_source_type_dialog;
 		nodeType->request_properties	= ui_node_rename;
 	}
