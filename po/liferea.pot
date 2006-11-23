@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-11-19 18:41+0100\n"
+"POT-Creation-Date: 2006-11-24 00:34+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -53,7 +53,7 @@ msgstr ""
 msgid "Publisher"
 msgstr ""
 
-#: ../xslt/feed.xml.in.h:7 ../xslt/fl_plugin.xml.in.h:2
+#: ../xslt/feed.xml.in.h:7 ../xslt/source.xml.in.h:1
 msgid "Source:"
 msgstr ""
 
@@ -77,13 +77,13 @@ msgid ""
 "anymore but you can still access the cached headlines."
 msgstr ""
 
-#: ../xslt/fl_plugin.xml.in.h:1 ../xslt/folder.xml.in.h:2
-#: ../xslt/vfolder.xml.in.h:1 ../src/interface.c:196 ../src/interface.c:1607
-msgid "Headlines"
+#: ../xslt/source.xml.in.h:2 ../xslt/folder.xml.in.h:2
+msgid "children with"
 msgstr ""
 
-#: ../xslt/fl_plugin.xml.in.h:3 ../xslt/folder.xml.in.h:3
-msgid "Subscriptions with"
+#: ../xslt/source.xml.in.h:3 ../xslt/folder.xml.in.h:3
+#: ../xslt/vfolder.xml.in.h:2
+msgid "unread headlines"
 msgstr ""
 
 #: ../xslt/folder.xml.in.h:1
@@ -128,7 +128,7 @@ msgstr ""
 msgid "News Bin:"
 msgstr ""
 
-#: ../xslt/vfolder.xml.in.h:2
+#: ../xslt/vfolder.xml.in.h:1
 msgid "Search Folder:"
 msgstr ""
 
@@ -205,7 +205,7 @@ msgid ""
 "characters were dropped!"
 msgstr ""
 
-#: ../src/export.c:151
+#: ../src/export.c:147
 #, c-format
 msgid "Error renaming %s to %s\n"
 msgstr ""
@@ -486,6 +486,10 @@ msgstr ""
 msgid "combined view"
 msgstr ""
 
+#: ../src/interface.c:196 ../src/interface.c:1607
+msgid "Headlines"
+msgstr ""
+
 #: ../src/interface.c:226
 msgid "Online/Offline Button"
 msgstr ""
@@ -647,7 +651,7 @@ msgstr ""
 msgid "Advanced"
 msgstr ""
 
-#: ../src/interface.c:882 ../src/interface.c:3488 ../src/node.c:472
+#: ../src/interface.c:882 ../src/interface.c:3488 ../src/node.c:473
 msgid "New Subscription"
 msgstr ""
 
@@ -1395,7 +1399,7 @@ msgstr ""
 msgid "Could not download \"%s\". Will retry in %d seconds."
 msgstr ""
 
-#: ../src/vfolder.c:59
+#: ../src/vfolder.c:58
 msgid "New Search Folder"
 msgstr ""
 
@@ -2112,11 +2116,11 @@ msgstr ""
 msgid "New OPML Subscription"
 msgstr ""
 
-#: ../src/fl_sources/node_source.c:208
+#: ../src/fl_sources/node_source.c:207
 msgid "No feed list source types found!"
 msgstr ""
 
-#: ../src/fl_sources/node_source.c:239
+#: ../src/fl_sources/node_source.c:238
 msgid "Source Type"
 msgstr ""
 

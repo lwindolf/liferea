@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-11-19 18:41+0100\n"
+"POT-Creation-Date: 2006-11-24 00:34+0100\n"
 "PO-Revision-Date: 2006-11-18 17:11-0300\n"
 "Last-Translator: Fernando Ike <fernando.ike@gmail.com>\n"
 "Language-Team: Portuguese/Brazil <pt@li.org>\n"
@@ -54,7 +54,7 @@ msgstr "Detalhes de erro do analisador"
 msgid "Publisher"
 msgstr "editores"
 
-#: ../xslt/feed.xml.in.h:7 ../xslt/fl_plugin.xml.in.h:2
+#: ../xslt/feed.xml.in.h:7 ../xslt/source.xml.in.h:1
 msgid "Source:"
 msgstr "Fontes:"
 
@@ -82,14 +82,15 @@ msgstr ""
 "O fonte foi descontinuado. Não o atualizará, mas poderá acessar os artigos "
 "no cache."
 
-#: ../xslt/fl_plugin.xml.in.h:1 ../xslt/folder.xml.in.h:2
-#: ../xslt/vfolder.xml.in.h:1 ../src/interface.c:196 ../src/interface.c:1607
-msgid "Headlines"
-msgstr "Resumo"
+#: ../xslt/source.xml.in.h:2 ../xslt/folder.xml.in.h:2
+msgid "children with"
+msgstr ""
 
-#: ../xslt/fl_plugin.xml.in.h:3 ../xslt/folder.xml.in.h:3
-msgid "Subscriptions with"
-msgstr "Assinaturas com"
+#: ../xslt/source.xml.in.h:3 ../xslt/folder.xml.in.h:3
+#: ../xslt/vfolder.xml.in.h:2
+#, fuzzy
+msgid "unread headlines"
+msgstr "E_xibe Resumos Com"
 
 #: ../xslt/folder.xml.in.h:1
 msgid "Folder:"
@@ -136,7 +137,7 @@ msgstr ""
 msgid "News Bin:"
 msgstr "Nova Janela"
 
-#: ../xslt/vfolder.xml.in.h:2
+#: ../xslt/vfolder.xml.in.h:1
 #, fuzzy
 msgid "Search Folder:"
 msgstr "Pesquisar pasta"
@@ -222,7 +223,7 @@ msgstr ""
 "Fim inesperado da seqüência de caracteres ou da codificação UTF-8 "
 "corrompido!  Alguns caracteres foram perdidos!"
 
-#: ../src/export.c:151
+#: ../src/export.c:147
 #, c-format
 msgid "Error renaming %s to %s\n"
 msgstr "Erro ao renomear %s para %s\n"
@@ -521,6 +522,10 @@ msgstr "E_xibe Resumos Com"
 msgid "combined view"
 msgstr ""
 
+#: ../src/interface.c:196 ../src/interface.c:1607
+msgid "Headlines"
+msgstr "Resumo"
+
 #: ../src/interface.c:226
 msgid "Online/Offline Button"
 msgstr ""
@@ -689,7 +694,7 @@ msgstr ""
 msgid "Advanced"
 msgstr "Avançado..."
 
-#: ../src/interface.c:882 ../src/interface.c:3488 ../src/node.c:472
+#: ../src/interface.c:882 ../src/interface.c:3488 ../src/node.c:473
 msgid "New Subscription"
 msgstr "Nova assinatura"
 
@@ -1495,7 +1500,7 @@ msgstr "Erro: Nâo há arquivo: \"%s\""
 msgid "Could not download \"%s\". Will retry in %d seconds."
 msgstr "Não pode baixar \"%s\". Repetirá em %d segundos"
 
-#: ../src/vfolder.c:59
+#: ../src/vfolder.c:58
 msgid "New Search Folder"
 msgstr "Nova Pesquisa de Pasta"
 
@@ -2250,11 +2255,11 @@ msgstr "feedlist_ptBR.opml"
 msgid "New OPML Subscription"
 msgstr "Nova assinatura"
 
-#: ../src/fl_sources/node_source.c:208
+#: ../src/fl_sources/node_source.c:207
 msgid "No feed list source types found!"
 msgstr "Tipos de fontes não encontrado!"
 
-#: ../src/fl_sources/node_source.c:239
+#: ../src/fl_sources/node_source.c:238
 msgid "Source Type"
 msgstr "Tipos de fonte"
 
@@ -2279,6 +2284,9 @@ msgstr "Sem Título"
 #: ../src/notification/notif_popup.c:323
 msgid "Liferea notification"
 msgstr "Notificação Liferea"
+
+#~ msgid "Subscriptions with"
+#~ msgstr "Assinaturas com"
 
 #~ msgid "internal error! time conversion error! mktime failed!\n"
 #~ msgstr "erro interno! erro de conversão de tempo! falha do mktime!\n"

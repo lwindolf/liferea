@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.1.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-11-19 18:41+0100\n"
+"POT-Creation-Date: 2006-11-24 00:34+0100\n"
 "PO-Revision-Date: 2006-10-20 21:55+0100\n"
 "Last-Translator: Lars Lindner <lars.lindner@gmx.net>\n"
 "Language-Team: Polish\n"
@@ -55,7 +55,7 @@ msgstr "Szczegóły błędów parsera"
 msgid "Publisher"
 msgstr ""
 
-#: ../xslt/feed.xml.in.h:7 ../xslt/fl_plugin.xml.in.h:2
+#: ../xslt/feed.xml.in.h:7 ../xslt/source.xml.in.h:1
 msgid "Source:"
 msgstr "Źródło:"
 
@@ -83,14 +83,15 @@ msgstr ""
 "Subskrypcja została zamknięta i nie jest już dostępna. Liferea nie będzie "
 "jej uaktualniać ale masz nadal dostęp do zachowanych artykułów."
 
-#: ../xslt/fl_plugin.xml.in.h:1 ../xslt/folder.xml.in.h:2
-#: ../xslt/vfolder.xml.in.h:1 ../src/interface.c:196 ../src/interface.c:1607
-msgid "Headlines"
-msgstr "Nagłówki"
+#: ../xslt/source.xml.in.h:2 ../xslt/folder.xml.in.h:2
+msgid "children with"
+msgstr ""
 
-#: ../xslt/fl_plugin.xml.in.h:3 ../xslt/folder.xml.in.h:3
-msgid "Subscriptions with"
-msgstr "Nowa Subskrypcja"
+#: ../xslt/source.xml.in.h:3 ../xslt/folder.xml.in.h:3
+#: ../xslt/vfolder.xml.in.h:2
+#, fuzzy
+msgid "unread headlines"
+msgstr "Prze_glądarka artykułów:"
 
 #: ../xslt/folder.xml.in.h:1
 msgid "Folder:"
@@ -135,7 +136,7 @@ msgstr ""
 msgid "News Bin:"
 msgstr "News Bin:"
 
-#: ../xslt/vfolder.xml.in.h:2
+#: ../xslt/vfolder.xml.in.h:1
 msgid "Search Folder:"
 msgstr "Search Folder:"
 
@@ -217,7 +218,7 @@ msgstr ""
 "Nieoczekiwany koniec sekwencji znaków lub uszkodzone kodowanie UTF-8! Część "
 "znaków została obcięta!"
 
-#: ../src/export.c:151
+#: ../src/export.c:147
 #, c-format
 msgid "Error renaming %s to %s\n"
 msgstr "Błąd przy zmianie nazwy z %s na %s\n"
@@ -527,6 +528,10 @@ msgstr "Prze_glądarka artykułów:"
 msgid "combined view"
 msgstr ""
 
+#: ../src/interface.c:196 ../src/interface.c:1607
+msgid "Headlines"
+msgstr "Nagłówki"
+
 #: ../src/interface.c:226
 msgid "Online/Offline Button"
 msgstr ""
@@ -693,7 +698,7 @@ msgstr ""
 msgid "Advanced"
 msgstr ""
 
-#: ../src/interface.c:882 ../src/interface.c:3488 ../src/node.c:472
+#: ../src/interface.c:882 ../src/interface.c:3488 ../src/node.c:473
 msgid "New Subscription"
 msgstr "Nowa Subskrypcja"
 
@@ -1522,7 +1527,7 @@ msgstr "Błąd: Nie ma takiego pliku \"%s\""
 msgid "Could not download \"%s\". Will retry in %d seconds."
 msgstr "Nie można pobrać \"%s\". Ponowna próba za %d sekund."
 
-#: ../src/vfolder.c:59
+#: ../src/vfolder.c:58
 msgid "New Search Folder"
 msgstr "Nowy Katalog Wyników"
 
@@ -2269,11 +2274,11 @@ msgstr "feedlist_pl.opml"
 msgid "New OPML Subscription"
 msgstr "Nowa OPML Subskrypcja"
 
-#: ../src/fl_sources/node_source.c:208
+#: ../src/fl_sources/node_source.c:207
 msgid "No feed list source types found!"
 msgstr "Nie znaleziono typu źródła subskrypcji!"
 
-#: ../src/fl_sources/node_source.c:239
+#: ../src/fl_sources/node_source.c:238
 msgid "Source Type"
 msgstr "Rodzaj źródła:"
 
@@ -2298,6 +2303,9 @@ msgstr "Bez tytułu"
 #: ../src/notification/notif_popup.c:323
 msgid "Liferea notification"
 msgstr "Powiadomienie Liferea"
+
+#~ msgid "Subscriptions with"
+#~ msgstr "Nowa Subskrypcja"
 
 #~ msgid ""
 #~ "<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black;"

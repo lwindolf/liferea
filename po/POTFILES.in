@@ -2,7 +2,7 @@
 
 liferea.desktop.in
 xslt/feed.xml.in
-xslt/fl_plugin.xml.in
+xslt/source.xml.in
 xslt/folder.xml.in
 xslt/item.xml.in
 xslt/newsbin.xml.in

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-11-19 18:41+0100\n"
+"POT-Creation-Date: 2006-11-24 00:34+0100\n"
 "PO-Revision-Date: 2006-11-16 21:41+0100\n"
 "Last-Translator: Dario 'MadHorse' Conigliaro <djdas@djdas.net>\n"
 "Language-Team: Italian <LL@li.org>\n"
@@ -55,7 +55,7 @@ msgstr "Dettagli errori del parser"
 msgid "Publisher"
 msgstr "Editore"
 
-#: ../xslt/feed.xml.in.h:7 ../xslt/fl_plugin.xml.in.h:2
+#: ../xslt/feed.xml.in.h:7 ../xslt/source.xml.in.h:1
 msgid "Source:"
 msgstr "Sorgente:"
 
@@ -85,14 +85,15 @@ msgstr ""
 "Questo notiziario è stato rimosso. Non è più disponibile. Liferea non lo "
 "aggiornerà più ma si può ancora accedere alle intestazioni nella cache."
 
-#: ../xslt/fl_plugin.xml.in.h:1 ../xslt/folder.xml.in.h:2
-#: ../xslt/vfolder.xml.in.h:1 ../src/interface.c:196 ../src/interface.c:1607
-msgid "Headlines"
-msgstr "Testate"
+#: ../xslt/source.xml.in.h:2 ../xslt/folder.xml.in.h:2
+msgid "children with"
+msgstr ""
 
-#: ../xslt/fl_plugin.xml.in.h:3 ../xslt/folder.xml.in.h:3
-msgid "Subscriptions with"
-msgstr "Sottoscrizioni con"
+#: ../xslt/source.xml.in.h:3 ../xslt/folder.xml.in.h:3
+#: ../xslt/vfolder.xml.in.h:2
+#, fuzzy
+msgid "unread headlines"
+msgstr "Mostra testate"
 
 #: ../xslt/folder.xml.in.h:1
 msgid "Folder:"
@@ -138,7 +139,7 @@ msgstr ""
 msgid "News Bin:"
 msgstr "Scomparto Notiziari:"
 
-#: ../xslt/vfolder.xml.in.h:2
+#: ../xslt/vfolder.xml.in.h:1
 msgid "Search Folder:"
 msgstr "Cartella Ricerche:"
 
@@ -221,7 +222,7 @@ msgstr ""
 "Sequenza di fine caratteri errata o codifica UTF-8 corrotta!Alcuni caratteri "
 "sono stati eliminati!"
 
-#: ../src/export.c:151
+#: ../src/export.c:147
 #, c-format
 msgid "Error renaming %s to %s\n"
 msgstr "Si è verificato un errore rinominando %s in %s\n"
@@ -536,6 +537,10 @@ msgstr "Mostra testate"
 msgid "combined view"
 msgstr "vista combinata"
 
+#: ../src/interface.c:196 ../src/interface.c:1607
+msgid "Headlines"
+msgstr "Testate"
+
 #: ../src/interface.c:226
 msgid "Online/Offline Button"
 msgstr "Pulsante In linea/Non in linea"
@@ -707,7 +712,7 @@ msgstr ""
 msgid "Advanced"
 msgstr "Avanzato"
 
-#: ../src/interface.c:882 ../src/interface.c:3488 ../src/node.c:472
+#: ../src/interface.c:882 ../src/interface.c:3488 ../src/node.c:473
 msgid "New Subscription"
 msgstr "Nuova Sottoscrizione"
 
@@ -1561,7 +1566,7 @@ msgstr "Errore: Non esiste alcun file \"%s\""
 msgid "Could not download \"%s\". Will retry in %d seconds."
 msgstr "Impossibile scaricare \"%s\". Riprovo tra %d secondi."
 
-#: ../src/vfolder.c:59
+#: ../src/vfolder.c:58
 msgid "New Search Folder"
 msgstr "Nuova Cartella Ricerche"
 
@@ -2315,11 +2320,11 @@ msgstr "feedlist.opml"
 msgid "New OPML Subscription"
 msgstr "Nuova Sottoscrizione OPML"
 
-#: ../src/fl_sources/node_source.c:208
+#: ../src/fl_sources/node_source.c:207
 msgid "No feed list source types found!"
 msgstr "Nessun tipo sorgente per la lista dei notiziari trovato!"
 
-#: ../src/fl_sources/node_source.c:239
+#: ../src/fl_sources/node_source.c:238
 msgid "Source Type"
 msgstr "Tipo Sorgente"
 
@@ -2343,3 +2348,6 @@ msgstr "Senza titolo"
 #: ../src/notification/notif_popup.c:323
 msgid "Liferea notification"
 msgstr "Notifica Liferea"
+
+#~ msgid "Subscriptions with"
+#~ msgstr "Sottoscrizioni con"

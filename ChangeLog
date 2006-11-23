@@ -6,7 +6,8 @@
 	* Patch from Michel Salim to use the GNOME document font
 	  instead of the GNOME application font for the HTML rendering.
 	* It is now possible to use "Remove All Items" on news bins.
-	* Renamed xslt/fl_plugin.xml.in to xslt/node_source.xml.in
+	* Renamed xslt/fl_plugin.xml.in to xslt/source.xml.in
+	* Fixes a problem with the feed list saving concept.
 
 	Translations
 
