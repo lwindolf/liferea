@@ -66,7 +66,16 @@ void	htmlview_add_item(itemPtr item);
 void	htmlview_remove_item(itemPtr item);
 
 /**
- * Updates the output of a given item from the HTML view rendering.
+ * Updates the output of the selected item in the HTML view rendering.
+ *
+ * This method _DOES NOT_ update the rendering output.
+ *
+ * @param item		the item to mark for update
+ */
+void	htmlview_select_item(itemPtr item);
+
+/**
+ * Updates the output of a given item in the HTML view rendering.
  *
  * This method _DOES NOT_ update the rendering output.
  *

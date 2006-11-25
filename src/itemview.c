@@ -35,7 +35,6 @@ static struct itemView_priv {
 	gboolean	htmlOnly;		/**< TRUE if HTML only mode */
 	guint		mode;			/**< current item view mode */
 	itemSetPtr	itemSet;		/**< currently item set */
-	gboolean	needsHTMLUpdate;		/**< item view needs to be updated */
 	gchar 		*userDefinedDateFmt;	/**< user defined date formatting string */
 } itemView_priv;
 
@@ -80,14 +79,12 @@ void itemview_clear(void) {
 
 	ui_itemlist_clear();
 	htmlview_clear();
-	itemView_priv.needsHTMLUpdate = TRUE;
 }
 
 void itemview_set_mode(guint mode) {
 
 	if(itemView_priv.mode != mode) {
 		itemView_priv.mode = mode;
-		itemView_priv.needsHTMLUpdate = TRUE;
 		htmlview_clear();	/* drop HTML rendering cache */
 	}
 }
@@ -97,7 +94,6 @@ void itemview_set_itemset(itemSetPtr itemSet) {
 
 	if(itemSet != itemView_priv.itemSet) {
 		itemView_priv.itemSet = itemSet;
-		itemView_priv.needsHTMLUpdate = TRUE;
 
 		/* 1. Perform UI item list preparations ... */
 		
@@ -137,20 +133,22 @@ void itemview_set_itemset(itemSetPtr itemSet) {
 
 void itemview_add_item(itemPtr item) {
 
+	if(!itemset_lookup_item(itemView_priv.itemSet, item->itemSet->node, item->nr))
+		return;
+
 	if(ITEMVIEW_ALL_ITEMS != itemView_priv.mode)
 		ui_itemlist_add_item(item);
-	else
-		itemView_priv.needsHTMLUpdate = TRUE;
-		
+
 	htmlview_add_item(item);
 }
 
 void itemview_remove_item(itemPtr item) {
 
+	if(!itemset_lookup_item(itemView_priv.itemSet, item->itemSet->node, item->nr))
+		return;
+
 	if(ITEMVIEW_ALL_ITEMS != itemView_priv.mode)
 		ui_itemlist_remove_item(item);
-	else
-		itemView_priv.needsHTMLUpdate = TRUE;
 
 	htmlview_remove_item(item);
 }
@@ -161,7 +159,7 @@ void itemview_select_item(itemPtr item) {
 		return;
 
 	ui_itemlist_select(item);
-	itemView_priv.needsHTMLUpdate = TRUE;
+	htmlview_select_item(item);
 }
 
 void itemview_update_item(itemPtr item) {
@@ -192,7 +190,6 @@ void itemview_update_item(itemPtr item) {
 	}
 
 	htmlview_update_item(item);
-	itemView_priv.needsHTMLUpdate = TRUE;
 }
 
 void itemview_update(void) {
@@ -200,11 +197,7 @@ void itemview_update(void) {
 	if(!itemView_priv.itemSet)
 		return;
 
-	if(itemView_priv.needsHTMLUpdate) {
-		itemView_priv.needsHTMLUpdate = FALSE;
-			
-		htmlview_update(ui_mainwindow_get_active_htmlview(), itemView_priv.mode);
-	}
+	htmlview_update(ui_mainwindow_get_active_htmlview(), itemView_priv.mode);
 }
 
 /* date format handling (not sure if this is the right place) */
