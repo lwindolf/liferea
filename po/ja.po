@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea trunk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-11-24 00:34+0100\n"
-"PO-Revision-Date: 2006-11-05 20:52+0900\n"
+"POT-Creation-Date: 2006-11-23 10:21+0900\n"
+"PO-Revision-Date: 2006-11-23 10:10+0900\n"
 "Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
@@ -56,7 +56,7 @@ msgstr "解析エラーの詳細"
 msgid "Publisher"
 msgstr "公開者"
 
-#: ../xslt/feed.xml.in.h:7 ../xslt/source.xml.in.h:1
+#: ../xslt/feed.xml.in.h:7 ../xslt/fl_plugin.xml.in.h:2
 msgid "Source:"
 msgstr "ソース:"
 
@@ -84,15 +84,14 @@ msgstr ""
 "この配信元は停止しているので、利用できません。今後 Liferea が更新することはあ"
 "りませんが、キャッシュに保存したヘッドラインにアクセスすることは可能です。"
 
-#: ../xslt/source.xml.in.h:2 ../xslt/folder.xml.in.h:2
-msgid "children with"
-msgstr ""
+#: ../xslt/fl_plugin.xml.in.h:1 ../xslt/folder.xml.in.h:2
+#: ../xslt/vfolder.xml.in.h:1 ../src/interface.c:196 ../src/interface.c:1607
+msgid "Headlines"
+msgstr "ヘッドライン"
 
-#: ../xslt/source.xml.in.h:3 ../xslt/folder.xml.in.h:3
-#: ../xslt/vfolder.xml.in.h:2
-#, fuzzy
-msgid "unread headlines"
-msgstr "使用する描画エンジン(_V):"
+#: ../xslt/fl_plugin.xml.in.h:3 ../xslt/folder.xml.in.h:3
+msgid "Subscriptions with"
+msgstr "次で購読する"
 
 #: ../xslt/folder.xml.in.h:1
 msgid "Folder:"
@@ -138,7 +137,7 @@ msgstr ""
 msgid "News Bin:"
 msgstr "NewsBin:"
 
-#: ../xslt/vfolder.xml.in.h:1
+#: ../xslt/vfolder.xml.in.h:2
 msgid "Search Folder:"
 msgstr "検索するフォルダ:"
 
@@ -517,17 +516,12 @@ msgid "wide view"
 msgstr "ワイドな表示"
 
 #: ../src/interface.c:184
-#, fuzzy
 msgid "View Headlines"
-msgstr "使用する描画エンジン(_V):"
+msgstr "ヘッドライン表示"
 
 #: ../src/interface.c:192
 msgid "combined view"
 msgstr "サマリ表示"
-
-#: ../src/interface.c:196 ../src/interface.c:1607
-msgid "Headlines"
-msgstr "ヘッドライン"
 
 #: ../src/interface.c:226
 msgid "Online/Offline Button"
@@ -696,7 +690,7 @@ msgstr ""
 msgid "Advanced"
 msgstr "拡張"
 
-#: ../src/interface.c:882 ../src/interface.c:3488 ../src/node.c:473
+#: ../src/interface.c:882 ../src/interface.c:3488 ../src/node.c:472
 msgid "New Subscription"
 msgstr "新しい購読"
 
@@ -1358,12 +1352,11 @@ msgstr ""
 "  --debug-gui      GUI 関連の全ての関数のデバッグ・メッセージを表示する"
 
 #: ../src/main.c:80
-#, fuzzy
 msgid ""
 "  --debug-html     Enable HTML debugging (saving to ~/.liferea_1.2/output."
 "xhtml)."
 msgstr ""
-"  --debug-html     HTML のデバッグを有効にする (保存先: ~/.liferea_1.1/"
+"  --debug-html     HTML のデバッグを有効にする (保存先: ~/.liferea_1.2/"
 "output.xhtml)"
 
 #: ../src/main.c:81
@@ -1525,7 +1518,7 @@ msgstr "エラー: ファイル \"%s\" がありません"
 msgid "Could not download \"%s\". Will retry in %d seconds."
 msgstr "\"%s\" をダウンロードできませんでした ( %d秒後にもう一度実行します)"
 
-#: ../src/vfolder.c:58
+#: ../src/vfolder.c:59
 msgid "New Search Folder"
 msgstr "新しい検索フォルダ"
 
@@ -1744,9 +1737,8 @@ msgid "Exports the feed list as OPML."
 msgstr "OPML の配信元一覧としてエキスポートします"
 
 #: ../src/ui/ui_mainwindow.c:885
-#, fuzzy
 msgid "_Items"
-msgstr "トピックが"
+msgstr "トピック(_I)"
 
 #: ../src/ui/ui_mainwindow.c:886
 msgid "_Next Unread Item"
@@ -2179,7 +2171,7 @@ msgstr "\"%s\" の検索中"
 #: ../src/ui/ui_search.c:122
 #, c-format
 msgid "%d Search Results for \"%s\""
-msgstr "\"%s\" を検索した結果 %d個"
+msgstr "\"%2$s\" を検索した結果 %1$d個"
 
 #: ../src/ui/ui_search.c:124
 msgid ""
@@ -2260,11 +2252,11 @@ msgstr "feedlist.opml"
 msgid "New OPML Subscription"
 msgstr "新しい OPML の購読"
 
-#: ../src/fl_sources/node_source.c:207
+#: ../src/fl_sources/node_source.c:208
 msgid "No feed list source types found!"
 msgstr "配信元一覧のソースの種類が見つかりませんでした！"
 
-#: ../src/fl_sources/node_source.c:238
+#: ../src/fl_sources/node_source.c:239
 msgid "Source Type"
 msgstr "ソースの種類"
 
@@ -2288,20 +2280,3 @@ msgstr "名前無し"
 #: ../src/notification/notif_popup.c:323
 msgid "Liferea notification"
 msgstr "Liferea からのお知らせ"
-
-#~ msgid "Subscriptions with"
-#~ msgstr "次で購読する"
-
-#~ msgid "Schlagzeilen anzeigen"
-#~ msgstr "Schlagzeilen anzeigen"
-
-#~ msgid ""
-#~ "<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black;"
-#~ "margin: 5px 0 5px 0\">This is an unstable version of Liferea 1.1. It "
-#~ "should not be used for production yet! If you want to use Liferea "
-#~ "regularily please download the last stable version from SourceForge!</div>"
-#~ msgstr ""
-#~ "<div style=\"background-color:#f7f0a3;padding:5px;border:solid 1px black;"
-#~ "margin: 5px 0 5px 0\">これは Liferea 1.1 の開発版です。製品版ではないので"
-#~ "取り扱いには注意して下さい。Liferea の安定版を使用したいのであれば、"
-#~ "SourceForge から最新の安定版をダウンロードして下さい。</div>"
