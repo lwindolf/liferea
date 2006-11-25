@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Liferea 0.9.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-11-24 00:34+0100\n"
-"PO-Revision-Date: 2006-11-24 00:35+0100\n"
+"PO-Revision-Date: 2006-11-24 19:43+0100\n"
 "Last-Translator: Lars Lindner <lars.lindner@gmx.net>\n"
 "Language-Team: German\n"
 "MIME-Version: 1.0\n"
@@ -83,7 +83,7 @@ msgstr "Unterknoten mit"
 #: ../xslt/folder.xml.in.h:3
 #: ../xslt/vfolder.xml.in.h:2
 msgid "unread headlines"
-msgstr "ungelesene Schlagzeilen"
+msgstr "ungelesenen Schlagzeilen"
 
 #: ../xslt/folder.xml.in.h:1
 msgid "Folder:"
