@@ -59,6 +59,7 @@ void htmlview_clear(void) {
 
 void htmlview_set_itemset(itemSetPtr itemSet) {
 
+	g_assert(0 == g_hash_table_size(htmlView_priv.htmlChunks));
 	htmlView_priv.itemSet = itemSet;
 	htmlView_priv.needsUpdate = TRUE;
 }
@@ -127,8 +128,6 @@ gchar * htmlview_render_item(itemPtr item) {
 	output = render_xml(doc, "item", params);
 	//xmlSaveFormatFile("/tmp/test.xml", doc, 1);
 	xmlFree(doc);
-	
-	g_hash_table_insert(htmlView_priv.htmlChunks, item, output);
 	
 	debug_exit("htmlview_render_item");
 
@@ -232,6 +231,7 @@ void htmlview_update(GtkWidget *widget, guint mode) {
 				chunk = htmlview_render_item(item);
 				if(chunk)
 					g_string_append(output, chunk);
+				g_free(chunk);
 			}
 			break;
 		case ITEMVIEW_ALL_ITEMS:
@@ -244,8 +244,10 @@ void htmlview_update(GtkWidget *widget, guint mode) {
 				gchar *chunk = g_hash_table_lookup(htmlView_priv.htmlChunks, iter->data);
 					
 				/* if not found: render new item now and add to cache */
-				if(!chunk)
+				if(!chunk) {
 					chunk = htmlview_render_item(iter->data);
+					g_hash_table_insert(htmlView_priv.htmlChunks, iter->data, chunk);
+				}
 					
 				g_string_append(output, chunk);
 				iter = g_list_next(iter);
@@ -262,7 +264,7 @@ void htmlview_update(GtkWidget *widget, guint mode) {
 	}
 	
 	htmlview_finish_output(output);
-g_print("writing %d bytes to HTML view\n", strlen(output->str));
+
 	debug1(DEBUG_HTML, "writing %d bytes to HTML view", strlen(output->str));
 	ui_htmlview_write(widget, output->str, baseURL);
 	

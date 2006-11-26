@@ -4,6 +4,7 @@
 
 	* Fixes more unnecessary updates in the two paned view mode
 	  during cache drops after an update of the selected feed.
+	* Fixes a memory when selecting items in 3 paned mode.
 
 
 2006-11-25  Lars Lindner  <lars.lindner@gmail.com>
