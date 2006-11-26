@@ -3648,6 +3648,24 @@ fail:
 }
 
 
+static int _wrap_node_default_render(lua_State* L) {
+  int SWIG_arg = -1;
+  nodePtr arg1 = (nodePtr) 0 ;
+  char *result = 0 ;
+  
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg(1);
+  arg1=(nodePtr)SWIG_MustGetPtr(L,1,SWIGTYPE_p_node,0,1,"node_default_render");
+  result = (char *)node_default_render(arg1);
+  SWIG_arg=0;
+  lua_pushstring(L,result); SWIG_arg++;
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_node_import(lua_State* L) {
   int SWIG_arg = -1;
   nodePtr arg1 = (nodePtr) 0 ;
@@ -5543,6 +5561,30 @@ fail:
 static int _wrap_itemlist_remove_items(lua_State* L) {
   int SWIG_arg = -1;
   itemSetPtr arg1 ;
+  GList *arg2 = (GList *) 0 ;
+  
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg(1);
+  if(!lua_isuserdata(L,2)) SWIG_fail_arg(2);
+  {
+    itemSetPtr * argp;
+    if(SWIG_ConvertPtr(L,1,(void**)(&argp),SWIGTYPE_p_itemSetPtr,0)) SWIG_fail;
+    arg1 = *argp;
+  }
+  arg2=(GList *)SWIG_MustGetPtr(L,2,SWIGTYPE_p_GList,0,2,"itemlist_remove_items");
+  itemlist_remove_items(arg1,arg2);
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_itemlist_remove_all_items(lua_State* L) {
+  int SWIG_arg = -1;
+  itemSetPtr arg1 ;
   
   if(!lua_isuserdata(L,1)) SWIG_fail_arg(1);
   {
@@ -5550,7 +5592,7 @@ static int _wrap_itemlist_remove_items(lua_State* L) {
     if(SWIG_ConvertPtr(L,1,(void**)(&argp),SWIGTYPE_p_itemSetPtr,0)) SWIG_fail;
     arg1 = *argp;
   }
-  itemlist_remove_items(arg1);
+  itemlist_remove_all_items(arg1);
   SWIG_arg=0;
   
   return SWIG_arg;
@@ -5946,10 +5988,10 @@ fail:
 }
 
 
-static int _wrap_feedlist_schedule_save(lua_State* L) {
+static int _wrap_feedlist_save(lua_State* L) {
   int SWIG_arg = -1;
   
-  feedlist_schedule_save();
+  feedlist_save();
   SWIG_arg=0;
   
   return SWIG_arg;
@@ -5960,10 +6002,10 @@ fail:
 }
 
 
-static int _wrap_feedlist_save(lua_State* L) {
+static int _wrap_feedlist_schedule_save(lua_State* L) {
   int SWIG_arg = -1;
   
-  feedlist_save();
+  feedlist_schedule_save();
   SWIG_arg=0;
   
   return SWIG_arg;
@@ -7240,13 +7282,13 @@ fail:
 static int _wrap_ui_itemlist_find_unread_item(lua_State* L) {
   int SWIG_arg = -1;
   itemPtr arg1 = (itemPtr) 0 ;
-  int result;
+  itemPtr result;
   
   if(!lua_isuserdata(L,1)) SWIG_fail_arg(1);
   arg1=(itemPtr)SWIG_MustGetPtr(L,1,SWIGTYPE_p_item,0,1,"ui_itemlist_find_unread_item");
-  result = (int)ui_itemlist_find_unread_item(arg1);
+  result = (itemPtr)ui_itemlist_find_unread_item(arg1);
   SWIG_arg=0;
-  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_item,0); SWIG_arg++; 
   return SWIG_arg;
   
 fail:
@@ -8133,6 +8175,7 @@ static const struct luaL_reg swig_commands[] = {
     { "node_str_to_type", _wrap_node_str_to_type},
     { "node_free", _wrap_node_free},
     { "node_update_counters", _wrap_node_update_counters},
+    { "node_default_render", _wrap_node_default_render},
     { "node_import", _wrap_node_import},
     { "node_export", _wrap_node_export},
     { "node_initial_load", _wrap_node_initial_load},
@@ -8226,6 +8269,7 @@ static const struct luaL_reg swig_commands[] = {
     { "itemlist_request_remove_item", _wrap_itemlist_request_remove_item},
     { "itemlist_remove_item", _wrap_itemlist_remove_item},
     { "itemlist_remove_items", _wrap_itemlist_remove_items},
+    { "itemlist_remove_all_items", _wrap_itemlist_remove_all_items},
     { "itemlist_mark_all_read", _wrap_itemlist_mark_all_read},
     { "itemlist_mark_all_old", _wrap_itemlist_mark_all_old},
     { "itemlist_mark_all_popup", _wrap_itemlist_mark_all_popup},
@@ -8248,8 +8292,8 @@ static const struct luaL_reg swig_commands[] = {
     { "feedlist_reset_new_item_count", _wrap_feedlist_reset_new_item_count},
     { "feedlist_update_counters", _wrap_feedlist_update_counters},
     { "feedlist_remove_node", _wrap_feedlist_remove_node},
-    { "feedlist_schedule_save", _wrap_feedlist_schedule_save},
     { "feedlist_save", _wrap_feedlist_save},
+    { "feedlist_schedule_save", _wrap_feedlist_schedule_save},
     { "feedlist_selection_changed", _wrap_feedlist_selection_changed},
     { "feedlist_find_unread_feed", _wrap_feedlist_find_unread_feed},
     { "on_menu_delete", _wrap_on_menu_delete},

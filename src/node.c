@@ -165,7 +165,7 @@ void node_free(nodePtr node) {
 	update_cancel_requests((gpointer)node);
 
 	if(node->loaded)  {
-		itemset_remove_items(node->itemSet);
+		itemset_remove_all_items(node->itemSet);
 		g_free(node->itemSet);
 		node->itemSet = NULL;
 	}

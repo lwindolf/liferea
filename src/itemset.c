@@ -175,9 +175,8 @@ void itemset_remove_item(itemSetPtr itemSet, itemPtr item) {
 	}
 }
 
-void itemset_remove_items(itemSetPtr itemSet) {
+void itemset_remove_all_items(itemSetPtr itemSet) {
 
-	/* hmmm... bad performance when removing a lot of items */
 	GList *list = g_list_copy(itemSet->items);
 	GList *iter = list;
 	while(iter) {

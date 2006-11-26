@@ -115,7 +115,7 @@ void itemlist_merge_itemset(itemSetPtr itemSet) {
 	gboolean	hasEnclosures = FALSE;
 
 	debug_enter("itemlist_merge_itemset");
-	
+
 	if(!displayed_itemSet)
 		return; /* Nothing to do if nothing is displayed */
 	
@@ -142,7 +142,7 @@ void itemlist_merge_itemset(itemSetPtr itemSet) {
 	
 	if(hasEnclosures)
 		ui_itemlist_enable_encicon_column(TRUE);
-	
+
 	itemview_update();
 
 	debug_exit("itemlist_merge_itemset");
@@ -391,6 +391,7 @@ void itemlist_remove_item(itemPtr item) {
 		deferred_item_remove = FALSE;
 		itemview_select_item(NULL);
 	}
+	
 	itemview_remove_item(item);
 	itemview_update();
 	itemset_remove_item(item->itemSet, item);
@@ -411,10 +412,23 @@ void itemlist_request_remove_item(itemPtr item) {
 	}
 }
 
-void itemlist_remove_items(itemSetPtr itemSet) {
+void itemlist_remove_items(itemSetPtr itemSet, GList *items) {
+	GList	*iter = items;
+	
+	while(iter) {
+		itemview_remove_item(iter->data);
+		itemset_remove_item(itemSet, iter->data);
+		iter = g_list_next(iter);
+	}
+
+	itemview_update();
+	ui_node_update(itemSet->node);
+}
+
+void itemlist_remove_all_items(itemSetPtr itemSet) {
 
 	itemview_clear();
-	itemset_remove_items(itemSet);
+	itemset_remove_all_items(itemSet);
 	itemview_update();
 	ui_node_update(itemSet->node);
 }

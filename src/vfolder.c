@@ -352,7 +352,7 @@ void vfolder_refresh(vfolderPtr vfolder) {
 	
 	debug_enter("vfolder_refresh");
 	
-	itemset_remove_items(vfolder->node->itemSet);
+	itemset_remove_all_items(vfolder->node->itemSet);
 	feedlist_foreach_data(vfolder_apply_rules, vfolder);
 	
 	debug_exit("vfolder_refresh");

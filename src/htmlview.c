@@ -65,6 +65,7 @@ void htmlview_set_itemset(itemSetPtr itemSet) {
 
 void htmlview_add_item(itemPtr item) {
 
+	debug1(DEBUG_HTML, "HTML view: adding \"%s\"", item_get_title(item));
 	g_hash_table_insert(htmlView_priv.htmlChunks, item, NULL);
 	htmlView_priv.needsUpdate = TRUE;
 		
@@ -74,12 +75,14 @@ void htmlview_add_item(itemPtr item) {
 
 void htmlview_remove_item(itemPtr item) {
 
+	debug1(DEBUG_HTML, "HTML view: removing \"%s\"", item_get_title(item));
 	g_hash_table_remove(htmlView_priv.htmlChunks, item);
 	htmlView_priv.needsUpdate = TRUE;
 }
 
 void htmlview_select_item(itemPtr item) {
-	
+
+	debug1(DEBUG_HTML, "HTML view: selecting \"%s\"", item_get_title(item));	
 	/* nothing to do... */
 	htmlView_priv.needsUpdate = TRUE;
 }
@@ -259,7 +262,7 @@ void htmlview_update(GtkWidget *widget, guint mode) {
 	}
 	
 	htmlview_finish_output(output);
-
+g_print("writing %d bytes to HTML view\n", strlen(output->str));
 	debug1(DEBUG_HTML, "writing %d bytes to HTML view", strlen(output->str));
 	ui_htmlview_write(widget, output->str, baseURL);
 	

@@ -560,7 +560,7 @@ static void feed_save_to_cache(nodePtr node) {
 	gchar		*filename, *tmpfilename;
 	gint		saveCount = 0;
 	gint		saveMaxCount;
-	GList		*iter, *itemlist;
+	GList		*iter, *itemlist, *droppedItems = NULL;
 	xmlDocPtr 	doc;
 			
 	debug_enter("feed_save_to_cache");	
@@ -587,7 +587,7 @@ static void feed_save_to_cache(nodePtr node) {
 			   (saveCount >= saveMaxCount) &&
 			   (feed->fhp == NULL || feed->fhp->directory == FALSE) &&
 			   ! item->flagStatus) {
-				itemlist_remove_item(item);
+				droppedItems = g_list_append(droppedItems, item);
 			} else {
 				item_to_xml(item, xmlDocGetRootElement(doc), FALSE);
 				saveCount++;
@@ -605,6 +605,11 @@ static void feed_save_to_cache(nodePtr node) {
 	}	
 	g_free(tmpfilename);
 	g_free(filename);
+	
+	if(droppedItems) {
+		itemlist_remove_items(node->itemSet, droppedItems);
+		g_list_free(droppedItems);
+	}
 
 	debug_exit("feed_save_to_cache");
 }

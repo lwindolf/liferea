@@ -121,13 +121,24 @@ void itemlist_request_remove_item(itemPtr item);
 void itemlist_remove_item(itemPtr item);
 
 /**
+ * To be called whenever some of the items of an item set
+ * are to be removed. In difference to itemlist_remove_item()
+ * this function will remove all items first and update the
+ * GUI once.
+ *
+ * @param itemSet	the item set from which items are to be removed
+ * @param items		the items to be removed
+ */
+void itemlist_remove_items(itemSetPtr itemSet, GList *items);
+
+/**
  * To be called whenever the user wants to remove 
  * all items of a node. Item list selection will be
  * resetted. All items are removed immediately.
  *
  * @param itemSet	the item set whose items should be removed
  */
-void itemlist_remove_items(itemSetPtr itemSet);
+void itemlist_remove_all_items(itemSetPtr itemSet);
 
 /**
  * Marks all items of the item set as read.

@@ -116,7 +116,7 @@ void itemset_remove_item(itemSetPtr itemSet, itemPtr item);
  *
  * @param itemSet	the item set
  */
-void itemset_remove_items(itemSetPtr itemSet);
+void itemset_remove_all_items(itemSetPtr itemSet);
 
 /**
  * Changes the "flag" status of a single item of the given itemset.
