@@ -7,6 +7,8 @@ xslt/folder.xml.in
 xslt/item.xml.in
 xslt/newsbin.xml.in
 xslt/vfolder.xml.in
+src/bacon-message-connection.c
+src/bacon-message-connection.h
 src/callbacks.c
 src/callbacks.h
 src/common.c
@@ -37,6 +39,8 @@ src/itemlist.c
 src/itemlist.h
 src/itemset.c
 src/itemset.h
+src/itemview.c
+src/itemview.h
 src/main.c
 src/metadata.c
 src/metadata.h
@@ -66,6 +70,8 @@ src/ui/ui_feed.c
 src/ui/ui_feed.h
 src/ui/ui_feedlist.c
 src/ui/ui_feedlist.h
+src/ui/ui_folder.c
+src/ui/ui_folder.h
 src/ui/ui_htmlview.c
 src/ui/ui_htmlview.h
 src/ui/ui_itemlist.c
@@ -86,6 +92,8 @@ src/ui/ui_tabs.c
 src/ui/ui_tabs.h
 src/ui/ui_tray.c
 src/ui/ui_tray.h
+src/ui/ui_update.c
+src/ui/ui_update.h
 src/ui/ui_vfolder.c
 src/ui/ui_vfolder.h
 src/parsers/atom10.c
@@ -122,12 +130,24 @@ src/parsers/rss_channel.c
 src/parsers/rss_channel.h
 src/parsers/rss_item.c
 src/parsers/rss_item.h
+src/fl_sources/bloglines_source.c
+src/fl_sources/bloglines_source-cb.c
+src/fl_sources/bloglines_source-cb.h
+src/fl_sources/bloglines_source.h
+src/fl_sources/bloglines_source-ui.c
+src/fl_sources/bloglines_source-ui.h
 src/fl_sources/default_source.c
 src/fl_sources/default_source.h
+src/fl_sources/dummy_source.c
+src/fl_sources/dummy_source.h
 src/fl_sources/opml_source.c
 src/fl_sources/opml_source.h
+src/fl_sources/opml_source-ui.c
+src/fl_sources/opml_source-ui.h
 src/fl_sources/node_source.c
 src/fl_sources/node_source.h
+src/fl_sources/node_source-ui.c
+src/fl_sources/node_source-ui.h
 src/mozilla/mozembed.c
 src/mozilla/mozembed.h
 src/mozilla/mozsupport.cpp
@@ -162,3 +182,5 @@ src/notification/notif_popup.h
 src/scripting/script.c
 src/scripting/script.h
 src/scripting/lua.c
+src/scripting/ui_script.c
+src/scripting/ui_script.h
