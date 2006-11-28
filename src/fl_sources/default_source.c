@@ -44,6 +44,8 @@
 /** lock to prevent feed list saving while loading */
 static gboolean feedlistImport = FALSE;
 
+extern gboolean cacheMigrated;	/* feedlist.c */
+
 /* DBUS support for new subscriptions */
 
 #ifdef USE_DBUS
@@ -236,6 +238,7 @@ static void default_source_source_import(nodePtr node) {
 	   !g_file_test(filename12, G_FILE_TEST_EXISTS)) {
 
 		g_print("starting 1.1->1.2 cache migration...\n");
+		cacheMigrated = TRUE;
 		
 		/* Note: v1.1 and v1.2 cache formats are equivalent and just needs copying of everything */
 
@@ -250,6 +253,7 @@ static void default_source_source_import(nodePtr node) {
 	/* check for 1.0->1.2 migration */
 	if(!g_file_test(filename12, G_FILE_TEST_EXISTS) &&
 	   g_file_test(filename10, G_FILE_TEST_EXISTS)) {
+		cacheMigrated = TRUE;
 		
 		g_print("starting 1.0->1.2 cache migration...\n");
 		

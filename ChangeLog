@@ -2,9 +2,12 @@
 
 	Version 1.2-RC4 (Unstable)
 
+	* Adds a popup giving notice of the 1.0->1.2 cache migration
+	  asking the user to manually remove the 1.0 cache.
 	* Fixes more unnecessary updates in the two paned view mode
 	  during cache drops after an update of the selected feed.
 	* Fixes a memory when selecting items in 3 paned mode.
+	* Fixes several missing translation literals.
 
 
 2006-11-25  Lars Lindner  <lars.lindner@gmail.com>

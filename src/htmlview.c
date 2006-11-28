@@ -126,7 +126,8 @@ gchar * htmlview_render_item(itemPtr item) {
 	params = render_add_parameter(params, "baseUrl='%s'", itemset_get_base_url(htmlView_priv.itemSet));
 	params = render_add_parameter(params, "summary='%d'", summaryMode?1:0);
 	output = render_xml(doc, "item", params);
-	//xmlSaveFormatFile("/tmp/test.xml", doc, 1);
+	
+	/* For debugging use: xmlSaveFormatFile("/tmp/test.xml", doc, 1); */
 	xmlFree(doc);
 	
 	debug_exit("htmlview_render_item");

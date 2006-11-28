@@ -55,11 +55,14 @@ static nodePtr	rootNode = NULL;
    display enabled) */
 static nodePtr	selectedNode = NULL; 		
 
-/* set when a feed list save is scheduled */
+/** set when a feed list save is scheduled */
 static guint feedlist_save_timer = 0;
 
-/* this flag prevents the feed list being saved before it is completely loaded */
+/** this flag prevents the feed list being saved before it is completely loaded */
 static gboolean feedlistLoading = TRUE;
+
+/** flag is set when any cache migration was done on startup */
+gboolean cacheMigrated = FALSE;
 
 nodePtr feedlist_get_root(void) { return rootNode; }
 
@@ -397,6 +400,12 @@ void feedlist_init(void) {
 	/* 6. Finally save the new feed list state */
 	feedlistLoading = FALSE;
 	feedlist_schedule_save();
+	
+	if(cacheMigrated)
+		ui_show_info_box(_("Liferea v1.2 uses a new cache format and has migrated your "
+		                   "feed cache. The cache content of v1.0 in ~/.liferea was "
+		                   "not deleted automatically. Please remove this directory "
+		                   "manually once you are sure migration was successful!"));
 	
 	debug_exit("feedlist_init");
 }
