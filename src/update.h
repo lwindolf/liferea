@@ -245,4 +245,20 @@ void update_cancel_requests(gpointer owner);
  */
 gboolean update_request_cancel_retry(struct request *request);
 
+#ifdef USE_NM
+/**
+ * Initialize NetworkManager support
+ * Set up NM support, so that offline state can be set based on availability of
+ * a network
+ * 
+ * @return TRUE if successfully initialized NM support
+ */
+gboolean update_nm_initialize(void);
+
+/**
+ * Clean up NetworkManager support
+ */
+void update_nm_cleanup(void);
+#endif // USE_NM
+
 #endif

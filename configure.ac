@@ -30,6 +30,7 @@ AC_SYS_LARGEFILE
 
 AC_ARG_ENABLE(sm,        AS_HELP_STRING([--disable-sm],[compile without X session management support]),,enable_sm=yes)
 AC_ARG_ENABLE(dbus,      AS_HELP_STRING([--disable-dbus],[compile without DBUS support]),,enable_dbus=yes)
+AC_ARG_ENABLE(nm,        AS_HELP_STRING([--disable-nm],[compile without NetworkManager support]),,enable_nm=yes)
 AC_ARG_ENABLE(gtkhtml2,  AS_HELP_STRING([--disable-gtkhtml2],[don't compile the gtkhtml2 backend]),,enable_gtkhtml2=yes)
 AC_ARG_ENABLE(xulrunner, AS_HELP_STRING([--disable-xulrunner],[don't compile the xulrunner backend]),,enable_xulrunner=yes)
 AC_ARG_ENABLE(gecko,     AS_HELP_STRING([--disable-gecko],[don't compile the Gecko backend]),,enable_gecko=yes)
@@ -342,6 +343,20 @@ AC_SUBST(DBUS_CFLAGS)
 AC_SUBST(DBUS_LIBS)
 dnl AM_CONDITIONAL(WITH_DBUS, test "x$enable_dbus" != "xyes")
 
+dnl ****
+dnl NetworkManager
+dnl ****
+if test "x$enable_nm" = "xyes"; then
+   AC_MSG_NOTICE([checking for NetworkManager])
+   PKG_CHECK_MODULES([NM], [dbus-glib-1 libnm_glib],enable_nm=yes,enable_nm=no)
+fi
+
+if test "x$enable_nm" = "xyes"; then
+  AC_DEFINE(USE_NM, 1, [Define if we're using NetworkManager.])
+fi
+
+AC_SUBST(NM_CFLAGS)
+AC_SUBST(NM_LIBS)
 
 dnl #
 dnl # Check for GNUTLS if it's specified.
@@ -469,6 +484,7 @@ echo "Build LUA scripting Plugin ..... : $enable_lua"
 echo
 echo "Use X Session Management........ : $enable_sm"
 echo "Use DBUS........................ : $enable_dbus"
+echo "Use NetworkManager.............. : $enable_nm"
 echo "GNUTLS SSL/HTTPS Support........ : $enable_gnutls"
 echo
 eval eval echo Liferea will be installed in $bindir.

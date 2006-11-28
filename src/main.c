@@ -136,6 +136,9 @@ int main(int argc, char *argv[]) {
 #ifdef USE_DBUS
 	dbus_g_thread_init();
 #endif
+#ifdef USE_NM
+	update_nm_initialize();
+#endif
 	gtk_init(&argc, &argv);
 	
 	bacon_connection = bacon_message_connection_new("liferea");

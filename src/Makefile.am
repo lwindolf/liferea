@@ -15,6 +15,7 @@ AM_CPPFLAGS = \
 	$(PACKAGE_CFLAGS) \
 	$(X_CFLAGS) \
 	$(DBUS_CFLAGS) \
+	$(NM_CFLAGS) \
 	$(GNUTLS_CFLAGS) 
 
 bin_PROGRAMS = liferea-bin 
@@ -39,7 +40,6 @@ liferea_bin_SOURCES = \
 	itemset.c itemset.h \
 	itemlist.c itemlist.h \
 	itemview.c itemview.h \
-	main.c \
 	metadata.c metadata.h \
 	newsbin.c newsbin.h \
 	node.c node.h \
@@ -49,6 +49,7 @@ liferea_bin_SOURCES = \
 	social.c social.h \
 	support.c support.h \
 	update.c update.h \
+	main.c \
 	vfolder.c vfolder.h 
 
 liferea_bin_LDADD =	net/liblinet.a \
@@ -57,7 +58,7 @@ liferea_bin_LDADD =	net/liblinet.a \
 			notification/liblinotification.a \
 			scripting/libliscript.a \
 			ui/libliui.a \
-			$(PACKAGE_LIBS) $(X_LIBS) $(X_PRE_LIBS) -lX11 $(X_EXTRA_LIBS) $(DBUS_LIBS) $(INTLLIBS) $(GNUTLS_LIBS) 
+			$(PACKAGE_LIBS) $(X_LIBS) $(X_PRE_LIBS) -lX11 $(X_EXTRA_LIBS) $(DBUS_LIBS) $(NM_LIBS) $(INTLLIBS) $(GNUTLS_LIBS) 
 
 if PLATFORM_WIN32
 

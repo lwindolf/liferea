@@ -1,5 +1,5 @@
 /**
- * @file update.c feed update request processing
+ * @file update.c update request processing
  *
  * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
@@ -34,6 +34,10 @@
 #include <sys/wait.h>
 #include <string.h>
 
+#ifdef USE_NM
+#include <NetworkManager/libnm_glib.h>
+#endif
+
 #include "common.h"
 #include "conf.h"
 #include "debug.h"
@@ -59,6 +63,12 @@ static GAsyncQueue	*results = NULL;
 static GMutex	*cond_mutex = NULL;
 static GCond	*offline_cond = NULL;
 static gboolean	online = TRUE;
+
+#ifdef USE_NM
+/* State for NM support */
+static libnm_glib_ctx *nm_ctx = NULL;
+static guint nm_id = 0;
+#endif
 
 /* update state interface */
 
@@ -583,3 +593,56 @@ void update_init(void) {
 			   NULL,
 			   NULL);
 }
+
+#ifdef USE_NM
+static void update_network_monitor(libnm_glib_ctx *ctx, gpointer user_data)
+{
+	libnm_glib_state	state;
+	gboolean online;
+
+	g_return_if_fail(ctx != NULL);
+
+	state = libnm_glib_get_network_state(ctx);
+	online = update_is_online();
+
+	if(online && state == LIBNM_NO_NETWORK_CONNECTION) {
+		debug0(DEBUG_UPDATE, "network manager: no network connection -> going offline");
+		update_set_online(FALSE);
+	} else if(!online && state == LIBNM_ACTIVE_NETWORK_CONNECTION) {
+		debug0(DEBUG_UPDATE, "network manager: active connection -> going online");
+		update_set_online(TRUE);
+	}
+}
+
+
+gboolean update_nm_initialize(void)
+{
+
+	debug0(DEBUG_UPDATE, "network manager: registering network state change callback");
+	
+	if (!nm_ctx)
+	{
+		nm_ctx = libnm_glib_init();
+		if (!nm_ctx) {
+				fprintf(stderr, "Could not initialize libnm.\n");
+				return FALSE;
+			  }	
+	}
+
+	nm_id = libnm_glib_register_callback(nm_ctx, update_network_monitor, NULL, NULL);
+	
+	return TRUE;
+}
+
+void update_nm_cleanup(void)
+{
+	debug0(DEBUG_UPDATE, "network manager: unregistering network state change callback");
+	
+	if (nm_id != 0 && nm_ctx != NULL) {
+		libnm_glib_unregister_callback(nm_ctx, nm_id);
+		libnm_glib_shutdown(nm_ctx);
+		nm_ctx = NULL;
+		nm_id = 0;
+	}
+}
+#endif
