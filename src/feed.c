@@ -313,7 +313,7 @@ static void feed_export(nodePtr node, xmlNodePtr cur, gboolean trusted) {
 
 	update_state_export(cur, feed->updateState);
 	
-	debug3(DEBUG_CACHE, "adding feed: source=%s interval=%s cacheLimit=%s", feed_get_source(feed), interval, cacheLimit);
+	debug3(DEBUG_CACHE, "adding feed: source=%s interval=%s cacheLimit=%s", feed_get_source(feed), interval, (cacheLimit != NULL ? cacheLimit : ""));
 	g_free(cacheLimit);
 	g_free(interval);
 
