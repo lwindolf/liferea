@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea trunk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-11-23 10:21+0900\n"
+"POT-Creation-Date: 2006-12-01 10:59+0100\n"
 "PO-Revision-Date: 2006-11-23 10:10+0900\n"
 "Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -56,7 +56,7 @@ msgstr "解析エラーの詳細"
 msgid "Publisher"
 msgstr "公開者"
 
-#: ../xslt/feed.xml.in.h:7 ../xslt/fl_plugin.xml.in.h:2
+#: ../xslt/feed.xml.in.h:7 ../xslt/source.xml.in.h:1
 msgid "Source:"
 msgstr "ソース:"
 
@@ -84,14 +84,15 @@ msgstr ""
 "この配信元は停止しているので、利用できません。今後 Liferea が更新することはあ"
 "りませんが、キャッシュに保存したヘッドラインにアクセスすることは可能です。"
 
-#: ../xslt/fl_plugin.xml.in.h:1 ../xslt/folder.xml.in.h:2
-#: ../xslt/vfolder.xml.in.h:1 ../src/interface.c:196 ../src/interface.c:1607
-msgid "Headlines"
-msgstr "ヘッドライン"
+#: ../xslt/source.xml.in.h:2 ../xslt/folder.xml.in.h:2
+msgid "children with"
+msgstr ""
 
-#: ../xslt/fl_plugin.xml.in.h:3 ../xslt/folder.xml.in.h:3
-msgid "Subscriptions with"
-msgstr "次で購読する"
+#: ../xslt/source.xml.in.h:3 ../xslt/folder.xml.in.h:3
+#: ../xslt/vfolder.xml.in.h:2
+#, fuzzy
+msgid "unread headlines"
+msgstr "ヘッドライン表示"
 
 #: ../xslt/folder.xml.in.h:1
 msgid "Folder:"
@@ -137,7 +138,7 @@ msgstr ""
 msgid "News Bin:"
 msgstr "NewsBin:"
 
-#: ../xslt/vfolder.xml.in.h:2
+#: ../xslt/vfolder.xml.in.h:1
 msgid "Search Folder:"
 msgstr "検索するフォルダ:"
 
@@ -278,7 +279,7 @@ msgstr ""
 "<p>配信元を読み込む際に XML エラーが発生しました！ (配信元 \"%s\" を読み込め"
 "ませんでした)</p>"
 
-#: ../src/feed.c:376 ../src/feed.c:656
+#: ../src/feed.c:376 ../src/feed.c:661
 msgid "<p>Empty document!</p>"
 msgstr "<p>ドキュメントが空です！</p>"
 
@@ -299,14 +300,14 @@ msgstr ""
 msgid "<p>Could not determine the feed type.</p>"
 msgstr "<p>配信元の種類を特定できませんでした！</p>"
 
-#: ../src/feed.c:639
+#: ../src/feed.c:644
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
 msgstr ""
 "キャッシュ・ファイル \"%s\" を読み込む際に XML エラーが発生しました！ (キャッ"
 "シュ・ファイルを読み込めませんでした)"
 
-#: ../src/feed.c:650
+#: ../src/feed.c:655
 #, c-format
 msgid ""
 "<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
@@ -315,31 +316,31 @@ msgstr ""
 "<p>キャッシュ・ファイルを読み込む際に XML エラーが発生しました！ (キャッ"
 "シュ・ファイル \"%s\" を読み込めませんでした)</p>"
 
-#: ../src/feed.c:671
+#: ../src/feed.c:676
 #, c-format
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 msgstr ""
 "<p>\"%s\" は正しいキャッシュ・ファイルではありません！ キャッシュ・ファイルが"
 "読めません！</p>"
 
-#: ../src/feed.c:729
+#: ../src/feed.c:734
 #, c-format
 msgid "There were errors while parsing cache file \"%s\""
 msgstr "キャッシュ・ファイル \"%s\" を解析する際にエラーが発生しました"
 
-#: ../src/feed.c:754
+#: ../src/feed.c:759
 #, c-format
 msgid "This feed \"%s\" is already being updated!"
 msgstr "この配信元 \"%s\" は既に更新済みです！"
 
-#: ../src/feed.c:759
+#: ../src/feed.c:764
 #, c-format
 msgid "The feed \"%s\" was discontinued. Liferea won't update it anymore!"
 msgstr ""
 "その配信元 \"%s\" は更新を停止しています。今後 Liferea で更新されることはあり"
 "ません！"
 
-#: ../src/feed.c:1021
+#: ../src/feed.c:1026
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box."
@@ -347,97 +348,97 @@ msgstr ""
 "この配信元をダウンロードするために必要な認証を実施していません。配信元のプロ"
 "パティ・ダイアログでユーザ名とパスワードを更新して下さい。"
 
-#: ../src/feed.c:1023
+#: ../src/feed.c:1028
 msgid "Payment Required"
 msgstr "課金請求がありました"
 
-#: ../src/feed.c:1024
+#: ../src/feed.c:1029
 msgid "Access Forbidden"
 msgstr "アクセスが拒否されました"
 
-#: ../src/feed.c:1025
+#: ../src/feed.c:1030
 msgid "Resource Not Found"
 msgstr "リソースが見つかりませんでした"
 
-#: ../src/feed.c:1026
+#: ../src/feed.c:1031
 msgid "Method Not Allowed"
 msgstr "メソッドを実行できません"
 
-#: ../src/feed.c:1027
+#: ../src/feed.c:1032
 msgid "Not Acceptable"
 msgstr "アクセスできません"
 
-#: ../src/feed.c:1028
+#: ../src/feed.c:1033
 msgid "Proxy Authentication Required"
 msgstr "プロキシによる認証が必要です"
 
-#: ../src/feed.c:1029
+#: ../src/feed.c:1034
 msgid "Request Time-Out"
 msgstr "タイムアウトの要求"
 
-#: ../src/feed.c:1030
+#: ../src/feed.c:1035
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "完了しました。リソースが存在しません。購読を解約して下さい！"
 
-#: ../src/feed.c:1035
+#: ../src/feed.c:1040
 msgid "URL is invalid"
 msgstr "URL が間違っています"
 
-#: ../src/feed.c:1036
+#: ../src/feed.c:1041
 msgid "Unsupported network protocol"
 msgstr "サポートしていないネットワーク・プロトコル"
 
-#: ../src/feed.c:1039
+#: ../src/feed.c:1044
 msgid "Error connecting to remote host"
 msgstr "リモート・ホストへ接続する際にエラー"
 
-#: ../src/feed.c:1040
+#: ../src/feed.c:1045
 msgid "Hostname could not be found"
 msgstr "該当するホスト名が見つかりませんでした"
 
-#: ../src/feed.c:1041
+#: ../src/feed.c:1046
 msgid "Network connection was refused by the remote host"
 msgstr "リモート・ホストがネットワーク接続を拒否しました"
 
-#: ../src/feed.c:1042
+#: ../src/feed.c:1047
 msgid "Remote host did not finish sending data"
 msgstr "リモート・ホストがデータ送信を完了しませんでした"
 
 #. Transfer errors
-#: ../src/feed.c:1044
+#: ../src/feed.c:1049
 msgid "Too many HTTP redirects were encountered"
 msgstr "HTTP のリダイレクションが多すぎます"
 
-#: ../src/feed.c:1047
+#: ../src/feed.c:1052
 msgid "Remote host sent an invalid response"
 msgstr "リモート・訪ソｔがおかしな応答を返してきました"
 
-#: ../src/feed.c:1054
+#: ../src/feed.c:1059
 msgid "Authentication failed"
 msgstr "認証に失敗しました"
 
-#: ../src/feed.c:1056
+#: ../src/feed.c:1061
 msgid "Webserver's authentication method incompatible with Liferea"
 msgstr "ウェブサーバの認証方法が Liferea のそれと互換性がありません"
 
-#: ../src/feed.c:1062
+#: ../src/feed.c:1067
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "配信元を利用できません: サーバがサポートしないリダイレクションを要求しました"
 
-#: ../src/feed.c:1063
+#: ../src/feed.c:1068
 msgid "Client Error"
 msgstr "クライアントのエラー"
 
-#: ../src/feed.c:1064
+#: ../src/feed.c:1069
 msgid "Server Error"
 msgstr "サーバのエラー"
 
-#: ../src/feed.c:1065
+#: ../src/feed.c:1070
 msgid "(unknown networking error happened)"
 msgstr "(原因不明のネットワーク接続エラーが発生しました)"
 
-#: ../src/feed.c:1074
+#: ../src/feed.c:1079
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
@@ -445,27 +446,27 @@ msgstr ""
 "この購読を読み込む際に問題が発生しました。URL と端末に出力されているメッセー"
 "ジを確認して下さい。"
 
-#: ../src/feed.c:1125
+#: ../src/feed.c:1130
 #, c-format
 msgid "Updating feed icon for \"%s\""
 msgstr "\"%s\" の favicon の更新中"
 
-#: ../src/feed.c:1158
+#: ../src/feed.c:1163
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "\"%s\" の URL が更新されていました"
 
-#: ../src/feed.c:1167
+#: ../src/feed.c:1172
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr "\"%s\" は停止しています。今後 Liferea が更新することはありません！"
 
-#: ../src/feed.c:1170
+#: ../src/feed.c:1175
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\" は最後の更新から変更はありません"
 
-#: ../src/feed.c:1186
+#: ../src/feed.c:1191
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!</"
@@ -475,35 +476,42 @@ msgstr ""
 "syndication 形式の一つとして提供されているものであるか確認して下さい！</"
 "p>XML パーサの出力:<br /><div class='xmlparseroutput'>"
 
-#: ../src/feed.c:1205
+#: ../src/feed.c:1210
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" を更新しました..."
 
-#: ../src/feed.c:1217
+#: ../src/feed.c:1222
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" は利用できません"
 
-#: ../src/feed.c:1339
+#: ../src/feed.c:1344
 #, c-format
 msgid "Updating \"%s\""
 msgstr "\"%s\" の更新中"
 
-#: ../src/feedlist.c:273
+#: ../src/feedlist.c:276
 msgid "You have to select a feed entry"
 msgstr "配信元エントリを一つ選択して下さい"
 
-#: ../src/feedlist.c:280 ../src/feedlist.c:289
+#: ../src/feedlist.c:283 ../src/feedlist.c:292
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea はオフライン・モードです (更新はできません)"
+
+#: ../src/feedlist.c:405
+msgid ""
+"Liferea v1.2 uses a new cache format and has migrated your feed cache. The "
+"cache content of v1.0 in ~/.liferea was not deleted automatically. Please "
+"remove this directory manually once you are sure migration was successful!"
+msgstr ""
 
 #: ../src/html.c:154
 msgid "Feed link auto discovery failed! No feed links found!"
 msgstr "配信元リンクの自動検出に失敗しました。配信元リンクが見つかりません！"
 
 #. GTK theme support
-#: ../src/interface.c:70 ../src/main.c:163
+#: ../src/interface.c:70 ../src/main.c:166
 msgid "Liferea"
 msgstr "Liferea"
 
@@ -522,6 +530,10 @@ msgstr "ヘッドライン表示"
 #: ../src/interface.c:192
 msgid "combined view"
 msgstr "サマリ表示"
+
+#: ../src/interface.c:196 ../src/interface.c:1607
+msgid "Headlines"
+msgstr "ヘッドライン"
 
 #: ../src/interface.c:226
 msgid "Online/Offline Button"
@@ -690,7 +702,7 @@ msgstr ""
 msgid "Advanced"
 msgstr "拡張"
 
-#: ../src/interface.c:882 ../src/interface.c:3488 ../src/node.c:472
+#: ../src/interface.c:882 ../src/interface.c:3488 ../src/node.c:473
 msgid "New Subscription"
 msgstr "新しい購読"
 
@@ -1383,21 +1395,21 @@ msgstr "  --debug-update   配信元を更新する際のデバッグ・メッ�
 msgid "  --debug-verbose  Print verbose debugging messages"
 msgstr "  --debug-verbose  デバッグ・メッセージを詳細に表示する"
 
-#: ../src/main.c:144
+#: ../src/main.c:147
 msgid "Liferea seems to be running already!"
 msgstr "既に Liferea が起動中のようです！"
 
-#: ../src/main.c:210
+#: ../src/main.c:213
 #, c-format
 msgid "The --mainwindow-state argument must be given a parameter.\n"
 msgstr "オプション --mainwindow-state にはパラメータが一つ必要です。\n"
 
-#: ../src/main.c:218
+#: ../src/main.c:221
 #, c-format
 msgid "The --session argument must be given a parameter.\n"
 msgstr "オプション '--session' にはパラメータが一つ必要です。\n"
 
-#: ../src/main.c:221
+#: ../src/main.c:224
 #, c-format
 msgid "Liferea encountered an unknown argument: %s\n"
 msgstr "Liferea は不明なオプションを受け取りました: %s\n"
@@ -1487,38 +1499,38 @@ msgstr "を含まない"
 msgid "Couldn't find pixmap file: %s"
 msgstr "Pixmap ファイルが見つかりませんでした: %s"
 
-#: ../src/update.c:164
+#: ../src/update.c:174
 #, c-format
 msgid "Error opening temp file %s to use for filtering!"
 msgstr "フィルタに使用する作業ファイル \"%s\" を開く際にエラーが発生しました！"
 
-#: ../src/update.c:187
+#: ../src/update.c:197
 #, c-format
 msgid "%s exited with status %d"
 msgstr "ステータス %2$d のトピック %1$s"
 
-#: ../src/update.c:193 ../src/update.c:194 ../src/update.c:294
+#: ../src/update.c:203 ../src/update.c:204 ../src/update.c:304
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "エラー: パイプ \"%s\" を開けませんでした"
 
 #. FIXME: maybe setting request->returncode would be better
-#: ../src/update.c:314
+#: ../src/update.c:324
 #, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr "エラー: ファイル \"%s\" を開けませんでした"
 
-#: ../src/update.c:320
+#: ../src/update.c:330
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "エラー: ファイル \"%s\" がありません"
 
-#: ../src/update.c:509
+#: ../src/update.c:519
 #, c-format
 msgid "Could not download \"%s\". Will retry in %d seconds."
 msgstr "\"%s\" をダウンロードできませんでした ( %d秒後にもう一度実行します)"
 
-#: ../src/vfolder.c:59
+#: ../src/vfolder.c:58
 msgid "New Search Folder"
 msgstr "新しい検索フォルダ"
 
@@ -1602,12 +1614,12 @@ msgstr ""
 msgid "This item does not have a link assigned!"
 msgstr "このトピックにはリンクが割り当てられていません！"
 
-#: ../src/ui/ui_htmlview.c:306 ../src/ui/ui_htmlview.c:326
+#: ../src/ui/ui_htmlview.c:313 ../src/ui/ui_htmlview.c:333
 #, c-format
 msgid "Browser command failed: %s"
 msgstr "ブラウザの起動に失敗しました: %s"
 
-#: ../src/ui/ui_htmlview.c:329
+#: ../src/ui/ui_htmlview.c:336
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "起動中: \"%s\""
@@ -2243,8 +2255,26 @@ msgstr "配信元 %s を解析する際にエラーが大量に発生しまし�
 msgid "%b %d %H:%M"
 msgstr "%B%e日 %H:%M"
 
+#: ../src/fl_sources/bloglines_source-ui.c:46
+msgid "Add Bloglines Account"
+msgstr ""
+
+#: ../src/fl_sources/bloglines_source-ui.c:57
+msgid "Please enter your Bloglines account settings."
+msgstr ""
+
+#: ../src/fl_sources/bloglines_source-ui.c:69
+#, fuzzy
+msgid "_Username"
+msgstr "ユーザ名(_N):"
+
+#: ../src/fl_sources/bloglines_source-ui.c:76
+#, fuzzy
+msgid "_Password"
+msgstr "パスワード(_P):"
+
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
-#: ../src/fl_sources/default_source.c:276
+#: ../src/fl_sources/default_source.c:280
 msgid "feedlist.opml"
 msgstr "feedlist.opml"
 
@@ -2252,13 +2282,40 @@ msgstr "feedlist.opml"
 msgid "New OPML Subscription"
 msgstr "新しい OPML の購読"
 
-#: ../src/fl_sources/node_source.c:208
+#: ../src/fl_sources/opml_source-ui.c:45
+msgid "Add OPML/Planet"
+msgstr ""
+
+#: ../src/fl_sources/opml_source-ui.c:56
+msgid ""
+"Please specify a local file or an URL pointing to a valid OPML feed list."
+msgstr ""
+
+#: ../src/fl_sources/opml_source-ui.c:66
+#, fuzzy
+msgid "_Location"
+msgstr "リンク先のアドレスのコピー(_C)"
+
+#: ../src/fl_sources/opml_source-ui.c:74
+#, fuzzy
+msgid "_Select File"
+msgstr "ファイルの選択..."
+
+#: ../src/fl_sources/node_source.c:207
 msgid "No feed list source types found!"
 msgstr "配信元一覧のソースの種類が見つかりませんでした！"
 
-#: ../src/fl_sources/node_source.c:239
+#: ../src/fl_sources/node_source.c:238
 msgid "Source Type"
 msgstr "ソースの種類"
+
+#: ../src/fl_sources/node_source-ui.c:42
+msgid "Source Selection"
+msgstr ""
+
+#: ../src/fl_sources/node_source-ui.c:57
+msgid "Select the source type you want to add..."
+msgstr ""
 
 #. Cast time_t tunix to int.
 #. Print cookie expire warning.
@@ -2280,3 +2337,15 @@ msgstr "名前無し"
 #: ../src/notification/notif_popup.c:323
 msgid "Liferea notification"
 msgstr "Liferea からのお知らせ"
+
+#: ../src/scripting/ui_script.c:135
+msgid "Sorry, no scripting support available!"
+msgstr ""
+
+#: ../src/scripting/ui_script.c:208
+#, fuzzy
+msgid "No script selected!"
+msgstr "リンクが選択されていません"
+
+#~ msgid "Subscriptions with"
+#~ msgstr "次で購読する"
