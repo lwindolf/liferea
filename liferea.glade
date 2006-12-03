@@ -6434,7 +6434,7 @@ at http://musicplayer.sourceforge.net</property>
 		  <child>
 		    <widget class="GtkLabel" id="label61">
 		      <property name="visible">True</property>
-		      <property name="label">Bart Kreska &lt;wytnijto@smlw.pl&gt;
+		      <property name="label">Bart Kreska &lt;bartkreska@users.sourceforge.net&gt;
 Dario Conigliaro &lt;djdas@djdas.net&gt;
 Fernando Ike de Oliveira &lt;fike@midstorm.org&gt;
 Sargate Kanogan &lt;sargate@gmail.com&gt;
