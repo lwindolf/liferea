@@ -50,8 +50,6 @@ static void export_append_node_tag(nodePtr node, gpointer userdata) {
 	if(!internal && ((NODE_TYPE_SOURCE == node->type) || (NODE_TYPE_VFOLDER == node->type)))
 		return;
 	
-	debug_enter("append_node_tag");
-
 	childNode = xmlNewChild(cur, NULL, BAD_CAST"outline", NULL);
 
 	/* 1. write generic node attributes */
@@ -88,8 +86,6 @@ static void export_append_node_tag(nodePtr node, gpointer userdata) {
 
 	/* 2. add node type specific stuff */
 	node_export(node, childNode, internal);
-	
-	debug_exit("append_node_tag");
 }
 
 void export_node_children(nodePtr node, xmlNodePtr cur, gboolean trusted) {

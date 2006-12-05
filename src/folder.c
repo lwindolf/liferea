@@ -51,9 +51,8 @@ static void folder_export(nodePtr node, xmlNodePtr cur, gboolean trusted) {
 			xmlNewProp(cur, BAD_CAST"collapsed", BAD_CAST"true");
 	}
 
-	export_node_children(node, cur, trusted);
-	
 	debug1(DEBUG_CACHE, "adding folder: title=%s", node_get_title(node));
+	export_node_children(node, cur, trusted);	
 }
 
 static void folder_initial_load(nodePtr node) {
