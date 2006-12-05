@@ -64,7 +64,7 @@ AC_SUBST(SO_PREFIX)
 AC_SUBST(SO_EXT)
 AC_DEFINE_UNQUOTED(LIBPREFIX, "$SO_PREFIX", [Platform dependent library prefix])
 
-AC_CHECK_FUNCS([strsep getaddrinfo])
+AC_CHECK_FUNCS([strsep getaddrinfo fsync])
 
 case "$host_os" in
         *solaris*)
