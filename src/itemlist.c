@@ -158,7 +158,7 @@ void itemlist_load(itemSetPtr itemSet) {
 
 	g_assert(NULL != itemSet);
 
-	debug1(DEBUG_GUI, "loading item list with node \"%s\"\n", node_get_title(itemSet->node));
+	debug1(DEBUG_GUI, "loading item list with node \"%s\"", node_get_title(itemSet->node));
 
 	/* 1. Filter check. Don't continue if folder is selected and 
 	   no folder viewing is configured. If folder viewing is enabled

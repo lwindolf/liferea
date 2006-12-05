@@ -466,8 +466,6 @@ gboolean vfolder_check_item(itemPtr item) {
 	GSList		*iter;
 	gboolean	added = FALSE;
 
-	debug_enter("vfolder_check_item");
-	
 	g_assert(item->itemSet->type == ITEMSET_TYPE_FEED);
 	g_assert(item->itemSet->node == item->sourceNode);
 	g_assert(item->nr == item->sourceNr);
@@ -478,7 +476,6 @@ gboolean vfolder_check_item(itemPtr item) {
 		iter = g_slist_next(iter);
 	}
 	
-	debug_exit("vfolder_check_item");
 	return added;
 }
 
