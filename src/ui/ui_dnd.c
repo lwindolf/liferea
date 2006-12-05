@@ -160,41 +160,6 @@ static gboolean ui_dnd_feed_drag_data_received(GtkTreeDragDest *drag_dest, GtkTr
 	return result;
 }
 
-/* ---------------------------------------------------------------------------- */
-/* news bins receiving items 							*/
-/* ---------------------------------------------------------------------------- */
-
-/* method to receive item which were dropped onto news bin nodes */
-static void ui_dnd_item_received(GtkWidget *widget, GdkDragContext *context, gint x, gint y, GtkSelectionData *data, guint info, guint time) {
-
-g_print("item dropped!\n");
-}
-
-static void ui_dnd_item_source_drag_data_get(GtkWidget *widget, GdkDragContext *context, GtkSelectionData *selection_data, guint info, guint time, gpointer data) {
-	gchar		*itemNr;
-	itemPtr		item;
-	
-	item = itemlist_get_selected();
-	if(item)
-		itemNr = g_strdup_printf("%lu", item->nr);
-	else
-		itemNr = g_strdup("-1");
-		
-        gtk_selection_data_set(selection_data, selection_data->target, 8, itemNr, strlen(itemNr));
-}
-
-void ui_dnd_setup_item_source(GtkWidget *widget) {
-
-	static GtkTargetEntry target_table[] = {
-	        { "application/x-liferea-item", 0, 0 }
-	};
-	
-	gtk_drag_source_set(widget, GDK_BUTTON1_MASK|GDK_BUTTON3_MASK,
-	                    target_table, 1, GDK_ACTION_COPY);
-	gtk_signal_connect(GTK_OBJECT(widget), "drag_data_get",
-	                   GTK_SIGNAL_FUNC(ui_dnd_item_source_drag_data_get), NULL);
-}
-
 void ui_dnd_setup_feedlist(GtkTreeStore *feedstore) {
 	GtkTreeDragSourceIface	*drag_source_iface;
 	GtkTreeDragDestIface	*drag_dest_iface;
