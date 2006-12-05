@@ -103,7 +103,7 @@ static void notif_libnotify_callback_show_details ( NotifyNotification *n, gchar
 		list_p = node_p->itemSet->items;
 		while(list_p != NULL) {
 			item_p = list_p->data;
-			if( item_p->popupStatus == TRUE) {
+			if( item_p->popupStatus == TRUE && item_p->readStatus == FALSE) {
 				item_p->popupStatus = FALSE;
 				item_count += 1;
 
@@ -213,7 +213,7 @@ static void notif_libnotify_node_has_new_items(nodePtr node_p) {
 	list_p = node_p->itemSet->items;
 	while(list_p != NULL) {
 		item_p = list_p->data;
-		if( item_p->popupStatus == TRUE) {
+		if( item_p->popupStatus == TRUE && item_p->readStatus == FALSE) {
 			item_count += 1;
 		}
 		list_p = g_list_next(list_p);

@@ -12,10 +12,13 @@
 	* Fixes a memory when selecting items in 3 paned mode.
 	* Fixes several missing translation literals.
 	* Should fix SF #1572427 that could cause feed list corruptions.
+	* Fixes SF #1582309 that caused duplicate new item notifications
+	  (patch from Mike Auty)
 
 	Translations
 
-	Update of Polish translation
+	* Update of Polish translation
+	* Fixes of translation mistakes (Vincent Lefevre)
 
 
 2006-11-25  Lars Lindner  <lars.lindner@gmail.com>
