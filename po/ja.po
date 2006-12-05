@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea trunk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-12-05 21:07+0100\n"
-"PO-Revision-Date: 2006-12-05 21:23+0100\n"
+"POT-Creation-Date: 2006-12-05 21:26+0100\n"
+"PO-Revision-Date: 2006-12-05 21:27+0100\n"
 "Last-Translator: Lars Lindner <lars.lindner@gmx.net>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
@@ -2097,7 +2097,7 @@ msgid "%d Search Results for \"%s\""
 msgstr "\"%2$s\" を検索した結果 %1$d個"
 
 #: ../src/ui/ui_search.c:124
-msgid "The item list now contains all items matching the specified search pattern. If you want to save this search result permanently you can click the \"Search Folder\" button in the search dialog and Liferea will add a search volder to your feed list."
+msgid "The item list now contains all items matching the specified search pattern. If you want to save this search result permanently you can click the \"Search Folder\" button in the search dialog and Liferea will add a search folder to your feed list."
 msgstr "トピックの一覧には検索で指定したパターンに一致するエントリが含まれています。この検索結果をディスクに保存する場合は、検索ダイアログにある [検索フォルダ] ボタンをクリックして下さい。すると、この結果が検索フォルダとして一覧に追加されます。"
 
 #: ../src/ui/ui_search.c:245

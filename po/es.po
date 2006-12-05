@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-12-05 21:07+0100\n"
-"PO-Revision-Date: 2006-12-05 21:19+0100\n"
+"POT-Creation-Date: 2006-12-05 21:26+0100\n"
+"PO-Revision-Date: 2006-12-05 21:29+0100\n"
 "Last-Translator: Lars Lindner <lars.lindner@gmx.net>\n"
 "Language-Team: Spanish <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -65,9 +65,8 @@ msgid "Source:"
 msgstr "Origen:"
 
 #: ../xslt/feed.xml.in.h:8
-#, fuzzy
 msgid "The last update of this subscription failed!<br/><b>HTTP error code <xsl:value-of select=\"httpErrorCode\"/>: <xsl:value-of select=\"httpError\"/></b>"
-msgstr "Falló la última actualización de esta fuente<br><br>Error HTTP %d: %s</b>"
+msgstr "Falló la última actualización de esta fuente<br><br>Error HTTP <xsl:value-of select=\"httpErrorCode\"/>: <xsl:value-of select=\"httpError\"/></b>"
 
 #: ../xslt/feed.xml.in.h:9
 msgid "There were errors while filtering this feed!"
@@ -2159,8 +2158,8 @@ msgid "%d Search Results for \"%s\""
 msgstr "%d Search Results for \"%s\""
 
 #: ../src/ui/ui_search.c:124
-msgid "The item list now contains all items matching the specified search pattern. If you want to save this search result permanently you can click the \"Search Folder\" button in the search dialog and Liferea will add a search volder to your feed list."
-msgstr "The item list now contains all items matching the specified search pattern. If you want to save this search result permanently you can click the \"Search Folder\" button in the search dialog and Liferea will add a search volder to your feed list."
+msgid "The item list now contains all items matching the specified search pattern. If you want to save this search result permanently you can click the \"Search Folder\" button in the search dialog and Liferea will add a search folder to your feed list."
+msgstr "The item list now contains all items matching the specified search pattern. If you want to save this search result permanently you can click the \"Search Folder\" button in the search dialog and Liferea will add a search folder to your feed list."
 
 #: ../src/ui/ui_search.c:245
 #, fuzzy

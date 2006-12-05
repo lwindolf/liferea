@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-12-05 21:07+0100\n"
-"PO-Revision-Date: 2006-12-05 21:23+0100\n"
+"POT-Creation-Date: 2006-12-05 21:26+0100\n"
+"PO-Revision-Date: 2006-12-05 21:26+0100\n"
 "Last-Translator: Lars Lindner <lars.lindner@gmx.net>\n"
 "Language-Team: Polish\n"
 "MIME-Version: 1.0\n"
@@ -2112,7 +2112,7 @@ msgid "%d Search Results for \"%s\""
 msgstr "%d Wyszukiwanie \"%s\""
 
 #: ../src/ui/ui_search.c:124
-msgid "The item list now contains all items matching the specified search pattern. If you want to save this search result permanently you can click the \"Search Folder\" button in the search dialog and Liferea will add a search volder to your feed list."
+msgid "The item list now contains all items matching the specified search pattern. If you want to save this search result permanently you can click the \"Search Folder\" button in the search dialog and Liferea will add a search folder to your feed list."
 msgstr "Lista zawiera teraz wszystkie pozycje pasujące do zadanych kryteriów wyszukiwania. Jeśli chcesz zapisać wyniki, naciśnij przycisk \"Katalog Wyników\" w oknie wyszukiwania a Liferea doda nowy katalog do listy subskrypcji."
 
 #: ../src/ui/ui_search.c:245

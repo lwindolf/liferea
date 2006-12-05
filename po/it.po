@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-12-05 21:07+0100\n"
-"PO-Revision-Date: 2006-12-05 21:22+0100\n"
+"POT-Creation-Date: 2006-12-05 21:26+0100\n"
+"PO-Revision-Date: 2006-12-05 21:27+0100\n"
 "Last-Translator: Lars Lindner <lars.lindner@gmx.net>\n"
 "Language-Team: Italian <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2106,7 +2106,7 @@ msgid "%d Search Results for \"%s\""
 msgstr "%d Risultati di ricerca per \"%s\""
 
 #: ../src/ui/ui_search.c:124
-msgid "The item list now contains all items matching the specified search pattern. If you want to save this search result permanently you can click the \"Search Folder\" button in the search dialog and Liferea will add a search volder to your feed list."
+msgid "The item list now contains all items matching the specified search pattern. If you want to save this search result permanently you can click the \"Search Folder\" button in the search dialog and Liferea will add a search folder to your feed list."
 msgstr "La lista degli elementi adesso contiene tutti gli elementi che soddisfano la stringa di ricerca specificata. Se si desidera salvare questo risultato in modo permanente cliccare sul pulsante \"Cartella Ricerche\" nella finestra di ricerca e Liferea aggiungerà una cartella virtuale alla lista dei notiziari."
 
 #: ../src/ui/ui_search.c:245
