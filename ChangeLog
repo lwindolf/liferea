@@ -14,10 +14,13 @@
 	* Should fix SF #1572427 that could cause feed list corruptions.
 	* Fixes SF #1582309 that caused duplicate new item notifications
 	  (patch from Mike Auty)
+	* Now copies URLs also to the X selection when choosing "Copy URL"
+	  from the item list context menu (reported by Rodrigo Gallardo)
 
 	Translations
 
-	* Update of Polish translation
+	* Update of Polish translation (Bart Kreska)
+	* Update of German translation
 	* Fixes of translation mistakes (Vincent Lefevre)
 
 

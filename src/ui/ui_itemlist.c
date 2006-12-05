@@ -610,10 +610,12 @@ gboolean on_itemlist_button_press_event(GtkWidget *treeview, GdkEventButton *eve
 void on_popup_copy_URL_clipboard(void) {
 	itemPtr         item;
 
-	if(NULL != (item = itemlist_get_selected()))
+	if(NULL != (item = itemlist_get_selected())) {
+		gtk_clipboard_set_text(gtk_clipboard_get(GDK_SELECTION_PRIMARY), item_get_source(item), -1);
 		gtk_clipboard_set_text(gtk_clipboard_get(GDK_SELECTION_CLIPBOARD), item_get_source(item), -1);
-	else
+	} else {
 		ui_mainwindow_set_status_bar(_("No item has been selected"));
+	}
 }
 
 void ui_itemlist_add_item_bookmark(itemPtr item) {
