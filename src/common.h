@@ -158,6 +158,18 @@ xmlDocPtr common_parse_xml(gchar *data, guint length, gboolean revocery, errorCt
 xmlDocPtr common_parse_xml_feed(feedParserCtxtPtr fpc);
 
 /**
+ * Common function for reliable writing of XML documents
+ * to disk. In difference to xmlSaveFile*() this function
+ * syncs the file and gives better error handling.
+ *
+ * @param doc		the XML document to save
+ * @param filename	the filename to write to
+ *
+ * @returns 0 on success
+ */
+gint common_save_xml(xmlDocPtr doc, gchar *filename);
+
+/**
  * Returns a formatted date string for the given timestamp.
  *
  * @param t		the timestamp

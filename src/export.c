@@ -133,7 +133,7 @@ gboolean export_OPML_feedlist(const gchar *filename, nodePtr node, gboolean trus
 		if(trusted)
 			old_umask = umask(077);
 			
-		if(-1 == xmlSaveFormatFileEnc(backupFilename, doc, NULL, 1)) {
+		if(-1 == common_save_xml(doc, backupFilename)) {
 			g_warning("Could not export to OPML file!!");
 			error = FALSE;
 		}

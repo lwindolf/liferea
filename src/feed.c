@@ -595,7 +595,7 @@ static void feed_save_to_cache(nodePtr node) {
 		}
 		g_list_free(itemlist);
 
-		if(xmlSaveFormatFile(tmpfilename, doc,1) == -1) {
+		if(common_save_xml(doc, tmpfilename) == -1) {
 			g_warning("Error attempting to save feed cache file \"%s\"!", tmpfilename);
 		} else {
 			if(rename(tmpfilename, filename) == -1)

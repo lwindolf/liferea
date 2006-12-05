@@ -45,11 +45,14 @@
 #include <libxml/entities.h>
 #include <libxml/HTMLparser.h>
 #include <libxml/xpath.h>
+
 #include <glib.h>
+#include <glib/gstdio.h>
 #include <pango/pango-types.h>
 #include <gtk/gtk.h>
 
 #include <sys/stat.h>
+#include <errno.h>
 #include <string.h>
 #include <locale.h>
 #include <time.h>
@@ -529,6 +532,58 @@ xmlDocPtr common_parse_xml_feed(feedParserCtxtPtr fpc) {
 	g_free(errors);
 	
 	return fpc->doc;
+}
+
+/* The following slightly modified function was originally taken 
+ * from GConf 2.16.0 backends/xml-dir.c: Copyright (C) 1999, 2000 Red Hat Inc. */
+
+/* for info on why this is used rather than xmlDocDump or xmlSaveFile
+ * and friends, see http://bugzilla.gnome.org/show_bug.cgi?id=108329 */
+gint common_save_xml(xmlDocPtr doc, gchar *filename) {
+	FILE	*fp;
+	char	*xmlbuf;
+	int	fd, n;
+
+	fp = g_fopen(filename, "w");
+	if(NULL == fp)
+		return -1;
+  
+	xmlDocDumpFormatMemory(doc, (xmlChar **)&xmlbuf, &n, TRUE);
+	if(n <= 0) {
+		errno = ENOMEM;
+		return -1;
+	}
+
+	if(fwrite(xmlbuf, sizeof (xmlChar), n, fp) < n)	{
+		xmlFree (xmlbuf);
+		return -1;
+	}
+
+	xmlFree (xmlbuf);
+
+	/* From the fflush(3) man page:
+	*
+	* Note that fflush() only flushes the user space buffers provided by the
+	* C library. To ensure that the data is physically stored on disk the
+	* kernel buffers must be flushed too, e.g. with sync(2) or fsync(2).
+	*/
+
+	/* flush user-space buffers */
+	if (fflush (fp) != 0)
+		return -1;
+
+	if ((fd = fileno (fp)) == -1)
+		return -1;
+
+#ifdef HAVE_FSYNC
+	/* sync kernel-space buffers to disk */
+	if (fsync (fd) == -1)
+		return -1;
+#endif
+
+	fclose(fp);
+
+	return 0;
 }
 
 #define	TIMESTRLEN	256

@@ -11,6 +11,7 @@
 	  during cache drops after an update of the selected feed.
 	* Fixes a memory when selecting items in 3 paned mode.
 	* Fixes several missing translation literals.
+	* Should fix SF #1572427 that could cause feed list corruptions.
 
 	Translations
 
