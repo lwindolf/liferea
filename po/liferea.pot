@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-12-01 10:59+0100\n"
+"POT-Creation-Date: 2006-12-05 21:07+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -161,45 +161,45 @@ msgstr ""
 msgid "FAQ"
 msgstr ""
 
-#: ../src/common.c:395
+#: ../src/common.c:398
 msgid "[There were more errors. Output was truncated!]"
 msgstr ""
 
-#: ../src/common.c:524
+#: ../src/common.c:527
 msgid "XML Parser: Could not parse document:\n"
 msgstr ""
 
 #. translation hint: date format for today, reorder format codes as necessary
-#: ../src/common.c:578
+#: ../src/common.c:633
 msgid "Today %l:%M %p"
 msgstr ""
 
 #. translation hint: date format for yesterday, reorder format codes as necessary
-#: ../src/common.c:589
+#: ../src/common.c:644
 msgid "Yesterday %l:%M %p"
 msgstr ""
 
 #. translation hint: date format for dates older than 2 days but not older than a week, reorder format codes as necessary
-#: ../src/common.c:602
+#: ../src/common.c:657
 msgid "%a %l:%M %p"
 msgstr ""
 
 #. translation hint: date format for dates older than a week but from this year, reorder format codes as necessary
-#: ../src/common.c:611
+#: ../src/common.c:666
 msgid "%b %d %l:%M %p"
 msgstr ""
 
 #. translation hint: date format for dates from the last years, reorder format codes as necessary
-#: ../src/common.c:614
+#: ../src/common.c:669
 msgid "%b %d %Y"
 msgstr ""
 
-#: ../src/common.c:812
+#: ../src/common.c:867
 #, c-format
 msgid "Cannot create cache directory \"%s\"!"
 msgstr ""
 
-#: ../src/common.c:895
+#: ../src/common.c:950
 msgid ""
 "Unexpected end of character sequence or corrupt UTF-8 encoding! Some "
 "characters were dropped!"
@@ -1770,7 +1770,7 @@ msgid "_New Subscription..."
 msgstr ""
 
 #: ../src/ui/ui_mainwindow.c:924
-msgid "Add a subscription to the feed list."
+msgid "Adds a subscription to the feed list."
 msgstr ""
 
 #: ../src/ui/ui_mainwindow.c:926
@@ -1778,7 +1778,7 @@ msgid "New _Folder..."
 msgstr ""
 
 #: ../src/ui/ui_mainwindow.c:926
-msgid "Add a folder to the feed list."
+msgid "Adds a folder to the feed list."
 msgstr ""
 
 #: ../src/ui/ui_mainwindow.c:927
@@ -1786,7 +1786,7 @@ msgid "New S_earch Folder..."
 msgstr ""
 
 #: ../src/ui/ui_mainwindow.c:927
-msgid "Add a new search folder to the feed list."
+msgid "Adds a new search folder to the feed list."
 msgstr ""
 
 #: ../src/ui/ui_mainwindow.c:928
