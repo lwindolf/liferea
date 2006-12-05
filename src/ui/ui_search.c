@@ -124,7 +124,7 @@ void on_searchentry_activate(GtkEntry *entry, gpointer user_data) {
 	g_string_append_printf(buffer, _("The item list now contains all items matching the "
 	                               "specified search pattern. If you want to save this search "
 	                               "result permanently you can click the \"Search Folder\" button in "
-	                               "the search dialog and Liferea will add a search volder to your "
+	                               "the search dialog and Liferea will add a search folder to your "
 	                               "feed list."));
 	g_string_append_printf(buffer, "</p></div>");
 	htmlview_finish_output(buffer);
