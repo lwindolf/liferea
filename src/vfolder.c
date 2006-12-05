@@ -147,6 +147,8 @@ static void vfolder_export(nodePtr node, xmlNodePtr cur, gboolean trusted) {
 
 		iter = g_slist_next(iter);
 	}
+	
+	debug1(DEBUG_CACHE, "adding vfolder: title=%s", node_get_title(node));
 
 	debug_exit("vfolder_export");
 }

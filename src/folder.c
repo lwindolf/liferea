@@ -52,6 +52,8 @@ static void folder_export(nodePtr node, xmlNodePtr cur, gboolean trusted) {
 	}
 
 	export_node_children(node, cur, trusted);
+	
+	debug1(DEBUG_CACHE, "adding folder: title=%s", node_get_title(node));
 }
 
 static void folder_initial_load(nodePtr node) {

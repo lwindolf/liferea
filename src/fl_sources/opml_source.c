@@ -84,6 +84,8 @@ void opml_source_export(nodePtr node) {
 	export_OPML_feedlist(filename, node, TRUE);
 	g_free(filename);
 	
+	debug1(DEBUG_CACHE, "adding OPML source: title=%s", node_get_title(node));
+	
 	debug_exit("opml_source_export");
 }
 
