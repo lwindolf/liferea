@@ -1,5 +1,13 @@
 2006-12-??  Lars Lindner  <lars.lindner@gmail.com>
 
+	Version 1.2-RC5 (Unstable)
+	
+	* Fixes a crash when cancelling the file selection dialog.
+	  (reported by Vincent Lefevre)
+	  
+
+2006-12-05  Lars Lindner  <lars.lindner@gmail.com>
+
 	Version 1.2-RC4 (Unstable)
 
 	* Adds a popup giving notice of the 1.0->1.2 cache migration
@@ -9,7 +17,7 @@
 	  the network availability.
 	* Fixes more unnecessary updates in the two paned view mode
 	  during cache drops after an update of the selected feed.
-	* Fixes a memory when selecting items in 3 paned mode.
+	* Fixes a memory leak when selecting items in 3 paned mode.
 	* Fixes several missing translation literals.
 	* Should fix SF #1572427 that could cause feed list corruptions.
 	* Fixes SF #1582309 that caused duplicate new item notifications

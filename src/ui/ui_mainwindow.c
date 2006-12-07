@@ -802,13 +802,13 @@ struct file_chooser_tuple {
 static void ui_choose_file_save_cb(GtkDialog *dialog, gint response_id, gpointer user_data) {
 	struct file_chooser_tuple *tuple = (struct file_chooser_tuple*)user_data;
 	gchar *filename;
-	
+
 	if(response_id == GTK_RESPONSE_ACCEPT) {
 		filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
 		tuple->func(filename, tuple->user_data);
 		g_free(filename);
 	} else {
-		tuple->func(NULL, user_data);
+		tuple->func(NULL, tuple->user_data);
 	}
 	
 	gtk_widget_destroy(GTK_WIDGET(dialog));
