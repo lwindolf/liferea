@@ -4,6 +4,7 @@
 	
 	* Fixes a crash when cancelling the file selection dialog.
 	  (reported by Vincent Lefevre)
+	* Fixes a possible Sparc64 crash (patch from Pierre Pronchery)
 
 	Translation
 

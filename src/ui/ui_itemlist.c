@@ -50,7 +50,7 @@ static GtkWidget 	*itemlist_treeview = NULL;
 
 static itemPtr ui_iter_to_item(GtkTreeIter *iter) {
 	nodePtr		node;
-	guint		nr;
+	gulong		nr;
 	
 	gtk_tree_model_get(GTK_TREE_MODEL(ui_itemlist_get_tree_store()), 
 	                   iter, IS_PARENT, &node, IS_NR, &nr, -1);
@@ -75,16 +75,16 @@ static gboolean ui_item_to_iter(itemPtr item, GtkTreeIter *iter) {
 
 /* sort function for the item list date column */
 static gint ui_itemlist_date_sort_func(GtkTreeModel *model, GtkTreeIter *a, GtkTreeIter *b, gpointer user_data) {
-	time_t	timea, timeb;
-	double diff;
+	gulong	timea, timeb;
+	double	diff;
 
 	gtk_tree_model_get(model, a, IS_TIME, &timea, -1);
 	gtk_tree_model_get(model, b, IS_TIME, &timeb, -1);
-	diff = difftime(timeb,timea);
+	diff = difftime((time_t)timeb, (time_t)timea);
 	
-	if (diff < 0)
+	if(diff < 0)
 		return 1;
-	else if (diff > 0)
+	else if(diff > 0)
 		return -1;
 	else
 		return 0;

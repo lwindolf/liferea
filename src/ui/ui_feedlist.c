@@ -95,7 +95,7 @@ static void ui_feedlist_selection_changed_cb(GtkTreeSelection *selection, gpoint
 	GtkTreeModel		*model;
 	nodePtr			node;
 	GdkGeometry		geometry;
-	gint			type = NODE_TYPE_INVALID;
+	guint			type = NODE_TYPE_INVALID;
 
 	if(gtk_tree_selection_get_selected(selection, &model, &iter)) {
 		gtk_tree_model_get(model, &iter, FS_PTR, &node, -1);
