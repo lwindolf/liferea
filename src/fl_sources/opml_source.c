@@ -319,10 +319,8 @@ static void opml_source_deinit(void) { }
 static struct nodeSourceType nst = {
 	NODE_SOURCE_TYPE_API_VERSION,
 	"fl_opml",
-	"Planet, BlogRoll, OPML",
-	"Integrate blogrolls or Planets in your feed list. Liferea will "
-	"automatically add and remove feeds according to the changes of "
-	"the source OPML document",
+	NULL,	/* name set below */
+	NULL,	/* description set below */
 	NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION,
 	opml_source_init,
 	opml_source_deinit,
@@ -335,4 +333,13 @@ static struct nodeSourceType nst = {
 	opml_source_auto_update
 };
 
-nodeSourceTypePtr opml_source_get_type(void) { return &nst; }
+nodeSourceTypePtr opml_source_get_type(void) {
+
+	if(!nst.name)
+		nst.name = _("Planet, BlogRoll, OPML");
+	if(!nst.description)
+		nst.description = _("Integrate blogrolls or Planets in your feed list. Liferea will "
+	                             "automatically add and remove feeds according to the changes of "
+	                             "the source OPML document");
+	return &nst;
+}

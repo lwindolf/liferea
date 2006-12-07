@@ -52,9 +52,8 @@ static void bloglines_source_deinit(void) { }
 static struct nodeSourceType nst = {
 	NODE_SOURCE_TYPE_API_VERSION,
 	"fl_bloglines",
-	"Bloglines",
-	"Integrate the feed list of your Bloglines account. Liferea will "
-	"present your Bloglines subscription as a read-only subtree in the feed list.",
+	NULL,	/* name defined below */
+	NULL,	/* description defined below */
 	NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION,
 	bloglines_source_init,
 	bloglines_source_deinit,
@@ -67,4 +66,13 @@ static struct nodeSourceType nst = {
 	bloglines_source_auto_update
 };
 
-nodeSourceTypePtr bloglines_source_get_type(void) { return &nst; }
+nodeSourceTypePtr bloglines_source_get_type(void) { 
+
+	if(!nst.name)
+		nst.name = _("Bloglines");
+	if(!nst.description)
+		nst.description = _("Integrate the feed list of your Bloglines account. Liferea will "
+	                            "present your Bloglines subscription as a read-only subtree in the feed list.");
+
+	return &nst;
+}
