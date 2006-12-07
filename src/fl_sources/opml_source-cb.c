@@ -68,7 +68,8 @@ void ui_opml_source_get_source_url(nodePtr parent) {
 static void on_file_select_clicked(const gchar *filename, gpointer user_data) {
 	GtkWidget	*dialog = GTK_WIDGET(user_data);
 
-	gtk_entry_set_text(GTK_ENTRY(lookup_widget(dialog, "location_entry")), g_strdup(filename));
+	if(filename && dialog)
+		gtk_entry_set_text(GTK_ENTRY(lookup_widget(dialog, "location_entry")), g_strdup(filename));
 }
 
 void on_select_button_clicked(GtkButton *button, gpointer user_data) {
