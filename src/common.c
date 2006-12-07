@@ -58,6 +58,8 @@
 #include <time.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <unistd.h>	/* fsync */
+
 #include "support.h"
 #include "common.h"
 #include "conf.h"
