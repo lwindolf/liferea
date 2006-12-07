@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-12-05 21:26+0100\n"
+"POT-Creation-Date: 2006-12-07 01:48+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -161,96 +161,96 @@ msgstr ""
 msgid "FAQ"
 msgstr ""
 
-#: ../src/common.c:398
+#: ../src/common.c:400
 msgid "[There were more errors. Output was truncated!]"
 msgstr ""
 
-#: ../src/common.c:527
+#: ../src/common.c:529
 msgid "XML Parser: Could not parse document:\n"
 msgstr ""
 
 #. translation hint: date format for today, reorder format codes as necessary
-#: ../src/common.c:633
+#: ../src/common.c:635
 msgid "Today %l:%M %p"
 msgstr ""
 
 #. translation hint: date format for yesterday, reorder format codes as necessary
-#: ../src/common.c:644
+#: ../src/common.c:646
 msgid "Yesterday %l:%M %p"
 msgstr ""
 
 #. translation hint: date format for dates older than 2 days but not older than a week, reorder format codes as necessary
-#: ../src/common.c:657
+#: ../src/common.c:659
 msgid "%a %l:%M %p"
 msgstr ""
 
 #. translation hint: date format for dates older than a week but from this year, reorder format codes as necessary
-#: ../src/common.c:666
+#: ../src/common.c:668
 msgid "%b %d %l:%M %p"
 msgstr ""
 
 #. translation hint: date format for dates from the last years, reorder format codes as necessary
-#: ../src/common.c:669
+#: ../src/common.c:671
 msgid "%b %d %Y"
 msgstr ""
 
-#: ../src/common.c:867
+#: ../src/common.c:869
 #, c-format
 msgid "Cannot create cache directory \"%s\"!"
 msgstr ""
 
-#: ../src/common.c:950
+#: ../src/common.c:952
 msgid ""
 "Unexpected end of character sequence or corrupt UTF-8 encoding! Some "
 "characters were dropped!"
 msgstr ""
 
-#: ../src/export.c:147
+#: ../src/export.c:143
 #, c-format
 msgid "Error renaming %s to %s\n"
 msgstr ""
 
-#: ../src/export.c:308 ../src/export.c:310
+#: ../src/export.c:304 ../src/export.c:306
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
 msgstr ""
 
-#: ../src/export.c:315 ../src/export.c:317
+#: ../src/export.c:311 ../src/export.c:313
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr ""
 
-#: ../src/export.c:338 ../src/export.c:340
+#: ../src/export.c:334 ../src/export.c:336
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 
-#: ../src/export.c:359
+#: ../src/export.c:355
 msgid "Imported feed list"
 msgstr ""
 
-#: ../src/export.c:371
+#: ../src/export.c:367
 msgid "Import Feed List"
 msgstr ""
 
-#: ../src/export.c:371
+#: ../src/export.c:367
 msgid "Import"
 msgstr ""
 
-#: ../src/export.c:378
+#: ../src/export.c:374
 msgid "Error while exporting feed list!"
 msgstr ""
 
-#: ../src/export.c:380
+#: ../src/export.c:376
 msgid "Feed List exported!"
 msgstr ""
 
-#: ../src/export.c:386
+#: ../src/export.c:382
 msgid "Export Feed List"
 msgstr ""
 
-#: ../src/export.c:386
+#: ../src/export.c:382
 msgid "Export"
 msgstr ""
 
@@ -1509,8 +1509,8 @@ msgid "Headline"
 msgstr ""
 
 #: ../src/ui/ui_itemlist.c:423 ../src/ui/ui_itemlist.c:436
-#: ../src/ui/ui_itemlist.c:481 ../src/ui/ui_itemlist.c:616
-#: ../src/ui/ui_itemlist.c:633
+#: ../src/ui/ui_itemlist.c:481 ../src/ui/ui_itemlist.c:617
+#: ../src/ui/ui_itemlist.c:635
 msgid "No item has been selected"
 msgstr ""
 
@@ -1522,7 +1522,7 @@ msgstr ""
 msgid "You must select a feed to delete its items!"
 msgstr ""
 
-#: ../src/ui/ui_itemlist.c:643
+#: ../src/ui/ui_itemlist.c:645
 msgid "No link selected!"
 msgstr ""
 
@@ -2114,6 +2114,16 @@ msgstr ""
 msgid "%b %d %H:%M"
 msgstr ""
 
+#: ../src/fl_sources/bloglines_source.c:72
+msgid "Bloglines"
+msgstr ""
+
+#: ../src/fl_sources/bloglines_source.c:74
+msgid ""
+"Integrate the feed list of your Bloglines account. Liferea will present your "
+"Bloglines subscription as a read-only subtree in the feed list."
+msgstr ""
+
 #: ../src/fl_sources/bloglines_source-ui.c:46
 msgid "Add Bloglines Account"
 msgstr ""
@@ -2133,6 +2143,16 @@ msgstr ""
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
 #: ../src/fl_sources/default_source.c:280
 msgid "feedlist.opml"
+msgstr ""
+
+#: ../src/fl_sources/opml_source.c:339
+msgid "Planet, BlogRoll, OPML"
+msgstr ""
+
+#: ../src/fl_sources/opml_source.c:341
+msgid ""
+"Integrate blogrolls or Planets in your feed list. Liferea will automatically "
+"add and remove feeds according to the changes of the source OPML document"
 msgstr ""
 
 #: ../src/fl_sources/opml_source.h:26
