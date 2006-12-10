@@ -5,6 +5,8 @@
 	* Fixes a crash when cancelling the file selection dialog.
 	  (reported by Vincent Lefevre)
 	* Fixes a possible Sparc64 crash (patch from Pierre Pronchery)
+	* Fixes SF #1607792 which caused program abort when removing
+	  items using the keyboard in an "unread" search folder.
 
 	Translation
 

@@ -383,7 +383,11 @@ static void itemlist_hide_item(itemPtr item) {
 
 void itemlist_remove_item(itemPtr item) {
 
-	g_assert(NULL != itemset_lookup_item(item->itemSet, item->itemSet->node, item->nr));
+	/* Normally the item should exist when removing it, but 
+	   when removing with the keyboard that will not be the case.
+	   FIXME: An asserting here would be better! */
+	if(NULL == itemset_lookup_item(item->itemSet, item->itemSet->node, item->nr))
+		return;
 	
 	if(displayed_item == item) {
 		displayed_item = NULL;
