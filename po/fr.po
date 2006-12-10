@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-12-07 02:16+0100\n"
+"POT-Creation-Date: 2006-12-10 17:04+0100\n"
 "PO-Revision-Date: 2006-12-07 02:26+0100\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.org>\n"
 "Language-Team: \n"
@@ -1658,12 +1658,12 @@ msgstr ""
 msgid "This item does not have a link assigned!"
 msgstr "Cet élément n'a pas de lien assigné !"
 
-#: ../src/ui/ui_htmlview.c:306 ../src/ui/ui_htmlview.c:326
+#: ../src/ui/ui_htmlview.c:313 ../src/ui/ui_htmlview.c:333
 #, c-format
 msgid "Browser command failed: %s"
 msgstr "La commande du navigateur a échoué : %s"
 
-#: ../src/ui/ui_htmlview.c:329
+#: ../src/ui/ui_htmlview.c:336
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Exécution de : \"%s\""
