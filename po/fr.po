@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-12-07 01:48+0100\n"
-"PO-Revision-Date: 2006-12-06 18:17+0100\n"
+"POT-Creation-Date: 2006-12-07 02:16+0100\n"
+"PO-Revision-Date: 2006-12-07 02:26+0100\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.org>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1403,10 +1403,9 @@ msgstr ""
 "  --debug-gui      Affiche les messages de débuggage concernant l'interface"
 
 #: ../src/main.c:80
-#, fuzzy
 msgid ""
 "  --debug-html     Enable HTML debugging (saving to ~/.liferea_1.2/output."
-"xhtml)."
+"xhtml)"
 msgstr ""
 "  --debug-html     Active le débug HTML (sauvé dans ~/.liferea_1.2/output."
 "xhtml)"
@@ -1659,12 +1658,12 @@ msgstr ""
 msgid "This item does not have a link assigned!"
 msgstr "Cet élément n'a pas de lien assigné !"
 
-#: ../src/ui/ui_htmlview.c:313 ../src/ui/ui_htmlview.c:333
+#: ../src/ui/ui_htmlview.c:306 ../src/ui/ui_htmlview.c:326
 #, c-format
 msgid "Browser command failed: %s"
 msgstr "La commande du navigateur a échoué : %s"
 
-#: ../src/ui/ui_htmlview.c:336
+#: ../src/ui/ui_htmlview.c:329
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Exécution de : \"%s\""
@@ -2312,15 +2311,17 @@ msgid "%b %d %H:%M"
 msgstr "%d %b %H:%M"
 
 #: ../src/fl_sources/bloglines_source.c:72
-#, fuzzy
 msgid "Bloglines"
-msgstr "Ajouter un compte Bloglines"
+msgstr "Bloglines"
 
 #: ../src/fl_sources/bloglines_source.c:74
 msgid ""
 "Integrate the feed list of your Bloglines account. Liferea will present your "
 "Bloglines subscription as a read-only subtree in the feed list."
 msgstr ""
+"Intégrer la liste des flux de votre compte Bloglines. Liferea présentera "
+"votre abonnement Bloglines comme un sous-arbre en lecture seule dans la "
+"liste des flux."
 
 #: ../src/fl_sources/bloglines_source-ui.c:46
 msgid "Add Bloglines Account"
@@ -2345,13 +2346,16 @@ msgstr "feedlist_fr.opml"
 
 #: ../src/fl_sources/opml_source.c:339
 msgid "Planet, BlogRoll, OPML"
-msgstr ""
+msgstr "Planet, BlogRoll, OPML"
 
 #: ../src/fl_sources/opml_source.c:341
 msgid ""
 "Integrate blogrolls or Planets in your feed list. Liferea will automatically "
 "add and remove feeds according to the changes of the source OPML document"
 msgstr ""
+"Intégrer des blogrolls ou Planets dans votre liste de flux. Liferea ajoutera "
+"ou supprimera automatiquement des flux suivant les changements du document "
+"source OPML"
 
 #: ../src/fl_sources/opml_source.h:26
 msgid "New OPML Subscription"
