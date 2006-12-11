@@ -367,7 +367,7 @@ gboolean ui_htmlview_launch_in_external_browser(const gchar *uri) {
 		g_warning("fatal: cannot retrieve browser command!");
 		return FALSE;
 	}
-	done = ui_htmlview_external_browser_execute(cmd, uri, browser->escapeRemote, FALSE);
+	done = ui_htmlview_external_browser_execute(cmd, uri, browser?browser->escapeRemote:FALSE, FALSE);
 	g_free(cmd);
 	return done;
 }
