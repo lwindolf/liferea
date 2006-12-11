@@ -77,116 +77,129 @@ struct enclosure_download_tool enclosure_download_tools[] = {
 	{ NULL,		NULL}
 };
 
-struct browser {
-	gchar *id; /**< Unique ID used in storing the prefs */
-	gchar *display; /**< Name to display in the prefs */
-	gchar *defaultplace; /**< Default command.... Use %s to specify URL. This command is called in the background. */
-	gchar *existingwin;
-	gchar *existingwinremote;
-	gchar *newwin;
-	gchar *newwinremote;
-	gchar *newtab;
-	gchar *newtabremote;
+static struct browser browsers[] = {
+	{
+		"gnome", "Gnome Default Browser", "gnome-open %s", 
+		NULL, NULL,
+		NULL, NULL,
+		NULL, NULL,
+		FALSE
+	},
+	{
+		"mozilla", "Mozilla", "mozilla %s",
+		NULL, "mozilla -remote openURL(%s)",
+		NULL, "mozillax -remote 'openURL(%s,new-window)'",
+		NULL, "mozilla -remote 'openURL(%s,new-tab)'",
+		FALSE	/* FIXME: do we need TRUE here? */
+	},
+	{
+		/* tested with Firefox 1.5 and 2.0 */
+		"firefox", "Firefox","firefox \"%s\"",
+		NULL, "firefox -a firefox -remote \"openURL(%s)\"",
+		NULL, "firefox -a firefox -remote 'openURL(%s,new-window)'",
+		NULL, "firefox -a firefox -remote 'openURL(%s,new-tab)'",
+		TRUE
+	},
+	{
+		"netscape", "Netscape", "netscape \"%s\"",
+		NULL, "netscape -remote \"openURL(%s)\"",
+		NULL, "netscape -remote \"openURL(%s,new-window)\"",
+		NULL, NULL,
+		FALSE	/* FIXME: do we need TRUE here? */
+	},
+	{
+		"opera", "Opera","opera \"%s\"",
+		"opera \"%s\"", "opera -remote \"openURL(%s)\"",
+		"opera -newwindow \"%s\"", NULL,
+		"opera -newpage \"%s\"", NULL,
+		FALSE
+	},
+	{
+		"epiphany", "Epiphany","epiphany \"%s\"",
+		NULL, NULL,
+		"epiphany \"%s\"", NULL,
+		"epiphany -n \"%s\"", NULL,
+		FALSE
+	},
+	{
+		"konqueror", "Konqueror", "kfmclient openURL \"%s\"",
+		NULL, NULL,
+		NULL, NULL,
+		NULL, NULL,
+		FALSE
+	},
+	{	NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, FALSE }
 };
 
-struct browser browsers[] = {
-	{"gnome", "Gnome Default Browser", "gnome-open %s", NULL, NULL,
-	 NULL, NULL,
-	 NULL, NULL},
-	{"mozilla", "Mozilla", "mozilla %s",
-	 NULL, "mozilla -remote openURL(%s)",
-	 NULL, "mozillax -remote 'openURL(%s,new-window)'",
-	 NULL, "mozilla -remote 'openURL(%s,new-tab)'"},
-	{"firefox", "Firefox","firefox \"%s\"",
-	 NULL, "firefox -a firefox -remote \"openURL(%s)\"",
-	 NULL, "firefox -a firefox -remote 'openURL(%s,new-window)'",
-	 NULL, "firefox -a firefox -remote 'openURL(%s,new-tab)'"},
-	{"netscape", "Netscape", "netscape \"%s\"",
-	 NULL, "netscape -remote \"openURL(%s)\"",
-	 NULL, "netscape -remote \"openURL(%s,new-window)\"",
-	 NULL, NULL},
-	{"opera", "Opera","opera \"%s\"",
-	 "opera \"%s\"", "opera -remote \"openURL(%s)\"",
-	 "opera -newwindow \"%s\"", NULL,
-	 "opera -newpage \"%s\"", NULL},
-	{"epiphany", "Epiphany","epiphany \"%s\"",
-	 NULL, NULL,
-	 "epiphany \"%s\"", NULL,
-	 "epiphany -n \"%s\"", NULL},
-	{"konqueror", "Konqueror", "kfmclient openURL \"%s\"",
-		 NULL, NULL,
-		 NULL, NULL,
-		 NULL, NULL},
-	{NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL}
-};
+gchar * prefs_get_browser_command(struct browser *browser, gboolean remote, gboolean fallback) {
+	gchar	*cmd = NULL;
+	gchar	*libname;
+	gint	place = getNumericConfValue(BROWSER_PLACE);
 
-gchar * prefs_get_browser_remotecmd(void) {
-	gchar *ret = NULL;
-	gchar *libname;
-	gint place = getNumericConfValue(BROWSER_PLACE);
-
+	/* check for manual browser command */
 	libname = getStringConfValue(BROWSER_ID);
-	if (!strcmp(libname, "manual")) {
-		ret = NULL;
+	if(g_str_equal(libname, "manual")) {
+		/* retrieve user defined command... */
+		cmd = getStringConfValue(BROWSER_COMMAND);
 	} else {
-		struct browser *iter;
-		for (iter = browsers; iter->id != NULL; iter++) {
-			if(!strcmp(libname, iter->id)) {
-				
-				switch (place) {
-				case 1:
-					ret = g_strdup(iter->existingwinremote);
-					break;
-				case 2:
-					ret = g_strdup(iter->newwinremote);
-					break;
-				case 3:
-					ret = g_strdup(iter->newtabremote);
-					break;
+		/* non manual browser definitions... */
+		if(browser) {
+			if(remote) {
+				switch(place) {
+					case 1:
+						cmd = browser->existingwinremote;
+						break;
+					case 2:
+						cmd = browser->newwinremote;
+						break;
+					case 3:
+						cmd = browser->newtabremote;
+						break;
+				}
+			} else {
+				switch(place) {
+					case 1:
+						cmd = browser->existingwin;
+						break;
+					case 2:
+						cmd = browser->newwin;
+						break;
+					case 3:
+						cmd = browser->newtab;
+						break;
 				}
 			}
+
+			if(fallback && !cmd)	/* Default when no special mode defined */
+				cmd = browser->defaultplace;
 		}
+
+		if(fallback && !cmd)	/* Last fallback: first browser default */
+			cmd = browsers[0].defaultplace;
 	}
 	g_free(libname);
-	return ret;
+		
+	return cmd?g_strdup(cmd):NULL;
 }
 
-gchar * prefs_get_browser_cmd(void) {
-	gchar *ret = NULL;
-	gchar *libname;
-	gint place = getNumericConfValue(BROWSER_PLACE);
+struct browser * prefs_get_browser(void) {
+	gchar		*libname;
+	struct browser	*browser = NULL;
 	
 	libname = getStringConfValue(BROWSER_ID);
-	if (!strcmp(libname, "manual")) {
-		ret = g_strdup(getStringConfValue(BROWSER_COMMAND));
-	} else {
+	if(!g_str_equal(libname, "manual")) {
 		struct browser *iter;
-		for (iter = browsers; iter->id != NULL; iter++) {
-			if(!strcmp(libname, iter->id)) {
-				
-				switch (place) {
-				case 1:
-					ret = g_strdup(iter->existingwin);
-					break;
-				case 2:
-					ret = g_strdup(iter->newwin);
-					break;
-				case 3:
-					ret = g_strdup(iter->newtab);
-					break;
-				}
-				if (ret == NULL) /* Default when no special mode defined */
-					ret = g_strdup(iter->defaultplace);
-			}
+		for(iter = browsers; iter->id != NULL; iter++) {
+			if(g_str_equal(libname, iter->id))
+				browser = iter;
 		}
 	}
 	g_free(libname);
-	if (ret == NULL)
-		ret = g_strdup(browsers[0].defaultplace);
-	return ret;
+
+	return browser;
 }
 
-gchar * prefs_get_download_cmd(void) {
+const gchar * prefs_get_download_cmd(void) {
 	struct enclosure_download_tool	*edt = enclosure_download_tools;
 
 	edt += getNumericConfValue(ENCLOSURE_DOWNLOAD_TOOL);

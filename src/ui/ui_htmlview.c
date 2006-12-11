@@ -280,7 +280,7 @@ gfloat ui_htmlview_get_zoom(GtkWidget *htmlview) {
 	return (htmlviewPlugin->zoomLevelGet)(htmlview);
 }
 
-static gboolean ui_htmlview_external_browser_execute(const gchar *cmd, const gchar *uri, gboolean sync) {
+static gboolean ui_htmlview_external_browser_execute(const gchar *cmd, const gchar *uri, gboolean remoteEscape, gboolean sync) {
 	GError		*error = NULL;
 	gchar 		*tmpUri, *tmp, **argv, **iter;
 	gint 		argc, status;
@@ -288,10 +288,13 @@ static gboolean ui_htmlview_external_browser_execute(const gchar *cmd, const gch
   
 	g_assert(cmd != NULL);
 	g_assert(uri != NULL);
-  
+
 	/* If the command is using the X remote API we must
 	   escaped all ',' in the URL */
-	tmpUri = common_strreplace(g_strdup(uri), ",", "%2C");
+	if(remoteEscape)
+		tmpUri = common_strreplace(g_strdup(uri), ",", "%2C");
+	else
+		tmpUri = g_strdup(uri);
 
 	/* If there is no %s in the command, then just append %s */
 	if(strstr(cmd, "%s"))
@@ -338,27 +341,33 @@ static gboolean ui_htmlview_external_browser_execute(const gchar *cmd, const gch
 }
 
 gboolean ui_htmlview_launch_in_external_browser(const gchar *uri) {
-	gchar		*cmd;
+	struct browser	*browser;
+	gchar		*cmd = NULL;
 	gboolean	done = FALSE;	
 	
 	g_assert(uri != NULL);
 	
-	/* try to execute synchronously... */
-	if(NULL != (cmd = prefs_get_browser_remotecmd()))
-		done = ui_htmlview_external_browser_execute(cmd, uri, TRUE);
-	g_free(cmd);
+	browser = prefs_get_browser();
+	if(browser) {
+		/* try to execute synchronously... */
+		cmd = prefs_get_browser_command(browser, TRUE /* remote */, FALSE /* fallback */);
+		if(cmd) {
+			done = ui_htmlview_external_browser_execute(cmd, uri, browser->escapeRemote, TRUE);
+			g_free(cmd);
+		}
+	}
 	
-	if (done)
+	if(done)
 		return TRUE;
 	
-	/* if it failed try to execute asynchronously... */	
-	
-	if(NULL == (cmd = prefs_get_browser_cmd())) {	/* no remote here!!!! */
+	/* if it failed try to execute asynchronously... */		
+	cmd = prefs_get_browser_command(browser, FALSE /* remote */, TRUE /* fallback */);
+	if(!cmd) {
 		ui_mainwindow_set_status_bar("fatal: cannot retrieve browser command!");
 		g_warning("fatal: cannot retrieve browser command!");
 		return FALSE;
 	}
-	done = ui_htmlview_external_browser_execute(cmd, uri, FALSE);
+	done = ui_htmlview_external_browser_execute(cmd, uri, browser->escapeRemote, FALSE);
 	g_free(cmd);
 	return done;
 }
