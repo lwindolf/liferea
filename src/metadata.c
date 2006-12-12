@@ -84,7 +84,7 @@ GSList * metadata_list_append(GSList *metadata, const gchar *strid, const gchar 
 			}
 			break;
 		default:
-			g_warning("Unknown metadata type \"%s\", this is a program bug! Treating as HTML.", strid);
+			debug1(DEBUG_CACHE, "Unknown metadata type \"%s\", this is a program bug! Treating as HTML.", strid);
 		case METADATA_TYPE_HTML:
 			/* Needs to check for proper XHTML */
 			if(common_is_well_formed_xhtml(data)) {
