@@ -64,6 +64,8 @@ static gboolean feedlistLoading = TRUE;
 /** flag is set when any cache migration was done on startup */
 gboolean cacheMigrated = FALSE;
 
+static void feedlist_unselect(void);
+
 nodePtr feedlist_get_root(void) { return rootNode; }
 
 nodePtr feedlist_get_selected(void) { return selectedNode; }
@@ -123,12 +125,8 @@ void feedlist_remove_node(nodePtr node) {
 
 	debug_enter("feedlist_remove_node");
 
-	if(node == selectedNode) {
-		ui_htmlview_clear(ui_mainwindow_get_active_htmlview());
-		itemlist_unload(FALSE);
-		ui_feedlist_select(NULL);
-		selectedNode = NULL;
-	}
+	if(node == selectedNode)
+		feedlist_unselect();
 
 	node_request_remove(node);
 
@@ -223,6 +221,17 @@ nodePtr feedlist_find_unread_feed(nodePtr folder) {
 }
 
 /* selection handling */
+
+static void feedlist_unselect(void) {
+
+	selectedNode = NULL;
+
+	itemview_set_itemset(NULL);
+	itemview_update();
+		
+	itemlist_unload(FALSE /* mark all read */);
+	ui_feedlist_select(NULL);
+}
 
 void feedlist_selection_changed(nodePtr node) {
 	nodePtr	displayed_node;

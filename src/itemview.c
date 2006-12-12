@@ -97,7 +97,7 @@ void itemview_set_itemset(itemSetPtr itemSet) {
 
 		/* 1. Perform UI item list preparations ... */
 		
-		/* a) Clear item list and disable sorting for performance reasons */
+		/* a) Clear item list */
 
 		/* Free the old itemstore and create a new one; this is the only way to disable sorting */
 		ui_itemlist_reset_tree_store();	 /* this also clears the itemlist. */
@@ -106,22 +106,25 @@ void itemview_set_itemset(itemSetPtr itemSet) {
 		/* b) Enable item list columns as necessary */
 		ui_itemlist_enable_encicon_column(FALSE);
 
-		switch(itemSet->type) {
-			case ITEMSET_TYPE_FEED:
-				ui_itemlist_enable_favicon_column(FALSE);
-				break;
-			case ITEMSET_TYPE_VFOLDER:
-			case ITEMSET_TYPE_FOLDER:
-				ui_itemlist_enable_favicon_column(TRUE);
-				break;
-		}
+		if(itemSet) {
+			switch(itemSet->type) {
+				case ITEMSET_TYPE_FEED:
+					ui_itemlist_enable_favicon_column(FALSE);
+					break;
+				case ITEMSET_TYPE_VFOLDER:
+				case ITEMSET_TYPE_FOLDER:
+					ui_itemlist_enable_favicon_column(TRUE);
+					break;
+			}
 
-		/* c) Set sorting again... */
-		disableSortingSaving++;
-		gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(model), 
-	                        		     itemSet->node->sortColumn, 
-	                        		     itemSet->node->sortReversed?GTK_SORT_DESCENDING:GTK_SORT_ASCENDING);
-		disableSortingSaving--;
+			/* c)  disable sorting for performance reasons, set sort column
+			       and enable sorting again */
+			disableSortingSaving++;
+			gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(model), 
+	                        			     itemSet->node->sortColumn, 
+	                        			     itemSet->node->sortReversed?GTK_SORT_DESCENDING:GTK_SORT_ASCENDING);
+			disableSortingSaving--;
+		}
 
 		/* 2. Reset view state */
 		itemview_clear();
@@ -193,9 +196,6 @@ void itemview_update_item(itemPtr item) {
 }
 
 void itemview_update(void) {
-
-	if(!itemView_priv.itemSet)
-		return;
 
 	htmlview_update(ui_mainwindow_get_active_htmlview(), itemView_priv.mode);
 }
