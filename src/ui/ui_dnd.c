@@ -139,13 +139,16 @@ static gboolean ui_dnd_feed_drag_data_received(GtkTreeDragDest *drag_dest, GtkTr
 				nodePtr	child;
 				gtk_tree_model_get(GTK_TREE_MODEL(drag_dest), &iter2, FS_PTR, &child, -1);
 				if(child) {
-					if(!strcmp(node->id, child->id) && memcmp(&iter, &iter2, sizeof(GtkTreeIter))) {
+					if((newParent == oldParent) &&
+					   !strcmp(node->id, child->id) && 
+					   memcmp(&iter, &iter2, sizeof(GtkTreeIter))) {
 						debug1(DEBUG_GUI, "   -> skipping old %s\n", child->title);
 					} else {
 						debug1(DEBUG_GUI, "   -> adding %s", child->title);
 						newParent->children = g_slist_append(newParent->children, child);
 					}
 				} else {
+					debug1(DEBUG_GUI, "   -> removing empty node");
 					/* remove possible existing "(empty)" node from newParent */
 					ui_node_remove_empty_node(&parentIter);
 				}
