@@ -38,7 +38,6 @@ static struct htmlView_priv {
 	GHashTable	*htmlChunks;	/**< cache of HTML chunks of all displayed items */
 	itemSetPtr	itemSet;	/**< the item set which is displayed */
 	guint		missingContent;	/**< counter for items without content */
-	gboolean	needsUpdate;	/**< flag to be set when HTML rendering is to be updated */
 } htmlView_priv;
 
 void htmlview_init(void) {
@@ -54,21 +53,18 @@ void htmlview_clear(void) {
 
 	htmlView_priv.htmlChunks = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, g_free);
 	htmlView_priv.missingContent = 0;
-	htmlView_priv.needsUpdate = TRUE;
 }
 
 void htmlview_set_itemset(itemSetPtr itemSet) {
 
 	g_assert(0 == g_hash_table_size(htmlView_priv.htmlChunks));
 	htmlView_priv.itemSet = itemSet;
-	htmlView_priv.needsUpdate = TRUE;
 }
 
 void htmlview_add_item(itemPtr item) {
 
 	debug1(DEBUG_HTML, "HTML view: adding \"%s\"", item_get_title(item));
 	g_hash_table_insert(htmlView_priv.htmlChunks, item, NULL);
-	htmlView_priv.needsUpdate = TRUE;
 		
 	if(!item_get_description(item) || (0 == strlen(item_get_description(item))))
 		htmlView_priv.missingContent++;	
@@ -78,20 +74,18 @@ void htmlview_remove_item(itemPtr item) {
 
 	debug1(DEBUG_HTML, "HTML view: removing \"%s\"", item_get_title(item));
 	g_hash_table_remove(htmlView_priv.htmlChunks, item);
-	htmlView_priv.needsUpdate = TRUE;
 }
 
 void htmlview_select_item(itemPtr item) {
 
 	debug1(DEBUG_HTML, "HTML view: selecting \"%s\"", item_get_title(item));	
 	/* nothing to do... */
-	htmlView_priv.needsUpdate = TRUE;
 }
 
 void htmlview_update_item(itemPtr item) {
 
+	/* ensure rerendering on next update by replace old HTML chunk with NULL */
 	g_hash_table_insert(htmlView_priv.htmlChunks, item, NULL);
-	htmlView_priv.needsUpdate = TRUE;
 }
 
 gchar * htmlview_render_item(itemPtr item) {
@@ -206,12 +200,7 @@ void htmlview_update(GtkWidget *widget, guint mode) {
 	itemPtr		item = NULL;
 	gchar		*chunk;
 	const gchar	*baseURL = NULL;
-	
-	if(!htmlView_priv.needsUpdate)
-		return;
 		
-	htmlView_priv.needsUpdate = FALSE;
-	
 	if(!htmlView_priv.itemSet) {
 		debug0(DEBUG_HTML, "clearing HTML view as nothing is selected");
 		ui_htmlview_clear(widget);

@@ -36,6 +36,8 @@ static struct itemView_priv {
 	guint		mode;			/**< current item view mode */
 	itemSetPtr	itemSet;		/**< currently item set */
 	gchar 		*userDefinedDateFmt;	/**< user defined date formatting string */
+	gboolean	needsHTMLViewUpdate;	/**< flag to be set when HTML rendering is to be 
+						     updated, used to delay HTML updates */
 } itemView_priv;
 
 void itemview_init(void) {
@@ -79,6 +81,8 @@ void itemview_clear(void) {
 
 	ui_itemlist_clear();
 	htmlview_clear();
+	
+	itemView_priv.needsHTMLViewUpdate = TRUE;
 }
 
 void itemview_set_mode(guint mode) {
@@ -134,24 +138,41 @@ void itemview_set_itemset(itemSetPtr itemSet) {
 	}
 }
 
+static gboolean itemview_is_affected(itemPtr item) {
+
+	if(!itemView_priv.itemSet)
+		return FALSE;
+
+	if(!itemset_lookup_item(itemView_priv.itemSet, item->itemSet->node, item->nr) &&
+	   !node_is_ancestor(itemView_priv.itemSet->node,item->itemSet->node))
+		return FALSE;
+		
+	return TRUE;
+}
+
 void itemview_add_item(itemPtr item) {
 
-	if(!itemset_lookup_item(itemView_priv.itemSet, item->itemSet->node, item->nr))
-		return;
-
 	if(ITEMVIEW_ALL_ITEMS != itemView_priv.mode)
+		/* add item in 3 pane mode */
 		ui_itemlist_add_item(item);
-
+	else
+		/* force HTML update in 2 pane mode */
+		itemView_priv.needsHTMLViewUpdate = TRUE;
+		
 	htmlview_add_item(item);
 }
 
 void itemview_remove_item(itemPtr item) {
 
-	if(!itemset_lookup_item(itemView_priv.itemSet, item->itemSet->node, item->nr))
+	if(!itemview_is_affected(item))
 		return;
-
+		
 	if(ITEMVIEW_ALL_ITEMS != itemView_priv.mode)
+		/* remove item in 3 pane mode */
 		ui_itemlist_remove_item(item);
+	else
+		/* force HTML update in 2 pane mode */
+		itemView_priv.needsHTMLViewUpdate = TRUE;
 
 	htmlview_remove_item(item);
 }
@@ -160,6 +181,8 @@ void itemview_select_item(itemPtr item) {
 
 	if(!itemView_priv.itemSet)
 		return;
+		
+	itemView_priv.needsHTMLViewUpdate = TRUE;
 
 	ui_itemlist_select(item);
 	htmlview_select_item(item);
@@ -169,21 +192,21 @@ void itemview_update_item(itemPtr item) {
 
 	if(!itemView_priv.itemSet)
 		return;
-
-	/* Always update the GtkTreeView */
+		
+	/* Always update the GtkTreeView (bail-out done in ui_itemlist_update_item() */
 	if(ITEMVIEW_ALL_ITEMS != itemView_priv.mode)
 		ui_itemlist_update_item(item);
 
 	/* Bail out if no HTML update necessary */
 	switch(itemView_priv.mode) {
 		case ITEMVIEW_ALL_ITEMS:
-			/* No update needed if 2 pane mode and item not in item set */
-			if(!itemset_lookup_item(itemView_priv.itemSet, item->itemSet->node, item->nr))
+			/* No HTML update needed if 2 pane mode and item not in item set */
+			if(!itemview_is_affected(item))
 				return;
 			break;
 		case ITEMVIEW_SINGLE_ITEM:		
-			/* No update needed if 3 pane mode and item not displayed */
-			if(item != itemlist_get_selected())
+			/* No HTML update needed if 3 pane mode and item not displayed */
+			if((item != itemlist_get_selected()) && !itemview_is_affected(item))
 				return;
 			break;
 		default:
@@ -191,13 +214,17 @@ void itemview_update_item(itemPtr item) {
 			return;
 			break;
 	}
-
+	
+	itemView_priv.needsHTMLViewUpdate = TRUE;
 	htmlview_update_item(item);
 }
 
 void itemview_update(void) {
 
-	htmlview_update(ui_mainwindow_get_active_htmlview(), itemView_priv.mode);
+	if(itemView_priv.needsHTMLViewUpdate) {
+		itemView_priv.needsHTMLViewUpdate = FALSE;
+		htmlview_update(ui_mainwindow_get_active_htmlview(), itemView_priv.mode);
+	}
 }
 
 /* date format handling (not sure if this is the right place) */

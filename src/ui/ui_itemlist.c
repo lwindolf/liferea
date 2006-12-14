@@ -199,59 +199,58 @@ void ui_itemlist_update_item(itemPtr item) {
 	const gchar 	*direction_marker;
 	GdkPixbuf	*icon = NULL;
 
-	/* Time */
-	if(0 != item->time) {
-		esc_time_str = itemview_format_date((time_t)item->time);
-		/* the time value is no markup, so we escape it... */
-		tmp = g_markup_escape_text(esc_time_str,-1);
-		g_free(esc_time_str);
-		esc_time_str = tmp;
-	} else {
-		esc_time_str = g_strdup("");
-	}
-	
-	/* Label and state icon */
-	if(!item->title || !strlen(item->title)) {
-		esc_title = g_strdup(_("<i>*** No title ***</i>"));
-	} else {
-		/* we escape here to use Pango markup (the parsing ensures that
-		   titles never contain escaped HTML) */
-		esc_title = g_markup_escape_text(item->title, -1);
-		esc_title = g_strstrip(esc_title);
-	}
-	
-	direction_marker = common_get_direction_mark(item->itemSet->node->title);
-	
-	if(FALSE == item->readStatus) {
-		time_str = g_strdup_printf("<span weight=\"bold\">%s</span>", esc_time_str);
-		label = g_strdup_printf("%s<span weight=\"bold\">%s</span>", direction_marker, esc_title);
-		icon = icons[ICON_UNREAD];
-	} else if(TRUE == item->updateStatus) {
-		time_str = g_strdup_printf("<span weight=\"bold\" color=\"#333\">%s</span>", esc_time_str);
-		label = g_strdup_printf("%s<span weight=\"bold\" color=\"#333\">%s</span>", direction_marker, esc_title);
-		icon = icons[ICON_UPDATED];
-	} else {
-		time_str = g_strdup(esc_time_str);
-		label = g_strdup_printf("%s%s", direction_marker, esc_title);
-		icon = icons[ICON_READ];
-	}
-	g_free(esc_title);
-	g_free(esc_time_str);
-	
-	if(item->flagStatus) 
-		icon = icons[ICON_FLAG];
-
-	/* Finish 'em... */
 	if(ui_item_to_iter(item, &iter)) {
+		/* Time */
+		if(0 != item->time) {
+			esc_time_str = itemview_format_date((time_t)item->time);
+			/* the time value is no markup, so we escape it... */
+			tmp = g_markup_escape_text(esc_time_str,-1);
+			g_free(esc_time_str);
+			esc_time_str = tmp;
+		} else {
+			esc_time_str = g_strdup("");
+		}
+
+		/* Label and state icon */
+		if(!item->title || !strlen(item->title)) {
+			esc_title = g_strdup(_("<i>*** No title ***</i>"));
+		} else {
+			/* we escape here to use Pango markup (the parsing ensures that
+			   titles never contain escaped HTML) */
+			esc_title = g_markup_escape_text(item->title, -1);
+			esc_title = g_strstrip(esc_title);
+		}
+
+		direction_marker = common_get_direction_mark(item->itemSet->node->title);
+
+		if(FALSE == item->readStatus) {
+			time_str = g_strdup_printf("<span weight=\"bold\">%s</span>", esc_time_str);
+			label = g_strdup_printf("%s<span weight=\"bold\">%s</span>", direction_marker, esc_title);
+			icon = icons[ICON_UNREAD];
+		} else if(TRUE == item->updateStatus) {
+			time_str = g_strdup_printf("<span weight=\"bold\" color=\"#333\">%s</span>", esc_time_str);
+			label = g_strdup_printf("%s<span weight=\"bold\" color=\"#333\">%s</span>", direction_marker, esc_title);
+			icon = icons[ICON_UPDATED];
+		} else {
+			time_str = g_strdup(esc_time_str);
+			label = g_strdup_printf("%s%s", direction_marker, esc_title);
+			icon = icons[ICON_READ];
+		}
+		g_free(esc_title);
+		g_free(esc_time_str);
+
+		if(item->flagStatus) 
+			icon = icons[ICON_FLAG];
+
 		gtk_tree_store_set(ui_itemlist_get_tree_store(), &iter,
 		                   IS_LABEL, label,
 				   IS_TIME_STR, time_str,
 				   IS_STATEICON, icon,
 				   -1);
-	}
 	
-	g_free(time_str);
-	g_free(label);
+		g_free(time_str);
+		g_free(label);
+	}
 }
 
 static gboolean ui_itemlist_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer data) {
@@ -583,6 +582,20 @@ gboolean on_itemlist_button_press_event(GtkWidget *treeview, GdkEventButton *eve
 	if(item) {
 		GdkEventButton *eb = (GdkEventButton*)event; 
 		switch(eb->button) {
+			case 1:
+				/* Allow flag toggling when left clicking in the flagging column.
+				   We depent on the fact that the state column is the first!!! 
+				   code inspired by the GTK+ 2.0 Tree View Tutorial at:
+				   http://scentric.net/tutorial/sec-misc-get-renderer-from-click.html */
+				if(NULL != (column = gtk_tree_view_get_column(GTK_TREE_VIEW(treeview), 0))) {
+					g_assert(NULL != column);
+					if(event->x <= column->width) {
+						itemlist_toggle_flag(item);
+						return TRUE;
+					}
+				}
+				return FALSE;
+				break;
 			case 2:
 				/* depending on the column middle mouse click toggles flag or read status
 				   We depent on the fact that the state column is the first!!! 
