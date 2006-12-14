@@ -148,7 +148,7 @@ static gboolean ui_dnd_feed_drag_data_received(GtkTreeDragDest *drag_dest, GtkTr
 						newParent->children = g_slist_append(newParent->children, child);
 					}
 				} else {
-					debug1(DEBUG_GUI, "   -> removing empty node");
+					debug0(DEBUG_GUI, "   -> removing empty node");
 					/* remove possible existing "(empty)" node from newParent */
 					ui_node_remove_empty_node(&parentIter);
 				}
