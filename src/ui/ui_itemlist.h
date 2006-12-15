@@ -38,6 +38,8 @@ enum is_columns {
 	IS_FAVICON,		/**< Pixbuf reference to the item's feed's icon */
 	IS_ENCICON,		/**< Pixbuf reference to the item's enclosure icon */
 	IS_ENCLOSURE,		/**< Flag wether enclosure is attached or not */
+	IS_SOURCE,		/**< Source node pointer */
+	IS_STATE,		/**< Original item state (unread, flagged...) for sorting */
 	IS_LEN			/**< Number of columns in the itemstore */
 };
 
