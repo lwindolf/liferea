@@ -25,9 +25,11 @@
    
    This is to allow a preference controlled default font size. 
    
-   If you make changes please change implications with both
+   If you make changes please check implications with both
    GtkHTML2 and Mozilla! Please document browser specific
-   decisions with comments!  
+   decisions with comments! 
+   
+   Note: relative positioning breaks link in GtkHTML2!
  */
 
 /* redefinition of link style necessary to prevent
@@ -81,14 +83,13 @@ table.itemhead, table.feedhead {
 
 table.itemhead * td {
 	padding: 2px;
+	padding-top: 4px;
 }
 
 table.itemhead * a.itemhead {
 	text-decoration:none;
 	color:black;
 	font-weight:bold;
-	position:relative;
-	top:1px;
 }
 
 td.headleft {
@@ -175,8 +176,6 @@ a.favicon img {
 	border:0;
 	margin:0;
 	padding:0;
-	position:relative;
-	top:2px;
 }
 
 /* styles to realize shading of new items in condensed mode */
