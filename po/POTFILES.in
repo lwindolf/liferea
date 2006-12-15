@@ -114,8 +114,6 @@ src/parsers/ns_content.c
 src/parsers/ns_content.h
 src/parsers/ns_dc.c
 src/parsers/ns_dc.h
-src/parsers/ns_fm.c
-src/parsers/ns_fm.h
 src/parsers/ns_photo.c
 src/parsers/ns_photo.h
 src/parsers/ns_slash.c

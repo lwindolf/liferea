@@ -270,10 +270,6 @@ div.blogchanneltitle {
 	color:white;
 }
 
-img.freshmeat {
-	margin:6px 6px 6px 12px;
-}
-
 table.slash {
 	margin:0 5px 0 0;	/* must not be in td.slash to work with Mozilla */
 	width:100%;
