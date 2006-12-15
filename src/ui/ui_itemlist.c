@@ -93,8 +93,8 @@ static gint ui_itemlist_date_sort_func(GtkTreeModel *model, GtkTreeIter *a, GtkT
 static gint ui_itemlist_favicon_sort_func(GtkTreeModel *model, GtkTreeIter *a, GtkTreeIter *b, gpointer user_data) {
 	nodePtr	node1, node2;
 	
-	gtk_tree_model_get(model, a, IS_PARENT, &node1, -1);
-	gtk_tree_model_get(model, b, IS_PARENT, &node2, -1);
+	gtk_tree_model_get(model, a, IS_SOURCE, &node1, -1);
+	gtk_tree_model_get(model, b, IS_SOURCE, &node2, -1);
 	
 	if(!node1->id || !node2->id)
 		return 0;
@@ -126,28 +126,22 @@ GtkTreeStore * ui_itemlist_get_tree_store(void) {
 	GtkTreeStore	*itemstore;
 	
 	model = gtk_tree_view_get_model(GTK_TREE_VIEW(itemlist_treeview));
-	if(NULL == model) {
-		/* set up a store of these attributes: 
-		 	- item creation time
-			- item creation time as string
-			- item label
-			- item state icon
-			- unique item id
-			- parent node
-			- parent node icon
-		 */
+	if(!model) {
 		itemstore = gtk_tree_store_new(IS_LEN,
-		                               G_TYPE_ULONG,
-		                               G_TYPE_STRING, 
-		                               G_TYPE_STRING,
-		                               GDK_TYPE_PIXBUF,
-		                               G_TYPE_ULONG,
-					       G_TYPE_POINTER,
-		                               GDK_TYPE_PIXBUF,
-		                               GDK_TYPE_PIXBUF,
-					       G_TYPE_BOOLEAN);
+		                               G_TYPE_ULONG,	/* IS_TIME */
+		                               G_TYPE_STRING, 	/* IS_TIME_STR */
+		                               G_TYPE_STRING,	/* IS_LABEL */
+		                               GDK_TYPE_PIXBUF,	/* IS_STATEICON */
+		                               G_TYPE_ULONG,	/* IS_NR */
+					       G_TYPE_POINTER,	/* IS_PARENT */
+		                               GDK_TYPE_PIXBUF,	/* IS_FAVICON */
+		                               GDK_TYPE_PIXBUF,	/* IS_ENCICON */
+					       G_TYPE_BOOLEAN,	/* IS_ENCLOSURE */
+					       G_TYPE_POINTER,	/* IS_SOURCE */
+					       G_TYPE_UINT	/* IS_STATE */
+					       );
 		gtk_tree_sortable_set_sort_func(GTK_TREE_SORTABLE(itemstore), IS_TIME, ui_itemlist_date_sort_func, NULL, NULL);
-		gtk_tree_sortable_set_sort_func(GTK_TREE_SORTABLE(itemstore), IS_PARENT, ui_itemlist_favicon_sort_func, NULL, NULL);
+		gtk_tree_sortable_set_sort_func(GTK_TREE_SORTABLE(itemstore), IS_SOURCE, ui_itemlist_favicon_sort_func, NULL, NULL);
 		g_signal_connect(G_OBJECT(itemstore), "sort-column-changed", G_CALLBACK(itemlist_sort_column_changed_cb), NULL);
 	} else {
 		itemstore = GTK_TREE_STORE(model);
@@ -294,6 +288,7 @@ GtkWidget* ui_itemlist_new() {
 	renderer = gtk_cell_renderer_pixbuf_new();
 	column = gtk_tree_view_column_new_with_attributes("", renderer, "pixbuf", IS_STATEICON, NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(itemlist), column);
+	gtk_tree_view_column_set_sort_column_id(column, IS_STATE);
 	/* No sorting because when an item is clicked, it would immediatly change the sorting order */
 	
 	renderer = gtk_cell_renderer_pixbuf_new();
@@ -308,7 +303,7 @@ GtkWidget* ui_itemlist_new() {
 	
 	renderer = gtk_cell_renderer_pixbuf_new();
 	column = gtk_tree_view_column_new_with_attributes("", renderer, "pixbuf", IS_FAVICON, NULL);
-	gtk_tree_view_column_set_sort_column_id(column, IS_PARENT);
+	gtk_tree_view_column_set_sort_column_id(column, IS_SOURCE);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(itemlist), column);
 	
 	column = gtk_tree_view_column_new();
@@ -380,18 +375,28 @@ void ui_itemlist_add_item(itemPtr item) {
 		/* nothing to do */
 	} else {
 		GtkTreeIter *iter = &old_iter;
+		gint state = 0;
+		
 		if(!exists) {
 			iter = g_new0(GtkTreeIter, 1);
 			gtk_tree_store_prepend(itemstore, iter, NULL);
 			g_hash_table_insert(item_to_iter, (gpointer)item, (gpointer)iter);
-		}	
+		}
+		
+		if(item->flagStatus)
+			state += 2;
+		if(!item->readStatus)
+			state += 1;
+		
 		gtk_tree_store_set(itemstore, iter,
+		                	      IS_TIME, item->time,
 		                	      IS_NR, item->nr,
 					      IS_PARENT, item->itemSet->node,
-		                	      IS_TIME, item->time,
 		                              IS_FAVICON, item->sourceNode->icon,
 		                              IS_ENCICON, item->hasEnclosure?icons[ICON_ENCLOSURE]:NULL,
 					      IS_ENCLOSURE, item->hasEnclosure,
+					      IS_SOURCE, item->sourceNode,
+					      IS_STATE, state,
 		                	      -1);
 		ui_itemlist_update_item(item);
 	}
