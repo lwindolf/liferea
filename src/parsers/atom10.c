@@ -33,7 +33,6 @@
 #include "debug.h"
 #include "feed.h"
 #include "ns_dc.h"
-#include "ns_fm.h"
 #include "ns_content.h"
 #include "ns_slash.h"
 #include "ns_syn.h"
@@ -720,7 +719,6 @@ feedHandlerPtr atom10_init_feed_handler(void) {
 		/* register RSS name space handlers */		
 		atom10_add_ns_handler(ns_bC_getRSSNsHandler());
 		atom10_add_ns_handler(ns_dc_getRSSNsHandler());
-		atom10_add_ns_handler(ns_fm_getRSSNsHandler());	
   		atom10_add_ns_handler(ns_slash_getRSSNsHandler());
 		atom10_add_ns_handler(ns_content_getRSSNsHandler());
 		atom10_add_ns_handler(ns_syn_getRSSNsHandler());

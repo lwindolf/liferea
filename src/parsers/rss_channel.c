@@ -36,7 +36,6 @@
 #include "feed.h"
 #include "metadata.h"
 #include "ns_dc.h"
-#include "ns_fm.h"
 #include "ns_content.h"
 #include "ns_slash.h"
 #include "ns_syn.h"
@@ -360,7 +359,6 @@ feedHandlerPtr rss_init_feed_handler(void) {
 		/* register RSS name space handlers */
 		rss_add_ns_handler(ns_bC_getRSSNsHandler());
 		rss_add_ns_handler(ns_dc_getRSSNsHandler());
-		rss_add_ns_handler(ns_fm_getRSSNsHandler());	
   		rss_add_ns_handler(ns_slash_getRSSNsHandler());
 		rss_add_ns_handler(ns_content_getRSSNsHandler());
 		rss_add_ns_handler(ns_syn_getRSSNsHandler());
