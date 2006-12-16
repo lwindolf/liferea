@@ -4,13 +4,13 @@
 
 	* Fixes a crash when removing subscriptions.
 	* Fixes suboptimal item list updating.
-	* Suppress unknown metadata type warnings. They
-	  are now printed at trace level only.
+	* Suppress unknown metadata type warnings. They are now printed at trace 
+	  level only.
 	* Allow flagging by left clicking in the flag column.
 	* Simple sorting feature for the item state column.
 	* Makes item header links work for GtkHTML2 again.
-	* Dropping ns_fm.* code as namespace is not used 
-	  anymore in any feeds online.
+	* Dropping ns_fm.* code as namespace is not used anymore in any feeds online.
+	* Added Slashdot namespace rendering again.
 
 
 2006-12-11  Lars Lindner  <lars.lindner@gmail.com>
