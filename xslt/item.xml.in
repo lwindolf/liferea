@@ -179,6 +179,15 @@
 
 <!-- header metadata (author + categories + date) -->
 <table class='headmeta' cellspacing="0" cellpadding="0">
+
+<xsl:if test="attributes/attribute[ @name = 'slash' ]">
+<tr>
+ <td valign="top" class='slash'> 
+   <xsl:apply-templates select="attributes/attribute[ @name = 'slash']"/>
+ </td>
+</tr> 
+</xsl:if>
+
 <xsl:if test="attributes/attribute[ @name = 'category' ]">
 <tr>
  <td valign="top" class='categories'>
@@ -320,6 +329,16 @@
 
 </xsl:element> <!-- item -->
 
+</xsl:template>
+
+<!-- ==================================================================== -->
+
+<!-- slashdot namespace -->
+<xsl:template match="attributes/attribute[ @name = 'slash']">
+  <span class="slashSection"><_span>Section</_span></span>
+  <span class="slashValue"><xsl:value-of select="substring-before(., ',')"/></span>
+  <span class="slashDepartment"><_span>Department</_span></span>
+  <span class="slashValue"><xsl:value-of select="substring-after(., ',')"/></span>
 </xsl:template>
 
 <!-- ==================================================================== -->

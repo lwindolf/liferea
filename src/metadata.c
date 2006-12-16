@@ -76,8 +76,8 @@ GSList * metadata_list_append(GSList *metadata, const gchar *strid, const gchar 
 			checked_data = g_strdup(data);
 			break;
 		case METADATA_TYPE_URL:
-			/* Simple sanity check to see if it doesn't break tags */
-			if(!strchr(data, '<') && !(strchr(data, '>'))) {
+			/* Simple sanity check to see if it doesn't break XML */
+			if(!strchr(data, '<') && !(strchr(data, '>')) && !(strchr(data, '&'))) {
 				checked_data = g_strdup(data);
 			} else {
 				checked_data = common_uri_escape(data);
@@ -268,9 +268,6 @@ void metadata_init(void) {
 	metadata_type_register("identifier",		METADATA_TYPE_HTML);
 	metadata_type_register("source",		METADATA_TYPE_URL);
 	metadata_type_register("coverage",		METADATA_TYPE_HTML);
-
-	/* types for freshmeat */
-	metadata_type_register("fmScreenshot", 		METADATA_TYPE_URL);
 	
 	/* types for photo blogs */
 	metadata_type_register("photo", 		METADATA_TYPE_URL);
