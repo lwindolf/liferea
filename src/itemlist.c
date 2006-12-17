@@ -199,6 +199,7 @@ void itemlist_unload(gboolean markRead) {
 
 	if(displayed_itemSet) {
 		itemview_clear();
+		itemview_set_itemset(NULL);
 		
 		/* 1. Postprocessing for previously selected node, this is necessary
 		   to realize reliable read marking when using condensed mode. It's
