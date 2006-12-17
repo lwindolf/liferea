@@ -518,7 +518,7 @@ gchar * node_default_render(nodePtr node) {
 
 	doc = node_to_xml(node);
 	result = render_xml(doc, NODE_TYPE(node)->id, params);	
-	xmlFree(doc);
+	xmlFreeDoc(doc);
 		
 	return result;
 }

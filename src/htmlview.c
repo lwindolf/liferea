@@ -126,7 +126,7 @@ gchar * htmlview_render_item(itemPtr item) {
 	output = render_xml(doc, "item", params);
 	
 	/* For debugging use: xmlSaveFormatFile("/tmp/test.xml", doc, 1); */
-	xmlFree(doc);
+	xmlFreeDoc(doc);
 	g_free(baseUrl);
 	
 	debug_exit("htmlview_render_item");
@@ -210,8 +210,11 @@ void htmlview_update(GtkWidget *widget, guint mode) {
 		ui_htmlview_clear(widget);
 		return;
 	}
-
-	baseURL = g_markup_escape_text(itemset_get_base_url(htmlView_priv.itemSet), -1);
+	
+	baseURL = (gchar *)itemset_get_base_url(htmlView_priv.itemSet);
+	if(baseURL)
+		baseURL = g_markup_escape_text(baseURL, -1);
+		
 	output = g_string_new(NULL);
 	htmlview_start_output(output, baseURL, TRUE, TRUE);
 
@@ -235,7 +238,7 @@ void htmlview_update(GtkWidget *widget, guint mode) {
 				debug1(DEBUG_HTML, "rendering item to HTML view: >>>%s<<<", item_get_title(iter->data));
 
 				/* try to retrieve item HTML chunk from cache */
-				gchar *chunk = g_hash_table_lookup(htmlView_priv.htmlChunks, iter->data);
+				chunk = g_hash_table_lookup(htmlView_priv.htmlChunks, iter->data);
 					
 				/* if not found: render new item now and add to cache */
 				if(!chunk) {

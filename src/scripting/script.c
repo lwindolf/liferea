@@ -116,7 +116,7 @@ static void script_config_save(void) {
 	if(-1 == xmlSaveFormatFileEnc(filename, doc, NULL, 1))
 		g_warning("Could save script config %s!", filename);
 		
-	xmlFree(doc);
+	xmlFreeDoc(doc);
 	g_free(filename);
 }
 
