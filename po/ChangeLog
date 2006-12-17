@@ -1,67 +1,21 @@
-2004-07-14  Nathan Conrad  <conrad@bungled.net>
+2006-12-11  Lars Lindner   <lars.lindner@gmail.com>
 
-	* update of French translation from Vincent Lefèvre
+	* added French translation for v1.2 from Vincent Lefèvre
 
-2004-06-20  Nathan Conrad  <conrad@bungled.net>
+2006-11-25  Lars Lindner   <lars.lindner@gmail.com>
 
-	* Slovak translation from Tibor Pittich
+	* added Spanish translation for v1.2 from Sargate Kanogan
+	
+2006-11-19  Lars Lindner   <lars.lindner@gmail.com>
 
-2004-06-13  Nathan Conrad  <conrad@bungled.net>
+	* added Italian translation for v1.2 from Dario Conigliaro
+	* added Brazilian Portuguese translation for v1.2 from
+	  Fernando Ike de Oliveira
+	  
+2006-11-10  Lars Lindner   <lars.lindner@gmail.com>
 
-	* update of the French translation from Vincent Lefèvre
-	* update of German translation from Enrico Genauck (converted to
-	UTF-8 by Nathan)
+	* added Japanese translation from Takeshi AIHANA
+	
+2006-11-03  Lars Lindner   <lars.lindner@gmail.com>
 
-2004-06-01  Lars Lindner <lars.lindner@gmx.net>
-
-	* added Czech translation from Juraj Kubelka
-
-2004-05-26  Lars Lindner <lars.lindner@gmx.net>
-
-	* update of the Korean translation from Park Ji-In
-	* added a Russian translation from Alekseev Vladimir
-
-2004-05-08  Lars Lindner <lars.lindner@gmx.net>
-
-	* update of the Italian translation from Dario Conigliaro
-
-2004-04-30  Nathan Conrad  <conrad@bungled.net>
-
-	* fixed two lines in the Italian translation
-	* added a traditional Chinese translation from Rex Tsai
-
-2004-04-28  Lars Lindner <lars.lindner@gmx.net>
-
-	* added Italian translation from Dario Conigliaro
-
-2004-04-09  Lars Lindner <lars.lindner@gmx.net>
-
-	* added Macedonian translation from Tomislav Markovski
-	* update of the Spanish translation from Topopardo
-
-2004-03-27  Lars Lindner <lars.lindner@gmx.net>
-
-	* update of the Japanese translation from Takeshi AIHANA
-	* update of the German translation from Enrico Genauck
-	* update of the Korean translation from Park Ji-In
-	* update of the Bulgarian translation from Vladimir Petkov
-
-2004-03-22  Lars Lindner <lars.lindner@gmx.net>
-
-	* update of the Korean translation from Park Ji-In
-
-2004-01-05  Lars Lindner <lars.lindner@gmx.net>
-
-	* update of Spanish translation from Carlos Fenollosa
-	  and José María Mateos
-
-2003-12-21  Lars Lindner <lars.lindner@gmx.net>
-
-	* added Korean translation from <FIXME!> 
-	* added Spanish translation from Carlos Fenollosa
-	* added German translation by myself
-
-2003-11-24  Lars Lindner <lars.lindner@gmx.net>
-
-	* added French translation from Stephane Jourdan
-	* added Japanese translation from Takeshi Aihana
+	* added German translation
