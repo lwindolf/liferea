@@ -40,7 +40,7 @@
 #include "render.h"
 #include "ui/ui_htmlview.h"
 
-static gchar		**langParams = NULL;	/* the current locale settings (for localization stylesheet) */
+static renderParamPtr	langParams = NULL;	/* the current locale settings (for localization stylesheet) */
 static gchar		*defaultParams = NULL;	/* some default parameters (for rendering stylesheets) */
 
 static GHashTable	*stylesheets = NULL;	/* XSLT stylesheet cache */
@@ -48,9 +48,9 @@ static GHashTable	*stylesheets = NULL;	/* XSLT stylesheet cache */
 void render_init(void) {
 	gchar   **shortlang = NULL;	/* e.g. "de" */
 	gchar	**lang = NULL;		/* e.g. "de_AT" */
-	
+
 	if(langParams)
-		g_strfreev(langParams);
+		render_parameter_free(langParams);
 	if(defaultParams)
 		g_free(defaultParams);
 
@@ -59,9 +59,9 @@ void render_init(void) {
 	lang = g_strsplit(g_strdup(setlocale(LC_MESSAGES, NULL)), "@", 0);
 	shortlang = g_strsplit(g_strdup(setlocale(LC_MESSAGES, NULL)), "_", 0);
 	
-	langParams = NULL;
-	langParams = render_add_parameter(langParams, "lang='%s'", lang[0]);
-	langParams = render_add_parameter(langParams, "shortlang='%s'", shortlang[0]);
+	langParams = render_parameter_new();
+	render_parameter_add(langParams, "lang='%s'", lang[0]);
+	render_parameter_add(langParams, "shortlang='%s'", shortlang[0]);
 	debug2(DEBUG_HTML, "XSLT localisation: lang='%s' shortlang='%s'", lang[0], shortlang[0]);
 
 	g_strfreev(shortlang);
@@ -104,7 +104,7 @@ xsltStylesheetPtr render_load_stylesheet(const gchar *xsltName) {
 		
 	g_free(filename);
 
-	if(NULL == (resDoc = xsltApplyStylesheet(i18n_filter, xsltDoc, (const gchar **)langParams)))
+	if(NULL == (resDoc = xsltApplyStylesheet(i18n_filter, xsltDoc, (const gchar **)langParams->params)))
 		g_warning("fatal: applying localization stylesheet failed (%s)!", xsltName);
 		
 	//xsltSaveResultToFile(stdout, resDoc, i18n_filter);
@@ -192,7 +192,7 @@ const gchar * render_get_css(void) {
 	return css->str;
 }
 
-gchar * render_xml(xmlDocPtr doc, const gchar *xsltName, gchar **params) {
+gchar * render_xml(xmlDocPtr doc, const gchar *xsltName, renderParamPtr paramSet) {
 	gchar			*output = NULL;
 	xmlDocPtr		resDoc;
 	xsltStylesheetPtr	xslt;
@@ -201,14 +201,15 @@ gchar * render_xml(xmlDocPtr doc, const gchar *xsltName, gchar **params) {
 	if(NULL == (xslt = render_load_stylesheet(xsltName)))
 		return NULL;
 
-	params = render_add_parameter(params, defaultParams);	// FIXME: merging would be better
+	if(!paramSet)
+		paramSet = render_parameter_new();
+	render_parameter_add(paramSet, "%s", defaultParams);
 
-	if(NULL == (resDoc = xsltApplyStylesheet(xslt, doc, (const gchar **)params))) {
+	if(NULL == (resDoc = xsltApplyStylesheet(xslt, doc, (const gchar **)paramSet->params))) {
 		g_warning("fatal: applying rendering stylesheet (%s) failed!", xsltName);
 		return NULL;
 	}
 	
-	g_strfreev(params);
 	/* for debugging use: xsltSaveResultToFile(stdout, resDoc, xslt); */
 	
 	/* save results into return string */
@@ -221,7 +222,8 @@ gchar * render_xml(xmlDocPtr doc, const gchar *xsltName, gchar **params) {
 
 	xmlOutputBufferClose(buf);
 	xmlFreeDoc(resDoc);
-	
+	render_parameter_free(paramSet);
+		
 	/* Return only the body contents */
 	if(output) {
 		gchar *tmp = strstr(output, "<body>");
@@ -234,11 +236,11 @@ gchar * render_xml(xmlDocPtr doc, const gchar *xsltName, gchar **params) {
 				*tmp = 0;
 		}
 	}
-	
+
 	return output;
 }
 
-gchar * render_file(const gchar *filename, const gchar *xsltName, gchar **params) {
+gchar * render_file(const gchar *filename, const gchar *xsltName, renderParamPtr paramSet) {
 	xmlDocPtr	srcDoc;
 	gchar		*output;
 
@@ -247,39 +249,50 @@ gchar * render_file(const gchar *filename, const gchar *xsltName, gchar **params
 		return NULL;
 	}
 
-	output = render_xml(srcDoc, xsltName, params);
+	output = render_xml(srcDoc, xsltName, paramSet);
 	xmlFreeDoc(srcDoc);
 
 	return output;
 }
 
-gchar ** render_add_parameter(gchar **params, const gchar *fmt, ...) {
-	gchar	*old, *new, *merged;
-	gchar	**newParams;
+/* parameter handling */
+
+renderParamPtr render_parameter_new(void) {
+	renderParamPtr	paramSet;
+	
+	paramSet = g_new0(struct renderParam, 1);
+
+	return paramSet;
+}
+
+void render_parameter_add(renderParamPtr paramSet, const gchar *fmt, ...) {
+	gchar	*new, *value, *name;
 	va_list args;
 	
-	if(!fmt)
-		return params;
+	g_assert(NULL != fmt);
+	g_assert(NULL != paramSet);
 	
 	va_start (args, fmt);
 	new = g_strdup_vprintf (fmt, args);
 	va_end (args);
-	
-	if(params) {
-		old = g_strjoinv(",", params);
-		merged = g_strjoin(",", old, new, NULL);
-		g_free(old);
-		g_strfreev(params);
-	} else {
-		merged = g_strdup(new);
-	}
 
-	newParams = g_strsplit_set(merged, ",=", 0);
+	name = new;
+	value = strchr(new, '=');
+	g_assert(NULL != value);
+	*value = 0;
+	value++;
 	
-	g_free(merged);
+	paramSet->len += 2;
+	paramSet->params = (gchar **)g_realloc(paramSet->params, (paramSet->len + 1)*sizeof(gchar *));
+	paramSet->params[paramSet->len] = NULL;
+	paramSet->params[paramSet->len-2] = g_strdup(name);
+	paramSet->params[paramSet->len-1] = g_strdup(value);
+
 	g_free(new);
-	
-	return newParams;
 }
 
+void render_parameter_free(renderParamPtr paramSet) {
 
+	g_strfreev(paramSet->params);
+	g_free(paramSet);
+}

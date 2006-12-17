@@ -89,12 +89,15 @@ void htmlview_update_item(itemPtr item) {
 }
 
 gchar * htmlview_render_item(itemPtr item) {
-	gchar		**params = NULL, *output = NULL;
+	renderParamPtr	params;
+	gchar		*output = NULL, *baseUrl;
 	gboolean	summaryMode = FALSE;
 	xmlDocPtr	doc;
 
 	debug_enter("htmlview_render_item");
-	
+
+	baseUrl = common_uri_escape(itemset_get_base_url(htmlView_priv.itemSet));
+
 	/* Output optimization for feeds without item content. This
 	   is not done for folders, because we only support all items
 	   in summary mode or all in detailed mode. With folder item 
@@ -114,15 +117,17 @@ gchar * htmlview_render_item(itemPtr item) {
 		feed = xmlNewChild(xmlDocGetRootElement(doc), NULL, "feed", NULL);
 		feed_to_xml(item->sourceNode, feed, TRUE);
 	}
-		
+	
 	/* do the XSLT rendering */
-	params = render_add_parameter(params, "pixmapsDir='file://" PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "'");
-	params = render_add_parameter(params, "baseUrl='%s'", itemset_get_base_url(htmlView_priv.itemSet));
-	params = render_add_parameter(params, "summary='%d'", summaryMode?1:0);
+	params = render_parameter_new();
+	render_parameter_add(params, "pixmapsDir='file://" PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "'");
+	render_parameter_add(params, "baseUrl='%s'", baseUrl);
+	render_parameter_add(params, "summary='%d'", summaryMode?1:0);
 	output = render_xml(doc, "item", params);
 	
 	/* For debugging use: xmlSaveFormatFile("/tmp/test.xml", doc, 1); */
 	xmlFree(doc);
+	g_free(baseUrl);
 	
 	debug_exit("htmlview_render_item");
 
@@ -198,8 +203,7 @@ void htmlview_update(GtkWidget *widget, guint mode) {
 	GList		*iter = NULL;
 	GString		*output;
 	itemPtr		item = NULL;
-	gchar		*chunk;
-	const gchar	*baseURL = NULL;
+	gchar		*chunk,	*baseURL;
 		
 	if(!htmlView_priv.itemSet) {
 		debug0(DEBUG_HTML, "clearing HTML view as nothing is selected");
@@ -207,7 +211,7 @@ void htmlview_update(GtkWidget *widget, guint mode) {
 		return;
 	}
 
-	baseURL = itemset_get_base_url(htmlView_priv.itemSet);	
+	baseURL = g_markup_escape_text(itemset_get_base_url(htmlView_priv.itemSet), -1);
 	output = g_string_new(NULL);
 	htmlview_start_output(output, baseURL, TRUE, TRUE);
 
@@ -259,4 +263,5 @@ void htmlview_update(GtkWidget *widget, guint mode) {
 	ui_htmlview_write(widget, output->str, baseURL);
 	
 	g_string_free(output, TRUE);
+	g_free(baseURL);
 }

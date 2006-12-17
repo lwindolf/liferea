@@ -25,6 +25,12 @@
 #include "item.h"
 #include "itemview.h"
 
+/** render parameter type */
+typedef struct renderParam {
+	gchar	**params;
+	guint	len;
+} *renderParamPtr;
+
 /**
  * To be called whenever the rendering parameters have changed.
  */
@@ -35,29 +41,42 @@ void render_update_params(void);
  *
  * @param filename	valid absolut source filename
  * @param xsltName	name of a stylesheet
- * @param params	comma separated parameter/value list
+ * @param params	parameter/value string array (will be free'd)
  *
  * @returns rendered XHTML
  */
-gchar * render_file(const gchar *filename, const gchar *xsltName, gchar **params);
+gchar * render_file(const gchar *filename, const gchar *xsltName, renderParamPtr paramSet);
 
 /**
  * Applies the stylesheet xslt to the given XML document with the given parameters.
  *
  * @param doc		XML source document
  * @param xsltName	name of a stylesheet
- * @param params	comma separated parameter/value list
+ * @param params	parameter/value string array (will be free'd)
  */
-gchar * render_xml(xmlDocPtr doc, const gchar *xsltName, gchar **params);
+gchar * render_xml(xmlDocPtr doc, const gchar *xsltName, renderParamPtr paramSet);
 
 /**
- * Helper function to add a rendering parameter to the given parameter list.
+ * Creates a new rendering parameter set.
  *
- * @param params	the old parameter list (will be freed)
- *
- * @returns a new parameter list
+ * @returns new parameter set
  */
-gchar ** render_add_parameter(gchar **params, const gchar *fmt, ...);
+renderParamPtr render_parameter_new(void);
+
+/**
+ * Helper function to add a rendering parameter to the given parameter set.
+ *
+ * @param paramSet	a parameter set to extend
+ * @param fmt		format code
+ *
+ * @returns a new parameter/value string array
+ */
+void render_parameter_add(renderParamPtr paramSet, const gchar *fmt, ...);
+
+/**
+ * Frees a given rendering parameter set.
+ */
+void render_parameter_free(renderParamPtr paramSet);
 
 /**
  * Returns CSS definitions for inclusion in XHTML output.

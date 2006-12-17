@@ -1399,11 +1399,13 @@ static void feed_mark_all_read(nodePtr node) {
 }
 
 static gchar * feed_render(nodePtr node) {
-	gchar		**params = NULL, *output = NULL;
+	renderParamPtr	params;
+	gchar		*output = NULL;
 	xmlDocPtr	doc;
 
 	doc = feed_to_xml(node, NULL, TRUE);
-	params = render_add_parameter(params, "pixmapsDir='file://" PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "'");
+	params = render_parameter_new();
+	render_parameter_add(params, "pixmapsDir='file://" PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "'");
 	output = render_xml(doc, "feed", params);
 	xmlFree(doc);
 

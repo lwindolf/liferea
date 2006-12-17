@@ -4,6 +4,8 @@
 
 	* Fixes a crash when removing subscriptions.
 	* Fixes suboptimal item list updating.
+	* Fixes SF #1595486 which caused items whose base URL contained
+	  an "=" character not to be displayed at all.
 	* Suppress unknown metadata type warnings. They are now printed at trace 
 	  level only.
 	* Allow flagging by left clicking in the flag column.
