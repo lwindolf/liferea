@@ -6,7 +6,7 @@ Linux or require many extra libraries to be installed. Liferea
 tries to fill this gap by creating a fast, easy to use, easy to
 install news aggregator for GTK/GNOME.
 
-This documentation was last updated for Liferea version 1.1.
+This documentation was last updated for Liferea version 1.2.
 
 Installation
 ============
@@ -17,8 +17,8 @@ from the Source Tarball. In the following you will find
 short hints for several platforms. See below to find
 how to compile the tarball.
 
-Debian:		There are official Debian packages maintained
-		by David Moreno Garza. To install Liferea run:
+Debian:		There are official Debian packages.
+		To install Liferea run:
 
 		   apt-get install liferea
 
@@ -59,7 +59,7 @@ Liferea allows direct subscriptions from Firefox 1.5+
 and Epiphany. Epiphany provides a standard plugin that
 allows adding subscription directly to Liferea.
 
-If you want to subscribe from within Firefox you need
+If you want to subscribe from within Firefox 1.5 you need
 to install an extension manually. Although there are
 several extensions that might do the task one called
 "FeedBag" is supplied with the source tarball. To
@@ -67,6 +67,15 @@ install it open feedbag.xpi from the source root
 directory with Firefox. This should start the 
 installation procedure. Once installed clicking the
 live bookmark icon should add subscriptions to Liferea.
+
+If you want to subscribe from within Firefox 2.0 you don't
+need to install the "FeedBag" extension. Instead you can
+configure Firefox 2.0 to add subscriptions to Liferea
+directly. To do so click the feed icon in the location 
+entry. Firefox will then present a menu where you can 
+configure a manual command instead of the Live Bookmarks
+to add subscriptions. Liferea supplies a script named
+"liferea-add-feed" that you can tell Firefox to use.
 	
 
 Compiling from Source
@@ -75,7 +84,7 @@ Compiling from Source
 If you want you can compile Liferea. Download the tarball from 
 the SourcForge project page and extract with: 
 
-   tar zxvf liferea-1.1.0.tar.gz 
+   tar zxvf liferea-1.2.0.tar.gz 
 
 Of course you should adjust the filename. After unpacking 
 run the standard autotools commands: 
@@ -109,8 +118,8 @@ as described in the previous section.
 Dependencies
 ============
 
-The library dependencies for Liferea are: gtk2, gconf2, libxml2
-and either libgtkembedmoz, libxul or gtkhtml2.
+The library dependencies for Liferea are: gtk2, gconf2, libxml2,
+libxslt and either libgtkembedmoz, libxul or gtkhtml2.
 
 If you want to use the Mozilla browser module you need a Mozilla
 installation containing libgtkembedmoz.so. Every up-to-date Firefox
