@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea trunk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-12-10 17:04+0100\n"
+"POT-Creation-Date: 2006-12-17 15:32+0100\n"
 "PO-Revision-Date: 2006-12-05 21:27+0100\n"
 "Last-Translator: Lars Lindner <lars.lindner@gmx.net>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -103,26 +103,35 @@ msgid "Author"
 msgstr "作者"
 
 #: ../xslt/item.xml.in.h:2
+msgid "Department"
+msgstr ""
+
+#: ../xslt/item.xml.in.h:3
 msgid "Filed under"
 msgstr "カテゴリ:"
 
-#: ../xslt/item.xml.in.h:3 ../src/interface.c:602
+#: ../xslt/item.xml.in.h:4
+#, fuzzy
+msgid "Section"
+msgstr "_Location"
+
+#: ../xslt/item.xml.in.h:5 ../src/interface.c:602
 msgid "Source"
 msgstr "ソース"
 
-#: ../xslt/item.xml.in.h:4
+#: ../xslt/item.xml.in.h:6
 msgid "bookmark"
 msgstr "ブックマーク"
 
-#: ../xslt/item.xml.in.h:5
+#: ../xslt/item.xml.in.h:7
 msgid "comments"
 msgstr "コメント"
 
-#: ../xslt/item.xml.in.h:6
+#: ../xslt/item.xml.in.h:8
 msgid "flag"
 msgstr "フラグ"
 
-#: ../xslt/item.xml.in.h:7
+#: ../xslt/item.xml.in.h:9
 msgid "search"
 msgstr "検索"
 
@@ -491,15 +500,15 @@ msgstr "\"%s\" は利用できません"
 msgid "Updating \"%s\""
 msgstr "\"%s\" の更新中"
 
-#: ../src/feedlist.c:276
+#: ../src/feedlist.c:285
 msgid "You have to select a feed entry"
 msgstr "配信元エントリを一つ選択して下さい"
 
-#: ../src/feedlist.c:283 ../src/feedlist.c:292
+#: ../src/feedlist.c:292 ../src/feedlist.c:301
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea はオフライン・モードです (更新はできません)"
 
-#: ../src/feedlist.c:405
+#: ../src/feedlist.c:414
 msgid ""
 "Liferea v1.2 uses a new cache format and has migrated your feed cache. The "
 "cache content of v1.0 in ~/.liferea was not deleted automatically. Please "
@@ -511,7 +520,7 @@ msgid "Feed link auto discovery failed! No feed links found!"
 msgstr "配信元リンクの自動検出に失敗しました。配信元リンクが見つかりません！"
 
 #. GTK theme support
-#: ../src/interface.c:70 ../src/main.c:166
+#: ../src/interface.c:70 ../src/main.c:184
 msgid "Liferea"
 msgstr "Liferea"
 
@@ -1324,46 +1333,46 @@ msgstr "NewsBin の名前(_N):"
 msgid "There are no unread items "
 msgstr "未読のトピックはありません"
 
-#: ../src/main.c:70
+#: ../src/main.c:71
 msgid "  --version        Print version information and exit"
 msgstr "  --version        バージョン情報を表示して終了する"
 
-#: ../src/main.c:71
+#: ../src/main.c:72
 msgid "  --help           Print this help and exit"
 msgstr "  --help           このヘルプを表示して終了する"
 
-#: ../src/main.c:72
+#: ../src/main.c:73
 msgid "  --mainwindow-state=STATE"
 msgstr "  --mainwindow-state=STATE"
 
-#: ../src/main.c:73
+#: ../src/main.c:74
 msgid "                   Start Liferea with its main window in STATE."
 msgstr "                   Liferea のメインウィンドウを STATE の状態で起動する"
 
-#: ../src/main.c:74
+#: ../src/main.c:75
 msgid "                   STATE may be `shown', `iconified', or `hidden'"
 msgstr ""
 "                   STATE に指定できるもの: `shown', `iconified', `hidden'"
 
-#: ../src/main.c:76
+#: ../src/main.c:77
 msgid "  --debug-all      Print debugging messages of all types"
 msgstr "  --debug-all      全ての種類のデバッグ・メッセージを表示する"
 
-#: ../src/main.c:77
+#: ../src/main.c:78
 msgid "  --debug-cache    Print debugging messages for the cache handling"
 msgstr "  --debug-cache    キャッシュ操作を行うデバッグ・メッセージを表示する"
 
-#: ../src/main.c:78
+#: ../src/main.c:79
 msgid ""
 "  --debug-conf     Print debugging messages of the configuration handling"
 msgstr "  --debug-conf     設定を操作する際のデバッグ・メッセージを表示する"
 
-#: ../src/main.c:79
+#: ../src/main.c:80
 msgid "  --debug-gui      Print debugging messages of all GUI functions"
 msgstr ""
 "  --debug-gui      GUI 関連の全ての関数のデバッグ・メッセージを表示する"
 
-#: ../src/main.c:80
+#: ../src/main.c:81
 msgid ""
 "  --debug-html     Enable HTML debugging (saving to ~/.liferea_1.2/output."
 "xhtml)"
@@ -1371,45 +1380,45 @@ msgstr ""
 "  --debug-html     HTML のデバッグを有効にする (保存先: ~/.liferea_1.2/"
 "output.xhtml)"
 
-#: ../src/main.c:81
+#: ../src/main.c:82
 msgid "  --debug-parsing  Print debugging messages of all parsing functions"
 msgstr ""
 "  --debug-parsing  解析関連の全ての関数のデバッグ・メッセージを表示する"
 
-#: ../src/main.c:82
+#: ../src/main.c:83
 msgid "  --debug-plugins  Print debugging messages when loading plugins"
 msgstr ""
 "  --debug-plugins  プラグインを読み込んだ時のデバッグ・メッセージを表示する"
 
-#: ../src/main.c:83
+#: ../src/main.c:84
 msgid ""
 "  --debug-trace    Print debugging messages when entering/leaving functions"
 msgstr "  --debug-trace    関数の入り口/出口のデバッグ・メッセージを表示する"
 
-#: ../src/main.c:84
+#: ../src/main.c:85
 msgid ""
 "  --debug-update   Print debugging messages of the feed update processing"
 msgstr "  --debug-update   配信元を更新する際のデバッグ・メッセージを表示する"
 
-#: ../src/main.c:85
+#: ../src/main.c:86
 msgid "  --debug-verbose  Print verbose debugging messages"
 msgstr "  --debug-verbose  デバッグ・メッセージを詳細に表示する"
 
-#: ../src/main.c:147
+#: ../src/main.c:165
 msgid "Liferea seems to be running already!"
 msgstr "既に Liferea が起動中のようです！"
 
-#: ../src/main.c:213
+#: ../src/main.c:231
 #, c-format
 msgid "The --mainwindow-state argument must be given a parameter.\n"
 msgstr "オプション --mainwindow-state にはパラメータが一つ必要です。\n"
 
-#: ../src/main.c:221
+#: ../src/main.c:239
 #, c-format
 msgid "The --session argument must be given a parameter.\n"
 msgstr "オプション '--session' にはパラメータが一つ必要です。\n"
 
-#: ../src/main.c:224
+#: ../src/main.c:242
 #, c-format
 msgid "Liferea encountered an unknown argument: %s\n"
 msgstr "Liferea は不明なオプションを受け取りました: %s\n"
@@ -1614,43 +1623,43 @@ msgstr ""
 msgid "This item does not have a link assigned!"
 msgstr "このトピックにはリンクが割り当てられていません！"
 
-#: ../src/ui/ui_htmlview.c:313 ../src/ui/ui_htmlview.c:333
+#: ../src/ui/ui_htmlview.c:309 ../src/ui/ui_htmlview.c:329
 #, c-format
 msgid "Browser command failed: %s"
 msgstr "ブラウザの起動に失敗しました: %s"
 
-#: ../src/ui/ui_htmlview.c:336
+#: ../src/ui/ui_htmlview.c:332
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "起動中: \"%s\""
 
-#: ../src/ui/ui_itemlist.c:215
+#: ../src/ui/ui_itemlist.c:210
 msgid "<i>*** No title ***</i>"
 msgstr "<i>*** タイトルなし ***</i>"
 
-#: ../src/ui/ui_itemlist.c:305
+#: ../src/ui/ui_itemlist.c:299
 msgid "Date"
 msgstr "日付"
 
-#: ../src/ui/ui_itemlist.c:316 ../src/ui/ui_itemlist.c:319
+#: ../src/ui/ui_itemlist.c:310 ../src/ui/ui_itemlist.c:313
 msgid "Headline"
 msgstr "ヘッドライン"
 
-#: ../src/ui/ui_itemlist.c:423 ../src/ui/ui_itemlist.c:436
-#: ../src/ui/ui_itemlist.c:481 ../src/ui/ui_itemlist.c:617
-#: ../src/ui/ui_itemlist.c:635
+#: ../src/ui/ui_itemlist.c:427 ../src/ui/ui_itemlist.c:440
+#: ../src/ui/ui_itemlist.c:485 ../src/ui/ui_itemlist.c:635
+#: ../src/ui/ui_itemlist.c:653
 msgid "No item has been selected"
 msgstr "トピックが選択されていません"
 
-#: ../src/ui/ui_itemlist.c:434
+#: ../src/ui/ui_itemlist.c:438
 msgid "This item has no link specified!"
 msgstr "このトピックにはリンクが割り当てられていません！"
 
-#: ../src/ui/ui_itemlist.c:471
+#: ../src/ui/ui_itemlist.c:475
 msgid "You must select a feed to delete its items!"
 msgstr "トピックを削除する配信元を選択して下さい！"
 
-#: ../src/ui/ui_itemlist.c:645
+#: ../src/ui/ui_itemlist.c:663
 msgid "No link selected!"
 msgstr "リンクが選択されていません"
 
@@ -2130,48 +2139,48 @@ msgid "/_Properties..."
 msgstr "/プロパティ(_P)..."
 
 #. This allows the user to choose their own browser by typing in the command.
-#: ../src/ui/ui_prefs.c:237
+#: ../src/ui/ui_prefs.c:252
 msgid "Manual"
 msgstr "手動"
 
-#: ../src/ui/ui_prefs.c:247
+#: ../src/ui/ui_prefs.c:262
 msgid "Browser default"
 msgstr "デフォルト"
 
-#: ../src/ui/ui_prefs.c:252
+#: ../src/ui/ui_prefs.c:267
 msgid "Existing window"
 msgstr "既存のウィンドウ"
 
-#: ../src/ui/ui_prefs.c:257
+#: ../src/ui/ui_prefs.c:272
 msgid "New window"
 msgstr "新しいウィンドウ"
 
-#: ../src/ui/ui_prefs.c:262 ../src/ui/ui_tabs.c:193 ../src/ui/ui_tabs.c:196
+#: ../src/ui/ui_prefs.c:277 ../src/ui/ui_tabs.c:193 ../src/ui/ui_tabs.c:196
 #: ../src/ui/ui_tabs.c:216 ../src/ui/ui_tabs.c:350
 msgid "New tab"
 msgstr "新しいタブ"
 
-#: ../src/ui/ui_prefs.c:272
+#: ../src/ui/ui_prefs.c:287
 msgid "Update only feeds scheduled for updates"
 msgstr "更新間隔がセットされた配信元のみ更新する"
 
-#: ../src/ui/ui_prefs.c:277
+#: ../src/ui/ui_prefs.c:292
 msgid "Update all feeds"
 msgstr "全ての配信元を更新する"
 
-#: ../src/ui/ui_prefs.c:282
+#: ../src/ui/ui_prefs.c:297
 msgid "Reset feed update timers (Update no feeds)"
 msgstr "更新せずに更新用タイマーをクリアする"
 
-#: ../src/ui/ui_prefs.c:524
+#: ../src/ui/ui_prefs.c:539
 msgid "Type"
 msgstr "種類"
 
-#: ../src/ui/ui_prefs.c:527
+#: ../src/ui/ui_prefs.c:542
 msgid "Program"
 msgstr "プログラム"
 
-#: ../src/ui/ui_prefs.c:774
+#: ../src/ui/ui_prefs.c:789
 msgid "Choose download directory"
 msgstr "ダウンロード・フォルダの選択"
 
@@ -2232,21 +2241,21 @@ msgstr ""
 "%s\n"
 "未読のトピックはありません"
 
-#: ../src/parsers/atom10.c:111
+#: ../src/parsers/atom10.c:110
 msgid "Liferea is unable to display this item's content."
 msgstr "Liferea ではこのトピックの内容を表示できません。"
 
-#: ../src/parsers/atom10.c:117
+#: ../src/parsers/atom10.c:116
 #, c-format
 msgid "<p><a href=\"%s\">View this item's content.</a></p>"
 msgstr "<p><a href=\"%s\">このトピックの内容を表示します</a></p>"
 
-#: ../src/parsers/atom10.c:249
+#: ../src/parsers/atom10.c:248
 msgid "Invalid Atom feed: unknown author"
 msgstr "おかしな Atom 配信元: 作者が不明です"
 
-#: ../src/parsers/atom10.c:691 ../src/parsers/pie_feed.c:282
-#: ../src/parsers/rss_channel.c:305
+#: ../src/parsers/atom10.c:690 ../src/parsers/pie_feed.c:282
+#: ../src/parsers/rss_channel.c:304
 #, c-format
 msgid "There were errors while parsing the feed %s!"
 msgstr "配信元 %s を解析する際にエラーが大量に発生しました！"

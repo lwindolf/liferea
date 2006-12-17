@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-12-10 17:04+0100\n"
+"POT-Creation-Date: 2006-12-17 15:32+0100\n"
 "PO-Revision-Date: 2006-12-05 21:29+0100\n"
 "Last-Translator: Lars Lindner <lars.lindner@gmx.net>\n"
 "Language-Team: Spanish <en@li.org>\n"
@@ -109,26 +109,35 @@ msgid "Author"
 msgstr "Autor"
 
 #: ../xslt/item.xml.in.h:2
+msgid "Department"
+msgstr ""
+
+#: ../xslt/item.xml.in.h:3
 msgid "Filed under"
 msgstr "Filed under"
 
-#: ../xslt/item.xml.in.h:3 ../src/interface.c:602
+#: ../xslt/item.xml.in.h:4
+#, fuzzy
+msgid "Section"
+msgstr "_Location"
+
+#: ../xslt/item.xml.in.h:5 ../src/interface.c:602
 msgid "Source"
 msgstr "Source"
 
-#: ../xslt/item.xml.in.h:4
+#: ../xslt/item.xml.in.h:6
 msgid "bookmark"
 msgstr ""
 
-#: ../xslt/item.xml.in.h:5
+#: ../xslt/item.xml.in.h:7
 msgid "comments"
 msgstr "Comentarios"
 
-#: ../xslt/item.xml.in.h:6
+#: ../xslt/item.xml.in.h:8
 msgid "flag"
 msgstr ""
 
-#: ../xslt/item.xml.in.h:7
+#: ../xslt/item.xml.in.h:9
 #, fuzzy
 msgid "search"
 msgstr "Buscar"
@@ -495,16 +504,16 @@ msgstr "\"%s\" no está disponible"
 msgid "Updating \"%s\""
 msgstr "Actualizando: \"%s\""
 
-#: ../src/feedlist.c:276
+#: ../src/feedlist.c:285
 msgid "You have to select a feed entry"
 msgstr "Tienes que elegir un archvio de fuente"
 
-#: ../src/feedlist.c:283 ../src/feedlist.c:292
+#: ../src/feedlist.c:292 ../src/feedlist.c:301
 msgid "Liferea is in offline mode. No update possible."
 msgstr ""
 "Lifera está trabajando sin conexión. No se pueden actualizar las fuentes"
 
-#: ../src/feedlist.c:405
+#: ../src/feedlist.c:414
 msgid ""
 "Liferea v1.2 uses a new cache format and has migrated your feed cache. The "
 "cache content of v1.0 in ~/.liferea was not deleted automatically. Please "
@@ -517,7 +526,7 @@ msgstr ""
 "Fallo al auto-descubrir la dirección de la fuente, no se encontraron fuentes"
 
 #. GTK theme support
-#: ../src/interface.c:70 ../src/main.c:166
+#: ../src/interface.c:70 ../src/main.c:184
 msgid "Liferea"
 msgstr "Liferea"
 
@@ -1353,49 +1362,49 @@ msgstr ""
 msgid "There are no unread items "
 msgstr "No hay elementos sin leer "
 
-#: ../src/main.c:70
+#: ../src/main.c:71
 msgid "  --version        Print version information and exit"
 msgstr "  --version        Muestra la versión de Liferea y finaliza"
 
-#: ../src/main.c:71
+#: ../src/main.c:72
 msgid "  --help           Print this help and exit"
 msgstr "  --help          Muestra esta ayuda y finaliza"
 
-#: ../src/main.c:72
+#: ../src/main.c:73
 msgid "  --mainwindow-state=STATE"
 msgstr "  --mainwindow-state=ESTADO"
 
-#: ../src/main.c:73
+#: ../src/main.c:74
 msgid "                   Start Liferea with its main window in STATE."
 msgstr "                   Arrancar Liferea con la ventana en ESTADO."
 
-#: ../src/main.c:74
+#: ../src/main.c:75
 msgid "                   STATE may be `shown', `iconified', or `hidden'"
 msgstr ""
 "                   ESTADO puede ser `shown' para mostrarla, `iconified' para "
 "dejarla en la bandeja del sistema, o `hidden' para no mostrarla"
 
-#: ../src/main.c:76
+#: ../src/main.c:77
 msgid "  --debug-all      Print debugging messages of all types"
 msgstr "  --debug-all      Mostrar todos los mensajes de depuración"
 
-#: ../src/main.c:77
+#: ../src/main.c:78
 msgid "  --debug-cache    Print debugging messages for the cache handling"
 msgstr "  --debug-cache    Mostrar mensajes de depuración sobre el caché"
 
-#: ../src/main.c:78
+#: ../src/main.c:79
 msgid ""
 "  --debug-conf     Print debugging messages of the configuration handling"
 msgstr ""
 "  --debug-conf     Mostrar mensajes de depuración sobre la configuración"
 
-#: ../src/main.c:79
+#: ../src/main.c:80
 msgid "  --debug-gui      Print debugging messages of all GUI functions"
 msgstr ""
 "  --debug-gui      Mostrar mensajes de depuración sobre todas las funciones "
 "de la interfaz gráfica"
 
-#: ../src/main.c:80
+#: ../src/main.c:81
 #, fuzzy
 msgid ""
 "  --debug-html     Enable HTML debugging (saving to ~/.liferea_1.2/output."
@@ -1403,52 +1412,52 @@ msgid ""
 msgstr ""
 "  --debug-html     Activa depuración HTML (guardado en ~/.liferea_1.1/output."
 
-#: ../src/main.c:81
+#: ../src/main.c:82
 msgid "  --debug-parsing  Print debugging messages of all parsing functions"
 msgstr ""
 "  --debug-parsing  Mostrar mensajes de depuración sobre todas las funciones "
 "de procesamiento"
 
-#: ../src/main.c:82
+#: ../src/main.c:83
 #, fuzzy
 msgid "  --debug-plugins  Print debugging messages when loading plugins"
 msgstr ""
 "  --debug-parsing  Mostrar mensajes de depuración cuando se carguen plugins"
 
-#: ../src/main.c:83
+#: ../src/main.c:84
 msgid ""
 "  --debug-trace    Print debugging messages when entering/leaving functions"
 msgstr ""
 "  --debug-trace    Mostrar mensajes de depuración al entrar/salir de las "
 "funciones"
 
-#: ../src/main.c:84
+#: ../src/main.c:85
 msgid ""
 "  --debug-update   Print debugging messages of the feed update processing"
 msgstr ""
 "  --debug-update   Mostrar mensajes de depuración sobre el proceso de "
 "actualizacionde fuentes"
 
-#: ../src/main.c:85
+#: ../src/main.c:86
 msgid "  --debug-verbose  Print verbose debugging messages"
 msgstr ""
 "  --debug-verbose  Mostrar información extra sobre los mensajes de depuración"
 
-#: ../src/main.c:147
+#: ../src/main.c:165
 msgid "Liferea seems to be running already!"
 msgstr "Al parecer Liferea ya se esta ejecutando!"
 
-#: ../src/main.c:213
+#: ../src/main.c:231
 #, c-format
 msgid "The --mainwindow-state argument must be given a parameter.\n"
 msgstr "Se necesita un parámetro para el argumento --mainwindow-state.\n"
 
-#: ../src/main.c:221
+#: ../src/main.c:239
 #, c-format
 msgid "The --session argument must be given a parameter.\n"
 msgstr "Se necesita un parámetro para el argumento --session.\n"
 
-#: ../src/main.c:224
+#: ../src/main.c:242
 #, c-format
 msgid "Liferea encountered an unknown argument: %s\n"
 msgstr "Liferea encontró un argumento desconocido: %s\n"
@@ -1659,43 +1668,43 @@ msgstr ""
 msgid "This item does not have a link assigned!"
 msgstr "Este elemento no tiene ningún enlace asignado"
 
-#: ../src/ui/ui_htmlview.c:313 ../src/ui/ui_htmlview.c:333
+#: ../src/ui/ui_htmlview.c:309 ../src/ui/ui_htmlview.c:329
 #, c-format
 msgid "Browser command failed: %s"
 msgstr "Fallo al lanzar el navegador: %s"
 
-#: ../src/ui/ui_htmlview.c:336
+#: ../src/ui/ui_htmlview.c:332
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Comenzando: \"%s\""
 
-#: ../src/ui/ui_itemlist.c:215
+#: ../src/ui/ui_itemlist.c:210
 msgid "<i>*** No title ***</i>"
 msgstr ""
 
-#: ../src/ui/ui_itemlist.c:305
+#: ../src/ui/ui_itemlist.c:299
 msgid "Date"
 msgstr "Fecha"
 
-#: ../src/ui/ui_itemlist.c:316 ../src/ui/ui_itemlist.c:319
+#: ../src/ui/ui_itemlist.c:310 ../src/ui/ui_itemlist.c:313
 msgid "Headline"
 msgstr "Titular"
 
-#: ../src/ui/ui_itemlist.c:423 ../src/ui/ui_itemlist.c:436
-#: ../src/ui/ui_itemlist.c:481 ../src/ui/ui_itemlist.c:617
-#: ../src/ui/ui_itemlist.c:635
+#: ../src/ui/ui_itemlist.c:427 ../src/ui/ui_itemlist.c:440
+#: ../src/ui/ui_itemlist.c:485 ../src/ui/ui_itemlist.c:635
+#: ../src/ui/ui_itemlist.c:653
 msgid "No item has been selected"
 msgstr "No se ha seleccionado ningún elemento"
 
-#: ../src/ui/ui_itemlist.c:434
+#: ../src/ui/ui_itemlist.c:438
 msgid "This item has no link specified!"
 msgstr "Este elemento no tiene ningún enlace asignado"
 
-#: ../src/ui/ui_itemlist.c:471
+#: ../src/ui/ui_itemlist.c:475
 msgid "You must select a feed to delete its items!"
 msgstr "Tienes que elegir una fuente para eliminar sus elementos"
 
-#: ../src/ui/ui_itemlist.c:645
+#: ../src/ui/ui_itemlist.c:663
 #, fuzzy
 msgid "No link selected!"
 msgstr "No se ha seleccionado ningún enlace"
@@ -2202,49 +2211,49 @@ msgid "/_Properties..."
 msgstr "/_Propiedades..."
 
 #. This allows the user to choose their own browser by typing in the command.
-#: ../src/ui/ui_prefs.c:237
+#: ../src/ui/ui_prefs.c:252
 msgid "Manual"
 msgstr "Manual"
 
-#: ../src/ui/ui_prefs.c:247
+#: ../src/ui/ui_prefs.c:262
 msgid "Browser default"
 msgstr "Navegador por defecto"
 
-#: ../src/ui/ui_prefs.c:252
+#: ../src/ui/ui_prefs.c:267
 msgid "Existing window"
 msgstr "Ventana existente"
 
-#: ../src/ui/ui_prefs.c:257
+#: ../src/ui/ui_prefs.c:272
 msgid "New window"
 msgstr "Nueva ventana"
 
-#: ../src/ui/ui_prefs.c:262 ../src/ui/ui_tabs.c:193 ../src/ui/ui_tabs.c:196
+#: ../src/ui/ui_prefs.c:277 ../src/ui/ui_tabs.c:193 ../src/ui/ui_tabs.c:196
 #: ../src/ui/ui_tabs.c:216 ../src/ui/ui_tabs.c:350
 msgid "New tab"
 msgstr "Nueva pestaña"
 
-#: ../src/ui/ui_prefs.c:272
+#: ../src/ui/ui_prefs.c:287
 msgid "Update only feeds scheduled for updates"
 msgstr "Actualiza sólo las fuentes con actualizaciones planificadas"
 
-#: ../src/ui/ui_prefs.c:277
+#: ../src/ui/ui_prefs.c:292
 msgid "Update all feeds"
 msgstr "Actualizar todas las fuentes"
 
-#: ../src/ui/ui_prefs.c:282
+#: ../src/ui/ui_prefs.c:297
 msgid "Reset feed update timers (Update no feeds)"
 msgstr ""
 "Reinicia los temporizadores de actualización (No actualizar ninguna fuente)"
 
-#: ../src/ui/ui_prefs.c:524
+#: ../src/ui/ui_prefs.c:539
 msgid "Type"
 msgstr "Tipo"
 
-#: ../src/ui/ui_prefs.c:527
+#: ../src/ui/ui_prefs.c:542
 msgid "Program"
 msgstr "Programa"
 
-#: ../src/ui/ui_prefs.c:774
+#: ../src/ui/ui_prefs.c:789
 msgid "Choose download directory"
 msgstr "Selecciona el directorio de descarga"
 
@@ -2310,21 +2319,21 @@ msgstr ""
 "%s\n"
 "No hay elementos sin leer"
 
-#: ../src/parsers/atom10.c:111
+#: ../src/parsers/atom10.c:110
 msgid "Liferea is unable to display this item's content."
 msgstr "Liferea no puede mostrar el contenido de este elemento."
 
-#: ../src/parsers/atom10.c:117
+#: ../src/parsers/atom10.c:116
 #, c-format
 msgid "<p><a href=\"%s\">View this item's content.</a></p>"
 msgstr "<p><a href=\"%s\">Ver el contenido de este elemento.</a></p>"
 
-#: ../src/parsers/atom10.c:249
+#: ../src/parsers/atom10.c:248
 msgid "Invalid Atom feed: unknown author"
 msgstr "Atom no valido: autor desconocido"
 
-#: ../src/parsers/atom10.c:691 ../src/parsers/pie_feed.c:282
-#: ../src/parsers/rss_channel.c:305
+#: ../src/parsers/atom10.c:690 ../src/parsers/pie_feed.c:282
+#: ../src/parsers/rss_channel.c:304
 #, c-format
 msgid "There were errors while parsing the feed %s!"
 msgstr "There were errors while parsing the feed %s!"
