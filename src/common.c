@@ -280,7 +280,7 @@ gboolean common_is_well_formed_xhtml(const gchar *data) {
 	
 	doc = common_parse_xml(xml, strlen(xml), FALSE, errors);
 	if(doc)
-		xmlFree(doc);
+		xmlFreeDoc(doc);
 		
 	g_free(xml);
 	g_string_free(errors->msg, TRUE);
@@ -984,6 +984,11 @@ xmlChar * common_uri_escape(const xmlChar *url) {
 		result = g_strdup(url);
 
 	return result;	
+}
+
+xmlChar * common_uri_unescape(const xmlChar *url) {
+
+	return xmlURIUnescapeString(url, -1, NULL);
 }
 
 /* to correctly escape and expand URLs */

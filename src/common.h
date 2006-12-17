@@ -252,14 +252,22 @@ gchar * common_create_cache_filename(const gchar *folder, const gchar *filename,
 gchar * common_encode_uri_string(gchar *string);
 
 /**
- * Takes an URL and returns a new string containing
- * the escaped URL.
+ * Takes an URL and returns a new string containing the escaped URL.
  *
- * @param url		the URL to escape (not freed)
+ * @param url		the URL to escape
  *
  * @returns new escaped URL string
  */
 xmlChar * common_uri_escape(const xmlChar *url);
+
+/**
+ * Takes an URL and returns a new string containing the unescaped URL.
+ *
+ * @param url		the URL to unescape
+ *
+ * @returns new unescaped URL string
+ */
+xmlChar * common_uri_unescape(const xmlChar *url);
 
 /** 
  * To correctly escape and expand URLs, does not touch the
