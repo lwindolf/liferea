@@ -513,11 +513,11 @@ static xmlDocPtr node_to_xml(nodePtr node) {
 }
 
 gchar * node_default_render(nodePtr node) {
-	gchar		*result, **params = NULL;
+	gchar		*result;
 	xmlDocPtr	doc;
 
 	doc = node_to_xml(node);
-	result = render_xml(doc, NODE_TYPE(node)->id, params);	
+	result = render_xml(doc, NODE_TYPE(node)->id, NULL);	
 	xmlFreeDoc(doc);
 		
 	return result;
