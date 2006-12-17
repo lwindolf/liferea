@@ -41,6 +41,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <signal.h>
+#include <unistd.h>
 #include "interface.h"
 #include "support.h"
 #include "callbacks.h"
@@ -104,6 +105,23 @@ static void on_bacon_message_received(const char *message, gpointer data) {
 	} else {
 		g_warning("Received unknown bacon command: >>>%s<<<", message);
 	}
+}
+
+static void fatal_signal_handler(int sig) {
+	sigset_t sigset;
+
+	sigemptyset(&sigset);
+	sigprocmask(SIG_SETMASK, &sigset, NULL);
+
+	g_print("\nLiferea did receive signal %d (%s).\n", sig, g_strsignal(sig));
+
+	if(debug_level) {
+		g_print("You have propably triggered a program bug. I will now try to \n");
+		g_print("create a backtrace which you can attach to any support requests.\n\n");
+		g_on_error_stack_trace(PACKAGE);
+	}
+
+	_exit(1);
 }
 
 static void signal_handler(int sig) {
@@ -251,7 +269,12 @@ int main(int argc, char *argv[]) {
 	signal(SIGTERM, signal_handler);
 	signal(SIGINT, signal_handler);
 	signal(SIGHUP, signal_handler);
-		
+
+#ifndef G_OS_WIN32
+	signal(SIGBUS, fatal_signal_handler);
+	signal(SIGSEGV, fatal_signal_handler);
+#endif
+
 	/* Note: we explicitely do not use the gdk_thread_*
 	   locking in Liferea because it freezes the program
 	   when running Flash applets in gtkmozembed */
