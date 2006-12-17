@@ -85,7 +85,7 @@ xsltStylesheetPtr render_load_stylesheet(const gchar *xsltName) {
 
 	/* try to serve the stylesheet from the cache */	
 	xslt = (xsltStylesheetPtr)g_hash_table_lookup(stylesheets, xsltName);
-	if(NULL != xslt)
+	if(xslt)
 		return xslt;
 	
 	/* or load and translate it... */
@@ -258,11 +258,8 @@ gchar * render_file(const gchar *filename, const gchar *xsltName, renderParamPtr
 /* parameter handling */
 
 renderParamPtr render_parameter_new(void) {
-	renderParamPtr	paramSet;
-	
-	paramSet = g_new0(struct renderParam, 1);
 
-	return paramSet;
+	return g_new0(struct renderParam, 1);
 }
 
 void render_parameter_add(renderParamPtr paramSet, const gchar *fmt, ...) {

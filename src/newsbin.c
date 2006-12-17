@@ -72,7 +72,7 @@ static gchar * newsbin_render(nodePtr node) {
 	params = render_parameter_new();
 	render_parameter_add(params, "pixmapsDir='file://" PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "'");
 	output = render_xml(doc, "newsbin", params);
-	xmlFree(doc);
+	xmlFreeDoc(doc);
 
 	return output;
 }
