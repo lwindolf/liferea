@@ -86,11 +86,12 @@ static struct browser browsers[] = {
 		FALSE
 	},
 	{
+		/* tested with SeaMonkey 1.0.6 */
 		"mozilla", "Mozilla", "mozilla %s",
 		NULL, "mozilla -remote openURL(%s)",
 		NULL, "mozillax -remote 'openURL(%s,new-window)'",
 		NULL, "mozilla -remote 'openURL(%s,new-tab)'",
-		FALSE	/* FIXME: do we need TRUE here? */
+		FALSE
 	},
 	{
 		/* tested with Firefox 1.5 and 2.0 */
@@ -101,11 +102,12 @@ static struct browser browsers[] = {
 		TRUE
 	},
 	{
+		/* tested with Netscape 4.76 */
 		"netscape", "Netscape", "netscape \"%s\"",
 		NULL, "netscape -remote \"openURL(%s)\"",
 		NULL, "netscape -remote \"openURL(%s,new-window)\"",
 		NULL, NULL,
-		FALSE	/* FIXME: do we need TRUE here? */
+		TRUE
 	},
 	{
 		"opera", "Opera","opera \"%s\"",
