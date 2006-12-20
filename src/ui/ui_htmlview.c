@@ -59,25 +59,15 @@ extern int	proxyport;
 
 void ui_htmlview_init(void) {
 	GSList		*iter;
-	gchar		*name;
-	gboolean	found = FALSE;
 		
-	name = getStringConfValue(BROWSER_MODULE);
-	
-	/* Try to find configured plugin */
+	/* Find best HTML renderer plugin */
 	iter = htmlviewPlugins;
 	while(iter) {
-		htmlviewPlugin = ((pluginPtr)iter->data)->symbols;
-		found = !strcmp(htmlviewPlugin->name, name);
-		if(found)
-			break;
+		htmlviewPluginPtr tmp = ((pluginPtr)iter->data)->symbols;
+		if(!htmlviewPlugin || (htmlviewPlugin->priority < tmp->priority))
+			htmlviewPlugin = tmp;
 		iter = g_slist_next(iter);
 	}
-	
-	if(!found)
-		debug2(DEBUG_PLUGINS, "Could not find configured browser plugin (%s), using plugin (%s) instead\n", name, htmlviewPlugin->name);
-		
-	g_free(name);
 	
 	if(htmlviewPlugin) {
 		debug1(DEBUG_PLUGINS, "using \"%s\" for HTML rendering...", htmlviewPlugin->name);

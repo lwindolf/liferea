@@ -1137,13 +1137,6 @@ create_prefdialog (void)
   GtkWidget *hbox57;
   GtkWidget *label142;
   GtkWidget *startupfeedhandler;
-  GtkWidget *vbox2579;
-  GtkWidget *label147;
-  GtkWidget *alignment23;
-  GtkWidget *vbox2580;
-  GtkWidget *feedsinmemorybtn1;
-  GSList *feedsinmemorybtn1_group = NULL;
-  GtkWidget *feedsinmemorybtn2;
   GtkWidget *label38;
   GtkWidget *vbox2593;
   GtkWidget *vbox2594;
@@ -1187,11 +1180,6 @@ create_prefdialog (void)
   GtkWidget *label190;
   GtkWidget *alignment28;
   GtkWidget *vbox2603;
-  GtkWidget *hbox28;
-  GtkWidget *label65;
-  GtkWidget *htmlviewoptionmenu;
-  GtkWidget *menu3;
-  GtkWidget *label224;
   GtkWidget *browseinwindow;
   GtkWidget *disablejavascript;
   GtkWidget *vbox248;
@@ -1398,38 +1386,6 @@ create_prefdialog (void)
   gtk_widget_show (startupfeedhandler);
   gtk_box_pack_start (GTK_BOX (hbox57), startupfeedhandler, FALSE, FALSE, 0);
 
-  vbox2579 = gtk_vbox_new (FALSE, 6);
-  gtk_widget_show (vbox2579);
-  gtk_box_pack_start (GTK_BOX (vbox3), vbox2579, FALSE, TRUE, 0);
-
-  label147 = gtk_label_new (_("<span weight=\"bold\">Feed Loading Settings</span>"));
-  gtk_widget_show (label147);
-  gtk_box_pack_start (GTK_BOX (vbox2579), label147, FALSE, FALSE, 0);
-  gtk_label_set_use_markup (GTK_LABEL (label147), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (label147), 0, 0.5);
-
-  alignment23 = gtk_alignment_new (0.5, 0.5, 1, 1);
-  gtk_widget_show (alignment23);
-  gtk_box_pack_start (GTK_BOX (vbox2579), alignment23, TRUE, TRUE, 0);
-  gtk_alignment_set_padding (GTK_ALIGNMENT (alignment23), 0, 0, 12, 0);
-
-  vbox2580 = gtk_vbox_new (FALSE, 6);
-  gtk_widget_show (vbox2580);
-  gtk_container_add (GTK_CONTAINER (alignment23), vbox2580);
-
-  feedsinmemorybtn1 = gtk_radio_button_new_with_mnemonic (NULL, _("Optimize for reduced _memory usage."));
-  gtk_widget_show (feedsinmemorybtn1);
-  gtk_box_pack_start (GTK_BOX (vbox2580), feedsinmemorybtn1, FALSE, FALSE, 0);
-  gtk_radio_button_set_group (GTK_RADIO_BUTTON (feedsinmemorybtn1), feedsinmemorybtn1_group);
-  feedsinmemorybtn1_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (feedsinmemorybtn1));
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (feedsinmemorybtn1), TRUE);
-
-  feedsinmemorybtn2 = gtk_radio_button_new_with_mnemonic (NULL, _("Optimize for _speed."));
-  gtk_widget_show (feedsinmemorybtn2);
-  gtk_box_pack_start (GTK_BOX (vbox2580), feedsinmemorybtn2, FALSE, FALSE, 0);
-  gtk_radio_button_set_group (GTK_RADIO_BUTTON (feedsinmemorybtn2), feedsinmemorybtn1_group);
-  feedsinmemorybtn1_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (feedsinmemorybtn2));
-
   label38 = gtk_label_new (_("Feeds"));
   gtk_widget_show (label38);
   gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook1), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook1), 0), label38);
@@ -1635,28 +1591,6 @@ create_prefdialog (void)
   vbox2603 = gtk_vbox_new (FALSE, 6);
   gtk_widget_show (vbox2603);
   gtk_container_add (GTK_CONTAINER (alignment28), vbox2603);
-
-  hbox28 = gtk_hbox_new (FALSE, 5);
-  gtk_widget_show (hbox28);
-  gtk_box_pack_start (GTK_BOX (vbox2603), hbox28, FALSE, FALSE, 0);
-
-  label65 = gtk_label_new_with_mnemonic (_("_View Headlines With"));
-  gtk_widget_show (label65);
-  gtk_box_pack_start (GTK_BOX (hbox28), label65, FALSE, FALSE, 0);
-
-  htmlviewoptionmenu = gtk_option_menu_new ();
-  gtk_widget_show (htmlviewoptionmenu);
-  gtk_box_pack_start (GTK_BOX (hbox28), htmlviewoptionmenu, FALSE, TRUE, 0);
-
-  menu3 = gtk_menu_new ();
-
-  gtk_option_menu_set_menu (GTK_OPTION_MENU (htmlviewoptionmenu), menu3);
-
-  label224 = gtk_label_new (_("<i>Please restart Liferea for changes to take effect.</i>"));
-  gtk_widget_show (label224);
-  gtk_box_pack_start (GTK_BOX (vbox2603), label224, FALSE, FALSE, 0);
-  gtk_label_set_use_markup (GTK_LABEL (label224), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (label224), 0, 0.5);
 
   browseinwindow = gtk_check_button_new_with_mnemonic (_("Open links in Liferea's _window."));
   gtk_widget_show (browseinwindow);
@@ -2140,12 +2074,6 @@ create_prefdialog (void)
   g_signal_connect ((gpointer) refreshIntervalSpinButton, "value_changed",
                     G_CALLBACK (on_default_update_interval_value_changed),
                     NULL);
-  g_signal_connect ((gpointer) feedsinmemorybtn1, "clicked",
-                    G_CALLBACK (on_feedsinmemorybtn_clicked),
-                    NULL);
-  g_signal_connect ((gpointer) feedsinmemorybtn2, "clicked",
-                    G_CALLBACK (on_feedsinmemorybtn_clicked),
-                    NULL);
   g_signal_connect ((gpointer) folderdisplaybtn, "toggled",
                     G_CALLBACK (on_folderdisplaybtn_toggled),
                     NULL);
@@ -2231,7 +2159,6 @@ create_prefdialog (void)
   gtk_label_set_mnemonic_widget (GTK_LABEL (label151), browsekeyoptionmenu);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label231), socialpopup);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label232), searchpopup);
-  gtk_label_set_mnemonic_widget (GTK_LABEL (label65), htmlviewoptionmenu);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label137), browserpopup);
   gtk_label_set_mnemonic_widget (GTK_LABEL (manuallabel), browsercmd);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label138), browserlocpopup);
@@ -2264,12 +2191,6 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, hbox57, "hbox57");
   GLADE_HOOKUP_OBJECT (prefdialog, label142, "label142");
   GLADE_HOOKUP_OBJECT (prefdialog, startupfeedhandler, "startupfeedhandler");
-  GLADE_HOOKUP_OBJECT (prefdialog, vbox2579, "vbox2579");
-  GLADE_HOOKUP_OBJECT (prefdialog, label147, "label147");
-  GLADE_HOOKUP_OBJECT (prefdialog, alignment23, "alignment23");
-  GLADE_HOOKUP_OBJECT (prefdialog, vbox2580, "vbox2580");
-  GLADE_HOOKUP_OBJECT (prefdialog, feedsinmemorybtn1, "feedsinmemorybtn1");
-  GLADE_HOOKUP_OBJECT (prefdialog, feedsinmemorybtn2, "feedsinmemorybtn2");
   GLADE_HOOKUP_OBJECT (prefdialog, label38, "label38");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox2593, "vbox2593");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox2594, "vbox2594");
@@ -2313,11 +2234,6 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, label190, "label190");
   GLADE_HOOKUP_OBJECT (prefdialog, alignment28, "alignment28");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox2603, "vbox2603");
-  GLADE_HOOKUP_OBJECT (prefdialog, hbox28, "hbox28");
-  GLADE_HOOKUP_OBJECT (prefdialog, label65, "label65");
-  GLADE_HOOKUP_OBJECT (prefdialog, htmlviewoptionmenu, "htmlviewoptionmenu");
-  GLADE_HOOKUP_OBJECT (prefdialog, menu3, "menu3");
-  GLADE_HOOKUP_OBJECT (prefdialog, label224, "label224");
   GLADE_HOOKUP_OBJECT (prefdialog, browseinwindow, "browseinwindow");
   GLADE_HOOKUP_OBJECT (prefdialog, disablejavascript, "disablejavascript");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox248, "vbox248");

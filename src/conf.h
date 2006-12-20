@@ -30,9 +30,10 @@
 #define BROWSER_ID			"/apps/liferea/browser_id"
 #define BROWSER_PLACE			"/apps/liferea/browser_place"
 #define BROWSER_COMMAND			"/apps/liferea/browser"
-#define BROWSER_MODULE			"/apps/liferea/browser-module"
+
 #define GNOME_DEFAULT_BROWSER_COMMAND	"gnome-open '%s'"
 #define DEFAULT_BROWSER_COMMAND		"mozilla '%s'"
+
 #define DEFAULT_FONT			"/desktop/gnome/interface/document_font_name"
 #define USER_FONT			"/apps/liferea/browser-font"
 #define REFOCUS_TIMEOUT			"/apps/liferea/refocus-timeout"
@@ -49,15 +50,12 @@
 /* item list settings */
 #define DATE_FORMAT			"/apps/liferea/date-format"
 
-// FIXME: remove me!
-#define TIME_FORMAT			"/apps/liferea/timeformat"
-#define TIME_FORMAT_MODE		"/apps/liferea/timeformatmode"
-
 /* feed handling settings */
 #define DEFAULT_MAX_ITEMS		"/apps/liferea/maxitemcount"
 #define DEFAULT_UPDATE_INTERVAL		"/apps/liferea/default-update-interval"
 #define STARTUP_FEED_ACTION		"/apps/liferea/startup_feed_action"
 #define UPDATE_THREAD_CONCURRENCY	"/apps/liferea/update-thread-concurrency"
+// FIXME: remove me!
 #define KEEP_FEEDS_IN_MEMORY		"/apps/liferea/keep-feeds-in-memory"
 #define DISABLE_SUBSCRIPTION_PIPE	"/apps/liferea/disable-subscription-pipe"
 #define ENABLE_FETCH_RETRIES		"/apps/liferea/enable-fetch-retries"

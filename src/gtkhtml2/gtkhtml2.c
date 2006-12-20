@@ -467,6 +467,7 @@ static gboolean gtkhtml2_scroll_pagedown(GtkWidget *scrollpane) {
 static struct htmlviewPlugin gtkhtml2Info = {
 	HTMLVIEW_PLUGIN_API_VERSION,
 	"GtkHTML2",
+	1,
 	gtkhtml2_init,
 	gtkhtml2_deinit,
 	gtkhtml2_new,

@@ -56,7 +56,6 @@ extern GSList *socialBookmarkSites;
 
 static GtkWidget *prefdialog = NULL;
 
-static void on_browsermodule_changed(GtkObject *object, gchar *libname);
 static void on_browser_changed(GtkOptionMenu *optionmenu, gpointer user_data);
 static void on_browser_place_changed(GtkOptionMenu *optionmenu, gpointer user_data);
 static void on_startup_feed_handler_changed(GtkEditable *editable, gpointer user_data);
@@ -226,7 +225,6 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	GtkTreeViewColumn 	*column;
 	GSList			*list;
 	gchar			*widgetname, *proxyport;
-	gchar			*configuredPluginName;
 	gchar			*configuredBrowser, *name;
 	gboolean		enabled, enabled2;
 	int			tmp, i;
@@ -310,26 +308,9 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 		itemCount = gtk_spin_button_get_adjustment(GTK_SPIN_BUTTON(widget));
 		gtk_adjustment_set_value(itemCount, getNumericConfValue(DEFAULT_MAX_ITEMS));
 
-		/* Set fields in the radio widgets so that they know their option # and the pref dialog */
-		for(i = 1; i <= 2; i++) {
-			widgetname = g_strdup_printf("%s%d", "feedsinmemorybtn", i);
-			widget = lookup_widget(prefdialog, widgetname);
-			gtk_object_set_data(GTK_OBJECT(widget), "option_number", GINT_TO_POINTER(i));
-			g_free(widgetname);
-		}
-
 		/* set default update interval spin button */
 		widget = lookup_widget(prefdialog,"refreshIntervalSpinButton");
 		gtk_spin_button_set_value(GTK_SPIN_BUTTON(widget), getNumericConfValue(DEFAULT_UPDATE_INTERVAL));
-
-		/* select currently active menu option */
-		tmp = 1;
-		if(getBooleanConfValue(KEEP_FEEDS_IN_MEMORY)) tmp = 2;
-
-		widgetname = g_strdup_printf("%s%d", "feedsinmemorybtn", tmp);
-		widget = lookup_widget(prefdialog, widgetname);
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), TRUE);
-		g_free(widgetname);
 
 		/* ================== panel 2 "folders" ==================== */
 
@@ -376,27 +357,6 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 		gtk_option_menu_set_history(GTK_OPTION_MENU(lookup_widget(prefdialog, "socialpopup")), tmp);
 
 		/* ================== panel 4 "browser" ==================== */
-
-		/* set up the internal browser module option menu */
-		tmp = i = 0;
-		widget = gtk_menu_new();
-		list = htmlviewPlugins;
-		configuredPluginName = getStringConfValue(BROWSER_MODULE);
-		while(list) {		
-			g_assert(NULL != list->data);
-			gchar	*pluginName = ((htmlviewPluginPtr)((pluginPtr)list->data)->symbols)->name;
-			entry = gtk_menu_item_new_with_label(pluginName);
-			gtk_widget_show(entry);
-			gtk_container_add(GTK_CONTAINER(widget), entry);
-			gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_browsermodule_changed), pluginName);
-			if(!strcmp(configuredPluginName, pluginName))
-				tmp = i;
-			i++;
-			list = g_slist_next(list);
-		}
-		gtk_menu_set_active(GTK_MENU(widget), tmp);
-		gtk_option_menu_set_menu(GTK_OPTION_MENU(lookup_widget(prefdialog, "htmlviewoptionmenu")), widget);
-		g_free(configuredPluginName);
 
 		/* set the inside browsing flag */
 		widget = lookup_widget(prefdialog, "browseinwindow");
@@ -610,11 +570,6 @@ static void on_browser_place_changed(GtkOptionMenu *optionmenu, gpointer user_da
 	setNumericConfValue(BROWSER_PLACE, num);
 }
 
-static void on_browsermodule_changed(GtkObject *object, gchar *libname) {
-	setStringConfValue(BROWSER_MODULE, libname);
-}
-
-
 void on_openlinksinsidebtn_clicked(GtkToggleButton *button, gpointer user_data) {
 	setBooleanConfValue(BROWSE_INSIDE_APPLICATION, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)));
 }
@@ -703,13 +658,6 @@ void on_proxyusernameentry_changed(GtkEditable *editable, gpointer user_data) {
 
 void on_proxypasswordentry_changed(GtkEditable *editable, gpointer user_data) {
 	setStringConfValue(PROXY_PASSWD, gtk_editable_get_chars(editable,0,-1));
-}
-
-void on_feedsinmemorybtn_clicked(GtkButton *button, gpointer user_data) {
-	gint		active_button;
-	
-	active_button = GPOINTER_TO_INT(gtk_object_get_data(GTK_OBJECT(button), "option_number"));
-	setBooleanConfValue(KEEP_FEEDS_IN_MEMORY, (active_button == 2));
 }
 
 void on_browsekey_space_activate(GtkMenuItem *menuitem, gpointer user_data) {

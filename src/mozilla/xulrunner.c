@@ -41,6 +41,7 @@ static void xulrunner_init(void) {
 static struct htmlviewPlugin xulrunnerInfo = {
 	.api_version	= HTMLVIEW_PLUGIN_API_VERSION,
 	.name		= "XulRunner",
+	.priority	= 11,
 	.plugin_init	= xulrunner_init,
 	.plugin_deinit	= mozembed_deinit,
 	.create		= mozembed_create,

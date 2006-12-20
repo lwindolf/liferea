@@ -30,11 +30,12 @@
 
 #define ENCLOSURE_PROTOCOL	"liferea-enclosure://"
 
-#define HTMLVIEW_PLUGIN_API_VERSION 11
+#define HTMLVIEW_PLUGIN_API_VERSION 12
 
 typedef struct htmlviewPlugin {
-	unsigned int 	api_version;
-	char 		*name;
+	guint 		api_version;
+	char 		*name;			/**< name to be stored in preferences */
+	guint		priority;		/**< to allow automatically selecting from multiple available renderers */
 	
 	/* plugin loading and unloading methods */
 	void 		(*plugin_init)		(void);
