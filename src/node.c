@@ -368,11 +368,14 @@ void node_merge_items(nodePtr node, GList *list) {
 
 void node_update_favicon(nodePtr node) {
 
-	if(NODE_TYPE_FEED != node->type)
-		return;
-
-	debug1(DEBUG_UPDATE, "favicon of node %s needs to be updated...", node->title);
-	feed_update_favicon(node);
+	if(NODE_TYPE_FEED == node->type) {
+		debug1(DEBUG_UPDATE, "favicon of node %s needs to be updated...", node->title);
+		feed_update_favicon(node);
+	}
+	
+	/* Recursion */
+	if(node->children)
+		node_foreach_child(node, node_update_favicon);
 }
 
 /* plugin and import callbacks and helper functions */
