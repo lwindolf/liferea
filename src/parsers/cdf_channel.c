@@ -181,7 +181,6 @@ feedHandlerPtr cdf_init_feed_handler(void) {
 	/* prepare feed handler structure */
 	fhp->typeStr = "cdf";
 	fhp->icon = ICON_AVAILABLE;
-	fhp->directory = FALSE;
 	fhp->feedParser	= cdf_parse;
 	fhp->checkFormat = cdf_format_check;
 	fhp->merge = TRUE;

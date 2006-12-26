@@ -318,7 +318,6 @@ feedHandlerPtr pie_init_feed_handler(void) {
 	/* prepare feed handler structure */
 	fhp->typeStr = "pie";
 	fhp->icon = ICON_AVAILABLE;
-	fhp->directory = FALSE;
 	fhp->feedParser	= pie_parse;
 	fhp->checkFormat = pie_format_check;
 	fhp->merge = TRUE;

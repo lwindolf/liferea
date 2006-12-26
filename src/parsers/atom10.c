@@ -732,7 +732,6 @@ feedHandlerPtr atom10_init_feed_handler(void) {
 	/* prepare feed handler structure */
 	fhp->typeStr = "pie";
 	fhp->icon = ICON_AVAILABLE;
-	fhp->directory = FALSE;
 	fhp->feedParser	= atom10_parse_feed;
 	fhp->checkFormat = atom10_format_check;
 	fhp->merge = TRUE;

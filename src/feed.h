@@ -121,13 +121,11 @@ typedef gboolean (*checkFormatFunc)	(xmlDocPtr doc, xmlNodePtr cur); /**< Return
 
 typedef struct feedHandler {
 	const gchar	*typeStr;	/**< string representation of the feed type */
-	int		icon;		/**< Icon number used for available feeds/directories */
-	gboolean	directory;	/**< Determines if a feed should be autoupdated and updated when "update all" is selected */
+	int		icon;		/**< Icon number used for available nodes without an own favicon */
 	feedParserFunc	feedParser;	/**< feed type parse function */
 	checkFormatFunc	checkFormat;	/**< Parser for the feed type*/
 	gboolean	merge;		/**< TRUE if feed type supports merging */
 	gboolean	noXML;		/**< TRUE if feed type isn't guaranteed to be XML */
-	
 } *feedHandlerPtr;
 
 /* ------------------------------------------------------------ */

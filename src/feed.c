@@ -589,10 +589,7 @@ static void feed_save_to_cache(nodePtr node) {
 			if(feed->cacheLimit == CACHE_DISABLE)
 				continue;
 
-			// FIXME: remove directory logic!
-			if((saveCount >= saveMaxCount) &&
-			   (feed->fhp == NULL || feed->fhp->directory == FALSE) &&
-			   !item->flagStatus) {
+			if((saveCount >= saveMaxCount) && !item->flagStatus) {
 				droppedItems = g_list_append(droppedItems, item);
 			} else {
 				item_to_xml(item, xmlDocGetRootElement(doc), FALSE);
