@@ -538,13 +538,19 @@ xmlDocPtr feed_to_xml(nodePtr node, xmlNodePtr feedNode, gboolean rendering) {
 
 guint feed_get_max_item_count(nodePtr node) {
 	feedPtr	feed = (feedPtr)node->data;
-	guint	max;
 	
-	max = feed->cacheLimit;
-	if(max == CACHE_DEFAULT)
-		max = getNumericConfValue(DEFAULT_MAX_ITEMS);
-		
-	return max;
+	switch(feed->cacheLimit) {
+		case CACHE_DEFAULT:
+			return getNumericConfValue(DEFAULT_MAX_ITEMS);
+			break;
+		case CACHE_DISABLE:
+		case CACHE_UNLIMITED:
+			return G_MAXUINT;
+			break;
+		default:
+			return feed->cacheLimit;
+			break;
+	}
 }
 
 /*
@@ -580,13 +586,13 @@ static void feed_save_to_cache(nodePtr node) {
 		for(iter = itemlist; iter != NULL; iter = g_list_next(iter)) {
 			itemPtr item = iter->data;
 
-			if(saveMaxCount == CACHE_DISABLE)
+			if(feed->cacheLimit == CACHE_DISABLE)
 				continue;
 
-			if((saveMaxCount != CACHE_UNLIMITED) &&
-			   (saveCount >= saveMaxCount) &&
+			// FIXME: remove directory logic!
+			if((saveCount >= saveMaxCount) &&
 			   (feed->fhp == NULL || feed->fhp->directory == FALSE) &&
-			   ! item->flagStatus) {
+			   !item->flagStatus) {
 				droppedItems = g_list_append(droppedItems, item);
 			} else {
 				item_to_xml(item, xmlDocGetRootElement(doc), FALSE);
@@ -1241,6 +1247,7 @@ void feed_process_update_result(struct request *request) {
 /* implementation of the node type interface */
 
 static void feed_load(nodePtr node) {
+	feedPtr		feed = (feedPtr)node->data;
 
 	debug2(DEBUG_CACHE, "+ feed_load (%s, ref count=%d)", node_get_title(node), node->loaded);
 	node->loaded++;
@@ -1251,8 +1258,10 @@ static void feed_load(nodePtr node) {
 	}
 	
 	/* node->itemSet will be NULL here, except when cache is disabled */
-	node_set_itemset(node, feed_load_from_cache(node));
-	g_assert(NULL != node->itemSet);
+	if(!node->itemSet || feed->cacheLimit != CACHE_DISABLE) {
+		node_set_itemset(node, feed_load_from_cache(node));
+		g_assert(NULL != node->itemSet);
+	}
 
 	debug2(DEBUG_CACHE, "- feed_load (%s, new ref count=%d)", node_get_title(node), node->loaded);
 }
