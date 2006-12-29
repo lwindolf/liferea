@@ -154,21 +154,19 @@ static themeColorPtr render_get_theme_color(const gchar *name, GdkColor themeCol
 static void render_get_theme_colors(void) {
 	GtkWidget	*htmlview;
 	GtkStyle	*style;
-	int		state;
 	
 	htmlview = ui_mainwindow_get_active_htmlview();
 	style = gtk_widget_get_style(htmlview);
-	state = GTK_WIDGET_STATE(htmlview);
 	g_assert(NULL != style);
 
 	g_assert(NULL == themeColors);
-	themeColors = g_slist_append(themeColors, render_get_theme_color("GTK-COLOR-FG",    style->fg[state]));
-	themeColors = g_slist_append(themeColors, render_get_theme_color("GTK-COLOR-BG",    style->bg[state]));
-	themeColors = g_slist_append(themeColors, render_get_theme_color("GTK-COLOR-LIGHT", style->light[state]));
-	themeColors = g_slist_append(themeColors, render_get_theme_color("GTK-COLOR-DARK",  style->dark[state]));
-	themeColors = g_slist_append(themeColors, render_get_theme_color("GTK-COLOR-MID",   style->mid[state]));
-	themeColors = g_slist_append(themeColors, render_get_theme_color("GTK-COLOR-BASE",  style->base[state]));
-	themeColors = g_slist_append(themeColors, render_get_theme_color("GTK-COLOR-TEXT",  style->text[state]));
+	themeColors = g_slist_append(themeColors, render_get_theme_color("GTK-COLOR-FG",    style->fg[GTK_STATE_NORMAL]));
+	themeColors = g_slist_append(themeColors, render_get_theme_color("GTK-COLOR-BG",    style->bg[GTK_STATE_NORMAL]));
+	themeColors = g_slist_append(themeColors, render_get_theme_color("GTK-COLOR-LIGHT", style->light[GTK_STATE_NORMAL]));
+	themeColors = g_slist_append(themeColors, render_get_theme_color("GTK-COLOR-DARK",  style->dark[GTK_STATE_NORMAL]));
+	themeColors = g_slist_append(themeColors, render_get_theme_color("GTK-COLOR-MID",   style->mid[GTK_STATE_NORMAL]));
+	themeColors = g_slist_append(themeColors, render_get_theme_color("GTK-COLOR-BASE",  style->base[GTK_STATE_NORMAL]));
+	themeColors = g_slist_append(themeColors, render_get_theme_color("GTK-COLOR-TEXT",  style->text[GTK_STATE_NORMAL]));
 }
 
 static gchar * render_set_theme_colors(gchar *css) {
