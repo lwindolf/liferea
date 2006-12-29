@@ -5,6 +5,7 @@
 	* Removes the memory usage/disk access optimization preference.
 	* Removes the internal browser module preference in favour of an 
 	  automatic priority based selection.
+	* HTML view respects GTK theme colors now.
 
 
 2006-12-17  Lars Lindner  <lars.lindner@gmail.com>

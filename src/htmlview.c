@@ -34,6 +34,8 @@
 #include "render.h"
 #include "ui/ui_htmlview.h"
 
+extern htmlviewPluginPtr htmlviewPlugin;
+
 static struct htmlView_priv {
 	GHashTable	*htmlChunks;	/**< cache of HTML chunks of all displayed items */
 	itemSetPtr	itemSet;	/**< the item set which is displayed */
@@ -151,7 +153,7 @@ void htmlview_start_output(GString *buffer, const gchar *base, gboolean css, gbo
 	}
 
 	if(css)
-		g_string_append(buffer, render_get_css());
+		g_string_append(buffer, render_get_css(htmlviewPlugin->externalCss));
 	
 	/* add predefined scripts to be used for item menu */
 	if(script) {

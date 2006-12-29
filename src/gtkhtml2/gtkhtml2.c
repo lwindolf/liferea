@@ -466,20 +466,21 @@ static gboolean gtkhtml2_scroll_pagedown(GtkWidget *scrollpane) {
 }
 
 static struct htmlviewPlugin gtkhtml2Info = {
-	HTMLVIEW_PLUGIN_API_VERSION,
-	"GtkHTML2",
-	1,
-	gtkhtml2_init,
-	gtkhtml2_deinit,
-	gtkhtml2_new,
-	gtkhtml2_write_html,
-	gtkhtml2_launch_url,
-	gtkhtml2_launch_inside_possible,
-	gtkhtml2_get_zoom_level,
-	gtkhtml2_change_zoom_level,
-	gtkhtml2_scroll_pagedown,
-	/* setProxy = */ NULL,
-	/* set_offline_mode */ NULL
+	.api_version	= HTMLVIEW_PLUGIN_API_VERSION,
+	.name		= "GtkHTML2",
+	.priority	= 1,
+	.externalCss	= FALSE,
+	.plugin_init	= gtkhtml2_init,
+	.plugin_deinit	= gtkhtml2_deinit,
+	.create		= gtkhtml2_new,
+	.write		= gtkhtml2_write_html,
+	.launch		= gtkhtml2_launch_url,
+	.launchInsidePossible = gtkhtml2_launch_inside_possible,
+	.zoomLevelGet	= gtkhtml2_get_zoom_level,
+	.zoomLevelSet	= gtkhtml2_change_zoom_level,
+	.scrollPagedown	= gtkhtml2_scroll_pagedown,
+	.setProxy	= NULL,
+	.setOffLine	= NULL
 };
 
 static struct plugin pi = {

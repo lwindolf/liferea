@@ -80,7 +80,9 @@ void render_parameter_free(renderParamPtr paramSet);
 
 /**
  * Returns CSS definitions for inclusion in XHTML output.
+ *
+ * @param externalCss	TRUE if CSS can be served as file reference
  */
-const gchar * render_get_css(void);
+const gchar * render_get_css(gboolean externalCss);
 
 #endif

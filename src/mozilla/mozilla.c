@@ -46,6 +46,7 @@ static struct htmlviewPlugin mozillaInfo = {
 	.api_version	= HTMLVIEW_PLUGIN_API_VERSION,
 	.name		= "Mozilla",
 	.priority	= 10,
+	.externalCss	= TRUE,
 	.plugin_init	= mozilla_init,
 	.plugin_deinit	= mozembed_deinit,
 	.create		= mozembed_create,

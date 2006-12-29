@@ -181,7 +181,7 @@ static gchar * render_set_theme_colors(gchar *css) {
 	return css;
 }
 
-const gchar * render_get_css(void) {
+const gchar * render_get_css(gboolean externalCss) {
 	
 	if(!css) {   
 		gchar	*styleSheetFile, *defaultStyleSheetFile, *adblockStyleSheetFile;
@@ -191,7 +191,7 @@ const gchar * render_get_css(void) {
 
 		render_get_theme_colors();		
 
-    		css = g_string_new("<style type=\"text/css\">\n<![CDATA[\n");
+    		css = g_string_new(NULL);
 
 		/* font configuration support */
 		font = getStringConfValue(USER_FONT);
@@ -247,8 +247,25 @@ const gchar * render_get_css(void) {
 		}
 
 		g_free(adblockStyleSheetFile);
-
-		g_string_append(css, "\n]]>\n</style>\n");
+		
+		if(externalCss) {
+			/* dump CSS to cache file and create a <style> tag to use the it */
+			gchar *filename = common_create_cache_filename("cache", "style", "css");
+			if(!g_file_set_contents(filename, css->str, -1, NULL))
+				g_warning("Cannot write temporary CSS file \"%s\"!", filename);
+			
+			g_string_free(css, TRUE);
+			
+			css = g_string_new("<style type=\"text/css\"> @import url(file://");
+			g_string_append(css, filename);
+			g_string_append(css, "); </style> ");
+			
+			g_free(filename);
+		} else {
+			/* keep the CSS in memory to serve it as a part of each HTML output */
+			g_string_prepend(css, "<style type=\"text/css\">\n<![CDATA[\n");
+			g_string_append(css, "\n]]>\n</style>\n");
+		}
 	}
 	
 	return css->str;
