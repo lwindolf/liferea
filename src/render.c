@@ -39,6 +39,7 @@
 #include "itemset.h"
 #include "render.h"
 #include "ui/ui_htmlview.h"
+#include "ui/ui_mainwindow.h"
 
 static renderParamPtr	langParams = NULL;	/* the current locale settings (for localization stylesheet) */
 static gchar		*defaultParams = NULL;	/* some default parameters (for rendering stylesheets) */
@@ -123,6 +124,65 @@ xsltStylesheetPtr render_load_stylesheet(const gchar *xsltName) {
 /** cached CSS definitions */
 static GString	*css = NULL;
 
+/** widget background theme colors as 8bit HTML RGB code */
+
+typedef struct themeColor {
+	const gchar	*name;
+	gchar		*value;
+} *themeColorPtr;
+
+static GSList *themeColors = NULL;
+
+/* Determining of theme colors, to be inserted in CSS */
+
+static themeColorPtr render_get_theme_color(const gchar *name, GdkColor themeColor) {
+	themeColorPtr	tc;
+	gushort		r, g, b;
+	
+	r = themeColor.red / 256;
+	g = themeColor.green / 256;
+	b = themeColor.blue / 256;
+	
+	tc = g_new0(struct themeColor, 1);
+	tc->name = name;
+	tc->value = g_strdup_printf("%.2X%.2X%.2X", r, g, b);
+	debug2(DEBUG_HTML, "theme color \"%s\" is %s", tc->name, tc->value);
+	
+	return tc;
+}
+
+static void render_get_theme_colors(void) {
+	GtkWidget	*htmlview;
+	GtkStyle	*style;
+	int		state;
+	
+	htmlview = ui_mainwindow_get_active_htmlview();
+	style = gtk_widget_get_style(htmlview);
+	state = GTK_WIDGET_STATE(htmlview);
+	g_assert(NULL != style);
+
+	g_assert(NULL == themeColors);
+	themeColors = g_slist_append(themeColors, render_get_theme_color("GTK-COLOR-FG",    style->fg[state]));
+	themeColors = g_slist_append(themeColors, render_get_theme_color("GTK-COLOR-BG",    style->bg[state]));
+	themeColors = g_slist_append(themeColors, render_get_theme_color("GTK-COLOR-LIGHT", style->light[state]));
+	themeColors = g_slist_append(themeColors, render_get_theme_color("GTK-COLOR-DARK",  style->dark[state]));
+	themeColors = g_slist_append(themeColors, render_get_theme_color("GTK-COLOR-MID",   style->mid[state]));
+	themeColors = g_slist_append(themeColors, render_get_theme_color("GTK-COLOR-BASE",  style->base[state]));
+	themeColors = g_slist_append(themeColors, render_get_theme_color("GTK-COLOR-TEXT",  style->text[state]));
+}
+
+static gchar * render_set_theme_colors(gchar *css) {
+	GSList	*iter = themeColors;
+	
+	while(iter) {
+		themeColorPtr tc = (themeColorPtr)iter->data;
+		css = common_strreplace(css, tc->name, tc->value);
+		iter = g_slist_next(iter);
+	}
+	
+	return css;
+}
+
 const gchar * render_get_css(void) {
 	
 	if(!css) {   
@@ -130,7 +190,9 @@ const gchar * render_get_css(void) {
 		gchar	*font = NULL;
 		gchar	*fontsize = NULL;
 		gchar	*tmp;
-		
+
+		render_get_theme_colors();		
+
     		css = g_string_new("<style type=\"text/css\">\n<![CDATA[\n");
 
 		/* font configuration support */
@@ -165,11 +227,13 @@ const gchar * render_get_css(void) {
 		styleSheetFile = g_strdup_printf("%s" G_DIR_SEPARATOR_S "liferea.css", common_get_cache_path());
 
 		if(g_file_get_contents(defaultStyleSheetFile, &tmp, NULL, NULL)) {
+			tmp = render_set_theme_colors(tmp);
 			g_string_append(css, tmp);
 			g_free(tmp);
 		}
 
 		if(g_file_get_contents(styleSheetFile, &tmp, NULL, NULL)) {
+			tmp = render_set_theme_colors(tmp);
 			g_string_append(css, tmp);
 			g_free(tmp);
 		}

@@ -20,16 +20,30 @@
  *
  */
 
-/* General note: no style definition should set absolute font sizes,
-   font families or line heigth and spacing.
+/* 
+
+   Font Definitions: 
+   =================
+
+   No style definition should set absolute font sizes,
+   font families or line heigth and spacing. This is to allow a GNOME
+   preference controlled default font size. 
    
-   This is to allow a preference controlled default font size. 
+   Color Definitions:
+   ==================
    
-   If you make changes please check implications with both
-   GtkHTML2 and Mozilla! Please document browser specific
-   decisions with comments! 
+   To allow using GTK theme colors the following key words 
+   will be replaced with the corresponding GTK theme color values:
    
-   Note: relative positioning breaks link in GtkHTML2!
+   GTK-COLOR-FG
+   GTK-COLOR-BG
+   GTK-COLOR-LIGHT
+   GTK-COLOR-DARK
+   GTK-COLOR-MID
+   GTK-COLOR-BASE
+   GTK-COLOR-TEXT
+   
+   General note: relative positioning breaks link in GtkHTML2!
  */
 
 /* redefinition of link style necessary to prevent
@@ -39,15 +53,15 @@ a:visited { 	color:#00007F; }
 a:active { 	color:#FF00FF; }
 
 body {
-	background: white;
-	color: black;
+	background: #GTK-COLOR-BASE;
+	color: #GTK-COLOR-TEXT;
 	padding:0;
 	margin:0;
 }
 
 blockquote {
-        border-left: 2px solid #CCC;
-        background: #F7F7F7;
+        border-left: 2px solid #GTK-COLOR-DARK;
+        background: #GTK-COLOR-BG;
         padding: 5px;
         font-style: italic;
         margin: 5px 20px;
@@ -69,16 +83,17 @@ table.itemhead, table.feedhead {
 	margin:0;
 	width:100%;
 	border:0;
-	border-bottom: 1px solid #888;
+	border-bottom: 1px solid #GTK-COLOR-DARK;
 	clear:both;
+	color:#GTK-COLOR-TEXT;
 }
 
 .flagged {
-	background-color:#FAA;
+	background-color:#F77;
 }
 
 .unflagged, .feedhead {
-	background-color:#DDD;
+	background-color: #GTK-COLOR-MID;
 }
 
 table.itemhead * td {
@@ -88,7 +103,7 @@ table.itemhead * td {
 
 table.itemhead * a.itemhead {
 	text-decoration:none;
-	color:black;
+	color:#GTK-COLOR-TEXT;
 	font-weight:bold;
 }
 
@@ -102,10 +117,10 @@ td.headright {
 }
 
 table.headmeta {
-	background:#F0F0F0;
+	background:#GTK-COLOR-BG;
 	width:100%;
 	border:0;
-	border-bottom:#C0C0C0 solid 1px;
+	border-bottom:#GTK-COLOR-MID solid 1px;
 	margin:0;
 }
 
@@ -126,11 +141,11 @@ table.headmeta td {
 
 .itemmenu a {
 	text-decoration:none;
-	color:#777;
+	color:#GTK-COLOR-TEXT;
 }
 
 .itemmenu a:hover {
-	color:#333;
+
 }
 
 .itemmenu * span {
@@ -212,7 +227,7 @@ a.favicon img {
 }
 
 .summaryunflagged a {
-	color:black;
+	color:#GTK-COLOR-TEXT;
 }
 
 hr.summary {
@@ -241,8 +256,8 @@ hr.summary {
 div.xmlparseroutput {
 	margin:10px 0px 10px 15px;
 	padding:5px;
-	border:2px solid black;
-	background:white;
+	border:2px solid #GTK-COLOR-DARK;
+	background:#GTK-COLOR-LIGHT;
 }
 
 span.details, span.detaillink {
@@ -265,8 +280,8 @@ span.showmore {
 div.blogchanneltitle {
 	padding-left:10px;
 	padding-right:10px;
-	background-color:#505050;
-	color:white;
+	background-color:#GTK-COLOR-DARK;
+	color:#GTK-COLOR-TEXT;
 }
 
 .slash {
@@ -289,17 +304,17 @@ div.photoheader {
 	margin:10px 0;
 	padding-left:10px;
 	padding-right:10px;
-	background-color:#505050;
-	color:white;
+	background-color:#GTK-COLOR-DARK;
+	color:#GTK-COLOR-TEXT;
 }
 
 table.enclosure {
-	background:#CCC;
+	background:#CCC;	// fixed color because xspf background is fixed #CCC
 	width:100%;
 	margin:0;
 	border:0;
-	border-top:#FFF solid 1px;
-	border-bottom:#777 solid 1px;
+	border-top:#GTK-COLOR-LIGHT solid 1px;
+	border-bottom:#GTK-COLOR-DARK solid 1px;
 }
 
 table.enclosure * td {

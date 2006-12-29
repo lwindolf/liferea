@@ -532,8 +532,8 @@ void ui_mainwindow_init(int mainwindowState) {
 	buffer = g_string_new(NULL);
 	htmlview_start_output(buffer, NULL, TRUE, FALSE);
 	g_string_append(buffer,    "<div style=\"padding:8px\">"
-	                           "<div style=\"background-color:#eee;padding:5px;border:solid 1px #aaa\">"
-				   "<table border=\"0\" cellpadding=\"5px\"><tr><td>"
+	                           "<div class=\"headmeta\" style=\"border:solid 1px #aaa\">"
+				   "<table class=\"headmeta\" style=\"padding:5px; font-size:120%\" border=\"0\" cellpadding=\"5px\"><tr><td>"
 				   // add application icon
 				   "<img src=\""
 				   PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S
