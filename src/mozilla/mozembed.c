@@ -43,6 +43,8 @@
 
 #define EMPTY "<html><body></body></html>"
 
+extern GtkWidget *mainwindow;
+
 /* points to the URL actually under the mouse pointer or is NULL */
 static gchar		*selectedURL = NULL;
 
@@ -221,6 +223,7 @@ static gint mozembed_open_uri_cb (GtkMozEmbed *embed, const char *uri, gpointer 
    The signal setting was derived from the Galeon source. */
 GtkWidget * mozembed_create(gboolean forceInternalBrowsing) {
 	GtkWidget	*widget;
+	gchar		*bgColor;
 	int		i;
 	
 	/* signals to connect on each embed widget */
@@ -266,6 +269,15 @@ GtkWidget * mozembed_create(gboolean forceInternalBrowsing) {
 	}
 	
 	g_object_set_data(G_OBJECT(widget), "internal_browsing", GINT_TO_POINTER(forceInternalBrowsing));
+	
+	/* enforce GTK theme background color as document background */	
+	bgColor = g_strdup_printf("#%.2x%.2x%.2x",
+	                          mainwindow->style->base[GTK_STATE_NORMAL].red >> 8,
+	                          mainwindow->style->base[GTK_STATE_NORMAL].green >> 8,
+	                          mainwindow->style->base[GTK_STATE_NORMAL].blue >> 8);
+
+	mozsupport_preference_set("browser.display.background_color", bgColor);
+	g_free(bgColor);
 	
 	return widget;
 }
