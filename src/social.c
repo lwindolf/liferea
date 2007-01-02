@@ -124,7 +124,9 @@ void social_init(void) {
 	social_register_site("Yahoo My Web",	"http://myweb2.search.yahoo.com/myresults/bookmarklet?u=%s&t=%s", TRUE, FALSE);
 	social_register_site("zurpy",		"http://tag.zurpy.com/?box=1&url=%s&title=%s", TRUE, FALSE);
 
-	social_set_site(getStringConfValue(SOCIAL_BM_SITE));
+	gchar *social_site=getStringConfValue(SOCIAL_BM_SITE);
+	social_set_site(social_site);
+	g_free(social_site);
 	
 	if(!site)
 		social_set_site("del.icio.us");		/* set default if necessary */

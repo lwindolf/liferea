@@ -77,7 +77,8 @@ static void script_config_load(void) {
 			xmlFreeDoc(doc);		
 		}
 	}
-	
+
+	g_free(filename);
 	scriptConfigLoading = FALSE;
 }
 
