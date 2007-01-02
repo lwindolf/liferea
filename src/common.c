@@ -480,7 +480,7 @@ gboolean common_xpath_foreach_match(xmlNodePtr node, gchar *expr, xpathMatchFunc
 	return FALSE;
 }
 
-xmlDocPtr common_parse_xml(gchar *data, guint length, gboolean recovery, errorCtxtPtr errCtx) {
+xmlDocPtr common_parse_xml(gchar *data, size_t length, gboolean recovery, errorCtxtPtr errCtx) {
 	xmlParserCtxtPtr	ctxt;
 	xmlDocPtr		doc;
 	
@@ -523,7 +523,7 @@ xmlDocPtr common_parse_xml_feed(feedParserCtxtPtr fpc) {
 	errors = g_new0(struct errorCtxt, 1);
 	errors->msg = fpc->feed->parseErrors;
 	
-	fpc->doc = common_parse_xml(fpc->data, fpc->dataLength, fpc->recovery, errors);
+	fpc->doc = common_parse_xml(fpc->data, (size_t)fpc->dataLength, fpc->recovery, errors);
 	if(!fpc->doc) {
 		debug1(DEBUG_PARSING, "xmlReadMemory: could not parse feed \"%s\"!\n", fpc->node->title);
 		g_string_prepend(fpc->feed->parseErrors, _("XML Parser: Could not parse document:\n"));
