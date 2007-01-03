@@ -156,8 +156,12 @@ void itemset_remove_item(itemSetPtr itemSet, itemPtr item) {
 		node_update_new_count(itemSet->node, -1);
 	if(item->popupStatus)
 		itemSet->node->popupCount--;
+		
+	/* remove from duplicate cache */
+	if(item->validGuid)
+		item_guid_list_remove_id(item);
 
-	/* propagate item removal to itemset type specific implementation */
+	/* perform itemset type specific removal actions */
 	switch(itemSet->type) {
 		case ITEMSET_TYPE_FEED:
 		case ITEMSET_TYPE_FOLDER:
