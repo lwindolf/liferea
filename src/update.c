@@ -169,16 +169,16 @@ static char* update_exec_filter_cmd(gchar *cmd, gchar *data, gchar **errorOutput
 	
 	fd = g_mkstemp(tmpfilename);
 	
-	if (fd == -1) {
+	if(fd == -1) {
 		debug1(DEBUG_UPDATE, "Error opening temp file %s to use for filtering!", tmpfilename);
 		*errorOutput = g_strdup_printf(_("Error opening temp file %s to use for filtering!"), tmpfilename);
 		g_free(tmpfilename);
 		return NULL;
 	}	
 		
-	file = fdopen (fd, "w");
-	fwrite (data, strlen(data), 1, file);
-	fclose (file);
+	file = fdopen(fd, "w");
+	fwrite(data, strlen(data), 1, file);
+	fclose(file);
 
 	*size = 0;
 	command = g_strdup_printf("%s < %s", cmd, tmpfilename);
@@ -189,7 +189,7 @@ static char* update_exec_filter_cmd(gchar *cmd, gchar *data, gchar **errorOutput
 			size_t len;
 			out = g_realloc(out, *size+1025);
 			len = fread(&out[*size], 1, 1024, p);
-			if (len > 0)
+			if(len > 0)
 				*size += len;
 		}
 		status = pclose(p);
@@ -568,8 +568,7 @@ static gboolean update_dequeue_results(gpointer user_data) {
 }
 
 void update_init(void) {
-	int	i;
-	int	count;
+	gushort	i, count;
 
 	downloadlib_init();
 	

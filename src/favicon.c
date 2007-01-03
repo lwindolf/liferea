@@ -127,7 +127,7 @@ static void favicon_download_icon_cb(requestPtr request) {
 	   /*(!strncmp("image", request->contentType, 5))*/) {
 		GdkPixbufLoader *loader = gdk_pixbuf_loader_new();
 		GdkPixbuf *pixbuf;
-		if(gdk_pixbuf_loader_write(loader, (guchar *)request->data, request->size, &err)) {
+		if(gdk_pixbuf_loader_write(loader, (guchar *)request->data, (gsize)request->size, &err)) {
 			if(gdk_pixbuf_loader_close(loader, &err)) {
 				pixbuf = gdk_pixbuf_loader_get_pixbuf(loader);
 				if(pixbuf) {
@@ -231,7 +231,7 @@ static gint count_slashes(const gchar *str) {
 	gint		slashes = 0;
 	
 	slashes = 0;
-	while(*tmp) {if(*tmp == '/') slashes++;tmp++; }
+	while(*tmp) { if(*tmp == '/') slashes++;tmp++; }
 	
 	return slashes;
 }
