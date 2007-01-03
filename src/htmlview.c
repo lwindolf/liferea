@@ -107,6 +107,7 @@ gchar * htmlview_render_item(itemPtr item) {
 	   single feed without item descriptions would make no sense. */
 	   
 	summaryMode = (ITEMSET_TYPE_FOLDER != htmlView_priv.itemSet->type) && 
+	              (ITEMSET_TYPE_VFOLDER != htmlView_priv.itemSet->type) && 
 	              (htmlView_priv.missingContent > 3);
 	
 	/* do the XML serialization */
