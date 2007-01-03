@@ -265,6 +265,9 @@ static guint node_get_max_item_count(nodePtr node) {
 	}
 }
 
+// FIXME: the "node" merging is obviously at itemset abstraction level
+// and therefore needs to be moved!
+
 /**
  * Determine wether a given item is to be merged
  * into the itemset or if it was already added.
@@ -285,7 +288,7 @@ static gboolean node_merge_check(itemSetPtr itemSet, itemPtr item) {
 	return FALSE;
 }
 
-/* only to be called by node_merge_items() */
+/* Only to be called by node_merge_items() */
 static void node_merge_item(nodePtr node, itemPtr item) {
 
 	debug3(DEBUG_UPDATE, "trying to merge \"%s\" (id=%d) to node \"%s\"", item_get_title(item), item->nr, node_get_title(node));
@@ -301,6 +304,14 @@ static void node_merge_item(nodePtr node, itemPtr item) {
 		
 		/* step 2: check for matching vfolders */
 		vfolder_check_item(item);
+		
+		/* step 3: duplicate detection, mark read if it is a duplicate */
+		if(item_guid_list_check_id(item)) {
+			item->readStatus = TRUE;
+			debug2(DEBUG_UPDATE, "-> duplicate guid detected: %s -> %s\n", item->id, item->title);
+		}
+		
+		item_guid_list_add_id(item);
 	} else {
 		debug2(DEBUG_UPDATE, "-> not adding \"%s\" to node \"%s\"...", item_get_title(item), node_get_title(node));
 		item_free(item);

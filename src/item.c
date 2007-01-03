@@ -38,9 +38,54 @@
 #include "support.h"
 #include "social.h"
 #include "vfolder.h"
-#include "ui/ui_itemlist.h" // FIXME
+//#include "ui/ui_itemlist.h" // FIXME
 
-/* function to create a new feed structure */
+/* Item duplicate handling */
+
+/*
+ * To manage duplicate items we keep a hash of all item GUIDs
+ * (note: non-globally unique ids are not managed in this list!) 
+ * and for each GUID we keep a list of the parent feeds containing
+ * items with this GUID. Precondition is of course that GUIDs
+ * are unique per feed which is ensured in the parsing/merging
+ * code. 
+ */
+static GHashTable *itemGuids = NULL;
+
+void item_guid_list_add_id(itemPtr item) {
+	GSList	*iter;
+	
+	g_assert(TRUE == item->validGuid);
+	
+	if(!itemGuids)
+		itemGuids = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
+
+	iter = (GSList *)g_hash_table_lookup(itemGuids, item->id);
+	iter = g_slist_append(iter, item->sourceNode);
+	g_hash_table_insert(itemGuids, g_strdup(item->id), iter);
+}
+
+gboolean item_guid_list_check_id(itemPtr item) {
+
+	if(!itemGuids)
+		return FALSE;
+
+	return (NULL != g_hash_table_lookup(itemGuids, item->id));
+}
+
+void item_guid_list_remove_id(itemPtr item) {
+	GSList	*iter;
+	
+	if(!itemGuids)
+		return;
+
+	iter = (GSList *)g_hash_table_lookup(itemGuids, item->id);
+	iter = g_slist_remove(iter, item->sourceNode);
+	g_hash_table_insert(itemGuids, g_strdup(item->id), iter);
+}
+
+/* item handling */
+
 itemPtr item_new(void) {
 	itemPtr		item;
 	
@@ -67,6 +112,7 @@ itemPtr item_copy(itemPtr item) {
 	copy->popupStatus = FALSE;
 	copy->flagStatus = item->flagStatus;
 	copy->time = item->time;
+	copy->validGuid = item->validGuid;
 	
 	/* the following line allows state propagation in item.c */
 	copy->sourceNode = item->itemSet->node;
@@ -131,6 +177,8 @@ const gchar *	item_get_real_source_title(itemPtr item) { return item->real_sourc
 
 void item_free(itemPtr item) {
 
+	/* Explicitely no removal from GUID list here! As item_free is used for unloading too. */
+
 	g_free(item->title);
 	g_free(item->source);
 	g_free(item->real_source_url);
@@ -188,6 +236,9 @@ itemPtr item_parse_cache(xmlNodePtr cur, gboolean migrateCache) {
 		else if(!xmlStrcmp(cur->name, BAD_CAST"id"))
 			item_set_id(item, tmp);
 			
+		else if(!xmlStrcmp(cur->name, BAD_CAST"validGuid"))
+			item->validGuid = TRUE;
+			
 		else if(!xmlStrcmp(cur->name, BAD_CAST"nr"))
 			item->nr = item->sourceNr = atol(tmp);
 			
@@ -215,6 +266,9 @@ itemPtr item_parse_cache(xmlNodePtr cur, gboolean migrateCache) {
 	
 	if(migrateCache && item->description)
 		item_set_description(item, common_text_to_xhtml(item->description));
+		
+	if(item->validGuid)
+		item_guid_list_add_id(item);
 
 	return item;
 }
@@ -251,6 +305,9 @@ void item_to_xml(itemPtr item, xmlNodePtr feedNode, gboolean rendering) {
 
 	if(item_get_id(item))
 		xmlNewTextChild(itemNode, NULL, "id", item_get_id(item));
+		
+	if(item->validGuid)
+		xmlNewTextChild(itemNode, NULL, "validGuid", BAD_CAST "true");		
 
 	tmp = g_strdup_printf("%ld", item->nr);
 	xmlNewTextChild(itemNode, NULL, "nr", tmp);
