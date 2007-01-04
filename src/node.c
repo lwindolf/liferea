@@ -306,12 +306,14 @@ static void node_merge_item(nodePtr node, itemPtr item) {
 		vfolder_check_item(item);
 		
 		/* step 3: duplicate detection, mark read if it is a duplicate */
-		if(item_guid_list_check_id(item)) {
-			item->readStatus = TRUE;
-			debug2(DEBUG_UPDATE, "-> duplicate guid detected: %s -> %s\n", item->id, item->title);
+		if(item->validGuid) {
+			if(item_guid_list_check_id(item)) {
+				item->readStatus = TRUE;
+				debug2(DEBUG_UPDATE, "-> duplicate guid detected: %s -> %s\n", item->id, item->title);
+			}
+
+			item_guid_list_add_id(item);
 		}
-		
-		item_guid_list_add_id(item);
 	} else {
 		debug2(DEBUG_UPDATE, "-> not adding \"%s\" to node \"%s\"...", item_get_title(item), node_get_title(node));
 		item_free(item);
