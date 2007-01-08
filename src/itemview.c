@@ -219,6 +219,21 @@ void itemview_update_item(itemPtr item) {
 	htmlview_update_item(item);
 }
 
+void itemview_update_node_info(itemSetPtr itemSet) {
+
+	if(!itemView_priv.itemSet)
+		return;
+		
+	if(itemView_priv.itemSet != itemSet)
+		return;
+		
+	if(ITEMVIEW_NODE_INFO != itemView_priv.mode)
+		return;
+		
+	itemView_priv.needsHTMLViewUpdate = TRUE;
+	/* Just setting the update flag, because node info is not cached */
+}
+
 void itemview_update(void) {
 
 	if(itemView_priv.needsHTMLViewUpdate) {
