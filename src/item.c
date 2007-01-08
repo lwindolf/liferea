@@ -38,7 +38,6 @@
 #include "support.h"
 #include "social.h"
 #include "vfolder.h"
-//#include "ui/ui_itemlist.h" // FIXME
 
 /* Item duplicate handling */
 
