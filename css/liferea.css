@@ -187,7 +187,7 @@ a.favicon img {
 }
 
 /* styles to realize shading of new items in condensed mode */
-.itemshaded { background:#ffe; padding:1px; margin:0; }
+.itemshaded { background:#ffe; color:black; padding:1px; margin:0; }
 
 .itemunshaded { padding:1px; margin:0; }
 
@@ -199,6 +199,7 @@ a.favicon img {
 .summaryshaded a {
 	display:block;
 	background:#ffe;
+	color:black;
 	text-decoration:none;
 	padding:1px 0px;
 	font-weight:bold;
@@ -206,6 +207,7 @@ a.favicon img {
 
 .summaryunshaded a {
 	display:block;
+	color:#GTK-COLOR-TEXT;
 	text-decoration:none;
 	padding:1px 0px;
 }
@@ -221,7 +223,6 @@ a.favicon img {
 }
 
 .summaryunflagged a {
-	color:#GTK-COLOR-TEXT;
 }
 
 hr.summary {
