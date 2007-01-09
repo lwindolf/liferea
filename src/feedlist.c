@@ -109,6 +109,8 @@ static void feedlist_unset_new_items(nodePtr node) {
 		itemlist_mark_all_old(node->itemSet);
 		node_unload(node);
 	}
+	
+	node_foreach_child(node, feedlist_unset_new_items);
 }
 
 void feedlist_reset_new_item_count(void) {

@@ -625,6 +625,7 @@ void node_set_itemset(nodePtr node, itemSetPtr itemSet) {
 		iter = g_list_next(iter);
 	}
 	
+	node->newCount = 0;	/* reset to avoid counting errors (FIXME: very bad solution!) */
 	node_update_counters(node);
 }
 

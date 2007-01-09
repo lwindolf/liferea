@@ -502,6 +502,8 @@ void itemlist_mark_all_old(itemSetPtr itemSet) {
 		iter = g_list_next(iter);
 	}
 	
+	itemSet->node->needsCacheSave = TRUE;
+	
 	/* No GUI updating necessary... */
 }
 
