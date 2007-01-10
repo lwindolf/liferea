@@ -1394,6 +1394,10 @@ static void feed_remove(nodePtr node) {
 
 	favicon_remove_from_cache(node->id);
 	notification_node_removed(node);
+	
+	/* When just dropping unread items, the parent unread count must be corrected */
+	node_update_unread_count(node->parent, (-1)*node->unreadCount);
+	
 	ui_node_remove_node(node);
 	
 	feed_remove_from_cache(node);
