@@ -280,8 +280,8 @@ AM_GCONF_SOURCE_2
 pkg_modules="	gtk+-2.0 >= 2.8.0 
 		pango >= 1.4.0
 		gconf-2.0 >= 1.1.9 
-		libxml-2.0 >= 2.4.1
-		libxslt
+		libxml-2.0 >= 2.6.27
+		libxslt >= 1.1.19
 		gmodule-2.0 >= 2.0.0"
 
 PKG_CHECK_MODULES(PACKAGE, [$pkg_modules])
