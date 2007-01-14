@@ -217,13 +217,13 @@ msgid ""
 "Unexpected end of character sequence or corrupt UTF-8 encoding! Some "
 "characters were dropped!"
 msgstr ""
-"Karakter sırası beklenmeyen bir şekilde sonlandı ya da UTF-8 kodlaması 
-bozuk! Bazı karakterler alınmadı!"
+"Karakter sırası beklenmeyen bir şekilde sonlandı ya da UTF-8 kodlaması "
+"bozuk! Bazı karakterler alınmadı!"
 
 #: ../src/export.c:143
 #, c-format
 msgid "Error renaming "
-msgstr "%s\nin ismi %s\n\ye değiştirilirken hata"
+msgstr ""
 
 #: ../src/export.c:304 ../src/export.c:306
 #, c-format
