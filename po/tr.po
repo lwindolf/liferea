@@ -223,7 +223,7 @@ msgstr ""
 #: ../src/export.c:143
 #, c-format
 msgid "Error renaming "
-msgstr ""
+msgstr "İsim değiştirilirken hata"
 
 #: ../src/export.c:304 ../src/export.c:306
 #, c-format
