@@ -728,6 +728,7 @@ feedHandlerPtr atom10_init_feed_handler(void) {
 		atom10_add_ns_handler(ns_cC_getRSSNsHandler());
 		atom10_add_ns_handler(ns_photo_getRSSNsHandler());
 		atom10_add_ns_handler(ns_pb_getRSSNsHandler());
+		atom10_add_ns_handler(ns_wfw_getRSSNsHandler());
 
 	}	
 	/* prepare feed handler structure */

@@ -181,6 +181,7 @@ void item_free(itemPtr item) {
 	if(item->commentFeed) {
 		node_unload(item->commentFeed);
 		node_free(item->commentFeed);
+		node_remove(item->commentFeed);
 	}
 
 	g_free(item->title);

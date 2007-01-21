@@ -367,6 +367,7 @@ feedHandlerPtr rss_init_feed_handler(void) {
 		rss_add_ns_handler(ns_cC_getRSSNsHandler());
 		rss_add_ns_handler(ns_photo_getRSSNsHandler());
 		rss_add_ns_handler(ns_pb_getRSSNsHandler());
+		rss_add_ns_handler(ns_wfw_getRSSNsHandler());
 	}
 							
 	/* prepare feed handler structure */
