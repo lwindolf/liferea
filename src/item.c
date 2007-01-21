@@ -177,6 +177,11 @@ const gchar *	item_get_real_source_title(itemPtr item) { return item->real_sourc
 void item_free(itemPtr item) {
 
 	/* Explicitely no removal from GUID list here! As item_free is used for unloading too. */
+	
+	if(item->commentFeed) {
+		node_unload(item->commentFeed);
+		node_free(item->commentFeed);
+	}
 
 	g_free(item->title);
 	g_free(item->source);
@@ -255,13 +260,28 @@ itemPtr item_parse_cache(xmlNodePtr cur, gboolean migrateCache) {
 			
 		else if(!xmlStrcmp(cur->name, BAD_CAST"attributes"))
 			item->metadata = metadata_parse_xml_nodes(cur);
-		
+			
+		else if(!xmlStrcmp(cur->name, BAD_CAST"monitorComments"))
+			item->monitorComments = TRUE;
+			
+		else if(!xmlStrcmp(cur->name, BAD_CAST"commentFeedId")) {
+			item->commentFeed = node_new();
+			node_set_id(item->commentFeed, tmp);
+			node_set_type(item->commentFeed, feed_get_node_type());
+		}
+			
 		g_free(tmp);	
 		tmp = NULL;
 		cur = cur->next;
 	}
 	
 	item->hasEnclosure = (NULL != metadata_list_get(item->metadata, "enclosure"));
+	
+	if(item->commentFeed) {
+		feedPtr	cfeed = feed_new((gchar *)metadata_list_get(item->metadata, "commentFeedUri"), NULL, NULL);
+		node_set_data(item->commentFeed, cfeed);
+		node_initial_load(item->commentFeed);
+	}
 	
 	if(migrateCache && item->description)
 		item_set_description(item, common_text_to_xhtml(item->description));
@@ -341,4 +361,10 @@ void item_to_xml(itemPtr item, xmlNodePtr feedNode, gboolean rendering) {
 	}		
 
 	metadata_add_xml_nodes(item->metadata, itemNode);
+	
+	if(item->monitorComments)
+		xmlNewTextChild(itemNode, NULL, "monitorComments", BAD_CAST "true");
+		
+	if(item->commentFeed)
+		xmlNewTextChild(itemNode, NULL, "commentFeedId", node_get_id(item->commentFeed));
 }

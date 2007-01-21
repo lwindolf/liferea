@@ -248,6 +248,7 @@ void metadata_init(void) {
 	metadata_type_register("category",		METADATA_TYPE_HTML);
 	metadata_type_register("enclosure",		METADATA_TYPE_URL);
 	metadata_type_register("commentsUri",		METADATA_TYPE_URL);
+	metadata_type_register("commentFeedUri",	METADATA_TYPE_URL);
 	metadata_type_register("feedTitle",		METADATA_TYPE_HTML);
 	
 	/* types for aggregation NS */

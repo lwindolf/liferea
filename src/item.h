@@ -63,6 +63,9 @@ typedef struct item {
 	GHashTable	*tmpdata;		/**< Temporary data hash used during stateful parsing */
 	time_t		time;			/**< Last modified date of the headline */
 	
+	gboolean	monitorComments;	/**< TRUE if peridioc check of comment feed is requested */
+	struct node	*commentFeed;		/**< comment feed structure */
+	
 	gulong		nr;			/**< Per item set unique item id */
 	struct itemSet	*itemSet;		/**< Pointer to the item set containing this item  */
 	gulong 		sourceNr;		/**< Like nr but the number in the sourceNode item set (used for searches and vfolders) */
