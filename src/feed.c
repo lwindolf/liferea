@@ -977,10 +977,25 @@ const gchar * feed_get_html_url(feedPtr feed) { return feed->htmlUrl; };
 void feed_set_html_url(feedPtr feed, const gchar *htmlUrl) {
 
 	g_free(feed->htmlUrl);
-	if(htmlUrl)
-		feed->htmlUrl = g_strchomp(g_strdup(htmlUrl));
-	else
-		feed->htmlUrl = NULL;
+	feed->htmlUrl = NULL;
+
+	if(htmlUrl) {
+		if(strstr(htmlUrl, "://")) {
+			/* absolute URI can be used directly */
+			feed->htmlUrl = g_strchomp(g_strdup(htmlUrl));
+		} else {
+			/* relative URI part needs to be expanded */
+			gchar *tmp, *source;
+			
+			source = g_strdup(feed_get_source(feed));
+			tmp = strrchr(source, '/');
+			if(tmp)
+				*(tmp+1) = '\0';
+
+			feed->htmlUrl = common_build_url(htmlUrl, source);
+			g_free(source);
+		}
+	}
 }
 
 const gchar * feed_get_image_url(feedPtr feed) { return feed->imageUrl; };
