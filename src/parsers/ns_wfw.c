@@ -40,8 +40,10 @@ static void parse_item_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
  	if(!xmlStrcmp("commentRss", cur->name) || !xmlStrcmp("commentRSS", cur->name))
 		uri = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 
-	if(uri)
+	if(uri) {
 		metadata_list_set(&(ctxt->item->metadata), "commentFeedUri", uri);
+		g_free(uri);
+	}
 }
 
 static void ns_wfw_register_ns(NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash) {
