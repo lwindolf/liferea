@@ -1,7 +1,7 @@
 /**
  * @file render.c generic XSLT rendering handling
  * 
- * Copyright (C) 2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2006-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -154,6 +154,7 @@ static themeColorPtr render_get_theme_color(const gchar *name, GdkColor themeCol
 static void render_get_theme_colors(void) {
 	GtkWidget	*htmlview;
 	GtkStyle	*style;
+//	GdkColor	*color;
 	
 	htmlview = ui_mainwindow_get_active_htmlview();
 	style = gtk_widget_get_style(htmlview);
@@ -167,6 +168,18 @@ static void render_get_theme_colors(void) {
 	themeColors = g_slist_append(themeColors, render_get_theme_color("GTK-COLOR-MID",   style->mid[GTK_STATE_NORMAL]));
 	themeColors = g_slist_append(themeColors, render_get_theme_color("GTK-COLOR-BASE",  style->base[GTK_STATE_NORMAL]));
 	themeColors = g_slist_append(themeColors, render_get_theme_color("GTK-COLOR-TEXT",  style->text[GTK_STATE_NORMAL]));
+	
+/*	color = NULL;
+	gtk_widget_style_get(GTK_WIDGET(mainwindow), "link-color", &color, NULL);
+	if(color)
+		themeColors = g_slist_append(themeColors, render_get_theme_color("GTK-COLOR-NORMAL-LINK", *color));
+	g_free(color);
+
+	color = NULL;	
+	gtk_widget_style_get(GTK_WIDGET(mainwindow), "visited-link-color", &color, NULL);
+	if(color)
+		themeColors = g_slist_append(themeColors, render_get_theme_color("GTK-COLOR-VISITED-LINK", *color));
+	g_free(color);*/
 }
 
 static gchar * render_set_theme_colors(gchar *css) {
