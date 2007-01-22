@@ -1,7 +1,7 @@
 /**
  * @file itemlist.c itemlist handling
  *
- * Copyright (C) 2004-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2007 Lars Lindner <lars.lindner@gmail.com>
  *	      
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -72,6 +72,17 @@ itemPtr itemlist_get_selected(void) {
 	return displayed_item;
 }
 
+static void itemlist_set_selected(itemPtr item) {
+
+	if(displayed_item)
+		script_run_for_hook(SCRIPT_HOOK_ITEM_UNSELECT);
+
+	displayed_item = item;
+		
+	if(displayed_item)
+		script_run_for_hook(SCRIPT_HOOK_ITEM_SELECTED);
+}
+
 nodePtr itemlist_get_displayed_node(void) {
 
 	if(displayed_itemSet)
@@ -88,7 +99,7 @@ static void itemlist_check_for_deferred_action(void) {
 
 	if(displayed_item) {
 		item = displayed_item;
-		displayed_item = NULL;
+		itemlist_set_selected(NULL);
 
 		/* check for removals caused by itemlist filter rule */
 		if(deferred_item_filter) {
@@ -210,7 +221,7 @@ void itemlist_unload(gboolean markRead) {
 		itemlist_check_for_deferred_action();
 	}
 
-	displayed_item = NULL;
+	itemlist_set_selected(NULL);
 	displayed_itemSet = NULL;
 }
 
@@ -391,7 +402,7 @@ void itemlist_remove_item(itemPtr item) {
 		return;
 	
 	if(displayed_item == item) {
-		displayed_item = NULL;
+		itemlist_set_selected(NULL);
 		deferred_item_filter = FALSE;
 		deferred_item_remove = FALSE;
 		itemview_select_item(NULL);
@@ -535,13 +546,10 @@ void itemlist_selection_changed(itemPtr item) {
 		   more matching the display rules because they have changed state */
 		itemlist_check_for_deferred_action();
 
-		if(displayed_item)
-			script_run_for_hook(SCRIPT_HOOK_ITEM_UNSELECT);
-	
 		debug1(DEBUG_GUI, "item list selection changed to \"%s\"", item_get_title(item));
-
-		displayed_item = item;
 		
+		itemlist_set_selected(item);
+	
 		/* set read and unset update status when selecting */
 		if(item) {
 			itemlist_set_read_status(item, TRUE);
@@ -560,9 +568,6 @@ void itemlist_selection_changed(itemPtr item) {
 		ui_node_update(displayed_itemSet->node);
 
 		feedlist_reset_new_item_count();
-	
-		if(displayed_item)
-			script_run_for_hook(SCRIPT_HOOK_ITEM_SELECTED);
 	}
 
 	debug_exit("itemlist_selection_changed");
