@@ -39,6 +39,18 @@ AC_ARG_ENABLE(gnutls,    AS_HELP_STRING([--enable-gnutls],[Attempt to use GNUTLS
 AC_ARG_ENABLE(libnotify, AS_HELP_STRING([--disable-libnotify],[don't compile the libnotify plugin]),,enable_libnotify=yes)
 AC_ARG_ENABLE(lua,       AS_HELP_STRING([--disable-lua],[don't compile with LUA scripting support]),,enable_lua=yes)
 
+AC_MSG_CHECKING([for 64bit platform])
+case "$target" in
+   x86_64-*-*)
+     enable_gtkhtml2=no
+     AC_MSG_RESULT([yes -> disabling GtkHTML2])
+     ;;
+   *)
+     AC_MSG_RESULT([no])
+     ;;
+esac
+
+
 AC_MSG_CHECKING([for some Win32 platform])
 case "$host" in
    *-*-cygwin*)
