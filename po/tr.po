@@ -160,7 +160,7 @@ msgstr "Yardım Konuları"
 
 #: ../src/callbacks.c:125
 msgid "reference_en.html"
-msgstr "reference_tr.html"
+msgstr "reference_en.html"
 
 #: ../src/callbacks.c:126
 msgid "Quick Reference"
@@ -168,7 +168,7 @@ msgstr "Hızlı Başvuru"
 
 #: ../src/callbacks.c:131
 msgid "faq_en.html"
-msgstr "faq_tr.html"
+msgstr "faq_en.html"
 
 #: ../src/callbacks.c:132
 msgid "FAQ"
@@ -1247,7 +1247,7 @@ msgstr ""
 
 #: ../src/interface.c:3355 ../src/ui/ui_mainwindow.c:871
 msgid "Update Monitor"
-msgstr "Gücelleme Denetçisi"
+msgstr "Güncelleme Denetçisi"
 
 #: ../src/interface.c:3370
 msgid "<b>Downloading Now</b>"
