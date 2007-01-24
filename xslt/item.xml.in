@@ -4,7 +4,7 @@
 /**
  * Rendering stylesheet for Liferea (item view: item rendering)
  *
- * Copyright (C) 2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2006-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -323,6 +323,27 @@
   <p>
     <xsl:value-of select="description" disable-output-escaping='yes'/>
   </p>
+  
+  <!-- comment handling -->
+  <xsl:if test="attributes/attribute[ @name = 'commentFeedUri' ]"> 
+     <p>
+     <!-- different menu depending on wether comments already downloaded or not -->
+     <xsl:choose>
+        <xsl:when test="count(comments/item) = 0">
+           (<xsl:element name="a">
+              <xsl:attribute name="href">liferea-load-comments://<xsl:value-of select="sourceId"/>-<xsl:value-of select="sourceNr"/></xsl:attribute>
+              <_span>load comments</_span>
+           </xsl:element>) 
+        </xsl:when>
+        <xsl:otherwise>
+	   <h3><_span>Comments</_span></h3>
+           <xsl:for-each select="comments/item">
+              <xsl:call-template name="comment_item"/>
+	   </xsl:for-each>
+        </xsl:otherwise>
+     </xsl:choose>
+     </p>
+  </xsl:if>
 </div>
 </xsl:element> <!-- end of shading div -->
 </xsl:element> <!-- end of base URL div -->
@@ -343,7 +364,7 @@
 
 <!-- ==================================================================== -->
 
-<!--- enclosure rendering -->
+<!-- enclosure rendering -->
 <xsl:template name="enclosure">
   <xsl:element name="a">
     <xsl:attribute name="class">enclosure</xsl:attribute>
@@ -353,6 +374,16 @@
       <xsl:with-param name="substr" select="'/'" />
     </xsl:call-template>
   </xsl:element>
+</xsl:template>
+
+<!-- ==================================================================== -->
+
+<!-- comment rendering -->
+<xsl:template name="comment_item">
+   <div class="comment">
+      <div class="comment_title"><xsl:value-of select="title"/></div>
+      <div class="comment_body"><xsl:value-of select="description" disable-output-escaping='yes'/></div>
+   </div>
 </xsl:template>
 
 <!-- ==================================================================== -->

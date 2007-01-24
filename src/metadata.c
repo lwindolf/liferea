@@ -138,7 +138,7 @@ void metadata_list_set(GSList **metadata, const gchar *strid, const gchar *data)
 	*metadata = g_slist_append(*metadata, p);
 }
 
-GSList * metadata_list_get(GSList *metadata, const gchar *strid) {
+GSList * metadata_list_get_values(GSList *metadata, const gchar *strid) {
 	GSList *list = metadata;
 	
 	while(list) {
@@ -148,6 +148,14 @@ GSList * metadata_list_get(GSList *metadata, const gchar *strid) {
 		list = list->next;
 	}
 	return NULL;
+}
+
+const gchar * metadata_list_get(GSList *metadata, const gchar *strid) {
+	GSList	*values;
+	
+	values = metadata_list_get_values(metadata, strid);
+	return values?values->data:NULL;
+
 }
 
 GSList * metadata_list_copy(GSList *list) {

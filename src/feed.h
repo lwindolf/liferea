@@ -1,7 +1,7 @@
 /**
  * @file feed.h common feed handling interface
  * 
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -251,17 +251,14 @@ void feed_set_lastmodified(feedPtr feed, const gchar *lastmodified);
 const gchar * feed_get_etag(feedPtr feed);
 void feed_set_etag(feedPtr feed, const gchar *etag);
 
-feedHandlerPtr feed_get_fhp(feedPtr feed);
-
-/* implementation of feed node update request processing callback */
-
 /**
- * Gets called by the download handling to start the
- * result processing for feed nodes.
+ * Parses the feed prepared with the given feed parser context. 
+ * Uses feed type auto discovery if autodiscover is TRUE.
  *
- * @param request	the request to process
+ * @param ctxt		feed parser context
+ * @param autodiscover	TRUE if feed type auto discovery is to be enabled
  */
-void feed_process_update_result(struct request *request);
+void feed_parse(feedParserCtxtPtr ctxt, gboolean autodiscover);
 
 /* implementation of the node type interface */
 

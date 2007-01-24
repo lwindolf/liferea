@@ -175,6 +175,24 @@ div.content, div.foottext {
 	padding:0px 6px 0px 12px;
 }
 
+div.comment {
+	border:1px solid #GTK-COLOR-DARK;
+	background:#GTK-COLOR-BG;
+	margin-bottom:5px;
+}
+
+div.comment_body {
+	padding-left:6px;
+	padding-right:6px;
+}
+
+div.comment_title {
+	padding-left:6px;
+	padding-right:6px;
+	font-weight:bold;
+	background:#GTK-COLOR-DARK;
+}
+
 a.favicon {
 	text-decoration:none;
 }

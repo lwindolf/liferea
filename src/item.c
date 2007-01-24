@@ -1,7 +1,7 @@
 /**
  * @file item.c common item handling
  *
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *	      
  * This program is free software; you can redistribute it and/or modify
@@ -83,7 +83,108 @@ void item_guid_list_remove_id(itemPtr item) {
 	g_hash_table_insert(itemGuids, g_strdup(item->id), iter);
 }
 
-/* item handling */
+/* Item comments handling */
+
+static void item_comments_process_update_result(struct request *request) {
+	feedParserCtxtPtr	ctxt;
+	itemPtr			item = (itemPtr)request->user_data;
+
+	debug_enter("item_comments_process_update_result");
+	
+	g_assert(0 < item->sourceNode->loaded);
+
+	/* note this is to update the feed URL on permanent redirects */
+	if(!strcmp(request->source, metadata_list_get(item->metadata, "commentFeedUri"))) {
+	
+		debug2(DEBUG_UPDATE, "updating comment feed URL from \"%s\" to \"%s\"", 
+		                     metadata_list_get(item->metadata, "commentFeedUri"), 
+				     request->source);
+				     
+		metadata_list_set(&(item->metadata), "commentFeedUri", request->source);
+		item->sourceNode->needsCacheSave = TRUE;
+	}
+	
+	if(401 == request->httpstatus) { /* unauthorized */
+		// FIXME: argh... give some hint in GUI!
+	} else if(410 == request->httpstatus) { /* gone */
+		// FIXME: how to prevent further updates?
+	} else if(304 == request->httpstatus) {
+		debug1(DEBUG_UPDATE, "comment feed \"%s\" did not change", request->source);
+	} else if(request->data) {
+		debug1(DEBUG_UPDATE, "received update result for comment feed \"%s\"", request->source);
+
+		/* parse the new downloaded feed into feed and itemSet */
+		ctxt = feed_create_parser_ctxt();
+		ctxt->feed = feed_new(request->source, NULL, NULL);
+		ctxt->node = node_new();
+		node_set_type(ctxt->node, feed_get_node_type());
+		node_set_data(ctxt->node, ctxt->feed);		
+		ctxt->data = request->data;
+		ctxt->dataLength = request->size;
+		feed_parse(ctxt, FALSE);
+
+		if(ctxt->failed) {
+			debug0(DEBUG_UPDATE, "parsing comment feed failed!");
+		} else {
+			/* drop old comment items and take new ones instead */
+			GList *iter = item->comments->items;
+			while(iter) {
+				item_free((itemPtr)iter->data);
+				iter = g_list_next(iter);
+			}
+			g_list_free(item->comments->items);
+			g_free(item->comments);
+			
+			item->comments = ctxt->itemSet;
+			ctxt->itemSet = NULL;
+			
+			iter = item->comments->items;
+			while(iter) {
+				debug1(DEBUG_UPDATE, " -> %s\n", ((itemPtr)iter->data)->title);
+				iter = g_list_next(iter);
+			}
+			
+			item->sourceNode->needsCacheSave = TRUE;
+		}
+				
+		feed_free_parser_ctxt(ctxt);
+		node_free(ctxt->node);
+	}
+
+	g_free(request->options);
+	item->updateRequest = NULL; 
+
+	itemview_update();
+	
+	node_unload(item->sourceNode);	/* release item from memory */
+	
+	debug_exit("item_comments_process_update_result");
+}
+
+void item_comments_load(itemPtr item) { 
+	struct request	*request;
+	const gchar	*url;
+	
+	url = metadata_list_get(item->metadata, "commentFeedUri");
+
+	debug2(DEBUG_UPDATE, "Updating comments for item \"%s\" (comment URL: %s)", item->title, url);
+	
+	node_load(item->sourceNode);	/* force item to stay in memory */
+	
+	request = update_request_new(item);
+	request->user_data = item;
+	request->options = g_new0(struct updateOptions, 1);
+	request->callback = item_comments_process_update_result;
+	request->source = g_strdup(url);
+	item->updateRequest = request;
+	update_execute_request(request);
+}
+
+void item_comments_monitor(itemPtr item) { item->monitorComments = TRUE; }
+
+void item_comments_unmonitor(itemPtr item) { item->monitorComments = FALSE; }
+
+/* Item handling */
 
 itemPtr item_new(void) {
 	itemPtr		item;
@@ -178,10 +279,13 @@ void item_free(itemPtr item) {
 
 	/* Explicitely no removal from GUID list here! As item_free is used for unloading too. */
 	
-	if(item->commentFeed) {
-		node_unload(item->commentFeed);
-		node_free(item->commentFeed);
-		node_remove(item->commentFeed);
+	if(item->comments) {
+		GList	*iter = item->comments->items;
+		while(iter) {
+			item_free((itemPtr)iter->data);
+			iter = g_list_next(iter);
+		}
+		g_free(item->comments);
 	}
 
 	g_free(item->title);
@@ -192,6 +296,12 @@ void item_free(itemPtr item) {
 	g_free(item->id);
 	g_assert(NULL == item->tmpdata);	/* should be free after rendering */
 	metadata_list_free(item->metadata);
+	
+	if(item->updateRequest)
+		update_cancel_requests((gpointer)item);
+	
+	if(item->updateState)
+		update_state_free(item->updateState);
 
 	g_free(item);
 }
@@ -204,6 +314,26 @@ const gchar * item_get_base_url(itemPtr item) {
 		return itemset_get_base_url(item->itemSet);
 }
 
+static void item_parse_comments(xmlNodePtr cur, itemPtr item) {
+	gchar		*tmp;
+	
+	cur = cur->xmlChildrenNode;
+	while(cur) {
+		if(cur->type != XML_ELEMENT_NODE ||
+		   !(tmp = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)))) {
+			cur = cur->next;
+			continue;
+		}
+
+		if(!xmlStrcmp(cur->name, BAD_CAST"item")) 
+			itemset_append_item(item->comments, item_parse_cache(cur, FALSE));
+
+		g_free(tmp);
+		tmp = NULL;
+		cur = cur->next;
+	}
+}
+
 itemPtr item_parse_cache(xmlNodePtr cur, gboolean migrateCache) {
 	itemPtr 	item;
 	gchar		*tmp;
@@ -213,10 +343,11 @@ itemPtr item_parse_cache(xmlNodePtr cur, gboolean migrateCache) {
 	item = item_new();
 	item->popupStatus = FALSE;
 	item->newStatus = FALSE;
+	item->comments = g_new0(struct itemSet, 1);
+	item->comments->type = ITEMSET_TYPE_FEED;
 	
 	cur = cur->xmlChildrenNode;
 	while(cur) {
-		
 		if(cur->type != XML_ELEMENT_NODE ||
 		   !(tmp = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)))) {
 			cur = cur->next;
@@ -265,24 +396,15 @@ itemPtr item_parse_cache(xmlNodePtr cur, gboolean migrateCache) {
 		else if(!xmlStrcmp(cur->name, BAD_CAST"monitorComments"))
 			item->monitorComments = TRUE;
 			
-		else if(!xmlStrcmp(cur->name, BAD_CAST"commentFeedId")) {
-			item->commentFeed = node_new();
-			node_set_id(item->commentFeed, tmp);
-			node_set_type(item->commentFeed, feed_get_node_type());
-		}
-			
+		else if(!xmlStrcmp(cur->name, BAD_CAST"comments"))
+			item_parse_comments(cur, item);
+		
 		g_free(tmp);	
 		tmp = NULL;
 		cur = cur->next;
 	}
 	
 	item->hasEnclosure = (NULL != metadata_list_get(item->metadata, "enclosure"));
-	
-	if(item->commentFeed) {
-		feedPtr	cfeed = feed_new((gchar *)metadata_list_get(item->metadata, "commentFeedUri"), NULL, NULL);
-		node_set_data(item->commentFeed, cfeed);
-		node_initial_load(item->commentFeed);
-	}
 	
 	if(migrateCache && item->description)
 		item_set_description(item, common_text_to_xhtml(item->description));
@@ -366,6 +488,13 @@ void item_to_xml(itemPtr item, xmlNodePtr feedNode, gboolean rendering) {
 	if(item->monitorComments)
 		xmlNewTextChild(itemNode, NULL, "monitorComments", BAD_CAST "true");
 		
-	if(item->commentFeed)
-		xmlNewTextChild(itemNode, NULL, "commentFeedId", node_get_id(item->commentFeed));
+	if(item->comments) {
+		GList		*iter = item->comments->items;
+		xmlNodePtr	commentsNode = xmlNewChild(itemNode, NULL, "comments", NULL);
+
+ 		while(iter) {
+			item_to_xml((itemPtr)iter->data, commentsNode, FALSE);
+			iter = g_list_next(iter);
+		}
+	}
 }

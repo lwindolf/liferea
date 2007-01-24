@@ -1,7 +1,7 @@
 /**
  * @file item.h common item handling
  * 
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -64,7 +64,9 @@ typedef struct item {
 	time_t		time;			/**< Last modified date of the headline */
 	
 	gboolean	monitorComments;	/**< TRUE if peridioc check of comment feed is requested */
-	struct node	*commentFeed;		/**< comment feed structure */
+	struct itemSet	*comments;		/**< comment feed structure */
+	struct request	*updateRequest;		/**< update request structure used when downloading comments */
+	struct updateState *updateState;	/**< update states (etag, last modified, cookies, last polling times...) used when downloading comments */
 	
 	gulong		nr;			/**< Per item set unique item id */
 	struct itemSet	*itemSet;		/**< Pointer to the item set containing this item  */
@@ -99,6 +101,29 @@ gboolean item_guid_list_check_id(itemPtr item);
  * @param item		item with a valid GUID
  */
 void item_guid_list_remove_id(itemPtr item);
+
+/* Item comments handling */
+
+/**
+ * Triggers immediate comments retrieval (or update) for the given item.
+ *
+ * @param item		the item
+ */
+void item_comments_load(itemPtr item);
+
+/**
+ * Enables permanent comments monitoring for the given item.
+ *
+ * @param item		the item
+ */ 
+void item_comments_monitor(itemPtr item);
+
+/**
+ * Disables permanent comments monitoring for the given item.
+ *
+ * @param item		the item
+ */
+void item_comments_unmonitor(itemPtr item);
 
 /* Item handling */
 

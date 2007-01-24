@@ -1,7 +1,7 @@
 /**
  * @file feed.c common feed handling
  * 
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -867,7 +867,7 @@ gboolean feed_merge_check(itemSetPtr sp, itemPtr new_ip) {
 
 		if((TRUE == ((feedPtr)(sp->node->data))->encAutoDownload) &&
 		   (TRUE == new_ip->newStatus)) {
-			GSList *iter = metadata_list_get(new_ip->metadata, "enclosure");
+			GSList *iter = metadata_list_get_values(new_ip->metadata, "enclosure");
 			while(iter) {
 				debug1(DEBUG_UPDATE, "download enclosure (%s)", (gchar *)iter->data);
 				ui_enclosure_save(NULL, g_strdup(iter->data), NULL);
@@ -1159,14 +1159,14 @@ void feed_update_favicon(nodePtr node) {
 
 /* implementation of feed node update request processing callback */
 
-void feed_process_update_result(struct request *request) {
+static void feed_process_update_result(struct request *request) {
 	feedParserCtxtPtr	ctxt;
 	nodePtr			node = (nodePtr)request->user_data;
 	feedPtr			feed = (feedPtr)node->data;
 	gchar			*old_title, *old_source;
 	gint			old_update_interval;
 
-	debug_enter("ui_feed_process_update_result");
+	debug_enter("feed_process_update_result");
 	
 	node_load(node);
 
@@ -1253,7 +1253,7 @@ void feed_process_update_result(struct request *request) {
 	
 	script_run_for_hook(SCRIPT_HOOK_FEED_UPDATED);
 
-	debug_exit("ui_feed_process_update_result");
+	debug_exit("feed_process_update_result");
 }
 
 /* implementation of the node type interface */
@@ -1365,8 +1365,8 @@ static void feed_schedule_update(nodePtr node, guint flags) {
 		ui_mainwindow_set_status_bar(_("Updating \"%s\""), node_get_title(node));
 		request = update_request_new(node);
 		request->user_data = node;
-		request->callback = feed_process_update_result;
 		request->options = feed->updateOptions;
+		request->callback = feed_process_update_result;
 		feed_prepare_request(feed, request, flags);
 		node->updateRequest = request;
 		update_execute_request(request);

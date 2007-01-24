@@ -177,10 +177,13 @@ struct internalUriType {
 };
 
 static struct internalUriType internalUriTypes[] = {
-	/* { "tag",	FIXME }, */
-	{ "flag",	itemlist_toggle_flag },
-	{ "bookmark",	ui_itemlist_add_item_bookmark },
-	{ NULL,		NULL }
+	/* { "tag",		FIXME }, */
+	{ "flag",		itemlist_toggle_flag },
+	{ "bookmark",		ui_itemlist_add_item_bookmark },
+	{ "load-comments",	item_comments_load },
+	{ "monitor-comments",	item_comments_monitor },
+	{ "unmonitor-comments",	item_comments_unmonitor },
+	{ NULL,			NULL }
 };
 
 void ui_htmlview_on_url(const gchar *url) {

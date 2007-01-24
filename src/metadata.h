@@ -76,14 +76,25 @@ GSList * metadata_list_append(GSList *metadata, const gchar *strid, const gchar 
 void metadata_list_set(GSList **metadata, const gchar *strid, const gchar *data);
 
 /**
+ * Returns the first value of a given type from a specified metadata list.
+ * Do use this function only for single instance types.
+ *
+ * @param metadata	the metadata list
+ * @param strid		the metadata type identifier
+ *
+ * @returns the first value (or NULL)
+ */
+const gchar * metadata_list_get(GSList *metadata, const gchar *strid);
+
+/**
  * Returns a list of all values of a given type from a specified metadata list.
  *
  * @param metadata	the metadata list
  * @param strid		the metadata type identifier
  *
- * @returns a list of values
+ * @returns a list of values (or NULL)
  */
-GSList * metadata_list_get(GSList *metadata, const gchar *strid);
+GSList * metadata_list_get_values(GSList *metadata, const gchar *strid);
 
 /** 
  * Creates a copy of a given metadata list.

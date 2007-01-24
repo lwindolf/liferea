@@ -410,7 +410,7 @@ static void *update_dequeue_requests(void *data) {
 		g_assert(NULL != request);
 		request->state = REQUEST_STATE_PROCESSING;
 
-		debug1(DEBUG_UPDATE, "processing received request (%s)", request->source);
+		debug1(DEBUG_UPDATE, "processing request (%s)", request->source);
 		if(request->callback == NULL) {
 			debug1(DEBUG_UPDATE, "freeing cancelled request (%s)", request->source);
 			update_request_free(request);
