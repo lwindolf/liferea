@@ -154,7 +154,7 @@ static void item_comments_process_update_result(struct request *request) {
 	g_free(request->options);
 	item->updateRequest = NULL; 
 
-	itemview_update_item(item);
+	itemview_update_item(item); 
 	itemview_update();
 	
 	node_unload(item->sourceNode);	/* release item from memory */
@@ -162,23 +162,28 @@ static void item_comments_process_update_result(struct request *request) {
 	debug_exit("item_comments_process_update_result");
 }
 
-void item_comments_load(itemPtr item) { 
+void item_comments_refresh(itemPtr item) { 
 	struct request	*request;
 	const gchar	*url;
 	
 	url = metadata_list_get(item->metadata, "commentFeedUri");
+	
+	if(url) {
+		debug2(DEBUG_UPDATE, "Updating comments for item \"%s\" (comment URL: %s)", item->title, url);
 
-	debug2(DEBUG_UPDATE, "Updating comments for item \"%s\" (comment URL: %s)", item->title, url);
-	
-	node_load(item->sourceNode);	/* force item to stay in memory */
-	
-	request = update_request_new(item);
-	request->user_data = item;
-	request->options = g_new0(struct updateOptions, 1);
-	request->callback = item_comments_process_update_result;
-	request->source = g_strdup(url);
-	item->updateRequest = request;
-	update_execute_request(request);
+		node_load(item->sourceNode);	/* force item to stay in memory */
+
+		request = update_request_new(item);
+		request->user_data = item;
+		request->options = g_new0(struct updateOptions, 1);
+		request->callback = item_comments_process_update_result;
+		request->source = g_strdup(url);
+		item->updateRequest = request;
+		update_execute_request(request);
+
+		itemview_update_item(item); 
+		itemview_update();
+	}
 }
 
 void item_comments_monitor(itemPtr item) { item->monitorComments = TRUE; }
@@ -191,6 +196,11 @@ itemPtr item_new(void) {
 	itemPtr		item;
 	
 	item = g_new0(struct item, 1);
+	
+	item->comments = g_new0(struct itemSet, 1);
+	item->comments->type = ITEMSET_TYPE_FEED;
+	item->updateState = update_state_new();
+	
 	item->newStatus = TRUE;
 	item->popupStatus = TRUE;
 	
@@ -221,6 +231,8 @@ itemPtr item_copy(itemPtr item) {
 
 	/* this copies metadata */
 	copy->metadata = metadata_list_copy(item->metadata);
+	
+	// FIXME: deep copy of comments
 
 	return copy;
 }
@@ -303,7 +315,8 @@ void item_free(itemPtr item) {
 	
 	if(item->updateState)
 		update_state_free(item->updateState);
-
+		
+	g_free(item->commentsError);
 	g_free(item);
 }
 
@@ -317,6 +330,8 @@ const gchar * item_get_base_url(itemPtr item) {
 
 static void item_parse_comments(xmlNodePtr cur, itemPtr item) {
 	gchar		*tmp;
+
+	update_state_import(cur, item->updateState);
 	
 	cur = cur->xmlChildrenNode;
 	while(cur) {
@@ -344,8 +359,6 @@ itemPtr item_parse_cache(xmlNodePtr cur, gboolean migrateCache) {
 	item = item_new();
 	item->popupStatus = FALSE;
 	item->newStatus = FALSE;
-	item->comments = g_new0(struct itemSet, 1);
-	item->comments->type = ITEMSET_TYPE_FEED;
 	
 	cur = cur->xmlChildrenNode;
 	while(cur) {
@@ -493,9 +506,16 @@ void item_to_xml(itemPtr item, xmlNodePtr feedNode, gboolean rendering) {
 		GList		*iter = item->comments->items;
 		xmlNodePtr	commentsNode = xmlNewChild(itemNode, NULL, "comments", NULL);
 
+		update_state_export(commentsNode, item->updateState);
+
  		while(iter) {
 			item_to_xml((itemPtr)iter->data, commentsNode, FALSE);
 			iter = g_list_next(iter);
+		}
+		
+		if(rendering) {
+			xmlNewTextChild(commentsNode, NULL, "commentState", 
+			                (item->updateRequest)?"updating":"ok");
 		}
 	}
 }

@@ -2,7 +2,7 @@
  * @file ui_htmlview.c common interface for browser module implementations
  * and module loading functions
  *
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net> 
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -180,7 +180,7 @@ static struct internalUriType internalUriTypes[] = {
 	/* { "tag",		FIXME }, */
 	{ "flag",		itemlist_toggle_flag },
 	{ "bookmark",		ui_itemlist_add_item_bookmark },
-	{ "load-comments",	item_comments_load },
+	{ "refresh-comments",	item_comments_refresh },
 	{ "monitor-comments",	item_comments_monitor },
 	{ "unmonitor-comments",	item_comments_unmonitor },
 	{ NULL,			NULL }

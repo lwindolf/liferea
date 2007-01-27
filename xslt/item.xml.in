@@ -209,9 +209,6 @@
        <xsl:value-of select="attributes/attribute[ @name = 'author' ]" disable-output-escaping='yes'/>
      </span></b>
    </td>
- <!--<td valign="top">
-  <span><div class='date'><xsl:value-of select="timestr"/></div></span>
- </td>-->
  </tr>
 </xsl:if>  
 <xsl:if test="real_source_url">
@@ -234,7 +231,7 @@
 <xsl:element name="table">
 <!-- construct unique id to allow Javascript showing/hiding of itemmenu -->
 <xsl:attribute name="id"><xsl:value-of select="sourceId"/>-<xsl:value-of select="nr"/></xsl:attribute>
-<xsl:attribute name="class">headmeta itemmenutable</xsl:attribute>
+<xsl:attribute name="class">headmeta hidden</xsl:attribute>
 <xsl:attribute name="cellspacing">0</xsl:attribute>
 <xsl:attribute name="cellpadding">0</xsl:attribute>
 <tr>
@@ -320,29 +317,44 @@
   <xsl:if test="readStatus != '0'">itemunshaded</xsl:if>
 </xsl:attribute>
 <div class='content'>
+  <!-- the items content -->
   <p>
     <xsl:value-of select="description" disable-output-escaping='yes'/>
   </p>
   
   <!-- comment handling -->
   <xsl:if test="attributes/attribute[ @name = 'commentFeedUri' ]"> 
-     <p>
-     <!-- different menu depending on wether comments already downloaded or not -->
+     <p>     
      <xsl:choose>
         <xsl:when test="count(comments/item) = 0">
-           (<xsl:element name="a">
-              <xsl:attribute name="href">liferea-load-comments://<xsl:value-of select="sourceId"/>-<xsl:value-of select="sourceNr"/></xsl:attribute>
-              <_span>load comments</_span>
-           </xsl:element>) 
+           <b><_span>No comments yet.</_span></b>
         </xsl:when>
         <xsl:otherwise>
-	   <h3><_span>Comments</_span></h3>
-           <xsl:for-each select="comments/item">
-              <xsl:call-template name="comment_item"/>
-	   </xsl:for-each>
+	   <b><_span>Comments</_span></b>
+	</xsl:otherwise>
+     </xsl:choose>
+  
+     <!-- Display "comment feed updating" hint -->
+     <xsl:choose>
+        <xsl:when test="comments/commentState = 'updating'">
+           (<_span>Updating...</_span>)
+	</xsl:when>
+        <xsl:otherwise>
+           (<xsl:element name="a">
+              <xsl:attribute name="href">liferea-refresh-comments://<xsl:value-of select="sourceId"/>-<xsl:value-of select="sourceNr"/></xsl:attribute>
+              <_span>Refresh</_span>
+           </xsl:element>)
         </xsl:otherwise>
      </xsl:choose>
-     </p>
+     
+     </p>     
+     <p>
+     
+     <xsl:for-each select="comments/item">
+        <xsl:call-template name="comment_item"/>
+     </xsl:for-each>
+
+     </p>    
   </xsl:if>
 </div>
 </xsl:element> <!-- end of shading div -->

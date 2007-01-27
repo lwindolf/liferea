@@ -1,7 +1,7 @@
 /*
- * Liferea HTML view default stylesheet (three pane mode)
+ * Liferea HTML view default stylesheet
  *
- * (C) 2004-2006 Lars Linder <lars.lindner@gmx.net>
+ * (C) 2004-2007 Lars Linder <lars.lindner@gmail.com>
  * (C) 2004 delusional <delusional@dx13.co.uk>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -123,7 +123,7 @@ table.headmeta td {
 	font-size:0.8em;
 }
 
-.itemmenutable {
+.hidden {
 	visibility:hidden;
 	display:none;
 }

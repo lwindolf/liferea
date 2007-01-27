@@ -67,6 +67,7 @@ typedef struct item {
 	struct itemSet	*comments;		/**< comment feed structure */
 	struct request	*updateRequest;		/**< update request structure used when downloading comments */
 	struct updateState *updateState;	/**< update states (etag, last modified, cookies, last polling times...) used when downloading comments */
+	gchar		*commentsError;		/**< Description of error if comments download failed */
 	
 	gulong		nr;			/**< Per item set unique item id */
 	struct itemSet	*itemSet;		/**< Pointer to the item set containing this item  */
@@ -109,7 +110,7 @@ void item_guid_list_remove_id(itemPtr item);
  *
  * @param item		the item
  */
-void item_comments_load(itemPtr item);
+void item_comments_refresh(itemPtr item);
 
 /**
  * Enables permanent comments monitoring for the given item.

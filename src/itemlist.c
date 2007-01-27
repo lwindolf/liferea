@@ -552,6 +552,8 @@ void itemlist_selection_changed(itemPtr item) {
 	
 		/* set read and unset update status when selecting */
 		if(item) {
+			item_comments_refresh(item);
+			
 			itemlist_set_read_status(item, TRUE);
 			itemlist_set_update_status(item, FALSE);
 			
