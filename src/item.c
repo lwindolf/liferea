@@ -154,6 +154,7 @@ static void item_comments_process_update_result(struct request *request) {
 	g_free(request->options);
 	item->updateRequest = NULL; 
 
+	itemview_update_item(item);
 	itemview_update();
 	
 	node_unload(item->sourceNode);	/* release item from memory */

@@ -19,6 +19,7 @@
  */
 
 #include "conf.h"
+#include "debug.h"
 #include "social.h"
 
 /** list of registered bookmarking sites */
