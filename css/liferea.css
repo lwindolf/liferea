@@ -251,13 +251,17 @@ hr.summary {
 }
 
 /* style for the HTTP error box at the beginning
-   of the feed description */
-#errors {
+   of the feed description and for item comment feeds */
+#errors, #commentFeedError {
 	width:100%;
 	border:0;
 	border-bottom:1px solid black;
 	margin:0;
 	background:#ffa;
+}
+
+#commentFeedError {
+	border:1px solid black;
 }
 
 #parseError, #filterError, #updateError {

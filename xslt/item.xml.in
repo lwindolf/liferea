@@ -336,7 +336,7 @@
   
      <!-- Display "comment feed updating" hint -->
      <xsl:choose>
-        <xsl:when test="comments/commentState = 'updating'">
+        <xsl:when test="comments/updateState = 'updating'">
            (<_span>Updating...</_span>)
 	</xsl:when>
         <xsl:otherwise>
@@ -347,13 +347,23 @@
         </xsl:otherwise>
      </xsl:choose>
      
-     </p>     
-     <p>
+     </p>
      
-     <xsl:for-each select="comments/item">
-        <xsl:call-template name="comment_item"/>
-     </xsl:for-each>
-
+     <!-- Display error box if necessary -->
+     <xsl:if test="comments/updateError">
+        <p>
+	   <div id="errors">
+	      <div id="updateError">
+	         <xsl:value-of select="comments/updateError"/>
+	      </div>
+	   </div>
+	</p>
+     </xsl:if>
+     
+     <p>     
+        <xsl:for-each select="comments/item">
+           <xsl:call-template name="comment_item"/>
+        </xsl:for-each>
      </p>    
   </xsl:if>
 </div>

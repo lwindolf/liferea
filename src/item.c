@@ -105,7 +105,7 @@ static void item_comments_process_update_result(struct request *request) {
 	}
 	
 	if(401 == request->httpstatus) { /* unauthorized */
-		// FIXME: argh... give some hint in GUI!
+		item->commentsError = g_strdup("");
 	} else if(410 == request->httpstatus) { /* gone */
 		// FIXME: how to prevent further updates?
 	} else if(304 == request->httpstatus) {
@@ -150,10 +150,29 @@ static void item_comments_process_update_result(struct request *request) {
 		feed_free_parser_ctxt(ctxt);
 		node_free(ctxt->node);
 	}
+	
+	/* update error message */
+	g_free(item->commentsError);
+	item->commentsError = NULL;
+	
+	if(!(request->httpstatus >= 200) && (request->httpstatus < 400)) {
+		const gchar * tmp;
+		
+		/* first specific codes (guarantees tmp to be set) */
+		tmp = common_http_error_to_str(request->httpstatus);
 
+		/* second netio errors */
+		if(common_netio_error_to_str(request->returncode))
+			tmp = common_netio_error_to_str(request->returncode);
+			
+		item->commentsError = g_strdup(tmp);
+	}	
+
+	/* clean up request */
 	g_free(request->options);
 	item->updateRequest = NULL; 
 
+	/* rerender item */
 	itemview_update_item(item); 
 	itemview_update();
 	
@@ -514,8 +533,11 @@ void item_to_xml(itemPtr item, xmlNodePtr feedNode, gboolean rendering) {
 		}
 		
 		if(rendering) {
-			xmlNewTextChild(commentsNode, NULL, "commentState", 
+			xmlNewTextChild(commentsNode, NULL, "updateState", 
 			                (item->updateRequest)?"updating":"ok");
+			
+			if(item->commentsError)
+				xmlNewTextChild(commentsNode, NULL, "updateError", item->commentsError);
 		}
 	}
 }

@@ -1039,55 +1039,13 @@ static void feed_update_error_status(feedPtr feed, gint httpstatus, gint resultc
 		return;
 	
 	if((200 != httpstatus) || (resultcode != NET_ERR_OK)) {
-		/* first specific codes */
-		switch(httpstatus) {
-			case 401:tmp = _("You are unauthorized to download this feed. Please update your username and "
-			                 "password in the feed properties dialog box.");break;
-			case 402:tmp = _("Payment Required");break;
-			case 403:tmp = _("Access Forbidden");break;
-			case 404:tmp = _("Resource Not Found");break;
-			case 405:tmp = _("Method Not Allowed");break;
-			case 406:tmp = _("Not Acceptable");break;
-			case 407:tmp = _("Proxy Authentication Required");break;
-			case 408:tmp = _("Request Time-Out");break;
-			case 410:tmp = _("Gone. Resource doesn't exist. Please unsubscribe!");break;
-		}
-		/* Then, netio errors */
-		if(!NULL) {
-			switch(resultcode) {
-				case NET_ERR_URL_INVALID:    tmp = _("URL is invalid"); break;
-				case NET_ERR_PROTO_INVALID:  tmp = _("Unsupported network protocol"); break;
-				case NET_ERR_UNKNOWN:
-				case NET_ERR_CONN_FAILED:
-				case NET_ERR_SOCK_ERR:       tmp = _("Error connecting to remote host"); break;
-				case NET_ERR_HOST_NOT_FOUND: tmp = _("Hostname could not be found"); break;
-				case NET_ERR_CONN_REFUSED:   tmp = _("Network connection was refused by the remote host"); break;
-				case NET_ERR_TIMEOUT:        tmp = _("Remote host did not finish sending data"); break;
-					/* Transfer errors */
-				case NET_ERR_REDIRECT_COUNT_ERR: tmp = _("Too many HTTP redirects were encountered"); break;
-				case NET_ERR_REDIRECT_ERR:
-				case NET_ERR_HTTP_PROTO_ERR: 
-				case NET_ERR_GZIP_ERR:           tmp = _("Remote host sent an invalid response"); break;
-					/* These are handled above	
-					   case NET_ERR_HTTP_410:
-					   case NET_ERR_HTTP_404:
-					   case NET_ERR_HTTP_NON_200:
-					*/
-				case NET_ERR_AUTH_FAILED:
-				case NET_ERR_AUTH_NO_AUTHINFO: tmp = _("Authentication failed"); break;
-				case NET_ERR_AUTH_GEN_AUTH_ERR:
-				case NET_ERR_AUTH_UNSUPPORTED: tmp = _("Webserver's authentication method incompatible with Liferea"); break;
-			}
-		}
-		/* And generic messages in the unlikely event that the above didn't work */
-		if(!tmp) {
-			switch(httpstatus / 100) {
-				case 3:tmp = _("Feed not available: Server requested unsupported redirection!");break;
-				case 4:tmp = _("Client Error");break;
-				case 5:tmp = _("Server Error");break;
-				default:tmp = _("(unknown networking error happened)");break;
-			}
-		}
+		/* first specific codes (guarantees tmp to be set) */
+		tmp = common_http_error_to_str(httpstatus);
+
+		/* second netio errors */
+		if(common_netio_error_to_str(resultcode))
+			tmp = common_netio_error_to_str(resultcode);
+
 		errorFound = TRUE;
 		feed->httpError = g_strdup(tmp);
 	}
