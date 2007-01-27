@@ -30,11 +30,9 @@
 #ifndef MD5_H
 #define MD5_H
 
-#ifdef __alpha
-typedef unsigned int uint32;
-#else
-typedef unsigned long uint32;
-#endif
+#include <glib.h>
+
+#define uint32	guint32
 
 struct MD5Context {
 	uint32 buf[4];
