@@ -939,7 +939,7 @@ const gchar * common_http_error_to_str(gint httpstatus) {
 }
 
 const gchar * common_netio_error_to_str(gint netstatus) {
-	gchar	*tmp;
+	gchar	*tmp = NULL;
 	
 	switch(netstatus) {
 		case NET_ERR_URL_INVALID:    tmp = _("URL is invalid"); break;
