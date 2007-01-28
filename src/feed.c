@@ -1019,7 +1019,7 @@ void feed_set_image_url(feedPtr feed, const gchar *imageUrl) {
  * @param resultcode	the update code's return code (see update.h)
  */
 static void feed_update_error_status(feedPtr feed, gint httpstatus, gint resultcode, gchar *filterError) {
-	gchar		*tmp = NULL;
+	const gchar	*errmsg = NULL;
 	gboolean	errorFound = FALSE;
 
 	if(feed->filterError)
@@ -1038,16 +1038,16 @@ static void feed_update_error_status(feedPtr feed, gint httpstatus, gint resultc
 	   (NULL == feed->filterError))
 		return;
 	
-	if((200 != httpstatus) || (resultcode != NET_ERR_OK)) {
+	if((200 != httpstatus) || (resultcode != NET_ERR_OK)) {	
 		/* first specific codes (guarantees tmp to be set) */
-		tmp = common_http_error_to_str(httpstatus);
+		errmsg = common_http_error_to_str(httpstatus);
 
 		/* second netio errors */
 		if(common_netio_error_to_str(resultcode))
-			tmp = common_netio_error_to_str(resultcode);
+			errmsg = common_netio_error_to_str(resultcode);
 
 		errorFound = TRUE;
-		feed->httpError = g_strdup(tmp);
+		feed->httpError = g_strdup(errmsg);
 	}
 	
 	/* if none of the above error descriptions matched... */
