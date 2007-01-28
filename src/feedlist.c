@@ -88,8 +88,8 @@ nodePtr feedlist_get_insertion_point(void) {
 
 /* statistic handling methods */
 
-int feedlist_get_unread_item_count(void) { return unreadCount; }
-int feedlist_get_new_item_count(void) { return newCount; }
+int feedlist_get_unread_item_count(void) { return (unreadCount > 0)?unreadCount:0; }
+int feedlist_get_new_item_count(void) { return (newCount > 0)?newCount:0; }
 
 void feedlist_update_counters(gint unreadDiff, gint newDiff) {
 
