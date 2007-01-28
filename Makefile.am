@@ -30,6 +30,7 @@ EXTRA_DIST = \
 	liferea.spec \
 	src/liferea \
 	src/liferea-add-feed \
+	po/liferea.pot \
 	$(desktop_in_files) \
 	$(desktop_DATA) \
 	$(schema_DATA) \
