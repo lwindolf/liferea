@@ -7,10 +7,10 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Liferea 0.1\n"
+"Project-Id-Version: Liferea 0.2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-12-17 15:32+0100\n"
-"PO-Revision-Date: 2007-01-25 15:24+0300\n"
+"PO-Revision-Date: 2007-01-26 10:10+0300\n"
 "Last-Translator: omsoft <oleg@koleso-auto.ru>\n"
 "Language-Team: Russian\n"
 "MIME-Version: 1.0\n"
@@ -286,7 +286,8 @@ msgid ""
 "<p>The URL you want Liferea to subscribe to points to a webpage and the auto "
 "discovery found no feeds on this page. Maybe this webpage just does not "
 "support feed auto discovery.</p>"
-msgstr ""
+msgstr "<p>По указанному адресу автопоиском не найдена ни одна лента."
+"Возможно, указанный сайт не поддерживает автообнаружение лент.</p>"
 
 #: ../src/feed.c:457
 msgid "<p>Could not determine the feed type.</p>"
@@ -435,7 +436,7 @@ msgstr "Обновление иконки для ленты \"%s\""
 #: ../src/feed.c:1163
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
-msgstr ""
+msgstr "Адрес \"%s\" изменился и был обновлен"
 
 #: ../src/feed.c:1172
 #, c-format
@@ -453,6 +454,9 @@ msgid ""
 "points to a resource provided in one of the supported syndication formats!</"
 "p>XML Parser Output:<br /><div class='xmlparseroutput'>"
 msgstr ""
+"<p>Невозможно определить тип ленты! Проверьте, действительно ли"
+"источник предоставляет ленту поддерживаемого формата!</"
+"p>Вывод XML парсера:<br /><div class='xmlparseroutput'>"
 
 #: ../src/feed.c:1210
 #, c-format
@@ -483,6 +487,9 @@ msgid ""
 "cache content of v1.0 in ~/.liferea was not deleted automatically. Please "
 "remove this directory manually once you are sure migration was successful!"
 msgstr ""
+"Liferea v1.2 использует новый формат кеша и автоматически отконвертирует ваш "
+"существующий кеш. Содержимое кеша версии 1.0 в папке ~/.liferea не будет автоматически"
+"удалено. Удалите его вручную после успешной конвертации."
 
 #: ../src/html.c:154
 msgid "Feed link auto discovery failed! No feed links found!"
@@ -708,7 +715,7 @@ msgid ""
 "to poll daily updated feeds every 15 minutes. To disable auto-updating per "
 "default set the interval to 0 minutes.</i>"
 msgstr ""
-"Note: <i>Пожалуйста, устанавливайте правильный интервал обновления лент. Нет смысла обновлять "
+"Примечание: <i>Пожалуйста, устанавливайте правильный интервал обновления лент. Нет смысла обновлять "
 "каждые 15 минут ленту, изменяющуся 1 раз в день. Для отключени автообновления установите "
 "интервал 0 минут.</i>"
 
@@ -794,11 +801,11 @@ msgstr "Опубликовать закладку в"
 
 #: ../src/interface.c:1601
 msgid "Search _Link for"
-msgstr ""
+msgstr "Искать ссылку на"
 
 #: ../src/interface.c:1624
 msgid "<span weight=\"bold\">Internal Browser Settings</span>"
-msgstr "<span weight=\"bold\">Настройки встроенного броузера</span>"
+msgstr "<span weight=\"bold\">Настройки встроенного браузера</span>"
 
 #: ../src/interface.c:1643
 msgid "_View Headlines With"
@@ -818,11 +825,11 @@ msgstr "Разрешить Javascript."
 
 #: ../src/interface.c:1673
 msgid "<span weight=\"bold\">External Browser Settings</span>"
-msgstr "<span weight=\"bold\">Настройки внешнего броузера</span>"
+msgstr "<span weight=\"bold\">Настройки внешнего браузера</span>"
 
 #: ../src/interface.c:1690
 msgid "_Browser:"
-msgstr "Броузер"
+msgstr "Браузер"
 
 #: ../src/interface.c:1697
 #, c-format
@@ -839,7 +846,7 @@ msgstr "Открыть ссылку в:"
 
 #: ../src/interface.c:1734
 msgid "Browser"
-msgstr "Броузер"
+msgstr "Браузер"
 
 #: ../src/interface.c:1747
 msgid "<span weight=\"bold\">Notification Settings</span>"
@@ -906,6 +913,8 @@ msgid ""
 "<i>Liferea reuses the GNOME proxy settings. If you use GNOME you can change "
 "these settings in the GNOME Control Center.</i>"
 msgstr ""
+"<i>Liferea использует настройки прокси среды GNOME. Если вы используете GNOME "
+"вы можете изменить эти настройки в GNOME Control Center.</i>"
 
 #: ../src/interface.c:1914
 msgid "_Enable Proxy"
@@ -977,7 +986,7 @@ msgstr "Новое имя:"
 
 #: ../src/interface.c:2597
 msgid "Create Search Engine Feed"
-msgstr ""
+msgstr "Создать ленту поисковой системы"
 
 #: ../src/interface.c:2614 ../src/interface.c:3248
 msgid "_Search for:"
@@ -985,11 +994,11 @@ msgstr "Искать:"
 
 #: ../src/interface.c:2622
 msgid "enter any search string you want"
-msgstr ""
+msgstr "введите строку поиска"
 
 #: ../src/interface.c:2629
 msgid "Maximal _Number Of Result Items:"
-msgstr ""
+msgstr "Максимальное количество результатов поиска:"
 
 #: ../src/interface.c:2638
 msgid ""
@@ -997,6 +1006,9 @@ msgid ""
 "search engine results for the specified search string. You can keep this "
 "feed permanently and update it like any other subscription.  "
 msgstr ""
+"Примечание: Liferea создаст подписку на ленту с результатами поиска"
+"по вашему запросу. Вы можете сохранить эту ленту и обновлять ее"
+"аналогично обычным лентам."
 
 #: ../src/interface.c:2718 ../src/interface.c:2763
 msgid "About"
@@ -1091,6 +1103,8 @@ msgid ""
 "Note: <i>The username and password will be saved to your Liferea feedlist "
 "file without using encryption.</i>"
 msgstr ""
+"Примечание: <i>Имя пользователя и пароль будут сохранены в списке лент"
+"Liferea без какого-либо шифрования.</i>"
 
 #: ../src/interface.c:2991
 msgid "Search Folder Properties"
@@ -1128,6 +1142,8 @@ msgid ""
 "want to be executed below. The downloaded file will be supplied as an "
 "argument for this command:"
 msgstr ""
+"Что Liferea должна сделать с этим вложением? Введите необходимую команду."
+"Полученный файл будет передан команде в качестве аргумента."
 
 #: ../src/interface.c:3167
 msgid "_Do this automatically for files like this from now on."
@@ -1142,11 +1158,14 @@ msgid ""
 "Enter a search string Liferea should find either in a items title or in its "
 "content."
 msgstr ""
+"Введите строку, которую Liferea будет искать в заголовке или теле "
+"элемента."
 
 #: ../src/interface.c:3271
 msgid ""
 "Saves this search as a search folder, which will appear in the feed list."
 msgstr ""
+"Соранить результаты поиска в папке поиска, отображаемой в списке."
 
 #: ../src/interface.c:3285
 msgid "Search Folder"
@@ -1157,6 +1176,8 @@ msgid ""
 "Starts searching for the specified text in all feeds. The search result will "
 "appear in the item list."
 msgstr ""
+"Начать поиск заданного текста во всех лентах. Результаты будут отображены"
+"в списке."
 
 #: ../src/interface.c:3355 ../src/ui/ui_mainwindow.c:871
 msgid "Update Monitor"
@@ -1179,6 +1200,8 @@ msgid ""
 "Enter a website location to use feed autodiscovery or in case you know it "
 "the exact feed location."
 msgstr ""
+"Введите адрес сайта для автоматического поиска ленты или точный "
+"адрес ленты."
 
 #: ../src/interface.c:3542
 msgid "Advanced..."
@@ -1417,17 +1440,17 @@ msgstr ""
 #: ../src/update.c:324
 #, c-format
 msgid "Error: Could not open file \"%s\""
-msgstr ""
+msgstr "Ошибка: невозможно открыть файл \"%s\""
 
 #: ../src/update.c:330
 #, c-format
 msgid "Error: There is no file \"%s\""
-msgstr ""
+msgstr "Ошибка: файл \"%s\" не существует"
 
 #: ../src/update.c:519
 #, c-format
 msgid "Could not download \"%s\". Will retry in %d seconds."
-msgstr ""
+msgstr "Невозможно получить \"%s\". Повторная попытка через %d секунд."
 
 #: ../src/vfolder.c:58
 msgid "New Search Folder"
@@ -1455,12 +1478,12 @@ msgstr "Получение вложения завершено: \"%s\""
 #: ../src/ui/ui_enclosure.c:229 ../src/ui/ui_enclosure.c:391
 #: ../src/ui/ui_feed.c:280
 msgid "Choose File"
-msgstr ""
+msgstr "Выберите файл"
 
 #: ../src/ui/ui_enclosure.c:284
 #, c-format
 msgid "<b>File Extension .%s</b>"
-msgstr ""
+msgstr "<b>Расширение имени файла .%s</b>"
 
 #: ../src/ui/ui_enclosure.c:286
 #, c-format
@@ -1478,7 +1501,7 @@ msgstr "Автор ленты рекомендует интервал обнов
 
 #: ../src/ui/ui_feed.c:581
 msgid "This feed specifies no default update interval."
-msgstr ""
+msgstr "Для ленты не указан интервал обновления по умолчанию."
 
 #: ../src/ui/ui_feedlist.c:288
 msgid "Deleting entry"
@@ -1507,12 +1530,12 @@ msgstr ""
 #. FIXME: bad because this is not only used for item links!
 #: ../src/ui/ui_htmlview.c:207
 msgid "This item does not have a link assigned!"
-msgstr ""
+msgstr "У элемента нет связанной ссылки!"
 
 #: ../src/ui/ui_htmlview.c:309 ../src/ui/ui_htmlview.c:329
 #, c-format
 msgid "Browser command failed: %s"
-msgstr ""
+msgstr "Ошибка команды браузера: %s"
 
 #: ../src/ui/ui_htmlview.c:332
 #, c-format
@@ -1535,19 +1558,19 @@ msgstr "Заголовок"
 #: ../src/ui/ui_itemlist.c:485 ../src/ui/ui_itemlist.c:635
 #: ../src/ui/ui_itemlist.c:653
 msgid "No item has been selected"
-msgstr ""
+msgstr "Не выбран элемент"
 
 #: ../src/ui/ui_itemlist.c:438
 msgid "This item has no link specified!"
-msgstr ""
+msgstr "У элемента нет ссылки!"
 
 #: ../src/ui/ui_itemlist.c:475
 msgid "You must select a feed to delete its items!"
-msgstr ""
+msgstr "Вы должны выбрать ленту для удаления ее элементов!"
 
 #: ../src/ui/ui_itemlist.c:663
 msgid "No link selected!"
-msgstr ""
+msgstr "Не выбрана ссылка!"
 
 #: ../src/ui/ui_mainwindow.c:542
 msgid "Liferea - Linux Feed Reader"
@@ -1596,7 +1619,7 @@ msgstr "Редактировать настройки"
 
 #: ../src/ui/ui_mainwindow.c:871
 msgid "Show a list of all feeds currently in the update queue"
-msgstr ""
+msgstr "Отобразить список всех лент, ожидающих обновления."
 
 #: ../src/ui/ui_mainwindow.c:873
 msgid "Allows to configure and edit LUA hook scripts"
@@ -1616,7 +1639,7 @@ msgstr "Обновить все"
 
 #: ../src/ui/ui_mainwindow.c:878
 msgid "Updates all subscriptions. This does not update OCS directories."
-msgstr ""
+msgstr "Обновить все подписки. Не затронет каталоги OCS."
 
 #: ../src/ui/ui_mainwindow.c:880
 msgid "Mark All As _Read"
@@ -1624,7 +1647,7 @@ msgstr "Отметить все прочитанным"
 
 #: ../src/ui/ui_mainwindow.c:880
 msgid "Marks read every item of every subscription."
-msgstr ""
+msgstr "Отметить прочитанными все элементы во всех подписках."
 
 #: ../src/ui/ui_mainwindow.c:882
 msgid "_Import Feed List..."
@@ -1632,7 +1655,7 @@ msgstr "Импорт списка лент"
 
 #: ../src/ui/ui_mainwindow.c:882
 msgid "Imports an OPML feed list."
-msgstr ""
+msgstr "Импортировать список лент OPML."
 
 #: ../src/ui/ui_mainwindow.c:883
 msgid "_Export Feed List..."
@@ -1640,7 +1663,7 @@ msgstr "Экспорт списка лент"
 
 #: ../src/ui/ui_mainwindow.c:883
 msgid "Exports the feed list as OPML."
-msgstr ""
+msgstr "Экспортировать список лент как OPML."
 
 #: ../src/ui/ui_mainwindow.c:885
 msgid "_Items"
@@ -1655,6 +1678,8 @@ msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
 msgstr ""
+"К следующему непрочитанному элементу. При необходимости - переход"
+"к следующей ленте с непрочитанными элементами."
 
 #: ../src/ui/ui_mainwindow.c:888
 msgid "Toggle _Read Status"
@@ -1662,7 +1687,7 @@ msgstr "Переключить статус прочтения"
 
 #: ../src/ui/ui_mainwindow.c:888
 msgid "Toggles the read status of the selected item."
-msgstr ""
+msgstr "Переключить статус прочтения выделенного элемента."
 
 #: ../src/ui/ui_mainwindow.c:890
 msgid "Toggle Item _Flag"
@@ -1670,7 +1695,7 @@ msgstr "Переключить флаг"
 
 #: ../src/ui/ui_mainwindow.c:890
 msgid "Toggles the flag status of the selected item."
-msgstr ""
+msgstr "Переключить флаг выделенного элемента."
 
 #: ../src/ui/ui_mainwindow.c:892
 msgid "Remove _Selected"
@@ -1678,7 +1703,7 @@ msgstr "Удалить выделенное"
 
 #: ../src/ui/ui_mainwindow.c:892
 msgid "Removes the selected item."
-msgstr ""
+msgstr "Удалить выбранный элемент."
 
 #: ../src/ui/ui_mainwindow.c:894
 msgid "Remove _All"
@@ -1686,11 +1711,11 @@ msgstr "Удалить все"
 
 #: ../src/ui/ui_mainwindow.c:894
 msgid "Removes all items of the currently selected feed."
-msgstr ""
+msgstr "Удалить все элементы из выделенной ленты."
 
 #: ../src/ui/ui_mainwindow.c:896
 msgid "_Launch In Browser"
-msgstr "Открыть в броузере"
+msgstr "Открыть в браузере"
 
 #: ../src/ui/ui_mainwindow.c:896
 msgid "Launches the item's link in the configured browser."
@@ -1750,7 +1775,7 @@ msgstr "Искать во всех лентах..."
 
 #: ../src/ui/ui_mainwindow.c:912
 msgid "Show the search dialog."
-msgstr ""
+msgstr "Отобразить диалог поиска."
 
 #: ../src/ui/ui_mainwindow.c:913
 msgid "Search With ..."
@@ -1798,7 +1823,7 @@ msgstr "Новая подписка"
 
 #: ../src/ui/ui_mainwindow.c:924
 msgid "Adds a subscription to the feed list."
-msgstr ""
+msgstr "Добавить подписку в список лент."
 
 #: ../src/ui/ui_mainwindow.c:926
 msgid "New _Folder..."
@@ -1806,7 +1831,7 @@ msgstr "Новая папка"
 
 #: ../src/ui/ui_mainwindow.c:926
 msgid "Adds a folder to the feed list."
-msgstr ""
+msgstr "Добавить папку в список лент."
 
 #: ../src/ui/ui_mainwindow.c:927
 msgid "New S_earch Folder..."
@@ -1840,7 +1865,7 @@ msgstr "Пометить как прочитанные"
 msgid ""
 "Marks all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
-msgstr ""
+msgstr "Отметить как прочитанное выбранную ленту или все ленты в выбранной папке."
 
 #: ../src/ui/ui_mainwindow.c:935
 msgid "Update _Selected"
@@ -1850,7 +1875,7 @@ msgstr "Обновить выбранные"
 msgid ""
 "Updates the selected subscription or all subscriptions of the selected "
 "folder."
-msgstr ""
+msgstr "Обновить выбранную ленту или все ленты в выбранной папке."
 
 #: ../src/ui/ui_mainwindow.c:940
 msgid "_Properties..."
@@ -1858,7 +1883,7 @@ msgstr "Свойства..."
 
 #: ../src/ui/ui_mainwindow.c:940
 msgid "Opens the property dialog for the selected subscription."
-msgstr ""
+msgstr "Открыть диалог настроек для выбранной ленты."
 
 #: ../src/ui/ui_mainwindow.c:941
 msgid "_Delete Selected"
@@ -1866,7 +1891,7 @@ msgstr "Удалить отмеченные"
 
 #: ../src/ui/ui_mainwindow.c:941
 msgid "Removes the selected subscription."
-msgstr ""
+msgstr "Удалить выбранную ленту."
 
 #: ../src/ui/ui_mainwindow.c:945
 msgid "_Work Offline"
@@ -1874,7 +1899,7 @@ msgstr "Работать автономно"
 
 #: ../src/ui/ui_mainwindow.c:945
 msgid "This option allows you to disable subscription updating."
-msgstr ""
+msgstr "Позволяет запретить обновление ленты."
 
 #: ../src/ui/ui_mainwindow.c:1079
 #, c-format
@@ -1896,7 +1921,7 @@ msgstr "/Открыть во вкладке"
 
 #: ../src/ui/ui_popup.c:114
 msgid "/_Launch Item In Browser"
-msgstr "/Открыть в броузере"
+msgstr "/Открыть в браузере"
 
 #: ../src/ui/ui_popup.c:121
 #, c-format
@@ -1923,11 +1948,11 @@ msgstr "/Удалить"
 
 #: ../src/ui/ui_popup.c:141
 msgid "/_Increase Text Size"
-msgstr "/Уменьшить шрифт"
+msgstr "/Увеличить шрифт"
 
 #: ../src/ui/ui_popup.c:142
 msgid "/_Decrease Text Size"
-msgstr "/Увеличить шрифт"
+msgstr "/Уменьшить шрифт"
 
 #: ../src/ui/ui_popup.c:147
 msgid "/Launch Link In _Tab"
@@ -1935,7 +1960,7 @@ msgstr "/Открыть ссылку во вкладке"
 
 #: ../src/ui/ui_popup.c:148
 msgid "/_Launch Link In Browser"
-msgstr "/Открыть ссылку в броузере"
+msgstr "/Открыть ссылку в браузере"
 
 #: ../src/ui/ui_popup.c:153
 msgid "/_Copy Link Location"
@@ -2024,7 +2049,7 @@ msgstr "Пользовательский"
 
 #: ../src/ui/ui_prefs.c:262
 msgid "Browser default"
-msgstr "Броузер по умолчанию"
+msgstr "Браузер по умолчанию"
 
 #: ../src/ui/ui_prefs.c:267
 msgid "Existing window"
@@ -2118,12 +2143,12 @@ msgstr ""
 
 #: ../src/parsers/atom10.c:110
 msgid "Liferea is unable to display this item's content."
-msgstr ""
+msgstr "Невозможно отобразить содержимое элемента."
 
 #: ../src/parsers/atom10.c:116
 #, c-format
 msgid "<p><a href=\"%s\">View this item's content.</a></p>"
-msgstr ""
+msgstr "<p><a href=\"%s\">Проосмотр содержимого элемента.</a></p>"
 
 #: ../src/parsers/atom10.c:248
 msgid "Invalid Atom feed: unknown author"
@@ -2133,7 +2158,7 @@ msgstr ""
 #: ../src/parsers/rss_channel.c:304
 #, c-format
 msgid "There were errors while parsing the feed %s!"
-msgstr ""
+msgstr "Ошибка при парсинге ленты %s!"
 
 #: ../src/parsers/ns_ag.c:72
 msgid "%b %d %H:%M"
@@ -2228,7 +2253,7 @@ msgstr ""
 #: ../src/notification/notif_libnotify.c:72
 #: ../src/notification/notif_libnotify.c:137
 msgid "This feed does not exist anymore!"
-msgstr ""
+msgstr "Эта лента более не существует!"
 
 #: ../src/notification/notif_popup.c:251
 msgid "Untitled"
@@ -2245,5 +2270,4 @@ msgstr ""
 #: ../src/scripting/ui_script.c:208
 msgid "No script selected!"
 msgstr "Не выбран скрипт!"
-
 
