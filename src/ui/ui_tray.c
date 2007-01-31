@@ -41,6 +41,9 @@
 #define	FONT_CHAR_WIDTH	6
 #define FONT_CHAR_HEIGHT 8
 
+#define TRAY_ICON_WIDTH	16
+#define TRAY_ICON_HEIGHT 16
+
 extern GdkPixbuf	*icons[];
 
 extern GtkWidget	*mainwindow;
@@ -93,23 +96,31 @@ static void ui_tray_expose_cb() {
 
 	gdk_draw_pixbuf(GDK_DRAWABLE(trayIcon_priv->image->window), 
 	                NULL, trayIcon_priv->currentIcon, 0, 0, 
-			(requisition.width > 16)?(requisition.width - 16)/2:0, 
-			(requisition.height > 16)?(requisition.height - 16)/2:0, 
+			(requisition.width > TRAY_ICON_WIDTH)?(requisition.width - TRAY_ICON_WIDTH)/2 - 1:0, 
+			(requisition.height > TRAY_ICON_HEIGHT)?(requisition.height - TRAY_ICON_HEIGHT)/2 - 1:0, 
 	                gdk_pixbuf_get_height(trayIcon_priv->currentIcon),
 			gdk_pixbuf_get_width(trayIcon_priv->currentIcon), 
 			GDK_RGB_DITHER_NONE, 0, 0);
 			
 	newItems = feedlist_get_new_item_count();
 	if(newItems > 0) {
+		guint textWidth, textStart;
 		str = g_strdup_printf("%d", newItems);
+		textWidth = strlen(str) * FONT_CHAR_WIDTH;
+		
+		if(textWidth + 2 > TRAY_ICON_WIDTH)
+			textStart = 1;
+		else
+			textStart = TRAY_ICON_WIDTH/2 - textWidth/2;
 
 		c = gdk_cairo_create(trayIcon_priv->image->window);
-		cairo_rectangle(c, 1, 3, 1 + strlen(str) * FONT_CHAR_WIDTH, 10);
-		cairo_set_source_rgb(c, 1, 0, 0);
+		cairo_rectangle(c, textStart - 1, 3, textWidth + 1, FONT_CHAR_HEIGHT + 2);
+		cairo_set_source_rgb(c, 1, 0.50, 0.10);	// orange
 		cairo_fill(c);
 
-		cairo_set_source_rgb(c, 1, 1, 1);
-		cairo_move_to(c, 1, 3 + FONT_CHAR_HEIGHT);
+		cairo_set_source_rgb(c, 1, 1, 1);		
+		cairo_move_to(c, textStart - 1, 3 + FONT_CHAR_HEIGHT);
+		cairo_select_font_face(c, "Sans", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
 		cairo_show_text(c, str);
 		cairo_destroy(c);
 
