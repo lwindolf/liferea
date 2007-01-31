@@ -197,6 +197,7 @@ void item_comments_refresh(itemPtr item) {
 		request->options = g_new0(struct updateOptions, 1);
 		request->callback = item_comments_process_update_result;
 		request->source = g_strdup(url);
+		request->priority = 1;
 		item->updateRequest = request;
 		update_execute_request(request);
 
