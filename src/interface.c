@@ -2670,7 +2670,7 @@ create_aboutdialog (void)
   gtk_container_add (GTK_CONTAINER (homepagebtn), label194);
   gtk_label_set_use_markup (GTK_LABEL (label194), TRUE);
 
-  label59 = gtk_label_new (_("Copyright (c) 2003-2006\nLars Lindner <lars.lindner@gmx.net> and \nNathan J. Conrad <t98502@users.sourceforge.net>\n"));
+  label59 = gtk_label_new (_("Copyright (c) 2003-2007\nLars Lindner <lars.lindner@gmail.com> and \nNathan J. Conrad <t98502@users.sourceforge.net>\n"));
   gtk_widget_show (label59);
   gtk_box_pack_start (GTK_BOX (vbox231), label59, FALSE, FALSE, 0);
   gtk_label_set_justify (GTK_LABEL (label59), GTK_JUSTIFY_CENTER);
