@@ -94,7 +94,8 @@ static gboolean ui_dnd_feed_drop_possible(GtkTreeDragDest *drag_dest, GtkTreePat
 static gboolean ui_dnd_feed_drag_data_received(GtkTreeDragDest *drag_dest, GtkTreePath *dest, GtkSelectionData *selection_data) {
 	GtkTreeIter	iter, iter2, parentIter;
 	nodePtr		node, oldParent, newParent;
-	gboolean	result, valid;
+	gboolean	result, valid, added;
+	gint		oldPos, pos;
 
 	if(TRUE == (result = old_feed_drag_data_received(drag_dest, dest, selection_data))) {
 		if(gtk_tree_model_get_iter(GTK_TREE_MODEL(drag_dest), &iter, dest)) {
@@ -103,6 +104,7 @@ static gboolean ui_dnd_feed_drag_data_received(GtkTreeDragDest *drag_dest, GtkTr
 			/* remove from old parents child list */
 			oldParent = node->parent;
 			g_assert(oldParent);
+			oldPos = g_slist_index(oldParent->children, node);
 			oldParent->children = g_slist_remove(oldParent->children, node);
 			
 			if(0 == g_slist_length(oldParent->children))
@@ -117,8 +119,8 @@ static gboolean ui_dnd_feed_drag_data_received(GtkTreeDragDest *drag_dest, GtkTr
 			}
 
 			/* drop old list... */
-			debug2(DEBUG_GUI, "old parent is %s (%d)\n", oldParent->title, g_slist_length(oldParent->children));
-			debug2(DEBUG_GUI, "new parent is %s (%d)\n", newParent->title, g_slist_length(newParent->children));
+			debug3(DEBUG_GUI, "old parent is %s (%d, position=%d)", oldParent->title, g_slist_length(oldParent->children), oldPos);
+			debug2(DEBUG_GUI, "new parent is %s (%d)", newParent->title, g_slist_length(newParent->children));
 			g_slist_free(newParent->children);
 			newParent->children = NULL;
 			node->parent = newParent;
@@ -127,7 +129,7 @@ static gboolean ui_dnd_feed_drag_data_received(GtkTreeDragDest *drag_dest, GtkTr
 			ui_node_update(oldParent);
 			ui_node_update(newParent);
 			
-			debug0(DEBUG_GUI, "new new parent child list:\n");
+			debug0(DEBUG_GUI, "new new parent child list:");
 				
 			/* and rebuild it from the tree model */
 			if(feedlist_get_root() != newParent)
@@ -135,16 +137,33 @@ static gboolean ui_dnd_feed_drag_data_received(GtkTreeDragDest *drag_dest, GtkTr
 			else
 				valid = gtk_tree_model_iter_children(GTK_TREE_MODEL(drag_dest), &iter2, NULL);
 				
+			pos = 0;
+			added = FALSE;
 			while(valid) {
-				nodePtr	child;
+				nodePtr	child;			
 				gtk_tree_model_get(GTK_TREE_MODEL(drag_dest), &iter2, FS_PTR, &child, -1);
 				if(child) {
-					if((newParent == oldParent) &&
-					   !strcmp(node->id, child->id) && 
-					   memcmp(&iter, &iter2, sizeof(GtkTreeIter))) {
-						debug1(DEBUG_GUI, "   -> skipping old %s\n", child->title);
+					/* Well this is a bit complicated... If we move a feed inside a folder
+					   we need to skip the old insertion point (oldPos). This is easy if the
+					   feed is added behind this position. If it is dropped before the flag
+					   added is set once the new copy is encountered. The remaining copy
+					   is skipped automatically when the flag is set.
+					 */
+					 
+					/* check if this is a copy of the dragged node or the original itself */
+					if((newParent == oldParent) && !strcmp(node->id, child->id)) {
+						if((pos == oldPos) || added) {
+							/* it is the original */
+							debug2(DEBUG_GUI, "   -> %d: skipping old insertion point %s", pos, child->title);
+						} else {
+							/* it is a copy inserted before the original */
+							added = TRUE;
+							debug2(DEBUG_GUI, "   -> %d: new insertion point of %s", pos, child->title);
+							newParent->children = g_slist_append(newParent->children, child);
+						}
 					} else {
-						debug1(DEBUG_GUI, "   -> adding %s", child->title);
+						/* all other nodes */
+						debug2(DEBUG_GUI, "   -> %d: adding %s", pos, child->title);
 						newParent->children = g_slist_append(newParent->children, child);
 					}
 				} else {
@@ -153,6 +172,7 @@ static gboolean ui_dnd_feed_drag_data_received(GtkTreeDragDest *drag_dest, GtkTr
 					ui_node_remove_empty_node(&parentIter);
 				}
 				valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(drag_dest), &iter2);
+				pos++;
 			}
 			
 			feedlist_schedule_save();

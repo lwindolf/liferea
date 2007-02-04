@@ -184,11 +184,11 @@ static gchar* ui_tabs_condense_text(const gchar* title) {
 	gchar *tmp, *tmp2;
 
 	/* make nice short title */
-	if (title != NULL) {
+	if(title) {
 		if(!strncmp(title, "http://",7))
 			title += strlen("http://");
 		tmp2 = tmp = g_strstrip(g_strdup(title));
-		if (*tmp == '\0') {
+		if(*tmp == '\0') {
 			g_free(tmp);
 			tmp = tmp2 = g_strdup(_("New tab"));
 		}

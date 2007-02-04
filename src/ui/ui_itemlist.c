@@ -275,8 +275,7 @@ GtkWidget* ui_itemlist_new() {
 	gtk_widget_show(itemlist);
 	gtk_widget_set_name(itemlist, "itemlist");
 	gtk_tree_view_set_rules_hint(GTK_TREE_VIEW(itemlist), TRUE);
-
-	/* register name for Glade widget lookup */	
+	
 	g_object_set_data(G_OBJECT(mainwindow), "itemlist", itemlist);
 
 	item_to_iter = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, g_free);
@@ -289,7 +288,6 @@ GtkWidget* ui_itemlist_new() {
 	column = gtk_tree_view_column_new_with_attributes("", renderer, "pixbuf", IS_STATEICON, NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(itemlist), column);
 	gtk_tree_view_column_set_sort_column_id(column, IS_STATE);
-	/* No sorting because when an item is clicked, it would immediatly change the sorting order */
 	
 	renderer = gtk_cell_renderer_pixbuf_new();
 	column = gtk_tree_view_column_new_with_attributes("", renderer, "pixbuf", IS_ENCICON, NULL);
@@ -325,14 +323,11 @@ GtkWidget* ui_itemlist_new() {
 	select = gtk_tree_view_get_selection(GTK_TREE_VIEW(itemlist));
 	gtk_tree_selection_set_mode(select, GTK_SELECTION_SINGLE);
 	g_signal_connect(G_OBJECT(select), "changed",
-                  G_CALLBACK(on_itemlist_selection_changed),
-                  NULL);
-	g_signal_connect ((gpointer) itemlist, "button_press_event",
-					  G_CALLBACK (on_itemlist_button_press_event),
-					  NULL);
-	g_signal_connect ((gpointer) itemlist, "row_activated",
-					  G_CALLBACK (on_Itemlist_row_activated),
-					  NULL);
+	                 G_CALLBACK(on_itemlist_selection_changed), NULL);
+	g_signal_connect((gpointer)itemlist, "button_press_event",
+	                 G_CALLBACK(on_itemlist_button_press_event), NULL);
+	g_signal_connect((gpointer)itemlist, "row_activated",
+	                 G_CALLBACK(on_Itemlist_row_activated), NULL);
 		  
 	return ilscrolledwindow;
 }
@@ -576,7 +571,11 @@ gboolean on_itemlist_button_press_event(GtkWidget *treeview, GdkEventButton *eve
 	if(event->type != GDK_BUTTON_PRESS)
 		return FALSE;
 
-	if(!gtk_tree_view_get_path_at_pos(GTK_TREE_VIEW(treeview), event->x, event->y, &path, NULL, NULL, NULL))
+	/* avoid handling header clicks */
+	if(event->window != gtk_tree_view_get_bin_window(GTK_TREE_VIEW(treeview)))
+		return FALSE;
+
+	if(!gtk_tree_view_get_path_at_pos(GTK_TREE_VIEW(treeview), (gint)event->x, (gint)event->y, &path, NULL, NULL, NULL))
 		return FALSE;
 
 	if(gtk_tree_model_get_iter(GTK_TREE_MODEL(ui_itemlist_get_tree_store()), &iter, path))
@@ -588,16 +587,15 @@ gboolean on_itemlist_button_press_event(GtkWidget *treeview, GdkEventButton *eve
 		GdkEventButton *eb = (GdkEventButton*)event; 
 		switch(eb->button) {
 			case 1:
+				column = gtk_tree_view_get_column(GTK_TREE_VIEW(treeview), 0);
+				if(!column)
+					return FALSE;
+					
 				/* Allow flag toggling when left clicking in the flagging column.
-				   We depent on the fact that the state column is the first!!! 
-				   code inspired by the GTK+ 2.0 Tree View Tutorial at:
-				   http://scentric.net/tutorial/sec-misc-get-renderer-from-click.html */
-				if(NULL != (column = gtk_tree_view_get_column(GTK_TREE_VIEW(treeview), 0))) {
-					g_assert(NULL != column);
-					if(event->x <= column->width) {
-						itemlist_toggle_flag(item);
-						return TRUE;
-					}
+				   We depend on the fact that the state column is the first!!! */
+				if(event->x <= column->width) {
+					itemlist_toggle_flag(item);
+					return TRUE;
 				}
 				return FALSE;
 				break;
@@ -628,7 +626,8 @@ gboolean on_itemlist_button_press_event(GtkWidget *treeview, GdkEventButton *eve
 void on_popup_copy_URL_clipboard(void) {
 	itemPtr         item;
 
-	if(NULL != (item = itemlist_get_selected())) {
+	item = itemlist_get_selected();
+	if(item) {
 		gtk_clipboard_set_text(gtk_clipboard_get(GDK_SELECTION_PRIMARY), item_get_source(item), -1);
 		gtk_clipboard_set_text(gtk_clipboard_get(GDK_SELECTION_CLIPBOARD), item_get_source(item), -1);
 	} else {

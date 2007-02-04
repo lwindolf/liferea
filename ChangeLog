@@ -1,6 +1,18 @@
+2006-12-23  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.2.1 (Stable)
+
+	* Fixes a bug that prevented column resizing in the item list.
+	* Fixes SF #1617434: prevents launching links in internal
+	  browser when using GtkHTML2.
+	* Fixes SF #1620875: loosing feeds after DnD
+	* Fixes recursive favicon features which didn't update favicons
+	  of feeds within folders.
+
+
 2006-12-17  Lars Lindner  <lars.lindner@gmail.com>
 
-	Version 1.2 (Unstable)
+	Version 1.2 (Stable)
 
 	* Fixes a crash when removing subscriptions.
 	* Fixes suboptimal item list updating.

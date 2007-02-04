@@ -412,6 +412,7 @@ static void gtkhtml2_launch_url(GtkWidget *scrollpane, const gchar *url) {
 	r->callback = gtkhtml2_html_received;
 	r->user_data = scrollpane;
 	r->priority = 1;
+	r->options = g_new0(struct updateOptions, 1);
 	g_object_set_data(G_OBJECT(scrollpane), "html_request", r);
 	update_execute_request(r);
 }

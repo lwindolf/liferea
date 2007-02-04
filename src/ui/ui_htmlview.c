@@ -146,19 +146,7 @@ void ui_htmlview_write(GtkWidget *htmlview, const gchar *string, const gchar *ba
 		g_free(filename);
 	}
 	
-	if(!g_utf8_validate(string, -1, NULL)) {
-		gchar *buffer = g_strdup(string);
-		
-		/* Its really a bug if we get invalid encoded UTF-8 here!!! */
-		g_warning("Invalid encoded UTF8 buffer passed to HTML widget!");
-		
-		/* to prevent crashes inside the browser */
-		buffer = common_utf8_fix(buffer);
-		(htmlviewPlugin->write)(htmlview, buffer, strlen(buffer), baseURL, "application/xhtml+xml");
-		g_free(buffer);
-	} else {
-		(htmlviewPlugin->write)(htmlview, string, strlen(string), baseURL, "application/xhtml+xml");
-	}
+	(htmlviewPlugin->write)(htmlview, string, strlen(string), baseURL, "application/xhtml+xml");
 }
 
 void ui_htmlview_clear(GtkWidget *widget) {
