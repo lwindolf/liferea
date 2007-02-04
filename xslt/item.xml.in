@@ -360,13 +360,10 @@
 <!--- single item summary mode rendering -->
 <xsl:template name="item_summary">
 <xsl:element name="div">
-  <xsl:attribute name="class">
-    <xsl:choose>
+  <xsl:attribute name="class"><xsl:choose>
       <xsl:when test="readStatus = '0'">summaryshaded</xsl:when>
       <xsl:otherwise>summaryunshaded</xsl:otherwise>
-    </xsl:choose>
-    summary<xsl:if test="mark = '0'">un</xsl:if>flagged
-  </xsl:attribute>
+    </xsl:choose> summary<xsl:if test="mark = '0'">un</xsl:if>flagged</xsl:attribute>
 
   <table cellspacing="0" cellpadding="0" width="100%">
   <tr>

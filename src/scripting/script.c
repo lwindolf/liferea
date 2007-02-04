@@ -61,8 +61,8 @@ static void script_config_load_hook(xmlNodePtr match, gpointer user_data) {
 
 static void script_config_load(void) {
 	xmlDocPtr	doc;
-	gchar		*filename, *data;
-	gint		len;
+	gchar		*filename, *data = NULL;
+	gsize		len;
 
 	scriptConfigLoading = TRUE;
 	
@@ -77,7 +77,9 @@ static void script_config_load(void) {
 			xmlFreeDoc(doc);		
 		}
 	}
-	
+
+	g_free(data);
+	g_free(filename);
 	scriptConfigLoading = FALSE;
 }
 

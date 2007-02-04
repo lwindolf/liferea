@@ -139,7 +139,7 @@ typedef struct errorCtxt {
  *
  * @return XML document
  */
-xmlDocPtr common_parse_xml(gchar *data, guint length, gboolean revocery, errorCtxtPtr errors);
+xmlDocPtr common_parse_xml(gchar *data, size_t length, gboolean revocery, errorCtxtPtr errors);
 
 /**
  * Common function to create a XML DOM object from a given

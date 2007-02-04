@@ -357,6 +357,9 @@ static void feedlist_expand_folder(nodePtr node) {
 
 	if(node->expanded)
 		ui_node_set_expansion(node, TRUE);
+		
+	if(node->children)
+		node_foreach_child(node, feedlist_expand_folder);
 }
 
 void feedlist_init(void) {
