@@ -139,6 +139,8 @@ void on_popup_copy_to_newsbin(gpointer user_data, guint callback_action, GtkWidg
 		ui_node_update(newsbin);
 		
 		node_unload(newsbin);
+	} else {
+		g_warning("Fatal: cannot determine selected item!");
 	}
 }
 

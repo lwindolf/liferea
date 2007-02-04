@@ -408,11 +408,11 @@ static void gtkhtml2_launch_url(GtkWidget *scrollpane, const gchar *url) {
 	kill_old_connections(scrollpane);
 	
 	r = update_request_new(NULL);
+	r->options = g_new0(struct updateOptions, 1);
 	r->source = g_strdup(url);
 	r->callback = gtkhtml2_html_received;
 	r->user_data = scrollpane;
 	r->priority = 1;
-	r->options = g_new0(struct updateOptions, 1);
 	g_object_set_data(G_OBJECT(scrollpane), "html_request", r);
 	update_execute_request(r);
 }
@@ -466,19 +466,19 @@ static gboolean gtkhtml2_scroll_pagedown(GtkWidget *scrollpane) {
 }
 
 static struct htmlviewPlugin gtkhtml2Info = {
-	HTMLVIEW_PLUGIN_API_VERSION,
-	"GtkHTML2",
-	gtkhtml2_init,
-	gtkhtml2_deinit,
-	gtkhtml2_new,
-	gtkhtml2_write_html,
-	gtkhtml2_launch_url,
-	gtkhtml2_launch_inside_possible,
-	gtkhtml2_get_zoom_level,
-	gtkhtml2_change_zoom_level,
-	gtkhtml2_scroll_pagedown,
-	/* setProxy = */ NULL,
-	/* set_offline_mode */ NULL
+	.api_version	= HTMLVIEW_PLUGIN_API_VERSION,
+	.name		= "GtkHTML2",
+	.plugin_init	= gtkhtml2_init,
+	.plugin_deinit	= gtkhtml2_deinit,
+	.create		= gtkhtml2_new,
+	.write		= gtkhtml2_write_html,
+	.launch		= gtkhtml2_launch_url,
+	.launchInsidePossible = gtkhtml2_launch_inside_possible,
+	.zoomLevelGet	= gtkhtml2_get_zoom_level,
+	.zoomLevelSet	= gtkhtml2_change_zoom_level,
+	.scrollPagedown	= gtkhtml2_scroll_pagedown,
+	.setProxy	= NULL,
+	.setOffLine	= NULL
 };
 
 static struct plugin pi = {

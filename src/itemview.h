@@ -86,11 +86,16 @@ void	itemview_remove_item(itemPtr item);
 void	itemview_select_item(itemPtr item);
 
 /**
- * Updates the output of a given item from the view.
+ * Requests updating the rendering of a given item.
  *
  * @param item	the item to update
  */
 void	itemview_update_item(itemPtr item);
+
+/**
+ * Requests updating the rendering of the node info view.
+ */
+void	itemview_update_node_info(itemSetPtr itemSet);
 
 /**
  * Refreshes the item view. Needs to be called after each

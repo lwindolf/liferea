@@ -532,8 +532,7 @@ void ui_mainwindow_init(int mainwindowState) {
 	buffer = g_string_new(NULL);
 	htmlview_start_output(buffer, NULL, TRUE, FALSE);
 	g_string_append(buffer,    "<div style=\"padding:8px\">"
-	                           "<div style=\"background-color:#eee;padding:5px;border:solid 1px #aaa\">"
-				   "<table border=\"0\" cellpadding=\"5px\"><tr><td>"
+				   "<table class=\"headmeta\" style=\"border:solid 1px #aaa;font-size:120%\" border=\"0\" cellspacing=\"0\" cellpadding=\"5px\"><tr><td>"
 				   // add application icon
 				   "<img src=\""
 				   PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S
@@ -547,7 +546,7 @@ void ui_mainwindow_init(int mainwindowState) {
 				   "subscription select Feeds -&gt; New Subscription. To browse the headlines "
 				   "of a feed select it in the feed list and the headlines will be loaded "
 				   "into the right pane.</p>"));
-	g_string_append(buffer,    "</td></tr></table></div>");
+	g_string_append(buffer,    "</td></tr></table>");
 
 	g_string_append(buffer,    "</div>");
 				   

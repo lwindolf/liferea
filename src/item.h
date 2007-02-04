@@ -57,6 +57,7 @@ typedef struct item {
 	gchar		*real_source_title;	/**< (optional) title of the real source */
 	gchar		*description;		/**< XHTML string containing the item's description */
 	gchar		*id;			/**< "Unique" syndication item identifier, for example <guid> in RSS */
+	gboolean	validGuid;		/**< TRUE if id of this item is a GUID and can be used for duplicate detection */
 	
 	GSList		*metadata;		/**< Metadata of this item */
 	GHashTable	*tmpdata;		/**< Temporary data hash used during stateful parsing */
@@ -68,6 +69,35 @@ typedef struct item {
 	struct node	*sourceNode;		/**< Pointer to the source node of this item */
 
 } *itemPtr;
+
+/* Item Duplicate handling */
+
+/**
+ * Adds the GUID of the given item to the GUID list.
+ *
+ * @param item		item with a valid GUID
+ */
+void item_guid_list_add_id(itemPtr item);
+
+/**
+ * Checks if there are items with the same GUID as the
+ * given item. Must not be called after item_guid_list_add().
+ *
+ * @param item		item with a valid GUID
+ *
+ * @returns TRUE if other items with the same GUID do exist
+ */
+gboolean item_guid_list_check_id(itemPtr item);
+
+/**
+ * Removes the GUID of the given item from the GUID list.
+ * To be used upon item deletion.
+ *
+ * @param item		item with a valid GUID
+ */
+void item_guid_list_remove_id(itemPtr item);
+
+/* Item handling */
 
 /**
  * Allocates a new item structure.

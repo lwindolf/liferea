@@ -1,3 +1,17 @@
+2007-01-11  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.2.3 (Stable)
+
+	* HTML view respects GTK theme colors now.
+	* Fixes negative new count values in the mainwindow status bar.
+	* Fixes incorrect unread count of parent folder when removing
+	  subscriptions with unread items.
+	* Fixes node info updating when marking read with middle 
+	  mouse button in the feed list.
+	* Fixes a bug that caused item loss in news bins.
+	* Adds Arabic translation from Khaled Hosny.
+
+
 2007-01-03  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.2.2 (Stable)

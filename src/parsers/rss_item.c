@@ -114,6 +114,7 @@ itemPtr parseRSSItem(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 			if(!item_get_id(ctxt->item)) {
 				if(tmp = xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1)) {
 					item_set_id(ctxt->item, tmp);
+					ctxt->item->validGuid = TRUE;
 					tmp2 = xmlGetProp(cur, "isPermaLink");
 					if(!item_get_source(ctxt->item) && (tmp2 == NULL || !xmlStrcmp(tmp2, BAD_CAST"true")))
 						item_set_source(ctxt->item, tmp); /* Per the RSS 2.0 spec. */

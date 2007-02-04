@@ -564,16 +564,16 @@ guint feed_get_max_item_count(nodePtr node) {
 static void feed_save_to_cache(nodePtr node) {
 	feedPtr		feed = (feedPtr)node->data;
 	gchar		*filename, *tmpfilename;
-	gint		saveCount = 0;
-	gint		saveMaxCount;
+	guint		saveCount = 0;
+	guint		saveMaxCount;
 	GList		*iter, *itemlist, *droppedItems = NULL;
 	xmlDocPtr 	doc;
 			
 	debug_enter("feed_save_to_cache");	
 
-	debug2(DEBUG_CACHE, "saving feed: %s (id=%s)", feed->source, node->id);
-
 	saveMaxCount = feed_get_max_item_count(node);
+
+	debug3(DEBUG_CACHE, "saving feed: %s (id=%s, maxCount=%d)", feed->source, node->id, saveMaxCount);
 
 	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", node->id, NULL);
 	tmpfilename = g_strdup_printf("%s~", filename);
@@ -1397,6 +1397,10 @@ static void feed_remove(nodePtr node) {
 
 	favicon_remove_from_cache(node->id);
 	notification_node_removed(node);
+	
+	/* When just dropping unread items, the parent unread count must be corrected */
+	node_update_unread_count(node->parent, (-1)*node->unreadCount);
+	
 	ui_node_remove_node(node);
 	
 	feed_remove_from_cache(node);

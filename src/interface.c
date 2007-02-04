@@ -2795,7 +2795,7 @@ create_aboutdialog (void)
   gtk_container_add (GTK_CONTAINER (scrolledwindow6), viewport2);
   gtk_viewport_set_shadow_type (GTK_VIEWPORT (viewport2), GTK_SHADOW_NONE);
 
-  label61 = gtk_label_new ("Bart Kreska <bartkreska@users.sourceforge.net>\nDario Conigliaro <djdas@djdas.net>\nFernando Ike de Oliveira <fike@midstorm.org>\nSargate Kanogan <sargate@gmail.com>\nTakeshi AIHANA <takeshi.aihana@gmail.com>\nVincent Lef\303\250vre <vincent@vinc17.org>");
+  label61 = gtk_label_new ("Bart Kreska <bartkreska@users.sourceforge.net>\nDario Conigliaro <djdas@djdas.net>\nFernando Ike de Oliveira <fike@midstorm.org>\nKhaled Hosny <khaledhosny@eglug.org>\nSargate Kanogan <sargate@gmail.com>\nTakeshi AIHANA <takeshi.aihana@gmail.com>\nVincent Lef\303\250vre <vincent@vinc17.org>\n");
   gtk_widget_show (label61);
   gtk_container_add (GTK_CONTAINER (viewport2), label61);
   gtk_misc_set_alignment (GTK_MISC (label61), 0, 0.1);
