@@ -1,18 +1,18 @@
 # Liferea French translation.
 # Copyright (C) 2003 Stéphane Jourdan
 # Copyright (C) 2004 Antoine Reversat
-# Copyright (C) 2004, 2005, 2006 Vincent Lefèvre
+# Copyright (C) 2004, 2005, 2006, 2007 Vincent Lefèvre
 # This file is distributed under the same license as the Liferea package.
 # Stéphane Jourdan <stephane.jourdan@itris.fr>, 2003.
 # Antoine Reversat <areversat@tuxfamily.org>, 2004.
-# Vincent Lefèvre <vincent@vinc17.org>, 2004-2006.
+# Vincent Lefèvre <vincent@vinc17.org>, 2004-2007.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Liferea 1.2\n"
+"Project-Id-Version: Liferea 1.2.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-12-17 15:32+0100\n"
-"PO-Revision-Date: 2006-12-07 02:26+0100\n"
+"POT-Creation-Date: 2007-01-11 03:46+0100\n"
+"PO-Revision-Date: 2006-12-25 02:44+0100\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.org>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -105,16 +105,15 @@ msgstr "Auteur"
 
 #: ../xslt/item.xml.in.h:2
 msgid "Department"
-msgstr ""
+msgstr "Département"
 
 #: ../xslt/item.xml.in.h:3
 msgid "Filed under"
 msgstr "Classé sous"
 
 #: ../xslt/item.xml.in.h:4
-#, fuzzy
 msgid "Section"
-msgstr "_Adresse"
+msgstr "Section"
 
 #: ../xslt/item.xml.in.h:5 ../src/interface.c:602
 msgid "Source"
@@ -290,7 +289,7 @@ msgstr ""
 "<p>Erreur XML lors de la lecture des flux ! Le flux \"%s\" ne peut être "
 "chargé !</p>"
 
-#: ../src/feed.c:376 ../src/feed.c:661
+#: ../src/feed.c:376 ../src/feed.c:667
 msgid "<p>Empty document!</p>"
 msgstr "<p>Document vide !</p>"
 
@@ -312,14 +311,14 @@ msgstr ""
 msgid "<p>Could not determine the feed type.</p>"
 msgstr "<p>Impossible de déterminer le type de flux.</p>"
 
-#: ../src/feed.c:644
+#: ../src/feed.c:650
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
 msgstr ""
 "Erreur lors de la lecture du fichier cache \"%s\" ! Le fichier cache n'a pas "
 "pu être chargé !"
 
-#: ../src/feed.c:655
+#: ../src/feed.c:661
 #, c-format
 msgid ""
 "<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
@@ -328,32 +327,32 @@ msgstr ""
 "<p>Erreur XML pendant l'analyse syntaxique du fichier cache ! Le fichier "
 "cache du flux \"%s\" n'a pas pu être chargé !</p>"
 
-#: ../src/feed.c:676
+#: ../src/feed.c:682
 #, c-format
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 msgstr ""
 "<p>\"%s\" n'est pas un fichier cache valide ! Impossible de lire le fichier "
 "cache !</p>"
 
-#: ../src/feed.c:734
+#: ../src/feed.c:740
 #, c-format
 msgid "There were errors while parsing cache file \"%s\""
 msgstr ""
 "Des erreurs sont survenues pendant l'analyse syntaxique du fichier cache \"%s"
 "\""
 
-#: ../src/feed.c:759
+#: ../src/feed.c:765
 #, c-format
 msgid "This feed \"%s\" is already being updated!"
 msgstr "Une mise à jour de ce flux \"%s\" est déjà en cours !"
 
-#: ../src/feed.c:764
+#: ../src/feed.c:770
 #, c-format
 msgid "The feed \"%s\" was discontinued. Liferea won't update it anymore!"
 msgstr ""
 "Le flux \"%s\" avait cessé d'exister. Liferea ne le mettra plus à jour !"
 
-#: ../src/feed.c:1026
+#: ../src/feed.c:1032
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box."
@@ -362,97 +361,97 @@ msgstr ""
 "nom d'utilisateur et votre mot de passe dans la boîte de dialogue des "
 "propriétés de ce flux."
 
-#: ../src/feed.c:1028
+#: ../src/feed.c:1034
 msgid "Payment Required"
 msgstr "Paiement nécessaire"
 
-#: ../src/feed.c:1029
+#: ../src/feed.c:1035
 msgid "Access Forbidden"
 msgstr "Accès interdit"
 
-#: ../src/feed.c:1030
+#: ../src/feed.c:1036
 msgid "Resource Not Found"
 msgstr "Ressource introuvable"
 
-#: ../src/feed.c:1031
+#: ../src/feed.c:1037
 msgid "Method Not Allowed"
 msgstr "Méthode interdite"
 
-#: ../src/feed.c:1032
+#: ../src/feed.c:1038
 msgid "Not Acceptable"
 msgstr "Non acceptable"
 
-#: ../src/feed.c:1033
+#: ../src/feed.c:1039
 msgid "Proxy Authentication Required"
 msgstr "Authentification par proxy exigée"
 
-#: ../src/feed.c:1034
+#: ../src/feed.c:1040
 msgid "Request Time-Out"
 msgstr "Délai de la requête expiré"
 
-#: ../src/feed.c:1035
+#: ../src/feed.c:1041
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "Parti. La ressource n'existe pas. Veuillez vous désabonner !"
 
-#: ../src/feed.c:1040
+#: ../src/feed.c:1046
 msgid "URL is invalid"
 msgstr "L'URL est invalide"
 
-#: ../src/feed.c:1041
+#: ../src/feed.c:1047
 msgid "Unsupported network protocol"
 msgstr "Protocole réseau non supporté"
 
-#: ../src/feed.c:1044
+#: ../src/feed.c:1050
 msgid "Error connecting to remote host"
 msgstr "Erreur de connexion à la machine distante"
 
-#: ../src/feed.c:1045
+#: ../src/feed.c:1051
 msgid "Hostname could not be found"
 msgstr "Le nom de la machine n'a pas pu être trouvé"
 
-#: ../src/feed.c:1046
+#: ../src/feed.c:1052
 msgid "Network connection was refused by the remote host"
 msgstr "La connexion réseau a été refusée par la machine distante"
 
-#: ../src/feed.c:1047
+#: ../src/feed.c:1053
 msgid "Remote host did not finish sending data"
 msgstr "La machine distante n'a pas fini d'envoyer ses données"
 
 #. Transfer errors
-#: ../src/feed.c:1049
+#: ../src/feed.c:1055
 msgid "Too many HTTP redirects were encountered"
 msgstr "Trop de redirections HTTP ont été rencontrées"
 
-#: ../src/feed.c:1052
+#: ../src/feed.c:1058
 msgid "Remote host sent an invalid response"
 msgstr "La machine distante a envoyé une réponse invalide"
 
-#: ../src/feed.c:1059
+#: ../src/feed.c:1065
 msgid "Authentication failed"
 msgstr "L'authentification a échoué"
 
-#: ../src/feed.c:1061
+#: ../src/feed.c:1067
 msgid "Webserver's authentication method incompatible with Liferea"
 msgstr "Méthode d'authentification du serveur web incompatible avec Liferea"
 
-#: ../src/feed.c:1067
+#: ../src/feed.c:1073
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "Flux non disponible : le serveur a demandé une redirection non supportée !"
 
-#: ../src/feed.c:1068
+#: ../src/feed.c:1074
 msgid "Client Error"
 msgstr "Erreur du client"
 
-#: ../src/feed.c:1069
+#: ../src/feed.c:1075
 msgid "Server Error"
 msgstr "Erreur du serveur"
 
-#: ../src/feed.c:1070
+#: ../src/feed.c:1076
 msgid "(unknown networking error happened)"
 msgstr "(une erreur réseau inconnue s'est produite)"
 
-#: ../src/feed.c:1079
+#: ../src/feed.c:1085
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
@@ -460,27 +459,27 @@ msgstr ""
 "Un problème est survenu pendant la lecture de cet abonnement. Veuillez "
 "vérifier l'URL et la sortie sur la console."
 
-#: ../src/feed.c:1130
+#: ../src/feed.c:1136
 #, c-format
 msgid "Updating feed icon for \"%s\""
 msgstr "Mise à jour de l'icône de flux pour \"%s\""
 
-#: ../src/feed.c:1163
+#: ../src/feed.c:1169
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "L'URL de \"%s\" a changé définitivement et a été mise à jour"
 
-#: ../src/feed.c:1172
+#: ../src/feed.c:1178
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr "\"%s\" a cessé d'exister. Liferea ne le mettra plus à jour !"
 
-#: ../src/feed.c:1175
+#: ../src/feed.c:1181
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\" n'a pas changé depuis la dernière mise à jour"
 
-#: ../src/feed.c:1191
+#: ../src/feed.c:1197
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!</"
@@ -491,32 +490,32 @@ msgstr ""
 "supportés !</p>Sortie de l'analyseur syntaxique XML :<br /><div "
 "class='xmlparseroutput'>"
 
-#: ../src/feed.c:1210
+#: ../src/feed.c:1216
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" mis à jour..."
 
-#: ../src/feed.c:1222
+#: ../src/feed.c:1228
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" n'est pas disponible"
 
-#: ../src/feed.c:1344
+#: ../src/feed.c:1353
 #, c-format
 msgid "Updating \"%s\""
 msgstr "Mise à jour de \"%s\""
 
-#: ../src/feedlist.c:285
+#: ../src/feedlist.c:287
 msgid "You have to select a feed entry"
 msgstr "Vous devez sélectionner un flux"
 
-#: ../src/feedlist.c:292 ../src/feedlist.c:301
+#: ../src/feedlist.c:294 ../src/feedlist.c:303
 msgid "Liferea is in offline mode. No update possible."
 msgstr ""
 "Liferea est en mode déconnecté. Il n'est pas possible de faire de mise à "
 "jour."
 
-#: ../src/feedlist.c:414
+#: ../src/feedlist.c:419
 msgid ""
 "Liferea v1.2 uses a new cache format and has migrated your feed cache. The "
 "cache content of v1.0 in ~/.liferea was not deleted automatically. Please "
@@ -730,7 +729,7 @@ msgstr ""
 msgid "Advanced"
 msgstr "Avancé"
 
-#: ../src/interface.c:882 ../src/interface.c:3488 ../src/node.c:473
+#: ../src/interface.c:882 ../src/interface.c:3488 ../src/node.c:489
 msgid "New Subscription"
 msgstr "Nouvel abonnement"
 
@@ -1293,7 +1292,7 @@ msgstr ""
 "Débute une recherche du texte spécifié dans tous les flux. Le résultat de la "
 "recherche apparaîtra dans la liste des éléments."
 
-#: ../src/interface.c:3355 ../src/ui/ui_mainwindow.c:871
+#: ../src/interface.c:3355 ../src/ui/ui_mainwindow.c:870
 msgid "Update Monitor"
 msgstr "Moniteur de mise à jour"
 
@@ -1321,7 +1320,7 @@ msgstr ""
 msgid "Advanced..."
 msgstr "Avancé..."
 
-#: ../src/interface.c:3611 ../src/ui/ui_mainwindow.c:873
+#: ../src/interface.c:3611 ../src/ui/ui_mainwindow.c:872
 msgid "Script Manager"
 msgstr "Gestionnaire de scripts"
 
@@ -1362,7 +1361,7 @@ msgid "_News Bin Name:"
 msgstr "Nom de _boîte à nouvelles :"
 
 #. if we don't find a feed with unread items do nothing
-#: ../src/itemlist.c:284
+#: ../src/itemlist.c:285
 msgid "There are no unread items "
 msgstr "Il n'y a aucun élément non lu "
 
@@ -1663,16 +1662,16 @@ msgstr ""
 "informations de débuggage !"
 
 #. FIXME: bad because this is not only used for item links!
-#: ../src/ui/ui_htmlview.c:207
+#: ../src/ui/ui_htmlview.c:195
 msgid "This item does not have a link assigned!"
 msgstr "Cet élément n'a pas de lien assigné !"
 
-#: ../src/ui/ui_htmlview.c:309 ../src/ui/ui_htmlview.c:329
+#: ../src/ui/ui_htmlview.c:297 ../src/ui/ui_htmlview.c:317
 #, c-format
 msgid "Browser command failed: %s"
 msgstr "La commande du navigateur a échoué : %s"
 
-#: ../src/ui/ui_htmlview.c:332
+#: ../src/ui/ui_htmlview.c:320
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Exécution de : \"%s\""
@@ -1681,37 +1680,37 @@ msgstr "Exécution de : \"%s\""
 msgid "<i>*** No title ***</i>"
 msgstr "<i>*** Pas de titre ***</i>"
 
-#: ../src/ui/ui_itemlist.c:299
+#: ../src/ui/ui_itemlist.c:297
 msgid "Date"
 msgstr "Date"
 
-#: ../src/ui/ui_itemlist.c:310 ../src/ui/ui_itemlist.c:313
+#: ../src/ui/ui_itemlist.c:308 ../src/ui/ui_itemlist.c:311
 msgid "Headline"
 msgstr "Titre"
 
-#: ../src/ui/ui_itemlist.c:427 ../src/ui/ui_itemlist.c:440
-#: ../src/ui/ui_itemlist.c:485 ../src/ui/ui_itemlist.c:635
-#: ../src/ui/ui_itemlist.c:653
+#: ../src/ui/ui_itemlist.c:422 ../src/ui/ui_itemlist.c:435
+#: ../src/ui/ui_itemlist.c:480 ../src/ui/ui_itemlist.c:634
+#: ../src/ui/ui_itemlist.c:652
 msgid "No item has been selected"
 msgstr "Aucun élément n'a été sélectionné"
 
-#: ../src/ui/ui_itemlist.c:438
+#: ../src/ui/ui_itemlist.c:433
 msgid "This item has no link specified!"
 msgstr "Cet élément n'a pas de lien spécifié !"
 
-#: ../src/ui/ui_itemlist.c:475
+#: ../src/ui/ui_itemlist.c:470
 msgid "You must select a feed to delete its items!"
 msgstr "Vous devez sélectionner un flux pour effacer ses éléments !"
 
-#: ../src/ui/ui_itemlist.c:663
+#: ../src/ui/ui_itemlist.c:662
 msgid "No link selected!"
 msgstr "Aucun lien sélectionné !"
 
-#: ../src/ui/ui_mainwindow.c:542
+#: ../src/ui/ui_mainwindow.c:541
 msgid "Liferea - Linux Feed Reader"
 msgstr "Liferea - Lecteur de flux"
 
-#: ../src/ui/ui_mainwindow.c:544
+#: ../src/ui/ui_mainwindow.c:543
 msgid ""
 "<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news "
 "feeds.</p><p>The left pane contains the list of your subscriptions. To add a "
@@ -1725,93 +1724,93 @@ msgstr ""
 "parcourir les titres d'un flux, sélectionnez le flux dans la liste, et les "
 "titres seront chargés dans le cadre de droite.</p>"
 
-#: ../src/ui/ui_mainwindow.c:598
+#: ../src/ui/ui_mainwindow.c:597
 msgid "Liferea is now online"
 msgstr "Liferea est maintenant connecté"
 
-#: ../src/ui/ui_mainwindow.c:600
+#: ../src/ui/ui_mainwindow.c:599
 msgid "Work Offline"
 msgstr "Travailler déconnecté"
 
-#: ../src/ui/ui_mainwindow.c:602
+#: ../src/ui/ui_mainwindow.c:601
 msgid "Liferea is now offline"
 msgstr "Liferea est maintenant déconnecté"
 
-#: ../src/ui/ui_mainwindow.c:604
+#: ../src/ui/ui_mainwindow.c:603
 msgid "Work Online"
 msgstr "Travailler connecté"
 
-#: ../src/ui/ui_mainwindow.c:868
+#: ../src/ui/ui_mainwindow.c:867
 msgid "_Program"
 msgstr "_Programme"
 
-#: ../src/ui/ui_mainwindow.c:869
+#: ../src/ui/ui_mainwindow.c:868
 msgid "_Preferences"
 msgstr "_Préférences"
 
-#: ../src/ui/ui_mainwindow.c:869
+#: ../src/ui/ui_mainwindow.c:868
 msgid "Edit Preferences."
 msgstr "Éditer les préférences."
 
-#: ../src/ui/ui_mainwindow.c:871
+#: ../src/ui/ui_mainwindow.c:870
 msgid "Show a list of all feeds currently in the update queue"
 msgstr ""
 "Montrer une liste de tous les flux actuellement dans la queue de mise à jour"
 
-#: ../src/ui/ui_mainwindow.c:873
+#: ../src/ui/ui_mainwindow.c:872
 msgid "Allows to configure and edit LUA hook scripts"
 msgstr "Permet de configurer et éditer des hooks en LUA"
 
-#: ../src/ui/ui_mainwindow.c:875
+#: ../src/ui/ui_mainwindow.c:874
 msgid "_Quit"
 msgstr "_Quitter"
 
-#: ../src/ui/ui_mainwindow.c:877
+#: ../src/ui/ui_mainwindow.c:876
 msgid "_Feeds"
 msgstr "_Flux"
 
-#: ../src/ui/ui_mainwindow.c:878
+#: ../src/ui/ui_mainwindow.c:877
 msgid "Update _All"
 msgstr "Mettre à jour le _tout"
 
-#: ../src/ui/ui_mainwindow.c:878
+#: ../src/ui/ui_mainwindow.c:877
 msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr ""
 "Met à jour tous les abonnements. Ceci ne met pas à jour les répertoires OCS."
 
-#: ../src/ui/ui_mainwindow.c:880
+#: ../src/ui/ui_mainwindow.c:879
 msgid "Mark All As _Read"
 msgstr "Marquer le tout comme _lu"
 
-#: ../src/ui/ui_mainwindow.c:880
+#: ../src/ui/ui_mainwindow.c:879
 msgid "Marks read every item of every subscription."
 msgstr "Marque comme lu chaque élément de chaque abonnement."
 
-#: ../src/ui/ui_mainwindow.c:882
+#: ../src/ui/ui_mainwindow.c:881
 msgid "_Import Feed List..."
 msgstr "_Importer une liste de flux..."
 
-#: ../src/ui/ui_mainwindow.c:882
+#: ../src/ui/ui_mainwindow.c:881
 msgid "Imports an OPML feed list."
 msgstr "Importe une liste de flux OPML."
 
-#: ../src/ui/ui_mainwindow.c:883
+#: ../src/ui/ui_mainwindow.c:882
 msgid "_Export Feed List..."
 msgstr "_Exporter la liste des flux..."
 
-#: ../src/ui/ui_mainwindow.c:883
+#: ../src/ui/ui_mainwindow.c:882
 msgid "Exports the feed list as OPML."
 msgstr "Exporte la liste des flux en OPML."
 
-#: ../src/ui/ui_mainwindow.c:885
+#: ../src/ui/ui_mainwindow.c:884
 msgid "_Items"
 msgstr "_Éléments"
 
-#: ../src/ui/ui_mainwindow.c:886
+#: ../src/ui/ui_mainwindow.c:885
 msgid "_Next Unread Item"
 msgstr "Élément _non lu suivant"
 
-#: ../src/ui/ui_mainwindow.c:886
+#: ../src/ui/ui_mainwindow.c:885
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -1819,187 +1818,187 @@ msgstr ""
 "Va au prochain élément non lu. Si nécessaire, sélectionne le prochain flux "
 "ayant des éléments non lus."
 
-#: ../src/ui/ui_mainwindow.c:888
+#: ../src/ui/ui_mainwindow.c:887
 msgid "Toggle _Read Status"
 msgstr "Changer le statut _lu"
 
-#: ../src/ui/ui_mainwindow.c:888
+#: ../src/ui/ui_mainwindow.c:887
 msgid "Toggles the read status of the selected item."
 msgstr "Change le statut lu de l'élément sélectionné."
 
-#: ../src/ui/ui_mainwindow.c:890
+#: ../src/ui/ui_mainwindow.c:889
 msgid "Toggle Item _Flag"
 msgstr "Changer le _marqueur de l'élément"
 
-#: ../src/ui/ui_mainwindow.c:890
+#: ../src/ui/ui_mainwindow.c:889
 msgid "Toggles the flag status of the selected item."
 msgstr "Change le statut du marqueur de l'élément sélectionné."
 
-#: ../src/ui/ui_mainwindow.c:892
+#: ../src/ui/ui_mainwindow.c:891
 msgid "Remove _Selected"
 msgstr "Supprimer la _sélection"
 
-#: ../src/ui/ui_mainwindow.c:892
+#: ../src/ui/ui_mainwindow.c:891
 msgid "Removes the selected item."
 msgstr "Supprime l'élément sélectionné."
 
-#: ../src/ui/ui_mainwindow.c:894
+#: ../src/ui/ui_mainwindow.c:893
 msgid "Remove _All"
 msgstr "Supprimer _tous les éléments"
 
-#: ../src/ui/ui_mainwindow.c:894
+#: ../src/ui/ui_mainwindow.c:893
 msgid "Removes all items of the currently selected feed."
 msgstr "Supprime tous les éléments du flux sélectionné."
 
-#: ../src/ui/ui_mainwindow.c:896
+#: ../src/ui/ui_mainwindow.c:895
 msgid "_Launch In Browser"
 msgstr "_Ouvrir dans le navigateur"
 
-#: ../src/ui/ui_mainwindow.c:896
+#: ../src/ui/ui_mainwindow.c:895
 msgid "Launches the item's link in the configured browser."
 msgstr "Ouvre le lien de l'élément dans le navigateur configuré."
 
-#: ../src/ui/ui_mainwindow.c:899
+#: ../src/ui/ui_mainwindow.c:898
 msgid "_View"
 msgstr "_Vue"
 
-#: ../src/ui/ui_mainwindow.c:900
+#: ../src/ui/ui_mainwindow.c:899
 msgid "_Increase Text Size"
 msgstr "_Augmenter la taille du texte"
 
-#: ../src/ui/ui_mainwindow.c:900
+#: ../src/ui/ui_mainwindow.c:899
 msgid "Increases the text size of the item view."
 msgstr "Augmente la taille du texte dans la vue de l'élément."
 
-#: ../src/ui/ui_mainwindow.c:902
+#: ../src/ui/ui_mainwindow.c:901
 msgid "_Decrease Text Size"
 msgstr "_Réduire la taille du texte"
 
-#: ../src/ui/ui_mainwindow.c:902
+#: ../src/ui/ui_mainwindow.c:901
 msgid "Decreases the text size of the item view."
 msgstr "Réduit la taille du texte dans la vue de l'élément."
 
-#: ../src/ui/ui_mainwindow.c:904
+#: ../src/ui/ui_mainwindow.c:903
 msgid "_Normal View"
 msgstr "Vue _normale"
 
-#: ../src/ui/ui_mainwindow.c:904
+#: ../src/ui/ui_mainwindow.c:903
 msgid "Set view mode to mail client mode."
 msgstr "Mettre la vue comme celle d'un client mail."
 
-#: ../src/ui/ui_mainwindow.c:906
+#: ../src/ui/ui_mainwindow.c:905
 msgid "_Wide View"
 msgstr "Vue _large"
 
-#: ../src/ui/ui_mainwindow.c:906
+#: ../src/ui/ui_mainwindow.c:905
 msgid "Set view mode to use three vertical panes."
 msgstr "Mettre une vue utilisant trois cadres verticaux."
 
-#: ../src/ui/ui_mainwindow.c:908
+#: ../src/ui/ui_mainwindow.c:907
 msgid "_Combined View"
 msgstr "Vue _combinée"
 
-#: ../src/ui/ui_mainwindow.c:908
+#: ../src/ui/ui_mainwindow.c:907
 msgid "Set view mode to two pane mode."
 msgstr "Mettre une vue utilisant deux cadres."
 
-#: ../src/ui/ui_mainwindow.c:911
+#: ../src/ui/ui_mainwindow.c:910
 msgid "_Search"
 msgstr "_Recherche"
 
-#: ../src/ui/ui_mainwindow.c:912
+#: ../src/ui/ui_mainwindow.c:911
 msgid "Search All Feeds..."
 msgstr "Chercher dans tous les flux..."
 
-#: ../src/ui/ui_mainwindow.c:912
+#: ../src/ui/ui_mainwindow.c:911
 msgid "Show the search dialog."
 msgstr "Affiche la boîte de recherche."
 
-#: ../src/ui/ui_mainwindow.c:913
+#: ../src/ui/ui_mainwindow.c:912
 msgid "Search With ..."
 msgstr "Chercher avec ..."
 
-#: ../src/ui/ui_mainwindow.c:915
+#: ../src/ui/ui_mainwindow.c:914
 msgid "_Help"
 msgstr "_Aide"
 
-#: ../src/ui/ui_mainwindow.c:916
+#: ../src/ui/ui_mainwindow.c:915
 msgid "_Contents"
 msgstr "_Sommaire"
 
-#: ../src/ui/ui_mainwindow.c:916
+#: ../src/ui/ui_mainwindow.c:915
 msgid "View help for this application."
 msgstr "Voir l'aide concernant cette application."
 
-#: ../src/ui/ui_mainwindow.c:917
+#: ../src/ui/ui_mainwindow.c:916
 msgid "_Quick Reference"
 msgstr "_Référence rapide"
 
-#: ../src/ui/ui_mainwindow.c:917
+#: ../src/ui/ui_mainwindow.c:916
 msgid "View a list of all Liferea shortcuts."
 msgstr "Voir une liste de tous les raccourcis clavier de Liferea."
 
-#: ../src/ui/ui_mainwindow.c:919
+#: ../src/ui/ui_mainwindow.c:918
 msgid "_FAQ"
 msgstr "_FAQ"
 
-#: ../src/ui/ui_mainwindow.c:919
+#: ../src/ui/ui_mainwindow.c:918
 msgid "View the FAQ for this application."
 msgstr "Voir la FAQ de cette application."
 
-#: ../src/ui/ui_mainwindow.c:920
+#: ../src/ui/ui_mainwindow.c:919
 msgid "_About"
 msgstr "À _propos"
 
-#: ../src/ui/ui_mainwindow.c:920
+#: ../src/ui/ui_mainwindow.c:919
 msgid "Shows an about dialog."
 msgstr "Affiche une fenêtre \"À propos\"."
 
-#: ../src/ui/ui_mainwindow.c:924
+#: ../src/ui/ui_mainwindow.c:923
 msgid "_New Subscription..."
 msgstr "Nouvel _abonnement..."
 
-#: ../src/ui/ui_mainwindow.c:924
+#: ../src/ui/ui_mainwindow.c:923
 msgid "Adds a subscription to the feed list."
 msgstr "Ajoute un abonnement à la liste des flux."
 
-#: ../src/ui/ui_mainwindow.c:926
+#: ../src/ui/ui_mainwindow.c:925
 msgid "New _Folder..."
 msgstr "Nouveau _dossier..."
 
-#: ../src/ui/ui_mainwindow.c:926
+#: ../src/ui/ui_mainwindow.c:925
 msgid "Adds a folder to the feed list."
 msgstr "Ajoute un dossier à la liste des flux."
 
-#: ../src/ui/ui_mainwindow.c:927
+#: ../src/ui/ui_mainwindow.c:926
 msgid "New S_earch Folder..."
 msgstr "Nouveau dossier de _recherche..."
 
-#: ../src/ui/ui_mainwindow.c:927
+#: ../src/ui/ui_mainwindow.c:926
 msgid "Adds a new search folder to the feed list."
 msgstr "Ajoute un nouveau dossier de recherche à la liste des flux."
 
-#: ../src/ui/ui_mainwindow.c:928
+#: ../src/ui/ui_mainwindow.c:927
 msgid "New _Source..."
 msgstr "Nouvelle _source..."
 
-#: ../src/ui/ui_mainwindow.c:928
+#: ../src/ui/ui_mainwindow.c:927
 msgid "Adds a new feed list source."
 msgstr "Ajoute une nouvelle source de liste de flux."
 
-#: ../src/ui/ui_mainwindow.c:929
+#: ../src/ui/ui_mainwindow.c:928
 msgid "New _News Bin..."
 msgstr "Nouvelle _boîte à nouvelles..."
 
-#: ../src/ui/ui_mainwindow.c:929
+#: ../src/ui/ui_mainwindow.c:928
 msgid "Adds a new news bin."
 msgstr "Ajoute une nouvelle boîte à nouvelles."
 
-#: ../src/ui/ui_mainwindow.c:933
+#: ../src/ui/ui_mainwindow.c:932
 msgid "_Mark Selected As Read"
 msgstr "_Marquer la sélection comme lue"
 
-#: ../src/ui/ui_mainwindow.c:933
+#: ../src/ui/ui_mainwindow.c:932
 msgid ""
 "Marks all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
@@ -2007,11 +2006,11 @@ msgstr ""
 "Marque comme lus tous les éléments de l'abonnement sélectionné ou de tous "
 "les abonnements du dossier sélectionné."
 
-#: ../src/ui/ui_mainwindow.c:935
+#: ../src/ui/ui_mainwindow.c:934
 msgid "Update _Selected"
 msgstr "Mettre à _jour la sélection"
 
-#: ../src/ui/ui_mainwindow.c:935
+#: ../src/ui/ui_mainwindow.c:934
 msgid ""
 "Updates the selected subscription or all subscriptions of the selected "
 "folder."
@@ -2019,38 +2018,38 @@ msgstr ""
 "Met à jour l'abonnement sélectionné ou tous les abonnements du dossier "
 "sélectionné."
 
-#: ../src/ui/ui_mainwindow.c:940
+#: ../src/ui/ui_mainwindow.c:939
 msgid "_Properties..."
 msgstr "_Propriétés..."
 
-#: ../src/ui/ui_mainwindow.c:940
+#: ../src/ui/ui_mainwindow.c:939
 msgid "Opens the property dialog for the selected subscription."
 msgstr "Ouvre la fenêtre des propriétés pour l'abonnement sélectionné."
 
-#: ../src/ui/ui_mainwindow.c:941
+#: ../src/ui/ui_mainwindow.c:940
 msgid "_Delete Selected"
 msgstr "S_upprimer la sélection"
 
-#: ../src/ui/ui_mainwindow.c:941
+#: ../src/ui/ui_mainwindow.c:940
 msgid "Removes the selected subscription."
 msgstr "Supprime l'abonnement sélectionné."
 
-#: ../src/ui/ui_mainwindow.c:945
+#: ../src/ui/ui_mainwindow.c:944
 msgid "_Work Offline"
 msgstr "_Travailler déconnecté"
 
-#: ../src/ui/ui_mainwindow.c:945
+#: ../src/ui/ui_mainwindow.c:944
 msgid "This option allows you to disable subscription updating."
 msgstr "Cette option vous permet de désactiver la mise à jour des abonnements."
 
-#: ../src/ui/ui_mainwindow.c:1079
+#: ../src/ui/ui_mainwindow.c:1078
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
 msgstr[0] "%d nouveau"
 msgstr[1] "%d nouveaux"
 
-#: ../src/ui/ui_mainwindow.c:1085
+#: ../src/ui/ui_mainwindow.c:1084
 #, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
@@ -2309,7 +2308,7 @@ msgstr "<p><a href=\"%s\">Voir le contenu de cet élément.</a></p>"
 msgid "Invalid Atom feed: unknown author"
 msgstr "Flux Atom invalide : auteur inconnu"
 
-#: ../src/parsers/atom10.c:690 ../src/parsers/pie_feed.c:282
+#: ../src/parsers/atom10.c:691 ../src/parsers/pie_feed.c:282
 #: ../src/parsers/rss_channel.c:304
 #, c-format
 msgid "There were errors while parsing the feed %s!"

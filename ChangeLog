@@ -1,3 +1,14 @@
+2007-01-21  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.2.4 (Stable)
+
+	* Fixes a possible GUI deadlock usually happening when
+	  using the Gecko rendering during background feed updates.
+	* Fixes a problem with relative feed base URLs.
+	* Update of French translation (Vincent Lefevre)
+	* New Turkish translation (Mehmet Atif Ergun)
+
+
 2007-01-11  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.2.3 (Stable)
