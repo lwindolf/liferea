@@ -177,7 +177,6 @@ div.content, div.foottext {
 
 div.comment {
 	border:1px solid #GTK-COLOR-DARK;
-	background:#GTK-COLOR-BG;
 	margin-bottom:5px;
 }
 
@@ -190,7 +189,7 @@ div.comment_title {
 	padding-left:6px;
 	padding-right:6px;
 	font-weight:bold;
-	background:#GTK-COLOR-DARK;
+	background:#GTK-COLOR-BG;
 }
 
 a.favicon {
