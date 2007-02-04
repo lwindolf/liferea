@@ -1,10 +1,31 @@
-2007-01-21  Lars Lindner  <lars.lindner@gmail.com>
+2007-02-01  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.2.5 (Stable)
+
+	* Disabling GtkHTML2 support for x86_64 platforms.
+	  Maintainers: please do discontinue any GtkHTML2 support
+	  on such platforms if possible, as it cause only trouble!
+	* Removed console warning that was given on each startup
+	  as long as social bookmarking site was not set.
+	* Fixes Debian #408475: liferea wrapper script is brittle, 
+	  depends on $0 (report and patch by jrodman)
+	* Fixes a type problem in the Digest authentication that 
+	  caused crashes on AMD64 (SF #1636563)
+
+	Translations:
+
+	* Fixes for Turkish translation (Mehmet Atif Ergun)
+	* Fixes for Arabic translation (Khaled Hosny)
+	* New Russian translation (Oleg Maloglovets)
+
+2007-01-22  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.2.4 (Stable)
 
 	* Fixes a possible GUI deadlock usually happening when
 	  using the Gecko rendering during background feed updates.
 	* Fixes a problem with relative feed base URLs.
+	* Fixes broken "item unselect" script trigger.
 	* Update of French translation (Vincent Lefevre)
 	* New Turkish translation (Mehmet Atif Ergun)
 

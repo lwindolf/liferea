@@ -19,6 +19,7 @@
  */
 
 #include "conf.h"
+#include "debug.h"
 #include "social.h"
 
 /** list of registered bookmarking sites */
@@ -53,7 +54,7 @@ void social_set_site(const gchar *name) {
 		iter = g_slist_next(iter);
 	}
 	
-	g_warning("Unknown social bookmarking site \"%s\"!", name);
+	debug1(DEBUG_GUI, "Unknown social bookmarking site \"%s\"!", name);
 }
 
 const gchar * social_get_site(void) { return site->name; }

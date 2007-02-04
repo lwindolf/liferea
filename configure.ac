@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([liferea],[1.2.4],[liferea-devel@lists.sourceforge.net])
+AC_INIT([liferea],[1.2.5],[liferea-devel@lists.sourceforge.net])
 AC_CANONICAL_TARGET([])
 AC_CONFIG_SRCDIR([src/feedlist.c])
 
@@ -38,6 +38,18 @@ AC_ARG_ENABLE(gecko,     AS_HELP_STRING([--enable-gecko=ARG],[specify which Geck
 AC_ARG_ENABLE(gnutls,    AS_HELP_STRING([--enable-gnutls],[Attempt to use GNUTLS for SSL support @<:@default=yes@:>@]),,enable_gnutls=yes)
 AC_ARG_ENABLE(libnotify, AS_HELP_STRING([--disable-libnotify],[don't compile the libnotify plugin]),,enable_libnotify=yes)
 AC_ARG_ENABLE(lua,       AS_HELP_STRING([--disable-lua],[don't compile with LUA scripting support]),,enable_lua=yes)
+
+AC_MSG_CHECKING([for 64bit platform])
+case "$target" in
+   x86_64-*-*)
+     enable_gtkhtml2=no
+     AC_MSG_RESULT([yes -> disabling GtkHTML2])
+     ;;
+   *)
+     AC_MSG_RESULT([no])
+     ;;
+esac
+
 
 AC_MSG_CHECKING([for some Win32 platform])
 case "$host" in

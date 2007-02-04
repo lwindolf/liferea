@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-12-17 15:32+0100\n"
+"POT-Creation-Date: 2007-01-28 14:39+0100\n"
 "PO-Revision-Date: 2006-12-05 21:26+0100\n"
 "Last-Translator: Lars Lindner <lars.lindner@gmx.net>\n"
 "Language-Team: Polish\n"
@@ -295,7 +295,7 @@ msgstr ""
 "<p>Błąd XML przy czytaniu subskrypcji! Subskrypcja \"%s\" nie mogła być "
 "załadowana!</p>"
 
-#: ../src/feed.c:376 ../src/feed.c:661
+#: ../src/feed.c:376 ../src/feed.c:667
 msgid "<p>Empty document!</p>"
 msgstr "<p>Pusty dokument!</p>"
 
@@ -317,13 +317,13 @@ msgstr ""
 msgid "<p>Could not determine the feed type.</p>"
 msgstr "<p>Nie można określić typu subskrypcji.</p>"
 
-#: ../src/feed.c:644
+#: ../src/feed.c:650
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
 msgstr ""
 "Błąd czytania pliku pamięci podręcznej \"%s\"! Nie można załadować pliku!"
 
-#: ../src/feed.c:655
+#: ../src/feed.c:661
 #, c-format
 msgid ""
 "<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
@@ -332,31 +332,31 @@ msgstr ""
 "<p>Błąd XML podczas przetwarzania pliku pamięci podręcznej! Nie można "
 "załadować pliku \"%s\"!</p>"
 
-#: ../src/feed.c:676
+#: ../src/feed.c:682
 #, c-format
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 msgstr ""
 "<p>\"%s\" nie jest poprawnym plikiem pamięci podręcznej! Nie można go "
 "przeczytać!</p>"
 
-#: ../src/feed.c:734
+#: ../src/feed.c:740
 #, c-format
 msgid "There were errors while parsing cache file \"%s\""
 msgstr "Wystąpiły błędy podczas przetwarzania pliku pamięci podręcznej \"%s\""
 
-#: ../src/feed.c:759
+#: ../src/feed.c:765
 #, c-format
 msgid "This feed \"%s\" is already being updated!"
 msgstr "Subskrypcja \"%s\" jest właśnie uaktualniana!"
 
-#: ../src/feed.c:764
+#: ../src/feed.c:770
 #, c-format
 msgid "The feed \"%s\" was discontinued. Liferea won't update it anymore!"
 msgstr ""
 "Subskrypcja \"%s\" została zamknięta. Liferea nie będzie jej więcej "
 "uaktualniać!"
 
-#: ../src/feed.c:1026
+#: ../src/feed.c:1047
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box."
@@ -364,97 +364,97 @@ msgstr ""
 "Nie masz dostępu do tej subskrypcji. Uaktualnij nazwę użytkownika i hasło w "
 "oknie ustawień subskrypcji."
 
-#: ../src/feed.c:1028
+#: ../src/feed.c:1049
 msgid "Payment Required"
 msgstr "Wymagane uiszczenie opłaty"
 
-#: ../src/feed.c:1029
+#: ../src/feed.c:1050
 msgid "Access Forbidden"
 msgstr "Dostęp zabroniony"
 
-#: ../src/feed.c:1030
+#: ../src/feed.c:1051
 msgid "Resource Not Found"
 msgstr "Zasób nie odnaleziony"
 
-#: ../src/feed.c:1031
+#: ../src/feed.c:1052
 msgid "Method Not Allowed"
 msgstr "Niedozwolona metoda"
 
-#: ../src/feed.c:1032
+#: ../src/feed.c:1053
 msgid "Not Acceptable"
 msgstr "Nieakceptowalne"
 
-#: ../src/feed.c:1033
+#: ../src/feed.c:1054
 msgid "Proxy Authentication Required"
 msgstr "Wymagana autoryzacja pośrednika sieciowego (proxy)"
 
-#: ../src/feed.c:1034
+#: ../src/feed.c:1055
 msgid "Request Time-Out"
 msgstr "Upłynął limit czasu żądania"
 
-#: ../src/feed.c:1035
+#: ../src/feed.c:1056
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "Zasób nie istnieje. Proszę usunąć subskrypcję!"
 
-#: ../src/feed.c:1040
+#: ../src/feed.c:1061
 msgid "URL is invalid"
 msgstr "URL jest nieprawidłowy"
 
-#: ../src/feed.c:1041
+#: ../src/feed.c:1062
 msgid "Unsupported network protocol"
 msgstr "Nieobsługiwany protokół sieciowy"
 
-#: ../src/feed.c:1044
+#: ../src/feed.c:1065
 msgid "Error connecting to remote host"
 msgstr "Błąd podczas łączenia ze zdalnym hostem"
 
-#: ../src/feed.c:1045
+#: ../src/feed.c:1066
 msgid "Hostname could not be found"
 msgstr "Nie można odnaleźć hosta o podanej nazwie"
 
-#: ../src/feed.c:1046
+#: ../src/feed.c:1067
 msgid "Network connection was refused by the remote host"
 msgstr "Zdalny host odrzucił połączenie"
 
-#: ../src/feed.c:1047
+#: ../src/feed.c:1068
 msgid "Remote host did not finish sending data"
 msgstr "Zdalny host nie zakończył wysyłania danych"
 
 #. Transfer errors
-#: ../src/feed.c:1049
+#: ../src/feed.c:1070
 msgid "Too many HTTP redirects were encountered"
 msgstr "Napotkano zbyt wiele przekierowań HTTP"
 
-#: ../src/feed.c:1052
+#: ../src/feed.c:1073
 msgid "Remote host sent an invalid response"
 msgstr "Zdalny host wysłał nieprawidłową odpowiedź"
 
-#: ../src/feed.c:1059
+#: ../src/feed.c:1080
 msgid "Authentication failed"
 msgstr "Autentykacja nieudana"
 
-#: ../src/feed.c:1061
+#: ../src/feed.c:1082
 msgid "Webserver's authentication method incompatible with Liferea"
 msgstr "Sposób autoryzacji serwera jest niekompatybilny z Liferea"
 
-#: ../src/feed.c:1067
+#: ../src/feed.c:1088
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "Subskrypcja niedostępna: Serwer zażądał nieobsługiwanego przekierowania!"
 
-#: ../src/feed.c:1068
+#: ../src/feed.c:1089
 msgid "Client Error"
 msgstr "Błąd klienta"
 
-#: ../src/feed.c:1069
+#: ../src/feed.c:1090
 msgid "Server Error"
 msgstr "Błąd serwera"
 
-#: ../src/feed.c:1070
+#: ../src/feed.c:1091
 msgid "(unknown networking error happened)"
 msgstr "(wystąpił nieznany błąd sieciowy)"
 
-#: ../src/feed.c:1079
+#: ../src/feed.c:1100
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
@@ -462,27 +462,27 @@ msgstr ""
 "Wystąpił problem przy czytaniu subskrypcji. Sprawdź adres URL oraz "
 "komunikaty na konsoli"
 
-#: ../src/feed.c:1130
+#: ../src/feed.c:1151
 #, c-format
 msgid "Updating feed icon for \"%s\""
 msgstr "Uaktualnianie ikony dla \"%s\""
 
-#: ../src/feed.c:1163
+#: ../src/feed.c:1184
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "URL \"%s\" zmienił się i został uaktualniony"
 
-#: ../src/feed.c:1172
+#: ../src/feed.c:1193
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr "\"%s\" został zamknięty. Liferea nie będzie go więcej uaktualniać!"
 
-#: ../src/feed.c:1175
+#: ../src/feed.c:1196
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\" nie zmienił się od ostaniej aktualizacji"
 
-#: ../src/feed.c:1191
+#: ../src/feed.c:1212
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!</"
@@ -492,30 +492,30 @@ msgstr ""
 "na zasób będący w jednym z obsługiwanych formatów subskrypcji!</p>Wydruk z "
 "parsera XML:<br /><div class='xmlparseroutput'>"
 
-#: ../src/feed.c:1210
+#: ../src/feed.c:1231
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" uaktualnione..."
 
-#: ../src/feed.c:1222
+#: ../src/feed.c:1243
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" nie jest dostępne"
 
-#: ../src/feed.c:1344
+#: ../src/feed.c:1368
 #, c-format
 msgid "Updating \"%s\""
 msgstr "Uaktualnianie \"%s\""
 
-#: ../src/feedlist.c:285
+#: ../src/feedlist.c:287
 msgid "You have to select a feed entry"
 msgstr "Musisz zaznaczyć pozycję subskrypcji"
 
-#: ../src/feedlist.c:292 ../src/feedlist.c:301
+#: ../src/feedlist.c:294 ../src/feedlist.c:303
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea działa w trybie offline. Uaktualnienia nie są możliwe."
 
-#: ../src/feedlist.c:414
+#: ../src/feedlist.c:419
 msgid ""
 "Liferea v1.2 uses a new cache format and has migrated your feed cache. The "
 "cache content of v1.0 in ~/.liferea was not deleted automatically. Please "
@@ -723,7 +723,7 @@ msgstr ""
 msgid "Advanced"
 msgstr "Zaawansowane"
 
-#: ../src/interface.c:882 ../src/interface.c:3488 ../src/node.c:473
+#: ../src/interface.c:882 ../src/interface.c:3488 ../src/node.c:489
 msgid "New Subscription"
 msgstr "Nowa Subskrypcja"
 
@@ -1274,7 +1274,7 @@ msgstr ""
 "Rozpoczyna wyszukiwanie tekstu we wszystkich subskrypcjach. Wyniki pojawią "
 "się na liście pozycji."
 
-#: ../src/interface.c:3355 ../src/ui/ui_mainwindow.c:871
+#: ../src/interface.c:3355 ../src/ui/ui_mainwindow.c:870
 msgid "Update Monitor"
 msgstr "Monitor uaktualniania"
 
@@ -1302,7 +1302,7 @@ msgstr ""
 msgid "Advanced..."
 msgstr "Zaawansowane..."
 
-#: ../src/interface.c:3611 ../src/ui/ui_mainwindow.c:873
+#: ../src/interface.c:3611 ../src/ui/ui_mainwindow.c:872
 msgid "Script Manager"
 msgstr "Menedżer skryptów"
 
@@ -1343,7 +1343,7 @@ msgid "_News Bin Name:"
 msgstr "_Nazwa Kosza:"
 
 #. if we don't find a feed with unread items do nothing
-#: ../src/itemlist.c:284
+#: ../src/itemlist.c:296
 msgid "There are no unread items "
 msgstr "Nie ma nieprzeczytanych pozycji "
 
@@ -1635,16 +1635,16 @@ msgstr ""
 "przeglądarki! Spróbuj opcji --debug-all aby dowiedzieć się więcej!"
 
 #. FIXME: bad because this is not only used for item links!
-#: ../src/ui/ui_htmlview.c:207
+#: ../src/ui/ui_htmlview.c:195
 msgid "This item does not have a link assigned!"
 msgstr "Ta pozycja nie ma przypisanego odnośnika!"
 
-#: ../src/ui/ui_htmlview.c:309 ../src/ui/ui_htmlview.c:329
+#: ../src/ui/ui_htmlview.c:297 ../src/ui/ui_htmlview.c:317
 #, c-format
 msgid "Browser command failed: %s"
 msgstr "Błąd uruchamiania przeglądarki: %s"
 
-#: ../src/ui/ui_htmlview.c:332
+#: ../src/ui/ui_htmlview.c:320
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Uruchamianie: \"%s\""
@@ -1653,37 +1653,37 @@ msgstr "Uruchamianie: \"%s\""
 msgid "<i>*** No title ***</i>"
 msgstr "<i>*** Bez tytułu ***</i>"
 
-#: ../src/ui/ui_itemlist.c:299
+#: ../src/ui/ui_itemlist.c:297
 msgid "Date"
 msgstr "Data"
 
-#: ../src/ui/ui_itemlist.c:310 ../src/ui/ui_itemlist.c:313
+#: ../src/ui/ui_itemlist.c:308 ../src/ui/ui_itemlist.c:311
 msgid "Headline"
 msgstr "Nagłówek"
 
-#: ../src/ui/ui_itemlist.c:427 ../src/ui/ui_itemlist.c:440
-#: ../src/ui/ui_itemlist.c:485 ../src/ui/ui_itemlist.c:635
-#: ../src/ui/ui_itemlist.c:653
+#: ../src/ui/ui_itemlist.c:422 ../src/ui/ui_itemlist.c:435
+#: ../src/ui/ui_itemlist.c:480 ../src/ui/ui_itemlist.c:634
+#: ../src/ui/ui_itemlist.c:652
 msgid "No item has been selected"
 msgstr "Żadna pozycja nie została zaznaczona"
 
-#: ../src/ui/ui_itemlist.c:438
+#: ../src/ui/ui_itemlist.c:433
 msgid "This item has no link specified!"
 msgstr "Ta pozycja nie ma przypisanego odnośnika!"
 
-#: ../src/ui/ui_itemlist.c:475
+#: ../src/ui/ui_itemlist.c:470
 msgid "You must select a feed to delete its items!"
 msgstr "Musisz zaznaczyć subskrypcję aby usunąć jej pozycje!"
 
-#: ../src/ui/ui_itemlist.c:663
+#: ../src/ui/ui_itemlist.c:662
 msgid "No link selected!"
 msgstr "Żaden odnośnik nie został zaznaczony"
 
-#: ../src/ui/ui_mainwindow.c:542
+#: ../src/ui/ui_mainwindow.c:541
 msgid "Liferea - Linux Feed Reader"
 msgstr "Liferea - Linux Feed Reader"
 
-#: ../src/ui/ui_mainwindow.c:544
+#: ../src/ui/ui_mainwindow.c:543
 msgid ""
 "<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news "
 "feeds.</p><p>The left pane contains the list of your subscriptions. To add a "
@@ -1696,93 +1696,93 @@ msgstr ""
 "Subskrypcje -&gt; Nowa Subskrypcja. Aby obejrzeć nagłówki, zaznacz "
 "subskrypcję w lewym oknie. Nagłówki zostaną pokazane w prawym oknie.</p>"
 
-#: ../src/ui/ui_mainwindow.c:598
+#: ../src/ui/ui_mainwindow.c:597
 msgid "Liferea is now online"
 msgstr "Liferea działa teraz w trybie online"
 
-#: ../src/ui/ui_mainwindow.c:600
+#: ../src/ui/ui_mainwindow.c:599
 msgid "Work Offline"
 msgstr "Pracuj Offline"
 
-#: ../src/ui/ui_mainwindow.c:602
+#: ../src/ui/ui_mainwindow.c:601
 msgid "Liferea is now offline"
 msgstr "Liferea działa teraz w trybie offline"
 
-#: ../src/ui/ui_mainwindow.c:604
+#: ../src/ui/ui_mainwindow.c:603
 msgid "Work Online"
 msgstr "Pracuj Online"
 
-#: ../src/ui/ui_mainwindow.c:868
+#: ../src/ui/ui_mainwindow.c:867
 msgid "_Program"
 msgstr "_Program"
 
-#: ../src/ui/ui_mainwindow.c:869
+#: ../src/ui/ui_mainwindow.c:868
 msgid "_Preferences"
 msgstr "_Preferencje"
 
-#: ../src/ui/ui_mainwindow.c:869
+#: ../src/ui/ui_mainwindow.c:868
 msgid "Edit Preferences."
 msgstr "Edytuje preferencje."
 
-#: ../src/ui/ui_mainwindow.c:871
+#: ../src/ui/ui_mainwindow.c:870
 msgid "Show a list of all feeds currently in the update queue"
 msgstr "Wyświetl listę subskrypcji oczekujących na uaktualnienie"
 
-#: ../src/ui/ui_mainwindow.c:873
+#: ../src/ui/ui_mainwindow.c:872
 msgid "Allows to configure and edit LUA hook scripts"
 msgstr "Pozwala edytować i konfigurować skrypty LUA"
 
-#: ../src/ui/ui_mainwindow.c:875
+#: ../src/ui/ui_mainwindow.c:874
 msgid "_Quit"
 msgstr "_Wyjście"
 
-#: ../src/ui/ui_mainwindow.c:877
+#: ../src/ui/ui_mainwindow.c:876
 msgid "_Feeds"
 msgstr "Su_bskrypcje"
 
 # Skrócone (toolbar)
-#: ../src/ui/ui_mainwindow.c:878
+#: ../src/ui/ui_mainwindow.c:877
 msgid "Update _All"
 msgstr "Uaktu_alnij"
 
-#: ../src/ui/ui_mainwindow.c:878
+#: ../src/ui/ui_mainwindow.c:877
 msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr "Uaktualnia wszystkie subskrypcje (nie dotyczy katalogów OCS)."
 
-#: ../src/ui/ui_mainwindow.c:880
+#: ../src/ui/ui_mainwindow.c:879
 msgid "Mark All As _Read"
 msgstr "_Oznacz jako przeczytane"
 
-#: ../src/ui/ui_mainwindow.c:880
+#: ../src/ui/ui_mainwindow.c:879
 msgid "Marks read every item of every subscription."
 msgstr "Oznacza każdy element każdej subskrypcji jako przeczytany."
 
-#: ../src/ui/ui_mainwindow.c:882
+#: ../src/ui/ui_mainwindow.c:881
 msgid "_Import Feed List..."
 msgstr "_Importuj listę subskrypcji..."
 
-#: ../src/ui/ui_mainwindow.c:882
+#: ../src/ui/ui_mainwindow.c:881
 msgid "Imports an OPML feed list."
 msgstr "Importuje listę subskrypcji OPML."
 
-#: ../src/ui/ui_mainwindow.c:883
+#: ../src/ui/ui_mainwindow.c:882
 msgid "_Export Feed List..."
 msgstr "_Eksportuj listę subskrypcji..."
 
-#: ../src/ui/ui_mainwindow.c:883
+#: ../src/ui/ui_mainwindow.c:882
 msgid "Exports the feed list as OPML."
 msgstr "Eksportuje listę subskrypcji jako OPML."
 
-#: ../src/ui/ui_mainwindow.c:885
+#: ../src/ui/ui_mainwindow.c:884
 msgid "_Items"
 msgstr "P_ozycje"
 
 # Skrócone (toolbar)
-#: ../src/ui/ui_mainwindow.c:886
+#: ../src/ui/ui_mainwindow.c:885
 msgid "_Next Unread Item"
 msgstr "_Następna nieprzeczytana"
 
-#: ../src/ui/ui_mainwindow.c:886
+#: ../src/ui/ui_mainwindow.c:885
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -1790,191 +1790,191 @@ msgstr ""
 "Przechodzi do następnej nieprzeczytanej pozycji. Jeśli trzeba, wybiera "
 "następną subskrypcję."
 
-#: ../src/ui/ui_mainwindow.c:888
+#: ../src/ui/ui_mainwindow.c:887
 msgid "Toggle _Read Status"
 msgstr "_Status przeczytania"
 
-#: ../src/ui/ui_mainwindow.c:888
+#: ../src/ui/ui_mainwindow.c:887
 msgid "Toggles the read status of the selected item."
 msgstr "Zmienia status przeczytania zaznaczonej pozycji."
 
-#: ../src/ui/ui_mainwindow.c:890
+#: ../src/ui/ui_mainwindow.c:889
 msgid "Toggle Item _Flag"
 msgstr "_Flaga pozycji"
 
-#: ../src/ui/ui_mainwindow.c:890
+#: ../src/ui/ui_mainwindow.c:889
 msgid "Toggles the flag status of the selected item."
 msgstr "Zmienia flagę zaznaczonej pozycji."
 
-#: ../src/ui/ui_mainwindow.c:892
+#: ../src/ui/ui_mainwindow.c:891
 msgid "Remove _Selected"
 msgstr "Usuń _zaznaczoną"
 
-#: ../src/ui/ui_mainwindow.c:892
+#: ../src/ui/ui_mainwindow.c:891
 msgid "Removes the selected item."
 msgstr "Usuwa zaznaczoną pozycję."
 
-#: ../src/ui/ui_mainwindow.c:894
+#: ../src/ui/ui_mainwindow.c:893
 msgid "Remove _All"
 msgstr "Usuń _wszystkie"
 
-#: ../src/ui/ui_mainwindow.c:894
+#: ../src/ui/ui_mainwindow.c:893
 msgid "Removes all items of the currently selected feed."
 msgstr "Usuwa wszystkie pozycje z zaznaczonej subskrypcji."
 
-#: ../src/ui/ui_mainwindow.c:896
+#: ../src/ui/ui_mainwindow.c:895
 msgid "_Launch In Browser"
 msgstr "Otwórz w przeg_lądarce"
 
-#: ../src/ui/ui_mainwindow.c:896
+#: ../src/ui/ui_mainwindow.c:895
 msgid "Launches the item's link in the configured browser."
 msgstr "Otwiera odnośnik pozycji w przeglądarce WWW."
 
-#: ../src/ui/ui_mainwindow.c:899
+#: ../src/ui/ui_mainwindow.c:898
 msgid "_View"
 msgstr "_Widok"
 
-#: ../src/ui/ui_mainwindow.c:900
+#: ../src/ui/ui_mainwindow.c:899
 msgid "_Increase Text Size"
 msgstr "Z_większ rozmiar czcionki"
 
-#: ../src/ui/ui_mainwindow.c:900
+#: ../src/ui/ui_mainwindow.c:899
 msgid "Increases the text size of the item view."
 msgstr "Zwiększa rozmiar tekstu oglądanej pozycji."
 
-#: ../src/ui/ui_mainwindow.c:902
+#: ../src/ui/ui_mainwindow.c:901
 msgid "_Decrease Text Size"
 msgstr "Z_mniejsz rozmiar czcionki"
 
-#: ../src/ui/ui_mainwindow.c:902
+#: ../src/ui/ui_mainwindow.c:901
 msgid "Decreases the text size of the item view."
 msgstr "Zmniejsza rozmiar tekstu oglądanej artykułu."
 
-#: ../src/ui/ui_mainwindow.c:904
+#: ../src/ui/ui_mainwindow.c:903
 msgid "_Normal View"
 msgstr "Widok _zwykły"
 
-#: ../src/ui/ui_mainwindow.c:904
+#: ../src/ui/ui_mainwindow.c:903
 msgid "Set view mode to mail client mode."
 msgstr "Ustawia widok jak w programie pocztowym."
 
-#: ../src/ui/ui_mainwindow.c:906
+#: ../src/ui/ui_mainwindow.c:905
 msgid "_Wide View"
 msgstr "Widok _szeroki"
 
-#: ../src/ui/ui_mainwindow.c:906
+#: ../src/ui/ui_mainwindow.c:905
 msgid "Set view mode to use three vertical panes."
 msgstr "Ustawia widok w trzech pionowych panelach."
 
 # Skrocone (toolbar)
-#: ../src/ui/ui_mainwindow.c:908
+#: ../src/ui/ui_mainwindow.c:907
 msgid "_Combined View"
 msgstr "Widok _kombinowany"
 
-#: ../src/ui/ui_mainwindow.c:908
+#: ../src/ui/ui_mainwindow.c:907
 msgid "Set view mode to two pane mode."
 msgstr "Ustawia widok dwupanelowy."
 
 # Szukaj brzmi zle (nie sugeruje ze celem jest znalezienie)
-#: ../src/ui/ui_mainwindow.c:911
+#: ../src/ui/ui_mainwindow.c:910
 msgid "_Search"
 msgstr "_Znajdź"
 
 # Skrocone (toolbar)
-#: ../src/ui/ui_mainwindow.c:912
+#: ../src/ui/ui_mainwindow.c:911
 msgid "Search All Feeds..."
 msgstr "Znajdź..."
 
-#: ../src/ui/ui_mainwindow.c:912
+#: ../src/ui/ui_mainwindow.c:911
 msgid "Show the search dialog."
 msgstr "Pokazuje pole wyszukiwania."
 
-#: ../src/ui/ui_mainwindow.c:913
+#: ../src/ui/ui_mainwindow.c:912
 msgid "Search With ..."
 msgstr "Znajdź z..."
 
-#: ../src/ui/ui_mainwindow.c:915
+#: ../src/ui/ui_mainwindow.c:914
 msgid "_Help"
 msgstr "Po_moc"
 
-#: ../src/ui/ui_mainwindow.c:916
+#: ../src/ui/ui_mainwindow.c:915
 msgid "_Contents"
 msgstr "_Zawartość"
 
-#: ../src/ui/ui_mainwindow.c:916
+#: ../src/ui/ui_mainwindow.c:915
 msgid "View help for this application."
 msgstr "Zobacz pomoc dla tej aplikacji."
 
-#: ../src/ui/ui_mainwindow.c:917
+#: ../src/ui/ui_mainwindow.c:916
 msgid "_Quick Reference"
 msgstr "_Streszczenie"
 
-#: ../src/ui/ui_mainwindow.c:917
+#: ../src/ui/ui_mainwindow.c:916
 msgid "View a list of all Liferea shortcuts."
 msgstr "Zobacz listę skrótów klawiszowych Liferea."
 
-#: ../src/ui/ui_mainwindow.c:919
+#: ../src/ui/ui_mainwindow.c:918
 msgid "_FAQ"
 msgstr "_FAQ"
 
-#: ../src/ui/ui_mainwindow.c:919
+#: ../src/ui/ui_mainwindow.c:918
 msgid "View the FAQ for this application."
 msgstr "Zobacz FAQ tej aplikacji."
 
-#: ../src/ui/ui_mainwindow.c:920
+#: ../src/ui/ui_mainwindow.c:919
 msgid "_About"
 msgstr "_O Programie"
 
-#: ../src/ui/ui_mainwindow.c:920
+#: ../src/ui/ui_mainwindow.c:919
 msgid "Shows an about dialog."
 msgstr "Pokazuje informacje o programie."
 
-#: ../src/ui/ui_mainwindow.c:924
+#: ../src/ui/ui_mainwindow.c:923
 msgid "_New Subscription..."
 msgstr "_Nowa Subskrypcja..."
 
-#: ../src/ui/ui_mainwindow.c:924
+#: ../src/ui/ui_mainwindow.c:923
 msgid "Adds a subscription to the feed list."
 msgstr "Dodaje nową subskrypcję."
 
-#: ../src/ui/ui_mainwindow.c:926
+#: ../src/ui/ui_mainwindow.c:925
 msgid "New _Folder..."
 msgstr "Nowy _Katalog..."
 
-#: ../src/ui/ui_mainwindow.c:926
+#: ../src/ui/ui_mainwindow.c:925
 msgid "Adds a folder to the feed list."
 msgstr "Dodaje katalog do listy subskrypcji."
 
-#: ../src/ui/ui_mainwindow.c:927
+#: ../src/ui/ui_mainwindow.c:926
 msgid "New S_earch Folder..."
 msgstr "Nowy _Katalog Wyników..."
 
-#: ../src/ui/ui_mainwindow.c:927
+#: ../src/ui/ui_mainwindow.c:926
 msgid "Adds a new search folder to the feed list."
 msgstr "Dodaje nowy Katalog Wyników do listy subskrypcji."
 
-#: ../src/ui/ui_mainwindow.c:928
+#: ../src/ui/ui_mainwindow.c:927
 msgid "New _Source..."
 msgstr "Nowe Ź_ródło..."
 
-#: ../src/ui/ui_mainwindow.c:928
+#: ../src/ui/ui_mainwindow.c:927
 msgid "Adds a new feed list source."
 msgstr "Dodaje nowe źródło do listy subskrypcji."
 
-#: ../src/ui/ui_mainwindow.c:929
+#: ../src/ui/ui_mainwindow.c:928
 msgid "New _News Bin..."
 msgstr "Nowy _Kosz..."
 
-#: ../src/ui/ui_mainwindow.c:929
+#: ../src/ui/ui_mainwindow.c:928
 msgid "Adds a new news bin."
 msgstr "Dodaje nowy Kosz."
 
 # Skrocone (toolbar)
-#: ../src/ui/ui_mainwindow.c:933
+#: ../src/ui/ui_mainwindow.c:932
 msgid "_Mark Selected As Read"
 msgstr "_Przeczytane"
 
-#: ../src/ui/ui_mainwindow.c:933
+#: ../src/ui/ui_mainwindow.c:932
 msgid ""
 "Marks all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
@@ -1982,11 +1982,11 @@ msgstr ""
 "Oznacza wszystkie pozycje zaznaczonej subskrypcji lub cały zaznaczony "
 "katalog jako przeczytane."
 
-#: ../src/ui/ui_mainwindow.c:935
+#: ../src/ui/ui_mainwindow.c:934
 msgid "Update _Selected"
 msgstr "Uaktualnij _zaznaczone"
 
-#: ../src/ui/ui_mainwindow.c:935
+#: ../src/ui/ui_mainwindow.c:934
 msgid ""
 "Updates the selected subscription or all subscriptions of the selected "
 "folder."
@@ -1994,38 +1994,38 @@ msgstr ""
 "Uaktualnia zaznaczone subskrypcje lub wszystkie subskrypcje z zaznaczonego "
 "katalogu."
 
-#: ../src/ui/ui_mainwindow.c:940
+#: ../src/ui/ui_mainwindow.c:939
 msgid "_Properties..."
 msgstr "_Właściwości..."
 
-#: ../src/ui/ui_mainwindow.c:940
+#: ../src/ui/ui_mainwindow.c:939
 msgid "Opens the property dialog for the selected subscription."
 msgstr "Otwiera okno właściwości zaznaczonej subskrypcji."
 
-#: ../src/ui/ui_mainwindow.c:941
+#: ../src/ui/ui_mainwindow.c:940
 msgid "_Delete Selected"
 msgstr "_Usuń zaznaczone"
 
-#: ../src/ui/ui_mainwindow.c:941
+#: ../src/ui/ui_mainwindow.c:940
 msgid "Removes the selected subscription."
 msgstr "Usuwa zaznaczone subskrypcje."
 
-#: ../src/ui/ui_mainwindow.c:945
+#: ../src/ui/ui_mainwindow.c:944
 msgid "_Work Offline"
 msgstr "Pracuj _Offline"
 
-#: ../src/ui/ui_mainwindow.c:945
+#: ../src/ui/ui_mainwindow.c:944
 msgid "This option allows you to disable subscription updating."
 msgstr "Blokuje uaktualnianie subskrypcji."
 
-#: ../src/ui/ui_mainwindow.c:1079
+#: ../src/ui/ui_mainwindow.c:1078
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
 msgstr[0] "%d nowa"
 msgstr[1] "%d nowych"
 
-#: ../src/ui/ui_mainwindow.c:1085
+#: ../src/ui/ui_mainwindow.c:1084
 #, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
@@ -2285,7 +2285,7 @@ msgstr "<p><a href=\"%s\">Podgląd zawartości tego elementu.</a></p>"
 msgid "Invalid Atom feed: unknown author"
 msgstr "Nieprawidłowe źródło Atom: autor nieznany"
 
-#: ../src/parsers/atom10.c:690 ../src/parsers/pie_feed.c:282
+#: ../src/parsers/atom10.c:691 ../src/parsers/pie_feed.c:282
 #: ../src/parsers/rss_channel.c:304
 #, c-format
 msgid "There were errors while parsing the feed %s!"
@@ -2386,6 +2386,40 @@ msgstr "Ciasteczko %s wygasło!"
 #: ../src/notification/notif_libnotify.c:137
 msgid "This feed does not exist anymore!"
 msgstr "Ta subskrypcja już nie istnieje!"
+
+#: ../src/notification/notif_libnotify.c:112
+msgid "This news entry has no headline"
+msgstr ""
+
+#: ../src/notification/notif_libnotify.c:117
+msgid "Visit"
+msgstr ""
+
+#: ../src/notification/notif_libnotify.c:154
+#: ../src/notification/notif_libnotify.c:239
+msgid "Open feed"
+msgstr ""
+
+#: ../src/notification/notif_libnotify.c:157
+#: ../src/notification/notif_libnotify.c:242
+#, fuzzy
+msgid "Mark all as read"
+msgstr "_Oznacz jako przeczytane"
+
+#: ../src/notification/notif_libnotify.c:226
+#, c-format
+msgid "%s has %d new / updated headlines\n"
+msgstr ""
+
+#: ../src/notification/notif_libnotify.c:228
+#, fuzzy
+msgid "Feed Update"
+msgstr "Tytuł subskrypcji"
+
+#: ../src/notification/notif_libnotify.c:236
+#, fuzzy
+msgid "Show details"
+msgstr "Szczegóły"
 
 #: ../src/notification/notif_popup.c:251
 msgid "Untitled"
