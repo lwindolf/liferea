@@ -4,7 +4,7 @@
 /**
  * Rendering stylesheet for Liferea (item view: item rendering)
  *
- * Copyright (C) 2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2006-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -177,7 +177,7 @@
 </table>
 </xsl:for-each>
 
-<!-- header metadata (author + categories + date) -->
+<!-- header metadata (author + categories + date + source feed) -->
 <table class='headmeta' cellspacing="0" cellpadding="0">
 
 <xsl:if test="attributes/attribute[ @name = 'slash' ]">
@@ -188,32 +188,6 @@
 </tr> 
 </xsl:if>
 
-<xsl:if test="attributes/attribute[ @name = 'category' ]">
-<tr>
- <td valign="top" class='categories'>
-     <_span>Filed under</_span>
-     <b><span class='categories'>
-       <xsl:for-each select="attributes/attribute[ @name = 'category' ]">
-         <xsl:if test="position() != 1">, </xsl:if>
-         <xsl:value-of select="." disable-output-escaping='yes'/>
-       </xsl:for-each>
-     </span></b>
- </td>
-</tr>
-</xsl:if>
-<xsl:if test="attributes/attribute[ @name = 'author' ]">
- <tr>
-   <td valign="top" class='author'>
-     <_span>Author</_span>
-     <b><span class='author'>
-       <xsl:value-of select="attributes/attribute[ @name = 'author' ]" disable-output-escaping='yes'/>
-     </span></b>
-   </td>
- <!--<td valign="top">
-  <span><div class='date'><xsl:value-of select="timestr"/></div></span>
- </td>-->
- </tr>
-</xsl:if>  
 <xsl:if test="real_source_url">
 <tr>
  <td valign="top" class='source'> 
@@ -229,6 +203,61 @@
  </td>
 </tr>
 </xsl:if>
+
+<!-- if there is no item set source then this is a merged item list
+     rendering and we should display the source feed title for the item -->
+<xsl:if test="not(/itemset/source)">
+<tr>
+ <td valign="top" class='source'> 
+     <_span>Feed</_span>
+     <b><span class='source'>
+       <xsl:element name="a">
+         <xsl:attribute name="href">
+           <xsl:value-of select="/itemset/feed/feedLink"/>
+         </xsl:attribute>
+         <xsl:value-of select="/itemset/feed/feedTitle"/>
+       </xsl:element>
+     </span></b>
+ </td>
+</tr>
+</xsl:if>
+
+<xsl:if test="attributes/attribute[ @name = 'category' ]">
+<tr>
+ <td valign="top" class='categories'>
+     <_span>Filed under</_span>
+     <b><span class='categories'>
+       <xsl:for-each select="attributes/attribute[ @name = 'category' ]">
+         <xsl:if test="position() != 1">, </xsl:if>
+         <xsl:value-of select="." disable-output-escaping='yes'/>
+       </xsl:for-each>
+     </span></b>
+ </td>
+</tr>
+</xsl:if>
+
+<xsl:if test="attributes/attribute[ @name = 'author' ]">
+ <tr>
+   <td valign="top" class='author'>
+     <_span>Author</_span>
+     <b><span class='author'>
+       <xsl:value-of select="attributes/attribute[ @name = 'author' ]" disable-output-escaping='yes'/>
+     </span></b>
+   </td>
+ </tr>
+</xsl:if>  
+
+<xsl:for-each select="duplicates/duplicateNode">
+<tr>
+ <td valign="top" class='source'> 
+     <_span>Also posted in</_span>
+     <b><span class='source'>
+         <xsl:value-of select="."/>
+     </span></b>
+ </td>
+</tr>
+</xsl:for-each>
+
 </table> <!-- end of header metadata -->
 
 <xsl:element name="table">
@@ -320,6 +349,7 @@
   <xsl:if test="readStatus != '0'">itemunshaded</xsl:if>
 </xsl:attribute>
 <div class='content'>
+  <!-- the items content -->
   <p>
     <xsl:value-of select="description" disable-output-escaping='yes'/>
   </p>
@@ -343,7 +373,7 @@
 
 <!-- ==================================================================== -->
 
-<!--- enclosure rendering -->
+<!-- enclosure rendering -->
 <xsl:template name="enclosure">
   <xsl:element name="a">
     <xsl:attribute name="class">enclosure</xsl:attribute>

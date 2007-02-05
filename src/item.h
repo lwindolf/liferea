@@ -1,7 +1,7 @@
 /**
  * @file item.h common item handling
  * 
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -85,9 +85,9 @@ void item_guid_list_add_id(itemPtr item);
  *
  * @param item		item with a valid GUID
  *
- * @returns TRUE if other items with the same GUID do exist
+ * @returns a list of all nodes that contains duplicates
  */
-gboolean item_guid_list_check_id(itemPtr item);
+GSList * item_guid_list_get_duplicates_for_id(itemPtr item);
 
 /**
  * Removes the GUID of the given item from the GUID list.

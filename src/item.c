@@ -1,7 +1,7 @@
 /**
  * @file item.c common item handling
  *
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *	      
  * This program is free software; you can redistribute it and/or modify
@@ -60,16 +60,10 @@ void item_guid_list_add_id(itemPtr item) {
 		itemGuids = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
 
 	iter = (GSList *)g_hash_table_lookup(itemGuids, item->id);
-	iter = g_slist_append(iter, item->sourceNode);
-	g_hash_table_insert(itemGuids, g_strdup(item->id), iter);
-}
-
-gboolean item_guid_list_check_id(itemPtr item) {
-
-	if(!itemGuids)
-		return FALSE;
-
-	return (NULL != g_hash_table_lookup(itemGuids, item->id));
+	if(!g_slist_find(iter, item->sourceNode)) {
+		iter = g_slist_append(iter, item->sourceNode);
+		g_hash_table_insert(itemGuids, g_strdup(item->id), iter);
+	}
 }
 
 void item_guid_list_remove_id(itemPtr item) {
@@ -79,8 +73,17 @@ void item_guid_list_remove_id(itemPtr item) {
 		return;
 
 	iter = (GSList *)g_hash_table_lookup(itemGuids, item->id);
+	g_assert(iter);
 	iter = g_slist_remove(iter, item->sourceNode);
 	g_hash_table_insert(itemGuids, g_strdup(item->id), iter);
+}
+
+GSList * item_guid_list_get_duplicates_for_id(itemPtr item) {
+
+	if(item->id)
+		return g_hash_table_lookup(itemGuids, item->id);
+	else
+		return NULL;
 }
 
 /* item handling */
@@ -265,9 +268,6 @@ itemPtr item_parse_cache(xmlNodePtr cur, gboolean migrateCache) {
 	
 	if(migrateCache && item->description)
 		item_set_description(item, common_text_to_xhtml(item->description));
-		
-	if(item->validGuid)
-		item_guid_list_add_id(item);
 
 	return item;
 }
@@ -277,11 +277,8 @@ void item_to_xml(itemPtr item, xmlNodePtr feedNode, gboolean rendering) {
 	gchar		*tmp;
 	
 	itemNode = xmlNewChild(feedNode, NULL, "item", NULL);
-	g_return_if_fail(itemNode);
 
-	if(NULL == item_get_title(item))
-		item_set_title(item, "");
-	xmlNewTextChild(itemNode, NULL, "title", item_get_title(item));
+	xmlNewTextChild(itemNode, NULL, "title", item_get_title(item)?item_get_title(item):"");
 
 	if(item_get_description(item)) {
 		if(rendering) {
@@ -329,6 +326,20 @@ void item_to_xml(itemPtr item, xmlNodePtr feedNode, gboolean rendering) {
 	g_free(tmp);
 
 	if(rendering) {
+		xmlNodePtr duplicatesNode;		
+		GSList *duplicates;
+		
+		duplicatesNode = xmlNewChild(itemNode, NULL, "duplicates", NULL);
+		duplicates = item_guid_list_get_duplicates_for_id(item);
+		while(duplicates) {
+			nodePtr duplicateNode = (nodePtr)duplicates->data;
+			if(duplicateNode != item->sourceNode) {
+				xmlNewTextChild(duplicatesNode, NULL, "duplicateNode", 
+				                node_get_title(duplicateNode));
+			}
+			duplicates = g_slist_next(duplicates);
+		}
+	
 		tmp = itemview_format_date(item->time);
 		xmlNewTextChild(itemNode, NULL, "timestr", tmp);
 		g_free(tmp);

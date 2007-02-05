@@ -1,7 +1,7 @@
 /**
  * @file feed.c common feed handling
  * 
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -717,11 +717,19 @@ itemSetPtr feed_load_from_cache(nodePtr node) {
 			else if(!xmlStrcmp(cur->name, BAD_CAST"feedDiscontinued")) 
 				feed->discontinued = (0 == atoi(tmp))?FALSE:TRUE;
 
-			else if(!xmlStrcmp(cur->name, BAD_CAST"item")) 
-				itemset_append_item(itemSet, item_parse_cache(cur, migrateCache));
-
 			else if(!xmlStrcmp(cur->name, BAD_CAST"attributes")) 
 				feed->metadata = metadata_parse_xml_nodes(cur);
+
+			else if(!xmlStrcmp(cur->name, BAD_CAST"item")) {
+				itemPtr item;
+				
+				item = item_parse_cache(cur, migrateCache);
+				item->sourceNode = node;
+				itemset_append_item(itemSet, item);
+		
+				if(item->validGuid)
+					item_guid_list_add_id(item);
+			}
 
 			g_free(tmp);	
 			cur = cur->next;

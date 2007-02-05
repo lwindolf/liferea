@@ -1,7 +1,7 @@
 /**
  * @file node.c common feed list node handling
  * 
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -296,10 +296,10 @@ static void node_merge_item(nodePtr node, itemPtr item) {
 	/* step 1: merge into node type internal data structures */
 	if(node_merge_check(node->itemSet, item)) {
 		g_assert(!item->sourceNode);
-		
+
 		/* step 1: add to itemset */
 		itemset_prepend_item(node->itemSet, item);
-		
+
 		debug3(DEBUG_UPDATE, "-> adding \"%s\" to item set %p with #%d...", item_get_title(item), node->itemSet, item->nr);
 		
 		/* step 2: check for matching vfolders */
@@ -307,11 +307,11 @@ static void node_merge_item(nodePtr node, itemPtr item) {
 		
 		/* step 3: duplicate detection, mark read if it is a duplicate */
 		if(item->validGuid) {
-			if(item_guid_list_check_id(item)) {
-				item->readStatus = TRUE;
+			if(item_guid_list_get_duplicates_for_id(item)) {
+				// FIXME do something better: item->readStatus = TRUE;
 				debug2(DEBUG_UPDATE, "-> duplicate guid detected: %s -> %s\n", item->id, item->title);
 			}
-				
+
 			item_guid_list_add_id(item);
 		}
 	} else {
