@@ -247,6 +247,17 @@
  </tr>
 </xsl:if>  
 
+<xsl:for-each select="duplicates/duplicateNode">
+<tr>
+ <td valign="top" class='source'> 
+     <_span>Also posted in</_span>
+     <b><span class='source'>
+         <xsl:value-of select="."/>
+     </span></b>
+ </td>
+</tr>
+</xsl:for-each>
+
 </table> <!-- end of header metadata -->
 
 <xsl:element name="table">

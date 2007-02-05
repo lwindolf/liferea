@@ -1,7 +1,7 @@
 /**
  * @file itemset.c support for different item list implementations
  * 
- * Copyright (C) 2005-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2005-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -106,7 +106,7 @@ static void itemset_prepare_item(itemSetPtr itemSet, itemPtr item) {
 	g_assert(item->itemSet != itemSet);
 	item->itemSet = itemSet;
 
-	/* when adding items after loading cache they have
+	/* when adding items after downloading they have
 	   no source node and nr, so we set it... */
 	if(!item->sourceNode)
 		item->sourceNode = itemSet->node;

@@ -714,11 +714,19 @@ itemSetPtr feed_load_from_cache(nodePtr node) {
 			else if(!xmlStrcmp(cur->name, BAD_CAST"feedDiscontinued")) 
 				feed->discontinued = (0 == atoi(tmp))?FALSE:TRUE;
 
-			else if(!xmlStrcmp(cur->name, BAD_CAST"item")) 
-				itemset_append_item(itemSet, item_parse_cache(cur, migrateCache));
-
 			else if(!xmlStrcmp(cur->name, BAD_CAST"attributes")) 
 				feed->metadata = metadata_parse_xml_nodes(cur);
+
+			else if(!xmlStrcmp(cur->name, BAD_CAST"item")) {
+				itemPtr item;
+				
+				item = item_parse_cache(cur, migrateCache);
+				item->sourceNode = node;
+				itemset_append_item(itemSet, item);
+		
+				if(item->validGuid)
+					item_guid_list_add_id(item);
+			}
 
 			g_free(tmp);	
 			cur = cur->next;

@@ -181,8 +181,6 @@ static struct internalUriType internalUriTypes[] = {
 	{ "flag",		itemlist_toggle_flag },
 	{ "bookmark",		ui_itemlist_add_item_bookmark },
 	{ "refresh-comments",	item_comments_refresh },
-	{ "monitor-comments",	item_comments_monitor },
-	{ "unmonitor-comments",	item_comments_unmonitor },
 	{ NULL,			NULL }
 };
 

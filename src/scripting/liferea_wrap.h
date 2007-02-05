@@ -5568,53 +5568,6 @@ fail:
 }
 
 
-static int _wrap_item_monitorComments_set(lua_State* L) {
-  int SWIG_arg = -1;
-  struct item *arg1 = (struct item *) 0 ;
-  int arg2 ;
-  
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
-  if(!lua_isnumber(L,2)) SWIG_fail_arg(2);
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_item,0))){
-    SWIG_fail_ptr("item_monitorComments_set",1,SWIGTYPE_p_item);
-  }
-  
-  arg2 = (int)lua_tonumber(L, 2);
-  if (arg1) (arg1)->monitorComments = arg2;
-  
-  SWIG_arg=0;
-  
-  return SWIG_arg;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_item_monitorComments_get(lua_State* L) {
-  int SWIG_arg = -1;
-  struct item *arg1 = (struct item *) 0 ;
-  int result;
-  
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_item,0))){
-    SWIG_fail_ptr("item_monitorComments_get",1,SWIGTYPE_p_item);
-  }
-  
-  result = (int) ((arg1)->monitorComments);
-  SWIG_arg=0;
-  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
-  return SWIG_arg;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
 static int _wrap_item_comments_set(lua_State* L) {
   int SWIG_arg = -1;
   struct item *arg1 = (struct item *) 0 ;
@@ -5760,6 +5713,60 @@ static int _wrap_item_updateState_get(lua_State* L) {
   result = (struct updateState *) ((arg1)->updateState);
   SWIG_arg=0;
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_updateState,0); SWIG_arg++; 
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_item_commentsError_set(lua_State* L) {
+  int SWIG_arg = -1;
+  struct item *arg1 = (struct item *) 0 ;
+  char *arg2 = (char *) 0 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  if(!lua_isstring(L,2)) SWIG_fail_arg(2);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_item,0))){
+    SWIG_fail_ptr("item_commentsError_set",1,SWIGTYPE_p_item);
+  }
+  
+  arg2 = (char *)lua_tostring(L, 2);
+  {
+    if (arg1->commentsError) free((char *)arg1->commentsError);
+    if (arg2) {
+      arg1->commentsError = (char *) malloc(strlen((const char *)arg2)+1);
+      strcpy((char *)arg1->commentsError, (const char *)arg2);
+    } else {
+      arg1->commentsError = 0;
+    }
+  }
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_item_commentsError_get(lua_State* L) {
+  int SWIG_arg = -1;
+  struct item *arg1 = (struct item *) 0 ;
+  char *result = 0 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_item,0))){
+    SWIG_fail_ptr("item_commentsError_get",1,SWIGTYPE_p_item);
+  }
+  
+  result = (char *) ((arg1)->commentsError);
+  SWIG_arg=0;
+  lua_pushstring(L,(const char*)result); SWIG_arg++;
   return SWIG_arg;
   
 fail:
@@ -6047,10 +6054,10 @@ static swig_lua_attribute swig_item_attributes[] = {
     { "metadata",_wrap_item_metadata_get, _wrap_item_metadata_set},
     { "tmpdata",_wrap_item_tmpdata_get, _wrap_item_tmpdata_set},
     { "time",_wrap_item_time_get, _wrap_item_time_set},
-    { "monitorComments",_wrap_item_monitorComments_get, _wrap_item_monitorComments_set},
     { "comments",_wrap_item_comments_get, _wrap_item_comments_set},
     { "updateRequest",_wrap_item_updateRequest_get, _wrap_item_updateRequest_set},
     { "updateState",_wrap_item_updateState_get, _wrap_item_updateState_set},
+    { "commentsError",_wrap_item_commentsError_get, _wrap_item_commentsError_set},
     { "nr",_wrap_item_nr_get, _wrap_item_nr_set},
     { "itemSet",_wrap_item_itemSet_get, _wrap_item_itemSet_set},
     { "sourceNr",_wrap_item_sourceNr_get, _wrap_item_sourceNr_set},
@@ -6081,20 +6088,20 @@ fail:
 }
 
 
-static int _wrap_item_guid_list_check_id(lua_State* L) {
+static int _wrap_item_guid_list_get_duplicates_for_id(lua_State* L) {
   int SWIG_arg = -1;
   itemPtr arg1 = (itemPtr) 0 ;
-  int result;
+  GSList *result = 0 ;
   
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_item,0))){
-    SWIG_fail_ptr("item_guid_list_check_id",1,SWIGTYPE_p_item);
+    SWIG_fail_ptr("item_guid_list_get_duplicates_for_id",1,SWIGTYPE_p_item);
   }
   
-  result = (int)item_guid_list_check_id(arg1);
+  result = (GSList *)item_guid_list_get_duplicates_for_id(arg1);
   SWIG_arg=0;
-  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_GSList,0); SWIG_arg++; 
   return SWIG_arg;
   
 fail:
@@ -6124,59 +6131,17 @@ fail:
 }
 
 
-static int _wrap_item_comments_load(lua_State* L) {
+static int _wrap_item_comments_refresh(lua_State* L) {
   int SWIG_arg = -1;
   itemPtr arg1 = (itemPtr) 0 ;
   
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_item,0))){
-    SWIG_fail_ptr("item_comments_load",1,SWIGTYPE_p_item);
+    SWIG_fail_ptr("item_comments_refresh",1,SWIGTYPE_p_item);
   }
   
-  item_comments_load(arg1);
-  SWIG_arg=0;
-  
-  return SWIG_arg;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_item_comments_monitor(lua_State* L) {
-  int SWIG_arg = -1;
-  itemPtr arg1 = (itemPtr) 0 ;
-  
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_item,0))){
-    SWIG_fail_ptr("item_comments_monitor",1,SWIGTYPE_p_item);
-  }
-  
-  item_comments_monitor(arg1);
-  SWIG_arg=0;
-  
-  return SWIG_arg;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_item_comments_unmonitor(lua_State* L) {
-  int SWIG_arg = -1;
-  itemPtr arg1 = (itemPtr) 0 ;
-  
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_item,0))){
-    SWIG_fail_ptr("item_comments_unmonitor",1,SWIGTYPE_p_item);
-  }
-  
-  item_comments_unmonitor(arg1);
+  item_comments_refresh(arg1);
   SWIG_arg=0;
   
   return SWIG_arg;
@@ -9962,14 +9927,14 @@ static const struct luaL_reg swig_commands[] = {
     { "item_tmpdata_get", _wrap_item_tmpdata_get},
     { "item_time_set", _wrap_item_time_set},
     { "item_time_get", _wrap_item_time_get},
-    { "item_monitorComments_set", _wrap_item_monitorComments_set},
-    { "item_monitorComments_get", _wrap_item_monitorComments_get},
     { "item_comments_set", _wrap_item_comments_set},
     { "item_comments_get", _wrap_item_comments_get},
     { "item_updateRequest_set", _wrap_item_updateRequest_set},
     { "item_updateRequest_get", _wrap_item_updateRequest_get},
     { "item_updateState_set", _wrap_item_updateState_set},
     { "item_updateState_get", _wrap_item_updateState_get},
+    { "item_commentsError_set", _wrap_item_commentsError_set},
+    { "item_commentsError_get", _wrap_item_commentsError_get},
     { "item_nr_set", _wrap_item_nr_set},
     { "item_nr_get", _wrap_item_nr_get},
     { "item_itemSet_set", _wrap_item_itemSet_set},
@@ -9981,11 +9946,9 @@ static const struct luaL_reg swig_commands[] = {
     { "new_item", _wrap_new_item},
     { "delete_item", _wrap_delete_item},
     { "item_guid_list_add_id", _wrap_item_guid_list_add_id},
-    { "item_guid_list_check_id", _wrap_item_guid_list_check_id},
+    { "item_guid_list_get_duplicates_for_id", _wrap_item_guid_list_get_duplicates_for_id},
     { "item_guid_list_remove_id", _wrap_item_guid_list_remove_id},
-    { "item_comments_load", _wrap_item_comments_load},
-    { "item_comments_monitor", _wrap_item_comments_monitor},
-    { "item_comments_unmonitor", _wrap_item_comments_unmonitor},
+    { "item_comments_refresh", _wrap_item_comments_refresh},
     { "item_new", _wrap_item_new},
     { "item_copy", _wrap_item_copy},
     { "item_get_base_url", _wrap_item_get_base_url},

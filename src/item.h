@@ -63,7 +63,6 @@ typedef struct item {
 	GHashTable	*tmpdata;		/**< Temporary data hash used during stateful parsing */
 	time_t		time;			/**< Last modified date of the headline */
 	
-	gboolean	monitorComments;	/**< TRUE if peridioc check of comment feed is requested */
 	struct itemSet	*comments;		/**< comment feed structure */
 	struct request	*updateRequest;		/**< update request structure used when downloading comments */
 	struct updateState *updateState;	/**< update states (etag, last modified, cookies, last polling times...) used when downloading comments */
@@ -91,9 +90,9 @@ void item_guid_list_add_id(itemPtr item);
  *
  * @param item		item with a valid GUID
  *
- * @returns TRUE if other items with the same GUID do exist
+ * @returns a list of all nodes that contains duplicates
  */
-gboolean item_guid_list_check_id(itemPtr item);
+GSList * item_guid_list_get_duplicates_for_id(itemPtr item);
 
 /**
  * Removes the GUID of the given item from the GUID list.
@@ -111,20 +110,6 @@ void item_guid_list_remove_id(itemPtr item);
  * @param item		the item
  */
 void item_comments_refresh(itemPtr item);
-
-/**
- * Enables permanent comments monitoring for the given item.
- *
- * @param item		the item
- */ 
-void item_comments_monitor(itemPtr item);
-
-/**
- * Disables permanent comments monitoring for the given item.
- *
- * @param item		the item
- */
-void item_comments_unmonitor(itemPtr item);
 
 /* Item handling */
 
