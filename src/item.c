@@ -73,9 +73,10 @@ void item_guid_list_remove_id(itemPtr item) {
 		return;
 
 	iter = (GSList *)g_hash_table_lookup(itemGuids, item->id);
-	g_assert(iter);
-	iter = g_slist_remove(iter, item->sourceNode);
-	g_hash_table_insert(itemGuids, g_strdup(item->id), iter);
+	if(iter) {
+		iter = g_slist_remove(iter, item->sourceNode);
+		g_hash_table_insert(itemGuids, g_strdup(item->id), iter);
+	}
 }
 
 GSList * item_guid_list_get_duplicates_for_id(itemPtr item) {
