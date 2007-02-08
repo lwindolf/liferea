@@ -21,6 +21,8 @@
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
 #endif
+
+#include <string.h>
  
 #include "conf.h"
 #include "debug.h"
@@ -319,6 +321,9 @@ void itemlist_set_flag(itemPtr item, gboolean newStatus) {
 
 		/* 4. update notification statistics */
 		feedlist_reset_new_item_count();		
+		
+		/* no duplicate state propagation to avoid copies 
+		   in the "Important" search folder */
 	}
 }
 	
@@ -329,6 +334,7 @@ void itemlist_toggle_flag(itemPtr item) {
 }
 
 void itemlist_set_read_status(itemPtr item, gboolean newStatus) {
+	GSList	*iter;
 
 	if(newStatus != item->readStatus) {		
 		item->itemSet->node->needsCacheSave = TRUE;
@@ -347,6 +353,37 @@ void itemlist_set_read_status(itemPtr item, gboolean newStatus) {
 
 		/* 4. update notification statistics */
 		feedlist_reset_new_item_count();
+
+		/* 5. duplicate state propagation */
+		iter = item_guid_list_get_duplicates_for_id(item);
+		while(iter) {
+			GList *dupIter;
+			nodePtr dupNode = (nodePtr)iter->data;
+			
+			if(dupNode != item->sourceNode) {
+				debug2(DEBUG_UPDATE, "marking duplicate in \"%s\" as %s...", node_get_title(dupNode), newStatus?"read":"unread");
+				node_load(dupNode);
+
+				dupIter = dupNode->itemSet->items;
+				while(dupIter) {
+					itemPtr duplicate = (itemPtr)dupIter->data;
+					if(!strcmp(duplicate->id, item->id) &&
+					   (newStatus != duplicate->readStatus)) {
+						/* don't call ourselves with duplicate item to avoid cascading, just repeat 1),2) and 3)... */
+						dupNode->needsCacheSave = TRUE;
+						itemset_set_item_read_status(dupNode->itemSet, duplicate, newStatus);
+						itemlist_update_item(duplicate);
+						node_update_counters(dupNode);
+						ui_node_update(dupNode);
+						debug0(DEBUG_UPDATE, " duplicate sync'ed...\n");
+					}
+					dupIter = g_list_next(dupIter);
+				}
+
+				node_unload(dupNode);
+			}
+			iter = g_slist_next(iter);
+		}
 	}
 }
 
@@ -372,6 +409,8 @@ void itemlist_set_update_status(itemPtr item, const gboolean newStatus) {
 
 		/* 4. update notification statistics */
 		feedlist_reset_new_item_count();
+	
+		/* no duplicate state propagation necessary */
 	}
 }
 

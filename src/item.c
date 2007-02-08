@@ -55,7 +55,7 @@ void item_guid_list_add_id(itemPtr item) {
 	GSList	*iter;
 	
 	g_assert(TRUE == item->validGuid);
-	
+		
 	if(!itemGuids)
 		itemGuids = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
 
@@ -70,6 +70,11 @@ void item_guid_list_remove_id(itemPtr item) {
 	GSList	*iter;
 	
 	if(!itemGuids)
+		return;
+	
+	/* avoid GUID list removal when dropping item copies
+	   from search folders */
+	if(item->itemSet->node->type == NODE_TYPE_VFOLDER)
 		return;
 
 	iter = (GSList *)g_hash_table_lookup(itemGuids, item->id);

@@ -7,6 +7,9 @@
 	  feed of a displayed item is.
 	* The item view header now provides a list of the feeds 
 	  that contain a duplicate of the feed.
+	* When changing the read status of an item with duplicates
+	  in other feeds the read status is propagated to the other
+	  item instances.
 	* Update of French translation (Vincent Lefevre)
 
 2007-02-01  Lars Lindner  <lars.lindner@gmail.com>
