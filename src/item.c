@@ -71,6 +71,11 @@ void item_guid_list_remove_id(itemPtr item) {
 	
 	if(!itemGuids)
 		return;
+	
+	/* avoid GUID list removal when dropping item copies
+	   from search folders */
+	if(item->itemSet->node->type == NODE_TYPE_VFOLDER)
+		return;
 
 	iter = (GSList *)g_hash_table_lookup(itemGuids, item->id);
 	if(iter) {
