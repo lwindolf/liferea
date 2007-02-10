@@ -1,7 +1,7 @@
 # liferea ja.po.
-# Copyright (C) 2003-2006 Free Software Foundation, Inc.
+# Copyright (C) 2003-2007 Free Software Foundation, Inc.
 # This file is distributed under the same license as the liferea package.
-# Takeshi AIHANA <aihana@gnome.gr.jp>, 2003-2006.
+# Takeshi AIHANA <takeshi.aihana@gmail.com>, 2003-2007.
 #
 # 翻訳の用例 (since 2004-08-16)
 # subscription: 購読
@@ -11,14 +11,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea trunk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-01-28 14:39+0100\n"
-"PO-Revision-Date: 2006-12-05 21:27+0100\n"
-"Last-Translator: Lars Lindner <lars.lindner@gmx.net>\n"
+"POT-Creation-Date: 2007-02-10 10:28+0900\n"
+"PO-Revision-Date: 2007-02-10 10:28+0900\n"
+"Last-Translator: Takeshi AIHANA <takeshi.aihana@gmail.com>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../liferea.desktop.in.h:1
 msgid "Download and view feeds"
@@ -86,52 +86,58 @@ msgstr ""
 
 #: ../xslt/source.xml.in.h:2 ../xslt/folder.xml.in.h:2
 msgid "children with"
-msgstr ""
+msgstr "children with"
 
 #: ../xslt/source.xml.in.h:3 ../xslt/folder.xml.in.h:3
 #: ../xslt/vfolder.xml.in.h:2
-#, fuzzy
 msgid "unread headlines"
-msgstr "ヘッドライン表示"
+msgstr "未読のヘッドライン"
 
 #: ../xslt/folder.xml.in.h:1
 msgid "Folder:"
 msgstr "フォルダ:"
 
 #: ../xslt/item.xml.in.h:1
+msgid "Also posted in"
+msgstr "別の投稿先"
+
+#: ../xslt/item.xml.in.h:2
 msgid "Author"
 msgstr "作者"
 
-#: ../xslt/item.xml.in.h:2
-msgid "Department"
-msgstr ""
-
 #: ../xslt/item.xml.in.h:3
+msgid "Department"
+msgstr "部門"
+
+#: ../xslt/item.xml.in.h:4
+msgid "Feed"
+msgstr "配信元"
+
+#: ../xslt/item.xml.in.h:5
 msgid "Filed under"
 msgstr "カテゴリ:"
 
-#: ../xslt/item.xml.in.h:4
-#, fuzzy
+#: ../xslt/item.xml.in.h:6
 msgid "Section"
-msgstr "_Location"
+msgstr "セクション"
 
-#: ../xslt/item.xml.in.h:5 ../src/interface.c:602
+#: ../xslt/item.xml.in.h:7 ../src/interface.c:602
 msgid "Source"
 msgstr "ソース"
 
-#: ../xslt/item.xml.in.h:6
+#: ../xslt/item.xml.in.h:8
 msgid "bookmark"
 msgstr "ブックマーク"
 
-#: ../xslt/item.xml.in.h:7
+#: ../xslt/item.xml.in.h:9
 msgid "comments"
 msgstr "コメント"
 
-#: ../xslt/item.xml.in.h:8
+#: ../xslt/item.xml.in.h:10
 msgid "flag"
 msgstr "フラグ"
 
-#: ../xslt/item.xml.in.h:9
+#: ../xslt/item.xml.in.h:11
 msgid "search"
 msgstr "検索"
 
@@ -332,24 +338,24 @@ msgstr ""
 "<p>\"%s\" は正しいキャッシュ・ファイルではありません！ キャッシュ・ファイルが"
 "読めません！</p>"
 
-#: ../src/feed.c:740
+#: ../src/feed.c:748
 #, c-format
 msgid "There were errors while parsing cache file \"%s\""
 msgstr "キャッシュ・ファイル \"%s\" を解析する際にエラーが発生しました"
 
-#: ../src/feed.c:765
+#: ../src/feed.c:773
 #, c-format
 msgid "This feed \"%s\" is already being updated!"
 msgstr "この配信元 \"%s\" は既に更新済みです！"
 
-#: ../src/feed.c:770
+#: ../src/feed.c:778
 #, c-format
 msgid "The feed \"%s\" was discontinued. Liferea won't update it anymore!"
 msgstr ""
 "その配信元 \"%s\" は更新を停止しています。今後 Liferea で更新されることはあり"
 "ません！"
 
-#: ../src/feed.c:1047
+#: ../src/feed.c:1055
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box."
@@ -357,97 +363,97 @@ msgstr ""
 "この配信元をダウンロードするために必要な認証を実施していません。配信元のプロ"
 "パティ・ダイアログでユーザ名とパスワードを更新して下さい。"
 
-#: ../src/feed.c:1049
+#: ../src/feed.c:1057
 msgid "Payment Required"
 msgstr "課金請求がありました"
 
-#: ../src/feed.c:1050
+#: ../src/feed.c:1058
 msgid "Access Forbidden"
 msgstr "アクセスが拒否されました"
 
-#: ../src/feed.c:1051
+#: ../src/feed.c:1059
 msgid "Resource Not Found"
 msgstr "リソースが見つかりませんでした"
 
-#: ../src/feed.c:1052
+#: ../src/feed.c:1060
 msgid "Method Not Allowed"
 msgstr "メソッドを実行できません"
 
-#: ../src/feed.c:1053
+#: ../src/feed.c:1061
 msgid "Not Acceptable"
 msgstr "アクセスできません"
 
-#: ../src/feed.c:1054
+#: ../src/feed.c:1062
 msgid "Proxy Authentication Required"
 msgstr "プロキシによる認証が必要です"
 
-#: ../src/feed.c:1055
+#: ../src/feed.c:1063
 msgid "Request Time-Out"
 msgstr "タイムアウトの要求"
 
-#: ../src/feed.c:1056
+#: ../src/feed.c:1064
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "完了しました。リソースが存在しません。購読を解約して下さい！"
 
-#: ../src/feed.c:1061
+#: ../src/feed.c:1069
 msgid "URL is invalid"
 msgstr "URL が間違っています"
 
-#: ../src/feed.c:1062
+#: ../src/feed.c:1070
 msgid "Unsupported network protocol"
 msgstr "サポートしていないネットワーク・プロトコル"
 
-#: ../src/feed.c:1065
+#: ../src/feed.c:1073
 msgid "Error connecting to remote host"
 msgstr "リモート・ホストへ接続する際にエラー"
 
-#: ../src/feed.c:1066
+#: ../src/feed.c:1074
 msgid "Hostname could not be found"
 msgstr "該当するホスト名が見つかりませんでした"
 
-#: ../src/feed.c:1067
+#: ../src/feed.c:1075
 msgid "Network connection was refused by the remote host"
 msgstr "リモート・ホストがネットワーク接続を拒否しました"
 
-#: ../src/feed.c:1068
+#: ../src/feed.c:1076
 msgid "Remote host did not finish sending data"
 msgstr "リモート・ホストがデータ送信を完了しませんでした"
 
 #. Transfer errors
-#: ../src/feed.c:1070
+#: ../src/feed.c:1078
 msgid "Too many HTTP redirects were encountered"
 msgstr "HTTP のリダイレクションが多すぎます"
 
-#: ../src/feed.c:1073
+#: ../src/feed.c:1081
 msgid "Remote host sent an invalid response"
 msgstr "リモート・訪ソｔがおかしな応答を返してきました"
 
-#: ../src/feed.c:1080
+#: ../src/feed.c:1088
 msgid "Authentication failed"
 msgstr "認証に失敗しました"
 
-#: ../src/feed.c:1082
+#: ../src/feed.c:1090
 msgid "Webserver's authentication method incompatible with Liferea"
 msgstr "ウェブサーバの認証方法が Liferea のそれと互換性がありません"
 
-#: ../src/feed.c:1088
+#: ../src/feed.c:1096
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "配信元を利用できません: サーバがサポートしないリダイレクションを要求しました"
 
-#: ../src/feed.c:1089
+#: ../src/feed.c:1097
 msgid "Client Error"
 msgstr "クライアントのエラー"
 
-#: ../src/feed.c:1090
+#: ../src/feed.c:1098
 msgid "Server Error"
 msgstr "サーバのエラー"
 
-#: ../src/feed.c:1091
+#: ../src/feed.c:1099
 msgid "(unknown networking error happened)"
 msgstr "(原因不明のネットワーク接続エラーが発生しました)"
 
-#: ../src/feed.c:1100
+#: ../src/feed.c:1108
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
@@ -455,27 +461,27 @@ msgstr ""
 "この購読を読み込む際に問題が発生しました。URL と端末に出力されているメッセー"
 "ジを確認して下さい。"
 
-#: ../src/feed.c:1151
+#: ../src/feed.c:1159
 #, c-format
 msgid "Updating feed icon for \"%s\""
 msgstr "\"%s\" の favicon の更新中"
 
-#: ../src/feed.c:1184
+#: ../src/feed.c:1192
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "\"%s\" の URL が更新されていました"
 
-#: ../src/feed.c:1193
+#: ../src/feed.c:1201
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr "\"%s\" は停止しています。今後 Liferea が更新することはありません！"
 
-#: ../src/feed.c:1196
+#: ../src/feed.c:1204
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\" は最後の更新から変更はありません"
 
-#: ../src/feed.c:1212
+#: ../src/feed.c:1220
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!</"
@@ -485,17 +491,17 @@ msgstr ""
 "syndication 形式の一つとして提供されているものであるか確認して下さい！</"
 "p>XML パーサの出力:<br /><div class='xmlparseroutput'>"
 
-#: ../src/feed.c:1231
+#: ../src/feed.c:1239
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" を更新しました..."
 
-#: ../src/feed.c:1243
+#: ../src/feed.c:1251
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" は利用できません"
 
-#: ../src/feed.c:1368
+#: ../src/feed.c:1376
 #, c-format
 msgid "Updating \"%s\""
 msgstr "\"%s\" の更新中"
@@ -514,6 +520,10 @@ msgid ""
 "cache content of v1.0 in ~/.liferea was not deleted automatically. Please "
 "remove this directory manually once you are sure migration was successful!"
 msgstr ""
+"Liferea v1.2 ではキャッシュの書式が新しくなったので、既にお使いの古いキャッ"
+"シュ情報を変換し新しいフォルダの中に格納しておきました。~/.liferea フォルダの"
+"中にある v1.0 のキャッシュは自動的には削除されません。正しく配信元が表示され"
+"問題がないのであれば、この古いフォルダを手動で削除しておいて下さい！"
 
 #: ../src/html.c:154
 msgid "Feed link auto discovery failed! No feed links found!"
@@ -1329,7 +1339,7 @@ msgid "_News Bin Name:"
 msgstr "NewsBin の名前(_N):"
 
 #. if we don't find a feed with unread items do nothing
-#: ../src/itemlist.c:296
+#: ../src/itemlist.c:298
 msgid "There are no unread items "
 msgstr "未読のトピックはありません"
 
@@ -1915,7 +1925,7 @@ msgstr "新しい購読(_N)..."
 
 #: ../src/ui/ui_mainwindow.c:923
 msgid "Adds a subscription to the feed list."
-msgstr "新しい購読を追加します"
+msgstr "新しい購読を配信元一覧に追加します"
 
 #: ../src/ui/ui_mainwindow.c:925
 msgid "New _Folder..."
@@ -1923,7 +1933,7 @@ msgstr "新しいフォルダ(_F)..."
 
 #: ../src/ui/ui_mainwindow.c:925
 msgid "Adds a folder to the feed list."
-msgstr "新しいフォルダを追加します"
+msgstr "新しいフォルダを配信元一覧に追加します"
 
 #: ../src/ui/ui_mainwindow.c:926
 msgid "New S_earch Folder..."
@@ -2000,12 +2010,14 @@ msgstr "このオプションで購読の更新を無効にできます"
 msgid " (%d new)"
 msgid_plural " (%d new)"
 msgstr[0] "(新着 %d個)"
+msgstr[1] "(新着 %d個)"
 
 #: ../src/ui/ui_mainwindow.c:1084
 #, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
 msgstr[0] "未読 %d個%s"
+msgstr[1] "未読 %d個%s"
 
 #: ../src/ui/ui_node.c:91
 msgid "<i>(empty)</i>"
@@ -2032,7 +2044,7 @@ msgstr "/%s にブックマークを追加する(_B)"
 
 #: ../src/ui/ui_popup.c:131
 msgid "/Copy Item _URL to Clipboard"
-msgstr "/URL をクリップボードへコピー"
+msgstr "/URL をクリップボードへコピーする"
 
 #: ../src/ui/ui_popup.c:134
 msgid "/Toggle Item _Flag"
@@ -2201,10 +2213,10 @@ msgid ""
 "\"Search Folder\" button in the search dialog and Liferea will add a search "
 "folder to your feed list."
 msgstr ""
-"トピックの一覧には検索で指定したパターンに一致するエントリが含まれています。"
-"この検索結果をディスクに保存する場合は、検索ダイアログにある [検索フォルダ] "
-"ボタンをクリックして下さい。すると、この結果が検索フォルダとして一覧に追加さ"
-"れます。"
+"トピックの一覧には検索で指定したパターンに一致したエントリが含まれています。"
+"この検索結果を保存する場合は、検索ダイアログにある [検索フォルダ] ボタンをク"
+"リックして下さい。すると、この結果が検索フォルダとして配信元一覧に追加されま"
+"す。"
 
 #: ../src/ui/ui_search.c:245
 msgid "Create a new search feed."
@@ -2215,6 +2227,7 @@ msgstr "新しい検索用配信元を生成します"
 msgid "%d new item"
 msgid_plural "%d new items"
 msgstr[0] "新しいトピックが %d個あります"
+msgstr[1] "新しいトピックが %d個あります"
 
 #: ../src/ui/ui_tray.c:110
 msgid "No new items"
@@ -2229,6 +2242,9 @@ msgid_plural ""
 "%s\n"
 "%d unread items"
 msgstr[0] ""
+"%s\n"
+"未読のトピックが %d個あります"
+msgstr[1] ""
 "%s\n"
 "未読のトピックが %d個あります"
 
@@ -2266,29 +2282,31 @@ msgstr "%B%e日 %H:%M"
 
 #: ../src/fl_sources/bloglines_source.c:72
 msgid "Bloglines"
-msgstr ""
+msgstr "Bloglines"
 
 #: ../src/fl_sources/bloglines_source.c:74
 msgid ""
 "Integrate the feed list of your Bloglines account. Liferea will present your "
 "Bloglines subscription as a read-only subtree in the feed list."
 msgstr ""
+"Bloglines のアカウント情報の配信元を取り込みます。Liferea では配信元のツリー"
+"の中に Bloglines の購読内容を読み込み専用で表示します。"
 
 #: ../src/fl_sources/bloglines_source-ui.c:46
 msgid "Add Bloglines Account"
-msgstr ""
+msgstr "Bloglines アカウントの追加"
 
 #: ../src/fl_sources/bloglines_source-ui.c:57
 msgid "Please enter your Bloglines account settings."
-msgstr ""
+msgstr "Bloglines のアカウント情報を入力して下さい:"
 
 #: ../src/fl_sources/bloglines_source-ui.c:69
 msgid "_Username"
-msgstr "_Username"
+msgstr "ユーザ名(_U)"
 
 #: ../src/fl_sources/bloglines_source-ui.c:76
 msgid "_Password"
-msgstr "_Password"
+msgstr "パスワード(_P)"
 
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
 #: ../src/fl_sources/default_source.c:280
@@ -2297,13 +2315,16 @@ msgstr "feedlist.opml"
 
 #: ../src/fl_sources/opml_source.c:339
 msgid "Planet, BlogRoll, OPML"
-msgstr ""
+msgstr "Planet/BlogRoll/OPML"
 
 #: ../src/fl_sources/opml_source.c:341
 msgid ""
 "Integrate blogrolls or Planets in your feed list. Liferea will automatically "
 "add and remove feeds according to the changes of the source OPML document"
 msgstr ""
+"BlogRoll や Planets の情報を配信元一覧にまとめて取り込みます。 Liferea では"
+"ソース OPML ドキュメントで発生した変更点に相当する配信元を自動的に追加したり"
+"削除します。"
 
 #: ../src/fl_sources/opml_source.h:26
 msgid "New OPML Subscription"
@@ -2311,20 +2332,21 @@ msgstr "新しい OPML の購読"
 
 #: ../src/fl_sources/opml_source-ui.c:45
 msgid "Add OPML/Planet"
-msgstr ""
+msgstr "OPML/Planet の追加"
 
 #: ../src/fl_sources/opml_source-ui.c:56
 msgid ""
 "Please specify a local file or an URL pointing to a valid OPML feed list."
 msgstr ""
+"妥当な OPML 配信元の一覧を表すローカル・ファイルまたは URL を指定して下さい。"
 
 #: ../src/fl_sources/opml_source-ui.c:66
 msgid "_Location"
-msgstr "_Location"
+msgstr "場所(_L)"
 
 #: ../src/fl_sources/opml_source-ui.c:74
 msgid "_Select File"
-msgstr "_Select File"
+msgstr "選択(_S)..."
 
 #: ../src/fl_sources/node_source.c:207
 msgid "No feed list source types found!"
@@ -2336,11 +2358,11 @@ msgstr "ソースの種類"
 
 #: ../src/fl_sources/node_source-ui.c:42
 msgid "Source Selection"
-msgstr ""
+msgstr "ソースの選択"
 
 #: ../src/fl_sources/node_source-ui.c:57
 msgid "Select the source type you want to add..."
-msgstr ""
+msgstr "追加するソースの種類を選択して下さい..."
 
 #. Cast time_t tunix to int.
 #. Print cookie expire warning.
@@ -2357,41 +2379,38 @@ msgstr "この配信元はもう存在していません！"
 
 #: ../src/notification/notif_libnotify.c:112
 msgid "This news entry has no headline"
-msgstr ""
+msgstr "このエントリにはヘッドラインがありません"
 
 #: ../src/notification/notif_libnotify.c:117
 msgid "Visit"
-msgstr ""
+msgstr "訪問する"
 
 #: ../src/notification/notif_libnotify.c:154
 #: ../src/notification/notif_libnotify.c:239
 msgid "Open feed"
-msgstr ""
+msgstr "配信元を開く"
 
 #: ../src/notification/notif_libnotify.c:157
 #: ../src/notification/notif_libnotify.c:242
-#, fuzzy
 msgid "Mark all as read"
-msgstr "全て既読にする(_R)"
+msgstr "全て既読にする"
 
 #: ../src/notification/notif_libnotify.c:226
 #, c-format
 msgid "%s has %d new / updated headlines\n"
-msgstr ""
+msgstr "%s には %d個の新規/更新されたヘッドラインがあります\n"
 
 #: ../src/notification/notif_libnotify.c:228
-#, fuzzy
 msgid "Feed Update"
-msgstr "配信元のタイトルが"
+msgstr "配信元の更新"
 
 #: ../src/notification/notif_libnotify.c:236
-#, fuzzy
 msgid "Show details"
-msgstr "詳細"
+msgstr "詳細を表示する"
 
 #: ../src/notification/notif_popup.c:251
 msgid "Untitled"
-msgstr "名前無し"
+msgstr "名前なし"
 
 #: ../src/notification/notif_popup.c:323
 msgid "Liferea notification"
@@ -2399,11 +2418,8 @@ msgstr "Liferea からのお知らせ"
 
 #: ../src/scripting/ui_script.c:135
 msgid "Sorry, no scripting support available!"
-msgstr ""
+msgstr "スクリプトをサポートしていません！"
 
 #: ../src/scripting/ui_script.c:208
 msgid "No script selected!"
-msgstr "No script selected!"
-
-#~ msgid "Subscriptions with"
-#~ msgstr "次で購読する"
+msgstr "スクリプトが選択されていません！"
