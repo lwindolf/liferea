@@ -9,10 +9,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Liferea 1.2.3\n"
+"Project-Id-Version: Liferea 1.2.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-01-28 14:39+0100\n"
-"PO-Revision-Date: 2006-12-25 02:44+0100\n"
+"POT-Creation-Date: 2007-02-08 12:25+0100\n"
+"PO-Revision-Date: 2007-02-06 13:38+0100\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.org>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -100,38 +100,46 @@ msgid "Folder:"
 msgstr "Dossier :"
 
 #: ../xslt/item.xml.in.h:1
+msgid "Also posted in"
+msgstr "Aussi posté dans"
+
+#: ../xslt/item.xml.in.h:2
 msgid "Author"
 msgstr "Auteur"
 
-#: ../xslt/item.xml.in.h:2
+#: ../xslt/item.xml.in.h:3
 msgid "Department"
 msgstr "Département"
 
-#: ../xslt/item.xml.in.h:3
+#: ../xslt/item.xml.in.h:4
+msgid "Feed"
+msgstr "Flux"
+
+#: ../xslt/item.xml.in.h:5
 msgid "Filed under"
 msgstr "Classé sous"
 
-#: ../xslt/item.xml.in.h:4
+#: ../xslt/item.xml.in.h:6
 msgid "Section"
 msgstr "Section"
 
-#: ../xslt/item.xml.in.h:5 ../src/interface.c:602
+#: ../xslt/item.xml.in.h:7 ../src/interface.c:602
 msgid "Source"
 msgstr "Source"
 
-#: ../xslt/item.xml.in.h:6
+#: ../xslt/item.xml.in.h:8
 msgid "bookmark"
 msgstr "marque-page"
 
-#: ../xslt/item.xml.in.h:7
+#: ../xslt/item.xml.in.h:9
 msgid "comments"
 msgstr "commentaires"
 
-#: ../xslt/item.xml.in.h:8
+#: ../xslt/item.xml.in.h:10
 msgid "flag"
 msgstr "marqueur"
 
-#: ../xslt/item.xml.in.h:9
+#: ../xslt/item.xml.in.h:11
 msgid "search"
 msgstr "chercher"
 
@@ -334,25 +342,25 @@ msgstr ""
 "<p>\"%s\" n'est pas un fichier cache valide ! Impossible de lire le fichier "
 "cache !</p>"
 
-#: ../src/feed.c:740
+#: ../src/feed.c:748
 #, c-format
 msgid "There were errors while parsing cache file \"%s\""
 msgstr ""
 "Des erreurs sont survenues pendant l'analyse syntaxique du fichier cache \"%s"
 "\""
 
-#: ../src/feed.c:765
+#: ../src/feed.c:773
 #, c-format
 msgid "This feed \"%s\" is already being updated!"
 msgstr "Une mise à jour de ce flux \"%s\" est déjà en cours !"
 
-#: ../src/feed.c:770
+#: ../src/feed.c:778
 #, c-format
 msgid "The feed \"%s\" was discontinued. Liferea won't update it anymore!"
 msgstr ""
 "Le flux \"%s\" avait cessé d'exister. Liferea ne le mettra plus à jour !"
 
-#: ../src/feed.c:1047
+#: ../src/feed.c:1055
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box."
@@ -361,97 +369,97 @@ msgstr ""
 "nom d'utilisateur et votre mot de passe dans la boîte de dialogue des "
 "propriétés de ce flux."
 
-#: ../src/feed.c:1049
+#: ../src/feed.c:1057
 msgid "Payment Required"
 msgstr "Paiement nécessaire"
 
-#: ../src/feed.c:1050
+#: ../src/feed.c:1058
 msgid "Access Forbidden"
 msgstr "Accès interdit"
 
-#: ../src/feed.c:1051
+#: ../src/feed.c:1059
 msgid "Resource Not Found"
 msgstr "Ressource introuvable"
 
-#: ../src/feed.c:1052
+#: ../src/feed.c:1060
 msgid "Method Not Allowed"
 msgstr "Méthode interdite"
 
-#: ../src/feed.c:1053
+#: ../src/feed.c:1061
 msgid "Not Acceptable"
 msgstr "Non acceptable"
 
-#: ../src/feed.c:1054
+#: ../src/feed.c:1062
 msgid "Proxy Authentication Required"
 msgstr "Authentification par proxy exigée"
 
-#: ../src/feed.c:1055
+#: ../src/feed.c:1063
 msgid "Request Time-Out"
 msgstr "Délai de la requête expiré"
 
-#: ../src/feed.c:1056
+#: ../src/feed.c:1064
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "Parti. La ressource n'existe pas. Veuillez vous désabonner !"
 
-#: ../src/feed.c:1061
+#: ../src/feed.c:1069
 msgid "URL is invalid"
 msgstr "L'URL est invalide"
 
-#: ../src/feed.c:1062
+#: ../src/feed.c:1070
 msgid "Unsupported network protocol"
 msgstr "Protocole réseau non supporté"
 
-#: ../src/feed.c:1065
+#: ../src/feed.c:1073
 msgid "Error connecting to remote host"
 msgstr "Erreur de connexion à la machine distante"
 
-#: ../src/feed.c:1066
+#: ../src/feed.c:1074
 msgid "Hostname could not be found"
 msgstr "Le nom de la machine n'a pas pu être trouvé"
 
-#: ../src/feed.c:1067
+#: ../src/feed.c:1075
 msgid "Network connection was refused by the remote host"
 msgstr "La connexion réseau a été refusée par la machine distante"
 
-#: ../src/feed.c:1068
+#: ../src/feed.c:1076
 msgid "Remote host did not finish sending data"
 msgstr "La machine distante n'a pas fini d'envoyer ses données"
 
 #. Transfer errors
-#: ../src/feed.c:1070
+#: ../src/feed.c:1078
 msgid "Too many HTTP redirects were encountered"
 msgstr "Trop de redirections HTTP ont été rencontrées"
 
-#: ../src/feed.c:1073
+#: ../src/feed.c:1081
 msgid "Remote host sent an invalid response"
 msgstr "La machine distante a envoyé une réponse invalide"
 
-#: ../src/feed.c:1080
+#: ../src/feed.c:1088
 msgid "Authentication failed"
 msgstr "L'authentification a échoué"
 
-#: ../src/feed.c:1082
+#: ../src/feed.c:1090
 msgid "Webserver's authentication method incompatible with Liferea"
 msgstr "Méthode d'authentification du serveur web incompatible avec Liferea"
 
-#: ../src/feed.c:1088
+#: ../src/feed.c:1096
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "Flux non disponible : le serveur a demandé une redirection non supportée !"
 
-#: ../src/feed.c:1089
+#: ../src/feed.c:1097
 msgid "Client Error"
 msgstr "Erreur du client"
 
-#: ../src/feed.c:1090
+#: ../src/feed.c:1098
 msgid "Server Error"
 msgstr "Erreur du serveur"
 
-#: ../src/feed.c:1091
+#: ../src/feed.c:1099
 msgid "(unknown networking error happened)"
 msgstr "(une erreur réseau inconnue s'est produite)"
 
-#: ../src/feed.c:1100
+#: ../src/feed.c:1108
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
@@ -459,27 +467,27 @@ msgstr ""
 "Un problème est survenu pendant la lecture de cet abonnement. Veuillez "
 "vérifier l'URL et la sortie sur la console."
 
-#: ../src/feed.c:1151
+#: ../src/feed.c:1159
 #, c-format
 msgid "Updating feed icon for \"%s\""
 msgstr "Mise à jour de l'icône de flux pour \"%s\""
 
-#: ../src/feed.c:1184
+#: ../src/feed.c:1192
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "L'URL de \"%s\" a changé définitivement et a été mise à jour"
 
-#: ../src/feed.c:1193
+#: ../src/feed.c:1201
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr "\"%s\" a cessé d'exister. Liferea ne le mettra plus à jour !"
 
-#: ../src/feed.c:1196
+#: ../src/feed.c:1204
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\" n'a pas changé depuis la dernière mise à jour"
 
-#: ../src/feed.c:1212
+#: ../src/feed.c:1220
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!</"
@@ -490,17 +498,17 @@ msgstr ""
 "supportés !</p>Sortie de l'analyseur syntaxique XML :<br /><div "
 "class='xmlparseroutput'>"
 
-#: ../src/feed.c:1231
+#: ../src/feed.c:1239
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" mis à jour..."
 
-#: ../src/feed.c:1243
+#: ../src/feed.c:1251
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" n'est pas disponible"
 
-#: ../src/feed.c:1368
+#: ../src/feed.c:1376
 #, c-format
 msgid "Updating \"%s\""
 msgstr "Mise à jour de \"%s\""
@@ -1361,7 +1369,7 @@ msgid "_News Bin Name:"
 msgstr "Nom de _boîte à nouvelles :"
 
 #. if we don't find a feed with unread items do nothing
-#: ../src/itemlist.c:296
+#: ../src/itemlist.c:298
 msgid "There are no unread items "
 msgstr "Il n'y a aucun élément non lu "
 
@@ -2419,37 +2427,34 @@ msgstr "Ce flux n'existe plus !"
 
 #: ../src/notification/notif_libnotify.c:112
 msgid "This news entry has no headline"
-msgstr ""
+msgstr "Cette nouvelle n'a pas de titre"
 
 #: ../src/notification/notif_libnotify.c:117
 msgid "Visit"
-msgstr ""
+msgstr "Visiter"
 
 #: ../src/notification/notif_libnotify.c:154
 #: ../src/notification/notif_libnotify.c:239
 msgid "Open feed"
-msgstr ""
+msgstr "Ouvrir le flux"
 
 #: ../src/notification/notif_libnotify.c:157
 #: ../src/notification/notif_libnotify.c:242
-#, fuzzy
 msgid "Mark all as read"
-msgstr "Marquer le tout comme _lu"
+msgstr "Marquer le tout comme lu"
 
 #: ../src/notification/notif_libnotify.c:226
 #, c-format
 msgid "%s has %d new / updated headlines\n"
-msgstr ""
+msgstr "%s a %d titres nouveaux / mis à jour\n"
 
 #: ../src/notification/notif_libnotify.c:228
-#, fuzzy
 msgid "Feed Update"
-msgstr "Le titre du flux"
+msgstr "Mise à jour du flux"
 
 #: ../src/notification/notif_libnotify.c:236
-#, fuzzy
 msgid "Show details"
-msgstr "Détails"
+msgstr "Montrer les détails"
 
 #: ../src/notification/notif_popup.c:251
 msgid "Untitled"
