@@ -40,24 +40,36 @@ static void lua_init(void) {
 		{"string",	luaopen_string},
 		{"math",	luaopen_math},
 		{"debug",	luaopen_debug},
+		#if defined(LUA_VERSION_NUM) && LUA_VERSION_NUM >= 501
+		{"package", luaopen_package},
+		#else
+		{"package", luaopen_loadlib},
+		#endif
 		{SWIG_name,	SWIG_init},
 		{NULL,		NULL}
 	};
 	
 	for(i=0; lualibs[i].func != 0 ; i++) {
-		lualibs[i].func(luaVM);  /* open library */
-		lua_settop(luaVM, 0);  /* discard any results */
+		lua_pushcfunction(luaVM, lualibs[i].func);
+		lua_pushstring(luaVM, lualibs[i].name);
+		lua_call(luaVM, 1, 0);
 	}
 }
 
 static void lua_run_cmd(const gchar *cmd) {
-
+	#if defined(LUA_VERSION_NUM) && LUA_VERSION_NUM >= 501
+	luaL_dostring(luaVM, cmd);
+	#else
 	lua_dostring(luaVM, cmd);
+	#endif
 }
 
 static void lua_run_script(const gchar *filename) {
-
+	#if defined(LUA_VERSION_NUM) && LUA_VERSION_NUM >=501
+	luaL_dofile(luaVM, filename);
+	#else
 	lua_dofile(luaVM, filename);
+	#endif
 }
 
 static void lua_deinit(void) {
