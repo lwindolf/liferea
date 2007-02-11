@@ -367,7 +367,7 @@ void itemlist_set_read_status(itemPtr item, gboolean newStatus) {
 				dupIter = dupNode->itemSet->items;
 				while(dupIter) {
 					itemPtr duplicate = (itemPtr)dupIter->data;
-					if(!strcmp(duplicate->id, item->id) &&
+					if(duplicate->id && item->id && !strcmp(duplicate->id, item->id) &&
 					   (newStatus != duplicate->readStatus)) {
 						/* don't call ourselves with duplicate item to avoid cascading, just repeat 1),2) and 3)... */
 						dupNode->needsCacheSave = TRUE;
