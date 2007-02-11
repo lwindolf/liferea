@@ -135,7 +135,20 @@ dnl LUA
 dnl ***
 
 if test "x$enable_lua" = "xyes"; then
-   PKG_CHECK_MODULES([LUA], [lua50 lualib50] ,enable_lua=yes,enable_lua=no)
+   dnl Lua 5.0 doesn't include any .pc file, so lua50.pc and lualib50.pc seems distribution specific (on my Gentoo, it is lua.pc)
+   dnl Lua 5.1 does include a lua.pc file, so it shouldn't be distribution specific
+   dnl However, the presence of lua.pc is certainly not a good indicator of lua version...
+   PKG_CHECK_MODULES([LUA50], [lua50 lualib50] ,has_lua50=yes,has_lua50=no)
+   PKG_CHECK_MODULES([LUA51], [lua] ,has_lua51=yes,has_lua51=no)
+   
+   if test "x$has_lua51" = "xyes" ; then
+      LUA_CFLAGS="$LUA51_CFLAGS"
+      LUA_LIBS="$LUA51_LIBS"
+   elif test "x$has_lua50" = "xyes" ; then
+      LUA_CFLAGS="$LUA50_CFLAGS"
+      LUA_LIBS="$LUA50_LIBS"
+   fi
+   
    AC_SUBST(LUA_CFLAGS)
    AC_SUBST(LUA_LIBS)
 else
