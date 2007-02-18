@@ -1,7 +1,7 @@
 /**
  * @file htmlview.c implementation of the item view interface for HTML rendering
  * 
- * Copyright (C) 2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2006-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,10 +27,10 @@
 #include "common.h"
 #include "debug.h"
 #include "feed.h"
+#include "htmlview.h"
 #include "item.h"
 #include "itemlist.h"
 #include "itemset.h"
-#include "htmlview.h"
 #include "render.h"
 #include "ui/ui_htmlview.h"
 
@@ -38,7 +38,7 @@ extern htmlviewPluginPtr htmlviewPlugin;
 
 static struct htmlView_priv {
 	GHashTable	*htmlChunks;	/**< cache of HTML chunks of all displayed items */
-	itemSetPtr	itemSet;	/**< the item set which is displayed */
+	nodePtr		node;		/**< the node whose items are displayed */
 	guint		missingContent;	/**< counter for items without content */
 } htmlView_priv;
 
@@ -57,10 +57,10 @@ void htmlview_clear(void) {
 	htmlView_priv.missingContent = 0;
 }
 
-void htmlview_set_itemset(itemSetPtr itemSet) {
+void htmlview_set_displayed_node(nodePtr node) {
 
 	g_assert(0 == g_hash_table_size(htmlView_priv.htmlChunks));
-	htmlView_priv.itemSet = itemSet;
+	htmlView_priv.node = node;
 }
 
 void htmlview_add_item(itemPtr item) {
@@ -98,7 +98,7 @@ gchar * htmlview_render_item(itemPtr item) {
 
 	debug_enter("htmlview_render_item");
 
-	baseUrl = common_uri_escape(itemset_get_base_url(htmlView_priv.itemSet));
+	baseUrl = common_uri_escape(node_get_base_url(htmlView_priv.node));
 
 	/* Output optimization for feeds without item content. This
 	   is not done for folders, because we only support all items
@@ -106,19 +106,19 @@ gchar * htmlview_render_item(itemPtr item) {
 	   sets displaying everything in summary because of only a
 	   single feed without item descriptions would make no sense. */
 	   
-	summaryMode = (ITEMSET_TYPE_FOLDER != htmlView_priv.itemSet->type) && 
-	              (ITEMSET_TYPE_VFOLDER != htmlView_priv.itemSet->type) && 
+	summaryMode = (NODE_TYPE_FOLDER != htmlView_priv.node->type) && 
+	              (NODE_TYPE_VFOLDER != htmlView_priv.node->type) && 
 	              (htmlView_priv.missingContent > 3);
 	
 	/* do the XML serialization */
-	doc = itemset_to_xml(htmlView_priv.itemSet);
+	doc = itemset_to_xml(htmlView_priv.node);
 			
 	item_to_xml(item, xmlDocGetRootElement(doc), TRUE);
 			
-	if(NODE_TYPE_FEED == item->sourceNode->type) {
+	if(NODE_TYPE_FEED == item->node->type) {
 		xmlNodePtr feed;
 		feed = xmlNewChild(xmlDocGetRootElement(doc), NULL, "feed", NULL);
-		feed_to_xml(item->sourceNode, feed, TRUE);
+		feed_to_xml(item->node, feed, TRUE);
 	}
 	
 	/* do the XSLT rendering */
@@ -208,13 +208,13 @@ void htmlview_update(GtkWidget *widget, guint mode) {
 	itemPtr		item = NULL;
 	gchar		*chunk,	*baseURL;
 		
-	if(!htmlView_priv.itemSet) {
+	if(!htmlView_priv.node) {
 		debug0(DEBUG_HTML, "clearing HTML view as nothing is selected");
 		ui_htmlview_clear(widget);
 		return;
 	}
 	
-	baseURL = (gchar *)itemset_get_base_url(htmlView_priv.itemSet);
+	baseURL = (gchar *)node_get_base_url(htmlView_priv.node);
 	if(baseURL)
 		baseURL = g_markup_escape_text(baseURL, -1);
 		
@@ -236,7 +236,8 @@ void htmlview_update(GtkWidget *widget, guint mode) {
 			break;
 		case ITEMVIEW_ALL_ITEMS:
 			/* concatenate all items */
-			iter = htmlView_priv.itemSet->items;
+			node_load_itemset(htmlView_priv.node);
+			iter = htmlView_priv.node->itemSet->items;
 			while(iter) {
 				debug1(DEBUG_HTML, "rendering item to HTML view: >>>%s<<<", item_get_title(iter->data));
 
@@ -252,9 +253,10 @@ void htmlview_update(GtkWidget *widget, guint mode) {
 				g_string_append(output, chunk);
 				iter = g_list_next(iter);
 			}
+			node_unload_itemset(htmlView_priv.node);
 			break;
 		case ITEMVIEW_NODE_INFO:
-			chunk = node_render(htmlView_priv.itemSet->node);
+			chunk = node_render(htmlView_priv.node);
 			g_string_append(output, chunk);
 			g_free(chunk);
 			break;

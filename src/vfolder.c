@@ -1,7 +1,7 @@
 /**
- * @file vfolder.c VFolder functionality
+ * @file vfolder.c search folder functionality
  *
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -200,15 +200,12 @@ static void vfolder_add_item(vfolderPtr vp, itemPtr item) {
 	while(iter) {
 		tmp = iter->data;
 		if((item->sourceNr == tmp->sourceNr) && 
-		   (item->sourceNode == tmp->sourceNode))
+		   (item->node == tmp->node))
 			return;
 		iter = g_list_next(iter);
 	}
 
 	/* add an item copy to the vfolder */	
-	
-	if(!item->readStatus)
-		vp->node->unreadCount++;
 	
 	tmp = item_copy(item);
 	itemset_prepend_item(vp->node->itemSet, tmp);
@@ -230,8 +227,8 @@ static void vfolder_remove_matching_item_copy(vfolderPtr vp, itemPtr ip) {
 		tmp = items->data;
 		g_assert(NULL != ip->itemSet);
 
-		if((ip->nr == tmp->sourceNr) &&
-		   (ip->itemSet->node == tmp->sourceNode)) {
+		if((ip->id == tmp->sourceNr) &&
+		   (ip->itemSet->node == tmp->node)) {
 			found = TRUE;
 			break;
 		}
@@ -246,11 +243,8 @@ static void vfolder_remove_matching_item_copy(vfolderPtr vp, itemPtr ip) {
 		   the original item may not exist anymore when the 
 		   removal is executed, so we need to remove the
 		   pointer to the original item */
-		tmp->sourceNode = tmp->itemSet->node;
+		tmp->node = tmp->itemSet->node;
 		tmp->sourceNr = -1;
-		
-		if(!tmp->readStatus)
-			vp->node->unreadCount--;
 		
 		/* we call itemlist_request_remove_item to prevent removing
 		   an item copy selected in the GUI... */
@@ -289,19 +283,19 @@ static gboolean vfolder_apply_rules_for_item(vfolderPtr vp, itemPtr ip) {
 	gboolean	added = FALSE;
 
 	/* check against all rules */
-	/* debug2(DEBUG_UPDATE, "applying rules of (%s) to item #%d", feed_get_title(vp), ip->nr); */
+	/* debug2(DEBUG_UPDATE, "applying rules of (%s) to item #%d", feed_get_title(vp), ip->id); */
 	iter = vp->rules;
 	while(NULL != iter) {
 		rp = iter->data;
 		if(rp->additive) {
 			if(!added && rule_check_item(rp, ip)) {
-				debug3(DEBUG_UPDATE, "adding matching item #%d (%s) to (%s)", ip->nr, item_get_title(ip), node_get_title(vp->node));
+				debug3(DEBUG_UPDATE, "adding matching item #%d (%s) to (%s)", ip->id, item_get_title(ip), node_get_title(vp->node));
 				vfolder_add_item(vp, ip);
 				added = TRUE;
 			}
 		} else {
 			if(added && rule_check_item(rp, ip)) {
-				debug3(DEBUG_UPDATE, "deleting matching item #%d (%s) to (%s)", ip->nr, item_get_title(ip), node_get_title(vp->node));
+				debug3(DEBUG_UPDATE, "deleting matching item #%d (%s) to (%s)", ip->id, item_get_title(ip), node_get_title(vp->node));
 				vfolder_remove_matching_item_copy(vp, ip);
 				added = FALSE;
 			}
@@ -319,7 +313,7 @@ static gboolean vfolder_apply_rules_for_item(vfolderPtr vp, itemPtr ip) {
 static void vfolder_apply_rules(nodePtr node, gpointer userdata) {
 	vfolderPtr	vp = (vfolderPtr)userdata;
 	GList		*items;
-
+return;	// FIXME
 	/* do not search in vfolders */
 	if(NODE_TYPE_VFOLDER == node->type)
 		return;
@@ -328,7 +322,6 @@ static void vfolder_apply_rules(nodePtr node, gpointer userdata) {
 		debug_enter("vfolder_apply_rules");
 
 		debug1(DEBUG_UPDATE, "applying rules for (%s)", node_get_title(node));
-		node_load(node);
 
 		/* check all node items */
 		items = node->itemSet->items;
@@ -336,9 +329,7 @@ static void vfolder_apply_rules(nodePtr node, gpointer userdata) {
 			vfolder_apply_rules_for_item(vp, items->data);
 			items = g_list_next(items);
 		}
-	
-		node_unload(node);
-	
+		
 		debug_exit("vfolder_apply_rules");
 	} else  {
 		/* Recursion */
@@ -394,8 +385,8 @@ void vfolder_update_item(itemPtr ip) {
 			}
 			
 			/* find the item copies */
-			if((ip->nr == tmp->sourceNr) &&
-			   (ip->itemSet->node == tmp->sourceNode)) {
+			if((ip->id == tmp->sourceNr) &&
+			   (ip->itemSet->node == tmp->node)) {
 				/* check if the item still matches, the item won't get added
 				   another time so this call effectivly just checks if the
 				   item is still to remain added. */
@@ -417,14 +408,6 @@ void vfolder_update_item(itemPtr ip) {
 						}
 					}
 					rule = g_slist_next(rule);
-				}
-				
-				/* update vfolder unread count */
-				if(tmp->readStatus != ip->readStatus) {
-					if(ip->readStatus)
-						vp->node->unreadCount--;
-					else
-						vp->node->unreadCount++;
 				}
 				
 				/* always update the item... funny? Maybe, but necessary so that with 
@@ -466,9 +449,10 @@ gboolean vfolder_check_item(itemPtr item) {
 	GSList		*iter;
 	gboolean	added = FALSE;
 
+return FALSE;
 	g_assert(item->itemSet->type == ITEMSET_TYPE_FEED);
-	g_assert(item->itemSet->node == item->sourceNode);
-	g_assert(item->nr == item->sourceNr);
+	g_assert(item->itemSet->node == item->node);
+	g_assert(item->id == item->sourceNr);
 
 	iter = vfolders;
 	while(iter) {
@@ -503,7 +487,7 @@ void vfolder_free(vfolderPtr vp) {
 	g_assert(NULL != vp->node->itemSet);
 	iter = vp->node->itemSet->items;
 	while(NULL != iter) {
-		item_free(iter->data);
+		item_unload(iter->data);
 		iter = g_list_next(iter);
 	}
 	g_list_free(vp->node->itemSet->items);
@@ -523,10 +507,7 @@ void vfolder_free(vfolderPtr vp) {
 
 /* implementation of the node type interface */
 
-static void vfolder_initial_load(nodePtr node) { }
-static void vfolder_load(nodePtr node) { }
 static void vfolder_save(nodePtr node) { }
-static void vfolder_unload(nodePtr node) { }
 static void vfolder_reset_update_counter(nodePtr node) { }
 static void vfolder_request_update(nodePtr node, guint flags) { }
 static void vfolder_request_auto_update(nodePtr node) { }
@@ -552,10 +533,7 @@ nodeTypePtr vfolder_get_node_type(void) {
 		NODE_TYPE_VFOLDER,
 		vfolder_import,
 		vfolder_export,
-		vfolder_initial_load,
-		vfolder_load,
 		vfolder_save,
-		vfolder_unload,
 		vfolder_reset_update_counter,
 		vfolder_request_update,
 		vfolder_request_auto_update,

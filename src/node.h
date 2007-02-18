@@ -1,7 +1,7 @@
 /**
  * @file node.h common feed list node handling interface
  * 
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -69,13 +69,11 @@ typedef struct node {
 	GSList			*children;	/**< ordered list of node children */
 	gchar			*id;		/**< unique node identifier string */
 
-	guint			unreadCount;	/**< number of items not yet read */
 	guint			popupCount;	/**< number of items to be notified */
 	guint			newCount;	/**< number of recently downloaded items */
 
 	gchar			*title;		/**< the label of the node in the feed list */
 	gpointer		icon;		/**< pointer to pixmap, if there is a favicon */
-	guint			loaded;		/**< counter which is non-zero if items are to be kept in memory */
 	gboolean		available;	/**< availability of this node (usually the last downloading state) */
 	gboolean		needsCacheSave;	/**< flag set when the feed's cache needs to be resaved */
 	gboolean		expanded;	/**< expansion state (for nodes with childs) */
@@ -110,10 +108,7 @@ typedef struct nodeType {
 	   All methods are mandatory for each node type. */
 	void    (*import)		(nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean trusted);
 	void    (*export)		(nodePtr node, xmlNodePtr cur, gboolean trusted);
-	void	(*initial_load)		(nodePtr node);
-	void	(*load)			(nodePtr node);
 	void 	(*save)			(nodePtr node);
-	void	(*unload)		(nodePtr node);
 	void	(*reset_update_counter)	(nodePtr node);
 	void	(*request_update)	(nodePtr node, guint flags);
 	void 	(*request_auto_update)	(nodePtr node);
@@ -449,6 +444,9 @@ itemSetPtr node_get_itemset(nodePtr node);
  */
 void node_set_itemset(nodePtr node, itemSetPtr sp);
 
+void node_load_itemset(nodePtr node);
+void node_unload_itemset(nodePtr node);
+
 /**
  * Node content rendering
  *
@@ -514,6 +512,26 @@ void node_set_view_mode(nodePtr node, guint newMode);
  * @returns viewing mode (0 = normal, 1 = wide, 2 = combined)
  */
 gboolean node_get_view_mode(nodePtr node);
+
+/**
+ * Allows to check wether an node requires to load
+ * the item link or the content after selecting an item.
+ *
+ * @param node	the node
+ *
+ * @returns TRUE if the item link is to be loaded
+ */
+gboolean node_load_link_preferred(nodePtr node);
+
+/**
+ * Returns the base URL for the given node.
+ * If it is a mixed item set NULL will be returned.
+ *
+ * @param node	the node
+ *
+ * @returns base URL
+ */
+const gchar * node_get_base_url(nodePtr node);
 
 /* child nodes iterating interface */
 

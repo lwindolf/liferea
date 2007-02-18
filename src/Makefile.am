@@ -27,6 +27,7 @@ liferea_bin_SOURCES = \
 	callbacks.c callbacks.h \
 	common.c common.h \
 	conf.c conf.h \
+	db.c db.h \
 	debug.c debug.h \
 	export.c export.h \
 	favicon.c favicon.h \

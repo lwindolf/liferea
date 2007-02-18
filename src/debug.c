@@ -5,7 +5,7 @@
  * Copyright (C) 2002  Charles Kerr <charles@rebelbase.com>
  *
  * Liferea specific adaptations
- * Copyright (C) 2004-2006  Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2007  Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -74,6 +74,7 @@ debug_printf (const char    * strloc,
 	else if(flag & DEBUG_HTML)	prefix="HTML";
 	else if(flag & DEBUG_PLUGINS)	prefix="PLUGINS";
 	else if(flag & DEBUG_TRACE)	prefix="TRACE";
+	else if(flag & DEBUG_DB)	prefix="DB";
 	else prefix="";
 
 	va_start (args, fmt);

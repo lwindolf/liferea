@@ -1,7 +1,7 @@
 /**
  * @file itemset.h interface for different item list implementations
  * 
- * Copyright (C) 2005-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2005-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -29,15 +29,6 @@
  * The itemset interface processes item list actions
  * based on the item set type specified by the node
  * the item set belongs to.
- *
- * Currently there are three types of item sets:
- *   - Feed
- *   - Folder
- *   - VFolder
- *
- * The type of the item set can be determined from
- * the node type (valid values: NODE_TYPE_FEED, 
- * NODE_TYPE_FOLDER and NODE_TYPE_VFOLDER).
  */
 
 enum itemSetTypes {
@@ -55,24 +46,6 @@ typedef struct itemSet {
 	gboolean	valid;		/**< FALSE if libxml2 recovery mode was used to create this item set*/
 	gulong		lastItemNr;	/**< internal counter used to uniqely assign item id's. */
 } *itemSetPtr;
-
-/**
- * Allows to check wether an item set requires to load
- * the item link or the content after selecting an item.
- *
- * @returns TRUE if the item link is to be loaded
- */
-gboolean itemset_load_link_preferred(itemSetPtr itemSet);
-
-/**
- * Returns the base URL for the given item set.
- * If it is a mixed item set NULL will be returned.
- *
- * @param itemSet	the item set
- *
- * @returns base URL
- */
-const gchar * itemset_get_base_url(itemSetPtr itemSet);
 
 /**
  * Scans all item of a given item set for the given item id.
@@ -167,8 +140,15 @@ void itemset_set_item_popup_status(itemSetPtr itemSet, itemPtr item, gboolean ne
  * Serialize the given item set to XML. Does not serialize items!
  * It only creates an XML document frame for an item set.
  *
- * @param itemSet	the item set to serialize
+ * @param node	the node whose item set is to be serialized
  */
-xmlDocPtr itemset_to_xml(itemSetPtr itemSet);
+xmlDocPtr itemset_to_xml(struct node *node);
+
+/**
+ * Frees the given item set and all items it contains.
+ *
+ * @param itemSet	the item set to free
+ */
+void itemset_free(itemSetPtr itemSet);
 
 #endif

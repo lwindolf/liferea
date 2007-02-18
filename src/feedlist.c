@@ -105,9 +105,9 @@ void feedlist_update_counters(gint unreadDiff, gint newDiff) {
 static void feedlist_unset_new_items(nodePtr node) {
 	
 	if(0 != node->newCount) {
-		node_load(node);
+		node_load_itemset(node);
 		itemlist_mark_all_old(node->itemSet);
-		node_unload(node);
+		node_unload_itemset(node);
 	}
 	
 	node_foreach_child(node, feedlist_unset_new_items);
@@ -181,7 +181,7 @@ static nodePtr feedlist_unread_scan(nodePtr folder) {
 			scanState = UNREAD_SCAN_FOUND_SELECTED;
 
 		/* feed match if beyond the selected feed or in second pass... */
-		if((scanState != UNREAD_SCAN_INIT) && (node->unreadCount > 0) &&
+		if((scanState != UNREAD_SCAN_INIT) && (node_get_unread_count(node) > 0) &&
 		   (NULL == node->children) && (NODE_TYPE_VFOLDER != node->type)) {
 		       return node;
 		}
@@ -191,7 +191,7 @@ static nodePtr feedlist_unread_scan(nodePtr folder) {
 		   are beyond the selected feed and the folder contains
 		   feeds with unread items... */
 		if(node->children &&
-		   (((scanState != UNREAD_SCAN_INIT) && (node->unreadCount > 0)) ||
+		   (((scanState != UNREAD_SCAN_INIT) && (node_get_unread_count(node) > 0)) ||
 		    (selectedIter && (node_is_ancestor(node, selectedNode))))) {
 		       if(NULL != (childNode = feedlist_unread_scan(node)))
 				return childNode;
@@ -228,7 +228,7 @@ static void feedlist_unselect(void) {
 
 	selectedNode = NULL;
 
-	itemview_set_itemset(NULL);
+	itemview_set_displayed_node(NULL);
 	itemview_update();
 		
 	itemlist_unload(FALSE /* mark all read */);
@@ -254,17 +254,15 @@ void feedlist_selection_changed(nodePtr node) {
 
 		/* Unload visible items. */
 		itemlist_unload(TRUE);
-
-		/* Unload previously displayed node. */
-		if(displayed_node)
-			node_unload(displayed_node);
-			
+	
 		/* Load items of new selected node. */
 		selectedNode = node;
 		if(selectedNode) {
-			node_load(selectedNode);
 			itemlist_set_view_mode(node_get_view_mode(selectedNode));
+			
+			node_load_itemset(selectedNode);
 			itemlist_load(selectedNode->itemSet);
+			node_unload_itemset(selectedNode);
 		} else {
 			ui_htmlview_clear(ui_mainwindow_get_active_htmlview());
 		}
@@ -345,14 +343,6 @@ void feedlist_save(void) {
 	feedlist_schedule_save_cb(NULL);
 }
 
-/* This method is needed to update the vfolder count
-   in the GUI after the initial feed loading is done. */
-static void feedlist_update_vfolder_count(nodePtr node) {
-
-	if(NODE_TYPE_VFOLDER == node->type) 
-		ui_node_update(node);
-}
-
 /* This method is used to initially set the expansion
    state of all nodes in the feed list */
 static void feedlist_expand_folder(nodePtr node) {
@@ -386,8 +376,6 @@ void feedlist_init(void) {
 
 	/* 3. Sequentially load and unload all feeds and by doing so 
 	   automatically load all vfolders */
-	feedlist_foreach(node_initial_load);
-	feedlist_foreach(feedlist_update_vfolder_count);
 	feedlist_foreach(feedlist_expand_folder);
 	
 	notification_enable(getBooleanConfValue(SHOW_POPUP_WINDOWS));
@@ -416,8 +404,8 @@ void feedlist_init(void) {
 	feedlist_schedule_save();
 	
 	if(cacheMigrated)
-		ui_show_info_box(_("Liferea v1.2 uses a new cache format and has migrated your "
-		                   "feed cache. The cache content of v1.0 in ~/.liferea was "
+		ui_show_info_box(_("Liferea v1.4 uses a new cache format and has migrated your "
+		                   "feed cache. The cache content of v1.2 in ~/.liferea_1.2 was "
 		                   "not deleted automatically. Please remove this directory "
 		                   "manually once you are sure migration was successful!"));
 	

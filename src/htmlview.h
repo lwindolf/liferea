@@ -1,7 +1,7 @@
 /**
  * @file htmlview.h implementation of the item view interface for HTML rendering
  * 
- * Copyright (C) 2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2006-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,8 +24,8 @@
 #include <gtk/gtk.h>
 
 #include "item.h"
-#include "itemset.h"
 #include "itemview.h"
+#include "node.h"
 
 /* interface for item and item set HTML rendering */
 
@@ -40,15 +40,15 @@ void	htmlview_init(void);
 void	htmlview_clear(void);
 
 /**
- * Prepares the HTML view for displaying items of the given item set.
+ * Prepares the HTML view for displaying items of the given node.
  *
- * @param itemSet	the item set that will be rendered
+ * @param node	the node whose items will be rendered
  */
-void	htmlview_set_itemset(itemSetPtr itemSet);
+void	htmlview_set_displayed_node(nodePtr node);
 
 /**
  * Adds an item to the HTML view for rendering. The item must belong
- * to the item set that was announced with ui_htmlview_load_itemset().
+ * to the item set that was announced with htmlview_set_displayed_node().
  *
  * This method _DOES NOT_ update the rendering output.
  *

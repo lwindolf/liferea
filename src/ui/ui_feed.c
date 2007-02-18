@@ -535,8 +535,6 @@ void ui_feed_properties(nodePtr node) {
 	gchar 			*defaultIntervalStr;
 	feedPtr			feed = (feedPtr)node->data;
 
-	node_load(node);
-
 	ui_data = g_new0(struct fp_prop_ui_data, 1);
 	ui_data->node = node;
 	ui_data->feed = feed;
@@ -690,7 +688,5 @@ void ui_feed_properties(nodePtr node) {
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(propdialog, "loadItemLinkCheck")), feed->loadItemLink);
 
 	gtk_widget_show_all(propdialog);
-
-	node_unload(node);
 }
 

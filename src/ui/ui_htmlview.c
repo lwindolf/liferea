@@ -214,34 +214,26 @@ void ui_htmlview_launch_URL(GtkWidget *htmlview, const gchar *url, gint launchTy
 		uriType = internalUriTypes;
 		while(uriType->suffix) {
 			if(!strncmp(url + strlen("liferea-"), uriType->suffix, strlen(uriType->suffix))) {
-				gchar *nodeid, *itemid;
+				gchar *nodeid, *itemnr;
 				nodeid = strstr(url, "://");
 				if(nodeid) {
 					nodeid += 3;
-					itemid = nodeid;
-					itemid = strchr(nodeid, '-');
-					if(itemid) {
-						nodePtr node;
+					itemnr = nodeid;
+					itemnr = strchr(nodeid, '-');
+					if(itemnr) {
 						itemPtr item;
 						
-						*itemid = 0;
-						itemid++;
-						
-						node = node_from_id(nodeid);
-						if(!node) {
-							g_warning("Fatal: no node with id (%s) found!\n", nodeid);
-							return;
-						}
-						
-						node_load(node);
-						
-						item = itemset_lookup_item(node->itemSet, node, atol(itemid));
-						if(item)
+						*itemnr = 0;
+						itemnr++;
+									
+						item = item_load(atol(itemnr));
+						if(item) {
 							(*uriType->func)(item);
-						else
-							g_warning("Fatal: no item with id (node=%s, item=%s) found!!!", nodeid, itemid);
-							
-						node_unload(node);
+							item_unload(item);
+						} else {
+							g_warning("Fatal: no item with id (node=%s, item=%s) found!!!", nodeid, itemnr);
+						}
+
 						return;
 					}
 				}

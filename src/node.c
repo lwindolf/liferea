@@ -20,6 +20,7 @@
  */
 
 #include "node.h"
+#include "db.h"
 #include "common.h"
 #include "conf.h"
 #include "callbacks.h"
@@ -45,10 +46,7 @@ void node_type_register(nodeTypePtr nodeType) {
 	g_assert(0 != nodeType->type);
 	g_assert(nodeType->import);
 	g_assert(nodeType->export);
-	g_assert(nodeType->initial_load);
-	g_assert(nodeType->load);
 	g_assert(nodeType->save);
-	g_assert(nodeType->unload);
 	g_assert(nodeType->reset_update_counter);
 	g_assert(nodeType->request_update);
 	g_assert(nodeType->request_auto_update);
@@ -164,11 +162,7 @@ void node_free(nodePtr node) {
 	
 	update_cancel_requests((gpointer)node);
 
-	if(node->loaded)  {
-		itemset_remove_all_items(node->itemSet);
-		g_free(node->itemSet);
-		node->itemSet = NULL;
-	}
+	db_remove_all_items_with_node_id(node->id);
 
 	if(node->icon)
 		g_object_unref(node->icon);
@@ -176,59 +170,6 @@ void node_free(nodePtr node) {
 	g_free(node->title);
 	g_free(node->id);
 	g_free(node);
-}
-
-void node_update_counters(nodePtr node) {
-	gint	unreadDiff, newDiff;
-	GList	*iter;
-
-	newDiff = -1 * node->newCount;
-	unreadDiff = -1 * node->unreadCount;
-	node->newCount = 0;
-	node->unreadCount = 0;
-
-	iter = node->itemSet->items;
-	while(iter) {
-		itemPtr item = (itemPtr)iter->data;
-		if(!item->readStatus)
-			node->unreadCount++;	
-		if(item->newStatus)
-			node->newCount++;
-		if(item->popupStatus)
-			node->popupCount++;
-		iter = g_list_next(iter);
-	}
-	newDiff += node->newCount;
-	unreadDiff += node->unreadCount;
-
-	if(NODE_TYPE_VFOLDER == node->type)
-		return;		/* prevent recursive counting and adding to statistics */
-
-	/* update parent folder */
-	if(node->parent)
-		node_update_unread_count(node->parent, unreadDiff);
-
-	/* propagate to feed list statistics */
-	if(NODE_TYPE_FEED == node->type)
-		feedlist_update_counters(unreadDiff, newDiff);		
-}
-
-void node_update_unread_count(nodePtr node, gint diff) {
-
-	node->unreadCount += diff;
-
-	/* vfolder unread counts are not interesting
-	   in the following propagation handling */
-	if(NODE_TYPE_VFOLDER == node->type)
-		return;
-
-	/* update parent node unread counters */
-	if(NULL != node->parent)
-		node_update_unread_count(node->parent, diff);
-
-	/* update global feed list statistic */
-	if(NODE_TYPE_FEED == node->type)
-		feedlist_update_counters(diff, 0);
 }
 
 void node_update_new_count(nodePtr node, gint diff) {
@@ -247,9 +188,10 @@ void node_update_new_count(nodePtr node, gint diff) {
 		feedlist_update_counters(0, diff);	
 }
 
-guint node_get_unread_count(nodePtr node) { 
-	
-	return node->unreadCount; 
+guint node_get_unread_count(nodePtr node) {
+
+	// FIXME: what about folders? recursion!
+	return db_get_unread_count_with_node_id(node->id);
 }
 
 /* generic node item set merging functions */
@@ -274,12 +216,10 @@ static guint node_get_max_item_count(nodePtr node) {
  */
 static gboolean node_merge_check(itemSetPtr itemSet, itemPtr item) {
 
-	switch(itemSet->type) {
-		case ITEMSET_TYPE_FEED:
+	switch(itemSet->node->type) {
+		case NODE_TYPE_FEED:
 			return feed_merge_check(itemSet, item);
 			break;
-		case ITEMSET_TYPE_FOLDER:
-		case ITEMSET_TYPE_VFOLDER:
 		default:
 			g_warning("node_merge_check(): If this happens something is wrong!");
 			break;
@@ -291,16 +231,16 @@ static gboolean node_merge_check(itemSetPtr itemSet, itemPtr item) {
 /* Only to be called by node_merge_items() */
 static void node_merge_item(nodePtr node, itemPtr item) {
 
-	debug3(DEBUG_UPDATE, "trying to merge \"%s\" (id=%d) to node \"%s\"", item_get_title(item), item->nr, node_get_title(node));
+	debug3(DEBUG_UPDATE, "trying to merge \"%s\" (id=%d) to node \"%s\"", item_get_title(item), item->id, node_get_title(node));
 
 	/* step 1: merge into node type internal data structures */
 	if(node_merge_check(node->itemSet, item)) {
-		g_assert(!item->sourceNode);
+		g_assert(!item->node);
 		
 		/* step 1: add to itemset */
 		itemset_prepend_item(node->itemSet, item);
 		
-		debug3(DEBUG_UPDATE, "-> adding \"%s\" to item set %p with #%d...", item_get_title(item), node->itemSet, item->nr);
+		debug2(DEBUG_UPDATE, "-> adding \"%s\" to item set %p...", item_get_title(item), node->itemSet);
 		
 		/* step 2: check for matching vfolders */
 		vfolder_check_item(item);
@@ -311,12 +251,10 @@ static void node_merge_item(nodePtr node, itemPtr item) {
 				// FIXME do something better: item->readStatus = TRUE;
 				debug2(DEBUG_UPDATE, "-> duplicate guid detected: %s -> %s\n", item->id, item->title);
 			}
-
-			item_guid_list_add_id(item);
 		}
 	} else {
 		debug2(DEBUG_UPDATE, "-> not adding \"%s\" to node \"%s\"...", item_get_title(item), node_get_title(node));
-		item_free(item);
+		item_unload(item);
 	}
 }
 
@@ -333,7 +271,7 @@ void node_merge_items(nodePtr node, GList *list) {
 		iter = node->itemSet->items;
 		while(iter) {
 			itemPtr item = (itemPtr)iter->data;
-			debug2(DEBUG_UPDATE, " -> item #%d \"%s\"", item->nr, item_get_title(item));
+			debug2(DEBUG_UPDATE, " -> item #%d \"%s\"", item->id, item_get_title(item));
 			iter = g_list_next(iter);
 		}
 	}
@@ -353,7 +291,7 @@ void node_merge_items(nodePtr node, GList *list) {
 			if(i > max) {
 				itemPtr item = (itemPtr)iter->data;
 				debug2(DEBUG_UPDATE, "ignoring item nr %u (%s)...", i, item_get_title(item));
-				item_free(item);
+				item_unload(item);
 				list = g_list_remove(list, item);
 			}
 			iter = g_list_next(iter);
@@ -371,12 +309,6 @@ void node_merge_items(nodePtr node, GList *list) {
 		iter = g_list_previous(iter);
 	}
 	g_list_free(list);
-	
-	/* Never update the overall feed list statistic 
-	   for folders and vfolders (because these are item
-	   list types with item copies or references)! */
-	if((NODE_TYPE_FOLDER != node->type) && (NODE_TYPE_VFOLDER != node->type))
-		node_update_counters(node);
 }
 
 void node_update_favicon(nodePtr node) {
@@ -517,7 +449,7 @@ static xmlDocPtr node_to_xml(nodePtr node) {
 
 	xmlNewTextChild(rootNode, NULL, "title", node_get_title(node));
 	
-	tmp = g_strdup_printf("%u", node->unreadCount);
+	tmp = g_strdup_printf("%u", node_get_unread_count(node));
 	xmlNewTextChild(rootNode, NULL, "unreadCount", tmp);
 	g_free(tmp);
 	
@@ -549,20 +481,8 @@ void node_export(nodePtr node, xmlNodePtr cur, gboolean trusted) {
 	NODE_TYPE(node)->export(node, cur, trusted);
 }
 
-void node_initial_load(nodePtr node) {
-	NODE_TYPE(node)->initial_load(node);
-}
-
-void node_load(nodePtr node) {
-	NODE_TYPE(node)->load(node);
-}
-
 void node_save(nodePtr node) {
 	NODE_TYPE(node)->save(node);
-}
-
-void node_unload(nodePtr node) {
-	NODE_TYPE(node)->unload(node);
 }
 
 void node_remove(nodePtr node) {
@@ -571,10 +491,10 @@ void node_remove(nodePtr node) {
 
 void node_mark_all_read(nodePtr node) {
 
-	if(0 != node->unreadCount) {
-		node_load(node);
+	if(0 != node_get_unread_count(node)) {
+		node_load_itemset(node);
 		NODE_TYPE(node)->mark_all_read(node);
-		node_unload(node);
+		node_unload_itemset(node);
 	}
 }
 
@@ -602,31 +522,29 @@ void node_request_properties(nodePtr node) {
 
 itemSetPtr node_get_itemset(nodePtr node) { return node->itemSet; }
 
+void node_load_itemset(nodePtr node) {
+
+	g_assert(NULL == node->itemSet);
+	node->itemSet = db_load_itemset_with_node_id(node->id);
+	node->itemSet->node = node;
+}
+
+void node_unload_itemset(nodePtr node) {
+
+//	g_assert(NULL != node->itemSet);
+	if(!node->itemSet)
+		return;
+		
+	itemset_free(node->itemSet);
+	node->itemSet = NULL;
+}
+
 void node_set_itemset(nodePtr node, itemSetPtr itemSet) {
-	GList	*iter;
 
 	g_assert(ITEMSET_TYPE_INVALID != itemSet->type);
 	g_assert(NULL == itemSet->node);
 	node->itemSet = itemSet;
 	itemSet->node = node;
-	
-	iter = itemSet->items;
-	while(iter) {
-		itemPtr	item = (itemPtr)(iter->data);
-		
-		/* When the item has no source node yet (after
-		   loading a feed from cache) it will be set here.
-		   If node_set_itemset() is called for folders
-		   and vfolders the items already should have a 
-		   sourceNode. */
-		if(!item->sourceNode)
-			item->sourceNode = node;
-			
-		iter = g_list_next(iter);
-	}
-	
-	node->newCount = 0;	/* reset to avoid counting errors (FIXME: very bad solution!) */
-	node_update_counters(node);
 }
 
 void node_set_title(nodePtr node, const gchar *title) {
@@ -692,6 +610,38 @@ void node_set_sort_column(nodePtr node, gint sortColumn, gboolean reversed) {
 void node_set_view_mode(nodePtr node, guint newMode) { node->viewMode = newMode; }
 
 gboolean node_get_view_mode(nodePtr node) { return node->viewMode; }
+
+gboolean node_load_link_preferred(nodePtr node) {
+
+	switch(node->type) {
+		case ITEMSET_TYPE_FEED:
+			return ((feedPtr)node->data)->loadItemLink;
+			break;
+		default:
+			return FALSE;
+			break;
+	}
+}
+
+const gchar * node_get_base_url(nodePtr node) {
+	const gchar 	*baseUrl = NULL;
+
+	switch(node->type) {
+		case NODE_TYPE_FEED:
+			baseUrl = feed_get_html_url((feedPtr)node->data);
+			break;
+		default:
+			break;
+	}
+
+	/* prevent feed scraping commands to end up as base URI */
+	if(!((baseUrl != NULL) &&
+	     (baseUrl[0] != '|') &&
+	     (strstr(baseUrl, "://") != NULL)))
+	   	baseUrl = NULL;
+
+	return baseUrl;
+}
 
 /* node children iterating interface */
 

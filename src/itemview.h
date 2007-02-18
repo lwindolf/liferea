@@ -1,7 +1,7 @@
 /**
  * @file itemview.h    item display interface abstraction
  * 
- * Copyright (C) 2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2006-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,11 +41,11 @@ void	itemview_init(void);
 void	itemview_clear(void);
     
 /**
- * Prepares the view for displaying items of the given item set.
+ * Prepares the view for displaying items of the given node.
  *
- * @param itemSet	the item set that is to be presented
+ * @param node	the node whose items are to be presented
  */
-void	itemview_set_itemset(itemSetPtr itemSet);
+void	itemview_set_displayed_node(struct node *node);
 
 /** item view display mode type */
 typedef enum {
@@ -64,7 +64,7 @@ void	itemview_set_mode(itemViewMode mode);
 
 /**
  * Adds an item to the view for rendering. The item must belong
- * to the item set that was announced with ui_htmlview_load_itemset().
+ * to the item set that was announced with itemview_set_displayed_node().
  *
  * @param item		the item to add
  */
@@ -94,8 +94,10 @@ void	itemview_update_item(itemPtr item);
 
 /**
  * Requests updating the rendering of the node info view.
+ *
+ * @node node	the node whose info view is to be updated
  */
-void	itemview_update_node_info(itemSetPtr itemSet);
+void	itemview_update_node_info(struct node *node);
 
 /**
  * Refreshes the item view. Needs to be called after each

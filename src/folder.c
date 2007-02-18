@@ -1,7 +1,7 @@
 /**
  * @file folder.c feed list and plugin callbacks for folders
  * 
- * Copyright (C) 2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2006-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -55,10 +55,6 @@ static void folder_export(nodePtr node, xmlNodePtr cur, gboolean trusted) {
 	export_node_children(node, cur, trusted);	
 }
 
-static void folder_initial_load(nodePtr node) {
-	node_foreach_child(node, node_initial_load);
-}
-
 /* This callback is used to compute the itemset of folder nodes */
 static void folder_merge_itemset(nodePtr node, gpointer userdata) {
 	itemSetPtr	itemSet = (itemSetPtr)userdata;
@@ -80,39 +76,10 @@ static void folder_merge_itemset(nodePtr node, gpointer userdata) {
 	}
 }
 
-static void folder_load(nodePtr node) {
-
-	node_foreach_child(node, node_load);
-
-	if(0 >= node->loaded) {
-		/* Concatenate all child item sets to form the folders item set */
-		itemSetPtr itemSet = g_new0(struct itemSet, 1);
-		itemSet->type = ITEMSET_TYPE_FOLDER;
-		node_foreach_child_data(node, folder_merge_itemset, itemSet);
-		node_set_itemset(node, itemSet);
-	}
-
-	node->loaded++;
-}
-
 static void folder_save(nodePtr node) {
+	
+	/* A folder has no own state but must give all childs the chance to save theirs */
 	node_foreach_child(node, node_save);
-}
-
-static void folder_unload(nodePtr node) {
-
-	if(0 >= node->loaded)
-		return;
-
-	if(1 == node->loaded) {
-		g_assert(NULL != node->itemSet);
-		g_list_free(node->itemSet->items);
-		node->itemSet->items = NULL;
-	}
-
-	node->loaded--;
-
-	node_foreach_child(node, node_unload);
 }
 
 static void folder_reset_update_counter(nodePtr node) {
@@ -157,10 +124,7 @@ nodeTypePtr folder_get_node_type(void) {
 		NODE_TYPE_FOLDER,
 		folder_import,
 		folder_export,
-		folder_initial_load,
-		folder_load,
 		folder_save,
-		folder_unload,
 		folder_reset_update_counter,
 		folder_request_update,
 		folder_request_auto_update,
@@ -190,10 +154,7 @@ nodeTypePtr root_get_node_type(void) {
 		NODE_TYPE_ROOT,
 		folder_import,
 		folder_export,
-		folder_initial_load,
-		folder_load,
 		folder_save,
-		folder_unload,
 		folder_reset_update_counter,
 		folder_request_update,
 		folder_request_auto_update,

@@ -1,7 +1,7 @@
 /**
- * @file ui_itemlist.h item list/view handling
+ * @file ui_itemlist.h item list GUI handling
  *
- * Copyright (C) 2004-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
  *	      
  * This library is free software; you can redistribute it and/or

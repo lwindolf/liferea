@@ -138,7 +138,7 @@ static void ns_blogChannel_download_request_cb(requestPtr request) {
 	}
 
 	if(buffer) {
-		node_load(requestData->ctxt->node);
+		// FIXME: needed? node_load(requestData->ctxt->node);
 		
 		switch(requestData->tag) {
 			case TAG_BLOGROLL:
@@ -169,7 +169,7 @@ static void ns_blogChannel_download_request_cb(requestPtr request) {
 		requestData->ctxt->node->needsCacheSave = TRUE;	/* needed because we're processing after feed parsing */
 		g_string_free(buffer, TRUE);
 		
-		node_unload(requestData->ctxt->node);
+		// FIXME: needed? node_unload(requestData->ctxt->node);
 	}
 	g_free(requestData->ctxt->itemSet);
 	feed_free_parser_ctxt(requestData->ctxt);

@@ -29,67 +29,19 @@
 #include <stdlib.h>
 #include <libxml/uri.h>
 
-#include "callbacks.h"
-#include "common.h"
+#include "db.h"
 #include "debug.h"
+#include "common.h"
 #include "item.h"
+#include "itemview.h"
 #include "metadata.h"
-#include "render.h"
 #include "support.h"
-#include "social.h"
-#include "vfolder.h"
 
 /* Item duplicate handling */
 
-/*
- * To manage duplicate items we keep a hash of all item GUIDs
- * (note: non-globally unique ids are not managed in this list!) 
- * and for each GUID we keep a list of the parent feeds containing
- * items with this GUID. Precondition is of course that GUIDs
- * are unique per feed which is ensured in the parsing/merging
- * code. 
- */
-static GHashTable *itemGuids = NULL;
-
-void item_guid_list_add_id(itemPtr item) {
-	GSList	*iter;
-	
-	g_assert(TRUE == item->validGuid);
-	
-	if(!itemGuids)
-		itemGuids = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
-
-	iter = (GSList *)g_hash_table_lookup(itemGuids, item->id);
-	if(!g_slist_find(iter, item->sourceNode)) {
-		iter = g_slist_append(iter, item->sourceNode);
-		g_hash_table_insert(itemGuids, g_strdup(item->id), iter);
-	}
-}
-
-void item_guid_list_remove_id(itemPtr item) {
-	GSList	*iter;
-	
-	if(!itemGuids)
-		return;
-	
-	/* avoid GUID list removal when dropping item copies
-	   from search folders */
-	if(item->itemSet->node->type == NODE_TYPE_VFOLDER)
-		return;
-
-	iter = (GSList *)g_hash_table_lookup(itemGuids, item->id);
-	if(iter) {
-		iter = g_slist_remove(iter, item->sourceNode);
-		g_hash_table_insert(itemGuids, g_strdup(item->id), iter);
-	}
-}
-
 GSList * item_guid_list_get_duplicates_for_id(itemPtr item) {
-
-	if(item->id)
-		return g_hash_table_lookup(itemGuids, item->id);
-	else
-		return NULL;
+	// FIXME!
+	return NULL;
 }
 
 /* Item comments handling */
@@ -100,7 +52,7 @@ static void item_comments_process_update_result(struct request *request) {
 
 	debug_enter("item_comments_process_update_result");
 	
-	g_assert(0 < item->sourceNode->loaded);
+	/* How to check this? -> g_assert(0 < item->sourceNode->loaded); */
 
 	/* note this is to update the feed URL on permanent redirects */
 	if(!strcmp(request->source, metadata_list_get(item->metadata, "commentFeedUri"))) {
@@ -110,7 +62,7 @@ static void item_comments_process_update_result(struct request *request) {
 				     request->source);
 				     
 		metadata_list_set(&(item->metadata), "commentFeedUri", request->source);
-		item->sourceNode->needsCacheSave = TRUE;
+		item->node->needsCacheSave = TRUE;
 	}
 	
 	if(401 == request->httpstatus) { /* unauthorized */
@@ -138,7 +90,7 @@ static void item_comments_process_update_result(struct request *request) {
 			/* drop old comment items and take new ones instead */
 			GList *iter = item->comments->items;
 			while(iter) {
-				item_free((itemPtr)iter->data);
+				item_unload((itemPtr)iter->data);
 				iter = g_list_next(iter);
 			}
 			g_list_free(item->comments->items);
@@ -153,7 +105,7 @@ static void item_comments_process_update_result(struct request *request) {
 				iter = g_list_next(iter);
 			}
 			
-			item->sourceNode->needsCacheSave = TRUE;
+			item->node->needsCacheSave = TRUE;
 		}
 				
 		feed_free_parser_ctxt(ctxt);
@@ -185,7 +137,7 @@ static void item_comments_process_update_result(struct request *request) {
 	itemview_update_item(item); 
 	itemview_update();
 	
-	node_unload(item->sourceNode);	/* release item from memory */
+	db_update_item(item);
 	
 	debug_exit("item_comments_process_update_result");
 }
@@ -198,8 +150,6 @@ void item_comments_refresh(itemPtr item) {
 	
 	if(url) {
 		debug2(DEBUG_UPDATE, "Updating comments for item \"%s\" (comment URL: %s)", item->title, url);
-
-		node_load(item->sourceNode);	/* force item to stay in memory */
 
 		request = update_request_new(item);
 		request->user_data = item;
@@ -232,6 +182,11 @@ itemPtr item_new(void) {
 	return item;
 }
 
+itemPtr item_load(gulong id) {
+
+	return db_load_item_with_id(id);
+}
+
 itemPtr item_copy(itemPtr item) {
 	itemPtr copy = item_new();
 
@@ -240,7 +195,7 @@ itemPtr item_copy(itemPtr item) {
 	item_set_real_source_url(copy, item->real_source_url);
 	item_set_real_source_title(copy, item->real_source_title);
 	item_set_description(copy, item->description);
-	item_set_id(copy, item->id);
+	item_set_id(copy, item->sourceId);
 	
 	copy->updateStatus = item->updateStatus;
 	copy->readStatus = item->readStatus;
@@ -251,8 +206,8 @@ itemPtr item_copy(itemPtr item) {
 	copy->validGuid = item->validGuid;
 	
 	/* the following line allows state propagation in item.c */
-	copy->sourceNode = item->itemSet->node;
-	copy->sourceNr = item->nr;
+	copy->node = NULL;
+	copy->sourceNr = item->id;
 
 	/* this copies metadata */
 	copy->metadata = metadata_list_copy(item->metadata);
@@ -302,25 +257,23 @@ void item_set_real_source_title(itemPtr item, const gchar * source) {
 }
 
 void item_set_id(itemPtr item, const gchar * id) {
-	g_free(item->id);
-	item->id = g_strdup(id);
+	g_free(item->sourceId);
+	item->sourceId = g_strdup(id);
 }
 
-const gchar *	item_get_id(itemPtr item) { return item->id; }
+const gchar *	item_get_id(itemPtr item) { return item->sourceId; }
 const gchar *	item_get_title(itemPtr item) {return item->title; }
 const gchar *	item_get_description(itemPtr item) { return item->description; }
 const gchar *	item_get_source(itemPtr item) { return item->source; }
 const gchar *	item_get_real_source_url(itemPtr item) { return item->real_source_url; }
 const gchar *	item_get_real_source_title(itemPtr item) { return item->real_source_title; }
 
-void item_free(itemPtr item) {
+void item_unload(itemPtr item) {
 
-	/* Explicitely no removal from GUID list here! As item_free is used for unloading too. */
-	
 	if(item->comments) {
 		GList	*iter = item->comments->items;
 		while(iter) {
-			item_free((itemPtr)iter->data);
+			item_unload((itemPtr)iter->data);
 			iter = g_list_next(iter);
 		}
 		g_free(item->comments);
@@ -328,10 +281,10 @@ void item_free(itemPtr item) {
 
 	g_free(item->title);
 	g_free(item->source);
+	g_free(item->sourceId);
 	g_free(item->real_source_url);
 	g_free(item->real_source_title);
 	g_free(item->description);
-	g_free(item->id);
 	g_assert(NULL == item->tmpdata);	/* should be free after rendering */
 	metadata_list_free(item->metadata);
 	
@@ -347,10 +300,9 @@ void item_free(itemPtr item) {
 
 const gchar * item_get_base_url(itemPtr item) {
 
-	if(item->sourceNode && (NODE_TYPE_FEED == item->sourceNode->type))
-		return feed_get_html_url((feedPtr)item->sourceNode->data);
-	else
-		return itemset_get_base_url(item->itemSet);
+	/* item->node is always the source node for the item 
+	   never a search folder or folder */
+	return node_get_base_url(item->node);
 }
 
 static void item_parse_comments(xmlNodePtr cur, itemPtr item) {
@@ -413,9 +365,6 @@ itemPtr item_parse_cache(xmlNodePtr cur, gboolean migrateCache) {
 			
 		else if(!xmlStrcmp(cur->name, BAD_CAST"validGuid"))
 			item->validGuid = TRUE;
-			
-		else if(!xmlStrcmp(cur->name, BAD_CAST"nr"))
-			item->nr = item->sourceNr = atol(tmp);
 			
 		else if(!xmlStrcmp(cur->name, BAD_CAST"readStatus"))
 			item->readStatus = (0 == atoi(tmp))?FALSE:TRUE;
@@ -482,7 +431,7 @@ void item_to_xml(itemPtr item, xmlNodePtr feedNode, gboolean rendering) {
 	if(item->validGuid)
 		xmlNewTextChild(itemNode, NULL, "validGuid", BAD_CAST "true");		
 
-	tmp = g_strdup_printf("%ld", item->nr);
+	tmp = g_strdup_printf("%ld", item->id);
 	xmlNewTextChild(itemNode, NULL, "nr", tmp);
 	g_free(tmp);
 
@@ -510,7 +459,7 @@ void item_to_xml(itemPtr item, xmlNodePtr feedNode, gboolean rendering) {
 		duplicates = item_guid_list_get_duplicates_for_id(item);
 		while(duplicates) {
 			nodePtr duplicateNode = (nodePtr)duplicates->data;
-			if(duplicateNode != item->sourceNode) {
+			if(duplicateNode != item->node) {
 				xmlNewTextChild(duplicatesNode, NULL, "duplicateNode", 
 				                node_get_title(duplicateNode));
 			}
@@ -521,7 +470,7 @@ void item_to_xml(itemPtr item, xmlNodePtr feedNode, gboolean rendering) {
 		xmlNewTextChild(itemNode, NULL, "timestr", tmp);
 		g_free(tmp);
 		
-		xmlNewTextChild(itemNode, NULL, "sourceId", item->sourceNode->id);
+		xmlNewTextChild(itemNode, NULL, "sourceId", item->node->id);
 		
 		tmp = g_strdup_printf("%ld", item->sourceNr);
 		xmlNewTextChild(itemNode, NULL, "sourceNr", tmp);

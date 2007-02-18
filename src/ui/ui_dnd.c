@@ -124,8 +124,7 @@ static gboolean ui_dnd_feed_drag_data_received(GtkTreeDragDest *drag_dest, GtkTr
 			g_slist_free(newParent->children);
 			newParent->children = NULL;
 			node->parent = newParent;
-			node_update_unread_count(oldParent, (-1)*node->unreadCount);
-			node_update_unread_count(newParent, node->unreadCount);
+			// FIXME: how to refresh unread count?
 			ui_node_update(oldParent);
 			ui_node_update(newParent);
 			

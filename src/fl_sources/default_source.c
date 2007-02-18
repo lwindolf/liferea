@@ -221,7 +221,7 @@ static gchar * default_source_source_get_feedlist(nodePtr node) {
 }
 
 static void default_source_source_import(nodePtr node) {
-	gchar		*filename10, *filename11, *filename12;
+	gchar		*filename13;
 
 	debug_enter("default_source_source_import");
 
@@ -229,59 +229,24 @@ static void default_source_source_import(nodePtr node) {
 	feedlistImport = TRUE;
 
 	/* build test file names */	
-	filename10 = g_strdup_printf("%s" G_DIR_SEPARATOR_S ".liferea/feedlist.opml", g_get_home_dir()); /* 1.0 path dir */
-	filename11 = g_strdup_printf("%s" G_DIR_SEPARATOR_S ".liferea_1.1/feedlist.opml", g_get_home_dir()); /* 1.1 path dir */
-	filename12 = default_source_source_get_feedlist(node);
+	filename13 = default_source_source_get_feedlist(node);
+
+	/* check for 1.0->1.3 migration */
+	// FIXME
+
+	/* check for 1.2->1.3 migration */
+	// FIXME
 	
-	/* check for 1.1->1.2 migration (just directory renaming) */
-	if(g_file_test(filename11, G_FILE_TEST_EXISTS) &&
-	   !g_file_test(filename12, G_FILE_TEST_EXISTS)) {
-
-		g_print("starting 1.1->1.2 cache migration...\n");
-		cacheMigrated = TRUE;
-		
-		/* Note: v1.1 and v1.2 cache formats are equivalent and just needs copying of everything */
-
-		/* copy old cache files to new cache dir */
-		default_source_copy_dir(".liferea_1.1", ".liferea_1.2", "");
-		default_source_copy_dir(".liferea_1.1", ".liferea_1.2", "cache" G_DIR_SEPARATOR_S "feeds");
-		default_source_copy_dir(".liferea_1.1", ".liferea_1.2", "cache" G_DIR_SEPARATOR_S "favicons");
-		default_source_copy_dir(".liferea_1.1", ".liferea_1.2", "cache" G_DIR_SEPARATOR_S "scripts");
-		default_source_copy_dir(".liferea_1.1", ".liferea_1.2", "cache" G_DIR_SEPARATOR_S "plugins");
-	}
-
-	/* check for 1.0->1.2 migration */
-	if(!g_file_test(filename12, G_FILE_TEST_EXISTS) &&
-	   g_file_test(filename10, G_FILE_TEST_EXISTS)) {
-		cacheMigrated = TRUE;
-		
-		g_print("starting 1.0->1.2 cache migration...\n");
-		
-		/* Note: because v1.2 uses a new cache format we
-		   do a cache migration. v1.2 uses $HOME/.liferea_1.2
-		   instead of $HOME/.liferea as it's cache directory */
-
-		/* copy old cache files to new cache dir */
-		default_source_copy_dir(".liferea", ".liferea_1.2", "cache" G_DIR_SEPARATOR_S "feeds");
-		default_source_copy_dir(".liferea", ".liferea_1.2", "cache" G_DIR_SEPARATOR_S "favicons");
-		
-		/* point feedlist.opml to the old 1.0 file (will be converted implicitely) */
-		g_free(filename12);
-		filename12 = g_strdup(filename10);
-	}
-	g_free(filename10);
-	g_free(filename11);
-
 	/* check for default feed list import */
-	if(!g_file_test(filename12, G_FILE_TEST_EXISTS)) {
+	if(!g_file_test(filename13, G_FILE_TEST_EXISTS)) {
 		/* if there is no feedlist.opml we provide a default feed list */
-		g_free(filename12);
+		g_free(filename13);
 		/* "feedlist.opml" is translatable so that translators can provide a localized default feed list */
-		filename12 = g_strdup_printf(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "opml" G_DIR_SEPARATOR_S "%s", _("feedlist.opml"));
+		filename13 = g_strdup_printf(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "opml" G_DIR_SEPARATOR_S "%s", _("feedlist.opml"));
 	}
-	if(!import_OPML_feedlist(filename12, node, node->source, FALSE, TRUE))
+	if(!import_OPML_feedlist(filename13, node, node->source, FALSE, TRUE))
 		g_error("Fatal: Feed list import failed!");
-	g_free(filename12);
+	g_free(filename13);
 	feedlistImport = FALSE;
 
 #ifdef USE_DBUS

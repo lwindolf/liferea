@@ -28,7 +28,7 @@
 #include <time.h>
 
 /* Currently Liferea knows only a single type of items used
-   for the itemset types feed, folder and vfolder. So each 
+   for the itemset types feed, folder and search folder. So each 
    feed list type provider must provide it's data using the
    item interface. */
  
@@ -44,6 +44,8 @@
  *  The item set node and the item source node is different
  *  for folders and vfolders. */
 typedef struct item {
+	gulong		id;			/**< internally unique item id */
+
 	/* those fields should not be accessed directly. Accessors are provided. */
 	gboolean 	readStatus;		/**< TRUE if the item has been read */
 	gboolean	newStatus;		/**< TRUE if the item was downloaded and is to be counted by the tray icon */
@@ -53,11 +55,11 @@ typedef struct item {
 	gboolean	hasEnclosure;		/**< TRUE if this item has at least one enclosure */
 	gchar		*title;			/**< Title */
 	gchar		*source;		/**< URL to the post online */
+	gchar		*sourceId;		/**< "Unique" syndication item identifier, for example <guid> in RSS */
+	gboolean	validGuid;		/**< TRUE if id of this item is a GUID and can be used for duplicate detection */
 	gchar		*real_source_url;	/**< (optional) URL of the real source (e.g. if listed in search engine result) */
 	gchar		*real_source_title;	/**< (optional) title of the real source */
 	gchar		*description;		/**< XHTML string containing the item's description */
-	gchar		*id;			/**< "Unique" syndication item identifier, for example <guid> in RSS */
-	gboolean	validGuid;		/**< TRUE if id of this item is a GUID and can be used for duplicate detection */
 	
 	GSList		*metadata;		/**< Metadata of this item */
 	GHashTable	*tmpdata;		/**< Temporary data hash used during stateful parsing */
@@ -68,10 +70,9 @@ typedef struct item {
 	struct updateState *updateState;	/**< update states (etag, last modified, cookies, last polling times...) used when downloading comments */
 	gchar		*commentsError;		/**< Description of error if comments download failed */
 	
-	gulong		nr;			/**< Per item set unique item id */
 	struct itemSet	*itemSet;		/**< Pointer to the item set containing this item  */
-	gulong 		sourceNr;		/**< Like nr but the number in the sourceNode item set (used for searches and vfolders) */
-	struct node	*sourceNode;		/**< Pointer to the source node of this item */
+	struct node	*node;			/**< Pointer to the containing node of this item */
+	gulong 		sourceNr;		/**< Either equal to nr or the number of the item this one is a copy of */
 
 } *itemPtr;
 
@@ -121,6 +122,17 @@ void item_comments_refresh(itemPtr item);
 itemPtr 	item_new(void);
 
 /**
+ * Returns the item structure for the given item id or
+ * NULL if no such item does exist. The caller has to free
+ * the item with item_unload() once it is not used anymore.
+ *
+ * @param id	item id to load
+ *
+ * @returns item structure
+ */
+itemPtr		item_load(gulong id);
+
+/**
  * Method to create a copy of an item. The copy will be
  * linked to the original item to allow state update
  * propagation (to be used with vfolders).
@@ -140,9 +152,9 @@ const gchar * item_get_base_url(itemPtr item);
  * Free the memory used by an itempointer. The item needs to be
  * removed from the itemlist before calling this function.
  *
- * @param ip the item to remove
+ * @param item	the item to unload
  */
-void	item_free(itemPtr item);
+void	item_unload(itemPtr item);
 
 /* methods to access properties */
 /** Returns the id of item. */

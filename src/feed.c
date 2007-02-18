@@ -59,9 +59,6 @@
 #include "notification/notif_plugin.h"
 #include "scripting/script.h"
 
-/** used for migration purposes: 1.0.x didn't specify a version */
-#define FEED_CACHE_VERSION	"1.1"
-
 /* auto detection lookup table */
 static GSList *feedhandlers = NULL;
 
@@ -472,8 +469,6 @@ static void feed_add_xml_attributes(nodePtr node, xmlNodePtr feedNode, gboolean 
 	feedPtr	feed = (feedPtr)node->data;
 	gchar	*tmp;
 	
-	xmlNewProp(feedNode, "version", BAD_CAST FEED_CACHE_VERSION);
-
 	xmlNewTextChild(feedNode, NULL, "feedId", node_get_id(node));
 	xmlNewTextChild(feedNode, NULL, "feedTitle", node_get_title(node));
 	xmlNewTextChild(feedNode, NULL, "feedSource", feed_get_source(feed));
@@ -551,208 +546,6 @@ guint feed_get_max_item_count(nodePtr node) {
 			return feed->cacheLimit;
 			break;
 	}
-}
-
-/*
- * Feeds caches are marked to be saved at a few different places:
- * (1) Inside whe feed_set_* functions where an item is marked or made read or unread
- * (2) Inside of feed_process_result
- * (3) The callback where items are removed from the itemlist
- *
- * This method really saves the feed to disk.
- */
-static void feed_save_to_cache(nodePtr node) {
-	feedPtr		feed = (feedPtr)node->data;
-	gchar		*filename, *tmpfilename;
-	guint		saveCount = 0;
-	guint		saveMaxCount;
-	GList		*iter, *itemlist, *droppedItems = NULL;
-	xmlDocPtr 	doc;
-			
-	debug_enter("feed_save_to_cache");	
-
-	saveMaxCount = feed_get_max_item_count(node);
-
-	debug3(DEBUG_CACHE, "saving feed: %s (id=%s, maxCount=%d)", feed->source, node->id, saveMaxCount);
-
-	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", node->id, NULL);
-	tmpfilename = g_strdup_printf("%s~", filename);
-	
-	/* Create the feed XML document */
-	if(NULL != (doc = feed_to_xml(node, NULL, FALSE))) {
-		/* If necessary drop items according to cache settings
-		   otherwise add them to the feed XML document */		
-		itemlist = g_list_copy(node->itemSet->items);
-		for(iter = itemlist; iter != NULL; iter = g_list_next(iter)) {
-			itemPtr item = iter->data;
-
-			if(feed->cacheLimit == CACHE_DISABLE)
-				continue;
-
-			if((saveCount >= saveMaxCount) && !item->flagStatus) {
-				droppedItems = g_list_append(droppedItems, item);
-			} else {
-				item_to_xml(item, xmlDocGetRootElement(doc), FALSE);
-				saveCount++;
-			}
-		}
-		g_list_free(itemlist);
-
-		if(common_save_xml(doc, tmpfilename) == -1) {
-			g_warning("Error attempting to save feed cache file \"%s\"!", tmpfilename);
-		} else {
-			if(rename(tmpfilename, filename) == -1)
-				perror("Error overwriting old cache file"); /* Nothing else can be done... probably the disk is going bad */
-		}
-		xmlFreeDoc(doc);
-	}	
-	g_free(tmpfilename);
-	g_free(filename);
-	
-	if(droppedItems) {
-		itemlist_remove_items(node->itemSet, droppedItems);
-		g_list_free(droppedItems);
-	}
-
-	debug_exit("feed_save_to_cache");
-}
-
-itemSetPtr feed_load_from_cache(nodePtr node) {
-	feedParserCtxtPtr	ctxt;
-	feedPtr			feed = (feedPtr)(node->data);
-	itemSetPtr		itemSet;
-	gboolean		migrateCache = TRUE;
-	gchar			*filename;
-	int			error = 0;
-
-	debug_enter("feed_load_from_cache");
-	
-	if(feed->parseErrors)
-		g_string_truncate(feed->parseErrors, 0);
-	else
-		feed->parseErrors = g_string_new(NULL);
-
-	ctxt = feed_create_parser_ctxt();
-	ctxt->feed = feed;
-	ctxt->node = node;
-	
-	itemSet = ctxt->itemSet;
-	itemSet->type = ITEMSET_TYPE_FEED;
-	
-	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", node->id, NULL);
-	debug2(DEBUG_CACHE, "loading cache file \"%s\" (feed \"%s\")", filename, feed_get_source(feed));
-	
-	if((!g_file_get_contents(filename, &ctxt->data, &ctxt->dataLength, NULL)) || (*ctxt->data == 0)) {
-		debug1(DEBUG_CACHE, "could not load cache file %s", filename);
-		ui_mainwindow_set_status_bar(_("Error while reading cache file \"%s\" ! Cache file could not be loaded!"), filename);
-		g_free(filename);
-		return itemSet;
-	}
-
-	do {
-		xmlNodePtr cur;
-		
-		g_assert(NULL != ctxt->data);
-
-		if(NULL == common_parse_xml_feed(ctxt)) {
-			g_string_append_printf(feed->parseErrors, _("<p>XML error while parsing cache file! Feed cache file \"%s\" could not be loaded!</p>"), filename);
-			error = 1;
-			break;
-		} 
-
-		if(NULL == (cur = xmlDocGetRootElement(ctxt->doc))) {
-			g_string_append(feed->parseErrors, _("<p>Empty document!</p>"));
-			error = 1;
-			break;
-		}
-
-		while(cur && xmlIsBlankNode(cur))
-			cur = cur->next;
-
-		if(!xmlStrcmp(cur->name, BAD_CAST"feed")) {
-			xmlChar *version;			
-			if((version = xmlGetProp(cur, BAD_CAST"version"))) {
-				migrateCache = xmlStrcmp(BAD_CAST FEED_CACHE_VERSION, version);
-				xmlFree(version);
-			}
-		} else {
-			g_string_append_printf(feed->parseErrors, _("<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"), filename);
-			error = 1;
-			break;		
-		}
-
-		metadata_list_free(feed->metadata);
-		feed->metadata = NULL;
-
-		cur = cur->xmlChildrenNode;
-		while(cur) {
-			gchar *tmp = common_utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1));
-
-			if(!tmp) {
-				cur = cur->next;
-				continue;
-			}
-
-			if(!xmlStrcmp(cur->name, BAD_CAST"feedDescription")) 
-				feed_set_description(feed, tmp);
-				
-			if(!xmlStrcmp(cur->name, BAD_CAST"feedOrigSource")) 
-				feed_set_orig_source(feed, tmp);
-
-			else if(!node->title && !xmlStrcmp(cur->name, BAD_CAST"feedTitle")) 
-				node_set_title(node, tmp);
-
-			else if(!xmlStrcmp(cur->name, BAD_CAST"feedUpdateInterval")) 
-				feed_set_default_update_interval(feed, atoi(tmp));
-
-			else if(!xmlStrcmp(cur->name, BAD_CAST"feedImage")) 
-				feed_set_image_url(feed, tmp);
-
-			else if(!xmlStrcmp(cur->name, BAD_CAST"feedStatus")) 
-				node->available = (0 == atoi(tmp))?FALSE:TRUE;
-
-			else if(!xmlStrcmp(cur->name, BAD_CAST"feedDiscontinued")) 
-				feed->discontinued = (0 == atoi(tmp))?FALSE:TRUE;
-
-			else if(!xmlStrcmp(cur->name, BAD_CAST"attributes")) 
-				feed->metadata = metadata_parse_xml_nodes(cur);
-
-			else if(!xmlStrcmp(cur->name, BAD_CAST"item")) {
-				itemPtr item;
-				
-				item = item_parse_cache(cur, migrateCache);
-				item->sourceNode = node;
-				itemset_append_item(itemSet, item);
-		
-				if(item->validGuid)
-					item_guid_list_add_id(item);
-			}
-
-			g_free(tmp);	
-			cur = cur->next;
-		}
-	} while(FALSE);
-	
-	if(migrateCache) {
-		node->needsCacheSave = TRUE;
-		g_print("enabling cache migration from 1.0 for feed \"%s\"\n", node_get_title(node));	
-		
-		if(feed->description)
-			feed_set_description(feed, common_text_to_xhtml(feed->description));
-	}
-
-	if(0 != error)
-		ui_mainwindow_set_status_bar(_("There were errors while parsing cache file \"%s\""), filename);
-
-	if(ctxt->doc)
-		xmlFreeDoc(ctxt->doc);
-		
-	g_free(ctxt->data);
-	g_free(filename);
-	feed_free_parser_ctxt(ctxt);
-	
-	debug_exit("feed_load_from_cache");
-	return itemSet;
 }
 
 // FIXME: needed?
@@ -916,7 +709,7 @@ gboolean feed_merge_check(itemSetPtr sp, itemPtr new_ip) {
 gint feed_get_default_update_interval(feedPtr feed) { return feed->defaultInterval; }
 void feed_set_default_update_interval(feedPtr feed, gint interval) { feed->defaultInterval = interval; }
 
-gint feed_get_update_interval(feedPtr fp) { return fp->updateInterval; }
+gint feed_get_update_interval(feedPtr feed) { return feed->updateInterval; }
 
 void feed_set_update_interval(feedPtr feed, gint interval) {
 	
@@ -1082,24 +875,6 @@ static void feed_free(feedPtr feed) {
 	g_free(feed);
 }
 
-/* method to totally erase the cache file of a given feed.... */
-static void feed_remove_from_cache(nodePtr node) {
-	gchar		*filename = NULL;
-	
-	if(node->id && node->id[0] != '\0')
-		filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", node->id, NULL);
-
-	if(filename) {
-		if(0 != unlink(filename)) {
-			/* Oh well.... Can't do anything about it. 99% of the time,
-		   	this is spam anyway. */;
-		}
-		g_free(filename);
-	}
-
-	feed_free(node->data);
-}
-
 static void feed_favicon_downloaded(gpointer user_data) {
 	nodePtr	node = (nodePtr)user_data;
 	
@@ -1134,8 +909,6 @@ static void feed_process_update_result(struct request *request) {
 
 	debug_enter("feed_process_update_result");
 	
-	node_load(node);
-
 	/* no matter what the result of the update is we need to save update
 	   status and the last update time to cache */
 	node->needsCacheSave = TRUE;
@@ -1176,6 +949,8 @@ static void feed_process_update_result(struct request *request) {
 			                                      "XML Parser Output:<br /><div class='xmlparseroutput'>"));
 			g_string_append(feed->parseErrors, "</div>");
 		} else {
+			node_load_itemset(node);
+			
 			/* merge the resulting items into the node's item set */
 			node_merge_items(node, ctxt->itemSet->items);
 		
@@ -1194,6 +969,8 @@ static void feed_process_update_result(struct request *request) {
 			ui_mainwindow_set_status_bar(_("\"%s\" updated..."), node_get_title(node));
 
 			itemlist_merge_itemset(node->itemSet);
+		
+			node_unload_itemset(node);
 
 			node->available = TRUE;
 		}
@@ -1215,7 +992,6 @@ static void feed_process_update_result(struct request *request) {
 
 	ui_node_update(node);
 	notification_node_has_new_items(node);
-	node_unload(node);
 	
 	script_run_for_hook(SCRIPT_HOOK_FEED_UPDATED);
 
@@ -1224,91 +1000,14 @@ static void feed_process_update_result(struct request *request) {
 
 /* implementation of the node type interface */
 
-static void feed_load(nodePtr node) {
-	feedPtr		feed = (feedPtr)node->data;
-
-	debug2(DEBUG_CACHE, "+ feed_load (%s, ref count=%d)", node_get_title(node), node->loaded);
-	node->loaded++;
-
-	if(1 < node->loaded) {
-		debug1(DEBUG_CACHE, "no loading %s because it is already loaded", node_get_title(node));
-		return;
-	}
-	
-	/* node->itemSet will be NULL here, except when cache is disabled */
-	if(!node->itemSet || feed->cacheLimit != CACHE_DISABLE) {
-		node_set_itemset(node, feed_load_from_cache(node));
-		g_assert(NULL != node->itemSet);
-	}
-
-	debug2(DEBUG_CACHE, "- feed_load (%s, new ref count=%d)", node_get_title(node), node->loaded);
-}
-
 static void feed_save(nodePtr node) {
-
-	if(0 == node->loaded)
-		return;
-
-	g_assert(NULL != node->itemSet);
 
 	if(FALSE == node->needsCacheSave)
 		return;
+		
+	/* Nothing to do. Feeds do not have any UI states */
 
-	feed_save_to_cache(node);
 	node->needsCacheSave = FALSE;
-}
-
-static void feed_unload(nodePtr node) {
-	feedPtr feed = (feedPtr)node->data;
-	GList	*iter;
-
-	debug2(DEBUG_CACHE, "+ node_unload (%s, ref count=%d)", node_get_title(node), node->loaded);
-
-	if(0 >= node->loaded) {
-		debug0(DEBUG_CACHE, "node is not loaded, nothing to do...");
-		return;
-	}
-
-	node_save(node);	/* save before unloading */
-
-	if(!getBooleanConfValue(KEEP_FEEDS_IN_MEMORY)) {
-		if(1 == node->loaded) {
-			g_assert(NULL != node->itemSet);
-			if(CACHE_DISABLE == feed->cacheLimit) {
-				debug1(DEBUG_CACHE, "not unloading node (%s) because cache is disabled", node_get_title(node));
-			} else {
-				debug1(DEBUG_CACHE, "unloading node (%s)", node_get_title(node));
-				g_assert(NULL != node->itemSet);
-				iter = node->itemSet->items;
-				while(iter) {
-					item_free((itemPtr)iter->data);
-					iter = g_list_next(iter);
-				}
-				g_list_free(node->itemSet->items);
-				g_free(node->itemSet);
-				node->itemSet = NULL;	
-			} 
-			/* node->itemSet will be NULL here, except when cache is disabled */
-		} else {
-			debug1(DEBUG_CACHE, "not unloading %s because it is still used", node_get_title(node));
-		}
-		node->loaded--;
-	}
-	debug2(DEBUG_CACHE, "- node_unload (%s, new ref count=%d)", node_get_title(node), node->loaded);
-}
-
-/**
- * Used to process feeds directly after feed list loading.
- * Loads the given feed or requests a download. During feed
- * loading its items are automatically checked against all 
- * vfolder rules.
- */
-static void feed_initial_load(nodePtr node) {
-
-	feed_load(node);
-	vfolder_check_node(node);	/* copy items to matching vfolders */
-	feed_unload(node);
-	ui_node_update(node);
 }
 
 static void feed_reset_update_counter(nodePtr node) {
@@ -1375,13 +1074,8 @@ static void feed_remove(nodePtr node) {
 
 	favicon_remove_from_cache(node->id);
 	notification_node_removed(node);
-	
-	/* When just dropping unread items, the parent unread count must be corrected */
-	node_update_unread_count(node->parent, (-1)*node->unreadCount);
-	
 	ui_node_remove_node(node);
-	
-	feed_remove_from_cache(node);
+	feed_free(node->data);
 }
 
 static void feed_mark_all_read(nodePtr node) {
@@ -1412,10 +1106,7 @@ nodeTypePtr feed_get_node_type(void) {
 		NODE_TYPE_FEED,
 		feed_import,
 		feed_export,
-		feed_initial_load,
-		feed_load,
 		feed_save,
-		feed_unload,
 		feed_reset_update_counter,
 		feed_request_update,
 		feed_request_auto_update,

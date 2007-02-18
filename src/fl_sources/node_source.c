@@ -289,10 +289,7 @@ nodeTypePtr node_source_get_node_type(void) {
 		nodeType->capabilities		= NODE_CAPABILITY_SHOW_UNREAD_COUNT;
 		nodeType->import		= node_source_import;
 		nodeType->export		= node_source_export;
-		nodeType->initial_load		= folder_get_node_type()->initial_load;
-		nodeType->load			= folder_get_node_type()->load;
 		nodeType->save			= node_source_save;
-		nodeType->unload		= folder_get_node_type()->unload;
 		nodeType->reset_update_counter	= folder_get_node_type()->reset_update_counter;
 		nodeType->request_update	= node_source_request_update;
 		nodeType->request_auto_update	= node_source_request_auto_update;

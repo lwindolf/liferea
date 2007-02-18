@@ -1,7 +1,7 @@
 /**
- * @file ui_itemlist.c Item list/view handling
+ * @file ui_itemlist.c item list GUI handling
  *  
- * Copyright (C) 2004-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This library is free software; you can redistribute it and/or
@@ -42,29 +42,23 @@
 #include "ui/ui_mainwindow.h"
 #include "ui/ui_tray.h"
 
-static GHashTable 	*item_to_iter = NULL;	/** hash table used for fast item->tree iter lookup */
+static GHashTable 	*item_id_to_iter = NULL;	/** hash table used for fast item id->tree iter lookup */
 
 static GtkWidget 	*itemlist_treeview = NULL;
 
 /* helper functions for item <-> iter conversion */
 
-static itemPtr ui_iter_to_item(GtkTreeIter *iter) {
-	nodePtr		node;
-	gulong		nr;
+static gulong ui_iter_to_item_id(GtkTreeIter *iter) {
+	gulong	id = 0;
 	
-	gtk_tree_model_get(GTK_TREE_MODEL(ui_itemlist_get_tree_store()), 
-	                   iter, IS_PARENT, &node, IS_NR, &nr, -1);
-
-	if(node)
-		return itemset_lookup_item(node->itemSet, node, nr);
-	else
-		return NULL;
+	gtk_tree_model_get(GTK_TREE_MODEL(ui_itemlist_get_tree_store()), iter, IS_NR, &id, -1);
+	return id;
 }
 
-static gboolean ui_item_to_iter(itemPtr item, GtkTreeIter *iter) {
+static gboolean ui_item_id_to_iter(gulong id, GtkTreeIter *iter) {
 	GtkTreeIter *old_iter;
 
-	old_iter = g_hash_table_lookup(item_to_iter, (gpointer)item);
+	old_iter = g_hash_table_lookup(item_id_to_iter, (gpointer)id);
 	if(!old_iter) {
 		return FALSE;
 	} else {
@@ -154,9 +148,9 @@ void ui_itemlist_remove_item(itemPtr item) {
 	GtkTreeIter	*iter;
 
 	g_assert(NULL != item);
-	if(NULL != (iter = g_hash_table_lookup(item_to_iter, (gpointer)item))) {
+	if(NULL != (iter = g_hash_table_lookup(item_id_to_iter, (gpointer)item))) {
 		gtk_tree_store_remove(ui_itemlist_get_tree_store(), iter);
-		g_hash_table_remove(item_to_iter, (gpointer)item);
+		g_hash_table_remove(item_id_to_iter, (gpointer)item);
 	} else {
 		/*g_warning("item to be removed not found in tree iter lookup hash!");*/
 	}
@@ -181,10 +175,10 @@ void ui_itemlist_clear(void) {
 
 	if(itemstore)
 		gtk_tree_store_clear(itemstore);
-	if(item_to_iter)
-		g_hash_table_destroy(item_to_iter);
+	if(item_id_to_iter)
+		g_hash_table_destroy(item_id_to_iter);
 	
-	item_to_iter = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, g_free);
+	item_id_to_iter = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, g_free);
 }
 
 void ui_itemlist_update_item(itemPtr item) {
@@ -193,7 +187,7 @@ void ui_itemlist_update_item(itemPtr item) {
 	const gchar 	*direction_marker;
 	GdkPixbuf	*icon = NULL;
 
-	if(ui_item_to_iter(item, &iter)) {
+	if(ui_item_id_to_iter(item->id, &iter)) {
 		/* Time */
 		if(0 != item->time) {
 			esc_time_str = itemview_format_date((time_t)item->time);
@@ -215,7 +209,7 @@ void ui_itemlist_update_item(itemPtr item) {
 			esc_title = g_strstrip(esc_title);
 		}
 
-		direction_marker = common_get_direction_mark(item->itemSet->node->title);
+		direction_marker = common_get_direction_mark(item->node->title);
 
 		if(FALSE == item->readStatus) {
 			time_str = g_strdup_printf("<span weight=\"bold\">%s</span>", esc_time_str);
@@ -278,7 +272,7 @@ GtkWidget* ui_itemlist_new() {
 	
 	g_object_set_data(G_OBJECT(mainwindow), "itemlist", itemlist);
 
-	item_to_iter = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, g_free);
+	item_id_to_iter = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, g_free);
 
 	itemstore = ui_itemlist_get_tree_store();
 
@@ -364,7 +358,7 @@ void ui_itemlist_add_item(itemPtr item) {
 	GtkTreeIter	old_iter;
 	gboolean	exists;
 
-	exists = ui_item_to_iter(item, &old_iter);
+	exists = ui_item_id_to_iter(item->id, &old_iter);
 	
 	if(exists && !item->newStatus) {
 		/* nothing to do */
@@ -375,22 +369,22 @@ void ui_itemlist_add_item(itemPtr item) {
 		if(!exists) {
 			iter = g_new0(GtkTreeIter, 1);
 			gtk_tree_store_prepend(itemstore, iter, NULL);
-			g_hash_table_insert(item_to_iter, (gpointer)item, (gpointer)iter);
+			g_hash_table_insert(item_id_to_iter, (gpointer)item->id, (gpointer)iter);
 		}
 		
 		if(item->flagStatus)
 			state += 2;
 		if(!item->readStatus)
 			state += 1;
-		
+
 		gtk_tree_store_set(itemstore, iter,
 		                	      IS_TIME, item->time,
-		                	      IS_NR, item->nr,
+		                	      IS_NR, item->id,
 					      IS_PARENT, item->itemSet->node,
-		                              IS_FAVICON, item->sourceNode->icon,
+		                              IS_FAVICON, item->node->icon,
 		                              IS_ENCICON, item->hasEnclosure?icons[ICON_ENCLOSURE]:NULL,
 					      IS_ENCLOSURE, item->hasEnclosure,
-					      IS_SOURCE, item->sourceNode,
+					      IS_SOURCE, item->node,
 					      IS_STATE, state,
 		                	      -1);
 		ui_itemlist_update_item(item);
@@ -492,7 +486,7 @@ void ui_itemlist_select(itemPtr item) {
 		GtkTreeIter		iter;
 		GtkTreePath		*path;
 		
-		g_return_if_fail(ui_item_to_iter(item, &iter));
+		g_return_if_fail(ui_item_id_to_iter(item->id, &iter));
 
 		treeview = itemlist_treeview;
 		selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
@@ -509,7 +503,7 @@ void ui_itemlist_select(itemPtr item) {
 static itemPtr ui_itemlist_find_unread_item_from_iter(GtkTreeIter *iter) {
 	itemPtr	item;
 	
-	item = ui_iter_to_item(iter);
+	item = item_load(ui_iter_to_item_id(iter));
 	if(item) {
 		if(!item->readStatus) {
 			if(2 != itemlist_get_view_mode()) {
@@ -520,7 +514,9 @@ static itemPtr ui_itemlist_find_unread_item_from_iter(GtkTreeIter *iter) {
 			}
 			return item;
 		}
+		item_unload(item);
 	}
+	
 	return NULL;
 }
 
@@ -532,7 +528,7 @@ itemPtr ui_itemlist_find_unread_item(itemPtr start) {
 	itemstore = ui_itemlist_get_tree_store();
 	
 	if(start)
-		valid = ui_item_to_iter(start, &iter);
+		valid = ui_item_id_to_iter(start->id, &iter);
 	else
 		valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(itemstore), &iter);
 	
@@ -567,6 +563,7 @@ gboolean on_itemlist_button_press_event(GtkWidget *treeview, GdkEventButton *eve
 	GtkTreePath		*path;
 	GtkTreeIter		iter;
 	itemPtr			item = NULL;
+	gboolean		result = FALSE;
 	
 	if(event->type != GDK_BUTTON_PRESS)
 		return FALSE;
@@ -579,7 +576,7 @@ gboolean on_itemlist_button_press_event(GtkWidget *treeview, GdkEventButton *eve
 		return FALSE;
 
 	if(gtk_tree_model_get_iter(GTK_TREE_MODEL(ui_itemlist_get_tree_store()), &iter, path))
-		item = ui_iter_to_item(&iter);	
+		item = item_load(ui_iter_to_item_id(&iter));
 		
 	gtk_tree_path_free(path);
 	
@@ -588,30 +585,30 @@ gboolean on_itemlist_button_press_event(GtkWidget *treeview, GdkEventButton *eve
 		switch(eb->button) {
 			case 1:
 				column = gtk_tree_view_get_column(GTK_TREE_VIEW(treeview), 0);
-				if(!column)
-					return FALSE;
-					
-				/* Allow flag toggling when left clicking in the flagging column.
-				   We depend on the fact that the state column is the first!!! */
-				if(event->x <= column->width) {
-					itemlist_toggle_flag(item);
-					return TRUE;
+				if(column) {			
+					/* Allow flag toggling when left clicking in the flagging column.
+					   We depend on the fact that the state column is the first!!! */
+					if(event->x <= column->width) {
+						itemlist_toggle_flag(item);
+						result = TRUE;
+					}
 				}
-				return FALSE;
 				break;
 			case 2:
 				/* Middle mouse click toggles read status... */
 				itemlist_toggle_read_status(item);
-				return TRUE;
+				result = TRUE;
 				break;
 			case 3:
 				ui_itemlist_select(item);
 				gtk_menu_popup(make_item_menu(item), NULL, NULL, NULL, NULL, eb->button, eb->time);
-				return TRUE;
+				result = TRUE;
 				break;
 		}
+		item_unload(item);
 	}
-	return FALSE;
+		
+	return result;
 }
 
 void on_popup_copy_URL_clipboard(void) {
@@ -660,7 +657,7 @@ void on_itemlist_selection_changed(GtkTreeSelection *selection, gpointer data) {
 	itemPtr		item = NULL;
 
 	if(gtk_tree_selection_get_selected(selection, &model, &iter))
-		item = ui_iter_to_item(&iter);
+		item = item_load(ui_iter_to_item_id(&iter));
 
 	if(item)
 		itemlist_selection_changed(item);

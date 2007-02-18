@@ -55,16 +55,13 @@
    All items are filtered using the item list filter.
  */
 
-itemSetPtr	displayed_itemSet = NULL;
+static rulePtr itemlist_filter = NULL;		/* currently active filter rule */
 
-/* internal item list states */
+static nodePtr	displayedNode = NULL;		/* the node whose own our child items are currently displayed */
+static itemPtr	displayed_item = NULL;		/* displayed item = selected item */
 
-static rulePtr itemlist_filter = NULL;	/* currently active filter rule */
-
-static itemPtr	displayed_item = NULL;	/* displayed item = selected item */
-
-static guint viewMode = 0;		/* current viewing mode */
-static guint itemlistLoading = 0;	/* if >0 prevents selection effects when loading the item list */
+static guint viewMode = 0;			/* current viewing mode */
+static guint itemlistLoading = 0;		/* if >0 prevents selection effects when loading the item list */
 
 static gboolean deferred_item_remove = FALSE;	/* TRUE if selected item needs to be removed from cache on unselecting */
 static gboolean deferred_item_filter = FALSE;	/* TRUE if selected item needs to be filtered on unselecting */
@@ -85,15 +82,7 @@ static void itemlist_set_selected(itemPtr item) {
 		script_run_for_hook(SCRIPT_HOOK_ITEM_SELECTED);
 }
 
-nodePtr itemlist_get_displayed_node(void) {
-
-	if(displayed_itemSet)
-		return displayed_itemSet->node;
-	else
-		return NULL;
-}
-
-itemSetPtr itemlist_get_displayed_itemset(void) { return displayed_itemSet; }
+nodePtr itemlist_get_displayed_node(void) { return displayedNode; }
 
 /* called when unselecting the item or unloading the item list */
 static void itemlist_check_for_deferred_action(void) {
@@ -107,7 +96,7 @@ static void itemlist_check_for_deferred_action(void) {
 		if(deferred_item_filter) {
 			deferred_item_filter = FALSE;
 			itemview_remove_item(item);
-			ui_node_update(item->sourceNode);
+			ui_node_update(item->node);
 		}
 
 		/* check for removals caused by vfolder rules */
@@ -129,13 +118,13 @@ void itemlist_merge_itemset(itemSetPtr itemSet) {
 
 	debug_enter("itemlist_merge_itemset");
 
-	if(!displayed_itemSet)
+	if(!displayedNode)
 		return; /* Nothing to do if nothing is displayed */
 	
-	if((displayed_itemSet != itemSet) && !node_is_ancestor(displayed_itemSet->node, itemSet->node))
+	if((displayedNode != itemSet->node) && !node_is_ancestor(displayedNode, itemSet->node))
 		return; /* Nothing to do if the item set does not belong to this node */
 
-	if((ITEMSET_TYPE_FOLDER == displayed_itemSet->type) && 
+	if((NODE_TYPE_FOLDER == displayedNode->type) && 
 	   (0 == getNumericConfValue(FOLDER_DISPLAY_MODE)))
 		return; /* Bail out if it is a folder without the recursive display preference set */
 		
@@ -192,9 +181,9 @@ void itemlist_load(itemSetPtr itemSet) {
 	viewMode = node_get_view_mode(itemSet->node);
 	ui_mainwindow_set_layout(viewMode);
 
-	/* Set the new item set... */
-	displayed_itemSet = itemSet;
-	itemview_set_itemset(itemSet);
+	/* Set the new displayed node... */
+	displayedNode = itemSet->node;
+	itemview_set_displayed_node(displayedNode);
 
 	if(NODE_VIEW_MODE_COMBINED != node_get_view_mode(itemSet->node))
 		itemview_set_mode(ITEMVIEW_NODE_INFO);
@@ -210,30 +199,30 @@ void itemlist_load(itemSetPtr itemSet) {
 
 void itemlist_unload(gboolean markRead) {
 
-	if(displayed_itemSet) {
+	if(displayedNode) {
 		itemview_clear();
-		itemview_set_itemset(NULL);
+		itemview_set_displayed_node(NULL);
 		
 		/* 1. Postprocessing for previously selected node, this is necessary
 		   to realize reliable read marking when using condensed mode. It's
 		   important to do this only when the selection really changed. */
-		if(markRead && (2 == node_get_view_mode(displayed_itemSet->node))) 
-			itemlist_mark_all_read(displayed_itemSet);
+		if(markRead && (2 == node_get_view_mode(displayedNode))) 
+			itemlist_mark_all_read(displayedNode->itemSet);
 
 		itemlist_check_for_deferred_action();
 	}
 
 	itemlist_set_selected(NULL);
-	displayed_itemSet = NULL;
+	displayedNode = NULL;
 }
 
 void itemlist_update_vfolder(vfolderPtr vfolder) {
 
-	if(displayed_itemSet == vfolder->node->itemSet)
+	if(displayedNode == vfolder->node)
 		/* maybe itemlist_load(vfolder) would be faster, but
 		   it unloads all feeds and therefore must not be 
 		   called from here! */		
-		itemlist_merge_itemset(displayed_itemSet);
+		itemlist_merge_itemset(displayedNode->itemSet);
 	else
 		ui_node_update(vfolder->node);
 }
@@ -243,11 +232,11 @@ void itemlist_update_vfolder(vfolderPtr vfolder) {
 static itemPtr itemlist_find_unread_item(void) {
 	itemPtr	result = NULL;
 	
-	if(!displayed_itemSet)
+	if(!displayedNode)
 		return NULL;
 
-	if(displayed_itemSet->node->children) {
-		feedlist_find_unread_feed(displayed_itemSet->node);
+	if(displayedNode->children) {
+		feedlist_find_unread_feed(displayedNode);
 		return NULL;
 	}
 
@@ -269,9 +258,9 @@ void itemlist_select_next_unread(void) {
 	/* If we are in combined mode we have to mark everything
 	   read or else we would never jump to the next feed,
 	   because no item will be selected and marked read... */
-	if(displayed_itemSet) {
-		if(NODE_VIEW_MODE_COMBINED == node_get_view_mode(displayed_itemSet->node))
-			itemlist_mark_all_read(displayed_itemSet);
+	if(displayedNode) {
+		if(NODE_VIEW_MODE_COMBINED == node_get_view_mode(displayedNode))
+			itemlist_mark_all_read(displayedNode->itemSet);
 	}
 
 	itemlistLoading++;	/* prevent unwanted selections */
@@ -337,7 +326,7 @@ void itemlist_set_read_status(itemPtr item, gboolean newStatus) {
 	GSList	*iter;
 
 	if(newStatus != item->readStatus) {		
-		item->itemSet->node->needsCacheSave = TRUE;
+		item->node->needsCacheSave = TRUE;
 
 		/* 1. propagate to model for recursion */
 		itemset_set_item_read_status(item->itemSet, item, newStatus);
@@ -346,10 +335,7 @@ void itemlist_set_read_status(itemPtr item, gboolean newStatus) {
 		itemlist_update_item(item);
 
 		/* 3. updated feed list unread counters */
-		node_update_counters(item->itemSet->node);
-		ui_node_update(item->itemSet->node);
-		if(item->sourceNode != item->itemSet->node)
-			ui_node_update(item->sourceNode);
+		ui_node_update(item->node);
 
 		/* 4. update notification statistics */
 		feedlist_reset_new_item_count();
@@ -360,27 +346,27 @@ void itemlist_set_read_status(itemPtr item, gboolean newStatus) {
 			GList *dupIter;
 			nodePtr dupNode = (nodePtr)iter->data;
 			
-			if(dupNode != item->sourceNode) {
+			if(dupNode != item->node) {
 				debug2(DEBUG_UPDATE, "marking duplicate in \"%s\" as %s...", node_get_title(dupNode), newStatus?"read":"unread");
-				node_load(dupNode);
+				node_load_itemset(dupNode);
 
 				dupIter = dupNode->itemSet->items;
 				while(dupIter) {
 					itemPtr duplicate = (itemPtr)dupIter->data;
-					if(duplicate->id && item->id && !strcmp(duplicate->id, item->id) &&
+					if(duplicate->sourceId && item->sourceId && 
+					   !strcmp(duplicate->sourceId, item->sourceId) &&
 					   (newStatus != duplicate->readStatus)) {
 						/* don't call ourselves with duplicate item to avoid cascading, just repeat 1),2) and 3)... */
 						dupNode->needsCacheSave = TRUE;
 						itemset_set_item_read_status(dupNode->itemSet, duplicate, newStatus);
 						itemlist_update_item(duplicate);
-						node_update_counters(dupNode);
 						ui_node_update(dupNode);
 						debug0(DEBUG_UPDATE, " duplicate sync'ed...\n");
 					}
 					dupIter = g_list_next(dupIter);
 				}
 
-				node_unload(dupNode);
+				node_unload_itemset(dupNode);
 			}
 			iter = g_slist_next(iter);
 		}
@@ -404,10 +390,7 @@ void itemlist_set_update_status(itemPtr item, const gboolean newStatus) {
 		/* 2. update item list GUI state */
 		itemlist_update_item(item);	
 
-		/* 3. no update of feed list necessary... */
-		node_update_counters(item->itemSet->node);
-
-		/* 4. update notification statistics */
+		/* 3. update notification statistics */
 		feedlist_reset_new_item_count();
 	
 		/* no duplicate state propagation necessary */
@@ -434,12 +417,6 @@ static void itemlist_hide_item(itemPtr item) {
 
 void itemlist_remove_item(itemPtr item) {
 
-	/* Normally the item should exist when removing it, but 
-	   when removing with the keyboard that will not be the case.
-	   FIXME: An asserting here would be better! */
-	if(NULL == itemset_lookup_item(item->itemSet, item->itemSet->node, item->nr))
-		return;
-	
 	if(displayed_item == item) {
 		itemlist_set_selected(NULL);
 		deferred_item_filter = FALSE;
@@ -579,11 +556,16 @@ void itemlist_mark_all_popup(itemSetPtr itemSet) {
 void itemlist_selection_changed(itemPtr item) {
 
 	debug_enter("itemlist_selection_changed");
-	
+
 	if(0 == itemlistLoading) {
 		/* folder&vfolder postprocessing to remove/filter unselected items no
 		   more matching the display rules because they have changed state */
 		itemlist_check_for_deferred_action();
+		
+		if(displayed_item) {
+			item_unload(displayed_item);
+			displayed_item = NULL;
+		}
 
 		debug1(DEBUG_GUI, "item list selection changed to \"%s\"", item_get_title(item));
 		
@@ -592,11 +574,11 @@ void itemlist_selection_changed(itemPtr item) {
 		/* set read and unset update status when selecting */
 		if(item) {
 			item_comments_refresh(item);
-			
+
 			itemlist_set_read_status(item, TRUE);
 			itemlist_set_update_status(item, FALSE);
 			
-			if(itemset_load_link_preferred(displayed_itemSet)) {
+			if(node_load_link_preferred(item->node)) {
 				ui_htmlview_launch_URL(ui_mainwindow_get_active_htmlview(), 
 				                       item_get_source(itemlist_get_selected()), 2);
 			} else {
@@ -606,7 +588,7 @@ void itemlist_selection_changed(itemPtr item) {
 			}
 		}
 
-		ui_node_update(displayed_itemSet->node);
+		ui_node_update(item->node);
 
 		feedlist_reset_new_item_count();
 	}

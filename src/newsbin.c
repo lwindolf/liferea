@@ -1,7 +1,7 @@
 /**
  * @file newsbin.c  news bin node type implementation
  * 
- * Copyright (C) 2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2006-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,12 +48,7 @@ static void newsbin_import(nodePtr node, nodePtr parent, xmlNodePtr cur, gboolea
 
 	feed_get_node_type()->import(node, parent, cur, trusted);
 	((feedPtr)node->data)->cacheLimit = CACHE_UNLIMITED;
-}
-
-static void newsbin_initial_load(nodePtr node) {
-
 	newsbin_list = g_slist_append(newsbin_list, node);
-	feed_get_node_type()->initial_load(node);
 }
 
 static void newsbin_remove(nodePtr node) {
@@ -115,10 +110,10 @@ void on_popup_copy_to_newsbin(gpointer user_data, guint callback_action, GtkWidg
 	newsbin = g_slist_nth_data(newsbin_list, callback_action);
 	item = itemlist_get_selected();
 	if(item) {
-		node_load(newsbin);
+		node_load_itemset(newsbin);
 		
 		copy = item_copy(item);
-		copy->sourceNode = newsbin;	/* necessary to become independent of original item */
+		copy->node = newsbin;	/* necessary to become independent of original item */
 		
 		/* To avoid item doubling in vfolders we reset
 		   simple vfolder match attributes */
@@ -128,9 +123,9 @@ void on_popup_copy_to_newsbin(gpointer user_data, guint callback_action, GtkWidg
 		/* To provide a hint in the rendered output what the orginial 
 		   feed was the original website link/title are added */		
 		if(!copy->real_source_url)
-			copy->real_source_url = g_strdup(itemset_get_base_url(item->itemSet));
+			copy->real_source_url = g_strdup(node_get_base_url(item->node));
 		if(!copy->real_source_title)
-			copy->real_source_title = g_strdup(node_get_title(item->itemSet->node));
+			copy->real_source_title = g_strdup(node_get_title(item->node));
 		
 		/* do the same as in node_merge_item(s) */
 		itemset_prepend_item(newsbin->itemSet, copy);
@@ -138,7 +133,7 @@ void on_popup_copy_to_newsbin(gpointer user_data, guint callback_action, GtkWidg
 		newsbin->needsCacheSave = TRUE;
 		ui_node_update(newsbin);
 		
-		node_unload(newsbin);
+		node_unload_itemset(newsbin);
 	}
 }
 
@@ -158,10 +153,7 @@ nodeTypePtr newsbin_get_node_type(void) {
 		nodeType->type			= NODE_TYPE_NEWSBIN;
 		nodeType->import		= newsbin_import;
 		nodeType->export		= feed_get_node_type()->export;
-		nodeType->initial_load		= newsbin_initial_load;
-		nodeType->load			= feed_get_node_type()->load;
 		nodeType->save			= feed_get_node_type()->save;
-		nodeType->unload		= feed_get_node_type()->unload;
 		nodeType->reset_update_counter	= feed_get_node_type()->reset_update_counter;
 		nodeType->request_update	= newsbin_request_update_dummy;
 		nodeType->request_auto_update	= newsbin_request_auto_update_dummy;
