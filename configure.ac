@@ -147,6 +147,8 @@ if test "x$enable_lua" = "xyes"; then
    elif test "x$has_lua50" = "xyes" ; then
       LUA_CFLAGS="$LUA50_CFLAGS"
       LUA_LIBS="$LUA50_LIBS"
+   else
+      enable_lua=no
    fi
    
    AC_SUBST(LUA_CFLAGS)
@@ -156,10 +158,6 @@ else
 fi
 
 AM_CONDITIONAL(WITH_LUA, test "x$enable_lua" = "xyes")
-
-if test "x$enable_lua" = "xyes"; then
-   AC_DEFINE(USE_LUA, 1, [Define if we're supporting LUA scripting.])
-fi
 
 dnl *********
 dnl XulRunner
@@ -254,8 +252,6 @@ if test "x$enable_mozilla" = "xyes" ; then
 -I$MOZILLA_INCLUDE_ROOT/js \
 -I$MOZILLA_INCLUDE_ROOT/jsconsole \
 -I$MOZILLA_INCLUDE_ROOT/layout \
--I$MOZILLA_INCLUDE_ROOT/mimetype \
--I$MOZILLA_INCLUDE_ROOT/mozxfer \
 -I$MOZILLA_INCLUDE_ROOT/necko \
 -I$MOZILLA_INCLUDE_ROOT/necko2 \
 -I$MOZILLA_INCLUDE_ROOT/nkcache \
