@@ -2,7 +2,7 @@
  * @file export.c OPML feedlist import&export
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2004-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2007 Lars Lindner <lars.lindner@gmx.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -123,7 +123,7 @@ gboolean export_OPML_feedlist(const gchar *filename, nodePtr node, gboolean trus
 			xmlDocSetRootElement(doc, opmlNode);		
 		} else {
 			g_warning("could not create XML feed node for feed cache document!");
-			error = FALSE;
+			error = TRUE;
 		}
 		
 		if(trusted)
@@ -131,25 +131,29 @@ gboolean export_OPML_feedlist(const gchar *filename, nodePtr node, gboolean trus
 			
 		if(-1 == common_save_xml(doc, backupFilename)) {
 			g_warning("Could not export to OPML file!!");
-			error = FALSE;
+			error = TRUE;
 		}
 		
 		if(trusted)
 			umask(old_umask);
 			
 		xmlFreeDoc(doc);
-		
-		if(rename(backupFilename, filename) < 0)
-			g_warning(_("Error renaming %s to %s\n"), backupFilename, filename);
+
+		if(!error) {		
+			if(rename(backupFilename, filename) < 0) {
+				g_warning(_("Error renaming %s to %s\n"), backupFilename, filename);
+				error = TRUE;
+			}
+		}
 	} else {
 		g_warning("could not create XML document!");
-		error = FALSE;
+		error = TRUE;
 	}
 	
 	g_free(backupFilename);
 	
 	debug_exit("export_OPML_feedlist");
-	return !error;
+	return error;
 }
 
 void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, nodeSourcePtr nodeSource, gboolean trusted) {

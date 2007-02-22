@@ -1,3 +1,13 @@
+2007-02-22  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.2.7 (Stable)
+
+	* Fixes in the feed list loading error handling.
+	* Now after successful feed list import on startup a
+	  feedlist.opml backup file will be created.
+	* Fixes LUA support detection.
+
+
 2007-02-11  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.2.6b (Stable)

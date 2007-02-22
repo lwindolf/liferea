@@ -1,7 +1,7 @@
 /**
  * @file default_source.c default static feedlist provider
  * 
- * Copyright (C) 2005-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2005-2007 Lars Lindner <lars.lindner@gmx.net>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2005 Raphaël Slinckx <raphael@slinckx.net>
  *
@@ -221,7 +221,9 @@ static gchar * default_source_source_get_feedlist(nodePtr node) {
 }
 
 static void default_source_source_import(nodePtr node) {
-	gchar		*filename10, *filename11, *filename12;
+	gchar		*filename10, *filename11, *filename12, *backupFilename;
+	gchar		*content;
+	gssize		length;
 
 	debug_enter("default_source_source_import");
 
@@ -232,7 +234,8 @@ static void default_source_source_import(nodePtr node) {
 	filename10 = g_strdup_printf("%s" G_DIR_SEPARATOR_S ".liferea/feedlist.opml", g_get_home_dir()); /* 1.0 path dir */
 	filename11 = g_strdup_printf("%s" G_DIR_SEPARATOR_S ".liferea_1.1/feedlist.opml", g_get_home_dir()); /* 1.1 path dir */
 	filename12 = default_source_source_get_feedlist(node);
-	
+	backupFilename = g_strdup_printf("%s.backup", filename12);
+		
 	/* check for 1.1->1.2 migration (just directory renaming) */
 	if(g_file_test(filename11, G_FILE_TEST_EXISTS) &&
 	   !g_file_test(filename12, G_FILE_TEST_EXISTS)) {
@@ -280,8 +283,15 @@ static void default_source_source_import(nodePtr node) {
 		filename12 = g_strdup_printf(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "opml" G_DIR_SEPARATOR_S "%s", _("feedlist.opml"));
 	}
 	if(!import_OPML_feedlist(filename12, node, node->source, FALSE, TRUE))
-		g_error("Fatal: Feed list import failed!");
+		g_error("Fatal: Feed list import failed! You might want to try to restore\n"
+		        "the feed list file %s from the backup in %s", filename12, backupFilename);
+		
+	/* upon successful import create a backup copy of the feed list */
+	if(g_file_get_contents(filename12, &content, &length, NULL))
+		g_file_set_contents(backupFilename, content, length, NULL);	
+		
 	g_free(filename12);
+	g_free(backupFilename);
 	feedlistImport = FALSE;
 
 #ifdef USE_DBUS
