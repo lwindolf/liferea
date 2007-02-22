@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([liferea],[1.2.6],[liferea-devel@lists.sourceforge.net])
+AC_INIT([liferea],[1.2.6b],[liferea-devel@lists.sourceforge.net])
 AC_CANONICAL_TARGET([])
 AC_CONFIG_SRCDIR([src/feedlist.c])
 
@@ -147,6 +147,8 @@ if test "x$enable_lua" = "xyes"; then
    elif test "x$has_lua50" = "xyes" ; then
       LUA_CFLAGS="$LUA50_CFLAGS"
       LUA_LIBS="$LUA50_LIBS"
+   else
+      enable_lua=no
    fi
    
    AC_SUBST(LUA_CFLAGS)
@@ -156,10 +158,6 @@ else
 fi
 
 AM_CONDITIONAL(WITH_LUA, test "x$enable_lua" = "xyes")
-
-if test "x$enable_lua" = "xyes"; then
-   AC_DEFINE(USE_LUA, 1, [Define if we're supporting LUA scripting.])
-fi
 
 dnl *********
 dnl XulRunner
