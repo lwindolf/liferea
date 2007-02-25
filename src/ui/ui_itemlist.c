@@ -459,7 +459,7 @@ void on_remove_items_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	
 	node = feedlist_get_selected();
 	if(node && ((NODE_TYPE_FEED == node->type) || (NODE_TYPE_NEWSBIN == node->type)))
-		itemlist_remove_all_items(node->itemSet);
+		itemlist_remove_all_items(node);
 	else
 		ui_show_error_box(_("You must select a feed to delete its items!"));
 }
@@ -510,7 +510,7 @@ static itemPtr ui_itemlist_find_unread_item_from_iter(GtkTreeIter *iter) {
 				ui_itemlist_select(item);
 				itemlist_set_read_status(item, TRUE);	/* needed when no selection happens (e.g. when the item is already selected) */
 			} else {
-				itemlist_mark_all_read(item->itemSet);
+				itemlist_mark_all_read(item->node);
 			}
 			return item;
 		}

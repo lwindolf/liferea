@@ -354,7 +354,7 @@ gboolean on_mainfeedlist_button_press_event(GtkWidget *widget,
 		case 2:
 			if(node) {
 				node_mark_all_read(node);
-				itemview_update_node_info(node->itemSet);
+				itemview_update_node_info(node);
 				itemview_update();
 			}
 			break;

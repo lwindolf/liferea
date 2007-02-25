@@ -109,17 +109,17 @@ void on_searchentry_activate(GtkEntry *entry, gpointer user_data) {
 	vfolder_add_rule(vfolder, "exact", searchstring, TRUE);
 
 	/* calculate vfolder item set */
-	vfolder_refresh(vfolder);
+	// FIXME: vfolder_refresh(vfolder);
 
 	/* switch to item list view and inform user in HTML view */
 	ui_feedlist_select(NULL);
 	itemlist_set_view_mode(0);
-	itemlist_load(searchResult->itemSet);
+	itemlist_load(searchResult);	// FIXME!!!
 
 	buffer = g_string_new(NULL);
 	htmlview_start_output(buffer, NULL, TRUE, FALSE);
 	g_string_append_printf(buffer, "<div class='content'><h2>");
-	g_string_append_printf(buffer, _("%d Search Results for \"%s\""), g_list_length(searchResult->itemSet->items), searchstring);
+	g_string_append_printf(buffer, _("%d Search Results for \"%s\""), 55, searchstring); // FIXME
 	g_string_append_printf(buffer, "</h2><p>");
 	g_string_append_printf(buffer, _("The item list now contains all items matching the "
 	                               "specified search pattern. If you want to save this search "

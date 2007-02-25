@@ -241,7 +241,8 @@ static void notifAddFeedNotif(feedNotif_t *feedNotif_p) {
 	gtk_box_pack_start(GTK_BOX(feedNotif_p->box_p), hbox_p, TRUE, TRUE, 0);
 	
 	/* Add the new items */
-	list_p = feedNotif_p->node_p->itemSet->items;
+	list_p = NULL;
+// FIXME	list_p = feedNotif_p->node_p->itemSet->items;
 	while(list_p != NULL) {
 		item_p = list_p->data;
 		if(TRUE == item_p->popupStatus) {

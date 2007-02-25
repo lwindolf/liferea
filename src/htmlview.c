@@ -205,6 +205,7 @@ void htmlview_finish_output(GString *buffer) {
 void htmlview_update(GtkWidget *widget, guint mode) {
 	GList		*iter = NULL;
 	GString		*output;
+	itemSetPtr	itemSet;
 	itemPtr		item = NULL;
 	gchar		*chunk,	*baseURL;
 		
@@ -236,8 +237,8 @@ void htmlview_update(GtkWidget *widget, guint mode) {
 			break;
 		case ITEMVIEW_ALL_ITEMS:
 			/* concatenate all items */
-			node_load_itemset(htmlView_priv.node);
-			iter = htmlView_priv.node->itemSet->items;
+			itemSet = node_get_itemset(htmlView_priv.node);
+			iter = itemSet->items;
 			while(iter) {
 				debug1(DEBUG_HTML, "rendering item to HTML view: >>>%s<<<", item_get_title(iter->data));
 
@@ -253,7 +254,7 @@ void htmlview_update(GtkWidget *widget, guint mode) {
 				g_string_append(output, chunk);
 				iter = g_list_next(iter);
 			}
-			node_unload_itemset(htmlView_priv.node);
+			itemset_free(itemSet);
 			break;
 		case ITEMVIEW_NODE_INFO:
 			chunk = node_render(htmlView_priv.node);

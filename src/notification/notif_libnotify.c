@@ -64,10 +64,8 @@ static void notif_libnotify_callback_mark_read ( NotifyNotification *n, gchar *a
 	nodePtr node_p = node_from_id(user_data);
 	
 	if(node_p) {
-		node_load(node_p);
-		itemlist_mark_all_read(node_p->itemSet);
-		itemlist_mark_all_popup(node_p->itemSet);
-		node_unload(node_p);
+		itemlist_mark_all_read(node_p);
+		itemlist_mark_all_popup(node_p);
 	} else {
 		ui_show_error_box(_("This feed does not exist anymore!"));
 	}
@@ -100,7 +98,8 @@ static void notif_libnotify_callback_show_details ( NotifyNotification *n, gchar
 		labelText_now_p = g_strdup("");
 
 		/* Gather the feed's headlines */
-		list_p = node_p->itemSet->items;
+		list_p = NULL;
+		// FIXME: list_p = node_p->itemSet->items;
 		while(list_p != NULL) {
 			item_p = list_p->data;
 			if( item_p->popupStatus == TRUE && item_p->readStatus == FALSE) {
@@ -210,7 +209,8 @@ static void notif_libnotify_node_has_new_items(nodePtr node_p) {
 
 	/* Count updated feed */
 	item_count = 0;
-	list_p = node_p->itemSet->items;
+	list_p = NULL;
+	// FIXME list_p = node_p->itemSet->items;
 	while(list_p != NULL) {
 		item_p = list_p->data;
 		if( item_p->popupStatus == TRUE && item_p->readStatus == FALSE) {

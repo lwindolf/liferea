@@ -55,27 +55,6 @@ static void folder_export(nodePtr node, xmlNodePtr cur, gboolean trusted) {
 	export_node_children(node, cur, trusted);	
 }
 
-/* This callback is used to compute the itemset of folder nodes */
-static void folder_merge_itemset(nodePtr node, gpointer userdata) {
-	itemSetPtr	itemSet = (itemSetPtr)userdata;
-
-	debug1(DEBUG_GUI, "merging items of node \"%s\"", node_get_title(node));
-
-	switch(node->type) {
-		case NODE_TYPE_FOLDER:
-			node_foreach_child_data(node, folder_merge_itemset, itemSet);
-			break;
-		case NODE_TYPE_VFOLDER:
-			return;
-			break;
-		default:
-			debug1(DEBUG_GUI, "   pre merge item set: %d items", g_list_length(itemSet->items));
-			itemSet->items = g_list_concat(itemSet->items, g_list_copy(node->itemSet->items));
-			debug1(DEBUG_GUI, "  post merge item set: %d items", g_list_length(itemSet->items));
-			break;
-	}
-}
-
 static void folder_save(nodePtr node) {
 	
 	/* A folder has no own state but must give all childs the chance to save theirs */

@@ -99,13 +99,13 @@ void db_init(void) {
 	               "WHERE itemsets.node_id = ?");		      
 	res = sqlite3_prepare(db, sql, -1, &itemsetLoadStmt, &left);
 	if(SQLITE_OK != res)
-		g_error("Failure while preparing statement, error=%d SQL: \"%s\"", res, sql);
+		g_error("Failure while preparing statement, (error=%d, %s) SQL: \"%s\"", res, sqlite3_errmsg(db), sql);
 	g_free(sql);
 	
 	sql = g_strdup("INSERT INTO itemsets (item_id,node_id) VALUES (?,?)");
 	res = sqlite3_prepare(db, sql, -1, &itemsetInsertStmt, &left);
 	if(SQLITE_OK != res) 
-		g_error("Failure while preparing statement, error=%d SQL: \"%s\"", res, sql);
+		g_error("Failure while preparing statement, (error=%d, %s) SQL: \"%s\"", res, sqlite3_errmsg(db), sql);
 	g_free(sql);
 	
 	sql = g_strdup("SELECT COUNT(*) FROM items INNER JOIN itemsets "
@@ -136,7 +136,7 @@ void db_init(void) {
 	               "WHERE items.ROWID = ?");      
 	res = sqlite3_prepare(db, sql, -1, &itemLoadStmt, &left);
 	if(SQLITE_OK != res)
-		g_error("Failure while preparing statement, error=%d SQL: \"%s\"", res, sql);
+		g_error("Failure while preparing statement, (error=%d, %s) SQL: \"%s\"", res, sqlite3_errmsg(db), sql);
 	g_free(sql);
 	
 	sql = g_strdup("INSERT INTO items ("
@@ -156,7 +156,7 @@ void db_init(void) {
 	               ") values (?,?,?,?,?,?,?,?,?,?,?,?,?)");
 	res = sqlite3_prepare(db, sql, -1, &itemInsertStmt, &left);
 	if(SQLITE_OK != res) 
-		g_error("Failure while preparing statement, error=%d SQL: \"%s\"", res, sql);
+		g_error("Failure while preparing statement, (error=%d, %s) SQL: \"%s\"", res, sqlite3_errmsg(db), sql);
 	g_free(sql);
 	
 	sql = g_strdup("UPDATE items SET "
@@ -175,7 +175,7 @@ void db_init(void) {
 	               "WHERE ROWID=?");
 	res = sqlite3_prepare(db, sql, -1, &itemUpdateStmt, &left);
 	if(SQLITE_OK != res) 
-		g_error("Failure while preparing statement, error=%d SQL: \"%s\"", res, sql);
+		g_error("Failure while preparing statement, (error=%d, %s) SQL: \"%s\"", res, sqlite3_errmsg(db), sql);
 	g_free(sql);
 	
 	debug_exit("db_init");
@@ -192,7 +192,8 @@ void db_deinit(void) {
 	sqlite3_finalize(itemsetInsertStmt);
 	sqlite3_finalize(itemsetReadCountStmt);
 		
-	sqlite3_close(db);
+	if(SQLITE_OK != sqlite3_close(db))
+		g_warning("DB close failed: %s", sqlite3_errmsg(db));
 	
 	debug_exit("db_deinit");
 }
@@ -210,7 +211,6 @@ static itemPtr db_load_item_from_columns(sqlite3_stmt *stmt) {
 	item->time		= sqlite3_column_int(stmt, 11);
 	item->id		= sqlite3_column_int(stmt, 12);
 	item->node		= node_from_id(sqlite3_column_text(stmt, 13));
-	item->itemSet		= item->node->itemSet;
 
 	item_set_title			(item, sqlite3_column_text(stmt, 0));
 	item_set_source			(item, sqlite3_column_text(stmt, 5));
@@ -222,7 +222,7 @@ static itemPtr db_load_item_from_columns(sqlite3_stmt *stmt) {
 	return item;
 }
 
-itemSetPtr db_load_itemset_with_node_id(const gchar *id) {
+itemSetPtr db_itemset_load(const gchar *id) {
 	itemSetPtr 	itemSet;
 	gint		res;
 
@@ -242,7 +242,7 @@ itemSetPtr db_load_itemset_with_node_id(const gchar *id) {
 	return itemSet;
 }
 
-itemPtr db_load_item_with_id(gulong id) {
+itemPtr db_item_load(gulong id) {
 	itemPtr 	item = NULL;
 	gint		res;
 	
@@ -263,7 +263,7 @@ itemPtr db_load_item_with_id(gulong id) {
 
 /* Item modification methods */
 
-static int db_new_item_id_cb(void *user_data, int count, char **values, char **columns) {
+static int db_item_set_id_cb(void *user_data, int count, char **values, char **columns) {
 	itemPtr	item = (itemPtr)user_data;
 	
 	g_assert(NULL != values);
@@ -281,21 +281,21 @@ static int db_new_item_id_cb(void *user_data, int count, char **values, char **c
 	return 0;
 }
 
-void db_set_item_id(itemPtr item) {
+static void db_item_set_id(itemPtr item) {
 	gchar	*sql, *err;
 	gint	res;
 	
 	g_assert(0 == item->id);
 	
 	sql = sqlite3_mprintf("SELECT MAX(ROWID) FROM items");
-	res = sqlite3_exec(db, sql, db_new_item_id_cb, item, &err);
+	res = sqlite3_exec(db, sql, db_item_set_id_cb, item, &err);
 	if(SQLITE_OK != res) 
 		g_warning("Select failed (%s) SQL: %s", err, sql);
 	sqlite3_free(sql);
 	sqlite3_free(err);
 }
 
-static void db_insert_item(itemPtr item) {
+static void db_item_insert(itemPtr item) {
 	gint	res;
 
 	debug1(DEBUG_DB, "insert of item \"%s\"", item->title);	
@@ -330,7 +330,7 @@ static void db_insert_item(itemPtr item) {
 		g_warning("Insert in \"items\" table failed (error code=%d, %s)", res, sqlite3_errmsg(db));
 }
 
-void db_update_item(itemPtr item) {
+void db_item_update(itemPtr item) {
 
 	debug3(DEBUG_DB, "update of item \"%s\" (id=%lu, thread=%p)", item->title, item->id, g_thread_self());
 	
@@ -358,31 +358,29 @@ void db_update_item(itemPtr item) {
 			g_warning("item update failed (error code=%d, %s)", res, sqlite3_errmsg(db));
 	} else {
 		/* If it did not work or had no id insert it... */
-		db_set_item_id(item);
-		db_insert_item(item);
+		db_item_set_id(item);
+		db_item_insert(item);
 	}
 }
 
-void db_update_itemset(itemSetPtr itemSet) {
-	GList	*iter;
-
-	debug1(DEBUG_DB, "update of itemset for node \"%s\"", itemSet->node?node_get_title(itemSet->node):"null");
-	iter = itemSet->items;
-	while(iter) {
-		db_update_item(iter->data);
-		iter = g_list_next(iter);
-	}
+void db_item_remove(gulong id) {
 }
 
-void db_remove_item_with_id(const gchar *id) {
+void db_itemset_remove_all(const gchar *id) {
 }
 
-void db_remove_all_items_with_node_id(const gchar *id) {
+void db_itemset_mark_all_read(const gchar *id) {
+}
+
+void db_itemset_mark_all_popup(const gchar *id) {
+}
+
+void db_itemset_mark_all_old(const gchar *id) {
 }
 
 /* Statistics interface */
 
-guint db_get_unread_count_with_node_id(const gchar *id) {
+guint db_itemset_get_unread_count(const gchar *id) {
 	gint	res;
 	guint	count = 0;
 	
@@ -397,4 +395,3 @@ guint db_get_unread_count_with_node_id(const gchar *id) {
 		
 	return count;
 }
-

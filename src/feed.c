@@ -689,7 +689,7 @@ gboolean feed_merge_check(itemSetPtr sp, itemPtr new_ip) {
 				metadata_list_free(old_ip->metadata);
 				old_ip->metadata = new_ip->metadata;
 				new_ip->metadata = NULL;
-				vfolder_update_item(old_ip);
+				// FIXME: vfolder update
 				debug0(DEBUG_VERBOSE, "-> item already existing and was updated");
 			} else {
 				debug0(DEBUG_VERBOSE, "-> item updates not merged because of parser errors");
@@ -949,10 +949,10 @@ static void feed_process_update_result(struct request *request) {
 			                                      "XML Parser Output:<br /><div class='xmlparseroutput'>"));
 			g_string_append(feed->parseErrors, "</div>");
 		} else {
-			node_load_itemset(node);
+			itemSetPtr itemSet = node_get_itemset(node);
 			
 			/* merge the resulting items into the node's item set */
-			node_merge_items(node, ctxt->itemSet->items);
+			itemset_merge_items(itemSet, ctxt->itemSet->items);
 		
 			/* restore user defined properties if necessary */
 			if(!(request->flags & FEED_REQ_RESET_TITLE)) 
@@ -968,9 +968,8 @@ static void feed_process_update_result(struct request *request) {
 
 			ui_mainwindow_set_status_bar(_("\"%s\" updated..."), node_get_title(node));
 
-			itemlist_merge_itemset(node->itemSet);
-		
-			node_unload_itemset(node);
+			itemlist_merge_itemset(itemSet);
+			itemset_free(itemSet);		
 
 			node->available = TRUE;
 		}
@@ -1080,7 +1079,7 @@ static void feed_remove(nodePtr node) {
 
 static void feed_mark_all_read(nodePtr node) {
 
-	itemlist_mark_all_read(node->itemSet);
+	itemlist_mark_all_read(node);
 }
 
 static gchar * feed_render(nodePtr node) {

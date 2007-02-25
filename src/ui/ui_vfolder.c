@@ -1,7 +1,7 @@
 /**
  * @file ui_vfolder.c  vfolder dialogs handling
  * 
- * Copyright (C) 2004-2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -78,8 +78,8 @@ static void on_propdialog_response(GtkDialog *dialog, gint response_id, gpointer
 	if(response_id == GTK_RESPONSE_OK) {	
 		/* update vfolder */
 		ui_itemlist_clear();
-		vfolder_refresh(ui_data->vp);
-		itemlist_load(ui_data->np->itemSet);
+		// FIXME: update vfolder
+		itemlist_load(ui_data->np);
 		ui_node_update(ui_data->np);
 	}
 	

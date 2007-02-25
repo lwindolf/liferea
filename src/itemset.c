@@ -52,6 +52,120 @@ xmlDocPtr itemset_to_xml(nodePtr node) {
 	return doc;
 }
 
+static guint itemset_get_max_item_count(itemSetPtr itemSet) {
+
+	switch(itemSet->node->type) {
+		case NODE_TYPE_FEED:
+			return feed_get_max_item_count(itemSet->node);
+			break;
+		default:
+			return G_MAXUINT;
+	}
+}
+
+/**
+ * Determine wether a given item is to be merged
+ * into the itemset or if it was already added.
+ */
+static gboolean itemset_merge_check(itemSetPtr itemSet, itemPtr item) {
+
+	switch(itemSet->node->type) {
+		case NODE_TYPE_FEED:
+			return feed_merge_check(itemSet, item);
+			break;
+		default:
+			g_warning("node_merge_check(): If this happens something is wrong!");
+			break;
+	}
+	
+	return FALSE;
+}
+
+static void itemset_merge_item(itemSetPtr itemSet, itemPtr item) {
+
+	debug2(DEBUG_UPDATE, "trying to merge \"%s\" to node \"%s\"", item_get_title(item), node_get_title(itemSet->node));
+
+	/* step 1: merge into node type internal data structures */
+	if(itemset_merge_check(itemSet, item)) {
+		g_assert(itemSet->node);
+		g_assert(!item->node);
+		g_assert(!item->id);
+		item->node = itemSet->node;
+		
+		/* step 1: add to itemset */
+		itemset_prepend_item(itemSet, item);
+
+		/* step 2: write to DB */
+		db_item_update(item);
+				
+		debug3(DEBUG_UPDATE, "-> added \"%s\" (id=%d) to item set %p...", item_get_title(item), item->id, itemSet);
+		
+		/* step 3: check for matching vfolders */
+		// FIXME
+		
+		/* step 4: duplicate detection, mark read if it is a duplicate */
+		// FIXME: still needed?
+		if(item->validGuid) {
+			if(item_guid_list_get_duplicates_for_id(item)) {
+				// FIXME do something better: item->readStatus = TRUE;
+				debug2(DEBUG_UPDATE, "-> duplicate guid detected: %s -> %s\n", item->id, item->title);
+			}
+		}
+	} else {
+		debug2(DEBUG_UPDATE, "-> not adding \"%s\" to node \"%s\"...", item_get_title(item), node_get_title(itemSet->node));
+		item_unload(item);
+	}
+}
+
+void itemset_merge_items(itemSetPtr itemSet, GList *list) {
+	GList	*iter;
+	guint	max;
+	
+	if(debug_level & DEBUG_UPDATE) {
+		debug3(DEBUG_UPDATE, "old item set %p of \"%s\" (%p):", itemSet, node_get_title(itemSet->node), itemSet->node);
+		iter = itemSet->items;
+		while(iter) {
+			itemPtr item = (itemPtr)iter->data;
+			debug2(DEBUG_UPDATE, " -> item #%d \"%s\"", item->id, item_get_title(item));
+			iter = g_list_next(iter);
+		}
+	}
+	
+	/* Truncate the new itemset if it is longer than
+	   the maximum cache size which could cause items
+	   to be dropped and added again on subsequent 
+	   merges with the same feed content */
+	max = itemset_get_max_item_count(itemSet);
+	if(g_list_length(list) > max) {
+		debug3(DEBUG_UPDATE, "item list too long (%u, max=%u) when merging into \"%s\"!", g_list_length(list), max, node_get_title(itemSet->node));
+		guint i = 0;
+		GList *iter, *copy;
+		iter = copy = g_list_copy(list);
+		while(iter) {
+			i++;
+			if(i > max) {
+				itemPtr item = (itemPtr)iter->data;
+				debug2(DEBUG_UPDATE, "ignoring item nr %u (%s)...", i, item_get_title(item));
+				item_unload(item);
+				list = g_list_remove(list, item);
+			}
+			iter = g_list_next(iter);
+		}
+		g_list_free(copy);
+	}	   
+
+	/* Items are given in top to bottom display order. 
+	   Adding them in this order would mean to reverse 
+	   their order in the merged list, so merging needs
+	   to be done bottom to top. */
+	iter = g_list_last(list);
+	while(iter) {
+		itemset_merge_item(itemSet, ((itemPtr)iter->data));
+		iter = g_list_previous(iter);
+	}
+	g_list_free(list);
+}
+
 void itemset_prepend_item(itemSetPtr itemSet, itemPtr item) {
 
 	item->itemSet = itemSet;
@@ -84,7 +198,7 @@ void itemset_remove_item(itemSetPtr itemSet, itemPtr item) {
 		case ITEMSET_TYPE_FEED:
 		case ITEMSET_TYPE_FOLDER:
 			/* remove vfolder copies */
-			vfolder_remove_item(item);
+			// FIXME
 
 			itemSet->node->needsCacheSave = TRUE;
 			break;
@@ -97,28 +211,14 @@ void itemset_remove_item(itemSetPtr itemSet, itemPtr item) {
 	}
 }
 
-// FIXME: still needed?
-void itemset_remove_all_items(itemSetPtr itemSet) {
-
-	GList *list = g_list_copy(itemSet->items);
-	GList *iter = list;
-	while(iter) {
-		itemset_remove_item(itemSet, (itemPtr)iter->data);
-		iter = g_list_next(iter);
-	}
-	g_list_free(list);
-
-	itemSet->node->needsCacheSave = TRUE;
-}
-
 void itemset_set_item_flag(itemSetPtr itemSet, itemPtr item, gboolean newFlagStatus) {
 
 	g_assert(newFlagStatus != item->flagStatus);
 
 	item->flagStatus = newFlagStatus;
-	db_update_item(item);
+	db_item_update(item);
 
-	vfolder_check_item(item);	/* check if now a search folder rule matches */
+	// FIXME: vfolder update?
 }
 
 void itemset_set_item_read_status(itemSetPtr itemSet, itemPtr item, gboolean newReadStatus) {
@@ -126,9 +226,9 @@ void itemset_set_item_read_status(itemSetPtr itemSet, itemPtr item, gboolean new
 	g_assert(newReadStatus != item->readStatus);
 
 	item->readStatus = newReadStatus;
-	db_update_item(item);
+	db_item_update(item);
 
-	vfolder_check_item(item);	/* check if now a search folder rule matches */
+	// FIXME: vfolder update?
 }
 
 void itemset_set_item_update_status(itemSetPtr itemSet, itemPtr item, gboolean newUpdateStatus) {
@@ -136,9 +236,9 @@ void itemset_set_item_update_status(itemSetPtr itemSet, itemPtr item, gboolean n
 	g_assert(newUpdateStatus != item->updateStatus);
 
 	item->updateStatus = newUpdateStatus;
-	db_update_item(item);
+	db_item_update(item);
 
-	vfolder_check_item(item);	/* check if now a search folder rule matches */
+	// FIXME: vfolder update?
 }
 
 void itemset_set_item_new_status(itemSetPtr itemSet, itemPtr item, gboolean newStatus) {
@@ -146,7 +246,7 @@ void itemset_set_item_new_status(itemSetPtr itemSet, itemPtr item, gboolean newS
 	g_assert(newStatus != item->newStatus);
 
 	item->newStatus = newStatus;
-	db_update_item(item);
+	db_item_update(item);
 
 	/* Note: new count updates must be done through the node
 	   interface to allow global feed list new counter */

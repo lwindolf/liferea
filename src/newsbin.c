@@ -19,6 +19,7 @@
  */
 
 #include <gtk/gtk.h>
+#include "db.h"
 #include "feed.h"
 #include "feedlist.h"
 #include "interface.h"
@@ -26,6 +27,7 @@
 #include "newsbin.h"
 #include "render.h"
 #include "support.h"
+#include "vfolder.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_node.h"
 #include "ui/ui_popup.h"
@@ -37,9 +39,6 @@ GSList * newsbin_get_list(void) { return newsbin_list; }
 
 static void newsbin_new(nodePtr node) {
 
-	itemSetPtr itemSet = (itemSetPtr)g_new0(struct itemSet, 1); /* create empty itemset */
-	itemSet->type = ITEMSET_TYPE_FEED;
-	node_set_itemset(node, itemSet);
 	node->needsCacheSave = TRUE;
 	feedlist_schedule_save();
 }
@@ -110,8 +109,6 @@ void on_popup_copy_to_newsbin(gpointer user_data, guint callback_action, GtkWidg
 	newsbin = g_slist_nth_data(newsbin_list, callback_action);
 	item = itemlist_get_selected();
 	if(item) {
-		node_load_itemset(newsbin);
-		
 		copy = item_copy(item);
 		copy->node = newsbin;	/* necessary to become independent of original item */
 		
@@ -128,12 +125,9 @@ void on_popup_copy_to_newsbin(gpointer user_data, guint callback_action, GtkWidg
 			copy->real_source_title = g_strdup(node_get_title(item->node));
 		
 		/* do the same as in node_merge_item(s) */
-		itemset_prepend_item(newsbin->itemSet, copy);
-		vfolder_check_item(copy);
+		db_item_update(copy);	// FIXME: is this enough?
 		newsbin->needsCacheSave = TRUE;
 		ui_node_update(newsbin);
-		
-		node_unload_itemset(newsbin);
 	}
 }
 

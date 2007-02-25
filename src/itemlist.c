@@ -25,6 +25,7 @@
 #include <string.h>
  
 #include "conf.h"
+#include "db.h"
 #include "debug.h"
 #include "feed.h"
 #include "feedlist.h"
@@ -158,13 +159,14 @@ void itemlist_merge_itemset(itemSetPtr itemSet) {
  * To be called whenever a feed was selected and should
  * replace the current itemlist.
  */
-void itemlist_load(itemSetPtr itemSet) {
+void itemlist_load(nodePtr node) {
+	itemSetPtr	itemSet;
 
 	debug_enter("itemlist_load");
 
-	g_assert(NULL != itemSet);
+	g_assert(NULL != node);
 
-	debug1(DEBUG_GUI, "loading item list with node \"%s\"", node_get_title(itemSet->node));
+	debug1(DEBUG_GUI, "loading item list with node \"%s\"", node_get_title(node));
 
 	/* 1. Filter check. Don't continue if folder is selected and 
 	   no folder viewing is configured. If folder viewing is enabled
@@ -173,7 +175,7 @@ void itemlist_load(itemSetPtr itemSet) {
 	g_free(itemlist_filter);
 	itemlist_filter = NULL;
 	   
-	if(ITEMSET_TYPE_FOLDER == itemSet->type) {
+	if(NODE_TYPE_FOLDER == node->type) {
 		if(0 == getNumericConfValue(FOLDER_DISPLAY_MODE))
 			return;
 	
@@ -182,19 +184,21 @@ void itemlist_load(itemSetPtr itemSet) {
 	}
 
 	itemlistLoading++;
-	viewMode = node_get_view_mode(itemSet->node);
+	viewMode = node_get_view_mode(node);
 	ui_mainwindow_set_layout(viewMode);
 
 	/* Set the new displayed node... */
-	currentNode = itemSet->node;
+	currentNode = node;
 	itemview_set_displayed_node(currentNode);
 
-	if(NODE_VIEW_MODE_COMBINED != node_get_view_mode(itemSet->node))
+	if(NODE_VIEW_MODE_COMBINED != node_get_view_mode(node))
 		itemview_set_mode(ITEMVIEW_NODE_INFO);
 	else
 		itemview_set_mode(ITEMVIEW_ALL_ITEMS);
 	
+	itemSet = node_get_itemset(currentNode);
 	itemlist_merge_itemset(itemSet);
+	itemset_free(itemSet);
 
 	itemlistLoading--;
 
@@ -211,24 +215,13 @@ void itemlist_unload(gboolean markRead) {
 		   to realize reliable read marking when using condensed mode. It's
 		   important to do this only when the selection really changed. */
 		if(markRead && (2 == node_get_view_mode(currentNode))) 
-			itemlist_mark_all_read(currentNode->itemSet);
+			itemlist_mark_all_read(currentNode);
 
 		itemlist_check_for_deferred_action();
 	}
 
 	itemlist_set_selected(NULL);
 	currentNode = NULL;
-}
-
-void itemlist_update_vfolder(vfolderPtr vfolder) {
-
-	if(currentNode == vfolder->node)
-		/* maybe itemlist_load(vfolder) would be faster, but
-		   it unloads all feeds and therefore must not be 
-		   called from here! */		
-		itemlist_merge_itemset(currentNode->itemSet);
-	else
-		ui_node_update(vfolder->node);
 }
 
 /* next unread selection logic */
@@ -251,7 +244,7 @@ static itemPtr itemlist_find_unread_item(void) {
 		result = ui_itemlist_find_unread_item(selectedId);
 		
 	if(!result)
-		result = ui_itemlist_find_unread_item(NULL);
+		result = ui_itemlist_find_unread_item(0);
 
 	return result;
 }
@@ -264,7 +257,7 @@ void itemlist_select_next_unread(void) {
 	   because no item will be selected and marked read... */
 	if(currentNode) {
 		if(NODE_VIEW_MODE_COMBINED == node_get_view_mode(currentNode))
-			itemlist_mark_all_read(currentNode->itemSet);
+			itemlist_mark_all_read(currentNode);
 	}
 
 	itemlistLoading++;	/* prevent unwanted selections */
@@ -401,8 +394,9 @@ void itemlist_remove_item(itemPtr item) {
 	
 	itemview_remove_item(item);
 	itemview_update();
-	itemset_remove_item(item->itemSet, item);
+	db_item_remove(item->id);
 	ui_node_update(item->node);
+	item_unload(item);
 }
 
 void itemlist_request_remove_item(itemPtr item) {
@@ -432,12 +426,12 @@ void itemlist_remove_items(itemSetPtr itemSet, GList *items) {
 	ui_node_update(itemSet->node);
 }
 
-void itemlist_remove_all_items(itemSetPtr itemSet) {
+void itemlist_remove_all_items(nodePtr node) {
 
 	itemview_clear();
-	itemset_remove_all_items(itemSet);
+	db_itemset_remove_all(node->id);
 	itemview_update();
-	ui_node_update(itemSet->node);
+	ui_node_update(node);
 }
 
 void itemlist_update_item(itemPtr item) {
@@ -450,79 +444,27 @@ void itemlist_update_item(itemPtr item) {
 	itemview_update_item(item);
 }
 
-void itemlist_mark_all_read(itemSetPtr itemSet) {
-	GList	*iter, *items;
-	itemPtr	item;
+void itemlist_mark_all_read(nodePtr node) {
 
-	/* two loops on list copies because the itemlist_set_* 
-	   methods may modify the original item list (e.g.
-	   if the displayed item set is a vfolder) */
-
-	items = g_list_copy(itemSet->items);
-	iter = items;
-	while(iter) {
-		item = (itemPtr)iter->data;
-		if(!item->readStatus) {
-			itemlist_set_read_status(item, TRUE);
-			itemlist_update_item(item);
-		}
-		iter = g_list_next(iter);
-	}
-	g_list_free(items);
-
-	items = g_list_copy(itemSet->items);
-	iter = items;
-	while(iter) {	
-		item = (itemPtr)iter->data;
-		if(item->updateStatus) {
-			itemlist_set_update_status(item, FALSE);
-			itemlist_update_item(item);
-		}
-		iter = g_list_next(iter);
-	}
-	g_list_free(items);
+	db_itemset_mark_all_read(node->id);
 	
-	itemSet->node->needsCacheSave = TRUE;
+	// FIXME: update search folders!
 	
 	/* GUI updating */	
 	itemview_update();
-	ui_node_update(itemSet->node);
+	ui_node_update(node);
 }
 
-void itemlist_mark_all_old(itemSetPtr itemSet) {
+void itemlist_mark_all_old(nodePtr node) {
 
-	/* no loop on list copy because the itemset_set_* 
-	   methods MUST NOT modify the original item list */
-
-	GList *iter = itemSet->items;
-	while(iter) {
-		itemPtr item = (itemPtr)iter->data;
-		if(item->newStatus) {
-			itemset_set_item_new_status(itemSet, item, FALSE);
-			itemlist_update_item(item);
-		}
-		iter = g_list_next(iter);
-	}
-	
-	itemSet->node->needsCacheSave = TRUE;
+	db_itemset_mark_all_old(node->id);
 	
 	/* No GUI updating necessary... */
 }
 
-void itemlist_mark_all_popup(itemSetPtr itemSet) {
+void itemlist_mark_all_popup(nodePtr node) {
 
-	/* no loop on list copy because the itemset_set_* 
-	   methods MUST NOT modify the original item list */
-
-	GList *iter = itemSet->items;
-	while(iter) {
-		itemPtr item = (itemPtr)iter->data;
-		if(item->popupStatus) {
-			itemset_set_item_popup_status(itemSet, item, FALSE);
-			itemlist_update_item(item);
-		}
-		iter = g_list_next(iter);
-	}
+	db_itemset_mark_all_popup(node->id);
 	
 	/* No GUI updating necessary... */
 }
@@ -583,7 +525,7 @@ void itemlist_set_view_mode(guint newMode) {
 		
 		node_set_view_mode(node, viewMode);
 		ui_mainwindow_set_layout(viewMode);
-		itemlist_load(node->itemSet);
+		itemlist_load(node);
 	}
 }
 

@@ -23,28 +23,77 @@
 #include "item.h"
 #include "itemset.h"
 
+/**
+ * Open and initialize the DB.
+ */
 void db_init(void);
 
+/**
+ * Clean up and close the DB.
+ */
 void db_deinit(void);
 
-itemSetPtr db_load_itemset_with_node_id(const gchar *id);
 
-itemPtr db_load_item_with_id(gulong id);
+/* item set access (note: item sets are identified by the node id string) */
 
 /**
- * To be used on new items. Determine a new unique
- * items id and sets the id for the given item.
+ * Loads all items of the given node id.
  *
- * @param item		the item 
+ * @param id	the node id
+ *
+ * @returns a newly allocated item set, must be freed using itemset_free()
  */
-void db_set_item_id(itemPtr item);
+itemSetPtr	db_itemset_load(const gchar *id);
 
-void db_update_item(itemPtr item);
+/**
+ * Removes all items of the given item set from the DB.
+ *
+ * @param id	the node id
+ */
+void		db_itemset_remove_all(const gchar *id);
 
-void db_update_itemset(itemSetPtr itemSet);
+/**
+ * Mass items state changing methods. Mark all items of
+ * a given item set as read/popup/old.
+ *
+ * @param id	the node id
+ */
+void		db_itemset_mark_all_read(const gchar *id);
+void		db_itemset_mark_all_popup(const gchar *id);
+void		db_itemset_mark_all_old(const gchar *id);
 
-void db_remove_item_with_id(const gchar *id);
+/**
+ * Returns the number of unread items for the given item set.
+ *
+ * @param id	the node id
+ *
+ * @returns the number of unread items
+ */
+guint		db_itemset_get_unread_count(const gchar *id);
 
-void db_remove_all_items_with_node_id(const gchar *id);
+/* item access (note: items are identified by the numeric item id) */
 
-guint db_get_unread_count_with_node_id(const gchar *id);
+/**
+ * Loads the item specified by id from the DB.
+ *
+ * @param id		the id
+ *
+ * @returns new item structure, must be freed using item_free()
+ */
+itemPtr	db_item_load(gulong id);
+
+/**
+ * Updates all attributes of the item in the DB
+ *
+ * @param item		the item
+ */
+void	db_item_update(itemPtr item);
+
+/**
+ * Removes the given item from the DB
+ *
+ * @param item		the item
+ */
+void	db_item_remove(gulong id);
+
+

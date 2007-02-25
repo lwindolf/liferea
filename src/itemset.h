@@ -44,7 +44,6 @@ typedef struct itemSet {
 	struct node	*node;		/**< the feed list node this item set belongs to */
 
 	gboolean	valid;		/**< FALSE if libxml2 recovery mode was used to create this item set*/
-	gulong		lastItemNr;	/**< internal counter used to uniqely assign item id's. */
 } *itemSetPtr;
 
 /**
@@ -59,6 +58,15 @@ typedef struct itemSet {
  * @returns NULL or the first found item
  */
 itemPtr itemset_lookup_item(itemSetPtr itemSet, struct node *node, gulong nr);
+
+/**
+ * Merges the given item set into the item set of
+ * the given node. Used for node updating.
+ *
+ * @param itemSet	the item set to merge into
+ * @param items		a list of items to merge
+ */
+void itemset_merge_items(itemSetPtr itemSet, GList *items);
 
 /**
  * Prepends a single item to the given item set.

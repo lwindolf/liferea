@@ -137,7 +137,7 @@ static void item_comments_process_update_result(struct request *request) {
 	itemview_update_item(item); 
 	itemview_update();
 	
-	db_update_item(item);
+	db_item_update(item);
 	
 	debug_exit("item_comments_process_update_result");
 }
@@ -184,7 +184,7 @@ itemPtr item_new(void) {
 
 itemPtr item_load(gulong id) {
 
-	return db_load_item_with_id(id);
+	return db_item_load(id);
 }
 
 itemPtr item_copy(itemPtr item) {

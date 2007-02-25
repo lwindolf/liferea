@@ -132,16 +132,6 @@ void node_set_data(nodePtr node, gpointer data) {
 	g_assert(NULL != node->nodeType);
 
 	node->data = data;
-
-	/* Vfolders are not handled by the node
-	   loading/unloading so the item set must be prepared 
-	   upon folder creation */
-
-	if(NODE_TYPE_VFOLDER == NODE_TYPE(node)->type) {
-		itemSetPtr itemSet = g_new0(struct itemSet, 1);
-		itemSet->type = ITEMSET_TYPE_VFOLDER;
-		node_set_itemset(node, itemSet);
-	}
 }
 
 gboolean node_is_ancestor(nodePtr node1, nodePtr node2) {
@@ -164,7 +154,7 @@ void node_free(nodePtr node) {
 	
 	update_cancel_requests((gpointer)node);
 
-	db_remove_all_items_with_node_id(node->id);
+	db_itemset_remove_all(node->id);
 
 	if(node->icon)
 		g_object_unref(node->icon);
@@ -193,131 +183,10 @@ void node_update_new_count(nodePtr node, gint diff) {
 guint node_get_unread_count(nodePtr node) {
 
 	// FIXME: what about folders? recursion!
-	return db_get_unread_count_with_node_id(node->id);
+	return db_itemset_get_unread_count(node->id);
 }
 
 /* generic node item set merging functions */
-
-static guint node_get_max_item_count(nodePtr node) {
-
-	switch(node->type) {
-		case NODE_TYPE_FEED:
-			return feed_get_max_item_count(node);
-			break;
-		default:
-			return G_MAXUINT;
-	}
-}
-
-// FIXME: the "node" merging is obviously at itemset abstraction level
-// and therefore needs to be moved!
-
-/**
- * Determine wether a given item is to be merged
- * into the itemset or if it was already added.
- */
-static gboolean node_merge_check(itemSetPtr itemSet, itemPtr item) {
-
-	switch(itemSet->node->type) {
-		case NODE_TYPE_FEED:
-			return feed_merge_check(itemSet, item);
-			break;
-		default:
-			g_warning("node_merge_check(): If this happens something is wrong!");
-			break;
-	}
-	
-	return FALSE;
-}
-
-/* Only to be called by node_merge_items() */
-static void node_merge_item(nodePtr node, itemPtr item) {
-
-	debug2(DEBUG_UPDATE, "trying to merge \"%s\" to node \"%s\"", item_get_title(item), node_get_title(node));
-
-	/* step 1: merge into node type internal data structures */
-	if(node_merge_check(node->itemSet, item)) {
-		g_assert(!item->node);
-		g_assert(!item->id);
-		item->node = node;
-		
-		/* step 1: add to itemset */
-		itemset_prepend_item(node->itemSet, item);
-
-		/* step 2: write to DB */
-		db_update_item(item);
-				
-		debug3(DEBUG_UPDATE, "-> added \"%s\" (id=%d) to item set %p...", item_get_title(item), item->id, node->itemSet);
-		
-		/* step 3: check for matching vfolders */
-		vfolder_check_item(item);
-		
-		/* step 4: duplicate detection, mark read if it is a duplicate */
-		// FIXME: still needed?
-		if(item->validGuid) {
-			if(item_guid_list_get_duplicates_for_id(item)) {
-				// FIXME do something better: item->readStatus = TRUE;
-				debug2(DEBUG_UPDATE, "-> duplicate guid detected: %s -> %s\n", item->id, item->title);
-			}
-		}
-	} else {
-		debug2(DEBUG_UPDATE, "-> not adding \"%s\" to node \"%s\"...", item_get_title(item), node_get_title(node));
-		item_unload(item);
-	}
-}
-
-/**
- * This method can be used to merge an ordered list of items
- * into the item list of the nodes item set.
- */
-void node_merge_items(nodePtr node, GList *list) {
-	GList	*iter;
-	guint	max;
-	
-	if(debug_level & DEBUG_UPDATE) {
-		debug4(DEBUG_UPDATE, "old item set %p (lastItemNr=%lu) of \"%s\" (%p):", node->itemSet, node->itemSet->lastItemNr, node_get_title(node), node);
-		iter = node->itemSet->items;
-		while(iter) {
-			itemPtr item = (itemPtr)iter->data;
-			debug2(DEBUG_UPDATE, " -> item #%d \"%s\"", item->id, item_get_title(item));
-			iter = g_list_next(iter);
-		}
-	}
-	
-	/* Truncate the new itemset if it is longer than
-	   the maximum cache size which could cause items
-	   to be dropped and added again on subsequent 
-	   merges with the same feed content */
-	max = node_get_max_item_count(node);
-	if(g_list_length(list) > max) {
-		debug3(DEBUG_UPDATE, "item list too long (%u, max=%u) when merging into \"%s\"!", g_list_length(list), max, node_get_title(node));
-		guint i = 0;
-		GList *iter, *copy;
-		iter = copy = g_list_copy(list);
-		while(iter) {
-			i++;
-			if(i > max) {
-				itemPtr item = (itemPtr)iter->data;
-				debug2(DEBUG_UPDATE, "ignoring item nr %u (%s)...", i, item_get_title(item));
-				item_unload(item);
-				list = g_list_remove(list, item);
-			}
-			iter = g_list_next(iter);
-		}
-		g_list_free(copy);
-	}	   
-
-	/* Items are given in top to bottom display order. 
-	   Adding them in this order would mean to reverse 
-	   their order in the merged list, so merging needs
-	   to be done bottom to top. */
-	iter = g_list_last(list);
-	while(iter) {
-		node_merge_item(node, ((itemPtr)iter->data));
-		iter = g_list_previous(iter);
-	}
-	g_list_free(list);
-}
 
 void node_update_favicon(nodePtr node) {
 
@@ -499,11 +368,8 @@ void node_remove(nodePtr node) {
 
 void node_mark_all_read(nodePtr node) {
 
-	if(0 != node_get_unread_count(node)) {
-		node_load_itemset(node);
+	if(0 != node_get_unread_count(node))
 		NODE_TYPE(node)->mark_all_read(node);
-		node_unload_itemset(node);
-	}
 }
 
 gchar * node_render(nodePtr node) {
@@ -528,31 +394,12 @@ void node_request_properties(nodePtr node) {
 
 /* node attributes encapsulation */
 
-itemSetPtr node_get_itemset(nodePtr node) { return node->itemSet; }
-
-void node_load_itemset(nodePtr node) {
-
-	g_assert(NULL == node->itemSet);
-	node->itemSet = db_load_itemset_with_node_id(node->id);
-	node->itemSet->node = node;
-}
-
-void node_unload_itemset(nodePtr node) {
-
-//	g_assert(NULL != node->itemSet);
-	if(!node->itemSet)
-		return;
-		
-	itemset_free(node->itemSet);
-	node->itemSet = NULL;
-}
-
-void node_set_itemset(nodePtr node, itemSetPtr itemSet) {
-
-	g_assert(ITEMSET_TYPE_INVALID != itemSet->type);
-	g_assert(NULL == itemSet->node);
-	node->itemSet = itemSet;
+itemSetPtr node_get_itemset(nodePtr node) {
+	itemSetPtr	itemSet;
+	
+	itemSet = db_itemset_load(node->id);
 	itemSet->node = node;
+	return itemSet;
 }
 
 void node_set_title(nodePtr node, const gchar *title) {

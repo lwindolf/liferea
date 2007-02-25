@@ -1,7 +1,7 @@
 /**
  * @file itemlist.h itemlist handling
  *
- * Copyright (C) 2004-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2007 Lars Lindner <lars.lindner@gmail.com>
  *	      
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,6 @@
 #include <gtk/gtk.h>
 #include "item.h"
 #include "itemset.h"
-#include "vfolder.h"
 
 /* This is a simple controller implementation for itemlist handling. 
    It manages the currently displayed itemset and provides synchronisation
@@ -65,11 +64,11 @@ itemPtr itemlist_get_selected(void);
 void itemlist_merge_itemset(itemSetPtr itemSet);
 
 /** 
- * Loads the passed feeds items into the itemlist.
+ * Loads the passed nodes items into the itemlist.
  *
- * @param itemSet 	the item set to be loaded
+ * @param node 		the node
  */
-void itemlist_load(itemSetPtr itemSet);
+void itemlist_load(nodePtr node);
 
 /**
  * Clears the item list. Unsets the currently
@@ -136,33 +135,30 @@ void itemlist_remove_items(itemSetPtr itemSet, GList *items);
  * all items of a node. Item list selection will be
  * resetted. All items are removed immediately.
  *
- * @param itemSet	the item set whose items should be removed
+ * @param node		the node whose item list is to be removed
  */
-void itemlist_remove_all_items(itemSetPtr itemSet);
+void itemlist_remove_all_items(nodePtr node);
 
 /**
  * Marks all items of the item set as read.
  *
- * @param itemSet	the item set to be marked read
+ * @param node		the node whose item list is to be modified
  */
-void itemlist_mark_all_read(itemSetPtr itemSet);
+void itemlist_mark_all_read(nodePtr node);
 
 /**
  * Resets the new flag for all items of the given item set.
  *
- * @param itemSet	the itemset
+ * @param node		the node whose item list is to be modified
  */
-void itemlist_mark_all_old(itemSetPtr itemSet);
+void itemlist_mark_all_old(nodePtr node);
 
 /**
  * Resets the popup flag for all items of the given item set.
  *
- * @param itemSet	the itemset
+ * @param node		the node whose item list is to be modified
  */
-void itemlist_mark_all_popup(itemSetPtr itemSet);
-
-// FIXME: clearify if method is necessary
-void itemlist_update_vfolder(vfolderPtr vfolder);
+void itemlist_mark_all_popup(nodePtr node);
 
 /**
  * Called from GUI when item list selection changes.

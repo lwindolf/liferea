@@ -79,7 +79,6 @@ typedef struct node {
 	gboolean		expanded;	/**< expansion state (for nodes with childs) */
 
 	/* item list state properties of this node */
-	itemSetPtr	itemSet;	/**< The set of items belonging to this node */
 	guint		viewMode;	/**< Viewing mode for this node (one of NODE_VIEW_MODE_*) */
 	gint		sortColumn;	/**< Sorting column. Set to either IS_TITLE, IS_FAVICON, IS_ENCICON or IS_TIME */
 	gboolean	sortReversed;	/**< Sort in the reverse order? */
@@ -421,31 +420,14 @@ void node_remove(nodePtr node);
 void node_reset_update_counter(nodePtr node);
 
 /**
- * Merges the given item set into the item set of
- * the given node. Used for node updating.
+ * Loads all items of the given node into memory.
+ * The caller needs to free the item set using itemset_free()
  *
  * @param node	the node
- * @param sp	the item set
- */
-void node_merge_items(nodePtr node, GList *items);
-
-/**
- * Returns the item set of the given node.
  *
- * @param node	the node
+ * @returns the item set
  */
 itemSetPtr node_get_itemset(nodePtr node);
-
-/**
- * Assigns the given item set to the given node.
- *
- * @param node	the node
- * @param sp	the item set
- */
-void node_set_itemset(nodePtr node, itemSetPtr sp);
-
-void node_load_itemset(nodePtr node);
-void node_unload_itemset(nodePtr node);
 
 /**
  * Node content rendering
