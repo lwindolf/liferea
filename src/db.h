@@ -31,6 +31,14 @@ itemSetPtr db_load_itemset_with_node_id(const gchar *id);
 
 itemPtr db_load_item_with_id(gulong id);
 
+/**
+ * To be used on new items. Determine a new unique
+ * items id and sets the id for the given item.
+ *
+ * @param item		the item 
+ */
+void db_set_item_id(itemPtr item);
+
 void db_update_item(itemPtr item);
 
 void db_update_itemset(itemSetPtr itemSet);

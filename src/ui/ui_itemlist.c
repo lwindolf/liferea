@@ -380,7 +380,7 @@ void ui_itemlist_add_item(itemPtr item) {
 		gtk_tree_store_set(itemstore, iter,
 		                	      IS_TIME, item->time,
 		                	      IS_NR, item->id,
-					      IS_PARENT, item->itemSet->node,
+					      IS_PARENT, item->node,
 		                              IS_FAVICON, item->node->icon,
 		                              IS_ENCICON, item->hasEnclosure?icons[ICON_ENCLOSURE]:NULL,
 					      IS_ENCLOSURE, item->hasEnclosure,

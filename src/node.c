@@ -18,6 +18,8 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+ 
+#include <string.h>
 
 #include "node.h"
 #include "db.h"
@@ -231,21 +233,27 @@ static gboolean node_merge_check(itemSetPtr itemSet, itemPtr item) {
 /* Only to be called by node_merge_items() */
 static void node_merge_item(nodePtr node, itemPtr item) {
 
-	debug3(DEBUG_UPDATE, "trying to merge \"%s\" (id=%d) to node \"%s\"", item_get_title(item), item->id, node_get_title(node));
+	debug2(DEBUG_UPDATE, "trying to merge \"%s\" to node \"%s\"", item_get_title(item), node_get_title(node));
 
 	/* step 1: merge into node type internal data structures */
 	if(node_merge_check(node->itemSet, item)) {
 		g_assert(!item->node);
+		g_assert(!item->id);
+		item->node = node;
 		
 		/* step 1: add to itemset */
 		itemset_prepend_item(node->itemSet, item);
+
+		/* step 2: write to DB */
+		db_update_item(item);
+				
+		debug3(DEBUG_UPDATE, "-> added \"%s\" (id=%d) to item set %p...", item_get_title(item), item->id, node->itemSet);
 		
-		debug2(DEBUG_UPDATE, "-> adding \"%s\" to item set %p...", item_get_title(item), node->itemSet);
-		
-		/* step 2: check for matching vfolders */
+		/* step 3: check for matching vfolders */
 		vfolder_check_item(item);
 		
-		/* step 3: duplicate detection, mark read if it is a duplicate */
+		/* step 4: duplicate detection, mark read if it is a duplicate */
+		// FIXME: still needed?
 		if(item->validGuid) {
 			if(item_guid_list_get_duplicates_for_id(item)) {
 				// FIXME do something better: item->readStatus = TRUE;

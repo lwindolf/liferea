@@ -64,7 +64,7 @@ void db_init(void) {
 	gint		res;	
 		
 	debug_enter("db_init");
-	
+
 	filename = common_create_cache_filename(NULL, "liferea", "db");
 	if(!sqlite3_open(filename, &db)) {
 		debug1(DEBUG_CACHE, "Data base file %s was not found... Creating new one.\n", filename);
@@ -174,6 +174,8 @@ void db_init(void) {
 
 void db_deinit(void) {
 
+	debug_enter("db_deinit");
+
 	sqlite3_finalize(itemLoadStmt);
 	sqlite3_finalize(itemInsertStmt);
 	sqlite3_finalize(itemUpdateStmt);
@@ -181,6 +183,8 @@ void db_deinit(void) {
 	sqlite3_finalize(itemsetInsertStmt);
 		
 	sqlite3_close(db);
+	
+	debug_exit("db_deinit");
 }
 
 /* Item structure loading methods */
@@ -190,7 +194,7 @@ static itemPtr db_load_item_from_columns(sqlite3_stmt *stmt) {
 	
 	item->readStatus	= sqlite3_column_int(stmt, 1)?TRUE:FALSE;
 	item->newStatus		= sqlite3_column_int(stmt, 2)?TRUE:FALSE;
-	item->readStatus	= sqlite3_column_int(stmt, 3)?TRUE:FALSE;
+	item->updateStatus	= sqlite3_column_int(stmt, 3)?TRUE:FALSE;
 	item->flagStatus	= sqlite3_column_int(stmt, 4)?TRUE:FALSE;
 	item->validGuid		= sqlite3_column_int(stmt, 7)?TRUE:FALSE;
 	item->time		= sqlite3_column_int(stmt, 11);
@@ -212,7 +216,7 @@ itemSetPtr db_load_itemset_with_node_id(const gchar *id) {
 	itemSetPtr 	itemSet;
 	gint		res;
 
-	debug1(DEBUG_DB, "load of itemset for node \"%s\"", id);	
+	debug2(DEBUG_DB, "load of itemset for node \"%s\" (thread=%p)", id, g_thread_self());
 	itemSet = g_new0(struct itemSet, 1);
 	itemSet->node = node_from_id(id);
 
@@ -239,6 +243,7 @@ itemPtr db_load_item_with_id(gulong id) {
 
 	if(sqlite3_step(itemLoadStmt) == SQLITE_ROW) {
 		item = db_load_item_from_columns(itemLoadStmt);
+		g_assert(SQLITE_DONE == sqlite3_step(itemLoadStmt));
 	} else {
 		debug2(DEBUG_DB, "Could not load item with id #%lu (error code %d)!", id, res);
 	}
@@ -266,6 +271,20 @@ static int db_new_item_id_cb(void *user_data, int count, char **values, char **c
 	return 0;
 }
 
+void db_set_item_id(itemPtr item) {
+	gchar	*sql, *err;
+	gint	res;
+	
+	g_assert(0 == item->id);
+	
+	sql = sqlite3_mprintf("SELECT MAX(ROWID) FROM items");
+	res = sqlite3_exec(db, sql, db_new_item_id_cb, item, &err);
+	if(SQLITE_OK != res) 
+		g_warning("Select failed (%s) SQL: %s", err, sql);
+	sqlite3_free(sql);
+	sqlite3_free(err);
+}
+
 static void db_insert_item(itemPtr item) {
 	gint	res;
 
@@ -279,7 +298,7 @@ static void db_insert_item(itemPtr item) {
 	sqlite3_bind_text(itemsetInsertStmt, 2, item->node->id, -1, SQLITE_TRANSIENT);
 	res = sqlite3_step(itemsetInsertStmt);
 	if(SQLITE_DONE != res) 
-		debug1(DEBUG_DB, "itemsets insert failed (error code=%d)", res);
+		g_warning("Insert in \"itemsets\" table failed (error code=%d, %s)", res, sqlite3_errmsg(db));
 				
 	/* insert item data */
 	sqlite3_reset(itemInsertStmt);
@@ -298,14 +317,16 @@ static void db_insert_item(itemPtr item) {
 	sqlite3_bind_int (itemInsertStmt, 13, item->id);
 	res = sqlite3_step(itemInsertStmt);
 	if(SQLITE_DONE != res) 
-		debug1(DEBUG_DB, "items insert failed (error code=%d)", res);
+		g_warning("Insert in \"items\" table failed (error code=%d, %s)", res, sqlite3_errmsg(db));
 }
 
 void db_update_item(itemPtr item) {
-	gint	res;
 
-	debug1(DEBUG_DB, "update of item \"%s\"", item->title);
+	debug3(DEBUG_DB, "update of item \"%s\" (id=%lu, thread=%p)", item->title, item->id, g_thread_self());
+	
 	if(item->id) {
+		gint	res;
+		
 		/* Try to update the item... */
 		sqlite3_reset(itemUpdateStmt);
 		sqlite3_bind_text(itemUpdateStmt, 1,  item->title, -1, SQLITE_TRANSIENT);
@@ -322,27 +343,14 @@ void db_update_item(itemPtr item) {
 		sqlite3_bind_int (itemUpdateStmt, 12, item->time);
 		sqlite3_bind_int (itemUpdateStmt, 13, item->id);
 		res = sqlite3_step(itemUpdateStmt);
+
 		if(SQLITE_DONE != res) 
-			debug1(DEBUG_DB, "item update failed (error code=%d)", res);
-		
-		if(SQLITE_DONE == res)
-			return;		
+			g_warning("item update failed (error code=%d, %s)", res, sqlite3_errmsg(db));
+	} else {
+		/* If it did not work or had no id insert it... */
+		db_set_item_id(item);
+		db_insert_item(item);
 	}
-		
-	/* If it did not work or has no id insert it... */
-	
-	/* If it has no id yet determine one... */
-	if(0 == item->id) {
-		gchar	*sql, *err;
-		sql = sqlite3_mprintf("SELECT MAX(ROWID) FROM items");
-		res = sqlite3_exec(db, sql, db_new_item_id_cb, item, &err);
-		if(SQLITE_OK != res) 
-			debug2(DEBUG_DB, "select failed (%s) SQL: %s", err, sql);
-		sqlite3_free(sql);
-		sqlite3_free(err);
-	}
-	
-	db_insert_item(item);
 }
 
 void db_update_itemset(itemSetPtr itemSet) {
