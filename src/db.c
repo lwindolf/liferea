@@ -33,6 +33,7 @@ static sqlite3_stmt *itemInsertStmt = NULL;
 static sqlite3_stmt *itemUpdateStmt = NULL;
 static sqlite3_stmt *itemsetLoadStmt = NULL;
 static sqlite3_stmt *itemsetInsertStmt = NULL;
+static sqlite3_stmt *itemsetReadCountStmt = NULL;
 
 static const gchar *schema_items = "\
 CREATE TABLE items ( \
@@ -105,6 +106,14 @@ void db_init(void) {
 	res = sqlite3_prepare(db, sql, -1, &itemsetInsertStmt, &left);
 	if(SQLITE_OK != res) 
 		g_error("Failure while preparing statement, error=%d SQL: \"%s\"", res, sql);
+	g_free(sql);
+	
+	sql = g_strdup("SELECT COUNT(*) FROM items INNER JOIN itemsets "
+	               "ON items.ROWID = itemsets.item_id "
+		       "WHERE items.read = 0 AND node_id = ?");
+	res = sqlite3_prepare(db, sql, -1, &itemsetReadCountStmt, &left);
+	if(SQLITE_OK != res) 
+		g_error("Failure while preparing statement (error=%d, %s) SQL: \"%s\"", res, sqlite3_errmsg(db), sql);
 	g_free(sql);
 	
 	sql = g_strdup("SELECT "
@@ -181,6 +190,7 @@ void db_deinit(void) {
 	sqlite3_finalize(itemUpdateStmt);
 	sqlite3_finalize(itemsetLoadStmt);
 	sqlite3_finalize(itemsetInsertStmt);
+	sqlite3_finalize(itemsetReadCountStmt);
 		
 	sqlite3_close(db);
 	
@@ -373,7 +383,18 @@ void db_remove_all_items_with_node_id(const gchar *id) {
 /* Statistics interface */
 
 guint db_get_unread_count_with_node_id(const gchar *id) {
-
-	return 5;
+	gint	res;
+	guint	count = 0;
+	
+	sqlite3_reset(itemsetReadCountStmt);
+	sqlite3_bind_text(itemsetReadCountStmt, 1, id, -1, SQLITE_TRANSIENT);
+	res = sqlite3_step(itemsetReadCountStmt);
+	
+	if(SQLITE_DONE)
+		count = sqlite3_column_int(itemsetReadCountStmt, 0);
+	else
+		g_warning("item read counting failed (error code=%d, %s)", res, sqlite3_errmsg(db));
+		
+	return count;
 }
 
