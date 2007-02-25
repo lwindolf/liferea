@@ -520,15 +520,15 @@ static itemPtr ui_itemlist_find_unread_item_from_iter(GtkTreeIter *iter) {
 	return NULL;
 }
 
-itemPtr ui_itemlist_find_unread_item(itemPtr start) {
+itemPtr ui_itemlist_find_unread_item(gulong startId) {
 	GtkTreeStore		*itemstore;
 	GtkTreeIter		iter;
 	gboolean		valid = TRUE;
 
 	itemstore = ui_itemlist_get_tree_store();
 	
-	if(start)
-		valid = ui_item_id_to_iter(start->id, &iter);
+	if(startId)
+		valid = ui_item_id_to_iter(startId, &iter);
 	else
 		valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(itemstore), &iter);
 	

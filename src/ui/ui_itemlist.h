@@ -198,9 +198,11 @@ void on_popup_remove_selected(gpointer callback_data, guint callback_action, Gtk
  * item in the current item list according to the current 
  * GtkTreeView sorting order.
  *
+ * @param startId	0 or the item id to start from
+ *
  * @returns item if an unread item was found
  */
-itemPtr ui_itemlist_find_unread_item(itemPtr start);
+itemPtr ui_itemlist_find_unread_item(gulong startId);
 
 /**
  * Searches the displayed feed and then all feeds for an unread
