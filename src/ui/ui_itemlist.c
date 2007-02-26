@@ -187,64 +187,81 @@ void ui_itemlist_clear(void) {
 	item_id_to_iter = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, g_free);
 }
 
-void ui_itemlist_update_item(itemPtr item) {
-	GtkTreeIter	iter;
+static void ui_itemlist_update_iter(GtkTreeIter *iter, itemPtr item) {
 	gchar		*label, *time_str, *esc_title, *esc_time_str, *tmp;
 	const gchar 	*direction_marker;
 	GdkPixbuf	*icon = NULL;
 
-	if(ui_item_id_to_iter(item->id, &iter)) {
-		/* Time */
-		if(0 != item->time) {
-			esc_time_str = itemview_format_date((time_t)item->time);
-			/* the time value is no markup, so we escape it... */
-			tmp = g_markup_escape_text(esc_time_str,-1);
-			g_free(esc_time_str);
-			esc_time_str = tmp;
-		} else {
-			esc_time_str = g_strdup("");
-		}
-
-		/* Label and state icon */
-		if(!item->title || !strlen(item->title)) {
-			esc_title = g_strdup(_("<i>*** No title ***</i>"));
-		} else {
-			/* we escape here to use Pango markup (the parsing ensures that
-			   titles never contain escaped HTML) */
-			esc_title = g_markup_escape_text(item->title, -1);
-			esc_title = g_strstrip(esc_title);
-		}
-
-		direction_marker = common_get_direction_mark(item->node->title);
-
-		if(FALSE == item->readStatus) {
-			time_str = g_strdup_printf("<span weight=\"bold\">%s</span>", esc_time_str);
-			label = g_strdup_printf("%s<span weight=\"bold\">%s</span>", direction_marker, esc_title);
-			icon = icons[ICON_UNREAD];
-		} else if(TRUE == item->updateStatus) {
-			time_str = g_strdup_printf("<span weight=\"bold\" color=\"#333\">%s</span>", esc_time_str);
-			label = g_strdup_printf("%s<span weight=\"bold\" color=\"#333\">%s</span>", direction_marker, esc_title);
-			icon = icons[ICON_UPDATED];
-		} else {
-			time_str = g_strdup(esc_time_str);
-			label = g_strdup_printf("%s%s", direction_marker, esc_title);
-			icon = icons[ICON_READ];
-		}
-		g_free(esc_title);
+	/* Time */
+	if(0 != item->time) {
+		esc_time_str = itemview_format_date((time_t)item->time);
+		/* the time value is no markup, so we escape it... */
+		tmp = g_markup_escape_text(esc_time_str,-1);
 		g_free(esc_time_str);
-
-		if(item->flagStatus) 
-			icon = icons[ICON_FLAG];
-
-		gtk_tree_store_set(ui_itemlist_get_tree_store(), &iter,
-		                   IS_LABEL, label,
-				   IS_TIME_STR, time_str,
-				   IS_STATEICON, icon,
-				   -1);
-	
-		g_free(time_str);
-		g_free(label);
+		esc_time_str = tmp;
+	} else {
+		esc_time_str = g_strdup("");
 	}
+
+	/* Label and state icon */
+	if(!item->title || !strlen(item->title)) {
+		esc_title = g_strdup(_("<i>*** No title ***</i>"));
+	} else {
+		/* we escape here to use Pango markup (the parsing ensures that
+		   titles never contain escaped HTML) */
+		esc_title = g_markup_escape_text(item->title, -1);
+		esc_title = g_strstrip(esc_title);
+	}
+
+	direction_marker = common_get_direction_mark(item->node->title);
+
+	if(FALSE == item->readStatus) {
+		time_str = g_strdup_printf("<span weight=\"bold\">%s</span>", esc_time_str);
+		label = g_strdup_printf("%s<span weight=\"bold\">%s</span>", direction_marker, esc_title);
+		icon = icons[ICON_UNREAD];
+	} else if(TRUE == item->updateStatus) {
+		time_str = g_strdup_printf("<span weight=\"bold\" color=\"#333\">%s</span>", esc_time_str);
+		label = g_strdup_printf("%s<span weight=\"bold\" color=\"#333\">%s</span>", direction_marker, esc_title);
+		icon = icons[ICON_UPDATED];
+	} else {
+		time_str = g_strdup(esc_time_str);
+		label = g_strdup_printf("%s%s", direction_marker, esc_title);
+		icon = icons[ICON_READ];
+	}
+	g_free(esc_title);
+	g_free(esc_time_str);
+
+	if(item->flagStatus) 
+		icon = icons[ICON_FLAG];
+
+	gtk_tree_store_set(ui_itemlist_get_tree_store(), iter,
+		           IS_LABEL, label,
+			   IS_TIME_STR, time_str,
+			   IS_STATEICON, icon,
+			   -1);
+
+	g_free(time_str);
+	g_free(label);
+}
+
+void ui_itemlist_update_item(itemPtr item) {
+	GtkTreeIter	iter;
+
+	if(ui_item_id_to_iter(item->id, &iter))
+		ui_itemlist_update_iter(&iter, item);
+}
+
+static void ui_itemlist_update_foreach(gpointer key, gpointer value, gpointer user_data) {
+	itemPtr item;
+
+	item = item_load(GPOINTER_TO_UINT(key));
+	ui_itemlist_update_iter((GtkTreeIter *)value, item);
+	item_unload(item);
+}
+
+void ui_itemlist_update_all_items(void) {
+
+	g_hash_table_foreach(item_id_to_iter, ui_itemlist_update_foreach, NULL);
 }
 
 static gboolean ui_itemlist_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer data) {

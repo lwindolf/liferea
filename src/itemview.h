@@ -93,6 +93,11 @@ void	itemview_select_item(itemPtr item);
 void	itemview_update_item(itemPtr item);
 
 /**
+ * Requests updating the rendering of a all displayed items.
+ */
+void	itemview_update_all_items(void);
+
+/**
  * Requests updating the rendering of the node info view.
  *
  * @node node	the node whose info view is to be updated

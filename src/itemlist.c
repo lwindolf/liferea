@@ -451,6 +451,7 @@ void itemlist_mark_all_read(nodePtr node) {
 	// FIXME: update search folders!
 	
 	/* GUI updating */	
+	itemview_update_all_items();
 	itemview_update();
 	ui_node_update(node);
 }

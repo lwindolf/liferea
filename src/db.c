@@ -33,6 +33,10 @@ static sqlite3_stmt *itemsetInsertStmt = NULL;
 static sqlite3_stmt *itemsetReadCountStmt = NULL;
 static sqlite3_stmt *itemsetRemoveStmt = NULL;
 static sqlite3_stmt *itemsetRemoveAllStmt = NULL;
+static sqlite3_stmt *itemsetMarkAllReadStmt = NULL;
+static sqlite3_stmt *itemsetMarkAllUpdatedStmt = NULL;
+static sqlite3_stmt *itemsetMarkAllOldStmt = NULL;
+static sqlite3_stmt *itemsetMarkAllPopupStmt = NULL;
 
 static sqlite3_stmt *itemLoadStmt = NULL;
 static sqlite3_stmt *itemInsertStmt = NULL;
@@ -45,6 +49,7 @@ CREATE TABLE items ( \
 	read			INTEGER, \
 	new			INTEGER, \
 	updated			INTEGER, \
+	popup			INTEGER, \
 	marked			INTEGER, \
 	source			TEXT, \
 	source_id		TEXT, \
@@ -57,8 +62,8 @@ CREATE TABLE items ( \
 
 static const gchar *schema_itemsets = "\
 CREATE TABLE itemsets ( \
-     item_id	INTEGER, \
-     node_id	TEXT \
+	item_id		INTEGER, \
+	node_id		TEXT \
 ); \
 CREATE INDEX itemset_idx ON itemsets (node_id);";
 
@@ -96,6 +101,7 @@ void db_init(void) {
 	               "items.read,"
 	               "items.new,"
 	               "items.updated,"
+	               "items.popup,"
 	               "items.marked,"
 	               "items.source,"
 	               "items.source_id,"
@@ -123,6 +129,22 @@ void db_init(void) {
 			
 	db_prepare_stmt(&itemsetRemoveAllStmt,
 	                "DELETE FROM itemsets WHERE node_id = ?");
+			
+	db_prepare_stmt(&itemsetMarkAllReadStmt,
+	                "UPDATE items SET read = 1 WHERE ROWID IN "
+			"(SELECT item_id FROM itemsets WHERE node_id = ?)");
+
+	db_prepare_stmt(&itemsetMarkAllUpdatedStmt,
+	                "UPDATE items SET updated = 0 WHERE ROWID IN "
+			"(SELECT item_id FROM itemsets WHERE node_id = ?)");
+			
+	db_prepare_stmt(&itemsetMarkAllOldStmt,
+	                "UPDATE items SET new = 0 WHERE ROWID IN "
+			"(SELECT item_id FROM itemsets WHERE node_id = ?)");
+
+	db_prepare_stmt(&itemsetMarkAllPopupStmt,
+	                "UPDATE items SET popup = 0 WHERE ROWID IN "
+			"(SELECT item_id FROM itemsets WHERE node_id = ?)");		
 
 	db_prepare_stmt(&itemLoadStmt,	
 	               "SELECT "
@@ -130,6 +152,7 @@ void db_init(void) {
 	               "items.read,"
 	               "items.new,"
 	               "items.updated,"
+	               "items.popup,"
 	               "items.marked,"
 	               "items.source,"
 	               "items.source_id,"
@@ -150,6 +173,7 @@ void db_init(void) {
 	               "read,"
 	               "new,"
 	               "updated,"
+	               "popup,"
 	               "marked,"
 	               "source,"
 	               "source_id,"
@@ -159,7 +183,7 @@ void db_init(void) {
 	               "description,"
 	               "date,"
 	               "ROWID"
-	               ") values (?,?,?,?,?,?,?,?,?,?,?,?,?)");
+	               ") values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 	
 	db_prepare_stmt(&itemUpdateStmt,
 	               "UPDATE items SET "
@@ -167,6 +191,7 @@ void db_init(void) {
 	               "read=?,"
 	               "new=?,"
 	               "updated=?,"
+	               "popup=?,"
 	               "marked=?,"
 	               "source=?,"
 	               "source_id=?,"
@@ -192,6 +217,10 @@ void db_deinit(void) {
 	sqlite3_finalize(itemsetReadCountStmt);
 	sqlite3_finalize(itemsetRemoveStmt);
 	sqlite3_finalize(itemsetRemoveAllStmt);
+	sqlite3_finalize(itemsetMarkAllReadStmt);
+	sqlite3_finalize(itemsetMarkAllOldStmt);
+	sqlite3_finalize(itemsetMarkAllUpdatedStmt);
+	sqlite3_finalize(itemsetMarkAllPopupStmt);
 	
 	sqlite3_finalize(itemLoadStmt);
 	sqlite3_finalize(itemInsertStmt);
@@ -212,18 +241,19 @@ static itemPtr db_load_item_from_columns(sqlite3_stmt *stmt) {
 	item->readStatus	= sqlite3_column_int(stmt, 1)?TRUE:FALSE;
 	item->newStatus		= sqlite3_column_int(stmt, 2)?TRUE:FALSE;
 	item->updateStatus	= sqlite3_column_int(stmt, 3)?TRUE:FALSE;
-	item->flagStatus	= sqlite3_column_int(stmt, 4)?TRUE:FALSE;
-	item->validGuid		= sqlite3_column_int(stmt, 7)?TRUE:FALSE;
-	item->time		= sqlite3_column_int(stmt, 11);
-	item->id		= sqlite3_column_int(stmt, 12);
-	item->node		= node_from_id(sqlite3_column_text(stmt, 13));
+	item->popupStatus	= sqlite3_column_int(stmt, 4)?TRUE:FALSE;
+	item->flagStatus	= sqlite3_column_int(stmt, 5)?TRUE:FALSE;
+	item->validGuid		= sqlite3_column_int(stmt, 8)?TRUE:FALSE;
+	item->time		= sqlite3_column_int(stmt, 12);
+	item->id		= sqlite3_column_int(stmt, 13);
+	item->node		= node_from_id(sqlite3_column_text(stmt, 14));
 
 	item_set_title			(item, sqlite3_column_text(stmt, 0));
-	item_set_source			(item, sqlite3_column_text(stmt, 5));
-	item_set_id			(item, sqlite3_column_text(stmt, 6));	
-	item_set_real_source_url	(item, sqlite3_column_text(stmt, 8));
-	item_set_real_source_title	(item, sqlite3_column_text(stmt, 9));
-	item_set_description		(item, sqlite3_column_text(stmt, 10));
+	item_set_source			(item, sqlite3_column_text(stmt, 6));
+	item_set_id			(item, sqlite3_column_text(stmt, 7));	
+	item_set_real_source_url	(item, sqlite3_column_text(stmt, 9));
+	item_set_real_source_title	(item, sqlite3_column_text(stmt, 10));
+	item_set_description		(item, sqlite3_column_text(stmt, 11));
 
 	return item;
 }
@@ -322,15 +352,16 @@ static void db_item_insert(itemPtr item) {
 	sqlite3_bind_int (itemInsertStmt, 2,  item->readStatus?1:0);
 	sqlite3_bind_int (itemInsertStmt, 3,  item->newStatus?1:0);
 	sqlite3_bind_int (itemInsertStmt, 4,  item->updateStatus?1:0);
-	sqlite3_bind_int (itemInsertStmt, 5,  item->flagStatus?1:0);
-	sqlite3_bind_text(itemInsertStmt, 6,  item->source, -1, SQLITE_TRANSIENT);
-	sqlite3_bind_text(itemInsertStmt, 7,  item->sourceId, -1, SQLITE_TRANSIENT);
-	sqlite3_bind_int (itemInsertStmt, 8,  item->validGuid?1:0);
-	sqlite3_bind_text(itemInsertStmt, 9,  item->real_source_url, -1, SQLITE_TRANSIENT);
-	sqlite3_bind_text(itemInsertStmt, 10, item->real_source_title, -1, SQLITE_TRANSIENT);
-	sqlite3_bind_text(itemInsertStmt, 11, item->description, -1, SQLITE_TRANSIENT);
-	sqlite3_bind_int (itemInsertStmt, 12, item->time);
-	sqlite3_bind_int (itemInsertStmt, 13, item->id);
+	sqlite3_bind_int (itemInsertStmt, 5,  item->popupStatus?1:0);
+	sqlite3_bind_int (itemInsertStmt, 6,  item->flagStatus?1:0);
+	sqlite3_bind_text(itemInsertStmt, 7,  item->source, -1, SQLITE_TRANSIENT);
+	sqlite3_bind_text(itemInsertStmt, 8,  item->sourceId, -1, SQLITE_TRANSIENT);
+	sqlite3_bind_int (itemInsertStmt, 9,  item->validGuid?1:0);
+	sqlite3_bind_text(itemInsertStmt, 10,  item->real_source_url, -1, SQLITE_TRANSIENT);
+	sqlite3_bind_text(itemInsertStmt, 11, item->real_source_title, -1, SQLITE_TRANSIENT);
+	sqlite3_bind_text(itemInsertStmt, 12, item->description, -1, SQLITE_TRANSIENT);
+	sqlite3_bind_int (itemInsertStmt, 13, item->time);
+	sqlite3_bind_int (itemInsertStmt, 14, item->id);
 	res = sqlite3_step(itemInsertStmt);
 	if(SQLITE_DONE != res) 
 		g_warning("Insert in \"items\" table failed (error code=%d, %s)", res, sqlite3_errmsg(db));
@@ -349,15 +380,16 @@ void db_item_update(itemPtr item) {
 		sqlite3_bind_int (itemUpdateStmt, 2,  item->readStatus?1:0);
 		sqlite3_bind_int (itemUpdateStmt, 3,  item->newStatus?1:0);
 		sqlite3_bind_int (itemUpdateStmt, 4,  item->updateStatus?1:0);
-		sqlite3_bind_int (itemUpdateStmt, 5,  item->flagStatus?1:0);
-		sqlite3_bind_text(itemUpdateStmt, 6,  item->source, -1, SQLITE_TRANSIENT);
-		sqlite3_bind_text(itemUpdateStmt, 7,  item->sourceId, -1, SQLITE_TRANSIENT);
-		sqlite3_bind_int (itemUpdateStmt, 8,  item->validGuid?1:0);
-		sqlite3_bind_text(itemUpdateStmt, 9,  item->real_source_url, -1, SQLITE_TRANSIENT);
-		sqlite3_bind_text(itemUpdateStmt, 10, item->real_source_title, -1, SQLITE_TRANSIENT);
-		sqlite3_bind_text(itemUpdateStmt, 11, item->description, -1, SQLITE_TRANSIENT);
-		sqlite3_bind_int (itemUpdateStmt, 12, item->time);
-		sqlite3_bind_int (itemUpdateStmt, 13, item->id);
+		sqlite3_bind_int (itemUpdateStmt, 5,  item->popupStatus?1:0);
+		sqlite3_bind_int (itemUpdateStmt, 6,  item->flagStatus?1:0);
+		sqlite3_bind_text(itemUpdateStmt, 7,  item->source, -1, SQLITE_TRANSIENT);
+		sqlite3_bind_text(itemUpdateStmt, 8,  item->sourceId, -1, SQLITE_TRANSIENT);
+		sqlite3_bind_int (itemUpdateStmt, 9,  item->validGuid?1:0);
+		sqlite3_bind_text(itemUpdateStmt, 10,  item->real_source_url, -1, SQLITE_TRANSIENT);
+		sqlite3_bind_text(itemUpdateStmt, 11, item->real_source_title, -1, SQLITE_TRANSIENT);
+		sqlite3_bind_text(itemUpdateStmt, 12, item->description, -1, SQLITE_TRANSIENT);
+		sqlite3_bind_int (itemUpdateStmt, 13, item->time);
+		sqlite3_bind_int (itemUpdateStmt, 14, item->id);
 		res = sqlite3_step(itemUpdateStmt);
 
 		if(SQLITE_DONE != res) 
@@ -396,14 +428,56 @@ void db_itemset_remove_all(const gchar *id) {
 }
 
 void db_itemset_mark_all_read(const gchar *id) {
+	gint	res;
+	
+	debug1(DEBUG_DB, "marking all items read for item set with %s", id);
+		
+	sqlite3_reset(itemsetMarkAllReadStmt);
+	sqlite3_bind_text(itemsetMarkAllReadStmt, 1, id, -1, SQLITE_TRANSIENT);
+	res = sqlite3_step(itemsetMarkAllReadStmt);
+
+	if(SQLITE_DONE != res)
+		g_warning("marking all items read failed (error code=%d, %s)", res, sqlite3_errmsg(db));
 }
 
-void db_itemset_mark_all_popup(const gchar *id) {
+void db_itemset_mark_all_updated(const gchar *id) {
+	gint	res;
+	
+	debug1(DEBUG_DB, "marking all items updared for item set with %s", id);
+		
+	sqlite3_reset(itemsetMarkAllUpdatedStmt);
+	sqlite3_bind_text(itemsetMarkAllUpdatedStmt, 1, id, -1, SQLITE_TRANSIENT);
+	res = sqlite3_step(itemsetMarkAllUpdatedStmt);
+
+	if(SQLITE_DONE != res)
+		g_warning("marking all items updated failed (error code=%d, %s)", res, sqlite3_errmsg(db));
 }
 
 void db_itemset_mark_all_old(const gchar *id) {
+	gint	res;
+	
+	debug1(DEBUG_DB, "marking all items old for item set with %s", id);
+		
+	sqlite3_reset(itemsetMarkAllOldStmt);
+	sqlite3_bind_text(itemsetMarkAllOldStmt, 1, id, -1, SQLITE_TRANSIENT);
+	res = sqlite3_step(itemsetMarkAllOldStmt);
+
+	if(SQLITE_DONE != res)
+		g_warning("marking all items old failed (error code=%d, %s)", res, sqlite3_errmsg(db));
 }
 
+void db_itemset_mark_all_popup(const gchar *id) {
+	gint	res;
+	
+	debug1(DEBUG_DB, "marking all items popup for item set with %s", id);
+		
+	sqlite3_reset(itemsetMarkAllPopupStmt);
+	sqlite3_bind_text(itemsetMarkAllPopupStmt, 1, id, -1, SQLITE_TRANSIENT);
+	res = sqlite3_step(itemsetMarkAllPopupStmt);
+
+	if(SQLITE_DONE != res)
+		g_warning("marking all items popup failed (error code=%d, %s)", res, sqlite3_errmsg(db));
+}
 /* Statistics interface */
 
 guint db_itemset_get_unread_count(const gchar *id) {

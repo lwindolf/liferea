@@ -208,6 +208,19 @@ void itemview_update_item(itemPtr item) {
 	htmlview_update_item(item);
 }
 
+void itemview_update_all_items(void) {
+
+	if(!itemView_priv.node)
+		return;
+		
+	/* Always update the GtkTreeView (bail-out done in ui_itemlist_update_item() */
+	if(ITEMVIEW_ALL_ITEMS != itemView_priv.mode)
+		ui_itemlist_update_all_items();
+		
+	itemView_priv.needsHTMLViewUpdate = TRUE;
+	htmlview_clear();	/* enforce rerendering */
+}
+
 void itemview_update_node_info(nodePtr node) {
 
 	if(!itemView_priv.node)

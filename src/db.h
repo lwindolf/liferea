@@ -18,6 +18,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#ifndef _DB_H
+#define _DB_H
+
 #include <glib.h>
 
 #include "item.h"
@@ -54,14 +57,14 @@ void		db_itemset_remove_all(const gchar *id);
 
 /**
  * Mass items state changing methods. Mark all items of
- * a given item set as read/popup/old.
+ * a given item set as read/updated/old/popup.
  *
  * @param id	the node id
  */
 void		db_itemset_mark_all_read(const gchar *id);
-void		db_itemset_mark_all_popup(const gchar *id);
+void		db_itemset_mark_all_updated(const gchar *id);
 void		db_itemset_mark_all_old(const gchar *id);
-
+void		db_itemset_mark_all_popup(const gchar *id);
 /**
  * Returns the number of unread items for the given item set.
  *
@@ -96,4 +99,4 @@ void	db_item_update(itemPtr item);
  */
 void	db_item_remove(gulong id);
 
-
+#endif
