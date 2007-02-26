@@ -591,7 +591,7 @@ gint common_save_xml(xmlDocPtr doc, gchar *filename) {
 #define	TIMESTRLEN	256
 
 gchar * common_format_date(time_t date, const gchar *date_format) {
-	gchar		*result;
+	gchar		*result, *formbuf;
 	struct tm	date_tm;
 	
 	if (date == 0) {
@@ -601,7 +601,9 @@ gchar * common_format_date(time_t date, const gchar *date_format) {
 	localtime_r (&date, &date_tm);
 	
 	result = g_new0(gchar, TIMESTRLEN);
-	strftime(result, TIMESTRLEN, date_format, &date_tm);
+	formbuf = g_locale_from_utf8 (date_format, -1, NULL, NULL, NULL);
+	strftime(result, TIMESTRLEN, formbuf, &date_tm);
+	g_free(formbuf);
 	return result;
 }
 
@@ -610,7 +612,7 @@ gchar * common_format_nice_date(time_t date) {
 	time_t nowdate = time(NULL);
 	time_t yesdate;
 	struct tm then, now, yesterday;
-	gchar *temp, *buf;
+	gchar *temp, *buf, *formbuf;
 	gboolean done = FALSE;
 	
 	if (date == 0) {
@@ -632,7 +634,9 @@ gchar * common_format_nice_date(time_t date) {
 		    then.tm_mon == now.tm_mon &&
 		    then.tm_year == now.tm_year) {
 		    	/* translation hint: date format for today, reorder format codes as necessary */
-			strftime (buf, TIMESTRLEN, _("Today %l:%M %p"), &then);
+			formbuf = g_locale_from_utf8 (_("Today %l:%M %p"), -1, NULL, NULL, NULL);
+			strftime (buf, TIMESTRLEN, formbuf, &then);
+			g_free(formbuf);
 			done = TRUE;
 		}
 	}
@@ -643,7 +647,9 @@ gchar * common_format_nice_date(time_t date) {
 		    then.tm_mon == yesterday.tm_mon &&
 		    then.tm_year == yesterday.tm_year) {
 		    	/* translation hint: date format for yesterday, reorder format codes as necessary */
-			strftime(buf, TIMESTRLEN, _("Yesterday %l:%M %p"), &then);
+			formbuf = g_locale_from_utf8 (_("Yesterday %l:%M %p"), -1, NULL, NULL, NULL);
+			strftime (buf, TIMESTRLEN, formbuf, &then);
+			g_free(formbuf);
 			done = TRUE;
 		}
 	}
@@ -656,7 +662,9 @@ gchar * common_format_nice_date(time_t date) {
 			    then.tm_mon == yesterday.tm_mon &&
 			    then.tm_year == yesterday.tm_year) {
 			    	/* translation hint: date format for dates older than 2 days but not older than a week, reorder format codes as necessary */
-				strftime (buf, TIMESTRLEN, _("%a %l:%M %p"), &then);
+				formbuf = g_locale_from_utf8 (_("%a %l:%M %p"), -1, NULL, NULL, NULL);
+				strftime (buf, TIMESTRLEN, formbuf, &then);
+				g_free(formbuf);
 				done = TRUE;
 				break;
 			}
@@ -665,10 +673,14 @@ gchar * common_format_nice_date(time_t date) {
 	if (!done) {
 		if (then.tm_year == now.tm_year) {
 			/* translation hint: date format for dates older than a week but from this year, reorder format codes as necessary */
-			strftime (buf, TIMESTRLEN, _("%b %d %l:%M %p"), &then);
+			formbuf = g_locale_from_utf8 (_("%b %d %l:%M %p"), -1, NULL, NULL, NULL);
+			strftime (buf, TIMESTRLEN, formbuf, &then);
+			g_free(formbuf);
 		} else {
 			/* translation hint: date format for dates from the last years, reorder format codes as necessary */
-			strftime (buf, TIMESTRLEN, _("%b %d %Y"), &then);
+			formbuf = g_locale_from_utf8 (_("%b %d %Y"), -1, NULL, NULL, NULL);
+			strftime (buf, TIMESTRLEN, formbuf, &then);
+			g_free(formbuf);
 		}
 	}
 
