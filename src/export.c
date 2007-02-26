@@ -156,7 +156,7 @@ gboolean export_OPML_feedlist(const gchar *filename, nodePtr node, gboolean trus
 	g_free(backupFilename);
 	
 	debug_exit("export_OPML_feedlist");
-	return error;
+	return !error;
 }
 
 void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, nodeSourcePtr nodeSource, gboolean trusted) {
