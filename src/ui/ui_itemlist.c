@@ -48,6 +48,11 @@ static GtkWidget 	*itemlist_treeview = NULL;
 
 /* helper functions for item <-> iter conversion */
 
+gboolean ui_itemlist_contains_item(gulong id) {
+
+	return (NULL != g_hash_table_lookup(item_id_to_iter, GUINT_TO_POINTER(id)));
+}
+
 static gulong ui_iter_to_item_id(GtkTreeIter *iter) {
 	gulong	id = 0;
 	
@@ -58,7 +63,7 @@ static gulong ui_iter_to_item_id(GtkTreeIter *iter) {
 static gboolean ui_item_id_to_iter(gulong id, GtkTreeIter *iter) {
 	GtkTreeIter *old_iter;
 
-	old_iter = g_hash_table_lookup(item_id_to_iter, (gpointer)id);
+	old_iter = g_hash_table_lookup(item_id_to_iter, GUINT_TO_POINTER(id));
 	if(!old_iter) {
 		return FALSE;
 	} else {
@@ -148,11 +153,12 @@ void ui_itemlist_remove_item(itemPtr item) {
 	GtkTreeIter	*iter;
 
 	g_assert(NULL != item);
-	if(NULL != (iter = g_hash_table_lookup(item_id_to_iter, (gpointer)item))) {
+	iter = g_hash_table_lookup(item_id_to_iter, GUINT_TO_POINTER(item->id));
+	if(iter) {
 		gtk_tree_store_remove(ui_itemlist_get_tree_store(), iter);
-		g_hash_table_remove(item_id_to_iter, (gpointer)item);
+		g_hash_table_remove(item_id_to_iter, GUINT_TO_POINTER(item->id));
 	} else {
-		/*g_warning("item to be removed not found in tree iter lookup hash!");*/
+		g_warning("Fatal: item to be removed not found in iter lookup hash!");
 	}
 }
 
@@ -369,7 +375,7 @@ void ui_itemlist_add_item(itemPtr item) {
 		if(!exists) {
 			iter = g_new0(GtkTreeIter, 1);
 			gtk_tree_store_prepend(itemstore, iter, NULL);
-			g_hash_table_insert(item_id_to_iter, (gpointer)item->id, (gpointer)iter);
+			g_hash_table_insert(item_id_to_iter, GUINT_TO_POINTER(item->id), (gpointer)iter);
 		}
 		
 		if(item->flagStatus)

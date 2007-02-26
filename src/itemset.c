@@ -268,6 +268,11 @@ void itemset_set_item_popup_status(itemSetPtr itemSet, itemPtr item, gboolean ne
 }
 
 void itemset_free(itemSetPtr itemSet) {
-
-	g_warning("FIXME: itemset_free()");
+	GList	*iter = itemSet->items;
+	
+	while(iter) {
+		item_unload(iter->data);
+		iter = g_list_next(iter);
+	}
+	g_free(itemSet);
 }

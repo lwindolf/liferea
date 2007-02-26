@@ -138,18 +138,6 @@ void itemview_set_displayed_node(nodePtr node) {
 	}
 }
 
-static gboolean itemview_is_affected(itemPtr item) {
-
-	if(!itemView_priv.node)
-		return FALSE;
-
-	// FIXME: check if item in affected itemset
-	if(!node_is_ancestor(itemView_priv.node, item->node))
-		return FALSE;
-		
-	return TRUE;
-}
-
 void itemview_add_item(itemPtr item) {
 
 	if(ITEMVIEW_ALL_ITEMS != itemView_priv.mode)
@@ -164,7 +152,7 @@ void itemview_add_item(itemPtr item) {
 
 void itemview_remove_item(itemPtr item) {
 
-	if(!itemview_is_affected(item))
+	if(!ui_itemlist_contains_item(item->id))
 		return;
 		
 	if(ITEMVIEW_ALL_ITEMS != itemView_priv.mode)
@@ -201,12 +189,13 @@ void itemview_update_item(itemPtr item) {
 	switch(itemView_priv.mode) {
 		case ITEMVIEW_ALL_ITEMS:
 			/* No HTML update needed if 2 pane mode and item not in item set */
-			if(!itemview_is_affected(item))
+			if(!ui_itemlist_contains_item(item->id))
 				return;
 			break;
 		case ITEMVIEW_SINGLE_ITEM:		
 			/* No HTML update needed if 3 pane mode and item not displayed */
-			if((item != itemlist_get_selected()) && !itemview_is_affected(item))
+			if((item != itemlist_get_selected()) && 
+			   !ui_itemlist_contains_item(item->id))
 				return;
 			break;
 		default:

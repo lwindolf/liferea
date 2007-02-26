@@ -49,6 +49,15 @@ enum is_columns {
  */
 GtkWidget* ui_itemlist_new();
 
+/**
+ * Checks wether the given id is currently displayed.
+ *
+ * @param id	the item id
+ *
+ * @returns TRUE if the item is in the tree view 
+ */
+gboolean ui_itemlist_contains_item(gulong id);
+
 void ui_itemlist_reset_tree_store(void);
 
 /**

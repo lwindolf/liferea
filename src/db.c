@@ -28,12 +28,16 @@
 
 static sqlite3 *db = NULL;
 
-static sqlite3_stmt *itemLoadStmt = NULL;
-static sqlite3_stmt *itemInsertStmt = NULL;
-static sqlite3_stmt *itemUpdateStmt = NULL;
 static sqlite3_stmt *itemsetLoadStmt = NULL;
 static sqlite3_stmt *itemsetInsertStmt = NULL;
 static sqlite3_stmt *itemsetReadCountStmt = NULL;
+static sqlite3_stmt *itemsetRemoveStmt = NULL;
+static sqlite3_stmt *itemsetRemoveAllStmt = NULL;
+
+static sqlite3_stmt *itemLoadStmt = NULL;
+static sqlite3_stmt *itemInsertStmt = NULL;
+static sqlite3_stmt *itemUpdateStmt = NULL;
+static sqlite3_stmt *itemRemoveStmt = NULL;
 
 static const gchar *schema_items = "\
 CREATE TABLE items ( \
@@ -58,11 +62,18 @@ CREATE TABLE itemsets ( \
 ); \
 CREATE INDEX itemset_idx ON itemsets (node_id);";
 
+static void db_prepare_stmt(sqlite3_stmt **stmt, gchar *sql) {
+	gint		res;	
+	const char	*left;
+		
+	res = sqlite3_prepare(db, sql, -1, stmt, &left);
+	if(SQLITE_OK != res)
+		g_error("Failure while preparing statement, (error=%d, %s) SQL: \"%s\"", res, sqlite3_errmsg(db), sql);
+}
+
 /* opening or creation of database */
 void db_init(void) {
-	gchar		*filename, *sql;
-	const char	*left;
-	gint		res;	
+	gchar		*filename;
 		
 	debug_enter("db_init");
 
@@ -78,8 +89,9 @@ void db_init(void) {
 	sqlite3_exec(db, schema_itemsets,	NULL, NULL, NULL);
 
 	/* prepare statements */
-		
-	sql = g_strdup("SELECT "
+	
+	db_prepare_stmt(&itemsetLoadStmt,
+	               "SELECT "
 	               "items.title,"
 	               "items.read,"
 	               "items.new,"
@@ -97,26 +109,23 @@ void db_init(void) {
 	               " FROM items INNER JOIN itemsets "
 	               "ON items.ROWID = itemsets.item_id "
 	               "WHERE itemsets.node_id = ?");		      
-	res = sqlite3_prepare(db, sql, -1, &itemsetLoadStmt, &left);
-	if(SQLITE_OK != res)
-		g_error("Failure while preparing statement, (error=%d, %s) SQL: \"%s\"", res, sqlite3_errmsg(db), sql);
-	g_free(sql);
 	
-	sql = g_strdup("INSERT INTO itemsets (item_id,node_id) VALUES (?,?)");
-	res = sqlite3_prepare(db, sql, -1, &itemsetInsertStmt, &left);
-	if(SQLITE_OK != res) 
-		g_error("Failure while preparing statement, (error=%d, %s) SQL: \"%s\"", res, sqlite3_errmsg(db), sql);
-	g_free(sql);
+	db_prepare_stmt(&itemsetInsertStmt,
+	                "INSERT INTO itemsets (item_id,node_id) VALUES (?,?)");
 	
-	sql = g_strdup("SELECT COUNT(*) FROM items INNER JOIN itemsets "
+	db_prepare_stmt(&itemsetReadCountStmt,
+	               "SELECT COUNT(*) FROM items INNER JOIN itemsets "
 	               "ON items.ROWID = itemsets.item_id "
 		       "WHERE items.read = 0 AND node_id = ?");
-	res = sqlite3_prepare(db, sql, -1, &itemsetReadCountStmt, &left);
-	if(SQLITE_OK != res) 
-		g_error("Failure while preparing statement (error=%d, %s) SQL: \"%s\"", res, sqlite3_errmsg(db), sql);
-	g_free(sql);
-	
-	sql = g_strdup("SELECT "
+		       
+	db_prepare_stmt(&itemsetRemoveStmt,
+	                "DELETE FROM itemsets WHERE item_id = ?");
+			
+	db_prepare_stmt(&itemsetRemoveAllStmt,
+	                "DELETE FROM itemsets WHERE node_id = ?");
+
+	db_prepare_stmt(&itemLoadStmt,	
+	               "SELECT "
 	               "items.title,"
 	               "items.read,"
 	               "items.new,"
@@ -134,12 +143,9 @@ void db_init(void) {
 	               " FROM items INNER JOIN itemsets "
 	               "ON items.ROWID = itemsets.item_id "
 	               "WHERE items.ROWID = ?");      
-	res = sqlite3_prepare(db, sql, -1, &itemLoadStmt, &left);
-	if(SQLITE_OK != res)
-		g_error("Failure while preparing statement, (error=%d, %s) SQL: \"%s\"", res, sqlite3_errmsg(db), sql);
-	g_free(sql);
 	
-	sql = g_strdup("INSERT INTO items ("
+	db_prepare_stmt(&itemInsertStmt,
+	               "INSERT INTO items ("
 	               "title,"
 	               "read,"
 	               "new,"
@@ -154,12 +160,9 @@ void db_init(void) {
 	               "date,"
 	               "ROWID"
 	               ") values (?,?,?,?,?,?,?,?,?,?,?,?,?)");
-	res = sqlite3_prepare(db, sql, -1, &itemInsertStmt, &left);
-	if(SQLITE_OK != res) 
-		g_error("Failure while preparing statement, (error=%d, %s) SQL: \"%s\"", res, sqlite3_errmsg(db), sql);
-	g_free(sql);
 	
-	sql = g_strdup("UPDATE items SET "
+	db_prepare_stmt(&itemUpdateStmt,
+	               "UPDATE items SET "
 	               "title=?,"
 	               "read=?,"
 	               "new=?,"
@@ -173,10 +176,9 @@ void db_init(void) {
 	               "description=?,"
 	               "date=? "
 	               "WHERE ROWID=?");
-	res = sqlite3_prepare(db, sql, -1, &itemUpdateStmt, &left);
-	if(SQLITE_OK != res) 
-		g_error("Failure while preparing statement, (error=%d, %s) SQL: \"%s\"", res, sqlite3_errmsg(db), sql);
-	g_free(sql);
+		       
+	db_prepare_stmt(&itemRemoveStmt,
+	                "DELETE FROM items WHERE ROWID = ?");
 	
 	debug_exit("db_init");
 }
@@ -184,13 +186,17 @@ void db_init(void) {
 void db_deinit(void) {
 
 	debug_enter("db_deinit");
-
-	sqlite3_finalize(itemLoadStmt);
-	sqlite3_finalize(itemInsertStmt);
-	sqlite3_finalize(itemUpdateStmt);
+	
 	sqlite3_finalize(itemsetLoadStmt);
 	sqlite3_finalize(itemsetInsertStmt);
 	sqlite3_finalize(itemsetReadCountStmt);
+	sqlite3_finalize(itemsetRemoveStmt);
+	sqlite3_finalize(itemsetRemoveAllStmt);
+	
+	sqlite3_finalize(itemLoadStmt);
+	sqlite3_finalize(itemInsertStmt);
+	sqlite3_finalize(itemUpdateStmt);
+	sqlite3_finalize(itemRemoveStmt);
 		
 	if(SQLITE_OK != sqlite3_close(db))
 		g_warning("DB close failed: %s", sqlite3_errmsg(db));
@@ -364,9 +370,29 @@ void db_item_update(itemPtr item) {
 }
 
 void db_item_remove(gulong id) {
+	gint	res;
+	
+	debug1(DEBUG_DB, "removing item with id %lu", id);
+	
+	sqlite3_reset(itemsetRemoveStmt);
+	sqlite3_bind_int(itemsetRemoveStmt, 1, id);
+	res = sqlite3_step(itemsetRemoveStmt);
+
+	if(SQLITE_DONE != res)
+		g_warning("item remove failed (error code=%d, %s)", res, sqlite3_errmsg(db));
 }
 
 void db_itemset_remove_all(const gchar *id) {
+	gint	res;
+	
+	debug1(DEBUG_DB, "removing all itesm for item set with %s", id);
+		
+	sqlite3_reset(itemsetRemoveAllStmt);
+	sqlite3_bind_text(itemsetRemoveAllStmt, 1, id, -1, SQLITE_TRANSIENT);
+	res = sqlite3_step(itemsetRemoveAllStmt);
+
+	if(SQLITE_DONE != res)
+		g_warning("removing all items failed (error code=%d, %s)", res, sqlite3_errmsg(db));
 }
 
 void db_itemset_mark_all_read(const gchar *id) {
@@ -388,7 +414,7 @@ guint db_itemset_get_unread_count(const gchar *id) {
 	sqlite3_bind_text(itemsetReadCountStmt, 1, id, -1, SQLITE_TRANSIENT);
 	res = sqlite3_step(itemsetReadCountStmt);
 	
-	if(SQLITE_DONE)
+	if(SQLITE_ROW == res)
 		count = sqlite3_column_int(itemsetReadCountStmt, 0);
 	else
 		g_warning("item read counting failed (error code=%d, %s)", res, sqlite3_errmsg(db));
