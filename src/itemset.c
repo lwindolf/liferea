@@ -264,7 +264,7 @@ void itemset_set_item_popup_status(itemSetPtr itemSet, itemPtr item, gboolean ne
 	/* Currently no node popup counter needed, therefore
 	   no propagation to nodes... */
 	
-	/* Popup status is never propagated to vfolders... */
+	/* Popup status is never propagated to search folders... */
 }
 
 void itemset_free(itemSetPtr itemSet) {

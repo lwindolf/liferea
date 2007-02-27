@@ -18,16 +18,40 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "folder.h"
 #include "common.h"
 #include "conf.h"
+#include "db.h"
 #include "debug.h"
 #include "export.h"
 #include "feedlist.h"
+#include "folder.h"
+#include "itemset.h"
+#include "node.h"
 #include "support.h"
 #include "ui/ui_folder.h"
 #include "ui/ui_node.h"
-#include "fl_sources/node_source.h"
+
+static void folder_merge_child_items(nodePtr node, gpointer user_data) {
+	itemSetPtr	folderItemSet = (itemSetPtr)user_data;
+	itemSetPtr	nodeItemSet;
+	
+	nodeItemSet = db_itemset_load(node->id);
+	folderItemSet->items = g_list_concat(folderItemSet->items, nodeItemSet->items);
+	nodeItemSet->items = NULL;
+	itemset_free(nodeItemSet);
+}
+
+static itemSetPtr folder_load(nodePtr node) {
+	itemSetPtr	itemSet;
+	
+	itemSet = g_new0(struct itemSet, 1);
+	itemSet->node = node;
+	
+	/* recursively load all child nodes */
+	node_foreach_child_data(node, folder_merge_child_items, itemSet);
+	
+	return itemSet;
+}
 
 static void folder_import(nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean trusted) {
 	
@@ -103,6 +127,7 @@ nodeTypePtr folder_get_node_type(void) {
 		NODE_TYPE_FOLDER,
 		folder_import,
 		folder_export,
+		folder_load,
 		folder_save,
 		folder_reset_update_counter,
 		folder_request_update,
@@ -133,6 +158,7 @@ nodeTypePtr root_get_node_type(void) {
 		NODE_TYPE_ROOT,
 		folder_import,
 		folder_export,
+		folder_load,
 		folder_save,
 		folder_reset_update_counter,
 		folder_request_update,

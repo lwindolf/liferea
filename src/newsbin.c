@@ -141,10 +141,12 @@ nodeTypePtr newsbin_get_node_type(void) {
 		/* derive the plugin node type from the folder node type */
 		nodeType = (nodeTypePtr)g_new0(struct nodeType, 1);
 		nodeType->capabilities		= NODE_CAPABILITY_RECEIVE_ITEMS |
-		                                  NODE_CAPABILITY_SHOW_UNREAD_COUNT;
+		                                  NODE_CAPABILITY_SHOW_UNREAD_COUNT |
+		                                  NODE_CAPABILITY_SHOW_ITEM_COUNT;
 		nodeType->id			= "newsbin";
 		nodeType->icon			= icons[ICON_NEWSBIN];
 		nodeType->type			= NODE_TYPE_NEWSBIN;
+		nodeType->load			= feed_get_node_type()->load;		
 		nodeType->import		= newsbin_import;
 		nodeType->export		= feed_get_node_type()->export;
 		nodeType->save			= feed_get_node_type()->save;

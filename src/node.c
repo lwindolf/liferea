@@ -358,6 +358,11 @@ void node_export(nodePtr node, xmlNodePtr cur, gboolean trusted) {
 	NODE_TYPE(node)->export(node, cur, trusted);
 }
 
+itemSetPtr node_get_itemset(nodePtr node) {
+	
+	return NODE_TYPE(node)->load(node);
+}
+
 void node_save(nodePtr node) {
 	NODE_TYPE(node)->save(node);
 }
@@ -393,14 +398,6 @@ void node_request_properties(nodePtr node) {
 }
 
 /* node attributes encapsulation */
-
-itemSetPtr node_get_itemset(nodePtr node) {
-	itemSetPtr	itemSet;
-	
-	itemSet = db_itemset_load(node->id);
-	itemSet->node = node;
-	return itemSet;
-}
 
 void node_set_title(nodePtr node, const gchar *title) {
 

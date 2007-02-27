@@ -35,6 +35,7 @@
 
 #include "conf.h"
 #include "common.h"
+#include "db.h"
 #include "debug.h"
 #include "favicon.h"
 #include "feed.h"
@@ -999,6 +1000,11 @@ static void feed_process_update_result(struct request *request) {
 
 /* implementation of the node type interface */
 
+static itemSetPtr feed_load(nodePtr node) {
+
+	return db_itemset_load(node->id);
+}
+
 static void feed_save(nodePtr node) {
 
 	if(FALSE == node->needsCacheSave)
@@ -1105,6 +1111,7 @@ nodeTypePtr feed_get_node_type(void) {
 		NODE_TYPE_FEED,
 		feed_import,
 		feed_export,
+		feed_load,
 		feed_save,
 		feed_reset_update_counter,
 		feed_request_update,

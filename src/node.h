@@ -105,17 +105,18 @@ typedef struct nodeType {
 	
 	/* For method documentation see the wrappers defined below! 
 	   All methods are mandatory for each node type. */
-	void    (*import)		(nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean trusted);
-	void    (*export)		(nodePtr node, xmlNodePtr cur, gboolean trusted);
-	void 	(*save)			(nodePtr node);
-	void	(*reset_update_counter)	(nodePtr node);
-	void	(*request_update)	(nodePtr node, guint flags);
-	void 	(*request_auto_update)	(nodePtr node);
-	void	(*remove)		(nodePtr node);
-	void 	(*mark_all_read)	(nodePtr node);
-	gchar * (*render)		(nodePtr node);
-	void	(*request_add)		(nodePtr parent);
-	void	(*request_properties)	(nodePtr node);
+	void    	(*import)		(nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean trusted);
+	void    	(*export)		(nodePtr node, xmlNodePtr cur, gboolean trusted);
+	itemSetPtr	(*load)			(nodePtr node);
+	void 		(*save)			(nodePtr node);
+	void		(*reset_update_counter)	(nodePtr node);
+	void		(*request_update)	(nodePtr node, guint flags);
+	void 		(*request_auto_update)	(nodePtr node);
+	void		(*remove)		(nodePtr node);
+	void 		(*mark_all_read)	(nodePtr node);
+	gchar *		(*render)		(nodePtr node);
+	void		(*request_add)		(nodePtr parent);
+	void		(*request_properties)	(nodePtr node);
 } *nodeTypePtr;
 
 #define NODE_TYPE(node)	(node->nodeType)

@@ -98,6 +98,11 @@ static void vfolder_import_rules(xmlNodePtr cur, vfolderPtr vp) {
 	}
 }
 
+static itemSetPtr vfolder_load(nodePtr node) {
+
+	return NULL;
+}
+
 static void vfolder_import(nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean trusted) {
 	vfolderPtr vfolder;
 
@@ -224,6 +229,7 @@ nodeTypePtr vfolder_get_node_type(void) {
 		NODE_TYPE_VFOLDER,
 		vfolder_import,
 		vfolder_export,
+		vfolder_load,
 		vfolder_save,
 		vfolder_reset_update_counter,
 		vfolder_request_update,
