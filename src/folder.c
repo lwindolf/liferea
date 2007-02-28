@@ -45,7 +45,7 @@ static itemSetPtr folder_load(nodePtr node) {
 	
 	itemSet = g_new0(struct itemSet, 1);
 	itemSet->node = node;
-g_print("folder merge: %s\n", node->title);	
+
 	node_foreach_child_data(node, folder_merge_child_items, itemSet);
 	
 	return itemSet;

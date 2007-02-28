@@ -90,26 +90,16 @@ void htmlview_update_item(itemPtr item) {
 	g_hash_table_insert(htmlView_priv.htmlChunks, item, NULL);
 }
 
-gchar * htmlview_render_item(itemPtr item) {
+static gchar * htmlview_render_item(itemPtr item, gboolean summaryMode) {
 	renderParamPtr	params;
 	gchar		*output = NULL, *baseUrl;
-	gboolean	summaryMode = FALSE;
+
 	xmlDocPtr	doc;
 
 	debug_enter("htmlview_render_item");
 
 	baseUrl = common_uri_escape(node_get_base_url(htmlView_priv.node));
 
-	/* Output optimization for feeds without item content. This
-	   is not done for folders, because we only support all items
-	   in summary mode or all in detailed mode. With folder item 
-	   sets displaying everything in summary because of only a
-	   single feed without item descriptions would make no sense. */
-	   
-	summaryMode = (NODE_TYPE_FOLDER != htmlView_priv.node->type) && 
-	              (NODE_TYPE_VFOLDER != htmlView_priv.node->type) && 
-	              (htmlView_priv.missingContent > 3);
-	
 	/* do the XML serialization */
 	doc = itemset_to_xml(htmlView_priv.node);
 			
@@ -208,6 +198,7 @@ void htmlview_update(GtkWidget *widget, guint mode) {
 	itemSetPtr	itemSet;
 	itemPtr		item = NULL;
 	gchar		*chunk,	*baseURL;
+	gboolean	summaryMode;
 		
 	if(!htmlView_priv.node) {
 		debug0(DEBUG_HTML, "clearing HTML view as nothing is selected");
@@ -229,13 +220,23 @@ void htmlview_update(GtkWidget *widget, guint mode) {
 		case ITEMVIEW_SINGLE_ITEM:
 			item = itemlist_get_selected();
 			if(item) {
-				chunk = htmlview_render_item(item);
+				chunk = htmlview_render_item(item, FALSE);
 				if(chunk)
 					g_string_append(output, chunk);
 				g_free(chunk);
 			}
 			break;
 		case ITEMVIEW_ALL_ITEMS:
+			/* Output optimization for feeds without item content. This
+			   is not done for folders, because we only support all items
+			   in summary mode or all in detailed mode. With folder item 
+			   sets displaying everything in summary because of only a
+			   single feed without item descriptions would make no sense. */
+
+			summaryMode = (NODE_TYPE_FOLDER != htmlView_priv.node->type) && 
+	        		      (NODE_TYPE_VFOLDER != htmlView_priv.node->type) && 
+	        		      (htmlView_priv.missingContent > 3);
+
 			/* concatenate all items */
 			itemSet = node_get_itemset(htmlView_priv.node);
 			iter = itemSet->items;
@@ -247,7 +248,7 @@ void htmlview_update(GtkWidget *widget, guint mode) {
 					
 				/* if not found: render new item now and add to cache */
 				if(!chunk) {
-					chunk = htmlview_render_item(iter->data);
+					chunk = htmlview_render_item(iter->data, summaryMode);
 					g_hash_table_insert(htmlView_priv.htmlChunks, iter->data, chunk);
 				}
 					
