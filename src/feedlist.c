@@ -1,7 +1,7 @@
 /**
  * @file feedlist.c feedlist handling
  *
- * Copyright (C) 2005-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2005-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *	      
  * This program is free software; you can redistribute it and/or modify
@@ -178,7 +178,7 @@ static nodePtr feedlist_unread_scan(nodePtr folder) {
 			scanState = UNREAD_SCAN_FOUND_SELECTED;
 
 		/* feed match if beyond the selected feed or in second pass... */
-		if((scanState != UNREAD_SCAN_INIT) && (node_get_unread_count(node) > 0) &&
+		if((scanState != UNREAD_SCAN_INIT) && (node->unreadCount > 0) &&
 		   (NULL == node->children) && (NODE_TYPE_VFOLDER != node->type)) {
 		       return node;
 		}
@@ -188,7 +188,7 @@ static nodePtr feedlist_unread_scan(nodePtr folder) {
 		   are beyond the selected feed and the folder contains
 		   feeds with unread items... */
 		if(node->children &&
-		   (((scanState != UNREAD_SCAN_INIT) && (node_get_unread_count(node) > 0)) ||
+		   (((scanState != UNREAD_SCAN_INIT) && (node->unreadCount > 0)) ||
 		    (selectedIter && (node_is_ancestor(node, selectedNode))))) {
 		       if(NULL != (childNode = feedlist_unread_scan(node)))
 				return childNode;
@@ -337,15 +337,15 @@ void feedlist_save(void) {
 	feedlist_schedule_save_cb(NULL);
 }
 
-/* This method is used to initially set the expansion
-   state of all nodes in the feed list */
-static void feedlist_expand_folder(nodePtr node) {
+/* This method is used to initially the node states in the feed list */
+static void feedlist_init_node(nodePtr node) {
 
 	if(node->expanded)
 		ui_node_set_expansion(node, TRUE);
 		
-	if(node->children)
-		node_foreach_child(node, feedlist_expand_folder);
+	ui_node_update(node);
+		
+	node_foreach_child(node, feedlist_init_node);
 }
 
 void feedlist_init(void) {
@@ -368,9 +368,9 @@ void feedlist_init(void) {
 	/* 2. Set up a root node and import the feed list plugins structure. */
 	rootNode = node_source_setup_root();
 
-	/* 3. Sequentially load and unload all feeds and by doing so 
-	   automatically load all vfolders */
-	feedlist_foreach(feedlist_expand_folder);
+	/* 3. Ensure correct unread count and folder expansion */
+	node_update_unread_count(rootNode);
+	feedlist_foreach(feedlist_init_node);
 	
 	notification_enable(getBooleanConfValue(SHOW_POPUP_WINDOWS));
 

@@ -20,7 +20,6 @@
 
 #include "common.h"
 #include "conf.h"
-#include "db.h"
 #include "debug.h"
 #include "export.h"
 #include "feedlist.h"
@@ -34,8 +33,8 @@
 static void folder_merge_child_items(nodePtr node, gpointer user_data) {
 	itemSetPtr	folderItemSet = (itemSetPtr)user_data;
 	itemSetPtr	nodeItemSet;
-	
-	nodeItemSet = db_itemset_load(node->id);
+
+	nodeItemSet = node_get_itemset(node);
 	folderItemSet->items = g_list_concat(folderItemSet->items, nodeItemSet->items);
 	nodeItemSet->items = NULL;
 	itemset_free(nodeItemSet);
@@ -46,8 +45,7 @@ static itemSetPtr folder_load(nodePtr node) {
 	
 	itemSet = g_new0(struct itemSet, 1);
 	itemSet->node = node;
-	
-	/* recursively load all child nodes */
+g_print("folder merge: %s\n", node->title);	
 	node_foreach_child_data(node, folder_merge_child_items, itemSet);
 	
 	return itemSet;
@@ -85,12 +83,25 @@ static void folder_save(nodePtr node) {
 	node_foreach_child(node, node_save);
 }
 
+static void folder_add_child_unread_count(nodePtr node, gpointer user_data) {
+	guint	*unreadCount = (guint *)user_data;
+
+	*unreadCount += node->unreadCount;
+}
+
+static void folder_update_unread_count(nodePtr node) {
+
+	node->unreadCount = 0;
+	node_foreach_child_data(node, folder_add_child_unread_count, &node->unreadCount);
+}
+
 static void folder_reset_update_counter(nodePtr node) {
+
 	node_foreach_child(node, node_reset_update_counter);
 }
 
 static void folder_request_update(nodePtr node, guint flags) {
-	// FIXME: int -> gpointer
+
 	node_foreach_child_data(node, node_request_update, GUINT_TO_POINTER(flags));
 }
 
@@ -129,6 +140,7 @@ nodeTypePtr folder_get_node_type(void) {
 		folder_export,
 		folder_load,
 		folder_save,
+		folder_update_unread_count,
 		folder_reset_update_counter,
 		folder_request_update,
 		folder_request_auto_update,
@@ -160,6 +172,7 @@ nodeTypePtr root_get_node_type(void) {
 		folder_export,
 		folder_load,
 		folder_save,
+		folder_update_unread_count,
 		folder_reset_update_counter,
 		folder_request_update,
 		folder_request_auto_update,

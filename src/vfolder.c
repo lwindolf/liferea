@@ -204,6 +204,12 @@ void vfolder_free(vfolderPtr vp) {
 /* implementation of the node type interface */
 
 static void vfolder_save(nodePtr node) { }
+
+static void vfolder_update_unread_count(nodePtr node) {
+
+	node->unreadCount = 5;	// FIXME!
+}
+
 static void vfolder_reset_update_counter(nodePtr node) { }
 static void vfolder_request_update(nodePtr node, guint flags) { }
 static void vfolder_request_auto_update(nodePtr node) { }
@@ -231,6 +237,7 @@ nodeTypePtr vfolder_get_node_type(void) {
 		vfolder_export,
 		vfolder_load,
 		vfolder_save,
+		vfolder_update_unread_count,
 		vfolder_reset_update_counter,
 		vfolder_request_update,
 		vfolder_request_auto_update,

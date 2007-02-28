@@ -48,7 +48,9 @@ void node_type_register(nodeTypePtr nodeType) {
 	g_assert(0 != nodeType->type);
 	g_assert(nodeType->import);
 	g_assert(nodeType->export);
+	g_assert(nodeType->load);
 	g_assert(nodeType->save);
+	g_assert(nodeType->update_unread_count);
 	g_assert(nodeType->reset_update_counter);
 	g_assert(nodeType->request_update);
 	g_assert(nodeType->request_auto_update);
@@ -180,10 +182,36 @@ void node_update_new_count(nodePtr node, gint diff) {
 		feedlist_update_counters(0, diff);	
 }
 
-guint node_get_unread_count(nodePtr node) {
+static void node_calc_unread_count(nodePtr node) {
 
-	// FIXME: what about folders? recursion!
-	return db_itemset_get_unread_count(node->id);
+	/* Order is important! First update all children
+	   so that hierarchical nodes (folders and feed
+	   list sources) can determine their own unread
+	   count as the sum of all childs afterwards */
+	node_foreach_child(node, node_calc_unread_count);
+	
+	NODE_TYPE(node)->update_unread_count(node);
+}
+
+static void node_update_parent_unread_count(nodePtr node) {
+
+	if(!node)
+		return;
+
+	NODE_TYPE(node)->update_unread_count(node);
+	
+	if(node->parent)
+		node_update_parent_unread_count(node->parent);
+}
+
+void node_update_unread_count(nodePtr node) {
+
+	/* Update the node itself and its children */
+	node_calc_unread_count(node);
+	
+	/* Update the unread count of the parent nodes,
+	   usually them just add all child unread counters */
+	node_update_parent_unread_count(node->parent);
 }
 
 /* generic node item set merging functions */
@@ -326,7 +354,7 @@ static xmlDocPtr node_to_xml(nodePtr node) {
 
 	xmlNewTextChild(rootNode, NULL, "title", node_get_title(node));
 	
-	tmp = g_strdup_printf("%u", node_get_unread_count(node));
+	tmp = g_strdup_printf("%u", node->unreadCount);
 	xmlNewTextChild(rootNode, NULL, "unreadCount", tmp);
 	g_free(tmp);
 	
@@ -359,7 +387,6 @@ void node_export(nodePtr node, xmlNodePtr cur, gboolean trusted) {
 }
 
 itemSetPtr node_get_itemset(nodePtr node) {
-	
 	return NODE_TYPE(node)->load(node);
 }
 
@@ -373,7 +400,7 @@ void node_remove(nodePtr node) {
 
 void node_mark_all_read(nodePtr node) {
 
-	if(0 != node_get_unread_count(node))
+	if(0 != node->unreadCount)
 		NODE_TYPE(node)->mark_all_read(node);
 }
 

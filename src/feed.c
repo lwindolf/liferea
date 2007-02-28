@@ -990,6 +990,7 @@ static void feed_process_update_result(struct request *request) {
 	if(request->flags & FEED_REQ_DOWNLOAD_FAVICON)
 		feed_update_favicon(node);
 
+	node_update_unread_count(node);
 	ui_node_update(node);
 	notification_node_has_new_items(node);
 	
@@ -1013,6 +1014,11 @@ static void feed_save(nodePtr node) {
 	/* Nothing to do. Feeds do not have any UI states */
 
 	node->needsCacheSave = FALSE;
+}
+
+static void feed_update_unread_count(nodePtr node) {
+
+	node->unreadCount = db_itemset_get_unread_count(node->id);
 }
 
 static void feed_reset_update_counter(nodePtr node) {
@@ -1113,6 +1119,7 @@ nodeTypePtr feed_get_node_type(void) {
 		feed_export,
 		feed_load,
 		feed_save,
+		feed_update_unread_count,
 		feed_reset_update_counter,
 		feed_request_update,
 		feed_request_auto_update,

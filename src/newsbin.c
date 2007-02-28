@@ -150,6 +150,7 @@ nodeTypePtr newsbin_get_node_type(void) {
 		nodeType->import		= newsbin_import;
 		nodeType->export		= feed_get_node_type()->export;
 		nodeType->save			= feed_get_node_type()->save;
+		nodeType->update_unread_count	= feed_get_node_type()->update_unread_count;
 		nodeType->reset_update_counter	= feed_get_node_type()->reset_update_counter;
 		nodeType->request_update	= newsbin_request_update_dummy;
 		nodeType->request_auto_update	= newsbin_request_auto_update_dummy;

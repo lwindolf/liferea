@@ -331,6 +331,7 @@ void itemlist_set_read_status(itemPtr item, gboolean newStatus) {
 		itemlist_update_item(item);
 
 		/* 3. updated feed list unread counters */
+		node_update_unread_count(item->node);
 		ui_node_update(item->node);
 
 		/* 4. update notification statistics */
@@ -395,6 +396,7 @@ void itemlist_remove_item(itemPtr item) {
 	itemview_remove_item(item);
 	itemview_update();
 	db_item_remove(item->id);
+	node_update_unread_count(item->node);
 	ui_node_update(item->node);
 	item_unload(item);
 }
@@ -453,6 +455,7 @@ void itemlist_mark_all_read(nodePtr node) {
 	/* GUI updating */	
 	itemview_update_all_items();
 	itemview_update();
+	node_update_unread_count(node);
 	ui_node_update(node);
 }
 

@@ -289,7 +289,11 @@ itemPtr db_item_load(gulong id) {
 
 	if(sqlite3_step(itemLoadStmt) == SQLITE_ROW) {
 		item = db_load_item_from_columns(itemLoadStmt);
-		g_assert(SQLITE_DONE == sqlite3_step(itemLoadStmt));
+		res = sqlite3_step(itemLoadStmt);
+		/* FIXME: sometimes (after updates) we get an unexpected SQLITE_ROW here! 
+		  if(SQLITE_DONE != res)
+			g_warning("Unexpected result when retrieving single item id=%lu! (error code=%d, %s)", id, res, sqlite3_errmsg(db));
+		 */
 	} else {
 		debug2(DEBUG_DB, "Could not load item with id #%lu (error code %d)!", id, res);
 	}

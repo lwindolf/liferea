@@ -209,7 +209,7 @@ void ui_node_update(nodePtr node) {
 	if(!iter)
 		return;
 
-	count = node_get_unread_count(node);
+	count = node->unreadCount;
 
 	labeltype = NODE_TYPE(node)->capabilities;
 	labeltype &= (NODE_CAPABILITY_SHOW_UNREAD_COUNT |
