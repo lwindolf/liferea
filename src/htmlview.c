@@ -239,17 +239,18 @@ void htmlview_update(GtkWidget *widget, guint mode) {
 
 			/* concatenate all items */
 			itemSet = node_get_itemset(htmlView_priv.node);
-			iter = itemSet->items;
+			iter = itemSet->ids;
 			while(iter) {
-				debug1(DEBUG_HTML, "rendering item to HTML view: >>>%s<<<", item_get_title(iter->data));
-
 				/* try to retrieve item HTML chunk from cache */
 				chunk = g_hash_table_lookup(htmlView_priv.htmlChunks, iter->data);
 					
 				/* if not found: render new item now and add to cache */
 				if(!chunk) {
-					chunk = htmlview_render_item(iter->data, summaryMode);
-					g_hash_table_insert(htmlView_priv.htmlChunks, iter->data, chunk);
+					item = item_load(GPOINTER_TO_UINT(iter->data));
+					debug1(DEBUG_HTML, "rendering item to HTML view: >>>%s<<<", item_get_title(item));
+					chunk = htmlview_render_item(item, summaryMode);
+					item_unload(item);
+					g_hash_table_insert(htmlView_priv.htmlChunks, iter->data, chunk);					
 				}
 					
 				g_string_append(output, chunk);

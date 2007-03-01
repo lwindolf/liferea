@@ -91,7 +91,7 @@ static gboolean rule_feed_title_match(rulePtr rule, itemPtr item) {
 	gboolean	result = FALSE;
 	gchar 		*title;
 	
-	if(NULL != (title = (gchar *)node_get_title(item->itemSet->node))) {
+	if(NULL != (title = (gchar *)node_get_title(item->node))) {
 		title = g_utf8_casefold(title, -1);
 		if(NULL != strstr(title, rule->value))
 			result = TRUE;

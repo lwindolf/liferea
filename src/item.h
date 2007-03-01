@@ -70,7 +70,6 @@ typedef struct item {
 	struct updateState *updateState;	/**< update states (etag, last modified, cookies, last polling times...) used when downloading comments */
 	gchar		*commentsError;		/**< Description of error if comments download failed */
 	
-	struct itemSet	*itemSet;		/**< Pointer to the item set containing this item  */
 	struct node	*node;			/**< Pointer to the containing node of this item */
 	gulong 		sourceNr;		/**< Either equal to nr or the number of the item this one is a copy of */
 

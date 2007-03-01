@@ -509,9 +509,8 @@ xmlDocPtr common_parse_xml_feed(feedParserCtxtPtr fpc) {
 		
 	g_assert(NULL != fpc->data);
 	g_assert(NULL != fpc->feed);
-	g_assert(NULL != fpc->itemSet);
 	
-	fpc->itemSet->valid = FALSE;
+	fpc->feed->valid = FALSE;
 	
 	/* we don't like no data */
 	if(0 == fpc->dataLength) {
@@ -530,7 +529,7 @@ xmlDocPtr common_parse_xml_feed(feedParserCtxtPtr fpc) {
 		g_string_append(fpc->feed->parseErrors, "\n");
 	}
 
-	fpc->itemSet->valid = (errors->errorCount > 0);
+	fpc->feed->valid = (errors->errorCount > 0);
 	g_free(errors);
 	
 	return fpc->doc;

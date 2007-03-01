@@ -98,6 +98,7 @@ feedPtr feed_new(const gchar *source, const gchar *filter, updateOptionsPtr opti
 	feed->updateInterval = -1;
 	feed->defaultInterval = -1;
 	feed->cacheLimit = CACHE_DEFAULT;
+	feed->valid = TRUE;
 
 	if(source) {
 		gchar *tmp, *uri = g_strdup(source);
@@ -322,8 +323,6 @@ feedParserCtxtPtr feed_create_parser_ctxt(void) {
 	feedParserCtxtPtr ctxt;
 
 	ctxt = g_new0(struct feedParserCtxt, 1);
-	ctxt->itemSet = (itemSetPtr)g_new0(struct itemSet, 1);
-	ctxt->itemSet->valid = TRUE;
 	ctxt->tmpdata = g_hash_table_new_full(g_str_hash, g_str_equal, NULL, g_free);
 	return ctxt;
 }
@@ -354,7 +353,7 @@ void feed_parse(feedParserCtxtPtr ctxt, gboolean autodiscover) {
 
 	g_assert(NULL != ctxt->feed);
 	g_assert(NULL != ctxt->node);
-	g_assert(NULL == ctxt->itemSet->items);
+	g_assert(NULL == ctxt->items);
 	
 	ctxt->failed = TRUE;	/* reset on success ... */
 	
@@ -603,45 +602,44 @@ static void feed_prepare_request(feedPtr feed, struct request *request, guint fl
 /* Implementation of the itemset type for feeds					*/
 /* ---------------------------------------------------------------------------- */
 
-gboolean feed_merge_check(itemSetPtr sp, itemPtr new_ip) {
-	GList		*old_items;
-	itemPtr		old_ip = NULL;
+gboolean feed_merge_check(itemSetPtr itemSet, itemPtr newItem) {
+	GList		*oldItemIdIter = itemSet->ids;
+	itemPtr		oldItem = NULL;
 	gboolean	found, equal = FALSE;
 
 	/* determine if we should add it... */
-	debug1(DEBUG_VERBOSE, "check new item for merging: \"%s\"", item_get_title(new_ip));
+	debug1(DEBUG_VERBOSE, "check new item for merging: \"%s\"", item_get_title(newItem));
 		
 	/* compare to every existing item in this feed */
 	found = FALSE;
-	old_items = sp->items;
-	while(NULL != old_items) {
-		old_ip = old_items->data;
+	while(oldItemIdIter) {
+		oldItem = item_load(GPOINTER_TO_UINT(oldItemIdIter->data));
 		
 		/* try to compare the two items */
 
 		/* trivial case: one item has id the other doesn't -> they can't be equal */
-		if(((item_get_id(old_ip) == NULL) && (item_get_id(new_ip) != NULL)) ||
-		   ((item_get_id(old_ip) != NULL) && (item_get_id(new_ip) == NULL))) {	
+		if(((item_get_id(oldItem) == NULL) && (item_get_id(newItem) != NULL)) ||
+		   ((item_get_id(oldItem) != NULL) && (item_get_id(newItem) == NULL))) {	
 			/* cannot be equal (different ids) so compare to 
 			   next old item */
-			old_items = g_list_next(old_items);
+			oldItemIdIter = g_list_next(oldItemIdIter);
 		   	continue;
 		} 
 
 		/* just for the case there are no ids: compare titles and HTML descriptions */
 		equal = TRUE;
 
-		if(((item_get_title(old_ip) != NULL) && (item_get_title(new_ip) != NULL)) && 
-		    (0 != strcmp(item_get_title(old_ip), item_get_title(new_ip))))		
+		if(((item_get_title(oldItem) != NULL) && (item_get_title(newItem) != NULL)) && 
+		    (0 != strcmp(item_get_title(oldItem), item_get_title(newItem))))		
 	    		equal = FALSE;
 
-		if(((item_get_description(old_ip) != NULL) && (item_get_description(new_ip) != NULL)) && 
-		    (0 != strcmp(item_get_description(old_ip), item_get_description(new_ip))))
+		if(((item_get_description(oldItem) != NULL) && (item_get_description(newItem) != NULL)) && 
+		    (0 != strcmp(item_get_description(oldItem), item_get_description(newItem))))
 	    		equal = FALSE;
 
 		/* best case: they both have ids (position important: id check is useless without knowing if the items are different!) */
-		if(NULL != item_get_id(old_ip)) {			
-			if(0 == strcmp(item_get_id(old_ip), item_get_id(new_ip))){
+		if(item_get_id(oldItem)) {			
+			if(0 == strcmp(item_get_id(oldItem), item_get_id(newItem))){
 				found = TRUE;
 				break;
 			} else {
@@ -656,7 +654,7 @@ gboolean feed_merge_check(itemSetPtr sp, itemPtr new_ip) {
 			break;
 		}
 
-		old_items = g_list_next(old_items);
+		oldItemIdIter = g_list_next(oldItemIdIter);
 	}
 		
 	if(!found) {
@@ -665,9 +663,9 @@ gboolean feed_merge_check(itemSetPtr sp, itemPtr new_ip) {
 		   is enabled we start the download. Enclosures added
 		   by updated items are not supported. */
 
-		if((TRUE == ((feedPtr)(sp->node->data))->encAutoDownload) &&
-		   (TRUE == new_ip->newStatus)) {
-			GSList *iter = metadata_list_get_values(new_ip->metadata, "enclosure");
+		if((TRUE == ((feedPtr)(itemSet->node->data))->encAutoDownload) &&
+		   (TRUE == newItem->newStatus)) {
+			GSList *iter = metadata_list_get_values(newItem->metadata, "enclosure");
 			while(iter) {
 				debug1(DEBUG_UPDATE, "download enclosure (%s)", (gchar *)iter->data);
 				ui_enclosure_save(NULL, g_strdup(iter->data), NULL);
@@ -679,15 +677,16 @@ gboolean feed_merge_check(itemSetPtr sp, itemPtr new_ip) {
 	} else {
 		/* if the item was found but has other contents -> update contents */
 		if(!equal) {
-			if(new_ip->itemSet->valid) {	
+			if(((feedPtr)(itemSet->node->data))->valid) {
 				/* no item_set_new_status() - we don't treat changed items as new items! */
-				item_set_title(old_ip, item_get_title(new_ip));
-				item_set_description(old_ip, item_get_description(new_ip));
-				old_ip->time = new_ip->time;
-				old_ip->updateStatus = TRUE;
-				metadata_list_free(old_ip->metadata);
-				old_ip->metadata = new_ip->metadata;
-				new_ip->metadata = NULL;
+				item_set_title(oldItem, item_get_title(newItem));
+				item_set_description(oldItem, item_get_description(newItem));
+				oldItem->time = newItem->time;
+				oldItem->updateStatus = TRUE;
+				// FIXME: this does not remove metadata from DB
+				metadata_list_free(oldItem->metadata);
+				oldItem->metadata = newItem->metadata;
+				newItem->metadata = NULL;
 				// FIXME: vfolder update
 				debug0(DEBUG_VERBOSE, "-> item already existing and was updated");
 			} else {
@@ -951,7 +950,7 @@ static void feed_process_update_result(struct request *request) {
 			itemSetPtr itemSet = node_get_itemset(node);
 			
 			/* merge the resulting items into the node's item set */
-			itemset_merge_items(itemSet, ctxt->itemSet->items);
+			itemset_merge_items(itemSet, ctxt->items);
 		
 			/* restore user defined properties if necessary */
 			if(!(request->flags & FEED_REQ_RESET_TITLE)) 

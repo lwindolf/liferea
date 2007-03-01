@@ -284,7 +284,7 @@ static void rss_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 					if(NULL != (ctxt->item = parseRSSItem(ctxt, cur))) {
 						if(0 == ctxt->item->time)
 							ctxt->item->time = ctxt->feed->time;
-						itemset_append_item(ctxt->itemSet, ctxt->item);
+						ctxt->items = g_list_append(ctxt->items, ctxt->item);
 					}
 					item = item->next;
 				}
@@ -293,7 +293,7 @@ static void rss_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 				if(NULL != (ctxt->item = parseRSSItem(ctxt, cur))) {
 					if(0 == ctxt->item->time)
 						ctxt->item->time = ctxt->feed->time;
-					itemset_append_item(ctxt->itemSet, ctxt->item);
+					ctxt->items = g_list_append(ctxt->items, ctxt->item);
 				}
 				
 			}

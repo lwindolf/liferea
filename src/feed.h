@@ -60,7 +60,7 @@ enum cache_limit {
 typedef struct feedParserCtxt {
 	struct feed	*feed;		/**< the feed to be parsed */
 	struct node	*node;		/**< the node the feed belongs to */
-	struct itemSet	*itemSet;	/**< the item set to fill */
+	GList		*items;		/**< the list of new items */
 	struct item	*item;		/**< the item currently parsed (or NULL) */
 	gboolean	recovery;	/**< TRUE if tolerant parsing needed (use only for RSS 0.9x!) */
 
@@ -109,6 +109,9 @@ typedef struct feed {
 	gint		cacheLimit;		/**< Amount of cache to save: See the cache_limit enum */
 	gboolean	noIncremental;		/**< Do merging for this feed but drop old items */
 	updateStatePtr	updateState;		/**< update states (etag, last modified, cookies, last polling times...) */	
+	
+	/* feed parsing state */
+	gboolean	valid;			/**< FALSE if libxml2 recovery mode was used to create this item set*/
 } *feedPtr;
 
 /* ------------------------------------------------------------ */
@@ -172,7 +175,7 @@ feedParserCtxtPtr feed_create_parser_ctxt(void);
 
 /**
  * Frees the given parser context. Note: it does
- * not free the constructed itemset!
+ * not free the list of new items!
  *
  * @param ctxt		the feed parsing context
  */
@@ -199,12 +202,12 @@ guint feed_get_max_item_count(nodePtr node);
 /**
  * Merging implementation for the feed itemset type.
  *
- * @param sp	the itemset to merge against
- * @param ip	the item to merge
+ * @param itemSet	the itemset to merge against
+ * @param item		the item to merge
  *
  * @returns TRUE if the item can be merged
  */
-gboolean feed_merge_check(itemSetPtr sp, itemPtr ip);
+gboolean feed_merge_check(itemSetPtr itemSet, itemPtr item);
 
 /* ------------------------------------------------------------ */
 /* feed property get/set 					*/

@@ -171,7 +171,7 @@ static void ns_blogChannel_download_request_cb(requestPtr request) {
 		
 		// FIXME: needed? node_unload(requestData->ctxt->node);
 	}
-	g_free(requestData->ctxt->itemSet);
+	g_list_free(requestData->ctxt->items);
 	feed_free_parser_ctxt(requestData->ctxt);
 	g_free(requestData);
 	

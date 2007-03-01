@@ -93,17 +93,14 @@ static void itemset_merge_item(itemSetPtr itemSet, itemPtr item) {
 		item->node = itemSet->node;
 		
 		/* step 1: add to itemset */
-		itemset_prepend_item(itemSet, item);
+		itemSet->ids = g_list_prepend(itemSet->ids, GUINT_TO_POINTER(item->id));
 
 		/* step 2: write to DB */
 		db_item_update(item);
 				
 		debug3(DEBUG_UPDATE, "-> added \"%s\" (id=%d) to item set %p...", item_get_title(item), item->id, itemSet);
 		
-		/* step 3: check for matching vfolders */
-		// FIXME
-		
-		/* step 4: duplicate detection, mark read if it is a duplicate */
+		/* step 3: duplicate detection, mark read if it is a duplicate */
 		// FIXME: still needed?
 		if(item->validGuid) {
 			if(item_guid_list_get_duplicates_for_id(item)) {
@@ -121,15 +118,7 @@ void itemset_merge_items(itemSetPtr itemSet, GList *list) {
 	GList	*iter;
 	guint	max;
 	
-	if(debug_level & DEBUG_UPDATE) {
-		debug3(DEBUG_UPDATE, "old item set %p of \"%s\" (%p):", itemSet, node_get_title(itemSet->node), itemSet->node);
-		iter = itemSet->items;
-		while(iter) {
-			itemPtr item = (itemPtr)iter->data;
-			debug2(DEBUG_UPDATE, " -> item #%d \"%s\"", item->id, item_get_title(item));
-			iter = g_list_next(iter);
-		}
-	}
+	debug3(DEBUG_UPDATE, "old item set %p of \"%s\" (%p):", itemSet, node_get_title(itemSet->node), itemSet->node);
 	
 	/* Truncate the new itemset if it is longer than
 	   the maximum cache size which could cause items
@@ -166,81 +155,6 @@ void itemset_merge_items(itemSetPtr itemSet, GList *list) {
 	g_list_free(list);
 }
 
-void itemset_prepend_item(itemSetPtr itemSet, itemPtr item) {
-
-	item->itemSet = itemSet;
-	itemSet->items = g_list_prepend(itemSet->items, item);
-}
-
-void itemset_append_item(itemSetPtr itemSet, itemPtr item) {
-
-	item->itemSet = itemSet;
-	itemSet->items = g_list_append(itemSet->items, item);
-}
-
-void itemset_remove_item(itemSetPtr itemSet, itemPtr item) {
-
-	if(!g_list_find(itemSet->items, item)) {
-		g_warning("itemset_remove_item(): item (%s) to be removed not found...", item->title);
-		return;
-	}
-
-	/* remove item from itemset */
-	itemSet->items = g_list_remove(itemSet->items, item);
-	
-	if(item->newStatus)
-		node_update_new_count(itemSet->node, -1);
-	if(item->popupStatus)
-		itemSet->node->popupCount--;
-
-	/* perform itemset type specific removal actions */
-	switch(itemSet->type) {
-		case ITEMSET_TYPE_FEED:
-		case ITEMSET_TYPE_FOLDER:
-			/* remove vfolder copies */
-			// FIXME
-
-			itemSet->node->needsCacheSave = TRUE;
-			break;
-		case ITEMSET_TYPE_VFOLDER:
-			/* No propagation */
-			break;
-		default:
-			g_error("itemset_remove_item(): unexpected item set type: %d\n", itemSet->type);
-			break;
-	}
-}
-
-void itemset_set_item_flag(itemSetPtr itemSet, itemPtr item, gboolean newFlagStatus) {
-
-	g_assert(newFlagStatus != item->flagStatus);
-
-	item->flagStatus = newFlagStatus;
-	db_item_update(item);
-
-	// FIXME: vfolder update?
-}
-
-void itemset_set_item_read_status(itemSetPtr itemSet, itemPtr item, gboolean newReadStatus) {
-
-	g_assert(newReadStatus != item->readStatus);
-
-	item->readStatus = newReadStatus;
-	db_item_update(item);
-
-	// FIXME: vfolder update?
-}
-
-void itemset_set_item_update_status(itemSetPtr itemSet, itemPtr item, gboolean newUpdateStatus) {
-
-	g_assert(newUpdateStatus != item->updateStatus);
-
-	item->updateStatus = newUpdateStatus;
-	db_item_update(item);
-
-	// FIXME: vfolder update?
-}
-
 void itemset_set_item_new_status(itemSetPtr itemSet, itemPtr item, gboolean newStatus) {
 
 	g_assert(newStatus != item->newStatus);
@@ -251,8 +165,6 @@ void itemset_set_item_new_status(itemSetPtr itemSet, itemPtr item, gboolean newS
 	/* Note: new count updates must be done through the node
 	   interface to allow global feed list new counter */
 	node_update_new_count(itemSet->node, newStatus?-1:1);
-	
-	/* New status is never propagated to search folders... */
 }
 
 void itemset_set_item_popup_status(itemSetPtr itemSet, itemPtr item, gboolean newPopupStatus) {
@@ -263,16 +175,10 @@ void itemset_set_item_popup_status(itemSetPtr itemSet, itemPtr item, gboolean ne
 
 	/* Currently no node popup counter needed, therefore
 	   no propagation to nodes... */
-	
-	/* Popup status is never propagated to search folders... */
 }
 
 void itemset_free(itemSetPtr itemSet) {
-	GList	*iter = itemSet->items;
-	
-	while(iter) {
-		item_unload(iter->data);
-		iter = g_list_next(iter);
-	}
+
+	g_list_free(itemSet->ids);
 	g_free(itemSet);
 }

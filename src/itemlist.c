@@ -136,14 +136,14 @@ void itemlist_merge_itemset(itemSetPtr itemSet) {
 	debug1(DEBUG_GUI, "reloading item list with node \"%s\"", node_get_title(itemSet->node));
 
 	/* update item list tree view */	
-	iter = g_list_last(itemSet->items);
+	iter = g_list_last(itemSet->ids);
 	while(iter) {
-		itemPtr item = iter->data;
+		itemPtr item = item_load(GPOINTER_TO_UINT(iter->data));
 		if(!(itemlist_filter && !rule_check_item(itemlist_filter, item))) {
 			hasEnclosures |= item->hasEnclosure;
 			itemview_add_item(item);
 		}
-
+		item_unload(item);
 		iter = g_list_previous(iter);
 	}
 	
@@ -295,10 +295,10 @@ void itemlist_select_next_unread(void) {
 void itemlist_set_flag(itemPtr item, gboolean newStatus) {
 	
 	if(newStatus != item->flagStatus) {
-		item->node->needsCacheSave = TRUE;
 
-		/* 1. propagate to model for recursion */
-		itemset_set_item_flag(item->itemSet, item, newStatus);
+		/* 1. save state to DB */
+		item->flagStatus = newStatus;
+		db_item_update(item);
 
 		/* 2. update item list GUI state */
 		itemlist_update_item(item);
@@ -322,10 +322,10 @@ void itemlist_toggle_flag(itemPtr item) {
 void itemlist_set_read_status(itemPtr item, gboolean newStatus) {
 
 	if(newStatus != item->readStatus) {		
-		item->node->needsCacheSave = TRUE;
 
-		/* 1. propagate to model for recursion */
-		itemset_set_item_read_status(item->itemSet, item, newStatus);
+		/* 1. save state to DB */
+		item->readStatus = newStatus;
+		db_item_update(item);
 
 		/* 2. update item list GUI state */
 		itemlist_update_item(item);
@@ -351,12 +351,12 @@ void itemlist_toggle_read_status(itemPtr item) {
 void itemlist_set_update_status(itemPtr item, const gboolean newStatus) { 
 	
 	if(newStatus != item->updateStatus) {	
-		item->node->needsCacheSave = TRUE;
 
-		/* 1. propagate to model for recursion */
-		itemset_set_item_update_status(item->itemSet, item, newStatus);
+		/* 1. save state to DB */
+		item->updateStatus = newStatus;
+		db_item_update(item);
 
-		/* 2. update item list GUI state */
+		/* 2. update item list state */
 		itemlist_update_item(item);	
 
 		/* 3. update notification statistics */
@@ -395,9 +395,12 @@ void itemlist_remove_item(itemPtr item) {
 	
 	itemview_remove_item(item);
 	itemview_update();
+	
 	db_item_remove(item->id);
+	
 	node_update_counters(item->node);
 	ui_node_update(item->node);
+	
 	item_unload(item);
 }
 
@@ -420,7 +423,6 @@ void itemlist_remove_items(itemSetPtr itemSet, GList *items) {
 	
 	while(iter) {
 		itemview_remove_item(iter->data);
-		itemset_remove_item(itemSet, iter->data);
 		iter = g_list_next(iter);
 	}
 
@@ -449,8 +451,6 @@ void itemlist_update_item(itemPtr item) {
 void itemlist_mark_all_read(nodePtr node) {
 
 	db_itemset_mark_all_read(node->id);
-	
-	// FIXME: update search folders!
 	
 	/* GUI updating */	
 	itemview_update_all_items();

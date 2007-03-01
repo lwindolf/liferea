@@ -87,25 +87,8 @@ static void item_comments_process_update_result(struct request *request) {
 		if(ctxt->failed) {
 			debug0(DEBUG_UPDATE, "parsing comment feed failed!");
 		} else {
-			/* drop old comment items and take new ones instead */
-			GList *iter = item->comments->items;
-			while(iter) {
-				item_unload((itemPtr)iter->data);
-				iter = g_list_next(iter);
-			}
-			g_list_free(item->comments->items);
-			g_free(item->comments);
-			
-			item->comments = ctxt->itemSet;
-			ctxt->itemSet = NULL;
-			
-			iter = item->comments->items;
-			while(iter) {
-				debug1(DEBUG_UPDATE, " -> %s\n", ((itemPtr)iter->data)->title);
-				iter = g_list_next(iter);
-			}
-			
-			item->node->needsCacheSave = TRUE;
+			debug1(DEBUG_UPDATE, "parsing comment feed successful (%d comments downloaded)", g_list_length(ctxt->items));
+			itemset_merge_items(item->comments, ctxt->items);
 		}
 				
 		feed_free_parser_ctxt(ctxt);
@@ -270,15 +253,9 @@ const gchar *	item_get_real_source_title(itemPtr item) { return item->real_sourc
 
 void item_unload(itemPtr item) {
 
-	if(item->comments) {
-		GList	*iter = item->comments->items;
-		while(iter) {
-			item_unload((itemPtr)iter->data);
-			iter = g_list_next(iter);
-		}
-		g_free(item->comments);
-	}
-
+	if(item->comments)
+		itemset_free(item->comments);
+		
 	g_free(item->title);
 	g_free(item->source);
 	g_free(item->sourceId);
@@ -303,28 +280,6 @@ const gchar * item_get_base_url(itemPtr item) {
 	/* item->node is always the source node for the item 
 	   never a search folder or folder */
 	return node_get_base_url(item->node);
-}
-
-static void item_parse_comments(xmlNodePtr cur, itemPtr item) {
-	gchar		*tmp;
-
-	update_state_import(cur, item->updateState);
-	
-	cur = cur->xmlChildrenNode;
-	while(cur) {
-		if(cur->type != XML_ELEMENT_NODE ||
-		   !(tmp = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)))) {
-			cur = cur->next;
-			continue;
-		}
-
-		if(!xmlStrcmp(cur->name, BAD_CAST"item")) 
-			itemset_append_item(item->comments, item_parse_cache(cur, FALSE));
-
-		g_free(tmp);
-		tmp = NULL;
-		cur = cur->next;
-	}
 }
 
 itemPtr item_parse_cache(xmlNodePtr cur, gboolean migrateCache) {
@@ -380,9 +335,6 @@ itemPtr item_parse_cache(xmlNodePtr cur, gboolean migrateCache) {
 			
 		else if(!xmlStrcmp(cur->name, BAD_CAST"attributes"))
 			item->metadata = metadata_parse_xml_nodes(cur);
-			
-		else if(!xmlStrcmp(cur->name, BAD_CAST"comments"))
-			item_parse_comments(cur, item);
 		
 		g_free(tmp);	
 		tmp = NULL;
@@ -463,14 +415,16 @@ void item_to_xml(itemPtr item, xmlNodePtr parentNode) {
 	metadata_add_xml_nodes(item->metadata, itemNode);
 		
 	if(item->comments) {
-		GList		*iter = item->comments->items;
+		GList		*iter = item->comments->ids;
 		xmlNodePtr	commentsNode = xmlNewChild(itemNode, NULL, "comments", NULL);
 
 // FIXME: move update states to DB
 //		update_state_export(commentsNode, item->updateState);
 
  		while(iter) {
-			item_to_xml((itemPtr)iter->data, commentsNode);
+			itemPtr comment = item_load(GPOINTER_TO_UINT(iter->data));
+			item_to_xml(comment, commentsNode);
+			item_unload(comment);
 			iter = g_list_next(iter);
 		}
 		

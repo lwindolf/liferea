@@ -115,25 +115,7 @@ void db_init(void) {
 	/* prepare statements */
 	
 	db_prepare_stmt(&itemsetLoadStmt,
-	               "SELECT "
-	               "items.title,"
-	               "items.read,"
-	               "items.new,"
-	               "items.updated,"
-	               "items.popup,"
-	               "items.marked,"
-	               "items.source,"
-	               "items.source_id,"
-	               "items.valid_guid,"
-	               "items.real_source_url,"
-	               "items.real_source_title,"
-	               "items.description,"
-	               "items.date,"
-		       "itemsets.item_id,"
-		       "itemsets.node_id"
-	               " FROM items INNER JOIN itemsets "
-	               "ON items.ROWID = itemsets.item_id "
-	               "WHERE itemsets.node_id = ?");		      
+	               "SELECT item_id FROM itemsets WHERE node_id = ?");		      
 	
 	db_prepare_stmt(&itemsetInsertStmt,
 	                "INSERT INTO itemsets (item_id,node_id) VALUES (?,?)");
@@ -341,7 +323,7 @@ itemSetPtr db_itemset_load(const gchar *id) {
 		g_error("db_load_itemset_with_node_id: sqlite bind failed (error code %d)!", res);
 
 	while(sqlite3_step(itemsetLoadStmt) == SQLITE_ROW) {
-		itemset_append_item(itemSet, db_load_item_from_columns(itemsetLoadStmt));
+		itemSet->ids = g_list_append(itemSet->ids, GUINT_TO_POINTER(sqlite3_column_int(itemsetLoadStmt, 0)));
 	}
 
 	return itemSet;

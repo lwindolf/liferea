@@ -35,8 +35,8 @@ static void folder_merge_child_items(nodePtr node, gpointer user_data) {
 	itemSetPtr	nodeItemSet;
 
 	nodeItemSet = node_get_itemset(node);
-	folderItemSet->items = g_list_concat(folderItemSet->items, nodeItemSet->items);
-	nodeItemSet->items = NULL;
+	folderItemSet->ids = g_list_concat(folderItemSet->ids, nodeItemSet->ids);
+	nodeItemSet->ids = NULL;
 	itemset_free(nodeItemSet);
 }
 

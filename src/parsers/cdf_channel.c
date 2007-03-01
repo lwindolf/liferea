@@ -55,9 +55,9 @@ static void parseCDFChannel(feedParserCtxtPtr ctxt, xmlNodePtr cur, CDFChannelPt
 		}
 
 		if((!xmlStrcasecmp(cur->name, BAD_CAST"logo"))) {
-			if(tmp = common_utf8_fix(xmlGetProp(cur, BAD_CAST"HREF"))) 
-				tmp = common_utf8_fix(xmlGetProp(cur, BAD_CAST"href"));
+			tmp = common_utf8_fix(xmlGetProp(cur, BAD_CAST"HREF"));
 			if(tmp) {
+				tmp = common_utf8_fix(xmlGetProp(cur, BAD_CAST"href"));
 				feed_set_image_url(ctxt->feed, tmp);
 				g_free(tmp);
 			}
@@ -70,29 +70,34 @@ static void parseCDFChannel(feedParserCtxtPtr ctxt, xmlNodePtr cur, CDFChannelPt
 			}
 
 		} else if((!xmlStrcasecmp(cur->name, BAD_CAST"item"))) {
-			if(ctxt->item = parseCDFItem(ctxt, cur, cp)) {
+			ctxt->item = parseCDFItem(ctxt, cur, cp);
+			if(ctxt->item) {
 				if(0 == ctxt->item->time)
 					ctxt->item->time = cp->time;
-				itemset_append_item(ctxt->itemSet, ctxt->item);
+				ctxt->items = g_list_append(ctxt->items, ctxt->item);
 			}
 
 		} else if(!xmlStrcasecmp(cur->name, BAD_CAST "title")) {
-			if(tmp = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE))) {
+			tmp = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE));
+			if(tmp) {
 				tmp = unhtmlize(tmp);
 				node_set_title(ctxt->node, tmp);
 				g_free(tmp);
 			}
 			
 		} else if(!xmlStrcasecmp(cur->name, BAD_CAST "abstract")) {
-			if(tmp = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE))) {
+			tmp = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE));
+			if(tmp) {
 				feed_set_description(ctxt->feed, tmp);
 				xmlFree(tmp);
 			}
 			
 		} else {		
 			tmp = g_ascii_strdown((gchar *)cur->name, -1);
-			if(tmp2 = g_hash_table_lookup(channelHash, tmp)) {
-				if(tmp3 = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE))) {
+			tmp2 = g_hash_table_lookup(channelHash, tmp);
+			if(tmp2) {
+				tmp3 = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE));
+				if(tmp3) {
 					ctxt->feed->metadata = metadata_list_append(ctxt->feed->metadata, tmp2, tmp3);
 					g_free(tmp3);
 				}

@@ -40,14 +40,12 @@ enum itemSetTypes {
 
 typedef struct itemSet {
 	guint		type;		/**< the type of the item set */
-	GList		*items;		/**< the list of items */
+	GList		*ids;		/**< the list of item ids */
 	struct node	*node;		/**< the feed list node this item set belongs to */
-
-	gboolean	valid;		/**< FALSE if libxml2 recovery mode was used to create this item set*/
 } *itemSetPtr;
 
 /**
- * Scans all item of a given item set for the given item id.
+ * Scans all items of a given item set for the given item id.
  * The node must be also given to correctly extract items from
  * merged item lists (like folders)
  *
@@ -67,82 +65,6 @@ itemPtr itemset_lookup_item(itemSetPtr itemSet, struct node *node, gulong nr);
  * @param items		a list of items to merge
  */
 void itemset_merge_items(itemSetPtr itemSet, GList *items);
-
-/**
- * Prepends a single item to the given item set.
- *
- * @param itemSet	the item set
- * @param item		the item to add
- */
-void itemset_prepend_item(itemSetPtr itemSet, itemPtr item);
-
-/**
- * Appends a single item to the given item set.
- *
- * @param itemSet	the item set
- * @param item		the item to add
- */
-void itemset_append_item(itemSetPtr itemSet, itemPtr item);
-
-/**
- * Removes a single item of a given item set.
- *
- * @param itemSet	the item set
- * @param item		the item to remove
- */
-void itemset_remove_item(itemSetPtr itemSet, itemPtr item);
-
-/**
- * Removes all items of a given item set.
- *
- * @param itemSet	the item set
- */
-void itemset_remove_all_items(itemSetPtr itemSet);
-
-/**
- * Changes the "flag" status of a single item of the given itemset.
- *
- * @param itemSet	the item set
- * @param item		the item to change
- * @param newStatus	the new flag status
- */
-void itemset_set_item_flag(itemSetPtr itemSet, itemPtr item, gboolean newStatus);
-
-/**
- * Changes the "read" status of a single item of the given itemset.
- *
- * @param itemSet	the item set
- * @param item		the item to change
- * @param newStatus	the new read status
- */
-void itemset_set_item_read_status(itemSetPtr itemSet, itemPtr item, gboolean newStatus);
-
-/**
- * Changes the "update" status of a single item of the given itemset.
- *
- * @param itemSet	the item set
- * @param item		the item to change
- * @param newStatus	the new update status
- */
-void itemset_set_item_update_status(itemSetPtr itemSet, itemPtr item, gboolean newStatus);
-
-/**
- * Changes the "new" status of a single item of the given itemset.
- *
- * @param itemSet	the item set
- * @param item		the item to change
- * @param newStatus	the new update status
- */
-void itemset_set_item_new_status(itemSetPtr itemSet, itemPtr item, gboolean newStatus);
-
-/**
- * Changes the "popup" status of a single item of the given itemset.
- *
- * @param itemSet	the item set
- * @param item		the item to change
- * @param newStatus	the new update status
- */
-void itemset_set_item_popup_status(itemSetPtr itemSet, itemPtr item, gboolean newStatus);
 
 /**
  * Serialize the given item set to XML. Does not serialize items!

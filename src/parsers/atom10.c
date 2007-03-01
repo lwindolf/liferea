@@ -717,7 +717,7 @@ static void atom10_parse_feed(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 			} else if((xmlStrEqual(cur->name, BAD_CAST"entry"))) {
 				ctxt->item = atom10_parse_entry(ctxt, cur);
 				if(ctxt->item)
-					itemset_append_item(ctxt->itemSet, ctxt->item);
+					ctxt->items = g_list_append(ctxt->items, ctxt->item);
 			}
 			cur = cur->next;
 		}
