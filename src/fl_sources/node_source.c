@@ -291,7 +291,7 @@ nodeTypePtr node_source_get_node_type(void) {
 		nodeType->export		= node_source_export;
 		nodeType->load			= folder_get_node_type()->load;
 		nodeType->save			= node_source_save;
-		nodeType->update_unread_count	= folder_get_node_type()->update_unread_count;
+		nodeType->update_counters	= folder_get_node_type()->update_counters;
 		nodeType->reset_update_counter	= folder_get_node_type()->reset_update_counter;
 		nodeType->request_update	= node_source_request_update;
 		nodeType->request_auto_update	= node_source_request_auto_update;

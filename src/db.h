@@ -65,6 +65,7 @@ void		db_itemset_mark_all_read(const gchar *id);
 void		db_itemset_mark_all_updated(const gchar *id);
 void		db_itemset_mark_all_old(const gchar *id);
 void		db_itemset_mark_all_popup(const gchar *id);
+
 /**
  * Returns the number of unread items for the given item set.
  *
@@ -73,6 +74,15 @@ void		db_itemset_mark_all_popup(const gchar *id);
  * @returns the number of unread items
  */
 guint		db_itemset_get_unread_count(const gchar *id);
+
+/**
+ * Returns the number of items for the given item set.
+ *
+ * @param id	the node id
+ *
+ * @returns the number of items
+ */
+guint		db_itemset_get_item_count(const gchar *id);
 
 /* item access (note: items are identified by the numeric item id) */
 

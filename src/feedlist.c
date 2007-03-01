@@ -366,15 +366,18 @@ void feedlist_init(void) {
 	node_source_type_register(bloglines_source_get_type());
 
 	/* 2. Set up a root node and import the feed list plugins structure. */
+	debug0(DEBUG_VERBOSE, "Setting up root node");
 	rootNode = node_source_setup_root();
 
-	/* 3. Ensure correct unread count and folder expansion */
-	node_update_unread_count(rootNode);
+	/* 3. Ensure folder expansion */
+	debug0(DEBUG_VERBOSE, "Expanding folders");
 	feedlist_foreach(feedlist_init_node);
-	
+
+	debug0(DEBUG_VERBOSE, "Notification setup");	
 	notification_enable(getBooleanConfValue(SHOW_POPUP_WINDOWS));
 
 	/* 4. Check if feeds do need updating. */
+	debug0(DEBUG_VERBOSE, "Performing initial feed update");
 	switch(getNumericConfValue(STARTUP_FEED_ACTION)) {
 		case 1: /* Update all feeds */
 			debug0(DEBUG_UPDATE, "initial update: updating all feeds");
@@ -391,14 +394,14 @@ void feedlist_init(void) {
 	}
 
 	/* 5. Start automatic updating */
- 	(void)g_timeout_add(1000, feedlist_auto_update, NULL);
+ 	(void)g_timeout_add(10000, feedlist_auto_update, NULL);
 
 	/* 6. Finally save the new feed list state */
 	feedlistLoading = FALSE;
 	feedlist_schedule_save();
 	
 	if(cacheMigrated)
-		ui_show_info_box(_("Liferea v1.4 uses a new cache format and has migrated your "
+		ui_show_info_box(_("This version of Liferea uses a new cache format and has migrated your "
 		                   "feed cache. The cache content of v1.2 in ~/.liferea_1.2 was "
 		                   "not deleted automatically. Please remove this directory "
 		                   "manually once you are sure migration was successful!"));

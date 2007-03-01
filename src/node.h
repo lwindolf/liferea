@@ -69,6 +69,7 @@ typedef struct node {
 	GSList			*children;	/**< ordered list of node children */
 	gchar			*id;		/**< unique node identifier string */
 
+	guint			itemCount;	/**< number of items */
 	guint			unreadCount;	/**< number of unread items */
 	guint			popupCount;	/**< number of items to be notified */
 	guint			newCount;	/**< number of recently downloaded items */
@@ -110,7 +111,7 @@ typedef struct nodeType {
 	void    	(*export)		(nodePtr node, xmlNodePtr cur, gboolean trusted);
 	itemSetPtr	(*load)			(nodePtr node);
 	void 		(*save)			(nodePtr node);
-	void		(*update_unread_count)	(nodePtr node);
+	void		(*update_counters)	(nodePtr node);
 	void		(*reset_update_counter)	(nodePtr node);
 	void		(*request_update)	(nodePtr node, guint flags);
 	void 		(*request_auto_update)	(nodePtr node);
@@ -227,12 +228,12 @@ const gchar * node_get_title(nodePtr node);
 void node_set_title(nodePtr node, const gchar *title);
 
 /**
- * Update the number of unread items of a node from the DB.
- * This method ensures propagation to parent folders.
+ * Update the number of items and unread items of a node from
+ * the DB. This method ensures propagation to parent folders.
  *
  * @param node	the node
  */
-void node_update_unread_count(nodePtr node);
+void node_update_counters(nodePtr node);
 
 /**
  * Update the number of new items of a node.

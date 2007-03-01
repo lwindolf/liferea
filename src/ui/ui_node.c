@@ -227,7 +227,7 @@ void ui_node_update(nodePtr node) {
 				                        node_get_title(node), count);
 			break;
 		case NODE_CAPABILITY_SHOW_ITEM_COUNT:
-			label = g_markup_printf_escaped("%s (%d)", node_get_title(node), 55); // FIXME
+			label = g_markup_printf_escaped("%s (%d)", node_get_title(node), node->itemCount);
 		     	break;
 		default:
 			label = g_markup_printf_escaped("%s", node_get_title(node));

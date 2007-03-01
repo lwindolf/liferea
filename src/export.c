@@ -2,7 +2,7 @@
  * @file export.c OPML feedlist import&export
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2004-2007 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -81,6 +81,14 @@ static void export_append_node_tag(nodePtr node, gpointer userdata) {
 			
 		tmp = g_strdup_printf("%u", node_get_view_mode(node));
 		xmlNewProp(childNode, BAD_CAST"viewMode", BAD_CAST tmp);
+		g_free(tmp);
+		
+		tmp = g_strdup_printf("%u", node->itemCount);
+		xmlNewProp(childNode, BAD_CAST"itemCount", BAD_CAST tmp);
+		g_free(tmp);
+		
+		tmp = g_strdup_printf("%u", node->unreadCount);
+		xmlNewProp(childNode, BAD_CAST"unreadCount", BAD_CAST tmp);
 		g_free(tmp);
 	}
 
@@ -224,6 +232,19 @@ void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, nodeSourcePtr node
 	tmp = xmlGetProp(cur, BAD_CAST"viewMode");
 	if(tmp) {
 		node_set_view_mode(node, atoi(tmp));
+		xmlFree(tmp);
+	}
+	
+	/* item statistics */
+	tmp = xmlGetProp(cur, BAD_CAST"itemCount");
+	if(tmp) {
+		node->itemCount = atoi(tmp);
+		xmlFree(tmp);
+	}
+	
+	tmp = xmlGetProp(cur, BAD_CAST"unreadCount");
+	if(tmp) {
+		node->unreadCount = atoi(tmp);
 		xmlFree(tmp);
 	}
 

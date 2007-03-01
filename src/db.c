@@ -31,6 +31,7 @@ static sqlite3 *db = NULL;
 static sqlite3_stmt *itemsetLoadStmt = NULL;
 static sqlite3_stmt *itemsetInsertStmt = NULL;
 static sqlite3_stmt *itemsetReadCountStmt = NULL;
+static sqlite3_stmt *itemsetItemCountStmt = NULL;
 static sqlite3_stmt *itemsetRemoveStmt = NULL;
 static sqlite3_stmt *itemsetRemoveAllStmt = NULL;
 static sqlite3_stmt *itemsetMarkAllReadStmt = NULL;
@@ -124,6 +125,11 @@ void db_init(void) {
 	               "ON items.ROWID = itemsets.item_id "
 		       "WHERE items.read = 0 AND node_id = ?");
 		       
+	db_prepare_stmt(&itemsetItemCountStmt,
+	               "SELECT COUNT(*) FROM items INNER JOIN itemsets "
+	               "ON items.ROWID = itemsets.item_id "
+		       "WHERE node_id = ?");
+		       
 	db_prepare_stmt(&itemsetRemoveStmt,
 	                "DELETE FROM itemsets WHERE item_id = ?");
 			
@@ -215,6 +221,7 @@ void db_deinit(void) {
 	sqlite3_finalize(itemsetLoadStmt);
 	sqlite3_finalize(itemsetInsertStmt);
 	sqlite3_finalize(itemsetReadCountStmt);
+	sqlite3_finalize(itemsetItemCountStmt);
 	sqlite3_finalize(itemsetRemoveStmt);
 	sqlite3_finalize(itemsetRemoveAllStmt);
 	sqlite3_finalize(itemsetMarkAllReadStmt);
@@ -482,6 +489,7 @@ void db_itemset_mark_all_popup(const gchar *id) {
 	if(SQLITE_DONE != res)
 		g_warning("marking all items popup failed (error code=%d, %s)", res, sqlite3_errmsg(db));
 }
+
 /* Statistics interface */
 
 guint db_itemset_get_unread_count(const gchar *id) {
@@ -496,6 +504,22 @@ guint db_itemset_get_unread_count(const gchar *id) {
 		count = sqlite3_column_int(itemsetReadCountStmt, 0);
 	else
 		g_warning("item read counting failed (error code=%d, %s)", res, sqlite3_errmsg(db));
+		
+	return count;
+}
+
+guint db_itemset_get_item_count(const gchar *id) {
+	gint	res;
+	guint	count = 0;
+	
+	sqlite3_reset(itemsetItemCountStmt);
+	sqlite3_bind_text(itemsetItemCountStmt, 1, id, -1, SQLITE_TRANSIENT);
+	res = sqlite3_step(itemsetItemCountStmt);
+	
+	if(SQLITE_ROW == res)
+		count = sqlite3_column_int(itemsetItemCountStmt, 0);
+	else
+		g_warning("item counting failed (error code=%d, %s)", res, sqlite3_errmsg(db));
 		
 	return count;
 }
