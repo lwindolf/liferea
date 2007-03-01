@@ -466,7 +466,7 @@ void feed_parse(feedParserCtxtPtr ctxt, gboolean autodiscover) {
 	debug_exit("feed_parse");
 }
 
-static void feed_add_xml_attributes(nodePtr node, xmlNodePtr feedNode, gboolean rendering) {
+static void feed_add_xml_attributes(nodePtr node, xmlNodePtr feedNode) {
 	feedPtr	feed = (feedPtr)node->data;
 	gchar	*tmp;
 	
@@ -493,32 +493,30 @@ static void feed_add_xml_attributes(nodePtr node, xmlNodePtr feedNode, gboolean 
 	xmlNewTextChild(feedNode, NULL, "feedDiscontinued", tmp);
 	g_free(tmp);
 
-	if(rendering) {
-		tmp = g_strdup_printf("file://%s", node_get_favicon_file(node));
-		xmlNewTextChild(feedNode, NULL, "favicon", tmp);
-		g_free(tmp);
+	tmp = g_strdup_printf("file://%s", node_get_favicon_file(node));
+	xmlNewTextChild(feedNode, NULL, "favicon", tmp);
+	g_free(tmp);
 		
-		xmlNewTextChild(feedNode, NULL, "feedLink", feed_get_html_url(feed));
+	xmlNewTextChild(feedNode, NULL, "feedLink", feed_get_html_url(feed));
 
-		if(feed->updateError)
-			xmlNewTextChild(feedNode, NULL, "updateError", feed->updateError);
-		if(feed->httpError) {
-			xmlNewTextChild(feedNode, NULL, "httpError", feed->httpError);
-			
-			tmp = g_strdup_printf("%d", feed->httpErrorCode);
-			xmlNewTextChild(feedNode, NULL, "httpErrorCode", tmp);
-			g_free(tmp);
-		}
-		if(feed->filterError)
-			xmlNewTextChild(feedNode, NULL, "filterError", feed->filterError);
-		if(feed->parseErrors && (strlen(feed->parseErrors->str) > 0))
-			xmlNewTextChild(feedNode, NULL, "parseError", feed->parseErrors->str);
+	if(feed->updateError)
+		xmlNewTextChild(feedNode, NULL, "updateError", feed->updateError);
+	if(feed->httpError) {
+		xmlNewTextChild(feedNode, NULL, "httpError", feed->httpError);
+
+		tmp = g_strdup_printf("%d", feed->httpErrorCode);
+		xmlNewTextChild(feedNode, NULL, "httpErrorCode", tmp);
+		g_free(tmp);
 	}
+	if(feed->filterError)
+		xmlNewTextChild(feedNode, NULL, "filterError", feed->filterError);
+	if(feed->parseErrors && (strlen(feed->parseErrors->str) > 0))
+		xmlNewTextChild(feedNode, NULL, "parseError", feed->parseErrors->str);
 
 	metadata_add_xml_nodes(feed->metadata, feedNode);
 }
 
-xmlDocPtr feed_to_xml(nodePtr node, xmlNodePtr feedNode, gboolean rendering) {
+xmlDocPtr feed_to_xml(nodePtr node, xmlNodePtr feedNode) {
 	xmlDocPtr	doc = NULL;
 	
 	if(!feedNode) {
@@ -527,7 +525,7 @@ xmlDocPtr feed_to_xml(nodePtr node, xmlNodePtr feedNode, gboolean rendering) {
 		feedNode = xmlNewDocNode(doc, NULL, "feed", NULL);
 		xmlDocSetRootElement(doc, feedNode);
 	}
-	feed_add_xml_attributes(node, feedNode, rendering);
+	feed_add_xml_attributes(node, feedNode);
 	
 	return doc;
 }
@@ -1100,7 +1098,7 @@ static gchar * feed_render(nodePtr node) {
 	gchar		*output = NULL;
 	xmlDocPtr	doc;
 
-	doc = feed_to_xml(node, NULL, TRUE);
+	doc = feed_to_xml(node, NULL);
 	params = render_parameter_new();
 	render_parameter_add(params, "pixmapsDir='file://" PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "'");
 	output = render_xml(doc, "feed", params);

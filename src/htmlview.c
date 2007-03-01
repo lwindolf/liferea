@@ -103,12 +103,12 @@ static gchar * htmlview_render_item(itemPtr item, gboolean summaryMode) {
 	/* do the XML serialization */
 	doc = itemset_to_xml(htmlView_priv.node);
 			
-	item_to_xml(item, xmlDocGetRootElement(doc), TRUE);
+	item_to_xml(item, xmlDocGetRootElement(doc));
 			
 	if(NODE_TYPE_FEED == item->node->type) {
 		xmlNodePtr feed;
 		feed = xmlNewChild(xmlDocGetRootElement(doc), NULL, "feed", NULL);
-		feed_to_xml(item->node, feed, TRUE);
+		feed_to_xml(item->node, feed);
 	}
 	
 	/* do the XSLT rendering */

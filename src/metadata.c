@@ -30,6 +30,12 @@
 #include "common.h"
 #include "debug.h"
 
+/* Metadata in Liferea are ordered lists of key/value list pairs. Both 
+   feed list nodes and items can have a list of metadata assigned. Metadata
+   date values are always text values but maybe of different type depending
+   on their usage type. */
+
+/** Metadata value types */
 enum {
 	METADATA_TYPE_ASCII = 1,	/**< metadata can be any character data */
 	METADATA_TYPE_URL = 2,		/**< metadata is an URL and guaranteed to be valid for use in XML */
@@ -136,6 +142,22 @@ void metadata_list_set(GSList **metadata, const gchar *strid, const gchar *data)
 	p->strid = g_strdup(strid);
 	p->data = g_slist_append(NULL, g_strdup(data));
 	*metadata = g_slist_append(*metadata, p);
+}
+
+void metadata_list_foreach(GSList *metadata, metadataForeachFunc func, gpointer user_data) {
+	GSList	*list = metadata;
+	guint	index = 0;
+	
+	while(list) {
+		struct pair *p = (struct pair*)list->data; 
+		GSList *values = (GSList *)p->data;
+		while(values) {
+			index++;
+			(*func)(p->strid, values->data, index, user_data);
+			values = g_slist_next(values);
+		}
+		list = list->next;
+	}
 }
 
 GSList * metadata_list_get_values(GSList *metadata, const gchar *strid) {

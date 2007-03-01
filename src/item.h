@@ -185,7 +185,7 @@ void		item_set_id(itemPtr item, const gchar * id);
 
 /**
  * Parse an xml tree and return a new item generated 
- * from the current node's information.
+ * from the current node's information. Only used for migration!
  *
  * @param cur		the XML node to parse
  * @param migrateCache	TRUE if cache migration requested
@@ -199,10 +199,8 @@ itemPtr item_parse_cache(xmlNodePtr cur, gboolean migrateCache);
  * to the given feed item list node. 
  *
  * @param item		the item to save to cache
- * @param feedNode	the XML node to add to
- * @param rendering	TRUE if XML output is to be used
- *                  	for rendering (adds some more tags)
+ * @param parentNode	the XML node to add to
  */
-void item_to_xml(itemPtr item, xmlNodePtr feedNode, gboolean rendering);
+void item_to_xml(itemPtr item, xmlNodePtr parentNode);
 
 #endif

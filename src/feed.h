@@ -156,12 +156,10 @@ feedPtr feed_new(const gchar *source, const gchar *filter, updateOptionsPtr opti
  * @param feedNode	XML node to add feed attributes to,
  *                      or NULL if a new XML document is to
  *                      be created
- * @param rendering	TRUE if XML output is to be used
- *                  	for rendering (adds some more tags)
  * 
  * @returns a new XML document (if feedNode was NULL)
  */
-xmlDocPtr feed_to_xml(nodePtr node, xmlNodePtr feedNode, gboolean rendering);
+xmlDocPtr feed_to_xml(nodePtr node, xmlNodePtr feedNode);
 
 /* feed parsing */
 

@@ -397,23 +397,21 @@ itemPtr item_parse_cache(xmlNodePtr cur, gboolean migrateCache) {
 	return item;
 }
 
-void item_to_xml(itemPtr item, xmlNodePtr feedNode, gboolean rendering) {
+void item_to_xml(itemPtr item, xmlNodePtr parentNode) {
+	xmlNodePtr	duplicatesNode;		
+	GSList		*duplicates;
 	xmlNodePtr	itemNode;
 	gchar		*tmp;
 	
-	itemNode = xmlNewChild(feedNode, NULL, "item", NULL);
+	itemNode = xmlNewChild(parentNode, NULL, "item", NULL);
 	g_return_if_fail(itemNode);
 
 	xmlNewTextChild(itemNode, NULL, "title", item_get_title(item)?item_get_title(item):"");
 
 	if(item_get_description(item)) {
-		if(rendering) {
-			tmp = common_strip_dhtml(item_get_description(item));
-			xmlNewTextChild(itemNode, NULL, "description", tmp);
-			g_free(tmp);
-		} else {
-			xmlNewTextChild(itemNode, NULL, "description", item_get_description(item));
-		}
+		tmp = common_strip_dhtml(item_get_description(item));
+		xmlNewTextChild(itemNode, NULL, "description", tmp);
+		g_free(tmp);
 	}
 	
 	if(item_get_source(item))
@@ -424,12 +422,6 @@ void item_to_xml(itemPtr item, xmlNodePtr feedNode, gboolean rendering) {
 
 	if(item_get_real_source_url(item))
 		xmlNewTextChild(itemNode, NULL, "real_source_url", item_get_real_source_url(item));
-
-	if(item_get_id(item))
-		xmlNewTextChild(itemNode, NULL, "id", item_get_id(item));
-		
-	if(item->validGuid)
-		xmlNewTextChild(itemNode, NULL, "validGuid", BAD_CAST "true");		
 
 	tmp = g_strdup_printf("%ld", item->id);
 	xmlNewTextChild(itemNode, NULL, "nr", tmp);
@@ -451,31 +443,22 @@ void item_to_xml(itemPtr item, xmlNodePtr feedNode, gboolean rendering) {
 	xmlNewTextChild(itemNode, NULL, "time", tmp);
 	g_free(tmp);
 
-	if(rendering) {
-		xmlNodePtr duplicatesNode;		
-		GSList *duplicates;
-		
-		duplicatesNode = xmlNewChild(itemNode, NULL, "duplicates", NULL);
-		duplicates = item_guid_list_get_duplicates_for_id(item);
-		while(duplicates) {
-			nodePtr duplicateNode = (nodePtr)duplicates->data;
-			if(duplicateNode != item->node) {
-				xmlNewTextChild(duplicatesNode, NULL, "duplicateNode", 
-				                node_get_title(duplicateNode));
-			}
-			duplicates = g_slist_next(duplicates);
+	duplicatesNode = xmlNewChild(itemNode, NULL, "duplicates", NULL);
+	duplicates = item_guid_list_get_duplicates_for_id(item);
+	while(duplicates) {
+		nodePtr duplicateNode = (nodePtr)duplicates->data;
+		if(duplicateNode != item->node) {
+			xmlNewTextChild(duplicatesNode, NULL, "duplicateNode", 
+			                node_get_title(duplicateNode));
 		}
+		duplicates = g_slist_next(duplicates);
+	}
 		
-		tmp = itemview_format_date(item->time);
-		xmlNewTextChild(itemNode, NULL, "timestr", tmp);
-		g_free(tmp);
+	xmlNewTextChild(itemNode, NULL, "sourceId", item->node->id);
 		
-		xmlNewTextChild(itemNode, NULL, "sourceId", item->node->id);
-		
-		tmp = g_strdup_printf("%ld", item->sourceNr);
-		xmlNewTextChild(itemNode, NULL, "sourceNr", tmp);
-		g_free(tmp);
-	}		
+	tmp = g_strdup_printf("%ld", item->id);
+	xmlNewTextChild(itemNode, NULL, "sourceNr", tmp);
+	g_free(tmp);
 
 	metadata_add_xml_nodes(item->metadata, itemNode);
 		
@@ -483,19 +466,18 @@ void item_to_xml(itemPtr item, xmlNodePtr feedNode, gboolean rendering) {
 		GList		*iter = item->comments->items;
 		xmlNodePtr	commentsNode = xmlNewChild(itemNode, NULL, "comments", NULL);
 
-		update_state_export(commentsNode, item->updateState);
+// FIXME: move update states to DB
+//		update_state_export(commentsNode, item->updateState);
 
  		while(iter) {
-			item_to_xml((itemPtr)iter->data, commentsNode, FALSE);
+			item_to_xml((itemPtr)iter->data, commentsNode);
 			iter = g_list_next(iter);
 		}
 		
-		if(rendering) {
-			xmlNewTextChild(commentsNode, NULL, "updateState", 
-			                (item->updateRequest)?"updating":"ok");
-			
-			if(item->commentsError)
-				xmlNewTextChild(commentsNode, NULL, "updateError", item->commentsError);
-		}
+		xmlNewTextChild(commentsNode, NULL, "updateState", 
+		                (item->updateRequest)?"updating":"ok");
+		
+		if(item->commentsError)
+			xmlNewTextChild(commentsNode, NULL, "updateError", item->commentsError);
 	}
 }
