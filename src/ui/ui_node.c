@@ -187,7 +187,7 @@ void ui_node_remove_node(nodePtr np) {
 		parentExpanded = ui_node_is_folder_expanded(np->parent); /* If the folder becomes empty, the folder would collapse */
 	
 	gtk_tree_store_remove(feedstore, iter);
-	g_hash_table_remove(flIterHash, iter);
+	g_hash_table_remove(flIterHash, np);
 	g_free(iter);
 	
 	if(np->parent) {
