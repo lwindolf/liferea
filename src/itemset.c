@@ -92,22 +92,22 @@ static void itemset_merge_item(itemSetPtr itemSet, itemPtr item) {
 		g_assert(!item->id);
 		item->node = itemSet->node;
 		
-		/* step 1: add to itemset */
-		itemSet->ids = g_list_prepend(itemSet->ids, GUINT_TO_POINTER(item->id));
-
-		/* step 2: write to DB */
+		/* step 1: write item to DB */
 		db_item_update(item);
+		
+		/* step 2: add to itemset */
+		itemSet->ids = g_list_prepend(itemSet->ids, GUINT_TO_POINTER(item->id));
 				
 		debug3(DEBUG_UPDATE, "-> added \"%s\" (id=%d) to item set %p...", item_get_title(item), item->id, itemSet);
 		
 		/* step 3: duplicate detection, mark read if it is a duplicate */
 		// FIXME: still needed?
-		if(item->validGuid) {
-			if(item_guid_list_get_duplicates_for_id(item)) {
+//		if(item->validGuid) {
+//			if(item_guid_list_get_duplicates_for_id(item)) {
 				// FIXME do something better: item->readStatus = TRUE;
-				debug2(DEBUG_UPDATE, "-> duplicate guid detected: %s -> %s\n", item->id, item->title);
-			}
-		}
+//				debug2(DEBUG_UPDATE, "-> duplicate guid detected: %s -> %s\n", item->id, item->title);
+//			}
+//		}
 	} else {
 		debug2(DEBUG_UPDATE, "-> not adding \"%s\" to node \"%s\"...", item_get_title(item), node_get_title(itemSet->node));
 		item_unload(item);

@@ -65,7 +65,8 @@ CREATE TABLE items ( \
 	real_source_url		TEXT, \
 	real_source_title	TEXT,	\
 	description		TEXT, \
-	date			INTEGER \
+	date			INTEGER, \
+	comment_feed_id		INTEGER \
 );";
 
 static const gchar *schema_itemsets = "\
@@ -168,6 +169,7 @@ void db_init(void) {
 	               "items.real_source_title,"
 	               "items.description,"
 	               "items.date,"
+		       "items.comment_feed_id,"
 		       "itemsets.item_id,"
 		       "itemsets.node_id"
 	               " FROM items INNER JOIN itemsets "
@@ -189,8 +191,9 @@ void db_init(void) {
 	               "real_source_title,"
 	               "description,"
 	               "date,"
+		       "comment_feed_id,"
 	               "ROWID"
-	               ") values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+	               ") values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 		       
 	db_prepare_stmt(&itemRemoveStmt,
 	                "DELETE FROM items WHERE ROWID = ?");
@@ -294,8 +297,9 @@ static itemPtr db_load_item_from_columns(sqlite3_stmt *stmt) {
 	item->flagStatus	= sqlite3_column_int(stmt, 5)?TRUE:FALSE;
 	item->validGuid		= sqlite3_column_int(stmt, 8)?TRUE:FALSE;
 	item->time		= sqlite3_column_int(stmt, 12);
-	item->id		= sqlite3_column_int(stmt, 13);
-	item->node		= node_from_id(sqlite3_column_text(stmt, 14));
+	item->commentFeedId	= sqlite3_column_text(stmt, 13);
+	item->id		= sqlite3_column_int(stmt, 14);
+	item->node		= node_from_id(sqlite3_column_text(stmt, 15));
 
 	item_set_title			(item, sqlite3_column_text(stmt, 0));
 	item_set_source			(item, sqlite3_column_text(stmt, 6));
@@ -421,7 +425,8 @@ void db_item_update(itemPtr item) {
 	sqlite3_bind_text(itemUpdateStmt, 11, item->real_source_title, -1, SQLITE_TRANSIENT);
 	sqlite3_bind_text(itemUpdateStmt, 12, item->description, -1, SQLITE_TRANSIENT);
 	sqlite3_bind_int (itemUpdateStmt, 13, item->time);
-	sqlite3_bind_int (itemUpdateStmt, 14, item->id);
+	sqlite3_bind_text(itemUpdateStmt, 14, item->commentFeedId, -1, SQLITE_TRANSIENT);
+	sqlite3_bind_int (itemUpdateStmt, 15, item->id);
 	res = sqlite3_step(itemUpdateStmt);
 
 	if(SQLITE_DONE != res) 

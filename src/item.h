@@ -65,10 +65,12 @@ typedef struct item {
 	GHashTable	*tmpdata;		/**< Temporary data hash used during stateful parsing */
 	time_t		time;			/**< Last modified date of the headline */
 	
-	struct itemSet	*comments;		/**< comment feed structure */
 	struct request	*updateRequest;		/**< update request structure used when downloading comments */
 	struct updateState *updateState;	/**< update states (etag, last modified, cookies, last polling times...) used when downloading comments */
-	gchar		*commentsError;		/**< Description of error if comments download failed */
+
+	/* Item Comments */	
+	gchar		*commentFeedId;		/**< Id of the items comments feed (or NULL)*/
+	gchar		*commentsError;		/**< Description of error if comments download failed (or NULL)*/
 	
 	struct node	*node;			/**< Pointer to the containing node of this item */
 	gulong 		sourceNr;		/**< Either equal to nr or the number of the item this one is a copy of */

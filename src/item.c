@@ -87,8 +87,12 @@ static void item_comments_process_update_result(struct request *request) {
 		if(ctxt->failed) {
 			debug0(DEBUG_UPDATE, "parsing comment feed failed!");
 		} else {
+			itemSetPtr comments;
+			
 			debug1(DEBUG_UPDATE, "parsing comment feed successful (%d comments downloaded)", g_list_length(ctxt->items));
-			itemset_merge_items(item->comments, ctxt->items);
+			comments = db_itemset_load(item->commentFeedId);
+			itemset_merge_items(comments, ctxt->items);
+			itemset_free(comments);
 		}
 				
 		feed_free_parser_ctxt(ctxt);
@@ -155,8 +159,6 @@ itemPtr item_new(void) {
 	
 	item = g_new0(struct item, 1);
 	
-	item->comments = g_new0(struct itemSet, 1);
-	item->comments->type = ITEMSET_TYPE_FEED;
 	item->updateState = update_state_new();
 	
 	item->newStatus = TRUE;
@@ -253,9 +255,6 @@ const gchar *	item_get_real_source_title(itemPtr item) { return item->real_sourc
 
 void item_unload(itemPtr item) {
 
-	if(item->comments)
-		itemset_free(item->comments);
-		
 	g_free(item->title);
 	g_free(item->source);
 	g_free(item->sourceId);
@@ -271,6 +270,7 @@ void item_unload(itemPtr item) {
 	if(item->updateState)
 		update_state_free(item->updateState);
 		
+	g_free(item->commentFeedId);
 	g_free(item->commentsError);
 	g_free(item);
 }
@@ -414,9 +414,10 @@ void item_to_xml(itemPtr item, xmlNodePtr parentNode) {
 
 	metadata_add_xml_nodes(item->metadata, itemNode);
 		
-	if(item->comments) {
-		GList		*iter = item->comments->ids;
+	if(item->commentFeedId) {
+		itemSetPtr	comments = db_itemset_load(item->commentFeedId);
 		xmlNodePtr	commentsNode = xmlNewChild(itemNode, NULL, "comments", NULL);
+		GList		*iter = comments->ids;
 
 // FIXME: move update states to DB
 //		update_state_export(commentsNode, item->updateState);
@@ -433,5 +434,7 @@ void item_to_xml(itemPtr item, xmlNodePtr parentNode) {
 		
 		if(item->commentsError)
 			xmlNewTextChild(commentsNode, NULL, "updateError", item->commentsError);
+			
+		itemset_free(comments);
 	}
 }
