@@ -197,7 +197,7 @@ static void on_propdialog_response(GtkDialog *dialog, gint response_id, gpointer
 		feed->encAutoDownload = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(GTK_WIDGET(dialog), "enclosureDownloadCheck")));
 		feed->loadItemLink = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(GTK_WIDGET(dialog), "loadItemLinkCheck")));
 
-		ui_node_update(node);
+		ui_node_update(node->id);
 		feedlist_schedule_save();
 		if(needsUpdate)
 			node_request_update(node, FEED_REQ_AUTH_DIALOG | FEED_REQ_PRIORITY_HIGH);

@@ -142,23 +142,23 @@ void itemlist_remove_all_items(nodePtr node);
 /**
  * Marks all items of the item set as read.
  *
- * @param node		the node whose item list is to be modified
+ * @param nodeId	the node whose item list is to be modified
  */
-void itemlist_mark_all_read(nodePtr node);
+void itemlist_mark_all_read(const gchar *nodeId);
 
 /**
  * Resets the new flag for all items of the given item set.
  *
- * @param node		the node whose item list is to be modified
+ * @param nodeId	the node whose item list is to be modified
  */
-void itemlist_mark_all_old(nodePtr node);
+void itemlist_mark_all_old(const gchar *nodeId);
 
 /**
  * Resets the popup flag for all items of the given item set.
  *
- * @param node		the node whose item list is to be modified
+ * @param nodeId	the node whose item list is to be modified
  */
-void itemlist_mark_all_popup(nodePtr node);
+void itemlist_mark_all_popup(const gchar *nodeId);
 
 /**
  * Called from GUI when item list selection changes.

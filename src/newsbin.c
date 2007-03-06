@@ -39,7 +39,6 @@ GSList * newsbin_get_list(void) { return newsbin_list; }
 
 static void newsbin_new(nodePtr node) {
 
-	node->needsCacheSave = TRUE;
 	feedlist_schedule_save();
 }
 
@@ -110,7 +109,7 @@ void on_popup_copy_to_newsbin(gpointer user_data, guint callback_action, GtkWidg
 	item = itemlist_get_selected();
 	if(item) {
 		copy = item_copy(item);
-		copy->node = newsbin;	/* necessary to become independent of original item */
+		copy->nodeId = newsbin->id;	/* necessary to become independent of original item */
 		
 		/* To avoid item doubling in vfolders we reset
 		   simple vfolder match attributes */
@@ -120,15 +119,14 @@ void on_popup_copy_to_newsbin(gpointer user_data, guint callback_action, GtkWidg
 		/* To provide a hint in the rendered output what the orginial 
 		   feed was the original website link/title are added */		
 		if(!copy->real_source_url)
-			copy->real_source_url = g_strdup(node_get_base_url(item->node));
+			copy->real_source_url = g_strdup(node_get_base_url(node_from_id(item->nodeId)));
 		if(!copy->real_source_title)
-			copy->real_source_title = g_strdup(node_get_title(item->node));
+			copy->real_source_title = g_strdup(node_get_title(node_from_id(item->nodeId)));
 		
 		/* do the same as in node_merge_item(s) */
 		db_item_update(copy);	// FIXME: is this enough?
-		newsbin->needsCacheSave = TRUE;
 		node_update_counters(newsbin);
-		ui_node_update(newsbin);
+		ui_node_update(newsbin->id);
 	}
 }
 

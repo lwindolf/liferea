@@ -80,7 +80,7 @@ static void on_propdialog_response(GtkDialog *dialog, gint response_id, gpointer
 		ui_itemlist_clear();
 		// FIXME: update vfolder
 		itemlist_load(ui_data->np);
-		ui_node_update(ui_data->np);
+		ui_node_update(ui_data->np->id);
 	}
 	
 	g_free(ui_data);

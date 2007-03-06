@@ -24,6 +24,7 @@
 #include <gtk/gtk.h>
 #include "item.h"
 #include "itemset.h"
+#include "node.h"
  
  /* Liferea knows two ways to present items: with a GTK
     tree view and with a HTML rendering widget. This 
@@ -45,7 +46,7 @@ void	itemview_clear(void);
  *
  * @param node	the node whose items are to be presented
  */
-void	itemview_set_displayed_node(struct node *node);
+void	itemview_set_displayed_node(nodePtr node);
 
 /** item view display mode type */
 typedef enum {

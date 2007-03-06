@@ -98,7 +98,7 @@ static void itemlist_check_for_deferred_action(void) {
 			deferred_item_filter = FALSE;
 			item = item_load(id);
 			itemview_remove_item(item);
-			ui_node_update(item->node);
+			ui_node_update(item->nodeId);
 			item_unload(item);
 		}
 
@@ -120,20 +120,23 @@ static void itemlist_check_for_deferred_action(void) {
 void itemlist_merge_itemset(itemSetPtr itemSet) {
 	GList		*iter;
 	gboolean	hasEnclosures = FALSE;
+	nodePtr		node;
 
 	debug_enter("itemlist_merge_itemset");
+	
+	node = node_from_id(itemSet->nodeId);
 
 	if(!currentNode)
 		return; /* Nothing to do if nothing is displayed */
 	
-	if((currentNode != itemSet->node) && !node_is_ancestor(currentNode, itemSet->node))
+	if((currentNode != node) && !node_is_ancestor(currentNode, node))
 		return; /* Nothing to do if the item set does not belong to this node */
 
 	if((NODE_TYPE_FOLDER == currentNode->type) && 
 	   (0 == getNumericConfValue(FOLDER_DISPLAY_MODE)))
 		return; /* Bail out if it is a folder without the recursive display preference set */
 		
-	debug1(DEBUG_GUI, "reloading item list with node \"%s\"", node_get_title(itemSet->node));
+	debug1(DEBUG_GUI, "reloading item list with node \"%s\"", node_get_title(node));
 
 	/* update item list tree view */	
 	iter = g_list_last(itemSet->ids);
@@ -215,7 +218,7 @@ void itemlist_unload(gboolean markRead) {
 		   to realize reliable read marking when using condensed mode. It's
 		   important to do this only when the selection really changed. */
 		if(markRead && (2 == node_get_view_mode(currentNode))) 
-			itemlist_mark_all_read(currentNode);
+			itemlist_mark_all_read(currentNode->id);
 
 		itemlist_check_for_deferred_action();
 	}
@@ -257,7 +260,7 @@ void itemlist_select_next_unread(void) {
 	   because no item will be selected and marked read... */
 	if(currentNode) {
 		if(NODE_VIEW_MODE_COMBINED == node_get_view_mode(currentNode))
-			itemlist_mark_all_read(currentNode);
+			itemlist_mark_all_read(currentNode->id);
 	}
 
 	itemlistLoading++;	/* prevent unwanted selections */
@@ -331,8 +334,8 @@ void itemlist_set_read_status(itemPtr item, gboolean newStatus) {
 		itemlist_update_item(item);
 
 		/* 3. updated feed list unread counters */
-		node_update_counters(item->node);
-		ui_node_update(item->node);
+		node_update_counters(node_from_id(item->nodeId));
+		ui_node_update(item->nodeId);
 
 		/* 4. update notification statistics */
 		feedlist_reset_new_item_count();
@@ -373,7 +376,7 @@ static void itemlist_hide_item(itemPtr item) {
 	   don't do it and set a flag to do it when unselecting */
 	if(selectedId != item->id) {
 		itemview_remove_item(item);
-		ui_node_update(item->node);
+		ui_node_update(item->nodeId);
 	} else {
 		deferred_item_filter = TRUE;
 		/* update the item to show new state that forces
@@ -398,8 +401,8 @@ void itemlist_remove_item(itemPtr item) {
 	
 	db_item_remove(item->id);
 	
-	node_update_counters(item->node);
-	ui_node_update(item->node);
+	node_update_counters(node_from_id(item->nodeId));
+	ui_node_update(item->nodeId);
 	
 	item_unload(item);
 }
@@ -427,7 +430,7 @@ void itemlist_remove_items(itemSetPtr itemSet, GList *items) {
 	}
 
 	itemview_update();
-	ui_node_update(itemSet->node);
+	ui_node_update(itemSet->nodeId);
 }
 
 void itemlist_remove_all_items(nodePtr node) {
@@ -435,7 +438,7 @@ void itemlist_remove_all_items(nodePtr node) {
 	itemview_clear();
 	db_itemset_remove_all(node->id);
 	itemview_update();
-	ui_node_update(node);
+	ui_node_update(node->id);
 }
 
 void itemlist_update_item(itemPtr item) {
@@ -448,27 +451,27 @@ void itemlist_update_item(itemPtr item) {
 	itemview_update_item(item);
 }
 
-void itemlist_mark_all_read(nodePtr node) {
+void itemlist_mark_all_read(const gchar *nodeId) {
 
-	db_itemset_mark_all_read(node->id);
+	db_itemset_mark_all_read(nodeId);
 	
 	/* GUI updating */	
 	itemview_update_all_items();
 	itemview_update();
-	node_update_counters(node);
-	ui_node_update(node);
+	node_update_counters(node_from_id(nodeId));
+	ui_node_update(nodeId);
 }
 
-void itemlist_mark_all_old(nodePtr node) {
+void itemlist_mark_all_old(const gchar *nodeId) {
 
-	db_itemset_mark_all_old(node->id);
+	db_itemset_mark_all_old(nodeId);
 	
 	/* No GUI updating necessary... */
 }
 
-void itemlist_mark_all_popup(nodePtr node) {
+void itemlist_mark_all_popup(const gchar *nodeId) {
 
-	db_itemset_mark_all_popup(node->id);
+	db_itemset_mark_all_popup(nodeId);
 	
 	/* No GUI updating necessary... */
 }
@@ -496,7 +499,7 @@ void itemlist_selection_changed(itemPtr item) {
 			itemlist_set_read_status(item, TRUE);
 			itemlist_set_update_status(item, FALSE);
 			
-			if(node_load_link_preferred(item->node)) {
+			if(node_load_link_preferred(node_from_id(item->nodeId))) {
 				ui_htmlview_launch_URL(ui_mainwindow_get_active_htmlview(), 
 				                       item_get_source(itemlist_get_selected()), 2);
 			} else {
@@ -506,7 +509,7 @@ void itemlist_selection_changed(itemPtr item) {
 			}
 		}
 
-		ui_node_update(item->node);
+		ui_node_update(item->nodeId);
 
 		feedlist_reset_new_item_count();
 	}

@@ -41,21 +41,8 @@ enum itemSetTypes {
 typedef struct itemSet {
 	guint		type;		/**< the type of the item set */
 	GList		*ids;		/**< the list of item ids */
-	struct node	*node;		/**< the feed list node this item set belongs to */
+	gchar		*nodeId;	/**< the feed list node id this item set belongs to */
 } *itemSetPtr;
-
-/**
- * Scans all items of a given item set for the given item id.
- * The node must be also given to correctly extract items from
- * merged item lists (like folders)
- *
- * @param itemSet	the item set
- * @param node		the parent node
- * @param nr		the item nr
- *
- * @returns NULL or the first found item
- */
-itemPtr itemset_lookup_item(itemSetPtr itemSet, struct node *node, gulong nr);
 
 /**
  * Merges the given item set into the item set of
@@ -65,14 +52,6 @@ itemPtr itemset_lookup_item(itemSetPtr itemSet, struct node *node, gulong nr);
  * @param items		a list of items to merge
  */
 void itemset_merge_items(itemSetPtr itemSet, GList *items);
-
-/**
- * Serialize the given item set to XML. Does not serialize items!
- * It only creates an XML document frame for an item set.
- *
- * @param node	the node whose item set is to be serialized
- */
-xmlDocPtr itemset_to_xml(struct node *node);
 
 /**
  * Frees the given item set and all items it contains.

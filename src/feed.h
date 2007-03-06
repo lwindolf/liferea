@@ -199,16 +199,6 @@ void feed_cancel_retry(nodePtr node);
  */
 guint feed_get_max_item_count(nodePtr node);
 
-/**
- * Merging implementation for the feed itemset type.
- *
- * @param itemSet	the itemset to merge against
- * @param item		the item to merge
- *
- * @returns TRUE if the item can be merged
- */
-gboolean feed_merge_check(itemSetPtr itemSet, itemPtr item);
-
 /* ------------------------------------------------------------ */
 /* feed property get/set 					*/
 /* ------------------------------------------------------------ */

@@ -32,35 +32,112 @@
 #include "support.h"
 #include "vfolder.h"
 
-xmlDocPtr itemset_to_xml(nodePtr node) {
-	xmlDocPtr 	doc;
-	xmlNodePtr 	itemSetNode;
-	
-	doc = xmlNewDoc("1.0");
-	itemSetNode = xmlNewDocNode(doc, NULL, "itemset", NULL);
-	
-	xmlDocSetRootElement(doc, itemSetNode);
-	
-	xmlNewTextChild(itemSetNode, NULL, "favicon", node_get_favicon_file(node));
-	xmlNewTextChild(itemSetNode, NULL, "title", node_get_title(node));
-
-	if(NODE_TYPE_FEED == node->type) {
-	       xmlNewTextChild(itemSetNode, NULL, "source", feed_get_source(node->data));
-	       xmlNewTextChild(itemSetNode, NULL, "link", feed_get_html_url(node->data));
-	}
-
-	return doc;
-}
-
 static guint itemset_get_max_item_count(itemSetPtr itemSet) {
 
-	switch(itemSet->node->type) {
-		case NODE_TYPE_FEED:
-			return feed_get_max_item_count(itemSet->node);
-			break;
-		default:
-			return G_MAXUINT;
+	if(ITEMSET_TYPE_FEED == itemSet->type) {
+		nodePtr node = node_from_id(itemSet->nodeId);
+		return feed_get_max_item_count(node);
 	}
+
+	return G_MAXUINT;
+}
+
+/* Generic merge logic suitable for feeds */
+gboolean itemset_generic_merge_check(itemSetPtr itemSet, itemPtr newItem) {
+	GList		*oldItemIdIter = itemSet->ids;
+	itemPtr		oldItem = NULL;
+	gboolean	found, equal = FALSE;
+
+	/* determine if we should add it... */
+	debug1(DEBUG_VERBOSE, "check new item for merging: \"%s\"", item_get_title(newItem));
+		
+	/* compare to every existing item in this feed */
+	found = FALSE;
+	while(oldItemIdIter) {
+		oldItem = item_load(GPOINTER_TO_UINT(oldItemIdIter->data));
+		
+		/* try to compare the two items */
+
+		/* trivial case: one item has id the other doesn't -> they can't be equal */
+		if(((item_get_id(oldItem) == NULL) && (item_get_id(newItem) != NULL)) ||
+		   ((item_get_id(oldItem) != NULL) && (item_get_id(newItem) == NULL))) {	
+			/* cannot be equal (different ids) so compare to 
+			   next old item */
+			oldItemIdIter = g_list_next(oldItemIdIter);
+		   	continue;
+		} 
+
+		/* just for the case there are no ids: compare titles and HTML descriptions */
+		equal = TRUE;
+
+		if(((item_get_title(oldItem) != NULL) && (item_get_title(newItem) != NULL)) && 
+		    (0 != strcmp(item_get_title(oldItem), item_get_title(newItem))))		
+	    		equal = FALSE;
+
+		if(((item_get_description(oldItem) != NULL) && (item_get_description(newItem) != NULL)) && 
+		    (0 != strcmp(item_get_description(oldItem), item_get_description(newItem))))
+	    		equal = FALSE;
+
+		/* best case: they both have ids (position important: id check is useless without knowing if the items are different!) */
+		if(item_get_id(oldItem)) {			
+			if(0 == strcmp(item_get_id(oldItem), item_get_id(newItem))){
+				found = TRUE;
+				break;
+			} else {
+				/* different ids, but the content might be still equal (e.g. empty)
+				   so we need to explicitly unset the equal flag !!!  */
+				equal = FALSE;
+			}
+		}
+			
+		if(equal) {
+			found = TRUE;
+			break;
+		}
+
+		oldItemIdIter = g_list_next(oldItemIdIter);
+	}
+		
+	if(!found) {
+
+		/* If a new item has enclosures and auto downloading
+		   is enabled we start the download. Enclosures added
+		   by updated items are not supported. */
+
+//		if((TRUE == ((feedPtr)(node_from_id(itemSet->nodeId)->data))->encAutoDownload) &&
+//		   (TRUE == newItem->newStatus)) {
+//			GSList *iter = metadata_list_get_values(newItem->metadata, "enclosure");
+//			while(iter) {
+//				debug1(DEBUG_UPDATE, "download enclosure (%s)", (gchar *)iter->data);
+//				ui_enclosure_save(NULL, g_strdup(iter->data), NULL);
+//				iter = g_slist_next(iter);
+//			}
+//		}
+		
+		debug0(DEBUG_VERBOSE, "-> item is to be added");
+	} else {
+		/* if the item was found but has other contents -> update contents */
+		if(!equal) {
+//			if(((feedPtr)(node_from_id(itemSet->nodeId)->data))->valid) {
+//				/* no item_set_new_status() - we don't treat changed items as new items! */
+//				item_set_title(oldItem, item_get_title(newItem));
+//				item_set_description(oldItem, item_get_description(newItem));
+//				oldItem->time = newItem->time;
+//				oldItem->updateStatus = TRUE;
+//				// FIXME: this does not remove metadata from DB
+//				metadata_list_free(oldItem->metadata);
+//				oldItem->metadata = newItem->metadata;
+//				newItem->metadata = NULL;
+//				debug0(DEBUG_VERBOSE, "-> item already existing and was updated");
+//			} else {
+//				debug0(DEBUG_VERBOSE, "-> item updates not merged because of parser errors");
+//			}
+		} else {
+			debug0(DEBUG_VERBOSE, "-> item already exists");
+		}
+	}
+
+	return !found;
 }
 
 /**
@@ -69,28 +146,19 @@ static guint itemset_get_max_item_count(itemSetPtr itemSet) {
  */
 static gboolean itemset_merge_check(itemSetPtr itemSet, itemPtr item) {
 
-	switch(itemSet->node->type) {
-		case NODE_TYPE_FEED:
-			return feed_merge_check(itemSet, item);
-			break;
-		default:
-			g_warning("node_merge_check(): If this happens something is wrong!");
-			break;
-	}
-	
-	return FALSE;
+	return itemset_generic_merge_check(itemSet, item);	
 }
 
 static void itemset_merge_item(itemSetPtr itemSet, itemPtr item) {
 
-	debug2(DEBUG_UPDATE, "trying to merge \"%s\" to node \"%s\"", item_get_title(item), node_get_title(itemSet->node));
+	debug2(DEBUG_UPDATE, "trying to merge \"%s\" to node id \"%s\"", item_get_title(item), itemSet->nodeId);
 
 	/* step 1: merge into node type internal data structures */
 	if(itemset_merge_check(itemSet, item)) {
-		g_assert(itemSet->node);
-		g_assert(!item->node);
+		g_assert(itemSet->nodeId);
+		g_assert(!item->nodeId);
 		g_assert(!item->id);
-		item->node = itemSet->node;
+		item->nodeId = itemSet->nodeId;
 		
 		/* step 1: write item to DB */
 		db_item_update(item);
@@ -109,7 +177,7 @@ static void itemset_merge_item(itemSetPtr itemSet, itemPtr item) {
 //			}
 //		}
 	} else {
-		debug2(DEBUG_UPDATE, "-> not adding \"%s\" to node \"%s\"...", item_get_title(item), node_get_title(itemSet->node));
+		debug2(DEBUG_UPDATE, "-> not adding \"%s\" to node id \"%s\"...", item_get_title(item), itemSet->nodeId);
 		item_unload(item);
 	}
 }
@@ -118,7 +186,7 @@ void itemset_merge_items(itemSetPtr itemSet, GList *list) {
 	GList	*iter;
 	guint	max;
 	
-	debug3(DEBUG_UPDATE, "old item set %p of \"%s\" (%p):", itemSet, node_get_title(itemSet->node), itemSet->node);
+	debug2(DEBUG_UPDATE, "old item set %p of (node id=%s):", itemSet, itemSet->nodeId);
 	
 	/* Truncate the new itemset if it is longer than
 	   the maximum cache size which could cause items
@@ -126,7 +194,7 @@ void itemset_merge_items(itemSetPtr itemSet, GList *list) {
 	   merges with the same feed content */
 	max = itemset_get_max_item_count(itemSet);
 	if(g_list_length(list) > max) {
-		debug3(DEBUG_UPDATE, "item list too long (%u, max=%u) when merging into \"%s\"!", g_list_length(list), max, node_get_title(itemSet->node));
+		debug2(DEBUG_UPDATE, "item list too long (%u, max=%u) for merging!", g_list_length(list), max);
 		guint i = 0;
 		GList *iter, *copy;
 		iter = copy = g_list_copy(list);
@@ -153,28 +221,6 @@ void itemset_merge_items(itemSetPtr itemSet, GList *list) {
 		iter = g_list_previous(iter);
 	}
 	g_list_free(list);
-}
-
-void itemset_set_item_new_status(itemSetPtr itemSet, itemPtr item, gboolean newStatus) {
-
-	g_assert(newStatus != item->newStatus);
-
-	item->newStatus = newStatus;
-	db_item_update(item);
-
-	/* Note: new count updates must be done through the node
-	   interface to allow global feed list new counter */
-	node_update_new_count(itemSet->node, newStatus?-1:1);
-}
-
-void itemset_set_item_popup_status(itemSetPtr itemSet, itemPtr item, gboolean newPopupStatus) {
-
-	g_assert(newPopupStatus != item->popupStatus);
-
-	item->popupStatus = newPopupStatus;
-
-	/* Currently no node popup counter needed, therefore
-	   no propagation to nodes... */
 }
 
 void itemset_free(itemSetPtr itemSet) {

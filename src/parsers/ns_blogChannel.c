@@ -166,7 +166,6 @@ static void ns_blogChannel_download_request_cb(requestPtr request) {
 		g_string_append(buffer, g_hash_table_lookup(requestData->ctxt->tmpdata, "bC:blogRoll"));
 		g_string_append(buffer, g_hash_table_lookup(requestData->ctxt->tmpdata, "bC:mySubscriptions"));
 		metadata_list_set(&(requestData->ctxt->feed->metadata), "blogChannel", buffer->str);
-		requestData->ctxt->node->needsCacheSave = TRUE;	/* needed because we're processing after feed parsing */
 		g_string_free(buffer, TRUE);
 		
 		// FIXME: needed? node_unload(requestData->ctxt->node);

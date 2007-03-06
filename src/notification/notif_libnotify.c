@@ -64,8 +64,8 @@ static void notif_libnotify_callback_mark_read ( NotifyNotification *n, gchar *a
 	nodePtr node_p = node_from_id(user_data);
 	
 	if(node_p) {
-		itemlist_mark_all_read(node_p);
-		itemlist_mark_all_popup(node_p);
+		itemlist_mark_all_read(node_p->id);
+		itemlist_mark_all_popup(node_p->id);
 	} else {
 		ui_show_error_box(_("This feed does not exist anymore!"));
 	}

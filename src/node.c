@@ -69,6 +69,7 @@ gchar * node_new_id() {
 	gchar		*id, *filename;
 	gboolean	already_used;
 	
+	// FIXME: check DB instead!
 	id = g_new0(gchar, 10);
 	do {
 		for(i=0;i<7;i++)
@@ -84,11 +85,17 @@ gchar * node_new_id() {
 }
 
 nodePtr node_from_id(const gchar *id) {
+	nodePtr	node;
 
+	if(!id)
+		return NULL;
+		
 	g_assert(NULL != nodes);
-	if(!g_hash_table_lookup(nodes, id))
-		g_warning("Fatal: no node with id %s found!", id);
-	return (nodePtr)g_hash_table_lookup(nodes, id);
+	node = (nodePtr)g_hash_table_lookup(nodes, id);
+	if(!node)
+		g_warning("Fatal: no node with id \"%s\" found!", id);
+		
+	return node;
 }
 
 nodePtr node_new(void) {
@@ -280,7 +287,7 @@ void node_add_child(nodePtr parent, nodePtr node, gint position) {
 		node->source = parent->source;
 	
 	ui_node_add(parent, node, position);	
-	ui_node_update(node);
+	ui_node_update(node->id);
 }
 
 /* To be called by node type implementations to add nodes */

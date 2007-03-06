@@ -72,6 +72,7 @@ static void export_append_node_tag(nodePtr node, gpointer userdata) {
 				xmlNewProp(childNode, BAD_CAST"sortColumn", BAD_CAST"time");
 				break;
 			case IS_PARENT:
+			case IS_SOURCE:
 				xmlNewProp(childNode, BAD_CAST"sortColumn", BAD_CAST"parent");
 				break;
 		}

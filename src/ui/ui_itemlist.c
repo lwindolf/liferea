@@ -213,7 +213,7 @@ static void ui_itemlist_update_iter(GtkTreeIter *iter, itemPtr item) {
 		esc_title = g_strstrip(esc_title);
 	}
 
-	direction_marker = common_get_direction_mark(item->node->title);
+	direction_marker = common_get_direction_mark(node_from_id(item->nodeId)->title);
 
 	if(FALSE == item->readStatus) {
 		time_str = g_strdup_printf("<span weight=\"bold\">%s</span>", esc_time_str);
@@ -380,6 +380,7 @@ void ui_itemlist_add_item(itemPtr item) {
 	GtkTreeStore	*itemstore = ui_itemlist_get_tree_store();
 	GtkTreeIter	old_iter;
 	gboolean	exists;
+	nodePtr		node;
 
 	exists = ui_item_id_to_iter(item->id, &old_iter);
 	
@@ -400,14 +401,16 @@ void ui_itemlist_add_item(itemPtr item) {
 		if(!item->readStatus)
 			state += 1;
 
+		node = node_from_id(item->nodeId);
+
 		gtk_tree_store_set(itemstore, iter,
 		                	      IS_TIME, item->time,
 		                	      IS_NR, item->id,
-					      IS_PARENT, item->node,
-		                              IS_FAVICON, item->node->icon,
+					      IS_PARENT, node,
+		                              IS_FAVICON, node->icon,
 		                              IS_ENCICON, item->hasEnclosure?icons[ICON_ENCLOSURE]:NULL,
 					      IS_ENCLOSURE, item->hasEnclosure,
-					      IS_SOURCE, item->node,
+					      IS_SOURCE, node,
 					      IS_STATE, state,
 		                	      -1);
 		ui_itemlist_update_item(item);
@@ -533,7 +536,7 @@ static itemPtr ui_itemlist_find_unread_item_from_iter(GtkTreeIter *iter) {
 				ui_itemlist_select(item);
 				itemlist_set_read_status(item, TRUE);	/* needed when no selection happens (e.g. when the item is already selected) */
 			} else {
-				itemlist_mark_all_read(item->node);
+				itemlist_mark_all_read(item->nodeId);
 			}
 			return item;
 		}

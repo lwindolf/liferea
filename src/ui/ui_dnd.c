@@ -108,7 +108,7 @@ static gboolean ui_dnd_feed_drag_data_received(GtkTreeDragDest *drag_dest, GtkTr
 			oldParent->children = g_slist_remove(oldParent->children, node);
 			
 			if(0 == g_slist_length(oldParent->children))
-				ui_node_add_empty_node(ui_node_to_iter(oldParent));
+				ui_node_add_empty_node(ui_node_to_iter(oldParent->id));
 			
 			/* and rebuild new parents child list */
 			if(gtk_tree_model_iter_parent(GTK_TREE_MODEL(drag_dest), &parentIter, &iter)) {
@@ -125,8 +125,8 @@ static gboolean ui_dnd_feed_drag_data_received(GtkTreeDragDest *drag_dest, GtkTr
 			newParent->children = NULL;
 			node->parent = newParent;
 			// FIXME: how to refresh unread count?
-			ui_node_update(oldParent);
-			ui_node_update(newParent);
+			ui_node_update(oldParent->id);
+			ui_node_update(newParent->id);
 			
 			debug0(DEBUG_GUI, "new new parent child list:");
 				

@@ -62,7 +62,6 @@ static void item_comments_process_update_result(struct request *request) {
 				     request->source);
 				     
 		metadata_list_set(&(item->metadata), "commentFeedUri", request->source);
-		item->node->needsCacheSave = TRUE;
 	}
 	
 	if(401 == request->httpstatus) { /* unauthorized */
@@ -90,6 +89,10 @@ static void item_comments_process_update_result(struct request *request) {
 			itemSetPtr comments;
 			
 			debug1(DEBUG_UPDATE, "parsing comment feed successful (%d comments downloaded)", g_list_length(ctxt->items));
+			
+			if(!item->commentFeedId)
+				item->commentFeedId = node_new_id();
+			
 			comments = db_itemset_load(item->commentFeedId);
 			itemset_merge_items(comments, ctxt->items);
 			itemset_free(comments);
@@ -191,7 +194,7 @@ itemPtr item_copy(itemPtr item) {
 	copy->validGuid = item->validGuid;
 	
 	/* the following line allows state propagation in item.c */
-	copy->node = NULL;
+	copy->nodeId = NULL;
 	copy->sourceNr = item->id;
 
 	/* this copies metadata */
@@ -279,7 +282,7 @@ const gchar * item_get_base_url(itemPtr item) {
 
 	/* item->node is always the source node for the item 
 	   never a search folder or folder */
-	return node_get_base_url(item->node);
+	return node_get_base_url(node_from_id(item->nodeId));
 }
 
 itemPtr item_parse_cache(xmlNodePtr cur, gboolean migrateCache) {
@@ -399,14 +402,14 @@ void item_to_xml(itemPtr item, xmlNodePtr parentNode) {
 	duplicates = item_guid_list_get_duplicates_for_id(item);
 	while(duplicates) {
 		nodePtr duplicateNode = (nodePtr)duplicates->data;
-		if(duplicateNode != item->node) {
+		if(!strcmp(duplicateNode->id, item->nodeId)) {
 			xmlNewTextChild(duplicatesNode, NULL, "duplicateNode", 
 			                node_get_title(duplicateNode));
 		}
 		duplicates = g_slist_next(duplicates);
 	}
 		
-	xmlNewTextChild(itemNode, NULL, "sourceId", item->node->id);
+	xmlNewTextChild(itemNode, NULL, "sourceId", item->nodeId);
 		
 	tmp = g_strdup_printf("%ld", item->id);
 	xmlNewTextChild(itemNode, NULL, "sourceNr", tmp);

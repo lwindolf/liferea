@@ -222,7 +222,7 @@ static void vfolder_remove(nodePtr node) {
 
 static void vfolder_mark_all_read(nodePtr node) {
 
-	itemlist_mark_all_read(node);
+	itemlist_mark_all_read(node->id);
 }
 
 nodeTypePtr vfolder_get_node_type(void) { 

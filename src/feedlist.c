@@ -105,7 +105,7 @@ void feedlist_update_counters(gint unreadDiff, gint newDiff) {
 static void feedlist_unset_new_items(nodePtr node) {
 	
 	if(0 != node->newCount)
-		itemlist_mark_all_old(node);
+		itemlist_mark_all_old(node->id);
 	
 	node_foreach_child(node, feedlist_unset_new_items);
 }
@@ -343,7 +343,7 @@ static void feedlist_init_node(nodePtr node) {
 	if(node->expanded)
 		ui_node_set_expansion(node, TRUE);
 		
-	ui_node_update(node);
+	ui_node_update(node->id);
 		
 	node_foreach_child(node, feedlist_init_node);
 }

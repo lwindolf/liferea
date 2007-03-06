@@ -90,10 +90,30 @@ void htmlview_update_item(itemPtr item) {
 	g_hash_table_insert(htmlView_priv.htmlChunks, item, NULL);
 }
 
+static xmlDocPtr itemset_to_xml(nodePtr node) {
+	xmlDocPtr 	doc;
+	xmlNodePtr 	itemSetNode;
+	
+	doc = xmlNewDoc("1.0");
+	itemSetNode = xmlNewDocNode(doc, NULL, "itemset", NULL);
+	
+	xmlDocSetRootElement(doc, itemSetNode);
+	
+	xmlNewTextChild(itemSetNode, NULL, "favicon", node_get_favicon_file(node));
+	xmlNewTextChild(itemSetNode, NULL, "title", node_get_title(node));
+
+	if(NODE_TYPE_FEED == node->type) {
+	       xmlNewTextChild(itemSetNode, NULL, "source", feed_get_source(node->data));
+	       xmlNewTextChild(itemSetNode, NULL, "link", feed_get_html_url(node->data));
+	}
+
+	return doc;
+}
+
 static gchar * htmlview_render_item(itemPtr item, gboolean summaryMode) {
 	renderParamPtr	params;
 	gchar		*output = NULL, *baseUrl;
-
+	nodePtr		node;
 	xmlDocPtr	doc;
 
 	debug_enter("htmlview_render_item");
@@ -105,10 +125,11 @@ static gchar * htmlview_render_item(itemPtr item, gboolean summaryMode) {
 			
 	item_to_xml(item, xmlDocGetRootElement(doc));
 			
-	if(NODE_TYPE_FEED == item->node->type) {
+	node = node_from_id(item->nodeId);
+	if(NODE_TYPE_FEED == node->type) {
 		xmlNodePtr feed;
 		feed = xmlNewChild(xmlDocGetRootElement(doc), NULL, "feed", NULL);
-		feed_to_xml(item->node, feed);
+		feed_to_xml(node, feed);
 	}
 	
 	/* do the XSLT rendering */

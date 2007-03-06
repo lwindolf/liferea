@@ -297,9 +297,9 @@ static itemPtr db_load_item_from_columns(sqlite3_stmt *stmt) {
 	item->flagStatus	= sqlite3_column_int(stmt, 5)?TRUE:FALSE;
 	item->validGuid		= sqlite3_column_int(stmt, 8)?TRUE:FALSE;
 	item->time		= sqlite3_column_int(stmt, 12);
-	item->commentFeedId	= sqlite3_column_text(stmt, 13);
+	item->commentFeedId	= g_strdup(sqlite3_column_text(stmt, 13));
 	item->id		= sqlite3_column_int(stmt, 14);
-	item->node		= node_from_id(sqlite3_column_text(stmt, 15));
+	item->nodeId		= g_strdup(sqlite3_column_text(stmt, 15));
 
 	item_set_title			(item, sqlite3_column_text(stmt, 0));
 	item_set_source			(item, sqlite3_column_text(stmt, 6));
@@ -319,7 +319,7 @@ itemSetPtr db_itemset_load(const gchar *id) {
 
 	debug2(DEBUG_DB, "load of itemset for node \"%s\" (thread=%p)", id, g_thread_self());
 	itemSet = g_new0(struct itemSet, 1);
-	itemSet->node = node_from_id(id);
+	itemSet->nodeId = (gchar *)id;
 
 	sqlite3_reset(itemsetLoadStmt);
 	res = sqlite3_bind_text(itemsetLoadStmt, 1, id, -1, SQLITE_TRANSIENT);
@@ -403,7 +403,7 @@ void db_item_update(itemPtr item) {
 		/* insert item <-> node relation */
 		sqlite3_reset(itemsetInsertStmt);
 		sqlite3_bind_int(itemsetInsertStmt, 1, item->id);
-		sqlite3_bind_text(itemsetInsertStmt, 2, item->node->id, -1, SQLITE_TRANSIENT);
+		sqlite3_bind_text(itemsetInsertStmt, 2, item->nodeId, -1, SQLITE_TRANSIENT);
 		res = sqlite3_step(itemsetInsertStmt);
 		if(SQLITE_DONE != res) 
 			g_warning("Insert in \"itemsets\" table failed (error code=%d, %s)", res, sqlite3_errmsg(db));

@@ -44,7 +44,7 @@ static itemSetPtr folder_load(nodePtr node) {
 	itemSetPtr	itemSet;
 	
 	itemSet = g_new0(struct itemSet, 1);
-	itemSet->node = node;
+	itemSet->nodeId = node->id;
 
 	node_foreach_child_data(node, folder_merge_child_items, itemSet);
 	
@@ -67,7 +67,7 @@ static void folder_import(nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean
 static void folder_export(nodePtr node, xmlNodePtr cur, gboolean trusted) {
 	
 	if(trusted) {
-		if(ui_node_is_folder_expanded(node))
+		if(ui_node_is_folder_expanded(node->id))
 			xmlNewProp(cur, BAD_CAST"expanded", BAD_CAST"true");
 		else
 			xmlNewProp(cur, BAD_CAST"collapsed", BAD_CAST"true");

@@ -49,8 +49,6 @@
 extern GtkWidget	*mainwindow;
 extern GHashTable	*feedHandler;
 
-GHashTable		*flIterHash = NULL;	/* hash table used for fast feed -> tree iter lookup */
-
 GtkTreeModel		*filter;
 GtkTreeStore		*feedstore = NULL;
 
@@ -59,7 +57,7 @@ static void ui_feedlist_row_changed_cb(GtkTreeModel *model, GtkTreePath *path, G
 	
 	gtk_tree_model_get(model, iter, FS_PTR, &node, -1);
 	if(node)
-		ui_node_update_iter(node, iter);
+		ui_node_update_iter(node->id, iter);
 }
 
 nodePtr ui_feedlist_get_target_folder(int *pos) {
@@ -75,8 +73,7 @@ nodePtr ui_feedlist_get_target_folder(int *pos) {
 	if(NULL == (node = feedlist_get_selected()))
 		return feedlist_get_root();
 	
-
-	iter = ui_node_to_iter(node);
+	iter = ui_node_to_iter(node->id);
 
 	if(NODE_TYPE_FOLDER == node->type) {
 		return node;
@@ -188,8 +185,6 @@ void ui_feedlist_init(GtkWidget *feedview) {
 	g_assert(mainwindow != NULL);
 	g_assert(feedview != NULL);
 
-	flIterHash = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, NULL);
-
 	/* Set up store */
 	feedstore = gtk_tree_store_new(FS_LEN,
 	                               G_TYPE_STRING,
@@ -249,7 +244,7 @@ void ui_feedlist_select(nodePtr node) {
 	gtk_window_set_focus(GTK_WINDOW(mainwindow), treeview);
 	
 	if(node) {
-		GtkTreePath *path = gtk_tree_model_get_path(GTK_TREE_MODEL(feedstore), ui_node_to_iter(node));
+		GtkTreePath *path = gtk_tree_model_get_path(GTK_TREE_MODEL(feedstore), ui_node_to_iter(node->id));
 	
 		if(NODE_TYPE_FOLDER != node->type)
 			gtk_tree_view_expand_to_path(GTK_TREE_VIEW(treeview), path);

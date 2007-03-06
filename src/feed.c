@@ -599,108 +599,6 @@ static void feed_prepare_request(feedPtr feed, struct request *request, guint fl
 }
 
 /* ---------------------------------------------------------------------------- */
-/* Implementation of the itemset type for feeds					*/
-/* ---------------------------------------------------------------------------- */
-
-gboolean feed_merge_check(itemSetPtr itemSet, itemPtr newItem) {
-	GList		*oldItemIdIter = itemSet->ids;
-	itemPtr		oldItem = NULL;
-	gboolean	found, equal = FALSE;
-
-	/* determine if we should add it... */
-	debug1(DEBUG_VERBOSE, "check new item for merging: \"%s\"", item_get_title(newItem));
-		
-	/* compare to every existing item in this feed */
-	found = FALSE;
-	while(oldItemIdIter) {
-		oldItem = item_load(GPOINTER_TO_UINT(oldItemIdIter->data));
-		
-		/* try to compare the two items */
-
-		/* trivial case: one item has id the other doesn't -> they can't be equal */
-		if(((item_get_id(oldItem) == NULL) && (item_get_id(newItem) != NULL)) ||
-		   ((item_get_id(oldItem) != NULL) && (item_get_id(newItem) == NULL))) {	
-			/* cannot be equal (different ids) so compare to 
-			   next old item */
-			oldItemIdIter = g_list_next(oldItemIdIter);
-		   	continue;
-		} 
-
-		/* just for the case there are no ids: compare titles and HTML descriptions */
-		equal = TRUE;
-
-		if(((item_get_title(oldItem) != NULL) && (item_get_title(newItem) != NULL)) && 
-		    (0 != strcmp(item_get_title(oldItem), item_get_title(newItem))))		
-	    		equal = FALSE;
-
-		if(((item_get_description(oldItem) != NULL) && (item_get_description(newItem) != NULL)) && 
-		    (0 != strcmp(item_get_description(oldItem), item_get_description(newItem))))
-	    		equal = FALSE;
-
-		/* best case: they both have ids (position important: id check is useless without knowing if the items are different!) */
-		if(item_get_id(oldItem)) {			
-			if(0 == strcmp(item_get_id(oldItem), item_get_id(newItem))){
-				found = TRUE;
-				break;
-			} else {
-				/* different ids, but the content might be still equal (e.g. empty)
-				   so we need to explicitly unset the equal flag !!!  */
-				equal = FALSE;
-			}
-		}
-			
-		if(equal) {
-			found = TRUE;
-			break;
-		}
-
-		oldItemIdIter = g_list_next(oldItemIdIter);
-	}
-		
-	if(!found) {
-
-		/* If a new item has enclosures and auto downloading
-		   is enabled we start the download. Enclosures added
-		   by updated items are not supported. */
-
-		if((TRUE == ((feedPtr)(itemSet->node->data))->encAutoDownload) &&
-		   (TRUE == newItem->newStatus)) {
-			GSList *iter = metadata_list_get_values(newItem->metadata, "enclosure");
-			while(iter) {
-				debug1(DEBUG_UPDATE, "download enclosure (%s)", (gchar *)iter->data);
-				ui_enclosure_save(NULL, g_strdup(iter->data), NULL);
-				iter = g_slist_next(iter);
-			}
-		}
-		
-		debug0(DEBUG_VERBOSE, "-> item is to be added");
-	} else {
-		/* if the item was found but has other contents -> update contents */
-		if(!equal) {
-			if(((feedPtr)(itemSet->node->data))->valid) {
-				/* no item_set_new_status() - we don't treat changed items as new items! */
-				item_set_title(oldItem, item_get_title(newItem));
-				item_set_description(oldItem, item_get_description(newItem));
-				oldItem->time = newItem->time;
-				oldItem->updateStatus = TRUE;
-				// FIXME: this does not remove metadata from DB
-				metadata_list_free(oldItem->metadata);
-				oldItem->metadata = newItem->metadata;
-				newItem->metadata = NULL;
-				// FIXME: vfolder update
-				debug0(DEBUG_VERBOSE, "-> item already existing and was updated");
-			} else {
-				debug0(DEBUG_VERBOSE, "-> item updates not merged because of parser errors");
-			}
-		} else {
-			debug0(DEBUG_VERBOSE, "-> item already exists");
-		}
-	}
-
-	return !found;
-}
-
-/* ---------------------------------------------------------------------------- */
 /* feed attributes encapsulation						*/
 /* ---------------------------------------------------------------------------- */
 
@@ -877,7 +775,7 @@ static void feed_favicon_downloaded(gpointer user_data) {
 	nodePtr	node = (nodePtr)user_data;
 	
 	node_set_icon(node, favicon_load_from_cache(node_get_id(node)));
-	ui_node_update(node);
+	ui_node_update(node->id);
 }
 
 void feed_update_favicon(nodePtr node) {
@@ -885,7 +783,6 @@ void feed_update_favicon(nodePtr node) {
 	
 	debug1(DEBUG_UPDATE, "trying to download favicon.ico for \"%s\"\n", node_get_title(node));
 	ui_mainwindow_set_status_bar(_("Updating feed icon for \"%s\""), node_get_title(node));
-	node->needsCacheSave = TRUE;
 	g_get_current_time(&feed->updateState->lastFaviconPoll);
 	favicon_download(node->id, 
 	                 feed_get_html_url(feed), 
@@ -893,7 +790,7 @@ void feed_update_favicon(nodePtr node) {
 			 feed->updateOptions,
 	                 feed_favicon_downloaded, 
 			 (gpointer)node);
-	
+	feedlist_schedule_save();	
 }
 
 /* implementation of feed node update request processing callback */
@@ -909,7 +806,6 @@ static void feed_process_update_result(struct request *request) {
 	
 	/* no matter what the result of the update is we need to save update
 	   status and the last update time to cache */
-	node->needsCacheSave = TRUE;
 	node->available = FALSE;
 	
 	/* note this is to update the feed URL on permanent redirects */
@@ -968,6 +864,10 @@ static void feed_process_update_result(struct request *request) {
 
 			itemlist_merge_itemset(itemSet);
 			itemset_free(itemSet);		
+			
+			node_update_counters(node);
+			notification_node_has_new_items(node);
+			ui_node_update(node->id);
 
 			node->available = TRUE;
 		}
@@ -987,9 +887,7 @@ static void feed_process_update_result(struct request *request) {
 	if(request->flags & FEED_REQ_DOWNLOAD_FAVICON)
 		feed_update_favicon(node);
 
-	node_update_counters(node);
-	ui_node_update(node);
-	notification_node_has_new_items(node);
+	feedlist_schedule_save();
 	
 	script_run_for_hook(SCRIPT_HOOK_FEED_UPDATED);
 
@@ -1005,12 +903,7 @@ static itemSetPtr feed_load(nodePtr node) {
 
 static void feed_save(nodePtr node) {
 
-	if(FALSE == node->needsCacheSave)
-		return;
-		
 	/* Nothing to do. Feeds do not have any UI states */
-
-	node->needsCacheSave = FALSE;
 }
 
 static void feed_update_unread_count(nodePtr node) {
@@ -1089,7 +982,7 @@ static void feed_remove(nodePtr node) {
 
 static void feed_mark_all_read(nodePtr node) {
 
-	itemlist_mark_all_read(node);
+	itemlist_mark_all_read(node->id);
 }
 
 static gchar * feed_render(nodePtr node) {

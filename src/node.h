@@ -77,7 +77,6 @@ typedef struct node {
 	gchar			*title;		/**< the label of the node in the feed list */
 	gpointer		icon;		/**< pointer to pixmap, if there is a favicon */
 	gboolean		available;	/**< availability of this node (usually the last downloading state) */
-	gboolean		needsCacheSave;	/**< flag set when the feed's cache needs to be resaved */
 	gboolean		expanded;	/**< expansion state (for nodes with childs) */
 
 	/* item list state properties of this node */
