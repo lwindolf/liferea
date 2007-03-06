@@ -393,7 +393,8 @@ static void *update_dequeue_requests(void *data) {
 		}
 		
 		/* do update processing */
-		debug0(DEBUG_VERBOSE, "waiting for request...");
+		if(DEBUG_VERBOSE & debug_level)
+			debug0(DEBUG_UPDATE, "waiting for request...");
 		if(high_priority) {
 			request = g_async_queue_pop(requests_high_prio);
 		} else {

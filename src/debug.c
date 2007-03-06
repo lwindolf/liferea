@@ -25,8 +25,6 @@
 #  include <config.h>
 #endif
 
-#include <config.h>
-
 #include <stdarg.h>
 #include <stdio.h>
 #include <time.h>
@@ -85,20 +83,20 @@ debug_printf (const char    * strloc,
 	localtime_r (&now_time_t, &now_tm);
 	strftime (timebuf, sizeof(timebuf), "%H:%M:%S", &now_tm);
 
-	if(flag&DEBUG_TRACE) {
+	if(flag & DEBUG_TRACE) {
 		const gint old_depth = GPOINTER_TO_INT (g_hash_table_lookup (t2d, self));
 		const gint new_depth = old_depth + (*fmt=='+' ? 1 : -1);
 
-		g_hash_table_insert (t2d, 
-		                     self,
-		                     GINT_TO_POINTER(new_depth));
+		g_hash_table_insert(t2d, 
+		                    self,
+		                    GINT_TO_POINTER(new_depth));
 
-		if(flag & DEBUG_VERBOSE)
+		if(debug_level & DEBUG_VERBOSE)
 			printf ("(%15s:%20s)(thread %p)(time %s)(depth %3d) %s: %s\n",
 				strloc,
 				function,
 				self,
-				timebuf,
+				timebuf,				
 				new_depth,
 				prefix,
 				string);
@@ -106,10 +104,10 @@ debug_printf (const char    * strloc,
 			printf ("%s: %s\n", prefix, string);
 
 
-		if (*fmt=='-')
+		if(*fmt=='-')
 			--depth;
 	} else {
-		if(flag & DEBUG_VERBOSE)
+		if(debug_level & DEBUG_VERBOSE)
 			printf ("(%15s:%20s)(thread %p)(time %s) %s: %s\n",
 				strloc,
 				function,

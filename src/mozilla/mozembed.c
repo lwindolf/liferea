@@ -61,7 +61,8 @@ void mozembed_write(GtkWidget *widget, const gchar *string, guint length, const 
 	/* prevent meta refresh of last document */
 	gtk_moz_embed_stop_load(GTK_MOZ_EMBED(widget));
 	
-	debug1(DEBUG_VERBOSE, "mozilla: HTML string >>>%s<<<", string);
+	if(DEBUG_VERBOSE & debug_level)
+		debug1(DEBUG_HTML, "mozilla: HTML string >>>%s<<<", string);
 	debug0(DEBUG_HTML, "mozilla: start writing...");
 	
 	if((NULL != string) && (length > 0)) {

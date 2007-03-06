@@ -127,7 +127,8 @@ void plugin_mgmt_init(void) {
 		filenamelen = 5 + strlen(G_MODULE_SUFFIX);
 		filename = (gchar *)g_dir_read_name(dir);
 		while(filename) {
-			debug1(DEBUG_VERBOSE, "testing %s...", filename);
+			if(DEBUG_VERBOSE & debug_level)
+				debug1(DEBUG_PLUGINS, "testing %s...", filename);
 			if((filenamelen < strlen(filename)) && (0 == strncmp(LIBPREFIX "li", filename, 5))) {	
 				/* now lets filter the files with correct library suffix */
 				if(!strncmp(G_MODULE_SUFFIX, filename + strlen(filename) - strlen(G_MODULE_SUFFIX), strlen(G_MODULE_SUFFIX))) {
@@ -136,16 +137,19 @@ void plugin_mgmt_init(void) {
 					   type loader. If the second loading went well add
 					   the plugin to the plugin list. */
 					if(!(plugin = plugin_mgmt_load(filename))) {
-						debug1(DEBUG_VERBOSE, "-> %s no valid plugin!", filename);
+						if(DEBUG_VERBOSE & debug_level)
+							debug1(DEBUG_PLUGINS, "-> %s no valid plugin!", filename);
 					} else {
 						debug3(DEBUG_PLUGINS, "-> %s (%s, type=%d)", plugin->name, filename, plugin->type);
 						plugins = g_slist_append(plugins, plugin);
 					}
 				} else {
-					debug0(DEBUG_VERBOSE, "-> no library suffix");
+					if(DEBUG_VERBOSE & debug_level)
+						debug0(DEBUG_PLUGINS, "-> no library suffix");
 				}
 			} else {
-				debug0(DEBUG_VERBOSE, "-> prefix does not match");
+				if(DEBUG_VERBOSE & debug_level)
+					debug0(DEBUG_PLUGINS, "-> prefix does not match");
 			}
 			filename = (gchar *)g_dir_read_name(dir);
 		}

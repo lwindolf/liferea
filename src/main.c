@@ -200,9 +200,9 @@ int main(int argc, char *argv[]) {
 		else if(!strcmp(arg, "--debug-trace"))
 			debug_flags |= DEBUG_TRACE;
 		else if(!strcmp(arg, "--debug-all"))
-			debug_flags |= DEBUG_TRACE|DEBUG_CACHE|DEBUG_CONF|DEBUG_UPDATE|DEBUG_PARSING|DEBUG_GUI|DEBUG_PLUGINS;
+			debug_flags |= DEBUG_TRACE|DEBUG_CACHE|DEBUG_CONF|DEBUG_UPDATE|DEBUG_PARSING|DEBUG_GUI|DEBUG_PLUGINS|DEBUG_DB;
 		else if(!strcmp(arg, "--debug-verbose"))
-			debug_flags |= DEBUG_VERBOSE;		
+			debug_flags |= DEBUG_VERBOSE;
 		else if(!strcmp(arg, "--version") || !strcmp(arg, "-v")) {
 			g_print("liferea %s\n", VERSION);
 			return 0;

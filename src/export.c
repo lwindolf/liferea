@@ -260,7 +260,7 @@ void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, nodeSourcePtr node
 	/* 2. determine node type */
 	typeStr = xmlGetProp(cur, BAD_CAST"type");
 	if(typeStr) {
-		debug1(DEBUG_VERBOSE, "-> node type tag found: \"%s\"\n", typeStr);
+		debug1(DEBUG_CACHE, "-> node type tag found: \"%s\"\n", typeStr);
 		node_set_type(node, node_str_to_type(typeStr));
 		xmlFree(typeStr);
 	} 
@@ -272,13 +272,13 @@ void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, nodeSourcePtr node
 			tmp = xmlGetProp(cur, BAD_CAST"xmlUrl");
 		
 		if(tmp) {
-			debug0(DEBUG_VERBOSE, "-> URL found assuming type feed");
+			debug0(DEBUG_CACHE, "-> URL found assuming type feed");
 			node_set_type(node, feed_get_node_type());
 			xmlFree(tmp);
 		} else {
 			/* if the outline has no type and URL it just has to be a folder */
 			node_set_type(node, folder_get_node_type());
-			debug0(DEBUG_VERBOSE, "-> must be a folder");
+			debug0(DEBUG_CACHE, "-> must be a folder");
 		}
 	}
 	

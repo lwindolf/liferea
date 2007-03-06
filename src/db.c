@@ -317,7 +317,7 @@ itemSetPtr db_itemset_load(const gchar *id) {
 	itemSetPtr 	itemSet;
 	gint		res;
 
-	debug2(DEBUG_DB, "load of itemset for node \"%s\" (thread=%p)", id, g_thread_self());
+	debug2(DEBUG_DB, "loading itemset for node \"%s\" (thread=%p)", id, g_thread_self());
 	itemSet = g_new0(struct itemSet, 1);
 	itemSet->nodeId = (gchar *)id;
 
@@ -330,12 +330,16 @@ itemSetPtr db_itemset_load(const gchar *id) {
 		itemSet->ids = g_list_append(itemSet->ids, GUINT_TO_POINTER(sqlite3_column_int(itemsetLoadStmt, 0)));
 	}
 
+	debug0(DEBUG_DB, "loading of itemset finished");
+	
 	return itemSet;
 }
 
 itemPtr db_item_load(gulong id) {
 	itemPtr 	item = NULL;
 	gint		res;
+
+	debug2(DEBUG_DB, "loading item %lu (thread=%p)", id, g_thread_self());
 	
 	sqlite3_reset(itemLoadStmt);
 	res = sqlite3_bind_int(itemLoadStmt, 1, id);
@@ -352,6 +356,8 @@ itemPtr db_item_load(gulong id) {
 	} else {
 		debug2(DEBUG_DB, "Could not load item with id #%lu (error code %d)!", id, res);
 	}
+
+	debug0(DEBUG_DB, "loading of item finished");
 
 	return item;
 }

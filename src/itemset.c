@@ -43,18 +43,18 @@ static guint itemset_get_max_item_count(itemSetPtr itemSet) {
 }
 
 /* Generic merge logic suitable for feeds */
-gboolean itemset_generic_merge_check(itemSetPtr itemSet, itemPtr newItem) {
-	GList		*oldItemIdIter = itemSet->ids;
+static gboolean itemset_generic_merge_check(GList *items, itemPtr newItem) {
+	GList		*oldItemIdIter = items;
 	itemPtr		oldItem = NULL;
 	gboolean	found, equal = FALSE;
 
 	/* determine if we should add it... */
-	debug1(DEBUG_VERBOSE, "check new item for merging: \"%s\"", item_get_title(newItem));
+	debug1(DEBUG_CACHE, "check new item for merging: \"%s\"", item_get_title(newItem));
 		
 	/* compare to every existing item in this feed */
 	found = FALSE;
 	while(oldItemIdIter) {
-		oldItem = item_load(GPOINTER_TO_UINT(oldItemIdIter->data));
+		oldItem = (itemPtr)(oldItemIdIter->data);
 		
 		/* try to compare the two items */
 
@@ -114,7 +114,7 @@ gboolean itemset_generic_merge_check(itemSetPtr itemSet, itemPtr newItem) {
 //			}
 //		}
 		
-		debug0(DEBUG_VERBOSE, "-> item is to be added");
+		debug0(DEBUG_CACHE, "-> item is to be added");
 	} else {
 		/* if the item was found but has other contents -> update contents */
 		if(!equal) {
@@ -128,12 +128,12 @@ gboolean itemset_generic_merge_check(itemSetPtr itemSet, itemPtr newItem) {
 //				metadata_list_free(oldItem->metadata);
 //				oldItem->metadata = newItem->metadata;
 //				newItem->metadata = NULL;
-//				debug0(DEBUG_VERBOSE, "-> item already existing and was updated");
+//				debug0(DEBUG_CACHE, "-> item already existing and was updated");
 //			} else {
-//				debug0(DEBUG_VERBOSE, "-> item updates not merged because of parser errors");
+//				debug0(DEBUG_CACHE, "-> item updates not merged because of parser errors");
 //			}
 		} else {
-			debug0(DEBUG_VERBOSE, "-> item already exists");
+			debug0(DEBUG_CACHE, "-> item already exists");
 		}
 	}
 
@@ -144,17 +144,29 @@ gboolean itemset_generic_merge_check(itemSetPtr itemSet, itemPtr newItem) {
  * Determine wether a given item is to be merged
  * into the itemset or if it was already added.
  */
-static gboolean itemset_merge_check(itemSetPtr itemSet, itemPtr item) {
+static gboolean itemset_merge_check(GList *items, itemPtr item) {
 
-	return itemset_generic_merge_check(itemSet, item);	
+	return itemset_generic_merge_check(items, item);	
 }
 
 static void itemset_merge_item(itemSetPtr itemSet, itemPtr item) {
+	GList		*iter, *items = NULL;
+	gboolean	merge;
 
 	debug2(DEBUG_UPDATE, "trying to merge \"%s\" to node id \"%s\"", item_get_title(item), itemSet->nodeId);
+	
+	/* load all items for merging comparison */
+	iter = itemSet->ids;
+	while(iter) {
+		items = g_list_append(items, item_load(GPOINTER_TO_UINT(iter->data)));
+		iter = g_list_next(iter);
+	}
 
-	/* step 1: merge into node type internal data structures */
-	if(itemset_merge_check(itemSet, item)) {
+	/* first try to merge with existing item */
+	merge = itemset_merge_check(items, item);
+
+	/* if it is a new item add it to the item set */	
+	if(merge) {
 		g_assert(itemSet->nodeId);
 		g_assert(!item->nodeId);
 		g_assert(!item->id);
@@ -180,6 +192,14 @@ static void itemset_merge_item(itemSetPtr itemSet, itemPtr item) {
 		debug2(DEBUG_UPDATE, "-> not adding \"%s\" to node id \"%s\"...", item_get_title(item), itemSet->nodeId);
 		item_unload(item);
 	}
+	
+	/* unload items again */
+	iter = items;
+	while(iter) {
+		item_unload((itemPtr)(iter->data));
+		iter = g_list_next(iter);
+	}
+	g_list_free(items);
 }
 
 void itemset_merge_items(itemSetPtr itemSet, GList *list) {

@@ -366,18 +366,18 @@ void feedlist_init(void) {
 	node_source_type_register(bloglines_source_get_type());
 
 	/* 2. Set up a root node and import the feed list plugins structure. */
-	debug0(DEBUG_VERBOSE, "Setting up root node");
+	debug0(DEBUG_CACHE, "Setting up root node");
 	rootNode = node_source_setup_root();
 
 	/* 3. Ensure folder expansion */
-	debug0(DEBUG_VERBOSE, "Expanding folders");
+	debug0(DEBUG_CACHE, "Expanding folders");
 	feedlist_foreach(feedlist_init_node);
 
-	debug0(DEBUG_VERBOSE, "Notification setup");	
+	debug0(DEBUG_GUI, "Notification setup");	
 	notification_enable(getBooleanConfValue(SHOW_POPUP_WINDOWS));
 
 	/* 4. Check if feeds do need updating. */
-	debug0(DEBUG_VERBOSE, "Performing initial feed update");
+	debug0(DEBUG_UPDATE, "Performing initial feed update");
 	switch(getNumericConfValue(STARTUP_FEED_ACTION)) {
 		case 1: /* Update all feeds */
 			debug0(DEBUG_UPDATE, "initial update: updating all feeds");
