@@ -224,10 +224,10 @@ void ui_node_update(const gchar *nodeId) {
 	iter = ui_node_to_iter(nodeId);
 	if(!iter)
 		return;
-		
+
 	labeltype = NODE_TYPE(node)->capabilities;
 	labeltype &= (NODE_CAPABILITY_SHOW_UNREAD_COUNT |
-	              NODE_CAPABILITY_SHOW_ITEM_COUNT);
+        	      NODE_CAPABILITY_SHOW_ITEM_COUNT);
 
 	if(!node->unreadCount && (labeltype & NODE_CAPABILITY_SHOW_UNREAD_COUNT))
 		labeltype -= NODE_CAPABILITY_SHOW_UNREAD_COUNT;
@@ -235,10 +235,10 @@ void ui_node_update(const gchar *nodeId) {
 	switch(labeltype) {
 		case NODE_CAPABILITY_SHOW_UNREAD_COUNT |
 		     NODE_CAPABILITY_SHOW_ITEM_COUNT:
-		     	/* treat like show unread count */
+	     		/* treat like show unread count */
 		case NODE_CAPABILITY_SHOW_UNREAD_COUNT:
 			label = g_markup_printf_escaped("<span weight=\"bold\">%s (%d)</span>",
-				                        node_get_title(node), node->unreadCount);
+			                        	node_get_title(node), node->unreadCount);
 			break;
 		case NODE_CAPABILITY_SHOW_ITEM_COUNT:
 			label = g_markup_printf_escaped("%s (%d)", node_get_title(node), node->itemCount);
@@ -247,12 +247,15 @@ void ui_node_update(const gchar *nodeId) {
 			label = g_markup_printf_escaped("%s", node_get_title(node));
 			break;
 	}
-g_print("update (%d) %s\n", node->unreadCount, node_get_title(node));
+
 	gtk_tree_store_set(feedstore, iter, FS_LABEL, label,
 	                                    FS_UNREAD, node->unreadCount,
 	                                    FS_ICON, node_get_icon(node),
 	                                    -1);
 	g_free(label);
+
+	if(node->parent)
+		ui_node_update(node->parent->id);
 }
 
 /* node renaming dialog */
