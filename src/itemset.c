@@ -99,21 +99,6 @@ static gboolean itemset_generic_merge_check(GList *items, itemPtr newItem) {
 	}
 		
 	if(!found) {
-
-		/* If a new item has enclosures and auto downloading
-		   is enabled we start the download. Enclosures added
-		   by updated items are not supported. */
-
-//		if((TRUE == ((feedPtr)(node_from_id(itemSet->nodeId)->data))->encAutoDownload) &&
-//		   (TRUE == newItem->newStatus)) {
-//			GSList *iter = metadata_list_get_values(newItem->metadata, "enclosure");
-//			while(iter) {
-//				debug1(DEBUG_UPDATE, "download enclosure (%s)", (gchar *)iter->data);
-//				ui_enclosure_save(NULL, g_strdup(iter->data), NULL);
-//				iter = g_slist_next(iter);
-//			}
-//		}
-		
 		debug0(DEBUG_CACHE, "-> item is to be added");
 	} else {
 		/* if the item was found but has other contents -> update contents */
@@ -186,6 +171,20 @@ static void itemset_merge_item(itemSetPtr itemSet, itemPtr item) {
 //			if(item_guid_list_get_duplicates_for_id(item)) {
 				// FIXME do something better: item->readStatus = TRUE;
 //				debug2(DEBUG_UPDATE, "-> duplicate guid detected: %s -> %s\n", item->id, item->title);
+//			}
+//		}
+
+		/* step 4: If a new item has enclosures and auto downloading
+		   is enabled we start the download. Enclosures added
+		   by updated items are not supported. */
+
+//		if((TRUE == ((feedPtr)(node_from_id(itemSet->nodeId)->data))->encAutoDownload) &&
+//		   (TRUE == newItem->newStatus)) {
+//			GSList *iter = metadata_list_get_values(newItem->metadata, "enclosure");
+//			while(iter) {
+//				debug1(DEBUG_UPDATE, "download enclosure (%s)", (gchar *)iter->data);
+//				ui_enclosure_save(NULL, g_strdup(iter->data), NULL);
+//				iter = g_slist_next(iter);
 //			}
 //		}
 	} else {

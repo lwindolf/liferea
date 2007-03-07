@@ -2,7 +2,7 @@
  * @file ui_node.c GUI folder handling
  * 
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2004-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2007 Lars Lindner <lars.lindner@gmail.com>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,6 @@
 #include "callbacks.h"
 #include "conf.h"
 #include "debug.h"
-#include "ui/ui_feedlist.h"
 #include "ui/ui_node.h"
 
 static GHashTable	*flIterHash = NULL;	/* hash table used for fast node id <-> tree iter lookup */
@@ -48,7 +47,7 @@ void ui_node_update_iter(const gchar *nodeId, GtkTreeIter *iter) {
 
 	if(!flIterHash)
 		return;
-	
+
 	if(NULL != (old = (GtkTreeIter *)g_hash_table_lookup(flIterHash, (gpointer)nodeId)))
 		*old = *iter;
 }
@@ -56,8 +55,8 @@ void ui_node_update_iter(const gchar *nodeId, GtkTreeIter *iter) {
 void ui_node_add_iter(const gchar *nodeId, GtkTreeIter *iter) {
 
 	if(!flIterHash)
-		flIterHash = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, NULL);
-		
+		flIterHash = g_hash_table_new_full(g_str_hash, g_str_equal, NULL, NULL);
+
 	g_hash_table_insert(flIterHash, (gpointer)nodeId, (gpointer)iter);
 }
 
@@ -225,7 +224,7 @@ void ui_node_update(const gchar *nodeId) {
 	iter = ui_node_to_iter(nodeId);
 	if(!iter)
 		return;
-
+		
 	labeltype = NODE_TYPE(node)->capabilities;
 	labeltype &= (NODE_CAPABILITY_SHOW_UNREAD_COUNT |
 	              NODE_CAPABILITY_SHOW_ITEM_COUNT);
@@ -248,7 +247,7 @@ void ui_node_update(const gchar *nodeId) {
 			label = g_markup_printf_escaped("%s", node_get_title(node));
 			break;
 	}
-	
+g_print("update (%d) %s\n", node->unreadCount, node_get_title(node));
 	gtk_tree_store_set(feedstore, iter, FS_LABEL, label,
 	                                    FS_UNREAD, node->unreadCount,
 	                                    FS_ICON, node_get_icon(node),

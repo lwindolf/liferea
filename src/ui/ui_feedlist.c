@@ -329,5 +329,3 @@ void on_menu_folder_new(GtkMenuItem *menuitem, gpointer user_data) {
 
 	node_request_interactive_add(NODE_TYPE_FOLDER);
 }
-
-
