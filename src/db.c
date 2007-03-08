@@ -459,7 +459,7 @@ void db_item_remove(gulong id) {
 void db_itemset_remove_all(const gchar *id) {
 	gint	res;
 	
-	debug1(DEBUG_DB, "removing all itesm for item set with %s", id);
+	debug1(DEBUG_DB, "removing all items for item set with %s", id);
 		
 	sqlite3_reset(itemsetRemoveAllStmt);
 	sqlite3_bind_text(itemsetRemoveAllStmt, 1, id, -1, SQLITE_TRANSIENT);

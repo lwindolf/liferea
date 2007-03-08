@@ -78,44 +78,15 @@ void feed_init(void) {
 	feedhandlers = g_slist_append(feedhandlers, pie_init_feed_handler());
 }
 
-#define FEED_PROTOCOL_PREFIX "feed://"
-
 /* function to create a new feed structure */
-feedPtr feed_new(const gchar *source, const gchar *filter, updateOptionsPtr options) {
+feedPtr feed_new(void) {
 	feedPtr		feed;
 	
 	feed = g_new0(struct feed, 1);
-
-	/* we don't allocate a request structure this is done
-	   during cache loading or first update! */
-
-	if(options)
-		feed->updateOptions = options;
-	else
-		feed->updateOptions = g_new0(struct updateOptions, 1);
-		
-	feed->updateState = g_new0(struct updateState, 1);	
-	feed->updateInterval = -1;
 	feed->defaultInterval = -1;
 	feed->cacheLimit = CACHE_DEFAULT;
 	feed->valid = TRUE;
 
-	if(source) {
-		gchar *tmp, *uri = g_strdup(source);
-		g_strstrip(uri);	/* strip confusing whitespaces */
-		
-		/* strip feed protocol prefix */
-		tmp = uri;
-		if(tmp == strstr(tmp, FEED_PROTOCOL_PREFIX))
-			tmp += strlen(FEED_PROTOCOL_PREFIX);
-			
-		feed_set_source(feed, tmp);
-		g_free(uri);
-	}
-	
-	if(filter)
-		feed_set_filter(feed, filter);
-	
 	return feed;
 }
 
@@ -337,22 +308,60 @@ void feed_free_parser_ctxt(feedParserCtxtPtr ctxt) {
 }
 
 /**
- * General feed source parsing function. Parses the passed feed source
- * and tries to determine the source type. If the type is HTML and 
- * autodiscover is TRUE the function tries to find a feed, tries to
- * download it and parse the feed's source instead of the passed source.
+ * This function tries to find a feed link for a given HTTP URI. It
+ * tries to download it. If it finds a valid feed source it parses
+ * this source instead into the given feed parsing context. It also
+ * replaces the HTTP URI with the found feed source.
  *
  * @param ctxt		feed parsing context
- * @param autodiscover	TRUE if auto discovery should be possible
  */
-void feed_parse(feedParserCtxtPtr ctxt, gboolean autodiscover) {
+void feed_auto_discover(feedParserCtxtPtr ctxt) {			
+			
+	debug1(DEBUG_UPDATE, "Starting feed auto discovery (%s)", feed_get_source(ctxt->feed));
+	if((source = html_auto_discover_feed(ctxt->data, feed_get_source(ctxt->feed)))) {
+		/* now download the first feed link found */
+		requestPtr request = update_request_new(0);
+		debug1(DEBUG_UPDATE, "feed link found: %s", source);
+		request->source = g_strdup(source);
+		request->options = ctxt->feed->updateOptions;
+		update_execute_request_sync(request);
+		if(request->data) {
+			debug0(DEBUG_UPDATE, "feed link download successful!");
+			feed_set_source(ctxt->feed, source);
+			ctxt->data = request->data;
+			ctxt->dataLength = request->size;
+			ctxt->failed = FALSE;
+			feed_parse(ctxt, FALSE);
+		} else {
+			/* if the download fails we do nothing except
+			   unsetting the handler so the original source
+			   will get a "unsupported type" error */
+			debug0(DEBUG_UPDATE, "feed link download failed!");
+		}
+		g_free(source);
+		update_request_free(request);
+	} else {
+		debug0(DEBUG_UPDATE, "no feed link found!");
+		g_string_append(ctxt->feed->parseErrors, _("The URL you want Liferea to subscribe to points to a webpage and the auto discovery found no feeds on this page. Maybe this webpage just does not support feed auto discovery."));
+	}
+}
+
+/**
+ * General feed source parsing function. Parses the passed feed source
+ * and tries to determine the source type. 
+ *
+ * @param ctxt		feed parsing context
+ *
+ * @returns FALSE if auto discovery is indicated, 
+ *          TRUE if feed type was recognized
+ */
+gboolean feed_parse(feedParserCtxtPtr ctxt) {
 	xmlNodePtr	cur;
 	gchar		*source;
 
 	debug_enter("feed_parse");
 
 	g_assert(NULL != ctxt->feed);
-	g_assert(NULL != ctxt->node);
 	g_assert(NULL == ctxt->items);
 	
 	ctxt->failed = TRUE;	/* reset on success ... */
@@ -365,12 +374,12 @@ void feed_parse(feedParserCtxtPtr ctxt, gboolean autodiscover) {
 	/* try to parse buffer with XML and to create a DOM tree */	
 	do {
 		if(NULL == common_parse_xml_feed(ctxt)) {
-			g_string_append_printf(ctxt->feed->parseErrors, _("<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"), ctxt->feed->source);
+			g_string_append_printf(ctxt->feed->parseErrors, _("XML error while reading feed! Feed \"%s\" could not be loaded!"), ctxt->feed->source);
 			break;
 		}
 		
 		if(NULL == (cur = xmlDocGetRootElement(ctxt->doc))) {
-			g_string_append(ctxt->feed->parseErrors, _("<p>Empty document!</p>"));
+			g_string_append(ctxt->feed->parseErrors, _("Empty document!"));
 			break;
 		}
 		
@@ -379,7 +388,7 @@ void feed_parse(feedParserCtxtPtr ctxt, gboolean autodiscover) {
 		}
 		
 		if(!cur->name) {
-			g_string_append(ctxt->feed->parseErrors, _("<p>Invalid XML!</p>"));
+			g_string_append(ctxt->feed->parseErrors, _("Invalid XML!"));
 			break;
 		}
 		
@@ -416,42 +425,14 @@ void feed_parse(feedParserCtxtPtr ctxt, gboolean autodiscover) {
 	   the feed source is no more valid and we need to start auto discovery */
 	if(!ctxt->feed->fhp) {
 		/* test if we have a HTML page */
-		if(autodiscover && 
-		   (strstr(ctxt->data, "<html>") || strstr(ctxt->data, "<HTML>") ||
+		if((strstr(ctxt->data, "<html>") || strstr(ctxt->data, "<HTML>") ||
 		    strstr(ctxt->data, "<html ") || strstr(ctxt->data, "<HTML "))) {
-			/* if yes we should scan for links */
-			debug1(DEBUG_UPDATE, "HTML detected, starting feed auto discovery (%s)", feed_get_source(ctxt->feed));
-			if((source = html_auto_discover_feed(ctxt->data, feed_get_source(ctxt->feed)))) {
-				/* now download the first feed link found */
-				requestPtr request = update_request_new(ctxt->node);
-				debug1(DEBUG_UPDATE, "feed link found: %s", source);
-				request->source = g_strdup(source);
-				request->options = ctxt->feed->updateOptions;
-				update_execute_request_sync(request);
-				if(request->data) {
-					debug0(DEBUG_UPDATE, "feed link download successful!");
-					feed_set_source(ctxt->feed, source);
-					ctxt->data = request->data;
-					ctxt->dataLength = request->size;
-					ctxt->failed = FALSE;
-					feed_parse(ctxt, FALSE);
-				} else {
-					/* if the download fails we do nothing except
-					   unsetting the handler so the original source
-					   will get a "unsupported type" error */
-					debug0(DEBUG_UPDATE, "feed link download failed!");
-				}
-				g_free(source);
-				update_request_free(request);
-			} else {
-				debug0(DEBUG_UPDATE, "no feed link found!");
-				ctxt->node->available = FALSE;
-				g_string_append(ctxt->feed->parseErrors, _("<p>The URL you want Liferea to subscribe to points to a webpage and the auto discovery found no feeds on this page. Maybe this webpage just does not support feed auto discovery.</p>"));
-			}
+			debug0(DEBUG_UPDATE, "HTML document detected!");
+			g_string_append(ctxt->feed->parseErrors, _("Source points to HTML document."));
+			ctxt->autoDiscover = TRUE;			
 		} else {
 			debug0(DEBUG_UPDATE, "neither a known feed type nor a HTML document!");
-			ctxt->node->available = FALSE;
-			g_string_append(ctxt->feed->parseErrors, _("<p>Could not determine the feed type.</p>"));
+			g_string_append(ctxt->feed->parseErrors, _("Could not determine the feed type."));
 		}
 	} else {
 		debug1(DEBUG_UPDATE, "discovered feed format: %s", feed_type_fhp_to_str(ctxt->feed->fhp));
@@ -463,6 +444,8 @@ void feed_parse(feedParserCtxtPtr ctxt, gboolean autodiscover) {
 	}
 		
 	debug_exit("feed_parse");
+	
+	return (ctxt->feed->fhp != NULL);
 }
 
 static void feed_add_xml_attributes(nodePtr node, xmlNodePtr feedNode) {
@@ -546,57 +529,6 @@ guint feed_get_max_item_count(nodePtr node) {
 	}
 }
 
-// FIXME: needed?
-void feed_cancel_retry(nodePtr node) {
-
-	if(node->updateRequest && update_request_cancel_retry(node->updateRequest))
-		node->updateRequest = NULL;
-}
-
-/* Checks wether updating a feed makes sense. */
-gboolean feed_can_be_updated(nodePtr node) {
-	feedPtr		feed = (feedPtr)node->data;
-
-	if(node->updateRequest) {
-		ui_mainwindow_set_status_bar(_("This feed \"%s\" is already being updated!"), node_get_title(node));
-		return FALSE;
-	}
-	
-	if(feed->discontinued) {
-		ui_mainwindow_set_status_bar(_("The feed \"%s\" was discontinued. Liferea won't update it anymore!"), node_get_title(node));
-		return FALSE;
-	}
-
-	if(!feed_get_source(feed)) {
-		g_warning("Feed source is NULL! This should never happen - cannot update!");
-		return FALSE;
-	}
-	return TRUE;
-}	
-
-static void feed_reset_update_counter_(feedPtr fp) {
-
-	g_get_current_time(&fp->updateState->lastPoll);
-	feedlist_schedule_save();
-	debug1(DEBUG_UPDATE, "Resetting last poll counter to %ld.\n", fp->updateState->lastPoll.tv_sec);
-}
-
-static void feed_prepare_request(feedPtr feed, struct request *request, guint flags) {
-
-	debug1(DEBUG_UPDATE, "preparing request for \"%s\"\n", feed_get_source(feed));
-
-	feed_reset_update_counter_(feed);
-
-	/* prepare request url (strdup because it might be
-  	   changed on permanent HTTP redirection in netio.c) */
-	request->source = g_strdup(feed_get_source(feed));
-	request->updateState = feed->updateState;
-	request->flags = flags;
-	request->priority = (flags & FEED_REQ_PRIORITY_HIGH)? 1 : 0;
-	request->allowRetries = (flags & FEED_REQ_ALLOW_RETRIES)? 1 : 0;
-	if(feed_get_filter(feed))
-		request->filtercmd = g_strdup(feed_get_filter(feed));
-}
 
 /* ---------------------------------------------------------------------------- */
 /* feed attributes encapsulation						*/
@@ -604,22 +536,6 @@ static void feed_prepare_request(feedPtr feed, struct request *request, guint fl
 
 gint feed_get_default_update_interval(feedPtr feed) { return feed->defaultInterval; }
 void feed_set_default_update_interval(feedPtr feed, gint interval) { feed->defaultInterval = interval; }
-
-gint feed_get_update_interval(feedPtr feed) { return feed->updateInterval; }
-
-void feed_set_update_interval(feedPtr feed, gint interval) {
-	
-	if(0 == interval) {
-		interval = -1;	/* This is evil, I know, but when this method
-				   is called to set the update interval to 0
-				   we mean never updating. The updating logic
-				   expects -1 for never updating and 0 for
-				   updating according to the global update
-				   interval... */
-	}
-	feed->updateInterval = interval;
-	feedlist_schedule_save();
-}
 
 feedHandlerPtr feed_get_fhp(feedPtr feed) {
 	return feed->fhp;
@@ -632,42 +548,6 @@ void feed_set_description(feedPtr fp, const gchar *description) {
 		fp->description = g_strdup(description);
 	else
 		fp->description = NULL;
-}
-
-const gchar * feed_get_orig_source(feedPtr feed) { return feed->origSource; }
-const gchar * feed_get_source(feedPtr feed) { return feed->source; }
-const gchar * feed_get_filter(feedPtr feed) { return feed->filtercmd; }
-
-void feed_set_orig_source(feedPtr feed, const gchar *source) {
-
-	g_free(feed->origSource);
-	feed->origSource = g_strchomp(g_strdup(source));
-	feedlist_schedule_save();
-}
-
-void feed_set_source(feedPtr feed, const gchar *source) {
-
-	g_free(feed->source);
-
-	feed->source = g_strchomp(g_strdup(source));
-	feedlist_schedule_save();
-	
-	g_free(feed->updateState->cookies);
-	if('|' != source[0])
-		/* check if we've got matching cookies ... */
-		feed->updateState->cookies = cookies_find_matching(source);
-	else 
-		feed->updateState->cookies = NULL;
-	
-	if(NULL == feed_get_orig_source(feed))
-		feed_set_orig_source(feed, source);
-}
-
-void feed_set_filter(feedPtr feed, const gchar *filter) {
-	g_free(feed->filtercmd);
-
-	feed->filtercmd = g_strdup(filter);
-	feedlist_schedule_save();
 }
 
 const gchar * feed_get_html_url(feedPtr feed) { return feed->htmlUrl; };
@@ -705,92 +585,15 @@ void feed_set_image_url(feedPtr feed, const gchar *imageUrl) {
 		feed->imageUrl = NULL;
 }
 
-/**
- * Creates a new error description according to the passed
- * HTTP status and the feeds parser errors. If the HTTP
- * status is a success status and no parser errors occurred
- * no error messages is created.
- *
- * @param fp		feed
- * @param httpstatus	HTTP status
- * @param resultcode	the update code's return code (see update.h)
- */
-static void feed_update_error_status(feedPtr feed, gint httpstatus, gint resultcode, gchar *filterError) {
-	const gchar	*errmsg = NULL;
-	gboolean	errorFound = FALSE;
-
-	if(feed->filterError)
-		g_free(feed->filterError);
-	if(feed->httpError)
-		g_free(feed->httpError);
-	if(feed->updateError)
-		g_free(feed->updateError);
-		
-	feed->filterError = g_strdup(filterError);
-	feed->updateError = NULL;
-	feed->httpError = NULL;
-	feed->httpErrorCode = httpstatus;
-	
-	if(((httpstatus >= 200) && (httpstatus < 400)) && /* HTTP codes starting with 2 and 3 mean no error */
-	   (NULL == feed->filterError))
-		return;
-	
-	if((200 != httpstatus) || (resultcode != NET_ERR_OK)) {	
-		/* first specific codes (guarantees tmp to be set) */
-		errmsg = common_http_error_to_str(httpstatus);
-
-		/* second netio errors */
-		if(common_netio_error_to_str(resultcode))
-			errmsg = common_netio_error_to_str(resultcode);
-
-		errorFound = TRUE;
-		feed->httpError = g_strdup(errmsg);
-	}
-	
-	/* if none of the above error descriptions matched... */
-	if(!errorFound)
-		feed->updateError = g_strdup(_("There was a problem while reading this subscription. Please check the URL and console output."));
-}
-
-/* method to free a feed structure and associated request data */
+/* method to free a feed structure */
 static void feed_free(feedPtr feed) {
 
 	g_string_free(feed->parseErrors, TRUE);
-	g_free(feed->updateError);
-	g_free(feed->filterError);
-	g_free(feed->httpError);
 	g_free(feed->htmlUrl);
 	g_free(feed->imageUrl);
 	g_free(feed->description);
-	g_free(feed->source);
-	g_free(feed->filtercmd);
-
-	g_free(feed->updateOptions);
-	update_state_free(feed->updateState);
 	metadata_list_free(feed->metadata);
 	g_free(feed);
-}
-
-static void feed_favicon_downloaded(gpointer user_data) {
-	nodePtr	node = (nodePtr)user_data;
-	
-	node_set_icon(node, favicon_load_from_cache(node_get_id(node)));
-	ui_node_update(node->id);
-}
-
-void feed_update_favicon(nodePtr node) {
-	feedPtr		feed = (feedPtr)node->data;
-	
-	debug1(DEBUG_UPDATE, "trying to download favicon.ico for \"%s\"\n", node_get_title(node));
-	ui_mainwindow_set_status_bar(_("Updating feed icon for \"%s\""), node_get_title(node));
-	g_get_current_time(&feed->updateState->lastFaviconPoll);
-	favicon_download(node->id, 
-	                 feed_get_html_url(feed), 
-			 feed_get_source(feed),
-			 feed->updateOptions,
-	                 feed_favicon_downloaded, 
-			 (gpointer)node);
-	feedlist_schedule_save();	
 }
 
 /* implementation of feed node update request processing callback */
@@ -799,6 +602,7 @@ static void feed_process_update_result(struct request *request) {
 	feedParserCtxtPtr	ctxt;
 	nodePtr			node = (nodePtr)request->user_data;
 	feedPtr			feed = (feedPtr)node->data;
+	subscriptionPtr		subscription = (subscriptionPtr)node->subscription;
 	gchar			*old_title, *old_source;
 	gint			old_update_interval;
 
@@ -808,9 +612,9 @@ static void feed_process_update_result(struct request *request) {
 	   status and the last update time to cache */
 	node->available = FALSE;
 	
-	/* note this is to update the feed URL on permanent redirects */
-	if(!strcmp(request->source, feed_get_source(feed))) {
-		feed_set_source(feed, request->source);
+	/* note this is to update the subscription URL on permanent redirects */
+	if(!strcmp(request->source, subscription_get_source(subscription))) {
+		subscription_set_source(subscription, request->source);
 		ui_mainwindow_set_status_bar(_("The URL of \"%s\" has changed permanently and was updated"), node_get_title(node));
 	}
 	
@@ -818,7 +622,7 @@ static void feed_process_update_result(struct request *request) {
 		if(request->flags & FEED_REQ_AUTH_DIALOG)
 			ui_feed_authdialog_new(node, request->flags);
 	} else if(410 == request->httpstatus) { /* gone */
-		feed->discontinued = TRUE;
+		subscription->discontinued = TRUE;
 		node->available = TRUE;
 		ui_mainwindow_set_status_bar(_("\"%s\" is discontinued. Liferea won't updated it anymore!"), node_get_title(node));
 	} else if(304 == request->httpstatus) {
@@ -826,14 +630,13 @@ static void feed_process_update_result(struct request *request) {
 		ui_mainwindow_set_status_bar(_("\"%s\" has not changed since last update"), node_get_title(node));
 	} else if(NULL != request->data) {
 		/* we save all properties that should not be overwritten in all cases */
-		old_update_interval = feed_get_update_interval(feed);
+		old_update_interval = subscription_get_update_interval(subscription);
 		old_title = g_strdup(node_get_title(node));
 		old_source = g_strdup(feed_get_source(feed));
 
 		/* parse the new downloaded feed into feed and itemSet */
 		ctxt = feed_create_parser_ctxt();
 		ctxt->feed = feed;
-		ctxt->node = node;
 		ctxt->data = request->data;
 		ctxt->dataLength = request->size;
 		feed_parse(ctxt, request->flags & FEED_REQ_AUTO_DISCOVER);
@@ -853,12 +656,12 @@ static void feed_process_update_result(struct request *request) {
 				node_set_title(node, old_title);
 				
 			if(!(request->flags & FEED_REQ_AUTO_DISCOVER))
-				feed_set_source(feed, old_source);
+				subscription_set_source(subscription, old_source);
 
 			if(request->flags & FEED_REQ_RESET_UPDATE_INT)
-				feed_set_update_interval(feed, feed_get_default_update_interval(feed));
+				subscription_set_update_interval(subscription, feed_get_default_update_interval(feed));
 			else
-				feed_set_update_interval(feed, old_update_interval);
+				subscription_set_update_interval(subscription, old_update_interval);
 
 			ui_mainwindow_set_status_bar(_("\"%s\" updated..."), node_get_title(node));
 
@@ -880,12 +683,12 @@ static void feed_process_update_result(struct request *request) {
 		ui_mainwindow_set_status_bar(_("\"%s\" is not available"), node_get_title(node));
 	}
 	
-	feed_update_error_status(feed, request->httpstatus, request->returncode, request->filterErrors);
+	subscription_update_error_status(subscription, request->httpstatus, request->returncode, request->filterErrors);
 
 	node->updateRequest = NULL; 
 
 	if(request->flags & FEED_REQ_DOWNLOAD_FAVICON)
-		feed_update_favicon(node);
+		subscription_update_favicon(node);
 
 	feedlist_schedule_save();
 	
@@ -914,7 +717,7 @@ static void feed_update_unread_count(nodePtr node) {
 
 static void feed_reset_update_counter(nodePtr node) {
 
-	feed_reset_update_counter_((feedPtr)node->data);
+	subscription_reset_update_counter(node->subscription);
 }
 
 static void feed_schedule_update(nodePtr node, guint flags) {
@@ -928,13 +731,13 @@ static void feed_schedule_update(nodePtr node, guint flags) {
 	if(node->updateRequest)
 		update_request_cancel_retry(node->updateRequest);
 	
-	if(feed_can_be_updated(node)) {
+	if(subscription_can_be_updated(node)) {
 		ui_mainwindow_set_status_bar(_("Updating \"%s\""), node_get_title(node));
 		request = update_request_new(node);
 		request->user_data = node;
 		request->options = feed->updateOptions;
 		request->callback = feed_process_update_result;
-		feed_prepare_request(feed, request, flags);
+		subscription_prepare_request(node->subscription, request, flags);
 		node->updateRequest = request;
 		update_execute_request(request);
 	}

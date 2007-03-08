@@ -81,7 +81,7 @@ static void item_comments_process_update_result(struct request *request) {
 		node_set_data(ctxt->node, ctxt->feed);		
 		ctxt->data = request->data;
 		ctxt->dataLength = request->size;
-		feed_parse(ctxt, FALSE);
+		feed_parse(ctxt);
 
 		if(ctxt->failed) {
 			debug0(DEBUG_UPDATE, "parsing comment feed failed!");

@@ -163,8 +163,6 @@ void node_free(nodePtr node) {
 	
 	update_cancel_requests((gpointer)node);
 
-	db_itemset_remove_all(node->id);
-
 	if(node->icon)
 		g_object_unref(node->icon);
 	g_free(node->iconFile);
