@@ -1,7 +1,11 @@
-2007-02-??  Lars Lindner  <lars.lindner@gmail.com>
+2007-03-10  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.2.8 (Stable)
 
+	* Adds a DBUS ping function that is used by the 
+	  liferea-add-feed script to check if the program is running.
+	* The liferea-add-feed script now starts Liferea if necessary.
+	  (solution by intangible/tsukasa)
 	* Fixes SF #1668278: error when exporting the feed list
 	  although the export was successfully completed
 	  (reported by Allan Engelhardt)

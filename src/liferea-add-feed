@@ -21,8 +21,39 @@ if ! which dbus-send >/dev/null 2>&1; then
 	exit 1
 fi
 
-if ! pgrep -x "(liferea|liferea-bin)" >/dev/null 2>&1; then
-	echo "Liferea is not running! You need to start it first."
+result=0
+i=1
+while [ $i -le 15 -a $result -eq 0 ]; 
+do
+	if dbus-send --session --print-reply=literal \
+	             --dest=org.gnome.feed.Reader \
+	             --type=method_call /org/gnome/feed/Reader \
+	             org.gnome.feed.Reader.Ping 2>/dev/null |\
+	   grep "boolean true" >/dev/null; 
+	then
+		result=1
+	else
+		result=0
+	fi
+	
+	if [ $result -eq 0 ]; then
+		if [ $i -eq 1 ]; then
+			echo "Liferea is not running! Trying to start it..."
+			`which liferea` &
+			if [ $? -ne 0 ]; then
+				echo "ERROR: Starting Liferea failed!"
+				exit 1
+			fi
+		else
+			echo "Still not running..."
+		fi
+		sleep 2
+	fi
+	i=`expr $i + 1` 
+done
+
+if [ $result -eq 0 ]; then
+	echo "ERROR: Liferea did not come up after 30s. Cannot add subscription..."
 	exit 1
 fi
 
