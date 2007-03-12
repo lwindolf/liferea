@@ -9,7 +9,12 @@
 	* Fixes SF #1668278: error when exporting the feed list
 	  although the export was successfully completed
 	  (reported by Allan Engelhardt)
+
+	Translations:
+
 	* Updated Italian translation (Dario Conigliaro)
+	* Updated Brazilian Portugese translation (Og Maciel)
+	* New Swedish translation (Daniel Nylander)
 
 
 2007-02-22  Lars Lindner  <lars.lindner@gmail.com>
