@@ -1,7 +1,7 @@
 /**
  * @file itemset.h interface for different item list implementations
  * 
- * Copyright (C) 2005-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2005-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -50,6 +50,7 @@ enum itemSetTypes {
 typedef struct itemSet {
 	guint		type;		/**< the type of the item set */
 	GList		*items;		/**< the list of items */
+	GHashTable	*nrHashes;	/**< hash of item number lookup hashes for all nodes of this itemset */
 	struct node	*node;		/**< the feed list node this item set belongs to */
 
 	gboolean	valid;		/**< FALSE if libxml2 recovery mode was used to create this item set*/
@@ -170,5 +171,13 @@ void itemset_set_item_popup_status(itemSetPtr itemSet, itemPtr item, gboolean ne
  * @param itemSet	the item set to serialize
  */
 xmlDocPtr itemset_to_xml(itemSetPtr itemSet);
+
+/**
+ * Frees an itemset structure. Assumes there are no more items in
+ * the item set, you should free them explicitely before hand.
+ *
+ * @param itemSet	the item set to free
+ */
+void itemset_free(itemSetPtr itemSet);
 
 #endif

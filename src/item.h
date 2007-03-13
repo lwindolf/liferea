@@ -38,11 +38,11 @@
 
 /**
  * An item stores a particular entry in a feed or a search.
- *  Each item belongs to an item set. An itemset is a collection
- *  of items. There are different item set types (e.g. feed,
- *  folder,vfolder or plugin). Each item has a source node.
- *  The item set node and the item source node is different
- *  for folders and vfolders. */
+ * Each item belongs to an item set. An itemset is a collection
+ * of items. There are different item set types (e.g. feed,
+ * folder,vfolder or plugin). Each item has a source node.
+ * The item set node and the item source node is different
+ * for folders and vfolders. */
 typedef struct item {
 	/* those fields should not be accessed directly. Accessors are provided. */
 	gboolean 	readStatus;		/**< TRUE if the item has been read */
@@ -65,7 +65,7 @@ typedef struct item {
 	
 	gulong		nr;			/**< Per item set unique item id */
 	struct itemSet	*itemSet;		/**< Pointer to the item set containing this item  */
-	gulong 		sourceNr;		/**< Like nr but the number in the sourceNode item set (used for searches and vfolders) */
+	gulong		sourceNr;		/**< Like nr but the number in the sourceNode item set (used for searches and vfolders) */
 	struct node	*sourceNode;		/**< Pointer to the source node of this item */
 
 } *itemPtr;

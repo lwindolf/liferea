@@ -166,7 +166,7 @@ void node_free(nodePtr node) {
 
 	if(node->loaded)  {
 		itemset_remove_all_items(node->itemSet);
-		g_free(node->itemSet);
+		itemset_free(node->itemSet);
 		node->itemSet = NULL;
 	}
 

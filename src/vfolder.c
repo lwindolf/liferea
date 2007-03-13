@@ -1,7 +1,7 @@
 /**
  * @file vfolder.c VFolder functionality
  *
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -220,40 +220,18 @@ static void vfolder_add_item(vfolderPtr vp, itemPtr item) {
  * removes them. Used for item remove propagation and for 
  * processing of removing vfolder rules.
  */
-static void vfolder_remove_matching_item_copy(vfolderPtr vp, itemPtr ip) {
-	gboolean	found = FALSE;
-	GList		*items;
+static void vfolder_remove_matching_item_copy(vfolderPtr vfolder, itemPtr item) {
 	itemPtr		tmp;
 
-	items = vp->node->itemSet->items;
-	while(NULL != items) {
-		tmp = items->data;
-		g_assert(NULL != ip->itemSet);
-
-		if((ip->nr == tmp->sourceNr) &&
-		   (ip->itemSet->node == tmp->sourceNode)) {
-			found = TRUE;
-			break;
-		}
-
-		items = g_list_next(items);
-	}
-
-	if(found) {
-		/*g_print("  removing item copy %d from vfolder %d\n", ip, vp);*/
-
-		/* because itemlist_request_remove_item might delay the removal
-		   the original item may not exist anymore when the 
-		   removal is executed, so we need to remove the
-		   pointer to the original item */
-		tmp->sourceNode = tmp->itemSet->node;
-		tmp->sourceNr = -1;
+	tmp = itemset_lookup_item(vfolder->node->itemSet, item->sourceNode, item->sourceNr);
+	if(tmp) {
+		/*g_print("  removing item copy %s from vfolder %s\n", item->title, vfolder->node->title);*/
 		
 		if(!tmp->readStatus)
-			vp->node->unreadCount--;
+			vfolder->node->unreadCount--;
 		
 		/* we call itemlist_request_remove_item to prevent removing
-		   an item copy selected in the GUI... */
+		   an item copy	currently selected in the item list... */
 		itemlist_request_remove_item(tmp);
 	}
 }
@@ -291,7 +269,7 @@ static gboolean vfolder_apply_rules_for_item(vfolderPtr vp, itemPtr ip) {
 	/* check against all rules */
 	/* debug2(DEBUG_UPDATE, "applying rules of (%s) to item #%d", feed_get_title(vp), ip->nr); */
 	iter = vp->rules;
-	while(NULL != iter) {
+	while(iter) {
 		rp = iter->data;
 		if(rp->additive) {
 			if(!added && rule_check_item(rp, ip)) {
@@ -364,89 +342,72 @@ void vfolder_refresh(vfolderPtr vfolder) {
  * Method to be called when an item was updated. Maybe called
  * after user interaction or updated item contents.
  */
-void vfolder_update_item(itemPtr ip) {
-	GList		*items;
+void vfolder_update_item(itemPtr item) {
 	GSList		*iter, *rule;
-	itemPtr		tmp;
-	vfolderPtr	vp;
 	rulePtr		rp;
 	gboolean	keep, remove;
 
 	debug_enter("vfolder_update_item");
 
 	/* never process vfolder items! */
-	g_assert(ip->itemSet->type != ITEMSET_TYPE_VFOLDER);
+	g_assert(item->itemSet->type != ITEMSET_TYPE_VFOLDER);
 	
 	iter = vfolders;
 	while(iter) {
-		vp = (vfolderPtr)iter->data;
+		vfolderPtr vfolder = (vfolderPtr)iter->data;
 		
-		/* first step: update item copy if found */
-		items = vp->node->itemSet->items;
-		while(NULL != items) {
-			tmp = items->data;
-			g_assert(NULL != ip->itemSet);
-			
-			/* avoid processing items that are in deletion state */
-			if(-1 == tmp->sourceNr) {
-				items = g_list_next(items);
-				continue;
-			}
-			
-			/* find the item copies */
-			if((ip->nr == tmp->sourceNr) &&
-			   (ip->itemSet->node == tmp->sourceNode)) {
-				/* check if the item still matches, the item won't get added
-				   another time so this call effectivly just checks if the
-				   item is still to remain added. */
+		/* check if current search folder contains the item to update */
+		itemPtr copy = itemset_lookup_item(vfolder->node->itemSet, item->sourceNode, item->sourceNr);
+		
+		if(copy) {					
+			/* check if the item still matches, the item won't get added
+			   another time so this call effectivly just checks if the
+			   item is still to remain added. */
+			keep = FALSE; 
+			remove = FALSE;
 
-				keep = FALSE; 
-				remove = FALSE;
-
-				/* check against all rules */
-				rule = vp->rules;
-				while(NULL != rule) {
-					rp = rule->data;
-					if(TRUE == rule_check_item(rp, ip)) {
-						/* the rule we checked does apply */
-						if(TRUE == rp->additive) {
-							keep = TRUE;
-						} else {
-							remove = TRUE;
-							break;
-						}
+			/* check against all rules of current search folder */
+			rule = vfolder->rules;
+			while(rule) {
+				rp = rule->data;
+				if(TRUE == rule_check_item(rp, item)) {
+					/* the rule we checked does apply */
+					if(TRUE == rp->additive) {
+						keep = TRUE;
+					} else {
+						remove = TRUE;
+						break;
 					}
-					rule = g_slist_next(rule);
 				}
-				
-				/* update vfolder unread count */
-				if(tmp->readStatus != ip->readStatus) {
-					if(ip->readStatus)
-						vp->node->unreadCount--;
-					else
-						vp->node->unreadCount++;
-				}
-				
-				/* always update the item... funny? Maybe, but necessary so that with 
-				   deferred removal items have correct state until really removed */
-				tmp->readStatus = ip->readStatus;
-				tmp->updateStatus = ip->updateStatus;
-				tmp->flagStatus = ip->flagStatus;
-
-				if((TRUE == keep) && (FALSE == remove)) {
-			   		debug2(DEBUG_UPDATE, "item (%s) used in vfolder (%s), updating vfolder copy...", item_get_title(ip), node_get_title(vp->node));
-					itemlist_update_item(tmp);
-				} else {
-					debug2(DEBUG_UPDATE, "item (%s) used in vfolder (%s) does not match anymore -> removing...", item_get_title(ip), node_get_title(vp->node));
-					itemlist_request_remove_item(tmp);
-				}
-				break;
+				rule = g_slist_next(rule);
 			}
-			items = g_list_next(items);
-		}
-		
-		ui_node_update(vp->node);	/* update the feedlist */
+				
+			/* update search folder unread count */
+			if(copy->readStatus != item->readStatus) {
+				if(item->readStatus)
+					vfolder->node->unreadCount--;
+				else
+					vfolder->node->unreadCount++;
+			}
+				
+			/* always update the item... funny? Maybe, but necessary so that with 
+			   deferred removal items have correct state until really removed */
+			copy->readStatus = item->readStatus;
+			copy->updateStatus = item->updateStatus;
+			copy->flagStatus = item->flagStatus;
 
+			if((TRUE == keep) && (FALSE == remove)) {
+		   		debug2(DEBUG_UPDATE, "item (%s) used in vfolder (%s), updating vfolder copy...", 
+				                     item_get_title(item), node_get_title(vfolder->node));
+				itemlist_update_item(copy);
+			} else {
+				debug2(DEBUG_UPDATE, "item (%s) used in vfolder (%s) does not match anymore -> removing...", 
+				                     item_get_title(item), node_get_title(vfolder->node));
+				vfolder_remove_matching_item_copy(vfolder, copy);
+			}
+			
+			ui_node_update(vfolder->node);	/* update the feedlist */
+		}		
 		iter = g_slist_next(iter);
 	}
 	

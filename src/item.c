@@ -125,6 +125,8 @@ itemPtr item_copy(itemPtr item) {
 	/* the following line allows state propagation in item.c */
 	copy->sourceNode = item->itemSet->node;
 	copy->sourceNr = item->nr;
+	copy->itemSet = NULL;
+	copy->nr = 0;
 
 	/* this copies metadata */
 	copy->metadata = metadata_list_copy(item->metadata);
@@ -311,7 +313,7 @@ void item_to_xml(itemPtr item, xmlNodePtr feedNode, gboolean rendering) {
 	if(item->validGuid)
 		xmlNewTextChild(itemNode, NULL, "validGuid", BAD_CAST "true");		
 
-	tmp = g_strdup_printf("%ld", item->nr);
+	tmp = g_strdup_printf("%lu", item->nr);
 	xmlNewTextChild(itemNode, NULL, "nr", tmp);
 	g_free(tmp);
 
@@ -352,7 +354,7 @@ void item_to_xml(itemPtr item, xmlNodePtr feedNode, gboolean rendering) {
 		
 		xmlNewTextChild(itemNode, NULL, "sourceId", item->sourceNode->id);
 		
-		tmp = g_strdup_printf("%ld", item->sourceNr);
+		tmp = g_strdup_printf("%lu", item->sourceNr);
 		xmlNewTextChild(itemNode, NULL, "sourceNr", tmp);
 		g_free(tmp);
 	}		

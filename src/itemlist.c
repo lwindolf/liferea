@@ -435,18 +435,18 @@ static void itemlist_hide_item(itemPtr item) {
 void itemlist_remove_item(itemPtr item) {
 
 	/* Normally the item should exist when removing it, but 
-	   when removing with the keyboard that will not be the case.
-	   FIXME: An asserting here would be better! */
-	if(NULL == itemset_lookup_item(item->itemSet, item->itemSet->node, item->nr))
+	   when removing with the keyboard this won't be the case.
+	   FIXME: An assertion here would be better! */
+	if(NULL == itemset_lookup_item(item->itemSet, item->sourceNode, item->sourceNr))
 		return;
-	
+
 	if(displayed_item == item) {
 		itemlist_set_selected(NULL);
 		deferred_item_filter = FALSE;
 		deferred_item_remove = FALSE;
 		itemview_select_item(NULL);
 	}
-	
+
 	itemview_remove_item(item);
 	itemview_update();
 	itemset_remove_item(item->itemSet, item);
@@ -585,7 +585,7 @@ void itemlist_selection_changed(itemPtr item) {
 		   more matching the display rules because they have changed state */
 		itemlist_check_for_deferred_action();
 
-		debug1(DEBUG_GUI, "item list selection changed to \"%s\"", item_get_title(item));
+		debug1(DEBUG_GUI, "item list selection changed to \"%s\"", item?item_get_title(item):"(null)");
 		
 		itemlist_set_selected(item);
 	

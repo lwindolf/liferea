@@ -171,7 +171,7 @@ static void ns_blogChannel_download_request_cb(requestPtr request) {
 		
 		node_unload(requestData->ctxt->node);
 	}
-	g_free(requestData->ctxt->itemSet);
+	itemset_free(requestData->ctxt->itemSet);
 	feed_free_parser_ctxt(requestData->ctxt);
 	g_free(requestData);
 	

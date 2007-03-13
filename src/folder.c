@@ -59,6 +59,11 @@ static void folder_initial_load(nodePtr node) {
 	node_foreach_child(node, node_initial_load);
 }
 
+static void folder_merge_nr_hash(gpointer key, gpointer value, gpointer user_data) {
+
+	g_hash_table_insert((GHashTable *)user_data, key, value);
+}
+
 /* This callback is used to compute the itemset of folder nodes */
 static void folder_merge_itemset(nodePtr node, gpointer userdata) {
 	itemSetPtr	itemSet = (itemSetPtr)userdata;
@@ -75,6 +80,8 @@ static void folder_merge_itemset(nodePtr node, gpointer userdata) {
 		default:
 			debug1(DEBUG_GUI, "   pre merge item set: %d items", g_list_length(itemSet->items));
 			itemSet->items = g_list_concat(itemSet->items, g_list_copy(node->itemSet->items));
+			if(node->itemSet->nrHashes)
+				g_hash_table_foreach(node->itemSet->nrHashes, folder_merge_nr_hash, itemSet->nrHashes);
 			debug1(DEBUG_GUI, "  post merge item set: %d items", g_list_length(itemSet->items));
 			break;
 	}
@@ -88,6 +95,7 @@ static void folder_load(nodePtr node) {
 		/* Concatenate all child item sets to form the folders item set */
 		itemSetPtr itemSet = g_new0(struct itemSet, 1);
 		itemSet->type = ITEMSET_TYPE_FOLDER;
+		itemSet->nrHashes = g_hash_table_new(g_direct_hash, g_direct_equal);
 		node_foreach_child_data(node, folder_merge_itemset, itemSet);
 		node_set_itemset(node, itemSet);
 	}

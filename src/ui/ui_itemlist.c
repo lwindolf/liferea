@@ -49,14 +49,14 @@ static GtkWidget 	*itemlist_treeview = NULL;
 /* helper functions for item <-> iter conversion */
 
 static itemPtr ui_iter_to_item(GtkTreeIter *iter) {
-	nodePtr		node;
-	gulong		nr;
+	nodePtr		sourceNode = NULL, node = NULL;
+	gulong		sourceNr;
 	
 	gtk_tree_model_get(GTK_TREE_MODEL(ui_itemlist_get_tree_store()), 
-	                   iter, IS_PARENT, &node, IS_NR, &nr, -1);
+	                   iter, IS_PARENT, &node, IS_SOURCE, &sourceNode, IS_NR, &sourceNr, -1);
 
 	if(node)
-		return itemset_lookup_item(node->itemSet, node, nr);
+		return itemset_lookup_item(node->itemSet, sourceNode, sourceNr);
 	else
 		return NULL;
 }
@@ -164,7 +164,6 @@ void ui_itemlist_remove_item(itemPtr item) {
 
 /* cleans up the item list, sets up the iter hash when called for the first time */
 void ui_itemlist_clear(void) {
-
 	GtkAdjustment		*adj;
 	GtkTreeView		*treeview;
 	GtkTreeStore		*itemstore = ui_itemlist_get_tree_store();
@@ -382,10 +381,10 @@ void ui_itemlist_add_item(itemPtr item) {
 			state += 2;
 		if(!item->readStatus)
 			state += 1;
-		
+
 		gtk_tree_store_set(itemstore, iter,
 		                	      IS_TIME, item->time,
-		                	      IS_NR, item->nr,
+		                	      IS_NR, item->sourceNr,
 					      IS_PARENT, item->itemSet->node,
 		                              IS_FAVICON, item->sourceNode->icon,
 		                              IS_ENCICON, item->hasEnclosure?icons[ICON_ENCLOSURE]:NULL,

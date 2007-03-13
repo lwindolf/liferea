@@ -86,19 +86,20 @@ xmlDocPtr itemset_to_xml(itemSetPtr itemSet) {
 }
 
 itemPtr itemset_lookup_item(itemSetPtr itemSet, nodePtr node, gulong nr) {
-
+	GHashTable 	*hash;
+	itemPtr		item = NULL;
+	
 	if(!itemSet)
 		return NULL;
 		
-	GList *iter = itemSet->items;
-	while(iter) {
-		itemPtr item = (itemPtr)(iter->data);
-		if((item->nr == nr) && (item->itemSet->node == node))
-			return item;
-		iter = g_list_next(iter);
-	}
+	if(!itemSet->nrHashes)
+		return NULL;
+	
+	hash = g_hash_table_lookup(itemSet->nrHashes, node);
+	if(hash)
+		item = g_hash_table_lookup(hash, GUINT_TO_POINTER(nr));
 
-	return NULL;
+	return item;
 }
 
 static void itemset_prepare_item(itemSetPtr itemSet, itemPtr item) {
@@ -114,8 +115,8 @@ static void itemset_prepare_item(itemSetPtr itemSet, itemPtr item) {
 	/* We prepare for adding the item to the itemset and
 	   have to ensure a unique item id. But we only change
 	   it if necessary. The caller must save the node to
-	   ensure changed item ids to get saved. */
-	if((item->nr == 0) || (NULL != itemset_lookup_item(itemSet, item->sourceNode, item->nr)))
+	   ensure changed item ids do get saved. */
+	if((item->nr == 0) || (NULL != itemset_lookup_item(itemSet, item->itemSet->node, item->nr)))
 		item->nr = ++(itemSet->lastItemNr);
 		
 	/* If the item already had an id we need to ensure
@@ -126,17 +127,41 @@ static void itemset_prepare_item(itemSetPtr itemSet, itemPtr item) {
 	if(ITEMSET_TYPE_FEED == itemSet->type)
 		item->sourceNr = item->nr;
 }
-				
+
+void itemset_add_to_nr_hash(itemSetPtr itemSet, itemPtr item) {
+	GHashTable	*hash;
+
+	if(!itemSet->nrHashes)
+		itemSet->nrHashes = g_hash_table_new(g_direct_hash, g_direct_equal);
+		
+	hash = g_hash_table_lookup(itemSet->nrHashes, item->sourceNode);
+	if(!hash) {
+		hash = g_hash_table_new(g_direct_hash, g_direct_equal);	
+		g_hash_table_insert(itemSet->nrHashes, item->sourceNode, hash);
+	}
+
+	g_hash_table_insert(hash, GUINT_TO_POINTER(item->sourceNr), item);
+}
+
+void itemset_remove_from_nr_hash(itemSetPtr itemSet, itemPtr item) {
+	GHashTable	*hash;
+
+	hash = g_hash_table_lookup(itemSet->nrHashes, item->sourceNode);	
+	if(hash)
+		g_hash_table_remove(hash, GUINT_TO_POINTER(item->sourceNr));
+}
 
 void itemset_prepend_item(itemSetPtr itemSet, itemPtr item) {
 
 	itemset_prepare_item(itemSet, item);
+	itemset_add_to_nr_hash(itemSet, item);
 	itemSet->items = g_list_prepend(itemSet->items, item);
 }
 
 void itemset_append_item(itemSetPtr itemSet, itemPtr item) {
 
 	itemset_prepare_item(itemSet, item);
+	itemset_add_to_nr_hash(itemSet, item);
 	itemSet->items = g_list_append(itemSet->items, item);
 }
 
@@ -148,6 +173,7 @@ void itemset_remove_item(itemSetPtr itemSet, itemPtr item) {
 	}
 
 	/* remove item from itemset */
+	itemset_remove_from_nr_hash(itemSet, item);
 	itemSet->items = g_list_remove(itemSet->items, item);
 	
 	if(!item->readStatus)
@@ -189,6 +215,7 @@ void itemset_remove_all_items(itemSetPtr itemSet) {
 	}
 	g_list_free(list);
 
+	itemSet->items = NULL;
 	itemSet->node->needsCacheSave = TRUE;
 }
 
@@ -288,4 +315,19 @@ void itemset_set_item_popup_status(itemSetPtr itemSet, itemPtr item, gboolean ne
 	   no propagation to nodes... */
 	
 	/* Popup status is never propagated to vfolders... */
+}
+
+static void itemset_free_nr_hash(gpointer key, gpointer value, gpointer user_data) {
+
+	g_hash_table_destroy(value);
+}
+
+void itemset_free(itemSetPtr itemSet) {
+
+	g_assert(NULL == itemSet->items);
+	if(itemSet->nrHashes) {
+		g_hash_table_foreach(itemSet->nrHashes, itemset_free_nr_hash, NULL);
+		g_hash_table_destroy(itemSet->nrHashes);
+	}
+	g_free(itemSet);
 }

@@ -1330,7 +1330,8 @@ static void feed_unload(nodePtr node) {
 					iter = g_list_next(iter);
 				}
 				g_list_free(node->itemSet->items);
-				g_free(node->itemSet);
+				node->itemSet->items = NULL;
+				itemset_free(node->itemSet);
 				node->itemSet = NULL;	
 			} 
 			/* node->itemSet will be NULL here, except when cache is disabled */
