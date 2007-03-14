@@ -6,6 +6,7 @@
 	  liferea-add-feed script to check if the program is running.
 	* The liferea-add-feed script now starts Liferea if necessary.
 	  (solution by intangible/tsukasa)
+	* Added 1x1 pixel filter to adblocking stylesheet.
 	* Fixes SF #1668278: error when exporting the feed list
 	  although the export was successfully completed
 	  (reported by Allan Engelhardt)

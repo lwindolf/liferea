@@ -1,7 +1,7 @@
 /*
  * Liferea ad blocking stylesheet
  *
- * (C) 2005-2006 Lars Linder <lars.lindner@gmx.net>
+ * (C) 2005-2007 Lars Linder <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,3 +28,4 @@ iframe[src="kanoodle"],
 div.feedflare { display: none !important; visibility:hidden; margin:0; }
 
 img[width="468"] { display: none !important }
+img[width="1"] { display: none !important }
