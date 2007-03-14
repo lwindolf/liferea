@@ -9,6 +9,8 @@
 	* Fixes SF #1668278: error when exporting the feed list
 	  although the export was successfully completed
 	  (reported by Allan Engelhardt)
+	* Fixes SF #1657717: memory leak when stripping DHTML from
+	  HTML type metadata (reported by Hubert Figuiere)
 
 	Translations:
 
