@@ -1,7 +1,7 @@
 /**
  * @file itemview.c    item display interface abstraction
  * 
- * Copyright (C) 2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2006-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -143,8 +143,8 @@ static gboolean itemview_is_affected(itemPtr item) {
 	if(!itemView_priv.itemSet)
 		return FALSE;
 
-	if(!itemset_lookup_item(itemView_priv.itemSet, item->itemSet->node, item->nr) &&
-	   !node_is_ancestor(itemView_priv.itemSet->node,item->itemSet->node))
+	if(!itemset_lookup_item(itemView_priv.itemSet, item->sourceNode, item->sourceNr) &&
+	   !node_is_ancestor(itemView_priv.itemSet->node, item->itemSet->node))
 		return FALSE;
 		
 	return TRUE;

@@ -1,7 +1,7 @@
 /**
- * @file ui_itemlist.c Item list/view handling
+ * @file ui_itemlist.c item list/view handling
  *  
- * Copyright (C) 2004-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This library is free software; you can redistribute it and/or
@@ -158,7 +158,7 @@ void ui_itemlist_remove_item(itemPtr item) {
 		gtk_tree_store_remove(ui_itemlist_get_tree_store(), iter);
 		g_hash_table_remove(item_to_iter, (gpointer)item);
 	} else {
-		/*g_warning("item to be removed not found in tree iter lookup hash!");*/
+		/* g_warning("item to be removed not found in tree iter lookup hash!"); */
 	}
 }
 
