@@ -1,4 +1,11 @@
-2007-03-10  Lars Lindner  <lars.lindner@gmail.com>
+2007-03-17  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.2.9 (Stable)
+
+	* Adding DBUS introspection (patch by moonz)
+
+
+2007-03-14  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.2.8 (Stable)
 

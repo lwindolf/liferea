@@ -91,6 +91,52 @@ static void liferea_dbus_connect(void) {
 	dbus_error_free(&error);
 }
 
+static DBusHandlerResult liferea_dbus_introspect(DBusConnection *connection, DBusMessage *message) {
+	DBusMessage *ret;
+	GString *xml;
+	
+	xml = g_string_new (NULL);
+	g_string_append (xml, DBUS_INTROSPECT_1_0_XML_DOCTYPE_DECL_NODE);
+	g_string_append (xml, "<node>\n");
+	
+	/* org.freedesktop.Introspectable */
+	g_string_append_printf (xml, "  <interface name=\"%s\">\n", DBUS_INTERFACE_INTROSPECTABLE);
+	g_string_append (xml, "    <method name=\"Introspect\">\n");
+	g_string_append (xml, "      <arg name=\"data\" direction=\"out\" type=\"s\"/>\n");
+	g_string_append (xml, "    </method>\n");
+	g_string_append (xml, "  </interface>\n");
+	
+	/* org.gnome.feed.Reader */
+	g_string_append_printf (xml, "  <interface name=\"%s\">\n", DBUS_RSS_INTERFACE);
+	g_string_append_printf (xml, "    <method name=\"%s\">\n", DBUS_RSS_METHOD);
+	g_string_append (xml, "      <arg name=\"success\" direction=\"out\" type=\"b\"/>\n");
+	g_string_append (xml, "      <arg name=\"url\" direction=\"in\" type=\"s\"/>\n");
+	g_string_append (xml, "    </method>\n");
+	g_string_append_printf (xml, "    <method name=\"%s\">\n", DBUS_FEED_READER_SET_ONLINE_METHOD);
+	g_string_append (xml, "      <arg name=\"success\" direction=\"out\" type=\"b\"/>\n");
+	g_string_append (xml, "      <arg name=\"online\" direction=\"in\" type=\"b\"/>\n");
+	g_string_append (xml, "    </method>\n");
+	g_string_append_printf (xml, "    <method name=\"%s\">\n", DBUS_FEED_READER_PING_METHOD);
+	g_string_append (xml, "      <arg name=\"success\" direction=\"out\" type=\"b\"/>\n");
+	g_string_append (xml, "    </method>\n");
+	g_string_append (xml, "  </interface>\n");
+	
+	g_string_append (xml, "</node>");
+	
+	/* Send message */
+	ret = dbus_message_new_method_return (message);
+	if(ret) {
+		dbus_message_append_args (ret, DBUS_TYPE_STRING, &xml->str,DBUS_TYPE_INVALID);
+		dbus_connection_send (connection, ret, NULL);
+		dbus_message_unref (ret);
+		g_string_free (xml, TRUE);
+		return DBUS_HANDLER_RESULT_HANDLED;
+	} else {
+		g_string_free (xml, TRUE);
+		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+	}
+}
+
 static DBusHandlerResult liferea_dbus_ping(DBusConnection *connection, DBusMessage *message) {
 	DBusMessage	*reply;
 	gboolean	result = TRUE;
@@ -189,6 +235,8 @@ static DBusHandlerResult liferea_dbus_message_handler(DBusConnection *connection
 		return liferea_dbus_ping(connection, message);
 	if(strcmp(DBUS_FEED_READER_SET_ONLINE_METHOD, method) == 0)
 		return liferea_dbus_set_online(connection, message);
+	if(strcmp(DBUS_INTROSPECT_METHOD, method) == 0)
+		return liferea_dbus_introspect(connection, message);
 	else
 		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
 }
