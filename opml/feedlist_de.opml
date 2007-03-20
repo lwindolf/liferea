@@ -7,7 +7,7 @@
     <outline text="Beispiel Abonnements">
       <outline text="deutsch">
       	<outline text="Tagesschau" htmlUrl="http://www.tagesschau.de/" xmlUrl="http://www.tagesschau.de/newsticker.rdf" />
-	<outline text="Netzeitung" htmlUrl="http://www.netzzeitung.de" xmlUrl="http://netzzeitung.de/service/rss/" />
+	<outline text="Netzeitung" htmlUrl="http://www.netzzeitung.de" xmlUrl="http://www.netzeitung.de/export/news/rss/titelseite.xml" />
 	<outline text="Heise Online" htmlUrl="http://www.heise.de" xmlUrl="http://www.heise.de/newsticker/heise.rdf" />
 	<outline text="golem.de" htmlUrl="http://golem.de" xmlUrl="http://www.golem.de/rss.php?feed=RSS1.0" />
       </outline>
