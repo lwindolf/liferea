@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-01-28 14:39+0100\n"
+"POT-Creation-Date: 2007-03-14 23:00+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -91,38 +91,46 @@ msgid "Folder:"
 msgstr ""
 
 #: ../xslt/item.xml.in.h:1
-msgid "Author"
+msgid "Also posted in"
 msgstr ""
 
 #: ../xslt/item.xml.in.h:2
-msgid "Department"
+msgid "Author"
 msgstr ""
 
 #: ../xslt/item.xml.in.h:3
-msgid "Filed under"
+msgid "Department"
 msgstr ""
 
 #: ../xslt/item.xml.in.h:4
-msgid "Section"
+msgid "Feed"
 msgstr ""
 
-#: ../xslt/item.xml.in.h:5 ../src/interface.c:602
-msgid "Source"
+#: ../xslt/item.xml.in.h:5
+msgid "Filed under"
 msgstr ""
 
 #: ../xslt/item.xml.in.h:6
-msgid "bookmark"
+msgid "Section"
 msgstr ""
 
-#: ../xslt/item.xml.in.h:7
-msgid "comments"
+#: ../xslt/item.xml.in.h:7 ../src/interface.c:602
+msgid "Source"
 msgstr ""
 
 #: ../xslt/item.xml.in.h:8
-msgid "flag"
+msgid "bookmark"
 msgstr ""
 
 #: ../xslt/item.xml.in.h:9
+msgid "comments"
+msgstr ""
+
+#: ../xslt/item.xml.in.h:10
+msgid "flag"
+msgstr ""
+
+#: ../xslt/item.xml.in.h:11
 msgid "search"
 msgstr ""
 
@@ -178,87 +186,87 @@ msgid "XML Parser: Could not parse document:\n"
 msgstr ""
 
 #. translation hint: date format for today, reorder format codes as necessary
-#: ../src/common.c:635
+#: ../src/common.c:637
 msgid "Today %l:%M %p"
 msgstr ""
 
 #. translation hint: date format for yesterday, reorder format codes as necessary
-#: ../src/common.c:646
+#: ../src/common.c:650
 msgid "Yesterday %l:%M %p"
 msgstr ""
 
 #. translation hint: date format for dates older than 2 days but not older than a week, reorder format codes as necessary
-#: ../src/common.c:659
+#: ../src/common.c:665
 msgid "%a %l:%M %p"
 msgstr ""
 
 #. translation hint: date format for dates older than a week but from this year, reorder format codes as necessary
-#: ../src/common.c:668
+#: ../src/common.c:676
 msgid "%b %d %l:%M %p"
 msgstr ""
 
 #. translation hint: date format for dates from the last years, reorder format codes as necessary
-#: ../src/common.c:671
+#: ../src/common.c:681
 msgid "%b %d %Y"
 msgstr ""
 
-#: ../src/common.c:869
+#: ../src/common.c:881
 #, c-format
 msgid "Cannot create cache directory \"%s\"!"
 msgstr ""
 
-#: ../src/common.c:952
+#: ../src/common.c:964
 msgid ""
 "Unexpected end of character sequence or corrupt UTF-8 encoding! Some "
 "characters were dropped!"
 msgstr ""
 
-#: ../src/export.c:143
+#: ../src/export.c:144
 #, c-format
 msgid "Error renaming %s to %s\n"
 msgstr ""
 
-#: ../src/export.c:304 ../src/export.c:306
+#: ../src/export.c:308 ../src/export.c:310
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
 msgstr ""
 
-#: ../src/export.c:311 ../src/export.c:313
+#: ../src/export.c:315 ../src/export.c:317
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr ""
 
-#: ../src/export.c:334 ../src/export.c:336
+#: ../src/export.c:338 ../src/export.c:340
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 
-#: ../src/export.c:355
+#: ../src/export.c:359
 msgid "Imported feed list"
 msgstr ""
 
-#: ../src/export.c:367
+#: ../src/export.c:371
 msgid "Import Feed List"
 msgstr ""
 
-#: ../src/export.c:367
+#: ../src/export.c:371
 msgid "Import"
 msgstr ""
 
-#: ../src/export.c:374
+#: ../src/export.c:378
 msgid "Error while exporting feed list!"
 msgstr ""
 
-#: ../src/export.c:376
+#: ../src/export.c:380
 msgid "Feed List exported!"
 msgstr ""
 
-#: ../src/export.c:382
+#: ../src/export.c:386
 msgid "Export Feed List"
 msgstr ""
 
-#: ../src/export.c:382
+#: ../src/export.c:386
 msgid "Export"
 msgstr ""
 
@@ -303,160 +311,160 @@ msgstr ""
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 msgstr ""
 
-#: ../src/feed.c:740
+#: ../src/feed.c:748
 #, c-format
 msgid "There were errors while parsing cache file \"%s\""
 msgstr ""
 
-#: ../src/feed.c:765
+#: ../src/feed.c:773
 #, c-format
 msgid "This feed \"%s\" is already being updated!"
 msgstr ""
 
-#: ../src/feed.c:770
+#: ../src/feed.c:778
 #, c-format
 msgid "The feed \"%s\" was discontinued. Liferea won't update it anymore!"
 msgstr ""
 
-#: ../src/feed.c:1047
+#: ../src/feed.c:1055
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box."
 msgstr ""
 
-#: ../src/feed.c:1049
+#: ../src/feed.c:1057
 msgid "Payment Required"
 msgstr ""
 
-#: ../src/feed.c:1050
+#: ../src/feed.c:1058
 msgid "Access Forbidden"
 msgstr ""
 
-#: ../src/feed.c:1051
+#: ../src/feed.c:1059
 msgid "Resource Not Found"
 msgstr ""
 
-#: ../src/feed.c:1052
+#: ../src/feed.c:1060
 msgid "Method Not Allowed"
 msgstr ""
 
-#: ../src/feed.c:1053
+#: ../src/feed.c:1061
 msgid "Not Acceptable"
 msgstr ""
 
-#: ../src/feed.c:1054
+#: ../src/feed.c:1062
 msgid "Proxy Authentication Required"
 msgstr ""
 
-#: ../src/feed.c:1055
+#: ../src/feed.c:1063
 msgid "Request Time-Out"
 msgstr ""
 
-#: ../src/feed.c:1056
+#: ../src/feed.c:1064
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr ""
 
-#: ../src/feed.c:1061
+#: ../src/feed.c:1069
 msgid "URL is invalid"
 msgstr ""
 
-#: ../src/feed.c:1062
+#: ../src/feed.c:1070
 msgid "Unsupported network protocol"
 msgstr ""
 
-#: ../src/feed.c:1065
+#: ../src/feed.c:1073
 msgid "Error connecting to remote host"
 msgstr ""
 
-#: ../src/feed.c:1066
+#: ../src/feed.c:1074
 msgid "Hostname could not be found"
 msgstr ""
 
-#: ../src/feed.c:1067
+#: ../src/feed.c:1075
 msgid "Network connection was refused by the remote host"
 msgstr ""
 
-#: ../src/feed.c:1068
+#: ../src/feed.c:1076
 msgid "Remote host did not finish sending data"
 msgstr ""
 
 #. Transfer errors
-#: ../src/feed.c:1070
+#: ../src/feed.c:1078
 msgid "Too many HTTP redirects were encountered"
 msgstr ""
 
-#: ../src/feed.c:1073
+#: ../src/feed.c:1081
 msgid "Remote host sent an invalid response"
 msgstr ""
 
-#: ../src/feed.c:1080
+#: ../src/feed.c:1088
 msgid "Authentication failed"
 msgstr ""
 
-#: ../src/feed.c:1082
+#: ../src/feed.c:1090
 msgid "Webserver's authentication method incompatible with Liferea"
 msgstr ""
 
-#: ../src/feed.c:1088
+#: ../src/feed.c:1096
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 
-#: ../src/feed.c:1089
+#: ../src/feed.c:1097
 msgid "Client Error"
 msgstr ""
 
-#: ../src/feed.c:1090
+#: ../src/feed.c:1098
 msgid "Server Error"
 msgstr ""
 
-#: ../src/feed.c:1091
+#: ../src/feed.c:1099
 msgid "(unknown networking error happened)"
 msgstr ""
 
-#: ../src/feed.c:1100
+#: ../src/feed.c:1108
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
 msgstr ""
 
-#: ../src/feed.c:1151
+#: ../src/feed.c:1159
 #, c-format
 msgid "Updating feed icon for \"%s\""
 msgstr ""
 
-#: ../src/feed.c:1184
+#: ../src/feed.c:1192
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr ""
 
-#: ../src/feed.c:1193
+#: ../src/feed.c:1201
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr ""
 
-#: ../src/feed.c:1196
+#: ../src/feed.c:1204
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr ""
 
-#: ../src/feed.c:1212
+#: ../src/feed.c:1220
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!</"
 "p>XML Parser Output:<br /><div class='xmlparseroutput'>"
 msgstr ""
 
-#: ../src/feed.c:1231
+#: ../src/feed.c:1239
 #, c-format
 msgid "\"%s\" updated..."
 msgstr ""
 
-#: ../src/feed.c:1243
+#: ../src/feed.c:1251
 #, c-format
 msgid "\"%s\" is not available"
 msgstr ""
 
-#: ../src/feed.c:1368
+#: ../src/feed.c:1377
 #, c-format
 msgid "Updating \"%s\""
 msgstr ""
@@ -1210,7 +1218,7 @@ msgid "_News Bin Name:"
 msgstr ""
 
 #. if we don't find a feed with unread items do nothing
-#: ../src/itemlist.c:296
+#: ../src/itemlist.c:298
 msgid "There are no unread items "
 msgstr ""
 
@@ -1504,33 +1512,33 @@ msgstr ""
 msgid "Starting: \"%s\""
 msgstr ""
 
-#: ../src/ui/ui_itemlist.c:210
+#: ../src/ui/ui_itemlist.c:209
 msgid "<i>*** No title ***</i>"
 msgstr ""
 
-#: ../src/ui/ui_itemlist.c:297
+#: ../src/ui/ui_itemlist.c:296
 msgid "Date"
 msgstr ""
 
-#: ../src/ui/ui_itemlist.c:308 ../src/ui/ui_itemlist.c:311
+#: ../src/ui/ui_itemlist.c:307 ../src/ui/ui_itemlist.c:310
 msgid "Headline"
 msgstr ""
 
-#: ../src/ui/ui_itemlist.c:422 ../src/ui/ui_itemlist.c:435
-#: ../src/ui/ui_itemlist.c:480 ../src/ui/ui_itemlist.c:634
-#: ../src/ui/ui_itemlist.c:652
+#: ../src/ui/ui_itemlist.c:421 ../src/ui/ui_itemlist.c:434
+#: ../src/ui/ui_itemlist.c:479 ../src/ui/ui_itemlist.c:633
+#: ../src/ui/ui_itemlist.c:651
 msgid "No item has been selected"
 msgstr ""
 
-#: ../src/ui/ui_itemlist.c:433
+#: ../src/ui/ui_itemlist.c:432
 msgid "This item has no link specified!"
 msgstr ""
 
-#: ../src/ui/ui_itemlist.c:470
+#: ../src/ui/ui_itemlist.c:469
 msgid "You must select a feed to delete its items!"
 msgstr ""
 
-#: ../src/ui/ui_itemlist.c:662
+#: ../src/ui/ui_itemlist.c:661
 msgid "No link selected!"
 msgstr ""
 
@@ -2070,18 +2078,18 @@ msgstr ""
 msgid "Create a new search feed."
 msgstr ""
 
-#: ../src/ui/ui_tray.c:106
+#: ../src/ui/ui_tray.c:175
 #, c-format
 msgid "%d new item"
 msgid_plural "%d new items"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/ui/ui_tray.c:110
+#: ../src/ui/ui_tray.c:182
 msgid "No new items"
 msgstr ""
 
-#: ../src/ui/ui_tray.c:114
+#: ../src/ui/ui_tray.c:186
 #, c-format
 msgid ""
 "%s\n"
@@ -2092,7 +2100,7 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/ui/ui_tray.c:116
+#: ../src/ui/ui_tray.c:188
 #, c-format
 msgid ""
 "%s\n"
@@ -2149,7 +2157,7 @@ msgid "_Password"
 msgstr ""
 
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
-#: ../src/fl_sources/default_source.c:280
+#: ../src/fl_sources/default_source.c:290
 msgid "feedlist.opml"
 msgstr ""
 

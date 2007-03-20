@@ -61,7 +61,8 @@ static void folder_initial_load(nodePtr node) {
 
 static void folder_merge_nr_hash(gpointer key, gpointer value, gpointer user_data) {
 
-	g_hash_table_insert((GHashTable *)user_data, key, value);
+	if(value)
+		g_hash_table_insert((GHashTable *)user_data, key, value);
 }
 
 /* This callback is used to compute the itemset of folder nodes */
@@ -78,6 +79,7 @@ static void folder_merge_itemset(nodePtr node, gpointer userdata) {
 			return;
 			break;
 		default:
+			node_load(node);
 			debug1(DEBUG_GUI, "   pre merge item set: %d items", g_list_length(itemSet->items));
 			itemSet->items = g_list_concat(itemSet->items, g_list_copy(node->itemSet->items));
 			if(node->itemSet->nrHashes)
@@ -88,10 +90,11 @@ static void folder_merge_itemset(nodePtr node, gpointer userdata) {
 }
 
 static void folder_load(nodePtr node) {
-
-	node_foreach_child(node, node_load);
-
-	if(0 >= node->loaded) {
+	
+	g_assert(0 <= node->loaded);
+	g_assert(0 == node->loaded || node->itemSet);
+	
+	if(0 == node->loaded) {
 		/* Concatenate all child item sets to form the folders item set */
 		itemSetPtr itemSet = g_new0(struct itemSet, 1);
 		itemSet->type = ITEMSET_TYPE_FOLDER;
@@ -109,26 +112,35 @@ static void folder_save(nodePtr node) {
 
 static void folder_unload(nodePtr node) {
 
-	if(0 >= node->loaded)
+	g_assert(0 == node->loaded || node->itemSet);
+	
+	if(0 == node->loaded)
 		return;
-
+	
 	if(1 == node->loaded) {
-		g_assert(NULL != node->itemSet);
+		/* Note: item and nr lists are only references, they are "loaded"
+		   in their respective feeds. Therefore we must avoid passing
+		   those shallow copies to itemset_free(). */		
 		g_list_free(node->itemSet->items);
 		node->itemSet->items = NULL;
+		g_hash_table_destroy(node->itemSet->nrHashes);
+		node->itemSet->nrHashes = NULL;
+		
+		itemset_free(node->itemSet);
+		node->itemSet = NULL;
 	}
-
 	node->loaded--;
 
 	node_foreach_child(node, node_unload);
 }
 
 static void folder_reset_update_counter(nodePtr node) {
+
 	node_foreach_child(node, node_reset_update_counter);
 }
 
 static void folder_request_update(nodePtr node, guint flags) {
-	// FIXME: int -> gpointer
+
 	node_foreach_child_data(node, node_request_update, GUINT_TO_POINTER(flags));
 }
 

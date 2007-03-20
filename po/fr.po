@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 1.2.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-08 12:25+0100\n"
+"POT-Creation-Date: 2007-03-14 23:00+0100\n"
 "PO-Revision-Date: 2007-02-06 13:38+0100\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.org>\n"
 "Language-Team: \n"
@@ -198,36 +198,36 @@ msgid "XML Parser: Could not parse document:\n"
 msgstr "Analyseur syntaxique XML : impossible d'analyser le document :\n"
 
 #. translation hint: date format for today, reorder format codes as necessary
-#: ../src/common.c:635
+#: ../src/common.c:637
 msgid "Today %l:%M %p"
 msgstr "Aujourd'hui %H:%M"
 
 #. translation hint: date format for yesterday, reorder format codes as necessary
-#: ../src/common.c:646
+#: ../src/common.c:650
 msgid "Yesterday %l:%M %p"
 msgstr "Hier %H:%M"
 
 #. translation hint: date format for dates older than 2 days but not older than a week, reorder format codes as necessary
-#: ../src/common.c:659
+#: ../src/common.c:665
 msgid "%a %l:%M %p"
 msgstr "%a %H:%M"
 
 #. translation hint: date format for dates older than a week but from this year, reorder format codes as necessary
-#: ../src/common.c:668
+#: ../src/common.c:676
 msgid "%b %d %l:%M %p"
 msgstr "%d %b %H:%M"
 
 #. translation hint: date format for dates from the last years, reorder format codes as necessary
-#: ../src/common.c:671
+#: ../src/common.c:681
 msgid "%b %d %Y"
 msgstr "%d %b %Y"
 
-#: ../src/common.c:869
+#: ../src/common.c:881
 #, c-format
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "Impossible de créer le répertoire cache \"%s\" !"
 
-#: ../src/common.c:952
+#: ../src/common.c:964
 msgid ""
 "Unexpected end of character sequence or corrupt UTF-8 encoding! Some "
 "characters were dropped!"
@@ -235,19 +235,19 @@ msgstr ""
 "Fin inattendue de la séquence de caractères ou encodage UTF-8 corrompu ! "
 "Certains caractères ont été perdus !"
 
-#: ../src/export.c:143
+#: ../src/export.c:144
 #, c-format
 msgid "Error renaming %s to %s\n"
 msgstr "Erreur lors du renommage de %s en %s\n"
 
-#: ../src/export.c:304 ../src/export.c:306
+#: ../src/export.c:308 ../src/export.c:310
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
 msgstr ""
 "Erreur XML pendant la lecture du fichier cache ! Impossible d'importer \"%s"
 "\" !"
 
-#: ../src/export.c:311 ../src/export.c:313
+#: ../src/export.c:315 ../src/export.c:317
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
@@ -255,38 +255,38 @@ msgstr ""
 "Document vide ! Le document OPML \"%s\" ne devrait pas être vide lors de "
 "l'importation."
 
-#: ../src/export.c:334 ../src/export.c:336
+#: ../src/export.c:338 ../src/export.c:340
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 "\"%s\" n'est pas un document OPML valide ! Liferea ne peut importer ce "
 "fichier !"
 
-#: ../src/export.c:355
+#: ../src/export.c:359
 msgid "Imported feed list"
 msgstr "Liste des flux importée"
 
-#: ../src/export.c:367
+#: ../src/export.c:371
 msgid "Import Feed List"
 msgstr "Importer une liste de flux"
 
-#: ../src/export.c:367
+#: ../src/export.c:371
 msgid "Import"
 msgstr "Importer"
 
-#: ../src/export.c:374
+#: ../src/export.c:378
 msgid "Error while exporting feed list!"
 msgstr "Erreur lors de l'exportation de la liste des flux !"
 
-#: ../src/export.c:376
+#: ../src/export.c:380
 msgid "Feed List exported!"
 msgstr "Liste des flux exportée !"
 
-#: ../src/export.c:382
+#: ../src/export.c:386
 msgid "Export Feed List"
 msgstr "Exporter la liste des flux"
 
-#: ../src/export.c:382
+#: ../src/export.c:386
 msgid "Export"
 msgstr "Exporter"
 
@@ -508,7 +508,7 @@ msgstr "\"%s\" mis à jour..."
 msgid "\"%s\" is not available"
 msgstr "\"%s\" n'est pas disponible"
 
-#: ../src/feed.c:1376
+#: ../src/feed.c:1377
 #, c-format
 msgid "Updating \"%s\""
 msgstr "Mise à jour de \"%s\""
@@ -1684,33 +1684,33 @@ msgstr "La commande du navigateur a échoué : %s"
 msgid "Starting: \"%s\""
 msgstr "Exécution de : \"%s\""
 
-#: ../src/ui/ui_itemlist.c:210
+#: ../src/ui/ui_itemlist.c:209
 msgid "<i>*** No title ***</i>"
 msgstr "<i>*** Pas de titre ***</i>"
 
-#: ../src/ui/ui_itemlist.c:297
+#: ../src/ui/ui_itemlist.c:296
 msgid "Date"
 msgstr "Date"
 
-#: ../src/ui/ui_itemlist.c:308 ../src/ui/ui_itemlist.c:311
+#: ../src/ui/ui_itemlist.c:307 ../src/ui/ui_itemlist.c:310
 msgid "Headline"
 msgstr "Titre"
 
-#: ../src/ui/ui_itemlist.c:422 ../src/ui/ui_itemlist.c:435
-#: ../src/ui/ui_itemlist.c:480 ../src/ui/ui_itemlist.c:634
-#: ../src/ui/ui_itemlist.c:652
+#: ../src/ui/ui_itemlist.c:421 ../src/ui/ui_itemlist.c:434
+#: ../src/ui/ui_itemlist.c:479 ../src/ui/ui_itemlist.c:633
+#: ../src/ui/ui_itemlist.c:651
 msgid "No item has been selected"
 msgstr "Aucun élément n'a été sélectionné"
 
-#: ../src/ui/ui_itemlist.c:433
+#: ../src/ui/ui_itemlist.c:432
 msgid "This item has no link specified!"
 msgstr "Cet élément n'a pas de lien spécifié !"
 
-#: ../src/ui/ui_itemlist.c:470
+#: ../src/ui/ui_itemlist.c:469
 msgid "You must select a feed to delete its items!"
 msgstr "Vous devez sélectionner un flux pour effacer ses éléments !"
 
-#: ../src/ui/ui_itemlist.c:662
+#: ../src/ui/ui_itemlist.c:661
 msgid "No link selected!"
 msgstr "Aucun lien sélectionné !"
 
@@ -2268,18 +2268,18 @@ msgstr ""
 msgid "Create a new search feed."
 msgstr "Créer un nouveau flux de recherche."
 
-#: ../src/ui/ui_tray.c:106
+#: ../src/ui/ui_tray.c:175
 #, c-format
 msgid "%d new item"
 msgid_plural "%d new items"
 msgstr[0] "%d nouvel élément"
 msgstr[1] "%d nouveaux éléments"
 
-#: ../src/ui/ui_tray.c:110
+#: ../src/ui/ui_tray.c:182
 msgid "No new items"
 msgstr "Pas de nouveaux éléments"
 
-#: ../src/ui/ui_tray.c:114
+#: ../src/ui/ui_tray.c:186
 #, c-format
 msgid ""
 "%s\n"
@@ -2294,7 +2294,7 @@ msgstr[1] ""
 "%s\n"
 "%d éléments non lus"
 
-#: ../src/ui/ui_tray.c:116
+#: ../src/ui/ui_tray.c:188
 #, c-format
 msgid ""
 "%s\n"
@@ -2356,7 +2356,7 @@ msgid "_Password"
 msgstr "_Mot de passe"
 
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
-#: ../src/fl_sources/default_source.c:280
+#: ../src/fl_sources/default_source.c:290
 msgid "feedlist.opml"
 msgstr "feedlist_fr.opml"
 

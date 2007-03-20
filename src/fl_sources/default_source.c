@@ -1,7 +1,7 @@
 /**
  * @file default_source.c default static feedlist provider
  * 
- * Copyright (C) 2005-2007 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2005-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2005 Raphaël Slinckx <raphael@slinckx.net>
  *
@@ -218,7 +218,6 @@ static DBusHandlerResult liferea_dbus_subscribe(DBusConnection *connection, DBus
 		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
 	}
 }
-
 
 static DBusHandlerResult liferea_dbus_message_handler(DBusConnection *connection, DBusMessage *message, void *user_data) {
 	const char  *method;
