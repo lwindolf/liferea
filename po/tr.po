@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-14 23:00+0100\n"
+"POT-Creation-Date: 2007-03-23 00:56+0100\n"
 "PO-Revision-Date: 2007-01-12 03:00+0100\n"
 "Last-Translator: Mehmet Atif Ergun <mehmetaergun@gmail.com>\n"
 "Language-Team: ubuntu-l10n-tr <ubuntu-tr@lists.ubuntu.com>\n"
@@ -493,15 +493,15 @@ msgstr "\"%s\" müsait değil"
 msgid "Updating \"%s\""
 msgstr "\"%s\" güncelleniyor"
 
-#: ../src/feedlist.c:287
+#: ../src/feedlist.c:297
 msgid "You have to select a feed entry"
 msgstr "Bir haber kaynağı seçmeniz gerekiyor"
 
-#: ../src/feedlist.c:294 ../src/feedlist.c:303
+#: ../src/feedlist.c:304 ../src/feedlist.c:313
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea çevrim dışı. Güncelleme olanaksız."
 
-#: ../src/feedlist.c:419
+#: ../src/feedlist.c:429
 msgid ""
 "Liferea v1.2 uses a new cache format and has migrated your feed cache. The "
 "cache content of v1.0 in ~/.liferea was not deleted automatically. Please "
@@ -537,7 +537,7 @@ msgstr "Haber Başlıklarını Görüntüle"
 msgid "combined view"
 msgstr "birleşik görünüm"
 
-#: ../src/interface.c:196 ../src/interface.c:1607
+#: ../src/interface.c:196 ../src/interface.c:1602
 msgid "Headlines"
 msgstr "Haber Başlıkları"
 
@@ -569,7 +569,7 @@ msgstr "_Evrensel öntanımlı güncelleme aralığını kullan."
 msgid "_Feed specific update interval of"
 msgstr "_Haber kaynağına özel güncelleme aralığı olan"
 
-#: ../src/interface.c:448 ../src/interface.c:1378
+#: ../src/interface.c:448 ../src/interface.c:1373
 msgid "minutes."
 msgstr "dakika."
 
@@ -590,7 +590,7 @@ msgstr "Bu haber kaynağının sunucusu %d dakikalık güncelleme aralığı ön
 msgid "General"
 msgstr "Genel"
 
-#: ../src/interface.c:482 ../src/interface.c:902 ../src/interface.c:3499
+#: ../src/interface.c:482 ../src/interface.c:902 ../src/interface.c:3444
 msgid "<b>Feed Source</b>"
 msgstr "<b>Haber Kaynağı</b>"
 
@@ -608,7 +608,7 @@ msgstr "_Yerel Dosya"
 
 #: ../src/interface.c:537 ../src/interface.c:912 ../src/interface.c:963
 #: ../src/interface.c:988 ../src/interface.c:1003 ../src/interface.c:1014
-#: ../src/interface.c:1032 ../src/interface.c:3509
+#: ../src/interface.c:1032 ../src/interface.c:3454
 msgid "    "
 msgstr "    "
 
@@ -680,11 +680,11 @@ msgstr "Arşiv"
 msgid "Use HTTP _authentication"
 msgstr "HTTP kimlik doğrulaması _kullan"
 
-#: ../src/interface.c:681 ../src/interface.c:2894
+#: ../src/interface.c:681 ../src/interface.c:2839
 msgid "User_name:"
 msgstr "Kullanıcı_adı:"
 
-#: ../src/interface.c:688 ../src/interface.c:2901
+#: ../src/interface.c:688 ../src/interface.c:2846
 msgid "_Password:"
 msgstr "_Şifre:"
 
@@ -708,7 +708,7 @@ msgstr "Makaleleri okurken öğe linkini iç tarayıcıda otomatik olarak _yükl
 msgid "Advanced"
 msgstr "Ileri Düzey"
 
-#: ../src/interface.c:882 ../src/interface.c:3488 ../src/node.c:489
+#: ../src/interface.c:882 ../src/interface.c:3433 ../src/node.c:489
 msgid "New Subscription"
 msgstr "Yeni Abonelik"
 
@@ -716,27 +716,27 @@ msgstr "Yeni Abonelik"
 msgid "<b>Download / Postprocessing</b>"
 msgstr "<b>Indir / Ardişlem"
 
-#: ../src/interface.c:1288
+#: ../src/interface.c:1283
 msgid "Liferea Preferences"
 msgstr "Liferea Tercihleri"
 
-#: ../src/interface.c:1314
+#: ../src/interface.c:1309
 msgid "<span weight=\"bold\">Feed Cache Handling</span>"
 msgstr "<span weight=\"bold\">Haber Bellek İşlenmesi</span>"
 
-#: ../src/interface.c:1329
+#: ../src/interface.c:1324
 msgid "Default _number of items per feed to save:"
 msgstr "Saklanacak öntanımlı haber _sayısı"
 
-#: ../src/interface.c:1345
+#: ../src/interface.c:1340
 msgid "<span weight=\"bold\">Feed Update Settings</span>"
 msgstr "<span weight=\"bold\">Haber Kaynağı Güncelleme Ayarları</span>"
 
-#: ../src/interface.c:1364
+#: ../src/interface.c:1359
 msgid "Default Feed Refresh _Interval:"
 msgstr "Öntanımlı Haber Güncelleme _Aralığı:"
 
-#: ../src/interface.c:1382
+#: ../src/interface.c:1377
 msgid ""
 "Note: <i>Please remember to set a reasonable refresh time. It is not desired "
 "to poll daily updated feeds every 15 minutes. To disable auto-updating per "
@@ -746,35 +746,35 @@ msgstr ""
 "haberlerin 15 dakikada bir güncellemesi istenmeyebilir. Otomatik "
 "güncellemeyi kapatmak için güncelleme aralığı olarak 0 dakika girin."
 
-#: ../src/interface.c:1393
+#: ../src/interface.c:1388
 msgid "At _startup:"
 msgstr "_Açılışta:"
 
-#: ../src/interface.c:1405
+#: ../src/interface.c:1400
 msgid "<span weight=\"bold\">Feed Loading Settings</span>"
 msgstr "<span weight=\"bold\">Haber Yükleme Seçenekleri</span>"
 
-#: ../src/interface.c:1420
+#: ../src/interface.c:1415
 msgid "Optimize for reduced _memory usage."
 msgstr "Daha az _bellek kullanımı için uygun hale getir."
 
-#: ../src/interface.c:1427
+#: ../src/interface.c:1422
 msgid "Optimize for _speed."
 msgstr "Daha fazla _hız için uygun hale getir."
 
-#: ../src/interface.c:1433
+#: ../src/interface.c:1428
 msgid "Feeds"
 msgstr "Haber Kaynakları"
 
-#: ../src/interface.c:1446
+#: ../src/interface.c:1441
 msgid "<span weight=\"bold\">Folder Display Settings</span>"
 msgstr "<span weight=\"bold\">Klasör Görüntüleme Ayarları</span>"
 
-#: ../src/interface.c:1461
+#: ../src/interface.c:1456
 msgid "_Show the items of all child feeds when a folder is selected."
 msgstr "_Klasörü seçince, içerdiği bütün haberleri göster"
 
-#: ../src/interface.c:1465
+#: ../src/interface.c:1460
 msgid ""
 "<i>This option can cause significant delays when loading folders containing "
 "many feeds.</i>"
@@ -782,83 +782,83 @@ msgstr ""
 "<i>Bu seçenek çok sayıda haber içeren klasörler gösterilirken aşırı "
 "gecikmelere neden olabilir.</i>"
 
-#: ../src/interface.c:1473
+#: ../src/interface.c:1468
 msgid "_Hide read items."
 msgstr "_Okunan haberleri sakla."
 
-#: ../src/interface.c:1481
+#: ../src/interface.c:1476
 msgid "<span weight=\"bold\">Feed Icons (Favicons)</span>"
 msgstr "<span weight=\"bold\">Haber Kaynak Simgeleri (GözdeSimge)</span>"
 
-#: ../src/interface.c:1496
+#: ../src/interface.c:1491
 msgid "_Update all favicons now"
 msgstr "_Bütün GözdeSimgeleri şimdi güncelle"
 
-#: ../src/interface.c:1500
+#: ../src/interface.c:1495
 msgid "Folders"
 msgstr "Klasörler"
 
-#: ../src/interface.c:1515
+#: ../src/interface.c:1510
 msgid "<span weight=\"bold\">Reading Headlines</span>"
 msgstr "<span weight=\"bold\">Haber Başlıklarını Okumak</span>"
 
-#: ../src/interface.c:1530
+#: ../src/interface.c:1525
 msgid "_Skim through articles with:"
 msgstr "_Makaleleri şu tuş(lar)la gözden geçir:"
 
-#: ../src/interface.c:1540
+#: ../src/interface.c:1535
 msgid "Space"
 msgstr "Boşluk"
 
-#: ../src/interface.c:1544
+#: ../src/interface.c:1539
 msgid "<Ctrl> Space"
 msgstr "<Ctrl> Boşluk"
 
-#: ../src/interface.c:1548
+#: ../src/interface.c:1543
 msgid "<Alt> Space"
 msgstr "<Alt> Boşluk"
 
-#: ../src/interface.c:1558
+#: ../src/interface.c:1553
 msgid "<span weight=\"bold\">Web Integration</span>"
 msgstr "<span weight=\"bold\">Web Entegrasyonu</span>"
 
-#: ../src/interface.c:1594
+#: ../src/interface.c:1589
 msgid "_Post Bookmarks to"
 msgstr "_Yer imlerini gönder"
 
-#: ../src/interface.c:1601
+#: ../src/interface.c:1596
 msgid "Search _Link for"
 msgstr "Linki _ara"
 
-#: ../src/interface.c:1624
+#: ../src/interface.c:1619
 msgid "<span weight=\"bold\">Internal Browser Settings</span>"
 msgstr "<span weight=\"bold\">İç Tarayıcı Ayarları</span>"
 
-#: ../src/interface.c:1643
+#: ../src/interface.c:1638
 msgid "_View Headlines With"
 msgstr "_Haber başlıklarını gör"
 
-#: ../src/interface.c:1655
+#: ../src/interface.c:1650
 msgid "<i>Please restart Liferea for changes to take effect.</i>"
 msgstr "<i>Değişikliklerin uygulanması için Lifrerea'yı tekrar başlatın.</i>"
 
-#: ../src/interface.c:1661
+#: ../src/interface.c:1656
 msgid "Open links in Liferea's _window."
 msgstr "Linkleri Liferea'nın _penceresinde aç."
 
-#: ../src/interface.c:1665
+#: ../src/interface.c:1660
 msgid "_Disable Javascript."
 msgstr "_Javascripti devreden çıkar."
 
-#: ../src/interface.c:1673
+#: ../src/interface.c:1668
 msgid "<span weight=\"bold\">External Browser Settings</span>"
 msgstr "<span weight=\"bold\">Dış Tarayıcı Ayarları</span>"
 
-#: ../src/interface.c:1690
+#: ../src/interface.c:1685
 msgid "_Browser:"
 msgstr "_Tarayıcı:"
 
-#: ../src/interface.c:1697
+#: ../src/interface.c:1692
 #, c-format
 msgid ""
 "_Manual:\n"
@@ -867,75 +867,64 @@ msgstr ""
 "_Elle:\n"
 "(Adres için %s)"
 
-#: ../src/interface.c:1711
+#: ../src/interface.c:1706
 msgid "_Open link in:"
 msgstr "_Linki içinde aç:"
 
-#: ../src/interface.c:1734
+#: ../src/interface.c:1729
 msgid "Browser"
 msgstr "Tarayıcı"
 
-#: ../src/interface.c:1747
+#: ../src/interface.c:1742
 msgid "<span weight=\"bold\">Notification Settings</span>"
 msgstr "<span weight=\"bold\">Uyarı Ayarları</span>"
 
-#: ../src/interface.c:1762
-msgid "Show a status _icon in the notification area (system tray)."
-msgstr "Uyarı alanında (sistem çubuğu) durum _simgesini göster."
-
-#: ../src/interface.c:1770
+#: ../src/interface.c:1757
 msgid "Show a _popup window with new headlines."
 msgstr "Yeni haber başlıklarını gösteren yeni _pencere aç."
 
-#: ../src/interface.c:1779
-msgid "         "
-msgstr "         "
+#: ../src/interface.c:1765
+msgid "Show a status _icon in the notification area (system tray)."
+msgstr "Uyarı alanında (sistem çubuğu) durum _simgesini göster."
 
-#: ../src/interface.c:1795
-msgid "Lower Right"
-msgstr "Sağ Alt"
+#: ../src/interface.c:1773
+#, fuzzy
+msgid "     "
+msgstr "    "
 
-#: ../src/interface.c:1803
-msgid "Upper Right"
-msgstr "Sağ Üst"
+#: ../src/interface.c:1781
+msgid "Show _number of new items in the tray icon."
+msgstr ""
 
-#: ../src/interface.c:1811
-msgid "Upper Left"
-msgstr "Sol Üst"
+#: ../src/interface.c:1785
+msgid "T_erminate instead of minimizing to tray icon."
+msgstr ""
 
-#: ../src/interface.c:1819
-msgid "Lower Left"
-msgstr "Sol Alt"
-
-#: ../src/interface.c:1827
-msgid "<b>Popup Placement</b>"
-msgstr "<b>Pencere Yeri</b>"
-
-#: ../src/interface.c:1838
+#: ../src/interface.c:1793
 msgid "<span weight=\"bold\">Menu Settings</span>"
 msgstr "<span weight=\"bold\">Menü Ayarları</span>"
 
-#: ../src/interface.c:1853
+#: ../src/interface.c:1808
 msgid "Show Menu _And Toolbar"
 msgstr "Menü _ve Araç Çubuğunu Göster"
 
-#: ../src/interface.c:1859
+#: ../src/interface.c:1814
 msgid "Show _Menu Only"
 msgstr "Yalnızca _Menüyü göster"
 
-#: ../src/interface.c:1865
+#: ../src/interface.c:1820
 msgid "Show _Toolbar Only"
 msgstr "Yalnızca _Araç Çubuğunu Göster"
 
-#: ../src/interface.c:1871
+#: ../src/interface.c:1826
 msgid "GUI"
 msgstr "Grafik Arayüzü"
 
-#: ../src/interface.c:1888
+#: ../src/interface.c:1843
 msgid "<span weight=\"bold\">HTTP Proxy Server</span>"
 msgstr "<span weight=\"bold\">HTTP Vekil Sunucu</span>"
 
-#: ../src/interface.c:1903
+#: ../src/interface.c:1858
 msgid ""
 "<i>Liferea reuses the GNOME proxy settings. If you use GNOME you can change "
 "these settings in the GNOME Control Center.</i>"
@@ -943,91 +932,91 @@ msgstr ""
 "<i>Liferea GNOME vekil ayarlarını kullanır. Eğer GNOME kullanıyorsanız, bu "
 "ayarları GNOME Kontrol Merkezinden değistirebilirsiniz.</i>"
 
-#: ../src/interface.c:1914
+#: ../src/interface.c:1869
 msgid "_Enable Proxy"
 msgstr "_Vekil Sunucu Kullan"
 
-#: ../src/interface.c:1933
+#: ../src/interface.c:1888
 msgid "Proxy _Host:"
 msgstr "Vekil Makina _Adı:"
 
-#: ../src/interface.c:1954
+#: ../src/interface.c:1909
 msgid "Proxy _Port:"
 msgstr "Vekil _Port:"
 
-#: ../src/interface.c:1961
+#: ../src/interface.c:1916
 msgid "Use Proxy _Authentication"
 msgstr "Vekil _Kimlik Doğrulaması Kullan"
 
-#: ../src/interface.c:1976
+#: ../src/interface.c:1931
 msgid "Proxy _Username:"
 msgstr "vekil _Kullanıcı Adı:"
 
-#: ../src/interface.c:1998
+#: ../src/interface.c:1953
 msgid "Proxy Pass_word:"
 msgstr "Vekil _Şifresi:"
 
-#: ../src/interface.c:2005
+#: ../src/interface.c:1960
 msgid "Proxy"
 msgstr "Vekil"
 
-#: ../src/interface.c:2018
+#: ../src/interface.c:1973
 msgid "<span weight=\"bold\">Downloading Enclosures</span>"
 msgstr "<span weight=\"bold\">Ekleri Indirmek</span>"
 
-#: ../src/interface.c:2035
+#: ../src/interface.c:1990
 msgid "_Download using"
 msgstr "_Kullanarak indir"
 
-#: ../src/interface.c:2042
+#: ../src/interface.c:1997
 msgid "_Save downloads in"
 msgstr "_Indirilenleri buraya kaydet"
 
-#: ../src/interface.c:2075 ../src/interface.c:3163
+#: ../src/interface.c:2030 ../src/interface.c:3108
 msgid "_Browse"
 msgstr "_Seç"
 
-#: ../src/interface.c:2083
+#: ../src/interface.c:2038
 msgid "<span weight=\"bold\">Opening Enclosures</span>"
 msgstr "<span weight=\"bold\">Ekleri Açmak</span>"
 
-#: ../src/interface.c:2121
+#: ../src/interface.c:2076
 msgid "Enclosures"
 msgstr "Ekler"
 
-#: ../src/interface.c:2428
+#: ../src/interface.c:2373
 msgid "New Folder"
 msgstr "Yeni Klasör"
 
-#: ../src/interface.c:2446
+#: ../src/interface.c:2391
 msgid "_Folder name:"
 msgstr "_Klasör ismi:"
 
-#: ../src/interface.c:2514
+#: ../src/interface.c:2459
 msgid "Rename"
 msgstr "Ismini değiştir"
 
-#: ../src/interface.c:2528
+#: ../src/interface.c:2473
 msgid "_New Name:"
 msgstr "_Yeni İsim:"
 
-#: ../src/interface.c:2597
+#: ../src/interface.c:2542
 msgid "Create Search Engine Feed"
 msgstr "Arama Motoru Haber Kaynağı Yarat"
 
-#: ../src/interface.c:2614 ../src/interface.c:3248
+#: ../src/interface.c:2559 ../src/interface.c:3193
 msgid "_Search for:"
 msgstr "_Ara:"
 
-#: ../src/interface.c:2622
+#: ../src/interface.c:2567
 msgid "enter any search string you want"
 msgstr "istediğiniz anahtar kelimeleri yazınız"
 
-#: ../src/interface.c:2629
+#: ../src/interface.c:2574
 msgid "Maximal _Number Of Result Items:"
 msgstr "En Fazla Sonuç _Sayısı"
 
-#: ../src/interface.c:2638
+#: ../src/interface.c:2583
 msgid ""
 "Note: Liferea will generate a feed subscription which is used to query the "
 "search engine results for the specified search string. You can keep this "
@@ -1037,21 +1026,22 @@ msgstr ""
 "ve yeni bir haber kaynağı oluşturacak. Bu kaynağı saklayabilir ve herhangi "
 "bir haber kaynağıyla olduğu gibi güncelleyebilirsiniz."
 
-#: ../src/interface.c:2718 ../src/interface.c:2763
+#: ../src/interface.c:2663 ../src/interface.c:2708
 msgid "About"
 msgstr "Hakkında"
 
-#: ../src/interface.c:2742
+#: ../src/interface.c:2687
 msgid "Liferea is a news aggregator for GTK+"
 msgstr "Liferea, GTK+ için bir haber okuyucusudur"
 
-#: ../src/interface.c:2752
+#: ../src/interface.c:2697
 msgid "<span color=\"blue\" underline=\"single\">Liferea Homepage</span>"
 msgstr "<span color=\"blue\" underline=\"single\">Liferea Anasayfası</span>"
 
-#: ../src/interface.c:2757
+#: ../src/interface.c:2702
+#, fuzzy
 msgid ""
-"Copyright (c) 2003-2006\n"
+"Copyright (c) 2003-2007\n"
 "Lars Lindner <lars.lindner@gmx.net> and \n"
 "Nathan J. Conrad <t98502@users.sourceforge.net>\n"
 msgstr ""
@@ -1060,7 +1050,7 @@ msgstr ""
 "Nathan J. Conrad <t98502@users.sourceforge.net>\n"
 
 #. I removed the email addresses. Looks much cleaner.
-#: ../src/interface.c:2778
+#: ../src/interface.c:2723
 msgid ""
 "Code, Patches, Debugging\n"
 "\n"
@@ -1158,24 +1148,24 @@ msgstr ""
 "Fabricio Zuardi tarafından yazılmıştı ve bu adreste \n"
 "bulunabilir: http://musicplayer.sourceforge.net"
 
-#: ../src/interface.c:2784
+#: ../src/interface.c:2729
 msgid "Contributors"
 msgstr "Katkıda Bulunanlar"
 
-#: ../src/interface.c:2804
+#: ../src/interface.c:2749
 msgid "Translation"
 msgstr "Çeviri"
 
-#: ../src/interface.c:2869
+#: ../src/interface.c:2814
 msgid "Authentication"
 msgstr "Doğrulama"
 
-#: ../src/interface.c:2882 ../src/ui/ui_feed.c:379
+#: ../src/interface.c:2827 ../src/ui/ui_feed.c:379
 #, c-format
 msgid "Enter the username and password for \"%s\" (%s):"
 msgstr "\"%s\" (%s) için kullanıcı adı ve şifre giriniz:"
 
-#: ../src/interface.c:2923
+#: ../src/interface.c:2868
 msgid ""
 "Note: <i>The username and password will be saved to your Liferea feedlist "
 "file without using encryption.</i>"
@@ -1183,19 +1173,19 @@ msgstr ""
 "Note: <i>Kullanıcı adı ve şifre, Liferea'nın haber kaynak liste dosyasında "
 "şifrelemeden saklanacaktır.</i>"
 
-#: ../src/interface.c:2991
+#: ../src/interface.c:2936
 msgid "Search Folder Properties"
 msgstr "Arama Klasörü Özellikleri"
 
-#: ../src/interface.c:3008
+#: ../src/interface.c:2953
 msgid "_Name:"
 msgstr "_İsim:"
 
-#: ../src/interface.c:3020
+#: ../src/interface.c:2965
 msgid "<b>Rule</b>"
 msgstr "<b>Kural</b>"
 
-#: ../src/interface.c:3048
+#: ../src/interface.c:2993
 msgid ""
 "Note: Items are added to the search folder if at least one additive rule\n"
 "matches. They are removed if at least one removing rule matches."
@@ -1204,19 +1194,19 @@ msgstr ""
 "eklenir. Eğer bir ya da daha çok çıkarma kuralı uyarsa, klasörden "
 "çıkarılırlar."
 
-#: ../src/interface.c:3121
+#: ../src/interface.c:3066
 msgid "Downloading Enclosure"
 msgstr "Ek İndiriliyor"
 
-#: ../src/interface.c:3138
+#: ../src/interface.c:3083
 msgid "Downloading an enclosure of type:"
 msgstr "Şu tür ek indiriliyor:"
 
-#: ../src/interface.c:3143
+#: ../src/interface.c:3088
 msgid "<b>text/plain</b>"
 msgstr "<b>metin/düz</b>"
 
-#: ../src/interface.c:3149
+#: ../src/interface.c:3094
 msgid ""
 "What should Liferea do with this enclosure? Please enter the command you "
 "want to be executed below. The downloaded file will be supplied as an "
@@ -1225,15 +1215,15 @@ msgstr ""
 "Liferea bu ekle ne yapmalı? Lütfen çalıştırılacak komutu aşağıda belirtiniz. "
 "Indirilen dosya, bu komutun değişkeni olarak kullanılacaktır:"
 
-#: ../src/interface.c:3167
+#: ../src/interface.c:3112
 msgid "_Do this automatically for files like this from now on."
 msgstr "_Bu tür dosyalar için artık otomatik olarak bunu yap."
 
-#: ../src/interface.c:3231
+#: ../src/interface.c:3176
 msgid "Search All Feeds"
 msgstr "Bütün Haber Kaynaklarını Ara"
 
-#: ../src/interface.c:3255
+#: ../src/interface.c:3200
 msgid ""
 "Enter a search string Liferea should find either in a items title or in its "
 "content."
@@ -1241,18 +1231,18 @@ msgstr ""
 "Liferea'nın, öğenin başlığında ya da içeriğinde bulmasını istediğiniz "
 "dizgiyi belirtiniz."
 
-#: ../src/interface.c:3271
+#: ../src/interface.c:3216
 msgid ""
 "Saves this search as a search folder, which will appear in the feed list."
 msgstr ""
 "Bu aramayı, haber kaynak listesinde gözükecek bir arama klasörü olarak "
 "kaydeder."
 
-#: ../src/interface.c:3285
+#: ../src/interface.c:3230
 msgid "Search Folder"
 msgstr "Arama Klasörü"
 
-#: ../src/interface.c:3294
+#: ../src/interface.c:3239
 msgid ""
 "Starts searching for the specified text in all feeds. The search result will "
 "appear in the item list."
@@ -1260,23 +1250,23 @@ msgstr ""
 "Belirtilen metni bütün haber kaynaklarında aramaya başlar. Arama sonucu öğe "
 "listesinde gözükecek."
 
-#: ../src/interface.c:3355 ../src/ui/ui_mainwindow.c:870
+#: ../src/interface.c:3300 ../src/ui/ui_mainwindow.c:870
 msgid "Update Monitor"
 msgstr "Güncelleme Denetçisi"
 
-#: ../src/interface.c:3370
+#: ../src/interface.c:3315
 msgid "<b>Downloading Now</b>"
 msgstr "<b>Şimdi İndiriliyor</b>"
 
-#: ../src/interface.c:3378
+#: ../src/interface.c:3323
 msgid "<b>Pending Requests</b>"
 msgstr "<b>Beklemedeki İstemler</b>"
 
-#: ../src/interface.c:3433
+#: ../src/interface.c:3378
 msgid "Cancel _All"
 msgstr "Hepsini _İptal Et"
 
-#: ../src/interface.c:3525
+#: ../src/interface.c:3470
 msgid ""
 "Enter a website location to use feed autodiscovery or in case you know it "
 "the exact feed location."
@@ -1284,47 +1274,47 @@ msgstr ""
 "Haber kaynak otomatik keşfini kullanmak istediğiniz, ya da haber kaynağının "
 "tam yerini bildiğiniz web sitesinin adresini belirtiniz. "
 
-#: ../src/interface.c:3542
+#: ../src/interface.c:3487
 msgid "Advanced..."
 msgstr "Detaylı..."
 
-#: ../src/interface.c:3611 ../src/ui/ui_mainwindow.c:872
+#: ../src/interface.c:3556 ../src/ui/ui_mainwindow.c:872
 msgid "Script Manager"
 msgstr "Senaryo Yöneticisi"
 
-#: ../src/interface.c:3627
+#: ../src/interface.c:3572
 msgid "<b>Hook</b>"
 msgstr "<b>Kanca</b>"
 
-#: ../src/interface.c:3649
+#: ../src/interface.c:3594
 msgid "<b>Registered Scripts</b>"
 msgstr "<b>Kayıtlı Senaryolar</b>"
 
-#: ../src/interface.c:3678
+#: ../src/interface.c:3623
 msgid "<b>Script Code</b>"
 msgstr "<b>Senaryo Kodu</b>"
 
-#: ../src/interface.c:3750
+#: ../src/interface.c:3695
 msgid "Exec Command"
 msgstr "Komutu Çalıştır"
 
-#: ../src/interface.c:3840
+#: ../src/interface.c:3785
 msgid "Add Script"
 msgstr "Senaryo Ekle"
 
-#: ../src/interface.c:3865
+#: ../src/interface.c:3810
 msgid "Reuse existing script"
 msgstr "Varolan senaryoyu tekrar kullan"
 
-#: ../src/interface.c:3873
+#: ../src/interface.c:3818
 msgid "Create new script"
 msgstr "Yeni senaryo yarat"
 
-#: ../src/interface.c:3924
+#: ../src/interface.c:3869
 msgid "Create News Bin"
 msgstr "Haber Sepeti Yarat"
 
-#: ../src/interface.c:3939
+#: ../src/interface.c:3884
 msgid "_News Bin Name:"
 msgstr "_HaberSepetinin Adı:"
 
@@ -2187,15 +2177,15 @@ msgstr ""
 "Haber kaynak güncelleme süreölçerlerini sıfırla (Hiçbir haber kaynağını "
 "güncelleme)"
 
-#: ../src/ui/ui_prefs.c:539
+#: ../src/ui/ui_prefs.c:527
 msgid "Type"
 msgstr "Tür"
 
-#: ../src/ui/ui_prefs.c:542
+#: ../src/ui/ui_prefs.c:530
 msgid "Program"
 msgstr "Program"
 
-#: ../src/ui/ui_prefs.c:789
+#: ../src/ui/ui_prefs.c:774
 msgid "Choose download directory"
 msgstr "İndirilecek klasörü seçiniz"
 
@@ -2225,18 +2215,18 @@ msgstr ""
 msgid "Create a new search feed."
 msgstr "Yeni bir arama klasörü yarat"
 
-#: ../src/ui/ui_tray.c:175
+#: ../src/ui/ui_tray.c:179
 #, c-format
 msgid "%d new item"
 msgid_plural "%d new items"
 msgstr[0] "%d yeni madde"
 msgstr[1] "%d yeni madde"
 
-#: ../src/ui/ui_tray.c:182
+#: ../src/ui/ui_tray.c:186
 msgid "No new items"
 msgstr "Yeni madde yok"
 
-#: ../src/ui/ui_tray.c:186
+#: ../src/ui/ui_tray.c:190
 #, c-format
 msgid ""
 "%s\n"
@@ -2251,7 +2241,7 @@ msgstr[1] ""
 "%s\n"
 "%d okunmamış madd"
 
-#: ../src/ui/ui_tray.c:188
+#: ../src/ui/ui_tray.c:192
 #, c-format
 msgid ""
 "%s\n"
@@ -2313,7 +2303,7 @@ msgid "_Password"
 msgstr "_Şifre"
 
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
-#: ../src/fl_sources/default_source.c:290
+#: ../src/fl_sources/default_source.c:337
 msgid "feedlist.opml"
 msgstr "haberkaynaklistesi.opml"
 
@@ -2431,3 +2421,25 @@ msgstr "Özür dilerim, senaryo desteği mevcut değil!"
 #: ../src/scripting/ui_script.c:208
 msgid "No script selected!"
 msgstr "Hiçbir senaryo seçili değil"
+
+#, fuzzy
+#~ msgid "window1"
+#~ msgstr "Yeni pencere"
+
+#~ msgid "         "
+#~ msgstr "         "
+
+#~ msgid "Lower Right"
+#~ msgstr "Sağ Alt"
+
+#~ msgid "Upper Right"
+#~ msgstr "Sağ Üst"
+
+#~ msgid "Upper Left"
+#~ msgstr "Sol Üst"
+
+#~ msgid "Lower Left"
+#~ msgstr "Sol Alt"
+
+#~ msgid "<b>Popup Placement</b>"
+#~ msgstr "<b>Pencere Yeri</b>"

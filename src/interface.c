@@ -1782,7 +1782,7 @@ create_prefdialog (void)
   gtk_widget_show (newcountintraybtn);
   gtk_box_pack_start (GTK_BOX (vbox2629), newcountintraybtn, FALSE, FALSE, 0);
 
-  minimizetotraybtn = gtk_check_button_new_with_mnemonic (_("Terminate when _closing the main window."));
+  minimizetotraybtn = gtk_check_button_new_with_mnemonic (_("T_erminate instead of minimizing to tray icon."));
   gtk_widget_show (minimizetotraybtn);
   gtk_box_pack_start (GTK_BOX (vbox2629), minimizetotraybtn, FALSE, FALSE, 0);
 
@@ -3930,19 +3930,5 @@ create_newnewsbindialog (void)
 
   gtk_widget_grab_default (newnewsbinbtn);
   return newnewsbindialog;
-}
-
-GtkWidget*
-create_window1 (void)
-{
-  GtkWidget *window1;
-
-  window1 = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_title (GTK_WINDOW (window1), _("window1"));
-
-  /* Store pointers to all widgets, for use by lookup_widget(). */
-  GLADE_HOOKUP_OBJECT_NO_REF (window1, window1, "window1");
-
-  return window1;
 }
 

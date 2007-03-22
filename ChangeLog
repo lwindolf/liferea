@@ -12,6 +12,10 @@
 	  to tray when closing the main window.
 	* Adding DBUS introspection (patch by moonz)
 
+	Translation
+
+	* Update of German translation (Lars Strojny)
+
 
 2007-03-14  Lars Lindner  <lars.lindner@gmail.com>
 
