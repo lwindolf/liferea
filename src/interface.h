@@ -19,3 +19,4 @@ GtkWidget* create_simplenewdialog (void);
 GtkWidget* create_scriptdialog (void);
 GtkWidget* create_scriptadddialog (void);
 GtkWidget* create_newnewsbindialog (void);
+GtkWidget* create_window1 (void);

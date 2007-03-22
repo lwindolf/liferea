@@ -235,6 +235,13 @@ static void feedlist_unselect(void) {
 	ui_feedlist_select(NULL);
 }
 
+static void feedlist_debug(nodePtr node) {
+
+	if(node->loaded)
+		g_print(" -> %d %s\n", node->loaded, node->title);
+	node_foreach_child(node, feedlist_debug);
+}
+
 void feedlist_selection_changed(nodePtr node) {
 	nodePtr	displayed_node;
 
@@ -272,6 +279,9 @@ void feedlist_selection_changed(nodePtr node) {
 		script_run_for_hook(SCRIPT_HOOK_FEED_SELECTED);
 	}
 
+	/*g_print("===== now loaded: ======\n");
+	feedlist_foreach(feedlist_debug);*/
+	
 	debug_exit("feedlist_selection_changed");
 }
 

@@ -114,9 +114,6 @@ static void folder_unload(nodePtr node) {
 
 	g_assert(0 == node->loaded || node->itemSet);
 	
-	if(0 == node->loaded)
-		return;
-	
 	if(1 == node->loaded) {
 		/* Note: item and nr lists are only references, they are "loaded"
 		   in their respective feeds. Therefore we must avoid passing
@@ -129,7 +126,9 @@ static void folder_unload(nodePtr node) {
 		itemset_free(node->itemSet);
 		node->itemSet = NULL;
 	}
-	node->loaded--;
+	
+	if(0 < node->loaded)
+		node->loaded--;
 
 	node_foreach_child(node, node_unload);
 }

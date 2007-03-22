@@ -1,7 +1,7 @@
 /**
  * @file conf.h Liferea configuration (gconf access)
  *
- * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004,2005 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -68,6 +68,8 @@
 
 /* GUI settings and persistency values */
 #define SHOW_TRAY_ICON			"/apps/liferea/trayicon"
+#define SHOW_NEW_COUNT_IN_TRAY		"/apps/liferea/trayicon-new-count"
+#define DONT_MINIMIZE_TO_TRAY		"/apps/liferea/dont-minimize-to-tray"
 #define SHOW_POPUP_WINDOWS		"/apps/liferea/show-popup-windows"
 #define POPUP_PLACEMENT			"/apps/liferea/popup-placement"
 #define DISABLE_MENUBAR			"/apps/liferea/disable-menubar"

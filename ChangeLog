@@ -2,6 +2,14 @@
 
 	Version 1.2.9 (Stable)
 
+	* Lowered memory usage by correctly unloading feeds from 
+	  memory after unselecting recursively displayed folders.
+	* Improved performance by avoiding unnecessary folder load 
+	  recursions.
+	* New preference option that allows enabling the display
+	  of the number of new items in the tray icon.
+	* New preference option that allows to disable minimizing
+	  to tray when closing the main window.
 	* Adding DBUS introspection (patch by moonz)
 
 

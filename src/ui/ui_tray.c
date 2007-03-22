@@ -29,6 +29,7 @@
 #include <gdk/gdk.h>
 
 #include "callbacks.h"
+#include "conf.h"
 #include "eggtrayicon.h"
 #include "support.h"
 #include "feedlist.h"
@@ -101,7 +102,10 @@ static void ui_tray_expose_cb() {
 	                gdk_pixbuf_get_height(trayIcon_priv->currentIcon),
 			gdk_pixbuf_get_width(trayIcon_priv->currentIcon), 
 			GDK_RGB_DITHER_NONE, 0, 0);
-			
+	
+	if(!getBooleanConfValue(SHOW_NEW_COUNT_IN_TRAY))
+		return;
+	
 	newItems = feedlist_get_new_item_count();
 	if(newItems > 0) {
 		guint textWidth, textStart;

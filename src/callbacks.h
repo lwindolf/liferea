@@ -93,5 +93,3 @@ void
 on_faq_activate                        (GtkMenuItem     *menuitem,
                                         gpointer         user_data);
 #endif
-
-

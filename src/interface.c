@@ -1211,19 +1211,14 @@ create_prefdialog (void)
   GtkWidget *label124;
   GtkWidget *alignment14;
   GtkWidget *vbox2617;
-  GtkWidget *trayiconoptionbtn;
-  GtkWidget *vbox256;
   GtkWidget *popupwindowsoptionbtn;
+  GtkWidget *vbox256;
+  GtkWidget *trayiconoptionbtn;
   GtkWidget *hbox85;
   GtkWidget *label195;
-  GtkWidget *frame1;
-  GtkWidget *placement_options;
-  GtkWidget *popup_placement3_radiobtn;
-  GSList *popup_placement3_radiobtn_group = NULL;
-  GtkWidget *popup_placement2_radiobtn;
-  GtkWidget *popup_placement1_radiobtn;
-  GtkWidget *popup_placement4_radiobtn;
-  GtkWidget *label196;
+  GtkWidget *vbox2629;
+  GtkWidget *newcountintraybtn;
+  GtkWidget *minimizetotraybtn;
   GtkWidget *vbox252;
   GtkWidget *label126;
   GtkWidget *alignment15;
@@ -1759,77 +1754,37 @@ create_prefdialog (void)
   gtk_widget_show (vbox2617);
   gtk_container_add (GTK_CONTAINER (alignment14), vbox2617);
 
-  trayiconoptionbtn = gtk_check_button_new_with_mnemonic (_("Show a status _icon in the notification area (system tray)."));
-  gtk_widget_show (trayiconoptionbtn);
-  gtk_box_pack_start (GTK_BOX (vbox2617), trayiconoptionbtn, FALSE, FALSE, 0);
+  popupwindowsoptionbtn = gtk_check_button_new_with_mnemonic (_("Show a _popup window with new headlines."));
+  gtk_widget_show (popupwindowsoptionbtn);
+  gtk_box_pack_start (GTK_BOX (vbox2617), popupwindowsoptionbtn, FALSE, FALSE, 0);
 
   vbox256 = gtk_vbox_new (FALSE, 6);
   gtk_widget_show (vbox256);
   gtk_box_pack_start (GTK_BOX (vbox2617), vbox256, TRUE, TRUE, 0);
 
-  popupwindowsoptionbtn = gtk_check_button_new_with_mnemonic (_("Show a _popup window with new headlines."));
-  gtk_widget_show (popupwindowsoptionbtn);
-  gtk_box_pack_start (GTK_BOX (vbox256), popupwindowsoptionbtn, FALSE, FALSE, 0);
+  trayiconoptionbtn = gtk_check_button_new_with_mnemonic (_("Show a status _icon in the notification area (system tray)."));
+  gtk_widget_show (trayiconoptionbtn);
+  gtk_box_pack_start (GTK_BOX (vbox256), trayiconoptionbtn, FALSE, FALSE, 0);
 
   hbox85 = gtk_hbox_new (FALSE, 0);
+  gtk_widget_show (hbox85);
   gtk_box_pack_start (GTK_BOX (vbox256), hbox85, TRUE, TRUE, 0);
-  gtk_widget_set_size_request (hbox85, -1, 0);
-  gtk_widget_set_sensitive (hbox85, FALSE);
 
-  label195 = gtk_label_new (_("         "));
+  label195 = gtk_label_new (_("     "));
   gtk_widget_show (label195);
   gtk_box_pack_start (GTK_BOX (hbox85), label195, FALSE, FALSE, 0);
 
-  frame1 = gtk_frame_new (NULL);
-  gtk_widget_show (frame1);
-  gtk_box_pack_start (GTK_BOX (hbox85), frame1, FALSE, TRUE, 0);
-  gtk_frame_set_shadow_type (GTK_FRAME (frame1), GTK_SHADOW_IN);
+  vbox2629 = gtk_vbox_new (FALSE, 6);
+  gtk_widget_show (vbox2629);
+  gtk_box_pack_start (GTK_BOX (hbox85), vbox2629, FALSE, TRUE, 0);
 
-  placement_options = gtk_table_new (2, 2, FALSE);
-  gtk_widget_show (placement_options);
-  gtk_container_add (GTK_CONTAINER (frame1), placement_options);
-  gtk_container_set_border_width (GTK_CONTAINER (placement_options), 6);
-  gtk_table_set_row_spacings (GTK_TABLE (placement_options), 6);
-  gtk_table_set_col_spacings (GTK_TABLE (placement_options), 12);
+  newcountintraybtn = gtk_check_button_new_with_mnemonic (_("Show _number of new items in the tray icon."));
+  gtk_widget_show (newcountintraybtn);
+  gtk_box_pack_start (GTK_BOX (vbox2629), newcountintraybtn, FALSE, FALSE, 0);
 
-  popup_placement3_radiobtn = gtk_radio_button_new_with_mnemonic (NULL, _("Lower Right"));
-  gtk_widget_show (popup_placement3_radiobtn);
-  gtk_table_attach (GTK_TABLE (placement_options), popup_placement3_radiobtn, 1, 2, 1, 2,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (0), 0, 0);
-  gtk_radio_button_set_group (GTK_RADIO_BUTTON (popup_placement3_radiobtn), popup_placement3_radiobtn_group);
-  popup_placement3_radiobtn_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (popup_placement3_radiobtn));
-
-  popup_placement2_radiobtn = gtk_radio_button_new_with_mnemonic (NULL, _("Upper Right"));
-  gtk_widget_show (popup_placement2_radiobtn);
-  gtk_table_attach (GTK_TABLE (placement_options), popup_placement2_radiobtn, 1, 2, 0, 1,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (0), 0, 0);
-  gtk_radio_button_set_group (GTK_RADIO_BUTTON (popup_placement2_radiobtn), popup_placement3_radiobtn_group);
-  popup_placement3_radiobtn_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (popup_placement2_radiobtn));
-
-  popup_placement1_radiobtn = gtk_radio_button_new_with_mnemonic (NULL, _("Upper Left"));
-  gtk_widget_show (popup_placement1_radiobtn);
-  gtk_table_attach (GTK_TABLE (placement_options), popup_placement1_radiobtn, 0, 1, 0, 1,
-                    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
-                    (GtkAttachOptions) (0), 0, 0);
-  gtk_radio_button_set_group (GTK_RADIO_BUTTON (popup_placement1_radiobtn), popup_placement3_radiobtn_group);
-  popup_placement3_radiobtn_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (popup_placement1_radiobtn));
-
-  popup_placement4_radiobtn = gtk_radio_button_new_with_mnemonic (NULL, _("Lower Left"));
-  gtk_widget_show (popup_placement4_radiobtn);
-  gtk_table_attach (GTK_TABLE (placement_options), popup_placement4_radiobtn, 0, 1, 1, 2,
-                    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
-                    (GtkAttachOptions) (0), 0, 0);
-  gtk_radio_button_set_group (GTK_RADIO_BUTTON (popup_placement4_radiobtn), popup_placement3_radiobtn_group);
-  popup_placement3_radiobtn_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (popup_placement4_radiobtn));
-
-  label196 = gtk_label_new (_("<b>Popup Placement</b>"));
-  gtk_widget_show (label196);
-  gtk_frame_set_label_widget (GTK_FRAME (frame1), label196);
-  gtk_label_set_use_markup (GTK_LABEL (label196), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (label196), 0, 0.5);
-  gtk_misc_set_padding (GTK_MISC (label196), 6, 0);
+  minimizetotraybtn = gtk_check_button_new_with_mnemonic (_("Terminate when _closing the main window."));
+  gtk_widget_show (minimizetotraybtn);
+  gtk_box_pack_start (GTK_BOX (vbox2629), minimizetotraybtn, FALSE, FALSE, 0);
 
   vbox252 = gtk_vbox_new (FALSE, 6);
   gtk_widget_show (vbox252);
@@ -2170,23 +2125,17 @@ create_prefdialog (void)
   g_signal_connect ((gpointer) browsercmd, "changed",
                     G_CALLBACK (on_browsercmd_changed),
                     NULL);
-  g_signal_connect ((gpointer) trayiconoptionbtn, "clicked",
-                    G_CALLBACK (on_trayiconoptionbtn_clicked),
-                    NULL);
   g_signal_connect ((gpointer) popupwindowsoptionbtn, "clicked",
                     G_CALLBACK (on_popupwindowsoptionbtn_clicked),
                     NULL);
-  g_signal_connect ((gpointer) popup_placement3_radiobtn, "clicked",
-                    G_CALLBACK (on_placement_radiobtn_clicked),
+  g_signal_connect ((gpointer) trayiconoptionbtn, "clicked",
+                    G_CALLBACK (on_trayiconoptionbtn_clicked),
                     NULL);
-  g_signal_connect ((gpointer) popup_placement2_radiobtn, "clicked",
-                    G_CALLBACK (on_placement_radiobtn_clicked),
+  g_signal_connect ((gpointer) newcountintraybtn, "clicked",
+                    G_CALLBACK (on_newcountintraybtn_clicked),
                     NULL);
-  g_signal_connect ((gpointer) popup_placement1_radiobtn, "clicked",
-                    G_CALLBACK (on_placement_radiobtn_clicked),
-                    NULL);
-  g_signal_connect ((gpointer) popup_placement4_radiobtn, "clicked",
-                    G_CALLBACK (on_placement_radiobtn_clicked),
+  g_signal_connect ((gpointer) minimizetotraybtn, "clicked",
+                    G_CALLBACK (on_minimizetotraybtn_clicked),
                     NULL);
   g_signal_connect ((gpointer) menuradiobtn1, "clicked",
                     G_CALLBACK (on_menuselection_clicked),
@@ -2337,18 +2286,14 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, label124, "label124");
   GLADE_HOOKUP_OBJECT (prefdialog, alignment14, "alignment14");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox2617, "vbox2617");
-  GLADE_HOOKUP_OBJECT (prefdialog, trayiconoptionbtn, "trayiconoptionbtn");
-  GLADE_HOOKUP_OBJECT (prefdialog, vbox256, "vbox256");
   GLADE_HOOKUP_OBJECT (prefdialog, popupwindowsoptionbtn, "popupwindowsoptionbtn");
+  GLADE_HOOKUP_OBJECT (prefdialog, vbox256, "vbox256");
+  GLADE_HOOKUP_OBJECT (prefdialog, trayiconoptionbtn, "trayiconoptionbtn");
   GLADE_HOOKUP_OBJECT (prefdialog, hbox85, "hbox85");
   GLADE_HOOKUP_OBJECT (prefdialog, label195, "label195");
-  GLADE_HOOKUP_OBJECT (prefdialog, frame1, "frame1");
-  GLADE_HOOKUP_OBJECT (prefdialog, placement_options, "placement_options");
-  GLADE_HOOKUP_OBJECT (prefdialog, popup_placement3_radiobtn, "popup_placement3_radiobtn");
-  GLADE_HOOKUP_OBJECT (prefdialog, popup_placement2_radiobtn, "popup_placement2_radiobtn");
-  GLADE_HOOKUP_OBJECT (prefdialog, popup_placement1_radiobtn, "popup_placement1_radiobtn");
-  GLADE_HOOKUP_OBJECT (prefdialog, popup_placement4_radiobtn, "popup_placement4_radiobtn");
-  GLADE_HOOKUP_OBJECT (prefdialog, label196, "label196");
+  GLADE_HOOKUP_OBJECT (prefdialog, vbox2629, "vbox2629");
+  GLADE_HOOKUP_OBJECT (prefdialog, newcountintraybtn, "newcountintraybtn");
+  GLADE_HOOKUP_OBJECT (prefdialog, minimizetotraybtn, "minimizetotraybtn");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox252, "vbox252");
   GLADE_HOOKUP_OBJECT (prefdialog, label126, "label126");
   GLADE_HOOKUP_OBJECT (prefdialog, alignment15, "alignment15");
@@ -2754,7 +2699,7 @@ create_aboutdialog (void)
   gtk_container_add (GTK_CONTAINER (homepagebtn), label194);
   gtk_label_set_use_markup (GTK_LABEL (label194), TRUE);
 
-  label59 = gtk_label_new (_("Copyright (c) 2003-2006\nLars Lindner <lars.lindner@gmx.net> and \nNathan J. Conrad <t98502@users.sourceforge.net>\n"));
+  label59 = gtk_label_new (_("Copyright (c) 2003-2007\nLars Lindner <lars.lindner@gmx.net> and \nNathan J. Conrad <t98502@users.sourceforge.net>\n"));
   gtk_widget_show (label59);
   gtk_box_pack_start (GTK_BOX (vbox231), label59, FALSE, FALSE, 0);
   gtk_label_set_justify (GTK_LABEL (label59), GTK_JUSTIFY_CENTER);
@@ -3985,5 +3930,19 @@ create_newnewsbindialog (void)
 
   gtk_widget_grab_default (newnewsbinbtn);
   return newnewsbindialog;
+}
+
+GtkWidget*
+create_window1 (void)
+{
+  GtkWidget *window1;
+
+  window1 = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  gtk_window_set_title (GTK_WINDOW (window1), _("window1"));
+
+  /* Store pointers to all widgets, for use by lookup_widget(). */
+  GLADE_HOOKUP_OBJECT_NO_REF (window1, window1, "window1");
+
+  return window1;
 }
 
