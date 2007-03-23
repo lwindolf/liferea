@@ -2,6 +2,8 @@
 
 	Version 1.2.9 (Stable)
 
+	* Fixes negative unread count problems introduced with
+	  the last release.
 	* Lowered memory usage by correctly unloading feeds from 
 	  memory after unselecting recursively displayed folders.
 	* Improved performance by avoiding unnecessary folder load 

@@ -225,11 +225,6 @@ static void vfolder_remove_matching_item_copy(vfolderPtr vfolder, itemPtr item) 
 
 	tmp = itemset_lookup_item(vfolder->node->itemSet, item->sourceNode, item->sourceNr);
 	if(tmp) {
-		/*g_print("  removing item copy %s from vfolder %s\n", item->title, vfolder->node->title);*/
-		
-		if(!tmp->readStatus)
-			vfolder->node->unreadCount--;
-		
 		/* we call itemlist_request_remove_item to prevent removing
 		   an item copy	currently selected in the item list... */
 		itemlist_request_remove_item(tmp);
@@ -240,20 +235,16 @@ static void vfolder_remove_matching_item_copy(vfolderPtr vfolder, itemPtr item) 
  * Searches all vfolders for copies of the given item and
  * removes them. Used for item remove propagation. 
  */
-void vfolder_remove_item(itemPtr ip) {
+void vfolder_remove_item(itemPtr item) {
 	GSList		*iter;
 
-	g_assert(ip->itemSet->type != ITEMSET_TYPE_VFOLDER);
-
-	debug_enter("vfolder_remove_item");
+	g_assert(item->itemSet->type != ITEMSET_TYPE_VFOLDER);
 
 	iter = vfolders;
 	while(iter) {
-		vfolder_remove_matching_item_copy((vfolderPtr)iter->data, ip);
+		vfolder_remove_matching_item_copy((vfolderPtr)iter->data, item);
 		iter = g_slist_next(iter);
 	}
-
-	debug_exit("vfolder_remove_item");
 }
 
 /**
@@ -405,7 +396,6 @@ void vfolder_update_item(itemPtr item) {
 				                     item_get_title(item), node_get_title(vfolder->node));
 				vfolder_remove_matching_item_copy(vfolder, copy);
 			}
-			
 			ui_node_update(vfolder->node);	/* update the feedlist */
 		}		
 		iter = g_slist_next(iter);
