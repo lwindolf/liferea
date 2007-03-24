@@ -69,7 +69,7 @@ static gint metadata_get_type(const gchar *name) {
 
 GSList * metadata_list_append(GSList *metadata, const gchar *strid, const gchar *data) {
 	GSList		*iter = metadata;
-	gchar		*checked_data = NULL;
+	gchar		*tmp, *checked_data = NULL;
 	struct pair 	*p;
 	
 	if(NULL == data)
@@ -94,14 +94,15 @@ GSList * metadata_list_append(GSList *metadata, const gchar *strid, const gchar 
 		case METADATA_TYPE_HTML:
 			/* Needs to check for proper XHTML */
 			if(common_is_well_formed_xhtml(data)) {
-				checked_data = g_strdup(data);
+				tmp = g_strdup(data);
 			} else {
 				debug1(DEBUG_PARSING, "not well formed HTML: %s\n", data);
-				checked_data = g_markup_escape_text(data, -1);
-				debug1(DEBUG_PARSING, "escaped as: %s\n", checked_data);
+				tmp = g_markup_escape_text(data, -1);
+				debug1(DEBUG_PARSING, "escaped as: %s\n", tmp);
 			}
 			/* And needs to remove DHTML */
-			checked_data = common_strip_dhtml(checked_data);
+			checked_data = common_strip_dhtml(tmp);
+			g_free(tmp);
 			break;
 	}
 	
