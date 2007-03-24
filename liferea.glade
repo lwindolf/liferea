@@ -4140,17 +4140,17 @@
 			      <property name="spacing">6</property>
 
 			      <child>
-				<widget class="GtkCheckButton" id="popupwindowsoptionbtn">
+				<widget class="GtkCheckButton" id="trayiconoptionbtn">
 				  <property name="visible">True</property>
 				  <property name="can_focus">True</property>
-				  <property name="label" translatable="yes">Show a _popup window with new headlines.</property>
+				  <property name="label" translatable="yes">Show a status _icon in the notification area (system tray).</property>
 				  <property name="use_underline">True</property>
 				  <property name="relief">GTK_RELIEF_NORMAL</property>
 				  <property name="focus_on_click">True</property>
 				  <property name="active">False</property>
 				  <property name="inconsistent">False</property>
 				  <property name="draw_indicator">True</property>
-				  <signal name="clicked" handler="on_popupwindowsoptionbtn_clicked" last_modification_time="Sun, 20 Jun 2004 00:53:48 GMT"/>
+				  <signal name="clicked" handler="on_trayiconoptionbtn_clicked" last_modification_time="Thu, 08 Jan 2004 17:55:02 GMT"/>
 				</widget>
 				<packing>
 				  <property name="padding">0</property>
@@ -4161,15 +4161,14 @@
 
 			      <child>
 				<widget class="GtkHBox" id="hbox85">
-				  <property name="height_request">0</property>
-				  <property name="sensitive">False</property>
+				  <property name="visible">True</property>
 				  <property name="homogeneous">False</property>
 				  <property name="spacing">0</property>
 
 				  <child>
 				    <widget class="GtkLabel" id="label195">
 				      <property name="visible">True</property>
-				      <property name="label" translatable="yes">         </property>
+				      <property name="label" translatable="yes">     </property>
 				      <property name="use_underline">False</property>
 				      <property name="use_markup">False</property>
 				      <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -4192,137 +4191,48 @@
 				  </child>
 
 				  <child>
-				    <widget class="GtkFrame" id="frame1">
+				    <widget class="GtkVBox" id="vbox2629">
 				      <property name="visible">True</property>
-				      <property name="label_xalign">0</property>
-				      <property name="label_yalign">0.5</property>
-				      <property name="shadow_type">GTK_SHADOW_IN</property>
+				      <property name="homogeneous">False</property>
+				      <property name="spacing">6</property>
 
 				      <child>
-					<widget class="GtkTable" id="placement_options">
-					  <property name="border_width">6</property>
+					<widget class="GtkCheckButton" id="newcountintraybtn">
 					  <property name="visible">True</property>
-					  <property name="n_rows">2</property>
-					  <property name="n_columns">2</property>
-					  <property name="homogeneous">False</property>
-					  <property name="row_spacing">6</property>
-					  <property name="column_spacing">12</property>
-
-					  <child>
-					    <widget class="GtkRadioButton" id="popup_placement3_radiobtn">
-					      <property name="visible">True</property>
-					      <property name="can_focus">True</property>
-					      <property name="label" translatable="yes">Lower Right</property>
-					      <property name="use_underline">True</property>
-					      <property name="relief">GTK_RELIEF_NORMAL</property>
-					      <property name="focus_on_click">True</property>
-					      <property name="active">False</property>
-					      <property name="inconsistent">False</property>
-					      <property name="draw_indicator">True</property>
-					      <signal name="clicked" handler="on_placement_radiobtn_clicked" last_modification_time="Sat, 15 Jan 2005 14:25:31 GMT"/>
-					    </widget>
-					    <packing>
-					      <property name="left_attach">1</property>
-					      <property name="right_attach">2</property>
-					      <property name="top_attach">1</property>
-					      <property name="bottom_attach">2</property>
-					      <property name="x_options">fill</property>
-					      <property name="y_options"></property>
-					    </packing>
-					  </child>
-
-					  <child>
-					    <widget class="GtkRadioButton" id="popup_placement2_radiobtn">
-					      <property name="visible">True</property>
-					      <property name="can_focus">True</property>
-					      <property name="label" translatable="yes">Upper Right</property>
-					      <property name="use_underline">True</property>
-					      <property name="relief">GTK_RELIEF_NORMAL</property>
-					      <property name="focus_on_click">True</property>
-					      <property name="active">False</property>
-					      <property name="inconsistent">False</property>
-					      <property name="draw_indicator">True</property>
-					      <property name="group">popup_placement3_radiobtn</property>
-					      <signal name="clicked" handler="on_placement_radiobtn_clicked" last_modification_time="Sat, 15 Jan 2005 14:24:58 GMT"/>
-					    </widget>
-					    <packing>
-					      <property name="left_attach">1</property>
-					      <property name="right_attach">2</property>
-					      <property name="top_attach">0</property>
-					      <property name="bottom_attach">1</property>
-					      <property name="x_options">fill</property>
-					      <property name="y_options"></property>
-					    </packing>
-					  </child>
-
-					  <child>
-					    <widget class="GtkRadioButton" id="popup_placement1_radiobtn">
-					      <property name="visible">True</property>
-					      <property name="can_focus">True</property>
-					      <property name="label" translatable="yes">Upper Left</property>
-					      <property name="use_underline">True</property>
-					      <property name="relief">GTK_RELIEF_NORMAL</property>
-					      <property name="focus_on_click">True</property>
-					      <property name="active">False</property>
-					      <property name="inconsistent">False</property>
-					      <property name="draw_indicator">True</property>
-					      <property name="group">popup_placement3_radiobtn</property>
-					      <signal name="clicked" handler="on_placement_radiobtn_clicked" last_modification_time="Sat, 15 Jan 2005 14:24:27 GMT"/>
-					    </widget>
-					    <packing>
-					      <property name="left_attach">0</property>
-					      <property name="right_attach">1</property>
-					      <property name="top_attach">0</property>
-					      <property name="bottom_attach">1</property>
-					      <property name="y_options"></property>
-					    </packing>
-					  </child>
-
-					  <child>
-					    <widget class="GtkRadioButton" id="popup_placement4_radiobtn">
-					      <property name="visible">True</property>
-					      <property name="can_focus">True</property>
-					      <property name="label" translatable="yes">Lower Left</property>
-					      <property name="use_underline">True</property>
-					      <property name="relief">GTK_RELIEF_NORMAL</property>
-					      <property name="focus_on_click">True</property>
-					      <property name="active">False</property>
-					      <property name="inconsistent">False</property>
-					      <property name="draw_indicator">True</property>
-					      <property name="group">popup_placement3_radiobtn</property>
-					      <signal name="clicked" handler="on_placement_radiobtn_clicked" last_modification_time="Sat, 15 Jan 2005 14:25:15 GMT"/>
-					    </widget>
-					    <packing>
-					      <property name="left_attach">0</property>
-					      <property name="right_attach">1</property>
-					      <property name="top_attach">1</property>
-					      <property name="bottom_attach">2</property>
-					      <property name="y_options"></property>
-					    </packing>
-					  </child>
+					  <property name="can_focus">True</property>
+					  <property name="label" translatable="yes">Show _number of new items in the tray icon.</property>
+					  <property name="use_underline">True</property>
+					  <property name="relief">GTK_RELIEF_NORMAL</property>
+					  <property name="focus_on_click">True</property>
+					  <property name="active">False</property>
+					  <property name="inconsistent">False</property>
+					  <property name="draw_indicator">True</property>
+					  <signal name="clicked" handler="on_newcountintraybtn_clicked" last_modification_time="Thu, 22 Mar 2007 22:39:48 GMT"/>
 					</widget>
+					<packing>
+					  <property name="padding">0</property>
+					  <property name="expand">False</property>
+					  <property name="fill">False</property>
+					</packing>
 				      </child>
 
 				      <child>
-					<widget class="GtkLabel" id="label196">
+					<widget class="GtkCheckButton" id="minimizetotraybtn">
 					  <property name="visible">True</property>
-					  <property name="label" translatable="yes">&lt;b&gt;Popup Placement&lt;/b&gt;</property>
-					  <property name="use_underline">False</property>
-					  <property name="use_markup">True</property>
-					  <property name="justify">GTK_JUSTIFY_LEFT</property>
-					  <property name="wrap">False</property>
-					  <property name="selectable">False</property>
-					  <property name="xalign">0</property>
-					  <property name="yalign">0.5</property>
-					  <property name="xpad">6</property>
-					  <property name="ypad">0</property>
-					  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
-					  <property name="width_chars">-1</property>
-					  <property name="single_line_mode">False</property>
-					  <property name="angle">0</property>
+					  <property name="can_focus">True</property>
+					  <property name="label" translatable="yes">T_erminate instead of minimizing to tray icon.</property>
+					  <property name="use_underline">True</property>
+					  <property name="relief">GTK_RELIEF_NORMAL</property>
+					  <property name="focus_on_click">True</property>
+					  <property name="active">False</property>
+					  <property name="inconsistent">False</property>
+					  <property name="draw_indicator">True</property>
+					  <signal name="clicked" handler="on_minimizetotraybtn_clicked" last_modification_time="Thu, 22 Mar 2007 22:39:57 GMT"/>
 					</widget>
 					<packing>
-					  <property name="type">label_item</property>
+					  <property name="padding">0</property>
+					  <property name="expand">False</property>
+					  <property name="fill">False</property>
 					</packing>
 				      </child>
 				    </widget>

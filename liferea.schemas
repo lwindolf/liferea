@@ -372,6 +372,28 @@ To change the gconftool target use the - -config-source=blah option to gconftool
       </locale>
     </schema>
     <schema>
+      <key>/schemas/apps/liferea/trayicon-new-count</key>
+      <applyto>/apps/liferea/trayicon-new-count</applyto>
+      <owner>liferea</owner>
+      <type>bool</type>
+      <default>false</default>
+      <locale name="C">
+        <short>Determines if the number of new items is shown in the system tray icon</short>
+        <long>Determines if the number of new items is shown in the system tray icon</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/liferea/dont-minimize-to-tray</key>
+      <applyto>/apps/liferea/dont-minimize-to-tray</applyto>
+      <owner>liferea</owner>
+      <type>bool</type>
+      <default>false</default>
+      <locale name="C">
+        <short>Determines if minimize to tray is not desired</short>
+	   <long>Determines if minimize to tray is not desired. This is relevant when the user clicks the close button or presses the window close hotkey of the window manager. If this option is disabled Liferea will just hide the window and keep running. If the option is enabled the application will terminate.</long>
+      </locale>
+    </schema>
+    <schema>
       <key>/schemas/apps/liferea/updateonstartup</key>
       <applyto>/apps/liferea/updateonstartup</applyto>
       <owner>liferea</owner>

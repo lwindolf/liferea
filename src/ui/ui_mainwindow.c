@@ -754,7 +754,7 @@ void ui_mainwindow_show() {
 
 static gboolean on_close(GtkWidget *widget, GdkEvent *event, struct mainwindow *mw) {
 	
-	if(ui_tray_get_count() == 0)
+	if((ui_tray_get_count() == 0) || (getBooleanConfValue(DONT_MINIMIZE_TO_TRAY)))
 		return on_quit(widget, event, mw);
 	ui_mainwindow_save_position();
 	gtk_widget_hide(GTK_WIDGET(mw->window));
