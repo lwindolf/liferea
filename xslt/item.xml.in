@@ -258,6 +258,17 @@
 </tr>
 </xsl:for-each>
 
+<xsl:if test="attributes/attribute[ @name = 'creator' ]">
+ <tr>
+   <td valign="top" class='creator'>
+     <_span>Creator</_span>
+     <b><span class='creator'>
+       <xsl:value-of select="attributes/attribute[ @name = 'creator' ]" disable-output-escaping='yes'/>
+     </span></b>
+   </td>
+ </tr>
+</xsl:if>  
+
 </table> <!-- end of header metadata -->
 
 <xsl:element name="table">

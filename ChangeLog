@@ -2,6 +2,9 @@
 
 	Version 1.2.10 (Stable)
 
+	* Added rendering of "creator" metadata attribute.
+	  (patch from Khaled Hosny)
+
 	Translation
 
 	* Update of Arabic translation (Khaled Hosny)
