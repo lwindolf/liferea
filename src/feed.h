@@ -26,6 +26,7 @@
 #include <glib.h>
 #include "node.h"
 #include "item.h"
+#include "subscription.h"
 
 /* The feed node type can be used by all feed list sources
    serving real feeds that are downloaded from the web, are provided
@@ -43,29 +44,9 @@ enum cache_limit {
 	CACHE_UNLIMITED = -2,
 };
 
-/** Holds all information used on feed parsing time */
-typedef struct feedParserCtxt {
-	struct feed	*feed;		/**< the feed to be parsed */
-	GList		*items;		/**< the list of new items */
-	struct item	*item;		/**< the item currently parsed (or NULL) */
-	gboolean	recovery;	/**< TRUE if tolerant parsing needed (use only for RSS 0.9x!) */
-
-	GHashTable	*tmpdata;	/**< tmp data hash used during stateful parsing */
-
-	gchar		*title;		/**< resulting feed/channel title */
-
-	gchar		*data;		/**< data buffer to parse */
-	gsize		dataLength;	/**< length of the data buffer */
-
-	xmlDocPtr	doc;		/**< the parsed data buffer */
-	gboolean	failed;		/**< TRUE if parsing failed because feed type could not be detected */
-} *feedParserCtxtPtr;
-
 /** Common structure to hold all information about a single feed. */
 typedef struct feed {
 	struct feedHandler *fhp;     		/**< Feed handler saved by the ->typeStr attribute. */
-	
-	gint		defaultInterval;	/**< update interval as specified by the feed */
 	
 	/* feed properties that need to be saved */
 	gchar		*htmlUrl;		/**< URL of HTML version of the feed */
@@ -83,6 +64,25 @@ typedef struct feed {
 	time_t		time;			/**< Feeds modified date */
 
 } *feedPtr;
+
+/** Holds all information used on feed parsing time */
+typedef struct feedParserCtxt {
+	subscriptionPtr	subscription;	/**< the subscription the feed belongs to (optional) */
+	feedPtr		feed;		/**< the feed structure to fill */
+	GList		*items;		/**< the list of new items */
+	struct item	*item;		/**< the item currently parsed (or NULL) */
+	gboolean	recovery;	/**< TRUE if tolerant parsing needed (use only for RSS 0.9x!) */
+
+	GHashTable	*tmpdata;	/**< tmp data hash used during stateful parsing */
+
+	gchar		*title;		/**< resulting feed/channel title */
+
+	gchar		*data;		/**< data buffer to parse */
+	gsize		dataLength;	/**< length of the data buffer */
+
+	xmlDocPtr	doc;		/**< the parsed data buffer */
+	gboolean	failed;		/**< TRUE if parsing failed because feed type could not be detected */
+} *feedParserCtxtPtr;
 
 /* ------------------------------------------------------------ */
 /* feed handler interface					*/
@@ -167,9 +167,6 @@ guint feed_get_max_item_count(nodePtr node);
  */
 feedHandlerPtr feed_type_str_to_fhp(const gchar *str);
 const gchar *feed_type_fhp_to_str(feedHandlerPtr fhp);
-
-gint feed_get_default_update_interval(feedPtr feed);
-void feed_set_default_update_interval(feedPtr feed, gint interval);
 
 const gchar * feed_get_title(feedPtr feed);
 void feed_set_title(feedPtr feed, const gchar * title);

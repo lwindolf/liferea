@@ -183,15 +183,14 @@ static void getOutlineList(feedParserCtxtPtr ctxt, guint tag, char *url) {
 
 	requestData = g_new0(struct requestData, 1);
 	requestData->ctxt = feed_create_parser_ctxt();	
-	requestData->ctxt->node = ctxt->node;
-	requestData->ctxt->feed = ctxt->feed;
+	requestData->ctxt->feed = ctxt->feed;	// FIXME
 	requestData->tag = tag;
 
-	request = update_request_new(ctxt->node);
+	request = update_request_new(ctxt->subscription);
 	request->source = g_strdup(url);
 	request->callback = ns_blogChannel_download_request_cb;
 	request->user_data = requestData;
-	request->options = ctxt->feed->updateOptions;
+	request->options = ctxt->subscription->updateOptions;
 	
 	update_execute_request(request);
 }

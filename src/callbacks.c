@@ -133,4 +133,3 @@ void on_faq_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	g_free(filename);
 }
 
-

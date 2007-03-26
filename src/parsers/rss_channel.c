@@ -1,7 +1,7 @@
 /**
  * @file rss_channel.c some tolerant and generic RSS/RDF channel parsing
  *
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2005-2006 Nathan Conrad <t98502@users.sourceforge.net> 
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -105,14 +105,14 @@ static void parseChannel(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 		} 
 		else if(!xmlStrcmp(cur->name, BAD_CAST"ttl")) {
  			if(NULL != (tmp = common_utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE)))) {
-				feed_set_default_update_interval(ctxt->feed, atoi(tmp));
-				feed_set_update_interval(ctxt->feed, atoi(tmp));
+				subscription_set_default_update_interval(ctxt->subscription, atoi(tmp));
+				subscription_set_update_interval(ctxt->subscription, atoi(tmp));
 				g_free(tmp);
 			}
 		}
 		else if(!xmlStrcmp(cur->name, BAD_CAST"title")) {
  			if(NULL != (tmp = unhtmlize(common_utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE))))) {
-				node_set_title(ctxt->node, tmp);
+				feed_set_title(ctxt->feed, tmp);
 				g_free(tmp);
 			}
 		}
@@ -302,7 +302,7 @@ static void rss_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 	}
 	
 	if(error)
-		ui_mainwindow_set_status_bar(_("There were errors while parsing the feed %s!"), node_get_title(ctxt->node));
+		ui_mainwindow_set_status_bar(_("There were errors while parsing the feed %s!"), feed_get_title(ctxt->feed));
 }
 
 static gboolean rss_format_check(xmlDocPtr doc, xmlNodePtr cur) {

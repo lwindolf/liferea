@@ -2,7 +2,7 @@
  * @file atom10.c Atom 1.0 Parser
  * 
  * Copyright (C) 2005-2006 Nathan Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,6 +44,7 @@
 #include "ns_wfw.h"
 #include "callbacks.h"
 #include "metadata.h"
+#include "subscription.h"
 #include "atom10.h"
 
 #define ATOM10_NS BAD_CAST"http://www.w3.org/2005/Atom"
@@ -477,14 +478,14 @@ static itemPtr atom10_parse_entry(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 		/* check namespace of this tag */
 		if(!cur->ns->href) {
 			/* This is an invalid feed... no idea what to do with the current element */
-			debug1(DEBUG_PARSING, "element with no namespace found in atom feed!");
+			debug1(DEBUG_PARSING, "element with no namespace found in atom feed (%s)!", cur->name);
 			cur = cur->next;
 			continue;
 		}
 		
 		
 		if(0 != xmlStrcmp(cur->ns->href, ATOM10_NS)) {
-			debug2(DEBUG_PARSING, "unknown namespace %s found!", cur->ns->href);
+			debug1(DEBUG_PARSING, "unknown namespace %s found!", cur->ns->href);
 			cur = cur->next;
 			continue;
 		}
@@ -493,7 +494,7 @@ static itemPtr atom10_parse_entry(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 		if(func != NULL) {
 			(*func)(cur, ctxt, NULL);
 		} else {
-			debug2(DEBUG_PARSING, "unknown entry element \"%s\" found\n", cur->name);
+			debug1(DEBUG_PARSING, "unknown entry element \"%s\" found\n", cur->name);
 		}
 		
 		cur = cur->next;
@@ -620,7 +621,7 @@ static void atom10_parse_feed_title(xmlNodePtr cur, feedParserCtxtPtr ctxt, stru
 	
 	title = atom10_parse_text_construct(cur, FALSE);
 	if(title) {
-		node_set_title(ctxt->node, title);
+		feed_set_title(ctxt->feed, title);
 		g_free(title);
 	}
 }
@@ -699,13 +700,13 @@ static void atom10_parse_feed(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 			/* check namespace of this tag */
 			if(!cur->ns->href) {
 				/* This is an invalid feed... no idea what to do with the current element */
-				debug1(DEBUG_PARSING, "element with no namespace found in atom feed %s!", node_get_title(ctxt->node));
+				debug1(DEBUG_PARSING, "element with no namespace found in atom feed (%s)!", cur->name);
 				cur = cur->next;
 				continue;
 			}
 
 			if(xmlStrcmp(cur->ns->href, ATOM10_NS)) {
-				debug2(DEBUG_PARSING, "unknown namespace %s found in atom feed %s", cur->ns->href, node_get_title(ctxt->node));
+				debug1(DEBUG_PARSING, "unknown namespace %s found in atom feed!", cur->ns->href);
 				cur = cur->next;
 				continue;
 			}
@@ -725,7 +726,7 @@ static void atom10_parse_feed(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 		/* FIXME: Maybe check to see that the required information was actually provided (persuant to the RFC). */
 		/* after parsing we fill in the infos into the feedPtr structure */		
 		if(error)
-			ui_mainwindow_set_status_bar(_("There were errors while parsing the feed %s!"), node_get_title(ctxt->node));
+			ui_mainwindow_set_status_bar(_("There were errors while parsing the feed %s!"), feed_get_title(ctxt->feed));
 		
 		break;
 	}

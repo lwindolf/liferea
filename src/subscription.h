@@ -45,6 +45,7 @@ typedef struct subscription {
 	updateOptionsPtr updateOptions;		/**< update options for the feed source */
 
 	gint		updateInterval;		/**< user defined update interval in minutes */	
+	guint		defaultInterval;	/**< optional update interval as specified by the feed */
 	
 	gchar		*updateError;		/**< textual description of processing errors */
 	gchar		*httpError;		/**< textual description of HTTP protocol errors */
@@ -106,6 +107,23 @@ gint subscription_get_update_interval(subscriptionPtr subscription);
  * @param interval	the new update interval (in seconds)
  */
 void subscription_set_update_interval(subscriptionPtr subscription, gint interval);
+
+/**
+ * Get the default update interval setting of a given subscription
+ *
+ * @param subscription	the subscription
+ *
+ * @returns the default update interval (in seconds) or 0
+ */
+guint subscription_get_default_update_interval(subscriptionPtr subscription);
+
+/**
+ * Set the default update interval setting for the given subscription
+ *
+ * @param subscription	the subscription
+ * @param interval	the default update interval (in seconds)
+ */
+void subscription_set_default_update_interval(subscriptionPtr subscription, guint interval);
 
 /**
  * Get the source URL of a given subscription

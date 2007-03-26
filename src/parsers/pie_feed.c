@@ -177,7 +177,8 @@ static void pie_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 			if(cur->ns) {
 				if((cur->ns->href && (nsh = (NsHandler *)g_hash_table_lookup(ns_pie_ns_uri_table, (gpointer)cur->ns->href))) ||
 				   (cur->ns->prefix && (nsh = (NsHandler *)g_hash_table_lookup(pie_nstable, (gpointer)cur->ns->prefix)))) {
-					if(pf = nsh->parseChannelTag)
+					pf = nsh->parseChannelTag;
+					if(pf)
 						(*pf)(ctxt, cur);
 					cur = cur->next;
 					continue;
@@ -187,13 +188,14 @@ static void pie_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 			} /* explicitly no following else !!! */
 			
 			if(!xmlStrcmp(cur->name, BAD_CAST"title")) {
-				if(tmp = unhtmlize(common_utf8_fix(pie_parse_content_construct(cur)))) {
-					node_set_title(ctxt->node, tmp);
+				tmp = unhtmlize(common_utf8_fix(pie_parse_content_construct(cur)));
+				if(tmp) {
+					feed_set_title(ctxt->feed, tmp);
 					g_free(tmp);
 				}
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"link")) {
-				if(tmp = common_utf8_fix(xmlGetProp(cur, BAD_CAST"href"))) {
-				
+				tmp = common_utf8_fix(xmlGetProp(cur, BAD_CAST"href"));
+				if(tmp) {				
 					/* 0.3 link : rel, type and href attribute */
 					tmp2 = common_utf8_fix(xmlGetProp(cur, BAD_CAST"rel"));
 					if(tmp2 && !xmlStrcmp(tmp2, BAD_CAST"alternate"))
@@ -204,7 +206,8 @@ static void pie_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 					g_free(tmp);
 				} else {
 					/* 0.2 link : element content is the link, or non-alternate link in 0.3 */
-					if(tmp = common_utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1))) {
+					tmp = common_utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1));
+					if(tmp) {
 						feed_set_html_url(ctxt->feed, tmp);
 						g_free(tmp);
 					}
@@ -213,25 +216,29 @@ static void pie_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 			/* parse feed author */
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"author")) {
 				/* parse feed author */
-				if(tmp = parseAuthor(cur)) {
+				tmp = parseAuthor(cur);
+				if(tmp) {
 					ctxt->feed->metadata = metadata_list_append(ctxt->feed->metadata, "author", tmp);
 					g_free(tmp);
 				}
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"tagline")) {
-				if(tmp = common_utf8_fix(pie_parse_content_construct(cur))) {
+				tmp = common_utf8_fix(pie_parse_content_construct(cur));
+				if(tmp) {
 					feed_set_description(ctxt->feed, tmp);
 					g_free(tmp);				
 				}
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"generator")) {
 				tmp = unhtmlize(common_utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1)));
 				if(tmp && tmp[0] != '\0') {
-					if(tmp2 = common_utf8_fix(xmlGetProp(cur, BAD_CAST"version"))) {
+					tmp2 = common_utf8_fix(xmlGetProp(cur, BAD_CAST"version"));
+					if(tmp2) {
 						tmp3 = g_strdup_printf("%s %s", tmp, tmp2);
 						g_free(tmp);
 						g_free(tmp2);
 						tmp = tmp3;
 					}
-					if(tmp2 = common_utf8_fix(xmlGetProp(cur, BAD_CAST"url"))) {
+					tmp2 = common_utf8_fix(xmlGetProp(cur, BAD_CAST"url"));
+					if(tmp2) {
 						tmp3 = g_strdup_printf("<a href=\"%s\">%s</a>", tmp2, tmp);
 						g_free(tmp2);
 						g_free(tmp);
@@ -241,33 +248,38 @@ static void pie_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 				}
 				g_free(tmp);
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"copyright")) {
-				if(tmp = common_utf8_fix(pie_parse_content_construct(cur))) {
+				tmp = common_utf8_fix(pie_parse_content_construct(cur));
+				if(tmp) {
 					ctxt->feed->metadata = metadata_list_append(ctxt->feed->metadata, "copyright", tmp);
 					g_free(tmp);
 				}				
 				
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"modified")) { /* Modified was last used in IETF draft 02) */
-				if(tmp = common_utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1))) {
+				tmp = common_utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1));
+				if(tmp) {
 					ctxt->feed->metadata = metadata_list_append(ctxt->feed->metadata, "pubDate", tmp);
 					ctxt->feed->time = parseISO8601Date(tmp);
 					g_free(tmp);
 				}
 
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"updated")) { /* Updated was added in IETF draft 03 */
-				if(tmp = common_utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1))) {
+				tmp = common_utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1));
+				if(tmp) {
 					ctxt->feed->metadata = metadata_list_append(ctxt->feed->metadata, "pubDate", tmp);
 					ctxt->feed->time = parseISO8601Date(tmp);
 					g_free(tmp);
 				}
 
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"contributor")) { 
-				if(tmp = parseAuthor(cur)) {
+				tmp = parseAuthor(cur);
+				if(tmp) {
 					ctxt->feed->metadata = metadata_list_append(ctxt->feed->metadata, "contributor", tmp);
 					g_free(tmp);
 				}
 				
 			} else if((!xmlStrcmp(cur->name, BAD_CAST"entry"))) {
-				if(ctxt->item = parseEntry(ctxt, cur)) {
+				ctxt->item = parseEntry(ctxt, cur);
+				if(ctxt->item) {
 					if(0 == ctxt->item->time)
 						ctxt->item->time = ctxt->feed->time;
 					ctxt->items = g_list_append(ctxt->items, ctxt->item);
@@ -279,7 +291,7 @@ static void pie_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 		
 		/* after parsing we fill in the infos into the feedPtr structure */		
 		if(error)
-			ui_mainwindow_set_status_bar(_("There were errors while parsing the feed %s!"), node_get_title(ctxt->node));
+			ui_mainwindow_set_status_bar(_("There were errors while parsing the feed %s!"), feed_get_title(ctxt->feed));
 
 		break;
 	}

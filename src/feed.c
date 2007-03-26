@@ -534,9 +534,6 @@ guint feed_get_max_item_count(nodePtr node) {
 /* feed attributes encapsulation						*/
 /* ---------------------------------------------------------------------------- */
 
-gint feed_get_default_update_interval(feedPtr feed) { return feed->defaultInterval; }
-void feed_set_default_update_interval(feedPtr feed, gint interval) { feed->defaultInterval = interval; }
-
 feedHandlerPtr feed_get_fhp(feedPtr feed) {
 	return feed->fhp;
 }

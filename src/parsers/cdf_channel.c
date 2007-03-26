@@ -81,7 +81,7 @@ static void parseCDFChannel(feedParserCtxtPtr ctxt, xmlNodePtr cur, CDFChannelPt
 			tmp = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE));
 			if(tmp) {
 				tmp = unhtmlize(tmp);
-				node_set_title(ctxt->node, tmp);
+				feed_set_title(ctxt->feed, tmp);
 				g_free(tmp);
 			}
 			

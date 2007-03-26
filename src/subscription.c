@@ -115,6 +115,10 @@ void subscription_set_update_interval(subscriptionPtr subscription, gint interva
 	feedlist_schedule_save();
 }
 
+guint subscription_get_default_update_interval(subscriptionPtr subscription) { return subscription->defaultInterval; }
+
+void subscription_set_default_update_interval(subscriptionPtr subscription, guint interval) { subscription->defaultInterval = interval; }
+
 const gchar * subscription_get_orig_source(subscriptionPtr subscription) { return subscription->origSource; }
 const gchar * subscription_get_source(subscriptionPtr subscription) { return subscription->source; }
 const gchar * subscription_get_filter(subscriptionPtr subscription) { return subscription->filtercmd; }
