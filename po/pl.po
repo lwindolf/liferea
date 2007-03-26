@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-23 00:56+0100\n"
+"POT-Creation-Date: 2007-03-24 18:46+0100\n"
 "PO-Revision-Date: 2006-12-05 21:26+0100\n"
 "Last-Translator: Lars Lindner <lars.lindner@gmx.net>\n"
 "Language-Team: Polish\n"
@@ -108,40 +108,44 @@ msgid "Author"
 msgstr "Autor"
 
 #: ../xslt/item.xml.in.h:3
-msgid "Department"
+msgid "Creator"
 msgstr ""
 
 #: ../xslt/item.xml.in.h:4
+msgid "Department"
+msgstr ""
+
+#: ../xslt/item.xml.in.h:5
 #, fuzzy
 msgid "Feed"
 msgstr "Subskrypcja:"
 
-#: ../xslt/item.xml.in.h:5
+#: ../xslt/item.xml.in.h:6
 msgid "Filed under"
 msgstr "Zaszeregowano w"
 
-#: ../xslt/item.xml.in.h:6
+#: ../xslt/item.xml.in.h:7
 #, fuzzy
 msgid "Section"
 msgstr "_Położenie"
 
-#: ../xslt/item.xml.in.h:7 ../src/interface.c:602
+#: ../xslt/item.xml.in.h:8 ../src/interface.c:602
 msgid "Source"
 msgstr "Źródło"
 
-#: ../xslt/item.xml.in.h:8
+#: ../xslt/item.xml.in.h:9
 msgid "bookmark"
 msgstr "zakładka"
 
-#: ../xslt/item.xml.in.h:9
+#: ../xslt/item.xml.in.h:10
 msgid "comments"
 msgstr "komentarze"
 
-#: ../xslt/item.xml.in.h:10
+#: ../xslt/item.xml.in.h:11
 msgid "flag"
 msgstr "flaga"
 
-#: ../xslt/item.xml.in.h:11
+#: ../xslt/item.xml.in.h:12
 msgid "search"
 msgstr "znajdź"
 

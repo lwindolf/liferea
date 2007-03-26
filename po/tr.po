@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-23 00:56+0100\n"
+"POT-Creation-Date: 2007-03-24 18:46+0100\n"
 "PO-Revision-Date: 2007-01-12 03:00+0100\n"
 "Last-Translator: Mehmet Atif Ergun <mehmetaergun@gmail.com>\n"
 "Language-Team: ubuntu-l10n-tr <ubuntu-tr@lists.ubuntu.com>\n"
@@ -102,39 +102,43 @@ msgid "Author"
 msgstr "Yazar"
 
 #: ../xslt/item.xml.in.h:3
+msgid "Creator"
+msgstr ""
+
+#: ../xslt/item.xml.in.h:4
 msgid "Department"
 msgstr "Bölüm"
 
-#: ../xslt/item.xml.in.h:4
+#: ../xslt/item.xml.in.h:5
 #, fuzzy
 msgid "Feed"
 msgstr "Haber:"
 
-#: ../xslt/item.xml.in.h:5
+#: ../xslt/item.xml.in.h:6
 msgid "Filed under"
 msgstr "Dosyalandığı yer"
 
-#: ../xslt/item.xml.in.h:6
+#: ../xslt/item.xml.in.h:7
 msgid "Section"
 msgstr "Kısım"
 
-#: ../xslt/item.xml.in.h:7 ../src/interface.c:602
+#: ../xslt/item.xml.in.h:8 ../src/interface.c:602
 msgid "Source"
 msgstr "Kaynak"
 
-#: ../xslt/item.xml.in.h:8
+#: ../xslt/item.xml.in.h:9
 msgid "bookmark"
 msgstr "yer imi"
 
-#: ../xslt/item.xml.in.h:9
+#: ../xslt/item.xml.in.h:10
 msgid "comments"
 msgstr "yorumlar"
 
-#: ../xslt/item.xml.in.h:10
+#: ../xslt/item.xml.in.h:11
 msgid "flag"
 msgstr "işaret"
 
-#: ../xslt/item.xml.in.h:11
+#: ../xslt/item.xml.in.h:12
 msgid "search"
 msgstr "ara"
 

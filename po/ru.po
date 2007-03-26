@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 0.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-23 00:56+0100\n"
+"POT-Creation-Date: 2007-03-24 18:46+0100\n"
 "PO-Revision-Date: 2007-01-26 10:10+0300\n"
 "Last-Translator: omsoft <oleg@koleso-auto.ru>\n"
 "Language-Team: Russian\n"
@@ -105,39 +105,43 @@ msgid "Author"
 msgstr "Автор"
 
 #: ../xslt/item.xml.in.h:3
+msgid "Creator"
+msgstr ""
+
+#: ../xslt/item.xml.in.h:4
 msgid "Department"
 msgstr "Отдел"
 
-#: ../xslt/item.xml.in.h:4
+#: ../xslt/item.xml.in.h:5
 #, fuzzy
 msgid "Feed"
 msgstr "Лента:"
 
-#: ../xslt/item.xml.in.h:5
+#: ../xslt/item.xml.in.h:6
 msgid "Filed under"
 msgstr "Опубликовано в"
 
-#: ../xslt/item.xml.in.h:6
+#: ../xslt/item.xml.in.h:7
 msgid "Section"
 msgstr "Секция"
 
-#: ../xslt/item.xml.in.h:7 ../src/interface.c:602
+#: ../xslt/item.xml.in.h:8 ../src/interface.c:602
 msgid "Source"
 msgstr "Источник"
 
-#: ../xslt/item.xml.in.h:8
+#: ../xslt/item.xml.in.h:9
 msgid "bookmark"
 msgstr "закладка"
 
-#: ../xslt/item.xml.in.h:9
+#: ../xslt/item.xml.in.h:10
 msgid "comments"
 msgstr "комментировать"
 
-#: ../xslt/item.xml.in.h:10
+#: ../xslt/item.xml.in.h:11
 msgid "flag"
 msgstr "флаг"
 
-#: ../xslt/item.xml.in.h:11
+#: ../xslt/item.xml.in.h:12
 msgid "search"
 msgstr "поиск"
 

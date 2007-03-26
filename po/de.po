@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 0.9.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-23 00:56+0100\n"
-"PO-Revision-Date: 2007-03-23 00:57+0100\n"
+"POT-Creation-Date: 2007-03-24 18:46+0100\n"
+"PO-Revision-Date: 2007-03-24 18:47+0100\n"
 "Last-Translator: Lars Lindner <lars.lindner@gmx.net>\n"
 "Language-Team: German\n"
 "MIME-Version: 1.0\n"
@@ -98,39 +98,43 @@ msgid "Author"
 msgstr "Autor"
 
 #: ../xslt/item.xml.in.h:3
+msgid "Creator"
+msgstr "Ersteller"
+
+#: ../xslt/item.xml.in.h:4
 msgid "Department"
 msgstr "Department"
 
-#: ../xslt/item.xml.in.h:4
+#: ../xslt/item.xml.in.h:5
 msgid "Feed"
 msgstr "Abonnement"
 
-#: ../xslt/item.xml.in.h:5
+#: ../xslt/item.xml.in.h:6
 msgid "Filed under"
 msgstr "Unter"
 
-#: ../xslt/item.xml.in.h:6
+#: ../xslt/item.xml.in.h:7
 msgid "Section"
 msgstr "Section"
 
-#: ../xslt/item.xml.in.h:7
+#: ../xslt/item.xml.in.h:8
 #: ../src/interface.c:602
 msgid "Source"
 msgstr "Quelle"
 
-#: ../xslt/item.xml.in.h:8
+#: ../xslt/item.xml.in.h:9
 msgid "bookmark"
 msgstr "Bookmark"
 
-#: ../xslt/item.xml.in.h:9
+#: ../xslt/item.xml.in.h:10
 msgid "comments"
 msgstr "Kommentare"
 
-#: ../xslt/item.xml.in.h:10
+#: ../xslt/item.xml.in.h:11
 msgid "flag"
 msgstr "Markieren"
 
-#: ../xslt/item.xml.in.h:11
+#: ../xslt/item.xml.in.h:12
 msgid "search"
 msgstr "Suche"
 
@@ -2447,8 +2451,6 @@ msgstr "Es wurde kein Skript ausgewählt!"
 #~ msgstr "Ursprünglicher Zeitstempel"
 #~ msgid "license"
 #~ msgstr "Lizenz"
-#~ msgid "creator"
-#~ msgstr "Ersteller"
 #~ msgid "type"
 #~ msgstr "Typ"
 #~ msgid "format"

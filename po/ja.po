@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea trunk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-23 00:56+0100\n"
+"POT-Creation-Date: 2007-03-24 18:46+0100\n"
 "PO-Revision-Date: 2007-02-10 10:28+0900\n"
 "Last-Translator: Takeshi AIHANA <takeshi.aihana@gmail.com>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -106,38 +106,42 @@ msgid "Author"
 msgstr "作者"
 
 #: ../xslt/item.xml.in.h:3
+msgid "Creator"
+msgstr ""
+
+#: ../xslt/item.xml.in.h:4
 msgid "Department"
 msgstr "部門"
 
-#: ../xslt/item.xml.in.h:4
+#: ../xslt/item.xml.in.h:5
 msgid "Feed"
 msgstr "配信元"
 
-#: ../xslt/item.xml.in.h:5
+#: ../xslt/item.xml.in.h:6
 msgid "Filed under"
 msgstr "カテゴリ:"
 
-#: ../xslt/item.xml.in.h:6
+#: ../xslt/item.xml.in.h:7
 msgid "Section"
 msgstr "セクション"
 
-#: ../xslt/item.xml.in.h:7 ../src/interface.c:602
+#: ../xslt/item.xml.in.h:8 ../src/interface.c:602
 msgid "Source"
 msgstr "ソース"
 
-#: ../xslt/item.xml.in.h:8
+#: ../xslt/item.xml.in.h:9
 msgid "bookmark"
 msgstr "ブックマーク"
 
-#: ../xslt/item.xml.in.h:9
+#: ../xslt/item.xml.in.h:10
 msgid "comments"
 msgstr "コメント"
 
-#: ../xslt/item.xml.in.h:10
+#: ../xslt/item.xml.in.h:11
 msgid "flag"
 msgstr "フラグ"
 
-#: ../xslt/item.xml.in.h:11
+#: ../xslt/item.xml.in.h:12
 msgid "search"
 msgstr "検索"
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-23 00:56+0100\n"
+"POT-Creation-Date: 2007-03-24 18:46+0100\n"
 "PO-Revision-Date: 2007-03-12 14:58+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -105,38 +105,43 @@ msgid "Author"
 msgstr "Författare"
 
 #: ../xslt/item.xml.in.h:3
+#, fuzzy
+msgid "Creator"
+msgstr "skapare"
+
+#: ../xslt/item.xml.in.h:4
 msgid "Department"
 msgstr "Avdelning"
 
-#: ../xslt/item.xml.in.h:4
+#: ../xslt/item.xml.in.h:5
 msgid "Feed"
 msgstr "Kanal"
 
-#: ../xslt/item.xml.in.h:5
+#: ../xslt/item.xml.in.h:6
 msgid "Filed under"
 msgstr "Arkiverad under"
 
-#: ../xslt/item.xml.in.h:6
+#: ../xslt/item.xml.in.h:7
 msgid "Section"
 msgstr "Avsnitt"
 
-#: ../xslt/item.xml.in.h:7 ../src/interface.c:602
+#: ../xslt/item.xml.in.h:8 ../src/interface.c:602
 msgid "Source"
 msgstr "Källa"
 
-#: ../xslt/item.xml.in.h:8
+#: ../xslt/item.xml.in.h:9
 msgid "bookmark"
 msgstr "bokmärke"
 
-#: ../xslt/item.xml.in.h:9
+#: ../xslt/item.xml.in.h:10
 msgid "comments"
 msgstr "kommentarer"
 
-#: ../xslt/item.xml.in.h:10
+#: ../xslt/item.xml.in.h:11
 msgid "flag"
 msgstr "flagga"
 
-#: ../xslt/item.xml.in.h:11
+#: ../xslt/item.xml.in.h:12
 msgid "search"
 msgstr "sök"
 
@@ -2589,9 +2594,6 @@ msgstr "Inget skript har markerats!"
 
 #~ msgid "license"
 #~ msgstr "licens"
-
-#~ msgid "creator"
-#~ msgstr "skapare"
 
 #~ msgid "type"
 #~ msgstr "typ"

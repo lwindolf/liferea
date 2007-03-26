@@ -596,7 +596,7 @@ void itemlist_selection_changed(itemPtr item) {
 			
 			if(itemset_load_link_preferred(displayed_itemSet)) {
 				ui_htmlview_launch_URL(ui_mainwindow_get_active_htmlview(), 
-				                       item_get_source(itemlist_get_selected()), 2);
+				                       item_get_source(itemlist_get_selected()), UI_HTMLVIEW_LAUNCH_INTERNAL);
 			} else {
 				itemview_set_mode(ITEMVIEW_SINGLE_ITEM);
 				itemview_select_item(item);

@@ -248,7 +248,7 @@ void ui_htmlview_launch_URL(GtkWidget *htmlview, const gchar *url, gint launchTy
 		g_warning("Internal error: unhandled protocol in URL \"%s\"!", url);
 		return;
 	}
-	
+
 	if((launchType == UI_HTMLVIEW_LAUNCH_INTERNAL || getBooleanConfValue(BROWSE_INSIDE_APPLICATION)) &&
 	   (htmlviewPlugin->launchInsidePossible)() &&
 	   (launchType != UI_HTMLVIEW_LAUNCH_EXTERNAL)) {

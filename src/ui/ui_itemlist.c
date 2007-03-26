@@ -637,7 +637,7 @@ void on_popup_copy_URL_clipboard(void) {
 void ui_itemlist_add_item_bookmark(itemPtr item) {
 
 	gchar *url = social_get_url(item_get_source(item), item_get_title(item));
-	ui_htmlview_launch_URL(ui_mainwindow_get_active_htmlview(), url, 1);
+	ui_htmlview_launch_URL(ui_mainwindow_get_active_htmlview(), url, UI_HTMLVIEW_LAUNCH_EXTERNAL);
 	g_free(url);
 }
 
@@ -655,7 +655,7 @@ void on_popup_social_bm_link_selected(gpointer selectedUrl, guint callback_actio
 	
 	if(selectedUrl) {
 		gchar *url = social_get_url(selectedUrl, "");
-		ui_htmlview_launch_URL(ui_mainwindow_get_active_htmlview(), url, 1);
+		ui_htmlview_launch_URL(ui_mainwindow_get_active_htmlview(), url, UI_HTMLVIEW_LAUNCH_EXTERNAL);
 		g_free(url);
 	} else {
 		ui_mainwindow_set_status_bar(_("No link selected!"));

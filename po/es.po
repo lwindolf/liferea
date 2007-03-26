@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-23 00:56+0100\n"
+"POT-Creation-Date: 2007-03-24 18:46+0100\n"
 "PO-Revision-Date: 2006-12-05 21:29+0100\n"
 "Last-Translator: Lars Lindner <lars.lindner@gmx.net>\n"
 "Language-Team: Spanish <en@li.org>\n"
@@ -113,39 +113,44 @@ msgid "Author"
 msgstr "Autor"
 
 #: ../xslt/item.xml.in.h:3
+#, fuzzy
+msgid "Creator"
+msgstr "creador"
+
+#: ../xslt/item.xml.in.h:4
 msgid "Department"
 msgstr ""
 
-#: ../xslt/item.xml.in.h:4
+#: ../xslt/item.xml.in.h:5
 msgid "Feed"
 msgstr "Fuente"
 
-#: ../xslt/item.xml.in.h:5
+#: ../xslt/item.xml.in.h:6
 msgid "Filed under"
 msgstr "Filed under"
 
-#: ../xslt/item.xml.in.h:6
+#: ../xslt/item.xml.in.h:7
 #, fuzzy
 msgid "Section"
 msgstr "_Location"
 
-#: ../xslt/item.xml.in.h:7 ../src/interface.c:602
+#: ../xslt/item.xml.in.h:8 ../src/interface.c:602
 msgid "Source"
 msgstr "Source"
 
-#: ../xslt/item.xml.in.h:8
+#: ../xslt/item.xml.in.h:9
 msgid "bookmark"
 msgstr ""
 
-#: ../xslt/item.xml.in.h:9
+#: ../xslt/item.xml.in.h:10
 msgid "comments"
 msgstr "Comentarios"
 
-#: ../xslt/item.xml.in.h:10
+#: ../xslt/item.xml.in.h:11
 msgid "flag"
 msgstr ""
 
-#: ../xslt/item.xml.in.h:11
+#: ../xslt/item.xml.in.h:12
 #, fuzzy
 msgid "search"
 msgstr "Buscar"
@@ -2671,9 +2676,6 @@ msgstr "No script selected!"
 
 #~ msgid "license"
 #~ msgstr "Licencia"
-
-#~ msgid "creator"
-#~ msgstr "creador"
 
 #~ msgid "type"
 #~ msgstr "tipo"
