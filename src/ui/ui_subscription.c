@@ -1,7 +1,7 @@
 /**
- * @file ui_feed.c	UI actions concerning a single feed
+ * @file ui_feed.c UI actions concerning a single feed
  *
- * Copyright (C) 2004-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -36,7 +36,7 @@
 #include "itemlist.h"
 #include "favicon.h"
 #include "debug.h"
-#include "ui/ui_feed.h"
+#include "ui/ui_subscription.h"
 
 extern GtkWidget *mainwindow;
 
@@ -44,7 +44,7 @@ extern GtkWidget *mainwindow;
  * general callbacks for "New" and "Properties" dialog              *
  ********************************************************************/
 
-struct fp_prop_ui_data {
+struct subscription_prop_ui_data {
 	feedPtr feed;
 	nodePtr node;
 	gint flags; /* Used by the authdialog to know how to request the feed update */
@@ -138,12 +138,12 @@ static void on_propdialog_response(GtkDialog *dialog, gint response_id, gpointer
 		gchar		*newSource;
 		const gchar	*newFilter;
 		gboolean	needsUpdate = FALSE;
-		feedPtr		feed = ui_data->feed;
 		nodePtr		node = ui_data->node;
+		subscriptionPtr	subscription = ui_data->subscription;
 		
 		/* "General" */
 		node_set_title(node, gtk_entry_get_text(GTK_ENTRY(ui_data->feedNameEntry)));
-		feed_set_update_interval(feed, gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(ui_data->refreshInterval)));
+		subscription_set_update_interval(subscription, gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(ui_data->refreshInterval)));
 		
 		/* Source */
 		newSource = ui_feed_dialog_decode_source(ui_data);
