@@ -1,4 +1,4 @@
-2007-03-??  Lars Lindner  <lars.lindner@gmail.com>
+2007-03-27  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.2.10 (Stable)
 
@@ -9,6 +9,8 @@
 	* Fixes links opening up in the configured external browser
 	  for feeds with enabled "auto load link" setting when the
 	  "load links in internal browser" preference is not set.
+	* Fixes another negative unread count problem.
+	  (reported by pochu)
 
 	Translation
 

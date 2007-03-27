@@ -300,8 +300,8 @@ void itemset_set_item_new_status(itemSetPtr itemSet, itemPtr item, gboolean newS
 
 	/* Note: new count updates must be done through the node
 	   interface to allow global feed list new counter */
-	node_update_new_count(itemSet->node, newStatus?-1:1);
-	
+	node_update_new_count(itemSet->node, newStatus?1:-1);
+
 	/* New status is never propagated to vfolders... */
 }
 
