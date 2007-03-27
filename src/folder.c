@@ -150,6 +150,8 @@ static void folder_request_auto_update(nodePtr node) {
 
 static void folder_remove(nodePtr node) {
 
+	folder_unload(node);
+
 	/* remove all children */
 	node_foreach_child(node, node_request_remove);
 	g_assert(!node->children);

@@ -4,6 +4,11 @@
 
 	* Added rendering of "creator" metadata attribute.
 	  (patch from Khaled Hosny)
+	* Fixes crash when removing folder with unread items.
+	  (SF #1685868, reported by Tigro)
+	* Fixes links opening up in the configured external browser
+	  for feeds with enabled "auto load link" setting when the
+	  "load links in internal browser" preference is not set.
 
 	Translation
 
