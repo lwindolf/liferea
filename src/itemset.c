@@ -89,12 +89,12 @@ itemPtr itemset_lookup_item(itemSetPtr itemSet, nodePtr node, gulong nr) {
 	GHashTable 	*hash;
 	itemPtr		item = NULL;
 	
-	if(!itemSet)
+	if(!itemSet || !node)
 		return NULL;
 		
 	if(!itemSet->nrHashes)
 		return NULL;
-	
+
 	hash = g_hash_table_lookup(itemSet->nrHashes, node);
 	if(hash)
 		item = g_hash_table_lookup(hash, GUINT_TO_POINTER(nr));

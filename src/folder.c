@@ -73,6 +73,7 @@ static void folder_merge_itemset(nodePtr node, gpointer userdata) {
 
 	switch(node->type) {
 		case NODE_TYPE_FOLDER:
+			node->loaded++;
 			node_foreach_child_data(node, folder_merge_itemset, itemSet);
 			break;
 		case NODE_TYPE_VFOLDER:
@@ -92,7 +93,6 @@ static void folder_merge_itemset(nodePtr node, gpointer userdata) {
 static void folder_load(nodePtr node) {
 	
 	g_assert(0 <= node->loaded);
-	g_assert(0 == node->loaded || node->itemSet);
 	
 	if(0 == node->loaded) {
 		/* Concatenate all child item sets to form the folders item set */
@@ -112,25 +112,25 @@ static void folder_save(nodePtr node) {
 
 static void folder_unload(nodePtr node) {
 
-	g_assert(0 == node->loaded || node->itemSet);
-	
 	if(1 == node->loaded) {
-		/* Note: item and nr lists are only references, they are "loaded"
-		   in their respective feeds. Therefore we must avoid passing
-		   those shallow copies to itemset_free(). */		
-		g_list_free(node->itemSet->items);
-		node->itemSet->items = NULL;
-		g_hash_table_destroy(node->itemSet->nrHashes);
-		node->itemSet->nrHashes = NULL;
-		
-		itemset_free(node->itemSet);
-		node->itemSet = NULL;
+		if(node->itemSet) {
+			/* Note: item and nr hashes are only references, they are "loaded"
+			   in their respective feeds. Therefore we must avoid passing
+			   those shallow copies to itemset_free(). */		
+			g_list_free(node->itemSet->items);
+			node->itemSet->items = NULL;
+			g_hash_table_destroy(node->itemSet->nrHashes);
+			node->itemSet->nrHashes = NULL;
+
+			itemset_free(node->itemSet);
+			node->itemSet = NULL;
+		}
+
+		node_foreach_child(node, node_unload);
 	}
 	
 	if(0 < node->loaded)
 		node->loaded--;
-
-	node_foreach_child(node, node_unload);
 }
 
 static void folder_reset_update_counter(nodePtr node) {
