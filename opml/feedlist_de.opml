@@ -15,7 +15,7 @@
       <outline text="international">
 	      <outline text="OSS">
         	<outline text="art.gnome.org" htmlUrl="http://art.gnome.org/" xmlUrl="http://art.gnome.org/backend.php" />
-        	<outline text="Debian Package a Day" htmlUrl="http://www.livejournal.com/users/debaday/" xmlUrl="http://www.livejournal.com/users/debaday/data/atom" />
+        	<outline text="Debian Package a Day" htmlUrl="http://debaday.debian.net/" xmlUrl="http://debaday.debian.net/feed/atom/" />
         	<outline text="Gnomefiles" htmlUrl="http://www.gnomefiles.org/" xmlUrl="http://www.gnomefiles.org/files/gnomefiles.rdf" />
         	<outline text="GNOME Footnotes" htmlUrl="http://www.gnomedesktop.org/" xmlUrl="http://www.gnomedesktop.org/backend.php" />
         	<outline text="GrokLaw" htmlUrl="http://www.groklaw.net/" xmlUrl="http://www.groklaw.net/backend/GrokLaw.rdf" />
@@ -28,6 +28,7 @@
 	      </outline>	
       </outline>
     </outline>
+
     <outline text="Ungelesen" title="Ungelesen" description="Ungelesen" type="vfolder" htmlUrl="" xmlUrl="vfolder">
       <outline type="rule" text="Read status" rule="unread" value="" additive="true"/>
     </outline>
