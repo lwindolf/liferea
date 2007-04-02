@@ -5,7 +5,7 @@
  * Copyright (C) 2002  Charles Kerr <charles@rebelbase.com>
  *
  * Liferea specific adaptions
- * Copyright (C) 2004-2006  Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2007  Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,7 +34,8 @@ typedef enum
 	DEBUG_TRACE		= (1<<5),
 	DEBUG_PLUGINS		= (1<<6),
 	DEBUG_HTML		= (1<<7),
-	DEBUG_VERBOSE		= (1<<8)
+	DEBUG_NET		= (1<<8),
+	DEBUG_VERBOSE		= (1<<9)
 }
 DebugFlags;
 

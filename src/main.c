@@ -1,7 +1,7 @@
 /**
  * @file main.c Liferea main program
  *
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *  
  * Some code like the command line handling was inspired by 
@@ -79,6 +79,7 @@ static void show_help(void) {
 	g_string_append_printf(str, "%s\n", _("  --debug-conf     Print debugging messages of the configuration handling"));
 	g_string_append_printf(str, "%s\n", _("  --debug-gui      Print debugging messages of all GUI functions"));
 	g_string_append_printf(str, "%s\n", _("  --debug-html     Enable HTML debugging (saving to ~/.liferea_1.2/output.xhtml)"));
+	g_string_append_printf(str, "%s\n", _("  --debug-net      Print debugging messages for all network access"));	
 	g_string_append_printf(str, "%s\n", _("  --debug-parsing  Print debugging messages of all parsing functions"));
 	g_string_append_printf(str, "%s\n", _("  --debug-plugins  Print debugging messages when loading plugins"));
 	g_string_append_printf(str, "%s\n", _("  --debug-trace    Print debugging messages when entering/leaving functions"));
@@ -203,10 +204,12 @@ int main(int argc, char *argv[]) {
 			debug_flags |= DEBUG_HTML;
 		else if(!strcmp(arg, "--debug-plugins"))
 			debug_flags |= DEBUG_PLUGINS;
+		else if(!strcmp(arg, "--debug-net"))
+			debug_flags |= DEBUG_NET;
 		else if(!strcmp(arg, "--debug-trace"))
 			debug_flags |= DEBUG_TRACE;
 		else if(!strcmp(arg, "--debug-all"))
-			debug_flags |= DEBUG_TRACE|DEBUG_CACHE|DEBUG_CONF|DEBUG_UPDATE|DEBUG_PARSING|DEBUG_GUI|DEBUG_PLUGINS;
+			debug_flags |= DEBUG_TRACE|DEBUG_CACHE|DEBUG_CONF|DEBUG_UPDATE|DEBUG_PARSING|DEBUG_GUI|DEBUG_PLUGINS|DEBUG_NET;
 		else if(!strcmp(arg, "--debug-verbose"))
 			debug_flags |= DEBUG_VERBOSE;		
 		else if(!strcmp(arg, "--version") || !strcmp(arg, "-v")) {

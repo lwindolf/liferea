@@ -23,6 +23,7 @@
 
 #include "../support.h"
 #include "../callbacks.h"
+#include "../debug.h"
 
 /* we redefine some SnowNews functions */
 #define UIStatus(a, b)		
