@@ -82,12 +82,12 @@ msgstr ""
 
 #: ../xslt/source.xml.in.h:2 ../xslt/folder.xml.in.h:2
 msgid "children with"
-msgstr "çocuklarla"
+msgstr "çocukla"
 
 #: ../xslt/source.xml.in.h:3 ../xslt/folder.xml.in.h:3
 #: ../xslt/vfolder.xml.in.h:2
 msgid "unread headlines"
-msgstr "okunmamış haber başlıkları"
+msgstr "okunmamış haber başlığı"
 
 #: ../xslt/folder.xml.in.h:1
 msgid "Folder:"
