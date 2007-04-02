@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-29 01:30+0200\n"
+"POT-Creation-Date: 2007-04-02 22:41+0200\n"
 "PO-Revision-Date: 2007-03-24 12:43+0200\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
@@ -522,7 +522,7 @@ msgid "Feed link auto discovery failed! No feed links found!"
 msgstr "فشَل الإكتشاف الآلي لوصلة التلقيم! لم يُعثر على أي وصلة تلقيم!"
 
 #. GTK theme support
-#: ../src/interface.c:70 ../src/main.c:184
+#: ../src/interface.c:70 ../src/main.c:185
 msgid "Liferea"
 msgstr "لايفريا"
 
@@ -704,7 +704,8 @@ msgid "_Automatically download all enclosures of this feed."
 msgstr "نزّل كل مغلّفات هذه التلقيمة آ_ليّاً."
 
 #: ../src/interface.c:725
-msgid "Auto-_load item link in internal browser when reading articles."
+#, fuzzy
+msgid "Auto-_load item link in configured browser when selecting articles."
 msgstr "حمّل عنصر الوصلة آليا في المتصفّح الداخلي أثناء قرائة المقالات."
 
 #: ../src/interface.c:729
@@ -1365,42 +1366,47 @@ msgstr ""
 "  --debug-html     فعّل تنقيح HTML (يحفظ في ~/.liferea_1.2/output.xhtml)"
 
 #: ../src/main.c:82
+#, fuzzy
+msgid "  --debug-net      Print debugging messages for all network access"
+msgstr "  --debug-all      اطبع رسائل التنقيح من كل الأنواع"
+
+#: ../src/main.c:83
 msgid "  --debug-parsing  Print debugging messages of all parsing functions"
 msgstr "  --debug-parsing  اطبع رسائل التنقيح لكل وظائف التحليل"
 
-#: ../src/main.c:83
+#: ../src/main.c:84
 msgid "  --debug-plugins  Print debugging messages when loading plugins"
 msgstr "  --debug-plugins  اطبع رسائل تنقيح عند تحميل الملحقات"
 
-#: ../src/main.c:84
+#: ../src/main.c:85
 msgid ""
 "  --debug-trace    Print debugging messages when entering/leaving functions"
 msgstr "  --debug-trace    اطبع رسائل التنقيح عند دخول/خروج من الوظائف"
 
-#: ../src/main.c:85
+#: ../src/main.c:86
 msgid ""
 "  --debug-update   Print debugging messages of the feed update processing"
 msgstr "  --debug-update   اطبع رسائل التنقيح لمعالجة تحديث التلقيمات"
 
-#: ../src/main.c:86
+#: ../src/main.c:87
 msgid "  --debug-verbose  Print verbose debugging messages"
 msgstr "  --debug-verbose  اطبع رسائل تنقيح مُطنبة"
 
-#: ../src/main.c:165
+#: ../src/main.c:166
 msgid "Liferea seems to be running already!"
 msgstr "يبدو أن لايفريا يعمل بالفعل!"
 
-#: ../src/main.c:231
+#: ../src/main.c:234
 #, c-format
 msgid "The --mainwindow-state argument must be given a parameter.\n"
 msgstr "يجب أن يعطى الخيار --mainwindow-state معاملا.\n"
 
-#: ../src/main.c:239
+#: ../src/main.c:242
 #, c-format
 msgid "The --session argument must be given a parameter.\n"
 msgstr "يجب أن يعطى الخيار --session معاملا.\n"
 
-#: ../src/main.c:242
+#: ../src/main.c:245
 #, c-format
 msgid "Liferea encountered an unknown argument: %s\n"
 msgstr "واجه لايفريا معطى مجهول: %s\n"

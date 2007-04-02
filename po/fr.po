@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 1.2.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-29 01:30+0200\n"
+"POT-Creation-Date: 2007-04-02 22:41+0200\n"
 "PO-Revision-Date: 2007-03-29 01:42+0100\n"
 "Last-Translator: Lars Lindner <lars.lindner@gmx.net>\n"
 "Language-Team: \n"
@@ -56,14 +56,18 @@ msgstr "Détail des erreurs d'analyse syntaxique"
 msgid "Publisher"
 msgstr "Éditeur (publisher)"
 
-#: ../xslt/feed.xml.in.h:7
-#: ../xslt/source.xml.in.h:1
+#: ../xslt/feed.xml.in.h:7 ../xslt/source.xml.in.h:1
 msgid "Source:"
 msgstr "Source :"
 
 #: ../xslt/feed.xml.in.h:8
-msgid "The last update of this subscription failed!<br/><b>HTTP error code <xsl:value-of select=\"httpErrorCode\"/>: <xsl:value-of select=\"httpError\"/></b>"
-msgstr "La dernière mise à jour de cet abonnement a échoué !<br/><b>Code d'erreur HTTP <xsl:value-of select=\"httpErrorCode\"/> : <xsl:value-of select=\"httpError\"/></b>"
+msgid ""
+"The last update of this subscription failed!<br/><b>HTTP error code <xsl:"
+"value-of select=\"httpErrorCode\"/>: <xsl:value-of select=\"httpError\"/></b>"
+msgstr ""
+"La dernière mise à jour de cet abonnement a échoué !<br/><b>Code d'erreur "
+"HTTP <xsl:value-of select=\"httpErrorCode\"/> : <xsl:value-of select="
+"\"httpError\"/></b>"
 
 #: ../xslt/feed.xml.in.h:9
 msgid "There were errors while filtering this feed!"
@@ -74,16 +78,19 @@ msgid "There were errors while parsing this feed!"
 msgstr "Des erreurs sont survenues pendant l'analyse syntaxique de ce flux !"
 
 #: ../xslt/feed.xml.in.h:11
-msgid "This feed is discontinued. It's no longer available. Liferea won't update it anymore but you can still access the cached headlines."
-msgstr "Ce flux a cessé d'exister. Il n'est plus disponible. Liferea ne le mettra plus à jour, mais vous pouvez toujours accéder aux titres situés dans le cache."
+msgid ""
+"This feed is discontinued. It's no longer available. Liferea won't update it "
+"anymore but you can still access the cached headlines."
+msgstr ""
+"Ce flux a cessé d'exister. Il n'est plus disponible. Liferea ne le mettra "
+"plus à jour, mais vous pouvez toujours accéder aux titres situés dans le "
+"cache."
 
-#: ../xslt/source.xml.in.h:2
-#: ../xslt/folder.xml.in.h:2
+#: ../xslt/source.xml.in.h:2 ../xslt/folder.xml.in.h:2
 msgid "children with"
 msgstr "enfants avec"
 
-#: ../xslt/source.xml.in.h:3
-#: ../xslt/folder.xml.in.h:3
+#: ../xslt/source.xml.in.h:3 ../xslt/folder.xml.in.h:3
 #: ../xslt/vfolder.xml.in.h:2
 msgid "unread headlines"
 msgstr "titres non lus"
@@ -120,8 +127,7 @@ msgstr "Classé sous"
 msgid "Section"
 msgstr "Section"
 
-#: ../xslt/item.xml.in.h:8
-#: ../src/interface.c:602
+#: ../xslt/item.xml.in.h:8 ../src/interface.c:602
 msgid "Source"
 msgstr "Source"
 
@@ -142,8 +148,13 @@ msgid "search"
 msgstr "chercher"
 
 #: ../xslt/newsbin.xml.in.h:1
-msgid "Add items to this news bin by selecting \"Copy to News Bin\" from the item list context menu."
-msgstr "Ajoutez des éléments à cette boîte à nouvelles en sélectionnant « Copier dans la boîte à nouvelles » à partir du menu contextuel de la liste des éléments."
+msgid ""
+"Add items to this news bin by selecting \"Copy to News Bin\" from the item "
+"list context menu."
+msgstr ""
+"Ajoutez des éléments à cette boîte à nouvelles en sélectionnant « Copier "
+"dans la boîte à nouvelles » à partir du menu contextuel de la liste des "
+"éléments."
 
 #: ../xslt/newsbin.xml.in.h:2
 msgid "News Bin:"
@@ -221,31 +232,39 @@ msgid "Cannot create cache directory \"%s\"!"
 msgstr "Impossible de créer le répertoire cache \"%s\" !"
 
 #: ../src/common.c:964
-msgid "Unexpected end of character sequence or corrupt UTF-8 encoding! Some characters were dropped!"
-msgstr "Fin inattendue de la séquence de caractères ou encodage UTF-8 corrompu ! Certains caractères ont été perdus !"
+msgid ""
+"Unexpected end of character sequence or corrupt UTF-8 encoding! Some "
+"characters were dropped!"
+msgstr ""
+"Fin inattendue de la séquence de caractères ou encodage UTF-8 corrompu ! "
+"Certains caractères ont été perdus !"
 
 #: ../src/export.c:144
 #, c-format
 msgid "Error renaming %s to %s\n"
 msgstr "Erreur lors du renommage de %s en %s\n"
 
-#: ../src/export.c:308
-#: ../src/export.c:310
+#: ../src/export.c:308 ../src/export.c:310
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
-msgstr "Erreur XML pendant la lecture du fichier cache ! Impossible d'importer \"%s\" !"
+msgstr ""
+"Erreur XML pendant la lecture du fichier cache ! Impossible d'importer \"%s"
+"\" !"
 
-#: ../src/export.c:315
-#: ../src/export.c:317
+#: ../src/export.c:315 ../src/export.c:317
 #, c-format
-msgid "Empty document! OPML document \"%s\" should not be empty when importing."
-msgstr "Document vide ! Le document OPML \"%s\" ne devrait pas être vide lors de l'importation."
+msgid ""
+"Empty document! OPML document \"%s\" should not be empty when importing."
+msgstr ""
+"Document vide ! Le document OPML \"%s\" ne devrait pas être vide lors de "
+"l'importation."
 
-#: ../src/export.c:338
-#: ../src/export.c:340
+#: ../src/export.c:338 ../src/export.c:340
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
-msgstr "\"%s\" n'est pas un document OPML valide ! Liferea ne peut importer ce fichier !"
+msgstr ""
+"\"%s\" n'est pas un document OPML valide ! Liferea ne peut importer ce "
+"fichier !"
 
 #: ../src/export.c:359
 msgid "Imported feed list"
@@ -278,10 +297,11 @@ msgstr "Exporter"
 #: ../src/feed.c:371
 #, c-format
 msgid "<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"
-msgstr "<p>Erreur XML lors de la lecture des flux ! Le flux \"%s\" ne peut être chargé !</p>"
+msgstr ""
+"<p>Erreur XML lors de la lecture des flux ! Le flux \"%s\" ne peut être "
+"chargé !</p>"
 
-#: ../src/feed.c:376
-#: ../src/feed.c:667
+#: ../src/feed.c:376 ../src/feed.c:667
 msgid "<p>Empty document!</p>"
 msgstr "<p>Document vide !</p>"
 
@@ -290,8 +310,14 @@ msgid "<p>Invalid XML!</p>"
 msgstr "<p>XML non valide !</p>"
 
 #: ../src/feed.c:452
-msgid "<p>The URL you want Liferea to subscribe to points to a webpage and the auto discovery found no feeds on this page. Maybe this webpage just does not support feed auto discovery.</p>"
-msgstr "<p>L'URL à laquelle vous voulez vous abonner pointe vers une page web et aucun flux n'a été découvert sur cette page. Peut-être que cette page web ne supporte pas la découverte automatique de flux.</p>"
+msgid ""
+"<p>The URL you want Liferea to subscribe to points to a webpage and the auto "
+"discovery found no feeds on this page. Maybe this webpage just does not "
+"support feed auto discovery.</p>"
+msgstr ""
+"<p>L'URL à laquelle vous voulez vous abonner pointe vers une page web et "
+"aucun flux n'a été découvert sur cette page. Peut-être que cette page web ne "
+"supporte pas la découverte automatique de flux.</p>"
 
 #: ../src/feed.c:457
 msgid "<p>Could not determine the feed type.</p>"
@@ -300,22 +326,32 @@ msgstr "<p>Impossible de déterminer le type de flux.</p>"
 #: ../src/feed.c:650
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
-msgstr "Erreur lors de la lecture du fichier cache \"%s\" ! Le fichier cache n'a pas pu être chargé !"
+msgstr ""
+"Erreur lors de la lecture du fichier cache \"%s\" ! Le fichier cache n'a pas "
+"pu être chargé !"
 
 #: ../src/feed.c:661
 #, c-format
-msgid "<p>XML error while parsing cache file! Feed cache file \"%s\" could not be loaded!</p>"
-msgstr "<p>Erreur XML pendant l'analyse syntaxique du fichier cache ! Le fichier cache du flux \"%s\" n'a pas pu être chargé !</p>"
+msgid ""
+"<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
+"loaded!</p>"
+msgstr ""
+"<p>Erreur XML pendant l'analyse syntaxique du fichier cache ! Le fichier "
+"cache du flux \"%s\" n'a pas pu être chargé !</p>"
 
 #: ../src/feed.c:682
 #, c-format
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
-msgstr "<p>\"%s\" n'est pas un fichier cache valide ! Impossible de lire le fichier cache !</p>"
+msgstr ""
+"<p>\"%s\" n'est pas un fichier cache valide ! Impossible de lire le fichier "
+"cache !</p>"
 
 #: ../src/feed.c:748
 #, c-format
 msgid "There were errors while parsing cache file \"%s\""
-msgstr "Des erreurs sont survenues pendant l'analyse syntaxique du fichier cache \"%s\""
+msgstr ""
+"Des erreurs sont survenues pendant l'analyse syntaxique du fichier cache \"%s"
+"\""
 
 #: ../src/feed.c:773
 #, c-format
@@ -325,11 +361,17 @@ msgstr "Une mise à jour de ce flux \"%s\" est déjà en cours !"
 #: ../src/feed.c:778
 #, c-format
 msgid "The feed \"%s\" was discontinued. Liferea won't update it anymore!"
-msgstr "Le flux \"%s\" avait cessé d'exister. Liferea ne le mettra plus à jour !"
+msgstr ""
+"Le flux \"%s\" avait cessé d'exister. Liferea ne le mettra plus à jour !"
 
 #: ../src/feed.c:1055
-msgid "You are unauthorized to download this feed. Please update your username and password in the feed properties dialog box."
-msgstr "Vous n'êtes pas autorisé à télécharger ce flux. Veuillez mettre à jour votre nom d'utilisateur et votre mot de passe dans la boîte de dialogue des propriétés de ce flux."
+msgid ""
+"You are unauthorized to download this feed. Please update your username and "
+"password in the feed properties dialog box."
+msgstr ""
+"Vous n'êtes pas autorisé à télécharger ce flux. Veuillez mettre à jour votre "
+"nom d'utilisateur et votre mot de passe dans la boîte de dialogue des "
+"propriétés de ce flux."
 
 #: ../src/feed.c:1057
 msgid "Payment Required"
@@ -406,7 +448,8 @@ msgstr "Méthode d'authentification du serveur web incompatible avec Liferea"
 
 #: ../src/feed.c:1096
 msgid "Feed not available: Server requested unsupported redirection!"
-msgstr "Flux non disponible : le serveur a demandé une redirection non supportée !"
+msgstr ""
+"Flux non disponible : le serveur a demandé une redirection non supportée !"
 
 #: ../src/feed.c:1097
 msgid "Client Error"
@@ -421,8 +464,12 @@ msgid "(unknown networking error happened)"
 msgstr "(une erreur réseau inconnue s'est produite)"
 
 #: ../src/feed.c:1108
-msgid "There was a problem while reading this subscription. Please check the URL and console output."
-msgstr "Un problème est survenu pendant la lecture de cet abonnement. Veuillez vérifier l'URL et la sortie sur la console."
+msgid ""
+"There was a problem while reading this subscription. Please check the URL "
+"and console output."
+msgstr ""
+"Un problème est survenu pendant la lecture de cet abonnement. Veuillez "
+"vérifier l'URL et la sortie sur la console."
 
 #: ../src/feed.c:1159
 #, c-format
@@ -445,8 +492,15 @@ msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\" n'a pas changé depuis la dernière mise à jour"
 
 #: ../src/feed.c:1220
-msgid "<p>Could not detect the type of this feed! Please check if the source really points to a resource provided in one of the supported syndication formats!</p>XML Parser Output:<br /><div class='xmlparseroutput'>"
-msgstr "<p>Impossible de détecter le type de ce flux ! Veuillez vérifier que la source pointe vraiment vers une ressource fournie dans un des formats supportés !</p>Sortie de l'analyseur syntaxique XML :<br /><div class='xmlparseroutput'>"
+msgid ""
+"<p>Could not detect the type of this feed! Please check if the source really "
+"points to a resource provided in one of the supported syndication formats!</"
+"p>XML Parser Output:<br /><div class='xmlparseroutput'>"
+msgstr ""
+"<p>Impossible de détecter le type de ce flux ! Veuillez vérifier que la "
+"source pointe vraiment vers une ressource fournie dans un des formats "
+"supportés !</p>Sortie de l'analyseur syntaxique XML :<br /><div "
+"class='xmlparseroutput'>"
 
 #: ../src/feed.c:1239
 #, c-format
@@ -467,22 +521,31 @@ msgstr "Mise à jour de \"%s\""
 msgid "You have to select a feed entry"
 msgstr "Vous devez sélectionner un flux"
 
-#: ../src/feedlist.c:304
-#: ../src/feedlist.c:313
+#: ../src/feedlist.c:304 ../src/feedlist.c:313
 msgid "Liferea is in offline mode. No update possible."
-msgstr "Liferea est en mode déconnecté. Il n'est pas possible de faire de mise à jour."
+msgstr ""
+"Liferea est en mode déconnecté. Il n'est pas possible de faire de mise à "
+"jour."
 
 #: ../src/feedlist.c:429
-msgid "Liferea v1.2 uses a new cache format and has migrated your feed cache. The cache content of v1.0 in ~/.liferea was not deleted automatically. Please remove this directory manually once you are sure migration was successful!"
-msgstr "Liferea v1.2 utilise un nouveau format de cache et a converti votre cache de flux. Le contenu du cache de v1.0 dans ~/.liferea n'a pas été effacé automatiquement. Veuillez supprimer ce répertoire à la main une fois que vous êtes sûr que la conversion s'est correctement effectuée !"
+msgid ""
+"Liferea v1.2 uses a new cache format and has migrated your feed cache. The "
+"cache content of v1.0 in ~/.liferea was not deleted automatically. Please "
+"remove this directory manually once you are sure migration was successful!"
+msgstr ""
+"Liferea v1.2 utilise un nouveau format de cache et a converti votre cache de "
+"flux. Le contenu du cache de v1.0 dans ~/.liferea n'a pas été effacé "
+"automatiquement. Veuillez supprimer ce répertoire à la main une fois que "
+"vous êtes sûr que la conversion s'est correctement effectuée !"
 
 #: ../src/html.c:154
 msgid "Feed link auto discovery failed! No feed links found!"
-msgstr "La découverte automatique de lien de flux a échoué ! Aucun lien de flux n'a été trouvé !"
+msgstr ""
+"La découverte automatique de lien de flux a échoué ! Aucun lien de flux n'a "
+"été trouvé !"
 
 #. GTK theme support
-#: ../src/interface.c:70
-#: ../src/main.c:184
+#: ../src/interface.c:70 ../src/main.c:185
 msgid "Liferea"
 msgstr "Liferea"
 
@@ -502,8 +565,7 @@ msgstr "Voir les titres"
 msgid "combined view"
 msgstr "vue combinée"
 
-#: ../src/interface.c:196
-#: ../src/interface.c:1602
+#: ../src/interface.c:196 ../src/interface.c:1602
 msgid "Headlines"
 msgstr "Titres"
 
@@ -529,14 +591,14 @@ msgstr "<span weight=\"bold\">Intervalle de mise à jour</span>"
 
 #: ../src/interface.c:423
 msgid "_Use global default update interval."
-msgstr "_Utiliser l'intervalle de mise à jour par défaut, défini de manière globale."
+msgstr ""
+"_Utiliser l'intervalle de mise à jour par défaut, défini de manière globale."
 
 #: ../src/interface.c:433
 msgid "_Feed specific update interval of"
 msgstr "_Intervalle de mise à jour spécifique au flux de"
 
-#: ../src/interface.c:448
-#: ../src/interface.c:1373
+#: ../src/interface.c:448 ../src/interface.c:1373
 msgid "minutes."
 msgstr "minutes."
 
@@ -551,79 +613,75 @@ msgstr " "
 #: ../src/interface.c:462
 #, c-format
 msgid "This feed provider suggests an update interval of %d minutes."
-msgstr "Le fournisseur de ce flux suggère un intervalle de mise à jour de %d minutes."
+msgstr ""
+"Le fournisseur de ce flux suggère un intervalle de mise à jour de %d minutes."
 
 #: ../src/interface.c:469
 msgid "General"
 msgstr "Général"
 
-#: ../src/interface.c:482
-#: ../src/interface.c:902
-#: ../src/interface.c:3444
+#: ../src/interface.c:482 ../src/interface.c:902 ../src/interface.c:3444
 msgid "<b>Feed Source</b>"
 msgstr "<b>Source du flux</b>"
 
-#: ../src/interface.c:515
-#: ../src/interface.c:941
+#: ../src/interface.c:515 ../src/interface.c:941
 msgid "_URL"
 msgstr "_URL"
 
-#: ../src/interface.c:521
-#: ../src/interface.c:947
+#: ../src/interface.c:521 ../src/interface.c:947
 msgid "_Command"
 msgstr "_Commande"
 
-#: ../src/interface.c:531
-#: ../src/interface.c:957
+#: ../src/interface.c:531 ../src/interface.c:957
 msgid "_Local File"
 msgstr "Fichier _local"
 
-#: ../src/interface.c:537
-#: ../src/interface.c:912
-#: ../src/interface.c:963
-#: ../src/interface.c:988
-#: ../src/interface.c:1003
-#: ../src/interface.c:1014
-#: ../src/interface.c:1032
-#: ../src/interface.c:3454
+#: ../src/interface.c:537 ../src/interface.c:912 ../src/interface.c:963
+#: ../src/interface.c:988 ../src/interface.c:1003 ../src/interface.c:1014
+#: ../src/interface.c:1032 ../src/interface.c:3454
 msgid "    "
 msgstr "    "
 
-#: ../src/interface.c:541
-#: ../src/interface.c:598
-#: ../src/interface.c:967
+#: ../src/interface.c:541 ../src/interface.c:598 ../src/interface.c:967
 #: ../src/interface.c:1044
 msgid "Select File..."
 msgstr "Sélectionner un fichier..."
 
-#: ../src/interface.c:545
-#: ../src/interface.c:928
+#: ../src/interface.c:545 ../src/interface.c:928
 msgid "_Source:"
 msgstr "_Source :"
 
-#: ../src/interface.c:552
-#: ../src/interface.c:971
+#: ../src/interface.c:552 ../src/interface.c:971
 msgid "Source Type:"
 msgstr "Type de source :"
 
-#: ../src/interface.c:563
-#: ../src/interface.c:1007
+#: ../src/interface.c:563 ../src/interface.c:1007
 msgid "Use conversion _filter"
 msgstr "Utiliser un _filtre de conversion"
 
-#: ../src/interface.c:576
-#: ../src/interface.c:1022
-msgid "Liferea can use external filter plugins in order to access feeds and directories in non-supported formats.  See the documentation for more information."
-msgstr "Liferea peut utiliser des filtres de conversion externes sous forme de greffons (plugins) pour accéder aux flux et aux répertoires qui sont dans des formats non supportés. Lisez la documentation pour de plus amples informations."
+#: ../src/interface.c:576 ../src/interface.c:1022
+msgid ""
+"Liferea can use external filter plugins in order to access feeds and "
+"directories in non-supported formats.  See the documentation for more "
+"information."
+msgstr ""
+"Liferea peut utiliser des filtres de conversion externes sous forme de "
+"greffons (plugins) pour accéder aux flux et aux répertoires qui sont dans "
+"des formats non supportés. Lisez la documentation pour de plus amples "
+"informations."
 
-#: ../src/interface.c:586
-#: ../src/interface.c:1036
+#: ../src/interface.c:586 ../src/interface.c:1036
 msgid "Convert _using:"
 msgstr "Convertir en _utilisant :"
 
 #: ../src/interface.c:611
-msgid "The cache setting controls if the contents of feeds are saved when Liferea exits. Marked items are always saved to the cache."
-msgstr "Le réglage du cache permet de contrôler si le contenu des flux doit être sauvegardé à la fermeture de Liferea. Les éléments marqués sont toujours sauvegardés dans le cache."
+msgid ""
+"The cache setting controls if the contents of feeds are saved when Liferea "
+"exits. Marked items are always saved to the cache."
+msgstr ""
+"Le réglage du cache permet de contrôler si le contenu des flux doit être "
+"sauvegardé à la fermeture de Liferea. Les éléments marqués sont toujours "
+"sauvegardés dans le cache."
 
 #: ../src/interface.c:618
 msgid "_Default cache settings"
@@ -653,18 +711,15 @@ msgstr "Archivage"
 msgid "Use HTTP _authentication"
 msgstr "Utiliser l'_authentification HTTP"
 
-#: ../src/interface.c:681
-#: ../src/interface.c:2839
+#: ../src/interface.c:681 ../src/interface.c:2839
 msgid "User_name:"
 msgstr "Nom d'_utilisateur :"
 
-#: ../src/interface.c:688
-#: ../src/interface.c:2846
+#: ../src/interface.c:688 ../src/interface.c:2846
 msgid "_Password:"
 msgstr "_Mot de passe :"
 
-#: ../src/interface.c:708
-#: ../src/interface.c:992
+#: ../src/interface.c:708 ../src/interface.c:992
 msgid "_Don't use proxy for download"
 msgstr "_Ne pas utiliser de proxy pour le téléchargement"
 
@@ -677,16 +732,17 @@ msgid "_Automatically download all enclosures of this feed."
 msgstr "_Télécharger automatiquement toutes les annexes de ce flux."
 
 #: ../src/interface.c:725
-msgid "Auto-_load item link in internal browser when reading articles."
-msgstr "_Chargement auto du lien assigné dans le navigateur interne à la lecture des articles."
+#, fuzzy
+msgid "Auto-_load item link in configured browser when selecting articles."
+msgstr ""
+"_Chargement auto du lien assigné dans le navigateur interne à la lecture des "
+"articles."
 
 #: ../src/interface.c:729
 msgid "Advanced"
 msgstr "Avancé"
 
-#: ../src/interface.c:882
-#: ../src/interface.c:3433
-#: ../src/node.c:489
+#: ../src/interface.c:882 ../src/interface.c:3433 ../src/node.c:489
 msgid "New Subscription"
 msgstr "Nouvel abonnement"
 
@@ -715,8 +771,15 @@ msgid "Default Feed Refresh _Interval:"
 msgstr "_Intervalle de rafraîchissement des flux par défaut :"
 
 #: ../src/interface.c:1377
-msgid "Note: <i>Please remember to set a reasonable refresh time. It is not desired to poll daily updated feeds every 15 minutes. To disable auto-updating per default set the interval to 0 minutes.</i>"
-msgstr "Note : <i>Veuillez vous souvenir de régler la vitesse de rafraîchissement raisonnablement. Il est inutile de rafraîchir tous les quarts d'heure un flux mis à jour quotidiennement. Pour désactiver la mise à jour automatique par défaut, réglez l'intervalle à 0 minute.</i>"
+msgid ""
+"Note: <i>Please remember to set a reasonable refresh time. It is not desired "
+"to poll daily updated feeds every 15 minutes. To disable auto-updating per "
+"default set the interval to 0 minutes.</i>"
+msgstr ""
+"Note : <i>Veuillez vous souvenir de régler la vitesse de rafraîchissement "
+"raisonnablement. Il est inutile de rafraîchir tous les quarts d'heure un "
+"flux mis à jour quotidiennement. Pour désactiver la mise à jour automatique "
+"par défaut, réglez l'intervalle à 0 minute.</i>"
 
 #: ../src/interface.c:1388
 msgid "At _startup:"
@@ -744,11 +807,17 @@ msgstr "<span weight=\"bold\">Réglages d'affichage des dossiers</span>"
 
 #: ../src/interface.c:1456
 msgid "_Show the items of all child feeds when a folder is selected."
-msgstr "_Montrer les éléments de tous les flux enfants lorsqu'un dossier est sélectionné."
+msgstr ""
+"_Montrer les éléments de tous les flux enfants lorsqu'un dossier est "
+"sélectionné."
 
 #: ../src/interface.c:1460
-msgid "<i>This option can cause significant delays when loading folders containing many feeds.</i>"
-msgstr "<i>Cette option peut causer des délais importants lors du chargement de dossiers contenant de nombreux flux.</i>"
+msgid ""
+"<i>This option can cause significant delays when loading folders containing "
+"many feeds.</i>"
+msgstr ""
+"<i>Cette option peut causer des délais importants lors du chargement de "
+"dossiers contenant de nombreux flux.</i>"
 
 #: ../src/interface.c:1468
 msgid "_Hide read items."
@@ -808,7 +877,8 @@ msgstr "_Voir les titres avec"
 
 #: ../src/interface.c:1650
 msgid "<i>Please restart Liferea for changes to take effect.</i>"
-msgstr "<i>Veuillez relancer Liferea pour que les changements prennent effet.</i>"
+msgstr ""
+"<i>Veuillez relancer Liferea pour que les changements prennent effet.</i>"
 
 #: ../src/interface.c:1656
 msgid "Open links in Liferea's _window."
@@ -853,7 +923,9 @@ msgstr "Afficher un _popup avec les nouveaux titres."
 
 #: ../src/interface.c:1765
 msgid "Show a status _icon in the notification area (system tray)."
-msgstr "Afficher une _icône de statut dans la zone de notification (barre des tâches)."
+msgstr ""
+"Afficher une _icône de statut dans la zone de notification (barre des "
+"tâches)."
 
 #: ../src/interface.c:1773
 msgid "     "
@@ -892,8 +964,12 @@ msgid "<span weight=\"bold\">HTTP Proxy Server</span>"
 msgstr "<span weight=\"bold\">Serveur proxy HTTP</span>"
 
 #: ../src/interface.c:1858
-msgid "<i>Liferea reuses the GNOME proxy settings. If you use GNOME you can change these settings in the GNOME Control Center.</i>"
-msgstr "<i>Liferea réutilise les réglages de proxy de GNOME. Si vous utilisez GNOME, vous pouvez changer ces réglages dans le Centre de contrôle de GNOME.</i>"
+msgid ""
+"<i>Liferea reuses the GNOME proxy settings. If you use GNOME you can change "
+"these settings in the GNOME Control Center.</i>"
+msgstr ""
+"<i>Liferea réutilise les réglages de proxy de GNOME. Si vous utilisez GNOME, "
+"vous pouvez changer ces réglages dans le Centre de contrôle de GNOME.</i>"
 
 #: ../src/interface.c:1869
 msgid "_Enable Proxy"
@@ -935,8 +1011,7 @@ msgstr "_Télécharger en utilisant"
 msgid "_Save downloads in"
 msgstr "Sauver les téléchargements _dans"
 
-#: ../src/interface.c:2030
-#: ../src/interface.c:3108
+#: ../src/interface.c:2030 ../src/interface.c:3108
 msgid "_Browse"
 msgstr "_Parcourir"
 
@@ -968,8 +1043,7 @@ msgstr "_Nouveau nom :"
 msgid "Create Search Engine Feed"
 msgstr "Créer un flux de moteur de recherche"
 
-#: ../src/interface.c:2559
-#: ../src/interface.c:3193
+#: ../src/interface.c:2559 ../src/interface.c:3193
 msgid "_Search for:"
 msgstr "_Chercher :"
 
@@ -982,11 +1056,17 @@ msgid "Maximal _Number Of Result Items:"
 msgstr "Nombre _maximal de résultats :"
 
 #: ../src/interface.c:2583
-msgid "Note: Liferea will generate a feed subscription which is used to query the search engine results for the specified search string. You can keep this feed permanently and update it like any other subscription.  "
-msgstr "Note : Liferea va générer un abonnement à un flux, utilisé pour récupérer les résultats du moteur de recherche pour la chaîne de recherche spécifiée. Vous pouvez garder ce flux définitivement et le mettre à jour comme n'importe quel autre abonnement.  "
+msgid ""
+"Note: Liferea will generate a feed subscription which is used to query the "
+"search engine results for the specified search string. You can keep this "
+"feed permanently and update it like any other subscription.  "
+msgstr ""
+"Note : Liferea va générer un abonnement à un flux, utilisé pour récupérer "
+"les résultats du moteur de recherche pour la chaîne de recherche spécifiée. "
+"Vous pouvez garder ce flux définitivement et le mettre à jour comme "
+"n'importe quel autre abonnement.  "
 
-#: ../src/interface.c:2663
-#: ../src/interface.c:2708
+#: ../src/interface.c:2663 ../src/interface.c:2708
 msgid "About"
 msgstr "À propos"
 
@@ -1119,15 +1199,18 @@ msgstr "Traduction"
 msgid "Authentication"
 msgstr "Authentification"
 
-#: ../src/interface.c:2827
-#: ../src/ui/ui_feed.c:379
+#: ../src/interface.c:2827 ../src/ui/ui_feed.c:379
 #, c-format
 msgid "Enter the username and password for \"%s\" (%s):"
 msgstr "Entrer le nom d'utilisateur et le mot de passe pour \"%s\" (%s) :"
 
 #: ../src/interface.c:2868
-msgid "Note: <i>The username and password will be saved to your Liferea feedlist file without using encryption.</i>"
-msgstr "Note : <i>le nom d'utilisateur et le mot de passe seront sauvés non chiffrés dans votre liste de flux Liferea.</i>"
+msgid ""
+"Note: <i>The username and password will be saved to your Liferea feedlist "
+"file without using encryption.</i>"
+msgstr ""
+"Note : <i>le nom d'utilisateur et le mot de passe seront sauvés non chiffrés "
+"dans votre liste de flux Liferea.</i>"
 
 #: ../src/interface.c:2936
 msgid "Search Folder Properties"
@@ -1146,8 +1229,10 @@ msgid ""
 "Note: Items are added to the search folder if at least one additive rule\n"
 "matches. They are removed if at least one removing rule matches."
 msgstr ""
-"Note : les éléments sont ajoutés au dossier de recherche si au moins une règle additive\n"
-"s'applique. Ils sont supprimés si au moins une règle de suppression s'applique."
+"Note : les éléments sont ajoutés au dossier de recherche si au moins une "
+"règle additive\n"
+"s'applique. Ils sont supprimés si au moins une règle de suppression "
+"s'applique."
 
 #: ../src/interface.c:3066
 msgid "Downloading Enclosure"
@@ -1162,35 +1247,53 @@ msgid "<b>text/plain</b>"
 msgstr "<b>text/plain</b>"
 
 #: ../src/interface.c:3094
-msgid "What should Liferea do with this enclosure? Please enter the command you want to be executed below. The downloaded file will be supplied as an argument for this command:"
-msgstr "Que doit faire Liferea avec cette annexe ? Veuillez entrer ci-dessous la commande que vous voulez exécuter. Le fichier téléchargé sera passé en argument de cette commande :"
+msgid ""
+"What should Liferea do with this enclosure? Please enter the command you "
+"want to be executed below. The downloaded file will be supplied as an "
+"argument for this command:"
+msgstr ""
+"Que doit faire Liferea avec cette annexe ? Veuillez entrer ci-dessous la "
+"commande que vous voulez exécuter. Le fichier téléchargé sera passé en "
+"argument de cette commande :"
 
 #: ../src/interface.c:3112
 msgid "_Do this automatically for files like this from now on."
-msgstr "_Faire ceci automatiquement pour les fichiers comme celui-ci à partir de maintenant."
+msgstr ""
+"_Faire ceci automatiquement pour les fichiers comme celui-ci à partir de "
+"maintenant."
 
 #: ../src/interface.c:3176
 msgid "Search All Feeds"
 msgstr "Chercher dans tous les flux"
 
 #: ../src/interface.c:3200
-msgid "Enter a search string Liferea should find either in a items title or in its content."
-msgstr "Entrez une chaîne à rechercher que Liferea doit trouver soit dans le titre, soit dans le contenu d'un élément."
+msgid ""
+"Enter a search string Liferea should find either in a items title or in its "
+"content."
+msgstr ""
+"Entrez une chaîne à rechercher que Liferea doit trouver soit dans le titre, "
+"soit dans le contenu d'un élément."
 
 #: ../src/interface.c:3216
-msgid "Saves this search as a search folder, which will appear in the feed list."
-msgstr "Sauve cette recherche comme un dossier de recherche, qui apparaîtra dans la liste des flux."
+msgid ""
+"Saves this search as a search folder, which will appear in the feed list."
+msgstr ""
+"Sauve cette recherche comme un dossier de recherche, qui apparaîtra dans la "
+"liste des flux."
 
 #: ../src/interface.c:3230
 msgid "Search Folder"
 msgstr "Dossier de recherche"
 
 #: ../src/interface.c:3239
-msgid "Starts searching for the specified text in all feeds. The search result will appear in the item list."
-msgstr "Débute une recherche du texte spécifié dans tous les flux. Le résultat de la recherche apparaîtra dans la liste des éléments."
+msgid ""
+"Starts searching for the specified text in all feeds. The search result will "
+"appear in the item list."
+msgstr ""
+"Débute une recherche du texte spécifié dans tous les flux. Le résultat de la "
+"recherche apparaîtra dans la liste des éléments."
 
-#: ../src/interface.c:3300
-#: ../src/ui/ui_mainwindow.c:870
+#: ../src/interface.c:3300 ../src/ui/ui_mainwindow.c:870
 msgid "Update Monitor"
 msgstr "Moniteur de mise à jour"
 
@@ -1207,15 +1310,18 @@ msgid "Cancel _All"
 msgstr "_Annuler le tout"
 
 #: ../src/interface.c:3470
-msgid "Enter a website location to use feed autodiscovery or in case you know it the exact feed location."
-msgstr "Entrez une adresse de site web à utiliser pour la découverte automatique ou, si vous la connaissez, l'adresse exacte du flux."
+msgid ""
+"Enter a website location to use feed autodiscovery or in case you know it "
+"the exact feed location."
+msgstr ""
+"Entrez une adresse de site web à utiliser pour la découverte automatique ou, "
+"si vous la connaissez, l'adresse exacte du flux."
 
 #: ../src/interface.c:3487
 msgid "Advanced..."
 msgstr "Avancé..."
 
-#: ../src/interface.c:3556
-#: ../src/ui/ui_mainwindow.c:872
+#: ../src/interface.c:3556 ../src/ui/ui_mainwindow.c:872
 msgid "Script Manager"
 msgstr "Gestionnaire de scripts"
 
@@ -1274,12 +1380,14 @@ msgstr "  --mainwindow-state=ÉTAT"
 
 #: ../src/main.c:74
 msgid "                   Start Liferea with its main window in STATE."
-msgstr "                   Lance Liferea avec sa fenêtre principale dans l'état ÉTAT."
+msgstr ""
+"                   Lance Liferea avec sa fenêtre principale dans l'état ÉTAT."
 
 #: ../src/main.c:75
 msgid "                   STATE may be `shown', `iconified', or `hidden'"
 msgstr ""
-"                   ÉTAT peut être « shown » (fenêtre visible), « iconified »\n"
+"                   ÉTAT peut être « shown » (fenêtre visible), "
+"« iconified »\n"
 "                   (fenêtre iconisée), ou « hidden » (fenêtre cachée)"
 
 #: ../src/main.c:77
@@ -1288,55 +1396,78 @@ msgstr "  --debug-all      Affiche tous les types de message de débuggage"
 
 #: ../src/main.c:78
 msgid "  --debug-cache    Print debugging messages for the cache handling"
-msgstr "  --debug-cache    Affiche les messages de débuggage pour la gestion du cache"
+msgstr ""
+"  --debug-cache    Affiche les messages de débuggage pour la gestion du cache"
 
 #: ../src/main.c:79
-msgid "  --debug-conf     Print debugging messages of the configuration handling"
-msgstr "  --debug-conf     Affiche les messages de débuggage du gestionnaire de config"
+msgid ""
+"  --debug-conf     Print debugging messages of the configuration handling"
+msgstr ""
+"  --debug-conf     Affiche les messages de débuggage du gestionnaire de "
+"config"
 
 #: ../src/main.c:80
 msgid "  --debug-gui      Print debugging messages of all GUI functions"
-msgstr "  --debug-gui      Affiche les messages de débuggage concernant l'interface"
+msgstr ""
+"  --debug-gui      Affiche les messages de débuggage concernant l'interface"
 
 #: ../src/main.c:81
-msgid "  --debug-html     Enable HTML debugging (saving to ~/.liferea_1.2/output.xhtml)"
-msgstr "  --debug-html     Active le débug HTML (sauvé dans ~/.liferea_1.2/output.xhtml)"
+msgid ""
+"  --debug-html     Enable HTML debugging (saving to ~/.liferea_1.2/output."
+"xhtml)"
+msgstr ""
+"  --debug-html     Active le débug HTML (sauvé dans ~/.liferea_1.2/output."
+"xhtml)"
 
 #: ../src/main.c:82
-msgid "  --debug-parsing  Print debugging messages of all parsing functions"
-msgstr "  --debug-parsing  Affiche les messages de débuggage concernant l'analyse XML"
+#, fuzzy
+msgid "  --debug-net      Print debugging messages for all network access"
+msgstr "  --debug-all      Affiche tous les types de message de débuggage"
 
 #: ../src/main.c:83
-msgid "  --debug-plugins  Print debugging messages when loading plugins"
-msgstr "  --debug-plugins  Affiche les messages de débuggage au chargement des greffons"
+msgid "  --debug-parsing  Print debugging messages of all parsing functions"
+msgstr ""
+"  --debug-parsing  Affiche les messages de débuggage concernant l'analyse XML"
 
 #: ../src/main.c:84
-msgid "  --debug-trace    Print debugging messages when entering/leaving functions"
-msgstr "  --debug-trace    Affiche les messages de dbg des entrées/sorties de fonctions"
+msgid "  --debug-plugins  Print debugging messages when loading plugins"
+msgstr ""
+"  --debug-plugins  Affiche les messages de débuggage au chargement des "
+"greffons"
 
 #: ../src/main.c:85
-msgid "  --debug-update   Print debugging messages of the feed update processing"
-msgstr "  --debug-update   Affiche les messages de débuggage de la mise à jour des flux"
+msgid ""
+"  --debug-trace    Print debugging messages when entering/leaving functions"
+msgstr ""
+"  --debug-trace    Affiche les messages de dbg des entrées/sorties de "
+"fonctions"
 
 #: ../src/main.c:86
+msgid ""
+"  --debug-update   Print debugging messages of the feed update processing"
+msgstr ""
+"  --debug-update   Affiche les messages de débuggage de la mise à jour des "
+"flux"
+
+#: ../src/main.c:87
 msgid "  --debug-verbose  Print verbose debugging messages"
 msgstr "  --debug-verbose  Affiche des messages de débuggage plus verbeux"
 
-#: ../src/main.c:165
+#: ../src/main.c:166
 msgid "Liferea seems to be running already!"
 msgstr "Liferea semble déjà être en train de tourner !"
 
-#: ../src/main.c:231
+#: ../src/main.c:234
 #, c-format
 msgid "The --mainwindow-state argument must be given a parameter.\n"
 msgstr "L'argument --mainwindow-state prend un paramètre.\n"
 
-#: ../src/main.c:239
+#: ../src/main.c:242
 #, c-format
 msgid "The --session argument must be given a parameter.\n"
 msgstr "L'argument --session prend un paramètre.\n"
 
-#: ../src/main.c:242
+#: ../src/main.c:245
 #, c-format
 msgid "Liferea encountered an unknown argument: %s\n"
 msgstr "Liferea a rencontré un argument inconnu : %s\n"
@@ -1357,15 +1488,11 @@ msgstr "ne contient pas"
 msgid "Item title"
 msgstr "Le titre de l'élément"
 
-#: ../src/rule.c:184
-#: ../src/rule.c:185
-#: ../src/rule.c:186
+#: ../src/rule.c:184 ../src/rule.c:185 ../src/rule.c:186
 msgid "does match"
 msgstr "satisfait"
 
-#: ../src/rule.c:184
-#: ../src/rule.c:185
-#: ../src/rule.c:186
+#: ../src/rule.c:184 ../src/rule.c:185 ../src/rule.c:186
 msgid "does not match"
 msgstr "ne satisfait pas"
 
@@ -1425,8 +1552,7 @@ msgstr "inclus"
 msgid "not included"
 msgstr "non inclus"
 
-#: ../src/support.c:90
-#: ../src/support.c:114
+#: ../src/support.c:90 ../src/support.c:114
 #, c-format
 msgid "Couldn't find pixmap file: %s"
 msgstr "Fichier pixmap %s introuvable."
@@ -1441,9 +1567,7 @@ msgstr "Erreur en ouvrant le fichier temporaire %s pour le filtrage !"
 msgid "%s exited with status %d"
 msgstr "%s s'est terminé avec le code de retour %d"
 
-#: ../src/update.c:203
-#: ../src/update.c:204
-#: ../src/update.c:304
+#: ../src/update.c:203 ../src/update.c:204 ../src/update.c:304
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "Erreur : impossible d'ouvrir le tuyau \"%s\""
@@ -1487,8 +1611,7 @@ msgstr "\"%s\" n'est pas un fichier de config de types d'annexes valide !"
 msgid "Enclosure download finished: \"%s\""
 msgstr "Le téléchargement de l'annexe s'est terminé : \"%s\""
 
-#: ../src/ui/ui_enclosure.c:229
-#: ../src/ui/ui_enclosure.c:391
+#: ../src/ui/ui_enclosure.c:229 ../src/ui/ui_enclosure.c:391
 #: ../src/ui/ui_feed.c:280
 msgid "Choose File"
 msgstr "Choisir un fichier"
@@ -1510,7 +1633,8 @@ msgstr "Source inconnue"
 #: ../src/ui/ui_feed.c:579
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minutes."
-msgstr "Le fournisseur de ce flux suggère un intervalle de mise à jour de %d minutes."
+msgstr ""
+"Le fournisseur de ce flux suggère un intervalle de mise à jour de %d minutes."
 
 #: ../src/ui/ui_feed.c:581
 msgid "This feed specifies no default update interval."
@@ -1535,16 +1659,20 @@ msgid "Deletion Confirmation"
 msgstr "Confirmation de la suppression"
 
 #: ../src/ui/ui_htmlview.c:87
-msgid "Sorry, I was not able to load any installed browser plugin! Try the --debug-plugins option to get debug information!"
-msgstr "Désolé, je n'ai été capable de charger aucun des greffons (plugins) de navigateur installés ! Essayez l'option --debug-plugins pour avoir des informations de débuggage !"
+msgid ""
+"Sorry, I was not able to load any installed browser plugin! Try the --debug-"
+"plugins option to get debug information!"
+msgstr ""
+"Désolé, je n'ai été capable de charger aucun des greffons (plugins) de "
+"navigateur installés ! Essayez l'option --debug-plugins pour avoir des "
+"informations de débuggage !"
 
 #. FIXME: bad because this is not only used for item links!
 #: ../src/ui/ui_htmlview.c:195
 msgid "This item does not have a link assigned!"
 msgstr "Cet élément n'a pas de lien assigné !"
 
-#: ../src/ui/ui_htmlview.c:297
-#: ../src/ui/ui_htmlview.c:317
+#: ../src/ui/ui_htmlview.c:297 ../src/ui/ui_htmlview.c:317
 #, c-format
 msgid "Browser command failed: %s"
 msgstr "La commande du navigateur a échoué : %s"
@@ -1562,15 +1690,12 @@ msgstr "<i>*** Pas de titre ***</i>"
 msgid "Date"
 msgstr "Date"
 
-#: ../src/ui/ui_itemlist.c:307
-#: ../src/ui/ui_itemlist.c:310
+#: ../src/ui/ui_itemlist.c:307 ../src/ui/ui_itemlist.c:310
 msgid "Headline"
 msgstr "Titre"
 
-#: ../src/ui/ui_itemlist.c:421
-#: ../src/ui/ui_itemlist.c:434
-#: ../src/ui/ui_itemlist.c:479
-#: ../src/ui/ui_itemlist.c:633
+#: ../src/ui/ui_itemlist.c:421 ../src/ui/ui_itemlist.c:434
+#: ../src/ui/ui_itemlist.c:479 ../src/ui/ui_itemlist.c:633
 #: ../src/ui/ui_itemlist.c:651
 msgid "No item has been selected"
 msgstr "Aucun élément n'a été sélectionné"
@@ -1592,8 +1717,18 @@ msgid "Liferea - Linux Feed Reader"
 msgstr "Liferea - Lecteur de flux"
 
 #: ../src/ui/ui_mainwindow.c:543
-msgid "<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news feeds.</p><p>The left pane contains the list of your subscriptions. To add a subscription select Feeds -&gt; New Subscription. To browse the headlines of a feed select it in the feed list and the headlines will be loaded into the right pane.</p>"
-msgstr "<p>Bienvenue dans <b>Liferea</b>, agrégateur de nouvelles pour des flux en ligne.</p><p>Le cadre de gauche contient la liste de vos abonnements. Pour ajouter un abonnement, sélectionnez Flux -&gt; Nouvel abonnement. Pour parcourir les titres d'un flux, sélectionnez le flux dans la liste, et les titres seront chargés dans le cadre de droite.</p>"
+msgid ""
+"<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news "
+"feeds.</p><p>The left pane contains the list of your subscriptions. To add a "
+"subscription select Feeds -&gt; New Subscription. To browse the headlines of "
+"a feed select it in the feed list and the headlines will be loaded into the "
+"right pane.</p>"
+msgstr ""
+"<p>Bienvenue dans <b>Liferea</b>, agrégateur de nouvelles pour des flux en "
+"ligne.</p><p>Le cadre de gauche contient la liste de vos abonnements. Pour "
+"ajouter un abonnement, sélectionnez Flux -&gt; Nouvel abonnement. Pour "
+"parcourir les titres d'un flux, sélectionnez le flux dans la liste, et les "
+"titres seront chargés dans le cadre de droite.</p>"
 
 #: ../src/ui/ui_mainwindow.c:597
 msgid "Liferea is now online"
@@ -1625,7 +1760,8 @@ msgstr "Éditer les préférences."
 
 #: ../src/ui/ui_mainwindow.c:870
 msgid "Show a list of all feeds currently in the update queue"
-msgstr "Montrer une liste de tous les flux actuellement dans la queue de mise à jour"
+msgstr ""
+"Montrer une liste de tous les flux actuellement dans la queue de mise à jour"
 
 #: ../src/ui/ui_mainwindow.c:872
 msgid "Allows to configure and edit LUA hook scripts"
@@ -1645,7 +1781,8 @@ msgstr "Mettre à jour le _tout"
 
 #: ../src/ui/ui_mainwindow.c:877
 msgid "Updates all subscriptions. This does not update OCS directories."
-msgstr "Met à jour tous les abonnements. Ceci ne met pas à jour les répertoires OCS."
+msgstr ""
+"Met à jour tous les abonnements. Ceci ne met pas à jour les répertoires OCS."
 
 #: ../src/ui/ui_mainwindow.c:879
 msgid "Mark All As _Read"
@@ -1680,8 +1817,12 @@ msgid "_Next Unread Item"
 msgstr "Élément _non lu suivant"
 
 #: ../src/ui/ui_mainwindow.c:885
-msgid "Jumps to the next unread item. If necessary selects the next feed with unread items."
-msgstr "Va au prochain élément non lu. Si nécessaire, sélectionne le prochain flux ayant des éléments non lus."
+msgid ""
+"Jumps to the next unread item. If necessary selects the next feed with "
+"unread items."
+msgstr ""
+"Va au prochain élément non lu. Si nécessaire, sélectionne le prochain flux "
+"ayant des éléments non lus."
 
 #: ../src/ui/ui_mainwindow.c:887
 msgid "Toggle _Read Status"
@@ -1864,16 +2005,24 @@ msgid "_Mark Selected As Read"
 msgstr "_Marquer la sélection comme lue"
 
 #: ../src/ui/ui_mainwindow.c:932
-msgid "Marks all items of the selected subscription or of all subscriptions of the selected folder as read."
-msgstr "Marque comme lus tous les éléments de l'abonnement sélectionné ou de tous les abonnements du dossier sélectionné."
+msgid ""
+"Marks all items of the selected subscription or of all subscriptions of the "
+"selected folder as read."
+msgstr ""
+"Marque comme lus tous les éléments de l'abonnement sélectionné ou de tous "
+"les abonnements du dossier sélectionné."
 
 #: ../src/ui/ui_mainwindow.c:934
 msgid "Update _Selected"
 msgstr "Mettre à _jour la sélection"
 
 #: ../src/ui/ui_mainwindow.c:934
-msgid "Updates the selected subscription or all subscriptions of the selected folder."
-msgstr "Met à jour l'abonnement sélectionné ou tous les abonnements du dossier sélectionné."
+msgid ""
+"Updates the selected subscription or all subscriptions of the selected "
+"folder."
+msgstr ""
+"Met à jour l'abonnement sélectionné ou tous les abonnements du dossier "
+"sélectionné."
 
 #: ../src/ui/ui_mainwindow.c:939
 msgid "_Properties..."
@@ -1931,8 +2080,7 @@ msgid "/Copy to News Bin/%s"
 msgstr "/Copier dans la boîte à nouvelles/%s"
 
 #. menu option for social bookmark creation
-#: ../src/ui/ui_popup.c:129
-#: ../src/ui/ui_popup.c:151
+#: ../src/ui/ui_popup.c:129 ../src/ui/ui_popup.c:151
 #, c-format
 msgid "/_Bookmark Link at %s"
 msgstr "/_Publier le lien sur %s"
@@ -2062,11 +2210,8 @@ msgstr "Fenêtre existante"
 msgid "New window"
 msgstr "Nouvelle fenêtre"
 
-#: ../src/ui/ui_prefs.c:277
-#: ../src/ui/ui_tabs.c:193
-#: ../src/ui/ui_tabs.c:196
-#: ../src/ui/ui_tabs.c:216
-#: ../src/ui/ui_tabs.c:350
+#: ../src/ui/ui_prefs.c:277 ../src/ui/ui_tabs.c:193 ../src/ui/ui_tabs.c:196
+#: ../src/ui/ui_tabs.c:216 ../src/ui/ui_tabs.c:350
 msgid "New tab"
 msgstr "Nouvel onglet"
 
@@ -2105,8 +2250,17 @@ msgid "%d Search Results for \"%s\""
 msgstr "%d résultats de recherche de « %s »"
 
 #: ../src/ui/ui_search.c:124
-msgid "The item list now contains all items matching the specified search pattern. If you want to save this search result permanently you can click the \"Search Folder\" button in the search dialog and Liferea will add a search folder to your feed list."
-msgstr "La liste contient maintenant tous les éléments satisfaisant le motif de recherche spécifié. Si vous voulez sauver ce résultat de manière permanente, vous pouvez cliquer sur le bouton « Dossier de recherche » dans la boîte de dialogue pour la recherche et Liferea ajoutera un dossier de recherche à votre liste de flux."
+msgid ""
+"The item list now contains all items matching the specified search pattern. "
+"If you want to save this search result permanently you can click the "
+"\"Search Folder\" button in the search dialog and Liferea will add a search "
+"folder to your feed list."
+msgstr ""
+"La liste contient maintenant tous les éléments satisfaisant le motif de "
+"recherche spécifié. Si vous voulez sauver ce résultat de manière permanente, "
+"vous pouvez cliquer sur le bouton « Dossier de recherche » dans la boîte de "
+"dialogue pour la recherche et Liferea ajoutera un dossier de recherche à "
+"votre liste de flux."
 
 #: ../src/ui/ui_search.c:245
 msgid "Create a new search feed."
@@ -2160,8 +2314,7 @@ msgstr "<p><a href=\"%s\">Voir le contenu de cet élément.</a></p>"
 msgid "Invalid Atom feed: unknown author"
 msgstr "Flux Atom invalide : auteur inconnu"
 
-#: ../src/parsers/atom10.c:691
-#: ../src/parsers/pie_feed.c:282
+#: ../src/parsers/atom10.c:691 ../src/parsers/pie_feed.c:282
 #: ../src/parsers/rss_channel.c:304
 #, c-format
 msgid "There were errors while parsing the feed %s!"
@@ -2176,8 +2329,13 @@ msgid "Bloglines"
 msgstr "Bloglines"
 
 #: ../src/fl_sources/bloglines_source.c:74
-msgid "Integrate the feed list of your Bloglines account. Liferea will present your Bloglines subscription as a read-only subtree in the feed list."
-msgstr "Intégrer la liste des flux de votre compte Bloglines. Liferea présentera votre abonnement Bloglines comme un sous-arbre en lecture seule dans la liste des flux."
+msgid ""
+"Integrate the feed list of your Bloglines account. Liferea will present your "
+"Bloglines subscription as a read-only subtree in the feed list."
+msgstr ""
+"Intégrer la liste des flux de votre compte Bloglines. Liferea présentera "
+"votre abonnement Bloglines comme un sous-arbre en lecture seule dans la "
+"liste des flux."
 
 #: ../src/fl_sources/bloglines_source-ui.c:46
 msgid "Add Bloglines Account"
@@ -2205,8 +2363,13 @@ msgid "Planet, BlogRoll, OPML"
 msgstr "Planet, BlogRoll, OPML"
 
 #: ../src/fl_sources/opml_source.c:341
-msgid "Integrate blogrolls or Planets in your feed list. Liferea will automatically add and remove feeds according to the changes of the source OPML document"
-msgstr "Intégrer des blogrolls ou Planets dans votre liste de flux. Liferea ajoutera ou supprimera automatiquement des flux suivant les changements du document source OPML"
+msgid ""
+"Integrate blogrolls or Planets in your feed list. Liferea will automatically "
+"add and remove feeds according to the changes of the source OPML document"
+msgstr ""
+"Intégrer des blogrolls ou Planets dans votre liste de flux. Liferea ajoutera "
+"ou supprimera automatiquement des flux suivant les changements du document "
+"source OPML"
 
 #: ../src/fl_sources/opml_source.h:26
 msgid "New OPML Subscription"
@@ -2217,8 +2380,11 @@ msgid "Add OPML/Planet"
 msgstr "Ajouter OPML/Planet"
 
 #: ../src/fl_sources/opml_source-ui.c:56
-msgid "Please specify a local file or an URL pointing to a valid OPML feed list."
-msgstr "Veuillez spécifier un fichier local ou une URL pointant sur une liste de flux OPML valide."
+msgid ""
+"Please specify a local file or an URL pointing to a valid OPML feed list."
+msgstr ""
+"Veuillez spécifier un fichier local ou une URL pointant sur une liste de "
+"flux OPML valide."
 
 #: ../src/fl_sources/opml_source-ui.c:66
 msgid "_Location"
@@ -2307,16 +2473,21 @@ msgstr "Pas de script sélectionné !"
 #, fuzzy
 #~ msgid "window1"
 #~ msgstr "Nouvelle fenêtre"
+
 #~ msgid "         "
 #~ msgstr "         "
+
 #~ msgid "Lower Right"
 #~ msgstr "En bas à droite"
+
 #~ msgid "Upper Right"
 #~ msgstr "En haut à droite"
+
 #~ msgid "Upper Left"
 #~ msgstr "En haut à gauche"
+
 #~ msgid "Lower Left"
 #~ msgstr "En bas à gauche"
+
 #~ msgid "<b>Popup Placement</b>"
 #~ msgstr "<b>Placement du popup</b>"
-

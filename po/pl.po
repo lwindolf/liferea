@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-29 01:30+0200\n"
+"POT-Creation-Date: 2007-04-02 22:41+0200\n"
 "PO-Revision-Date: 2006-12-05 21:26+0100\n"
 "Last-Translator: Lars Lindner <lars.lindner@gmx.net>\n"
 "Language-Team: Polish\n"
@@ -545,7 +545,7 @@ msgstr ""
 "żadnych odnośników!"
 
 #. GTK theme support
-#: ../src/interface.c:70 ../src/main.c:184
+#: ../src/interface.c:70 ../src/main.c:185
 msgid "Liferea"
 msgstr "Liferea"
 
@@ -728,7 +728,8 @@ msgid "_Automatically download all enclosures of this feed."
 msgstr "_Automatycznie pobieraj załączniki dla tej subskrypcji."
 
 #: ../src/interface.c:725
-msgid "Auto-_load item link in internal browser when reading articles."
+#, fuzzy
+msgid "Auto-_load item link in configured browser when selecting articles."
 msgstr ""
 "Podczas czytania automatycznie ładu_j odnośniki w zewnętrznej przeglądarce."
 
@@ -1398,48 +1399,53 @@ msgstr ""
 "output.xhtml)"
 
 #: ../src/main.c:82
+#, fuzzy
+msgid "  --debug-net      Print debugging messages for all network access"
+msgstr "  --debug-all      Wyświetla informacje debugowania wszystkich typów"
+
+#: ../src/main.c:83
 msgid "  --debug-parsing  Print debugging messages of all parsing functions"
 msgstr ""
 "  --debug-parsing  Wyświetla informacje debugowania wszystkich funkcji "
 "parsujących"
 
-#: ../src/main.c:83
+#: ../src/main.c:84
 msgid "  --debug-plugins  Print debugging messages when loading plugins"
 msgstr "  --debug-plugins  Wyświetla informacje debugowania ładowania wtyczek "
 
-#: ../src/main.c:84
+#: ../src/main.c:85
 msgid ""
 "  --debug-trace    Print debugging messages when entering/leaving functions"
 msgstr ""
 "  --debug-trace    Wyświetla informacje debugowania przy wchodzeniu do/"
 "wychodzeniu z funkcji"
 
-#: ../src/main.c:85
+#: ../src/main.c:86
 msgid ""
 "  --debug-update   Print debugging messages of the feed update processing"
 msgstr ""
 "  --debug-update   Wyświetla informacje debugowania przetwarzania "
 "uaktualniania"
 
-#: ../src/main.c:86
+#: ../src/main.c:87
 msgid "  --debug-verbose  Print verbose debugging messages"
 msgstr "  --debug-verbose  Wyświetla dokładne informacje debugowania"
 
-#: ../src/main.c:165
+#: ../src/main.c:166
 msgid "Liferea seems to be running already!"
 msgstr "Wygląda na to, że Liferea już jest uruchomiona!"
 
-#: ../src/main.c:231
+#: ../src/main.c:234
 #, c-format
 msgid "The --mainwindow-state argument must be given a parameter.\n"
 msgstr "Argument --mainwindow-state musi mieć parametr.\n"
 
-#: ../src/main.c:239
+#: ../src/main.c:242
 #, c-format
 msgid "The --session argument must be given a parameter.\n"
 msgstr "Argument --session musi mieć parametr.\n"
 
-#: ../src/main.c:242
+#: ../src/main.c:245
 #, c-format
 msgid "Liferea encountered an unknown argument: %s\n"
 msgstr "Nieznany argument: %s\n"

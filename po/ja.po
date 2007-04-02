@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea trunk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-29 01:30+0200\n"
+"POT-Creation-Date: 2007-04-02 22:41+0200\n"
 "PO-Revision-Date: 2007-02-10 10:28+0900\n"
 "Last-Translator: Takeshi AIHANA <takeshi.aihana@gmail.com>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -534,7 +534,7 @@ msgid "Feed link auto discovery failed! No feed links found!"
 msgstr "配信元リンクの自動検出に失敗しました。配信元リンクが見つかりません！"
 
 #. GTK theme support
-#: ../src/interface.c:70 ../src/main.c:184
+#: ../src/interface.c:70 ../src/main.c:185
 msgid "Liferea"
 msgstr "Liferea"
 
@@ -717,7 +717,8 @@ msgid "_Automatically download all enclosures of this feed."
 msgstr "この配信元が提供する全てのエンクロージャを自動的にダウンロードする(_A)"
 
 #: ../src/interface.c:725
-msgid "Auto-_load item link in internal browser when reading articles."
+#, fuzzy
+msgid "Auto-_load item link in configured browser when selecting articles."
 msgstr ""
 "ニュースを読む際に内部ブラウザの中にアイテムのリンクを自動的に読み込む(_L)"
 
@@ -1385,44 +1386,49 @@ msgstr ""
 "output.xhtml)"
 
 #: ../src/main.c:82
+#, fuzzy
+msgid "  --debug-net      Print debugging messages for all network access"
+msgstr "  --debug-all      全ての種類のデバッグ・メッセージを表示する"
+
+#: ../src/main.c:83
 msgid "  --debug-parsing  Print debugging messages of all parsing functions"
 msgstr ""
 "  --debug-parsing  解析関連の全ての関数のデバッグ・メッセージを表示する"
 
-#: ../src/main.c:83
+#: ../src/main.c:84
 msgid "  --debug-plugins  Print debugging messages when loading plugins"
 msgstr ""
 "  --debug-plugins  プラグインを読み込んだ時のデバッグ・メッセージを表示する"
 
-#: ../src/main.c:84
+#: ../src/main.c:85
 msgid ""
 "  --debug-trace    Print debugging messages when entering/leaving functions"
 msgstr "  --debug-trace    関数の入り口/出口のデバッグ・メッセージを表示する"
 
-#: ../src/main.c:85
+#: ../src/main.c:86
 msgid ""
 "  --debug-update   Print debugging messages of the feed update processing"
 msgstr "  --debug-update   配信元を更新する際のデバッグ・メッセージを表示する"
 
-#: ../src/main.c:86
+#: ../src/main.c:87
 msgid "  --debug-verbose  Print verbose debugging messages"
 msgstr "  --debug-verbose  デバッグ・メッセージを詳細に表示する"
 
-#: ../src/main.c:165
+#: ../src/main.c:166
 msgid "Liferea seems to be running already!"
 msgstr "既に Liferea が起動中のようです！"
 
-#: ../src/main.c:231
+#: ../src/main.c:234
 #, c-format
 msgid "The --mainwindow-state argument must be given a parameter.\n"
 msgstr "オプション --mainwindow-state にはパラメータが一つ必要です。\n"
 
-#: ../src/main.c:239
+#: ../src/main.c:242
 #, c-format
 msgid "The --session argument must be given a parameter.\n"
 msgstr "オプション '--session' にはパラメータが一つ必要です。\n"
 
-#: ../src/main.c:242
+#: ../src/main.c:245
 #, c-format
 msgid "Liferea encountered an unknown argument: %s\n"
 msgstr "Liferea は不明なオプションを受け取りました: %s\n"

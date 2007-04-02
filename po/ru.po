@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 0.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-29 01:30+0200\n"
+"POT-Creation-Date: 2007-04-02 22:41+0200\n"
 "PO-Revision-Date: 2007-01-26 10:10+0300\n"
 "Last-Translator: omsoft <oleg@koleso-auto.ru>\n"
 "Language-Team: Russian\n"
@@ -522,7 +522,7 @@ msgid "Feed link auto discovery failed! No feed links found!"
 msgstr "Ошибка автообнаружения лент! Ленты не найдены!"
 
 #. GTK theme support
-#: ../src/interface.c:70 ../src/main.c:184
+#: ../src/interface.c:70 ../src/main.c:185
 msgid "Liferea"
 msgstr ""
 
@@ -700,7 +700,8 @@ msgid "_Automatically download all enclosures of this feed."
 msgstr "Автоматически получать все вложения для этой ленты."
 
 #: ../src/interface.c:725
-msgid "Auto-_load item link in internal browser when reading articles."
+#, fuzzy
+msgid "Auto-_load item link in configured browser when selecting articles."
 msgstr ""
 "Автозагрузка ссылок элементов во встроенном броузере при чтении статьи."
 
@@ -1308,42 +1309,46 @@ msgid ""
 msgstr ""
 
 #: ../src/main.c:82
-msgid "  --debug-parsing  Print debugging messages of all parsing functions"
+msgid "  --debug-net      Print debugging messages for all network access"
 msgstr ""
 
 #: ../src/main.c:83
-msgid "  --debug-plugins  Print debugging messages when loading plugins"
+msgid "  --debug-parsing  Print debugging messages of all parsing functions"
 msgstr ""
 
 #: ../src/main.c:84
-msgid ""
-"  --debug-trace    Print debugging messages when entering/leaving functions"
+msgid "  --debug-plugins  Print debugging messages when loading plugins"
 msgstr ""
 
 #: ../src/main.c:85
 msgid ""
-"  --debug-update   Print debugging messages of the feed update processing"
+"  --debug-trace    Print debugging messages when entering/leaving functions"
 msgstr ""
 
 #: ../src/main.c:86
+msgid ""
+"  --debug-update   Print debugging messages of the feed update processing"
+msgstr ""
+
+#: ../src/main.c:87
 msgid "  --debug-verbose  Print verbose debugging messages"
 msgstr ""
 
-#: ../src/main.c:165
+#: ../src/main.c:166
 msgid "Liferea seems to be running already!"
 msgstr "Похоже, что Liferea уже запущена!"
 
-#: ../src/main.c:231
+#: ../src/main.c:234
 #, c-format
 msgid "The --mainwindow-state argument must be given a parameter.\n"
 msgstr ""
 
-#: ../src/main.c:239
+#: ../src/main.c:242
 #, c-format
 msgid "The --session argument must be given a parameter.\n"
 msgstr ""
 
-#: ../src/main.c:242
+#: ../src/main.c:245
 #, c-format
 msgid "Liferea encountered an unknown argument: %s\n"
 msgstr "Неизвестный аргумент: %s\n"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-29 01:30+0200\n"
+"POT-Creation-Date: 2007-04-02 22:41+0200\n"
 "PO-Revision-Date: 2007-03-10 19:15-0500\n"
 "Last-Translator: Og Maciel <ogmaciel@ubuntu.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-l10n-br@listas.cipsga.org.br>\n"
@@ -536,7 +536,7 @@ msgstr ""
 "fonte de notícias foi encontrado!"
 
 #. GTK theme support
-#: ../src/interface.c:70 ../src/main.c:184
+#: ../src/interface.c:70 ../src/main.c:185
 msgid "Liferea"
 msgstr "Liferea"
 
@@ -721,7 +721,8 @@ msgid "_Automatically download all enclosures of this feed."
 msgstr "Download _automático de todos componentes desta fonte de notícias."
 
 #: ../src/interface.c:725
-msgid "Auto-_load item link in internal browser when reading articles."
+#, fuzzy
+msgid "Auto-_load item link in configured browser when selecting articles."
 msgstr ""
 "Carregar automaticamente o _link do item no browser interno quando lendo "
 "artigos."
@@ -1401,48 +1402,53 @@ msgstr ""
 "saída.xhtml)"
 
 #: ../src/main.c:82
+#, fuzzy
+msgid "  --debug-net      Print debugging messages for all network access"
+msgstr "  --debug-all      Exibe todos tipos de mensagens"
+
+#: ../src/main.c:83
 msgid "  --debug-parsing  Print debugging messages of all parsing functions"
 msgstr ""
 "  --debug-parsing  Exibe mensagens de depuração de todas funções de análise"
 
-#: ../src/main.c:83
+#: ../src/main.c:84
 msgid "  --debug-plugins  Print debugging messages when loading plugins"
 msgstr ""
 "  --debug-plugins  Exibe mensagens de depuração quando carregar os plug-ins"
 
-#: ../src/main.c:84
+#: ../src/main.c:85
 msgid ""
 "  --debug-trace    Print debugging messages when entering/leaving functions"
 msgstr ""
 "  --debug-trace    Exibe as mensagens de depuração das funções de entrada e "
 "saída."
 
-#: ../src/main.c:85
+#: ../src/main.c:86
 msgid ""
 "  --debug-update   Print debugging messages of the feed update processing"
 msgstr ""
 " --debug-update   Exibe mensagens de depuração sobre atualizações de fonte"
 
-#: ../src/main.c:86
+#: ../src/main.c:87
 msgid "  --debug-verbose  Print verbose debugging messages"
 msgstr "  --debug-verbose  Exibe mensagens detalhadas de depuração"
 
-#: ../src/main.c:165
+#: ../src/main.c:166
 msgid "Liferea seems to be running already!"
 msgstr "Parece que o Liferea já está em execução!"
 
-#: ../src/main.c:231
+#: ../src/main.c:234
 #, c-format
 msgid "The --mainwindow-state argument must be given a parameter.\n"
 msgstr ""
 "É necessário passar um argumento para o parâmetro --mainwindow-state.\n"
 
-#: ../src/main.c:239
+#: ../src/main.c:242
 #, c-format
 msgid "The --session argument must be given a parameter.\n"
 msgstr "É necessário passar um argumento para o parâmetro --session.\n"
 
-#: ../src/main.c:242
+#: ../src/main.c:245
 #, c-format
 msgid "Liferea encountered an unknown argument: %s\n"
 msgstr "Liferea encontrou um argumento desconhecido: %s\n"
