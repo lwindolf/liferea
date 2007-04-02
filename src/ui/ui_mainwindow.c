@@ -876,7 +876,7 @@ static GtkActionEntry ui_mainwindow_action_entries[] = {
 	{"FeedsMenu", NULL, N_("_Feeds")},
 	{"UpdateAll", "gtk-refresh", N_("Update _All"), "<control>A", N_("Updates all subscriptions. This does not update OCS directories."),
 	 G_CALLBACK(on_menu_update_all)},
-	{"MarkAllFeedsAsRead", "gtk-apply", N_("Mark All As _Read"), NULL, N_("Marks read every item of every subscription."),
+	{"MarkAllFeedsAsRead", "gtk-apply", N_("Mark All As _Read"), "<control>L", N_("Marks read every item of every subscription."),
 	 G_CALLBACK(on_menu_allfeedsread)},
 	{"ImportFeedList", "gtk-open", N_("_Import Feed List..."), NULL, N_("Imports an OPML feed list."), G_CALLBACK(on_import_activate)},
 	{"ExportFeedList", "gtk-save-as", N_("_Export Feed List..."), NULL, N_("Exports the feed list as OPML."), G_CALLBACK(on_export_activate)},
