@@ -1,16 +1,30 @@
+2007-04-03  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.2.10c (Stable)
+
+	* Reverting fix of 1.2.10 to prevent crashes in the
+	  Gecko support code when clicking links in the HTML view.
+	* Changed feed property label (auto-load link) to match
+	  real (suboptimal) behaviour when external browser 
+	  is configured.
+	* Adds a hot key (Ctrl-L) to mark all feeds as read.
+	  (patch suggested by Paul Dwerryhouse)
+	
+	Translations
+
+	* Update of Turkish translation (Mehmet Atif Ergun)
+
+
 2007-03-29  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.2.10b (Stable)
 
 	* Fixes a crash when updating a folder recursively
 	  after marking all items of this folder as read.
-	* Adds a hot key (Ctrl-L) to mark all feeds as read.
-	  (patch suggested by Paul Dwerryhouse)
 	
 	Translations
 
 	* Update of French translation (Vincent Levefre)
-	* Update of Turkish translation (Mehmet Atif Ergun)
 
 
 2007-03-27  Lars Lindner  <lars.lindner@gmail.com>
