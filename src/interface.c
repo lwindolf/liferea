@@ -722,7 +722,7 @@ create_propdialog (void)
   gtk_widget_show (enclosureDownloadCheck);
   gtk_box_pack_start (GTK_BOX (vbox2615), enclosureDownloadCheck, FALSE, FALSE, 0);
 
-  loadItemLinkCheck = gtk_check_button_new_with_mnemonic (_("Auto-_load item link in internal browser when reading articles."));
+  loadItemLinkCheck = gtk_check_button_new_with_mnemonic (_("Auto-_load item link in configured browser when selecting articles."));
   gtk_widget_show (loadItemLinkCheck);
   gtk_box_pack_start (GTK_BOX (vbox2615), loadItemLinkCheck, FALSE, FALSE, 0);
 
