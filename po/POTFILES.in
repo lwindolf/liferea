@@ -142,6 +142,8 @@ src/fl_sources/opml_source.c
 src/fl_sources/opml_source.h
 src/fl_sources/opml_source-ui.c
 src/fl_sources/opml_source-ui.h
+src/fl_sources/opml_source-cb.c
+src/fl_sources/opml_source-cb.h
 src/fl_sources/node_source.c
 src/fl_sources/node_source.h
 src/fl_sources/node_source-ui.c
