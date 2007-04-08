@@ -1,3 +1,10 @@
+2007-04-08  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.2.11 (Stable)
+
+	* Updated French translation (Vincent Lefevre)
+
+
 2007-04-03  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.2.10c (Stable)
@@ -9,6 +16,8 @@
 	  is configured.
 	* Adds a hot key (Ctrl-L) to mark all feeds as read.
 	  (patch suggested by Paul Dwerryhouse)
+	* Fixes outdated URL in the default feed lists.
+	* Fixes syntax errors in some default feed lists.
 	
 	Translations
 

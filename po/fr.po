@@ -9,11 +9,11 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Liferea 1.2.6\n"
+"Project-Id-Version: Liferea 1.2.10\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-04-02 22:41+0200\n"
-"PO-Revision-Date: 2007-03-29 01:42+0100\n"
-"Last-Translator: Lars Lindner <lars.lindner@gmx.net>\n"
+"PO-Revision-Date: 2007-04-03 03:49+0200\n"
+"Last-Translator: Vincent Lefevre <vincent@vinc17.org>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -672,7 +672,7 @@ msgstr ""
 
 #: ../src/interface.c:586 ../src/interface.c:1036
 msgid "Convert _using:"
-msgstr "Convertir en _utilisant :"
+msgstr "Convertir _en utilisant :"
 
 #: ../src/interface.c:611
 msgid ""
@@ -721,7 +721,7 @@ msgstr "_Mot de passe :"
 
 #: ../src/interface.c:708 ../src/interface.c:992
 msgid "_Don't use proxy for download"
-msgstr "_Ne pas utiliser de proxy pour le téléchargement"
+msgstr "Ne _pas utiliser de proxy pour le téléchargement"
 
 #: ../src/interface.c:712
 msgid "Download"
@@ -732,11 +732,10 @@ msgid "_Automatically download all enclosures of this feed."
 msgstr "_Télécharger automatiquement toutes les annexes de ce flux."
 
 #: ../src/interface.c:725
-#, fuzzy
 msgid "Auto-_load item link in configured browser when selecting articles."
 msgstr ""
-"_Chargement auto du lien assigné dans le navigateur interne à la lecture des "
-"articles."
+"_Chargement auto du lien assigné dans le navigateur configuré lors de la "
+"sélection des articles."
 
 #: ../src/interface.c:729
 msgid "Advanced"
@@ -929,7 +928,7 @@ msgstr ""
 
 #: ../src/interface.c:1773
 msgid "     "
-msgstr "    "
+msgstr "     "
 
 #: ../src/interface.c:1781
 msgid "Show _number of new items in the tray icon."
@@ -1420,9 +1419,10 @@ msgstr ""
 "xhtml)"
 
 #: ../src/main.c:82
-#, fuzzy
 msgid "  --debug-net      Print debugging messages for all network access"
-msgstr "  --debug-all      Affiche tous les types de message de débuggage"
+msgstr ""
+"  --debug-net      Affiche les messages de débuggage concernant les accès "
+"réseau"
 
 #: ../src/main.c:83
 msgid "  --debug-parsing  Print debugging messages of all parsing functions"
@@ -2469,25 +2469,3 @@ msgstr "Désolé, pas de support de script disponible !"
 #: ../src/scripting/ui_script.c:208
 msgid "No script selected!"
 msgstr "Pas de script sélectionné !"
-
-#, fuzzy
-#~ msgid "window1"
-#~ msgstr "Nouvelle fenêtre"
-
-#~ msgid "         "
-#~ msgstr "         "
-
-#~ msgid "Lower Right"
-#~ msgstr "En bas à droite"
-
-#~ msgid "Upper Right"
-#~ msgstr "En haut à droite"
-
-#~ msgid "Upper Left"
-#~ msgstr "En haut à gauche"
-
-#~ msgid "Lower Left"
-#~ msgstr "En bas à gauche"
-
-#~ msgid "<b>Popup Placement</b>"
-#~ msgstr "<b>Placement du popup</b>"
