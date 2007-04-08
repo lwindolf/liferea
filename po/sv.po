@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-02 22:41+0200\n"
-"PO-Revision-Date: 2007-03-12 14:58+0100\n"
+"POT-Creation-Date: 2007-04-08 23:34+0200\n"
+"PO-Revision-Date: 2007-04-04 20:38+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
@@ -105,9 +105,8 @@ msgid "Author"
 msgstr "Författare"
 
 #: ../xslt/item.xml.in.h:3
-#, fuzzy
 msgid "Creator"
-msgstr "skapare"
+msgstr "Skapare"
 
 #: ../xslt/item.xml.in.h:4
 msgid "Department"
@@ -708,10 +707,10 @@ msgid "_Automatically download all enclosures of this feed."
 msgstr "Hämta _automatiskt alla kanalens bilagor."
 
 #: ../src/interface.c:725
-#, fuzzy
 msgid "Auto-_load item link in configured browser when selecting articles."
 msgstr ""
-"Läs a_utomatiskt in artikellänk i interna webbläsaren när du läser artiklar."
+"Läs a_utomatiskt in artikellänk i konfigurerad webbläsare när artiklar "
+"markeras."
 
 #: ../src/interface.c:729
 msgid "Advanced"
@@ -845,9 +844,8 @@ msgid "<span weight=\"bold\">Internal Browser Settings</span>"
 msgstr "<span weight=\"bold\">Inställningar för intern webbläsare</span>"
 
 #: ../src/interface.c:1638
-#, fuzzy
 msgid "_View Headlines With"
-msgstr "Visa rubriker"
+msgstr "_Visa rubriker med"
 
 #: ../src/interface.c:1650
 msgid "<i>Please restart Liferea for changes to take effect.</i>"
@@ -899,17 +897,16 @@ msgid "Show a status _icon in the notification area (system tray)."
 msgstr "Visa en status_ikon i notifieringsfältet (systembrickan)."
 
 #: ../src/interface.c:1773
-#, fuzzy
 msgid "     "
-msgstr "    "
+msgstr "     "
 
 #: ../src/interface.c:1781
 msgid "Show _number of new items in the tray icon."
-msgstr ""
+msgstr "Visa a_ntal nya artiklar i notifieringsytan."
 
 #: ../src/interface.c:1785
 msgid "T_erminate instead of minimizing to tray icon."
-msgstr ""
+msgstr "A_vsluta istället för att minimera till notifieringsytan."
 
 #: ../src/interface.c:1793
 msgid "<span weight=\"bold\">Menu Settings</span>"
@@ -1050,14 +1047,13 @@ msgid "<span color=\"blue\" underline=\"single\">Liferea Homepage</span>"
 msgstr "<span color=\"blue\" underline=\"single\">Lifereas webbsida</span>"
 
 #: ../src/interface.c:2702
-#, fuzzy
 msgid ""
 "Copyright (c) 2003-2007\n"
 "Lars Lindner <lars.lindner@gmx.net> and \n"
 "Nathan J. Conrad <t98502@users.sourceforge.net>\n"
 msgstr ""
 "Copyright © 2003-2007\n"
-"Lars Lindner <lars.lindner@gmail.com> och \n"
+"Lars Lindner <lars.lindner@gmx.net> och \n"
 "Nathan J. Conrad <t98502@users.sourceforge.net>\n"
 
 #. I removed the email addresses. Looks much cleaner.
@@ -1386,9 +1382,9 @@ msgstr ""
 "output.xhtml)"
 
 #: ../src/main.c:82
-#, fuzzy
 msgid "  --debug-net      Print debugging messages for all network access"
-msgstr "  --debug-all      Skriv ut felsökningsmeddelanden av alla typer"
+msgstr ""
+"  --debug-net      Skriv ut felsökningsmeddelanden för all nätverksåtkomst"
 
 #: ../src/main.c:83
 msgid "  --debug-parsing  Print debugging messages of all parsing functions"
@@ -2351,6 +2347,10 @@ msgstr "_Adress"
 msgid "_Select File"
 msgstr "_Välj fil"
 
+#: ../src/fl_sources/opml_source-cb.c:77
+msgid "Choose OPML File"
+msgstr "Välj OPML-fil"
+
 #: ../src/fl_sources/node_source.c:207
 msgid "No feed list source types found!"
 msgstr "Inga källtyper för kanallista hittades!"
@@ -2448,9 +2448,6 @@ msgstr "Inget skript har markerats!"
 
 #~ msgid "<b>Popup Placement</b>"
 #~ msgstr "<b>Placering av popupfönster</b>"
-
-#~ msgid "Choose OPML File"
-#~ msgstr "Välj OPML-fil"
 
 #~ msgid "internal OCS namespace parsing error!"
 #~ msgstr "Internt tolkningsfel av OCS-namnrymd!"
