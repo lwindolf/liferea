@@ -369,7 +369,7 @@ gboolean feed_parse(feedParserCtxtPtr ctxt) {
 	g_assert(NULL == ctxt->items);
 	
 	ctxt->failed = TRUE;	/* reset on success ... */
-	
+
 	if(ctxt->feed->parseErrors)
 		g_string_truncate(ctxt->feed->parseErrors, 0);
 	else
@@ -639,6 +639,7 @@ static void feed_process_update_result(struct request *request) {
 		ctxt->feed = feed;
 		ctxt->data = request->data;
 		ctxt->dataLength = request->size;
+		ctxt->subscription = node->subscription;
 
 		if(request->flags & FEED_REQ_AUTO_DISCOVER)
 			feed_auto_discover(ctxt);
@@ -728,7 +729,9 @@ static void feed_schedule_update(nodePtr node, guint flags) {
 	struct request		*request;
 	
 	debug1(DEBUG_UPDATE, "Scheduling %s to be updated", node_get_title(node));
-
+	
+	g_assert (NULL != node->subscription);
+	
 	/* Retries that might have long timeouts must be 
 	   cancelled to immediately execute the user request. */
 	if(node->updateRequest)
