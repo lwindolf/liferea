@@ -1,5 +1,5 @@
 /**
- * @file ui_feed.c UI actions concerning a single feed
+ * @file ui_subscription.c subscription dialogs
  *
  * Copyright (C) 2004-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
@@ -33,25 +33,21 @@
 #include "callbacks.h"
 #include "update.h"
 #include "interface.h"
-#include "itemlist.h"
-#include "favicon.h"
 #include "debug.h"
 #include "ui/ui_subscription.h"
 
 extern GtkWidget *mainwindow;
 
-/********************************************************************
- * general callbacks for "New" and "Properties" dialog              *
- ********************************************************************/
+/** common private structure for all subscription dialogs */
+struct SubscriptionDialogPrivate {
 
-struct subscription_prop_ui_data {
-	feedPtr feed;
-	nodePtr node;
-	gint flags; /* Used by the authdialog to know how to request the feed update */
+	subscriptionPtr subscription;	/** used only for "properties" dialog */
+	nodePtr		parentNode;	/** used only for "new" dialogs */
+
 	gint selector; /* Desiginates which fileselection dialog box is open.
 				   Set to 'u' for source
 				   Set to 'f' for filter */
-	
+				   
 	GtkWidget *dialog;
 	GtkWidget *feedNameEntry;
 	GtkWidget *refreshInterval;
@@ -63,12 +59,73 @@ struct subscription_prop_ui_data {
 	GtkWidget *authcheckbox;
 	GtkWidget *credTable;
 	GtkWidget *username;
-	GtkWidget *password;
+	GtkWidget *password;	
 };
 
-/* dialog callbacks */
+/* properties dialog */
 
-static gchar * ui_feed_create_url(gchar *url, gboolean auth, const gchar *username, const gchar *password) {
+static void subscription_prop_dialog_class_init	(SubscriptionPropDialogClass *klass);
+static void subscription_prop_dialog_init	(SubscriptionPropDialog *spd);
+
+#define SUBSCRIPTION_PROP_DIALOG_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object), SUBSCRIPTION_PROP_DIALOG_TYPE, SubscriptionDialogPrivate))
+
+static GObjectClass *parent_class = NULL;
+
+GType
+subscription_prop_dialog_get_type (void) 
+{
+	static GType type = 0;
+
+	if (G_UNLIKELY (type == 0)) 
+	{
+		static const GTypeInfo our_info = 
+		{
+			sizeof (SubscriptionPropDialogClass),
+			NULL, /* base_init */
+			NULL, /* base_finalize */
+			(GClassInitFunc) subscription_prop_dialog_class_init,
+			NULL,
+			NULL, /* class_data */
+			sizeof (SubscriptionPropDialog),
+			0, /* n_preallocs */
+			(GInstanceInitFunc) subscription_prop_dialog_init
+		};
+
+		type = g_type_register_static (G_TYPE_OBJECT,
+					       "SubscriptionPropDialog",
+					       &our_info, 0);
+	}
+
+	return type;
+}
+
+static void
+subscription_prop_dialog_finalize (GObject *object)
+{
+	/*SubscriptionPropDialog *dialog = SUBSCRIPTION_PROP_DIALOG (object);*/
+	/*SubscriptionPropDialogPrivate *priv = dialog->priv;*/
+
+	G_OBJECT_CLASS (parent_class)->finalize (object);
+}
+
+static void
+subscription_prop_dialog_class_init (SubscriptionPropDialogClass *klass)
+{
+	GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+	parent_class = g_type_class_peek_parent (klass);
+
+	object_class->finalize = subscription_prop_dialog_finalize;
+
+	g_type_class_add_private (object_class, sizeof(SubscriptionDialogPrivate));
+}
+
+static gchar * 
+ui_subscription_create_url (gchar *url,
+                            gboolean auth, 
+			    const gchar *username, 
+			    const gchar *password) 
+{
 	gchar	*source = NULL;
 	gchar *str, *tmp2;
 	
@@ -112,74 +169,80 @@ static gchar * ui_feed_create_url(gchar *url, gboolean auth, const gchar *userna
 	return source;
 }
 
-static gchar * ui_feed_dialog_decode_source(struct fp_prop_ui_data *ui_data) {
+static gchar * 
+ui_subscription_dialog_decode_source (SubscriptionDialogPrivate *ui_data) 
+{
 	gchar	*source = NULL;
 
-	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->fileRadio)))
-		source = g_strdup(gtk_entry_get_text(GTK_ENTRY(ui_data->sourceEntry)));
+	if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (ui_data->fileRadio)))
+		source = g_strdup (gtk_entry_get_text (GTK_ENTRY (ui_data->sourceEntry)));
 		
-	else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->urlRadio)))
-		source = ui_feed_create_url(g_strdup(gtk_entry_get_text(GTK_ENTRY(ui_data->sourceEntry))),
-		                            ui_data->authcheckbox &&
-		                            gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->authcheckbox)),
-		                            gtk_entry_get_text(GTK_ENTRY(ui_data->username)),
-					    gtk_entry_get_text(GTK_ENTRY(ui_data->password)));
+	else if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (ui_data->urlRadio)))
+		source = ui_subscription_create_url (g_strdup (gtk_entry_get_text (GTK_ENTRY (ui_data->sourceEntry))),
+		                                    ui_data->authcheckbox &&
+		                                    gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (ui_data->authcheckbox)),
+		                                    gtk_entry_get_text (GTK_ENTRY (ui_data->username)),
+		                                    gtk_entry_get_text (GTK_ENTRY (ui_data->password)));
 					    
-	else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->cmdRadio)))
-		source = g_strdup_printf("|%s", gtk_entry_get_text(GTK_ENTRY(ui_data->sourceEntry)));
+	else if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (ui_data->cmdRadio)))
+		source = g_strdup_printf ("|%s", gtk_entry_get_text (GTK_ENTRY (ui_data->sourceEntry)));
 
 	return source;
 }
 
-static void on_propdialog_response(GtkDialog *dialog, gint response_id, gpointer user_data) {
-	struct fp_prop_ui_data *ui_data = (struct fp_prop_ui_data*)user_data;
+static void 
+on_propdialog_response (GtkDialog *dialog,
+                        gint response_id,
+			gpointer user_data) 
+{
+	SubscriptionPropDialog *spd = (SubscriptionPropDialog *)user_data;
 	
 	if(response_id == GTK_RESPONSE_OK) {
 		gchar		*newSource;
 		const gchar	*newFilter;
 		gboolean	needsUpdate = FALSE;
-		nodePtr		node = ui_data->node;
-		subscriptionPtr	subscription = ui_data->subscription;
+		subscriptionPtr	subscription = spd->priv->subscription;
+		nodePtr		node = spd->priv->subscription->node;
+		feedPtr		feed = (feedPtr)node->data;
 		
 		/* "General" */
-		node_set_title(node, gtk_entry_get_text(GTK_ENTRY(ui_data->feedNameEntry)));
-		subscription_set_update_interval(subscription, gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(ui_data->refreshInterval)));
+		node_set_title(node, gtk_entry_get_text(GTK_ENTRY(spd->priv->feedNameEntry)));
+		subscription_set_update_interval(subscription, gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(spd->priv->refreshInterval)));
 		
 		/* Source */
-		newSource = ui_feed_dialog_decode_source(ui_data);
+		newSource = ui_subscription_dialog_decode_source(spd->priv);
 		
 		/* Filter handling */
-		newFilter = gtk_entry_get_text(GTK_ENTRY(lookup_widget(ui_data->dialog, "filterEntry")));
-		if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(ui_data->dialog, "filterCheckbox"))) &&
+		newFilter = gtk_entry_get_text(GTK_ENTRY(lookup_widget(spd->priv->dialog, "filterEntry")));
+		if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(spd->priv->dialog, "filterCheckbox"))) &&
 		   strcmp(newFilter,"")) { /* Maybe this should be a test to see if the file exists? */
-			if(feed_get_filter(feed) == NULL ||
-			   strcmp(newFilter, feed_get_filter(feed))) {
-				feed_set_filter(feed, newFilter);
+			if(subscription_get_filter(subscription) == NULL ||
+			   strcmp(newFilter, subscription_get_filter(subscription))) {
+				subscription_set_filter(subscription, newFilter);
 				needsUpdate = TRUE;
 			}
 		} else {
-			if(feed_get_filter(feed)) {
-				feed_set_filter(feed, NULL);
+			if(subscription_get_filter(subscription)) {
+				subscription_set_filter(subscription, NULL);
 				needsUpdate = TRUE;
 			}
 		}
 		
 		/* if URL has changed... */
-		if(strcmp(newSource, feed_get_source(feed))) {
-			feed_set_source(feed, newSource);
+		if(strcmp(newSource, subscription_get_source(subscription))) {
+			subscription_set_source(subscription, newSource);
 			needsUpdate = TRUE;
 		}
 		g_free(newSource);
 
 		/* Update interval handling */
 		if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(GTK_WIDGET(dialog), "updateIntervalNever"))))
-			feed_set_update_interval(feed, -2);
+			subscription_set_update_interval(subscription, -2);
 		else if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(GTK_WIDGET(dialog), "updateIntervalDefault"))))
-			feed_set_update_interval(feed, -1);
+			subscription_set_update_interval(subscription, -1);
 		else if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(GTK_WIDGET(dialog), "updateIntervalSpecific"))))
-			feed_set_update_interval(feed, gtk_spin_button_get_value(GTK_SPIN_BUTTON(lookup_widget(GTK_WIDGET(dialog), "refreshIntervalSpinButton"))));
-		
-		
+			subscription_set_update_interval(subscription, gtk_spin_button_get_value(GTK_SPIN_BUTTON(lookup_widget(GTK_WIDGET(dialog), "refreshIntervalSpinButton"))));
+			
 		/* "Archive" handling */
 		if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(GTK_WIDGET(dialog), "feedCacheDefault"))))
 			feed->cacheLimit = CACHE_DEFAULT;
@@ -191,7 +254,7 @@ static void on_propdialog_response(GtkDialog *dialog, gint response_id, gpointer
 			feed->cacheLimit = gtk_spin_button_get_value(GTK_SPIN_BUTTON(lookup_widget(GTK_WIDGET(dialog), "cacheItemLimit")));
 
 		/* "Download" Options */
-		feed->updateOptions->dontUseProxy = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(GTK_WIDGET(dialog), "dontUseProxyCheck")));
+		subscription->updateOptions->dontUseProxy = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(GTK_WIDGET(dialog), "dontUseProxyCheck")));
 
 		/* "Advanced" options */
 		feed->encAutoDownload = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(GTK_WIDGET(dialog), "enclosureDownloadCheck")));
@@ -203,12 +266,14 @@ static void on_propdialog_response(GtkDialog *dialog, gint response_id, gpointer
 			node_request_update(node, FEED_REQ_AUTH_DIALOG | FEED_REQ_PRIORITY_HIGH);
 	}
 
-	g_free(ui_data);
-	gtk_widget_destroy(GTK_WIDGET(dialog));
+	g_object_unref(spd);
 }
 
-static void on_feed_prop_filtercheck(GtkToggleButton *button, gpointer user_data) {
-	struct fp_prop_ui_data *ui_data = (struct fp_prop_ui_data*)user_data;
+static void
+on_feed_prop_filtercheck (GtkToggleButton *button,
+                          gpointer user_data) 
+{
+	SubscriptionDialogPrivate *ui_data = (SubscriptionDialogPrivate *)user_data;
 	
 	gboolean filter = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(ui_data->dialog, "filterCheckbox")));
 	if(filter)
@@ -217,7 +282,10 @@ static void on_feed_prop_filtercheck(GtkToggleButton *button, gpointer user_data
 		gtk_widget_hide(lookup_widget(ui_data->dialog, "innerfiltervbox"));
 }
 
-static void ui_feed_prop_enable_httpauth(struct fp_prop_ui_data *ui_data, gboolean enable) {
+static void
+ui_subscription_prop_enable_httpauth (SubscriptionDialogPrivate *ui_data,
+                                      gboolean enable) 
+{
 	gboolean on;
 
 	if(ui_data->authcheckbox) {
@@ -227,25 +295,34 @@ static void ui_feed_prop_enable_httpauth(struct fp_prop_ui_data *ui_data, gboole
 	}
 }
 
-static void on_feed_prop_authcheck(GtkToggleButton *button, gpointer user_data) {
-	struct fp_prop_ui_data *ui_data = (struct fp_prop_ui_data*)user_data;
+static void
+on_feed_prop_authcheck (GtkToggleButton *button,
+                        gpointer user_data) 
+{
+	SubscriptionDialogPrivate *ui_data = (SubscriptionDialogPrivate *)user_data;
 	gboolean url = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->urlRadio));
 
-	ui_feed_prop_enable_httpauth(ui_data, url);
+	ui_subscription_prop_enable_httpauth(ui_data, url);
 }
 
-static void on_feed_prop_url_radio(GtkToggleButton *button, gpointer user_data) {
-	struct fp_prop_ui_data *ui_data = (struct fp_prop_ui_data*)user_data;
+static void
+on_feed_prop_url_radio (GtkToggleButton *button,
+                        gpointer user_data) 
+{
+	SubscriptionDialogPrivate *ui_data = (SubscriptionDialogPrivate *)user_data;
 	gboolean url = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->urlRadio));
 	gboolean file = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->fileRadio));
 	gboolean cmd = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ui_data->cmdRadio));
 	
-	ui_feed_prop_enable_httpauth(ui_data, url);
+	ui_subscription_prop_enable_httpauth(ui_data, url);
 	gtk_widget_set_sensitive(ui_data->selectFile, file || cmd);
 }
 
-static void on_selectfileok_clicked(const gchar *filename, gpointer user_data) {
-	struct fp_prop_ui_data *ui_data = (struct fp_prop_ui_data*)user_data;
+static void
+on_selectfileok_clicked (const gchar *filename,
+                         gpointer user_data) 
+{
+	SubscriptionDialogPrivate *ui_data = (SubscriptionDialogPrivate *)user_data;
 	gchar *utfname;
 	
 	if(!filename)
@@ -263,8 +340,11 @@ static void on_selectfileok_clicked(const gchar *filename, gpointer user_data) {
 	g_free(utfname);
 }
 
-static void on_selectfile_pressed(GtkButton *button, gpointer user_data) {
-	struct fp_prop_ui_data *ui_data = (struct fp_prop_ui_data*)user_data;
+static void
+on_selectfile_pressed (GtkButton *button,
+                       gpointer user_data) 
+{
+	SubscriptionDialogPrivate *ui_data = (SubscriptionDialogPrivate *)user_data;
 	const gchar *utfname;
 	gchar *name;
 	
@@ -281,132 +361,261 @@ static void on_selectfile_pressed(GtkButton *button, gpointer user_data) {
 	g_free(name);
 }
  
-static void on_feed_prop_cache_radio(GtkToggleButton *button, gpointer user_data) {
-	struct fp_prop_ui_data *ui_data = (struct fp_prop_ui_data*)user_data;
+static void
+on_feed_prop_cache_radio (GtkToggleButton *button,
+                          gpointer user_data) 
+{
+	SubscriptionDialogPrivate *ui_data = (SubscriptionDialogPrivate *)user_data;
 	gboolean limited = gtk_toggle_button_get_active(button);
 	
 	gtk_widget_set_sensitive(lookup_widget(GTK_WIDGET(ui_data->dialog), "cacheItemLimit"), limited);
 }
 
-static void on_feed_prop_update_radio(GtkToggleButton *button, gpointer user_data) {
-	struct fp_prop_ui_data *ui_data = (struct fp_prop_ui_data*)user_data;
+static void
+on_feed_prop_update_radio (GtkToggleButton *button,
+                           gpointer user_data) 
+{
+	SubscriptionDialogPrivate *ui_data = (SubscriptionDialogPrivate *)user_data;
 	gboolean limited = gtk_toggle_button_get_active(button);
 	
 	gtk_widget_set_sensitive(lookup_widget(GTK_WIDGET(ui_data->dialog), "refreshIntervalSpinButton"), limited);
 }
 
-/********************************************************************
- * "HTTP Authentication" dialog                                     *
- ********************************************************************/
+static void
+ui_subscription_prop_dialog_load (SubscriptionPropDialog *spd, 
+                                  subscriptionPtr subscription) 
+{
+	gint 		interval;
+	guint		defaultInterval;
+	gchar 		*defaultIntervalStr;
+	nodePtr		node = subscription->node;
+	feedPtr		feed = (feedPtr)node->data;
 
-static void on_authdialog_response(GtkDialog *dialog, gint response_id, gpointer user_data) {
-	struct fp_prop_ui_data *ui_data = (struct fp_prop_ui_data*)user_data;
+	node_load(node);
 
-	if(response_id == GTK_RESPONSE_OK) {
-		xmlURIPtr uri;
-		xmlChar *user, *pass, *sourceUrl;
+	/* General */
+	gtk_entry_set_text(GTK_ENTRY(spd->priv->feedNameEntry), node_get_title(node));
 
-		/* Source */
-		uri = xmlParseURI(BAD_CAST feed_get_source(ui_data->feed));
-		
-		if(!uri) {
-			g_warning("Error when parsing authentication URL! Authentication settings lost.");
-			g_free(ui_data);
-			return;
-		}
-		if(uri->user)
-			xmlFree(uri->user);
-
-		user = BAD_CAST gtk_entry_get_text(GTK_ENTRY(ui_data->username));
-		pass = BAD_CAST gtk_entry_get_text(GTK_ENTRY(ui_data->password));
-		uri->user = g_strdup_printf("%s:%s", user, pass);
-
-		sourceUrl = xmlSaveUri(uri);
-		if(sourceUrl) {
-			feed_set_source(ui_data->feed, sourceUrl);
-			xmlFree(sourceUrl);
-		}
-
-		node_request_update(ui_data->node, ui_data->flags);
-		xmlFreeURI(uri);
+	spd->priv->refreshInterval = lookup_widget(spd->priv->dialog,"refreshIntervalSpinButton");
+	
+	interval = subscription_get_update_interval(subscription);
+	defaultInterval = subscription_get_default_update_interval(subscription);
+	
+	if(-2 >= interval) {
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(spd->priv->dialog, "updateIntervalNever")), TRUE);
+		gtk_spin_button_set_value(GTK_SPIN_BUTTON(lookup_widget(spd->priv->dialog, "refreshIntervalSpinButton")), defaultInterval);
+	} else if(-1 == interval) {
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(spd->priv->dialog, "updateIntervalDefault")), TRUE);
+		gtk_spin_button_set_value(GTK_SPIN_BUTTON(lookup_widget(spd->priv->dialog, "refreshIntervalSpinButton")), defaultInterval);
+	} else {
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(spd->priv->dialog, "updateIntervalSpecific")), TRUE);
+		gtk_spin_button_set_value(GTK_SPIN_BUTTON(lookup_widget(spd->priv->dialog, "refreshIntervalSpinButton")), interval);
 	}
+	
+	gtk_widget_set_sensitive(lookup_widget(spd->priv->dialog, "refreshIntervalSpinButton"), interval > 0);
+	
+	/* setup info label about default update interval */
+	if(-1 != defaultInterval)
+		defaultIntervalStr = g_strdup_printf(_("The provider of this feed suggests an update interval of %d minutes."), defaultInterval);
+	else
+		defaultIntervalStr = g_strdup(_("This feed specifies no default update interval."));
 
-	gtk_widget_destroy(GTK_WIDGET(dialog));
-	g_free(ui_data);
-}
+	gtk_label_set_text(GTK_LABEL(lookup_widget(spd->priv->dialog, "feedUpdateInfo")), defaultIntervalStr);
+	g_free(defaultIntervalStr);
 
-void ui_feed_authdialog_new(nodePtr node, gint flags) {
-	GtkWidget		*authdialog;
-	struct fp_prop_ui_data	*ui_data;
-	gchar			*promptStr;
-	gchar			*source = NULL;
-	xmlURIPtr		uri;	
-	
-	ui_data = g_new0(struct fp_prop_ui_data, 1);
-	
-	/* Create the dialog */
-	ui_data->dialog = authdialog = create_authdialog();
-	ui_data->node = node;
-	ui_data->feed = (feedPtr)node->data;
-	ui_data->flags = flags;
-	gtk_window_set_transient_for(GTK_WINDOW(authdialog), GTK_WINDOW(mainwindow));
-	
-	/* Auth check box */
-	ui_data->username = lookup_widget(authdialog, "usernameEntry");
-	ui_data->password = lookup_widget(authdialog, "passwordEntry");
-	
-	uri = xmlParseURI(BAD_CAST feed_get_source(ui_data->feed));
-	
-	if(uri) {
-		if(uri->user) {
-			gchar *user = uri->user;
-			gchar *pass = strstr(user, ":");
-			if(pass) {
-				pass[0] = '\0';
-				pass++;
-				gtk_entry_set_text(GTK_ENTRY(ui_data->password), pass);
+	/* Source */
+	if(subscription_get_source(subscription)[0] == '|') {
+		gtk_entry_set_text(GTK_ENTRY(spd->priv->sourceEntry), &(subscription_get_source(subscription)[1]));
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(spd->priv->cmdRadio), TRUE);
+		ui_subscription_prop_enable_httpauth(spd->priv, FALSE);
+		gtk_widget_set_sensitive(spd->priv->selectFile, TRUE);
+	} else if(strstr(subscription_get_source(subscription), "://") != NULL) {
+		xmlURIPtr uri = xmlParseURI(BAD_CAST subscription_get_source(subscription));
+		xmlChar *parsedUrl;
+		if(uri) {
+			if(uri->user) {
+				gchar *user = uri->user;
+				gchar *pass = strstr(user, ":");
+				if(pass) {
+					pass[0] = '\0';
+					pass++;
+					gtk_entry_set_text(GTK_ENTRY(spd->priv->password), pass);
+				}
+				gtk_entry_set_text(GTK_ENTRY(spd->priv->username), user);
+				xmlFree(uri->user);
+				uri->user = NULL;
+				gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(spd->priv->authcheckbox), TRUE);
 			}
-			gtk_entry_set_text(GTK_ENTRY(ui_data->username), user);
-			xmlFree(uri->user);
-			uri->user = NULL;
+			parsedUrl = xmlSaveUri(uri);
+			gtk_entry_set_text(GTK_ENTRY(spd->priv->sourceEntry), parsedUrl);
+			xmlFree(parsedUrl);
+			xmlFreeURI(uri);
+		} else {
+			gtk_entry_set_text(GTK_ENTRY(spd->priv->sourceEntry), subscription_get_source(subscription));
 		}
-		xmlFree(uri->user);
-		uri->user = NULL;
-		source = xmlSaveUri(uri);
-		xmlFreeURI(uri);
+		ui_subscription_prop_enable_httpauth(spd->priv, TRUE);
+		gtk_widget_set_sensitive(spd->priv->selectFile, FALSE);
+	} else {
+		/* File */
+		gtk_entry_set_text(GTK_ENTRY(spd->priv->sourceEntry), subscription_get_source(subscription));
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(spd->priv->fileRadio), TRUE);
+		ui_subscription_prop_enable_httpauth(spd->priv, FALSE);
+		gtk_widget_set_sensitive(spd->priv->selectFile, TRUE);
 	}
-	
-	promptStr = g_strdup_printf(_("Enter the username and password for \"%s\" (%s):"),
-	                            node_get_title(node), source?source:_("Unknown source"));
-	gtk_label_set_text(GTK_LABEL(lookup_widget(authdialog, "prompt")), promptStr);
-	g_free(promptStr);
-	if(source)
-		xmlFree(source);
-	
-	g_signal_connect(G_OBJECT(authdialog), "response",
-	                 G_CALLBACK(on_authdialog_response), ui_data);
 
-	gtk_widget_show_all(authdialog);
+	if(subscription_get_filter(subscription)) {
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(spd->priv->dialog, "filterCheckbox")), TRUE);
+		gtk_entry_set_text(GTK_ENTRY(lookup_widget(spd->priv->dialog, "filterEntry")), subscription_get_filter(subscription));
+	}
+
+	/* Archive */
+	if(feed->cacheLimit == CACHE_DISABLE) {
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(spd->priv->dialog, "feedCacheDisable")), TRUE);
+	} else if(feed->cacheLimit == CACHE_DEFAULT) {
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(spd->priv->dialog, "feedCacheDefault")), TRUE);
+	} else if(feed->cacheLimit == CACHE_UNLIMITED) {
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(spd->priv->dialog, "feedCacheUnlimited")), TRUE);
+	} else {
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(spd->priv->dialog, "feedCacheLimited")), TRUE);
+		gtk_spin_button_set_value(GTK_SPIN_BUTTON(lookup_widget(spd->priv->dialog, "cacheItemLimit")), feed->cacheLimit);
+	}
+
+	gtk_widget_set_sensitive(lookup_widget(spd->priv->dialog, "cacheItemLimit"), feed->cacheLimit > 0);
+
+	on_feed_prop_filtercheck(GTK_TOGGLE_BUTTON(lookup_widget(spd->priv->dialog, "filterCheckbox")), spd->priv);
+	
+	/* Download */
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(spd->priv->dialog, "dontUseProxyCheck")), subscription->updateOptions->dontUseProxy);
+
+	/* Advanced */	
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(spd->priv->dialog, "enclosureDownloadCheck")), feed->encAutoDownload);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(spd->priv->dialog, "loadItemLinkCheck")), feed->loadItemLink);
+
+	node_unload(node);
 }
 
-/********************************************************************
- * complex "New" dialog                                             *
- ********************************************************************/
+static void
+subscription_prop_dialog_init (SubscriptionPropDialog *spd)
+{
+	GtkWidget	*propdialog;
+	
+	spd->priv = SUBSCRIPTION_PROP_DIALOG_GET_PRIVATE (spd);
+	spd->priv->dialog = propdialog = create_propdialog ();
+	gtk_window_set_transient_for (GTK_WINDOW(propdialog), GTK_WINDOW (mainwindow));
+	
+	spd->priv->feedNameEntry = lookup_widget (propdialog,"feedNameEntry");
+	spd->priv->refreshInterval = lookup_widget (propdialog,"refreshIntervalSpinButton");
+	spd->priv->sourceEntry = lookup_widget (propdialog,"sourceEntry");
+	spd->priv->selectFile = lookup_widget (propdialog,"selectSourceFileButton");
+	spd->priv->fileRadio = lookup_widget (propdialog, "feed_loc_file");
+	spd->priv->urlRadio = lookup_widget (propdialog, "feed_loc_url");
+	spd->priv->cmdRadio = lookup_widget (propdialog, "feed_loc_command");
 
-static void on_newdialog_response(GtkDialog *dialog, gint response_id, gpointer user_data) {
-	struct fp_prop_ui_data *ui_data = (struct fp_prop_ui_data*)user_data;
+	spd->priv->authcheckbox = lookup_widget (propdialog, "HTTPauthCheck");
+	spd->priv->username = lookup_widget (propdialog, "usernameEntry");
+	spd->priv->password = lookup_widget (propdialog, "passwordEntry");
+	spd->priv->credTable = lookup_widget (propdialog, "table4");
+	
+	g_signal_connect (spd->priv->selectFile, "clicked", G_CALLBACK (on_selectfile_pressed), spd->priv);
+	g_signal_connect (spd->priv->urlRadio, "toggled", G_CALLBACK (on_feed_prop_url_radio), spd->priv);
+	g_signal_connect (spd->priv->fileRadio, "toggled", G_CALLBACK (on_feed_prop_url_radio), spd->priv);
+	g_signal_connect (spd->priv->cmdRadio, "toggled", G_CALLBACK (on_feed_prop_url_radio), spd->priv);
+	g_signal_connect (spd->priv->authcheckbox, "toggled", G_CALLBACK (on_feed_prop_authcheck), spd->priv);
 
+	g_signal_connect (lookup_widget (propdialog, "filterCheckbox"), "toggled", G_CALLBACK (on_feed_prop_filtercheck), spd->priv);
+	g_signal_connect (lookup_widget (propdialog, "filterSelectFile"), "clicked", G_CALLBACK (on_selectfile_pressed), spd->priv);
+	g_signal_connect (lookup_widget (propdialog, "feedCacheLimited"), "toggled", G_CALLBACK (on_feed_prop_cache_radio), spd->priv);
+	g_signal_connect (lookup_widget (propdialog, "updateIntervalSpecific"), "toggled", G_CALLBACK(on_feed_prop_update_radio), spd->priv);
+	
+	g_signal_connect (G_OBJECT (propdialog), "response", G_CALLBACK (on_propdialog_response), spd);
+
+	gtk_widget_show_all (propdialog);
+}
+
+SubscriptionPropDialog *
+ui_subscription_prop_dialog_new (subscriptionPtr subscription) 
+{
+	SubscriptionPropDialog *spd;
+	
+	spd = SUBSCRIPTION_PROP_DIALOG (g_object_new (SUBSCRIPTION_PROP_DIALOG_TYPE, NULL));
+	ui_subscription_prop_dialog_load(spd, subscription);
+	return spd;
+}
+
+/* complex "New" dialog */
+ 
+static void new_subscription_dialog_class_init	(NewSubscriptionDialogClass *klass);
+static void new_subscription_dialog_init	(NewSubscriptionDialog *ns);
+
+#define NEW_SUBSCRIPTION_DIALOG_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object), NEW_SUBSCRIPTION_DIALOG_TYPE, SubscriptionDialogPrivate))
+
+GType
+new_subscription_dialog_get_type (void) 
+{
+	static GType type = 0;
+
+	if (G_UNLIKELY (type == 0)) 
+	{
+		static const GTypeInfo our_info = 
+		{
+			sizeof (NewSubscriptionDialogClass),
+			NULL, /* base_init */
+			NULL, /* base_finalize */
+			(GClassInitFunc) new_subscription_dialog_class_init,
+			NULL,
+			NULL, /* class_data */
+			sizeof (NewSubscriptionDialog),
+			0, /* n_preallocs */
+			(GInstanceInitFunc) new_subscription_dialog_init
+		};
+
+		type = g_type_register_static (G_TYPE_OBJECT,
+					       "NewSubscriptionDialog",
+					       &our_info, 0);
+	}
+
+	return type;
+}
+
+static void
+new_subscription_dialog_finalize (GObject *object)
+{
+	/*NewSubscriptionDialog *dialog = NEW_SUBSCRIPTION_DIALOG (object);*/
+	/*NewSubscriptionDialogPrivate *priv = dialog->priv;*/
+
+	G_OBJECT_CLASS (parent_class)->finalize (object);
+}
+
+static void
+new_subscription_dialog_class_init (NewSubscriptionDialogClass *klass)
+{
+	GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+	parent_class = g_type_class_peek_parent (klass);
+
+	object_class->finalize = new_subscription_dialog_finalize;
+
+	g_type_class_add_private (object_class, sizeof(SubscriptionDialogPrivate));
+}
+
+static void
+on_newdialog_response (GtkDialog *dialog,
+                       gint response_id, 
+		       gpointer user_data) 
+{
+	NewSubscriptionDialog *nsd = (NewSubscriptionDialog *)user_data;
+	
 	if(response_id == GTK_RESPONSE_OK) {
 		gchar *source = NULL;
 		const gchar *filter = NULL;
 		updateOptionsPtr options;
 
 		/* Source */
-		source = ui_feed_dialog_decode_source(ui_data);
+		source = ui_subscription_dialog_decode_source(nsd->priv);
 
 		/* Filter handling */
-		filter = gtk_entry_get_text(GTK_ENTRY(lookup_widget(ui_data->dialog, "filterEntry")));
-		if(!gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(ui_data->dialog, "filterCheckbox"))) ||
+		filter = gtk_entry_get_text(GTK_ENTRY(lookup_widget(nsd->priv->dialog, "filterEntry")));
+		if(!gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(nsd->priv->dialog, "filterCheckbox"))) ||
 		   !strcmp(filter,"")) { /* Maybe this should be a test to see if the file exists? */
 			filter = NULL;
 		} 
@@ -424,269 +633,167 @@ static void on_newdialog_response(GtkDialog *dialog, gint response_id, gpointer 
 		g_free(source);
 	}
 
-	gtk_widget_destroy(GTK_WIDGET(dialog));
-	g_free(ui_data);
+	g_object_unref(nsd);
 }
 
-static void on_complex_newdialog(struct fp_prop_ui_data *ui_data) {
-	GtkWidget		*newdialog;
-
-	gtk_widget_destroy(ui_data->dialog);
-
-	/* Create the dialog */
-	ui_data->dialog = newdialog = create_newdialog();
-	gtk_window_set_transient_for(GTK_WINDOW(newdialog), GTK_WINDOW(mainwindow));
-
-	/***********************************************************************
-	 * Source                                                              *
-	 **********************************************************************/
-		
+static void
+new_subscription_dialog_init (NewSubscriptionDialog *nsd)
+{
+	GtkWidget	*newdialog;
+	
+	nsd->priv = NEW_SUBSCRIPTION_DIALOG_GET_PRIVATE (nsd);
+	nsd->priv->dialog = newdialog = create_newdialog ();
+	gtk_window_set_transient_for (GTK_WINDOW (newdialog), GTK_WINDOW (mainwindow));
+	
 	/* Setup source entry */
-	ui_data->sourceEntry = lookup_widget(newdialog,"sourceEntry");
-	gtk_widget_grab_focus(GTK_WIDGET(ui_data->sourceEntry));
-	gtk_entry_set_activates_default(GTK_ENTRY(ui_data->sourceEntry), TRUE);
+	nsd->priv->sourceEntry = lookup_widget (newdialog,"sourceEntry");
+	gtk_widget_grab_focus (GTK_WIDGET (nsd->priv->sourceEntry));
+	gtk_entry_set_activates_default (GTK_ENTRY (nsd->priv->sourceEntry), TRUE);
 		
-	ui_data->selectFile = lookup_widget(newdialog,"selectSourceFileButton");
-	g_signal_connect(ui_data->selectFile, "clicked", G_CALLBACK (on_selectfile_pressed), ui_data);
+	nsd->priv->selectFile = lookup_widget (newdialog,"selectSourceFileButton");
+	g_signal_connect (nsd->priv->selectFile, "clicked", G_CALLBACK (on_selectfile_pressed), nsd);
 	
 	/* Feed location radio buttons */
-	ui_data->fileRadio = lookup_widget(newdialog, "feed_loc_file");
-	ui_data->urlRadio = lookup_widget(newdialog, "feed_loc_url");
-	ui_data->cmdRadio = lookup_widget(newdialog, "feed_loc_command");
-	g_signal_connect(ui_data->urlRadio, "toggled", G_CALLBACK(on_feed_prop_url_radio), ui_data);
-	g_signal_connect(ui_data->fileRadio, "toggled", G_CALLBACK(on_feed_prop_url_radio), ui_data);
-	g_signal_connect(ui_data->cmdRadio, "toggled", G_CALLBACK(on_feed_prop_url_radio), ui_data);
+	nsd->priv->fileRadio = lookup_widget (newdialog, "feed_loc_file");
+	nsd->priv->urlRadio = lookup_widget (newdialog, "feed_loc_url");
+	nsd->priv->cmdRadio = lookup_widget (newdialog, "feed_loc_command");
 
-	g_signal_connect(lookup_widget(newdialog, "filterCheckbox"), "toggled", G_CALLBACK(on_feed_prop_filtercheck), ui_data);
-	g_signal_connect(lookup_widget(newdialog, "filterSelectFile"), "clicked", G_CALLBACK(on_selectfile_pressed), ui_data);
+	g_signal_connect (nsd->priv->urlRadio, "toggled", G_CALLBACK (on_feed_prop_url_radio), nsd->priv);
+	g_signal_connect (nsd->priv->fileRadio, "toggled", G_CALLBACK (on_feed_prop_url_radio), nsd->priv);
+	g_signal_connect (nsd->priv->cmdRadio, "toggled", G_CALLBACK (on_feed_prop_url_radio), nsd->priv);
 
-	gtk_widget_grab_default(lookup_widget(newdialog, "newfeedbtn"));
-	g_signal_connect(G_OBJECT(newdialog), "response",
-	                 G_CALLBACK(on_newdialog_response), ui_data);
+	g_signal_connect (lookup_widget (newdialog, "filterCheckbox"), "toggled", G_CALLBACK (on_feed_prop_filtercheck), nsd->priv);
+	g_signal_connect (lookup_widget (newdialog, "filterSelectFile"), "clicked", G_CALLBACK (on_selectfile_pressed), nsd->priv);
+
+	gtk_widget_grab_default (lookup_widget (newdialog, "newfeedbtn"));
+	g_signal_connect (G_OBJECT (newdialog), "response", G_CALLBACK (on_newdialog_response), nsd);
 	
-	gtk_widget_show_all(newdialog);
-	on_feed_prop_filtercheck(GTK_TOGGLE_BUTTON(lookup_widget(newdialog, "filterCheckbox")), ui_data);
-	on_feed_prop_url_radio(GTK_TOGGLE_BUTTON(ui_data->urlRadio), ui_data);
+	on_feed_prop_filtercheck (GTK_TOGGLE_BUTTON (lookup_widget (newdialog, "filterCheckbox")), nsd->priv);
+	on_feed_prop_url_radio (GTK_TOGGLE_BUTTON (nsd->priv->urlRadio), nsd->priv);
 	
-	gtk_widget_show(newdialog);
+	gtk_widget_show_all (newdialog);
 }
 
-/********************************************************************
- * simple "New" dialog                                             *
- ********************************************************************/
-
-static void on_simple_newdialog_response(GtkDialog *dialog, gint response_id, gpointer user_data) {
-	struct fp_prop_ui_data *ui_data = (struct fp_prop_ui_data*)user_data;
-	gchar *source = NULL;	
+NewSubscriptionDialog *
+ui_complex_subscription_dialog_new (nodePtr parent) 
+{
+	NewSubscriptionDialog *nsd;
 	
-	switch(response_id) {
-		case GTK_RESPONSE_OK:
-			source = ui_feed_create_url(g_strdup(gtk_entry_get_text(GTK_ENTRY(ui_data->sourceEntry))),
-			                            FALSE /* auth */, NULL /* user */, NULL /* passwd */);
+	nsd = NEW_SUBSCRIPTION_DIALOG (g_object_new (NEW_SUBSCRIPTION_DIALOG_TYPE, NULL));
+	nsd->priv->parentNode = parent;
+	return nsd;
+}
 
-			node_request_automatic_add(source, NULL, NULL, NULL,
-						   FEED_REQ_RESET_TITLE | 
-						   FEED_REQ_RESET_UPDATE_INT | 
-						   FEED_REQ_AUTO_DISCOVER | 
-						   FEED_REQ_PRIORITY_HIGH | 
-						   FEED_REQ_DOWNLOAD_FAVICON | 
-						   FEED_REQ_AUTH_DIALOG);
-			g_free(source);
-			break;
-		case GTK_RESPONSE_APPLY: /* misused for "Advanced" */
-			on_complex_newdialog(ui_data);
-			return;
-			break;
+/* simple "New" dialog */
+
+static void simple_subscription_dialog_class_init	(SimpleSubscriptionDialogClass *klass);
+static void simple_subscription_dialog_init		(SimpleSubscriptionDialog *ssd);
+
+#define SIMPLE_SUBSCRIPTION_DIALOG_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object), SIMPLE_SUBSCRIPTION_DIALOG_TYPE, SubscriptionDialogPrivate))
+
+GType
+simple_subscription_dialog_get_type (void) 
+{
+	static GType type = 0;
+
+	if (G_UNLIKELY (type == 0)) 
+	{
+		static const GTypeInfo our_info = 
+		{
+			sizeof (SimpleSubscriptionDialogClass),
+			NULL, /* base_init */
+			NULL, /* base_finalize */
+			(GClassInitFunc) simple_subscription_dialog_class_init,
+			NULL,
+			NULL, /* class_data */
+			sizeof (SimpleSubscriptionDialog),
+			0, /* n_preallocs */
+			(GInstanceInitFunc) simple_subscription_dialog_init
+		};
+
+		type = g_type_register_static (G_TYPE_OBJECT,
+					       "SimpleSubscriptionDialog",
+					       &our_info, 0);
 	}
-	gtk_widget_destroy(GTK_WIDGET(dialog));
-	g_free(ui_data);
+
+	return type;
 }
 
-void ui_feed_add(nodePtr parent) {
-	GtkWidget		*newdialog;
-	struct fp_prop_ui_data	*ui_data;
+static void
+simple_subscription_dialog_finalize (GObject *object)
+{
+	/*SimpleSubscriptionDialog *dialog = SIMPLE_SUBSCRIPTION_DIALOG (object);*/
+	/*SimpleSubscriptionDialogPrivate *priv = dialog->priv;*/
 
-	ui_data = g_new0(struct fp_prop_ui_data, 1);
-	ui_data->node = parent;
+	G_OBJECT_CLASS (parent_class)->finalize (object);
+}
 
-	/* Create the dialog */
-	ui_data->dialog = newdialog = create_simplenewdialog();
-	gtk_window_set_transient_for(GTK_WINDOW(newdialog), GTK_WINDOW(mainwindow));
+static void
+simple_subscription_dialog_class_init (SimpleSubscriptionDialogClass *klass)
+{
+	GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+	parent_class = g_type_class_peek_parent (klass);
+
+	object_class->finalize = simple_subscription_dialog_finalize;
+
+	g_type_class_add_private (object_class, sizeof(SubscriptionDialogPrivate));
+}
+
+static void
+on_simple_newdialog_response (GtkDialog *dialog,
+                              gint response_id,
+			      gpointer user_data) 
+{
+	SimpleSubscriptionDialog *ssd = (SimpleSubscriptionDialog *)user_data;
+	gchar *source = NULL;
+	
+	if (response_id == GTK_RESPONSE_OK) {
+		source = ui_subscription_create_url( g_strdup (gtk_entry_get_text (GTK_ENTRY(ssd->priv->sourceEntry))),
+		                                     FALSE /* auth */, NULL /* user */, NULL /* passwd */);
+
+		node_request_automatic_add(source, NULL, NULL, NULL,
+					   FEED_REQ_RESET_TITLE | 
+					   FEED_REQ_RESET_UPDATE_INT | 
+					   FEED_REQ_AUTO_DISCOVER | 
+					   FEED_REQ_PRIORITY_HIGH | 
+					   FEED_REQ_DOWNLOAD_FAVICON | 
+					   FEED_REQ_AUTH_DIALOG);
+		g_free(source);
+	}
+	
+	g_object_unref(ssd);
+	
+	if (response_id == GTK_RESPONSE_APPLY) /* misused for "Advanced" */
+		new_subscription_dialog_init (NULL);	// FIXME
+}
+
+static void
+simple_subscription_dialog_init (SimpleSubscriptionDialog *ssd)
+{
+	GtkWidget	*newdialog;
+	
+	ssd->priv = SIMPLE_SUBSCRIPTION_DIALOG_GET_PRIVATE (ssd);
+	ssd->priv->dialog = newdialog = create_simplenewdialog ();
+	gtk_window_set_transient_for (GTK_WINDOW (newdialog), GTK_WINDOW (mainwindow));
 	
 	/* Setup source entry */
-	ui_data->sourceEntry = lookup_widget(newdialog,"sourceEntry");
-	gtk_widget_grab_focus(GTK_WIDGET(ui_data->sourceEntry));
-	gtk_entry_set_activates_default(GTK_ENTRY(ui_data->sourceEntry), TRUE);
+	ssd->priv->sourceEntry = lookup_widget (newdialog,"sourceEntry");
+	gtk_widget_grab_focus (GTK_WIDGET (ssd->priv->sourceEntry));
+	gtk_entry_set_activates_default (GTK_ENTRY (ssd->priv->sourceEntry), TRUE);
 
-	g_signal_connect(G_OBJECT(newdialog), "response",
-	                 G_CALLBACK(on_simple_newdialog_response), ui_data);
+	g_signal_connect (G_OBJECT (newdialog), "response",
+	                  G_CALLBACK (on_simple_newdialog_response), ssd);
 	
-	gtk_widget_show(newdialog);
+	gtk_widget_show_all (newdialog);
 }
 
-/********************************************************************
- * "Properties" dialog                                              *
- ********************************************************************/
-
-void ui_feed_properties(nodePtr node) {
-	GtkWidget		*propdialog;
-	struct fp_prop_ui_data	*ui_data;
-	int 			interval, defaultInterval;
-	gchar 			*defaultIntervalStr;
-	feedPtr			feed = (feedPtr)node->data;
-
-	ui_data = g_new0(struct fp_prop_ui_data, 1);
-	ui_data->node = node;
-	ui_data->feed = feed;
+SimpleSubscriptionDialog *
+ui_subscription_dialog_new (nodePtr parent) 
+{
+	SimpleSubscriptionDialog *ssd;
 	
-	/* Create the dialog */
-	ui_data->dialog = propdialog = create_propdialog();
-	gtk_window_set_transient_for(GTK_WINDOW(propdialog), GTK_WINDOW(mainwindow));
-
-	/***********************************************************************
-	 * General                                                             *
-	 ***********************************************************************/
-
-	/* Setup feed name */
-	ui_data->feedNameEntry = lookup_widget(propdialog,"feedNameEntry");
-	gtk_entry_set_text(GTK_ENTRY(ui_data->feedNameEntry), node_get_title(node));
-
-	/* Setup refresh interval */
-	ui_data->refreshInterval = lookup_widget(propdialog,"refreshIntervalSpinButton");
-	
-	/* interval radio buttons */
-	interval = feed_get_update_interval(feed);
-	defaultInterval = feed_get_default_update_interval(feed);
-	
-	if(-2 >= interval) {
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(propdialog, "updateIntervalNever")), TRUE);
-		gtk_spin_button_set_value(GTK_SPIN_BUTTON(lookup_widget(propdialog, "refreshIntervalSpinButton")), defaultInterval);
-	} else if(-1 == interval) {
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(propdialog, "updateIntervalDefault")), TRUE);
-		gtk_spin_button_set_value(GTK_SPIN_BUTTON(lookup_widget(propdialog, "refreshIntervalSpinButton")), defaultInterval);
-	} else {
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(propdialog, "updateIntervalSpecific")), TRUE);
-		gtk_spin_button_set_value(GTK_SPIN_BUTTON(lookup_widget(propdialog, "refreshIntervalSpinButton")), interval);
-	}
-	
-	gtk_widget_set_sensitive(lookup_widget(propdialog, "refreshIntervalSpinButton"), interval > 0);
-	g_signal_connect(lookup_widget(propdialog, "updateIntervalSpecific"), "toggled", G_CALLBACK(on_feed_prop_update_radio), ui_data);
-	
-	/* setup info label about default update interval */
-	if(-1 != defaultInterval)
-		defaultIntervalStr = g_strdup_printf(_("The provider of this feed suggests an update interval of %d minutes."), defaultInterval);
-	else
-		defaultIntervalStr = g_strdup(_("This feed specifies no default update interval."));
-
-	gtk_label_set_text(GTK_LABEL(lookup_widget(propdialog, "feedUpdateInfo")), defaultIntervalStr);
-	g_free(defaultIntervalStr);
-
-	/***********************************************************************
-	 * Source                                                              *
-	 ***********************************************************************/
-		
-	/* Setup source entry */
-	ui_data->sourceEntry = lookup_widget(propdialog,"sourceEntry");
-	
-	ui_data->selectFile = lookup_widget(propdialog,"selectSourceFileButton");
-	g_signal_connect(ui_data->selectFile, "clicked", G_CALLBACK (on_selectfile_pressed), ui_data);
-
-	/* Feed location radio buttons */
-	ui_data->fileRadio = lookup_widget(propdialog, "feed_loc_file");
-	ui_data->urlRadio = lookup_widget(propdialog, "feed_loc_url");
-	ui_data->cmdRadio = lookup_widget(propdialog, "feed_loc_command");
-	g_signal_connect(ui_data->urlRadio, "toggled", G_CALLBACK(on_feed_prop_url_radio), ui_data);
-	g_signal_connect(ui_data->fileRadio, "toggled", G_CALLBACK(on_feed_prop_url_radio), ui_data);
-	g_signal_connect(ui_data->cmdRadio, "toggled", G_CALLBACK(on_feed_prop_url_radio), ui_data);
-
-	/* Auth check box */
-	ui_data->authcheckbox = lookup_widget(propdialog, "HTTPauthCheck");
-	ui_data->username = lookup_widget(propdialog, "usernameEntry");
-	ui_data->password = lookup_widget(propdialog, "passwordEntry");
-	ui_data->credTable = lookup_widget(propdialog, "table4");
-	g_signal_connect(ui_data->authcheckbox, "toggled", G_CALLBACK(on_feed_prop_authcheck), ui_data);
-
-	if(feed_get_source(feed)[0] == '|') {
-		gtk_entry_set_text(GTK_ENTRY(ui_data->sourceEntry), &(feed_get_source(feed)[1]));
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(ui_data->cmdRadio), TRUE);
-		ui_feed_prop_enable_httpauth(ui_data, FALSE);
-		gtk_widget_set_sensitive(ui_data->selectFile, TRUE);
-	} else if(strstr(feed_get_source(feed), "://") != NULL) {
-		xmlURIPtr uri = xmlParseURI(BAD_CAST feed_get_source(feed));
-		xmlChar *parsedUrl;
-		if(uri) {
-			if(uri->user) {
-				gchar *user = uri->user;
-				gchar *pass = strstr(user, ":");
-				if(pass) {
-					pass[0] = '\0';
-					pass++;
-					gtk_entry_set_text(GTK_ENTRY(ui_data->password), pass);
-				}
-				gtk_entry_set_text(GTK_ENTRY(ui_data->username), user);
-				xmlFree(uri->user);
-				uri->user = NULL;
-				gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(ui_data->authcheckbox), TRUE);
-			}
-			parsedUrl = xmlSaveUri(uri);
-			gtk_entry_set_text(GTK_ENTRY(ui_data->sourceEntry), parsedUrl);
-			xmlFree(parsedUrl);
-			xmlFreeURI(uri);
-		} else {
-			gtk_entry_set_text(GTK_ENTRY(ui_data->sourceEntry), feed_get_source(feed));
-		}
-		ui_feed_prop_enable_httpauth(ui_data, TRUE);
-		gtk_widget_set_sensitive(ui_data->selectFile, FALSE);
-	} else {
-		/* File */
-		gtk_entry_set_text(GTK_ENTRY(ui_data->sourceEntry), feed_get_source(feed));
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(ui_data->fileRadio), TRUE);
-		ui_feed_prop_enable_httpauth(ui_data, FALSE);
-		gtk_widget_set_sensitive(ui_data->selectFile, TRUE);
-	}
-
-	if(feed_get_filter(feed)) {
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(propdialog, "filterCheckbox")), TRUE);
-		gtk_entry_set_text(GTK_ENTRY(lookup_widget(propdialog, "filterEntry")), feed_get_filter(feed));
-	}
-	g_signal_connect(lookup_widget(propdialog, "filterCheckbox"), "toggled", G_CALLBACK(on_feed_prop_filtercheck), ui_data);
-	g_signal_connect(lookup_widget(propdialog, "filterSelectFile"), "clicked", G_CALLBACK (on_selectfile_pressed), ui_data);
-
-	/***********************************************************************
-	 * Archive                                                             *
-	 ***********************************************************************/
-
-	/* Cache size radio buttons */
-	if(feed->cacheLimit == CACHE_DISABLE) {
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(propdialog, "feedCacheDisable")), TRUE);
-	} else if(feed->cacheLimit == CACHE_DEFAULT) {
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(propdialog, "feedCacheDefault")), TRUE);
-	} else if(feed->cacheLimit == CACHE_UNLIMITED) {
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(propdialog, "feedCacheUnlimited")), TRUE);
-	} else {
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(propdialog, "feedCacheLimited")), TRUE);
-		gtk_spin_button_set_value(GTK_SPIN_BUTTON(lookup_widget(propdialog, "cacheItemLimit")), feed->cacheLimit);
-	}
-
-	gtk_widget_set_sensitive(lookup_widget(propdialog, "cacheItemLimit"), feed->cacheLimit > 0);
-	g_signal_connect(lookup_widget(propdialog, "feedCacheLimited"), "toggled", G_CALLBACK(on_feed_prop_cache_radio), ui_data);
-
-	g_signal_connect(G_OBJECT (propdialog), "response", G_CALLBACK (on_propdialog_response), ui_data);
-
-	on_feed_prop_filtercheck(GTK_TOGGLE_BUTTON(lookup_widget(propdialog, "filterCheckbox")), ui_data);
-	
-	/***********************************************************************
-	 * Download                                                            *
-	 ***********************************************************************/
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(propdialog, "dontUseProxyCheck")), feed->updateOptions->dontUseProxy);
-
-	/***********************************************************************
-	 * Advanced                                                            *
-	 ***********************************************************************/
-	
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(propdialog, "enclosureDownloadCheck")), feed->encAutoDownload);
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(propdialog, "loadItemLinkCheck")), feed->loadItemLink);
-
-	gtk_widget_show_all(propdialog);
+	ssd = SIMPLE_SUBSCRIPTION_DIALOG (g_object_new (SIMPLE_SUBSCRIPTION_DIALOG_TYPE, NULL));
+	ssd->priv->parentNode = parent;
+	return ssd;
 }
-
