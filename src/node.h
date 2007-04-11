@@ -57,6 +57,7 @@ enum {
 typedef struct node {
 	gpointer		data;		/**< node type specific data structure */
 	guint			type;		/**< node type */
+	struct subscription	*subscription;	/**< subscription attached to this node (or NULL) */
 	struct nodeType		*nodeType;	/**< node type implementation */	
 	struct nodeSource	*source;	/**< the feed list plugin instance handling this node */
 
@@ -199,6 +200,14 @@ void node_set_type(nodePtr node, nodeTypePtr type);
  * @param data	the structure
  */
 void node_set_data(nodePtr node, gpointer data);
+
+/**
+ * Attaches the subscription to the given node.
+ *
+ * @param node		the node
+ * @param subscription	the subscription
+ */
+void node_set_subscription(nodePtr node, struct subscription *subscription);
 
 /**
  * Determines wether node1 is an ancestor of node2

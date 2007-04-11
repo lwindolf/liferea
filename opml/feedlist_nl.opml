@@ -4,31 +4,32 @@
     <title>Liferea Dutch Feed List</title>
   </head>
   <body>
-    <!-- lets keep this English block in sync over all feed lists! -->
-    <outline text="Example Feeds">
-      <outline text="OSS">
-        <outline text="art.gnome.org" htmlUrl="http://art.gnome.org/" xmlUrl="http://art.gnome.org/backend.php" />
-        <outline text="Debian Package a Day" htmlUrl="http://www.livejournal.com/users/debaday/" xmlUrl="http://www.livejournal.com/users/debaday/data/atom" />
-        <outline text="Gnomefiles" htmlUrl="http://www.gnomefiles.org/" xmlUrl="http://www.gnomefiles.org/files/gnomefiles.rdf" />
-        <outline text="GNOME Footnotes" htmlUrl="http://www.gnomedesktop.org/" xmlUrl="http://www.gnomedesktop.org/backend.php" />
-        <outline text="GrokLaw" htmlUrl="http://www.groklaw.net/" xmlUrl="http://www.groklaw.net/backend/GrokLaw.rdf" />
-        <outline text="Linux.com" htmlUrl="http://www.linux.com/" xmlUrl="http://www.linux.com/index.rss" />
-        <outline text="mozillaZine" htmlUrl="http://www.mozillazine.org/" xmlUrl="http://www.mozillazine.org/contents.rdf" />
-        <outline text="Newsforge" htmlUrl="http://www.newsforge.com" xmlUrl="http://www.newsforge.com/newsforge.rss" />
-        <outline text="Planet Debian" htmlUrl="http://planet.debian.org/" xmlUrl="http://planet.debian.org/rss20.xml" />
-        <outline text="Slashdot" htmlUrl="http://slashdot.org"  xmlUrl="http://slashdot.org/slashdot.rss" />
-        <outline text="TuxMobil" htmlUrl="http://tuxmobil.org" xmlUrl="http://tuxmobil.org/tuxmobil_rss.rdf" />      
-      </outline>	
-    </outline>
+      <!-- lets keep this English block in sync over all feed lists! -->
+      <outline text="international">
+	      <outline text="OSS">
+        	<outline text="art.gnome.org" htmlUrl="http://art.gnome.org/" xmlUrl="http://art.gnome.org/backend.php" />
+        	<outline text="Debian Package a Day" htmlUrl="http://debaday.debian.net/" xmlUrl="http://debaday.debian.net/feed/atom/" />
+        	<outline text="Gnomefiles" htmlUrl="http://www.gnomefiles.org/" xmlUrl="http://www.gnomefiles.org/files/gnomefiles.rdf" />
+        	<outline text="GNOME Footnotes" htmlUrl="http://www.gnomedesktop.org/" xmlUrl="http://www.gnomedesktop.org/backend.php" />
+        	<outline text="GrokLaw" htmlUrl="http://www.groklaw.net/" xmlUrl="http://www.groklaw.net/backend/GrokLaw.rdf" />
+        	<outline text="Linux.com" htmlUrl="http://www.linux.com/" xmlUrl="http://www.linux.com/index.rss" />
+        	<outline text="mozillaZine" htmlUrl="http://www.mozillazine.org/" xmlUrl="http://www.mozillazine.org/contents.rdf" />
+        	<outline text="Newsforge" htmlUrl="http://www.newsforge.com" xmlUrl="http://www.newsforge.com/newsforge.rss" />
+        	<outline text="Planet Debian" htmlUrl="http://planet.debian.org/" xmlUrl="http://planet.debian.org/rss20.xml" />
+        	<outline text="Slashdot" htmlUrl="http://slashdot.org"  xmlUrl="http://slashdot.org/slashdot.rss" />
+        	<outline text="TuxMobil" htmlUrl="http://tuxmobil.org" xmlUrl="http://tuxmobil.org/tuxmobil_rss.rdf" />      
+	      </outline>	
+      </outline>
+
     <outline text="Nederlandse bonusfeeds!">
       <outline text="Nieuws">
-        <outline text="NRC Handelsblad | Binnenland" htmlUrl="http://www.nrc.nl/binnenland/" xmlUrl="http://www.nrc.nl/rss/binnenland/">
-        <outline text="nu.nl | Het laatste nieuws lees je het eerst op NU.nl" htmlUrl="http://www.nu.nl/" xmlUrl="http://www.nu.nl/deeplink_rss2/index.jsp?r=Algemeen">
-        <outline text="Tweakers.net" htmlUrl="http://tweakers.net/" xmlUrl="http://tweakers.net/feeds/mixed.xml">
+        <outline text="NRC Handelsblad | Binnenland" htmlUrl="http://www.nrc.nl/binnenland/" xmlUrl="http://www.nrc.nl/rss/binnenland/" />
+        <outline text="nu.nl | Het laatste nieuws lees je het eerst op NU.nl" htmlUrl="http://www.nu.nl/" xmlUrl="http://www.nu.nl/deeplink_rss2/index.jsp?r=Algemeen" />
+        <outline text="Tweakers.net" htmlUrl="http://tweakers.net/" xmlUrl="http://tweakers.net/feeds/mixed.xml" />
       </outline>
       <outline text="Blogs">
-        <outline text="GeenStijl" htmlUrl="http://www.geenstijl.nl/" xmlUrl="http://www.geenstijl.nl/atom.xml">
-        <outline text="Avec Pinguin" htmlUrl="http://avecpinguin.kikkum.net/" xmlUrl="http://avecpinguin.kikkum.net/feedje.xml">
+        <outline text="GeenStijl" htmlUrl="http://www.geenstijl.nl/" xmlUrl="http://www.geenstijl.nl/atom.xml" />
+        <outline text="Avec Pinguin" htmlUrl="http://avecpinguin.kikkum.net/" xmlUrl="http://avecpinguin.kikkum.net/feedje.xml" />
       </outline>
     </outline>
     <outline text="Ongelezen" title="Ongelezen" description="Ongelezen" type="vfolder" htmlUrl="" xmlUrl="vfolder">

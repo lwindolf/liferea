@@ -391,8 +391,6 @@ ui_subscription_prop_dialog_load (SubscriptionPropDialog *spd,
 	nodePtr		node = subscription->node;
 	feedPtr		feed = (feedPtr)node->data;
 
-	node_load(node);
-
 	/* General */
 	gtk_entry_set_text(GTK_ENTRY(spd->priv->feedNameEntry), node_get_title(node));
 
@@ -490,8 +488,6 @@ ui_subscription_prop_dialog_load (SubscriptionPropDialog *spd,
 	/* Advanced */	
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(spd->priv->dialog, "enclosureDownloadCheck")), feed->encAutoDownload);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(spd->priv->dialog, "loadItemLinkCheck")), feed->loadItemLink);
-
-	node_unload(node);
 }
 
 static void

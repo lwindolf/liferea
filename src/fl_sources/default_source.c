@@ -35,10 +35,10 @@
 #include "plugin.h"
 #include "fl_sources/default_source.h"
 #include "fl_sources/node_source.h"
-#include "ui/ui_feed.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_mainwindow.h"
 #include "ui/ui_node.h"
+#include "ui/ui_subscription.h"
 #include "ui/ui_tray.h"
 
 /** lock to prevent feed list saving while loading */

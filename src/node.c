@@ -143,6 +143,15 @@ void node_set_data(nodePtr node, gpointer data) {
 	node->data = data;
 }
 
+void node_set_subscription(nodePtr node, subscriptionPtr subscription) {
+
+	g_assert(NULL == node->subscription);
+	g_assert(NULL != node->nodeType);
+		
+	node->subscription = subscription;
+	subscription->node = node;
+}
+
 gboolean node_is_ancestor(nodePtr node1, nodePtr node2) {
 	nodePtr	tmp;
 
@@ -225,7 +234,7 @@ void node_update_favicon(nodePtr node) {
 
 	if(NODE_TYPE_FEED == node->type) {
 		debug1(DEBUG_UPDATE, "favicon of node %s needs to be updated...", node->title);
-		feed_update_favicon(node);
+		subscription_update_favicon(node->subscription);
 	}
 	
 	/* Recursion */
@@ -329,7 +338,8 @@ void node_request_automatic_add(const gchar *source, const gchar *title, const g
 	node = node_new();
 	node_set_type(node,feed_get_node_type());
 	node_set_title(node, title?title:_("New Subscription"));
-	node_set_data(node, feed_new(source, filter, options));
+	node_set_data(node, feed_new());
+	node_set_subscription(node, subscription_new(source, filter, options));
 
 	ui_feedlist_get_target_folder(&pos);
 	node_add_child(parent, node, pos);

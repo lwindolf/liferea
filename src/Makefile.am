@@ -48,6 +48,7 @@ liferea_bin_SOURCES = \
 	render.c render.h \
 	rule.c rule.h \
 	social.c social.h \
+	subscription.c subscription.h \
 	support.c support.h \
 	update.c update.h \
 	main.c \

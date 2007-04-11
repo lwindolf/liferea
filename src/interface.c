@@ -722,7 +722,7 @@ create_propdialog (void)
   gtk_widget_show (enclosureDownloadCheck);
   gtk_box_pack_start (GTK_BOX (vbox2615), enclosureDownloadCheck, FALSE, FALSE, 0);
 
-  loadItemLinkCheck = gtk_check_button_new_with_mnemonic (_("Auto-_load item link in internal browser when reading articles."));
+  loadItemLinkCheck = gtk_check_button_new_with_mnemonic (_("Auto-_load item link in configured browser when selecting articles."));
   gtk_widget_show (loadItemLinkCheck);
   gtk_box_pack_start (GTK_BOX (vbox2615), loadItemLinkCheck, FALSE, FALSE, 0);
 
@@ -1199,7 +1199,7 @@ create_prefdialog (void)
   GtkWidget *label124;
   GtkWidget *alignment14;
   GtkWidget *vbox2617;
-  GtkWidget *trayiconoptionbtn;
+  GtkWidget *popupwindowsoptionbtn;
   GtkWidget *vbox256;
   GtkWidget *trayiconoptionbtn;
   GtkWidget *hbox85;
@@ -1688,9 +1688,9 @@ create_prefdialog (void)
   gtk_widget_show (vbox2617);
   gtk_container_add (GTK_CONTAINER (alignment14), vbox2617);
 
-  trayiconoptionbtn = gtk_check_button_new_with_mnemonic (_("Show a status _icon in the notification area (system tray)."));
-  gtk_widget_show (trayiconoptionbtn);
-  gtk_box_pack_start (GTK_BOX (vbox2617), trayiconoptionbtn, FALSE, FALSE, 0);
+  popupwindowsoptionbtn = gtk_check_button_new_with_mnemonic (_("Show a _popup window with new headlines."));
+  gtk_widget_show (popupwindowsoptionbtn);
+  gtk_box_pack_start (GTK_BOX (vbox2617), popupwindowsoptionbtn, FALSE, FALSE, 0);
 
   vbox256 = gtk_vbox_new (FALSE, 6);
   gtk_widget_show (vbox256);
@@ -2053,8 +2053,8 @@ create_prefdialog (void)
   g_signal_connect ((gpointer) browsercmd, "changed",
                     G_CALLBACK (on_browsercmd_changed),
                     NULL);
-  g_signal_connect ((gpointer) trayiconoptionbtn, "clicked",
-                    G_CALLBACK (on_trayiconoptionbtn_clicked),
+  g_signal_connect ((gpointer) popupwindowsoptionbtn, "clicked",
+                    G_CALLBACK (on_popupwindowsoptionbtn_clicked),
                     NULL);
   g_signal_connect ((gpointer) trayiconoptionbtn, "clicked",
                     G_CALLBACK (on_trayiconoptionbtn_clicked),
@@ -2202,7 +2202,7 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, label124, "label124");
   GLADE_HOOKUP_OBJECT (prefdialog, alignment14, "alignment14");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox2617, "vbox2617");
-  GLADE_HOOKUP_OBJECT (prefdialog, trayiconoptionbtn, "trayiconoptionbtn");
+  GLADE_HOOKUP_OBJECT (prefdialog, popupwindowsoptionbtn, "popupwindowsoptionbtn");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox256, "vbox256");
   GLADE_HOOKUP_OBJECT (prefdialog, trayiconoptionbtn, "trayiconoptionbtn");
   GLADE_HOOKUP_OBJECT (prefdialog, hbox85, "hbox85");
@@ -2656,7 +2656,7 @@ create_aboutdialog (void)
   gtk_container_add (GTK_CONTAINER (scrolledwindow6), viewport2);
   gtk_viewport_set_shadow_type (GTK_VIEWPORT (viewport2), GTK_SHADOW_NONE);
 
-  label61 = gtk_label_new ("Bart Kreska <bartkreska@users.sourceforge.net>\nDario Conigliaro <djdas@djdas.net>\nFernando Ike de Oliveira <fike@midstorm.org>\nKhaled Hosny <khaledhosny@eglug.org>\nSargate Kanogan <sargate@gmail.com>\nTakeshi AIHANA <takeshi.aihana@gmail.com>\nVincent Lef\303\250vre <vincent@vinc17.org>\n");
+  label61 = gtk_label_new ("Bart Kreska <bartkreska@users.sourceforge.net>\nDario Conigliaro <djdas@djdas.net>\nFernando Ike de Oliveira <fike@midstorm.org>\nKhaled Hosny <khaledhosny@eglug.org>\nSargate Kanogan <sargate@gmail.com>\nTakeshi AIHANA <takeshi.aihana@gmail.com>\nVincent Lef\303\250vre <vincent@vinc17.org>\nOleg Maloglovets <oleg@koleso-auto.ru>");
   gtk_widget_show (label61);
   gtk_container_add (GTK_CONTAINER (viewport2), label61);
   gtk_misc_set_alignment (GTK_MISC (label61), 0, 0.1);

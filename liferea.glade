@@ -1891,7 +1891,7 @@
 		<widget class="GtkCheckButton" id="loadItemLinkCheck">
 		  <property name="visible">True</property>
 		  <property name="can_focus">True</property>
-		  <property name="label" translatable="yes">Auto-_load item link in internal browser when reading articles.</property>
+		  <property name="label" translatable="yes">Auto-_load item link in configured browser when selecting articles.</property>
 		  <property name="use_underline">True</property>
 		  <property name="relief">GTK_RELIEF_NORMAL</property>
 		  <property name="focus_on_click">True</property>
@@ -4114,17 +4114,17 @@
 			  <property name="spacing">6</property>
 
 			  <child>
-			    <widget class="GtkCheckButton" id="trayiconoptionbtn">
+			    <widget class="GtkCheckButton" id="popupwindowsoptionbtn">
 			      <property name="visible">True</property>
 			      <property name="can_focus">True</property>
-			      <property name="label" translatable="yes">Show a status _icon in the notification area (system tray).</property>
+			      <property name="label" translatable="yes">Show a _popup window with new headlines.</property>
 			      <property name="use_underline">True</property>
 			      <property name="relief">GTK_RELIEF_NORMAL</property>
 			      <property name="focus_on_click">True</property>
 			      <property name="active">False</property>
 			      <property name="inconsistent">False</property>
 			      <property name="draw_indicator">True</property>
-			      <signal name="clicked" handler="on_trayiconoptionbtn_clicked" last_modification_time="Thu, 08 Jan 2004 17:55:02 GMT"/>
+			      <signal name="clicked" handler="on_popupwindowsoptionbtn_clicked" last_modification_time="Sun, 20 Jun 2004 00:53:48 GMT"/>
 			    </widget>
 			    <packing>
 			      <property name="padding">0</property>
@@ -6163,7 +6163,7 @@ Khaled Hosny &lt;khaledhosny@eglug.org&gt;
 Sargate Kanogan &lt;sargate@gmail.com&gt;
 Takeshi AIHANA &lt;takeshi.aihana@gmail.com&gt;
 Vincent Lefèvre &lt;vincent@vinc17.org&gt;
-</property>
+Oleg Maloglovets &lt;oleg@koleso-auto.ru&gt;</property>
 		      <property name="use_underline">False</property>
 		      <property name="use_markup">False</property>
 		      <property name="justify">GTK_JUSTIFY_LEFT</property>

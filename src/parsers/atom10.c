@@ -577,7 +577,7 @@ static void atom10_parse_feed_link(xmlNodePtr cur, feedParserCtxtPtr ctxt, struc
 	
 	href = atom10_parse_link(cur, ctxt, state);
 	if(href) {
-		feed_set_html_url(ctxt->feed, href);
+		feed_set_html_url(ctxt->feed, subscription_get_source(ctxt->subscription), href);
 		/* Set the default base to the feed's HTML URL if not set yet */
 		if (xmlNodeGetBase(cur->doc, xmlDocGetRootElement(cur->doc)) == NULL)
 			xmlNodeSetBase(xmlDocGetRootElement(cur->doc), href);
@@ -621,8 +621,9 @@ static void atom10_parse_feed_title(xmlNodePtr cur, feedParserCtxtPtr ctxt, stru
 	
 	title = atom10_parse_text_construct(cur, FALSE);
 	if(title) {
-		feed_set_title(ctxt->feed, title);
-		g_free(title);
+		if(ctxt->title)
+			g_free(ctxt->title);
+		ctxt->title = title;
 	}
 }
 

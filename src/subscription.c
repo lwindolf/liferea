@@ -18,7 +18,15 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include <string.h>
+#include "common.h"
+#include "debug.h"
+#include "favicon.h"
+#include "feedlist.h"
 #include "subscription.h"
+#include "support.h"
+#include "net/cookies.h"
+#include "ui/ui_mainwindow.h"
 #include "ui/ui_node.h"
 
 #define FEED_PROTOCOL_PREFIX "feed://"
@@ -34,7 +42,8 @@ subscriptionPtr subscription_new(const gchar *source, const gchar *filter, updat
 		
 	subscription->updateState = g_new0(struct updateState, 1);	
 	subscription->updateInterval = -1;
-
+	subscription->defaultInterval = -1;
+	
 	if(source) {
 		gchar *tmp, *uri = g_strdup(source);
 		g_strstrip(uri);	/* strip confusing whitespaces */
@@ -86,7 +95,7 @@ void subscription_prepare_request(subscriptionPtr subscription, struct request *
 
 	debug1(DEBUG_UPDATE, "preparing request for \"%s\"\n", subscription_get_source(subscription));
 
-	subscription_reset_update_counter_(subscription);
+	subscription_reset_update_counter(subscription);
 
 	/* prepare request url (strdup because it might be
   	   changed on permanent HTTP redirection in netio.c) */
@@ -164,24 +173,24 @@ void subscription_set_filter(subscriptionPtr subscription, const gchar *filter) 
  * @param httpstatus	HTTP status
  * @param resultcode	the update code's return code (see update.h)
  */
-static void subscription_update_error_status(feedPtr feed, gint httpstatus, gint resultcode, gchar *filterError) {
+void subscription_update_error_status(subscriptionPtr subscription, gint httpstatus, gint resultcode, gchar *filterError) {
 	const gchar	*errmsg = NULL;
 	gboolean	errorFound = FALSE;
 
-	if(feed->filterError)
-		g_free(feed->filterError);
-	if(feed->httpError)
-		g_free(feed->httpError);
-	if(feed->updateError)
-		g_free(feed->updateError);
+	if(subscription->filterError)
+		g_free(subscription->filterError);
+	if(subscription->httpError)
+		g_free(subscription->httpError);
+	if(subscription->updateError)
+		g_free(subscription->updateError);
 		
-	feed->filterError = g_strdup(filterError);
-	feed->updateError = NULL;
-	feed->httpError = NULL;
-	feed->httpErrorCode = httpstatus;
+	subscription->filterError = g_strdup(filterError);
+	subscription->updateError = NULL;
+	subscription->httpError = NULL;
+	subscription->httpErrorCode = httpstatus;
 	
 	if(((httpstatus >= 200) && (httpstatus < 400)) && /* HTTP codes starting with 2 and 3 mean no error */
-	   (NULL == feed->filterError))
+	   (NULL == subscription->filterError))
 		return;
 	
 	if((200 != httpstatus) || (resultcode != NET_ERR_OK)) {	
@@ -193,12 +202,12 @@ static void subscription_update_error_status(feedPtr feed, gint httpstatus, gint
 			errmsg = common_netio_error_to_str(resultcode);
 
 		errorFound = TRUE;
-		feed->httpError = g_strdup(errmsg);
+		subscription->httpError = g_strdup(errmsg);
 	}
 	
 	/* if none of the above error descriptions matched... */
 	if(!errorFound)
-		feed->updateError = g_strdup(_("There was a problem while reading this subscription. Please check the URL and console output."));
+		subscription->updateError = g_strdup(_("There was a problem while reading this subscription. Please check the URL and console output."));
 }
 
 static void subscription_favicon_downloaded(gpointer user_data) {
@@ -218,7 +227,7 @@ void subscription_update_favicon(subscriptionPtr subscription) {
 			 subscription_get_source(subscription),
 			 subscription->updateOptions,
 	                 subscription_favicon_downloaded, 
-			 (gpointer)node);
+			 (gpointer)subscription->node);
 	feedlist_schedule_save();	
 }
 

@@ -11,6 +11,24 @@
       <outline text="&#x41B;&#x438;&#x43D;&#x443;&#x43A;&#x441; &#x437;&#x430; &#x431;&#x44A;&#x43B;&#x433;&#x430;&#x440;&#x438;: &#x41D;&#x43E;&#x432;&#x438;&#x43D;&#x438;" title="&#x41B;&#x438;&#x43D;&#x443;&#x43A;&#x441; &#x437;&#x430; &#x431;&#x44A;&#x43B;&#x433;&#x430;&#x440;&#x438;: &#x41D;&#x43E;&#x432;&#x438;&#x43D;&#x438;" description="&#x41B;&#x438;&#x43D;&#x443;&#x43A;&#x441; &#x437;&#x430; &#x431;&#x44A;&#x43B;&#x433;&#x430;&#x440;&#x438;: &#x41D;&#x43E;&#x432;&#x438;&#x43D;&#x438;" type="rss" htmlUrl="http://www.linux-bg.org" xmlUrl="http://linux-bg.org/linux-bg-news.rdf" updateInterval="-1"/>
       <outline text="Planet GNOME-BG" title="Planet GNOME-BG" description="Planet GNOME-BG" type="rss" htmlUrl="http://gnome.fsa-bg.org" xmlUrl="http://gnome.fsa-bg.org/rss20.xml" updateInterval="-1"/>
     </outline>
+
+      <!-- lets keep this English block in sync over all feed lists! -->
+      <outline text="international">
+	      <outline text="OSS">
+        	<outline text="art.gnome.org" htmlUrl="http://art.gnome.org/" xmlUrl="http://art.gnome.org/backend.php" />
+        	<outline text="Debian Package a Day" htmlUrl="http://debaday.debian.net/" xmlUrl="http://debaday.debian.net/feed/atom/" />
+        	<outline text="Gnomefiles" htmlUrl="http://www.gnomefiles.org/" xmlUrl="http://www.gnomefiles.org/files/gnomefiles.rdf" />
+        	<outline text="GNOME Footnotes" htmlUrl="http://www.gnomedesktop.org/" xmlUrl="http://www.gnomedesktop.org/backend.php" />
+        	<outline text="GrokLaw" htmlUrl="http://www.groklaw.net/" xmlUrl="http://www.groklaw.net/backend/GrokLaw.rdf" />
+        	<outline text="Linux.com" htmlUrl="http://www.linux.com/" xmlUrl="http://www.linux.com/index.rss" />
+        	<outline text="mozillaZine" htmlUrl="http://www.mozillazine.org/" xmlUrl="http://www.mozillazine.org/contents.rdf" />
+        	<outline text="Newsforge" htmlUrl="http://www.newsforge.com" xmlUrl="http://www.newsforge.com/newsforge.rss" />
+        	<outline text="Planet Debian" htmlUrl="http://planet.debian.org/" xmlUrl="http://planet.debian.org/rss20.xml" />
+        	<outline text="Slashdot" htmlUrl="http://slashdot.org"  xmlUrl="http://slashdot.org/slashdot.rss" />
+        	<outline text="TuxMobil" htmlUrl="http://tuxmobil.org" xmlUrl="http://tuxmobil.org/tuxmobil_rss.rdf" />      
+	      </outline>	
+      </outline>
+
     <outline text="Unread" title="Unread" description="Unread" type="vfolder" htmlUrl="" xmlUrl="vfolder">
       <outline type="rule" text="Read status" rule="unread" value="" additive="true"/>
     </outline>

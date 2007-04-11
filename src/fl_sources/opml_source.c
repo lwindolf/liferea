@@ -1,7 +1,7 @@
 /**
  * @file opml_source.c OPML Planet/Blogroll feed list source
  * 
- * Copyright (C) 2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2006-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -135,10 +135,11 @@ static void opml_source_merge_feed(xmlNodePtr match, gpointer user_data) {
 		node = node_new();
 		node_set_title(node, title);
 		if(url) {
-			node_set_type(node, feed_get_node_type());
-			node_set_data(node, feed_new(url, NULL, NULL));
+			node_set_type (node, feed_get_node_type ());
+			node_set_data (node, feed_new ());
+			node_set_subscription (node, subscription_new (url, NULL, NULL));
 		} else {
-			node_set_type(node, folder_get_node_type());
+			node_set_type (node, folder_get_node_type ());
 		}
 		node_add_child(mergeCtxt->parent, node, -1);
 		node_request_update(node, FEED_REQ_RESET_TITLE);
@@ -177,12 +178,11 @@ static void opml_source_merge_feed(xmlNodePtr match, gpointer user_data) {
 
 // FIXME: broken for empty feed lists!
 static void opml_source_check_for_removal(nodePtr node, gpointer user_data) {
-	feedPtr		feed = node->data;
 	gchar		*expr = NULL;
 
 	switch(node->type) {
 		case NODE_TYPE_FEED:
-			expr = g_strdup_printf("//outline[ @xmlUrl='%s' ]", feed->source);
+			expr = g_strdup_printf("//outline[ @xmlUrl='%s' ]", subscription_get_source (node->subscription));
 			break;
 		case NODE_TYPE_FOLDER:
 			node_foreach_child_data(node, opml_source_check_for_removal, user_data);

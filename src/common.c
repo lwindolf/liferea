@@ -514,7 +514,7 @@ xmlDocPtr common_parse_xml_feed(feedParserCtxtPtr fpc) {
 	
 	/* we don't like no data */
 	if(0 == fpc->dataLength) {
-		debug1(DEBUG_PARSING, "common_parse_xml_feed(): empty input while parsing \"%s\"!", fpc->node->title);
+		debug1(DEBUG_PARSING, "common_parse_xml_feed(): empty input while parsing \"%s\"!", fpc->subscription->node->title);
 		g_string_append(fpc->feed->parseErrors, "Empty input!\n");
 		return NULL;
 	}
@@ -524,7 +524,7 @@ xmlDocPtr common_parse_xml_feed(feedParserCtxtPtr fpc) {
 	
 	fpc->doc = common_parse_xml(fpc->data, (size_t)fpc->dataLength, fpc->recovery, errors);
 	if(!fpc->doc) {
-		debug1(DEBUG_PARSING, "xmlReadMemory: could not parse feed \"%s\"!\n", fpc->node->title);
+		debug1(DEBUG_PARSING, "xmlReadMemory: could not parse feed \"%s\"!\n", fpc->subscription->node->title);
 		g_string_prepend(fpc->feed->parseErrors, _("XML Parser: Could not parse document:\n"));
 		g_string_append(fpc->feed->parseErrors, "\n");
 	}

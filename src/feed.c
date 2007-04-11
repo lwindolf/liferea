@@ -53,7 +53,8 @@
 #include "parsers/rss_channel.h"
 #include "parsers/atom10.h"
 #include "parsers/pie_feed.h"
-#include "ui/ui_feed.h"
+#include "ui/ui_auth.h"
+#include "ui/ui_subscription.h"
 #include "ui/ui_enclosure.h"
 #include "ui/ui_mainwindow.h"
 #include "ui/ui_node.h"
@@ -83,7 +84,7 @@ feedPtr feed_new(void) {
 	feedPtr		feed;
 	
 	feed = g_new0(struct feed, 1);
-	feed->defaultInterval = -1;
+
 	feed->cacheLimit = CACHE_DEFAULT;
 	feed->valid = TRUE;
 
@@ -140,11 +141,12 @@ static void feed_import(nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean t
 	if(source) {
 		xmlChar	*typeStr = xmlGetProp(cur, BAD_CAST"type");
 		
-		feed = feed_new(NULL, NULL, NULL);
+		feed = feed_new();
 		feed->fhp = feed_type_str_to_fhp(typeStr);
 		xmlFree(typeStr);
 		
 		node_set_data(node, feed);
+		node_set_subscription(node, subscription_new(NULL, NULL, NULL));
 
 		if(!trusted && source[0] == '|') {
 			/* FIXME: Display warning dialog asking if the command
@@ -154,7 +156,7 @@ static void feed_import(nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean t
 			source = tmp;
 		}
 
-		feed_set_source(feed, source);
+		subscription_set_source(node->subscription, source);
 		xmlFree(source);
 
 		if((filter = xmlGetProp(cur, BAD_CAST"filtercmd"))) {
@@ -166,12 +168,12 @@ static void feed_import(nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean t
 				filter = tmp;
 			}
 
-			feed_set_filter(feed, filter);
+			subscription_set_filter(node->subscription, filter);
 			xmlFree(filter);
 		}
 		
 		intervalStr = xmlGetProp(cur, BAD_CAST"updateInterval");
-		feed_set_update_interval(feed, parse_integer(intervalStr, -1));
+		subscription_set_update_interval(node->subscription, parse_integer(intervalStr, -1));
 		xmlFree(intervalStr);
 
 		title = xmlGetProp(cur, BAD_CAST"title");
@@ -195,7 +197,7 @@ static void feed_import(nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean t
 		/* Obtain the htmlUrl */
 		htmlUrlStr = xmlGetProp(cur, BAD_CAST"htmlUrl");
 		if(htmlUrlStr && xmlStrcmp(htmlUrlStr, ""))
-			feed_set_html_url(feed, htmlUrlStr);
+			feed_set_html_url(feed, "", htmlUrlStr);
 		xmlFree(htmlUrlStr);
 	
 		tmp = xmlGetProp(cur, BAD_CAST"noIncremental");
@@ -218,22 +220,22 @@ static void feed_import(nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean t
 		/* no proxy flag */
 		tmp = xmlGetProp(cur, BAD_CAST"dontUseProxy");
 		if(tmp && !xmlStrcmp(tmp, BAD_CAST"true"))
-			feed->updateOptions->dontUseProxy = TRUE;
+			node->subscription->updateOptions->dontUseProxy = TRUE;
 		xmlFree(tmp);
 					
-		update_state_import(cur, feed->updateState);
+		update_state_import(cur, node->subscription->updateState);
 		
 		node_set_icon(node, favicon_load_from_cache(node->id));
 		
-		if(favicon_update_needed(node_get_id(node), feed->updateState))
-			feed_update_favicon(node);
+		if(favicon_update_needed(node_get_id(node), node->subscription->updateState))
+			subscription_update_favicon(node->subscription);
 
 		debug5(DEBUG_CACHE, "import feed: title=%s source=%s typeStr=%s interval=%d lastpoll=%ld", 
 		       node_get_title(node), 
-		       feed_get_source(feed), 
+		       subscription_get_source(node->subscription), 
 		       typeStr, 
-		       feed_get_update_interval(feed), 
-		       feed->updateState->lastPoll.tv_sec);
+		       subscription_get_update_interval(node->subscription), 
+		       node->subscription->updateState->lastPoll.tv_sec);
 
 		node_add_child(parent, node, -1);
 	}
@@ -246,17 +248,17 @@ static void feed_export(nodePtr node, xmlNodePtr cur, gboolean trusted) {
 
 	debug_enter("feed_export");
 
-	gchar *interval = g_strdup_printf("%d",feed_get_update_interval(feed));
+	gchar *interval = g_strdup_printf("%d", subscription_get_update_interval (node->subscription));
 	gchar *cacheLimit = NULL;
 
 	if(feed_get_html_url(feed))
 		xmlNewProp(cur, BAD_CAST"htmlUrl", BAD_CAST feed_get_html_url(feed));
 	else
 		xmlNewProp(cur, BAD_CAST"htmlUrl", BAD_CAST "");
-	xmlNewProp(cur, BAD_CAST"xmlUrl", BAD_CAST feed_get_source(feed));
+	xmlNewProp(cur, BAD_CAST"xmlUrl", BAD_CAST subscription_get_source (node->subscription));
 
-	if(feed_get_filter(feed))
-		xmlNewProp(cur, BAD_CAST"filtercmd", BAD_CAST feed_get_filter(feed));
+	if(subscription_get_filter (node->subscription))
+		xmlNewProp(cur, BAD_CAST"filtercmd", BAD_CAST subscription_get_filter (node->subscription));
 
 	if(trusted) {
 		xmlNewProp(cur, BAD_CAST"updateInterval", BAD_CAST interval);
@@ -277,13 +279,15 @@ static void feed_export(nodePtr node, xmlNodePtr cur, gboolean trusted) {
 		if(TRUE == feed->loadItemLink)
 			xmlNewProp(cur, BAD_CAST"loadItemLink", BAD_CAST"true");
 			
-		if(TRUE == feed->updateOptions->dontUseProxy)
+		if(TRUE == node->subscription->updateOptions->dontUseProxy)
 			xmlNewProp(cur, BAD_CAST"dontUseProxy", BAD_CAST"true");
 	}
 
-	update_state_export(cur, feed->updateState);
+	update_state_export(cur, node->subscription->updateState);
 	
-	debug3(DEBUG_CACHE, "adding feed: source=%s interval=%s cacheLimit=%s", feed_get_source(feed), interval, (cacheLimit != NULL ? cacheLimit : ""));
+	debug3(DEBUG_CACHE, "adding feed: source=%s interval=%s cacheLimit=%s",
+	       subscription_get_source (node->subscription), 
+	       interval, (cacheLimit != NULL ? cacheLimit : ""));
 	g_free(cacheLimit);
 	g_free(interval);
 
@@ -315,23 +319,24 @@ void feed_free_parser_ctxt(feedParserCtxtPtr ctxt) {
  *
  * @param ctxt		feed parsing context
  */
-void feed_auto_discover(feedParserCtxtPtr ctxt) {			
+void feed_auto_discover(feedParserCtxtPtr ctxt) {
+	gchar	*source;
 			
-	debug1(DEBUG_UPDATE, "Starting feed auto discovery (%s)", feed_get_source(ctxt->feed));
-	if((source = html_auto_discover_feed(ctxt->data, feed_get_source(ctxt->feed)))) {
+	debug1(DEBUG_UPDATE, "Starting feed auto discovery (%s)", subscription_get_source (ctxt->subscription));
+	if((source = html_auto_discover_feed (ctxt->data, subscription_get_source (ctxt->subscription)))) {
 		/* now download the first feed link found */
 		requestPtr request = update_request_new(0);
 		debug1(DEBUG_UPDATE, "feed link found: %s", source);
 		request->source = g_strdup(source);
-		request->options = ctxt->feed->updateOptions;
+		request->options = ctxt->subscription->updateOptions;
 		update_execute_request_sync(request);
 		if(request->data) {
 			debug0(DEBUG_UPDATE, "feed link download successful!");
-			feed_set_source(ctxt->feed, source);
+			subscription_set_source(ctxt->subscription, source);
 			ctxt->data = request->data;
 			ctxt->dataLength = request->size;
 			ctxt->failed = FALSE;
-			feed_parse(ctxt, FALSE);
+			feed_parse(ctxt);
 		} else {
 			/* if the download fails we do nothing except
 			   unsetting the handler so the original source
@@ -357,11 +362,10 @@ void feed_auto_discover(feedParserCtxtPtr ctxt) {
  */
 gboolean feed_parse(feedParserCtxtPtr ctxt) {
 	xmlNodePtr	cur;
-	gchar		*source;
+	gboolean	autoDiscovery = FALSE;
 
 	debug_enter("feed_parse");
 
-	g_assert(NULL != ctxt->feed);
 	g_assert(NULL == ctxt->items);
 	
 	ctxt->failed = TRUE;	/* reset on success ... */
@@ -374,7 +378,7 @@ gboolean feed_parse(feedParserCtxtPtr ctxt) {
 	/* try to parse buffer with XML and to create a DOM tree */	
 	do {
 		if(NULL == common_parse_xml_feed(ctxt)) {
-			g_string_append_printf(ctxt->feed->parseErrors, _("XML error while reading feed! Feed \"%s\" could not be loaded!"), ctxt->feed->source);
+			g_string_append_printf(ctxt->feed->parseErrors, _("XML error while reading feed! Feed \"%s\" could not be loaded!"), subscription_get_source (ctxt->subscription));
 			break;
 		}
 		
@@ -429,7 +433,7 @@ gboolean feed_parse(feedParserCtxtPtr ctxt) {
 		    strstr(ctxt->data, "<html ") || strstr(ctxt->data, "<HTML "))) {
 			debug0(DEBUG_UPDATE, "HTML document detected!");
 			g_string_append(ctxt->feed->parseErrors, _("Source points to HTML document."));
-			ctxt->autoDiscover = TRUE;			
+			autoDiscovery = TRUE;
 		} else {
 			debug0(DEBUG_UPDATE, "neither a known feed type nor a HTML document!");
 			g_string_append(ctxt->feed->parseErrors, _("Could not determine the feed type."));
@@ -445,7 +449,7 @@ gboolean feed_parse(feedParserCtxtPtr ctxt) {
 		
 	debug_exit("feed_parse");
 	
-	return (ctxt->feed->fhp != NULL);
+	return autoDiscovery;
 }
 
 static void feed_add_xml_attributes(nodePtr node, xmlNodePtr feedNode) {
@@ -454,8 +458,8 @@ static void feed_add_xml_attributes(nodePtr node, xmlNodePtr feedNode) {
 	
 	xmlNewTextChild(feedNode, NULL, "feedId", node_get_id(node));
 	xmlNewTextChild(feedNode, NULL, "feedTitle", node_get_title(node));
-	xmlNewTextChild(feedNode, NULL, "feedSource", feed_get_source(feed));
-	xmlNewTextChild(feedNode, NULL, "feedOrigSource", feed_get_orig_source(feed));
+	xmlNewTextChild(feedNode, NULL, "feedSource", subscription_get_source (node->subscription));
+	xmlNewTextChild(feedNode, NULL, "feedOrigSource", subscription_get_orig_source (node->subscription));
 
 	if(feed->description)
 		xmlNewTextChild(feedNode, NULL, "feedDescription", feed->description);
@@ -463,7 +467,7 @@ static void feed_add_xml_attributes(nodePtr node, xmlNodePtr feedNode) {
 	if(feed_get_image_url(feed))
 		xmlNewTextChild(feedNode, NULL, "feedImage", feed_get_image_url(feed));
 
-	tmp = g_strdup_printf("%d", feed->defaultInterval);
+	tmp = g_strdup_printf("%d", subscription_get_default_update_interval (node->subscription));
 	xmlNewTextChild(feedNode, NULL, "feedUpdateInterval", tmp);
 	g_free(tmp);
 
@@ -471,7 +475,7 @@ static void feed_add_xml_attributes(nodePtr node, xmlNodePtr feedNode) {
 	xmlNewTextChild(feedNode, NULL, "feedStatus", tmp);
 	g_free(tmp);
 
-	tmp = g_strdup_printf("%d", feed->discontinued?1:0);
+	tmp = g_strdup_printf("%d", node->subscription->discontinued?1:0);
 	xmlNewTextChild(feedNode, NULL, "feedDiscontinued", tmp);
 	g_free(tmp);
 
@@ -481,17 +485,17 @@ static void feed_add_xml_attributes(nodePtr node, xmlNodePtr feedNode) {
 		
 	xmlNewTextChild(feedNode, NULL, "feedLink", feed_get_html_url(feed));
 
-	if(feed->updateError)
-		xmlNewTextChild(feedNode, NULL, "updateError", feed->updateError);
-	if(feed->httpError) {
-		xmlNewTextChild(feedNode, NULL, "httpError", feed->httpError);
+	if(node->subscription->updateError)
+		xmlNewTextChild(feedNode, NULL, "updateError", node->subscription->updateError);
+	if(node->subscription->httpError) {
+		xmlNewTextChild(feedNode, NULL, "httpError", node->subscription->httpError);
 
-		tmp = g_strdup_printf("%d", feed->httpErrorCode);
+		tmp = g_strdup_printf("%d", node->subscription->httpErrorCode);
 		xmlNewTextChild(feedNode, NULL, "httpErrorCode", tmp);
 		g_free(tmp);
 	}
-	if(feed->filterError)
-		xmlNewTextChild(feedNode, NULL, "filterError", feed->filterError);
+	if(node->subscription->filterError)
+		xmlNewTextChild(feedNode, NULL, "filterError", node->subscription->filterError);
 	if(feed->parseErrors && (strlen(feed->parseErrors->str) > 0))
 		xmlNewTextChild(feedNode, NULL, "parseError", feed->parseErrors->str);
 
@@ -548,8 +552,7 @@ void feed_set_description(feedPtr fp, const gchar *description) {
 }
 
 const gchar * feed_get_html_url(feedPtr feed) { return feed->htmlUrl; };
-void feed_set_html_url(feedPtr feed, const gchar *htmlUrl) {
-
+void feed_set_html_url(feedPtr feed, const gchar *base, const gchar *htmlUrl) {
 	g_free(feed->htmlUrl);
 	feed->htmlUrl = NULL;
 
@@ -561,7 +564,7 @@ void feed_set_html_url(feedPtr feed, const gchar *htmlUrl) {
 			/* relative URI part needs to be expanded */
 			gchar *tmp, *source;
 			
-			source = g_strdup(feed_get_source(feed));
+			source = g_strdup(base);
 			tmp = strrchr(source, '/');
 			if(tmp)
 				*(tmp+1) = '\0';
@@ -617,7 +620,7 @@ static void feed_process_update_result(struct request *request) {
 	
 	if(401 == request->httpstatus) { /* unauthorized */
 		if(request->flags & FEED_REQ_AUTH_DIALOG)
-			ui_feed_authdialog_new(node, request->flags);
+			ui_auth_dialog_new(node->subscription, request->flags);
 	} else if(410 == request->httpstatus) { /* gone */
 		subscription->discontinued = TRUE;
 		node->available = TRUE;
@@ -629,15 +632,19 @@ static void feed_process_update_result(struct request *request) {
 		/* we save all properties that should not be overwritten in all cases */
 		old_update_interval = subscription_get_update_interval(subscription);
 		old_title = g_strdup(node_get_title(node));
-		old_source = g_strdup(feed_get_source(feed));
+		old_source = g_strdup(subscription_get_source(node->subscription));
 
 		/* parse the new downloaded feed into feed and itemSet */
 		ctxt = feed_create_parser_ctxt();
 		ctxt->feed = feed;
 		ctxt->data = request->data;
 		ctxt->dataLength = request->size;
-		feed_parse(ctxt, request->flags & FEED_REQ_AUTO_DISCOVER);
 
+		if(request->flags & FEED_REQ_AUTO_DISCOVER)
+			feed_auto_discover(ctxt);
+		else
+			feed_parse(ctxt);
+		
 		if(ctxt->failed) {
 			g_string_prepend(feed->parseErrors, _("<p>Could not detect the type of this feed! Please check if the source really points to a resource provided in one of the supported syndication formats!</p>"
 			                                      "XML Parser Output:<br /><div class='xmlparseroutput'>"));
@@ -656,7 +663,7 @@ static void feed_process_update_result(struct request *request) {
 				subscription_set_source(subscription, old_source);
 
 			if(request->flags & FEED_REQ_RESET_UPDATE_INT)
-				subscription_set_update_interval(subscription, feed_get_default_update_interval(feed));
+				subscription_set_update_interval(subscription, subscription_get_default_update_interval(subscription));
 			else
 				subscription_set_update_interval(subscription, old_update_interval);
 
@@ -685,7 +692,7 @@ static void feed_process_update_result(struct request *request) {
 	node->updateRequest = NULL; 
 
 	if(request->flags & FEED_REQ_DOWNLOAD_FAVICON)
-		subscription_update_favicon(node);
+		subscription_update_favicon(node->subscription);
 
 	feedlist_schedule_save();
 	
@@ -718,7 +725,6 @@ static void feed_reset_update_counter(nodePtr node) {
 }
 
 static void feed_schedule_update(nodePtr node, guint flags) {
-	feedPtr			feed = (feedPtr)node->data;
 	struct request		*request;
 	
 	debug1(DEBUG_UPDATE, "Scheduling %s to be updated", node_get_title(node));
@@ -732,7 +738,7 @@ static void feed_schedule_update(nodePtr node, guint flags) {
 		ui_mainwindow_set_status_bar(_("Updating \"%s\""), node_get_title(node));
 		request = update_request_new(node);
 		request->user_data = node;
-		request->options = feed->updateOptions;
+		request->options = node->subscription->updateOptions;
 		request->callback = feed_process_update_result;
 		subscription_prepare_request(node->subscription, request, flags);
 		node->updateRequest = request;
@@ -746,13 +752,12 @@ static void feed_request_update(nodePtr node, guint flags) {
 }
 
 static void feed_request_auto_update(nodePtr node) {
-	feedPtr		feed = (feedPtr)node->data;
 	GTimeVal	now;
 	gint		interval;
 	guint		flags = 0;
 
 	g_get_current_time(&now);
-	interval = feed_get_update_interval(feed);
+	interval = subscription_get_update_interval(node->subscription);
 	
 	if(-2 >= interval)
 		return;		/* don't update this feed */
@@ -764,12 +769,12 @@ static void feed_request_auto_update(nodePtr node) {
 		flags |= FEED_REQ_ALLOW_RETRIES;
 
 	if(interval > 0)
-		if(feed->updateState->lastPoll.tv_sec + interval*60 <= now.tv_sec)
+		if(node->subscription->updateState->lastPoll.tv_sec + interval*60 <= now.tv_sec)
 			feed_schedule_update(node, flags);
 
 	/* And check for favicon updating */
-	if(feed->updateState->lastFaviconPoll.tv_sec + 30*24*60*60 <= now.tv_sec)
-		feed_update_favicon(node);
+	if(node->subscription->updateState->lastFaviconPoll.tv_sec + 30*24*60*60 <= now.tv_sec)
+		subscription_update_favicon(node->subscription);
 }
 
 static void feed_remove(nodePtr node) {
@@ -799,6 +804,16 @@ static gchar * feed_render(nodePtr node) {
 	return output;
 }
 
+static void feed_add(nodePtr parentNode) {
+
+	ui_subscription_dialog_new(parentNode);
+}
+
+static void feed_properties(nodePtr node) {
+
+	ui_subscription_prop_dialog_new(node->subscription);
+}
+
 nodeTypePtr feed_get_node_type(void) { 
 
 	static struct nodeType nti = {
@@ -817,8 +832,8 @@ nodeTypePtr feed_get_node_type(void) {
 		feed_remove,
 		feed_mark_all_read,
 		feed_render,
-		ui_feed_add,
-		ui_feed_properties
+		feed_add,
+		feed_properties
 	};
 	nti.icon = icons[ICON_DEFAULT];
 	

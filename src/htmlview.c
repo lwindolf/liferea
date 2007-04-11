@@ -103,7 +103,7 @@ static xmlDocPtr itemset_to_xml(nodePtr node) {
 	xmlNewTextChild(itemSetNode, NULL, "title", node_get_title(node));
 
 	if(NODE_TYPE_FEED == node->type) {
-	       xmlNewTextChild(itemSetNode, NULL, "source", feed_get_source(node->data));
+	       xmlNewTextChild(itemSetNode, NULL, "source", subscription_get_source(node->subscription));
 	       xmlNewTextChild(itemSetNode, NULL, "link", feed_get_html_url(node->data));
 	}
 

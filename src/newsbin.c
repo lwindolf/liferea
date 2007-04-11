@@ -89,7 +89,8 @@ void on_newnewsbinbtn_clicked(GtkButton *button, gpointer user_data) {
 	newsbin = node_new();
 	node_set_title(newsbin, (gchar *)gtk_entry_get_text(GTK_ENTRY(lookup_widget(newnewsbindialog, "nameentry"))));
 	node_set_type(newsbin, newsbin_get_node_type());
-	node_set_data(newsbin, (gpointer)feed_new("newsbin", NULL, 0));
+	node_set_data(newsbin, (gpointer)feed_new());
+	node_set_subscription(newsbin, (gpointer)subscription_new("newsbin", NULL, 0));
 	newsbin_new(newsbin);
 
 	ui_feedlist_get_target_folder(&pos);

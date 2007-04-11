@@ -190,8 +190,9 @@ static void pie_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 			if(!xmlStrcmp(cur->name, BAD_CAST"title")) {
 				tmp = unhtmlize(common_utf8_fix(pie_parse_content_construct(cur)));
 				if(tmp) {
-					feed_set_title(ctxt->feed, tmp);
-					g_free(tmp);
+					if(ctxt->title)
+						g_free(ctxt->title);
+					ctxt->title = tmp;
 				}
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"link")) {
 				tmp = common_utf8_fix(xmlGetProp(cur, BAD_CAST"href"));
@@ -199,7 +200,7 @@ static void pie_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 					/* 0.3 link : rel, type and href attribute */
 					tmp2 = common_utf8_fix(xmlGetProp(cur, BAD_CAST"rel"));
 					if(tmp2 && !xmlStrcmp(tmp2, BAD_CAST"alternate"))
-						feed_set_html_url(ctxt->feed, tmp);
+						feed_set_html_url(ctxt->feed, subscription_get_source(ctxt->subscription), tmp);
 					else
 						/* FIXME: Maybe do something with other links? */;
 					g_free(tmp2);
@@ -208,7 +209,7 @@ static void pie_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 					/* 0.2 link : element content is the link, or non-alternate link in 0.3 */
 					tmp = common_utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1));
 					if(tmp) {
-						feed_set_html_url(ctxt->feed, tmp);
+						feed_set_html_url(ctxt->feed, subscription_get_source(ctxt->subscription), tmp);
 						g_free(tmp);
 					}
 				}

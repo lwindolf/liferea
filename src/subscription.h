@@ -21,6 +21,7 @@
 #define _SUBSCRIPTION_H
  
 #include <glib.h>
+#include "node.h"
 #include "update.h"
 
 /** Flags used in the request structure */
@@ -56,9 +57,6 @@ typedef struct subscription {
 
 	gchar		*filtercmd;		/**< feed filter command */
 	gchar		*filterError;		/**< textual description of filter errors */
-	
-	gboolean	encAutoDownload;	/**< enclosure auto download flag */
-	gboolean	loadItemLink;		/**< automatic item link load flag */
 } *subscriptionPtr;
 
 /**
@@ -126,6 +124,13 @@ guint subscription_get_default_update_interval(subscriptionPtr subscription);
 void subscription_set_default_update_interval(subscriptionPtr subscription, guint interval);
 
 /**
+ * Reset the update counter for the given subscription.
+ *
+ * @param subscription	the subscription
+ */
+void subscription_reset_update_counter(subscriptionPtr subscription);
+
+/**
  * Get the source URL of a given subscription
  *
  * @param subscription	the subscription
@@ -177,11 +182,21 @@ const gchar * subscription_get_filter(subscriptionPtr subscription);
 void subscription_set_filter(subscriptionPtr subscription, const gchar * filter);
 
 /**
+ * Updates the error status of the given subscription
+ *
+ * @param subscription	the subscription
+ * @param httpstatus	the new HTTP status code
+ * @param resultcode	the update result code
+ * @param filterError	filter error string (or NULL)
+ */
+void subscription_update_error_status(subscriptionPtr subscription, gint httpstatus, gint resultcode, gchar *filterError);
+
+/**
  * Request the favicon of the given node to be updated.
  *
- * @param node		the node
+ * @param subscription	the subscription
  */
-void subscription_update_favicon(nodePtr node);
+void subscription_update_favicon(subscriptionPtr subscription);
 
 /**
  * Frees the given subscription structure.

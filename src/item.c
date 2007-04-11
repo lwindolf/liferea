@@ -49,6 +49,7 @@ GSList * item_guid_list_get_duplicates_for_id(itemPtr item) {
 static void item_comments_process_update_result(struct request *request) {
 	feedParserCtxtPtr	ctxt;
 	itemPtr			item = (itemPtr)request->user_data;
+	nodePtr			node;
 
 	debug_enter("item_comments_process_update_result");
 	
@@ -74,11 +75,13 @@ static void item_comments_process_update_result(struct request *request) {
 		debug1(DEBUG_UPDATE, "received update result for comment feed \"%s\"", request->source);
 
 		/* parse the new downloaded feed into feed and itemSet */
+		node = node_new();
 		ctxt = feed_create_parser_ctxt();
-		ctxt->feed = feed_new(request->source, NULL, NULL);
-		ctxt->node = node_new();
-		node_set_type(ctxt->node, feed_get_node_type());
-		node_set_data(ctxt->node, ctxt->feed);		
+		ctxt->subscription = subscription_new(request->source, NULL, NULL);
+		ctxt->feed = feed_new();
+		node_set_type(node, feed_get_node_type());
+		node_set_data(node, ctxt->feed);		
+		node_set_subscription(node, ctxt->subscription);
 		ctxt->data = request->data;
 		ctxt->dataLength = request->size;
 		feed_parse(ctxt);
@@ -98,8 +101,9 @@ static void item_comments_process_update_result(struct request *request) {
 			itemset_free(comments);
 		}
 				
+		node_free(ctxt->subscription->node);
+		subscription_free(ctxt->subscription);
 		feed_free_parser_ctxt(ctxt);
-		node_free(ctxt->node);
 	}
 	
 	/* update error message */

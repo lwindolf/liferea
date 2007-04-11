@@ -63,6 +63,9 @@ typedef struct feed {
 	GString		*parseErrors;		/**< textual description of parsing errors */
 	time_t		time;			/**< Feeds modified date */
 
+	/* feed specific behaviour settings */
+	gboolean	encAutoDownload;	/**< enclosure auto download flag */
+	gboolean	loadItemLink;		/**< automatic item link load flag */
 } *feedPtr;
 
 /** Holds all information used on feed parsing time */
@@ -175,7 +178,17 @@ const gchar * feed_get_description(feedPtr feed);
 void feed_set_description(feedPtr feed, const gchar *description);
 
 const gchar * feed_get_html_url(feedPtr feed);
-void feed_set_html_url(feedPtr feed, const gchar *url);
+
+/**
+ * Set the HTML URL of the given feed. If the passed
+ * URL is a relative one it will be expanded using the
+ * given base URL.
+ *
+ * @param feed		the feed
+ * @param base		base URL for expansion
+ * @param url		the new HTML URL
+ */
+void feed_set_html_url(feedPtr feed, const gchar *base, const gchar *url);
 
 const gchar * feed_get_image_url(feedPtr feed);
 void feed_set_image_url(feedPtr feed, const gchar *url);
@@ -187,13 +200,15 @@ const gchar * feed_get_etag(feedPtr feed);
 void feed_set_etag(feedPtr feed, const gchar *etag);
 
 /**
- * Parses the feed prepared with the given feed parser context. 
- * Uses feed type auto discovery if autodiscover is TRUE.
+ * General feed source parsing function. Parses the passed feed source
+ * and tries to determine the source type. 
  *
- * @param ctxt		feed parser context
- * @param autodiscover	TRUE if feed type auto discovery is to be enabled
+ * @param ctxt		feed parsing context
+ *
+ * @returns FALSE if auto discovery is indicated, 
+ *          TRUE if feed type was recognized
  */
-void feed_parse(feedParserCtxtPtr ctxt, gboolean autodiscover);
+gboolean feed_parse(feedParserCtxtPtr ctxt);
 
 /* implementation of the node type interface */
 

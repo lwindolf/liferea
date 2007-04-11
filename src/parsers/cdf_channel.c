@@ -65,7 +65,7 @@ static void parseCDFChannel(feedParserCtxtPtr ctxt, xmlNodePtr cur, CDFChannelPt
 		} else if((!xmlStrcasecmp(cur->name, BAD_CAST"a"))) {
 			xmlChar *value = xmlGetProp(cur, BAD_CAST"HREF");
 			if(value) {
-				feed_set_html_url(ctxt->feed, (gchar *)value);
+				feed_set_html_url(ctxt->feed, subscription_get_source(ctxt->subscription), (gchar *)value);
 				xmlFree(value);
 			}
 
@@ -81,8 +81,10 @@ static void parseCDFChannel(feedParserCtxtPtr ctxt, xmlNodePtr cur, CDFChannelPt
 			tmp = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE));
 			if(tmp) {
 				tmp = unhtmlize(tmp);
-				feed_set_title(ctxt->feed, tmp);
-				g_free(tmp);
+				
+				if(ctxt->title)
+					g_free(ctxt->title);
+				ctxt->title = tmp;
 			}
 			
 		} else if(!xmlStrcasecmp(cur->name, BAD_CAST "abstract")) {
@@ -140,8 +142,8 @@ static void cdf_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 			cur = cur->next;
 		}
 
-		/* after parsing we fill in the infos into the feedPtr structure */		
-		feed_set_default_update_interval(ctxt->feed, -1);
+		/* after parsing we fill in the infos into the subscription structure */		
+		subscription_set_default_update_interval(ctxt->subscription, -1);
 		
 		g_free(cp);
 	} while (FALSE);

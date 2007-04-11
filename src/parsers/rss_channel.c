@@ -112,13 +112,14 @@ static void parseChannel(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 		}
 		else if(!xmlStrcmp(cur->name, BAD_CAST"title")) {
  			if(NULL != (tmp = unhtmlize(common_utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE))))) {
-				feed_set_title(ctxt->feed, tmp);
-				g_free(tmp);
+				if(ctxt->title)
+					g_free(ctxt->title);
+				ctxt->title = tmp;
 			}
 		}
 		else if(!xmlStrcmp(cur->name, BAD_CAST"link")) {
  			if(NULL != (tmp = unhtmlize(common_utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE))))) {
-				feed_set_html_url(ctxt->feed, tmp);
+				feed_set_html_url(ctxt->feed, subscription_get_source(ctxt->subscription), tmp);
 				g_free(tmp);
 			}
 		}
@@ -302,7 +303,7 @@ static void rss_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 	}
 	
 	if(error)
-		ui_mainwindow_set_status_bar(_("There were errors while parsing the feed %s!"), feed_get_title(ctxt->feed));
+		ui_mainwindow_set_status_bar(_("There were errors while parsing the feed %s!"), subscription_get_source(ctxt->subscription));
 }
 
 static gboolean rss_format_check(xmlDocPtr doc, xmlNodePtr cur) {

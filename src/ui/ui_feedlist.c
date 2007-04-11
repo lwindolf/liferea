@@ -1,7 +1,7 @@
 /**
  * @file ui_feedlist.c GUI feed list handling
  *
- * Copyright (C) 2004-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2005 Raphaël Slinckx <raphael@slinckx.net>
  * 
@@ -42,7 +42,7 @@
 #include "debug.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_mainwindow.h"
-#include "ui/ui_feed.h"
+#include "ui/ui_subscription.h"
 #include "ui/ui_vfolder.h"
 #include "ui/ui_tabs.h"
 

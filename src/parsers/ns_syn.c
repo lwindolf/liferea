@@ -42,7 +42,7 @@ static void ns_syn_parse_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 	gint	period;
 	gint	frequency = 1;
 	
-	period = feed_get_default_update_interval(ctxt->feed);
+	period = subscription_get_default_update_interval(ctxt->subscription);
 	if(!xmlStrcmp(cur->name, BAD_CAST"updatePeriod")) {
 		if(tmp = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)) {
 
@@ -71,7 +71,7 @@ static void ns_syn_parse_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 	if(0 != frequency)
 		period /= frequency;
 
-	feed_set_default_update_interval(ctxt->feed, period);
+	subscription_set_default_update_interval(ctxt->subscription, period);
 }
 
 static void ns_syn_register_ns(NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash) {
