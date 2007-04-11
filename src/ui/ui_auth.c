@@ -93,7 +93,7 @@ auth_dialog_finalize (GObject *object)
 }
 
 static void
-auth_dialog_class_init (SubscriptionPropDialogClass *klass)
+auth_dialog_class_init (AuthDialogClass *klass)
 {
 	GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
@@ -136,7 +136,7 @@ on_authdialog_response (GtkDialog *dialog,
 			xmlFree (sourceUrl);
 		}
 
-		node_request_update (ad->priv->node, ad->priv->flags);
+		node_request_update (ad->priv->subscription->node, ad->priv->flags);
 		xmlFreeURI (uri);
 	}
 
@@ -148,7 +148,7 @@ ui_auth_dialog_load (AuthDialog *ad,
                      subscriptionPtr subscription,
                      gint flags)
 {
-	AuthDialogPriv		*ui_data = ad->priv;
+	AuthDialogPrivate	*ui_data = ad->priv;
 	gchar			*promptStr;
 	gchar			*source = NULL;
 	xmlURIPtr		uri;	
@@ -156,8 +156,8 @@ ui_auth_dialog_load (AuthDialog *ad,
 	ui_data->subscription = subscription;
 	ui_data->flags = flags;
 	
-	ui_data->username = lookup_widget (authdialog, "usernameEntry");
-	ui_data->password = lookup_widget (authdialog, "passwordEntry");
+	ui_data->username = lookup_widget (ui_data->dialog, "usernameEntry");
+	ui_data->password = lookup_widget (ui_data->dialog, "passwordEntry");
 	
 	uri = xmlParseURI (BAD_CAST subscription_get_source (ui_data->subscription));
 	
@@ -189,11 +189,11 @@ ui_auth_dialog_load (AuthDialog *ad,
 }
 
 static void
-auth_prop_dialog_init (AuthDialog *ad)
+auth_dialog_init (AuthDialog *ad)
 {
 	GtkWidget	*authdialog;
 	
-	ad->priv = AUTH_DIALOG_GET_PRIVATE (spd);
+	ad->priv = AUTH_DIALOG_GET_PRIVATE (ad);
 	
 	ad->priv->dialog = authdialog = create_authdialog ();
 	gtk_window_set_transient_for (GTK_WINDOW (authdialog), GTK_WINDOW (mainwindow));
@@ -207,7 +207,7 @@ auth_prop_dialog_init (AuthDialog *ad)
 }
 
 
-AuthPropDialog *
+AuthDialog *
 ui_auth_dialog_new (subscriptionPtr subscription, gint flags) 
 {
 	AuthDialog *ad;
