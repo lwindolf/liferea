@@ -13,6 +13,7 @@ noinst_LIBRARIES = libliui.a
 libliui_a_CFLAGS = $(PACKAGE_FLAGS)
 libliui_a_SOURCES = \
 	eggtrayicon.c eggtrayicon.h \
+	ui_auth.c ui_auth.h \
 	ui_dnd.c ui_dnd.h \
 	ui_enclosure.c ui_enclosure.h \
 	ui_feedlist.c ui_feedlist.h \
