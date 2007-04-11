@@ -357,6 +357,8 @@ dnl ****
 if test "x$enable_dbus" = "xyes"; then
    AC_MSG_NOTICE([checking for DBUS >= 0.30])
    PKG_CHECK_MODULES([DBUS], [dbus-1 >= 0.30 dbus-glib-1 >= 0.30],enable_dbus=yes,enable_dbus=no)
+else
+   enable_dbus=no
 fi
 
 if test "x$enable_dbus" = "xyes"; then
@@ -365,7 +367,7 @@ fi
 
 AC_SUBST(DBUS_CFLAGS)
 AC_SUBST(DBUS_LIBS)
-dnl AM_CONDITIONAL(WITH_DBUS, test "x$enable_dbus" != "xyes")
+AM_CONDITIONAL(WITH_DBUS, test "x$enable_dbus" = "xyes")
 
 dnl ****
 dnl NetworkManager

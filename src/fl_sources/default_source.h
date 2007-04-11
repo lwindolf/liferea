@@ -25,24 +25,6 @@
 #  include <config.h>
 #endif
 
-#ifdef USE_DBUS
-
-/* Yes, we know that DBUS API isn't stable yet */
-#define DBUS_API_SUBJECT_TO_CHANGE
-#include <dbus/dbus.h>
-#include <dbus/dbus-glib.h>
-#include <dbus/dbus-glib-lowlevel.h>
-
-#define DBUS_RSS_SERVICE "org.gnome.feed.Reader"
-#define DBUS_RSS_INTERFACE "org.gnome.feed.Reader"
-#define DBUS_RSS_OBJECT  "/org/gnome/feed/Reader"
-#define DBUS_RSS_METHOD  "Subscribe"
-#define DBUS_FEED_READER_SET_ONLINE_METHOD  "SetOnline"
-#define DBUS_FEED_READER_PING_METHOD  "Ping"
-#define DBUS_INTROSPECT_METHOD "Introspect"
-
-#endif /* USE_DBUS */
-
 #include "fl_sources/node_source.h"
 
 /**

@@ -41,17 +41,19 @@
 #include <stdlib.h>
 #include <signal.h>
 #include <unistd.h>
-#include "interface.h"
-#include "support.h"
+
 #include "callbacks.h"
-#include "feed.h"
-#include "vfolder.h"
-#include "db.h"
 #include "conf.h"
 #include "common.h"
-#include "social.h"
-#include "update.h"
+#include "db.h"
+#include "dbus.h"
 #include "debug.h"
+#include "feed.h"
+#include "interface.h"
+#include "social.h"
+#include "support.h"
+#include "update.h"
+#include "vfolder.h"
 #include "ui/ui_mainwindow.h"
 #include "ui/ui_htmlview.h"
 #include "ui/ui_session.h"
@@ -128,6 +130,7 @@ int main(int argc, char *argv[]) {
 	gulong		debug_flags = 0;
 	const char 	*arg;
 	gint		i;
+	LifereaDBus	*dbus;
 	int mainwindowState = MAINWINDOW_SHOWN;
 #ifdef USE_SM
 	gchar *opt_session_arg = NULL;
@@ -251,6 +254,11 @@ int main(int argc, char *argv[]) {
 	conf_load();			/* load global feed settings */
 	script_init();			/* setup scripting if supported */
 	social_init();			/* initialized social bookmarking */
+#ifdef USE_DBUS	
+	dbus = liferea_dbus_new ();	
+#else
+	debug0(DEBUG_GUI, "Compiled without DBUS support.");
+#endif
 	ui_mainwindow_init(mainwindowState);	/* setup mainwindow and initialize gconf configured GUI behaviour */
 
 #ifdef USE_SM
@@ -276,7 +284,8 @@ int main(int argc, char *argv[]) {
 
 	lifereaStarted = TRUE;
 	gtk_main();
-		
+	
+	g_object_unref (G_OBJECT (dbus));
 	bacon_message_connection_free(bacon_connection);
 	return 0;
 }

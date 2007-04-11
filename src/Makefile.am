@@ -28,6 +28,7 @@ liferea_bin_SOURCES = \
 	common.c common.h \
 	conf.c conf.h \
 	db.c db.h \
+	dbus.c dbus.h \
 	debug.c debug.h \
 	export.c export.h \
 	favicon.c favicon.h \
@@ -61,6 +62,17 @@ liferea_bin_LDADD =	net/liblinet.a \
 			scripting/libliscript.a \
 			ui/libliui.a \
 			$(PACKAGE_LIBS) $(X_LIBS) $(X_PRE_LIBS) -lX11 $(X_EXTRA_LIBS) $(DBUS_LIBS) $(NM_LIBS) $(INTLLIBS) $(GNUTLS_LIBS) 
+
+if WITH_DBUS
+
+EXTRA_DIST = liferea_dbus.xml
+BUILT_SOURCES = dbus_wrap.c
+CLEANFILES = $(BUILT_SOURCES)
+
+dbus_wrap.c: liferea_dbus.xml
+	dbus-binding-tool --mode=glib-server --prefix=liferea_dbus liferea_dbus.xml > dbus_wrap.c
+
+endif
 
 if PLATFORM_WIN32
 

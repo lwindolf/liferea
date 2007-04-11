@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<node name="/">
+  <interface name="org.designfu.SampleService">
+    <method name="Ping">
+      <arg name="result" type="b" direction="out" />
+    </method>
+    
+    <method name="SetOnline">
+      <arg name="online" type="b" />
+      <arg name="result" type="b" direction="out" />
+    </method>
+    
+    <method name="Subscribe">
+      <arg name="url" type="s" />
+      <arg name="result" type="b" direction="out" />
+    </method>
+  </interface>
+</node>
