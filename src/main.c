@@ -293,6 +293,8 @@ int main(int argc, char *argv[]) {
 gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
 
 	debug_enter("on_quit");
+	
+	script_run_for_hook(SCRIPT_HOOK_SHUTDOWN);	
 
 	ui_mainwindow_save_position();
 	gtk_widget_hide(mainwindow);

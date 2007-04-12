@@ -34,13 +34,18 @@ typedef struct hookInfo {
 
 static struct hookInfo availableHooks[] = {
 	{ "startup",		SCRIPT_HOOK_STARTUP },
+	
 	/* update events */
 	{ "feed updated",	SCRIPT_HOOK_FEED_UPDATED },
+	
 	/* selection hooks */
 	{ "item selected",	SCRIPT_HOOK_ITEM_SELECTED },
 	{ "feed selected",	SCRIPT_HOOK_FEED_SELECTED },
 	{ "item unselect",	SCRIPT_HOOK_ITEM_UNSELECT },
 	{ "feed unselect",	SCRIPT_HOOK_FEED_UNSELECT },
+	
+	{ "shutdown",		SCRIPT_HOOK_SHUTDOWN },
+	
 	{ NULL, 0 }
 };
 
