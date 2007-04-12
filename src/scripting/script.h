@@ -46,13 +46,17 @@ typedef struct scriptSupportImpl {
 typedef enum hooks {
 	SCRIPT_HOOK_INVALID = 0,
 	SCRIPT_HOOK_STARTUP,
+	
 	/* update events */
 	SCRIPT_HOOK_FEED_UPDATED,
+	
 	/* selection hooks */
 	SCRIPT_HOOK_ITEM_SELECTED,
 	SCRIPT_HOOK_FEED_SELECTED,
 	SCRIPT_HOOK_ITEM_UNSELECT,
 	SCRIPT_HOOK_FEED_UNSELECT,
+	
+	SCRIPT_HOOK_SHUTDOWN
 } hookType;
 
 /**
