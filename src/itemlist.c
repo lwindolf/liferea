@@ -124,6 +124,8 @@ void itemlist_merge_itemset(itemSetPtr itemSet) {
 
 	debug_enter("itemlist_merge_itemset");
 	
+	debug_start_measurement (DEBUG_GUI);
+	
 	node = node_from_id(itemSet->nodeId);
 
 	if(!currentNode)
@@ -154,6 +156,8 @@ void itemlist_merge_itemset(itemSetPtr itemSet) {
 		ui_itemlist_enable_encicon_column(TRUE);
 
 	itemview_update();
+	
+	debug_end_measurement (DEBUG_GUI, "itemlist merge");
 
 	debug_exit("itemlist_merge_itemset");
 }

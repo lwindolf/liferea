@@ -204,6 +204,9 @@ static void itemset_merge_item(itemSetPtr itemSet, itemPtr item) {
 void itemset_merge_items(itemSetPtr itemSet, GList *list) {
 	GList	*iter;
 	guint	max;
+
+	debug_start_measurement (DEBUG_UPDATE);
+	db_begin_transaction ();
 	
 	debug2(DEBUG_UPDATE, "old item set %p of (node id=%s):", itemSet, itemSet->nodeId);
 	
@@ -240,6 +243,9 @@ void itemset_merge_items(itemSetPtr itemSet, GList *list) {
 		iter = g_list_previous(iter);
 	}
 	g_list_free(list);
+	
+	db_commit_transaction ();
+	debug_end_measurement (DEBUG_UPDATE, "merge itemset");
 }
 
 void itemset_free(itemSetPtr itemSet) {
