@@ -439,7 +439,7 @@ void db_item_update(itemPtr item) {
 	if(SQLITE_DONE != res) 
 		g_warning("item update failed (error code=%d, %s)", res, sqlite3_errmsg(db));
 	
-	//db_metadata_update(item);
+	db_metadata_update(item);
 	
 	debug_end_measurement (DEBUG_DB, "item update");
 }
