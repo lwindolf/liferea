@@ -126,10 +126,9 @@ void db_init(void) {
 	               "ON items.ROWID = itemsets.item_id "
 		       "WHERE items.read = 0 AND node_id = ? "
 		       "ORDER BY items.date, items.ROWID DESC");
-		       
+	       
 	db_prepare_stmt(&itemsetItemCountStmt,
-	               "SELECT COUNT(*) FROM items INNER JOIN itemsets "
-	               "ON items.ROWID = itemsets.item_id "
+	               "SELECT COUNT(*) FROM itemsets "
 		       "WHERE node_id = ?");
 		       
 	db_prepare_stmt(&itemsetRemoveStmt,
@@ -339,7 +338,8 @@ itemPtr db_item_load(gulong id) {
 	itemPtr 	item = NULL;
 	gint		res;
 
-	debug2(DEBUG_DB, "loading item %lu (thread=%p)", id, g_thread_self());
+	debug2 (DEBUG_DB, "loading item %lu (thread=%p)", id, g_thread_self ());
+	debug_start_measurement (DEBUG_DB);
 	
 	sqlite3_reset(itemLoadStmt);
 	res = sqlite3_bind_int(itemLoadStmt, 1, id);
@@ -357,7 +357,7 @@ itemPtr db_item_load(gulong id) {
 		debug2(DEBUG_DB, "Could not load item with id #%lu (error code %d)!", id, res);
 	}
 
-	debug0(DEBUG_DB, "loading of item finished");
+	debug_end_measurement (DEBUG_DB, "item load");
 
 	return item;
 }
@@ -399,7 +399,8 @@ static void db_item_set_id(itemPtr item) {
 void db_item_update(itemPtr item) {
 	gint	res;
 	
-	debug3(DEBUG_DB, "update of item \"%s\" (id=%lu, thread=%p)", item->title, item->id, g_thread_self());
+	debug3 (DEBUG_DB, "update of item \"%s\" (id=%lu, thread=%p)", item->title, item->id, g_thread_self());
+	debug_start_measurement (DEBUG_DB);
 
 	if(!item->id) {
 		db_item_set_id(item);
@@ -439,6 +440,8 @@ void db_item_update(itemPtr item) {
 		g_warning("item update failed (error code=%d, %s)", res, sqlite3_errmsg(db));
 	
 	db_metadata_update(item);
+	
+	debug_end_measurement (DEBUG_DB, "item update");
 }
 
 void db_item_remove(gulong id) {
@@ -527,6 +530,8 @@ guint db_itemset_get_unread_count(const gchar *id) {
 	gint	res;
 	guint	count = 0;
 	
+	debug_start_measurement (DEBUG_DB);
+	
 	sqlite3_reset(itemsetReadCountStmt);
 	sqlite3_bind_text(itemsetReadCountStmt, 1, id, -1, SQLITE_TRANSIENT);
 	res = sqlite3_step(itemsetReadCountStmt);
@@ -536,12 +541,16 @@ guint db_itemset_get_unread_count(const gchar *id) {
 	else
 		g_warning("item read counting failed (error code=%d, %s)", res, sqlite3_errmsg(db));
 		
+	debug_end_measurement (DEBUG_DB, "counting unread items");
+		
 	return count;
 }
 
 guint db_itemset_get_item_count(const gchar *id) {
 	gint	res;
 	guint	count = 0;
+
+	debug_start_measurement (DEBUG_DB);
 	
 	sqlite3_reset(itemsetItemCountStmt);
 	sqlite3_bind_text(itemsetItemCountStmt, 1, id, -1, SQLITE_TRANSIENT);
@@ -551,6 +560,8 @@ guint db_itemset_get_item_count(const gchar *id) {
 		count = sqlite3_column_int(itemsetItemCountStmt, 0);
 	else
 		g_warning("item counting failed (error code=%d, %s)", res, sqlite3_errmsg(db));
+
+	debug_end_measurement (DEBUG_DB, "counting items");
 		
 	return count;
 }
