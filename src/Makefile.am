@@ -43,6 +43,7 @@ liferea_bin_SOURCES = \
 	itemlist.c itemlist.h \
 	itemview.c itemview.h \
 	metadata.c metadata.h \
+	migrate.c migrate.h \
 	newsbin.c newsbin.h \
 	node.c node.h \
 	plugin.c plugin.h \

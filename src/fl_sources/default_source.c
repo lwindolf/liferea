@@ -22,16 +22,16 @@
 #include <glib.h>
 #include <glib/gstdio.h>
 #include <string.h>
-#include <libxml/uri.h>
 #include "support.h"
 #include "common.h"
 #include "conf.h"
+#include "debug.h"
+#include "export.h"
 #include "feed.h"
 #include "feedlist.h"
-#include "export.h"
-#include "debug.h"
-#include "update.h"
+#include "migrate.h"
 #include "plugin.h"
+#include "update.h"
 #include "fl_sources/default_source.h"
 #include "fl_sources/node_source.h"
 #include "ui/ui_feedlist.h"
@@ -45,68 +45,56 @@ static gboolean feedlistImport = FALSE;
 
 extern gboolean cacheMigrated;	/* feedlist.c */
 
-static void default_source_copy_dir(const gchar *from, const gchar *to, const gchar *subdir) {
-	gchar *dirname10, *dirname12;
-	gchar *srcfile, *destfile;
-   	GDir *dir;
-		
-	dirname10 = g_strdup_printf("%s" G_DIR_SEPARATOR_S "%s" G_DIR_SEPARATOR_S "%s", g_get_home_dir(), from, subdir);
-	dirname12 = g_strdup_printf("%s" G_DIR_SEPARATOR_S "%s" G_DIR_SEPARATOR_S "%s", g_get_home_dir(), to, subdir);
-	
-	dir = g_dir_open(dirname10, 0, NULL);
-	while(NULL != (srcfile = (gchar *)g_dir_read_name(dir))) {
-		gchar	*content;
-		gsize	length;
-		destfile = g_strdup_printf("%s" G_DIR_SEPARATOR_S "%s", dirname12, srcfile);
-		srcfile = g_strdup_printf("%s" G_DIR_SEPARATOR_S "%s", dirname10, srcfile);
-		g_print("copying %s to %s\n", srcfile, destfile);
-		if(g_file_get_contents(srcfile, &content, &length, NULL))
-			g_file_set_contents(destfile, content, length, NULL);
-		g_free(content);
-		g_free(destfile);
-		g_free(srcfile);
-	}
-	g_dir_close(dir);
-	
-	g_free(dirname10);
-	g_free(dirname12);
-}
-
 static gchar * default_source_source_get_feedlist(nodePtr node) {
 
 	return common_create_cache_filename(NULL, "feedlist", "opml");
 }
 
-static void default_source_source_import(nodePtr node) {
+static void
+default_source_source_import (nodePtr node) 
+{
+	gchar		*filename10;
+	gchar		*filename12;
 	gchar		*filename13;
 
-	debug_enter("default_source_source_import");
+	debug_enter ("default_source_source_import");
 
 	/* start the import */
 	feedlistImport = TRUE;
 
-	/* build test file names */	
-	filename13 = default_source_source_get_feedlist(node);
+	/* build test file names */
+	filename10 = g_strdup_printf ("%s/.liferea/feedlist.opml", g_get_home_dir ());
+	filename12 = g_strdup_printf ("%s/.liferea_1.2/feedlist.opml", g_get_home_dir ());
+	filename13 = default_source_source_get_feedlist (node);
 
-	/* check for 1.0->1.3 migration */
-	// FIXME
+	/* if feed list is missing, try migration */
+	
+	if (!g_file_test (filename13, G_FILE_TEST_EXISTS) &&
+	     g_file_test (filename12, G_FILE_TEST_EXISTS))
+		migrate_12_to_13 ();
 
-	/* check for 1.2->1.3 migration */
-	// FIXME
+	if (!g_file_test (filename13, G_FILE_TEST_EXISTS) &&
+	     g_file_test (filename10, G_FILE_TEST_EXISTS))
+		migrate_10_to_13 ();
 	
 	/* check for default feed list import */
-	if(!g_file_test(filename13, G_FILE_TEST_EXISTS)) {
+	if (!g_file_test (filename13, G_FILE_TEST_EXISTS)) {
 		/* if there is no feedlist.opml we provide a default feed list */
-		g_free(filename13);
+		g_free (filename13);
 		/* "feedlist.opml" is translatable so that translators can provide a localized default feed list */
-		filename13 = g_strdup_printf(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "opml" G_DIR_SEPARATOR_S "%s", _("feedlist.opml"));
+		filename13 = g_strdup_printf (PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "opml" G_DIR_SEPARATOR_S "%s", _("feedlist.opml"));
 	}
-	if(!import_OPML_feedlist(filename13, node, node->source, FALSE, TRUE))
-		g_error("Fatal: Feed list import failed!");
-	g_free(filename13);
+	
+	if (!import_OPML_feedlist (filename13, node, node->source, FALSE, TRUE))
+		g_error ("Fatal: Feed list import failed!");
+		
+	g_free (filename13);
+	g_free (filename12);
+	g_free (filename10);
+	
 	feedlistImport = FALSE;
 
-	debug_exit("default_source_source_import");
+	debug_exit ("default_source_source_import");
 }
 
 static void default_source_source_export(nodePtr node) {

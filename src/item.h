@@ -72,7 +72,7 @@ typedef struct item {
 	gchar		*commentFeedId;		/**< Id of the items comments feed (or NULL)*/
 	gchar		*commentsError;		/**< Description of error if comments download failed (or NULL)*/
 	
-	gchar		*nodeId;			/**< Pointer to the containing node of this item */
+	gchar		*nodeId;		/**< Node id the containing node */
 	gulong 		sourceNr;		/**< Either equal to nr or the number of the item this one is a copy of */
 
 } *itemPtr;
