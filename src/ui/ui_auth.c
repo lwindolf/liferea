@@ -86,8 +86,9 @@ auth_dialog_get_type (void)
 static void
 auth_dialog_finalize (GObject *object)
 {
-	/*AuthDialog *dialog = AUTH_DIALOG (object);*/
-	/*AuthDialogPrivate *priv = dialog->priv;*/
+	AuthDialog *ad = AUTH_DIALOG (object);
+	
+	gtk_widget_destroy (ad->priv->dialog);
 
 	G_OBJECT_CLASS (parent_class)->finalize (object);
 }

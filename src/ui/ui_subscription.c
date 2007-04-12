@@ -102,9 +102,10 @@ subscription_prop_dialog_get_type (void)
 static void
 subscription_prop_dialog_finalize (GObject *object)
 {
-	/*SubscriptionPropDialog *dialog = SUBSCRIPTION_PROP_DIALOG (object);*/
-	/*SubscriptionPropDialogPrivate *priv = dialog->priv;*/
+	SubscriptionPropDialog *spd = SUBSCRIPTION_PROP_DIALOG (object);
 
+	gtk_widget_destroy (spd->priv->dialog);
+	
 	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
@@ -391,6 +392,8 @@ ui_subscription_prop_dialog_load (SubscriptionPropDialog *spd,
 	nodePtr		node = subscription->node;
 	feedPtr		feed = (feedPtr)node->data;
 
+	spd->priv->subscription = subscription;
+
 	/* General */
 	gtk_entry_set_text(GTK_ENTRY(spd->priv->feedNameEntry), node_get_title(node));
 
@@ -576,8 +579,9 @@ new_subscription_dialog_get_type (void)
 static void
 new_subscription_dialog_finalize (GObject *object)
 {
-	/*NewSubscriptionDialog *dialog = NEW_SUBSCRIPTION_DIALOG (object);*/
-	/*NewSubscriptionDialogPrivate *priv = dialog->priv;*/
+	NewSubscriptionDialog *nsd = NEW_SUBSCRIPTION_DIALOG (object);
+	
+	gtk_widget_destroy (nsd->priv->dialog);
 
 	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -718,8 +722,9 @@ simple_subscription_dialog_get_type (void)
 static void
 simple_subscription_dialog_finalize (GObject *object)
 {
-	/*SimpleSubscriptionDialog *dialog = SIMPLE_SUBSCRIPTION_DIALOG (object);*/
-	/*SimpleSubscriptionDialogPrivate *priv = dialog->priv;*/
+	SimpleSubscriptionDialog *ssd = SIMPLE_SUBSCRIPTION_DIALOG (object);
+	
+	gtk_widget_destroy (ssd->priv->dialog);
 
 	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -758,10 +763,10 @@ on_simple_newdialog_response (GtkDialog *dialog,
 		g_free(source);
 	}
 	
-	g_object_unref(ssd);
-	
 	if (response_id == GTK_RESPONSE_APPLY) /* misused for "Advanced" */
-		new_subscription_dialog_init (NULL);	// FIXME
+		ui_complex_subscription_dialog_new (ssd->priv->parentNode);
+		
+	g_object_unref (ssd);
 }
 
 static void

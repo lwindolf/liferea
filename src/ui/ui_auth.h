@@ -38,13 +38,15 @@ typedef struct AuthDialogPrivate	AuthDialogPrivate;
 
 struct AuthDialog
 {
+	GObject		parent;
+	
 	/*< private >*/
 	AuthDialogPrivate	*priv;
 };
 
 struct AuthDialogClass 
 {
-	GtkWidgetClass parent_class;
+	GtkObjectClass parent_class;
 };
 
 GType auth_dialog_get_type	(void);

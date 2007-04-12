@@ -41,13 +41,15 @@ typedef struct SubscriptionPropDialogClass	SubscriptionPropDialogClass;
 
 struct SubscriptionPropDialog
 {
+	GObject parent;
+	
 	/*< private >*/
 	SubscriptionDialogPrivate	*priv;
 };
 
 struct SubscriptionPropDialogClass 
 {
-	GtkWidgetClass parent_class;
+	GtkObjectClass parent_class;
 };
 
 GType subscription_prop_dialog_get_type	(void);
@@ -74,13 +76,15 @@ typedef struct NewSubscriptionDialogClass	NewSubscriptionDialogClass;
 
 struct NewSubscriptionDialog
 {
+	GObject parent;
+	
 	/*< private >*/
 	SubscriptionDialogPrivate	*priv;
 };
 
 struct NewSubscriptionDialogClass 
 {
-	GtkWidgetClass parent_class;
+	GtkObjectClass parent_class;
 };
 
 GType new_subscription_dialog_get_type	(void);
@@ -107,13 +111,15 @@ typedef struct SimpleSubscriptionDialogClass	SimpleSubscriptionDialogClass;
 
 struct SimpleSubscriptionDialog
 {
+	GObject parent;
+	
 	/*< private >*/
 	SubscriptionDialogPrivate	*priv;
 };
 
 struct SimpleSubscriptionDialogClass 
 {
-	GtkWidgetClass parent_class;
+	GtkObjectClass parent_class;
 };
 
 GType simple_subscription_dialog_get_type	(void);
