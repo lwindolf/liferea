@@ -39,10 +39,41 @@ typedef enum
 }
 DebugFlags;
 
+/**
+ * Method to save start time for a measurement.
+ *
+ * @param level		debugging flags that enable the measurement
+ *
+ * Not thread-safe!
+ */
+extern void debug_start_measurement_func (const char * function);
+
+#define debug_start_measurement(level) if ((debug_level) & level) debug_start_measurement_func (PRETTY_FUNCTION)
+
+/**
+ * Method to calculate the duration for a measurement.
+ * The result will be printed to the debug trace.
+ *
+ * @param level		debugging flags that enable the measurement
+ * @param name		name of the measurement
+ *
+ * Not thread-safe!
+ */
+extern void debug_end_measurement_func (const char * function, unsigned long flags, gchar *name);
+
+#define debug_end_measurement(level, name) if ((debug_level) & level) debug_end_measurement_func (PRETTY_FUNCTION, level, name)
+
+/**
+ * Enable debugging for one or more of the given debugging flags.
+ *
+ * @param flags		debugging flags (see above)
+ */
 extern void set_debug_level (unsigned long flags);
 
+/** currently configured debug flag set */
 extern unsigned long debug_level;
 
+/** macros for debug output */
 extern void debug_printf (const char * strloc, const char * function, unsigned long level, const char* fmt, ...);
 
 #ifdef __GNUC__

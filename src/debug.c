@@ -35,6 +35,72 @@
 unsigned long debug_level = 0;
 
 static int depth = 0;
+
+static GHashTable *startTimes = NULL;
+
+static const char *
+debug_get_prefix (unsigned long flag) 
+{
+	if (flag & DEBUG_CACHE)		return "CACHE";
+	if (flag & DEBUG_CONF)		return "CONF";
+	if (flag & DEBUG_UPDATE)	return "UPDATE";
+	if (flag & DEBUG_PARSING)	return "PARSING";
+	if (flag & DEBUG_GUI)		return "GUI";
+	if (flag & DEBUG_HTML)		return "HTML";
+	if (flag & DEBUG_PLUGINS)	return "PLUGINS";
+	if (flag & DEBUG_TRACE)		return "TRACE";
+	if (flag & DEBUG_DB)		return "DB";
+	return "";	
+}
+
+void
+debug_start_measurement_func (const char * function)
+{
+	GTimeVal	*startTime = NULL;
+	
+	if (!function)
+		return;
+		
+	if (!startTimes)
+		startTimes = g_hash_table_new (g_str_hash, g_str_equal);
+	
+	startTime = (GTimeVal *) g_hash_table_lookup (startTimes, function);
+	
+	if (!startTime)
+	{
+		startTime = g_new0 (GTimeVal, 1);
+		g_hash_table_insert (startTimes, g_strdup(function), startTime);
+	}
+
+	g_get_current_time (startTime);
+}
+
+void
+debug_end_measurement_func (const char * function,
+                            unsigned long flags, 
+			    gchar *name)
+{
+	GTimeVal	*startTime = NULL;
+	GTimeVal	endTime;
+		
+	if (!function)
+		return;
+		
+	if (!startTimes)
+		return;
+	
+	startTime = g_hash_table_lookup (startTimes, function);
+
+	if (!startTime) 
+		return;
+		
+	g_get_current_time (&endTime);
+	g_time_val_add (&endTime, (-1) * startTime->tv_usec);
+	
+	g_print ("%s: %s took %01ld,%03lds\n", debug_get_prefix (flags), name, 
+	                                     endTime.tv_sec - startTime->tv_sec, 
+					     endTime.tv_usec/1000);
+}
  
 void
 set_debug_level (unsigned long level)
@@ -64,16 +130,7 @@ debug_printf (const char    * strloc,
 	g_return_if_fail (fmt != NULL);
 
 	/* get prefix */
-	if(flag & DEBUG_CACHE)		prefix="CACHE";
-	else if(flag & DEBUG_CONF)	prefix="CONF";
-	else if(flag & DEBUG_UPDATE)	prefix="UPDATE";
-	else if(flag & DEBUG_PARSING)	prefix="PARSING";
-	else if(flag & DEBUG_GUI)	prefix="GUI";
-	else if(flag & DEBUG_HTML)	prefix="HTML";
-	else if(flag & DEBUG_PLUGINS)	prefix="PLUGINS";
-	else if(flag & DEBUG_TRACE)	prefix="TRACE";
-	else if(flag & DEBUG_DB)	prefix="DB";
-	else prefix="";
+	prefix = debug_get_prefix(flag);
 
 	va_start (args, fmt);
 	string = g_strdup_vprintf (fmt, args);

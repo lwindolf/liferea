@@ -325,7 +325,8 @@ void itemlist_toggle_flag(itemPtr item) {
 void itemlist_set_read_status(itemPtr item, gboolean newStatus) {
 
 	if(newStatus != item->readStatus) {		
-
+		debug_start_measurement (DEBUG_GUI);
+		
 		/* 1. save state to DB */
 		item->readStatus = newStatus;
 		db_item_update(item);
@@ -341,7 +342,9 @@ void itemlist_set_read_status(itemPtr item, gboolean newStatus) {
 		feedlist_reset_new_item_count();
 
 		/* 5. duplicate state propagation */
-		// FIXME!		
+		// FIXME!
+		
+		debug_end_measurement (DEBUG_GUI, "set read status");
 	}
 }
 
@@ -477,44 +480,52 @@ void itemlist_mark_all_popup(const gchar *nodeId) {
 }
 
 /* mouse/keyboard interaction callbacks */
-void itemlist_selection_changed(itemPtr item) {
+void 
+itemlist_selection_changed (itemPtr item) {
 
-	debug_enter("itemlist_selection_changed");
+	debug_enter ("itemlist_selection_changed");
+	debug_start_measurement (DEBUG_GUI);
 
-	if(0 == itemlistLoading) {
+	if (0 == itemlistLoading)
+	{
 		/* folder&vfolder postprocessing to remove/filter unselected items no
 		   more matching the display rules because they have changed state */
-		itemlist_check_for_deferred_action();
+		itemlist_check_for_deferred_action ();
 		
 		selectedId = 0;
 
-		debug1(DEBUG_GUI, "item list selection changed to \"%s\"", item_get_title(item));
+		debug1 (DEBUG_GUI, "item list selection changed to \"%s\"", item_get_title (item));
 		
-		itemlist_set_selected(item);
+		itemlist_set_selected (item);
 	
 		/* set read and unset update status when selecting */
-		if(item) {
-			item_comments_refresh(item);
+		if (item)
+		{
+			item_comments_refresh (item);
 
-			itemlist_set_read_status(item, TRUE);
-			itemlist_set_update_status(item, FALSE);
+			itemlist_set_read_status (item, TRUE);
+			itemlist_set_update_status (item, FALSE);
 			
-			if(node_load_link_preferred(node_from_id(item->nodeId))) {
-				ui_htmlview_launch_URL(ui_mainwindow_get_active_htmlview(), 
-				                       item_get_source(itemlist_get_selected()), UI_HTMLVIEW_LAUNCH_INTERNAL);
-			} else {
-				itemview_set_mode(ITEMVIEW_SINGLE_ITEM);
-				itemview_select_item(item);
-				itemview_update();
+			if(node_load_link_preferred (node_from_id (item->nodeId))) 
+			{
+				ui_htmlview_launch_URL (ui_mainwindow_get_active_htmlview (), 
+				                        item_get_source (itemlist_get_selected ()), UI_HTMLVIEW_LAUNCH_INTERNAL);
+			} 
+			else 
+			{
+				itemview_set_mode (ITEMVIEW_SINGLE_ITEM);
+				itemview_select_item (item);
+				itemview_update ();
 			}
 		}
 
-		ui_node_update(item->nodeId);
+		ui_node_update (item->nodeId);
 
-		feedlist_reset_new_item_count();
+		feedlist_reset_new_item_count ();
 	}
 
-	debug_exit("itemlist_selection_changed");
+	debug_end_measurement (DEBUG_GUI, "itemlist selection");
+	debug_exit ("itemlist_selection_changed");
 }
 
 /* viewing mode callbacks */
