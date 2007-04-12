@@ -439,7 +439,7 @@ void db_item_update(itemPtr item) {
 	if(SQLITE_DONE != res) 
 		g_warning("item update failed (error code=%d, %s)", res, sqlite3_errmsg(db));
 	
-	db_metadata_update(item);
+	//db_metadata_update(item);
 	
 	debug_end_measurement (DEBUG_DB, "item update");
 }
@@ -564,4 +564,46 @@ guint db_itemset_get_item_count(const gchar *id) {
 	debug_end_measurement (DEBUG_DB, "counting items");
 		
 	return count;
+}
+
+void
+db_begin_transaction (void)
+{
+	gchar	*sql, *err;
+	gint	res;
+	
+	sql = sqlite3_mprintf("BEGIN");
+	res = sqlite3_exec(db, sql, NULL, NULL, &err);
+	if(SQLITE_OK != res) 
+		g_warning("Transaction begin failed (%s) SQL: %s", err, sql);
+	sqlite3_free(sql);
+	sqlite3_free(err);
+}
+
+void
+db_commit_transaction (void) 
+{
+	gchar	*sql, *err;
+	gint	res;
+	
+	sql = sqlite3_mprintf("COMMIT");
+	res = sqlite3_exec(db, sql, NULL, NULL, &err);
+	if(SQLITE_OK != res) 
+		g_warning("Transaction begin failed (%s) SQL: %s", err, sql);
+	sqlite3_free(sql);
+	sqlite3_free(err);
+}
+
+void
+db_rollback_transaction (void) 
+{
+	gchar	*sql, *err;
+	gint	res;
+	
+	sql = sqlite3_mprintf("ROLLBACK");
+	res = sqlite3_exec(db, sql, NULL, NULL, &err);
+	if(SQLITE_OK != res) 
+		g_warning("Transaction begin failed (%s) SQL: %s", err, sql);
+	sqlite3_free(sql);
+	sqlite3_free(err);
 }

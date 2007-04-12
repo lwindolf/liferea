@@ -109,4 +109,19 @@ void	db_item_update(itemPtr item);
  */
 void	db_item_remove(gulong id);
 
+/**
+ * Explicitely start a transaction.
+ */
+void	db_begin_transaction (void);
+
+/**
+ * Commit previously started transaction.
+ */
+void	db_commit_transaction (void);
+
+/**
+ * Rollback previously started transaction.
+ */
+void	db_rollback_transaction (void);
+
 #endif
