@@ -2311,7 +2311,7 @@ msgstr "_Lösenord"
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
 #: ../src/fl_sources/default_source.c:337
 msgid "feedlist.opml"
-msgstr "feedlist.opml"
+msgstr "feedlist_sv.opml"
 
 #: ../src/fl_sources/opml_source.c:339
 msgid "Planet, BlogRoll, OPML"

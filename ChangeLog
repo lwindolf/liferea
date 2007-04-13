@@ -2,8 +2,10 @@
 
 	Version 1.2.11 (Stable)
 
+	* Added scripting hook for program shutdown.
 	* Updated French translation (Vincent Lefevre)
 	* Updated Swedish translation (Daniel Nylander)
+	* Added Swedish default feed list (Daniel Nylander)
 
 
 2007-04-03  Lars Lindner  <lars.lindner@gmail.com>
