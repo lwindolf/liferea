@@ -221,7 +221,6 @@ void itemset_merge_items(itemSetPtr itemSet, GList *list) {
 	guint	max;
 
 	debug_start_measurement (DEBUG_UPDATE);
-	db_begin_transaction ();
 	
 	debug2(DEBUG_UPDATE, "old item set %p of (node id=%s):", itemSet, itemSet->nodeId);
 	
@@ -259,7 +258,6 @@ void itemset_merge_items(itemSetPtr itemSet, GList *list) {
 	}
 	g_list_free(list);
 	
-	db_end_transaction ();
 	debug_end_measurement (DEBUG_UPDATE, "merge itemset");
 }
 

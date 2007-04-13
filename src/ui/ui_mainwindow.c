@@ -2,7 +2,7 @@
  * @file ui_mainwindow.c some functions concerning the main window 
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2004-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -548,6 +548,25 @@ void ui_mainwindow_init(int mainwindowState) {
 				   "into the right pane.</p>"));
 	g_string_append(buffer,    "</td></tr></table>");
 
+	g_string_append(buffer,    "</div>");
+	
+	g_string_append(buffer,    "<div style=\"background:#ffc;border:1px solid black;margin:8px;padding:8px\">");
+	g_string_append(buffer,    "<p><b>Important:</b> This is an <b>UNSTABLE</b> test release. Use it only "
+	                           "if you want to help with the development of Liferea and if you are willing "
+				   "to do some debugging if it crashes. And it will crash, and hang, and eat memory and "
+				   "it might even kill your cat!</p>"
+				   "<p>Anyway it won't harm your 1.2.x installation as it uses a different cache "
+				   "directory. On first start it will auto-migrate all your items to the sqlite backend...</p>"
+				   "<p>What currently doesn't work:"
+				   "<ul>"
+				   "   <li>search folders and searching</li>"
+				   "   <li>item ordering in two pane mode</li>"
+				   "   <li>item duplicate handling</li>"
+				   "   <li>enclosure auto-download</li>"
+				   "   <li>news bins</li>"
+				   "   <li>notification</li>"
+				   "</ul>"
+				   "</p>");
 	g_string_append(buffer,    "</div>");
 				   
 	htmlview_finish_output(buffer);
