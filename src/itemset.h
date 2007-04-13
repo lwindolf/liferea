@@ -44,6 +44,18 @@ typedef struct itemSet {
 	gchar		*nodeId;	/**< the feed list node id this item set belongs to */
 } *itemSetPtr;
 
+/* item set iterating interface */
+
+typedef void 	(*itemActionFunc)	(itemPtr item);
+
+/**
+ * Calls the given callback for each of the items in the item set.
+ *
+ * @param itemSet	the item set
+ * @param callback	the callback
+ */
+void itemset_foreach (itemSetPtr itemSet, itemActionFunc callback);
+
 /**
  * Merges the given item set into the item set of
  * the given node. Used for node updating.

@@ -518,6 +518,9 @@ const gchar * node_get_base_url(nodePtr node);
 
 /* child nodes iterating interface */
 
+typedef void 	(*nodeActionFunc)	(nodePtr node);
+typedef void 	(*nodeActionDataFunc)	(nodePtr node, gpointer user_data);
+
 /**
  * Do not call this method directly! Do use
  * node_foreach_child() or node_foreach_child_data()!

@@ -187,11 +187,14 @@ void ui_itemlist_clear(void) {
 	item_id_to_iter = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, g_free);
 }
 
-static void ui_itemlist_update_iter(GtkTreeIter *iter, itemPtr item) {
+static void
+ui_itemlist_update_iter (GtkTreeIter *iter,
+                         itemPtr item)
+{
 	gchar		*label, *time_str, *esc_title, *esc_time_str, *tmp;
 	const gchar 	*direction_marker;
 	GdkPixbuf	*icon = NULL;
-
+	
 	/* Time */
 	if(0 != item->time) {
 		esc_time_str = itemview_format_date((time_t)item->time);
@@ -244,37 +247,52 @@ static void ui_itemlist_update_iter(GtkTreeIter *iter, itemPtr item) {
 	g_free(label);
 }
 
-void ui_itemlist_update_item(itemPtr item) {
+void 
+ui_itemlist_update_item (itemPtr item) 
+{
 	GtkTreeIter	iter;
 
-	if(ui_item_id_to_iter(item->id, &iter))
-		ui_itemlist_update_iter(&iter, item);
+	if (ui_item_id_to_iter (item->id, &iter))
+		ui_itemlist_update_iter (&iter, item);
 }
 
-static void ui_itemlist_update_foreach(gpointer key, gpointer value, gpointer user_data) {
-	itemPtr item;
+static void
+ui_itemlist_update_item_foreach (gpointer key,
+                                 gpointer value,
+				 gpointer user_data)
+{
+	itemPtr 	item;
+	
+	item = item_load (key /* id */);
+	if (!item) 
+		return;
 
-	item = item_load(GPOINTER_TO_UINT(key));
-	ui_itemlist_update_iter((GtkTreeIter *)value, item);
-	item_unload(item);
+	ui_itemlist_update_iter (value /* iter */, item);
+	
+	item_unload (item);
 }
 
-void ui_itemlist_update_all_items(void) {
+void 
+ui_itemlist_update_all_items (void) 
+{
 
-	g_hash_table_foreach(item_id_to_iter, ui_itemlist_update_foreach, NULL);
+	g_hash_table_foreach (item_id_to_iter, ui_itemlist_update_item_foreach, NULL);
 }
 
-static gboolean ui_itemlist_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer data) {
-
-	if((event->type == GDK_KEY_PRESS) &&
-	   (event->state == 0) &&
-	   (event->keyval == GDK_Delete)) {
+static gboolean
+ui_itemlist_key_press_cb (GtkWidget *widget,
+                          GdkEventKey *event,
+			  gpointer data) 
+{
+	if ((event->type == GDK_KEY_PRESS) && (event->state == 0) && (event->keyval == GDK_Delete)) 
 		on_remove_item_activate(NULL, NULL);
-	}
+
 	return FALSE;
 }
 
-GtkWidget* ui_itemlist_new() {
+GtkWidget * 
+ui_itemlist_new(void) 
+{
 	GtkCellRenderer		*renderer;
 	GtkTreeViewColumn 	*column;
 	GtkTreeSelection	*select;
@@ -350,7 +368,8 @@ GtkWidget* ui_itemlist_new() {
 }
 
 /* typically called when filling the item tree view */
-void ui_itemlist_prefocus(void) {
+void 
+ui_itemlist_prefocus (void) {
 	GtkWidget		*itemlist, *focus_widget;
 	GtkTreeSelection	*itemselection;
 	
@@ -364,56 +383,63 @@ void ui_itemlist_prefocus(void) {
 	itemlist = itemlist_treeview;
 	
 	/* we need to restore the focus after we temporarily select the itemlist */
-	focus_widget = gtk_window_get_focus(GTK_WINDOW(mainwindow));
+	focus_widget = gtk_window_get_focus (GTK_WINDOW (mainwindow));
 
 	/* prevent marking as unread before focussing, which leads to a selection */
-	gtk_widget_grab_focus(itemlist);
+	gtk_widget_grab_focus (itemlist);
 
-	if(NULL != (itemselection = gtk_tree_view_get_selection(GTK_TREE_VIEW(itemlist))))
-		gtk_tree_selection_unselect_all(itemselection);
+	itemselection = gtk_tree_view_get_selection (GTK_TREE_VIEW (itemlist));
+	if(itemselection)
+		gtk_tree_selection_unselect_all (itemselection);
 	
-	if(focus_widget)
-		gtk_widget_grab_focus(focus_widget);		
+	if (focus_widget)
+		gtk_widget_grab_focus (focus_widget);
 }
 
-void ui_itemlist_add_item(itemPtr item) {
-	GtkTreeStore	*itemstore = ui_itemlist_get_tree_store();
+void 
+ui_itemlist_add_item (itemPtr item) 
+{
+	GtkTreeStore	*itemstore = ui_itemlist_get_tree_store ();
 	GtkTreeIter	old_iter;
 	gboolean	exists;
 	nodePtr		node;
 
-	exists = ui_item_id_to_iter(item->id, &old_iter);
+	exists = ui_item_id_to_iter (item->id, &old_iter);
 	
-	if(exists && !item->newStatus) {
+	if (exists && !item->newStatus) 
+	{
 		/* nothing to do */
-	} else {
+	} 
+	else 
+	{
 		GtkTreeIter *iter = &old_iter;
 		gint state = 0;
 		
-		if(!exists) {
-			iter = g_new0(GtkTreeIter, 1);
-			gtk_tree_store_prepend(itemstore, iter, NULL);
-			g_hash_table_insert(item_id_to_iter, GUINT_TO_POINTER(item->id), (gpointer)iter);
+		if (!exists) 
+		{
+			iter = g_new0 (GtkTreeIter, 1);
+			gtk_tree_store_prepend (itemstore, iter, NULL);
+			g_hash_table_insert (item_id_to_iter, GUINT_TO_POINTER (item->id), (gpointer)iter);
 		}
 		
-		if(item->flagStatus)
+		if (item->flagStatus)
 			state += 2;
-		if(!item->readStatus)
+		if (!item->readStatus)
 			state += 1;
 
-		node = node_from_id(item->nodeId);
+		node = node_from_id (item->nodeId);
 
-		gtk_tree_store_set(itemstore, iter,
-		                	      IS_TIME, item->time,
-		                	      IS_NR, item->id,
-					      IS_PARENT, node,
-		                              IS_FAVICON, node->icon,
-		                              IS_ENCICON, item->hasEnclosure?icons[ICON_ENCLOSURE]:NULL,
-					      IS_ENCLOSURE, item->hasEnclosure,
-					      IS_SOURCE, node,
-					      IS_STATE, state,
-		                	      -1);
-		ui_itemlist_update_item(item);
+		gtk_tree_store_set (itemstore, iter,
+		                	       IS_TIME, item->time,
+		                	       IS_NR, item->id,
+					       IS_PARENT, node,
+		                               IS_FAVICON, node->icon,
+		                               IS_ENCICON, item->hasEnclosure?icons[ICON_ENCLOSURE]:NULL,
+					       IS_ENCLOSURE, item->hasEnclosure,
+					       IS_SOURCE, node,
+					       IS_STATE, state,
+		                	       -1);
+		ui_itemlist_update_item (item);
 	}
 }
 
@@ -425,57 +451,103 @@ void ui_itemlist_enable_favicon_column(gboolean enabled) {
 	gtk_tree_view_column_set_visible(gtk_tree_view_get_column(GTK_TREE_VIEW(itemlist_treeview), 3), enabled);
 }
 
-void ui_itemlist_enable_encicon_column(gboolean enabled) {
+void 
+ui_itemlist_enable_encicon_column (gboolean enabled) 
+{
 
 	/* we depend on the fact that the third column is the enclosure icon column!!! */
-	gtk_tree_view_column_set_visible(gtk_tree_view_get_column(GTK_TREE_VIEW(itemlist_treeview), 1), enabled);
+	gtk_tree_view_column_set_visible (gtk_tree_view_get_column (GTK_TREE_VIEW (itemlist_treeview), 1), enabled);
 }
 
-void on_popup_launchitem_selected(void) {
+void
+on_popup_launchitem_selected (void) 
+{
 	itemPtr		item;
 
-	if(NULL != (item = itemlist_get_selected()))
-		ui_htmlview_launch_URL(ui_tabs_get_active_htmlview(), 
-		                       (gchar *)item_get_source(item), 
-				       UI_HTMLVIEW_LAUNCH_DEFAULT);
+	item = itemlist_get_selected ();
+	if (item)
+	{
+		ui_htmlview_launch_URL (ui_tabs_get_active_htmlview (), 
+		                        (gchar *)item_get_source (item), 
+				        UI_HTMLVIEW_LAUNCH_DEFAULT);
+				       
+		item_unload (item);
+	}
 	else
-		ui_mainwindow_set_status_bar(_("No item has been selected"));
-}
-
-void on_popup_launchitem_in_tab_selected(void) {
-	itemPtr		item;
-	const gchar	*link;
-
-	if(NULL != (item = itemlist_get_selected())) {
-		if(NULL != (link = item_get_source(item)))
-			ui_tabs_new(link, link, FALSE);
-		else
-			ui_show_error_box(_("This item has no link specified!"));
-	} else {
-		ui_mainwindow_set_status_bar(_("No item has been selected"));
+	{
+		ui_mainwindow_set_status_bar (_("No item has been selected"));
 	}
 }
 
-void on_Itemlist_row_activated(GtkTreeView *treeview, GtkTreePath *path, GtkTreeViewColumn *column, gpointer user_data) {
+void
+on_popup_launchitem_in_tab_selected (void) 
+{
+	itemPtr		item;
+	const gchar	*link;
 
-	on_popup_launchitem_selected();
+	item = itemlist_get_selected ();
+	if (item) 
+	{
+		link = item_get_source (item);
+		if (link)
+			ui_tabs_new (link, link, FALSE);
+		else
+			ui_show_error_box (_("This item has no link specified!"));
+			
+		item_unload (item);
+	} 
+	else 
+	{
+		ui_mainwindow_set_status_bar (_("No item has been selected"));
+	}
 }
 
-/* menu callbacks */					
-void on_toggle_item_flag(GtkMenuItem *menuitem, gpointer user_data) {
+void 
+on_Itemlist_row_activated (GtkTreeView *treeview,
+                           GtkTreePath *path,
+			   GtkTreeViewColumn *column,
+			   gpointer user_data) 
+{
+
+	on_popup_launchitem_selected ();
+}
+
+/* menu callbacks */
+
+void
+on_toggle_item_flag (GtkMenuItem *menuitem,
+                     gpointer user_data) 
+{
 	itemPtr		item;
-	
-	if(NULL != (item = itemlist_get_selected()))
+
+	item = itemlist_get_selected ();
+	if (item)
+	{
 		itemlist_toggle_flag(item);
+		item_unload(item);
+	}
 }
 
-void on_popup_toggle_flag(gpointer callback_data, guint callback_action, GtkWidget *widget) { on_toggle_item_flag(NULL, NULL); }
+void 
+on_popup_toggle_flag (gpointer callback_data,
+                      guint callback_action,
+		      GtkWidget *widget) 
+{
+	on_toggle_item_flag(NULL, NULL);
+}
 
-void on_toggle_unread_status(GtkMenuItem *menuitem, gpointer user_data) {
+void 
+on_toggle_unread_status (GtkMenuItem *menuitem,
+                         gpointer user_data) 
+{
 	itemPtr		item;
 
-	if(NULL != (item = itemlist_get_selected())) 
-		itemlist_toggle_read_status(item);
+	item = itemlist_get_selected ();
+	if (item) 
+	{
+		itemlist_toggle_read_status (item);
+		item_unload (item);
+	}
 }
 
 void on_popup_toggle_read(gpointer callback_data, guint callback_action, GtkWidget *widget) { on_toggle_unread_status(NULL, NULL); }

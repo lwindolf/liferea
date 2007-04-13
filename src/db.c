@@ -74,7 +74,8 @@ CREATE TABLE itemsets ( \
 	item_id		INTEGER, \
 	node_id		TEXT \
 ); \
-CREATE INDEX itemset_idx ON itemsets (node_id);";
+CREATE INDEX itemset_idx  ON itemsets (node_id); \
+CREATE INDEX itemset_idx2 ON itemsets (item_id);";
 
 static const gchar *schema_metadata = "\
 CREATE TABLE metadata ( \
@@ -109,15 +110,20 @@ void db_init(void) {
 	
 	/* create tables */
 	
-	sqlite3_exec(db, schema_items,		NULL, NULL, NULL);
-	sqlite3_exec(db, schema_itemsets,	NULL, NULL, NULL);
-	sqlite3_exec(db, schema_metadata,	NULL, NULL, NULL);
+	sqlite3_exec (db, schema_items,		NULL, NULL, NULL);
+	sqlite3_exec (db, schema_itemsets,	NULL, NULL, NULL);
+	sqlite3_exec (db, schema_metadata,	NULL, NULL, NULL);
+	
+	/*res = sqlite3_exec (db, "PRAGMA synchronous=off", NULL, NULL, &err);
+	if (SQLITE_OK != res)
+		g_error ("Failure when disabling sync mode, (error=%d, %s)", res, err);
+	sqlite3_free(err);*/
 
 	/* prepare statements */
 	
 	db_prepare_stmt(&itemsetLoadStmt,
-	               "SELECT item_id FROM itemsets WHERE node_id = ?");		      
-	
+	               "SELECT item_id FROM itemsets WHERE node_id = ?");
+		       
 	db_prepare_stmt(&itemsetInsertStmt,
 	                "INSERT INTO itemsets (item_id,node_id) VALUES (?,?)");
 	
@@ -242,7 +248,7 @@ void db_deinit(void) {
 static GSList * db_metadata_load(gulong id) {
 	GSList	*metadata = NULL;
 	gint	res;
-	
+
 	sqlite3_reset(metadataLoadStmt);
 	res = sqlite3_bind_int(metadataLoadStmt, 1, id);
 	if(SQLITE_OK != res)
@@ -323,7 +329,7 @@ itemSetPtr db_itemset_load(const gchar *id) {
 	sqlite3_reset(itemsetLoadStmt);
 	res = sqlite3_bind_text(itemsetLoadStmt, 1, id, -1, SQLITE_TRANSIENT);
 	if(SQLITE_OK != res)
-		g_error("db_load_itemset_with_node_id: sqlite bind failed (error code %d)!", res);
+		g_error("db_itemset_load: sqlite bind failed (error code %d)!", res);
 
 	while(sqlite3_step(itemsetLoadStmt) == SQLITE_ROW) {
 		itemSet->ids = g_list_append(itemSet->ids, GUINT_TO_POINTER(sqlite3_column_int(itemsetLoadStmt, 0)));
@@ -581,12 +587,12 @@ db_begin_transaction (void)
 }
 
 void
-db_commit_transaction (void) 
+db_end_transaction (void) 
 {
 	gchar	*sql, *err;
 	gint	res;
 	
-	sql = sqlite3_mprintf("COMMIT");
+	sql = sqlite3_mprintf("END");
 	res = sqlite3_exec(db, sql, NULL, NULL, &err);
 	if(SQLITE_OK != res) 
 		g_warning("Transaction begin failed (%s) SQL: %s", err, sql);

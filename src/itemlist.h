@@ -68,7 +68,7 @@ void itemlist_merge_itemset(itemSetPtr itemSet);
  *
  * @param node 		the node
  */
-void itemlist_load(nodePtr node);
+void itemlist_load(struct node *node);
 
 /**
  * Clears the item list. Unsets the currently
@@ -77,6 +77,13 @@ void itemlist_load(nodePtr node);
  * @param markRead	if TRUE all items are marked as read
  */
 void itemlist_unload(gboolean markRead);
+
+/**
+ * Calls the given callback for each of the items in the item list.
+ *
+ * @param callback	the callback
+ */
+void itemlist_foreach (itemActionFunc callback);
 
 /**
  * Changes the viewing mode property of the item list.
@@ -137,7 +144,7 @@ void itemlist_remove_items(itemSetPtr itemSet, GList *items);
  *
  * @param node		the node whose item list is to be removed
  */
-void itemlist_remove_all_items(nodePtr node);
+void itemlist_remove_all_items(struct node *node);
 
 /**
  * Marks all items of the item set as read.

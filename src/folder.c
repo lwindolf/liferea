@@ -1,5 +1,5 @@
 /**
- * @file folder.c feed list and plugin callbacks for folders
+ * @file folder.c feed list callbacks for folders
  * 
  * Copyright (C) 2006-2007 Lars Lindner <lars.lindner@gmail.com>
  *

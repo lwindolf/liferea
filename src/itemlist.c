@@ -58,8 +58,9 @@
 
 static rulePtr itemlist_filter = NULL;		/* currently active filter rule */
 
-static nodePtr	currentNode = NULL;		/* the node whose own our child items are currently displayed */
+static nodePtr	currentNode = NULL;		/* the node whose own or its child items are currently displayed */
 static gulong	selectedId = 0;			/* the currently selected (and displayed) item id */
+static gboolean	hasEnclosures;			/* TRUE if at least one item of the current itemset has an enclosure */
 
 static guint viewMode = 0;			/* current viewing mode */
 static guint itemlistLoading = 0;		/* if >0 prevents selection effects when loading the item list */
@@ -112,14 +113,23 @@ static void itemlist_check_for_deferred_action(void) {
 	}
 }
 
+static void
+itemlist_merge_item (itemPtr item) 
+{
+
+	if (!(itemlist_filter && !rule_check_item(itemlist_filter, item))) 
+	{
+		hasEnclosures |= item->hasEnclosure;
+		itemview_add_item (item);
+	}
+}
+
 /**
  * To be called whenever an itemset was updated. If it is the
  * displayed itemset it will be merged against the item list
  * tree view.
  */
 void itemlist_merge_itemset(itemSetPtr itemSet) {
-	GList		*iter;
-	gboolean	hasEnclosures = FALSE;
 	nodePtr		node;
 
 	debug_enter("itemlist_merge_itemset");
@@ -140,17 +150,8 @@ void itemlist_merge_itemset(itemSetPtr itemSet) {
 		
 	debug1(DEBUG_GUI, "reloading item list with node \"%s\"", node_get_title(node));
 
-	/* update item list tree view */	
-	iter = g_list_last(itemSet->ids);
-	while(iter) {
-		itemPtr item = item_load(GPOINTER_TO_UINT(iter->data));
-		if(!(itemlist_filter && !rule_check_item(itemlist_filter, item))) {
-			hasEnclosures |= item->hasEnclosure;
-			itemview_add_item(item);
-		}
-		item_unload(item);
-		iter = g_list_previous(iter);
-	}
+	/* merge items into item view */
+	itemset_foreach(itemSet, itemlist_merge_item);
 	
 	if(hasEnclosures)
 		ui_itemlist_enable_encicon_column(TRUE);
@@ -181,6 +182,8 @@ void itemlist_load(nodePtr node) {
 	   
 	g_free(itemlist_filter);
 	itemlist_filter = NULL;
+	
+	hasEnclosures = FALSE;
 	   
 	if(NODE_TYPE_FOLDER == node->type) {
 		if(0 == getNumericConfValue(FOLDER_DISPLAY_MODE))
@@ -229,6 +232,16 @@ void itemlist_unload(gboolean markRead) {
 
 	itemlist_set_selected(NULL);
 	currentNode = NULL;
+}
+
+void
+itemlist_foreach (itemActionFunc callback)
+{
+	itemSetPtr itemSet;
+	
+	itemSet = node_get_itemset (currentNode->id);
+	itemset_foreach (itemSet, callback);
+	itemset_free (itemSet);
 }
 
 /* next unread selection logic */

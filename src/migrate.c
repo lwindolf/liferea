@@ -244,7 +244,7 @@ migrate_items (const gchar *sourceDir)
 	}
 	g_dir_close (dir);
 	
-	db_commit_transaction ();
+	db_end_transaction ();
 }
 
 void 

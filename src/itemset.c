@@ -28,9 +28,24 @@
 #include "itemlist.h"
 #include "itemset.h"
 #include "node.h"
-#include "render.h"
 #include "support.h"
-#include "vfolder.h"
+
+void
+itemset_foreach (itemSetPtr itemSet, itemActionFunc callback)
+{
+	GList	*iter = itemSet->ids;
+	
+	while(iter) 
+	{
+		itemPtr item = item_load (GPOINTER_TO_UINT (iter->data));
+		if (item) 
+		{
+			(*callback) (item);
+			item_unload (item);
+		}
+		iter = g_list_next (iter);
+	}
+}
 
 static guint itemset_get_max_item_count(itemSetPtr itemSet) {
 
@@ -244,7 +259,7 @@ void itemset_merge_items(itemSetPtr itemSet, GList *list) {
 	}
 	g_list_free(list);
 	
-	db_commit_transaction ();
+	db_end_transaction ();
 	debug_end_measurement (DEBUG_UPDATE, "merge itemset");
 }
 
