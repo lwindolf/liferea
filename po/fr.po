@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 1.2.10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-02 22:41+0200\n"
-"PO-Revision-Date: 2007-04-03 03:49+0200\n"
+"POT-Creation-Date: 2007-04-13 01:24+0200\n"
+"PO-Revision-Date: 2007-04-13 01:31+0200\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.org>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -2393,6 +2393,10 @@ msgstr "_Adresse"
 #: ../src/fl_sources/opml_source-ui.c:74
 msgid "_Select File"
 msgstr "Sélectionner un _fichier"
+
+#: ../src/fl_sources/opml_source-cb.c:77
+msgid "Choose OPML File"
+msgstr "Choisir un fichier OPML"
 
 #: ../src/fl_sources/node_source.c:207
 msgid "No feed list source types found!"
