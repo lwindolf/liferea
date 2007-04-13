@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<opml version="1.0">
+  <head>
+    <title>Liferea Default Feed List</title>
+  </head>
+  <body>
+    <outline title="Exempelkanaler" text="Exempelkanaler" description="Exempelkanaler" type="folder">
+      <outline title="Nyheter" text="Nyheter" description="Nyheter" type="folder">
+        <outline title="Aftonbladet Nyheter" text="Aftonbladet Nyheter" description="Aftonbladet Nyheter" type="rss" htmlUrl="http://www.aftonbladet.se" xmlUrl="http://www.aftonbladet.se/rss/nyheter.xml" etag="&quot;efc92b0c-2e-2e6a-461fdfa1&quot;" lastModified="Fri, 13 Apr 2007 19:53:05 GMT" lastPollTime="1176494511" lastFaviconPollTime="1176494511"/>
+        <outline title="IDG.se - Senaste nytt" text="IDG.se - Senaste nytt" description="IDG.se - Senaste nytt" type="rss" htmlUrl="http://www.idg.se" xmlUrl="http://www.idg.se/rss/nyheter" lastPollTime="1176494543" lastFaviconPollTime="1176494543"/>
+        <outline title="Daniel Nylander.se" text="Daniel Nylander.se" description="Daniel Nylander.se" type="rss" htmlUrl="http://www.danielnylander.se" xmlUrl="http://www.danielnylander.se/feed/" etag="&quot;6a10520d85fc67d0a96686492d523652&quot;" lastModified="Wed, 11 Apr 2007 11:00:16 GMT" lastPollTime="1176494641" lastFaviconPollTime="1176494642"/>
+        <outline title="Planet Ubuntu Sverige" text="Planet Ubuntu Sverige" description="Planet Ubuntu Sverige" type="rss" htmlUrl="http://ubuntu-se.org/planet/" xmlUrl="http://ubuntu-se.org/planet/rss20.xml" etag="&quot;704fd-1248-f3265d80&quot;" lastModified="Fri, 13 Apr 2007 20:00:06 GMT" lastPollTime="1176494673" lastFaviconPollTime="1176494674"/>
+        <outline title="linuxportalen.se - Det nya navet f&#xF6;r linuxanv&#xE4;ndare i Sverige" text="linuxportalen.se - Det nya navet f&#xF6;r linuxanv&#xE4;ndare i Sverige" description="linuxportalen.se - Det nya navet f&#xF6;r linuxanv&#xE4;ndare i Sverige" type="rss" htmlUrl="http://www.linuxportalen.se" xmlUrl="http://www.linuxportalen.se/node/feed" lastPollTime="1176494700" lastFaviconPollTime="1176494701"/>
+        <outline title="CS: &#xD6;ppen k&#xE4;llkod" text="CS: &#xD6;ppen k&#xE4;llkod" description="CS: &#xD6;ppen k&#xE4;llkod" type="rss" htmlUrl="http://computersweden.idg.se" xmlUrl="http://computersweden.idg.se/rss/%C3%B6ppen+k%C3%A4llkod" lastPollTime="1176494784" lastFaviconPollTime="1176494789"/>
+        <outline title="Nyheter fr&#xE5;n Expressen" text="Nyheter fr&#xE5;n Expressen" description="Nyheter fr&#xE5;n Expressen" type="rss" htmlUrl="http://expressen.se/1.573280.1175529352?standAlone=true" xmlUrl="http://expressen.se/1.573280?standAlone=true" lastPollTime="1176494844" lastFaviconPollTime="1176494844"/>
+      </outline>
+      <outline title="&#xD6;ppen k&#xE4;llkod" text="&#xD6;ppen k&#xE4;llkod" description="&#xD6;ppen k&#xE4;llkod" type="folder">
+        <outline title="art.gnome.org" text="art.gnome.org" description="art.gnome.org" type="rss" htmlUrl="http://art.gnome.org" xmlUrl="http://art.gnome.org/backend.php" etag="05929c16ed169f933f77b664e34b3d90" lastModified="Fri, 13 Apr 2007 00:35:03 GMT" lastPollTime="1176493726" lastFaviconPollTime="1174974957"/>
+        <outline title="Debian Package a Day" text="Debian Package a Day" description="Debian Package a Day" type="pie" htmlUrl="http://debaday.livejournal.com/" xmlUrl="http://www.livejournal.com/users/debaday/data/atom" lastModified="Mon, 15 Nov 2004 15:01:13 GMT" lastPollTime="1176493726" lastFaviconPollTime="1174974955"/>
+        <outline title="Gnomefiles" text="Gnomefiles" description="Gnomefiles" type="rss" htmlUrl="http://www.gnomefiles.org" xmlUrl="http://www.gnomefiles.org/files/gnomefiles.rdf" etag="&quot;338080-3103-87904040&quot;" lastModified="Fri, 13 Apr 2007 19:30:01 GMT" lastPollTime="1176493726" lastFaviconPollTime="1174974955"/>
+        <outline title="GNOME Footnotes" text="GNOME Footnotes" description="GNOME Footnotes" type="rss" htmlUrl="http://gnomedesktop.org" xmlUrl="http://www.gnomedesktop.org/backend.php" etag="&quot;ad0d7d7c8988cf6a0d484e832d2769ff&quot;" lastModified="Fri, 13 Apr 2007 19:30:05 GMT" lastPollTime="1176493726" lastFaviconPollTime="1174974957"/>
+        <outline title="GrokLaw" text="GrokLaw" description="GrokLaw" type="rss" htmlUrl="http://www.groklaw.net" xmlUrl="http://www.groklaw.net/backend/GrokLaw.rdf" etag="&quot;c1a52-10198-461fde7d&quot;" lastModified="Fri, 13 Apr 2007 19:48:13 GMT" lastPollTime="1176493726" lastFaviconPollTime="1174974955"/>
+        <outline title="Linux.com" text="Linux.com" description="Linux.com" type="rss" htmlUrl="http://www.linux.com/" xmlUrl="http://www.linux.com/index.rss" etag="rMgsO1G/In5moLnQ4uOySU3R5Wk" lastModified="Fri, 13 Apr 2007 17:15:23 GMT" lastPollTime="1176493726" lastFaviconPollTime="1174974955"/>
+        <outline title="mozillaZine" text="mozillaZine" description="mozillaZine" type="rss" htmlUrl="http://www.mozillazine.org/" xmlUrl="http://www.mozillazine.org/contents.rdf" etag="&quot;1664e2-b3d-ba57bdc0&quot;" lastModified="Fri, 13 Apr 2007 17:21:03 GMT" lastPollTime="1176493726" lastFaviconPollTime="1174974955"/>
+        <outline title="Newsforge" text="Newsforge" description="Newsforge" type="rss" htmlUrl="http://www.newsforge.com/" xmlUrl="http://www.newsforge.com/newsforge.rss" lastPollTime="1176493726" lastFaviconPollTime="1174974955"/>
+        <outline title="Planet Debian" text="Planet Debian" description="Planet Debian" type="rss" htmlUrl="http://planet.debian.org/" xmlUrl="http://planet.debian.org/rss20.xml" etag="&quot;de802f-1d22c-461fdd9c&quot;" lastModified="Fri, 13 Apr 2007 19:44:28 GMT" lastPollTime="1176493726" lastFaviconPollTime="1174974955"/>
+        <outline title="Planet Ubuntu" text="Planet Ubuntu" description="Planet Ubuntu" type="rss" htmlUrl="http://planet.ubuntu.com/" xmlUrl="http://planet.ubuntu.com/rss20.xml" etag="&quot;3d1a147-150b6-c8979700&quot;" lastModified="Fri, 13 Apr 2007 19:48:12 GMT" lastPollTime="1176493726" lastFaviconPollTime="1174974955"/>
+        <outline title="Planet GNOME" text="Planet GNOME" description="Planet GNOME" type="rss" htmlUrl="http://planet.gnome.org/" xmlUrl="http://planet.gnome.org/rss20.xml" etag="&quot;7002b0-f350-abbe5600&quot;" lastModified="Fri, 13 Apr 2007 19:40:08 GMT" lastPollTime="1176493726" lastFaviconPollTime="1173993849"/>
+        <outline title="Slashdot" text="Slashdot" description="Slashdot" type="rss" htmlUrl="http://slashdot.org/" xmlUrl="http://slashdot.org/slashdot.rss" etag="DMtXnVxoVoIvDhGDrbbb26dy6hs" lastModified="Fri, 13 Apr 2007 19:24:17 GMT" lastPollTime="1176493724" lastFaviconPollTime="1174974955"/>
+        <outline title="TuxMobil" text="TuxMobil" description="TuxMobil" type="rss" htmlUrl="http://tuxmobil.org" xmlUrl="http://tuxmobil.org/tuxmobil_rss.rdf" etag="&quot;520211-fc3-461e3960&quot;" lastModified="Thu, 12 Apr 2007 13:51:28 GMT" lastPollTime="1176493724" lastFaviconPollTime="1174974955"/>
+      </outline>
+    </outline>
+  </body>
+</opml>
