@@ -21,7 +21,14 @@
 #ifndef __LIFEREA_DBUS_H__
 #define __LIFEREA_DBUS_H__
 
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif
+
+#ifdef USE_DBUS	
+#include <dbus.h>
 #include <dbus/dbus-glib.h>
+#endif
 
 #define LF_DBUS_PATH "/org/gnome/feed/Reader"
 #define LF_DBUS_SERVICE "org.gnome.feed.Reader"

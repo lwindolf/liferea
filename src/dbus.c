@@ -18,6 +18,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif 
+
+#ifdef USE_DBUS	
+
 #include <dbus/dbus-glib.h>
 #include "dbus.h"
 #include "node.h"
@@ -75,3 +81,5 @@ LifereaDBus* liferea_dbus_new() {
 	
 	return obj;
 }
+
+#endif /* USE_DBUS */

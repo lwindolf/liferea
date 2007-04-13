@@ -28,12 +28,6 @@
 #  include <config.h>
 #endif
 
-#ifdef USE_DBUS
-#define DBUS_API_SUBJECT_TO_CHANGE
-#include <dbus/dbus.h>
-#include <dbus/dbus-glib.h>
-#endif
-
 #include <gtk/gtk.h>
 #include <locale.h> /* For setlocale */
 
@@ -130,7 +124,7 @@ int main(int argc, char *argv[]) {
 	gulong		debug_flags = 0;
 	const char 	*arg;
 	gint		i;
-	LifereaDBus	*dbus;
+	LifereaDBus	*dbus = NULL;
 	int mainwindowState = MAINWINDOW_SHOWN;
 #ifdef USE_SM
 	gchar *opt_session_arg = NULL;
