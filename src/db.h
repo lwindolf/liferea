@@ -100,7 +100,7 @@ void		db_itemset_foreach (const gchar *id, itemActionFunc callback);
  *
  * @param id		the id
  *
- * @returns new item structure, must be freed using item_free()
+ * @returns new item structure, must be free'd using item_unload()
  */
 itemPtr	db_item_load(gulong id);
 
@@ -117,6 +117,15 @@ void	db_item_update(itemPtr item);
  * @param item		the item
  */
 void	db_item_remove(gulong id);
+
+/**
+ * Returns a list of item ids with the given GUID. 
+ *
+ * @param guid	the item GUID
+ *
+ * @returns a list of item ids
+ */
+GSList * db_item_get_duplicates(const gchar *guid);
 
 /**
  * Explicitely start a transaction.

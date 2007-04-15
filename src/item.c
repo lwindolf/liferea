@@ -37,13 +37,6 @@
 #include "metadata.h"
 #include "support.h"
 
-/* Item duplicate handling */
-
-GSList * item_guid_list_get_duplicates_for_id(itemPtr item) {
-	// FIXME!
-	return NULL;
-}
-
 /* Item comments handling */
 
 static void item_comments_process_update_result(struct request *request) {
@@ -335,15 +328,27 @@ void item_to_xml(itemPtr item, xmlNodePtr parentNode) {
 	xmlNewTextChild(itemNode, NULL, "time", tmp);
 	g_free(tmp);
 
-	duplicatesNode = xmlNewChild(itemNode, NULL, "duplicates", NULL);
-	duplicates = item_guid_list_get_duplicates_for_id(item);
-	while(duplicates) {
-		nodePtr duplicateNode = (nodePtr)duplicates->data;
-		if(!strcmp(duplicateNode->id, item->nodeId)) {
-			xmlNewTextChild(duplicatesNode, NULL, "duplicateNode", 
-			                node_get_title(duplicateNode));
+	if (item->validGuid) 
+	{
+		GSList	*iter, *duplicates;
+		
+		duplicatesNode = xmlNewChild(itemNode, NULL, "duplicates", NULL);
+		duplicates = iter = db_item_get_duplicates(item->sourceId);
+		while(iter) 
+		{
+			gulong id = GPOINTER_TO_UINT (iter->data);
+			itemPtr duplicate = item_load (id);
+			if (duplicate)
+			{
+				nodePtr duplicateNode = node_from_id (duplicate->nodeId);
+				if (duplicateNode && (item->id != duplicate->id))
+					xmlNewTextChild(duplicatesNode, NULL, "duplicateNode", 
+					                node_get_title(duplicateNode));
+				item_unload (duplicate);
+			}
+			iter = g_slist_next (iter);
 		}
-		duplicates = g_slist_next(duplicates);
+		g_slist_free (duplicates);
 	}
 		
 	xmlNewTextChild(itemNode, NULL, "sourceId", item->nodeId);

@@ -79,13 +79,6 @@ void itemlist_load(struct node *node);
 void itemlist_unload(gboolean markRead);
 
 /**
- * Calls the given callback for each of the items in the item list.
- *
- * @param callback	the callback
- */
-void itemlist_foreach (itemActionFunc callback);
-
-/**
  * Changes the viewing mode property of the item list.
  * Do not use this method to change the viewing mode
  * of a displayed node!

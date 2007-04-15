@@ -36,6 +36,7 @@ static sqlite3_stmt *itemsetInsertStmt = NULL;
 static sqlite3_stmt *itemsetReadCountStmt = NULL;
 static sqlite3_stmt *itemsetItemCountStmt = NULL;
 static sqlite3_stmt *itemsetRemoveStmt = NULL;
+
 static sqlite3_stmt *itemsetRemoveAllStmt = NULL;
 static sqlite3_stmt *itemsetMarkAllReadStmt = NULL;
 static sqlite3_stmt *itemsetMarkAllUpdatedStmt = NULL;
@@ -46,6 +47,7 @@ static sqlite3_stmt *itemLoadStmt = NULL;
 static sqlite3_stmt *itemInsertStmt = NULL;
 static sqlite3_stmt *itemUpdateStmt = NULL;
 static sqlite3_stmt *itemRemoveStmt = NULL;
+static sqlite3_stmt *itemDuplicatesStmt = NULL;
 
 static sqlite3_stmt *metadataLoadStmt = NULL;
 static sqlite3_stmt *metadataInsertStmt = NULL;
@@ -199,6 +201,9 @@ void db_init(void) {
 	db_prepare_stmt(&itemRemoveStmt,
 	                "DELETE FROM items WHERE ROWID = ?");
 			
+	db_prepare_stmt(&itemDuplicatesStmt,
+	               "SELECT ROWID FROM items WHERE source_id = ?");
+			
 	db_prepare_stmt(&metadataLoadStmt,
 	                "SELECT key,value,nr FROM metadata WHERE item_id = ? ORDER BY nr");
 			
@@ -220,6 +225,7 @@ void db_deinit(void) {
 	sqlite3_finalize(itemsetReadCountStmt);
 	sqlite3_finalize(itemsetItemCountStmt);
 	sqlite3_finalize(itemsetRemoveStmt);
+
 	sqlite3_finalize(itemsetRemoveAllStmt);
 	sqlite3_finalize(itemsetMarkAllReadStmt);
 	sqlite3_finalize(itemsetMarkAllOldStmt);
@@ -230,6 +236,7 @@ void db_deinit(void) {
 	sqlite3_finalize(itemInsertStmt);
 	sqlite3_finalize(itemUpdateStmt);
 	sqlite3_finalize(itemRemoveStmt);
+	sqlite3_finalize(itemDuplicatesStmt);
 	
 	sqlite3_finalize(metadataLoadStmt);
 	sqlite3_finalize(metadataInsertStmt);
@@ -430,7 +437,7 @@ void db_item_update(itemPtr item) {
 	sqlite3_bind_text(itemUpdateStmt, 7,  item->source, -1, SQLITE_TRANSIENT);
 	sqlite3_bind_text(itemUpdateStmt, 8,  item->sourceId, -1, SQLITE_TRANSIENT);
 	sqlite3_bind_int (itemUpdateStmt, 9,  item->validGuid?1:0);
-	sqlite3_bind_text(itemUpdateStmt, 10,  item->real_source_url, -1, SQLITE_TRANSIENT);
+	sqlite3_bind_text(itemUpdateStmt, 10, item->real_source_url, -1, SQLITE_TRANSIENT);
 	sqlite3_bind_text(itemUpdateStmt, 11, item->real_source_title, -1, SQLITE_TRANSIENT);
 	sqlite3_bind_text(itemUpdateStmt, 12, item->description, -1, SQLITE_TRANSIENT);
 	sqlite3_bind_int (itemUpdateStmt, 13, item->time);
@@ -459,6 +466,30 @@ void db_item_remove(gulong id) {
 
 	if(SQLITE_DONE != res)
 		g_warning("item remove failed (error code=%d, %s)", res, sqlite3_errmsg(db));
+}
+
+GSList * 
+db_item_get_duplicates (const gchar *guid) 
+{
+	GSList	*duplicates = NULL;
+	gint	res;
+
+	debug_start_measurement (DEBUG_DB);
+
+	sqlite3_reset (itemDuplicatesStmt);
+	res = sqlite3_bind_text (itemDuplicatesStmt, 1, guid, -1, SQLITE_TRANSIENT);
+	if (SQLITE_OK != res)
+		g_error ("db_item_get_duplicates: sqlite bind failed (error code %d)!", res);
+
+	while (sqlite3_step (itemDuplicatesStmt) == SQLITE_ROW) 
+	{
+		gulong id = sqlite3_column_int(itemDuplicatesStmt, 0);
+		duplicates = g_slist_append (duplicates, GUINT_TO_POINTER (id));
+	}
+
+	debug_end_measurement (DEBUG_DB, "searching for duplicates");
+	
+	return duplicates;
 }
 
 void db_itemset_remove_all(const gchar *id) {

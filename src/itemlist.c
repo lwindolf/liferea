@@ -234,16 +234,6 @@ void itemlist_unload(gboolean markRead) {
 	currentNode = NULL;
 }
 
-void
-itemlist_foreach (itemActionFunc callback)
-{
-	itemSetPtr itemSet;
-	
-	itemSet = node_get_itemset (currentNode->id);
-	itemset_foreach (itemSet, callback);
-	itemset_free (itemSet);
-}
-
 /* next unread selection logic */
 
 static itemPtr itemlist_find_unread_item(void) {
@@ -359,7 +349,24 @@ void itemlist_set_read_status(itemPtr item, gboolean newStatus) {
 		feedlist_reset_new_item_count();
 
 		/* 5. duplicate state propagation */
-		// FIXME!
+		if (item->validGuid)
+		{
+			GSList *duplicates, *iter;
+			
+			duplicates = iter = db_item_get_duplicates (item->sourceId);
+			while (iter)
+			{
+				itemPtr duplicate = item_load (GPOINTER_TO_UINT (iter->data));
+				if (duplicate)
+				{
+					itemlist_set_read_status (duplicate, newStatus);
+					db_item_update (duplicate);
+					item_unload (duplicate);
+				}
+				iter = g_slist_next (iter);
+			}
+			g_slist_free (duplicates);
+		}
 		
 		debug_end_measurement (DEBUG_GUI, "set read status");
 	}

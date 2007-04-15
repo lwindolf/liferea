@@ -2,6 +2,7 @@
 
 	Version 1.3.2 (Unstable)
 
+	* Added duplicate detection support again.
 	* Fixes DBUS checks to allow compiling without DBUS.
 	* Fixes wrong availability state after updating feeds.
 

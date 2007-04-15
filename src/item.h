@@ -77,33 +77,6 @@ typedef struct item {
 
 } *itemPtr;
 
-/* Item Duplicate handling */
-
-/**
- * Adds the GUID of the given item to the GUID list.
- *
- * @param item		item with a valid GUID
- */
-void item_guid_list_add_id(itemPtr item);
-
-/**
- * Checks if there are items with the same GUID as the
- * given item. Must not be called after item_guid_list_add().
- *
- * @param item		item with a valid GUID
- *
- * @returns a list of all nodes that contains duplicates
- */
-GSList * item_guid_list_get_duplicates_for_id(itemPtr item);
-
-/**
- * Removes the GUID of the given item from the GUID list.
- * To be used upon item deletion.
- *
- * @param item		item with a valid GUID
- */
-void item_guid_list_remove_id(itemPtr item);
-
 /* Item comments handling */
 
 /**

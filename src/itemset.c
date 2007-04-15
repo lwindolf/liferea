@@ -181,13 +181,26 @@ static void itemset_merge_item(itemSetPtr itemSet, itemPtr item) {
 		debug3(DEBUG_UPDATE, "-> added \"%s\" (id=%d) to item set %p...", item_get_title(item), item->id, itemSet);
 		
 		/* step 3: duplicate detection, mark read if it is a duplicate */
-		// FIXME: still needed?
-//		if(item->validGuid) {
-//			if(item_guid_list_get_duplicates_for_id(item)) {
-				// FIXME do something better: item->readStatus = TRUE;
-//				debug2(DEBUG_UPDATE, "-> duplicate guid detected: %s -> %s\n", item->id, item->title);
-//			}
-//		}
+		if (item->validGuid) 
+		{
+			GSList	*iter, *duplicates;
+
+			duplicates = iter = db_item_get_duplicates (item->sourceId);
+			while (iter) 
+			{
+				debug1 (DEBUG_UPDATE, "-> duplicate guid exists: #%lu\n", GPOINTER_TO_UINT (iter->data));
+				iter = g_slist_next (iter);
+			}
+			
+			if (g_slist_length(duplicates) > 1)
+			{
+				item->readStatus = TRUE;	/* no unread counting... */
+				item->newStatus = FALSE;	/* no new counting and enclosure download... */
+				item->popupStatus = FALSE;	/* no notification... */
+			}
+			
+			g_slist_free(duplicates);
+		}
 
 		/* step 4: If a new item has enclosures and auto downloading
 		   is enabled we start the download. Enclosures added
