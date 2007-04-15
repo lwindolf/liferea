@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([liferea],[1.3.1],[liferea-devel@lists.sourceforge.net])
+AC_INIT([liferea],[1.3.2],[liferea-devel@lists.sourceforge.net])
 AC_CANONICAL_TARGET([])
 AC_CONFIG_SRCDIR([src/feedlist.c])
 

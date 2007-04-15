@@ -673,11 +673,11 @@ static void feed_process_update_result(struct request *request) {
 			itemlist_merge_itemset(itemSet);
 			itemset_free(itemSet);		
 			
+			node->available = TRUE;
+			
 			node_update_counters(node);
 			notification_node_has_new_items(node);
 			ui_node_update(node->id);
-
-			node->available = TRUE;
 		}
 				
 		g_free(old_title);

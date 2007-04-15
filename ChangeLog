@@ -1,4 +1,12 @@
-2007-04-13  Lars Lindner <lars.lindner@gmail.com>
+2007-04-??  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.3.2 (Unstable)
+
+	* Fixes DBUS checks to allow compiling without DBUS.
+	* Fixes wrong availability state after updating feeds.
+
+
+2007-04-13  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.3.1 (Unstable)
 
@@ -7,7 +15,7 @@
 	* Improved DBUS implementation (patch by mooonz)
 
 
-2007-02-01  Lars Lindner <lars.lindner@gmail.com>
+2007-02-01  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.3.0 (Unstable)
 

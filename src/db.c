@@ -51,42 +51,6 @@ static sqlite3_stmt *metadataLoadStmt = NULL;
 static sqlite3_stmt *metadataInsertStmt = NULL;
 static sqlite3_stmt *metadataRemoveStmt = NULL;
 
-static const gchar *schema_items = "\
-CREATE TABLE items ( \
-	title			TEXT, \
-	read			INTEGER, \
-	new			INTEGER, \
-	updated			INTEGER, \
-	popup			INTEGER, \
-	marked			INTEGER, \
-	source			TEXT, \
-	source_id		TEXT, \
-	valid_guid		INTEGER, \
-	real_source_url		TEXT, \
-	real_source_title	TEXT,	\
-	description		TEXT, \
-	date			INTEGER, \
-	comment_feed_id		INTEGER \
-);";
-
-static const gchar *schema_itemsets = "\
-CREATE TABLE itemsets ( \
-	item_id		INTEGER, \
-	node_id		TEXT \
-); \
-CREATE INDEX itemset_idx  ON itemsets (node_id); \
-CREATE INDEX itemset_idx2 ON itemsets (item_id);";
-
-static const gchar *schema_metadata = "\
-CREATE TABLE metadata ( \
-	item_id		INTEGER, \
-	nr              INTEGER, \
-	key             TEXT, \
-	value           TEXT, \
-        PRIMARY KEY (item_id, nr) \
-); \
-CREATE INDEX metadata_idx ON metadata (item_id);";
-
 static void db_prepare_stmt(sqlite3_stmt **stmt, gchar *sql) {
 	gint		res;	
 	const char	*left;
@@ -109,10 +73,42 @@ void db_init(void) {
 	g_free(filename);
 	
 	/* create tables */
-	
-	sqlite3_exec (db, schema_items,		NULL, NULL, NULL);
-	sqlite3_exec (db, schema_itemsets,	NULL, NULL, NULL);
-	sqlite3_exec (db, schema_metadata,	NULL, NULL, NULL);
+	sqlite3_exec (db,"CREATE TABLE items ( \
+				title			TEXT, \
+				read			INTEGER, \
+				new			INTEGER, \
+				updated			INTEGER, \
+				popup			INTEGER, \
+				marked			INTEGER, \
+				source			TEXT, \
+				source_id		TEXT, \
+				valid_guid		INTEGER, \
+				real_source_url		TEXT, \
+				real_source_title	TEXT,	\
+				description		TEXT, \
+				date			INTEGER, \
+				comment_feed_id		INTEGER \
+			);", NULL, NULL, NULL);
+			
+	sqlite3_exec (db, "CREATE INDEX items_idx ON items (source_id);", NULL, NULL, NULL);
+
+	sqlite3_exec (db, "CREATE TABLE itemsets ( \
+				item_id		INTEGER, \
+				node_id		TEXT \
+			);", NULL, NULL, NULL);
+			
+	sqlite3_exec (db, "CREATE INDEX itemset_idx  ON itemsets (node_id);", NULL, NULL, NULL);
+	sqlite3_exec (db, "CREATE INDEX itemset_idx2 ON itemsets (item_id);", NULL, NULL, NULL);
+
+	sqlite3_exec (db, "CREATE TABLE metadata ( \
+				item_id		INTEGER, \
+				nr              INTEGER, \
+				key             TEXT, \
+				value           TEXT, \
+        			PRIMARY KEY (item_id, nr) \
+			);", NULL, NULL, NULL);
+			
+	sqlite3_exec (db, "CREATE INDEX metadata_idx ON metadata (item_id);", NULL, NULL, NULL);
 	
 	/*res = sqlite3_exec (db, "PRAGMA synchronous=off", NULL, NULL, &err);
 	if (SQLITE_OK != res)
