@@ -5,6 +5,7 @@
 	* Added duplicate detection support again.
 	* Fixes DBUS checks to allow compiling without DBUS.
 	* Fixes wrong availability state after updating feeds.
+	* Fixes ordering in 2 pane mode view.
 
 
 2007-04-13  Lars Lindner  <lars.lindner@gmail.com>

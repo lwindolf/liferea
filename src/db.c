@@ -38,7 +38,6 @@ static sqlite3_stmt *itemsetItemCountStmt = NULL;
 static sqlite3_stmt *itemsetRemoveStmt = NULL;
 
 static sqlite3_stmt *itemsetRemoveAllStmt = NULL;
-static sqlite3_stmt *itemsetMarkAllReadStmt = NULL;
 static sqlite3_stmt *itemsetMarkAllUpdatedStmt = NULL;
 static sqlite3_stmt *itemsetMarkAllOldStmt = NULL;
 static sqlite3_stmt *itemsetMarkAllPopupStmt = NULL;
@@ -47,7 +46,10 @@ static sqlite3_stmt *itemLoadStmt = NULL;
 static sqlite3_stmt *itemInsertStmt = NULL;
 static sqlite3_stmt *itemUpdateStmt = NULL;
 static sqlite3_stmt *itemRemoveStmt = NULL;
-static sqlite3_stmt *itemDuplicatesStmt = NULL;
+static sqlite3_stmt *itemMarkReadStmt = NULL;
+
+static sqlite3_stmt *duplicatesFindStmt = NULL;
+static sqlite3_stmt *duplicatesMarkReadStmt = NULL;
 
 static sqlite3_stmt *metadataLoadStmt = NULL;
 static sqlite3_stmt *metadataInsertStmt = NULL;
@@ -140,10 +142,6 @@ void db_init(void) {
 			
 	db_prepare_stmt(&itemsetRemoveAllStmt,
 	                "DELETE FROM itemsets WHERE node_id = ?");
-			
-	db_prepare_stmt(&itemsetMarkAllReadStmt,
-	                "UPDATE items SET read = 1 WHERE ROWID IN "
-			"(SELECT item_id FROM itemsets WHERE node_id = ?)");
 
 	db_prepare_stmt(&itemsetMarkAllUpdatedStmt,
 	                "UPDATE items SET updated = 0 WHERE ROWID IN "
@@ -201,9 +199,15 @@ void db_init(void) {
 	db_prepare_stmt(&itemRemoveStmt,
 	                "DELETE FROM items WHERE ROWID = ?");
 			
-	db_prepare_stmt(&itemDuplicatesStmt,
-	               "SELECT ROWID FROM items WHERE source_id = ?");
-			
+	db_prepare_stmt(&itemMarkReadStmt,
+	                "UPDATE items SET read = 1 WHERE ROWID = ?");
+					
+	db_prepare_stmt(&duplicatesFindStmt,
+	                "SELECT ROWID FROM items WHERE source_id = ?");
+		       
+	db_prepare_stmt(&duplicatesMarkReadStmt,
+ 	                "UPDATE items SET read = 1 WHERE source_id = ?");
+						
 	db_prepare_stmt(&metadataLoadStmt,
 	                "SELECT key,value,nr FROM metadata WHERE item_id = ? ORDER BY nr");
 			
@@ -227,7 +231,6 @@ void db_deinit(void) {
 	sqlite3_finalize(itemsetRemoveStmt);
 
 	sqlite3_finalize(itemsetRemoveAllStmt);
-	sqlite3_finalize(itemsetMarkAllReadStmt);
 	sqlite3_finalize(itemsetMarkAllOldStmt);
 	sqlite3_finalize(itemsetMarkAllUpdatedStmt);
 	sqlite3_finalize(itemsetMarkAllPopupStmt);
@@ -236,7 +239,10 @@ void db_deinit(void) {
 	sqlite3_finalize(itemInsertStmt);
 	sqlite3_finalize(itemUpdateStmt);
 	sqlite3_finalize(itemRemoveStmt);
-	sqlite3_finalize(itemDuplicatesStmt);
+	sqlite3_finalize(itemMarkReadStmt);
+	
+	sqlite3_finalize(duplicatesFindStmt);
+	sqlite3_finalize(duplicatesMarkReadStmt);
 	
 	sqlite3_finalize(metadataLoadStmt);
 	sqlite3_finalize(metadataInsertStmt);
@@ -476,14 +482,14 @@ db_item_get_duplicates (const gchar *guid)
 
 	debug_start_measurement (DEBUG_DB);
 
-	sqlite3_reset (itemDuplicatesStmt);
-	res = sqlite3_bind_text (itemDuplicatesStmt, 1, guid, -1, SQLITE_TRANSIENT);
+	sqlite3_reset (duplicatesFindStmt);
+	res = sqlite3_bind_text (duplicatesFindStmt, 1, guid, -1, SQLITE_TRANSIENT);
 	if (SQLITE_OK != res)
 		g_error ("db_item_get_duplicates: sqlite bind failed (error code %d)!", res);
 
-	while (sqlite3_step (itemDuplicatesStmt) == SQLITE_ROW) 
+	while (sqlite3_step (duplicatesFindStmt) == SQLITE_ROW) 
 	{
-		gulong id = sqlite3_column_int(itemDuplicatesStmt, 0);
+		gulong id = sqlite3_column_int(duplicatesFindStmt, 0);
 		duplicates = g_slist_append (duplicates, GUINT_TO_POINTER (id));
 	}
 
@@ -505,17 +511,33 @@ void db_itemset_remove_all(const gchar *id) {
 		g_warning("removing all items failed (error code=%d, %s)", res, sqlite3_errmsg(db));
 }
 
-void db_itemset_mark_all_read(const gchar *id) {
+void
+db_item_mark_read (itemPtr item) 
+{
 	gint	res;
 	
-	debug1(DEBUG_DB, "marking all items read for item set with %s", id);
-		
-	sqlite3_reset(itemsetMarkAllReadStmt);
-	sqlite3_bind_text(itemsetMarkAllReadStmt, 1, id, -1, SQLITE_TRANSIENT);
-	res = sqlite3_step(itemsetMarkAllReadStmt);
+	if (!item->validGuid)
+	{
+		debug1 (DEBUG_DB, "marking item with id=%lu read", item->id);
+			
+		sqlite3_reset (itemMarkReadStmt);
+		sqlite3_bind_int (itemMarkReadStmt, 1, item->id);
+		res = sqlite3_step (itemMarkReadStmt);
 
-	if(SQLITE_DONE != res)
-		g_warning("marking all items read failed (error code=%d, %s)", res, sqlite3_errmsg(db));
+		if (SQLITE_DONE != res)
+			g_warning ("marking item read failed (error code=%d, %s)", res, sqlite3_errmsg (db));
+	}
+	else
+	{
+		debug1 (DEBUG_DB, "marking all duplicates with source id=%s read", item->sourceId);
+		
+		sqlite3_reset (duplicatesMarkReadStmt);
+		sqlite3_bind_text (duplicatesMarkReadStmt, 1, item->sourceId, -1, SQLITE_TRANSIENT);
+		res = sqlite3_step (duplicatesMarkReadStmt);
+
+		if (SQLITE_DONE != res)
+			g_warning ("marking duplicates read failed (error code=%d, %s)", res, sqlite3_errmsg (db));
+	}
 }
 
 void db_itemset_mark_all_updated(const gchar *id) {

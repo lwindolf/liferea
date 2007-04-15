@@ -478,15 +478,29 @@ void itemlist_update_item(itemPtr item) {
 	itemview_update_item(item);
 }
 
-void itemlist_mark_all_read(const gchar *nodeId) {
-
-	db_itemset_mark_all_read(nodeId);
+void
+itemlist_mark_all_read (const gchar *nodeId) 
+{
+	nodePtr node = node_from_id (nodeId);
+	itemSetPtr itemSet = node_get_itemset (node);
+	if (!itemSet)
+		return;
+		
+	GList *iter = itemSet->ids;
+	while (iter)
+	{
+		gulong id = GPOINTER_TO_UINT (iter->data);
+		itemPtr item = item_load (id);
+		db_item_mark_read (item);
+		item_unload (item);
+		iter = g_list_next (iter);
+	}
 	
 	/* GUI updating */	
-	itemview_update_all_items();
-	itemview_update();
-	node_update_counters(node_from_id(nodeId));
-	ui_node_update(nodeId);
+	itemview_update_all_items ();
+	itemview_update ();
+	node_update_counters (node_from_id (nodeId));
+	ui_node_update (nodeId);
 }
 
 void itemlist_mark_all_old(const gchar *nodeId) {

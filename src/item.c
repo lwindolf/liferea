@@ -284,7 +284,6 @@ const gchar * item_get_base_url(itemPtr item) {
 
 void item_to_xml(itemPtr item, xmlNodePtr parentNode) {
 	xmlNodePtr	duplicatesNode;		
-	GSList		*duplicates;
 	xmlNodePtr	itemNode;
 	gchar		*tmp;
 	

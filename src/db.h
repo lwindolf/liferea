@@ -62,7 +62,6 @@ void		db_itemset_remove_all(const gchar *id);
  *
  * @param id	the node id
  */
-void		db_itemset_mark_all_read(const gchar *id);
 void		db_itemset_mark_all_updated(const gchar *id);
 void		db_itemset_mark_all_old(const gchar *id);
 void		db_itemset_mark_all_popup(const gchar *id);
@@ -117,6 +116,14 @@ void	db_item_update(itemPtr item);
  * @param item		the item
  */
 void	db_item_remove(gulong id);
+
+/**
+ * Marks a single item as read. If the item has a valid GUID
+ * it will mark all duplicates read.
+ *
+ * @param item		the item
+ */
+void	db_item_mark_read (itemPtr item);
 
 /**
  * Returns a list of item ids with the given GUID. 
