@@ -11,6 +11,8 @@ src/bacon-message-connection.c
 src/bacon-message-connection.h
 src/callbacks.c
 src/callbacks.h
+src/comments.c
+src/comments.h
 src/common.c
 src/common.h
 src/conf.c
@@ -56,6 +58,8 @@ src/rule.c
 src/rule.h
 src/social.c
 src/social.h
+src/subscription.c
+src/subscription.h
 src/support.c
 src/support.h
 src/update.c
