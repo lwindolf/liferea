@@ -45,7 +45,6 @@ static sqlite3_stmt *itemsetMarkAllPopupStmt = NULL;
 static sqlite3_stmt *itemLoadStmt = NULL;
 static sqlite3_stmt *itemInsertStmt = NULL;
 static sqlite3_stmt *itemUpdateStmt = NULL;
-static sqlite3_stmt *itemRemoveStmt = NULL;
 static sqlite3_stmt *itemMarkReadStmt = NULL;
 
 static sqlite3_stmt *duplicatesFindStmt = NULL;
@@ -113,6 +112,13 @@ void db_init(void) {
 			);", NULL, NULL, NULL);
 			
 	sqlite3_exec (db, "CREATE INDEX metadata_idx ON metadata (item_id);", NULL, NULL, NULL);
+	
+	/* Set up removal triggers */
+	
+	sqlite3_exec (db, "CREATE TRIGGER IF NOT EXISTS item_removal DELETE ON itemsets \
+	                   BEGIN \
+			      DELETE FROM items WHERE ROWID = old.item_id; \
+	                   END;", NULL, NULL, NULL);
 	
 	/*res = sqlite3_exec (db, "PRAGMA synchronous=off", NULL, NULL, &err);
 	if (SQLITE_OK != res)
@@ -195,9 +201,6 @@ void db_init(void) {
 		       "comment_feed_id,"
 	               "ROWID"
 	               ") values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-		       
-	db_prepare_stmt(&itemRemoveStmt,
-	                "DELETE FROM items WHERE ROWID = ?");
 			
 	db_prepare_stmt(&itemMarkReadStmt,
 	                "UPDATE items SET read = 1 WHERE ROWID = ?");
@@ -238,7 +241,6 @@ void db_deinit(void) {
 	sqlite3_finalize(itemLoadStmt);
 	sqlite3_finalize(itemInsertStmt);
 	sqlite3_finalize(itemUpdateStmt);
-	sqlite3_finalize(itemRemoveStmt);
 	sqlite3_finalize(itemMarkReadStmt);
 	
 	sqlite3_finalize(duplicatesFindStmt);
