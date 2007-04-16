@@ -31,136 +31,17 @@
 
 #include "db.h"
 #include "debug.h"
+#include "comments.h"
 #include "common.h"
 #include "item.h"
 #include "itemview.h"
 #include "metadata.h"
 #include "support.h"
 
-/* Item comments handling */
-
-static void item_comments_process_update_result(struct request *request) {
-	feedParserCtxtPtr	ctxt;
-	itemPtr			item = (itemPtr)request->user_data;
-	nodePtr			node;
-
-	debug_enter("item_comments_process_update_result");
-	
-	/* How to check this? -> g_assert(0 < item->sourceNode->loaded); */
-
-	/* note this is to update the feed URL on permanent redirects */
-	if(!strcmp(request->source, metadata_list_get(item->metadata, "commentFeedUri"))) {
-	
-		debug2(DEBUG_UPDATE, "updating comment feed URL from \"%s\" to \"%s\"", 
-		                     metadata_list_get(item->metadata, "commentFeedUri"), 
-				     request->source);
-				     
-		metadata_list_set(&(item->metadata), "commentFeedUri", request->source);
-	}
-	
-	if(401 == request->httpstatus) { /* unauthorized */
-		item->commentsError = g_strdup("");
-	} else if(410 == request->httpstatus) { /* gone */
-		// FIXME: how to prevent further updates?
-	} else if(304 == request->httpstatus) {
-		debug1(DEBUG_UPDATE, "comment feed \"%s\" did not change", request->source);
-	} else if(request->data) {
-		debug1(DEBUG_UPDATE, "received update result for comment feed \"%s\"", request->source);
-
-		/* parse the new downloaded feed into feed and itemSet */
-		node = node_new();
-		ctxt = feed_create_parser_ctxt();
-		ctxt->subscription = subscription_new(request->source, NULL, NULL);
-		ctxt->feed = feed_new();
-		node_set_type(node, feed_get_node_type());
-		node_set_data(node, ctxt->feed);		
-		node_set_subscription(node, ctxt->subscription);
-		ctxt->data = request->data;
-		ctxt->dataLength = request->size;
-		feed_parse(ctxt);
-
-		if(ctxt->failed) {
-			debug0(DEBUG_UPDATE, "parsing comment feed failed!");
-		} else {
-			itemSetPtr comments;
-			
-			debug1(DEBUG_UPDATE, "parsing comment feed successful (%d comments downloaded)", g_list_length(ctxt->items));
-			
-			if(!item->commentFeedId)
-				item->commentFeedId = node_new_id();
-			
-			comments = db_itemset_load(item->commentFeedId);
-			itemset_merge_items(comments, ctxt->items);
-			itemset_free(comments);
-		}
-				
-		node_free(ctxt->subscription->node);
-		subscription_free(ctxt->subscription);
-		feed_free_parser_ctxt(ctxt);
-	}
-	
-	/* update error message */
-	g_free(item->commentsError);
-	item->commentsError = NULL;
-	
-	if(!(request->httpstatus >= 200) && (request->httpstatus < 400)) {
-		const gchar * tmp;
-		
-		/* first specific codes (guarantees tmp to be set) */
-		tmp = common_http_error_to_str(request->httpstatus);
-
-		/* second netio errors */
-		if(common_netio_error_to_str(request->returncode))
-			tmp = common_netio_error_to_str(request->returncode);
-			
-		item->commentsError = g_strdup(tmp);
-	}	
-
-	/* clean up request */
-	g_free(request->options);
-	item->updateRequest = NULL; 
-
-	/* rerender item */
-	itemview_update_item(item); 
-	itemview_update();
-	
-	db_item_update(item);
-	
-	debug_exit("item_comments_process_update_result");
-}
-
-void item_comments_refresh(itemPtr item) { 
-	struct request	*request;
-	const gchar	*url;
-	
-	url = metadata_list_get(item->metadata, "commentFeedUri");
-	
-	if(url) {
-		debug2(DEBUG_UPDATE, "Updating comments for item \"%s\" (comment URL: %s)", item->title, url);
-
-		request = update_request_new(item);
-		request->user_data = item;
-		request->options = g_new0(struct updateOptions, 1);
-		request->callback = item_comments_process_update_result;
-		request->source = g_strdup(url);
-		request->priority = 1;
-		item->updateRequest = request;
-		update_execute_request(request);
-
-		itemview_update_item(item); 
-		itemview_update();
-	}
-}
-
-/* Item handling */
-
 itemPtr item_new(void) {
 	itemPtr		item;
 	
 	item = g_new0(struct item, 1);
-	
-	item->updateState = update_state_new();
-	
 	item->newStatus = TRUE;
 	item->popupStatus = TRUE;
 	
@@ -253,26 +134,22 @@ const gchar *	item_get_source(itemPtr item) { return item->source; }
 const gchar *	item_get_real_source_url(itemPtr item) { return item->real_source_url; }
 const gchar *	item_get_real_source_title(itemPtr item) { return item->real_source_title; }
 
-void item_unload(itemPtr item) {
+void
+item_unload (itemPtr item) 
+{
 
-	g_free(item->title);
-	g_free(item->source);
-	g_free(item->sourceId);
-	g_free(item->real_source_url);
-	g_free(item->real_source_title);
-	g_free(item->description);
-	g_assert(NULL == item->tmpdata);	/* should be free after rendering */
-	metadata_list_free(item->metadata);
+	g_free (item->title);
+	g_free (item->source);
+	g_free (item->sourceId);
+	g_free (item->real_source_url);
+	g_free (item->real_source_title);
+	g_free (item->description);
+	g_free (item->commentFeedId);
 	
-	if(item->updateRequest)
-		update_cancel_requests((gpointer)item);
-	
-	if(item->updateState)
-		update_state_free(item->updateState);
-		
-	g_free(item->commentFeedId);
-	g_free(item->commentsError);
-	g_free(item);
+	g_assert (NULL == item->tmpdata);	/* should be free after rendering */
+	metadata_list_free (item->metadata);
+
+	g_free (item);
 }
 
 const gchar * item_get_base_url(itemPtr item) {
@@ -357,28 +234,7 @@ void item_to_xml(itemPtr item, xmlNodePtr parentNode) {
 	g_free(tmp);
 
 	metadata_add_xml_nodes(item->metadata, itemNode);
-		
-	if(item->commentFeedId) {
-		itemSetPtr	comments = db_itemset_load(item->commentFeedId);
-		xmlNodePtr	commentsNode = xmlNewChild(itemNode, NULL, "comments", NULL);
-		GList		*iter = comments->ids;
-
-// FIXME: move update states to DB
-//		update_state_export(commentsNode, item->updateState);
-
- 		while(iter) {
-			itemPtr comment = item_load(GPOINTER_TO_UINT(iter->data));
-			item_to_xml(comment, commentsNode);
-			item_unload(comment);
-			iter = g_list_next(iter);
-		}
-		
-		xmlNewTextChild(commentsNode, NULL, "updateState", 
-		                (item->updateRequest)?"updating":"ok");
-		
-		if(item->commentsError)
-			xmlNewTextChild(commentsNode, NULL, "updateError", item->commentsError);
-			
-		itemset_free(comments);
-	}
+	
+	if (item->commentFeedId)
+		comments_to_xml (itemNode, item->commentFeedId);
 }

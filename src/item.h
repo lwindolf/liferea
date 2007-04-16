@@ -64,29 +64,13 @@ typedef struct item {
 	GSList		*metadata;		/**< Metadata of this item */
 	GHashTable	*tmpdata;		/**< Temporary data hash used during stateful parsing */
 	time_t		time;			/**< Last modified date of the headline */
-	
-	struct request	*updateRequest;		/**< update request structure used when downloading comments */
-	struct updateState *updateState;	/**< update states (etag, last modified, cookies, last polling times...) used when downloading comments */
 
-	/* Item Comments */	
 	gchar		*commentFeedId;		/**< Id of the items comments feed (or NULL)*/
-	gchar		*commentsError;		/**< Description of error if comments download failed (or NULL)*/
-	
+
 	gchar		*nodeId;		/**< Node id the containing node */
 	gulong 		sourceNr;		/**< Either equal to nr or the number of the item this one is a copy of */
 
 } *itemPtr;
-
-/* Item comments handling */
-
-/**
- * Triggers immediate comments retrieval (or update) for the given item.
- *
- * @param item		the item
- */
-void item_comments_refresh(itemPtr item);
-
-/* Item handling */
 
 /**
  * Allocates a new item structure.

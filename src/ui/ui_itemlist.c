@@ -263,8 +263,8 @@ ui_itemlist_update_item_foreach (gpointer key,
 {
 	itemPtr 	item;
 	
-	item = item_load (key /* id */);
-	if (!item) 
+	item = item_load (GPOINTER_TO_UINT (key) /* id */);
+	if (!item)
 		return;
 
 	ui_itemlist_update_iter (value /* iter */, item);

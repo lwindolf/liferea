@@ -25,6 +25,7 @@ liferea_bin_SOURCES = \
 	bacon-message-connection.c \
 	bacon-message-connection.h \
 	callbacks.c callbacks.h \
+	comments.c comments.h \
 	common.c common.h \
 	conf.c conf.h \
 	db.c db.h \

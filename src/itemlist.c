@@ -24,6 +24,7 @@
 
 #include <string.h>
  
+#include "comments.h"
 #include "conf.h"
 #include "db.h"
 #include "debug.h"
@@ -425,9 +426,13 @@ void itemlist_remove_item(itemPtr item) {
 	
 	itemview_remove_item(item);
 	itemview_update();
+
+	/* remove item and comment item childs from DB */
+	if (item->commentFeedId)
+		comments_remove (item->commentFeedId);
+	db_item_remove (item->id);
 	
-	db_item_remove(item->id);
-	
+	/* update feed list */
 	node_update_counters(node_from_id(item->nodeId));
 	ui_node_update(item->nodeId);
 	
@@ -464,6 +469,7 @@ void itemlist_remove_all_items(nodePtr node) {
 
 	itemview_clear();
 	db_itemset_remove_all(node->id);
+	// FIXME: leaking comments!
 	itemview_update();
 	ui_node_update(node->id);
 }
@@ -539,7 +545,7 @@ itemlist_selection_changed (itemPtr item) {
 		/* set read and unset update status when selecting */
 		if (item)
 		{
-			item_comments_refresh (item);
+			comments_refresh (item);
 
 			itemlist_set_read_status (item, TRUE);
 			itemlist_set_update_status (item, FALSE);

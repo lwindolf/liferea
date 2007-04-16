@@ -27,6 +27,7 @@
 #include <string.h>
 #include <glib.h>
 #include <gmodule.h>
+#include "comments.h"
 #include "common.h"
 #include "conf.h"
 #include "callbacks.h"
@@ -180,7 +181,7 @@ static struct internalUriType internalUriTypes[] = {
 	/* { "tag",		FIXME }, */
 	{ "flag",		itemlist_toggle_flag },
 	{ "bookmark",		ui_itemlist_add_item_bookmark },
-	{ "refresh-comments",	item_comments_refresh },
+	{ "refresh-comments",	comments_refresh },
 	{ NULL,			NULL }
 };
 
