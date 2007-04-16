@@ -115,7 +115,7 @@ void db_init(void) {
 	
 	/* Set up removal triggers */
 	
-	sqlite3_exec (db, "CREATE TRIGGER IF NOT EXISTS item_removal DELETE ON itemsets \
+	sqlite3_exec (db, "CREATE TRIGGER item_removal DELETE ON itemsets \
 	                   BEGIN \
 			      DELETE FROM items WHERE ROWID = old.item_id; \
 	                   END;", NULL, NULL, NULL);
