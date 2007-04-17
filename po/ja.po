@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea trunk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-02 22:41+0200\n"
+"POT-Creation-Date: 2007-04-08 23:34+0200\n"
 "PO-Revision-Date: 2007-02-10 10:28+0900\n"
 "Last-Translator: Takeshi AIHANA <takeshi.aihana@gmail.com>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -2347,6 +2347,11 @@ msgstr "場所(_L)"
 #: ../src/fl_sources/opml_source-ui.c:74
 msgid "_Select File"
 msgstr "選択(_S)..."
+
+#: ../src/fl_sources/opml_source-cb.c:77
+#, fuzzy
+msgid "Choose OPML File"
+msgstr "ファイルの選択"
 
 #: ../src/fl_sources/node_source.c:207
 msgid "No feed list source types found!"

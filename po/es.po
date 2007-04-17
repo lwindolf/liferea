@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-02 22:41+0200\n"
+"POT-Creation-Date: 2007-04-08 23:34+0200\n"
 "PO-Revision-Date: 2006-12-05 21:29+0100\n"
 "Last-Translator: Lars Lindner <lars.lindner@gmx.net>\n"
 "Language-Team: Spanish <en@li.org>\n"
@@ -2411,6 +2411,11 @@ msgstr "_Location"
 #: ../src/fl_sources/opml_source-ui.c:74
 msgid "_Select File"
 msgstr "_Select File"
+
+#: ../src/fl_sources/opml_source-cb.c:77
+#, fuzzy
+msgid "Choose OPML File"
+msgstr "Elige Archivo"
 
 #: ../src/fl_sources/node_source.c:207
 msgid "No feed list source types found!"

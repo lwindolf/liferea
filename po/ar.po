@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-02 22:41+0200\n"
+"POT-Creation-Date: 2007-04-08 23:34+0200\n"
 "PO-Revision-Date: 2007-03-24 12:43+0200\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
@@ -2332,6 +2332,11 @@ msgstr "_موقع"
 #: ../src/fl_sources/opml_source-ui.c:74
 msgid "_Select File"
 msgstr "ا_نتقي ملف"
+
+#: ../src/fl_sources/opml_source-cb.c:77
+#, fuzzy
+msgid "Choose OPML File"
+msgstr "اختر ملف"
 
 #: ../src/fl_sources/node_source.c:207
 msgid "No feed list source types found!"
