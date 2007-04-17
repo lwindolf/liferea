@@ -118,7 +118,7 @@ static void
 itemlist_merge_item (itemPtr item) 
 {
 
-	if (!(itemlist_filter && !rule_check_item(itemlist_filter, item))) 
+	if (!(itemlist_filter && FALSE)) // FIXME: !rule_check_item(itemlist_filter, item))) 
 	{
 		hasEnclosures |= item->hasEnclosure;
 		itemview_add_item (item);
@@ -482,7 +482,8 @@ void itemlist_remove_all_items(nodePtr node) {
 
 void itemlist_update_item(itemPtr item) {
 
-	if(itemlist_filter && !rule_check_item(itemlist_filter, item)) {
+	if(itemlist_filter && FALSE) // FIXME: !rule_check_item(itemlist_filter, item)) 
+	{
 		itemlist_hide_item(item);
 		return;
 	}

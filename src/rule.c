@@ -1,7 +1,7 @@
 /**
  * @file rule.c feed/vfolder rule handling
  *
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,149 +23,149 @@
 #endif
 
 #include <string.h> /* For strstr() */
-#include "support.h"
+#include "common.h"
+#include "debug.h"
 #include "feed.h"
 #include "item.h"
-#include "rule.h"
-#include "debug.h"
 #include "metadata.h"
+#include "rule.h"
+#include "support.h"
 
 #define ITEM_MATCH_RULE_ID		"exact"
 #define ITEM_TITLE_MATCH_RULE_ID	"exact_title"
 #define ITEM_DESC_MATCH_RULE_ID		"exact_desc"
    
-/* rule function interface, each function requires a item
-   structure which it matches somehow against its values and
-   returns TRUE if the rule was fulfilled and FALSE if not.*/
-typedef gboolean (*ruleCheckFuncPtr)	(rulePtr rp, itemPtr ip);
+/** function type used to query SQL WHERE clause condition for rules */
+typedef gchar * (*ruleConditionFunc)	(rulePtr rule);
    
 /* the rule function list is used to create popup menues in ui_vfolder.c */
 struct ruleInfo *ruleFunctions = NULL;
 gint nrOfRuleFunctions = 0;
 
-rulePtr rule_new(struct vfolder *vp, const gchar *ruleId, const gchar *value, gboolean additive) {
-	ruleInfoPtr	ri;
-	rulePtr		rp;
+rulePtr
+rule_new (struct vfolder *vfolder,
+          const gchar *ruleId,
+          const gchar *value,
+          gboolean additive) 
+{
+	ruleInfoPtr	ruleInfo;
+	rulePtr		rule;
 	int		i;
 	
-	for(i = 0, ri = ruleFunctions; i < nrOfRuleFunctions; i++, ri++) {
-		if(0 == strcmp(ri->ruleId, ruleId)) {
-			rp = (rulePtr)g_new0(struct rule, 1);
-			rp->ruleInfo = ri;
-			rp->additive = additive;
-			rp->vp = vp;
-			
-			/* if it is a text matching rule make the text
-			   matching value case insensitive */
-			if((0 == strcmp(ruleId, ITEM_MATCH_RULE_ID)) ||
-			   (0 == strcmp(ruleId, ITEM_TITLE_MATCH_RULE_ID)) ||
-			   (0 == strcmp(ruleId, ITEM_DESC_MATCH_RULE_ID))) {
-				rp->value = g_utf8_casefold(value, -1);
-			} else {
-				rp->value = g_strdup(value);
-			}
-			
-			return rp;
+	for (i = 0, ruleInfo = ruleFunctions; i < nrOfRuleFunctions; i++, ruleInfo++) 
+	{
+		if (0 == strcmp (ruleInfo->ruleId, ruleId)) 
+		{
+			rule = (rulePtr) g_new0 (struct rule, 1);
+			rule->ruleInfo = ruleInfo;
+			rule->additive = additive;
+			rule->vp = vfolder;		
+			rule->value = g_strdup (value);	
+			return rule;
 		}
 	}	
 	return NULL;
 }
 
-gboolean rule_check_item(rulePtr rp, itemPtr ip) {
-	g_assert(ip != NULL);
-	
-	return (*((ruleCheckFuncPtr)rp->ruleInfo->ruleFunc))(rp, ip);
-}
-
-void rule_free(rulePtr rp) {
-
-	g_free(rp->value);
-	g_free(rp);
+void 
+rule_free (rulePtr rule)
+{
+	g_free (rule->value);
+	g_free (rule);
 }
 
 /* -------------------------------------------------------------------- */
-/* rule checking implementations					*/
+/* rule conditions							*/
 /* -------------------------------------------------------------------- */
 
-static gboolean rule_feed_title_match(rulePtr rule, itemPtr item) {
-	gboolean	result = FALSE;
-	gchar 		*title;
-	
-	if(NULL != (title = (gchar *)node_get_title(node_from_id(item->nodeId)))) {
-		title = g_utf8_casefold(title, -1);
-		if(NULL != strstr(title, rule->value))
-			result = TRUE;
-		g_free(title);
-	}
-	
-	return result;
+static gchar *
+rule_feed_title_match (rulePtr rule) 
+{
+	return g_strdup ("");	// FIXME: cannot be realized without having feeds in DB
 }
 
-static gboolean rule_item_title_match(rulePtr rule, itemPtr item) {
-	gboolean	result = FALSE;
-	gchar 		*title;
+static gchar *
+rule_item_title_match (rulePtr rule) 
+{
+	gchar	*result, *pattern;
 	
-	if(NULL != (title = (gchar *)item_get_title(item))) {
-		title = g_utf8_casefold(title, -1);
-		if(NULL != strstr(title, rule->value))
-			result = TRUE;
-		g_free(title);
-	}
+	pattern = common_strreplace (g_strdup (rule->value), "'", "");
+	result = g_strdup_printf ("item.title LIKE '%s'", pattern);
+	g_free (pattern);
 	
 	return result;
 }
 
-static gboolean rule_item_description_match(rulePtr rule, itemPtr item) {
-	gboolean	result = FALSE;
-	gchar 		*desc;
-
-	if(NULL != (desc = (gchar *)item_get_description(item))) {
-		desc = g_utf8_casefold(desc, -1);
-		if(NULL != strstr(desc, rule->value))
-			result = TRUE;
-		g_free(desc);
-	}
+static gchar *
+rule_item_description_match (rulePtr rule) 
+{
+	gchar	*result, *pattern;
+	
+	pattern = common_strreplace (g_strdup (rule->value), "'", "");
+	result = g_strdup_printf ("item.description LIKE '%s'", pattern);
+	g_free (pattern);
 	
 	return result;
 }
 
-static gboolean rule_item_match(rulePtr rule, itemPtr item) {
-
-	if(rule_item_title_match(rule, item))
-		return TRUE;
-		
-	if(rule_item_description_match(rule, item))
-		return TRUE;
-
-	return FALSE;
+static gchar *
+rule_item_match (rulePtr rule) 
+{
+	gchar	*result, *pattern;
+	
+	pattern = common_strreplace (g_strdup (rule->value), "'", "");
+	result = g_strdup_printf ("(item.title LIKE '%s' item.description LIKE '%s')", pattern, pattern);
+	g_free (pattern);
+	
+	return result;
 }
 
-static gboolean rule_item_is_unread(rulePtr rule, itemPtr item) {
-
-	return !(item->readStatus);
+static gchar *
+rule_item_is_unread (rulePtr rule) 
+{
+	return g_strdup ("items.read = 0");
 }
 
-static gboolean rule_item_is_flagged(rulePtr rule, itemPtr item) {
-
-	return item->flagStatus;
+static gchar *
+rule_item_is_flagged (rulePtr rule) 
+{
+	return g_strdup ("items.marked = 1");
 }
 
-static gboolean rule_item_was_updated(rulePtr rule, itemPtr item) {
-
-	return item->updateStatus;
+static gchar *
+rule_item_was_updated (rulePtr rule)
+{
+	return g_strdup ("items.updated = 1");
 }
 
-static gboolean rule_item_has_enclosure(rulePtr rule, itemPtr item) {
+static gchar *
+rule_item_has_enclosure (rulePtr rule) 
+{
+	return g_strdup ("metadata.key = 'enclosure'");
+}
 
-	return item->hasEnclosure;
+gchar *
+rules_to_sql_condition (GSList *rules)
+{
+	// FIXME
+	return NULL;
 }
 
 /* rule initialization */
 
-static void rule_add(ruleCheckFuncPtr func, gchar *ruleId, gchar *title, gchar *positive, gchar *negative, gboolean needsParameter) {
+static void
+rule_add (ruleConditionFunc func, 
+          gchar *ruleId, 
+          gchar *title,
+          gchar *positive,
+          gchar *negative,
+          gboolean needsParameter,	/* has parameters */
+	  gboolean itemMatch, 		/* needs items table */
+	  gboolean metadataMatch)	/* needs metadata table */ 
+{
 
-	ruleFunctions = (ruleInfoPtr)g_realloc(ruleFunctions, sizeof(struct ruleInfo)*(nrOfRuleFunctions + 1));
-	if(NULL == ruleFunctions)
+	ruleFunctions = (ruleInfoPtr) g_realloc (ruleFunctions, sizeof (struct ruleInfo) * (nrOfRuleFunctions + 1));
+	if (NULL == ruleFunctions)
 		g_error("could not allocate memory!");
 	ruleFunctions[nrOfRuleFunctions].ruleFunc = func;
 	ruleFunctions[nrOfRuleFunctions].ruleId = ruleId;
@@ -173,21 +173,24 @@ static void rule_add(ruleCheckFuncPtr func, gchar *ruleId, gchar *title, gchar *
 	ruleFunctions[nrOfRuleFunctions].positive = positive;
 	ruleFunctions[nrOfRuleFunctions].negative = negative;
 	ruleFunctions[nrOfRuleFunctions].needsParameter = needsParameter;
+	ruleFunctions[nrOfRuleFunctions].itemMatch = itemMatch;
+	ruleFunctions[nrOfRuleFunctions].metadataMatch = metadataMatch;
 	nrOfRuleFunctions++;
 }
 
-void rule_init(void) {
+void
+rule_init (void) 
+{
+	debug_enter ("rule_init");
 
-	debug_enter("rule_init");
+	rule_add (rule_item_match,		ITEM_MATCH_RULE_ID,		_("Item"),		_("does contain"),	_("does not contain"),	TRUE, TRUE, FALSE);
+	rule_add (rule_item_title_match,	ITEM_TITLE_MATCH_RULE_ID,	_("Item title"),	_("does match"),	_("does not match"),	TRUE, TRUE, FALSE);
+	rule_add (rule_item_description_match,	ITEM_DESC_MATCH_RULE_ID,	_("Item body"),		_("does match"),	_("does not match"),	TRUE, TRUE, FALSE);
+	rule_add (rule_feed_title_match,	"feed_title",			_("Feed title"),	_("does match"),	_("does not match"),	TRUE, TRUE, FALSE);
+	rule_add (rule_item_is_unread,		"unread",			_("Read status"),	_("is unread"),		_("is read"),		FALSE, TRUE, FALSE);
+	rule_add (rule_item_is_flagged,		"flagged",			_("Flag status"),	_("is flagged"),	_("is unflagged"),	FALSE, TRUE, FALSE);
+	rule_add (rule_item_was_updated,	"updated",			_("Update status"),	_("was updated"),	_("was not updated"),	FALSE, TRUE, FALSE);
+	rule_add (rule_item_has_enclosure,	"enclosure",			_("Podcast"),		_("included"),		_("not included"),	FALSE, FALSE, TRUE);
 
-	rule_add(rule_item_match,		ITEM_MATCH_RULE_ID,		_("Item"),		_("does contain"),	_("does not contain"),	TRUE);
-	rule_add(rule_item_title_match,		ITEM_TITLE_MATCH_RULE_ID,	_("Item title"),	_("does match"),	_("does not match"),	TRUE);
-	rule_add(rule_item_description_match,	ITEM_DESC_MATCH_RULE_ID,	_("Item body"),		_("does match"),	_("does not match"),	TRUE);
-	rule_add(rule_feed_title_match,		"feed_title",			_("Feed title"),	_("does match"),	_("does not match"),	TRUE);
-	rule_add(rule_item_is_unread,		"unread",			_("Read status"),	_("is unread"),		_("is read"),		FALSE);
-	rule_add(rule_item_is_flagged,		"flagged",			_("Flag status"),	_("is flagged"),	_("is unflagged"),	FALSE);
-	rule_add(rule_item_was_updated,		"updated",			_("Update status"),	_("was updated"),	_("was not updated"),	FALSE);
-	rule_add(rule_item_has_enclosure,	"enclosure",			_("Podcast"),		_("included"),		_("not included"),	FALSE);
-
-	debug_exit("rule_init");
+	debug_exit ("rule_init");
 }

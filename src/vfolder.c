@@ -1,7 +1,7 @@
 /**
  * @file vfolder.c search folder functionality
  *
- * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

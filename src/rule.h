@@ -1,7 +1,7 @@
 /**
- * @file rule.h feed/vfolder rule handling
+ * @file rule.h feed/search folder rule handling
  *
- * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,12 +26,14 @@
 
 /** rule info structure */
 typedef struct ruleInfo {
-	gpointer		ruleFunc;	/* the rules test function */
-	gchar			*ruleId;	/* rule id for cache file storage */
-	gchar			*title;		/* rule type title for dialogs */
-	gchar			*positive;	/* text for positive logic selection */
-	gchar			*negative;	/* text for negative logic selection */
-	gboolean		needsParameter;	/* some rules may require no parameter... */
+	gpointer		ruleFunc;	/**< the rules test function */
+	gchar			*ruleId;	/**< rule id for cache file storage */
+	gchar			*title;		/**< rule type title for dialogs */
+	gchar			*positive;	/**< text for positive logic selection */
+	gchar			*negative;	/**< text for negative logic selection */
+	gboolean		needsParameter;	/**< some rules may require no parameter... */
+	gboolean		itemMatch;	/**< TRUE if rule matches item attributes */
+	gboolean		metadataMatch;	/**< TRUE if rule matches metadata attributes */
 } *ruleInfoPtr;
 
 /** structure to store a rule instance */

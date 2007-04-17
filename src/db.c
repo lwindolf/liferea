@@ -672,3 +672,35 @@ db_rollback_transaction (void)
 	sqlite3_free(sql);
 	sqlite3_free(err);
 }
+
+void
+db_create_view (const gchar *id,
+                const gchar *conditions,
+                gboolean items,
+                gboolean metadata)
+{
+	gchar	*sql, *err, *tables = NULL;
+	gint	res;
+	
+	if (items && !metadata)
+		tables = g_strdup ("items");
+	if (!items && metadata)
+		tables = g_strdup ("metadata");
+	if (items && metadata)
+		tables = g_strdup ("items INNER JOIN metadata ON items.ROWID = metadata.item_id");
+		
+	g_return_if_fail (items || metadata);
+	
+	sql = sqlite3_mprintf ("CREATE TEMP VIEW vfolder_%s AS "
+	                       "SELECT items.ROWID FROM %s "
+			       "WHERE %s;", 
+			       id, tables, conditions);
+			      
+	res = sqlite3_exec(db, sql, NULL, NULL, &err);
+	if(SQLITE_OK != res) 
+		g_warning("Create view failed (%s) SQL: %s", err, sql);
+	
+	g_free (tables);
+	sqlite3_free (sql);
+	sqlite3_free (err);
+}

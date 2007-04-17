@@ -149,4 +149,16 @@ void	db_end_transaction (void);
  */
 void	db_rollback_transaction (void);
 
+/**
+ * Creates a new temporary view (used for search folders)
+ *
+ * @param id		unique search folder id
+ * @param conditions	condition in SQL WHERE syntax
+ * @param items		TRUE if items table is needed
+ *                      to evaluate WHERE clause
+ * @param metadata	TRUE if metadata table is needed
+ *                      to evaluate WHERE clause
+ */
+void	db_create_view (const gchar *id, const gchar *conditions, gboolean items, gboolean metadata);
+ 
 #endif
