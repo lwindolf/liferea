@@ -191,14 +191,16 @@ htmlview_render_item (itemPtr item,
 
 	debug_enter ("htmlview_render_item");
 
-	baseUrl = common_uri_escape (node_get_base_url (htmlView_priv.node));
+	/* don't use node from htmlView_priv as this would be
+	   wrong for folders and other merged item sets */
+	node = node_from_id (item->nodeId);
+	baseUrl = common_uri_escape (node_get_base_url (node));
 
 	/* do the XML serialization */
-	doc = itemset_to_xml (htmlView_priv.node);
+	doc = itemset_to_xml (node);
 			
 	item_to_xml(item, xmlDocGetRootElement (doc));
 			
-	node = node_from_id (item->nodeId);
 	if (NODE_TYPE_FEED == node->type) 
 	{
 		xmlNodePtr feed;
