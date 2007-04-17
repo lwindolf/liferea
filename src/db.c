@@ -119,6 +119,14 @@ void db_init(void) {
 	                   BEGIN \
 			      DELETE FROM items WHERE ROWID = old.item_id; \
 	                   END;", NULL, NULL, NULL);
+			   
+	/* Cleanup of DB */
+	
+	sqlite3_exec (db, "DELETE FROM items WHERE ROWID NOT IN "
+			  "(SELECT item_id FROM itemsets);", NULL, NULL, NULL);
+			  
+	sqlite3_exec (db, "DELETE FROM itemsets WHERE item_id NOT IN "
+			  "(SELECT ROWID FROM items);", NULL, NULL, NULL);
 	
 	/*res = sqlite3_exec (db, "PRAGMA synchronous=off", NULL, NULL, &err);
 	if (SQLITE_OK != res)
