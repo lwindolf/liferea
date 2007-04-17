@@ -404,9 +404,9 @@
      </xsl:if>
      
      <p>     
-        <xsl:for-each select="comments/item">
-           <xsl:call-template name="comment_item"/>
-        </xsl:for-each>
+        <xsl:apply-templates select="comments/item">
+           <xsl:sort select="time"/>
+        </xsl:apply-templates>
      </p>    
   </xsl:if>
 </div>
@@ -444,7 +444,7 @@
 <!-- ==================================================================== -->
 
 <!-- comment rendering -->
-<xsl:template name="comment_item">
+<xsl:template match="comments/item">
    <div class="comment">
       <div class="comment_title"><xsl:value-of select="title"/></div>
       <div class="comment_body"><xsl:value-of select="description" disable-output-escaping='yes'/></div>
