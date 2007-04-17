@@ -358,7 +358,13 @@ void itemlist_set_read_status(itemPtr item, gboolean newStatus) {
 			while (iter)
 			{
 				itemPtr duplicate = item_load (GPOINTER_TO_UINT (iter->data));
-				if (duplicate)
+				
+				/* The check on node_from_id() is an evil workaround
+				   to handle "lost" items in the DB that have no 
+				   associated node in the feed list. This should be 
+				   fixed by having the feed list in the DB too, so
+				   we can clean up correctly after crashes. */
+				if (duplicate && node_from_id (duplicate->nodeId))
 				{
 					itemlist_set_read_status (duplicate, newStatus);
 					db_item_update (duplicate);
