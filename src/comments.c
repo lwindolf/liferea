@@ -75,7 +75,6 @@ comments_process_update_result (struct request *request)
 
 	debug_enter ("comments_process_update_result");
 	
-g_print("updating result processing for item comments...\n");
 	item = item_load (commentFeed->itemId);
 	g_return_if_fail (item != NULL);
 	
@@ -159,23 +158,24 @@ g_print("updating result processing for item comments...\n");
 void
 comments_refresh (itemPtr item) 
 { 
-	commentFeedPtr	commentFeed;
+	commentFeedPtr	commentFeed = NULL;
 	struct request	*request;
 	const gchar	*url;
 	
 	url = metadata_list_get (item->metadata, "commentFeedUri");
 	if (url) 
 	{
-g_print("updating item comments...\n");	
 		debug2 (DEBUG_UPDATE, "Updating comments for item \"%s\" (comment URL: %s)", item->title, url);
 
 		// FIXME: restore update state from DB?		
-		commentFeed = comment_feed_from_id (item->commentFeedId);
+		
+		if (item->commentFeedId)
+			commentFeed = comment_feed_from_id (item->commentFeedId);
+		else
+			item->commentFeedId = node_new_id ();		
+			
 		if (!commentFeed)
-		{
-			g_assert (NULL == item->commentFeedId);
-			item->commentFeedId = node_new_id ();
-				
+		{			
 			commentFeed = g_new0 (struct commentFeed, 1);
 			commentFeed->id = g_strdup (item->commentFeedId);
 			commentFeed->itemId = item->id;
