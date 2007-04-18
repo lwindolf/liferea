@@ -26,7 +26,7 @@
 
 /** rule info structure */
 typedef struct ruleInfo {
-	gpointer		ruleFunc;	/**< the rules test function */
+	gpointer		ruleFunc;	/**< the rules condition function */
 	gchar			*ruleId;	/**< rule id for cache file storage */
 	gchar			*title;		/**< rule type title for dialogs */
 	gchar			*positive;	/**< text for positive logic selection */
@@ -48,37 +48,38 @@ typedef struct rule {
 extern struct ruleInfo *ruleFunctions;
 extern gint nrOfRuleFunctions;
 
-/** initializes the rule handling */
-void rule_init(void);
+/**
+ * Initializes the rule handling 
+ */
+void rule_init (void);
 
 /** 
  * Looks up the given rule id and sets up a new rule
  * structure with for the given vfolder and rule value 
  *
- * @param vp		vfolder the rule belongs to
+ * @param vfolder	vfolder the rule belongs to
  * @param ruleId	id string for this rule type
  * @param value		argument string for this rule
  * @param additive	indicates positive or negative logic
  *
  * @returns a new rule structure
  */
-rulePtr rule_new(struct vfolder *vp, const gchar *ruleId, const gchar *value, gboolean additive);
+rulePtr rule_new (struct vfolder *vfolder, const gchar *ruleId, const gchar *value, gboolean additive);
 
 /**
- * Checks an item against a given rule.
+ * Processes the given rule list and creates a DB view
+ * with the given id.
  *
- * @param rp	rule to check against
- * @param ip	item to check
- *
- * @returns TRUE if the item matches the rule
+ * @param rules		the rule list
+ * @param id		the view id
  */
-gboolean rule_check_item(rulePtr rp, itemPtr ip);
+void rules_to_view (GSList *rules, const gchar *id);
 
 /** 
  * Free's the given rule structure 
  *
- * @param rp	rule to free
+ * @param rule	rule to free
  */
-void rule_free(rulePtr rp);
+void rule_free (rulePtr rule);
 
 #endif

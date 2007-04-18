@@ -26,6 +26,7 @@
 #include "callbacks.h"
 #include "common.h"
 #include "conf.h"
+#include "db.h"
 #include "debug.h"
 #include "itemset.h"
 #include "itemlist.h"
@@ -33,93 +34,109 @@
 #include "vfolder.h"
 #include "ui/ui_vfolder.h"
 
-/**
- * The list of all existing vfolders. Used for updating vfolder
- * information upon item changes
- */
-static GSList		*vfolders = NULL;
-
-void vfolder_init(void) {
-
+void
+vfolder_init (void)
+{
 	rule_init();
 }
 
-/* sets up a vfolder feed structure */
-vfolderPtr vfolder_new(nodePtr node) {
+vfolderPtr
+vfolder_new (nodePtr node) 
+{
 	vfolderPtr	vfolder;
 
-	debug_enter("vfolder_new");
+	debug_enter ("vfolder_new");
 
-	vfolder = g_new0(struct vfolder, 1);
+	vfolder = g_new0 (struct vfolder, 1);
 	vfolder->node = node;
-	vfolders = g_slist_append(vfolders, vfolder);
 
-	node_set_title(node, _("New Search Folder"));	/* set default title */
-	node_set_type(node, vfolder_get_node_type());
-	node_set_data(node, (gpointer)vfolder);
+	node_set_title (node, _("New Search Folder"));	/* set default title */
+	node_set_type (node, vfolder_get_node_type());
+	node_set_data (node, (gpointer)vfolder);
 
-	debug_exit("vfolder_new");
+	debug_exit ("vfolder_new");
 	
 	return vfolder;
 }
 
-static void vfolder_import_rules(xmlNodePtr cur, vfolderPtr vp) {
+static void
+vfolder_import_rules (xmlNodePtr cur,
+                      vfolderPtr vfolder)
+{
 	xmlChar		*type, *ruleId, *value, *additive;
 	
 	/* process any children */
 	cur = cur->xmlChildrenNode;
-	while(cur != NULL) {
-		if(!xmlStrcmp(cur->name, BAD_CAST"outline")) {
-			type = xmlGetProp(cur, BAD_CAST"type");
-			if(type != NULL && !xmlStrcmp(type, BAD_CAST"rule")) {
+	while (cur) {
+		if (!xmlStrcmp (cur->name, BAD_CAST"outline")) {
+			type = xmlGetProp (cur, BAD_CAST"type");
+			if (type && !xmlStrcmp (type, BAD_CAST"rule")) {
 
-				ruleId = xmlGetProp(cur, BAD_CAST"rule");
-				value = xmlGetProp(cur, BAD_CAST"value");
-				additive = xmlGetProp(cur, BAD_CAST"additive");
+				ruleId = xmlGetProp (cur, BAD_CAST"rule");
+				value = xmlGetProp (cur, BAD_CAST"value");
+				additive = xmlGetProp (cur, BAD_CAST"additive");
 
-				if((NULL != ruleId) && (NULL != value)) {			
-					debug2(DEBUG_CACHE, "loading rule \"%s\" \"%s\"\n", ruleId, value);
+				if (ruleId && value) {			
+					debug2 (DEBUG_CACHE, "loading rule \"%s\" \"%s\"\n", ruleId, value);
 
-					if(additive != NULL && !xmlStrcmp(additive, BAD_CAST"true"))
-						vfolder_add_rule(vp, ruleId, value, TRUE);
+					if (additive && !xmlStrcmp (additive, BAD_CAST"true"))
+						vfolder_add_rule (vfolder, ruleId, value, TRUE);
 					else
-						vfolder_add_rule(vp, ruleId, value, FALSE);
+						vfolder_add_rule (vfolder, ruleId, value, FALSE);
 				} else {
-					g_warning("ignoring invalid rule entry in feed list...\n");
+					g_warning ("ignoring invalid rule entry for vfolder \"%s\"...\n", node_get_title (vfolder->node));
 				}
 				
-				xmlFree(ruleId);
-				xmlFree(value);
-				xmlFree(additive);
+				xmlFree (ruleId);
+				xmlFree (value);
+				xmlFree (additive);
 			}
-			xmlFree(type);
+			xmlFree (type);
 		}
 		cur = cur->next;
 	}
 }
 
-static itemSetPtr vfolder_load(nodePtr node) {
-
-	return NULL;
+static itemSetPtr
+vfolder_load (nodePtr node) 
+{
+	return db_view_load (node->id);
 }
 
-static void vfolder_import(nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean trusted) {
+void
+vfolder_refresh (vfolderPtr vfolder)
+{
+	g_return_if_fail (NULL != vfolder->node);
+
+	if (vfolder->viewExists)
+		db_view_remove (vfolder->node->id);
+		
+	rules_to_view (vfolder->rules, vfolder->node->id);
+}
+
+static void
+vfolder_import (nodePtr node,
+                nodePtr parent,
+                xmlNodePtr cur,
+                gboolean trusted) 
+{
 	vfolderPtr vfolder;
 
-	debug_enter("vfolder_import");
+	debug_enter ("vfolder_import");
 
-	vfolder = g_new0(struct vfolder, 1);
+	vfolder = g_new0 (struct vfolder, 1);
 	vfolder->node = node;
-	vfolder_import_rules(cur, vfolder);
-	vfolders = g_slist_append(vfolders, vfolder);
+	vfolder_import_rules (cur, vfolder);
 
-	debug1(DEBUG_CACHE, "import vfolder: title=%s", node_get_title(node));
+	debug1 (DEBUG_CACHE, "import vfolder: title=%s", node_get_title (node));
 	
-	node_set_type(node, vfolder_get_node_type());
-	node_set_data(node, (gpointer)vfolder);
-	node_add_child(parent, node, -1);
+	node_set_type (node, vfolder_get_node_type ());
+	node_set_data (node, (gpointer) vfolder);
+	node_add_child (parent, node, -1);
+	
+	vfolder_refresh (vfolder);
 
-	debug_exit("vfolder_import");
+	debug_exit ("vfolder_import");
 }
 
 static void vfolder_export(nodePtr node, xmlNodePtr cur, gboolean trusted) {
@@ -173,32 +190,33 @@ void vfolder_add_rule(vfolderPtr vp, const gchar *ruleId, const gchar *value, gb
 /* Method that remove a rule from a vfolder. To be used
    when deleting or changing vfolders. Does not process
    items. */
-void vfolder_remove_rule(vfolderPtr vp, rulePtr rp) {
-
-	debug_enter("vfolder_remove_rule");
-	vp->rules = g_slist_remove(vp->rules, rp);
-	debug_exit("vfolder_remove_rule");
+void
+vfolder_remove_rule (vfolderPtr vfolder, rulePtr rule) 
+{
+	vfolder->rules = g_slist_remove(vfolder->rules, rule);
 }
 
 /* called when a vfolder is processed by feed_free
    to get rid of the vfolder items */
-void vfolder_free(vfolderPtr vp) {
+void
+vfolder_free (vfolderPtr vfolder) 
+{
 	GSList		*rule;
 
-	debug_enter("vfolder_free");
-
-	// FIXME!
+	debug_enter ("vfolder_free");
+	
+	db_view_remove (vfolder->node->id);
 	
 	/* free vfolder rules */
-	rule = vp->rules;
-	while(NULL != rule) {
-		rule_free(rule->data);
-		rule = g_slist_next(rule);
+	rule = vfolder->rules;
+	while (rule) {
+		rule_free (rule->data);
+		rule = g_slist_next (rule);
 	}
-	g_slist_free(vp->rules);
-	vp->rules = NULL;
+	g_slist_free(vfolder->rules);
+	vfolder->rules = NULL;
 	
-	debug_exit("vfolder_free");
+	debug_exit ("vfolder_free");
 }
 
 /* implementation of the node type interface */

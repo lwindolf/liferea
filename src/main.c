@@ -238,13 +238,13 @@ int main(int argc, char *argv[]) {
 	add_pixmap_directory(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps");
 
 	/* order is important! */
+	rule_init();
 	db_init();			/* initialize sqlite */
 	conf_init();			/* initialize gconf */
 	update_init();			/* initialize the download subsystem */
 	plugin_mgmt_init();		/* get list of plugins and initialize them */
 	ui_htmlview_init();		/* setup HTML widgets */
 	feed_init();			/* register feed types */
-	vfolder_init();			/* register vfolder rules */
 	conf_load();			/* load global feed settings */
 	script_init();			/* setup scripting if supported */
 	social_init();			/* initialized social bookmarking */

@@ -24,10 +24,8 @@
 
 #include <string.h> /* For strstr() */
 #include "common.h"
+#include "db.h"
 #include "debug.h"
-#include "feed.h"
-#include "item.h"
-#include "metadata.h"
 #include "rule.h"
 #include "support.h"
 
@@ -114,7 +112,7 @@ rule_item_match (rulePtr rule)
 	gchar	*result, *pattern;
 	
 	pattern = common_strreplace (g_strdup (rule->value), "'", "");
-	result = g_strdup_printf ("(item.title LIKE '%s' item.description LIKE '%s')", pattern, pattern);
+	result = g_strdup_printf ("(item.title LIKE '%s' AND item.description LIKE '%s')", pattern, pattern);
 	g_free (pattern);
 	
 	return result;
@@ -144,11 +142,31 @@ rule_item_has_enclosure (rulePtr rule)
 	return g_strdup ("metadata.key = 'enclosure'");
 }
 
-gchar *
-rules_to_sql_condition (GSList *rules)
+void
+rules_to_view (GSList *rules, const gchar *id)
 {
-	// FIXME
-	return NULL;
+	gboolean	items = FALSE;
+	gboolean	metadata = FALSE;
+	gchar		*conditions = NULL;
+	
+	while (rules) {
+		rulePtr rule = (rulePtr)rules->data;
+		items |= rule->ruleInfo->itemMatch;
+		metadata |= rule->ruleInfo->metadataMatch;
+		if (!conditions) {
+			conditions = (*((ruleConditionFunc)rule->ruleInfo->ruleFunc)) (rule);
+		} else {
+			gchar *old, *new;
+			old = conditions;
+			new = (*((ruleConditionFunc)rule->ruleInfo->ruleFunc)) (rule);
+			conditions = g_strdup_printf ("%s AND %s", conditions, new);
+			g_free (new);
+			g_free (old);
+		}
+		rules = g_slist_next (rules);
+	}
+g_print("new view %s condition: %s\n", id,conditions);
+	db_view_create (id, conditions, items, metadata);
 }
 
 /* rule initialization */

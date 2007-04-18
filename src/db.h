@@ -152,13 +152,29 @@ void	db_rollback_transaction (void);
 /**
  * Creates a new temporary view (used for search folders)
  *
- * @param id		unique search folder id
+ * @param id		the node id
  * @param conditions	condition in SQL WHERE syntax
  * @param items		TRUE if items table is needed
  *                      to evaluate WHERE clause
  * @param metadata	TRUE if metadata table is needed
  *                      to evaluate WHERE clause
  */
-void	db_create_view (const gchar *id, const gchar *conditions, gboolean items, gboolean metadata);
- 
+void db_view_create (const gchar *id, const gchar *conditions, gboolean items, gboolean metadata);
+
+/**
+ * Removes a temparory view with the given id from the DB session
+ *
+ * @param id		the node id
+ */
+void db_view_remove (const gchar *id);
+
+/**
+ * Returns an item set of all items for the given view id.
+ *
+ * @param id		the node id
+ *
+ * @returns a new item set (to be free'd using itemset_free())
+ */
+itemSetPtr db_view_load (const gchar *id);
+
 #endif

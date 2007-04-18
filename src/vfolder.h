@@ -1,7 +1,7 @@
 /**
- * @file vfolder.h VFolder functionality
+ * @file vfolder.h search folder functionality
  *
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,120 +22,77 @@
 #define _VFOLDER_H
 
 #include <glib.h>
-#include "item.h"
 #include "rule.h"
 
-/* The vfolder implementation of Liferea is similar to the
-   one in Evolution. Vfolders are effectivly permanent searches.
+/* The search folder implementation of Liferea is similar to the
+   one in Evolution. Search folders are effectivly permanent searches.
 
-   Each vfolder instance is a set of rules applied to all items
-   of all other feeds (excluding other vfolders). Each vfolder
-   instance can have a single node in the feed list. 
+   Each search folder instance is a set of rules applied to all items
+   of all other feeds (excluding other search folders). Each search
+   folder instance can be represented by a single node in the feed list. 
    
-   The vfolder concept also constitutes an own itemset type
-   with special update propagation and removal handling. */
+   The search folder concept also constitutes an own itemset type
+   with special update propagation and removal handling. 
+   (FIXME: above still true?) */
 
+/** search vfolder data structure */
 typedef struct vfolder {
-	GSList		*rules;			/**< list of rules if this is a vfolder */
-	struct node	*node;			/**< the node of the vfolder, needed for merging */
+	GSList		*rules;		/**< list of rules of this search folder */
+	struct node	*node;		/**< the feed list node of this search folder (or NULL) */
+	gboolean	viewExists;	/**< TRUE if DB view was created */
 } *vfolderPtr;
 
 /**
- * Initialize vfolder handling.
+ * Sets up a new search folder structure.
+ *
+ * @param node 	the feed list node of the search folder
+ *
+ * @returns a new search folder structure
  */
-void	vfolder_init(void);
+vfolderPtr vfolder_new (struct node *node);
 
 /**
- * Sets up a new vfolder structure.
- *
- * @param node 	the feed list node of the vfolder
- *
- * @returns a new vfolder
- */
-vfolderPtr vfolder_new(struct node *node);
-
-/* set/get of vfolder title */
-const gchar * vfolder_get_title(vfolderPtr vp);
-void vfolder_set_title(vfolderPtr vp, const gchar * title);
-
-/**
- * Method thats adds a rule to a vfolder. To be used
- * on loading time or when creating searching. Does 
- * not process items. Just sets up the vfolder.
+ * Method thats adds a rule to a search folder. To be used
+ * on loading time, when creating searches or when editing
+ * search folder properties.
  *  
- * @param fp		vfolder the rule belongs to
+ * vfolder_refresh() needs to called to update the item matches
+ *
+ * @param vfolder	search folder the rule belongs to
  * @param ruleId	id string for this rule type
  * @param value		argument string for this rule
  * @param additive	indicates positive or negative logic
  */
-void	vfolder_add_rule(vfolderPtr vp, const gchar *ruleId, const gchar *value, gboolean additive);
+void vfolder_add_rule (vfolderPtr vfolder, const gchar *ruleId, const gchar *value, gboolean additive);
 
 /** 
- * Method that removes a rule from a vfolder. To be used
- * when deleting or changing vfolders. Does not process
- * items. 
+ * Method that removes a rule from the rule list of a given
+ * search folder. To be used when deleting search folders 
+ * or editing its rules.
  *
- * @param vp	vfolder
- * @param rp	rule to remove
+ * vfolder_refresh() needs to called to update the item matches
+ *
+ * @param vfolder	search folder
+ * @param rule		rule to remove
  */
-void	vfolder_remove_rule(vfolderPtr vp, rulePtr rp);
+void vfolder_remove_rule (vfolderPtr vfolder, rulePtr rule);
 
 /**
- * Method that applies the rules of the given vfolder to 
- * all existing items. To be used for creating search
- * results or new vfolders. Not to be used when loading
- * vfolders from cache. 
+ * Method that "refreshes" the DB view according
+ * to the search folder rules. To be called after
+ * vfolder_(add|remove)_rule().
  *
- * @param vp	vfolder
+ * @param vfolder	search folder to rebuild
  */
-void	vfolder_refresh(vfolderPtr vp);
+void vfolder_refresh(vfolderPtr vfolder);
 
 /**
- * Method to be called when a item was updated. This maybe
- * after user interaction or updated item contents 
+ * Called when a search folder is processed by node_free()
+ * to get rid of the search folder items.
  *
- * @param ip	item of a feed to check
+ * @param vfolder	search folder to free
  */
-void	vfolder_update_item(itemPtr ip);
-
-/**
- * Method to be called when a new item needs to be checked
- * against all vfolder rules. To be used upon feed list loading
- * and when new items are downloaded.
- *
- * This method may also be used to recheck an vfolder item
- * copy again. This may remove the item copy if it does not
- * longer match the vfolder rules.
- *
- * @param item	node item to check
- * @returns TRUE if item (still) added, FALSE otherwise
- */
-gboolean vfolder_check_item(itemPtr item);
-
-/**
- * Method to be called during initial node loading to check
- * all items of a single node for vfolder rule macthing.
- *
- * @param node	the node whose items are to be checked
- */
-void vfolder_check_node(struct node *node);
-
-/** 
- * Searches all vfolders for copies of the given item and
- * removes them. Used for item remove propagation. If a
- * vfolder item copy is passed it is removed directly.
- *
- * @param ip	feed item or vfolder item copy to remove
- */
-void	vfolder_remove_item(itemPtr ip);
-
-/**
- * Called when a vfolder is processed by feed_free
- * to get rid of the vfolder items.
- *
- * @param vp	vfolder to free
- */
-void	vfolder_free(vfolderPtr vp);
+void vfolder_free (vfolderPtr vfolder);
 
 /* implementation of the node type interface */
 struct nodeType * vfolder_get_node_type(void);

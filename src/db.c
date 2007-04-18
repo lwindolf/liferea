@@ -674,7 +674,7 @@ db_rollback_transaction (void)
 }
 
 void
-db_create_view (const gchar *id,
+db_view_create (const gchar *id,
                 const gchar *conditions,
                 gboolean items,
                 gboolean metadata)
@@ -691,8 +691,14 @@ db_create_view (const gchar *id,
 		
 	g_return_if_fail (items || metadata);
 	
-	sql = sqlite3_mprintf ("CREATE TEMP VIEW vfolder_%s AS "
-	                       "SELECT items.ROWID FROM %s "
+	sql = sqlite3_mprintf ("CREATE TEMP VIEW view_%s AS "
+	                       "SELECT "
+	                       "items.ROWID,"
+	                       "items.title,"
+	                       "items.read,"
+	                       "items.updated,"
+	                       "items.marked"
+			       " FROM %s "
 			       "WHERE %s;", 
 			       id, tables, conditions);
 			      
@@ -703,4 +709,51 @@ db_create_view (const gchar *id,
 	g_free (tables);
 	sqlite3_free (sql);
 	sqlite3_free (err);
+}
+
+void
+db_view_remove (const gchar *id)
+{
+	gchar	*sql, *err;
+	gint	res;
+		
+	sql = sqlite3_mprintf ("DROP VIEW view_%s;", id);
+	
+		res = sqlite3_exec(db, sql, NULL, NULL, &err);
+	if(SQLITE_OK != res) 
+		g_warning("Dropping view failed (%s) SQL: %s", err, sql);
+	
+	sqlite3_free (sql);
+	sqlite3_free (err);
+}
+
+itemSetPtr
+db_view_load (const gchar *id) 
+{
+	gchar		*sql;
+	sqlite3_stmt	*viewLoadStmt;	
+	itemSetPtr 	itemSet;
+	gint		res;
+
+	debug2 (DEBUG_DB, "loading view for node \"%s\" (thread=%p)", id, g_thread_self());
+	itemSet = g_new0 (struct itemSet, 1);
+	itemSet->nodeId = (gchar *)id;
+
+	sql = sqlite3_mprintf ("SELECT items.ROWID FROM view_%s;", id);
+	db_prepare_stmt (&viewLoadStmt, sql);
+	sqlite3_reset (viewLoadStmt);
+	res = sqlite3_bind_text (viewLoadStmt, 1, id, -1, SQLITE_TRANSIENT);
+	if(SQLITE_OK != res)
+		g_error("db_itemset_load: sqlite bind failed (error code %d)!", res);
+
+	while (sqlite3_step (viewLoadStmt) == SQLITE_ROW) {
+		itemSet->ids = g_list_append (itemSet->ids, GUINT_TO_POINTER (sqlite3_column_int (viewLoadStmt, 0)));
+	}
+
+	sqlite3_free (sql);
+	sqlite3_finalize(viewLoadStmt);
+	
+	debug0 (DEBUG_DB, "loading of view finished");
+	
+	return itemSet;
 }
