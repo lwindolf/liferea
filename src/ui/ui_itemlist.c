@@ -415,6 +415,9 @@ ui_itemlist_add_item (itemPtr item)
 		GtkTreeIter *iter = &old_iter;
 		gint state = 0;
 		
+		node = node_from_id (item->nodeId);
+		g_return_if_fail (NULL != node);
+		
 		if (!exists) 
 		{
 			iter = g_new0 (GtkTreeIter, 1);
@@ -426,8 +429,6 @@ ui_itemlist_add_item (itemPtr item)
 			state += 2;
 		if (!item->readStatus)
 			state += 1;
-
-		node = node_from_id (item->nodeId);
 
 		gtk_tree_store_set (itemstore, iter,
 		                	       IS_TIME, item->time,

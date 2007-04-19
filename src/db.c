@@ -693,7 +693,7 @@ db_view_create (const gchar *id,
 	
 	sql = sqlite3_mprintf ("CREATE TEMP VIEW view_%s AS "
 	                       "SELECT "
-	                       "items.ROWID,"
+	                       "items.ROWID AS item_id,"
 	                       "items.title,"
 	                       "items.read,"
 	                       "items.updated,"
@@ -701,7 +701,7 @@ db_view_create (const gchar *id,
 			       " FROM %s "
 			       "WHERE %s;", 
 			       id, tables, conditions);
-			      
+
 	res = sqlite3_exec(db, sql, NULL, NULL, &err);
 	if(SQLITE_OK != res) 
 		g_warning("Create view failed (%s) SQL: %s", err, sql);
@@ -733,18 +733,14 @@ db_view_load (const gchar *id)
 	gchar		*sql;
 	sqlite3_stmt	*viewLoadStmt;	
 	itemSetPtr 	itemSet;
-	gint		res;
 
 	debug2 (DEBUG_DB, "loading view for node \"%s\" (thread=%p)", id, g_thread_self());
 	itemSet = g_new0 (struct itemSet, 1);
 	itemSet->nodeId = (gchar *)id;
 
-	sql = sqlite3_mprintf ("SELECT items.ROWID FROM view_%s;", id);
+	sql = sqlite3_mprintf ("SELECT item_id FROM view_%s;", id);
 	db_prepare_stmt (&viewLoadStmt, sql);
 	sqlite3_reset (viewLoadStmt);
-	res = sqlite3_bind_text (viewLoadStmt, 1, id, -1, SQLITE_TRANSIENT);
-	if(SQLITE_OK != res)
-		g_error("db_itemset_load: sqlite bind failed (error code %d)!", res);
 
 	while (sqlite3_step (viewLoadStmt) == SQLITE_ROW) {
 		itemSet->ids = g_list_append (itemSet->ids, GUINT_TO_POINTER (sqlite3_column_int (viewLoadStmt, 0)));

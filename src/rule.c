@@ -88,7 +88,7 @@ rule_item_title_match (rulePtr rule)
 	gchar	*result, *pattern;
 	
 	pattern = common_strreplace (g_strdup (rule->value), "'", "");
-	result = g_strdup_printf ("item.title LIKE '%s'", pattern);
+	result = g_strdup_printf ("items.title LIKE '%s'", pattern);
 	g_free (pattern);
 	
 	return result;
@@ -100,7 +100,7 @@ rule_item_description_match (rulePtr rule)
 	gchar	*result, *pattern;
 	
 	pattern = common_strreplace (g_strdup (rule->value), "'", "");
-	result = g_strdup_printf ("item.description LIKE '%s'", pattern);
+	result = g_strdup_printf ("items.description LIKE '%s'", pattern);
 	g_free (pattern);
 	
 	return result;
@@ -112,7 +112,7 @@ rule_item_match (rulePtr rule)
 	gchar	*result, *pattern;
 	
 	pattern = common_strreplace (g_strdup (rule->value), "'", "");
-	result = g_strdup_printf ("(item.title LIKE '%s' AND item.description LIKE '%s')", pattern, pattern);
+	result = g_strdup_printf ("(items.title LIKE '%s' AND items.description LIKE '%s')", pattern, pattern);
 	g_free (pattern);
 	
 	return result;
