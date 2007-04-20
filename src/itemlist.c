@@ -169,7 +169,7 @@ void itemlist_load(itemSetPtr itemSet) {
 
 	debug_enter("itemlist_load");
 
-	g_assert(NULL != itemSet);
+	g_return_if_fail(NULL != itemSet);
 
 	debug1(DEBUG_GUI, "loading item list with node \"%s\"", node_get_title(itemSet->node));
 
