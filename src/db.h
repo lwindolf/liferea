@@ -149,17 +149,48 @@ void	db_end_transaction (void);
  */
 void	db_rollback_transaction (void);
 
+/** Query table flags (to construct join expression for a query) */
+typedef enum {
+	QUERY_TABLE_ITEMS	= (1 << 0),
+	QUERY_TABLE_METADATA	= (1 << 1)
+} queryTables;
+
+/** Query column flags (to construct column list) */
+typedef enum {
+	QUERY_COLUMN_ITEM_ID		= (1 << 0),
+	QUERY_COLUMN_ITEM_TITLE		= (1 << 1),
+	QUERY_COLUMN_ITEM_DESCRIPTION	= (1 << 2),
+	QUERY_COLUMN_ITEM_READ_STATUS	= (1 << 3),
+	QUERY_COLUMN_ITEM_UPDATE_STATUS	= (1 << 4),
+	QUERY_COLUMN_METADATA_PODCAST	= (1 << 5)
+} queryColumns;
+
+/** Query info structure to be used with views and for dynamic item checks. */
+typedef struct query {
+	guint		tables;		/**< used tables, set of queryTable flags */
+	guint		columns;	/**< used columns, set of queryColumn flags */
+	
+	gchar 		*conditions;	/**< condition in SQL WHERE syntax */
+} *queryPtr;
+
+/**
+ * Executes the passed matching query and checks if the
+ * given item id matches the query.
+ *
+ * @param id		the item id
+ * @param query		query info for item check
+ *
+ * @returns TRUE if the item matches the query
+ */
+gboolean db_item_check (guint id, const queryPtr query);
+
 /**
  * Creates a new temporary view (used for search folders)
  *
  * @param id		the node id
- * @param conditions	condition in SQL WHERE syntax
- * @param items		TRUE if items table is needed
- *                      to evaluate WHERE clause
- * @param metadata	TRUE if metadata table is needed
- *                      to evaluate WHERE clause
+ * @param query		query info to construct view
  */
-void db_view_create (const gchar *id, const gchar *conditions, gboolean items, gboolean metadata);
+void db_view_create (const gchar *id, const queryPtr query);
 
 /**
  * Removes a temparory view with the given id from the DB session

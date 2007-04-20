@@ -1,5 +1,5 @@
 /**
- * @file rule.h feed/search folder rule handling
+ * @file rule.h DB item match rule handling
  *
  * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  *
@@ -26,14 +26,14 @@
 
 /** rule info structure */
 typedef struct ruleInfo {
-	gpointer		ruleFunc;	/**< the rules condition function */
-	gchar			*ruleId;	/**< rule id for cache file storage */
-	gchar			*title;		/**< rule type title for dialogs */
-	gchar			*positive;	/**< text for positive logic selection */
-	gchar			*negative;	/**< text for negative logic selection */
-	gboolean		needsParameter;	/**< some rules may require no parameter... */
-	gboolean		itemMatch;	/**< TRUE if rule matches item attributes */
-	gboolean		metadataMatch;	/**< TRUE if rule matches metadata attributes */
+	gchar		*ruleId;	/**< rule id for cache file storage */
+	gchar		*title;		/**< rule type title for dialogs */
+	gchar		*positive;	/**< text for positive logic selection */
+	gchar		*negative;	/**< text for negative logic selection */
+	gboolean	needsParameter;	/**< some rules may require no parameter... */
+	
+	gpointer	queryFunc;	/**< the query condition creation function */
+	guint		queryTables;	/**< tables necessary for the rule query */
 } *ruleInfoPtr;
 
 /** structure to store a rule instance */
@@ -55,9 +55,9 @@ void rule_init (void);
 
 /** 
  * Looks up the given rule id and sets up a new rule
- * structure with for the given vfolder and rule value 
+ * structure with for the given search folder and rule value 
  *
- * @param vfolder	vfolder the rule belongs to
+ * @param vfolder	search folder the rule belongs to
  * @param ruleId	id string for this rule type
  * @param value		argument string for this rule
  * @param additive	indicates positive or negative logic
@@ -74,6 +74,16 @@ rulePtr rule_new (struct vfolder *vfolder, const gchar *ruleId, const gchar *val
  * @param id		the view id
  */
 void rules_to_view (GSList *rules, const gchar *id);
+
+/**
+ * Checks if the given item id matches the given rules.
+ *
+ * @param rules		the rule list
+ * @param id		the item id
+ *
+ * @returns TRUE if the item matches the rules
+ */
+gboolean rules_check_item (GSList *rules, guint id);
 
 /** 
  * Free's the given rule structure 

@@ -1,5 +1,5 @@
 /**
- * @file rule.c feed/vfolder rule handling
+ * @file rule.c DB based item matching rule handling
  *
  * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  *
@@ -88,7 +88,7 @@ rule_item_title_match (rulePtr rule)
 	gchar	*result, *pattern;
 	
 	pattern = common_strreplace (g_strdup (rule->value), "'", "");
-	result = g_strdup_printf ("items.title LIKE '%s'", pattern);
+	result = g_strdup_printf ("items.title LIKE '%%%s%%'", pattern);
 	g_free (pattern);
 	
 	return result;
@@ -100,7 +100,7 @@ rule_item_description_match (rulePtr rule)
 	gchar	*result, *pattern;
 	
 	pattern = common_strreplace (g_strdup (rule->value), "'", "");
-	result = g_strdup_printf ("items.description LIKE '%s'", pattern);
+	result = g_strdup_printf ("items.description LIKE '%%%s%%'", pattern);
 	g_free (pattern);
 	
 	return result;
@@ -112,7 +112,7 @@ rule_item_match (rulePtr rule)
 	gchar	*result, *pattern;
 	
 	pattern = common_strreplace (g_strdup (rule->value), "'", "");
-	result = g_strdup_printf ("(items.title LIKE '%s' AND items.description LIKE '%s')", pattern, pattern);
+	result = g_strdup_printf ("(items.title LIKE '%%%s%%' AND items.description LIKE '%%%s%%')", pattern, pattern);
 	g_free (pattern);
 	
 	return result;
@@ -142,57 +142,84 @@ rule_item_has_enclosure (rulePtr rule)
 	return g_strdup ("metadata.key = 'enclosure'");
 }
 
-void
-rules_to_view (GSList *rules, const gchar *id)
+static queryPtr
+query_create (GSList *rules)
 {
-	gboolean	items = FALSE;
-	gboolean	metadata = FALSE;
-	gchar		*conditions = NULL;
+	queryPtr	query;
 	
+	query = g_new0 (struct query, 1);
 	while (rules) {
 		rulePtr rule = (rulePtr)rules->data;
-		items |= rule->ruleInfo->itemMatch;
-		metadata |= rule->ruleInfo->metadataMatch;
-		if (!conditions) {
-			conditions = (*((ruleConditionFunc)rule->ruleInfo->ruleFunc)) (rule);
+		query->tables |= rule->ruleInfo->queryTables;
+		if (!query->conditions) {
+			query->conditions = (*((ruleConditionFunc)rule->ruleInfo->queryFunc)) (rule);
 		} else {
 			gchar *old, *new;
-			old = conditions;
-			new = (*((ruleConditionFunc)rule->ruleInfo->ruleFunc)) (rule);
-			conditions = g_strdup_printf ("%s AND %s", conditions, new);
+			old = query->conditions;
+			new = (*((ruleConditionFunc)rule->ruleInfo->queryFunc)) (rule);
+			query->conditions = g_strdup_printf ("%s AND %s", old, new);
 			g_free (new);
 			g_free (old);
 		}
 		rules = g_slist_next (rules);
 	}
-g_print("new view %s condition: %s\n", id,conditions);
-	db_view_create (id, conditions, items, metadata);
+	return query;
+}
+
+static void
+query_free (queryPtr query)
+{
+	g_free (query->conditions);
+	g_free (query);
+}
+
+void
+rules_to_view (GSList *rules, const gchar *id)
+{
+	queryPtr	query;
+	
+	query = query_create (rules);
+	db_view_create (id, query);
+	query_free (query);
+}
+
+gboolean
+rules_check_item (GSList *rules, guint id)
+{
+	gboolean	result;
+	queryPtr	query;
+
+	query = query_create (rules);	
+	result = db_item_check (id, query);
+	query_free (query);
+		
+	return result;
 }
 
 /* rule initialization */
 
 static void
-rule_add (ruleConditionFunc func, 
+rule_add (ruleConditionFunc queryFunc,
           gchar *ruleId, 
           gchar *title,
           gchar *positive,
           gchar *negative,
           gboolean needsParameter,	/* has parameters */
-	  gboolean itemMatch, 		/* needs items table */
-	  gboolean metadataMatch)	/* needs metadata table */ 
+	  guint queryTables)
 {
 
 	ruleFunctions = (ruleInfoPtr) g_realloc (ruleFunctions, sizeof (struct ruleInfo) * (nrOfRuleFunctions + 1));
 	if (NULL == ruleFunctions)
 		g_error("could not allocate memory!");
-	ruleFunctions[nrOfRuleFunctions].ruleFunc = func;
+		
 	ruleFunctions[nrOfRuleFunctions].ruleId = ruleId;
 	ruleFunctions[nrOfRuleFunctions].title = title;
 	ruleFunctions[nrOfRuleFunctions].positive = positive;
 	ruleFunctions[nrOfRuleFunctions].negative = negative;
 	ruleFunctions[nrOfRuleFunctions].needsParameter = needsParameter;
-	ruleFunctions[nrOfRuleFunctions].itemMatch = itemMatch;
-	ruleFunctions[nrOfRuleFunctions].metadataMatch = metadataMatch;
+
+	ruleFunctions[nrOfRuleFunctions].queryFunc = queryFunc;	
+	ruleFunctions[nrOfRuleFunctions].queryTables = queryTables;
 	nrOfRuleFunctions++;
 }
 
@@ -201,14 +228,14 @@ rule_init (void)
 {
 	debug_enter ("rule_init");
 
-	rule_add (rule_item_match,		ITEM_MATCH_RULE_ID,		_("Item"),		_("does contain"),	_("does not contain"),	TRUE, TRUE, FALSE);
-	rule_add (rule_item_title_match,	ITEM_TITLE_MATCH_RULE_ID,	_("Item title"),	_("does match"),	_("does not match"),	TRUE, TRUE, FALSE);
-	rule_add (rule_item_description_match,	ITEM_DESC_MATCH_RULE_ID,	_("Item body"),		_("does match"),	_("does not match"),	TRUE, TRUE, FALSE);
-	rule_add (rule_feed_title_match,	"feed_title",			_("Feed title"),	_("does match"),	_("does not match"),	TRUE, TRUE, FALSE);
-	rule_add (rule_item_is_unread,		"unread",			_("Read status"),	_("is unread"),		_("is read"),		FALSE, TRUE, FALSE);
-	rule_add (rule_item_is_flagged,		"flagged",			_("Flag status"),	_("is flagged"),	_("is unflagged"),	FALSE, TRUE, FALSE);
-	rule_add (rule_item_was_updated,	"updated",			_("Update status"),	_("was updated"),	_("was not updated"),	FALSE, TRUE, FALSE);
-	rule_add (rule_item_has_enclosure,	"enclosure",			_("Podcast"),		_("included"),		_("not included"),	FALSE, FALSE, TRUE);
+	rule_add (rule_item_match,		ITEM_MATCH_RULE_ID,		_("Item"),		_("does contain"),	_("does not contain"),	TRUE, QUERY_TABLE_ITEMS);
+	rule_add (rule_item_title_match,	ITEM_TITLE_MATCH_RULE_ID,	_("Item title"),	_("does match"),	_("does not match"),	TRUE, QUERY_TABLE_ITEMS);
+	rule_add (rule_item_description_match,	ITEM_DESC_MATCH_RULE_ID,	_("Item body"),		_("does match"),	_("does not match"),	TRUE, QUERY_TABLE_ITEMS);
+	rule_add (rule_feed_title_match,	"feed_title",			_("Feed title"),	_("does match"),	_("does not match"),	TRUE, QUERY_TABLE_ITEMS);
+	rule_add (rule_item_is_unread,		"unread",			_("Read status"),	_("is unread"),		_("is read"),		FALSE, QUERY_TABLE_ITEMS);
+	rule_add (rule_item_is_flagged,		"flagged",			_("Flag status"),	_("is flagged"),	_("is unflagged"),	FALSE, QUERY_TABLE_ITEMS);
+	rule_add (rule_item_was_updated,	"updated",			_("Update status"),	_("was updated"),	_("was not updated"),	FALSE, QUERY_TABLE_ITEMS);
+	rule_add (rule_item_has_enclosure,	"enclosure",			_("Podcast"),		_("included"),		_("not included"),	FALSE, QUERY_TABLE_METADATA);
 
 	debug_exit ("rule_init");
 }

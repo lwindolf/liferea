@@ -673,24 +673,53 @@ db_rollback_transaction (void)
 	sqlite3_free(err);
 }
 
+gboolean
+db_item_check (guint id, const queryPtr query)
+{
+	gchar		*sql, *tables = NULL;
+	gboolean	result = FALSE;
+	sqlite3_stmt	*itemCheckStmt;	
+
+	g_return_val_if_fail (query->tables != 0, FALSE);
+	// g_return_val_if_fail (query->columns == NULL, FALSE); FIXME
+		
+	if (query->tables & QUERY_TABLE_ITEMS)
+		tables = g_strdup ("items");
+	if (query->tables & QUERY_TABLE_METADATA)
+		tables = g_strdup ("metadata");
+	if (query->tables & (QUERY_TABLE_METADATA | QUERY_TABLE_ITEMS))
+		tables = g_strdup ("items INNER JOIN metadata ON items.ROWID = metadata.item_id");
+
+	sql = sqlite3_mprintf ("SELECT item_id FROM %s WHERE items.ROWID=%d AND %s;",
+	                       tables, id, query->conditions);
+	db_prepare_stmt (&itemCheckStmt, sql);
+	sqlite3_reset (itemCheckStmt);
+
+	result = (sqlite3_step (itemCheckStmt) == SQLITE_ROW);
+	
+	g_free (tables);
+	sqlite3_free (sql);
+	sqlite3_finalize (itemCheckStmt);
+	
+	return result;
+}
+
 void
-db_view_create (const gchar *id,
-                const gchar *conditions,
-                gboolean items,
-                gboolean metadata)
+db_view_create (const gchar *id, queryPtr query)
 {
 	gchar	*sql, *err, *tables = NULL;
 	gint	res;
-	
-	if (items && !metadata)
-		tables = g_strdup ("items");
-	if (!items && metadata)
-		tables = g_strdup ("metadata");
-	if (items && metadata)
-		tables = g_strdup ("items INNER JOIN metadata ON items.ROWID = metadata.item_id");
+
+	g_return_if_fail (query->tables != 0);
+	// g_return_if_fail (query->columns == NULL); FIXME
 		
-	g_return_if_fail (items || metadata);
-	
+	if (query->tables & QUERY_TABLE_ITEMS)
+		tables = g_strdup ("items");
+	if (query->tables & QUERY_TABLE_METADATA)
+		tables = g_strdup ("metadata");
+	if (query->tables & (QUERY_TABLE_METADATA | QUERY_TABLE_ITEMS))
+		tables = g_strdup ("items INNER JOIN metadata ON items.ROWID = metadata.item_id");
+
 	sql = sqlite3_mprintf ("CREATE TEMP VIEW view_%s AS "
 	                       "SELECT "
 	                       "items.ROWID AS item_id,"
@@ -700,7 +729,7 @@ db_view_create (const gchar *id,
 	                       "items.marked"
 			       " FROM %s "
 			       "WHERE %s;", 
-			       id, tables, conditions);
+			       id, tables, query->conditions);
 
 	res = sqlite3_exec(db, sql, NULL, NULL, &err);
 	if(SQLITE_OK != res) 
