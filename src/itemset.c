@@ -146,6 +146,9 @@ void itemset_add_to_nr_hash(itemSetPtr itemSet, itemPtr item) {
 void itemset_remove_from_nr_hash(itemSetPtr itemSet, itemPtr item) {
 	GHashTable	*hash;
 
+	if(!itemSet->nrHashes)
+		return;
+		
 	hash = g_hash_table_lookup(itemSet->nrHashes, item->sourceNode);	
 	if(hash)
 		g_hash_table_remove(hash, GUINT_TO_POINTER(item->sourceNr));

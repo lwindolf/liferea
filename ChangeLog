@@ -1,6 +1,7 @@
-2007-04-??  Lars Lindner  <lars.lindner@gmail.com>
+2007-04-21  Lars Lindner  <lars.lindner@gmail.com>
 
 	* Workaround for Gentoo bug #116797 (reported by Maxim Britov)
+	* Fixes possible crash when removing folders with unread items.
 	* Updated Spanish translation (Luis Rodrigo Gallardo Cruz)
 	* Added Catalan translation (Gil Forcada)
 
