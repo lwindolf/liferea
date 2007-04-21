@@ -29,10 +29,10 @@
 #include "support.h"
 #include "update.h"
 
-/* Comment feeds in Liferea are simple flat list of items attached
+/* Comment feeds in Liferea are simple flat lists of items attached
    to a single item. Each item that has a comment feed URL in its 
-   metadata list gets its comment feed updates as soon as the user
-   displays the item in 3 pane mode.
+   metadata list gets its comment feed updated as soon as the user
+   triggers rendering of the item in 3 pane mode.
    
    Although rendered differently items and comment items are handled
    in the same way. */
@@ -193,6 +193,7 @@ comments_refresh (itemPtr item)
 		request->source = g_strdup (url);
 		request->priority = 1;
 		update_execute_request (request);
+		commentFeed->updateRequest = request;
 
 		itemview_update_item (item); 
 		itemview_update ();
@@ -224,7 +225,7 @@ comments_to_xml (xmlNodePtr parentNode,
 		item_unload (comment);
 		iter = g_list_next (iter);
 	}
-		
+
 	xmlNewTextChild (commentsNode, NULL, "updateState", 
 	                 (commentFeed->updateRequest)?"updating":"ok");
 		
