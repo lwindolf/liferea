@@ -182,6 +182,7 @@ itemset_to_xml (nodePtr node)
 
 static gchar *
 htmlview_render_item (itemPtr item, 
+                      guint viewMode,
                       gboolean summaryMode) 
 {
 	renderParamPtr	params;
@@ -213,6 +214,7 @@ htmlview_render_item (itemPtr item,
 	render_parameter_add (params, "pixmapsDir='file://" PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "'");
 	render_parameter_add (params, "baseUrl='%s'", baseUrl);
 	render_parameter_add (params, "summary='%d'", summaryMode?1:0);
+	render_parameter_add (params, "single='%d'", (viewMode == ITEMVIEW_SINGLE_ITEM)?0:1);
 	output = render_xml (doc, "item", params);
 	
 	/* For debugging use: xmlSaveFormatFile("/tmp/test.xml", doc, 1); */
@@ -329,7 +331,7 @@ htmlview_update (GtkWidget *widget,
 			item = itemlist_get_selected ();
 			if (item) 
 			{
-				gchar *html = htmlview_render_item (item, FALSE);
+				gchar *html = htmlview_render_item (item, mode, FALSE);
 				if (html)
 				{
 					g_string_append (output, html);
@@ -362,7 +364,7 @@ htmlview_update (GtkWidget *widget,
 					if (item)
 					{
 						debug1 (DEBUG_HTML, "rendering item to HTML view: >>>%s<<<", item_get_title (item));
-						chunk->html = htmlview_render_item (item, summaryMode);
+						chunk->html = htmlview_render_item (item, mode, summaryMode);
 						item_unload (item);
 					}
 				}

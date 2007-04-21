@@ -30,7 +30,8 @@
 <!-- the local pixmap directory (e.g. /usr/share/liferea/pixmaps/) -->
 <xsl:param name="pixmapsDir"/>
 <xsl:param name="baseUrl"/>
-<xsl:param name="summary"/>
+<xsl:param name="summary"/>	<!-- 1=summary rendering, 0=normal rendering -->
+<xsl:param name="single"/>	<!-- 1=single item rendering, 0=2 pane mode -->
 
 <xsl:template match="/itemset">
 
@@ -274,7 +275,7 @@
 <xsl:element name="table">
 <!-- construct unique id to allow Javascript showing/hiding of itemmenu -->
 <xsl:attribute name="id"><xsl:value-of select="sourceId"/>-<xsl:value-of select="nr"/></xsl:attribute>
-<xsl:attribute name="class">headmeta hidden</xsl:attribute>
+<xsl:attribute name="class">headmeta<xsl:if test="$single = 1"> hidden</xsl:if></xsl:attribute>
 <xsl:attribute name="cellspacing">0</xsl:attribute>
 <xsl:attribute name="cellpadding">0</xsl:attribute>
 <tr>
