@@ -47,7 +47,6 @@ static itemSetPtr folder_load(nodePtr node) {
 	itemSet->nodeId = node->id;
 
 	node_foreach_child_data(node, folder_merge_child_items, itemSet);
-	
 	return itemSet;
 }
 

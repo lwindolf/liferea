@@ -131,7 +131,7 @@ itemlist_check_item (itemPtr item)
 	/* use search folder rule list in case of a search folder */
 	if (itemlist_priv.currentNode->type == NODE_TYPE_VFOLDER)		
 		return rules_check_item (((vfolderPtr)itemlist_priv.currentNode->data)->rules, item->id);
-	
+
 	/* apply the item list filter if available */
 	if (itemlist_priv.filter)
 		return rules_check_item (itemlist_priv.filter, item->id);

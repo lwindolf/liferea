@@ -54,7 +54,9 @@ static sqlite3_stmt *metadataLoadStmt = NULL;
 static sqlite3_stmt *metadataInsertStmt = NULL;
 static sqlite3_stmt *metadataRemoveStmt = NULL;
 
-static void db_prepare_stmt(sqlite3_stmt **stmt, gchar *sql) {
+static void
+db_prepare_stmt(sqlite3_stmt **stmt, gchar *sql) 
+{
 	gint		res;	
 	const char	*left;
 		
@@ -64,7 +66,9 @@ static void db_prepare_stmt(sqlite3_stmt **stmt, gchar *sql) {
 }
 
 /* opening or creation of database */
-void db_init(void) {
+void
+db_init (void) 
+{
 	gchar		*filename;
 		
 	debug_enter("db_init");
@@ -231,7 +235,9 @@ void db_init(void) {
 	debug_exit("db_init");
 }
 
-void db_deinit(void) {
+void
+db_deinit (void) 
+{
 
 	debug_enter("db_deinit");
 	
@@ -264,7 +270,9 @@ void db_deinit(void) {
 	debug_exit("db_deinit");
 }
 
-static GSList * db_metadata_load(gulong id) {
+static GSList *
+db_metadata_load(gulong id) 
+{
 	GSList	*metadata = NULL;
 	gint	res;
 
@@ -281,7 +289,12 @@ static GSList * db_metadata_load(gulong id) {
 	return metadata;
 }
 
-static void db_metadata_update_cb(const gchar *key, const gchar *value, guint index, gpointer user_data) {
+static void
+db_metadata_update_cb (const gchar *key,
+                       const gchar *value,
+                       guint index,
+                       gpointer user_data) 
+{
 	itemPtr	item = (itemPtr)user_data;
 	gint	res;
 
@@ -295,12 +308,15 @@ static void db_metadata_update_cb(const gchar *key, const gchar *value, guint in
 		g_warning("Update in \"metadata\" table failed (error code=%d, %s)", res, sqlite3_errmsg(db));
 }
 
-static void db_metadata_update(itemPtr item) {
-
+static void
+db_metadata_update(itemPtr item) 
+{
 	metadata_list_foreach(item->metadata, db_metadata_update_cb, item);
 }
 
-static void db_metadata_remove(gulong id) {
+static void
+db_metadata_remove(gulong id) 
+{
 	gint	res;
 	
 	sqlite3_reset(metadataRemoveStmt);
@@ -311,7 +327,9 @@ static void db_metadata_remove(gulong id) {
 }
 /* Item structure loading methods */
 
-static itemPtr db_load_item_from_columns(sqlite3_stmt *stmt) {
+static itemPtr
+db_load_item_from_columns (sqlite3_stmt *stmt) 
+{
 	itemPtr item = item_new();
 	
 	item->readStatus	= sqlite3_column_int(stmt, 1)?TRUE:FALSE;
@@ -337,7 +355,9 @@ static itemPtr db_load_item_from_columns(sqlite3_stmt *stmt) {
 	return item;
 }
 
-itemSetPtr db_itemset_load(const gchar *id) {
+itemSetPtr
+db_itemset_load (const gchar *id) 
+{
 	itemSetPtr 	itemSet;
 	gint		res;
 
@@ -359,7 +379,9 @@ itemSetPtr db_itemset_load(const gchar *id) {
 	return itemSet;
 }
 
-itemPtr db_item_load(gulong id) {
+itemPtr
+db_item_load (gulong id) 
+{
 	itemPtr 	item = NULL;
 	gint		res;
 
@@ -389,7 +411,12 @@ itemPtr db_item_load(gulong id) {
 
 /* Item modification methods */
 
-static int db_item_set_id_cb(void *user_data, int count, char **values, char **columns) {
+static int
+db_item_set_id_cb (void *user_data,
+                   int count,
+		   char **values,
+		   char **columns) 
+{
 	itemPtr	item = (itemPtr)user_data;
 	
 	g_assert(NULL != values);
@@ -407,7 +434,9 @@ static int db_item_set_id_cb(void *user_data, int count, char **values, char **c
 	return 0;
 }
 
-static void db_item_set_id(itemPtr item) {
+static void
+db_item_set_id (itemPtr item) 
+{
 	gchar	*sql, *err;
 	gint	res;
 	
@@ -421,7 +450,9 @@ static void db_item_set_id(itemPtr item) {
 	sqlite3_free(err);
 }
 
-void db_item_update(itemPtr item) {
+void
+db_item_update (itemPtr item) 
+{
 	gint	res;
 	
 	debug3 (DEBUG_DB, "update of item \"%s\" (id=%lu, thread=%p)", item->title, item->id, g_thread_self());
@@ -469,7 +500,9 @@ void db_item_update(itemPtr item) {
 	debug_end_measurement (DEBUG_DB, "item update");
 }
 
-void db_item_remove(gulong id) {
+void
+db_item_remove (gulong id) 
+{
 	gint	res;
 	
 	debug1(DEBUG_DB, "removing item with id %lu", id);
@@ -508,7 +541,9 @@ db_item_get_duplicates (const gchar *guid)
 	return duplicates;
 }
 
-void db_itemset_remove_all(const gchar *id) {
+void 
+db_itemset_remove_all (const gchar *id) 
+{
 	gint	res;
 	
 	debug1(DEBUG_DB, "removing all items for item set with %s", id);
@@ -550,7 +585,9 @@ db_item_mark_read (itemPtr item)
 	}
 }
 
-void db_itemset_mark_all_updated(const gchar *id) {
+void 
+db_itemset_mark_all_updated (const gchar *id) 
+{
 	gint	res;
 	
 	debug1(DEBUG_DB, "marking all items updared for item set with %s", id);
@@ -563,7 +600,9 @@ void db_itemset_mark_all_updated(const gchar *id) {
 		g_warning("marking all items updated failed (error code=%d, %s)", res, sqlite3_errmsg(db));
 }
 
-void db_itemset_mark_all_old(const gchar *id) {
+void 
+db_itemset_mark_all_old (const gchar *id) 
+{
 	gint	res;
 	
 	debug1(DEBUG_DB, "marking all items old for item set with %s", id);
@@ -576,7 +615,9 @@ void db_itemset_mark_all_old(const gchar *id) {
 		g_warning("marking all items old failed (error code=%d, %s)", res, sqlite3_errmsg(db));
 }
 
-void db_itemset_mark_all_popup(const gchar *id) {
+void 
+db_itemset_mark_all_popup (const gchar *id) 
+{
 	gint	res;
 	
 	debug1(DEBUG_DB, "marking all items popup for item set with %s", id);
@@ -591,7 +632,9 @@ void db_itemset_mark_all_popup(const gchar *id) {
 
 /* Statistics interface */
 
-guint db_itemset_get_unread_count(const gchar *id) {
+guint 
+db_itemset_get_unread_count (const gchar *id) 
+{
 	gint	res;
 	guint	count = 0;
 	
@@ -611,7 +654,9 @@ guint db_itemset_get_unread_count(const gchar *id) {
 	return count;
 }
 
-guint db_itemset_get_item_count(const gchar *id) {
+guint 
+db_itemset_get_item_count (const gchar *id) 
+{
 	gint	res;
 	guint	count = 0;
 
@@ -653,7 +698,7 @@ db_end_transaction (void)
 	
 	sql = sqlite3_mprintf("END");
 	res = sqlite3_exec(db, sql, NULL, NULL, &err);
-	if(SQLITE_OK != res) 
+	  if(SQLITE_OK != res) 
 		g_warning("Transaction begin failed (%s) SQL: %s", err, sql);
 	sqlite3_free(sql);
 	sqlite3_free(err);
@@ -677,31 +722,31 @@ gboolean
 db_item_check (guint id, const queryPtr query)
 {
 	gchar		*sql, *tables = NULL;
-	gboolean	result = FALSE;
+	gint		res;
 	sqlite3_stmt	*itemCheckStmt;	
 
 	g_return_val_if_fail (query->tables != 0, FALSE);
 	// g_return_val_if_fail (query->columns == NULL, FALSE); FIXME
 		
-	if (query->tables & QUERY_TABLE_ITEMS)
-		tables = g_strdup ("items");
-	if (query->tables & QUERY_TABLE_METADATA)
-		tables = g_strdup ("metadata");
-	if (query->tables & (QUERY_TABLE_METADATA | QUERY_TABLE_ITEMS))
-		tables = g_strdup ("items INNER JOIN metadata ON items.ROWID = metadata.item_id");
+	if (query->tables == QUERY_TABLE_ITEMS)
+		tables = g_strdup ("items.ROWID FROM items");
+	if (query->tables == QUERY_TABLE_METADATA)
+		tables = g_strdup ("metadata.ROWID FROM metadata");
+	if (query->tables == (QUERY_TABLE_METADATA | QUERY_TABLE_ITEMS))
+		tables = g_strdup ("items.ROWID FROM items INNER JOIN metadata ON items.ROWID = metadata.item_id");
 
-	sql = sqlite3_mprintf ("SELECT item_id FROM %s WHERE items.ROWID=%d AND %s;",
+	sql = sqlite3_mprintf ("SELECT %s WHERE items.ROWID=%d AND %s;",
 	                       tables, id, query->conditions);
 	db_prepare_stmt (&itemCheckStmt, sql);
 	sqlite3_reset (itemCheckStmt);
 
-	result = (sqlite3_step (itemCheckStmt) == SQLITE_ROW);
-	
+	res = sqlite3_step (itemCheckStmt);
+
 	g_free (tables);
 	sqlite3_free (sql);
 	sqlite3_finalize (itemCheckStmt);
 	
-	return result;
+	return (SQLITE_ROW == res);
 }
 
 void
