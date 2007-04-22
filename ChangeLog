@@ -11,6 +11,7 @@
 	* Improves comment feed handling. Now the correct comment
 	  feed update state is displayed and auto-updating of
 	  comment feeds works properly.
+	* Fixes date rendering in summary mode.
 
 
 2007-04-17  Lars Lindner  <lars.lindner@gmail.com>
