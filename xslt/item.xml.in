@@ -42,10 +42,7 @@
 <body>
 
 <!-- base URL of the itemset -->
-<xsl:element name="div">
-<xsl:attribute name="href">
-   <xsl:value-of select="$baseUrl"/>
-</xsl:attribute>
+<div href="{$baseUrl}">
 
 <xsl:for-each select="item">
   <xsl:choose>
@@ -58,7 +55,7 @@
   </xsl:choose>
 </xsl:for-each>
 
-</xsl:element> <!-- end of base URL div -->
+</div> <!-- end of base URL div -->
 
 </body>
 </html>
@@ -71,67 +68,59 @@
 <xsl:template name="item">
 
 <!-- base URL of parent feed -->
-<xsl:element name="div">
-<xsl:attribute name="href">
-   <xsl:value-of select="/itemset/feed/feedSource"/>
-</xsl:attribute>
+<div href="{/itemset/feed/feedSource}">
 
 <!-- the item -->
-<xsl:element name="div">
+
+<xsl:variable name="onMouseOver">
+   <xsl:text disable-output-escaping='yes'>doShow('</xsl:text>
+   <xsl:value-of select="sourceId"/>-<xsl:value-of select="nr"/>
+   <xsl:text disable-output-escaping='yes'>');</xsl:text>
+</xsl:variable>
 
 <!-- entering header starts delayed show of the item menu -->
-<xsl:attribute name="onmouseover">
-<xsl:text disable-output-escaping='yes'>doShow('</xsl:text>
-<xsl:value-of select="sourceId"/>-<xsl:value-of select="nr"/>
-<xsl:text disable-output-escaping='yes'>');</xsl:text>
-</xsl:attribute>
-
 <!-- leaving header stops show counter -->
-<xsl:attribute name="onmouseout">stopShow();</xsl:attribute>
+<div onmouseover="{$onMouseOver}" onmouseout="stopShow();">
 
 <!-- header table -->
-<xsl:element name="table">
-<xsl:attribute name="class">itemhead <xsl:if test="mark = '0'">un</xsl:if>flagged</xsl:attribute>
-<xsl:attribute name="cellspacing">0</xsl:attribute>
-<xsl:attribute name="cellpadding">0</xsl:attribute>
+<xsl:variable name="flagclass">
+  <xsl:if test="mark = '0'">un</xsl:if>
+  <xsl:text>flagged</xsl:text>
+</xsl:variable>
+<table class="itemhead {$flagclass}" cellspacing="0" cellpadding="0">
 
 <tr>
   <td valign="middle" class="headleft">
     <!-- Feed link as favicon -->
-    <xsl:element name="a">
-      <xsl:attribute name="class">favicon</xsl:attribute>
-      <xsl:attribute name="href"><xsl:value-of select="/itemset/feed/feedLink"/></xsl:attribute>
-      <xsl:element name="img">
-        <xsl:attribute name="src">
-          <xsl:choose>
-            <xsl:when test="not(sourceFavicon)">
-              <xsl:value-of select="/itemset/feed/favicon"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="sourceFavicon"/>
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:attribute>
-      </xsl:element>
-    </xsl:element>
+    
+    <xsl:variable name="favicon">
+      <xsl:choose>
+        <xsl:when test="not(sourceFavicon)">
+          <xsl:value-of select="/itemset/feed/favicon"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="sourceFavicon"/>
+        </xsl:otherwise>
+      </xsl:choose>   
+    </xsl:variable>
+    
+    <a class="favicon" href="{/itemset/feed/feedLink}">
+      <img src="{$favicon}"/>
+    </a>
   </td>
   <td width="100%" valign="middle" class="headright">
     <!-- Item title as link -->
-    <xsl:element name="a">
-      <xsl:attribute name="class">itemhead</xsl:attribute>
-      <xsl:attribute name="href">
-        <xsl:value-of select="source"/>
-      </xsl:attribute>
+    <a class="itemhead" href="{source}">
       <xsl:value-of select="title"/>
       <!-- the title added above might be empty, in this 
            case we add the date of the post -->
       <xsl:if test="title = ''">
          <xsl:value-of select="timestr"/> 
       </xsl:if>
-    </xsl:element>
+    </a>
   </td>
 </tr>
-</xsl:element>
+</table>
 
 <!-- enclosures -->
 <xsl:for-each select="attributes/attribute[ @name = 'enclosure' ]">
@@ -139,33 +128,30 @@
 
 <tr>
   <td valign="middle" class="headleft">
-    <xsl:element name="a">
-      <xsl:attribute name="class">favicon</xsl:attribute>
-      <xsl:attribute name="href">liferea-enclosure://load?<xsl:value-of select="."/></xsl:attribute>
-      <xsl:element name="img">
-        <xsl:attribute name="border">0</xsl:attribute>
-        <xsl:attribute name="class">enclosurebtn</xsl:attribute>
-	<xsl:attribute name="src"><xsl:value-of select="$pixmapsDir"/>attachment.png</xsl:attribute>
-      </xsl:element>
-    </xsl:element>
+    <a class="favicon" href="liferea-enclosure://load?{.}">
+      <img border="0" class="enclosurebtn" src="{$pixmapsDir}attachment.png"/>
+    </a>
   </td>
   <td width="99%">
    <xsl:choose>
     <xsl:when test="contains(.,'mp3') or contains(.,'ogg')">
       <span class="xspf_player">
-        <xsl:element name="object">
-          <xsl:attribute name="type">application/x-shockwave-flash</xsl:attribute>
-          <xsl:attribute name="width">400</xsl:attribute>
-          <xsl:attribute name="height">15</xsl:attribute>
-          <xsl:attribute name="data"><xsl:value-of select="$pixmapsDir"/>../media/xspf_player_slim.swf?song_title=<xsl:call-template name="substring-after-last">
+        <xsl:variable name="song">
+          <xsl:call-template name="substring-after-last">
             <xsl:with-param name="input"  select="." />
             <xsl:with-param name="substr" select="'/'" />
-          </xsl:call-template>&amp;song_url=<xsl:value-of select="."/>&amp;player_title=Click+to+play+<xsl:call-template name="substring-after-last">
+          </xsl:call-template>
+        </xsl:variable>
+        <xsl:variable name="player">
+          <xsl:call-template name="substring-after-last">
             <xsl:with-param name="input"  select="." />
             <xsl:with-param name="substr" select="'/'" />
-          </xsl:call-template>...</xsl:attribute>
+          </xsl:call-template>
+        </xsl:variable>
+        <object type="application/x-shockwave-flash" width="400" height="15"
+           data="{$pixmapsDir}../media/xspf_player_slim.swf?song_title={$song}&amp;song_url={.}&amp;player_title=Click+to+play+{$player}...">
           <xsl:call-template name="enclosure"/>
-        </xsl:element>
+        </object>
       </span>
      </xsl:when>
      <xsl:otherwise>
@@ -194,12 +180,9 @@
  <td valign="top" class='source'> 
      <_span>Source</_span>
      <b><span class='source'>
-       <xsl:element name="a">
-         <xsl:attribute name="href">
-           <xsl:value-of select="real_source_url"/>
-         </xsl:attribute>
+       <a href="{real_source_url}">
          <xsl:value-of select="real_source_title"/>
-       </xsl:element>
+       </a>
      </span></b>
  </td>
 </tr>
@@ -212,12 +195,9 @@
  <td valign="top" class='source'> 
      <_span>Feed</_span>
      <b><span class='source'>
-       <xsl:element name="a">
-         <xsl:attribute name="href">
-           <xsl:value-of select="/itemset/feed/feedLink"/>
-         </xsl:attribute>
+       <a href="{/itemset/feed/feedLink}">
          <xsl:value-of select="/itemset/feed/feedTitle"/>
-       </xsl:element>
+       </a>
      </span></b>
  </td>
 </tr>
@@ -272,94 +252,66 @@
 
 </table> <!-- end of header metadata -->
 
-<xsl:element name="table">
 <!-- construct unique id to allow Javascript showing/hiding of itemmenu -->
-<xsl:attribute name="id"><xsl:value-of select="sourceId"/>-<xsl:value-of select="nr"/></xsl:attribute>
-<xsl:attribute name="class">headmeta<xsl:if test="$single = 1"> hidden</xsl:if></xsl:attribute>
-<xsl:attribute name="cellspacing">0</xsl:attribute>
-<xsl:attribute name="cellpadding">0</xsl:attribute>
+<xsl:variable name="hiddenMenu">
+   <xsl:if test="$single = 1">hidden</xsl:if>
+</xsl:variable>
+
+<table id="{sourceId}-{nr}" class="headmeta {$hiddenMenu}"
+       cellspacing="0" cellpadding="0">
 <tr>
  <td class='itemmenu'> 
 
-<!-- for comment link and search engine link -->
+  <!-- for comment link and search engine link -->
 
-<!-- Flagging link -->
-<xsl:element name="a">
-  <xsl:attribute name="class">flag</xsl:attribute>
-  <xsl:attribute name="href">liferea-flag://<xsl:value-of select="sourceId"/>-<xsl:value-of select="sourceNr"/></xsl:attribute>
-  <xsl:element name="img">
-    <xsl:attribute name="border">0</xsl:attribute>
-    <xsl:attribute name="class">flagbtn</xsl:attribute>
-    <xsl:attribute name="src"><xsl:value-of select="$pixmapsDir"/>
-    <xsl:if test="mark = '0'">grayflag.png</xsl:if>
-    <xsl:if test="mark = '1'">flag.png</xsl:if>
-    </xsl:attribute>
-  </xsl:element>
-  <_span>flag</_span>
-</xsl:element>
+  <!-- Flagging link -->
+  <a class="flag" href="liferea-flag://{sourceId}-{sourceNr}">
+    <xsl:variable name="png">
+      <xsl:if test="mark = '0'">grayflag.png</xsl:if>
+      <xsl:if test="mark = '1'">flag.png</xsl:if>
+    </xsl:variable>
+    <img border="0" class="flagbtn" src="{$pixmapsDir}{$png}"/>
+    <_span>flag</_span>
+  </a>
    
-<!-- Tagging link -->
-<!--<xsl:element name="a">
-  <xsl:attribute name="class">bookmark</xsl:attribute>
-  <xsl:attribute name="href">liferea-tag://<xsl:value-of select="sourceId"/>-<xsl:value-of select="nr"/></xsl:attribute>
-  <xsl:element name="img">
-    <xsl:attribute name="border">0</xsl:attribute>
-    <xsl:attribute name="class">tagbtn</xsl:attribute>
-    <xsl:attribute name="src"><xsl:value-of select="$pixmapsDir"/>tag.png</xsl:attribute>
-  </xsl:element>
-  <_span>add tag</_span>
-</xsl:element>-->
+  <!-- Tagging link -->
+  <!--<a class="bookmark" href="liferea-tag://{sourceId}-{nr}">
+    <img border="0" class="tagbtn" src="{$pixmapsDir}tag.png"/>
+    <_span>add tag</_span>
+  </a>-->
 
-<!-- Bookmarking link -->
-<xsl:element name="a">
-  <xsl:attribute name="class">bookmark</xsl:attribute>
-  <xsl:attribute name="href">liferea-bookmark://<xsl:value-of select="sourceId"/>-<xsl:value-of select="nr"/></xsl:attribute>
-  <xsl:element name="img">
-    <xsl:attribute name="border">0</xsl:attribute>
-    <xsl:attribute name="class">bookmarkbtn</xsl:attribute>
-    <xsl:attribute name="src"><xsl:value-of select="$pixmapsDir"/>bookmark.png</xsl:attribute>
-  </xsl:element>
-  <_span>bookmark</_span>
-</xsl:element>
+  <!-- Bookmarking link -->
+  <a class="bookmark" href="liferea-bookmark://{sourceId}-{nr}">
+    <img border="0" class="bookmarkbtn" src="{$pixmapsDir}bookmark.png"/>
+    <_span>bookmark</_span>
+  </a>
 
-<!-- Comments link -->
-<xsl:if test="attributes/attribute[ @name = 'commentsUri' ]">
-  <xsl:element name="a">
-    <xsl:attribute name="href">
-      <xsl:attribute name="class">comments</xsl:attribute>
-      <xsl:value-of select="attributes/attribute[ @name = 'commentsUri' ]"/>
-    </xsl:attribute>
-    <xsl:element name="img">
-      <xsl:attribute name="border">0</xsl:attribute>
-      <xsl:attribute name="class">commentsbtn</xsl:attribute>
-      <xsl:attribute name="src"><xsl:value-of select="$pixmapsDir"/>comments.png</xsl:attribute>
-    </xsl:element>
-    <_span>comments</_span>
-  </xsl:element>
-</xsl:if>
+  <!-- Comments link -->
+  <xsl:if test="attributes/attribute[ @name = 'commentsUri' ]">
+    <a class="comments" href="{attributes/attribute[ @name = 'commentsUri' ]}">
+      <img border="0" class="commentsbtn" src="{$pixmapsDir}comments.png"/>
+      <_span>comments</_span>
+    </a>
+  </xsl:if>
 
-<!-- Technorati link -->
-<xsl:element name="a">
-  <xsl:attribute name="class">technorati</xsl:attribute>
-  <xsl:attribute name="href">http://www.technorati.com/cosmos/search.html?url=<xsl:value-of select="source"/></xsl:attribute>
-  <xsl:element name="img">
-    <xsl:attribute name="class">technoratibtn</xsl:attribute>
-    <xsl:attribute name="border">0</xsl:attribute>
-    <xsl:attribute name="alt">[Technorati]</xsl:attribute>
-    <xsl:attribute name="src"><xsl:value-of select="$pixmapsDir"/>technorati.png</xsl:attribute>
-  </xsl:element>
-  <_span>search</_span>
-</xsl:element>
+  <!-- Technorati link -->
+  <a class="technorati"
+     href="http://www.technorati.com/cosmos/search.html?url={source}">
+    <img class="technoratibtn" border="0" alt="[Technorati]"
+         src="{$pixmapsDir}technorati.png"/>
+    <_span>search</_span>
+  </a>
 
  </td><!-- end of comment and search engine link -->
 </tr>
-</xsl:element> <!-- itemmenutable -->
+</table> <!-- itemmenutable -->
 
-<xsl:element name="div">
-<xsl:attribute name="class">
+<xsl:variable name="shading">
   <xsl:if test="readStatus = '0'">itemshaded</xsl:if>
   <xsl:if test="readStatus != '0'">itemunshaded</xsl:if>
-</xsl:attribute>
+</xsl:variable>
+
+<div class="{$shading}">
 <div class='content'>
   <!-- the items content -->
   <p>
@@ -384,10 +336,9 @@
            (<_span>Updating...</_span>)
 	</xsl:when>
         <xsl:otherwise>
-           (<xsl:element name="a">
-              <xsl:attribute name="href">liferea-refresh-comments://<xsl:value-of select="sourceId"/>-<xsl:value-of select="sourceNr"/></xsl:attribute>
+           (<a href="liferea-refresh-comments://{sourceId}-{sourceNr}">
               <_span>Refresh</_span>
-           </xsl:element>)
+           </a>)
         </xsl:otherwise>
      </xsl:choose>
      
@@ -411,10 +362,10 @@
      </p>    
   </xsl:if>
 </div>
-</xsl:element> <!-- end of shading div -->
-</xsl:element> <!-- end of base URL div -->
+</div> <!-- end of shading div -->
+</div> <!-- end of base URL div -->
 
-</xsl:element> <!-- item -->
+</div> <!-- item -->
 
 </xsl:template>
 
@@ -432,14 +383,12 @@
 
 <!-- enclosure rendering -->
 <xsl:template name="enclosure">
-  <xsl:element name="a">
-    <xsl:attribute name="class">enclosure</xsl:attribute>
-    <xsl:attribute name="href"><xsl:value-of select="."/></xsl:attribute>
+  <a class="enclosure" href="{.}">
     <xsl:call-template name="substring-after-last">
       <xsl:with-param name="input"  select="." />
       <xsl:with-param name="substr" select="'/'" />
     </xsl:call-template>
-  </xsl:element>
+  </a>
 </xsl:template>
 
 <!-- ==================================================================== -->
@@ -456,12 +405,15 @@
 
 <!--- single item summary mode rendering -->
 <xsl:template name="item_summary">
-<xsl:element name="div">
-  <xsl:attribute name="class"><xsl:choose>
+
+<xsl:variable name="summaryShading">
+   <xsl:choose>
       <xsl:when test="readStatus = '0'">summaryshaded</xsl:when>
       <xsl:otherwise>summaryunshaded</xsl:otherwise>
-    </xsl:choose> summary<xsl:if test="mark = '0'">un</xsl:if>flagged</xsl:attribute>
-
+   </xsl:choose> summary<xsl:if test="mark = '0'">un</xsl:if>flagged
+</xsl:variable>
+    
+<div class="{$summaryShading}">
   <table cellspacing="0" cellpadding="0" width="100%">
   <tr>
     <td class="summarytime" valign="top">
@@ -469,12 +421,9 @@
     </td>
     <td width="100%">
       <!-- Item title as link -->
-      <xsl:element name="a">
-        <xsl:attribute name="href">
-          <xsl:value-of select="source"/>
-        </xsl:attribute>
+      <a href="{source}">
         <xsl:value-of select="title"/>
-      </xsl:element>
+      </a>
 
       <!-- summary mode means most of the items have no description,
            but lets output them for those who have one... -->
@@ -485,14 +434,12 @@
 
       <!-- enclosures -->
       <xsl:for-each select="attributes/attribute[ @name = 'enclosure' ]">
-        (<xsl:element name="a">
-          <xsl:attribute name="class">enclosure</xsl:attribute>
-          <xsl:attribute name="href"><xsl:value-of select="."/></xsl:attribute>
+        (<a class="enclosure" href="{.}">
           <xsl:call-template name="substring-after-last">
             <xsl:with-param name="input"  select="." />
             <xsl:with-param name="substr" select="'/'" />
           </xsl:call-template>
-        </xsl:element>)
+        </a>)
       </xsl:for-each>
 
     </td>
@@ -501,7 +448,7 @@
     
   <hr class='summary'/>
 
-</xsl:element>
+</div>
 </xsl:template>
 
 <!-- ==================================================================== -->
