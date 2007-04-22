@@ -83,14 +83,6 @@ static void export_append_node_tag(nodePtr node, gpointer userdata) {
 		tmp = g_strdup_printf("%u", node_get_view_mode(node));
 		xmlNewProp(childNode, BAD_CAST"viewMode", BAD_CAST tmp);
 		g_free(tmp);
-		
-		tmp = g_strdup_printf("%u", node->itemCount);
-		xmlNewProp(childNode, BAD_CAST"itemCount", BAD_CAST tmp);
-		g_free(tmp);
-		
-		tmp = g_strdup_printf("%u", node->unreadCount);
-		xmlNewProp(childNode, BAD_CAST"unreadCount", BAD_CAST tmp);
-		g_free(tmp);
 	}
 
 	/* 2. add node type specific stuff */
@@ -236,19 +228,6 @@ void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, nodeSourcePtr node
 		xmlFree(tmp);
 	}
 	
-	/* item statistics */
-	tmp = xmlGetProp(cur, BAD_CAST"itemCount");
-	if(tmp) {
-		node->itemCount = atoi(tmp);
-		xmlFree(tmp);
-	}
-	
-	tmp = xmlGetProp(cur, BAD_CAST"unreadCount");
-	if(tmp) {
-		node->unreadCount = atoi(tmp);
-		xmlFree(tmp);
-	}
-
 	/* expansion state */		
 	if(xmlHasProp(cur, BAD_CAST"expanded"))
 		node->expanded = TRUE;

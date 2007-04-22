@@ -55,7 +55,7 @@ static sqlite3_stmt *metadataInsertStmt = NULL;
 static sqlite3_stmt *metadataRemoveStmt = NULL;
 
 static void
-db_prepare_stmt(sqlite3_stmt **stmt, gchar *sql) 
+db_prepare_stmt (sqlite3_stmt **stmt, gchar *sql) 
 {
 	gint		res;	
 	const char	*left;
@@ -65,11 +65,40 @@ db_prepare_stmt(sqlite3_stmt **stmt, gchar *sql)
 		g_error("Failure while preparing statement, (error=%d, %s) SQL: \"%s\"", res, sqlite3_errmsg(db), sql);
 }
 
+static void
+db_exec (const gchar *sql)
+{
+	gchar	*err;
+	gint	res;
+	
+	debug1 (DEBUG_DB, "executing SQL: %s", sql);
+	res = sqlite3_exec (db, sql, NULL, NULL, &err);
+	debug2 (DEBUG_DB, " -> result: %d (%s)", res, err?err:"success");	
+	sqlite3_free (err);
+}
+
+static guint
+db_get_schema_version (void)
+{
+	guint		schemaVersion;
+	sqlite3_stmt	*schemaVersionStmt;	
+	
+	db_prepare_stmt (&schemaVersionStmt, "SELECT value FROM info WHERE key = 'schemaVersion'");
+	sqlite3_step (schemaVersionStmt);
+	schemaVersion = sqlite3_column_int (schemaVersionStmt, 0);
+	sqlite3_finalize(schemaVersionStmt);
+	
+	return schemaVersion;
+}
+
+#define SCHEMA_TARGET_VERSION 1
+
 /* opening or creation of database */
 void
 db_init (void) 
 {
 	gchar		*filename;
+	guint		schemaVersion;
 		
 	debug_enter("db_init");
 
@@ -79,7 +108,43 @@ db_init (void)
 	}
 	g_free(filename);
 	
-	/* create tables */
+	/* create info table/check versioning info */			
+	schemaVersion = db_get_schema_version();
+	debug1 (DEBUG_DB, "current DB schema version: %d", schemaVersion);
+	
+	if (SCHEMA_TARGET_VERSION < schemaVersion)
+		g_error ("Fatal: The cache database was created by a newer version of Liferea than this one!");
+		       
+	if (SCHEMA_TARGET_VERSION > schemaVersion) {
+		/* do table migration */
+		if (0 == schemaVersion) {
+			/* 1.3.2 -> 1.3.3 adding read flag to itemsets relation */
+			debug0 (DEBUG_DB, "migrating from schema version 0 to 1");
+			db_exec ("BEGIN; "
+		        	 "CREATE TEMPORARY TABLE itemsets_backup(item_id,node_id); "
+				 "INSERT INTO itemsets_backup SELECT item_id,node_id FROM itemsets; "
+		        	 "DROP TABLE itemsets; "
+                        	 "CREATE TABLE itemsets ( "
+				 "	item_id		INTEGER, "
+				 "	node_id		TEXT, "
+				 "	read		INTEGER "
+		        	 "); "
+				 "INSERT INTO itemsets SELECT item_id,node_id,0 FROM itemsets_backup; "
+				 "DROP TABLE itemsets_backup; "
+		        	 "REPLACE INTO info (key, value) VALUES ('schemaVersion',1); "
+				 "END;");
+		}
+			 
+		if (1 != schemaVersion)
+			g_warning ("Fatal: DB schema migration failed! Running with --debug-db could give some hints!");
+	}
+
+	/* create tables if they do not exist yet */
+	sqlite3_exec (db, "CREATE TABLE info ( \
+	                      key	TEXT, \
+		              value	TEXT \
+	                   );", NULL, NULL, NULL);
+
 	sqlite3_exec (db,"CREATE TABLE items ( \
 				title			TEXT, \
 				read			INTEGER, \
@@ -101,7 +166,8 @@ db_init (void)
 
 	sqlite3_exec (db, "CREATE TABLE itemsets ( \
 				item_id		INTEGER, \
-				node_id		TEXT \
+				node_id		TEXT, \
+				read		INTEGER \
 			);", NULL, NULL, NULL);
 			
 	sqlite3_exec (db, "CREATE INDEX itemset_idx  ON itemsets (node_id);", NULL, NULL, NULL);
@@ -115,22 +181,37 @@ db_init (void)
         			PRIMARY KEY (item_id, nr) \
 			);", NULL, NULL, NULL);
 			
-	sqlite3_exec (db, "CREATE INDEX metadata_idx ON metadata (item_id);", NULL, NULL, NULL);
+	db_exec ("CREATE INDEX metadata_idx ON metadata (item_id);");
 	
-	/* Set up removal triggers */
-	
-	sqlite3_exec (db, "CREATE TRIGGER item_removal DELETE ON itemsets \
-	                   BEGIN \
-			      DELETE FROM items WHERE ROWID = old.item_id; \
-	                   END;", NULL, NULL, NULL);
+	/* Set up removal trigger */	
+	db_exec ("DROP TRIGGER item_removal;");
+	db_exec ("CREATE TRIGGER item_removal DELETE ON itemsets \
+	          BEGIN \
+	             DELETE FROM items WHERE ROWID = old.item_id; \
+	          END;");
+			   
+	/* Set up read state update triggers */
+	db_exec ("DROP TRIGGER item_insert;");
+	db_exec ("CREATE TRIGGER item_insert INSERT ON items \
+	          BEGIN \
+	             UPDATE itemsets SET read = new.read \
+	             WHERE item_id = new.ROWID; \
+	          END;");
+
+	db_exec ("DROP TRIGGER item_update;");
+	db_exec ("CREATE TRIGGER item_update UPDATE ON items \
+	          BEGIN \
+	             UPDATE itemsets SET read = new.read \
+	             WHERE item_id = new.ROWID; \
+	          END;");
 			   
 	/* Cleanup of DB */
 	
-	sqlite3_exec (db, "DELETE FROM items WHERE ROWID NOT IN "
-			  "(SELECT item_id FROM itemsets);", NULL, NULL, NULL);
+	db_exec ("DELETE FROM items WHERE ROWID NOT IN "
+		 "(SELECT item_id FROM itemsets);");
 			  
-	sqlite3_exec (db, "DELETE FROM itemsets WHERE item_id NOT IN "
-			  "(SELECT ROWID FROM items);", NULL, NULL, NULL);
+	db_exec ("DELETE FROM itemsets WHERE item_id NOT IN "
+		 "(SELECT ROWID FROM items);");
 	
 	/*res = sqlite3_exec (db, "PRAGMA synchronous=off", NULL, NULL, &err);
 	if (SQLITE_OK != res)
@@ -143,13 +224,11 @@ db_init (void)
 	               "SELECT item_id FROM itemsets WHERE node_id = ?");
 		       
 	db_prepare_stmt(&itemsetInsertStmt,
-	                "INSERT INTO itemsets (item_id,node_id) VALUES (?,?)");
+	                "INSERT INTO itemsets (item_id,node_id,read) VALUES (?,?,?)");
 	
 	db_prepare_stmt(&itemsetReadCountStmt,
-	               "SELECT COUNT(*) FROM items INNER JOIN itemsets "
-	               "ON items.ROWID = itemsets.item_id "
-		       "WHERE items.read = 0 AND node_id = ? "
-		       "ORDER BY items.date, items.ROWID DESC");
+	               "SELECT COUNT(*) FROM itemsets "
+		       "WHERE node_id = ? AND read = 0");
 	       
 	db_prepare_stmt(&itemsetItemCountStmt,
 	               "SELECT COUNT(*) FROM itemsets "
@@ -465,8 +544,9 @@ db_item_update (itemPtr item)
 		
 		/* insert item <-> node relation */
 		sqlite3_reset(itemsetInsertStmt);
-		sqlite3_bind_int(itemsetInsertStmt, 1, item->id);
+		sqlite3_bind_int (itemsetInsertStmt, 1, item->id);
 		sqlite3_bind_text(itemsetInsertStmt, 2, item->nodeId, -1, SQLITE_TRANSIENT);
+		sqlite3_bind_int (itemsetInsertStmt, 3, item->readStatus);
 		res = sqlite3_step(itemsetInsertStmt);
 		if(SQLITE_DONE != res) 
 			g_warning("Insert in \"itemsets\" table failed (error code=%d, %s)", res, sqlite3_errmsg(db));
@@ -650,7 +730,7 @@ db_itemset_get_unread_count (const gchar *id)
 		g_warning("item read counting failed (error code=%d, %s)", res, sqlite3_errmsg(db));
 		
 	debug_end_measurement (DEBUG_DB, "counting unread items");
-		
+
 	return count;
 }
 

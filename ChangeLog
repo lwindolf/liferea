@@ -1,8 +1,16 @@
-2007-04-??  Lars Lindner  <lars.lindner@gmail.com>
+2007-04-22  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.3.3 (Unstable)
 
-	* Makes search folders work again.
+	* Changes the DB schema to improve performance
+	  when determining the unread/total item count of a feed.
+	* Added mechanism for automatic schema migration and
+	  schema version checking.
+	* Makes search folders work again. Note: unread counters
+	  for search folders are not yet working.
+	* Improves comment feed handling. Now the correct comment
+	  feed update state is displayed and auto-updating of
+	  comment feeds works properly.
 
 
 2007-04-17  Lars Lindner  <lars.lindner@gmail.com>
