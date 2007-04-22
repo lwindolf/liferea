@@ -204,6 +204,10 @@ void item_to_xml(itemPtr item, xmlNodePtr parentNode) {
 	xmlNewTextChild(itemNode, NULL, "time", tmp);
 	g_free(tmp);
 
+	tmp = itemview_format_date(item->time);
+	xmlNewTextChild(itemNode, NULL, "timestr", tmp);
+	g_free(tmp);
+
 	if (item->validGuid) 
 	{
 		GSList	*iter, *duplicates;
