@@ -77,16 +77,53 @@ db_exec (const gchar *sql)
 	sqlite3_free (err);
 }
 
-static guint
+static gboolean
+db_table_exists (const gchar *name)
+{
+	gchar		*sql;
+	sqlite3_stmt	*stmt;
+	gint		res;
+
+	sql = sqlite3_mprintf ("SELECT COUNT(*) FROM sqlite_master WHERE type = 'table' AND name = '%s';", name);
+	db_prepare_stmt (&stmt, sql);
+	sqlite3_step (stmt);
+	res = sqlite3_column_int (stmt, 0);
+	sqlite3_finalize (stmt);
+	sqlite3_free (sql);
+	return (1 == res);
+}
+
+static void
+db_set_schema_version (gint schemaVersion)
+{
+	gchar	*err, *sql;
+
+	sql = sqlite3_mprintf ("REPLACE INTO info (name, value) VALUES ('schemaVersion',%d);", schemaVersion);
+	if (SQLITE_OK != sqlite3_exec (db, sql, NULL, NULL, &err))
+		debug1 (DEBUG_DB, "setting schema version failed: %s", err);
+	sqlite3_free (sql);
+	sqlite3_free (err);
+}
+
+static gint
 db_get_schema_version (void)
 {
 	guint		schemaVersion;
-	sqlite3_stmt	*schemaVersionStmt;	
+	sqlite3_stmt	*stmt;
 	
-	db_prepare_stmt (&schemaVersionStmt, "SELECT value FROM info WHERE key = 'schemaVersion'");
-	sqlite3_step (schemaVersionStmt);
-	schemaVersion = sqlite3_column_int (schemaVersionStmt, 0);
-	sqlite3_finalize(schemaVersionStmt);
+	if (!db_table_exists ("info")) {
+		db_exec ("CREATE TABLE info ( "
+		         "   name	TEXT, "
+			 "   value	TEXT, "
+		         "   PRIMARY KEY (name) "
+		         ");");
+		return -1;
+	}
+	
+	db_prepare_stmt (&stmt, "SELECT value FROM info WHERE name = 'schemaVersion'");
+	sqlite3_step (stmt);
+	schemaVersion = sqlite3_column_int (stmt, 0);
+	sqlite3_finalize (stmt);
 	
 	return schemaVersion;
 }
@@ -98,88 +135,102 @@ void
 db_init (void) 
 {
 	gchar		*filename;
-	guint		schemaVersion;
+	gint		schemaVersion;
 		
-	debug_enter("db_init");
+	debug_enter ("db_init");
 
-	filename = common_create_cache_filename(NULL, "liferea", "db");
-	if(!sqlite3_open(filename, &db)) {
-		debug1(DEBUG_CACHE, "Data base file %s was not found... Creating new one.\n", filename);
+open:
+	filename = common_create_cache_filename (NULL, "liferea", "db");
+	debug1 (DEBUG_DB, "Opening DB file %s...", filename);
+	if (!sqlite3_open (filename, &db)) {
+		debug1 (DEBUG_CACHE, "Data base file %s was not found... Creating new one.\n", filename);
 	}
-	g_free(filename);
+	g_free (filename);
 	
-	/* create info table/check versioning info */			
-	schemaVersion = db_get_schema_version();
+	/* create info table/check versioning info */				   
+	schemaVersion = db_get_schema_version ();
 	debug1 (DEBUG_DB, "current DB schema version: %d", schemaVersion);
+	
+	if (-1 == schemaVersion) {
+		/* no schema version available -> first installation
+		   without tables or migration from 1.3.2... */
+		if (db_table_exists ("itemsets")) {
+			db_set_schema_version (0);
+			schemaVersion = 0;	/* trigger migration path */
+		} else {
+			db_set_schema_version (SCHEMA_TARGET_VERSION);
+			schemaVersion = SCHEMA_TARGET_VERSION;	/* nothing exists yet, tables will be created below */
+		}
+	}
 	
 	if (SCHEMA_TARGET_VERSION < schemaVersion)
 		g_error ("Fatal: The cache database was created by a newer version of Liferea than this one!");
 		       
 	if (SCHEMA_TARGET_VERSION > schemaVersion) {
-		/* do table migration */
+		/* do table migration */	
 		if (0 == schemaVersion) {
 			/* 1.3.2 -> 1.3.3 adding read flag to itemsets relation */
 			debug0 (DEBUG_DB, "migrating from schema version 0 to 1");
 			db_exec ("BEGIN; "
-		        	 "CREATE TEMPORARY TABLE itemsets_backup(item_id,node_id); "
+	        		 "CREATE TEMPORARY TABLE itemsets_backup(item_id,node_id); "
 				 "INSERT INTO itemsets_backup SELECT item_id,node_id FROM itemsets; "
-		        	 "DROP TABLE itemsets; "
-                        	 "CREATE TABLE itemsets ( "
+	        		 "DROP TABLE itemsets; "
+                       		 "CREATE TABLE itemsets ( "
 				 "	item_id		INTEGER, "
 				 "	node_id		TEXT, "
 				 "	read		INTEGER "
-		        	 "); "
-				 "INSERT INTO itemsets SELECT item_id,node_id,0 FROM itemsets_backup; "
+	        		 "); "
+				 "INSERT INTO itemsets SELECT itemsets_backup.item_id,itemsets_backup.node_id,items.read FROM itemsets_backup INNER JOIN items ON itemsets_backup.item_id = items.ROWID; "
 				 "DROP TABLE itemsets_backup; "
-		        	 "REPLACE INTO info (key, value) VALUES ('schemaVersion',1); "
+	        		 "REPLACE INTO info (name, value) VALUES ('schemaVersion',1); "
 				 "END;");
 		}
-			 
-		if (1 != schemaVersion)
-			g_warning ("Fatal: DB schema migration failed! Running with --debug-db could give some hints!");
+		
+		if (SCHEMA_TARGET_VERSION != db_get_schema_version ())
+			g_error ("Fatal: DB schema migration failed! Running with --debug-db could give some hints!");
+			
+		db_deinit ();			
+		debug0 (DEBUG_DB, "Reopening DB after migration...");
+		goto open;
 	}
 
 	/* create tables if they do not exist yet */
-	sqlite3_exec (db, "CREATE TABLE info ( \
-	                      key	TEXT, \
-		              value	TEXT \
-	                   );", NULL, NULL, NULL);
-
-	sqlite3_exec (db,"CREATE TABLE items ( \
-				title			TEXT, \
-				read			INTEGER, \
-				new			INTEGER, \
-				updated			INTEGER, \
-				popup			INTEGER, \
-				marked			INTEGER, \
-				source			TEXT, \
-				source_id		TEXT, \
-				valid_guid		INTEGER, \
-				real_source_url		TEXT, \
-				real_source_title	TEXT,	\
-				description		TEXT, \
-				date			INTEGER, \
-				comment_feed_id		INTEGER \
-			);", NULL, NULL, NULL);
+	db_exec ("CREATE TABLE items ("
+	         "   title		TEXT,"
+	         "   read		INTEGER,"
+	         "   new		INTEGER,"
+	         "   updated		INTEGER,"
+	         "   popup		INTEGER,"
+	         "   marked		INTEGER,"
+	         "   source		TEXT,"
+	         "   source_id		TEXT,"
+	         "   valid_guid		INTEGER,"
+	         "   real_source_url	TEXT,"
+	         "   real_source_title	TEXT,"
+	         "   description	TEXT,"
+	         "   date		INTEGER,"
+	         "   comment_feed_id	INTEGER"
+	         ");");
 			
-	sqlite3_exec (db, "CREATE INDEX items_idx ON items (source_id);", NULL, NULL, NULL);
+	db_exec ("CREATE INDEX items_idx ON items (source_id);");
 
-	sqlite3_exec (db, "CREATE TABLE itemsets ( \
-				item_id		INTEGER, \
-				node_id		TEXT, \
-				read		INTEGER \
-			);", NULL, NULL, NULL);
+	db_exec ("CREATE TABLE itemsets ("
+	         "   item_id		INTEGER,"
+	         "   node_id		TEXT,"
+	         "   read		INTEGER,"
+	         "   PRIMARY KEY (item_id, node_id)"
+	         ");");
 			
-	sqlite3_exec (db, "CREATE INDEX itemset_idx  ON itemsets (node_id);", NULL, NULL, NULL);
-	sqlite3_exec (db, "CREATE INDEX itemset_idx2 ON itemsets (item_id);", NULL, NULL, NULL);
+	db_exec ("CREATE INDEX itemset_idx  ON itemsets (node_id);");
+	db_exec ("CREATE INDEX itemset_idx2 ON itemsets (item_id);");
 
-	sqlite3_exec (db, "CREATE TABLE metadata ( \
-				item_id		INTEGER, \
-				nr              INTEGER, \
-				key             TEXT, \
-				value           TEXT, \
-        			PRIMARY KEY (item_id, nr) \
-			);", NULL, NULL, NULL);
+	db_exec ("CREATE TABLE metadata ("
+	         "   item_id		INTEGER,"
+	         "   nr              	INTEGER,"
+	         "   key             	TEXT,"
+	         "   value           	TEXT,"
+	         "   PRIMARY KEY (item_id, nr)"
+	         ");");
 			
 	db_exec ("CREATE INDEX metadata_idx ON metadata (item_id);");
 	
@@ -192,18 +243,18 @@ db_init (void)
 			   
 	/* Set up read state update triggers */
 	db_exec ("DROP TRIGGER item_insert;");
-	db_exec ("CREATE TRIGGER item_insert INSERT ON items \
-	          BEGIN \
-	             UPDATE itemsets SET read = new.read \
-	             WHERE item_id = new.ROWID; \
-	          END;");
+	db_exec ("CREATE TRIGGER item_insert INSERT ON items "
+	         "BEGIN "
+	         "   UPDATE itemsets SET read = new.read "
+	         "   WHERE item_id = new.ROWID; "
+	         "END;");
 
 	db_exec ("DROP TRIGGER item_update;");
-	db_exec ("CREATE TRIGGER item_update UPDATE ON items \
-	          BEGIN \
-	             UPDATE itemsets SET read = new.read \
-	             WHERE item_id = new.ROWID; \
-	          END;");
+	db_exec ("CREATE TRIGGER item_update UPDATE ON items "
+	         "BEGIN "
+	         "   UPDATE itemsets SET read = new.read "
+	         "   WHERE item_id = new.ROWID; "
+	         "END;");
 			   
 	/* Cleanup of DB */
 	
@@ -345,6 +396,8 @@ db_deinit (void)
 		
 	if(SQLITE_OK != sqlite3_close(db))
 		g_warning("DB close failed: %s", sqlite3_errmsg(db));
+	
+	db = NULL;
 	
 	debug_exit("db_deinit");
 }

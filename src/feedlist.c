@@ -338,14 +338,16 @@ void feedlist_save(void) {
 }
 
 /* This method is used to initially the node states in the feed list */
-static void feedlist_init_node(nodePtr node) {
-
-	if(node->expanded)
-		ui_node_set_expansion(node, TRUE);
+static void
+feedlist_init_node (nodePtr node) 
+{
+	if (node->expanded)
+		ui_node_set_expansion (node, TRUE);
 		
-	ui_node_update(node->id);
+	node_update_counters (node);
+	ui_node_update (node->id);
 		
-	node_foreach_child(node, feedlist_init_node);
+	node_foreach_child (node, feedlist_init_node);
 }
 
 void feedlist_init(void) {
@@ -369,9 +371,9 @@ void feedlist_init(void) {
 	debug0(DEBUG_CACHE, "Setting up root node");
 	rootNode = node_source_setup_root();
 
-	/* 3. Ensure folder expansion */
-	debug0(DEBUG_CACHE, "Expanding folders");
-	feedlist_foreach(feedlist_init_node);
+	/* 3. Ensure folder expansion and unread count*/
+	debug0(DEBUG_CACHE, "Initializing node state");
+	feedlist_foreach (feedlist_init_node);
 
 	debug0(DEBUG_GUI, "Notification setup");	
 	notification_enable(getBooleanConfValue(SHOW_POPUP_WINDOWS));
