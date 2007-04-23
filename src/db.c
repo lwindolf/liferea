@@ -60,7 +60,7 @@ db_prepare_stmt (sqlite3_stmt **stmt, gchar *sql)
 	gint		res;	
 	const char	*left;
 		
-	res = sqlite3_prepare(db, sql, -1, stmt, &left);
+	res = sqlite3_prepare_v2(db, sql, -1, stmt, &left);
 	if(SQLITE_OK != res)
 		g_error("Failure while preparing statement, (error=%d, %s) SQL: \"%s\"", res, sqlite3_errmsg(db), sql);
 }
@@ -86,6 +86,7 @@ db_table_exists (const gchar *name)
 
 	sql = sqlite3_mprintf ("SELECT COUNT(*) FROM sqlite_master WHERE type = 'table' AND name = '%s';", name);
 	db_prepare_stmt (&stmt, sql);
+	sqlite3_reset (stmt);
 	sqlite3_step (stmt);
 	res = sqlite3_column_int (stmt, 0);
 	sqlite3_finalize (stmt);
@@ -146,6 +147,8 @@ open:
 		debug1 (DEBUG_CACHE, "Data base file %s was not found... Creating new one.\n", filename);
 	}
 	g_free (filename);
+	
+	sqlite3_extended_result_codes (db, TRUE);
 	
 	/* create info table/check versioning info */				   
 	schemaVersion = db_get_schema_version ();
