@@ -3,6 +3,9 @@
 	Version 1.3.4 (Unstable)
 
 	* XSLT 2.0 rewrite of the rendering stylesheets (Aaron Crane)
+	* New preference option that allows to configure the
+	  toolbar appearance independantely from GNOME (Ori Avtalion)
+	* Fixes crashes when using sqlite introduced with 1.3.3
 
 
 2007-04-22  Lars Lindner  <lars.lindner@gmail.com>

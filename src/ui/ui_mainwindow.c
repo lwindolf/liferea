@@ -372,7 +372,7 @@ static struct mainwindow *ui_mainwindow_new(void) {
 	struct mainwindow	*mw;
 	
 	window = create_mainwindow();
-	toolbar_style = getStringConfValue("/desktop/gnome/interface/toolbar_style");
+	toolbar_style = conf_get_toolbar_style ();
 	mw = g_new0(struct mainwindow, 1);
 	
 	mainwindow_priv = mw;

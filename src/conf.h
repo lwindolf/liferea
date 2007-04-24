@@ -1,7 +1,7 @@
 /**
  * @file conf.h Liferea configuration (gconf access)
  *
- * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004,2005 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -72,6 +72,7 @@
 #define POPUP_PLACEMENT			"/apps/liferea/popup-placement"
 #define DISABLE_MENUBAR			"/apps/liferea/disable-menubar"
 #define DISABLE_TOOLBAR			"/apps/liferea/disable-toolbar"
+#define TOOLBAR_STYLE			"/apps/liferea/toolbar-style"
 #define LAST_WINDOW_X			"/apps/liferea/last-window-x"
 #define LAST_WINDOW_Y			"/apps/liferea/last-window-y"
 #define LAST_WINDOW_WIDTH		"/apps/liferea/last-window-width"
@@ -98,11 +99,6 @@
 void	conf_init(void);
 void	conf_load(void);
 
-/* methods to modify folder contents */
-GSList * getFeedKeyList(gchar *keyprefix);
-void 	setFeedKeyList(gchar *keyprefix, GSList *newlist);
-gchar * getFreeFeedKey(gchar *keyprefix);
-
 /* preferences configuration methods */
 
 gboolean 	getBooleanConfValue(gchar *valuename);
@@ -112,5 +108,12 @@ gint		getNumericConfValue(gchar  *valuename);
 void 	setBooleanConfValue(gchar *valuename, gboolean value);
 void	setStringConfValue(gchar *valuename, const gchar *value);
 void	setNumericConfValue(gchar  *valuename, gint value);
+
+/**
+ * Returns the current toolbar configuration.
+ *
+ * @returns a string (to be free'd using g_free)
+ */
+gchar * conf_get_toolbar_style (void);
 
 #endif

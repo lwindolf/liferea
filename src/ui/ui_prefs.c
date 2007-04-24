@@ -63,6 +63,7 @@ static void on_updateallfavicons_clicked(GtkButton *button, gpointer user_data);
 static void on_enableproxybtn_clicked (GtkButton *button, gpointer user_data);
 static void on_enc_download_tool_changed(GtkEditable *editable, gpointer user_data);
 static void on_socialsite_changed(GtkOptionMenu *optionmenu, gpointer user_data);
+static void on_toolbar_style_changed(GtkComboBox *widget, gpointer user_data);
 
 struct enclosure_download_tool {
 	gchar	*name;
@@ -78,7 +79,7 @@ struct enclosure_download_tool enclosure_download_tools[] = {
 
 static struct browser browsers[] = {
 	{
-		"gnome", "Gnome Default Browser", "gnome-open %s", 
+		"gnome", "GNOME Default Browser", "gnome-open %s", 
 		NULL, NULL,
 		NULL, NULL,
 		NULL, NULL,
@@ -131,6 +132,8 @@ static struct browser browsers[] = {
 	},
 	{	NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, FALSE }
 };
+
+static gchar * gui_toolbar_style[] = { "", "both", "both-horiz", "icons", "text", NULL };
 
 gchar * prefs_get_browser_command(struct browser *browser, gboolean remote, gboolean fallback) {
 	gchar	*cmd = NULL;
@@ -218,7 +221,7 @@ static void ui_pref_destroyed_cb(GtkWidget *widget, void *data) {
 }
 
 void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
-	GtkWidget		*widget, *entry, *menu;
+	GtkWidget		*widget, *entry, *menu, *combo;
 	GtkAdjustment		*itemCount;
 	GtkTreeIter		*treeiter;
 	GtkTreeStore		*treestore;
@@ -298,6 +301,14 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 		gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_startup_feed_handler_changed), GINT_TO_POINTER(2));
 
 		gtk_option_menu_set_menu(GTK_OPTION_MENU(lookup_widget(prefdialog, "startupfeedhandler")), menu);
+
+		/* Create the toolbar style combo */
+		combo = lookup_widget(prefdialog, "toolbarcombo");
+		gtk_combo_box_append_text(GTK_COMBO_BOX(combo), _("GNOME default"));
+		gtk_combo_box_append_text(GTK_COMBO_BOX(combo), _("Text below icons"));
+		gtk_combo_box_append_text(GTK_COMBO_BOX(combo), _("Text beside icons"));
+		gtk_combo_box_append_text(GTK_COMBO_BOX(combo), _("Icons only"));
+		gtk_combo_box_append_text(GTK_COMBO_BOX(combo), _("Text only"));
 
 		/* ================== panel 1 "feeds" ==================== */
 
@@ -420,6 +431,23 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 		widget = lookup_widget(prefdialog, widgetname);
 		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), TRUE);
 		g_free(widgetname);
+
+		/* select currently active toolbar style option */
+		gtk_signal_connect(GTK_OBJECT(lookup_widget(prefdialog, "toolbarcombo")), "changed", G_CALLBACK(on_toolbar_style_changed), NULL);
+		name = getStringConfValue(TOOLBAR_STYLE);
+
+		i = 0;
+		for (i = 0; gui_toolbar_style[i] != NULL; ++i) {
+			if (strcmp(name, gui_toolbar_style[i]) == 0)
+				break;
+		}
+		g_free(name);
+
+		// Invalid key value. Revert to default
+		if (gui_toolbar_style[i] == NULL)
+			i = 0;
+
+		gtk_combo_box_set_active(GTK_COMBO_BOX(lookup_widget(prefdialog, "toolbarcombo")), i);
 
 		/* ================= panel 5 "proxy" ======================== */
 		enabled = getBooleanConfValue(USE_PROXY);
@@ -570,6 +598,16 @@ void on_disablejavascript_toggled(GtkToggleButton *togglebutton, gpointer user_d
 
 void on_socialsite_changed(GtkOptionMenu *optionmenu, gpointer user_data) {
 	social_set_site((gchar *)user_data);
+}
+
+void on_toolbar_style_changed(GtkComboBox *widget, gpointer user_data) {
+	gchar *style;
+	gint value = gtk_combo_box_get_active(widget);
+	setStringConfValue(TOOLBAR_STYLE, gui_toolbar_style[value]);
+
+	style = conf_get_toolbar_style();
+	ui_mainwindow_set_toolbar_style(style);
+	g_free(style);
 }
 
 void on_itemCountBtn_value_changed(GtkSpinButton *spinbutton, gpointer user_data) {

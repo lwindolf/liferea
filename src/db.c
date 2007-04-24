@@ -905,17 +905,28 @@ db_view_create (const gchar *id, queryPtr query)
 	                       "SELECT "
 	                       "items.ROWID AS item_id,"
 	                       "items.title,"
-	                       "items.read,"
+	                       "items.read AS item_read,"
 	                       "items.updated,"
 	                       "items.marked"
-			       " FROM %s "
+	                       " FROM %s "
 			       "WHERE %s;", 
 			       id, tables, query->conditions);
 
 	res = sqlite3_exec(db, sql, NULL, NULL, &err);
 	if(SQLITE_OK != res) 
 		g_warning("Create view failed (%s) SQL: %s", err, sql);
-	
+
+	sqlite3_free (sql);
+	sqlite3_free (err);
+		
+	sql = sqlite3_mprintf ("CREATE TEMP VIEW view_%s_unread AS "
+	                       "SELECT item_id FROM view_%s WHERE item_read = 0",
+			       id, id);
+			       
+	res = sqlite3_exec(db, sql, NULL, NULL, &err);
+	if(SQLITE_OK != res) 
+		g_warning("Create view failed (%s) SQL: %s", err, sql);
+			       
 	g_free (tables);
 	sqlite3_free (sql);
 	sqlite3_free (err);

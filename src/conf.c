@@ -1,7 +1,7 @@
 /**
  * @file conf.c Liferea configuration (gconf access)
  *
- * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004,2005 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -132,13 +132,17 @@ static void conf_tray_settings_cb(GConfClient *client, guint cnxn_id, GConfEntry
 	}
 }
 
-static void conf_toolbar_style_settings_cb(GConfClient *client, guint cnxn_id, GConfEntry *entry, gpointer user_data) {
-	GConfValue *value;
-	if (entry != NULL) {
-		
-		value = gconf_entry_get_value(entry);
-		if (value != NULL && value->type == GCONF_VALUE_STRING)
-			ui_mainwindow_set_toolbar_style(gconf_value_get_string(value));
+static void
+conf_toolbar_style_settings_cb (GConfClient *client,
+                                guint cnxn_id,
+                                GConfEntry *entry,
+                                gpointer user_data) 
+{
+	gchar *style = conf_get_toolbar_style();
+
+	if (style != NULL) {
+		ui_mainwindow_set_toolbar_style (style);
+		g_free (style);
 	}
 }
 
@@ -199,7 +203,6 @@ static void conf_proxy_reset_settings_cb(GConfClient *client, guint cnxn_id, GCo
 		  proxyusername != NULL ? proxyusername : "NULL",
 		  proxypassword != NULL ? proxypassword : "NULL");
 }
-
 
 /*----------------------------------------------------------------------*/
 /* generic configuration access methods					*/
@@ -292,4 +295,19 @@ gint getNumericConfValue(gchar *valuename) {
 	}
 			
 	return result;
+}
+
+gchar *
+conf_get_toolbar_style(void) 
+{
+	gchar *style;
+
+	style = getStringConfValue (TOOLBAR_STYLE);
+
+	/* check if we don't override the toolbar style */
+	if (strcmp(style, "") == 0) {
+		g_free (style);
+		style = getStringConfValue ("/desktop/gnome/interface/toolbar_style");
+	}
+	return style;
 }

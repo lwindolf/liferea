@@ -335,6 +335,19 @@ To change the gconftool target use the - -config-source=blah option to gconftool
       </locale>
     </schema>
     <schema>
+      <key>/schemas/apps/liferea/toolbar_style</key>
+      <applyto>/apps/liferea/toolbar_style</applyto>
+      <owner>liferea</owner>
+      <type>string</type>
+      <default></default>
+      <locale name="C">
+        <short>Determines the style of the toolbar buttons</short>
+        <long>Determines the style of the toolbar buttons locally,
+	   overriding the GNOME settings. Valid values are "both", "both-horiz",
+	   "icons", and "text". If empty or not specified, the GNOME settings are used.</long>
+      </locale>
+    </schema>
+    <schema>
       <key>/schemas/apps/liferea/timeformat</key>
       <applyto>/apps/liferea/timeformat</applyto>
       <owner>liferea</owner>

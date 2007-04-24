@@ -1215,6 +1215,9 @@ create_prefdialog (void)
   GSList *menuradiobtn1_group = NULL;
   GtkWidget *menuradiobtn2;
   GtkWidget *menuradiobtn3;
+  GtkWidget *hbox92244;
+  GtkWidget *label254;
+  GtkWidget *toolbarcombo;
   GtkWidget *label139;
   GtkWidget *vbox258;
   GtkWidget *vbox227;
@@ -1724,7 +1727,7 @@ create_prefdialog (void)
   gtk_widget_show (vbox252);
   gtk_box_pack_start (GTK_BOX (vbox259), vbox252, FALSE, TRUE, 0);
 
-  label126 = gtk_label_new (_("<span weight=\"bold\">Menu Settings</span>"));
+  label126 = gtk_label_new (_("<span weight=\"bold\">Menu and Toolbar Settings</span>"));
   gtk_widget_show (label126);
   gtk_box_pack_start (GTK_BOX (vbox252), label126, FALSE, FALSE, 0);
   gtk_label_set_use_markup (GTK_LABEL (label126), TRUE);
@@ -1756,6 +1759,20 @@ create_prefdialog (void)
   gtk_box_pack_start (GTK_BOX (vbox223), menuradiobtn3, FALSE, FALSE, 0);
   gtk_radio_button_set_group (GTK_RADIO_BUTTON (menuradiobtn3), menuradiobtn1_group);
   menuradiobtn1_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (menuradiobtn3));
+
+  hbox92244 = gtk_hbox_new (FALSE, 12);
+  gtk_widget_show (hbox92244);
+  gtk_box_pack_start (GTK_BOX (vbox223), hbox92244, TRUE, FALSE, 0);
+
+  label254 = gtk_label_new_with_mnemonic (_("Toolbar _button labels:"));
+  gtk_widget_show (label254);
+  gtk_box_pack_start (GTK_BOX (hbox92244), label254, FALSE, FALSE, 0);
+  gtk_label_set_use_markup (GTK_LABEL (label254), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (label254), 0, 0.5);
+
+  toolbarcombo = gtk_combo_box_new_text ();
+  gtk_widget_show (toolbarcombo);
+  gtk_box_pack_start (GTK_BOX (hbox92244), toolbarcombo, FALSE, FALSE, 0);
 
   label139 = gtk_label_new (_("GUI"));
   gtk_widget_show (label139);
@@ -2217,6 +2234,9 @@ create_prefdialog (void)
   GLADE_HOOKUP_OBJECT (prefdialog, menuradiobtn1, "menuradiobtn1");
   GLADE_HOOKUP_OBJECT (prefdialog, menuradiobtn2, "menuradiobtn2");
   GLADE_HOOKUP_OBJECT (prefdialog, menuradiobtn3, "menuradiobtn3");
+  GLADE_HOOKUP_OBJECT (prefdialog, hbox92244, "hbox92244");
+  GLADE_HOOKUP_OBJECT (prefdialog, label254, "label254");
+  GLADE_HOOKUP_OBJECT (prefdialog, toolbarcombo, "toolbarcombo");
   GLADE_HOOKUP_OBJECT (prefdialog, label139, "label139");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox258, "vbox258");
   GLADE_HOOKUP_OBJECT (prefdialog, vbox227, "vbox227");
