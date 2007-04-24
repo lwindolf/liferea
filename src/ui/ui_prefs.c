@@ -79,7 +79,7 @@ struct enclosure_download_tool enclosure_download_tools[] = {
 
 static struct browser browsers[] = {
 	{
-		"gnome", "GNOME Default Browser", "gnome-open %s", 
+		"gnome", N_("GNOME Default Browser"), "gnome-open %s", 
 		NULL, NULL,
 		NULL, NULL,
 		NULL, NULL,
@@ -243,7 +243,7 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 		/* Set up browser selection popup */
 		menu = gtk_menu_new();
 		for(i=0, iter = browsers; iter->id != NULL; iter++, i++) {
-			entry = gtk_menu_item_new_with_label(iter->display);
+			entry = gtk_menu_item_new_with_label(_(iter->display));
 			gtk_widget_show(entry);
 			gtk_container_add(GTK_CONTAINER(menu), entry);
 			gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_browser_changed), GINT_TO_POINTER(i));
