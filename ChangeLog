@@ -1,4 +1,15 @@
+2007-04-25  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.2.12b (Stable)
+
+	* Fix for default feed list filename used with 
+	  Brazilian Portugese translation (Og Maciel)
+	* Update of Brazilian Portugese translation (Og Maciel)
+
+
 2007-04-21  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.2.12 (Stable)
 
 	* Workaround for Gentoo bug #116797 (reported by Maxim Britov)
 	* Fixes possible crash when removing folders with unread items.

@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-04-08 23:34+0200\n"
-"PO-Revision-Date: 2007-03-10 19:15-0500\n"
+"PO-Revision-Date: 2007-04-24 18:47-0500\n"
 "Last-Translator: Og Maciel <ogmaciel@ubuntu.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-l10n-br@listas.cipsga.org.br>\n"
 "MIME-Version: 1.0\n"
@@ -96,7 +96,7 @@ msgstr "Pasta:"
 
 #: ../xslt/item.xml.in.h:1
 msgid "Also posted in"
-msgstr ""
+msgstr "Também publicado em"
 
 #: ../xslt/item.xml.in.h:2
 msgid "Author"
@@ -104,16 +104,15 @@ msgstr "Autor"
 
 #: ../xslt/item.xml.in.h:3
 msgid "Creator"
-msgstr ""
+msgstr "Criador"
 
 #: ../xslt/item.xml.in.h:4
 msgid "Department"
 msgstr "Departamento"
 
 #: ../xslt/item.xml.in.h:5
-#, fuzzy
 msgid "Feed"
-msgstr "Fontes de Notícias:"
+msgstr "Fontes de Notícias"
 
 #: ../xslt/item.xml.in.h:6
 msgid "Filed under"
@@ -721,11 +720,10 @@ msgid "_Automatically download all enclosures of this feed."
 msgstr "Download _automático de todos componentes desta fonte de notícias."
 
 #: ../src/interface.c:725
-#, fuzzy
 msgid "Auto-_load item link in configured browser when selecting articles."
 msgstr ""
-"Carregar automaticamente o _link do item no browser interno quando lendo "
-"artigos."
+"Carregar automaticamente o _link do item no browser interno quando "
+"selecionando artigos."
 
 #: ../src/interface.c:729
 msgid "Advanced"
@@ -916,17 +914,16 @@ msgid "Show a status _icon in the notification area (system tray)."
 msgstr "Exibe um _icone na área de notificação (bandeja do sistema)."
 
 #: ../src/interface.c:1773
-#, fuzzy
 msgid "     "
 msgstr "    "
 
 #: ../src/interface.c:1781
 msgid "Show _number of new items in the tray icon."
-msgstr ""
+msgstr "Exibir _número de novos itens no ícone da bandeja."
 
 #: ../src/interface.c:1785
 msgid "T_erminate instead of minimizing to tray icon."
-msgstr ""
+msgstr "T_erminar em vez de minimizar para o ícone da bandeja."
 
 #: ../src/interface.c:1793
 msgid "<span weight=\"bold\">Menu Settings</span>"
@@ -1068,13 +1065,12 @@ msgid "<span color=\"blue\" underline=\"single\">Liferea Homepage</span>"
 msgstr "<span color=\"blue\" underline=\"single\">Página Web do Liferea</span>"
 
 #: ../src/interface.c:2702
-#, fuzzy
 msgid ""
 "Copyright (c) 2003-2007\n"
 "Lars Lindner <lars.lindner@gmx.net> and \n"
 "Nathan J. Conrad <t98502@users.sourceforge.net>\n"
 msgstr ""
-"Copyright (c) 2003-2006 \n"
+"Copyright (c) 2003-2007\n"
 "Lars Lindner <lars.lindner@gmx.net> and \n"
 "Nathan J. Conrad <t98502@users.sourceforge.net>\n"
 
@@ -1402,9 +1398,9 @@ msgstr ""
 "saída.xhtml)"
 
 #: ../src/main.c:82
-#, fuzzy
 msgid "  --debug-net      Print debugging messages for all network access"
-msgstr "  --debug-all      Exibe todos tipos de mensagens"
+msgstr "  --debug-net      Exibe mensagens de depuração de todos acessos de red
+e"
 
 #: ../src/main.c:83
 msgid "  --debug-parsing  Print debugging messages of all parsing functions"
@@ -2337,7 +2333,7 @@ msgstr "_Senha"
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
 #: ../src/fl_sources/default_source.c:337
 msgid "feedlist.opml"
-msgstr "feedlist_ptBR.opml"
+msgstr "feedlist.opml"
 
 #: ../src/fl_sources/opml_source.c:339
 msgid "Planet, BlogRoll, OPML"
@@ -2376,9 +2372,8 @@ msgid "_Select File"
 msgstr "_Selecionar Arquivo"
 
 #: ../src/fl_sources/opml_source-cb.c:77
-#, fuzzy
 msgid "Choose OPML File"
-msgstr "Escolher Arquivo"
+msgstr "Escolher Arquivo OPML"
 
 #: ../src/fl_sources/node_source.c:207
 msgid "No feed list source types found!"
