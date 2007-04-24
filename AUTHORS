@@ -48,18 +48,15 @@ Chris Pirillo <chris@lockergnome.com>			Cool new icon for OPML
 Eric Anderson <ejona86@users.sf.net>			Use icons from gtk theme
 Daniel Gryniewicz <dang@gentoo.org>			Network Manager support
 mooonz <mooonz@users.sf.net>				improved DBUS support
+Ori Avtalion <oavtal@bezeqint.net>			Preference for toolbar style
 
-Packaging
-=========
+Maintainer Credits
+==================
 
-Christophe Barbe <christophe.barbe@ufies.org>	Debian (until 0.6.0)
-David Moreno Garza <damog@damog.net>		Debian (currently)
-Harry Auschner					SuSE
-John McKnight					Slackware
-Dario Conigliaro <djdas@djdas.net>		Slackware
-Phillip Compton	<pcompton@proteinmedia.com>	Fedora
-Dag Wieers <dag@wieers.com>			Fedora
-Jeremy Teo <white.wristband@gmail.com>		Solaris (Blastwave)
+Luis Rodrigo Gallardo Cruz <rodrigo@nul-unu.com>	Debian
+Emilio Pozuelo Monfort <pochu27@gmail.com>		Ubuntu
+Phillip Compton	<pcompton@proteinmedia.com>		Fedora
+Dag Wieers <dag@wieers.com>				Fedora
 
 
 Documentation and Translations
