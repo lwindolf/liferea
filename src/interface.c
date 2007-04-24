@@ -2128,10 +2128,12 @@ create_prefdialog (void)
   gtk_label_set_mnemonic_widget (GTK_LABEL (label137), browserpopup);
   gtk_label_set_mnemonic_widget (GTK_LABEL (manuallabel), browsercmd);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label138), browserlocpopup);
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label254), toolbarcombo);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label53), proxyhostentry);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label54), proxyportentry);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label145), proxyhostentry);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label146), proxyportentry);
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label216), enc_download_tool_option_btn);
 
   /* Store pointers to all widgets, for use by lookup_widget(). */
   GLADE_HOOKUP_OBJECT_NO_REF (prefdialog, prefdialog, "prefdialog");
