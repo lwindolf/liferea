@@ -333,8 +333,16 @@ static void default_source_source_import(nodePtr node) {
 	if(!g_file_test(filename12, G_FILE_TEST_EXISTS)) {
 		/* if there is no feedlist.opml we provide a default feed list */
 		g_free(filename12);
+
 		/* "feedlist.opml" is translatable so that translators can provide a localized default feed list */
 		filename12 = g_strdup_printf(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "opml" G_DIR_SEPARATOR_S "%s", _("feedlist.opml"));
+		
+		/* sanity check to catch wrong filenames supplied in translations */
+		if(!g_file_test(filename12, G_FILE_TEST_EXISTS)) {
+			g_warning("Configured localized feed list \"%s\" does not exist!", filename12);
+			g_free(filename12);
+			filename12 = g_strdup_printf(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "opml" G_DIR_SEPARATOR_S "%s", "feedlist.opml");
+		}
 	}
 	if(!import_OPML_feedlist(filename12, node, node->source, FALSE, TRUE))
 		g_error("Fatal: Feed list import failed! You might want to try to restore\n"
