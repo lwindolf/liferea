@@ -1399,8 +1399,7 @@ msgstr ""
 
 #: ../src/main.c:82
 msgid "  --debug-net      Print debugging messages for all network access"
-msgstr "  --debug-net      Exibe mensagens de depuração de todos acessos de red
-e"
+msgstr "  --debug-net      Exibe mensagens de depuração de todos acessos de rede"
 
 #: ../src/main.c:83
 msgid "  --debug-parsing  Print debugging messages of all parsing functions"
