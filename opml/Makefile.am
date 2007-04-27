@@ -1,5 +1,6 @@
 EXTRA_DIST = \
 	feedlist.opml \
+	feedlist_ca.opml \
 	feedlist_de.opml \
 	feedlist_es.opml \
 	feedlist_fr.opml \
@@ -10,6 +11,7 @@ EXTRA_DIST = \
 
 lifereadistopmldir = $(datadir)/liferea/opml
 lifereadistopml_DATA = feedlist.opml \
+			feedlist_ca.opml \
 			feedlist_de.opml \
 			feedlist_es.opml \
 			feedlist_fr.opml \
