@@ -1,3 +1,10 @@
+2007-05-??  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.2.13 (Stable)
+
+	* Added new Catalan default feed list (Gil Forcada)
+
+
 2007-04-25  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.2.12b (Stable)
@@ -5,6 +12,8 @@
 	* Fix for default feed list filename used with 
 	  Brazilian Portugese translation (Og Maciel)
 	* Update of Brazilian Portugese translation (Og Maciel)
+	* Adds a check to prevent loading of invalid filenames
+	  of localized feed lists.
 
 
 2007-04-21  Lars Lindner  <lars.lindner@gmail.com>

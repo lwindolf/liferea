@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<opml version="1.0">
+  <head>
+    <title>Canals predeterminats</title>
+  </head>
+  <body>
+     <outline text="Canals d'exemple (català)">
+      <outline text="Notícies">
+        <outline text="Vilaweb" htmlUrl="http://www.vilaweb.cat" xmlUrl="http://www.vilaweb.cat/media/rss/noticies_edicio_333_rss.xml" />
+        <outline text="Avui" htmlUrl="http://www.avui.cat" xmlUrl="http://www.avui.cat/rss/articles.php" />
+        <outline text="Generalitat de Catalunya" htmlUrl="http://www.gencat.cat" xmlUrl="http://www.gencat.cat/web/meugencat/cat/rss.htm" />
+      </outline>
+      <outline text="Tecnologia">
+        <outline text="Softcatalà" htmlUrl="http://www.softcatala.org" xmlUrl="http://www.softcatala.org/noticies/noticies.rss" />
+        <outline text="NacióDigital" htmlUrl="http://www.naciodigital.cat" xmlUrl="http://naciodigital.cat/rss.php" />
+        <outline text="LaFarga" htmlUrl="http://www.lafarga.cat" xmlUrl="http://www.lafarga.cat/noticies/feed" />
+      </outline>
+    </outline>
+
+    <!-- lets keep this English block in sync over all feed lists! -->
+    <outline text="Fuentes de ejemplo (inglés)">
+      <outline text="OSS">
+        <outline text="art.gnome.org" htmlUrl="http://art.gnome.org/" xmlUrl="http://art.gnome.org/backend.php" />
+        <outline text="Debian Package a Day" htmlUrl="http://www.livejournal.com/users/debaday/" xmlUrl="http://www.livejournal.com/users/debaday/data/atom" />
+        <outline text="Gnomefiles" htmlUrl="http://www.gnomefiles.org/" xmlUrl="http://www.gnomefiles.org/files/gnomefiles.rdf" />
+        <outline text="GNOME Footnotes" htmlUrl="http://www.gnomedesktop.org/" xmlUrl="http://www.gnomedesktop.org/backend.php" />
+        <outline text="GrokLaw" htmlUrl="http://www.groklaw.net/" xmlUrl="http://www.groklaw.net/backend/GrokLaw.rdf" />
+        <outline text="Linux.com" htmlUrl="http://www.linux.com/" xmlUrl="http://www.linux.com/index.rss" />
+        <outline text="mozillaZine" htmlUrl="http://www.mozillazine.org/" xmlUrl="http://www.mozillazine.org/contents.rdf" />
+        <outline text="Newsforge" htmlUrl="http://www.newsforge.com" xmlUrl="http://www.newsforge.com/newsforge.rss" />
+        <outline text="Planet Debian" htmlUrl="http://planet.debian.org/" xmlUrl="http://planet.debian.org/rss20.xml" />
+        <outline text="Slashdot" htmlUrl="http://slashdot.org"  xmlUrl="http://slashdot.org/slashdot.rss" />
+        <outline text="TuxMobil" htmlUrl="http://tuxmobil.org" xmlUrl="http://tuxmobil.org/tuxmobil_rss.rdf" />      
+      </outline>	
+    </outline>
+    <outline text="Unread" title="Unread" description="Unread" type="vfolder" htmlUrl="" xmlUrl="vfolder">
+      <outline type="rule" text="Read status" rule="unread" value="" additive="true"/>
+    </outline>
+    <outline text="Important" title="Important" description="Important" type="vfolder" htmlUrl="" xmlUrl="vfolder">
+      <outline type="rule" text="Flag status" rule="flagged" value="" additive="true"/>
+    </outline>
+  </body>
+</opml>
+

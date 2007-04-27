@@ -2345,7 +2345,7 @@ msgstr "_Contrasenya"
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
 #: ../src/fl_sources/default_source.c:280
 msgid "feedlist.opml"
-msgstr "llistacanals.opml"
+msgstr "feedlist_ca.opml"
 
 #: ../src/fl_sources/opml_source.c:339
 msgid "Planet, BlogRoll, OPML"
