@@ -2315,7 +2315,7 @@ msgstr "_Şifre"
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
 #: ../src/fl_sources/default_source.c:337
 msgid "feedlist.opml"
-msgstr "haberkaynaklistesi.opml"
+msgstr "feedlist.opml"
 
 #: ../src/fl_sources/opml_source.c:339
 msgid "Planet, BlogRoll, OPML"
