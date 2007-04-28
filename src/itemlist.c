@@ -469,16 +469,18 @@ void itemlist_request_remove_item(itemPtr item) {
 
 void itemlist_remove_items(itemSetPtr itemSet, GList *items) {
 	GList	*iter = items;
+	nodePtr	node = itemSet->node;
 	
 	while(iter) {
-		itemview_remove_item(iter->data);
-		itemset_remove_item(itemSet, iter->data);
-		item_free(iter->data);
+		itemPtr item = (itemPtr)iter->data;
+		itemview_remove_item(item);
+		itemset_remove_item(itemSet, item);	
+		item_free(item);
 		iter = g_list_next(iter);
 	}
 
 	itemview_update();
-	ui_node_update(itemSet->node);
+	ui_node_update(node);
 }
 
 void itemlist_remove_all_items(itemSetPtr itemSet) {

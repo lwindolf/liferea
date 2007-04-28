@@ -179,12 +179,10 @@ void node_free(nodePtr node) {
 }
 
 void node_update_counters(nodePtr node) {
-	gint	unreadDiff, newDiff;
+	gint	unreadDiff;
 	GList	*iter;
 
-	newDiff = -1 * node->newCount;
 	unreadDiff = -1 * node->unreadCount;
-	node->newCount = 0;
 	node->unreadCount = 0;
 
 	iter = node->itemSet->items;
@@ -192,15 +190,12 @@ void node_update_counters(nodePtr node) {
 		itemPtr item = (itemPtr)iter->data;
 		if(!item->readStatus)
 			node->unreadCount++;	
-		if(item->newStatus)
-			node->newCount++;
 		if(item->popupStatus)
 			node->popupCount++;
 		iter = g_list_next(iter);
 	}
-	newDiff += node->newCount;
 	unreadDiff += node->unreadCount;
-
+	
 	if(NODE_TYPE_VFOLDER == node->type)
 		return;		/* prevent recursive counting and adding to statistics */
 
@@ -210,7 +205,7 @@ void node_update_counters(nodePtr node) {
 
 	/* propagate to feed list statistics */
 	if(NODE_TYPE_FEED == node->type)
-		feedlist_update_counters(unreadDiff, newDiff);		
+		feedlist_update_counters(unreadDiff, 0);
 }
 
 void node_update_unread_count(nodePtr node, gint diff) {
@@ -229,22 +224,6 @@ void node_update_unread_count(nodePtr node, gint diff) {
 	/* update global feed list statistic */
 	if(NODE_TYPE_FEED == node->type)
 		feedlist_update_counters(diff, 0);
-}
-
-void node_update_new_count(nodePtr node, gint diff) {
-
-	node->newCount += diff;
-
-	/* vfolder new counts are not interesting
-	   in the following propagation handling */
-	if(NODE_TYPE_VFOLDER == node->type)
-		return;
-
-	/* no parent node propagation necessary */
-
-	/* update global feed list statistic */
-	if(NODE_TYPE_FEED == node->type)
-		feedlist_update_counters(0, diff);	
 }
 
 guint node_get_unread_count(nodePtr node) { 
@@ -289,8 +268,8 @@ static gboolean node_merge_check(itemSetPtr itemSet, itemPtr item) {
 }
 
 /* Only to be called by node_merge_items() */
-static void node_merge_item(nodePtr node, itemPtr item) {
-
+static gboolean node_merge_item(nodePtr node, itemPtr item) {
+	
 	debug3(DEBUG_UPDATE, "trying to merge \"%s\" (id=%d) to node \"%s\"", item_get_title(item), item->nr, node_get_title(node));
 
 	/* step 1: merge into node type internal data structures */
@@ -314,10 +293,12 @@ static void node_merge_item(nodePtr node, itemPtr item) {
 
 			item_guid_list_add_id(item);
 		}
+		return TRUE;
 	} else {
 		debug2(DEBUG_UPDATE, "-> not adding \"%s\" to node \"%s\"...", item_get_title(item), node_get_title(node));
 		item_free(item);
 	}
+	return FALSE;
 }
 
 /**
@@ -326,8 +307,8 @@ static void node_merge_item(nodePtr node, itemPtr item) {
  */
 void node_merge_items(nodePtr node, GList *list) {
 	GList	*iter;
-	guint	max;
-	
+	guint	max, new = 0;
+		
 	if(debug_level & DEBUG_UPDATE) {
 		debug4(DEBUG_UPDATE, "old item set %p (lastItemNr=%lu) of \"%s\" (%p):", node->itemSet, node->itemSet->lastItemNr, node_get_title(node), node);
 		iter = node->itemSet->items;
@@ -367,7 +348,8 @@ void node_merge_items(nodePtr node, GList *list) {
 	   to be done bottom to top. */
 	iter = g_list_last(list);
 	while(iter) {
-		node_merge_item(node, ((itemPtr)iter->data));
+		if(node_merge_item(node, ((itemPtr)iter->data)))
+			new++;
 		iter = g_list_previous(iter);
 	}
 	g_list_free(list);
@@ -377,6 +359,8 @@ void node_merge_items(nodePtr node, GList *list) {
 	   list types with item copies or references)! */
 	if((NODE_TYPE_FOLDER != node->type) && (NODE_TYPE_VFOLDER != node->type))
 		node_update_counters(node);
+		
+	feedlist_update_counters(0, new);
 }
 
 void node_update_favicon(nodePtr node) {
@@ -625,7 +609,6 @@ void node_set_itemset(nodePtr node, itemSetPtr itemSet) {
 		iter = g_list_next(iter);
 	}
 	
-	node->newCount = 0;	/* reset to avoid counting errors (FIXME: very bad solution!) */
 	node_update_counters(node);
 }
 

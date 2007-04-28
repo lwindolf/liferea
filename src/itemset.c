@@ -180,9 +180,7 @@ void itemset_remove_item(itemSetPtr itemSet, itemPtr item) {
 	itemSet->items = g_list_remove(itemSet->items, item);
 	
 	if(!item->readStatus)
-		node_update_unread_count(itemSet->node, -1);
-	if(item->newStatus)
-		node_update_new_count(itemSet->node, -1);
+		node_update_unread_count(itemSet->node, -1);   
 	if(item->popupStatus)
 		itemSet->node->popupCount--;
 		
@@ -302,8 +300,7 @@ void itemset_set_item_new_status(itemSetPtr itemSet, itemPtr item, gboolean newS
 	item->newStatus = newStatus;
 
 	/* Note: new count updates must be done through the node
-	   interface to allow global feed list new counter */
-	node_update_new_count(itemSet->node, newStatus?1:-1);
+	   interface to allow global feed list new counter. */
 
 	/* New status is never propagated to vfolders... */
 }

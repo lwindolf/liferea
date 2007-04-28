@@ -95,6 +95,10 @@ void feedlist_update_counters(gint unreadDiff, gint newDiff) {
 
 	unreadCount += unreadDiff;
 	newCount += newDiff;
+	
+	/* sanity check */
+	if(newCount > unreadCount)
+		newCount = unreadCount;
 
 	if((0 != newDiff) || (0 != unreadDiff)) {
 		ui_tray_update();
@@ -102,21 +106,9 @@ void feedlist_update_counters(gint unreadDiff, gint newDiff) {
 	}
 }
 
-static void feedlist_unset_new_items(nodePtr node) {
-	
-	if(0 != node->newCount) {
-		node_load(node);
-		itemlist_mark_all_old(node->itemSet);
-		node_unload(node);
-	}
-
-	node_foreach_child(node, feedlist_unset_new_items);
-}
-
 void feedlist_reset_new_item_count(void) {
 
 	if(0 != newCount) {
-		feedlist_foreach(feedlist_unset_new_items);
 		newCount = 0;
 		ui_tray_update();
 		ui_mainwindow_update_feedsinfo();

@@ -71,7 +71,6 @@ typedef struct node {
 
 	guint			unreadCount;	/**< number of items not yet read */
 	guint			popupCount;	/**< number of items to be notified */
-	guint			newCount;	/**< number of recently downloaded items */
 
 	gchar			*title;		/**< the label of the node in the feed list */
 	gpointer		icon;		/**< pointer to pixmap, if there is a favicon */
@@ -247,14 +246,6 @@ guint node_get_unread_count(nodePtr node);
  * @param diff	the difference to the current unread count
  */
 void node_update_unread_count(nodePtr node, gint diff);
-
-/**
- * Update the number of new items of a node.
- *
- * @param node	the node
- * @param diff	the difference to the current unread count
- */
-void node_update_new_count(nodePtr node, gint diff);
 
 /**
  * Recursively marks all items of the given node as read.
