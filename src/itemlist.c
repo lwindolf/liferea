@@ -473,6 +473,7 @@ void itemlist_remove_items(itemSetPtr itemSet, GList *items) {
 	while(iter) {
 		itemview_remove_item(iter->data);
 		itemset_remove_item(itemSet, iter->data);
+		item_free(iter->data);
 		iter = g_list_next(iter);
 	}
 
