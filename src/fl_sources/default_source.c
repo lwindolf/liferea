@@ -352,6 +352,7 @@ static void default_source_source_import(nodePtr node) {
 	if(g_file_get_contents(filename12, &content, &length, NULL))
 		g_file_set_contents(backupFilename, content, length, NULL);	
 		
+	g_free(content);
 	g_free(filename12);
 	g_free(backupFilename);
 	feedlistImport = FALSE;
