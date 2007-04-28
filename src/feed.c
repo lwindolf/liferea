@@ -555,8 +555,8 @@ guint feed_get_max_item_count(nodePtr node) {
 
 /*
  * Feeds caches are marked to be saved at a few different places:
- * (1) Inside whe feed_set_* functions where an item is marked or made read or unread
- * (2) Inside of feed_process_result
+ * (1) Inside the feed_set_* functions where an item is marked or made read or unread
+ * (2) Inside of feed_process_update_result
  * (3) The callback where items are removed from the itemlist
  *
  * This method really saves the feed to disk.
