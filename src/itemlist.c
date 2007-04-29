@@ -474,7 +474,8 @@ void itemlist_remove_items(itemSetPtr itemSet, GList *items) {
 	while(iter) {
 		itemPtr item = (itemPtr)iter->data;
 		itemview_remove_item(item);
-		itemset_remove_item(itemSet, item);	
+		itemset_remove_item(itemSet, item);
+		vfolder_remove_item(item);
 		item_free(item);
 		iter = g_list_next(iter);
 	}
