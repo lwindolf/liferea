@@ -359,7 +359,7 @@ void node_merge_items(nodePtr node, GList *list) {
 	   list types with item copies or references)! */
 	if((NODE_TYPE_FOLDER != node->type) && (NODE_TYPE_VFOLDER != node->type))
 		node_update_counters(node);
-		
+
 	feedlist_update_counters(0, new);
 }
 

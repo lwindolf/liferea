@@ -1,7 +1,13 @@
-2007-05-??  Lars Lindner  <lars.lindner@gmail.com>
+2007-05-30  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.2.13 (Stable)
 
+	* Fixes a significant memory leak when dropping items
+	  from cache reported by several users.
+	* Changes the new item counting to a simpler counting
+	  statistic so that on subsequent updates of the same
+	  feed might present a lower new item number, but which
+	  is a bit faster.
 	* Added new Catalan default feed list (Gil Forcada)
 
 
