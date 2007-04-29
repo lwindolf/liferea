@@ -1177,7 +1177,7 @@ void feed_process_update_result(struct request *request) {
 	gchar			*old_title, *old_source;
 	gint			old_update_interval;
 
-	debug_enter("ui_feed_process_update_result");
+	debug_enter("feed_process_update_result");
 	
 	node_load(node);
 
@@ -1245,7 +1245,8 @@ void feed_process_update_result(struct request *request) {
 				
 		g_free(old_title);
 		g_free(old_source);
-
+		ctxt->itemSet->items = NULL;
+		itemset_free(ctxt->itemSet);
 		feed_free_parser_ctxt(ctxt);
 	} else {	
 		ui_mainwindow_set_status_bar(_("\"%s\" is not available"), node_get_title(node));
@@ -1264,7 +1265,7 @@ void feed_process_update_result(struct request *request) {
 	
 	script_run_for_hook(SCRIPT_HOOK_FEED_UPDATED);
 
-	debug_exit("ui_feed_process_update_result");
+	debug_exit("feed_process_update_result");
 }
 
 /* implementation of the node type interface */
