@@ -1,4 +1,13 @@
-2007-05-30  Lars Lindner  <lars.lindner@gmail.com>
+2007-05-??  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.2.14 (Stable)
+
+	* Fixes a crash when updating the Atom 0.3 GMail feed 
+	  (reported by Paul Keuseman)
+	* Update of Japanese translation (Takeshi AIHANA)
+
+
+2007-04-30  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.2.13 (Stable)
 
