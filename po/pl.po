@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-08 23:34+0200\n"
+"POT-Creation-Date: 2007-05-01 20:13+0200\n"
 "PO-Revision-Date: 2006-12-05 21:26+0100\n"
 "Last-Translator: Lars Lindner <lars.lindner@gmx.net>\n"
 "Language-Team: Polish\n"
@@ -510,25 +510,25 @@ msgstr ""
 msgid "\"%s\" updated..."
 msgstr "\"%s\" uaktualnione..."
 
-#: ../src/feed.c:1251
+#: ../src/feed.c:1252
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" nie jest dostępne"
 
-#: ../src/feed.c:1377
+#: ../src/feed.c:1378
 #, c-format
 msgid "Updating \"%s\""
 msgstr "Uaktualnianie \"%s\""
 
-#: ../src/feedlist.c:297
+#: ../src/feedlist.c:289
 msgid "You have to select a feed entry"
 msgstr "Musisz zaznaczyć pozycję subskrypcji"
 
-#: ../src/feedlist.c:304 ../src/feedlist.c:313
+#: ../src/feedlist.c:296 ../src/feedlist.c:305
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea działa w trybie offline. Uaktualnienia nie są możliwe."
 
-#: ../src/feedlist.c:429
+#: ../src/feedlist.c:421
 msgid ""
 "Liferea v1.2 uses a new cache format and has migrated your feed cache. The "
 "cache content of v1.0 in ~/.liferea was not deleted automatically. Please "
@@ -737,7 +737,7 @@ msgstr ""
 msgid "Advanced"
 msgstr "Zaawansowane"
 
-#: ../src/interface.c:882 ../src/interface.c:3433 ../src/node.c:489
+#: ../src/interface.c:882 ../src/interface.c:3433 ../src/node.c:473
 msgid "New Subscription"
 msgstr "Nowa Subskrypcja"
 
@@ -2290,11 +2290,11 @@ msgstr "Liferea nie jest w stanie wyświetlić zawartości tego elementu."
 msgid "<p><a href=\"%s\">View this item's content.</a></p>"
 msgstr "<p><a href=\"%s\">Podgląd zawartości tego elementu.</a></p>"
 
-#: ../src/parsers/atom10.c:248
+#: ../src/parsers/atom10.c:249
 msgid "Invalid Atom feed: unknown author"
 msgstr "Nieprawidłowe źródło Atom: autor nieznany"
 
-#: ../src/parsers/atom10.c:691 ../src/parsers/pie_feed.c:282
+#: ../src/parsers/atom10.c:692 ../src/parsers/pie_feed.c:286
 #: ../src/parsers/rss_channel.c:304
 #, c-format
 msgid "There were errors while parsing the feed %s!"
@@ -2332,7 +2332,7 @@ msgid "_Password"
 msgstr "_Hasło:"
 
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
-#: ../src/fl_sources/default_source.c:337
+#: ../src/fl_sources/default_source.c:338
 msgid "feedlist.opml"
 msgstr "feedlist_pl.opml"
 
@@ -2443,11 +2443,11 @@ msgstr "Bez tytułu"
 msgid "Liferea notification"
 msgstr "Powiadomienie Liferea"
 
-#: ../src/scripting/ui_script.c:135
+#: ../src/scripting/ui_script.c:140
 msgid "Sorry, no scripting support available!"
 msgstr "Obsługa skryptów nie jest dostępna!"
 
-#: ../src/scripting/ui_script.c:208
+#: ../src/scripting/ui_script.c:213
 msgid "No script selected!"
 msgstr "Nie wybrano skryptów!"
 
