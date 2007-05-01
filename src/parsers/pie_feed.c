@@ -89,8 +89,12 @@ gchar* pie_parse_content_construct(xmlNodePtr cur) {
 			!strcmp(type, "text/plain")) {
 			gchar *tmp;
 			tmp = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-			ret = g_markup_printf_escaped("<div xmlns=\"http://www.w3.org/1999/xhtml\"><pre>%s</pre></div>", tmp);
-			g_free(tmp);
+			if(tmp) {
+				ret = g_markup_printf_escaped("<div xmlns=\"http://www.w3.org/1999/xhtml\"><pre>%s</pre></div>", tmp);
+				g_free(tmp);
+			} else {
+				ret = g_strdup("");
+			}
 			/* Next are things that contain subttags */
 		} else if(!g_strcasecmp(type, "HTML") ||
 		          !strcmp(type, "text/html")) {

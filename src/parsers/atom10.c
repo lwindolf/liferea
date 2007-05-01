@@ -132,15 +132,16 @@ static gchar* atom10_parse_content_construct(xmlNodePtr cur, feedParserCtxtPtr c
 			gchar *tmp;
 			/* Assume that "text/ *" files can be directly displayed.. kinda stated in the RFC */
 			ret = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-			
-			g_strchug(g_strchomp(ret));
-			
-			if(!type || !strcasecmp(type, "text"))
-				tmp = atom10_mark_up_text_content(ret);
-			else
-				tmp = g_markup_printf_escaped("<pre>%s</pre>", ret);
-			g_free(ret);
-			ret = tmp;
+			if(ret) {
+				g_strchug(g_strchomp(ret));
+
+				if(!type || !strcasecmp(type, "text"))
+					tmp = atom10_mark_up_text_content(ret);
+				else
+					tmp = g_markup_printf_escaped("<pre>%s</pre>", ret);
+				g_free(ret);
+				ret = tmp;
+			}
 		} else if(!strcmp(type,"xhtml") || !g_strcasecmp(type, "application/xhtml+xml")) {
 			/* The spec says to only show the contents of the div tag that MUST be present */
 			ret = common_utf8_fix(extractHTMLNode(cur, 2, NULL));
