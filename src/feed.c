@@ -222,20 +222,19 @@ static void feed_import(nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean t
 		if(tmp && !xmlStrcmp(tmp, BAD_CAST"true"))
 			node->subscription->updateOptions->dontUseProxy = TRUE;
 		xmlFree(tmp);
-					
-		update_state_import(cur, node->subscription->updateState);
 		
+		update_state_import(cur, node->subscription->updateState);
+						
 		node_set_icon(node, favicon_load_from_cache(node->id));
 		
-		if(favicon_update_needed(node_get_id(node), node->subscription->updateState))
+		if(favicon_update_needed(node->id, node->subscription->updateState))
 			subscription_update_favicon(node->subscription);
 
-		debug5(DEBUG_CACHE, "import feed: title=%s source=%s typeStr=%s interval=%d lastpoll=%ld", 
+		debug4(DEBUG_CACHE, "import feed: title=%s source=%s typeStr=%s interval=%d", 
 		       node_get_title(node), 
 		       subscription_get_source(node->subscription), 
 		       typeStr, 
-		       subscription_get_update_interval(node->subscription), 
-		       node->subscription->updateState->lastPoll.tv_sec);
+		       subscription_get_update_interval(node->subscription));
 
 		node_add_child(parent, node, -1);
 	}
@@ -283,8 +282,6 @@ static void feed_export(nodePtr node, xmlNodePtr cur, gboolean trusted) {
 			xmlNewProp(cur, BAD_CAST"dontUseProxy", BAD_CAST"true");
 	}
 
-	update_state_export(cur, node->subscription->updateState);
-	
 	debug3(DEBUG_CACHE, "adding feed: source=%s interval=%s cacheLimit=%s",
 	       subscription_get_source (node->subscription), 
 	       interval, (cacheLimit != NULL ? cacheLimit : ""));
@@ -695,7 +692,8 @@ static void feed_process_update_result(struct request *request) {
 	if(request->flags & FEED_REQ_DOWNLOAD_FAVICON)
 		subscription_update_favicon(node->subscription);
 
-	feedlist_schedule_save();
+	db_update_state_save (node->id, node->subscription->updateState);
+	feedlist_schedule_save ();
 	
 	script_run_for_hook(SCRIPT_HOOK_FEED_UPDATED);
 

@@ -23,6 +23,7 @@
 #include <string.h>
 #include "callbacks.h"
 #include "common.h"
+#include "db.h"
 #include "debug.h"
 #include "node.h"
 #include "folder.h"
@@ -130,12 +131,12 @@ static void node_source_import(nodePtr node, nodePtr parent, xmlNodePtr cur, gbo
 		node->available = TRUE;
 		node->source = g_new0(struct nodeSource, 1);
 		node->source->updateOptions = g_new0(struct updateOptions, 1);
-		node->source->updateState = g_new0(struct updateState, 1);
+		node->source->updateState = update_state_new();
 		node->source->root = node;
 		node->source->type = type;
 		node->source->url = xmlGetProp(cur, BAD_CAST"xmlUrl");
 		
-		update_state_import(cur, node->source->updateState);
+		db_update_state_load(node->id, node->source->updateState);
 				
 		type->source_import(node);	// FIXME: pass trusted flag?
 	} else {
@@ -157,8 +158,6 @@ static void node_source_export(nodePtr node, xmlNodePtr cur, gboolean trusted) {
 		
 	if(node->source->url)
 		xmlNewProp(cur, BAD_CAST"xmlUrl", node->source->url);
-		
-	update_state_export(cur, node->source->updateState);
 
 	debug_exit("node_source_export");
 }

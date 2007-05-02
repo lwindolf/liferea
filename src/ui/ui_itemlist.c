@@ -416,7 +416,8 @@ ui_itemlist_add_item (itemPtr item)
 		gint state = 0;
 		
 		node = node_from_id (item->nodeId);
-		g_return_if_fail (NULL != node);
+		if(!node)
+			return;	/* comment items do cause this... maybe filtering them earlier would be a good idea... */
 		
 		if (!exists) 
 		{

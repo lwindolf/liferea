@@ -1,5 +1,5 @@
 /**
- * @file vfolder.c search folder functionality
+ * @file vfolder.c search folder node type
  *
  * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  *
@@ -32,6 +32,7 @@
 #include "itemlist.h"
 #include "node.h"
 #include "vfolder.h"
+#include "ui/ui_node.h"
 #include "ui/ui_vfolder.h"
 
 void
@@ -50,9 +51,10 @@ vfolder_new (nodePtr node)
 	vfolder = g_new0 (struct vfolder, 1);
 	vfolder->node = node;
 
-	node_set_title (node, _("New Search Folder"));	/* set default title */
+	if (!node->title)
+		node_set_title (node, _("New Search Folder"));	/* set default title */
 	node_set_type (node, vfolder_get_node_type());
-	node_set_data (node, (gpointer)vfolder);
+	node_set_data (node, (gpointer) vfolder);
 
 	debug_exit ("vfolder_new");
 	
@@ -112,6 +114,8 @@ vfolder_refresh (vfolderPtr vfolder)
 		db_view_remove (vfolder->node->id);
 		
 	rules_to_view (vfolder->rules, vfolder->node->id);
+	
+	vfolder->node->unreadCount = db_view_get_unread_count (vfolder->node->id);
 }
 
 static void
@@ -122,69 +126,65 @@ vfolder_import (nodePtr node,
 {
 	vfolderPtr vfolder;
 
-	debug_enter ("vfolder_import");
-
-	vfolder = g_new0 (struct vfolder, 1);
-	vfolder->node = node;
-	vfolder_import_rules (cur, vfolder);
-
 	debug1 (DEBUG_CACHE, "import vfolder: title=%s", node_get_title (node));
-	
-	node_set_type (node, vfolder_get_node_type ());
-	node_set_data (node, (gpointer) vfolder);
-	node_add_child (parent, node, -1);
-	
-	vfolder_refresh (vfolder);
 
-	debug_exit ("vfolder_import");
+	vfolder = vfolder_new (node);
+	vfolder_import_rules (cur, vfolder);
+	node_add_child (parent, node, -1);
+	vfolder_refresh (vfolder);
 }
 
-static void vfolder_export(nodePtr node, xmlNodePtr cur, gboolean trusted) {
-	vfolderPtr	vfolder = (vfolderPtr)node->data;
+static void
+vfolder_export (nodePtr node,
+                xmlNodePtr cur,
+                gboolean trusted)
+{
+	vfolderPtr	vfolder = (vfolderPtr) node->data;
 	xmlNodePtr	ruleNode;
 	rulePtr		rule;
 	GSList		*iter;
 
-	debug_enter("vfolder_export");
+	debug_enter ("vfolder_export");
 	
-	g_assert(TRUE == trusted);
+	g_assert (TRUE == trusted);
 
 	iter = vfolder->rules;
-	while(iter) {
+	while (iter) {
 		rule = iter->data;
-		ruleNode = xmlNewChild(cur, NULL, BAD_CAST"outline", NULL);
-		xmlNewProp(ruleNode, BAD_CAST"type", BAD_CAST "rule");
-		xmlNewProp(ruleNode, BAD_CAST"text", BAD_CAST rule->ruleInfo->title);
-		xmlNewProp(ruleNode, BAD_CAST"rule", BAD_CAST rule->ruleInfo->ruleId);
-		xmlNewProp(ruleNode, BAD_CAST"value", BAD_CAST rule->value);
-		if(TRUE == rule->additive)
-			xmlNewProp(ruleNode, BAD_CAST"additive", BAD_CAST "true");
+		ruleNode = xmlNewChild (cur, NULL, BAD_CAST"outline", NULL);
+		xmlNewProp (ruleNode, BAD_CAST"type", BAD_CAST "rule");
+		xmlNewProp (ruleNode, BAD_CAST"text", BAD_CAST rule->ruleInfo->title);
+		xmlNewProp (ruleNode, BAD_CAST"rule", BAD_CAST rule->ruleInfo->ruleId);
+		xmlNewProp (ruleNode, BAD_CAST"value", BAD_CAST rule->value);
+		if (rule->additive)
+			xmlNewProp (ruleNode, BAD_CAST"additive", BAD_CAST "true");
 		else
-			xmlNewProp(ruleNode, BAD_CAST"additive", BAD_CAST "false");
+			xmlNewProp (ruleNode, BAD_CAST"additive", BAD_CAST "false");
 
-		iter = g_slist_next(iter);
+		iter = g_slist_next (iter);
 	}
 	
-	debug1(DEBUG_CACHE, "adding vfolder: title=%s", node_get_title(node));
+	debug1 (DEBUG_CACHE, "adding vfolder: title=%s", node_get_title (node));
 
-	debug_exit("vfolder_export");
+	debug_exit ("vfolder_export");
 }
 
 /* Method thats adds a rule to a vfolder. To be used
    on loading time or when creating searching. Does 
    not process items. Just sets up the vfolder */
-void vfolder_add_rule(vfolderPtr vp, const gchar *ruleId, const gchar *value, gboolean additive) {
-	rulePtr		rp;
+void
+vfolder_add_rule (vfolderPtr vfolder,
+                  const gchar *ruleId,
+                  const gchar *value,
+                  gboolean additive)
+{
+	rulePtr		rule;
 	
-	debug_enter("vfolder_add_rule");
-
-	if(NULL != (rp = rule_new(vp, ruleId, value, additive))) {
-		vp->rules = g_slist_append(vp->rules, rp);
-	} else {
-		g_warning("unknown rule id: \"%s\"", ruleId);
-	}
-	
-	debug_exit("vfolder_add_rule");
+	rule = rule_new (vfolder, ruleId, value, additive);
+	if(rule)
+		vfolder->rules = g_slist_append(vfolder->rules, rule);
+	else
+		g_warning("unknown search folder rule id: \"%s\"", ruleId);
 }
 
 /* Method that remove a rule from a vfolder. To be used
@@ -193,11 +193,9 @@ void vfolder_add_rule(vfolderPtr vp, const gchar *ruleId, const gchar *value, gb
 void
 vfolder_remove_rule (vfolderPtr vfolder, rulePtr rule) 
 {
-	vfolder->rules = g_slist_remove(vfolder->rules, rule);
+	vfolder->rules = g_slist_remove (vfolder->rules, rule);
 }
 
-/* called when a vfolder is processed by feed_free
-   to get rid of the vfolder items */
 void
 vfolder_free (vfolderPtr vfolder) 
 {
@@ -213,7 +211,7 @@ vfolder_free (vfolderPtr vfolder)
 		rule_free (rule->data);
 		rule = g_slist_next (rule);
 	}
-	g_slist_free(vfolder->rules);
+	g_slist_free (vfolder->rules);
 	vfolder->rules = NULL;
 	
 	debug_exit ("vfolder_free");
@@ -221,30 +219,34 @@ vfolder_free (vfolderPtr vfolder)
 
 /* implementation of the node type interface */
 
-static void vfolder_save(nodePtr node) { }
+static void vfolder_save (nodePtr node) { }
 
-static void vfolder_update_unread_count(nodePtr node) {
-
-	node->unreadCount = 5;	// FIXME!
+static void
+vfolder_update_unread_count (nodePtr node) 
+{
+	g_warning ("This should never be called!");
 }
 
-static void vfolder_reset_update_counter(nodePtr node) { }
-static void vfolder_request_update(nodePtr node, guint flags) { }
-static void vfolder_request_auto_update(nodePtr node) { }
+static void vfolder_reset_update_counter (nodePtr node) { }
+static void vfolder_request_update (nodePtr node, guint flags) { }
+static void vfolder_request_auto_update (nodePtr node) { }
 
-static void vfolder_remove(nodePtr node) {
-
-	ui_node_remove_node(node);
-	vfolder_free(node->data);
+static void
+vfolder_remove (nodePtr node) 
+{
+	ui_node_remove_node (node);
+	vfolder_free (node->data);
 }
 
-static void vfolder_mark_all_read(nodePtr node) {
-
-	itemlist_mark_all_read(node->id);
+static void
+vfolder_mark_all_read (nodePtr node) 
+{
+	itemlist_mark_all_read (node->id);
 }
 
-nodeTypePtr vfolder_get_node_type(void) { 
-
+nodeTypePtr
+vfolder_get_node_type (void)
+{ 
 	static struct nodeType nti = {
 		NODE_CAPABILITY_SHOW_UNREAD_COUNT |
 		NODE_CAPABILITY_SHOW_ITEM_COUNT,

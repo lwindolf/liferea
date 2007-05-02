@@ -35,6 +35,9 @@
    
 /** function type used to query SQL WHERE clause condition for rules */
 typedef gchar * (*ruleConditionFunc)	(rulePtr rule);
+
+/** function type used to check in memory items */
+typedef gboolean (*ruleCheckFunc)	(rulePtr rule, itemPtr item);
    
 /* the rule function list is used to create popup menues in ui_vfolder.c */
 struct ruleInfo *ruleFunctions = NULL;
@@ -77,13 +80,13 @@ rule_free (rulePtr rule)
 /* -------------------------------------------------------------------- */
 
 static gchar *
-rule_feed_title_match (rulePtr rule) 
+rule_condition_feed_title_match (rulePtr rule) 
 {
 	return g_strdup ("");	// FIXME: cannot be realized without having feeds in DB
 }
 
 static gchar *
-rule_item_title_match (rulePtr rule) 
+rule_condition_item_title_match (rulePtr rule) 
 {
 	gchar	*result, *pattern;
 	
@@ -95,7 +98,7 @@ rule_item_title_match (rulePtr rule)
 }
 
 static gchar *
-rule_item_description_match (rulePtr rule) 
+rule_condition_item_description_match (rulePtr rule) 
 {
 	gchar	*result, *pattern;
 	
@@ -107,7 +110,7 @@ rule_item_description_match (rulePtr rule)
 }
 
 static gchar *
-rule_item_match (rulePtr rule) 
+rule_condition_item_match (rulePtr rule) 
 {
 	gchar	*result, *pattern;
 	
@@ -119,25 +122,37 @@ rule_item_match (rulePtr rule)
 }
 
 static gchar *
-rule_item_is_unread (rulePtr rule) 
+rule_condition_item_is_unread (rulePtr rule) 
 {
 	return g_strdup ("items.read = 0");
 }
 
+static gboolean
+rule_check_item_is_unread (rulePtr rule, itemPtr item)
+{
+	return (0 == item->readStatus);
+}
+
 static gchar *
-rule_item_is_flagged (rulePtr rule) 
+rule_condition_item_is_flagged (rulePtr rule) 
 {
 	return g_strdup ("items.marked = 1");
 }
 
+static gboolean
+rule_check_item_is_flagged (rulePtr rule, itemPtr item)
+{
+	return (1 == item->flagStatus);
+}
+
 static gchar *
-rule_item_was_updated (rulePtr rule)
+rule_condition_item_was_updated (rulePtr rule)
 {
 	return g_strdup ("items.updated = 1");
 }
 
 static gchar *
-rule_item_has_enclosure (rulePtr rule) 
+rule_condition_item_has_enclosure (rulePtr rule) 
 {
 	return g_strdup ("metadata.key = 'enclosure'");
 }
@@ -184,13 +199,21 @@ rules_to_view (GSList *rules, const gchar *id)
 }
 
 gboolean
-rules_check_item (GSList *rules, guint id)
+rules_check_item (GSList *rules, itemPtr item)
 {
 	gboolean	result;
 	queryPtr	query;
+	
+	/* first try in memory checks (for "unread" and "important" search folder)... */
+	if (1 == g_slist_length (rules)) {
+		ruleCheckFunc func = ((rulePtr) rules->data)->ruleInfo->checkFunc;
+		if (func)
+			return (*func) (rules->data, item);
+	}
 
+	/* if not possible query DB */
 	query = query_create (rules);	
-	result = db_item_check (id, query);
+	result = db_item_check (item->id, query);
 	query_free (query);
 		
 	return result;
@@ -200,6 +223,7 @@ rules_check_item (GSList *rules, guint id)
 
 static void
 rule_add (ruleConditionFunc queryFunc,
+          ruleCheckFunc checkFunc,
           gchar *ruleId, 
           gchar *title,
           gchar *positive,
@@ -217,6 +241,8 @@ rule_add (ruleConditionFunc queryFunc,
 	ruleFunctions[nrOfRuleFunctions].positive = positive;
 	ruleFunctions[nrOfRuleFunctions].negative = negative;
 	ruleFunctions[nrOfRuleFunctions].needsParameter = needsParameter;
+	
+	ruleFunctions[nrOfRuleFunctions].checkFunc = checkFunc;
 
 	ruleFunctions[nrOfRuleFunctions].queryFunc = queryFunc;	
 	ruleFunctions[nrOfRuleFunctions].queryTables = queryTables;
@@ -228,14 +254,14 @@ rule_init (void)
 {
 	debug_enter ("rule_init");
 
-	rule_add (rule_item_match,		ITEM_MATCH_RULE_ID,		_("Item"),		_("does contain"),	_("does not contain"),	TRUE, QUERY_TABLE_ITEMS);
-	rule_add (rule_item_title_match,	ITEM_TITLE_MATCH_RULE_ID,	_("Item title"),	_("does match"),	_("does not match"),	TRUE, QUERY_TABLE_ITEMS);
-	rule_add (rule_item_description_match,	ITEM_DESC_MATCH_RULE_ID,	_("Item body"),		_("does match"),	_("does not match"),	TRUE, QUERY_TABLE_ITEMS);
-	rule_add (rule_feed_title_match,	"feed_title",			_("Feed title"),	_("does match"),	_("does not match"),	TRUE, QUERY_TABLE_ITEMS);
-	rule_add (rule_item_is_unread,		"unread",			_("Read status"),	_("is unread"),		_("is read"),		FALSE, QUERY_TABLE_ITEMS);
-	rule_add (rule_item_is_flagged,		"flagged",			_("Flag status"),	_("is flagged"),	_("is unflagged"),	FALSE, QUERY_TABLE_ITEMS);
-	rule_add (rule_item_was_updated,	"updated",			_("Update status"),	_("was updated"),	_("was not updated"),	FALSE, QUERY_TABLE_ITEMS);
-	rule_add (rule_item_has_enclosure,	"enclosure",			_("Podcast"),		_("included"),		_("not included"),	FALSE, QUERY_TABLE_METADATA);
+	rule_add (rule_condition_item_match,		NULL,				ITEM_MATCH_RULE_ID,		_("Item"),		_("does contain"),	_("does not contain"),	TRUE, QUERY_TABLE_ITEMS);
+	rule_add (rule_condition_item_title_match,	NULL,				ITEM_TITLE_MATCH_RULE_ID,	_("Item title"),	_("does match"),	_("does not match"),	TRUE, QUERY_TABLE_ITEMS);
+	rule_add (rule_condition_item_description_match, NULL,				ITEM_DESC_MATCH_RULE_ID,	_("Item body"),		_("does match"),	_("does not match"),	TRUE, QUERY_TABLE_ITEMS);
+	rule_add (rule_condition_feed_title_match,	NULL,				"feed_title",			_("Feed title"),	_("does match"),	_("does not match"),	TRUE, QUERY_TABLE_ITEMS);
+	rule_add (rule_condition_item_is_unread,	rule_check_item_is_unread,	"unread",			_("Read status"),	_("is unread"),		_("is read"),		FALSE, QUERY_TABLE_ITEMS);
+	rule_add (rule_condition_item_is_flagged,	rule_check_item_is_flagged,	"flagged",			_("Flag status"),	_("is flagged"),	_("is unflagged"),	FALSE, QUERY_TABLE_ITEMS);
+	rule_add (rule_condition_item_was_updated,	NULL, 				"updated",			_("Update status"),	_("was updated"),	_("was not updated"),	FALSE, QUERY_TABLE_ITEMS);
+	rule_add (rule_condition_item_has_enclosure,	NULL,				"enclosure",			_("Podcast"),		_("included"),		_("not included"),	FALSE, QUERY_TABLE_METADATA);
 
 	debug_exit ("rule_init");
 }

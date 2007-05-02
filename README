@@ -17,7 +17,8 @@ from the Source Tarball. In the following you will find
 short hints for several platforms. See below to find
 how to compile the tarball.
 
-Debian:		There are official Debian packages.
+Ubuntu/		There are official packages in both Debian and Ubuntu
+Debian:		
 		To install Liferea run:
 
 		   apt-get install liferea

@@ -157,18 +157,10 @@ void update_state_set_etag(updateStatePtr updateState, const gchar *etag);
 /**
  * Imports an updateState from the given XML node.
  *
- * @param cur		the XML node
- * @param updateState	the update state to set
+ * @param cur          the XML node
+ * @param updateState  the update state to set
  */
 void update_state_import(xmlNodePtr cur, updateStatePtr updateState);
-
-/**
- * Exports the given updateState. Adds attributes to the given XML node.
- *
- * @param cur		the XML node
- * @param updateState	the update state to export
- */
-void update_state_export(xmlNodePtr cur, updateStatePtr updateState);
 
 /**
  * Frees the given update state.

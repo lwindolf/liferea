@@ -1,5 +1,5 @@
 /**
- * @file db.c sqlite backend for item storage
+ * @file db.c sqlite backend
  * 
  * Copyright (C) 2007  Lars Lindner <lars.lindner@gmail.com>
  *
@@ -51,8 +51,15 @@ static sqlite3_stmt *duplicatesFindStmt = NULL;
 static sqlite3_stmt *duplicatesMarkReadStmt = NULL;
 
 static sqlite3_stmt *metadataLoadStmt = NULL;
-static sqlite3_stmt *metadataInsertStmt = NULL;
-static sqlite3_stmt *metadataRemoveStmt = NULL;
+static sqlite3_stmt *metadataUpdateStmt = NULL;
+
+static sqlite3_stmt *updateStateLoadStmt = NULL;
+static sqlite3_stmt *updateStateSaveStmt = NULL;
+
+static sqlite3_stmt *subscriptionMetadataLoadStmt = NULL;
+static sqlite3_stmt *subscriptionMetadataUpdateStmt = NULL;
+
+static sqlite3_stmt *subscriptionRemoveStmt = NULL;
 
 static void
 db_prepare_stmt (sqlite3_stmt **stmt, gchar *sql) 
@@ -129,7 +136,7 @@ db_get_schema_version (void)
 	return schemaVersion;
 }
 
-#define SCHEMA_TARGET_VERSION 1
+#define SCHEMA_TARGET_VERSION 2
 
 /* opening or creation of database */
 void
@@ -171,7 +178,7 @@ open:
 		       
 	if (SCHEMA_TARGET_VERSION > schemaVersion) {
 		/* do table migration */	
-		if (0 == schemaVersion) {
+		if (db_get_schema_version () == 0) {
 			/* 1.3.2 -> 1.3.3 adding read flag to itemsets relation */
 			debug0 (DEBUG_DB, "migrating from schema version 0 to 1");
 			db_exec ("BEGIN; "
@@ -186,6 +193,25 @@ open:
 				 "INSERT INTO itemsets SELECT itemsets_backup.item_id,itemsets_backup.node_id,items.read FROM itemsets_backup INNER JOIN items ON itemsets_backup.item_id = items.ROWID; "
 				 "DROP TABLE itemsets_backup; "
 	        		 "REPLACE INTO info (name, value) VALUES ('schemaVersion',1); "
+				 "END;");
+		}
+		
+		if (db_get_schema_version () == 1) {
+			/* 1.3.3 -> 1.3.4 adding comment item flag to itemsets relation */
+			debug0 (DEBUG_DB, "migrating from schema version 1 to 2");
+			db_exec ("BEGIN; "
+	        		 "CREATE TEMPORARY TABLE itemsets_backup(item_id,node_id,read); "
+				 "INSERT INTO itemsets_backup SELECT item_id,node_id,read FROM itemsets; "
+	        		 "DROP TABLE itemsets; "
+                       		 "CREATE TABLE itemsets ( "
+				 "	item_id		INTEGER, "
+				 "	node_id		TEXT, "
+				 "	read		INTEGER, "
+				 "      comment		INTEGER "
+	        		 "); "
+				 "INSERT INTO itemsets SELECT itemsets_backup.item_id,itemsets_backup.node_id,itemsets_backup.read,0 FROM itemsets_backup; "
+				 "DROP TABLE itemsets_backup; "
+	        		 "REPLACE INTO info (name, value) VALUES ('schemaVersion',2); "
 				 "END;");
 		}
 		
@@ -221,12 +247,13 @@ open:
 	         "   item_id		INTEGER,"
 	         "   node_id		TEXT,"
 	         "   read		INTEGER,"
+		 "   comment            INTEGER,"
 	         "   PRIMARY KEY (item_id, node_id)"
 	         ");");
-			
+		 
 	db_exec ("CREATE INDEX itemset_idx  ON itemsets (node_id);");
 	db_exec ("CREATE INDEX itemset_idx2 ON itemsets (item_id);");
-
+	
 	db_exec ("CREATE TABLE metadata ("
 	         "   item_id		INTEGER,"
 	         "   nr              	INTEGER,"
@@ -237,14 +264,15 @@ open:
 			
 	db_exec ("CREATE INDEX metadata_idx ON metadata (item_id);");
 	
-	/* Set up removal trigger */	
+	/* Set up item removal trigger */	
 	db_exec ("DROP TRIGGER item_removal;");
-	db_exec ("CREATE TRIGGER item_removal DELETE ON itemsets \
-	          BEGIN \
-	             DELETE FROM items WHERE ROWID = old.item_id; \
-	          END;");
+	db_exec ("CREATE TRIGGER item_removal DELETE ON itemsets "
+	         "BEGIN "
+	         "   DELETE FROM items WHERE ROWID = old.item_id; "
+		 "   DELETE FROM metadata WHERE item_id = old.item_id; "
+	         "END;");
 			   
-	/* Set up read state update triggers */
+	/* Set up item read state update triggers */
 	db_exec ("DROP TRIGGER item_insert;");
 	db_exec ("CREATE TRIGGER item_insert INSERT ON items "
 	         "BEGIN "
@@ -257,6 +285,39 @@ open:
 	         "BEGIN "
 	         "   UPDATE itemsets SET read = new.read "
 	         "   WHERE item_id = new.ROWID; "
+	         "END;");
+	 
+	db_exec ("CREATE TABLE subscription ("
+	         "   node_id            STRING,"
+	         "   PRIMARY KEY (node_id)"
+		 ");");
+		 	
+	db_exec ("CREATE TABLE update_state ("
+	         "   node_id            STRING,"
+		 "   last_modified      STRING,"
+		 "   etag               STRING,"
+		 "   last_update        INTEGER,"
+		 "   last_favicon_update INTEGER,"
+	         "   PRIMARY KEY (node_id)"
+		 ");");
+		 
+	db_exec ("CREATE TABLE subscription_metadata ("
+	         "   node_id            STRING,"
+		 "   nr                 INTEGER,"
+		 "   key                TEXT,"
+		 "   value              TEXT,"
+		 "   PRIMARY KEY (node_id, nr)"
+		 ");");
+		 
+	db_exec ("CREATE INDEX subscription_metadata_idx ON subscription_metadata (node_id);");
+	
+	/* Set up subscription removal trigger */	
+	db_exec ("DROP TRIGGER subscription_removal;");
+	db_exec ("CREATE TRIGGER subscription_removal DELETE ON subscription "
+	         "BEGIN "
+	         "   DELETE FROM update_state WHERE node_id = old.node_id; "
+		 "   DELETE FROM subscription_metadata WHERE node_id = old.node_id; "
+		 "   DELETE FROM itemsets WHERE node_id = old.node_id; "
 	         "END;");
 			   
 	/* Cleanup of DB */
@@ -347,62 +408,83 @@ open:
 	               "ROWID"
 	               ") values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			
-	db_prepare_stmt(&itemMarkReadStmt,
-	                "UPDATE items SET read = 1 WHERE ROWID = ?");
+	db_prepare_stmt (&itemMarkReadStmt,
+	                 "UPDATE items SET read = 1 WHERE ROWID = ?");
 					
-	db_prepare_stmt(&duplicatesFindStmt,
-	                "SELECT ROWID FROM items WHERE source_id = ?");
+	db_prepare_stmt (&duplicatesFindStmt,
+	                 "SELECT ROWID FROM items WHERE source_id = ?");
 		       
-	db_prepare_stmt(&duplicatesMarkReadStmt,
- 	                "UPDATE items SET read = 1 WHERE source_id = ?");
+	db_prepare_stmt (&duplicatesMarkReadStmt,
+ 	                 "UPDATE items SET read = 1 WHERE source_id = ?");
 						
-	db_prepare_stmt(&metadataLoadStmt,
-	                "SELECT key,value,nr FROM metadata WHERE item_id = ? ORDER BY nr");
+	db_prepare_stmt (&metadataLoadStmt,
+	                 "SELECT key,value,nr FROM metadata WHERE item_id = ? ORDER BY nr");
 			
-	db_prepare_stmt(&metadataInsertStmt,
-	                "REPLACE INTO metadata (item_id,nr,key,value) VALUES (?,?,?,?)");
+	db_prepare_stmt (&metadataUpdateStmt,
+	                 "REPLACE INTO metadata (item_id,nr,key,value) VALUES (?,?,?,?)");
 			
-	db_prepare_stmt(&metadataRemoveStmt,
-	                "DELETE FROM metadata WHERE item_id = ?");
-	
-	debug_exit("db_init");
+	db_prepare_stmt (&updateStateLoadStmt,
+	                 "SELECT "
+	                 "last_modified,"
+	                 "etag,"
+	                 "last_update,"
+	                 "last_favicon_update "
+			 "FROM update_state "
+			 "WHERE node_id = ?");
+			 
+	db_prepare_stmt (&updateStateSaveStmt,
+	                 "REPLACE INTO update_state "
+			 "(node_id,last_modified,etag,last_update,last_favicon_update) "
+			 "VALUES (?,?,?,?,?)");
+			 
+	db_prepare_stmt (&subscriptionRemoveStmt,
+	                 "DELETE FROM subscription WHERE node_id = ?");
+		
+	debug_exit ("db_init");
 }
 
 void
 db_deinit (void) 
 {
 
-	debug_enter("db_deinit");
+	debug_enter ("db_deinit");
 	
-	sqlite3_finalize(itemsetLoadStmt);
-	sqlite3_finalize(itemsetInsertStmt);
-	sqlite3_finalize(itemsetReadCountStmt);
-	sqlite3_finalize(itemsetItemCountStmt);
-	sqlite3_finalize(itemsetRemoveStmt);
+	sqlite3_finalize (itemsetLoadStmt);
+	sqlite3_finalize (itemsetInsertStmt);
+	sqlite3_finalize (itemsetReadCountStmt);
+	sqlite3_finalize (itemsetItemCountStmt);
+	sqlite3_finalize (itemsetRemoveStmt);
 
-	sqlite3_finalize(itemsetRemoveAllStmt);
-	sqlite3_finalize(itemsetMarkAllOldStmt);
-	sqlite3_finalize(itemsetMarkAllUpdatedStmt);
-	sqlite3_finalize(itemsetMarkAllPopupStmt);
+	sqlite3_finalize (itemsetRemoveAllStmt);
+	sqlite3_finalize (itemsetMarkAllOldStmt);
+	sqlite3_finalize (itemsetMarkAllUpdatedStmt);
+	sqlite3_finalize (itemsetMarkAllPopupStmt);
 	
-	sqlite3_finalize(itemLoadStmt);
-	sqlite3_finalize(itemInsertStmt);
-	sqlite3_finalize(itemUpdateStmt);
-	sqlite3_finalize(itemMarkReadStmt);
+	sqlite3_finalize (itemLoadStmt);
+	sqlite3_finalize (itemInsertStmt);
+	sqlite3_finalize (itemUpdateStmt);
+	sqlite3_finalize (itemMarkReadStmt);
 	
-	sqlite3_finalize(duplicatesFindStmt);
-	sqlite3_finalize(duplicatesMarkReadStmt);
+	sqlite3_finalize (duplicatesFindStmt);
+	sqlite3_finalize (duplicatesMarkReadStmt);
 	
-	sqlite3_finalize(metadataLoadStmt);
-	sqlite3_finalize(metadataInsertStmt);
-	sqlite3_finalize(metadataRemoveStmt);
+	sqlite3_finalize (metadataLoadStmt);
+	sqlite3_finalize (metadataUpdateStmt);
+	
+	sqlite3_finalize (updateStateLoadStmt);
+	sqlite3_finalize (updateStateSaveStmt);
+	
+	sqlite3_finalize (subscriptionRemoveStmt);
+	
+	sqlite3_finalize (subscriptionMetadataLoadStmt);
+	sqlite3_finalize (subscriptionMetadataUpdateStmt);
 		
-	if(SQLITE_OK != sqlite3_close(db))
-		g_warning("DB close failed: %s", sqlite3_errmsg(db));
+	if (SQLITE_OK != sqlite3_close (db))
+		g_warning ("DB close failed: %s", sqlite3_errmsg (db));
 	
 	db = NULL;
 	
-	debug_exit("db_deinit");
+	debug_exit ("db_deinit");
 }
 
 static GSList *
@@ -433,12 +515,12 @@ db_metadata_update_cb (const gchar *key,
 	itemPtr	item = (itemPtr)user_data;
 	gint	res;
 
-	sqlite3_reset(metadataInsertStmt);
-	sqlite3_bind_int (metadataInsertStmt, 1, item->id);
-	sqlite3_bind_int (metadataInsertStmt, 2, index);
-	sqlite3_bind_text(metadataInsertStmt, 3, key, -1, SQLITE_TRANSIENT);
-	sqlite3_bind_text(metadataInsertStmt, 4, value, -1, SQLITE_TRANSIENT);
-	res = sqlite3_step(metadataInsertStmt);
+	sqlite3_reset(metadataUpdateStmt);
+	sqlite3_bind_int (metadataUpdateStmt, 1, item->id);
+	sqlite3_bind_int (metadataUpdateStmt, 2, index);
+	sqlite3_bind_text(metadataUpdateStmt, 3, key, -1, SQLITE_TRANSIENT);
+	sqlite3_bind_text(metadataUpdateStmt, 4, value, -1, SQLITE_TRANSIENT);
+	res = sqlite3_step(metadataUpdateStmt);
 	if(SQLITE_DONE != res) 
 		g_warning("Update in \"metadata\" table failed (error code=%d, %s)", res, sqlite3_errmsg(db));
 }
@@ -449,17 +531,6 @@ db_metadata_update(itemPtr item)
 	metadata_list_foreach(item->metadata, db_metadata_update_cb, item);
 }
 
-static void
-db_metadata_remove(gulong id) 
-{
-	gint	res;
-	
-	sqlite3_reset(metadataRemoveStmt);
-	sqlite3_bind_int(metadataRemoveStmt, 1, id);
-	res = sqlite3_step(metadataRemoveStmt);
-	if(SQLITE_DONE != res) 
-		g_warning("Delete in \"metadata\" table failed (error code=%d, %s)", res, sqlite3_errmsg(db));
-}
 /* Item structure loading methods */
 
 static itemPtr
@@ -526,7 +597,7 @@ db_item_load (gulong id)
 	sqlite3_reset(itemLoadStmt);
 	res = sqlite3_bind_int(itemLoadStmt, 1, id);
 	if(SQLITE_OK != res)
-		g_error("db_load_item_with_id: sqlite bind failed (error code %d)!", res);
+		g_error("db_item_load: sqlite bind failed (error code %d)!", res);
 
 	if(sqlite3_step(itemLoadStmt) == SQLITE_ROW) {
 		item = db_load_item_from_columns(itemLoadStmt);
@@ -642,8 +713,6 @@ db_item_remove (gulong id)
 	gint	res;
 	
 	debug1(DEBUG_DB, "removing item with id %lu", id);
-	
-	db_metadata_remove(id);
 	
 	sqlite3_reset(itemsetRemoveStmt);
 	sqlite3_bind_int(itemsetRemoveStmt, 1, id);
@@ -912,20 +981,9 @@ db_view_create (const gchar *id, queryPtr query)
 			       "WHERE %s;", 
 			       id, tables, query->conditions);
 
-	res = sqlite3_exec(db, sql, NULL, NULL, &err);
-	if(SQLITE_OK != res) 
-		g_warning("Create view failed (%s) SQL: %s", err, sql);
-
-	sqlite3_free (sql);
-	sqlite3_free (err);
-		
-	sql = sqlite3_mprintf ("CREATE TEMP VIEW view_%s_unread AS "
-	                       "SELECT item_id FROM view_%s WHERE item_read = 0",
-			       id, id);
-			       
-	res = sqlite3_exec(db, sql, NULL, NULL, &err);
-	if(SQLITE_OK != res) 
-		g_warning("Create view failed (%s) SQL: %s", err, sql);
+	res = sqlite3_exec (db, sql, NULL, NULL, &err);
+	if (SQLITE_OK != res) 
+		g_warning ("Create view failed (%s) SQL: %s", err, sql);
 			       
 	g_free (tables);
 	sqlite3_free (sql);
@@ -938,11 +996,10 @@ db_view_remove (const gchar *id)
 	gchar	*sql, *err;
 	gint	res;
 		
-	sql = sqlite3_mprintf ("DROP VIEW view_%s;", id);
-	
-		res = sqlite3_exec(db, sql, NULL, NULL, &err);
-	if(SQLITE_OK != res) 
-		g_warning("Dropping view failed (%s) SQL: %s", err, sql);
+	sql = sqlite3_mprintf ("DROP VIEW view_%s;", id);	
+	res = sqlite3_exec (db, sql, NULL, NULL, &err);
+	if (SQLITE_OK != res) 
+		g_warning ("Dropping view failed (%s) SQL: %s", err, sql);
 	
 	sqlite3_free (sql);
 	sqlite3_free (err);
@@ -955,7 +1012,7 @@ db_view_load (const gchar *id)
 	sqlite3_stmt	*viewLoadStmt;	
 	itemSetPtr 	itemSet;
 
-	debug2 (DEBUG_DB, "loading view for node \"%s\" (thread=%p)", id, g_thread_self());
+	debug2 (DEBUG_DB, "loading view for node \"%s\" (thread=%p)", id, g_thread_self ());
 	itemSet = g_new0 (struct itemSet, 1);
 	itemSet->nodeId = (gchar *)id;
 
@@ -968,9 +1025,91 @@ db_view_load (const gchar *id)
 	}
 
 	sqlite3_free (sql);
-	sqlite3_finalize(viewLoadStmt);
+	sqlite3_finalize (viewLoadStmt);
 	
 	debug0 (DEBUG_DB, "loading of view finished");
 	
 	return itemSet;
+}
+
+guint
+db_view_get_unread_count (const gchar *id)
+{
+	gchar		*sql;
+	sqlite3_stmt	*viewCountStmt;	
+	gint		res;
+	guint		count = 0;
+
+	debug_start_measurement (DEBUG_DB);
+
+	sql = sqlite3_mprintf ("SELECT COUNT(*) FROM view_%s WHERE item_read = 0;", id);
+	db_prepare_stmt (&viewCountStmt, sql);
+	sqlite3_reset (viewCountStmt);
+	res = sqlite3_step (viewCountStmt);
+	
+	if (SQLITE_ROW == res)
+		count = sqlite3_column_int (viewCountStmt, 0);
+	else
+		g_warning ("view unread counting failed (error code=%d, %s)", res, sqlite3_errmsg (db));
+
+	sqlite3_free (sql);
+	sqlite3_finalize (viewCountStmt);
+	
+	debug_end_measurement (DEBUG_DB, "view unread counting");
+	
+	return count;
+}
+
+void
+db_update_state_load (const gchar *id,
+                      updateStatePtr updateState)
+{
+	gint		res;
+
+	debug2 (DEBUG_DB, "loading subscription %s update state (thread=%p)", id, g_thread_self ());
+	debug_start_measurement (DEBUG_DB);	
+
+	sqlite3_reset (updateStateLoadStmt);
+	sqlite3_bind_text (updateStateLoadStmt, 1, id, -1, SQLITE_TRANSIENT);
+
+	res = sqlite3_step (updateStateLoadStmt);
+	if (SQLITE_ROW == res) {
+		updateState->lastModified		= g_strdup (sqlite3_column_text (updateStateLoadStmt, 0));
+		updateState->etag			= g_strdup (sqlite3_column_text (updateStateLoadStmt, 1));
+		updateState->lastPoll.tv_sec		= sqlite3_column_int (updateStateLoadStmt, 2);
+		updateState->lastFaviconPoll.tv_sec	= sqlite3_column_int (updateStateLoadStmt, 3);
+	} else {
+		debug2 (DEBUG_DB, "Could not load update state for subscription %s (error code %d)!", id, res);
+	}
+
+	debug_end_measurement (DEBUG_DB, "update state load");
+}
+
+void
+db_update_state_save (const gchar *id,
+                      updateStatePtr updateState)
+{	
+	gint		res;
+
+	debug2 (DEBUG_DB, "saving subscription %s update state (thread=%p)", id, g_thread_self ());
+	debug_start_measurement (DEBUG_DB);
+	
+	sqlite3_reset (updateStateSaveStmt);
+	sqlite3_bind_text (updateStateSaveStmt, 1, id, -1, SQLITE_TRANSIENT);
+
+	sqlite3_bind_text (updateStateSaveStmt, 2, updateState->lastModified, -1, SQLITE_TRANSIENT);
+	sqlite3_bind_text (updateStateSaveStmt, 3, updateState->etag, -1, SQLITE_TRANSIENT);
+	sqlite3_bind_int  (updateStateSaveStmt, 4, updateState->lastPoll.tv_sec);
+	sqlite3_bind_int  (updateStateSaveStmt, 5, updateState->lastFaviconPoll.tv_sec);
+
+	res = sqlite3_step (updateStateSaveStmt);
+	if (SQLITE_DONE != res)
+		g_warning ("Could not save update state for subscription %s (error code %d)!", id, res);
+
+	debug_end_measurement (DEBUG_DB, "update state save");
+}
+
+void
+db_feed_remove (const gchar *id)
+{
 }

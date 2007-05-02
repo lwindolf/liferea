@@ -27,6 +27,7 @@
 
 #include "support.h"
 #include "common.h"
+#include "db.h"
 #include "debug.h"
 #include "feed.h"
 #include "feedlist.h"
@@ -265,6 +266,7 @@ void opml_source_process_update_results(requestPtr request) {
 	}
 	
 	node_foreach_child(node, node_request_update);
+	db_update_state_save (node->id, request->updateState);
 	update_request_free(request);
 }
 

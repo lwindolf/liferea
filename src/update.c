@@ -95,6 +95,7 @@ void update_state_set_etag(updateStatePtr updateState, const gchar *etag) {
 		updateState->etag = g_strdup(etag);
 }
 
+/* legacy state import method */
 void update_state_import(xmlNodePtr cur, updateStatePtr updateState) {
 	xmlChar	*tmp;
 	
@@ -122,27 +123,6 @@ void update_state_import(xmlNodePtr cur, updateStatePtr updateState) {
 	updateState->lastFaviconPoll.tv_usec = 0L;
 	if(tmp)
 		xmlFree(tmp);
-}
-
-void update_state_export(xmlNodePtr cur, updateStatePtr updateState) {
-
-	if(update_state_get_etag(updateState)) 
-		xmlNewProp(cur, BAD_CAST"etag", BAD_CAST update_state_get_etag(updateState));
-
-	if(update_state_get_lastmodified(updateState)) 
-		xmlNewProp(cur, BAD_CAST"lastModified", BAD_CAST update_state_get_lastmodified(updateState));
-		
-	if(updateState->lastPoll.tv_sec > 0) {
-		gchar *lastPoll = g_strdup_printf("%ld", updateState->lastPoll.tv_sec);
-		xmlNewProp(cur, BAD_CAST"lastPollTime", BAD_CAST lastPoll);
-		g_free(lastPoll);
-	}
-	
-	if(updateState->lastFaviconPoll.tv_sec > 0) {
-		gchar *lastPoll = g_strdup_printf("%ld", updateState->lastFaviconPoll.tv_sec);
-		xmlNewProp(cur, BAD_CAST"lastFaviconPollTime", BAD_CAST lastPoll);
-		g_free(lastPoll);
-	}
 }
 
 void update_state_free(updateStatePtr updateState) {

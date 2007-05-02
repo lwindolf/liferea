@@ -130,11 +130,11 @@ itemlist_check_item (itemPtr item)
 {
 	/* use search folder rule list in case of a search folder */
 	if (itemlist_priv.currentNode->type == NODE_TYPE_VFOLDER)		
-		return rules_check_item (((vfolderPtr)itemlist_priv.currentNode->data)->rules, item->id);
+		return rules_check_item (((vfolderPtr)itemlist_priv.currentNode->data)->rules, item);
 
 	/* apply the item list filter if available */
 	if (itemlist_priv.filter)
-		return rules_check_item (itemlist_priv.filter, item->id);
+		return rules_check_item (itemlist_priv.filter, item);
 	
 	/* otherwise keep the item */
 	return TRUE;
@@ -488,7 +488,7 @@ itemlist_remove_item (itemPtr item)
 	node_update_counters (node_from_id (item->nodeId));
 	ui_node_update (item->nodeId);
 	
-	item_unload(item);
+	item_unload (item);
 }
 
 void

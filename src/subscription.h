@@ -52,7 +52,7 @@ typedef struct subscription {
 	gchar		*httpError;		/**< textual description of HTTP protocol errors */
 	gint		httpErrorCode;		/**< last HTTP error code */
 	updateStatePtr	updateState;		/**< update states (etag, last modified, cookies, last polling times...) */
-	
+
 	gboolean	discontinued;		/**< flag to avoid updating after HTTP 410 */
 
 	gchar		*filtercmd;		/**< feed filter command */

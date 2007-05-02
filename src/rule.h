@@ -32,6 +32,8 @@ typedef struct ruleInfo {
 	gchar		*negative;	/**< text for negative logic selection */
 	gboolean	needsParameter;	/**< some rules may require no parameter... */
 	
+	gpointer	checkFunc;	/**< the in memory check function (or NULL) */
+	
 	gpointer	queryFunc;	/**< the query condition creation function */
 	guint		queryTables;	/**< tables necessary for the rule query */
 } *ruleInfoPtr;
@@ -79,11 +81,11 @@ void rules_to_view (GSList *rules, const gchar *id);
  * Checks if the given item id matches the given rules.
  *
  * @param rules		the rule list
- * @param id		the item id
+ * @param item		the item
  *
  * @returns TRUE if the item matches the rules
  */
-gboolean rules_check_item (GSList *rules, guint id);
+gboolean rules_check_item (GSList *rules, itemPtr item);
 
 /** 
  * Free's the given rule structure 

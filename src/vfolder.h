@@ -1,5 +1,5 @@
 /**
- * @file vfolder.h search folder functionality
+ * @file vfolder.h search folder node type
  *
  * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  *
@@ -95,6 +95,6 @@ void vfolder_refresh(vfolderPtr vfolder);
 void vfolder_free (vfolderPtr vfolder);
 
 /* implementation of the node type interface */
-struct nodeType * vfolder_get_node_type(void);
+struct nodeType * vfolder_get_node_type (void);
 
 #endif

@@ -1,5 +1,5 @@
 /**
- * @file db.h sqlite backend for item storage
+ * @file db.h sqlite backend 
  * 
  * Copyright (C) 2007  Lars Lindner <lars.lindner@gmail.com>
  *
@@ -26,6 +26,7 @@
 #include "item.h"
 #include "itemlist.h"
 #include "itemset.h"
+#include "update.h"
 
 /**
  * Open and initialize the DB.
@@ -187,7 +188,7 @@ gboolean db_item_check (guint id, const queryPtr query);
 /**
  * Creates a new temporary view (used for search folders)
  *
- * @param id		the node id
+ * @param id		the view id
  * @param query		query info to construct view
  */
 void db_view_create (const gchar *id, const queryPtr query);
@@ -195,17 +196,48 @@ void db_view_create (const gchar *id, const queryPtr query);
 /**
  * Removes a temparory view with the given id from the DB session
  *
- * @param id		the node id
+ * @param id		the view id
  */
 void db_view_remove (const gchar *id);
 
 /**
  * Returns an item set of all items for the given view id.
  *
- * @param id		the node id
+ * @param id		the view id
  *
  * @returns a new item set (to be free'd using itemset_free())
  */
 itemSetPtr db_view_load (const gchar *id);
+
+/** 
+ * Returns the unread item count for the given view id.
+ *
+ * @param id		the view id
+ *
+ * @returns the number of unread items in the view
+ */
+guint db_view_get_unread_count (const gchar *id);
+
+/**
+ * Loads the feed state for the given feed from the DB
+ *
+ * @param id		the node id
+ * @param updateState	update state structure to fill
+ */
+void db_update_state_load (const gchar *id, updateStatePtr updateState);
+
+/**
+ * Updates all attributes and state of the feed in the DB
+ *
+ * @param id		the node id
+ */
+void db_update_state_save (const gchar *id, updateStatePtr updateState);
+
+/**
+ * Removes the feed with the given id from the DB
+ *
+ * @param id		the node id
+ */
+void db_feed_remove (const gchar *id);
 
 #endif
