@@ -244,14 +244,6 @@ void node_set_title(nodePtr node, const gchar *title);
 void node_update_counters(nodePtr node);
 
 /**
- * Update the number of new items of a node.
- *
- * @param node	the node
- * @param diff	the difference to the current unread count
- */
-void node_update_new_count(nodePtr node, gint diff);
-
-/**
  * Recursively marks all items of the given node as read.
  *
  * @param node	the node to process

@@ -183,23 +183,12 @@ void node_free(nodePtr node) {
 	g_free(node);
 }
 
-void node_update_new_count(nodePtr node, gint diff) {
+static void node_calc_counters(nodePtr node) {
 
-	node->newCount += diff;
-
-	/* vfolder new counts are not interesting
+	/* vfolder unread counts are not interesting
 	   in the following propagation handling */
 	if(NODE_TYPE_VFOLDER == node->type)
 		return;
-
-	/* no parent node propagation necessary */
-
-	/* update global feed list statistic */
-	if(NODE_TYPE_FEED == node->type)
-		feedlist_update_counters(0, diff);	
-}
-
-static void node_calc_counters(nodePtr node) {
 
 	/* Order is important! First update all children
 	   so that hierarchical nodes (folders and feed
