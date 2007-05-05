@@ -110,6 +110,14 @@ vfolder_load (nodePtr node)
 }
 
 void
+vfolder_update_counters (nodePtr node) 
+{
+	node->unreadCount = db_view_get_unread_count (node->id);
+	node->itemCount = db_view_get_item_count (node->id);
+	ui_node_update (node->id);
+}
+
+void
 vfolder_refresh (vfolderPtr vfolder)
 {
 	g_return_if_fail (NULL != vfolder->node);
@@ -119,8 +127,7 @@ vfolder_refresh (vfolderPtr vfolder)
 		
 	rules_to_view (vfolder->rules, vfolder->node->id);
 	
-	vfolder->node->unreadCount = db_view_get_unread_count (vfolder->node->id);
-	vfolder->node->itemCount = db_view_get_item_count (vfolder->node->id);
+	vfolder_update_counters (vfolder->node);
 }
 
 static gboolean
@@ -137,7 +144,7 @@ vfolder_is_affected (vfolderPtr vfolder, const gchar *ruleName)
 }
 
 void
-vfolder_foreach_with_rule (const gchar *ruleName, nodeActionDataFunc func, gpointer data) 
+vfolder_foreach_with_rule (const gchar *ruleName, nodeActionFunc func) 
 {
 	GSList	*iter = vfolders;
 	
@@ -145,7 +152,7 @@ vfolder_foreach_with_rule (const gchar *ruleName, nodeActionDataFunc func, gpoin
 	while (iter) {
 		vfolderPtr vfolder = (vfolderPtr)iter->data;
 		if (vfolder_is_affected (vfolder, ruleName))
-			(*func) (vfolder->node, data);
+			(*func) (vfolder->node);
 		iter = g_slist_next (iter);
 	}
 }
@@ -278,7 +285,7 @@ static void vfolder_save (nodePtr node) { }
 static void
 vfolder_update_unread_count (nodePtr node) 
 {
-	g_warning ("This should never be called!");
+	g_warning("Should never be called!");
 }
 
 static void vfolder_reset_update_counter (nodePtr node) { }

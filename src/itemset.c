@@ -29,6 +29,7 @@
 #include "itemset.h"
 #include "node.h"
 #include "support.h"
+#include "vfolder.h"
 
 void
 itemset_foreach (itemSetPtr itemSet, itemActionFunc callback)
@@ -270,6 +271,10 @@ void itemset_merge_items(itemSetPtr itemSet, GList *list) {
 		iter = g_list_previous(iter);
 	}
 	g_list_free(list);
+	
+	/* Update search folder counters */
+	vfolder_foreach_with_rule ("unread", vfolder_update_counters);
+	vfolder_foreach_with_rule ("flagged", vfolder_update_counters);
 	
 	debug_end_measurement (DEBUG_UPDATE, "merge itemset");
 }

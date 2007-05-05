@@ -83,9 +83,8 @@ void vfolder_remove_rule (vfolderPtr vfolder, rulePtr rule);
  *
  * @param ruleName	the rule type
  * @param func		callback
- * @param data		callback data
  */
-void vfolder_foreach_with_rule (const gchar *ruleName, nodeActionDataFunc func, gpointer data);
+void vfolder_foreach_with_rule (const gchar *ruleName, nodeActionFunc func);
 
 /**
  * Method to invoke callbacks for all search folders that are
@@ -104,13 +103,21 @@ void vfolder_foreach_with_rule (const gchar *ruleName, nodeActionDataFunc func, 
 void vfolder_foreach_with_item (itemPtr item, const gchar *ruleName, nodeActionFunc positiveFunc, nodeActionFunc negativeFunc);
 
 /**
+ * Method that updates the unread and item count for the given
+ * search folder node.
+ *
+ * @param node		the search folder node
+ */
+void vfolder_update_counters (nodePtr node);
+
+/**
  * Method that "refreshes" the DB view according
  * to the search folder rules. To be called after
  * vfolder_(add|remove)_rule().
  *
  * @param vfolder	search folder to rebuild
  */
-void vfolder_refresh(vfolderPtr vfolder);
+void vfolder_refresh (vfolderPtr vfolder);
 
 /**
  * Called when a search folder is processed by node_free()

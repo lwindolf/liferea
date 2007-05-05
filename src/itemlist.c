@@ -510,6 +510,10 @@ itemlist_hide_item (itemPtr item)
 void
 itemlist_remove_item (itemPtr item) 
 {
+	/* update search folder counters */
+	vfolder_foreach_with_item (item, "flagged", itemlist_decrement_vfolder_count, NULL);
+	vfolder_foreach_with_item (item, "unread", itemlist_decrement_vfolder_unread, NULL);
+
 	if(itemlist_priv.selectedId == item->id) {
 		itemlist_set_selected (NULL);
 		itemlist_priv.deferredFilter = FALSE;
@@ -563,12 +567,19 @@ itemlist_remove_items (itemSetPtr itemSet, GList *items)
 
 void
 itemlist_remove_all_items (nodePtr node)
-{
+{	
 	itemview_clear ();
 	db_itemset_remove_all (node->id);
 	// FIXME: leaking comments!
 	itemview_update ();
+	
+	node->itemCount = 0;
+	node->unreadCount = 0;
 	ui_node_update (node->id);
+	
+	/* Search folders updating */
+	vfolder_foreach_with_rule ("unread", vfolder_update_counters);
+	vfolder_foreach_with_rule ("flagged", vfolder_update_counters);
 }
 
 void
@@ -582,14 +593,6 @@ itemlist_update_item (itemPtr item)
 	itemview_update_item (item);
 }
 
-static void 
-itemlist_vfolder_update_unread (nodePtr node, gpointer data)
-{
-	node->unreadCount += GPOINTER_TO_INT (data);
-	node->itemCount += GPOINTER_TO_INT (data);
-	ui_node_update (node->id);
-}
-
 void
 itemlist_mark_all_read (const gchar *nodeId) 
 {
@@ -597,9 +600,6 @@ itemlist_mark_all_read (const gchar *nodeId)
 	itemSetPtr itemSet = node_get_itemset (node);
 	if (!itemSet || !node)
 		return;
-		
-	vfolder_foreach_with_rule ("unread", itemlist_vfolder_update_unread,
-	                           GINT_TO_POINTER (-1 * node->unreadCount));
 		
 	GList *iter = itemSet->ids;
 	while (iter)
@@ -617,6 +617,9 @@ itemlist_mark_all_read (const gchar *nodeId)
 	itemview_update ();
 	node_update_counters (node_from_id (nodeId));
 	ui_node_update (nodeId);
+	
+	/* Search folder updating */
+	vfolder_foreach_with_rule ("unread", vfolder_update_counters);
 }
 
 void

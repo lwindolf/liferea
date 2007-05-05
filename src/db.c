@@ -996,7 +996,8 @@ db_view_create (const gchar *id, queryPtr query)
 			tables = g_strdup ("items");
 			break;
 		case QUERY_TABLE_METADATA:
-			tables = g_strdup ("metadata");
+			// tables = g_strdup ("metadata"); FIXME: avoid join
+			tables = g_strdup ("items INNER JOIN metadata ON items.ROWID = metadata.item_id");
 			break;
 		case (QUERY_TABLE_METADATA | QUERY_TABLE_ITEMS):
 			tables = g_strdup ("items INNER JOIN metadata ON items.ROWID = metadata.item_id");
