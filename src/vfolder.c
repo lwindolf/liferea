@@ -35,6 +35,9 @@
 #include "ui/ui_node.h"
 #include "ui/ui_vfolder.h"
 
+/** The list of all existing vfolders. Used for updating vfolder information upon item changes */
+static GSList		*vfolders = NULL;
+
 void
 vfolder_init (void)
 {
@@ -50,6 +53,7 @@ vfolder_new (nodePtr node)
 
 	vfolder = g_new0 (struct vfolder, 1);
 	vfolder->node = node;
+	vfolders = g_slist_append (vfolders, vfolder);
 
 	if (!node->title)
 		node_set_title (node, _("New Search Folder"));	/* set default title */
@@ -116,6 +120,54 @@ vfolder_refresh (vfolderPtr vfolder)
 	rules_to_view (vfolder->rules, vfolder->node->id);
 	
 	vfolder->node->unreadCount = db_view_get_unread_count (vfolder->node->id);
+	vfolder->node->itemCount = db_view_get_item_count (vfolder->node->id);
+}
+
+static gboolean
+vfolder_is_affected (vfolderPtr vfolder, const gchar *ruleName)
+{
+	GSList *iter = vfolder->rules;
+	while (iter) {
+		rulePtr rule = (rulePtr)iter->data;
+		if (g_str_equal (rule->ruleInfo->ruleId, ruleName))
+			return TRUE;
+		iter = g_slist_next(iter);
+	}
+	return FALSE;
+}
+
+void
+vfolder_foreach_with_rule (const gchar *ruleName, nodeActionFunc func) 
+{
+	GSList	*iter = vfolders;
+	
+	g_assert (NULL != func);
+	while (iter) {
+		vfolderPtr vfolder = (vfolderPtr)iter->data;
+		if (vfolder_is_affected (vfolder, ruleName))
+			(*func) (vfolder->node);
+		iter = g_slist_next (iter);
+	}
+}
+
+void
+vfolder_foreach_with_item (itemPtr item, const gchar *ruleName, nodeActionFunc positiveFunc, nodeActionFunc negativeFunc)
+{
+	GSList	*iter = vfolders;
+	
+	while (iter) {
+		vfolderPtr vfolder = (vfolderPtr)iter->data;
+		if (vfolder_is_affected (vfolder, ruleName)) {
+			if (rules_check_item (vfolder->rules, item)) {
+				if (positiveFunc)
+					(*positiveFunc) (vfolder->node);	
+			} else {
+				if (negativeFunc)
+					(*negativeFunc) (vfolder->node);
+			}
+		}
+		iter = g_slist_next (iter);
+	}
 }
 
 static void
@@ -203,8 +255,10 @@ vfolder_free (vfolderPtr vfolder)
 
 	debug_enter ("vfolder_free");
 	
-	db_view_remove (vfolder->node->id);
+	vfolders = g_slist_remove (vfolders, vfolder);
 	
+	db_view_remove (vfolder->node->id);
+		
 	/* free vfolder rules */
 	rule = vfolder->rules;
 	while (rule) {
@@ -242,6 +296,7 @@ static void
 vfolder_mark_all_read (nodePtr node) 
 {
 	itemlist_mark_all_read (node->id);
+	node->unreadCount = 0;
 }
 
 nodeTypePtr

@@ -206,16 +206,19 @@ rules_check_item (GSList *rules, itemPtr item)
 	
 	/* first try in memory checks (for "unread" and "important" search folder)... */
 	if (1 == g_slist_length (rules)) {
-		ruleCheckFunc func = ((rulePtr) rules->data)->ruleInfo->checkFunc;
-		if (func)
-			return (*func) (rules->data, item);
+		rulePtr rule = (rulePtr) rules->data;
+		ruleCheckFunc func = rule->ruleInfo->checkFunc;
+		if (func) {
+			result = (*func) (rules->data, item);
+			return (rule->additive)?result:!result;
+		}
 	}
 
 	/* if not possible query DB */
 	query = query_create (rules);	
 	result = db_item_check (item->id, query);
 	query_free (query);
-		
+	
 	return result;
 }
 

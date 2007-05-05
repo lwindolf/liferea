@@ -210,6 +210,15 @@ void db_view_remove (const gchar *id);
 itemSetPtr db_view_load (const gchar *id);
 
 /** 
+ * Returns the item count for the given view id.
+ *
+ * @param id		the view id
+ *
+ * @returns the number of items in the view
+ */
+guint db_view_get_item_count (const gchar *id);
+
+/** 
  * Returns the unread item count for the given view id.
  *
  * @param id		the view id

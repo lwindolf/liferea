@@ -1071,6 +1071,34 @@ db_view_load (const gchar *id)
 }
 
 guint
+db_view_get_item_count (const gchar *id)
+{
+	gchar		*sql;
+	sqlite3_stmt	*viewCountStmt;	
+	gint		res;
+	guint		count = 0;
+
+	debug_start_measurement (DEBUG_DB);
+
+	sql = sqlite3_mprintf ("SELECT COUNT(*) FROM view_%s;", id);
+	db_prepare_stmt (&viewCountStmt, sql);
+	sqlite3_reset (viewCountStmt);
+	res = sqlite3_step (viewCountStmt);
+	
+	if (SQLITE_ROW == res)
+		count = sqlite3_column_int (viewCountStmt, 0);
+	else
+		g_warning ("view unread counting failed (error code=%d, %s)", res, sqlite3_errmsg (db));
+
+	sqlite3_free (sql);
+	sqlite3_finalize (viewCountStmt);
+	
+	debug_end_measurement (DEBUG_DB, "view item counting");
+	
+	return count;
+}
+
+guint
 db_view_get_unread_count (const gchar *id)
 {
 	gchar		*sql;

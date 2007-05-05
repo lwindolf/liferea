@@ -343,21 +343,41 @@ itemlist_select_next_unread (void)
 }
 
 /* menu commands */
+
+static void
+itemlist_decrement_vfolder_count (nodePtr node)
+{
+	node->itemCount--;
+	ui_node_update (node->id);
+}
+
+static void
+itemlist_increment_vfolder_count (nodePtr node)
+{
+	node->itemCount++;
+	ui_node_update (node->id);
+}
+
 void
 itemlist_set_flag (itemPtr item, gboolean newStatus) 
 {	
 	if (newStatus != item->flagStatus) {
 
-		/* 1. save state to DB */
+		/* 1. propagate to vfolders (must happen before changing the item state) */
+		vfolder_foreach_with_item (item, "flagged",
+		                           itemlist_decrement_vfolder_count,
+		                           itemlist_increment_vfolder_count);
+						 
+		/* 2. save state to DB */
 		item->flagStatus = newStatus;
 		db_item_update (item);
 
-		/* 2. update item list GUI state */
+		/* 3. update item list GUI state */
 		itemlist_update_item (item);
 
-		/* 3. no update of feed list necessary... */
+		/* 4. no update of feed list necessary... */
 
-		/* 4. update notification statistics */
+		/* 5. update notification statistics */
 		feedlist_reset_new_item_count ();
 		
 		/* no duplicate state propagation to avoid copies 
@@ -372,27 +392,46 @@ itemlist_toggle_flag (itemPtr item)
 	itemview_update ();
 }
 
+static void
+itemlist_decrement_vfolder_unread (nodePtr node)
+{
+	node->unreadCount--;
+	ui_node_update (node->id);
+}
+
+static void
+itemlist_increment_vfolder_unread (nodePtr node)
+{
+	node->unreadCount++;
+	ui_node_update (node->id);
+}
+
 void
 itemlist_set_read_status (itemPtr item, gboolean newStatus) 
 {
 	if (newStatus != item->readStatus) {
 		debug_start_measurement (DEBUG_GUI);
-		
-		/* 1. save state to DB */
+
+		/* 1. propagate to vfolders (must happen before changing the item state) */
+		vfolder_foreach_with_item (item, "unread",
+		                           itemlist_decrement_vfolder_unread,
+		                           itemlist_increment_vfolder_unread);
+				
+		/* 2. save state to DB */
 		item->readStatus = newStatus;
 		db_item_update (item);
 
-		/* 2. update item list GUI state */
+		/* 3. update item list GUI state */
 		itemlist_update_item (item);
 
-		/* 3. updated feed list unread counters */
+		/* 4. updated feed list unread counters */
 		node_update_counters (node_from_id (item->nodeId));
 		ui_node_update (item->nodeId);
-
-		/* 4. update notification statistics */
+		
+		/* 5. update notification statistics */
 		feedlist_reset_new_item_count ();
 
-		/* 5. duplicate state propagation */
+		/* 6. duplicate state propagation */
 		if (item->validGuid) {
 			GSList *duplicates, *iter;
 			
@@ -564,6 +603,7 @@ itemlist_mark_all_read (const gchar *nodeId)
 	itemview_update ();
 	node_update_counters (node_from_id (nodeId));
 	ui_node_update (nodeId);
+	vfolder_foreach_with_rule ("unread");
 }
 
 void

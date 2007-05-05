@@ -78,6 +78,31 @@ void vfolder_add_rule (vfolderPtr vfolder, const gchar *ruleId, const gchar *val
 void vfolder_remove_rule (vfolderPtr vfolder, rulePtr rule);
 
 /**
+ * Method to invoke a callback for all search folders that do use
+ * the given rule.
+ *
+ * @param ruleName	the rule type
+ * @param func		callback
+ */
+void vfolder_foreach_with_rule (const gchar *ruleName, nodeActionFunc func);
+
+/**
+ * Method to invoke callbacks for all search folders that are
+ * affected by a modification of the given item. The given rule
+ * name is to be used to select the relevant search folders. 
+ * For each affected search folder it is check if the item matches
+ * the search folder rules. If yes then positiveFunc is called,
+ * otherwise negativeFunc is called. For unaffected search folders
+ * neither is called.
+ *
+ * @param item		the item that changed
+ * @param ruleName	the rule type that matches the item change
+ * @param positiveFunc	function to call if the search folder rules do match
+ * @param negativeFunc	function to call if the search folder rules do not match
+ */
+void vfolder_foreach_with_item (itemPtr item, const gchar *ruleName, nodeActionFunc positiveFunc, nodeActionFunc negativeFunc);
+
+/**
  * Method that "refreshes" the DB view according
  * to the search folder rules. To be called after
  * vfolder_(add|remove)_rule().
