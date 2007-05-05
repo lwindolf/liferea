@@ -211,6 +211,28 @@ open:
 	        		 "); "
 				 "INSERT INTO itemsets SELECT itemsets_backup.item_id,itemsets_backup.node_id,itemsets_backup.read,0 FROM itemsets_backup; "
 				 "DROP TABLE itemsets_backup; "
+				 "CREATE TEMPORARY TABLE items_backup(title,read,new,updated,popup,marked,source,source_id,valid_guid,real_source_url,real_source_title,description,date,comment_feed_id);"
+				 "INSERT INTO items_backup SELECT title,read,new,updated,popup,marked,source,source_id,valid_guid,real_source_url,real_source_title,description,date,comment_feed_id FROM items; "
+				 "DROP TABLE items; "
+				 "CREATE TABLE items ("
+			         "   title		TEXT,"
+			         "   read		INTEGER,"
+			         "   new		INTEGER,"
+			         "   updated		INTEGER,"
+			         "   popup		INTEGER,"
+			         "   marked		INTEGER,"
+			         "   source		TEXT,"
+			         "   source_id		TEXT,"
+			         "   valid_guid		INTEGER,"
+			         "   real_source_url	TEXT,"
+			         "   real_source_title	TEXT,"
+			         "   description	TEXT,"
+			         "   date		INTEGER,"
+			         "   comment_feed_id	INTEGER,"
+				 "   comment            INTEGER"
+			         "); "
+				 "INSERT INTO items SELECT title,read,new,updated,popup,marked,source,source_id,valid_guid,real_source_url,real_source_title,description,date,comment_feed_id,0 FROM items_backup; "
+				 "DROP TABLE items_backup; "
 	        		 "REPLACE INTO info (name, value) VALUES ('schemaVersion',2); "
 				 "END;");
 		}
@@ -238,7 +260,8 @@ open:
 	         "   real_source_title	TEXT,"
 	         "   description	TEXT,"
 	         "   date		INTEGER,"
-	         "   comment_feed_id	INTEGER"
+	         "   comment_feed_id	INTEGER,"
+		 "   comment            INTEGER"
 	         ");");
 			
 	db_exec ("CREATE INDEX items_idx ON items (source_id);");
@@ -339,11 +362,11 @@ open:
 	               "SELECT item_id FROM itemsets WHERE node_id = ?");
 		       
 	db_prepare_stmt(&itemsetInsertStmt,
-	                "INSERT INTO itemsets (item_id,node_id,read) VALUES (?,?,?)");
+	                "INSERT INTO itemsets (item_id,node_id,read,comment) VALUES (?,?,?,?)");
 	
 	db_prepare_stmt(&itemsetReadCountStmt,
 	               "SELECT COUNT(*) FROM itemsets "
-		       "WHERE node_id = ? AND read = 0");
+		       "WHERE read = 0 AND node_id = ?");
 	       
 	db_prepare_stmt(&itemsetItemCountStmt,
 	               "SELECT COUNT(*) FROM itemsets "
@@ -674,6 +697,7 @@ db_item_update (itemPtr item)
 		sqlite3_bind_int (itemsetInsertStmt, 1, item->id);
 		sqlite3_bind_text(itemsetInsertStmt, 2, item->nodeId, -1, SQLITE_TRANSIENT);
 		sqlite3_bind_int (itemsetInsertStmt, 3, item->readStatus);
+		sqlite3_bind_int (itemsetInsertStmt, 4, item->isComment?1:0);
 		res = sqlite3_step(itemsetInsertStmt);
 		if(SQLITE_DONE != res) 
 			g_warning("Insert in \"itemsets\" table failed (error code=%d, %s)", res, sqlite3_errmsg(db));
@@ -978,7 +1002,7 @@ db_view_create (const gchar *id, queryPtr query)
 	                       "items.updated,"
 	                       "items.marked"
 	                       " FROM %s "
-			       "WHERE %s;", 
+			       "WHERE %s AND items.comment = 0;", 
 			       id, tables, query->conditions);
 
 	res = sqlite3_exec (db, sql, NULL, NULL, &err);

@@ -66,6 +66,7 @@ typedef struct item {
 	time_t		time;			/**< Last modified date of the headline */
 
 	gchar		*commentFeedId;		/**< Id of the items comments feed (or NULL)*/
+	gboolean	isComment;		/**< TRUE if item is from a comment feed */
 
 	gchar		*nodeId;		/**< Node id the containing node */
 	gulong 		sourceNr;		/**< Either equal to nr or the number of the item this one is a copy of */

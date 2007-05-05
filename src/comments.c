@@ -112,7 +112,15 @@ comments_process_update_result (struct request *request)
 		if(ctxt->failed) {
 			debug0(DEBUG_UPDATE, "parsing comment feed failed!");
 		} else {
-			itemSetPtr comments;
+			itemSetPtr	comments;
+			GList		*iter;
+			
+			/* before merging mark all downloaded items as comments */
+			iter = ctxt->items;
+			while (iter) {
+				((itemPtr) iter->data)->isComment = TRUE;
+				iter = g_list_next (iter);
+			}
 			
 			debug1(DEBUG_UPDATE, "parsing comment feed successful (%d comments downloaded)", g_list_length(ctxt->items));		
 			comments = db_itemset_load(commentFeed->id);
