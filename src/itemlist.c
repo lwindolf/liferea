@@ -396,6 +396,7 @@ static void
 itemlist_decrement_vfolder_unread (nodePtr node)
 {
 	node->unreadCount--;
+	node->itemCount--;
 	ui_node_update (node->id);
 }
 
@@ -403,6 +404,7 @@ static void
 itemlist_increment_vfolder_unread (nodePtr node)
 {
 	node->unreadCount++;
+	node->itemCount++;
 	ui_node_update (node->id);
 }
 
@@ -580,20 +582,32 @@ itemlist_update_item (itemPtr item)
 	itemview_update_item (item);
 }
 
+static void 
+itemlist_vfolder_update_unread (nodePtr node, gpointer data)
+{
+	node->unreadCount += GPOINTER_TO_INT (data);
+	node->itemCount += GPOINTER_TO_INT (data);
+	ui_node_update (node->id);
+}
+
 void
 itemlist_mark_all_read (const gchar *nodeId) 
 {
 	nodePtr node = node_from_id (nodeId);
 	itemSetPtr itemSet = node_get_itemset (node);
-	if (!itemSet)
+	if (!itemSet || !node)
 		return;
+		
+	vfolder_foreach_with_rule ("unread", itemlist_vfolder_update_unread,
+	                           GINT_TO_POINTER (-1 * node->unreadCount));
 		
 	GList *iter = itemSet->ids;
 	while (iter)
 	{
 		gulong id = GPOINTER_TO_UINT (iter->data);
 		itemPtr item = item_load (id);
-		db_item_mark_read (item);
+		if (!item->readStatus)
+			db_item_mark_read (item);
 		item_unload (item);
 		iter = g_list_next (iter);
 	}
@@ -603,7 +617,6 @@ itemlist_mark_all_read (const gchar *nodeId)
 	itemview_update ();
 	node_update_counters (node_from_id (nodeId));
 	ui_node_update (nodeId);
-	vfolder_foreach_with_rule ("unread");
 }
 
 void

@@ -137,7 +137,7 @@ vfolder_is_affected (vfolderPtr vfolder, const gchar *ruleName)
 }
 
 void
-vfolder_foreach_with_rule (const gchar *ruleName, nodeActionFunc func) 
+vfolder_foreach_with_rule (const gchar *ruleName, nodeActionDataFunc func, gpointer data) 
 {
 	GSList	*iter = vfolders;
 	
@@ -145,7 +145,7 @@ vfolder_foreach_with_rule (const gchar *ruleName, nodeActionFunc func)
 	while (iter) {
 		vfolderPtr vfolder = (vfolderPtr)iter->data;
 		if (vfolder_is_affected (vfolder, ruleName))
-			(*func) (vfolder->node);
+			(*func) (vfolder->node, data);
 		iter = g_slist_next (iter);
 	}
 }

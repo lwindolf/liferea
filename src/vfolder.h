@@ -83,8 +83,9 @@ void vfolder_remove_rule (vfolderPtr vfolder, rulePtr rule);
  *
  * @param ruleName	the rule type
  * @param func		callback
+ * @param data		callback data
  */
-void vfolder_foreach_with_rule (const gchar *ruleName, nodeActionFunc func);
+void vfolder_foreach_with_rule (const gchar *ruleName, nodeActionDataFunc func, gpointer data);
 
 /**
  * Method to invoke callbacks for all search folders that are
