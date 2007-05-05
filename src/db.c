@@ -406,6 +406,7 @@ open:
 	               "items.description,"
 	               "items.date,"
 		       "items.comment_feed_id,"
+		       "items.comment,"
 		       "itemsets.item_id,"
 		       "itemsets.node_id"
 	               " FROM items INNER JOIN itemsets "
@@ -428,8 +429,9 @@ open:
 	               "description,"
 	               "date,"
 		       "comment_feed_id,"
+		       "comment,"
 	               "ROWID"
-	               ") values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+	               ") values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			
 	db_prepare_stmt (&itemMarkReadStmt,
 	                 "UPDATE items SET read = 1 WHERE ROWID = ?");
@@ -569,8 +571,9 @@ db_load_item_from_columns (sqlite3_stmt *stmt)
 	item->validGuid		= sqlite3_column_int(stmt, 8)?TRUE:FALSE;
 	item->time		= sqlite3_column_int(stmt, 12);
 	item->commentFeedId	= g_strdup(sqlite3_column_text(stmt, 13));
-	item->id		= sqlite3_column_int(stmt, 14);
-	item->nodeId		= g_strdup(sqlite3_column_text(stmt, 15));
+	item->isComment		= sqlite3_column_int(stmt, 14);
+	item->id		= sqlite3_column_int(stmt, 15);
+	item->nodeId		= g_strdup(sqlite3_column_text(stmt, 16));
 
 	item_set_title			(item, sqlite3_column_text(stmt, 0));
 	item_set_source			(item, sqlite3_column_text(stmt, 6));
@@ -720,7 +723,8 @@ db_item_update (itemPtr item)
 	sqlite3_bind_text(itemUpdateStmt, 12, item->description, -1, SQLITE_TRANSIENT);
 	sqlite3_bind_int (itemUpdateStmt, 13, item->time);
 	sqlite3_bind_text(itemUpdateStmt, 14, item->commentFeedId, -1, SQLITE_TRANSIENT);
-	sqlite3_bind_int (itemUpdateStmt, 15, item->id);
+	sqlite3_bind_int (itemUpdateStmt, 15, item->isComment?1:0);
+	sqlite3_bind_int (itemUpdateStmt, 16, item->id);
 	res = sqlite3_step(itemUpdateStmt);
 
 	if(SQLITE_DONE != res) 
@@ -987,12 +991,21 @@ db_view_create (const gchar *id, queryPtr query)
 	g_return_if_fail (query->tables != 0);
 	// g_return_if_fail (query->columns == NULL); FIXME
 		
-	if (query->tables & QUERY_TABLE_ITEMS)
-		tables = g_strdup ("items");
-	if (query->tables & QUERY_TABLE_METADATA)
-		tables = g_strdup ("metadata");
-	if (query->tables & (QUERY_TABLE_METADATA | QUERY_TABLE_ITEMS))
-		tables = g_strdup ("items INNER JOIN metadata ON items.ROWID = metadata.item_id");
+	switch(query->tables) {
+		case QUERY_TABLE_ITEMS:
+			tables = g_strdup ("items");
+			break;
+		case QUERY_TABLE_METADATA:
+			tables = g_strdup ("metadata");
+			break;
+		case (QUERY_TABLE_METADATA | QUERY_TABLE_ITEMS):
+			tables = g_strdup ("items INNER JOIN metadata ON items.ROWID = metadata.item_id");
+			break;
+		default:
+			g_warning("db_view_create(): invalid set of tables requested!");
+			return;
+			break;
+	}
 
 	sql = sqlite3_mprintf ("CREATE TEMP VIEW view_%s AS "
 	                       "SELECT "
@@ -1002,9 +1015,10 @@ db_view_create (const gchar *id, queryPtr query)
 	                       "items.updated,"
 	                       "items.marked"
 	                       " FROM %s "
-			       "WHERE %s AND items.comment = 0;", 
+			       "WHERE %s AND items.comment != 1;", 
 			       id, tables, query->conditions);
-
+	debug2(DEBUG_DB, "Creating view %s: %s", id, sql);
+	
 	res = sqlite3_exec (db, sql, NULL, NULL, &err);
 	if (SQLITE_OK != res) 
 		g_warning ("Create view failed (%s) SQL: %s", err, sql);
