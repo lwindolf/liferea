@@ -1008,7 +1008,7 @@ db_view_create (const gchar *id, queryPtr query)
 			break;
 	}
 
-	sql = sqlite3_mprintf ("CREATE TEMP VIEW view_%s AS "
+	sql = sqlite3_mprintf ("CREATE VIEW view_%s AS "
 	                       "SELECT "
 	                       "items.ROWID AS item_id,"
 	                       "items.title,"
@@ -1022,7 +1022,7 @@ db_view_create (const gchar *id, queryPtr query)
 	
 	res = sqlite3_exec (db, sql, NULL, NULL, &err);
 	if (SQLITE_OK != res) 
-		g_warning ("Create view failed (%s) SQL: %s", err, sql);
+		debug2 (DEBUG_DB, "Create view failed (%s) SQL: %s", err, sql);
 			       
 	g_free (tables);
 	sqlite3_free (sql);
