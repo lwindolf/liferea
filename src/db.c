@@ -67,9 +67,9 @@ db_prepare_stmt (sqlite3_stmt **stmt, gchar *sql)
 	gint		res;	
 	const char	*left;
 		
-	res = sqlite3_prepare_v2(db, sql, -1, stmt, &left);
-	if(SQLITE_OK != res)
-		g_error("Failure while preparing statement, (error=%d, %s) SQL: \"%s\"", res, sqlite3_errmsg(db), sql);
+	res = sqlite3_prepare_v2 (db, sql, -1, stmt, &left);
+	if (SQLITE_OK != res)
+		g_error ("Failure while preparing statement, (error=%d, %s) SQL: \"%s\"", res, sqlite3_errmsg(db), sql);
 }
 
 static void
@@ -988,7 +988,8 @@ db_view_create (const gchar *id, queryPtr query)
 	gchar	*sql, *err, *tables = NULL;
 	gint	res;
 
-	g_return_if_fail (query->tables != 0);
+	if (query->tables == 0)
+		return;
 	// g_return_if_fail (query->columns == NULL); FIXME
 		
 	switch(query->tables) {
@@ -1048,22 +1049,29 @@ itemSetPtr
 db_view_load (const gchar *id) 
 {
 	gchar		*sql;
+	gint		res;
 	sqlite3_stmt	*viewLoadStmt;	
 	itemSetPtr 	itemSet;
 
 	debug2 (DEBUG_DB, "loading view for node \"%s\" (thread=%p)", id, g_thread_self ());
+	
 	itemSet = g_new0 (struct itemSet, 1);
 	itemSet->nodeId = (gchar *)id;
 
 	sql = sqlite3_mprintf ("SELECT item_id FROM view_%s;", id);
-	db_prepare_stmt (&viewLoadStmt, sql);
+	res = sqlite3_prepare_v2 (db, sql, -1, &viewLoadStmt, NULL);
+	sqlite3_free (sql);
+	if (SQLITE_OK != res) {
+		debug2 (DEBUG_DB, "could not load view %s (error=%d)", id, res);
+		return itemSet;
+	}
+
 	sqlite3_reset (viewLoadStmt);
 
 	while (sqlite3_step (viewLoadStmt) == SQLITE_ROW) {
 		itemSet->ids = g_list_append (itemSet->ids, GUINT_TO_POINTER (sqlite3_column_int (viewLoadStmt, 0)));
 	}
 
-	sqlite3_free (sql);
 	sqlite3_finalize (viewLoadStmt);
 	
 	debug0 (DEBUG_DB, "loading of view finished");
@@ -1082,16 +1090,21 @@ db_view_get_item_count (const gchar *id)
 	debug_start_measurement (DEBUG_DB);
 
 	sql = sqlite3_mprintf ("SELECT COUNT(*) FROM view_%s;", id);
-	db_prepare_stmt (&viewCountStmt, sql);
+	res = sqlite3_prepare_v2 (db, sql, -1, &viewCountStmt, NULL);
+	sqlite3_free (sql);
+	if (SQLITE_OK != res) {
+		debug2 (DEBUG_DB, "could determine view %s item count (error=%d)", id, res);
+		return 0;
+	}
+	
 	sqlite3_reset (viewCountStmt);
 	res = sqlite3_step (viewCountStmt);
 	
 	if (SQLITE_ROW == res)
 		count = sqlite3_column_int (viewCountStmt, 0);
 	else
-		g_warning ("view unread counting failed (error code=%d, %s)", res, sqlite3_errmsg (db));
+		g_warning ("view item counting failed (error code=%d, %s)", res, sqlite3_errmsg (db));
 
-	sqlite3_free (sql);
 	sqlite3_finalize (viewCountStmt);
 	
 	debug_end_measurement (DEBUG_DB, "view item counting");
@@ -1110,7 +1123,13 @@ db_view_get_unread_count (const gchar *id)
 	debug_start_measurement (DEBUG_DB);
 
 	sql = sqlite3_mprintf ("SELECT COUNT(*) FROM view_%s WHERE item_read = 0;", id);
-	db_prepare_stmt (&viewCountStmt, sql);
+	res = sqlite3_prepare_v2 (db, sql, -1, &viewCountStmt, NULL);
+	sqlite3_free (sql);
+	if (SQLITE_OK != res) {
+		debug2 (DEBUG_DB, "could determine view %s unread count (error=%d)", id, res);
+		return 0;
+	}
+	
 	sqlite3_reset (viewCountStmt);
 	res = sqlite3_step (viewCountStmt);
 	
@@ -1119,7 +1138,6 @@ db_view_get_unread_count (const gchar *id)
 	else
 		g_warning ("view unread counting failed (error code=%d, %s)", res, sqlite3_errmsg (db));
 
-	sqlite3_free (sql);
 	sqlite3_finalize (viewCountStmt);
 	
 	debug_end_measurement (DEBUG_DB, "view unread counting");
