@@ -1,11 +1,14 @@
-2007-04-??  Lars Lindner  <lars.lindner@gmail.com>
+2007-05-06  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.3.4 (Unstable)
 
 	* XSLT 2.0 rewrite of the rendering stylesheets (Aaron Crane)
 	* New preference option that allows to configure the
 	  toolbar appearance independantely from GNOME (Ori Avtalion)
+	* Fixes search folder item/unread counting.
+	* Fixes problems with the search folder rule matching.
 	* Fixes crashes when using sqlite introduced with 1.3.3
+	* Fixes crash when creating a new search folder.
 
 
 2007-04-22  Lars Lindner  <lars.lindner@gmail.com>
