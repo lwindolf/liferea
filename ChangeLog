@@ -1,7 +1,11 @@
-2007-05-??  Lars Lindner  <lars.lindner@gmail.com>
+2007-05-07  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.2.14 (Stable)
 
+	* Adds network execution priviledges for the XSPF flash applet
+	  Liferea uses to play MP3 enclosures (fix suggested by Tsukasa)
+	* Allowing HTTP headers with tab character at line start.
+	  (suggested by Joern P. Meier)
 	* Fixes a crash when updating the Atom 0.3 GMail feed 
 	  (reported by Paul Keuseman)
 	* Update of Japanese translation (Takeshi AIHANA)

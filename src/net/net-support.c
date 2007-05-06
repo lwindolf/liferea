@@ -271,7 +271,7 @@ int checkValidHTTPHeader (const unsigned char * header, int size) {
 	
 	for (i = 0; i < len; i++) {
 		if (((header[i] < 32) || (header[i] > 127)) &&
-			(header[i] != '\r') && (header[i] != '\n'))
+			(header[i] != '\t') && (header[i] != '\r') && (header[i] != '\n'))
 			return -1;
 	}
 	return 0;
