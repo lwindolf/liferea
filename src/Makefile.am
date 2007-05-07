@@ -71,7 +71,7 @@ EXTRA_DIST = liferea_dbus.xml
 BUILT_SOURCES = dbus_wrap.c
 CLEANFILES = $(BUILT_SOURCES)
 
-dbus_wrap.c: liferea_dbus.xml
+dbus_wrap.c: $(srcdir)/liferea_dbus.xml
 	dbus-binding-tool --mode=glib-server --prefix=liferea_dbus $(srcdir)/liferea_dbus.xml > dbus_wrap.c
 
 endif

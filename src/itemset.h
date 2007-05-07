@@ -31,15 +31,7 @@
  * the item set belongs to.
  */
 
-enum itemSetTypes {
-	ITEMSET_TYPE_INVALID = 0,
-	ITEMSET_TYPE_FEED,
-	ITEMSET_TYPE_FOLDER,
-	ITEMSET_TYPE_VFOLDER
-};
-
 typedef struct itemSet {
-	guint		type;		/**< the type of the item set */
 	GList		*ids;		/**< the list of item ids */
 	gchar		*nodeId;	/**< the feed list node id this item set belongs to */
 } *itemSetPtr;

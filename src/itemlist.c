@@ -111,7 +111,6 @@ itemlist_check_for_deferred_action (void)
 			item = item_load(id);
 			itemview_remove_item(item);
 			ui_node_update(item->nodeId);
-			item_unload(item);
 		}
 
 		/* check for removals caused by vfolder rules */
@@ -119,7 +118,6 @@ itemlist_check_for_deferred_action (void)
 			itemlist_priv.deferredRemove = FALSE;
 			item = item_load(id);
 			itemlist_remove_item(item);
-			item_unload(item);
 		}
 	}
 }
@@ -524,9 +522,6 @@ itemlist_remove_item (itemPtr item)
 	itemview_remove_item (item);
 	itemview_update ();
 
-	/* remove item and comment item childs from DB */
-	if (item->commentFeedId)
-		comments_remove (item->commentFeedId);
 	db_item_remove (item->id);
 	
 	/* update feed list */
@@ -554,15 +549,33 @@ itemlist_request_remove_item (itemPtr item)
 void
 itemlist_remove_items (itemSetPtr itemSet, GList *items)
 {
-	GList	*iter = items;
+	GList		*iter = items;
+	gboolean	unread = FALSE, flagged = FALSE;
 	
 	while (iter) {
-		itemview_remove_item (iter->data);
+		itemPtr item = (itemPtr) iter->data;
+		unread |= !item->readStatus;
+		flagged |= item->flagStatus;
+		if (itemlist_priv.selectedId != item->id) {
+			/* don't call itemlist_remove_item() here, because it's to slow */
+			itemview_remove_item (item);
+			db_item_remove (item->id);
+		} else {
+			/* go the normal and selection-safe way to avoid disturbing the user */
+			itemlist_request_remove_item (item);
+		}
 		iter = g_list_next (iter);
 	}
 
 	itemview_update ();
+	node_update_counters (node_from_id (itemSet->nodeId));
 	ui_node_update (itemSet->nodeId);
+	
+	/* Search folders updating */
+	if (unread)
+		vfolder_foreach_with_rule ("unread", vfolder_update_counters);
+	if (flagged)
+		vfolder_foreach_with_rule ("flagged", vfolder_update_counters);	
 }
 
 void
@@ -570,16 +583,16 @@ itemlist_remove_all_items (nodePtr node)
 {	
 	itemview_clear ();
 	db_itemset_remove_all (node->id);
-	// FIXME: leaking comments!
 	itemview_update ();
+	
+	/* Search folders updating */
+	if (node->unreadCount)
+		vfolder_foreach_with_rule ("unread", vfolder_update_counters);
+	vfolder_foreach_with_rule ("flagged", vfolder_update_counters);
 	
 	node->itemCount = 0;
 	node->unreadCount = 0;
 	ui_node_update (node->id);
-	
-	/* Search folders updating */
-	vfolder_foreach_with_rule ("unread", vfolder_update_counters);
-	vfolder_foreach_with_rule ("flagged", vfolder_update_counters);
 }
 
 void

@@ -503,7 +503,7 @@ gboolean node_get_view_mode(nodePtr node) { return node->viewMode; }
 gboolean node_load_link_preferred(nodePtr node) {
 
 	switch(node->type) {
-		case ITEMSET_TYPE_FEED:
+		case NODE_TYPE_FEED:
 			return ((feedPtr)node->data)->loadItemLink;
 			break;
 		default:

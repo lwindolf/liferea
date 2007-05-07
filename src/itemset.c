@@ -27,20 +27,20 @@
 #include "feed.h"
 #include "itemlist.h"
 #include "itemset.h"
+#include "metadata.h"
 #include "node.h"
 #include "support.h"
 #include "vfolder.h"
+#include "ui/ui_enclosure.h"
 
 void
 itemset_foreach (itemSetPtr itemSet, itemActionFunc callback)
 {
 	GList	*iter = itemSet->ids;
 	
-	while(iter) 
-	{
+	while(iter) {
 		itemPtr item = item_load (GPOINTER_TO_UINT (iter->data));
-		if (item) 
-		{
+		if (item) {
 			(*callback) (item);
 			item_unload (item);
 		}
@@ -48,55 +48,59 @@ itemset_foreach (itemSetPtr itemSet, itemActionFunc callback)
 	}
 }
 
-static guint itemset_get_max_item_count(itemSetPtr itemSet) {
-
-	if(ITEMSET_TYPE_FEED == itemSet->type) {
-		nodePtr node = node_from_id(itemSet->nodeId);
-		return feed_get_max_item_count(node);
-	}
+// FIXME: this ought to be a subscription property!
+static guint
+itemset_get_max_item_count (itemSetPtr itemSet)
+{
+	nodePtr node = node_from_id (itemSet->nodeId);
+	
+	if (NODE_TYPE_FEED == node->type)
+		return feed_get_max_item_count (node);
 
 	return G_MAXUINT;
 }
 
 /* Generic merge logic suitable for feeds */
-static gboolean itemset_generic_merge_check(GList *items, itemPtr newItem) {
+static gboolean
+itemset_generic_merge_check (GList *items, itemPtr newItem) 
+{
 	GList		*oldItemIdIter = items;
 	itemPtr		oldItem = NULL;
 	gboolean	found, equal = FALSE;
 
 	/* determine if we should add it... */
-	debug1(DEBUG_CACHE, "check new item for merging: \"%s\"", item_get_title(newItem));
+	debug1 (DEBUG_CACHE, "check new item for merging: \"%s\"", item_get_title (newItem));
 		
 	/* compare to every existing item in this feed */
 	found = FALSE;
-	while(oldItemIdIter) {
+	while (oldItemIdIter) {
 		oldItem = (itemPtr)(oldItemIdIter->data);
 		
 		/* try to compare the two items */
 
 		/* trivial case: one item has id the other doesn't -> they can't be equal */
-		if(((item_get_id(oldItem) == NULL) && (item_get_id(newItem) != NULL)) ||
-		   ((item_get_id(oldItem) != NULL) && (item_get_id(newItem) == NULL))) {	
+		if (((item_get_id (oldItem) == NULL) && (item_get_id (newItem) != NULL)) ||
+		    ((item_get_id (oldItem) != NULL) && (item_get_id (newItem) == NULL))) {	
 			/* cannot be equal (different ids) so compare to 
 			   next old item */
-			oldItemIdIter = g_list_next(oldItemIdIter);
+			oldItemIdIter = g_list_next (oldItemIdIter);
 		   	continue;
 		} 
 
 		/* just for the case there are no ids: compare titles and HTML descriptions */
 		equal = TRUE;
 
-		if(((item_get_title(oldItem) != NULL) && (item_get_title(newItem) != NULL)) && 
-		    (0 != strcmp(item_get_title(oldItem), item_get_title(newItem))))		
+		if (((item_get_title (oldItem) != NULL) && (item_get_title (newItem) != NULL)) && 
+		     (0 != strcmp (item_get_title (oldItem), item_get_title (newItem))))		
 	    		equal = FALSE;
 
-		if(((item_get_description(oldItem) != NULL) && (item_get_description(newItem) != NULL)) && 
-		    (0 != strcmp(item_get_description(oldItem), item_get_description(newItem))))
+		if (((item_get_description (oldItem) != NULL) && (item_get_description (newItem) != NULL)) && 
+		     (0 != strcmp (item_get_description(oldItem), item_get_description (newItem))))
 	    		equal = FALSE;
 
 		/* best case: they both have ids (position important: id check is useless without knowing if the items are different!) */
-		if(item_get_id(oldItem)) {			
-			if(0 == strcmp(item_get_id(oldItem), item_get_id(newItem))){
+		if (item_get_id (oldItem)) {			
+			if (0 == strcmp (item_get_id (oldItem), item_get_id (newItem))) {
 				found = TRUE;
 				break;
 			} else {
@@ -106,35 +110,35 @@ static gboolean itemset_generic_merge_check(GList *items, itemPtr newItem) {
 			}
 		}
 			
-		if(equal) {
+		if (equal) {
 			found = TRUE;
 			break;
 		}
 
-		oldItemIdIter = g_list_next(oldItemIdIter);
+		oldItemIdIter = g_list_next (oldItemIdIter);
 	}
 		
-	if(!found) {
-		debug0(DEBUG_CACHE, "-> item is to be added");
+	if (!found) {
+		debug0 (DEBUG_CACHE, "-> item is to be added");
 	} else {
 		/* if the item was found but has other contents -> update contents */
-		if(!equal) {
-//			if(((feedPtr)(node_from_id(itemSet->nodeId)->data))->valid) {
+		if (!equal) {
+//			if (((feedPtr)(node_from_id(itemSet->nodeId)->data))->valid) {
 //				/* no item_set_new_status() - we don't treat changed items as new items! */
-//				item_set_title(oldItem, item_get_title(newItem));
-//				item_set_description(oldItem, item_get_description(newItem));
+//				item_set_title (oldItem, item_get_title (newItem));
+//				item_set_description (oldItem, item_get_description (newItem));
 //				oldItem->time = newItem->time;
 //				oldItem->updateStatus = TRUE;
 //				// FIXME: this does not remove metadata from DB
-//				metadata_list_free(oldItem->metadata);
+//				metadata_list_free (oldItem->metadata);
 //				oldItem->metadata = newItem->metadata;
 //				newItem->metadata = NULL;
-//				debug0(DEBUG_CACHE, "-> item already existing and was updated");
+//				debug0 (DEBUG_CACHE, "-> item already existing and was updated");
 //			} else {
-//				debug0(DEBUG_CACHE, "-> item updates not merged because of parser errors");
+//				debug0 (DEBUG_CACHE, "-> item updates not merged because of parser errors");
 //			}
 		} else {
-			debug0(DEBUG_CACHE, "-> item already exists");
+			debug0 (DEBUG_CACHE, "-> item already exists");
 		}
 	}
 
@@ -145,142 +149,183 @@ static gboolean itemset_generic_merge_check(GList *items, itemPtr newItem) {
  * Determine wether a given item is to be merged
  * into the itemset or if it was already added.
  */
-static gboolean itemset_merge_check(GList *items, itemPtr item) {
-
-	return itemset_generic_merge_check(items, item);	
+static gboolean
+itemset_merge_check (GList *items, itemPtr item)
+{
+	return itemset_generic_merge_check (items, item);	
 }
 
-static void itemset_merge_item(itemSetPtr itemSet, itemPtr item) {
-	GList		*iter, *items = NULL;
+static gboolean
+itemset_merge_item (itemSetPtr itemSet, GList *items, itemPtr item)
+{
 	gboolean	merge;
 
-	debug2(DEBUG_UPDATE, "trying to merge \"%s\" to node id \"%s\"", item_get_title(item), itemSet->nodeId);
+	debug2 (DEBUG_UPDATE, "trying to merge \"%s\" to node id \"%s\"", item_get_title (item), itemSet->nodeId);
 	
-	/* load all items for merging comparison */
-	iter = itemSet->ids;
-	while(iter) {
-		items = g_list_append(items, item_load(GPOINTER_TO_UINT(iter->data)));
-		iter = g_list_next(iter);
-	}
-
 	/* first try to merge with existing item */
-	merge = itemset_merge_check(items, item);
+	merge = itemset_merge_check (items, item);
 
 	/* if it is a new item add it to the item set */	
-	if(merge) {
-		g_assert(itemSet->nodeId);
-		g_assert(!item->nodeId);
-		g_assert(!item->id);
+	if (merge) {
+		g_assert (itemSet->nodeId);
+		g_assert (!item->nodeId);
+		g_assert (!item->id);
 		item->nodeId = itemSet->nodeId;
 		
 		/* step 1: write item to DB */
-		db_item_update(item);
+		db_item_update (item);
 		
 		/* step 2: add to itemset */
-		itemSet->ids = g_list_prepend(itemSet->ids, GUINT_TO_POINTER(item->id));
+		itemSet->ids = g_list_prepend (itemSet->ids, GUINT_TO_POINTER (item->id));
 				
-		debug3(DEBUG_UPDATE, "-> added \"%s\" (id=%d) to item set %p...", item_get_title(item), item->id, itemSet);
+		debug3 (DEBUG_UPDATE, "-> added \"%s\" (id=%d) to item set %p...", item_get_title (item), item->id, itemSet);
 		
 		/* step 3: duplicate detection, mark read if it is a duplicate */
-		if (item->validGuid) 
-		{
+		if (item->validGuid) {
 			GSList	*iter, *duplicates;
 
 			duplicates = iter = db_item_get_duplicates (item->sourceId);
-			while (iter) 
-			{
+			while (iter) {
 				debug1 (DEBUG_UPDATE, "-> duplicate guid exists: #%lu\n", GPOINTER_TO_UINT (iter->data));
 				iter = g_slist_next (iter);
 			}
 			
-			if (g_slist_length(duplicates) > 1)
-			{
+			if (g_slist_length (duplicates) > 1) {
 				item->readStatus = TRUE;	/* no unread counting... */
 				item->newStatus = FALSE;	/* no new counting and enclosure download... */
 				item->popupStatus = FALSE;	/* no notification... */
 			}
 			
-			g_slist_free(duplicates);
+			g_slist_free (duplicates);
 		}
 
 		/* step 4: If a new item has enclosures and auto downloading
 		   is enabled we start the download. Enclosures added
 		   by updated items are not supported. */
 
-//		if((TRUE == ((feedPtr)(node_from_id(itemSet->nodeId)->data))->encAutoDownload) &&
-//		   (TRUE == newItem->newStatus)) {
-//			GSList *iter = metadata_list_get_values(newItem->metadata, "enclosure");
-//			while(iter) {
-//				debug1(DEBUG_UPDATE, "download enclosure (%s)", (gchar *)iter->data);
-//				ui_enclosure_save(NULL, g_strdup(iter->data), NULL);
-//				iter = g_slist_next(iter);
-//			}
-//		}
+		if ((((feedPtr)(node_from_id (itemSet->nodeId)->data))->encAutoDownload) && item->newStatus) {
+			GSList *iter = metadata_list_get_values (item->metadata, "enclosure");
+			while (iter) {
+				debug1 (DEBUG_UPDATE, "download enclosure (%s)", (gchar *)iter->data);
+				ui_enclosure_save (NULL, g_strdup (iter->data), NULL);
+				iter = g_slist_next (iter);
+			}
+		}
 	} else {
-		debug2(DEBUG_UPDATE, "-> not adding \"%s\" to node id \"%s\"...", item_get_title(item), itemSet->nodeId);
-		item_unload(item);
+		debug2 (DEBUG_UPDATE, "-> not adding \"%s\" to node id \"%s\"...", item_get_title (item), itemSet->nodeId);
+		item_unload (item);
 	}
 	
-	/* unload items again */
-	iter = items;
-	while(iter) {
-		item_unload((itemPtr)(iter->data));
-		iter = g_list_next(iter);
-	}
-	g_list_free(items);
+	return merge;
 }
 
-void itemset_merge_items(itemSetPtr itemSet, GList *list) {
-	GList	*iter;
-	guint	max;
+static gint
+itemset_sort_by_date (gconstpointer a, gconstpointer b)
+{
+	itemPtr item1 = (itemPtr)a;
+	itemPtr item2 = (itemPtr)b;
+	
+	g_assert(item1 && item2);
+	return item1->time < item2->time;
+}
+
+void
+itemset_merge_items (itemSetPtr itemSet, GList *list)
+{
+	GList	*iter, *droppedItems = NULL, *items = NULL;
+	guint	max, toBeDropped, newCount = 0;
 
 	debug_start_measurement (DEBUG_UPDATE);
 	
-	debug2(DEBUG_UPDATE, "old item set %p of (node id=%s):", itemSet, itemSet->nodeId);
+	debug2 (DEBUG_UPDATE, "old item set %p of (node id=%s):", itemSet, itemSet->nodeId);
 	
-	/* Truncate the new itemset if it is longer than
+	/* 1. Avoid cache wrapping
+	
+	   Truncate the new itemset if it is longer than
 	   the maximum cache size which could cause items
 	   to be dropped and added again on subsequent 
 	   merges with the same feed content */
-	max = itemset_get_max_item_count(itemSet);
-	if(g_list_length(list) > max) {
-		debug2(DEBUG_UPDATE, "item list too long (%u, max=%u) for merging!", g_list_length(list), max);
+	max = itemset_get_max_item_count (itemSet);
+	if (g_list_length (list) > max) {
+		debug2 (DEBUG_UPDATE, "item list too long (%u, max=%u) for merging!", g_list_length (list), max);
 		guint i = 0;
 		GList *iter, *copy;
-		iter = copy = g_list_copy(list);
-		while(iter) {
+		iter = copy = g_list_copy (list);
+		while (iter) {
 			i++;
-			if(i > max) {
-				itemPtr item = (itemPtr)iter->data;
-				debug2(DEBUG_UPDATE, "ignoring item nr %u (%s)...", i, item_get_title(item));
-				item_unload(item);
-				list = g_list_remove(list, item);
+			if (i > max) {
+				itemPtr item = (itemPtr) iter->data;
+				debug2 (DEBUG_UPDATE, "ignoring item nr %u (%s)...", i, item_get_title(item));
+				item_unload (item);
+				list = g_list_remove (list, item);
 			}
-			iter = g_list_next(iter);
+			iter = g_list_next (iter);
 		}
-		g_list_free(copy);
-	}	   
-
-	/* Items are given in top to bottom display order. 
+		g_list_free (copy);
+	}	 
+	
+	/* 2. Preload all items for merging comparison */
+	iter = itemSet->ids;
+	while (iter) {
+		items = g_list_append (items, item_load (GPOINTER_TO_UINT (iter->data)));
+		iter = g_list_next (iter);
+	}
+ 
+	/* 3. Merge items
+	 
+	   Items are given in top to bottom display order. 
 	   Adding them in this order would mean to reverse 
 	   their order in the merged list, so merging needs
 	   to be done bottom to top. */
-	iter = g_list_last(list);
-	while(iter) {
-		itemset_merge_item(itemSet, ((itemPtr)iter->data));
-		iter = g_list_previous(iter);
+	iter = g_list_last (list);
+	while (iter) {
+		if (itemset_merge_item (itemSet, items, ((itemPtr)iter->data)))
+			newCount++;
+		iter = g_list_previous (iter);
 	}
-	g_list_free(list);
+	g_list_free (list);
 	
-	/* Update search folder counters */
-	vfolder_foreach_with_rule ("unread", vfolder_update_counters);
-	vfolder_foreach_with_rule ("flagged", vfolder_update_counters);
+	/* 4. Apply cache limit and unload items */
+	
+	if (newCount + g_list_length (items) > max)
+		toBeDropped = newCount + g_list_length (items) - max;
+	else
+		toBeDropped = 0;
+		
+	debug3 (DEBUG_UPDATE, "%u new items, cache limit is %u -> dropping %u items", newCount, max, toBeDropped);
+	items = g_list_sort (items, itemset_sort_by_date);
+	iter = g_list_last (items);
+	while (iter) {
+		itemPtr item = (itemPtr) iter->data;
+		if (toBeDropped > 0) {
+			debug2 (DEBUG_UPDATE, "dropping item nr %u (%s)....", item->id, item_get_title (item));
+			droppedItems = g_list_append (droppedItems, item);
+			/* no unloading here, is done in itemlist_remove_items() */
+			toBeDropped--;
+		}
+		item_unload (item);
+		iter = g_list_previous (iter);
+	}
+	
+	if (droppedItems) {
+		itemlist_remove_items (itemSet, droppedItems);
+		g_list_free (droppedItems);
+	}
+	
+	g_list_free (items);
+	
+	/* 5. Update search folder counters */
+	if (newCount) {
+		vfolder_foreach_with_rule ("unread", vfolder_update_counters);
+		vfolder_foreach_with_rule ("flagged", vfolder_update_counters);
+	}
 	
 	debug_end_measurement (DEBUG_UPDATE, "merge itemset");
 }
 
-void itemset_free(itemSetPtr itemSet) {
-
-	g_list_free(itemSet->ids);
-	g_free(itemSet);
+void
+itemset_free (itemSetPtr itemSet)
+{
+	g_list_free (itemSet->ids);
+	g_free (itemSet);
 }
