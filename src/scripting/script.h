@@ -1,7 +1,7 @@
 /**
  * @file script.h scripting support interface
  *
- * Copyright (C) 2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2006-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -56,7 +56,9 @@ typedef enum hooks {
 	SCRIPT_HOOK_ITEM_UNSELECT,
 	SCRIPT_HOOK_FEED_UNSELECT,
 	
-	SCRIPT_HOOK_SHUTDOWN
+	SCRIPT_HOOK_SHUTDOWN,
+	
+	SCRIPT_HOOK_NEW_SUBSCRIPTION
 } hookType;
 
 /**

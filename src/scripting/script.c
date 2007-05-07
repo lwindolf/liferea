@@ -1,7 +1,7 @@
 /**
  * @file script.c generic scripting support implementation
  *
- * Copyright (C) 2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2006-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public

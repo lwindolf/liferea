@@ -1,7 +1,7 @@
 /**
  * @file ui_script.c UI dialogs concerning script configuration
  *
- * Copyright (C) 2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2006-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -33,18 +33,21 @@ typedef struct hookInfo {
 } *hookInfoPtr;
 
 static struct hookInfo availableHooks[] = {
-	{ "startup",		SCRIPT_HOOK_STARTUP },
+	{ N_("startup"),		SCRIPT_HOOK_STARTUP },
 	
 	/* update events */
-	{ "feed updated",	SCRIPT_HOOK_FEED_UPDATED },
+	{ N_("feed updated"),		SCRIPT_HOOK_FEED_UPDATED },
+	
+	/* feed list editing */
+	{ N_("feed added"),		SCRIPT_HOOK_NEW_SUBSCRIPTION },
 	
 	/* selection hooks */
-	{ "item selected",	SCRIPT_HOOK_ITEM_SELECTED },
-	{ "feed selected",	SCRIPT_HOOK_FEED_SELECTED },
-	{ "item unselect",	SCRIPT_HOOK_ITEM_UNSELECT },
-	{ "feed unselect",	SCRIPT_HOOK_FEED_UNSELECT },
+	{ N_("item selected"),		SCRIPT_HOOK_ITEM_SELECTED },
+	{ N_("feed selected"),		SCRIPT_HOOK_FEED_SELECTED },
+	{ N_("item unselect"),		SCRIPT_HOOK_ITEM_UNSELECT },
+	{ N_("feed unselect"),		SCRIPT_HOOK_FEED_UNSELECT },
 	
-	{ "shutdown",		SCRIPT_HOOK_SHUTDOWN },
+	{ N_("shutdown"),		SCRIPT_HOOK_SHUTDOWN },
 	
 	{ NULL, 0 }
 };

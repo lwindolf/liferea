@@ -37,6 +37,7 @@
 #include "update.h"
 #include "vfolder.h"
 #include "fl_sources/node_source.h"
+#include "scripting/script.h"
 
 static GHashTable *nodes = NULL;
 static GSList *nodeTypes = NULL;
@@ -338,6 +339,8 @@ void node_request_automatic_add(const gchar *source, const gchar *title, const g
 	node_request_update(node, flags);
 	feedlist_schedule_save();
 	ui_feedlist_select(node);
+	
+	script_run_for_hook (SCRIPT_HOOK_NEW_SUBSCRIPTION);
 }
 
 void node_request_remove(nodePtr node) {
