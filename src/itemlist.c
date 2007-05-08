@@ -554,7 +554,6 @@ itemlist_remove_items (itemSetPtr itemSet, GList *items)
 	
 	while (iter) {
 		itemPtr item = (itemPtr) iter->data;
-g_print("itemlist_remove_items for %s\n", item->title);
 		unread |= !item->readStatus;
 		flagged |= item->flagStatus;
 		if (itemlist_priv.selectedId != item->id) {
@@ -607,30 +606,49 @@ itemlist_update_item (itemPtr item)
 	itemview_update_item (item);
 }
 
+static void
+itemlist_update_node_counters (gpointer key, gpointer value, gpointer user_data)
+{
+	nodePtr node = (nodePtr)key;
+	
+	node_update_counters (node);
+	ui_node_update (node->id);
+}
+
 void
 itemlist_mark_all_read (const gchar *nodeId) 
 {
-	nodePtr node = node_from_id (nodeId);
-	itemSetPtr itemSet = node_get_itemset (node);
+	GHashTable	*affectedNodes = NULL;
+	nodePtr		node;
+	itemSetPtr	itemSet;
+	
+	node = node_from_id (nodeId);	
+	itemSet = node_get_itemset (node);
+	
 	if (!itemSet || !node)
 		return;
+		
+	affectedNodes = g_hash_table_new (g_direct_hash, g_direct_equal);
 		
 	GList *iter = itemSet->ids;
 	while (iter)
 	{
 		gulong id = GPOINTER_TO_UINT (iter->data);
 		itemPtr item = item_load (id);
-		if (!item->readStatus)
+		if (!item->readStatus) {
 			db_item_mark_read (item);
+			g_hash_table_insert (affectedNodes, node_from_id (item->nodeId), NULL);
+		}
 		item_unload (item);
 		iter = g_list_next (iter);
 	}
 	
+	g_hash_table_destroy (affectedNodes);
+	
 	/* GUI updating */	
 	itemview_update_all_items ();
 	itemview_update ();
-	node_update_counters (node_from_id (nodeId));
-	ui_node_update (nodeId);
+	g_hash_table_foreach (affectedNodes, itemlist_update_node_counters, NULL);
 	
 	/* Search folder updating */
 	vfolder_foreach_with_rule ("unread", vfolder_update_counters);
