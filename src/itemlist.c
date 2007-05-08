@@ -642,13 +642,12 @@ itemlist_mark_all_read (const gchar *nodeId)
 		item_unload (item);
 		iter = g_list_next (iter);
 	}
-	
-	g_hash_table_destroy (affectedNodes);
-	
-	/* GUI updating */	
+		
+	/* feed list updating */	
 	itemview_update_all_items ();
 	itemview_update ();
 	g_hash_table_foreach (affectedNodes, itemlist_update_node_counters, NULL);
+	g_hash_table_destroy (affectedNodes);	
 	
 	/* Search folder updating */
 	vfolder_foreach_with_rule ("unread", vfolder_update_counters);
