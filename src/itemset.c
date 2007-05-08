@@ -302,8 +302,9 @@ itemset_merge_items (itemSetPtr itemSet, GList *list)
 			droppedItems = g_list_append (droppedItems, item);
 			/* no unloading here, is done in itemlist_remove_items() */
 			toBeDropped--;
+		} else {
+			item_unload (item);
 		}
-		item_unload (item);
 		iter = g_list_previous (iter);
 	}
 	

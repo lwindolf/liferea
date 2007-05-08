@@ -154,7 +154,7 @@ void itemview_remove_item(itemPtr item) {
 
 	if(!ui_itemlist_contains_item(item->id))
 		return;
-		
+
 	if(ITEMVIEW_ALL_ITEMS != itemView_priv.mode)
 		/* remove item in 3 pane mode */
 		ui_itemlist_remove_item(item);

@@ -554,6 +554,7 @@ itemlist_remove_items (itemSetPtr itemSet, GList *items)
 	
 	while (iter) {
 		itemPtr item = (itemPtr) iter->data;
+g_print("itemlist_remove_items for %s\n", item->title);
 		unread |= !item->readStatus;
 		flagged |= item->flagStatus;
 		if (itemlist_priv.selectedId != item->id) {
