@@ -305,7 +305,7 @@ pkg_modules="	gtk+-2.0 >= 2.8.0
 		gconf-2.0 >= 1.1.9 
 		libxml-2.0 >= 2.6.27
 		libxslt >= 1.1.19
-		sqlite3
+		sqlite3 >= 3.3.9
 		gmodule-2.0 >= 2.0.0"
 
 PKG_CHECK_MODULES(PACKAGE, [$pkg_modules])
