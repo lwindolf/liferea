@@ -67,7 +67,7 @@ liferea_bin_LDADD =	net/liblinet.a \
 
 if WITH_DBUS
 
-EXTRA_DIST = liferea_dbus.xml
+EXTRA_DIST = $(srcdir)/liferea_dbus.xml
 BUILT_SOURCES = dbus_wrap.c
 CLEANFILES = $(BUILT_SOURCES)
 
