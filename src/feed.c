@@ -29,9 +29,6 @@
 #include <libxml/tree.h>
 #include <libxml/uri.h>
 #include <string.h>
-#include <time.h>
-#include <unistd.h> /* For unlink() */
-#include <stdlib.h>
 
 #include "conf.h"
 #include "common.h"
@@ -47,8 +44,6 @@
 #include "render.h"
 #include "support.h"
 #include "update.h"
-#include "vfolder.h"
-#include "net/cookies.h"
 #include "parsers/cdf_channel.h"
 #include "parsers/rss_channel.h"
 #include "parsers/atom10.h"
@@ -227,9 +222,6 @@ static void feed_import(nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean t
 						
 		node_set_icon(node, favicon_load_from_cache(node->id));
 		
-		if(favicon_update_needed(node->id, node->subscription->updateState))
-			subscription_update_favicon(node->subscription);
-
 		debug4(DEBUG_CACHE, "import feed: title=%s source=%s typeStr=%s interval=%d", 
 		       node_get_title(node), 
 		       subscription_get_source(node->subscription), 
@@ -774,7 +766,7 @@ static void feed_request_auto_update(nodePtr node) {
 			feed_schedule_update(node, flags);
 
 	/* And check for favicon updating */
-	if(node->subscription->updateState->lastFaviconPoll.tv_sec + 30*24*60*60 <= now.tv_sec)
+	if (favicon_update_needed (node->id, node->subscription->updateState))
 		subscription_update_favicon(node->subscription);
 }
 

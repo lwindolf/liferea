@@ -77,22 +77,14 @@ GdkPixbuf * favicon_load_from_cache(const gchar *id) {
 }
 
 gboolean favicon_update_needed(const gchar *id, updateStatePtr updateState) {
-	struct stat	statinfo;
-	gchar		*filename;
 	GTimeVal	now;
 	gboolean	result = FALSE;
 	
-	/* try to load a saved favicon */
-	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", id, "png");
-	
-	if(0 == stat((const char*)filename, &statinfo)) {
-		/* check creation date and update favicon if older than one month */
-		g_get_current_time(&now);
-		if(now.tv_sec > (updateState->lastFaviconPoll.tv_sec + 60*60*24*31))
-			result = TRUE;
-	}
-	g_free(filename);
-	
+	/* check creation date and update favicon if older than one month */
+	g_get_current_time(&now);
+	if(now.tv_sec > (updateState->lastFaviconPoll.tv_sec + 60*60*24*31))
+		result = TRUE;
+
 	return result;
 }
 
@@ -220,6 +212,9 @@ static void favicon_download_run(faviconDownloadCtxtPtr ctxt) {
 		update_execute_request(request);
 	} else {
 		debug1(DEBUG_UPDATE, "favicon %s could not be downloaded!\n", ctxt->id);
+		/* Run favicon-updated callback */
+		if(ctxt->callback)
+			(ctxt->callback)(ctxt->user_data);
 		g_free(ctxt);
 	}
 	

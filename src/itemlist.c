@@ -631,8 +631,7 @@ itemlist_mark_all_read (const gchar *nodeId)
 	affectedNodes = g_hash_table_new (g_direct_hash, g_direct_equal);
 		
 	GList *iter = itemSet->ids;
-	while (iter)
-	{
+	while (iter) {
 		gulong id = GPOINTER_TO_UINT (iter->data);
 		itemPtr item = item_load (id);
 		if (!item->readStatus) {
@@ -676,8 +675,7 @@ itemlist_selection_changed (itemPtr item)
 	debug_enter ("itemlist_selection_changed");
 	debug_start_measurement (DEBUG_GUI);
 
-	if (0 == itemlist_priv.loading)
-	{
+	if (0 == itemlist_priv.loading)	{
 		/* folder&vfolder postprocessing to remove/filter unselected items no
 		   more matching the display rules because they have changed state */
 		itemlist_check_for_deferred_action ();
@@ -689,20 +687,16 @@ itemlist_selection_changed (itemPtr item)
 		itemlist_set_selected (item);
 	
 		/* set read and unset update status when selecting */
-		if (item)
-		{
+		if (item) {
 			comments_refresh (item);
 
 			itemlist_set_read_status (item, TRUE);
 			itemlist_set_update_status (item, FALSE);
 			
-			if(node_load_link_preferred (node_from_id (item->nodeId))) 
-			{
+			if(node_load_link_preferred (node_from_id (item->nodeId))) {
 				ui_htmlview_launch_URL (ui_mainwindow_get_active_htmlview (), 
 				                        item_get_source (itemlist_get_selected ()), UI_HTMLVIEW_LAUNCH_INTERNAL);
-			} 
-			else 
-			{
+			} else {
 				itemview_set_mode (ITEMVIEW_SINGLE_ITEM);
 				itemview_select_item (item);
 				itemview_update ();

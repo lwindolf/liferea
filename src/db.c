@@ -1150,6 +1150,9 @@ db_update_state_load (const gchar *id,
                       updateStatePtr updateState)
 {
 	gint		res;
+	
+	g_assert (NULL == updateState->lastModified);
+	g_assert (NULL == updateState->etag);
 
 	debug2 (DEBUG_DB, "loading subscription %s update state (thread=%p)", id, g_thread_self ());
 	debug_start_measurement (DEBUG_DB);	

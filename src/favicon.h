@@ -50,8 +50,8 @@ void favicon_remove_from_cache(const gchar *id);
 gboolean favicon_update_needed(const gchar *id, updateStatePtr updateState);
 
 /**
- * Favicon download callback. Triggered in case of 
- * successful download only.
+ * Favicon download callback. Called after the download
+ * has finished (both on success and failure).
  *
  * @param user_data	user data for the callback
  */

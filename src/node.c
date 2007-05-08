@@ -152,7 +152,6 @@ void node_set_subscription(nodePtr node, subscriptionPtr subscription) {
 	node->subscription = subscription;
 	subscription->node = node;
 	
-	/* Is this really a good place to load the subscription state? */
 	db_update_state_load (node->id, subscription->updateState);
 }
 

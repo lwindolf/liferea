@@ -260,9 +260,10 @@ static void
 subscription_favicon_downloaded (gpointer user_data)
 {
 	nodePtr	node = (nodePtr)user_data;
-	
+
 	node_set_icon (node, favicon_load_from_cache (node->id));
 	ui_node_update (node->id);
+	db_update_state_save (node->id, node->subscription->updateState);
 }
 
 void
@@ -271,7 +272,6 @@ subscription_update_favicon (subscriptionPtr subscription)
 	debug1 (DEBUG_UPDATE, "trying to download favicon.ico for \"%s\"\n", node_get_title (subscription->node));
 	ui_mainwindow_set_status_bar (_("Updating favicon for \"%s\""), node_get_title (subscription->node));
 	g_get_current_time (&subscription->updateState->lastFaviconPoll);
-	db_update_state_load (subscription->node->id, subscription->updateState);
 	favicon_download (subscription->node->id,
 	                  node_get_base_url (subscription->node),
 			  subscription_get_source (subscription),
