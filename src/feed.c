@@ -308,9 +308,16 @@ void feed_free_parser_ctxt(feedParserCtxtPtr ctxt) {
  *
  * @param ctxt		feed parsing context
  */
-void feed_auto_discover(feedParserCtxtPtr ctxt) {
+static void
+feed_auto_discover (feedParserCtxtPtr ctxt)
+{
 	gchar	*source;
-			
+	
+	if(ctxt->feed->parseErrors)
+		g_string_truncate(ctxt->feed->parseErrors, 0);
+	else
+		ctxt->feed->parseErrors = g_string_new(NULL);
+		
 	debug1(DEBUG_UPDATE, "Starting feed auto discovery (%s)", subscription_get_source (ctxt->subscription));
 	if((source = html_auto_discover_feed (ctxt->data, subscription_get_source (ctxt->subscription)))) {
 		/* now download the first feed link found */
@@ -347,11 +354,11 @@ void feed_auto_discover(feedParserCtxtPtr ctxt) {
  * @param ctxt		feed parsing context
  *
  * @returns FALSE if auto discovery is indicated, 
- *          TRUE if feed type was recognized
+ *          TRUE if feed type was recognized and parsing was successful
  */
 gboolean feed_parse(feedParserCtxtPtr ctxt) {
 	xmlNodePtr	cur;
-	gboolean	autoDiscovery = FALSE;
+	gboolean	success = FALSE;
 
 	debug_enter("feed_parse");
 
@@ -388,7 +395,7 @@ gboolean feed_parse(feedParserCtxtPtr ctxt) {
 		if(!cur)
 			break;
 			
-		/* determine the syndication format */
+		/* determine the syndication format and start parser */
 		GSList *handlerIter = feedhandlers;
 		while(handlerIter) {
 			feedHandlerPtr handler = (feedHandlerPtr)(handlerIter->data);
@@ -422,13 +429,13 @@ gboolean feed_parse(feedParserCtxtPtr ctxt) {
 		    strstr(ctxt->data, "<html ") || strstr(ctxt->data, "<HTML "))) {
 			debug0(DEBUG_UPDATE, "HTML document detected!");
 			g_string_append(ctxt->feed->parseErrors, _("Source points to HTML document."));
-			autoDiscovery = TRUE;
 		} else {
 			debug0(DEBUG_UPDATE, "neither a known feed type nor a HTML document!");
 			g_string_append(ctxt->feed->parseErrors, _("Could not determine the feed type."));
 		}
 	} else {
 		debug1(DEBUG_UPDATE, "discovered feed format: %s", feed_type_fhp_to_str(ctxt->feed->fhp));
+		success = TRUE;
 	}
 	
 	if(ctxt->doc) {
@@ -438,7 +445,7 @@ gboolean feed_parse(feedParserCtxtPtr ctxt) {
 		
 	debug_exit("feed_parse");
 	
-	return autoDiscovery;
+	return success;
 }
 
 static void feed_add_xml_attributes(nodePtr node, xmlNodePtr feedNode) {
@@ -630,10 +637,13 @@ static void feed_process_update_result(struct request *request) {
 		ctxt->dataLength = request->size;
 		ctxt->subscription = node->subscription;
 
-		if(request->flags & FEED_REQ_AUTO_DISCOVER)
-			feed_auto_discover(ctxt);
-		else
-			feed_parse(ctxt);
+		/* try to parse the feed */
+		if(!feed_parse(ctxt)) {
+			/* if it doesn't work and it is a new subscription
+			   start feed auto discovery */
+			if(request->flags & FEED_REQ_AUTO_DISCOVER)
+				feed_auto_discover(ctxt);
+		}
 		
 		if(ctxt->failed) {
 			g_string_prepend(feed->parseErrors, _("<p>Could not detect the type of this feed! Please check if the source really points to a resource provided in one of the supported syndication formats!</p>"

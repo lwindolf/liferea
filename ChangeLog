@@ -5,6 +5,8 @@
 	* New scripting hook triggering when a new subscriptions is added.
 	* Raised sqlite3 dependency to 3.3.9 as sqlite3_prepare_v2() is 
 	  not available with earlier versions. (suggested by Joseph Sacco)
+	* Fixes subscription problems when subscribing using the "New
+	  Subscription" dialog.
 
 2007-05-06  Lars Lindner  <lars.lindner@gmail.com>
 
