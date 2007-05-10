@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-25 00:49+0200\n"
+"POT-Creation-Date: 2007-05-10 21:33+0200\n"
 "PO-Revision-Date: 2007-01-28 22:13+0200\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
@@ -366,51 +366,51 @@ msgstr ""
 msgid "Error renaming %s to %s\n"
 msgstr "خطأ أثناء إعادة تسمية %s إلى %s\n"
 
-#: ../src/export.c:312 ../src/export.c:314
+#: ../src/export.c:313 ../src/export.c:315
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
 msgstr "خطأ XML أثناء قرائة ملف الذاكرة المخبّأة! تعذّر استيراد \"%s\"!"
 
-#: ../src/export.c:319 ../src/export.c:321
+#: ../src/export.c:320 ../src/export.c:322
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr "مستند فارغ! يجب ألا يكون مستند OPML \"%s\" فارغا أثناء التصدير."
 
-#: ../src/export.c:342 ../src/export.c:344
+#: ../src/export.c:343 ../src/export.c:345
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr "\"%s\" ليس مستند OPML صالحاً! لا يستطيع لايفريا استيراد هذا الملف!"
 
-#: ../src/export.c:363
+#: ../src/export.c:364
 msgid "Imported feed list"
 msgstr "قائمة التلقيمات المستوردة"
 
-#: ../src/export.c:375
+#: ../src/export.c:376
 msgid "Import Feed List"
 msgstr "استورد قائمة التلقيمات"
 
-#: ../src/export.c:375
+#: ../src/export.c:376
 msgid "Import"
 msgstr "استورد"
 
-#: ../src/export.c:382
+#: ../src/export.c:383
 msgid "Error while exporting feed list!"
 msgstr "خطأ أثناء تصدير قائمة التلقيمات!"
 
-#: ../src/export.c:384
+#: ../src/export.c:385
 msgid "Feed List exported!"
 msgstr "صُدّرت قائمة التلقيمات!"
 
-#: ../src/export.c:390
+#: ../src/export.c:391
 msgid "Export Feed List"
 msgstr "صدّر قائمة التلقيمات"
 
-#: ../src/export.c:390
+#: ../src/export.c:391
 msgid "Export"
 msgstr "صدّر"
 
-#: ../src/feed.c:350
+#: ../src/feed.c:346
 #, fuzzy
 msgid ""
 "The URL you want Liferea to subscribe to points to a webpage and the auto "
@@ -421,46 +421,46 @@ msgstr ""
 "التلقائي أية تلقيمات في هذه الصفحة. ربما لا تدعم هذه الصفحة الإكتشاف "
 "التلقائي للتلقيمات. </p>"
 
-#: ../src/feed.c:381
+#: ../src/feed.c:377
 #, fuzzy, c-format
 msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
 msgstr "<p> خطأ XML أثناء قراءة التلقيمة! لا يمكن تحميل التلقيمة \"%s\"! </p>"
 
-#: ../src/feed.c:386
+#: ../src/feed.c:382
 #, fuzzy
 msgid "Empty document!"
 msgstr "<p> !مستند فارغ </p>"
 
-#: ../src/feed.c:395
+#: ../src/feed.c:391
 #, fuzzy
 msgid "Invalid XML!"
 msgstr "<p> XML غير صحيح! </p>"
 
-#: ../src/feed.c:435
+#: ../src/feed.c:431
 msgid "Source points to HTML document."
 msgstr ""
 
-#: ../src/feed.c:439
+#: ../src/feed.c:434
 #, fuzzy
 msgid "Could not determine the feed type."
 msgstr "<p> تعذّر تحديد نوع التلقيمة. </p>"
 
-#: ../src/feed.c:618
+#: ../src/feed.c:614
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "تغير عنوان \"%s\" بشكل دائم وتم تحديثه"
 
-#: ../src/feed.c:627
+#: ../src/feed.c:623
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr "توقّف \"%s\". لن يحّثة لايفريا بعد الآن!"
 
-#: ../src/feed.c:630
+#: ../src/feed.c:626
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "لم يتغيّر \"%s\" منذ آخر تحديث"
 
-#: ../src/feed.c:650
+#: ../src/feed.c:649
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!</"
@@ -470,12 +470,12 @@ msgstr ""
 "مورِد متوفّر بأحد تنسيقات تجميع الأخبار المدعومة! </p> خرْج محلّل XML: <br /"
 "><div class='xmlparseroutput'>"
 
-#: ../src/feed.c:671
+#: ../src/feed.c:670
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "حُدِّث \"%s\"..."
 
-#: ../src/feed.c:688
+#: ../src/feed.c:687
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" ليس متوفّرا"
@@ -700,7 +700,7 @@ msgstr "حمّل عنصر الوصلة آليا في المتصفّح الداخ
 msgid "Advanced"
 msgstr "متقدّم"
 
-#: ../src/interface.c:882 ../src/interface.c:3371 ../src/node.c:340
+#: ../src/interface.c:882 ../src/interface.c:3371 ../src/node.c:331
 msgid "New Subscription"
 msgstr "اشتراك جديد"
 
@@ -1223,7 +1223,7 @@ msgstr ""
 "يبدأ البحث عن النصّ المحدد في كل التلقيمات. ستظهر نتيجة البحث في قائمة "
 "العناصر."
 
-#: ../src/interface.c:3238 ../src/ui/ui_mainwindow.c:896
+#: ../src/interface.c:3238 ../src/ui/ui_mainwindow.c:894
 msgid "Update Monitor"
 msgstr "مراقب التحديث"
 
@@ -1251,7 +1251,7 @@ msgstr ""
 msgid "Advanced..."
 msgstr "متقدّم..."
 
-#: ../src/interface.c:3494 ../src/ui/ui_mainwindow.c:898
+#: ../src/interface.c:3494 ../src/ui/ui_mainwindow.c:896
 msgid "Script Manager"
 msgstr "مدير السكريبت"
 
@@ -1292,7 +1292,7 @@ msgid "_News Bin Name:"
 msgstr "اسم سلّة الأ_خبار:"
 
 #. if we don't find a feed with unread items do nothing
-#: ../src/itemlist.c:335
+#: ../src/itemlist.c:333
 msgid "There are no unread items "
 msgstr "لا توجد عناصر غير مقروءة"
 
@@ -1348,105 +1348,105 @@ msgstr "يجب أن يعطى الخيار --session معاملا.\n"
 msgid "Liferea encountered an unknown argument: %s\n"
 msgstr "واجه لايفريا معطى مجهول: %s\n"
 
-#: ../src/rule.c:257
+#: ../src/rule.c:260
 msgid "Item"
 msgstr "عنصر"
 
-#: ../src/rule.c:257
+#: ../src/rule.c:260
 msgid "does contain"
 msgstr "يحتوي"
 
-#: ../src/rule.c:257
+#: ../src/rule.c:260
 msgid "does not contain"
 msgstr "لا يحتوي"
 
-#: ../src/rule.c:258
+#: ../src/rule.c:261
 msgid "Item title"
 msgstr "عنوان العنصر"
 
-#: ../src/rule.c:258 ../src/rule.c:259 ../src/rule.c:260
+#: ../src/rule.c:261 ../src/rule.c:262 ../src/rule.c:263
 msgid "does match"
 msgstr "يُطابِق"
 
-#: ../src/rule.c:258 ../src/rule.c:259 ../src/rule.c:260
+#: ../src/rule.c:261 ../src/rule.c:262 ../src/rule.c:263
 msgid "does not match"
 msgstr "لا يطابق"
 
-#: ../src/rule.c:259
+#: ../src/rule.c:262
 msgid "Item body"
 msgstr "متن العنصر"
 
-#: ../src/rule.c:260
+#: ../src/rule.c:263
 msgid "Feed title"
 msgstr "عنوان التلقيمة"
 
-#: ../src/rule.c:261
+#: ../src/rule.c:264
 msgid "Read status"
 msgstr "حالة القرائة "
 
-#: ../src/rule.c:261
+#: ../src/rule.c:264
 msgid "is unread"
 msgstr "غير مقروء"
 
-#: ../src/rule.c:261
+#: ../src/rule.c:264
 msgid "is read"
 msgstr "مقروء"
 
-#: ../src/rule.c:262
+#: ../src/rule.c:265
 msgid "Flag status"
 msgstr "حالة الشارة"
 
-#: ../src/rule.c:262
+#: ../src/rule.c:265
 msgid "is flagged"
 msgstr "مؤشّر"
 
-#: ../src/rule.c:262
+#: ../src/rule.c:265
 msgid "is unflagged"
 msgstr "غير مؤشّر"
 
-#: ../src/rule.c:263
+#: ../src/rule.c:266
 msgid "Update status"
 msgstr "حدّث الحالة"
 
-#: ../src/rule.c:263
+#: ../src/rule.c:266
 msgid "was updated"
 msgstr "حُدِّث"
 
-#: ../src/rule.c:263
+#: ../src/rule.c:266
 msgid "was not updated"
 msgstr "لم يُحَدّث"
 
-#: ../src/rule.c:264
+#: ../src/rule.c:267
 msgid "Podcast"
 msgstr "تدوين صوتي"
 
-#: ../src/rule.c:264
+#: ../src/rule.c:267
 msgid "included"
 msgstr "مُدْرج"
 
-#: ../src/rule.c:264
+#: ../src/rule.c:267
 msgid "not included"
 msgstr "غير مُدْرج"
 
-#: ../src/subscription.c:71
+#: ../src/subscription.c:78
 #, fuzzy, c-format
 msgid "Subscription \"%s\" is already being updated!"
 msgstr "يجري تحديث هذه التلقيمة \"%s\" بالفعل!"
 
-#: ../src/subscription.c:76
+#: ../src/subscription.c:83
 #, fuzzy, c-format
 msgid ""
 "The subscription \"%s\" was discontinued. Liferea won't update it anymore!"
 msgstr "أُوقِفة التلقيمة \"%s\". لن يقوم لايفريا بالتحديث بعد الآن!"
 
-#: ../src/subscription.c:210
+#: ../src/subscription.c:256
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
 msgstr ""
 "كانت هناك مشكلة أثناء قراءة هذا الإشتراك. رجاء تحقق من العنوان وخرْج الكونسول."
 
-#: ../src/subscription.c:223
+#: ../src/subscription.c:273
 #, fuzzy, c-format
 msgid "Updating favicon for \"%s\""
 msgstr "جارِ تحديث أيقونة التلقيمة لـ \"%s\""
@@ -1456,38 +1456,38 @@ msgstr "جارِ تحديث أيقونة التلقيمة لـ \"%s\""
 msgid "Couldn't find pixmap file: %s"
 msgstr "لا يوجد ملف pixmap '%s'"
 
-#: ../src/update.c:174
+#: ../src/update.c:154
 #, c-format
 msgid "Error opening temp file %s to use for filtering!"
 msgstr "خطأ أثناء فتح الملف المؤقّت %s لاستخدامه في الترشيح!"
 
-#: ../src/update.c:197
+#: ../src/update.c:177
 #, c-format
 msgid "%s exited with status %d"
 msgstr "%s خرج بالحالة %d"
 
-#: ../src/update.c:203 ../src/update.c:204 ../src/update.c:304
+#: ../src/update.c:183 ../src/update.c:184 ../src/update.c:284
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "خطأ: تعذّر فتح الأنبوب \"%s\""
 
 #. FIXME: maybe setting request->returncode would be better
-#: ../src/update.c:324
+#: ../src/update.c:304
 #, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr "خطأ: تعذّر فتح الملف \"%s\""
 
-#: ../src/update.c:330
+#: ../src/update.c:310
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "خطأ: ليس ثمّة ملف \"%s\""
 
-#: ../src/update.c:520
+#: ../src/update.c:500
 #, c-format
 msgid "Could not download \"%s\". Will retry in %d seconds."
 msgstr "تعذّر تنزيل \"%s\". سأعيد المحاولة خلال %d من الثواني."
 
-#: ../src/vfolder.c:55
+#: ../src/vfolder.c:59
 msgid "New Search Folder"
 msgstr "مجلّد بحث جديد"
 
@@ -1619,91 +1619,91 @@ msgstr ""
 "اشتراك اختر تلقيمات -> اشتراك جديد. لتصفّح العناوين الرئيسية لتلقيمة اخترها "
 "في قائمة التلقيمات وستحمّل العناوين الرئيسية في اللوح الأيمن.</p>"
 
-#: ../src/ui/ui_mainwindow.c:623
+#: ../src/ui/ui_mainwindow.c:621
 msgid "Liferea is now online"
 msgstr "الآن لايفريا متّصل"
 
-#: ../src/ui/ui_mainwindow.c:625
+#: ../src/ui/ui_mainwindow.c:623
 msgid "Work Offline"
 msgstr "اعمل دون اتّصال"
 
-#: ../src/ui/ui_mainwindow.c:627
+#: ../src/ui/ui_mainwindow.c:625
 msgid "Liferea is now offline"
 msgstr "الآن لايفريا غير متّصل"
 
-#: ../src/ui/ui_mainwindow.c:629
+#: ../src/ui/ui_mainwindow.c:627
 msgid "Work Online"
 msgstr "اعمل باتّصال"
 
-#: ../src/ui/ui_mainwindow.c:893
+#: ../src/ui/ui_mainwindow.c:891
 msgid "_Program"
 msgstr "_برنامج"
 
-#: ../src/ui/ui_mainwindow.c:894
+#: ../src/ui/ui_mainwindow.c:892
 msgid "_Preferences"
 msgstr "_تفضيلات"
 
-#: ../src/ui/ui_mainwindow.c:894
+#: ../src/ui/ui_mainwindow.c:892
 msgid "Edit Preferences."
 msgstr "حرّر التفضيلات."
 
-#: ../src/ui/ui_mainwindow.c:896
+#: ../src/ui/ui_mainwindow.c:894
 msgid "Show a list of all feeds currently in the update queue"
 msgstr "اعرض قائمة بكل التلقيمات الموجودة حاليا في طابور التحديث"
 
-#: ../src/ui/ui_mainwindow.c:898
+#: ../src/ui/ui_mainwindow.c:896
 msgid "Allows to configure and edit LUA hook scripts"
 msgstr "يسمح بإعداد وتحرير LUA hook scripts"
 
-#: ../src/ui/ui_mainwindow.c:900
+#: ../src/ui/ui_mainwindow.c:898
 msgid "_Quit"
 msgstr "ا_خرج"
 
-#: ../src/ui/ui_mainwindow.c:902
+#: ../src/ui/ui_mainwindow.c:900
 msgid "_Feeds"
 msgstr "_تلقيمات"
 
-#: ../src/ui/ui_mainwindow.c:903
+#: ../src/ui/ui_mainwindow.c:901
 msgid "Update _All"
 msgstr "حدّث ال_كل"
 
-#: ../src/ui/ui_mainwindow.c:903
+#: ../src/ui/ui_mainwindow.c:901
 msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr "يُحدّث كل الإشتراكات. لا يُحدّث هذا أدلّة OCS."
 
-#: ../src/ui/ui_mainwindow.c:905
+#: ../src/ui/ui_mainwindow.c:903
 msgid "Mark All As _Read"
 msgstr "علّم الكل ك_مقروء"
 
-#: ../src/ui/ui_mainwindow.c:905
+#: ../src/ui/ui_mainwindow.c:903
 msgid "Marks read every item of every subscription."
 msgstr "علّم كل عنصر في كل اشتراك كمقروء."
 
-#: ../src/ui/ui_mainwindow.c:907
+#: ../src/ui/ui_mainwindow.c:905
 msgid "_Import Feed List..."
 msgstr "ا_ستورد قائمة التلقيمات..."
 
-#: ../src/ui/ui_mainwindow.c:907
+#: ../src/ui/ui_mainwindow.c:905
 msgid "Imports an OPML feed list."
 msgstr "استورد قائمة تلقيمات OPML."
 
-#: ../src/ui/ui_mainwindow.c:908
+#: ../src/ui/ui_mainwindow.c:906
 msgid "_Export Feed List..."
 msgstr "_صدّر قائمة التلقيمات..."
 
-#: ../src/ui/ui_mainwindow.c:908
+#: ../src/ui/ui_mainwindow.c:906
 msgid "Exports the feed list as OPML."
 msgstr "يصدّر قائمة التلقيمات كـ OPML."
 
-#: ../src/ui/ui_mainwindow.c:910
+#: ../src/ui/ui_mainwindow.c:908
 msgid "_Items"
 msgstr "_عناصر"
 
-#: ../src/ui/ui_mainwindow.c:911
+#: ../src/ui/ui_mainwindow.c:909
 msgid "_Next Unread Item"
 msgstr "العنصر غير المقروء ال_تالي"
 
-#: ../src/ui/ui_mainwindow.c:911
+#: ../src/ui/ui_mainwindow.c:909
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -1711,228 +1711,228 @@ msgstr ""
 "تقفز للعنصر الغير مقروء التالي. تختار التلقيمة التالية ذات العناصر غير "
 "المقروءة إذا كان ضرورياً."
 
-#: ../src/ui/ui_mainwindow.c:913
+#: ../src/ui/ui_mainwindow.c:911
 msgid "Toggle _Read Status"
 msgstr "بدّل حالة ال_قراءة"
 
-#: ../src/ui/ui_mainwindow.c:913
+#: ../src/ui/ui_mainwindow.c:911
 msgid "Toggles the read status of the selected item."
 msgstr "تبدّل حالة قراءة العناصر المنتقاه."
 
-#: ../src/ui/ui_mainwindow.c:915
+#: ../src/ui/ui_mainwindow.c:913
 msgid "Toggle Item _Flag"
 msgstr "بدّل _شارة العنصر"
 
-#: ../src/ui/ui_mainwindow.c:915
+#: ../src/ui/ui_mainwindow.c:913
 msgid "Toggles the flag status of the selected item."
 msgstr "تبدّل حالة شارة العنصر المنتقى."
 
-#: ../src/ui/ui_mainwindow.c:917
+#: ../src/ui/ui_mainwindow.c:915
 msgid "Remove _Selected"
 msgstr "احذف ال_منتقى"
 
-#: ../src/ui/ui_mainwindow.c:917
+#: ../src/ui/ui_mainwindow.c:915
 msgid "Removes the selected item."
 msgstr "يحذف العنصر المُنتقى."
 
-#: ../src/ui/ui_mainwindow.c:919
+#: ../src/ui/ui_mainwindow.c:917
 msgid "Remove _All"
 msgstr "احذف ال_كل"
 
-#: ../src/ui/ui_mainwindow.c:919
+#: ../src/ui/ui_mainwindow.c:917
 msgid "Removes all items of the currently selected feed."
 msgstr "يحذف كل عناصر التلقيمات المُنتقاه حالياً."
 
-#: ../src/ui/ui_mainwindow.c:921
+#: ../src/ui/ui_mainwindow.c:919
 msgid "_Launch In Browser"
 msgstr "ا_فتح في المتصفح"
 
-#: ../src/ui/ui_mainwindow.c:921
+#: ../src/ui/ui_mainwindow.c:919
 msgid "Launches the item's link in the configured browser."
 msgstr "يفتح وصله العنصر في المتصفّح المعدّ."
 
-#: ../src/ui/ui_mainwindow.c:924
+#: ../src/ui/ui_mainwindow.c:922
 msgid "_View"
 msgstr "ا_عرض"
 
-#: ../src/ui/ui_mainwindow.c:925
+#: ../src/ui/ui_mainwindow.c:923
 msgid "_Increase Text Size"
 msgstr "زِ_د حجم النص"
 
-#: ../src/ui/ui_mainwindow.c:925
+#: ../src/ui/ui_mainwindow.c:923
 msgid "Increases the text size of the item view."
 msgstr "يزيد حجم النص عند عرض العنصر."
 
-#: ../src/ui/ui_mainwindow.c:927
+#: ../src/ui/ui_mainwindow.c:925
 msgid "_Decrease Text Size"
 msgstr "_قلل حجم النص"
 
-#: ../src/ui/ui_mainwindow.c:927
+#: ../src/ui/ui_mainwindow.c:925
 msgid "Decreases the text size of the item view."
 msgstr "يقلل حجم النص عند عرض العنصر."
 
-#: ../src/ui/ui_mainwindow.c:929
+#: ../src/ui/ui_mainwindow.c:927
 msgid "_Normal View"
 msgstr "المشهد العادي"
 
-#: ../src/ui/ui_mainwindow.c:929
+#: ../src/ui/ui_mainwindow.c:927
 msgid "Set view mode to mail client mode."
 msgstr "اضبط نمط العرض كنمط عميل البريد."
 
-#: ../src/ui/ui_mainwindow.c:931
+#: ../src/ui/ui_mainwindow.c:929
 msgid "_Wide View"
 msgstr "مشهد _عريض"
 
-#: ../src/ui/ui_mainwindow.c:931
+#: ../src/ui/ui_mainwindow.c:929
 msgid "Set view mode to use three vertical panes."
 msgstr "اضبط نمط العرض ليستخدم ثلاث ألواح رأسيّة."
 
-#: ../src/ui/ui_mainwindow.c:933
+#: ../src/ui/ui_mainwindow.c:931
 msgid "_Combined View"
 msgstr "مشهد مركّ_ب"
 
-#: ../src/ui/ui_mainwindow.c:933
+#: ../src/ui/ui_mainwindow.c:931
 msgid "Set view mode to two pane mode."
 msgstr "اضبط نمط العرض إلى نمط اللوحين."
 
-#: ../src/ui/ui_mainwindow.c:936
+#: ../src/ui/ui_mainwindow.c:934
 msgid "_Search"
 msgstr "ا_بحث"
 
-#: ../src/ui/ui_mainwindow.c:937
+#: ../src/ui/ui_mainwindow.c:935
 msgid "Search All Feeds..."
 msgstr "ابحث في كل التلقيمات..."
 
-#: ../src/ui/ui_mainwindow.c:937
+#: ../src/ui/ui_mainwindow.c:935
 msgid "Show the search dialog."
 msgstr "اظهر حوار البحث."
 
-#: ../src/ui/ui_mainwindow.c:938
+#: ../src/ui/ui_mainwindow.c:936
 msgid "Search With ..."
 msgstr "ابحث باستخدام..."
 
-#: ../src/ui/ui_mainwindow.c:940
+#: ../src/ui/ui_mainwindow.c:938
 msgid "_Help"
 msgstr "_مساعدة"
 
-#: ../src/ui/ui_mainwindow.c:941
+#: ../src/ui/ui_mainwindow.c:939
 msgid "_Contents"
 msgstr "الم_حتويات"
 
-#: ../src/ui/ui_mainwindow.c:941
+#: ../src/ui/ui_mainwindow.c:939
 msgid "View help for this application."
 msgstr "اعرض مساعدة هذا التطبيق."
 
-#: ../src/ui/ui_mainwindow.c:942
+#: ../src/ui/ui_mainwindow.c:940
 msgid "_Quick Reference"
 msgstr "مرجع _سريع"
 
-#: ../src/ui/ui_mainwindow.c:942
+#: ../src/ui/ui_mainwindow.c:940
 msgid "View a list of all Liferea shortcuts."
 msgstr "اعرض قائمة بكل اختصارات لايفريا."
 
-#: ../src/ui/ui_mainwindow.c:944
+#: ../src/ui/ui_mainwindow.c:942
 msgid "_FAQ"
 msgstr "أ_سئلة متكرّرة"
 
-#: ../src/ui/ui_mainwindow.c:944
+#: ../src/ui/ui_mainwindow.c:942
 msgid "View the FAQ for this application."
 msgstr "اعرض الأسألة المتكرّرة لهذا التطبيق."
 
-#: ../src/ui/ui_mainwindow.c:945
+#: ../src/ui/ui_mainwindow.c:943
 msgid "_About"
 msgstr "_حوْل"
 
-#: ../src/ui/ui_mainwindow.c:945
+#: ../src/ui/ui_mainwindow.c:943
 msgid "Shows an about dialog."
 msgstr "اعرض حوار حوْل."
 
-#: ../src/ui/ui_mainwindow.c:949
+#: ../src/ui/ui_mainwindow.c:947
 msgid "_New Subscription..."
 msgstr "اشتراك _جديد..."
 
-#: ../src/ui/ui_mainwindow.c:949
+#: ../src/ui/ui_mainwindow.c:947
 msgid "Adds a subscription to the feed list."
 msgstr "أضِف اشتراك إلى قائمة التلقيمات."
 
-#: ../src/ui/ui_mainwindow.c:951
+#: ../src/ui/ui_mainwindow.c:949
 msgid "New _Folder..."
 msgstr "_مجلّد جديد..."
 
-#: ../src/ui/ui_mainwindow.c:951
+#: ../src/ui/ui_mainwindow.c:949
 msgid "Adds a folder to the feed list."
 msgstr "أضِف مجلّد إلى قائمة التلقيمات."
 
-#: ../src/ui/ui_mainwindow.c:952
+#: ../src/ui/ui_mainwindow.c:950
 msgid "New S_earch Folder..."
 msgstr "مجلّد _بحث جديد..."
 
-#: ../src/ui/ui_mainwindow.c:952
+#: ../src/ui/ui_mainwindow.c:950
 msgid "Adds a new search folder to the feed list."
 msgstr "أضِف مجلّد بحث جديد إلى قائمة التلقيمات."
 
-#: ../src/ui/ui_mainwindow.c:953
+#: ../src/ui/ui_mainwindow.c:951
 msgid "New _Source..."
 msgstr "م_صدر جديد..."
 
-#: ../src/ui/ui_mainwindow.c:953
+#: ../src/ui/ui_mainwindow.c:951
 msgid "Adds a new feed list source."
 msgstr "أضِف مصدر قائمة تلقيمات جديد."
 
-#: ../src/ui/ui_mainwindow.c:954
+#: ../src/ui/ui_mainwindow.c:952
 msgid "New _News Bin..."
 msgstr "_سلّة أخبار جديدة..."
 
-#: ../src/ui/ui_mainwindow.c:954
+#: ../src/ui/ui_mainwindow.c:952
 msgid "Adds a new news bin."
 msgstr "أضِف سلّة أخبار جديدة."
 
-#: ../src/ui/ui_mainwindow.c:958
+#: ../src/ui/ui_mainwindow.c:956
 msgid "_Mark Selected As Read"
 msgstr "_علّم المنتقى كمقروء"
 
-#: ../src/ui/ui_mainwindow.c:958
+#: ../src/ui/ui_mainwindow.c:956
 msgid ""
 "Marks all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
 msgstr ""
 "علّم كل عناصر الإشتراك المنتقى أو كل الإشتراكات في المجلّد المنتقى كمقروء."
 
-#: ../src/ui/ui_mainwindow.c:960
+#: ../src/ui/ui_mainwindow.c:958
 msgid "Update _Selected"
 msgstr "حدّث ال_مُنتَقى"
 
-#: ../src/ui/ui_mainwindow.c:960
+#: ../src/ui/ui_mainwindow.c:958
 msgid ""
 "Updates the selected subscription or all subscriptions of the selected "
 "folder."
 msgstr "يُحدّث الإشتراك المُنتقى أو كل الإشتراكات في المجلّد المُنتقى."
 
-#: ../src/ui/ui_mainwindow.c:965
+#: ../src/ui/ui_mainwindow.c:963
 msgid "_Properties..."
 msgstr "_خصائص..."
 
-#: ../src/ui/ui_mainwindow.c:965
+#: ../src/ui/ui_mainwindow.c:963
 msgid "Opens the property dialog for the selected subscription."
 msgstr "يفتح حوار خصائص الإشتراك المنتقى."
 
-#: ../src/ui/ui_mainwindow.c:966
+#: ../src/ui/ui_mainwindow.c:964
 msgid "_Delete Selected"
 msgstr "ا_حذف المنتقى"
 
-#: ../src/ui/ui_mainwindow.c:966
+#: ../src/ui/ui_mainwindow.c:964
 msgid "Removes the selected subscription."
 msgstr "يحذف الإشتراك المُنتقى."
 
-#: ../src/ui/ui_mainwindow.c:970
+#: ../src/ui/ui_mainwindow.c:968
 msgid "_Work Offline"
 msgstr "ا_عمل دون اتّصال"
 
-#: ../src/ui/ui_mainwindow.c:970
+#: ../src/ui/ui_mainwindow.c:968
 msgid "This option allows you to disable subscription updating."
 msgstr "يسمح لك هذا الخيار بتعطيل تحديث الإشتراك."
 
-#: ../src/ui/ui_mainwindow.c:1104
+#: ../src/ui/ui_mainwindow.c:1102
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
@@ -1941,7 +1941,7 @@ msgstr[1] "(اثنان جديدان)"
 msgstr[2] "(%d جديدة)"
 msgstr[3] "(%d جديدا)"
 
-#: ../src/ui/ui_mainwindow.c:1110
+#: ../src/ui/ui_mainwindow.c:1108
 #, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
@@ -1968,7 +1968,7 @@ msgid "/Copy to News Bin/%s"
 msgstr "/انسخ لسلّة الأخبار/%s"
 
 #. menu option for social bookmark creation
-#: ../src/ui/ui_popup.c:129 ../src/ui/ui_popup.c:151
+#: ../src/ui/ui_popup.c:129 ../src/ui/ui_popup.c:152
 #, c-format
 msgid "/_Bookmark Link at %s"
 msgstr "/_علّم الوصلة في %s"
@@ -1978,106 +1978,111 @@ msgid "/Copy Item _URL to Clipboard"
 msgstr "/انسخ _عنوان العنصر إلى الحافظة"
 
 #: ../src/ui/ui_popup.c:134
+#, fuzzy
+msgid "/Toggle _Read Status"
+msgstr "بدّل حالة ال_قراءة"
+
+#: ../src/ui/ui_popup.c:135
 msgid "/Toggle Item _Flag"
 msgstr "/بدّل _شارة العنصر"
 
-#: ../src/ui/ui_popup.c:135
+#: ../src/ui/ui_popup.c:136
 msgid "/R_emove Item"
 msgstr "/أ_زل عنصر"
 
-#: ../src/ui/ui_popup.c:141
+#: ../src/ui/ui_popup.c:142
 msgid "/_Increase Text Size"
 msgstr "/_زد حجم النص"
 
-#: ../src/ui/ui_popup.c:142
+#: ../src/ui/ui_popup.c:143
 msgid "/_Decrease Text Size"
 msgstr "/_قلل حجم النص"
 
-#: ../src/ui/ui_popup.c:147
+#: ../src/ui/ui_popup.c:148
 msgid "/Launch Link In _Tab"
 msgstr "/افتح الرابط في _لسان"
 
-#: ../src/ui/ui_popup.c:148
+#: ../src/ui/ui_popup.c:149
 msgid "/_Launch Link In Browser"
 msgstr "/ا_فتح الرابط في المتصفّح"
 
-#: ../src/ui/ui_popup.c:153
+#: ../src/ui/ui_popup.c:154
 msgid "/_Copy Link Location"
 msgstr "/ا_نسخ موقع الرابط"
 
-#: ../src/ui/ui_popup.c:155
+#: ../src/ui/ui_popup.c:156
 msgid "/_Subscribe..."
 msgstr "/ا_شترك..."
 
-#: ../src/ui/ui_popup.c:161
+#: ../src/ui/ui_popup.c:162
 msgid "/Toggle _Online|Offline"
 msgstr "/بدّل وضع _متّصل|غير متّصل"
 
-#: ../src/ui/ui_popup.c:162
+#: ../src/ui/ui_popup.c:163
 msgid "/_Update All"
 msgstr "/_حدّث الكل"
 
-#: ../src/ui/ui_popup.c:163
+#: ../src/ui/ui_popup.c:164
 msgid "/_Preferences..."
 msgstr "/_تفضيلات..."
 
-#: ../src/ui/ui_popup.c:165
+#: ../src/ui/ui_popup.c:166
 msgid "/_Show|Hide Window"
 msgstr "/ا_ظهر|اخفي النافذة"
 
-#: ../src/ui/ui_popup.c:166
+#: ../src/ui/ui_popup.c:167
 msgid "/_Quit"
 msgstr "/ا_خرج"
 
-#: ../src/ui/ui_popup.c:172
+#: ../src/ui/ui_popup.c:173
 msgid "/Open Enclosure..."
 msgstr "/افتح مغلّف..."
 
-#: ../src/ui/ui_popup.c:173
+#: ../src/ui/ui_popup.c:174
 msgid "/Save As..."
 msgstr "/احفظ كـ..."
 
-#: ../src/ui/ui_popup.c:285
+#: ../src/ui/ui_popup.c:286
 msgid "/_Update Folder"
 msgstr "/_حدّث المجلّد"
 
-#: ../src/ui/ui_popup.c:288
+#: ../src/ui/ui_popup.c:289
 msgid "/_Update"
 msgstr "/_حدّث"
 
-#: ../src/ui/ui_popup.c:290
+#: ../src/ui/ui_popup.c:291
 msgid "/_Mark All As Read"
 msgstr "/_علّم الكل كمقروء"
 
-#: ../src/ui/ui_popup.c:294
+#: ../src/ui/ui_popup.c:295
 msgid "/_New"
 msgstr "/_جديد"
 
-#: ../src/ui/ui_popup.c:295
+#: ../src/ui/ui_popup.c:296
 msgid "/_New/New _Subscription..."
 msgstr "/_جديد/ا_شتراك جديد..."
 
-#: ../src/ui/ui_popup.c:296
+#: ../src/ui/ui_popup.c:297
 msgid "/_New/New _Folder..."
 msgstr "/_جديد/_مجلّد جديد..."
 
-#: ../src/ui/ui_popup.c:297
+#: ../src/ui/ui_popup.c:298
 msgid "/_New/New S_earch Folder..."
 msgstr "/_جديد/مجلّد _بحث جديد..."
 
-#: ../src/ui/ui_popup.c:298
+#: ../src/ui/ui_popup.c:299
 msgid "/_New/New S_ource..."
 msgstr "/_جديد/م_صدر جديد..."
 
-#: ../src/ui/ui_popup.c:299
+#: ../src/ui/ui_popup.c:300
 msgid "/_New/New _News Bin..."
 msgstr "/_جديد/_سلّة أخبار جديدة..."
 
-#: ../src/ui/ui_popup.c:305
+#: ../src/ui/ui_popup.c:306
 msgid "/_Delete"
 msgstr "/ا_حذف"
 
-#: ../src/ui/ui_popup.c:307
+#: ../src/ui/ui_popup.c:308
 msgid "/_Properties..."
 msgstr "/ال_خصائص..."
 
@@ -2280,15 +2285,15 @@ msgid "_Password"
 msgstr "_كلمة السر"
 
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
-#: ../src/fl_sources/default_source.c:85
+#: ../src/fl_sources/default_source.c:86
 msgid "feedlist.opml"
 msgstr "feedlist.opml"
 
-#: ../src/fl_sources/opml_source.c:339
+#: ../src/fl_sources/opml_source.c:341
 msgid "Planet, BlogRoll, OPML"
 msgstr "Planet, BlogRoll, OPML"
 
-#: ../src/fl_sources/opml_source.c:341
+#: ../src/fl_sources/opml_source.c:343
 msgid ""
 "Integrate blogrolls or Planets in your feed list. Liferea will automatically "
 "add and remove feeds according to the changes of the source OPML document"
@@ -2322,11 +2327,11 @@ msgstr "ا_نتقي ملف"
 msgid "Choose OPML File"
 msgstr "اختر ملف"
 
-#: ../src/fl_sources/node_source.c:207
+#: ../src/fl_sources/node_source.c:206
 msgid "No feed list source types found!"
 msgstr "لم يُعثر على أنواع مصادر قائمة التلقيمات!"
 
-#: ../src/fl_sources/node_source.c:238
+#: ../src/fl_sources/node_source.c:237
 msgid "Source Type"
 msgstr "نوع المصدر"
 
@@ -2390,11 +2395,52 @@ msgstr "غير معنون"
 msgid "Liferea notification"
 msgstr "تبليغ لايفريا"
 
-#: ../src/scripting/ui_script.c:140
+#: ../src/scripting/ui_script.c:36
+#, fuzzy
+msgid "startup"
+msgstr "عند ال_بدأ:"
+
+#. update events
+#: ../src/scripting/ui_script.c:39
+#, fuzzy
+msgid "feed updated"
+msgstr "تحديث التلقيمة"
+
+#. feed list editing
+#: ../src/scripting/ui_script.c:42
+#, fuzzy
+msgid "feed added"
+msgstr "قاريء تلقيمات"
+
+#. selection hooks
+#: ../src/scripting/ui_script.c:45
+#, fuzzy
+msgid "item selected"
+msgstr "احذف ال_منتقى"
+
+#: ../src/scripting/ui_script.c:46
+#, fuzzy
+msgid "feed selected"
+msgstr "احذف ال_منتقى"
+
+#: ../src/scripting/ui_script.c:47
+#, fuzzy
+msgid "item unselect"
+msgstr "لم تُنْتقَى أية عناصر"
+
+#: ../src/scripting/ui_script.c:48
+msgid "feed unselect"
+msgstr ""
+
+#: ../src/scripting/ui_script.c:50
+msgid "shutdown"
+msgstr ""
+
+#: ../src/scripting/ui_script.c:143
 msgid "Sorry, no scripting support available!"
 msgstr "آسف، لا يتوفّر دعم للسكريبت"
 
-#: ../src/scripting/ui_script.c:213
+#: ../src/scripting/ui_script.c:216
 msgid "No script selected!"
 msgstr "لم يُنْتقَى أية سكريبت!"
 
