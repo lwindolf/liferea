@@ -171,7 +171,7 @@ void node_free(nodePtr node) {
 
 	g_assert(NULL == node->children);
 	
-	g_hash_table_remove(nodes, node);
+	g_hash_table_remove(nodes, node->id);
 	
 	update_cancel_requests((gpointer)node);
 
@@ -286,7 +286,6 @@ void node_add_child(nodePtr parent, nodePtr node, gint position) {
 		node->source = parent->source;
 	
 	ui_node_add(parent, node, position);	
-	ui_node_update(node->id);
 }
 
 /* To be called by node type implementations to add nodes */

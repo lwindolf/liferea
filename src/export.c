@@ -183,8 +183,9 @@ void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, nodeSourcePtr node
 			xmlFree(id);
 		} else
 			needsUpdate = TRUE;
-	} else
+	} else {
 		needsUpdate = TRUE;
+	}
 	
 	/* title */
 	title = xmlGetProp(cur, BAD_CAST"title");
