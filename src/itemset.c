@@ -54,7 +54,7 @@ itemset_get_max_item_count (itemSetPtr itemSet)
 {
 	nodePtr node = node_from_id (itemSet->nodeId);
 	
-	if (NODE_TYPE_FEED == node->type)
+	if (node && NODE_TYPE_FEED == node->type)
 		return feed_get_max_item_count (node);
 
 	return G_MAXUINT;
@@ -159,6 +159,7 @@ static gboolean
 itemset_merge_item (itemSetPtr itemSet, GList *items, itemPtr item)
 {
 	gboolean	merge;
+	nodePtr		node;
 
 	debug2 (DEBUG_UPDATE, "trying to merge \"%s\" to node id \"%s\"", item_get_title (item), itemSet->nodeId);
 	
@@ -202,8 +203,8 @@ itemset_merge_item (itemSetPtr itemSet, GList *items, itemPtr item)
 		/* step 4: If a new item has enclosures and auto downloading
 		   is enabled we start the download. Enclosures added
 		   by updated items are not supported. */
-
-		if ((((feedPtr)(node_from_id (itemSet->nodeId)->data))->encAutoDownload) && item->newStatus) {
+		node = node_from_id (itemSet->nodeId);
+		if (node && (((feedPtr)node->data)->encAutoDownload) && item->newStatus) {
 			GSList *iter = metadata_list_get_values (item->metadata, "enclosure");
 			while (iter) {
 				debug1 (DEBUG_UPDATE, "download enclosure (%s)", (gchar *)iter->data);
