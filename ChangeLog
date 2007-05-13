@@ -3,6 +3,8 @@
 	Version 1.3.6 (Unstable)
 
 	* Fixes a crash when updating comment feeds.
+	* Better update result processing timer, should cause
+	  less CPU usage. (patch from Arjan van de Ven)
 
 
 2007-05-11  Lars Lindner  <lars.lindner@gmail.com>
