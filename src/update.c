@@ -59,6 +59,8 @@ static GAsyncQueue	*requests_high_prio = NULL;
 static GAsyncQueue	*requests_normal_prio = NULL;
 static GAsyncQueue	*results = NULL;
 
+static guint		results_timer = 0;
+
 /* condition mutex for offline mode */
 static GMutex	*cond_mutex = NULL;
 static GCond	*offline_cond = NULL;
@@ -69,6 +71,8 @@ static gboolean	online = TRUE;
 static libnm_glib_ctx *nm_ctx = NULL;
 static guint nm_id = 0;
 #endif
+
+static gboolean update_dequeue_results(gpointer user_data);
 
 /* update state interface */
 
@@ -420,6 +424,13 @@ static void *update_dequeue_requests(void *data) {
 			/* return the request so the GUI thread can merge the feeds and display the results... */
 			debug1(DEBUG_UPDATE, "request (%s) finished", request->source);
 			g_async_queue_push(results, (gpointer)request);
+			if (!results_timer) 
+				results_timer = g_timeout_add_full(G_PRIORITY_DEFAULT_IDLE,
+		                   100, 
+				   update_dequeue_results, 
+				   NULL,
+				   NULL);
+
 		}
 	}
 }
@@ -532,6 +543,8 @@ gboolean update_request_cancel_retry(requestPtr request) {
 static gboolean update_dequeue_results(gpointer user_data) {
 	requestPtr	request;
 	request_cb	callback;
+
+	results_timer = 0;
 	
 	while(NULL != (request = g_async_queue_try_pop(results))) {
 		callback = request->callback;
@@ -564,7 +577,7 @@ static gboolean update_dequeue_results(gpointer user_data) {
 		/* Normal result processing */
 		(callback)(request);
 	}
-	return TRUE;
+	return FALSE;
 }
 
 void update_init(void) {
@@ -585,13 +598,6 @@ void update_init(void) {
 	
 	for(i = 0; i < count; i++)
 		g_thread_create(update_dequeue_requests, GINT_TO_POINTER((i == 0)), FALSE, NULL);
-
-	/* setup the processing of feed update results */
-	g_timeout_add_full(G_PRIORITY_DEFAULT_IDLE,
-	                   100, 
-			   update_dequeue_results, 
-			   NULL,
-			   NULL);
 }
 
 #ifdef USE_NM
