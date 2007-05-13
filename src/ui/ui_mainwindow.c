@@ -569,7 +569,9 @@ void ui_mainwindow_init(int mainwindowState) {
 				   "<p>What works since this release:"
 				   "<ul>"
 				   "   <li>enclosure auto-download</li>"
-				   "   <li>the cache limiting</li>"
+				   "   <li>cache limiting is realized again</li>"
+				   "   <li>fixed crash when clicking on empty search folder</li>"
+				   "   <li>broken favicon updating is now fixed</li>"
 				   "</ul>"
 				   "</p>");
 	g_string_append(buffer,    "</div>");
