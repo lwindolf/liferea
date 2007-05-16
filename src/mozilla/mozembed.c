@@ -1,7 +1,7 @@
 /**
  * @file mozembed.c common gtkmozembed handling.
  *   
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>   
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>   
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * Contains code from the Galeon sources
@@ -32,10 +32,10 @@
 #include <errno.h>
 #include <glib.h>
 #include <gtkmozembed.h>
+
 #include "mozilla/mozsupport.h"
 #include "common.h"
 #include "conf.h"
-#include "support.h"
 #include "debug.h"
 #include "ui/ui_htmlview.h"
 #include "ui/ui_popup.h"
@@ -170,34 +170,46 @@ static gint mozembed_dom_key_press_cb (GtkMozEmbed *dummy, gpointer dom_event, g
  * mozembed_dom_mouse_click_cb: GTKMOZEMBED SIGNAL, emitted when user 
  * clicks on the document
  */
-static gint mozembed_dom_mouse_click_cb (GtkMozEmbed *dummy, gpointer dom_event, gpointer embed) {
-	gint	button;
-
-	if(-1 == (button = mozsupport_get_mouse_event_button(dom_event))) {
-		g_warning("Cannot determine mouse button!\n");
+static gint
+mozembed_dom_mouse_click_cb (GtkMozEmbed *dummy, gpointer dom_event, gpointer embed) 
+{
+	gint		button;
+	gboolean	safeURL = FALSE;
+	
+	if(-1 == (button = mozsupport_get_mouse_event_button (dom_event))) {
+		g_warning ("Cannot determine mouse button!\n");
 		return FALSE;
 	}
 	
+	/* prevent launching local filesystem links */	
+	if (selectedURL)
+		safeURL = (NULL == strstr (selectedURL, "file://"));
+		
 	/* do we have a right mouse button click? */
-	if(button == 2) {
-		if(NULL == selectedURL)
-			gtk_menu_popup(GTK_MENU(make_html_menu()), NULL, NULL,
-				       NULL, NULL, button, 0);
+	if (button == 2) {
+		if(!selectedURL)
+			gtk_menu_popup (GTK_MENU (make_html_menu ()), NULL, NULL,
+				        NULL, NULL, button, 0);
 		else
-			gtk_menu_popup(GTK_MENU(make_url_menu(selectedURL)), NULL, NULL,
-				       NULL, NULL, button, 0);
+			gtk_menu_popup (GTK_MENU (make_url_menu (safeURL?selectedURL:"")), NULL, NULL,
+				        NULL, NULL, button, 0);
 	
 		return TRUE;
-	/* or a middle button click */
-	} else if(button == 1) {
-		if(NULL != selectedURL) {	
-			ui_tabs_new(selectedURL, selectedURL, FALSE);
+	} else {
+		if (!selectedURL)
+			return FALSE;	/* should never happen */
+			
+		if (!safeURL)
 			return TRUE;
+			
+		/* on middle button click */
+		if (button == 1) {
+			ui_tabs_new (selectedURL, selectedURL, FALSE);
+			return TRUE;
+		/* on left button click */
 		} else {
 			return FALSE;
-		}			
-	} else {
-		return FALSE;
+		}
 	}
 }
 

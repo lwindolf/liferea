@@ -2,7 +2,7 @@
  * @file gtkhtml2.c GtkHTML2 browser module implementation for Liferea
  *
  * Copyright (C) 2004-2006 Nathan Conrad <conrad@bungled.net>
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>  
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>  
  * Copyright (C) 2004 Juho Snellman <jsnell@users.sourceforge.net>
  * 
  * Note large portions of this code (callbacks and html widget
@@ -38,12 +38,13 @@
 #include <string.h>
 #include <glib.h>
 #include <errno.h>
+
 #include "common.h"
-#include "ui/ui_htmlview.h"
-#include "support.h"
-#include "callbacks.h"
-#include "update.h"
 #include "debug.h"
+#include "update.h"
+#include "ui/ui_htmlview.h"
+#include "ui/ui_popup.h"
+#include "ui/ui_tabs.h"
 
 #define BUFFER_SIZE 8192
 
@@ -58,21 +59,28 @@ static GdkCursor	*link_cursor = NULL;
 static void link_clicked (HtmlDocument *doc, const gchar *url, gpointer data);
 static void gtkhtml2_scroll_to_top(GtkWidget *scrollpane);
 
-static int button_press_event(HtmlView *view, GdkEventButton *event, gpointer userdata) {
+static int
+button_press_event (HtmlView *view, GdkEventButton *event, gpointer userdata)
+{
+	gboolean safeURL = FALSE;
+	
+	g_return_val_if_fail (view != NULL, FALSE);
+	g_return_val_if_fail (event != NULL, FALSE);
 
-	g_return_val_if_fail(view != NULL, FALSE);
-	g_return_val_if_fail(event != NULL, FALSE);
-
-	if((event->type == GDK_BUTTON_PRESS) && (event->button == 3)) {
-		if(NULL == selectedURL) {
-			gtk_menu_popup(GTK_MENU(make_html_menu()), NULL, NULL,
-				       NULL, NULL, event->button, event->time);
+	if ((event->type == GDK_BUTTON_PRESS) && (event->button == 3)) {
+		/* prevent launching local filesystem links */	
+		if (selectedURL)
+			safeURL = (NULL == strstr (selectedURL, "file://"));
+			
+		if (!selectedURL) {
+			gtk_menu_popup (GTK_MENU (make_html_menu ()), NULL, NULL,
+				        NULL, NULL, event->button, event->time);
 		} else {
-			gdk_window_set_cursor(GDK_WINDOW(gtk_widget_get_parent_window(GTK_WIDGET(view))), NULL);
-			gtk_menu_popup(GTK_MENU(make_url_menu(selectedURL)), NULL, NULL,
-				       NULL, NULL, event->button, event->time);
+			gdk_window_set_cursor (GDK_WINDOW (gtk_widget_get_parent_window (GTK_WIDGET (view))), NULL);
+			gtk_menu_popup (GTK_MENU (make_url_menu (safeURL?selectedURL:"")), NULL, NULL,
+				        NULL, NULL, event->button, event->time);
 		}
-		g_free(selectedURL);
+		g_free (selectedURL);
 		selectedURL = NULL;
 
 		return TRUE; 
@@ -251,17 +259,23 @@ static void kill_old_connections (GtkWidget *scrollpane) {
 		request_data_kill((struct request*)tmp->data);
 }
 
-static void link_clicked(HtmlDocument *doc, const gchar *url, gpointer scrollpane) {
+static void
+link_clicked (HtmlDocument *doc, const gchar *url, gpointer scrollpane)
+{
 	xmlChar		*absURL;
 	
-	absURL = common_build_url(url, g_object_get_data(G_OBJECT(doc), "liferea-base-uri"));
-	if(absURL != NULL) {
-		kill_old_connections(GTK_WIDGET(scrollpane));
-		ui_htmlview_launch_URL(GTK_WIDGET(scrollpane), absURL,
-						   GPOINTER_TO_INT(g_object_get_data(G_OBJECT(scrollpane), "internal_browsing")) ?  UI_HTMLVIEW_LAUNCH_INTERNAL: UI_HTMLVIEW_LAUNCH_DEFAULT);
-		xmlFree(absURL);
+	absURL = common_build_url (url, g_object_get_data (G_OBJECT (doc), "liferea-base-uri"));
+	if (absURL) {
+		/* prevent local filesystem links */
+		if (!strstr (selectedURL, "file://")) {	
+			kill_old_connections (GTK_WIDGET (scrollpane));
+			ui_htmlview_launch_URL (GTK_WIDGET (scrollpane), absURL,
+			                        GPOINTER_TO_INT (g_object_get_data(G_OBJECT(scrollpane), "internal_browsing")) ?  UI_HTMLVIEW_LAUNCH_INTERNAL: UI_HTMLVIEW_LAUNCH_DEFAULT);
+		}
+		xmlFree (absURL);
 	}
 }
+
 void gtkhtml2_destroyed_cb(GtkObject *scrollpane, gpointer user_data) {
 	kill_old_connections(GTK_WIDGET(scrollpane));
 }
