@@ -59,17 +59,22 @@ static void link_clicked (HtmlDocument *doc, const gchar *url, gpointer data);
 static void gtkhtml2_scroll_to_top(GtkWidget *scrollpane);
 
 static int button_press_event(HtmlView *view, GdkEventButton *event, gpointer userdata) {
+	gboolean safeURL = FALSE;
 
 	g_return_val_if_fail(view != NULL, FALSE);
 	g_return_val_if_fail(event != NULL, FALSE);
-
+	
 	if((event->type == GDK_BUTTON_PRESS) && (event->button == 3)) {
-		if(NULL == selectedURL) {
+		/* prevent launching local filesystem links */	
+		if(selectedURL)
+			safeURL = (NULL == strstr(selectedURL, "file://"));
+			
+		if(!selectedURL) {
 			gtk_menu_popup(GTK_MENU(make_html_menu()), NULL, NULL,
 				       NULL, NULL, event->button, event->time);
 		} else {
 			gdk_window_set_cursor(GDK_WINDOW(gtk_widget_get_parent_window(GTK_WIDGET(view))), NULL);
-			gtk_menu_popup(GTK_MENU(make_url_menu(selectedURL)), NULL, NULL,
+			gtk_menu_popup(GTK_MENU(make_url_menu(safeURL?selectedURL:"")), NULL, NULL,
 				       NULL, NULL, event->button, event->time);
 		}
 		g_free(selectedURL);
@@ -256,9 +261,12 @@ static void link_clicked(HtmlDocument *doc, const gchar *url, gpointer scrollpan
 	
 	absURL = common_build_url(url, g_object_get_data(G_OBJECT(doc), "liferea-base-uri"));
 	if(absURL != NULL) {
-		kill_old_connections(GTK_WIDGET(scrollpane));
-		ui_htmlview_launch_URL(GTK_WIDGET(scrollpane), absURL,
-						   GPOINTER_TO_INT(g_object_get_data(G_OBJECT(scrollpane), "internal_browsing")) ?  UI_HTMLVIEW_LAUNCH_INTERNAL: UI_HTMLVIEW_LAUNCH_DEFAULT);
+		/* prevent local filesystem links */
+		if(!strstr(selectedURL, "file://")) {
+			kill_old_connections(GTK_WIDGET(scrollpane));
+			ui_htmlview_launch_URL(GTK_WIDGET(scrollpane), absURL,
+			                       GPOINTER_TO_INT(g_object_get_data(G_OBJECT(scrollpane), "internal_browsing")) ?  UI_HTMLVIEW_LAUNCH_INTERNAL: UI_HTMLVIEW_LAUNCH_DEFAULT);
+		}
 		xmlFree(absURL);
 	}
 }

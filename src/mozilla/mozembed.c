@@ -171,33 +171,44 @@ static gint mozembed_dom_key_press_cb (GtkMozEmbed *dummy, gpointer dom_event, g
  * clicks on the document
  */
 static gint mozembed_dom_mouse_click_cb (GtkMozEmbed *dummy, gpointer dom_event, gpointer embed) {
-	gint	button;
+	gint		button;
+	gboolean	safeURL = FALSE;
 
 	if(-1 == (button = mozsupport_get_mouse_event_button(dom_event))) {
 		g_warning("Cannot determine mouse button!\n");
 		return FALSE;
 	}
+
+	/* prevent launching local filesystem links */	
+	if(selectedURL)
+		safeURL = (NULL == strstr(selectedURL, "file://"));
 	
 	/* do we have a right mouse button click? */
 	if(button == 2) {
-		if(NULL == selectedURL)
+		if(!selectedURL)
 			gtk_menu_popup(GTK_MENU(make_html_menu()), NULL, NULL,
 				       NULL, NULL, button, 0);
 		else
-			gtk_menu_popup(GTK_MENU(make_url_menu(selectedURL)), NULL, NULL,
+			gtk_menu_popup(GTK_MENU(make_url_menu(safeURL?selectedURL:"")), NULL, NULL,
 				       NULL, NULL, button, 0);
 	
 		return TRUE;
-	/* or a middle button click */
-	} else if(button == 1) {
-		if(NULL != selectedURL) {	
+	} else {
+		if(!selectedURL)
+			return FALSE;	/* should never happen */
+			
+		if(!safeURL)
+			return TRUE;
+			
+		/* on middle button click */
+		if(button == 1) {
 			ui_tabs_new(selectedURL, selectedURL, FALSE);
 			return TRUE;
+	
+		/* on left button click */
 		} else {
 			return FALSE;
-		}			
-	} else {
-		return FALSE;
+		}
 	}
 }
 
