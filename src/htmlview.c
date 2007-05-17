@@ -305,7 +305,7 @@ htmlview_update (GtkWidget *widget,
 	GSList		*iter;
 	GString		*output;
 	itemPtr		item = NULL;
-	gchar		*baseURL;
+	gchar		*baseURL = NULL;
 	gboolean	summaryMode;
 		
 	if (!htmlView_priv.node)
@@ -315,7 +315,18 @@ htmlview_update (GtkWidget *widget,
 		return;
 	}
 	
-	baseURL = (gchar *) node_get_base_url (htmlView_priv.node);
+	/* determine base URL */
+	switch(mode) {
+		case ITEMVIEW_SINGLE_ITEM:
+			item = itemlist_get_selected();
+			if(item)
+				baseURL = (gchar *)node_get_base_url(node_from_id(item->nodeId));
+			break;
+		default:
+			baseURL = (gchar *) node_get_base_url (htmlView_priv.node);
+			break;
+	}
+
 	if (baseURL)
 		baseURL = g_markup_escape_text (baseURL, -1);
 		
