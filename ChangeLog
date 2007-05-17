@@ -1,9 +1,14 @@
-2007-05-??  Lars Lindner  <lars.lindner@gmail.com>
+2007-05-17  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.2.15 (Stable)
 
 	* Better update result processing timer, should cause
 	  less CPU usage. (patch from Arjan van de Ven)
+	* Increased security: disallowing clicking on file://
+	  links in the rendering widget, as well as preventing
+	  from opening such links using the context menu.
+	* Fixes unresolved symbol in LUA binding.
+	  (SF #1720462, reported by Jonathan Cristoforetti)
 
 
 2007-05-07  Lars Lindner  <lars.lindner@gmail.com>

@@ -4373,28 +4373,6 @@ fail:
 }
 
 
-static int _wrap_node_get_max_item_count(lua_State* L) {
-  int SWIG_arg = -1;
-  nodePtr arg1 = (nodePtr) 0 ;
-  unsigned int result;
-  
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_node,0))){
-    SWIG_fail_ptr("node_get_max_item_count",1,SWIGTYPE_p_node);
-  }
-  
-  result = (unsigned int)node_get_max_item_count(arg1);
-  SWIG_arg=0;
-  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
-  return SWIG_arg;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
 static int _wrap_node_merge_items(lua_State* L) {
   int SWIG_arg = -1;
   nodePtr arg1 = (nodePtr) 0 ;
@@ -9597,7 +9575,6 @@ static const struct luaL_reg swig_commands[] = {
     { "node_unload", _wrap_node_unload},
     { "node_remove", _wrap_node_remove},
     { "node_reset_update_counter", _wrap_node_reset_update_counter},
-    { "node_get_max_item_count", _wrap_node_get_max_item_count},
     { "node_merge_items", _wrap_node_merge_items},
     { "node_get_itemset", _wrap_node_get_itemset},
     { "node_set_itemset", _wrap_node_set_itemset},
