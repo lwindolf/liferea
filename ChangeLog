@@ -9,6 +9,8 @@
 	  from opening such links using the context menu.
 	* Fixes unresolved symbol in LUA binding.
 	  (SF #1720462, reported by Jonathan Cristoforetti)
+	* Fixes broken base URL when selecting items in 3 pane
+	  mode from folders.
 
 
 2007-05-07  Lars Lindner  <lars.lindner@gmail.com>

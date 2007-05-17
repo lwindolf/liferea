@@ -204,7 +204,7 @@ void htmlview_update(GtkWidget *widget, guint mode) {
 	GList		*iter = NULL;
 	GString		*output;
 	itemPtr		item = NULL;
-	gchar		*chunk,	*baseURL;
+	gchar		*chunk,	*baseURL = NULL;
 		
 	if(!htmlView_priv.itemSet) {
 		debug0(DEBUG_HTML, "clearing HTML view as nothing is selected");
@@ -212,7 +212,18 @@ void htmlview_update(GtkWidget *widget, guint mode) {
 		return;
 	}
 	
-	baseURL = (gchar *)itemset_get_base_url(htmlView_priv.itemSet);
+	/* determine base URL */
+	switch(mode) {
+		case ITEMVIEW_SINGLE_ITEM:
+			item = itemlist_get_selected();
+			if(item)
+				baseURL = (gchar *)itemset_get_base_url(item->sourceNode->itemSet);
+			break;
+		default:
+			baseURL = (gchar *)itemset_get_base_url(htmlView_priv.itemSet);
+			break;
+	}	
+	
 	if(baseURL)
 		baseURL = g_markup_escape_text(baseURL, -1);
 		
