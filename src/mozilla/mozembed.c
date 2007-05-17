@@ -61,6 +61,9 @@ void mozembed_write(GtkWidget *widget, const gchar *string, guint length, const 
 	/* prevent meta refresh of last document */
 	gtk_moz_embed_stop_load(GTK_MOZ_EMBED(widget));
 	
+	/* always prevent following local links in self-generated HTML */
+	g_object_set_data(G_OBJECT(widget), "localDocument", GINT_TO_POINTER(FALSE));
+	
 	if(DEBUG_VERBOSE & debug_level)
 		debug1(DEBUG_HTML, "mozilla: HTML string >>>%s<<<", string);
 	debug0(DEBUG_HTML, "mozilla: start writing...");
@@ -172,17 +175,20 @@ static gint mozembed_dom_key_press_cb (GtkMozEmbed *dummy, gpointer dom_event, g
  */
 static gint mozembed_dom_mouse_click_cb (GtkMozEmbed *dummy, gpointer dom_event, gpointer embed) {
 	gint		button;
-	gboolean	safeURL = FALSE;
+	gboolean	isLocalDoc, safeURL = FALSE;
 
 	if(-1 == (button = mozsupport_get_mouse_event_button(dom_event))) {
 		g_warning("Cannot determine mouse button!\n");
 		return FALSE;
 	}
 
+	/* source document in local filesystem? */
+	isLocalDoc = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(GTK_WIDGET(dummy)), "localDocument"));
+
 	/* prevent launching local filesystem links */	
 	if(selectedURL)
-		safeURL = (NULL == strstr(selectedURL, "file://"));
-	
+		safeURL = (NULL == strstr(selectedURL, "file://")) || isLocalDoc;
+
 	/* do we have a right mouse button click? */
 	if(button == 2) {
 		if(!selectedURL)
@@ -333,6 +339,11 @@ void mozembed_deinit(void) {
 
 /* launches the specified URL */
 void mozembed_launch_url(GtkWidget *widget, const gchar *url) {
+	gboolean isLocalDoc;
+
+	/* determine if launched URL is a local one and set the flag to allow following local links */
+	isLocalDoc = (url == strstr(url, "file://"));
+	g_object_set_data(G_OBJECT(widget), "localDocument", GINT_TO_POINTER(isLocalDoc));
 
 	gtk_moz_embed_load_url(GTK_MOZ_EMBED(widget), url); 
 }
