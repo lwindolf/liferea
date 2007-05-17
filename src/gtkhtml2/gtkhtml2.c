@@ -62,15 +62,20 @@ static void gtkhtml2_scroll_to_top(GtkWidget *scrollpane);
 static int
 button_press_event (HtmlView *view, GdkEventButton *event, gpointer userdata)
 {
-	gboolean safeURL = FALSE;
+	gboolean 	safeURL = FALSE;
+	gboolean	isLocalDoc = FALSE;
 	
 	g_return_val_if_fail (view != NULL, FALSE);
 	g_return_val_if_fail (event != NULL, FALSE);
 
 	if ((event->type == GDK_BUTTON_PRESS) && (event->button == 3)) {
+
+		/* source document in local filesystem? */
+		isLocalDoc = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (view->document), "localDocument"));
+
 		/* prevent launching local filesystem links */	
-		if (selectedURL)
-			safeURL = (NULL == strstr (selectedURL, "file://"));
+		if(selectedURL)
+			safeURL = (NULL == strstr(selectedURL, "file://")) || isLocalDoc;
 			
 		if (!selectedURL) {
 			gtk_menu_popup (GTK_MENU (make_html_menu ()), NULL, NULL,
@@ -184,14 +189,20 @@ static void gtkhtml2_url_request_received_cb(struct request *r) {
 }
 
 static void url_request(HtmlDocument *doc, const gchar *url, HtmlStream *stream, gpointer data) {
-	gchar		*absURL;
+	gchar		*absURL, *base;
+	gboolean	isLocalDoc;	
 	
 	g_assert(NULL != stream);
 
-	if(NULL != strstr(url, "file://"))
+	base = g_object_get_data(G_OBJECT(doc), "liferea-base-uri");
+
+	/* source document in local filesystem? */
+	isLocalDoc = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(doc), "localDocument"));
+
+	if(NULL != strstr(url, "file://") || isLocalDoc)
 		absURL = g_strdup(url + strlen("file://"));
 	else
-		absURL = common_build_url(url, g_object_get_data(G_OBJECT(doc), "liferea-base-uri"));
+		absURL = common_build_url(url, base);
 
 	if(absURL != NULL) {
 		struct request *r;
@@ -263,11 +274,18 @@ static void
 link_clicked (HtmlDocument *doc, const gchar *url, gpointer scrollpane)
 {
 	xmlChar		*absURL;
+	gboolean	safeURL, isLocalDoc;
 	
 	absURL = common_build_url (url, g_object_get_data (G_OBJECT (doc), "liferea-base-uri"));
 	if (absURL) {
+		/* source document in local filesystem? */
+		isLocalDoc = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (doc), "localDocument"));
+
+		/* prevent launching local filesystem links */	
+		safeURL = (NULL == strstr (absURL, "file://")) || isLocalDoc;
+		
 		/* prevent local filesystem links */
-		if (!strstr (selectedURL, "file://")) {	
+		if (safeURL) {	
 			kill_old_connections (GTK_WIDGET (scrollpane));
 			ui_htmlview_launch_URL (GTK_WIDGET (scrollpane), absURL,
 			                        GPOINTER_TO_INT (g_object_get_data(G_OBJECT(scrollpane), "internal_browsing")) ?  UI_HTMLVIEW_LAUNCH_INTERNAL: UI_HTMLVIEW_LAUNCH_DEFAULT);
@@ -310,26 +328,35 @@ static gfloat gtkhtml2_get_zoom_level(GtkWidget *scrollpane) {
 /* function to write HTML source given as a UTF-8 string. Note: Originally
    the same doc object was reused over and over. To avoid any problems 
    with this now a new one for each output is created... */
-static void gtkhtml2_write_html(GtkWidget *scrollpane, const gchar *string, guint length,  const gchar *base, const gchar *contentType) {
+static void
+gtkhtml2_write_html (GtkWidget *scrollpane,
+                     const gchar *string,
+                     guint length,
+                     const gchar *base,
+                     const gchar *contentType)
+{
 	
-	GtkWidget *htmlwidget = gtk_bin_get_child(GTK_BIN(scrollpane));
-	HtmlDocument	*doc = HTML_VIEW(htmlwidget)->document;
+	GtkWidget	*htmlwidget = gtk_bin_get_child (GTK_BIN (scrollpane));
+	HtmlDocument	*doc = HTML_VIEW (htmlwidget)->document;
 
 	/* finalizing older stuff */
-	if(NULL != doc) {
-		kill_old_connections(scrollpane);
-		html_document_clear(doc);	/* heard rumors that this is necessary... */
-		if (g_object_get_data(G_OBJECT(doc), "liferea-base-uri") != NULL)
-			g_free(g_object_get_data(G_OBJECT(doc), "liferea-base-uri"));
-		g_object_unref(G_OBJECT(doc));
+	if (doc) {
+		kill_old_connections (scrollpane);
+		html_document_clear (doc);	/* heard rumors that this is necessary... */
+		if (g_object_get_data (G_OBJECT (doc), "liferea-base-uri") != NULL)
+			g_free (g_object_get_data (G_OBJECT (doc), "liferea-base-uri"));
+		g_object_unref (G_OBJECT (doc));
 	}
 	
-	doc = html_document_new();
-	html_view_set_document(HTML_VIEW(htmlwidget), doc);
-	g_object_set_data(G_OBJECT(doc), "liferea-base-uri", g_strdup(base));
-	html_document_clear(doc);
+	doc = html_document_new ();
+	html_view_set_document (HTML_VIEW (htmlwidget), doc);
+	
+	g_object_set_data (G_OBJECT (doc), "liferea-base-uri", g_strdup (base));
+	g_object_set_data (G_OBJECT (doc), "localDocument", GINT_TO_POINTER (FALSE));	
+	
+	html_document_clear (doc);
 	/* Gtkhtml2 only responds to text/html documents, thus everything else must be converted to HTML in Liferea's code */
-	html_document_open_stream(doc, "text/html");
+	html_document_open_stream (doc, "text/html");
 	
 	g_signal_connect (G_OBJECT (doc), "request_url",
 				   GTK_SIGNAL_FUNC (url_request), htmlwidget);
@@ -343,23 +370,22 @@ static void gtkhtml2_write_html(GtkWidget *scrollpane, const gchar *string, guin
 	g_signal_connect (G_OBJECT (doc), "title_changed",
 				   G_CALLBACK (gtkhtml2_title_changed), scrollpane);
 
-	if(NULL == string || length == 0)
-		html_document_write_stream(doc, EMPTY, strlen(EMPTY));	
-	else if (contentType != NULL && !strcmp("text/plain", contentType)) {
-		gchar *tmp = g_markup_escape_text(string, length);
-		html_document_write_stream(doc, "<html><head></head><body><pre>", strlen("<html><head></head><body><pre>"));
-		html_document_write_stream(doc, tmp, strlen(tmp));
-		html_document_write_stream(doc, "</pre></body></html>", strlen("</pre></body></html>"));
-		g_free(tmp);
+	if (NULL == string || length == 0)
+		html_document_write_stream (doc, EMPTY, strlen(EMPTY));	
+	else if (contentType && !strcmp ("text/plain", contentType)) {
+		gchar *tmp = g_markup_escape_text (string, length);
+		html_document_write_stream (doc, "<html><head></head><body><pre>", strlen ("<html><head></head><body><pre>"));
+		html_document_write_stream (doc, tmp, strlen (tmp));
+		html_document_write_stream (doc, "</pre></body></html>", strlen ("</pre></body></html>"));
+		g_free (tmp);
 	} else {
-		html_document_write_stream(doc, string, length);
+		html_document_write_stream (doc, string, length);
 	}
-
 	
-	html_document_close_stream(doc);
+	html_document_close_stream (doc);
 
-	gtkhtml2_change_zoom_level(scrollpane, gtkhtml2_get_zoom_level(scrollpane));	/* to enforce applying of changed zoom levels */
-	gtkhtml2_scroll_to_top(scrollpane);
+	gtkhtml2_change_zoom_level (scrollpane, gtkhtml2_get_zoom_level (scrollpane));	/* to enforce applying of changed zoom levels */
+	gtkhtml2_scroll_to_top (scrollpane);
 }
 
 static GtkWidget* gtkhtml2_new(gboolean forceInternalBrowsing) {
@@ -395,43 +421,54 @@ static GtkWidget* gtkhtml2_new(gboolean forceInternalBrowsing) {
 	return scrollpane;
 }
 
+static void gtkhtml2_init () { }
 
+static void gtkhtml2_deinit () { }
 
-static void gtkhtml2_init() {
-}
-
-static void gtkhtml2_deinit() {
-}
-
-static void gtkhtml2_html_received(struct request *r) {
+static void
+gtkhtml2_html_received (struct request *r)
+{
+	gboolean	isLocalDoc;
+	
 	/* Remove reference to the request structure */
-	g_object_set_data(G_OBJECT(r->user_data), "html_request", NULL);
+	g_object_set_data (G_OBJECT (r->user_data), "html_request", NULL);
 	
 	/* If no data was returned... */
-	if(r->size == 0 || r->data == NULL) {
+	if (r->size == 0 || r->data == NULL) {
 		/* Maybe an error message should be displayed.... */
 		return; /* This should nicely exit.... */
 	}
-	ui_tabs_set_location(GTK_WIDGET(r->user_data), r->source);
-	gtkhtml2_write_html(GTK_WIDGET(r->user_data), r->data, r->size,  r->source, r->contentType);
+	ui_tabs_set_location (GTK_WIDGET (r->user_data), r->source);
+	gtkhtml2_write_html (GTK_WIDGET (r->user_data), r->data, r->size,  r->source, r->contentType);
+	
+	/* determine if launched URL is a local one and set the flag to allow following local links */
+	isLocalDoc = (r->source == strstr(r->source, "file://"));
+	g_object_set_data (G_OBJECT (HTML_VIEW (gtk_bin_get_child (GTK_BIN (r->user_data)))->document),
+	                   "localDocument", GINT_TO_POINTER (isLocalDoc));
 }
 
-static void gtkhtml2_launch_url(GtkWidget *scrollpane, const gchar *url) { 
+static void
+gtkhtml2_launch_url (GtkWidget *scrollpane, const gchar *url)
+{
 	struct request *r;
 	
-	kill_old_connections(scrollpane);
+	kill_old_connections (scrollpane);
 	
-	r = update_request_new(NULL);
-	r->options = g_new0(struct updateOptions, 1);
-	r->source = g_strdup(url);
+	r = update_request_new (NULL);
+	r->options = g_new0 (struct updateOptions, 1);
+	r->source = g_strdup (url);
 	r->callback = gtkhtml2_html_received;
 	r->user_data = scrollpane;
 	r->priority = 1;
-	g_object_set_data(G_OBJECT(scrollpane), "html_request", r);
-	update_execute_request(r);
+	g_object_set_data (G_OBJECT (scrollpane), "html_request", r);
+	update_execute_request (r);
 }
 
-static gboolean gtkhtml2_launch_inside_possible(void) { return TRUE; }
+static gboolean
+gtkhtml2_launch_inside_possible (void)
+{
+	return TRUE; 
+}
 
 /* -------------------------------------------------------------------- */
 /* other functions... 							*/
