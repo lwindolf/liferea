@@ -1,7 +1,7 @@
 /**
  * @file pie_feed.c Atom 0.3 channel parsing
  * 
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,14 +26,12 @@
 #include <string.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
-#include "support.h"
-#include "conf.h"
 #include "common.h"
 #include "feed.h"
+#include "feedlist.h"
 #include "pie_feed.h"
 #include "pie_entry.h"
 #include "ns_dc.h"
-#include "callbacks.h"
 #include "metadata.h"
 
 /* to store the PIENsHandler structs for all supported RDF namespace handlers */
@@ -154,14 +152,12 @@ gchar * parseAuthor(xmlNodePtr cur) {
    the feed could not be read) */
 static void pie_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 	gchar			*tmp2, *tmp = NULL, *tmp3;
-	int 			error = 0;
 	NsHandler		*nsh;
 	parseChannelTagFunc	pf;
 	
 	while(TRUE) {
 		if(xmlStrcmp(cur->name, BAD_CAST"feed")) {
 			g_string_append(ctxt->feed->parseErrors, "<p>Could not find Atom/Echo/PIE header!</p>");
-			error = 1;
 			break;			
 		}
 
@@ -290,10 +286,6 @@ static void pie_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 			cur = cur->next;
 		}
 		
-		/* after parsing we fill in the infos into the feedPtr structure */		
-		if(error)
-			ui_mainwindow_set_status_bar(_("There were errors while parsing the feed %s!"), feed_get_title(ctxt->feed));
-
 		break;
 	}
 }

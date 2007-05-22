@@ -1,5 +1,5 @@
 /**
- * @file itemset.c support for different item list implementations
+ * @file itemset.c handling sets of items
  * 
  * Copyright (C) 2005-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
@@ -20,16 +20,16 @@
  */
 
 #include <string.h>
-#include "db.h"
-#include "debug.h"
+
 #include "conf.h"
 #include "common.h"
+#include "db.h"
+#include "debug.h"
 #include "feed.h"
 #include "itemlist.h"
 #include "itemset.h"
 #include "metadata.h"
 #include "node.h"
-#include "support.h"
 #include "vfolder.h"
 #include "ui/ui_enclosure.h"
 

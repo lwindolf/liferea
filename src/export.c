@@ -27,12 +27,15 @@
 #include <sys/stat.h>
 #include <libxml/tree.h>
 #include <string.h>
-#include "folder.h"
-#include "callbacks.h"
+
 #include "common.h"
-#include "interface.h"
-#include "support.h"
 #include "debug.h"
+#include "feedlist.h"
+#include "folder.h"
+#include "ui/ui_feedlist.h"
+#include "ui/ui_itemlist.h"
+#include "ui/ui_mainwindow.h"
+#include "fl_sources/node_source.h"
 
 struct exportData {
 	gboolean	trusted; /**< Include all the extra Liferea-specific tags */
@@ -373,7 +376,7 @@ void on_import_activate_cb(const gchar *filename, gpointer user_data) {
 
 void on_import_activate(GtkMenuItem *menuitem, gpointer user_data) {
 
-	ui_choose_file(_("Import Feed List"), GTK_WINDOW(mainwindow), _("Import"), FALSE, on_import_activate_cb, NULL, NULL, NULL);
+	ui_choose_file(_("Import Feed List"), _("Import"), FALSE, on_import_activate_cb, NULL, NULL, NULL);
 }
 
 static void on_export_activate_cb(const gchar *filename, gpointer user_data) {
@@ -388,5 +391,5 @@ static void on_export_activate_cb(const gchar *filename, gpointer user_data) {
 
 void on_export_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	
-	ui_choose_file(_("Export Feed List"), GTK_WINDOW(mainwindow), _("Export"), TRUE, on_export_activate_cb,  NULL, "feedlist.opml", NULL);
+	ui_choose_file(_("Export Feed List"), _("Export"), TRUE, on_export_activate_cb,  NULL, "feedlist.opml", NULL);
 }

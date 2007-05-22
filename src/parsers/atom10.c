@@ -27,11 +27,11 @@
 #include <string.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
-#include "support.h"
 #include "conf.h"
 #include "common.h"
 #include "debug.h"
 #include "feed.h"
+#include "feedlist.h"
 #include "ns_dc.h"
 #include "ns_content.h"
 #include "ns_slash.h"
@@ -42,7 +42,6 @@
 #include "ns_cC.h"
 #include "ns_photo.h"
 #include "ns_wfw.h"
-#include "callbacks.h"
 #include "metadata.h"
 #include "subscription.h"
 #include "atom10.h"
@@ -641,7 +640,6 @@ static void atom10_parse_feed_updated(xmlNodePtr cur, feedParserCtxtPtr ctxt, st
 /* reads a Atom feed URL and returns a new channel structure (even if
    the feed could not be read) */
 static void atom10_parse_feed(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
-	int 			error = 0;
 	NsHandler		*nsh;
 	parseChannelTagFunc	pf;
 	atom10ElementParserFunc func;
@@ -667,7 +665,6 @@ static void atom10_parse_feed(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 	while(TRUE) {
 		if(xmlStrcmp(cur->name, BAD_CAST"feed")) {
 			g_string_append(ctxt->feed->parseErrors, "<p>Could not find Atom 1.0 header!</p>");
-			error = 1;
 			break;			
 		}
 		
@@ -726,8 +723,6 @@ static void atom10_parse_feed(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 		
 		/* FIXME: Maybe check to see that the required information was actually provided (persuant to the RFC). */
 		/* after parsing we fill in the infos into the feedPtr structure */		
-		if(error)
-			ui_mainwindow_set_status_bar(_("There were errors while parsing the feed %s!"), feed_get_title(ctxt->feed));
 		
 		break;
 	}

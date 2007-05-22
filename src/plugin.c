@@ -27,7 +27,7 @@
 #include <gmodule.h>
 #include <string.h>
 #include <libxml/tree.h>
-#include "support.h"
+
 #include "debug.h"
 #include "node.h"
 #include "plugin.h"

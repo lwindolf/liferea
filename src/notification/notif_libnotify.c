@@ -29,13 +29,14 @@
 
 #include <libnotify/notify.h>
 
+#include "common.h"
 #include "conf.h"
 #include "node.h"
 #include "item.h"
-#include "callbacks.h"
-#include "support.h"
+#include "itemlist.h"
 #include "plugin.h"
 #include "ui/ui_feedlist.h"
+#include "ui/ui_mainwindow.h"
 #include "ui/ui_tray.h"
 
 #include "notification/notif_plugin.h"

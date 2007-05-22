@@ -20,17 +20,20 @@
 
 #include <gmodule.h>
 #include <gtk/gtk.h>
+#include <glade/glade.h>
 #include <string.h>
-#include "callbacks.h"
+
 #include "common.h"
 #include "db.h"
 #include "debug.h"
-#include "node.h"
+#include "feedlist.h"
 #include "folder.h"
+#include "node.h"
 #include "plugin.h"
-#include "support.h"
+#include "ui/ui_dialog.h"
+#include "ui/ui_mainwindow.h"
+#include "ui/ui_node.h"
 #include "fl_sources/node_source.h"
-#include "fl_sources/node_source-ui.h"
 #include "notification/notif_plugin.h"
 
 static GSList	*nodeSourceTypes = NULL;
@@ -175,26 +178,40 @@ void node_source_new(nodePtr node, nodeSourceTypePtr type, const gchar *sourceUr
 
 /* source instance creation dialog */
 
-static void on_node_source_type_selected(GtkDialog *dialog, gint response_id, gpointer user_data) {
+static void
+on_node_source_type_selected (GtkDialog *dialog,
+                              gint response_id,
+			      gpointer user_data)
+{
 	GtkTreeSelection	*selection;
 	GtkTreeModel		*model;
 	GtkTreeIter		iter;
-	nodePtr 		parent = (nodePtr)user_data;
+	nodePtr 		parent = (nodePtr) user_data;
 	nodeSourceTypePtr	type;
 	
-	if(response_id == GTK_RESPONSE_OK) {
-		selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(lookup_widget(GTK_WIDGET(dialog), "type_list")));
-		g_assert(NULL != selection);
-		gtk_tree_selection_get_selected(selection, &model, &iter);
-		gtk_tree_model_get(model, &iter, 1, &type, -1);
-		type->source_new(parent);
+	if (response_id == GTK_RESPONSE_OK) {
+		selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (liferea_dialog_lookup (GTK_WIDGET (dialog), "type_list")));
+		g_assert (NULL != selection);
+		gtk_tree_selection_get_selected (selection, &model, &iter);
+		gtk_tree_model_get (model, &iter, 1, &type, -1);
+		type->source_new (parent);
 	}
 	
-	gtk_widget_destroy(GTK_WIDGET(dialog));
+	gtk_widget_destroy (GTK_WIDGET (dialog));
 }
 
-void ui_node_source_type_dialog(nodePtr parent) {
+static void
+on_node_source_type_dialog_destroy (GtkDialog *dialog,
+                                    gpointer user_data) 
+{
+	g_object_unref (user_data);
+}
+
+void
+ui_node_source_type_dialog (nodePtr parent)
+{
 	GSList 			*iter = nodeSourceTypes;
+	GladeXML		*xml;
 	GtkWidget 		*dialog, *treeview;
 	GtkTreeStore		*treestore;
 	GtkCellRenderer		*renderer;
@@ -202,86 +219,95 @@ void ui_node_source_type_dialog(nodePtr parent) {
 	GtkTreeIter		treeiter;
 	nodeSourceTypePtr	type;
 
-	if(!nodeSourceTypes) {
-		ui_show_error_box(_("No feed list source types found!"));
+	if (!nodeSourceTypes) {
+		ui_show_error_box (_("No feed list source types found!"));
 		return;
 	}		
 
 	/* set up the dialog */
-	dialog = create_node_source_type_dialog();
+	xml = glade_xml_new ( PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE "node_source.glade", NULL, NULL);
+	dialog = glade_xml_get_widget (xml, "node_source_type_dialog");
 
-	treestore = gtk_tree_store_new(2, G_TYPE_STRING, G_TYPE_POINTER);
+	treestore = gtk_tree_store_new (2, G_TYPE_STRING, G_TYPE_POINTER);
 	
 	/* add available feed list source to treestore */
-	while(iter) {
-		type = (nodeSourceTypePtr)iter->data;
-		if(type->capabilities & NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION) {
+	while (iter) {
+		type = (nodeSourceTypePtr) iter->data;
+		if (type->capabilities & NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION) {
 
-			gtk_tree_store_append(treestore, &treeiter, NULL);
-			gtk_tree_store_set(treestore, &treeiter, 
-			                              // FIXME: this leaks memory!
-			                              0, g_strdup_printf("<b>%s</b>\n<i>%s</i>", type->name, type->description),
-			                              1, type,
-						      -1);
+			gtk_tree_store_append (treestore, &treeiter, NULL);
+			gtk_tree_store_set (treestore, &treeiter, 
+			                               // FIXME: this leaks memory!
+			                               0, g_strdup_printf("<b>%s</b>\n<i>%s</i>", type->name, type->description),
+			                               1, type,
+						       -1);
 		}
-		iter = g_slist_next(iter);
+		iter = g_slist_next (iter);
 	}
 
-	treeview = lookup_widget(dialog, "type_list");
-	g_assert(NULL != treeview);
+	treeview = liferea_dialog_lookup (dialog, "type_list");
+	g_assert (NULL != treeview);
 
-	column = gtk_tree_view_column_new();
-	renderer = gtk_cell_renderer_text_new();
-	g_object_set(renderer, "wrap-width", 400, NULL);
-	g_object_set(renderer, "wrap-mode", PANGO_WRAP_WORD, NULL);
-	gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(treeview), -1, _("Source Type"), renderer, "markup", 0, NULL);
-	gtk_tree_view_set_model(GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(treestore));
-	g_object_unref(treestore);
+	column = gtk_tree_view_column_new ();
+	renderer = gtk_cell_renderer_text_new ();
+	g_object_set (renderer, "wrap-width", 400, NULL);
+	g_object_set (renderer, "wrap-mode", PANGO_WRAP_WORD, NULL);
+	gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (treeview), -1, _("Source Type"), renderer, "markup", 0, NULL);
+	gtk_tree_view_set_model (GTK_TREE_VIEW (treeview), GTK_TREE_MODEL (treestore));
+	g_object_unref (treestore);
 
-	gtk_tree_selection_set_mode(gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview)),
-	                            GTK_SELECTION_SINGLE);
+	gtk_tree_selection_set_mode (gtk_tree_view_get_selection (GTK_TREE_VIEW (treeview)),
+	                             GTK_SELECTION_SINGLE);
 
-	g_signal_connect(G_OBJECT(dialog), "response",
-			 G_CALLBACK(on_node_source_type_selected), 
-			 (gpointer)parent);
-
-	gtk_widget_show_all(dialog);
+	g_signal_connect (G_OBJECT (dialog), "response",
+			  G_CALLBACK (on_node_source_type_selected), 
+			  (gpointer)parent);
+	g_signal_connect (G_OBJECT (dialog), "destroy",
+	                  G_CALLBACK (on_node_source_type_dialog_destroy),
+			  (gpointer) xml);
 }
 
 /* implementation of the node type interface */
 
-static void node_source_request_update(nodePtr node, guint flags) {
+static void
+node_source_request_update (nodePtr node, guint flags)
+{
 
-	if(NULL != NODE_SOURCE_TYPE(node)->source_update)
-		NODE_SOURCE_TYPE(node)->source_update(node);
+	if (NULL != NODE_SOURCE_TYPE (node)->source_update)
+		NODE_SOURCE_TYPE (node)->source_update (node);
 }
 
-static void node_source_request_auto_update(nodePtr node) {
-
-	if(NULL != NODE_SOURCE_TYPE(node)->source_auto_update)
-		NODE_SOURCE_TYPE(node)->source_auto_update(node);
+static void
+node_source_request_auto_update (nodePtr node)
+{
+	if (NULL != NODE_SOURCE_TYPE (node)->source_auto_update)
+		NODE_SOURCE_TYPE (node)->source_auto_update (node);
 }
 
-static void node_source_remove(nodePtr node) {
-
-	if(NULL != NODE_SOURCE_TYPE(node)->source_delete)
-		NODE_SOURCE_TYPE(node)->source_delete(node);
+static void
+node_source_remove (nodePtr node)
+{
+	if (NULL != NODE_SOURCE_TYPE (node)->source_delete)
+		NODE_SOURCE_TYPE (node)->source_delete (node);
 		
-	notification_node_removed(node);
-	ui_node_remove_node(node);
+	notification_node_removed (node);
+	ui_node_remove_node (node);
 }
 
-static void node_source_save(nodePtr node) {
-
-	node_foreach_child(node, node_save);
+static void
+node_source_save (nodePtr node)
+{
+	node_foreach_child (node, node_save);
 }
 
-nodeTypePtr node_source_get_node_type(void) {
+nodeTypePtr
+node_source_get_node_type (void)
+{
 	static nodeTypePtr	nodeType;
 
-	if(!nodeType) {
+	if (!nodeType) {
 		/* derive the plugin node type from the folder node type */
-		nodeType = (nodeTypePtr)g_new0(struct nodeType, 1);
+		nodeType = (nodeTypePtr) g_new0 (struct nodeType, 1);
 		nodeType->id			= "source";
 		nodeType->icon			= icons[ICON_DEFAULT];
 		nodeType->type			= NODE_TYPE_SOURCE;

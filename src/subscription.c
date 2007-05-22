@@ -19,13 +19,13 @@
  */
 
 #include <string.h>
+
 #include "common.h"
 #include "db.h"
 #include "debug.h"
 #include "favicon.h"
 #include "feedlist.h"
 #include "subscription.h"
-#include "support.h"
 #include "net/cookies.h"
 #include "ui/ui_mainwindow.h"
 #include "ui/ui_node.h"

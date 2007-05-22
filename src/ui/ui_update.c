@@ -1,7 +1,7 @@
 /**
  * @file ui_update.c GUI update monitor
  * 
- * Copyright (C) 2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2006-2007 Lars Lindner <lars.lindner@gmail.com>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,14 +20,13 @@
 
 #include <glib.h>
 
-#include "ui/ui_update.h" 
-
+#include "common.h"
 #include "feedlist.h"
-#include "interface.h"
 #include "node.h"
-#include "support.h"
 #include "update.h"
+#include "ui/ui_dialog.h"
 #include "ui/ui_node.h"
+#include "ui/ui_update.h" 
 
 enum {
 	UM_FAVICON,
@@ -128,10 +127,10 @@ void on_menu_show_update_monitor(GtkWidget *widget, gpointer user_data) {
 	GtkTreeView		*view;
 
 	if(!umdialog) {
-		umdialog = create_updatedialog();
+		umdialog = liferea_dialog_new (NULL, "updatedialog");
 				
 		/* Set up left store and view */
-		view = GTK_TREE_VIEW(lookup_widget(umdialog, "left"));
+		view = GTK_TREE_VIEW(liferea_dialog_lookup(umdialog, "left"));
 		um1store = gtk_tree_store_new(UM_LEN, GDK_TYPE_PIXBUF, G_TYPE_STRING);
 		gtk_tree_view_set_model(view, GTK_TREE_MODEL(um1store));
 
@@ -146,7 +145,7 @@ void on_menu_show_update_monitor(GtkWidget *widget, gpointer user_data) {
 		gtk_tree_view_append_column(view, column);
 		
 		/* Set up right store and view */
-		view = GTK_TREE_VIEW(lookup_widget(umdialog, "right"));
+		view = GTK_TREE_VIEW(liferea_dialog_lookup(umdialog, "right"));
 		um2store = gtk_tree_store_new(UM_LEN, GDK_TYPE_PIXBUF, G_TYPE_STRING);
 		gtk_tree_view_set_model(view, GTK_TREE_MODEL(um2store));
 

@@ -1,7 +1,7 @@
 /**
  * @file ui_search.c everything about searching
  *
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,19 +24,21 @@
 
 #include <string.h>
 #include <gtk/gtk.h>
-#include "callbacks.h"
-#include "interface.h"
-#include "node.h"
-#include "vfolder.h"
-#include "rule.h"
-#include "support.h"
+
 #include "common.h"
+#include "feedlist.h"
+#include "itemlist.h"
+#include "node.h"
+#include "rule.h"
+#include "vfolder.h"
+#include "ui/ui_dialog.h"
+#include "ui/ui_feedlist.h"
 #include "ui/ui_htmlview.h"
-#include "ui/ui_search.h"
+#include "ui/ui_itemlist.h"
 #include "ui/ui_mainwindow.h"
+#include "ui/ui_search.h"
 #include "ui/ui_vfolder.h"
 
-extern GtkWidget	*mainwindow;
 static GtkWidget	*searchdialog = NULL;
 static GtkWidget 	*searchEngineDialog = NULL;
 static nodePtr		searchResult = NULL;
@@ -61,13 +63,12 @@ void on_searchbtn_clicked(GtkButton *button, gpointer user_data) {
 	GtkWidget	*searchentry;
 	gboolean	visible;
 
-	if(NULL == searchdialog) {
-		searchdialog = create_searchdialog();
-		gtk_window_set_transient_for(GTK_WINDOW(searchdialog), GTK_WINDOW(mainwindow));
-		g_signal_connect(G_OBJECT(searchdialog), "destroy", G_CALLBACK(ui_search_destroyed_cb), NULL);
+	if (!searchdialog) {
+		searchdialog = liferea_dialog_new (NULL, "searchdialog");
+		g_signal_connect (G_OBJECT (searchdialog), "destroy", G_CALLBACK (ui_search_destroyed_cb), NULL);
 	}
 	
-	searchentry = lookup_widget(searchdialog, "searchentry");
+	searchentry = liferea_dialog_lookup(searchdialog, "searchentry");
 	gtk_window_set_focus(GTK_WINDOW(searchdialog), searchentry);
 	g_object_get(searchdialog, "visible", &visible, NULL);
 	g_object_set(searchdialog, "visible", !visible, NULL);
@@ -85,7 +86,7 @@ void on_searchentry_activate(GtkEntry *entry, gpointer user_data) {
 	GString			*buffer;
 	vfolderPtr		vfolder;
 	
-	searchentry = lookup_widget(searchdialog, "searchentry");
+	searchentry = liferea_dialog_lookup(searchdialog, "searchentry");
 	searchstring = gtk_entry_get_text(GTK_ENTRY(searchentry));
 	ui_mainwindow_set_status_bar(_("Searching for \"%s\""), searchstring);
 
@@ -132,7 +133,7 @@ void on_searchentry_activate(GtkEntry *entry, gpointer user_data) {
 	g_string_free(buffer, TRUE);
 
 	/* enable vfolder add button */	
-	gtk_widget_set_sensitive(lookup_widget(searchdialog, "vfolderaddbtn"), TRUE);
+	gtk_widget_set_sensitive(liferea_dialog_lookup(searchdialog, "vfolderaddbtn"), TRUE);
 }
 
 void on_searchentry_changed(GtkEditable *editable, gpointer user_data) {
@@ -140,7 +141,7 @@ void on_searchentry_changed(GtkEditable *editable, gpointer user_data) {
 	
 	/* just to disable the start search button when search string is empty... */
 	searchtext = gtk_editable_get_chars(editable,0,-1);
-	gtk_widget_set_sensitive(lookup_widget(searchdialog, "searchstartbtn"), searchtext && (0 < strlen(searchtext)));
+	gtk_widget_set_sensitive(liferea_dialog_lookup(searchdialog, "searchstartbtn"), searchtext && (0 < strlen(searchtext)));
 		
 }
 
@@ -173,8 +174,8 @@ void on_search_engine_btn_clicked(GtkButton *button, gpointer user_data) {
 	uriFmt = g_object_get_data(G_OBJECT(searchEngineDialog), "uriFmt");
 	limitSupported = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(searchEngineDialog), "limitSupported"));
 
-	keywords = lookup_widget(searchEngineDialog, "searchkeywords");
-	resultCountButton = lookup_widget(searchEngineDialog, "resultcount");
+	keywords = liferea_dialog_lookup(searchEngineDialog, "searchkeywords");
+	resultCountButton = liferea_dialog_lookup(searchEngineDialog, "resultcount");
 	if((NULL != keywords) && (NULL != resultCountButton)) {
 		resultCount = gtk_spin_button_get_adjustment(GTK_SPIN_BUTTON(resultCountButton));
 		searchtext = (gchar *)g_strdup(gtk_entry_get_text(GTK_ENTRY(keywords)));
@@ -209,18 +210,17 @@ static void ui_search_engine_dialog_destroyed_cb(GtkWidget *widget, void *data) 
 void ui_search_engine_new_feed(const gchar *uriFmt, gboolean limitSupported) {
 	GtkWidget	*keywords;
 	
-	if(NULL == searchEngineDialog) {
-		searchEngineDialog = create_searchenginedialog();
-		gtk_window_set_transient_for(GTK_WINDOW(searchEngineDialog), GTK_WINDOW(mainwindow));
-		g_signal_connect(G_OBJECT(searchEngineDialog), "destroy", G_CALLBACK(ui_search_engine_dialog_destroyed_cb), NULL);
+	if (!searchEngineDialog) {
+		searchEngineDialog = liferea_dialog_new (NULL, "searchenginedialog");
+		g_signal_connect (G_OBJECT (searchEngineDialog), "destroy", G_CALLBACK (ui_search_engine_dialog_destroyed_cb), NULL);
 	}
 		
-	keywords = lookup_widget(searchEngineDialog, "searchkeywords");
+	keywords = liferea_dialog_lookup(searchEngineDialog, "searchkeywords");
 	gtk_window_set_focus(GTK_WINDOW(searchEngineDialog), keywords);
 	gtk_entry_set_text(GTK_ENTRY(keywords), "");
 	gtk_widget_show(searchEngineDialog);
 	
-	gtk_widget_set_sensitive(lookup_widget(searchEngineDialog, "resultcount"), limitSupported);
+	gtk_widget_set_sensitive(liferea_dialog_lookup(searchEngineDialog, "resultcount"), limitSupported);
 	
 	g_object_set_data(G_OBJECT(searchEngineDialog), "uriFmt", (gpointer)uriFmt);
 	g_object_set_data(G_OBJECT(searchEngineDialog), "limitSupported", GINT_TO_POINTER(limitSupported));

@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([liferea],[1.3.5],[liferea-devel@lists.sourceforge.net])
+AC_INIT([liferea],[1.3.6],[liferea-devel@lists.sourceforge.net])
 AC_CANONICAL_TARGET([])
 AC_CONFIG_SRCDIR([src/feedlist.c])
 
@@ -300,13 +300,15 @@ fi
 
 AM_GCONF_SOURCE_2
 
+# note: exact minimum sqlite3 dependency is 3.3.9, but .pc only gives 3.3
 pkg_modules="	gtk+-2.0 >= 2.8.0 
 		pango >= 1.4.0
 		gconf-2.0 >= 1.1.9 
 		libxml-2.0 >= 2.6.27
 		libxslt >= 1.1.19
-		sqlite3 >= 3.3.9
-		gmodule-2.0 >= 2.0.0"
+		sqlite3 >= 3.3
+		gmodule-2.0 >= 2.0.0
+		libglade-2.0 >= 2.0.0"
 
 PKG_CHECK_MODULES(PACKAGE, [$pkg_modules])
 

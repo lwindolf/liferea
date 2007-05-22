@@ -2,7 +2,7 @@
  * @file html.c HTML file handling / feed auto discovery
  * 
  * Copyright (C) 2004 ahmed el-helw <ahmedre@cc.gatech.edu>
- * Copyright (C) 2004 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,10 +30,9 @@
 #include <string.h>
 
 #include "common.h"
-#include "support.h"
-#include "callbacks.h"
 #include "debug.h"
 #include "html.h"
+#include "ui/ui_mainwindow.h"
 
 enum {
 	LINK_FAVICON,

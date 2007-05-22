@@ -1,7 +1,7 @@
 /* 
- * Liferea adaption header to use the SnowNews HTTP code.
+ * Liferea glue header to use the SnowNews HTTP code.
  *
- * Copyright 2004 Lars Lindner <lars.lindner@gmx.net> 
+ * Copyright 2004-2007 Lars Lindner <lars.lindner@gmail.com> 
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
@@ -21,8 +21,7 @@
 #ifndef _COMPAT_H
 #define _COMPAT_H
 
-#include "../support.h"
-#include "../callbacks.h"
+#include <glib.h>
 
 /* we redefine some SnowNews functions */
 #define UIStatus(a, b)

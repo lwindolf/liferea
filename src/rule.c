@@ -23,11 +23,11 @@
 #endif
 
 #include <string.h> /* For strstr() */
+
 #include "common.h"
 #include "db.h"
 #include "debug.h"
 #include "rule.h"
-#include "support.h"
 
 #define ITEM_MATCH_RULE_ID		"exact"
 #define ITEM_TITLE_MATCH_RULE_ID	"exact_title"

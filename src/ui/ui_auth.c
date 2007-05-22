@@ -25,17 +25,14 @@
 #include <gtk/gtk.h>
 #include <libxml/uri.h>
 #include <string.h> 
-#include "support.h"
+#include "common.h"
 #include "feed.h"
 #include "node.h"
 #include "conf.h"
-#include "callbacks.h"
 #include "update.h"
-#include "interface.h"
 #include "debug.h"
 #include "ui/ui_auth.h"
-
-extern GtkWidget *mainwindow;
+#include "ui/ui_dialog.h"
 
 static void auth_dialog_class_init	(AuthDialogClass *klass);
 static void auth_dialog_init		(AuthDialog *ad);
@@ -157,8 +154,8 @@ ui_auth_dialog_load (AuthDialog *ad,
 	ui_data->subscription = subscription;
 	ui_data->flags = flags;
 	
-	ui_data->username = lookup_widget (ui_data->dialog, "usernameEntry");
-	ui_data->password = lookup_widget (ui_data->dialog, "passwordEntry");
+	ui_data->username = liferea_dialog_lookup (ui_data->dialog, "usernameEntry");
+	ui_data->password = liferea_dialog_lookup (ui_data->dialog, "passwordEntry");
 	
 	uri = xmlParseURI (BAD_CAST subscription_get_source (ui_data->subscription));
 	
@@ -183,7 +180,7 @@ ui_auth_dialog_load (AuthDialog *ad,
 	
 	promptStr = g_strdup_printf ( _("Enter the username and password for \"%s\" (%s):"),
 	                             node_get_title (ui_data->subscription->node), source?source:_("Unknown source"));
-	gtk_label_set_text (GTK_LABEL (lookup_widget (ui_data->dialog, "prompt")), promptStr);
+	gtk_label_set_text (GTK_LABEL (liferea_dialog_lookup (ui_data->dialog, "prompt")), promptStr);
 	g_free (promptStr);
 	if (source)
 		xmlFree (source);
@@ -196,11 +193,9 @@ auth_dialog_init (AuthDialog *ad)
 	
 	ad->priv = AUTH_DIALOG_GET_PRIVATE (ad);
 	
-	ad->priv->dialog = authdialog = create_authdialog ();
-	gtk_window_set_transient_for (GTK_WINDOW (authdialog), GTK_WINDOW (mainwindow));
-
-	ad->priv->username = lookup_widget (authdialog, "usernameEntry");
-	ad->priv->password = lookup_widget (authdialog, "passwordEntry");
+	ad->priv->dialog = authdialog = liferea_dialog_new (NULL, "authdialog");
+	ad->priv->username = liferea_dialog_lookup (authdialog, "usernameEntry");
+	ad->priv->password = liferea_dialog_lookup (authdialog, "passwordEntry");
 	
 	g_signal_connect (G_OBJECT (authdialog), "response", G_CALLBACK (on_authdialog_response), ad);
 

@@ -14,6 +14,7 @@ libliui_a_CFLAGS = $(PACKAGE_FLAGS)
 libliui_a_SOURCES = \
 	eggtrayicon.c eggtrayicon.h \
 	ui_auth.c ui_auth.h \
+	ui_dialog.c ui_dialog.h \
 	ui_dnd.c ui_dnd.h \
 	ui_enclosure.c ui_enclosure.h \
 	ui_feedlist.c ui_feedlist.h \
@@ -26,6 +27,7 @@ libliui_a_SOURCES = \
 	ui_prefs.c ui_prefs.h \
 	ui_search.c ui_search.h \
 	ui_session.c ui_session.h \
+	ui_shell.c ui_shell.h \
 	ui_subscription.c ui_subscription.h \
 	ui_tabs.c ui_tabs.h \
 	ui_tray.c ui_tray.h \

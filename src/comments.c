@@ -26,7 +26,6 @@
 #include "feed.h"
 #include "itemview.h"
 #include "metadata.h"
-#include "support.h"
 #include "update.h"
 
 /* Comment feeds in Liferea are simple flat lists of items attached

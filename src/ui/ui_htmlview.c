@@ -30,16 +30,17 @@
 #include "comments.h"
 #include "common.h"
 #include "conf.h"
-#include "callbacks.h"
 #include "debug.h"
+#include "itemlist.h"
 #include "plugin.h"
 #include "social.h"
-#include "support.h"
 #include "render.h"
+#include "ui/ui_enclosure.h"
 #include "ui/ui_htmlview.h"
+#include "ui/ui_itemlist.h"
+#include "ui/ui_mainwindow.h"
 #include "ui/ui_tabs.h"
 #include "ui/ui_prefs.h"
-#include "ui/ui_enclosure.h"
 
 /* function types for the imported symbols */
 typedef htmlviewPluginPtr (*infoFunction)();

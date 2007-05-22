@@ -25,6 +25,7 @@
 #include <string.h>
  
 #include "comments.h"
+#include "common.h"
 #include "conf.h"
 #include "db.h"
 #include "debug.h"
@@ -34,10 +35,8 @@
 #include "itemset.h"
 #include "itemview.h"
 #include "node.h"
-#include "support.h"
 #include "rule.h"
 #include "vfolder.h"
-#include "itemset.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_itemlist.h"
 #include "ui/ui_htmlview.h"
@@ -610,7 +609,8 @@ static void
 itemlist_update_node_counters (gpointer key, gpointer value, gpointer user_data)
 {
 	nodePtr node = (nodePtr)key;
-	
+
+	g_return_if_fail(node != NULL);
 	node_update_counters (node);
 	ui_node_update (node->id);
 }

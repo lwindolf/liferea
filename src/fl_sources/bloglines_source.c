@@ -1,7 +1,7 @@
 /**
  * @file bloglines_source.c Bloglines feed list source support
  * 
- * Copyright (C) 2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2006-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,11 +25,9 @@
 
 #include <unistd.h>
 
-#include "support.h"
+#include "common.h"
 #include "conf.h"
-#include "debug.h"
 #include "node.h"
-#include "fl_sources/bloglines_source-ui.h"
 #include "fl_sources/bloglines_source-cb.h"
 #include "fl_sources/node_source.h"
 #include "fl_sources/opml_source.h"
@@ -52,8 +50,9 @@ static void bloglines_source_deinit(void) { }
 static struct nodeSourceType nst = {
 	NODE_SOURCE_TYPE_API_VERSION,
 	"fl_bloglines",
-	NULL,	/* name defined below */
-	NULL,	/* description defined below */
+	N_("Bloglines"),
+	N_("Integrate the feed list of your Bloglines account. Liferea will "
+	   "present your Bloglines subscription as a read-only subtree in the feed list."),
 	NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION,
 	bloglines_source_init,
 	bloglines_source_deinit,
@@ -66,13 +65,8 @@ static struct nodeSourceType nst = {
 	bloglines_source_auto_update
 };
 
-nodeSourceTypePtr bloglines_source_get_type(void) { 
-
-	if(!nst.name)
-		nst.name = _("Bloglines");
-	if(!nst.description)
-		nst.description = _("Integrate the feed list of your Bloglines account. Liferea will "
-	                            "present your Bloglines subscription as a read-only subtree in the feed list.");
-
+nodeSourceTypePtr
+bloglines_source_get_type(void)
+{
 	return &nst;
 }

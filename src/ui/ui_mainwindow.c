@@ -27,28 +27,36 @@
 #include <gtk/gtk.h>
 #include <gdk/gdk.h>
 #include <gdk/gdkkeysyms.h>
+
 #include <string.h>
 #include <libintl.h>
 
-#include "callbacks.h"
 #include "common.h"
 #include "conf.h"
 #include "debug.h"
-#include "interface.h"
+#include "export.h"
+#include "feedlist.h"
+#include "itemlist.h"
 #include "itemview.h"
-#include "support.h"
 #include "update.h"
-#include "ui/ui_enclosure.h"
-#include "ui/ui_feedlist.h"
-#include "ui/ui_mainwindow.h"
-#include "ui/ui_node.h"
-#include "ui/ui_tray.h"
-#include "ui/ui_htmlview.h"
-#include "ui/ui_itemlist.h"
-#include "ui/ui_session.h"
-#include "ui/ui_update.h"
 #include "scripting/script.h"
 #include "scripting/ui_script.h"
+#include "ui/ui_dialog.h"
+#include "ui/ui_dnd.h"
+#include "ui/ui_enclosure.h"
+#include "ui/ui_feedlist.h"
+#include "ui/ui_htmlview.h"
+#include "ui/ui_itemlist.h"
+#include "ui/ui_mainwindow.h"
+#include "ui/ui_node.h"
+#include "ui/ui_popup.h"
+#include "ui/ui_prefs.h"
+#include "ui/ui_search.h"
+#include "ui/ui_session.h"
+#include "ui/ui_shell.h"
+#include "ui/ui_tabs.h"
+#include "ui/ui_tray.h"
+#include "ui/ui_update.h"
 
 static struct mainwindow {
 	GtkWindow *window;
@@ -126,6 +134,97 @@ GtkWidget *ui_mainwindow_get_active_htmlview(void) {
 
 extern htmlviewPluginPtr htmlviewPlugin;
 
+/* simple dialogs */
+
+void ui_show_error_box(const char *format, ...) {
+	GtkWidget	*dialog;
+	va_list		args;
+	gchar		*msg;
+
+	g_return_if_fail(format != NULL);
+
+	va_start(args, format);
+	msg = g_strdup_vprintf(format, args);
+	va_end(args);
+	
+	dialog = gtk_message_dialog_new(GTK_WINDOW(mainwindow),
+                  GTK_DIALOG_DESTROY_WITH_PARENT,
+                  GTK_MESSAGE_ERROR,
+                  GTK_BUTTONS_CLOSE,
+                  "%s", msg);
+	(void)gtk_dialog_run(GTK_DIALOG (dialog));
+	gtk_widget_destroy(dialog);
+	g_free(msg);
+}
+
+void ui_show_info_box(const char *format, ...) { 
+	GtkWidget	*dialog;
+	va_list		args;
+	gchar		*msg;
+
+	g_return_if_fail(format != NULL);
+
+	va_start(args, format);
+	msg = g_strdup_vprintf(format, args);
+	va_end(args);
+		
+	dialog = gtk_message_dialog_new(GTK_WINDOW(mainwindow),
+                  GTK_DIALOG_DESTROY_WITH_PARENT,
+                  GTK_MESSAGE_INFO,
+                  GTK_BUTTONS_CLOSE,
+                  "%s", msg);
+	(void)gtk_dialog_run(GTK_DIALOG (dialog));
+	gtk_widget_destroy(dialog);
+	g_free(msg);
+}
+
+/*------------------------------------------------------------------------------*/
+/* exit handler	and menu callbacks						*/
+/*------------------------------------------------------------------------------*/
+
+void on_popup_quit(gpointer callback_data, guint callback_action, GtkWidget *widget) {
+
+	(void)on_quit(NULL, NULL, NULL);
+}
+
+void on_about_activate(GtkMenuItem *menuitem, gpointer user_data) {
+	GtkWidget *dialog;
+	GtkLabel *versionLabel;
+	gchar *text;
+
+	dialog = liferea_dialog_new (NULL, "aboutdialog");
+	versionLabel = GTK_LABEL(liferea_dialog_lookup(dialog, "version_label"));
+	text = g_strdup_printf("%s %s", PACKAGE, VERSION);;
+	gtk_label_set_text(versionLabel,text);
+	g_free(text);
+	gtk_widget_show(dialog);
+}
+
+void on_homepagebtn_clicked(GtkButton *button, gpointer user_data) {
+
+	/* launch the homepage when button in about dialog is pressed */
+	ui_htmlview_launch_in_external_browser(_("http://liferea.sf.net"));
+}
+
+void on_topics_activate(GtkMenuItem *menuitem, gpointer user_data) {
+	gchar *filename = g_strdup_printf("file://" PACKAGE_DATA_DIR "/" PACKAGE "/doc/html/%s", _("topics_en.html"));
+	ui_tabs_new(filename, _("Help Topics"), TRUE);
+	g_free(filename);
+}
+
+
+void on_quick_reference_activate(GtkMenuItem *menuitem, gpointer user_data) {
+	gchar *filename = g_strdup_printf("file://" PACKAGE_DATA_DIR "/" PACKAGE "/doc/html/%s", _("reference_en.html"));
+	ui_tabs_new(filename, _("Quick Reference"), TRUE);
+	g_free(filename);
+}
+
+void on_faq_activate(GtkMenuItem *menuitem, gpointer user_data) {
+	gchar *filename = g_strdup_printf("file://" PACKAGE_DATA_DIR "/" PACKAGE "/doc/html/%s", _("faq_en.html"));
+	ui_tabs_new(filename, _("FAQ"), TRUE);
+	g_free(filename);
+}
+
 /*------------------------------------------------------------------------------*/
 /* keyboard navigation	 							*/
 /*------------------------------------------------------------------------------*/
@@ -135,7 +234,7 @@ static void on_treeview_set_first(gchar* treename) {
 	GtkTreeView	*treeview;
 	GtkTreePath	*path;
 
-	treeview = GTK_TREE_VIEW(lookup_widget(mainwindow, treename));
+	treeview = GTK_TREE_VIEW(liferea_shell_lookup(treename));
 	path = gtk_tree_path_new_first();
 	gtk_tree_view_set_cursor(treeview, path, NULL, FALSE);
 	gtk_tree_path_free(path);
@@ -146,7 +245,7 @@ void on_treeview_move(gchar* treename, gint step) {
 	GtkTreeView	*treeview;
 	gboolean	ret;
 
-	treeview = GTK_TREE_VIEW(lookup_widget(mainwindow, treename));
+	treeview = GTK_TREE_VIEW(liferea_shell_lookup(treename));
 	gtk_widget_grab_focus(GTK_WIDGET(treeview));
 	g_signal_emit_by_name(treeview, "move-cursor", GTK_MOVEMENT_DISPLAY_LINES, step, &ret);
 }
@@ -288,7 +387,7 @@ void ui_mainwindow_set_layout(guint newMode) {
 
 	if(!mainwindow_priv->htmlview) {
 		mainwindow_priv->htmlview = ui_htmlview_new(FALSE);
-		gtk_container_add(GTK_CONTAINER(lookup_widget(mainwindow, "normalViewHtml")),
+		gtk_container_add(GTK_CONTAINER(liferea_shell_lookup("normalViewHtml")),
 		                  GTK_WIDGET(mainwindow_priv->htmlview));
 		gtk_widget_show(mainwindow_priv->htmlview);
 	}
@@ -317,14 +416,14 @@ void ui_mainwindow_set_layout(guint newMode) {
 	}
 
 	/* reparenting HTML view */
-	gtk_notebook_set_current_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "itemtabs")), newMode);
-	gtk_widget_reparent(GTK_WIDGET(mainwindow_priv->htmlview), lookup_widget(mainwindow, htmlWidgetName));
-	gtk_widget_reparent(GTK_WIDGET(mainwindow_priv->itemlist), lookup_widget(mainwindow, ilWidgetName));
+	gtk_notebook_set_current_page(GTK_NOTEBOOK(liferea_shell_lookup("itemtabs")), newMode);
+	gtk_widget_reparent(GTK_WIDGET(mainwindow_priv->htmlview), liferea_shell_lookup(htmlWidgetName));
+	gtk_widget_reparent(GTK_WIDGET(mainwindow_priv->itemlist), liferea_shell_lookup(ilWidgetName));
 
 	/* grab necessary to force HTML widget update (display must
 	   change from feed description to list of items and vica 
 	   versa */
-	gtk_widget_grab_focus(lookup_widget(mainwindow, "feedlist"));
+	gtk_widget_grab_focus(liferea_shell_lookup("feedlist"));
 }
 
 void ui_mainwindow_set_toolbar_style(const gchar *toolbar_style) {
@@ -364,47 +463,44 @@ static gboolean on_notebook_scroll_event_null_cb (GtkWidget *widget, GdkEventScr
 	return TRUE;
 }
 
-
 static struct mainwindow *ui_mainwindow_new(void) {
 	GtkWidget		*window;
 	GtkWidget		*statusbar;
 	gchar			*toolbar_style;
 	struct mainwindow	*mw;
+
+	window = liferea_shell_lookup ("mainwindow");
+	mw = mainwindow_priv = g_new0 (struct mainwindow, 1);
+	mw->window = GTK_WINDOW (window);
 	
-	window = create_mainwindow();
 	toolbar_style = conf_get_toolbar_style ();
-	mw = g_new0(struct mainwindow, 1);
-	
-	mainwindow_priv = mw;
 
-	mw->window = GTK_WINDOW(window);
-
-	gtk_widget_set_name(window, "lifereaMainwindow");
-	gtk_widget_set_name(lookup_widget(window, "feedlist"), "feedlist");
+	gtk_widget_set_name (window, "lifereaMainwindow");
+	gtk_widget_set_name (liferea_shell_lookup ("feedlist"), "feedlist");
 	
 	ui_mainwindow_create_menus(mw);
-	gtk_box_pack_start (GTK_BOX (lookup_widget(window,"vbox1")), mw->toolbar, FALSE, FALSE, 0);
-	gtk_box_reorder_child(GTK_BOX (lookup_widget(window,"vbox1")), mw->toolbar, 0);
-	gtk_box_pack_start (GTK_BOX (lookup_widget(window,"vbox1")), mw->menubar, FALSE, FALSE, 0);
-	gtk_box_reorder_child(GTK_BOX (lookup_widget(window,"vbox1")), mw->menubar, 0);
+	gtk_box_pack_start (GTK_BOX (liferea_shell_lookup ("vbox1")), mw->toolbar, FALSE, FALSE, 0);
+	gtk_box_reorder_child(GTK_BOX (liferea_shell_lookup ("vbox1")), mw->toolbar, 0);
+	gtk_box_pack_start (GTK_BOX (liferea_shell_lookup ("vbox1")), mw->menubar, FALSE, FALSE, 0);
+	gtk_box_reorder_child(GTK_BOX (liferea_shell_lookup ("vbox1")), mw->menubar, 0);
 	ui_mainwindow_set_toolbar_style(toolbar_style);
 	g_free(toolbar_style);
 	gtk_widget_show_all(GTK_WIDGET(mw->toolbar));
 
-	g_signal_connect ((gpointer) lookup_widget(window, "itemtabs"), "key_press_event",
-					  G_CALLBACK (on_key_press_event_null_cb), NULL);
+	g_signal_connect ((gpointer) liferea_shell_lookup ("itemtabs"), "key_press_event",
+	                  G_CALLBACK (on_key_press_event_null_cb), NULL);
 
-	g_signal_connect ((gpointer) lookup_widget(window, "itemtabs"), "key_release_event",
-					  G_CALLBACK (on_key_press_event_null_cb), NULL);
+	g_signal_connect ((gpointer) liferea_shell_lookup ("itemtabs"), "key_release_event",
+	                  G_CALLBACK (on_key_press_event_null_cb), NULL);
 	
-	g_signal_connect ((gpointer) lookup_widget(window, "itemtabs"), "scroll_event",
-                      G_CALLBACK (on_notebook_scroll_event_null_cb), NULL);
+	g_signal_connect ((gpointer) liferea_shell_lookup ("itemtabs"), "scroll_event",
+	                  G_CALLBACK (on_notebook_scroll_event_null_cb), NULL);
 	
 	g_signal_connect(mw->window, "delete_event", G_CALLBACK(on_close), mw);
 	g_signal_connect(mw->window, "window_state_event", G_CALLBACK(on_mainwindow_window_state_event), mw);
 	g_signal_connect(mw->window, "key_press_event", G_CALLBACK(on_mainwindow_key_press_event), mw);
 	
-	statusbar = lookup_widget(window, "statusbar");
+	statusbar = liferea_shell_lookup ("statusbar");
 	mw->statusbar_feedsinfo = gtk_label_new("");
 	gtk_widget_show(mw->statusbar_feedsinfo);
 	gtk_box_pack_start(GTK_BOX(statusbar), mw->statusbar_feedsinfo, FALSE, FALSE, 5);
@@ -439,6 +535,8 @@ void ui_mainwindow_init(int mainwindowState) {
 	
 	debug_enter("ui_mainwindow_init");
 	
+	liferea_shell_create ();
+	
 	ui_search_init();
 
 	mw = ui_mainwindow_new();
@@ -447,25 +545,25 @@ void ui_mainwindow_init(int mainwindowState) {
  
 	/* load pane proportions */
 	if(0 != getNumericConfValue(LAST_VPANE_POS))
-		gtk_paned_set_position(GTK_PANED(lookup_widget(mainwindow, "leftpane")), getNumericConfValue(LAST_VPANE_POS));
+		gtk_paned_set_position(GTK_PANED(liferea_shell_lookup("leftpane")), getNumericConfValue(LAST_VPANE_POS));
 	if(0 != getNumericConfValue(LAST_HPANE_POS))
-		gtk_paned_set_position(GTK_PANED(lookup_widget(mainwindow, "normalViewPane")), getNumericConfValue(LAST_HPANE_POS));
+		gtk_paned_set_position(GTK_PANED(liferea_shell_lookup("normalViewPane")), getNumericConfValue(LAST_HPANE_POS));
 	if(0 != getNumericConfValue(LAST_WPANE_POS))
-		gtk_paned_set_position(GTK_PANED(lookup_widget(mainwindow, "wideViewPane")), getNumericConfValue(LAST_WPANE_POS));
+		gtk_paned_set_position(GTK_PANED(liferea_shell_lookup("wideViewPane")), getNumericConfValue(LAST_WPANE_POS));
 
 	/* order important !!! */
-	ui_feedlist_init(lookup_widget(mainwindow, "feedlist"));
+	ui_feedlist_init(liferea_shell_lookup("feedlist"));
 	
 	mw->itemlist = ui_itemlist_new();
 	/* initially we pack the item list in the normal view pane,
 	   which is later changed in ui_mainwindow_set_layout() */
-	gtk_container_add(GTK_CONTAINER(lookup_widget(mainwindow, "normalViewItems")), mw->itemlist);
+	gtk_container_add(GTK_CONTAINER(liferea_shell_lookup("normalViewItems")), mw->itemlist);
 	
 	itemview_init();
 	
 	/* necessary to prevent selection signals when filling the feed list
 	   and setting the 2/3 pane mode view */
-	gtk_widget_set_sensitive(GTK_WIDGET(lookup_widget(mainwindow, "feedlist")), FALSE);
+	gtk_widget_set_sensitive(GTK_WIDGET(liferea_shell_lookup("feedlist")), FALSE);
 
 	/* first try to load icons from theme */
 	icon_theme = gtk_icon_theme_get_default();
@@ -568,10 +666,7 @@ void ui_mainwindow_init(int mainwindowState) {
 				   "</p>"
 				   "<p>What works since this release:"
 				   "<ul>"
-				   "   <li>enclosure auto-download</li>"
-				   "   <li>cache limiting is realized again</li>"
-				   "   <li>fixed crash when clicking on empty search folder</li>"
-				   "   <li>broken favicon updating is now fixed</li>"
+				   "   <li>fixed crash when updating comment feeds</li>"
 				   "</ul>"
 				   "</p>");
 	g_string_append(buffer,    "</div>");
@@ -580,7 +675,7 @@ void ui_mainwindow_init(int mainwindowState) {
 	ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer->str, NULL);
 	g_string_free(buffer, TRUE);
 
-	gtk_widget_set_sensitive(GTK_WIDGET(lookup_widget(mainwindow, "feedlist")), TRUE);
+	gtk_widget_set_sensitive(GTK_WIDGET(liferea_shell_lookup("feedlist")), TRUE);
 	
 	script_run_for_hook(SCRIPT_HOOK_STARTUP);
 
@@ -617,7 +712,7 @@ void ui_mainwindow_update_menubar(void) {
 void ui_mainwindow_online_status_changed(int online) {
 	GtkWidget	*widget;
 
-	widget = lookup_widget(mainwindow, "onlineimage");
+	widget = liferea_shell_lookup("onlineimage");
 	
 	if(online) {
 		ui_mainwindow_set_status_bar(_("Liferea is now online"));
@@ -656,8 +751,7 @@ void ui_mainwindow_set_status_bar(const char *format, ...) {
 	str = g_strdup_vprintf(format, args);
 	va_end(args);
 
-	g_assert(NULL != mainwindow);
-	statusbar = lookup_widget(mainwindow, "statusbar");
+	statusbar = liferea_shell_lookup("statusbar");
 	g_assert(NULL != statusbar);
 
 	gtk_label_set_text(GTK_LABEL(GTK_STATUSBAR(statusbar)->label), str);
@@ -691,17 +785,17 @@ void ui_mainwindow_save_position(void) {
 	setNumericConfValue(LAST_WINDOW_HEIGHT, h);
 	
 	/* save pane proportions */
-	if(NULL != (pane = lookup_widget(mainwindow, "leftpane"))) {
+	if(NULL != (pane = liferea_shell_lookup("leftpane"))) {
 		x = gtk_paned_get_position(GTK_PANED(pane));
 		setNumericConfValue(LAST_VPANE_POS, x);
 	}
 	
-	if(NULL != (pane = lookup_widget(mainwindow, "normalViewPane"))) {
+	if(NULL != (pane = liferea_shell_lookup("normalViewPane"))) {
 		y = gtk_paned_get_position(GTK_PANED(pane));
 		setNumericConfValue(LAST_HPANE_POS, y);
 	}
 	
-	if(NULL != (pane = lookup_widget(mainwindow, "wideViewPane"))) {
+	if(NULL != (pane = liferea_shell_lookup("wideViewPane"))) {
 		y = gtk_paned_get_position(GTK_PANED(pane));
 		setNumericConfValue(LAST_WPANE_POS, y);
 	}
@@ -840,7 +934,7 @@ static void ui_choose_file_save_cb(GtkDialog *dialog, gint response_id, gpointer
 	g_free(tuple);
 }
 
-static void ui_choose_file_or_dir(gchar *title, GtkWindow *parent, gchar *buttonName, gboolean saving, gboolean directory, fileChoosenCallback callback, const gchar *currentPath, const gchar *defaultFilename, gpointer user_data) {
+static void ui_choose_file_or_dir(gchar *title, gchar *buttonName, gboolean saving, gboolean directory, fileChoosenCallback callback, const gchar *currentPath, const gchar *defaultFilename, gpointer user_data) {
 	GtkWidget			*dialog;
 	struct file_chooser_tuple	*tuple;
 	GtkWidget			*button;
@@ -848,8 +942,7 @@ static void ui_choose_file_or_dir(gchar *title, GtkWindow *parent, gchar *button
 	g_assert(!(saving & directory));
 	g_assert(!(defaultFilename && !saving));
 	
-	dialog = gtk_file_chooser_dialog_new(title,
-	                                     parent,
+	dialog = gtk_file_chooser_dialog_new(title, GTK_WINDOW (mainwindow),
 	                                     (directory?GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER:
 					      (saving ? GTK_FILE_CHOOSER_ACTION_SAVE : GTK_FILE_CHOOSER_ACTION_OPEN)),
 	                                     GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
@@ -878,14 +971,14 @@ static void ui_choose_file_or_dir(gchar *title, GtkWindow *parent, gchar *button
 	gtk_widget_show_all(dialog);
 }
 
-void ui_choose_file(gchar *title, GtkWindow *parent, gchar *buttonName, gboolean saving, fileChoosenCallback callback, const gchar *currentPath, const gchar *defaultFilename, gpointer user_data) {
+void ui_choose_file(gchar *title, gchar *buttonName, gboolean saving, fileChoosenCallback callback, const gchar *currentPath, const gchar *defaultFilename, gpointer user_data) {
 
-	ui_choose_file_or_dir(title, parent, buttonName, saving, FALSE, callback, currentPath, defaultFilename, user_data);
+	ui_choose_file_or_dir(title, buttonName, saving, FALSE, callback, currentPath, defaultFilename, user_data);
 }
 
-void ui_choose_directory(gchar *title, GtkWindow *parent, gchar *buttonName, fileChoosenCallback callback, const gchar *currentPath, gpointer user_data) {
+void ui_choose_directory(gchar *title, gchar *buttonName, fileChoosenCallback callback, const gchar *currentPath, gpointer user_data) {
 
-	ui_choose_file_or_dir(title, parent, buttonName, FALSE, TRUE, callback, currentPath, NULL, user_data);
+	ui_choose_file_or_dir(title, buttonName, FALSE, TRUE, callback, currentPath, NULL, user_data);
 }
 
 
@@ -895,8 +988,10 @@ static GtkActionEntry ui_mainwindow_action_entries[] = {
 	 G_CALLBACK(on_prefbtn_clicked)},
 	{"ShowUpdateMonitor", NULL, N_("Update Monitor"), NULL, N_("Show a list of all feeds currently in the update queue"),
 	 G_CALLBACK(on_menu_show_update_monitor)},
-	{"ShowScriptManager", NULL, N_("Script Manager"), NULL, N_("Allows to configure and edit LUA hook scripts"),
+/*	{"ShowScriptManager", NULL, N_("Script Manager"), NULL, N_("Allows to configure and edit LUA hook scripts"),
 	 G_CALLBACK(on_menu_show_script_manager)},
+	FIXME: we have some linking problem here...	
+	 */
 	{"Quit",GTK_STOCK_QUIT, N_("_Quit"), "<control>Q", NULL, G_CALLBACK(on_quit)},
 
 	{"FeedsMenu", NULL, N_("_Feeds")},
@@ -969,8 +1064,6 @@ static GtkActionEntry ui_mainwindow_read_write_action_entries[] = {
 static GtkToggleActionEntry ui_mainwindow_action_toggle_entries[] = {
 	{"ToggleOfflineMode", NULL, N_("_Work Offline"), NULL, N_("This option allows you to disable subscription updating."),
 	 G_CALLBACK(on_work_offline_activate)}
-	/*{"ToggleCondensedMode", GTK_STOCK_JUSTIFY_FILL, N_("Toggle _Condensed View"), NULL, N_("Toggles the item list mode between condensed and normal mode."),
-	 G_CALLBACK(on_toggle_condensed_view_activate)}	*/
 };
 
 static const char *ui_mainwindow_ui_desc =
@@ -980,7 +1073,7 @@ static const char *ui_mainwindow_ui_desc =
 "      <menuitem action='ShowPreferences'/>"
 "      <separator/>"
 "      <menuitem action='ShowUpdateMonitor'/>"
-"      <menuitem action='ShowScriptManager'/>"
+/*"      <menuitem action='ShowScriptManager'/>"*/
 "      <separator/>"
 "      <menuitem action='ToggleOfflineMode'/>"
 "      <separator/>"

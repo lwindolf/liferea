@@ -1,7 +1,7 @@
 /**
  * @file update.c update request processing
  *
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -41,7 +41,6 @@
 #include "common.h"
 #include "conf.h"
 #include "debug.h"
-#include "support.h"
 #include "update.h"
 #include "ui/ui_htmlview.h"
 #include "ui/ui_mainwindow.h"

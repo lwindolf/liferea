@@ -19,15 +19,16 @@
  */
 
 #include <gtk/gtk.h>
+
+#include "common.h"
 #include "db.h"
 #include "feed.h"
 #include "feedlist.h"
-#include "interface.h"
 #include "itemlist.h"
 #include "newsbin.h"
 #include "render.h"
-#include "support.h"
 #include "vfolder.h"
+#include "ui/ui_dialog.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_node.h"
 #include "ui/ui_popup.h"
@@ -73,10 +74,10 @@ static gchar * newsbin_render(nodePtr node) {
 static void ui_newsbin_add(nodePtr parent) {
 	GtkWidget	*nameentry;
 	
-	if(!newnewsbindialog || !G_IS_OBJECT(newnewsbindialog))
-		newnewsbindialog = create_newnewsbindialog();
+	if (!newnewsbindialog || !G_IS_OBJECT (newnewsbindialog))
+		newnewsbindialog = liferea_dialog_new (NULL, "newnewsbindialog");
 
-	nameentry = lookup_widget(newnewsbindialog, "nameentry");
+	nameentry = liferea_dialog_lookup(newnewsbindialog, "nameentry");
 	gtk_entry_set_text(GTK_ENTRY(nameentry), "");
 		
 	gtk_widget_show(newnewsbindialog);
@@ -87,7 +88,7 @@ void on_newnewsbinbtn_clicked(GtkButton *button, gpointer user_data) {
 	int		pos;
 	
 	newsbin = node_new();
-	node_set_title(newsbin, (gchar *)gtk_entry_get_text(GTK_ENTRY(lookup_widget(newnewsbindialog, "nameentry"))));
+	node_set_title(newsbin, (gchar *)gtk_entry_get_text(GTK_ENTRY(liferea_dialog_lookup(newnewsbindialog, "nameentry"))));
 	node_set_type(newsbin, newsbin_get_node_type());
 	node_set_data(newsbin, (gpointer)feed_new());
 	node_set_subscription(newsbin, (gpointer)subscription_new("newsbin", NULL, 0));

@@ -28,15 +28,14 @@
 #include <libxml/uri.h>
 #include <string.h>
 #include <time.h>
-#include "support.h"
-#include "callbacks.h"
-#include "update.h"
+
 #include "common.h"
 #include "conf.h"
 #include "debug.h"
-#include "ui/ui_tray.h"
+#include "update.h"
 #include "ui/ui_htmlview.h"
 #include "ui/ui_mainwindow.h"
+#include "ui/ui_tray.h"
 
 #define MAX_GCONF_PATHLEN	256
 

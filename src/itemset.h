@@ -1,5 +1,5 @@
 /**
- * @file itemset.h interface for different item list implementations
+ * @file itemset.h interface to handle sets of items
  * 
  * Copyright (C) 2005-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>

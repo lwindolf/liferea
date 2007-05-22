@@ -1,7 +1,7 @@
 /**
  * @file common.h common routines
  *
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -27,11 +27,37 @@
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 #include <glib.h>
+#include <gtk/gtk.h>
+
 #include "feed.h"
 
 #define htmlToCDATA(buffer) g_strdup_printf("<![CDATA[%s]]>", buffer)
 
 extern gboolean lifereaStarted;
+
+/*
+ * Standard gettext macros (as provided by glade-2).
+ */
+#ifdef ENABLE_NLS
+#  include <libintl.h>
+#  undef _
+#  define _(String) dgettext (PACKAGE, String)
+#  define Q_(String) g_strip_context ((String), gettext (String))
+#  ifdef gettext_noop
+#    define N_(String) gettext_noop (String)
+#  else
+#    define N_(String) (String)
+#  endif
+#else
+#  define textdomain(String) (String)
+#  define gettext(String) (String)
+#  define dgettext(Domain,Message) (Message)
+#  define dcgettext(Domain,Message,Type) (Message)
+#  define bindtextdomain(Domain,Directory) (Domain)
+#  define _(String) (String)
+#  define Q_(String) g_strip_context ((String), (String))
+#  define N_(String) (String)
+#endif
 
 /** Conversion function which should be applied to all read XML strings, 
    to ensure proper UTF8. doc points to the xml document and its encoding and
@@ -297,6 +323,23 @@ xmlChar * common_uri_unescape(const xmlChar *url);
  * @returns new string with resulting absolute URL
  */
 xmlChar * common_build_url(const gchar *url, const gchar *baseURL);
+
+/**
+ * Adds a directory to the list of pixmap directories
+ * to be searched when using create_pixbuf()
+ *
+ * @param directory	directory path name
+ */
+void	add_pixmap_directory (const gchar *directory);
+
+/**
+ * Takes a filename and tries to load the image into a GdkPixbuf. 
+ *
+ * @param filename	the filename
+ *
+ * @returns a new pixbuf or NULL
+ */
+GdkPixbuf*  create_pixbuf (const gchar *filename);
 
 /**
  * Analyzes the given string and returns the LTR/RTL

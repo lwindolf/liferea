@@ -1,5 +1,5 @@
 /**
- * @file ui_vfolder.c  vfolder dialogs handling
+ * @file ui_vfolder.c  search folder dialog handling
  * 
  * Copyright (C) 2004-2007 Lars Lindner <lars.lindner@gmail.com>
  *
@@ -25,11 +25,10 @@
 #include <gtk/gtk.h>
 
 #include "feedlist.h"
-#include "interface.h"
 #include "itemlist.h"
-#include "support.h"
 #include "rule.h"
 #include "vfolder.h"
+#include "ui/ui_dialog.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_itemlist.h"
 #include "ui/ui_node.h"
@@ -59,7 +58,7 @@ static void on_propdialog_response(GtkDialog *dialog, gint response_id, gpointer
 	GSList				*iter, *unused_rules;
 	
 	if(response_id == GTK_RESPONSE_OK) {
-		node_set_title(ui_data->np, gtk_entry_get_text(GTK_ENTRY(lookup_widget(GTK_WIDGET(dialog), "feedNameEntry"))));
+		node_set_title (ui_data->np, gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET (dialog), "feedNameEntry"))));
 		unused_rules = ui_data->vp->rules;
 		ui_data->vp->rules = ui_data->newRules;
 	} else {
@@ -268,16 +267,15 @@ void ui_vfolder_properties(nodePtr node) {
 	ui_data->np = node;
 	
 	/* Create the dialog */
-	ui_data->dialog = vfolderdialog = create_vfolderdialog();
-	gtk_window_set_transient_for(GTK_WINDOW(vfolderdialog), GTK_WINDOW(mainwindow));
+	ui_data->dialog = vfolderdialog = liferea_dialog_new (NULL, "vfolderdialog");
 
 	/* Setup feed name */
-	ui_data->feedNameEntry = lookup_widget(vfolderdialog,"feedNameEntry");
+	ui_data->feedNameEntry = liferea_dialog_lookup (vfolderdialog, "feedNameEntry");
 	gtk_entry_set_text(GTK_ENTRY(ui_data->feedNameEntry), node_get_title(node));
 	
 	/* Set up rule list vbox */
 	ui_data->ruleVBox = gtk_vbox_new(FALSE, 0);
-	gtk_container_add(GTK_CONTAINER(lookup_widget(vfolderdialog, "ruleview")), ui_data->ruleVBox);
+	gtk_container_add(GTK_CONTAINER(liferea_dialog_lookup(vfolderdialog, "ruleview")), ui_data->ruleVBox);
 	
 	/* load rules into dialog */	
 	iter = ui_data->vp->rules;
@@ -287,7 +285,7 @@ void ui_vfolder_properties(nodePtr node) {
 	}
 	
 	/* bind buttons */
-	g_signal_connect(lookup_widget(vfolderdialog, "addrulebtn"), "clicked", G_CALLBACK(on_addrulebtn_clicked), ui_data);
+	g_signal_connect(liferea_dialog_lookup(vfolderdialog, "addrulebtn"), "clicked", G_CALLBACK(on_addrulebtn_clicked), ui_data);
 	g_signal_connect(G_OBJECT(vfolderdialog), "response", G_CALLBACK(on_propdialog_response), ui_data);
 	
 	gtk_widget_show_all(vfolderdialog);	

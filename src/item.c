@@ -29,14 +29,13 @@
 #include <stdlib.h>
 #include <libxml/uri.h>
 
-#include "db.h"
-#include "debug.h"
 #include "comments.h"
 #include "common.h"
+#include "db.h"
+#include "debug.h"
 #include "item.h"
 #include "itemview.h"
 #include "metadata.h"
-#include "support.h"
 
 itemPtr item_new(void) {
 	itemPtr		item;

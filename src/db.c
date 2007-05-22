@@ -344,12 +344,20 @@ open:
 	         "END;");
 			   
 	/* Cleanup of DB */
-	
+	debug_start_measurement (DEBUG_DB);
 	db_exec ("DELETE FROM items WHERE ROWID NOT IN "
 		 "(SELECT item_id FROM itemsets);");
-			  
+	debug_end_measurement (DEBUG_DB, "cleanup lost items");
+
+	debug_start_measurement (DEBUG_DB);
 	db_exec ("DELETE FROM itemsets WHERE item_id NOT IN "
 		 "(SELECT ROWID FROM items);");
+	debug_end_measurement (DEBUG_DB, "cleanup lost itemset entries");
+	
+	debug_start_measurement (DEBUG_DB);
+	db_exec ("DELETE FROM itemsets WHERE node_id NOT IN "
+	         "(SELECT node_id FROM subscriptions);");
+	debug_end_measurement (DEBUG_DB, "cleanup lost node entries");
 	
 	/*res = sqlite3_exec (db, "PRAGMA synchronous=off", NULL, NULL, &err);
 	if (SQLITE_OK != res)
@@ -1009,7 +1017,7 @@ db_view_create (const gchar *id, queryPtr query)
 			break;
 	}
 
-	sql = sqlite3_mprintf ("CREATE VIEW view_%s AS "
+	sql = sqlite3_mprintf ("CREATE TEMP VIEW view_%s AS "
 	                       "SELECT "
 	                       "items.ROWID AS item_id,"
 	                       "items.title,"
@@ -1119,7 +1127,7 @@ db_view_get_unread_count (const gchar *id)
 	sqlite3_stmt	*viewCountStmt;	
 	gint		res;
 	guint		count = 0;
-
+return 0;
 	debug_start_measurement (DEBUG_DB);
 
 	sql = sqlite3_mprintf ("SELECT COUNT(*) FROM view_%s WHERE item_read = 0;", id);
@@ -1200,4 +1208,17 @@ db_update_state_save (const gchar *id,
 void
 db_feed_remove (const gchar *id)
 {
+	gint		res;
+
+	debug2 (DEBUG_DB, "removing subscription %s (thread=%p)", id, g_thread_self ());
+	debug_start_measurement (DEBUG_DB);
+	
+	sqlite3_reset (subscriptionRemoveStmt);
+	sqlite3_bind_text (subscriptionRemoveStmt, 1, id, -1, SQLITE_TRANSIENT);
+
+	res = sqlite3_step (subscriptionRemoveStmt);
+	if (SQLITE_DONE != res)
+		g_warning ("Could not remove subscription %s (error code %d)!", id, res);
+
+	debug_end_measurement (DEBUG_DB, "subscription remove");
 }

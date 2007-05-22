@@ -30,11 +30,10 @@
 #include <string.h>
 #include <time.h>
 
-#include "favicon.h"
-#include "support.h"
-#include "feed.h"
 #include "common.h"
 #include "debug.h"
+#include "favicon.h"
+#include "feed.h"
 #include "html.h"
 
 typedef struct faviconDownloadCtxt {

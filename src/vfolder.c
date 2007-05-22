@@ -22,12 +22,11 @@
 #  include <config.h>
 #endif
 
-#include "support.h"
-#include "callbacks.h"
 #include "common.h"
 #include "conf.h"
 #include "db.h"
 #include "debug.h"
+#include "feedlist.h"
 #include "itemset.h"
 #include "itemlist.h"
 #include "node.h"

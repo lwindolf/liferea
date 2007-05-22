@@ -36,20 +36,19 @@
 #include <signal.h>
 #include <unistd.h>
 
-#include "callbacks.h"
 #include "conf.h"
 #include "common.h"
 #include "db.h"
 #include "dbus.h"
 #include "debug.h"
 #include "feed.h"
-#include "interface.h"
+#include "feedlist.h"
 #include "social.h"
-#include "support.h"
 #include "update.h"
 #include "vfolder.h"
-#include "ui/ui_mainwindow.h"
+#include "ui/ui_feedlist.h"
 #include "ui/ui_htmlview.h"
+#include "ui/ui_mainwindow.h"
 #include "ui/ui_session.h"
 #include "scripting/script.h"
 
@@ -58,6 +57,8 @@
 static BaconMessageConnection *bacon_connection = NULL;
 
 gboolean lifereaStarted = FALSE;
+
+gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data);
 
 static void show_help(void) {
 	GString	*str = g_string_new(NULL);
@@ -126,6 +127,7 @@ int main(int argc, char *argv[]) {
 	gint		i;
 	LifereaDBus	*dbus = NULL;
 	int mainwindowState = MAINWINDOW_SHOWN;
+	
 #ifdef USE_SM
 	gchar *opt_session_arg = NULL;
 #endif
@@ -234,6 +236,8 @@ int main(int argc, char *argv[]) {
 		}
 	}
 	set_debug_level(debug_flags);
+	
+	debug_start_measurement (DEBUG_DB);
 
 	add_pixmap_directory(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps");
 
@@ -277,6 +281,9 @@ int main(int argc, char *argv[]) {
 	   when running Flash applets in gtkmozembed */
 
 	lifereaStarted = TRUE;
+	
+	debug_end_measurement (DEBUG_DB, "startup");
+	
 	gtk_main();
 	
 	g_object_unref (G_OBJECT (dbus));

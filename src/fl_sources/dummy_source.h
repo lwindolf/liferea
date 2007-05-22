@@ -1,7 +1,7 @@
 /**
- * @file dummy_source.h default static feedlist provider
+ * @file dummy_source.h dummy feed list source
  * 
- * Copyright (C) 2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2005-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,4 +28,4 @@
  */
 nodeSourceTypePtr dummy_source_get_type(void);
 
-#endif /* _FL_DUMMY_H */
+#endif /* _DUMMY_SOURCE_H */

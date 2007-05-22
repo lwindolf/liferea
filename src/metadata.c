@@ -25,10 +25,10 @@
 #include <glib.h>
 #include <libxml/tree.h>
 #include <string.h>
-#include "support.h"
-#include "metadata.h"
+
 #include "common.h"
 #include "debug.h"
+#include "metadata.h"
 
 /* Metadata in Liferea are ordered lists of key/value list pairs. Both 
    feed list nodes and items can have a list of metadata assigned. Metadata

@@ -26,17 +26,18 @@
 #include <gtk/gtk.h>
 #include <libxml/uri.h>
 #include <string.h> 
-#include "support.h"
-#include "feed.h"
-#include "node.h"
-#include "conf.h"
-#include "callbacks.h"
-#include "update.h"
-#include "interface.h"
-#include "debug.h"
-#include "ui/ui_subscription.h"
 
-extern GtkWidget *mainwindow;
+#include "common.h"
+#include "conf.h"
+#include "debug.h"
+#include "feed.h"
+#include "feedlist.h"
+#include "node.h"
+#include "update.h"
+#include "ui/ui_dialog.h"
+#include "ui/ui_mainwindow.h"	/* for ui_choose_file() */
+#include "ui/ui_node.h"
+#include "ui/ui_subscription.h"
 
 /** common private structure for all subscription dialogs */
 struct SubscriptionDialogPrivate {
@@ -51,6 +52,7 @@ struct SubscriptionDialogPrivate {
 	GtkWidget *dialog;
 	GtkWidget *feedNameEntry;
 	GtkWidget *refreshInterval;
+	GtkWidget *refreshIntervalUnit;
 	GtkWidget *sourceEntry;
 	GtkWidget *selectFile;
 	GtkWidget *fileRadio;
@@ -208,14 +210,13 @@ on_propdialog_response (GtkDialog *dialog,
 		
 		/* "General" */
 		node_set_title(node, gtk_entry_get_text(GTK_ENTRY(spd->priv->feedNameEntry)));
-		subscription_set_update_interval(subscription, gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(spd->priv->refreshInterval)));
 		
 		/* Source */
 		newSource = ui_subscription_dialog_decode_source(spd->priv);
 		
 		/* Filter handling */
-		newFilter = gtk_entry_get_text(GTK_ENTRY(lookup_widget(spd->priv->dialog, "filterEntry")));
-		if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(spd->priv->dialog, "filterCheckbox"))) &&
+		newFilter = gtk_entry_get_text(GTK_ENTRY(liferea_dialog_lookup(spd->priv->dialog, "filterEntry")));
+		if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(liferea_dialog_lookup(spd->priv->dialog, "filterCheckbox"))) &&
 		   strcmp(newFilter,"")) { /* Maybe this should be a test to see if the file exists? */
 			if(subscription_get_filter(subscription) == NULL ||
 			   strcmp(newFilter, subscription_get_filter(subscription))) {
@@ -237,29 +238,34 @@ on_propdialog_response (GtkDialog *dialog,
 		g_free(newSource);
 
 		/* Update interval handling */
-		if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(GTK_WIDGET(dialog), "updateIntervalNever"))))
-			subscription_set_update_interval(subscription, -2);
-		else if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(GTK_WIDGET(dialog), "updateIntervalDefault"))))
-			subscription_set_update_interval(subscription, -1);
-		else if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(GTK_WIDGET(dialog), "updateIntervalSpecific"))))
-			subscription_set_update_interval(subscription, gtk_spin_button_get_value(GTK_SPIN_BUTTON(lookup_widget(GTK_WIDGET(dialog), "refreshIntervalSpinButton"))));
+		if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "updateIntervalNever"))))
+			subscription_set_update_interval (subscription, -2);
+		else if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "updateIntervalDefault"))))
+			subscription_set_update_interval (subscription, -1);
+		else if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "updateIntervalSpecific")))) {
+			gint intervalUnit = gtk_combo_box_get_active (GTK_COMBO_BOX (spd->priv->refreshIntervalUnit));
+			gint updateInterval = gtk_spin_button_get_value_as_int (GTK_SPIN_BUTTON (spd->priv->refreshInterval));
+			if (intervalUnit == 1) updateInterval *= 60;	/* hours */
+			if (intervalUnit == 2) updateInterval *= 1440;	/* days */
+			subscription_set_update_interval (subscription, gtk_spin_button_get_value_as_int (GTK_SPIN_BUTTON (spd->priv->refreshInterval)));
+		}
 			
 		/* "Archive" handling */
-		if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(GTK_WIDGET(dialog), "feedCacheDefault"))))
+		if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(liferea_dialog_lookup(GTK_WIDGET(dialog), "feedCacheDefault"))))
 			feed->cacheLimit = CACHE_DEFAULT;
-		else if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(GTK_WIDGET(dialog), "feedCacheDisable"))))
+		else if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(liferea_dialog_lookup(GTK_WIDGET(dialog), "feedCacheDisable"))))
 			feed->cacheLimit = CACHE_DISABLE;
-		else if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(GTK_WIDGET(dialog), "feedCacheUnlimited"))))
+		else if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(liferea_dialog_lookup(GTK_WIDGET(dialog), "feedCacheUnlimited"))))
 			feed->cacheLimit = CACHE_UNLIMITED;
-		else if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(GTK_WIDGET(dialog), "feedCacheLimited"))))
-			feed->cacheLimit = gtk_spin_button_get_value(GTK_SPIN_BUTTON(lookup_widget(GTK_WIDGET(dialog), "cacheItemLimit")));
+		else if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(liferea_dialog_lookup(GTK_WIDGET(dialog), "feedCacheLimited"))))
+			feed->cacheLimit = gtk_spin_button_get_value(GTK_SPIN_BUTTON(liferea_dialog_lookup(GTK_WIDGET(dialog), "cacheItemLimit")));
 
 		/* "Download" Options */
-		subscription->updateOptions->dontUseProxy = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(GTK_WIDGET(dialog), "dontUseProxyCheck")));
+		subscription->updateOptions->dontUseProxy = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(liferea_dialog_lookup(GTK_WIDGET(dialog), "dontUseProxyCheck")));
 
 		/* "Advanced" options */
-		feed->encAutoDownload = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(GTK_WIDGET(dialog), "enclosureDownloadCheck")));
-		feed->loadItemLink = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(GTK_WIDGET(dialog), "loadItemLinkCheck")));
+		feed->encAutoDownload = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(liferea_dialog_lookup(GTK_WIDGET(dialog), "enclosureDownloadCheck")));
+		feed->loadItemLink = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(liferea_dialog_lookup(GTK_WIDGET(dialog), "loadItemLinkCheck")));
 
 		ui_node_update(node->id);
 		feedlist_schedule_save();
@@ -276,11 +282,11 @@ on_feed_prop_filtercheck (GtkToggleButton *button,
 {
 	SubscriptionDialogPrivate *ui_data = (SubscriptionDialogPrivate *)user_data;
 	
-	gboolean filter = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(ui_data->dialog, "filterCheckbox")));
+	gboolean filter = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(liferea_dialog_lookup(ui_data->dialog, "filterCheckbox")));
 	if(filter)
-		gtk_widget_show(lookup_widget(ui_data->dialog, "innerfiltervbox"));
+		gtk_widget_show(liferea_dialog_lookup(ui_data->dialog, "innerfiltervbox"));
 	else
-		gtk_widget_hide(lookup_widget(ui_data->dialog, "innerfiltervbox"));
+		gtk_widget_hide(liferea_dialog_lookup(ui_data->dialog, "innerfiltervbox"));
 }
 
 static void
@@ -335,7 +341,7 @@ on_selectfileok_clicked (const gchar *filename,
 		if(ui_data->selector == 'u')
 			gtk_entry_set_text(GTK_ENTRY(ui_data->sourceEntry), utfname);
 		else
-			gtk_entry_set_text(GTK_ENTRY(lookup_widget(ui_data->dialog, "filterEntry")), utfname);
+			gtk_entry_set_text(GTK_ENTRY(liferea_dialog_lookup(ui_data->dialog, "filterEntry")), utfname);
 	}
 	
 	g_free(utfname);
@@ -354,11 +360,11 @@ on_selectfile_pressed (GtkButton *button,
 		utfname = gtk_entry_get_text(GTK_ENTRY(ui_data->sourceEntry));
 	} else {
 		ui_data->selector = 'f';
-		utfname = gtk_entry_get_text(GTK_ENTRY(lookup_widget(ui_data->dialog, "filterEntry")));
+		utfname = gtk_entry_get_text(GTK_ENTRY(liferea_dialog_lookup(ui_data->dialog, "filterEntry")));
 	}
 	
 	name = g_filename_from_utf8(utfname,-1,NULL, NULL, NULL);
-	ui_choose_file(_("Choose File"), GTK_WINDOW(ui_data->dialog), GTK_STOCK_OPEN, FALSE, on_selectfileok_clicked, name, NULL, ui_data);
+	ui_choose_file(_("Choose File"), GTK_STOCK_OPEN, FALSE, on_selectfileok_clicked, name, NULL, ui_data);
 	g_free(name);
 }
  
@@ -369,17 +375,18 @@ on_feed_prop_cache_radio (GtkToggleButton *button,
 	SubscriptionDialogPrivate *ui_data = (SubscriptionDialogPrivate *)user_data;
 	gboolean limited = gtk_toggle_button_get_active(button);
 	
-	gtk_widget_set_sensitive(lookup_widget(GTK_WIDGET(ui_data->dialog), "cacheItemLimit"), limited);
+	gtk_widget_set_sensitive(liferea_dialog_lookup(GTK_WIDGET(ui_data->dialog), "cacheItemLimit"), limited);
 }
 
 static void
 on_feed_prop_update_radio (GtkToggleButton *button,
                            gpointer user_data) 
 {
-	SubscriptionDialogPrivate *ui_data = (SubscriptionDialogPrivate *)user_data;
-	gboolean limited = gtk_toggle_button_get_active(button);
+	SubscriptionDialogPrivate *priv = (SubscriptionDialogPrivate *) user_data;
+	gboolean limited = gtk_toggle_button_get_active (button);
 	
-	gtk_widget_set_sensitive(lookup_widget(GTK_WIDGET(ui_data->dialog), "refreshIntervalSpinButton"), limited);
+	gtk_widget_set_sensitive (priv->refreshInterval, limited);
+	gtk_widget_set_sensitive (priv->refreshIntervalUnit, limited);
 }
 
 static void
@@ -387,7 +394,7 @@ ui_subscription_prop_dialog_load (SubscriptionPropDialog *spd,
                                   subscriptionPtr subscription) 
 {
 	gint 		interval;
-	guint		defaultInterval;
+	guint		defaultInterval, spinSetInterval;
 	gchar 		*defaultIntervalStr;
 	nodePtr		node = subscription->node;
 	feedPtr		feed = (feedPtr)node->data;
@@ -397,23 +404,35 @@ ui_subscription_prop_dialog_load (SubscriptionPropDialog *spd,
 	/* General */
 	gtk_entry_set_text(GTK_ENTRY(spd->priv->feedNameEntry), node_get_title(node));
 
-	spd->priv->refreshInterval = lookup_widget(spd->priv->dialog,"refreshIntervalSpinButton");
+	spd->priv->refreshInterval = liferea_dialog_lookup(spd->priv->dialog,"refreshIntervalSpinButton");
 	
 	interval = subscription_get_update_interval(subscription);
 	defaultInterval = subscription_get_default_update_interval(subscription);
+	spinSetInterval = defaultInterval;
 	
-	if(-2 >= interval) {
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(spd->priv->dialog, "updateIntervalNever")), TRUE);
-		gtk_spin_button_set_value(GTK_SPIN_BUTTON(lookup_widget(spd->priv->dialog, "refreshIntervalSpinButton")), defaultInterval);
-	} else if(-1 == interval) {
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(spd->priv->dialog, "updateIntervalDefault")), TRUE);
-		gtk_spin_button_set_value(GTK_SPIN_BUTTON(lookup_widget(spd->priv->dialog, "refreshIntervalSpinButton")), defaultInterval);
+	if (-2 >= interval) {
+		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup(spd->priv->dialog, "updateIntervalNever")), TRUE);
+	} else if (-1 == interval) {
+		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup(spd->priv->dialog, "updateIntervalDefault")), TRUE);
 	} else {
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(spd->priv->dialog, "updateIntervalSpecific")), TRUE);
-		gtk_spin_button_set_value(GTK_SPIN_BUTTON(lookup_widget(spd->priv->dialog, "refreshIntervalSpinButton")), interval);
+		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup(spd->priv->dialog, "updateIntervalSpecific")), TRUE);
+		spinSetInterval = interval;
 	}
 	
-	gtk_widget_set_sensitive(lookup_widget(spd->priv->dialog, "refreshIntervalSpinButton"), interval > 0);
+	/* Set refresh interval spin button and combo box */
+	if (spinSetInterval % 1440 == 0) {	/* days */
+		gtk_combo_box_set_active (GTK_COMBO_BOX (spd->priv->refreshIntervalUnit), 2);
+		spinSetInterval /= 1440;
+	} else if (spinSetInterval % 60 == 0) {	/* hours */
+		gtk_combo_box_set_active (GTK_COMBO_BOX (spd->priv->refreshIntervalUnit), 1);
+		spinSetInterval /= 60;
+	} else {
+		gtk_combo_box_set_active (GTK_COMBO_BOX (spd->priv->refreshIntervalUnit), 0);
+	}
+	gtk_spin_button_set_value (GTK_SPIN_BUTTON (spd->priv->refreshInterval), spinSetInterval);
+
+	gtk_widget_set_sensitive (spd->priv->refreshInterval, interval > 0);
+	gtk_widget_set_sensitive (spd->priv->refreshIntervalUnit, interval > 0);
 	
 	/* setup info label about default update interval */
 	if(-1 != defaultInterval)
@@ -421,7 +440,7 @@ ui_subscription_prop_dialog_load (SubscriptionPropDialog *spd,
 	else
 		defaultIntervalStr = g_strdup(_("This feed specifies no default update interval."));
 
-	gtk_label_set_text(GTK_LABEL(lookup_widget(spd->priv->dialog, "feedUpdateInfo")), defaultIntervalStr);
+	gtk_label_set_text(GTK_LABEL(liferea_dialog_lookup(spd->priv->dialog, "feedUpdateInfo")), defaultIntervalStr);
 	g_free(defaultIntervalStr);
 
 	/* Source */
@@ -465,32 +484,32 @@ ui_subscription_prop_dialog_load (SubscriptionPropDialog *spd,
 	}
 
 	if(subscription_get_filter(subscription)) {
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(spd->priv->dialog, "filterCheckbox")), TRUE);
-		gtk_entry_set_text(GTK_ENTRY(lookup_widget(spd->priv->dialog, "filterEntry")), subscription_get_filter(subscription));
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(liferea_dialog_lookup(spd->priv->dialog, "filterCheckbox")), TRUE);
+		gtk_entry_set_text(GTK_ENTRY(liferea_dialog_lookup(spd->priv->dialog, "filterEntry")), subscription_get_filter(subscription));
 	}
 
 	/* Archive */
 	if(feed->cacheLimit == CACHE_DISABLE) {
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(spd->priv->dialog, "feedCacheDisable")), TRUE);
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(liferea_dialog_lookup(spd->priv->dialog, "feedCacheDisable")), TRUE);
 	} else if(feed->cacheLimit == CACHE_DEFAULT) {
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(spd->priv->dialog, "feedCacheDefault")), TRUE);
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(liferea_dialog_lookup(spd->priv->dialog, "feedCacheDefault")), TRUE);
 	} else if(feed->cacheLimit == CACHE_UNLIMITED) {
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(spd->priv->dialog, "feedCacheUnlimited")), TRUE);
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(liferea_dialog_lookup(spd->priv->dialog, "feedCacheUnlimited")), TRUE);
 	} else {
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(spd->priv->dialog, "feedCacheLimited")), TRUE);
-		gtk_spin_button_set_value(GTK_SPIN_BUTTON(lookup_widget(spd->priv->dialog, "cacheItemLimit")), feed->cacheLimit);
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(liferea_dialog_lookup(spd->priv->dialog, "feedCacheLimited")), TRUE);
+		gtk_spin_button_set_value(GTK_SPIN_BUTTON(liferea_dialog_lookup(spd->priv->dialog, "cacheItemLimit")), feed->cacheLimit);
 	}
 
-	gtk_widget_set_sensitive(lookup_widget(spd->priv->dialog, "cacheItemLimit"), feed->cacheLimit > 0);
+	gtk_widget_set_sensitive(liferea_dialog_lookup(spd->priv->dialog, "cacheItemLimit"), feed->cacheLimit > 0);
 
-	on_feed_prop_filtercheck(GTK_TOGGLE_BUTTON(lookup_widget(spd->priv->dialog, "filterCheckbox")), spd->priv);
+	on_feed_prop_filtercheck(GTK_TOGGLE_BUTTON(liferea_dialog_lookup(spd->priv->dialog, "filterCheckbox")), spd->priv);
 	
 	/* Download */
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(spd->priv->dialog, "dontUseProxyCheck")), subscription->updateOptions->dontUseProxy);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(liferea_dialog_lookup(spd->priv->dialog, "dontUseProxyCheck")), subscription->updateOptions->dontUseProxy);
 
 	/* Advanced */	
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(spd->priv->dialog, "enclosureDownloadCheck")), feed->encAutoDownload);
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(spd->priv->dialog, "loadItemLinkCheck")), feed->loadItemLink);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(liferea_dialog_lookup(spd->priv->dialog, "enclosureDownloadCheck")), feed->encAutoDownload);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(liferea_dialog_lookup(spd->priv->dialog, "loadItemLinkCheck")), feed->loadItemLink);
 }
 
 static void
@@ -499,21 +518,21 @@ subscription_prop_dialog_init (SubscriptionPropDialog *spd)
 	GtkWidget	*propdialog;
 	
 	spd->priv = SUBSCRIPTION_PROP_DIALOG_GET_PRIVATE (spd);
-	spd->priv->dialog = propdialog = create_propdialog ();
-	gtk_window_set_transient_for (GTK_WINDOW(propdialog), GTK_WINDOW (mainwindow));
+	spd->priv->dialog = propdialog = liferea_dialog_new (NULL, "propdialog");
 	
-	spd->priv->feedNameEntry = lookup_widget (propdialog,"feedNameEntry");
-	spd->priv->refreshInterval = lookup_widget (propdialog,"refreshIntervalSpinButton");
-	spd->priv->sourceEntry = lookup_widget (propdialog,"sourceEntry");
-	spd->priv->selectFile = lookup_widget (propdialog,"selectSourceFileButton");
-	spd->priv->fileRadio = lookup_widget (propdialog, "feed_loc_file");
-	spd->priv->urlRadio = lookup_widget (propdialog, "feed_loc_url");
-	spd->priv->cmdRadio = lookup_widget (propdialog, "feed_loc_command");
+	spd->priv->feedNameEntry = liferea_dialog_lookup (propdialog, "feedNameEntry");
+	spd->priv->refreshInterval = liferea_dialog_lookup (propdialog, "refreshIntervalSpinButton");
+	spd->priv->refreshIntervalUnit = liferea_dialog_lookup (propdialog, "refreshIntervalUnitComboBox");
+	spd->priv->sourceEntry = liferea_dialog_lookup (propdialog, "sourceEntry");
+	spd->priv->selectFile = liferea_dialog_lookup (propdialog, "selectSourceFileButton");
+	spd->priv->fileRadio = liferea_dialog_lookup (propdialog, "feed_loc_file");
+	spd->priv->urlRadio = liferea_dialog_lookup (propdialog, "feed_loc_url");
+	spd->priv->cmdRadio = liferea_dialog_lookup (propdialog, "feed_loc_command");
 
-	spd->priv->authcheckbox = lookup_widget (propdialog, "HTTPauthCheck");
-	spd->priv->username = lookup_widget (propdialog, "usernameEntry");
-	spd->priv->password = lookup_widget (propdialog, "passwordEntry");
-	spd->priv->credTable = lookup_widget (propdialog, "table4");
+	spd->priv->authcheckbox = liferea_dialog_lookup (propdialog, "HTTPauthCheck");
+	spd->priv->username = liferea_dialog_lookup (propdialog, "usernameEntry");
+	spd->priv->password = liferea_dialog_lookup (propdialog, "passwordEntry");
+	spd->priv->credTable = liferea_dialog_lookup (propdialog, "table4");
 	
 	g_signal_connect (spd->priv->selectFile, "clicked", G_CALLBACK (on_selectfile_pressed), spd->priv);
 	g_signal_connect (spd->priv->urlRadio, "toggled", G_CALLBACK (on_feed_prop_url_radio), spd->priv);
@@ -521,10 +540,10 @@ subscription_prop_dialog_init (SubscriptionPropDialog *spd)
 	g_signal_connect (spd->priv->cmdRadio, "toggled", G_CALLBACK (on_feed_prop_url_radio), spd->priv);
 	g_signal_connect (spd->priv->authcheckbox, "toggled", G_CALLBACK (on_feed_prop_authcheck), spd->priv);
 
-	g_signal_connect (lookup_widget (propdialog, "filterCheckbox"), "toggled", G_CALLBACK (on_feed_prop_filtercheck), spd->priv);
-	g_signal_connect (lookup_widget (propdialog, "filterSelectFile"), "clicked", G_CALLBACK (on_selectfile_pressed), spd->priv);
-	g_signal_connect (lookup_widget (propdialog, "feedCacheLimited"), "toggled", G_CALLBACK (on_feed_prop_cache_radio), spd->priv);
-	g_signal_connect (lookup_widget (propdialog, "updateIntervalSpecific"), "toggled", G_CALLBACK(on_feed_prop_update_radio), spd->priv);
+	g_signal_connect (liferea_dialog_lookup (propdialog, "filterCheckbox"), "toggled", G_CALLBACK (on_feed_prop_filtercheck), spd->priv);
+	g_signal_connect (liferea_dialog_lookup (propdialog, "filterSelectFile"), "clicked", G_CALLBACK (on_selectfile_pressed), spd->priv);
+	g_signal_connect (liferea_dialog_lookup (propdialog, "feedCacheLimited"), "toggled", G_CALLBACK (on_feed_prop_cache_radio), spd->priv);
+	g_signal_connect (liferea_dialog_lookup (propdialog, "updateIntervalSpecific"), "toggled", G_CALLBACK(on_feed_prop_update_radio), spd->priv);
 	
 	g_signal_connect (G_OBJECT (propdialog), "response", G_CALLBACK (on_propdialog_response), spd);
 
@@ -614,14 +633,14 @@ on_newdialog_response (GtkDialog *dialog,
 		source = ui_subscription_dialog_decode_source(nsd->priv);
 
 		/* Filter handling */
-		filter = gtk_entry_get_text(GTK_ENTRY(lookup_widget(nsd->priv->dialog, "filterEntry")));
-		if(!gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(nsd->priv->dialog, "filterCheckbox"))) ||
+		filter = gtk_entry_get_text(GTK_ENTRY(liferea_dialog_lookup(nsd->priv->dialog, "filterEntry")));
+		if(!gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(liferea_dialog_lookup(nsd->priv->dialog, "filterCheckbox"))) ||
 		   !strcmp(filter,"")) { /* Maybe this should be a test to see if the file exists? */
 			filter = NULL;
 		} 
 		
 		options = g_new0(struct updateOptions, 1);
-		options->dontUseProxy = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(GTK_WIDGET(dialog), "dontUseProxyCheck")));
+		options->dontUseProxy = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(liferea_dialog_lookup(GTK_WIDGET(dialog), "dontUseProxyCheck")));
 		
 		node_request_automatic_add(source, NULL, filter, options,
 					   FEED_REQ_RESET_TITLE | 
@@ -642,33 +661,32 @@ new_subscription_dialog_init (NewSubscriptionDialog *nsd)
 	GtkWidget	*newdialog;
 	
 	nsd->priv = NEW_SUBSCRIPTION_DIALOG_GET_PRIVATE (nsd);
-	nsd->priv->dialog = newdialog = create_newdialog ();
-	gtk_window_set_transient_for (GTK_WINDOW (newdialog), GTK_WINDOW (mainwindow));
+	nsd->priv->dialog = newdialog = liferea_dialog_new (NULL, "newdialog");
 	
 	/* Setup source entry */
-	nsd->priv->sourceEntry = lookup_widget (newdialog,"sourceEntry");
+	nsd->priv->sourceEntry = liferea_dialog_lookup (newdialog,"sourceEntry");
 	gtk_widget_grab_focus (GTK_WIDGET (nsd->priv->sourceEntry));
 	gtk_entry_set_activates_default (GTK_ENTRY (nsd->priv->sourceEntry), TRUE);
 		
-	nsd->priv->selectFile = lookup_widget (newdialog,"selectSourceFileButton");
+	nsd->priv->selectFile = liferea_dialog_lookup (newdialog,"selectSourceFileButton");
 	g_signal_connect (nsd->priv->selectFile, "clicked", G_CALLBACK (on_selectfile_pressed), nsd);
 	
 	/* Feed location radio buttons */
-	nsd->priv->fileRadio = lookup_widget (newdialog, "feed_loc_file");
-	nsd->priv->urlRadio = lookup_widget (newdialog, "feed_loc_url");
-	nsd->priv->cmdRadio = lookup_widget (newdialog, "feed_loc_command");
+	nsd->priv->fileRadio = liferea_dialog_lookup (newdialog, "feed_loc_file");
+	nsd->priv->urlRadio = liferea_dialog_lookup (newdialog, "feed_loc_url");
+	nsd->priv->cmdRadio = liferea_dialog_lookup (newdialog, "feed_loc_command");
 
 	g_signal_connect (nsd->priv->urlRadio, "toggled", G_CALLBACK (on_feed_prop_url_radio), nsd->priv);
 	g_signal_connect (nsd->priv->fileRadio, "toggled", G_CALLBACK (on_feed_prop_url_radio), nsd->priv);
 	g_signal_connect (nsd->priv->cmdRadio, "toggled", G_CALLBACK (on_feed_prop_url_radio), nsd->priv);
 
-	g_signal_connect (lookup_widget (newdialog, "filterCheckbox"), "toggled", G_CALLBACK (on_feed_prop_filtercheck), nsd->priv);
-	g_signal_connect (lookup_widget (newdialog, "filterSelectFile"), "clicked", G_CALLBACK (on_selectfile_pressed), nsd->priv);
+	g_signal_connect (liferea_dialog_lookup (newdialog, "filterCheckbox"), "toggled", G_CALLBACK (on_feed_prop_filtercheck), nsd->priv);
+	g_signal_connect (liferea_dialog_lookup (newdialog, "filterSelectFile"), "clicked", G_CALLBACK (on_selectfile_pressed), nsd->priv);
 
-	gtk_widget_grab_default (lookup_widget (newdialog, "newfeedbtn"));
+	gtk_widget_grab_default (liferea_dialog_lookup (newdialog, "newfeedbtn"));
 	g_signal_connect (G_OBJECT (newdialog), "response", G_CALLBACK (on_newdialog_response), nsd);
 	
-	on_feed_prop_filtercheck (GTK_TOGGLE_BUTTON (lookup_widget (newdialog, "filterCheckbox")), nsd->priv);
+	on_feed_prop_filtercheck (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (newdialog, "filterCheckbox")), nsd->priv);
 	on_feed_prop_url_radio (GTK_TOGGLE_BUTTON (nsd->priv->urlRadio), nsd->priv);
 	
 	gtk_widget_show_all (newdialog);
@@ -738,7 +756,7 @@ simple_subscription_dialog_class_init (SimpleSubscriptionDialogClass *klass)
 
 	object_class->finalize = simple_subscription_dialog_finalize;
 
-	g_type_class_add_private (object_class, sizeof(SubscriptionDialogPrivate));
+	g_type_class_add_private (object_class, sizeof (SubscriptionDialogPrivate));
 }
 
 static void
@@ -775,11 +793,10 @@ simple_subscription_dialog_init (SimpleSubscriptionDialog *ssd)
 	GtkWidget	*newdialog;
 	
 	ssd->priv = SIMPLE_SUBSCRIPTION_DIALOG_GET_PRIVATE (ssd);
-	ssd->priv->dialog = newdialog = create_simplenewdialog ();
-	gtk_window_set_transient_for (GTK_WINDOW (newdialog), GTK_WINDOW (mainwindow));
+	ssd->priv->dialog = newdialog = liferea_dialog_new (NULL, "simplenewdialog");
 	
 	/* Setup source entry */
-	ssd->priv->sourceEntry = lookup_widget (newdialog,"sourceEntry");
+	ssd->priv->sourceEntry = liferea_dialog_lookup (newdialog, "sourceEntry");
 	gtk_widget_grab_focus (GTK_WIDGET (ssd->priv->sourceEntry));
 	gtk_entry_set_activates_default (GTK_ENTRY (ssd->priv->sourceEntry), TRUE);
 

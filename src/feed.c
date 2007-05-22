@@ -42,7 +42,6 @@
 #include "metadata.h"
 #include "node.h"
 #include "render.h"
-#include "support.h"
 #include "update.h"
 #include "parsers/cdf_channel.h"
 #include "parsers/rss_channel.h"
@@ -780,12 +779,16 @@ static void feed_request_auto_update(nodePtr node) {
 		subscription_update_favicon(node->subscription);
 }
 
-static void feed_remove(nodePtr node) {
-
-	favicon_remove_from_cache(node->id);
-	notification_node_removed(node);
-	ui_node_remove_node(node);
-	feed_free(node->data);
+static void
+feed_remove (nodePtr node)
+{
+	notification_node_removed (node);
+	ui_node_remove_node (node);
+	
+	favicon_remove_from_cache (node->id);
+	db_feed_remove (node->id);
+	
+	feed_free (node->data);
 }
 
 static void feed_mark_all_read(nodePtr node) {

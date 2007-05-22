@@ -2,7 +2,7 @@
  * @file ui_folder.c GUI folder handling
  * 
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2004-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2007 Lars Lindner <lars.lindner@gmail.com>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,11 +24,11 @@
 #endif
 
 #include <gtk/gtk.h>
-#include "support.h"
-#include "interface.h"
-#include "callbacks.h"
 #include "debug.h"
+#include "feedlist.h"
 #include "folder.h"
+#include "ui/ui_dialog.h"
+#include "ui/ui_feedlist.h"
 #include "ui/ui_folder.h"
 
 static GtkWidget	*newfolderdialog = NULL;
@@ -37,9 +37,9 @@ void ui_folder_add(nodePtr parent) {
 	GtkWidget	*foldernameentry;
 	
 	if(!newfolderdialog || !G_IS_OBJECT(newfolderdialog))
-		newfolderdialog = create_newfolderdialog();
+		newfolderdialog = liferea_dialog_new (NULL, "newfolderdialog");
 
-	foldernameentry = lookup_widget(newfolderdialog, "foldertitleentry");
+	foldernameentry = liferea_dialog_lookup(newfolderdialog, "foldertitleentry");
 	gtk_entry_set_text(GTK_ENTRY(foldernameentry), "");
 		
 	gtk_widget_show(newfolderdialog);
@@ -50,7 +50,7 @@ void on_newfolderbtn_clicked(GtkButton *button, gpointer user_data) {
 	
 	/* create folder node */
 	folder = node_new();
-	node_set_title(folder, (gchar *)gtk_entry_get_text(GTK_ENTRY(lookup_widget(newfolderdialog, "foldertitleentry"))));
+	node_set_title(folder, (gchar *)gtk_entry_get_text(GTK_ENTRY(liferea_dialog_lookup(newfolderdialog, "foldertitleentry"))));
 	node_set_type(folder, folder_get_node_type());
 
 	/* add the new folder to the model */

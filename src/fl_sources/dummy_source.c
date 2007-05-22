@@ -1,5 +1,5 @@
 /**
- * @file dummy_source.c dummy feedlist provider
+ * @file dummy_source.c dummy feed list source
  * 
  * Copyright (C) 2006 Lars Lindner <lars.lindner@gmx.net>
  *
@@ -18,7 +18,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "callbacks.h"
+#include "common.h"
+#include "feedlist.h"
 #include "fl_sources/node_source.h"
 
 static gchar * dummy_source_get_feedlist(nodePtr node) { return NULL; }

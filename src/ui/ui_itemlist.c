@@ -28,8 +28,6 @@
 #include <string.h>
 #include <gdk/gdkkeysyms.h>
 
-#include "support.h"
-#include "callbacks.h"
 #include "common.h"
 #include "debug.h"
 #include "feed.h"
@@ -40,6 +38,8 @@
 #include "ui/ui_htmlview.h"
 #include "ui/ui_itemlist.h"
 #include "ui/ui_mainwindow.h"
+#include "ui/ui_popup.h"
+#include "ui/ui_tabs.h"
 #include "ui/ui_tray.h"
 
 static GHashTable 	*item_id_to_iter = NULL;	/** hash table used for fast item id->tree iter lookup */

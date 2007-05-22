@@ -24,12 +24,15 @@
 #endif
 
 #include <gtk/gtk.h>
-#include "support.h"
-#include "interface.h"
-#include "callbacks.h"
+#include "common.h"
 #include "conf.h"
 #include "debug.h"
+#include "feedlist.h"
+#include "ui/ui_dialog.h"
+#include "ui/ui_feedlist.h"
 #include "ui/ui_node.h"
+#include "ui/ui_popup.h"
+#include "ui/ui_shell.h"
 
 static GHashTable	*flIterHash = NULL;	/* hash table used for fast node id <-> tree iter lookup */
 static GtkWidget	*nodenamedialog = NULL;
@@ -72,7 +75,7 @@ gboolean ui_node_is_folder_expanded(const gchar *nodeId) {
 	iter = ui_node_to_iter(nodeId);
 	if(iter) {
 		path = gtk_tree_model_get_path(GTK_TREE_MODEL(feedstore), iter);
-		expanded = gtk_tree_view_row_expanded(GTK_TREE_VIEW(lookup_widget(mainwindow, "feedlist")), path);
+		expanded = gtk_tree_view_row_expanded(GTK_TREE_VIEW(liferea_shell_lookup("feedlist")), path);
 		gtk_tree_path_free(path);
 	}
 
@@ -88,7 +91,7 @@ void ui_node_set_expansion(nodePtr folder, gboolean expanded) {
 	if(!iter)
 		return;
 
-	treeview = lookup_widget(mainwindow, "feedlist");
+	treeview = liferea_shell_lookup("feedlist");
 	path = gtk_tree_model_get_path(GTK_TREE_MODEL(feedstore), iter);
 	if(expanded)
 		gtk_tree_view_expand_row(GTK_TREE_VIEW(treeview), path, FALSE);
@@ -260,30 +263,34 @@ void ui_node_update(const gchar *nodeId) {
 
 /* node renaming dialog */
 
-static void on_nodenamedialog_response(GtkDialog *dialog, gint response_id, gpointer user_data) {
+static void
+on_nodenamedialog_response (GtkDialog *dialog, gint response_id, gpointer user_data)
+{
 	nodePtr	node = (nodePtr)user_data;
 
-	if(response_id == GTK_RESPONSE_OK) {
-		node_set_title(node, (gchar *)gtk_entry_get_text(GTK_ENTRY(lookup_widget(GTK_WIDGET(dialog), "nameentry"))));
+	if (response_id == GTK_RESPONSE_OK) {
+		node_set_title (node, (gchar *) gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET (dialog), "nameentry"))));
 
-		ui_node_update(node->id);
-		feedlist_schedule_save();
-		ui_popup_update_menues();
+		ui_node_update (node->id);
+		feedlist_schedule_save ();
+		ui_popup_update_menues ();
 	}
 	
-	gtk_widget_destroy(GTK_WIDGET(dialog));
+	gtk_widget_destroy (GTK_WIDGET (dialog));
 	nodenamedialog = NULL;
 }
 
-void ui_node_rename(nodePtr node) {
+void
+ui_node_rename (nodePtr node)
+{
 	GtkWidget	*nameentry;
 	
-	if(!nodenamedialog || !G_IS_OBJECT(nodenamedialog))
-		nodenamedialog = create_nodenamedialog();
+	if (!nodenamedialog || !G_IS_OBJECT (nodenamedialog))
+		nodenamedialog = liferea_dialog_new (NULL, "nodenamedialog");
 
-	nameentry = lookup_widget(nodenamedialog, "nameentry");
-	gtk_entry_set_text(GTK_ENTRY(nameentry), node_get_title(node));
-	g_signal_connect(G_OBJECT(nodenamedialog), "response", 
-	                 G_CALLBACK(on_nodenamedialog_response), node);
-	gtk_widget_show(nodenamedialog);
+	nameentry = liferea_dialog_lookup (nodenamedialog, "nameentry");
+	gtk_entry_set_text (GTK_ENTRY (nameentry), node_get_title (node));
+	g_signal_connect (G_OBJECT (nodenamedialog), "response", 
+	                  G_CALLBACK (on_nodenamedialog_response), node);
+	gtk_widget_show (nodenamedialog);
 }

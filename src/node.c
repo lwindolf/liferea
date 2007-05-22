@@ -21,22 +21,23 @@
  
 #include <string.h>
 
-#include "node.h"
-#include "db.h"
 #include "common.h"
 #include "conf.h"
-#include "callbacks.h"
+#include "db.h"
 #include "debug.h"
 #include "favicon.h"
 #include "feed.h"
 #include "feedlist.h"
 #include "folder.h"
 #include "itemset.h"
+#include "node.h"
 #include "render.h"
-#include "support.h"
 #include "update.h"
 #include "vfolder.h"
 #include "fl_sources/node_source.h"
+#include "ui/ui_feedlist.h"
+#include "ui/ui_itemlist.h"
+#include "ui/ui_node.h"
 #include "scripting/script.h"
 
 static GHashTable *nodes = NULL;

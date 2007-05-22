@@ -28,12 +28,11 @@
 #include <stdlib.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
-#include "support.h"
 #include "conf.h"
 #include "common.h"
 #include "rss_channel.h"
-#include "callbacks.h"
 #include "feed.h"
+#include "feedlist.h"
 #include "metadata.h"
 #include "ns_dc.h"
 #include "ns_content.h"
@@ -301,9 +300,6 @@ static void rss_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 			cur = cur->next;
 		}
 	}
-	
-	if(error)
-		ui_mainwindow_set_status_bar(_("There were errors while parsing the feed %s!"), subscription_get_source(ctxt->subscription));
 }
 
 static gboolean rss_format_check(xmlDocPtr doc, xmlNodePtr cur) {

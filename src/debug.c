@@ -97,6 +97,10 @@ debug_end_measurement_func (const char * function,
 	g_get_current_time (&endTime);
 	g_time_val_add (&endTime, (-1) * startTime->tv_usec);
 	
+	if ((0 == endTime.tv_sec - startTime->tv_sec) &&
+	    (0 == endTime.tv_usec/1000))
+		return;
+	
 	g_print ("%s: %s took %01ld,%03lds\n", debug_get_prefix (flags), name, 
 	                                     endTime.tv_sec - startTime->tv_sec, 
 					     endTime.tv_usec/1000);

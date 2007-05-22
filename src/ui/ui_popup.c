@@ -1,7 +1,7 @@
 /**
  * @file ui_popup.c popup menus
  *
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -26,16 +26,24 @@
 #include <libxml/uri.h>
 #include <string.h>
 
+#include "common.h"
 #include "feed.h"
+#include "feedlist.h"
+#include "itemlist.h"
 #include "node.h"
-#include "support.h"
-#include "callbacks.h"
+#include "newsbin.h"
 #include "social.h"
 #include "update.h"
-#include "ui/ui_popup.h"
-#include "ui/ui_mainwindow.h"
 #include "ui/ui_enclosure.h"
 #include "ui/ui_feedlist.h"
+#include "ui/ui_htmlview.h"
+#include "ui/ui_itemlist.h"
+#include "ui/ui_mainwindow.h"
+#include "ui/ui_popup.h"
+#include "ui/ui_prefs.h"
+#include "ui/ui_shell.h"
+#include "ui/ui_tabs.h"
+#include "fl_sources/node_source.h"
 
 /*------------------------------------------------------------------------------*/
 /* popup menu callbacks 							*/
@@ -327,7 +335,7 @@ gboolean on_mainfeedlist_button_press_event(GtkWidget *widget,
 	gboolean	selected = TRUE;
 	nodePtr		node = NULL;
 
-	treeview = lookup_widget(mainwindow, "feedlist");
+	treeview = liferea_shell_lookup ("feedlist");
 	g_assert(treeview);
 
 	if(event->type != GDK_BUTTON_PRESS)
@@ -336,11 +344,11 @@ gboolean on_mainfeedlist_button_press_event(GtkWidget *widget,
 	eb = (GdkEventButton*)event;
 
 	/* determine node */	
-	if(!gtk_tree_view_get_path_at_pos(GTK_TREE_VIEW(lookup_widget(mainwindow, "feedlist")), event->x, event->y, &path, NULL, NULL, NULL)) {
+	if(!gtk_tree_view_get_path_at_pos(GTK_TREE_VIEW(liferea_shell_lookup("feedlist")), event->x, event->y, &path, NULL, NULL, NULL)) {
 		selected=FALSE;
 		node = feedlist_get_root();
 	} else {
-		model = gtk_tree_view_get_model(GTK_TREE_VIEW(lookup_widget(mainwindow, "feedlist")));
+		model = gtk_tree_view_get_model(GTK_TREE_VIEW(liferea_shell_lookup("feedlist")));
 		gtk_tree_model_get_iter(model, &iter, path);
 		gtk_tree_path_free(path);
 		gtk_tree_model_get(model, &iter, FS_PTR, &node, -1);

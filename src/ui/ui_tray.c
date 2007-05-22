@@ -28,15 +28,15 @@
 #include <gtk/gtk.h>
 #include <gdk/gdk.h>
 
-#include "callbacks.h"
+#include "common.h"
 #include "conf.h"
 #include "eggtrayicon.h"
-#include "support.h"
 #include "feedlist.h"
-#include "ui_tray.h"
-#include "ui_popup.h"
-#include "ui_mainwindow.h"
 #include "update.h"
+#include "ui/ui_dnd.h"
+#include "ui/ui_mainwindow.h"
+#include "ui/ui_popup.h"
+#include "ui/ui_tray.h"
 
 // FIXME: determine this from Pango or Cairo somehow...
 #define	FONT_CHAR_WIDTH	6
@@ -46,8 +46,6 @@
 #define TRAY_ICON_HEIGHT 16
 
 extern GdkPixbuf	*icons[];
-
-extern GtkWidget	*mainwindow;
 
 static struct trayIcon_priv {
 	int		trayCount;		/**< reference counter */

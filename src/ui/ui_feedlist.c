@@ -31,22 +31,23 @@
 #include <fcntl.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
-#include "support.h"
-#include "interface.h"
-#include "callbacks.h"
+
 #include "common.h"
-#include "feedlist.h"
 #include "conf.h"
-#include "update.h"
 #include "favicon.h"
+#include "feedlist.h"
+#include "update.h"
 #include "debug.h"
+#include "ui/ui_dnd.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_mainwindow.h"
+#include "ui/ui_node.h"
+#include "ui/ui_shell.h"
 #include "ui/ui_subscription.h"
-#include "ui/ui_vfolder.h"
 #include "ui/ui_tabs.h"
+#include "ui/ui_vfolder.h"
+#include "fl_sources/node_source.h"
 
-extern GtkWidget	*mainwindow;
 extern GHashTable	*feedHandler;
 
 GtkTreeModel		*filter;
@@ -78,7 +79,7 @@ nodePtr ui_feedlist_get_target_folder(int *pos) {
 	if(NODE_TYPE_FOLDER == node->type) {
 		return node;
 	} else {
-		path = gtk_tree_model_get_path(gtk_tree_view_get_model(GTK_TREE_VIEW(lookup_widget(mainwindow, "feedlist"))), iter);
+		path = gtk_tree_model_get_path (gtk_tree_view_get_model (GTK_TREE_VIEW (liferea_shell_lookup ("feedlist"))), iter);
 		indices = gtk_tree_path_get_indices(path);
 		if(NULL != pos)
 			*pos = indices[gtk_tree_path_get_depth(path)-1] + 1;
@@ -115,7 +116,7 @@ static void ui_feedlist_selection_changed_cb(GtkTreeSelection *selection, gpoint
 			
 			/* workaround to ensure the feedlist is focussed when we click it
 			   (Mozilla might prevent this, ui_itemlist_display() depends on this */
-			gtk_widget_grab_focus(lookup_widget(mainwindow, "feedlist"));
+			gtk_widget_grab_focus ( liferea_shell_lookup ("feedlist"));
 		}
 		
 		/* update feed list and item list states */
@@ -221,9 +222,9 @@ void ui_feedlist_init(GtkWidget *feedview) {
 	select = gtk_tree_view_get_selection(GTK_TREE_VIEW(feedview));
 	gtk_tree_selection_set_mode(select, GTK_SELECTION_SINGLE);
 	
-	g_signal_connect(G_OBJECT(select), "changed",
-                 	 G_CALLBACK(ui_feedlist_selection_changed_cb),
-                	 lookup_widget(mainwindow, "feedlist"));
+	g_signal_connect (G_OBJECT (select), "changed",
+	                  G_CALLBACK (ui_feedlist_selection_changed_cb),
+                	  liferea_shell_lookup ("feedlist"));
 	
 	ui_dnd_setup_feedlist(feedstore);			
 	ui_mainwindow_update_feed_menu(FALSE, FALSE);
@@ -235,7 +236,7 @@ void ui_feedlist_select(nodePtr node) {
 	GtkWidget		*treeview;
 	GtkWidget		*focused;
 
-	treeview = lookup_widget(mainwindow, "feedlist");
+	treeview = liferea_shell_lookup ("feedlist");
 	
 	/* To work around a GTK+ bug. If the treeview is not
 	   focused, setting the selected item will always select the

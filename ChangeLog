@@ -5,7 +5,15 @@
 	* Fixes a crash when updating comment feeds.
 	* Better update result processing timer, should cause
 	  less CPU usage. (patch from Arjan van de Ven)
-
+	* Adds a new dependency to libglade-2.0 because glade-3
+	  dropped code generation support. UI is now loaded 
+	  directly from the glade XML source file.
+	* Changing sqlite3 dependency from 3.3.9 to 3.3 because
+	  the sqlite3 pkg-config file doesn't provide the minor
+	  version.
+	* Removed support for old notification popups in favour
+	  of the libnotify style notifications.
+	  
 
 2007-05-11  Lars Lindner  <lars.lindner@gmail.com>
 
@@ -21,6 +29,7 @@
 	* Fixes a crash when migrating.
         * Fixes an favicon update state problem that caused
 	  continuous favicon updates.
+	  
 
 2007-05-06  Lars Lindner  <lars.lindner@gmail.com>
 

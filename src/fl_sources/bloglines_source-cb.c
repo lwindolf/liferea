@@ -1,7 +1,7 @@
 /**
  * @file bloglines_source-cb.c Bloglines feed list provider
  * 
- * Copyright (C) 2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2006-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,47 +24,63 @@
 
 #include <gtk/gtk.h>
 #include <libxml/uri.h>
+#include <glade/glade.h>
 
 #include "fl_sources/bloglines_source.h"
 #include "fl_sources/bloglines_source-cb.h"
-#include "fl_sources/bloglines_source-ui.h"
 #include "fl_sources/opml_source.h"
-#include "support.h"
+#include "ui/ui_dialog.h"
 
-static void on_bloglines_source_selected(GtkDialog *dialog, gint response_id, gpointer user_data) {
-	nodePtr		node, parent = (nodePtr)user_data;
+static void
+on_bloglines_source_selected (GtkDialog *dialog,
+                              gint response_id,
+                              gpointer user_data) 
+{
+	nodePtr		node, parent = (nodePtr) user_data;
 	gchar		*url;
 	xmlURIPtr 	uri;
 
-	if(response_id == GTK_RESPONSE_OK) {
-		uri = xmlParseURI("http://rpc.bloglines.com/listsubs");
-		uri->user = g_strdup_printf("%s:%s", gtk_entry_get_text(GTK_ENTRY(lookup_widget(GTK_WIDGET(dialog), "userEntry"))),
-		                            gtk_entry_get_text(GTK_ENTRY(lookup_widget(GTK_WIDGET(dialog), "passwordEntry"))));
-		url = xmlSaveUri(uri);
+	if (response_id == GTK_RESPONSE_OK) {
+		uri = xmlParseURI ("http://rpc.bloglines.com/listsubs");
+		uri->user = g_strdup_printf ("%s:%s", gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET (dialog), "userEntry"))),
+		                             gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET (dialog), "passwordEntry"))));
+		url = xmlSaveUri (uri);
 
-		node = node_new();
-		node_set_title(node, "Bloglines");
-		node_source_new(node, bloglines_source_get_type(), url);
-		node->source->updateOptions->username = g_strdup(gtk_entry_get_text(GTK_ENTRY(lookup_widget(GTK_WIDGET(dialog), "userEntry"))));
-		node->source->updateOptions->password = g_strdup(gtk_entry_get_text(GTK_ENTRY(lookup_widget(GTK_WIDGET(dialog), "passwordEntry"))));
-		opml_source_setup(parent, node);
-		opml_source_update(node);
+		node = node_new ();
+		node_set_title (node, "Bloglines");
+		node_source_new (node, bloglines_source_get_type (), url);
+		node->source->updateOptions->username = g_strdup (gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "userEntry"))));
+		node->source->updateOptions->password = g_strdup (gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "passwordEntry"))));
+		opml_source_setup (parent, node);
+		opml_source_update (node);
 		
-		g_free(url);
-		xmlFreeURI(uri);
+		g_free (url);
+		xmlFreeURI (uri);
 	}
 
-	gtk_widget_destroy(GTK_WIDGET(dialog));
+	gtk_widget_destroy (GTK_WIDGET (dialog));
 }
 
-void ui_bloglines_source_get_account_info(nodePtr parent) {
+static void
+on_bloglines_source_dialog_destroy (GtkDialog *dialog,
+                                    gpointer user_data) 
+{
+	g_object_unref (user_data);
+}
+
+void
+ui_bloglines_source_get_account_info (nodePtr parent)
+{
 	GtkWidget	*dialog;
-
-	dialog = create_bloglines_source_dialog();
-
-	g_signal_connect(G_OBJECT(dialog), "response",
-			 G_CALLBACK(on_bloglines_source_selected), 
-			 (gpointer)parent);
-
-	gtk_widget_show_all(dialog);
+	GladeXML	*xml;
+	
+	xml = glade_xml_new ( PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE "bloglines_source.glade", NULL, NULL);
+	dialog = glade_xml_get_widget (xml, "bloglines_source_dialog");
+	
+	g_signal_connect (G_OBJECT (dialog), "response",
+			  G_CALLBACK (on_bloglines_source_selected), 
+			  (gpointer) parent);
+	g_signal_connect (G_OBJECT (dialog), "destroy",
+	                  G_CALLBACK (on_bloglines_source_dialog_destroy),
+			  (gpointer) xml);
 }

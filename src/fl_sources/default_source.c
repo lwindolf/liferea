@@ -22,7 +22,7 @@
 #include <glib.h>
 #include <glib/gstdio.h>
 #include <string.h>
-#include "support.h"
+
 #include "common.h"
 #include "conf.h"
 #include "debug.h"
