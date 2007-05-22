@@ -1,5 +1,6 @@
 # List of source files containing translatable strings.
 
+liferea.glade
 liferea.desktop.in
 xslt/feed.xml.in
 xslt/source.xml.in
@@ -9,8 +10,6 @@ xslt/newsbin.xml.in
 xslt/vfolder.xml.in
 src/bacon-message-connection.c
 src/bacon-message-connection.h
-src/callbacks.c
-src/callbacks.h
 src/comments.c
 src/comments.h
 src/common.c
@@ -35,8 +34,6 @@ src/html.c
 src/html.h
 src/htmlview.c
 src/htmlview.h
-src/interface.c
-src/interface.h
 src/item.c
 src/item.h
 src/itemlist.c
@@ -60,8 +57,6 @@ src/social.c
 src/social.h
 src/subscription.c
 src/subscription.h
-src/support.c
-src/support.h
 src/update.c
 src/update.h
 src/vfolder.c
@@ -70,6 +65,8 @@ src/ui/eggtrayicon.c
 src/ui/eggtrayicon.h
 src/ui/ui_auth.c
 src/ui/ui_auth.h
+src/ui/ui_dialog.c
+src/ui/ui_dialog.h
 src/ui/ui_dnd.c
 src/ui/ui_dnd.h
 src/ui/ui_enclosure.c
@@ -94,6 +91,8 @@ src/ui/ui_search.c
 src/ui/ui_search.h
 src/ui/ui_session.c
 src/ui/ui_session.h
+src/ui/ui_shell.c
+src/ui/ui_shell.h
 src/ui/ui_subscription.c
 src/ui/ui_subscription.h
 src/ui/ui_tabs.c
@@ -136,6 +135,7 @@ src/parsers/rss_channel.c
 src/parsers/rss_channel.h
 src/parsers/rss_item.c
 src/parsers/rss_item.h
+src/fl_sources/bloglines_source.glade
 src/fl_sources/bloglines_source.c
 src/fl_sources/bloglines_source-cb.c
 src/fl_sources/bloglines_source-cb.h
@@ -146,12 +146,14 @@ src/fl_sources/default_source.c
 src/fl_sources/default_source.h
 src/fl_sources/dummy_source.c
 src/fl_sources/dummy_source.h
+src/fl_sources/opml_source.glade
 src/fl_sources/opml_source.c
 src/fl_sources/opml_source.h
 src/fl_sources/opml_source-ui.c
 src/fl_sources/opml_source-ui.h
 src/fl_sources/opml_source-cb.c
 src/fl_sources/opml_source-cb.h
+src/fl_sources/node_source.glade
 src/fl_sources/node_source.c
 src/fl_sources/node_source.h
 src/fl_sources/node_source-ui.c
