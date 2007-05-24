@@ -280,7 +280,7 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 		gtk_option_menu_set_menu(GTK_OPTION_MENU(liferea_dialog_lookup(prefdialog, "browserlocpopup")), menu);
 
 		/* Create the startup feed handling menu */
-		menu = gtk_menu_new();
+/*		menu = gtk_menu_new();
 
 		entry = gtk_menu_item_new_with_label(_("Update only feeds scheduled for updates"));
 		gtk_widget_show(entry);
@@ -298,7 +298,7 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 		gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_startup_feed_handler_changed), GINT_TO_POINTER(2));
 
 		gtk_option_menu_set_menu(GTK_OPTION_MENU(liferea_dialog_lookup(prefdialog, "startupfeedhandler")), menu);
-
+*/
 		/* Create the toolbar style combo */
 		combo = liferea_dialog_lookup(prefdialog, "toolbarcombo");
 		gtk_combo_box_append_text(GTK_COMBO_BOX(combo), _("GNOME default"));
