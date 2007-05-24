@@ -56,7 +56,6 @@ static GtkWidget *prefdialog = NULL;
 
 static void on_browser_changed(GtkOptionMenu *optionmenu, gpointer user_data);
 static void on_browser_place_changed(GtkOptionMenu *optionmenu, gpointer user_data);
-static void on_startup_feed_handler_changed(GtkEditable *editable, gpointer user_data);
 static void on_updateallfavicons_clicked(GtkButton *button, gpointer user_data);
 static void on_enableproxybtn_clicked (GtkButton *button, gpointer user_data);
 static void on_enc_download_tool_changed(GtkEditable *editable, gpointer user_data);
@@ -279,38 +278,13 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 
 		gtk_option_menu_set_menu(GTK_OPTION_MENU(liferea_dialog_lookup(prefdialog, "browserlocpopup")), menu);
 
-		/* Create the startup feed handling menu */
-/*		menu = gtk_menu_new();
-
-		entry = gtk_menu_item_new_with_label(_("Update only feeds scheduled for updates"));
-		gtk_widget_show(entry);
-		gtk_container_add(GTK_CONTAINER(menu), entry);
-		gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_startup_feed_handler_changed), GINT_TO_POINTER(0));
-
-		entry = gtk_menu_item_new_with_label(_("Update all feeds"));
-		gtk_widget_show(entry);
-		gtk_container_add(GTK_CONTAINER(menu), entry);
-		gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_startup_feed_handler_changed), GINT_TO_POINTER(1));
-
-		entry = gtk_menu_item_new_with_label(_("Reset feed update timers (Update no feeds)"));
-		gtk_widget_show(entry);
-		gtk_container_add(GTK_CONTAINER(menu), entry);
-		gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_startup_feed_handler_changed), GINT_TO_POINTER(2));
-
-		gtk_option_menu_set_menu(GTK_OPTION_MENU(liferea_dialog_lookup(prefdialog, "startupfeedhandler")), menu);
-*/
 		/* Create the toolbar style combo */
 		combo = liferea_dialog_lookup(prefdialog, "toolbarcombo");
-		gtk_combo_box_append_text(GTK_COMBO_BOX(combo), _("GNOME default"));
-		gtk_combo_box_append_text(GTK_COMBO_BOX(combo), _("Text below icons"));
-		gtk_combo_box_append_text(GTK_COMBO_BOX(combo), _("Text beside icons"));
-		gtk_combo_box_append_text(GTK_COMBO_BOX(combo), _("Icons only"));
-		gtk_combo_box_append_text(GTK_COMBO_BOX(combo), _("Text only"));
 
 		/* ================== panel 1 "feeds" ==================== */
 
-		tmp = getNumericConfValue(STARTUP_FEED_ACTION);
-		gtk_option_menu_set_history(GTK_OPTION_MENU(liferea_dialog_lookup(prefdialog, "startupfeedhandler")), tmp);
+		gtk_combo_box_set_active (GTK_COMBO_BOX (liferea_dialog_lookup (prefdialog, "startupActionCombo")), 
+		                          getNumericConfValue (STARTUP_FEED_ACTION));
 
 		widget = liferea_dialog_lookup(prefdialog, "itemCountBtn");
 		itemCount = gtk_spin_button_get_adjustment(GTK_SPIN_BUTTON(widget));
@@ -339,23 +313,9 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 
 		/* ================== panel 3 "headlines" ==================== */
 
-		/* select current browse key menu entry */
-		switch(getNumericConfValue(BROWSE_KEY_SETTING)) {
-			case 0:
-				tmp = 1;
-				break;
-			default:
-			case 1:
-				tmp = 0;
-				break;
-			case 2:
-				tmp = 2;
-				break;
-
-		}
-		widget = liferea_dialog_lookup(prefdialog, "browsekeyoptionmenu");
-		gtk_option_menu_set_history(GTK_OPTION_MENU(widget), tmp);
-		
+		gtk_combo_box_set_active (GTK_COMBO_BOX (liferea_dialog_lookup(prefdialog, "skimKeyCombo")),
+		                          getNumericConfValue(BROWSE_KEY_SETTING));
+					  
 		/* Setup social bookmarking list */
 		i = 0;
 		name = getStringConfValue(SOCIAL_BM_SITE);
@@ -441,7 +401,6 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 		g_free(widgetname);
 
 		/* select currently active toolbar style option */
-		gtk_signal_connect(GTK_OBJECT(liferea_dialog_lookup(prefdialog, "toolbarcombo")), "changed", G_CALLBACK(on_toolbar_style_changed), NULL);
 		name = getStringConfValue(TOOLBAR_STYLE);
 
 		i = 0;
@@ -449,13 +408,13 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 			if (strcmp(name, gui_toolbar_style[i]) == 0)
 				break;
 		}
-		g_free(name);
+		g_free (name);
 
 		// Invalid key value. Revert to default
 		if (gui_toolbar_style[i] == NULL)
 			i = 0;
 
-		gtk_combo_box_set_active(GTK_COMBO_BOX(liferea_dialog_lookup(prefdialog, "toolbarcombo")), i);
+		gtk_combo_box_set_active (GTK_COMBO_BOX (liferea_dialog_lookup (prefdialog, "toolbarCombo")), i);
 
 		/* ================= panel 5 "proxy" ======================== */
 		enabled = getBooleanConfValue(USE_PROXY);
@@ -568,9 +527,10 @@ void on_popupwindowsoptionbtn_clicked(GtkButton *button, gpointer user_data) {
 	gtk_widget_set_sensitive(liferea_dialog_lookup(prefdialog, "placement_options"), enabled);
 }
 
-static void on_startup_feed_handler_changed(GtkEditable *editable, gpointer user_data) {
-
-	setNumericConfValue(STARTUP_FEED_ACTION, GPOINTER_TO_INT(user_data));
+void
+on_startupActionCombo_changed(GtkComboBox *combo, gpointer user_data)
+{
+	setNumericConfValue(STARTUP_FEED_ACTION, gtk_combo_box_get_active (GTK_COMBO_BOX (liferea_dialog_lookup (prefdialog, "startupActionCombo"))));
 }
 
 void on_browsercmd_changed(GtkEditable *editable, gpointer user_data) {
@@ -608,7 +568,7 @@ void on_socialsite_changed(GtkOptionMenu *optionmenu, gpointer user_data) {
 	social_set_site((gchar *)user_data);
 }
 
-void on_toolbar_style_changed(GtkComboBox *widget, gpointer user_data) {
+void on_toolbarCombo_changed(GtkComboBox *widget, gpointer user_data) {
 	gchar *style;
 	gint value = gtk_combo_box_get_active(widget);
 	setStringConfValue(TOOLBAR_STYLE, gui_toolbar_style[value]);
@@ -686,7 +646,6 @@ void on_proxyhostentry_changed(GtkEditable *editable, gpointer user_data) {
 	setStringConfValue(PROXY_HOST, gtk_editable_get_chars(editable,0,-1));
 }
 
-
 void on_proxyportentry_changed(GtkEditable *editable, gpointer user_data) {
 	setNumericConfValue(PROXY_PORT, atoi(gtk_editable_get_chars(editable,0,-1)));
 }
@@ -699,19 +658,10 @@ void on_proxypasswordentry_changed(GtkEditable *editable, gpointer user_data) {
 	setStringConfValue(PROXY_PASSWD, gtk_editable_get_chars(editable,0,-1));
 }
 
-void on_browsekey_space_activate(GtkMenuItem *menuitem, gpointer user_data) {
-
-	setNumericConfValue(BROWSE_KEY_SETTING, 1);
-}
-
-void on_browsekey_ctrl_space_activate(GtkMenuItem *menuitem, gpointer user_data) {
-
-	setNumericConfValue(BROWSE_KEY_SETTING, 0);
-}
-
-void on_browsekey_alt_space_activate(GtkMenuItem *menuitem, gpointer user_data) {
-
-	setNumericConfValue(BROWSE_KEY_SETTING, 2);
+void
+on_skimKeyCombo_changed(GtkComboBox *combo, gpointer user_data) 
+{
+	setNumericConfValue (BROWSE_KEY_SETTING, gtk_combo_box_get_active (GTK_COMBO_BOX (liferea_dialog_lookup (prefdialog, "skimKeyCombo"))));
 }
 
 static void on_enc_download_tool_changed(GtkEditable *editable, gpointer user_data) {

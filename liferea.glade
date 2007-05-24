@@ -1755,6 +1755,7 @@ days</property>
                                     <child>
                                       <widget class="GtkComboBox" id="refreshIntervalUnitComboBox">
                                         <property name="visible">True</property>
+                                        <property name="row_span_column">3</property>
                                         <property name="items" translatable="yes">minutes
 hours
 days</property>
@@ -1780,7 +1781,7 @@ days</property>
                               <widget class="GtkLabel" id="label135">
                                 <property name="visible">True</property>
                                 <property name="xalign">0</property>
-                                <property name="label" translatable="yes">Note: &lt;i&gt;Please remember to set a reasonable refresh time. It is not desired to poll daily updated feeds every 15 minutes. To disable auto-updating per default set the interval to 0 minutes.&lt;/i&gt;</property>
+                                <property name="label" translatable="yes" comments="Feed update interval hint in preference dialog.">Note: &lt;i&gt;Please remember to set a reasonable refresh time. Usually It is a waste of bandwidth to poll feeds more often than each hour.&lt;/i&gt;</property>
                                 <property name="use_markup">True</property>
                                 <property name="wrap">True</property>
                               </widget>
@@ -1799,7 +1800,6 @@ days</property>
                                     <property name="visible">True</property>
                                     <property name="label" translatable="yes">At _startup:</property>
                                     <property name="use_underline">True</property>
-                                    <property name="mnemonic_widget">startupfeedhandler</property>
                                   </widget>
                                   <packing>
                                     <property name="expand">False</property>
@@ -1807,9 +1807,14 @@ days</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <widget class="GtkOptionMenu" id="startupfeedhandler">
+                                  <widget class="GtkComboBox" id="startupActionCombo">
                                     <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
+                                    <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                                    <property name="row_span_column">0</property>
+                                    <property name="items" translatable="yes" comments="Preference dialog menu options for feed update behaviour on startup.">Update out-dated feeds
+Force update of all feeds
+No feed update at all</property>
+                                    <signal name="changed" handler="on_startupActionCombo_changed"/>
                                   </widget>
                                   <packing>
                                     <property name="expand">False</property>
@@ -2045,12 +2050,13 @@ days</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkComboBox" id="combobox1">
+                              <widget class="GtkComboBox" id="skimKeyCombo">
                                 <property name="visible">True</property>
                                 <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                                <property name="items" translatable="yes" comments="menu entries for headline skimming key in preferences">Space
+                                <property name="items" translatable="yes" comments="Headline skimming hotkey preference combo box values. Propably don't need translation.">Space
 &lt;Ctrl&gt; Space
 &lt;Alt&gt; Space</property>
+                                <signal name="changed" handler="on_skimKeyCombo_changed"/>
                               </widget>
                               <packing>
                                 <property name="expand">False</property>
@@ -2624,7 +2630,7 @@ days</property>
                                     <property name="label" translatable="yes">Toolbar _button labels:</property>
                                     <property name="use_markup">True</property>
                                     <property name="use_underline">True</property>
-                                    <property name="mnemonic_widget">toolbarcombo</property>
+                                    <property name="mnemonic_widget">toolbarCombo</property>
                                   </widget>
                                   <packing>
                                     <property name="expand">False</property>
@@ -2632,8 +2638,14 @@ days</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <widget class="GtkComboBox" id="toolbarcombo">
+                                  <widget class="GtkComboBox" id="toolbarCombo">
                                     <property name="visible">True</property>
+                                    <property name="items" translatable="yes" comments="Toolbar style options in preferences.">GNOME default
+Text below icons
+Text beside icons
+Icons only
+Text only</property>
+                                    <signal name="changed" handler="on_toolbarCombo_changed"/>
                                   </widget>
                                   <packing>
                                     <property name="expand">False</property>
@@ -3121,11 +3133,13 @@ days</property>
                                 <property name="can_focus">True</property>
                                 <property name="shadow_type">GTK_SHADOW_IN</property>
                                 <child>
-                                  <widget class="GtkTreeView" id="enc_actions_view">
-                                    <property name="height_request">100</property>
+                                  <widget class="GtkTreeView" id="enc_action_view">
+				    <property name="height_request">100</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
-                                    <property name="rules_hint">True</property>
+				    <property name="rules_hint">True</property>
+                                    <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                                    <property name="headers_clickable">True</property>
                                   </widget>
                                 </child>
                               </widget>
@@ -5259,9 +5273,5 @@ matches. They are removed if at least one removing rule matches.</property>
         </child>
       </widget>
     </child>
-  </widget>
-  <widget class="GtkMenu" id="menu1">
-    <property name="visible">True</property>
-    <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
   </widget>
 </glade-interface>

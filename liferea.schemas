@@ -38,7 +38,7 @@ To change the gconftool target use the - -config-source=blah option to gconftool
         <short>Selects which key to use to pagedown or go to the next
 	   unread item</short>
         <long>Selects which key to use to pagedown or go to the next
-	   unread item. Set to 0 to use ctrl-space, 1 to use space, or 2
+	   unread item. Set to 0 to use space, 1 to use ctrl-space, or 2
 	   to use alt-space.</long>
       </locale>
     </schema>
