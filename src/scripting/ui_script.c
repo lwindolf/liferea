@@ -43,8 +43,8 @@ static struct hookInfo availableHooks[] = {
 	/* selection hooks */
 	{ N_("item selected"),		SCRIPT_HOOK_ITEM_SELECTED },
 	{ N_("feed selected"),		SCRIPT_HOOK_FEED_SELECTED },
-	{ N_("item unselect"),		SCRIPT_HOOK_ITEM_UNSELECT },
-	{ N_("feed unselect"),		SCRIPT_HOOK_FEED_UNSELECT },
+	{ N_("item unselected"),	SCRIPT_HOOK_ITEM_UNSELECT },
+	{ N_("feed unselected"),	SCRIPT_HOOK_FEED_UNSELECT },
 	
 	{ N_("shutdown"),		SCRIPT_HOOK_SHUTDOWN },
 	
