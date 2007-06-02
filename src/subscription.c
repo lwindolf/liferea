@@ -92,9 +92,9 @@ subscription_can_be_updated (nodePtr node)
 }	
 
 void
-subscription_reset_update_counter (subscriptionPtr subscription) 
+subscription_reset_update_counter (subscriptionPtr subscription, GTimeVal *now) 
 {
-	g_get_current_time (&subscription->updateState->lastPoll);
+	subscription->updateState->lastPoll.tv_sec = now->tv_sec;
 	db_update_state_save (subscription->node->id, subscription->updateState);
 	debug1 (DEBUG_UPDATE, "Resetting last poll counter to %ld.\n", subscription->updateState->lastPoll.tv_sec);
 }
@@ -102,11 +102,12 @@ subscription_reset_update_counter (subscriptionPtr subscription)
 void
 subscription_prepare_request (subscriptionPtr subscription,
                               struct request *request,
-                              guint flags)
+                              guint flags,
+                              GTimeVal *now)
 {
 	debug1 (DEBUG_UPDATE, "preparing request for \"%s\"\n", subscription_get_source (subscription));
 
-	subscription_reset_update_counter (subscription);
+	subscription_reset_update_counter (subscription, now);
 
 	/* prepare request url (strdup because it might be
   	   changed on permanent HTTP redirection in netio.c) */
@@ -267,11 +268,11 @@ subscription_favicon_downloaded (gpointer user_data)
 }
 
 void
-subscription_update_favicon (subscriptionPtr subscription)
+subscription_update_favicon (subscriptionPtr subscription, GTimeVal *now)
 {	
 	debug1 (DEBUG_UPDATE, "trying to download favicon.ico for \"%s\"\n", node_get_title (subscription->node));
 	ui_mainwindow_set_status_bar (_("Updating favicon for \"%s\""), node_get_title (subscription->node));
-	g_get_current_time (&subscription->updateState->lastFaviconPoll);
+	subscription->updateState->lastFaviconPoll.tv_sec = now->tv_sec;
 	favicon_download (subscription->node->id,
 	                  node_get_base_url (subscription->node),
 			  subscription_get_source (subscription),

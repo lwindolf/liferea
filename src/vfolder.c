@@ -287,9 +287,9 @@ vfolder_update_unread_count (nodePtr node)
 	g_warning("Should never be called!");
 }
 
-static void vfolder_reset_update_counter (nodePtr node) { }
+static void vfolder_reset_update_counter (nodePtr node, GTimeVal *now) { }
 static void vfolder_request_update (nodePtr node, guint flags) { }
-static void vfolder_request_auto_update (nodePtr node) { }
+static void vfolder_request_auto_update (nodePtr node, GTimeVal *now) { }
 
 static void
 vfolder_remove (nodePtr node) 

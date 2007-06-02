@@ -134,16 +134,21 @@ void feedlist_remove_node(nodePtr node) {
 	debug_exit("feedlist_remove_node");
 }
 
-static gboolean feedlist_auto_update(void *data) {
-
-	debug_enter("feedlist_auto_update");
-
-	if(update_is_online())
-		feedlist_foreach(node_request_auto_update);
-	else
-		debug0(DEBUG_UPDATE, "no update processing because we are offline!");
+static gboolean
+feedlist_auto_update (void *data)
+{
+	GTimeVal now;
 	
-	debug_exit("feedlist_auto_update");
+	debug_enter ("feedlist_auto_update");
+
+	if (update_is_online()) {
+		g_get_current_time (&now);
+		feedlist_foreach_data (node_request_auto_update, &now);
+	} else {
+		debug0 (DEBUG_UPDATE, "no update processing because we are offline!");
+	}
+	
+	debug_exit ("feedlist_auto_update");
 
 	return TRUE;
 }

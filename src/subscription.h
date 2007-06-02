@@ -86,8 +86,9 @@ gboolean subscription_can_be_updated(nodePtr node);
  * @param subscription	the subscription
  * @param request	an uninitialized request
  * @param flags		request processing flags
+ * @param now		current time
  */
-void subscription_prepare_request(subscriptionPtr subscription, struct request *request, guint flags);
+void subscription_prepare_request (subscriptionPtr subscription, struct request *request, guint flags, GTimeVal *now);
 
 /**
  * Get the update interval setting of a given subscription
@@ -127,8 +128,9 @@ void subscription_set_default_update_interval(subscriptionPtr subscription, guin
  * Reset the update counter for the given subscription.
  *
  * @param subscription	the subscription
+ * @param now		current time
  */
-void subscription_reset_update_counter(subscriptionPtr subscription);
+void subscription_reset_update_counter (subscriptionPtr subscription, GTimeVal *now);
 
 /**
  * Get the source URL of a given subscription
@@ -195,8 +197,9 @@ void subscription_update_error_status(subscriptionPtr subscription, gint httpsta
  * Request the favicon of the given node to be updated.
  *
  * @param subscription	the subscription
+ * @param now		current time
  */
-void subscription_update_favicon(subscriptionPtr subscription);
+void subscription_update_favicon (subscriptionPtr subscription, GTimeVal *now);
 
 /**
  * Frees the given subscription structure.

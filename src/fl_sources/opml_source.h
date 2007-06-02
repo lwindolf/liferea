@@ -76,8 +76,9 @@ void opml_source_process_update_results(requestPtr request);
  * Updates the OPML source of the given node.
  *
  * @param node		the node
+ * @param now		current time
  */
-void opml_source_update(nodePtr node);
+void opml_source_update(nodePtr node, GTimeVal *now);
 
 /**
  * Returns OPML source type implementation info.

@@ -1,7 +1,7 @@
 /**
  * @file node_source.h generic feed list provider interface
  * 
- * Copyright (C) 2005-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2005-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -105,13 +105,13 @@ typedef struct nodeSourceType {
 	 * This OPTIONAL callback is called to start a user requested
 	 * update of the source the node belongs to.
 	 */
-	void		(*source_update)(nodePtr node);
+	void		(*source_update)(nodePtr node, GTimeVal *now);
 	
 	/**
 	 * This MANDATORY callback is called regularily to allow 
 	 * the the source the node belongs to to auto-update.
 	 */
-	void		(*source_auto_update)(nodePtr node);
+	void		(*source_auto_update)(nodePtr node, GTimeVal *now);
 } *nodeSourceTypePtr;
 
 /** feed list source instance */

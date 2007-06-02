@@ -93,19 +93,22 @@ static void folder_update_unread_count(nodePtr node) {
 	node_foreach_child_data(node, folder_add_child_unread_count, &node->unreadCount);
 }
 
-static void folder_reset_update_counter(nodePtr node) {
-
-	node_foreach_child(node, node_reset_update_counter);
+static void
+folder_reset_update_counter (nodePtr node, GTimeVal *now)
+{
+	node_foreach_child_data (node, node_reset_update_counter, now);
 }
 
-static void folder_request_update(nodePtr node, guint flags) {
-
-	node_foreach_child_data(node, node_request_update, GUINT_TO_POINTER(flags));
+static void
+folder_request_update (nodePtr node, guint flags)
+{
+	node_foreach_child_data (node, node_request_update, GUINT_TO_POINTER (flags));
 }
 
-static void folder_request_auto_update(nodePtr node) {
-	
-	node_foreach_child(node, node_request_auto_update);
+static void
+folder_request_auto_update (nodePtr node, GTimeVal *now) 
+{	
+	node_foreach_child_data (node, node_request_auto_update, now);
 }
 
 static void folder_remove(nodePtr node) {

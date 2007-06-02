@@ -625,9 +625,13 @@ void on_menuselection_clicked(GtkButton *button, gpointer user_data) {
 	ui_mainwindow_update_toolbar();
 }
 
-static void on_updateallfavicons_clicked(GtkButton *button, gpointer user_data) {
-
-	feedlist_foreach(node_update_favicon);
+static void
+on_updateallfavicons_clicked (GtkButton *button, gpointer user_data)
+{
+	GTimeVal now;
+	
+	g_get_current_time (&now);
+	feedlist_foreach_data (node_update_favicon, &now);
 }
  
 static void on_enableproxybtn_clicked(GtkButton *button, gpointer user_data) {

@@ -1,5 +1,5 @@
 /**
- * @file node_source.c generic feedlist provider implementation
+ * @file node_source.c generic feed list provider implementation
  * 
  * Copyright (C) 2005-2007 Lars Lindner <lars.lindner@gmail.com>
  *
@@ -272,16 +272,18 @@ ui_node_source_type_dialog (nodePtr parent)
 static void
 node_source_request_update (nodePtr node, guint flags)
 {
-
+	GTimeVal now;
+	
+	g_get_current_time (&now);
 	if (NULL != NODE_SOURCE_TYPE (node)->source_update)
-		NODE_SOURCE_TYPE (node)->source_update (node);
+		NODE_SOURCE_TYPE (node)->source_update (node, &now);
 }
 
 static void
-node_source_request_auto_update (nodePtr node)
+node_source_request_auto_update (nodePtr node, GTimeVal *now)
 {
 	if (NULL != NODE_SOURCE_TYPE (node)->source_auto_update)
-		NODE_SOURCE_TYPE (node)->source_auto_update (node);
+		NODE_SOURCE_TYPE (node)->source_auto_update (node, now);
 }
 
 static void

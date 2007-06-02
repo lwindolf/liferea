@@ -690,8 +690,12 @@ static void feed_process_update_result(struct request *request) {
 
 	node->updateRequest = NULL; 
 
-	if(request->flags & FEED_REQ_DOWNLOAD_FAVICON)
-		subscription_update_favicon(node->subscription);
+	if (request->flags & FEED_REQ_DOWNLOAD_FAVICON) {
+		GTimeVal now;
+		
+		g_get_current_time (&now);
+		subscription_update_favicon (node->subscription, &now);
+	}
 
 	db_update_state_save (node->id, node->subscription->updateState);
 	feedlist_schedule_save ();
@@ -719,12 +723,15 @@ static void feed_update_unread_count(nodePtr node) {
 	node->unreadCount = db_itemset_get_unread_count(node->id);
 }
 
-static void feed_reset_update_counter(nodePtr node) {
-
-	subscription_reset_update_counter(node->subscription);
+static void
+feed_reset_update_counter (nodePtr node, GTimeVal *now)
+{
+	subscription_reset_update_counter (node->subscription, now);
 }
 
-static void feed_schedule_update(nodePtr node, guint flags) {
+static void
+feed_schedule_update (nodePtr node, guint flags, GTimeVal *now)
+{
 	struct request		*request;
 	
 	debug1(DEBUG_UPDATE, "Scheduling %s to be updated", node_get_title(node));
@@ -742,41 +749,45 @@ static void feed_schedule_update(nodePtr node, guint flags) {
 		request->user_data = node;
 		request->options = node->subscription->updateOptions;
 		request->callback = feed_process_update_result;
-		subscription_prepare_request(node->subscription, request, flags);
+		subscription_prepare_request(node->subscription, request, flags, now);
 		node->updateRequest = request;
 		update_execute_request(request);
 	}
 }
 
-static void feed_request_update(nodePtr node, guint flags) {
+static void
+feed_request_update (nodePtr node, guint flags)
+{
+	GTimeVal now;
 
-	feed_schedule_update(node, flags | FEED_REQ_PRIORITY_HIGH);
+	g_get_current_time (&now);
+	feed_schedule_update (node, flags | FEED_REQ_PRIORITY_HIGH, &now);
 }
 
-static void feed_request_auto_update(nodePtr node) {
-	GTimeVal	now;
+static void
+feed_request_auto_update (nodePtr node, GTimeVal *now)
+{
 	gint		interval;
 	guint		flags = 0;
 
-	g_get_current_time(&now);
-	interval = subscription_get_update_interval(node->subscription);
+	interval = subscription_get_update_interval (node->subscription);
 	
-	if(-2 >= interval)
+	if (-2 >= interval)
 		return;		/* don't update this feed */
 		
-	if(-1 == interval)
-		interval = getNumericConfValue(DEFAULT_UPDATE_INTERVAL);
+	if (-1 == interval)
+		interval = getNumericConfValue (DEFAULT_UPDATE_INTERVAL);
 	
-	if(getBooleanConfValue(ENABLE_FETCH_RETRIES))
+	if (getBooleanConfValue (ENABLE_FETCH_RETRIES))
 		flags |= FEED_REQ_ALLOW_RETRIES;
 
-	if(interval > 0)
-		if(node->subscription->updateState->lastPoll.tv_sec + interval*60 <= now.tv_sec)
-			feed_schedule_update(node, flags);
+	if (interval > 0)
+		if (node->subscription->updateState->lastPoll.tv_sec + interval*60 <= now->tv_sec)
+			feed_schedule_update (node, flags, now);
 
 	/* And check for favicon updating */
-	if (favicon_update_needed (node->id, node->subscription->updateState))
-		subscription_update_favicon(node->subscription);
+	if (favicon_update_needed (node->id, node->subscription->updateState, now))
+		subscription_update_favicon (node->subscription, now);
 }
 
 static void

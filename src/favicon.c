@@ -75,13 +75,13 @@ GdkPixbuf * favicon_load_from_cache(const gchar *id) {
 	return result;
 }
 
-gboolean favicon_update_needed(const gchar *id, updateStatePtr updateState) {
-	GTimeVal	now;
+gboolean
+favicon_update_needed(const gchar *id, updateStatePtr updateState, GTimeVal *now)
+{
 	gboolean	result = FALSE;
 	
 	/* check creation date and update favicon if older than one month */
-	g_get_current_time(&now);
-	if(now.tv_sec > (updateState->lastFaviconPoll.tv_sec + 60*60*24*31))
+	if (now->tv_sec > (updateState->lastFaviconPoll.tv_sec + 60*60*24*31))
 		result = TRUE;
 
 	return result;

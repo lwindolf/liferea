@@ -112,9 +112,9 @@ typedef struct nodeType {
 	itemSetPtr	(*load)			(nodePtr node);
 	void 		(*save)			(nodePtr node);
 	void		(*update_counters)	(nodePtr node);
-	void		(*reset_update_counter)	(nodePtr node);
+	void		(*reset_update_counter)	(nodePtr node, GTimeVal *now);
 	void		(*request_update)	(nodePtr node, guint flags);
-	void 		(*request_auto_update)	(nodePtr node);
+	void 		(*request_auto_update)	(nodePtr node, GTimeVal *now);
 	void		(*remove)		(nodePtr node);
 	void 		(*mark_all_read)	(nodePtr node);
 	gchar *		(*render)		(nodePtr node);
@@ -409,8 +409,9 @@ void node_remove(nodePtr node);
  * Resets the update interval for a given node.
  *
  * @param node	the node
+ * @param now	current time
  */
-void node_reset_update_counter(nodePtr node);
+void node_reset_update_counter(nodePtr node, GTimeVal *now);
 
 /**
  * Loads all items of the given node into memory.
@@ -435,8 +436,9 @@ gchar * node_render(nodePtr node);
  * Node auto-update scheduling (feed list auto update).
  *
  * @param node	the node
+ * @param now	current time
  */
-void node_request_auto_update(nodePtr node);
+void node_request_auto_update(nodePtr node, GTimeVal *now);
 
 /**
  * Immediate node updating (user requested). The request might
@@ -459,8 +461,9 @@ void node_request_properties(nodePtr node);
  * Called when updating favicons is requested.
  *
  * @param node		the node
+ * @param now		current time
  */
-void node_update_favicon(nodePtr node);
+void node_update_favicon (nodePtr node, GTimeVal *now);
 
 /**
  * Change/Set the sort column of a given node.

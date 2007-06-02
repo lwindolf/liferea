@@ -52,7 +52,7 @@ on_bloglines_source_selected (GtkDialog *dialog,
 		node->source->updateOptions->username = g_strdup (gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "userEntry"))));
 		node->source->updateOptions->password = g_strdup (gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "passwordEntry"))));
 		opml_source_setup (parent, node);
-		opml_source_update (node);
+		node_request_update (node, 0);
 		
 		g_free (url);
 		xmlFreeURI (uri);

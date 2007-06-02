@@ -636,13 +636,14 @@ itemlist_mark_all_read (const gchar *nodeId)
 		itemPtr item = item_load (id);
 		if (!item->readStatus) {
 			db_item_mark_read (item);
+			itemlist_update_item (item);
 			g_hash_table_insert (affectedNodes, node_from_id (item->nodeId), NULL);
 		}
 		item_unload (item);
 		iter = g_list_next (iter);
 	}
 		
-	/* feed list updating */	
+	/* GUI list updating */
 	itemview_update_all_items ();
 	itemview_update ();
 	g_hash_table_foreach (affectedNodes, itemlist_update_node_counters, NULL);
@@ -692,7 +693,7 @@ itemlist_selection_changed (itemPtr item)
 
 			itemlist_set_read_status (item, TRUE);
 			itemlist_set_update_status (item, FALSE);
-			
+
 			if(node_load_link_preferred (node_from_id (item->nodeId))) {
 				ui_htmlview_launch_URL (ui_mainwindow_get_active_htmlview (), 
 				                        item_get_source (itemlist_get_selected ()), UI_HTMLVIEW_LAUNCH_INTERNAL);

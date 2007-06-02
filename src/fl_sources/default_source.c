@@ -122,26 +122,14 @@ static void default_source_source_export(nodePtr node) {
 	debug_exit("default_source_source_export");
 }
 
-static void default_source_source_auto_update(nodePtr node) {
-
-	node_foreach_child(node, node_request_auto_update);
+static void
+default_source_source_auto_update (nodePtr node, GTimeVal *now)
+{
+	node_foreach_child_data (node, node_request_auto_update, now);
 }
 
-/* root node type definition */
-
-static void default_source_init(void) {
-
-	debug_enter("default_source_init");
-
-	debug_exit("default_source_init");
-}
-
-static void default_source_deinit(void) {
-	
-	debug_enter("default_source_deinit");
-
-	debug_exit("default_source_deinit");
-}
+static void default_source_init (void) { }
+static void default_source_deinit (void) { }
 
 /* feed list provider plugin definition */
 
