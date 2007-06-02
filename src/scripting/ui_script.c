@@ -84,7 +84,7 @@ ui_script_load_code (void)
 {
 	GtkWidget	*edit = liferea_dialog_lookup (scriptdialog, "scriptedit");
 	gchar		*filename, *buffer = NULL;
-	gint		len = 0;
+	gsize		len = 0;
 	
 	if (selectedScript) {
 		filename = common_create_cache_filename ("cache" G_DIR_SEPARATOR_S "scripts", selectedScript, "lua");
