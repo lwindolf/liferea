@@ -108,6 +108,13 @@ void feedlist_save(void);
  */
 void feedlist_schedule_save(void);
 
+/**
+ * Resets the update counter of all childs of the given node
+ *
+ * @param node		the node (or NULL for whole feed list)
+ */
+void feedlist_reset_update_counters (nodePtr node);
+
 /* feed list iterating interface */
 
 /**

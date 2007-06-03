@@ -96,7 +96,7 @@ static void folder_update_unread_count(nodePtr node) {
 static void
 folder_reset_update_counter (nodePtr node, GTimeVal *now)
 {
-	node_foreach_child_data (node, node_reset_update_counter, now);
+	feedlist_reset_update_counters (node);
 }
 
 static void

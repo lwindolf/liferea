@@ -344,6 +344,18 @@ void feedlist_save(void) {
 	feedlist_schedule_save_cb(NULL);
 }
 
+void
+feedlist_reset_update_counters (nodePtr node) 
+{
+	GTimeVal now;
+	
+	if (NULL == node)
+		node = feedlist_get_root ();	
+	
+	g_get_current_time (&now);
+	node_foreach_child_data (node, node_reset_update_counter, &now);
+}
+
 /* This method is used to initially the node states in the feed list */
 static void
 feedlist_init_node (nodePtr node) 
@@ -395,7 +407,7 @@ void feedlist_init(void) {
 			break;
 		case 2:
 			debug0(DEBUG_UPDATE, "initial update: resetting feed counter");
-			feedlist_foreach(node_reset_update_counter);
+			feedlist_reset_update_counters (NULL);
 			break;
 		default:
 			debug0(DEBUG_UPDATE, "initial update: using auto update");
