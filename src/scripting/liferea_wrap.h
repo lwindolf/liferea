@@ -1375,47 +1375,49 @@ SWIG_Lua_SetModule(lua_State* L, swig_module_info *module) {
 #define SWIGTYPE_p_GHashTable swig_types[4]
 #define SWIGTYPE_p_GList swig_types[5]
 #define SWIGTYPE_p_GSList swig_types[6]
-#define SWIGTYPE_p_GtkButton swig_types[7]
-#define SWIGTYPE_p_GtkMenuItem swig_types[8]
-#define SWIGTYPE_p_GtkToggleAction swig_types[9]
-#define SWIGTYPE_p_GtkTreeIter swig_types[10]
-#define SWIGTYPE_p_GtkTreePath swig_types[11]
-#define SWIGTYPE_p_GtkTreeSelection swig_types[12]
-#define SWIGTYPE_p_GtkTreeSortable swig_types[13]
-#define SWIGTYPE_p_GtkTreeStore swig_types[14]
-#define SWIGTYPE_p_GtkTreeView swig_types[15]
-#define SWIGTYPE_p_GtkTreeViewColumn swig_types[16]
-#define SWIGTYPE_p_GtkWidget swig_types[17]
-#define SWIGTYPE_p_GtkWindow swig_types[18]
-#define SWIGTYPE_p_f_p_q_const__char_gpointer__void swig_types[19]
-#define SWIGTYPE_p_f_p_struct_node__p_char swig_types[20]
-#define SWIGTYPE_p_f_p_struct_node__void swig_types[21]
-#define SWIGTYPE_p_f_p_struct_node_p_struct_node_xmlNodePtr_int__void swig_types[22]
-#define SWIGTYPE_p_f_p_struct_node_unsigned_int__void swig_types[23]
-#define SWIGTYPE_p_f_p_struct_node_xmlNodePtr_int__void swig_types[24]
-#define SWIGTYPE_p_gpointer swig_types[25]
-#define SWIGTYPE_p_gulong swig_types[26]
-#define SWIGTYPE_p_int swig_types[27]
-#define SWIGTYPE_p_item swig_types[28]
-#define SWIGTYPE_p_itemSet swig_types[29]
-#define SWIGTYPE_p_itemSetPtr swig_types[30]
-#define SWIGTYPE_p_node swig_types[31]
-#define SWIGTYPE_p_nodeSource swig_types[32]
-#define SWIGTYPE_p_nodeType swig_types[33]
-#define SWIGTYPE_p_p_GdkPixbuf swig_types[34]
-#define SWIGTYPE_p_request swig_types[35]
-#define SWIGTYPE_p_socialBookmarkSite swig_types[36]
-#define SWIGTYPE_p_time_t swig_types[37]
-#define SWIGTYPE_p_ui_data swig_types[38]
-#define SWIGTYPE_p_updateOptionsPtr swig_types[39]
-#define SWIGTYPE_p_vfolderPtr swig_types[40]
-#define SWIGTYPE_p_xmlNodePtr swig_types[41]
-#define SWIGTYPE_time_t swig_types[42]
-#define SWIGTYPE_updateOptionsPtr swig_types[43]
-#define SWIGTYPE_vfolderPtr swig_types[44]
-#define SWIGTYPE_xmlNodePtr swig_types[45]
-static swig_type_info *swig_types[47];
-static swig_module_info swig_module = {swig_types, 46, 0, 0, 0, 0};
+#define SWIGTYPE_p_GTimeVal swig_types[7]
+#define SWIGTYPE_p_GtkButton swig_types[8]
+#define SWIGTYPE_p_GtkMenuItem swig_types[9]
+#define SWIGTYPE_p_GtkToggleAction swig_types[10]
+#define SWIGTYPE_p_GtkTreeIter swig_types[11]
+#define SWIGTYPE_p_GtkTreePath swig_types[12]
+#define SWIGTYPE_p_GtkTreeSelection swig_types[13]
+#define SWIGTYPE_p_GtkTreeSortable swig_types[14]
+#define SWIGTYPE_p_GtkTreeStore swig_types[15]
+#define SWIGTYPE_p_GtkTreeView swig_types[16]
+#define SWIGTYPE_p_GtkTreeViewColumn swig_types[17]
+#define SWIGTYPE_p_GtkWidget swig_types[18]
+#define SWIGTYPE_p_GtkWindow swig_types[19]
+#define SWIGTYPE_p_f_p_q_const__char_gpointer__void swig_types[20]
+#define SWIGTYPE_p_f_p_struct_node__p_char swig_types[21]
+#define SWIGTYPE_p_f_p_struct_node__void swig_types[22]
+#define SWIGTYPE_p_f_p_struct_node_p_GTimeVal__void swig_types[23]
+#define SWIGTYPE_p_f_p_struct_node_p_struct_node_xmlNodePtr_int__void swig_types[24]
+#define SWIGTYPE_p_f_p_struct_node_unsigned_int__void swig_types[25]
+#define SWIGTYPE_p_f_p_struct_node_xmlNodePtr_int__void swig_types[26]
+#define SWIGTYPE_p_gpointer swig_types[27]
+#define SWIGTYPE_p_gulong swig_types[28]
+#define SWIGTYPE_p_int swig_types[29]
+#define SWIGTYPE_p_item swig_types[30]
+#define SWIGTYPE_p_itemSet swig_types[31]
+#define SWIGTYPE_p_itemSetPtr swig_types[32]
+#define SWIGTYPE_p_node swig_types[33]
+#define SWIGTYPE_p_nodeSource swig_types[34]
+#define SWIGTYPE_p_nodeType swig_types[35]
+#define SWIGTYPE_p_p_GdkPixbuf swig_types[36]
+#define SWIGTYPE_p_request swig_types[37]
+#define SWIGTYPE_p_socialBookmarkSite swig_types[38]
+#define SWIGTYPE_p_time_t swig_types[39]
+#define SWIGTYPE_p_ui_data swig_types[40]
+#define SWIGTYPE_p_updateOptionsPtr swig_types[41]
+#define SWIGTYPE_p_vfolderPtr swig_types[42]
+#define SWIGTYPE_p_xmlNodePtr swig_types[43]
+#define SWIGTYPE_time_t swig_types[44]
+#define SWIGTYPE_updateOptionsPtr swig_types[45]
+#define SWIGTYPE_vfolderPtr swig_types[46]
+#define SWIGTYPE_xmlNodePtr swig_types[47]
+static swig_type_info *swig_types[49];
+static swig_module_info swig_module = {swig_types, 48, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -3099,7 +3101,7 @@ fail:
 static int _wrap_nodeType_reset_update_counter_set(lua_State* L) {
   int SWIG_arg = -1;
   struct nodeType *arg1 = (struct nodeType *) 0 ;
-  void (*arg2)(nodePtr) = (void (*)(nodePtr)) 0 ;
+  void (*arg2)(nodePtr,GTimeVal *) = (void (*)(nodePtr,GTimeVal *)) 0 ;
   
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
   if(!SWIG_isptrtype(L,2)) SWIG_fail_arg(2);
@@ -3109,8 +3111,8 @@ static int _wrap_nodeType_reset_update_counter_set(lua_State* L) {
   }
   
   
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_f_p_struct_node__void,0))){
-    SWIG_fail_ptr("nodeType_reset_update_counter_set",2,SWIGTYPE_p_f_p_struct_node__void);
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_f_p_struct_node_p_GTimeVal__void,0))){
+    SWIG_fail_ptr("nodeType_reset_update_counter_set",2,SWIGTYPE_p_f_p_struct_node_p_GTimeVal__void);
   }
   
   if (arg1) (arg1)->reset_update_counter = arg2;
@@ -3128,7 +3130,7 @@ fail:
 static int _wrap_nodeType_reset_update_counter_get(lua_State* L) {
   int SWIG_arg = -1;
   struct nodeType *arg1 = (struct nodeType *) 0 ;
-  void (*result)(nodePtr) = 0 ;
+  void (*result)(nodePtr,GTimeVal *) = 0 ;
   
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
   
@@ -3136,9 +3138,9 @@ static int _wrap_nodeType_reset_update_counter_get(lua_State* L) {
     SWIG_fail_ptr("nodeType_reset_update_counter_get",1,SWIGTYPE_p_nodeType);
   }
   
-  result = (void (*)(nodePtr)) ((arg1)->reset_update_counter);
+  result = (void (*)(nodePtr,GTimeVal *)) ((arg1)->reset_update_counter);
   SWIG_arg=0;
-  SWIG_NewPointerObj(L,result,SWIGTYPE_p_f_p_struct_node__void,0); SWIG_arg++; 
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_f_p_struct_node_p_GTimeVal__void,0); SWIG_arg++; 
   return SWIG_arg;
   
 fail:
@@ -3201,7 +3203,7 @@ fail:
 static int _wrap_nodeType_request_auto_update_set(lua_State* L) {
   int SWIG_arg = -1;
   struct nodeType *arg1 = (struct nodeType *) 0 ;
-  void (*arg2)(nodePtr) = (void (*)(nodePtr)) 0 ;
+  void (*arg2)(nodePtr,GTimeVal *) = (void (*)(nodePtr,GTimeVal *)) 0 ;
   
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
   if(!SWIG_isptrtype(L,2)) SWIG_fail_arg(2);
@@ -3211,8 +3213,8 @@ static int _wrap_nodeType_request_auto_update_set(lua_State* L) {
   }
   
   
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_f_p_struct_node__void,0))){
-    SWIG_fail_ptr("nodeType_request_auto_update_set",2,SWIGTYPE_p_f_p_struct_node__void);
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_f_p_struct_node_p_GTimeVal__void,0))){
+    SWIG_fail_ptr("nodeType_request_auto_update_set",2,SWIGTYPE_p_f_p_struct_node_p_GTimeVal__void);
   }
   
   if (arg1) (arg1)->request_auto_update = arg2;
@@ -3230,7 +3232,7 @@ fail:
 static int _wrap_nodeType_request_auto_update_get(lua_State* L) {
   int SWIG_arg = -1;
   struct nodeType *arg1 = (struct nodeType *) 0 ;
-  void (*result)(nodePtr) = 0 ;
+  void (*result)(nodePtr,GTimeVal *) = 0 ;
   
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
   
@@ -3238,9 +3240,9 @@ static int _wrap_nodeType_request_auto_update_get(lua_State* L) {
     SWIG_fail_ptr("nodeType_request_auto_update_get",1,SWIGTYPE_p_nodeType);
   }
   
-  result = (void (*)(nodePtr)) ((arg1)->request_auto_update);
+  result = (void (*)(nodePtr,GTimeVal *)) ((arg1)->request_auto_update);
   SWIG_arg=0;
-  SWIG_NewPointerObj(L,result,SWIGTYPE_p_f_p_struct_node__void,0); SWIG_arg++; 
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_f_p_struct_node_p_GTimeVal__void,0); SWIG_arg++; 
   return SWIG_arg;
   
 fail:
@@ -4355,14 +4357,21 @@ fail:
 static int _wrap_node_reset_update_counter(lua_State* L) {
   int SWIG_arg = -1;
   nodePtr arg1 = (nodePtr) 0 ;
+  GTimeVal *arg2 = (GTimeVal *) 0 ;
   
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg(2);
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_node,0))){
     SWIG_fail_ptr("node_reset_update_counter",1,SWIGTYPE_p_node);
   }
   
-  node_reset_update_counter(arg1);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_GTimeVal,0))){
+    SWIG_fail_ptr("node_reset_update_counter",2,SWIGTYPE_p_GTimeVal);
+  }
+  
+  node_reset_update_counter(arg1,arg2);
   SWIG_arg=0;
   
   return SWIG_arg;
@@ -4483,14 +4492,21 @@ fail:
 static int _wrap_node_request_auto_update(lua_State* L) {
   int SWIG_arg = -1;
   nodePtr arg1 = (nodePtr) 0 ;
+  GTimeVal *arg2 = (GTimeVal *) 0 ;
   
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg(2);
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_node,0))){
     SWIG_fail_ptr("node_request_auto_update",1,SWIGTYPE_p_node);
   }
   
-  node_request_auto_update(arg1);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_GTimeVal,0))){
+    SWIG_fail_ptr("node_request_auto_update",2,SWIGTYPE_p_GTimeVal);
+  }
+  
+  node_request_auto_update(arg1,arg2);
   SWIG_arg=0;
   
   return SWIG_arg;
@@ -4549,14 +4565,21 @@ fail:
 static int _wrap_node_update_favicon(lua_State* L) {
   int SWIG_arg = -1;
   nodePtr arg1 = (nodePtr) 0 ;
+  GTimeVal *arg2 = (GTimeVal *) 0 ;
   
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg(2);
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_node,0))){
     SWIG_fail_ptr("node_update_favicon",1,SWIGTYPE_p_node);
   }
   
-  node_update_favicon(arg1);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_GTimeVal,0))){
+    SWIG_fail_ptr("node_update_favicon",2,SWIGTYPE_p_GTimeVal);
+  }
+  
+  node_update_favicon(arg1,arg2);
   SWIG_arg=0;
   
   return SWIG_arg;
@@ -9872,6 +9895,7 @@ static swig_type_info _swigt__itemSetPtr = {"_itemSetPtr", "itemSetPtr", 0, 0, (
 static swig_type_info _swigt__p_GHashTable = {"_p_GHashTable", "GHashTable *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_GList = {"_p_GList", "GList *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_GSList = {"_p_GSList", "GSList *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_GTimeVal = {"_p_GTimeVal", "GTimeVal *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_GtkButton = {"_p_GtkButton", "GtkButton *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_GtkMenuItem = {"_p_GtkMenuItem", "GtkMenuItem *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_GtkToggleAction = {"_p_GtkToggleAction", "GtkToggleAction *", 0, 0, (void*)0, 0};
@@ -9887,6 +9911,7 @@ static swig_type_info _swigt__p_GtkWindow = {"_p_GtkWindow", "GtkWindow *", 0, 0
 static swig_type_info _swigt__p_f_p_q_const__char_gpointer__void = {"_p_f_p_q_const__char_gpointer__void", "void (*)(char const *,gpointer)|fileChoosenCallback", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_f_p_struct_node__p_char = {"_p_f_p_struct_node__p_char", "char *(*)(struct node *)|char *(*)(nodePtr)", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_f_p_struct_node__void = {"_p_f_p_struct_node__void", "void (*)(struct node *)|void (*)(nodePtr)", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_f_p_struct_node_p_GTimeVal__void = {"_p_f_p_struct_node_p_GTimeVal__void", "void (*)(struct node *,GTimeVal *)|void (*)(nodePtr,GTimeVal *)", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_f_p_struct_node_p_struct_node_xmlNodePtr_int__void = {"_p_f_p_struct_node_p_struct_node_xmlNodePtr_int__void", "void (*)(struct node *,struct node *,xmlNodePtr,int)|void (*)(nodePtr,nodePtr,xmlNodePtr,int)", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_f_p_struct_node_unsigned_int__void = {"_p_f_p_struct_node_unsigned_int__void", "void (*)(struct node *,unsigned int)|void (*)(nodePtr,unsigned int)", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_f_p_struct_node_xmlNodePtr_int__void = {"_p_f_p_struct_node_xmlNodePtr_int__void", "void (*)(struct node *,xmlNodePtr,int)|void (*)(nodePtr,xmlNodePtr,int)", 0, 0, (void*)0, 0};
@@ -9920,6 +9945,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_GHashTable,
   &_swigt__p_GList,
   &_swigt__p_GSList,
+  &_swigt__p_GTimeVal,
   &_swigt__p_GtkButton,
   &_swigt__p_GtkMenuItem,
   &_swigt__p_GtkToggleAction,
@@ -9935,6 +9961,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_f_p_q_const__char_gpointer__void,
   &_swigt__p_f_p_struct_node__p_char,
   &_swigt__p_f_p_struct_node__void,
+  &_swigt__p_f_p_struct_node_p_GTimeVal__void,
   &_swigt__p_f_p_struct_node_p_struct_node_xmlNodePtr_int__void,
   &_swigt__p_f_p_struct_node_unsigned_int__void,
   &_swigt__p_f_p_struct_node_xmlNodePtr_int__void,
@@ -9968,6 +9995,7 @@ static swig_cast_info _swigc__itemSetPtr[] = {  {&_swigt__itemSetPtr, 0, 0, 0},{
 static swig_cast_info _swigc__p_GHashTable[] = {  {&_swigt__p_GHashTable, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_GList[] = {  {&_swigt__p_GList, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_GSList[] = {  {&_swigt__p_GSList, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_GTimeVal[] = {  {&_swigt__p_GTimeVal, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_GtkButton[] = {  {&_swigt__p_GtkButton, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_GtkMenuItem[] = {  {&_swigt__p_GtkMenuItem, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_GtkToggleAction[] = {  {&_swigt__p_GtkToggleAction, 0, 0, 0},{0, 0, 0, 0}};
@@ -9983,6 +10011,7 @@ static swig_cast_info _swigc__p_GtkWindow[] = {  {&_swigt__p_GtkWindow, 0, 0, 0}
 static swig_cast_info _swigc__p_f_p_q_const__char_gpointer__void[] = {  {&_swigt__p_f_p_q_const__char_gpointer__void, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_f_p_struct_node__p_char[] = {  {&_swigt__p_f_p_struct_node__p_char, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_f_p_struct_node__void[] = {  {&_swigt__p_f_p_struct_node__void, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_f_p_struct_node_p_GTimeVal__void[] = {  {&_swigt__p_f_p_struct_node_p_GTimeVal__void, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_f_p_struct_node_p_struct_node_xmlNodePtr_int__void[] = {  {&_swigt__p_f_p_struct_node_p_struct_node_xmlNodePtr_int__void, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_f_p_struct_node_unsigned_int__void[] = {  {&_swigt__p_f_p_struct_node_unsigned_int__void, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_f_p_struct_node_xmlNodePtr_int__void[] = {  {&_swigt__p_f_p_struct_node_xmlNodePtr_int__void, 0, 0, 0},{0, 0, 0, 0}};
@@ -10016,6 +10045,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_GHashTable,
   _swigc__p_GList,
   _swigc__p_GSList,
+  _swigc__p_GTimeVal,
   _swigc__p_GtkButton,
   _swigc__p_GtkMenuItem,
   _swigc__p_GtkToggleAction,
@@ -10031,6 +10061,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_f_p_q_const__char_gpointer__void,
   _swigc__p_f_p_struct_node__p_char,
   _swigc__p_f_p_struct_node__void,
+  _swigc__p_f_p_struct_node_p_GTimeVal__void,
   _swigc__p_f_p_struct_node_p_struct_node_xmlNodePtr_int__void,
   _swigc__p_f_p_struct_node_unsigned_int__void,
   _swigc__p_f_p_struct_node_xmlNodePtr_int__void,
