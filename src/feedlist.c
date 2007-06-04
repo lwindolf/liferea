@@ -128,11 +128,14 @@ void feedlist_remove_node(nodePtr node) {
 }
 
 static gboolean feedlist_auto_update(void *data) {
+	GTimeVal now;
 
 	debug_enter("feedlist_auto_update");
+	
+	g_get_current_time(&now);
 
 	if(update_is_online())
-		feedlist_foreach(node_request_auto_update);
+		feedlist_foreach_data(node_request_auto_update, &now);
 	else
 		debug0(DEBUG_UPDATE, "no update processing because we are offline!");
 	
