@@ -802,6 +802,8 @@ db_item_mark_read (itemPtr item)
 {
 	gint	res;
 	
+	item->readStatus = TRUE;
+	
 	if (!item->validGuid)
 	{
 		debug1 (DEBUG_DB, "marking item with id=%lu read", item->id);
@@ -1132,7 +1134,7 @@ db_view_get_unread_count (const gchar *id)
 	sqlite3_stmt	*viewCountStmt;	
 	gint		res;
 	guint		count = 0;
-return 0;
+
 	debug_start_measurement (DEBUG_DB);
 
 	sql = sqlite3_mprintf ("SELECT COUNT(*) FROM view_%s WHERE item_read = 0;", id);

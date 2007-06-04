@@ -16,6 +16,8 @@
 	* Breaks the preference compatibility of the browser
 	  skimming hotkey. Previously was <Space> saved as 0
 	  and <Ctrl>-<Space> as 1, now it is the opposite.
+	* Fixes unread counter of parent nodes after moving
+	  feed list subtrees with DnD.
 	  
 
 2007-05-11  Lars Lindner  <lars.lindner@gmail.com>

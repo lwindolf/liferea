@@ -124,9 +124,6 @@ static gboolean ui_dnd_feed_drag_data_received(GtkTreeDragDest *drag_dest, GtkTr
 			g_slist_free(newParent->children);
 			newParent->children = NULL;
 			node->parent = newParent;
-			// FIXME: how to refresh unread count?
-			ui_node_update(oldParent->id);
-			ui_node_update(newParent->id);
 			
 			debug0(DEBUG_GUI, "new new parent child list:");
 				
@@ -173,6 +170,11 @@ static gboolean ui_dnd_feed_drag_data_received(GtkTreeDragDest *drag_dest, GtkTr
 				valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(drag_dest), &iter2);
 				pos++;
 			}
+			
+			node_update_counters (newParent);
+			node_update_counters (oldParent);
+			ui_node_update (newParent->id);
+			ui_node_update (oldParent->id);			
 			
 			feedlist_schedule_save();
 			ui_itemlist_prefocus();
