@@ -976,8 +976,13 @@ db_item_check (guint id, const queryPtr query)
 	if (query->tables == (QUERY_TABLE_METADATA | QUERY_TABLE_ITEMS))
 		tables = g_strdup ("items.ROWID FROM items INNER JOIN metadata ON items.ROWID = metadata.item_id");
 
-	sql = sqlite3_mprintf ("SELECT %s WHERE items.ROWID=%d AND %s;",
-	                       tables, id, query->conditions);
+	if (query->tables == QUERY_TABLE_METADATA)
+		sql = sqlite3_mprintf ("SELECT %s WHERE metadata.item_id=%d AND %s;",
+		                       tables, id, query->conditions);
+	else
+		sql = sqlite3_mprintf ("SELECT %s WHERE items.ROWID=%d AND %s;",
+		                       tables, id, query->conditions);
+				       
 	db_prepare_stmt (&itemCheckStmt, sql);
 	sqlite3_reset (itemCheckStmt);
 
