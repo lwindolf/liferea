@@ -268,7 +268,7 @@ void opml_source_process_update_results(requestPtr request) {
 	update_request_free(request);
 }
 
-void opml_source_update(nodePtr node) {
+void opml_source_update(nodePtr node, GTimeVal *now) {
 	requestPtr	request;
 	
 	if(node->source->url) {
@@ -281,19 +281,16 @@ void opml_source_update(nodePtr node) {
 		request->user_data = node;
 		debug2(DEBUG_UPDATE, "updating OPML source %s (node id %s)", node->source->url, node->id);
 		update_execute_request(request);
-		g_get_current_time(&request->updateState->lastPoll);	
+		request->updateState->lastPoll.tv_sec = now->tv_sec;
 	} else {
 		g_warning("Cannot update feed list source %s: missing URL!\n", node->title);
 	}
 }
 
-static void opml_source_auto_update(nodePtr node) {
-	GTimeVal	now;
+static void opml_source_auto_update(nodePtr node, GTimeVal *now) {
 	
-	g_get_current_time(&now);
-	
-	if(node->source->updateState->lastPoll.tv_sec + OPML_SOURCE_UPDATE_INTERVAL <= now.tv_sec)
-		opml_source_update(node);	
+	if(node->source->updateState->lastPoll.tv_sec + OPML_SOURCE_UPDATE_INTERVAL <= now->tv_sec)
+		opml_source_update(node, now);
 }
 
 /** called during import and when subscribing, we will do

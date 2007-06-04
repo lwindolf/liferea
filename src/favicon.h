@@ -46,8 +46,9 @@ void favicon_remove_from_cache(const gchar *id);
  *
  * @param id		the favicon id
  * @param updateState	update state info of the favicon
+ * @param now		current time
  */
-gboolean favicon_update_needed(const gchar *id, updateStatePtr updateState);
+gboolean favicon_update_needed(const gchar *id, updateStatePtr updateState, GTimeVal *now);
 
 /**
  * Favicon download callback. Triggered in case of 

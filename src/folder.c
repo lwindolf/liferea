@@ -133,9 +133,9 @@ static void folder_unload(nodePtr node) {
 		node->loaded--;
 }
 
-static void folder_reset_update_counter(nodePtr node) {
+static void folder_reset_update_counter(nodePtr node, GTimeVal *now) {
 
-	node_foreach_child(node, node_reset_update_counter);
+	node_foreach_child_data(node, node_reset_update_counter, now);
 }
 
 static void folder_request_update(nodePtr node, guint flags) {
@@ -143,9 +143,9 @@ static void folder_request_update(nodePtr node, guint flags) {
 	node_foreach_child_data(node, node_request_update, GUINT_TO_POINTER(flags));
 }
 
-static void folder_request_auto_update(nodePtr node) {
+static void folder_request_auto_update(nodePtr node, GTimeVal *now) {
 	
-	node_foreach_child(node, node_request_auto_update);
+	node_foreach_child_data(node, node_request_auto_update, now);
 }
 
 static void folder_remove(nodePtr node) {

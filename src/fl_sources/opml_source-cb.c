@@ -41,13 +41,16 @@ extern GtkWidget *mainwindow;
 
 static void on_opml_source_selected(GtkDialog *dialog, gint response_id, gpointer user_data) {
 	nodePtr		node, parent = (nodePtr)user_data;
+	GTimeVal	now;
 
 	if(response_id == GTK_RESPONSE_OK) {
 		node = node_new();
 		node_set_title(node, OPML_SOURCE_DEFAULT_TITLE);
 		node_source_new(node, opml_source_get_type(), gtk_entry_get_text(GTK_ENTRY(lookup_widget(GTK_WIDGET(dialog), "location_entry"))));
 		opml_source_setup(parent, node);
-		opml_source_update(node);
+		
+		g_get_current_time(&now);
+		opml_source_update(node, &now);
 	}
 
 	gtk_widget_destroy(GTK_WIDGET(dialog));

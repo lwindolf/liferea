@@ -1,3 +1,15 @@
+2007-06-04  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.2.16 (Stable)
+
+	* Major code reorganisation to minimize the number
+	  of gettimeofday() calls which caused a lot of CPU
+	  activity and wakeups on laptops.
+	* Fixes "jumpy" behaviour of the HTML view item menu
+	  in three pane mode. Now the menu is visible 
+	  immediately on rendering.
+
+
 2007-05-17  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.2.15 (Stable)

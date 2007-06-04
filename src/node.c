@@ -363,16 +363,16 @@ void node_merge_items(nodePtr node, GList *list) {
 	feedlist_update_counters(0, new);
 }
 
-void node_update_favicon(nodePtr node) {
+void node_update_favicon(nodePtr node, GTimeVal *now) {
 
 	if(NODE_TYPE_FEED == node->type) {
 		debug1(DEBUG_UPDATE, "favicon of node %s needs to be updated...", node->title);
-		feed_update_favicon(node);
+		feed_update_favicon(node, now);
 	}
 	
 	/* Recursion */
 	if(node->children)
-		node_foreach_child(node, node_update_favicon);
+		node_foreach_child_data(node, node_update_favicon, now);
 }
 
 /* plugin and import callbacks and helper functions */
@@ -566,12 +566,12 @@ gchar * node_render(nodePtr node) {
 	return NODE_TYPE(node)->render(node);
 }
 
-void node_reset_update_counter(nodePtr node) {
-	NODE_TYPE(node)->reset_update_counter(node);
+void node_reset_update_counter(nodePtr node, GTimeVal *now) {
+	NODE_TYPE(node)->reset_update_counter(node, now);
 }
 
-void node_request_auto_update(nodePtr node) {
-	NODE_TYPE(node)->request_auto_update(node);
+void node_request_auto_update(nodePtr node, GTimeVal *now) {
+	NODE_TYPE(node)->request_auto_update(node, now);
 }
 
 void node_request_update(nodePtr node, guint flags) {

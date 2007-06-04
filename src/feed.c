@@ -161,6 +161,7 @@ static void feed_import(nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean t
 	gchar		*cacheLimitStr, *filter, *intervalStr, *title; 
 	gchar		*htmlUrlStr, *source, *tmp; 
 	feedPtr		feed = NULL;
+	GTimeVal	now;
 
 	debug_enter("feed_import");
 
@@ -255,8 +256,8 @@ static void feed_import(nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean t
 		
 		node_set_icon(node, favicon_load_from_cache(node->id));
 		
-		if(favicon_update_needed(node_get_id(node), feed->updateState))
-			feed_update_favicon(node);
+		if(favicon_update_needed(node_get_id(node), feed->updateState, &now))
+			feed_update_favicon(node, &now);
 
 		debug5(DEBUG_CACHE, "import feed: title=%s source=%s typeStr=%s interval=%d lastpoll=%ld", 
 		       node_get_title(node), 
@@ -786,18 +787,17 @@ gboolean feed_can_be_updated(nodePtr node) {
 	return TRUE;
 }	
 
-static void feed_reset_update_counter_(feedPtr fp) {
+static void feed_reset_update_counter_(feedPtr fp, GTimeVal *now) {
 
-	g_get_current_time(&fp->updateState->lastPoll);
+	fp->updateState->lastPoll.tv_sec = now->tv_sec;
 	feedlist_schedule_save();
 	debug1(DEBUG_UPDATE, "Resetting last poll counter to %ld.\n", fp->updateState->lastPoll.tv_sec);
 }
 
 static void feed_prepare_request(feedPtr feed, struct request *request, guint flags) {
+	GTimeVal now;
 
 	debug1(DEBUG_UPDATE, "preparing request for \"%s\"\n", feed_get_source(feed));
-
-	feed_reset_update_counter_(feed);
 
 	/* prepare request url (strdup because it might be
   	   changed on permanent HTTP redirection in netio.c) */
@@ -1152,13 +1152,13 @@ static void feed_favicon_downloaded(gpointer user_data) {
 	ui_node_update(node);
 }
 
-void feed_update_favicon(nodePtr node) {
+void feed_update_favicon(nodePtr node, GTimeVal *now) {
 	feedPtr		feed = (feedPtr)node->data;
 	
 	debug1(DEBUG_UPDATE, "trying to download favicon.ico for \"%s\"\n", node_get_title(node));
 	ui_mainwindow_set_status_bar(_("Updating feed icon for \"%s\""), node_get_title(node));
 	node->needsCacheSave = TRUE;
-	g_get_current_time(&feed->updateState->lastFaviconPoll);
+	feed->updateState->lastFaviconPoll.tv_sec = now->tv_sec;
 	favicon_download(node->id, 
 	                 feed_get_html_url(feed), 
 			 feed_get_source(feed),
@@ -1256,8 +1256,12 @@ void feed_process_update_result(struct request *request) {
 
 	node->updateRequest = NULL; 
 
-	if(request->flags & FEED_REQ_DOWNLOAD_FAVICON)
-		feed_update_favicon(node);
+	if(request->flags & FEED_REQ_DOWNLOAD_FAVICON) {
+		GTimeVal now;
+		
+		g_get_current_time(&now);
+		feed_update_favicon(node, &now);
+	}
 
 	ui_node_update(node);
 	notification_node_has_new_items(node);
@@ -1358,12 +1362,12 @@ static void feed_initial_load(nodePtr node) {
 	ui_node_update(node);
 }
 
-static void feed_reset_update_counter(nodePtr node) {
+static void feed_reset_update_counter(nodePtr node, GTimeVal *now) {
 
-	feed_reset_update_counter_((feedPtr)node->data);
+	feed_reset_update_counter_((feedPtr)node->data, now);
 }
 
-static void feed_schedule_update(nodePtr node, guint flags) {
+static void feed_schedule_update(nodePtr node, guint flags, GTimeVal *now) {
 	feedPtr			feed = (feedPtr)node->data;
 	struct request		*request;
 	
@@ -1381,23 +1385,24 @@ static void feed_schedule_update(nodePtr node, guint flags) {
 		request->callback = feed_process_update_result;
 		request->options = feed->updateOptions;
 		feed_prepare_request(feed, request, flags);
+		feed_reset_update_counter_((feedPtr)node->data, now);
 		node->updateRequest = request;
 		update_execute_request(request);
 	}
 }
 
 static void feed_request_update(nodePtr node, guint flags) {
-
-	feed_schedule_update(node, flags | FEED_REQ_PRIORITY_HIGH);
+	GTimeVal now;
+	
+	g_get_current_time(&now);
+	feed_schedule_update(node, flags | FEED_REQ_PRIORITY_HIGH, &now);
 }
 
-static void feed_request_auto_update(nodePtr node) {
+static void feed_request_auto_update(nodePtr node, GTimeVal *now) {
 	feedPtr		feed = (feedPtr)node->data;
-	GTimeVal	now;
 	gint		interval;
 	guint		flags = 0;
 
-	g_get_current_time(&now);
 	interval = feed_get_update_interval(feed);
 	
 	if(-2 >= interval)
@@ -1410,12 +1415,12 @@ static void feed_request_auto_update(nodePtr node) {
 		flags |= FEED_REQ_ALLOW_RETRIES;
 
 	if(interval > 0)
-		if(feed->updateState->lastPoll.tv_sec + interval*60 <= now.tv_sec)
-			feed_schedule_update(node, flags);
+		if(feed->updateState->lastPoll.tv_sec + interval*60 <= now->tv_sec)
+			feed_schedule_update(node, flags, now);
 
 	/* And check for favicon updating */
-	if(feed->updateState->lastFaviconPoll.tv_sec + 30*24*60*60 <= now.tv_sec)
-		feed_update_favicon(node);
+	if(feed->updateState->lastFaviconPoll.tv_sec + 30*24*60*60 <= now->tv_sec)
+		feed_update_favicon(node, now);
 }
 
 static void feed_remove(nodePtr node) {

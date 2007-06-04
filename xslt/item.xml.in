@@ -31,6 +31,7 @@
 <xsl:param name="pixmapsDir"/>
 <xsl:param name="baseUrl"/>
 <xsl:param name="summary"/>
+<xsl:param name="single"/>
 
 <xsl:template match="/itemset">
 
@@ -274,7 +275,7 @@
 <xsl:element name="table">
 <!-- construct unique id to allow Javascript showing/hiding of itemmenu -->
 <xsl:attribute name="id"><xsl:value-of select="sourceId"/>-<xsl:value-of select="nr"/></xsl:attribute>
-<xsl:attribute name="class">headmeta itemmenutable</xsl:attribute>
+<xsl:attribute name="class">headmeta <xsl:if test="$single = 1">hidden</xsl:if></xsl:attribute>
 <xsl:attribute name="cellspacing">0</xsl:attribute>
 <xsl:attribute name="cellpadding">0</xsl:attribute>
 <tr>

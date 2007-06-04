@@ -367,8 +367,11 @@ static void feedlist_expand_folder(nodePtr node) {
 }
 
 void feedlist_init(void) {
+	GTimeVal now;
 
 	debug_enter("feedlist_init");
+	
+	g_get_current_time(&now);
 	
 	/* 1. Register standard node and source types */
 	node_type_register(feed_get_node_type());
@@ -403,7 +406,7 @@ void feedlist_init(void) {
 			break;
 		case 2:
 			debug0(DEBUG_UPDATE, "initial update: resetting feed counter");
-			feedlist_foreach(node_reset_update_counter);
+			feedlist_foreach_data(node_reset_update_counter, &now);
 			break;
 		default:
 			debug0(DEBUG_UPDATE, "initial update: using auto update");

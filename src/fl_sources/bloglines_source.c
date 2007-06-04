@@ -34,13 +34,10 @@
 #include "fl_sources/node_source.h"
 #include "fl_sources/opml_source.h"
 
-static void bloglines_source_auto_update(nodePtr node) {
-	GTimeVal	now;
-	
-	g_get_current_time(&now);
-	
-	if(node->source->updateState->lastPoll.tv_sec + getNumericConfValue(DEFAULT_UPDATE_INTERVAL)*60 <= now.tv_sec)
-		opml_source_update(node);	
+static void bloglines_source_auto_update(nodePtr node, GTimeVal *now) {
+
+	if(node->source->updateState->lastPoll.tv_sec + getNumericConfValue(DEFAULT_UPDATE_INTERVAL)*60 <= now->tv_sec)
+		opml_source_update(node, now);	
 }
 
 static void bloglines_source_init(void) { }

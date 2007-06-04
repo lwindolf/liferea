@@ -35,6 +35,7 @@ static void on_bloglines_source_selected(GtkDialog *dialog, gint response_id, gp
 	nodePtr		node, parent = (nodePtr)user_data;
 	gchar		*url;
 	xmlURIPtr 	uri;
+	GTimeVal	now;
 
 	if(response_id == GTK_RESPONSE_OK) {
 		uri = xmlParseURI("http://rpc.bloglines.com/listsubs");
@@ -47,8 +48,10 @@ static void on_bloglines_source_selected(GtkDialog *dialog, gint response_id, gp
 		node_source_new(node, bloglines_source_get_type(), url);
 		node->source->updateOptions->username = g_strdup(gtk_entry_get_text(GTK_ENTRY(lookup_widget(GTK_WIDGET(dialog), "userEntry"))));
 		node->source->updateOptions->password = g_strdup(gtk_entry_get_text(GTK_ENTRY(lookup_widget(GTK_WIDGET(dialog), "passwordEntry"))));
+
+		g_get_current_time(&now);
 		opml_source_setup(parent, node);
-		opml_source_update(node);
+		opml_source_update(node, &now);
 		
 		g_free(url);
 		xmlFreeURI(uri);

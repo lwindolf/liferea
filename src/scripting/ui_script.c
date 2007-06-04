@@ -78,7 +78,7 @@ static void ui_script_reload_script_list(void) {
 static void ui_script_load_code(void) {
 	GtkWidget	*edit = lookup_widget(scriptdialog, "scriptedit");
 	gchar		*filename, *buffer = NULL;
-	gint		len = 0;
+	gsize		len = 0;
 	
 	if(selectedScript) {
 		filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "scripts", selectedScript, "lua");

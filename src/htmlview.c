@@ -88,7 +88,7 @@ void htmlview_update_item(itemPtr item) {
 	g_hash_table_insert(htmlView_priv.htmlChunks, item, NULL);
 }
 
-gchar * htmlview_render_item(itemPtr item) {
+gchar * htmlview_render_item(itemPtr item, guint viewMode) {
 	renderParamPtr	params;
 	gchar		*output = NULL, *baseUrl;
 	gboolean	summaryMode = FALSE;
@@ -124,6 +124,7 @@ gchar * htmlview_render_item(itemPtr item) {
 	render_parameter_add(params, "pixmapsDir='file://" PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "'");
 	render_parameter_add(params, "baseUrl='%s'", baseUrl);
 	render_parameter_add(params, "summary='%d'", summaryMode?1:0);
+	render_parameter_add(params, "single='%d'", (viewMode == ITEMVIEW_SINGLE_ITEM)?0:1);
 	output = render_xml(doc, "item", params);
 	
 	/* For debugging use: xmlSaveFormatFile("/tmp/test.xml", doc, 1); */
@@ -216,7 +217,7 @@ void htmlview_update(GtkWidget *widget, guint mode) {
 	switch(mode) {
 		case ITEMVIEW_SINGLE_ITEM:
 			item = itemlist_get_selected();
-			if(item)
+			if(item && item->sourceNode->itemSet)
 				baseURL = (gchar *)itemset_get_base_url(item->sourceNode->itemSet);
 			break;
 		default:
@@ -237,7 +238,7 @@ void htmlview_update(GtkWidget *widget, guint mode) {
 		case ITEMVIEW_SINGLE_ITEM:
 			item = itemlist_get_selected();
 			if(item) {
-				chunk = htmlview_render_item(item);
+				chunk = htmlview_render_item(item, mode);
 				if(chunk)
 					g_string_append(output, chunk);
 				g_free(chunk);
@@ -254,7 +255,7 @@ void htmlview_update(GtkWidget *widget, guint mode) {
 					
 				/* if not found: render new item now and add to cache */
 				if(!chunk) {
-					chunk = htmlview_render_item(iter->data);
+					chunk = htmlview_render_item(iter->data, mode);
 					g_hash_table_insert(htmlView_priv.htmlChunks, iter->data, chunk);
 				}
 					

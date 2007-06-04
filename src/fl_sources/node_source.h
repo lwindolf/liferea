@@ -105,13 +105,13 @@ typedef struct nodeSourceType {
 	 * This OPTIONAL callback is called to start a user requested
 	 * update of the source the node belongs to.
 	 */
-	void		(*source_update)(nodePtr node);
+	void		(*source_update)(nodePtr node, GTimeVal *now);
 	
 	/**
 	 * This MANDATORY callback is called regularily to allow 
 	 * the the source the node belongs to to auto-update.
 	 */
-	void		(*source_auto_update)(nodePtr node);
+	void		(*source_auto_update)(nodePtr node, GTimeVal *now);
 } *nodeSourceTypePtr;
 
 /** feed list source instance */

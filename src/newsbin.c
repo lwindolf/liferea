@@ -144,7 +144,7 @@ void on_popup_copy_to_newsbin(gpointer user_data, guint callback_action, GtkWidg
 	}
 }
 
-void newsbin_request_auto_update_dummy(nodePtr node) { }
+void newsbin_request_auto_update_dummy(nodePtr node, GTimeVal *now) { }
 void newsbin_request_update_dummy(nodePtr node, guint flags) { }
 
 nodeTypePtr newsbin_get_node_type(void) {

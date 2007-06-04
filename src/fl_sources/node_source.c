@@ -253,14 +253,18 @@ void ui_node_source_type_dialog(nodePtr parent) {
 
 static void node_source_request_update(nodePtr node, guint flags) {
 
-	if(NULL != NODE_SOURCE_TYPE(node)->source_update)
-		NODE_SOURCE_TYPE(node)->source_update(node);
+	if(NULL != NODE_SOURCE_TYPE(node)->source_update) {
+		GTimeVal now;
+		
+		g_get_current_time(&now);
+		NODE_SOURCE_TYPE(node)->source_update(node, &now);
+	}
 }
 
-static void node_source_request_auto_update(nodePtr node) {
+static void node_source_request_auto_update(nodePtr node, GTimeVal *now) {
 
 	if(NULL != NODE_SOURCE_TYPE(node)->source_auto_update)
-		NODE_SOURCE_TYPE(node)->source_auto_update(node);
+		NODE_SOURCE_TYPE(node)->source_auto_update(node, now);
 }
 
 static void node_source_remove(nodePtr node) {

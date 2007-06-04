@@ -478,9 +478,9 @@ static void vfolder_initial_load(nodePtr node) { }
 static void vfolder_load(nodePtr node) { }
 static void vfolder_save(nodePtr node) { }
 static void vfolder_unload(nodePtr node) { }
-static void vfolder_reset_update_counter(nodePtr node) { }
+static void vfolder_reset_update_counter(nodePtr node, GTimeVal *now) { }
 static void vfolder_request_update(nodePtr node, guint flags) { }
-static void vfolder_request_auto_update(nodePtr node) { }
+static void vfolder_request_auto_update(nodePtr node, GTimeVal *now) { }
 
 static void vfolder_remove(nodePtr node) {
 

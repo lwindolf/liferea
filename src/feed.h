@@ -276,7 +276,8 @@ nodeTypePtr feed_get_node_type(void);
  * Request the favicon of the given feed node to be updated.
  *
  * @param node		the feed node
+ * @param now		current time
  */
-void feed_update_favicon(nodePtr node);
+void feed_update_favicon(nodePtr node, GTimeVal *now);
 
 #endif

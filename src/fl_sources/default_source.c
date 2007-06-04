@@ -389,9 +389,9 @@ static void default_source_source_export(nodePtr node) {
 	debug_exit("default_source_source_export");
 }
 
-static void default_source_source_auto_update(nodePtr node) {
+static void default_source_source_auto_update(nodePtr node, GTimeVal *now) {
 
-	node_foreach_child(node, node_request_auto_update);
+	node_foreach_child_data(node, node_request_auto_update, now);
 }
 
 /* root node type definition */

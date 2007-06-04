@@ -123,7 +123,7 @@ table.headmeta td {
 	font-size:0.8em;
 }
 
-.itemmenutable {
+.hidden {
 	visibility:hidden;
 	display:none;
 }
