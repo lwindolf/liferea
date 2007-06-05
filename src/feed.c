@@ -795,7 +795,6 @@ static void feed_reset_update_counter_(feedPtr fp, GTimeVal *now) {
 }
 
 static void feed_prepare_request(feedPtr feed, struct request *request, guint flags) {
-	GTimeVal now;
 
 	debug1(DEBUG_UPDATE, "preparing request for \"%s\"\n", feed_get_source(feed));
 
