@@ -1236,5 +1236,6 @@ void downloadlib_process_url(struct request *request) {
 			     netioRequest->problem, 
 			     netioRequest->netio_error, 
 			     request->data);
+	g_free(netioRequest);
 	return;
 }
