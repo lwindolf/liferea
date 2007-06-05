@@ -406,7 +406,7 @@ static void *update_dequeue_requests(void *data) {
 				if(!request) {
 					GTimeVal wait;
 					g_get_current_time(&wait);
-					g_time_val_add(&wait, 5000);
+					g_time_val_add(&wait, 500000);
 					request = g_async_queue_timed_pop(requests_normal_prio, &wait);
 				}
 			} while(!request);

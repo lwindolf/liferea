@@ -8,6 +8,13 @@
 	* Fixes "jumpy" behaviour of the HTML view item menu
 	  in three pane mode. Now the menu is visible 
 	  immediately on rendering.
+	* Fixes a bad mistake in the timer code that caused
+	  a lot of unnecessary wakeups and thereby high power 
+	  consumption on laptops. (fix from jtjt)
+
+	Translations
+
+	* New Basque translation from Iñaki Larrañaga Murgoitio
 
 
 2007-05-17  Lars Lindner  <lars.lindner@gmail.com>
