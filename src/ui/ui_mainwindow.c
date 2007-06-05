@@ -1033,7 +1033,7 @@ static GtkActionEntry ui_mainwindow_action_entries[] = {
 	{"CreateEngineSearch", NULL, N_("Search With ...")},
 	
 	{"HelpMenu", NULL, N_("_Help")},
-	{"ShowHelpContents", "gtk-help", N_("_Contents"), NULL, N_("View help for this application."), G_CALLBACK(on_topics_activate)},
+	{"ShowHelpContents", "gtk-help", N_("_Contents"), "F1", N_("View help for this application."), G_CALLBACK(on_topics_activate)},
 	{"ShowHelpQuickReference", NULL, N_("_Quick Reference"), NULL, N_("View a list of all Liferea shortcuts."),
 	 G_CALLBACK(on_quick_reference_activate)},
 	{"ShowHelpFAQ", NULL, N_("_FAQ"), NULL, N_("View the FAQ for this application."), G_CALLBACK(on_faq_activate)},
