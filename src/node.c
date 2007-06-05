@@ -626,6 +626,8 @@ void node_set_icon(nodePtr node, gpointer icon) {
 		g_object_unref(node->icon);
 	node->icon = icon;
 
+	if(node->iconFile)
+		g_free(node->iconFile);
 	if(node->icon)
 		node->iconFile = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", node->id, "png");
 	else
