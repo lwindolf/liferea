@@ -37,12 +37,6 @@
 /** The list of all existing vfolders. Used for updating vfolder information upon item changes */
 static GSList		*vfolders = NULL;
 
-void
-vfolder_init (void)
-{
-	rule_init();
-}
-
 vfolderPtr
 vfolder_new (nodePtr node) 
 {

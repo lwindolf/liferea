@@ -96,8 +96,9 @@
 #define DISABLE_DBUS			"/apps/liferea/disable-dbus"
 
 /* initializing methods */
-void	conf_init(void);
-void	conf_load(void);
+void	conf_init (void);
+void	conf_deinit (void);
+void	conf_load (void);
 
 /* preferences configuration methods */
 

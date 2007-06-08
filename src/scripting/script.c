@@ -192,11 +192,26 @@ GSList *script_hook_get_list(hookType type) {
 	return g_hash_table_lookup(scripts, GINT_TO_POINTER(type));
 }
 
-void script_deinit(void) {
+void
+script_hook_free (gpointer key, gpointer value, gpointer user_data)
+{
+	GSList	*iter, *list;
+	
+	iter = list = (GSList *) value;
+	while (iter) {
+		g_free (iter->data);	/* free script name */
+		iter = g_slist_next (iter);
+	}	
+	g_slist_free (list);
+}
 
-	if(scriptImpl)
-		scriptImpl->deinit();
+void
+script_deinit (void)
+{
+	if (scriptImpl)
+		scriptImpl->deinit ();
 
+	g_hash_table_foreach (scripts, script_hook_free, NULL);
 	// FIXME: foreach hook free script list
-	g_hash_table_destroy(scripts);
+	g_hash_table_destroy (scripts);
 }

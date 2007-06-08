@@ -309,6 +309,7 @@ on_quit (GtkWidget *widget, GdkEvent *event, gpointer user_data)
 	feedlist_free ();
 	itemlist_free ();
 	db_deinit ();
+	script_deinit ();
 	social_free ();
 	
 	gtk_widget_destroy (mainwindow);
@@ -318,6 +319,7 @@ on_quit (GtkWidget *widget, GdkEvent *event, gpointer user_data)
 	/* unplug */
 	session_end ();
 #endif
+	conf_deinit ();
 	
 	gtk_main_quit ();
 	

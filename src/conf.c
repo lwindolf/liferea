@@ -107,8 +107,19 @@ void conf_init() {
 		NET_TIMEOUT = 30;	/* default network timeout 30s */
 }
 
+void
+conf_deinit (void)
+{
+	g_object_unref (client);
+	g_free (useragent);
+	g_free (proxyname);
+	g_free (proxyusername);
+	g_free (proxypassword);
+}
+
 /* maybe called several times to reload configuration */
-void conf_load() {
+void conf_load(void)
+{
 	gint	maxitemcount;
 	gchar *downloadPath;
 	
