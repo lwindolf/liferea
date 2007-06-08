@@ -172,7 +172,12 @@ void update_state_free(updateStatePtr updateState);
 /**
  * Initialises the download subsystem, including its thread(s). 
  */
-void update_init(void); 
+void update_init (void); 
+
+/**
+ * Stops all update processing and frees all used memory.
+ */
+void update_deinit (void);
 
 /** 
  * Creates a new request structure.

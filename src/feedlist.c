@@ -444,5 +444,8 @@ void
 feedlist_free (void)
 {
 	feedlist_foreach (feedlist_free_node);
-	node_free (feedlist_get_root ());
+	node_free (rootNode);
+	rootNode = NULL;
+	
+	feedlistLoading = TRUE;	/* prevent further feed list saving */
 }

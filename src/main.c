@@ -299,8 +299,8 @@ on_quit (GtkWidget *widget, GdkEvent *event, gpointer user_data)
 
 	/* order is important ! */
 		
-	script_run_for_hook (SCRIPT_HOOK_SHUTDOWN);	
-
+	script_run_for_hook (SCRIPT_HOOK_SHUTDOWN);
+	
 	ui_mainwindow_save_position ();
 	gtk_widget_hide (mainwindow);
 
@@ -308,6 +308,7 @@ on_quit (GtkWidget *widget, GdkEvent *event, gpointer user_data)
 	feedlist_save ();
 	feedlist_free ();
 	itemlist_free ();
+	update_deinit ();
 	db_deinit ();
 	script_deinit ();
 	social_free ();

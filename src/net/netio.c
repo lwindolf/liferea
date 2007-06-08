@@ -1169,24 +1169,35 @@ static char * DownloadFeed (char * url, struct feed_request * cur_ptr, int suppr
 #include "../update.h"
 #include "downloadlib.h"
 
-/* Downloads a feed and returns the data or NULL as return value.
-   The url of the has to be passed in the feed structure.
-   If the the webserver reports a permanent redirection, the
-   feed url will be modified and the old URL 'll be freed. The
-   request structure 'll also contain the HTTP status and the
-   last modified string.
- */
-
-void downloadlib_init() {
+void
+downloadlib_init (void)
+{
 #ifdef HAVE_GNUTLS
 	gcry_control (GCRYCTL_SET_THREAD_CBS, &gcry_threads_pthread);
 	
-	gnutls_global_init();
-	gnutls_certificate_allocate_credentials(&xcred);
-	gnutls_certificate_set_x509_trust_file(xcred, "ca.pem", GNUTLS_X509_FMT_PEM);
+	gnutls_global_init ();
+	gnutls_certificate_allocate_credentials (&xcred);
+	gnutls_certificate_set_x509_trust_file (xcred, "ca.pem", GNUTLS_X509_FMT_PEM);
 #endif
 }
 
+void
+downloadlib_deinit (void)
+{
+#ifdef HAVE_GNUTLS
+	gnutls_certificate_free_credentials (xcred);
+	
+	gnutls_global_deinit ();
+#endif
+}
+
+/* Downloads a feed specified in the request structure, returns 
+   the downloaded data or NULL in the request structure.
+   If the the webserver reports a permanent redirection, the
+   feed url will be modified and the old URL 'll be freed. The
+   request structure will also contain the HTTP status and the
+   last modified string.
+ */
 void downloadlib_process_url(struct request *request) {
 	struct feed_request	*netioRequest;
 	gchar *oldurl = g_strdup(request->source);

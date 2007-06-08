@@ -48,6 +48,31 @@ typedef struct commentFeed
 	struct updateState *updateState;	/**< update states (etag, last modified, cookies, last polling times...) used when downloading comments */
 } *commentFeedPtr;
 
+static void
+comment_feed_free (commentFeedPtr commentFeed)
+{
+	if (commentFeed->updateRequest)
+		update_cancel_requests (commentFeed);
+	if (commentFeed->updateState)
+		update_state_free (commentFeed->updateState);
+	
+	g_free (commentFeed->id);
+	g_free (commentFeed);
+}
+
+static void
+comment_feed_free_cb (gpointer key, gpointer value, gpointer user_data)
+{
+	comment_feed_free (value);
+}
+
+void
+comments_deinit (void)
+{
+	g_hash_table_foreach (commentFeeds, comment_feed_free_cb, NULL);
+	g_hash_table_destroy (commentFeeds);
+}
+
 /**
  * Hash lookup to find comment feeds with the given id.
  * Returns the comment feed (or NULL).
@@ -251,12 +276,5 @@ comments_remove (const gchar *id)
 	
 	commentFeed = comment_feed_from_id (id);
 	g_return_if_fail (commentFeed != NULL);
-	
-	if (commentFeed->updateRequest)
-		update_cancel_requests (commentFeed);
-	if (commentFeed->updateState)
-		update_state_free (commentFeed->updateState);
-	
-	g_free (commentFeed->id);
-	g_free (commentFeed);
+	comment_feed_free (commentFeed);
 }

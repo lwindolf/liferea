@@ -53,6 +53,9 @@
 /** global request list, used for lookups when cancelling */
 static GSList *requests = NULL;
 
+/** list of update threads */
+static GSList *threads = NULL;
+
 /* communication queues for requesting updates and sending the results */
 static GAsyncQueue	*requests_high_prio = NULL;
 static GAsyncQueue	*requests_normal_prio = NULL;
@@ -575,8 +578,10 @@ void update_init(void) {
 	if(1 >= (count = getNumericConfValue(UPDATE_THREAD_CONCURRENCY)))
 		count = DEFAULT_UPDATE_THREAD_CONCURRENCY;
 	
-	for(i = 0; i < count; i++)
-		g_thread_create(update_dequeue_requests, GINT_TO_POINTER((i == 0)), FALSE, NULL);
+	for (i = 0; i < count; i++) {
+		GThread *thread = g_thread_create (update_dequeue_requests, GINT_TO_POINTER((i == 0)), FALSE, NULL);
+		threads = g_slist_append (threads, thread);
+	}
 }
 
 #ifdef USE_NM
@@ -631,3 +636,28 @@ void update_nm_cleanup(void)
 	}
 }
 #endif
+
+void
+update_deinit (void)
+{
+	debug_enter ("update_deinit");
+	
+	//update_nm_cleanup ();
+	
+	downloadlib_deinit ();
+	
+	/* FIXME: terminate update threads to be able to remove the queues
+	
+	g_async_queue_unref (requests_high_prio);
+	g_async_queue_unref (requests_normal_prio);
+	g_async_queue_unref (results);
+	*/
+	
+	g_free (offline_cond);
+	g_free (cond_mutex);
+	
+	g_slist_free (requests);
+	requests = NULL;
+	
+	debug_exit ("update_deinit");
+}

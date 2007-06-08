@@ -26,6 +26,11 @@
 #include "item.h"
 
 /**
+ * Frees everything related with comments 
+ */
+void comments_deinit (void);
+
+/**
  * Triggers immediate comments retrieval (or update) for the given item.
  *
  * @param item		the item
