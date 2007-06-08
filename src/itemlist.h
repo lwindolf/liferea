@@ -25,11 +25,10 @@
 #include "item.h"
 #include "itemset.h"
 
-/* This is a simple controller implementation for itemlist handling. 
-   It manages the currently displayed itemset and provides synchronisation
-   for backend and GUI access to this itemset.  
-   
-   Bypass only for read-only item access! */
+/**
+ * Frees everything used by the item list.
+ */
+void itemlist_free (void);
 
 /**
  * Returns the currently displayed node.

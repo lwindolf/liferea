@@ -367,9 +367,16 @@ ui_itemlist_new(void)
 	return ilscrolledwindow;
 }
 
+void
+ui_itemlist_destroy (void)
+{
+	g_hash_table_destroy (item_id_to_iter);
+}
+
 /* typically called when filling the item tree view */
 void 
-ui_itemlist_prefocus (void) {
+ui_itemlist_prefocus (void)
+{
 	GtkWidget		*itemlist, *focus_widget;
 	GtkTreeSelection	*itemselection;
 	

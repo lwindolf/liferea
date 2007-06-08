@@ -291,29 +291,36 @@ int main(int argc, char *argv[]) {
 	return 0;
 }
 
-gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
+gboolean
+on_quit (GtkWidget *widget, GdkEvent *event, gpointer user_data)
+{
 
-	debug_enter("on_quit");
+	debug_enter ("on_quit");
+
+	/* order is important ! */
+		
+	script_run_for_hook (SCRIPT_HOOK_SHUTDOWN);	
+
+	ui_mainwindow_save_position ();
+	gtk_widget_hide (mainwindow);
+
+	ui_feedlist_select (NULL);
+	feedlist_save ();
+	feedlist_free ();
+	itemlist_free ();
+	db_deinit ();
+	social_free ();
 	
-	script_run_for_hook(SCRIPT_HOOK_SHUTDOWN);	
-
-	ui_mainwindow_save_position();
-	gtk_widget_hide(mainwindow);
-
-	ui_feedlist_select(NULL);
-	feedlist_save();
-	db_deinit();
-	
-	gtk_widget_destroy(mainwindow);
-	ui_htmlview_deinit();
+	gtk_widget_destroy (mainwindow);
+	ui_htmlview_deinit ();
 	
 #ifdef USE_SM
 	/* unplug */
-	session_end();
+	session_end ();
 #endif
 	
-	gtk_main_quit();
+	gtk_main_quit ();
 	
-	debug_exit("on_quit");
+	debug_exit ("on_quit");
 	return FALSE;
 }

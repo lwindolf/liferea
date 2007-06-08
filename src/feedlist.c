@@ -430,3 +430,19 @@ void feedlist_init(void) {
 	debug_exit("feedlist_init");
 }
 
+static void
+feedlist_free_node (nodePtr node)
+{
+	if (node->children)
+		node_foreach_child (node, feedlist_free_node);
+	
+	node->parent->children = g_slist_remove (node->parent->children, node);
+	node_free (node); 
+}
+
+void
+feedlist_free (void)
+{
+	feedlist_foreach (feedlist_free_node);
+	node_free (feedlist_get_root ());
+}

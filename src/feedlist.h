@@ -1,7 +1,7 @@
 /**
  * @file feedlist.h feedlist handling
  *
- * Copyright (C) 2005-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2005-2006 Lars Lindner <lars.lindner@gmail.com>
  *	      
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,28 +51,33 @@ extern GdkPixbuf *icons[MAX_ICONS];
 /** 
  * Initializes the feed list handling.
  */
-void feedlist_init(void);
+void feedlist_init (void);
+
+/**
+ * Destroys the feed list structure.
+ */
+void feedlist_free (void);
 
 /**
  * Get feed list root node.
  *
  * @returns root node
  */
-nodePtr feedlist_get_root(void);
+nodePtr feedlist_get_root (void);
 
 /**
  * Get currently selected feed list node 
  *
  * @returns selected node (or NULL)
  */
-nodePtr feedlist_get_selected(void);
+nodePtr feedlist_get_selected (void);
 
 /**
  * Get the node insertion point for new subscriptions. 
  *
  * @returns a parent node for new subscriptions
  */
-nodePtr feedlist_get_insertion_point(void);
+nodePtr feedlist_get_insertion_point (void);
 
 /** statistic counter handling methods */
 int feedlist_get_unread_item_count(void);

@@ -60,7 +60,6 @@ static void on_updateallfavicons_clicked(GtkButton *button, gpointer user_data);
 static void on_enableproxybtn_clicked (GtkButton *button, gpointer user_data);
 static void on_enc_download_tool_changed(GtkEditable *editable, gpointer user_data);
 static void on_socialsite_changed(GtkOptionMenu *optionmenu, gpointer user_data);
-static void on_toolbar_style_changed(GtkComboBox *widget, gpointer user_data);
 
 struct enclosure_download_tool {
 	gchar	*name;

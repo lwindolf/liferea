@@ -48,12 +48,6 @@
    It manages the currently displayed itemset, realizes filtering
    and provides synchronisation for backend and GUI access to this 
    itemset.  
-
-   Bypass only for read-only item access!   
-
-   For the data structure the item list is assigned an item set by
-   itemlist_load(), which can be updated with itemlist_merge_itemset().
-   All items are filtered using the item list filter.
  */
  
 static struct itemlist_priv 
@@ -69,6 +63,15 @@ static struct itemlist_priv
 	gboolean 	deferredRemove;		/**< TRUE if selected item needs to be removed from cache on unselecting */
 	gboolean 	deferredFilter;		/**< TRUE if selected item needs to be filtered on unselecting */
 } itemlist_priv;
+
+void
+itemlist_free (void)
+{
+	ui_itemlist_destroy (); 
+	
+	// FIXME: free filter rules
+	g_slist_free (itemlist_priv.filter);
+}
 
 itemPtr
 itemlist_get_selected (void)
@@ -317,10 +320,9 @@ itemlist_select_next_unread (void)
 	/* If none is found we continue searching in the feed list */
 	if (!result) {
 		nodePtr	node;
-		
+
 		/* scan feed list and find first feed with unread items */
 		node = feedlist_find_unread_feed (feedlist_get_root ());
-
 		if (node) {
 			/* load found feed */
 			ui_feedlist_select (node);

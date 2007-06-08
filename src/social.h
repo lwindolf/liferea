@@ -1,7 +1,7 @@
 /**
  * @file social.h social networking integration
  * 
- * Copyright (C) 2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2006-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,12 @@ typedef struct socialBookmarkSite {
 /**
  * Initialize social bookmarking support.
  */
-void social_init(void);
+void social_init (void);
+
+/**
+ * Frees social bookmarking structures
+ */
+void social_free (void);
 
 /**
  * Add a new site to the default social bookmark site list.

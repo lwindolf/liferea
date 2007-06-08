@@ -1,4 +1,4 @@
-2007-05-??  Lars Lindner  <lars.lindner@gmail.com>
+2007-06-??  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.3.6 (Unstable)
 
@@ -18,6 +18,10 @@
 	  and <Ctrl>-<Space> as 1, now it is the opposite.
 	* Fixes unread counter of parent nodes after moving
 	  feed list subtrees with DnD.
+
+	Translations
+
+	* Update of French translation from Vincent Lefevre
 	  
 
 2007-05-11  Lars Lindner  <lars.lindner@gmail.com>

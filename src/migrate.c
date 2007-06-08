@@ -256,7 +256,7 @@ migrate_10_to_13 (void)
 	migrate_copy_dir (".liferea", ".liferea_1.3", "");
 	migrate_copy_dir (".liferea", ".liferea_1.3", "cache" G_DIR_SEPARATOR_S "favicons");
 
-	sourceDir = g_strdup_printf("%s" G_DIR_SEPARATOR_S ".liferea_1.0" G_DIR_SEPARATOR_S "cache" G_DIR_SEPARATOR_S "feeds", g_get_home_dir());	
+	sourceDir = g_strdup_printf("%s" G_DIR_SEPARATOR_S ".liferea" G_DIR_SEPARATOR_S "cache" G_DIR_SEPARATOR_S "feeds", g_get_home_dir());	
 	migrate_items(sourceDir);
 	g_free(sourceDir);
 }
