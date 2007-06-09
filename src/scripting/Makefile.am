@@ -3,6 +3,7 @@
 EXTRA_DIST = liferea.i 
 
 INCLUDES = \
+        -fno-strict-aliasing \
         -DPACKAGE_DATA_DIR=\""$(datadir)"\" \
         -DPACKAGE_LIB_DIR=\""$(libdir)"\" \
         -DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
