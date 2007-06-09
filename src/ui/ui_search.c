@@ -54,29 +54,24 @@ static GSList	*searchEngines = NULL;
 /* search dialog callbacks							*/
 /*------------------------------------------------------------------------------*/
 
-static void ui_search_destroyed_cb(GtkWidget *widget, void *data) {
-
+static void
+ui_search_destroyed_cb(GtkWidget *widget, void *data)
+{
 	searchdialog = NULL;
 }
 
-void on_searchbtn_clicked(GtkButton *button, gpointer user_data) {
+void
+on_searchbtn_clicked (GtkButton *button, gpointer user_data)
+{
 	GtkWidget	*searchentry;
-	gboolean	visible;
 
 	if (!searchdialog) {
 		searchdialog = liferea_dialog_new (NULL, "searchdialog");
 		g_signal_connect (G_OBJECT (searchdialog), "destroy", G_CALLBACK (ui_search_destroyed_cb), NULL);
 	}
 	
-	searchentry = liferea_dialog_lookup(searchdialog, "searchentry");
-	gtk_window_set_focus(GTK_WINDOW(searchdialog), searchentry);
-	g_object_get(searchdialog, "visible", &visible, NULL);
-	g_object_set(searchdialog, "visible", !visible, NULL);
-}
-
-void on_hidesearch_clicked(GtkButton *button, gpointer user_data) {
-
-	gtk_widget_hide(searchdialog);
+	searchentry = liferea_dialog_lookup (searchdialog, "searchentry");
+	gtk_window_set_focus (GTK_WINDOW (searchdialog), searchentry);
 }
 
 void

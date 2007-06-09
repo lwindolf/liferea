@@ -40,8 +40,6 @@ void on_searchbtn_clicked(GtkButton *button, gpointer user_data);
 void on_searchentry_activate(GtkEntry *entry, gpointer user_data);
 void on_searchentry_changed(GtkEditable *editable, gpointer user_data);
 
-void on_hidesearch_clicked(GtkButton *button, gpointer user_data);
-
 void on_newVFolder_clicked(GtkButton *button, gpointer user_data);
 
 void on_new_vfolder_activate(GtkMenuItem *menuitem, gpointer user_data);

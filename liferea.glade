@@ -4399,7 +4399,7 @@ matches. They are removed if at least one removing rule matches.</property>
                 <property name="label">gtk-close</property>
                 <property name="use_stock">True</property>
                 <property name="response_id">-7</property>
-                <signal name="clicked" handler="on_hidesearch_clicked"/>
+                <signal name="clicked" handler="gtk_widget_destroy" object="searchdialog"/>
               </widget>
             </child>
             <child>
