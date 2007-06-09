@@ -2786,7 +2786,7 @@ Text only</property>
                                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                                     <property name="spacing">6</property>
                                     <child>
-                                      <widget class="GtkRadioButton" id="proxyModeRadio">
+                                      <widget class="GtkRadioButton" id="proxyAutoDetectRadio">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
@@ -2798,7 +2798,7 @@ Text only</property>
                                       </widget>
                                     </child>
                                     <child>
-                                      <widget class="GtkRadioButton" id="proxyModeRadio2">
+                                      <widget class="GtkRadioButton" id="noProxyRadio">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
@@ -2807,14 +2807,14 @@ Text only</property>
                                         <property name="response_id">0</property>
                                         <property name="active">True</property>
                                         <property name="draw_indicator">True</property>
-                                        <property name="group">proxyModeRadio</property>
+                                        <property name="group">proxyAutoDetectRadio</property>
                                       </widget>
                                       <packing>
                                         <property name="position">1</property>
                                       </packing>
                                     </child>
                                     <child>
-                                      <widget class="GtkRadioButton" id="proxyModeRadio3">
+                                      <widget class="GtkRadioButton" id="manualProxyRadio">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
@@ -2823,14 +2823,14 @@ Text only</property>
                                         <property name="response_id">0</property>
                                         <property name="active">True</property>
                                         <property name="draw_indicator">True</property>
-                                        <property name="group">proxyModeRadio</property>
+                                        <property name="group">proxyAutoDetectRadio</property>
                                       </widget>
                                       <packing>
                                         <property name="position">2</property>
                                       </packing>
                                     </child>
                                     <child>
-                                      <widget class="GtkHBox" id="hbox1">
+                                      <widget class="GtkHBox" id="proxybox">
                                         <property name="visible">True</property>
                                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                                         <child>
@@ -2849,7 +2849,7 @@ Text only</property>
                                             <property name="visible">True</property>
                                             <property name="spacing">6</property>
                                             <child>
-                                              <widget class="GtkTable" id="proxytable1">
+                                              <widget class="GtkTable" id="proxytable">
                                                 <property name="visible">True</property>
                                                 <property name="n_rows">2</property>
                                                 <property name="n_columns">2</property>
@@ -2861,7 +2861,7 @@ Text only</property>
                                                     <property name="xalign">0</property>
                                                     <property name="label" translatable="yes">Proxy _Port:</property>
                                                     <property name="use_underline">True</property>
-                                                    <property name="mnemonic_widget">proxyportentry1</property>
+                                                    <property name="mnemonic_widget">proxyportentry</property>
                                                   </widget>
                                                   <packing>
                                                     <property name="top_attach">1</property>
@@ -2871,7 +2871,7 @@ Text only</property>
                                                   </packing>
                                                 </child>
                                                 <child>
-                                                  <widget class="GtkEntry" id="proxyportentry1">
+                                                  <widget class="GtkEntry" id="proxyportentry">
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="invisible_char">*</property>
@@ -2887,7 +2887,7 @@ Text only</property>
                                                   </packing>
                                                 </child>
                                                 <child>
-                                                  <widget class="GtkEntry" id="proxyhostentry1">
+                                                  <widget class="GtkEntry" id="proxyhostentry">
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="invisible_char">*</property>
@@ -2906,7 +2906,7 @@ Text only</property>
                                                     <property name="xalign">0</property>
                                                     <property name="label" translatable="yes">Proxy _Host:</property>
                                                     <property name="use_underline">True</property>
-                                                    <property name="mnemonic_widget">proxyhostentry1</property>
+                                                    <property name="mnemonic_widget">proxyhostentry</property>
                                                   </widget>
                                                   <packing>
                                                     <property name="x_options">GTK_FILL</property>
@@ -2919,13 +2919,14 @@ Text only</property>
                                               </packing>
                                             </child>
                                             <child>
-                                              <widget class="GtkCheckButton" id="useProxyAuth1">
+                                              <widget class="GtkCheckButton" id="useProxyAuth">
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">True</property>
                                                 <property name="label" translatable="yes">Use Proxy Au_thentication</property>
                                                 <property name="use_underline">True</property>
                                                 <property name="response_id">0</property>
                                                 <property name="draw_indicator">True</property>
+                                                <signal name="toggled" handler="on_useProxyAuth_toggled"/>
                                               </widget>
                                               <packing>
                                                 <property name="expand">False</property>
@@ -2938,7 +2939,7 @@ Text only</property>
                                                 <property name="visible">True</property>
                                                 <property name="left_padding">21</property>
                                                 <child>
-                                                  <widget class="GtkTable" id="proxyauthbox1">
+                                                  <widget class="GtkTable" id="proxyauthtable">
                                                     <property name="visible">True</property>
                                                     <property name="n_rows">2</property>
                                                     <property name="n_columns">2</property>
@@ -2950,7 +2951,7 @@ Text only</property>
                                                         <property name="xalign">0</property>
                                                         <property name="label" translatable="yes">Proxy Pass_word:</property>
                                                         <property name="use_underline">True</property>
-                                                        <property name="mnemonic_widget">proxypasswordentry1</property>
+                                                        <property name="mnemonic_widget">proxypasswordentry</property>
                                                       </widget>
                                                       <packing>
                                                         <property name="top_attach">1</property>
@@ -2960,7 +2961,7 @@ Text only</property>
                                                       </packing>
                                                     </child>
                                                     <child>
-                                                      <widget class="GtkEntry" id="proxypasswordentry1">
+                                                      <widget class="GtkEntry" id="proxypasswordentry">
                                                         <property name="visible">True</property>
                                                         <property name="can_focus">True</property>
                                                         <property name="visibility">False</property>
@@ -2977,7 +2978,7 @@ Text only</property>
                                                       </packing>
                                                     </child>
                                                     <child>
-                                                      <widget class="GtkEntry" id="proxyuserentry1">
+                                                      <widget class="GtkEntry" id="proxyuserentry">
                                                         <property name="visible">True</property>
                                                         <property name="can_focus">True</property>
                                                         <property name="invisible_char">*</property>
@@ -2996,7 +2997,7 @@ Text only</property>
                                                         <property name="xalign">0</property>
                                                         <property name="label" translatable="yes">Proxy _Username:</property>
                                                         <property name="use_underline">True</property>
-                                                        <property name="mnemonic_widget">proxyuserentry1</property>
+                                                        <property name="mnemonic_widget">proxyuserentry</property>
                                                       </widget>
                                                       <packing>
                                                         <property name="x_options">GTK_FILL</property>

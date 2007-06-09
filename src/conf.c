@@ -170,13 +170,13 @@ static void conf_proxy_reset_settings_cb(GConfClient *client, guint cnxn_id, GCo
 	proxypassword = NULL;
 	
 	/* first check for a configured GNOME proxy */
-	if(getBooleanConfValue(USE_PROXY)) {
-		proxyname = getStringConfValue(PROXY_HOST);
-		proxyport = getNumericConfValue(PROXY_PORT);
+	if(getBooleanConfValue(GNOME_USE_PROXY)) {
+		proxyname = getStringConfValue(GNOME_PROXY_HOST);
+		proxyport = getNumericConfValue(GNOME_PROXY_PORT);
 		debug2(DEBUG_CONF, "using GNOME configured proxy: \"%s\" port \"%d\"", proxyname, proxyport);
-		if (getBooleanConfValue(PROXY_USEAUTH)) {
-			proxyusername = getStringConfValue(PROXY_USER);
-			proxypassword = getStringConfValue(PROXY_PASSWD);
+		if (getBooleanConfValue(GNOME_PROXY_USEAUTH)) {
+			proxyusername = getStringConfValue(GNOME_PROXY_USER);
+			proxypassword = getStringConfValue(GNOME_PROXY_PASSWD);
 		}
 	} else {
 		/* otherwise there could be a proxy specified in the environment 

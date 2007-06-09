@@ -82,12 +82,18 @@
 
 /* networking settings */
 #define NETWORK_TIMEOUT			"/apps/liferea/network-timeout"
-#define USE_PROXY			"/system/http_proxy/use_http_proxy"
-#define PROXY_HOST			"/system/http_proxy/host"
-#define PROXY_PORT			"/system/http_proxy/port"
-#define PROXY_USEAUTH			"/system/http_proxy/use_authentication"
-#define PROXY_USER			"/system/http_proxy/authentication_user"
-#define PROXY_PASSWD			"/system/http_proxy/authentication_password"
+#define PROXY_DETECT_MODE		"/apps/liferea/proxy-detect-mode"
+#define PROXY_HOST			"/apps/liferea/proxy-host"
+#define PROXY_PORT			"/apps/liferea/proxy-port"
+#define PROXY_USEAUTH			"/apps/liferea/proxy-use_authentication"
+#define PROXY_USER			"/apps/liferea/proxy-authentication_user"
+#define PROXY_PASSWD			"/apps/liferea/proxy-authentication_password"
+#define GNOME_USE_PROXY			"/system/http_proxy/use_http_proxy"
+#define GNOME_PROXY_HOST		"/system/http_proxy/host"
+#define GNOME_PROXY_PORT		"/system/http_proxy/port"
+#define GNOME_PROXY_USEAUTH		"/system/http_proxy/use_authentication"
+#define GNOME_PROXY_USER		"/system/http_proxy/authentication_user"
+#define GNOME_PROXY_PASSWD		"/system/http_proxy/authentication_password"
 
 /* other settings */
 #define DISABLE_DBUS			"/apps/liferea/disable-dbus"

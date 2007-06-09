@@ -57,7 +57,6 @@ static GtkWidget *prefdialog = NULL;
 static void on_browser_changed(GtkOptionMenu *optionmenu, gpointer user_data);
 static void on_browser_place_changed(GtkOptionMenu *optionmenu, gpointer user_data);
 static void on_updateallfavicons_clicked(GtkButton *button, gpointer user_data);
-static void on_enableproxybtn_clicked (GtkButton *button, gpointer user_data);
 static void on_enc_download_tool_changed(GtkEditable *editable, gpointer user_data);
 static void on_socialsite_changed(GtkOptionMenu *optionmenu, gpointer user_data);
 
@@ -205,6 +204,272 @@ const gchar * prefs_get_download_cmd(void) {
 	edt += getNumericConfValue(ENCLOSURE_DOWNLOAD_TOOL);
 	/* FIXME: array boundary check */
 	return edt->cmd;
+}
+
+/*------------------------------------------------------------------------------*/
+/* preference callbacks 							*/
+/*------------------------------------------------------------------------------*/
+
+void on_folderdisplaybtn_toggled(GtkToggleButton *togglebutton, gpointer user_data) {
+
+	gboolean enabled = gtk_toggle_button_get_active(togglebutton);
+	setNumericConfValue(FOLDER_DISPLAY_MODE, (TRUE == enabled)?1:0);
+}
+
+void on_folderhidereadbtn_toggled(GtkToggleButton *togglebutton, gpointer user_data) {
+	nodePtr	displayedNode;
+
+	gboolean enabled = gtk_toggle_button_get_active(togglebutton);
+	setBooleanConfValue(FOLDER_DISPLAY_HIDE_READ, enabled);
+	displayedNode = itemlist_get_displayed_node();
+	if(displayedNode)
+		itemlist_load(displayedNode);
+}
+
+void on_trayiconoptionbtn_clicked(GtkButton *button, gpointer user_data) {
+
+	gboolean enabled = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button));
+	setBooleanConfValue(SHOW_TRAY_ICON, enabled);
+	gtk_widget_set_sensitive(liferea_dialog_lookup(prefdialog, "newcountintraybtn"), enabled);
+	gtk_widget_set_sensitive(liferea_dialog_lookup(prefdialog, "minimizetotraybtn"), enabled);
+}
+
+void on_popupwindowsoptionbtn_clicked(GtkButton *button, gpointer user_data) {
+
+	gboolean enabled = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button));
+	setBooleanConfValue(SHOW_POPUP_WINDOWS, enabled);
+	notification_enable(getBooleanConfValue(SHOW_POPUP_WINDOWS));
+	gtk_widget_set_sensitive(liferea_dialog_lookup(prefdialog, "placement_options"), enabled);
+}
+
+void
+on_startupActionCombo_changed(GtkComboBox *combo, gpointer user_data)
+{
+	setNumericConfValue(STARTUP_FEED_ACTION, gtk_combo_box_get_active (GTK_COMBO_BOX (liferea_dialog_lookup (prefdialog, "startupActionCombo"))));
+}
+
+void on_browsercmd_changed(GtkEditable *editable, gpointer user_data) {
+
+	setStringConfValue(BROWSER_COMMAND, gtk_editable_get_chars(editable,0,-1));
+}
+
+static void on_browser_changed(GtkOptionMenu *optionmenu, gpointer user_data) {
+	gint num = GPOINTER_TO_INT(user_data);
+
+	gtk_widget_set_sensitive(liferea_dialog_lookup(prefdialog, "browsercmd"), browsers[num].id == NULL);	
+	gtk_widget_set_sensitive(liferea_dialog_lookup(prefdialog, "manuallabel"), browsers[num].id == NULL);	
+
+	if (browsers[num].id == NULL)
+		setStringConfValue(BROWSER_ID, "manual");
+	else
+		setStringConfValue(BROWSER_ID, browsers[num].id);
+}
+
+static void on_browser_place_changed(GtkOptionMenu *optionmenu, gpointer user_data) {
+	int num = GPOINTER_TO_INT(user_data);
+	
+	setNumericConfValue(BROWSER_PLACE, num);
+}
+
+void on_openlinksinsidebtn_clicked(GtkToggleButton *button, gpointer user_data) {
+	setBooleanConfValue(BROWSE_INSIDE_APPLICATION, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)));
+}
+
+void on_disablejavascript_toggled(GtkToggleButton *togglebutton, gpointer user_data) {
+	setBooleanConfValue(DISABLE_JAVASCRIPT, gtk_toggle_button_get_active(togglebutton));
+}
+
+void on_socialsite_changed(GtkOptionMenu *optionmenu, gpointer user_data) {
+	social_set_site((gchar *)user_data);
+}
+
+void on_toolbarCombo_changed(GtkComboBox *widget, gpointer user_data) {
+	gchar *style;
+	gint value = gtk_combo_box_get_active(widget);
+	setStringConfValue(TOOLBAR_STYLE, gui_toolbar_style[value]);
+
+	style = conf_get_toolbar_style();
+	ui_mainwindow_set_toolbar_style(style);
+	g_free(style);
+}
+
+void on_itemCountBtn_value_changed(GtkSpinButton *spinbutton, gpointer user_data) {
+	GtkAdjustment	*itemCount;
+	
+	itemCount = gtk_spin_button_get_adjustment(spinbutton);
+	setNumericConfValue(DEFAULT_MAX_ITEMS, gtk_adjustment_get_value(itemCount));
+}
+
+void on_default_update_interval_value_changed(GtkSpinButton *spinbutton, gpointer user_data) {
+	gint		updateInterval;
+	GtkWidget	*widget;
+	gint		intervalUnit;
+
+	widget = liferea_dialog_lookup(prefdialog, "refreshIntervalUnitComboBox");
+	intervalUnit = gtk_combo_box_get_active(GTK_COMBO_BOX(widget));
+	updateInterval = gtk_spin_button_get_value_as_int(spinbutton);
+
+	if (intervalUnit == 1) updateInterval *= 60;		/* hours */
+	else if (intervalUnit == 2) updateInterval *= 1440;	/* days */
+
+	setNumericConfValue(DEFAULT_UPDATE_INTERVAL, updateInterval);
+}
+
+void on_menuselection_clicked(GtkButton *button, gpointer user_data) {
+	gint		active_button;
+	
+	active_button = GPOINTER_TO_INT(gtk_object_get_data(GTK_OBJECT(button), "option_number"));
+	switch(active_button) {
+		case 1:
+			setBooleanConfValue(DISABLE_MENUBAR, FALSE);
+			setBooleanConfValue(DISABLE_TOOLBAR, FALSE);
+			break;
+		case 2:
+			setBooleanConfValue(DISABLE_MENUBAR, FALSE);
+			setBooleanConfValue(DISABLE_TOOLBAR, TRUE);
+			break;
+		case 3:
+			setBooleanConfValue(DISABLE_MENUBAR, TRUE);
+			setBooleanConfValue(DISABLE_TOOLBAR, FALSE);
+			break;
+		default:
+			break;
+	}
+	
+	ui_mainwindow_update_menubar();
+	ui_mainwindow_update_toolbar();
+}
+
+static void
+on_updateallfavicons_clicked (GtkButton *button, gpointer user_data)
+{
+	GTimeVal now;
+	
+	g_get_current_time (&now);
+	feedlist_foreach_data (node_update_favicon, &now);
+}
+
+static void
+on_proxyAutoDetect_clicked (GtkButton *button, gpointer user_data)
+{
+	setBooleanConfValue (PROXY_DETECT_MODE, 0);
+	gtk_widget_set_sensitive (GTK_WIDGET (liferea_dialog_lookup (prefdialog, "proxybox")), FALSE);
+}
+
+static void
+on_noProxy_clicked (GtkButton *button, gpointer user_data)
+{
+	setBooleanConfValue (PROXY_DETECT_MODE, 1);
+	gtk_widget_set_sensitive (GTK_WIDGET (liferea_dialog_lookup (prefdialog, "proxybox")), FALSE);
+}
+
+static void
+on_manualProxy_clicked (GtkButton *button, gpointer user_data)
+{
+	setBooleanConfValue (PROXY_DETECT_MODE, 2);
+	gtk_widget_set_sensitive (GTK_WIDGET (liferea_dialog_lookup (prefdialog, "proxybox")), TRUE);
+}
+
+void
+on_useProxyAuth_toggled (GtkToggleButton *button, gpointer user_data)
+{
+	gboolean enabled = gtk_toggle_button_get_active (button);
+	gtk_widget_set_sensitive (GTK_WIDGET(liferea_dialog_lookup(prefdialog, "proxyauthtable")), enabled);
+	setBooleanConfValue (PROXY_USEAUTH, enabled);
+}
+
+void on_proxyhostentry_changed(GtkEditable *editable, gpointer user_data) {
+	setStringConfValue(PROXY_HOST, gtk_editable_get_chars(editable,0,-1));
+}
+
+void on_proxyportentry_changed(GtkEditable *editable, gpointer user_data) {
+	setNumericConfValue(PROXY_PORT, atoi(gtk_editable_get_chars(editable,0,-1)));
+}
+
+void on_proxyusernameentry_changed(GtkEditable *editable, gpointer user_data) {
+	setStringConfValue(PROXY_USER, gtk_editable_get_chars(editable,0,-1));
+}
+
+void on_proxypasswordentry_changed(GtkEditable *editable, gpointer user_data) {
+	setStringConfValue(PROXY_PASSWD, gtk_editable_get_chars(editable,0,-1));
+}
+
+void
+on_skimKeyCombo_changed(GtkComboBox *combo, gpointer user_data) 
+{
+	setNumericConfValue (BROWSE_KEY_SETTING, gtk_combo_box_get_active (GTK_COMBO_BOX (liferea_dialog_lookup (prefdialog, "skimKeyCombo"))));
+}
+
+static void on_enc_download_tool_changed(GtkEditable *editable, gpointer user_data) {
+
+	setNumericConfValue(ENCLOSURE_DOWNLOAD_TOOL, GPOINTER_TO_INT(user_data));
+}
+
+void on_enc_action_change_btn_clicked(GtkButton *button, gpointer user_data) {
+	GtkTreeModel		*model;
+	GtkTreeSelection	*selection;
+	GtkTreeIter		iter;
+	gpointer		type;
+
+	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(liferea_dialog_lookup(prefdialog, "enc_actions_view")));
+	if(gtk_tree_selection_get_selected(selection, &model, &iter)) {
+		gtk_tree_model_get(model, &iter, FTS_PTR, &type, -1);
+		ui_enclosure_change_type(type);
+		gtk_tree_store_set(GTK_TREE_STORE(model), &iter, 
+		                   FTS_CMD, ((encTypePtr)type)->cmd, -1);
+	}
+}
+
+void on_enc_action_remove_btn_clicked(GtkButton *button, gpointer user_data) {
+	GtkTreeModel		*model;
+	GtkTreeSelection	*selection;
+	GtkTreeIter		iter;
+	gpointer		type;
+
+	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(liferea_dialog_lookup(prefdialog, "enc_actions_view")));
+	if(gtk_tree_selection_get_selected(selection, &model, &iter)) {
+		gtk_tree_model_get(model, &iter, FTS_PTR, &type, -1);
+		gtk_tree_store_remove(GTK_TREE_STORE(model), &iter);
+		ui_enclosure_remove_type(type);
+	}
+}
+
+void on_save_download_entry_changed(GtkEditable *editable, gpointer user_data) {
+
+	setStringConfValue(ENCLOSURE_DOWNLOAD_PATH, gtk_editable_get_chars(editable , 0, -1));
+}
+
+static void on_save_download_finished(const gchar *filename, gpointer user_data) {
+	GtkWidget	*dialog = (GtkWidget *)user_data;
+	gchar		*utfname;
+	
+	if(filename == NULL)
+		return;
+	
+	utfname = g_filename_to_utf8(filename, -1, NULL, NULL, NULL);
+
+	if(utfname != NULL) {
+		gtk_entry_set_text(GTK_ENTRY(liferea_dialog_lookup(dialog, "save_download_entry")), utfname);
+		setStringConfValue(ENCLOSURE_DOWNLOAD_PATH, utfname);
+	}
+	
+	g_free(utfname);
+}
+
+void on_save_download_select_btn_clicked(GtkButton *button, gpointer user_data) {
+	const gchar *path = gtk_editable_get_chars(GTK_EDITABLE(liferea_dialog_lookup(prefdialog, "save_download_entry")), 0, -1);
+	
+	ui_choose_directory(_("Choose download directory"), GTK_STOCK_OPEN, on_save_download_finished, path, prefdialog);
+}
+
+void on_newcountintraybtn_clicked(GtkButton *button, gpointer user_data) {
+
+	setBooleanConfValue(SHOW_NEW_COUNT_IN_TRAY, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)));
+}
+
+void on_minimizetotraybtn_clicked(GtkButton *button, gpointer user_data) {
+
+	setBooleanConfValue(DONT_MINIMIZE_TO_TRAY, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)));
 }
 
 /*------------------------------------------------------------------------------*/
@@ -416,32 +681,38 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 		gtk_combo_box_set_active (GTK_COMBO_BOX (liferea_dialog_lookup (prefdialog, "toolbarCombo")), i);
 
 		/* ================= panel 5 "proxy" ======================== */
-		enabled = getBooleanConfValue(USE_PROXY);
-		widget = liferea_dialog_lookup(prefdialog, "enableproxybtn");
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), enabled);
+		proxyport = g_strdup_printf ("%d", getNumericConfValue (PROXY_PORT));
+		gtk_entry_set_text (GTK_ENTRY (liferea_dialog_lookup (prefdialog, "proxyhostentry")), getStringConfValue(PROXY_HOST));
+		gtk_entry_set_text (GTK_ENTRY (liferea_dialog_lookup (prefdialog, "proxyportentry")), proxyport);
+		g_free (proxyport);
 
-		entry = liferea_dialog_lookup(prefdialog, "proxyhostentry");
-		gtk_entry_set_text(GTK_ENTRY(entry), getStringConfValue(PROXY_HOST));
-
-		entry = liferea_dialog_lookup(prefdialog, "proxyportentry");
-		proxyport = g_strdup_printf("%d", getNumericConfValue(PROXY_PORT));
-		gtk_entry_set_text(GTK_ENTRY(entry), proxyport);
-		g_free(proxyport);
-
-
-		/* Authentication */
-		enabled2 = getBooleanConfValue(PROXY_USEAUTH);
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(liferea_dialog_lookup(prefdialog, "useProxyAuth")), enabled2);
-		gtk_entry_set_text(GTK_ENTRY(liferea_dialog_lookup(prefdialog, "proxyuserentry")), getStringConfValue(PROXY_USER));
-		gtk_entry_set_text(GTK_ENTRY(liferea_dialog_lookup(prefdialog, "proxypasswordentry")), getStringConfValue(PROXY_PASSWD));
-
-		gtk_widget_set_sensitive(GTK_WIDGET(liferea_dialog_lookup(prefdialog, "proxybox")), enabled);
-		if (enabled)
-			gtk_widget_set_sensitive(GTK_WIDGET(liferea_dialog_lookup(prefdialog, "proxyauthbox")), enabled2);
-
-		gtk_signal_connect(GTK_OBJECT(liferea_dialog_lookup(prefdialog, "enableproxybtn")), "clicked", G_CALLBACK(on_enableproxybtn_clicked), NULL);
-		gtk_signal_connect(GTK_OBJECT(liferea_dialog_lookup(prefdialog, "useProxyAuth")), "clicked", G_CALLBACK(on_enableproxybtn_clicked), NULL);
-
+		enabled = getBooleanConfValue (PROXY_USEAUTH);
+		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (prefdialog, "useProxyAuth")), enabled);
+		gtk_entry_set_text (GTK_ENTRY (liferea_dialog_lookup (prefdialog, "proxyuserentry")), getStringConfValue (PROXY_USER));
+		gtk_entry_set_text (GTK_ENTRY (liferea_dialog_lookup (prefdialog, "proxypasswordentry")), getStringConfValue (PROXY_PASSWD));
+		gtk_widget_set_sensitive (GTK_WIDGET (liferea_dialog_lookup(prefdialog, "proxyauthtable")), enabled);
+			
+		i = getBooleanConfValue (PROXY_DETECT_MODE);
+		switch (i) {
+			default:
+			case 0: /* proxy auto detect */
+				gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (prefdialog, "proxyAutoDetectRadio")), TRUE);
+				enabled = FALSE;
+				break;
+			case 1: /* no proxy */
+				gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (prefdialog, "noProxyRadio")), TRUE);
+				enabled = FALSE;
+				break;
+			case 2: /* manual proxy */
+				gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (prefdialog, "manualProxyRadio")), TRUE);
+				enabled = TRUE;
+				break;
+		}
+		gtk_widget_set_sensitive (GTK_WIDGET (liferea_dialog_lookup (prefdialog, "proxybox")), enabled);
+		g_signal_connect (G_OBJECT (liferea_dialog_lookup (prefdialog, "proxyAutoDetectRadio")), "clicked", G_CALLBACK (on_proxyAutoDetect_clicked), NULL);
+		g_signal_connect (G_OBJECT (liferea_dialog_lookup (prefdialog, "noProxyRadio")), "clicked", G_CALLBACK (on_noProxy_clicked), NULL);
+		g_signal_connect (G_OBJECT (liferea_dialog_lookup (prefdialog, "manualProxyRadio")), "clicked", G_CALLBACK (on_manualProxy_clicked), NULL);
+		
 		/* ================= panel 6 "enclosures" ======================== */
 
 		/* menu for download tool */
@@ -488,253 +759,4 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 		gtk_tree_selection_set_mode(gtk_tree_view_get_selection(GTK_TREE_VIEW(widget)), GTK_SELECTION_SINGLE);
 	}	
 	gtk_window_present(GTK_WINDOW(prefdialog));
-}
-
-/*------------------------------------------------------------------------------*/
-/* preference callbacks 							*/
-/*------------------------------------------------------------------------------*/
-
-void on_folderdisplaybtn_toggled(GtkToggleButton *togglebutton, gpointer user_data) {
-
-	gboolean enabled = gtk_toggle_button_get_active(togglebutton);
-	setNumericConfValue(FOLDER_DISPLAY_MODE, (TRUE == enabled)?1:0);
-}
-
-void on_folderhidereadbtn_toggled(GtkToggleButton *togglebutton, gpointer user_data) {
-	nodePtr	displayedNode;
-
-	gboolean enabled = gtk_toggle_button_get_active(togglebutton);
-	setBooleanConfValue(FOLDER_DISPLAY_HIDE_READ, enabled);
-	displayedNode = itemlist_get_displayed_node();
-	if(displayedNode)
-		itemlist_load(displayedNode);
-}
-
-void on_trayiconoptionbtn_clicked(GtkButton *button, gpointer user_data) {
-
-	gboolean enabled = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button));
-	setBooleanConfValue(SHOW_TRAY_ICON, enabled);
-	gtk_widget_set_sensitive(liferea_dialog_lookup(prefdialog, "newcountintraybtn"), enabled);
-	gtk_widget_set_sensitive(liferea_dialog_lookup(prefdialog, "minimizetotraybtn"), enabled);
-}
-
-void on_popupwindowsoptionbtn_clicked(GtkButton *button, gpointer user_data) {
-
-	gboolean enabled = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button));
-	setBooleanConfValue(SHOW_POPUP_WINDOWS, enabled);
-	notification_enable(getBooleanConfValue(SHOW_POPUP_WINDOWS));
-	gtk_widget_set_sensitive(liferea_dialog_lookup(prefdialog, "placement_options"), enabled);
-}
-
-void
-on_startupActionCombo_changed(GtkComboBox *combo, gpointer user_data)
-{
-	setNumericConfValue(STARTUP_FEED_ACTION, gtk_combo_box_get_active (GTK_COMBO_BOX (liferea_dialog_lookup (prefdialog, "startupActionCombo"))));
-}
-
-void on_browsercmd_changed(GtkEditable *editable, gpointer user_data) {
-
-	setStringConfValue(BROWSER_COMMAND, gtk_editable_get_chars(editable,0,-1));
-}
-
-static void on_browser_changed(GtkOptionMenu *optionmenu, gpointer user_data) {
-	gint num = GPOINTER_TO_INT(user_data);
-
-	gtk_widget_set_sensitive(liferea_dialog_lookup(prefdialog, "browsercmd"), browsers[num].id == NULL);	
-	gtk_widget_set_sensitive(liferea_dialog_lookup(prefdialog, "manuallabel"), browsers[num].id == NULL);	
-
-	if (browsers[num].id == NULL)
-		setStringConfValue(BROWSER_ID, "manual");
-	else
-		setStringConfValue(BROWSER_ID, browsers[num].id);
-}
-
-static void on_browser_place_changed(GtkOptionMenu *optionmenu, gpointer user_data) {
-	int num = GPOINTER_TO_INT(user_data);
-	
-	setNumericConfValue(BROWSER_PLACE, num);
-}
-
-void on_openlinksinsidebtn_clicked(GtkToggleButton *button, gpointer user_data) {
-	setBooleanConfValue(BROWSE_INSIDE_APPLICATION, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)));
-}
-
-void on_disablejavascript_toggled(GtkToggleButton *togglebutton, gpointer user_data) {
-	setBooleanConfValue(DISABLE_JAVASCRIPT, gtk_toggle_button_get_active(togglebutton));
-}
-
-void on_socialsite_changed(GtkOptionMenu *optionmenu, gpointer user_data) {
-	social_set_site((gchar *)user_data);
-}
-
-void on_toolbarCombo_changed(GtkComboBox *widget, gpointer user_data) {
-	gchar *style;
-	gint value = gtk_combo_box_get_active(widget);
-	setStringConfValue(TOOLBAR_STYLE, gui_toolbar_style[value]);
-
-	style = conf_get_toolbar_style();
-	ui_mainwindow_set_toolbar_style(style);
-	g_free(style);
-}
-
-void on_itemCountBtn_value_changed(GtkSpinButton *spinbutton, gpointer user_data) {
-	GtkAdjustment	*itemCount;
-	
-	itemCount = gtk_spin_button_get_adjustment(spinbutton);
-	setNumericConfValue(DEFAULT_MAX_ITEMS, gtk_adjustment_get_value(itemCount));
-}
-
-void on_default_update_interval_value_changed(GtkSpinButton *spinbutton, gpointer user_data) {
-	gint		updateInterval;
-	GtkWidget	*widget;
-	gint		intervalUnit;
-
-	widget = liferea_dialog_lookup(prefdialog, "refreshIntervalUnitComboBox");
-	intervalUnit = gtk_combo_box_get_active(GTK_COMBO_BOX(widget));
-	updateInterval = gtk_spin_button_get_value_as_int(spinbutton);
-
-	if (intervalUnit == 1) updateInterval *= 60;		/* hours */
-	else if (intervalUnit == 2) updateInterval *= 1440;	/* days */
-
-	setNumericConfValue(DEFAULT_UPDATE_INTERVAL, updateInterval);
-}
-
-void on_menuselection_clicked(GtkButton *button, gpointer user_data) {
-	gint		active_button;
-	
-	active_button = GPOINTER_TO_INT(gtk_object_get_data(GTK_OBJECT(button), "option_number"));
-	switch(active_button) {
-		case 1:
-			setBooleanConfValue(DISABLE_MENUBAR, FALSE);
-			setBooleanConfValue(DISABLE_TOOLBAR, FALSE);
-			break;
-		case 2:
-			setBooleanConfValue(DISABLE_MENUBAR, FALSE);
-			setBooleanConfValue(DISABLE_TOOLBAR, TRUE);
-			break;
-		case 3:
-			setBooleanConfValue(DISABLE_MENUBAR, TRUE);
-			setBooleanConfValue(DISABLE_TOOLBAR, FALSE);
-			break;
-		default:
-			break;
-	}
-	
-	ui_mainwindow_update_menubar();
-	ui_mainwindow_update_toolbar();
-}
-
-static void
-on_updateallfavicons_clicked (GtkButton *button, gpointer user_data)
-{
-	GTimeVal now;
-	
-	g_get_current_time (&now);
-	feedlist_foreach_data (node_update_favicon, &now);
-}
- 
-static void on_enableproxybtn_clicked(GtkButton *button, gpointer user_data) {
-	gboolean	enabled;
-	
-	enabled = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(liferea_dialog_lookup(prefdialog, "useProxyAuth")));
-	gtk_widget_set_sensitive(GTK_WIDGET(liferea_dialog_lookup(prefdialog, "proxyauthbox")), enabled);
-	setBooleanConfValue(PROXY_USEAUTH, enabled);
-	
-	enabled = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(liferea_dialog_lookup(prefdialog, "enableproxybtn")));
-	gtk_widget_set_sensitive(GTK_WIDGET(liferea_dialog_lookup(prefdialog, "proxybox")), enabled);
-	setBooleanConfValue(USE_PROXY, enabled);
-}
-
-void on_proxyhostentry_changed(GtkEditable *editable, gpointer user_data) {
-	setStringConfValue(PROXY_HOST, gtk_editable_get_chars(editable,0,-1));
-}
-
-void on_proxyportentry_changed(GtkEditable *editable, gpointer user_data) {
-	setNumericConfValue(PROXY_PORT, atoi(gtk_editable_get_chars(editable,0,-1)));
-}
-
-void on_proxyusernameentry_changed(GtkEditable *editable, gpointer user_data) {
-	setStringConfValue(PROXY_USER, gtk_editable_get_chars(editable,0,-1));
-}
-
-void on_proxypasswordentry_changed(GtkEditable *editable, gpointer user_data) {
-	setStringConfValue(PROXY_PASSWD, gtk_editable_get_chars(editable,0,-1));
-}
-
-void
-on_skimKeyCombo_changed(GtkComboBox *combo, gpointer user_data) 
-{
-	setNumericConfValue (BROWSE_KEY_SETTING, gtk_combo_box_get_active (GTK_COMBO_BOX (liferea_dialog_lookup (prefdialog, "skimKeyCombo"))));
-}
-
-static void on_enc_download_tool_changed(GtkEditable *editable, gpointer user_data) {
-
-	setNumericConfValue(ENCLOSURE_DOWNLOAD_TOOL, GPOINTER_TO_INT(user_data));
-}
-
-void on_enc_action_change_btn_clicked(GtkButton *button, gpointer user_data) {
-	GtkTreeModel		*model;
-	GtkTreeSelection	*selection;
-	GtkTreeIter		iter;
-	gpointer		type;
-
-	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(liferea_dialog_lookup(prefdialog, "enc_actions_view")));
-	if(gtk_tree_selection_get_selected(selection, &model, &iter)) {
-		gtk_tree_model_get(model, &iter, FTS_PTR, &type, -1);
-		ui_enclosure_change_type(type);
-		gtk_tree_store_set(GTK_TREE_STORE(model), &iter, 
-		                   FTS_CMD, ((encTypePtr)type)->cmd, -1);
-	}
-}
-
-void on_enc_action_remove_btn_clicked(GtkButton *button, gpointer user_data) {
-	GtkTreeModel		*model;
-	GtkTreeSelection	*selection;
-	GtkTreeIter		iter;
-	gpointer		type;
-
-	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(liferea_dialog_lookup(prefdialog, "enc_actions_view")));
-	if(gtk_tree_selection_get_selected(selection, &model, &iter)) {
-		gtk_tree_model_get(model, &iter, FTS_PTR, &type, -1);
-		gtk_tree_store_remove(GTK_TREE_STORE(model), &iter);
-		ui_enclosure_remove_type(type);
-	}
-}
-
-void on_save_download_entry_changed(GtkEditable *editable, gpointer user_data) {
-
-	setStringConfValue(ENCLOSURE_DOWNLOAD_PATH, gtk_editable_get_chars(editable , 0, -1));
-}
-
-static void on_save_download_finished(const gchar *filename, gpointer user_data) {
-	GtkWidget	*dialog = (GtkWidget *)user_data;
-	gchar		*utfname;
-	
-	if(filename == NULL)
-		return;
-	
-	utfname = g_filename_to_utf8(filename, -1, NULL, NULL, NULL);
-
-	if(utfname != NULL) {
-		gtk_entry_set_text(GTK_ENTRY(liferea_dialog_lookup(dialog, "save_download_entry")), utfname);
-		setStringConfValue(ENCLOSURE_DOWNLOAD_PATH, utfname);
-	}
-	
-	g_free(utfname);
-}
-
-void on_save_download_select_btn_clicked(GtkButton *button, gpointer user_data) {
-	const gchar *path = gtk_editable_get_chars(GTK_EDITABLE(liferea_dialog_lookup(prefdialog, "save_download_entry")), 0, -1);
-	
-	ui_choose_directory(_("Choose download directory"), GTK_STOCK_OPEN, on_save_download_finished, path, prefdialog);
-}
-
-void on_newcountintraybtn_clicked(GtkButton *button, gpointer user_data) {
-
-	setBooleanConfValue(SHOW_NEW_COUNT_IN_TRAY, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)));
-}
-
-void on_minimizetotraybtn_clicked(GtkButton *button, gpointer user_data) {
-
-	setBooleanConfValue(DONT_MINIMIZE_TO_TRAY, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)));
 }
