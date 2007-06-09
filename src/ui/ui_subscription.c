@@ -29,6 +29,7 @@
 
 #include "common.h"
 #include "conf.h"
+#include "db.h"
 #include "debug.h"
 #include "feed.h"
 #include "feedlist.h"
