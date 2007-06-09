@@ -6351,7 +6351,11 @@ Khaled Hosny &lt;khaledhosny@eglug.org&gt;
 Sargate Kanogan &lt;sargate@gmail.com&gt;
 Takeshi AIHANA &lt;takeshi.aihana@gmail.com&gt;
 Vincent Lefèvre &lt;vincent@vinc17.org&gt;
-Oleg Maloglovets &lt;oleg@koleso-auto.ru&gt;</property>
+Oleg Maloglovets &lt;oleg@koleso-auto.ru&gt;
+Daniel Nylander &lt;dnylander@users.sourceforge.net&gt;
+Gil Forcada &lt;gilforcada@guifi.net&gt;
+Martin Picek &lt;picek.martin@gmail.com&gt;
+</property>
 		      <property name="use_underline">False</property>
 		      <property name="use_markup">False</property>
 		      <property name="justify">GTK_JUSTIFY_LEFT</property>
