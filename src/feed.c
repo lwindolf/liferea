@@ -42,6 +42,7 @@
 #include "metadata.h"
 #include "node.h"
 #include "render.h"
+#include "script.h"
 #include "update.h"
 #include "parsers/cdf_channel.h"
 #include "parsers/rss_channel.h"
@@ -53,7 +54,6 @@
 #include "ui/ui_mainwindow.h"
 #include "ui/ui_node.h"
 #include "notification/notif_plugin.h"
-#include "scripting/script.h"
 
 /* auto detection lookup table */
 static GSList *feedhandlers = NULL;

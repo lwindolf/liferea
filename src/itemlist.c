@@ -36,13 +36,13 @@
 #include "itemview.h"
 #include "node.h"
 #include "rule.h"
+#include "script.h"
 #include "vfolder.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_itemlist.h"
 #include "ui/ui_htmlview.h"
 #include "ui/ui_mainwindow.h"
 #include "ui/ui_node.h"
-#include "scripting/script.h"
 
 /* This is a simple controller implementation for itemlist handling. 
    It manages the currently displayed itemset, realizes filtering

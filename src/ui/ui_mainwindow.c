@@ -38,9 +38,9 @@
 #include "feedlist.h"
 #include "itemlist.h"
 #include "itemview.h"
+#include "script.h"
 #include "update.h"
-#include "scripting/script.h"
-#include "scripting/ui_script.h"
+#include "ui/ui_script.h"
 #include "ui/ui_dialog.h"
 #include "ui/ui_dnd.h"
 #include "ui/ui_enclosure.h"
@@ -984,17 +984,14 @@ void ui_choose_directory(gchar *title, gchar *buttonName, fileChoosenCallback ca
 	ui_choose_file_or_dir(title, buttonName, FALSE, TRUE, callback, currentPath, NULL, user_data);
 }
 
-
 static GtkActionEntry ui_mainwindow_action_entries[] = {
 	{"ProgramMenu", NULL, N_("_Program")},
 	{"ShowPreferences", GTK_STOCK_PREFERENCES, N_("_Preferences"), NULL, N_("Edit Preferences."),
 	 G_CALLBACK(on_prefbtn_clicked)},
 	{"ShowUpdateMonitor", NULL, N_("Update Monitor"), NULL, N_("Show a list of all feeds currently in the update queue"),
 	 G_CALLBACK(on_menu_show_update_monitor)},
-/*	{"ShowScriptManager", NULL, N_("Script Manager"), NULL, N_("Allows to configure and edit LUA hook scripts"),
+	{"ShowScriptManager", NULL, N_("Script Manager"), NULL, N_("Allows to configure and edit LUA hook scripts"),
 	 G_CALLBACK(on_menu_show_script_manager)},
-	FIXME: we have some linking problem here...	
-	 */
 	{"Quit",GTK_STOCK_QUIT, N_("_Quit"), "<control>Q", NULL, G_CALLBACK(on_quit)},
 
 	{"FeedsMenu", NULL, N_("_Feeds")},
@@ -1076,7 +1073,7 @@ static const char *ui_mainwindow_ui_desc =
 "      <menuitem action='ShowPreferences'/>"
 "      <separator/>"
 "      <menuitem action='ShowUpdateMonitor'/>"
-/*"      <menuitem action='ShowScriptManager'/>"*/
+"      <menuitem action='ShowScriptManager'/>"
 "      <separator/>"
 "      <menuitem action='ToggleOfflineMode'/>"
 "      <separator/>"

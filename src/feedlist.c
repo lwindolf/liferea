@@ -31,6 +31,7 @@
 #include "itemview.h"
 #include "newsbin.h"
 #include "node.h"
+#include "script.h"
 #include "update.h"
 #include "vfolder.h"
 #include "ui/ui_feedlist.h"
@@ -45,7 +46,6 @@
 #include "fl_sources/node_source.h"
 #include "fl_sources/opml_source.h"
 #include "notification/notif_plugin.h"
-#include "scripting/script.h"
 
 static guint unreadCount = 0;
 static guint newCount = 0;

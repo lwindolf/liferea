@@ -48,6 +48,7 @@ liferea_bin_SOURCES = \
 	plugin.c plugin.h \
 	render.c render.h \
 	rule.c rule.h \
+	script.c script.h \
 	social.c social.h \
 	subscription.c subscription.h \
 	update.c update.h \
@@ -58,7 +59,6 @@ liferea_bin_LDADD =	net/liblinet.a \
 			parsers/libliparsers.a \
 			fl_sources/libliflsources.a \
 			notification/liblinotification.a \
-			scripting/libliscript.a \
 			ui/libliui.a \
 			$(PACKAGE_LIBS) $(X_LIBS) $(X_PRE_LIBS) -lX11 $(X_EXTRA_LIBS) $(DBUS_LIBS) $(NM_LIBS) $(INTLLIBS) $(GNUTLS_LIBS) 
 

@@ -21,8 +21,8 @@
 
 #include <string.h>
 #include "common.h"
-#include "scripting/script.h"
-#include "scripting/ui_script.h"
+#include "script.h"
+#include "ui/ui_script.h"
 #include "ui/ui_dialog.h"
 #include "ui/ui_mainwindow.h"
 

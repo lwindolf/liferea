@@ -32,13 +32,13 @@
 #include "itemset.h"
 #include "node.h"
 #include "render.h"
+#include "script.h"
 #include "update.h"
 #include "vfolder.h"
 #include "fl_sources/node_source.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_itemlist.h"
 #include "ui/ui_node.h"
-#include "scripting/script.h"
 
 static GHashTable *nodes = NULL;
 static GSList *nodeTypes = NULL;

@@ -43,6 +43,7 @@
 #include "debug.h"
 #include "feed.h"
 #include "feedlist.h"
+#include "script.h"
 #include "social.h"
 #include "update.h"
 #include "vfolder.h"
@@ -50,7 +51,6 @@
 #include "ui/ui_htmlview.h"
 #include "ui/ui_mainwindow.h"
 #include "ui/ui_session.h"
-#include "scripting/script.h"
 
 #include "bacon-message-connection.h"
 
