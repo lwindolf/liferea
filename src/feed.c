@@ -216,8 +216,6 @@ static void feed_import(nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean t
 		if(tmp && !xmlStrcmp(tmp, BAD_CAST"true"))
 			node->subscription->updateOptions->dontUseProxy = TRUE;
 		xmlFree(tmp);
-		
-		update_state_import(cur, node->subscription->updateState);
 						
 		node_set_icon(node, favicon_load_from_cache(node->id));
 		
@@ -228,6 +226,9 @@ static void feed_import(nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean t
 		       subscription_get_update_interval(node->subscription));
 
 		node_add_child(parent, node, -1);
+		
+		/* ensure DB state and OPML info are the same */
+		db_subscription_update (node->subscription);
 	}
 
 	debug_exit("feed_import");
@@ -665,6 +666,9 @@ static void feed_process_update_result(struct request *request) {
 				subscription_set_update_interval(subscription, subscription_get_default_update_interval(subscription));
 			else
 				subscription_set_update_interval(subscription, old_update_interval);
+			
+			if (request->flags > 0)
+				db_subscription_update (node->subscription);
 
 			ui_mainwindow_set_status_bar(_("\"%s\" updated..."), node_get_title(node));
 
@@ -797,7 +801,7 @@ feed_remove (nodePtr node)
 	ui_node_remove_node (node);
 	
 	favicon_remove_from_cache (node->id);
-	db_feed_remove (node->id);
+	db_subscription_remove (node->id);
 	
 	feed_free (node->data);
 }

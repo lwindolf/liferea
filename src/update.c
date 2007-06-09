@@ -101,36 +101,6 @@ void update_state_set_etag(updateStatePtr updateState, const gchar *etag) {
 		updateState->etag = g_strdup(etag);
 }
 
-/* legacy state import method */
-void update_state_import(xmlNodePtr cur, updateStatePtr updateState) {
-	xmlChar	*tmp;
-	
-	tmp = xmlGetProp(cur, BAD_CAST"etag");
-	if(tmp) {
-		update_state_set_etag(updateState, tmp);
-		xmlFree(tmp);
-	}
-	
-	tmp = xmlGetProp(cur, BAD_CAST"lastModified");
-	if(tmp) {
-		update_state_set_lastmodified(updateState, tmp);
-		xmlFree(tmp);
-	}
-		
-	/* Last poll time*/
-	tmp = xmlGetProp(cur, BAD_CAST"lastPollTime");
-	updateState->lastPoll.tv_sec = common_parse_long(tmp, 0L);
-	updateState->lastPoll.tv_usec = 0L;
-	if(tmp)
-		xmlFree(tmp);
-
-	tmp = xmlGetProp(cur, BAD_CAST"lastFaviconPollTime");
-	updateState->lastFaviconPoll.tv_sec = common_parse_long(tmp, 0L);
-	updateState->lastFaviconPoll.tv_usec = 0L;
-	if(tmp)
-		xmlFree(tmp);
-}
-
 void update_state_free(updateStatePtr updateState) {
 
 	g_free(updateState->etag);

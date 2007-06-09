@@ -243,10 +243,24 @@ void db_update_state_load (const gchar *id, updateStatePtr updateState);
 void db_update_state_save (const gchar *id, updateStatePtr updateState);
 
 /**
- * Removes the feed with the given id from the DB
+ * Updates (or inserts) the properties of the given subscription in the DB.
+ *
+ * @param subscription	the subscription
+ */
+void db_subscription_update (subscriptionPtr subscription);
+
+/**
+ * Removes the subscription with the given id from the DB
  *
  * @param id		the node id
  */
-void db_feed_remove (const gchar *id);
+void db_subscription_remove (const gchar *id);
+
+/**
+ * Returns a list of all subscription node ids.
+ *
+ * @returns a list of strings (values must be free'd by caller)
+ */
+GSList * db_subscription_list_load (void);
 
 #endif

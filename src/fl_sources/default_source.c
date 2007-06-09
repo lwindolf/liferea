@@ -25,6 +25,7 @@
 
 #include "common.h"
 #include "conf.h"
+#include "db.h"
 #include "debug.h"
 #include "export.h"
 #include "feed.h"
@@ -56,6 +57,7 @@ default_source_source_import (nodePtr node)
 	gchar		*filename10;
 	gchar		*filename12;
 	gchar		*filename13;
+	GSList		*iter, *subscriptions;
 
 	debug_enter ("default_source_source_import");
 
@@ -99,6 +101,20 @@ default_source_source_import (nodePtr node)
 	g_free (filename13);
 	g_free (filename12);
 	g_free (filename10);
+	
+	/* DB cleanup, ensure that there are no subscriptions in the DB
+	   that have no representation in the OPML feed list. */
+	   debug0 (DEBUG_DB, "checking for lost subscriptions...");
+	subscriptions = db_subscription_list_load ();
+	for (iter = subscriptions; iter != NULL; iter = iter->next) {
+		gchar *id = (gchar *)iter->data;
+		if (NULL == node_from_id (id)) {
+			debug1 (DEBUG_DB, "found lost subscription (id=%s), dropping it...", id);
+			db_subscription_remove (id);
+		}
+		g_free (id);
+	}
+	g_slist_free (subscriptions);
 	
 	feedlistImport = FALSE;
 

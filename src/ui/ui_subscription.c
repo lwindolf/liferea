@@ -267,10 +267,11 @@ on_propdialog_response (GtkDialog *dialog,
 		feed->encAutoDownload = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(liferea_dialog_lookup(GTK_WIDGET(dialog), "enclosureDownloadCheck")));
 		feed->loadItemLink = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(liferea_dialog_lookup(GTK_WIDGET(dialog), "loadItemLinkCheck")));
 
-		ui_node_update(node->id);
-		feedlist_schedule_save();
-		if(needsUpdate)
-			node_request_update(node, FEED_REQ_AUTH_DIALOG | FEED_REQ_PRIORITY_HIGH);
+		ui_node_update (node->id);
+		feedlist_schedule_save ();
+		db_subscription_update (subscription);
+		if (needsUpdate)
+			node_request_update (node, FEED_REQ_AUTH_DIALOG | FEED_REQ_PRIORITY_HIGH);
 	}
 
 	g_object_unref(spd);

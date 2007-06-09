@@ -79,61 +79,62 @@ void on_hidesearch_clicked(GtkButton *button, gpointer user_data) {
 	gtk_widget_hide(searchdialog);
 }
 
-void on_searchentry_activate(GtkEntry *entry, gpointer user_data) {
+void
+on_searchentry_activate (GtkEntry *entry, gpointer user_data)
+{
 	/* do not use passed entry because callback is used from a button too */
 	GtkWidget		*searchentry;
 	G_CONST_RETURN gchar	*searchstring;
 	GString			*buffer;
 	vfolderPtr		vfolder;
 	
-	searchentry = liferea_dialog_lookup(searchdialog, "searchentry");
-	searchstring = gtk_entry_get_text(GTK_ENTRY(searchentry));
-	ui_mainwindow_set_status_bar(_("Searching for \"%s\""), searchstring);
+	searchentry = liferea_dialog_lookup (searchdialog, "searchentry");
+	searchstring = gtk_entry_get_text (GTK_ENTRY(searchentry));
 
 	/* remove last search */
-	ui_itemlist_clear();
+	ui_itemlist_clear ();
 	
-	if(searchResult) {
+	if (searchResult) {
 		/* Unload from itemlist (necessary on subsequent loads */
-		if(searchResult == itemlist_get_displayed_node())
-			itemlist_unload(FALSE);
+		if (searchResult == itemlist_get_displayed_node ())
+			itemlist_unload (FALSE);
 			
-		vfolder_free(searchResult->data);
-		node_free(searchResult);
+		vfolder_free (searchResult->data);
+		node_free (searchResult);
 	}
 
 	/* create new search */
-	searchResult = node_new();
-	vfolder = vfolder_new(searchResult);
+	searchResult = node_new ();
+	vfolder = vfolder_new (searchResult);
 	
-	node_set_title(searchResult, searchstring);
-	vfolder_add_rule(vfolder, "exact", searchstring, TRUE);
+	node_set_title (searchResult, searchstring);
+	vfolder_add_rule (vfolder, "exact", searchstring, TRUE);
 
 	/* calculate vfolder item set */
-	// FIXME: vfolder_refresh(vfolder);
+	vfolder_refresh (vfolder);
 
 	/* switch to item list view and inform user in HTML view */
-	ui_feedlist_select(NULL);
-	itemlist_set_view_mode(0);
-	itemlist_load(searchResult);	// FIXME!!!
+	ui_feedlist_select (NULL);
+	itemlist_set_view_mode (0);
+	itemlist_load (searchResult);
 
-	buffer = g_string_new(NULL);
-	htmlview_start_output(buffer, NULL, TRUE, FALSE);
-	g_string_append_printf(buffer, "<div class='content'><h2>");
-	g_string_append_printf(buffer, _("%d Search Results for \"%s\""), 55, searchstring); // FIXME
-	g_string_append_printf(buffer, "</h2><p>");
-	g_string_append_printf(buffer, _("The item list now contains all items matching the "
-	                               "specified search pattern. If you want to save this search "
-	                               "result permanently you can click the \"Search Folder\" button in "
-	                               "the search dialog and Liferea will add a search folder to your "
-	                               "feed list."));
-	g_string_append_printf(buffer, "</p></div>");
-	htmlview_finish_output(buffer);
-	ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer->str, NULL);
-	g_string_free(buffer, TRUE);
+	buffer = g_string_new (NULL);
+	htmlview_start_output (buffer, NULL, TRUE, FALSE);
+	g_string_append_printf (buffer, "<div class='content'><h2>");
+	g_string_append_printf (buffer, _("%d Search Results for \"%s\""), searchResult->itemCount, searchstring);
+	g_string_append_printf (buffer, "</h2><p>");
+	g_string_append_printf (buffer, _("The item list now contains all items matching the "
+	                                "specified search pattern. If you want to save this search "
+	                                "result permanently you can click the \"Search Folder\" button in "
+	                                "the search dialog and Liferea will add a search folder to your "
+	                                "feed list."));
+	g_string_append_printf (buffer, "</p></div>");
+	htmlview_finish_output (buffer);
+	ui_htmlview_write (ui_mainwindow_get_active_htmlview (), buffer->str, NULL);
+	g_string_free (buffer, TRUE);
 
 	/* enable vfolder add button */	
-	gtk_widget_set_sensitive(liferea_dialog_lookup(searchdialog, "vfolderaddbtn"), TRUE);
+	gtk_widget_set_sensitive (liferea_dialog_lookup (searchdialog, "vfolderaddbtn"), TRUE);
 }
 
 void on_searchentry_changed(GtkEditable *editable, gpointer user_data) {

@@ -317,7 +317,9 @@ void node_request_interactive_add(guint type) {
 
 /* Automatic subscription adding (e.g. URL DnD), creates a new feed node
    without any user interaction. */
-void node_request_automatic_add(const gchar *source, const gchar *title, const gchar *filter, updateOptionsPtr options, gint flags) {
+void
+node_request_automatic_add (const gchar *source, const gchar *title, const gchar *filter, updateOptionsPtr options, gint flags)
+{
 	nodePtr		node, parent;
 	gint		pos;
 
@@ -328,17 +330,18 @@ void node_request_automatic_add(const gchar *source, const gchar *title, const g
 	if(0 == (NODE_SOURCE_TYPE(parent->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS))
 		return;
 
-	node = node_new();
-	node_set_type(node,feed_get_node_type());
-	node_set_title(node, title?title:_("New Subscription"));
-	node_set_data(node, feed_new());
-	node_set_subscription(node, subscription_new(source, filter, options));
+	node = node_new ();
+	node_set_type (node,feed_get_node_type ());
+	node_set_title (node, title?title:_("New Subscription"));
+	node_set_data (node, feed_new ());
+	node_set_subscription (node, subscription_new (source, filter, options));
+	db_subscription_update (node->subscription);
 
-	ui_feedlist_get_target_folder(&pos);
-	node_add_child(parent, node, pos);
-	node_request_update(node, flags);
-	feedlist_schedule_save();
-	ui_feedlist_select(node);
+	ui_feedlist_get_target_folder (&pos);
+	node_add_child (parent, node, pos);
+	node_request_update (node, flags);
+	feedlist_schedule_save ();
+	ui_feedlist_select (node);
 	
 	script_run_for_hook (SCRIPT_HOOK_NEW_SUBSCRIPTION);
 }

@@ -667,6 +667,9 @@ void ui_mainwindow_init(int mainwindowState) {
 				   "<p>What works since this release:"
 				   "<ul>"
 				   "   <li>fixed crash when updating comment feeds</li>"
+				   "   <li>no more unnecessary favicon updates</li>"
+				   "   <li>less memory leaks</li>"
+				   "   <li>less CPU usage/power consumption</li>"
 				   "</ul>"
 				   "</p>");
 	g_string_append(buffer,    "</div>");

@@ -59,7 +59,10 @@ static sqlite3_stmt *updateStateSaveStmt = NULL;
 static sqlite3_stmt *subscriptionMetadataLoadStmt = NULL;
 static sqlite3_stmt *subscriptionMetadataUpdateStmt = NULL;
 
+static sqlite3_stmt *subscriptionUpdateStmt = NULL;
 static sqlite3_stmt *subscriptionRemoveStmt = NULL;
+
+static sqlite3_stmt *subscriptionListLoadStmt = NULL;
 
 static void
 db_prepare_stmt (sqlite3_stmt **stmt, gchar *sql) 
@@ -136,7 +139,7 @@ db_get_schema_version (void)
 	return schemaVersion;
 }
 
-#define SCHEMA_TARGET_VERSION 2
+#define SCHEMA_TARGET_VERSION 3
 
 /* opening or creation of database */
 void
@@ -237,6 +240,19 @@ open:
 				 "END;");
 		}
 		
+		if (db_get_schema_version () == 2) {
+			/* 1.3.5 -> 1.3.6 adding subscription relation */
+			debug0 (DEBUG_DB, "migrating from schema version 2 to 3");
+			db_exec ("BEGIN; "
+			         "CREATE TABLE SUBSCRIPTION ("
+		                 "   NODE_ID            STRING,"
+		                 "   PRIMARY KEY (NODE_ID)"
+			         "); "
+				 "INSERT INTO subscription SELECT DISTINCT node_id FROM itemsets; "
+				 "REPLACE INTO info (name, value) VALUES ('schemaVersion',3); "
+				 "END;");
+		}
+		
 		if (SCHEMA_TARGET_VERSION != db_get_schema_version ())
 			g_error ("Fatal: DB schema migration failed! Running with --debug-db could give some hints!");
 			
@@ -310,9 +326,9 @@ open:
 	         "   WHERE item_id = new.ROWID; "
 	         "END;");
 	 
-	db_exec ("CREATE TABLE subscription ("
-	         "   node_id            STRING,"
-	         "   PRIMARY KEY (node_id)"
+	db_exec ("CREATE TABLE SUBSCRIPTION ("
+	         "   NODE_ID            STRING,"
+	         "   PRIMARY KEY (NODE_ID)"
 		 ");");
 		 	
 	db_exec ("CREATE TABLE update_state ("
@@ -355,8 +371,8 @@ open:
 	debug_end_measurement (DEBUG_DB, "cleanup lost itemset entries");
 	
 	debug_start_measurement (DEBUG_DB);
-	db_exec ("DELETE FROM itemsets WHERE node_id NOT IN "
-	         "(SELECT node_id FROM subscriptions);");
+	db_exec ("DELETE FROM itemsets WHERE comment = 0 AND node_id NOT IN "
+	         "(SELECT node_id FROM subscription);");
 	debug_end_measurement (DEBUG_DB, "cleanup lost node entries");
 	
 	/*res = sqlite3_exec (db, "PRAGMA synchronous=off", NULL, NULL, &err);
@@ -470,8 +486,16 @@ open:
 			 "(node_id,last_modified,etag,last_update,last_favicon_update) "
 			 "VALUES (?,?,?,?,?)");
 			 
+	db_prepare_stmt (&subscriptionUpdateStmt,
+	                 "REPLACE INTO subscription "
+			 "(node_id) "
+			 "VALUES (?)");
+			 
 	db_prepare_stmt (&subscriptionRemoveStmt,
 	                 "DELETE FROM subscription WHERE node_id = ?");
+			 
+	db_prepare_stmt (&subscriptionListLoadStmt,
+	                 "SELECT node_id FROM subscription");
 		
 	debug_exit ("db_init");
 }
@@ -507,7 +531,10 @@ db_deinit (void)
 	sqlite3_finalize (updateStateLoadStmt);
 	sqlite3_finalize (updateStateSaveStmt);
 	
+	sqlite3_finalize (subscriptionUpdateStmt);
 	sqlite3_finalize (subscriptionRemoveStmt);
+	
+	sqlite3_finalize (subscriptionListLoadStmt);
 	
 	sqlite3_finalize (subscriptionMetadataLoadStmt);
 	sqlite3_finalize (subscriptionMetadataUpdateStmt);
@@ -1213,7 +1240,25 @@ db_update_state_save (const gchar *id,
 }
 
 void
-db_feed_remove (const gchar *id)
+db_subscription_update (subscriptionPtr subscription)
+{
+	gint		res;
+	
+	debug2 (DEBUG_DB, "updating subscription info %s (thread %p)", subscription->node->id, g_thread_self());
+	debug_start_measurement (DEBUG_DB);
+	
+	sqlite3_reset (subscriptionUpdateStmt);
+	sqlite3_bind_text (subscriptionUpdateStmt, 1, subscription->node->id, -1, SQLITE_TRANSIENT);
+	
+	res = sqlite3_step (subscriptionUpdateStmt);
+	if (SQLITE_DONE != res)
+		g_warning ("Could not update subscription info %s in DB (error code %d)!", subscription->node->id, res);
+		
+	debug_end_measurement (DEBUG_DB, "subscription_update");
+}
+
+void
+db_subscription_remove (const gchar *id)
 {
 	gint		res;
 
@@ -1225,7 +1270,21 @@ db_feed_remove (const gchar *id)
 
 	res = sqlite3_step (subscriptionRemoveStmt);
 	if (SQLITE_DONE != res)
-		g_warning ("Could not remove subscription %s (error code %d)!", id, res);
+		g_warning ("Could not remove subscription %s from DB (error code %d)!", id, res);
 
 	debug_end_measurement (DEBUG_DB, "subscription remove");
+}
+
+GSList *
+db_subscription_list_load (void)
+{
+	gint		res;
+	GSList		*list = NULL;
+
+	sqlite3_reset (subscriptionListLoadStmt);
+	while (sqlite3_step (subscriptionListLoadStmt) == SQLITE_ROW) {
+		list = g_slist_append(list, g_strdup (sqlite3_column_text (subscriptionListLoadStmt, 0)));
+	}
+
+	return list;
 }
