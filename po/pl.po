@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-05-01 20:13+0200\n"
+"POT-Creation-Date: 2007-06-04 23:10+0200\n"
 "PO-Revision-Date: 2006-12-05 21:26+0100\n"
 "Last-Translator: Lars Lindner <lars.lindner@gmx.net>\n"
 "Language-Team: Polish\n"
@@ -301,22 +301,22 @@ msgstr "Eksportuj listę subskrypcji"
 msgid "Export"
 msgstr "Eksportuj"
 
-#: ../src/feed.c:371
+#: ../src/feed.c:372
 #, c-format
 msgid "<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"
 msgstr ""
 "<p>Błąd XML przy czytaniu subskrypcji! Subskrypcja \"%s\" nie mogła być "
 "załadowana!</p>"
 
-#: ../src/feed.c:376 ../src/feed.c:667
+#: ../src/feed.c:377 ../src/feed.c:668
 msgid "<p>Empty document!</p>"
 msgstr "<p>Pusty dokument!</p>"
 
-#: ../src/feed.c:385
+#: ../src/feed.c:386
 msgid "<p>Invalid XML!</p>"
 msgstr "<p>Nieprawidłowy XML!</p>"
 
-#: ../src/feed.c:452
+#: ../src/feed.c:453
 msgid ""
 "<p>The URL you want Liferea to subscribe to points to a webpage and the auto "
 "discovery found no feeds on this page. Maybe this webpage just does not "
@@ -326,17 +326,17 @@ msgstr ""
 "udało się automatycznie wykryć na niej żadnych subskrypcji. Być może ta "
 "strona nie obsługuje automatycznego wykrywania subskrypcji.</p>"
 
-#: ../src/feed.c:457
+#: ../src/feed.c:458
 msgid "<p>Could not determine the feed type.</p>"
 msgstr "<p>Nie można określić typu subskrypcji.</p>"
 
-#: ../src/feed.c:650
+#: ../src/feed.c:651
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
 msgstr ""
 "Błąd czytania pliku pamięci podręcznej \"%s\"! Nie można załadować pliku!"
 
-#: ../src/feed.c:661
+#: ../src/feed.c:662
 #, c-format
 msgid ""
 "<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
@@ -345,31 +345,31 @@ msgstr ""
 "<p>Błąd XML podczas przetwarzania pliku pamięci podręcznej! Nie można "
 "załadować pliku \"%s\"!</p>"
 
-#: ../src/feed.c:682
+#: ../src/feed.c:683
 #, c-format
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 msgstr ""
 "<p>\"%s\" nie jest poprawnym plikiem pamięci podręcznej! Nie można go "
 "przeczytać!</p>"
 
-#: ../src/feed.c:748
+#: ../src/feed.c:749
 #, c-format
 msgid "There were errors while parsing cache file \"%s\""
 msgstr "Wystąpiły błędy podczas przetwarzania pliku pamięci podręcznej \"%s\""
 
-#: ../src/feed.c:773
+#: ../src/feed.c:774
 #, c-format
 msgid "This feed \"%s\" is already being updated!"
 msgstr "Subskrypcja \"%s\" jest właśnie uaktualniana!"
 
-#: ../src/feed.c:778
+#: ../src/feed.c:779
 #, c-format
 msgid "The feed \"%s\" was discontinued. Liferea won't update it anymore!"
 msgstr ""
 "Subskrypcja \"%s\" została zamknięta. Liferea nie będzie jej więcej "
 "uaktualniać!"
 
-#: ../src/feed.c:1055
+#: ../src/feed.c:1054
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box."
@@ -377,97 +377,97 @@ msgstr ""
 "Nie masz dostępu do tej subskrypcji. Uaktualnij nazwę użytkownika i hasło w "
 "oknie ustawień subskrypcji."
 
-#: ../src/feed.c:1057
+#: ../src/feed.c:1056
 msgid "Payment Required"
 msgstr "Wymagane uiszczenie opłaty"
 
-#: ../src/feed.c:1058
+#: ../src/feed.c:1057
 msgid "Access Forbidden"
 msgstr "Dostęp zabroniony"
 
-#: ../src/feed.c:1059
+#: ../src/feed.c:1058
 msgid "Resource Not Found"
 msgstr "Zasób nie odnaleziony"
 
-#: ../src/feed.c:1060
+#: ../src/feed.c:1059
 msgid "Method Not Allowed"
 msgstr "Niedozwolona metoda"
 
-#: ../src/feed.c:1061
+#: ../src/feed.c:1060
 msgid "Not Acceptable"
 msgstr "Nieakceptowalne"
 
-#: ../src/feed.c:1062
+#: ../src/feed.c:1061
 msgid "Proxy Authentication Required"
 msgstr "Wymagana autoryzacja pośrednika sieciowego (proxy)"
 
-#: ../src/feed.c:1063
+#: ../src/feed.c:1062
 msgid "Request Time-Out"
 msgstr "Upłynął limit czasu żądania"
 
-#: ../src/feed.c:1064
+#: ../src/feed.c:1063
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "Zasób nie istnieje. Proszę usunąć subskrypcję!"
 
-#: ../src/feed.c:1069
+#: ../src/feed.c:1068
 msgid "URL is invalid"
 msgstr "URL jest nieprawidłowy"
 
-#: ../src/feed.c:1070
+#: ../src/feed.c:1069
 msgid "Unsupported network protocol"
 msgstr "Nieobsługiwany protokół sieciowy"
 
-#: ../src/feed.c:1073
+#: ../src/feed.c:1072
 msgid "Error connecting to remote host"
 msgstr "Błąd podczas łączenia ze zdalnym hostem"
 
-#: ../src/feed.c:1074
+#: ../src/feed.c:1073
 msgid "Hostname could not be found"
 msgstr "Nie można odnaleźć hosta o podanej nazwie"
 
-#: ../src/feed.c:1075
+#: ../src/feed.c:1074
 msgid "Network connection was refused by the remote host"
 msgstr "Zdalny host odrzucił połączenie"
 
-#: ../src/feed.c:1076
+#: ../src/feed.c:1075
 msgid "Remote host did not finish sending data"
 msgstr "Zdalny host nie zakończył wysyłania danych"
 
 #. Transfer errors
-#: ../src/feed.c:1078
+#: ../src/feed.c:1077
 msgid "Too many HTTP redirects were encountered"
 msgstr "Napotkano zbyt wiele przekierowań HTTP"
 
-#: ../src/feed.c:1081
+#: ../src/feed.c:1080
 msgid "Remote host sent an invalid response"
 msgstr "Zdalny host wysłał nieprawidłową odpowiedź"
 
-#: ../src/feed.c:1088
+#: ../src/feed.c:1087
 msgid "Authentication failed"
 msgstr "Autentykacja nieudana"
 
-#: ../src/feed.c:1090
+#: ../src/feed.c:1089
 msgid "Webserver's authentication method incompatible with Liferea"
 msgstr "Sposób autoryzacji serwera jest niekompatybilny z Liferea"
 
-#: ../src/feed.c:1096
+#: ../src/feed.c:1095
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "Subskrypcja niedostępna: Serwer zażądał nieobsługiwanego przekierowania!"
 
-#: ../src/feed.c:1097
+#: ../src/feed.c:1096
 msgid "Client Error"
 msgstr "Błąd klienta"
 
-#: ../src/feed.c:1098
+#: ../src/feed.c:1097
 msgid "Server Error"
 msgstr "Błąd serwera"
 
-#: ../src/feed.c:1099
+#: ../src/feed.c:1098
 msgid "(unknown networking error happened)"
 msgstr "(wystąpił nieznany błąd sieciowy)"
 
-#: ../src/feed.c:1108
+#: ../src/feed.c:1107
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
@@ -475,27 +475,27 @@ msgstr ""
 "Wystąpił problem przy czytaniu subskrypcji. Sprawdź adres URL oraz "
 "komunikaty na konsoli"
 
-#: ../src/feed.c:1159
+#: ../src/feed.c:1158
 #, c-format
 msgid "Updating feed icon for \"%s\""
 msgstr "Uaktualnianie ikony dla \"%s\""
 
-#: ../src/feed.c:1192
+#: ../src/feed.c:1191
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "URL \"%s\" zmienił się i został uaktualniony"
 
-#: ../src/feed.c:1201
+#: ../src/feed.c:1200
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr "\"%s\" został zamknięty. Liferea nie będzie go więcej uaktualniać!"
 
-#: ../src/feed.c:1204
+#: ../src/feed.c:1203
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\" nie zmienił się od ostaniej aktualizacji"
 
-#: ../src/feed.c:1220
+#: ../src/feed.c:1219
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!</"
@@ -505,17 +505,17 @@ msgstr ""
 "na zasób będący w jednym z obsługiwanych formatów subskrypcji!</p>Wydruk z "
 "parsera XML:<br /><div class='xmlparseroutput'>"
 
-#: ../src/feed.c:1239
+#: ../src/feed.c:1238
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" uaktualnione..."
 
-#: ../src/feed.c:1252
+#: ../src/feed.c:1251
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" nie jest dostępne"
 
-#: ../src/feed.c:1378
+#: ../src/feed.c:1381
 #, c-format
 msgid "Updating \"%s\""
 msgstr "Uaktualnianie \"%s\""
@@ -528,7 +528,7 @@ msgstr "Musisz zaznaczyć pozycję subskrypcji"
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea działa w trybie offline. Uaktualnienia nie są możliwe."
 
-#: ../src/feedlist.c:421
+#: ../src/feedlist.c:424
 msgid ""
 "Liferea v1.2 uses a new cache format and has migrated your feed cache. The "
 "cache content of v1.0 in ~/.liferea was not deleted automatically. Please "
@@ -1535,33 +1535,33 @@ msgstr "nie dołączony"
 msgid "Couldn't find pixmap file: %s"
 msgstr "Nie można odnaleźć pliku piksmapy: %s"
 
-#: ../src/update.c:174
+#: ../src/update.c:178
 #, c-format
 msgid "Error opening temp file %s to use for filtering!"
 msgstr "Błąd otwierania pliku tymczasowego %s potrzebnego do filtrowania!"
 
-#: ../src/update.c:197
+#: ../src/update.c:201
 #, c-format
 msgid "%s exited with status %d"
 msgstr "%s zakończył ze statusem %d"
 
-#: ../src/update.c:203 ../src/update.c:204 ../src/update.c:304
+#: ../src/update.c:207 ../src/update.c:208 ../src/update.c:308
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "Błąd: Nie można otworzyć potoku \"%s\""
 
 #. FIXME: maybe setting request->returncode would be better
-#: ../src/update.c:324
+#: ../src/update.c:328
 #, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr "Błąd: Nie można otworzyć pliku \"%s\""
 
-#: ../src/update.c:330
+#: ../src/update.c:334
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "Błąd: Nie ma takiego pliku \"%s\""
 
-#: ../src/update.c:519
+#: ../src/update.c:530
 #, c-format
 msgid "Could not download \"%s\". Will retry in %d seconds."
 msgstr "Nie można pobrać \"%s\". Ponowna próba za %d sekund."
@@ -2216,7 +2216,7 @@ msgstr "Typ"
 msgid "Program"
 msgstr "Program"
 
-#: ../src/ui/ui_prefs.c:774
+#: ../src/ui/ui_prefs.c:776
 msgid "Choose download directory"
 msgstr "Wybierz katalog na pobrane pliki"
 
@@ -2304,12 +2304,12 @@ msgstr "Wystąpiły błędy podczas przetwarzania tej subskrypcji %s!"
 msgid "%b %d %H:%M"
 msgstr "%B %d %H:%M"
 
-#: ../src/fl_sources/bloglines_source.c:72
+#: ../src/fl_sources/bloglines_source.c:69
 #, fuzzy
 msgid "Bloglines"
 msgstr "Dodaj konto Bloglines"
 
-#: ../src/fl_sources/bloglines_source.c:74
+#: ../src/fl_sources/bloglines_source.c:71
 msgid ""
 "Integrate the feed list of your Bloglines account. Liferea will present your "
 "Bloglines subscription as a read-only subtree in the feed list."
@@ -2336,11 +2336,11 @@ msgstr "_Hasło:"
 msgid "feedlist.opml"
 msgstr "feedlist_pl.opml"
 
-#: ../src/fl_sources/opml_source.c:339
+#: ../src/fl_sources/opml_source.c:336
 msgid "Planet, BlogRoll, OPML"
 msgstr ""
 
-#: ../src/fl_sources/opml_source.c:341
+#: ../src/fl_sources/opml_source.c:338
 msgid ""
 "Integrate blogrolls or Planets in your feed list. Liferea will automatically "
 "add and remove feeds according to the changes of the source OPML document"
@@ -2367,7 +2367,7 @@ msgstr "_Położenie"
 msgid "_Select File"
 msgstr "_Wybierz plik..."
 
-#: ../src/fl_sources/opml_source-cb.c:77
+#: ../src/fl_sources/opml_source-cb.c:80
 #, fuzzy
 msgid "Choose OPML File"
 msgstr "Wybierz plik"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-05-01 20:13+0200\n"
+"POT-Creation-Date: 2007-06-04 23:10+0200\n"
 "PO-Revision-Date: 2007-04-19 21:41+0200\n"
 "Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
@@ -293,22 +293,22 @@ msgstr "Exporta la llista de canals"
 msgid "Export"
 msgstr "Exporta"
 
-#: ../src/feed.c:371
+#: ../src/feed.c:372
 #, c-format
 msgid "<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"
 msgstr ""
 "<p>S'ha produït un error XML en llegir el canal. No s'ha pogut carregar «%"
 "s»</p>"
 
-#: ../src/feed.c:376 ../src/feed.c:667
+#: ../src/feed.c:377 ../src/feed.c:668
 msgid "<p>Empty document!</p>"
 msgstr "<p>El document és buit</b>"
 
-#: ../src/feed.c:385
+#: ../src/feed.c:386
 msgid "<p>Invalid XML!</p>"
 msgstr "<p>XML no vàlid</p>"
 
-#: ../src/feed.c:452
+#: ../src/feed.c:453
 msgid ""
 "<p>The URL you want Liferea to subscribe to points to a webpage and the auto "
 "discovery found no feeds on this page. Maybe this webpage just does not "
@@ -318,18 +318,18 @@ msgstr ""
 "web i el descobridor automàtic no hi ha trobat cap canal. Potser aquesta "
 "pàgina web no permet el descobriment automàtic del canal.</p>"
 
-#: ../src/feed.c:457
+#: ../src/feed.c:458
 msgid "<p>Could not determine the feed type.</p>"
 msgstr "<p>No s'ha pogut determinar el tipus de canal.</p>"
 
-#: ../src/feed.c:650
+#: ../src/feed.c:651
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
 msgstr ""
 "S'ha produït un error en llegir el fitxer de memòria cau «%s». No s'ha pogut "
 "carregar el fitxer de memòria cau."
 
-#: ../src/feed.c:661
+#: ../src/feed.c:662
 #, c-format
 msgid ""
 "<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
@@ -338,29 +338,29 @@ msgstr ""
 "<p>S'ha produït un error XML en analitzar el fitxer de memòria cau. No s'ha "
 "pogut carregar el fitxer de memòria cau «%s» del canal.</p>"
 
-#: ../src/feed.c:682
+#: ../src/feed.c:683
 #, c-format
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
 msgstr ""
 "<p>«%s» no és un fitxer de memòria cau vàlid. No s'ha pogut llegir el fitxer "
 "de memòria cau.</p>"
 
-#: ../src/feed.c:748
+#: ../src/feed.c:749
 #, c-format
 msgid "There were errors while parsing cache file \"%s\""
 msgstr "S'han produït errors en analitzar el fitxer de memòria cau «%s»"
 
-#: ../src/feed.c:773
+#: ../src/feed.c:774
 #, c-format
 msgid "This feed \"%s\" is already being updated!"
 msgstr "Ja s'està actualitzant el canal «%s»"
 
-#: ../src/feed.c:778
+#: ../src/feed.c:779
 #, c-format
 msgid "The feed \"%s\" was discontinued. Liferea won't update it anymore!"
 msgstr "El canal «%s» ja no es manté. El Liferea no l'actualitzarà més."
 
-#: ../src/feed.c:1055
+#: ../src/feed.c:1054
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box."
@@ -368,99 +368,99 @@ msgstr ""
 "No esteu autoritzat a descarregar aquest canal. Actualitzeu el vostre nom "
 "d'usuari i la contrasenya en el quadre de diàleg de les propietats del canal."
 
-#: ../src/feed.c:1057
+#: ../src/feed.c:1056
 msgid "Payment Required"
 msgstr "Es requereix pagament"
 
-#: ../src/feed.c:1058
+#: ../src/feed.c:1057
 msgid "Access Forbidden"
 msgstr "Accés prohibit"
 
-#: ../src/feed.c:1059
+#: ../src/feed.c:1058
 msgid "Resource Not Found"
 msgstr "No s'ha trobat el recurs"
 
-#: ../src/feed.c:1060
+#: ../src/feed.c:1059
 msgid "Method Not Allowed"
 msgstr "No es permet utilitzar aquest mètode"
 
-#: ../src/feed.c:1061
+#: ../src/feed.c:1060
 msgid "Not Acceptable"
 msgstr "No acceptable"
 
-#: ../src/feed.c:1062
+#: ../src/feed.c:1061
 msgid "Proxy Authentication Required"
 msgstr "Es requereix autenticació a través de servidor intermediari"
 
-#: ../src/feed.c:1063
+#: ../src/feed.c:1062
 msgid "Request Time-Out"
 msgstr "S'ha esgotat el temps de la sol·licitud"
 
-#: ../src/feed.c:1064
+#: ../src/feed.c:1063
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "Se n'ha anat. El recurs ja no existeix. Cancel·leu la subscripció."
 
-#: ../src/feed.c:1069
+#: ../src/feed.c:1068
 msgid "URL is invalid"
 msgstr "L'URL és invàlid"
 
-#: ../src/feed.c:1070
+#: ../src/feed.c:1069
 msgid "Unsupported network protocol"
 msgstr "Protocol de xarxa no implementat"
 
-#: ../src/feed.c:1073
+#: ../src/feed.c:1072
 msgid "Error connecting to remote host"
 msgstr "S'ha produït un error en connectar-se a l'ordinador remot"
 
-#: ../src/feed.c:1074
+#: ../src/feed.c:1073
 msgid "Hostname could not be found"
 msgstr "No s'ha pogut trobar el nom de l'ordinador"
 
-#: ../src/feed.c:1075
+#: ../src/feed.c:1074
 msgid "Network connection was refused by the remote host"
 msgstr "L'ordinador remot ha rebutjat la connexió de xarxa"
 
-#: ../src/feed.c:1076
+#: ../src/feed.c:1075
 msgid "Remote host did not finish sending data"
 msgstr "L'ordinador remot no ha acabat d'enviar les dades"
 
 #. Transfer errors
-#: ../src/feed.c:1078
+#: ../src/feed.c:1077
 msgid "Too many HTTP redirects were encountered"
 msgstr "S'han trobat massa redireccionaments HTTP"
 
-#: ../src/feed.c:1081
+#: ../src/feed.c:1080
 msgid "Remote host sent an invalid response"
 msgstr "L'ordinador remot ha enviat una resposta invàlida"
 
-#: ../src/feed.c:1088
+#: ../src/feed.c:1087
 msgid "Authentication failed"
 msgstr "Ha fallat l'autenticació"
 
-#: ../src/feed.c:1090
+#: ../src/feed.c:1089
 msgid "Webserver's authentication method incompatible with Liferea"
 msgstr ""
 "El mètode d'autenticació del servidor web és incompatible amb el Liferea"
 
-#: ../src/feed.c:1096
+#: ../src/feed.c:1095
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "El canal no està disponible: el servidor ha sol·licitat una redirecció no "
 "implementada"
 
-#: ../src/feed.c:1097
+#: ../src/feed.c:1096
 msgid "Client Error"
 msgstr "Error del client"
 
-#: ../src/feed.c:1098
+#: ../src/feed.c:1097
 msgid "Server Error"
 msgstr "Error del servidor"
 
-#: ../src/feed.c:1099
+#: ../src/feed.c:1098
 msgid "(unknown networking error happened)"
 msgstr "(s'ha produït un error de xarxa desconegut)"
 
-#: ../src/feed.c:1108
+#: ../src/feed.c:1107
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
@@ -468,27 +468,27 @@ msgstr ""
 "S'ha produït un problema en llegir aquesta subscripció. Verifiqueu l'URL i "
 "la sortida del terminal."
 
-#: ../src/feed.c:1159
+#: ../src/feed.c:1158
 #, c-format
 msgid "Updating feed icon for \"%s\""
 msgstr "S'està actualitzant la icona del canal «%s»"
 
-#: ../src/feed.c:1192
+#: ../src/feed.c:1191
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "L'URL de «%s» ha canviat permanentment i s'ha actualitzat"
 
-#: ../src/feed.c:1201
+#: ../src/feed.c:1200
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr "«%s» ja no es manté. El Liferea no l'actualitzarà més"
 
-#: ../src/feed.c:1204
+#: ../src/feed.c:1203
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "«%s» no ha canviat des de l'última actualització"
 
-#: ../src/feed.c:1220
+#: ../src/feed.c:1219
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!</"
@@ -498,17 +498,17 @@ msgstr ""
 "apunti realment a un recurs proporcionat per un dels formats de sindicació "
 "permesos.</p>Sortida de l'analitzador XML:<br /><div class='xmlparseroutput'>"
 
-#: ../src/feed.c:1239
+#: ../src/feed.c:1238
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "s'ha actualitzat «%s»..."
 
-#: ../src/feed.c:1252
+#: ../src/feed.c:1251
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "no està disponible «%s»"
 
-#: ../src/feed.c:1378
+#: ../src/feed.c:1381
 #, c-format
 msgid "Updating \"%s\""
 msgstr "S'està actualitzant «%s»"
@@ -522,7 +522,7 @@ msgid "Liferea is in offline mode. No update possible."
 msgstr ""
 "El Liferea està en mode de fora de línia. No és possible fer actualitzacions."
 
-#: ../src/feedlist.c:421
+#: ../src/feedlist.c:424
 msgid ""
 "Liferea v1.2 uses a new cache format and has migrated your feed cache. The "
 "cache content of v1.0 in ~/.liferea was not deleted automatically. Please "
@@ -1553,34 +1553,34 @@ msgstr "exclòs"
 msgid "Couldn't find pixmap file: %s"
 msgstr "No s'ha pogut trobar el fitxer de mapa de píxels: %s"
 
-#: ../src/update.c:174
+#: ../src/update.c:178
 #, c-format
 msgid "Error opening temp file %s to use for filtering!"
 msgstr ""
 "S'ha produït un error en obrir el fitxer %s a utilitzar per al filtratge"
 
-#: ../src/update.c:197
+#: ../src/update.c:201
 #, c-format
 msgid "%s exited with status %d"
 msgstr "%s ha sortit amb l'estat %d"
 
-#: ../src/update.c:203 ../src/update.c:204 ../src/update.c:304
+#: ../src/update.c:207 ../src/update.c:208 ../src/update.c:308
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "Error: no s'ha pogut obrir el conducte «%s»"
 
 #. FIXME: maybe setting request->returncode would be better
-#: ../src/update.c:324
+#: ../src/update.c:328
 #, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr "Error: no s'ha pogut obrir el fitxer «%s»"
 
-#: ../src/update.c:330
+#: ../src/update.c:334
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "Error: no hi ha cap fitxer «%s»"
 
-#: ../src/update.c:519
+#: ../src/update.c:530
 #, c-format
 msgid "Could not download \"%s\". Will retry in %d seconds."
 msgstr "No s'ha pogut baixar «%s». Es tornarà a intentar d'aquí %d segons."
@@ -2237,7 +2237,7 @@ msgstr "Tipus"
 msgid "Program"
 msgstr "Programa"
 
-#: ../src/ui/ui_prefs.c:774
+#: ../src/ui/ui_prefs.c:776
 msgid "Choose download directory"
 msgstr "Escolliu el directori de baixada"
 
@@ -2325,11 +2325,11 @@ msgstr "S'han produït errors en analitzar el canal «%s»"
 msgid "%b %d %H:%M"
 msgstr "%b %d %H:%M"
 
-#: ../src/fl_sources/bloglines_source.c:72
+#: ../src/fl_sources/bloglines_source.c:69
 msgid "Bloglines"
 msgstr "Bloglines"
 
-#: ../src/fl_sources/bloglines_source.c:74
+#: ../src/fl_sources/bloglines_source.c:71
 msgid ""
 "Integrate the feed list of your Bloglines account. Liferea will present your "
 "Bloglines subscription as a read-only subtree in the feed list."
@@ -2359,11 +2359,11 @@ msgstr "_Contrasenya"
 msgid "feedlist.opml"
 msgstr "feedlist_ca.opml"
 
-#: ../src/fl_sources/opml_source.c:339
+#: ../src/fl_sources/opml_source.c:336
 msgid "Planet, BlogRoll, OPML"
 msgstr "Planeta, llista de blocs, OPML"
 
-#: ../src/fl_sources/opml_source.c:341
+#: ../src/fl_sources/opml_source.c:338
 msgid ""
 "Integrate blogrolls or Planets in your feed list. Liferea will automatically "
 "add and remove feeds according to the changes of the source OPML document"
@@ -2395,7 +2395,7 @@ msgstr "_Ubicació"
 msgid "_Select File"
 msgstr "_Seleccioneu un fitxer"
 
-#: ../src/fl_sources/opml_source-cb.c:77
+#: ../src/fl_sources/opml_source-cb.c:80
 #, fuzzy
 msgid "Choose OPML File"
 msgstr "Escolliu un fitxer"
