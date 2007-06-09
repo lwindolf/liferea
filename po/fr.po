@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 1.3.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-06-02 17:29+0200\n"
+"POT-Creation-Date: 2007-06-09 18:46+0200\n"
 "PO-Revision-Date: 2007-06-02 22:01+0200\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.org>\n"
 "Language-Team: French\n"
@@ -439,7 +439,7 @@ msgstr "Nombre _maximal de résultats :"
 msgid "New Folder"
 msgstr "Nouveau dossier"
 
-#: ../liferea.glade.h:128 ../src/node.c:333
+#: ../liferea.glade.h:128 ../src/node.c:335
 msgid "New Subscription"
 msgstr "Nouvel abonnement"
 
@@ -525,7 +525,7 @@ msgstr ""
 "Sauve cette recherche comme un dossier de recherche, qui apparaîtra dans la "
 "liste des flux."
 
-#: ../liferea.glade.h:145
+#: ../liferea.glade.h:145 ../src/ui/ui_mainwindow.c:993
 msgid "Script Manager"
 msgstr "Gestionnaire de scripts"
 
@@ -633,7 +633,7 @@ msgstr "_Boutons de la barre d'outils :"
 msgid "Translation"
 msgstr "Traduction"
 
-#: ../liferea.glade.h:171 ../src/ui/ui_mainwindow.c:989
+#: ../liferea.glade.h:171 ../src/ui/ui_mainwindow.c:991
 msgid "Update Monitor"
 msgstr "Moniteur de mise à jour"
 
@@ -1011,7 +1011,7 @@ msgid "Search Folder:"
 msgstr "Dossier de recherche :"
 
 #. unauthorized
-#: ../src/comments.c:91
+#: ../src/comments.c:116
 msgid "Authorization Error"
 msgstr "Erreur d'autorisation"
 
@@ -1220,7 +1220,7 @@ msgstr "Exporter la liste des flux"
 msgid "Export"
 msgstr "Exporter"
 
-#: ../src/feed.c:345
+#: ../src/feed.c:346
 msgid ""
 "The URL you want Liferea to subscribe to points to a webpage and the auto "
 "discovery found no feeds on this page. Maybe this webpage just does not "
@@ -1230,44 +1230,44 @@ msgstr ""
 "flux n'a été découvert sur cette page. Peut-être que cette page web ne "
 "supporte pas la découverte automatique de flux."
 
-#: ../src/feed.c:376
+#: ../src/feed.c:377
 #, c-format
 msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
 msgstr ""
 "Erreur XML lors de la lecture du flux ! Le flux \"%s\" ne peut être chargé !"
 
-#: ../src/feed.c:381
+#: ../src/feed.c:382
 msgid "Empty document!"
 msgstr "Document vide !"
 
-#: ../src/feed.c:390
+#: ../src/feed.c:391
 msgid "Invalid XML!"
 msgstr "XML non valide !"
 
-#: ../src/feed.c:430
+#: ../src/feed.c:431
 msgid "Source points to HTML document."
 msgstr "La source pointe sur le document HTML."
 
-#: ../src/feed.c:433
+#: ../src/feed.c:434
 msgid "Could not determine the feed type."
 msgstr "Impossible de déterminer le type de flux."
 
-#: ../src/feed.c:613
+#: ../src/feed.c:614
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "L'URL de \"%s\" a changé définitivement et a été mise à jour"
 
-#: ../src/feed.c:622
+#: ../src/feed.c:623
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr "\"%s\" a cessé d'exister. Liferea ne le mettra plus à jour !"
 
-#: ../src/feed.c:625
+#: ../src/feed.c:626
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\" n'a pas changé depuis la dernière mise à jour"
 
-#: ../src/feed.c:648
+#: ../src/feed.c:649
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!</"
@@ -1278,17 +1278,17 @@ msgstr ""
 "supportés !</p>Sortie de l'analyseur syntaxique XML :<br /><div "
 "class='xmlparseroutput'>"
 
-#: ../src/feed.c:669
+#: ../src/feed.c:673
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" mis à jour..."
 
-#: ../src/feed.c:686
+#: ../src/feed.c:690
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" n'est pas disponible"
 
-#: ../src/feed.c:747
+#: ../src/feed.c:751
 #, c-format
 msgid "Updating \"%s\""
 msgstr "Mise à jour de \"%s\""
@@ -1303,7 +1303,7 @@ msgstr ""
 "Liferea est en mode déconnecté. Il n'est pas possible de faire de mise à "
 "jour."
 
-#: ../src/feedlist.c:413
+#: ../src/feedlist.c:425
 msgid ""
 "This version of Liferea uses a new cache format and has migrated your feed "
 "cache. The cache content of v1.2 in ~/.liferea_1.2 was not deleted "
@@ -1322,7 +1322,7 @@ msgstr ""
 "été trouvé !"
 
 #. if we don't find a feed with unread items do nothing
-#: ../src/itemlist.c:332
+#: ../src/itemlist.c:334
 msgid "There are no unread items "
 msgstr "Il n'y a aucun élément non lu "
 
@@ -1482,43 +1482,43 @@ msgstr ""
 "Un problème est survenu pendant la lecture de cet abonnement. Veuillez "
 "vérifier l'URL et la sortie sur la console."
 
-#: ../src/subscription.c:274
+#: ../src/subscription.c:273
 #, c-format
 msgid "Updating favicon for \"%s\""
 msgstr "Mise à jour de la favicon pour \"%s\""
 
-#: ../src/update.c:157
+#: ../src/update.c:130
 #, c-format
 msgid "Error opening temp file %s to use for filtering!"
 msgstr "Erreur en ouvrant le fichier temporaire %s pour le filtrage !"
 
-#: ../src/update.c:180
+#: ../src/update.c:153
 #, c-format
 msgid "%s exited with status %d"
 msgstr "%s s'est terminé avec le code de retour %d"
 
-#: ../src/update.c:186 ../src/update.c:187 ../src/update.c:287
+#: ../src/update.c:159 ../src/update.c:160 ../src/update.c:260
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "Erreur : impossible d'ouvrir le tuyau \"%s\""
 
 #. FIXME: maybe setting request->returncode would be better
-#: ../src/update.c:307
+#: ../src/update.c:280
 #, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr "Erreur : impossible d'ouvrir le fichier \"%s\""
 
-#: ../src/update.c:313
+#: ../src/update.c:286
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "Erreur : il n'y a pas de fichier \"%s\""
 
-#: ../src/update.c:510
+#: ../src/update.c:483
 #, c-format
 msgid "Could not download \"%s\". Will retry in %d seconds."
 msgstr "Impossible de télécharger \"%s\". Nouvelle tentative dans %d secondes."
 
-#: ../src/vfolder.c:58
+#: ../src/vfolder.c:52
 msgid "New Search Folder"
 msgstr "Nouveau dossier de recherche"
 
@@ -1546,7 +1546,7 @@ msgid "Enclosure download finished: \"%s\""
 msgstr "Le téléchargement de l'annexe s'est terminé : \"%s\""
 
 #: ../src/ui/ui_enclosure.c:229 ../src/ui/ui_enclosure.c:391
-#: ../src/ui/ui_subscription.c:367
+#: ../src/ui/ui_subscription.c:369
 msgid "Choose File"
 msgstr "Choisir un fichier"
 
@@ -1614,21 +1614,21 @@ msgstr "Date"
 msgid "Headline"
 msgstr "Titre"
 
-#: ../src/ui/ui_itemlist.c:480 ../src/ui/ui_itemlist.c:503
-#: ../src/ui/ui_itemlist.c:574 ../src/ui/ui_itemlist.c:722
-#: ../src/ui/ui_itemlist.c:740
+#: ../src/ui/ui_itemlist.c:487 ../src/ui/ui_itemlist.c:510
+#: ../src/ui/ui_itemlist.c:581 ../src/ui/ui_itemlist.c:729
+#: ../src/ui/ui_itemlist.c:747
 msgid "No item has been selected"
 msgstr "Aucun élément n'a été sélectionné"
 
-#: ../src/ui/ui_itemlist.c:497
+#: ../src/ui/ui_itemlist.c:504
 msgid "This item has no link specified!"
 msgstr "Cet élément n'a pas de lien spécifié !"
 
-#: ../src/ui/ui_itemlist.c:564
+#: ../src/ui/ui_itemlist.c:571
 msgid "You must select a feed to delete its items!"
 msgstr "Vous devez sélectionner un flux pour effacer ses éléments !"
 
-#: ../src/ui/ui_itemlist.c:750
+#: ../src/ui/ui_itemlist.c:757
 msgid "No link selected!"
 msgstr "Aucun lien sélectionné !"
 
@@ -1679,43 +1679,43 @@ msgstr ""
 "parcourir les titres d'un flux, sélectionnez le flux dans la liste, et les "
 "titres seront chargés dans le cadre de droite.</p>"
 
-#: ../src/ui/ui_mainwindow.c:718
+#: ../src/ui/ui_mainwindow.c:721
 msgid "Liferea is now online"
 msgstr "Liferea est maintenant connecté"
 
-#: ../src/ui/ui_mainwindow.c:720
+#: ../src/ui/ui_mainwindow.c:723
 msgid "Work Offline"
 msgstr "Travailler déconnecté"
 
-#: ../src/ui/ui_mainwindow.c:722
+#: ../src/ui/ui_mainwindow.c:725
 msgid "Liferea is now offline"
 msgstr "Liferea est maintenant déconnecté"
 
-#: ../src/ui/ui_mainwindow.c:724
+#: ../src/ui/ui_mainwindow.c:727
 msgid "Work Online"
 msgstr "Travailler connecté"
 
-#: ../src/ui/ui_mainwindow.c:986
+#: ../src/ui/ui_mainwindow.c:988
 msgid "_Program"
 msgstr "_Programme"
 
-#: ../src/ui/ui_mainwindow.c:987
+#: ../src/ui/ui_mainwindow.c:989
 msgid "_Preferences"
 msgstr "_Préférences"
 
-#: ../src/ui/ui_mainwindow.c:987
+#: ../src/ui/ui_mainwindow.c:989
 msgid "Edit Preferences."
 msgstr "Éditer les préférences."
 
-#: ../src/ui/ui_mainwindow.c:989
+#: ../src/ui/ui_mainwindow.c:991
 msgid "Show a list of all feeds currently in the update queue"
 msgstr ""
 "Montrer une liste de tous les flux actuellement dans la queue de mise à jour"
 
-#. {"ShowScriptManager", NULL, N_("Script Manager"), NULL, N_("Allows to configure and edit LUA hook scripts"),
-#. G_CALLBACK(on_menu_show_script_manager)},
-#. FIXME: we have some linking problem here...
-#.
+#: ../src/ui/ui_mainwindow.c:993
+msgid "Allows to configure and edit LUA hook scripts"
+msgstr "Permet de configurer et éditer des hooks en LUA"
+
 #: ../src/ui/ui_mainwindow.c:995
 msgid "_Quit"
 msgstr "_Quitter"
@@ -2146,55 +2146,97 @@ msgstr "/_Supprimer"
 msgid "/_Properties..."
 msgstr "/_Propriétés..."
 
-#: ../src/ui/ui_prefs.c:79
+#: ../src/ui/ui_prefs.c:78
 msgid "GNOME Default Browser"
 msgstr "Navigateur par défaut de GNOME"
 
 #. This allows the user to choose their own browser by typing in the command.
-#: ../src/ui/ui_prefs.c:249
+#: ../src/ui/ui_prefs.c:248
 msgid "Manual"
 msgstr "Manuel"
 
-#: ../src/ui/ui_prefs.c:259
+#: ../src/ui/ui_prefs.c:258
 msgid "Browser default"
 msgstr "Choix par défaut du navigateur"
 
-#: ../src/ui/ui_prefs.c:264
+#: ../src/ui/ui_prefs.c:263
 msgid "Existing window"
 msgstr "Fenêtre existante"
 
-#: ../src/ui/ui_prefs.c:269
+#: ../src/ui/ui_prefs.c:268
 msgid "New window"
 msgstr "Nouvelle fenêtre"
 
-#: ../src/ui/ui_prefs.c:274 ../src/ui/ui_tabs.c:196 ../src/ui/ui_tabs.c:199
+#: ../src/ui/ui_prefs.c:273 ../src/ui/ui_tabs.c:196 ../src/ui/ui_tabs.c:199
 #: ../src/ui/ui_tabs.c:219 ../src/ui/ui_tabs.c:353
 msgid "New tab"
 msgstr "Nouvel onglet"
 
-#: ../src/ui/ui_prefs.c:482
+#: ../src/ui/ui_prefs.c:481
 msgid "Type"
 msgstr "Type"
 
-#: ../src/ui/ui_prefs.c:485
+#: ../src/ui/ui_prefs.c:484
 msgid "Program"
 msgstr "Programme"
 
-#: ../src/ui/ui_prefs.c:730
+#: ../src/ui/ui_prefs.c:729
 msgid "Choose download directory"
 msgstr "Choisissez un répertoire de téléchargement"
 
-#: ../src/ui/ui_search.c:91
-#, c-format
-msgid "Searching for \"%s\""
-msgstr "Recherche de \"%s\""
+#: ../src/ui/ui_script.c:35
+msgid "startup"
+msgstr "lancement"
 
-#: ../src/ui/ui_search.c:123
+#. update events
+#: ../src/ui/ui_script.c:38
+msgid "feed updated"
+msgstr "flux mis à jour"
+
+#. feed list editing
+#: ../src/ui/ui_script.c:41
+msgid "feed added"
+msgstr "flux ajouté"
+
+#. selection hooks
+#: ../src/ui/ui_script.c:44
+msgid "item selected"
+msgstr "élément sélectionné"
+
+#: ../src/ui/ui_script.c:45
+msgid "feed selected"
+msgstr "flux sélectionné"
+
+#: ../src/ui/ui_script.c:46
+msgid "item unselected"
+msgstr "élément désélectionné"
+
+#: ../src/ui/ui_script.c:47
+msgid "feed unselected"
+msgstr "flux désélectionné"
+
+#: ../src/ui/ui_script.c:49
+msgid "shutdown"
+msgstr "fermeture"
+
+#: ../src/ui/ui_script.c:153
+msgid "Sorry, no scripting support available!"
+msgstr "Désolé, pas de support de script disponible !"
+
+#: ../src/ui/ui_script.c:179
+msgid "Script Name"
+msgstr "Nom de script"
+
+#: ../src/ui/ui_script.c:230
+msgid "No script selected!"
+msgstr "Pas de script sélectionné !"
+
+#: ../src/ui/ui_search.c:119
 #, c-format
 msgid "%d Search Results for \"%s\""
 msgstr "%d résultats de recherche de « %s »"
 
-#: ../src/ui/ui_search.c:125
+#: ../src/ui/ui_search.c:121
 msgid ""
 "The item list now contains all items matching the specified search pattern. "
 "If you want to save this search result permanently you can click the "
@@ -2207,17 +2249,17 @@ msgstr ""
 "dialogue pour la recherche et Liferea ajoutera un dossier de recherche à "
 "votre liste de flux."
 
-#: ../src/ui/ui_search.c:245
+#: ../src/ui/ui_search.c:241
 msgid "Create a new search feed."
 msgstr "Créer un nouveau flux de recherche."
 
-#: ../src/ui/ui_subscription.c:439
+#: ../src/ui/ui_subscription.c:441
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minutes."
 msgstr ""
 "Le fournisseur de ce flux suggère un intervalle de mise à jour de %d minutes."
 
-#: ../src/ui/ui_subscription.c:441
+#: ../src/ui/ui_subscription.c:443
 msgid "This feed specifies no default update interval."
 msgstr "Ce flux ne spécifie aucun intervalle de mise à jour."
 
@@ -2303,7 +2345,7 @@ msgstr ""
 "liste des flux."
 
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
-#: ../src/fl_sources/default_source.c:86
+#: ../src/fl_sources/default_source.c:88
 msgid "feedlist.opml"
 msgstr "feedlist_fr.opml"
 
@@ -2407,52 +2449,8 @@ msgstr "Mise à jour du flux"
 msgid "Show details"
 msgstr "Montrer les détails"
 
-#: ../src/scripting/ui_script.c:35
-msgid "startup"
-msgstr "lancement"
-
-#. update events
-#: ../src/scripting/ui_script.c:38
-msgid "feed updated"
-msgstr "flux mis à jour"
-
-#. feed list editing
-#: ../src/scripting/ui_script.c:41
-msgid "feed added"
-msgstr "flux ajouté"
-
-#. selection hooks
-#: ../src/scripting/ui_script.c:44
-msgid "item selected"
-msgstr "élément sélectionné"
-
-#: ../src/scripting/ui_script.c:45
-msgid "feed selected"
-msgstr "flux sélectionné"
-
-#: ../src/scripting/ui_script.c:46
-msgid "item unselected"
-msgstr "élément désélectionné"
-
-#: ../src/scripting/ui_script.c:47
-msgid "feed unselected"
-msgstr "flux désélectionné"
-
-#: ../src/scripting/ui_script.c:49
-msgid "shutdown"
-msgstr "fermeture"
-
-#: ../src/scripting/ui_script.c:153
-msgid "Sorry, no scripting support available!"
-msgstr "Désolé, pas de support de script disponible !"
-
-#: ../src/scripting/ui_script.c:179
-msgid "Script Name"
-msgstr "Nom de script"
-
-#: ../src/scripting/ui_script.c:230
-msgid "No script selected!"
-msgstr "Pas de script sélectionné !"
+#~ msgid "Searching for \"%s\""
+#~ msgstr "Recherche de \"%s\""
 
 #~ msgid ""
 #~ "<i>Liferea reuses the GNOME proxy settings. If you use GNOME you can "
@@ -2476,9 +2474,6 @@ msgstr "Pas de script sélectionné !"
 
 #~ msgid "<Alt> Space"
 #~ msgstr "<Alt> Espace"
-
-#~ msgid "Allows to configure and edit LUA hook scripts"
-#~ msgstr "Permet de configurer et éditer des hooks en LUA"
 
 #~ msgid "Update only feeds scheduled for updates"
 #~ msgstr "Mise à jour seulement des flux arrivés à expiration"
