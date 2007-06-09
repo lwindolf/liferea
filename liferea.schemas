@@ -178,18 +178,6 @@ To change the gconftool target use the - -config-source=blah option to gconftool
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/liferea/keep-feeds-in-memory</key>
-      <applyto>/apps/liferea/keep-feeds-in-memory</applyto>
-      <owner>liferea</owner>
-      <type>bool</type>
-      <default>false</default>
-      <locale name="C">
-        <short>Keep all items loaded in memory</short>
-        <long>Keep all items loaded in memory. This increases speed
-	   and memory usage of Liferea.</long>
-      </locale>
-    </schema>
-    <schema>
       <key>/schemas/apps/liferea/last-hpane-pos</key>
       <applyto>/apps/liferea/last-hpane-pos</applyto>
       <owner>liferea</owner>
