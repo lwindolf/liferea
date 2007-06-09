@@ -1278,7 +1278,6 @@ db_subscription_remove (const gchar *id)
 GSList *
 db_subscription_list_load (void)
 {
-	gint		res;
 	GSList		*list = NULL;
 
 	sqlite3_reset (subscriptionListLoadStmt);
