@@ -18,6 +18,8 @@
 	  and <Ctrl>-<Space> as 1, now it is the opposite.
 	* Fixes unread counter of parent nodes after moving
 	  feed list subtrees with DnD.
+	* Improved memory cleanup on exit to help debugging
+	  memory leaks.
 
 	Translations
 
