@@ -1,6 +1,8 @@
 2007-06-??  Lars Lindner  <lars.lindner@gmail.com>
 
 	* Fixes some memory leaks (Hubert Figuiere)
+	* Fixes SF #1731789 "Open Feed" in detailed libnotify
+	  popup view did not work (reported by vfiend)
 
 	Translations
 

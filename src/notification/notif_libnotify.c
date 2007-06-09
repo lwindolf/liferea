@@ -1,5 +1,5 @@
 /** 
- * @file notif_libnotify.c notifications via libnotfy
+ * @file notif_libnotify.c notifications via libnotify
  *
  * Copyright (c) 2006, Norman Jonas <liferea.sf.net@devport.codepilot.net>
  *	      
@@ -153,10 +153,10 @@ static void notif_libnotify_callback_show_details ( NotifyNotification *n, gchar
 
 		notify_notification_add_action(n, "open", _("Open feed"),
 										(NotifyActionCallback)notif_libnotify_callback_open,
-										node_p, NULL);
+										node_p->id, NULL);
 		notify_notification_add_action(n, "mark_read", _("Mark all as read"),
 										(NotifyActionCallback)notif_libnotify_callback_mark_read,
-										node_p, NULL);
+										node_p->id, NULL);
 
 		node_unload(node_p);
 
