@@ -2076,7 +2076,7 @@ msgstr "Suche nach \"%s\""
 #: ../src/ui/ui_search.c:122
 #, c-format
 msgid "%d Search Results for \"%s\""
-msgstr "%d Sucheergebnisse für \"%s\""
+msgstr "%d Suchergebnisse für \"%s\""
 
 #: ../src/ui/ui_search.c:124
 msgid "The item list now contains all items matching the specified search pattern. If you want to save this search result permanently you can click the \"Search Folder\" button in the search dialog and Liferea will add a search folder to your feed list."
