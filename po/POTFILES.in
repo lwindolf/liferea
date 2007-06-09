@@ -53,6 +53,8 @@ src/render.c
 src/render.h
 src/rule.c
 src/rule.h
+src/script.c
+src/script.h
 src/social.c
 src/social.h
 src/subscription.c
@@ -87,6 +89,8 @@ src/ui/ui_popup.c
 src/ui/ui_popup.h
 src/ui/ui_prefs.c
 src/ui/ui_prefs.h
+src/ui/ui_script.c
+src/ui/ui_script.h
 src/ui/ui_search.c
 src/ui/ui_search.h
 src/ui/ui_session.c
@@ -181,8 +185,4 @@ src/notification/notif_libnotify.c
 src/notification/notif_libnotify.h
 src/notification/notif_plugin.c
 src/notification/notif_plugin.h
-src/scripting/script.c
-src/scripting/script.h
 src/scripting/lua.c
-src/scripting/ui_script.c
-src/scripting/ui_script.h
