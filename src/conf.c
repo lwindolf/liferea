@@ -107,12 +107,12 @@ void conf_load(void)
 	gchar *downloadPath;
 	
 	/* check if important preferences exist... */
-	if(0 == (maxitemcount = getNumericConfValue(DEFAULT_MAX_ITEMS)))
-		setNumericConfValue(DEFAULT_MAX_ITEMS, 100);
+	if(0 == (maxitemcount = conf_get_int_value(DEFAULT_MAX_ITEMS)))
+		conf_set_int_value(DEFAULT_MAX_ITEMS, 100);
 	
-	downloadPath = getStringConfValue(ENCLOSURE_DOWNLOAD_PATH);
+	downloadPath = conf_get_str_value(ENCLOSURE_DOWNLOAD_PATH);
 	if(0 == strcmp("", downloadPath))
-		setStringConfValue(ENCLOSURE_DOWNLOAD_PATH, g_getenv("HOME"));
+		conf_set_str_value(ENCLOSURE_DOWNLOAD_PATH, g_getenv("HOME"));
 	g_free(downloadPath);
 }
 
@@ -139,7 +139,12 @@ conf_toolbar_style_settings_cb (GConfClient *client,
 	}
 }
 
-static void conf_proxy_reset_settings_cb(GConfClient *client, guint cnxn_id, GConfEntry *entry, gpointer user_data) {
+static void
+conf_proxy_reset_settings_cb (GConfClient *client,
+                              guint cnxn_id,
+                              GConfEntry *entry,
+                              gpointer user_data)
+{
 	gchar		*proxyname, *proxyusername, *proxypassword, *tmp;
 	guint		proxyport;
 	xmlURIPtr 	uri;
@@ -149,43 +154,69 @@ static void conf_proxy_reset_settings_cb(GConfClient *client, guint cnxn_id, GCo
 	proxyusername = NULL;
 	proxypassword = NULL;
 	
-	/* first check for a configured GNOME proxy */
-	if(getBooleanConfValue(GNOME_USE_PROXY)) {
-		proxyname = getStringConfValue(GNOME_PROXY_HOST);
-		proxyport = getNumericConfValue(GNOME_PROXY_PORT);
-		debug2(DEBUG_CONF, "using GNOME configured proxy: \"%s\" port \"%d\"", proxyname, proxyport);
-		if (getBooleanConfValue(GNOME_PROXY_USEAUTH)) {
-			proxyusername = getStringConfValue(GNOME_PROXY_USER);
-			proxypassword = getStringConfValue(GNOME_PROXY_PASSWD);
-		}
-	} else {
-		/* otherwise there could be a proxy specified in the environment 
-		   the following code was derived from SnowNews' setup.c */
-		if(g_getenv("http_proxy") != NULL) {
-			/* The pointer returned by getenv must not be altered.
-			   What about mentioning this in the manpage of getenv? */
-			debug0(DEBUG_CONF, "using proxy from environment");
-			do {
-				uri = xmlParseURI(BAD_CAST g_getenv("http_proxy"));
-				if (uri == NULL)
-					break;
-				if (uri->server == NULL) {
-					xmlFreeURI(uri);
-					break;
+	switch (conf_get_int_value (PROXY_DETECT_MODE)) {
+		default:
+		case 0:
+			debug0 (DEBUG_CONF, "proxy auto detect is configured");
+				
+			/* first check for a configured GNOME proxy */
+			if (conf_get_bool_value (GNOME_USE_PROXY)) {
+				proxyname = conf_get_str_value (GNOME_PROXY_HOST);
+				proxyport = conf_get_int_value (GNOME_PROXY_PORT);
+				debug2 (DEBUG_CONF, "using GNOME configured proxy: \"%s\" port \"%d\"", proxyname, proxyport);
+				if (conf_get_bool_value (GNOME_PROXY_USEAUTH)) {
+					proxyusername = conf_get_str_value (GNOME_PROXY_USER);
+					proxypassword = conf_get_str_value (GNOME_PROXY_PASSWD);
 				}
-				proxyname = g_strdup(uri->server);
-				proxyport = (uri->port == 0) ? 3128 : uri->port;
-				if (uri->user != NULL) {
-					tmp = strtok(uri->user, ":");
-					tmp = strtok(NULL, ":");
-					if (tmp != NULL) {
-						proxyusername = g_strdup(uri->user);
-						proxypassword = g_strdup(tmp);
-					}
+			} else {
+				/* otherwise there could be a proxy specified in the environment 
+				   the following code was derived from SnowNews' setup.c */
+				if (g_getenv("http_proxy")) {
+					/* The pointer returned by getenv must not be altered.
+					   What about mentioning this in the manpage of getenv? */
+					debug0 (DEBUG_CONF, "using proxy from environment");
+					do {
+						uri = xmlParseURI (BAD_CAST g_getenv ("http_proxy"));
+						if (uri == NULL) {
+							debug0 (DEBUG_CONF, "parsing URI in $http_proxy failed!");
+							break;
+						}
+						if (uri->server == NULL) {
+							debug0 (DEBUG_CONF, "could not determine proxy name from $http_proxy!");
+							xmlFreeURI (uri);
+							break;
+						}
+						proxyname = g_strdup (uri->server);
+						proxyport = (uri->port == 0) ? 3128 : uri->port;
+						if (uri->user) {
+							tmp = strtok (uri->user, ":");
+							tmp = strtok (NULL, ":");
+							if (tmp) {
+								proxyusername = g_strdup (uri->user);
+								proxypassword = g_strdup (tmp);
+							}
+						}
+						xmlFreeURI (uri);
+					} while (FALSE);
 				}
-				xmlFreeURI(uri);
-			} while (FALSE);
-		}
+			}
+			if (!proxyname)
+				debug0 (DEBUG_CONF, "no proxy GNOME of $http_proxy configuration found...");
+			break;
+		case 1:
+			debug0 (DEBUG_CONF, "proxy is disabled by user");
+			/* nothing to do */
+			break;
+		case 2:
+			debug0 (DEBUG_CONF, "manual proxy is configured");
+
+			proxyname = conf_get_str_value (PROXY_HOST);
+			proxyport = conf_get_int_value (PROXY_PORT);
+			if (conf_get_bool_value (PROXY_USEAUTH)) {
+				proxyusername = conf_get_str_value (PROXY_USER);
+				proxypassword = conf_get_str_value (PROXY_PASSWD);
+			}
+			break;
 	}
 	
 	debug4 (DEBUG_CONF, "Proxy settings are now %s:%d %s:%s", proxyname != NULL ? proxyname : "NULL", proxyport,
@@ -200,7 +231,7 @@ static void conf_proxy_reset_settings_cb(GConfClient *client, guint cnxn_id, GCo
 /* generic configuration access methods					*/
 /*----------------------------------------------------------------------*/
 
-void setBooleanConfValue(gchar *valuename, gboolean value) {
+void conf_set_bool_value(const gchar *valuename, gboolean value) {
 	GError		*err = NULL;
 	GConfValue	*gcv;
 	
@@ -213,7 +244,7 @@ void setBooleanConfValue(gchar *valuename, gboolean value) {
 	is_gconf_error(&err);
 }
 
-gboolean getBooleanConfValue(gchar *valuename) {
+gboolean conf_get_bool_value(const gchar *valuename) {
 	GConfValue	*value = NULL;
 	gboolean	result;
 
@@ -221,7 +252,7 @@ gboolean getBooleanConfValue(gchar *valuename) {
 
 	value = gconf_client_get(client, valuename, NULL);
 	if(NULL == value) {
-		setBooleanConfValue(valuename, FALSE);
+		conf_set_bool_value(valuename, FALSE);
 		result = FALSE;
 	} else {
 		result = gconf_value_get_bool(value);
@@ -231,7 +262,7 @@ gboolean getBooleanConfValue(gchar *valuename) {
 	return result;
 }
 
-void setStringConfValue(gchar *valuename, const gchar *value) {
+void conf_set_str_value(const gchar *valuename, const gchar *value) {
 	GError		*err = NULL;
 	GConfValue	*gcv;
 	
@@ -244,7 +275,7 @@ void setStringConfValue(gchar *valuename, const gchar *value) {
 	is_gconf_error(&err);
 }
 
-gchar * getStringConfValue(gchar *valuename) {
+gchar * conf_get_str_value(const gchar *valuename) {
 	GConfValue	*value = NULL;
 	gchar		*result;
 
@@ -261,7 +292,7 @@ gchar * getStringConfValue(gchar *valuename) {
 	return result;
 }
 
-void setNumericConfValue(gchar *valuename, gint value) {
+void conf_set_int_value(const gchar *valuename, gint value) {
 	GError		*err = NULL;
 	GConfValue	*gcv;
 	
@@ -274,7 +305,7 @@ void setNumericConfValue(gchar *valuename, gint value) {
 	gconf_value_free(gcv);
 }
 
-gint getNumericConfValue(gchar *valuename) {
+gint conf_get_int_value(const gchar *valuename) {
 	GConfValue	*value;
 	gint		result = 0;
 
@@ -294,12 +325,12 @@ conf_get_toolbar_style(void)
 {
 	gchar *style;
 
-	style = getStringConfValue (TOOLBAR_STYLE);
+	style = conf_get_str_value (TOOLBAR_STYLE);
 
 	/* check if we don't override the toolbar style */
 	if (strcmp(style, "") == 0) {
 		g_free (style);
-		style = getStringConfValue ("/desktop/gnome/interface/toolbar_style");
+		style = conf_get_str_value ("/desktop/gnome/interface/toolbar_style");
 	}
 	return style;
 }

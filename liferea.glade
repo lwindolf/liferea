@@ -2978,7 +2978,7 @@ Text only</property>
                                                       </packing>
                                                     </child>
                                                     <child>
-                                                      <widget class="GtkEntry" id="proxyuserentry">
+                                                      <widget class="GtkEntry" id="proxyusernameentry">
                                                         <property name="visible">True</property>
                                                         <property name="can_focus">True</property>
                                                         <property name="invisible_char">*</property>
