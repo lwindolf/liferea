@@ -41,11 +41,11 @@
 #include "common.h"
 #include "conf.h"
 #include "debug.h"
+#include "net.h"
 #include "update.h"
 #include "ui/ui_htmlview.h"
 #include "ui/ui_mainwindow.h"
 #include "ui/ui_tray.h"
-#include "net/downloadlib.h"
 
 /* must never be smaller than 2, because first thread works exclusivly on high prio requests */
 #define DEFAULT_UPDATE_THREAD_CONCURRENCY	6
@@ -297,7 +297,7 @@ void update_execute_request_sync(requestPtr request) {
 		update_exec_cmd(request);
 		
 	} else if(strstr(request->source, "://") && strncmp(request->source, "file://",7)) {
-		downloadlib_process_url(request);
+		network_process_request (request);
 		if(request->httpstatus >= 400) {
 			g_free(request->data);
 			request->data = NULL;
@@ -536,7 +536,7 @@ static gboolean update_dequeue_results(gpointer user_data) {
 void update_init(void) {
 	gushort	i, count;
 
-	downloadlib_init();
+	network_init ();
 	
 	requests_high_prio = g_async_queue_new();
 	requests_normal_prio = g_async_queue_new();
@@ -614,7 +614,7 @@ update_deinit (void)
 	
 	//update_nm_cleanup ();
 	
-	downloadlib_deinit ();
+	network_deinit ();
 	
 	/* FIXME: terminate update threads to be able to remove the queues
 	

@@ -47,4 +47,10 @@ struct feed_request {
 	int no_proxy;				/* 1 = don't use a proxy, 0 = use proxy */
 };
 
+void netio_init (void);
+
+void netio_deinit (void);
+
+char * DownloadFeed (char *url, struct feed_request *request, int suppressoutput);
+
 #endif

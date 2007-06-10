@@ -33,7 +33,6 @@
 #include "conf.h"
 #include "debug.h"
 #include "update.h"
-#include "ui/ui_htmlview.h"
 #include "ui/ui_mainwindow.h"
 #include "ui/ui_tray.h"
 
@@ -44,14 +43,6 @@
 #define HOMEPAGE	"http://liferea.sf.net/"
 
 static GConfClient	*client;
-
-/* configuration values for the SnowNews HTTP code used from within netio.c */
-int	NET_TIMEOUT = 30;
-char 	*useragent = NULL;
-char	*proxyname = NULL;
-char	*proxyusername = NULL;
-char	*proxypassword = NULL;
-int	proxyport = 0;
 
 /* Function prototypes */
 static void conf_proxy_reset_settings_cb(GConfClient *client, guint cnxn_id, GConfEntry *entry, gpointer user_data);
@@ -76,45 +67,37 @@ void conf_init() {
 	/* has to be called for multithreaded programs */
 	xmlInitParser();
 	
-	/* the following code was copied from SnowNews and adapted to build
-	   a Liferea user agent... */
-	
 	/* Construct the User-Agent string of Liferea. This is done here in program init,
 	   because we need to do it exactly once and it will never change while the program
 	   is running. */
 	if (g_getenv("LANG") != NULL) {
 		/* e.g. Liferea/0.3.8 (Linux; de_DE; (http://liferea.sf.net/) */
-		useragent = g_strdup_printf("Liferea/%s (%s; %s; %s)", VERSION, OSNAME, g_getenv("LANG"), HOMEPAGE);
+		network_set_user_agent (g_strdup_printf("Liferea/%s (%s; %s; %s)", VERSION, OSNAME, g_getenv("LANG"), HOMEPAGE));
 	} else {
 		/* "Liferea/" + VERSION + "(" OS + "; " + HOMEPAGE + ")" */
-		useragent = g_strdup_printf("Liferea/%s (%s; %s)", VERSION, OSNAME, HOMEPAGE);
+		network_set_user_agent( g_strdup_printf("Liferea/%s (%s; %s)", VERSION, OSNAME, HOMEPAGE));
 	}
 	
 	/* initialize GConf client */
 	client = gconf_client_get_default();
 	gconf_client_add_dir(client, PATH, GCONF_CLIENT_PRELOAD_NONE, NULL);
+	gconf_client_add_dir(client, "/apps/liferea/proxy", GCONF_CLIENT_PRELOAD_NONE, NULL);
 	gconf_client_add_dir(client, "/system/http_proxy", GCONF_CLIENT_PRELOAD_NONE, NULL);
 	gconf_client_add_dir(client, "/desktop/gnome/interface", GCONF_CLIENT_PRELOAD_NONE, NULL);
-
+	
+	gconf_client_notify_add(client, "/apps/liferea/proxy", conf_proxy_reset_settings_cb, NULL, NULL, NULL);
 	gconf_client_notify_add(client, "/system/http_proxy", conf_proxy_reset_settings_cb, NULL, NULL, NULL);
 	gconf_client_notify_add(client, "/desktop/gnome/interface/toolbar_style", conf_toolbar_style_settings_cb, NULL, NULL, NULL);
 	gconf_client_notify_add(client, SHOW_TRAY_ICON, conf_tray_settings_cb, NULL, NULL, NULL);
 	
 	/* Load settings into static buffers */
 	conf_proxy_reset_settings_cb(NULL, 0, NULL, NULL);
-
-	if(0 == (NET_TIMEOUT = getNumericConfValue(NETWORK_TIMEOUT)))
-		NET_TIMEOUT = 30;	/* default network timeout 30s */
 }
 
 void
 conf_deinit (void)
 {
 	g_object_unref (client);
-	g_free (useragent);
-	g_free (proxyname);
-	g_free (proxyusername);
-	g_free (proxypassword);
 }
 
 /* maybe called several times to reload configuration */
@@ -157,16 +140,13 @@ conf_toolbar_style_settings_cb (GConfClient *client,
 }
 
 static void conf_proxy_reset_settings_cb(GConfClient *client, guint cnxn_id, GConfEntry *entry, gpointer user_data) {
-	gchar	*tmp;
-	xmlURIPtr uri;
+	gchar		*proxyname, *proxyusername, *proxypassword, *tmp;
+	guint		proxyport;
+	xmlURIPtr 	uri;
 	
-	g_free(proxyname);
 	proxyname = NULL;
-	proxyport = 0;	
-	
-	g_free(proxyusername);
+	proxyport = 0;
 	proxyusername = NULL;
-	g_free(proxypassword);
 	proxypassword = NULL;
 	
 	/* first check for a configured GNOME proxy */
@@ -208,10 +188,12 @@ static void conf_proxy_reset_settings_cb(GConfClient *client, guint cnxn_id, GCo
 		}
 	}
 	
-	ui_htmlview_set_proxy(proxyname, proxyport, proxyusername, proxypassword);
-	debug4(DEBUG_CONF, "Proxy settings are now %s:%d %s:%s", proxyname != NULL ? proxyname : "NULL", proxyport,
+	debug4 (DEBUG_CONF, "Proxy settings are now %s:%d %s:%s", proxyname != NULL ? proxyname : "NULL", proxyport,
 		  proxyusername != NULL ? proxyusername : "NULL",
 		  proxypassword != NULL ? proxypassword : "NULL");
+		  
+	network_set_proxy (proxyname, proxyport);
+	network_set_proxy_auth (proxyusername, proxypassword);
 }
 
 /*----------------------------------------------------------------------*/

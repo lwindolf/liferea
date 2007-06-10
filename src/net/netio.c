@@ -1090,7 +1090,7 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, char * aut
 /* Returns allocated string with body of webserver reply.
    Various status info put into struct feed_request * cur_ptr.
    Set suppressoutput=1 to disable ncurses calls. */
-static char * DownloadFeed (char * url, struct feed_request * cur_ptr, int suppressoutput) {
+char * DownloadFeed (char * url, struct feed_request * cur_ptr, int suppressoutput) {
 	char *host;					/* Needs to freed. */
 	char *tmphost;
 	char *freeme;
@@ -1162,15 +1162,8 @@ static char * DownloadFeed (char * url, struct feed_request * cur_ptr, int suppr
 	return returndata;
 }
 
-/*-----------------------------------------------------------------------*/
-/* some Liferea specific code...					 */
-
-#include "../debug.h"
-#include "../update.h"
-#include "downloadlib.h"
-
 void
-downloadlib_init (void)
+netio_init (void)
 {
 #ifdef HAVE_GNUTLS
 	gcry_control (GCRYCTL_SET_THREAD_CBS, &gcry_threads_pthread);
@@ -1182,71 +1175,11 @@ downloadlib_init (void)
 }
 
 void
-downloadlib_deinit (void)
+netio_deinit (void)
 {
 #ifdef HAVE_GNUTLS
 	gnutls_certificate_free_credentials (xcred);
 	
 	gnutls_global_deinit ();
 #endif
-}
-
-/* Downloads a feed specified in the request structure, returns 
-   the downloaded data or NULL in the request structure.
-   If the the webserver reports a permanent redirection, the
-   feed url will be modified and the old URL 'll be freed. The
-   request structure will also contain the HTTP status and the
-   last modified string.
- */
-void downloadlib_process_url(struct request *request) {
-	struct feed_request	*netioRequest;
-	gchar *oldurl = g_strdup(request->source);
-	
-	debug1(DEBUG_UPDATE, "downloading %s", request->source);
-	
-	g_assert(request->data == NULL);
-	g_assert(request->contentType == NULL);
-
-	netioRequest = g_new0(struct feed_request, 1);
-	netioRequest->feedurl = request->source;
-
-	if(request->updateState) {
-		netioRequest->lastmodified = request->updateState->lastModified;
-		netioRequest->etag = request->updateState->etag;
-		netioRequest->cookies = g_strdup(request->updateState->cookies);
-	}
-		
-	netioRequest->problem = 0;
-	netioRequest->netio_error = 0;
-	netioRequest->no_proxy = request->options->dontUseProxy?1:0;
-	netioRequest->content_type = NULL;
-	netioRequest->contentlength = 0;
-	netioRequest->authinfo = NULL;
-	netioRequest->servauth = NULL;
-	netioRequest->lasthttpstatus = 0; /* This might, or might not mean something to someone */
-	
-	request->data = DownloadFeed(oldurl, netioRequest, 0);
-
-	g_free(oldurl);
-	if(request->data == NULL)
-		netioRequest->problem = 1;
-	request->size = netioRequest->contentlength;
-	request->httpstatus = netioRequest->lasthttpstatus;
-	request->returncode = netioRequest->netio_error;
-	request->source = netioRequest->feedurl;
-	if(request->updateState) {
-		request->updateState->lastModified = netioRequest->lastmodified;
-		request->updateState->etag = netioRequest->etag;
-	}
-	request->contentType = netioRequest->content_type;
-	g_free(netioRequest->servauth);
-	g_free(netioRequest->authinfo);
-	g_free(netioRequest->cookies);
-	debug4(DEBUG_UPDATE, "download result - HTTP status: %d, error: %d, netio error:%d, data: %d",
-	                     request->httpstatus, 
-			     netioRequest->problem, 
-			     netioRequest->netio_error, 
-			     request->data);
-	g_free(netioRequest);
-	return;
 }
