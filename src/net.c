@@ -59,6 +59,30 @@ network_set_user_agent (gchar *newUserAgent)
 	useragent = newUserAgent;
 }
 
+const gchar *
+network_get_proxy_host (void)
+{
+	return proxyname;
+}
+
+const gchar *
+network_get_proxy_port (void)
+{
+	return proxyport;
+}
+
+const gchar *
+network_get_proxy_username (void)
+{
+	return proxyusername;
+}
+
+const gchar *
+network_get_proxy_password (void)
+{
+	return proxypassword;
+}
+
 void
 network_set_proxy (gchar *newProxyName, guint newProxyPort)
 {
@@ -66,7 +90,7 @@ network_set_proxy (gchar *newProxyName, guint newProxyPort)
 	proxyname = newProxyName;
 	proxyport = newProxyPort;
 	
-	ui_htmlview_set_proxy(proxyname, proxyport, proxyusername, proxypassword);
+	ui_htmlview_update_proxy ();
 }
 
 void
@@ -77,7 +101,7 @@ network_set_proxy_auth (gchar *newProxyUsername, gchar *newProxyPassword)
 	proxyusername = newProxyUsername;
 	proxypassword = newProxyPassword;
 	
-	ui_htmlview_set_proxy(proxyname, proxyport, proxyusername, proxypassword);
+	ui_htmlview_update_proxy ();
 }
 
 /* Downloads a feed specified in the request structure, returns 

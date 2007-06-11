@@ -260,7 +260,9 @@ open:
 		debug0 (DEBUG_DB, "Reopening DB after migration...");
 		goto open;
 	}
-
+	
+	db_begin_transaction ();
+	
 	/* create tables if they do not exist yet */
 	db_exec ("CREATE TABLE items ("
 	         "   title		TEXT,"
@@ -358,8 +360,13 @@ open:
 		 "   DELETE FROM subscription_metadata WHERE node_id = old.node_id; "
 		 "   DELETE FROM itemsets WHERE node_id = old.node_id; "
 	         "END;");
+		 
+	db_end_transaction ();
 			   
 	/* Cleanup of DB */
+	
+	db_begin_transaction ();
+	
 	debug_start_measurement (DEBUG_DB);
 	db_exec ("DELETE FROM items WHERE ROWID NOT IN "
 		 "(SELECT item_id FROM itemsets);");
@@ -375,10 +382,7 @@ open:
 	         "(SELECT node_id FROM subscription);");
 	debug_end_measurement (DEBUG_DB, "cleanup lost node entries");
 	
-	/*res = sqlite3_exec (db, "PRAGMA synchronous=off", NULL, NULL, &err);
-	if (SQLITE_OK != res)
-		g_error ("Failure when disabling sync mode, (error=%d, %s)", res, err);
-	sqlite3_free(err);*/
+	db_end_transaction ();
 
 	/* prepare statements */
 	
@@ -496,7 +500,9 @@ open:
 			 
 	db_prepare_stmt (&subscriptionListLoadStmt,
 	                 "SELECT node_id FROM subscription");
-		
+	
+	g_assert (sqlite3_get_autocommit (db));
+	
 	debug_exit ("db_init");
 }
 
@@ -968,10 +974,24 @@ db_end_transaction (void)
 	
 	sql = sqlite3_mprintf("END");
 	res = sqlite3_exec(db, sql, NULL, NULL, &err);
-	  if(SQLITE_OK != res) 
-		g_warning("Transaction begin failed (%s) SQL: %s", err, sql);
+	if(SQLITE_OK != res) 
+		g_warning("Transaction end failed (%s) SQL: %s", err, sql);
 	sqlite3_free(sql);
 	sqlite3_free(err);
+}
+
+void
+db_commit_transaction (void)
+{
+	gchar	*sql, *err;
+	gint	res;
+	
+	sql = sqlite3_mprintf("COMMIT");
+	res = sqlite3_exec(db, sql, NULL, NULL, &err);
+	if(SQLITE_OK != res) 
+		g_warning("Transaction commit failed (%s) SQL: %s", err, sql);
+	sqlite3_free(sql);
+	sqlite3_free(err);	
 }
 
 void

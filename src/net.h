@@ -64,6 +64,34 @@ void network_set_proxy (gchar *host, guint port);
 void network_set_proxy_auth (gchar *username, gchar *password);
 
 /**
+ * Returns the currently configured proxy host.
+ *
+ * @returns the proxy host
+ */
+const gchar * network_get_proxy_host (void);
+
+/**
+ * Returns the currently configured proxy port.
+ *
+ * @returns the proxy port
+ */
+const gchar * network_get_proxy_port (void);
+
+/**
+ * Returns the currently configured proxy user name 
+ *
+ * @returns the proxy user name (or NULL)
+ */
+const gchar * network_get_proxy_username (void);
+
+/**
+ * Returns the currently configured proxy password.
+ *
+ * @returns the proxy password (or NULL)
+ */
+const gchar * network_get_proxy_password (void);
+
+/**
  * Process the given request. As a result the different
  * member values of the request will be set or changed.
  *

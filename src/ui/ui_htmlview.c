@@ -74,7 +74,7 @@ void ui_htmlview_init(void) {
 	if(htmlviewPlugin) {
 		debug1(DEBUG_PLUGINS, "using \"%s\" for HTML rendering...", htmlviewPlugin->name);
 		htmlviewPlugin->plugin_init();
-		ui_htmlview_set_proxy(proxyname, proxyport, proxyusername, proxypassword);
+		ui_htmlview_update_proxy ();
 	} else {
 		g_error(_("Sorry, I was not able to load any installed browser plugin! Try the --debug-plugins option to get debug information!"));
 	}
@@ -362,10 +362,14 @@ gboolean ui_htmlview_scroll(void) {
 	return (htmlviewPlugin->scrollPagedown)(ui_mainwindow_get_active_htmlview());
 }
 
-void ui_htmlview_set_proxy(gchar *hostname, int port, gchar *username, gchar *password) {
-
-	if(htmlviewPlugin && htmlviewPlugin->setProxy)
-		(htmlviewPlugin->setProxy)(hostname, port, username, password);
+void
+ui_htmlview_update_proxy (void)
+{
+	if (htmlviewPlugin && htmlviewPlugin->setProxy)
+		(htmlviewPlugin->setProxy) (network_get_proxy_host (),
+		                            network_get_proxy_port (),
+					    network_get_proxy_username (),
+					    network_get_proxy_password ());
 }
 
 void ui_htmlview_online_status_changed(gboolean online) {
