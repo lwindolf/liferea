@@ -3,6 +3,7 @@ EXTRA_DIST = \
 	feedlist_ca.opml \
 	feedlist_de.opml \
 	feedlist_es.opml \
+	feedlist_eu.opml \
 	feedlist_fr.opml \
 	feedlist_pl.opml \
 	feedlist_sk.opml \
@@ -14,6 +15,7 @@ lifereadistopml_DATA = feedlist.opml \
 			feedlist_ca.opml \
 			feedlist_de.opml \
 			feedlist_es.opml \
+			feedlist_eu.opml \
 			feedlist_fr.opml \
 			feedlist_pl.opml \
 			feedlist_sk.opml \
