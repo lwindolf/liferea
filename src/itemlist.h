@@ -94,14 +94,13 @@ void itemlist_set_view_mode(guint newMode);
 guint itemlist_get_view_mode(void);
 
 /**
- * Menu callbacks that toggle the different viewing modes
+ * Menu callback that toggles the different viewing modes
  *
- * @param menuitem	the clicked menu item
+ * @param action	the action that emitted the signal
+ * @param current	the member of action which was activated
  * @param user_data	unused
  */
-void on_normal_view_activate(GtkToggleAction *menuitem, gpointer user_data);
-void on_wide_view_activate(GtkToggleAction *menuitem, gpointer user_data);
-void on_combined_view_activate(GtkToggleAction *menuitem, gpointer user_data);
+void on_view_activate(GtkRadioAction *action, GtkRadioAction *current, gpointer user_data);
 
 /* item handling functions */
 

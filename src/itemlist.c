@@ -749,19 +749,9 @@ itemlist_set_view_mode (guint newMode)
 }
 
 void
-on_normal_view_activate (GtkToggleAction *menuitem, gpointer user_data) 
+on_view_activate (GtkRadioAction *action, GtkRadioAction *current, gpointer user_data)
 {
-	itemlist_set_view_mode (0);
+	gint val = gtk_radio_action_get_current_value (current);
+	itemlist_set_view_mode (val);
 }
 
-void
-on_wide_view_activate (GtkToggleAction *menuitem, gpointer user_data)
-{
-	itemlist_set_view_mode (1);
-}
-
-void
-on_combined_view_activate (GtkToggleAction *menuitem, gpointer user_data)
-{
-	itemlist_set_view_mode (2);
-}

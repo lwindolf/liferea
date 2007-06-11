@@ -99,7 +99,7 @@ static const gchar *iconThemeNames[] = {
 };
 
 /* icon names */
-static gchar *iconNames[] = {	"read.xpm",		/* ICON_READ */
+static const gchar *iconNames[] = {	"read.xpm",		/* ICON_READ */
 				"unread.png",		/* ICON_UNREAD */
 				"flag.png",		/* ICON_FLAG */
 				"available.png",	/* ICON_AVAILABLE */
@@ -385,6 +385,12 @@ gboolean on_mainwindow_key_press_event(GtkWidget *widget, GdkEventKey *event, gp
 void ui_mainwindow_set_layout(guint newMode) {
 	gchar	*htmlWidgetName, *ilWidgetName;
 
+	{
+		GtkRadioAction *action;
+		action = (GtkRadioAction*)gtk_action_group_get_action (mainwindow_priv->generalActions, "NormalView");
+		gtk_radio_action_set_current_value(action, newMode);
+	}
+	
 	if(!mainwindow_priv->htmlview) {
 		mainwindow_priv->htmlview = ui_htmlview_new(FALSE);
 		gtk_container_add(GTK_CONTAINER(liferea_shell_lookup("normalViewHtml")),
@@ -984,7 +990,7 @@ void ui_choose_directory(gchar *title, gchar *buttonName, fileChoosenCallback ca
 	ui_choose_file_or_dir(title, buttonName, FALSE, TRUE, callback, currentPath, NULL, user_data);
 }
 
-static GtkActionEntry ui_mainwindow_action_entries[] = {
+static const GtkActionEntry ui_mainwindow_action_entries[] = {
 	{"ProgramMenu", NULL, N_("_Program")},
 	{"ShowPreferences", GTK_STOCK_PREFERENCES, N_("_Preferences"), NULL, N_("Edit Preferences."),
 	 G_CALLBACK(on_prefbtn_clicked)},
@@ -1021,12 +1027,6 @@ static GtkActionEntry ui_mainwindow_action_entries[] = {
 	 G_CALLBACK(on_popup_zoomin_selected)},
 	{"ZoomOut", "gtk-zoom-out", N_("_Decrease Text Size"), "<control>minus", N_("Decreases the text size of the item view."),
 	 G_CALLBACK(on_popup_zoomout_selected)},
-	{"NormalView", NULL, N_("_Normal View"), NULL, N_("Set view mode to mail client mode."),
-	 G_CALLBACK(on_normal_view_activate)},
-	{"WideView", NULL, N_("_Wide View"), NULL, N_("Set view mode to use three vertical panes."),
-	 G_CALLBACK(on_wide_view_activate)},
-	{"CombinedView", NULL, N_("_Combined View"), NULL, N_("Set view mode to two pane mode."),
-	 G_CALLBACK(on_combined_view_activate)},
 	 
 	{"SearchMenu", NULL, N_("_Search")},
 	{"SearchFeeds", "gtk-find", N_("Search All Feeds..."), "<control>F", N_("Show the search dialog."), G_CALLBACK(on_searchbtn_clicked)},
@@ -1040,7 +1040,16 @@ static GtkActionEntry ui_mainwindow_action_entries[] = {
 	{"ShowAbout", "gtk-about", N_("_About"), NULL, N_("Shows an about dialog."), G_CALLBACK(on_about_activate)}
 };
 
-static GtkActionEntry ui_mainwindow_add_action_entries[] = {
+static const GtkRadioActionEntry ui_mainwindow_view_radio_entries[] = {
+	{"NormalView", NULL, N_("_Normal View"), NULL, N_("Set view mode to mail client mode."),
+	 0},
+	{"WideView", NULL, N_("_Wide View"), NULL, N_("Set view mode to use three vertical panes."),
+	 1},
+	{"CombinedView", NULL, N_("_Combined View"), NULL, N_("Set view mode to two pane mode."),
+	 2}
+};
+
+static const GtkActionEntry ui_mainwindow_add_action_entries[] = {
 	{"NewSubscription", "gtk-add", N_("_New Subscription..."), NULL, N_("Adds a subscription to the feed list."),
 	 G_CALLBACK(on_menu_feed_new)},
 	{"NewFolder", "gtk-new", N_("New _Folder..."), NULL, N_("Adds a folder to the feed list."), G_CALLBACK(on_menu_folder_new)},
@@ -1049,19 +1058,19 @@ static GtkActionEntry ui_mainwindow_add_action_entries[] = {
 	{"NewNewsBin", NULL, N_("New _News Bin..."), NULL, N_("Adds a new news bin."), G_CALLBACK(on_new_newsbin_activate)}
 };
 
-static GtkActionEntry ui_mainwindow_feed_action_entries[] = {
+static const GtkActionEntry ui_mainwindow_feed_action_entries[] = {
 	{"MarkFeedAsRead", "gtk-apply", N_("_Mark Selected As Read"), "<control>R", N_("Marks all items of the selected subscription or of all subscriptions of the selected folder as read."), 
 	 G_CALLBACK(on_menu_allread)},
 	{"UpdateSelected", "gtk-refresh", N_("Update _Selected"), NULL, N_("Updates the selected subscription or all subscriptions of the selected folder."),
 	 G_CALLBACK(on_menu_update)}
 };
 
-static GtkActionEntry ui_mainwindow_read_write_action_entries[] = {
+static const GtkActionEntry ui_mainwindow_read_write_action_entries[] = {
 	{"Properties", "gtk-properties", N_("_Properties..."), NULL, N_("Opens the property dialog for the selected subscription."), G_CALLBACK(on_menu_properties)},
 	{"DeleteSelected", "gtk-delete", N_("_Delete Selected"), NULL, N_("Removes the selected subscription."), G_CALLBACK(on_menu_delete)}
 };
 
-static GtkToggleActionEntry ui_mainwindow_action_toggle_entries[] = {
+static const GtkToggleActionEntry ui_mainwindow_action_toggle_entries[] = {
 	{"ToggleOfflineMode", NULL, N_("_Work Offline"), NULL, N_("This option allows you to disable subscription updating."),
 	 G_CALLBACK(on_work_offline_activate)}
 };
@@ -1153,7 +1162,7 @@ static void ui_mainwindow_create_menus(struct mainwindow *mw) {
 	gtk_action_group_set_translation_domain (mw->generalActions, PACKAGE);
 	gtk_action_group_add_actions (mw->generalActions, ui_mainwindow_action_entries, G_N_ELEMENTS (ui_mainwindow_action_entries), mw);
 	gtk_action_group_add_toggle_actions (mw->generalActions, ui_mainwindow_action_toggle_entries, G_N_ELEMENTS (ui_mainwindow_action_toggle_entries), mw);
-	/*gtk_action_group_add_radio_actions (mw->generalActions, radio_entries, G_N_ELEMENTS (radio_entries), 0, radio_action_callback, user_data);*/
+	gtk_action_group_add_radio_actions (mw->generalActions, ui_mainwindow_view_radio_entries, G_N_ELEMENTS (ui_mainwindow_view_radio_entries), itemlist_get_view_mode (), (GCallback)on_view_activate, (gpointer)TRUE);
 	gtk_ui_manager_insert_action_group (ui_manager, mw->generalActions, 0);
 
 	mw->addActions = gtk_action_group_new ("AddActions");

@@ -2,7 +2,13 @@
 
 	Version 1.3.7 (Unstable)
 
-	* Improved proxy preference options.
+	* Improved proxy preference options. Now it is 
+	  possible to use no proxy even when environment
+	  $http_proxy says otherwise.
+	  (SF #1662742 reported by Mike Auty)
+	* View menu options for normal, wide and combined
+	  viewing mode are now radio buttons. 
+          (patch by Eric Anderson)
 
 
 2007-06-09  Lars Lindner  <lars.lindner@gmail.com>
