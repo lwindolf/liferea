@@ -2313,7 +2313,7 @@ msgstr "_Pasahitza"
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
 #: ../src/fl_sources/default_source.c:338
 msgid "feedlist.opml"
-msgstr "feedlist.opml"
+msgstr "feedlist_eu.opml"
 
 #: ../src/fl_sources/opml_source.c:336
 msgid "Planet, BlogRoll, OPML"

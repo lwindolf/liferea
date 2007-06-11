@@ -1,5 +1,7 @@
 2007-06-??  Lars Lindner  <lars.lindner@gmail.com>
 
+	Version 1.2.17 (Stable)
+
 	* Fixes some memory leaks (Hubert Figuiere)
 	* Fixes SF #1731789 "Open Feed" in detailed libnotify
 	  popup view did not work (reported by vfiend)
@@ -7,6 +9,7 @@
 	Translations
 
 	* New Czech translation from Martin Picek
+	* New Basque default feed list from Iñaki Larrañaga Murgoitio
 
 
 2007-06-04  Lars Lindner  <lars.lindner@gmail.com>

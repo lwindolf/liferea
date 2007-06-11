@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<opml version="1.0">
+  <head>
+    <title>Iturri lehenetsiak</title>
+  </head>
+  <body>
+      <outline text="Iturriak (euskaraz)">
+            <outline text="Software Librea">
+                <outline text="EuskalGNU" htmlUrl="http://www.euskalgnu.org" xmlUrl="http://www.euskalgnu.org/index.php?option=com_rss" />
+                <outline text="Librezale" htmlUrl="http://www.librezale.org" xmlUrl="http://www.librezale.org/web/meugencat/cat/rss.htm" />
+                <outline text="Marrapuntu" htmlUrl="http://www.marrapuntu.org" xmlUrl="http://marrapuntu.org/?q=rss.xml" />
+                <outline text="Zabaldu" htmlUrl="http://www.zabaldu.com" xmlUrl="http://www.zabaldu.com/rss2.php" />
+      </outline>	
+            <outline text="Egunkariak">
+                <outline text="Argia" htmlUrl="http://www.argia.com" xmlUrl="http://www.argia.com/rss/haria.xml" />
+                <outline text="Berria" htmlUrl="http://www.berria.info" xmlUrl="http://www.berria.info/rss/ediziojarraia.php" />
+                <outline text="Eitb 24" htmlUrl="http://www.eitb24.com" xmlUrl="http://www.eitb24.com/rss/rss-eitb24-home-eu.xml" />
+                <outline text="Indymedia Euskal Herria" htmlUrl="http://euskalherria.indymedia.org" xmlUrl="http://euskalherria.indymedia.org/features.1-0.eu.rdf" />
+
+                <outline text="Sustatu" htmlUrl="http://www.sustatu.com" xmlUrl="http://www.sustatu.com/rdf" />
+            </outline>
+            <outline text="Hainbat">
+                <outline text="Zientzia.Net" htmlUrl="http://www.zientzia.net" xmlUrl="http://www.zientzia.net/elhrss.asp" />
+            </outline>
+    </outline>
+
+
+
+
+      <!-- lets keep this English block in sync over all feed lists! -->
+      <outline text="international">
+	      <outline text="OSS">
+        	<outline text="art.gnome.org" htmlUrl="http://art.gnome.org/" xmlUrl="http://art.gnome.org/backend.php" />
+        	<outline text="Debian Package a Day" htmlUrl="http://debaday.debian.net/" xmlUrl="http://debaday.debian.net/feed/atom/" />
+        	<outline text="Gnomefiles" htmlUrl="http://www.gnomefiles.org/" xmlUrl="http://www.gnomefiles.org/files/gnomefiles.rdf" />
+        	<outline text="GNOME Footnotes" htmlUrl="http://www.gnomedesktop.org/" xmlUrl="http://www.gnomedesktop.org/backend.php" />
+        	<outline text="GrokLaw" htmlUrl="http://www.groklaw.net/" xmlUrl="http://www.groklaw.net/backend/GrokLaw.rdf" />
+        	<outline text="Linux.com" htmlUrl="http://www.linux.com/" xmlUrl="http://www.linux.com/index.rss" />
+        	<outline text="mozillaZine" htmlUrl="http://www.mozillazine.org/" xmlUrl="http://www.mozillazine.org/contents.rdf" />
+        	<outline text="Newsforge" htmlUrl="http://www.newsforge.com" xmlUrl="http://www.newsforge.com/newsforge.rss" />
+        	<outline text="Planet Debian" htmlUrl="http://planet.debian.org/" xmlUrl="http://planet.debian.org/rss20.xml" />
+        	<outline text="Slashdot" htmlUrl="http://slashdot.org"  xmlUrl="http://slashdot.org/slashdot.rss" />
+        	<outline text="TuxMobil" htmlUrl="http://tuxmobil.org" xmlUrl="http://tuxmobil.org/tuxmobil_rss.rdf" />      
+	      </outline>	
+      </outline>
+
+     <outline text="Irakurri gabeak" title="Irakurri gabeak" description="Irakurri gabeak" type="vfolder" htmlUrl="" xmlUrl="vfolder">
+      <outline type="rule" text="Irakurketen egoera" rule="unread" value="" additive="true"/>
+    </outline>
+    <outline text="Banderekin" title="Banderekin" description="Banderekin" type="vfolder" htmlUrl="" xmlUrl="vfolder">
+      <outline type="rule" text="Banderen egoera" rule="flagged" value="" additive="true"/>
+    </outline>
+  </body>
+</opml>
