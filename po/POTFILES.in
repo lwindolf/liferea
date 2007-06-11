@@ -45,6 +45,8 @@ src/itemview.h
 src/main.c
 src/metadata.c
 src/metadata.h
+src/net.c
+src/net.h
 src/node.c
 src/node.h
 src/plugin.c
