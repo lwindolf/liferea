@@ -611,7 +611,7 @@ static void
 itemlist_update_node_counters (gpointer key, gpointer value, gpointer user_data)
 {
 	nodePtr node = (nodePtr)key;
-
+g_print("affected: %s\n", node->title);
 	g_return_if_fail(node != NULL);
 	node_update_counters (node);
 	ui_node_update (node->id);
@@ -640,6 +640,14 @@ itemlist_mark_all_read (const gchar *nodeId)
 			db_item_mark_read (item);
 			itemlist_update_item (item);
 			g_hash_table_insert (affectedNodes, node_from_id (item->nodeId), NULL);
+			// FIXME: better provide get_duplicate_nodes() method
+			GSList *iter = db_item_get_duplicates (item->sourceId);
+			while (iter) {
+				itemPtr item = item_load (GPOINTER_TO_UINT (iter->data));
+				g_hash_table_insert (affectedNodes, node_from_id (item->nodeId), NULL);
+				iter = g_slist_next (iter);
+				item_unload (item);
+			}
 		}
 		item_unload (item);
 		iter = g_list_next (iter);
