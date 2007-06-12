@@ -172,7 +172,6 @@ src/net/cookies.c
 src/net/cookies.h
 src/net/digcalc.c
 src/net/digcalc.h
-src/net/downloadlib.h
 src/net/md5.c
 src/net/md5.h
 src/net/netio.c
