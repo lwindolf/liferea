@@ -59,6 +59,7 @@ static sqlite3_stmt *updateStateSaveStmt = NULL;
 static sqlite3_stmt *subscriptionMetadataLoadStmt = NULL;
 static sqlite3_stmt *subscriptionMetadataUpdateStmt = NULL;
 
+static sqlite3_stmt *subscriptionLoadStmt = NULL;
 static sqlite3_stmt *subscriptionUpdateStmt = NULL;
 static sqlite3_stmt *subscriptionRemoveStmt = NULL;
 
@@ -139,7 +140,7 @@ db_get_schema_version (void)
 	return schemaVersion;
 }
 
-#define SCHEMA_TARGET_VERSION 3
+#define SCHEMA_TARGET_VERSION 4
 
 /* opening or creation of database */
 void
@@ -253,6 +254,30 @@ open:
 				 "END;");
 		}
 		
+		if (db_get_schema_version () == 3) {
+			/* 1.3.6 -> 1.3.7 adding all necessary attributes to subscription relation */
+			debug0 (DEBUG_DB, "migrating from schema version 3 to 4");
+			db_exec ("BEGIN; "
+			         "CREATE TEMPORARY TABLE subscription_backup(node_id); "
+				 "INSERT INTO subscription_backup SELECT node_id FROM subscription; "
+			         "DROP TABLE subscription; "
+			         "CREATE TABLE subscription ("
+		                 "   node_id            STRING,"
+				 "   source             STRING,"
+				 "   orig_source        STRING,"
+				 "   filter_cmd         STRING,"
+				 "   update_interval	INTEGER,"
+				 "   default_interval   INTEGER,"
+				 "   discontinued       INTEGER,"
+				 "   available          INTEGER,"
+		                 "   PRIMARY KEY (node_id)"
+			         "); "
+				 "INSERT INTO subscription SELECT node_id,null,null,null,0,0,0,0 FROM subscription_backup; "
+				 "DROP TABLE subscription_backup; "
+				 "REPLACE INTO info (name, value) VALUES ('schemaVersion',4); "
+				 "END;");
+		}
+		
 		if (SCHEMA_TARGET_VERSION != db_get_schema_version ())
 			g_error ("Fatal: DB schema migration failed! Running with --debug-db could give some hints!");
 			
@@ -328,9 +353,16 @@ open:
 	         "   WHERE item_id = new.ROWID; "
 	         "END;");
 	 
-	db_exec ("CREATE TABLE SUBSCRIPTION ("
-	         "   NODE_ID            STRING,"
-	         "   PRIMARY KEY (NODE_ID)"
+	db_exec ("CREATE TABLE subscription ("
+	         "   node_id            STRING,"
+		 "   source             STRING,"
+		 "   orig_source        STRING,"
+		 "   filter_cmd         STRING,"
+		 "   update_interval	INTEGER,"
+		 "   default_interval   INTEGER,"
+		 "   discontinued       INTEGER,"
+		 "   available          INTEGER,"
+	         "   PRIMARY KEY (node_id)"
 		 ");");
 		 	
 	db_exec ("CREATE TABLE update_state ("
@@ -491,15 +523,34 @@ open:
 			 "VALUES (?,?,?,?,?)");
 			 
 	db_prepare_stmt (&subscriptionUpdateStmt,
-	                 "REPLACE INTO subscription "
-			 "(node_id) "
-			 "VALUES (?)");
+	                 "REPLACE INTO subscription ("
+			 "node_id,"
+			 "source,"
+			 "orig_source,"
+			 "filter_cmd,"
+			 "update_interval,"
+			 "default_interval,"
+			 "discontinued,"
+			 "available"
+			 ") VALUES (?,?,?,?,?,?,?,?)");
 			 
 	db_prepare_stmt (&subscriptionRemoveStmt,
 	                 "DELETE FROM subscription WHERE node_id = ?");
 			 
 	db_prepare_stmt (&subscriptionListLoadStmt,
 	                 "SELECT node_id FROM subscription");
+			 
+	db_prepare_stmt (&subscriptionLoadStmt,
+	                 "SELECT "
+			 "node_id,"
+			 "source,"
+			 "orig_source,"
+			 "filter_cmd,"
+			 "update_interval,"
+			 "default_interval,"
+			 "discontinued,"
+			 "available "
+			 "FROM subscription");
 	
 	g_assert (sqlite3_get_autocommit (db));
 	
@@ -537,6 +588,7 @@ db_deinit (void)
 	sqlite3_finalize (updateStateLoadStmt);
 	sqlite3_finalize (updateStateSaveStmt);
 	
+	sqlite3_finalize (subscriptionLoadStmt);
 	sqlite3_finalize (subscriptionUpdateStmt);
 	sqlite3_finalize (subscriptionRemoveStmt);
 	
@@ -1269,6 +1321,15 @@ db_subscription_update (subscriptionPtr subscription)
 	
 	sqlite3_reset (subscriptionUpdateStmt);
 	sqlite3_bind_text (subscriptionUpdateStmt, 1, subscription->node->id, -1, SQLITE_TRANSIENT);
+	sqlite3_bind_text (subscriptionUpdateStmt, 2, subscription->source, -1, SQLITE_TRANSIENT);
+	sqlite3_bind_text (subscriptionUpdateStmt, 3, subscription->origSource, -1, SQLITE_TRANSIENT);	
+	sqlite3_bind_text (subscriptionUpdateStmt, 4, subscription->filtercmd, -1, SQLITE_TRANSIENT);
+	sqlite3_bind_int  (subscriptionUpdateStmt, 5, subscription->updateInterval);
+	sqlite3_bind_int  (subscriptionUpdateStmt, 6, subscription->defaultInterval);
+	sqlite3_bind_int  (subscriptionUpdateStmt, 7, subscription->discontinued?1:0);
+	sqlite3_bind_int  (subscriptionUpdateStmt, 8, (subscription->updateError ||
+	                                               subscription->httpError ||
+						       subscription->filterError)?1:0);
 	
 	res = sqlite3_step (subscriptionUpdateStmt);
 	if (SQLITE_DONE != res)
