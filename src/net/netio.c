@@ -128,9 +128,15 @@ static int NetRead(int fd, void *proto_data, enum netio_proto proto, char *data,
 		do {
 			s = gnutls_record_recv((gnutls_session)proto_data, data, len-1);
 		} while ((s == GNUTLS_E_AGAIN) || (s == GNUTLS_E_INTERRUPTED));
+	
+		/* ignore some type of errors (happens with GMail for some reason) */
+		if (GNUTLS_E_UNEXPECTED_PACKET_LENGTH == s)
+			s = GNUTLS_E_SUCCESS;
+
 		if (s > 0)
 			data[s] = '\0';
-		debug2(DEBUG_NET, "read %u bytes from SSL session %p", len, proto_data);
+
+		debug3(DEBUG_NET, "read %u bytes from SSL session %p (return code = %d)", len, proto_data, s);
 		return s;
 	}
 #endif
@@ -1093,6 +1099,7 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, char * aut
 		else if (retval < 0) {
 			free(body);
 			cur_ptr->netio_error = NET_ERR_SOCK_ERR;
+			debug1(DEBUG_NET, "error %d: while reading from socket", retval);
 			return NULL;
 		}
 		body = realloc (body, length+retval);
