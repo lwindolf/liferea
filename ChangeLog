@@ -11,6 +11,11 @@
           (patch by Eric Anderson)
 	* New unread/new count query methods for the DBUS
 	  interface (patch by Emilio Pozuelo Monfort)
+	* Fixed wrong unread count of parent folders and
+	  search folders after removing feeds.
+	  (reported by Ori Avtalion)
+	* Fixed not setting the feed title when creating
+	  new subscriptions. (reported by Ori Avtalion)
 
 
 2007-06-09  Lars Lindner  <lars.lindner@gmail.com>

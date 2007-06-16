@@ -599,7 +599,7 @@ static void feed_process_update_result(struct request *request) {
 	nodePtr			node = (nodePtr)request->user_data;
 	feedPtr			feed = (feedPtr)node->data;
 	subscriptionPtr		subscription = (subscriptionPtr)node->subscription;
-	gchar			*old_title, *old_source;
+	gchar			*old_source;
 	gint			old_update_interval;
 
 	debug_enter("feed_process_update_result");
@@ -627,7 +627,6 @@ static void feed_process_update_result(struct request *request) {
 	} else if(NULL != request->data) {
 		/* we save all properties that should not be overwritten in all cases */
 		old_update_interval = subscription_get_update_interval(subscription);
-		old_title = g_strdup(node_get_title(node));
 		old_source = g_strdup(subscription_get_source(node->subscription));
 
 		/* parse the new downloaded feed into feed and itemSet */
@@ -656,8 +655,8 @@ static void feed_process_update_result(struct request *request) {
 			itemset_merge_items(itemSet, ctxt->items);
 		
 			/* restore user defined properties if necessary */
-			if(!(request->flags & FEED_REQ_RESET_TITLE)) 
-				node_set_title(node, old_title);
+			if(request->flags & FEED_REQ_RESET_TITLE)
+				node_set_title(node, ctxt->title);
 				
 			if(!(request->flags & FEED_REQ_AUTO_DISCOVER))
 				subscription_set_source(subscription, old_source);
@@ -681,7 +680,6 @@ static void feed_process_update_result(struct request *request) {
 			notification_node_has_new_items(node);
 		}
 				
-		g_free(old_title);
 		g_free(old_source);
 
 		feed_free_parser_ctxt(ctxt);
