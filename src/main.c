@@ -72,8 +72,8 @@ static void show_help(void) {
 	g_string_append_printf(str, "%s\n", _("                   STATE may be `shown', `iconified', or `hidden'"));
 	g_string_append_c(str, '\n');
 	g_string_append_printf(str, "%s\n", _("  --debug-<topic>  Print debugging messages for the given topic"));
-	g_string_append_printf(str, "%s\n", _("                   Possible topics are: all,cache,conf,gui,html"));
-	g_string_append_printf(str, "%s\n", _("                   parsing,plugins,trace,update,db,verbose"));
+	g_string_append_printf(str, "%s\n", _("                   Possible topics are: all,db,cache,conf,gui,html"));
+	g_string_append_printf(str, "%s\n", _("                   net,parsing,plugins,trace,update,db,verbose"));
 	g_string_append_c(str, '\n');
 	g_print("%s", str->str);
 	g_string_free(str, TRUE);
@@ -180,30 +180,32 @@ int main(int argc, char *argv[]) {
 	for(i = 1; i < argc; ++i) {
 		arg = argv[i];
 		
-		if(!strcmp(arg, "--debug-cache"))
+		if (!strcmp (arg, "--debug-cache"))
 			debug_flags |= DEBUG_CACHE;
-		else if(!strcmp(arg, "--debug-conf"))
+		else if (!strcmp (arg, "--debug-conf"))
 			debug_flags |= DEBUG_CONF;
-		else if(!strcmp(arg, "--debug-update"))
+		else if (!strcmp (arg, "--debug-update"))
 			debug_flags |= DEBUG_UPDATE;
-		else if(!strcmp(arg, "--debug-parsing"))
+		else if (!strcmp (arg, "--debug-parsing"))
 			debug_flags |= DEBUG_PARSING;
-		else if(!strcmp(arg, "--debug-gui"))
+		else if (!strcmp (arg, "--debug-gui"))
 			debug_flags |= DEBUG_GUI;
-		else if(!strcmp(arg, "--debug-html"))
+		else if (!strcmp (arg, "--debug-html"))
 			debug_flags |= DEBUG_HTML;
-		else if(!strcmp(arg, "--debug-plugins"))
+		else if (!strcmp (arg, "--debug-plugins"))
 			debug_flags |= DEBUG_PLUGINS;
-		else if(!strcmp(arg, "--debug-db"))
+		else if (!strcmp (arg, "--debug-net"))
+			debug_flags |= DEBUG_NET;
+		else if (!strcmp (arg, "--debug-db"))
 			debug_flags |= DEBUG_DB;
-		else if(!strcmp(arg, "--debug-trace"))
+		else if (!strcmp (arg, "--debug-trace"))
 			debug_flags |= DEBUG_TRACE;
-		else if(!strcmp(arg, "--debug-all"))
-			debug_flags |= DEBUG_TRACE|DEBUG_CACHE|DEBUG_CONF|DEBUG_UPDATE|DEBUG_PARSING|DEBUG_GUI|DEBUG_PLUGINS|DEBUG_DB;
-		else if(!strcmp(arg, "--debug-verbose"))
+		else if (!strcmp (arg, "--debug-all"))
+			debug_flags |= DEBUG_TRACE|DEBUG_CACHE|DEBUG_CONF|DEBUG_UPDATE|DEBUG_PARSING|DEBUG_GUI|DEBUG_PLUGINS|DEBUG_NET|DEBUG_DB;
+		else if (!strcmp (arg, "--debug-verbose"))
 			debug_flags |= DEBUG_VERBOSE;
-		else if(!strcmp(arg, "--version") || !strcmp(arg, "-v")) {
-			g_print("liferea %s\n", VERSION);
+		else if (!strcmp (arg, "--version") || !strcmp (arg, "-v")) {
+			g_print ("liferea %s\n", VERSION);
 			return 0;
 		}
 		else if(!strcmp(arg, "--help") || !strcmp(arg, "-h")) {

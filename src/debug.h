@@ -34,8 +34,9 @@ typedef enum
 	DEBUG_TRACE		= (1<<5),
 	DEBUG_PLUGINS		= (1<<6),
 	DEBUG_HTML		= (1<<7),
-	DEBUG_DB		= (1<<8),
-	DEBUG_VERBOSE		= (1<<9)
+	DEBUG_NET		= (1<<8),
+	DEBUG_DB		= (1<<9),
+	DEBUG_VERBOSE		= (1<<10)
 }
 DebugFlags;
 

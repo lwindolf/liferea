@@ -49,6 +49,7 @@ debug_get_prefix (unsigned long flag)
 	if (flag & DEBUG_HTML)		return "HTML";
 	if (flag & DEBUG_PLUGINS)	return "PLUGINS";
 	if (flag & DEBUG_TRACE)		return "TRACE";
+	if (flag & DEBUG_NET)		return "NET";
 	if (flag & DEBUG_DB)		return "DB";
 	return "";	
 }

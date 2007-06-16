@@ -141,12 +141,17 @@ GSList * db_item_get_duplicates(const gchar *guid);
 void	db_begin_transaction (void);
 
 /**
- * Commit previously started transaction.
+ * End previously started transaction.
  */
 void	db_end_transaction (void);
 
 /**
- * Rollback previously started transaction.
+ * Commit current transaction.
+ */
+void	db_commit_transaction (void);
+
+/**
+ * Rollback current transaction.
  */
 void	db_rollback_transaction (void);
 
