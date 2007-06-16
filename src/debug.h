@@ -60,7 +60,7 @@ extern void debug_start_measurement_func (const char * function);
  *
  * Not thread-safe!
  */
-extern void debug_end_measurement_func (const char * function, unsigned long flags, gchar *name);
+extern void debug_end_measurement_func (const char * function, unsigned long flags, char *name);
 
 #define debug_end_measurement(level, name) if ((debug_level) & level) debug_end_measurement_func (PRETTY_FUNCTION, level, name)
 

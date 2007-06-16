@@ -71,7 +71,8 @@ static gnutls_certificate_client_credentials xcred;
 
 #endif
 
-#include "common.h"
+#include "../debug.h"
+#include "../common.h"
 #include "conversions.h"
 #include "net-support.h"
 #include "zlib_interface.h"
@@ -96,10 +97,12 @@ enum netio_proto {
 
 int NetWrite(int fd, void *proto_data, enum netio_proto proto, const void *data, size_t len) {
 	if (proto == NETIO_PROTO_HTTP) {
+		debug2(DEBUG_NET, "writing %u bytes to socket %d", len, fd);
 		return write(fd, data, len);
 	}
 #ifdef HAVE_GNUTLS
 	else if (proto == NETIO_PROTO_HTTPS) {
+		debug2(DEBUG_NET, "writing %u bytes to SSL session %p", len, proto_data);
 		int s;
 		do {
 			s = gnutls_record_send((gnutls_session)proto_data, data, len);
@@ -118,6 +121,7 @@ static int NetRead(int fd, void *proto_data, enum netio_proto proto, char *data,
 		s = read(fd, data, len-1);
 		if (s >=0)
 		    data[s] = '\0';
+		debug2(DEBUG_NET, "read %u bytes from socket %d", len, s);
 		return s;
 	}
 #ifdef HAVE_GNUTLS
@@ -125,8 +129,15 @@ static int NetRead(int fd, void *proto_data, enum netio_proto proto, char *data,
 		do {
 			s = gnutls_record_recv((gnutls_session)proto_data, data, len-1);
 		} while ((s == GNUTLS_E_AGAIN) || (s == GNUTLS_E_INTERRUPTED));
+	
+		/* ignore some type of errors (happens with GMail for some reason) */
+		if (GNUTLS_E_UNEXPECTED_PACKET_LENGTH == s)
+			s = GNUTLS_E_SUCCESS;
+
 		if (s > 0)
 			data[s] = '\0';
+
+		debug3(DEBUG_NET, "read %u bytes from SSL session %p (return code = %d)", len, proto_data, s);
 		return s;
 	}
 #endif
@@ -136,11 +147,13 @@ static int NetRead(int fd, void *proto_data, enum netio_proto proto, char *data,
 }
 static void NetClose(int fd, void *proto_data, enum netio_proto proto) {
 	close(fd);
+	debug1(DEBUG_NET, "closed socket %d", fd);
 #ifdef HAVE_GNUTLS
 	if (proto == NETIO_PROTO_HTTPS) {
 		/* do not wait for the peer to close the connection. */
 		gnutls_bye ((gnutls_session)proto_data, GNUTLS_SHUT_WR);
 		gnutls_deinit (proto_data);
+		debug1(DEBUG_NET, "closed SSL session %p", proto_data);
 	}
 #endif
 }
@@ -182,6 +195,7 @@ int NetPoll (struct feed_request * cur_ptr, int my_socket, int rw) {
 	
 	if (!FD_ISSET(my_socket, &rfds)) {
 		/* Timed out */
+		debug1(DEBUG_NET, "timeout for socket %u", my_socket);
 		cur_ptr->netio_error = NET_ERR_TIMEOUT;
 		return -1;
 	} else {
@@ -248,6 +262,7 @@ static int NetReadHeaderLine(int my_socket, void *proto_data, enum netio_proto p
 		
 	}
 	/* At this point, the line was too long, or not enough data or something */
+	debug1(DEBUG_NET, "Fatal: too long header line read from socket %d!", my_socket);
 	return -1;
 }
 
@@ -269,8 +284,10 @@ void *NetConnectGnutls(int *fd) {
 	if (ret < 0) {
 		close(*fd);
 		*fd = -1;
+		debug1(DEBUG_NET, "Fatal: failed to set up SSL session for socket %d", fd);
 		return NULL;
 	}
+	debug2(DEBUG_NET, "SSL session %p set up for socket %d", session, fd);
 	return session;
 }
 #endif
@@ -292,16 +309,8 @@ static int NetConnect (int * my_socket, char * host, struct feed_request * cur_p
 	struct addrinfo *res = NULL, *ai;
 	char *realhost;
 	char port_str[9];
-	
-	/*
-	if (!suppressoutput) {
-		if (cur_ptr->title == NULL)
-			snprintf (tmp, sizeof(tmp), _("Downloading \"%s\""), cur_ptr->feedurl);
-		else
-			snprintf (tmp, sizeof(tmp), _("Downloading \"%s\""), cur_ptr->title);
 
-			UIStatus (tmp, 0);
-			}*/
+	debug0(DEBUG_NET, "NetConnect() (with getaddrinfo)");
 	
 	if (proto  == NETIO_PROTO_INVALID
 #ifndef HAVE_GNUTLS
@@ -309,6 +318,7 @@ static int NetConnect (int * my_socket, char * host, struct feed_request * cur_p
 #endif
 		) {
 		cur_ptr->netio_error = NET_ERR_PROTO_INVALID;
+		debug0(DEBUG_NET, "invalid protocol!");
 		return -1;
 	}
 
@@ -329,6 +339,7 @@ static int NetConnect (int * my_socket, char * host, struct feed_request * cur_p
 		snprintf(port_str, sizeof(port_str), "%d", proxyport);
 		realhost = strdup(proxyname);
 	}
+	debug2(DEBUG_NET, "host=%s port=%s", realhost, port_str);
 	
 	ret = getaddrinfo(realhost, port_str, &hints, &res);
 	
@@ -341,6 +352,7 @@ static int NetConnect (int * my_socket, char * host, struct feed_request * cur_p
 			if (res != NULL)
 				freeaddrinfo(res);
 			cur_ptr->netio_error = NET_ERR_HOST_NOT_FOUND;
+			debug1(DEBUG_NET, "error: could not resolve hostname \"%s\"", realhost);
 			free(realhost);
 			return -1;
 		}
@@ -352,6 +364,7 @@ static int NetConnect (int * my_socket, char * host, struct feed_request * cur_p
 		*my_socket = socket (ai->ai_family, ai->ai_socktype, ai->ai_protocol);
 		if (*my_socket == -1) {
 			cur_ptr->netio_error = NET_ERR_SOCK_ERR;
+			debug0(DEBUG_NET, "error: failed to create socket");
 			continue;
 		}
 	
@@ -365,11 +378,13 @@ static int NetConnect (int * my_socket, char * host, struct feed_request * cur_p
 			if (errno != EINPROGRESS) {
 				close (*my_socket);
 				cur_ptr->netio_error = NET_ERR_CONN_REFUSED;
+				debug0(DEBUG_NET, "error: connection refused");
 				continue;
 			}
 			
 			if ((NetPoll (cur_ptr, *my_socket, NET_WRITE)) == -1) {
 				close (*my_socket);
+				debug0(DEBUG_NET, "error: NetPoll() failed, closing socket");
 				continue;
 			}
 			
@@ -380,6 +395,7 @@ static int NetConnect (int * my_socket, char * host, struct feed_request * cur_p
 			if (cur_ptr->connectresult != 0) {
 				close (*my_socket);
 				cur_ptr->netio_error = NET_ERR_CONN_FAILED;	/* ->strerror(cur_ptr->connectresult) */
+				debug0(DEBUG_NET, "error: connection failed");
 				continue;
 			}
 		}
@@ -387,16 +403,21 @@ static int NetConnect (int * my_socket, char * host, struct feed_request * cur_p
 		cur_ptr->netio_error = NET_ERR_OK;
 		break;
 	}
-	
+		
 	freeaddrinfo(res);
 	if (cur_ptr->netio_error != NET_ERR_OK)
 		return -1;
+	
+	debug1(DEBUG_NET, "successfully connected socket %d", my_socket);		
+	
 #else
 	struct sockaddr_in address;	
 	struct hostent *remotehost;
 	socklen_t len;
 	char *realhost;
 	unsigned short port;
+
+	debug0(DEBUG_NET, "NetConnect() (without getaddrinfo)");
 	
 	if (proto  == NETIO_PROTO_INVALID
 #ifndef HAVE_GNUTLS
@@ -404,6 +425,7 @@ static int NetConnect (int * my_socket, char * host, struct feed_request * cur_p
 #endif
 		) {
 		cur_ptr->netio_error = NET_ERR_PROTO_INVALID;
+		debug0(DEBUG_NET, "invalid protocol!");
 		return -1;
 	}
 
@@ -411,20 +433,13 @@ static int NetConnect (int * my_socket, char * host, struct feed_request * cur_p
 	if (sscanf (host, "%[^:]:%hd", realhost, &port) != 2) {
 		port = 80;
 	}
-	/*
-	if (!suppressoutput) {
-		if (cur_ptr->title == NULL)
-			snprintf (tmp, sizeof(tmp), _("Downloading \"%s\""), cur_ptr->feedurl);
-		else
-			snprintf (tmp, sizeof(tmp), _("Downloading \"%s\""), cur_ptr->title);
-
-			UIStatus (tmp, 0);
-			}*/
+	debug2(DEBUG_NET, "host=%s port=%s", realhost, port_str);
 	
 	/* Create a inet stream TCP socket. */
 	*my_socket = socket (AF_INET, SOCK_STREAM, 0);
 	if (*my_socket == -1) {
 		cur_ptr->netio_error = NET_ERR_SOCK_ERR;
+		debug0(DEBUG_NET, "error: failed to create socket");
 		return -1;
 	}
 	
@@ -438,6 +453,7 @@ static int NetConnect (int * my_socket, char * host, struct feed_request * cur_p
 		remotehost = gethostbyname (proxyname);
 		if (remotehost == NULL) {
 			close (*my_socket);
+			debug1(DEBUG_NET, "error: could not resolve hostname \"%s\"", realhost);
 			free (realhost);
 			cur_ptr->netio_error = NET_ERR_HOST_NOT_FOUND;
 			return -1;
@@ -458,12 +474,14 @@ static int NetConnect (int * my_socket, char * host, struct feed_request * cur_p
 			close (*my_socket);
 			free (realhost);
 			cur_ptr->netio_error = NET_ERR_CONN_REFUSED;
+			debug0(DEBUG_NET, "error: connection refused");
 			return -1;
 		}
 		
 		if ((NetPoll (cur_ptr, *my_socket, NET_WRITE)) == -1) {
 			close (*my_socket);
 			free (realhost);
+			debug0(DEBUG_NET, "error: NetPoll() failed, closing socket");
 			return -1;
 		}
 		
@@ -474,14 +492,18 @@ static int NetConnect (int * my_socket, char * host, struct feed_request * cur_p
 			close (*my_socket);
 			free (realhost);
 			cur_ptr->netio_error = NET_ERR_CONN_FAILED;	/* ->strerror(cur_ptr->connectresult) */
+			debug0(DEBUG_NET, "error: connection failed");
 			return -1;
 		}
 	}
+	
+	debug1(DEBUG_NET, "successfully connected socket %d", my_socket);	
 	
 	free(realhost);
 #endif /* HAVE_GETADDRINFO */
 #ifdef HAVE_GNUTLS
 	if (proto == NETIO_PROTO_HTTPS) {
+		debug1(DEBUG_NET, "setting up SSL session for socket %d", my_socket);
 		*proto_data = NetConnectGnutls(my_socket);
 		if (proto_data == NULL || *my_socket == -1)
 			return -1;
@@ -529,18 +551,11 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, char * aut
 	void *proto_data;
 	int my_socket;
 	
+	debug2(DEBUG_NET, "downloading url=%s host=%s", url, host);
+	
 	if ((NetConnect (&my_socket, host, cur_ptr, proto, suppressoutput, &proto_data)) != 0) {
 		cur_ptr->problem = 1;
 		return NULL;
-	}
-	
-	if (!suppressoutput) {
-		/*if (cur_ptr->title == NULL)
-			snprintf (tmp, sizeof(tmp), _("Downloading \"http://%s%s\""), host, url);
-		else
-			snprintf (tmp, sizeof(tmp), _("Downloading \"%s\""), cur_ptr->title);
-
-			UIStatus (tmp, 0);*/
 	}
 	
 	redirectcount = 0;
@@ -594,26 +609,37 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, char * aut
 	
 	if (tmpstring != NULL)
 		free(tmpstring);
+		
+	if(debug_level & DEBUG_VERBOSE)
+		debug2(DEBUG_NET, "sending HTTP request on socket %d: \n%s\n", my_socket, netbuf);
+		
 	NetWrite(my_socket, proto_data, proto, netbuf, strlen(netbuf));
 	
 	if ((NetPoll (cur_ptr, my_socket, NET_READ)) == -1) {
+		debug1(DEBUG_NET, "no response on socket %d", my_socket);
 		NetClose (my_socket, proto_data, proto);
 		return NULL;
 	}
+	
+	debug1(DEBUG_NET, "received HTTP response for socket %d", my_socket);
 	
 	nextstr = NULL;
 	recvbufused = 0;
 	if (NetReadHeaderLine(my_socket, proto_data, proto, cur_ptr,
 							   netbuf, sizeof(netbuf), &recvbufused,
 							   &nextstr, headerline) < 0) {
+		debug1(DEBUG_NET, "failed to read HTTP header from socket %d", my_socket);
 		NetClose (my_socket, proto_data, proto);
 		return NULL;
 	}
 	
+	if(debug_level & DEBUG_VERBOSE)
+		debug1(DEBUG_NET, "read header line >>> %s", headerline);
+		
 	if (checkValidHTTPHeader(headerline, sizeof(headerline)) != 0) {
 		cur_ptr->netio_error = NET_ERR_HTTP_PROTO_ERR;
-		NetClose (my_socket, proto_data, proto);
-		
+		debug0(DEBUG_NET, "error: header line is invalid");
+		NetClose (my_socket, proto_data, proto);		
 		return NULL;
 	}
 	
@@ -628,6 +654,7 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, char * aut
 	strsep (&tmpstatus, " ");
 	if (tmpstatus == NULL) {
 		cur_ptr->netio_error = NET_ERR_HTTP_PROTO_ERR;
+		debug0(DEBUG_NET, "error: HTTP protocol failure");
 		NetClose (my_socket, proto_data, proto);
 		free (savestart);	/* Probably more leaks when doing auth and abort here. */
 		return NULL;
@@ -635,6 +662,7 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, char * aut
 	strncpy (httpstatus, tmpstatus, 3);
 	free (savestart);
 	
+	debug2(DEBUG_NET, "read HTTP status \"%s\" for socket %d", httpstatus, my_socket);
 	cur_ptr->lasthttpstatus = atoi (httpstatus);
 	
 	/* If the redirectloop was run newhost and newurl were allocated.
@@ -655,8 +683,9 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, char * aut
 				cur_ptr->problem = 0;
 				handled = 1;
 				break;
-			case 300:	/* Multiple choice and everything 300 not handled is fatal. */
+			case 300:	/* Multiple choice and everything 300 not handled is fatal. */			
 				cur_ptr->netio_error = NET_ERR_HTTP_NON_200;
+				debug1(DEBUG_NET, "unhandled 3xx status for socket %d", my_socket);
 				NetClose (my_socket, proto_data, proto);
 				return NULL;
 			case 301:
@@ -670,6 +699,7 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, char * aut
 				/* Give up if we reach MAX_HTTP_REDIRECTS to avoid loops. */
 				if (redirectcount > MAX_HTTP_REDIRECTS) {
 					cur_ptr->netio_error = NET_ERR_REDIRECT_COUNT_ERR;
+					debug1(DEBUG_NET, "too many redirects on socket %d", my_socket);
 					NetClose (my_socket, proto_data, proto);
 					return NULL;
 				}
@@ -679,12 +709,14 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, char * aut
 										  netbuf, sizeof(netbuf), &recvbufused,
 										  &nextstr, headerline) < 0) {
 						cur_ptr->netio_error = NET_ERR_HTTP_PROTO_ERR;
+						debug0(DEBUG_NET, "error: HTTP protocol failure");
 						NetClose (my_socket, proto_data, proto);
 						return NULL;
 					}
 					
 					if (checkValidHTTPHeader(headerline, sizeof(headerline)) != 0) {
 						cur_ptr->netio_error = NET_ERR_HTTP_PROTO_ERR;
+						debug1(DEBUG_NET, "error: invalid header line >>> %s", headerline);
 						NetClose (my_socket, proto_data, proto);
 						return NULL;
 					}
@@ -708,6 +740,7 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, char * aut
 						if (redirecttarget == NULL) {
 							cur_ptr->problem = 1;
 							cur_ptr->netio_error = NET_ERR_REDIRECT_ERR;
+							debug1(DEBUG_NET, "redirect error for socket %d", my_socket);
 							free (freeme);
 							NetClose (my_socket, proto_data, proto);
 							return NULL;
@@ -716,6 +749,8 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, char * aut
 						/* Location must start with "http", otherwise switch on quirksmode. */
 						if (strncmp(redirecttarget, "http", 4) != 0)
 							quirksmode = 1;
+
+						debug2(DEBUG_NET, "found Location header %s>>> %s", (quirksmode == 1)?"(quirks mode on)":"", redirecttarget);
 						
 						/* If the Location header is invalid we need to construct
 						   a correct one here before proceeding with the program.
@@ -743,6 +778,7 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, char * aut
 							if (checkValidHTTPURL(newlocation) != 0) {
 								cur_ptr->problem = 1;
 								cur_ptr->netio_error = NET_ERR_REDIRECT_ERR;
+								debug0(DEBUG_NET, "error: invalid URL specified for redirect");
 								NetClose (my_socket, proto_data, proto);
 								return NULL;
 							}
@@ -790,6 +826,8 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, char * aut
 						newurl = strdup (newlocation);
 					
 						free (freeme);
+						
+						debug2(DEBUG_NET, "redirect to host=%s location=%s", newhost, newlocation);
 						
 						/* Close connection. */	
 						NetClose (my_socket, proto_data, proto);
@@ -847,7 +885,7 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, char * aut
 				} else {
 					/* second pass, give up on unknown error base class */
 					cur_ptr->netio_error = NET_ERR_HTTP_NON_200;
-					/*printlog (cur_ptr, servreply);*/
+					debug1(DEBUG_NET, "unknown HTTP status read from socket %d", my_socket);
 					NetClose (my_socket, proto_data, proto);
 					return NULL;
 				}
@@ -859,21 +897,27 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, char * aut
 		if (NetReadHeaderLine(my_socket, proto_data, proto, cur_ptr,
 							  netbuf, sizeof(netbuf), &recvbufused,
 							  &nextstr, headerline) < 0) {
+			debug0(DEBUG_NET, "error: HTTP protocol failure");
 			NetClose (my_socket, proto_data, proto);
 			return NULL;
 		}
 		
 		if (checkValidHTTPHeader(headerline, sizeof(headerline)) != 0) {
 			cur_ptr->netio_error = NET_ERR_HTTP_PROTO_ERR;
+			debug1(DEBUG_NET, "error: invalid header line >>> %s", headerline);
 			NetClose (my_socket, proto_data, proto);
 			return NULL;
 		}
 		
+		debug2(DEBUG_NET, "processing header line from socket %d >>> %s", my_socket, headerline);
+		
 		if (strncasecmp (headerline, "Transfer-Encoding", 17) == 0) {
 			/* Chunked transfer encoding. HTTP/1.1 extension.
 			   http://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html#sec3.6.1 */
-			if (strstr (headerline, "chunked") != NULL)
+			if (strstr (headerline, "chunked") != NULL) {
+				debug0(DEBUG_NET, "-> chunked encoding detected!");
 				chunked = 1;
+			}
 		}
 		
 		/* Get last modified date. This is only relevant on HTTP 200. */
@@ -892,6 +936,7 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, char * aut
 				if (cur_ptr->lastmodified[strlen(cur_ptr->lastmodified)-1] == '\r')
 					cur_ptr->lastmodified[strlen(cur_ptr->lastmodified)-1] = '\0';
 				free(freeme);
+				debug1(DEBUG_NET, "-> last modified \"%s\"", cur_ptr->lastmodified);
 			}
 		}
 		
@@ -911,12 +956,15 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, char * aut
 				free(cur_ptr->etag);
 			cur_ptr->etag = strdup(tmpstring);
 			free(freeme);
+			debug1(DEBUG_NET, "-> etag \"%s\"", cur_ptr->etag);
 		}
 		/* Check and parse Content-Encoding header. */
 		if (strncasecmp (headerline, "Content-Encoding", 16) == 0) {
 			/* Will also catch x-gzip. */
-			if (strstr (headerline, "gzip") != NULL)
+			if (strstr (headerline, "gzip") != NULL) {
 				inflate = 1;
+				debug0(DEBUG_NET, "-> encoding is gzip");
+			}
 		}
 		
 		if (strncasecmp (headerline, "Content-Type", 12) == 0) {
@@ -937,6 +985,7 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, char * aut
 				if (cur_ptr->content_type[strlen(cur_ptr->content_type)-1] == '\r')
 					cur_ptr->content_type[strlen(cur_ptr->content_type)-1] = '\0';
 				free(freeme);
+				debug1(DEBUG_NET, "-> content type \"%s\"", cur_ptr->content_type); 
 			}
 		}
 		
@@ -948,6 +997,7 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, char * aut
 			if (authfailed) {
 				/* Don't repeat authrequest if it already failed before! */
 				cur_ptr->netio_error = NET_ERR_AUTH_FAILED;
+				debug1(DEBUG_NET, "error: previous authentication for request %p failed", cur_ptr);
 				NetClose (my_socket, proto_data, proto);
 				return NULL;
 			}
@@ -965,16 +1015,19 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, char * aut
 			cur_ptr->servauth = strdup (headerline);
 			
 			/* Load authinfo into cur_ptr->authinfo. */
+			debug0(DEBUG_NET, "parsing authinfo");
 			retval = NetSupportAuth(cur_ptr, authdata, url, headerline);
 			
 			switch (retval) {
 				case 1:
 					cur_ptr->netio_error = NET_ERR_AUTH_NO_AUTHINFO;
+					debug0(DEBUG_NET, "error: invalid authentication header");
 					NetClose (my_socket, proto_data, proto);
 					return NULL;
 					break;
 				case 2:
 					cur_ptr->netio_error = NET_ERR_AUTH_GEN_AUTH_ERR;
+					debug0(DEBUG_NET, "error: generic authentication problem");
 					NetClose (my_socket, proto_data, proto);
 					return NULL;
 					break;
@@ -992,6 +1045,7 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, char * aut
 				}
 
 				/* Now that we have an authinfo, repeat the current request. */
+				debug2(DEBUG_NET, "created authinfo \"%s\", retrying request %p", cur_ptr->authinfo, cur_ptr);
 				goto tryagain;
 			}
 		}
@@ -1010,6 +1064,7 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, char * aut
 
 	if(cur_ptr->lasthttpstatus == 401) {
 		cur_ptr->netio_error = NET_ERR_AUTH_UNSUPPORTED;
+		debug0(DEBUG_NET, "error: authentication unsupported");
 		NetClose (my_socket, proto_data, proto);
 		return NULL;
 	}
@@ -1045,6 +1100,7 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, char * aut
 		else if (retval < 0) {
 			free(body);
 			cur_ptr->netio_error = NET_ERR_SOCK_ERR;
+			debug1(DEBUG_NET, "error %d: while reading from socket", retval);
 			return NULL;
 		}
 		body = realloc (body, length+retval);
@@ -1054,6 +1110,8 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, char * aut
 	}
 	body = realloc(body, length+1);
 	body[length] = '\0';
+	
+	debug2(DEBUG_NET, "read %d bytes message body from socket %d", length, my_socket);
 		
 	/* Close connection. */
 	NetClose (my_socket, proto_data, proto);
@@ -1062,6 +1120,7 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, char * aut
 		if (decodechunked(body, &length) == NULL) {
 			free (body);
 			cur_ptr->netio_error = NET_ERR_HTTP_PROTO_ERR;
+			debug0(DEBUG_NET, "error: decoding chunked response failed");
 			return NULL;
 		}
 	}
@@ -1074,6 +1133,7 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, char * aut
 		if (jg_gzip_uncompress (body, length, &inflatedbody, &len) != 0) {
 			free (body);
 			cur_ptr->netio_error = NET_ERR_GZIP_ERR;
+			debug0(DEBUG_NET, "error: gzip uncompression failed");
 			return NULL;
 		}
 		
