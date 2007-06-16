@@ -679,7 +679,6 @@ static void feed_process_update_result(struct request *request) {
 			
 			node_update_counters(node);
 			notification_node_has_new_items(node);
-			ui_node_update(node->id);
 		}
 				
 		g_free(old_title);

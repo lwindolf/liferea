@@ -173,8 +173,6 @@ static gboolean ui_dnd_feed_drag_data_received(GtkTreeDragDest *drag_dest, GtkTr
 			
 			node_update_counters (newParent);
 			node_update_counters (oldParent);
-			ui_node_update (newParent->id);
-			ui_node_update (oldParent->id);			
 			
 			feedlist_schedule_save();
 			ui_itemlist_prefocus();

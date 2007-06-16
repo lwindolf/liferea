@@ -201,21 +201,31 @@ static void node_calc_counters(nodePtr node) {
 }
 
 static void node_update_parent_counters(nodePtr node) {
+	guint old;
 
 	if(!node)
 		return;
+		
+	old = node->unreadCount;
 
 	NODE_TYPE(node)->update_counters(node);
+	
+	if (old != node->unreadCount)
+		ui_node_update (node->id);
 	
 	if(node->parent)
 		node_update_parent_counters(node->parent);
 }
 
 void node_update_counters(nodePtr node) {
+	guint old = node->unreadCount;
 
 	/* Update the node itself and its children */
 	node_calc_counters(node);
 	
+	if (old != node->unreadCount);
+		ui_node_update (node->id);	
+		
 	/* Update the unread count of the parent nodes,
 	   usually them just add all child unread counters */
 	node_update_parent_counters(node->parent);
@@ -346,13 +356,19 @@ node_request_automatic_add (const gchar *source, const gchar *title, const gchar
 	script_run_for_hook (SCRIPT_HOOK_NEW_SUBSCRIPTION);
 }
 
-void node_request_remove(nodePtr node) {
+void
+node_request_remove (nodePtr node)
+{
+	/* using itemlist_remove_all_items() ensure correct unread
+	   and item counters for all parent folders and matching 
+	   search folders */
+	itemlist_remove_all_items (node);
+	
+	node_remove (node);
 
-	node_remove(node);
+	node->parent->children = g_slist_remove (node->parent->children, node);
 
-	node->parent->children = g_slist_remove(node->parent->children, node);
-
-	node_free(node);
+	node_free (node);
 }
 
 static xmlDocPtr node_to_xml(nodePtr node) {

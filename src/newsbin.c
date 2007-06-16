@@ -126,9 +126,8 @@ void on_popup_copy_to_newsbin(gpointer user_data, guint callback_action, GtkWidg
 			copy->real_source_title = g_strdup(node_get_title(node_from_id(item->nodeId)));
 		
 		/* do the same as in node_merge_item(s) */
-		db_item_update(copy);	// FIXME: is this enough?
+		db_item_update(copy);
 		node_update_counters(newsbin);
-		ui_node_update(newsbin->id);
 	}
 }
 

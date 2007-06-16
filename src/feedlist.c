@@ -364,7 +364,6 @@ feedlist_init_node (nodePtr node)
 		ui_node_set_expansion (node, TRUE);
 		
 	node_update_counters (node);
-	ui_node_update (node->id);
 		
 	node_foreach_child (node, feedlist_init_node);
 }

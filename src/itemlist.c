@@ -427,7 +427,6 @@ itemlist_set_read_status (itemPtr item, gboolean newStatus)
 
 		/* 4. updated feed list unread counters */
 		node_update_counters (node_from_id (item->nodeId));
-		ui_node_update (item->nodeId);
 		
 		/* 5. update notification statistics */
 		feedlist_reset_new_item_count ();
@@ -527,7 +526,6 @@ itemlist_remove_item (itemPtr item)
 	
 	/* update feed list */
 	node_update_counters (node_from_id (item->nodeId));
-	ui_node_update (item->nodeId);
 	
 	item_unload (item);
 }
@@ -570,7 +568,6 @@ itemlist_remove_items (itemSetPtr itemSet, GList *items)
 
 	itemview_update ();
 	node_update_counters (node_from_id (itemSet->nodeId));
-	ui_node_update (itemSet->nodeId);
 	
 	/* Search folders updating */
 	if (unread)
@@ -582,18 +579,20 @@ itemlist_remove_items (itemSetPtr itemSet, GList *items)
 void
 itemlist_remove_all_items (nodePtr node)
 {	
-	itemview_clear ();
+	if (node == itemlist_priv.currentNode)
+		itemview_clear ();
+		
 	db_itemset_remove_all (node->id);
-	itemview_update ();
+	
+	if (node == itemlist_priv.currentNode)
+		itemview_update ();
 	
 	/* Search folders updating */
 	if (node->unreadCount)
 		vfolder_foreach_with_rule ("unread", vfolder_update_counters);
 	vfolder_foreach_with_rule ("flagged", vfolder_update_counters);
 	
-	node->itemCount = 0;
-	node->unreadCount = 0;
-	ui_node_update (node->id);
+	node_update_counters (node);
 }
 
 void
@@ -611,10 +610,9 @@ static void
 itemlist_update_node_counters (gpointer key, gpointer value, gpointer user_data)
 {
 	nodePtr node = (nodePtr)key;
-g_print("affected: %s\n", node->title);
+
 	g_return_if_fail(node != NULL);
 	node_update_counters (node);
-	ui_node_update (node->id);
 }
 
 void
