@@ -9,6 +9,8 @@
 	* View menu options for normal, wide and combined
 	  viewing mode are now radio buttons. 
           (patch by Eric Anderson)
+	* New unread/new count query methods for the DBUS
+	  interface (patch by Emilio Pozuelo Monfort)
 
 
 2007-06-09  Lars Lindner  <lars.lindner@gmail.com>

@@ -50,6 +50,7 @@ Daniel Gryniewicz <dang@gentoo.org>			Network Manager support
 mooonz <mooonz@users.sf.net>				improved DBUS support
 Ori Avtalion <oavtal@bezeqint.net>			Preference for toolbar style
 Eric Anderson <ejona86@gmail.com>			Main menu improval
+Emilio Pozuele Monfort <pochu@ubuntu.com>		new DBUS query methods
 
 Maintainer Credits
 ==================
