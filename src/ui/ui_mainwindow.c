@@ -671,11 +671,6 @@ void ui_mainwindow_init(int mainwindowState) {
 				   "</p>"
 				   "<p>Fixed/new with this release:"
 				   "<ul>"
-				   "   <li>improved proxy preference options</li>"
-				   "   <li>radio menu buttons for view options</li>"
-				   "   <li>correct unread count after removing feeds</li>"
-				   "   <li>correct feed title setting on subscription</li>"
-				   "   <li>new DBUS methods for unread/new item count</li>"
 				   "</ul>"
 				   "</p>");
 	g_string_append(buffer,    "</div>");
