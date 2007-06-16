@@ -168,7 +168,8 @@ itemlist_merge_itemset (itemSetPtr itemSet)
 	if(!itemlist_priv.currentNode)
 		return; /* Nothing to do if nothing is displayed */
 	
-	if((itemlist_priv.currentNode != node) && 
+	if((NODE_TYPE_VFOLDER != itemlist_priv.currentNode->type) &&
+	   (itemlist_priv.currentNode != node) && 
 	   !node_is_ancestor (itemlist_priv.currentNode, node))
 		return; /* Nothing to do if the item set does not belong to this node */
 
