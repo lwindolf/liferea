@@ -47,7 +47,6 @@
 #include "fl_sources/opml_source.h"
 #include "notification/notif_plugin.h"
 
-static guint unreadCount = 0;
 static guint newCount = 0;
 
 static nodePtr	rootNode = NULL;
@@ -90,18 +89,19 @@ nodePtr feedlist_get_insertion_point(void) {
 
 /* statistic handling methods */
 
-int feedlist_get_unread_item_count(void) { return (unreadCount > 0)?unreadCount:0; }
-int feedlist_get_new_item_count(void) { return (newCount > 0)?newCount:0; }
+guint
+feedlist_get_unread_item_count (void)
+{
+	if (!rootNode)
+		return 0;
+		
+	return (rootNode->unreadCount > 0)?rootNode->unreadCount:0;
+}
 
-void feedlist_update_counters(gint unreadDiff, gint newDiff) {
-
-	unreadCount += unreadDiff;
-	newCount += newDiff;
-
-	if((0 != newDiff) || (0 != unreadDiff)) {
-		ui_tray_update();
-		ui_mainwindow_update_feedsinfo();
-	}
+guint
+feedlist_get_new_item_count (void)
+{
+	return (newCount > 0)?newCount:0;
 }
 
 static void feedlist_unset_new_items(nodePtr node) {

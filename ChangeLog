@@ -3,6 +3,9 @@
 	Version 1.3.8 (Unstable)
 
 	* Fixes merging new items into search folders.
+	* Reimplemented global unread/new counting used
+	  to display numbers in status bar and tray icon.
+	  (Emilio Pozuelo Monfort)
 
 
 2007-06-16  Lars Lindner  <lars.lindner@gmail.com>

@@ -210,8 +210,10 @@ static void node_update_parent_counters(nodePtr node) {
 
 	NODE_TYPE(node)->update_counters(node);
 	
-	if (old != node->unreadCount)
+	if (old != node->unreadCount) {
 		ui_node_update (node->id);
+		ui_mainwindow_update_feedsinfo ();
+	}
 	
 	if(node->parent)
 		node_update_parent_counters(node->parent);

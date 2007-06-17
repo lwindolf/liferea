@@ -80,12 +80,11 @@ nodePtr feedlist_get_selected (void);
 nodePtr feedlist_get_insertion_point (void);
 
 /** statistic counter handling methods */
-int feedlist_get_unread_item_count(void);
-int feedlist_get_new_item_count(void);
+guint feedlist_get_unread_item_count (void);
+guint feedlist_get_new_item_count (void);
 
 /* feed list manipulation */
 void feedlist_reset_new_item_count(void);
-void feedlist_update_counters(gint unreadDiff, gint newDiff);
 
 /**
  * Helper function to query the feed list root node.
