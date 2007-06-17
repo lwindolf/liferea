@@ -83,8 +83,17 @@ nodePtr feedlist_get_insertion_point (void);
 guint feedlist_get_unread_item_count (void);
 guint feedlist_get_new_item_count (void);
 
-/* feed list manipulation */
-void feedlist_reset_new_item_count(void);
+/**
+ * Increase the global feed list new item counter.
+ *
+ * @param newCount	value to add
+ */
+void feedlist_update_new_item_count (guint addValue);
+
+/**
+ * Reset the global feed list new item counter.
+ */
+void feedlist_reset_new_item_count (void);
 
 /**
  * Helper function to query the feed list root node.

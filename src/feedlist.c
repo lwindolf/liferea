@@ -112,13 +112,22 @@ static void feedlist_unset_new_items(nodePtr node) {
 	node_foreach_child(node, feedlist_unset_new_items);
 }
 
-void feedlist_reset_new_item_count(void) {
+void
+feedlist_update_new_item_count (guint addValue)
+{
+	newCount += addValue;
+	ui_tray_update ();
+	ui_mainwindow_update_feedsinfo ();
+}
 
-	if(0 != newCount) {
-		feedlist_foreach(feedlist_unset_new_items);
+void
+feedlist_reset_new_item_count (void)
+{
+	if (newCount) {
+		feedlist_foreach (feedlist_unset_new_items);
 		newCount = 0;
-		ui_tray_update();
-		ui_mainwindow_update_feedsinfo();
+		ui_tray_update ();
+		ui_mainwindow_update_feedsinfo ();
 	}
 }
 

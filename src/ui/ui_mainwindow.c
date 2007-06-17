@@ -669,8 +669,9 @@ void ui_mainwindow_init(int mainwindowState) {
 				   "   <li>feed metadata saving/rendering</li>"
 				   "</ul>"
 				   "</p>"
-				   "<p>Fixed/new with this release:"
+				   "<p>Working since this release:"
 				   "<ul>"
+				   "   <li>global unread counter</li>"
 				   "</ul>"
 				   "</p>");
 	g_string_append(buffer,    "</div>");

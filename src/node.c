@@ -233,7 +233,25 @@ void node_update_counters(nodePtr node) {
 	node_update_parent_counters(node->parent);
 }
 
-/* generic node item set merging functions */
+void
+node_merge_items (nodePtr node, GList *items) 
+{
+	guint		newCount;
+	itemSetPtr	itemSet;
+	
+	itemSet = node_get_itemset (node);	
+	newCount = itemset_merge_items (itemSet, items);
+	itemlist_merge_itemset (itemSet);
+	itemset_free (itemSet);
+
+	if (newCount) {
+		vfolder_foreach_with_rule ("unread", vfolder_update_counters);
+		vfolder_foreach_with_rule ("flagged", vfolder_update_counters);
+	}
+			
+	node_update_counters (node);
+	feedlist_update_new_item_count (newCount);
+}
 
 void
 node_update_favicon (nodePtr node, GTimeVal *now)

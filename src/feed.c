@@ -649,10 +649,8 @@ static void feed_process_update_result(struct request *request) {
 			                                      "XML Parser Output:<br /><div class='xmlparseroutput'>"));
 			g_string_append(feed->parseErrors, "</div>");
 		} else {
-			itemSetPtr itemSet = node_get_itemset(node);
-			
 			/* merge the resulting items into the node's item set */
-			itemset_merge_items(itemSet, ctxt->items);
+			node_merge_items(node, ctxt->items);
 		
 			/* restore user defined properties if necessary */
 			if(request->flags & FEED_REQ_RESET_TITLE)
@@ -670,13 +668,9 @@ static void feed_process_update_result(struct request *request) {
 				db_subscription_update (node->subscription);
 
 			ui_mainwindow_set_status_bar(_("\"%s\" updated..."), node_get_title(node));
-
-			itemlist_merge_itemset(itemSet);
-			itemset_free(itemSet);		
-			
+		
 			node->available = TRUE;
 			
-			node_update_counters(node);
 			notification_node_has_new_items(node);
 		}
 				

@@ -30,7 +30,6 @@
 #include "itemset.h"
 #include "metadata.h"
 #include "node.h"
-#include "vfolder.h"
 #include "ui/ui_enclosure.h"
 
 void
@@ -230,7 +229,7 @@ itemset_sort_by_date (gconstpointer a, gconstpointer b)
 	return item1->time < item2->time;
 }
 
-void
+guint
 itemset_merge_items (itemSetPtr itemSet, GList *list)
 {
 	GList	*iter, *droppedItems = NULL, *items = NULL;
@@ -316,13 +315,9 @@ itemset_merge_items (itemSetPtr itemSet, GList *list)
 	
 	g_list_free (items);
 	
-	/* 5. Update search folder counters */
-	if (newCount) {
-		vfolder_foreach_with_rule ("unread", vfolder_update_counters);
-		vfolder_foreach_with_rule ("flagged", vfolder_update_counters);
-	}
-	
 	debug_end_measurement (DEBUG_UPDATE, "merge itemset");
+	
+	return newCount;
 }
 
 void

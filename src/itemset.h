@@ -54,8 +54,10 @@ void itemset_foreach (itemSetPtr itemSet, itemActionFunc callback);
  *
  * @param itemSet	the item set to merge into
  * @param items		a list of items to merge
+ *
+ * @returns the number of new merged items
  */
-void itemset_merge_items(itemSetPtr itemSet, GList *items);
+guint itemset_merge_items(itemSetPtr itemSet, GList *items);
 
 /**
  * Frees the given item set and all items it contains.
