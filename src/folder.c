@@ -84,7 +84,8 @@ static void folder_save(nodePtr node) {
 static void folder_add_child_unread_count(nodePtr node, gpointer user_data) {
 	guint	*unreadCount = (guint *)user_data;
 
-	*unreadCount += node->unreadCount;
+	if (NODE_TYPE_VFOLDER != node->type)
+		*unreadCount += node->unreadCount;
 }
 
 static void folder_update_unread_count(nodePtr node) {
