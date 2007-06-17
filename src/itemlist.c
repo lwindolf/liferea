@@ -171,7 +171,7 @@ itemlist_merge_itemset (itemSetPtr itemSet)
 	if((NODE_TYPE_VFOLDER != itemlist_priv.currentNode->type) &&
 	   (itemlist_priv.currentNode != node) && 
 	   !node_is_ancestor (itemlist_priv.currentNode, node))
-		return; /* Nothing to do if the item set does not belong to this node */
+		return; /* Nothing to do if the item set does not belong to this node, or this is a search folder */
 
 	if((NODE_TYPE_FOLDER == itemlist_priv.currentNode->type) && 
 	   (0 == getNumericConfValue (FOLDER_DISPLAY_MODE)))

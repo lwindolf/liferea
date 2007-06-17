@@ -72,7 +72,7 @@ static void show_help(void) {
 	g_string_append_printf(str, "%s\n", _("                   STATE may be `shown', `iconified', or `hidden'"));
 	g_string_append_c(str, '\n');
 	g_string_append_printf(str, "%s\n", _("  --debug-<topic>  Print debugging messages for the given topic"));
-	g_string_append_printf(str, "%s\n", _("                   Possible topics are: all,db,cache,conf,gui,html"));
+	g_string_append_printf(str, "%s\n", _("                   Possible topics are: all,cache,conf,db,gui,html"));
 	g_string_append_printf(str, "%s\n", _("                   net,parsing,plugins,trace,update,db,verbose"));
 	g_string_append_c(str, '\n');
 	g_print("%s", str->str);
