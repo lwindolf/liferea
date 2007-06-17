@@ -75,7 +75,7 @@ const gchar * network_get_proxy_host (void);
  *
  * @returns the proxy port
  */
-const gchar * network_get_proxy_port (void);
+guint network_get_proxy_port (void);
 
 /**
  * Returns the currently configured proxy user name 

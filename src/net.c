@@ -65,7 +65,7 @@ network_get_proxy_host (void)
 	return proxyname;
 }
 
-const gchar *
+guint
 network_get_proxy_port (void)
 {
 	return proxyport;
