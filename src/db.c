@@ -166,15 +166,9 @@ open:
 	debug1 (DEBUG_DB, "current DB schema version: %d", schemaVersion);
 	
 	if (-1 == schemaVersion) {
-		/* no schema version available -> first installation
-		   without tables or migration from 1.3.2... */
-		if (db_table_exists ("itemsets")) {
-			db_set_schema_version (0);
-			schemaVersion = 0;	/* trigger migration path */
-		} else {
-			db_set_schema_version (SCHEMA_TARGET_VERSION);
-			schemaVersion = SCHEMA_TARGET_VERSION;	/* nothing exists yet, tables will be created below */
-		}
+		/* no schema version available -> first installation without tables... */
+		db_set_schema_version (SCHEMA_TARGET_VERSION);
+		schemaVersion = SCHEMA_TARGET_VERSION;	/* nothing exists yet, tables will be created below */
 	}
 	
 	if (SCHEMA_TARGET_VERSION < schemaVersion)
