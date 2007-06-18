@@ -76,7 +76,7 @@ vfolder_import_rules (xmlNodePtr cur,
 				additive = xmlGetProp (cur, BAD_CAST"additive");
 
 				if (ruleId && value) {			
-					debug2 (DEBUG_CACHE, "loading rule \"%s\" \"%s\"\n", ruleId, value);
+					debug2 (DEBUG_CACHE, "loading rule \"%s\" \"%s\"", ruleId, value);
 
 					if (additive && !xmlStrcmp (additive, BAD_CAST"true"))
 						vfolder_add_rule (vfolder, ruleId, value, TRUE);

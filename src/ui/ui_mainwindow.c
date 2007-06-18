@@ -664,14 +664,15 @@ void ui_mainwindow_init(int mainwindowState) {
 				   "<p>What currently doesn't work:"
 				   "<ul>"
 				   "   <li>search folder feed title matching</li>"
-				   "   <li>tray icon state handling (untested)</li>"
 				   "   <li>notifications</li>"
-				   "   <li>feed metadata saving/rendering</li>"
 				   "</ul>"
 				   "</p>"
 				   "<p>Working since this release:"
 				   "<ul>"
 				   "   <li>global unread counter</li>"
+				   "   <li>reorganized main menu</li>"
+				   "   <li>tray icon state handling</li>"
+				   "   <li>feed metadata saving/rendering</li>"
 				   "</ul>"
 				   "</p>");
 	g_string_append(buffer,    "</div>");
@@ -987,24 +988,20 @@ void ui_choose_directory(gchar *title, gchar *buttonName, fileChoosenCallback ca
 }
 
 static const GtkActionEntry ui_mainwindow_action_entries[] = {
-	{"ProgramMenu", NULL, N_("_Program")},
-	{"ShowPreferences", GTK_STOCK_PREFERENCES, N_("_Preferences"), NULL, N_("Edit Preferences."),
-	 G_CALLBACK(on_prefbtn_clicked)},
-	{"ShowUpdateMonitor", NULL, N_("Update Monitor"), NULL, N_("Show a list of all feeds currently in the update queue"),
-	 G_CALLBACK(on_menu_show_update_monitor)},
-	{"ShowScriptManager", NULL, N_("Script Manager"), NULL, N_("Allows to configure and edit LUA hook scripts"),
-	 G_CALLBACK(on_menu_show_script_manager)},
-	{"Quit",GTK_STOCK_QUIT, N_("_Quit"), "<control>Q", NULL, G_CALLBACK(on_quit)},
-
-	{"FeedsMenu", NULL, N_("_Feeds")},
+	{"SubscriptionsMenu", NULL, N_("_Subscriptions")},
 	{"UpdateAll", "gtk-refresh", N_("Update _All"), "<control>A", N_("Updates all subscriptions. This does not update OCS directories."),
 	 G_CALLBACK(on_menu_update_all)},
 	{"MarkAllFeedsAsRead", "gtk-apply", N_("Mark All As _Read"), NULL, N_("Marks read every item of every subscription."),
 	 G_CALLBACK(on_menu_allfeedsread)},
 	{"ImportFeedList", "gtk-open", N_("_Import Feed List..."), NULL, N_("Imports an OPML feed list."), G_CALLBACK(on_import_activate)},
 	{"ExportFeedList", "gtk-save-as", N_("_Export Feed List..."), NULL, N_("Exports the feed list as OPML."), G_CALLBACK(on_export_activate)},
+	{"Quit",GTK_STOCK_QUIT, N_("_Quit"), "<control>Q", NULL, G_CALLBACK(on_quit)},
 
-	{"ItemsMenu", NULL, N_("_Items")},
+	{"FeedMenu", NULL, N_("_Feed")},
+	{"RemoveAllItems", "gtk-delete", N_("Remove _All"), NULL, N_("Removes all items of the currently selected feed."),
+	 G_CALLBACK(on_remove_items_activate)},
+
+	{"ItemMenu", NULL, N_("_Item")},
 	{"NextUnreadItem", GTK_STOCK_GO_FORWARD, N_("_Next Unread Item"), "<control>N", N_("Jumps to the next unread item. If necessary selects the next feed with unread items."),
 	 G_CALLBACK(on_next_unread_item_activate)},
 	{"ToggleItemReadStatus", "gtk-apply", N_("Toggle _Read Status"), "<control>U", N_("Toggles the read status of the selected item."),
@@ -1013,8 +1010,6 @@ static const GtkActionEntry ui_mainwindow_action_entries[] = {
 	 G_CALLBACK(on_toggle_item_flag)},
 	{"RemoveSelectedItem", "gtk-delete", N_("Remove _Selected"), NULL, N_("Removes the selected item."),
 	 G_CALLBACK(on_remove_item_activate)},
-	{"RemoveAllItems", "gtk-delete", N_("Remove _All"), NULL, N_("Removes all items of the currently selected feed."),
-	 G_CALLBACK(on_remove_items_activate)},
 	{"LaunchItemInBrowser", NULL, N_("_Launch In Browser"), NULL, N_("Launches the item's link in the configured browser."),
 	 G_CALLBACK(on_popup_launchitem_selected)},
 
@@ -1023,6 +1018,14 @@ static const GtkActionEntry ui_mainwindow_action_entries[] = {
 	 G_CALLBACK(on_popup_zoomin_selected)},
 	{"ZoomOut", "gtk-zoom-out", N_("_Decrease Text Size"), "<control>minus", N_("Decreases the text size of the item view."),
 	 G_CALLBACK(on_popup_zoomout_selected)},
+
+	{"ToolsMenu", NULL, N_("_Tools")},
+	{"ShowUpdateMonitor", NULL, N_("Update Monitor"), NULL, N_("Show a list of all feeds currently in the update queue"),
+	 G_CALLBACK(on_menu_show_update_monitor)},
+	{"ShowScriptManager", NULL, N_("Script Manager"), NULL, N_("Allows to configure and edit LUA hook scripts"),
+	 G_CALLBACK(on_menu_show_script_manager)},
+	{"ShowPreferences", GTK_STOCK_PREFERENCES, N_("_Preferences"), NULL, N_("Edit Preferences."),
+	 G_CALLBACK(on_prefbtn_clicked)},
 	 
 	{"SearchMenu", NULL, N_("_Search")},
 	{"SearchFeeds", "gtk-find", N_("Search All Feeds..."), "<control>F", N_("Show the search dialog."), G_CALLBACK(on_searchbtn_clicked)},
@@ -1074,20 +1077,8 @@ static const GtkToggleActionEntry ui_mainwindow_action_toggle_entries[] = {
 static const char *ui_mainwindow_ui_desc =
 "<ui>"
 "  <menubar name='MainwindowMenubar'>"
-"    <menu action='ProgramMenu'>"
-"      <menuitem action='ShowPreferences'/>"
-"      <separator/>"
-"      <menuitem action='ShowUpdateMonitor'/>"
-"      <menuitem action='ShowScriptManager'/>"
-"      <separator/>"
-"      <menuitem action='ToggleOfflineMode'/>"
-"      <separator/>"
-"      <menuitem action='Quit'/>"
-"    </menu>"
-"    <menu action='FeedsMenu'>"
-"      <menuitem action='UpdateSelected'/>"
+"    <menu action='SubscriptionsMenu'>"
 "      <menuitem action='UpdateAll'/>"
-"      <menuitem action='MarkFeedAsRead'/>"
 "      <menuitem action='MarkAllFeedsAsRead'/>"
 "      <separator/>"
 "      <menuitem action='NewSubscription'/>"
@@ -1096,19 +1087,28 @@ static const char *ui_mainwindow_ui_desc =
 "      <menuitem action='NewPlugin'/>"
 "      <menuitem action='NewNewsBin'/>"
 "      <separator/>"
-"      <menuitem action='Properties'/>"
-"      <menuitem action='DeleteSelected'/>"
-"      <separator/>"
 "      <menuitem action='ImportFeedList'/>"
 "      <menuitem action='ExportFeedList'/>"
+"      <separator/>"
+"      <menuitem action='ToggleOfflineMode'/>"
+"      <separator/>"
+"      <menuitem action='Quit'/>"
 "    </menu>"
-"    <menu action='ItemsMenu'>"
+"    <menu action='FeedMenu'>"
+"      <menuitem action='UpdateSelected'/>"
+"      <menuitem action='MarkFeedAsRead'/>"
+"      <separator/>"
+"      <menuitem action='RemoveAllItems'/>"
+"      <menuitem action='DeleteSelected'/>"
+"      <separator/>"
+"      <menuitem action='Properties'/>"
+"    </menu>"
+"    <menu action='ItemMenu'>"
 "      <menuitem action='NextUnreadItem'/>"
 "      <separator/>"
 "      <menuitem action='ToggleItemReadStatus'/>"
 "      <menuitem action='ToggleItemFlag'/>"
 "      <menuitem action='RemoveSelectedItem'/>"
-"      <menuitem action='RemoveAllItems'/>"
 "      <separator/>"
 "      <menuitem action='LaunchItemInBrowser'/>"
 "    </menu>"
@@ -1119,6 +1119,11 @@ static const char *ui_mainwindow_ui_desc =
 "      <menuitem action='NormalView'/>"
 "      <menuitem action='WideView'/>"
 "      <menuitem action='CombinedView'/>"
+"    </menu>"
+"    <menu action='ToolsMenu'>"
+"      <menuitem action='ShowUpdateMonitor'/>"
+"      <menuitem action='ShowScriptManager'/>"
+"      <menuitem action='ShowPreferences'/>"
 "    </menu>"
 "    <menu action='SearchMenu'>"
 "      <menuitem action='SearchFeeds'/>"

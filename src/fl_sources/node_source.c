@@ -29,7 +29,6 @@
 #include "feedlist.h"
 #include "folder.h"
 #include "node.h"
-#include "plugin.h"
 #include "ui/ui_dialog.h"
 #include "ui/ui_mainwindow.h"
 #include "ui/ui_node.h"
@@ -80,14 +79,14 @@ gboolean node_source_type_register(nodeSourceTypePtr type) {
 
 	/* check feed list provider plugin version */
 	if(NODE_SOURCE_TYPE_API_VERSION != type->api_version) {
-		debug3(DEBUG_PLUGINS, "feed list source API version mismatch: \"%s\" has version %d should be %d\n", type->name, type->api_version, NODE_SOURCE_TYPE_API_VERSION);
+		debug3(DEBUG_PLUGINS, "feed list source API version mismatch: \"%s\" has version %d should be %d", type->name, type->api_version, NODE_SOURCE_TYPE_API_VERSION);
 		return FALSE;
 	} 
 
 	/* check if all mandatory functions are provided */
 	if(!(type->source_type_init &&
 	     type->source_type_deinit)) {
-		debug1(DEBUG_PLUGINS, "mandatory functions missing: \"%s\"\n", type->name);
+		debug1(DEBUG_PLUGINS, "mandatory functions missing: \"%s\"", type->name);
 		return FALSE;
 	}
 
@@ -110,13 +109,13 @@ static void node_source_import(nodePtr node, nodePtr parent, xmlNodePtr cur, gbo
 		typeStr = xmlGetProp(cur, BAD_CAST"pluginType"); /* for migration only */
 
 	if(typeStr) {
-		debug2(DEBUG_CACHE, "creating feed list plugin instance (type=%s,id=%s)\n", typeStr, node->id);
+		debug2(DEBUG_CACHE, "creating node source instance (type=%s,id=%s)", typeStr, node->id);
 
 		node_add_child(parent, node, -1);
 		
 		node->available = FALSE;
 
-		/* scan for matching plugin and create new instance */
+		/* scan for matching node source and create new instance */
 		type = node_source_type_find(typeStr, 0);
 		
 		if(NULL == type) {
@@ -153,7 +152,7 @@ static void node_source_export(nodePtr node, xmlNodePtr cur, gboolean trusted) {
 
 	debug_enter("node_source_export");
 
-	debug2(DEBUG_CACHE, "node source export for node %s, id=%s\n", node->title, NODE_SOURCE_TYPE(node)->id);
+	debug2(DEBUG_CACHE, "node source export for node %s, id=%s", node->title, NODE_SOURCE_TYPE(node)->id);
 	if(!strcmp(NODE_SOURCE_TYPE(node)->id, NODE_SOURCE_TYPE_DUMMY_ID))
 		xmlNewProp(cur, BAD_CAST"sourceType", BAD_CAST(node->data));
 	else
@@ -308,7 +307,7 @@ node_source_get_node_type (void)
 	static nodeTypePtr	nodeType;
 
 	if (!nodeType) {
-		/* derive the plugin node type from the folder node type */
+		/* derive the node source node type from the folder node type */
 		nodeType = (nodeTypePtr) g_new0 (struct nodeType, 1);
 		nodeType->id			= "source";
 		nodeType->icon			= icons[ICON_DEFAULT];

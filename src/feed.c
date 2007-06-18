@@ -498,16 +498,21 @@ static void feed_add_xml_attributes(nodePtr node, xmlNodePtr feedNode) {
 	metadata_add_xml_nodes(feed->metadata, feedNode);
 }
 
-xmlDocPtr feed_to_xml(nodePtr node, xmlNodePtr feedNode) {
+xmlDocPtr
+feed_to_xml (nodePtr node, xmlNodePtr feedNode)
+{
 	xmlDocPtr	doc = NULL;
 	
-	if(!feedNode) {
-		doc = xmlNewDoc("1.0");
-		feedNode = xmlDocGetRootElement(doc);
-		feedNode = xmlNewDocNode(doc, NULL, "feed", NULL);
-		xmlDocSetRootElement(doc, feedNode);
+	if (!feedNode) {
+		doc = xmlNewDoc ("1.0");
+		feedNode = xmlDocGetRootElement (doc);
+		feedNode = xmlNewDocNode (doc, NULL, "feed", NULL);
+		xmlDocSetRootElement (doc, feedNode);
 	}
-	feed_add_xml_attributes(node, feedNode);
+	feed_add_xml_attributes (node, feedNode);
+	
+	g_assert (node->subscription);
+	metadata_add_xml_nodes (node->subscription->metadata, feedNode);	
 	
 	return doc;
 }

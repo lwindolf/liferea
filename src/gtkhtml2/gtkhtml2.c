@@ -113,7 +113,7 @@ on_submit_idle(gpointer data)
 	GtkWidget *htmlwidget = gtk_bin_get_child(GTK_BIN(ctx->scrollpane));
 	HtmlDocument *doc = HTML_VIEW(htmlwidget)->document;
 
-	debug3(DEBUG_UPDATE, "action = '%s', method = '%s', encoding = '%s'\n", 
+	debug3(DEBUG_UPDATE, "action = '%s', method = '%s', encoding = '%s'", 
 		 ctx->action, ctx->method, ctx->encoding);
 
 	if(ctx->method == NULL || strcasecmp (ctx->method, "get") == 0) {
@@ -406,11 +406,6 @@ static GtkWidget* gtkhtml2_new(gboolean forceInternalBrowsing) {
 	
 	g_object_set_data(G_OBJECT(scrollpane), "internal_browsing", GINT_TO_POINTER(forceInternalBrowsing));
 	handler = g_signal_connect(G_OBJECT(htmlwidget), "on_url", G_CALLBACK(on_url), NULL);
-	
-	/* this is to debug the rare problem reported by some users
-	   who get no mouse hovering with GtkHTML2 */
-	if(0 == handler)
-		g_warning("Could not setup URL handler for GtkHTML2!!!\nPlease help to debug this problem and post a comment on the\nproject homepage including your GTK and GtkHTML2 library versions!\n");
 		
 	g_signal_connect(G_OBJECT(scrollpane), "destroy", G_CALLBACK(gtkhtml2_destroyed_cb), NULL);
 	g_signal_connect(G_OBJECT(htmlwidget), "button-press-event", G_CALLBACK(button_press_event), NULL);

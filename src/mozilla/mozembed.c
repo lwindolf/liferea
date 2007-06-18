@@ -352,8 +352,12 @@ void mozembed_launch_url(GtkWidget *widget, const gchar *url) {
 
 gboolean mozembed_launch_inside_possible(void) { return TRUE; }
 
-void mozembed_set_proxy(gchar *hostname, int port, gchar *username, gchar *password) {
-
+void
+mozembed_set_proxy (const gchar *hostname,
+                    guint port,
+                    const gchar *username,
+                    const gchar *password)
+{
 	if(hostname) {
 		debug0(DEBUG_GUI, "setting proxy for Mozilla");
 		mozsupport_preference_set("network.proxy.http", hostname);

@@ -611,7 +611,7 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, char * aut
 		free(tmpstring);
 		
 	if(debug_level & DEBUG_VERBOSE)
-		debug2(DEBUG_NET, "sending HTTP request on socket %d: \n%s\n", my_socket, netbuf);
+		debug2(DEBUG_NET, "sending HTTP request on socket %d: \n%s", my_socket, netbuf);
 		
 	NetWrite(my_socket, proto_data, proto, netbuf, strlen(netbuf));
 	

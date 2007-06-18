@@ -333,7 +333,9 @@
      <!-- Display "comment feed updating" hint -->
      <xsl:choose>
         <xsl:when test="comments/updateState = 'updating'">
-           (<_span>Updating...</_span>)
+           (<span>
+	      <_span>Updating...</_span>
+	    </span>)
 	</xsl:when>
         <xsl:otherwise>
            (<a href="liferea-refresh-comments://{sourceId}-{sourceNr}">

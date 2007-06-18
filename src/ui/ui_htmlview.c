@@ -32,6 +32,7 @@
 #include "conf.h"
 #include "debug.h"
 #include "itemlist.h"
+#include "net.h"
 #include "plugin.h"
 #include "social.h"
 #include "render.h"
@@ -95,14 +96,14 @@ gboolean ui_htmlview_plugin_load(pluginPtr plugin, GModule *handle) {
 
 	/* check feed list provider plugin version */
 	if(HTMLVIEW_PLUGIN_API_VERSION != htmlviewPlugin->api_version) {
-		debug3(DEBUG_PLUGINS, "html view API version mismatch: \"%s\" has version %d should be %d\n", htmlviewPlugin->name, htmlviewPlugin->api_version, HTMLVIEW_PLUGIN_API_VERSION);
+		debug3(DEBUG_PLUGINS, "html view API version mismatch: \"%s\" has version %d should be %d", htmlviewPlugin->name, htmlviewPlugin->api_version, HTMLVIEW_PLUGIN_API_VERSION);
 		return FALSE;
 	} 
 
 	/* check if all mandatory symbols are provided */
 	if(!(htmlviewPlugin->plugin_init &&
 	     htmlviewPlugin->plugin_deinit)) {
-		debug1(DEBUG_PLUGINS, "mandatory symbols missing: \"%s\"\n", htmlviewPlugin->name);
+		debug1(DEBUG_PLUGINS, "mandatory symbols missing: \"%s\"", htmlviewPlugin->name);
 		return FALSE;
 	}
 
@@ -201,7 +202,7 @@ void ui_htmlview_launch_URL(GtkWidget *htmlview, const gchar *url, gint launchTy
 		return;
 	}
 	
-	debug3(DEBUG_GUI, "launch URL: %s  %s %d\n", getBooleanConfValue(BROWSE_INSIDE_APPLICATION)?"true":"false",
+	debug3(DEBUG_GUI, "launch URL: %s  %s %d", getBooleanConfValue(BROWSE_INSIDE_APPLICATION)?"true":"false",
 		  (htmlviewPlugin->launchInsidePossible)()?"true":"false",
 		  launchType);
 		  

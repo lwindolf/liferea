@@ -194,6 +194,9 @@ comments_refresh (itemPtr item)
 	struct request	*request;
 	const gchar	*url;
 	
+	if (!update_is_online ())
+		return;
+	
 	url = metadata_list_get (item->metadata, "commentFeedUri");
 	if (url) 
 	{

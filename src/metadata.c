@@ -62,7 +62,7 @@ static gint metadata_get_type(const gchar *name) {
 
 	type = GPOINTER_TO_INT(g_hash_table_lookup(metadata_types, (gpointer)name));
 	if(0 == type)
-		debug1(DEBUG_PARSING, "unknown metadata type (%s)\n", name);
+		debug1(DEBUG_PARSING, "unknown metadata type (%s)", name);
 	
 	return type;
 }
@@ -96,9 +96,9 @@ GSList * metadata_list_append(GSList *metadata, const gchar *strid, const gchar 
 			if(common_is_well_formed_xhtml(data)) {
 				tmp = g_strdup(data);
 			} else {
-				debug1(DEBUG_PARSING, "not well formed HTML: %s\n", data);
+				debug1(DEBUG_PARSING, "not well formed HTML: %s", data);
 				tmp = g_markup_escape_text(data, -1);
-				debug1(DEBUG_PARSING, "escaped as: %s\n", tmp);
+				debug1(DEBUG_PARSING, "escaped as: %s", tmp);
 			}
 			/* And needs to remove DHTML */
 			checked_data = common_strip_dhtml(tmp);

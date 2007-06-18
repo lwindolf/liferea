@@ -248,6 +248,13 @@ void db_update_state_load (const gchar *id, updateStatePtr updateState);
 void db_update_state_save (const gchar *id, updateStatePtr updateState);
 
 /**
+ * Load the metadata and update state of the given subscription.
+ *
+ * @param subscription	the subscription whose info to load
+ */
+void db_subscription_load (subscriptionPtr subscription);
+
+/**
  * Updates (or inserts) the properties of the given subscription in the DB.
  *
  * @param subscription	the subscription

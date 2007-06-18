@@ -493,7 +493,7 @@ static itemPtr atom10_parse_entry(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 		if(func != NULL) {
 			(*func)(cur, ctxt, NULL);
 		} else {
-			debug1(DEBUG_PARSING, "unknown entry element \"%s\" found\n", cur->name);
+			debug1(DEBUG_PARSING, "unknown entry element \"%s\" found", cur->name);
 		}
 		
 		cur = cur->next;

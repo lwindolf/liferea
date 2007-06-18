@@ -371,6 +371,9 @@ feedlist_init_node (nodePtr node)
 {
 	if (node->expanded)
 		ui_node_set_expansion (node, TRUE);
+	
+	if (node->subscription)
+		db_subscription_load (node->subscription);
 		
 	node_update_counters (node);
 		

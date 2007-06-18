@@ -6,6 +6,11 @@
 	* Reimplemented global unread/new counting used
 	  to display numbers in status bar and tray icon.
 	  (Emilio Pozuelo Monfort)
+	* Reorganized main menu. No more "Program" menu
+	  and a much more logical assignment of the 
+	  different menu options.
+	* Avoids updating comment feeds when offline.
+	* Reimplemented subscription metadata support.
 
 
 2007-06-16  Lars Lindner  <lars.lindner@gmail.com>

@@ -48,6 +48,8 @@ typedef struct subscription {
 	gint		updateInterval;		/**< user defined update interval in minutes */	
 	guint		defaultInterval;	/**< optional update interval as specified by the feed */
 	
+	GSList		*metadata;		/**< metadata list assigned to this subscription */
+	
 	gchar		*updateError;		/**< textual description of processing errors */
 	gchar		*httpError;		/**< textual description of HTTP protocol errors */
 	gint		httpErrorCode;		/**< last HTTP error code */

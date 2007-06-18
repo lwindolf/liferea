@@ -243,7 +243,7 @@ void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, nodeSourcePtr node
 	/* 2. determine node type */
 	typeStr = xmlGetProp(cur, BAD_CAST"type");
 	if(typeStr) {
-		debug1(DEBUG_CACHE, "-> node type tag found: \"%s\"\n", typeStr);
+		debug1(DEBUG_CACHE, "-> node type tag found: \"%s\"", typeStr);
 		node_set_type(node, node_str_to_type(typeStr));
 		xmlFree(typeStr);
 	} 

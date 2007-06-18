@@ -186,7 +186,7 @@ itemset_merge_item (itemSetPtr itemSet, GList *items, itemPtr item)
 
 			duplicates = iter = db_item_get_duplicates (item->sourceId);
 			while (iter) {
-				debug1 (DEBUG_UPDATE, "-> duplicate guid exists: #%lu\n", GPOINTER_TO_UINT (iter->data));
+				debug1 (DEBUG_UPDATE, "-> duplicate guid exists: #%lu", GPOINTER_TO_UINT (iter->data));
 				iter = g_slist_next (iter);
 			}
 			

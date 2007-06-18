@@ -50,7 +50,7 @@ typedef struct htmlviewPlugin {
 	gfloat		(*zoomLevelGet)		(GtkWidget *widget);
 	void		(*zoomLevelSet)		(GtkWidget *widget, gfloat zoom);
 	gboolean	(*scrollPagedown)	(GtkWidget *widget);
-	void		(*setProxy)		(const gchar *hostname, int port, const gchar *username, const gchar *password);
+	void		(*setProxy)		(const gchar *hostname, guint port, const gchar *username, const gchar *password);
 	void		(*setOffLine)		(gboolean offline);
 } *htmlviewPluginPtr;
 

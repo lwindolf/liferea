@@ -149,14 +149,14 @@ static gpointer ui_enclosure_exec(gpointer data) {
 	GError		*error = NULL;
 	gint		status;
 	
-	debug1(DEBUG_UPDATE, "running \"%s\"\n", ejp->download);
+	debug1(DEBUG_UPDATE, "running \"%s\"", ejp->download);
 	g_spawn_command_line_sync(ejp->download, NULL, NULL, &status, &error);
 	if((NULL != error) && (0 != error->code)) {
 		g_warning("command \"%s\" failed with exitcode %d!", ejp->download, status);
 	} else {
 		if(NULL != ejp->run) {
 			/* execute */
-			debug1(DEBUG_UPDATE, "running \"%s\"\n", ejp->run);
+			debug1(DEBUG_UPDATE, "running \"%s\"", ejp->run);
 			g_spawn_command_line_async(ejp->run, &error);
 			if((NULL != error) && (0 != error->code))
 				g_warning("command \"%s\" failed!", ejp->run);
@@ -191,7 +191,7 @@ void ui_enclosure_download(encTypePtr etp, const gchar *url, const gchar *filena
 	g_free(filenameQ);
 	g_free(urlQ);
 	
-	debug2(DEBUG_UPDATE, "downloading %s to %s...\n", url, filename);
+	debug2(DEBUG_UPDATE, "downloading %s to %s...", url, filename);
 
 	/* free now unnecessary stuff */
 	if((NULL != etp) && (FALSE == etp->permanent))
@@ -344,7 +344,7 @@ void on_popup_open_enclosure(gpointer callback_data, guint callback_action, GtkW
 	if(NULL == typestr)
 		typestr = g_strdup("data");
 
-	debug3(DEBUG_CACHE, "url:%s, type:%s mime:%s\n", url, typestr, mime?"TRUE":"FALSE");
+	debug3(DEBUG_CACHE, "url:%s, type:%s mime:%s", url, typestr, mime?"TRUE":"FALSE");
 		
 	/* search for type configuration */
 	iter = types;

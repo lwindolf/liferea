@@ -25,6 +25,7 @@
 #include "debug.h"
 #include "favicon.h"
 #include "feedlist.h"
+#include "metadata.h"
 #include "subscription.h"
 #include "net/cookies.h"
 #include "ui/ui_mainwindow.h"
@@ -96,7 +97,7 @@ subscription_reset_update_counter (subscriptionPtr subscription, GTimeVal *now)
 {
 	subscription->updateState->lastPoll.tv_sec = now->tv_sec;
 	db_update_state_save (subscription->node->id, subscription->updateState);
-	debug1 (DEBUG_UPDATE, "Resetting last poll counter to %ld.\n", subscription->updateState->lastPoll.tv_sec);
+	debug1 (DEBUG_UPDATE, "Resetting last poll counter to %ld.", subscription->updateState->lastPoll.tv_sec);
 }
 
 void
@@ -105,7 +106,7 @@ subscription_prepare_request (subscriptionPtr subscription,
                               guint flags,
                               GTimeVal *now)
 {
-	debug1 (DEBUG_UPDATE, "preparing request for \"%s\"\n", subscription_get_source (subscription));
+	debug1 (DEBUG_UPDATE, "preparing request for \"%s\"", subscription_get_source (subscription));
 
 	subscription_reset_update_counter (subscription, now);
 
@@ -269,7 +270,7 @@ subscription_favicon_downloaded (gpointer user_data)
 void
 subscription_update_favicon (subscriptionPtr subscription, GTimeVal *now)
 {	
-	debug1 (DEBUG_UPDATE, "trying to download favicon.ico for \"%s\"\n", node_get_title (subscription->node));
+	debug1 (DEBUG_UPDATE, "trying to download favicon.ico for \"%s\"", node_get_title (subscription->node));
 	ui_mainwindow_set_status_bar (_("Updating favicon for \"%s\""), node_get_title (subscription->node));
 	subscription->updateState->lastFaviconPoll.tv_sec = now->tv_sec;
 	db_update_state_save (subscription->node->id, subscription->updateState);
@@ -293,6 +294,7 @@ subscription_free (subscriptionPtr subscription)
 
 	g_free (subscription->updateOptions);
 	update_state_free (subscription->updateState);
+	metadata_list_free (subscription->metadata);
 	
 	g_free (subscription);
 }

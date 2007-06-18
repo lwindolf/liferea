@@ -239,7 +239,7 @@ static void update_exec_cmd(requestPtr request) {
 	size_t	len;
 		
 	/* if the first char is a | we have a pipe else a file */
-	debug1(DEBUG_UPDATE, "executing command \"%s\"...\n", (request->source) + 1);	
+	debug1(DEBUG_UPDATE, "executing command \"%s\"...", (request->source) + 1);	
 	f = popen((request->source) + 1, "r");
 	if(f) {
 		while(!feof(f) && !ferror(f)) {

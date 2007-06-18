@@ -85,16 +85,16 @@ gchar * common_utf8_fix(xmlChar *string) {
 		/* if we have an invalid string we try to shorten
 		   it until it is valid UTF-8 */
 		debug0(DEBUG_PARSING, "parser delivered invalid UTF-8!");
-		debug1(DEBUG_PARSING, "	>>>%s<<<\n", string);
-		debug1(DEBUG_PARSING, "first invalid char is: >>>%s<<<\n" , invalid_offset);
+		debug1(DEBUG_PARSING, "	>>>%s<<<", string);
+		debug1(DEBUG_PARSING, "first invalid char is: >>>%s<<<" , invalid_offset);
 		debug0(DEBUG_PARSING, "removing invalid bytes");
 		
 		do {
 			memmove((void *)invalid_offset, invalid_offset + 1, strlen(invalid_offset + 1) + 1);			
 		} while(!g_utf8_validate(string, -1, &invalid_offset));
 		
-		debug0(DEBUG_PARSING, "result is:\n");
-		debug1(DEBUG_PARSING, "	>>>%s<<<\n", string);		
+		debug0(DEBUG_PARSING, "result is:");
+		debug1(DEBUG_PARSING, "	>>>%s<<<", string);
 	}
 	
 	return string;
@@ -522,7 +522,7 @@ xmlDocPtr common_parse_xml_feed(feedParserCtxtPtr fpc) {
 	
 	fpc->doc = common_parse_xml(fpc->data, (size_t)fpc->dataLength, fpc->recovery, errors);
 	if(!fpc->doc) {
-		debug1(DEBUG_PARSING, "xmlReadMemory: could not parse feed \"%s\"!\n", fpc->subscription->node->title);
+		debug1(DEBUG_PARSING, "xmlReadMemory: could not parse feed \"%s\"!", fpc->subscription->node->title);
 		g_string_prepend(fpc->feed->parseErrors, _("XML Parser: Could not parse document:\n"));
 		g_string_append(fpc->feed->parseErrors, "\n");
 	}
@@ -747,10 +747,10 @@ time_t parseISO8601Date(gchar *date) {
 			
 			return t;
 		} else {
-			debug0(DEBUG_PARSING, "internal error! time conversion error! mktime failed!\n");
+			debug0(DEBUG_PARSING, "internal error! time conversion error! mktime failed!");
 		}
 	} else {
-		debug0(DEBUG_PARSING, "Invalid ISO8601 date format! Ignoring <dc:date> information!\n");
+		debug0(DEBUG_PARSING, "Invalid ISO8601 date format! Ignoring <dc:date> information!");
 	}
 	
 	return 0;
@@ -864,7 +864,7 @@ time_t parseRFC822Date(gchar *date) {
 			t = t - (t2 - t);
 			return t;
 		} else {
-			debug0(DEBUG_PARSING, "internal error! time conversion error! mktime failed!\n");
+			debug0(DEBUG_PARSING, "internal error! time conversion error! mktime failed!");
 		}
 	}
 	

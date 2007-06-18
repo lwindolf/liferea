@@ -44,14 +44,14 @@ gboolean notification_plugin_load(pluginPtr plugin, GModule *handle) {
 
 	/* check notification provider plugin version */
 	if(NOTIFICATION_PLUGIN_API_VERSION != notificationPlugin->api_version) {
-		debug3(DEBUG_PLUGINS, "notification API version mismatch: \"%s\" has version %d should be %d\n", plugin->name, notificationPlugin->api_version, NOTIFICATION_PLUGIN_API_VERSION);
+		debug3(DEBUG_PLUGINS, "notification API version mismatch: \"%s\" has version %d should be %d", plugin->name, notificationPlugin->api_version, NOTIFICATION_PLUGIN_API_VERSION);
 		return FALSE;
 	} 
 
 	/* check if all mandatory symbols are provided */
 	if(!(notificationPlugin->plugin_init &&
 	     notificationPlugin->plugin_deinit)) {
-		debug1(DEBUG_PLUGINS, "mandatory symbols missing: \"%s\"\n", plugin->name);
+		debug1(DEBUG_PLUGINS, "mandatory symbols missing: \"%s\"", plugin->name);
 		return FALSE;
 	}
 	

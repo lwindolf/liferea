@@ -55,7 +55,7 @@ void opml_source_import(nodePtr node) {
 
 	opml_source_setup(NULL, node);
 	
-	debug1(DEBUG_CACHE, "starting import of opml source instance (id=%s)\n", node->id);
+	debug1(DEBUG_CACHE, "starting import of opml source instance (id=%s)", node->id);
 	filename = opml_source_get_feedlist(node);
 	if(g_file_test(filename, G_FILE_TEST_EXISTS)) {
 		import_OPML_feedlist(filename, node, node->source, FALSE, TRUE);
@@ -130,7 +130,7 @@ static void opml_source_merge_feed(xmlNodePtr match, gpointer user_data) {
 		expr = g_strdup_printf("//outline[@title = '%s']", title);
 
 	if(!common_xpath_find(mergeCtxt->xmlNode, expr)) {
-		debug2(DEBUG_UPDATE, "adding %s (%s)\n", title, url);
+		debug2(DEBUG_UPDATE, "adding %s (%s)", title, url);
 		node = node_new();
 		node_set_title(node, title);
 		if(url) {
@@ -194,12 +194,12 @@ static void opml_source_check_for_removal(nodePtr node, gpointer user_data) {
 	}
 	
 	if(!common_xpath_find((xmlNodePtr)user_data, expr)) {
-		debug1(DEBUG_UPDATE, "removing %s...\n", node_get_title(node));
+		debug1(DEBUG_UPDATE, "removing %s...", node_get_title(node));
 		if(feedlist_get_selected() == node)
 			ui_feedlist_select(NULL);
 		node_request_remove(node);
 	} else {
-		debug1(DEBUG_UPDATE, "keeping %s...\n", node_get_title(node));
+		debug1(DEBUG_UPDATE, "keeping %s...", node_get_title(node));
 	}
 	g_free(expr);
 }

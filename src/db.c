@@ -155,7 +155,7 @@ open:
 	filename = common_create_cache_filename (NULL, "liferea", "db");
 	debug1 (DEBUG_DB, "Opening DB file %s...", filename);
 	if (!sqlite3_open (filename, &db)) {
-		debug1 (DEBUG_CACHE, "Data base file %s was not found... Creating new one.\n", filename);
+		debug1 (DEBUG_CACHE, "Data base file %s was not found... Creating new one.", filename);
 	}
 	g_free (filename);
 	
@@ -546,6 +546,12 @@ open:
 			 "available "
 			 "FROM subscription");
 	
+	db_prepare_stmt (&subscriptionMetadataLoadStmt,
+	                 "SELECT key,value,nr FROM subscription_metadata WHERE node_id = ? ORDER BY nr");
+			
+	db_prepare_stmt (&subscriptionMetadataUpdateStmt,
+	                 "REPLACE INTO subscription_metadata (node_id,nr,key,value) VALUES (?,?,?,?)");
+
 	g_assert (sqlite3_get_autocommit (db));
 	
 	debug_exit ("db_init");
@@ -600,7 +606,7 @@ db_deinit (void)
 }
 
 static GSList *
-db_metadata_load(gulong id) 
+db_item_metadata_load(gulong id) 
 {
 	GSList	*metadata = NULL;
 	gint	res;
@@ -619,7 +625,7 @@ db_metadata_load(gulong id)
 }
 
 static void
-db_metadata_update_cb (const gchar *key,
+db_item_metadata_update_cb (const gchar *key,
                        const gchar *value,
                        guint index,
                        gpointer user_data) 
@@ -638,9 +644,9 @@ db_metadata_update_cb (const gchar *key,
 }
 
 static void
-db_metadata_update(itemPtr item) 
+db_item_metadata_update(itemPtr item) 
 {
-	metadata_list_foreach(item->metadata, db_metadata_update_cb, item);
+	metadata_list_foreach(item->metadata, db_item_metadata_update_cb, item);
 }
 
 /* Item structure loading methods */
@@ -669,7 +675,7 @@ db_load_item_from_columns (sqlite3_stmt *stmt)
 	item_set_real_source_title	(item, sqlite3_column_text(stmt, 10));
 	item_set_description		(item, sqlite3_column_text(stmt, 11));
 
-	item->metadata = db_metadata_load(item->id);
+	item->metadata = db_item_metadata_load(item->id);
 
 	return item;
 }
@@ -817,7 +823,7 @@ db_item_update (itemPtr item)
 	if(SQLITE_DONE != res) 
 		g_warning("item update failed (error code=%d, %s)", res, sqlite3_errmsg(db));
 	
-	db_metadata_update(item);
+	db_item_metadata_update(item);
 	
 	debug_end_measurement (DEBUG_DB, "item update");
 }
@@ -1305,6 +1311,56 @@ db_update_state_save (const gchar *id,
 	debug_end_measurement (DEBUG_DB, "update state save");
 }
 
+static GSList *
+db_subscription_metadata_load(const gchar *id) 
+{
+	GSList	*metadata = NULL;
+	gint	res;
+
+	sqlite3_reset(subscriptionMetadataLoadStmt);
+	res = sqlite3_bind_text(subscriptionMetadataLoadStmt, 1, id, -1, SQLITE_TRANSIENT);
+	if(SQLITE_OK != res)
+		g_error("db_load_metadata: sqlite bind failed (error code %d)!", res);
+
+	while(sqlite3_step(subscriptionMetadataLoadStmt) == SQLITE_ROW) {
+		metadata = metadata_list_append(metadata, sqlite3_column_text(subscriptionMetadataLoadStmt, 0), 
+		                                          sqlite3_column_text(subscriptionMetadataLoadStmt, 1));
+	}
+
+	return metadata;
+}
+
+static void
+db_subscription_metadata_update_cb (const gchar *key,
+                                    const gchar *value,
+                                    guint index,
+                                    gpointer user_data) 
+{
+	nodePtr	node = (nodePtr)user_data;
+	gint	res;
+
+	sqlite3_reset(subscriptionMetadataUpdateStmt);
+	sqlite3_bind_text(subscriptionMetadataUpdateStmt, 1, node->id, -1, SQLITE_TRANSIENT);
+	sqlite3_bind_int (subscriptionMetadataUpdateStmt, 2, index);
+	sqlite3_bind_text(subscriptionMetadataUpdateStmt, 3, key, -1, SQLITE_TRANSIENT);
+	sqlite3_bind_text(subscriptionMetadataUpdateStmt, 4, value, -1, SQLITE_TRANSIENT);
+	res = sqlite3_step(subscriptionMetadataUpdateStmt);
+	if(SQLITE_DONE != res) 
+		g_warning("Update in \"metadata\" table failed (error code=%d, %s)", res, sqlite3_errmsg(db));
+}
+
+static void
+db_subscription_metadata_update(subscriptionPtr subscription) 
+{
+	metadata_list_foreach(subscription->metadata, db_subscription_metadata_update_cb, subscription->node);
+}
+
+void
+db_subscription_load (subscriptionPtr subscription)
+{
+	subscription->metadata = db_subscription_metadata_load (subscription->node->id);
+}
+
 void
 db_subscription_update (subscriptionPtr subscription)
 {
@@ -1328,6 +1384,8 @@ db_subscription_update (subscriptionPtr subscription)
 	res = sqlite3_step (subscriptionUpdateStmt);
 	if (SQLITE_DONE != res)
 		g_warning ("Could not update subscription info %s in DB (error code %d)!", subscription->node->id, res);
+		
+	db_subscription_metadata_update (subscription);
 		
 	debug_end_measurement (DEBUG_DB, "subscription_update");
 }
