@@ -646,6 +646,7 @@ itemlist_mark_all_read (const gchar *nodeId)
 				itemPtr item = item_load (GPOINTER_TO_UINT (iter->data));
 				g_hash_table_insert (affectedNodes, node_from_id (item->nodeId), NULL);
 				iter = g_slist_next (iter);
+				itemlist_update_item (item);
 				item_unload (item);
 			}
 		}
