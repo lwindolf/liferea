@@ -649,6 +649,8 @@ static void feed_process_update_result(struct request *request) {
 			                                      "XML Parser Output:<br /><div class='xmlparseroutput'>"));
 			g_string_append(feed->parseErrors, "</div>");
 		} else {
+			node->available = TRUE;
+			
 			/* merge the resulting items into the node's item set */
 			node_merge_items(node, ctxt->items);
 		
@@ -668,9 +670,7 @@ static void feed_process_update_result(struct request *request) {
 				db_subscription_update (node->subscription);
 
 			ui_mainwindow_set_status_bar(_("\"%s\" updated..."), node_get_title(node));
-		
-			node->available = TRUE;
-			
+					
 			notification_node_has_new_items(node);
 		}
 				
