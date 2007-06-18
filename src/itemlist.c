@@ -174,7 +174,7 @@ itemlist_merge_itemset (itemSetPtr itemSet)
 		return; /* Nothing to do if the item set does not belong to this node, or this is a search folder */
 
 	if((NODE_TYPE_FOLDER == itemlist_priv.currentNode->type) && 
-	   (0 == getNumericConfValue (FOLDER_DISPLAY_MODE)))
+	   (0 == conf_get_int_value (FOLDER_DISPLAY_MODE)))
 		return; /* Bail out if it is a folder without the recursive display preference set */
 		
 	debug1 (DEBUG_GUI, "reloading item list with node \"%s\"", node_get_title (node));
@@ -222,11 +222,12 @@ itemlist_load (nodePtr node)
 	
 	itemlist_priv.hasEnclosures = FALSE;
 	   
-	if (NODE_TYPE_FOLDER == node->type) {
-		if (0 == getNumericConfValue (FOLDER_DISPLAY_MODE))
+	/* for folders and other heirarchic nodes do filtering */
+	if ((NODE_TYPE_FOLDER == node->type) || node->children) {
+		if (0 == conf_get_int_value (FOLDER_DISPLAY_MODE))
 			return;
 	
-		if (getBooleanConfValue (FOLDER_DISPLAY_HIDE_READ))
+		if (conf_get_bool_value (FOLDER_DISPLAY_HIDE_READ))
 			itemlist_priv.filter = g_slist_append (NULL, rule_new (NULL, "unread", "", TRUE));
 	}
 
