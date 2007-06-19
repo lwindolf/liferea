@@ -1,4 +1,4 @@
-.TH LIFEREA "1" "July 22, 2006"
+.TH LIFEREA "1" "June 19, 2007"
 .SH NAME
 Liferea \- RSS/RDF and Atom news aggregator
 
@@ -31,6 +31,9 @@ Print debugging messages for the cache handling
 .B \-\-debug\-conf
 Print debugging messages of the configuration handling
 .TP
+.B \-\-debug\-db
+Print debugging messages of the database handling
+.TP
 .B \-\-debug\-gui
 Print debugging messages of all GUI functions
 .TP
@@ -38,6 +41,9 @@ Print debugging messages of all GUI functions
 Enables HTML rendering debugging. Each time Liferea
 renders HTML output it will also dump the generated
 HTML into ~/.liferea_1.1/output.xhtml.
+.TP
+.B \-\-debug\-net
+Print debugging messages of all network activity
 .TP
 .B \-\-debug\-parsing
 Print debugging messages of all parsing functions
@@ -55,7 +61,7 @@ Print debugging messages of the feed update processing
 Print verbose debugging messages
 
 .SH DBUS INTERFACE
-To allow integration with other programs \fBLiferea\fP profives a DBUS
+To allow integration with other programs \fBLiferea\fP provides a DBUS
 interface for automatic creation of new subscriptions. The script
 \fBliferea-add-feed\fP is a convenient way to use this interface. Just
 pass a valid feed URL as parameter and the feed will be added to the
@@ -86,7 +92,7 @@ Contains stylesheets for feed display
 /usr/share/liferea/opml/
 Contains default feedlists
 .TP
-~/.liferea_1.1/
+~/.liferea_1.4/
 Contains user feedlist and feed cache
 .SH AUTHOR
 This manual page was written by Lars Lindner <lars.lindner@gmail.com>.
