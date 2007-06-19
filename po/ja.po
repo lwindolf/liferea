@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea trunk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-06-09 18:46+0200\n"
+"POT-Creation-Date: 2007-06-20 01:42+0200\n"
 "PO-Revision-Date: 2006-12-05 21:27+0100\n"
 "Last-Translator: Lars Lindner <lars.lindner@gmx.net>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -436,7 +436,7 @@ msgstr "検索結果の最大数(_N):"
 msgid "New Folder"
 msgstr "新しいフォルダ"
 
-#: ../liferea.glade.h:128 ../src/node.c:335
+#: ../liferea.glade.h:128 ../src/node.c:365
 msgid "New Subscription"
 msgstr "新しい購読"
 
@@ -519,7 +519,7 @@ msgid ""
 "Saves this search as a search folder, which will appear in the feed list."
 msgstr "この検索結果を検索フォルダとして保存して配信元一覧の中に表示します"
 
-#: ../liferea.glade.h:145 ../src/ui/ui_mainwindow.c:993
+#: ../liferea.glade.h:145
 msgid "Script Manager"
 msgstr "スクリプト・マネージャ"
 
@@ -618,7 +618,7 @@ msgstr ""
 msgid "Translation"
 msgstr "翻訳者"
 
-#: ../liferea.glade.h:171 ../src/ui/ui_mainwindow.c:991
+#: ../liferea.glade.h:171
 msgid "Update Monitor"
 msgstr "更新モニタ"
 
@@ -1235,22 +1235,22 @@ msgstr ""
 msgid "Could not determine the feed type."
 msgstr "<p>配信元の種類を特定できませんでした！</p>"
 
-#: ../src/feed.c:614
+#: ../src/feed.c:619
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "\"%s\" の URL が更新されていました"
 
-#: ../src/feed.c:623
+#: ../src/feed.c:628
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr "\"%s\" は停止しています。今後 Liferea が更新することはありません！"
 
-#: ../src/feed.c:626
+#: ../src/feed.c:631
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\" は最後の更新から変更はありません"
 
-#: ../src/feed.c:649
+#: ../src/feed.c:653
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!</"
@@ -1260,30 +1260,30 @@ msgstr ""
 "syndication 形式の一つとして提供されているものであるか確認して下さい！</"
 "p>XML パーサの出力:<br /><div class='xmlparseroutput'>"
 
-#: ../src/feed.c:673
+#: ../src/feed.c:677
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" を更新しました..."
 
-#: ../src/feed.c:690
+#: ../src/feed.c:686
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" は利用できません"
 
-#: ../src/feed.c:751
+#: ../src/feed.c:747
 #, c-format
 msgid "Updating \"%s\""
 msgstr "\"%s\" の更新中"
 
-#: ../src/feedlist.c:286
+#: ../src/feedlist.c:295
 msgid "You have to select a feed entry"
 msgstr "配信元エントリを一つ選択して下さい"
 
-#: ../src/feedlist.c:293 ../src/feedlist.c:302
+#: ../src/feedlist.c:302 ../src/feedlist.c:311
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea はオフライン・モードです (更新はできません)"
 
-#: ../src/feedlist.c:425
+#: ../src/feedlist.c:436
 msgid ""
 "This version of Liferea uses a new cache format and has migrated your feed "
 "cache. The cache content of v1.2 in ~/.liferea_1.2 was not deleted "
@@ -1296,7 +1296,7 @@ msgid "Feed link auto discovery failed! No feed links found!"
 msgstr "配信元リンクの自動検出に失敗しました。配信元リンクが見つかりません！"
 
 #. if we don't find a feed with unread items do nothing
-#: ../src/itemlist.c:334
+#: ../src/itemlist.c:336
 msgid "There are no unread items "
 msgstr "未読のトピックはありません"
 
@@ -1327,28 +1327,28 @@ msgid "  --debug-<topic>  Print debugging messages for the given topic"
 msgstr "  --debug-cache    キャッシュ操作を行うデバッグ・メッセージを表示する"
 
 #: ../src/main.c:75
-msgid "                   Possible topics are: all,cache,conf,gui,html"
+msgid "                   Possible topics are: all,cache,conf,db,gui,html"
 msgstr ""
 
 #: ../src/main.c:76
-msgid "                   parsing,plugins,trace,update,db,verbose"
+msgid "                   net,parsing,plugins,trace,update,verbose"
 msgstr ""
 
 #: ../src/main.c:156
 msgid "Liferea seems to be running already!"
 msgstr "既に Liferea が起動中のようです！"
 
-#: ../src/main.c:224
+#: ../src/main.c:226
 #, c-format
 msgid "The --mainwindow-state argument must be given a parameter.\n"
 msgstr "オプション --mainwindow-state にはパラメータが一つ必要です。\n"
 
-#: ../src/main.c:232
+#: ../src/main.c:234
 #, c-format
 msgid "The --session argument must be given a parameter.\n"
 msgstr "オプション '--session' にはパラメータが一つ必要です。\n"
 
-#: ../src/main.c:235
+#: ../src/main.c:237
 #, c-format
 msgid "Liferea encountered an unknown argument: %s\n"
 msgstr "Liferea は不明なオプションを受け取りました: %s\n"
@@ -1433,12 +1433,12 @@ msgstr "を含む"
 msgid "not included"
 msgstr "を含まない"
 
-#: ../src/subscription.c:78
+#: ../src/subscription.c:79
 #, fuzzy, c-format
 msgid "Subscription \"%s\" is already being updated!"
 msgstr "この配信元 \"%s\" は既に更新済みです！"
 
-#: ../src/subscription.c:83
+#: ../src/subscription.c:84
 #, fuzzy, c-format
 msgid ""
 "The subscription \"%s\" was discontinued. Liferea won't update it anymore!"
@@ -1446,7 +1446,7 @@ msgstr ""
 "その配信元 \"%s\" は更新を停止しています。今後 Liferea で更新されることはあり"
 "ません！"
 
-#: ../src/subscription.c:257
+#: ../src/subscription.c:258
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
@@ -1454,7 +1454,7 @@ msgstr ""
 "この購読を読み込む際に問題が発生しました。URL と端末に出力されているメッセー"
 "ジを確認して下さい。"
 
-#: ../src/subscription.c:273
+#: ../src/subscription.c:274
 #, fuzzy, c-format
 msgid "Updating favicon for \"%s\""
 msgstr "\"%s\" の favicon の更新中"
@@ -1551,7 +1551,7 @@ msgstr "本当に \"%s\" を削除してもよろしいですか？"
 msgid "Deletion Confirmation"
 msgstr "削除の確認"
 
-#: ../src/ui/ui_htmlview.c:79
+#: ../src/ui/ui_htmlview.c:80
 msgid ""
 "Sorry, I was not able to load any installed browser plugin! Try the --debug-"
 "plugins option to get debug information!"
@@ -1561,16 +1561,16 @@ msgstr ""
 "てみて下さい)"
 
 #. FIXME: bad because this is not only used for item links!
-#: ../src/ui/ui_htmlview.c:200
+#: ../src/ui/ui_htmlview.c:201
 msgid "This item does not have a link assigned!"
 msgstr "このトピックにはリンクが割り当てられていません！"
 
-#: ../src/ui/ui_htmlview.c:294 ../src/ui/ui_htmlview.c:314
+#: ../src/ui/ui_htmlview.c:295 ../src/ui/ui_htmlview.c:315
 #, c-format
 msgid "Browser command failed: %s"
 msgstr "ブラウザの起動に失敗しました: %s"
 
-#: ../src/ui/ui_htmlview.c:317
+#: ../src/ui/ui_htmlview.c:318
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "起動中: \"%s\""
@@ -1634,11 +1634,11 @@ msgstr "faq_ja.html"
 msgid "FAQ"
 msgstr "FAQ"
 
-#: ../src/ui/ui_mainwindow.c:639
+#: ../src/ui/ui_mainwindow.c:657
 msgid "Liferea - Linux Feed Reader"
 msgstr "Liferea - Linux ニュース・アグリゲータ"
 
-#: ../src/ui/ui_mainwindow.c:641
+#: ../src/ui/ui_mainwindow.c:659
 msgid ""
 "<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news "
 "feeds.</p><p>The left pane contains the list of your subscriptions. To add a "
@@ -1652,91 +1652,86 @@ msgstr ""
 "を選択して下さい。この一覧からニュースを選択すると、そのヘッドラインが読み込"
 "まれて右側のペインに表示されます。</p>"
 
-#: ../src/ui/ui_mainwindow.c:721
+#: ../src/ui/ui_mainwindow.c:736
 msgid "Liferea is now online"
 msgstr "Liferea はオンラインです"
 
-#: ../src/ui/ui_mainwindow.c:723
+#: ../src/ui/ui_mainwindow.c:738
 msgid "Work Offline"
 msgstr "オフラインで動作"
 
-#: ../src/ui/ui_mainwindow.c:725
+#: ../src/ui/ui_mainwindow.c:740
 msgid "Liferea is now offline"
 msgstr "Liferea はオフラインです"
 
-#: ../src/ui/ui_mainwindow.c:727
+#: ../src/ui/ui_mainwindow.c:742
 msgid "Work Online"
 msgstr "オンラインで動作"
 
-#: ../src/ui/ui_mainwindow.c:988
-msgid "_Program"
-msgstr "プログラム(_P)"
+#: ../src/ui/ui_mainwindow.c:1003
+#, fuzzy
+msgid "_Subscriptions"
+msgstr "次で購読する"
 
-#: ../src/ui/ui_mainwindow.c:989
-msgid "_Preferences"
-msgstr "設定(_P)"
-
-#: ../src/ui/ui_mainwindow.c:989
-msgid "Edit Preferences."
-msgstr "設定を編集します"
-
-#: ../src/ui/ui_mainwindow.c:991
-msgid "Show a list of all feeds currently in the update queue"
-msgstr "更新キューの中にある全ての配信元の一覧を表示します"
-
-#: ../src/ui/ui_mainwindow.c:993
-msgid "Allows to configure and edit LUA hook scripts"
-msgstr "LUA フック・スクリプトの設定と編集を行います"
-
-#: ../src/ui/ui_mainwindow.c:995
-msgid "_Quit"
-msgstr "終了(_Q)"
-
-#: ../src/ui/ui_mainwindow.c:997
-msgid "_Feeds"
-msgstr "配信元(_F)"
-
-#: ../src/ui/ui_mainwindow.c:998
+#: ../src/ui/ui_mainwindow.c:1004
 msgid "Update _All"
 msgstr "全て更新(_A)"
 
-#: ../src/ui/ui_mainwindow.c:998
+#: ../src/ui/ui_mainwindow.c:1004
 msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr "全ての配信元を更新します (OCS ディレクトリを除く)"
 
-#: ../src/ui/ui_mainwindow.c:1000
+#: ../src/ui/ui_mainwindow.c:1006
 msgid "Mark All As _Read"
 msgstr "全て既読にする(_R)"
 
-#: ../src/ui/ui_mainwindow.c:1000
+#: ../src/ui/ui_mainwindow.c:1006
 msgid "Marks read every item of every subscription."
 msgstr "全ての購読の全てのトピックに既読マークを付与します"
 
-#: ../src/ui/ui_mainwindow.c:1002
+#: ../src/ui/ui_mainwindow.c:1008
 msgid "_Import Feed List..."
 msgstr "配信元一覧のインポート(_I)..."
 
-#: ../src/ui/ui_mainwindow.c:1002
+#: ../src/ui/ui_mainwindow.c:1008
 msgid "Imports an OPML feed list."
 msgstr "OPML 配信元一覧をインポートします"
 
-#: ../src/ui/ui_mainwindow.c:1003
+#: ../src/ui/ui_mainwindow.c:1009
 msgid "_Export Feed List..."
 msgstr "配信元一覧のエキスポート(_E)..."
 
-#: ../src/ui/ui_mainwindow.c:1003
+#: ../src/ui/ui_mainwindow.c:1009
 msgid "Exports the feed list as OPML."
 msgstr "OPML の配信元一覧としてエキスポートします"
 
-#: ../src/ui/ui_mainwindow.c:1005
-msgid "_Items"
+#: ../src/ui/ui_mainwindow.c:1010
+msgid "_Quit"
+msgstr "終了(_Q)"
+
+#: ../src/ui/ui_mainwindow.c:1012
+#, fuzzy
+msgid "_Feed"
+msgstr "配信元(_F)"
+
+#: ../src/ui/ui_mainwindow.c:1013
+msgid "Remove _All"
+msgstr "全て削除(_A)"
+
+#: ../src/ui/ui_mainwindow.c:1013
+msgid "Removes all items of the currently selected feed."
+msgstr "現在選択している全てのトピックを削除します"
+
+#: ../src/ui/ui_mainwindow.c:1016
+#, fuzzy
+msgid "_Item"
 msgstr "トピック(_I)"
 
-#: ../src/ui/ui_mainwindow.c:1006
+#: ../src/ui/ui_mainwindow.c:1017
 msgid "_Next Unread Item"
 msgstr "次の未読のトピック(_N)"
 
-#: ../src/ui/ui_mainwindow.c:1006
+#: ../src/ui/ui_mainwindow.c:1017
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -1744,187 +1739,211 @@ msgstr ""
 "次の未読トピックへジャンプします (必要であれば、未読トピックがある次の配信元"
 "を選択して下さい)"
 
-#: ../src/ui/ui_mainwindow.c:1008
+#: ../src/ui/ui_mainwindow.c:1019
 msgid "Toggle _Read Status"
 msgstr "既読ステータスの切替え(_R)"
 
-#: ../src/ui/ui_mainwindow.c:1008
+#: ../src/ui/ui_mainwindow.c:1019
 msgid "Toggles the read status of the selected item."
 msgstr "選択したトピックの既読ステータスを切り替えます"
 
-#: ../src/ui/ui_mainwindow.c:1010
+#: ../src/ui/ui_mainwindow.c:1021
 msgid "Toggle Item _Flag"
 msgstr "トピック・フラグの切り替え(_F)"
 
-#: ../src/ui/ui_mainwindow.c:1010
+#: ../src/ui/ui_mainwindow.c:1021
 msgid "Toggles the flag status of the selected item."
 msgstr "選択したトピックの既読ステータスを切り替えます"
 
-#: ../src/ui/ui_mainwindow.c:1012
-msgid "Remove _Selected"
-msgstr "選択したトピックの削除(_S)"
+#: ../src/ui/ui_mainwindow.c:1023
+#, fuzzy
+msgid "R_emove"
+msgstr "/トピックの削除(_E)"
 
-#: ../src/ui/ui_mainwindow.c:1012
+#: ../src/ui/ui_mainwindow.c:1023
 msgid "Removes the selected item."
 msgstr "現在選択しているトピックを削除します"
 
-#: ../src/ui/ui_mainwindow.c:1014
-msgid "Remove _All"
-msgstr "全て削除(_A)"
-
-#: ../src/ui/ui_mainwindow.c:1014
-msgid "Removes all items of the currently selected feed."
-msgstr "現在選択している全てのトピックを削除します"
-
-#: ../src/ui/ui_mainwindow.c:1016
+#: ../src/ui/ui_mainwindow.c:1025
 msgid "_Launch In Browser"
 msgstr "ブラウザで開く(_L)"
 
-#: ../src/ui/ui_mainwindow.c:1016
+#: ../src/ui/ui_mainwindow.c:1025
 msgid "Launches the item's link in the configured browser."
 msgstr "設定したブラウザでトピックのリンクを開きます"
 
-#: ../src/ui/ui_mainwindow.c:1019
+#: ../src/ui/ui_mainwindow.c:1028
 msgid "_View"
 msgstr "表示(_V)"
 
-#: ../src/ui/ui_mainwindow.c:1020
+#: ../src/ui/ui_mainwindow.c:1029
 msgid "_Increase Text Size"
 msgstr "文字を大きくする(_I)"
 
-#: ../src/ui/ui_mainwindow.c:1020
+#: ../src/ui/ui_mainwindow.c:1029
 msgid "Increases the text size of the item view."
 msgstr "エントリの表示サイズを大きくします"
 
-#: ../src/ui/ui_mainwindow.c:1022
+#: ../src/ui/ui_mainwindow.c:1031
 msgid "_Decrease Text Size"
 msgstr "文字を小さくする(_D)"
 
-#: ../src/ui/ui_mainwindow.c:1022
+#: ../src/ui/ui_mainwindow.c:1031
 msgid "Decreases the text size of the item view."
 msgstr "エントリの表示サイズを小さくします"
 
-#: ../src/ui/ui_mainwindow.c:1024
-msgid "_Normal View"
-msgstr "通常の表示(_N)"
+#: ../src/ui/ui_mainwindow.c:1034
+msgid "_Tools"
+msgstr ""
 
-#: ../src/ui/ui_mainwindow.c:1024
-msgid "Set view mode to mail client mode."
-msgstr "メーラー・モードで表示します"
+#: ../src/ui/ui_mainwindow.c:1035
+#, fuzzy
+msgid "_Update Monitor"
+msgstr "更新モニタ"
 
-#: ../src/ui/ui_mainwindow.c:1026
-msgid "_Wide View"
-msgstr "ワイド表示(_W)"
+#: ../src/ui/ui_mainwindow.c:1035
+msgid "Show a list of all feeds currently in the update queue"
+msgstr "更新キューの中にある全ての配信元の一覧を表示します"
 
-#: ../src/ui/ui_mainwindow.c:1026
-msgid "Set view mode to use three vertical panes."
-msgstr "ニュースやトピック、その内容を縦型に表示します"
+#: ../src/ui/ui_mainwindow.c:1037
+#, fuzzy
+msgid "_Script Manager"
+msgstr "スクリプト・マネージャ"
 
-#: ../src/ui/ui_mainwindow.c:1028
-msgid "_Combined View"
-msgstr "サマリ表示(_C)"
+#: ../src/ui/ui_mainwindow.c:1037
+msgid "Allows to configure and edit LUA hook scripts"
+msgstr "LUA フック・スクリプトの設定と編集を行います"
 
-#: ../src/ui/ui_mainwindow.c:1028
-msgid "Set view mode to two pane mode."
-msgstr "トピックを要約して表示します"
+#: ../src/ui/ui_mainwindow.c:1039
+msgid "_Preferences"
+msgstr "設定(_P)"
 
-#: ../src/ui/ui_mainwindow.c:1031
+#: ../src/ui/ui_mainwindow.c:1039
+msgid "Edit Preferences."
+msgstr "設定を編集します"
+
+#: ../src/ui/ui_mainwindow.c:1042
 msgid "_Search"
 msgstr "検索(_S)"
 
-#: ../src/ui/ui_mainwindow.c:1032
+#: ../src/ui/ui_mainwindow.c:1043
 msgid "Search All Feeds..."
 msgstr "全ての配信元から検索..."
 
-#: ../src/ui/ui_mainwindow.c:1032
+#: ../src/ui/ui_mainwindow.c:1043
 msgid "Show the search dialog."
 msgstr "検索ダイアログを表示します"
 
-#: ../src/ui/ui_mainwindow.c:1033
+#: ../src/ui/ui_mainwindow.c:1044
 msgid "Search With ..."
 msgstr "次で検索..."
 
-#: ../src/ui/ui_mainwindow.c:1035
+#: ../src/ui/ui_mainwindow.c:1046
 msgid "_Help"
 msgstr "ヘルプ(_H)"
 
-#: ../src/ui/ui_mainwindow.c:1036
+#: ../src/ui/ui_mainwindow.c:1047
 msgid "_Contents"
 msgstr "目次(_C)"
 
-#: ../src/ui/ui_mainwindow.c:1036
+#: ../src/ui/ui_mainwindow.c:1047
 msgid "View help for this application."
 msgstr "このアプリケーションのヘルプを表示します"
 
-#: ../src/ui/ui_mainwindow.c:1037
+#: ../src/ui/ui_mainwindow.c:1048
 msgid "_Quick Reference"
 msgstr "クイック・リファレンス(_Q)"
 
-#: ../src/ui/ui_mainwindow.c:1037
+#: ../src/ui/ui_mainwindow.c:1048
 msgid "View a list of all Liferea shortcuts."
 msgstr "ショートカット・キーの一覧を表示します"
 
-#: ../src/ui/ui_mainwindow.c:1039
+#: ../src/ui/ui_mainwindow.c:1050
 msgid "_FAQ"
 msgstr "FAQ(_F)"
 
-#: ../src/ui/ui_mainwindow.c:1039
+#: ../src/ui/ui_mainwindow.c:1050
 msgid "View the FAQ for this application."
 msgstr "このアプリケーションの FAQ を表示します"
 
-#: ../src/ui/ui_mainwindow.c:1040
+#: ../src/ui/ui_mainwindow.c:1051
 msgid "_About"
 msgstr "情報(_A)"
 
-#: ../src/ui/ui_mainwindow.c:1040
+#: ../src/ui/ui_mainwindow.c:1051
 msgid "Shows an about dialog."
 msgstr "情報ダイアログを表示します"
 
-#: ../src/ui/ui_mainwindow.c:1044
+#: ../src/ui/ui_mainwindow.c:1055
+msgid "_Normal View"
+msgstr "通常の表示(_N)"
+
+#: ../src/ui/ui_mainwindow.c:1055
+msgid "Set view mode to mail client mode."
+msgstr "メーラー・モードで表示します"
+
+#: ../src/ui/ui_mainwindow.c:1057
+msgid "_Wide View"
+msgstr "ワイド表示(_W)"
+
+#: ../src/ui/ui_mainwindow.c:1057
+msgid "Set view mode to use three vertical panes."
+msgstr "ニュースやトピック、その内容を縦型に表示します"
+
+#: ../src/ui/ui_mainwindow.c:1059
+msgid "_Combined View"
+msgstr "サマリ表示(_C)"
+
+#: ../src/ui/ui_mainwindow.c:1059
+msgid "Set view mode to two pane mode."
+msgstr "トピックを要約して表示します"
+
+#: ../src/ui/ui_mainwindow.c:1064
 msgid "_New Subscription..."
 msgstr "新しい購読(_N)..."
 
-#: ../src/ui/ui_mainwindow.c:1044
+#: ../src/ui/ui_mainwindow.c:1064
 msgid "Adds a subscription to the feed list."
 msgstr "新しい購読を追加します"
 
-#: ../src/ui/ui_mainwindow.c:1046
+#: ../src/ui/ui_mainwindow.c:1066
 msgid "New _Folder..."
 msgstr "新しいフォルダ(_F)..."
 
-#: ../src/ui/ui_mainwindow.c:1046
+#: ../src/ui/ui_mainwindow.c:1066
 msgid "Adds a folder to the feed list."
 msgstr "新しいフォルダを追加します"
 
-#: ../src/ui/ui_mainwindow.c:1047
+#: ../src/ui/ui_mainwindow.c:1067
 msgid "New S_earch Folder..."
 msgstr "新しい検索フォルダ(_E)..."
 
-#: ../src/ui/ui_mainwindow.c:1047
+#: ../src/ui/ui_mainwindow.c:1067
 msgid "Adds a new search folder to the feed list."
 msgstr "新しい検索フォルダを配信元一覧に追加します"
 
-#: ../src/ui/ui_mainwindow.c:1048
+#: ../src/ui/ui_mainwindow.c:1068
 msgid "New _Source..."
 msgstr "新しい場所(_S)..."
 
-#: ../src/ui/ui_mainwindow.c:1048
+#: ../src/ui/ui_mainwindow.c:1068
 msgid "Adds a new feed list source."
 msgstr "新しい配信元一覧の場所を追加します"
 
-#: ../src/ui/ui_mainwindow.c:1049
+#: ../src/ui/ui_mainwindow.c:1069
 msgid "New _News Bin..."
 msgstr "新しい NewsBin(_N)..."
 
-#: ../src/ui/ui_mainwindow.c:1049
+#: ../src/ui/ui_mainwindow.c:1069
 msgid "Adds a new news bin."
 msgstr "新しい NewsBin を追加します"
 
-#: ../src/ui/ui_mainwindow.c:1053
-msgid "_Mark Selected As Read"
-msgstr "選択したものを既読にする(_M)"
+#: ../src/ui/ui_mainwindow.c:1073
+#, fuzzy
+msgid "_Mark As Read"
+msgstr "/全て既読にする(_M)"
 
-#: ../src/ui/ui_mainwindow.c:1053
+#: ../src/ui/ui_mainwindow.c:1073
 msgid ""
 "Marks all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
@@ -1932,47 +1951,49 @@ msgstr ""
 "現在選択している購読の全てのトピック、または選択したフォルダの全てのトピック"
 "に既読マークを付与します"
 
-#: ../src/ui/ui_mainwindow.c:1055
-msgid "Update _Selected"
-msgstr "配信元の更新(_S)"
+#: ../src/ui/ui_mainwindow.c:1075
+#, fuzzy
+msgid "_Update"
+msgstr "/更新(_U)"
 
-#: ../src/ui/ui_mainwindow.c:1055
+#: ../src/ui/ui_mainwindow.c:1075
 msgid ""
 "Updates the selected subscription or all subscriptions of the selected "
 "folder."
 msgstr "選択した購読または選択したフォルダにある全ての購読を更新します"
 
-#: ../src/ui/ui_mainwindow.c:1060
+#: ../src/ui/ui_mainwindow.c:1080
 msgid "_Properties..."
 msgstr "プロパティ(_P)..."
 
-#: ../src/ui/ui_mainwindow.c:1060
+#: ../src/ui/ui_mainwindow.c:1080
 msgid "Opens the property dialog for the selected subscription."
 msgstr "選択した購読のプロパティ・ダイアログを開きます"
 
-#: ../src/ui/ui_mainwindow.c:1061
-msgid "_Delete Selected"
-msgstr "配信元の削除(_D)"
+#: ../src/ui/ui_mainwindow.c:1081
+#, fuzzy
+msgid "_Remove"
+msgstr "全て削除(_A)"
 
-#: ../src/ui/ui_mainwindow.c:1061
+#: ../src/ui/ui_mainwindow.c:1081
 msgid "Removes the selected subscription."
 msgstr "選択した購読を削除します"
 
-#: ../src/ui/ui_mainwindow.c:1065
+#: ../src/ui/ui_mainwindow.c:1085
 msgid "_Work Offline"
 msgstr "オフラインで動作(_W)"
 
-#: ../src/ui/ui_mainwindow.c:1065
+#: ../src/ui/ui_mainwindow.c:1085
 msgid "This option allows you to disable subscription updating."
 msgstr "このオプションで購読の更新を無効にできます"
 
-#: ../src/ui/ui_mainwindow.c:1197
+#: ../src/ui/ui_mainwindow.c:1219
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
 msgstr[0] "(新着 %d個)"
 
-#: ../src/ui/ui_mainwindow.c:1203
+#: ../src/ui/ui_mainwindow.c:1225
 #, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
@@ -2114,43 +2135,43 @@ msgstr "/削除(_D)"
 msgid "/_Properties..."
 msgstr "/プロパティ(_P)..."
 
-#: ../src/ui/ui_prefs.c:78
+#: ../src/ui/ui_prefs.c:77
 msgid "GNOME Default Browser"
 msgstr ""
 
+#: ../src/ui/ui_prefs.c:471
+msgid "Choose download directory"
+msgstr "ダウンロード・フォルダの選択"
+
 #. This allows the user to choose their own browser by typing in the command.
-#: ../src/ui/ui_prefs.c:248
+#: ../src/ui/ui_prefs.c:522
 msgid "Manual"
 msgstr "手動"
 
-#: ../src/ui/ui_prefs.c:258
+#: ../src/ui/ui_prefs.c:532
 msgid "Browser default"
 msgstr "デフォルト"
 
-#: ../src/ui/ui_prefs.c:263
+#: ../src/ui/ui_prefs.c:537
 msgid "Existing window"
 msgstr "既存のウィンドウ"
 
-#: ../src/ui/ui_prefs.c:268
+#: ../src/ui/ui_prefs.c:542
 msgid "New window"
 msgstr "新しいウィンドウ"
 
-#: ../src/ui/ui_prefs.c:273 ../src/ui/ui_tabs.c:196 ../src/ui/ui_tabs.c:199
+#: ../src/ui/ui_prefs.c:547 ../src/ui/ui_tabs.c:196 ../src/ui/ui_tabs.c:199
 #: ../src/ui/ui_tabs.c:219 ../src/ui/ui_tabs.c:353
 msgid "New tab"
 msgstr "新しいタブ"
 
-#: ../src/ui/ui_prefs.c:481
+#: ../src/ui/ui_prefs.c:765
 msgid "Type"
 msgstr "種類"
 
-#: ../src/ui/ui_prefs.c:484
+#: ../src/ui/ui_prefs.c:768
 msgid "Program"
 msgstr "プログラム"
-
-#: ../src/ui/ui_prefs.c:729
-msgid "Choose download directory"
-msgstr "ダウンロード・フォルダの選択"
 
 #: ../src/ui/ui_script.c:35
 #, fuzzy
@@ -2208,11 +2229,12 @@ msgid "No script selected!"
 msgstr "No script selected!"
 
 #: ../src/ui/ui_search.c:119
-#, c-format
-msgid "%d Search Results for \"%s\""
-msgstr "\"%2$s\" を検索した結果 %1$d個"
+#, fuzzy, c-format
+msgid "%d Search Result for \"%s\""
+msgid_plural "%d Search Results for \"%s\""
+msgstr[0] "\"%2$s\" を検索した結果 %1$d個"
 
-#: ../src/ui/ui_search.c:121
+#: ../src/ui/ui_search.c:124
 msgid ""
 "The item list now contains all items matching the specified search pattern. "
 "If you want to save this search result permanently you can click the "
@@ -2224,16 +2246,18 @@ msgstr ""
 "ボタンをクリックして下さい。すると、この結果が検索フォルダとして一覧に追加さ"
 "れます。"
 
-#: ../src/ui/ui_search.c:241
+#: ../src/ui/ui_search.c:244
 msgid "Create a new search feed."
 msgstr "新しい検索用配信元を生成します"
 
 #: ../src/ui/ui_subscription.c:441
-#, c-format
-msgid "The provider of this feed suggests an update interval of %d minutes."
-msgstr "この配信元では更新間隔を %d分にすることを推奨しています。"
+#, fuzzy, c-format
+msgid "The provider of this feed suggests an update interval of %d minute."
+msgid_plural ""
+"The provider of this feed suggests an update interval of %d minutes."
+msgstr[0] "この配信元では更新間隔を %d分にすることを推奨しています。"
 
-#: ../src/ui/ui_subscription.c:443
+#: ../src/ui/ui_subscription.c:445
 msgid "This feed specifies no default update interval."
 msgstr "この配信元ではデフォルトの更新間隔を設定してません。"
 
@@ -2360,11 +2384,11 @@ msgstr ""
 msgid "Source Selection"
 msgstr ""
 
-#: ../src/fl_sources/node_source.c:223
+#: ../src/fl_sources/node_source.c:222
 msgid "No feed list source types found!"
 msgstr "配信元一覧のソースの種類が見つかりませんでした！"
 
-#: ../src/fl_sources/node_source.c:255
+#: ../src/fl_sources/node_source.c:254
 msgid "Source Type"
 msgstr "ソースの種類"
 
@@ -2402,8 +2426,9 @@ msgstr "全て既読にする(_R)"
 
 #: ../src/notification/notif_libnotify.c:227
 #, c-format
-msgid "%s has %d new / updated headlines\n"
-msgstr ""
+msgid "%s has %d new / updated headline\n"
+msgid_plural "%s has %d new / updated headlines\n"
+msgstr[0] ""
 
 #: ../src/notification/notif_libnotify.c:229
 #, fuzzy
@@ -2414,6 +2439,21 @@ msgstr "配信元のタイトルが"
 #, fuzzy
 msgid "Show details"
 msgstr "詳細"
+
+#~ msgid "_Program"
+#~ msgstr "プログラム(_P)"
+
+#~ msgid "Remove _Selected"
+#~ msgstr "選択したトピックの削除(_S)"
+
+#~ msgid "_Mark Selected As Read"
+#~ msgstr "選択したものを既読にする(_M)"
+
+#~ msgid "Update _Selected"
+#~ msgstr "配信元の更新(_S)"
+
+#~ msgid "_Delete Selected"
+#~ msgstr "配信元の削除(_D)"
 
 #~ msgid "minutes."
 #~ msgstr "分"
@@ -2557,6 +2597,3 @@ msgstr "詳細"
 
 #~ msgid "  --debug-verbose  Print verbose debugging messages"
 #~ msgstr "  --debug-verbose  デバッグ・メッセージを詳細に表示する"
-
-#~ msgid "Subscriptions with"
-#~ msgstr "次で購読する"

@@ -438,7 +438,9 @@ ui_subscription_prop_dialog_load (SubscriptionPropDialog *spd,
 	
 	/* setup info label about default update interval */
 	if(-1 != defaultInterval)
-		defaultIntervalStr = g_strdup_printf(_("The provider of this feed suggests an update interval of %d minutes."), defaultInterval);
+		defaultIntervalStr = g_strdup_printf(ngettext("The provider of this feed suggests an update interval of %d minute.", 
+		                                              "The provider of this feed suggests an update interval of %d minutes.",
+		                                              defaultInterval), defaultInterval);
 	else
 		defaultIntervalStr = g_strdup(_("This feed specifies no default update interval."));
 

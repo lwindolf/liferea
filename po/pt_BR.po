@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-06-09 18:46+0200\n"
+"POT-Creation-Date: 2007-06-20 01:42+0200\n"
 "PO-Revision-Date: 2007-03-10 19:12-0500\n"
 "Last-Translator: Og Maciel <ogmaciel@ubuntu.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-l10n-br@listas.cipsga.org.br>\n"
@@ -436,7 +436,7 @@ msgstr "_Número Máximo de Itens por Resultado:"
 msgid "New Folder"
 msgstr "Nova Pasta"
 
-#: ../liferea.glade.h:128 ../src/node.c:335
+#: ../liferea.glade.h:128 ../src/node.c:365
 msgid "New Subscription"
 msgstr "Nova Assinatura"
 
@@ -522,7 +522,7 @@ msgstr ""
 "Salva esta pesquisa como uma pasta virtual, a qual aparecerá na lista de "
 "fontes de notícias."
 
-#: ../liferea.glade.h:145 ../src/ui/ui_mainwindow.c:993
+#: ../liferea.glade.h:145
 msgid "Script Manager"
 msgstr "Gerenciador de Script"
 
@@ -625,7 +625,7 @@ msgstr ""
 msgid "Translation"
 msgstr "Tradução"
 
-#: ../liferea.glade.h:171 ../src/ui/ui_mainwindow.c:991
+#: ../liferea.glade.h:171
 msgid "Update Monitor"
 msgstr "Atualizar Monitor"
 
@@ -1245,22 +1245,22 @@ msgstr ""
 msgid "Could not determine the feed type."
 msgstr "<p>Não foi possível determinar o tipo de fonte de notícias.</p>"
 
-#: ../src/feed.c:614
+#: ../src/feed.c:619
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "O URL de \"%s\" mudou permanetemente e foi atualizado"
 
-#: ../src/feed.c:623
+#: ../src/feed.c:628
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr "\"%s\" foi interrompido e não será mais atualizado pelo Liferea!"
 
-#: ../src/feed.c:626
+#: ../src/feed.c:631
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\" não foi modificado desde a última atualização"
 
-#: ../src/feed.c:649
+#: ../src/feed.c:653
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!</"
@@ -1271,30 +1271,30 @@ msgstr ""
 "formatos de sindicato suportados!</p> Saída do Analisador de XML:<br /><div "
 "class='xmlparseroutput'>"
 
-#: ../src/feed.c:673
+#: ../src/feed.c:677
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" atualizado..."
 
-#: ../src/feed.c:690
+#: ../src/feed.c:686
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" não está disponível"
 
-#: ../src/feed.c:751
+#: ../src/feed.c:747
 #, c-format
 msgid "Updating \"%s\""
 msgstr "Atualizando \"%s\""
 
-#: ../src/feedlist.c:286
+#: ../src/feedlist.c:295
 msgid "You have to select a feed entry"
 msgstr "Você deve selecionar uma fonte de notícias"
 
-#: ../src/feedlist.c:293 ../src/feedlist.c:302
+#: ../src/feedlist.c:302 ../src/feedlist.c:311
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea está em modo offline. Não é possível atualizar."
 
-#: ../src/feedlist.c:425
+#: ../src/feedlist.c:436
 #, fuzzy
 msgid ""
 "This version of Liferea uses a new cache format and has migrated your feed "
@@ -1314,7 +1314,7 @@ msgstr ""
 "fonte de notícias foi encontrado!"
 
 #. if we don't find a feed with unread items do nothing
-#: ../src/itemlist.c:334
+#: ../src/itemlist.c:336
 msgid "There are no unread items "
 msgstr "Não há artigo não lido "
 
@@ -1345,29 +1345,29 @@ msgid "  --debug-<topic>  Print debugging messages for the given topic"
 msgstr "  --debug-cache    Exibe mensagens de depuração do arquivo do cache"
 
 #: ../src/main.c:75
-msgid "                   Possible topics are: all,cache,conf,gui,html"
+msgid "                   Possible topics are: all,cache,conf,db,gui,html"
 msgstr ""
 
 #: ../src/main.c:76
-msgid "                   parsing,plugins,trace,update,db,verbose"
+msgid "                   net,parsing,plugins,trace,update,verbose"
 msgstr ""
 
 #: ../src/main.c:156
 msgid "Liferea seems to be running already!"
 msgstr "Parece que o Liferea já está em execução!"
 
-#: ../src/main.c:224
+#: ../src/main.c:226
 #, c-format
 msgid "The --mainwindow-state argument must be given a parameter.\n"
 msgstr ""
 "É necessário passar um argumento para o parâmetro --mainwindow-state.\n"
 
-#: ../src/main.c:232
+#: ../src/main.c:234
 #, c-format
 msgid "The --session argument must be given a parameter.\n"
 msgstr "É necessário passar um argumento para o parâmetro --session.\n"
 
-#: ../src/main.c:235
+#: ../src/main.c:237
 #, c-format
 msgid "Liferea encountered an unknown argument: %s\n"
 msgstr "Liferea encontrou um argumento desconhecido: %s\n"
@@ -1452,12 +1452,12 @@ msgstr "incluído"
 msgid "not included"
 msgstr "não incluído"
 
-#: ../src/subscription.c:78
+#: ../src/subscription.c:79
 #, fuzzy, c-format
 msgid "Subscription \"%s\" is already being updated!"
 msgstr "Esta fonte de notícias \"%s\" já está sendo atualizada!"
 
-#: ../src/subscription.c:83
+#: ../src/subscription.c:84
 #, fuzzy, c-format
 msgid ""
 "The subscription \"%s\" was discontinued. Liferea won't update it anymore!"
@@ -1465,7 +1465,7 @@ msgstr ""
 "A fonte de notícias \"%s\" foi interrompida e não será mais atualizada pelo "
 "Liferea!"
 
-#: ../src/subscription.c:257
+#: ../src/subscription.c:258
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
@@ -1473,7 +1473,7 @@ msgstr ""
 "Foi encontrado um problema ao ler esta assinatura. Por favor, verifique o "
 "URL e a saída no console."
 
-#: ../src/subscription.c:273
+#: ../src/subscription.c:274
 #, fuzzy, c-format
 msgid "Updating favicon for \"%s\""
 msgstr "Atualizando o ícone da fonte de notícias \"%s\""
@@ -1569,7 +1569,7 @@ msgstr "Você realmente deseja apagar \"%s\"?"
 msgid "Deletion Confirmation"
 msgstr "Confirmar Exclusão"
 
-#: ../src/ui/ui_htmlview.c:79
+#: ../src/ui/ui_htmlview.c:80
 msgid ""
 "Sorry, I was not able to load any installed browser plugin! Try the --debug-"
 "plugins option to get debug information!"
@@ -1578,16 +1578,16 @@ msgstr ""
 "navegador! Tente a opção --debug-plugins para obter informações de depuração!"
 
 #. FIXME: bad because this is not only used for item links!
-#: ../src/ui/ui_htmlview.c:200
+#: ../src/ui/ui_htmlview.c:201
 msgid "This item does not have a link assigned!"
 msgstr "Este item não possui um link designado!"
 
-#: ../src/ui/ui_htmlview.c:294 ../src/ui/ui_htmlview.c:314
+#: ../src/ui/ui_htmlview.c:295 ../src/ui/ui_htmlview.c:315
 #, c-format
 msgid "Browser command failed: %s"
 msgstr "Falha ao iniciar o navegador: %s"
 
-#: ../src/ui/ui_htmlview.c:317
+#: ../src/ui/ui_htmlview.c:318
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Iniciando: \"%s\""
@@ -1651,11 +1651,11 @@ msgstr "faq_en.html"
 msgid "FAQ"
 msgstr "FAQ"
 
-#: ../src/ui/ui_mainwindow.c:639
+#: ../src/ui/ui_mainwindow.c:657
 msgid "Liferea - Linux Feed Reader"
 msgstr "Liferea - Leitor de Fontes de Notícias do Linux"
 
-#: ../src/ui/ui_mainwindow.c:641
+#: ../src/ui/ui_mainwindow.c:659
 msgid ""
 "<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news "
 "feeds.</p><p>The left pane contains the list of your subscriptions. To add a "
@@ -1670,91 +1670,86 @@ msgstr ""
 "notícias, selecione-a na lista de fontes de notícias e as notícias serão "
 "carregadas no painel direito.</p>"
 
-#: ../src/ui/ui_mainwindow.c:721
+#: ../src/ui/ui_mainwindow.c:736
 msgid "Liferea is now online"
 msgstr "Liferea está online"
 
-#: ../src/ui/ui_mainwindow.c:723
+#: ../src/ui/ui_mainwindow.c:738
 msgid "Work Offline"
 msgstr "Trabalhar Offline"
 
-#: ../src/ui/ui_mainwindow.c:725
+#: ../src/ui/ui_mainwindow.c:740
 msgid "Liferea is now offline"
 msgstr "Liferea está offline"
 
-#: ../src/ui/ui_mainwindow.c:727
+#: ../src/ui/ui_mainwindow.c:742
 msgid "Work Online"
 msgstr "Trabalhar Online"
 
-#: ../src/ui/ui_mainwindow.c:988
-msgid "_Program"
-msgstr "_Programa"
+#: ../src/ui/ui_mainwindow.c:1003
+#, fuzzy
+msgid "_Subscriptions"
+msgstr "Nova Assinatura"
 
-#: ../src/ui/ui_mainwindow.c:989
-msgid "_Preferences"
-msgstr "_Preferências"
-
-#: ../src/ui/ui_mainwindow.c:989
-msgid "Edit Preferences."
-msgstr "Editar Preferências."
-
-#: ../src/ui/ui_mainwindow.c:991
-msgid "Show a list of all feeds currently in the update queue"
-msgstr "Exibe uma lista de todas as fontes de notícias na fila de atualização"
-
-#: ../src/ui/ui_mainwindow.c:993
-msgid "Allows to configure and edit LUA hook scripts"
-msgstr "Permite configurar e editar ganchos de script LUA"
-
-#: ../src/ui/ui_mainwindow.c:995
-msgid "_Quit"
-msgstr "_Sair"
-
-#: ../src/ui/ui_mainwindow.c:997
-msgid "_Feeds"
-msgstr "_Fontes"
-
-#: ../src/ui/ui_mainwindow.c:998
+#: ../src/ui/ui_mainwindow.c:1004
 msgid "Update _All"
 msgstr "A_tualizar Todos"
 
-#: ../src/ui/ui_mainwindow.c:998
+#: ../src/ui/ui_mainwindow.c:1004
 msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr "Atualiza todas assinaturas. Isto não atualiza diretórios OCS."
 
-#: ../src/ui/ui_mainwindow.c:1000
+#: ../src/ui/ui_mainwindow.c:1006
 msgid "Mark All As _Read"
 msgstr "Ma_rcar Todos Como Lido"
 
-#: ../src/ui/ui_mainwindow.c:1000
+#: ../src/ui/ui_mainwindow.c:1006
 msgid "Marks read every item of every subscription."
 msgstr "Marca todos itens de todas assinaturas como lido."
 
-#: ../src/ui/ui_mainwindow.c:1002
+#: ../src/ui/ui_mainwindow.c:1008
 msgid "_Import Feed List..."
 msgstr "_Importar Lista de Fontes de Notícias..."
 
-#: ../src/ui/ui_mainwindow.c:1002
+#: ../src/ui/ui_mainwindow.c:1008
 msgid "Imports an OPML feed list."
 msgstr "Importa uma lista OPML de fonte de notícias."
 
-#: ../src/ui/ui_mainwindow.c:1003
+#: ../src/ui/ui_mainwindow.c:1009
 msgid "_Export Feed List..."
 msgstr "_Exportar Lista de Notícias..."
 
-#: ../src/ui/ui_mainwindow.c:1003
+#: ../src/ui/ui_mainwindow.c:1009
 msgid "Exports the feed list as OPML."
 msgstr "Exporta a lista de fonte de notícias como OPML."
 
-#: ../src/ui/ui_mainwindow.c:1005
-msgid "_Items"
+#: ../src/ui/ui_mainwindow.c:1010
+msgid "_Quit"
+msgstr "_Sair"
+
+#: ../src/ui/ui_mainwindow.c:1012
+#, fuzzy
+msgid "_Feed"
+msgstr "_Fontes"
+
+#: ../src/ui/ui_mainwindow.c:1013
+msgid "Remove _All"
+msgstr "Remover _Todos"
+
+#: ../src/ui/ui_mainwindow.c:1013
+msgid "Removes all items of the currently selected feed."
+msgstr "Remove todos os item selecionados da fonte de notícias atual."
+
+#: ../src/ui/ui_mainwindow.c:1016
+#, fuzzy
+msgid "_Item"
 msgstr "_Itens"
 
-#: ../src/ui/ui_mainwindow.c:1006
+#: ../src/ui/ui_mainwindow.c:1017
 msgid "_Next Unread Item"
 msgstr "_Avançar Para Item Não Lido"
 
-#: ../src/ui/ui_mainwindow.c:1006
+#: ../src/ui/ui_mainwindow.c:1017
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -1762,187 +1757,211 @@ msgstr ""
 "Avança para o próximo item não lido. Se for necessário, seleciona a próxima "
 "fonte de notícias com itens ainda não lidos."
 
-#: ../src/ui/ui_mainwindow.c:1008
+#: ../src/ui/ui_mainwindow.c:1019
 msgid "Toggle _Read Status"
 msgstr "Alte_rar para Lido ou Não Lido"
 
-#: ../src/ui/ui_mainwindow.c:1008
+#: ../src/ui/ui_mainwindow.c:1019
 msgid "Toggles the read status of the selected item."
 msgstr "Alterna o status de leitura do artigo selecionado."
 
-#: ../src/ui/ui_mainwindow.c:1010
+#: ../src/ui/ui_mainwindow.c:1021
 msgid "Toggle Item _Flag"
 msgstr "Alternar Sinalizador do Item"
 
-#: ../src/ui/ui_mainwindow.c:1010
+#: ../src/ui/ui_mainwindow.c:1021
 msgid "Toggles the flag status of the selected item."
 msgstr "Alterna o sinalizador de status do item selecionado."
 
-#: ../src/ui/ui_mainwindow.c:1012
-msgid "Remove _Selected"
-msgstr "Remover _Seleção"
+#: ../src/ui/ui_mainwindow.c:1023
+#, fuzzy
+msgid "R_emove"
+msgstr "/R_emover Item"
 
-#: ../src/ui/ui_mainwindow.c:1012
+#: ../src/ui/ui_mainwindow.c:1023
 msgid "Removes the selected item."
 msgstr "Remove os artigos selcionados."
 
-#: ../src/ui/ui_mainwindow.c:1014
-msgid "Remove _All"
-msgstr "Remover _Todos"
-
-#: ../src/ui/ui_mainwindow.c:1014
-msgid "Removes all items of the currently selected feed."
-msgstr "Remove todos os item selecionados da fonte de notícias atual."
-
-#: ../src/ui/ui_mainwindow.c:1016
+#: ../src/ui/ui_mainwindow.c:1025
 msgid "_Launch In Browser"
 msgstr "_Abrir No Navegador"
 
-#: ../src/ui/ui_mainwindow.c:1016
+#: ../src/ui/ui_mainwindow.c:1025
 msgid "Launches the item's link in the configured browser."
 msgstr "Abre o link do item no navegador configurado."
 
-#: ../src/ui/ui_mainwindow.c:1019
+#: ../src/ui/ui_mainwindow.c:1028
 msgid "_View"
 msgstr "_Ver"
 
-#: ../src/ui/ui_mainwindow.c:1020
+#: ../src/ui/ui_mainwindow.c:1029
 msgid "_Increase Text Size"
 msgstr "_Aumentar Tamanho do Texto"
 
-#: ../src/ui/ui_mainwindow.c:1020
+#: ../src/ui/ui_mainwindow.c:1029
 msgid "Increases the text size of the item view."
 msgstr "Aumenta o tamanho do texto de exibição do item."
 
-#: ../src/ui/ui_mainwindow.c:1022
+#: ../src/ui/ui_mainwindow.c:1031
 msgid "_Decrease Text Size"
 msgstr "_Diminuir Tamanho do Texto"
 
-#: ../src/ui/ui_mainwindow.c:1022
+#: ../src/ui/ui_mainwindow.c:1031
 msgid "Decreases the text size of the item view."
 msgstr "Diminui o tamanho do texto de exibição do item."
 
-#: ../src/ui/ui_mainwindow.c:1024
-msgid "_Normal View"
-msgstr "Visualização _Normal"
+#: ../src/ui/ui_mainwindow.c:1034
+msgid "_Tools"
+msgstr ""
 
-#: ../src/ui/ui_mainwindow.c:1024
-msgid "Set view mode to mail client mode."
-msgstr "Define o modo de visualização para o modo de cliente de e-mail."
+#: ../src/ui/ui_mainwindow.c:1035
+#, fuzzy
+msgid "_Update Monitor"
+msgstr "Atualizar Monitor"
 
-#: ../src/ui/ui_mainwindow.c:1026
-msgid "_Wide View"
-msgstr "Visualização Ampla"
+#: ../src/ui/ui_mainwindow.c:1035
+msgid "Show a list of all feeds currently in the update queue"
+msgstr "Exibe uma lista de todas as fontes de notícias na fila de atualização"
 
-#: ../src/ui/ui_mainwindow.c:1026
-msgid "Set view mode to use three vertical panes."
-msgstr "Define o modo de visualização para usar três painéis verticais."
+#: ../src/ui/ui_mainwindow.c:1037
+#, fuzzy
+msgid "_Script Manager"
+msgstr "Gerenciador de Script"
 
-#: ../src/ui/ui_mainwindow.c:1028
-msgid "_Combined View"
-msgstr "Visualização _Combinada"
+#: ../src/ui/ui_mainwindow.c:1037
+msgid "Allows to configure and edit LUA hook scripts"
+msgstr "Permite configurar e editar ganchos de script LUA"
 
-#: ../src/ui/ui_mainwindow.c:1028
-msgid "Set view mode to two pane mode."
-msgstr "Define o modo de visualização para um modo com dois painéis."
+#: ../src/ui/ui_mainwindow.c:1039
+msgid "_Preferences"
+msgstr "_Preferências"
 
-#: ../src/ui/ui_mainwindow.c:1031
+#: ../src/ui/ui_mainwindow.c:1039
+msgid "Edit Preferences."
+msgstr "Editar Preferências."
+
+#: ../src/ui/ui_mainwindow.c:1042
 msgid "_Search"
 msgstr "Pesqui_sar"
 
-#: ../src/ui/ui_mainwindow.c:1032
+#: ../src/ui/ui_mainwindow.c:1043
 msgid "Search All Feeds..."
 msgstr "Procurar em Todas as Fontes..."
 
-#: ../src/ui/ui_mainwindow.c:1032
+#: ../src/ui/ui_mainwindow.c:1043
 msgid "Show the search dialog."
 msgstr "Exibe o diálogo de pesquisa."
 
-#: ../src/ui/ui_mainwindow.c:1033
+#: ../src/ui/ui_mainwindow.c:1044
 msgid "Search With ..."
 msgstr "Pesquisar Com..."
 
-#: ../src/ui/ui_mainwindow.c:1035
+#: ../src/ui/ui_mainwindow.c:1046
 msgid "_Help"
 msgstr "_Ajuda"
 
-#: ../src/ui/ui_mainwindow.c:1036
+#: ../src/ui/ui_mainwindow.c:1047
 msgid "_Contents"
 msgstr "_Índice"
 
-#: ../src/ui/ui_mainwindow.c:1036
+#: ../src/ui/ui_mainwindow.c:1047
 msgid "View help for this application."
 msgstr "Veja ajuda para esta aplicação."
 
-#: ../src/ui/ui_mainwindow.c:1037
+#: ../src/ui/ui_mainwindow.c:1048
 msgid "_Quick Reference"
 msgstr "R_eferência Rápida"
 
-#: ../src/ui/ui_mainwindow.c:1037
+#: ../src/ui/ui_mainwindow.c:1048
 msgid "View a list of all Liferea shortcuts."
 msgstr "Exibir uma lista de atalhos do Liferea."
 
-#: ../src/ui/ui_mainwindow.c:1039
+#: ../src/ui/ui_mainwindow.c:1050
 msgid "_FAQ"
 msgstr "_FAQ"
 
-#: ../src/ui/ui_mainwindow.c:1039
+#: ../src/ui/ui_mainwindow.c:1050
 msgid "View the FAQ for this application."
 msgstr "Exibir o FAQ desta aplicação."
 
-#: ../src/ui/ui_mainwindow.c:1040
+#: ../src/ui/ui_mainwindow.c:1051
 msgid "_About"
 msgstr "_Sobre"
 
-#: ../src/ui/ui_mainwindow.c:1040
+#: ../src/ui/ui_mainwindow.c:1051
 msgid "Shows an about dialog."
 msgstr "Exibe o diálogo sobre esta aplicação."
 
-#: ../src/ui/ui_mainwindow.c:1044
+#: ../src/ui/ui_mainwindow.c:1055
+msgid "_Normal View"
+msgstr "Visualização _Normal"
+
+#: ../src/ui/ui_mainwindow.c:1055
+msgid "Set view mode to mail client mode."
+msgstr "Define o modo de visualização para o modo de cliente de e-mail."
+
+#: ../src/ui/ui_mainwindow.c:1057
+msgid "_Wide View"
+msgstr "Visualização Ampla"
+
+#: ../src/ui/ui_mainwindow.c:1057
+msgid "Set view mode to use three vertical panes."
+msgstr "Define o modo de visualização para usar três painéis verticais."
+
+#: ../src/ui/ui_mainwindow.c:1059
+msgid "_Combined View"
+msgstr "Visualização _Combinada"
+
+#: ../src/ui/ui_mainwindow.c:1059
+msgid "Set view mode to two pane mode."
+msgstr "Define o modo de visualização para um modo com dois painéis."
+
+#: ../src/ui/ui_mainwindow.c:1064
 msgid "_New Subscription..."
 msgstr "_Novas Assinaturas..."
 
-#: ../src/ui/ui_mainwindow.c:1044
+#: ../src/ui/ui_mainwindow.c:1064
 msgid "Adds a subscription to the feed list."
 msgstr "Adiciona uma nova assinatura à lista de fontes de notícias."
 
-#: ../src/ui/ui_mainwindow.c:1046
+#: ../src/ui/ui_mainwindow.c:1066
 msgid "New _Folder..."
 msgstr "Nova _Pasta..."
 
-#: ../src/ui/ui_mainwindow.c:1046
+#: ../src/ui/ui_mainwindow.c:1066
 msgid "Adds a folder to the feed list."
 msgstr "Adiciona uma pasta à lista de fontes de notícias."
 
-#: ../src/ui/ui_mainwindow.c:1047
+#: ../src/ui/ui_mainwindow.c:1067
 msgid "New S_earch Folder..."
 msgstr "Nova Pasta Virtual..."
 
-#: ../src/ui/ui_mainwindow.c:1047
+#: ../src/ui/ui_mainwindow.c:1067
 msgid "Adds a new search folder to the feed list."
 msgstr "Adicionar uma nova pasta virtual à lista de fontes de notícias."
 
-#: ../src/ui/ui_mainwindow.c:1048
+#: ../src/ui/ui_mainwindow.c:1068
 msgid "New _Source..."
 msgstr "Nova Fo_nte..."
 
-#: ../src/ui/ui_mainwindow.c:1048
+#: ../src/ui/ui_mainwindow.c:1068
 msgid "Adds a new feed list source."
 msgstr "Adicionar uma nova fonte de lista de fontes de notícias."
 
-#: ../src/ui/ui_mainwindow.c:1049
+#: ../src/ui/ui_mainwindow.c:1069
 msgid "New _News Bin..."
 msgstr "_Novo Recipiente de Notícias..."
 
-#: ../src/ui/ui_mainwindow.c:1049
+#: ../src/ui/ui_mainwindow.c:1069
 msgid "Adds a new news bin."
 msgstr "Adiciona um novo recipiente de notícias."
 
-#: ../src/ui/ui_mainwindow.c:1053
-msgid "_Mark Selected As Read"
-msgstr "_Marcar Seleção Como Lido"
+#: ../src/ui/ui_mainwindow.c:1073
+#, fuzzy
+msgid "_Mark As Read"
+msgstr "/_Marcar Todos Como Lido"
 
-#: ../src/ui/ui_mainwindow.c:1053
+#: ../src/ui/ui_mainwindow.c:1073
 msgid ""
 "Marks all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
@@ -1950,49 +1969,51 @@ msgstr ""
 "Marca todos os itens da assinatura selecionada ou todas as assinaturas da "
 "pasta selecionada como lidos."
 
-#: ../src/ui/ui_mainwindow.c:1055
-msgid "Update _Selected"
-msgstr "Atualizar _Seleção"
+#: ../src/ui/ui_mainwindow.c:1075
+#, fuzzy
+msgid "_Update"
+msgstr "/_Atualizar"
 
-#: ../src/ui/ui_mainwindow.c:1055
+#: ../src/ui/ui_mainwindow.c:1075
 msgid ""
 "Updates the selected subscription or all subscriptions of the selected "
 "folder."
 msgstr ""
 "Atualiza a assinatura selecionada ou todas assinaturas da pasta selecionada. "
 
-#: ../src/ui/ui_mainwindow.c:1060
+#: ../src/ui/ui_mainwindow.c:1080
 msgid "_Properties..."
 msgstr "_Propriedades..."
 
-#: ../src/ui/ui_mainwindow.c:1060
+#: ../src/ui/ui_mainwindow.c:1080
 msgid "Opens the property dialog for the selected subscription."
 msgstr "Abre o diálogo de propriedades para a assinatura selecionada."
 
-#: ../src/ui/ui_mainwindow.c:1061
-msgid "_Delete Selected"
-msgstr "_Apagar Seleção"
+#: ../src/ui/ui_mainwindow.c:1081
+#, fuzzy
+msgid "_Remove"
+msgstr "Remover _Todos"
 
-#: ../src/ui/ui_mainwindow.c:1061
+#: ../src/ui/ui_mainwindow.c:1081
 msgid "Removes the selected subscription."
 msgstr "Remove as assinaturas selecionadas."
 
-#: ../src/ui/ui_mainwindow.c:1065
+#: ../src/ui/ui_mainwindow.c:1085
 msgid "_Work Offline"
 msgstr "T_rabalhar Offline"
 
-#: ../src/ui/ui_mainwindow.c:1065
+#: ../src/ui/ui_mainwindow.c:1085
 msgid "This option allows you to disable subscription updating."
 msgstr "Esta opção permite desabilitar a atualização de assinaturas."
 
-#: ../src/ui/ui_mainwindow.c:1197
+#: ../src/ui/ui_mainwindow.c:1219
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
 msgstr[0] "(%d novo)"
 msgstr[1] "(%d novos)"
 
-#: ../src/ui/ui_mainwindow.c:1203
+#: ../src/ui/ui_mainwindow.c:1225
 #, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
@@ -2135,43 +2156,43 @@ msgstr "/_Apagar"
 msgid "/_Properties..."
 msgstr "/_Propriedades..."
 
-#: ../src/ui/ui_prefs.c:78
+#: ../src/ui/ui_prefs.c:77
 msgid "GNOME Default Browser"
 msgstr ""
 
+#: ../src/ui/ui_prefs.c:471
+msgid "Choose download directory"
+msgstr "Escolha o diretório de download"
+
 #. This allows the user to choose their own browser by typing in the command.
-#: ../src/ui/ui_prefs.c:248
+#: ../src/ui/ui_prefs.c:522
 msgid "Manual"
 msgstr "Manual"
 
-#: ../src/ui/ui_prefs.c:258
+#: ../src/ui/ui_prefs.c:532
 msgid "Browser default"
 msgstr "Navegador padrão"
 
-#: ../src/ui/ui_prefs.c:263
+#: ../src/ui/ui_prefs.c:537
 msgid "Existing window"
 msgstr "Janela existente"
 
-#: ../src/ui/ui_prefs.c:268
+#: ../src/ui/ui_prefs.c:542
 msgid "New window"
 msgstr "Nova Janela"
 
-#: ../src/ui/ui_prefs.c:273 ../src/ui/ui_tabs.c:196 ../src/ui/ui_tabs.c:199
+#: ../src/ui/ui_prefs.c:547 ../src/ui/ui_tabs.c:196 ../src/ui/ui_tabs.c:199
 #: ../src/ui/ui_tabs.c:219 ../src/ui/ui_tabs.c:353
 msgid "New tab"
 msgstr "Nova aba"
 
-#: ../src/ui/ui_prefs.c:481
+#: ../src/ui/ui_prefs.c:765
 msgid "Type"
 msgstr "Tipo"
 
-#: ../src/ui/ui_prefs.c:484
+#: ../src/ui/ui_prefs.c:768
 msgid "Program"
 msgstr "Programa"
-
-#: ../src/ui/ui_prefs.c:729
-msgid "Choose download directory"
-msgstr "Escolha o diretório de download"
 
 #: ../src/ui/ui_script.c:35
 #, fuzzy
@@ -2229,11 +2250,13 @@ msgid "No script selected!"
 msgstr "Nenhum script selecionado!"
 
 #: ../src/ui/ui_search.c:119
-#, c-format
-msgid "%d Search Results for \"%s\""
-msgstr "%d Resultados da Pesquisa por \"%s\""
+#, fuzzy, c-format
+msgid "%d Search Result for \"%s\""
+msgid_plural "%d Search Results for \"%s\""
+msgstr[0] "%d Resultados da Pesquisa por \"%s\""
+msgstr[1] "%d Resultados da Pesquisa por \"%s\""
 
-#: ../src/ui/ui_search.c:121
+#: ../src/ui/ui_search.c:124
 msgid ""
 "The item list now contains all items matching the specified search pattern. "
 "If you want to save this search result permanently you can click the "
@@ -2245,18 +2268,23 @@ msgstr ""
 "botão \"Pasta Virtual\" no diálogo da pesquisa e o Liferea adicionará uma "
 "Pasta Virtual na sua lista de fontes de notícias."
 
-#: ../src/ui/ui_search.c:241
+#: ../src/ui/ui_search.c:244
 msgid "Create a new search feed."
 msgstr "Criar uma nova pesquisa de fontes de notícias."
 
 #: ../src/ui/ui_subscription.c:441
-#, c-format
-msgid "The provider of this feed suggests an update interval of %d minutes."
-msgstr ""
+#, fuzzy, c-format
+msgid "The provider of this feed suggests an update interval of %d minute."
+msgid_plural ""
+"The provider of this feed suggests an update interval of %d minutes."
+msgstr[0] ""
+"O fornecedor desta fonte de notícias sugere um intervalo de atualização de %"
+"d minutos."
+msgstr[1] ""
 "O fornecedor desta fonte de notícias sugere um intervalo de atualização de %"
 "d minutos."
 
-#: ../src/ui/ui_subscription.c:443
+#: ../src/ui/ui_subscription.c:445
 msgid "This feed specifies no default update interval."
 msgstr ""
 "Esta fonte de notícias não possui um intervalo de atualização definido."
@@ -2396,11 +2424,11 @@ msgstr "Selecione o tipo de fonte que você deseja adicionar..."
 msgid "Source Selection"
 msgstr "Seleção de Fonte"
 
-#: ../src/fl_sources/node_source.c:223
+#: ../src/fl_sources/node_source.c:222
 msgid "No feed list source types found!"
 msgstr "Nenhum tipo de lista de fonte de notícias encontrado!"
 
-#: ../src/fl_sources/node_source.c:255
+#: ../src/fl_sources/node_source.c:254
 msgid "Source Type"
 msgstr "Tipo de Fonte"
 
@@ -2438,8 +2466,10 @@ msgstr "Ma_rcar Todos Como Lido"
 
 #: ../src/notification/notif_libnotify.c:227
 #, c-format
-msgid "%s has %d new / updated headlines\n"
-msgstr ""
+msgid "%s has %d new / updated headline\n"
+msgid_plural "%s has %d new / updated headlines\n"
+msgstr[0] ""
+msgstr[1] ""
 
 #: ../src/notification/notif_libnotify.c:229
 #, fuzzy
@@ -2450,6 +2480,21 @@ msgstr "Título do item"
 #, fuzzy
 msgid "Show details"
 msgstr "Detalhes"
+
+#~ msgid "_Program"
+#~ msgstr "_Programa"
+
+#~ msgid "Remove _Selected"
+#~ msgstr "Remover _Seleção"
+
+#~ msgid "_Mark Selected As Read"
+#~ msgstr "_Marcar Seleção Como Lido"
+
+#~ msgid "Update _Selected"
+#~ msgstr "Atualizar _Seleção"
+
+#~ msgid "_Delete Selected"
+#~ msgstr "_Apagar Seleção"
 
 #~ msgid "minutes."
 #~ msgstr "minutos."

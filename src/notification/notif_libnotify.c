@@ -224,7 +224,7 @@ static void notif_libnotify_node_has_new_items(nodePtr node_p) {
 		return;
 	}
 
-	labelSummary_p = g_strdup_printf (_("%s has %d new / updated headlines\n"), node_get_title(node_p), item_count );
+	labelSummary_p = g_strdup_printf (ngettext("%s has %d new / updated headline\n", "%s has %d new / updated headlines\n", item_count), node_get_title(node_p), item_count );
 
 	n = notify_notification_new ( _("Feed Update"), labelSummary_p, NULL, NULL);
 

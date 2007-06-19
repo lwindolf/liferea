@@ -12,6 +12,8 @@
 	* Avoids updating comment feeds when offline.
 	* Reimplemented subscription metadata support.
 	* Manpage update (Emilio Pozuelo Monfort)
+	* Fixes for several plural literal localizations.
+	  (patch SF #1738731 from Ed Catmur)
 
 
 2007-06-16  Lars Lindner  <lars.lindner@gmail.com>

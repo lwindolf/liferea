@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-06-09 18:46+0200\n"
+"POT-Creation-Date: 2007-06-20 01:42+0200\n"
 "PO-Revision-Date: 2007-01-28 22:13+0200\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
@@ -435,7 +435,7 @@ msgstr "ال_عدد الأقصى من عناصر الناتج:"
 msgid "New Folder"
 msgstr "مجلّد جديد"
 
-#: ../liferea.glade.h:128 ../src/node.c:335
+#: ../liferea.glade.h:128 ../src/node.c:365
 msgid "New Subscription"
 msgstr "اشتراك جديد"
 
@@ -517,7 +517,7 @@ msgid ""
 "Saves this search as a search folder, which will appear in the feed list."
 msgstr "يحفظ هذا البحث كمجلّد بحث، الذي سيظهر في قائمة التلقيمات."
 
-#: ../liferea.glade.h:145 ../src/ui/ui_mainwindow.c:993
+#: ../liferea.glade.h:145
 msgid "Script Manager"
 msgstr "مدير السكريبت"
 
@@ -618,7 +618,7 @@ msgstr ""
 msgid "Translation"
 msgstr "الترجمه"
 
-#: ../liferea.glade.h:171 ../src/ui/ui_mainwindow.c:991
+#: ../liferea.glade.h:171
 msgid "Update Monitor"
 msgstr "مراقب التحديث"
 
@@ -1225,22 +1225,22 @@ msgstr ""
 msgid "Could not determine the feed type."
 msgstr "<p> تعذّر تحديد نوع التلقيمة. </p>"
 
-#: ../src/feed.c:614
+#: ../src/feed.c:619
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "تغير عنوان \"%s\" بشكل دائم وتم تحديثه"
 
-#: ../src/feed.c:623
+#: ../src/feed.c:628
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr "توقّف \"%s\". لن يحّثة لايفريا بعد الآن!"
 
-#: ../src/feed.c:626
+#: ../src/feed.c:631
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "لم يتغيّر \"%s\" منذ آخر تحديث"
 
-#: ../src/feed.c:649
+#: ../src/feed.c:653
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!</"
@@ -1250,30 +1250,30 @@ msgstr ""
 "مورِد متوفّر بأحد تنسيقات تجميع الأخبار المدعومة! </p> خرْج محلّل XML: <br /"
 "><div class='xmlparseroutput'>"
 
-#: ../src/feed.c:673
+#: ../src/feed.c:677
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "حُدِّث \"%s\"..."
 
-#: ../src/feed.c:690
+#: ../src/feed.c:686
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" ليس متوفّرا"
 
-#: ../src/feed.c:751
+#: ../src/feed.c:747
 #, c-format
 msgid "Updating \"%s\""
 msgstr "جارِ تحديث \"%s\""
 
-#: ../src/feedlist.c:286
+#: ../src/feedlist.c:295
 msgid "You have to select a feed entry"
 msgstr "عليك اختيار عنصر تلقيمة"
 
-#: ../src/feedlist.c:293 ../src/feedlist.c:302
+#: ../src/feedlist.c:302 ../src/feedlist.c:311
 msgid "Liferea is in offline mode. No update possible."
 msgstr "لايفريا في وضع دون اتصال. لا يمكن التحديث."
 
-#: ../src/feedlist.c:425
+#: ../src/feedlist.c:436
 #, fuzzy
 msgid ""
 "This version of Liferea uses a new cache format and has migrated your feed "
@@ -1290,7 +1290,7 @@ msgid "Feed link auto discovery failed! No feed links found!"
 msgstr "فشَل الإكتشاف الآلي لوصلة التلقيم! لم يُعثر على أي وصلة تلقيم!"
 
 #. if we don't find a feed with unread items do nothing
-#: ../src/itemlist.c:334
+#: ../src/itemlist.c:336
 msgid "There are no unread items "
 msgstr "لا توجد عناصر غير مقروءة"
 
@@ -1320,28 +1320,28 @@ msgid "  --debug-<topic>  Print debugging messages for the given topic"
 msgstr "  --debug-cache    اطبع رسائل التنقيح للتعامل مع الذاكرة المخبّأة"
 
 #: ../src/main.c:75
-msgid "                   Possible topics are: all,cache,conf,gui,html"
+msgid "                   Possible topics are: all,cache,conf,db,gui,html"
 msgstr ""
 
 #: ../src/main.c:76
-msgid "                   parsing,plugins,trace,update,db,verbose"
+msgid "                   net,parsing,plugins,trace,update,verbose"
 msgstr ""
 
 #: ../src/main.c:156
 msgid "Liferea seems to be running already!"
 msgstr "يبدو أن لايفريا يعمل بالفعل!"
 
-#: ../src/main.c:224
+#: ../src/main.c:226
 #, c-format
 msgid "The --mainwindow-state argument must be given a parameter.\n"
 msgstr "يجب أن يعطى الخيار --mainwindow-state معاملا.\n"
 
-#: ../src/main.c:232
+#: ../src/main.c:234
 #, c-format
 msgid "The --session argument must be given a parameter.\n"
 msgstr "يجب أن يعطى الخيار --session معاملا.\n"
 
-#: ../src/main.c:235
+#: ../src/main.c:237
 #, c-format
 msgid "Liferea encountered an unknown argument: %s\n"
 msgstr "واجه لايفريا معطى مجهول: %s\n"
@@ -1426,25 +1426,25 @@ msgstr "مُدْرج"
 msgid "not included"
 msgstr "غير مُدْرج"
 
-#: ../src/subscription.c:78
+#: ../src/subscription.c:79
 #, fuzzy, c-format
 msgid "Subscription \"%s\" is already being updated!"
 msgstr "يجري تحديث هذه التلقيمة \"%s\" بالفعل!"
 
-#: ../src/subscription.c:83
+#: ../src/subscription.c:84
 #, fuzzy, c-format
 msgid ""
 "The subscription \"%s\" was discontinued. Liferea won't update it anymore!"
 msgstr "أُوقِفة التلقيمة \"%s\". لن يقوم لايفريا بالتحديث بعد الآن!"
 
-#: ../src/subscription.c:257
+#: ../src/subscription.c:258
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
 msgstr ""
 "كانت هناك مشكلة أثناء قراءة هذا الإشتراك. رجاء تحقق من العنوان وخرْج الكونسول."
 
-#: ../src/subscription.c:273
+#: ../src/subscription.c:274
 #, fuzzy, c-format
 msgid "Updating favicon for \"%s\""
 msgstr "جارِ تحديث أيقونة التلقيمة لـ \"%s\""
@@ -1540,7 +1540,7 @@ msgstr "أواثق من رغبتك في حذف \"%s\"؟"
 msgid "Deletion Confirmation"
 msgstr "تأكيد الحذف"
 
-#: ../src/ui/ui_htmlview.c:79
+#: ../src/ui/ui_htmlview.c:80
 msgid ""
 "Sorry, I was not able to load any installed browser plugin! Try the --debug-"
 "plugins option to get debug information!"
@@ -1549,16 +1549,16 @@ msgstr ""
 "معلومات التنقيح!"
 
 #. FIXME: bad because this is not only used for item links!
-#: ../src/ui/ui_htmlview.c:200
+#: ../src/ui/ui_htmlview.c:201
 msgid "This item does not have a link assigned!"
 msgstr "لا توجد وصلة مرتبطة بهذا العنصر!"
 
-#: ../src/ui/ui_htmlview.c:294 ../src/ui/ui_htmlview.c:314
+#: ../src/ui/ui_htmlview.c:295 ../src/ui/ui_htmlview.c:315
 #, c-format
 msgid "Browser command failed: %s"
 msgstr "فشل أمر المتصفّح: %s"
 
-#: ../src/ui/ui_htmlview.c:317
+#: ../src/ui/ui_htmlview.c:318
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "جارِ بدأ: \"%s\""
@@ -1624,11 +1624,11 @@ msgstr "أسألة متكرّرة"
 
 # ARABEYES: keep the html code, this is
 # intentional
-#: ../src/ui/ui_mainwindow.c:639
+#: ../src/ui/ui_mainwindow.c:657
 msgid "Liferea - Linux Feed Reader"
 msgstr "<p align=\"right\">لايفريا - قاريء تلقيمات لينكس</p>"
 
-#: ../src/ui/ui_mainwindow.c:641
+#: ../src/ui/ui_mainwindow.c:659
 msgid ""
 "<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news "
 "feeds.</p><p>The left pane contains the list of your subscriptions. To add a "
@@ -1641,91 +1641,86 @@ msgstr ""
 "اشتراك اختر تلقيمات -> اشتراك جديد. لتصفّح العناوين الرئيسية لتلقيمة اخترها "
 "في قائمة التلقيمات وستحمّل العناوين الرئيسية في اللوح الأيمن.</p>"
 
-#: ../src/ui/ui_mainwindow.c:721
+#: ../src/ui/ui_mainwindow.c:736
 msgid "Liferea is now online"
 msgstr "الآن لايفريا متّصل"
 
-#: ../src/ui/ui_mainwindow.c:723
+#: ../src/ui/ui_mainwindow.c:738
 msgid "Work Offline"
 msgstr "اعمل دون اتّصال"
 
-#: ../src/ui/ui_mainwindow.c:725
+#: ../src/ui/ui_mainwindow.c:740
 msgid "Liferea is now offline"
 msgstr "الآن لايفريا غير متّصل"
 
-#: ../src/ui/ui_mainwindow.c:727
+#: ../src/ui/ui_mainwindow.c:742
 msgid "Work Online"
 msgstr "اعمل باتّصال"
 
-#: ../src/ui/ui_mainwindow.c:988
-msgid "_Program"
-msgstr "_برنامج"
+#: ../src/ui/ui_mainwindow.c:1003
+#, fuzzy
+msgid "_Subscriptions"
+msgstr "اشتراك جديد"
 
-#: ../src/ui/ui_mainwindow.c:989
-msgid "_Preferences"
-msgstr "_تفضيلات"
-
-#: ../src/ui/ui_mainwindow.c:989
-msgid "Edit Preferences."
-msgstr "حرّر التفضيلات."
-
-#: ../src/ui/ui_mainwindow.c:991
-msgid "Show a list of all feeds currently in the update queue"
-msgstr "اعرض قائمة بكل التلقيمات الموجودة حاليا في طابور التحديث"
-
-#: ../src/ui/ui_mainwindow.c:993
-msgid "Allows to configure and edit LUA hook scripts"
-msgstr "يسمح بإعداد وتحرير LUA hook scripts"
-
-#: ../src/ui/ui_mainwindow.c:995
-msgid "_Quit"
-msgstr "ا_خرج"
-
-#: ../src/ui/ui_mainwindow.c:997
-msgid "_Feeds"
-msgstr "_تلقيمات"
-
-#: ../src/ui/ui_mainwindow.c:998
+#: ../src/ui/ui_mainwindow.c:1004
 msgid "Update _All"
 msgstr "حدّث ال_كل"
 
-#: ../src/ui/ui_mainwindow.c:998
+#: ../src/ui/ui_mainwindow.c:1004
 msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr "يُحدّث كل الإشتراكات. لا يُحدّث هذا أدلّة OCS."
 
-#: ../src/ui/ui_mainwindow.c:1000
+#: ../src/ui/ui_mainwindow.c:1006
 msgid "Mark All As _Read"
 msgstr "علّم الكل ك_مقروء"
 
-#: ../src/ui/ui_mainwindow.c:1000
+#: ../src/ui/ui_mainwindow.c:1006
 msgid "Marks read every item of every subscription."
 msgstr "علّم كل عنصر في كل اشتراك كمقروء."
 
-#: ../src/ui/ui_mainwindow.c:1002
+#: ../src/ui/ui_mainwindow.c:1008
 msgid "_Import Feed List..."
 msgstr "ا_ستورد قائمة التلقيمات..."
 
-#: ../src/ui/ui_mainwindow.c:1002
+#: ../src/ui/ui_mainwindow.c:1008
 msgid "Imports an OPML feed list."
 msgstr "استورد قائمة تلقيمات OPML."
 
-#: ../src/ui/ui_mainwindow.c:1003
+#: ../src/ui/ui_mainwindow.c:1009
 msgid "_Export Feed List..."
 msgstr "_صدّر قائمة التلقيمات..."
 
-#: ../src/ui/ui_mainwindow.c:1003
+#: ../src/ui/ui_mainwindow.c:1009
 msgid "Exports the feed list as OPML."
 msgstr "يصدّر قائمة التلقيمات كـ OPML."
 
-#: ../src/ui/ui_mainwindow.c:1005
-msgid "_Items"
+#: ../src/ui/ui_mainwindow.c:1010
+msgid "_Quit"
+msgstr "ا_خرج"
+
+#: ../src/ui/ui_mainwindow.c:1012
+#, fuzzy
+msgid "_Feed"
+msgstr "_تلقيمات"
+
+#: ../src/ui/ui_mainwindow.c:1013
+msgid "Remove _All"
+msgstr "احذف ال_كل"
+
+#: ../src/ui/ui_mainwindow.c:1013
+msgid "Removes all items of the currently selected feed."
+msgstr "يحذف كل عناصر التلقيمات المُنتقاه حالياً."
+
+#: ../src/ui/ui_mainwindow.c:1016
+#, fuzzy
+msgid "_Item"
 msgstr "_عناصر"
 
-#: ../src/ui/ui_mainwindow.c:1006
+#: ../src/ui/ui_mainwindow.c:1017
 msgid "_Next Unread Item"
 msgstr "العنصر غير المقروء ال_تالي"
 
-#: ../src/ui/ui_mainwindow.c:1006
+#: ../src/ui/ui_mainwindow.c:1017
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -1733,228 +1728,254 @@ msgstr ""
 "تقفز للعنصر الغير مقروء التالي. تختار التلقيمة التالية ذات العناصر غير "
 "المقروءة إذا كان ضرورياً."
 
-#: ../src/ui/ui_mainwindow.c:1008
+#: ../src/ui/ui_mainwindow.c:1019
 msgid "Toggle _Read Status"
 msgstr "بدّل حالة ال_قراءة"
 
-#: ../src/ui/ui_mainwindow.c:1008
+#: ../src/ui/ui_mainwindow.c:1019
 msgid "Toggles the read status of the selected item."
 msgstr "تبدّل حالة قراءة العناصر المنتقاه."
 
-#: ../src/ui/ui_mainwindow.c:1010
+#: ../src/ui/ui_mainwindow.c:1021
 msgid "Toggle Item _Flag"
 msgstr "بدّل _شارة العنصر"
 
-#: ../src/ui/ui_mainwindow.c:1010
+#: ../src/ui/ui_mainwindow.c:1021
 msgid "Toggles the flag status of the selected item."
 msgstr "تبدّل حالة شارة العنصر المنتقى."
 
-#: ../src/ui/ui_mainwindow.c:1012
-msgid "Remove _Selected"
-msgstr "احذف ال_منتقى"
+#: ../src/ui/ui_mainwindow.c:1023
+#, fuzzy
+msgid "R_emove"
+msgstr "/أ_زل عنصر"
 
-#: ../src/ui/ui_mainwindow.c:1012
+#: ../src/ui/ui_mainwindow.c:1023
 msgid "Removes the selected item."
 msgstr "يحذف العنصر المُنتقى."
 
-#: ../src/ui/ui_mainwindow.c:1014
-msgid "Remove _All"
-msgstr "احذف ال_كل"
-
-#: ../src/ui/ui_mainwindow.c:1014
-msgid "Removes all items of the currently selected feed."
-msgstr "يحذف كل عناصر التلقيمات المُنتقاه حالياً."
-
-#: ../src/ui/ui_mainwindow.c:1016
+#: ../src/ui/ui_mainwindow.c:1025
 msgid "_Launch In Browser"
 msgstr "ا_فتح في المتصفح"
 
-#: ../src/ui/ui_mainwindow.c:1016
+#: ../src/ui/ui_mainwindow.c:1025
 msgid "Launches the item's link in the configured browser."
 msgstr "يفتح وصله العنصر في المتصفّح المعدّ."
 
-#: ../src/ui/ui_mainwindow.c:1019
+#: ../src/ui/ui_mainwindow.c:1028
 msgid "_View"
 msgstr "ا_عرض"
 
-#: ../src/ui/ui_mainwindow.c:1020
+#: ../src/ui/ui_mainwindow.c:1029
 msgid "_Increase Text Size"
 msgstr "زِ_د حجم النص"
 
-#: ../src/ui/ui_mainwindow.c:1020
+#: ../src/ui/ui_mainwindow.c:1029
 msgid "Increases the text size of the item view."
 msgstr "يزيد حجم النص عند عرض العنصر."
 
-#: ../src/ui/ui_mainwindow.c:1022
+#: ../src/ui/ui_mainwindow.c:1031
 msgid "_Decrease Text Size"
 msgstr "_قلل حجم النص"
 
-#: ../src/ui/ui_mainwindow.c:1022
+#: ../src/ui/ui_mainwindow.c:1031
 msgid "Decreases the text size of the item view."
 msgstr "يقلل حجم النص عند عرض العنصر."
 
-#: ../src/ui/ui_mainwindow.c:1024
-msgid "_Normal View"
-msgstr "المشهد العادي"
+#: ../src/ui/ui_mainwindow.c:1034
+msgid "_Tools"
+msgstr ""
 
-#: ../src/ui/ui_mainwindow.c:1024
-msgid "Set view mode to mail client mode."
-msgstr "اضبط نمط العرض كنمط عميل البريد."
+#: ../src/ui/ui_mainwindow.c:1035
+#, fuzzy
+msgid "_Update Monitor"
+msgstr "مراقب التحديث"
 
-#: ../src/ui/ui_mainwindow.c:1026
-msgid "_Wide View"
-msgstr "مشهد _عريض"
+#: ../src/ui/ui_mainwindow.c:1035
+msgid "Show a list of all feeds currently in the update queue"
+msgstr "اعرض قائمة بكل التلقيمات الموجودة حاليا في طابور التحديث"
 
-#: ../src/ui/ui_mainwindow.c:1026
-msgid "Set view mode to use three vertical panes."
-msgstr "اضبط نمط العرض ليستخدم ثلاث ألواح رأسيّة."
+#: ../src/ui/ui_mainwindow.c:1037
+#, fuzzy
+msgid "_Script Manager"
+msgstr "مدير السكريبت"
 
-#: ../src/ui/ui_mainwindow.c:1028
-msgid "_Combined View"
-msgstr "مشهد مركّ_ب"
+#: ../src/ui/ui_mainwindow.c:1037
+msgid "Allows to configure and edit LUA hook scripts"
+msgstr "يسمح بإعداد وتحرير LUA hook scripts"
 
-#: ../src/ui/ui_mainwindow.c:1028
-msgid "Set view mode to two pane mode."
-msgstr "اضبط نمط العرض إلى نمط اللوحين."
+#: ../src/ui/ui_mainwindow.c:1039
+msgid "_Preferences"
+msgstr "_تفضيلات"
 
-#: ../src/ui/ui_mainwindow.c:1031
+#: ../src/ui/ui_mainwindow.c:1039
+msgid "Edit Preferences."
+msgstr "حرّر التفضيلات."
+
+#: ../src/ui/ui_mainwindow.c:1042
 msgid "_Search"
 msgstr "ا_بحث"
 
-#: ../src/ui/ui_mainwindow.c:1032
+#: ../src/ui/ui_mainwindow.c:1043
 msgid "Search All Feeds..."
 msgstr "ابحث في كل التلقيمات..."
 
-#: ../src/ui/ui_mainwindow.c:1032
+#: ../src/ui/ui_mainwindow.c:1043
 msgid "Show the search dialog."
 msgstr "اظهر حوار البحث."
 
-#: ../src/ui/ui_mainwindow.c:1033
+#: ../src/ui/ui_mainwindow.c:1044
 msgid "Search With ..."
 msgstr "ابحث باستخدام..."
 
-#: ../src/ui/ui_mainwindow.c:1035
+#: ../src/ui/ui_mainwindow.c:1046
 msgid "_Help"
 msgstr "_مساعدة"
 
-#: ../src/ui/ui_mainwindow.c:1036
+#: ../src/ui/ui_mainwindow.c:1047
 msgid "_Contents"
 msgstr "الم_حتويات"
 
-#: ../src/ui/ui_mainwindow.c:1036
+#: ../src/ui/ui_mainwindow.c:1047
 msgid "View help for this application."
 msgstr "اعرض مساعدة هذا التطبيق."
 
-#: ../src/ui/ui_mainwindow.c:1037
+#: ../src/ui/ui_mainwindow.c:1048
 msgid "_Quick Reference"
 msgstr "مرجع _سريع"
 
-#: ../src/ui/ui_mainwindow.c:1037
+#: ../src/ui/ui_mainwindow.c:1048
 msgid "View a list of all Liferea shortcuts."
 msgstr "اعرض قائمة بكل اختصارات لايفريا."
 
-#: ../src/ui/ui_mainwindow.c:1039
+#: ../src/ui/ui_mainwindow.c:1050
 msgid "_FAQ"
 msgstr "أ_سئلة متكرّرة"
 
-#: ../src/ui/ui_mainwindow.c:1039
+#: ../src/ui/ui_mainwindow.c:1050
 msgid "View the FAQ for this application."
 msgstr "اعرض الأسألة المتكرّرة لهذا التطبيق."
 
-#: ../src/ui/ui_mainwindow.c:1040
+#: ../src/ui/ui_mainwindow.c:1051
 msgid "_About"
 msgstr "_حوْل"
 
-#: ../src/ui/ui_mainwindow.c:1040
+#: ../src/ui/ui_mainwindow.c:1051
 msgid "Shows an about dialog."
 msgstr "اعرض حوار حوْل."
 
-#: ../src/ui/ui_mainwindow.c:1044
+#: ../src/ui/ui_mainwindow.c:1055
+msgid "_Normal View"
+msgstr "المشهد العادي"
+
+#: ../src/ui/ui_mainwindow.c:1055
+msgid "Set view mode to mail client mode."
+msgstr "اضبط نمط العرض كنمط عميل البريد."
+
+#: ../src/ui/ui_mainwindow.c:1057
+msgid "_Wide View"
+msgstr "مشهد _عريض"
+
+#: ../src/ui/ui_mainwindow.c:1057
+msgid "Set view mode to use three vertical panes."
+msgstr "اضبط نمط العرض ليستخدم ثلاث ألواح رأسيّة."
+
+#: ../src/ui/ui_mainwindow.c:1059
+msgid "_Combined View"
+msgstr "مشهد مركّ_ب"
+
+#: ../src/ui/ui_mainwindow.c:1059
+msgid "Set view mode to two pane mode."
+msgstr "اضبط نمط العرض إلى نمط اللوحين."
+
+#: ../src/ui/ui_mainwindow.c:1064
 msgid "_New Subscription..."
 msgstr "اشتراك _جديد..."
 
-#: ../src/ui/ui_mainwindow.c:1044
+#: ../src/ui/ui_mainwindow.c:1064
 msgid "Adds a subscription to the feed list."
 msgstr "أضِف اشتراك إلى قائمة التلقيمات."
 
-#: ../src/ui/ui_mainwindow.c:1046
+#: ../src/ui/ui_mainwindow.c:1066
 msgid "New _Folder..."
 msgstr "_مجلّد جديد..."
 
-#: ../src/ui/ui_mainwindow.c:1046
+#: ../src/ui/ui_mainwindow.c:1066
 msgid "Adds a folder to the feed list."
 msgstr "أضِف مجلّد إلى قائمة التلقيمات."
 
-#: ../src/ui/ui_mainwindow.c:1047
+#: ../src/ui/ui_mainwindow.c:1067
 msgid "New S_earch Folder..."
 msgstr "مجلّد _بحث جديد..."
 
-#: ../src/ui/ui_mainwindow.c:1047
+#: ../src/ui/ui_mainwindow.c:1067
 msgid "Adds a new search folder to the feed list."
 msgstr "أضِف مجلّد بحث جديد إلى قائمة التلقيمات."
 
-#: ../src/ui/ui_mainwindow.c:1048
+#: ../src/ui/ui_mainwindow.c:1068
 msgid "New _Source..."
 msgstr "م_صدر جديد..."
 
-#: ../src/ui/ui_mainwindow.c:1048
+#: ../src/ui/ui_mainwindow.c:1068
 msgid "Adds a new feed list source."
 msgstr "أضِف مصدر قائمة تلقيمات جديد."
 
-#: ../src/ui/ui_mainwindow.c:1049
+#: ../src/ui/ui_mainwindow.c:1069
 msgid "New _News Bin..."
 msgstr "_سلّة أخبار جديدة..."
 
-#: ../src/ui/ui_mainwindow.c:1049
+#: ../src/ui/ui_mainwindow.c:1069
 msgid "Adds a new news bin."
 msgstr "أضِف سلّة أخبار جديدة."
 
-#: ../src/ui/ui_mainwindow.c:1053
-msgid "_Mark Selected As Read"
-msgstr "_علّم المنتقى كمقروء"
+#: ../src/ui/ui_mainwindow.c:1073
+#, fuzzy
+msgid "_Mark As Read"
+msgstr "/_علّم الكل كمقروء"
 
-#: ../src/ui/ui_mainwindow.c:1053
+#: ../src/ui/ui_mainwindow.c:1073
 msgid ""
 "Marks all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
 msgstr ""
 "علّم كل عناصر الإشتراك المنتقى أو كل الإشتراكات في المجلّد المنتقى كمقروء."
 
-#: ../src/ui/ui_mainwindow.c:1055
-msgid "Update _Selected"
-msgstr "حدّث ال_مُنتَقى"
+#: ../src/ui/ui_mainwindow.c:1075
+#, fuzzy
+msgid "_Update"
+msgstr "/_حدّث"
 
-#: ../src/ui/ui_mainwindow.c:1055
+#: ../src/ui/ui_mainwindow.c:1075
 msgid ""
 "Updates the selected subscription or all subscriptions of the selected "
 "folder."
 msgstr "يُحدّث الإشتراك المُنتقى أو كل الإشتراكات في المجلّد المُنتقى."
 
-#: ../src/ui/ui_mainwindow.c:1060
+#: ../src/ui/ui_mainwindow.c:1080
 msgid "_Properties..."
 msgstr "_خصائص..."
 
-#: ../src/ui/ui_mainwindow.c:1060
+#: ../src/ui/ui_mainwindow.c:1080
 msgid "Opens the property dialog for the selected subscription."
 msgstr "يفتح حوار خصائص الإشتراك المنتقى."
 
-#: ../src/ui/ui_mainwindow.c:1061
-msgid "_Delete Selected"
-msgstr "ا_حذف المنتقى"
+#: ../src/ui/ui_mainwindow.c:1081
+#, fuzzy
+msgid "_Remove"
+msgstr "احذف ال_كل"
 
-#: ../src/ui/ui_mainwindow.c:1061
+#: ../src/ui/ui_mainwindow.c:1081
 msgid "Removes the selected subscription."
 msgstr "يحذف الإشتراك المُنتقى."
 
-#: ../src/ui/ui_mainwindow.c:1065
+#: ../src/ui/ui_mainwindow.c:1085
 msgid "_Work Offline"
 msgstr "ا_عمل دون اتّصال"
 
-#: ../src/ui/ui_mainwindow.c:1065
+#: ../src/ui/ui_mainwindow.c:1085
 msgid "This option allows you to disable subscription updating."
 msgstr "يسمح لك هذا الخيار بتعطيل تحديث الإشتراك."
 
-#: ../src/ui/ui_mainwindow.c:1197
+#: ../src/ui/ui_mainwindow.c:1219
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
@@ -1963,7 +1984,7 @@ msgstr[1] "(اثنان جديدان)"
 msgstr[2] "(%d جديدة)"
 msgstr[3] "(%d جديدا)"
 
-#: ../src/ui/ui_mainwindow.c:1203
+#: ../src/ui/ui_mainwindow.c:1225
 #, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
@@ -2108,43 +2129,43 @@ msgstr "/ا_حذف"
 msgid "/_Properties..."
 msgstr "/ال_خصائص..."
 
-#: ../src/ui/ui_prefs.c:78
+#: ../src/ui/ui_prefs.c:77
 msgid "GNOME Default Browser"
 msgstr ""
 
+#: ../src/ui/ui_prefs.c:471
+msgid "Choose download directory"
+msgstr "اختر دليل التنزيل"
+
 #. This allows the user to choose their own browser by typing in the command.
-#: ../src/ui/ui_prefs.c:248
+#: ../src/ui/ui_prefs.c:522
 msgid "Manual"
 msgstr "يدوي"
 
-#: ../src/ui/ui_prefs.c:258
+#: ../src/ui/ui_prefs.c:532
 msgid "Browser default"
 msgstr "افتراضي المتصفح"
 
-#: ../src/ui/ui_prefs.c:263
+#: ../src/ui/ui_prefs.c:537
 msgid "Existing window"
 msgstr "نافذة موجودة"
 
-#: ../src/ui/ui_prefs.c:268
+#: ../src/ui/ui_prefs.c:542
 msgid "New window"
 msgstr "نافذة جديدة"
 
-#: ../src/ui/ui_prefs.c:273 ../src/ui/ui_tabs.c:196 ../src/ui/ui_tabs.c:199
+#: ../src/ui/ui_prefs.c:547 ../src/ui/ui_tabs.c:196 ../src/ui/ui_tabs.c:199
 #: ../src/ui/ui_tabs.c:219 ../src/ui/ui_tabs.c:353
 msgid "New tab"
 msgstr "لسان جديد"
 
-#: ../src/ui/ui_prefs.c:481
+#: ../src/ui/ui_prefs.c:765
 msgid "Type"
 msgstr "النوع"
 
-#: ../src/ui/ui_prefs.c:484
+#: ../src/ui/ui_prefs.c:768
 msgid "Program"
 msgstr "البرنامج"
-
-#: ../src/ui/ui_prefs.c:729
-msgid "Choose download directory"
-msgstr "اختر دليل التنزيل"
 
 #: ../src/ui/ui_script.c:35
 #, fuzzy
@@ -2202,11 +2223,15 @@ msgid "No script selected!"
 msgstr "لم يُنْتقَى أية سكريبت!"
 
 #: ../src/ui/ui_search.c:119
-#, c-format
-msgid "%d Search Results for \"%s\""
-msgstr "%d نتائج البحث عن \"%s\""
+#, fuzzy, c-format
+msgid "%d Search Result for \"%s\""
+msgid_plural "%d Search Results for \"%s\""
+msgstr[0] "%d نتائج البحث عن \"%s\""
+msgstr[1] "%d نتائج البحث عن \"%s\""
+msgstr[2] "%d نتائج البحث عن \"%s\""
+msgstr[3] "%d نتائج البحث عن \"%s\""
 
-#: ../src/ui/ui_search.c:121
+#: ../src/ui/ui_search.c:124
 msgid ""
 "The item list now contains all items matching the specified search pattern. "
 "If you want to save this search result permanently you can click the "
@@ -2217,16 +2242,21 @@ msgstr ""
 "حفظ نتائج البحث بشكل دائم فانقر زر \"مجلّد بحث\" في حوار البحث وسيضيف لايفريا "
 "مجلّد بحث في قائمة تلقيماتك."
 
-#: ../src/ui/ui_search.c:241
+#: ../src/ui/ui_search.c:244
 msgid "Create a new search feed."
 msgstr "انشيء تلقيمة بحث جديدة."
 
 #: ../src/ui/ui_subscription.c:441
-#, c-format
-msgid "The provider of this feed suggests an update interval of %d minutes."
-msgstr "مزوّد هذه التلقيمة يقترح فترة تحديث %d من الدقائق."
+#, fuzzy, c-format
+msgid "The provider of this feed suggests an update interval of %d minute."
+msgid_plural ""
+"The provider of this feed suggests an update interval of %d minutes."
+msgstr[0] "مزوّد هذه التلقيمة يقترح فترة تحديث %d من الدقائق."
+msgstr[1] "مزوّد هذه التلقيمة يقترح فترة تحديث %d من الدقائق."
+msgstr[2] "مزوّد هذه التلقيمة يقترح فترة تحديث %d من الدقائق."
+msgstr[3] "مزوّد هذه التلقيمة يقترح فترة تحديث %d من الدقائق."
 
-#: ../src/ui/ui_subscription.c:443
+#: ../src/ui/ui_subscription.c:445
 msgid "This feed specifies no default update interval."
 msgstr "لا تُحدِّد هذه التلقيمة فترة تحديث افتراضيّة."
 
@@ -2369,11 +2399,11 @@ msgstr "انتقي نوع المصدر الذي ترغب بإضافته..."
 msgid "Source Selection"
 msgstr "انتقاء المصدر"
 
-#: ../src/fl_sources/node_source.c:223
+#: ../src/fl_sources/node_source.c:222
 msgid "No feed list source types found!"
 msgstr "لم يُعثر على أنواع مصادر قائمة التلقيمات!"
 
-#: ../src/fl_sources/node_source.c:255
+#: ../src/fl_sources/node_source.c:254
 msgid "Source Type"
 msgstr "نوع المصدر"
 
@@ -2409,9 +2439,13 @@ msgid "Mark all as read"
 msgstr "علّم الكل كمقروء"
 
 #: ../src/notification/notif_libnotify.c:227
-#, c-format
-msgid "%s has %d new / updated headlines\n"
-msgstr "%s له %d من العناوين الجديدة / المُحدّثة\n"
+#, fuzzy, c-format
+msgid "%s has %d new / updated headline\n"
+msgid_plural "%s has %d new / updated headlines\n"
+msgstr[0] "%s له %d من العناوين الجديدة / المُحدّثة\n"
+msgstr[1] "%s له %d من العناوين الجديدة / المُحدّثة\n"
+msgstr[2] "%s له %d من العناوين الجديدة / المُحدّثة\n"
+msgstr[3] "%s له %d من العناوين الجديدة / المُحدّثة\n"
 
 #: ../src/notification/notif_libnotify.c:229
 msgid "Feed Update"
@@ -2420,6 +2454,21 @@ msgstr "تحديث التلقيمة"
 #: ../src/notification/notif_libnotify.c:237
 msgid "Show details"
 msgstr "اظهر التفاصيل"
+
+#~ msgid "_Program"
+#~ msgstr "_برنامج"
+
+#~ msgid "Remove _Selected"
+#~ msgstr "احذف ال_منتقى"
+
+#~ msgid "_Mark Selected As Read"
+#~ msgstr "_علّم المنتقى كمقروء"
+
+#~ msgid "Update _Selected"
+#~ msgstr "حدّث ال_مُنتَقى"
+
+#~ msgid "_Delete Selected"
+#~ msgstr "ا_حذف المنتقى"
 
 #~ msgid "minutes."
 #~ msgstr "دقائق."

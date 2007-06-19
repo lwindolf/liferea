@@ -116,7 +116,10 @@ on_searchentry_activate (GtkEntry *entry, gpointer user_data)
 	buffer = g_string_new (NULL);
 	htmlview_start_output (buffer, NULL, TRUE, FALSE);
 	g_string_append_printf (buffer, "<div class='content'><h2>");
-	g_string_append_printf (buffer, _("%d Search Results for \"%s\""), searchResult->itemCount, searchstring);
+	g_string_append_printf (buffer, ngettext("%d Search Result for \"%s\"", 
+	                                         "%d Search Results for \"%s\"",
+	                                         searchResult->itemCount),
+	                        searchResult->itemCount, searchstring);
 	g_string_append_printf (buffer, "</h2><p>");
 	g_string_append_printf (buffer, _("The item list now contains all items matching the "
 	                                "specified search pattern. If you want to save this search "
