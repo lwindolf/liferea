@@ -51,7 +51,8 @@ extern "C" {
 }
 
 extern "C" 
-gint mozsupport_key_press_cb(GtkWidget *widget, gpointer ev) {
+gint mozsupport_key_press_cb (GtkWidget *widget, gpointer ev)
+{
 	nsIDOMKeyEvent	*event = (nsIDOMKeyEvent*)ev;
 	PRUint32	keyCode = 0;
 	PRBool		alt, ctrl, shift;
@@ -62,15 +63,18 @@ gint mozsupport_key_press_cb(GtkWidget *widget, gpointer ev) {
 	   can be caught with the GTK code in ui_mainwindow.c.
 	   This is a bad case of code duplication... */
 	
-	event->GetCharCode(&keyCode);
-	if(keyCode == nsIDOMKeyEvent::DOM_VK_SPACE) {
-     		event->GetShiftKey(&shift);
-     		event->GetCtrlKey(&ctrl);
-     		event->GetAltKey(&alt);
-		if((0 == getNumericConfValue(BROWSE_KEY_SETTING)) &&
-		   !(alt | shift | ctrl)) {
-			if(mozsupport_scroll_pagedown(widget) == FALSE)
-				on_next_unread_item_activate(NULL, NULL);
+	event->GetCharCode (&keyCode);
+	if (keyCode == nsIDOMKeyEvent::DOM_VK_SPACE) {
+     		event->GetShiftKey (&shift);
+     		event->GetCtrlKey (&ctrl);
+     		event->GetAltKey (&alt);
+		
+		/* Do trigger scrolling if the skimming hotkey is not
+		   <Space> without a modifier, or if a modifier is pressed */
+		if ((0 != conf_get_int_value (BROWSE_KEY_SETTING)) &&
+		    (alt | shift | ctrl)) {
+			if (mozsupport_scroll_pagedown(widget) == FALSE)
+				on_next_unread_item_activate (NULL, NULL);
 			return TRUE;
 		}
 	}	

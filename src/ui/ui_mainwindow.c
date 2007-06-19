@@ -258,121 +258,133 @@ static void on_treeview_next(gchar* treename) {
 	on_treeview_move(treename, 1);
 }
 
-gboolean on_mainwindow_key_press_event(GtkWidget *widget, GdkEventKey *event, gpointer data) {
+gboolean
+on_mainwindow_key_press_event (GtkWidget *widget, GdkEventKey *event, gpointer data)
+{
 	gboolean	modifier_matches = FALSE;
 	guint		default_modifiers;
 	const gchar	*type;
 	GtkWidget	*focusw;
 
-	if(event->type == GDK_KEY_PRESS) {
-		default_modifiers = gtk_accelerator_get_default_mod_mask();
+	if (event->type == GDK_KEY_PRESS) {
+		default_modifiers = gtk_accelerator_get_default_mod_mask ();
 
 		/* handle headline skimming hotkey */
-		switch(event->keyval) {
+		switch (event->keyval) {
 			case GDK_space:
-				switch(getNumericConfValue(BROWSE_KEY_SETTING)) {
-					case 0:
-						modifier_matches = ((event->state & GDK_CONTROL_MASK) == GDK_CONTROL_MASK);
-						break;
+				switch (conf_get_int_value (BROWSE_KEY_SETTING)) {
 					default:
-					case 1:
+					case 0:
 						modifier_matches = ((event->state & default_modifiers) == 0);
-						if(!strcmp(htmlviewPlugin->name, "Mozilla")) /* Hack to make space handled in the module */
+						/* Hack to make space handled in the module. This is necessary
+						   because the GtkMozEmbed code must be able to catch spaces
+						   for input fields.
+						   
+						   By ignoring the space here it will be passed to the GtkMozEmbed
+						   widget which in turn will pass it back if it is not eaten by
+						   any input field currently focussed. */
+						if (!strcmp (htmlviewPlugin->name, "Mozilla") ||
+						    !strcmp (htmlviewPlugin->name, "XulRunner"))
 							return FALSE;
+
+						/* GtkHTML2 does handle <Space> correctly */
+						break;
+					case 1:
+						modifier_matches = ((event->state & GDK_CONTROL_MASK) == GDK_CONTROL_MASK);
 						break;
 					case 2:
 						modifier_matches = ((event->state & GDK_MOD1_MASK) == GDK_MOD1_MASK);
 						break;
 				}
 				
-				if(modifier_matches) {
+				if (modifier_matches) {
 					/* Note that this code is duplicated in mozilla/mozilla.cpp! */
-					if(ui_htmlview_scroll() == FALSE)
-						on_next_unread_item_activate(NULL, NULL);
+					if (ui_htmlview_scroll () == FALSE)
+						on_next_unread_item_activate (NULL, NULL);
 					return TRUE;
 				}
 				break;
 		}
 
 		/* menu hotkeys (duplicated so they work with hidden menu */
-		if(GDK_CONTROL_MASK == (event->state & default_modifiers)) {
-			switch(event->keyval) {
+		if (GDK_CONTROL_MASK == (event->state & default_modifiers)) {
+			switch (event->keyval) {
 				case GDK_KP_Add:
-					on_popup_zoomin_selected(NULL, 0, NULL);
+					on_popup_zoomin_selected (NULL, 0, NULL);
 					return TRUE;
 					break;
 				case GDK_KP_Subtract:
-					on_popup_zoomout_selected(NULL, 0, NULL);
+					on_popup_zoomout_selected (NULL, 0, NULL);
 					return TRUE;
 					break;
 				case GDK_period:
 				case GDK_n:
-					on_next_unread_item_activate(NULL, NULL);
+					on_next_unread_item_activate (NULL, NULL);
 					return TRUE;
 					break;
 				case GDK_r:
-					on_menu_allread(NULL, NULL);
+					on_menu_allread (NULL, NULL);
 					return TRUE;
 					break;
 				case GDK_t:
-					on_toggle_item_flag(NULL, NULL);
+					on_toggle_item_flag (NULL, NULL);
 					return TRUE;
 					break;
 				case GDK_u:
-					on_toggle_unread_status(NULL, NULL);
+					on_toggle_unread_status (NULL, NULL);
 					return TRUE;
 					break;
 				case GDK_a:
-					on_menu_update_all(NULL, NULL);
+					on_menu_update_all (NULL, NULL);
 					return TRUE;
 					break;
 				case GDK_f:
-					on_searchbtn_clicked(NULL, NULL);
+					on_searchbtn_clicked (NULL, NULL);
 					return TRUE;
 					break;
 			}
 		}
 
 		/* prevent usage of navigation keys in entries */
-		focusw = gtk_window_get_focus(GTK_WINDOW(widget));
-		if(GTK_IS_ENTRY(focusw))
+		focusw = gtk_window_get_focus (GTK_WINDOW (widget));
+		if (GTK_IS_ENTRY (focusw))
 			return FALSE;
 
 		/* prevent usage of navigation keys in HTML view */
-		type = g_type_name(GTK_WIDGET_TYPE(focusw));
-		if((NULL != type) && (0 == strcmp(type, "MozContainer")))
+		type = g_type_name (GTK_WIDGET_TYPE (focusw));
+		if (type && (!strcmp (type, "MozContainer")))
 			return FALSE;
 
 		/* somehow we don't need to check for GtkHTML2... */
 
 		/* check for treeview navigation */
-		if(0 == (event->state & default_modifiers)) {
-			switch(event->keyval) {
+		if (0 == (event->state & default_modifiers)) {
+			switch (event->keyval) {
 				case GDK_KP_Delete:
 				case GDK_Delete:
-					on_remove_item_activate(NULL, NULL);
+					on_remove_item_activate (NULL, NULL);
 					return TRUE;
 					break;
 				case GDK_n: 
-					on_next_unread_item_activate(NULL, NULL);
+					on_next_unread_item_activate (NULL, NULL);
 					return TRUE;
 					break;
 				case GDK_f:
-					on_treeview_next("itemlist");
+					on_treeview_next ("itemlist");
 					return TRUE;
 					break;
 				case GDK_b:
-					on_treeview_prev("itemlist");
+					on_treeview_prev ("itemlist");
 					return TRUE;
 					break;
 				case GDK_u:
-					on_treeview_prev("feedlist");
-					on_treeview_set_first("itemlist");
+					on_treeview_prev ("feedlist");
+					on_treeview_set_first ("itemlist");
 					return TRUE;
 					break;
 				case GDK_d:
-					on_treeview_next("feedlist");
-					on_treeview_set_first("itemlist");
+					on_treeview_next ("feedlist");
+					on_treeview_set_first ("itemlist");
 					return TRUE;
 					break;
 			}
