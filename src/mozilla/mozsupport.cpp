@@ -1,7 +1,7 @@
 /**
  * @file mozsupport.cpp C++ portion of GtkMozEmbed support
  *
- * Copyright (C) 2004-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * The preference handling was taken from the Galeon source
@@ -67,7 +67,7 @@ gint mozsupport_key_press_cb(GtkWidget *widget, gpointer ev) {
      		event->GetShiftKey(&shift);
      		event->GetCtrlKey(&ctrl);
      		event->GetAltKey(&alt);
-		if((1 == getNumericConfValue(BROWSE_KEY_SETTING)) &&
+		if((0 == getNumericConfValue(BROWSE_KEY_SETTING)) &&
 		   !(alt | shift | ctrl)) {
 			if(mozsupport_scroll_pagedown(widget) == FALSE)
 				on_next_unread_item_activate(NULL, NULL);
