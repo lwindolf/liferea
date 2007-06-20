@@ -667,16 +667,15 @@ void ui_mainwindow_init(int mainwindowState) {
 	g_string_append(buffer,    "</div>");
 	
 	g_string_append(buffer,    "<div style=\"background:#ffc;border:1px solid black;margin:8px;padding:8px\">");
-	g_string_append(buffer,    "<p><b>Important:</b> This is an <b>UNSTABLE</b> test release. Use it only "
-	                           "if you want to help with the development of Liferea and if you are willing "
-				   "to do some debugging if it crashes. And it will crash, and hang, and eat memory and "
-				   "it might even kill your cat!</p>"
-				   "<p>Anyway it won't harm your 1.2.x installation as it uses a different cache "
-				   "directory. On first start it will auto-migrate all your items to the sqlite backend...</p>"
+	g_string_append(buffer,    "<p><b>Important:</b> This is an <b>UNSTABLE</b> test release. Please "
+				   "expect crashes and broken functionality.</p>"
+				   "<p>For support you can use <b>#liferea</b> "
+				   "on freenode.net or the <a href=\"mailto:liferea-devel@lists.sf.net\">mailing list</a>.</p>"
 				   "<p>What currently doesn't work:"
 				   "<ul>"
 				   "   <li>search folder feed title matching</li>"
-				   "   <li>notifications</li>"
+				   "   <li>enclosure action configuration</li>"
+				   "   <li>notifications (untested)</li>"
 				   "</ul>"
 				   "</p>"
 				   "<p>Working since this release:"
