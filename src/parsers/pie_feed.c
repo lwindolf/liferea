@@ -184,7 +184,7 @@ static void pie_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 			} /* explicitly no following else !!! */
 			
 			if(!xmlStrcmp(cur->name, BAD_CAST"title")) {
-				tmp = unhtmlize(common_utf8_fix(pie_parse_content_construct(cur)));
+				tmp = unhtmlize(pie_parse_content_construct(cur));
 				if(tmp) {
 					if(ctxt->title)
 						g_free(ctxt->title);
@@ -225,7 +225,7 @@ static void pie_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 					g_free(tmp);				
 				}
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"generator")) {
-				tmp = unhtmlize(common_utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1)));
+				tmp = unhtmlize(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1));
 				if(tmp && tmp[0] != '\0') {
 					tmp2 = common_utf8_fix(xmlGetProp(cur, BAD_CAST"version"));
 					if(tmp2) {

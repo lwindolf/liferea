@@ -184,7 +184,7 @@ static gchar* atom10_parse_text_construct(xmlNodePtr cur, gboolean htmlified) {
 			}
 		}
 	} else if (!strcmp(type, "html")) {
-		ret = common_utf8_fix(common_utf8_fix(extractHTMLNode(cur, 0, NULL)));
+		ret = common_utf8_fix(extractHTMLNode(cur, 0, NULL));
 		if (!htmlified)
 			ret = unhtmlize(unxmlize(ret));
 	} else if(!strcmp(type, "xhtml")) {
@@ -542,7 +542,7 @@ static void atom10_parse_feed_contributor(xmlNodePtr cur, feedParserCtxtPtr ctxt
 static void atom10_parse_feed_generator(xmlNodePtr cur, feedParserCtxtPtr ctxt, itemPtr ip, struct atom10ParserState *state) {
 	gchar *ret, *version, *tmp = "", *uri;
 
-	ret = unhtmlize(common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
+	ret = unhtmlize(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 	if(ret != NULL && ret[0] != '\0') {
 		version = common_utf8_fix(xmlGetNsProp(cur, BAD_CAST"version", NULL));
 		if(version != NULL) {

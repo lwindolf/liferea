@@ -84,7 +84,7 @@ itemPtr parseCDFItem(feedParserCtxtPtr ctxt, xmlNodePtr cur, CDFChannelPtr cp) {
 			}
 			
 		} else if((!xmlStrcasecmp(cur->name, BAD_CAST"title"))) {
-			if(tmp = unhtmlize(common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)))) {
+			if(tmp = unhtmlize(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))) {
 				item_set_title(ctxt->item, tmp);
 				g_free(tmp);
 			}

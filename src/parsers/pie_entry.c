@@ -75,7 +75,7 @@ itemPtr parseEntry(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 		} /* explicitly no following else !!! */
 		
 		if(!xmlStrcmp(cur->name, BAD_CAST"title")) {
-			if(tmp = unhtmlize(common_utf8_fix(pie_parse_content_construct(cur)))) {
+			if(tmp = unhtmlize(pie_parse_content_construct(cur))) {
 				item_set_title(ctxt->item, tmp);
 				g_free(tmp);
 			}

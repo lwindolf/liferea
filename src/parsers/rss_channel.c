@@ -110,14 +110,14 @@ static void parseChannel(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 			}
 		}
 		else if(!xmlStrcmp(cur->name, BAD_CAST"title")) {
- 			if(NULL != (tmp = unhtmlize(common_utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE))))) {
+ 			if(NULL != (tmp = unhtmlize(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE)))) {
 				if(ctxt->title)
 					g_free(ctxt->title);
 				ctxt->title = tmp;
 			}
 		}
 		else if(!xmlStrcmp(cur->name, BAD_CAST"link")) {
- 			if(NULL != (tmp = unhtmlize(common_utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE))))) {
+ 			if(NULL != (tmp = unhtmlize(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE)))) {
 				feed_set_html_url(ctxt->feed, subscription_get_source(ctxt->subscription), tmp);
 				g_free(tmp);
 			}
