@@ -217,6 +217,8 @@ void opml_source_process_update_results(requestPtr request) {
 	if(request->data) {
 		doc = common_parse_xml(request->data, request->size, FALSE, NULL);
 		if(doc) {
+			gchar *filename;
+			
 			root = xmlDocGetRootElement(doc);
 			
 			/* Go through all existing nodes and remove those whose
@@ -229,7 +231,9 @@ void opml_source_process_update_results(requestPtr request) {
 							   next step */
 			
 			/* Merge up-to-date OPML feed list. */
-			oldDoc = xmlParseFile(opml_source_get_feedlist(node));
+			filename = opml_source_get_feedlist (node);
+			oldDoc = xmlParseFile (filename);
+			g_free (filename);
 			
 			mergeCtxt = g_new0(struct mergeCtxt, 1);
 			mergeCtxt->rootNode = node;
