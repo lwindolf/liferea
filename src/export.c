@@ -251,10 +251,11 @@ void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, nodeSourcePtr node
 	/* if we didn't find a type attribute we use heuristics */
 	if(!node->type) {
 		/* check for a source URL */
-		if(NULL == (tmp = xmlGetProp(cur, BAD_CAST"xmlUrl")));
-			tmp = xmlGetProp(cur, BAD_CAST"xmlUrl");
+		tmp = xmlGetProp (cur, BAD_CAST"xmlUrl");
+		if (!tmp)
+			tmp = xmlGetProp (cur, BAD_CAST"xmlurl");	/* AmphetaDesk */
 		
-		if(tmp) {
+		if (tmp) {
 			debug0(DEBUG_CACHE, "-> URL found assuming type feed");
 			node_set_type(node, feed_get_node_type());
 			xmlFree(tmp);

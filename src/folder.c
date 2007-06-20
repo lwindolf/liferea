@@ -56,8 +56,8 @@ static void folder_import(nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean
 	
 	cur = cur->xmlChildrenNode;
 	while(cur) {
-		if((!xmlStrcmp(cur->name, BAD_CAST"outline")))
-		import_parse_outline(cur, node, node->source, trusted);
+		if(!xmlStrcmp(cur->name, BAD_CAST"outline"))
+			import_parse_outline(cur, node, node->source, trusted);
 		cur = cur->next;				
 	}
 }
