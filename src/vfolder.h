@@ -125,7 +125,7 @@ void vfolder_refresh (vfolderPtr vfolder);
  *
  * @param vfolder	search folder to free
  */
-void vfolder_free (vfolderPtr vfolder);
+void vfolder_free (gpointer data);
 
 /* implementation of the node type interface */
 struct nodeType * vfolder_get_node_type (void);

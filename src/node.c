@@ -168,20 +168,24 @@ gboolean node_is_ancestor(nodePtr node1, nodePtr node2) {
 	return FALSE;
 }
 
-void node_free(nodePtr node) {
+void
+node_free (nodePtr node)
+{
+	if (node->data && NODE_TYPE (node)->free)
+		NODE_TYPE (node)->free (node->data);
 
-	g_assert(NULL == node->children);
+	g_assert (NULL == node->children);
 	
-	g_hash_table_remove(nodes, node->id);
+	g_hash_table_remove (nodes, node->id);
 	
-	update_cancel_requests((gpointer)node);
+	update_cancel_requests ((gpointer) node);
 
-	if(node->icon)
-		g_object_unref(node->icon);
-	g_free(node->iconFile);
-	g_free(node->title);
-	g_free(node->id);
-	g_free(node);
+	if (node->icon)
+		g_object_unref (node->icon);
+	g_free (node->iconFile);
+	g_free (node->title);
+	g_free (node->id);
+	g_free (node);
 }
 
 static void node_calc_counters(nodePtr node) {

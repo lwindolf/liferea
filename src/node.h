@@ -120,6 +120,7 @@ typedef struct nodeType {
 	gchar *		(*render)		(nodePtr node);
 	void		(*request_add)		(nodePtr parent);
 	void		(*request_properties)	(nodePtr node);
+	void		(*free)			(gpointer data);
 } *nodeTypePtr;
 
 #define NODE_TYPE(node)	(node->nodeType)

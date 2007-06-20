@@ -159,6 +159,7 @@ nodeTypePtr newsbin_get_node_type(void) {
 		nodeType->render		= newsbin_render;
 		nodeType->request_add		= ui_newsbin_add;
 		nodeType->request_properties	= ui_node_rename;
+		nodeType->free			= feed_get_node_type()->free;
 	}
 
 	return nodeType; 

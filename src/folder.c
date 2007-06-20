@@ -182,7 +182,8 @@ nodeTypePtr root_get_node_type(void) {
 		folder_mark_all_read,
 		node_default_render,
 		ui_folder_add,
-		ui_node_rename
+		ui_node_rename,
+		NULL
 	};
 
 	return &rnti; 

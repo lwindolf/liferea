@@ -249,8 +249,9 @@ vfolder_remove_rule (vfolderPtr vfolder, rulePtr rule)
 }
 
 void
-vfolder_free (vfolderPtr vfolder) 
+vfolder_free (gpointer data) 
 {
+	vfolderPtr	vfolder = (vfolderPtr) data;
 	GSList		*rule;
 
 	debug_enter ("vfolder_free");
@@ -320,7 +321,8 @@ vfolder_get_node_type (void)
 		vfolder_mark_all_read,
 		node_default_render,
 		ui_vfolder_add,
-		ui_vfolder_properties
+		ui_vfolder_properties,
+		vfolder_free
 	};
 	nti.icon = icons[ICON_VFOLDER];
 

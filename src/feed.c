@@ -587,9 +587,12 @@ void feed_set_image_url(feedPtr feed, const gchar *imageUrl) {
 }
 
 /* method to free a feed structure */
-static void feed_free(feedPtr feed) {
+static void
+feed_free (gpointer data) {
+	feedPtr	feed = (feedPtr)data;
 
-	g_string_free(feed->parseErrors, TRUE);
+	if(feed->parseErrors)
+		g_string_free(feed->parseErrors, TRUE);
 	g_free(feed->htmlUrl);
 	g_free(feed->imageUrl);
 	g_free(feed->description);
@@ -850,7 +853,8 @@ nodeTypePtr feed_get_node_type(void) {
 		feed_mark_all_read,
 		feed_render,
 		feed_add,
-		feed_properties
+		feed_properties,
+		feed_free
 	};
 	nti.icon = icons[ICON_DEFAULT];
 	
