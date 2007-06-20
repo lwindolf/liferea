@@ -151,12 +151,16 @@ network_process_request (struct request *request)
 	request->source = netioRequest->feedurl;
 	if(request->updateState) {
 		request->updateState->lastModified = netioRequest->lastmodified;
+		netioRequest->lastmodified = NULL;
 		request->updateState->etag = netioRequest->etag;
+		netioRequest->etag = NULL;
 	}
 	request->contentType = netioRequest->content_type;
 	g_free(netioRequest->servauth);
 	g_free(netioRequest->authinfo);
 	g_free(netioRequest->cookies);
+	g_free(netioRequest->lastmodified);
+	g_free(netioRequest->etag);
 	debug4(DEBUG_UPDATE, "download result - HTTP status: %d, error: %d, netio error:%d, data: %d",
 	                     request->httpstatus, 
 			     netioRequest->problem, 
