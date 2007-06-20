@@ -271,7 +271,8 @@ gfloat ui_htmlview_get_zoom(GtkWidget *htmlview) {
 static gboolean ui_htmlview_external_browser_execute(const gchar *cmd, const gchar *uri, gboolean remoteEscape, gboolean sync) {
 	GError		*error = NULL;
 	gchar 		*tmpUri, *tmp, **argv, **iter;
-	gint 		argc, status;
+	gint 		argc;
+	gint		status = 0;
 	gboolean 	done = FALSE;
   
 	g_assert(cmd != NULL);
@@ -309,7 +310,7 @@ static gboolean ui_htmlview_external_browser_execute(const gchar *cmd, const gch
 	debug2(DEBUG_GUI, "Running the browser-remote %s command '%s'", sync ? "sync" : "async", tmp);
 	if(sync)
 		g_spawn_sync(NULL, argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, NULL, &status, &error);
-	else
+	else 
 		g_spawn_async(NULL, argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, &error);
   
 	if(error && (0 != error->code)) {

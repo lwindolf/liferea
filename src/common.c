@@ -149,6 +149,7 @@ static xmlNodePtr common_html_doc_find_body(xmlDocPtr doc) {
 /* Extract XHTML from the children of the passed node. */
 gchar * extractHTMLNode(xmlNodePtr cur, gint xhtmlMode, const gchar *defaultBase) {
 	xmlBufferPtr	buf;
+	xmlChar         *xml_base = NULL;
 	gchar		*result = NULL;
 
 	/* Create the new document and add the div tag*/
@@ -158,8 +159,11 @@ gchar * extractHTMLNode(xmlNodePtr cur, gint xhtmlMode, const gchar *defaultBase
 	xmlNewNs(divNode, BAD_CAST "http://www.w3.org/1999/xhtml", NULL);
 
 	/* Set the xml:base  of the div tag */
-	if(xmlNodeGetBase(cur->doc, cur))
-		xmlNodeSetBase( divNode, xmlNodeGetBase(cur->doc, cur) );
+	xml_base = xmlNodeGetBase(cur->doc, cur);
+	if(xml_base) {
+		xmlNodeSetBase( divNode, xml_base );
+		xmlFree(xml_base);
+	}
 	else if(defaultBase)
 		xmlNodeSetBase( divNode, defaultBase);
 	

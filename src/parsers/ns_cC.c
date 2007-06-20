@@ -72,12 +72,16 @@ static gchar * parse_tag(xmlNodePtr cur) {
 
 static void parse_channel_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 
-	metadata_list_set(&(ctxt->feed->metadata), "license", parse_tag(cur));
+	gchar * tag = parse_tag(cur);
+	metadata_list_set(&(ctxt->feed->metadata), "license", tag);
+	g_free(tag);
 }
 
 static void parse_item_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 
-	metadata_list_set(&(ctxt->item->metadata), "license", parse_tag(cur));
+	gchar * tag = parse_tag(cur);
+	metadata_list_set(&(ctxt->item->metadata), "license", tag);
+	g_free(tag);
 }
 
 static void ns_cC_register_ns(NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash) {
