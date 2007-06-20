@@ -324,6 +324,7 @@ static int NetConnect (int * my_socket, char * host, struct feed_request * cur_p
 
 	res = 0;
 	memset(&hints, 0, sizeof(hints));
+	memset(&port_str, 0, sizeof(port_str));
 	hints.ai_family = AF_UNSPEC;
 	hints.ai_socktype = SOCK_STREAM;
 	hints.ai_protocol = IPPROTO_TCP;
