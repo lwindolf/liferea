@@ -565,6 +565,7 @@ itemlist_remove_items (itemSetPtr itemSet, GList *items)
 			/* go the normal and selection-safe way to avoid disturbing the user */
 			itemlist_request_remove_item (item);
 		}
+		item_unload (item);
 		iter = g_list_next (iter);
 	}
 
