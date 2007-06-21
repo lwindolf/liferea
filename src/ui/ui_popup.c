@@ -286,6 +286,7 @@ static void ui_popup_delete(gpointer callback_data, guint callback_action, GtkWi
  * node type. The node will be passed as a callback_data.
  */
 static GtkMenu *ui_popup_node_menu(nodePtr node, gboolean validSelection) {
+	GtkMenu			*menu;
 	GtkItemFactoryEntry	*menu_items = NULL;
 	gint 			menu_len = 0;
 
@@ -317,7 +318,9 @@ static GtkMenu *ui_popup_node_menu(nodePtr node, gboolean validSelection) {
 		}
 	}
 
-	return make_menu(menu_items, menu_len, node);
+	menu = make_menu(menu_items, menu_len, node);
+	g_free(menu_items);
+	return menu;
 }
 
 /*------------------------------------------------------------------------------*/
