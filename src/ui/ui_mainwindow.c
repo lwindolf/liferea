@@ -665,28 +665,6 @@ void ui_mainwindow_init(int mainwindowState) {
 	g_string_append(buffer,    "</td></tr></table>");
 
 	g_string_append(buffer,    "</div>");
-	
-	g_string_append(buffer,    "<div style=\"background:#ffc;border:1px solid black;margin:8px;padding:8px\">");
-	g_string_append(buffer,    "<p><b>Important:</b> This is an <b>UNSTABLE</b> test release. Please "
-				   "expect crashes and broken functionality.</p>"
-				   "<p>For support you can use <b>#liferea</b> "
-				   "on freenode.net or the <a href=\"mailto:liferea-devel@lists.sf.net\">mailing list</a>.</p>"
-				   "<p>What currently doesn't work:"
-				   "<ul>"
-				   "   <li>search folder feed title matching</li>"
-				   "   <li>enclosure action configuration</li>"
-				   "   <li>notifications (untested)</li>"
-				   "</ul>"
-				   "</p>"
-				   "<p>Working since this release:"
-				   "<ul>"
-				   "   <li>global unread counter</li>"
-				   "   <li>reorganized main menu</li>"
-				   "   <li>tray icon state handling</li>"
-				   "   <li>feed metadata saving/rendering</li>"
-				   "</ul>"
-				   "</p>");
-	g_string_append(buffer,    "</div>");
 				   
 	htmlview_finish_output(buffer);
 	ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer->str, NULL);
