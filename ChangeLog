@@ -4,6 +4,7 @@
 
 	* Fixes some memory leaks (Hubert Figuiere)
 	* Improved manpage (Emilo Pozuelo Monfort)
+	* Starter script support for $DEBUGGER (Hubert Figuiere)
 
 
 2007-06-16  Lars Lindner  <lars.lindner@gmail.com>
