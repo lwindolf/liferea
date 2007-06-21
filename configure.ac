@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([liferea],[1.2.17],[liferea-devel@lists.sourceforge.net])
+AC_INIT([liferea],[1.2.18],[liferea-devel@lists.sourceforge.net])
 AC_CANONICAL_TARGET([])
 AC_CONFIG_SRCDIR([src/feedlist.c])
 
@@ -170,6 +170,8 @@ if test "x$enable_xulrunner" = "xyes" ; then
    AC_SUBST([XULRUNNER_HOME])
    AC_SUBST(XULRUNNER_CFLAGS)
    AC_SUBST(XULRUNNER_LIBS)
+
+   MOZILLA_LIB_ROOT=`$PKG_CONFIG --libs-only-L xulrunner-gtkmozembed | awk '{print $1}' |  cut -c 3-`
    
    dnl the Mozilla XPCOM access means C++
    AC_PROG_CXX
@@ -300,6 +302,10 @@ fi
 
 AM_GCONF_SOURCE_2
 
+dnl
+dnl libxml2/libxslt versions lower than the given ones are known
+dnl to crash on certain distributions, lower them on your own risk!
+dnl
 pkg_modules="	gtk+-2.0 >= 2.8.0 
 		pango >= 1.4.0
 		gconf-2.0 >= 1.1.9 
