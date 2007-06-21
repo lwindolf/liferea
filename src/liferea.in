@@ -22,4 +22,4 @@ if [ -z "$DBUS_SESSION_BUS_ADDRESS" ]; then
 	export DBUS_SESSION_BUS_ADDRESS
 fi
 
-exec "$dist_bin/liferea-bin" $params
+exec $DEBUGGER "$dist_bin/liferea-bin" $params
