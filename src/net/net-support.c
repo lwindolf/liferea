@@ -88,6 +88,32 @@ char * GetRandomBytes (void) {
 	return randomness;
 }
 
+char * ExtractValue (char **token) {
+	char *value, *valueEnd;
+	
+	value = strchr (*token, '=');
+	value++;
+	
+	if ('"' == *value) {
+		value++;
+		valueEnd = strchr (value + 1, '"');
+	} else {
+		valueEnd = strpbrk (value, " ,");
+	}
+	
+	if (*valueEnd) {
+		*valueEnd = '\0';
+		do {
+			valueEnd++;
+		} while ((*valueEnd == ',') || (*valueEnd == ' '));
+		*token = valueEnd;
+	} else {
+		return NULL;
+	}
+	
+	return g_strdup (value);
+}
+
 char * ConstructDigestAuth (char * username, char * password, char * url, char * authdata) {
 	char * authinfo = NULL;			/* Authorization header as sent to the server. */
 	char * token;
@@ -104,32 +130,24 @@ char * ConstructDigestAuth (char * username, char * password, char * url, char *
 	
 	cnonce = GetRandomBytes();
 	
+	if (!authdata)
+		return;
+	
+	token = authdata;
 	while (1) {
-		token = strsep (&authdata, ", ");
-		
-		if (token == NULL)
+		while (*token == ' ') token++;
+
+		if (*token == '\0')
 			break;
 		
-		if (strncasecmp (token, "realm", 5) == 0) {
-			len = strlen(token)-8;
-			memmove (token, token+7, len);
-			token[len] = '\0';
-			realm = g_strdup (token);
-		} else if (strncasecmp (token, "qop", 3) == 0) {
-			len = strlen(token)-6;
-			memmove (token, token+5, len);
-			token[len] = '\0';
-			qop = g_strdup (token);
-		} else if (strncasecmp (token, "nonce", 5) == 0) {
-			len = strlen(token)-8;
-			memmove (token, token+7, len);
-			token[len] = '\0';
-			nonce = g_strdup (token);
-		} else if (strncasecmp (token, "opaque", 6) == 0) {
-			len = strlen(token)-9;
-			memmove (token, token+8, len);
-			token[len] = '\0';
-			opaque = g_strdup (token);
+		if (strncasecmp (token, "realm=", 6) == 0) {
+			realm = ExtractValue (&token);
+		} else if (strncasecmp (token, "qop=", 4) == 0) {
+			qop = ExtractValue (&token);
+		} else if (strncasecmp (token, "nonce=", 6) == 0) {
+			nonce = ExtractValue (&token);
+		} else if (strncasecmp (token, "opaque=", 7) == 0) {
+			opaque = ExtractValue (&token);
 		}
 	}
 	
