@@ -15,6 +15,8 @@
 	* Fixes for several plural literal localizations.
 	  (patch SF #1738731 from Ed Catmur)
 	* Fixes several memory leaks (Hubert Figuiere)
+	* Removes feedbag.xpi as most users should work
+	  with Firefox 2+ now.
 
 
 2007-06-16  Lars Lindner  <lars.lindner@gmail.com>

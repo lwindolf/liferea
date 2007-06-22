@@ -27,7 +27,6 @@ dtddir = $(pkgdatadir)/dtd
 dtd_DATA = dtd/html.ent
 
 EXTRA_DIST = \
-	feedbag.xpi \
 	$(glade_DATA) \
 	liferea.gladep \
 	liferea.spec \
