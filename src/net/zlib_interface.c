@@ -29,6 +29,7 @@
 #include <stdio.h>
 #include <zlib.h>
 #include <string.h>
+#include <glib.h>
 
 int JG_ZLIB_DEBUG = 1;
 
@@ -102,7 +103,7 @@ int jg_zlib_uncompress(void const *in_buf, int in_size,
 			case Z_DATA_ERROR:
 			case Z_VERSION_ERROR:
 				inflateEnd(&stream);
-				free(out_buf);
+				g_free(out_buf);
 				if (JG_ZLIB_DEBUG) {
 					snprintf (tmpstring, sizeof(tmpstring), "ERROR: zlib_uncompress: %d %s\n", result, stream.msg);
 					fprintf(stderr, tmpstring);
@@ -112,7 +113,7 @@ int jg_zlib_uncompress(void const *in_buf, int in_size,
 		if (stream.avail_out < sizeof tmp_buf) {
 			/* Add the new uncompressed data to our output buffer. */
 			new_bytes = sizeof tmp_buf - stream.avail_out;
-			out_buf = realloc(out_buf, out_buf_bytes + new_bytes);
+			out_buf = g_realloc(out_buf, out_buf_bytes + new_bytes);
 			memcpy(out_buf + out_buf_bytes, tmp_buf, new_bytes);
 			out_buf_bytes += new_bytes;
 			stream.next_out = tmp_buf;
@@ -120,7 +121,7 @@ int jg_zlib_uncompress(void const *in_buf, int in_size,
 		} else {
 			/* For some reason, inflate() didn't write out a single byte. */
 			inflateEnd(&stream);
-			free(out_buf);
+			g_free(out_buf);
 			if (JG_ZLIB_DEBUG)
 				fprintf(stderr, "ERROR: No output during decompression\n");
 			return JG_ZLIB_ERROR_NODATA;
@@ -132,7 +133,7 @@ DONE:
 	inflateEnd(&stream);
 	
 	/* Null-terminate the output buffer so it can be handled like a string. */
-	out_buf = realloc(out_buf, out_buf_bytes + 1);
+	out_buf = g_realloc(out_buf, out_buf_bytes + 1);
 	out_buf[out_buf_bytes] = 0;
 	
 	/* The returned size does NOT include the additionall null byte! */
