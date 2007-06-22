@@ -49,17 +49,17 @@ char * ConstructBasicAuth (char * username, char * password) {
 
 	/* Construct the cleartext authstring. */
 	len = strlen(username) + 1 + strlen(password) + 1;
-	authstring = malloc (len);
+	authstring = g_malloc (len);
 	snprintf (authstring, len, "%s:%s", username, password);
 	tmpstr = base64encode (authstring, len-1);
 	
 	/* "Authorization: Basic " + base64str + \r\n\0 */
 	len = 21 + strlen(tmpstr) + 3;
-	authinfo = malloc (len);
+	authinfo = g_malloc (len);
 	snprintf (authinfo, len, "Authorization: Basic %s\r\n", tmpstr);
 	
-	free (tmpstr);
-	free (authstring);
+	g_free (tmpstr);
+	g_free (authstring);
 	
 	return authinfo;
 }
@@ -81,7 +81,7 @@ char * GetRandomBytes (void) {
 		fclose (devrandom);
 	}
 	
-	randomness = malloc (17);
+	randomness = g_malloc (17);
 	snprintf (randomness, 17, "%hhx%hhx%hhx%hhx%hhx%hhx%hhx%hhx",
 		raw[0], raw[1], raw[2], raw[3], raw[4], raw[5], raw[6], raw[7]);
 	
@@ -114,22 +114,22 @@ char * ConstructDigestAuth (char * username, char * password, char * url, char *
 			len = strlen(token)-8;
 			memmove (token, token+7, len);
 			token[len] = '\0';
-			realm = strdup (token);
+			realm = g_strdup (token);
 		} else if (strncasecmp (token, "qop", 3) == 0) {
 			len = strlen(token)-6;
 			memmove (token, token+5, len);
 			token[len] = '\0';
-			qop = strdup (token);
+			qop = g_strdup (token);
 		} else if (strncasecmp (token, "nonce", 5) == 0) {
 			len = strlen(token)-8;
 			memmove (token, token+7, len);
 			token[len] = '\0';
-			nonce = strdup (token);
+			nonce = g_strdup (token);
 		} else if (strncasecmp (token, "opaque", 6) == 0) {
 			len = strlen(token)-9;
 			memmove (token, token+8, len);
 			token[len] = '\0';
-			opaque = strdup (token);
+			opaque = g_strdup (token);
 		}
 	}
 	
@@ -148,7 +148,7 @@ char * ConstructDigestAuth (char * username, char * password, char * url, char *
 		else
 			len = 32 + strlen(username) + 10 + strlen(realm) + 10 + strlen(nonce) + 8 + strlen(url) + 28 + strlen(Response) + 16 + strlen(szNonceCount) + 10 + strlen(cnonce) + 10 + strlen(opaque) + 4;
 
-		authinfo = malloc (len);
+		authinfo = g_malloc (len);
 
 		if (opaque == NULL) {
 			snprintf (authinfo, len, "Authorization: Digest username=\"%s\", realm=\"%s\", nonce=\"%s\", uri=\"%s\", algorithm=MD5, response=\"%s\", qop=auth, nc=%s, cnonce=\"%s\"\r\n",
@@ -160,15 +160,11 @@ char * ConstructDigestAuth (char * username, char * password, char * url, char *
 
 	}
 
-	if(realm)
-		free (realm);
-	if(qop)
-		free (qop);
-	if(nonce)
-		free (nonce);
-	free (cnonce);
-	if(opaque)
-		free (opaque);
+	g_free (realm);
+	g_free (qop);
+	g_free (nonce);
+	g_free (cnonce);
+	g_free (opaque);
 		
 	return authinfo;
 }
@@ -188,7 +184,7 @@ int NetSupportAuth (struct feed_request * cur_ptr, char * authdata, char * url, 
 	char * authtype = NULL;
 	
 	/* Reset cur_ptr->authinfo. */
-	free (cur_ptr->authinfo);
+	g_free (cur_ptr->authinfo);
 	cur_ptr->authinfo = NULL;
 	
 	/* Catch invalid authdata. */
@@ -199,27 +195,27 @@ int NetSupportAuth (struct feed_request * cur_ptr, char * authdata, char * url, 
 		return 1;
 	}
 	
-	tmpstr = strdup (authdata);
+	tmpstr = g_strdup (authdata);
 	freeme = tmpstr;
 	
 	strsep (&tmpstr, ":");
-	username = strdup (freeme);
-	password = strdup (tmpstr);
+	username = g_strdup (freeme);
+	password = g_strdup (tmpstr);
 	
 	/* Free allocated string in tmpstr. */
-	free (freeme);
+	g_free (freeme);
 	
 	/* Extract requested auth type from webserver reply. */
-	header = strdup (netbuf);
+	header = g_strdup (netbuf);
 	freeme = header;
 	strsep (&header, " ");
 	authtype = header;
 	
 	/* Catch invalid server replies. authtype should contain at least _something_. */
 	if (authtype == NULL) {
-		free (freeme);
-		free (username);
-		free (password);
+		g_free (freeme);
+		g_free (username);
+		g_free (password);
 		return -1;
 	}
 	
@@ -237,15 +233,15 @@ int NetSupportAuth (struct feed_request * cur_ptr, char * authdata, char * url, 
 		cur_ptr->authinfo = ConstructDigestAuth (username, password, url, header);
 	} else {
 		/* Unkown auth type. */
-		free (freeme);
-		free (username);
-		free (password);
+		g_free (freeme);
+		g_free (username);
+		g_free (password);
 		return -1;
 	}
 	
-	free (username);
-	free (password);
-	free (freeme);
+	g_free (username);
+	g_free (password);
+	g_free (freeme);
 
 	if (cur_ptr->authinfo == NULL) {
 		return 2;

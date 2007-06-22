@@ -55,7 +55,7 @@ char *base64encode(char const *inbuf, unsigned int inbuf_size) {
 	int bits = 0;
 	int char_count = 0;
 	
-	outbuf = malloc(1);
+	outbuf = g_malloc(1);
 	
 	while (inbuf_pos < inbuf_size) {
 	
@@ -63,7 +63,7 @@ char *base64encode(char const *inbuf, unsigned int inbuf_size) {
 		char_count++;
 		
 		if (char_count == 3) {
-			outbuf = realloc(outbuf, outbuf_size+4);
+			outbuf = g_realloc(outbuf, outbuf_size+4);
 			outbuf_size += 4;
 			outbuf[outbuf_pos+0] = alphabet[bits >> 18];
 			outbuf[outbuf_pos+1] = alphabet[(bits >> 12) & 0x3f];
@@ -81,7 +81,7 @@ char *base64encode(char const *inbuf, unsigned int inbuf_size) {
 	
 	if (char_count > 0) {
 		bits <<= 16 - (8 * char_count);
-		outbuf = realloc(outbuf, outbuf_size+4);
+		outbuf = g_realloc(outbuf, outbuf_size+4);
 		outbuf_size += 4;
 		outbuf[outbuf_pos+0] = alphabet[bits >> 18];
 		outbuf[outbuf_pos+1] = alphabet[(bits >> 12) & 0x3f];
@@ -95,7 +95,7 @@ char *base64encode(char const *inbuf, unsigned int inbuf_size) {
 		outbuf_pos += 4;
 	}
 	
-	outbuf = realloc(outbuf, outbuf_size+1);
+	outbuf = g_realloc(outbuf, outbuf_size+1);
 	outbuf[outbuf_pos] = 0;
 	
 	return outbuf;

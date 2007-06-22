@@ -66,7 +66,7 @@ char * CookieCutter (const char *feedurl, FILE * cookies) {
 	/* Get current time. */
 	tunix = time(0);
 	
-	url = strdup (feedurl);
+	url = g_strdup (feedurl);
 	freeme = url;
 	
 	strsep (&url, "/");
@@ -74,7 +74,7 @@ char * CookieCutter (const char *feedurl, FILE * cookies) {
 	tmphost = url;
 	strsep (&url, "/");
 	if (url == NULL) {
-		free (freeme);
+		g_free (freeme);
 		return NULL;
 	}
 	
@@ -83,15 +83,15 @@ char * CookieCutter (const char *feedurl, FILE * cookies) {
 		strsep (&tmphost, "@");
 	}
 	
-	host = strdup (tmphost);
+	host = g_strdup (tmphost);
 	url--;
 	url[0] = '/';
 	if (url[strlen(url)-1] == '\n') {
 		url[strlen(url)-1] = '\0';
 	}
 	
-	path = strdup (url);
-	free (freeme);
+	path = g_strdup (url);
+	g_free (freeme);
 	freeme = NULL;
 	
 	while (!feof(cookies)) {
@@ -107,7 +107,7 @@ char * CookieCutter (const char *feedurl, FILE * cookies) {
 		if (buf[0] == '#')
 			continue;
 				
-		cookie = strdup (buf);
+		cookie = g_strdup (buf);
 		freeme = cookie;
 		
 		/* Munch trailing newline. */
@@ -124,14 +124,14 @@ char * CookieCutter (const char *feedurl, FILE * cookies) {
 			switch (i) {
 				case 0:
 					/* Cookie hostname. */
-					cookiehost = strdup (tmpstr);
+					cookiehost = g_strdup (tmpstr);
 					break;
 				case 1:
 					/* Discard host match value. */
 					break;
 				case 2:
 					/* Cookie path. */
-					cookiepath = strdup (tmpstr);
+					cookiepath = g_strdup (tmpstr);
 					break;
 				case 3:
 					/* Secure cookie? */
@@ -144,11 +144,11 @@ char * CookieCutter (const char *feedurl, FILE * cookies) {
 					break;
 				case 5:
 					/* NAME */
-					cookiename = strdup (tmpstr);
+					cookiename = g_strdup (tmpstr);
 					break;
 				case 6:
 					/* VALUE */
-					cookievalue = strdup (tmpstr);
+					cookievalue = g_strdup (tmpstr);
 					break;
 				default:
 					break;
@@ -170,14 +170,14 @@ char * CookieCutter (const char *feedurl, FILE * cookies) {
 			   Cookie: NAME=VALUE; NAME=VALUE */
 			if (cookienr == 1) {
 				len = 8 + strlen(cookiename) + 1 + strlen(cookievalue) + 1;
-				result = malloc (len);
+				result = g_malloc (len);
 				strcpy (result, "Cookie: ");
 				strcat (result, cookiename);
 				strcat (result, "=");
 				strcat (result, cookievalue);
 			} else {
 				len += strlen(cookiename) + 1 + strlen(cookievalue) + 3;
-				result = realloc (result, len);
+				result = g_realloc (result, len);
 				strcat (result, "; ");
 				strcat (result, cookiename);
 				strcat (result, "=");
@@ -191,21 +191,21 @@ char * CookieCutter (const char *feedurl, FILE * cookies) {
 			UIStatus (tmp, 1);
 		}
 
-		free (freeme);
+		g_free (freeme);
 		freeme = NULL;
-		free (cookiehost);
-		free (cookiepath);
-		free (cookiename);
-		free (cookievalue);
+		g_free (cookiehost);
+		g_free (cookiepath);
+		g_free (cookiename);
+		g_free (cookievalue);
 	}
 	
-	free (host);
-	free (path);
-	free (freeme);
+	g_free (host);
+	g_free (path);
+	g_free (freeme);
 	
 	/* Append \r\n to result */
 	if (result != NULL) {
-		result = realloc (result, len+2);
+		result = g_realloc (result, len+2);
 		strcat (result, "\r\n");
 	}
 	
