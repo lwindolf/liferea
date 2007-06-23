@@ -987,7 +987,7 @@ static const GtkActionEntry ui_mainwindow_action_entries[] = {
 	{"Quit",GTK_STOCK_QUIT, N_("_Quit"), "<control>Q", NULL, G_CALLBACK(on_quit)},
 
 	{"FeedMenu", NULL, N_("_Feed")},
-	{"RemoveAllItems", "gtk-delete", N_("Remove _All"), NULL, N_("Removes all items of the currently selected feed."),
+	{"RemoveAllItems", "gtk-delete", N_("Remove _All Items"), NULL, N_("Removes all items of the currently selected feed."),
 	 G_CALLBACK(on_remove_items_activate)},
 
 	{"ItemMenu", NULL, N_("_Item")},
