@@ -101,7 +101,7 @@ static void ui_tray_expose_cb() {
 			gdk_pixbuf_get_width(trayIcon_priv->currentIcon), 
 			GDK_RGB_DITHER_NONE, 0, 0);
 	
-	if(!getBooleanConfValue(SHOW_NEW_COUNT_IN_TRAY))
+	if(!conf_get_bool_value(SHOW_NEW_COUNT_IN_TRAY))
 		return;
 	
 	newItems = feedlist_get_new_item_count();
@@ -131,31 +131,59 @@ static void ui_tray_expose_cb() {
 	}
 }
 
-static void ui_tray_icon_set(gint newItems, GdkPixbuf *icon) {
+static void
+ui_tray_icon_set (gint newItems, GdkPixbuf *icon)
+{
 	guint 	width;
-	
-	width = ((guint)log10(newItems) + 1) * FONT_CHAR_WIDTH;
-	width += 2; /* number color border */
-	width += 2; /* tray icon padding */;
-	if(width < 16)
-		width = 16;
 
-	g_assert(trayIcon_priv->widget);
-	
-	trayIcon_priv->currentIcon = icon;
-	
-	if(trayIcon_priv->alignment)
-		gtk_widget_destroy(trayIcon_priv->alignment);
-	
-	trayIcon_priv->alignment = gtk_alignment_new(0.5, 0.5, 0.0, 0.0);
-	trayIcon_priv->image = gtk_drawing_area_new();
-	gtk_widget_set_size_request(trayIcon_priv->image, width, 16);
-	g_signal_connect(G_OBJECT(trayIcon_priv->image), "expose_event",  
-                         G_CALLBACK(ui_tray_expose_cb), NULL);
- 
-	gtk_container_add(GTK_CONTAINER(trayIcon_priv->eventBox), trayIcon_priv->alignment);
-	gtk_container_add(GTK_CONTAINER(trayIcon_priv->alignment), trayIcon_priv->image);
-	gtk_widget_show_all(GTK_WIDGET(trayIcon_priv->widget));
+	g_assert (trayIcon_priv->widget);
+
+	/* Having two code branches here to have real transparency
+	   at least with new count disabled... */
+	if (conf_get_bool_value (SHOW_NEW_COUNT_IN_TRAY)) {	
+		width = ((guint) log10 (newItems) + 1) * FONT_CHAR_WIDTH;
+		width += 2; /* number color border */
+		width += 2; /* tray icon padding */;
+		if (width < 16)
+			width = 16;
+
+		trayIcon_priv->currentIcon = icon;
+
+		if (trayIcon_priv->image)
+			gtk_widget_destroy (trayIcon_priv->image);
+
+		if (trayIcon_priv->alignment)
+			gtk_widget_destroy (trayIcon_priv->alignment);
+
+		trayIcon_priv->alignment = gtk_alignment_new (0.5, 0.5, 0.0, 0.0);
+		trayIcon_priv->image = gtk_drawing_area_new ();
+		gtk_widget_set_size_request (trayIcon_priv->image, width, 16);
+		g_signal_connect (G_OBJECT (trayIcon_priv->image), "expose_event",  
+                        	  G_CALLBACK (ui_tray_expose_cb), NULL);
+
+		gtk_container_add (GTK_CONTAINER (trayIcon_priv->eventBox), trayIcon_priv->alignment);
+		gtk_container_add (GTK_CONTAINER (trayIcon_priv->alignment), trayIcon_priv->image);
+		gtk_widget_show_all (GTK_WIDGET(trayIcon_priv->widget));
+	} else {
+		/* Skip loading icon if already displayed. */
+		if (icon == trayIcon_priv->currentIcon)
+			return;
+		trayIcon_priv->currentIcon = icon;
+
+		if (trayIcon_priv->image)
+			gtk_widget_destroy (trayIcon_priv->image);
+
+		if (trayIcon_priv->alignment) {
+			gtk_widget_destroy (trayIcon_priv->alignment);
+			trayIcon_priv->alignment = NULL;
+		}
+
+		trayIcon_priv->alignment = gtk_alignment_new (0.5, 0.5, 0.0, 0.0);
+		trayIcon_priv->image = gtk_image_new_from_pixbuf (icon);
+		gtk_container_add (GTK_CONTAINER (trayIcon_priv->eventBox), trayIcon_priv->alignment);
+		gtk_container_add (GTK_CONTAINER (trayIcon_priv->alignment), trayIcon_priv->image);
+		gtk_widget_show_all (GTK_WIDGET (trayIcon_priv->widget));
+   	}
 }
 
 void ui_tray_update(void) {
@@ -245,8 +273,6 @@ static void ui_tray_install(void) {
 
 	trayIcon_priv->widget = egg_tray_icon_new(PACKAGE);
 	trayIcon_priv->eventBox = gtk_event_box_new();
-	
-//		GtkAlignment	*align;
 	
 	g_signal_connect(trayIcon_priv->eventBox, "button_press_event",
 	                 G_CALLBACK(tray_icon_pressed), trayIcon_priv->widget);
