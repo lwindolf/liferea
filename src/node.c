@@ -180,6 +180,9 @@ node_free (nodePtr node)
 	
 	update_cancel_requests ((gpointer) node);
 
+	if (node->subscription)
+		subscription_free (node->subscription);
+
 	if (node->icon)
 		g_object_unref (node->icon);
 	g_free (node->iconFile);
