@@ -801,8 +801,6 @@ feed_remove (nodePtr node)
 	
 	favicon_remove_from_cache (node->id);
 	db_subscription_remove (node->id);
-	
-	feed_free (node->data);
 }
 
 static void feed_mark_all_read(nodePtr node) {

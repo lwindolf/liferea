@@ -140,7 +140,7 @@ db_get_schema_version (void)
 	return schemaVersion;
 }
 
-#define SCHEMA_TARGET_VERSION 4
+#define SCHEMA_TARGET_VERSION 5
 
 /* opening or creation of database */
 void
@@ -272,6 +272,13 @@ open:
 				 "END;");
 		}
 		
+		if (db_get_schema_version () == 4) {
+			/* 1.3.8 -> 1.4-RC1 adding node relation */
+			debug0 (DEBUG_DB, "migrating from schema version 4 to 5");
+			/* table create below... */
+			db_set_schema_version (5);
+		}
+		
 		if (SCHEMA_TARGET_VERSION != db_get_schema_version ())
 			g_error ("Fatal: DB schema migration failed! Running with --debug-db could give some hints!");
 			
@@ -382,10 +389,25 @@ open:
 	db_exec ("DROP TRIGGER subscription_removal;");
 	db_exec ("CREATE TRIGGER subscription_removal DELETE ON subscription "
 	         "BEGIN "
+		 "   DELETE FROM node WHERE node_id = old.node_id; "
 	         "   DELETE FROM update_state WHERE node_id = old.node_id; "
 		 "   DELETE FROM subscription_metadata WHERE node_id = old.node_id; "
 		 "   DELETE FROM itemsets WHERE node_id = old.node_id; "
 	         "END;");
+		 
+	db_exec ("CREATE TABLE node ("
+	         "   node_id		STRING,"
+	         "   parent_id		STRING,"
+	         "   title		STRING,"
+		 "   type		INTEGER,"
+		 "   expanded           INTEGER,"
+		 "   view_mode		INTEGER,"
+		 "   sort_column	INTEGER,"
+		 "   sort_reversed	INTEGER,"
+		 "   PRIMARY KEY (node_id)"
+	         ");");
+		 
+	db_exec ("CREATE INDEX node_idx ON node (node_id);");
 		 
 	db_end_transaction ();
 			   

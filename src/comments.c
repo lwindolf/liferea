@@ -153,7 +153,6 @@ comments_process_update_result (struct request *request)
 		}
 				
 		node_free(ctxt->subscription->node);
-		subscription_free(ctxt->subscription);
 		feed_free_parser_ctxt(ctxt);
 	}
 	

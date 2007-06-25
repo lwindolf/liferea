@@ -218,8 +218,6 @@ migrate_load_from_cache (const gchar *sourceDir, const gchar *id)
 	g_free (filename);
 
 	node_free (node);
-	g_free (ctxt->feed);	/* g_free() ok because no fields used... */
-	subscription_free (ctxt->subscription);
 	feed_free_parser_ctxt (ctxt);
 	
 	g_print ("\n");
