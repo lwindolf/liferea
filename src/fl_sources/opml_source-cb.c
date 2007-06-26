@@ -68,7 +68,7 @@ ui_opml_source_get_source_url (nodePtr parent)
 	GtkWidget	*dialog;
 	GladeXML	*xml;
 
-	xml = glade_xml_new ( PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE "opml_source.glade", NULL, NULL);
+	xml = glade_xml_new ( PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "opml_source.glade", NULL, NULL);
 	dialog = glade_xml_get_widget (xml, "opml_source_dialog");
 
 	g_signal_connect (G_OBJECT (dialog), "response",
