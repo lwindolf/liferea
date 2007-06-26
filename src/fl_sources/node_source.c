@@ -210,7 +210,6 @@ void
 ui_node_source_type_dialog (nodePtr parent)
 {
 	GSList 			*iter = nodeSourceTypes;
-	GladeXML		*xml;
 	GtkWidget 		*dialog, *treeview;
 	GtkTreeStore		*treestore;
 	GtkCellRenderer		*renderer;
@@ -224,8 +223,7 @@ ui_node_source_type_dialog (nodePtr parent)
 	}		
 
 	/* set up the dialog */
-	xml = glade_xml_new ( PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE "node_source.glade", NULL, NULL);
-	dialog = glade_xml_get_widget (xml, "node_source_type_dialog");
+	dialog = liferea_dialog_new (PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "node_source.glade", "node_source_type_dialog");
 
 	treestore = gtk_tree_store_new (2, G_TYPE_STRING, G_TYPE_POINTER);
 	
@@ -261,9 +259,6 @@ ui_node_source_type_dialog (nodePtr parent)
 	g_signal_connect (G_OBJECT (dialog), "response",
 			  G_CALLBACK (on_node_source_type_selected), 
 			  (gpointer)parent);
-	g_signal_connect (G_OBJECT (dialog), "destroy",
-	                  G_CALLBACK (on_node_source_type_dialog_destroy),
-			  (gpointer) xml);
 }
 
 /* implementation of the node type interface */
