@@ -49,6 +49,7 @@ google_source_merge_feed(xmlNodePtr match, gpointer user_data)
 {
 	readerPtr	reader = (readerPtr)user_data;
 	nodePtr		node;
+	GSList		*iter;
 	xmlNodePtr	xml;
 	xmlChar		*title, *id;
 	
@@ -59,6 +60,15 @@ google_source_merge_feed(xmlNodePtr match, gpointer user_data)
 	xml = common_xpath_find (match, "./string[@name='id']");
 	if (xml)
 		id = xmlNodeListGetString (xml->doc, xml->xmlChildrenNode, 1);
+		
+	/* check if node already exists */
+	iter = reader->root->children;
+	while (iter) {
+		node = (nodePtr)iter->data;
+		if (g_str_equal (node_get_title (node), title))
+			return;
+		iter = g_slist_next (iter);
+	}
 	
 	/* Note: ids look like "feed/http://rss.slashdot.org" */
 	if (id && title) {
