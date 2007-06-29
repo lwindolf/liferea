@@ -97,7 +97,7 @@ void opml_source_remove(nodePtr node) {
 	node_foreach_child(node, node_request_remove);
 	g_assert(!node->children);
 	
-	/* step 2: delete plugin instance OPML cache file */
+	/* step 2: delete source instance OPML cache file */
 	filename = opml_source_get_feedlist(node);
 	unlink(filename);
 	g_free(filename);
@@ -277,17 +277,15 @@ opml_source_update (nodePtr node, GTimeVal *now)
 {
 	requestPtr	request;
 	
-	if(node->source->url) {
-		request = update_request_new(node);
-		request->options = node->source->updateOptions;
-		request->updateState = node->source->updateState;
-		request->source = g_strdup(node->source->url);
+	if(subscription_get_source (node->subscription)) {
+		request = update_request_new (node);
+		subscription_prepare_request (node->subscription, request, 0, now);
+		request->options = node->subscription->updateOptions;
 		request->priority = 1;
 		request->callback = opml_source_process_update_results;
 		request->user_data = node;
-		debug2(DEBUG_UPDATE, "updating OPML source %s (node id %s)", node->source->url, node->id);
+		debug2(DEBUG_UPDATE, "updating OPML source %s (node id %s)", request->source, node->id);
 		update_execute_request(request);
-		request->updateState->lastPoll.tv_sec = now->tv_sec;
 	} else {
 		g_warning("Cannot update feed list source %s: missing URL!\n", node->title);
 	}
@@ -296,17 +294,23 @@ opml_source_update (nodePtr node, GTimeVal *now)
 static void
 opml_source_auto_update(nodePtr node, GTimeVal *now)
 {
-	if (node->source->updateState->lastPoll.tv_sec + OPML_SOURCE_UPDATE_INTERVAL <= now->tv_sec)
+	if (node->subscription->updateState->lastPoll.tv_sec + OPML_SOURCE_UPDATE_INTERVAL <= now->tv_sec)
 		opml_source_update (node, now);	
 }
 
 /** called during import and when subscribing, we will do
     node_add_child() only when subscribing */
-void opml_source_setup(nodePtr parent, nodePtr node) {
-
-	node->icon = create_pixbuf("fl_opml.png");
+void
+opml_source_setup (nodePtr parent, nodePtr node)
+{
+	gchar	*filename;
 	
 	node_set_type(node, node_source_get_node_type());
+	
+	filename = g_strdup_printf ("%s.png", NODE_SOURCE_TYPE (node)->id);
+	node->icon = create_pixbuf (filename);
+	g_free (filename);
+	
 	if(parent) {
 		gint pos;
 		ui_feedlist_get_target_folder(&pos);

@@ -282,6 +282,86 @@ subscription_update_favicon (subscriptionPtr subscription, GTimeVal *now)
 			  (gpointer)subscription->node);
 }
 
+subscriptionPtr
+subscription_import (xmlNodePtr xml, gboolean trusted)
+{
+	subscriptionPtr	subscription;
+	xmlChar		*source, *filter, *intervalStr, *tmp;
+
+	subscription = subscription_new (NULL, NULL, NULL);
+	
+	source = xmlGetProp (xml, BAD_CAST "xmlUrl");
+	if (!source)
+		source = xmlGetProp (xml, BAD_CAST "xmlurl");	/* e.g. for AmphetaDesk */
+		
+	if (source) {
+		xmlChar	*typeStr = xmlGetProp (xml, BAD_CAST "type");
+	
+		if (!trusted && source[0] == '|') {
+			/* FIXME: Display warning dialog asking if the command
+			   is safe? */
+			tmp = g_strdup_printf ("unsafe command: %s", source);
+			xmlFree (source);
+			source = tmp;
+		}
+	
+		subscription_set_source (subscription, source);
+		xmlFree (source);
+	
+		if ((filter = xmlGetProp (xml, BAD_CAST "filtercmd"))) {
+			if (!trusted) {
+				/* FIXME: Display warning dialog asking if the command
+				   is safe? */
+				tmp = g_strdup_printf ("unsafe command: %s", filter);
+				xmlFree (filter);
+				filter = tmp;
+			}
+
+			subscription_set_filter (subscription, filter);
+			xmlFree (filter);
+		}
+		
+		intervalStr = xmlGetProp (xml, BAD_CAST "updateInterval");
+		subscription_set_update_interval (subscription, parse_integer (intervalStr, -1));
+		xmlFree (intervalStr);
+	
+		/* no proxy flag */
+		tmp = xmlGetProp (xml, BAD_CAST "dontUseProxy");
+		if (tmp && !xmlStrcmp (tmp, BAD_CAST "true"))
+			subscription->updateOptions->dontUseProxy = TRUE;
+		xmlFree (tmp);
+		
+		/* authentication options */
+		subscription->updateOptions->username = xmlGetProp (xml, BAD_CAST "username");
+		subscription->updateOptions->password = xmlGetProp (xml, BAD_CAST "password");
+	}
+	
+	return subscription;
+}
+
+void
+subscription_export (subscriptionPtr subscription, xmlNodePtr xml, gboolean trusted)
+{
+	gchar *interval = g_strdup_printf ("%d", subscription_get_update_interval (subscription));
+
+	xmlNewProp (xml, BAD_CAST "xmlUrl", BAD_CAST subscription_get_source (subscription));
+	
+	if (subscription_get_filter (subscription))
+		xmlNewProp (xml, BAD_CAST"filtercmd", BAD_CAST subscription_get_filter (subscription));
+		
+	if(trusted) {
+		xmlNewProp (xml, BAD_CAST"updateInterval", BAD_CAST interval);
+
+		if (subscription->updateOptions->dontUseProxy)
+			xmlNewProp (xml, BAD_CAST"dontUseProxy", BAD_CAST"true");
+			
+		if (subscription->updateOptions->username)
+			xmlNewProp (xml, BAD_CAST"username", subscription->updateOptions->username);
+		if (subscription->updateOptions->password)
+			xmlNewProp (xml, BAD_CAST"password", subscription->updateOptions->password);
+	}	
+}
+
 void
 subscription_free (subscriptionPtr subscription)
 {

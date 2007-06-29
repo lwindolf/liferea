@@ -70,7 +70,26 @@ typedef struct subscription {
  *
  * @returns the new subscription
  */
-subscriptionPtr subscription_new(const gchar *source, const gchar *filter, updateOptionsPtr options);
+subscriptionPtr subscription_new (const gchar *source, const gchar *filter, updateOptionsPtr options);
+
+/**
+ * Imports a subscription from the given XML document.
+ *
+ * @param xml		xml node
+ * @param trusted	TRUE when importing from internal XML document
+ *
+ * @returns a new subscription
+ */
+subscriptionPtr subscription_import (xmlNodePtr xml, gboolean trusted);
+
+/**
+ * Exports the given subscription to the given XML document.
+ *
+ * @param subscription	the subscription
+ * @param xml		xml node
+ * @param trusted	TRUE when exporting to internal XML document
+ */
+void subscription_export (subscriptionPtr subscription, xmlNodePtr xml, gboolean trusted);
 
 /**
  * Checks wether a subscription is ready to be updated

@@ -98,81 +98,76 @@ gboolean node_source_type_register(nodeSourceTypePtr type) {
 	return TRUE;
 }
 
-static void node_source_import(nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean trusted) {
+static void
+node_source_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trusted)
+{
 	nodeSourceTypePtr	type;
 	xmlChar			*typeStr = NULL;
 
-	debug_enter("node_source_import");
+	debug_enter ("node_source_import");
 
-	typeStr = xmlGetProp(cur, BAD_CAST"sourceType");
-	if(!typeStr)
-		typeStr = xmlGetProp(cur, BAD_CAST"pluginType"); /* for migration only */
+	typeStr = xmlGetProp (xml, BAD_CAST"sourceType");
+	if (!typeStr)
+		typeStr = xmlGetProp (xml, BAD_CAST"pluginType"); /* for migration only */
 
-	if(typeStr) {
-		debug2(DEBUG_CACHE, "creating node source instance (type=%s,id=%s)", typeStr, node->id);
+	if (typeStr) {
+		debug2 (DEBUG_CACHE, "creating node source instance (type=%s,id=%s)", typeStr, node->id);
 
-		node_add_child(parent, node, -1);
+		node_add_child (parent, node, -1);
 		
 		node->available = FALSE;
 
 		/* scan for matching node source and create new instance */
-		type = node_source_type_find(typeStr, 0);
+		type = node_source_type_find (typeStr, 0);
 		
-		if(NULL == type) {
+		if (!type) {
 			/* Source type is not available for some reason, but
 			   we need a representation to keep the node source
 			   in the feed list. So we load a dummy source type
 			   instead and save the real source id in the
 			   unused node's data field */
-			type = node_source_type_find(NODE_SOURCE_TYPE_DUMMY_ID, 0);
-			g_assert(NULL != type);
-			node->data = g_strdup(typeStr);
+			type = node_source_type_find (NODE_SOURCE_TYPE_DUMMY_ID, 0);
+			g_assert (NULL != type);
+			node->data = g_strdup (typeStr);
 		}
 		
 		node->type = NODE_TYPE_SOURCE;
 		node->available = TRUE;
-		node->source = g_new0(struct nodeSource, 1);
-		node->source->updateOptions = g_new0(struct updateOptions, 1);
-		node->source->updateState = update_state_new();
-		node->source->root = node;
-		node->source->type = type;
-		node->source->url = xmlGetProp(cur, BAD_CAST"xmlUrl");
-		
-		db_update_state_load(node->id, node->source->updateState);
+		node->source = NULL;
+		node_source_new (node, type);
+		node_set_subscription (node, subscription_import (xml, trusted));
 				
-		type->source_import(node);	// FIXME: pass trusted flag?
+		type->source_import (node);	// FIXME: pass trusted flag?
 	} else {
-		g_warning("No source type given for node \"%s\"", node_get_title(node));
+		g_warning ("No source type given for node \"%s\". Ignoring it.", node_get_title (node));
 	}	
 
-	debug_exit("node_source_import");
+	debug_exit ("node_source_import");
 }
 
-static void node_source_export(nodePtr node, xmlNodePtr cur, gboolean trusted) {
+static void
+node_source_export (nodePtr node, xmlNodePtr xml, gboolean trusted)
+{
+	debug_enter ("node_source_export");
 
-	debug_enter("node_source_export");
-
-	debug2(DEBUG_CACHE, "node source export for node %s, id=%s", node->title, NODE_SOURCE_TYPE(node)->id);
-	if(!strcmp(NODE_SOURCE_TYPE(node)->id, NODE_SOURCE_TYPE_DUMMY_ID))
-		xmlNewProp(cur, BAD_CAST"sourceType", BAD_CAST(node->data));
+	debug2 (DEBUG_CACHE, "node source export for node %s, id=%s", node->title, NODE_SOURCE_TYPE (node)->id);
+	if (!strcmp (NODE_SOURCE_TYPE (node)->id, NODE_SOURCE_TYPE_DUMMY_ID))
+		xmlNewProp (xml, BAD_CAST"sourceType", BAD_CAST (node->data));
 	else
-		xmlNewProp(cur, BAD_CAST"sourceType", BAD_CAST(NODE_SOURCE_TYPE(node)->id));
+		xmlNewProp (xml, BAD_CAST"sourceType", BAD_CAST (NODE_SOURCE_TYPE(node)->id));
 		
-	if(node->source->url)
-		xmlNewProp(cur, BAD_CAST"xmlUrl", node->source->url);
+	subscription_export (node->subscription, xml, trusted);
 
 	debug_exit("node_source_export");
 }
 
-void node_source_new(nodePtr node, nodeSourceTypePtr type, const gchar *sourceUrl) {
-
-	g_assert(NULL == node->source);
-	node->source = g_new0(struct nodeSource, 1);
+void
+node_source_new (nodePtr node, nodeSourceTypePtr type)
+{ 
+	g_assert (NULL == node->source);
+	node->source = g_new0 (struct nodeSource, 1);
 	node->source->root = node;
 	node->source->type = type;
-	node->source->url = g_strdup(sourceUrl);
-	node->source->updateOptions = g_new0(struct updateOptions, 1);
-	node->source->updateState = g_new0(struct updateState, 1);
 }
 
 /* source instance creation dialog */

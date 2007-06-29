@@ -59,7 +59,7 @@ typedef struct node {
 	guint			type;		/**< node type */
 	struct subscription	*subscription;	/**< subscription attached to this node (or NULL) */
 	struct nodeType		*nodeType;	/**< node type implementation */	
-	struct nodeSource	*source;	/**< the feed list plugin instance handling this node */
+	struct nodeSource	*source;	/**< the feed list source handling this node */
 
 	struct request		*updateRequest;	/**< update request structure used when downloading content (is not to be listed in the requests list!) */
 	

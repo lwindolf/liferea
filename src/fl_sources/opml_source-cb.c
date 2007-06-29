@@ -23,7 +23,6 @@
 #endif
 
 #include <gtk/gtk.h>
-#include <glade/glade.h>
 
 #include "common.h"
 #include "debug.h"
@@ -47,8 +46,9 @@ on_opml_source_selected (GtkDialog *dialog,
 	if (response_id == GTK_RESPONSE_OK) {
 		node = node_new ();
 		node_set_title (node, OPML_SOURCE_DEFAULT_TITLE);
-		node_source_new (node, opml_source_get_type(), gtk_entry_get_text(GTK_ENTRY(liferea_dialog_lookup(GTK_WIDGET(dialog), "location_entry"))));
+		node_source_new (node, opml_source_get_type());
 		opml_source_setup (parent, node);
+		node_set_subscription (node, subscription_new (gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET (dialog), "location_entry"))), NULL, NULL));
 		node_request_update (node, 0);
 	}
 
@@ -66,17 +66,12 @@ void
 ui_opml_source_get_source_url (nodePtr parent) 
 {
 	GtkWidget	*dialog;
-	GladeXML	*xml;
 
-	xml = glade_xml_new ( PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "opml_source.glade", NULL, NULL);
-	dialog = glade_xml_get_widget (xml, "opml_source_dialog");
+	dialog = liferea_dialog_new (PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "opml_source.glade", "opml_source_dialog");
 
 	g_signal_connect (G_OBJECT (dialog), "response",
 			  G_CALLBACK (on_opml_source_selected), 
 			  (gpointer)parent);
-	g_signal_connect (G_OBJECT (dialog), "destroy",
-	                  G_CALLBACK (on_opml_source_dialog_destroy),
-			  (gpointer) xml);
 }
 
 static void

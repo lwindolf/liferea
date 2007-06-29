@@ -43,6 +43,7 @@
 #include "fl_sources/bloglines_source.h"
 #include "fl_sources/default_source.h"
 #include "fl_sources/dummy_source.h"
+#include "fl_sources/google_source.h"
 #include "fl_sources/node_source.h"
 #include "fl_sources/opml_source.h"
 #include "notification/notif_plugin.h"
@@ -385,17 +386,18 @@ void feedlist_init(void) {
 	debug_enter("feedlist_init");
 	
 	/* 1. Register standard node and source types */
-	node_type_register(feed_get_node_type());
-	node_type_register(root_get_node_type());
-	node_type_register(folder_get_node_type());
-	node_type_register(vfolder_get_node_type());
-	node_type_register(node_source_get_node_type());
-	node_type_register(newsbin_get_node_type());
+	node_type_register (feed_get_node_type ());
+	node_type_register (root_get_node_type ());
+	node_type_register (folder_get_node_type ());
+	node_type_register (vfolder_get_node_type ());
+	node_type_register (node_source_get_node_type ());
+	node_type_register (newsbin_get_node_type ());
 	
-	node_source_type_register(default_source_get_type());
-	node_source_type_register(dummy_source_get_type());
-	node_source_type_register(opml_source_get_type());
-	node_source_type_register(bloglines_source_get_type());
+	node_source_type_register (default_source_get_type ());
+	node_source_type_register (dummy_source_get_type ());
+	node_source_type_register (opml_source_get_type ());
+	node_source_type_register (bloglines_source_get_type ());
+	node_source_type_register (google_source_get_type ());
 
 	/* 2. Set up a root node and import the feed list plugins structure. */
 	debug0(DEBUG_CACHE, "Setting up root node");

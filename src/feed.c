@@ -111,7 +111,7 @@ feedHandlerPtr feed_type_str_to_fhp(const gchar *str) {
 	return NULL;
 }
 
-static int parse_integer(gchar *str, int def) {
+int parse_integer(gchar *str, int def) {
 	int num;
 
 	if(str == NULL)
@@ -122,165 +122,113 @@ static int parse_integer(gchar *str, int def) {
 	return num;
 }
 
-static void feed_import(nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean trusted) {
+static void
+feed_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trusted)
+{
 	gchar		*cacheLimitStr, *filter, *intervalStr, *title; 
 	gchar		*htmlUrlStr, *source, *tmp; 
 	feedPtr		feed = NULL;
-
-	debug_enter("feed_import");
-
-	if(NULL == (source = xmlGetProp(cur, BAD_CAST"xmlUrl")))
-		source = xmlGetProp(cur, BAD_CAST"xmlurl");	/* e.g. for AmphetaDesk */
 		
-	if(source) {
-		xmlChar	*typeStr = xmlGetProp(cur, BAD_CAST"type");
+	xmlChar	*typeStr = xmlGetProp (xml, BAD_CAST"type");
 		
-		feed = feed_new();
-		feed->fhp = feed_type_str_to_fhp(typeStr);
-		xmlFree(typeStr);
+	feed = feed_new ();
+	feed->fhp = feed_type_str_to_fhp (typeStr);
+	xmlFree (typeStr);
 		
-		node_set_data(node, feed);
-		node_set_subscription(node, subscription_new(NULL, NULL, NULL));
+	node_set_data (node, feed);
+	node_set_subscription (node, subscription_import (xml, trusted));
 
-		if(!trusted && source[0] == '|') {
-			/* FIXME: Display warning dialog asking if the command
-			   is safe? */
-			tmp = g_strdup_printf("unsafe command: %s", source);
-			xmlFree(source);
-			source = tmp;
-		}
-
-		subscription_set_source(node->subscription, source);
-		xmlFree(source);
-
-		if((filter = xmlGetProp(cur, BAD_CAST"filtercmd"))) {
-			if(!trusted) {
-				/* FIXME: Display warning dialog asking if the command
-				   is safe? */
-				tmp = g_strdup_printf("unsafe command: %s", filter);
-				xmlFree(filter);
-				filter = tmp;
-			}
-
-			subscription_set_filter(node->subscription, filter);
-			xmlFree(filter);
-		}
-		
-		intervalStr = xmlGetProp(cur, BAD_CAST"updateInterval");
-		subscription_set_update_interval(node->subscription, parse_integer(intervalStr, -1));
-		xmlFree(intervalStr);
-
-		title = xmlGetProp(cur, BAD_CAST"title");
-		if(!title || !xmlStrcmp(title, BAD_CAST"")) {
-			if(title)
-				xmlFree(title);
-			title = xmlGetProp(cur, BAD_CAST"text");
-		}
-
-		node_set_title(node, title);
-		xmlFree(title);
-
-		/* Set the feed cache limit */
-		cacheLimitStr = xmlGetProp(cur, BAD_CAST"cacheLimit");
-		if(cacheLimitStr && !xmlStrcmp(cacheLimitStr, "unlimited"))
-			feed->cacheLimit = CACHE_UNLIMITED;
-		else
-			feed->cacheLimit = parse_integer(cacheLimitStr, CACHE_DEFAULT);
-		xmlFree(cacheLimitStr);
+	/* Set the feed cache limit */
+	cacheLimitStr = xmlGetProp (xml, BAD_CAST "cacheLimit");
+	if (cacheLimitStr && !xmlStrcmp (cacheLimitStr, "unlimited"))
+		feed->cacheLimit = CACHE_UNLIMITED;
+	else
+		feed->cacheLimit = parse_integer (cacheLimitStr, CACHE_DEFAULT);
+	xmlFree (cacheLimitStr);
 	
-		/* Obtain the htmlUrl */
-		htmlUrlStr = xmlGetProp(cur, BAD_CAST"htmlUrl");
-		if(htmlUrlStr && xmlStrcmp(htmlUrlStr, ""))
-			feed_set_html_url(feed, "", htmlUrlStr);
-		xmlFree(htmlUrlStr);
+	/* Obtain the htmlUrl */
+	htmlUrlStr = xmlGetProp (xml, BAD_CAST"htmlUrl");
+	if (htmlUrlStr && xmlStrcmp (htmlUrlStr, ""))
+		feed_set_html_url (feed, "", htmlUrlStr);
+	xmlFree (htmlUrlStr);
 	
-		tmp = xmlGetProp(cur, BAD_CAST"noIncremental");
-		if(tmp && !xmlStrcmp(tmp, BAD_CAST"true"))
-			feed->noIncremental = TRUE;
-		xmlFree(tmp);
+	tmp = xmlGetProp (xml, BAD_CAST"noIncremental");
+	if (tmp && !xmlStrcmp (tmp, BAD_CAST"true"))
+		feed->noIncremental = TRUE;
+	xmlFree (tmp);
 	
-		/* enclosure auto download flag */
-		tmp = xmlGetProp(cur, BAD_CAST"encAutoDownload");
-		if(tmp && !xmlStrcmp(tmp, BAD_CAST"true"))
-			feed->encAutoDownload = TRUE;
-		xmlFree(tmp);
+	/* enclosure auto download flag */
+	tmp = xmlGetProp (xml, BAD_CAST"encAutoDownload");
+	if (tmp && !xmlStrcmp (tmp, BAD_CAST"true"))
+		feed->encAutoDownload = TRUE;
+	xmlFree (tmp);
 			
-		/* auto item link loading flag */
-		tmp = xmlGetProp(cur, BAD_CAST"loadItemLink");
-		if(tmp && !xmlStrcmp(tmp, BAD_CAST"true"))
-			feed->loadItemLink = TRUE;
-		xmlFree(tmp);
-			
-		/* no proxy flag */
-		tmp = xmlGetProp(cur, BAD_CAST"dontUseProxy");
-		if(tmp && !xmlStrcmp(tmp, BAD_CAST"true"))
-			node->subscription->updateOptions->dontUseProxy = TRUE;
-		xmlFree(tmp);
-						
-		node_set_icon(node, favicon_load_from_cache(node->id));
-		
-		debug4(DEBUG_CACHE, "import feed: title=%s source=%s typeStr=%s interval=%d", 
-		       node_get_title(node), 
-		       subscription_get_source(node->subscription), 
-		       typeStr, 
-		       subscription_get_update_interval(node->subscription));
-
-		node_add_child(parent, node, -1);
-		
-		/* ensure DB state and OPML info are the same */
-		db_subscription_update (node->subscription);
+	/* auto item link loading flag */
+	tmp = xmlGetProp (xml, BAD_CAST"loadItemLink");
+	if (tmp && !xmlStrcmp (tmp, BAD_CAST"true"))
+		feed->loadItemLink = TRUE;
+	xmlFree (tmp);
+							
+	title = xmlGetProp (xml, BAD_CAST"title");
+	if (!title || !xmlStrcmp (title, BAD_CAST"")) {
+		if (title)
+			xmlFree (title);
+		title = xmlGetProp (xml, BAD_CAST"text");
 	}
 
-	debug_exit("feed_import");
+	node_set_title (node, title);
+	xmlFree (title);
+	
+	node_set_icon (node, favicon_load_from_cache (node->id));
+		
+	debug4 (DEBUG_CACHE, "import feed: title=%s source=%s typeStr=%s interval=%d", 
+	        node_get_title (node), 
+	        subscription_get_source (node->subscription), 
+	        typeStr, 
+	        subscription_get_update_interval (node->subscription));
+
+	node_add_child (parent, node, -1);
 }
 
-static void feed_export(nodePtr node, xmlNodePtr cur, gboolean trusted) {
-	feedPtr feed = (feedPtr)node->data;
-
-	debug_enter("feed_export");
-
-	gchar *interval = g_strdup_printf("%d", subscription_get_update_interval (node->subscription));
+static void
+feed_export (nodePtr node, xmlNodePtr xml, gboolean trusted)
+{
+	feedPtr feed = (feedPtr) node->data;
 	gchar *cacheLimit = NULL;
 
-	if(feed_get_html_url(feed))
-		xmlNewProp(cur, BAD_CAST"htmlUrl", BAD_CAST feed_get_html_url(feed));
+	if (feed_get_html_url (feed))
+		xmlNewProp (xml, BAD_CAST"htmlUrl", BAD_CAST feed_get_html_url (feed));
 	else
-		xmlNewProp(cur, BAD_CAST"htmlUrl", BAD_CAST "");
-	xmlNewProp(cur, BAD_CAST"xmlUrl", BAD_CAST subscription_get_source (node->subscription));
+		xmlNewProp (xml, BAD_CAST"htmlUrl", BAD_CAST "");
 
-	if(subscription_get_filter (node->subscription))
-		xmlNewProp(cur, BAD_CAST"filtercmd", BAD_CAST subscription_get_filter (node->subscription));
+	subscription_export (node->subscription, xml, trusted);
+
+	if (subscription_get_filter (node->subscription))
+		xmlNewProp(xml, BAD_CAST"filtercmd", BAD_CAST subscription_get_filter (node->subscription));
 
 	if(trusted) {
-		xmlNewProp(cur, BAD_CAST"updateInterval", BAD_CAST interval);
-		
-		if(feed->cacheLimit >= 0)
-			cacheLimit = g_strdup_printf("%d", feed->cacheLimit);
-		if(feed->cacheLimit == CACHE_UNLIMITED)
-			cacheLimit = g_strdup("unlimited");
-		if(cacheLimit)
-			xmlNewProp(cur, BAD_CAST"cacheLimit", BAD_CAST cacheLimit);
+		if (feed->cacheLimit >= 0)
+			cacheLimit = g_strdup_printf ("%d", feed->cacheLimit);
+		if (feed->cacheLimit == CACHE_UNLIMITED)
+			cacheLimit = g_strdup ("unlimited");
+		if (cacheLimit)
+			xmlNewProp (xml, BAD_CAST"cacheLimit", BAD_CAST cacheLimit);
 
-		if(feed->noIncremental)
-			xmlNewProp(cur, BAD_CAST"noIncremental", BAD_CAST"true");
+		if (feed->noIncremental)
+			xmlNewProp (xml, BAD_CAST"noIncremental", BAD_CAST"true");
 			
-		if(TRUE == feed->encAutoDownload)
-			xmlNewProp(cur, BAD_CAST"encAutoDownload", BAD_CAST"true");
+		if (feed->encAutoDownload)
+			xmlNewProp (xml, BAD_CAST"encAutoDownload", BAD_CAST"true");
 			
-		if(TRUE == feed->loadItemLink)
-			xmlNewProp(cur, BAD_CAST"loadItemLink", BAD_CAST"true");
-			
-		if(TRUE == node->subscription->updateOptions->dontUseProxy)
-			xmlNewProp(cur, BAD_CAST"dontUseProxy", BAD_CAST"true");
+		if (feed->loadItemLink)
+			xmlNewProp (xml, BAD_CAST"loadItemLink", BAD_CAST"true");
 	}
 
-	debug3(DEBUG_CACHE, "adding feed: source=%s interval=%s cacheLimit=%s",
-	       subscription_get_source (node->subscription), 
-	       interval, (cacheLimit != NULL ? cacheLimit : ""));
-	g_free(cacheLimit);
-	g_free(interval);
-
-	debug_exit("feed_export");
+	debug3 (DEBUG_CACHE, "adding feed: source=%s interval=%d cacheLimit=%s",
+	        subscription_get_source (node->subscription), 
+		subscription_get_update_interval (node->subscription),
+	        (cacheLimit != NULL ? cacheLimit : ""));
+	g_free (cacheLimit);
 }
 
 feedParserCtxtPtr feed_create_parser_ctxt(void) {

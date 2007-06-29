@@ -117,10 +117,7 @@ typedef struct nodeSourceType {
 /** feed list source instance */
 typedef struct nodeSource {
 	nodeSourceTypePtr	type;		/**< node source type of this source instance */
-	updateStatePtr 		updateState;	/**< the update state (etags, last modified, cookies...) of this source */
-	updateOptionsPtr	updateOptions;	/**< the update options (no proxy, user, pwd) */
 	nodePtr			root;		/**< insertion node of this node source instance */
-	gchar			*url;		/**< URL or filename of the node source instance */
 } *nodeSourcePtr;
 
 /** Use this to cast the node source type from a node structure. */
@@ -152,9 +149,8 @@ gboolean node_source_type_register(nodeSourceTypePtr type);
  *
  * @param node			a newly created node
  * @param nodeSourceType	the node source type
- * @param sourceUrl		URI of the source
  */
-void node_source_new(nodePtr node, nodeSourceTypePtr nodeSourceType, const gchar *sourceUrl);
+void node_source_new(nodePtr node, nodeSourceTypePtr nodeSourceType);
 
 /**
  * Launches a source creation dialog. The new source
