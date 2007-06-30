@@ -364,11 +364,8 @@ itemlist_set_flag (itemPtr item, gboolean newStatus)
 {	
 	if (newStatus != item->flagStatus) {
 
-		/* 1. propagate to vfolders (must happen before changing the item state) */
-		vfolder_foreach_with_item (item, "flagged",
-		                           itemlist_decrement_vfolder_count,
-		                           itemlist_increment_vfolder_count);
-						 
+		/* 1. No search folder propagation... */
+					 
 		/* 2. save state to DB */
 		item->flagStatus = newStatus;
 		db_item_update (item);
@@ -415,25 +412,28 @@ itemlist_set_read_status (itemPtr item, gboolean newStatus)
 	if (newStatus != item->readStatus) {
 		debug_start_measurement (DEBUG_GUI);
 
-		/* 1. propagate to vfolders (must happen before changing the item state) */
-		vfolder_foreach_with_item (item, "unread",
-		                           itemlist_decrement_vfolder_unread,
-		                           itemlist_increment_vfolder_unread);
+		/* 1. remove propagate to vfolders (must happen before changing the item state) */
+		if (newStatus)
+			vfolder_foreach_with_item (item->id, itemlist_decrement_vfolder_unread);
 				
 		/* 2. save state to DB */
 		item->readStatus = newStatus;
 		db_item_update (item);
-
-		/* 3. update item list GUI state */
+		
+		/* 3. add propagate to vfolders (must happen after changing the item state) */
+		if (!newStatus)
+			vfolder_foreach_with_item (item->id, itemlist_increment_vfolder_unread);
+			
+		/* 4. update item list GUI state */
 		itemlist_update_item (item);
 
-		/* 4. updated feed list unread counters */
+		/* 5. updated feed list unread counters */
 		node_update_counters (node_from_id (item->nodeId));
 		
-		/* 5. update notification statistics */
+		/* 6. update notification statistics */
 		feedlist_reset_new_item_count ();
 
-		/* 6. duplicate state propagation */
+		/* 7. duplicate state propagation */
 		if (item->validGuid) {
 			GSList *duplicates, *iter;
 			
@@ -511,10 +511,10 @@ void
 itemlist_remove_item (itemPtr item) 
 {
 	/* update search folder counters */
-	vfolder_foreach_with_item (item, "flagged", itemlist_decrement_vfolder_count, NULL);
-	vfolder_foreach_with_item (item, "unread", itemlist_decrement_vfolder_unread, NULL);
+	if (!item->readStatus)
+		vfolder_foreach_with_item (item->id, itemlist_decrement_vfolder_unread);
 
-	if(itemlist_priv.selectedId == item->id) {
+	if (itemlist_priv.selectedId == item->id) {
 		itemlist_set_selected (NULL);
 		itemlist_priv.deferredFilter = FALSE;
 		itemlist_priv.deferredRemove = FALSE;
@@ -571,12 +571,7 @@ itemlist_remove_items (itemSetPtr itemSet, GList *items)
 
 	itemview_update ();
 	node_update_counters (node_from_id (itemSet->nodeId));
-	
-	/* Search folders updating */
-	if (unread)
-		vfolder_foreach_with_rule ("unread", vfolder_update_counters);
-	if (flagged)
-		vfolder_foreach_with_rule ("flagged", vfolder_update_counters);	
+	vfolder_foreach (vfolder_update_counters);
 }
 
 void

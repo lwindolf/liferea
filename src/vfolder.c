@@ -137,6 +137,12 @@ vfolder_is_affected (vfolderPtr vfolder, const gchar *ruleName)
 }
 
 void
+vfolder_foreach (nodeActionFunc func)
+{
+	vfolder_foreach_with_rule (NULL, func);
+}
+
+void
 vfolder_foreach_with_rule (const gchar *ruleName, nodeActionFunc func) 
 {
 	GSList	*iter = vfolders;
@@ -144,28 +150,21 @@ vfolder_foreach_with_rule (const gchar *ruleName, nodeActionFunc func)
 	g_assert (NULL != func);
 	while (iter) {
 		vfolderPtr vfolder = (vfolderPtr)iter->data;
-		if (vfolder_is_affected (vfolder, ruleName))
+		if (!ruleName || vfolder_is_affected (vfolder, ruleName))
 			(*func) (vfolder->node);
 		iter = g_slist_next (iter);
 	}
 }
 
 void
-vfolder_foreach_with_item (itemPtr item, const gchar *ruleName, nodeActionFunc positiveFunc, nodeActionFunc negativeFunc)
+vfolder_foreach_with_item (gulong itemId, nodeActionFunc func)
 {
 	GSList	*iter = vfolders;
 	
 	while (iter) {
 		vfolderPtr vfolder = (vfolderPtr)iter->data;
-		if (vfolder_is_affected (vfolder, ruleName)) {
-			if (rules_check_item (vfolder->rules, item)) {
-				if (positiveFunc)
-					(*positiveFunc) (vfolder->node);	
-			} else {
-				if (negativeFunc)
-					(*negativeFunc) (vfolder->node);
-			}
-		}
+		if (db_view_contains_item (vfolder->node->id, itemId))
+			(*func) (vfolder->node);	
 		iter = g_slist_next (iter);
 	}
 }
