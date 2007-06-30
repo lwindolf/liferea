@@ -348,7 +348,10 @@ itemlist_select_next_unread (void)
 static void
 itemlist_decrement_vfolder_count (nodePtr node)
 {
-	node->itemCount--;
+	if (node->itemCount > 0)
+		node->itemCount--;
+	else
+		node->itemCount = 0;
 	ui_node_update (node->id);
 }
 
