@@ -409,6 +409,7 @@ void feedlist_init(void) {
 
 	debug0(DEBUG_GUI, "Notification setup");	
 	notification_enable(getBooleanConfValue(SHOW_POPUP_WINDOWS));
+	ui_tray_update ();
 
 	/* 4. Check if feeds do need updating. */
 	debug0(DEBUG_UPDATE, "Performing initial feed update");
