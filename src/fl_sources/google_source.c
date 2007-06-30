@@ -52,7 +52,7 @@ google_source_check_for_removal (nodePtr node, gpointer user_data)
 
 	switch (node->type) {
 		case NODE_TYPE_FEED:
-			expr = g_strdup_printf ("/object/list[@name='subscriptions']/object/string[@name='title']/. = '%s'", node_get_title (node));
+			expr = g_strdup_printf ("/object/list[@name='subscriptions']/object/string[@name='title'][. = '%s']", node_get_title (node));
 			break;
 		case NODE_TYPE_FOLDER:
 		default:
