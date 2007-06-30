@@ -175,7 +175,6 @@ static void opml_source_merge_feed(xmlNodePtr match, gpointer user_data) {
 	xmlFree(url);
 }
 
-// FIXME: broken for empty feed lists!
 static void opml_source_check_for_removal(nodePtr node, gpointer user_data) {
 	feedPtr		feed = node->data;
 	gchar		*expr = NULL;
