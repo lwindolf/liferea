@@ -432,7 +432,7 @@ xpath_foreach_match (xmlNodePtr node, gchar *expr, xpathMatchFunc func, gpointer
 			xpathObj = xmlXPathEval (expr, xpathCtxt);
 		}
 			
-		if (xpathObj && xpathObj->nodesetval->nodeMax) {
+		if (xpathObj && xpathObj->nodesetval && xpathObj->nodesetval->nodeMax) {
 			int	i;
 			for (i = 0; i < xpathObj->nodesetval->nodeNr; i++)
 				(*func) (xpathObj->nodesetval->nodeTab[i], user_data);

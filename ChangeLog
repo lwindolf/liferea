@@ -17,6 +17,8 @@
 	* Fixes several memory leaks (Hubert Figuiere)
 	* Removes feedbag.xpi as most users should work
 	  with Firefox 2+ now.
+	* Fixes crash when updating an OPML subscription
+	  with is empty.
 
 
 2007-06-16  Lars Lindner  <lars.lindner@gmail.com>
