@@ -29,6 +29,7 @@
 #include "metadata.h"
 #include "migrate.h"
 #include "node.h"
+#include "xml.h"
 
 static void 
 migrate_copy_dir (const gchar *from,
@@ -125,8 +126,8 @@ migrate_item_parse_cache (xmlNodePtr cur,
 	
 	item->hasEnclosure = (NULL != metadata_list_get(item->metadata, "enclosure"));
 	
-	if(migrateCache && item->description)
-		item_set_description(item, common_text_to_xhtml(item->description));
+	if (migrateCache && item->description)
+		item_set_description (item, xhtml_from_text (item->description));
 
 	return item;
 }
@@ -170,7 +171,7 @@ migrate_load_from_cache (const gchar *sourceDir, const gchar *id)
 		
 		g_assert (NULL != ctxt->data);
 
-		if (NULL == common_parse_xml_feed (ctxt))
+		if (NULL == xml_parse_feed (ctxt))
 			break;
 
 		if (NULL == (cur = xmlDocGetRootElement (ctxt->doc)))

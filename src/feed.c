@@ -25,8 +25,6 @@
 
 #include <glib.h>
 #include <libxml/xmlmemory.h>
-#include <libxml/parser.h>
-#include <libxml/tree.h>
 #include <libxml/uri.h>
 #include <string.h>
 
@@ -44,6 +42,7 @@
 #include "render.h"
 #include "script.h"
 #include "update.h"
+#include "xml.h"
 #include "parsers/cdf_channel.h"
 #include "parsers/rss_channel.h"
 #include "parsers/atom10.h"
@@ -111,17 +110,6 @@ feedHandlerPtr feed_type_str_to_fhp(const gchar *str) {
 	return NULL;
 }
 
-int parse_integer(gchar *str, int def) {
-	int num;
-
-	if(str == NULL)
-		return def;
-	if(0==(sscanf(str,"%d",&num)))
-		num = def;
-	
-	return num;
-}
-
 static void
 feed_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trusted)
 {
@@ -143,7 +131,7 @@ feed_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trusted)
 	if (cacheLimitStr && !xmlStrcmp (cacheLimitStr, "unlimited"))
 		feed->cacheLimit = CACHE_UNLIMITED;
 	else
-		feed->cacheLimit = parse_integer (cacheLimitStr, CACHE_DEFAULT);
+		feed->cacheLimit = common_parse_long (cacheLimitStr, CACHE_DEFAULT);
 	xmlFree (cacheLimitStr);
 	
 	/* Obtain the htmlUrl */
@@ -321,8 +309,8 @@ gboolean feed_parse(feedParserCtxtPtr ctxt) {
 
 	/* try to parse buffer with XML and to create a DOM tree */	
 	do {
-		if(NULL == common_parse_xml_feed(ctxt)) {
-			g_string_append_printf(ctxt->feed->parseErrors, _("XML error while reading feed! Feed \"%s\" could not be loaded!"), subscription_get_source (ctxt->subscription));
+		if(NULL == xml_parse_feed (ctxt)) {
+			g_string_append_printf (ctxt->feed->parseErrors, _("XML error while reading feed! Feed \"%s\" could not be loaded!"), subscription_get_source (ctxt->subscription));
 			break;
 		}
 		

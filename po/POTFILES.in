@@ -65,6 +65,8 @@ src/update.c
 src/update.h
 src/vfolder.c
 src/vfolder.h
+src/xml.c
+src/xml.h
 src/ui/eggtrayicon.c
 src/ui/eggtrayicon.h
 src/ui/ui_auth.c

@@ -21,6 +21,7 @@
 #define _SUBSCRIPTION_H
  
 #include <glib.h>
+#include <libxml/parser.h>
 #include "node.h"
 #include "update.h"
 

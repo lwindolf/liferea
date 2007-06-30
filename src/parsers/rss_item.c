@@ -24,12 +24,10 @@
 
 #include <string.h>
 
-#include <libxml/xmlmemory.h>
-#include <libxml/parser.h>
-
 #include "common.h"
 #include "rss_item.h"
 #include "metadata.h"
+#include "xml.h"
 
 #define RDF_NS	BAD_CAST"http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 
@@ -136,7 +134,7 @@ itemPtr parseRSSItem(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 			}
 		}
 		else if(!xmlStrcmp(cur->name, BAD_CAST"description")) {
- 			if(tmp = common_utf8_fix(extractHTMLNode(cur, 0, NULL))) {
+ 			if(tmp = common_utf8_fix(xhtml_extract (cur, 0, NULL))) {
 				/* don't overwrite content:encoded descriptions... */
 				if(!item_get_description(ctxt->item))
 					item_set_description(ctxt->item, tmp);

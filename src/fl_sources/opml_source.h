@@ -21,6 +21,7 @@
 #ifndef _OPML_SOURCE_H
 #define _OPML_SOURCE_H
 
+#include "common.h"
 #include "node.h"
 
 #define OPML_SOURCE_DEFAULT_TITLE _("New OPML Subscription")

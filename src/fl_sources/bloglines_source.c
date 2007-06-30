@@ -19,15 +19,10 @@
  */
 
 #include <glib.h>
-#include <libxml/xpath.h>
-#include <libxml/parser.h>
-#include <libxml/tree.h>
-
 #include <unistd.h>
 
-#include "common.h"
 #include "conf.h"
-#include "node.h"
+#include "subscription.h"
 #include "fl_sources/bloglines_source-cb.h"
 #include "fl_sources/node_source.h"
 #include "fl_sources/opml_source.h"
@@ -35,7 +30,7 @@
 static void
 bloglines_source_auto_update (nodePtr node, GTimeVal *now)
 {
-	if (node->subscription->updateState->lastPoll.tv_sec + getNumericConfValue(DEFAULT_UPDATE_INTERVAL)*60 <= now->tv_sec)
+	if (node->subscription->updateState->lastPoll.tv_sec + conf_get_int_value (DEFAULT_UPDATE_INTERVAL)*60 <= now->tv_sec)
 		opml_source_update (node, now);	
 }
 

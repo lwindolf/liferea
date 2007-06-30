@@ -54,7 +54,8 @@ liferea_bin_SOURCES = \
 	subscription.c subscription.h \
 	update.c update.h \
 	main.c \
-	vfolder.c vfolder.h 
+	vfolder.c vfolder.h \
+	xml.c xml.h
 
 liferea_bin_LDADD =	net/liblinet.a \
 			parsers/libliparsers.a \

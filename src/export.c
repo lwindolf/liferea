@@ -32,6 +32,7 @@
 #include "debug.h"
 #include "feedlist.h"
 #include "folder.h"
+#include "xml.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_itemlist.h"
 #include "ui/ui_mainwindow.h"
@@ -136,7 +137,7 @@ gboolean export_OPML_feedlist(const gchar *filename, nodePtr node, gboolean trus
 		if(trusted)
 			old_umask = umask(077);
 			
-		if(-1 == common_save_xml(doc, backupFilename)) {
+		if(-1 == xml_save_to_file (doc, backupFilename)) {
 			g_warning("Could not export to OPML file! Feed list changes will be lost!");
 			error = TRUE;
 		}
@@ -328,7 +329,7 @@ gboolean import_OPML_feedlist(const gchar *filename, nodePtr parentNode, nodeSou
 		} else {
 			if(!trusted) {
 				/* set title only when importing as folder and not as OPML source */
-				xmlNodePtr title = common_xpath_find(cur, "/opml/head/title"); 
+				xmlNodePtr title = xpath_find (cur, "/opml/head/title"); 
 				if(title) {
 					xmlChar *titleStr = common_utf8_fix(xmlNodeListGetString(title->doc, title->xmlChildrenNode, 1));
 					if(titleStr) {

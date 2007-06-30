@@ -26,8 +26,7 @@
 #include <sys/time.h>
 #include <string.h>
 #include <stdlib.h>
-#include <libxml/xmlmemory.h>
-#include <libxml/parser.h>
+
 #include "conf.h"
 #include "common.h"
 #include "rss_channel.h"
@@ -45,6 +44,7 @@
 #include "ns_photo.h"
 #include "ns_wfw.h"
 #include "rss_item.h"
+#include "xml.h"
 
 /* HTML output strings */
 #define TEXT_INPUT_FORM_START	"<form class=\"rssform\" method=\"GET\" action=\""
@@ -123,7 +123,7 @@ static void parseChannel(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 			}
 		}
 		else if(!xmlStrcmp(cur->name, BAD_CAST"description")) {
- 			if(NULL != (tmp = common_utf8_fix(extractHTMLNode(cur, 0, NULL)))) {
+ 			if(NULL != (tmp = common_utf8_fix(xhtml_extract (cur, 0, NULL)))) {
 				feed_set_description(ctxt->feed, tmp);
 				g_free(tmp);
 			}
@@ -143,10 +143,10 @@ static gchar* parseTextInput(xmlNodePtr cur) {
 		if(cur->type == XML_ELEMENT_NODE) {
 			if(!xmlStrcmp(cur->name, BAD_CAST"title")) {
 				g_free(tiTitle);
-				tiTitle = extractHTMLNode(cur, 0, NULL);
+				tiTitle = xhtml_extract (cur, 0, NULL);
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"description")) {
 				g_free(tiDescription);
-				tiDescription = extractHTMLNode(cur, 0, NULL);
+				tiDescription = xhtml_extract (cur, 0, NULL);
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"name")) {
 				g_free(tiName);
 				tiName = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));

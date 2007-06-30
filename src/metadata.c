@@ -23,12 +23,12 @@
 #endif
 
 #include <glib.h>
-#include <libxml/tree.h>
 #include <string.h>
 
 #include "common.h"
 #include "debug.h"
 #include "metadata.h"
+#include "xml.h"
 
 /* Metadata in Liferea are ordered lists of key/value list pairs. Both 
    feed list nodes and items can have a list of metadata assigned. Metadata
@@ -93,16 +93,16 @@ GSList * metadata_list_append(GSList *metadata, const gchar *strid, const gchar 
 			debug1(DEBUG_CACHE, "Unknown metadata type \"%s\", this is a program bug! Treating as HTML.", strid);
 		case METADATA_TYPE_HTML:
 			/* Needs to check for proper XHTML */
-			if(common_is_well_formed_xhtml(data)) {
-				tmp = g_strdup(data);
+			if (xhtml_is_well_formed (data)) {
+				tmp = g_strdup (data);
 			} else {
-				debug1(DEBUG_PARSING, "not well formed HTML: %s", data);
-				tmp = g_markup_escape_text(data, -1);
-				debug1(DEBUG_PARSING, "escaped as: %s", tmp);
+				debug1 (DEBUG_PARSING, "not well formed HTML: %s", data);
+				tmp = g_markup_escape_text (data, -1);
+				debug1 (DEBUG_PARSING, "escaped as: %s", tmp);
 			}
 			/* And needs to remove DHTML */
-			checked_data = common_strip_dhtml(tmp);
-			g_free(tmp);
+			checked_data = xhtml_strip_dhtml (tmp);
+			g_free (tmp);
 			break;
 	}
 	

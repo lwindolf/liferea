@@ -31,6 +31,7 @@
 #include "common.h"
 #include "conf.h"
 #include "debug.h"
+#include "feed.h"
 #include "itemlist.h"
 #include "net.h"
 #include "plugin.h"

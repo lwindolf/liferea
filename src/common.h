@@ -29,10 +29,6 @@
 #include <glib.h>
 #include <gtk/gtk.h>
 
-#include "feed.h"
-
-#define htmlToCDATA(buffer) g_strdup_printf("<![CDATA[%s]]>", buffer)
-
 extern gboolean lifereaStarted;
 
 /*
@@ -74,126 +70,6 @@ gchar * common_utf8_fix(xmlChar * string);
  * @returns result value
  */
 long common_parse_long(gchar *str, long def);
-
-/* converts a UTF-8 string containing HTML tags to plain text */
-gchar * unhtmlize(gchar *string);
-
-gchar * unxmlize(gchar *string);
-
-/* parses a XML node and returns its contents as a string */
-/* gchar * parseHTML(htmlNodePtr cur); */
-
-/** 
- * Extract XHTML from the children of the passed node.
- *
- * @param cur         parent of the nodes that will be returned
- * @param xhtmlMode   If 0, reads escaped HTML.
- *                    If 1, reads XHTML nodes as children, and wrap in div tag
- *                    If 2, Find a div tag, and return it as a string
- * @param defaultBase 
- * @returns XHTML version of children of passed node
- */
-gchar * extractHTMLNode(xmlNodePtr cur, gint xhtmlMode, const gchar *defaultBase);
-
-/**
- * Strips some DHTML constructs from the given HTML string.
- *
- * @param html	some HTML content
- *
- * @return newly allocated stripped HTML string
- */
-gchar * common_strip_dhtml(const gchar *html);
-
-/**
- * Convert the given string to proper XHTML content.
- * Note: this function does not respect relative URLs
- * and is to be used for cache migration 1.0 -> 1.1 only!
- *
- * @param text		usually an entity escaped HTML string
- *
- * @returns a new valid XHTML string
- */
-gchar * common_text_to_xhtml(const gchar *text);
-
-/**
- * Checks the given string for XHTML well formedness.
- *
- * @returns TRUE if the string is well formed XHTML
- */
-gboolean common_is_well_formed_xhtml(const gchar *text);
-
-/**
- * Find the first XML node matching an XPath expression.
- *
- * @param node		node to apply the XPath expression to
- * @param expr		an XPath expression string
- *
- * @return first node found that matches expr (or NULL)
- */
-xmlNodePtr common_xpath_find(xmlNodePtr node, gchar *expr);
-
-/** Function type used by common_xpath_foreach_match() */
-typedef void (*xpathMatchFunc)(xmlNodePtr match, gpointer user_data);
-
-/**
- * Executes an XPath expression and calls the given function for each matching node.
- *
- * @param node		node to apply the XPath expression to
- * @param expr		an XPath expression string
- * @param func		the function to call for each result
- *
- * @return TRUE if result set was not empty
- */
-gboolean common_xpath_foreach_match(xmlNodePtr node, gchar *expr, xpathMatchFunc func, gpointer user_data);
-
-/** used to keep track of error messages during parsing */
-typedef struct errorCtxt {
-	GString		*msg;		/**< message buffer */
-	gint		errorCount;	/**< error counter */
-} *errorCtxtPtr;
-
-/**
- * Common function to create a XML DOM object from a given XML buffer.
- * 
- * The function returns a XML document pointer or NULL
- * if the document could not be read.
- *
- * @param data		XML document buffer
- * @param length	length of buffer
- * @param recovery	enable tolerant XML parsing (use only for RSS 0.9x!)
- * @param errors	parser error context (can be NULL)
- *
- * @return XML document
- */
-xmlDocPtr common_parse_xml(gchar *data, size_t length, gboolean revocery, errorCtxtPtr errors);
-
-/**
- * Common function to create a XML DOM object from a given
- * XML buffer. This function sets up a parser context,
- * enables recovery mode and sets up the error handler.
- * 
- * The function returns a XML document pointer or NULL
- * if the document could not be read. It also sets 
- * errormsg to the last error messages on parsing
- * errors. 
- *
- * @param fpc	feed parsing context with valid data
- *
- * @return XML document
- */
-xmlDocPtr common_parse_xml_feed(feedParserCtxtPtr fpc);
-
-/**
- * Common function for reliable writing of XML documents
- * to disk. In difference to xmlSaveFile*() this function
- * syncs the file and gives better error handling.
- *
- * @param doc		the XML document to save
- * @param filename	the filename to write to
- *
- * @returns 0 on success
- */
-gint common_save_xml(xmlDocPtr doc, gchar *filename);
 
 /**
  * Returns a formatted date string for the given timestamp.

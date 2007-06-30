@@ -33,6 +33,7 @@
 #include "pie_entry.h"
 #include "ns_dc.h"
 #include "metadata.h"
+#include "xml.h"
 
 /* to store the PIENsHandler structs for all supported RDF namespace handlers */
 GHashTable	*pie_nstable = NULL;
@@ -61,12 +62,12 @@ gchar* pie_parse_content_construct(xmlNodePtr cur) {
 	   does not exist in the newer IETF drafts.*/
 	if(NULL != mode) {
 		if(!strcmp(mode, "escaped")) {
-			tmp = common_utf8_fix(extractHTMLNode(cur, 0, NULL));
+			tmp = common_utf8_fix(xhtml_extract (cur, 0, NULL));
 			if(NULL != tmp)
 				ret = tmp;
 			
 		} else if(!strcmp(mode, "xml")) {
-			ret = extractHTMLNode(cur, 1,NULL);
+			ret = xhtml_extract (cur, 1,NULL);
 			
 		} else if(!strcmp(mode, "base64")) {
 			g_warning("Base64 encoded <content> in Atom feeds not supported!\n");
@@ -92,11 +93,11 @@ gchar* pie_parse_content_construct(xmlNodePtr cur) {
 			/* Next are things that contain subttags */
 		} else if(!g_strcasecmp(type, "HTML") ||
 		          !strcmp(type, "text/html")) {
-			ret = extractHTMLNode(cur, 0,"http://default.base.com/");
+			ret = xhtml_extract (cur, 0,"http://default.base.com/");
 		} else if(/* HTML types */
 		          !g_strcasecmp(type, "xhtml") ||
 		          !strcmp(type, "application/xhtml+xml")) {
-			ret = extractHTMLNode(cur, 1,"http://default.base.com/");
+			ret = xhtml_extract (cur, 1,"http://default.base.com/");
 		}
 	}
 	/* If the type was text, everything must be now escaped and

@@ -28,6 +28,7 @@
 #include "debug.h"
 #include "plugin.h"
 #include "script.h"
+#include "xml.h"
 
 /** hash of the scripts registered for different hooks */
 static GHashTable *scripts = NULL;
@@ -47,39 +48,43 @@ static void script_config_load_hook_script(xmlNodePtr match, gpointer user_data)
 	}
 }
 
-static void script_config_load_hook(xmlNodePtr match, gpointer user_data) {
+static void
+script_config_load_hook (xmlNodePtr match, gpointer user_data)
+{
 	gint	type;
 	gchar	*tmp;
 	
-	tmp = xmlGetProp(match, BAD_CAST"type");
-	type = atoi(tmp);
-	g_free(tmp);
-	if(!type)
+	tmp = xmlGetProp (match, BAD_CAST"type");
+	type = atoi (tmp);
+	g_free (tmp);
+	if (!type)
 		return;
-	common_xpath_foreach_match(match, "script", script_config_load_hook_script, GINT_TO_POINTER(type));
+	xpath_foreach_match (match, "script", script_config_load_hook_script, GINT_TO_POINTER (type));
 }
 
-static void script_config_load(void) {
+static void
+script_config_load (void)
+{
 	xmlDocPtr	doc;
 	gchar		*filename, *data = NULL;
 	gsize		len;
 
 	scriptConfigLoading = TRUE;
 	
-	filename = common_create_cache_filename(NULL, "scripts", "xml");	
-	if(g_file_get_contents(filename, &data, &len, NULL)) {
-		doc = common_parse_xml(data, len, FALSE, NULL);
-		if(doc) {
-			common_xpath_foreach_match(xmlDocGetRootElement(doc),
-			                           "/scripts/hook",
-						   script_config_load_hook,
-						   NULL);
-			xmlFreeDoc(doc);		
+	filename = common_create_cache_filename (NULL, "scripts", "xml");	
+	if (g_file_get_contents (filename, &data, &len, NULL)) {
+		doc = xml_parse (data, len, FALSE, NULL);
+		if (doc) {
+			xpath_foreach_match (xmlDocGetRootElement (doc),
+			                     "/scripts/hook",
+			                     script_config_load_hook,
+			                     NULL);
+			xmlFreeDoc (doc);
 		}
 	}
 
-	g_free(data);
-	g_free(filename);
+	g_free (data);
+	g_free (filename);
 	scriptConfigLoading = FALSE;
 }
 

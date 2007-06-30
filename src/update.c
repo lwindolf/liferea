@@ -43,6 +43,7 @@
 #include "debug.h"
 #include "net.h"
 #include "update.h"
+#include "xml.h"
 #include "ui/ui_htmlview.h"
 #include "ui/ui_mainwindow.h"
 #include "ui/ui_tray.h"
@@ -165,47 +166,52 @@ static char* update_exec_filter_cmd(gchar *cmd, gchar *data, gchar **errorOutput
 	return out;
 }
 
-static gchar * update_apply_xslt(requestPtr request) {
+static gchar *
+update_apply_xslt (requestPtr request)
+{
 	xsltStylesheetPtr	xslt = NULL;
 	xmlOutputBufferPtr	buf;
 	xmlDocPtr		srcDoc = NULL, resDoc = NULL;
 	gchar			*output = NULL;
 
 	do {
-		if(NULL == (srcDoc = common_parse_xml(request->data, request->size, FALSE, NULL))) {
+		srcDoc = xml_parse (request->data, request->size, FALSE, NULL);
+		if (!srcDoc) {
 			g_warning("fatal: parsing request result XML source failed (%s)!", request->filtercmd);
 			break;
 		}
 
 		/* load localization stylesheet */
-		if(NULL == (xslt = xsltParseStylesheetFile(request->filtercmd))) {
-			g_warning("fatal: could not load filter stylesheet \"%s\"!", request->filtercmd);
+		xslt = xsltParseStylesheetFile (request->filtercmd);
+		if (!xslt) {
+			g_warning ("fatal: could not load filter stylesheet \"%s\"!", request->filtercmd);
 			break;
 		}
 
-		if(NULL == (resDoc = xsltApplyStylesheet(xslt, srcDoc, NULL))) {
-			g_warning("fatal: applying stylesheet \"%s\" failed!", request->filtercmd);
+		resDoc = xsltApplyStylesheet (xslt, srcDoc, NULL);
+		if (!resDoc) {
+			g_warning ("fatal: applying stylesheet \"%s\" failed!", request->filtercmd);
 			break;
 		}
 
-		buf = xmlAllocOutputBuffer(NULL);
-		if(-1 == xsltSaveResultTo(buf, resDoc, xslt)) {
-			g_warning("fatal: retrieving result of filter stylesheet failed (%s)!", request->filtercmd);
+		buf = xmlAllocOutputBuffer (NULL);
+		if (-1 == xsltSaveResultTo (buf, resDoc, xslt)) {
+			g_warning ("fatal: retrieving result of filter stylesheet failed (%s)!", request->filtercmd);
 			break;
 		}
 		
-		if(xmlBufferLength(buf->buffer) > 0)
-			output = xmlCharStrdup(xmlBufferContent(buf->buffer));
+		if (xmlBufferLength (buf->buffer) > 0)
+			output = xmlCharStrdup (xmlBufferContent (buf->buffer));
+ 
+		xmlOutputBufferClose (buf);
+	} while (FALSE);
 
-		xmlOutputBufferClose(buf);
-	} while(FALSE);
-
-	if(srcDoc)
-		xmlFreeDoc(srcDoc);
-	if(resDoc)
-		xmlFreeDoc(resDoc);
-	if(xslt)
-		xsltFreeStylesheet(xslt);
+	if (srcDoc)
+		xmlFreeDoc (srcDoc);
+	if (resDoc)
+		xmlFreeDoc (resDoc);
+	if (xslt)
+		xsltFreeStylesheet (xslt);
 	
 	return output;
 }

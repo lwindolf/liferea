@@ -29,7 +29,9 @@
 #include "common.h"
 #include "conf.h"
 #include "debug.h"
+#include "feedlist.h"
 #include "node.h"
+#include "xml.h"
 #include "fl_sources/google_source-cb.h"
 #include "fl_sources/node_source.h"
 #include "fl_sources/opml_source.h"
@@ -43,6 +45,32 @@ typedef struct reader {
 	GTimeVal	*lastSubscriptionListUpdate;
 } *readerPtr;
 
+static void
+google_source_check_for_removal (nodePtr node, gpointer user_data)
+{
+	gchar		*expr = NULL;
+
+	switch (node->type) {
+		case NODE_TYPE_FEED:
+			expr = g_strdup_printf ("/object/list[@name='subscriptions']/object/string[@name='title']/. = '%s'", node_get_title (node));
+			break;
+		case NODE_TYPE_FOLDER:
+		default:
+			g_warning("opml_source_check_for_removal(): This should never happen...");
+			return;
+			break;
+	}
+	
+	if (!xpath_find ((xmlNodePtr)user_data, expr)) {
+		debug1 (DEBUG_UPDATE, "removing %s...", node_get_title (node));
+		if (feedlist_get_selected() == node)
+			ui_feedlist_select (NULL);
+		node_request_remove (node);
+	} else {
+		debug1 (DEBUG_UPDATE, "keeping %s...", node_get_title (node));
+	}
+	g_free (expr);
+}
 
 static void
 google_source_merge_feed(xmlNodePtr match, gpointer user_data)
@@ -53,11 +81,11 @@ google_source_merge_feed(xmlNodePtr match, gpointer user_data)
 	xmlNodePtr	xml;
 	xmlChar		*title, *id;
 	
-	xml = common_xpath_find (match, "./string[@name='title']");
+	xml = xpath_find (match, "./string[@name='title']");
 	if (xml)
 		title = xmlNodeListGetString (xml->doc, xml->xmlChildrenNode, 1);
 		
-	xml = common_xpath_find (match, "./string[@name='id']");
+	xml = xpath_find (match, "./string[@name='id']");
 	if (xml)
 		id = xmlNodeListGetString (xml->doc, xml->xmlChildrenNode, 1);
 		
@@ -98,32 +126,33 @@ google_source_subscriptions_cb (requestPtr request)
 	
 	debug1(DEBUG_UPDATE, "Google Reader subscription list download finished data=%d", request->data);
 
-	node->available = FALSE;
-
 	if (request->data) {
-		doc = common_parse_xml(request->data, request->size, FALSE, NULL);
+		doc = xml_parse (request->data, request->size, FALSE, NULL);
 		if(doc) {		
-			root = xmlDocGetRootElement(doc);
+			root = xmlDocGetRootElement (doc);
 			
 			/* Go through all existing nodes and remove those whose
 			   URLs are not in new feed list. Also removes those URLs
 			   from the list that have corresponding existing nodes. */
-			// FIXME: implement me!
-
+			node_foreach_child_data (node, google_source_check_for_removal, (gpointer)root);
+						
 			opml_source_export (node);	/* save new feed list tree to disk 
 			                                   to ensure correct document in 
 							   next step */
 
-			common_xpath_foreach_match(root, "/object/list[@name='subscriptions']/object",
-						   google_source_merge_feed,
-						   (gpointer)reader);
+			xpath_foreach_match (root, "/object/list[@name='subscriptions']/object",
+			                     google_source_merge_feed,
+			                     (gpointer)reader);
 						   
 			opml_source_export (node);	/* save new feeds to feed list */
 						   
 			node->available = TRUE;
+			xmlFreeDoc (doc);
 		}
+		g_free (request->data);
+	} else {
+		node->available = FALSE;
 	}
-	g_free (request->data);
 }
 
 static void

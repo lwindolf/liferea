@@ -25,8 +25,7 @@
 
 #include <sys/time.h>
 #include <string.h>
-#include <libxml/xmlmemory.h>
-#include <libxml/parser.h>
+
 #include "conf.h"
 #include "common.h"
 #include "debug.h"
@@ -44,6 +43,7 @@
 #include "ns_wfw.h"
 #include "metadata.h"
 #include "subscription.h"
+#include "xml.h"
 #include "atom10.h"
 
 #define ATOM10_NS BAD_CAST"http://www.w3.org/2005/Atom"
@@ -128,7 +128,7 @@ static gchar* atom10_parse_content_construct(xmlNodePtr cur, feedParserCtxtPtr c
 		
 		/* This that need to be de-encoded and should not contain sub-tags.*/
 		if(type && (g_str_equal(type,"html") || !g_strcasecmp(type, "text/html"))) {
-			ret = common_utf8_fix(extractHTMLNode(cur, 0, NULL));
+			ret = common_utf8_fix(xhtml_extract (cur, 0, NULL));
 		} else if(!type || !strcmp(type, "text") || !strncasecmp(type, "text/",5)) {
 			gchar *tmp;
 			/* Assume that "text/ *" files can be directly displayed.. kinda stated in the RFC */
@@ -144,7 +144,7 @@ static gchar* atom10_parse_content_construct(xmlNodePtr cur, feedParserCtxtPtr c
 			ret = tmp;
 		} else if(!strcmp(type,"xhtml") || !g_strcasecmp(type, "application/xhtml+xml")) {
 			/* The spec says to only show the contents of the div tag that MUST be present */
-			ret = common_utf8_fix(extractHTMLNode(cur, 2, NULL));
+			ret = common_utf8_fix(xhtml_extract (cur, 2, NULL));
 		} else {
 			/* Do nothing on unsupported content types. This allows summaries to be used. */
 			ret = NULL;
@@ -184,12 +184,12 @@ static gchar* atom10_parse_text_construct(xmlNodePtr cur, gboolean htmlified) {
 			}
 		}
 	} else if (!strcmp(type, "html")) {
-		ret = common_utf8_fix(extractHTMLNode(cur, 0, NULL));
+		ret = common_utf8_fix(xhtml_extract (cur, 0, NULL));
 		if (!htmlified)
 			ret = unhtmlize(unxmlize(ret));
 	} else if(!strcmp(type, "xhtml")) {
 		/* The spec says to show the contents of the div tag that MUST be present */
-		ret = common_utf8_fix(extractHTMLNode(cur, 2, NULL));
+		ret = common_utf8_fix(xhtml_extract (cur, 2, NULL));
 		
 		if (!htmlified)
 			ret = unhtmlize(ret);

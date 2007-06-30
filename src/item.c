@@ -27,15 +27,14 @@
 #include <time.h>
 #include <string.h> /* For memset() */
 #include <stdlib.h>
-#include <libxml/uri.h>
 
 #include "comments.h"
-#include "common.h"
 #include "db.h"
 #include "debug.h"
 #include "item.h"
 #include "itemview.h"
 #include "metadata.h"
+#include "xml.h"
 
 itemPtr item_new(void) {
 	itemPtr		item;
@@ -169,10 +168,10 @@ void item_to_xml(itemPtr item, xmlNodePtr parentNode) {
 
 	xmlNewTextChild(itemNode, NULL, "title", item_get_title(item)?item_get_title(item):"");
 
-	if(item_get_description(item)) {
-		tmp = common_strip_dhtml(item_get_description(item));
-		xmlNewTextChild(itemNode, NULL, "description", tmp);
-		g_free(tmp);
+	if (item_get_description (item)) {
+		tmp = xhtml_strip_dhtml (item_get_description (item));
+		xmlNewTextChild (itemNode, NULL, "description", tmp);
+		g_free (tmp);
 	}
 	
 	if(item_get_source(item))

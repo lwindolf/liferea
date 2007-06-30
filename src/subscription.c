@@ -322,7 +322,7 @@ subscription_import (xmlNodePtr xml, gboolean trusted)
 		}
 		
 		intervalStr = xmlGetProp (xml, BAD_CAST "updateInterval");
-		subscription_set_update_interval (subscription, parse_integer (intervalStr, -1));
+		subscription_set_update_interval (subscription, common_parse_long (intervalStr, -1));
 		xmlFree (intervalStr);
 	
 		/* no proxy flag */
