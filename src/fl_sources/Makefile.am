@@ -13,11 +13,8 @@ libliflsources_a_SOURCES = node_source.c node_source.h \
                            default_source.c default_source.h \
                            dummy_source.c dummy_source.h \
                            google_source.c google_source.h \
-                           google_source-cb.c google_source-cb.h \
                            opml_source.c opml_source.h \
-                           opml_source-cb.c opml_source-cb.h \
-			   bloglines_source.c bloglines_source.h \
-			   bloglines_source-cb.c bloglines_source-cb.h
+			   bloglines_source.c bloglines_source.h
 
 libliflsources_a_CFLAGS = $(PACKAGE_FLAGS)
 

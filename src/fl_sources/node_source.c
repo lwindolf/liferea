@@ -20,7 +20,6 @@
 
 #include <gmodule.h>
 #include <gtk/gtk.h>
-#include <glade/glade.h>
 #include <string.h>
 
 #include "common.h"
@@ -30,7 +29,6 @@
 #include "folder.h"
 #include "node.h"
 #include "ui/ui_dialog.h"
-#include "ui/ui_mainwindow.h"
 #include "ui/ui_node.h"
 #include "fl_sources/node_source.h"
 #include "notification/notif_plugin.h"
@@ -320,3 +318,4 @@ node_source_get_node_type (void)
 
 	return nodeType; 
 }
+

@@ -24,15 +24,6 @@
 #include "fl_sources/node_source.h"
 
 /**
- * Sets up the given node as a Google Reader source node.
- *
- * @param parent	parent node (or NULL when importing)
- * @param node		the node
- */
-void google_source_setup(nodePtr parent, nodePtr node);
-
-
-/**
  * Returns Google Reader source type implementation info.
  */
 nodeSourceTypePtr google_source_get_type(void);

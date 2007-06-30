@@ -19,11 +19,13 @@
  */
 
 #include <glib.h>
+#include <gtk/gtk.h>
 #include <unistd.h>
 
 #include "conf.h"
 #include "subscription.h"
-#include "fl_sources/bloglines_source-cb.h"
+#include "ui/ui_dialog.h"
+#include "fl_sources/bloglines_source.h"
 #include "fl_sources/node_source.h"
 #include "fl_sources/opml_source.h"
 
@@ -37,6 +39,51 @@ bloglines_source_auto_update (nodePtr node, GTimeVal *now)
 static void bloglines_source_init (void) { }
 
 static void bloglines_source_deinit (void) { }
+
+/* GUI callbacks */
+
+static void
+on_bloglines_source_selected (GtkDialog *dialog,
+                              gint response_id,
+                              gpointer user_data) 
+{
+	nodePtr		node, parent = (nodePtr) user_data;
+	subscriptionPtr	subscription;
+
+	if (response_id == GTK_RESPONSE_OK) {
+		subscription = subscription_new ("http://rpc.bloglines.com/listsubs", NULL, NULL);
+		subscription->updateOptions->username = g_strdup (gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "userEntry"))));
+		subscription->updateOptions->password = g_strdup (gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "passwordEntry"))));
+
+		node = node_new ();
+		node_set_title (node, "Bloglines");
+		node_source_new (node, bloglines_source_get_type ());
+		opml_source_setup (parent, node);
+		node_set_subscription (node, subscription);
+		node_request_update (node, 0);
+	}
+
+	gtk_widget_destroy (GTK_WIDGET (dialog));
+}
+
+static void
+on_bloglines_source_dialog_destroy (GtkDialog *dialog,
+                                    gpointer user_data) 
+{
+	g_object_unref (user_data);
+}
+
+static void
+ui_bloglines_source_get_account_info (nodePtr parent)
+{
+	GtkWidget	*dialog;
+	
+	dialog = liferea_dialog_new ( PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "bloglines_source.glade", "bloglines_source_dialog");
+	
+	g_signal_connect (G_OBJECT (dialog), "response",
+			  G_CALLBACK (on_bloglines_source_selected), 
+			  (gpointer) parent);
+}
 
 /* node source type definition */
 

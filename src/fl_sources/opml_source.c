@@ -19,10 +19,7 @@
  */
 
 #include <glib.h>
-#include <libxml/xpath.h>
-#include <libxml/parser.h>
-#include <libxml/tree.h>
-
+#include <gtk/gtk.h>
 #include <unistd.h>
 
 #include "common.h"
@@ -34,15 +31,17 @@
 #include "folder.h"
 #include "node.h"
 #include "xml.h"
+#include "ui/ui_dialog.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_node.h"
 #include "fl_sources/opml_source.h"
-#include "fl_sources/opml_source-cb.h"
 #include "fl_sources/node_source.h"
 #include "notification/notif_plugin.h"
 
 /** default OPML update interval = once a day */
 #define OPML_SOURCE_UPDATE_INTERVAL 60*60*24
+
+static void ui_opml_source_get_source_url (nodePtr parent);
 
 gchar * opml_source_get_feedlist(nodePtr node) {
 
@@ -178,7 +177,6 @@ opml_source_merge_feed (xmlNodePtr match, gpointer user_data)
 	xmlFree (url);
 }
 
-// FIXME: broken for empty feed lists!
 static void
 opml_source_check_for_removal (nodePtr node, gpointer user_data)
 {
@@ -353,4 +351,59 @@ nodeSourceTypePtr
 opml_source_get_type (void)
 {
 	return &nst;
+}
+
+/* GUI callbacks */
+
+static void
+on_opml_source_selected (GtkDialog *dialog, 
+                         gint response_id,
+                         gpointer user_data)
+{
+	nodePtr node, parent = (nodePtr)user_data;
+
+	if (response_id == GTK_RESPONSE_OK) {
+		node = node_new ();
+		node_set_title (node, OPML_SOURCE_DEFAULT_TITLE);
+		node_source_new (node, opml_source_get_type());
+		opml_source_setup (parent, node);
+		node_set_subscription (node, subscription_new (gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET (dialog), "location_entry"))), NULL, NULL));
+		node_request_update (node, 0);
+	}
+
+	gtk_widget_destroy (GTK_WIDGET (dialog));
+}
+
+static void
+on_opml_source_dialog_destroy (GtkDialog *dialog,
+                               gpointer user_data) 
+{
+	g_object_unref (user_data);
+}
+
+static void
+ui_opml_source_get_source_url (nodePtr parent) 
+{
+	GtkWidget	*dialog;
+
+	dialog = liferea_dialog_new (PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "opml_source.glade", "opml_source_dialog");
+
+	g_signal_connect (G_OBJECT (dialog), "response",
+			  G_CALLBACK (on_opml_source_selected), 
+			  (gpointer)parent);
+}
+
+static void
+on_file_select_clicked (const gchar *filename, gpointer user_data)
+{
+	GtkWidget	*dialog = GTK_WIDGET (user_data);
+
+	if (filename && dialog)
+		gtk_entry_set_text (GTK_ENTRY (liferea_dialog_lookup (dialog, "location_entry")), g_strdup(filename));
+}
+
+void
+on_select_button_clicked (GtkButton *button, gpointer user_data)
+{
+	ui_choose_file (_("Choose OPML File"), GTK_STOCK_OPEN, FALSE, on_file_select_clicked, NULL, NULL, user_data);
 }

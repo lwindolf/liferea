@@ -19,11 +19,7 @@
  */
 
 #include <glib.h>
-#include <libxml/xpath.h>
-#include <libxml/parser.h>
-#include <libxml/tree.h>
-
-#include <unistd.h>
+#include <gtk/gtk.h>
 #include <string.h>
 
 #include "common.h"
@@ -32,7 +28,8 @@
 #include "feedlist.h"
 #include "node.h"
 #include "xml.h"
-#include "fl_sources/google_source-cb.h"
+#include "ui/ui_dialog.h"
+#include "fl_sources/google_source.h"
 #include "fl_sources/node_source.h"
 #include "fl_sources/opml_source.h"
 
@@ -44,6 +41,8 @@ typedef struct reader {
 	gchar		*sid;	/**< session id */
 	GTimeVal	*lastSubscriptionListUpdate;
 } *readerPtr;
+
+/* source logic */
 
 static void
 google_source_check_for_removal (nodePtr node, gpointer user_data)
@@ -270,6 +269,51 @@ static void google_source_init (void) { }
 
 static void google_source_deinit (void) { }
 
+/* GUI callbacks */
+
+static void
+on_google_source_selected (GtkDialog *dialog,
+                           gint response_id,
+                           gpointer user_data) 
+{
+	nodePtr		node, parent = (nodePtr) user_data;
+	subscriptionPtr	subscription;
+
+	if (response_id == GTK_RESPONSE_OK) {
+		subscription = subscription_new ("http://www.google.com/reader", NULL, NULL);
+		subscription->updateOptions->username = g_strdup (gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "userEntry"))));
+		subscription->updateOptions->password = g_strdup (gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "passwordEntry"))));
+		
+		node = node_new ();
+		node_set_title (node, "Google Reader");
+		node_source_new (node, google_source_get_type ());
+		google_source_setup (parent, node);
+		node_set_subscription (node, subscription);
+		node_request_update (node, 0);
+	}
+
+	gtk_widget_destroy (GTK_WIDGET (dialog));
+}
+
+static void
+on_google_source_dialog_destroy (GtkDialog *dialog,
+                                 gpointer user_data) 
+{
+	g_object_unref (user_data);
+}
+
+static void
+ui_google_source_get_account_info (nodePtr parent)
+{
+	GtkWidget	*dialog;
+	
+	dialog = liferea_dialog_new ( PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "google_source.glade", "google_source_dialog");
+	
+	g_signal_connect (G_OBJECT (dialog), "response",
+			  G_CALLBACK (on_google_source_selected), 
+			  (gpointer) parent);
+}
+
 /* node source type definition */
 
 static struct nodeSourceType nst = {
@@ -295,3 +339,4 @@ google_source_get_type(void)
 {
 	return &nst;
 }
+
