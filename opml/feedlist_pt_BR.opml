@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<opml version="1.0">
+<head>
+    <title>Lista de Fontes de Notícias</title>
+</head>
+<body>
+    <outline text="Exemplos de Canais de Notícias">
+        <outline text="Notícias">
+            <outline title="Planeta Gnu/Linux Brasil" text="Planeta Gnu/Linux Brasil" description="Planeta Gnu/Linux Brasil" type="pie" htmlUrl="http://planeta.gnulinuxbrasil.org/" xmlUrl="http://planeta.gnulinuxbrasil.org/atom.xml" />
+            <outline title="BR-Linux.org - Linux levado a sério desde 1996" text="BR-Linux.org - Linux levado a sério desde 1996" description="BR-Linux.org - Linux levado a sério desde 1996" type="rss" htmlUrl="http://br-linux.org/linux" xmlUrl="http://br-linux.org/linux/node/feed" />
+        </outline>
+        <!-- lets keep this English block in sync over all feed lists! -->
+        <outline text="internacional">
+            <outline text="OSS">
+                <outline text="art.gnome.org" htmlUrl="http://art.gnome.org/" xmlUrl="http://art.gnome.org/backend.php" />
+                <outline text="Debian Package a Day" htmlUrl="http://debaday.debian.net/" xmlUrl="http://debaday.debian.net/feed/atom/" />
+                <outline text="Gnomefiles" htmlUrl="http://www.gnomefiles.org/" xmlUrl="http://www.gnomefiles.org/files/gnomefiles.rdf" />
+                <outline text="GNOME Footnotes" htmlUrl="http://www.gnomedesktop.org/" xmlUrl="http://www.gnomedesktop.org/backend.php" />
+                <outline text="GrokLaw" htmlUrl="http://www.groklaw.net/" xmlUrl="http://www.groklaw.net/backend/GrokLaw.rdf" />
+                <outline text="Linux.com" htmlUrl="http://www.linux.com/" xmlUrl="http://www.linux.com/index.rss" />
+                <outline text="mozillaZine" htmlUrl="http://www.mozillazine.org/" xmlUrl="http://www.mozillazine.org/contents.rdf" />
+                <outline text="Newsforge" htmlUrl="http://www.newsforge.com" xmlUrl="http://www.newsforge.com/newsforge.rss" />
+                <outline text="Planet Debian" htmlUrl="http://planet.debian.org/" xmlUrl="http://planet.debian.org/rss20.xml" />
+                <outline text="Slashdot" htmlUrl="http://slashdot.org"  xmlUrl="http://slashdot.org/slashdot.rss" />
+                <outline text="TuxMobil" htmlUrl="http://tuxmobil.org" xmlUrl="http://tuxmobil.org/tuxmobil_rss.rdf" />
+            </outline>
+        </outline>
+
+        <outline text="Não Lidos" title="Não Lidos" description="Notícias ainda não lidas" type="vfolder" htmlUrl="" xmlUrl="vfolder">
+            <outline type="rule" text="Status de leitura" rule="unread" value="" additive="true"/>
+        </outline>
+        <outline text="Importante" title="Importante" description="Importante" type="vfolder" htmlUrl="" xmlUrl="vfolder">
+            <outline type="rule" text="Sinalizador de status" rule="flagged" value="" additive="true"/>
+        </outline>
+    </outline>
+  </body>
+</opml>
