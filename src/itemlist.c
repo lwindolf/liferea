@@ -623,7 +623,7 @@ itemlist_mark_all_read (const gchar *nodeId)
 	node = node_from_id (nodeId);	
 	itemSet = node_get_itemset (node);
 	
-	if (!itemSet || !node)
+	if (!itemSet || !node || !node->unreadCount)
 		return;
 		
 	affectedNodes = g_hash_table_new (g_direct_hash, g_direct_equal);
@@ -653,11 +653,11 @@ itemlist_mark_all_read (const gchar *nodeId)
 	/* GUI list updating */
 	itemview_update_all_items ();
 	itemview_update ();
+
 	g_hash_table_foreach (affectedNodes, itemlist_update_node_counters, NULL);
 	g_hash_table_destroy (affectedNodes);	
 	
-	/* Search folder updating */
-	vfolder_foreach_with_rule ("unread", vfolder_update_counters);
+	vfolder_foreach (vfolder_update_counters);
 }
 
 void
