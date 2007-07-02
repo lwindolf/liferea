@@ -809,7 +809,7 @@ db_item_update (itemPtr item)
 	}
 
 	/* Update the item... */
-	db_get_statement ("itemUpdateStmt");
+	stmt = db_get_statement ("itemUpdateStmt");
 	sqlite3_bind_text (stmt, 1,  item->title, -1, SQLITE_TRANSIENT);
 	sqlite3_bind_int  (stmt, 2,  item->readStatus?1:0);
 	sqlite3_bind_int  (stmt, 3,  item->newStatus?1:0);
