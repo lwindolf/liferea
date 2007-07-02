@@ -134,10 +134,8 @@ char * ConstructDigestAuth (char * username, char * password, char * url, char *
 		return;
 	
 	token = authdata;
-g_print("authdata: >>>%s<<< (len=%d)\n", authdata, strlen(authdata));
 	while (1) {
 		while (*token == ' ') token++;
-g_print("token: >>>%s<<< (len=%d)\n", token, strlen(token));
 
 		if (*token == '\0')
 			break;
