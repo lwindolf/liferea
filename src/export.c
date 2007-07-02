@@ -277,6 +277,9 @@ void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, nodeSourcePtr node
 		        		  | FEED_REQ_DOWNLOAD_FAVICON
 		        		  | FEED_REQ_AUTH_DIALOG);
 	}
+	
+	/* 5. save node info to DB */
+	db_node_update (node);
 
 	debug_exit("import_parse_outline");
 }

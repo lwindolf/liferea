@@ -544,7 +544,17 @@ static GdkPixbuf* ui_mainwindow_get_theme_icon(GtkIconTheme *icon_theme, const g
 	return pixbuf;
 }
 
-void ui_mainwindow_init(int mainwindowState) {
+static void
+ui_mainwindow_destroy_cb (gpointer user_data)
+{
+	ui_htmlview_deinit ();
+	ui_tray_enable (FALSE);
+	notification_enable (FALSE);
+}
+
+void
+ui_mainwindow_init (int mainwindowState)
+{
 	GtkWidget	*widget;
 	int		i;
 	GString		*buffer;
@@ -560,6 +570,8 @@ void ui_mainwindow_init(int mainwindowState) {
 	mw = ui_mainwindow_new();
 	mainwindow = GTK_WIDGET(mw->window);
 	ui_tabs_init();
+	
+	g_signal_connect (G_OBJECT (mainwindow), "destroy", G_CALLBACK (ui_mainwindow_destroy_cb), NULL);
  
 	/* load pane proportions */
 	if(0 != getNumericConfValue(LAST_VPANE_POS))

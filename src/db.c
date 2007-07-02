@@ -31,49 +31,51 @@
 
 static sqlite3 *db = NULL;
 
-static sqlite3_stmt *itemsetLoadStmt = NULL;
-static sqlite3_stmt *itemsetInsertStmt = NULL;
-static sqlite3_stmt *itemsetReadCountStmt = NULL;
-static sqlite3_stmt *itemsetItemCountStmt = NULL;
-static sqlite3_stmt *itemsetRemoveStmt = NULL;
+/** value structure of statements hash */ 
+typedef struct statement {
+	sqlite3_stmt	*stmt;
+} statement;
 
-static sqlite3_stmt *itemsetRemoveAllStmt = NULL;
-static sqlite3_stmt *itemsetMarkAllUpdatedStmt = NULL;
-static sqlite3_stmt *itemsetMarkAllOldStmt = NULL;
-static sqlite3_stmt *itemsetMarkAllPopupStmt = NULL;
-
-static sqlite3_stmt *itemLoadStmt = NULL;
-static sqlite3_stmt *itemInsertStmt = NULL;
-static sqlite3_stmt *itemUpdateStmt = NULL;
-static sqlite3_stmt *itemMarkReadStmt = NULL;
-
-static sqlite3_stmt *duplicatesFindStmt = NULL;
-static sqlite3_stmt *duplicatesMarkReadStmt = NULL;
-
-static sqlite3_stmt *metadataLoadStmt = NULL;
-static sqlite3_stmt *metadataUpdateStmt = NULL;
-
-static sqlite3_stmt *updateStateLoadStmt = NULL;
-static sqlite3_stmt *updateStateSaveStmt = NULL;
-
-static sqlite3_stmt *subscriptionMetadataLoadStmt = NULL;
-static sqlite3_stmt *subscriptionMetadataUpdateStmt = NULL;
-
-static sqlite3_stmt *subscriptionLoadStmt = NULL;
-static sqlite3_stmt *subscriptionUpdateStmt = NULL;
-static sqlite3_stmt *subscriptionRemoveStmt = NULL;
-
-static sqlite3_stmt *subscriptionListLoadStmt = NULL;
+/** hash of all prepared statements */
+static GHashTable *statements = NULL;
 
 static void
-db_prepare_stmt (sqlite3_stmt **stmt, gchar *sql) 
+db_prepare_stmt (sqlite3_stmt **stmt, const gchar *sql) 
 {
 	gint		res;	
 	const char	*left;
-		
+
 	res = sqlite3_prepare_v2 (db, sql, -1, stmt, &left);
 	if (SQLITE_OK != res)
 		g_error ("Failure while preparing statement, (error=%d, %s) SQL: \"%s\"", res, sqlite3_errmsg(db), sql);
+}
+
+static void
+db_new_statement (const gchar *name, const gchar *sql)
+{
+	struct statement *statement;
+	
+	statement = g_new0 (struct statement, 1);
+	db_prepare_stmt (&statement->stmt, sql);
+	
+	if (!statements)
+		statements = g_hash_table_new (g_str_hash, g_str_equal);
+				
+	g_hash_table_insert (statements, (gpointer)name, (gpointer)statement);
+
+}
+
+static sqlite3_stmt *
+db_get_statement (const gchar *name)
+{
+	struct statement *statement;
+	
+	statement = (struct statement *) g_hash_table_lookup (statements, name);
+	if (!statement)
+		g_error ("Fatal: unknown prepared statement \"%s\" requested!", name);
+
+	sqlite3_reset (statement->stmt);	
+	return statement->stmt;
 }
 
 static void
@@ -434,62 +436,62 @@ open:
 
 	/* prepare statements */
 	
-	db_prepare_stmt(&itemsetLoadStmt,
-	               "SELECT item_id FROM itemsets WHERE node_id = ?");
+	db_new_statement ("itemsetLoadStmt",
+	                  "SELECT item_id FROM itemsets WHERE node_id = ?");
 		       
-	db_prepare_stmt(&itemsetInsertStmt,
-	                "INSERT INTO itemsets (item_id,node_id,read,comment) VALUES (?,?,?,?)");
+	db_new_statement ("itemsetInsertStmt",
+	                  "INSERT INTO itemsets (item_id,node_id,read,comment) VALUES (?,?,?,?)");
 	
-	db_prepare_stmt(&itemsetReadCountStmt,
-	               "SELECT COUNT(*) FROM itemsets "
-		       "WHERE read = 0 AND node_id = ?");
+	db_new_statement ("itemsetReadCountStmt",
+	                  "SELECT COUNT(*) FROM itemsets "
+		          "WHERE read = 0 AND node_id = ?");
 	       
-	db_prepare_stmt(&itemsetItemCountStmt,
-	               "SELECT COUNT(*) FROM itemsets "
-		       "WHERE node_id = ?");
+	db_new_statement ("itemsetItemCountStmt",
+	                  "SELECT COUNT(*) FROM itemsets "
+		          "WHERE node_id = ?");
 		       
-	db_prepare_stmt(&itemsetRemoveStmt,
-	                "DELETE FROM itemsets WHERE item_id = ?");
+	db_new_statement ("itemsetRemoveStmt",
+	                  "DELETE FROM itemsets WHERE item_id = ?");
 			
-	db_prepare_stmt(&itemsetRemoveAllStmt,
-	                "DELETE FROM itemsets WHERE node_id = ?");
+	db_new_statement ("itemsetRemoveAllStmt",
+	                  "DELETE FROM itemsets WHERE node_id = ?");
 
-	db_prepare_stmt(&itemsetMarkAllUpdatedStmt,
-	                "UPDATE items SET updated = 0 WHERE ROWID IN "
-			"(SELECT item_id FROM itemsets WHERE node_id = ?)");
+	db_new_statement ("itemsetMarkAllUpdatedStmt",
+	                  "UPDATE items SET updated = 0 WHERE ROWID IN "
+			  "(SELECT item_id FROM itemsets WHERE node_id = ?)");
 			
-	db_prepare_stmt(&itemsetMarkAllOldStmt,
-	                "UPDATE items SET new = 0 WHERE ROWID IN "
-			"(SELECT item_id FROM itemsets WHERE node_id = ?)");
+	db_new_statement ("itemsetMarkAllOldStmt",
+	                  "UPDATE items SET new = 0 WHERE ROWID IN "
+			  "(SELECT item_id FROM itemsets WHERE node_id = ?)");
 
-	db_prepare_stmt(&itemsetMarkAllPopupStmt,
-	                "UPDATE items SET popup = 0 WHERE ROWID IN "
-			"(SELECT item_id FROM itemsets WHERE node_id = ?)");		
+	db_new_statement ("itemsetMarkAllPopupStmt",
+	                  "UPDATE items SET popup = 0 WHERE ROWID IN "
+			  "(SELECT item_id FROM itemsets WHERE node_id = ?)");		
 
-	db_prepare_stmt(&itemLoadStmt,	
-	               "SELECT "
-	               "items.title,"
-	               "items.read,"
-	               "items.new,"
-	               "items.updated,"
-	               "items.popup,"
-	               "items.marked,"
-	               "items.source,"
-	               "items.source_id,"
-	               "items.valid_guid,"
-	               "items.real_source_url,"
-	               "items.real_source_title,"
-	               "items.description,"
-	               "items.date,"
-		       "items.comment_feed_id,"
-		       "items.comment,"
-		       "itemsets.item_id,"
-		       "itemsets.node_id"
-	               " FROM items INNER JOIN itemsets "
-	               "ON items.ROWID = itemsets.item_id "
-	               "WHERE items.ROWID = ?");      
+	db_new_statement ("itemLoadStmt",
+	                  "SELECT "
+	                  "items.title,"
+	                  "items.read,"
+	                  "items.new,"
+	                  "items.updated,"
+	                  "items.popup,"
+	                  "items.marked,"
+	                  "items.source,"
+	                  "items.source_id,"
+	                  "items.valid_guid,"
+	                  "items.real_source_url,"
+	                  "items.real_source_title,"
+	                  "items.description,"
+	                  "items.date,"
+		          "items.comment_feed_id,"
+		          "items.comment,"
+		          "itemsets.item_id,"
+		          "itemsets.node_id"
+	                  " FROM items INNER JOIN itemsets "
+	                  "ON items.ROWID = itemsets.item_id "
+	                  "WHERE items.ROWID = ?");      
 	
-	db_prepare_stmt(&itemUpdateStmt,
+	db_new_statement ("itemUpdateStmt",
 	               "REPLACE INTO items ("
 	               "title,"
 	               "read,"
@@ -509,22 +511,22 @@ open:
 	               "ROWID"
 	               ") values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			
-	db_prepare_stmt (&itemMarkReadStmt,
+	db_new_statement ("itemMarkReadStmt",
 	                 "UPDATE items SET read = 1 WHERE ROWID = ?");
 					
-	db_prepare_stmt (&duplicatesFindStmt,
+	db_new_statement ("duplicatesFindStmt",
 	                 "SELECT ROWID FROM items WHERE source_id = ?");
 		       
-	db_prepare_stmt (&duplicatesMarkReadStmt,
+	db_new_statement ("duplicatesMarkReadStmt",
  	                 "UPDATE items SET read = 1 WHERE source_id = ?");
 						
-	db_prepare_stmt (&metadataLoadStmt,
+	db_new_statement ("metadataLoadStmt",
 	                 "SELECT key,value,nr FROM metadata WHERE item_id = ? ORDER BY nr");
 			
-	db_prepare_stmt (&metadataUpdateStmt,
+	db_new_statement ("metadataUpdateStmt",
 	                 "REPLACE INTO metadata (item_id,nr,key,value) VALUES (?,?,?,?)");
 			
-	db_prepare_stmt (&updateStateLoadStmt,
+	db_new_statement ("updateStateLoadStmt",
 	                 "SELECT "
 	                 "last_modified,"
 	                 "etag,"
@@ -533,12 +535,12 @@ open:
 			 "FROM update_state "
 			 "WHERE node_id = ?");
 			 
-	db_prepare_stmt (&updateStateSaveStmt,
+	db_new_statement ("updateStateSaveStmt",
 	                 "REPLACE INTO update_state "
 			 "(node_id,last_modified,etag,last_update,last_favicon_update) "
 			 "VALUES (?,?,?,?,?)");
 			 
-	db_prepare_stmt (&subscriptionUpdateStmt,
+	db_new_statement ("subscriptionUpdateStmt",
 	                 "REPLACE INTO subscription ("
 			 "node_id,"
 			 "source,"
@@ -550,13 +552,13 @@ open:
 			 "available"
 			 ") VALUES (?,?,?,?,?,?,?,?)");
 			 
-	db_prepare_stmt (&subscriptionRemoveStmt,
+	db_new_statement ("subscriptionRemoveStmt",
 	                 "DELETE FROM subscription WHERE node_id = ?");
 			 
-	db_prepare_stmt (&subscriptionListLoadStmt,
+	db_new_statement ("subscriptionListLoadStmt",
 	                 "SELECT node_id FROM subscription");
 			 
-	db_prepare_stmt (&subscriptionLoadStmt,
+	db_new_statement ("subscriptionLoadStmt",
 	                 "SELECT "
 			 "node_id,"
 			 "source,"
@@ -568,15 +570,25 @@ open:
 			 "available "
 			 "FROM subscription");
 	
-	db_prepare_stmt (&subscriptionMetadataLoadStmt,
+	db_new_statement ("subscriptionMetadataLoadStmt",
 	                 "SELECT key,value,nr FROM subscription_metadata WHERE node_id = ? ORDER BY nr");
 			
-	db_prepare_stmt (&subscriptionMetadataUpdateStmt,
+	db_new_statement ("subscriptionMetadataUpdateStmt",
 	                 "REPLACE INTO subscription_metadata (node_id,nr,key,value) VALUES (?,?,?,?)");
+	
+	db_new_statement ("nodeUpdateStmt",
+	                  "REPLACE INTO node (node_id,parent_id,title,type,expanded,view_mode,sort_column,sort_reversed) VALUES (?,?,?,?,?,?,?,?)");
 
 	g_assert (sqlite3_get_autocommit (db));
 	
 	debug_exit ("db_init");
+}
+
+static void
+db_free_statements (gpointer key, gpointer value, gpointer user_data)
+{
+	sqlite3_finalize (((struct statement *)value)->stmt);
+	g_free (value);
 }
 
 void
@@ -585,39 +597,8 @@ db_deinit (void)
 
 	debug_enter ("db_deinit");
 	
-	sqlite3_finalize (itemsetLoadStmt);
-	sqlite3_finalize (itemsetInsertStmt);
-	sqlite3_finalize (itemsetReadCountStmt);
-	sqlite3_finalize (itemsetItemCountStmt);
-	sqlite3_finalize (itemsetRemoveStmt);
-
-	sqlite3_finalize (itemsetRemoveAllStmt);
-	sqlite3_finalize (itemsetMarkAllOldStmt);
-	sqlite3_finalize (itemsetMarkAllUpdatedStmt);
-	sqlite3_finalize (itemsetMarkAllPopupStmt);
-	
-	sqlite3_finalize (itemLoadStmt);
-	sqlite3_finalize (itemInsertStmt);
-	sqlite3_finalize (itemUpdateStmt);
-	sqlite3_finalize (itemMarkReadStmt);
-	
-	sqlite3_finalize (duplicatesFindStmt);
-	sqlite3_finalize (duplicatesMarkReadStmt);
-	
-	sqlite3_finalize (metadataLoadStmt);
-	sqlite3_finalize (metadataUpdateStmt);
-	
-	sqlite3_finalize (updateStateLoadStmt);
-	sqlite3_finalize (updateStateSaveStmt);
-	
-	sqlite3_finalize (subscriptionLoadStmt);
-	sqlite3_finalize (subscriptionUpdateStmt);
-	sqlite3_finalize (subscriptionRemoveStmt);
-	
-	sqlite3_finalize (subscriptionListLoadStmt);
-	
-	sqlite3_finalize (subscriptionMetadataLoadStmt);
-	sqlite3_finalize (subscriptionMetadataUpdateStmt);
+	g_hash_table_foreach (statements, db_free_statements, NULL);
+	g_hash_table_destroy (statements);	
 		
 	if (SQLITE_OK != sqlite3_close (db))
 		g_warning ("DB close failed: %s", sqlite3_errmsg (db));
@@ -630,17 +611,18 @@ db_deinit (void)
 static GSList *
 db_item_metadata_load(gulong id) 
 {
-	GSList	*metadata = NULL;
-	gint	res;
+	GSList		*metadata = NULL;
+	sqlite3_stmt 	*stmt;
+	gint		res;
 
-	sqlite3_reset(metadataLoadStmt);
-	res = sqlite3_bind_int(metadataLoadStmt, 1, id);
-	if(SQLITE_OK != res)
-		g_error("db_load_metadata: sqlite bind failed (error code %d)!", res);
+	stmt = db_get_statement ("metadataLoadStmt");
+	res = sqlite3_bind_int (stmt, 1, id);
+	if (SQLITE_OK != res)
+		g_error ("db_item_load_metadata: sqlite bind failed (error code %d)!", res);
 
-	while(sqlite3_step(metadataLoadStmt) == SQLITE_ROW) {
-		metadata = metadata_list_append(metadata, sqlite3_column_text(metadataLoadStmt, 0), 
-		                                          sqlite3_column_text(metadataLoadStmt, 1));
+	while (sqlite3_step (stmt) == SQLITE_ROW) {
+		metadata = metadata_list_append (metadata, sqlite3_column_text(stmt, 0), 
+		                                           sqlite3_column_text(stmt, 1));
 	}
 
 	return metadata;
@@ -648,21 +630,22 @@ db_item_metadata_load(gulong id)
 
 static void
 db_item_metadata_update_cb (const gchar *key,
-                       const gchar *value,
-                       guint index,
-                       gpointer user_data) 
+                            const gchar *value,
+                            guint index,
+                            gpointer user_data) 
 {
-	itemPtr	item = (itemPtr)user_data;
-	gint	res;
+	sqlite3_stmt	*stmt;
+	itemPtr		item = (itemPtr)user_data;
+	gint		res;
 
-	sqlite3_reset(metadataUpdateStmt);
-	sqlite3_bind_int (metadataUpdateStmt, 1, item->id);
-	sqlite3_bind_int (metadataUpdateStmt, 2, index);
-	sqlite3_bind_text(metadataUpdateStmt, 3, key, -1, SQLITE_TRANSIENT);
-	sqlite3_bind_text(metadataUpdateStmt, 4, value, -1, SQLITE_TRANSIENT);
-	res = sqlite3_step(metadataUpdateStmt);
-	if(SQLITE_DONE != res) 
-		g_warning("Update in \"metadata\" table failed (error code=%d, %s)", res, sqlite3_errmsg(db));
+	stmt = db_get_statement ("metadataUpdateStmt");
+	sqlite3_bind_int  (stmt, 1, item->id);
+	sqlite3_bind_int  (stmt, 2, index);
+	sqlite3_bind_text (stmt, 3, key, -1, SQLITE_TRANSIENT);
+	sqlite3_bind_text (stmt, 4, value, -1, SQLITE_TRANSIENT);
+	res = sqlite3_step (stmt);
+	if (SQLITE_DONE != res) 
+		g_warning ("Update in \"metadata\" table failed (error code=%d, %s)", res, sqlite3_errmsg (db));
 }
 
 static void
@@ -705,6 +688,7 @@ db_load_item_from_columns (sqlite3_stmt *stmt)
 itemSetPtr
 db_itemset_load (const gchar *id) 
 {
+	sqlite3_stmt	*stmt;
 	itemSetPtr 	itemSet;
 	gint		res;
 
@@ -712,16 +696,16 @@ db_itemset_load (const gchar *id)
 	itemSet = g_new0(struct itemSet, 1);
 	itemSet->nodeId = (gchar *)id;
 
-	sqlite3_reset(itemsetLoadStmt);
-	res = sqlite3_bind_text(itemsetLoadStmt, 1, id, -1, SQLITE_TRANSIENT);
-	if(SQLITE_OK != res)
-		g_error("db_itemset_load: sqlite bind failed (error code %d)!", res);
+	stmt = db_get_statement ("itemsetLoadStmt");
+	res = sqlite3_bind_text (stmt, 1, id, -1, SQLITE_TRANSIENT);
+	if (SQLITE_OK != res)
+		g_error ("db_itemset_load: sqlite bind failed (error code %d)!", res);
 
-	while(sqlite3_step(itemsetLoadStmt) == SQLITE_ROW) {
-		itemSet->ids = g_list_append(itemSet->ids, GUINT_TO_POINTER(sqlite3_column_int(itemsetLoadStmt, 0)));
+	while (sqlite3_step (stmt) == SQLITE_ROW) {
+		itemSet->ids = g_list_append (itemSet->ids, GUINT_TO_POINTER (sqlite3_column_int (stmt, 0)));
 	}
 
-	debug0(DEBUG_DB, "loading of itemset finished");
+	debug0 (DEBUG_DB, "loading of itemset finished");
 	
 	return itemSet;
 }
@@ -729,26 +713,27 @@ db_itemset_load (const gchar *id)
 itemPtr
 db_item_load (gulong id) 
 {
+	sqlite3_stmt	*stmt;
 	itemPtr 	item = NULL;
 	gint		res;
 
 	debug2 (DEBUG_DB, "loading item %lu (thread=%p)", id, g_thread_self ());
 	debug_start_measurement (DEBUG_DB);
 	
-	sqlite3_reset(itemLoadStmt);
-	res = sqlite3_bind_int(itemLoadStmt, 1, id);
-	if(SQLITE_OK != res)
-		g_error("db_item_load: sqlite bind failed (error code %d)!", res);
+	stmt = db_get_statement ("itemLoadStmt");
+	res = sqlite3_bind_int (stmt, 1, id);
+	if (SQLITE_OK != res)
+		g_error ("db_item_load: sqlite bind failed (error code %d)!", res);
 
-	if(sqlite3_step(itemLoadStmt) == SQLITE_ROW) {
-		item = db_load_item_from_columns(itemLoadStmt);
-		res = sqlite3_step(itemLoadStmt);
+	if (sqlite3_step (stmt) == SQLITE_ROW) {
+		item = db_load_item_from_columns (stmt);
+		res = sqlite3_step (stmt);
 		/* FIXME: sometimes (after updates) we get an unexpected SQLITE_ROW here! 
 		  if(SQLITE_DONE != res)
 			g_warning("Unexpected result when retrieving single item id=%lu! (error code=%d, %s)", id, res, sqlite3_errmsg(db));
 		 */
 	} else {
-		debug2(DEBUG_DB, "Could not load item with id #%lu (error code %d)!", id, res);
+		debug2 (DEBUG_DB, "Could not load item with id #%lu (error code %d)!", id, res);
 	}
 
 	debug_end_measurement (DEBUG_DB, "item load");
@@ -787,20 +772,21 @@ db_item_set_id (itemPtr item)
 	gchar	*sql, *err;
 	gint	res;
 	
-	g_assert(0 == item->id);
+	g_assert (0 == item->id);
 	
-	sql = sqlite3_mprintf("SELECT MAX(ROWID) FROM items");
-	res = sqlite3_exec(db, sql, db_item_set_id_cb, item, &err);
-	if(SQLITE_OK != res) 
-		g_warning("Select failed (%s) SQL: %s", err, sql);
-	sqlite3_free(sql);
-	sqlite3_free(err);
+	sql = sqlite3_mprintf ("SELECT MAX(ROWID) FROM items");
+	res = sqlite3_exec (db, sql, db_item_set_id_cb, item, &err);
+	if (SQLITE_OK != res) 
+		g_warning ("Select failed (%s) SQL: %s", err, sql);
+	sqlite3_free (sql);
+	sqlite3_free (err);
 }
 
 void
 db_item_update (itemPtr item) 
 {
-	gint	res;
+	sqlite3_stmt	*stmt;
+	gint		res;
 	
 	debug3 (DEBUG_DB, "update of item \"%s\" (id=%lu, thread=%p)", item->title, item->id, g_thread_self());
 	debug_start_measurement (DEBUG_DB);
@@ -811,41 +797,41 @@ db_item_update (itemPtr item)
 		debug1(DEBUG_DB, "insert into table \"itemsets\": \"%s\"", item->title);	
 		
 		/* insert item <-> node relation */
-		sqlite3_reset(itemsetInsertStmt);
-		sqlite3_bind_int (itemsetInsertStmt, 1, item->id);
-		sqlite3_bind_text(itemsetInsertStmt, 2, item->nodeId, -1, SQLITE_TRANSIENT);
-		sqlite3_bind_int (itemsetInsertStmt, 3, item->readStatus);
-		sqlite3_bind_int (itemsetInsertStmt, 4, item->isComment?1:0);
-		res = sqlite3_step(itemsetInsertStmt);
-		if(SQLITE_DONE != res) 
-			g_warning("Insert in \"itemsets\" table failed (error code=%d, %s)", res, sqlite3_errmsg(db));
+		stmt = db_get_statement ("itemsetInsertStmt");
+		sqlite3_bind_int  (stmt, 1, item->id);
+		sqlite3_bind_text (stmt, 2, item->nodeId, -1, SQLITE_TRANSIENT);
+		sqlite3_bind_int  (stmt, 3, item->readStatus);
+		sqlite3_bind_int  (stmt, 4, item->isComment?1:0);
+		res = sqlite3_step (stmt);
+		if (SQLITE_DONE != res) 
+			g_warning ("Insert in \"itemsets\" table failed (error code=%d, %s)", res, sqlite3_errmsg (db));
 
 	}
 
 	/* Update the item... */
-	sqlite3_reset(itemUpdateStmt);
-	sqlite3_bind_text(itemUpdateStmt, 1,  item->title, -1, SQLITE_TRANSIENT);
-	sqlite3_bind_int (itemUpdateStmt, 2,  item->readStatus?1:0);
-	sqlite3_bind_int (itemUpdateStmt, 3,  item->newStatus?1:0);
-	sqlite3_bind_int (itemUpdateStmt, 4,  item->updateStatus?1:0);
-	sqlite3_bind_int (itemUpdateStmt, 5,  item->popupStatus?1:0);
-	sqlite3_bind_int (itemUpdateStmt, 6,  item->flagStatus?1:0);
-	sqlite3_bind_text(itemUpdateStmt, 7,  item->source, -1, SQLITE_TRANSIENT);
-	sqlite3_bind_text(itemUpdateStmt, 8,  item->sourceId, -1, SQLITE_TRANSIENT);
-	sqlite3_bind_int (itemUpdateStmt, 9,  item->validGuid?1:0);
-	sqlite3_bind_text(itemUpdateStmt, 10, item->real_source_url, -1, SQLITE_TRANSIENT);
-	sqlite3_bind_text(itemUpdateStmt, 11, item->real_source_title, -1, SQLITE_TRANSIENT);
-	sqlite3_bind_text(itemUpdateStmt, 12, item->description, -1, SQLITE_TRANSIENT);
-	sqlite3_bind_int (itemUpdateStmt, 13, item->time);
-	sqlite3_bind_text(itemUpdateStmt, 14, item->commentFeedId, -1, SQLITE_TRANSIENT);
-	sqlite3_bind_int (itemUpdateStmt, 15, item->isComment?1:0);
-	sqlite3_bind_int (itemUpdateStmt, 16, item->id);
-	res = sqlite3_step(itemUpdateStmt);
+	db_get_statement ("itemUpdateStmt");
+	sqlite3_bind_text (stmt, 1,  item->title, -1, SQLITE_TRANSIENT);
+	sqlite3_bind_int  (stmt, 2,  item->readStatus?1:0);
+	sqlite3_bind_int  (stmt, 3,  item->newStatus?1:0);
+	sqlite3_bind_int  (stmt, 4,  item->updateStatus?1:0);
+	sqlite3_bind_int  (stmt, 5,  item->popupStatus?1:0);
+	sqlite3_bind_int  (stmt, 6,  item->flagStatus?1:0);
+	sqlite3_bind_text (stmt, 7,  item->source, -1, SQLITE_TRANSIENT);
+	sqlite3_bind_text (stmt, 8,  item->sourceId, -1, SQLITE_TRANSIENT);
+	sqlite3_bind_int  (stmt, 9,  item->validGuid?1:0);
+	sqlite3_bind_text (stmt, 10, item->real_source_url, -1, SQLITE_TRANSIENT);
+	sqlite3_bind_text (stmt, 11, item->real_source_title, -1, SQLITE_TRANSIENT);
+	sqlite3_bind_text (stmt, 12, item->description, -1, SQLITE_TRANSIENT);
+	sqlite3_bind_int  (stmt, 13, item->time);
+	sqlite3_bind_text (stmt, 14, item->commentFeedId, -1, SQLITE_TRANSIENT);
+	sqlite3_bind_int  (stmt, 15, item->isComment?1:0);
+	sqlite3_bind_int  (stmt, 16, item->id);
+	res = sqlite3_step (stmt);
 
-	if(SQLITE_DONE != res) 
-		g_warning("item update failed (error code=%d, %s)", res, sqlite3_errmsg(db));
+	if (SQLITE_DONE != res) 
+		g_warning ("item update failed (error code=%d, %s)", res, sqlite3_errmsg (db));
 	
-	db_item_metadata_update(item);
+	db_item_metadata_update (item);
 	
 	debug_end_measurement (DEBUG_DB, "item update");
 }
@@ -853,34 +839,36 @@ db_item_update (itemPtr item)
 void
 db_item_remove (gulong id) 
 {
-	gint	res;
+	sqlite3_stmt	*stmt;
+	gint		res;
 	
-	debug1(DEBUG_DB, "removing item with id %lu", id);
+	debug1 (DEBUG_DB, "removing item with id %lu", id);
 	
-	sqlite3_reset(itemsetRemoveStmt);
-	sqlite3_bind_int(itemsetRemoveStmt, 1, id);
-	res = sqlite3_step(itemsetRemoveStmt);
+	stmt = db_get_statement ("itemsetRemoveStmt");
+	sqlite3_bind_int (stmt, 1, id);
+	res = sqlite3_step (stmt);
 
-	if(SQLITE_DONE != res)
-		g_warning("item remove failed (error code=%d, %s)", res, sqlite3_errmsg(db));
+	if (SQLITE_DONE != res)
+		g_warning ("item remove failed (error code=%d, %s)", res, sqlite3_errmsg (db));
 }
 
 GSList * 
 db_item_get_duplicates (const gchar *guid) 
 {
-	GSList	*duplicates = NULL;
-	gint	res;
+	GSList		*duplicates = NULL;
+	sqlite3_stmt	*stmt;
+	gint		res;
 
 	debug_start_measurement (DEBUG_DB);
 
-	sqlite3_reset (duplicatesFindStmt);
-	res = sqlite3_bind_text (duplicatesFindStmt, 1, guid, -1, SQLITE_TRANSIENT);
+	stmt = db_get_statement ("duplicatesFindStmt");
+	res = sqlite3_bind_text (stmt, 1, guid, -1, SQLITE_TRANSIENT);
 	if (SQLITE_OK != res)
 		g_error ("db_item_get_duplicates: sqlite bind failed (error code %d)!", res);
 
-	while (sqlite3_step (duplicatesFindStmt) == SQLITE_ROW) 
+	while (sqlite3_step (stmt) == SQLITE_ROW) 
 	{
-		gulong id = sqlite3_column_int(duplicatesFindStmt, 0);
+		gulong id = sqlite3_column_int (stmt, 0);
 		duplicates = g_slist_append (duplicates, GUINT_TO_POINTER (id));
 	}
 
@@ -892,22 +880,24 @@ db_item_get_duplicates (const gchar *guid)
 void 
 db_itemset_remove_all (const gchar *id) 
 {
-	gint	res;
+	sqlite3_stmt	*stmt;
+	gint		res;
 	
 	debug1(DEBUG_DB, "removing all items for item set with %s", id);
 		
-	sqlite3_reset(itemsetRemoveAllStmt);
-	sqlite3_bind_text(itemsetRemoveAllStmt, 1, id, -1, SQLITE_TRANSIENT);
-	res = sqlite3_step(itemsetRemoveAllStmt);
+	stmt = db_get_statement ("itemsetRemoveAllStmt");
+	sqlite3_bind_text (stmt, 1, id, -1, SQLITE_TRANSIENT);
+	res = sqlite3_step (stmt);
 
-	if(SQLITE_DONE != res)
-		g_warning("removing all items failed (error code=%d, %s)", res, sqlite3_errmsg(db));
+	if (SQLITE_DONE != res)
+		g_warning ("removing all items failed (error code=%d, %s)", res, sqlite3_errmsg (db));
 }
 
 void
 db_item_mark_read (itemPtr item) 
 {
-	gint	res;
+	sqlite3_stmt	*stmt;
+	gint		res;
 	
 	item->readStatus = TRUE;
 	
@@ -915,9 +905,9 @@ db_item_mark_read (itemPtr item)
 	{
 		debug1 (DEBUG_DB, "marking item with id=%lu read", item->id);
 			
-		sqlite3_reset (itemMarkReadStmt);
-		sqlite3_bind_int (itemMarkReadStmt, 1, item->id);
-		res = sqlite3_step (itemMarkReadStmt);
+		stmt = db_get_statement ("itemMarkReadStmt");
+		sqlite3_bind_int (stmt, 1, item->id);
+		res = sqlite3_step (stmt);
 
 		if (SQLITE_DONE != res)
 			g_warning ("marking item read failed (error code=%d, %s)", res, sqlite3_errmsg (db));
@@ -926,9 +916,9 @@ db_item_mark_read (itemPtr item)
 	{
 		debug1 (DEBUG_DB, "marking all duplicates with source id=%s read", item->sourceId);
 		
-		sqlite3_reset (duplicatesMarkReadStmt);
-		sqlite3_bind_text (duplicatesMarkReadStmt, 1, item->sourceId, -1, SQLITE_TRANSIENT);
-		res = sqlite3_step (duplicatesMarkReadStmt);
+		stmt = db_get_statement ("duplicatesMarkReadStmt");
+		sqlite3_bind_text (stmt, 1, item->sourceId, -1, SQLITE_TRANSIENT);
+		res = sqlite3_step (stmt);
 
 		if (SQLITE_DONE != res)
 			g_warning ("marking duplicates read failed (error code=%d, %s)", res, sqlite3_errmsg (db));
@@ -938,46 +928,49 @@ db_item_mark_read (itemPtr item)
 void 
 db_itemset_mark_all_updated (const gchar *id) 
 {
-	gint	res;
+	sqlite3_stmt	*stmt;
+	gint		res;
 	
-	debug1(DEBUG_DB, "marking all items updared for item set with %s", id);
+	debug1 (DEBUG_DB, "marking all items updared for item set with %s", id);
 		
-	sqlite3_reset(itemsetMarkAllUpdatedStmt);
-	sqlite3_bind_text(itemsetMarkAllUpdatedStmt, 1, id, -1, SQLITE_TRANSIENT);
-	res = sqlite3_step(itemsetMarkAllUpdatedStmt);
+	stmt = db_get_statement ("itemsetMarkAllUpdatedStmt");
+	sqlite3_bind_text (stmt, 1, id, -1, SQLITE_TRANSIENT);
+	res = sqlite3_step (stmt);
 
-	if(SQLITE_DONE != res)
-		g_warning("marking all items updated failed (error code=%d, %s)", res, sqlite3_errmsg(db));
+	if (SQLITE_DONE != res)
+		g_warning ("marking all items updated failed (error code=%d, %s)", res, sqlite3_errmsg (db));
 }
 
 void 
 db_itemset_mark_all_old (const gchar *id) 
 {
-	gint	res;
+	sqlite3_stmt	*stmt;
+	gint		res;
 	
-	debug1(DEBUG_DB, "marking all items old for item set with %s", id);
+	debug1 (DEBUG_DB, "marking all items old for item set with %s", id);
 		
-	sqlite3_reset(itemsetMarkAllOldStmt);
-	sqlite3_bind_text(itemsetMarkAllOldStmt, 1, id, -1, SQLITE_TRANSIENT);
-	res = sqlite3_step(itemsetMarkAllOldStmt);
+	stmt = db_get_statement ("itemsetMarkAllOldStmt");
+	sqlite3_bind_text (stmt, 1, id, -1, SQLITE_TRANSIENT);
+	res = sqlite3_step (stmt);
 
-	if(SQLITE_DONE != res)
-		g_warning("marking all items old failed (error code=%d, %s)", res, sqlite3_errmsg(db));
+	if (SQLITE_DONE != res)
+		g_warning ("marking all items old failed (error code=%d, %s)", res, sqlite3_errmsg(db));
 }
 
 void 
 db_itemset_mark_all_popup (const gchar *id) 
 {
-	gint	res;
+	sqlite3_stmt	*stmt;
+	gint		res;
 	
-	debug1(DEBUG_DB, "marking all items popup for item set with %s", id);
+	debug1 (DEBUG_DB, "marking all items popup for item set with %s", id);
 		
-	sqlite3_reset(itemsetMarkAllPopupStmt);
-	sqlite3_bind_text(itemsetMarkAllPopupStmt, 1, id, -1, SQLITE_TRANSIENT);
-	res = sqlite3_step(itemsetMarkAllPopupStmt);
+	stmt = db_get_statement ("itemsetMarkAllPopupStmt");
+	sqlite3_bind_text (stmt, 1, id, -1, SQLITE_TRANSIENT);
+	res = sqlite3_step (stmt);
 
-	if(SQLITE_DONE != res)
-		g_warning("marking all items popup failed (error code=%d, %s)", res, sqlite3_errmsg(db));
+	if (SQLITE_DONE != res)
+		g_warning ("marking all items popup failed (error code=%d, %s)", res, sqlite3_errmsg(db));
 }
 
 /* Statistics interface */
@@ -985,19 +978,20 @@ db_itemset_mark_all_popup (const gchar *id)
 guint 
 db_itemset_get_unread_count (const gchar *id) 
 {
-	gint	res;
-	guint	count = 0;
+	sqlite3_stmt	*stmt;
+	gint		res;
+	guint		count = 0;
 	
 	debug_start_measurement (DEBUG_DB);
 	
-	sqlite3_reset(itemsetReadCountStmt);
-	sqlite3_bind_text(itemsetReadCountStmt, 1, id, -1, SQLITE_TRANSIENT);
-	res = sqlite3_step(itemsetReadCountStmt);
+	stmt = db_get_statement ("itemsetReadCountStmt");
+	sqlite3_bind_text (stmt, 1, id, -1, SQLITE_TRANSIENT);
+	res = sqlite3_step (stmt);
 	
-	if(SQLITE_ROW == res)
-		count = sqlite3_column_int(itemsetReadCountStmt, 0);
+	if (SQLITE_ROW == res)
+		count = sqlite3_column_int (stmt, 0);
 	else
-		g_warning("item read counting failed (error code=%d, %s)", res, sqlite3_errmsg(db));
+		g_warning("item read counting failed (error code=%d, %s)", res, sqlite3_errmsg (db));
 		
 	debug_end_measurement (DEBUG_DB, "counting unread items");
 
@@ -1007,19 +1001,20 @@ db_itemset_get_unread_count (const gchar *id)
 guint 
 db_itemset_get_item_count (const gchar *id) 
 {
-	gint	res;
-	guint	count = 0;
+	sqlite3_stmt 	*stmt;
+	gint		res;
+	guint		count = 0;
 
 	debug_start_measurement (DEBUG_DB);
 	
-	sqlite3_reset(itemsetItemCountStmt);
-	sqlite3_bind_text(itemsetItemCountStmt, 1, id, -1, SQLITE_TRANSIENT);
-	res = sqlite3_step(itemsetItemCountStmt);
+	stmt = db_get_statement ("itemsetItemCountStmt");
+	sqlite3_bind_text (stmt, 1, id, -1, SQLITE_TRANSIENT);
+	res = sqlite3_step (stmt);
 	
-	if(SQLITE_ROW == res)
-		count = sqlite3_column_int(itemsetItemCountStmt, 0);
+	if (SQLITE_ROW == res)
+		count = sqlite3_column_int (stmt, 0);
 	else
-		g_warning("item counting failed (error code=%d, %s)", res, sqlite3_errmsg(db));
+		g_warning ("item counting failed (error code=%d, %s)", res, sqlite3_errmsg (db));
 
 	debug_end_measurement (DEBUG_DB, "counting items");
 		
@@ -1032,12 +1027,12 @@ db_begin_transaction (void)
 	gchar	*sql, *err;
 	gint	res;
 	
-	sql = sqlite3_mprintf("BEGIN");
-	res = sqlite3_exec(db, sql, NULL, NULL, &err);
-	if(SQLITE_OK != res) 
-		g_warning("Transaction begin failed (%s) SQL: %s", err, sql);
-	sqlite3_free(sql);
-	sqlite3_free(err);
+	sql = sqlite3_mprintf ("BEGIN");
+	res = sqlite3_exec (db, sql, NULL, NULL, &err);
+	if (SQLITE_OK != res) 
+		g_warning ("Transaction begin failed (%s) SQL: %s", err, sql);
+	sqlite3_free (sql);
+	sqlite3_free (err);
 }
 
 void
@@ -1046,12 +1041,12 @@ db_end_transaction (void)
 	gchar	*sql, *err;
 	gint	res;
 	
-	sql = sqlite3_mprintf("END");
-	res = sqlite3_exec(db, sql, NULL, NULL, &err);
-	if(SQLITE_OK != res) 
-		g_warning("Transaction end failed (%s) SQL: %s", err, sql);
-	sqlite3_free(sql);
-	sqlite3_free(err);
+	sql = sqlite3_mprintf ("END");
+	res = sqlite3_exec (db, sql, NULL, NULL, &err);
+	if (SQLITE_OK != res) 
+		g_warning ("Transaction end failed (%s) SQL: %s", err, sql);
+	sqlite3_free (sql);
+	sqlite3_free (err);
 }
 
 void
@@ -1060,12 +1055,12 @@ db_commit_transaction (void)
 	gchar	*sql, *err;
 	gint	res;
 	
-	sql = sqlite3_mprintf("COMMIT");
-	res = sqlite3_exec(db, sql, NULL, NULL, &err);
-	if(SQLITE_OK != res) 
-		g_warning("Transaction commit failed (%s) SQL: %s", err, sql);
-	sqlite3_free(sql);
-	sqlite3_free(err);	
+	sql = sqlite3_mprintf ("COMMIT");
+	res = sqlite3_exec (db, sql, NULL, NULL, &err);
+	if (SQLITE_OK != res) 
+		g_warning ("Transaction commit failed (%s) SQL: %s", err, sql);
+	sqlite3_free (sql);
+	sqlite3_free (err);	
 }
 
 void
@@ -1074,12 +1069,12 @@ db_rollback_transaction (void)
 	gchar	*sql, *err;
 	gint	res;
 	
-	sql = sqlite3_mprintf("ROLLBACK");
-	res = sqlite3_exec(db, sql, NULL, NULL, &err);
-	if(SQLITE_OK != res) 
-		g_warning("Transaction begin failed (%s) SQL: %s", err, sql);
-	sqlite3_free(sql);
-	sqlite3_free(err);
+	sql = sqlite3_mprintf ("ROLLBACK");
+	res = sqlite3_exec (db, sql, NULL, NULL, &err);
+	if (SQLITE_OK != res) 
+		g_warning ("Transaction begin failed (%s) SQL: %s", err, sql);
+	sqlite3_free (sql);
+	sqlite3_free (err);
 }
 
 gboolean
@@ -1318,6 +1313,7 @@ void
 db_update_state_load (const gchar *id,
                       updateStatePtr updateState)
 {
+	sqlite3_stmt	*stmt;
 	gint		res;
 	
 	g_assert (NULL == updateState->lastModified);
@@ -1326,15 +1322,15 @@ db_update_state_load (const gchar *id,
 	debug2 (DEBUG_DB, "loading subscription %s update state (thread=%p)", id, g_thread_self ());
 	debug_start_measurement (DEBUG_DB);	
 
-	sqlite3_reset (updateStateLoadStmt);
-	sqlite3_bind_text (updateStateLoadStmt, 1, id, -1, SQLITE_TRANSIENT);
+	stmt = db_get_statement ("updateStateLoadStmt");
+	sqlite3_bind_text (stmt, 1, id, -1, SQLITE_TRANSIENT);
 
-	res = sqlite3_step (updateStateLoadStmt);
+	res = sqlite3_step (stmt);
 	if (SQLITE_ROW == res) {
-		updateState->lastModified		= g_strdup (sqlite3_column_text (updateStateLoadStmt, 0));
-		updateState->etag			= g_strdup (sqlite3_column_text (updateStateLoadStmt, 1));
-		updateState->lastPoll.tv_sec		= sqlite3_column_int (updateStateLoadStmt, 2);
-		updateState->lastFaviconPoll.tv_sec	= sqlite3_column_int (updateStateLoadStmt, 3);
+		updateState->lastModified		= g_strdup (sqlite3_column_text (stmt, 0));
+		updateState->etag			= g_strdup (sqlite3_column_text (stmt, 1));
+		updateState->lastPoll.tv_sec		= sqlite3_column_int (stmt, 2);
+		updateState->lastFaviconPoll.tv_sec	= sqlite3_column_int (stmt, 3);
 	} else {
 		debug2 (DEBUG_DB, "Could not load update state for subscription %s (error code %d)!", id, res);
 	}
@@ -1345,21 +1341,22 @@ db_update_state_load (const gchar *id,
 void
 db_update_state_save (const gchar *id,
                       updateStatePtr updateState)
-{	
+{
+	sqlite3_stmt	*stmt;
 	gint		res;
 
 	debug2 (DEBUG_DB, "saving subscription %s update state (thread=%p)", id, g_thread_self ());
 	debug_start_measurement (DEBUG_DB);
 	
-	sqlite3_reset (updateStateSaveStmt);
-	sqlite3_bind_text (updateStateSaveStmt, 1, id, -1, SQLITE_TRANSIENT);
+	stmt = db_get_statement ("updateStateSaveStmt");
+	sqlite3_bind_text (stmt, 1, id, -1, SQLITE_TRANSIENT);
 
-	sqlite3_bind_text (updateStateSaveStmt, 2, updateState->lastModified, -1, SQLITE_TRANSIENT);
-	sqlite3_bind_text (updateStateSaveStmt, 3, updateState->etag, -1, SQLITE_TRANSIENT);
-	sqlite3_bind_int  (updateStateSaveStmt, 4, updateState->lastPoll.tv_sec);
-	sqlite3_bind_int  (updateStateSaveStmt, 5, updateState->lastFaviconPoll.tv_sec);
+	sqlite3_bind_text (stmt, 2, updateState->lastModified, -1, SQLITE_TRANSIENT);
+	sqlite3_bind_text (stmt, 3, updateState->etag, -1, SQLITE_TRANSIENT);
+	sqlite3_bind_int  (stmt, 4, updateState->lastPoll.tv_sec);
+	sqlite3_bind_int  (stmt, 5, updateState->lastFaviconPoll.tv_sec);
 
-	res = sqlite3_step (updateStateSaveStmt);
+	res = sqlite3_step (stmt);
 	if (SQLITE_DONE != res)
 		g_warning ("Could not save update state for subscription %s (error code %d)!", id, res);
 
@@ -1369,17 +1366,18 @@ db_update_state_save (const gchar *id,
 static GSList *
 db_subscription_metadata_load(const gchar *id) 
 {
-	GSList	*metadata = NULL;
-	gint	res;
+	GSList		*metadata = NULL;
+	sqlite3_stmt	*stmt;
+	gint		res;
 
-	sqlite3_reset(subscriptionMetadataLoadStmt);
-	res = sqlite3_bind_text(subscriptionMetadataLoadStmt, 1, id, -1, SQLITE_TRANSIENT);
-	if(SQLITE_OK != res)
-		g_error("db_load_metadata: sqlite bind failed (error code %d)!", res);
+	stmt = db_get_statement ("subscriptionMetadataLoadStmt");
+	res = sqlite3_bind_text (stmt, 1, id, -1, SQLITE_TRANSIENT);
+	if (SQLITE_OK != res)
+		g_error ("db_load_metadata: sqlite bind failed (error code %d)!", res);
 
-	while(sqlite3_step(subscriptionMetadataLoadStmt) == SQLITE_ROW) {
-		metadata = metadata_list_append(metadata, sqlite3_column_text(subscriptionMetadataLoadStmt, 0), 
-		                                          sqlite3_column_text(subscriptionMetadataLoadStmt, 1));
+	while (sqlite3_step (stmt) == SQLITE_ROW) {
+		metadata = metadata_list_append (metadata, sqlite3_column_text(stmt, 0), 
+		                                           sqlite3_column_text(stmt, 1));
 	}
 
 	return metadata;
@@ -1391,23 +1389,24 @@ db_subscription_metadata_update_cb (const gchar *key,
                                     guint index,
                                     gpointer user_data) 
 {
-	nodePtr	node = (nodePtr)user_data;
-	gint	res;
+	sqlite3_stmt	*stmt;
+	nodePtr		node = (nodePtr)user_data;
+	gint		res;
 
-	sqlite3_reset(subscriptionMetadataUpdateStmt);
-	sqlite3_bind_text(subscriptionMetadataUpdateStmt, 1, node->id, -1, SQLITE_TRANSIENT);
-	sqlite3_bind_int (subscriptionMetadataUpdateStmt, 2, index);
-	sqlite3_bind_text(subscriptionMetadataUpdateStmt, 3, key, -1, SQLITE_TRANSIENT);
-	sqlite3_bind_text(subscriptionMetadataUpdateStmt, 4, value, -1, SQLITE_TRANSIENT);
-	res = sqlite3_step(subscriptionMetadataUpdateStmt);
-	if(SQLITE_DONE != res) 
-		g_warning("Update in \"metadata\" table failed (error code=%d, %s)", res, sqlite3_errmsg(db));
+	stmt = db_get_statement ("subscriptionMetadataUpdateStmt");
+	sqlite3_bind_text (stmt, 1, node->id, -1, SQLITE_TRANSIENT);
+	sqlite3_bind_int  (stmt, 2, index);
+	sqlite3_bind_text (stmt, 3, key, -1, SQLITE_TRANSIENT);
+	sqlite3_bind_text (stmt, 4, value, -1, SQLITE_TRANSIENT);
+	res = sqlite3_step (stmt);
+	if (SQLITE_DONE != res) 
+		g_warning ("Update in \"metadata\" table failed (error code=%d, %s)", res, sqlite3_errmsg (db));
 }
 
 static void
-db_subscription_metadata_update(subscriptionPtr subscription) 
+db_subscription_metadata_update (subscriptionPtr subscription) 
 {
-	metadata_list_foreach(subscription->metadata, db_subscription_metadata_update_cb, subscription->node);
+	metadata_list_foreach (subscription->metadata, db_subscription_metadata_update_cb, subscription->node);
 }
 
 void
@@ -1419,24 +1418,25 @@ db_subscription_load (subscriptionPtr subscription)
 void
 db_subscription_update (subscriptionPtr subscription)
 {
+	sqlite3_stmt	*stmt;
 	gint		res;
 	
 	debug2 (DEBUG_DB, "updating subscription info %s (thread %p)", subscription->node->id, g_thread_self());
 	debug_start_measurement (DEBUG_DB);
 	
-	sqlite3_reset (subscriptionUpdateStmt);
-	sqlite3_bind_text (subscriptionUpdateStmt, 1, subscription->node->id, -1, SQLITE_TRANSIENT);
-	sqlite3_bind_text (subscriptionUpdateStmt, 2, subscription->source, -1, SQLITE_TRANSIENT);
-	sqlite3_bind_text (subscriptionUpdateStmt, 3, subscription->origSource, -1, SQLITE_TRANSIENT);	
-	sqlite3_bind_text (subscriptionUpdateStmt, 4, subscription->filtercmd, -1, SQLITE_TRANSIENT);
-	sqlite3_bind_int  (subscriptionUpdateStmt, 5, subscription->updateInterval);
-	sqlite3_bind_int  (subscriptionUpdateStmt, 6, subscription->defaultInterval);
-	sqlite3_bind_int  (subscriptionUpdateStmt, 7, subscription->discontinued?1:0);
-	sqlite3_bind_int  (subscriptionUpdateStmt, 8, (subscription->updateError ||
-	                                               subscription->httpError ||
-						       subscription->filterError)?1:0);
+	stmt = db_get_statement ("subscriptionUpdateStmt");
+	sqlite3_bind_text (stmt, 1, subscription->node->id, -1, SQLITE_TRANSIENT);
+	sqlite3_bind_text (stmt, 2, subscription->source, -1, SQLITE_TRANSIENT);
+	sqlite3_bind_text (stmt, 3, subscription->origSource, -1, SQLITE_TRANSIENT);	
+	sqlite3_bind_text (stmt, 4, subscription->filtercmd, -1, SQLITE_TRANSIENT);
+	sqlite3_bind_int  (stmt, 5, subscription->updateInterval);
+	sqlite3_bind_int  (stmt, 6, subscription->defaultInterval);
+	sqlite3_bind_int  (stmt, 7, subscription->discontinued?1:0);
+	sqlite3_bind_int  (stmt, 8, (subscription->updateError ||
+	                             subscription->httpError ||
+				     subscription->filterError)?1:0);
 	
-	res = sqlite3_step (subscriptionUpdateStmt);
+	res = sqlite3_step (stmt);
 	if (SQLITE_DONE != res)
 		g_warning ("Could not update subscription info %s in DB (error code %d)!", subscription->node->id, res);
 		
@@ -1448,15 +1448,16 @@ db_subscription_update (subscriptionPtr subscription)
 void
 db_subscription_remove (const gchar *id)
 {
+	sqlite3_stmt	*stmt;
 	gint		res;
 
 	debug2 (DEBUG_DB, "removing subscription %s (thread=%p)", id, g_thread_self ());
 	debug_start_measurement (DEBUG_DB);
 	
-	sqlite3_reset (subscriptionRemoveStmt);
-	sqlite3_bind_text (subscriptionRemoveStmt, 1, id, -1, SQLITE_TRANSIENT);
+	stmt = db_get_statement ("subscriptionRemoveStmt");
+	sqlite3_bind_text (stmt, 1, id, -1, SQLITE_TRANSIENT);
 
-	res = sqlite3_step (subscriptionRemoveStmt);
+	res = sqlite3_step (stmt);
 	if (SQLITE_DONE != res)
 		g_warning ("Could not remove subscription %s from DB (error code %d)!", id, res);
 
@@ -1466,12 +1467,40 @@ db_subscription_remove (const gchar *id)
 GSList *
 db_subscription_list_load (void)
 {
+	sqlite3_stmt	*stmt;
 	GSList		*list = NULL;
 
-	sqlite3_reset (subscriptionListLoadStmt);
-	while (sqlite3_step (subscriptionListLoadStmt) == SQLITE_ROW) {
-		list = g_slist_append(list, g_strdup (sqlite3_column_text (subscriptionListLoadStmt, 0)));
+	stmt = db_get_statement ("subscriptionListLoadStmt");
+	while (sqlite3_step (stmt) == SQLITE_ROW) {
+		list = g_slist_append(list, g_strdup (sqlite3_column_text (stmt, 0)));
 	}
 
 	return list;
+}
+
+void
+db_node_update (nodePtr node)
+{
+	sqlite3_stmt	*stmt;
+	gint		res;
+	
+	debug2 (DEBUG_DB, "updating node info %s (thread %p)", node->id, g_thread_self());
+	debug_start_measurement (DEBUG_DB);
+	
+	stmt = db_get_statement ("nodeUpdateStmt");
+	sqlite3_bind_text (stmt, 1, node->id, -1, SQLITE_TRANSIENT);
+	sqlite3_bind_text (stmt, 2, node->parent->id, -1, SQLITE_TRANSIENT);
+	sqlite3_bind_text (stmt, 3, node->title, -1, SQLITE_TRANSIENT);	
+	sqlite3_bind_int  (stmt, 4, node->type);
+	sqlite3_bind_int  (stmt, 5, node->expanded?1:0);
+	sqlite3_bind_int  (stmt, 6, node->viewMode);
+	sqlite3_bind_int  (stmt, 7, node->sortColumn);
+	sqlite3_bind_int  (stmt, 8, node->sortReversed?1:0);
+	
+	res = sqlite3_step (stmt);
+	if (SQLITE_DONE != res)
+		g_warning ("Could not update subscription info %s in DB (error code %d)!", node->id, res);
+		
+	debug_end_measurement (DEBUG_DB, "subscription_update");
+	
 }

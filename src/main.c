@@ -314,10 +314,8 @@ on_quit (GtkWidget *widget, GdkEvent *event, gpointer user_data)
 	db_deinit ();
 	script_deinit ();
 	social_free ();
-	
+
 	gtk_widget_destroy (mainwindow);
-	ui_htmlview_deinit ();
-	
 #ifdef USE_SM
 	/* unplug */
 	session_end ();

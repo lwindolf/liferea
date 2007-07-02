@@ -420,7 +420,7 @@ void on_enc_action_change_btn_clicked(GtkButton *button, gpointer user_data) {
 	GtkTreeIter		iter;
 	gpointer		type;
 
-	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(liferea_dialog_lookup(prefdialog, "enc_actions_view")));
+	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(liferea_dialog_lookup(prefdialog, "enc_action_view")));
 	if(gtk_tree_selection_get_selected(selection, &model, &iter)) {
 		gtk_tree_model_get(model, &iter, FTS_PTR, &type, -1);
 		ui_enclosure_change_type(type);
@@ -435,7 +435,7 @@ void on_enc_action_remove_btn_clicked(GtkButton *button, gpointer user_data) {
 	GtkTreeIter		iter;
 	gpointer		type;
 
-	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(liferea_dialog_lookup(prefdialog, "enc_actions_view")));
+	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(liferea_dialog_lookup(prefdialog, "enc_action_view")));
 	if(gtk_tree_selection_get_selected(selection, &model, &iter)) {
 		gtk_tree_model_get(model, &iter, FTS_PTR, &type, -1);
 		gtk_tree_store_remove(GTK_TREE_STORE(model), &iter);
@@ -759,7 +759,7 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 			list = g_slist_next(list);
 		}
 
-		widget = liferea_dialog_lookup(prefdialog, "enc_actions_view");
+		widget = liferea_dialog_lookup(prefdialog, "enc_action_view");
 		gtk_tree_view_set_model(GTK_TREE_VIEW(widget), GTK_TREE_MODEL(treestore));
 
 		column = gtk_tree_view_column_new_with_attributes(_("Type"), gtk_cell_renderer_text_new(), "text", FTS_TYPE, NULL);
