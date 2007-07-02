@@ -1,5 +1,9 @@
+2007-07-02  Lars Lindner  <lars.lindner@gmail.com>
+
 	Version 1.2.19 (Stable)
 
+	* Fixes SF #1741243 which caused endless loops on
+	  LiveJournal authentication.
 	* Added Brazilian-Portugese localized feed list.
 	  (Og Maciel)
 

@@ -134,8 +134,10 @@ char * ConstructDigestAuth (char * username, char * password, char * url, char *
 		return;
 	
 	token = authdata;
+g_print("authdata: >>>%s<<< (len=%d)\n", authdata, strlen(authdata));
 	while (1) {
 		while (*token == ' ') token++;
+g_print("token: >>>%s<<< (len=%d)\n", token, strlen(token));
 
 		if (*token == '\0')
 			break;
@@ -148,6 +150,10 @@ char * ConstructDigestAuth (char * username, char * password, char * url, char *
 			nonce = ExtractValue (&token);
 		} else if (strncasecmp (token, "opaque=", 7) == 0) {
 			opaque = ExtractValue (&token);
+		} else {
+			/* unknown key=value pair, skipping */
+			gchar *useless = ExtractValue (&token);
+			g_free (useless);
 		}
 	}
 	
