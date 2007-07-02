@@ -32,9 +32,14 @@
 #define ITEM_MATCH_RULE_ID		"exact"
 #define ITEM_TITLE_MATCH_RULE_ID	"exact_title"
 #define ITEM_DESC_MATCH_RULE_ID		"exact_desc"
+
+typedef struct condition {
+	guint	tables;		/**< tables used by the condition */
+	gchar	*sql;		/**< SQL of the condition */
+} *conditionPtr;
    
 /** function type used to query SQL WHERE clause condition for rules */
-typedef gchar * (*ruleConditionFunc)	(rulePtr rule);
+typedef conditionPtr (*ruleConditionFunc)	(rulePtr rule);
 
 /** function type used to check in memory items */
 typedef gboolean (*ruleCheckFunc)	(rulePtr rule, itemPtr item);
@@ -61,7 +66,7 @@ rule_new (struct vfolder *vfolder,
 			rule->ruleInfo = ruleInfo;
 			rule->additive = additive;
 			rule->vp = vfolder;		
-			rule->value = g_strdup (value);	
+			rule->value = common_strreplace (g_strdup (value), "'", "");	
 			return rule;
 		}
 	}	
@@ -79,52 +84,64 @@ rule_free (rulePtr rule)
 /* rule conditions							*/
 /* -------------------------------------------------------------------- */
 
-static gchar *
+static conditionPtr
 rule_condition_feed_title_match (rulePtr rule) 
 {
-	return g_strdup ("");	// FIXME: cannot be realized without having feeds in DB
+	conditionPtr	condition;
+
+	condition = g_new0(struct condition, 1);
+	condition->tables = QUERY_TABLE_NODE;
+	condition->sql = g_strdup_printf ("node.title LIKE '%%%s%%'", rule->value);
+	
+	return condition;
 }
 
-static gchar *
+static conditionPtr
 rule_condition_item_title_match (rulePtr rule) 
 {
-	gchar	*result, *pattern;
+	conditionPtr	condition;
+
+	condition = g_new0(struct condition, 1);
+	condition->tables = QUERY_TABLE_ITEMS;
+	condition->sql = g_strdup_printf ("items.title LIKE '%%%s%%'", rule->value);
 	
-	pattern = common_strreplace (g_strdup (rule->value), "'", "");
-	result = g_strdup_printf ("items.title LIKE '%%%s%%'", pattern);
-	g_free (pattern);
-	
-	return result;
+	return condition;
 }
 
-static gchar *
+static conditionPtr
 rule_condition_item_description_match (rulePtr rule) 
 {
-	gchar	*result, *pattern;
+	conditionPtr	condition;
 	
-	pattern = common_strreplace (g_strdup (rule->value), "'", "");
-	result = g_strdup_printf ("items.description LIKE '%%%s%%'", pattern);
-	g_free (pattern);
+	condition = g_new0(struct condition, 1);
+	condition->tables = QUERY_TABLE_ITEMS;
+	condition->sql = g_strdup_printf ("items.description LIKE '%%%s%%'", rule->value);
 	
-	return result;
+	return condition;
 }
 
-static gchar *
+static conditionPtr
 rule_condition_item_match (rulePtr rule) 
 {
-	gchar	*result, *pattern;
+	conditionPtr	condition;
 	
-	pattern = common_strreplace (g_strdup (rule->value), "'", "");
-	result = g_strdup_printf ("(items.title LIKE '%%%s%%' AND items.description LIKE '%%%s%%')", pattern, pattern);
-	g_free (pattern);
+	condition = g_new0(struct condition, 1);
+	condition->tables = QUERY_TABLE_ITEMS;
+	condition->sql = g_strdup_printf ("(items.title LIKE '%%%s%%' OR items.description LIKE '%%%s%%')", rule->value, rule->value);
 	
-	return result;
+	return condition;
 }
 
-static gchar *
+static conditionPtr
 rule_condition_item_is_unread (rulePtr rule) 
 {
-	return g_strdup ("items.read = 0");
+	conditionPtr	condition;
+	
+	condition = g_new0(struct condition, 1);
+	condition->tables = QUERY_TABLE_ITEMS;
+	condition->sql = g_strdup ("items.read = 0");
+	
+	return condition;
 }
 
 static gboolean
@@ -133,10 +150,16 @@ rule_check_item_is_unread (rulePtr rule, itemPtr item)
 	return (0 == item->readStatus);
 }
 
-static gchar *
+static conditionPtr
 rule_condition_item_is_flagged (rulePtr rule) 
 {
-	return g_strdup ("items.marked = 1");
+	conditionPtr	condition;
+	
+	condition = g_new0(struct condition, 1);
+	condition->tables = QUERY_TABLE_ITEMS;
+	condition->sql = g_strdup ("items.marked = 1");
+	
+	return condition;
 }
 
 static gboolean
@@ -145,37 +168,53 @@ rule_check_item_is_flagged (rulePtr rule, itemPtr item)
 	return (1 == item->flagStatus);
 }
 
-static gchar *
+static conditionPtr
 rule_condition_item_was_updated (rulePtr rule)
 {
-	return g_strdup ("items.updated = 1");
+	conditionPtr	condition;
+	
+	condition = g_new0(struct condition, 1);
+	condition->tables = QUERY_TABLE_ITEMS;
+	condition->sql = g_strdup ("items.updated = 1");
+	
+	return condition;
 }
 
-static gchar *
+static conditionPtr
 rule_condition_item_has_enclosure (rulePtr rule) 
 {
-	return g_strdup ("metadata.key = 'enclosure'");
+	conditionPtr	condition;
+	
+	condition = g_new0(struct condition, 1);
+	condition->tables = QUERY_TABLE_METADATA;
+	condition->sql = g_strdup ("metadata.key = 'enclosure'");
+	
+	return condition;
 }
 
 static queryPtr
 query_create (GSList *rules)
 {
 	queryPtr	query;
+	conditionPtr	condition;
 	
 	query = g_new0 (struct query, 1);
 	while (rules) {
 		rulePtr rule = (rulePtr)rules->data;
-		query->tables |= rule->ruleInfo->queryTables;
+		conditionPtr condition;
+		
+		condition = (*((ruleConditionFunc)rule->ruleInfo->queryFunc)) (rule);
 		if (!query->conditions) {
-			query->conditions = (*((ruleConditionFunc)rule->ruleInfo->queryFunc)) (rule);
+			query->conditions = condition->sql;
+			condition->sql = NULL;
 		} else {
-			gchar *old, *new;
-			old = query->conditions;
-			new = (*((ruleConditionFunc)rule->ruleInfo->queryFunc)) (rule);
-			query->conditions = g_strdup_printf ("%s AND %s", old, new);
-			g_free (new);
+			gchar *old = query->conditions;
+			query->conditions = g_strdup_printf ("%s AND %s", old, condition->sql);
 			g_free (old);
 		}
+		query->tables |= condition->tables;
+		g_free (condition->sql);
+		g_free (condition);
 		rules = g_slist_next (rules);
 	}
 	return query;
@@ -194,6 +233,7 @@ rules_to_view (GSList *rules, const gchar *id)
 	queryPtr	query;
 	
 	query = query_create (rules);
+	query->columns = QUERY_COLUMN_ITEM_ID | QUERY_COLUMN_ITEM_READ_STATUS;
 	db_view_create (id, query);
 	query_free (query);
 }
@@ -216,6 +256,7 @@ rules_check_item (GSList *rules, itemPtr item)
 
 	/* if not possible query DB */
 	query = query_create (rules);	
+	query->columns = QUERY_COLUMN_ITEM_ID;
 	result = db_item_check (item->id, query);
 	query_free (query);
 	
@@ -260,7 +301,7 @@ rule_init (void)
 	rule_add (rule_condition_item_match,		NULL,				ITEM_MATCH_RULE_ID,		_("Item"),		_("does contain"),	_("does not contain"),	TRUE, QUERY_TABLE_ITEMS);
 	rule_add (rule_condition_item_title_match,	NULL,				ITEM_TITLE_MATCH_RULE_ID,	_("Item title"),	_("does match"),	_("does not match"),	TRUE, QUERY_TABLE_ITEMS);
 	rule_add (rule_condition_item_description_match, NULL,				ITEM_DESC_MATCH_RULE_ID,	_("Item body"),		_("does match"),	_("does not match"),	TRUE, QUERY_TABLE_ITEMS);
-	rule_add (rule_condition_feed_title_match,	NULL,				"feed_title",			_("Feed title"),	_("does match"),	_("does not match"),	TRUE, QUERY_TABLE_ITEMS);
+	rule_add (rule_condition_feed_title_match,	NULL,				"feed_title",			_("Feed title"),	_("does match"),	_("does not match"),	TRUE, QUERY_TABLE_NODE);
 	rule_add (rule_condition_item_is_unread,	rule_check_item_is_unread,	"unread",			_("Read status"),	_("is unread"),		_("is read"),		FALSE, QUERY_TABLE_ITEMS);
 	rule_add (rule_condition_item_is_flagged,	rule_check_item_is_flagged,	"flagged",			_("Flag status"),	_("is flagged"),	_("is unflagged"),	FALSE, QUERY_TABLE_ITEMS);
 	rule_add (rule_condition_item_was_updated,	NULL, 				"updated",			_("Update status"),	_("was updated"),	_("was not updated"),	FALSE, QUERY_TABLE_ITEMS);

@@ -1,4 +1,4 @@
-2007-07-??
+2007-07-??  Lars Lindner  <lars.lindner@gmail.com>
 	
 	Version 1.4-RC1 (Unstable)
 	
@@ -6,6 +6,9 @@
 	  other rules than new/flagged.
 	* Fixes enclosure actions preferences tab.
 	* Fixes handling of empty XPath results.
+	* Fixes item matching search folder rule which
+	  did only match if title AND content did contain
+	  the search string. Now it is correctly OR'd.
 
 2007-06-21  Lars Lindner  <lars.lindner@gmail.com>
 

@@ -1077,36 +1077,129 @@ db_rollback_transaction (void)
 	sqlite3_free (err);
 }
 
+static gchar *
+db_query_to_sql (guint id, const queryPtr query) 
+{
+	gchar		*sql, *join, *from, *columns, *itemMatch = NULL, *tmp;
+	gint		baseTable = 0;
+	
+	g_return_val_if_fail (query->tables != 0, NULL);
+	
+	/* 1.) determine ROWID column and base table */
+	if (query->tables |= QUERY_TABLE_ITEMS) {
+		baseTable = QUERY_TABLE_ITEMS;
+		query->tables -= baseTable;
+		from = g_strdup ("FROM items ");
+	} else if (query->tables |= QUERY_TABLE_METADATA) {
+		baseTable = QUERY_TABLE_METADATA;
+		query->tables -= baseTable;
+		from = g_strdup ("FROM metadata ");
+	} else if (query->tables |= QUERY_TABLE_NODE) {
+		baseTable = QUERY_TABLE_NODE;
+		query->tables -= baseTable;
+		from = g_strdup ("FROM itemsets INNER JOIN node ON node.id = itemsets.node_id ");
+	} else {
+		g_warning ("Fatal: unknown table constant passed to query construction! (1)");
+		return NULL;
+	}
+
+	/* 2.) determine select columns */
+	
+	/* first add id column */
+	g_assert (query->columns & QUERY_COLUMN_ITEM_ID);
+	if (baseTable == QUERY_TABLE_ITEMS)
+		columns = g_strdup ("items.ROWID AS item_id");
+	else if (baseTable == QUERY_TABLE_METADATA)
+		columns = g_strdup ("metadata.ROWID AS item_id");
+	else if (baseTable == QUERY_TABLE_NODE)
+		columns = g_strdup ("itemsets.ROWID AS item_id");
+	else {
+		g_warning("Fatal: unknown table constant passed to query construction! (2)");
+		return NULL;
+	}
+	
+	if (query->columns & QUERY_COLUMN_ITEM_READ_STATUS) {
+		g_assert ((baseTable | query->tables ) & QUERY_TABLE_ITEMS);
+		tmp = columns;
+		columns = g_strdup_printf ("%s,items.read AS item_read", tmp);
+		g_free (tmp);
+	}
+	
+	/* 3.) join remaining tables	 */
+	join = g_strdup ("");
+	
+	/* (query->tables == QUERY_TABLE_ITEMS) can never happen */
+	
+	if (query->tables == QUERY_TABLE_METADATA) {
+		tmp = join;
+		query->tables -= QUERY_TABLE_METADATA;
+		if (baseTable == QUERY_TABLE_ITEMS) {
+			join = g_strdup_printf ("%sINNER JOIN metadata ON items.ROWID = metadata.ROWID ");
+		} else {
+			g_warning ("Fatal: unsupported merge combination: metadata + %d!", baseTable);
+			return NULL;
+		}
+		g_free (tmp);
+	}
+	if (query->tables == QUERY_TABLE_NODE) {
+		tmp = join;
+		query->tables -= QUERY_TABLE_NODE;
+		if (baseTable == QUERY_TABLE_ITEMS) {
+			join = g_strdup_printf ("%sINNER JOIN node ON node.id = items.node_id ");
+		} else if (baseTable == QUERY_TABLE_METADATA) {
+			join = g_strdup_printf ("%sINNER JOIN itemsets ON itemsets.ROWID = metadata.ROWID INNER JOIN node ON node.id  = itemsets.node_id ");
+		} else {
+			g_warning ("Fatal: unsupported merge combination: node + %d!", baseTable);
+			return NULL;
+		}
+		g_free (tmp);
+	}
+	g_assert (0 == query->tables);
+	
+	/* 4.) create SQL query */
+	if (0 != id) {
+		if (baseTable == QUERY_TABLE_METADATA)
+			itemMatch = g_strdup_printf ("metadata.item_id=%d", id);
+		else if (baseTable == QUERY_TABLE_ITEMS)
+			itemMatch = g_strdup_printf ("items.ROWID=%d", id);
+		else if (baseTable == QUERY_TABLE_NODE)
+			itemMatch = g_strdup_printf ("itemsets.item_id=%d", id);
+		else {
+			g_warning ("Fatal: unknown table constant passed to query construction! (3)");
+			return NULL;
+		}
+	}
+			
+	if (itemMatch)
+		sql = sqlite3_mprintf ("SELECT %s %s %s WHERE %s AND %s",
+		                       columns, from, join, itemMatch, query->conditions);
+	else
+		sql = sqlite3_mprintf ("SELECT %s %s %s WHERE %s",
+		                       columns, from, join, query->conditions);
+				       
+	g_free (columns);
+	g_free (from);
+	g_free (join);
+	g_free (itemMatch);
+	
+	return sql;
+}
+
 gboolean
 db_item_check (guint id, const queryPtr query)
 {
-	gchar		*sql, *tables = NULL;
+	gchar		*sql;
 	gint		res;
 	sqlite3_stmt	*itemCheckStmt;	
 
-	g_return_val_if_fail (query->tables != 0, FALSE);
-	// g_return_val_if_fail (query->columns == NULL, FALSE); FIXME
-		
-	if (query->tables == QUERY_TABLE_ITEMS)
-		tables = g_strdup ("items.ROWID FROM items");
-	if (query->tables == QUERY_TABLE_METADATA)
-		tables = g_strdup ("metadata.ROWID FROM metadata");
-	if (query->tables == (QUERY_TABLE_METADATA | QUERY_TABLE_ITEMS))
-		tables = g_strdup ("items.ROWID FROM items INNER JOIN metadata ON items.ROWID = metadata.item_id");
-
-	if (query->tables == QUERY_TABLE_METADATA)
-		sql = sqlite3_mprintf ("SELECT %s WHERE metadata.item_id=%d AND %s;",
-		                       tables, id, query->conditions);
-	else
-		sql = sqlite3_mprintf ("SELECT %s WHERE items.ROWID=%d AND %s;",
-		                       tables, id, query->conditions);
-				       
+	sql = db_query_to_sql (id, query);
+	g_return_val_if_fail (sql != NULL, FALSE);
+					       
 	db_prepare_stmt (&itemCheckStmt, sql);
 	sqlite3_reset (itemCheckStmt);
 
 	res = sqlite3_step (itemCheckStmt);
 
-	g_free (tables);
 	sqlite3_free (sql);
 	sqlite3_finalize (itemCheckStmt);
 	
@@ -1116,47 +1209,23 @@ db_item_check (guint id, const queryPtr query)
 void
 db_view_create (const gchar *id, queryPtr query)
 {
-	gchar	*sql, *err, *tables = NULL;
+	gchar	*select, *sql, *err;
 	gint	res;
 
-	if (query->tables == 0)
+	select = db_query_to_sql (0, query);
+	if (!select) {
+		g_warning ("View query creation failed!");
 		return;
-	// g_return_if_fail (query->columns == NULL); FIXME
-		
-	switch(query->tables) {
-		case QUERY_TABLE_ITEMS:
-			tables = g_strdup ("items");
-			break;
-		case QUERY_TABLE_METADATA:
-			// tables = g_strdup ("metadata"); FIXME: avoid join
-			tables = g_strdup ("items INNER JOIN metadata ON items.ROWID = metadata.item_id");
-			break;
-		case (QUERY_TABLE_METADATA | QUERY_TABLE_ITEMS):
-			tables = g_strdup ("items INNER JOIN metadata ON items.ROWID = metadata.item_id");
-			break;
-		default:
-			g_warning("db_view_create(): invalid set of tables requested!");
-			return;
-			break;
 	}
-
-	sql = sqlite3_mprintf ("CREATE TEMP VIEW view_%s AS "
-	                       "SELECT "
-	                       "items.ROWID AS item_id,"
-	                       "items.title,"
-	                       "items.read AS item_read,"
-	                       "items.updated,"
-	                       "items.marked"
-	                       " FROM %s "
-			       "WHERE %s AND items.comment != 1;", 
-			       id, tables, query->conditions);
+		
+	sql = sqlite3_mprintf ("CREATE TEMP VIEW view_%s AS %s AND items.comment != 1;", id, select);
 	debug2(DEBUG_DB, "Creating view %s: %s", id, sql);
 	
 	res = sqlite3_exec (db, sql, NULL, NULL, &err);
 	if (SQLITE_OK != res) 
 		debug2 (DEBUG_DB, "Create view failed (%s) SQL: %s", err, sql);
 			       
-	g_free (tables);
+	g_free (select);
 	sqlite3_free (sql);
 	sqlite3_free (err);
 }
@@ -1224,7 +1293,7 @@ db_view_contains_item (const gchar *id, gulong itemId)
 	res = sqlite3_prepare_v2 (db, sql, -1, &viewCountStmt, NULL);
 	sqlite3_free (sql);
 	if (SQLITE_OK != res) {
-		debug2 (DEBUG_DB, "could determine view %s item count (error=%d)", id, res);
+		debug2 (DEBUG_DB, "couldn't determine view %s item count (error=%d)", id, res);
 		return FALSE;
 	}
 	
@@ -1257,7 +1326,7 @@ db_view_get_item_count (const gchar *id)
 	res = sqlite3_prepare_v2 (db, sql, -1, &viewCountStmt, NULL);
 	sqlite3_free (sql);
 	if (SQLITE_OK != res) {
-		debug2 (DEBUG_DB, "could determine view %s item count (error=%d)", id, res);
+		debug2 (DEBUG_DB, "couldn't determine view %s item count (error=%d)", id, res);
 		return 0;
 	}
 	
@@ -1290,7 +1359,7 @@ db_view_get_unread_count (const gchar *id)
 	res = sqlite3_prepare_v2 (db, sql, -1, &viewCountStmt, NULL);
 	sqlite3_free (sql);
 	if (SQLITE_OK != res) {
-		debug2 (DEBUG_DB, "could determine view %s unread count (error=%d)", id, res);
+		debug2 (DEBUG_DB, "couldn't determine view %s unread count (error=%d)", id, res);
 		return 0;
 	}
 	

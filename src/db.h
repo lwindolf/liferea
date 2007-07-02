@@ -159,17 +159,14 @@ void	db_rollback_transaction (void);
 /** Query table flags (to construct join expression for a query) */
 typedef enum {
 	QUERY_TABLE_ITEMS	= (1 << 0),
-	QUERY_TABLE_METADATA	= (1 << 1)
+	QUERY_TABLE_METADATA	= (1 << 1),
+	QUERY_TABLE_NODE	= (1 << 2)
 } queryTables;
 
 /** Query column flags (to construct column list) */
 typedef enum {
 	QUERY_COLUMN_ITEM_ID		= (1 << 0),
-	QUERY_COLUMN_ITEM_TITLE		= (1 << 1),
-	QUERY_COLUMN_ITEM_DESCRIPTION	= (1 << 2),
-	QUERY_COLUMN_ITEM_READ_STATUS	= (1 << 3),
-	QUERY_COLUMN_ITEM_UPDATE_STATUS	= (1 << 4),
-	QUERY_COLUMN_METADATA_PODCAST	= (1 << 5)
+	QUERY_COLUMN_ITEM_READ_STATUS	= (1 << 1)
 } queryColumns;
 
 /** Query info structure to be used with views and for dynamic item checks. */
