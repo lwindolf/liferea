@@ -1081,23 +1081,24 @@ static gchar *
 db_query_to_sql (guint id, const queryPtr query) 
 {
 	gchar		*sql, *join, *from, *columns, *itemMatch = NULL, *tmp;
-	gint		baseTable = 0;
+	gint		tables, baseTable = 0;
 	
-	g_return_val_if_fail (query->tables != 0, NULL);
+	tables = query->tables;
+	g_return_val_if_fail (tables != 0, NULL);
 	
 	/* 1.) determine ROWID column and base table */
-	if (query->tables |= QUERY_TABLE_ITEMS) {
+	if (tables & QUERY_TABLE_ITEMS) {
 		baseTable = QUERY_TABLE_ITEMS;
-		query->tables -= baseTable;
+		tables -= baseTable;
 		from = g_strdup ("FROM items ");
-	} else if (query->tables |= QUERY_TABLE_METADATA) {
+	} else if (tables & QUERY_TABLE_METADATA) {
 		baseTable = QUERY_TABLE_METADATA;
-		query->tables -= baseTable;
+		tables -= baseTable;
 		from = g_strdup ("FROM metadata ");
-	} else if (query->tables |= QUERY_TABLE_NODE) {
+	} else if (tables & QUERY_TABLE_NODE) {
 		baseTable = QUERY_TABLE_NODE;
-		query->tables -= baseTable;
-		from = g_strdup ("FROM itemsets INNER JOIN node ON node.id = itemsets.node_id ");
+		tables -= baseTable;
+		from = g_strdup ("FROM itemsets INNER JOIN node ON node.node_id = itemsets.node_id ");
 	} else {
 		g_warning ("Fatal: unknown table constant passed to query construction! (1)");
 		return NULL;
@@ -1110,51 +1111,58 @@ db_query_to_sql (guint id, const queryPtr query)
 	if (baseTable == QUERY_TABLE_ITEMS)
 		columns = g_strdup ("items.ROWID AS item_id");
 	else if (baseTable == QUERY_TABLE_METADATA)
-		columns = g_strdup ("metadata.ROWID AS item_id");
+		columns = g_strdup ("metadata.item_id AS item_id");
 	else if (baseTable == QUERY_TABLE_NODE)
 		columns = g_strdup ("itemsets.ROWID AS item_id");
 	else {
-		g_warning("Fatal: unknown table constant passed to query construction! (2)");
+		g_warning ("Fatal: unknown table constant passed to query construction! (2)");
 		return NULL;
 	}
 	
 	if (query->columns & QUERY_COLUMN_ITEM_READ_STATUS) {
-		g_assert ((baseTable | query->tables ) & QUERY_TABLE_ITEMS);
-		tmp = columns;
-		columns = g_strdup_printf ("%s,items.read AS item_read", tmp);
-		g_free (tmp);
+		if (query->tables & QUERY_TABLE_ITEMS) {
+			tmp = columns;
+			columns = g_strdup_printf ("%s,items.read AS item_read", tmp);
+			g_free (tmp);
+		} else if (query->tables & QUERY_TABLE_NODE) {
+			tmp = columns;
+			columns = g_strdup_printf ("%s,itemsets.read AS item_read", tmp);
+			g_free (tmp);	
+		} else {
+			g_warning ("Fatal: neither items nor itemsets included in query tables!");
+		}
 	}
 	
 	/* 3.) join remaining tables	 */
 	join = g_strdup ("");
 	
-	/* (query->tables == QUERY_TABLE_ITEMS) can never happen */
+	/* (tables == QUERY_TABLE_ITEMS) can never happen */
 	
-	if (query->tables == QUERY_TABLE_METADATA) {
+	if (tables == QUERY_TABLE_METADATA) {
 		tmp = join;
-		query->tables -= QUERY_TABLE_METADATA;
+		tables -= QUERY_TABLE_METADATA;
 		if (baseTable == QUERY_TABLE_ITEMS) {
-			join = g_strdup_printf ("%sINNER JOIN metadata ON items.ROWID = metadata.ROWID ");
+			join = g_strdup_printf ("%sINNER JOIN metadata ON items.ROWID = metadata.ROWID ", join);
 		} else {
 			g_warning ("Fatal: unsupported merge combination: metadata + %d!", baseTable);
 			return NULL;
 		}
 		g_free (tmp);
 	}
-	if (query->tables == QUERY_TABLE_NODE) {
+	if (tables == QUERY_TABLE_NODE) {
 		tmp = join;
-		query->tables -= QUERY_TABLE_NODE;
+		tables -= QUERY_TABLE_NODE;
 		if (baseTable == QUERY_TABLE_ITEMS) {
-			join = g_strdup_printf ("%sINNER JOIN node ON node.id = items.node_id ");
+			join = g_strdup_printf ("%sINNER JOIN node ON node.node_id = itemsets.node_id ", join);
 		} else if (baseTable == QUERY_TABLE_METADATA) {
-			join = g_strdup_printf ("%sINNER JOIN itemsets ON itemsets.ROWID = metadata.ROWID INNER JOIN node ON node.id  = itemsets.node_id ");
+			join = g_strdup_printf ("%sINNER JOIN itemsets ON itemsets.ROWID = metadata.ROWID INNER JOIN node ON node.node_id  = itemsets.node_id ", join);
 		} else {
 			g_warning ("Fatal: unsupported merge combination: node + %d!", baseTable);
 			return NULL;
 		}
 		g_free (tmp);
 	}
-	g_assert (0 == query->tables);
+	g_assert (0 == tables);
 	
 	/* 4.) create SQL query */
 	if (0 != id) {
@@ -1217,8 +1225,13 @@ db_view_create (const gchar *id, queryPtr query)
 		g_warning ("View query creation failed!");
 		return;
 	}
-		
-	sql = sqlite3_mprintf ("CREATE TEMP VIEW view_%s AS %s AND items.comment != 1;", id, select);
+
+	if (query->tables & QUERY_TABLE_NODE)
+		sql = sqlite3_mprintf ("CREATE TEMP VIEW view_%s AS %s AND itemsets.comment != 1;", id, select);
+	else if (query->tables & QUERY_TABLE_ITEMS)
+		sql = sqlite3_mprintf ("CREATE TEMP VIEW view_%s AS %s AND items.comment != 1;", id, select);
+	else
+		sql = sqlite3_mprintf ("CREATE TEMP VIEW view_%s AS %s;", id, select);
 	debug2(DEBUG_DB, "Creating view %s: %s", id, sql);
 	
 	res = sqlite3_exec (db, sql, NULL, NULL, &err);
