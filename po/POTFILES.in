@@ -145,8 +145,6 @@ src/parsers/rss_item.c
 src/parsers/rss_item.h
 src/fl_sources/bloglines_source.glade
 src/fl_sources/bloglines_source.c
-src/fl_sources/bloglines_source-cb.c
-src/fl_sources/bloglines_source-cb.h
 src/fl_sources/bloglines_source.h
 src/fl_sources/default_source.c
 src/fl_sources/default_source.h
@@ -155,13 +153,9 @@ src/fl_sources/dummy_source.h
 src/fl_sources/google_source.glade
 src/fl_sources/google_source.c
 src/fl_sources/google_source.h
-src/fl_sources/google_source-cb.c
-src/fl_sources/google_source-cb.h
 src/fl_sources/opml_source.glade
 src/fl_sources/opml_source.c
 src/fl_sources/opml_source.h
-src/fl_sources/opml_source-cb.c
-src/fl_sources/opml_source-cb.h
 src/fl_sources/node_source.glade
 src/fl_sources/node_source.c
 src/fl_sources/node_source.h
