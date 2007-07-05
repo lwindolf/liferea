@@ -1129,7 +1129,7 @@ db_query_to_sql (guint id, const queryPtr query)
 			columns = g_strdup_printf ("%s,itemsets.read AS item_read", tmp);
 			g_free (tmp);	
 		} else {
-			g_warning ("Fatal: neither items nor itemsets included in query tables!");
+			//g_warning ("Fatal: neither items nor itemsets included in query tables!");
 		}
 	}
 	
