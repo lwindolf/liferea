@@ -1,3 +1,13 @@
+2007-07-??  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.4-RC2 (Unstable)
+
+	* Fixes missing disabling of the feed menu actions
+	  after removing a feed (reported by Luis Rodrigo
+	  Gallardo Cruz)
+	* Fixes HTML formatting of parser/filter error output.
+
+
 2007-07-05  Lars Lindner  <lars.lindner@gmail.com>
 	
 	Version 1.4-RC1 (Unstable)

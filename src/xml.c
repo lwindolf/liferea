@@ -350,12 +350,12 @@ xml_buffer_parse_error (void *ctxt, const gchar * msg, ...)
 		g_free (newmsg);
 		newmsg = tmp;
 	
-		g_string_append_printf(errors->msg, "%s\n", newmsg);
+		g_string_append_printf(errors->msg, "<pre>%s</pre>\n", newmsg);
 		g_free(newmsg);
 	}
 	
 	if (MAX_PARSE_ERROR_LINES == errors->errorCount)
-		g_string_append_printf (errors->msg, "\n%s", _("[There were more errors. Output was truncated!]"));
+		g_string_append_printf (errors->msg, "<br />%s", _("[There were more errors. Output was truncated!]"));
 }
 
 static xmlDocPtr entities = NULL;
