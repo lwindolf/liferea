@@ -5,6 +5,9 @@
 	* Fixes missing disabling of the feed menu actions
 	  after removing a feed (reported by Luis Rodrigo
 	  Gallardo Cruz)
+	* Fixes segfault when marking folders read without 
+	  having the recursive item display enabled.
+	  (reported by Luis Rodrigo Gallardo Cruz)
 	* Fixes HTML formatting of parser/filter error output.
 
 

@@ -129,7 +129,8 @@ static gboolean
 itemlist_check_item (itemPtr item)
 {
 	/* use search folder rule list in case of a search folder */
-	if (itemlist_priv.currentNode->type == NODE_TYPE_VFOLDER)		
+	if ((itemlist_priv.currentNode != NULL) &&
+	    (itemlist_priv.currentNode->type == NODE_TYPE_VFOLDER))
 		return rules_check_item (((vfolderPtr)itemlist_priv.currentNode->data)->rules, item);
 
 	/* apply the item list filter if available */
