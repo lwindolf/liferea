@@ -28,7 +28,7 @@ msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-06-04 23:10+0200\n"
-"PO-Revision-Date: 2007-04-19 15:49-0500\n"
+"PO-Revision-Date: 2007-07-04 17:27-0500\n"
 "Last-Translator: Rodrigo Gallardo <rodrigo@nul-unu.com>\n"
 "Language-Team: Spanish <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -641,7 +641,7 @@ msgstr "Archivo _local"
 #: ../src/interface.c:988 ../src/interface.c:1003 ../src/interface.c:1014
 #: ../src/interface.c:1032 ../src/interface.c:3454
 msgid "    "
-msgstr "    "
+msgstr ""
 
 #: ../src/interface.c:541 ../src/interface.c:598 ../src/interface.c:967
 #: ../src/interface.c:1044
@@ -774,10 +774,7 @@ msgid ""
 "Note: <i>Please remember to set a reasonable refresh time. It is not desired "
 "to poll daily updated feeds every 15 minutes. To disable auto-updating per "
 "default set the interval to 0 minutes.</i>"
-msgstr ""
-"Nota: <i>Por favor, escriba un tiempo razonable. No es necesario comprobar "
-"cada 15 minutos canales que se actualizan una vez al día. Para desactivar la "
-"actualización automática ponga el intervalo a 0 minutos.</i>"
+msgstr "Nota: <i>Por favor, use un tiempo razonable. No es necesario comprobar cada 15 minutos canales que se actualizan una vez al día. Para desactivar la actualización automática ponga el intervalo a 0 minutos.</i>"
 
 #: ../src/interface.c:1388
 msgid "At _startup:"
@@ -922,9 +919,8 @@ msgid "Show a status _icon in the notification area (system tray)."
 msgstr "Mostrar un icono en el área de notificación (system tray)."
 
 #: ../src/interface.c:1773
-#, fuzzy
 msgid "     "
-msgstr "    "
+msgstr ""
 
 #: ../src/interface.c:1781
 msgid "Show _number of new items in the tray icon."
@@ -1768,7 +1764,7 @@ msgstr "_Salir"
 
 #: ../src/ui/ui_mainwindow.c:876
 msgid "_Feeds"
-msgstr "Canales"
+msgstr "_Canales"
 
 #: ../src/ui/ui_mainwindow.c:877
 msgid "Update _All"
@@ -1780,7 +1776,7 @@ msgstr "Actualiza todas las fuentes, excepto directorios OCS."
 
 #: ../src/ui/ui_mainwindow.c:879
 msgid "Mark All As _Read"
-msgstr "Ma_rcar todo como leído"
+msgstr "Marcar _todo como leído"
 
 #: ../src/ui/ui_mainwindow.c:879
 msgid "Marks read every item of every subscription."
@@ -1796,7 +1792,7 @@ msgstr "Importa una lista de canales en formato OPML."
 
 #: ../src/ui/ui_mainwindow.c:882
 msgid "_Export Feed List..."
-msgstr "_Exportar lista de canales..."
+msgstr "E_xportar lista de canales..."
 
 #: ../src/ui/ui_mainwindow.c:882
 msgid "Exports the feed list as OPML."
@@ -1804,11 +1800,11 @@ msgstr "Exporta la lista de canales en formato OPML."
 
 #: ../src/ui/ui_mainwindow.c:884
 msgid "_Items"
-msgstr "Artículos"
+msgstr "_Artículos"
 
 #: ../src/ui/ui_mainwindow.c:885
 msgid "_Next Unread Item"
-msgstr "Siguie_nte artículo nuevo"
+msgstr "Siguiente artículo _nuevo"
 
 #: ../src/ui/ui_mainwindow.c:885
 msgid ""
@@ -1820,7 +1816,7 @@ msgstr ""
 
 #: ../src/ui/ui_mainwindow.c:887
 msgid "Toggle _Read Status"
-msgstr "Cambia_r entre leído y no leído"
+msgstr "_Cambiar entre leído y no leído"
 
 #: ../src/ui/ui_mainwindow.c:887
 msgid "Toggles the read status of the selected item."
@@ -1828,7 +1824,7 @@ msgstr "Pasa el artículo actual de leído a no leído o viceversa."
 
 #: ../src/ui/ui_mainwindow.c:889
 msgid "Toggle Item _Flag"
-msgstr "_Colocar o quitar marca"
+msgstr "Colocar o quitar _marca"
 
 #: ../src/ui/ui_mainwindow.c:889
 msgid "Toggles the flag status of the selected item."
@@ -1844,7 +1840,7 @@ msgstr "Elimina el artículo seleccionado."
 
 #: ../src/ui/ui_mainwindow.c:893
 msgid "Remove _All"
-msgstr "Elimin_ar todos"
+msgstr "Eliminar _todos"
 
 #: ../src/ui/ui_mainwindow.c:893
 msgid "Removes all items of the currently selected feed."
@@ -1852,7 +1848,7 @@ msgstr "Elimina todos los artículos del canal seleccionado."
 
 #: ../src/ui/ui_mainwindow.c:895
 msgid "_Launch In Browser"
-msgstr "Abr_ir en el navegador"
+msgstr "_Abrir en el navegador"
 
 #: ../src/ui/ui_mainwindow.c:895
 msgid "Launches the item's link in the configured browser."
@@ -1872,7 +1868,7 @@ msgstr "Aumenta el tamaño del texto en la vista del artículo."
 
 #: ../src/ui/ui_mainwindow.c:901
 msgid "_Decrease Text Size"
-msgstr "Re_ducir el tamaño del texto"
+msgstr "_Reducir el tamaño del texto"
 
 #: ../src/ui/ui_mainwindow.c:901
 msgid "Decreases the text size of the item view."
@@ -1888,7 +1884,7 @@ msgstr "Visualiza en modo «cliente de correo»"
 
 #: ../src/ui/ui_mainwindow.c:905
 msgid "_Wide View"
-msgstr "Vista amplia"
+msgstr "Vista a_mplia"
 
 #: ../src/ui/ui_mainwindow.c:905
 msgid "Set view mode to use three vertical panes."
@@ -1904,7 +1900,7 @@ msgstr "Visualiza usando dos paneles."
 
 #: ../src/ui/ui_mainwindow.c:910
 msgid "_Search"
-msgstr "Bu_scar"
+msgstr "_Buscar"
 
 #: ../src/ui/ui_mainwindow.c:911
 msgid "Search All Feeds..."
@@ -1932,7 +1928,7 @@ msgstr "Muestra la ayuda del programa."
 
 #: ../src/ui/ui_mainwindow.c:916
 msgid "_Quick Reference"
-msgstr "Referencia rápida"
+msgstr "_Referencia rápida"
 
 #: ../src/ui/ui_mainwindow.c:916
 msgid "View a list of all Liferea shortcuts."
@@ -1964,7 +1960,7 @@ msgstr "Añade una suscripción a la lista de canales."
 
 #: ../src/ui/ui_mainwindow.c:925
 msgid "New _Folder..."
-msgstr "Nueva carpeta..."
+msgstr "Nueva _carpeta..."
 
 #: ../src/ui/ui_mainwindow.c:925
 msgid "Adds a folder to the feed list."
@@ -1972,7 +1968,7 @@ msgstr "Añade una carpeta a la lista de canales."
 
 #: ../src/ui/ui_mainwindow.c:926
 msgid "New S_earch Folder..."
-msgstr "Nueva carpeta de búsquedal..."
+msgstr "Nueva carpeta de _búsqueda..."
 
 #: ../src/ui/ui_mainwindow.c:926
 msgid "Adds a new search folder to the feed list."
@@ -1980,7 +1976,7 @@ msgstr "Añade una carpeta de búsqueda a la lista de canales."
 
 #: ../src/ui/ui_mainwindow.c:927
 msgid "New _Source..."
-msgstr "Nueva fuente..."
+msgstr "Nueva _fuente..."
 
 #: ../src/ui/ui_mainwindow.c:927
 msgid "Adds a new feed list source."
@@ -1988,7 +1984,7 @@ msgstr "Agrega una nueva fuente de listas de canales."
 
 #: ../src/ui/ui_mainwindow.c:928
 msgid "New _News Bin..."
-msgstr "_Nueva bandeja..."
+msgstr "Nueva ban_deja..."
 
 #: ../src/ui/ui_mainwindow.c:928
 msgid "Adds a new news bin."
@@ -2028,7 +2024,7 @@ msgstr "Abre el cuadro de propiedades del canal seleccionado."
 
 #: ../src/ui/ui_mainwindow.c:940
 msgid "_Delete Selected"
-msgstr "Eliminar seleccionado"
+msgstr "_Eliminar seleccionado"
 
 #: ../src/ui/ui_mainwindow.c:940
 msgid "Removes the selected subscription."
@@ -2272,15 +2268,19 @@ msgid "No new items"
 msgstr "No hay artículos nuevos"
 
 #: ../src/ui/ui_tray.c:190
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "%s\n"
 "%d unread item"
 msgid_plural ""
 "%s\n"
 "%d unread items"
-msgstr[0] "%s - %d artículo sin leer"
-msgstr[1] "%s - %d artículos sin leer"
+msgstr[0] ""
+"%s\n"
+"%d artículo sin leer"
+msgstr[1] ""
+"%s\n"
+"%d artículos sin leer"
 
 #: ../src/ui/ui_tray.c:192
 #, c-format
@@ -2349,9 +2349,8 @@ msgid "feedlist.opml"
 msgstr "feedlist_es.opml"
 
 #: ../src/fl_sources/opml_source.c:336
-#, fuzzy
 msgid "Planet, BlogRoll, OPML"
-msgstr "Planet,·BlogRoll,·OPML"
+msgstr "Planet, BlogRoll, OPML"
 
 #: ../src/fl_sources/opml_source.c:338
 msgid ""
@@ -2385,9 +2384,8 @@ msgid "_Select File"
 msgstr "Elegir archivo"
 
 #: ../src/fl_sources/opml_source-cb.c:80
-#, fuzzy
 msgid "Choose OPML File"
-msgstr "Elegir archivo"
+msgstr "Elija el archivo OPML"
 
 #: ../src/fl_sources/node_source.c:207
 msgid "No feed list source types found!"
