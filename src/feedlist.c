@@ -238,15 +238,17 @@ nodePtr feedlist_find_unread_feed(nodePtr folder) {
 
 /* selection handling */
 
-static void feedlist_unselect(void) {
-
+static void
+feedlist_unselect (void)
+{
 	selectedNode = NULL;
 
-	itemview_set_displayed_node(NULL);
-	itemview_update();
+	itemview_set_displayed_node (NULL);
+	itemview_update ();
 		
-	itemlist_unload(FALSE /* mark all read */);
-	ui_feedlist_select(NULL);
+	itemlist_unload (FALSE /* mark all read */);
+	ui_feedlist_select (NULL);
+	ui_mainwindow_update_feed_menu (FALSE, FALSE);
 }
 
 void feedlist_selection_changed(nodePtr node) {
