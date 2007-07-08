@@ -273,7 +273,9 @@ opml_source_process_update_results (requestPtr request)
 	
 	node_foreach_child (node, node_request_update);
 	db_update_state_save (node->id, request->updateState);
-	update_request_free (request);
+	
+	itemview_update_node_info (node);
+	itemview_update ();
 }
 
 void

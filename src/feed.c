@@ -638,6 +638,8 @@ static void feed_process_update_result(struct request *request) {
 
 	db_update_state_save (node->id, node->subscription->updateState);
 	feedlist_schedule_save ();
+	itemview_update_node_info (node);
+	itemview_update ();
 	
 	script_run_for_hook(SCRIPT_HOOK_FEED_UPDATED);
 

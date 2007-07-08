@@ -225,13 +225,13 @@ void itemview_update_node_info(nodePtr node) {
 
 	if(!itemView_priv.node)
 		return;
-		
+	
 	if(itemView_priv.node != node)
 		return;
-		
+
 	if(ITEMVIEW_NODE_INFO != itemView_priv.mode)
 		return;
-		
+
 	itemView_priv.needsHTMLViewUpdate = TRUE;
 	/* Just setting the update flag, because node info is not cached */
 }

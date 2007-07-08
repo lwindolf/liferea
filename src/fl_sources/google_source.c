@@ -42,6 +42,8 @@ typedef struct reader {
 	GTimeVal	*lastSubscriptionListUpdate;
 } *readerPtr;
 
+static void google_source_update_subscription_list (nodePtr node, GTimeVal *now);
+
 /* source logic */
 
 static void
@@ -152,6 +154,14 @@ google_source_subscriptions_cb (requestPtr request)
 	} else {
 		node->available = FALSE;
 	}
+
+	subscription_update_error_status(node->subscription, request->httpstatus, request->returncode, NULL);
+
+	node_foreach_child (node, node_request_update);
+	db_update_state_save (node->id, request->updateState);
+
+	itemview_update_node_info (node);
+	itemview_update ();
 }
 
 static void
@@ -160,6 +170,7 @@ google_source_login_cb (requestPtr request)
 	nodePtr		node = (nodePtr)request->user_data;
 	readerPtr	reader = (readerPtr)node->data;
 	gchar		*tmp;
+	GTimeVal	now;
 	
 	debug0 (DEBUG_UPDATE, "google login processing...");
 	
@@ -190,6 +201,14 @@ google_source_login_cb (requestPtr request)
 		node->subscription->updateError = g_strdup (_("Google Reader login failed!"));
 	}
 	g_free (request->data);
+
+	subscription_update_error_status(node->subscription, request->httpstatus, request->returncode, NULL);
+
+	itemview_update_node_info (node);
+	itemview_update ();
+
+	g_get_current_time (&now);
+	google_source_update_subscription_list (node, &now);
 }
 
 /* authenticate to receive SID... */
