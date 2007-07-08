@@ -9,6 +9,7 @@
 	  having the recursive item display enabled.
 	  (reported by Luis Rodrigo Gallardo Cruz)
 	* Fixes HTML formatting of parser/filter error output.
+	* Fixes still incorrect unread count in tray icon.
 
 
 2007-07-05  Lars Lindner  <lars.lindner@gmail.com>

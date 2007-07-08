@@ -219,6 +219,7 @@ static void node_update_parent_counters(nodePtr node) {
 	
 	if (old != node->unreadCount) {
 		ui_node_update (node->id);
+		ui_tray_update ();
 		ui_mainwindow_update_feedsinfo ();
 	}
 	
