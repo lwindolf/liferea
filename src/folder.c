@@ -103,7 +103,7 @@ folder_reset_update_counter (nodePtr node, GTimeVal *now)
 static void
 folder_request_update (nodePtr node, guint flags)
 {
-	node_foreach_child_data (node, node_request_update, GUINT_TO_POINTER (flags));
+	node_foreach_child_data (node, node_update_subscription, GUINT_TO_POINTER (flags));
 }
 
 static void
@@ -143,9 +143,6 @@ nodeTypePtr folder_get_node_type(void) {
 		folder_load,
 		folder_save,
 		folder_update_unread_count,
-		folder_reset_update_counter,
-		folder_request_update,
-		folder_request_auto_update,
 		folder_remove,
 		folder_mark_all_read,
 		node_default_render,
@@ -175,9 +172,7 @@ nodeTypePtr root_get_node_type(void) {
 		folder_load,
 		folder_save,
 		folder_update_unread_count,
-		folder_reset_update_counter,
-		folder_request_update,
-		folder_request_auto_update,
+		NULL,		/* process_update_result() */
 		folder_remove,
 		folder_mark_all_read,
 		node_default_render,

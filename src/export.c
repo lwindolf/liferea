@@ -273,9 +273,10 @@ void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, nodeSourcePtr node
 	/* 4. update immediately if necessary */
 	if(needsUpdate && (NODE_TYPE(node) != NULL)) {
 		debug1(DEBUG_CACHE, "seems to be an import, setting new id: %s and doing first download...", node_get_id(node));
-		node_request_update(node, (xmlHasProp(cur, BAD_CAST"updateInterval") ? 0 : FEED_REQ_RESET_UPDATE_INT)
-		        		  | FEED_REQ_DOWNLOAD_FAVICON
-		        		  | FEED_REQ_AUTH_DIALOG);
+		subscription_update (node->subscription,
+		                     (xmlHasProp(cur, BAD_CAST"updateInterval") ? 0 : FEED_REQ_RESET_UPDATE_INT)
+		                      | FEED_REQ_DOWNLOAD_FAVICON
+		                      | FEED_REQ_AUTH_DIALOG);
 	}
 	
 	/* 5. save node info to DB */

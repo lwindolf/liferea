@@ -257,23 +257,6 @@ ui_node_source_type_dialog (nodePtr parent)
 /* implementation of the node type interface */
 
 static void
-node_source_request_update (nodePtr node, guint flags)
-{
-	GTimeVal now;
-	
-	g_get_current_time (&now);
-	if (NULL != NODE_SOURCE_TYPE (node)->source_update)
-		NODE_SOURCE_TYPE (node)->source_update (node, &now);
-}
-
-static void
-node_source_request_auto_update (nodePtr node, GTimeVal *now)
-{
-	if (NULL != NODE_SOURCE_TYPE (node)->source_auto_update)
-		NODE_SOURCE_TYPE (node)->source_auto_update (node, now);
-}
-
-static void
 node_source_remove (nodePtr node)
 {
 	if (NULL != NODE_SOURCE_TYPE (node)->source_delete)
@@ -289,6 +272,12 @@ node_source_save (nodePtr node)
 	node_foreach_child (node, node_save);
 }
 
+static void
+node_source_process_update_result (nodePtr node, requestPtr request)
+{
+	// FIXME
+}
+
 nodeTypePtr
 node_source_get_node_type (void)
 {
@@ -300,15 +289,13 @@ node_source_get_node_type (void)
 		nodeType->id			= "source";
 		nodeType->icon			= icons[ICON_DEFAULT];
 		nodeType->type			= NODE_TYPE_SOURCE;
-		nodeType->capabilities		= NODE_CAPABILITY_SHOW_UNREAD_COUNT;
+		nodeType->capabilities		= NODE_CAPABILITY_SHOW_UNREAD_COUNT | NODE_CAPABILITY_GENERIC_UPDATE;
 		nodeType->import		= node_source_import;
 		nodeType->export		= node_source_export;
 		nodeType->load			= folder_get_node_type()->load;
 		nodeType->save			= node_source_save;
 		nodeType->update_counters	= folder_get_node_type()->update_counters;
-		nodeType->reset_update_counter	= folder_get_node_type()->reset_update_counter;
-		nodeType->request_update	= node_source_request_update;
-		nodeType->request_auto_update	= node_source_request_auto_update;
+		nodeType->process_update_result = node_source_process_update_result;
 		nodeType->remove		= node_source_remove;
 		nodeType->mark_all_read		= folder_get_node_type()->mark_all_read;
 		nodeType->render		= node_default_render;

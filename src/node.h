@@ -60,9 +60,6 @@ typedef struct node {
 	struct subscription	*subscription;	/**< subscription attached to this node (or NULL) */
 	struct nodeType		*nodeType;	/**< node type implementation */	
 	struct nodeSource	*source;	/**< the feed list source handling this node */
-
-	struct request		*updateRequest;	/**< update request structure used when downloading content (is not to be listed in the requests list!) */
-	
 	gchar			*iconFile;	/**< the path of the favicon file */
 
 	/* feed list state properties of this node */
@@ -95,7 +92,8 @@ enum {
 	NODE_CAPABILITY_RECEIVE_ITEMS		= (1<<4),	/**< is a DnD target for item copies */
 	NODE_CAPABILITY_REORDER			= (1<<5),	/**< allows DnD to reorder childs */
 	NODE_CAPABILITY_SHOW_UNREAD_COUNT	= (1<<6),	/**< display the unread item count in the feed list */
-	NODE_CAPABILITY_SHOW_ITEM_COUNT		= (1<<7)	/**< display the absolute item count in the feed list */
+	NODE_CAPABILITY_SHOW_ITEM_COUNT		= (1<<7),	/**< display the absolute item count in the feed list */
+	NODE_CAPABILITY_GENERIC_UPDATE		= (1<<8)	/**< generic updating, node type has no specific update implementation */
 };
 
 /** node type interface */
@@ -112,9 +110,7 @@ typedef struct nodeType {
 	itemSetPtr	(*load)			(nodePtr node);
 	void 		(*save)			(nodePtr node);
 	void		(*update_counters)	(nodePtr node);
-	void		(*reset_update_counter)	(nodePtr node, GTimeVal *now);
-	void		(*request_update)	(nodePtr node, guint flags);
-	void 		(*request_auto_update)	(nodePtr node, GTimeVal *now);
+	void 		(*process_update_result)(requestPtr request);
 	void		(*remove)		(nodePtr node);
 	void 		(*mark_all_read)	(nodePtr node);
 	gchar *		(*render)		(nodePtr node);
@@ -208,7 +204,32 @@ void node_set_data(nodePtr node, gpointer data);
  * @param node		the node
  * @param subscription	the subscription
  */
-void node_set_subscription(nodePtr node, struct subscription *subscription);
+void node_set_subscription (nodePtr node, struct subscription *subscription);
+
+/**
+ * Helper function to be used with node_foreach_child()
+ * to mass-update subscriptions.
+ *
+ * @param node		the node
+ */
+void node_update_subscription (nodePtr node);
+
+/**
+ * Helper function to be used with node_foreach_child()
+ * to mass-auto-update subscriptions.
+ *
+ * @param node		the node
+ */
+void node_auto_update_subscription (nodePtr node);
+
+/**
+ * Helper function to be used with node_foreach_child()
+ * to mass-auto-update subscriptions.
+ *
+ * @param node		the node
+ * @param now		the current timestamp
+ */
+void node_reset_update_counter (nodePtr node, GTimeVal *now);
 
 /**
  * Determines wether node1 is an ancestor of node2
@@ -379,25 +400,11 @@ void node_export(nodePtr node, xmlNodePtr cur, gboolean trusted);
 void node_initial_load(nodePtr node);
 
 /**
- * Loads the given node from cache.
- *
- * @param node	the node
- */
-void node_load(nodePtr node);
-
-/**
  * Saves the given node to cache.
  *
  * @param node	the node
  */
 void node_save(nodePtr node);
-
-/**
- * Unload the given node from memory.
- *
- * @param node	the node
- */
-void node_unload(nodePtr node);
 
 /**
  * Removes the given node.

@@ -64,6 +64,8 @@ void opml_source_import(nodePtr node) {
 		node->available = FALSE;
 	}
 	g_free(filename);
+	
+	subscription_set_update_interval (node->subscription, OPML_SOURCE_UPDATE_INTERVAL);
 
 	debug_exit("opml_source_import");
 }
@@ -143,7 +145,7 @@ opml_source_merge_feed (xmlNodePtr match, gpointer user_data)
 			node_set_type (node, folder_get_node_type ());
 		}
 		node_add_child (mergeCtxt->parent, node, -1);
-		node_request_update (node, FEED_REQ_RESET_TITLE);
+		subscription_update (node->subscription, FEED_REQ_RESET_TITLE);
 	}		
 	
 	/* Recursion if this is a folder */
@@ -271,37 +273,7 @@ opml_source_process_update_results (requestPtr request)
 		}
 	}
 	
-	node_foreach_child (node, node_request_update);
-	db_update_state_save (node->id, request->updateState);
-	
-	itemview_update_node_info (node);
-	itemview_update ();
-}
-
-void
-opml_source_update (nodePtr node, GTimeVal *now)
-{
-	requestPtr	request;
-	
-	if(subscription_get_source (node->subscription)) {
-		request = update_request_new (node);
-		subscription_prepare_request (node->subscription, request, 0, now);
-		request->options = node->subscription->updateOptions;
-		request->priority = 1;
-		request->callback = opml_source_process_update_results;
-		request->user_data = node;
-		debug2(DEBUG_UPDATE, "updating OPML source %s (node id %s)", request->source, node->id);
-		update_execute_request(request);
-	} else {
-		g_warning("Cannot update feed list source %s: missing URL!\n", node->title);
-	}
-}
-
-static void
-opml_source_auto_update(nodePtr node, GTimeVal *now)
-{
-	if (node->subscription->updateState->lastPoll.tv_sec + OPML_SOURCE_UPDATE_INTERVAL <= now->tv_sec)
-		opml_source_update (node, now);	
+	node_foreach_child (node, node_update_subscription);
 }
 
 /** called during import and when subscribing, we will do
@@ -345,8 +317,6 @@ static struct nodeSourceType nst = {
 	opml_source_import,
 	opml_source_export,
 	opml_source_get_feedlist,
-	opml_source_update,
-	opml_source_auto_update
 };
 
 nodeSourceTypePtr
@@ -370,7 +340,7 @@ on_opml_source_selected (GtkDialog *dialog,
 		node_source_new (node, opml_source_get_type());
 		opml_source_setup (parent, node);
 		node_set_subscription (node, subscription_new (gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET (dialog), "location_entry"))), NULL, NULL));
-		node_request_update (node, 0);
+		subscription_update (node->subscription, 0);
 	}
 
 	gtk_widget_destroy (GTK_WIDGET (dialog));

@@ -1,5 +1,5 @@
 /**
- * @file update.c update request processing
+ * @file update.c  generic update request processing
  *
  * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
@@ -324,6 +324,7 @@ gpointer update_request_new(gpointer owner) {
 	request = g_new0(struct request, 1);
 	request->owner = owner;
 	request->state = REQUEST_STATE_INITIALIZED;
+	g_get_current_time (&request->timestamp);
 	
 	return (gpointer)request;
 }

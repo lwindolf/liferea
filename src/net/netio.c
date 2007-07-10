@@ -974,16 +974,21 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, char * aut
 			if (tmpstring == NULL)
 				g_free (freeme);
 			else {
+				size_t slen;
 				freeme2 = NULL;
 				freeme2 = strstr(tmpstring, ";");
 				if (freeme2 != NULL)
 					freeme2[0] = '\0';
 				g_free(cur_ptr->content_type);
 				cur_ptr->content_type = g_strdup(tmpstring);
-				if (cur_ptr->content_type[strlen(cur_ptr->content_type)-1] == '\n')
-					cur_ptr->content_type[strlen(cur_ptr->content_type)-1] = '\0';
-				if (cur_ptr->content_type[strlen(cur_ptr->content_type)-1] == '\r')
-					cur_ptr->content_type[strlen(cur_ptr->content_type)-1] = '\0';
+				slen = strlen(cur_ptr->content_type);
+				if (slen && (cur_ptr->content_type[slen-1] == '\n')) {
+					slen--;
+					cur_ptr->content_type[slen] = '\0';
+				}
+				if (slen && (cur_ptr->content_type[slen-1] == '\r')) {
+					cur_ptr->content_type[slen-1] = '\0';
+				}
 				g_free(freeme);
 				debug1(DEBUG_NET, "-> content type \"%s\"", cur_ptr->content_type); 
 			}
@@ -994,6 +999,7 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, char * aut
 		 * RFC 2617 */
 		if ((strncasecmp (headerline, "WWW-Authenticate", 16) == 0) &&
 			(cur_ptr->lasthttpstatus == 401)) {
+			size_t slen;
 			if (authfailed) {
 				/* Don't repeat authrequest if it already failed before! */
 				cur_ptr->netio_error = NET_ERR_AUTH_FAILED;
@@ -1003,10 +1009,13 @@ char * NetIO (char * host, char * url, struct feed_request * cur_ptr, char * aut
 			}
 
 			/* Remove trailing \r\n from line. */
-			if (headerline[strlen(headerline)-1] == '\n')
-				headerline[strlen(headerline)-1] = '\0';
-			if (headerline[strlen(headerline)-1] == '\r')
-				headerline[strlen(headerline)-1] = '\0';
+			slen = strlen(headerline);
+			if (slen && (headerline[slen-1] == '\n')) {
+				slen--;
+				headerline[slen] = '\0';
+			}
+			if (slen && (headerline[slen-1] == '\r'))
+				headerline[slen-1] = '\0';
 				
 			/* Make a copy of the WWW-Authenticate header. We use it to
 			   reconstruct a new auth reply on every loop. */

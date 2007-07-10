@@ -126,9 +126,11 @@ migrate_item_parse_cache (xmlNodePtr cur,
 	
 	item->hasEnclosure = (NULL != metadata_list_get(item->metadata, "enclosure"));
 	
-	if (migrateCache && item->description)
-		item_set_description (item, xhtml_from_text (item->description));
-
+	if (migrateCache && item->description) {
+		gchar *desc = xhtml_from_text (item->description);
+		item_set_description (item, desc);
+		g_free(desc);
+	}
 	return item;
 }
 
@@ -206,6 +208,7 @@ migrate_load_from_cache (const gchar *sourceDir, const gchar *id)
 				
 				if (0 == (itemCount % 10))
 					g_print(".");
+				item_unload(item);
 			}
 			
 			cur = cur->next;

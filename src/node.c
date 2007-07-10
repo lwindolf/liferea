@@ -53,9 +53,6 @@ void node_type_register(nodeTypePtr nodeType) {
 	g_assert(nodeType->load);
 	g_assert(nodeType->save);
 	g_assert(nodeType->update_counters);
-	g_assert(nodeType->reset_update_counter);
-	g_assert(nodeType->request_update);
-	g_assert(nodeType->request_auto_update);
 	g_assert(nodeType->remove);
 	g_assert(nodeType->mark_all_read);
 	g_assert(nodeType->render);
@@ -145,15 +142,42 @@ void node_set_data(nodePtr node, gpointer data) {
 	node->data = data;
 }
 
-void node_set_subscription(nodePtr node, subscriptionPtr subscription) {
+void
+node_set_subscription (nodePtr node, subscriptionPtr subscription) 
+{
 
-	g_assert(NULL == node->subscription);
-	g_assert(NULL != node->nodeType);
+	g_assert (NULL == node->subscription);
+	g_assert (NULL != node->nodeType);
 		
 	node->subscription = subscription;
 	subscription->node = node;
 	
 	db_update_state_load (node->id, subscription->updateState);
+}
+
+void
+node_update_subscription (nodePtr node) 
+{
+	subscription_update (node->subscription, 0);
+	
+	node_foreach_child (node, node_update_subscription);
+}
+
+
+void
+node_auto_update_subscription (nodePtr node) 
+{
+	subscription_auto_update (node->subscription);
+	
+	node_foreach_child (node, node_auto_update_subscription);
+}
+
+void
+node_reset_update_counter (nodePtr node, GTimeVal *now) 
+{
+	subscription_reset_update_counter (node->subscription, now);
+	
+	node_foreach_child_data (node, node_reset_update_counter, now);
 }
 
 gboolean node_is_ancestor(nodePtr node1, nodePtr node2) {
@@ -336,7 +360,7 @@ void node_add(nodePtr node, nodePtr parent, gint pos, guint flags) {
 	ui_feedlist_get_target_folder(&pos);
 
 	node_add_child(parent, node, pos);
-	node_request_update(node, flags);
+	subscription_update(node->subscription, flags);
 }
 
 /* Interactive node adding (e.g. feed menu->new subscription) */
@@ -377,7 +401,7 @@ node_request_automatic_add (const gchar *source, const gchar *title, const gchar
 
 	ui_feedlist_get_target_folder (&pos);
 	node_add_child (parent, node, pos);
-	node_request_update (node, flags);
+	subscription_update (node->subscription, flags);
 	feedlist_schedule_save ();
 	ui_feedlist_select (node);
 	
@@ -463,18 +487,6 @@ void node_mark_all_read(nodePtr node) {
 
 gchar * node_render(nodePtr node) {
 	return NODE_TYPE(node)->render(node);
-}
-
-void node_reset_update_counter(nodePtr node, GTimeVal *now) {
-	NODE_TYPE(node)->reset_update_counter(node, now);
-}
-
-void node_request_auto_update(nodePtr node, GTimeVal *now) {
-	NODE_TYPE(node)->request_auto_update(node, now);
-}
-
-void node_request_update(nodePtr node, guint flags) {
-	NODE_TYPE(node)->request_update(node, flags);
 }
 
 void node_request_properties(nodePtr node) {

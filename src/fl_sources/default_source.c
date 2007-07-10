@@ -138,12 +138,6 @@ static void default_source_source_export(nodePtr node) {
 	debug_exit("default_source_source_export");
 }
 
-static void
-default_source_source_auto_update (nodePtr node, GTimeVal *now)
-{
-	node_foreach_child_data (node, node_request_auto_update, now);
-}
-
 static void default_source_init (void) { }
 static void default_source_deinit (void) { }
 
@@ -163,8 +157,6 @@ static struct nodeSourceType nst = {
 	default_source_source_import,
 	default_source_source_export,
 	default_source_source_get_feedlist,
-	NULL,
-	default_source_source_auto_update
 };
 
 nodeSourceTypePtr default_source_get_type(void) { return &nst; }

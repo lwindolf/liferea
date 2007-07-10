@@ -272,7 +272,7 @@ on_propdialog_response (GtkDialog *dialog,
 		feedlist_schedule_save ();
 		db_subscription_update (subscription);
 		if (needsUpdate)
-			node_request_update (node, FEED_REQ_AUTH_DIALOG | FEED_REQ_PRIORITY_HIGH);
+			subscription_update (subscription, FEED_REQ_AUTH_DIALOG | FEED_REQ_PRIORITY_HIGH);
 	}
 
 	g_object_unref(spd);

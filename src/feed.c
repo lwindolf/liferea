@@ -538,7 +538,9 @@ feed_free (gpointer data) {
 
 /* implementation of feed node update request processing callback */
 
-static void feed_process_update_result(struct request *request) {
+static void
+feed_process_update_result (struct request *request)
+{
 	feedParserCtxtPtr	ctxt;
 	nodePtr			node = (nodePtr)request->user_data;
 	feedPtr			feed = (feedPtr)node->data;
@@ -546,29 +548,13 @@ static void feed_process_update_result(struct request *request) {
 	gchar			*old_source;
 	gint			old_update_interval;
 
-	debug_enter("feed_process_update_result");
+	debug_enter ("feed_process_update_result");
 	
 	/* no matter what the result of the update is we need to save update
 	   status and the last update time to cache */
 	node->available = FALSE;
 	
-	/* note this is to update the subscription URL on permanent redirects */
-	if(!strcmp(request->source, subscription_get_source(subscription))) {
-		subscription_set_source(subscription, request->source);
-		ui_mainwindow_set_status_bar(_("The URL of \"%s\" has changed permanently and was updated"), node_get_title(node));
-	}
-	
-	if(401 == request->httpstatus) { /* unauthorized */
-		if(request->flags & FEED_REQ_AUTH_DIALOG)
-			ui_auth_dialog_new(node->subscription, request->flags);
-	} else if(410 == request->httpstatus) { /* gone */
-		subscription->discontinued = TRUE;
-		node->available = TRUE;
-		ui_mainwindow_set_status_bar(_("\"%s\" is discontinued. Liferea won't updated it anymore!"), node_get_title(node));
-	} else if(304 == request->httpstatus) {
-		node->available = TRUE;
-		ui_mainwindow_set_status_bar(_("\"%s\" has not changed since last update"), node_get_title(node));
-	} else if(NULL != request->data) {
+	if (request->data) {
 		/* we save all properties that should not be overwritten in all cases */
 		old_update_interval = subscription_get_update_interval(subscription);
 		old_source = g_strdup(subscription_get_source(node->subscription));
@@ -581,154 +567,73 @@ static void feed_process_update_result(struct request *request) {
 		ctxt->subscription = node->subscription;
 
 		/* try to parse the feed */
-		if(!feed_parse(ctxt)) {
+		if (!feed_parse(ctxt)) {
 			/* if it doesn't work and it is a new subscription
 			   start feed auto discovery */
-			if(request->flags & FEED_REQ_AUTO_DISCOVER)
-				feed_auto_discover(ctxt);
+			if (request->flags & FEED_REQ_AUTO_DISCOVER)
+				feed_auto_discover (ctxt);
 		}
 		
-		if(ctxt->failed) {
-			g_string_prepend(feed->parseErrors, _("<p>Could not detect the type of this feed! Please check if the source really points to a resource provided in one of the supported syndication formats!</p>"
-			                                      "XML Parser Output:<br /><div class='xmlparseroutput'>"));
-			g_string_append(feed->parseErrors, "</div>");
+		if (ctxt->failed) {
+			g_string_prepend (feed->parseErrors, _("<p>Could not detect the type of this feed! Please check if the source really points to a resource provided in one of the supported syndication formats!</p>"
+			                                       "XML Parser Output:<br /><div class='xmlparseroutput'>"));
+			g_string_append (feed->parseErrors, "</div>");
 		} else {
 			node->available = TRUE;
 			
 			/* merge the resulting items into the node's item set */
-			node_merge_items(node, ctxt->items);
+			node_merge_items (node, ctxt->items);
 		
 			/* restore user defined properties if necessary */
-			if(request->flags & FEED_REQ_RESET_TITLE)
-				node_set_title(node, ctxt->title);
+			if (request->flags & FEED_REQ_RESET_TITLE)
+				node_set_title (node, ctxt->title);
 				
-			if(!(request->flags & FEED_REQ_AUTO_DISCOVER))
-				subscription_set_source(subscription, old_source);
+			if (!(request->flags & FEED_REQ_AUTO_DISCOVER))
+				subscription_set_source (subscription, old_source);
 
-			if(request->flags & FEED_REQ_RESET_UPDATE_INT)
-				subscription_set_update_interval(subscription, subscription_get_default_update_interval(subscription));
+			if (request->flags & FEED_REQ_RESET_UPDATE_INT)
+				subscription_set_update_interval (subscription, subscription_get_default_update_interval(subscription));
 			else
-				subscription_set_update_interval(subscription, old_update_interval);
+				subscription_set_update_interval (subscription, old_update_interval);
 			
 			if (request->flags > 0)
 				db_subscription_update (node->subscription);
 
-			ui_mainwindow_set_status_bar(_("\"%s\" updated..."), node_get_title(node));
+			ui_mainwindow_set_status_bar (_("\"%s\" updated..."), node_get_title(node));
 					
-			notification_node_has_new_items(node);
+			notification_node_has_new_items (node);
 		}
 				
-		g_free(old_source);
-
-		feed_free_parser_ctxt(ctxt);
+		g_free (old_source);
+		feed_free_parser_ctxt (ctxt);
 	} else {	
-		ui_mainwindow_set_status_bar(_("\"%s\" is not available"), node_get_title(node));
-	}
-	
-	subscription_update_error_status(subscription, request->httpstatus, request->returncode, request->filterErrors);
-
-	node->updateRequest = NULL; 
-
-	if (request->flags & FEED_REQ_DOWNLOAD_FAVICON) {
-		GTimeVal now;
-		
-		g_get_current_time (&now);
-		subscription_update_favicon (node->subscription, &now);
+		ui_mainwindow_set_status_bar (_("\"%s\" is not available"), node_get_title(node));
 	}
 
-	db_update_state_save (node->id, node->subscription->updateState);
-	feedlist_schedule_save ();
-	itemview_update_node_info (node);
-	itemview_update ();
-	
-	script_run_for_hook(SCRIPT_HOOK_FEED_UPDATED);
+	script_run_for_hook (SCRIPT_HOOK_FEED_UPDATED);
 
-	debug_exit("feed_process_update_result");
+	debug_exit ("feed_process_update_result");
 }
 
 /* implementation of the node type interface */
 
-static itemSetPtr feed_load(nodePtr node) {
-
+static itemSetPtr
+feed_load (nodePtr node)
+{
 	return db_itemset_load(node->id);
 }
 
-static void feed_save(nodePtr node) {
-
+static void
+feed_save (nodePtr node)
+{
 	/* Nothing to do. Feeds do not have any UI states */
 }
 
-static void feed_update_unread_count(nodePtr node) {
-
-	node->itemCount = db_itemset_get_item_count(node->id);
-	node->unreadCount = db_itemset_get_unread_count(node->id);
-}
-
 static void
-feed_reset_update_counter (nodePtr node, GTimeVal *now)
+feed_update_unread_count (nodePtr node)
 {
-	subscription_reset_update_counter (node->subscription, now);
-}
-
-static void
-feed_schedule_update (nodePtr node, guint flags, GTimeVal *now)
-{
-	struct request		*request;
-	
-	debug1(DEBUG_UPDATE, "Scheduling %s to be updated", node_get_title(node));
-	
-	g_assert (NULL != node->subscription);
-	
-	/* Retries that might have long timeouts must be 
-	   cancelled to immediately execute the user request. */
-	if(node->updateRequest)
-		update_request_cancel_retry(node->updateRequest);
-	
-	if(subscription_can_be_updated(node)) {
-		ui_mainwindow_set_status_bar(_("Updating \"%s\""), node_get_title(node));
-		request = update_request_new(node);
-		request->user_data = node;
-		request->options = node->subscription->updateOptions;
-		request->callback = feed_process_update_result;
-		subscription_prepare_request(node->subscription, request, flags, now);
-		node->updateRequest = request;
-		update_execute_request(request);
-	}
-}
-
-static void
-feed_request_update (nodePtr node, guint flags)
-{
-	GTimeVal now;
-
-	g_get_current_time (&now);
-	feed_schedule_update (node, flags | FEED_REQ_PRIORITY_HIGH, &now);
-}
-
-static void
-feed_request_auto_update (nodePtr node, GTimeVal *now)
-{
-	gint		interval;
-	guint		flags = 0;
-
-	interval = subscription_get_update_interval (node->subscription);
-	
-	if (-2 >= interval)
-		return;		/* don't update this feed */
-		
-	if (-1 == interval)
-		interval = getNumericConfValue (DEFAULT_UPDATE_INTERVAL);
-	
-	if (getBooleanConfValue (ENABLE_FETCH_RETRIES))
-		flags |= FEED_REQ_ALLOW_RETRIES;
-
-	if (interval > 0)
-		if (node->subscription->updateState->lastPoll.tv_sec + interval*60 <= now->tv_sec)
-			feed_schedule_update (node, flags, now);
-
-	/* And check for favicon updating */
-	if (favicon_update_needed (node->id, node->subscription->updateState, now))
-		subscription_update_favicon (node->subscription, now);
+	node->itemCount = db_itemset_get_item_count (node->id);
+	node->unreadCount = db_itemset_get_unread_count (node->id);
 }
 
 static void
@@ -741,39 +646,46 @@ feed_remove (nodePtr node)
 	db_subscription_remove (node->id);
 }
 
-static void feed_mark_all_read(nodePtr node) {
-
-	itemlist_mark_all_read(node->id);
+static void
+feed_mark_all_read (nodePtr node)
+{
+	itemlist_mark_all_read (node->id);
 }
 
-static gchar * feed_render(nodePtr node) {
+static gchar *
+feed_render (nodePtr node)
+{
 	renderParamPtr	params;
 	gchar		*output = NULL;
 	xmlDocPtr	doc;
 
-	doc = feed_to_xml(node, NULL);
-	params = render_parameter_new();
-	render_parameter_add(params, "pixmapsDir='file://" PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "'");
-	output = render_xml(doc, "feed", params);
-	xmlFreeDoc(doc);
+	doc = feed_to_xml (node, NULL);
+	params = render_parameter_new ();
+	render_parameter_add (params, "pixmapsDir='file://" PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "'");
+	output = render_xml (doc, "feed", params);
+	xmlFreeDoc (doc);
 
 	return output;
 }
 
-static void feed_add(nodePtr parentNode) {
-
-	ui_subscription_dialog_new(parentNode);
+static void
+feed_add (nodePtr parentNode)
+{
+	ui_subscription_dialog_new (parentNode);
 }
 
-static void feed_properties(nodePtr node) {
-
-	ui_subscription_prop_dialog_new(node->subscription);
+static void
+feed_properties (nodePtr node)
+{
+	ui_subscription_prop_dialog_new (node->subscription);
 }
 
-nodeTypePtr feed_get_node_type(void) { 
-
+nodeTypePtr
+feed_get_node_type (void)
+{ 
 	static struct nodeType nti = {
-		NODE_CAPABILITY_SHOW_UNREAD_COUNT,
+		NODE_CAPABILITY_SHOW_UNREAD_COUNT |
+		NODE_CAPABILITY_GENERIC_UPDATE,
 		"feed",		/* not used, feed format ids are used instead */
 		NULL,
 		NODE_TYPE_FEED,
@@ -782,9 +694,7 @@ nodeTypePtr feed_get_node_type(void) {
 		feed_load,
 		feed_save,
 		feed_update_unread_count,
-		feed_reset_update_counter,
-		feed_request_update,
-		feed_request_auto_update,
+		feed_process_update_result,
 		feed_remove,
 		feed_mark_all_read,
 		feed_render,

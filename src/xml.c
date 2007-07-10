@@ -170,7 +170,7 @@ xhtml_from_text (const gchar *sourceText)
 		}
 
 		if(xmlBufferLength(buf) > 0)
-			result = xmlCharStrdup(xmlBufferContent(buf));
+			result = g_strdup(xmlBufferContent(buf));
 		else
 			result = g_strdup("");
 

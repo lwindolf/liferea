@@ -281,10 +281,6 @@ vfolder_update_unread_count (nodePtr node)
 	g_warning("Should never be called!");
 }
 
-static void vfolder_reset_update_counter (nodePtr node, GTimeVal *now) { }
-static void vfolder_request_update (nodePtr node, guint flags) { }
-static void vfolder_request_auto_update (nodePtr node, GTimeVal *now) { }
-
 static void
 vfolder_remove (nodePtr node) 
 {
@@ -313,9 +309,7 @@ vfolder_get_node_type (void)
 		vfolder_load,
 		vfolder_save,
 		vfolder_update_unread_count,
-		vfolder_reset_update_counter,
-		vfolder_request_update,
-		vfolder_request_auto_update,
+		NULL,			/* process_update_result() */
 		vfolder_remove,
 		vfolder_mark_all_read,
 		node_default_render,

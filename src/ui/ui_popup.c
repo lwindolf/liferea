@@ -246,7 +246,7 @@ GtkMenu *ui_popup_make_enclosure_menu(const gchar *url) {
 /* popup callback wrappers */
 
 static void ui_popup_update(gpointer callback_data, guint callback_action, GtkWidget *widget) {
-	node_request_update((nodePtr)callback_data, FEED_REQ_PRIORITY_HIGH);
+	subscription_update(((nodePtr)callback_data)->subscription, FEED_REQ_PRIORITY_HIGH);
 }
 
 static void ui_popup_mark_as_read(gpointer callback_data, guint callback_action, GtkWidget *widget) {

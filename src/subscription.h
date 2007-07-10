@@ -45,7 +45,8 @@ typedef struct subscription {
 	gchar		*source;		/**< current source, can be changed by redirects */
 	gchar		*origSource;		/**< the source given when creating the subscription */
 	updateOptionsPtr updateOptions;		/**< update options for the feed source */
-
+	struct request	*updateRequest;		/**< update request structure used when downloading the subscribed source */
+	
 	gint		updateInterval;		/**< user defined update interval in minutes */	
 	guint		defaultInterval;	/**< optional update interval as specified by the feed */
 	
@@ -95,11 +96,11 @@ void subscription_export (subscriptionPtr subscription, xmlNodePtr xml, gboolean
 /**
  * Checks wether a subscription is ready to be updated
  *
- * @param node		then node to check
+ * @param subscription	the subscription to check
  *
  * @returns TRUE if subscription can be updated
  */
-gboolean subscription_can_be_updated(nodePtr node);
+gboolean subscription_can_be_updated(subscriptionPtr subscription);
 
 /**
  * Prepares a given request structure for an update of the
@@ -111,6 +112,26 @@ gboolean subscription_can_be_updated(nodePtr node);
  * @param now		current time
  */
 void subscription_prepare_request (subscriptionPtr subscription, struct request *request, guint flags, GTimeVal *now);
+
+/**
+ * Triggers updating a subscription. Will download the 
+ * the document indicated by the source URL of the subscription.
+ * Will call the node type specific update callback to process
+ * the downloaded data.
+ *
+ * @param subscription	the subscription
+ * @param flags		update flags
+ */
+void subscription_update (subscriptionPtr subscription, guint flags);
+
+/**
+ * Called when auto updating. Checks wether the subscription
+ * needs to be updated (according to it's update interval) and
+ * if necessary calls subscription_update().
+ *
+ * @param subscription	the subscription
+ */
+void subscription_auto_update (subscriptionPtr subscription);
 
 /**
  * Get the update interval setting of a given subscription
@@ -214,14 +235,6 @@ void subscription_set_filter(subscriptionPtr subscription, const gchar * filter)
  * @param filterError	filter error string (or NULL)
  */
 void subscription_update_error_status(subscriptionPtr subscription, gint httpstatus, gint resultcode, gchar *filterError);
-
-/**
- * Request the favicon of the given node to be updated.
- *
- * @param subscription	the subscription
- * @param now		current time
- */
-void subscription_update_favicon (subscriptionPtr subscription, GTimeVal *now);
 
 /**
  * Frees the given subscription structure.

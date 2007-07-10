@@ -308,7 +308,7 @@ on_google_source_selected (GtkDialog *dialog,
 		node_source_new (node, google_source_get_type ());
 		google_source_setup (parent, node);
 		node_set_subscription (node, subscription);
-		node_request_update (node, 0);
+		subscription_update (subscription, 0);
 	}
 
 	gtk_widget_destroy (GTK_WIDGET (dialog));
@@ -348,9 +348,7 @@ static struct nodeSourceType nst = {
 	opml_source_remove,
 	opml_source_import,
 	opml_source_export,
-	opml_source_get_feedlist,
-	google_source_update_subscription_list,
-	google_source_auto_update
+	opml_source_get_feedlist
 };
 
 nodeSourceTypePtr

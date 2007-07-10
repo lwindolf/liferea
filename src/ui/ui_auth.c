@@ -134,7 +134,7 @@ on_authdialog_response (GtkDialog *dialog,
 			xmlFree (sourceUrl);
 		}
 
-		node_request_update (ad->priv->subscription->node, ad->priv->flags);
+		subscription_update (ad->priv->subscription, ad->priv->flags);
 		xmlFreeURI (uri);
 	}
 

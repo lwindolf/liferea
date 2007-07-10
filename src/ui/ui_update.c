@@ -23,6 +23,7 @@
 #include "common.h"
 #include "feedlist.h"
 #include "node.h"
+#include "subscription.h"
 #include "update.h"
 #include "ui/ui_dialog.h"
 #include "ui/ui_node.h"
@@ -70,14 +71,14 @@ static void ui_update_find_requests(nodePtr node) {
 	if(node->children)
 		node_foreach_child(node, ui_update_find_requests);
 
-	if(node->updateRequest) {
-		if(REQUEST_STATE_PROCESSING == node->updateRequest->state) {
+	if(node->subscription->updateRequest) {
+		if(REQUEST_STATE_PROCESSING == node->subscription->updateRequest->state) {
 			ui_update_merge_request(node, um1store, um1hash);
 			ui_update_remove_request(node, um2store, um2hash);
 			return;
 		}
 
-		if(REQUEST_STATE_PENDING == node->updateRequest->state) {
+		if(REQUEST_STATE_PENDING == node->subscription->updateRequest->state) {
 			ui_update_merge_request(node, um2store, um2hash);
 			return;
 		}
@@ -102,9 +103,9 @@ static void ui_update_cancel(nodePtr node) {
 	if(node->children)
 		node_foreach_child(node, ui_update_cancel);
 
-	if(node->updateRequest) {
-		node->updateRequest->callback = NULL;
-		node->updateRequest = NULL;
+	if(node->subscription->updateRequest) {
+		node->subscription->updateRequest->callback = NULL;
+		node->subscription->updateRequest = NULL;
 	}
 }
 

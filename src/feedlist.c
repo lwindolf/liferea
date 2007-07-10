@@ -152,8 +152,7 @@ feedlist_auto_update (void *data)
 	debug_enter ("feedlist_auto_update");
 
 	if (update_is_online()) {
-		g_get_current_time (&now);
-		feedlist_foreach_data (node_request_auto_update, &now);
+		feedlist_foreach (node_auto_update_subscription);
 	} else {
 		debug0 (DEBUG_UPDATE, "no update processing because we are offline!");
 	}
@@ -292,26 +291,28 @@ void on_menu_delete(GtkWidget *widget, gpointer user_data) {
 	ui_feedlist_delete_prompt(selectedNode);
 }
 
-void on_menu_update(GtkWidget *widget, gpointer user_data) {
-
-	if(!selectedNode) {
+void
+on_menu_update(GtkWidget *widget, gpointer user_data)
+{
+	if (!selectedNode) {
 		ui_show_error_box(_("You have to select a feed entry"));
 		return;
 	}
 
-	if(update_is_online()) 
-		node_request_update(selectedNode, FEED_REQ_PRIORITY_HIGH);
+	if (update_is_online ()) 
+		subscription_update (selectedNode->subscription, FEED_REQ_PRIORITY_HIGH);
 	else
-		ui_mainwindow_set_status_bar(_("Liferea is in offline mode. No update possible."));
+		ui_mainwindow_set_status_bar (_("Liferea is in offline mode. No update possible."));
 }
 
-void on_menu_update_all(GtkWidget *widget, gpointer user_data) { 
-
-	if(update_is_online()) 
+void
+on_menu_update_all(GtkWidget *widget, gpointer user_data)
+{ 
+	if (update_is_online ()) 
 		// FIXME: int -> pointer
-		feedlist_foreach_data(node_request_update, (gpointer)FEED_REQ_PRIORITY_HIGH);
+		feedlist_foreach_data (node_update_subscription, (gpointer)FEED_REQ_PRIORITY_HIGH);
 	else
-		ui_mainwindow_set_status_bar(_("Liferea is in offline mode. No update possible."));
+		ui_mainwindow_set_status_bar (_("Liferea is in offline mode. No update possible."));
 }
 
 void on_menu_allread(GtkWidget *widget, gpointer user_data) {
@@ -418,8 +419,7 @@ void feedlist_init(void) {
 	switch(getNumericConfValue(STARTUP_FEED_ACTION)) {
 		case 1: /* Update all feeds */
 			debug0(DEBUG_UPDATE, "initial update: updating all feeds");
-			// FIXME: int -> gpointer
-			feedlist_foreach_data(node_request_update, 0);
+			feedlist_foreach_data(node_update_subscription, 0);
 			break;
 		case 2:
 			debug0(DEBUG_UPDATE, "initial update: resetting feed counter");

@@ -10,6 +10,12 @@
 	  (reported by Luis Rodrigo Gallardo Cruz)
 	* Fixes HTML formatting of parser/filter error output.
 	* Fixes still incorrect unread count in tray icon.
+	* Fixes several memory leaks (Hubert Figuiere)
+	* Fixes a bug in the networking code (Hubert Figuiere)
+
+	Translations
+
+	* Update of Brazilian Portugese translation (Og Maciel)
 
 
 2007-07-05  Lars Lindner  <lars.lindner@gmail.com>

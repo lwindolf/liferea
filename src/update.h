@@ -1,7 +1,7 @@
 /**
- * @file update.h  feed update request processing
+ * @file update.h  generic update request processing
  *
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -113,7 +113,7 @@ typedef struct updateState {
 
 /** structure storing all information about a single update request */
 typedef struct request {
-	/* Set by requester */
+	/* Set when requesting */
 	gchar 		*source;	/**< Location of the source. If it starts with
 					     '|', it is a command. If it contains "://",
 					     then it is parsed as a URL, otherwise it is a
@@ -126,6 +126,7 @@ typedef struct request {
 	guint32		flags;		/**< Flags to be passed to the callback */
 	gint		priority;	/**< priority of the request. Set to 1 for high priority */
 	gboolean	allowRetries;	/**< Allow download retries on network errors */
+	GTimeVal	timestamp;	/**< Timestamp of request start time */
 	
 	/* Set by download system*/
 	gpointer	owner;		/**< Pointer to anything used for lookup when cancelling requests */

@@ -131,9 +131,6 @@ void on_popup_copy_to_newsbin(gpointer user_data, guint callback_action, GtkWidg
 	}
 }
 
-void newsbin_request_auto_update_dummy(nodePtr node, GTimeVal *now) { }
-void newsbin_request_update_dummy(nodePtr node, guint flags) { }
-
 nodeTypePtr newsbin_get_node_type(void) {
 	static nodeTypePtr	nodeType;
 
@@ -151,9 +148,6 @@ nodeTypePtr newsbin_get_node_type(void) {
 		nodeType->export		= feed_get_node_type()->export;
 		nodeType->save			= feed_get_node_type()->save;
 		nodeType->update_counters	= feed_get_node_type()->update_counters;
-		nodeType->reset_update_counter	= feed_get_node_type()->reset_update_counter;
-		nodeType->request_update	= newsbin_request_update_dummy;
-		nodeType->request_auto_update	= newsbin_request_auto_update_dummy;
 		nodeType->remove		= newsbin_remove;
 		nodeType->mark_all_read		= feed_get_node_type()->mark_all_read;
 		nodeType->render		= newsbin_render;

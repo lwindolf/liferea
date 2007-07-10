@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-07-06 00:46+0200\n"
-"PO-Revision-Date: 2007-03-10 19:12-0500\n"
+"PO-Revision-Date: 2007-07-08 23:44-0500\n"
 "Last-Translator: Og Maciel <ogmaciel@ubuntu.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-l10n-br@listas.cipsga.org.br>\n"
 "MIME-Version: 1.0\n"
@@ -25,14 +25,12 @@ msgid "    "
 msgstr "    "
 
 #: ../liferea.glade.h:3
-#, fuzzy
 msgid "     "
-msgstr "    "
+msgstr "     "
 
 #: ../liferea.glade.h:4
-#, fuzzy
 msgid "      "
-msgstr "    "
+msgstr "      "
 
 #: ../liferea.glade.h:5
 msgid "<b>Download / Postprocessing</b>"
@@ -75,7 +73,7 @@ msgid ""
 "<i>This option can cause significant delays when loading folders containing "
 "many feeds.</i>"
 msgstr ""
-"<i>Esta fonte pode causar atrasos significantes no carregamento de pastas "
+"<i>Esta opção pode causar atrasos significantes no carregamento de pastas "
 "contendo muitas fontes de notícias.</i>"
 
 #: ../liferea.glade.h:15
@@ -105,8 +103,7 @@ msgstr "<span weight=\"bold\">Nome da Fonte de Notícias</span>"
 #: ../liferea.glade.h:21
 msgid "<span weight=\"bold\">Feed Update Settings</span>"
 msgstr ""
-"<span weight=\"bold\">Configurações de Atualização de Fontes de Notícias</"
-"span>"
+"<span weight=\"bold\">Configurações de Atualização de Fontes de Notícias</span>"
 
 #: ../liferea.glade.h:22
 msgid "<span weight=\"bold\">Folder Display Settings</span>"
@@ -121,9 +118,8 @@ msgid "<span weight=\"bold\">Internal Browser Settings</span>"
 msgstr "<span weight=\"bold\">Configurações do Navegador Interno</span>"
 
 #: ../liferea.glade.h:25
-#, fuzzy
 msgid "<span weight=\"bold\">Menu and Toolbar Settings</span>"
-msgstr "<span weight=\"bold\">Configurações do Menu</span>"
+msgstr "<span weight=\"bold\">Configurações do Menu e Barra de Ferramentas</span>"
 
 #: ../liferea.glade.h:26
 msgid "<span weight=\"bold\">Notification Settings</span>"
@@ -135,11 +131,11 @@ msgstr "<span weight=\"bold\">Abrindo Componentes</span>"
 
 #: ../liferea.glade.h:28
 msgid "<span weight=\"bold\">Reading Headlines</span>"
-msgstr "<span weight=\"bold\">Lendo Notícias</span>"
+msgstr "<span weight=\"bold\">Lendo Manchetes</span>"
 
 #: ../liferea.glade.h:29
 msgid "<span weight=\"bold\">Update Interval</span>"
-msgstr "<span weight=\"bold\">Intervalo de Atualização</span>"
+msgstr "<span weight=\"bold\">Intervalo de Atualizações</span>"
 
 #: ../liferea.glade.h:30
 msgid "<span weight=\"bold\">Web Integration</span>"
@@ -174,10 +170,9 @@ msgid "Authentication"
 msgstr "Autenticação"
 
 #: ../liferea.glade.h:38
-#, fuzzy
 msgid "Auto-_load item link in configured browser when selecting articles."
 msgstr ""
-"Carregar automaticamente o _link do item no browser interno quando lendo "
+"Carregar automaticamente o _link do item no browser configurado quando selecionando "
 "artigos."
 
 #: ../liferea.glade.h:39
@@ -296,13 +291,12 @@ msgid "Convert _using:"
 msgstr "_Converter _usando:"
 
 #: ../liferea.glade.h:91
-#, fuzzy
 msgid ""
 "Copyright (c) 2003-2007\n"
 "Lars Lindner <lars.lindner@gmail.com> and \n"
 "Nathan J. Conrad <t98502@users.sourceforge.net>\n"
 msgstr ""
-"Copyright (c) 2003-2006 \n"
+"Copyright (c) 2003-2007 \n"
 "Lars Lindner <lars.lindner@gmx.net> and \n"
 "Nathan J. Conrad <t98502@users.sourceforge.net>\n"
 
@@ -328,7 +322,7 @@ msgstr "_Número padrão de itens por fonte de notícias para salvar:"
 
 #: ../liferea.glade.h:100
 msgid "Di_sable cache"
-msgstr "Cache De_sabilitado"
+msgstr "De_sabilitar Cache"
 
 #: ../liferea.glade.h:101
 msgid "Download"
@@ -360,7 +354,7 @@ msgid ""
 "the exact feed location."
 msgstr ""
 "Digite o endereço de website para usar na pesquisa automática ou caso você "
-"conheça o endereço exato da fonte de notícias."
+"conheça, o endereço exato da fonte de notícias."
 
 #: ../liferea.glade.h:108 ../src/ui/ui_auth.c:181
 #, no-c-format
@@ -392,6 +386,11 @@ msgid ""
 "Icons only\n"
 "Text only"
 msgstr ""
+"Padrão do GNOME\n"
+"Texto abaixo dos ícones\n"
+"Texto ao lado dos ícones\n"
+"Somente ícones\n"
+"Somente texto"
 
 #: ../liferea.glade.h:119
 msgid "GUI"
@@ -403,7 +402,7 @@ msgstr "Geral"
 
 #: ../liferea.glade.h:121
 msgid "Headlines"
-msgstr "Notícias"
+msgstr "Manchetes"
 
 #. GTK theme support
 #: ../liferea.glade.h:122 ../src/main.c:175
@@ -442,14 +441,13 @@ msgstr "Nova Assinatura"
 
 #. Feed update interval hint in preference dialog.
 #: ../liferea.glade.h:130
-#, fuzzy
 msgid ""
 "Note: <i>Please remember to set a reasonable refresh time. Usually it is a "
 "waste of bandwidth to poll feeds more often than each hour.</i>"
 msgstr ""
-"Nota: <i>Lembre-se de configurar o intervalo de atualização. Não é "
-"necessário atualizar as fontes de notícias a cada 15 minutos. Para "
-"desabilitar atualização automática altere o intervalo para 0 minutos.</i>"
+"Nota: <i>Lembre-se de definir um intervalo de atualização razoável. Geralmente é um "
+"desperdício de banda atualizar fontes de notícias com uma frequência maior que uma vez "
+"por hora.</i>"
 
 #: ../liferea.glade.h:131
 msgid ""
@@ -560,11 +558,11 @@ msgstr "Exibe Apena_s a Barra de Ferramentas"
 
 #: ../liferea.glade.h:154
 msgid "Show _number of new items in the tray icon."
-msgstr ""
+msgstr "Exibir _número de novos ítens no ícone da bandeja."
 
 #: ../liferea.glade.h:155
 msgid "Show a _popup window with new headlines."
-msgstr "Exibe uma janela instantânea com novas notícias."
+msgstr "Exibe uma janela instantânea com novas manchetes."
 
 #: ../liferea.glade.h:156
 msgid "Show a status _icon in the notification area (system tray)."
@@ -585,6 +583,9 @@ msgid ""
 "<Ctrl> Space\n"
 "<Alt> Space"
 msgstr ""
+"Espaço\n"
+"<Ctrl> Espaço\n"
+"<Alt> Espaço"
 
 #: ../liferea.glade.h:163
 msgid ""
@@ -600,7 +601,7 @@ msgstr "Propriedades da Assinatura"
 
 #: ../liferea.glade.h:165
 msgid "T_erminate instead of minimizing to tray icon."
-msgstr ""
+msgstr "Finalizar invés de minimizar para o ícone da band_eja"
 
 #: ../liferea.glade.h:166
 msgid ""
@@ -615,11 +616,11 @@ msgstr ""
 #, no-c-format
 msgid "This feed provider suggests an update interval of %d minutes."
 msgstr ""
-"Este fonte de notícias sugere um intervalo de atualização de %d minutos."
+"Esta fonte de notícias sugere um intervalo de atualização de %d minutos."
 
 #: ../liferea.glade.h:169
 msgid "Toolbar _button labels:"
-msgstr ""
+msgstr "Rótulos dos botões da barra de ferramentas:"
 
 #: ../liferea.glade.h:170
 msgid "Translation"
@@ -636,15 +637,17 @@ msgid ""
 "Force update of all feeds\n"
 "No feed update at all"
 msgstr ""
+"Atualizar fontes de notícias desatualizadas\n"
+"Forçar atualização de todas as fontes de notícias\n"
+"Não atualize"
 
 #: ../liferea.glade.h:176
 msgid "Use HTTP _authentication"
 msgstr "Usar _autenticação HTTP"
 
 #: ../liferea.glade.h:177
-#, fuzzy
 msgid "Use Proxy Au_thentication"
-msgstr "Usar _Autenticação de Proxy"
+msgstr "Usar Au_tenticação de Proxy"
 
 #: ../liferea.glade.h:178
 msgid "Use conversion _filter"
@@ -652,11 +655,11 @@ msgstr "Usar _filtro de conversão"
 
 #: ../liferea.glade.h:179
 msgid "User_name:"
-msgstr "_Usuário:"
+msgstr "Nome de usuário:"
 
 #: ../liferea.glade.h:180
 msgid "View Headlines"
-msgstr "Ver Notícias"
+msgstr "Ver Manchetes"
 
 #: ../liferea.glade.h:181
 msgid ""
@@ -670,7 +673,7 @@ msgstr ""
 
 #: ../liferea.glade.h:182
 msgid "_Auto Detect (GNOME or environment)"
-msgstr ""
+msgstr "Detectar _Automaticamente (GNOME ou ambiente)"
 
 #: ../liferea.glade.h:183
 msgid "_Automatically download all enclosures of this feed."
@@ -734,7 +737,7 @@ msgstr "Arquivo _Local"
 
 #: ../liferea.glade.h:198
 msgid "_Manual Setting:"
-msgstr ""
+msgstr "Configuração _Manual:"
 
 #: ../liferea.glade.h:200
 #, no-c-format
@@ -758,9 +761,8 @@ msgid "_News Bin Name:"
 msgstr "_Nome do Recipiente de Notícias:"
 
 #: ../liferea.glade.h:205
-#, fuzzy
 msgid "_No Proxy"
-msgstr "Proxy"
+msgstr "Sem Proxy"
 
 #: ../liferea.glade.h:206
 msgid "_Open link in:"
@@ -830,6 +832,9 @@ msgid ""
 "hours\n"
 "days"
 msgstr ""
+"minutos\n"
+"horas\n"
+"dias"
 
 #: ../liferea.glade.h:224
 msgid "normal view"
@@ -902,7 +907,7 @@ msgid ""
 "anymore but you can still access the cached headlines."
 msgstr ""
 "Esta fonte de notícias foi interrompida, e não está mais disponível. Liferea "
-"não a atualizará mais, mas você poderá ainda acessar as notícias no cache."
+"não a atualizará mais, mas você poderá ainda acessar as manchetes no cache."
 
 #: ../xslt/source.xml.in.h:2 ../xslt/folder.xml.in.h:2
 msgid "children with"
@@ -911,7 +916,7 @@ msgstr "crianças com"
 #: ../xslt/source.xml.in.h:3 ../xslt/folder.xml.in.h:3
 #: ../xslt/vfolder.xml.in.h:2
 msgid "unread headlines"
-msgstr "notícias não lidas"
+msgstr "manchetes não lidas"
 
 #: ../xslt/folder.xml.in.h:1
 msgid "Folder:"
@@ -919,55 +924,51 @@ msgstr "Pasta:"
 
 #: ../xslt/item.xml.in.h:1
 msgid "Also posted in"
-msgstr ""
+msgstr "Também publicado em"
 
 #: ../xslt/item.xml.in.h:2
 msgid "Author"
 msgstr "Autor"
 
 #: ../xslt/item.xml.in.h:3
-#, fuzzy
 msgid "Comments"
 msgstr "comentários"
 
 #: ../xslt/item.xml.in.h:4
 msgid "Creator"
-msgstr ""
+msgstr "Criador"
 
 #: ../xslt/item.xml.in.h:5
 msgid "Department"
 msgstr "Departamento"
 
 #: ../xslt/item.xml.in.h:6
-#, fuzzy
 msgid "Feed"
-msgstr "Fontes de Notícias:"
+msgstr "Fontes de Notícias"
 
 #: ../xslt/item.xml.in.h:7
 msgid "Filed under"
 msgstr "Arquivado sob"
 
 #: ../xslt/item.xml.in.h:8
-#, fuzzy
 msgid "No comments yet."
-msgstr "comentários"
+msgstr "Sem comentários."
 
 #: ../xslt/item.xml.in.h:9
 msgid "Refresh"
-msgstr ""
+msgstr "Atualizar"
 
 #: ../xslt/item.xml.in.h:10
 msgid "Section"
 msgstr "Seção"
 
 #: ../xslt/item.xml.in.h:12
-#, fuzzy
 msgid "Updating..."
-msgstr "Atualizando \"%s\""
+msgstr "Atualizando..."
 
 #: ../xslt/item.xml.in.h:13
 msgid "bookmark"
-msgstr "marcador"
+msgstr "favorito"
 
 #: ../xslt/item.xml.in.h:14
 msgid "comments"
@@ -975,7 +976,7 @@ msgstr "comentários"
 
 #: ../xslt/item.xml.in.h:15
 msgid "flag"
-msgstr "sinalizador"
+msgstr "sinalizar"
 
 #: ../xslt/item.xml.in.h:16
 msgid "search"
@@ -999,9 +1000,8 @@ msgstr "Pasta Virtual:"
 
 #. unauthorized
 #: ../src/comments.c:116
-#, fuzzy
 msgid "Authorization Error"
-msgstr "Autenticação"
+msgstr "Erro de Autorização"
 
 #. translation hint: date format for today, reorder format codes as necessary
 #: ../src/common.c:150
@@ -1200,47 +1200,43 @@ msgid "Export"
 msgstr "Exportar"
 
 #: ../src/feed.c:282
-#, fuzzy
 msgid ""
 "The URL you want Liferea to subscribe to points to a webpage and the auto "
 "discovery found no feeds on this page. Maybe this webpage just does not "
 "support feed auto discovery."
 msgstr ""
-"<p>O URL que você deseja assinar pelo Liferea aponta para uma página de web "
+"O URL que você deseja assinar pelo Liferea aponta para uma página de web "
 "e o pesquisador automático não encontrou nenhuma fonte de notícias nesta "
-"página. Talvez esta páginade  web não tenha suporte à pesquisa automática de "
-"fontes de notícias. </p>"
+"página. Talvez esta página de  web não tenha suporte à pesquisa automática de "
+"fontes de notícias."
 
 #: ../src/feed.c:313
-#, fuzzy, c-format
+#, c-format
 msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
 msgstr ""
-"<p>Erro de XML ao ler fonte de notícias! Impossível carregar a fonte de "
-"notícias \"%s\"! </p>"
+"Erro de XML ao ler fonte de notícias! Não foi possível carregar a fonte de "
+"notícias \"%s\"!"
 
 #: ../src/feed.c:318
-#, fuzzy
 msgid "Empty document!"
-msgstr "<p>Documento vazio!</p>"
+msgstr "Documento vazio!"
 
 #: ../src/feed.c:327
-#, fuzzy
 msgid "Invalid XML!"
-msgstr "<p>XML inválido!</p>"
+msgstr "XML inválido!"
 
 #: ../src/feed.c:367
 msgid "Source points to HTML document."
-msgstr ""
+msgstr "Fonte aponta para um documento em HTML."
 
 #: ../src/feed.c:370
-#, fuzzy
 msgid "Could not determine the feed type."
-msgstr "<p>Não foi possível determinar o tipo de fonte de notícias.</p>"
+msgstr "Não foi possível determinar o tipo de fonte de notícias."
 
 #: ../src/feed.c:558
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
-msgstr "O URL de \"%s\" mudou permanetemente e foi atualizado"
+msgstr "O URL de \"%s\" mudou permanentemente e foi atualizado"
 
 #: ../src/feed.c:567
 #, c-format
@@ -1260,8 +1256,8 @@ msgid ""
 msgstr ""
 "<p>Não foi possível detectar o tipo desta fonte de notícias! Por favor, "
 "verifique se a fonte realmente aponta para um recurso fornecido em um dos "
-"formatos de sindicato suportados!</p> Saída do Analisador de XML:<br /><div "
-"class='xmlparseroutput'>"
+"formatos de sindicato suportados!</p> Saída do Analisador de XML:<br />"
+"<div class='xmlparseroutput'>"
 
 #: ../src/feed.c:616
 #, c-format
@@ -1287,15 +1283,14 @@ msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea está em modo offline. Não é possível atualizar."
 
 #: ../src/feedlist.c:439
-#, fuzzy
 msgid ""
 "This version of Liferea uses a new cache format and has migrated your feed "
 "cache. The cache content of v1.2 in ~/.liferea_1.2 was not deleted "
 "automatically. Please remove this directory manually once you are sure "
 "migration was successful!"
 msgstr ""
-"O Lifera v1.2 usa um novo formato de cache e atualizou o seu cache de fontes "
-"de notícias. O conteúdo do cache da versão v1.0 em ~/.liferea não foi "
+"Esta versão do Lifera usa um novo formato de cache e atualizou o seu cache de fontes "
+"de notícias. O conteúdo do cache da versão v1.2 em ~/.liferea_1,2 não foi "
 "apagado automaticamente. Por favor, remova este diretório manualmente uma "
 "vez que você tenha verificado se a atualização foi feita com sucesso!"
 
@@ -1332,17 +1327,16 @@ msgstr ""
 "                   ESTADO pode ser \"mostrado\", \"ícone\", ou \"oculto\""
 
 #: ../src/main.c:74
-#, fuzzy
 msgid "  --debug-<topic>  Print debugging messages for the given topic"
-msgstr "  --debug-cache    Exibe mensagens de depuração do arquivo do cache"
+msgstr "  --debug-<topic>    Exibe mensagens de depuração do arquivo do cache"
 
 #: ../src/main.c:75
 msgid "                   Possible topics are: all,cache,conf,db,gui,html"
-msgstr ""
+msgstr "                   Tópicos disponíveis são: all,cache,conf,db,gui,html"
 
 #: ../src/main.c:76
 msgid "                   net,parsing,plugins,trace,update,verbose"
-msgstr ""
+msgstr "                   net,parsing,plugins,trace,update,verbose"
 
 #: ../src/main.c:156
 msgid "Liferea seems to be running already!"
@@ -1445,12 +1439,12 @@ msgid "not included"
 msgstr "não incluído"
 
 #: ../src/subscription.c:79
-#, fuzzy, c-format
+#, c-format
 msgid "Subscription \"%s\" is already being updated!"
-msgstr "Esta fonte de notícias \"%s\" já está sendo atualizada!"
+msgstr "A fonte de notícias \"%s\" já está sendo atualizada!"
 
 #: ../src/subscription.c:84
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The subscription \"%s\" was discontinued. Liferea won't update it anymore!"
 msgstr ""
@@ -1466,7 +1460,7 @@ msgstr ""
 "URL e a saída no console."
 
 #: ../src/subscription.c:274
-#, fuzzy, c-format
+#, c-format
 msgid "Updating favicon for \"%s\""
 msgstr "Atualizando o ícone da fonte de notícias \"%s\""
 
@@ -1544,7 +1538,7 @@ msgstr "Escolher Arquivo"
 #: ../src/ui/ui_enclosure.c:284
 #, c-format
 msgid "<b>File Extension .%s</b>"
-msgstr "<b>Extensão do Arquivo .%s</b>"
+msgstr "<b>Extensão de Arquivo .%s</b>"
 
 #: ../src/ui/ui_enclosure.c:286
 #, c-format
@@ -1602,7 +1596,7 @@ msgstr "Data"
 
 #: ../src/ui/ui_itemlist.c:343 ../src/ui/ui_itemlist.c:346
 msgid "Headline"
-msgstr "Notícia"
+msgstr "Manchetes"
 
 #: ../src/ui/ui_itemlist.c:487 ../src/ui/ui_itemlist.c:510
 #: ../src/ui/ui_itemlist.c:581 ../src/ui/ui_itemlist.c:729
@@ -1666,8 +1660,8 @@ msgstr ""
 "<p>Seja bem-vindo ao <b>Liferea</b>, um agregador de fontes de notícias "
 "online para a área de trabalho. </p><p>O painel esquerdo contém uma lista "
 "com suas assinaturas. Para adicionar uma assinatura, selecione Fontes de "
-"Notícias -&gt; Nova Assinatura. Para navegar pelas notícias de uma fonte de "
-"notícias, selecione-a na lista de fontes de notícias e as notícias serão "
+"Notícias -&gt; Nova Assinatura. Para navegar pelas manchetes de uma fonte de "
+"notícias, selecione-a na lista de fontes de notícias e as manchetes serão "
 "carregadas no painel direito.</p>"
 
 #: ../src/ui/ui_mainwindow.c:725
@@ -1687,9 +1681,8 @@ msgid "Work Online"
 msgstr "Trabalhar Online"
 
 #: ../src/ui/ui_mainwindow.c:992
-#, fuzzy
 msgid "_Subscriptions"
-msgstr "Nova Assinatura"
+msgstr "Assinaturas"
 
 #: ../src/ui/ui_mainwindow.c:993
 msgid "Update _All"
@@ -1728,21 +1721,18 @@ msgid "_Quit"
 msgstr "_Sair"
 
 #: ../src/ui/ui_mainwindow.c:1001
-#, fuzzy
 msgid "_Feed"
-msgstr "_Fontes"
+msgstr "_Fonte de Notícias"
 
 #: ../src/ui/ui_mainwindow.c:1002
-#, fuzzy
 msgid "Remove _All Items"
-msgstr "Remover _Todos"
+msgstr "Remover _Todos Itens"
 
 #: ../src/ui/ui_mainwindow.c:1002
 msgid "Removes all items of the currently selected feed."
 msgstr "Remove todos os item selecionados da fonte de notícias atual."
 
 #: ../src/ui/ui_mainwindow.c:1005
-#, fuzzy
 msgid "_Item"
 msgstr "_Itens"
 
@@ -1764,7 +1754,7 @@ msgstr "Alte_rar para Lido ou Não Lido"
 
 #: ../src/ui/ui_mainwindow.c:1008
 msgid "Toggles the read status of the selected item."
-msgstr "Alterna o status de leitura do artigo selecionado."
+msgstr "Alterna o status de leitura do item selecionado."
 
 #: ../src/ui/ui_mainwindow.c:1010
 msgid "Toggle Item _Flag"
@@ -1775,13 +1765,12 @@ msgid "Toggles the flag status of the selected item."
 msgstr "Alterna o sinalizador de status do item selecionado."
 
 #: ../src/ui/ui_mainwindow.c:1012
-#, fuzzy
 msgid "R_emove"
-msgstr "/R_emover Item"
+msgstr "R_emover"
 
 #: ../src/ui/ui_mainwindow.c:1012
 msgid "Removes the selected item."
-msgstr "Remove os artigos selcionados."
+msgstr "Remove os itens selecionados."
 
 #: ../src/ui/ui_mainwindow.c:1014
 msgid "_Launch In Browser"
@@ -1813,21 +1802,19 @@ msgstr "Diminui o tamanho do texto de exibição do item."
 
 #: ../src/ui/ui_mainwindow.c:1023
 msgid "_Tools"
-msgstr ""
+msgstr "Ferramentas"
 
 #: ../src/ui/ui_mainwindow.c:1024
-#, fuzzy
 msgid "_Update Monitor"
-msgstr "Atualizar Monitor"
+msgstr "Monitor de Atualização"
 
 #: ../src/ui/ui_mainwindow.c:1024
 msgid "Show a list of all feeds currently in the update queue"
 msgstr "Exibe uma lista de todas as fontes de notícias na fila de atualização"
 
 #: ../src/ui/ui_mainwindow.c:1026
-#, fuzzy
 msgid "_Script Manager"
-msgstr "Gerenciador de Script"
+msgstr "Gerenciador de _Script"
 
 #: ../src/ui/ui_mainwindow.c:1026
 msgid "Allows to configure and edit LUA hook scripts"
@@ -1958,9 +1945,8 @@ msgid "Adds a new news bin."
 msgstr "Adiciona um novo recipiente de notícias."
 
 #: ../src/ui/ui_mainwindow.c:1062
-#, fuzzy
 msgid "_Mark As Read"
-msgstr "/_Marcar Todos Como Lido"
+msgstr "_Marcar Como Lido"
 
 #: ../src/ui/ui_mainwindow.c:1062
 msgid ""
@@ -1971,9 +1957,8 @@ msgstr ""
 "pasta selecionada como lidos."
 
 #: ../src/ui/ui_mainwindow.c:1064
-#, fuzzy
 msgid "_Update"
-msgstr "/_Atualizar"
+msgstr "_Atualizar"
 
 #: ../src/ui/ui_mainwindow.c:1064
 msgid ""
@@ -1991,9 +1976,8 @@ msgid "Opens the property dialog for the selected subscription."
 msgstr "Abre o diálogo de propriedades para a assinatura selecionada."
 
 #: ../src/ui/ui_mainwindow.c:1070
-#, fuzzy
 msgid "_Remove"
-msgstr "Remover _Todos"
+msgstr "_Remover"
 
 #: ../src/ui/ui_mainwindow.c:1070
 msgid "Removes the selected subscription."
@@ -2049,9 +2033,8 @@ msgid "/Copy Item _URL to Clipboard"
 msgstr "/Copiar _URL do Item para a Área de Transferência"
 
 #: ../src/ui/ui_popup.c:142
-#, fuzzy
 msgid "/Toggle _Read Status"
-msgstr "Alte_rar para Lido ou Não Lido"
+msgstr "/Alte_rnar Status de Leitura"
 
 #: ../src/ui/ui_popup.c:143
 msgid "/Toggle Item _Flag"
@@ -2159,7 +2142,7 @@ msgstr "/_Propriedades..."
 
 #: ../src/ui/ui_prefs.c:77
 msgid "GNOME Default Browser"
-msgstr ""
+msgstr "Navegador Padrão do GNOME"
 
 #: ../src/ui/ui_prefs.c:471
 msgid "Choose download directory"
@@ -2196,65 +2179,57 @@ msgid "Program"
 msgstr "Programa"
 
 #: ../src/ui/ui_script.c:35
-#, fuzzy
 msgid "startup"
-msgstr "Ao _iniciar:"
+msgstr "inicialização"
 
 #. update events
 #: ../src/ui/ui_script.c:38
-#, fuzzy
 msgid "feed updated"
-msgstr "Título do item"
+msgstr "fonte de notícias atualizada"
 
 #. feed list editing
 #: ../src/ui/ui_script.c:41
-#, fuzzy
 msgid "feed added"
-msgstr "Leitor de Fontes de Notícias"
+msgstr "fontes de notícias adicionada"
 
 #. selection hooks
 #: ../src/ui/ui_script.c:44
-#, fuzzy
 msgid "item selected"
-msgstr "Remover _Seleção"
+msgstr "item selecionado"
 
 #: ../src/ui/ui_script.c:45
-#, fuzzy
 msgid "feed selected"
-msgstr "Remover _Seleção"
+msgstr "fonte de notícias selecionado"
 
 #: ../src/ui/ui_script.c:46
-#, fuzzy
 msgid "item unselected"
-msgstr "Remover _Seleção"
+msgstr "item não selecionado"
 
 #: ../src/ui/ui_script.c:47
-#, fuzzy
 msgid "feed unselected"
-msgstr "Remover _Seleção"
+msgstr "fonte de notícias não selecionada"
 
 #: ../src/ui/ui_script.c:49
 msgid "shutdown"
-msgstr ""
+msgstr "desligar"
 
 #: ../src/ui/ui_script.c:153
 msgid "Sorry, no scripting support available!"
 msgstr "Sinto muito, mas não há suporte para script disponível!"
 
 #: ../src/ui/ui_script.c:179
-#, fuzzy
 msgid "Script Name"
-msgstr "Gerenciador de Script"
+msgstr "Nome do Script"
 
 #: ../src/ui/ui_script.c:230
 msgid "No script selected!"
 msgstr "Nenhum script selecionado!"
 
 #: ../src/ui/ui_search.c:119
-#, fuzzy, c-format
+#, c-format
 msgid "%d Search Result for \"%s\""
 msgid_plural "%d Search Results for \"%s\""
-msgstr[0] "%d Resultados da Pesquisa por \"%s\""
+msgstr[0] "%d Resultado da Pesquisa por \"%s\""
 msgstr[1] "%d Resultados da Pesquisa por \"%s\""
 
 #: ../src/ui/ui_search.c:124
@@ -2274,16 +2249,14 @@ msgid "Create a new search feed."
 msgstr "Criar uma nova pesquisa de fontes de notícias."
 
 #: ../src/ui/ui_subscription.c:441
-#, fuzzy, c-format
+#, c-format
 msgid "The provider of this feed suggests an update interval of %d minute."
 msgid_plural ""
 "The provider of this feed suggests an update interval of %d minutes."
-msgstr[0] ""
-"O fornecedor desta fonte de notícias sugere um intervalo de atualização de %"
-"d minutos."
-msgstr[1] ""
-"O fornecedor desta fonte de notícias sugere um intervalo de atualização de %"
-"d minutos."
+msgstr[0] "O fornecedor desta fonte de notícias sugere um intervalo de atualização de "
+"%d minuto."
+msgstr[1] "O fornecedor desta fonte de notícias sugere um intervalo de atualização de "
+"%d minutos."
 
 #: ../src/ui/ui_subscription.c:445
 msgid "This feed specifies no default update interval."
@@ -2375,40 +2348,35 @@ msgstr ""
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
 #: ../src/fl_sources/default_source.c:88
 msgid "feedlist.opml"
-msgstr "feedlist_ptBR.opml"
+msgstr "feedlist_pt_BR.opml"
 
 #: ../src/fl_sources/google_source.glade.h:1
-#, fuzzy
 msgid "Add Google Reader Account"
-msgstr "Adicionar Conta do Bloglines"
+msgstr "Adicionar Conta do Google Reader"
 
 #: ../src/fl_sources/google_source.glade.h:2
-#, fuzzy
 msgid "Please enter your Google Reader account settings."
-msgstr "Por favor digite a configuração de sua conta no Bloglines."
+msgstr "Por favor digite a configuração de sua conta no Google Reader."
 
 #: ../src/fl_sources/google_source.glade.h:4
-#, fuzzy
 msgid "_Username (Email)"
-msgstr "Nome de _Usuário"
+msgstr "Nome de _Usuário (E-mail)"
 
 #: ../src/fl_sources/google_source.c:190
 msgid "Google Reader login failed!"
-msgstr ""
+msgstr "Falha ao efetuar login no Google Reader!"
 
 #: ../src/fl_sources/google_source.c:322
-#, fuzzy
 msgid "Google Reader"
-msgstr "Leitor de Fontes de Notícias"
+msgstr "Google Reader"
 
 #: ../src/fl_sources/google_source.c:323
-#, fuzzy
 msgid ""
 "Integrate the feed list of your Google Reader account. Liferea will present "
 "your Google Reader subscription as a read-only subtree in the feed list."
 msgstr ""
-"Integrar a lista de fonte de notícias de sua conta no Bloglines. Liferea "
-"apresentará sua assinatura do Bloglines como uma árvore secundária (somente "
+"Integrar a lista de fonte de notícias de sua conta no Google Reader. Liferea "
+"apresentará sua assinatura do Google Reader como uma árvore secundária (somente "
 "com permissão de leitura) na lista de fontes de notícias."
 
 #: ../src/fl_sources/opml_source.glade.h:1
@@ -2444,9 +2412,8 @@ msgstr ""
 "de acordo com as atualizações na fonte do documento OPML"
 
 #: ../src/fl_sources/opml_source.c:408
-#, fuzzy
 msgid "Choose OPML File"
-msgstr "Escolher Arquivo"
+msgstr "Escolher Arquivo OPML"
 
 #: ../src/fl_sources/opml_source.h:27
 msgid "New OPML Subscription"
@@ -2483,202 +2450,33 @@ msgstr "Esta fonte de notícias não existe mais!"
 
 #: ../src/notification/notif_libnotify.c:112
 msgid "This news entry has no headline"
-msgstr ""
+msgstr "Esta entrada de notícias não possui manchete"
 
 #: ../src/notification/notif_libnotify.c:117
 msgid "Visit"
-msgstr ""
+msgstr "Visita"
 
 #: ../src/notification/notif_libnotify.c:154
 #: ../src/notification/notif_libnotify.c:240
 msgid "Open feed"
-msgstr ""
+msgstr "Abrir fonte de notícias"
 
 #: ../src/notification/notif_libnotify.c:157
 #: ../src/notification/notif_libnotify.c:243
-#, fuzzy
 msgid "Mark all as read"
-msgstr "Ma_rcar Todos Como Lido"
+msgstr "Ma_rcar todos como lidos"
 
 #: ../src/notification/notif_libnotify.c:227
 #, c-format
 msgid "%s has %d new / updated headline\n"
 msgid_plural "%s has %d new / updated headlines\n"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s possui %d nova / atualizada manchete\n"
+msgstr[1] "%s possui %d novas / atualizadas manchetes\n"
 
 #: ../src/notification/notif_libnotify.c:229
-#, fuzzy
 msgid "Feed Update"
-msgstr "Título do item"
+msgstr "Atualização de Fonte de Notícias"
 
 #: ../src/notification/notif_libnotify.c:237
-#, fuzzy
 msgid "Show details"
-msgstr "Detalhes"
-
-#~ msgid "_Program"
-#~ msgstr "_Programa"
-
-#~ msgid "Remove _Selected"
-#~ msgstr "Remover _Seleção"
-
-#~ msgid "_Mark Selected As Read"
-#~ msgstr "_Marcar Seleção Como Lido"
-
-#~ msgid "Update _Selected"
-#~ msgstr "Atualizar _Seleção"
-
-#~ msgid "_Delete Selected"
-#~ msgstr "_Apagar Seleção"
-
-#~ msgid "minutes."
-#~ msgstr "minutos."
-
-#~ msgid "Space"
-#~ msgstr "Espaço"
-
-#~ msgid "<Ctrl> Space"
-#~ msgstr "<Ctrl> Espaço"
-
-#~ msgid "<Alt> Space"
-#~ msgstr "<Alt> Espaço"
-
-#~ msgid ""
-#~ "<i>Liferea reuses the GNOME proxy settings. If you use GNOME you can "
-#~ "change these settings in the GNOME Control Center.</i>"
-#~ msgstr ""
-#~ "Liferea usa as configurações de proxy do GNOME. Se o GNOME alterar as "
-#~ "configurações do GNOME Control Center."
-
-#~ msgid "_Enable Proxy"
-#~ msgstr "Proxy _Habilitado"
-
-#~ msgid "Update only feeds scheduled for updates"
-#~ msgstr "Atualizar apenas fontes agendadas para atualização"
-
-#~ msgid "Update all feeds"
-#~ msgstr "Atualizar todos as fontes de notícias"
-
-#~ msgid "Reset feed update timers (Update no feeds)"
-#~ msgstr ""
-#~ "Reinicia a atualizador da fonte de notícias (Não atualiza a fonte de "
-#~ "notícias)"
-
-#~ msgid "Searching for \"%s\""
-#~ msgstr "Procurando por \"%s\""
-
-#~ msgid "There were errors while parsing the feed %s!"
-#~ msgstr "Foram encontrado erros ao processar a fonte de notícias %s!"
-
-#~ msgid "Untitled"
-#~ msgstr "Sem Título"
-
-#~ msgid "Liferea notification"
-#~ msgstr "Notificação Liferea"
-
-#, fuzzy
-#~ msgid "item unselect"
-#~ msgstr "Nenhum item foi selecionado"
-
-#~ msgid ""
-#~ "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
-#~ msgstr ""
-#~ "Erro ao ler o arquivo do cache \"%s\"! Não foi possível carregar o "
-#~ "arquivo!"
-
-#~ msgid ""
-#~ "<p>XML error while parsing cache file! Feed cache file \"%s\" could not "
-#~ "be loaded!</p>"
-#~ msgstr ""
-#~ "<p>Erro de XML ao processar o arquivo do cache! Não foi possível carregar "
-#~ "o arquivo de fontes de notícias \"%s\" do cache!</p>"
-
-#~ msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
-#~ msgstr ""
-#~ "<p>\"%s\" não é um arquivo do cache válido! Não foi possível ler o "
-#~ "arquivo do cache!</p>"
-
-#~ msgid "There were errors while parsing cache file \"%s\""
-#~ msgstr ""
-#~ "Alguns erros foram encontrados ao processar o arquivo \"%s\" do cache"
-
-#~ msgid "<span weight=\"bold\">Feed Loading Settings</span>"
-#~ msgstr ""
-#~ "<span weight=\"bold\">Configurações para Carregar Fontes de Notícias</"
-#~ "span>"
-
-#~ msgid "Optimize for reduced _memory usage."
-#~ msgstr "Otimizar para uso reduzido de _memória."
-
-#~ msgid "Optimize for _speed."
-#~ msgstr "Otimizar para melhor _velocidade."
-
-#~ msgid "_View Headlines With"
-#~ msgstr "_Ver Notícias Com"
-
-#~ msgid "<i>Please restart Liferea for changes to take effect.</i>"
-#~ msgstr "<i>Por favor, reinicie o Liferea para efetuar as mudanças.</i>"
-
-#~ msgid "         "
-#~ msgstr "         "
-
-#~ msgid "Lower Right"
-#~ msgstr "Direita Inferior"
-
-#~ msgid "Upper Right"
-#~ msgstr "Direita Superior"
-
-#~ msgid "Upper Left"
-#~ msgstr "Esquerda Superior"
-
-#~ msgid "Lower Left"
-#~ msgstr "Esquerda Inferior"
-
-#~ msgid "<b>Popup Placement</b>"
-#~ msgstr "<b>Posição da Janela Instantânea</b>"
-
-#~ msgid "  --debug-all      Print debugging messages of all types"
-#~ msgstr "  --debug-all      Exibe todos tipos de mensagens"
-
-#~ msgid ""
-#~ "  --debug-conf     Print debugging messages of the configuration handling"
-#~ msgstr ""
-#~ "  --debug-conf     Exibe mensagens de depuração sobre a configuração"
-
-#~ msgid "  --debug-gui      Print debugging messages of all GUI functions"
-#~ msgstr ""
-#~ "  --debug-gui      Exibe todas mensagens de depuração das funções da "
-#~ "interface gráfica"
-
-#~ msgid ""
-#~ "  --debug-html     Enable HTML debugging (saving to ~/.liferea_1.2/output."
-#~ "xhtml)"
-#~ msgstr ""
-#~ "  --debug--html     Habilita depuração HTML (salvando em ~/.liferea_1.2/"
-#~ "saída.xhtml)"
-
-#~ msgid "  --debug-parsing  Print debugging messages of all parsing functions"
-#~ msgstr ""
-#~ "  --debug-parsing  Exibe mensagens de depuração de todas funções de "
-#~ "análise"
-
-#~ msgid "  --debug-plugins  Print debugging messages when loading plugins"
-#~ msgstr ""
-#~ "  --debug-plugins  Exibe mensagens de depuração quando carregar os plug-"
-#~ "ins"
-
-#~ msgid ""
-#~ "  --debug-trace    Print debugging messages when entering/leaving "
-#~ "functions"
-#~ msgstr ""
-#~ "  --debug-trace    Exibe as mensagens de depuração das funções de entrada "
-#~ "e saída."
-
-#~ msgid ""
-#~ "  --debug-update   Print debugging messages of the feed update processing"
-#~ msgstr ""
-#~ " --debug-update   Exibe mensagens de depuração sobre atualizações de fonte"
-
-#~ msgid "  --debug-verbose  Print verbose debugging messages"
-#~ msgstr "  --debug-verbose  Exibe mensagens detalhadas de depuração"
+msgstr "Mostrar detalhes"

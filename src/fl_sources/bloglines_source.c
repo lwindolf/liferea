@@ -29,13 +29,6 @@
 #include "fl_sources/node_source.h"
 #include "fl_sources/opml_source.h"
 
-static void
-bloglines_source_auto_update (nodePtr node, GTimeVal *now)
-{
-	if (node->subscription->updateState->lastPoll.tv_sec + conf_get_int_value (DEFAULT_UPDATE_INTERVAL)*60 <= now->tv_sec)
-		opml_source_update (node, now);	
-}
-
 static void bloglines_source_init (void) { }
 
 static void bloglines_source_deinit (void) { }
@@ -60,7 +53,7 @@ on_bloglines_source_selected (GtkDialog *dialog,
 		node_source_new (node, bloglines_source_get_type ());
 		opml_source_setup (parent, node);
 		node_set_subscription (node, subscription);
-		node_request_update (node, 0);
+		subscription_update (subscription, 0);
 	}
 
 	gtk_widget_destroy (GTK_WIDGET (dialog));
@@ -101,8 +94,6 @@ static struct nodeSourceType nst = {
 	opml_source_import,
 	opml_source_export,
 	opml_source_get_feedlist,
-	opml_source_update,
-	bloglines_source_auto_update
 };
 
 nodeSourceTypePtr
