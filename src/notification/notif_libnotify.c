@@ -94,16 +94,15 @@ static void notif_libnotify_callback_show_details ( NotifyNotification *n, gchar
 	node_p = node_from_id(user_data);
 	
 	if(node_p) {
-		node_load(node_p);
+		itemSetPtr itemSet = node_get_itemset (node_p);
 
 		labelText_now_p = g_strdup("");
 
 		/* Gather the feed's headlines */
-		list_p = NULL;
-		// FIXME: list_p = node_p->itemSet->items;
-		while(list_p != NULL) {
-			item_p = list_p->data;
-			if( item_p->popupStatus == TRUE && item_p->readStatus == FALSE) {
+		list_p = itemSet->ids;
+		while (list_p) {
+			item_p = item_load ( GPOINTER_TO_UINT (list_p->data));
+			if (item_p->popupStatus && !item_p->readStatus) {
 				item_p->popupStatus = FALSE;
 				item_count += 1;
 
@@ -126,11 +125,13 @@ static void notif_libnotify_callback_show_details ( NotifyNotification *n, gchar
 				g_free(labelText_p);
 				g_free(labelText_prev_p);
 			}
-			list_p = g_list_next(list_p);
+			item_unload (item_p);
+			list_p = g_list_next (list_p);
 		}
+		itemset_free (itemSet);
 
-		if ( item_count == 0 ) {
-			g_free(labelText_now_p);
+		if (item_count == 0) {
+			g_free (labelText_now_p);
 			return;
 		}
 	} else {
@@ -157,8 +158,6 @@ static void notif_libnotify_callback_show_details ( NotifyNotification *n, gchar
 		notify_notification_add_action(n, "mark_read", _("Mark all as read"),
 										(NotifyActionCallback)notif_libnotify_callback_mark_read,
 										node_p->id, NULL);
-
-		node_unload(node_p);
 
 		conf_get_bool_value(SHOW_TRAY_ICON);
 		if (!notify_notification_show (n, NULL)) {
