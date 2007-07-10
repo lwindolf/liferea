@@ -13,6 +13,7 @@
 	* Fixes several memory leaks (Hubert Figuiere)
 	* Fixes a bug in the networking code (Hubert Figuiere)
 	* Fixes a crash in the Atom parsing (Hubert Figuiere)
+	* Fixes a leak in vfolder_import() (Hubert Figuiere)
 
 	Translations
 

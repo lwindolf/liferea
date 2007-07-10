@@ -183,6 +183,7 @@ vfolder_import (nodePtr node,
 	vfolder_import_rules (cur, vfolder);
 	node_add_child (parent, node, -1);
 	vfolder_refresh (vfolder);
+	vfolder_free (vfolder);
 }
 
 static void
