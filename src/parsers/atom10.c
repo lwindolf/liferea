@@ -255,6 +255,7 @@ static gchar * atom10_parse_person_construct(xmlNodePtr cur) {
 	return tmp;
 }
 
+/* Note: this function is called for both item and feed context */
 static gchar* atom10_parse_link(xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10ParserState *state) {
 	gchar *href, *alternate = NULL;
 	
@@ -281,11 +282,14 @@ static gchar* atom10_parse_link(xmlNodePtr cur, feedParserCtxtPtr ctxt, struct a
 		else if(g_str_equal(relation, "replies")) {
 			if(!type || g_str_equal(type, BAD_CAST"application/atom+xml")) {
 				gchar *commentUri = common_build_url(url, feed_get_html_url(ctxt->feed));
-				metadata_list_set(&ctxt->item->metadata, "commentFeedUri", commentUri);
+				if (ctxt->item)
+					metadata_list_set(&ctxt->item->metadata, "commentFeedUri", commentUri);
 			}
 		} else if(g_str_equal(relation, "enclosure")) {
-			ctxt->item->metadata = metadata_list_append(ctxt->item->metadata, "enclosure", url);
-			ctxt->item->hasEnclosure = TRUE;
+			if (ctxt->item) {
+				ctxt->item->metadata = metadata_list_append(ctxt->item->metadata, "enclosure", url);
+				ctxt->item->hasEnclosure = TRUE;
+			}
 		} else {
 			/* FIXME: Maybe do something with other links such as "related" and add metadata for "via"? */;
 		}

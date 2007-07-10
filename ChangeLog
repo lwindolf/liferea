@@ -12,6 +12,7 @@
 	* Fixes still incorrect unread count in tray icon.
 	* Fixes several memory leaks (Hubert Figuiere)
 	* Fixes a bug in the networking code (Hubert Figuiere)
+	* Fixes a crash in the Atom parsing (Hubert Figuiere)
 
 	Translations
 
