@@ -108,7 +108,7 @@ google_source_merge_feed(xmlNodePtr match, gpointer user_data)
 		node_set_data (node, feed_new ());
 		node_set_subscription (node, subscription_new (id + 5, NULL, NULL));
 		node_add_child (reader->root, node, -1);
-		node_request_update (node, FEED_REQ_RESET_TITLE);
+		subscription_update (node->subscription, FEED_REQ_RESET_TITLE);
 	}
 
 	if (id)
@@ -159,7 +159,7 @@ google_source_subscriptions_cb (requestPtr request)
 	itemview_update_node_info (node);
 	itemview_update ();
 
-	node_foreach_child (node, node_request_update);
+	node_foreach_child (node, node_update_subscription);
 	db_update_state_save (node->id, request->updateState);
 }
 
@@ -193,7 +193,8 @@ google_source_login_cb (requestPtr request)
 		node->available = TRUE;
 		
 		/* now that we are authenticated retrigger updating to start data retrieval */
-		node_request_update (node, 0);
+		g_get_current_time (&now);
+		google_source_update_subscription_list (node, &now);
 	} else {
 		debug0 (DEBUG_UPDATE, "google reader login failed! no SID found in result!");
 		node->available = FALSE;
@@ -205,9 +206,6 @@ google_source_login_cb (requestPtr request)
 
 	itemview_update_node_info (node);
 	itemview_update ();
-
-	g_get_current_time (&now);
-	google_source_update_subscription_list (node, &now);
 }
 
 /* authenticate to receive SID... */

@@ -160,7 +160,7 @@ static void notif_libnotify_callback_show_details ( NotifyNotification *n, gchar
 
 		node_unload(node_p);
 
-		getBooleanConfValue(SHOW_TRAY_ICON);
+		conf_get_bool_value(SHOW_TRAY_ICON);
 		if (!notify_notification_show (n, NULL)) {
 			fprintf(stderr, "PLUGIN:notif_libnotify.c - failed to update notification via libnotify\n");
 		}
@@ -204,7 +204,7 @@ static void notif_libnotify_node_has_new_items(nodePtr node_p) {
 	itemPtr item_p;
 	gint item_count;
 
-	if(!getBooleanConfValue(SHOW_POPUP_WINDOWS)) {
+	if(!conf_get_bool_value(SHOW_POPUP_WINDOWS)) {
 		return;
 	}
 

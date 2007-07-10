@@ -392,14 +392,6 @@ void node_import(nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean trusted)
 void node_export(nodePtr node, xmlNodePtr cur, gboolean trusted);
 
 /**
- * Initially loads the given node from cache.
- * To be used during startup (initializes vfolders).
- *
- * @param node	the node
- */
-void node_initial_load(nodePtr node);
-
-/**
  * Saves the given node to cache.
  *
  * @param node	the node
@@ -459,24 +451,6 @@ void node_merge_items (nodePtr node, GList *items);
  * @returns string with node rendered in HTML
  */
 gchar * node_render(nodePtr node);
-
-/**
- * Node auto-update scheduling (feed list auto update).
- *
- * @param node	the node
- * @param now	current time
- */
-void node_request_auto_update(nodePtr node, GTimeVal *now);
-
-/**
- * Immediate node updating (user requested). The request might
- * be ignored in some cases (e.g. when feed is discontinued or 
- * another request is already running).
- *
- * @param node	the node
- * @param flags	update handling flags
- */
-void node_request_update(nodePtr node, guint flags);
 
 /**
  * Request opening a properties dialog for the given node.

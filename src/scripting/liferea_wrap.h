@@ -1377,7 +1377,7 @@ SWIG_Lua_SetModule(lua_State* L, swig_module_info *module) {
 #define SWIGTYPE_p_GTimeVal swig_types[6]
 #define SWIGTYPE_p_GtkButton swig_types[7]
 #define SWIGTYPE_p_GtkMenuItem swig_types[8]
-#define SWIGTYPE_p_GtkToggleAction swig_types[9]
+#define SWIGTYPE_p_GtkRadioAction swig_types[9]
 #define SWIGTYPE_p_GtkTreeIter swig_types[10]
 #define SWIGTYPE_p_GtkTreePath swig_types[11]
 #define SWIGTYPE_p_GtkTreeSelection swig_types[12]
@@ -1386,30 +1386,30 @@ SWIG_Lua_SetModule(lua_State* L, swig_module_info *module) {
 #define SWIGTYPE_p_GtkTreeView swig_types[15]
 #define SWIGTYPE_p_GtkTreeViewColumn swig_types[16]
 #define SWIGTYPE_p_GtkWidget swig_types[17]
-#define SWIGTYPE_p_f_p_q_const__char_gpointer__void swig_types[18]
-#define SWIGTYPE_p_f_p_struct_node__itemSetPtr swig_types[19]
-#define SWIGTYPE_p_f_p_struct_node__p_char swig_types[20]
-#define SWIGTYPE_p_f_p_struct_node__void swig_types[21]
-#define SWIGTYPE_p_f_p_struct_node_p_GTimeVal__void swig_types[22]
+#define SWIGTYPE_p_f_gpointer__void swig_types[18]
+#define SWIGTYPE_p_f_p_q_const__char_gpointer__void swig_types[19]
+#define SWIGTYPE_p_f_p_struct_node__itemSetPtr swig_types[20]
+#define SWIGTYPE_p_f_p_struct_node__p_char swig_types[21]
+#define SWIGTYPE_p_f_p_struct_node__void swig_types[22]
 #define SWIGTYPE_p_f_p_struct_node_p_struct_node_xmlNodePtr_int__void swig_types[23]
-#define SWIGTYPE_p_f_p_struct_node_unsigned_int__void swig_types[24]
+#define SWIGTYPE_p_f_p_struct_node_requestPtr__void swig_types[24]
 #define SWIGTYPE_p_f_p_struct_node_xmlNodePtr_int__void swig_types[25]
 #define SWIGTYPE_p_gpointer swig_types[26]
 #define SWIGTYPE_p_gulong swig_types[27]
 #define SWIGTYPE_p_int swig_types[28]
 #define SWIGTYPE_p_item swig_types[29]
-#define SWIGTYPE_p_itemSet swig_types[30]
-#define SWIGTYPE_p_itemSetPtr swig_types[31]
-#define SWIGTYPE_p_node swig_types[32]
-#define SWIGTYPE_p_nodeSource swig_types[33]
-#define SWIGTYPE_p_nodeType swig_types[34]
-#define SWIGTYPE_p_p_GdkPixbuf swig_types[35]
-#define SWIGTYPE_p_request swig_types[36]
-#define SWIGTYPE_p_socialBookmarkSite swig_types[37]
-#define SWIGTYPE_p_subscription swig_types[38]
-#define SWIGTYPE_p_time_t swig_types[39]
-#define SWIGTYPE_p_updateOptionsPtr swig_types[40]
-#define SWIGTYPE_p_xmlNodePtr swig_types[41]
+#define SWIGTYPE_p_itemSetPtr swig_types[30]
+#define SWIGTYPE_p_node swig_types[31]
+#define SWIGTYPE_p_nodeSource swig_types[32]
+#define SWIGTYPE_p_nodeType swig_types[33]
+#define SWIGTYPE_p_p_GdkPixbuf swig_types[34]
+#define SWIGTYPE_p_requestPtr swig_types[35]
+#define SWIGTYPE_p_socialBookmarkSite swig_types[36]
+#define SWIGTYPE_p_subscription swig_types[37]
+#define SWIGTYPE_p_time_t swig_types[38]
+#define SWIGTYPE_p_updateOptionsPtr swig_types[39]
+#define SWIGTYPE_p_xmlNodePtr swig_types[40]
+#define SWIGTYPE_requestPtr swig_types[41]
 #define SWIGTYPE_time_t swig_types[42]
 #define SWIGTYPE_updateOptionsPtr swig_types[43]
 #define SWIGTYPE_xmlNodePtr swig_types[44]
@@ -1690,57 +1690,6 @@ static int _wrap_node_source_get(lua_State* L) {
   result = (struct nodeSource *) ((arg1)->source);
   SWIG_arg=0;
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_nodeSource,0); SWIG_arg++; 
-  return SWIG_arg;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_node_updateRequest_set(lua_State* L) {
-  int SWIG_arg = -1;
-  struct node *arg1 = (struct node *) 0 ;
-  struct request *arg2 = (struct request *) 0 ;
-  
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
-  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg(2);
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_node,0))){
-    SWIG_fail_ptr("node_updateRequest_set",1,SWIGTYPE_p_node);
-  }
-  
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_request,0))){
-    SWIG_fail_ptr("node_updateRequest_set",2,SWIGTYPE_p_request);
-  }
-  
-  if (arg1) (arg1)->updateRequest = arg2;
-  
-  SWIG_arg=0;
-  
-  return SWIG_arg;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_node_updateRequest_get(lua_State* L) {
-  int SWIG_arg = -1;
-  struct node *arg1 = (struct node *) 0 ;
-  struct request *result = 0 ;
-  
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_node,0))){
-    SWIG_fail_ptr("node_updateRequest_get",1,SWIGTYPE_p_node);
-  }
-  
-  result = (struct request *) ((arg1)->updateRequest);
-  SWIG_arg=0;
-  SWIG_NewPointerObj(L,result,SWIGTYPE_p_request,0); SWIG_arg++; 
   return SWIG_arg;
   
 fail:
@@ -2544,7 +2493,6 @@ static swig_lua_attribute swig_node_attributes[] = {
     { "subscription",_wrap_node_subscription_get, _wrap_node_subscription_set},
     { "nodeType",_wrap_node_nodeType_get, _wrap_node_nodeType_set},
     { "source",_wrap_node_source_get, _wrap_node_source_set},
-    { "updateRequest",_wrap_node_updateRequest_get, _wrap_node_updateRequest_set},
     { "iconFile",_wrap_node_iconFile_get, _wrap_node_iconFile_set},
     { "parent",_wrap_node_parent_get, _wrap_node_parent_set},
     { "children",_wrap_node_children_get, _wrap_node_children_set},
@@ -3037,24 +2985,24 @@ fail:
 }
 
 
-static int _wrap_nodeType_reset_update_counter_set(lua_State* L) {
+static int _wrap_nodeType_process_update_result_set(lua_State* L) {
   int SWIG_arg = -1;
   struct nodeType *arg1 = (struct nodeType *) 0 ;
-  void (*arg2)(nodePtr,GTimeVal *) = (void (*)(nodePtr,GTimeVal *)) 0 ;
+  void (*arg2)(nodePtr,requestPtr) = (void (*)(nodePtr,requestPtr)) 0 ;
   
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
   if(!SWIG_isptrtype(L,2)) SWIG_fail_arg(2);
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_nodeType,0))){
-    SWIG_fail_ptr("nodeType_reset_update_counter_set",1,SWIGTYPE_p_nodeType);
+    SWIG_fail_ptr("nodeType_process_update_result_set",1,SWIGTYPE_p_nodeType);
   }
   
   
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_f_p_struct_node_p_GTimeVal__void,0))){
-    SWIG_fail_ptr("nodeType_reset_update_counter_set",2,SWIGTYPE_p_f_p_struct_node_p_GTimeVal__void);
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_f_p_struct_node_requestPtr__void,0))){
+    SWIG_fail_ptr("nodeType_process_update_result_set",2,SWIGTYPE_p_f_p_struct_node_requestPtr__void);
   }
   
-  if (arg1) (arg1)->reset_update_counter = arg2;
+  if (arg1) (arg1)->process_update_result = arg2;
   
   SWIG_arg=0;
   
@@ -3066,122 +3014,20 @@ fail:
 }
 
 
-static int _wrap_nodeType_reset_update_counter_get(lua_State* L) {
+static int _wrap_nodeType_process_update_result_get(lua_State* L) {
   int SWIG_arg = -1;
   struct nodeType *arg1 = (struct nodeType *) 0 ;
-  void (*result)(nodePtr,GTimeVal *) = 0 ;
+  void (*result)(nodePtr,requestPtr) = 0 ;
   
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_nodeType,0))){
-    SWIG_fail_ptr("nodeType_reset_update_counter_get",1,SWIGTYPE_p_nodeType);
+    SWIG_fail_ptr("nodeType_process_update_result_get",1,SWIGTYPE_p_nodeType);
   }
   
-  result = (void (*)(nodePtr,GTimeVal *)) ((arg1)->reset_update_counter);
+  result = (void (*)(nodePtr,requestPtr)) ((arg1)->process_update_result);
   SWIG_arg=0;
-  SWIG_NewPointerObj(L,result,SWIGTYPE_p_f_p_struct_node_p_GTimeVal__void,0); SWIG_arg++; 
-  return SWIG_arg;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_nodeType_request_update_set(lua_State* L) {
-  int SWIG_arg = -1;
-  struct nodeType *arg1 = (struct nodeType *) 0 ;
-  void (*arg2)(nodePtr,unsigned int) = (void (*)(nodePtr,unsigned int)) 0 ;
-  
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
-  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg(2);
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_nodeType,0))){
-    SWIG_fail_ptr("nodeType_request_update_set",1,SWIGTYPE_p_nodeType);
-  }
-  
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_f_p_struct_node_unsigned_int__void,0))){
-    SWIG_fail_ptr("nodeType_request_update_set",2,SWIGTYPE_p_f_p_struct_node_unsigned_int__void);
-  }
-  
-  if (arg1) (arg1)->request_update = arg2;
-  
-  SWIG_arg=0;
-  
-  return SWIG_arg;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_nodeType_request_update_get(lua_State* L) {
-  int SWIG_arg = -1;
-  struct nodeType *arg1 = (struct nodeType *) 0 ;
-  void (*result)(nodePtr,unsigned int) = 0 ;
-  
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_nodeType,0))){
-    SWIG_fail_ptr("nodeType_request_update_get",1,SWIGTYPE_p_nodeType);
-  }
-  
-  result = (void (*)(nodePtr,unsigned int)) ((arg1)->request_update);
-  SWIG_arg=0;
-  SWIG_NewPointerObj(L,result,SWIGTYPE_p_f_p_struct_node_unsigned_int__void,0); SWIG_arg++; 
-  return SWIG_arg;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_nodeType_request_auto_update_set(lua_State* L) {
-  int SWIG_arg = -1;
-  struct nodeType *arg1 = (struct nodeType *) 0 ;
-  void (*arg2)(nodePtr,GTimeVal *) = (void (*)(nodePtr,GTimeVal *)) 0 ;
-  
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
-  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg(2);
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_nodeType,0))){
-    SWIG_fail_ptr("nodeType_request_auto_update_set",1,SWIGTYPE_p_nodeType);
-  }
-  
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_f_p_struct_node_p_GTimeVal__void,0))){
-    SWIG_fail_ptr("nodeType_request_auto_update_set",2,SWIGTYPE_p_f_p_struct_node_p_GTimeVal__void);
-  }
-  
-  if (arg1) (arg1)->request_auto_update = arg2;
-  
-  SWIG_arg=0;
-  
-  return SWIG_arg;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_nodeType_request_auto_update_get(lua_State* L) {
-  int SWIG_arg = -1;
-  struct nodeType *arg1 = (struct nodeType *) 0 ;
-  void (*result)(nodePtr,GTimeVal *) = 0 ;
-  
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_nodeType,0))){
-    SWIG_fail_ptr("nodeType_request_auto_update_get",1,SWIGTYPE_p_nodeType);
-  }
-  
-  result = (void (*)(nodePtr,GTimeVal *)) ((arg1)->request_auto_update);
-  SWIG_arg=0;
-  SWIG_NewPointerObj(L,result,SWIGTYPE_p_f_p_struct_node_p_GTimeVal__void,0); SWIG_arg++; 
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_f_p_struct_node_requestPtr__void,0); SWIG_arg++; 
   return SWIG_arg;
   
 fail:
@@ -3445,6 +3291,57 @@ fail:
 }
 
 
+static int _wrap_nodeType_free_set(lua_State* L) {
+  int SWIG_arg = -1;
+  struct nodeType *arg1 = (struct nodeType *) 0 ;
+  void (*arg2)(gpointer) = (void (*)(gpointer)) 0 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg(2);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_nodeType,0))){
+    SWIG_fail_ptr("nodeType_free_set",1,SWIGTYPE_p_nodeType);
+  }
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_f_gpointer__void,0))){
+    SWIG_fail_ptr("nodeType_free_set",2,SWIGTYPE_p_f_gpointer__void);
+  }
+  
+  if (arg1) (arg1)->free = arg2;
+  
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_nodeType_free_get(lua_State* L) {
+  int SWIG_arg = -1;
+  struct nodeType *arg1 = (struct nodeType *) 0 ;
+  void (*result)(gpointer) = 0 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_nodeType,0))){
+    SWIG_fail_ptr("nodeType_free_get",1,SWIGTYPE_p_nodeType);
+  }
+  
+  result = (void (*)(gpointer)) ((arg1)->free);
+  SWIG_arg=0;
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_f_gpointer__void,0); SWIG_arg++; 
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_new_nodeType(lua_State* L) {
   int SWIG_arg = -1;
   struct nodeType *result = 0 ;
@@ -3499,14 +3396,13 @@ static swig_lua_attribute swig_nodeType_attributes[] = {
     { "load",_wrap_nodeType_load_get, _wrap_nodeType_load_set},
     { "save",_wrap_nodeType_save_get, _wrap_nodeType_save_set},
     { "update_counters",_wrap_nodeType_update_counters_get, _wrap_nodeType_update_counters_set},
-    { "reset_update_counter",_wrap_nodeType_reset_update_counter_get, _wrap_nodeType_reset_update_counter_set},
-    { "request_update",_wrap_nodeType_request_update_get, _wrap_nodeType_request_update_set},
-    { "request_auto_update",_wrap_nodeType_request_auto_update_get, _wrap_nodeType_request_auto_update_set},
+    { "process_update_result",_wrap_nodeType_process_update_result_get, _wrap_nodeType_process_update_result_set},
     { "remove",_wrap_nodeType_remove_get, _wrap_nodeType_remove_set},
     { "mark_all_read",_wrap_nodeType_mark_all_read_get, _wrap_nodeType_mark_all_read_set},
     { "render",_wrap_nodeType_render_get, _wrap_nodeType_render_set},
     { "request_add",_wrap_nodeType_request_add_get, _wrap_nodeType_request_add_set},
     { "request_properties",_wrap_nodeType_request_properties_get, _wrap_nodeType_request_properties_set},
+    { "free",_wrap_nodeType_free_get, _wrap_nodeType_free_set},
     {0,0,0}
 };
 static swig_lua_class *swig_nodeType_bases[] = {0};
@@ -3746,6 +3642,76 @@ static int _wrap_node_set_subscription(lua_State* L) {
   }
   
   node_set_subscription(arg1,arg2);
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_node_update_subscription(lua_State* L) {
+  int SWIG_arg = -1;
+  nodePtr arg1 = (nodePtr) 0 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_node,0))){
+    SWIG_fail_ptr("node_update_subscription",1,SWIGTYPE_p_node);
+  }
+  
+  node_update_subscription(arg1);
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_node_auto_update_subscription(lua_State* L) {
+  int SWIG_arg = -1;
+  nodePtr arg1 = (nodePtr) 0 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_node,0))){
+    SWIG_fail_ptr("node_auto_update_subscription",1,SWIGTYPE_p_node);
+  }
+  
+  node_auto_update_subscription(arg1);
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_node_reset_update_counter(lua_State* L) {
+  int SWIG_arg = -1;
+  nodePtr arg1 = (nodePtr) 0 ;
+  GTimeVal *arg2 = (GTimeVal *) 0 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg(2);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_node,0))){
+    SWIG_fail_ptr("node_reset_update_counter",1,SWIGTYPE_p_node);
+  }
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_GTimeVal,0))){
+    SWIG_fail_ptr("node_reset_update_counter",2,SWIGTYPE_p_GTimeVal);
+  }
+  
+  node_reset_update_counter(arg1,arg2);
   SWIG_arg=0;
   
   return SWIG_arg;
@@ -4169,48 +4135,6 @@ fail:
 }
 
 
-static int _wrap_node_initial_load(lua_State* L) {
-  int SWIG_arg = -1;
-  nodePtr arg1 = (nodePtr) 0 ;
-  
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_node,0))){
-    SWIG_fail_ptr("node_initial_load",1,SWIGTYPE_p_node);
-  }
-  
-  node_initial_load(arg1);
-  SWIG_arg=0;
-  
-  return SWIG_arg;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_node_load(lua_State* L) {
-  int SWIG_arg = -1;
-  nodePtr arg1 = (nodePtr) 0 ;
-  
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_node,0))){
-    SWIG_fail_ptr("node_load",1,SWIGTYPE_p_node);
-  }
-  
-  node_load(arg1);
-  SWIG_arg=0;
-  
-  return SWIG_arg;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
 static int _wrap_node_save(lua_State* L) {
   int SWIG_arg = -1;
   nodePtr arg1 = (nodePtr) 0 ;
@@ -4232,17 +4156,26 @@ fail:
 }
 
 
-static int _wrap_node_unload(lua_State* L) {
+static int _wrap_node_process_update_result(lua_State* L) {
   int SWIG_arg = -1;
   nodePtr arg1 = (nodePtr) 0 ;
+  requestPtr arg2 ;
+  requestPtr *argp2 ;
   
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  if(!lua_isuserdata(L,2)) SWIG_fail_arg(2);
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_node,0))){
-    SWIG_fail_ptr("node_unload",1,SWIGTYPE_p_node);
+    SWIG_fail_ptr("node_process_update_result",1,SWIGTYPE_p_node);
   }
   
-  node_unload(arg1);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&argp2,SWIGTYPE_p_requestPtr,0))){
+    SWIG_fail_ptr("node_process_update_result",2,SWIGTYPE_requestPtr);
+  }
+  arg2 = *argp2;
+  
+  node_process_update_result(arg1,arg2);
   SWIG_arg=0;
   
   return SWIG_arg;
@@ -4264,34 +4197,6 @@ static int _wrap_node_remove(lua_State* L) {
   }
   
   node_remove(arg1);
-  SWIG_arg=0;
-  
-  return SWIG_arg;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_node_reset_update_counter(lua_State* L) {
-  int SWIG_arg = -1;
-  nodePtr arg1 = (nodePtr) 0 ;
-  GTimeVal *arg2 = (GTimeVal *) 0 ;
-  
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
-  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg(2);
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_node,0))){
-    SWIG_fail_ptr("node_reset_update_counter",1,SWIGTYPE_p_node);
-  }
-  
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_GTimeVal,0))){
-    SWIG_fail_ptr("node_reset_update_counter",2,SWIGTYPE_p_GTimeVal);
-  }
-  
-  node_reset_update_counter(arg1,arg2);
   SWIG_arg=0;
   
   return SWIG_arg;
@@ -4329,6 +4234,34 @@ fail:
 }
 
 
+static int _wrap_node_merge_items(lua_State* L) {
+  int SWIG_arg = -1;
+  nodePtr arg1 = (nodePtr) 0 ;
+  GList *arg2 = (GList *) 0 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg(2);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_node,0))){
+    SWIG_fail_ptr("node_merge_items",1,SWIGTYPE_p_node);
+  }
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_GList,0))){
+    SWIG_fail_ptr("node_merge_items",2,SWIGTYPE_p_GList);
+  }
+  
+  node_merge_items(arg1,arg2);
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_node_render(lua_State* L) {
   int SWIG_arg = -1;
   nodePtr arg1 = (nodePtr) 0 ;
@@ -4343,58 +4276,6 @@ static int _wrap_node_render(lua_State* L) {
   result = (char *)node_render(arg1);
   SWIG_arg=0;
   lua_pushstring(L,(const char*)result); SWIG_arg++;
-  return SWIG_arg;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_node_request_auto_update(lua_State* L) {
-  int SWIG_arg = -1;
-  nodePtr arg1 = (nodePtr) 0 ;
-  GTimeVal *arg2 = (GTimeVal *) 0 ;
-  
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
-  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg(2);
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_node,0))){
-    SWIG_fail_ptr("node_request_auto_update",1,SWIGTYPE_p_node);
-  }
-  
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_GTimeVal,0))){
-    SWIG_fail_ptr("node_request_auto_update",2,SWIGTYPE_p_GTimeVal);
-  }
-  
-  node_request_auto_update(arg1,arg2);
-  SWIG_arg=0;
-  
-  return SWIG_arg;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_node_request_update(lua_State* L) {
-  int SWIG_arg = -1;
-  nodePtr arg1 = (nodePtr) 0 ;
-  unsigned int arg2 ;
-  
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
-  if(!lua_isnumber(L,2)) SWIG_fail_arg(2);
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_node,0))){
-    SWIG_fail_ptr("node_request_update",1,SWIGTYPE_p_node);
-  }
-  
-  arg2 = (unsigned int)lua_tonumber(L, 2);
-  node_request_update(arg1,arg2);
-  SWIG_arg=0;
-  
   return SWIG_arg;
   
 fail:
@@ -6146,33 +6027,6 @@ fail:
 }
 
 
-static int _wrap_item_parse_cache(lua_State* L) {
-  int SWIG_arg = -1;
-  xmlNodePtr arg1 ;
-  int arg2 ;
-  itemPtr result;
-  xmlNodePtr *argp1 ;
-  
-  if(!lua_isuserdata(L,1)) SWIG_fail_arg(1);
-  if(!lua_isnumber(L,2)) SWIG_fail_arg(2);
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_xmlNodePtr,0))){
-    SWIG_fail_ptr("item_parse_cache",1,SWIGTYPE_xmlNodePtr);
-  }
-  arg1 = *argp1;
-  
-  arg2 = (int)lua_tonumber(L, 2);
-  result = (itemPtr)item_parse_cache(arg1,arg2);
-  SWIG_arg=0;
-  SWIG_NewPointerObj(L,result,SWIGTYPE_p_item,0); SWIG_arg++; 
-  return SWIG_arg;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
 static int _wrap_item_to_xml(lua_State* L) {
   int SWIG_arg = -1;
   itemPtr arg1 = (itemPtr) 0 ;
@@ -6203,13 +6057,12 @@ fail:
 }
 
 
-static int _wrap_itemlist_get_displayed_node(lua_State* L) {
+static int _wrap_itemlist_free(lua_State* L) {
   int SWIG_arg = -1;
-  struct node *result = 0 ;
   
-  result = (struct node *)itemlist_get_displayed_node();
+  itemlist_free();
   SWIG_arg=0;
-  SWIG_NewPointerObj(L,result,SWIGTYPE_p_node,0); SWIG_arg++; 
+  
   return SWIG_arg;
   
 fail:
@@ -6218,13 +6071,13 @@ fail:
 }
 
 
-static int _wrap_itemlist_get_displayed_itemset(lua_State* L) {
+static int _wrap_itemlist_get_displayed_node(lua_State* L) {
   int SWIG_arg = -1;
-  struct itemSet *result = 0 ;
+  struct node *result = 0 ;
   
-  result = (struct itemSet *)itemlist_get_displayed_itemset();
+  result = (struct node *)itemlist_get_displayed_node();
   SWIG_arg=0;
-  SWIG_NewPointerObj(L,result,SWIGTYPE_p_itemSet,0); SWIG_arg++; 
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_node,0); SWIG_arg++; 
   return SWIG_arg;
   
 fail:
@@ -6341,86 +6194,33 @@ fail:
 }
 
 
-static int _wrap_on_normal_view_activate(lua_State* L) {
+static int _wrap_on_view_activate(lua_State* L) {
   int SWIG_arg = -1;
-  GtkToggleAction *arg1 = (GtkToggleAction *) 0 ;
-  gpointer arg2 ;
-  gpointer *argp2 ;
+  GtkRadioAction *arg1 = (GtkRadioAction *) 0 ;
+  GtkRadioAction *arg2 = (GtkRadioAction *) 0 ;
+  gpointer arg3 ;
+  gpointer *argp3 ;
   
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
-  if(!lua_isuserdata(L,2)) SWIG_fail_arg(2);
+  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg(2);
+  if(!lua_isuserdata(L,3)) SWIG_fail_arg(3);
   
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_GtkToggleAction,0))){
-    SWIG_fail_ptr("on_normal_view_activate",1,SWIGTYPE_p_GtkToggleAction);
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_GtkRadioAction,0))){
+    SWIG_fail_ptr("on_view_activate",1,SWIGTYPE_p_GtkRadioAction);
   }
   
   
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&argp2,SWIGTYPE_p_gpointer,0))){
-    SWIG_fail_ptr("on_normal_view_activate",2,SWIGTYPE_gpointer);
-  }
-  arg2 = *argp2;
-  
-  on_normal_view_activate(arg1,arg2);
-  SWIG_arg=0;
-  
-  return SWIG_arg;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_on_wide_view_activate(lua_State* L) {
-  int SWIG_arg = -1;
-  GtkToggleAction *arg1 = (GtkToggleAction *) 0 ;
-  gpointer arg2 ;
-  gpointer *argp2 ;
-  
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
-  if(!lua_isuserdata(L,2)) SWIG_fail_arg(2);
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_GtkToggleAction,0))){
-    SWIG_fail_ptr("on_wide_view_activate",1,SWIGTYPE_p_GtkToggleAction);
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_GtkRadioAction,0))){
+    SWIG_fail_ptr("on_view_activate",2,SWIGTYPE_p_GtkRadioAction);
   }
   
   
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&argp2,SWIGTYPE_p_gpointer,0))){
-    SWIG_fail_ptr("on_wide_view_activate",2,SWIGTYPE_gpointer);
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,3,(void**)&argp3,SWIGTYPE_p_gpointer,0))){
+    SWIG_fail_ptr("on_view_activate",3,SWIGTYPE_gpointer);
   }
-  arg2 = *argp2;
+  arg3 = *argp3;
   
-  on_wide_view_activate(arg1,arg2);
-  SWIG_arg=0;
-  
-  return SWIG_arg;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_on_combined_view_activate(lua_State* L) {
-  int SWIG_arg = -1;
-  GtkToggleAction *arg1 = (GtkToggleAction *) 0 ;
-  gpointer arg2 ;
-  gpointer *argp2 ;
-  
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
-  if(!lua_isuserdata(L,2)) SWIG_fail_arg(2);
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_GtkToggleAction,0))){
-    SWIG_fail_ptr("on_combined_view_activate",1,SWIGTYPE_p_GtkToggleAction);
-  }
-  
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&argp2,SWIGTYPE_p_gpointer,0))){
-    SWIG_fail_ptr("on_combined_view_activate",2,SWIGTYPE_gpointer);
-  }
-  arg2 = *argp2;
-  
-  on_combined_view_activate(arg1,arg2);
+  on_view_activate(arg1,arg2,arg3);
   SWIG_arg=0;
   
   return SWIG_arg;
@@ -6799,6 +6599,20 @@ fail:
 }
 
 
+static int _wrap_feedlist_free(lua_State* L) {
+  int SWIG_arg = -1;
+  
+  feedlist_free();
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_feedlist_get_root(lua_State* L) {
   int SWIG_arg = -1;
   nodePtr result;
@@ -6846,9 +6660,9 @@ fail:
 
 static int _wrap_feedlist_get_unread_item_count(lua_State* L) {
   int SWIG_arg = -1;
-  int result;
+  unsigned int result;
   
-  result = (int)feedlist_get_unread_item_count();
+  result = (unsigned int)feedlist_get_unread_item_count();
   SWIG_arg=0;
   lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
   return SWIG_arg;
@@ -6861,11 +6675,28 @@ fail:
 
 static int _wrap_feedlist_get_new_item_count(lua_State* L) {
   int SWIG_arg = -1;
-  int result;
+  unsigned int result;
   
-  result = (int)feedlist_get_new_item_count();
+  result = (unsigned int)feedlist_get_new_item_count();
   SWIG_arg=0;
   lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_feedlist_update_new_item_count(lua_State* L) {
+  int SWIG_arg = -1;
+  unsigned int arg1 ;
+  
+  if(!lua_isnumber(L,1)) SWIG_fail_arg(1);
+  arg1 = (unsigned int)lua_tonumber(L, 1);
+  feedlist_update_new_item_count(arg1);
+  SWIG_arg=0;
+  
   return SWIG_arg;
   
 fail:
@@ -6878,26 +6709,6 @@ static int _wrap_feedlist_reset_new_item_count(lua_State* L) {
   int SWIG_arg = -1;
   
   feedlist_reset_new_item_count();
-  SWIG_arg=0;
-  
-  return SWIG_arg;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_feedlist_update_counters(lua_State* L) {
-  int SWIG_arg = -1;
-  int arg1 ;
-  int arg2 ;
-  
-  if(!lua_isnumber(L,1)) SWIG_fail_arg(1);
-  if(!lua_isnumber(L,2)) SWIG_fail_arg(2);
-  arg1 = (int)lua_tonumber(L, 1);
-  arg2 = (int)lua_tonumber(L, 2);
-  feedlist_update_counters(arg1,arg2);
   SWIG_arg=0;
   
   return SWIG_arg;
@@ -6947,6 +6758,27 @@ static int _wrap_feedlist_schedule_save(lua_State* L) {
   int SWIG_arg = -1;
   
   feedlist_schedule_save();
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_feedlist_reset_update_counters(lua_State* L) {
+  int SWIG_arg = -1;
+  nodePtr arg1 = (nodePtr) 0 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_node,0))){
+    SWIG_fail_ptr("feedlist_reset_update_counters",1,SWIGTYPE_p_node);
+  }
+  
+  feedlist_reset_update_counters(arg1);
   SWIG_arg=0;
   
   return SWIG_arg;
@@ -7420,6 +7252,20 @@ fail:
 }
 
 
+static int _wrap_social_free(lua_State* L) {
+  int SWIG_arg = -1;
+  
+  social_free();
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_social_register_site(lua_State* L) {
   int SWIG_arg = -1;
   char *arg1 = (char *) 0 ;
@@ -7808,6 +7654,20 @@ static int _wrap_ui_itemlist_new(lua_State* L) {
   result = (GtkWidget *)ui_itemlist_new();
   SWIG_arg=0;
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_GtkWidget,0); SWIG_arg++; 
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_ui_itemlist_destroy(lua_State* L) {
+  int SWIG_arg = -1;
+  
+  ui_itemlist_destroy();
+  SWIG_arg=0;
+  
   return SWIG_arg;
   
 fail:
@@ -9330,8 +9190,6 @@ static const struct luaL_reg swig_commands[] = {
     { "node_nodeType_get", _wrap_node_nodeType_get},
     { "node_source_set", _wrap_node_source_set},
     { "node_source_get", _wrap_node_source_get},
-    { "node_updateRequest_set", _wrap_node_updateRequest_set},
-    { "node_updateRequest_get", _wrap_node_updateRequest_get},
     { "node_iconFile_set", _wrap_node_iconFile_set},
     { "node_iconFile_get", _wrap_node_iconFile_get},
     { "node_parent_set", _wrap_node_parent_set},
@@ -9382,12 +9240,8 @@ static const struct luaL_reg swig_commands[] = {
     { "nodeType_save_get", _wrap_nodeType_save_get},
     { "nodeType_update_counters_set", _wrap_nodeType_update_counters_set},
     { "nodeType_update_counters_get", _wrap_nodeType_update_counters_get},
-    { "nodeType_reset_update_counter_set", _wrap_nodeType_reset_update_counter_set},
-    { "nodeType_reset_update_counter_get", _wrap_nodeType_reset_update_counter_get},
-    { "nodeType_request_update_set", _wrap_nodeType_request_update_set},
-    { "nodeType_request_update_get", _wrap_nodeType_request_update_get},
-    { "nodeType_request_auto_update_set", _wrap_nodeType_request_auto_update_set},
-    { "nodeType_request_auto_update_get", _wrap_nodeType_request_auto_update_get},
+    { "nodeType_process_update_result_set", _wrap_nodeType_process_update_result_set},
+    { "nodeType_process_update_result_get", _wrap_nodeType_process_update_result_get},
     { "nodeType_remove_set", _wrap_nodeType_remove_set},
     { "nodeType_remove_get", _wrap_nodeType_remove_get},
     { "nodeType_mark_all_read_set", _wrap_nodeType_mark_all_read_set},
@@ -9398,6 +9252,8 @@ static const struct luaL_reg swig_commands[] = {
     { "nodeType_request_add_get", _wrap_nodeType_request_add_get},
     { "nodeType_request_properties_set", _wrap_nodeType_request_properties_set},
     { "nodeType_request_properties_get", _wrap_nodeType_request_properties_get},
+    { "nodeType_free_set", _wrap_nodeType_free_set},
+    { "nodeType_free_get", _wrap_nodeType_free_get},
     { "new_nodeType", _wrap_new_nodeType},
     { "delete_nodeType", _wrap_delete_nodeType},
     { "node_type_register", _wrap_node_type_register},
@@ -9410,6 +9266,9 @@ static const struct luaL_reg swig_commands[] = {
     { "node_set_type", _wrap_node_set_type},
     { "node_set_data", _wrap_node_set_data},
     { "node_set_subscription", _wrap_node_set_subscription},
+    { "node_update_subscription", _wrap_node_update_subscription},
+    { "node_auto_update_subscription", _wrap_node_auto_update_subscription},
+    { "node_reset_update_counter", _wrap_node_reset_update_counter},
     { "node_is_ancestor", _wrap_node_is_ancestor},
     { "node_get_title", _wrap_node_get_title},
     { "node_set_title", _wrap_node_set_title},
@@ -9427,16 +9286,12 @@ static const struct luaL_reg swig_commands[] = {
     { "node_default_render", _wrap_node_default_render},
     { "node_import", _wrap_node_import},
     { "node_export", _wrap_node_export},
-    { "node_initial_load", _wrap_node_initial_load},
-    { "node_load", _wrap_node_load},
     { "node_save", _wrap_node_save},
-    { "node_unload", _wrap_node_unload},
+    { "node_process_update_result", _wrap_node_process_update_result},
     { "node_remove", _wrap_node_remove},
-    { "node_reset_update_counter", _wrap_node_reset_update_counter},
     { "node_get_itemset", _wrap_node_get_itemset},
+    { "node_merge_items", _wrap_node_merge_items},
     { "node_render", _wrap_node_render},
-    { "node_request_auto_update", _wrap_node_request_auto_update},
-    { "node_request_update", _wrap_node_request_update},
     { "node_request_properties", _wrap_node_request_properties},
     { "node_update_favicon", _wrap_node_update_favicon},
     { "node_set_sort_column", _wrap_node_set_sort_column},
@@ -9506,19 +9361,16 @@ static const struct luaL_reg swig_commands[] = {
     { "item_set_real_source_url", _wrap_item_set_real_source_url},
     { "item_set_real_source_title", _wrap_item_set_real_source_title},
     { "item_set_id", _wrap_item_set_id},
-    { "item_parse_cache", _wrap_item_parse_cache},
     { "item_to_xml", _wrap_item_to_xml},
+    { "itemlist_free", _wrap_itemlist_free},
     { "itemlist_get_displayed_node", _wrap_itemlist_get_displayed_node},
-    { "itemlist_get_displayed_itemset", _wrap_itemlist_get_displayed_itemset},
     { "itemlist_get_selected", _wrap_itemlist_get_selected},
     { "itemlist_merge_itemset", _wrap_itemlist_merge_itemset},
     { "itemlist_load", _wrap_itemlist_load},
     { "itemlist_unload", _wrap_itemlist_unload},
     { "itemlist_set_view_mode", _wrap_itemlist_set_view_mode},
     { "itemlist_get_view_mode", _wrap_itemlist_get_view_mode},
-    { "on_normal_view_activate", _wrap_on_normal_view_activate},
-    { "on_wide_view_activate", _wrap_on_wide_view_activate},
-    { "on_combined_view_activate", _wrap_on_combined_view_activate},
+    { "on_view_activate", _wrap_on_view_activate},
     { "itemlist_update_item", _wrap_itemlist_update_item},
     { "itemlist_request_remove_item", _wrap_itemlist_request_remove_item},
     { "itemlist_remove_item", _wrap_itemlist_remove_item},
@@ -9537,16 +9389,18 @@ static const struct luaL_reg swig_commands[] = {
     { "icons_set", _wrap_icons_set},
     { "icons_get", _wrap_icons_get},
     { "feedlist_init", _wrap_feedlist_init},
+    { "feedlist_free", _wrap_feedlist_free},
     { "feedlist_get_root", _wrap_feedlist_get_root},
     { "feedlist_get_selected", _wrap_feedlist_get_selected},
     { "feedlist_get_insertion_point", _wrap_feedlist_get_insertion_point},
     { "feedlist_get_unread_item_count", _wrap_feedlist_get_unread_item_count},
     { "feedlist_get_new_item_count", _wrap_feedlist_get_new_item_count},
+    { "feedlist_update_new_item_count", _wrap_feedlist_update_new_item_count},
     { "feedlist_reset_new_item_count", _wrap_feedlist_reset_new_item_count},
-    { "feedlist_update_counters", _wrap_feedlist_update_counters},
     { "feedlist_remove_node", _wrap_feedlist_remove_node},
     { "feedlist_save", _wrap_feedlist_save},
     { "feedlist_schedule_save", _wrap_feedlist_schedule_save},
+    { "feedlist_reset_update_counters", _wrap_feedlist_reset_update_counters},
     { "feedlist_selection_changed", _wrap_feedlist_selection_changed},
     { "feedlist_find_unread_feed", _wrap_feedlist_find_unread_feed},
     { "on_menu_delete", _wrap_on_menu_delete},
@@ -9565,6 +9419,7 @@ static const struct luaL_reg swig_commands[] = {
     { "new_socialBookmarkSite", _wrap_new_socialBookmarkSite},
     { "delete_socialBookmarkSite", _wrap_delete_socialBookmarkSite},
     { "social_init", _wrap_social_init},
+    { "social_free", _wrap_social_free},
     { "social_register_site", _wrap_social_register_site},
     { "social_get_url", _wrap_social_get_url},
     { "social_set_site", _wrap_social_set_site},
@@ -9582,6 +9437,7 @@ static const struct luaL_reg swig_commands[] = {
     { "on_new_plugin_activate", _wrap_on_new_plugin_activate},
     { "on_new_newsbin_activate", _wrap_on_new_newsbin_activate},
     { "ui_itemlist_new", _wrap_ui_itemlist_new},
+    { "ui_itemlist_destroy", _wrap_ui_itemlist_destroy},
     { "ui_itemlist_contains_item", _wrap_ui_itemlist_contains_item},
     { "ui_itemlist_reset_tree_store", _wrap_ui_itemlist_reset_tree_store},
     { "ui_itemlist_get_tree_store", _wrap_ui_itemlist_get_tree_store},
@@ -9679,6 +9535,7 @@ static swig_lua_const_info swig_constants[] = {
 { SWIG_LUA_INT,     (char *)"NODE_CAPABILITY_REORDER", (long) NODE_CAPABILITY_REORDER, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"NODE_CAPABILITY_SHOW_UNREAD_COUNT", (long) NODE_CAPABILITY_SHOW_UNREAD_COUNT, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"NODE_CAPABILITY_SHOW_ITEM_COUNT", (long) NODE_CAPABILITY_SHOW_ITEM_COUNT, 0, 0, 0},
+{ SWIG_LUA_INT,     (char *)"NODE_CAPABILITY_GENERIC_UPDATE", (long) NODE_CAPABILITY_GENERIC_UPDATE, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"ICON_READ", (long) ICON_READ, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"ICON_UNREAD", (long) ICON_UNREAD, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"ICON_FLAG", (long) ICON_FLAG, 0, 0, 0},
@@ -9732,7 +9589,7 @@ static swig_type_info _swigt__p_GSList = {"_p_GSList", "GSList *", 0, 0, (void*)
 static swig_type_info _swigt__p_GTimeVal = {"_p_GTimeVal", "GTimeVal *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_GtkButton = {"_p_GtkButton", "GtkButton *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_GtkMenuItem = {"_p_GtkMenuItem", "GtkMenuItem *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_GtkToggleAction = {"_p_GtkToggleAction", "GtkToggleAction *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_GtkRadioAction = {"_p_GtkRadioAction", "GtkRadioAction *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_GtkTreeIter = {"_p_GtkTreeIter", "GtkTreeIter *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_GtkTreePath = {"_p_GtkTreePath", "GtkTreePath *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_GtkTreeSelection = {"_p_GtkTreeSelection", "GtkTreeSelection *", 0, 0, (void*)0, 0};
@@ -9741,30 +9598,30 @@ static swig_type_info _swigt__p_GtkTreeStore = {"_p_GtkTreeStore", "GtkTreeStore
 static swig_type_info _swigt__p_GtkTreeView = {"_p_GtkTreeView", "GtkTreeView *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_GtkTreeViewColumn = {"_p_GtkTreeViewColumn", "GtkTreeViewColumn *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_GtkWidget = {"_p_GtkWidget", "GtkWidget *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_f_gpointer__void = {"_p_f_gpointer__void", "void (*)(gpointer)", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_f_p_q_const__char_gpointer__void = {"_p_f_p_q_const__char_gpointer__void", "void (*)(char const *,gpointer)|fileChoosenCallback", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_f_p_struct_node__itemSetPtr = {"_p_f_p_struct_node__itemSetPtr", "itemSetPtr (*)(struct node *)|itemSetPtr (*)(nodePtr)", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_f_p_struct_node__p_char = {"_p_f_p_struct_node__p_char", "char *(*)(struct node *)|char *(*)(nodePtr)", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_f_p_struct_node__void = {"_p_f_p_struct_node__void", "void (*)(struct node *)|void (*)(nodePtr)", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_f_p_struct_node_p_GTimeVal__void = {"_p_f_p_struct_node_p_GTimeVal__void", "void (*)(struct node *,GTimeVal *)|void (*)(nodePtr,GTimeVal *)", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_f_p_struct_node_p_struct_node_xmlNodePtr_int__void = {"_p_f_p_struct_node_p_struct_node_xmlNodePtr_int__void", "void (*)(struct node *,struct node *,xmlNodePtr,int)|void (*)(nodePtr,nodePtr,xmlNodePtr,int)", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_f_p_struct_node_unsigned_int__void = {"_p_f_p_struct_node_unsigned_int__void", "void (*)(struct node *,unsigned int)|void (*)(nodePtr,unsigned int)", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_f_p_struct_node_requestPtr__void = {"_p_f_p_struct_node_requestPtr__void", "void (*)(struct node *,requestPtr)|void (*)(nodePtr,requestPtr)", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_f_p_struct_node_xmlNodePtr_int__void = {"_p_f_p_struct_node_xmlNodePtr_int__void", "void (*)(struct node *,xmlNodePtr,int)|void (*)(nodePtr,xmlNodePtr,int)", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gpointer = {"_p_gpointer", "gpointer *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gulong = {"_p_gulong", "gulong *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_int = {"_p_int", "int *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_item = {"_p_item", "struct item *|itemPtr", 0, 0, (void*)&_wrap_class_item, 0};
-static swig_type_info _swigt__p_itemSet = {"_p_itemSet", "struct itemSet *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_itemSetPtr = {"_p_itemSetPtr", "itemSetPtr *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_node = {"_p_node", "struct node *|nodePtr", 0, 0, (void*)&_wrap_class_node, 0};
 static swig_type_info _swigt__p_nodeSource = {"_p_nodeSource", "struct nodeSource *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_nodeType = {"_p_nodeType", "struct nodeType *|nodeTypePtr", 0, 0, (void*)&_wrap_class_nodeType, 0};
 static swig_type_info _swigt__p_p_GdkPixbuf = {"_p_p_GdkPixbuf", "GdkPixbuf **", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_request = {"_p_request", "struct request *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_requestPtr = {"_p_requestPtr", "requestPtr *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_socialBookmarkSite = {"_p_socialBookmarkSite", "socialBookmarkSite *", 0, 0, (void*)&_wrap_class_socialBookmarkSite, 0};
 static swig_type_info _swigt__p_subscription = {"_p_subscription", "struct subscription *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_time_t = {"_p_time_t", "time_t *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_updateOptionsPtr = {"_p_updateOptionsPtr", "updateOptionsPtr *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_xmlNodePtr = {"_p_xmlNodePtr", "xmlNodePtr *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__requestPtr = {"_requestPtr", "requestPtr", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__time_t = {"_time_t", "time_t", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__updateOptionsPtr = {"_updateOptionsPtr", "updateOptionsPtr", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__xmlNodePtr = {"_xmlNodePtr", "xmlNodePtr", 0, 0, (void*)0, 0};
@@ -9779,7 +9636,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_GTimeVal,
   &_swigt__p_GtkButton,
   &_swigt__p_GtkMenuItem,
-  &_swigt__p_GtkToggleAction,
+  &_swigt__p_GtkRadioAction,
   &_swigt__p_GtkTreeIter,
   &_swigt__p_GtkTreePath,
   &_swigt__p_GtkTreeSelection,
@@ -9788,30 +9645,30 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_GtkTreeView,
   &_swigt__p_GtkTreeViewColumn,
   &_swigt__p_GtkWidget,
+  &_swigt__p_f_gpointer__void,
   &_swigt__p_f_p_q_const__char_gpointer__void,
   &_swigt__p_f_p_struct_node__itemSetPtr,
   &_swigt__p_f_p_struct_node__p_char,
   &_swigt__p_f_p_struct_node__void,
-  &_swigt__p_f_p_struct_node_p_GTimeVal__void,
   &_swigt__p_f_p_struct_node_p_struct_node_xmlNodePtr_int__void,
-  &_swigt__p_f_p_struct_node_unsigned_int__void,
+  &_swigt__p_f_p_struct_node_requestPtr__void,
   &_swigt__p_f_p_struct_node_xmlNodePtr_int__void,
   &_swigt__p_gpointer,
   &_swigt__p_gulong,
   &_swigt__p_int,
   &_swigt__p_item,
-  &_swigt__p_itemSet,
   &_swigt__p_itemSetPtr,
   &_swigt__p_node,
   &_swigt__p_nodeSource,
   &_swigt__p_nodeType,
   &_swigt__p_p_GdkPixbuf,
-  &_swigt__p_request,
+  &_swigt__p_requestPtr,
   &_swigt__p_socialBookmarkSite,
   &_swigt__p_subscription,
   &_swigt__p_time_t,
   &_swigt__p_updateOptionsPtr,
   &_swigt__p_xmlNodePtr,
+  &_swigt__requestPtr,
   &_swigt__time_t,
   &_swigt__updateOptionsPtr,
   &_swigt__xmlNodePtr,
@@ -9826,7 +9683,7 @@ static swig_cast_info _swigc__p_GSList[] = {  {&_swigt__p_GSList, 0, 0, 0},{0, 0
 static swig_cast_info _swigc__p_GTimeVal[] = {  {&_swigt__p_GTimeVal, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_GtkButton[] = {  {&_swigt__p_GtkButton, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_GtkMenuItem[] = {  {&_swigt__p_GtkMenuItem, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_GtkToggleAction[] = {  {&_swigt__p_GtkToggleAction, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_GtkRadioAction[] = {  {&_swigt__p_GtkRadioAction, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_GtkTreeIter[] = {  {&_swigt__p_GtkTreeIter, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_GtkTreePath[] = {  {&_swigt__p_GtkTreePath, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_GtkTreeSelection[] = {  {&_swigt__p_GtkTreeSelection, 0, 0, 0},{0, 0, 0, 0}};
@@ -9835,30 +9692,30 @@ static swig_cast_info _swigc__p_GtkTreeStore[] = {  {&_swigt__p_GtkTreeStore, 0,
 static swig_cast_info _swigc__p_GtkTreeView[] = {  {&_swigt__p_GtkTreeView, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_GtkTreeViewColumn[] = {  {&_swigt__p_GtkTreeViewColumn, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_GtkWidget[] = {  {&_swigt__p_GtkWidget, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_f_gpointer__void[] = {  {&_swigt__p_f_gpointer__void, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_f_p_q_const__char_gpointer__void[] = {  {&_swigt__p_f_p_q_const__char_gpointer__void, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_f_p_struct_node__itemSetPtr[] = {  {&_swigt__p_f_p_struct_node__itemSetPtr, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_f_p_struct_node__p_char[] = {  {&_swigt__p_f_p_struct_node__p_char, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_f_p_struct_node__void[] = {  {&_swigt__p_f_p_struct_node__void, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_f_p_struct_node_p_GTimeVal__void[] = {  {&_swigt__p_f_p_struct_node_p_GTimeVal__void, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_f_p_struct_node_p_struct_node_xmlNodePtr_int__void[] = {  {&_swigt__p_f_p_struct_node_p_struct_node_xmlNodePtr_int__void, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_f_p_struct_node_unsigned_int__void[] = {  {&_swigt__p_f_p_struct_node_unsigned_int__void, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_f_p_struct_node_requestPtr__void[] = {  {&_swigt__p_f_p_struct_node_requestPtr__void, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_f_p_struct_node_xmlNodePtr_int__void[] = {  {&_swigt__p_f_p_struct_node_xmlNodePtr_int__void, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gpointer[] = {  {&_swigt__p_gpointer, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gulong[] = {  {&_swigt__p_gulong, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_int[] = {  {&_swigt__p_int, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_item[] = {  {&_swigt__p_item, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_itemSet[] = {  {&_swigt__p_itemSet, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_itemSetPtr[] = {  {&_swigt__p_itemSetPtr, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_node[] = {  {&_swigt__p_node, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_nodeSource[] = {  {&_swigt__p_nodeSource, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_nodeType[] = {  {&_swigt__p_nodeType, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_p_GdkPixbuf[] = {  {&_swigt__p_p_GdkPixbuf, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_request[] = {  {&_swigt__p_request, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_requestPtr[] = {  {&_swigt__p_requestPtr, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_socialBookmarkSite[] = {  {&_swigt__p_socialBookmarkSite, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_subscription[] = {  {&_swigt__p_subscription, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_time_t[] = {  {&_swigt__p_time_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_updateOptionsPtr[] = {  {&_swigt__p_updateOptionsPtr, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_xmlNodePtr[] = {  {&_swigt__p_xmlNodePtr, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__requestPtr[] = {  {&_swigt__requestPtr, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__time_t[] = {  {&_swigt__time_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__updateOptionsPtr[] = {  {&_swigt__updateOptionsPtr, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__xmlNodePtr[] = {  {&_swigt__xmlNodePtr, 0, 0, 0},{0, 0, 0, 0}};
@@ -9873,7 +9730,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_GTimeVal,
   _swigc__p_GtkButton,
   _swigc__p_GtkMenuItem,
-  _swigc__p_GtkToggleAction,
+  _swigc__p_GtkRadioAction,
   _swigc__p_GtkTreeIter,
   _swigc__p_GtkTreePath,
   _swigc__p_GtkTreeSelection,
@@ -9882,30 +9739,30 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_GtkTreeView,
   _swigc__p_GtkTreeViewColumn,
   _swigc__p_GtkWidget,
+  _swigc__p_f_gpointer__void,
   _swigc__p_f_p_q_const__char_gpointer__void,
   _swigc__p_f_p_struct_node__itemSetPtr,
   _swigc__p_f_p_struct_node__p_char,
   _swigc__p_f_p_struct_node__void,
-  _swigc__p_f_p_struct_node_p_GTimeVal__void,
   _swigc__p_f_p_struct_node_p_struct_node_xmlNodePtr_int__void,
-  _swigc__p_f_p_struct_node_unsigned_int__void,
+  _swigc__p_f_p_struct_node_requestPtr__void,
   _swigc__p_f_p_struct_node_xmlNodePtr_int__void,
   _swigc__p_gpointer,
   _swigc__p_gulong,
   _swigc__p_int,
   _swigc__p_item,
-  _swigc__p_itemSet,
   _swigc__p_itemSetPtr,
   _swigc__p_node,
   _swigc__p_nodeSource,
   _swigc__p_nodeType,
   _swigc__p_p_GdkPixbuf,
-  _swigc__p_request,
+  _swigc__p_requestPtr,
   _swigc__p_socialBookmarkSite,
   _swigc__p_subscription,
   _swigc__p_time_t,
   _swigc__p_updateOptionsPtr,
   _swigc__p_xmlNodePtr,
+  _swigc__requestPtr,
   _swigc__time_t,
   _swigc__updateOptionsPtr,
   _swigc__xmlNodePtr,

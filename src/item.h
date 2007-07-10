@@ -143,17 +143,6 @@ void		item_set_real_source_title(itemPtr item, const gchar * source);
 void		item_set_id(itemPtr item, const gchar * id);
 
 /**
- * Parse an xml tree and return a new item generated 
- * from the current node's information. Only used for migration!
- *
- * @param cur		the XML node to parse
- * @param migrateCache	TRUE if cache migration requested
- *
- * @returns a new item structure
- */
-itemPtr item_parse_cache(xmlNodePtr cur, gboolean migrateCache);
-
-/**
  * Does the opposite of item_parse_cache. Adds an XML node
  * to the given feed item list node. 
  *

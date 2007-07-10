@@ -35,15 +35,7 @@ void itemlist_free (void);
  *
  * @returns displayed node (or NULL)
  */
-// FIXME: drop me in favour of itemlist_get_displayed_itemset()
 struct node * itemlist_get_displayed_node(void);
-
-/**
- * Returns the currently displayed item set.
- *
- * @returns displayed item set (or NULL)
- */
-struct itemSet * itemlist_get_displayed_itemset(void);
 
 /**
  * Returns the currently selected item.
