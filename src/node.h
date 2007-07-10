@@ -110,7 +110,7 @@ typedef struct nodeType {
 	itemSetPtr	(*load)			(nodePtr node);
 	void 		(*save)			(nodePtr node);
 	void		(*update_counters)	(nodePtr node);
-	void 		(*process_update_result)(requestPtr request);
+	void 		(*process_update_result)(nodePtr node, requestPtr request);
 	void		(*remove)		(nodePtr node);
 	void 		(*mark_all_read)	(nodePtr node);
 	gchar *		(*render)		(nodePtr node);
@@ -405,6 +405,15 @@ void node_initial_load(nodePtr node);
  * @param node	the node
  */
 void node_save(nodePtr node);
+
+/**
+ * Passes the completed request structure to the node
+ * type specific processing.
+ *
+ * @param node		the node
+ * @param request	the processed request
+ */
+void node_process_update_result (nodePtr node, requestPtr request);
 
 /**
  * Removes the given node.

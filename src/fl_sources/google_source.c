@@ -154,14 +154,13 @@ google_source_subscriptions_cb (requestPtr request)
 	} else {
 		node->available = FALSE;
 	}
-
 	subscription_update_error_status(node->subscription, request->httpstatus, request->returncode, NULL);
-
-	node_foreach_child (node, node_request_update);
-	db_update_state_save (node->id, request->updateState);
 
 	itemview_update_node_info (node);
 	itemview_update ();
+
+	node_foreach_child (node, node_request_update);
+	db_update_state_save (node->id, request->updateState);
 }
 
 static void
@@ -249,7 +248,8 @@ google_source_update_subscription_list (nodePtr node, GTimeVal *now)
 		google_source_login (node, now);
 		return;
 	}
-	
+
+	/* not using subscription_update() code because we need to set extra cookies */	
 	request = update_request_new (node);
 	subscription_prepare_request (node->subscription, request, 0, now);
 	request->options = node->subscription->updateOptions;
@@ -348,7 +348,8 @@ static struct nodeSourceType nst = {
 	opml_source_remove,
 	opml_source_import,
 	opml_source_export,
-	opml_source_get_feedlist
+	opml_source_get_feedlist,
+	NULL
 };
 
 nodeSourceTypePtr

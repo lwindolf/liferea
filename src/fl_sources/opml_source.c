@@ -210,9 +210,8 @@ opml_source_check_for_removal (nodePtr node, gpointer user_data)
 }
 
 void
-opml_source_process_update_results (requestPtr request)
+opml_source_process_update_result (nodePtr node, requestPtr request)
 {
-	nodePtr		node = (nodePtr)request->user_data;
 	mergeCtxtPtr	mergeCtxt;
 	xmlDocPtr	doc, oldDoc;
 	xmlNodePtr	root, title;
@@ -317,6 +316,7 @@ static struct nodeSourceType nst = {
 	opml_source_import,
 	opml_source_export,
 	opml_source_get_feedlist,
+	opml_source_process_update_result
 };
 
 nodeSourceTypePtr

@@ -275,7 +275,8 @@ node_source_save (nodePtr node)
 static void
 node_source_process_update_result (nodePtr node, requestPtr request)
 {
-	// FIXME
+	if (NULL != NODE_SOURCE_TYPE (node)->source_process_update_result)
+		NODE_SOURCE_TYPE (node)->source_process_update_result (node, request);
 }
 
 nodeTypePtr
@@ -301,6 +302,7 @@ node_source_get_node_type (void)
 		nodeType->render		= node_default_render;
 		nodeType->request_add		= ui_node_source_type_dialog;
 		nodeType->request_properties	= ui_node_rename;
+		nodeType->process_update_result	= node_source_process_update_result;
 	}
 
 	return nodeType; 

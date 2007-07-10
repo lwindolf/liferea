@@ -162,8 +162,7 @@ subscription_process_update_result (requestPtr request)
 	
 	/* 2. call subscription/node type specific processing */
 	if (processing)
-		;
-	// FIXME
+		node_process_update_result (node, request);
 	
 	/* 3. postprocessing */
 	subscription->updateRequest = NULL;
@@ -397,8 +396,6 @@ subscription_import (xmlNodePtr xml, gboolean trusted)
 		source = xmlGetProp (xml, BAD_CAST "xmlurl");	/* e.g. for AmphetaDesk */
 		
 	if (source) {
-		xmlChar	*typeStr = xmlGetProp (xml, BAD_CAST "type");
-	
 		if (!trusted && source[0] == '|') {
 			/* FIXME: Display warning dialog asking if the command
 			   is safe? */

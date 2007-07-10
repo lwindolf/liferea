@@ -157,6 +157,7 @@ static struct nodeSourceType nst = {
 	default_source_source_import,
 	default_source_source_export,
 	default_source_source_get_feedlist,
+	NULL
 };
 
 nodeSourceTypePtr default_source_get_type(void) { return &nst; }

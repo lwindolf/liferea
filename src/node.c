@@ -475,6 +475,13 @@ void node_save(nodePtr node) {
 	NODE_TYPE(node)->save(node);
 }
 
+void
+node_process_update_result (nodePtr node, requestPtr request)
+{
+	if (NODE_TYPE (node)->process_update_result)
+		NODE_TYPE (node)->process_update_result (node, request);
+}
+
 void node_remove(nodePtr node) {
 	NODE_TYPE(node)->remove(node);
 }

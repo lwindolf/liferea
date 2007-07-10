@@ -539,10 +539,9 @@ feed_free (gpointer data) {
 /* implementation of feed node update request processing callback */
 
 static void
-feed_process_update_result (struct request *request)
+feed_process_update_result (nodePtr node, struct request *request)
 {
 	feedParserCtxtPtr	ctxt;
-	nodePtr			node = (nodePtr)request->user_data;
 	feedPtr			feed = (feedPtr)node->data;
 	subscriptionPtr		subscription = (subscriptionPtr)node->subscription;
 	gchar			*old_source;

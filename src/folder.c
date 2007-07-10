@@ -143,6 +143,7 @@ nodeTypePtr folder_get_node_type(void) {
 		folder_load,
 		folder_save,
 		folder_update_unread_count,
+		NULL,			/* process_update_result */
 		folder_remove,
 		folder_mark_all_read,
 		node_default_render,

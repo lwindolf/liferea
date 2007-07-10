@@ -69,9 +69,10 @@ void opml_source_setup(nodePtr parent, nodePtr node);
 /**
  * Request processing callback for OPML source updates.
  *
- * @param request	finished requests
+ * @param node		the node
+ * @param request	finished request
  */
-void opml_source_process_update_results(requestPtr request);
+void opml_source_process_update_result(nodePtr node, requestPtr request);
 
 /**
  * Updates the OPML source of the given node.

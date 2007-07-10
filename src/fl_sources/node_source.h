@@ -100,6 +100,12 @@ typedef struct nodeSourceType {
 	 * caller.
 	 */
 	gchar *		(*source_get_feedlist)(nodePtr node);
+	
+	/**
+	 * This optional method is called to allow result processing for
+	 * update requests started using subscription_update(). 
+	 */
+	void		(*source_process_update_result)(nodePtr node, requestPtr request);
 } *nodeSourceTypePtr;
 
 /** feed list source instance */
