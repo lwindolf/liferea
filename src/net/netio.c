@@ -433,7 +433,7 @@ static int NetConnect (int * my_socket, char * host, struct feed_request * cur_p
 	if (sscanf (host, "%[^:]:%hd", realhost, &port) != 2) {
 		port = 80;
 	}
-	debug2(DEBUG_NET, "host=%s port=%s", realhost, port_str);
+	debug2(DEBUG_NET, "host=%s port=%u", realhost, port);
 	
 	/* Create a inet stream TCP socket. */
 	*my_socket = socket (AF_INET, SOCK_STREAM, 0);
