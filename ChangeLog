@@ -1,6 +1,10 @@
+2007-07-??  Lars Lindner  <lars.lindner@gmail.com>
 
 	* Update of Spanish translation by Luis Rodrigo
 	  Gallardo Cruz
+	* Fixes a compilation problem on systems without
+	  getaddrinfo (reported by Gilles Gravier)
+	* Fixes a bug in the networking code (Hubert Figuiere)
 
 
 2007-07-02  Lars Lindner  <lars.lindner@gmail.com>
