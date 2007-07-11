@@ -66,26 +66,30 @@ static void ui_update_merge_request(nodePtr node, GtkTreeStore *store, GHashTabl
 	g_hash_table_insert(hash, (gpointer)node->id, (gpointer)iter);
 }
 
-static void ui_update_find_requests(nodePtr node) {
+static void
+ui_update_find_requests (nodePtr node) {
 
-	if(node->children)
-		node_foreach_child(node, ui_update_find_requests);
+	if (node->children)
+		node_foreach_child (node, ui_update_find_requests);
 
-	if(node->subscription->updateRequest) {
-		if(REQUEST_STATE_PROCESSING == node->subscription->updateRequest->state) {
-			ui_update_merge_request(node, um1store, um1hash);
-			ui_update_remove_request(node, um2store, um2hash);
+	if (!node->subscription)
+		return;
+		
+	if (node->subscription->updateRequest) {
+		if (REQUEST_STATE_PROCESSING == node->subscription->updateRequest->state) {
+			ui_update_merge_request (node, um1store, um1hash);
+			ui_update_remove_request (node, um2store, um2hash);
 			return;
 		}
 
-		if(REQUEST_STATE_PENDING == node->subscription->updateRequest->state) {
-			ui_update_merge_request(node, um2store, um2hash);
+		if (REQUEST_STATE_PENDING == node->subscription->updateRequest->state) {
+			ui_update_merge_request (node, um2store, um2hash);
 			return;
 		}
 	}
-		
-	ui_update_remove_request(node, um1store, um1hash);
-	ui_update_remove_request(node, um2store, um2hash);
+			
+	ui_update_remove_request (node, um1store, um1hash);
+	ui_update_remove_request (node, um2store, um2hash);
 }
 
 static gboolean ui_update_monitor_update(void *data) {
