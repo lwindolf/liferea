@@ -308,7 +308,7 @@ dnl  - libxml2/libxslt versions lower than the given ones are known
 dnl    to crash on certain distributions, lower them on your own risk!
 dnl  - exact minimum sqlite3 dependency is 3.3.9, but .pc only gives 3.3
 dnl
-pkg_modules="	gtk+-2.0 >= 2.8.0 
+pkg_modules="	gtk+-2.0 >= 2.10.0 
 		pango >= 1.4.0
 		gconf-2.0 >= 1.1.9 
 		libxml-2.0 >= 2.6.27
