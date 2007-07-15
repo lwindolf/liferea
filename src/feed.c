@@ -191,9 +191,6 @@ feed_export (nodePtr node, xmlNodePtr xml, gboolean trusted)
 
 	subscription_export (node->subscription, xml, trusted);
 
-	if (subscription_get_filter (node->subscription))
-		xmlNewProp(xml, BAD_CAST"filtercmd", BAD_CAST subscription_get_filter (node->subscription));
-
 	if(trusted) {
 		if (feed->cacheLimit >= 0)
 			cacheLimit = g_strdup_printf ("%d", feed->cacheLimit);
