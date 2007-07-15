@@ -64,9 +64,6 @@ static gboolean is_gconf_error(GError **err) {
 /* called once on startup */
 void conf_init() {
 	
-	/* has to be called for multithreaded programs */
-	xmlInitParser();
-	
 	/* Construct the User-Agent string of Liferea. This is done here in program init,
 	   because we need to do it exactly once and it will never change while the program
 	   is running. */

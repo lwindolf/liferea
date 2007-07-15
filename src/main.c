@@ -47,6 +47,7 @@
 #include "social.h"
 #include "update.h"
 #include "vfolder.h"
+#include "xml.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_htmlview.h"
 #include "ui/ui_mainwindow.h"
@@ -246,6 +247,7 @@ int main(int argc, char *argv[]) {
 	/* order is important! */
 	rule_init();
 	db_init();			/* initialize sqlite */
+	xml_init ();			/* initialize libxml2 */
 	conf_init();			/* initialize gconf */
 	update_init();			/* initialize the download subsystem */
 	plugin_mgmt_init();		/* get list of plugins and initialize them */

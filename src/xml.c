@@ -506,6 +506,16 @@ xml_parse_feed (feedParserCtxtPtr fpc)
 	return fpc->doc;
 }
 
+void
+xml_init (void)
+{
+	/* set libxml2 to use glib allocation, so that we
+	   can free() and reuse libxml2 allocated memory chunks */
+	xmlMemSetup (g_free, g_malloc, g_realloc, g_strdup);
+	/* has to be called for multithreaded programs */
+	xmlInitParser ();
+}
+
 /* The following slightly modified function was originally taken 
  * from GConf 2.16.0 backends/xml-dir.c: Copyright (C) 1999, 2000 Red Hat Inc. */
 

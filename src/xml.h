@@ -29,6 +29,11 @@
 #include "feed.h"
 
 /**
+ * Initialize XML parsing.
+ */
+void xml_init (void);
+
+/**
  * Retrieves the text content of an HTML chunk. All entities
  * will be replaced. All HTML tags are stripped. The passed
  * string will be freed.

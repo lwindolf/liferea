@@ -13,11 +13,15 @@
 	* Fixes several memory leaks (Hubert Figuiere)
 	* Fixes a bug in the networking code (Hubert Figuiere)
 	* Fixes a crash in the Atom parsing (Hubert Figuiere)
-	* Fixes a leak in vfolder_import() (Hubert Figuiere)
+	* Fixes a compilation problem on systems without
+	  getaddrinfo (reported by Gilles Gravier)
+	* Using glib allocation for libxml2 too
 
 	Translations
 
 	* Update of Brazilian Portugese translation (Og Maciel)
+	* Update of French translation (Vincent Lefevre)
+	* Update of Spanish translation (Luis Rodrigo Gallardo Cruz)
 
 
 2007-07-05  Lars Lindner  <lars.lindner@gmail.com>
