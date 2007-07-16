@@ -521,8 +521,8 @@ void feed_set_image_url(feedPtr feed, const gchar *imageUrl) {
 
 /* method to free a feed structure */
 static void
-feed_free (gpointer data) {
-	feedPtr	feed = (feedPtr)data;
+feed_free (nodePtr node) {
+	feedPtr	feed = (feedPtr)node->data;
 
 	if(feed->parseErrors)
 		g_string_free(feed->parseErrors, TRUE);

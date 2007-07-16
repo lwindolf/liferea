@@ -106,6 +106,12 @@ typedef struct nodeSourceType {
 	 * update requests started using subscription_update(). 
 	 */
 	void		(*source_process_update_result)(nodePtr node, requestPtr request);
+	
+	/**
+	 * Frees all data of the given node source instance. To be called
+	 * during node_free() for a source node.
+	 */
+	void		(*free) (nodePtr node);
 } *nodeSourceTypePtr;
 
 /** feed list source instance */

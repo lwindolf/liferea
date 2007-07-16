@@ -116,7 +116,14 @@ typedef struct nodeType {
 	gchar *		(*render)		(nodePtr node);
 	void		(*request_add)		(nodePtr parent);
 	void		(*request_properties)	(nodePtr node);
-	void		(*free)			(gpointer data);
+	
+	/**
+	 * Called to allow node type to clean up it's specific data.
+	 * The node structure itself is destroyed after this call.
+	 *
+	 * @param node		the node
+	 */
+	void		(*free)			(nodePtr node);
 } *nodeTypePtr;
 
 #define NODE_TYPE(node)	(node->nodeType)

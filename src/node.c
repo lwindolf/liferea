@@ -196,7 +196,7 @@ void
 node_free (nodePtr node)
 {
 	if (node->data && NODE_TYPE (node)->free)
-		NODE_TYPE (node)->free (node->data);
+		NODE_TYPE (node)->free (node);
 
 	g_assert (NULL == node->children);
 	

@@ -90,7 +90,7 @@ google_source_merge_feed(xmlNodePtr match, gpointer user_data)
 	if (xml)
 		id = xmlNodeListGetString (xml->doc, xml->xmlChildrenNode, 1);
 		
-	/* check if node already exists */
+	/* check if node to be merged already exists */
 	iter = reader->root->children;
 	while (iter) {
 		node = (nodePtr)iter->data;
@@ -106,7 +106,7 @@ google_source_merge_feed(xmlNodePtr match, gpointer user_data)
 		node_set_title (node, title);
 		node_set_type (node, feed_get_node_type ());
 		node_set_data (node, feed_new ());
-		node_set_subscription (node, subscription_new (id + 5, NULL, NULL));
+		node_set_subscription (node, subscription_new (id + 5 /* skip "feed/" */, NULL, NULL));
 		node_add_child (reader->root, node, -1);
 		subscription_update (node->subscription, FEED_REQ_RESET_TITLE);
 	}
@@ -331,6 +331,15 @@ ui_google_source_get_account_info (nodePtr parent)
 			  (gpointer) parent);
 }
 
+static void
+google_source_free (nodePtr node)
+{
+	readerPtr reader = (readerPtr) node->data;
+	
+	g_free (reader->sid);	
+	g_free (reader);
+}
+
 /* node source type definition */
 
 static struct nodeSourceType nst = {
@@ -347,7 +356,8 @@ static struct nodeSourceType nst = {
 	opml_source_import,
 	opml_source_export,
 	opml_source_get_feedlist,
-	NULL
+	NULL,
+	google_source_free
 };
 
 nodeSourceTypePtr

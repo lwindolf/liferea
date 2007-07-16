@@ -94,7 +94,8 @@ static struct nodeSourceType nst = {
 	opml_source_import,
 	opml_source_export,
 	opml_source_get_feedlist,
-	opml_source_process_update_result
+	opml_source_process_update_result,
+	NULL	/* free */
 };
 
 nodeSourceTypePtr

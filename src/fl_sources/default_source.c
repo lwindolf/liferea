@@ -56,8 +56,9 @@ default_source_source_import (nodePtr node)
 {
 	gchar		*filename10;
 	gchar		*filename12;
-	gchar		*filename13;
+	gchar		*filename;
 	GSList		*iter, *subscriptions;
+	migrationMode	migration = 0;
 
 	debug_enter ("default_source_source_import");
 
@@ -67,40 +68,48 @@ default_source_source_import (nodePtr node)
 	/* build test file names */
 	filename10 = g_strdup_printf ("%s/.liferea/feedlist.opml", g_get_home_dir ());
 	filename12 = g_strdup_printf ("%s/.liferea_1.2/feedlist.opml", g_get_home_dir ());
-	filename13 = default_source_source_get_feedlist (node);
-
-	/* if feed list is missing, try migration */
+	filename = default_source_source_get_feedlist (node);
 	
-	if (!g_file_test (filename13, G_FILE_TEST_EXISTS) &&
-	     g_file_test (filename12, G_FILE_TEST_EXISTS))
-		migrate_12_to_13 ();
+	if (!g_file_test (filename, G_FILE_TEST_EXISTS)) {
+		/* if feed list is missing, try migration */
+		
+		if (g_file_test (filename12, G_FILE_TEST_EXISTS)) {
+			g_free (filename);
+		     	filename = g_strdup (filename12);
+			migration = MIGRATION_MODE_12_TO_13;
+		} else if (g_file_test (filename10, G_FILE_TEST_EXISTS)) {
+			g_free (filename);
+	     		filename = g_strdup (filename10);
+			migration = MIGRATION_MODE_10_TO_13;
+		}
+	}
 
-	if (!g_file_test (filename13, G_FILE_TEST_EXISTS) &&
-	     g_file_test (filename10, G_FILE_TEST_EXISTS))
-		migrate_10_to_13 ();
+	g_free (filename12);
+	g_free (filename10);
 	
 	/* check for default feed list import */
-	if (!g_file_test (filename13, G_FILE_TEST_EXISTS)) {
+	if (!g_file_test (filename, G_FILE_TEST_EXISTS)) {
 		/* if there is no feedlist.opml we provide a default feed list */
-		g_free (filename13);
+		g_free (filename);
 		
 		/* "feedlist.opml" is translatable so that translators can provide a localized default feed list */
-		filename13 = g_strdup_printf (PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "opml" G_DIR_SEPARATOR_S "%s", _("feedlist.opml"));
+		filename = g_strdup_printf (PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "opml" G_DIR_SEPARATOR_S "%s", _("feedlist.opml"));
 		
 		/* sanity check to catch wrong filenames supplied in translations */
-		if (!g_file_test (filename13, G_FILE_TEST_EXISTS)) {
-			g_warning ("Configured localized feed list \"%s\" does not exist!", filename13);
-			g_free (filename13);
-			filename13 = g_strdup_printf(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "opml" G_DIR_SEPARATOR_S "%s", "feedlist.opml");
+		if (!g_file_test (filename, G_FILE_TEST_EXISTS)) {
+			g_warning ("Configured localized feed list \"%s\" does not exist!", filename);
+			g_free (filename);
+			filename = g_strdup_printf(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "opml" G_DIR_SEPARATOR_S "%s", "feedlist.opml");
 		}
 	}
 	
-	if (!import_OPML_feedlist (filename13, node, node->source, FALSE, TRUE))
+	if (!import_OPML_feedlist (filename, node, node->source, FALSE, TRUE))
 		g_error ("Fatal: Feed list import failed!");
 		
-	g_free (filename13);
-	g_free (filename12);
-	g_free (filename10);
+	g_free (filename);
+			
+	if (migration)
+		migration_execute (migration);
 	
 	/* DB cleanup, ensure that there are no subscriptions in the DB
 	   that have no representation in the OPML feed list. */
@@ -152,12 +161,13 @@ static struct nodeSourceType nst = {
 	NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST,
 	default_source_init,
 	default_source_deinit,
-	NULL,
-	NULL,
+	NULL,	/* ui_add */
+	NULL,	/* remove */
 	default_source_source_import,
 	default_source_source_export,
 	default_source_source_get_feedlist,
-	NULL
+	NULL,	/* process_update_result */
+	NULL	/* free */
 };
 
 nodeSourceTypePtr default_source_get_type(void) { return &nst; }

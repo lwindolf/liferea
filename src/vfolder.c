@@ -183,7 +183,6 @@ vfolder_import (nodePtr node,
 	vfolder_import_rules (cur, vfolder);
 	node_add_child (parent, node, -1);
 	vfolder_refresh (vfolder);
-	vfolder_free (vfolder);
 }
 
 static void
@@ -248,10 +247,10 @@ vfolder_remove_rule (vfolderPtr vfolder, rulePtr rule)
 	vfolder->rules = g_slist_remove (vfolder->rules, rule);
 }
 
-void
-vfolder_free (gpointer data) 
+static void
+vfolder_free (nodePtr node) 
 {
-	vfolderPtr	vfolder = (vfolderPtr) data;
+	vfolderPtr	vfolder = (vfolderPtr) node->data;
 	GSList		*rule;
 
 	debug_enter ("vfolder_free");
@@ -286,7 +285,7 @@ static void
 vfolder_remove (nodePtr node) 
 {
 	ui_node_remove_node (node);
-	vfolder_free (node->data);
+	vfolder_free (node);
 }
 
 static void

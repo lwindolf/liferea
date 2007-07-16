@@ -94,7 +94,6 @@ on_searchentry_activate (GtkEntry *entry, gpointer user_data)
 		if (searchResult == itemlist_get_displayed_node ())
 			itemlist_unload (FALSE);
 			
-		vfolder_free (searchResult->data);
 		node_free (searchResult);
 	}
 

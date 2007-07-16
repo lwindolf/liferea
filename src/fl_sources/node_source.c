@@ -279,6 +279,13 @@ node_source_process_update_result (nodePtr node, requestPtr request)
 		NODE_SOURCE_TYPE (node)->source_process_update_result (node, request);
 }
 
+static void
+node_source_free (nodePtr node)
+{
+	if (NULL != NODE_SOURCE_TYPE (node)->free)
+		NODE_SOURCE_TYPE (node)->free (node);
+}
+
 nodeTypePtr
 node_source_get_node_type (void)
 {
@@ -303,6 +310,7 @@ node_source_get_node_type (void)
 		nodeType->request_add		= ui_node_source_type_dialog;
 		nodeType->request_properties	= ui_node_rename;
 		nodeType->process_update_result	= node_source_process_update_result;
+		nodeType->free			= node_source_free;
 	}
 
 	return nodeType; 

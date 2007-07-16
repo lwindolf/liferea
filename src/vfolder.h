@@ -121,14 +121,6 @@ void vfolder_update_counters (nodePtr node);
  */
 void vfolder_refresh (vfolderPtr vfolder);
 
-/**
- * Called when a search folder is processed by node_free()
- * to get rid of the search folder items.
- *
- * @param vfolder	search folder to free
- */
-void vfolder_free (gpointer data);
-
 /* implementation of the node type interface */
 struct nodeType * vfolder_get_node_type (void);
 
