@@ -246,8 +246,10 @@ guint db_view_get_unread_count (const gchar *id);
  *
  * @param id		the node id
  * @param updateState	update state structure to fill
+ *
+ * @returns TRUE if update state could be loaded
  */
-void db_update_state_load (const gchar *id, updateStatePtr updateState);
+gboolean db_update_state_load (const gchar *id, updateStatePtr updateState);
 
 /**
  * Updates all attributes and state of the feed in the DB

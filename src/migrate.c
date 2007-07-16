@@ -146,16 +146,16 @@ migrate_load_from_cache (const gchar *sourceDir, const gchar *id)
 	guint 			itemCount = 0;
 	
 	debug_enter ("migrate_load_from_cache");
-	
-	ctxt = feed_create_parser_ctxt ();
-	ctxt->subscription = subscription_new (NULL, NULL, NULL);
-	ctxt->feed = feed_new ();
 
-	node = node_new();		
-	node_set_id (node, id);
-	node_set_type (node, feed_get_node_type ());
-	node_set_data (node, ctxt->feed);
-	node_set_subscription (node, ctxt->subscription);
+	node = node_from_id (id);
+	if (!node) {
+		debug1 (DEBUG_CACHE, "ignoring cache file %s because it is not referenced in feed list...", id);
+		return;		/* propably a stale cache file */
+	}
+
+	ctxt = feed_create_parser_ctxt ();
+	ctxt->subscription = node->subscription;
+	ctxt->feed = (feedPtr)node->data;
 		
 	filename = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "%s", sourceDir, node->id);
 	debug2 (DEBUG_CACHE, "loading cache file \"%s\" (feed \"%s\")", filename, subscription_get_source(ctxt->subscription));
@@ -221,8 +221,10 @@ migrate_load_from_cache (const gchar *sourceDir, const gchar *id)
 	g_free (ctxt->data);
 	g_free (filename);
 
-	node_free (node);
 	feed_free_parser_ctxt (ctxt);
+	
+	db_node_update (node);
+	db_subscription_update (node->subscription);
 	
 	g_print ("\n");
 	
@@ -246,11 +248,10 @@ migrate_items (const gchar *sourceDir)
 	}
 	g_dir_close (dir);
 	
-	db_end_transaction ();
 	db_commit_transaction ();
 }
 
-void 
+static void 
 migrate_10_to_13 (void)
 {
 	gchar *sourceDir;
@@ -264,7 +265,7 @@ migrate_10_to_13 (void)
 	g_free(sourceDir);
 }
 
-void
+static void
 migrate_12_to_13 (void)
 {
 	gchar *sourceDir;
@@ -278,4 +279,20 @@ migrate_12_to_13 (void)
 	sourceDir = g_strdup_printf("%s" G_DIR_SEPARATOR_S ".liferea_1.2" G_DIR_SEPARATOR_S "cache" G_DIR_SEPARATOR_S "feeds", g_get_home_dir());
 	migrate_items(sourceDir);
 	g_free(sourceDir);
+}
+
+void
+migration_execute (migrationMode mode)
+{
+	switch (mode) {
+		case MIGRATION_MODE_10_TO_13:
+			migrate_10_to_13 ();
+			break;
+		case MIGRATION_MODE_12_TO_13:
+			migrate_12_to_13 ();
+			break;
+		default:
+			g_error ("Invalid migration mode!");
+			break;
+	}
 }

@@ -21,14 +21,17 @@
 #ifndef _MIGRATE_H
 #define _MIGRATE_H
 
-/**
- * Migrates cache version 1.0 to 1.3.
- */
-void	migrate_10_to_13	(void);
+typedef enum {
+	MIGRATION_MODE_INVALID = 0,
+	MIGRATION_MODE_10_TO_13,
+	MIGRATION_MODE_12_TO_13
+} migrationMode;
 
 /**
- * Migrates cache version 1.2 to 1.3.
+ * Performs a migration for the given migration mode.
+ *
+ * @param mode	migration mode
  */
-void	migrate_12_to_13	(void);
+void migration_execute (migrationMode mode);
 
 #endif

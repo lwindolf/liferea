@@ -1391,7 +1391,7 @@ db_view_get_unread_count (const gchar *id)
 	return count;
 }
 
-void
+gboolean
 db_update_state_load (const gchar *id,
                       updateStatePtr updateState)
 {
@@ -1418,6 +1418,8 @@ db_update_state_load (const gchar *id,
 	}
 
 	debug_end_measurement (DEBUG_DB, "update state load");
+	
+	return (SQLITE_ROW == res);
 }
 
 void

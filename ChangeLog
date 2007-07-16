@@ -16,6 +16,13 @@
 	* Fixes a compilation problem on systems without
 	  getaddrinfo (reported by Gilles Gravier)
 	* Using glib allocation for libxml2 too
+	* Avoid displaying negative numbers in feed list
+	  if unread counting is incorrect. Treat negative 
+	  counts like zero count.
+	* Improved migration code. Now ignores stale cache files.
+	* Fixes commit warning on migration.
+	* Fixes loosing all items when restarting shortly after
+	  a cache migration.
 
 	Translations
 
