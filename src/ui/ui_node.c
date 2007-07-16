@@ -232,7 +232,7 @@ void ui_node_update(const gchar *nodeId) {
 	labeltype &= (NODE_CAPABILITY_SHOW_UNREAD_COUNT |
         	      NODE_CAPABILITY_SHOW_ITEM_COUNT);
 
-	if(!node->unreadCount && (labeltype & NODE_CAPABILITY_SHOW_UNREAD_COUNT))
+	if(node->unreadCount <= 0 && (labeltype & NODE_CAPABILITY_SHOW_UNREAD_COUNT))
 		labeltype -= NODE_CAPABILITY_SHOW_UNREAD_COUNT;
 
 	switch(labeltype) {
