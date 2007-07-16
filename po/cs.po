@@ -1,5 +1,5 @@
 # Czech translation of Liferea.
-# Copyright (C) 2007 THE Liferea'S COPYRIGHT HOLDER
+# Copyright (C) 2007 THE LIFEREA'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the Liferea package.
 # Martin Picek <picek.martin@gmail.com>, 2007.
 # 
@@ -106,7 +106,7 @@ msgstr "Tvůrce"
 
 #: ../xslt/item.xml.in.h:4
 msgid "Department"
-msgstr "Sekce"
+msgstr "Oddělení"
 
 #: ../xslt/item.xml.in.h:5
 msgid "Feed"
@@ -145,7 +145,7 @@ msgid ""
 "Add items to this news bin by selecting \"Copy to News Bin\" from the item "
 "list context menu."
 msgstr ""
-"Přidejte články do této rubriky vybráním \"Kopírovat do rubriky\" z kontextové nabídky "
+"Přidejte články do této rubriky vybráním „Kopírovat do rubriky“ z kontextové nabídky "
 "seznamu článků."
 
 #: ../xslt/newsbin.xml.in.h:2
@@ -221,7 +221,7 @@ msgstr "%b %d %Y"
 #: ../src/common.c:881
 #, c-format
 msgid "Cannot create cache directory \"%s\"!"
-msgstr "Adresář vyrovnávací paměti \"%s\" nelze vytvořit!"
+msgstr "Adresář vyrovnávací paměti „%s“ nelze vytvořit!"
 
 #: ../src/common.c:964
 msgid ""
@@ -239,18 +239,18 @@ msgstr "Chyba při přejmenování %s na %s\n"
 #: ../src/export.c:308 ../src/export.c:310
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
-msgstr "Chyba XML při čtení souboru z vyrovnávací paměti! \"%s\" nemohlo být importováno!"
+msgstr "Chyba XML při čtení souboru z vyrovnávací paměti! „%s“ nemohlo být importováno!"
 
 #: ../src/export.c:315 ../src/export.c:317
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
-msgstr "Prázdný dokument! OPML dokument \"%s\" nesmí být prázdný, má-li být importován."
+msgstr "Prázdný dokument! OPML dokument „%s“ nesmí být prázdný, má-li být importován."
 
 #: ../src/export.c:338 ../src/export.c:340
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
-msgstr "\"%s\" není platný OPML dokument! Liferea ho nemohla importovat!"
+msgstr "„%s“ není platný OPML dokument! Liferea ho nemohla importovat!"
 
 #: ../src/export.c:359
 msgid "Imported feed list"
@@ -283,7 +283,7 @@ msgstr "Exportovat"
 #: ../src/feed.c:372
 #, c-format
 msgid "<p>XML error while reading feed! Feed \"%s\" could not be loaded!</p>"
-msgstr "<p>Chyba XML při čtení kanálu! Kanál \"%s\" nemohl být načten!</p>"
+msgstr "<p>Chyba XML při čtení kanálu! Kanál „%s“ nemohl být načten!</p>"
 
 #: ../src/feed.c:377 ../src/feed.c:668
 msgid "<p>Empty document!</p>"
@@ -308,34 +308,34 @@ msgstr "<p>Nemohl být určen typ kanálu.</p>"
 #: ../src/feed.c:651
 #, c-format
 msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
-msgstr "Chyba při čtení souboru \"%s\" z vyrovnávací paměti! Soubor nemohl být načten!"
+msgstr "Chyba při čtení souboru „%s“ z vyrovnávací paměti! Soubor nemohl být načten!"
 
 #: ../src/feed.c:662
 #, c-format
 msgid ""
 "<p>XML error while parsing cache file! Feed cache file \"%s\" could not be "
 "loaded!</p>"
-msgstr "Chyba XML při zpracování souboru z vyrovnávací paměti! Kanál \"%s\" nemohl být načten!"
+msgstr "Chyba XML při zpracování souboru z vyrovnávací paměti! Kanál „%s“ nemohl být načten!"
 
 #: ../src/feed.c:683
 #, c-format
 msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
-msgstr "<p>\"%s\" není platný soubor vyrovnávací paměti! Nelze ho proto číst!</p>"
+msgstr "<p>„%s“ není platný soubor vyrovnávací paměti! Nelze ho proto číst!</p>"
 
 #: ../src/feed.c:749
 #, c-format
 msgid "There were errors while parsing cache file \"%s\""
-msgstr "Vyskytly se chyby při zpracování souboru \"%s\" z vyrovnávací paměti"
+msgstr "Vyskytly se chyby při zpracování souboru „%s“ z vyrovnávací paměti"
 
 #: ../src/feed.c:774
 #, c-format
 msgid "This feed \"%s\" is already being updated!"
-msgstr "Kanál \"%s\" již byl aktualizován!"
+msgstr "Kanál „%s“ již byl aktualizován!"
 
 #: ../src/feed.c:779
 #, c-format
 msgid "The feed \"%s\" was discontinued. Liferea won't update it anymore!"
-msgstr "Kanál \"%s\" byl přerušený. Liferea ho již nebude aktualizovat!"
+msgstr "Kanál „%s“ byl přerušený. Liferea ho již nebude aktualizovat!"
 
 #: ../src/feed.c:1054
 msgid ""
@@ -444,22 +444,22 @@ msgstr ""
 #: ../src/feed.c:1158
 #, c-format
 msgid "Updating feed icon for \"%s\""
-msgstr "Aktualizace ikonky kanálu pro \"%s\""
+msgstr "Aktualizace ikonky kanálu pro „%s“"
 
 #: ../src/feed.c:1191
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
-msgstr "URL \"%s\" se trvale změnilo a bylo aktualizováno"
+msgstr "URL „%s“ se trvale změnilo a bylo aktualizováno"
 
 #: ../src/feed.c:1200
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
-msgstr "\"%s\" je přerušený. Lifera ho již nebude aktualizovat."
+msgstr "„%s“ je přerušený. Lifera ho již nebude aktualizovat."
 
 #: ../src/feed.c:1203
 #, c-format
 msgid "\"%s\" has not changed since last update"
-msgstr "\"%s\" od poslední aktualizace nebyl změněn"
+msgstr "„%s“ od poslední aktualizace nebyl změněn"
 
 #: ../src/feed.c:1219
 msgid ""
@@ -475,17 +475,17 @@ msgstr ""
 #: ../src/feed.c:1238
 #, c-format
 msgid "\"%s\" updated..."
-msgstr "\"%s\" aktualizováno..."
+msgstr "„%s“ aktualizováno…"
 
 #: ../src/feed.c:1251
 #, c-format
 msgid "\"%s\" is not available"
-msgstr "\"%s\" není dostupné"
+msgstr "„%s“ není dostupné"
 
 #: ../src/feed.c:1381
 #, c-format
 msgid "Updating \"%s\""
-msgstr "Aktualizace \"%s\""
+msgstr "Aktualizace „%s“"
 
 #: ../src/feedlist.c:289
 msgid "You have to select a feed entry"
@@ -608,7 +608,7 @@ msgstr "    "
 #: ../src/interface.c:541 ../src/interface.c:598 ../src/interface.c:967
 #: ../src/interface.c:1044
 msgid "Select File..."
-msgstr "Vybrat soubor..."
+msgstr "Vybrat soubor…"
 
 #: ../src/interface.c:545 ../src/interface.c:928
 msgid "_Source:"
@@ -1084,7 +1084,7 @@ msgid ""
 "written by Fabricio Zuardi and can be found \n"
 "at http://musicplayer.sourceforge.net"
 msgstr ""
-"Kód, záplaty, oprava chyb\n"
+"Kód, záplaty, ladění\n"
 "\n"
 "James Doherty\n"
 "Jeremy Messenger\n"
@@ -1116,7 +1116,7 @@ msgstr ""
 "Ed Catmur\n"
 "Chris Pirillo\n"
 "Eric Anderson\n"
-"and many more...\n"
+"a mnoho dalších…\n"
 "\n"
 "Kód z jiných projektů\n"
 "\n"
@@ -1147,7 +1147,7 @@ msgstr "Autentizace"
 #: ../src/interface.c:2827 ../src/ui/ui_feed.c:379
 #, c-format
 msgid "Enter the username and password for \"%s\" (%s):"
-msgstr "Vložte uživatelské jméno a heslo pro  \"%s\" (%s):"
+msgstr "Vložte uživatelské jméno a heslo pro  „%s“ (%s):"
 
 #: ../src/interface.c:2868
 msgid ""
@@ -1256,7 +1256,7 @@ msgstr ""
 
 #: ../src/interface.c:3487
 msgid "Advanced..."
-msgstr "Pokročilé..."
+msgstr "Pokročilé…"
 
 #: ../src/interface.c:3556 ../src/ui/ui_mainwindow.c:872
 msgid "Script Manager"
@@ -1325,54 +1325,54 @@ msgstr ""
 
 #: ../src/main.c:77
 msgid "  --debug-all      Print debugging messages of all types"
-msgstr "  --debug-all      Zobrazit vývojové zprávy všech typů"
+msgstr "  --debug-all      Zobrazit ladící zprávy všech typů"
 
 #: ../src/main.c:78
 msgid "  --debug-cache    Print debugging messages for the cache handling"
-msgstr "  --debug-cache    Zobrazit vývojové zprávy o zacházení s vyrovnávací pamětí"
+msgstr "  --debug-cache    Zobrazit ladící zprávy o zacházení s vyrovnávací pamětí"
 
 #: ../src/main.c:79
 msgid ""
 "  --debug-conf     Print debugging messages of the configuration handling"
-msgstr "  --debug-conf     Zobrazit vývojové zprávy o zacházení s nastavením"
+msgstr "  --debug-conf     Zobrazit ladící zprávy o zacházení s nastavením"
 
 #: ../src/main.c:80
 msgid "  --debug-gui      Print debugging messages of all GUI functions"
-msgstr "  --debug-gui      Zobrazit vývojové zprávy všech funkcí GUI"
+msgstr "  --debug-gui      Zobrazit ladící zprávy všech funkcí GUI"
 
 #: ../src/main.c:81
 msgid ""
 "  --debug-html     Enable HTML debugging (saving to ~/.liferea_1.2/output."
 "xhtml)"
 msgstr ""
-"  --debug-html     Povolit vývoj HTML (ukládáno do ~/.liferea_1.2/output."
+"  --debug-html     Povolit ladění HTML (ukládáno do ~/.liferea_1.2/output."
 "xhtml)"
 
 #: ../src/main.c:82
 msgid "  --debug-net      Print debugging messages for all network access"
-msgstr "  --debug-net      Zobrazit vývojové zprávy o všech síťových přístupech"
+msgstr "  --debug-net      Zobrazit ladící zprávy o všech síťových přístupech"
 
 #: ../src/main.c:83
 msgid "  --debug-parsing  Print debugging messages of all parsing functions"
-msgstr "  --debug-parsing  Zobrazit vývojové zprávy všech funkcí zpracování"
+msgstr "  --debug-parsing  Zobrazit ladící zprávy všech funkcí zpracování"
 
 #: ../src/main.c:84
 msgid "  --debug-plugins  Print debugging messages when loading plugins"
-msgstr "  --debug-plugins  Zobrazit vývojové zprávy při načítání zásuvných modulů"
+msgstr "  --debug-plugins  Zobrazit vladící zprávy při načítání zásuvných modulů"
 
 #: ../src/main.c:85
 msgid ""
 "  --debug-trace    Print debugging messages when entering/leaving functions"
-msgstr "  --debug-trace    Zobrazit vývojové zprávy při spouštění nebo opouštění funkcí"
+msgstr "  --debug-trace    Zobrazit ladící zprávy při spouštění nebo opouštění funkcí"
 
 #: ../src/main.c:86
 msgid ""
 "  --debug-update   Print debugging messages of the feed update processing"
-msgstr "  --debug-update   Zobrazit vývojové zprávy o procesu aktualizace kanálu"
+msgstr "  --debug-update   Zobrazit ladící zprávy o procesu aktualizace kanálu"
 
 #: ../src/main.c:87
 msgid "  --debug-verbose  Print verbose debugging messages"
-msgstr "  --debug-verbose  Zobrazit delší vývojové zprávy"
+msgstr "  --debug-verbose  Zobrazit delší ladící zprávy"
 
 #: ../src/main.c:166
 msgid "Liferea seems to be running already!"
@@ -1491,23 +1491,23 @@ msgstr "%s ukončeno se stavem %d"
 #: ../src/update.c:207 ../src/update.c:208 ../src/update.c:308
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
-msgstr "Chyba: Nešlo otevřít rouru \"%s\""
+msgstr "Chyba: Nešlo otevřít rouru „%s“"
 
 #. FIXME: maybe setting request->returncode would be better
 #: ../src/update.c:328
 #, c-format
 msgid "Error: Could not open file \"%s\""
-msgstr "Chyba: Nešlo otevřít soubor \"%s\""
+msgstr "Chyba: Nešlo otevřít soubor „%s“"
 
 #: ../src/update.c:334
 #, c-format
 msgid "Error: There is no file \"%s\""
-msgstr "Chyba: Není zde žádný soubor \"%s\""
+msgstr "Chyba: Není zde žádný soubor „%s“"
 
 #: ../src/update.c:530
 #, c-format
 msgid "Could not download \"%s\". Will retry in %d seconds."
-msgstr "Nešlo stáhnout \"%s\". Za %d sekund se bude pokus o stažení opakovat."
+msgstr "Nešlo stáhnout „%s“. Za %d sekund se bude pokus o stažení opakovat."
 
 #: ../src/vfolder.c:58
 msgid "New Search Folder"
@@ -1524,13 +1524,13 @@ msgstr ""
 #: ../src/ui/ui_enclosure.c:74
 #, c-format
 msgid "\"%s\" is not a valid enclosure type config file!"
-msgstr "\"%s\" není platná příloha typu konfiguračního souboru!"
+msgstr "„%s“ není platná příloha typu konfiguračního souboru!"
 
 #. just saving
 #: ../src/ui/ui_enclosure.c:165
 #, c-format
 msgid "Enclosure download finished: \"%s\""
-msgstr "Stahování příloh je dokončeno: \"%s\""
+msgstr "Stahování příloh je dokončeno: „%s“"
 
 #: ../src/ui/ui_enclosure.c:229 ../src/ui/ui_enclosure.c:391
 #: ../src/ui/ui_feed.c:280
@@ -1567,12 +1567,12 @@ msgstr "Mazání vstupu"
 #: ../src/ui/ui_feedlist.c:289
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
-msgstr "Jste si jisti, že chcete smazat \"%s\" a jeho obsah?"
+msgstr "Jste si jisti, že chcete smazat „%s„ i s obsahem?"
 
 #: ../src/ui/ui_feedlist.c:289
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
-msgstr "Jste si jisti, že chcete smazat \"%s\"?"
+msgstr "Jste si jisti, že chcete smazat „%s“?"
 
 #: ../src/ui/ui_feedlist.c:296
 msgid "Deletion Confirmation"
@@ -1599,7 +1599,7 @@ msgstr "Příkaz pro prohlížeč selhal: %s"
 #: ../src/ui/ui_htmlview.c:320
 #, c-format
 msgid "Starting: \"%s\""
-msgstr "Spouští se: \"%s\""
+msgstr "Spouští se: „%s“"
 
 #: ../src/ui/ui_itemlist.c:209
 msgid "<i>*** No title ***</i>"
@@ -1654,7 +1654,7 @@ msgstr "Liferea je připojena k síti"
 
 #: ../src/ui/ui_mainwindow.c:599
 msgid "Work Offline"
-msgstr "Pracovat odpojen od sítě"
+msgstr "Pracovat bez sítě"
 
 #: ../src/ui/ui_mainwindow.c:601
 msgid "Liferea is now offline"
@@ -1710,7 +1710,7 @@ msgstr "Označí za přečtené všechny články všech kanálů."
 
 #: ../src/ui/ui_mainwindow.c:881
 msgid "_Import Feed List..."
-msgstr "_Importovat seznam kanálů..."
+msgstr "_Importovat seznam kanálů…"
 
 #: ../src/ui/ui_mainwindow.c:881
 msgid "Imports an OPML feed list."
@@ -1718,7 +1718,7 @@ msgstr "Importuje OPML seznam kanálů."
 
 #: ../src/ui/ui_mainwindow.c:882
 msgid "_Export Feed List..."
-msgstr "_Exportovat seznam kanálů..."
+msgstr "_Exportovat seznam kanálů…"
 
 #: ../src/ui/ui_mainwindow.c:882
 msgid "Exports the feed list as OPML."
@@ -1838,7 +1838,7 @@ msgstr "Zobrazit dialog hledání."
 
 #: ../src/ui/ui_mainwindow.c:912
 msgid "Search With ..."
-msgstr "Hledat za pomoci ..."
+msgstr "Hledat za pomoci …"
 
 #: ../src/ui/ui_mainwindow.c:914
 msgid "_Help"
@@ -1878,7 +1878,7 @@ msgstr "Zobrazí dialog o programu."
 
 #: ../src/ui/ui_mainwindow.c:923
 msgid "_New Subscription..."
-msgstr "_Nový odběr..."
+msgstr "_Nový odběr…"
 
 #: ../src/ui/ui_mainwindow.c:923
 msgid "Adds a subscription to the feed list."
@@ -1886,7 +1886,7 @@ msgstr "Přidá odběr do seznamu kanálů."
 
 #: ../src/ui/ui_mainwindow.c:925
 msgid "New _Folder..."
-msgstr "Nová _složka..."
+msgstr "Nová _složka…"
 
 #: ../src/ui/ui_mainwindow.c:925
 msgid "Adds a folder to the feed list."
@@ -1894,7 +1894,7 @@ msgstr "Přidá složku do seznamu kanálů."
 
 #: ../src/ui/ui_mainwindow.c:926
 msgid "New S_earch Folder..."
-msgstr "Nová složka hl_edání..."
+msgstr "Nová složka hl_edání…"
 
 #: ../src/ui/ui_mainwindow.c:926
 msgid "Adds a new search folder to the feed list."
@@ -1902,7 +1902,7 @@ msgstr "Přidá novou složku hledání do seznamu kanálů."
 
 #: ../src/ui/ui_mainwindow.c:927
 msgid "New _Source..."
-msgstr "Nový _zdroj..."
+msgstr "Nový _zdroj…"
 
 #: ../src/ui/ui_mainwindow.c:927
 msgid "Adds a new feed list source."
@@ -1910,7 +1910,7 @@ msgstr "Přidá nový zdroj seznamu kanálů."
 
 #: ../src/ui/ui_mainwindow.c:928
 msgid "New _News Bin..."
-msgstr "_Nová rubrika..."
+msgstr "_Nová rubrika…"
 
 #: ../src/ui/ui_mainwindow.c:928
 msgid "Adds a new news bin."
@@ -1941,7 +1941,7 @@ msgstr ""
 
 #: ../src/ui/ui_mainwindow.c:939
 msgid "_Properties..."
-msgstr "Vlas_tnosti..."
+msgstr "Vlas_tnosti…"
 
 #: ../src/ui/ui_mainwindow.c:939
 msgid "Opens the property dialog for the selected subscription."
@@ -1957,7 +1957,7 @@ msgstr "Smaže vybrané odběry."
 
 #: ../src/ui/ui_mainwindow.c:944
 msgid "_Work Offline"
-msgstr "P_racovat odpojen od sítě"
+msgstr "P_racovat bez sítě"
 
 #: ../src/ui/ui_mainwindow.c:944
 msgid "This option allows you to disable subscription updating."
@@ -2030,7 +2030,7 @@ msgstr "/K_opírovat adresu odkazu"
 
 #: ../src/ui/ui_popup.c:155
 msgid "/_Subscribe..."
-msgstr "/_Odběr..."
+msgstr "/_Odběr…"
 
 #: ../src/ui/ui_popup.c:161
 msgid "/Toggle _Online|Offline"
@@ -2042,7 +2042,7 @@ msgstr "/Akt_ualizovat vše"
 
 #: ../src/ui/ui_popup.c:163
 msgid "/_Preferences..."
-msgstr "/_Nastavení..."
+msgstr "/_Nastavení…"
 
 #: ../src/ui/ui_popup.c:165
 msgid "/_Show|Hide Window"
@@ -2054,15 +2054,15 @@ msgstr "/Uk_ončit"
 
 #: ../src/ui/ui_popup.c:172
 msgid "/Open Enclosure..."
-msgstr "/Otevřít přílohu..."
+msgstr "/Otevřít přílohu…"
 
 #: ../src/ui/ui_popup.c:173
 msgid "/Save As..."
-msgstr "/Uložit jako..."
+msgstr "/Uložit jako…"
 
 #: ../src/ui/ui_popup.c:285
 msgid "/_Update Folder"
-msgstr "/Akt_ualizovat složku..."
+msgstr "/Akt_ualizovat složku…"
 
 #: ../src/ui/ui_popup.c:288
 msgid "/_Update"
@@ -2078,23 +2078,23 @@ msgstr "/_Vytvořit"
 
 #: ../src/ui/ui_popup.c:295
 msgid "/_New/New _Subscription..."
-msgstr "/_Vytvořit/Nový _odběr..."
+msgstr "/_Vytvořit/Nový _odběr…"
 
 #: ../src/ui/ui_popup.c:296
 msgid "/_New/New _Folder..."
-msgstr "/_Vytvořit/Novou _složku..."
+msgstr "/_Vytvořit/Novou _složku…"
 
 #: ../src/ui/ui_popup.c:297
 msgid "/_New/New S_earch Folder..."
-msgstr "/_Vytvořit/Novou složku hl_edání..."
+msgstr "/_Vytvořit/Novou složku hl_edání…"
 
 #: ../src/ui/ui_popup.c:298
 msgid "/_New/New S_ource..."
-msgstr "/_Vytvořit/Nový _zdroj..."
+msgstr "/_Vytvořit/Nový _zdroj…"
 
 #: ../src/ui/ui_popup.c:299
 msgid "/_New/New _News Bin..."
-msgstr "/_Vytvořit/Novou _rubriku..."
+msgstr "/_Vytvořit/Novou _rubriku…"
 
 #: ../src/ui/ui_popup.c:305
 msgid "/_Delete"
@@ -2102,7 +2102,7 @@ msgstr "/Sma_zat"
 
 #: ../src/ui/ui_popup.c:307
 msgid "/_Properties..."
-msgstr "/_Vlastnosti..."
+msgstr "/_Vlastnosti…"
 
 #. This allows the user to choose their own browser by typing in the command.
 #: ../src/ui/ui_prefs.c:252
@@ -2153,12 +2153,12 @@ msgstr "Vybrat adresář pro stahování"
 #: ../src/ui/ui_search.c:90
 #, c-format
 msgid "Searching for \"%s\""
-msgstr "Vyhledávání \"%s\""
+msgstr "Vyhledávání „%s“"
 
 #: ../src/ui/ui_search.c:122
 #, c-format
 msgid "%d Search Results for \"%s\""
-msgstr "%d výsledky hledání \"%s\""
+msgstr "%d výsledky hledání „%s“"
 
 #: ../src/ui/ui_search.c:124
 msgid ""
@@ -2167,6 +2167,10 @@ msgid ""
 "\"Search Folder\" button in the search dialog and Liferea will add a search "
 "folder to your feed list."
 msgstr ""
+"Seznam článků nyní obsahuje všechny články odpovídající hledanému výrazu. "
+"Jestliže chcete trvale uložit tento výsledek hledání, můžete klepnout na "
+"tlačítko „Složka hledání“ v dialogu hledání a Liferea přidá "
+"složku hledání do vašeho seznamu kanálů"
 
 #: ../src/ui/ui_search.c:245
 msgid "Create a new search feed."
@@ -2311,7 +2315,7 @@ msgstr "Výběr zdroje"
 
 #: ../src/fl_sources/node_source-ui.c:57
 msgid "Select the source type you want to add..."
-msgstr "Vyberte typ zdroje, který chcete přidat..."
+msgstr "Vyberte typ zdroje, který chcete přidat…"
 
 #. Cast time_t tunix to int.
 #. Print cookie expire warning.
