@@ -110,7 +110,7 @@ liferea_shell_init (LifereaShell *ls)
 	liferea_shell = ls;
 	
 	ls->priv = LIFEREA_SHELL_GET_PRIVATE (ls);
-	ls->priv->xml = glade_xml_new (PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "liferea.glade", "mainwindow", NULL);
+	ls->priv->xml = glade_xml_new (PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "liferea.glade", "mainwindow", GETTEXT_PACKAGE);
 	glade_xml_signal_autoconnect (ls->priv->xml);
 }
 

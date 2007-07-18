@@ -134,9 +134,9 @@ liferea_dialog_new (const gchar *filename, const gchar *name)
 	ld = LIFEREA_DIALOG (g_object_new (LIFEREA_DIALOG_TYPE, NULL));
 
 	if (filename)
-		ld->priv->xml = glade_xml_new (filename, name, NULL);
+		ld->priv->xml = glade_xml_new (filename, name, GETTEXT_PACKAGE);
 	else
-		ld->priv->xml = glade_xml_new (PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "liferea.glade", name, NULL);
+		ld->priv->xml = glade_xml_new (PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "liferea.glade", name, GETTEXT_PACKAGE);
 	g_return_val_if_fail (ld->priv->xml != NULL, NULL);
 
 	ld->priv->dialog = glade_xml_get_widget (ld->priv->xml, name);

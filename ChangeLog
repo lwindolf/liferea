@@ -2,6 +2,10 @@
 
 	Version 1.4-RC3 (Unstable)
 
+	* Uses correct translation domain for dynamically
+	  created dialogs now (reported by Luis Rodrigo 
+	  Gallardo Cruz)
+
 	Translations
 
 	* Update of Swedish translation (Daniel Nylander)
