@@ -54,6 +54,7 @@
 
 #include "common.h"
 #include "conf.h"
+#include "e-date.h"
 #include "feed.h"
 #include "debug.h"
 
@@ -104,7 +105,7 @@ long common_parse_long(gchar *str, long def) {
 #define	TIMESTRLEN	256
 
 gchar * common_format_date(time_t date, const gchar *date_format) {
-	gchar		*result, *formbuf;
+	gchar		*result;
 	struct tm	date_tm;
 	
 	if (date == 0) {
@@ -114,9 +115,7 @@ gchar * common_format_date(time_t date, const gchar *date_format) {
 	localtime_r (&date, &date_tm);
 	
 	result = g_new0(gchar, TIMESTRLEN);
-	formbuf = g_locale_from_utf8 (date_format, -1, NULL, NULL, NULL);
-	strftime(result, TIMESTRLEN, formbuf, &date_tm);
-	g_free(formbuf);
+	e_utf8_strftime_fix_am_pm(result, TIMESTRLEN, date_format, &date_tm);
 	return result;
 }
 
@@ -125,7 +124,7 @@ gchar * common_format_nice_date(time_t date) {
 	time_t nowdate = time(NULL);
 	time_t yesdate;
 	struct tm then, now, yesterday;
-	gchar *temp, *buf, *formbuf;
+	gchar *temp, *buf;
 	gboolean done = FALSE;
 	
 	if (date == 0) {
@@ -138,7 +137,7 @@ gchar * common_format_nice_date(time_t date) {
 	localtime_r (&nowdate, &now);
 
 /*	if (nowdate - date < 60 * 60 * 8 && nowdate > date) {
-		strftime (buf, TIMESTRLEN, _("%l:%M %p"), &then);
+		e_utf8_strftime_fix_am_pm (buf, TIMESTRLEN, _("%l:%M %p"), &then);
 		done = TRUE;
 	}*/
 
@@ -147,9 +146,7 @@ gchar * common_format_nice_date(time_t date) {
 		    then.tm_mon == now.tm_mon &&
 		    then.tm_year == now.tm_year) {
 		    	/* translation hint: date format for today, reorder format codes as necessary */
-			formbuf = g_locale_from_utf8 (_("Today %l:%M %p"), -1, NULL, NULL, NULL);
-			strftime (buf, TIMESTRLEN, formbuf, &then);
-			g_free(formbuf);
+			e_utf8_strftime_fix_am_pm (buf, TIMESTRLEN, _("Today %l:%M %p"), &then);
 			done = TRUE;
 		}
 	}
@@ -160,9 +157,7 @@ gchar * common_format_nice_date(time_t date) {
 		    then.tm_mon == yesterday.tm_mon &&
 		    then.tm_year == yesterday.tm_year) {
 		    	/* translation hint: date format for yesterday, reorder format codes as necessary */
-			formbuf = g_locale_from_utf8 (_("Yesterday %l:%M %p"), -1, NULL, NULL, NULL);
-			strftime (buf, TIMESTRLEN, formbuf, &then);
-			g_free(formbuf);
+			e_utf8_strftime_fix_am_pm (buf, TIMESTRLEN, _("Yesterday %l:%M %p"), &then);
 			done = TRUE;
 		}
 	}
@@ -175,9 +170,7 @@ gchar * common_format_nice_date(time_t date) {
 			    then.tm_mon == yesterday.tm_mon &&
 			    then.tm_year == yesterday.tm_year) {
 			    	/* translation hint: date format for dates older than 2 days but not older than a week, reorder format codes as necessary */
-				formbuf = g_locale_from_utf8 (_("%a %l:%M %p"), -1, NULL, NULL, NULL);
-				strftime (buf, TIMESTRLEN, formbuf, &then);
-				g_free(formbuf);
+				e_utf8_strftime_fix_am_pm (buf, TIMESTRLEN, _("%a %l:%M %p"), &then);
 				done = TRUE;
 				break;
 			}
@@ -186,14 +179,10 @@ gchar * common_format_nice_date(time_t date) {
 	if (!done) {
 		if (then.tm_year == now.tm_year) {
 			/* translation hint: date format for dates older than a week but from this year, reorder format codes as necessary */
-			formbuf = g_locale_from_utf8 (_("%b %d %l:%M %p"), -1, NULL, NULL, NULL);
-			strftime (buf, TIMESTRLEN, formbuf, &then);
-			g_free(formbuf);
+			e_strftime_fix_am_pm (buf, TIMESTRLEN, _("%b %d %l:%M %p"), &then);
 		} else {
 			/* translation hint: date format for dates from the last years, reorder format codes as necessary */
-			formbuf = g_locale_from_utf8 (_("%b %d %Y"), -1, NULL, NULL, NULL);
-			strftime (buf, TIMESTRLEN, formbuf, &then);
-			g_free(formbuf);
+			e_strftime_fix_am_pm (buf, TIMESTRLEN, _("%b %d %Y"), &then);
 		}
 	}
 

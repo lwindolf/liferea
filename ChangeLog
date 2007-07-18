@@ -5,6 +5,8 @@
 	* Uses correct translation domain for dynamically
 	  created dialogs now (reported by Luis Rodrigo 
 	  Gallardo Cruz)
+	* Fixing AM/PM problems for US locales by reusing
+	  Evolution time formatting code (SF #1317220)
 
 	Translations
 
