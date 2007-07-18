@@ -228,7 +228,7 @@ ui_node_source_type_dialog (nodePtr parent)
 			gtk_tree_store_append (treestore, &treeiter, NULL);
 			gtk_tree_store_set (treestore, &treeiter, 
 			                               // FIXME: this leaks memory!
-			                               0, g_strdup_printf("<b>%s</b>\n<i>%s</i>", type->name, type->description),
+			                               0, g_strdup_printf("<b>%s</b>\n<i>%s</i>", type->name, _(type->description)),
 			                               1, type,
 						       -1);
 		}
