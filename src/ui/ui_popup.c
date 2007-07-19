@@ -291,11 +291,10 @@ static GtkMenu *ui_popup_node_menu(nodePtr node, gboolean validSelection) {
 	gint 			menu_len = 0;
 
 	if(validSelection) {
-		if(node->type == NODE_TYPE_FOLDER)
-			addPopupOption(&menu_items, &menu_len, _("/_Update Folder"), 	NULL, ui_popup_update,		0, "<StockItem>", GTK_STOCK_REFRESH);
-
-		if((node->type != NODE_TYPE_FOLDER) && (node->type != NODE_TYPE_VFOLDER))
+		if(NODE_TYPE(node)->capabilities & NODE_CAPABILITY_UPDATE)
 			addPopupOption(&menu_items, &menu_len, _("/_Update"), 		NULL, ui_popup_update,		0, "<StockItem>", GTK_STOCK_REFRESH);
+		else if(NODE_TYPE(node)->capabilities & NODE_CAPABILITY_UPDATE_CHILDS)
+			addPopupOption(&menu_items, &menu_len, _("/_Update Folder"), 	NULL, ui_popup_update,		0, "<StockItem>", GTK_STOCK_REFRESH);
 
 		addPopupOption(&menu_items, &menu_len, _("/_Mark All As Read"),		NULL, ui_popup_mark_as_read, 	0, "<StockItem>", GTK_STOCK_APPLY);
 	}

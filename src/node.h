@@ -93,7 +93,8 @@ enum {
 	NODE_CAPABILITY_REORDER			= (1<<5),	/**< allows DnD to reorder childs */
 	NODE_CAPABILITY_SHOW_UNREAD_COUNT	= (1<<6),	/**< display the unread item count in the feed list */
 	NODE_CAPABILITY_SHOW_ITEM_COUNT		= (1<<7),	/**< display the absolute item count in the feed list */
-	NODE_CAPABILITY_GENERIC_UPDATE		= (1<<8)	/**< generic updating, node type has no specific update implementation */
+	NODE_CAPABILITY_UPDATE			= (1<<8),	/**< node type always has a subscription and can be updated */
+	NODE_CAPABILITY_UPDATE_CHILDS		= (1<<9)	/**< childs of this node type can be updated */
 };
 
 /** node type interface */

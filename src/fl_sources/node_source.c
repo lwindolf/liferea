@@ -297,7 +297,9 @@ node_source_get_node_type (void)
 		nodeType->id			= "source";
 		nodeType->icon			= icons[ICON_DEFAULT];
 		nodeType->type			= NODE_TYPE_SOURCE;
-		nodeType->capabilities		= NODE_CAPABILITY_SHOW_UNREAD_COUNT | NODE_CAPABILITY_GENERIC_UPDATE;
+		nodeType->capabilities		= NODE_CAPABILITY_SHOW_UNREAD_COUNT |
+						  NODE_CAPABILITY_UPDATE_CHILDS |
+						  NODE_CAPABILITY_UPDATE;
 		nodeType->import		= node_source_import;
 		nodeType->export		= node_source_export;
 		nodeType->load			= folder_get_node_type()->load;

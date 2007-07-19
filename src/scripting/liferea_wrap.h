@@ -1386,35 +1386,34 @@ SWIG_Lua_SetModule(lua_State* L, swig_module_info *module) {
 #define SWIGTYPE_p_GtkTreeView swig_types[15]
 #define SWIGTYPE_p_GtkTreeViewColumn swig_types[16]
 #define SWIGTYPE_p_GtkWidget swig_types[17]
-#define SWIGTYPE_p_f_gpointer__void swig_types[18]
-#define SWIGTYPE_p_f_p_q_const__char_gpointer__void swig_types[19]
-#define SWIGTYPE_p_f_p_struct_node__itemSetPtr swig_types[20]
-#define SWIGTYPE_p_f_p_struct_node__p_char swig_types[21]
-#define SWIGTYPE_p_f_p_struct_node__void swig_types[22]
-#define SWIGTYPE_p_f_p_struct_node_p_struct_node_xmlNodePtr_int__void swig_types[23]
-#define SWIGTYPE_p_f_p_struct_node_requestPtr__void swig_types[24]
-#define SWIGTYPE_p_f_p_struct_node_xmlNodePtr_int__void swig_types[25]
-#define SWIGTYPE_p_gpointer swig_types[26]
-#define SWIGTYPE_p_gulong swig_types[27]
-#define SWIGTYPE_p_int swig_types[28]
-#define SWIGTYPE_p_item swig_types[29]
-#define SWIGTYPE_p_itemSetPtr swig_types[30]
-#define SWIGTYPE_p_node swig_types[31]
-#define SWIGTYPE_p_nodeSource swig_types[32]
-#define SWIGTYPE_p_nodeType swig_types[33]
-#define SWIGTYPE_p_p_GdkPixbuf swig_types[34]
-#define SWIGTYPE_p_requestPtr swig_types[35]
-#define SWIGTYPE_p_socialBookmarkSite swig_types[36]
-#define SWIGTYPE_p_subscription swig_types[37]
-#define SWIGTYPE_p_time_t swig_types[38]
-#define SWIGTYPE_p_updateOptionsPtr swig_types[39]
-#define SWIGTYPE_p_xmlNodePtr swig_types[40]
-#define SWIGTYPE_requestPtr swig_types[41]
-#define SWIGTYPE_time_t swig_types[42]
-#define SWIGTYPE_updateOptionsPtr swig_types[43]
-#define SWIGTYPE_xmlNodePtr swig_types[44]
-static swig_type_info *swig_types[46];
-static swig_module_info swig_module = {swig_types, 45, 0, 0, 0, 0};
+#define SWIGTYPE_p_f_p_q_const__char_gpointer__void swig_types[18]
+#define SWIGTYPE_p_f_p_struct_node__itemSetPtr swig_types[19]
+#define SWIGTYPE_p_f_p_struct_node__p_char swig_types[20]
+#define SWIGTYPE_p_f_p_struct_node__void swig_types[21]
+#define SWIGTYPE_p_f_p_struct_node_p_struct_node_xmlNodePtr_int__void swig_types[22]
+#define SWIGTYPE_p_f_p_struct_node_requestPtr__void swig_types[23]
+#define SWIGTYPE_p_f_p_struct_node_xmlNodePtr_int__void swig_types[24]
+#define SWIGTYPE_p_gpointer swig_types[25]
+#define SWIGTYPE_p_gulong swig_types[26]
+#define SWIGTYPE_p_int swig_types[27]
+#define SWIGTYPE_p_item swig_types[28]
+#define SWIGTYPE_p_itemSetPtr swig_types[29]
+#define SWIGTYPE_p_node swig_types[30]
+#define SWIGTYPE_p_nodeSource swig_types[31]
+#define SWIGTYPE_p_nodeType swig_types[32]
+#define SWIGTYPE_p_p_GdkPixbuf swig_types[33]
+#define SWIGTYPE_p_requestPtr swig_types[34]
+#define SWIGTYPE_p_socialBookmarkSite swig_types[35]
+#define SWIGTYPE_p_subscription swig_types[36]
+#define SWIGTYPE_p_time_t swig_types[37]
+#define SWIGTYPE_p_updateOptionsPtr swig_types[38]
+#define SWIGTYPE_p_xmlNodePtr swig_types[39]
+#define SWIGTYPE_requestPtr swig_types[40]
+#define SWIGTYPE_time_t swig_types[41]
+#define SWIGTYPE_updateOptionsPtr swig_types[42]
+#define SWIGTYPE_xmlNodePtr swig_types[43]
+static swig_type_info *swig_types[45];
+static swig_module_info swig_module = {swig_types, 44, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -3294,7 +3293,7 @@ fail:
 static int _wrap_nodeType_free_set(lua_State* L) {
   int SWIG_arg = -1;
   struct nodeType *arg1 = (struct nodeType *) 0 ;
-  void (*arg2)(gpointer) = (void (*)(gpointer)) 0 ;
+  void (*arg2)(nodePtr) = (void (*)(nodePtr)) 0 ;
   
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
   if(!SWIG_isptrtype(L,2)) SWIG_fail_arg(2);
@@ -3304,8 +3303,8 @@ static int _wrap_nodeType_free_set(lua_State* L) {
   }
   
   
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_f_gpointer__void,0))){
-    SWIG_fail_ptr("nodeType_free_set",2,SWIGTYPE_p_f_gpointer__void);
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_f_p_struct_node__void,0))){
+    SWIG_fail_ptr("nodeType_free_set",2,SWIGTYPE_p_f_p_struct_node__void);
   }
   
   if (arg1) (arg1)->free = arg2;
@@ -3323,7 +3322,7 @@ fail:
 static int _wrap_nodeType_free_get(lua_State* L) {
   int SWIG_arg = -1;
   struct nodeType *arg1 = (struct nodeType *) 0 ;
-  void (*result)(gpointer) = 0 ;
+  void (*result)(nodePtr) = 0 ;
   
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
   
@@ -3331,9 +3330,9 @@ static int _wrap_nodeType_free_get(lua_State* L) {
     SWIG_fail_ptr("nodeType_free_get",1,SWIGTYPE_p_nodeType);
   }
   
-  result = (void (*)(gpointer)) ((arg1)->free);
+  result = (void (*)(nodePtr)) ((arg1)->free);
   SWIG_arg=0;
-  SWIG_NewPointerObj(L,result,SWIGTYPE_p_f_gpointer__void,0); SWIG_arg++; 
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_f_p_struct_node__void,0); SWIG_arg++; 
   return SWIG_arg;
   
 fail:
@@ -9535,7 +9534,8 @@ static swig_lua_const_info swig_constants[] = {
 { SWIG_LUA_INT,     (char *)"NODE_CAPABILITY_REORDER", (long) NODE_CAPABILITY_REORDER, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"NODE_CAPABILITY_SHOW_UNREAD_COUNT", (long) NODE_CAPABILITY_SHOW_UNREAD_COUNT, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"NODE_CAPABILITY_SHOW_ITEM_COUNT", (long) NODE_CAPABILITY_SHOW_ITEM_COUNT, 0, 0, 0},
-{ SWIG_LUA_INT,     (char *)"NODE_CAPABILITY_GENERIC_UPDATE", (long) NODE_CAPABILITY_GENERIC_UPDATE, 0, 0, 0},
+{ SWIG_LUA_INT,     (char *)"NODE_CAPABILITY_UPDATE", (long) NODE_CAPABILITY_UPDATE, 0, 0, 0},
+{ SWIG_LUA_INT,     (char *)"NODE_CAPABILITY_UPDATE_CHILDS", (long) NODE_CAPABILITY_UPDATE_CHILDS, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"ICON_READ", (long) ICON_READ, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"ICON_UNREAD", (long) ICON_UNREAD, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"ICON_FLAG", (long) ICON_FLAG, 0, 0, 0},
@@ -9598,7 +9598,6 @@ static swig_type_info _swigt__p_GtkTreeStore = {"_p_GtkTreeStore", "GtkTreeStore
 static swig_type_info _swigt__p_GtkTreeView = {"_p_GtkTreeView", "GtkTreeView *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_GtkTreeViewColumn = {"_p_GtkTreeViewColumn", "GtkTreeViewColumn *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_GtkWidget = {"_p_GtkWidget", "GtkWidget *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_f_gpointer__void = {"_p_f_gpointer__void", "void (*)(gpointer)", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_f_p_q_const__char_gpointer__void = {"_p_f_p_q_const__char_gpointer__void", "void (*)(char const *,gpointer)|fileChoosenCallback", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_f_p_struct_node__itemSetPtr = {"_p_f_p_struct_node__itemSetPtr", "itemSetPtr (*)(struct node *)|itemSetPtr (*)(nodePtr)", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_f_p_struct_node__p_char = {"_p_f_p_struct_node__p_char", "char *(*)(struct node *)|char *(*)(nodePtr)", 0, 0, (void*)0, 0};
@@ -9645,7 +9644,6 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_GtkTreeView,
   &_swigt__p_GtkTreeViewColumn,
   &_swigt__p_GtkWidget,
-  &_swigt__p_f_gpointer__void,
   &_swigt__p_f_p_q_const__char_gpointer__void,
   &_swigt__p_f_p_struct_node__itemSetPtr,
   &_swigt__p_f_p_struct_node__p_char,
@@ -9692,7 +9690,6 @@ static swig_cast_info _swigc__p_GtkTreeStore[] = {  {&_swigt__p_GtkTreeStore, 0,
 static swig_cast_info _swigc__p_GtkTreeView[] = {  {&_swigt__p_GtkTreeView, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_GtkTreeViewColumn[] = {  {&_swigt__p_GtkTreeViewColumn, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_GtkWidget[] = {  {&_swigt__p_GtkWidget, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_f_gpointer__void[] = {  {&_swigt__p_f_gpointer__void, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_f_p_q_const__char_gpointer__void[] = {  {&_swigt__p_f_p_q_const__char_gpointer__void, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_f_p_struct_node__itemSetPtr[] = {  {&_swigt__p_f_p_struct_node__itemSetPtr, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_f_p_struct_node__p_char[] = {  {&_swigt__p_f_p_struct_node__p_char, 0, 0, 0},{0, 0, 0, 0}};
@@ -9739,7 +9736,6 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_GtkTreeView,
   _swigc__p_GtkTreeViewColumn,
   _swigc__p_GtkWidget,
-  _swigc__p_f_gpointer__void,
   _swigc__p_f_p_q_const__char_gpointer__void,
   _swigc__p_f_p_struct_node__itemSetPtr,
   _swigc__p_f_p_struct_node__p_char,
