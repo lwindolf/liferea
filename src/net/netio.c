@@ -409,7 +409,7 @@ static int NetConnect (int * my_socket, char * host, struct feed_request * cur_p
 	if (cur_ptr->netio_error != NET_ERR_OK)
 		return -1;
 	
-	debug1(DEBUG_NET, "successfully connected socket %d", my_socket);		
+	debug1(DEBUG_NET, "successfully connected socket %d", *my_socket);
 	
 #else
 	struct sockaddr_in address;	
@@ -498,13 +498,13 @@ static int NetConnect (int * my_socket, char * host, struct feed_request * cur_p
 		}
 	}
 	
-	debug1(DEBUG_NET, "successfully connected socket %d", my_socket);	
+	debug1(DEBUG_NET, "successfully connected socket %d", *my_socket);
 	
 	g_free(realhost);
 #endif /* HAVE_GETADDRINFO */
 #ifdef HAVE_GNUTLS
 	if (proto == NETIO_PROTO_HTTPS) {
-		debug1(DEBUG_NET, "setting up SSL session for socket %d", my_socket);
+		debug1(DEBUG_NET, "setting up SSL session for socket %d", *my_socket);
 		*proto_data = NetConnectGnutls(my_socket);
 		if (proto_data == NULL || *my_socket == -1)
 			return -1;
