@@ -107,10 +107,13 @@ static void ui_update_cancel(nodePtr node) {
 	if(node->children)
 		node_foreach_child(node, ui_update_cancel);
 
-	if(node->subscription->updateRequest) {
-		node->subscription->updateRequest->callback = NULL;
-		node->subscription->updateRequest = NULL;
-	}
+	if(!node->subscription)
+		return;
+	if(!node->subscription->updateRequest)
+		return;
+	
+	node->subscription->updateRequest->callback = NULL;
+	node->subscription->updateRequest = NULL;
 }
 
 void on_cancel_all_requests_clicked(GtkButton *button, gpointer user_data) {
