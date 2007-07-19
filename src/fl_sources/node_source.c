@@ -254,6 +254,18 @@ ui_node_source_type_dialog (nodePtr parent)
 			  (gpointer)parent);
 }
 
+void
+node_source_update (nodePtr node)
+{
+	NODE_SOURCE_TYPE (node)->source_update (node);
+}
+
+void
+node_source_auto_update (nodePtr node)
+{
+	NODE_SOURCE_TYPE (node)->source_auto_update (node);
+}
+
 /* implementation of the node type interface */
 
 static void
@@ -275,8 +287,7 @@ node_source_save (nodePtr node)
 static void
 node_source_process_update_result (nodePtr node, requestPtr request)
 {
-	if (NULL != NODE_SOURCE_TYPE (node)->source_process_update_result)
-		NODE_SOURCE_TYPE (node)->source_process_update_result (node, request);
+	g_warning("node_source_process_update_result: This should never happen!");
 }
 
 static void

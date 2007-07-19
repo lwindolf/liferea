@@ -125,6 +125,17 @@ void subscription_prepare_request (subscriptionPtr subscription, struct request 
 void subscription_update (subscriptionPtr subscription, guint flags);
 
 /**
+ * Like subscription_update() updates a given subscription, but
+ * allows to specify another result processing callback then the
+ * one defined by the node type of the subscription.
+ *
+ * @param subscription	the subscription
+ * @param callback	the callback
+ * @param flags		update flags
+ */
+void subscription_update_with_callback (subscriptionPtr subscription, gpointer callback, guint flags);
+
+/**
  * Called when auto updating. Checks wether the subscription
  * needs to be updated (according to it's update interval) and
  * if necessary calls subscription_update().
@@ -174,6 +185,22 @@ void subscription_set_default_update_interval(subscriptionPtr subscription, guin
  * @param now		current time
  */
 void subscription_reset_update_counter (subscriptionPtr subscription, GTimeVal *now);
+
+/**
+ * Allows to explicitely set the cookies for the next 
+ * update request. This method needs to be called after
+ * subscription_set_source() which always resets the cookies
+ * property. Note: update requests handled by the default
+ * subscription result processing callback will overwrite
+ * the cookies again in case of permanent redirects, so it
+ * is necessary to set cookies before each request if 
+ * different cookies than the source specific ones are
+ * necessary.
+ *
+ * @param subscription	the subscription
+ * @param cookies	the cookies
+ */
+void subscription_set_cookies (subscriptionPtr subscription, const gchar *cookies);
 
 /**
  * Get the source URL of a given subscription

@@ -209,9 +209,10 @@ opml_source_check_for_removal (nodePtr node, gpointer user_data)
 	g_free (expr);
 }
 
-void
-opml_source_process_update_result (nodePtr node, requestPtr request)
+static void
+opml_source_process_update_result (requestPtr request)
 {
+	nodePtr		node = (nodePtr)request->user_data;
 	mergeCtxtPtr	mergeCtxt;
 	xmlDocPtr	doc, oldDoc;
 	xmlNodePtr	root, title;
@@ -275,6 +276,30 @@ opml_source_process_update_result (nodePtr node, requestPtr request)
 	node_foreach_child (node, node_update_subscription);
 }
 
+static void
+opml_source_schedule_update (nodePtr node, guint flags)
+{
+	subscription_update_with_callback (node->subscription, opml_source_process_update_result, flags);
+}
+
+void
+opml_source_update (nodePtr node)
+{
+	opml_source_schedule_update (node, 0);  // FIXME: 0 ?
+}
+
+void
+opml_source_auto_update (nodePtr node)
+{
+	GTimeVal	now;
+	
+	g_get_current_time (&now);
+	
+	/* do daily updates for the feed list and feed updates according to the default interval */
+	if (node->subscription->updateState->lastPoll.tv_sec + OPML_SOURCE_UPDATE_INTERVAL <= now.tv_sec)
+		opml_source_schedule_update (node, 0);
+}
+
 /** called during import and when subscribing, we will do
     node_add_child() only when subscribing */
 void
@@ -316,7 +341,8 @@ static struct nodeSourceType nst = {
 	opml_source_import,
 	opml_source_export,
 	opml_source_get_feedlist,
-	opml_source_process_update_result,
+	opml_source_update,
+	opml_source_auto_update,
 	NULL	/* free */
 };
 

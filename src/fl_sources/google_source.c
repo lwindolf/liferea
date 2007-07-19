@@ -42,7 +42,7 @@ typedef struct reader {
 	GTimeVal	*lastSubscriptionListUpdate;
 } *readerPtr;
 
-static void google_source_update_subscription_list (nodePtr node, GTimeVal *now);
+static void google_source_update_subscription_list (nodePtr node, guint flags);
 
 /* source logic */
 
@@ -194,7 +194,7 @@ google_source_login_cb (requestPtr request)
 		
 		/* now that we are authenticated retrigger updating to start data retrieval */
 		g_get_current_time (&now);
-		google_source_update_subscription_list (node, &now);
+		google_source_update_subscription_list (node, 0);
 	} else {
 		debug0 (DEBUG_UPDATE, "google reader login failed! no SID found in result!");
 		node->available = FALSE;
@@ -210,54 +210,45 @@ google_source_login_cb (requestPtr request)
 
 /* authenticate to receive SID... */
 static void
-google_source_login (nodePtr node, GTimeVal *now)
+google_source_login (nodePtr node, guint flags)
 {
-	requestPtr	request;
+	gchar		*source;
 	readerPtr	reader = (readerPtr)node->data;
 	
 	if (!reader) {
 		node->data = reader = g_new0 (struct reader, 1);
 		reader->root = node;
+	} else {
+		g_free (reader->sid);
+		reader->sid = NULL;
 	}
-	
-	request = update_request_new (node);
-	subscription_prepare_request (node->subscription, request, 0, now);
-	request->options = node->subscription->updateOptions;
-	request->source = g_strdup_printf ("https://www.google.com/accounts/ClientLogin?service=reader&Email=%s&Passwd=%s&source=liferea&continue=http://www.google.com",
-	                                    node->subscription->updateOptions->username,
-	                                    node->subscription->updateOptions->password);
-	request->callback = google_source_login_cb;
-	request->priority = 1;
-	request->user_data = node;
-	debug2 (DEBUG_UPDATE, "login to Google Reader source %s (node id %s)", request->source, node->id);
-	update_execute_request (request);
+
+	source = g_strdup_printf ("https://www.google.com/accounts/ClientLogin?service=reader&Email=%s&Passwd=%s&source=liferea&continue=http://www.google.com",
+	                          node->subscription->updateOptions->username,
+	                          node->subscription->updateOptions->password);
+	debug2 (DEBUG_UPDATE, "login to Google Reader source %s (node id %s)", source, node->id);
+	subscription_set_source (node->subscription, source);
+	subscription_update_with_callback (node->subscription, google_source_login_cb, flags);
+	g_free (source);
 }
 
 static void
-google_source_update_subscription_list (nodePtr node, GTimeVal *now)
+google_source_update_subscription_list (nodePtr node, guint flags)
 {
-	requestPtr	request;
 	readerPtr	reader = (readerPtr)node->data;
 	
 	if (!reader) {
 		/* not logged in yet, successful login will
 		   trigger an update automatically, so return
 		   after calling async login method ... */
-		google_source_login (node, now);
+		google_source_login (node, flags);
 		return;
 	}
 
-	/* not using subscription_update() code because we need to set extra cookies */	
-	request = update_request_new (node);
-	subscription_prepare_request (node->subscription, request, 0, now);
-	request->options = node->subscription->updateOptions;
-	node->subscription->updateState->cookies = reader->sid;
-	request->source = g_strdup ("http://www.google.com/reader/api/0/subscription/list");
-	request->callback = google_source_subscriptions_cb;
-	request->priority = 1;
-	request->user_data = node;
-	debug2 (DEBUG_UPDATE, "updating Google Reader source %s (node id %s)", request->source, node->id);
-	update_execute_request (request);
+	debug1 (DEBUG_UPDATE, "updating Google Reader subscription (node id %s)", node->id);
+	subscription_set_source (node->subscription, "http://www.google.com/reader/api/0/subscription/list");
+	subscription_set_cookies (node->subscription, reader->sid);
+	subscription_update_with_callback (node->subscription, google_source_subscriptions_cb, flags);
 }
 
 /** called during import and when subscribing, we will do
@@ -275,11 +266,21 @@ void google_source_setup(nodePtr parent, nodePtr node) {
 }
 
 static void
-google_source_auto_update (nodePtr node, GTimeVal *now)
+google_source_update (nodePtr node)
 {
+	google_source_update_subscription_list (node, 0);  // FIXME: 0 ?
+}
+
+static void
+google_source_auto_update (nodePtr node)
+{
+	GTimeVal	now;
+	
+	g_get_current_time (&now);
+	
 	/* do daily updates for the feed list and feed updates according to the default interval */
-	if (node->subscription->updateState->lastPoll.tv_sec + GOOGLE_SOURCE_UPDATE_INTERVAL <= now->tv_sec)
-		google_source_update_subscription_list (node, now);
+	if (node->subscription->updateState->lastPoll.tv_sec + GOOGLE_SOURCE_UPDATE_INTERVAL <= now.tv_sec)
+		google_source_update_subscription_list (node, 0);
 }
 
 static void google_source_init (void) { }
@@ -356,7 +357,8 @@ static struct nodeSourceType nst = {
 	opml_source_import,
 	opml_source_export,
 	opml_source_get_feedlist,
-	NULL,
+	google_source_update,
+	google_source_auto_update,
 	google_source_free
 };
 

@@ -67,20 +67,18 @@ void opml_source_remove(nodePtr node);
 void opml_source_setup(nodePtr parent, nodePtr node);
 
 /**
- * Request processing callback for OPML source updates.
+ * Force update of the OPML source and all child subscriptions of the given node.
  *
  * @param node		the node
- * @param request	finished request
  */
-void opml_source_process_update_result(nodePtr node, requestPtr request);
+void opml_source_update(nodePtr node);
 
 /**
- * Updates the OPML source of the given node.
+ * Request auto-update of the OPML source and all child subscriptions of the given node.
  *
  * @param node		the node
- * @param now		current time
  */
-void opml_source_update(nodePtr node, GTimeVal *now);
+void opml_source_auto_update(nodePtr node);
 
 /**
  * Returns OPML source type implementation info.

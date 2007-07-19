@@ -126,10 +126,16 @@ subscription_update_favicon (subscriptionPtr subscription, GTimeVal *now)
 			  (gpointer)subscription->node);
 }
 
+typedef struct subscriptionUpdateCtxt {
+	subscriptionPtr	subscription;
+	request_cb	callback;
+} *subscriptionUpdateCtxtPtr;
+
 static void
 subscription_process_update_result (requestPtr request)
 {
-	subscriptionPtr subscription = (subscriptionPtr)request->user_data;
+	subscriptionUpdateCtxtPtr ctxt = (subscriptionUpdateCtxtPtr)request->user_data;
+	subscriptionPtr	subscription = ctxt->subscription;
 	nodePtr		node = subscription->node;
 	gboolean	processing = FALSE;
 	
@@ -161,27 +167,41 @@ subscription_process_update_result (requestPtr request)
 		subscription_update_favicon (subscription, &request->timestamp);
 	
 	/* 2. call subscription/node type specific processing */
-	if (processing)
-		node_process_update_result (node, request);
+	if (processing) {
+		if (ctxt->callback) {
+			request->user_data = node;
+			(*ctxt->callback) (request);
+		} else {
+			node_process_update_result (node, request);
+		}
+	}
 	
 	/* 3. postprocessing */
 	subscription->updateRequest = NULL;
 
+	g_get_current_time (&subscription->updateState->lastPoll);
 	db_update_state_save (subscription->node->id, subscription->updateState);
 	feedlist_schedule_save ();
 	itemview_update_node_info (subscription->node);
 	itemview_update ();
+	
+	g_free (ctxt);
 }
 
 void
-subscription_update (subscriptionPtr subscription, guint flags)
+subscription_update_with_callback (subscriptionPtr subscription, gpointer callback, guint flags)
 {
-	struct request		*request;
+	subscriptionUpdateCtxtPtr	ctxt;
+	struct request			*request;
 	
 	if (!subscription)
 		return;
 	
 	debug1 (DEBUG_UPDATE, "Scheduling %s to be updated", node_get_title(subscription->node));
+	
+	ctxt = g_new0 (struct subscriptionUpdateCtxt, 1);
+	ctxt->subscription = subscription;
+	ctxt->callback = callback;
 	
 	/* Retries that might have long timeouts must be 
 	   cancelled to immediately execute the user request. */
@@ -193,7 +213,7 @@ subscription_update (subscriptionPtr subscription, guint flags)
 	if (subscription_can_be_updated (subscription)) {
 		ui_mainwindow_set_status_bar (_("Updating \"%s\""), node_get_title (subscription->node));
 		request = update_request_new (subscription);
-		request->user_data = subscription;
+		request->user_data = ctxt;
 		request->options = subscription->updateOptions;
 		request->callback = subscription_process_update_result;
 
@@ -212,6 +232,12 @@ subscription_update (subscriptionPtr subscription, guint flags)
 		subscription->updateRequest = request;
 		update_execute_request (request);
 	}
+}
+
+void
+subscription_update (subscriptionPtr subscription, guint flags)
+{
+	subscription_update_with_callback (subscription, NULL, flags);
 }
 
 void
@@ -298,6 +324,17 @@ subscription_get_filter (subscriptionPtr subscription)
 }
 
 void
+subscription_set_cookies (subscriptionPtr subscription, const gchar *cookies)
+{
+	g_free (subscription->updateState->cookies);
+
+	if (cookies)
+		subscription->updateState->cookies = g_strdup(cookies);
+	else
+		subscription->updateState->cookies = NULL;
+}
+
+void
 subscription_set_orig_source (subscriptionPtr subscription, const gchar *source)
 {
 	g_free (subscription->origSource);
@@ -312,12 +349,11 @@ subscription_set_source (subscriptionPtr subscription, const gchar *source)
 	subscription->source = g_strchomp (g_strdup (source));
 	feedlist_schedule_save ();
 	
-	g_free (subscription->updateState->cookies);
 	if ('|' != source[0])
 		/* check if we've got matching cookies ... */
-		subscription->updateState->cookies = cookies_find_matching (source);
+		subscription_set_cookies (subscription, cookies_find_matching (source));
 	else 
-		subscription->updateState->cookies = NULL;
+		subscription_set_cookies (subscription, NULL);
 	
 	if (NULL == subscription_get_orig_source (subscription))
 		subscription_set_orig_source (subscription, source);

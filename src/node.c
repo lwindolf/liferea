@@ -156,19 +156,33 @@ node_set_subscription (nodePtr node, subscriptionPtr subscription)
 }
 
 void
-node_update_subscription (nodePtr node) 
+node_update_subscription (nodePtr node, gpointer user_data) 
 {
-	subscription_update (node->subscription, 0);
+	if (node->source->root == node) {
+		node_source_update (node);
+		return;
+	}
 	
-	node_foreach_child (node, node_update_subscription);
+	if (!node->subscription)
+		return;
+
+	subscription_update (node->subscription, GPOINTER_TO_UINT (user_data));
+	node_foreach_child_data (node, node_update_subscription, user_data);
 }
 
 
 void
 node_auto_update_subscription (nodePtr node) 
 {
-	subscription_auto_update (node->subscription);
+	if (node->source->root == node) {
+		node_source_auto_update (node);
+		return;
+	}
 	
+	if (!node->subscription)
+		return;
+	
+	subscription_auto_update (node->subscription);	
 	node_foreach_child (node, node_auto_update_subscription);
 }
 

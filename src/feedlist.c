@@ -151,11 +151,10 @@ feedlist_auto_update (void *data)
 	
 	debug_enter ("feedlist_auto_update");
 
-	if (update_is_online()) {
-		feedlist_foreach (node_auto_update_subscription);
-	} else {
+	if (update_is_online ())
+		node_auto_update_subscription (feedlist_get_root ());
+	else
 		debug0 (DEBUG_UPDATE, "no update processing because we are offline!");
-	}
 	
 	debug_exit ("feedlist_auto_update");
 
@@ -300,7 +299,7 @@ on_menu_update(GtkWidget *widget, gpointer user_data)
 	}
 
 	if (update_is_online ()) 
-		subscription_update (selectedNode->subscription, FEED_REQ_PRIORITY_HIGH);
+		node_update_subscription (selectedNode, GUINT_TO_POINTER (FEED_REQ_PRIORITY_HIGH));
 	else
 		ui_mainwindow_set_status_bar (_("Liferea is in offline mode. No update possible."));
 }
@@ -309,8 +308,7 @@ void
 on_menu_update_all(GtkWidget *widget, gpointer user_data)
 { 
 	if (update_is_online ()) 
-		// FIXME: int -> pointer
-		feedlist_foreach_data (node_update_subscription, (gpointer)FEED_REQ_PRIORITY_HIGH);
+		node_update_subscription (feedlist_get_root(), GUINT_TO_POINTER (FEED_REQ_PRIORITY_HIGH));
 	else
 		ui_mainwindow_set_status_bar (_("Liferea is in offline mode. No update possible."));
 }
@@ -419,7 +417,7 @@ void feedlist_init(void) {
 	switch(getNumericConfValue(STARTUP_FEED_ACTION)) {
 		case 1: /* Update all feeds */
 			debug0(DEBUG_UPDATE, "initial update: updating all feeds");
-			feedlist_foreach_data(node_update_subscription, 0);
+			node_update_subscription (feedlist_get_root (), 0);
 			break;
 		case 2:
 			debug0(DEBUG_UPDATE, "initial update: resetting feed counter");

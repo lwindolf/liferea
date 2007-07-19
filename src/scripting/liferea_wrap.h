@@ -3654,14 +3654,17 @@ fail:
 static int _wrap_node_update_subscription(lua_State* L) {
   int SWIG_arg = -1;
   nodePtr arg1 = (nodePtr) 0 ;
+  unsigned int arg2 ;
   
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  if(!lua_isnumber(L,2)) SWIG_fail_arg(2);
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_node,0))){
     SWIG_fail_ptr("node_update_subscription",1,SWIGTYPE_p_node);
   }
   
-  node_update_subscription(arg1);
+  arg2 = (unsigned int)lua_tonumber(L, 2);
+  node_update_subscription(arg1,arg2);
   SWIG_arg=0;
   
   return SWIG_arg;

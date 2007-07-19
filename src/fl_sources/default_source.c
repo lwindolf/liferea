@@ -147,6 +147,18 @@ static void default_source_source_export(nodePtr node) {
 	debug_exit("default_source_source_export");
 }
 
+static void
+default_source_update (nodePtr node)
+{	
+	node_foreach_child (node, node_update_subscription);
+}
+
+static void
+default_source_auto_update (nodePtr node)
+{	
+	node_foreach_child (node, node_auto_update_subscription);
+}
+
 static void default_source_init (void) { }
 static void default_source_deinit (void) { }
 
@@ -166,7 +178,8 @@ static struct nodeSourceType nst = {
 	default_source_source_import,
 	default_source_source_export,
 	default_source_source_get_feedlist,
-	NULL,	/* process_update_result */
+	default_source_update,
+	default_source_auto_update,
 	NULL	/* free */
 };
 

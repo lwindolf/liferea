@@ -219,8 +219,9 @@ void node_set_subscription (nodePtr node, struct subscription *subscription);
  * to mass-update subscriptions.
  *
  * @param node		the node
+ * @param user_data	update flags
  */
-void node_update_subscription (nodePtr node);
+void node_update_subscription (nodePtr node, gpointer user_data);
 
 /**
  * Helper function to be used with node_foreach_child()
