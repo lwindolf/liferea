@@ -179,7 +179,7 @@ static void parse_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur, gboolean isFeedTag
 				if(isNotEmpty) {
 					if(isFeedTag) {
 						if(mapping = mapToFeedMetadata[i])
-							ctxt->feed->metadata = metadata_list_append(ctxt->feed->metadata, mapping, value);
+							ctxt->subscription->metadata = metadata_list_append(ctxt->subscription->metadata, mapping, value);
 					} else {
 						if(mapping = mapToItemMetadata[i])
 							ctxt->item->metadata = metadata_list_append(ctxt->item->metadata, mapping, value);

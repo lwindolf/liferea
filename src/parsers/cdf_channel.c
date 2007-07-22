@@ -37,6 +37,7 @@
 #include "cdf_channel.h"
 #include "cdf_item.h"
 #include "metadata.h"
+#include "xml.h"
 
 /* note: the tag order has to correspond with the CHANNEL_* defines in the header file */
 static GHashTable *channelHash = NULL;
@@ -98,7 +99,7 @@ static void parseCDFChannel(feedParserCtxtPtr ctxt, xmlNodePtr cur, CDFChannelPt
 			if(tmp2) {
 				tmp3 = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE));
 				if(tmp3) {
-					ctxt->feed->metadata = metadata_list_append(ctxt->feed->metadata, tmp2, tmp3);
+					ctxt->subscription->metadata = metadata_list_append(ctxt->subscription->metadata, tmp2, tmp3);
 					g_free(tmp3);
 				}
 			}

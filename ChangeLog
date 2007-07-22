@@ -8,6 +8,9 @@
 	* Fixing AM/PM problems for US locales by reusing
 	  Evolution time formatting code (SF #1317220)
 	* Fixes node source updating (OPML, Bloglines...)
+	* Fixes missing feed metadata rendering
+	* Fixes DnD of read-only subscription lists
+	* Updated documentation for 1.4
 
 	Translations
 

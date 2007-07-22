@@ -515,7 +515,7 @@ static itemPtr atom10_parse_entry(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 static void atom10_parse_feed_author(xmlNodePtr cur, feedParserCtxtPtr ctxt, itemPtr ip, struct atom10ParserState *state) {
 	/* parse feed author */
 	gchar *author = atom10_parse_person_construct(cur);
-	ctxt->feed->metadata = metadata_list_append(ctxt->feed->metadata, "author", author);
+	ctxt->subscription->metadata = metadata_list_append(ctxt->subscription->metadata, "author", author);
 	g_free(author);
 	/* FIXME: make item parsing use this author if not specified elsewhere */
 }
@@ -530,7 +530,7 @@ static void atom10_parse_feed_category(xmlNodePtr cur, feedParserCtxtPtr ctxt, i
 	}
 	if(label != NULL) {
 		escaped = g_markup_escape_text(label, -1);
-		ctxt->feed->metadata = metadata_list_append(ctxt->feed->metadata, "category", escaped);
+		ctxt->subscription->metadata = metadata_list_append(ctxt->subscription->metadata, "category", escaped);
 		g_free(escaped);
 		xmlFree(label);
 	}
@@ -539,7 +539,7 @@ static void atom10_parse_feed_category(xmlNodePtr cur, feedParserCtxtPtr ctxt, i
 static void atom10_parse_feed_contributor(xmlNodePtr cur, feedParserCtxtPtr ctxt, itemPtr ip, struct atom10ParserState *state) {
 	/* parse feed contributors */
 	gchar *contributer = atom10_parse_person_construct(cur);
-	ctxt->feed->metadata = metadata_list_append(ctxt->feed->metadata, "contributor", contributer);
+	ctxt->subscription->metadata = metadata_list_append(ctxt->subscription->metadata, "contributor", contributer);
 	g_free(contributer);
 }
 
@@ -562,7 +562,7 @@ static void atom10_parse_feed_generator(xmlNodePtr cur, feedParserCtxtPtr ctxt, 
 			g_free(ret);
 			ret = tmp;
 		}
-		ctxt->feed->metadata = metadata_list_append(ctxt->feed->metadata, "feedgenerator", tmp);
+		ctxt->subscription->metadata = metadata_list_append(ctxt->subscription->metadata, "feedgenerator", tmp);
 	}
 	g_free(ret);
 }
@@ -604,7 +604,7 @@ static void atom10_parse_feed_rights(xmlNodePtr cur, feedParserCtxtPtr ctxt, str
 	
 	rights = atom10_parse_text_construct(cur, FALSE);
 	if(rights) {
-		ctxt->feed->metadata = metadata_list_append(ctxt->feed->metadata, "copyright", rights);
+		ctxt->subscription->metadata = metadata_list_append(ctxt->subscription->metadata, "copyright", rights);
 		g_free(rights);
 	}
 }
@@ -635,7 +635,7 @@ static void atom10_parse_feed_updated(xmlNodePtr cur, feedParserCtxtPtr ctxt, st
 	
 	timestamp = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 	if(timestamp) {
-		ctxt->feed->metadata = metadata_list_append(ctxt->feed->metadata, "contentUpdateDate", timestamp);
+		ctxt->subscription->metadata = metadata_list_append(ctxt->subscription->metadata, "contentUpdateDate", timestamp);
 		ctxt->feed->time = parseISO8601Date(timestamp);
 		g_free(timestamp);
 	}

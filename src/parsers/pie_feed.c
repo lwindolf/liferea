@@ -216,7 +216,7 @@ static void pie_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 				/* parse feed author */
 				tmp = parseAuthor(cur);
 				if(tmp) {
-					ctxt->feed->metadata = metadata_list_append(ctxt->feed->metadata, "author", tmp);
+					ctxt->subscription->metadata = metadata_list_append(ctxt->subscription->metadata, "author", tmp);
 					g_free(tmp);
 				}
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"tagline")) {
@@ -242,20 +242,20 @@ static void pie_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 						g_free(tmp);
 						tmp = tmp3;
 					}
-					ctxt->feed->metadata = metadata_list_append(ctxt->feed->metadata, "feedgenerator", tmp);
+					ctxt->subscription->metadata = metadata_list_append(ctxt->subscription->metadata, "feedgenerator", tmp);
 				}
 				g_free(tmp);
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"copyright")) {
 				tmp = common_utf8_fix(pie_parse_content_construct(cur));
 				if(tmp) {
-					ctxt->feed->metadata = metadata_list_append(ctxt->feed->metadata, "copyright", tmp);
+					ctxt->subscription->metadata = metadata_list_append(ctxt->subscription->metadata, "copyright", tmp);
 					g_free(tmp);
 				}				
 				
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"modified")) { /* Modified was last used in IETF draft 02) */
 				tmp = common_utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1));
 				if(tmp) {
-					ctxt->feed->metadata = metadata_list_append(ctxt->feed->metadata, "pubDate", tmp);
+					ctxt->subscription->metadata = metadata_list_append(ctxt->subscription->metadata, "pubDate", tmp);
 					ctxt->feed->time = parseISO8601Date(tmp);
 					g_free(tmp);
 				}
@@ -263,7 +263,7 @@ static void pie_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"updated")) { /* Updated was added in IETF draft 03 */
 				tmp = common_utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1));
 				if(tmp) {
-					ctxt->feed->metadata = metadata_list_append(ctxt->feed->metadata, "pubDate", tmp);
+					ctxt->subscription->metadata = metadata_list_append(ctxt->subscription->metadata, "pubDate", tmp);
 					ctxt->feed->time = parseISO8601Date(tmp);
 					g_free(tmp);
 				}
@@ -271,7 +271,7 @@ static void pie_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"contributor")) { 
 				tmp = parseAuthor(cur);
 				if(tmp) {
-					ctxt->feed->metadata = metadata_list_append(ctxt->feed->metadata, "contributor", tmp);
+					ctxt->subscription->metadata = metadata_list_append(ctxt->subscription->metadata, "contributor", tmp);
 					g_free(tmp);
 				}
 				

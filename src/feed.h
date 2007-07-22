@@ -48,11 +48,10 @@ enum cache_limit {
 typedef struct feed {
 	struct feedHandler *fhp;     		/**< Feed handler saved by the ->typeStr attribute. */
 	
-	/* feed properties that need to be saved */
+	/* feed properties that need to be saved */	// FIXME: move to metadata
 	gchar		*htmlUrl;		/**< URL of HTML version of the feed */
 	gchar		*imageUrl;		/**< URL of the optional feed image */
 	gchar		*description;		/**< HTML string describing the feed */
-	GSList		*metadata;		/**< metadata of this feed */
 
 	/* feed cache state properties */
 	gint		cacheLimit;		/**< Amount of cache to save: See the cache_limit enum */

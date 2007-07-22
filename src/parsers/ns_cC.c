@@ -73,7 +73,7 @@ static gchar * parse_tag(xmlNodePtr cur) {
 static void parse_channel_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 
 	gchar * tag = parse_tag(cur);
-	metadata_list_set(&(ctxt->feed->metadata), "license", tag);
+	metadata_list_set(&(ctxt->subscription->metadata), "license", tag);
 	g_free(tag);
 }
 

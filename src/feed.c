@@ -344,8 +344,8 @@ gboolean feed_parse(feedParserCtxtPtr ctxt) {
 				ctxt->tmpdata = g_hash_table_new_full(g_str_hash, g_str_equal, NULL, g_free);
 				
 				/* we always drop old metadata */
-				metadata_list_free(ctxt->feed->metadata);
-				ctxt->feed->metadata = NULL;
+				metadata_list_free(ctxt->subscription->metadata);
+				ctxt->subscription->metadata = NULL;
 				ctxt->failed = FALSE;
 
 				ctxt->feed->fhp = handler;
@@ -384,31 +384,51 @@ gboolean feed_parse(feedParserCtxtPtr ctxt) {
 	return success;
 }
 
-static void feed_add_xml_attributes(nodePtr node, xmlNodePtr feedNode) {
+static void
+feed_add_xml_attributes (nodePtr node, xmlNodePtr feedNode)
+{
 	feedPtr	feed = (feedPtr)node->data;
 	gchar	*tmp;
 	
-	xmlNewTextChild(feedNode, NULL, "feedId", node_get_id(node));
-	xmlNewTextChild(feedNode, NULL, "feedTitle", node_get_title(node));
-	xmlNewTextChild(feedNode, NULL, "feedSource", subscription_get_source (node->subscription));
-	xmlNewTextChild(feedNode, NULL, "feedOrigSource", subscription_get_orig_source (node->subscription));
+	xmlNewTextChild (feedNode, NULL, "feedId", node_get_id (node));
+	xmlNewTextChild (feedNode, NULL, "feedTitle", node_get_title (node));
 
-	if(feed->description)
-		xmlNewTextChild(feedNode, NULL, "feedDescription", feed->description);
+	if (feed->description)
+		xmlNewTextChild (feedNode, NULL, "feedDescription", feed->description);
 
-	if(feed_get_image_url(feed))
-		xmlNewTextChild(feedNode, NULL, "feedImage", feed_get_image_url(feed));
+	if (feed_get_image_url (feed))
+		xmlNewTextChild (feedNode, NULL, "feedImage", feed_get_image_url (feed));
 
-	tmp = g_strdup_printf("%d", subscription_get_default_update_interval (node->subscription));
-	xmlNewTextChild(feedNode, NULL, "feedUpdateInterval", tmp);
-	g_free(tmp);
+	// FIXME: move subscription stuff to subscription.c
+	if (node->subscription) {
+		xmlNewTextChild (feedNode, NULL, "feedSource", subscription_get_source (node->subscription));
+		xmlNewTextChild (feedNode, NULL, "feedOrigSource", subscription_get_orig_source (node->subscription));
+
+		tmp = g_strdup_printf ("%d", subscription_get_default_update_interval (node->subscription));
+		xmlNewTextChild (feedNode, NULL, "feedUpdateInterval", tmp);
+		g_free (tmp);
+	
+		tmp = g_strdup_printf ("%d", node->subscription->discontinued?1:0);
+		xmlNewTextChild (feedNode, NULL, "feedDiscontinued", tmp);
+		g_free (tmp);
+
+		if (node->subscription->updateError)
+			xmlNewTextChild (feedNode, NULL, "updateError", node->subscription->updateError);
+		if (node->subscription->httpError) {
+			xmlNewTextChild (feedNode, NULL, "httpError", node->subscription->httpError);
+
+			tmp = g_strdup_printf ("%d", node->subscription->httpErrorCode);
+			xmlNewTextChild (feedNode, NULL, "httpErrorCode", tmp);
+			g_free (tmp);
+		}
+		if (node->subscription->filterError)
+			xmlNewTextChild (feedNode, NULL, "filterError", node->subscription->filterError);
+	
+		metadata_add_xml_nodes(node->subscription->metadata, feedNode);	
+	}
 
 	tmp = g_strdup_printf("%d", node->available?1:0);
 	xmlNewTextChild(feedNode, NULL, "feedStatus", tmp);
-	g_free(tmp);
-
-	tmp = g_strdup_printf("%d", node->subscription->discontinued?1:0);
-	xmlNewTextChild(feedNode, NULL, "feedDiscontinued", tmp);
 	g_free(tmp);
 
 	tmp = g_strdup_printf("file://%s", node_get_favicon_file(node));
@@ -417,21 +437,8 @@ static void feed_add_xml_attributes(nodePtr node, xmlNodePtr feedNode) {
 		
 	xmlNewTextChild(feedNode, NULL, "feedLink", feed_get_html_url(feed));
 
-	if(node->subscription->updateError)
-		xmlNewTextChild(feedNode, NULL, "updateError", node->subscription->updateError);
-	if(node->subscription->httpError) {
-		xmlNewTextChild(feedNode, NULL, "httpError", node->subscription->httpError);
-
-		tmp = g_strdup_printf("%d", node->subscription->httpErrorCode);
-		xmlNewTextChild(feedNode, NULL, "httpErrorCode", tmp);
-		g_free(tmp);
-	}
-	if(node->subscription->filterError)
-		xmlNewTextChild(feedNode, NULL, "filterError", node->subscription->filterError);
 	if(feed->parseErrors && (strlen(feed->parseErrors->str) > 0))
 		xmlNewTextChild(feedNode, NULL, "parseError", feed->parseErrors->str);
-
-	metadata_add_xml_nodes(feed->metadata, feedNode);
 }
 
 xmlDocPtr
@@ -446,9 +453,6 @@ feed_to_xml (nodePtr node, xmlNodePtr feedNode)
 		xmlDocSetRootElement (doc, feedNode);
 	}
 	feed_add_xml_attributes (node, feedNode);
-	
-	g_assert (node->subscription);
-	metadata_add_xml_nodes (node->subscription->metadata, feedNode);	
 	
 	return doc;
 }
@@ -532,7 +536,6 @@ feed_free (nodePtr node) {
 	g_free(feed->htmlUrl);
 	g_free(feed->imageUrl);
 	g_free(feed->description);
-	metadata_list_free(feed->metadata);
 	g_free(feed);
 }
 

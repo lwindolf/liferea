@@ -90,14 +90,14 @@ static void parseChannel(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 		/* Check for metadata tags */
 		if(NULL != (tmp2 = g_hash_table_lookup(RssToMetadataMapping, cur->name))) {
 			if(NULL != (tmp3 = common_utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE)))) {
-				ctxt->feed->metadata = metadata_list_append(ctxt->feed->metadata, tmp2, tmp3);
+				ctxt->subscription->metadata = metadata_list_append(ctxt->subscription->metadata, tmp2, tmp3);
 				g_free(tmp3);
 			}
 		}	
 		/* check for specific tags */
 		else if(!xmlStrcmp(cur->name, BAD_CAST"pubDate")) {
  			if(NULL != (tmp = common_utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1)))) {
-				ctxt->feed->metadata = metadata_list_append(ctxt->feed->metadata, "pubDate", tmp);
+				ctxt->subscription->metadata = metadata_list_append(ctxt->subscription->metadata, "pubDate", tmp);
 				ctxt->feed->time = parseRFC822Date(tmp);
 				g_free(tmp);
 			}
@@ -274,7 +274,7 @@ static void rss_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 				   only one text[iI]nput per channel and parsing the rdf:ressource
 				   one should not harm */
 				if(NULL != (tmp = parseTextInput(cur))) {
-					ctxt->feed->metadata = metadata_list_append(ctxt->feed->metadata, "textInput", tmp);
+					ctxt->subscription->metadata = metadata_list_append(ctxt->subscription->metadata, "textInput", tmp);
 					g_free(tmp);
 				}
 				

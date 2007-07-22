@@ -31,6 +31,7 @@
 #include "pie_entry.h"
 #include "pie_feed.h"
 #include "metadata.h"
+#include "xml.h"
 
 /* uses the same namespace handler as PIE_channel */
 extern GHashTable *pie_nstable;
