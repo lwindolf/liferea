@@ -168,12 +168,13 @@ feed_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trusted)
 	xmlFree (title);
 	
 	node_set_icon (node, favicon_load_from_cache (node->id));
-		
-	debug4 (DEBUG_CACHE, "import feed: title=%s source=%s typeStr=%s interval=%d", 
-	        node_get_title (node), 
-	        subscription_get_source (node->subscription), 
-	        typeStr, 
-	        subscription_get_update_interval (node->subscription));
+	
+	if (node->subscription)
+		debug4 (DEBUG_CACHE, "import feed: title=%s source=%s typeStr=%s interval=%d", 
+		        node_get_title (node), 
+	        	subscription_get_source (node->subscription), 
+		        typeStr, 
+		        subscription_get_update_interval (node->subscription));
 
 	node_add_child (parent, node, -1);
 }
@@ -189,7 +190,8 @@ feed_export (nodePtr node, xmlNodePtr xml, gboolean trusted)
 	else
 		xmlNewProp (xml, BAD_CAST"htmlUrl", BAD_CAST "");
 
-	subscription_export (node->subscription, xml, trusted);
+	if (node->subscription)
+		subscription_export (node->subscription, xml, trusted);
 
 	if(trusted) {
 		if (feed->cacheLimit >= 0)

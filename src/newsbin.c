@@ -36,28 +36,43 @@
 static GtkWidget *newnewsbindialog = NULL;
 static GSList * newsbin_list = NULL;
 
-GSList * newsbin_get_list(void) { return newsbin_list; }
+GSList *
+newsbin_get_list (void)
+{
+	return newsbin_list;
+}
 
-static void newsbin_new(nodePtr node) {
-
+static void
+newsbin_new(nodePtr node)
+{
 	feedlist_schedule_save();
 }
 
-static void newsbin_import(nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean trusted) {
-
-	feed_get_node_type()->import(node, parent, cur, trusted);
+static void
+newsbin_import (nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean trusted)
+{
+	feed_get_node_type ()->import (node, parent, cur, trusted);
+	
+	/* but we don't need a subscription (created by feed_import()) */
+	g_free (node->subscription);
+	node->subscription = NULL;
+	
 	((feedPtr)node->data)->cacheLimit = CACHE_UNLIMITED;
+	
 	newsbin_list = g_slist_append(newsbin_list, node);
 }
 
-static void newsbin_remove(nodePtr node) {
-
+static void
+newsbin_remove (nodePtr node)
+{
 	newsbin_list = g_slist_remove(newsbin_list, node);
 	feed_get_node_type()->remove(node);
 	ui_popup_update_menues();
 }
 
-static gchar * newsbin_render(nodePtr node) {
+static gchar *
+newsbin_render (nodePtr node)
+{
 	renderParamPtr	params;
 	gchar		*output = NULL;
 	xmlDocPtr	doc;
@@ -71,7 +86,9 @@ static gchar * newsbin_render(nodePtr node) {
 	return output;
 }
 
-static void ui_newsbin_add(nodePtr parent) {
+static void
+ui_newsbin_add (nodePtr parent)
+{
 	GtkWidget	*nameentry;
 	
 	if (!newnewsbindialog || !G_IS_OBJECT (newnewsbindialog))
@@ -83,7 +100,9 @@ static void ui_newsbin_add(nodePtr parent) {
 	gtk_widget_show(newnewsbindialog);
 }
 
-void on_newnewsbinbtn_clicked(GtkButton *button, gpointer user_data) {
+void 
+on_newnewsbinbtn_clicked (GtkButton *button, gpointer user_data)
+{
 	nodePtr		newsbin;
 	int		pos;
 	
@@ -102,7 +121,9 @@ void on_newnewsbinbtn_clicked(GtkButton *button, gpointer user_data) {
 	ui_popup_update_menues();
 }
 
-void on_popup_copy_to_newsbin(gpointer user_data, guint callback_action, GtkWidget *widget) {
+void 
+on_popup_copy_to_newsbin (gpointer user_data, guint callback_action, GtkWidget *widget)
+{
 	nodePtr		newsbin;
 	itemPtr		item, copy;
 
@@ -130,10 +151,12 @@ void on_popup_copy_to_newsbin(gpointer user_data, guint callback_action, GtkWidg
 	}
 }
 
-nodeTypePtr newsbin_get_node_type(void) {
+nodeTypePtr
+newsbin_get_node_type (void)
+{
 	static nodeTypePtr	nodeType;
 
-	if(!nodeType) {
+	if (!nodeType) {
 		/* derive the plugin node type from the folder node type */
 		nodeType = (nodeTypePtr)g_new0(struct nodeType, 1);
 		nodeType->capabilities		= NODE_CAPABILITY_RECEIVE_ITEMS |
