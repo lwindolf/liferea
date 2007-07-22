@@ -33,6 +33,7 @@
 #include "ui/ui_itemlist.h"
 #include "ui/ui_node.h"
 #include "ui/ui_dnd.h"
+#include "fl_sources/node_source.h"
 
 static gboolean (*old_feed_drop_possible)(GtkTreeDragDest   *drag_dest,
                                           GtkTreePath       *dest_path,
@@ -56,9 +57,10 @@ static gboolean ui_dnd_feed_draggable(GtkTreeDragSource *drag_source, GtkTreePat
 	if(gtk_tree_model_get_iter(GTK_TREE_MODEL(drag_source), &iter, path)) {
 		gtk_tree_model_get(GTK_TREE_MODEL(drag_source), &iter, FS_PTR, &node, -1);
 		
-		/* everything besides "empty" entries may be dragged */		
-		if(node == NULL)
+		/* never drag "empty" entries or nodes of read-only subscription lists*/
+		if (!node || !(NODE_SOURCE_TYPE (node->parent)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST))
 			return FALSE;
+		
 		return TRUE;
 	} else {
 		g_warning("fatal error! could not resolve tree path!");
