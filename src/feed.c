@@ -211,10 +211,11 @@ feed_export (nodePtr node, xmlNodePtr xml, gboolean trusted)
 			xmlNewProp (xml, BAD_CAST"loadItemLink", BAD_CAST"true");
 	}
 
-	debug3 (DEBUG_CACHE, "adding feed: source=%s interval=%d cacheLimit=%s",
-	        subscription_get_source (node->subscription), 
-		subscription_get_update_interval (node->subscription),
-	        (cacheLimit != NULL ? cacheLimit : ""));
+	if (node->subscription)
+		debug3 (DEBUG_CACHE, "adding feed: source=%s interval=%d cacheLimit=%s",
+		        subscription_get_source (node->subscription), 
+			subscription_get_update_interval (node->subscription),
+		        (cacheLimit != NULL ? cacheLimit : ""));
 	g_free (cacheLimit);
 }
 
