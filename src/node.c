@@ -163,10 +163,9 @@ node_update_subscription (nodePtr node, gpointer user_data)
 		return;
 	}
 	
-	if (!node->subscription)
-		return;
-
-	subscription_update (node->subscription, GPOINTER_TO_UINT (user_data));
+	if (node->subscription)
+		subscription_update (node->subscription, GPOINTER_TO_UINT (user_data));
+		
 	node_foreach_child_data (node, node_update_subscription, user_data);
 }
 
@@ -179,10 +178,9 @@ node_auto_update_subscription (nodePtr node)
 		return;
 	}
 	
-	if (!node->subscription)
-		return;
-	
-	subscription_auto_update (node->subscription);	
+	if (node->subscription)
+		subscription_auto_update (node->subscription);	
+		
 	node_foreach_child (node, node_auto_update_subscription);
 }
 
