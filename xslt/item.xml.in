@@ -188,9 +188,10 @@
 </tr>
 </xsl:if>
 
-<!-- if there is no item set source then this is a merged item list
-     rendering and we should display the source feed title for the item -->
-<xsl:if test="not(/itemset/source)">
+<!-- If there is no item set source then this is a merged item list
+     rendering and we should display the source feed title for the item.
+     Only exception: News Bins which do not have an itemset source. -->
+<xsl:if test="not(/itemset/source) and /itemset/feed/feedTitle">
 <tr>
  <td valign="top" class='source'> 
      <_span>Feed</_span>
