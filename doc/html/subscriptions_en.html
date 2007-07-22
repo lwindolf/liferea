@@ -24,15 +24,28 @@
 	This section documents all user interactions necessary to create and maintain subscription.
 	</p>
 	
-	<h3>Subscribing</h3>
+	<h3>Things Liferea Can Subscribe To</h3>
 	<p>
-	To create a new subscription select "New Feed" from the feed 
-	list's contextual menu or the "Feeds" menu. A dialog to create a 
+	As a news aggregator Liferea allows you to subscribe to different
+	syndication sources. The most common use case is to subscribe to
+	single feeds. But Liferea also supports subscribing a source that provides
+	a collection of feeds. So you can subscribe to:
+	
+	<ul>
+		<li>any OPML source (a planet feed list, a blog roll...)</li>
+		<li>a <a href="http://www.bloglines.com">Bloglines</a> subscription list</li>
+		<li>a <a href="http://google.com/reader">Google Reader</a> subscription list</li>
+	</ul>
+	
+	<h3>Subscribing to a Feed</h3>
+	<p>
+	To create a new feed subscription select "New Feed" from the feed 
+	list's contextual menu or the "Subscriptions" menu. A dialog to create a 
 	new subscription will appear.
 	</p>	
 
 	<p align="center">
-	<img src="help_subscribe_1.2.0.png">
+	<img src="help_subscribe_1.4.0.png">
 	</p>
 	
 	<p>
@@ -41,7 +54,7 @@
 	into the text box and click "OK".
 	</p>
 	
-	<h3>Creating special subscriptions</h3>
+	<h3>Creating Special Feed Subscriptions</h3>
 
 	<p>
 	Liferea supports obtaining feeds from a variety of different sources 
@@ -52,7 +65,7 @@
 	complex subscription dialog:</p>
 	
 	<p align="center">
-	<img src="help_subscribe_adv_1.2.0.png">
+	<img src="help_subscribe_adv_1.4.0.png">
 	</p>
 	
 	<p>
@@ -79,11 +92,11 @@
 	feed to stdout. Conversion filters are often written using
 	perl. </p>
 	
-	<h3>Feed Properties</h3>
+	<h3>Changing Subscription Properties</h3>
 
 	<p>
 	The feed properties dialog is used to configure additional feed
-	properties and can be activated in the "Feeds" menu or from feed 
+	properties and can be activated in the "Subscriptions" menu or from feed 
 	context menu. After successfully creating a new subscription you 
 	usually don't need to change the feed properties.
 	</p>
@@ -100,7 +113,7 @@
 	<h4>General Properties</h4>
 
 	<p align="center">
-	<img src="help_feed_prop_general_1.2.0.png"/>
+	<img src="help_feed_prop_general_1.4.0.png"/>
 	</p>
 	
 	<p>The "General" pane allows you to set feed title and update
@@ -145,17 +158,17 @@
 	<h4>Source Properties</h4>
 
 	<p align="center">
-	<img src="help_feed_prop_source_1.2.0.png"/>
+	<img src="help_feed_prop_source_1.4.0.png"/>
 	</p>
 	
 	<p>The "Source" pane contains the same fields that the advanced
 	subscription dialog provides. You can use these	settings to change 
 	the feed source (e.g. after a feed's URL has changed).</p>
 
-	<h2>Archive Properties</h2>
+	<h4>Archive Properties</h4>
 
 	<p align="center">
-	<img src="help_feed_prop_cache_1.2.0.png"/>
+	<img src="help_feed_prop_cache_1.4.0.png"/>
 	</p>
 	
 	<p>The third pane, "Archive", controls how many items of
@@ -184,7 +197,7 @@
 	<h4>Download Properties</h4>
 	
 	<p align="center">
-	<img src="help_feed_prop_downl_1.2.0.png"/>
+	<img src="help_feed_prop_downl_1.4.0.png"/>
 	</p>
 	
 	<p>
@@ -198,7 +211,7 @@
 	<h4>Advanced Properties</h4>
 	
 	<p align="center">
-	<img src="help_feed_prop_adv_1.2.0.png"/>
+	<img src="help_feed_prop_adv_1.4.0.png"/>
 	</p>
 
 	<p>
@@ -212,7 +225,47 @@
 	When this check box is enabled it will automatically load the item link
 	when the item selection changes.
 	</p>	
-
+	
+	<h3>Subscribing to OPML Sources, Bloglines and Google Reader Accounts</h3>
+	<p>
+	To subscribe to OPML feed lists or a Bloglines or Google Reader account
+	select "New Source" from the context menu of the feed list or from the
+	"Subscriptions" menu. From the following dialog select the source type
+	you like to create.
+	</p>
+	
+	<h4>OPML Sources</h3>
+	<p>
+	If you have selected "Planet/BlogRoll/OPML" you need to supply the source
+	URL of the OPML document. If necessary provide authentication information.
+	After doing so a new OPML source node will be inserted in the feed list 
+	and after downloading the OPML document for the first time new 
+	subscriptions as described by the OPML source will be created. If the
+	OPML feed list changes over time old subscriptions are automatically
+	dropped and new ones are added.
+	</p>
+	
+	<h4>Bloglines</h4>
+	<p>
+	If you have selected "Bloglines" you just need to supply your Bloglines username
+	and password. Similar to the OPML source Liferea will automatically retrieve
+	the Bloglines subscription list and will automatically add your Bloglines subscriptions.
+	<br /><br />
+	<b>Note: Liferea only retrieves the subscription list of your Bloglines account.
+	It does not synchronize item read states with Bloglines!</b>
+	</p>
+	
+	<h4>Google Reader</h4>
+	<p>
+	If you have selected "Google Reader" you just need to supply your Google Reader
+	username and password. Similar to the OPML source Liferea will automatically
+	retrieve the Google Reader subscription list and will automatically add all
+	Google Reader subscriptions.
+	<br /><br />
+	<b>Note: Liferea only retrieves the subscription list of your Google Reader account.
+	It does not synchronize item read states with Google Reader!</b>	
+	</p>
+	
 	<!-- navigation footer start -->
 	<hr />
 	<table width="100%">
