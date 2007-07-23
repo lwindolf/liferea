@@ -29,13 +29,14 @@
 
 #include <libnotify/notify.h>
 
+#include "common.h"
 #include "conf.h"
 #include "node.h"
 #include "item.h"
-#include "callbacks.h"
-#include "support.h"
+#include "itemlist.h"
 #include "plugin.h"
 #include "ui/ui_feedlist.h"
+#include "ui/ui_mainwindow.h"
 #include "ui/ui_tray.h"
 
 #include "notification/notif_plugin.h"
@@ -64,10 +65,8 @@ static void notif_libnotify_callback_mark_read ( NotifyNotification *n, gchar *a
 	nodePtr node_p = node_from_id(user_data);
 	
 	if(node_p) {
-		node_load(node_p);
-		itemlist_mark_all_read(node_p->itemSet);
-		itemlist_mark_all_popup(node_p->itemSet);
-		node_unload(node_p);
+		itemlist_mark_all_read(node_p->id);
+		itemlist_mark_all_popup(node_p->id);
 	} else {
 		ui_show_error_box(_("This feed does not exist anymore!"));
 	}
@@ -95,15 +94,15 @@ static void notif_libnotify_callback_show_details ( NotifyNotification *n, gchar
 	node_p = node_from_id(user_data);
 	
 	if(node_p) {
-		node_load(node_p);
+		itemSetPtr itemSet = node_get_itemset (node_p);
 
 		labelText_now_p = g_strdup("");
 
 		/* Gather the feed's headlines */
-		list_p = node_p->itemSet->items;
-		while(list_p != NULL) {
-			item_p = list_p->data;
-			if( item_p->popupStatus == TRUE && item_p->readStatus == FALSE) {
+		list_p = itemSet->ids;
+		while (list_p) {
+			item_p = item_load ( GPOINTER_TO_UINT (list_p->data));
+			if (item_p->popupStatus && !item_p->readStatus) {
 				item_p->popupStatus = FALSE;
 				item_count += 1;
 
@@ -126,11 +125,13 @@ static void notif_libnotify_callback_show_details ( NotifyNotification *n, gchar
 				g_free(labelText_p);
 				g_free(labelText_prev_p);
 			}
-			list_p = g_list_next(list_p);
+			item_unload (item_p);
+			list_p = g_list_next (list_p);
 		}
+		itemset_free (itemSet);
 
-		if ( item_count == 0 ) {
-			g_free(labelText_now_p);
+		if (item_count == 0) {
+			g_free (labelText_now_p);
 			return;
 		}
 	} else {
@@ -153,14 +154,12 @@ static void notif_libnotify_callback_show_details ( NotifyNotification *n, gchar
 
 		notify_notification_add_action(n, "open", _("Open feed"),
 										(NotifyActionCallback)notif_libnotify_callback_open,
-										node_p, NULL);
+										node_p->id, NULL);
 		notify_notification_add_action(n, "mark_read", _("Mark all as read"),
 										(NotifyActionCallback)notif_libnotify_callback_mark_read,
-										node_p, NULL);
+										node_p->id, NULL);
 
-		node_unload(node_p);
-
-		getBooleanConfValue(SHOW_TRAY_ICON);
+		conf_get_bool_value(SHOW_TRAY_ICON);
 		if (!notify_notification_show (n, NULL)) {
 			fprintf(stderr, "PLUGIN:notif_libnotify.c - failed to update notification via libnotify\n");
 		}
@@ -204,13 +203,14 @@ static void notif_libnotify_node_has_new_items(nodePtr node_p) {
 	itemPtr item_p;
 	gint item_count;
 
-	if(!getBooleanConfValue(SHOW_POPUP_WINDOWS)) {
+	if(!conf_get_bool_value(SHOW_POPUP_WINDOWS)) {
 		return;
 	}
 
 	/* Count updated feed */
 	item_count = 0;
-	list_p = node_p->itemSet->items;
+	list_p = NULL;
+	// FIXME list_p = node_p->itemSet->items;
 	while(list_p != NULL) {
 		item_p = list_p->data;
 		if( item_p->popupStatus == TRUE && item_p->readStatus == FALSE) {
@@ -223,7 +223,7 @@ static void notif_libnotify_node_has_new_items(nodePtr node_p) {
 		return;
 	}
 
-	labelSummary_p = g_strdup_printf (_("%s has %d new / updated headlines\n"), node_get_title(node_p), item_count );
+	labelSummary_p = g_strdup_printf (ngettext("%s has %d new / updated headline\n", "%s has %d new / updated headlines\n", item_count), node_get_title(node_p), item_count );
 
 	n = notify_notification_new ( _("Feed Update"), labelSummary_p, NULL, NULL);
 

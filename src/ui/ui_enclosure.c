@@ -1,7 +1,7 @@
 /**
- * @file ui_enclosure.c enclosures user interface
+ * @file ui_enclosure.c enclosures/podcast support
  *
- * Copyright (C) 2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2005-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,14 +26,14 @@
 #include <libxml/tree.h>
 #include <libxml/uri.h>
 #include <string.h>
+
 #include "common.h"
-#include "callbacks.h"
-#include "interface.h"
-#include "support.h"
 #include "conf.h"
 #include "debug.h"
-#include "ui_popup.h"
-#include "ui_enclosure.h"
+#include "ui/ui_dialog.h"
+#include "ui/ui_popup.h"
+#include "ui/ui_prefs.h"
+#include "ui/ui_enclosure.h"
 
 static GSList *types = NULL;
 
@@ -149,14 +149,14 @@ static gpointer ui_enclosure_exec(gpointer data) {
 	GError		*error = NULL;
 	gint		status;
 	
-	debug1(DEBUG_UPDATE, "running \"%s\"\n", ejp->download);
+	debug1(DEBUG_UPDATE, "running \"%s\"", ejp->download);
 	g_spawn_command_line_sync(ejp->download, NULL, NULL, &status, &error);
 	if((NULL != error) && (0 != error->code)) {
 		g_warning("command \"%s\" failed with exitcode %d!", ejp->download, status);
 	} else {
 		if(NULL != ejp->run) {
 			/* execute */
-			debug1(DEBUG_UPDATE, "running \"%s\"\n", ejp->run);
+			debug1(DEBUG_UPDATE, "running \"%s\"", ejp->run);
 			g_spawn_command_line_async(ejp->run, &error);
 			if((NULL != error) && (0 != error->code))
 				g_warning("command \"%s\" failed!", ejp->run);
@@ -191,7 +191,7 @@ void ui_enclosure_download(encTypePtr etp, const gchar *url, const gchar *filena
 	g_free(filenameQ);
 	g_free(urlQ);
 	
-	debug2(DEBUG_UPDATE, "downloading %s to %s...\n", url, filename);
+	debug2(DEBUG_UPDATE, "downloading %s to %s...", url, filename);
 
 	/* free now unnecessary stuff */
 	if((NULL != etp) && (FALSE == etp->permanent))
@@ -214,7 +214,7 @@ static void on_selectcmdok_clicked(const gchar *filename, gpointer user_data) {
 		return;
 	
 	if(NULL != (utfname = g_filename_to_utf8(filename, -1, NULL, NULL, NULL))) {
-		gtk_entry_set_text(GTK_ENTRY(lookup_widget(dialog, "enc_cmd_entry")), utfname);	
+		gtk_entry_set_text(GTK_ENTRY(liferea_dialog_lookup(dialog, "enc_cmd_entry")), utfname);	
 		g_free(utfname);
 	}
 }
@@ -224,9 +224,9 @@ static void on_selectcmd_pressed(GtkButton *button, gpointer user_data) {
 	const gchar	*utfname;
 	gchar 		*name;
 	
-	utfname =  gtk_entry_get_text(GTK_ENTRY(lookup_widget(dialog,"enc_cmd_entry")));
+	utfname =  gtk_entry_get_text(GTK_ENTRY(liferea_dialog_lookup(dialog,"enc_cmd_entry")));
 	if(NULL != (name = g_filename_from_utf8(utfname, -1, NULL, NULL, NULL))) {
-		ui_choose_file(_("Choose File"), GTK_WINDOW(dialog), GTK_STOCK_OPEN, FALSE, on_selectcmdok_clicked, name, NULL, dialog);
+		ui_choose_file(_("Choose File"), GTK_STOCK_OPEN, FALSE, on_selectcmdok_clicked, name, NULL, dialog);
 		g_free(name);
 	}
 }
@@ -252,8 +252,8 @@ static void on_adddialog_response(GtkDialog *dialog, gint response_id, gpointer 
 		} else {
 			g_free(etp->cmd);
 		}
-		etp->cmd = g_strdup(gtk_entry_get_text(GTK_ENTRY(lookup_widget(GTK_WIDGET(dialog), "enc_cmd_entry"))));
-		etp->permanent = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(GTK_WIDGET(dialog), "enc_always_btn")));
+		etp->cmd = g_strdup(gtk_entry_get_text(GTK_ENTRY(liferea_dialog_lookup(GTK_WIDGET(dialog), "enc_cmd_entry"))));
+		etp->permanent = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(liferea_dialog_lookup(GTK_WIDGET(dialog), "enc_always_btn")));
 		if(TRUE == new)
 			types = g_slist_append(types, etp);
 
@@ -272,26 +272,26 @@ static void ui_enclosure_add(encTypePtr type, gchar *url, gchar *typestr) {
 	GtkWidget	*dialog;
 	gchar		*tmp;
 	
-	dialog = create_enchandlerdialog();
+	dialog = liferea_dialog_new (NULL, "enchandlerdialog");
 	
 	if(type != NULL) {
 		typestr = (NULL != type->mime)?type->mime:type->extension;
-		gtk_entry_set_text(GTK_ENTRY(lookup_widget(dialog, "enc_cmd_entry")), type->cmd);
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(lookup_widget(GTK_WIDGET(dialog), "enc_always_btn")), TRUE);
+		gtk_entry_set_text(GTK_ENTRY(liferea_dialog_lookup(dialog, "enc_cmd_entry")), type->cmd);
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(liferea_dialog_lookup(GTK_WIDGET(dialog), "enc_always_btn")), TRUE);
 	}
 	
 	if(NULL == strchr(typestr, '/')) 
 		tmp = g_strdup_printf(_("<b>File Extension .%s</b>"), typestr);
 	else
 		tmp = g_strdup_printf(_("<b>%s</b>"), typestr);
-	gtk_label_set_markup_with_mnemonic(GTK_LABEL(lookup_widget(dialog, "enc_type_label")), tmp);
+	gtk_label_set_markup_with_mnemonic(GTK_LABEL(liferea_dialog_lookup(dialog, "enc_type_label")), tmp);
 	g_free(tmp);
 
 	g_object_set_data(G_OBJECT(dialog), "typestr", typestr);
 	g_object_set_data(G_OBJECT(dialog), "url", url);
 	g_object_set_data(G_OBJECT(dialog), "type", type);
 	g_signal_connect(G_OBJECT(dialog), "response", G_CALLBACK(on_adddialog_response), type);
-	g_signal_connect(G_OBJECT(lookup_widget(dialog, "enc_cmd_select_btn")), "clicked", G_CALLBACK(on_selectcmd_pressed), dialog);
+	g_signal_connect(G_OBJECT(liferea_dialog_lookup(dialog, "enc_cmd_select_btn")), "clicked", G_CALLBACK(on_selectcmd_pressed), dialog);
 	gtk_widget_show(dialog);
 	
 }
@@ -344,7 +344,7 @@ void on_popup_open_enclosure(gpointer callback_data, guint callback_action, GtkW
 	if(NULL == typestr)
 		typestr = g_strdup("data");
 
-	debug3(DEBUG_CACHE, "url:%s, type:%s mime:%s\n", url, typestr, mime?"TRUE":"FALSE");
+	debug3(DEBUG_CACHE, "url:%s, type:%s mime:%s", url, typestr, mime?"TRUE":"FALSE");
 		
 	/* search for type configuration */
 	iter = types;
@@ -388,5 +388,5 @@ void on_popup_save_enclosure(gpointer callback_data, guint callback_action, GtkW
 	else
 		filename = callback_data;
 		
-	ui_choose_file(_("Choose File"), GTK_WINDOW(mainwindow), GTK_STOCK_SAVE_AS, TRUE, on_encsave_clicked, NULL, filename, callback_data);
+	ui_choose_file(_("Choose File"), GTK_STOCK_SAVE_AS, TRUE, on_encsave_clicked, NULL, filename, callback_data);
 }

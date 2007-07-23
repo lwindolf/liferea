@@ -1,7 +1,7 @@
 /**
  * @file conf.h Liferea configuration (gconf access)
  *
- * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004,2005 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -55,9 +55,6 @@
 #define DEFAULT_UPDATE_INTERVAL		"/apps/liferea/default-update-interval"
 #define STARTUP_FEED_ACTION		"/apps/liferea/startup_feed_action"
 #define UPDATE_THREAD_CONCURRENCY	"/apps/liferea/update-thread-concurrency"
-// FIXME: remove me!
-#define KEEP_FEEDS_IN_MEMORY		"/apps/liferea/keep-feeds-in-memory"
-#define DISABLE_SUBSCRIPTION_PIPE	"/apps/liferea/disable-subscription-pipe"
 #define ENABLE_FETCH_RETRIES		"/apps/liferea/enable-fetch-retries"
 
 /* folder handling settings */
@@ -66,10 +63,13 @@
 
 /* GUI settings and persistency values */
 #define SHOW_TRAY_ICON			"/apps/liferea/trayicon"
+#define SHOW_NEW_COUNT_IN_TRAY		"/apps/liferea/trayicon-new-count"
+#define DONT_MINIMIZE_TO_TRAY		"/apps/liferea/dont-minimize-to-tray"
 #define SHOW_POPUP_WINDOWS		"/apps/liferea/show-popup-windows"
 #define POPUP_PLACEMENT			"/apps/liferea/popup-placement"
 #define DISABLE_MENUBAR			"/apps/liferea/disable-menubar"
 #define DISABLE_TOOLBAR			"/apps/liferea/disable-toolbar"
+#define TOOLBAR_STYLE			"/apps/liferea/toolbar-style"
 #define LAST_WINDOW_X			"/apps/liferea/last-window-x"
 #define LAST_WINDOW_Y			"/apps/liferea/last-window-y"
 #define LAST_WINDOW_WIDTH		"/apps/liferea/last-window-width"
@@ -82,33 +82,92 @@
 
 /* networking settings */
 #define NETWORK_TIMEOUT			"/apps/liferea/network-timeout"
-#define USE_PROXY			"/system/http_proxy/use_http_proxy"
-#define PROXY_HOST			"/system/http_proxy/host"
-#define PROXY_PORT			"/system/http_proxy/port"
-#define PROXY_USEAUTH			"/system/http_proxy/use_authentication"
-#define PROXY_USER			"/system/http_proxy/authentication_user"
-#define PROXY_PASSWD			"/system/http_proxy/authentication_password"
+#define PROXY_DETECT_MODE		"/apps/liferea/proxy/detect-mode"
+#define PROXY_HOST			"/apps/liferea/proxy/host"
+#define PROXY_PORT			"/apps/liferea/proxy/port"
+#define PROXY_USEAUTH			"/apps/liferea/proxy/use_authentication"
+#define PROXY_USER			"/apps/liferea/proxy/authentication_user"
+#define PROXY_PASSWD			"/apps/liferea/proxy/authentication_password"
+#define GNOME_USE_PROXY			"/system/http_proxy/use_http_proxy"
+#define GNOME_PROXY_HOST		"/system/http_proxy/host"
+#define GNOME_PROXY_PORT		"/system/http_proxy/port"
+#define GNOME_PROXY_USEAUTH		"/system/http_proxy/use_authentication"
+#define GNOME_PROXY_USER		"/system/http_proxy/authentication_user"
+#define GNOME_PROXY_PASSWD		"/system/http_proxy/authentication_password"
 
 /* other settings */
 #define DISABLE_DBUS			"/apps/liferea/disable-dbus"
 
 /* initializing methods */
-void	conf_init(void);
-void	conf_load(void);
+void	conf_init (void);
+void	conf_deinit (void);
+void	conf_load (void);
 
-/* methods to modify folder contents */
-GSList * getFeedKeyList(gchar *keyprefix);
-void 	setFeedKeyList(gchar *keyprefix, GSList *newlist);
-gchar * getFreeFeedKey(gchar *keyprefix);
+/* preferences access methods */
 
-/* preferences configuration methods */
+/**
+ * Retrieves the value of the given boolean configuration key.
+ *
+ * @param key	the configuration key
+ *
+ * @returns boolean value (FALSE on failure)
+ */
+#define getBooleanConfValue(key) conf_get_bool_value(key)
+gboolean conf_get_bool_value (const gchar *key);
 
-gboolean 	getBooleanConfValue(gchar *valuename);
-gchar *		getStringConfValue(gchar *valuename);
-gint		getNumericConfValue(gchar  *valuename);
+/**
+ * Retrieves the value of the given string configuration key.
+ *
+ * @param key	the configuration key
+ *
+ * @returns string value (NULL on failure, to be free'd using g_free)
+ */
+#define getStringConfValue(key) conf_get_str_value(key)
+gchar *	conf_get_str_value (const gchar *key);
 
-void 	setBooleanConfValue(gchar *valuename, gboolean value);
-void	setStringConfValue(gchar *valuename, const gchar *value);
-void	setNumericConfValue(gchar  *valuename, gint value);
+/**
+ * Retrieves the value of the given integer configuration key.
+ *
+ * @param key	the configuration key
+ *
+ * @returns integer value (0 on failure)
+ */
+#define getNumericConfValue(key) conf_get_int_value(key)
+gint conf_get_int_value (const gchar *key);
+
+/**
+ * Sets the value of the given boolean configuration key.
+ * 
+ * @param key	the configuration key
+ * @param value	the new boolean value
+ */
+#define setBooleanConfValue(key,value) conf_set_bool_value(key,value)
+void conf_set_bool_value (const gchar *key, gboolean value);
+
+/**
+ * Sets the value of the given string configuration key.
+ * The given value will not be free'd after setting it!
+ *
+ * @param key	the configuration key
+ * @param value	the new string value
+ */
+#define setStringConfValue(key,value) conf_set_str_value(key,value)
+void conf_set_str_value (const gchar *key, const gchar *value);
+
+/**
+ * Sets the value of the given integer configuration key
+ *
+ * @param key	the configuration key
+ * @param value	the new integer value
+ */
+#define setNumericConfValue(key,value) conf_set_int_value(key,value)
+void conf_set_int_value (const gchar *key, gint value);
+
+/**
+ * Returns the current toolbar configuration.
+ *
+ * @returns a string (to be free'd using g_free)
+ */
+gchar * conf_get_toolbar_style (void);
 
 #endif

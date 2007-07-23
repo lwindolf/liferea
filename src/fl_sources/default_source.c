@@ -1,9 +1,8 @@
 /**
  * @file default_source.c default static feedlist provider
  * 
- * Copyright (C) 2005-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2005-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2005 Raphaël Slinckx <raphael@slinckx.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,22 +22,23 @@
 #include <glib.h>
 #include <glib/gstdio.h>
 #include <string.h>
-#include <libxml/uri.h>
-#include "support.h"
+
 #include "common.h"
 #include "conf.h"
+#include "db.h"
+#include "debug.h"
+#include "export.h"
 #include "feed.h"
 #include "feedlist.h"
-#include "export.h"
-#include "debug.h"
-#include "update.h"
+#include "migrate.h"
 #include "plugin.h"
+#include "update.h"
 #include "fl_sources/default_source.h"
 #include "fl_sources/node_source.h"
-#include "ui/ui_feed.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_mainwindow.h"
 #include "ui/ui_node.h"
+#include "ui/ui_subscription.h"
 #include "ui/ui_tray.h"
 
 /** lock to prevent feed list saving while loading */
@@ -46,257 +46,88 @@ static gboolean feedlistImport = FALSE;
 
 extern gboolean cacheMigrated;	/* feedlist.c */
 
-/* DBUS support for new subscriptions */
-
-#ifdef USE_DBUS
-
-static DBusHandlerResult default_source_dbus_message_handler (DBusConnection *connection, DBusMessage *message, void *user_data);
-
-static void
-default_source_dbus_connect ()
-{
-	DBusError       error;
-	DBusConnection *connection;
-	DBusObjectPathVTable feedreader_vtable = { NULL, default_source_dbus_message_handler, NULL};
-
-	/* Get the Session bus */
-	dbus_error_init (&error);
-	connection = dbus_bus_get (DBUS_BUS_SESSION, &error);
-	if (connection == NULL || dbus_error_is_set (&error))
-	{
-		fprintf (stderr, "*** ui_feedlist.c: Failed get session dbus: %s | %s\n", error.name,  error.message);
-		dbus_error_free (&error);
-     	return;
-	}
-	dbus_error_free (&error);
-    
-	/* Various inits */
-	dbus_connection_set_exit_on_disconnect (connection, FALSE);
-	dbus_connection_setup_with_g_main (connection, NULL);
-	    
-	/* Register for the FeedReader service on the bus, so we get method calls */
-	dbus_bus_request_name (connection, DBUS_RSS_SERVICE, 0, &error);
-
-	if (dbus_error_is_set (&error))
-	{
-		fprintf (stderr, "*** ui_feedlist.c: Failed to get dbus service: %s | %s\n", error.name, error.message);
-		dbus_error_free (&error);
-		return;
-	}
-	dbus_error_free (&error);
-	
-	/* Register the object path so we can receive method calls for that object */
-	if (!dbus_connection_register_object_path (connection, DBUS_RSS_OBJECT, &feedreader_vtable, &error))
- 	{
- 		fprintf (stderr, "*** ui_feedlist.c:Failed to register dbus object path: %s | %s\n", error.name, error.message);
- 		dbus_error_free (&error);
-    	return;
-    }
-    dbus_error_free (&error);
-}
-
-static DBusHandlerResult
-ui_feedlist_dbus_set_online (DBusConnection *connection, DBusMessage *message)
-{
-	DBusError error;
-	DBusMessage *reply;
-	gboolean b;
-	gboolean done = TRUE;
-	
-	/* Retreive the dbus message arguments (the online status) */	
-	dbus_error_init (&error);
-	if (!dbus_message_get_args (message, &error, DBUS_TYPE_BOOLEAN, &b, DBUS_TYPE_INVALID))
-	{
-		fprintf (stderr, "*** ui_feedlist.c: Error while retreiving message parameter, expecting a boolean: %s | %s\n", error.name,  error.message);
-		reply = dbus_message_new_error (message, error.name, error.message);
-		dbus_connection_send (connection, reply, NULL);
-		dbus_message_unref (reply);
-		dbus_error_free(&error);
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	}
-	dbus_error_free(&error);
-
-	/* Set online status */
-	update_set_online(b);
-
-	/* Acknowledge the new feed by returning true */
-	reply = dbus_message_new_method_return (message);
-	if (reply != NULL)
-	{
-		dbus_message_append_args (reply, DBUS_TYPE_BOOLEAN, &done,DBUS_TYPE_INVALID);
-		dbus_connection_send (connection, reply, NULL);
-		dbus_message_unref (reply);
-		return DBUS_HANDLER_RESULT_HANDLED;
-	}
-	else
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-}
-
-static DBusHandlerResult
-default_source_dbus_subscribe (DBusConnection *connection, DBusMessage *message) {
-	DBusError error;
-	DBusMessage *reply;
-	char *s;
-	gboolean done = TRUE;
-	
-	/* Retreive the dbus message arguments (the new feed url) */	
-	dbus_error_init (&error);
-	if(!dbus_message_get_args (message, &error, DBUS_TYPE_STRING, &s, DBUS_TYPE_INVALID)) {
-		g_warning("default_source_dbus_subscribe(): Error while retreiving message parameter, expecting a string url: %s | %s\n", error.name,  error.message);
-		reply = dbus_message_new_error (message, error.name, error.message);
-		dbus_connection_send (connection, reply, NULL);
-		dbus_message_unref (reply);
-		dbus_error_free(&error);
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	}
-	dbus_error_free(&error);
-
-	/* Subscribe the feed */
-	node_request_automatic_add(s, NULL, NULL, NULL, FEED_REQ_RESET_TITLE | FEED_REQ_RESET_UPDATE_INT);
-
-	/* Acknowledge the new feed by returning true */
-	reply = dbus_message_new_method_return (message);
-	if(reply) {
-		dbus_message_append_args (reply, DBUS_TYPE_BOOLEAN, &done,DBUS_TYPE_INVALID);
-		dbus_connection_send (connection, reply, NULL);
-		dbus_message_unref (reply);
-		return DBUS_HANDLER_RESULT_HANDLED;
-	} else {
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	}
-}
-
-
-static DBusHandlerResult
-default_source_dbus_message_handler (DBusConnection *connection, DBusMessage *message, void *user_data)
-{
-	const char  *method;
-	
-	if (connection == NULL)
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	if (message == NULL)
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	
-	method = dbus_message_get_member (message);
-	if (strcmp (DBUS_RSS_METHOD, method) == 0)
-		return default_source_dbus_subscribe (connection, message);
-	if (strcmp (DBUS_RSS_SET_ONLINE_METHOD, method) == 0)
-		return ui_feedlist_dbus_set_online (connection, message);
-	else
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-}
-
-#endif /* USE_DBUS */
-
-static void default_source_copy_dir(const gchar *from, const gchar *to, const gchar *subdir) {
-	gchar *dirname10, *dirname12;
-	gchar *srcfile, *destfile;
-   	GDir *dir;
-		
-	dirname10 = g_strdup_printf("%s" G_DIR_SEPARATOR_S "%s" G_DIR_SEPARATOR_S "%s", g_get_home_dir(), from, subdir);
-	dirname12 = g_strdup_printf("%s" G_DIR_SEPARATOR_S "%s" G_DIR_SEPARATOR_S "%s", g_get_home_dir(), to, subdir);
-	
-	dir = g_dir_open(dirname10, 0, NULL);
-	while(NULL != (srcfile = (gchar *)g_dir_read_name(dir))) {
-		gchar	*content;
-		gsize	length;
-		destfile = g_strdup_printf("%s" G_DIR_SEPARATOR_S "%s", dirname12, srcfile);
-		srcfile = g_strdup_printf("%s" G_DIR_SEPARATOR_S "%s", dirname10, srcfile);
-		g_print("copying %s to %s\n", srcfile, destfile);
-		if(g_file_get_contents(srcfile, &content, &length, NULL))
-			g_file_set_contents(destfile, content, length, NULL);
-		g_free(content);
-		g_free(destfile);
-		g_free(srcfile);
-	}
-	g_dir_close(dir);
-	
-	g_free(dirname10);
-	g_free(dirname12);
-}
-
 static gchar * default_source_source_get_feedlist(nodePtr node) {
 
 	return common_create_cache_filename(NULL, "feedlist", "opml");
 }
 
-static void default_source_source_import(nodePtr node) {
-	gchar		*filename10, *filename11, *filename12;
+static void
+default_source_source_import (nodePtr node) 
+{
+	gchar		*filename10;
+	gchar		*filename12;
+	gchar		*filename;
+	GSList		*iter, *subscriptions;
+	migrationMode	migration = 0;
 
-	debug_enter("default_source_source_import");
+	debug_enter ("default_source_source_import");
 
 	/* start the import */
 	feedlistImport = TRUE;
 
-	/* build test file names */	
-	filename10 = g_strdup_printf("%s" G_DIR_SEPARATOR_S ".liferea/feedlist.opml", g_get_home_dir()); /* 1.0 path dir */
-	filename11 = g_strdup_printf("%s" G_DIR_SEPARATOR_S ".liferea_1.1/feedlist.opml", g_get_home_dir()); /* 1.1 path dir */
-	filename12 = default_source_source_get_feedlist(node);
+	/* build test file names */
+	filename10 = g_strdup_printf ("%s/.liferea/feedlist.opml", g_get_home_dir ());
+	filename12 = g_strdup_printf ("%s/.liferea_1.2/feedlist.opml", g_get_home_dir ());
+	filename = default_source_source_get_feedlist (node);
 	
-	/* check for 1.1->1.2 migration (just directory renaming) */
-	if(g_file_test(filename11, G_FILE_TEST_EXISTS) &&
-	   !g_file_test(filename12, G_FILE_TEST_EXISTS)) {
-
-		g_print("starting 1.1->1.2 cache migration...\n");
-		cacheMigrated = TRUE;
+	if (!g_file_test (filename, G_FILE_TEST_EXISTS)) {
+		/* if feed list is missing, try migration */
 		
-		/* Note: v1.1 and v1.2 cache formats are equivalent and just needs copying of everything */
-
-		/* copy old cache files to new cache dir */
-		default_source_copy_dir(".liferea_1.1", ".liferea_1.2", "");
-		default_source_copy_dir(".liferea_1.1", ".liferea_1.2", "cache" G_DIR_SEPARATOR_S "feeds");
-		default_source_copy_dir(".liferea_1.1", ".liferea_1.2", "cache" G_DIR_SEPARATOR_S "favicons");
-		default_source_copy_dir(".liferea_1.1", ".liferea_1.2", "cache" G_DIR_SEPARATOR_S "scripts");
-		default_source_copy_dir(".liferea_1.1", ".liferea_1.2", "cache" G_DIR_SEPARATOR_S "plugins");
+		if (g_file_test (filename12, G_FILE_TEST_EXISTS)) {
+			g_free (filename);
+		     	filename = g_strdup (filename12);
+			migration = MIGRATION_MODE_12_TO_13;
+		} else if (g_file_test (filename10, G_FILE_TEST_EXISTS)) {
+			g_free (filename);
+	     		filename = g_strdup (filename10);
+			migration = MIGRATION_MODE_10_TO_13;
+		}
 	}
 
-	/* check for 1.0->1.2 migration */
-	if(!g_file_test(filename12, G_FILE_TEST_EXISTS) &&
-	   g_file_test(filename10, G_FILE_TEST_EXISTS)) {
-		cacheMigrated = TRUE;
-		
-		g_print("starting 1.0->1.2 cache migration...\n");
-		
-		/* Note: because v1.2 uses a new cache format we
-		   do a cache migration. v1.2 uses $HOME/.liferea_1.2
-		   instead of $HOME/.liferea as it's cache directory */
-
-		/* copy old cache files to new cache dir */
-		default_source_copy_dir(".liferea", ".liferea_1.2", "cache" G_DIR_SEPARATOR_S "feeds");
-		default_source_copy_dir(".liferea", ".liferea_1.2", "cache" G_DIR_SEPARATOR_S "favicons");
-		
-		/* point feedlist.opml to the old 1.0 file (will be converted implicitely) */
-		g_free(filename12);
-		filename12 = g_strdup(filename10);
-	}
-	g_free(filename10);
-	g_free(filename11);
-
+	g_free (filename12);
+	g_free (filename10);
+	
 	/* check for default feed list import */
-	if(!g_file_test(filename12, G_FILE_TEST_EXISTS)) {
+	if (!g_file_test (filename, G_FILE_TEST_EXISTS)) {
 		/* if there is no feedlist.opml we provide a default feed list */
-		g_free(filename12);
+		g_free (filename);
+		
 		/* "feedlist.opml" is translatable so that translators can provide a localized default feed list */
-		filename12 = g_strdup_printf(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "opml" G_DIR_SEPARATOR_S "%s", _("feedlist.opml"));
+		filename = g_strdup_printf (PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "opml" G_DIR_SEPARATOR_S "%s", _("feedlist.opml"));
+		
+		/* sanity check to catch wrong filenames supplied in translations */
+		if (!g_file_test (filename, G_FILE_TEST_EXISTS)) {
+			g_warning ("Configured localized feed list \"%s\" does not exist!", filename);
+			g_free (filename);
+			filename = g_strdup_printf(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "opml" G_DIR_SEPARATOR_S "%s", "feedlist.opml");
+		}
 	}
-	if(!import_OPML_feedlist(filename12, node, node->source, FALSE, TRUE))
-		g_error("Fatal: Feed list import failed!");
-	g_free(filename12);
+	
+	if (!import_OPML_feedlist (filename, node, node->source, FALSE, TRUE))
+		g_error ("Fatal: Feed list import failed!");
+		
+	g_free (filename);
+			
+	if (migration)
+		migration_execute (migration);
+	
+	/* DB cleanup, ensure that there are no subscriptions in the DB
+	   that have no representation in the OPML feed list. */
+	   debug0 (DEBUG_DB, "checking for lost subscriptions...");
+	subscriptions = db_subscription_list_load ();
+	for (iter = subscriptions; iter != NULL; iter = iter->next) {
+		gchar *id = (gchar *)iter->data;
+		if (NULL == node_from_id (id)) {
+			debug1 (DEBUG_DB, "found lost subscription (id=%s), dropping it...", id);
+			db_subscription_remove (id);
+		}
+		g_free (id);
+	}
+	g_slist_free (subscriptions);
+	
 	feedlistImport = FALSE;
 
-#ifdef USE_DBUS
-	if(!getBooleanConfValue(DISABLE_DBUS)) {
-		/* Start listening on the dbus for new subscriptions */	
-		debug0(DEBUG_GUI, "Registering with DBUS...");
-		default_source_dbus_connect();
-	} else {
-		g_print("DBUS disabled by user request...");
-	}
-#else
-	debug0(DEBUG_GUI, "Compiled without DBUS support.");
-#endif
-
-	debug_exit("default_source_source_import");
+	debug_exit ("default_source_source_import");
 }
 
 static void default_source_source_export(nodePtr node) {
@@ -316,26 +147,20 @@ static void default_source_source_export(nodePtr node) {
 	debug_exit("default_source_source_export");
 }
 
-static void default_source_source_auto_update(nodePtr node) {
-
-	node_foreach_child(node, node_request_auto_update);
+static void
+default_source_update (nodePtr node)
+{	
+	node_foreach_child (node, node_update_subscription);
 }
 
-/* root node type definition */
-
-static void default_source_init(void) {
-
-	debug_enter("default_source_init");
-
-	debug_exit("default_source_init");
+static void
+default_source_auto_update (nodePtr node)
+{	
+	node_foreach_child (node, node_auto_update_subscription);
 }
 
-static void default_source_deinit(void) {
-	
-	debug_enter("default_source_deinit");
-
-	debug_exit("default_source_deinit");
-}
+static void default_source_init (void) { }
+static void default_source_deinit (void) { }
 
 /* feed list provider plugin definition */
 
@@ -348,13 +173,14 @@ static struct nodeSourceType nst = {
 	NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST,
 	default_source_init,
 	default_source_deinit,
-	NULL,
-	NULL,
+	NULL,	/* ui_add */
+	NULL,	/* remove */
 	default_source_source_import,
 	default_source_source_export,
 	default_source_source_get_feedlist,
-	NULL,
-	default_source_source_auto_update
+	default_source_update,
+	default_source_auto_update,
+	NULL	/* free */
 };
 
 nodeSourceTypePtr default_source_get_type(void) { return &nst; }

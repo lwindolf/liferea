@@ -1,7 +1,7 @@
 /**
  * @file rss_item.c RSS/RDF item parsing 
  *
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,13 +24,10 @@
 
 #include <string.h>
 
-#include <libxml/xmlmemory.h>
-#include <libxml/parser.h>
-
-#include "support.h"
 #include "common.h"
 #include "rss_item.h"
 #include "metadata.h"
+#include "xml.h"
 
 #define RDF_NS	BAD_CAST"http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 
@@ -125,19 +122,19 @@ itemPtr parseRSSItem(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 			}
 		}
 		else if(!xmlStrcmp(cur->name, BAD_CAST"title")) {
- 			if(tmp = unhtmlize(common_utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE)))) {
+ 			if(tmp = unhtmlize(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE))) {
 				item_set_title(ctxt->item, tmp);
 				g_free(tmp);
 			}
 		}
 		else if(!xmlStrcmp(cur->name, BAD_CAST"link")) {
- 			if(tmp = unhtmlize(common_utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE)))) {
+ 			if(tmp = unhtmlize(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE))) {
 				item_set_source(ctxt->item, tmp);
 				g_free(tmp);
 			}
 		}
 		else if(!xmlStrcmp(cur->name, BAD_CAST"description")) {
- 			if(tmp = common_utf8_fix(extractHTMLNode(cur, 0, NULL))) {
+ 			if(tmp = common_utf8_fix(xhtml_extract (cur, 0, NULL))) {
 				/* don't overwrite content:encoded descriptions... */
 				if(!item_get_description(ctxt->item))
 					item_set_description(ctxt->item, tmp);
@@ -149,7 +146,7 @@ itemPtr parseRSSItem(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 				item_set_real_source_url(ctxt->item, tmp);
 				g_free(tmp);
 			}
-			if(tmp = unhtmlize(common_utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1)))) {
+			if(tmp = unhtmlize(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1))) {
 				item_set_real_source_title(ctxt->item, tmp);
 				g_free(tmp);
 			}

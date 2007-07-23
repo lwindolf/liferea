@@ -23,13 +23,19 @@
 #endif
 
 #include <glib.h>
-#include <libxml/tree.h>
 #include <string.h>
-#include "support.h"
-#include "metadata.h"
+
 #include "common.h"
 #include "debug.h"
+#include "metadata.h"
+#include "xml.h"
 
+/* Metadata in Liferea are ordered lists of key/value list pairs. Both 
+   feed list nodes and items can have a list of metadata assigned. Metadata
+   date values are always text values but maybe of different type depending
+   on their usage type. */
+
+/** Metadata value types */
 enum {
 	METADATA_TYPE_ASCII = 1,	/**< metadata can be any character data */
 	METADATA_TYPE_URL = 2,		/**< metadata is an URL and guaranteed to be valid for use in XML */
@@ -56,14 +62,14 @@ static gint metadata_get_type(const gchar *name) {
 
 	type = GPOINTER_TO_INT(g_hash_table_lookup(metadata_types, (gpointer)name));
 	if(0 == type)
-		debug1(DEBUG_PARSING, "unknown metadata type (%s)\n", name);
+		debug1(DEBUG_PARSING, "unknown metadata type (%s)", name);
 	
 	return type;
 }
 
 GSList * metadata_list_append(GSList *metadata, const gchar *strid, const gchar *data) {
 	GSList		*iter = metadata;
-	gchar		*checked_data = NULL;
+	gchar		*tmp, *checked_data = NULL;
 	struct pair 	*p;
 	
 	if(NULL == data)
@@ -87,15 +93,16 @@ GSList * metadata_list_append(GSList *metadata, const gchar *strid, const gchar 
 			debug1(DEBUG_CACHE, "Unknown metadata type \"%s\", this is a program bug! Treating as HTML.", strid);
 		case METADATA_TYPE_HTML:
 			/* Needs to check for proper XHTML */
-			if(common_is_well_formed_xhtml(data)) {
-				checked_data = g_strdup(data);
+			if (xhtml_is_well_formed (data)) {
+				tmp = g_strdup (data);
 			} else {
-				debug1(DEBUG_PARSING, "not well formed HTML: %s\n", data);
-				checked_data = g_markup_escape_text(data, -1);
-				debug1(DEBUG_PARSING, "escaped as: %s\n", checked_data);
+				debug1 (DEBUG_PARSING, "not well formed HTML: %s", data);
+				tmp = g_markup_escape_text (data, -1);
+				debug1 (DEBUG_PARSING, "escaped as: %s", tmp);
 			}
 			/* And needs to remove DHTML */
-			checked_data = common_strip_dhtml(checked_data);
+			checked_data = xhtml_strip_dhtml (tmp);
+			g_free (tmp);
 			break;
 	}
 	
@@ -136,6 +143,22 @@ void metadata_list_set(GSList **metadata, const gchar *strid, const gchar *data)
 	p->strid = g_strdup(strid);
 	p->data = g_slist_append(NULL, g_strdup(data));
 	*metadata = g_slist_append(*metadata, p);
+}
+
+void metadata_list_foreach(GSList *metadata, metadataForeachFunc func, gpointer user_data) {
+	GSList	*list = metadata;
+	guint	index = 0;
+	
+	while(list) {
+		struct pair *p = (struct pair*)list->data; 
+		GSList *values = (GSList *)p->data;
+		while(values) {
+			index++;
+			(*func)(p->strid, values->data, index, user_data);
+			values = g_slist_next(values);
+		}
+		list = list->next;
+	}
 }
 
 GSList * metadata_list_get_values(GSList *metadata, const gchar *strid) {

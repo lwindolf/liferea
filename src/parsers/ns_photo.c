@@ -1,7 +1,7 @@
 /**
  * @file ns_photo.c photo blog namespace support
  *
- * Copyright (C) 2004-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,6 @@
 #endif
 
 #include <string.h>
-#include "support.h"
 #include "common.h"
 #include "ns_photo.h"
 

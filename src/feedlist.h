@@ -1,7 +1,7 @@
 /**
  * @file feedlist.h feedlist handling
  *
- * Copyright (C) 2005-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2005-2006 Lars Lindner <lars.lindner@gmail.com>
  *	      
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,36 +51,49 @@ extern GdkPixbuf *icons[MAX_ICONS];
 /** 
  * Initializes the feed list handling.
  */
-void feedlist_init(void);
+void feedlist_init (void);
+
+/**
+ * Destroys the feed list structure.
+ */
+void feedlist_free (void);
 
 /**
  * Get feed list root node.
  *
  * @returns root node
  */
-nodePtr feedlist_get_root(void);
+nodePtr feedlist_get_root (void);
 
 /**
  * Get currently selected feed list node 
  *
  * @returns selected node (or NULL)
  */
-nodePtr feedlist_get_selected(void);
+nodePtr feedlist_get_selected (void);
 
 /**
  * Get the node insertion point for new subscriptions. 
  *
  * @returns a parent node for new subscriptions
  */
-nodePtr feedlist_get_insertion_point(void);
+nodePtr feedlist_get_insertion_point (void);
 
 /** statistic counter handling methods */
-int feedlist_get_unread_item_count(void);
-int feedlist_get_new_item_count(void);
+guint feedlist_get_unread_item_count (void);
+guint feedlist_get_new_item_count (void);
 
-/* feed list manipulation */
-void feedlist_reset_new_item_count(void);
-void feedlist_update_counters(gint unreadDiff, gint newDiff);
+/**
+ * Increase the global feed list new item counter.
+ *
+ * @param newCount	value to add
+ */
+void feedlist_update_new_item_count (guint addValue);
+
+/**
+ * Reset the global feed list new item counter.
+ */
+void feedlist_reset_new_item_count (void);
 
 /**
  * Helper function to query the feed list root node.
@@ -107,6 +120,13 @@ void feedlist_save(void);
  * Triggers state saving for all feed list sources.
  */
 void feedlist_schedule_save(void);
+
+/**
+ * Resets the update counter of all childs of the given node
+ *
+ * @param node		the node (or NULL for whole feed list)
+ */
+void feedlist_reset_update_counters (nodePtr node);
 
 /* feed list iterating interface */
 

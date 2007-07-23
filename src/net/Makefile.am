@@ -20,8 +20,7 @@ liblinet_a_SOURCES = \
 	netio.c netio.h \
 	net-support.c net-support.h \
 	os-support.c os-support.h \
-	zlib_interface.c zlib_interface.h \
-	downloadlib.h
+	zlib_interface.c zlib_interface.h
 
 
 

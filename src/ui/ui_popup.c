@@ -1,7 +1,7 @@
 /**
  * @file ui_popup.c popup menus
  *
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -26,16 +26,24 @@
 #include <libxml/uri.h>
 #include <string.h>
 
+#include "common.h"
 #include "feed.h"
+#include "feedlist.h"
+#include "itemlist.h"
 #include "node.h"
-#include "support.h"
-#include "callbacks.h"
+#include "newsbin.h"
 #include "social.h"
 #include "update.h"
-#include "ui/ui_popup.h"
-#include "ui/ui_mainwindow.h"
 #include "ui/ui_enclosure.h"
 #include "ui/ui_feedlist.h"
+#include "ui/ui_htmlview.h"
+#include "ui/ui_itemlist.h"
+#include "ui/ui_mainwindow.h"
+#include "ui/ui_popup.h"
+#include "ui/ui_prefs.h"
+#include "ui/ui_shell.h"
+#include "ui/ui_tabs.h"
+#include "fl_sources/node_source.h"
 
 /*------------------------------------------------------------------------------*/
 /* popup menu callbacks 							*/
@@ -131,6 +139,7 @@ void ui_popup_update_menues(void) {
 	addPopupOption(&item_menu_items, &item_menu_len, _("/Copy Item _URL to Clipboard"),     NULL, on_popup_copy_URL_clipboard,     		0, NULL, 0);
 	
 	addPopupOption(&item_menu_items, &item_menu_len, "/",					NULL, NULL, 					0, "<Separator>", 0);
+	addPopupOption(&item_menu_items, &item_menu_len, _("/Toggle _Read Status"),		NULL, on_popup_toggle_read, 			0, NULL, 0);
 	addPopupOption(&item_menu_items, &item_menu_len, _("/Toggle Item _Flag"),		NULL, on_popup_toggle_flag, 			0, NULL, 0);
 	addPopupOption(&item_menu_items, &item_menu_len, _("/R_emove Item"),			NULL, on_popup_remove_selected,			0, "<StockItem>", GTK_STOCK_DELETE);
 
@@ -237,7 +246,7 @@ GtkMenu *ui_popup_make_enclosure_menu(const gchar *url) {
 /* popup callback wrappers */
 
 static void ui_popup_update(gpointer callback_data, guint callback_action, GtkWidget *widget) {
-	node_request_update((nodePtr)callback_data, FEED_REQ_PRIORITY_HIGH);
+	subscription_update(((nodePtr)callback_data)->subscription, FEED_REQ_PRIORITY_HIGH);
 }
 
 static void ui_popup_mark_as_read(gpointer callback_data, guint callback_action, GtkWidget *widget) {
@@ -277,15 +286,15 @@ static void ui_popup_delete(gpointer callback_data, guint callback_action, GtkWi
  * node type. The node will be passed as a callback_data.
  */
 static GtkMenu *ui_popup_node_menu(nodePtr node, gboolean validSelection) {
+	GtkMenu			*menu;
 	GtkItemFactoryEntry	*menu_items = NULL;
 	gint 			menu_len = 0;
 
 	if(validSelection) {
-		if(node->type == NODE_TYPE_FOLDER)
-			addPopupOption(&menu_items, &menu_len, _("/_Update Folder"), 	NULL, ui_popup_update,		0, "<StockItem>", GTK_STOCK_REFRESH);
-
-		if((node->type != NODE_TYPE_FOLDER) && (node->type != NODE_TYPE_VFOLDER))
+		if(NODE_TYPE(node)->capabilities & NODE_CAPABILITY_UPDATE)
 			addPopupOption(&menu_items, &menu_len, _("/_Update"), 		NULL, ui_popup_update,		0, "<StockItem>", GTK_STOCK_REFRESH);
+		else if(NODE_TYPE(node)->capabilities & NODE_CAPABILITY_UPDATE_CHILDS)
+			addPopupOption(&menu_items, &menu_len, _("/_Update Folder"), 	NULL, ui_popup_update,		0, "<StockItem>", GTK_STOCK_REFRESH);
 
 		addPopupOption(&menu_items, &menu_len, _("/_Mark All As Read"),		NULL, ui_popup_mark_as_read, 	0, "<StockItem>", GTK_STOCK_APPLY);
 	}
@@ -308,7 +317,9 @@ static GtkMenu *ui_popup_node_menu(nodePtr node, gboolean validSelection) {
 		}
 	}
 
-	return make_menu(menu_items, menu_len, node);
+	menu = make_menu(menu_items, menu_len, node);
+	g_free(menu_items);
+	return menu;
 }
 
 /*------------------------------------------------------------------------------*/
@@ -326,7 +337,7 @@ gboolean on_mainfeedlist_button_press_event(GtkWidget *widget,
 	gboolean	selected = TRUE;
 	nodePtr		node = NULL;
 
-	treeview = lookup_widget(mainwindow, "feedlist");
+	treeview = liferea_shell_lookup ("feedlist");
 	g_assert(treeview);
 
 	if(event->type != GDK_BUTTON_PRESS)
@@ -335,11 +346,11 @@ gboolean on_mainfeedlist_button_press_event(GtkWidget *widget,
 	eb = (GdkEventButton*)event;
 
 	/* determine node */	
-	if(!gtk_tree_view_get_path_at_pos(GTK_TREE_VIEW(lookup_widget(mainwindow, "feedlist")), event->x, event->y, &path, NULL, NULL, NULL)) {
+	if(!gtk_tree_view_get_path_at_pos(GTK_TREE_VIEW(liferea_shell_lookup("feedlist")), event->x, event->y, &path, NULL, NULL, NULL)) {
 		selected=FALSE;
 		node = feedlist_get_root();
 	} else {
-		model = gtk_tree_view_get_model(GTK_TREE_VIEW(lookup_widget(mainwindow, "feedlist")));
+		model = gtk_tree_view_get_model(GTK_TREE_VIEW(liferea_shell_lookup("feedlist")));
 		gtk_tree_model_get_iter(model, &iter, path);
 		gtk_tree_path_free(path);
 		gtk_tree_model_get(model, &iter, FS_PTR, &node, -1);
@@ -354,7 +365,7 @@ gboolean on_mainfeedlist_button_press_event(GtkWidget *widget,
 		case 2:
 			if(node) {
 				node_mark_all_read(node);
-				itemview_update_node_info(node->itemSet);
+				itemview_update_node_info(node);
 				itemview_update();
 			}
 			break;

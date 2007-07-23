@@ -1,7 +1,7 @@
 /**
  * @file feedlist.c feedlist handling
  *
- * Copyright (C) 2005-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2005-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *	      
  * This program is free software; you can redistribute it and/or modify
@@ -20,32 +20,34 @@
  */
 
 #include <libxml/uri.h>
-#include "support.h"
-#include "feed.h"
-#include "feedlist.h"
-#include "newsbin.h"
-#include "node.h"
-#include "folder.h"
-#include "vfolder.h"
-#include "itemlist.h"
-#include "update.h"
+
+#include "common.h"
 #include "conf.h"
 #include "debug.h"
-#include "callbacks.h"
-#include "ui/ui_mainwindow.h"
+#include "feed.h"
+#include "feedlist.h"
+#include "folder.h"
+#include "itemlist.h"
+#include "itemview.h"
+#include "newsbin.h"
+#include "node.h"
+#include "script.h"
+#include "update.h"
+#include "vfolder.h"
 #include "ui/ui_feedlist.h"
-#include "ui/ui_tray.h"
-#include "ui/ui_feed.h"
+#include "ui/ui_htmlview.h"
+#include "ui/ui_mainwindow.h"
 #include "ui/ui_node.h"
+#include "ui/ui_subscription.h"
+#include "ui/ui_tray.h"
 #include "fl_sources/bloglines_source.h"
 #include "fl_sources/default_source.h"
 #include "fl_sources/dummy_source.h"
+#include "fl_sources/google_source.h"
 #include "fl_sources/node_source.h"
 #include "fl_sources/opml_source.h"
 #include "notification/notif_plugin.h"
-#include "scripting/script.h"
 
-static guint unreadCount = 0;
 static guint newCount = 0;
 
 static nodePtr	rootNode = NULL;
@@ -88,38 +90,45 @@ nodePtr feedlist_get_insertion_point(void) {
 
 /* statistic handling methods */
 
-int feedlist_get_unread_item_count(void) { return (unreadCount > 0)?unreadCount:0; }
-int feedlist_get_new_item_count(void) { return (newCount > 0)?newCount:0; }
+guint
+feedlist_get_unread_item_count (void)
+{
+	if (!rootNode)
+		return 0;
+		
+	return (rootNode->unreadCount > 0)?rootNode->unreadCount:0;
+}
 
-void feedlist_update_counters(gint unreadDiff, gint newDiff) {
-
-	unreadCount += unreadDiff;
-	newCount += newDiff;
-
-	if((0 != newDiff) || (0 != unreadDiff)) {
-		ui_tray_update();
-		ui_mainwindow_update_feedsinfo();
-	}
+guint
+feedlist_get_new_item_count (void)
+{
+	return (newCount > 0)?newCount:0;
 }
 
 static void feedlist_unset_new_items(nodePtr node) {
 	
-	if(0 != node->newCount) {
-		node_load(node);
-		itemlist_mark_all_old(node->itemSet);
-		node_unload(node);
-	}
+	if(0 != node->newCount)
+		itemlist_mark_all_old(node->id);
 	
 	node_foreach_child(node, feedlist_unset_new_items);
 }
 
-void feedlist_reset_new_item_count(void) {
+void
+feedlist_update_new_item_count (guint addValue)
+{
+	newCount += addValue;
+	ui_tray_update ();
+	ui_mainwindow_update_feedsinfo ();
+}
 
-	if(0 != newCount) {
-		feedlist_foreach(feedlist_unset_new_items);
+void
+feedlist_reset_new_item_count (void)
+{
+	if (newCount) {
+		feedlist_foreach (feedlist_unset_new_items);
 		newCount = 0;
-		ui_tray_update();
-		ui_mainwindow_update_feedsinfo();
+		ui_tray_update ();
+		ui_mainwindow_update_feedsinfo ();
 	}
 }
 
@@ -135,16 +144,19 @@ void feedlist_remove_node(nodePtr node) {
 	debug_exit("feedlist_remove_node");
 }
 
-static gboolean feedlist_auto_update(void *data) {
-
-	debug_enter("feedlist_auto_update");
-
-	if(update_is_online())
-		feedlist_foreach(node_request_auto_update);
-	else
-		debug0(DEBUG_UPDATE, "no update processing because we are offline!");
+static gboolean
+feedlist_auto_update (void *data)
+{
+	GTimeVal now;
 	
-	debug_exit("feedlist_auto_update");
+	debug_enter ("feedlist_auto_update");
+
+	if (update_is_online ())
+		node_auto_update_subscription (feedlist_get_root ());
+	else
+		debug0 (DEBUG_UPDATE, "no update processing because we are offline!");
+	
+	debug_exit ("feedlist_auto_update");
 
 	return TRUE;
 }
@@ -224,15 +236,17 @@ nodePtr feedlist_find_unread_feed(nodePtr folder) {
 
 /* selection handling */
 
-static void feedlist_unselect(void) {
-
+static void
+feedlist_unselect (void)
+{
 	selectedNode = NULL;
 
-	itemview_set_itemset(NULL);
-	itemview_update();
+	itemview_set_displayed_node (NULL);
+	itemview_update ();
 		
-	itemlist_unload(FALSE /* mark all read */);
-	ui_feedlist_select(NULL);
+	itemlist_unload (FALSE /* mark all read */);
+	ui_feedlist_select (NULL);
+	ui_mainwindow_update_feed_menu (FALSE, FALSE);
 }
 
 void feedlist_selection_changed(nodePtr node) {
@@ -254,17 +268,12 @@ void feedlist_selection_changed(nodePtr node) {
 
 		/* Unload visible items. */
 		itemlist_unload(TRUE);
-
-		/* Unload previously displayed node. */
-		if(displayed_node)
-			node_unload(displayed_node);
-			
+	
 		/* Load items of new selected node. */
 		selectedNode = node;
 		if(selectedNode) {
-			node_load(selectedNode);
-			itemlist_set_view_mode(node_get_view_mode(selectedNode));
-			itemlist_load(selectedNode->itemSet);
+			itemlist_set_view_mode(node_get_view_mode(selectedNode));		
+			itemlist_load(selectedNode);
 		} else {
 			ui_htmlview_clear(ui_mainwindow_get_active_htmlview());
 		}
@@ -281,26 +290,27 @@ void on_menu_delete(GtkWidget *widget, gpointer user_data) {
 	ui_feedlist_delete_prompt(selectedNode);
 }
 
-void on_menu_update(GtkWidget *widget, gpointer user_data) {
-
-	if(!selectedNode) {
+void
+on_menu_update(GtkWidget *widget, gpointer user_data)
+{
+	if (!selectedNode) {
 		ui_show_error_box(_("You have to select a feed entry"));
 		return;
 	}
 
-	if(update_is_online()) 
-		node_request_update(selectedNode, FEED_REQ_PRIORITY_HIGH);
+	if (update_is_online ()) 
+		node_update_subscription (selectedNode, GUINT_TO_POINTER (FEED_REQ_PRIORITY_HIGH));
 	else
-		ui_mainwindow_set_status_bar(_("Liferea is in offline mode. No update possible."));
+		ui_mainwindow_set_status_bar (_("Liferea is in offline mode. No update possible."));
 }
 
-void on_menu_update_all(GtkWidget *widget, gpointer user_data) { 
-
-	if(update_is_online()) 
-		// FIXME: int -> pointer
-		feedlist_foreach_data(node_request_update, (gpointer)FEED_REQ_PRIORITY_HIGH);
+void
+on_menu_update_all(GtkWidget *widget, gpointer user_data)
+{ 
+	if (update_is_online ()) 
+		node_update_subscription (feedlist_get_root(), GUINT_TO_POINTER (FEED_REQ_PRIORITY_HIGH));
 	else
-		ui_mainwindow_set_status_bar(_("Liferea is in offline mode. No update possible."));
+		ui_mainwindow_set_status_bar (_("Liferea is in offline mode. No update possible."));
 }
 
 void on_menu_allread(GtkWidget *widget, gpointer user_data) {
@@ -345,23 +355,31 @@ void feedlist_save(void) {
 	feedlist_schedule_save_cb(NULL);
 }
 
-/* This method is needed to update the vfolder count
-   in the GUI after the initial feed loading is done. */
-static void feedlist_update_vfolder_count(nodePtr node) {
-
-	if(NODE_TYPE_VFOLDER == node->type) 
-		ui_node_update(node);
+void
+feedlist_reset_update_counters (nodePtr node) 
+{
+	GTimeVal now;
+	
+	if (NULL == node)
+		node = feedlist_get_root ();	
+	
+	g_get_current_time (&now);
+	node_foreach_child_data (node, node_reset_update_counter, &now);
 }
 
-/* This method is used to initially set the expansion
-   state of all nodes in the feed list */
-static void feedlist_expand_folder(nodePtr node) {
-
-	if(node->expanded)
-		ui_node_set_expansion(node, TRUE);
+/* This method is used to initially the node states in the feed list */
+static void
+feedlist_init_node (nodePtr node) 
+{
+	if (node->expanded)
+		ui_node_set_expansion (node, TRUE);
+	
+	if (node->subscription)
+		db_subscription_load (node->subscription);
 		
-	if(node->children)
-		node_foreach_child(node, feedlist_expand_folder);
+	node_update_counters (node);
+		
+	node_foreach_child (node, feedlist_init_node);
 }
 
 void feedlist_init(void) {
@@ -369,39 +387,41 @@ void feedlist_init(void) {
 	debug_enter("feedlist_init");
 	
 	/* 1. Register standard node and source types */
-	node_type_register(feed_get_node_type());
-	node_type_register(root_get_node_type());
-	node_type_register(folder_get_node_type());
-	node_type_register(vfolder_get_node_type());
-	node_type_register(node_source_get_node_type());
-	node_type_register(newsbin_get_node_type());
+	node_type_register (feed_get_node_type ());
+	node_type_register (root_get_node_type ());
+	node_type_register (folder_get_node_type ());
+	node_type_register (vfolder_get_node_type ());
+	node_type_register (node_source_get_node_type ());
+	node_type_register (newsbin_get_node_type ());
 	
-	node_source_type_register(default_source_get_type());
-	node_source_type_register(dummy_source_get_type());
-	node_source_type_register(opml_source_get_type());
-	node_source_type_register(bloglines_source_get_type());
+	node_source_type_register (default_source_get_type ());
+	node_source_type_register (dummy_source_get_type ());
+	node_source_type_register (opml_source_get_type ());
+	node_source_type_register (bloglines_source_get_type ());
+	node_source_type_register (google_source_get_type ());
 
 	/* 2. Set up a root node and import the feed list plugins structure. */
+	debug0(DEBUG_CACHE, "Setting up root node");
 	rootNode = node_source_setup_root();
 
-	/* 3. Sequentially load and unload all feeds and by doing so 
-	   automatically load all vfolders */
-	feedlist_foreach(node_initial_load);
-	feedlist_foreach(feedlist_update_vfolder_count);
-	feedlist_foreach(feedlist_expand_folder);
-	
+	/* 3. Ensure folder expansion and unread count*/
+	debug0(DEBUG_CACHE, "Initializing node state");
+	feedlist_foreach (feedlist_init_node);
+
+	debug0(DEBUG_GUI, "Notification setup");	
 	notification_enable(getBooleanConfValue(SHOW_POPUP_WINDOWS));
+	ui_tray_update ();
 
 	/* 4. Check if feeds do need updating. */
+	debug0(DEBUG_UPDATE, "Performing initial feed update");
 	switch(getNumericConfValue(STARTUP_FEED_ACTION)) {
 		case 1: /* Update all feeds */
 			debug0(DEBUG_UPDATE, "initial update: updating all feeds");
-			// FIXME: int -> gpointer
-			feedlist_foreach_data(node_request_update, 0);
+			node_update_subscription (feedlist_get_root (), 0);
 			break;
 		case 2:
 			debug0(DEBUG_UPDATE, "initial update: resetting feed counter");
-			feedlist_foreach(node_reset_update_counter);
+			feedlist_reset_update_counters (NULL);
 			break;
 		default:
 			debug0(DEBUG_UPDATE, "initial update: using auto update");
@@ -409,18 +429,37 @@ void feedlist_init(void) {
 	}
 
 	/* 5. Start automatic updating */
- 	(void)g_timeout_add(1000, feedlist_auto_update, NULL);
+ 	(void)g_timeout_add(10000, feedlist_auto_update, NULL);
 
 	/* 6. Finally save the new feed list state */
 	feedlistLoading = FALSE;
 	feedlist_schedule_save();
 	
 	if(cacheMigrated)
-		ui_show_info_box(_("Liferea v1.2 uses a new cache format and has migrated your "
-		                   "feed cache. The cache content of v1.0 in ~/.liferea was "
+		ui_show_info_box(_("This version of Liferea uses a new cache format and has migrated your "
+		                   "feed cache. The cache content of v1.2 in ~/.liferea_1.2 was "
 		                   "not deleted automatically. Please remove this directory "
 		                   "manually once you are sure migration was successful!"));
 	
 	debug_exit("feedlist_init");
 }
 
+static void
+feedlist_free_node (nodePtr node)
+{
+	if (node->children)
+		node_foreach_child (node, feedlist_free_node);
+	
+	node->parent->children = g_slist_remove (node->parent->children, node);
+	node_free (node); 
+}
+
+void
+feedlist_free (void)
+{
+	feedlist_foreach (feedlist_free_node);
+	node_free (rootNode);
+	rootNode = NULL;
+	
+	feedlistLoading = TRUE;	/* prevent further feed list saving */
+}

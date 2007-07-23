@@ -1,7 +1,7 @@
 /**
  * @file itemlist.h itemlist handling
  *
- * Copyright (C) 2004-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2007 Lars Lindner <lars.lindner@gmail.com>
  *	      
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,28 +24,18 @@
 #include <gtk/gtk.h>
 #include "item.h"
 #include "itemset.h"
-#include "vfolder.h"
 
-/* This is a simple controller implementation for itemlist handling. 
-   It manages the currently displayed itemset and provides synchronisation
-   for backend and GUI access to this itemset.  
-   
-   Bypass only for read-only item access! */
+/**
+ * Frees everything used by the item list.
+ */
+void itemlist_free (void);
 
 /**
  * Returns the currently displayed node.
  *
  * @returns displayed node (or NULL)
  */
-// FIXME: drop me in favour of itemlist_get_displayed_itemset()
 struct node * itemlist_get_displayed_node(void);
-
-/**
- * Returns the currently displayed item set.
- *
- * @returns displayed item set (or NULL)
- */
-struct itemSet * itemlist_get_displayed_itemset(void);
 
 /**
  * Returns the currently selected item.
@@ -65,11 +55,11 @@ itemPtr itemlist_get_selected(void);
 void itemlist_merge_itemset(itemSetPtr itemSet);
 
 /** 
- * Loads the passed feeds items into the itemlist.
+ * Loads the passed nodes items into the itemlist.
  *
- * @param itemSet 	the item set to be loaded
+ * @param node 		the node
  */
-void itemlist_load(itemSetPtr itemSet);
+void itemlist_load(struct node *node);
 
 /**
  * Clears the item list. Unsets the currently
@@ -96,14 +86,13 @@ void itemlist_set_view_mode(guint newMode);
 guint itemlist_get_view_mode(void);
 
 /**
- * Menu callbacks that toggle the different viewing modes
+ * Menu callback that toggles the different viewing modes
  *
- * @param menuitem	the clicked menu item
+ * @param action	the action that emitted the signal
+ * @param current	the member of action which was activated
  * @param user_data	unused
  */
-void on_normal_view_activate(GtkToggleAction *menuitem, gpointer user_data);
-void on_wide_view_activate(GtkToggleAction *menuitem, gpointer user_data);
-void on_combined_view_activate(GtkToggleAction *menuitem, gpointer user_data);
+void on_view_activate(GtkRadioAction *action, GtkRadioAction *current, gpointer user_data);
 
 /* item handling functions */
 
@@ -136,33 +125,30 @@ void itemlist_remove_items(itemSetPtr itemSet, GList *items);
  * all items of a node. Item list selection will be
  * resetted. All items are removed immediately.
  *
- * @param itemSet	the item set whose items should be removed
+ * @param node		the node whose item list is to be removed
  */
-void itemlist_remove_all_items(itemSetPtr itemSet);
+void itemlist_remove_all_items(struct node *node);
 
 /**
  * Marks all items of the item set as read.
  *
- * @param itemSet	the item set to be marked read
+ * @param nodeId	the node whose item list is to be modified
  */
-void itemlist_mark_all_read(itemSetPtr itemSet);
+void itemlist_mark_all_read(const gchar *nodeId);
 
 /**
  * Resets the new flag for all items of the given item set.
  *
- * @param itemSet	the itemset
+ * @param nodeId	the node whose item list is to be modified
  */
-void itemlist_mark_all_old(itemSetPtr itemSet);
+void itemlist_mark_all_old(const gchar *nodeId);
 
 /**
  * Resets the popup flag for all items of the given item set.
  *
- * @param itemSet	the itemset
+ * @param nodeId	the node whose item list is to be modified
  */
-void itemlist_mark_all_popup(itemSetPtr itemSet);
-
-// FIXME: clearify if method is necessary
-void itemlist_update_vfolder(vfolderPtr vfolder);
+void itemlist_mark_all_popup(const gchar *nodeId);
 
 /**
  * Called from GUI when item list selection changes.

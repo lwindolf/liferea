@@ -39,8 +39,10 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "../callbacks.h"
-#include "../debug.h"
+#include "common.h"
+#include "debug.h"
+#include "ui/ui_mainwindow.h"
+#include "ui/ui_shell.h"
 
 #define GAIM_DEBUG_ALL 0
 #define GAIM_DEBUG_INFO 1

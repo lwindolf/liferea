@@ -46,9 +46,9 @@ static void parse_channel_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 	value = common_utf8_fix(xmlGetProp(cur, "resource"));	
 	
 	if(!xmlStrcmp("errorReportsTo", cur->name))
-		metadata_list_set(&(ctxt->feed->metadata), "errorReportsTo", value);
+		metadata_list_set(&(ctxt->subscription->metadata), "errorReportsTo", value);
 	else if(!xmlStrcmp("generatorAgent", cur->name))
-		metadata_list_set(&(ctxt->feed->metadata), "feedgeneratorUri", value);
+		metadata_list_set(&(ctxt->subscription->metadata), "feedgeneratorUri", value);
 	
 	g_free(value);
 	return;

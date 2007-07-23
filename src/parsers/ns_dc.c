@@ -1,7 +1,7 @@
 /**
  * @file ns_dc.c Dublin Core support for RSS and Atom
  *
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,7 +27,6 @@
 
 #include "ns_dc.h"
 #include "conf.h"
-#include "support.h"
 #include "common.h"
 #include "metadata.h"
 
@@ -180,7 +179,7 @@ static void parse_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur, gboolean isFeedTag
 				if(isNotEmpty) {
 					if(isFeedTag) {
 						if(mapping = mapToFeedMetadata[i])
-							ctxt->feed->metadata = metadata_list_append(ctxt->feed->metadata, mapping, value);
+							ctxt->subscription->metadata = metadata_list_append(ctxt->subscription->metadata, mapping, value);
 					} else {
 						if(mapping = mapToItemMetadata[i])
 							ctxt->item->metadata = metadata_list_append(ctxt->item->metadata, mapping, value);

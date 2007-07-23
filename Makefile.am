@@ -7,6 +7,9 @@ desktopdir = $(datadir)/applications
 desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
 @INTLTOOL_DESKTOP_RULE@
 
+gladedir = $(pkgdatadir)
+glade_DATA = liferea.glade
+
 schemadir   = @GCONF_SCHEMA_FILE_DIR@
 schema_DATA = liferea.schemas
 
@@ -24,8 +27,7 @@ dtddir = $(pkgdatadir)/dtd
 dtd_DATA = dtd/html.ent
 
 EXTRA_DIST = \
-	feedbag.xpi \
-	liferea.glade \
+	$(glade_DATA) \
 	liferea.gladep \
 	liferea.spec \
 	src/liferea \

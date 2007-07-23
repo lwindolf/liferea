@@ -24,10 +24,13 @@ bin_SCRIPTS = liferea liferea-add-feed
 liferea_bin_SOURCES = \
 	bacon-message-connection.c \
 	bacon-message-connection.h \
-	callbacks.c callbacks.h \
+	comments.c comments.h \
 	common.c common.h \
 	conf.c conf.h \
+	db.c db.h \
+	dbus.c dbus.h \
 	debug.c debug.h \
+	e-date.c e-date.h \
 	export.c export.h \
 	favicon.c favicon.h \
 	feed.c feed.h \
@@ -35,30 +38,43 @@ liferea_bin_SOURCES = \
 	folder.c folder.h \
 	html.c html.h \
 	htmlview.c htmlview.h \
-	interface.c interface.h \
 	item.c item.h \
 	itemset.c itemset.h \
 	itemlist.c itemlist.h \
 	itemview.c itemview.h \
 	metadata.c metadata.h \
+	migrate.c migrate.h \
+	net.c net.h \
 	newsbin.c newsbin.h \
 	node.c node.h \
 	plugin.c plugin.h \
 	render.c render.h \
 	rule.c rule.h \
+	script.c script.h \
 	social.c social.h \
-	support.c support.h \
+	subscription.c subscription.h \
 	update.c update.h \
 	main.c \
-	vfolder.c vfolder.h 
+	vfolder.c vfolder.h \
+	xml.c xml.h
 
 liferea_bin_LDADD =	net/liblinet.a \
 			parsers/libliparsers.a \
 			fl_sources/libliflsources.a \
 			notification/liblinotification.a \
-			scripting/libliscript.a \
 			ui/libliui.a \
 			$(PACKAGE_LIBS) $(X_LIBS) $(X_PRE_LIBS) -lX11 $(X_EXTRA_LIBS) $(DBUS_LIBS) $(NM_LIBS) $(INTLLIBS) $(GNUTLS_LIBS) 
+
+if WITH_DBUS
+
+EXTRA_DIST = $(srcdir)/liferea_dbus.xml
+BUILT_SOURCES = dbus_wrap.c
+CLEANFILES = $(BUILT_SOURCES)
+
+dbus_wrap.c: $(srcdir)/liferea_dbus.xml
+	dbus-binding-tool --mode=glib-server --prefix=liferea_dbus $(srcdir)/liferea_dbus.xml > dbus_wrap.c
+
+endif
 
 if PLATFORM_WIN32
 

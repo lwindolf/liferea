@@ -3,27 +3,17 @@
 EXTRA_DIST = liferea.i 
 
 INCLUDES = \
-	-fno-strict-aliasing \
+        -fno-strict-aliasing \
         -DPACKAGE_DATA_DIR=\""$(datadir)"\" \
         -DPACKAGE_LIB_DIR=\""$(libdir)"\" \
         -DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
-        -I$(top_srcdir)/src \
-        $(PACKAGE_CFLAGS) \
-	$(LUA_CFLAGS)
-
-
-noinst_LIBRARIES = libliscript.a
-
-libliscript_a_CFLAGS = $(PACKAGE_FLAGS) $(LUA_FLAGS)
-libliscript_a_SOURCES = \
-	script.c script.h \
-	ui_script.c ui_script.h
+        -I$(top_srcdir)/src
 
 if WITH_LUA
 
 BUILT_SOURCES = liferea_wrap.h
 pkglib_LTLIBRARIES = libliscrlua.la
-libliscrlua_la_SOURCES = liferea_wrap.h lua.c script.h 
+libliscrlua_la_SOURCES = liferea_wrap.h lua.c ../script.h 
 libliscrlua_la_LIBADD = $(PACKAGE_LIBS) $(LUA_LIBS) $(INTLLIBS)
 libliscrlua_la_CFLAGS = $(PACKAGE_CFLAGS) $(LUA_CFLAGS)
 

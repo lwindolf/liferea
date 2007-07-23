@@ -1,7 +1,7 @@
 /**
  * @file pie_entry.c Atom0.3 entry parsing 
  *
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,11 +27,11 @@
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 
-#include "support.h"
 #include "common.h"
 #include "pie_entry.h"
 #include "pie_feed.h"
 #include "metadata.h"
+#include "xml.h"
 
 /* uses the same namespace handler as PIE_channel */
 extern GHashTable *pie_nstable;
@@ -76,7 +76,7 @@ itemPtr parseEntry(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 		} /* explicitly no following else !!! */
 		
 		if(!xmlStrcmp(cur->name, BAD_CAST"title")) {
-			if(tmp = unhtmlize(common_utf8_fix(pie_parse_content_construct(cur)))) {
+			if(tmp = unhtmlize(pie_parse_content_construct(cur))) {
 				item_set_title(ctxt->item, tmp);
 				g_free(tmp);
 			}

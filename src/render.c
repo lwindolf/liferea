@@ -57,8 +57,8 @@ void render_init(void) {
 
 	/* prepare localization parameters */
 	debug1(DEBUG_HTML, "XSLT localisation: setlocale(LC_MESSAGES, NULL) reports '%s'", setlocale(LC_MESSAGES, NULL));
-	lang = g_strsplit(g_strdup(setlocale(LC_MESSAGES, NULL)), "@", 0);
-	shortlang = g_strsplit(g_strdup(setlocale(LC_MESSAGES, NULL)), "_", 0);
+	lang = g_strsplit(setlocale(LC_MESSAGES, NULL), "@", 0);
+	shortlang = g_strsplit(setlocale(LC_MESSAGES, NULL), "_", 0);
 	
 	langParams = render_parameter_new();
 	render_parameter_add(langParams, "lang='%s'", lang[0]);

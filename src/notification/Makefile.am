@@ -15,11 +15,6 @@ liblinotification_a_SOURCES = notif_plugin.c notif_plugin.h
 
 liblinotification_a_CFLAGS = $(PACKAGE_CFLAGS)
 
-# mini popup plugin
-liblinotifpopup_la_LIBADD = $(PACKAGE_LIBS)
-liblinotifpopup_la_CFLAGS = $(PACKAGE_CFLAGS)
-liblinotifpopup_la_SOURCES = notif_popup.c notif_popup.h notif_plugin.h 
-
 if WITH_LIBNOTIFY
 
 # libnotify popup plugin
@@ -27,8 +22,5 @@ liblinotiflibnotify_la_LIBADD = $(PACKAGE_LIBS) $(LIBNOTIFY_LIBS)
 liblinotiflibnotify_la_CFLAGS = $(PACKAGE_CFLAGS) $(LIBNOTIFY_CFLAGS)
 liblinotiflibnotify_la_SOURCES = notif_libnotify.c notif_libnotify.h notif_plugin.h 
 
-pkglib_LTLIBRARIES =	liblinotifpopup.la \
-			liblinotiflibnotify.la
-else
-pkglib_LTLIBRARIES =	liblinotifpopup.la
+pkglib_LTLIBRARIES = liblinotiflibnotify.la
 endif

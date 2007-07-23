@@ -38,7 +38,7 @@ To change the gconftool target use the - -config-source=blah option to gconftool
         <short>Selects which key to use to pagedown or go to the next
 	   unread item</short>
         <long>Selects which key to use to pagedown or go to the next
-	   unread item. Set to 0 to use ctrl-space, 1 to use space, or 2
+	   unread item. Set to 0 to use space, 1 to use ctrl-space, or 2
 	   to use alt-space.</long>
       </locale>
     </schema>
@@ -175,18 +175,6 @@ To change the gconftool target use the - -config-source=blah option to gconftool
         <long>If set to true, and a network error is encountered while
         fetching a feed, Liferea will do a few more tries. This is useful
         in case of temporary loss of network/internet connection.</long>
-      </locale>
-    </schema>
-    <schema>
-      <key>/schemas/apps/liferea/keep-feeds-in-memory</key>
-      <applyto>/apps/liferea/keep-feeds-in-memory</applyto>
-      <owner>liferea</owner>
-      <type>bool</type>
-      <default>false</default>
-      <locale name="C">
-        <short>Keep all items loaded in memory</short>
-        <long>Keep all items loaded in memory. This increases speed
-	   and memory usage of Liferea.</long>
       </locale>
     </schema>
     <schema>
@@ -335,6 +323,19 @@ To change the gconftool target use the - -config-source=blah option to gconftool
       </locale>
     </schema>
     <schema>
+      <key>/schemas/apps/liferea/toolbar_style</key>
+      <applyto>/apps/liferea/toolbar_style</applyto>
+      <owner>liferea</owner>
+      <type>string</type>
+      <default></default>
+      <locale name="C">
+        <short>Determines the style of the toolbar buttons</short>
+        <long>Determines the style of the toolbar buttons locally,
+	   overriding the GNOME settings. Valid values are "both", "both-horiz",
+	   "icons", and "text". If empty or not specified, the GNOME settings are used.</long>
+      </locale>
+    </schema>
+    <schema>
       <key>/schemas/apps/liferea/timeformat</key>
       <applyto>/apps/liferea/timeformat</applyto>
       <owner>liferea</owner>
@@ -369,6 +370,28 @@ To change the gconftool target use the - -config-source=blah option to gconftool
       <locale name="C">
         <short>Determines if the system tray icon is to be shown</short>
 	   <long>Determines if the system tray icon is to be shown</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/liferea/trayicon-new-count</key>
+      <applyto>/apps/liferea/trayicon-new-count</applyto>
+      <owner>liferea</owner>
+      <type>bool</type>
+      <default>false</default>
+      <locale name="C">
+        <short>Determines if the number of new items is shown in the system tray icon</short>
+        <long>Determines if the number of new items is shown in the system tray icon</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/liferea/dont-minimize-to-tray</key>
+      <applyto>/apps/liferea/dont-minimize-to-tray</applyto>
+      <owner>liferea</owner>
+      <type>bool</type>
+      <default>false</default>
+      <locale name="C">
+        <short>Determines if minimize to tray is not desired</short>
+	   <long>Determines if minimize to tray is not desired. This is relevant when the user clicks the close button or presses the window close hotkey of the window manager. If this option is disabled Liferea will just hide the window and keep running. If the option is enabled the application will terminate.</long>
       </locale>
     </schema>
     <schema>

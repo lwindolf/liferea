@@ -27,18 +27,22 @@
 #include <string.h>
 #include <glib.h>
 #include <gmodule.h>
+#include "comments.h"
 #include "common.h"
 #include "conf.h"
-#include "callbacks.h"
 #include "debug.h"
+#include "feed.h"
+#include "itemlist.h"
+#include "net.h"
 #include "plugin.h"
 #include "social.h"
-#include "support.h"
 #include "render.h"
+#include "ui/ui_enclosure.h"
 #include "ui/ui_htmlview.h"
+#include "ui/ui_itemlist.h"
+#include "ui/ui_mainwindow.h"
 #include "ui/ui_tabs.h"
 #include "ui/ui_prefs.h"
-#include "ui/ui_enclosure.h"
 
 /* function types for the imported symbols */
 typedef htmlviewPluginPtr (*infoFunction)();
@@ -72,7 +76,7 @@ void ui_htmlview_init(void) {
 	if(htmlviewPlugin) {
 		debug1(DEBUG_PLUGINS, "using \"%s\" for HTML rendering...", htmlviewPlugin->name);
 		htmlviewPlugin->plugin_init();
-		ui_htmlview_set_proxy(proxyname, proxyport, proxyusername, proxypassword);
+		ui_htmlview_update_proxy ();
 	} else {
 		g_error(_("Sorry, I was not able to load any installed browser plugin! Try the --debug-plugins option to get debug information!"));
 	}
@@ -93,14 +97,14 @@ gboolean ui_htmlview_plugin_load(pluginPtr plugin, GModule *handle) {
 
 	/* check feed list provider plugin version */
 	if(HTMLVIEW_PLUGIN_API_VERSION != htmlviewPlugin->api_version) {
-		debug3(DEBUG_PLUGINS, "html view API version mismatch: \"%s\" has version %d should be %d\n", htmlviewPlugin->name, htmlviewPlugin->api_version, HTMLVIEW_PLUGIN_API_VERSION);
+		debug3(DEBUG_PLUGINS, "html view API version mismatch: \"%s\" has version %d should be %d", htmlviewPlugin->name, htmlviewPlugin->api_version, HTMLVIEW_PLUGIN_API_VERSION);
 		return FALSE;
 	} 
 
 	/* check if all mandatory symbols are provided */
 	if(!(htmlviewPlugin->plugin_init &&
 	     htmlviewPlugin->plugin_deinit)) {
-		debug1(DEBUG_PLUGINS, "mandatory symbols missing: \"%s\"\n", htmlviewPlugin->name);
+		debug1(DEBUG_PLUGINS, "mandatory symbols missing: \"%s\"", htmlviewPlugin->name);
 		return FALSE;
 	}
 
@@ -180,7 +184,7 @@ static struct internalUriType internalUriTypes[] = {
 	/* { "tag",		FIXME }, */
 	{ "flag",		itemlist_toggle_flag },
 	{ "bookmark",		ui_itemlist_add_item_bookmark },
-	{ "refresh-comments",	item_comments_refresh },
+	{ "refresh-comments",	comments_refresh },
 	{ NULL,			NULL }
 };
 
@@ -199,7 +203,7 @@ void ui_htmlview_launch_URL(GtkWidget *htmlview, const gchar *url, gint launchTy
 		return;
 	}
 	
-	debug3(DEBUG_GUI, "launch URL: %s  %s %d\n", getBooleanConfValue(BROWSE_INSIDE_APPLICATION)?"true":"false",
+	debug3(DEBUG_GUI, "launch URL: %s  %s %d", getBooleanConfValue(BROWSE_INSIDE_APPLICATION)?"true":"false",
 		  (htmlviewPlugin->launchInsidePossible)()?"true":"false",
 		  launchType);
 		  
@@ -214,34 +218,26 @@ void ui_htmlview_launch_URL(GtkWidget *htmlview, const gchar *url, gint launchTy
 		uriType = internalUriTypes;
 		while(uriType->suffix) {
 			if(!strncmp(url + strlen("liferea-"), uriType->suffix, strlen(uriType->suffix))) {
-				gchar *nodeid, *itemid;
+				gchar *nodeid, *itemnr;
 				nodeid = strstr(url, "://");
 				if(nodeid) {
 					nodeid += 3;
-					itemid = nodeid;
-					itemid = strchr(nodeid, '-');
-					if(itemid) {
-						nodePtr node;
+					itemnr = nodeid;
+					itemnr = strchr(nodeid, '-');
+					if(itemnr) {
 						itemPtr item;
 						
-						*itemid = 0;
-						itemid++;
-						
-						node = node_from_id(nodeid);
-						if(!node) {
-							g_warning("Fatal: no node with id (%s) found!\n", nodeid);
-							return;
-						}
-						
-						node_load(node);
-						
-						item = itemset_lookup_item(node->itemSet, node, atol(itemid));
-						if(item)
+						*itemnr = 0;
+						itemnr++;
+									
+						item = item_load(atol(itemnr));
+						if(item) {
 							(*uriType->func)(item);
-						else
-							g_warning("Fatal: no item with id (node=%s, item=%s) found!!!", nodeid, itemid);
-							
-						node_unload(node);
+							item_unload(item);
+						} else {
+							g_warning("Fatal: no item with id (node=%s, item=%s) found!!!", nodeid, itemnr);
+						}
+
 						return;
 					}
 				}
@@ -274,7 +270,8 @@ gfloat ui_htmlview_get_zoom(GtkWidget *htmlview) {
 static gboolean ui_htmlview_external_browser_execute(const gchar *cmd, const gchar *uri, gboolean remoteEscape, gboolean sync) {
 	GError		*error = NULL;
 	gchar 		*tmpUri, *tmp, **argv, **iter;
-	gint 		argc, status;
+	gint 		argc;
+	gint		status = 0;
 	gboolean 	done = FALSE;
   
 	g_assert(cmd != NULL);
@@ -312,7 +309,7 @@ static gboolean ui_htmlview_external_browser_execute(const gchar *cmd, const gch
 	debug2(DEBUG_GUI, "Running the browser-remote %s command '%s'", sync ? "sync" : "async", tmp);
 	if(sync)
 		g_spawn_sync(NULL, argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, NULL, &status, &error);
-	else
+	else 
 		g_spawn_async(NULL, argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, &error);
   
 	if(error && (0 != error->code)) {
@@ -368,10 +365,14 @@ gboolean ui_htmlview_scroll(void) {
 	return (htmlviewPlugin->scrollPagedown)(ui_mainwindow_get_active_htmlview());
 }
 
-void ui_htmlview_set_proxy(gchar *hostname, int port, gchar *username, gchar *password) {
-
-	if(htmlviewPlugin && htmlviewPlugin->setProxy)
-		(htmlviewPlugin->setProxy)(hostname, port, username, password);
+void
+ui_htmlview_update_proxy (void)
+{
+	if (htmlviewPlugin && htmlviewPlugin->setProxy)
+		(htmlviewPlugin->setProxy) (network_get_proxy_host (),
+		                            network_get_proxy_port (),
+					    network_get_proxy_username (),
+					    network_get_proxy_password ());
 }
 
 void ui_htmlview_online_status_changed(gboolean online) {

@@ -1,7 +1,7 @@
 /**
- * @file update.c update request processing
+ * @file update.c  generic update request processing
  *
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -41,12 +41,12 @@
 #include "common.h"
 #include "conf.h"
 #include "debug.h"
-#include "support.h"
+#include "net.h"
 #include "update.h"
+#include "xml.h"
 #include "ui/ui_htmlview.h"
 #include "ui/ui_mainwindow.h"
 #include "ui/ui_tray.h"
-#include "net/downloadlib.h"
 
 /* must never be smaller than 2, because first thread works exclusivly on high prio requests */
 #define DEFAULT_UPDATE_THREAD_CONCURRENCY	6
@@ -54,10 +54,15 @@
 /** global request list, used for lookups when cancelling */
 static GSList *requests = NULL;
 
+/** list of update threads */
+static GSList *threads = NULL;
+
 /* communication queues for requesting updates and sending the results */
 static GAsyncQueue	*requests_high_prio = NULL;
 static GAsyncQueue	*requests_normal_prio = NULL;
 static GAsyncQueue	*results = NULL;
+
+static guint		results_timer = 0;
 
 /* condition mutex for offline mode */
 static GMutex	*cond_mutex = NULL;
@@ -69,6 +74,8 @@ static gboolean	online = TRUE;
 static libnm_glib_ctx *nm_ctx = NULL;
 static guint nm_id = 0;
 #endif
+
+static gboolean update_dequeue_results(gpointer user_data);
 
 /* update state interface */
 
@@ -93,56 +100,6 @@ void update_state_set_etag(updateStatePtr updateState, const gchar *etag) {
 	updateState->etag = NULL;
 	if(etag)
 		updateState->etag = g_strdup(etag);
-}
-
-void update_state_import(xmlNodePtr cur, updateStatePtr updateState) {
-	xmlChar	*tmp;
-	
-	tmp = xmlGetProp(cur, BAD_CAST"etag");
-	if(tmp) {
-		update_state_set_etag(updateState, tmp);
-		xmlFree(tmp);
-	}
-	
-	tmp = xmlGetProp(cur, BAD_CAST"lastModified");
-	if(tmp) {
-		update_state_set_lastmodified(updateState, tmp);
-		xmlFree(tmp);
-	}
-		
-	/* Last poll time*/
-	tmp = xmlGetProp(cur, BAD_CAST"lastPollTime");
-	updateState->lastPoll.tv_sec = common_parse_long(tmp, 0L);
-	updateState->lastPoll.tv_usec = 0L;
-	if(tmp)
-		xmlFree(tmp);
-
-	tmp = xmlGetProp(cur, BAD_CAST"lastFaviconPollTime");
-	updateState->lastFaviconPoll.tv_sec = common_parse_long(tmp, 0L);
-	updateState->lastFaviconPoll.tv_usec = 0L;
-	if(tmp)
-		xmlFree(tmp);
-}
-
-void update_state_export(xmlNodePtr cur, updateStatePtr updateState) {
-
-	if(update_state_get_etag(updateState)) 
-		xmlNewProp(cur, BAD_CAST"etag", BAD_CAST update_state_get_etag(updateState));
-
-	if(update_state_get_lastmodified(updateState)) 
-		xmlNewProp(cur, BAD_CAST"lastModified", BAD_CAST update_state_get_lastmodified(updateState));
-		
-	if(updateState->lastPoll.tv_sec > 0) {
-		gchar *lastPoll = g_strdup_printf("%ld", updateState->lastPoll.tv_sec);
-		xmlNewProp(cur, BAD_CAST"lastPollTime", BAD_CAST lastPoll);
-		g_free(lastPoll);
-	}
-	
-	if(updateState->lastFaviconPoll.tv_sec > 0) {
-		gchar *lastPoll = g_strdup_printf("%ld", updateState->lastFaviconPoll.tv_sec);
-		xmlNewProp(cur, BAD_CAST"lastFaviconPollTime", BAD_CAST lastPoll);
-		g_free(lastPoll);
-	}
 }
 
 void update_state_free(updateStatePtr updateState) {
@@ -209,47 +166,52 @@ static char* update_exec_filter_cmd(gchar *cmd, gchar *data, gchar **errorOutput
 	return out;
 }
 
-static gchar * update_apply_xslt(requestPtr request) {
+static gchar *
+update_apply_xslt (requestPtr request)
+{
 	xsltStylesheetPtr	xslt = NULL;
 	xmlOutputBufferPtr	buf;
 	xmlDocPtr		srcDoc = NULL, resDoc = NULL;
 	gchar			*output = NULL;
 
 	do {
-		if(NULL == (srcDoc = common_parse_xml(request->data, request->size, FALSE, NULL))) {
+		srcDoc = xml_parse (request->data, request->size, FALSE, NULL);
+		if (!srcDoc) {
 			g_warning("fatal: parsing request result XML source failed (%s)!", request->filtercmd);
 			break;
 		}
 
 		/* load localization stylesheet */
-		if(NULL == (xslt = xsltParseStylesheetFile(request->filtercmd))) {
-			g_warning("fatal: could not load filter stylesheet \"%s\"!", request->filtercmd);
+		xslt = xsltParseStylesheetFile (request->filtercmd);
+		if (!xslt) {
+			g_warning ("fatal: could not load filter stylesheet \"%s\"!", request->filtercmd);
 			break;
 		}
 
-		if(NULL == (resDoc = xsltApplyStylesheet(xslt, srcDoc, NULL))) {
-			g_warning("fatal: applying stylesheet \"%s\" failed!", request->filtercmd);
+		resDoc = xsltApplyStylesheet (xslt, srcDoc, NULL);
+		if (!resDoc) {
+			g_warning ("fatal: applying stylesheet \"%s\" failed!", request->filtercmd);
 			break;
 		}
 
-		buf = xmlAllocOutputBuffer(NULL);
-		if(-1 == xsltSaveResultTo(buf, resDoc, xslt)) {
-			g_warning("fatal: retrieving result of filter stylesheet failed (%s)!", request->filtercmd);
+		buf = xmlAllocOutputBuffer (NULL);
+		if (-1 == xsltSaveResultTo (buf, resDoc, xslt)) {
+			g_warning ("fatal: retrieving result of filter stylesheet failed (%s)!", request->filtercmd);
 			break;
 		}
 		
-		if(xmlBufferLength(buf->buffer) > 0)
-			output = xmlCharStrdup(xmlBufferContent(buf->buffer));
+		if (xmlBufferLength (buf->buffer) > 0)
+			output = xmlCharStrdup (xmlBufferContent (buf->buffer));
+ 
+		xmlOutputBufferClose (buf);
+	} while (FALSE);
 
-		xmlOutputBufferClose(buf);
-	} while(FALSE);
-
-	if(srcDoc)
-		xmlFreeDoc(srcDoc);
-	if(resDoc)
-		xmlFreeDoc(resDoc);
-	if(xslt)
-		xsltFreeStylesheet(xslt);
+	if (srcDoc)
+		xmlFreeDoc (srcDoc);
+	if (resDoc)
+		xmlFreeDoc (resDoc);
+	if (xslt)
+		xsltFreeStylesheet (xslt);
 	
 	return output;
 }
@@ -283,7 +245,7 @@ static void update_exec_cmd(requestPtr request) {
 	size_t	len;
 		
 	/* if the first char is a | we have a pipe else a file */
-	debug1(DEBUG_UPDATE, "executing command \"%s\"...\n", (request->source) + 1);	
+	debug1(DEBUG_UPDATE, "executing command \"%s\"...", (request->source) + 1);	
 	f = popen((request->source) + 1, "r");
 	if(f) {
 		while(!feof(f) && !ferror(f)) {
@@ -341,7 +303,7 @@ void update_execute_request_sync(requestPtr request) {
 		update_exec_cmd(request);
 		
 	} else if(strstr(request->source, "://") && strncmp(request->source, "file://",7)) {
-		downloadlib_process_url(request);
+		network_process_request (request);
 		if(request->httpstatus >= 400) {
 			g_free(request->data);
 			request->data = NULL;
@@ -362,6 +324,7 @@ gpointer update_request_new(gpointer owner) {
 	request = g_new0(struct request, 1);
 	request->owner = owner;
 	request->state = REQUEST_STATE_INITIALIZED;
+	g_get_current_time (&request->timestamp);
 	
 	return (gpointer)request;
 }
@@ -393,7 +356,8 @@ static void *update_dequeue_requests(void *data) {
 		}
 		
 		/* do update processing */
-		debug0(DEBUG_VERBOSE, "waiting for request...");
+		if(DEBUG_VERBOSE & debug_level)
+			debug0(DEBUG_UPDATE, "waiting for request...");
 		if(high_priority) {
 			request = g_async_queue_pop(requests_high_prio);
 		} else {
@@ -402,7 +366,7 @@ static void *update_dequeue_requests(void *data) {
 				if(!request) {
 					GTimeVal wait;
 					g_get_current_time(&wait);
-					g_time_val_add(&wait, 5000);
+					g_time_val_add(&wait, 500000);
 					request = g_async_queue_timed_pop(requests_normal_prio, &wait);
 				}
 			} while(!request);
@@ -420,6 +384,13 @@ static void *update_dequeue_requests(void *data) {
 			/* return the request so the GUI thread can merge the feeds and display the results... */
 			debug1(DEBUG_UPDATE, "request (%s) finished", request->source);
 			g_async_queue_push(results, (gpointer)request);
+			if (!results_timer) 
+				results_timer = g_timeout_add_full(G_PRIORITY_DEFAULT_IDLE,
+		                   100, 
+				   update_dequeue_results, 
+				   NULL,
+				   NULL);
+
 		}
 	}
 }
@@ -532,6 +503,8 @@ gboolean update_request_cancel_retry(requestPtr request) {
 static gboolean update_dequeue_results(gpointer user_data) {
 	requestPtr	request;
 	request_cb	callback;
+
+	results_timer = 0;
 	
 	while(NULL != (request = g_async_queue_try_pop(results))) {
 		callback = request->callback;
@@ -564,13 +537,13 @@ static gboolean update_dequeue_results(gpointer user_data) {
 		/* Normal result processing */
 		(callback)(request);
 	}
-	return TRUE;
+	return FALSE;
 }
 
 void update_init(void) {
 	gushort	i, count;
 
-	downloadlib_init();
+	network_init ();
 	
 	requests_high_prio = g_async_queue_new();
 	requests_normal_prio = g_async_queue_new();
@@ -582,15 +555,10 @@ void update_init(void) {
 	if(1 >= (count = getNumericConfValue(UPDATE_THREAD_CONCURRENCY)))
 		count = DEFAULT_UPDATE_THREAD_CONCURRENCY;
 	
-	for(i = 0; i < count; i++)
-		g_thread_create(update_dequeue_requests, GINT_TO_POINTER((i == 0)), FALSE, NULL);
-
-	/* setup the processing of feed update results */
-	g_timeout_add_full(G_PRIORITY_DEFAULT_IDLE,
-	                   100, 
-			   update_dequeue_results, 
-			   NULL,
-			   NULL);
+	for (i = 0; i < count; i++) {
+		GThread *thread = g_thread_create (update_dequeue_requests, GINT_TO_POINTER((i == 0)), FALSE, NULL);
+		threads = g_slist_append (threads, thread);
+	}
 }
 
 #ifdef USE_NM
@@ -645,3 +613,28 @@ void update_nm_cleanup(void)
 	}
 }
 #endif
+
+void
+update_deinit (void)
+{
+	debug_enter ("update_deinit");
+	
+	//update_nm_cleanup ();
+	
+	network_deinit ();
+	
+	/* FIXME: terminate update threads to be able to remove the queues
+	
+	g_async_queue_unref (requests_high_prio);
+	g_async_queue_unref (requests_normal_prio);
+	g_async_queue_unref (results);
+	*/
+	
+	g_free (offline_cond);
+	g_free (cond_mutex);
+	
+	g_slist_free (requests);
+	requests = NULL;
+	
+	debug_exit ("update_deinit");
+}

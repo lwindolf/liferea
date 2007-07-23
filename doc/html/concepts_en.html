@@ -99,34 +99,26 @@
 	better description. Nonetheless the prefix "news" is usually used with the terms
 	"feed", "headline" and "aggregator".
 	</p>
+	
+	<h3>What is a Subscription?</h3>
 	<p>
-	When you add a new subscription then you have to specify the source of the 
-	feed so that the news aggregator can initially retrieve it. The feed source
-	is usually a HTTP URL. When updating the news feed the aggregator downloads
-	the document served when accessing this URL. There are several <a href="http://en.wikipedia.org/wiki/Extensible_Markup_Language">XML</a>-based and
-	XML-like syndication standards (<a href="http://en.wikipedia.org/wiki/RSS_%28file_format%29">RSS</a>, <a href="http://en.wikipedia.org/wiki/Atom_%28standard%29">Atom</a>...) that define how a feed must
-	look like so that the aggregator knows how to interpret the document
-	contents.
-	</p>
-	<p>
-	As a user you usually do not have to know about the syndication format.
-	You just need to know the source URL of the feed you want to subscribe.
-	</p>
+	When you add a new feed then you have to specify the source of the 
+	feed, so that the news aggregator can initially retrieve it. The feed source
+	is usually a HTTP URL. This URL with optional authentication and proxy
+	settings is a "subscription" managed by Liferea.
+	</p>	
 	
 	<h3>What is the Feed List?</h3>
 	<p>
-	Typical news aggregators present you with a list of your feed subscription.
-	Following the email client interface paradigm the feed list is often
-	presented in the left pane of the news aggregator interface.
-	</p>
-	<p>
-	Depending on the aggregator you use the feed list might be hierarchically
-	organized using folders or categories.
+	To manage and easily navigate your subscriptions Liferea provides you with
+	a hierarchic tree of your subscriptions. Similar to email clients the "feed
+	list" is located in the left pane. You can organize your subscription 
+	after topics in different folders.
 	</p>
 	
 	<h3>What is a Headline?</h3>
 	<p>
-	When a news aggregator updates a news feed it download the source document
+	When a news aggregator updates a news feed it downloads the source document
 	from the source URL of the feed subscription. This source document provides
 	a set of the most recent headlines which then need to be merged against the 
 	current feed cache of the aggregator because the set of headlines provided

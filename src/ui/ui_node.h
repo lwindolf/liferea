@@ -28,17 +28,17 @@
 /**
  * Determines the tree iter of a given node.
  *
- * @param node	the node
+ * @param nodeId	the node id
  */
-GtkTreeIter * ui_node_to_iter(nodePtr node);
+GtkTreeIter * ui_node_to_iter(const gchar *nodeId);
 
 /**
  * Updates the tree iter of a given node.
  *
- * @param node	the node
- * @param iter	the new iter
+ * @param nodeId	the node
+ * @param iter		the new iter
  */
-void ui_node_update_iter(nodePtr node, GtkTreeIter *iter);
+void ui_node_update_iter(const gchar *nodeId, GtkTreeIter *iter);
 
 /**
  * Add a node to the feedlist
@@ -73,22 +73,22 @@ void ui_node_add_empty_node(GtkTreeIter *parent);
 void ui_node_remove_empty_node(GtkTreeIter *parent);
 
 /**
- * Updates the tree view iter of the given node.
+ * Determines the expansion state of a folder.
  *
- * @param node	the node
+ * @param nodeId	the node id of the folder
+ *
+ * @returns TRUE if the folder is expanded
  */
-void ui_node_update(nodePtr node);
-
-gboolean ui_node_is_folder_expanded(nodePtr folder);
+gboolean ui_node_is_folder_expanded(const gchar *nodeId);
 
 /**
  * Checks if the given folder node has children 
  * or not and applies a tree store workaround
  * if necessary.
  *
- * @param folder	the folder node
+ * @param nodeId	the node id of the folder
  */
-void ui_node_check_if_folder_is_empty(nodePtr folder);
+void ui_node_check_if_folder_is_empty(const gchar *nodeId);
 
 /**
  * Change the expansion/collapsing of the given folder node.
@@ -101,14 +101,14 @@ void ui_node_set_expansion(nodePtr folder, gboolean expanded);
 /**
  * Updates the tree view entry of the given node.
  *
- * @param node	the node
+ * @param nodeId	the node id
  */
-void ui_node_update(nodePtr node);
+void ui_node_update(const gchar *nodeId);
 
 /**
  * Open dialog to rename a given node.
  *
- * @param node	the node to rename
+ * @param node		the node to rename
  */
 void ui_node_rename(nodePtr node);
 

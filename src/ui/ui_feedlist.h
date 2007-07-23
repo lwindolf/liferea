@@ -35,10 +35,6 @@ enum {
 	FS_LEN
 };
 
-typedef struct ui_data {
-	GtkTreeIter row;
-} ui_data;
-
 extern GtkTreeStore	*feedstore;
 
 /**
@@ -47,9 +43,6 @@ extern GtkTreeStore	*feedstore;
  * @param node	the node to select
  */
 void ui_feedlist_select(nodePtr node);
-
-typedef void 	(*nodeActionFunc)	(nodePtr node);
-typedef void 	(*nodeActionDataFunc)	(nodePtr node, gpointer user_data);
 
 /**
  * Initializes the feed list. For example, it creates the various

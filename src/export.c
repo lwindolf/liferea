@@ -2,7 +2,7 @@
  * @file export.c OPML feedlist import&export
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2004-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,12 +27,16 @@
 #include <sys/stat.h>
 #include <libxml/tree.h>
 #include <string.h>
-#include "folder.h"
-#include "callbacks.h"
+
 #include "common.h"
-#include "interface.h"
-#include "support.h"
 #include "debug.h"
+#include "feedlist.h"
+#include "folder.h"
+#include "xml.h"
+#include "ui/ui_feedlist.h"
+#include "ui/ui_itemlist.h"
+#include "ui/ui_mainwindow.h"
+#include "fl_sources/node_source.h"
 
 struct exportData {
 	gboolean	trusted; /**< Include all the extra Liferea-specific tags */
@@ -72,6 +76,7 @@ static void export_append_node_tag(nodePtr node, gpointer userdata) {
 				xmlNewProp(childNode, BAD_CAST"sortColumn", BAD_CAST"time");
 				break;
 			case IS_PARENT:
+			case IS_SOURCE:
 				xmlNewProp(childNode, BAD_CAST"sortColumn", BAD_CAST"parent");
 				break;
 		}
@@ -107,31 +112,34 @@ gboolean export_OPML_feedlist(const gchar *filename, nodePtr node, gboolean trus
 	
 	backupFilename = g_strdup_printf("%s~", filename);
 	
-	if(NULL != (doc = xmlNewDoc("1.0"))) {	
-		if(NULL != (opmlNode = xmlNewDocNode(doc, NULL, BAD_CAST"opml", NULL))) {
+	doc = xmlNewDoc("1.0");
+	if(doc) {	
+		opmlNode = xmlNewDocNode(doc, NULL, BAD_CAST"opml", NULL);
+		if(opmlNode) {
 			xmlNewProp(opmlNode, BAD_CAST"version", BAD_CAST"1.0");
 			
 			/* create head */
-			if(NULL != (cur = xmlNewChild(opmlNode, NULL, BAD_CAST"head", NULL))) {
+			cur = xmlNewChild(opmlNode, NULL, BAD_CAST"head", NULL);
+			if(cur)
 				xmlNewTextChild(cur, NULL, BAD_CAST"title", BAD_CAST"Liferea Feed List Export");
-			}
 			
 			/* create body with feed list */
-			if(NULL != (cur = xmlNewChild(opmlNode, NULL, BAD_CAST"body", NULL)))
+			cur = xmlNewChild(opmlNode, NULL, BAD_CAST"body", NULL);
+			if(cur)
 				export_node_children(node, cur, trusted);
 			
 			xmlDocSetRootElement(doc, opmlNode);		
 		} else {
 			g_warning("could not create XML feed node for feed cache document!");
-			error = FALSE;
+			error = TRUE;
 		}
 		
 		if(trusted)
 			old_umask = umask(077);
 			
-		if(-1 == common_save_xml(doc, backupFilename)) {
-			g_warning("Could not export to OPML file!!");
-			error = FALSE;
+		if(-1 == xml_save_to_file (doc, backupFilename)) {
+			g_warning("Could not export to OPML file! Feed list changes will be lost!");
+			error = TRUE;
 		}
 		
 		if(trusted)
@@ -139,11 +147,15 @@ gboolean export_OPML_feedlist(const gchar *filename, nodePtr node, gboolean trus
 			
 		xmlFreeDoc(doc);
 		
-		if(rename(backupFilename, filename) < 0)
-			g_warning(_("Error renaming %s to %s\n"), backupFilename, filename);
+		if(!error) {
+			if(rename(backupFilename, filename) < 0) {
+				g_warning(_("Error renaming %s to %s\n"), backupFilename, filename);
+				error = TRUE;
+			}
+		}
 	} else {
-		g_warning("could not create XML document!");
-		error = FALSE;
+		g_warning("Could not create XML document!");
+		error = TRUE;
 	}
 	
 	g_free(backupFilename);
@@ -175,8 +187,9 @@ void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, nodeSourcePtr node
 			xmlFree(id);
 		} else
 			needsUpdate = TRUE;
-	} else
+	} else {
 		needsUpdate = TRUE;
+	}
 	
 	/* title */
 	title = xmlGetProp(cur, BAD_CAST"title");
@@ -219,7 +232,7 @@ void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, nodeSourcePtr node
 		node_set_view_mode(node, atoi(tmp));
 		xmlFree(tmp);
 	}
-
+	
 	/* expansion state */		
 	if(xmlHasProp(cur, BAD_CAST"expanded"))
 		node->expanded = TRUE;
@@ -231,7 +244,7 @@ void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, nodeSourcePtr node
 	/* 2. determine node type */
 	typeStr = xmlGetProp(cur, BAD_CAST"type");
 	if(typeStr) {
-		debug1(DEBUG_VERBOSE, "-> node type tag found: \"%s\"\n", typeStr);
+		debug1(DEBUG_CACHE, "-> node type tag found: \"%s\"", typeStr);
 		node_set_type(node, node_str_to_type(typeStr));
 		xmlFree(typeStr);
 	} 
@@ -239,17 +252,18 @@ void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, nodeSourcePtr node
 	/* if we didn't find a type attribute we use heuristics */
 	if(!node->type) {
 		/* check for a source URL */
-		if(NULL == (tmp = xmlGetProp(cur, BAD_CAST"xmlUrl")));
-			tmp = xmlGetProp(cur, BAD_CAST"xmlUrl");
+		tmp = xmlGetProp (cur, BAD_CAST"xmlUrl");
+		if (!tmp)
+			tmp = xmlGetProp (cur, BAD_CAST"xmlurl");	/* AmphetaDesk */
 		
-		if(tmp) {
-			debug0(DEBUG_VERBOSE, "-> URL found assuming type feed");
+		if (tmp) {
+			debug0(DEBUG_CACHE, "-> URL found assuming type feed");
 			node_set_type(node, feed_get_node_type());
 			xmlFree(tmp);
 		} else {
 			/* if the outline has no type and URL it just has to be a folder */
 			node_set_type(node, folder_get_node_type());
-			debug0(DEBUG_VERBOSE, "-> must be a folder");
+			debug0(DEBUG_CACHE, "-> must be a folder");
 		}
 	}
 	
@@ -259,10 +273,14 @@ void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, nodeSourcePtr node
 	/* 4. update immediately if necessary */
 	if(needsUpdate && (NODE_TYPE(node) != NULL)) {
 		debug1(DEBUG_CACHE, "seems to be an import, setting new id: %s and doing first download...", node_get_id(node));
-		node_request_update(node, (xmlHasProp(cur, BAD_CAST"updateInterval") ? 0 : FEED_REQ_RESET_UPDATE_INT)
-		        		  | FEED_REQ_DOWNLOAD_FAVICON
-		        		  | FEED_REQ_AUTH_DIALOG);
+		subscription_update (node->subscription,
+		                     (xmlHasProp(cur, BAD_CAST"updateInterval") ? 0 : FEED_REQ_RESET_UPDATE_INT)
+		                      | FEED_REQ_DOWNLOAD_FAVICON
+		                      | FEED_REQ_AUTH_DIALOG);
 	}
+	
+	/* 5. save node info to DB */
+	db_node_update (node);
 
 	debug_exit("import_parse_outline");
 }
@@ -315,7 +333,7 @@ gboolean import_OPML_feedlist(const gchar *filename, nodePtr parentNode, nodeSou
 		} else {
 			if(!trusted) {
 				/* set title only when importing as folder and not as OPML source */
-				xmlNodePtr title = common_xpath_find(cur, "/opml/head/title"); 
+				xmlNodePtr title = xpath_find (cur, "/opml/head/title"); 
 				if(title) {
 					xmlChar *titleStr = common_utf8_fix(xmlNodeListGetString(title->doc, title->xmlChildrenNode, 1));
 					if(titleStr) {
@@ -364,7 +382,7 @@ void on_import_activate_cb(const gchar *filename, gpointer user_data) {
 
 void on_import_activate(GtkMenuItem *menuitem, gpointer user_data) {
 
-	ui_choose_file(_("Import Feed List"), GTK_WINDOW(mainwindow), _("Import"), FALSE, on_import_activate_cb, NULL, NULL, NULL);
+	ui_choose_file(_("Import Feed List"), _("Import"), FALSE, on_import_activate_cb, NULL, NULL, NULL);
 }
 
 static void on_export_activate_cb(const gchar *filename, gpointer user_data) {
@@ -379,5 +397,5 @@ static void on_export_activate_cb(const gchar *filename, gpointer user_data) {
 
 void on_export_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	
-	ui_choose_file(_("Export Feed List"), GTK_WINDOW(mainwindow), _("Export"), TRUE, on_export_activate_cb,  NULL, "feedlist.opml", NULL);
+	ui_choose_file(_("Export Feed List"), _("Export"), TRUE, on_export_activate_cb,  NULL, "feedlist.opml", NULL);
 }

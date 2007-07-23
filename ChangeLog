@@ -1,11 +1,222 @@
-2007-??-??  ??? <???>
+2007-07-??  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.4.0 (Stable)
+
+	
+
+
+2007-07-22  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.4-RC3 (Unstable)
+
+	* Uses correct translation domain for dynamically
+	  created dialogs now (reported by Luis Rodrigo 
+	  Gallardo Cruz)
+	* Fixing AM/PM problems for US locales by reusing
+	  Evolution time formatting code (SF #1317220)
+	* Fixes node source updating (OPML, Bloglines...)
+	* Fixes missing feed metadata rendering
+	* Fixes DnD of read-only subscription lists
+	* Updated documentation for 1.4
+
+	Translations
+
+	* Update of Swedish translation (Daniel Nylander)
+	* Update of Arabic translation (Khaled Hosny)
+	* Update of German translation
+
+
+2007-07-16  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.4-RC2 (Unstable)
+
+	* Fixes missing disabling of the feed menu actions
+	  after removing a feed (reported by Luis Rodrigo
+	  Gallardo Cruz)
+	* Fixes segfault when marking folders read without 
+	  having the recursive item display enabled.
+	  (reported by Luis Rodrigo Gallardo Cruz)
+	* Fixes HTML formatting of parser/filter error output.
+	* Fixes still incorrect unread count in tray icon.
+	* Fixes several memory leaks (Hubert Figuiere)
+	* Fixes a bug in the networking code (Hubert Figuiere)
+	* Fixes a crash in the Atom parsing (Hubert Figuiere)
+	* Fixes a compilation problem on systems without
+	  getaddrinfo (reported by Gilles Gravier)
+	* Using glib allocation for libxml2 too
+	* Avoid displaying negative numbers in feed list
+	  if unread counting is incorrect. Treat negative 
+	  counts like zero count.
+	* Improved migration code. Now ignores stale cache files.
+	* Fixes commit warning on migration.
+	* Fixes loosing all items when restarting shortly after
+	  a cache migration.
+
+	Translations
+
+	* Update of Brazilian Portugese translation (Og Maciel)
+	* Update of French translation (Vincent Lefevre)
+	* Update of Spanish translation (Luis Rodrigo Gallardo Cruz)
+
+
+2007-07-05  Lars Lindner  <lars.lindner@gmail.com>
+	
+	Version 1.4-RC1 (Unstable)
+	
+	* Fixes unread counting of search folders with
+	  other rules than new/flagged.
+	* Fixes enclosure actions preferences tab.
+	* Fixes handling of empty XPath results.
+	* Fixes item matching search folder rule which
+	  did only match if title AND content did contain
+	  the search string. Now it is correctly OR'd.
+
+
+2007-06-21  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.3.8 (Unstable)
+
+	* Fixes merging new items into search folders.
+	* Reimplemented global unread/new counting used
+	  to display numbers in status bar and tray icon.
+	  (Emilio Pozuelo Monfort)
+	* Reorganized main menu. No more "Program" menu
+	  and a much more logical assignment of the 
+	  different menu options.
+	* Avoids updating comment feeds when offline.
+	* Reimplemented subscription metadata support.
+	* Manpage update (Emilio Pozuelo Monfort)
+	* Fixes for several plural literal localizations.
+	  (patch SF #1738731 from Ed Catmur)
+	* Fixes several memory leaks (Hubert Figuiere)
+	* Removes feedbag.xpi as most users should work
+	  with Firefox 2+ now.
+	* Fixes crash when updating an OPML subscription
+	  with is empty.
+
+
+2007-06-16  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.3.7 (Unstable)
+
+	* Improved proxy preference options. Now it is 
+	  possible to use no proxy even when environment
+	  $http_proxy says otherwise.
+	  (SF #1662742 reported by Mike Auty)
+	* View menu options for normal, wide and combined
+	  viewing mode are now radio buttons. 
+          (patch by Eric Anderson)
+	* New unread/new count query methods for the DBUS
+	  interface (patch by Emilio Pozuelo Monfort)
+	* Fixed wrong unread count of parent folders and
+	  search folders after removing feeds.
+	  (reported by Ori Avtalion)
+	* Fixed not setting the feed title when creating
+	  new subscriptions. (reported by Ori Avtalion)
+
+
+2007-06-09  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.3.6 (Unstable)
+
+	* Fixes a crash when updating comment feeds.
+	* Better update result processing timer, should cause
+	  less CPU usage. (patch from Arjan van de Ven)
+	* Adds a new dependency to libglade-2.0 because glade-3
+	  dropped code generation support. UI is now loaded 
+	  directly from the glade XML source file.
+	* Changing sqlite3 dependency from 3.3.9 to 3.3 because
+	  the sqlite3 pkg-config file doesn't provide the minor
+	  version.
+	* Removed support for old notification popups in favour
+	  of the libnotify style notifications.
+	* Breaks the preference compatibility of the browser
+	  skimming hotkey. Previously was <Space> saved as 0
+	  and <Ctrl>-<Space> as 1, now it is the opposite.
+	* Fixes unread counter of parent nodes after moving
+	  feed list subtrees with DnD.
+	* Fixes unnecessary favicon update on each startup.
+	* Improved memory cleanup on exit to help debugging
+	  memory leaks.
+
+	Translations
+
+	* Update of French translation from Vincent Lefevre
+	  
+
+2007-05-11  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.3.5 (Unstable)
+
+	* New scripting hook triggering when a new subscription is added.
+	* Re-added toggle read state option in context menu.
+	  (patch by Ori Avtalion)
+	* Raised sqlite3 dependency to 3.3.9 as sqlite3_prepare_v2() is 
+	  not available with earlier versions. (suggested by Joseph Sacco)
+	* Fixes subscription problems when subscribing using the "New
+	  Subscription" dialog.
+	* Fixes a crash when migrating.
+        * Fixes an favicon update state problem that caused
+	  continuous favicon updates.
+	  
+
+2007-05-06  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.3.4 (Unstable)
+
+	* Simplify the rendering stylesheets (Aaron Crane)
+	* New preference option that allows to configure the
+	  toolbar appearance independantely from GNOME (Ori Avtalion)
+	* Fixes search folder item/unread counting.
+	* Fixes problems with the search folder rule matching.
+	* Fixes crashes when using sqlite introduced with 1.3.3
+	* Fixes crash when creating a new search folder.
+
+
+2007-04-22  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.3.3 (Unstable)
+
+	* Changes the DB schema to improve performance
+	  when determining the unread/total item count of a feed.
+	* Added mechanism for automatic schema migration and
+	  schema version checking.
+	* Makes search folders work again. Note: unread counters
+	  for search folders are not yet working.
+	* Improves comment feed handling. Now the correct comment
+	  feed update state is displayed and auto-updating of
+	  comment feeds works properly.
+	* Fixes date rendering in summary mode.
+
+
+2007-04-17  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.3.2 (Unstable)
+
+	* Added duplicate detection support again.
+	* Fixes auto-updating of comment feed when reading items.
+	* Fixes DBUS checks to allow compiling without DBUS.
+	* Fixes wrong availability state after updating feeds.
+	* Fixes ordering in 2 pane mode view.
+
+
+2007-04-13  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.3.1 (Unstable)
+
+	* Using a sqlite backend now.
+	* Automated cache migration for 1.0->1.3 and 1.2->1.3
+	* Improved DBUS implementation (patch by mooonz)
+
+
+2007-02-01  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.3.0 (Unstable)
 
 	* Removes the memory usage/disk access optimization preference.
 	* Removes the internal browser module preference in favour of an 
 	  automatic priority based selection.
-	* HTML view respects GTK theme colors now.
+	* Added comment feed support.
 
 
 2006-12-17  Lars Lindner  <lars.lindner@gmail.com>
@@ -24,779 +235,5 @@
 	* Makes item header links work for GtkHTML2 again.
 	* Dropping ns_fm.* code as namespace is not used anymore in any feeds online.
 	* Added Slashdot namespace rendering again.
-
-
-2006-12-11  Lars Lindner  <lars.lindner@gmail.com>
-
-	Version 1.2-RC5 (Unstable)
-	
-	* Fixes a crash when cancelling the file selection dialog.
-	  (reported by Vincent Lefevre)
-	* Fixes a possible Sparc64 crash (patch from Pierre Pronchery)
-	* Fixes SF #1607792 which caused program abort when removing
-	  items using the keyboard in an "unread" search folder.
-	* Fixes SF #1604604 that caused URLs with "," to open 
-	  incorrectly with Firefox.
-
-	Translation
-
-	* Added French translation (Vincent Lefevre)
-	  
-
-2006-12-05  Lars Lindner  <lars.lindner@gmail.com>
-
-	Version 1.2-RC4 (Unstable)
-
-	* Adds a popup giving notice of the 1.0->1.2 cache migration
-	  asking the user to manually remove the 1.0 cache.
-	* Adds optional Network Manager support (patch from Daniel Gryniewicz)
-	  so the online status is changed automatically according to
-	  the network availability.
-	* Fixes more unnecessary updates in the two paned view mode
-	  during cache drops after an update of the selected feed.
-	* Fixes a memory leak when selecting items in 3 paned mode.
-	* Fixes several missing translation literals.
-	* Should fix SF #1572427 that could cause feed list corruptions.
-	* Fixes SF #1582309 that caused duplicate new item notifications
-	  (patch from Mike Auty)
-	* Now copies URLs also to the X selection when choosing "Copy URL"
-	  from the item list context menu (reported by Rodrigo Gallardo)
-
-	Translations
-
-	* Update of Polish translation (Bart Kreska)
-	* Update of German translation
-	* Fixes of translation mistakes (Vincent Lefevre)
-
-
-2006-11-25  Lars Lindner  <lars.lindner@gmail.com>
-
-	Version 1.2-RC3 (Unstable)
-
-	* Fixes a possible feed list corruption reported by several users.
-	* Patch from Michel Salim to use the GNOME document font
-	  instead of the GNOME application font for the HTML rendering.
-	* It is now possible to use "Remove All Items" on news bins.
-	* Renamed xslt/fl_plugin.xml.in to xslt/source.xml.in
-	* Fixes a problem with the feed list saving concept.
-	* Fixes unnecessary updates in two paned view mode during
-	  updates of other feeds.
-
-	Translations
-
-	* Added Spanish translation (Sargate Kanogan)
-	* Updated Japanese translation (Takeshi AIHANA)
-	* Updated German translation
-
-
-2006-11-19  Lars Lindner  <lars.lindner@gmail.com>
-
-	Version 1.2-RC2 (Unstable)
-
-	* Fixes SF #1594994 menu translation problem 
-	  (reported by Takeshi AIHANA)
-	* Fixes crash when doing Next-Unread with Ctrl-N right
-	  after startup without a selection (reported by Daniel Gryniewicz)
-	* Fixes crash when doing a second search immediately
-	  after the first one (reported by Sergei Butakov)
-	* Dropping SuSE specific spec file.
-
-	Translations
-
-	* Added Italian translation (Dario Conigliaro)
-	* Added Brazilian Portuguese translation (Fernando Ike de Oliveira)
-	* Updated German translation
-
-
-2006-11-10  Lars Lindner  <lars.lindner@gmail.com>
-
-	Version 1.2-RC1 (Unstable)
-
-	* Improved library dependencies in build tooling for
-	  GnuTLS support (by Alex Myltsev)
-	* Fixes a crash when unflagging items in vfolder with
-	  matching rule "flagged". (reported by Sergei Butakov)
-	* Fixes the broken unread item shading in combined view.
-	* Changes the cache directory from ~/.liferea_1.1 to
-	  ~/.liferea_1.2. For migration contents will be copied.
-	  Nothing will be deleted.
-	* Enabling StartupNotify in .desktop file (SF #1589488
-	  reported by Sven Arvidsson)
-	* Fixing a liferea-feed-add problem with running program
-	  detection reported by Pierre Gronlier
-	* Updated RPM spec files
-	* Updated user documentation
-
-	Translations
-
-	* Added Japanese translation (Takeshi AIHANA)
-
-
-2006-11-03  Lars Lindner  <lars.lindner@gmail.com>
-
-	Version 1.1.9 (Unstable)
-
-
-	* Fixes SF #1569020 reported by smglchatguru: Next unread
-	  cause the first unread item to be marked read and the 
-	  second unread item to be selected when changing to the
-	  next feed with unread items. (Solution in 1.1.8 was
-	  not 100% complete)
-	* Fixes SF #1588004: pressing delete in empty item list
-	  causes crash.
-	* Fixes SF #1585843 reported by shizow: error while exporting 
-	  feed list.
-	* Avoid unnecessary item view updates when merging items 
-	  while viewing folders or in combined viewing mode.
-	* Fixes the HTML view item menu to work correctly with folders
-	  and search folders.
-	* Fixes a crash when selecting an "empty" node after creating
-	  a new folder (reported by Sergei Butakov)
-	* After feed list node creation there is no more XML error
-	  in the HTML description view.
-
-
-2006-10-31  Lars Lindner  <lars.lindner@gmail.com>
-
-	Version 1.1.8 (Unstable)
-	
-	* Fixes SF #1569020 reported by smglchatguru: Next unread
-	  cause the first unread item to be mark read and the 
-	  second unread item to be selected when changing to the
-	  next feed with unread items.
-	* Fixes SF #1582052 which caused authentication failures
-	  when downloading Blogger feeds.
-	* Fixes a bug that prevented changing item state of items
-	  listed in the recursive folder view.
-	* Fixes a bug in the node/item lookup that caused strange
-	  merging and item access problems
-	* Fixes a bug that prevented "Next-Unread" to jump out of
-	  feeds with unread items that were displayed in combined
-	  mode.
-	* Fixes wrong new item count displayed right after startup.
-	* New item age dependant date column format as used in
-	  other news/email clients as Evolution.
-	* Removed old date format preference.
-	* Simple Bloglines support with a new feed list source type.
-
-
-2006-10-21  Lars Lindner  <lars.lindner@gmail.com>
-
-	Version 1.1.7 (Unstable)
-
-	* Fixes problem in the networking code.
-	* Adds support for wide view (with three vertical panes) 
-	  as an alternative to the email client layout.
-	* Adds support for GTK icon themes. Now the folder,
-	  vfolder, attachment and flag icon match the GTK
-	  icon scheme. (Eric Anderson)
-	* Rewrite of the rendering to allow partial
-	  HTML view updates. This should improve the rendering
-	  performance a bit.
-	* Caches CSS now instead of reading from disk.
-	* Adds more metadata rendering to match v1.0 metadata
-	  display capabilities.
-	* Improved summary mode output with red title
-	  to indicate flagged items.
-	* Drops the CSS stylesheet liferea2.css. Now only 
-	  liferea.css is used for all viewing modes!
-	* Drops the XSLT stylesheets itemset.xml and summary.xml
-
-	Bugfixes:
-
-	* Fixes SF #1579909 reported by Joshua Rodman: Minor Atom 
-	  parser warnings were printed to stderr.
-	* Fixes SF #1579316 reported by Rich Burridge: the toggle
-	  button for online/offline working has no accessibility
-	  name.
-	* Fixes SF #1573252 that cause crashes when subscribing
-	  to feed:// URLs (Kees Cook)
-	* Fixes SF #1570402 reported by jmc35894263 that crashes
-	  upon selecting "Properties" for folder nodes.
-
-
-2006-10-02  Lars Lindner  <lars.lindner@gmail.com>
-
-	Version 1.1.6 (Unstable)
-
-	* Simple news bin support. You can create news
-	  bins and add items from the item list context
-	  menu. Items in news bins are kept permanently.
-	* HTML based item menu in combined mode. This
-	  allows social bookmarking from combined mode
-	  too.
-	* Now removing <script> tags from HTML metadata.
-	  This makes Liferea comply with more of the
-	  snellspace.com aggregator security tests
-	* Empty titles in the HTML view are now replaced
-	  by the item post date.
-	* The feed properties dialog now doesn't open 
-	  automatically anymore when creating a news
-	  subscription.
-	* Flagged items in 2pane mode have now a red colored 
-	  title bar to distinguish the from unflagged items.
-	* Update of the included FeedBag extension to v1.1
-	* Faster "mark all read" feature.
-
-
-2006-09-20  Lars Lindner  <lars.lindner@gmail.com>
-
-	Version 1.1.5 (Unstable)
-
-	* Experimental scripting support. From the main menu
-	  you can open a "Script Manager" dialog where you
-	  can add LUA scripts for some hook types. This adds
-	  an optional LUA dependency.
-	* No-Proxy support. Now the feed properties and the
-	  advanced subscription dialog provide a no-proxy
-	  option.
-        * Fixes SF #1554534 which prevented creating
-          new subscriptions with feed:// URLs by using
-          the liferea-feed-add wrapper.
-        * Fixes SF #1538838 which caused a problem on
-          Atom feeds with empty text node contents.
-          (reported by Jose M. daLuz)
-	* Fixes broken item list keyboard navigation.
-	* Fixes crashes when marking folders as read.
-	* Improved error handling on feed list loading errors
-	  to avoid loss of feed list.
-
-
-2006-09-10  Lars Lindner  <lars.lindner@gmail.com>
-
-	Version 1.1.4 (Unstable)
-
-	* Simplified subscription dialog hides all filtering and
-	  command piping features.
-	* Fixes rendering and function of the broken search
-	  feature. (reported by Sergei Butakov)
-	* Added a new feed property that allows to automatically
-	  load the item link instead of the item contents.
-	* The feed cache now stores the original subscription
-	  URL for each feed. So after redirecting accidents one
-	  could restore it. For migration the current source URL
-	  is used as the original source. Currently there is no
-	  GUI function to restore those URLs.
-	* Fixes SF #1357891 which is about incorrect merging for
-	  feeds that provide more items than the configured cache
-	  size. Now the items to be merged are truncated before
-	  merging. (reported by Rich Daley and others)
-	* Fixes entering periods into URL entries in tabs.
-	* Removes the old locking code and replaces it with the
-	  libbacon message connection. This gets rid of the 
-	  annoying "lock file found" dialog and just raises
-	  a running instance. Note that this might not work with
-	  multipe X servers and in networked environments.
-	* Replaced the flag icon with the GNOME stock icon for
-	  'important'. Also updated the 'unread' icon from the
-	  GNOME 2.14 stock.
-	* The item list now displays an additional column at the
-	  second position if one of the currently displayed items
-	  has an enclosure. For each item with an enclosure the
-	  'attachment' symbol (copied from GNOME stock) is 
-	  displayed.
-
-	Translations:
-
-	* Updated Polish translation (Bart Kreska)
-	* Updated German translation
-
-
-2006-09-05  Lars Lindner  <lars.lindner@gmail.com>
-
-	Version 1.1.3 (Unstable)
-
-	* Adding Solaris compile fixes (patch from Paul Keusemann)
-	* Raising GTK+ dependency to 2.8.x.
-	* Improved Atom handling on unknown content types.
-	* Fixes merging problems.
-	* Fixes SF #1543848 which aborted Liferea when $LANG
-	  was not set (reported by slackforge and Sergei Butakov).
-	* Fixes SF #1543774 which broke compiling against
-	  XulRunner (reported by Pascal Bleser)
-	* Added missing files for distclean make target.
-
-
-2006-08-30  Lars Lindner  <lars.lindner@gmail.com>
-
-	Version 1.1.2 (Unstable)
-
-	* Fixes v1.0 cache migration problem that caused HTML
-	  content to be lost (reported by Aristotle Pagaltzis).
-	* Fixes a lot of CSS rendering glitches
-	* Fixes a DnD problem which caused duplicate feeds after
-	  restarting the program.
-	* Main menu and context menus are now node type sensitive.
-	* Binding 3rd mouse button to "Mark As Read" when used in
-	  the feed list.
-	* Improving the search engine support. Now the search
-	  menu provides Feedster, Ice Rocket, Reddit, Delicious,
-	  Google Blog, Yahoo and Technorati options.
-	* Adds a social bookmarking feature available from the
-	  context menu of the item list and links in the HTML
-	  pane. Supports many social bookmarking services that
-	  can be configured in the preferences.
-	* Improves favicon downloading. Now more favicons types
-	  than before are found (problem reported by Hadmut Danish).
-	* Disabled horizontal scrolling in feed list and enabled
-	  GTK 2.6+ ellipsizing for the feed list node title 
-	  renderer (suggested by Lars Strojny).
-
-
-2006-08-20  Lars Lindner  <lars.lindner@gmail.com>
-
-	Version 1.1.1 (Unstable)
-
-	* Adds a simple feed update monitor available from
-	  the "Program" menu.
-	* Improves the OPML/Blogroll support that now
-	  should correctly update (remove and merge)
-	  feeds when the source OPML was changed.
-	* Added 64bit source patch from Daniel Gryniewicz.
-	* Replaced the OPML source icon with an OPML icon
-	  created by Chris Pirillo.
-	* Rewrite of the metadata handling. Now the different
-	  metadata types are checked for correct format. This
-	  solves SF #1538875 (reported by Jose M. daLuz).
-	* No lax XML parsing for Atom and OPML anymore.
-	  According Daniel Veillard (libxml2 developer)
-	  the recovery mode is to be dropped in future.
-
-
-2006-08-11  Lars Lindner  <lars.lindner@gmail.com>
-
-	Version 1.1.0 (Unstable)
-
-	* HTTPS support. (Nathan Conrad)
-	* src/ui/eggtrayicon.[ch]: updated from libegg, to fix 
-	  the extra spacing between icons. (Rodrigo Moya)
-	* Bring mini popups to foreground when updated. 
-	  (Scott Harmon)
-	* Added CSS style for <del> and <ins> HTML tags.
-	  (Jose Maria Mateos)
-	* Patch to realize download retries to avoid the 
-	  effects of intermediate disconnection. Each
-	  download is retried up to 3 times after waiting 30s
-	  Retries are only executed after network failures
-	  not after HTTP errors. (Thomas de Grenier de Latour)
-	* New vfolder rule to match the update status
-	  of headlines
-	* Liferea now catches SIGTERM and saves the feed list
-	  when terminated without using the session manager.
-	* The Mozilla rendering module now respects the 
-	  offline mode of Liferea. This way offline browsing
-	  works correctly. (patch from Don Malcom)
-	* Added optional libnotify support. (Norman Jonas)
-	* Now read items are instantly removed after 
-	  unselecting when browsing folder with "hide read
-          items" enabled.
-	* The status bar now presents the number of new and
-	  unread headlines (Frederic Peter).
-	* Rendering is now done using XSLT. This introduces
-	  a dependency to libxslt.
-	* Makefile improvements (Remi Cardona).
-	* With v1.1 the GtkHTML2 rendering module support
-	  was dropped. The reason were problems when 
-	  rendering XHTML and using Flash applets.
-	* With v1.1 the support for OCS and OPML as feed
-	  sources was dropped. During the initial import
-	  all feeds of this type will be dropped without
-	  further notice. Note: OPML as feed list source for 
-	  import/export still works.
-	* Filter XSLT stylesheet are now applied using 
-	  libxslt instead of running xsltproc.
-
-	Bugfixes
-
-	* Fixes SF #1504203 (reported by John Lee), now the
-	  2 pane mode HTML view is updated after selecting
-	  "mark all read".
-	  
-	Translation
-	
-	* Updated German translation
-
-
-2006-08-10  Lars Lindner  <lars.lindner@gmail.com>
-
-	Version 1.0.21 (Stable)
-
-	* Fixes SF #1266406 which caused vfolder rules
-	  not to match item descriptions correctly.
-	* Fixes the problem that one cannot enter
-	  periods in the URL entry of tabs. This 
-	  problem was introduced with 1.0.19.
-	* Adds a patch from Remi Cardona that allows
-	  building against SeaMonkey.
-	* Adds patch #1294843 from Yaakov Selkowitz
-	  to improve compile support on Cygwin.
-	* Adds a patch for SF #1537325 from Ed Catmur
-	  that improves the text direction of headlines
-	  in the tree views or the notification popups
-	  for mixed text.
-	* Raises Pango dependency to 1.4.0
-
-
-
-2006-08-07  Lars Lindner  <lars.lindner@gmail.com>
-
-	Version 1.0.20
-
-	* The Mozilla rendering plugin now has the Mozilla
-	  library path hard coded to ensure to use the correct
-	  gtkmozembed library. This also means that there is no 
-	  more searching for gtkmozembed by the start script.
-	  This should fix SF #1532011 and SF #1455278.
-	* Fixes SF #1529612 which causes Liferea to ignore
-	  a HTTP 301 redirect if it is followed by a HTTP 304.
-	  (reported by David A. Desrosiers)
-
-
-2006-07-31  Lars Lindner  <lars.lindner@gmail.com>
-
-	Version 1.0.19
-
-	* Fixes a uninitialized value bug in the lock handling.
-	* Adds a DBUS method to change the online state of
-	  Liferea contributed by keizie.
-	* Fixes a possible DBUS crash by correctly initializing
-	  the DBUS thread handling. (SF #1523428 reported by
-	  several Debian and Fedora users, thanks for the hint
-	  from John Palmieri)
-	* Added a patch from Daniel Gryniewicz which solves
-	  three 64bit issue that cause crashes on AMD64
-	  installations.
-	* Fixes some compiler warnings for the Mozilla renderer
-	  plugin.
-	* Bigger update of the manpage.
-
-
-2006-07-22  Lars Lindner  <lars.lindner@gmail.com>
-
-	Version 1.0.18
-
-	* Fixes SF #1526078 which caused crashes when
-	  accessing RSS 2.0 feeds without a channel link.
-	  (reported by Gilles Gravier)
-	* Avoid crashes by checking the content type
-	  of responses before parsing favicon image data
-	  (reported by Carlos Moffat, Debian #378645)
-	* Quoting fix in the liferea start fix to
-	  make it run with Bourne shell SF #1526724.
-	  (reported by Gilles Gravier)
-	* Compile flags fix for Solaris where -lresolv
-	  was missing SF #1526722. 
-	  (reported by Gilles Gravier)
-	* Added a note about the DBUS interface and
-	  wrapper script to the manpage.
-	* Added a gconf key to disable DBUS if 
-	  necessary (/apps/liferea/disable-dbus).
-	* Removed support for DBUS 0.23. Now the
-	  minimal DBUS dependency is 0.30.
-
-
-2006-07-18  Lars Lindner  <lars.lindner@gmail.com>
-
-	Version 1.0.17
-
-	* Added SuSE patches supplied by Christoph Thiel.
-	* Fixes a possible uninitialized value in the network
-	  authentication code.
-	* Partially fixes Debian #378075 reported by Daniel 
-	  Jacobowitz, which caused the unwanted unescaping
-	  of URLs when internally launching links with
-	  the GtkHTML browser module.
-
-
-2006-06-26  Lars Lindner  <lars.lindner@gmail.com>
-
-	Version 1.0.16
-
-	* Workaround for SF #1509741 where GtkHTML2
-	  can cause crashes when reducing the zoomlevel
-	  when multi-line text is selected.
-	  (reported by nagappan)
-	* Fixes a significant memory leak as described
-	  in SF #1498277 reported by several users.
-
-
-2006-06-13  Lars Lindner   <lars.lindner@gmail.com>
-
-	Version 1.0.15
-
-	* Removing confusing output line from starter
-	  script (Debian #372733, reported by Joshua Rodman)
-	* Added patch SF #1504171 that fixes the problem
-	  of the headline states not getting updated
-	  after a feed update.
-	* Added a workaround for SF #1503029 which crashes
-	  when doing HTTP digest authentication without
-	  a "nonce" field in the authentication data.
-	  (reported by Kalle)
-
-
-2006-05-29  Lars Lindner  <lars.lindner@gmail.com>
-
-	Version 1.0.14
-
-	* New wrapper script "liferea-add-feed" for the 
-	  dbus-send command needed to add subscriptions
-	  from the command line.
-	* Fixes full content display for Atom 0.3
-	  feeds (Debian #366822 reported by Marco d'Itri).
-	* Fixes the --mainwindow-state=hidden behaviour.
-	  Until now it had the same effect like
-	  --mainwindow-state=iconified. (reported by
-	  Sebastian Droege)
-
-	Translation:
-
-	* Update of Polish translation (Bart Kreska)
-	* Fixed some links in the German documentation.
-
-
-2006-05-17  Lars Lindner  <lars.lindner@gmail.com>
-
-	Version 1.0.13
-
-	* Added a patch to make the tray icon
-	  respect the GNOME panel transparency
-	  setting. This will only work for the
-	  most recent GNOME versions.
-	  (Sebastian Droege)
-	* Liferea now calls res_init() to 
-	  recover from disconnect situations
-	  where the host was moved to another
-	  network. (Nathan Conrad)
-
-2006-05-07  Lars Lindner  <lars.lindner@gmail.com>
-
-	Version 1.0.12
-
-	* XulRunner support. Liferea now provides
-	  an additional browser module that is
-	  for running with XulRunner. So now it
-	  can work with GtkHTML2, Mozilla/Firefox
-	  and XulRunner. (Nathan Conrad)
-
-
-2006-05-03  Lars Lindner <lars.lindner@gmail.com>
-
-	Version 1.0.11
-
-	* Added "ins" and "del" element styles to CSS.
-	  SF patch #1393105 (Jose Maria Mateos)
-	* The source package now contains a Firefox
-	  extension (feedbag.xpi) that changes the
-	  live bookmarks button so that it will add
-	  add subscriptions directly to Liferea.
-
-	Bugfixes:
-
-	* Fixes a Atom 1.0 parsing bug when parsing
-	  plain text content. (Aristotle Pagaltzis)
-	* Fix for SF #1480051: Avoid adding internal 
-	  feed list properties when exporting the
-	  feed list to OPML. Also always adding a 
-	  text attribute to each outline node.
-	* Fix for SF #1479930: Liferea exited with
-	  assertion when unselecting a vfolder that
-	  was displayed in 2 pane mode.
-
-
-
-2006-04-22  Lars Lindner <lars.lindner@gmail.com>
-
-	Version 1.0.10
-
-	* Added 64bit library path for Firefox
-	  to start script (patch from plblaze)
-	* Added fix a timezone parsing problem
-	  (patch for #1469172 from jimee)
-	* Added a workaround for a problem caused
-	  by installing the gconf schemes from 
-	  earlier Liferea version, which caused
-	  a HTML view zoom level of 0.
-
-
-2006-04-03  Lars Lindner <lars.lindner@gmail.com>
-
-	Version 1.0.9
-
-	Bugfixes:
-
-	* Patch from Sebastian Droege that prevents the
-	  invisible text problem. This happened because the
-	  schema default values (including the one for text
-	  zooming) could not be localised.
-
-	Translations:
-
-	* Update of Italian translation (Dario Coniglario)
-
-
-2006-03-19  Lars Lindner <lars.lindner@gmail.com>
-
-	Version 1.0.8
-
-	* Adaption of style sheets to prevent GtkHTML2
-	  from using the theme color for links.
-	* Fix for a problem that did prevent opening
-	  file:// URLs with anchors in GtkHTML2
-
-	Translations:
-
-	* German translation of the user documentation.
-	* Update of Swedish translation (Sigge Kotliar)
-
-
-2006-03-05  Lars Lindner <lars.lindner@gmail.com>
-
-	Version 1.0.7
-
-	* Fix crashes relating to file selection. (Nathan Conrad)
-	* Improves all GTK 2.0 directory selection dialogs. 
-	  They no longer show the file selection list. It
-	  also fixes an issue with loading the last dirname
-	  part as the filename. (Lars Lindner)
-
-	Translations:
-
-	* New Polish default feed list (Bart Kreska)
-	* Update of Polish translation (Bart Kreska)
-	* Update of Dutch translation (Patrick Bos)
-
-	
-2006-02-25  Lars Lindner <lars.lindner@gmail.com>
-
-	Version 1.0.6
-
-	* The schema documentation was updated to
-	  add all still undocumented gconf keys.
-	* Fixes a mismatch between the schema default
-	  and the preference preselection for the 
-	  item list time column format option.
-
-	Translations:
-
-	* Update of Polish translation (Bart Kreska)
-	* Update of Dutch translation (Patrick Bos)
-	* Added Dutch default feed list (Patrick Bos)
-	* Added Dutch quick reference (Patrick Bos)
-	* Added Japanes quick reference, FAQ & help
-	  topics (Takeshi AIHANA)
-
-
-2006-02-21  Lars Lindner  <lars.lindner@gmail.com>
-
-	Version 1.0.5
-
-	* Added Dutch translation (Patrick Bos)
-	* Update of Brazilian Portugese translation
-	  (Fernando Ike de Oliveira)
-
-
-2006-02-10  Nathan Conrad  <conrad@bungled.net>
-
-	Version 1.0.4
-
-	* Removes GDK locking to avoid freezing the program when a new
-	  browser window is created or a flash plugin is used. Note that
-	  this only effects users of the mozilla renderer and not the
-	  gtkhtml2 renderer.
-	* When browsing the World Wide Web inside of Liferea, tab titles
-	  now change to the title of the HTML page being viewed. Also, a
-	  similar change was made for the location bar.
-	* Fixes a crash in the Atom 1.0 parser.
-	* Tray icon reports if Liferea is in offline or online mode.
-	  (Thomas de Grenier de Latour)
-	* Long headlines are now ellipsized when displayed in the
-	  item list. (Requires GTK+ 2.6 or above)
-	
-	Translations:
-
-	* Update of Spanish translation (Carlos Fenellosa Biesla)
-	* Update of German translation
-
-
-2006-02-01  Lars Lindner <lars.lindner@gmail.com>
-
-        Version 1.0.3
-
-	* Fixes a problem introduced with 1.0.2 that
-	  causes crashes when parsing Atom 1.0 feeds 
-	  without proper type attributes on content
-	  tags. (Nathan Conrad)
-
-
-2006-01-25  Lars Lindner <lars.lindner@gmail.com>
-
-	Version 1.0.2
-
-	* Escapes comma characters in URL so loading
-	  websites with such URLs in external browsers
-	  that use the X remote protocol works.
-	  (SF #1404730)
-	* Atom 1.0 parsing improvements.
-	  (Aristotle Pagaltzis)
-	* Improved zlib decompression support.
-	  (SF #1411596, Nathan Conrad)
-	* Updated mozilla browser module source to
-	  allow compilation against Firefox 1.5.
-
-
-2006-01-17  Lars Lindner  <lars.lindner@gmail.com>
-
-	Version 1.0.1
-
-	* Fixes a compatibility issue with Firefox 1.5
-	  that might cause crashes when running with both
-	  the Mozilla Suite and Firefox are installed.
-	  (Gentoo bug #118700 reported by Ed Katmur)
-	* Removes vfolder nodes when exporting the feed list. 
-	  (SF #1407742 reported by Duilio J. Protti)
-
-
-2005-12-23  Lars Lindner  <lars.lindner@gmail.com>
-
-	Version 1.0
-
-	* Notifications are now always kept on top.
-	  (patch from Scott Harmon)
-	* HTML view cleared when subscription is removed.
-	* Added <Del> as accelerator for deleting items.
-	* Now double clicking an item behaves according
-	  to the open-link-in-Liferea preference.
-	  (SF 1362228, reported by jphendrix)
-
-	Bugfixes:
-
-	* Fixes crash on "Next Unread" when no feed list
-	  selection is available.
-	* Fixes a memory corruption caused by a bug in
-	  the Atom 1.0 parsing code. (SF #1366369, 
-	  reported by Stephane Bortzmeyer)
-	* Fixes crash when removing items from the "Unread"
-	  vfolder. (reported by Liberty Young)
-	* Fixes missing dates for RSS feeds that specify
-	  RFC822 date definitions without seconds.
-	  (reported by Aristotle Pagaltzis)
-	* Right clicking the enclosure download arrow
-	  now opens the enclosures menu and not the
-	  standard hyperlink context menu.
-	* Lockfiles are correctly checked for hostnames containing
-	  periods.
-
-	Translations:
-
-	* Update of Japanese translation (Takeshi AIHANA)
-	* Update of Bulgarian translation (Vladimir Petkov)
-	* Update of Italian translation (Dario Coniglario)
-	* Update of Spanish translation (Calos Fenollosa Bielsa)
-	* Update of Brazilian Portugese translation
-	  (Fernando Ike de Oliveira)
-	* Update of Slovakian translation (Tibor Pittich)
-	* Update of Korean translation (Park Ji-In)
-	* Update of Swedish translation (Sigge Kotliar)
 
 [truncated]

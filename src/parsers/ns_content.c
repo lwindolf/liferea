@@ -1,7 +1,7 @@
 /**
  * @file ns_content.c content namespace support
  *
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@
 
 #include "ns_content.h"
 #include "common.h"
+#include "xml.h"
 
 /* a namespace documentation can be found at 
    http://web.resource.org/rss/1.0/modules/content/
@@ -38,7 +39,7 @@ static void parse_item_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 	gchar *tmp;
 
   	if(!xmlStrcmp(cur->name, "encoded")) {
-		if(tmp = common_utf8_fix(extractHTMLNode(cur, 0, NULL))) {
+		if(tmp = common_utf8_fix(xhtml_extract (cur, 0, NULL))) {
 			item_set_description(ctxt->item, tmp);
 			g_free(tmp);
 		}

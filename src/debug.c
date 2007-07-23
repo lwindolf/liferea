@@ -5,7 +5,7 @@
  * Copyright (C) 2002  Charles Kerr <charles@rebelbase.com>
  *
  * Liferea specific adaptations
- * Copyright (C) 2004-2006  Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2007  Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,8 +25,6 @@
 #  include <config.h>
 #endif
 
-#include <config.h>
-
 #include <stdarg.h>
 #include <stdio.h>
 #include <time.h>
@@ -37,6 +35,77 @@
 unsigned long debug_level = 0;
 
 static int depth = 0;
+
+static GHashTable *startTimes = NULL;
+
+static const char *
+debug_get_prefix (unsigned long flag) 
+{
+	if (flag & DEBUG_CACHE)		return "CACHE";
+	if (flag & DEBUG_CONF)		return "CONF";
+	if (flag & DEBUG_UPDATE)	return "UPDATE";
+	if (flag & DEBUG_PARSING)	return "PARSING";
+	if (flag & DEBUG_GUI)		return "GUI";
+	if (flag & DEBUG_HTML)		return "HTML";
+	if (flag & DEBUG_PLUGINS)	return "PLUGINS";
+	if (flag & DEBUG_TRACE)		return "TRACE";
+	if (flag & DEBUG_NET)		return "NET";
+	if (flag & DEBUG_DB)		return "DB";
+	return "";	
+}
+
+void
+debug_start_measurement_func (const char * function)
+{
+	GTimeVal	*startTime = NULL;
+	
+	if (!function)
+		return;
+		
+	if (!startTimes)
+		startTimes = g_hash_table_new (g_str_hash, g_str_equal);
+	
+	startTime = (GTimeVal *) g_hash_table_lookup (startTimes, function);
+	
+	if (!startTime)
+	{
+		startTime = g_new0 (GTimeVal, 1);
+		g_hash_table_insert (startTimes, g_strdup(function), startTime);
+	}
+
+	g_get_current_time (startTime);
+}
+
+void
+debug_end_measurement_func (const char * function,
+                            unsigned long flags, 
+			    gchar *name)
+{
+	GTimeVal	*startTime = NULL;
+	GTimeVal	endTime;
+		
+	if (!function)
+		return;
+		
+	if (!startTimes)
+		return;
+	
+	startTime = g_hash_table_lookup (startTimes, function);
+
+	if (!startTime) 
+		return;
+		
+	g_get_current_time (&endTime);
+	g_time_val_add (&endTime, (-1) * startTime->tv_usec);
+	
+	if ((0 == endTime.tv_sec - startTime->tv_sec) &&
+	    (0 == endTime.tv_usec/1000))
+		return;
+	
+	g_print ("%s: %s took %01ld,%03lds\n", debug_get_prefix (flags), name, 
+	                                     endTime.tv_sec - startTime->tv_sec, 
+					     endTime.tv_usec/1000);
+}
  
 void
 set_debug_level (unsigned long level)
@@ -66,15 +135,7 @@ debug_printf (const char    * strloc,
 	g_return_if_fail (fmt != NULL);
 
 	/* get prefix */
-	if(flag & DEBUG_CACHE)		prefix="CACHE";
-	else if(flag & DEBUG_CONF)	prefix="CONF";
-	else if(flag & DEBUG_UPDATE)	prefix="UPDATE";
-	else if(flag & DEBUG_PARSING)	prefix="PARSING";
-	else if(flag & DEBUG_GUI)	prefix="GUI";
-	else if(flag & DEBUG_HTML)	prefix="HTML";
-	else if(flag & DEBUG_PLUGINS)	prefix="PLUGINS";
-	else if(flag & DEBUG_TRACE)	prefix="TRACE";
-	else prefix="";
+	prefix = debug_get_prefix(flag);
 
 	va_start (args, fmt);
 	string = g_strdup_vprintf (fmt, args);
@@ -84,20 +145,20 @@ debug_printf (const char    * strloc,
 	localtime_r (&now_time_t, &now_tm);
 	strftime (timebuf, sizeof(timebuf), "%H:%M:%S", &now_tm);
 
-	if(flag&DEBUG_TRACE) {
+	if(flag & DEBUG_TRACE) {
 		const gint old_depth = GPOINTER_TO_INT (g_hash_table_lookup (t2d, self));
 		const gint new_depth = old_depth + (*fmt=='+' ? 1 : -1);
 
-		g_hash_table_insert (t2d, 
-		                     self,
-		                     GINT_TO_POINTER(new_depth));
+		g_hash_table_insert(t2d, 
+		                    self,
+		                    GINT_TO_POINTER(new_depth));
 
-		if(flag & DEBUG_VERBOSE)
+		if(debug_level & DEBUG_VERBOSE)
 			printf ("(%15s:%20s)(thread %p)(time %s)(depth %3d) %s: %s\n",
 				strloc,
 				function,
 				self,
-				timebuf,
+				timebuf,				
 				new_depth,
 				prefix,
 				string);
@@ -105,10 +166,10 @@ debug_printf (const char    * strloc,
 			printf ("%s: %s\n", prefix, string);
 
 
-		if (*fmt=='-')
+		if(*fmt=='-')
 			--depth;
 	} else {
-		if(flag & DEBUG_VERBOSE)
+		if(debug_level & DEBUG_VERBOSE)
 			printf ("(%15s:%20s)(thread %p)(time %s) %s: %s\n",
 				strloc,
 				function,

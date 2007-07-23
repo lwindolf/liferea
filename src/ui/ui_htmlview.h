@@ -50,7 +50,7 @@ typedef struct htmlviewPlugin {
 	gfloat		(*zoomLevelGet)		(GtkWidget *widget);
 	void		(*zoomLevelSet)		(GtkWidget *widget, gfloat zoom);
 	gboolean	(*scrollPagedown)	(GtkWidget *widget);
-	void		(*setProxy)		(gchar *hostname, int port, gchar *username, gchar *password);
+	void		(*setProxy)		(const gchar *hostname, guint port, const gchar *username, const gchar *password);
 	void		(*setOffLine)		(gboolean offline);
 } *htmlviewPluginPtr;
 
@@ -181,13 +181,8 @@ gboolean ui_htmlview_scroll(void);
 
 /**
  * Callback for proxy setting changes.
- *
- * @param hostname	proxy hostname, or NULL to disable the proxy
- * @param port		proxy port
- * @param username	proxy authentication username
- * @param password	proxy authentication password
  */
-void ui_htmlview_set_proxy(gchar *hostname, int port, gchar *username, gchar *password);
+void ui_htmlview_update_proxy (void);
 
 /**
  * Callback for online state changes.

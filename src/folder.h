@@ -1,7 +1,7 @@
 /**
- * @file folder.h feed list and plugin callbacks for folders
+ * @file folder.h feed list callbacks for folders
  * 
- * Copyright (C) 2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2006-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

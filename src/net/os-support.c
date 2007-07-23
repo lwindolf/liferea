@@ -41,7 +41,7 @@
 void * s_malloc (size_t size) {
 	void *newmem;
 	
-	newmem = malloc (size);
+	newmem = g_malloc (size);
 	
 	if (newmem == NULL) {
 		MainQuit ("Allocating memory", strerror(errno));

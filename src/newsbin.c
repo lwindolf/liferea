@@ -1,7 +1,7 @@
 /**
  * @file newsbin.c  news bin node type implementation
  * 
- * Copyright (C) 2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2006-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,13 +19,16 @@
  */
 
 #include <gtk/gtk.h>
+
+#include "common.h"
+#include "db.h"
 #include "feed.h"
 #include "feedlist.h"
-#include "interface.h"
 #include "itemlist.h"
 #include "newsbin.h"
 #include "render.h"
-#include "support.h"
+#include "vfolder.h"
+#include "ui/ui_dialog.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_node.h"
 #include "ui/ui_popup.h"
@@ -33,42 +36,48 @@
 static GtkWidget *newnewsbindialog = NULL;
 static GSList * newsbin_list = NULL;
 
-GSList * newsbin_get_list(void) { return newsbin_list; }
+GSList *
+newsbin_get_list (void)
+{
+	return newsbin_list;
+}
 
-static void newsbin_new(nodePtr node) {
-
-	itemSetPtr itemSet = (itemSetPtr)g_new0(struct itemSet, 1); /* create empty itemset */
-	itemSet->type = ITEMSET_TYPE_FEED;
-	node_set_itemset(node, itemSet);
-	node->needsCacheSave = TRUE;
+static void
+newsbin_new(nodePtr node)
+{
 	feedlist_schedule_save();
 }
 
-static void newsbin_import(nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean trusted) {
-
-	feed_get_node_type()->import(node, parent, cur, trusted);
+static void
+newsbin_import (nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean trusted)
+{
+	feed_get_node_type ()->import (node, parent, cur, trusted);
+	
+	/* but we don't need a subscription (created by feed_import()) */
+	g_free (node->subscription);
+	node->subscription = NULL;
+	
 	((feedPtr)node->data)->cacheLimit = CACHE_UNLIMITED;
-}
-
-static void newsbin_initial_load(nodePtr node) {
-
+	
 	newsbin_list = g_slist_append(newsbin_list, node);
-	feed_get_node_type()->initial_load(node);
 }
 
-static void newsbin_remove(nodePtr node) {
-
+static void
+newsbin_remove (nodePtr node)
+{
 	newsbin_list = g_slist_remove(newsbin_list, node);
 	feed_get_node_type()->remove(node);
 	ui_popup_update_menues();
 }
 
-static gchar * newsbin_render(nodePtr node) {
+static gchar *
+newsbin_render (nodePtr node)
+{
 	renderParamPtr	params;
 	gchar		*output = NULL;
 	xmlDocPtr	doc;
 
-	doc = feed_to_xml(node, NULL, TRUE);
+	doc = feed_to_xml(node, NULL);
 	params = render_parameter_new();
 	render_parameter_add(params, "pixmapsDir='file://" PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "'");
 	output = render_xml(doc, "newsbin", params);
@@ -77,26 +86,30 @@ static gchar * newsbin_render(nodePtr node) {
 	return output;
 }
 
-static void ui_newsbin_add(nodePtr parent) {
+static void
+ui_newsbin_add (nodePtr parent)
+{
 	GtkWidget	*nameentry;
 	
-	if(!newnewsbindialog || !G_IS_OBJECT(newnewsbindialog))
-		newnewsbindialog = create_newnewsbindialog();
+	if (!newnewsbindialog || !G_IS_OBJECT (newnewsbindialog))
+		newnewsbindialog = liferea_dialog_new (NULL, "newnewsbindialog");
 
-	nameentry = lookup_widget(newnewsbindialog, "nameentry");
+	nameentry = liferea_dialog_lookup(newnewsbindialog, "nameentry");
 	gtk_entry_set_text(GTK_ENTRY(nameentry), "");
 		
 	gtk_widget_show(newnewsbindialog);
 }
 
-void on_newnewsbinbtn_clicked(GtkButton *button, gpointer user_data) {
+void 
+on_newnewsbinbtn_clicked (GtkButton *button, gpointer user_data)
+{
 	nodePtr		newsbin;
 	int		pos;
 	
 	newsbin = node_new();
-	node_set_title(newsbin, (gchar *)gtk_entry_get_text(GTK_ENTRY(lookup_widget(newnewsbindialog, "nameentry"))));
+	node_set_title(newsbin, (gchar *)gtk_entry_get_text(GTK_ENTRY(liferea_dialog_lookup(newnewsbindialog, "nameentry"))));
 	node_set_type(newsbin, newsbin_get_node_type());
-	node_set_data(newsbin, (gpointer)feed_new("newsbin", NULL, 0));
+	node_set_data(newsbin, (gpointer)feed_new());
 	newsbin_new(newsbin);
 
 	ui_feedlist_get_target_folder(&pos);
@@ -108,17 +121,17 @@ void on_newnewsbinbtn_clicked(GtkButton *button, gpointer user_data) {
 	ui_popup_update_menues();
 }
 
-void on_popup_copy_to_newsbin(gpointer user_data, guint callback_action, GtkWidget *widget) {
+void 
+on_popup_copy_to_newsbin (gpointer user_data, guint callback_action, GtkWidget *widget)
+{
 	nodePtr		newsbin;
 	itemPtr		item, copy;
 
 	newsbin = g_slist_nth_data(newsbin_list, callback_action);
 	item = itemlist_get_selected();
 	if(item) {
-		node_load(newsbin);
-		
 		copy = item_copy(item);
-		copy->sourceNode = newsbin;	/* necessary to become independent of original item */
+		copy->nodeId = newsbin->id;	/* necessary to become independent of original item */
 		
 		/* To avoid item doubling in vfolders we reset
 		   simple vfolder match attributes */
@@ -128,48 +141,41 @@ void on_popup_copy_to_newsbin(gpointer user_data, guint callback_action, GtkWidg
 		/* To provide a hint in the rendered output what the orginial 
 		   feed was the original website link/title are added */		
 		if(!copy->real_source_url)
-			copy->real_source_url = g_strdup(itemset_get_base_url(item->itemSet));
+			copy->real_source_url = g_strdup(node_get_base_url(node_from_id(item->nodeId)));
 		if(!copy->real_source_title)
-			copy->real_source_title = g_strdup(node_get_title(item->itemSet->node));
+			copy->real_source_title = g_strdup(node_get_title(node_from_id(item->nodeId)));
 		
 		/* do the same as in node_merge_item(s) */
-		itemset_prepend_item(newsbin->itemSet, copy);
-		vfolder_check_item(copy);
-		newsbin->needsCacheSave = TRUE;
-		ui_node_update(newsbin);
-		
-		node_unload(newsbin);
+		db_item_update(copy);
+		node_update_counters(newsbin);
 	}
 }
 
-void newsbin_request_auto_update_dummy(nodePtr node) { }
-void newsbin_request_update_dummy(nodePtr node, guint flags) { }
-
-nodeTypePtr newsbin_get_node_type(void) {
+nodeTypePtr
+newsbin_get_node_type (void)
+{
 	static nodeTypePtr	nodeType;
 
-	if(!nodeType) {
+	if (!nodeType) {
 		/* derive the plugin node type from the folder node type */
 		nodeType = (nodeTypePtr)g_new0(struct nodeType, 1);
 		nodeType->capabilities		= NODE_CAPABILITY_RECEIVE_ITEMS |
-		                                  NODE_CAPABILITY_SHOW_UNREAD_COUNT;
+		                                  NODE_CAPABILITY_SHOW_UNREAD_COUNT |
+		                                  NODE_CAPABILITY_SHOW_ITEM_COUNT;
 		nodeType->id			= "newsbin";
 		nodeType->icon			= icons[ICON_NEWSBIN];
 		nodeType->type			= NODE_TYPE_NEWSBIN;
+		nodeType->load			= feed_get_node_type()->load;		
 		nodeType->import		= newsbin_import;
 		nodeType->export		= feed_get_node_type()->export;
-		nodeType->initial_load		= newsbin_initial_load;
-		nodeType->load			= feed_get_node_type()->load;
 		nodeType->save			= feed_get_node_type()->save;
-		nodeType->unload		= feed_get_node_type()->unload;
-		nodeType->reset_update_counter	= feed_get_node_type()->reset_update_counter;
-		nodeType->request_update	= newsbin_request_update_dummy;
-		nodeType->request_auto_update	= newsbin_request_auto_update_dummy;
+		nodeType->update_counters	= feed_get_node_type()->update_counters;
 		nodeType->remove		= newsbin_remove;
 		nodeType->mark_all_read		= feed_get_node_type()->mark_all_read;
 		nodeType->render		= newsbin_render;
 		nodeType->request_add		= ui_newsbin_add;
 		nodeType->request_properties	= ui_node_rename;
+		nodeType->free			= feed_get_node_type()->free;
 	}
 
 	return nodeType; 

@@ -30,11 +30,10 @@
 #include <string.h>
 #include <time.h>
 
-#include "favicon.h"
-#include "support.h"
-#include "feed.h"
 #include "common.h"
 #include "debug.h"
+#include "favicon.h"
+#include "feed.h"
 #include "html.h"
 
 typedef struct faviconDownloadCtxt {
@@ -76,23 +75,15 @@ GdkPixbuf * favicon_load_from_cache(const gchar *id) {
 	return result;
 }
 
-gboolean favicon_update_needed(const gchar *id, updateStatePtr updateState) {
-	struct stat	statinfo;
-	gchar		*filename;
-	GTimeVal	now;
+gboolean
+favicon_update_needed(const gchar *id, updateStatePtr updateState, GTimeVal *now)
+{
 	gboolean	result = FALSE;
-	
-	/* try to load a saved favicon */
-	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", id, "png");
-	
-	if(0 == stat((const char*)filename, &statinfo)) {
-		/* check creation date and update favicon if older than one month */
-		g_get_current_time(&now);
-		if(now.tv_sec > (updateState->lastFaviconPoll.tv_sec + 60*60*24*31))
-			result = TRUE;
-	}
-	g_free(filename);
-	
+
+	/* check creation date and update favicon if older than one month */
+	if (now->tv_sec > (updateState->lastFaviconPoll.tv_sec + 60*60*24*31))
+		result = TRUE;
+
 	return result;
 }
 
@@ -205,7 +196,7 @@ static void favicon_download_run(faviconDownloadCtxtPtr ctxt) {
 	if(ctxt->urls) {
 		url = (gchar *)ctxt->urls->data;
 		ctxt->urls = g_slist_remove(ctxt->urls, url);
-		debug2(DEBUG_UPDATE, "favicon %s trying URL: %s\n", ctxt->id, url);
+		debug2(DEBUG_UPDATE, "favicon %s trying URL: %s", ctxt->id, url);
 
 		request = update_request_new(ctxt->user_data);
 		request->source = url;
@@ -219,7 +210,10 @@ static void favicon_download_run(faviconDownloadCtxtPtr ctxt) {
 
 		update_execute_request(request);
 	} else {
-		debug1(DEBUG_UPDATE, "favicon %s could not be downloaded!\n", ctxt->id);
+		debug1(DEBUG_UPDATE, "favicon %s could not be downloaded!", ctxt->id);
+		/* Run favicon-updated callback */
+		if(ctxt->callback)
+			(ctxt->callback)(ctxt->user_data);
 		g_free(ctxt);
 	}
 	
@@ -264,13 +258,13 @@ void favicon_download(const gchar *id, const gchar *html_url, const gchar *sourc
 	/* In the following These URLs will be prepared here and passed as a list to 
 	   the download function that will then process in order
 	   until success or the end of the list is reached... */
-	debug1(DEBUG_UPDATE, "preparing download URLs for favicon %s...\n", ctxt->id);
+	debug1(DEBUG_UPDATE, "preparing download URLs for favicon %s...", ctxt->id);
 	
 	/* case 1. */
 	if(html_url) {
 		tmp = g_strdup(html_url);	
 		ctxt->urls = g_slist_append(ctxt->urls, tmp);
-		debug1(DEBUG_UPDATE, "(1) adding favicon search URL: %s\n", tmp);
+		debug1(DEBUG_UPDATE, "(1) adding favicon search URL: %s", tmp);
 	}
 
 	/* case 2. */
@@ -280,7 +274,7 @@ void favicon_download(const gchar *id, const gchar *html_url, const gchar *sourc
 	if(tmp) {
 		*tmp = 0;
 		ctxt->urls = g_slist_append(ctxt->urls, tmp2);
-		debug1(DEBUG_UPDATE, "(2) adding favicon search URL: %s\n", tmp2);
+		debug1(DEBUG_UPDATE, "(2) adding favicon search URL: %s", tmp2);
 	}
 	
 	/* case 3. */
@@ -295,7 +289,7 @@ void favicon_download(const gchar *id, const gchar *html_url, const gchar *sourc
 					tmp = tmp2;
 					tmp2 = g_strdup_printf("%s/favicon.ico", tmp);
 					ctxt->urls = g_slist_append(ctxt->urls, tmp2);
-					debug1(DEBUG_UPDATE, "(3) adding favicon source URL: %s\n", tmp2);
+					debug1(DEBUG_UPDATE, "(3) adding favicon source URL: %s", tmp2);
 				}
 			}
 			g_free(tmp);
@@ -311,7 +305,7 @@ void favicon_download(const gchar *id, const gchar *html_url, const gchar *sourc
 			tmp = tmp2;
 			tmp2 = g_strdup_printf("%s/favicon.ico", tmp);
 			ctxt->urls = g_slist_append(ctxt->urls, tmp2);
-			debug1(DEBUG_UPDATE, "(4) adding favicon source URL: %s\n", tmp2);
+			debug1(DEBUG_UPDATE, "(4) adding favicon source URL: %s", tmp2);
 		}
 		g_free(tmp);
 	
@@ -325,7 +319,7 @@ void favicon_download(const gchar *id, const gchar *html_url, const gchar *sourc
 				tmp = tmp2;
 				tmp2 = g_strdup_printf("%s/favicon.ico", tmp);
 				ctxt->urls = g_slist_append(ctxt->urls, tmp2);
-				debug1(DEBUG_UPDATE, "(5) adding favicon source URL: %s\n", tmp2);
+				debug1(DEBUG_UPDATE, "(5) adding favicon source URL: %s", tmp2);
 			}
 		}
 		g_free(tmp);

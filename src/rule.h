@@ -1,7 +1,7 @@
 /**
- * @file rule.h feed/vfolder rule handling
+ * @file rule.h DB item match rule handling
  *
- * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,12 +26,16 @@
 
 /** rule info structure */
 typedef struct ruleInfo {
-	gpointer		ruleFunc;	/* the rules test function */
-	gchar			*ruleId;	/* rule id for cache file storage */
-	gchar			*title;		/* rule type title for dialogs */
-	gchar			*positive;	/* text for positive logic selection */
-	gchar			*negative;	/* text for negative logic selection */
-	gboolean		needsParameter;	/* some rules may require no parameter... */
+	gchar		*ruleId;	/**< rule id for cache file storage */
+	gchar		*title;		/**< rule type title for dialogs */
+	gchar		*positive;	/**< text for positive logic selection */
+	gchar		*negative;	/**< text for negative logic selection */
+	gboolean	needsParameter;	/**< some rules may require no parameter... */
+	
+	gpointer	checkFunc;	/**< the in memory check function (or NULL) */
+	
+	gpointer	queryFunc;	/**< the query condition creation function */
+	guint		queryTables;	/**< tables necessary for the rule query */
 } *ruleInfoPtr;
 
 /** structure to store a rule instance */
@@ -46,37 +50,48 @@ typedef struct rule {
 extern struct ruleInfo *ruleFunctions;
 extern gint nrOfRuleFunctions;
 
-/** initializes the rule handling */
-void rule_init(void);
+/**
+ * Initializes the rule handling 
+ */
+void rule_init (void);
 
 /** 
  * Looks up the given rule id and sets up a new rule
- * structure with for the given vfolder and rule value 
+ * structure with for the given search folder and rule value 
  *
- * @param vp		vfolder the rule belongs to
+ * @param vfolder	search folder the rule belongs to
  * @param ruleId	id string for this rule type
  * @param value		argument string for this rule
  * @param additive	indicates positive or negative logic
  *
  * @returns a new rule structure
  */
-rulePtr rule_new(struct vfolder *vp, const gchar *ruleId, const gchar *value, gboolean additive);
+rulePtr rule_new (struct vfolder *vfolder, const gchar *ruleId, const gchar *value, gboolean additive);
 
 /**
- * Checks an item against a given rule.
+ * Processes the given rule list and creates a DB view
+ * with the given id.
  *
- * @param rp	rule to check against
- * @param ip	item to check
- *
- * @returns TRUE if the item matches the rule
+ * @param rules		the rule list
+ * @param id		the view id
  */
-gboolean rule_check_item(rulePtr rp, itemPtr ip);
+void rules_to_view (GSList *rules, const gchar *id);
+
+/**
+ * Checks if the given item id matches the given rules.
+ *
+ * @param rules		the rule list
+ * @param item		the item
+ *
+ * @returns TRUE if the item matches the rules
+ */
+gboolean rules_check_item (GSList *rules, itemPtr item);
 
 /** 
  * Free's the given rule structure 
  *
- * @param rp	rule to free
+ * @param rule	rule to free
  */
-void rule_free(rulePtr rp);
+void rule_free (rulePtr rule);
 
 #endif

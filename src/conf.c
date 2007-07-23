@@ -1,7 +1,7 @@
 /**
  * @file conf.c Liferea configuration (gconf access)
  *
- * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004,2005 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -28,15 +28,13 @@
 #include <libxml/uri.h>
 #include <string.h>
 #include <time.h>
-#include "support.h"
-#include "callbacks.h"
-#include "update.h"
+
 #include "common.h"
 #include "conf.h"
 #include "debug.h"
-#include "ui/ui_tray.h"
-#include "ui/ui_htmlview.h"
+#include "update.h"
 #include "ui/ui_mainwindow.h"
+#include "ui/ui_tray.h"
 
 #define MAX_GCONF_PATHLEN	256
 
@@ -45,14 +43,6 @@
 #define HOMEPAGE	"http://liferea.sf.net/"
 
 static GConfClient	*client;
-
-/* configuration values for the SnowNews HTTP code used from within netio.c */
-int	NET_TIMEOUT = 30;
-char 	*useragent = NULL;
-char	*proxyname = NULL;
-char	*proxyusername = NULL;
-char	*proxypassword = NULL;
-int	proxyport = 0;
 
 /* Function prototypes */
 static void conf_proxy_reset_settings_cb(GConfClient *client, guint cnxn_id, GConfEntry *entry, gpointer user_data);
@@ -74,52 +64,52 @@ static gboolean is_gconf_error(GError **err) {
 /* called once on startup */
 void conf_init() {
 	
-	/* has to be called for multithreaded programs */
-	xmlInitParser();
-	
-	/* the following code was copied from SnowNews and adapted to build
-	   a Liferea user agent... */
-	
 	/* Construct the User-Agent string of Liferea. This is done here in program init,
 	   because we need to do it exactly once and it will never change while the program
 	   is running. */
 	if (g_getenv("LANG") != NULL) {
 		/* e.g. Liferea/0.3.8 (Linux; de_DE; (http://liferea.sf.net/) */
-		useragent = g_strdup_printf("Liferea/%s (%s; %s; %s)", VERSION, OSNAME, g_getenv("LANG"), HOMEPAGE);
+		network_set_user_agent (g_strdup_printf("Liferea/%s (%s; %s; %s)", VERSION, OSNAME, g_getenv("LANG"), HOMEPAGE));
 	} else {
 		/* "Liferea/" + VERSION + "(" OS + "; " + HOMEPAGE + ")" */
-		useragent = g_strdup_printf("Liferea/%s (%s; %s)", VERSION, OSNAME, HOMEPAGE);
+		network_set_user_agent( g_strdup_printf("Liferea/%s (%s; %s)", VERSION, OSNAME, HOMEPAGE));
 	}
 	
 	/* initialize GConf client */
 	client = gconf_client_get_default();
 	gconf_client_add_dir(client, PATH, GCONF_CLIENT_PRELOAD_NONE, NULL);
+	gconf_client_add_dir(client, "/apps/liferea/proxy", GCONF_CLIENT_PRELOAD_NONE, NULL);
 	gconf_client_add_dir(client, "/system/http_proxy", GCONF_CLIENT_PRELOAD_NONE, NULL);
 	gconf_client_add_dir(client, "/desktop/gnome/interface", GCONF_CLIENT_PRELOAD_NONE, NULL);
-
+	
+	gconf_client_notify_add(client, "/apps/liferea/proxy", conf_proxy_reset_settings_cb, NULL, NULL, NULL);
 	gconf_client_notify_add(client, "/system/http_proxy", conf_proxy_reset_settings_cb, NULL, NULL, NULL);
 	gconf_client_notify_add(client, "/desktop/gnome/interface/toolbar_style", conf_toolbar_style_settings_cb, NULL, NULL, NULL);
 	gconf_client_notify_add(client, SHOW_TRAY_ICON, conf_tray_settings_cb, NULL, NULL, NULL);
 	
 	/* Load settings into static buffers */
 	conf_proxy_reset_settings_cb(NULL, 0, NULL, NULL);
+}
 
-	if(0 == (NET_TIMEOUT = getNumericConfValue(NETWORK_TIMEOUT)))
-		NET_TIMEOUT = 30;	/* default network timeout 30s */
+void
+conf_deinit (void)
+{
+	g_object_unref (client);
 }
 
 /* maybe called several times to reload configuration */
-void conf_load() {
+void conf_load(void)
+{
 	gint	maxitemcount;
 	gchar *downloadPath;
 	
 	/* check if important preferences exist... */
-	if(0 == (maxitemcount = getNumericConfValue(DEFAULT_MAX_ITEMS)))
-		setNumericConfValue(DEFAULT_MAX_ITEMS, 100);
+	if(0 == (maxitemcount = conf_get_int_value(DEFAULT_MAX_ITEMS)))
+		conf_set_int_value(DEFAULT_MAX_ITEMS, 100);
 	
-	downloadPath = getStringConfValue(ENCLOSURE_DOWNLOAD_PATH);
+	downloadPath = conf_get_str_value(ENCLOSURE_DOWNLOAD_PATH);
 	if(0 == strcmp("", downloadPath))
-		setStringConfValue(ENCLOSURE_DOWNLOAD_PATH, g_getenv("HOME"));
+		conf_set_str_value(ENCLOSURE_DOWNLOAD_PATH, g_getenv("HOME"));
 	g_free(downloadPath);
 }
 
@@ -132,80 +122,113 @@ static void conf_tray_settings_cb(GConfClient *client, guint cnxn_id, GConfEntry
 	}
 }
 
-static void conf_toolbar_style_settings_cb(GConfClient *client, guint cnxn_id, GConfEntry *entry, gpointer user_data) {
-	GConfValue *value;
-	if (entry != NULL) {
-		
-		value = gconf_entry_get_value(entry);
-		if (value != NULL && value->type == GCONF_VALUE_STRING)
-			ui_mainwindow_set_toolbar_style(gconf_value_get_string(value));
+static void
+conf_toolbar_style_settings_cb (GConfClient *client,
+                                guint cnxn_id,
+                                GConfEntry *entry,
+                                gpointer user_data) 
+{
+	gchar *style = conf_get_toolbar_style();
+
+	if (style != NULL) {
+		ui_mainwindow_set_toolbar_style (style);
+		g_free (style);
 	}
 }
 
-static void conf_proxy_reset_settings_cb(GConfClient *client, guint cnxn_id, GConfEntry *entry, gpointer user_data) {
-	gchar	*tmp;
-	xmlURIPtr uri;
+static void
+conf_proxy_reset_settings_cb (GConfClient *client,
+                              guint cnxn_id,
+                              GConfEntry *entry,
+                              gpointer user_data)
+{
+	gchar		*proxyname, *proxyusername, *proxypassword, *tmp;
+	guint		proxyport;
+	xmlURIPtr 	uri;
 	
-	g_free(proxyname);
 	proxyname = NULL;
-	proxyport = 0;	
-	
-	g_free(proxyusername);
+	proxyport = 0;
 	proxyusername = NULL;
-	g_free(proxypassword);
 	proxypassword = NULL;
 	
-	/* first check for a configured GNOME proxy */
-	if(getBooleanConfValue(USE_PROXY)) {
-		proxyname = getStringConfValue(PROXY_HOST);
-		proxyport = getNumericConfValue(PROXY_PORT);
-		debug2(DEBUG_CONF, "using GNOME configured proxy: \"%s\" port \"%d\"", proxyname, proxyport);
-		if (getBooleanConfValue(PROXY_USEAUTH)) {
-			proxyusername = getStringConfValue(PROXY_USER);
-			proxypassword = getStringConfValue(PROXY_PASSWD);
-		}
-	} else {
-		/* otherwise there could be a proxy specified in the environment 
-		   the following code was derived from SnowNews' setup.c */
-		if(g_getenv("http_proxy") != NULL) {
-			/* The pointer returned by getenv must not be altered.
-			   What about mentioning this in the manpage of getenv? */
-			debug0(DEBUG_CONF, "using proxy from environment");
-			do {
-				uri = xmlParseURI(BAD_CAST g_getenv("http_proxy"));
-				if (uri == NULL)
-					break;
-				if (uri->server == NULL) {
-					xmlFreeURI(uri);
-					break;
+	switch (conf_get_int_value (PROXY_DETECT_MODE)) {
+		default:
+		case 0:
+			debug0 (DEBUG_CONF, "proxy auto detect is configured");
+				
+			/* first check for a configured GNOME proxy */
+			if (conf_get_bool_value (GNOME_USE_PROXY)) {
+				proxyname = conf_get_str_value (GNOME_PROXY_HOST);
+				proxyport = conf_get_int_value (GNOME_PROXY_PORT);
+				debug2 (DEBUG_CONF, "using GNOME configured proxy: \"%s\" port \"%d\"", proxyname, proxyport);
+				if (conf_get_bool_value (GNOME_PROXY_USEAUTH)) {
+					proxyusername = conf_get_str_value (GNOME_PROXY_USER);
+					proxypassword = conf_get_str_value (GNOME_PROXY_PASSWD);
 				}
-				proxyname = g_strdup(uri->server);
-				proxyport = (uri->port == 0) ? 3128 : uri->port;
-				if (uri->user != NULL) {
-					tmp = strtok(uri->user, ":");
-					tmp = strtok(NULL, ":");
-					if (tmp != NULL) {
-						proxyusername = g_strdup(uri->user);
-						proxypassword = g_strdup(tmp);
-					}
+			} else {
+				/* otherwise there could be a proxy specified in the environment 
+				   the following code was derived from SnowNews' setup.c */
+				if (g_getenv("http_proxy")) {
+					/* The pointer returned by getenv must not be altered.
+					   What about mentioning this in the manpage of getenv? */
+					debug0 (DEBUG_CONF, "using proxy from environment");
+					do {
+						uri = xmlParseURI (BAD_CAST g_getenv ("http_proxy"));
+						if (uri == NULL) {
+							debug0 (DEBUG_CONF, "parsing URI in $http_proxy failed!");
+							break;
+						}
+						if (uri->server == NULL) {
+							debug0 (DEBUG_CONF, "could not determine proxy name from $http_proxy!");
+							xmlFreeURI (uri);
+							break;
+						}
+						proxyname = g_strdup (uri->server);
+						proxyport = (uri->port == 0) ? 3128 : uri->port;
+						if (uri->user) {
+							tmp = strtok (uri->user, ":");
+							tmp = strtok (NULL, ":");
+							if (tmp) {
+								proxyusername = g_strdup (uri->user);
+								proxypassword = g_strdup (tmp);
+							}
+						}
+						xmlFreeURI (uri);
+					} while (FALSE);
 				}
-				xmlFreeURI(uri);
-			} while (FALSE);
-		}
+			}
+			if (!proxyname)
+				debug0 (DEBUG_CONF, "no proxy GNOME of $http_proxy configuration found...");
+			break;
+		case 1:
+			debug0 (DEBUG_CONF, "proxy is disabled by user");
+			/* nothing to do */
+			break;
+		case 2:
+			debug0 (DEBUG_CONF, "manual proxy is configured");
+
+			proxyname = conf_get_str_value (PROXY_HOST);
+			proxyport = conf_get_int_value (PROXY_PORT);
+			if (conf_get_bool_value (PROXY_USEAUTH)) {
+				proxyusername = conf_get_str_value (PROXY_USER);
+				proxypassword = conf_get_str_value (PROXY_PASSWD);
+			}
+			break;
 	}
 	
-	ui_htmlview_set_proxy(proxyname, proxyport, proxyusername, proxypassword);
-	debug4(DEBUG_CONF, "Proxy settings are now %s:%d %s:%s", proxyname != NULL ? proxyname : "NULL", proxyport,
+	debug4 (DEBUG_CONF, "Proxy settings are now %s:%d %s:%s", proxyname != NULL ? proxyname : "NULL", proxyport,
 		  proxyusername != NULL ? proxyusername : "NULL",
 		  proxypassword != NULL ? proxypassword : "NULL");
+		  
+	network_set_proxy (proxyname, proxyport);
+	network_set_proxy_auth (proxyusername, proxypassword);
 }
-
 
 /*----------------------------------------------------------------------*/
 /* generic configuration access methods					*/
 /*----------------------------------------------------------------------*/
 
-void setBooleanConfValue(gchar *valuename, gboolean value) {
+void conf_set_bool_value(const gchar *valuename, gboolean value) {
 	GError		*err = NULL;
 	GConfValue	*gcv;
 	
@@ -218,7 +241,7 @@ void setBooleanConfValue(gchar *valuename, gboolean value) {
 	is_gconf_error(&err);
 }
 
-gboolean getBooleanConfValue(gchar *valuename) {
+gboolean conf_get_bool_value(const gchar *valuename) {
 	GConfValue	*value = NULL;
 	gboolean	result;
 
@@ -226,7 +249,7 @@ gboolean getBooleanConfValue(gchar *valuename) {
 
 	value = gconf_client_get(client, valuename, NULL);
 	if(NULL == value) {
-		setBooleanConfValue(valuename, FALSE);
+		conf_set_bool_value(valuename, FALSE);
 		result = FALSE;
 	} else {
 		result = gconf_value_get_bool(value);
@@ -236,7 +259,7 @@ gboolean getBooleanConfValue(gchar *valuename) {
 	return result;
 }
 
-void setStringConfValue(gchar *valuename, const gchar *value) {
+void conf_set_str_value(const gchar *valuename, const gchar *value) {
 	GError		*err = NULL;
 	GConfValue	*gcv;
 	
@@ -249,7 +272,7 @@ void setStringConfValue(gchar *valuename, const gchar *value) {
 	is_gconf_error(&err);
 }
 
-gchar * getStringConfValue(gchar *valuename) {
+gchar * conf_get_str_value(const gchar *valuename) {
 	GConfValue	*value = NULL;
 	gchar		*result;
 
@@ -266,7 +289,7 @@ gchar * getStringConfValue(gchar *valuename) {
 	return result;
 }
 
-void setNumericConfValue(gchar *valuename, gint value) {
+void conf_set_int_value(const gchar *valuename, gint value) {
 	GError		*err = NULL;
 	GConfValue	*gcv;
 	
@@ -279,7 +302,7 @@ void setNumericConfValue(gchar *valuename, gint value) {
 	gconf_value_free(gcv);
 }
 
-gint getNumericConfValue(gchar *valuename) {
+gint conf_get_int_value(const gchar *valuename) {
 	GConfValue	*value;
 	gint		result = 0;
 
@@ -292,4 +315,19 @@ gint getNumericConfValue(gchar *valuename) {
 	}
 			
 	return result;
+}
+
+gchar *
+conf_get_toolbar_style(void) 
+{
+	gchar *style;
+
+	style = conf_get_str_value (TOOLBAR_STYLE);
+
+	/* check if we don't override the toolbar style */
+	if (strcmp(style, "") == 0) {
+		g_free (style);
+		style = conf_get_str_value ("/desktop/gnome/interface/toolbar_style");
+	}
+	return style;
 }

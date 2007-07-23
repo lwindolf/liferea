@@ -1,7 +1,7 @@
 /**
- * @file folder.c feed list and plugin callbacks for folders
+ * @file folder.c feed list callbacks for folders
  * 
- * Copyright (C) 2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2006-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +18,36 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "folder.h"
 #include "common.h"
 #include "conf.h"
 #include "debug.h"
 #include "export.h"
 #include "feedlist.h"
-#include "support.h"
+#include "folder.h"
+#include "itemset.h"
+#include "node.h"
 #include "ui/ui_folder.h"
 #include "ui/ui_node.h"
-#include "fl_sources/node_source.h"
+
+static void folder_merge_child_items(nodePtr node, gpointer user_data) {
+	itemSetPtr	folderItemSet = (itemSetPtr)user_data;
+	itemSetPtr	nodeItemSet;
+
+	nodeItemSet = node_get_itemset(node);
+	folderItemSet->ids = g_list_concat(folderItemSet->ids, nodeItemSet->ids);
+	nodeItemSet->ids = NULL;
+	itemset_free(nodeItemSet);
+}
+
+static itemSetPtr folder_load(nodePtr node) {
+	itemSetPtr	itemSet;
+	
+	itemSet = g_new0(struct itemSet, 1);
+	itemSet->nodeId = node->id;
+
+	node_foreach_child_data(node, folder_merge_child_items, itemSet);
+	return itemSet;
+}
 
 static void folder_import(nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean trusted) {
 	
@@ -36,8 +56,8 @@ static void folder_import(nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean
 	
 	cur = cur->xmlChildrenNode;
 	while(cur) {
-		if((!xmlStrcmp(cur->name, BAD_CAST"outline")))
-		import_parse_outline(cur, node, node->source, trusted);
+		if(!xmlStrcmp(cur->name, BAD_CAST"outline"))
+			import_parse_outline(cur, node, node->source, trusted);
 		cur = cur->next;				
 	}
 }
@@ -45,7 +65,7 @@ static void folder_import(nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean
 static void folder_export(nodePtr node, xmlNodePtr cur, gboolean trusted) {
 	
 	if(trusted) {
-		if(ui_node_is_folder_expanded(node))
+		if(ui_node_is_folder_expanded(node->id))
 			xmlNewProp(cur, BAD_CAST"expanded", BAD_CAST"true");
 		else
 			xmlNewProp(cur, BAD_CAST"collapsed", BAD_CAST"true");
@@ -55,78 +75,23 @@ static void folder_export(nodePtr node, xmlNodePtr cur, gboolean trusted) {
 	export_node_children(node, cur, trusted);	
 }
 
-static void folder_initial_load(nodePtr node) {
-	node_foreach_child(node, node_initial_load);
-}
-
-/* This callback is used to compute the itemset of folder nodes */
-static void folder_merge_itemset(nodePtr node, gpointer userdata) {
-	itemSetPtr	itemSet = (itemSetPtr)userdata;
-
-	debug1(DEBUG_GUI, "merging items of node \"%s\"", node_get_title(node));
-
-	switch(node->type) {
-		case NODE_TYPE_FOLDER:
-			node_foreach_child_data(node, folder_merge_itemset, itemSet);
-			break;
-		case NODE_TYPE_VFOLDER:
-			return;
-			break;
-		default:
-			debug1(DEBUG_GUI, "   pre merge item set: %d items", g_list_length(itemSet->items));
-			itemSet->items = g_list_concat(itemSet->items, g_list_copy(node->itemSet->items));
-			debug1(DEBUG_GUI, "  post merge item set: %d items", g_list_length(itemSet->items));
-			break;
-	}
-}
-
-static void folder_load(nodePtr node) {
-
-	node_foreach_child(node, node_load);
-
-	if(0 >= node->loaded) {
-		/* Concatenate all child item sets to form the folders item set */
-		itemSetPtr itemSet = g_new0(struct itemSet, 1);
-		itemSet->type = ITEMSET_TYPE_FOLDER;
-		node_foreach_child_data(node, folder_merge_itemset, itemSet);
-		node_set_itemset(node, itemSet);
-	}
-
-	node->loaded++;
-}
-
 static void folder_save(nodePtr node) {
+	
+	/* A folder has no own state but must give all childs the chance to save theirs */
 	node_foreach_child(node, node_save);
 }
 
-static void folder_unload(nodePtr node) {
+static void folder_add_child_unread_count(nodePtr node, gpointer user_data) {
+	guint	*unreadCount = (guint *)user_data;
 
-	if(0 >= node->loaded)
-		return;
-
-	if(1 == node->loaded) {
-		g_assert(NULL != node->itemSet);
-		g_list_free(node->itemSet->items);
-		node->itemSet->items = NULL;
-	}
-
-	node->loaded--;
-
-	node_foreach_child(node, node_unload);
+	if (NODE_TYPE_VFOLDER != node->type)
+		*unreadCount += node->unreadCount;
 }
 
-static void folder_reset_update_counter(nodePtr node) {
-	node_foreach_child(node, node_reset_update_counter);
-}
+static void folder_update_unread_count(nodePtr node) {
 
-static void folder_request_update(nodePtr node, guint flags) {
-	// FIXME: int -> gpointer
-	node_foreach_child_data(node, node_request_update, GUINT_TO_POINTER(flags));
-}
-
-static void folder_request_auto_update(nodePtr node) {
-	
-	node_foreach_child(node, node_request_auto_update);
+	node->unreadCount = 0;
+	node_foreach_child_data(node, folder_add_child_unread_count, &node->unreadCount);
 }
 
 static void folder_remove(nodePtr node) {
@@ -151,19 +116,17 @@ nodeTypePtr folder_get_node_type(void) {
 		NODE_CAPABILITY_REMOVE_CHILDS |
 		NODE_CAPABILITY_SUBFOLDERS |
 		NODE_CAPABILITY_REORDER |
-		NODE_CAPABILITY_SHOW_UNREAD_COUNT,
+		NODE_CAPABILITY_SHOW_UNREAD_COUNT |
+		NODE_CAPABILITY_UPDATE_CHILDS,
 		"folder",
 		NULL,
 		NODE_TYPE_FOLDER,
 		folder_import,
 		folder_export,
-		folder_initial_load,
 		folder_load,
 		folder_save,
-		folder_unload,
-		folder_reset_update_counter,
-		folder_request_update,
-		folder_request_auto_update,
+		folder_update_unread_count,
+		NULL,			/* process_update_result */
 		folder_remove,
 		folder_mark_all_read,
 		node_default_render,
@@ -184,24 +147,23 @@ nodeTypePtr root_get_node_type(void) {
 		NODE_CAPABILITY_REMOVE_CHILDS |
 		NODE_CAPABILITY_SUBFOLDERS |
 		NODE_CAPABILITY_REORDER |
-		NODE_CAPABILITY_SHOW_UNREAD_COUNT,
+		NODE_CAPABILITY_SHOW_UNREAD_COUNT |
+		NODE_CAPABILITY_UPDATE_CHILDS,		
 		"root",
 		NULL,		/* and no need for an icon */
 		NODE_TYPE_ROOT,
 		folder_import,
 		folder_export,
-		folder_initial_load,
 		folder_load,
 		folder_save,
-		folder_unload,
-		folder_reset_update_counter,
-		folder_request_update,
-		folder_request_auto_update,
+		folder_update_unread_count,
+		NULL,		/* process_update_result() */
 		folder_remove,
 		folder_mark_all_read,
 		node_default_render,
 		ui_folder_add,
-		ui_node_rename
+		ui_node_rename,
+		NULL
 	};
 
 	return &rnti; 

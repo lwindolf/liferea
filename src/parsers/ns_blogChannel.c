@@ -138,7 +138,7 @@ static void ns_blogChannel_download_request_cb(requestPtr request) {
 	}
 
 	if(buffer) {
-		node_load(requestData->ctxt->node);
+		// FIXME: needed? node_load(requestData->ctxt->node);
 		
 		switch(requestData->tag) {
 			case TAG_BLOGROLL:
@@ -165,13 +165,12 @@ static void ns_blogChannel_download_request_cb(requestPtr request) {
 		g_string_append(buffer, g_hash_table_lookup(requestData->ctxt->tmpdata, "bC:blink"));
 		g_string_append(buffer, g_hash_table_lookup(requestData->ctxt->tmpdata, "bC:blogRoll"));
 		g_string_append(buffer, g_hash_table_lookup(requestData->ctxt->tmpdata, "bC:mySubscriptions"));
-		metadata_list_set(&(requestData->ctxt->feed->metadata), "blogChannel", buffer->str);
-		requestData->ctxt->node->needsCacheSave = TRUE;	/* needed because we're processing after feed parsing */
+		metadata_list_set(&(requestData->ctxt->subscription->metadata), "blogChannel", buffer->str);
 		g_string_free(buffer, TRUE);
 		
-		node_unload(requestData->ctxt->node);
+		// FIXME: needed? node_unload(requestData->ctxt->node);
 	}
-	g_free(requestData->ctxt->itemSet);
+	g_list_free(requestData->ctxt->items);
 	feed_free_parser_ctxt(requestData->ctxt);
 	g_free(requestData);
 	
@@ -184,15 +183,14 @@ static void getOutlineList(feedParserCtxtPtr ctxt, guint tag, char *url) {
 
 	requestData = g_new0(struct requestData, 1);
 	requestData->ctxt = feed_create_parser_ctxt();	
-	requestData->ctxt->node = ctxt->node;
-	requestData->ctxt->feed = ctxt->feed;
+	requestData->ctxt->subscription = ctxt->subscription;	// FIXME
 	requestData->tag = tag;
 
-	request = update_request_new(ctxt->node);
+	request = update_request_new(ctxt->subscription);
 	request->source = g_strdup(url);
 	request->callback = ns_blogChannel_download_request_cb;
 	request->user_data = requestData;
-	request->options = ctxt->feed->updateOptions;
+	request->options = ctxt->subscription->updateOptions;
 	
 	update_execute_request(request);
 }

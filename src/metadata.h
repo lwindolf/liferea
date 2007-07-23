@@ -86,6 +86,25 @@ void metadata_list_set(GSList **metadata, const gchar *strid, const gchar *data)
  */
 const gchar * metadata_list_get(GSList *metadata, const gchar *strid);
 
+/** 
+ * Definition of metadata foreach function 
+ *
+ * @param key		metadata type id
+ * @param value		metadata value
+ * @param index		metadata list ordering index
+ * @param user_data	user data
+ */
+typedef void	(*metadataForeachFunc)	(const gchar *key, const gchar *value, guint index, gpointer user_data);
+
+/**
+ * Can be used to iterate over all key/value pairs of the given metadata list.
+ *
+ * @param metadata	the metadata list
+ * @param func		callback function
+ * @param user_data	data to be passed to func
+ */
+void metadata_list_foreach(GSList *metadata, metadataForeachFunc func, gpointer user_data);
+
 /**
  * Returns a list of all values of a given type from a specified metadata list.
  *

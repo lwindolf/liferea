@@ -1,7 +1,7 @@
 /*
    mod_aggregation support
    
-   Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+   Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -25,8 +25,6 @@
 #include "common.h"
 #include "metadata.h"
 #include "ns_ag.h"
-#include "support.h"
-#include "ui/ui_itemlist.h"
 
 /* you can find an aggregation namespace spec at:
    http://web.resource.org/rss/1.0/modules/aggregation/

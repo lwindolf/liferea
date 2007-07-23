@@ -1,7 +1,7 @@
 /**
  * @file itemview.c    item display interface abstraction
  * 
- * Copyright (C) 2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2006-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ gint disableSortingSaving;		/* set in ui_itemlist.c to disable sort-changed call
 static struct itemView_priv {
 	gboolean	htmlOnly;		/**< TRUE if HTML only mode */
 	guint		mode;			/**< current item view mode */
-	itemSetPtr	itemSet;		/**< currently item set */
+	nodePtr		node;			/**< the node whose item are displayed */
 	gchar 		*userDefinedDateFmt;	/**< user defined date formatting string */
 	gboolean	needsHTMLViewUpdate;	/**< flag to be set when HTML rendering is to be 
 						     updated, used to delay HTML updates */
@@ -93,11 +93,11 @@ void itemview_set_mode(guint mode) {
 	}
 }
 
-void itemview_set_itemset(itemSetPtr itemSet) {
+void itemview_set_displayed_node(nodePtr node) {
 	GtkTreeModel	*model;
 
-	if(itemSet != itemView_priv.itemSet) {
-		itemView_priv.itemSet = itemSet;
+	if(node != itemView_priv.node) {
+		itemView_priv.node = node;
 
 		/* 1. Perform UI item list preparations ... */
 		
@@ -110,13 +110,13 @@ void itemview_set_itemset(itemSetPtr itemSet) {
 		/* b) Enable item list columns as necessary */
 		ui_itemlist_enable_encicon_column(FALSE);
 
-		if(itemSet) {
-			switch(itemSet->type) {
-				case ITEMSET_TYPE_FEED:
+		if(node) {
+			switch(node->type) {
+				case NODE_TYPE_FEED:
 					ui_itemlist_enable_favicon_column(FALSE);
 					break;
-				case ITEMSET_TYPE_VFOLDER:
-				case ITEMSET_TYPE_FOLDER:
+				case NODE_TYPE_VFOLDER:
+				case NODE_TYPE_FOLDER:
 					ui_itemlist_enable_favicon_column(TRUE);
 					break;
 			}
@@ -125,8 +125,8 @@ void itemview_set_itemset(itemSetPtr itemSet) {
 			       and enable sorting again */
 			disableSortingSaving++;
 			gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(model), 
-	                        			     itemSet->node->sortColumn, 
-	                        			     itemSet->node->sortReversed?GTK_SORT_DESCENDING:GTK_SORT_ASCENDING);
+	                                                     node->sortColumn, 
+	                                                     node->sortReversed?GTK_SORT_DESCENDING:GTK_SORT_ASCENDING);
 			disableSortingSaving--;
 		}
 
@@ -134,20 +134,8 @@ void itemview_set_itemset(itemSetPtr itemSet) {
 		itemview_clear();
 		
 		/* 3. And repare HTML view */
-		htmlview_set_itemset(itemSet);
+		htmlview_set_displayed_node(node);
 	}
-}
-
-static gboolean itemview_is_affected(itemPtr item) {
-
-	if(!itemView_priv.itemSet)
-		return FALSE;
-
-	if(!itemset_lookup_item(itemView_priv.itemSet, item->itemSet->node, item->nr) &&
-	   !node_is_ancestor(itemView_priv.itemSet->node,item->itemSet->node))
-		return FALSE;
-		
-	return TRUE;
 }
 
 void itemview_add_item(itemPtr item) {
@@ -164,9 +152,9 @@ void itemview_add_item(itemPtr item) {
 
 void itemview_remove_item(itemPtr item) {
 
-	if(!itemview_is_affected(item))
+	if(!ui_itemlist_contains_item(item->id))
 		return;
-		
+
 	if(ITEMVIEW_ALL_ITEMS != itemView_priv.mode)
 		/* remove item in 3 pane mode */
 		ui_itemlist_remove_item(item);
@@ -179,7 +167,7 @@ void itemview_remove_item(itemPtr item) {
 
 void itemview_select_item(itemPtr item) {
 
-	if(!itemView_priv.itemSet)
+	if(!itemView_priv.node)
 		return;
 		
 	itemView_priv.needsHTMLViewUpdate = TRUE;
@@ -190,7 +178,7 @@ void itemview_select_item(itemPtr item) {
 
 void itemview_update_item(itemPtr item) {
 
-	if(!itemView_priv.itemSet)
+	if(!itemView_priv.node)
 		return;
 		
 	/* Always update the GtkTreeView (bail-out done in ui_itemlist_update_item() */
@@ -201,12 +189,13 @@ void itemview_update_item(itemPtr item) {
 	switch(itemView_priv.mode) {
 		case ITEMVIEW_ALL_ITEMS:
 			/* No HTML update needed if 2 pane mode and item not in item set */
-			if(!itemview_is_affected(item))
+			if(!ui_itemlist_contains_item(item->id))
 				return;
 			break;
 		case ITEMVIEW_SINGLE_ITEM:		
 			/* No HTML update needed if 3 pane mode and item not displayed */
-			if((item != itemlist_get_selected()) && !itemview_is_affected(item))
+			if((item != itemlist_get_selected()) && 
+			   !ui_itemlist_contains_item(item->id))
 				return;
 			break;
 		default:
@@ -219,17 +208,30 @@ void itemview_update_item(itemPtr item) {
 	htmlview_update_item(item);
 }
 
-void itemview_update_node_info(itemSetPtr itemSet) {
+void itemview_update_all_items(void) {
 
-	if(!itemView_priv.itemSet)
+	if(!itemView_priv.node)
 		return;
 		
-	if(itemView_priv.itemSet != itemSet)
-		return;
+	/* Always update the GtkTreeView (bail-out done in ui_itemlist_update_item() */
+	if(ITEMVIEW_ALL_ITEMS != itemView_priv.mode)
+		ui_itemlist_update_all_items();
 		
+	itemView_priv.needsHTMLViewUpdate = TRUE;
+	htmlview_clear();	/* enforce rerendering */
+}
+
+void itemview_update_node_info(nodePtr node) {
+
+	if(!itemView_priv.node)
+		return;
+	
+	if(itemView_priv.node != node)
+		return;
+
 	if(ITEMVIEW_NODE_INFO != itemView_priv.mode)
 		return;
-		
+
 	itemView_priv.needsHTMLViewUpdate = TRUE;
 	/* Just setting the update flag, because node info is not cached */
 }

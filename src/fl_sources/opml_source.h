@@ -1,7 +1,7 @@
 /**
  * @file opml_source.h OPML Planet/Blogroll feed list provider
  * 
- * Copyright (C) 2005-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2005-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 #ifndef _OPML_SOURCE_H
 #define _OPML_SOURCE_H
 
+#include "common.h"
 #include "node.h"
 
 #define OPML_SOURCE_DEFAULT_TITLE _("New OPML Subscription")
@@ -66,18 +67,18 @@ void opml_source_remove(nodePtr node);
 void opml_source_setup(nodePtr parent, nodePtr node);
 
 /**
- * Request processing callback for OPML source updates.
- *
- * @param request	finished requests
- */
-void opml_source_process_update_results(requestPtr request);
-
-/**
- * Updates the OPML source of the given node.
+ * Force update of the OPML source and all child subscriptions of the given node.
  *
  * @param node		the node
  */
 void opml_source_update(nodePtr node);
+
+/**
+ * Request auto-update of the OPML source and all child subscriptions of the given node.
+ *
+ * @param node		the node
+ */
+void opml_source_auto_update(nodePtr node);
 
 /**
  * Returns OPML source type implementation info.

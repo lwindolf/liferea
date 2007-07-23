@@ -1,7 +1,7 @@
 /**
  * @file notif_plugin.c generic notification interface
  * 
- * Copyright (C) 2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2006-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,10 +21,10 @@
 #include <gmodule.h>
 #include <gtk/gtk.h>
 #include <string.h>
+#include "common.h"
 #include "debug.h"
 #include "node.h"
 #include "plugin.h"
-#include "support.h"
 #include "notification/notif_plugin.h"
 
 static GSList *notificationPlugins = NULL;
@@ -44,14 +44,14 @@ gboolean notification_plugin_load(pluginPtr plugin, GModule *handle) {
 
 	/* check notification provider plugin version */
 	if(NOTIFICATION_PLUGIN_API_VERSION != notificationPlugin->api_version) {
-		debug3(DEBUG_PLUGINS, "notification API version mismatch: \"%s\" has version %d should be %d\n", plugin->name, notificationPlugin->api_version, NOTIFICATION_PLUGIN_API_VERSION);
+		debug3(DEBUG_PLUGINS, "notification API version mismatch: \"%s\" has version %d should be %d", plugin->name, notificationPlugin->api_version, NOTIFICATION_PLUGIN_API_VERSION);
 		return FALSE;
 	} 
 
 	/* check if all mandatory symbols are provided */
 	if(!(notificationPlugin->plugin_init &&
 	     notificationPlugin->plugin_deinit)) {
-		debug1(DEBUG_PLUGINS, "mandatory symbols missing: \"%s\"\n", plugin->name);
+		debug1(DEBUG_PLUGINS, "mandatory symbols missing: \"%s\"", plugin->name);
 		return FALSE;
 	}
 	

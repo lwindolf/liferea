@@ -1,7 +1,7 @@
 /**
  * @file ui_tabs.c browser tabs
  *
- * Copyright (C) 2004-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2006 Nathan Conrad <conrad@bungled.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -24,12 +24,15 @@
 #endif
 
 #include <string.h>
-#include "support.h"
-#include "ui/ui_mainwindow.h"
+
+#include "common.h"
+#include "itemlist.h"
 #include "ui/ui_htmlview.h"
 #include "ui/ui_itemlist.h"
+#include "ui/ui_mainwindow.h"
+#include "ui/ui_shell.h"
 #include "ui/ui_tabs.h"
-#include "itemlist.h"
+
 extern GtkWidget	*mainwindow;
 
 /** structure holding all URLs visited in a tab */
@@ -140,12 +143,12 @@ static void on_tab_close_clicked(GtkWidget *widget, gpointer user_data) {
 	ui_tabs_history_free(tab->history);
 	g_free(tab);
 
-	i = gtk_notebook_get_current_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")));
-	gtk_notebook_remove_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")), i);
+	i = gtk_notebook_get_current_page(GTK_NOTEBOOK(liferea_shell_lookup("browsertabs")));
+	gtk_notebook_remove_page(GTK_NOTEBOOK(liferea_shell_lookup("browsertabs")), i);
 	
 	/* check if all tabs are closed */
-	if(1 == gtk_notebook_get_n_pages(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs"))))
-		gtk_notebook_set_show_tabs(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")), FALSE);
+	if(1 == gtk_notebook_get_n_pages(GTK_NOTEBOOK(liferea_shell_lookup("browsertabs"))))
+		gtk_notebook_set_show_tabs(GTK_NOTEBOOK(liferea_shell_lookup("browsertabs")), FALSE);
 }
 
 static void on_tab_switched(GtkNotebook *notebook, GtkNotebookPage *page, guint page_num, gpointer user_data) {
@@ -175,8 +178,8 @@ static void on_tab_history_forward(GtkWidget *widget, gpointer user_data) {
 
 void ui_tabs_init(void) {
 
-	gtk_notebook_set_show_tabs(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")), FALSE);
-	g_signal_connect((gpointer)lookup_widget(mainwindow, "browsertabs"), "switch-page", G_CALLBACK(on_tab_switched), NULL);
+	gtk_notebook_set_show_tabs(GTK_NOTEBOOK(liferea_shell_lookup("browsertabs")), FALSE);
+	g_signal_connect((gpointer)liferea_shell_lookup("browsertabs"), "switch-page", G_CALLBACK(on_tab_switched), NULL);
 }
 
 static gchar* ui_tabs_condense_text(const gchar* title) {
@@ -274,11 +277,11 @@ GtkWidget* ui_tabs_new(const gchar *url, const gchar *title, gboolean activate) 
 	gtk_box_pack_end(GTK_BOX(vbox), htmlframe, TRUE, TRUE, 0);
 	gtk_widget_show_all(vbox);
 	
-	i = gtk_notebook_append_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")), vbox, label);
-	gtk_notebook_set_show_tabs(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")), TRUE);
+	i = gtk_notebook_append_page(GTK_NOTEBOOK(liferea_shell_lookup("browsertabs")), vbox, label);
+	gtk_notebook_set_show_tabs(GTK_NOTEBOOK(liferea_shell_lookup("browsertabs")), TRUE);
 	
 	if(activate && (i != -1))
-		gtk_notebook_set_current_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")), i);
+		gtk_notebook_set_current_page(GTK_NOTEBOOK(liferea_shell_lookup("browsertabs")), i);
 	
 	if(url)	{
 		ui_tabs_history_add_location(tab, (gchar *)url);
@@ -289,7 +292,7 @@ GtkWidget* ui_tabs_new(const gchar *url, const gchar *title, gboolean activate) 
 
 void ui_tabs_show_headlines(void) {
 
-	gtk_notebook_set_current_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")), 0);
+	gtk_notebook_set_current_page(GTK_NOTEBOOK(liferea_shell_lookup("browsertabs")), 0);
 }
 
 /** This method is used to find the tab infos for a given
@@ -320,12 +323,12 @@ void ui_tabs_close_tab(GtkWidget *child) {
 	if(NULL == (tab = ui_tabs_find_notebook_child(child)))
 		return;
 	
-	n = gtk_notebook_get_current_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")));
-	gtk_notebook_remove_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")), n);
+	n = gtk_notebook_get_current_page(GTK_NOTEBOOK(liferea_shell_lookup("browsertabs")));
+	gtk_notebook_remove_page(GTK_NOTEBOOK(liferea_shell_lookup("browsertabs")), n);
 	
 	/* check if all tabs are closed */
-	if(1 == gtk_notebook_get_n_pages(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs"))))
-		gtk_notebook_set_show_tabs(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")), FALSE);
+	if(1 == gtk_notebook_get_n_pages(GTK_NOTEBOOK(liferea_shell_lookup("browsertabs"))))
+		gtk_notebook_set_show_tabs(GTK_NOTEBOOK(liferea_shell_lookup("browsertabs")), FALSE);
 }
 
 void ui_tabs_set_location(GtkWidget *child, const gchar *uri) {
@@ -350,7 +353,7 @@ void ui_tabs_set_title(GtkWidget *child, const gchar *title) {
 	text = ui_tabs_condense_text(title != NULL ? title : _("New tab"));
 	label = gtk_label_new(text);
 	gtk_widget_show(label);
-	gtk_notebook_set_tab_label(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")),
+	gtk_notebook_set_tab_label(GTK_NOTEBOOK(liferea_shell_lookup("browsertabs")),
 	                           tab->widget, label);
 	g_free(text);
 }
@@ -359,11 +362,11 @@ GtkWidget * ui_tabs_get_active_htmlview(void) {
 	tabInfo		*tab;
 	gint		current;
 	
-	current = gtk_notebook_get_current_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")));
+	current = gtk_notebook_get_current_page(GTK_NOTEBOOK(liferea_shell_lookup("browsertabs")));
 	if(0 == current)
 		return ui_mainwindow_get_active_htmlview();
 		
-	tab = g_object_get_data(G_OBJECT(gtk_notebook_get_nth_page(GTK_NOTEBOOK(lookup_widget(mainwindow, "browsertabs")), current)), "tabInfo");
+	tab = g_object_get_data(G_OBJECT(gtk_notebook_get_nth_page(GTK_NOTEBOOK(liferea_shell_lookup("browsertabs")), current)), "tabInfo");
 	return tab->htmlview;
 }
 

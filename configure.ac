@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([liferea],[1.3.0],[liferea-devel@lists.sourceforge.net])
+AC_INIT([liferea],[1.4-RC3],[liferea-devel@lists.sourceforge.net])
 AC_CANONICAL_TARGET([])
 AC_CONFIG_SRCDIR([src/feedlist.c])
 
@@ -170,6 +170,8 @@ if test "x$enable_xulrunner" = "xyes" ; then
    AC_SUBST([XULRUNNER_HOME])
    AC_SUBST(XULRUNNER_CFLAGS)
    AC_SUBST(XULRUNNER_LIBS)
+
+   MOZILLA_LIB_ROOT=`$PKG_CONFIG --libs-only-L xulrunner-gtkmozembed | awk '{print $1}' |  cut -c 3-`
    
    dnl the Mozilla XPCOM access means C++
    AC_PROG_CXX
@@ -252,6 +254,8 @@ if test "x$enable_mozilla" = "xyes" ; then
 -I$MOZILLA_INCLUDE_ROOT/js \
 -I$MOZILLA_INCLUDE_ROOT/jsconsole \
 -I$MOZILLA_INCLUDE_ROOT/layout \
+-I$MOZILLA_INCLUDE_ROOT/mimetype \
+-I$MOZILLA_INCLUDE_ROOT/mozxfer \
 -I$MOZILLA_INCLUDE_ROOT/necko \
 -I$MOZILLA_INCLUDE_ROOT/necko2 \
 -I$MOZILLA_INCLUDE_ROOT/nkcache \
@@ -298,12 +302,20 @@ fi
 
 AM_GCONF_SOURCE_2
 
-pkg_modules="	gtk+-2.0 >= 2.8.0 
+dnl Notes:
+dnl
+dnl  - libxml2/libxslt versions lower than the given ones are known
+dnl    to crash on certain distributions, lower them on your own risk!
+dnl  - exact minimum sqlite3 dependency is 3.3.9, but .pc only gives 3.3
+dnl
+pkg_modules="	gtk+-2.0 >= 2.10.0 
 		pango >= 1.4.0
 		gconf-2.0 >= 1.1.9 
 		libxml-2.0 >= 2.6.27
 		libxslt >= 1.1.19
-		gmodule-2.0 >= 2.0.0"
+		sqlite3 >= 3.3
+		gmodule-2.0 >= 2.0.0
+		libglade-2.0 >= 2.0.0"
 
 PKG_CHECK_MODULES(PACKAGE, [$pkg_modules])
 
@@ -354,6 +366,8 @@ dnl ****
 if test "x$enable_dbus" = "xyes"; then
    AC_MSG_NOTICE([checking for DBUS >= 0.30])
    PKG_CHECK_MODULES([DBUS], [dbus-1 >= 0.30 dbus-glib-1 >= 0.30],enable_dbus=yes,enable_dbus=no)
+else
+   enable_dbus=no
 fi
 
 if test "x$enable_dbus" = "xyes"; then
@@ -362,7 +376,7 @@ fi
 
 AC_SUBST(DBUS_CFLAGS)
 AC_SUBST(DBUS_LIBS)
-dnl AM_CONDITIONAL(WITH_DBUS, test "x$enable_dbus" != "xyes")
+AM_CONDITIONAL(WITH_DBUS, test "x$enable_dbus" = "xyes")
 
 dnl ****
 dnl NetworkManager

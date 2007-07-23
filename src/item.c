@@ -27,209 +27,28 @@
 #include <time.h>
 #include <string.h> /* For memset() */
 #include <stdlib.h>
-#include <libxml/uri.h>
 
-#include "callbacks.h"
-#include "common.h"
+#include "comments.h"
+#include "db.h"
 #include "debug.h"
 #include "item.h"
+#include "itemview.h"
 #include "metadata.h"
-#include "render.h"
-#include "support.h"
-#include "social.h"
-#include "vfolder.h"
-
-/* Item duplicate handling */
-
-/*
- * To manage duplicate items we keep a hash of all item GUIDs
- * (note: non-globally unique ids are not managed in this list!) 
- * and for each GUID we keep a list of the parent feeds containing
- * items with this GUID. Precondition is of course that GUIDs
- * are unique per feed which is ensured in the parsing/merging
- * code. 
- */
-static GHashTable *itemGuids = NULL;
-
-void item_guid_list_add_id(itemPtr item) {
-	GSList	*iter;
-	
-	g_assert(TRUE == item->validGuid);
-	
-	if(!itemGuids)
-		itemGuids = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
-
-	iter = (GSList *)g_hash_table_lookup(itemGuids, item->id);
-	if(!g_slist_find(iter, item->sourceNode)) {
-		iter = g_slist_append(iter, item->sourceNode);
-		g_hash_table_insert(itemGuids, g_strdup(item->id), iter);
-	}
-}
-
-void item_guid_list_remove_id(itemPtr item) {
-	GSList	*iter;
-	
-	if(!itemGuids)
-		return;
-	
-	/* avoid GUID list removal when dropping item copies
-	   from search folders */
-	if(item->itemSet->node->type == NODE_TYPE_VFOLDER)
-		return;
-
-	iter = (GSList *)g_hash_table_lookup(itemGuids, item->id);
-	if(iter) {
-		iter = g_slist_remove(iter, item->sourceNode);
-		g_hash_table_insert(itemGuids, g_strdup(item->id), iter);
-	}
-}
-
-GSList * item_guid_list_get_duplicates_for_id(itemPtr item) {
-
-	if(item->id)
-		return g_hash_table_lookup(itemGuids, item->id);
-	else
-		return NULL;
-}
-
-/* Item comments handling */
-
-static void item_comments_process_update_result(struct request *request) {
-	feedParserCtxtPtr	ctxt;
-	itemPtr			item = (itemPtr)request->user_data;
-
-	debug_enter("item_comments_process_update_result");
-	
-	g_assert(0 < item->sourceNode->loaded);
-
-	/* note this is to update the feed URL on permanent redirects */
-	if(!strcmp(request->source, metadata_list_get(item->metadata, "commentFeedUri"))) {
-	
-		debug2(DEBUG_UPDATE, "updating comment feed URL from \"%s\" to \"%s\"", 
-		                     metadata_list_get(item->metadata, "commentFeedUri"), 
-				     request->source);
-				     
-		metadata_list_set(&(item->metadata), "commentFeedUri", request->source);
-		item->sourceNode->needsCacheSave = TRUE;
-	}
-	
-	if(401 == request->httpstatus) { /* unauthorized */
-		item->commentsError = g_strdup("");
-	} else if(410 == request->httpstatus) { /* gone */
-		// FIXME: how to prevent further updates?
-	} else if(304 == request->httpstatus) {
-		debug1(DEBUG_UPDATE, "comment feed \"%s\" did not change", request->source);
-	} else if(request->data) {
-		debug1(DEBUG_UPDATE, "received update result for comment feed \"%s\"", request->source);
-
-		/* parse the new downloaded feed into feed and itemSet */
-		ctxt = feed_create_parser_ctxt();
-		ctxt->feed = feed_new(request->source, NULL, NULL);
-		ctxt->node = node_new();
-		node_set_type(ctxt->node, feed_get_node_type());
-		node_set_data(ctxt->node, ctxt->feed);		
-		ctxt->data = request->data;
-		ctxt->dataLength = request->size;
-		feed_parse(ctxt, FALSE);
-
-		if(ctxt->failed) {
-			debug0(DEBUG_UPDATE, "parsing comment feed failed!");
-		} else {
-			/* drop old comment items and take new ones instead */
-			GList *iter = item->comments->items;
-			while(iter) {
-				item_free((itemPtr)iter->data);
-				iter = g_list_next(iter);
-			}
-			g_list_free(item->comments->items);
-			g_free(item->comments);
-			
-			item->comments = ctxt->itemSet;
-			ctxt->itemSet = NULL;
-			
-			iter = item->comments->items;
-			while(iter) {
-				debug1(DEBUG_UPDATE, " -> %s\n", ((itemPtr)iter->data)->title);
-				iter = g_list_next(iter);
-			}
-			
-			item->sourceNode->needsCacheSave = TRUE;
-		}
-				
-		feed_free_parser_ctxt(ctxt);
-		node_free(ctxt->node);
-	}
-	
-	/* update error message */
-	g_free(item->commentsError);
-	item->commentsError = NULL;
-	
-	if(!(request->httpstatus >= 200) && (request->httpstatus < 400)) {
-		const gchar * tmp;
-		
-		/* first specific codes (guarantees tmp to be set) */
-		tmp = common_http_error_to_str(request->httpstatus);
-
-		/* second netio errors */
-		if(common_netio_error_to_str(request->returncode))
-			tmp = common_netio_error_to_str(request->returncode);
-			
-		item->commentsError = g_strdup(tmp);
-	}	
-
-	/* clean up request */
-	g_free(request->options);
-	item->updateRequest = NULL; 
-
-	/* rerender item */
-	itemview_update_item(item); 
-	itemview_update();
-	
-	node_unload(item->sourceNode);	/* release item from memory */
-	
-	debug_exit("item_comments_process_update_result");
-}
-
-void item_comments_refresh(itemPtr item) { 
-	struct request	*request;
-	const gchar	*url;
-	
-	url = metadata_list_get(item->metadata, "commentFeedUri");
-	
-	if(url) {
-		debug2(DEBUG_UPDATE, "Updating comments for item \"%s\" (comment URL: %s)", item->title, url);
-
-		node_load(item->sourceNode);	/* force item to stay in memory */
-
-		request = update_request_new(item);
-		request->user_data = item;
-		request->options = g_new0(struct updateOptions, 1);
-		request->callback = item_comments_process_update_result;
-		request->source = g_strdup(url);
-		request->priority = 1;
-		item->updateRequest = request;
-		update_execute_request(request);
-
-		itemview_update_item(item); 
-		itemview_update();
-	}
-}
-
-/* Item handling */
+#include "xml.h"
 
 itemPtr item_new(void) {
 	itemPtr		item;
 	
 	item = g_new0(struct item, 1);
-	
-	item->comments = g_new0(struct itemSet, 1);
-	item->comments->type = ITEMSET_TYPE_FEED;
-	item->updateState = update_state_new();
-	
 	item->newStatus = TRUE;
 	item->popupStatus = TRUE;
 	
 	return item;
+}
+
+itemPtr item_load(gulong id) {
+
+	return db_item_load(id);
 }
 
 itemPtr item_copy(itemPtr item) {
@@ -240,7 +59,7 @@ itemPtr item_copy(itemPtr item) {
 	item_set_real_source_url(copy, item->real_source_url);
 	item_set_real_source_title(copy, item->real_source_title);
 	item_set_description(copy, item->description);
-	item_set_id(copy, item->id);
+	item_set_id(copy, item->sourceId);
 	
 	copy->updateStatus = item->updateStatus;
 	copy->readStatus = item->readStatus;
@@ -251,8 +70,8 @@ itemPtr item_copy(itemPtr item) {
 	copy->validGuid = item->validGuid;
 	
 	/* the following line allows state propagation in item.c */
-	copy->sourceNode = item->itemSet->node;
-	copy->sourceNr = item->nr;
+	copy->nodeId = NULL;
+	copy->sourceNr = item->id;
 
 	/* this copies metadata */
 	copy->metadata = metadata_list_copy(item->metadata);
@@ -302,169 +121,57 @@ void item_set_real_source_title(itemPtr item, const gchar * source) {
 }
 
 void item_set_id(itemPtr item, const gchar * id) {
-	g_free(item->id);
-	item->id = g_strdup(id);
+	g_free(item->sourceId);
+	item->sourceId = g_strdup(id);
 }
 
-const gchar *	item_get_id(itemPtr item) { return item->id; }
+const gchar *	item_get_id(itemPtr item) { return item->sourceId; }
 const gchar *	item_get_title(itemPtr item) {return item->title; }
 const gchar *	item_get_description(itemPtr item) { return item->description; }
 const gchar *	item_get_source(itemPtr item) { return item->source; }
 const gchar *	item_get_real_source_url(itemPtr item) { return item->real_source_url; }
 const gchar *	item_get_real_source_title(itemPtr item) { return item->real_source_title; }
 
-void item_free(itemPtr item) {
+void
+item_unload (itemPtr item) 
+{
 
-	/* Explicitely no removal from GUID list here! As item_free is used for unloading too. */
+	g_free (item->title);
+	g_free (item->source);
+	g_free (item->sourceId);
+	g_free (item->real_source_url);
+	g_free (item->real_source_title);
+	g_free (item->description);
+	g_free (item->commentFeedId);
+	g_free (item->nodeId);
 	
-	if(item->comments) {
-		GList	*iter = item->comments->items;
-		while(iter) {
-			item_free((itemPtr)iter->data);
-			iter = g_list_next(iter);
-		}
-		g_free(item->comments);
-	}
+	g_assert (NULL == item->tmpdata);	/* should be free after rendering */
+	metadata_list_free (item->metadata);
 
-	g_free(item->title);
-	g_free(item->source);
-	g_free(item->real_source_url);
-	g_free(item->real_source_title);
-	g_free(item->description);
-	g_free(item->id);
-	g_assert(NULL == item->tmpdata);	/* should be free after rendering */
-	metadata_list_free(item->metadata);
-	
-	if(item->updateRequest)
-		update_cancel_requests((gpointer)item);
-	
-	if(item->updateState)
-		update_state_free(item->updateState);
-		
-	g_free(item->commentsError);
-	g_free(item);
+	g_free (item);
 }
 
 const gchar * item_get_base_url(itemPtr item) {
 
-	if(item->sourceNode && (NODE_TYPE_FEED == item->sourceNode->type))
-		return feed_get_html_url((feedPtr)item->sourceNode->data);
-	else
-		return itemset_get_base_url(item->itemSet);
+	/* item->node is always the source node for the item 
+	   never a search folder or folder */
+	return node_get_base_url(node_from_id(item->nodeId));
 }
 
-static void item_parse_comments(xmlNodePtr cur, itemPtr item) {
-	gchar		*tmp;
-
-	update_state_import(cur, item->updateState);
-	
-	cur = cur->xmlChildrenNode;
-	while(cur) {
-		if(cur->type != XML_ELEMENT_NODE ||
-		   !(tmp = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)))) {
-			cur = cur->next;
-			continue;
-		}
-
-		if(!xmlStrcmp(cur->name, BAD_CAST"item")) 
-			itemset_append_item(item->comments, item_parse_cache(cur, FALSE));
-
-		g_free(tmp);
-		tmp = NULL;
-		cur = cur->next;
-	}
-}
-
-itemPtr item_parse_cache(xmlNodePtr cur, gboolean migrateCache) {
-	itemPtr 	item;
-	gchar		*tmp;
-	
-	g_assert(NULL != cur);
-	
-	item = item_new();
-	item->popupStatus = FALSE;
-	item->newStatus = FALSE;
-	
-	cur = cur->xmlChildrenNode;
-	while(cur) {
-		if(cur->type != XML_ELEMENT_NODE ||
-		   !(tmp = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)))) {
-			cur = cur->next;
-			continue;
-		}
-		
-		if(!xmlStrcmp(cur->name, BAD_CAST"title"))
-			item_set_title(item, tmp);
-			
-		else if(!xmlStrcmp(cur->name, BAD_CAST"description"))
-			item_set_description(item, tmp);
-			
-		else if(!xmlStrcmp(cur->name, BAD_CAST"source"))
-			item_set_source(item, tmp);
-			
-		else if(!xmlStrcmp(cur->name, BAD_CAST"real_source_url"))
-			item_set_real_source_url(item, tmp);
-			
-		else if(!xmlStrcmp(cur->name, BAD_CAST"real_source_title"))
-			item_set_real_source_title(item, tmp);
-			
-		else if(!xmlStrcmp(cur->name, BAD_CAST"id"))
-			item_set_id(item, tmp);
-			
-		else if(!xmlStrcmp(cur->name, BAD_CAST"validGuid"))
-			item->validGuid = TRUE;
-			
-		else if(!xmlStrcmp(cur->name, BAD_CAST"nr"))
-			item->nr = item->sourceNr = atol(tmp);
-			
-		else if(!xmlStrcmp(cur->name, BAD_CAST"readStatus"))
-			item->readStatus = (0 == atoi(tmp))?FALSE:TRUE;
-			
-		else if(!xmlStrcmp(cur->name, BAD_CAST"updateStatus"))
-			item->updateStatus = (0 == atoi(tmp))?FALSE:TRUE;
-
-		else if(!xmlStrcmp(cur->name, BAD_CAST"mark")) 
-			item->flagStatus = (1 == atoi(tmp))?TRUE:FALSE;
-			
-		else if(!xmlStrcmp(cur->name, BAD_CAST"time"))
-			item->time = atol(tmp);
-			
-		else if(!xmlStrcmp(cur->name, BAD_CAST"attributes"))
-			item->metadata = metadata_parse_xml_nodes(cur);
-			
-		else if(!xmlStrcmp(cur->name, BAD_CAST"comments"))
-			item_parse_comments(cur, item);
-		
-		g_free(tmp);	
-		tmp = NULL;
-		cur = cur->next;
-	}
-	
-	item->hasEnclosure = (NULL != metadata_list_get(item->metadata, "enclosure"));
-	
-	if(migrateCache && item->description)
-		item_set_description(item, common_text_to_xhtml(item->description));
-
-	return item;
-}
-
-void item_to_xml(itemPtr item, xmlNodePtr feedNode, gboolean rendering) {
+void item_to_xml(itemPtr item, xmlNodePtr parentNode) {
+	xmlNodePtr	duplicatesNode;		
 	xmlNodePtr	itemNode;
 	gchar		*tmp;
 	
-	itemNode = xmlNewChild(feedNode, NULL, "item", NULL);
+	itemNode = xmlNewChild(parentNode, NULL, "item", NULL);
 	g_return_if_fail(itemNode);
 
 	xmlNewTextChild(itemNode, NULL, "title", item_get_title(item)?item_get_title(item):"");
 
-	if(item_get_description(item)) {
-		if(rendering) {
-			tmp = common_strip_dhtml(item_get_description(item));
-			xmlNewTextChild(itemNode, NULL, "description", tmp);
-			g_free(tmp);
-		} else {
-			xmlNewTextChild(itemNode, NULL, "description", item_get_description(item));
-		}
+	if (item_get_description (item)) {
+		tmp = xhtml_strip_dhtml (item_get_description (item));
+		xmlNewTextChild (itemNode, NULL, "description", tmp);
+		g_free (tmp);
 	}
 	
 	if(item_get_source(item))
@@ -476,13 +183,7 @@ void item_to_xml(itemPtr item, xmlNodePtr feedNode, gboolean rendering) {
 	if(item_get_real_source_url(item))
 		xmlNewTextChild(itemNode, NULL, "real_source_url", item_get_real_source_url(item));
 
-	if(item_get_id(item))
-		xmlNewTextChild(itemNode, NULL, "id", item_get_id(item));
-		
-	if(item->validGuid)
-		xmlNewTextChild(itemNode, NULL, "validGuid", BAD_CAST "true");		
-
-	tmp = g_strdup_printf("%ld", item->nr);
+	tmp = g_strdup_printf("%ld", item->id);
 	xmlNewTextChild(itemNode, NULL, "nr", tmp);
 	g_free(tmp);
 
@@ -502,51 +203,41 @@ void item_to_xml(itemPtr item, xmlNodePtr feedNode, gboolean rendering) {
 	xmlNewTextChild(itemNode, NULL, "time", tmp);
 	g_free(tmp);
 
-	if(rendering) {
-		xmlNodePtr duplicatesNode;		
-		GSList *duplicates;
+	tmp = itemview_format_date(item->time);
+	xmlNewTextChild(itemNode, NULL, "timestr", tmp);
+	g_free(tmp);
+
+	if (item->validGuid) 
+	{
+		GSList	*iter, *duplicates;
 		
 		duplicatesNode = xmlNewChild(itemNode, NULL, "duplicates", NULL);
-		duplicates = item_guid_list_get_duplicates_for_id(item);
-		while(duplicates) {
-			nodePtr duplicateNode = (nodePtr)duplicates->data;
-			if(duplicateNode != item->sourceNode) {
-				xmlNewTextChild(duplicatesNode, NULL, "duplicateNode", 
-				                node_get_title(duplicateNode));
+		duplicates = iter = db_item_get_duplicates(item->sourceId);
+		while(iter) 
+		{
+			gulong id = GPOINTER_TO_UINT (iter->data);
+			itemPtr duplicate = item_load (id);
+			if (duplicate)
+			{
+				nodePtr duplicateNode = node_from_id (duplicate->nodeId);
+				if (duplicateNode && (item->id != duplicate->id))
+					xmlNewTextChild(duplicatesNode, NULL, "duplicateNode", 
+					                node_get_title(duplicateNode));
+				item_unload (duplicate);
 			}
-			duplicates = g_slist_next(duplicates);
+			iter = g_slist_next (iter);
 		}
+		g_slist_free (duplicates);
+	}
 		
-		tmp = itemview_format_date(item->time);
-		xmlNewTextChild(itemNode, NULL, "timestr", tmp);
-		g_free(tmp);
+	xmlNewTextChild(itemNode, NULL, "sourceId", item->nodeId);
 		
-		xmlNewTextChild(itemNode, NULL, "sourceId", item->sourceNode->id);
-		
-		tmp = g_strdup_printf("%ld", item->sourceNr);
-		xmlNewTextChild(itemNode, NULL, "sourceNr", tmp);
-		g_free(tmp);
-	}		
+	tmp = g_strdup_printf("%ld", item->id);
+	xmlNewTextChild(itemNode, NULL, "sourceNr", tmp);
+	g_free(tmp);
 
 	metadata_add_xml_nodes(item->metadata, itemNode);
-		
-	if(item->comments) {
-		GList		*iter = item->comments->items;
-		xmlNodePtr	commentsNode = xmlNewChild(itemNode, NULL, "comments", NULL);
-
-		update_state_export(commentsNode, item->updateState);
-
- 		while(iter) {
-			item_to_xml((itemPtr)iter->data, commentsNode, FALSE);
-			iter = g_list_next(iter);
-		}
-		
-		if(rendering) {
-			xmlNewTextChild(commentsNode, NULL, "updateState", 
-			                (item->updateRequest)?"updating":"ok");
-			
-			if(item->commentsError)
-				xmlNewTextChild(commentsNode, NULL, "updateError", item->commentsError);
-		}
-	}
+	
+	if (item->commentFeedId)
+		comments_to_xml (itemNode, item->commentFeedId);
 }

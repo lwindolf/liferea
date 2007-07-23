@@ -1,7 +1,7 @@
 /**
  * @file ui_feedlist.c GUI feed list handling
  *
- * Copyright (C) 2004-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2005 Raphaël Slinckx <raphael@slinckx.net>
  * 
@@ -31,25 +31,24 @@
 #include <fcntl.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
-#include "support.h"
-#include "interface.h"
-#include "callbacks.h"
+
 #include "common.h"
-#include "feedlist.h"
 #include "conf.h"
-#include "update.h"
 #include "favicon.h"
+#include "feedlist.h"
+#include "update.h"
 #include "debug.h"
+#include "ui/ui_dnd.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_mainwindow.h"
-#include "ui/ui_feed.h"
-#include "ui/ui_vfolder.h"
+#include "ui/ui_node.h"
+#include "ui/ui_shell.h"
+#include "ui/ui_subscription.h"
 #include "ui/ui_tabs.h"
+#include "ui/ui_vfolder.h"
+#include "fl_sources/node_source.h"
 
-extern GtkWidget	*mainwindow;
 extern GHashTable	*feedHandler;
-
-GHashTable		*flIterHash = NULL;	/* hash table used for fast feed -> tree iter lookup */
 
 GtkTreeModel		*filter;
 GtkTreeStore		*feedstore = NULL;
@@ -59,7 +58,7 @@ static void ui_feedlist_row_changed_cb(GtkTreeModel *model, GtkTreePath *path, G
 	
 	gtk_tree_model_get(model, iter, FS_PTR, &node, -1);
 	if(node)
-		ui_node_update_iter(node, iter);
+		ui_node_update_iter(node->id, iter);
 }
 
 nodePtr ui_feedlist_get_target_folder(int *pos) {
@@ -75,13 +74,12 @@ nodePtr ui_feedlist_get_target_folder(int *pos) {
 	if(NULL == (node = feedlist_get_selected()))
 		return feedlist_get_root();
 	
-
-	iter = ui_node_to_iter(node);
+	iter = ui_node_to_iter(node->id);
 
 	if(NODE_TYPE_FOLDER == node->type) {
 		return node;
 	} else {
-		path = gtk_tree_model_get_path(gtk_tree_view_get_model(GTK_TREE_VIEW(lookup_widget(mainwindow, "feedlist"))), iter);
+		path = gtk_tree_model_get_path (gtk_tree_view_get_model (GTK_TREE_VIEW (liferea_shell_lookup ("feedlist"))), iter);
 		indices = gtk_tree_path_get_indices(path);
 		if(NULL != pos)
 			*pos = indices[gtk_tree_path_get_depth(path)-1] + 1;
@@ -118,7 +116,7 @@ static void ui_feedlist_selection_changed_cb(GtkTreeSelection *selection, gpoint
 			
 			/* workaround to ensure the feedlist is focussed when we click it
 			   (Mozilla might prevent this, ui_itemlist_display() depends on this */
-			gtk_widget_grab_focus(lookup_widget(mainwindow, "feedlist"));
+			gtk_widget_grab_focus ( liferea_shell_lookup ("feedlist"));
 		}
 		
 		/* update feed list and item list states */
@@ -188,8 +186,6 @@ void ui_feedlist_init(GtkWidget *feedview) {
 	g_assert(mainwindow != NULL);
 	g_assert(feedview != NULL);
 
-	flIterHash = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, NULL);
-
 	/* Set up store */
 	feedstore = gtk_tree_store_new(FS_LEN,
 	                               G_TYPE_STRING,
@@ -226,9 +222,9 @@ void ui_feedlist_init(GtkWidget *feedview) {
 	select = gtk_tree_view_get_selection(GTK_TREE_VIEW(feedview));
 	gtk_tree_selection_set_mode(select, GTK_SELECTION_SINGLE);
 	
-	g_signal_connect(G_OBJECT(select), "changed",
-                 	 G_CALLBACK(ui_feedlist_selection_changed_cb),
-                	 lookup_widget(mainwindow, "feedlist"));
+	g_signal_connect (G_OBJECT (select), "changed",
+	                  G_CALLBACK (ui_feedlist_selection_changed_cb),
+                	  liferea_shell_lookup ("feedlist"));
 	
 	ui_dnd_setup_feedlist(feedstore);			
 	ui_mainwindow_update_feed_menu(FALSE, FALSE);
@@ -240,7 +236,7 @@ void ui_feedlist_select(nodePtr node) {
 	GtkWidget		*treeview;
 	GtkWidget		*focused;
 
-	treeview = lookup_widget(mainwindow, "feedlist");
+	treeview = liferea_shell_lookup ("feedlist");
 	
 	/* To work around a GTK+ bug. If the treeview is not
 	   focused, setting the selected item will always select the
@@ -249,7 +245,7 @@ void ui_feedlist_select(nodePtr node) {
 	gtk_window_set_focus(GTK_WINDOW(mainwindow), treeview);
 	
 	if(node) {
-		GtkTreePath *path = gtk_tree_model_get_path(GTK_TREE_MODEL(feedstore), ui_node_to_iter(node));
+		GtkTreePath *path = gtk_tree_model_get_path(GTK_TREE_MODEL(feedstore), ui_node_to_iter(node->id));
 	
 		if(NODE_TYPE_FOLDER != node->type)
 			gtk_tree_view_expand_to_path(GTK_TREE_VIEW(treeview), path);
@@ -334,5 +330,3 @@ void on_menu_folder_new(GtkMenuItem *menuitem, gpointer user_data) {
 
 	node_request_interactive_add(NODE_TYPE_FOLDER);
 }
-
-

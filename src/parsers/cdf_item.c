@@ -1,7 +1,7 @@
 /**
  * @file cdf_item.c CDF item parsing 
  *
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,11 +23,11 @@
 
 #include <string.h>
 
-#include "support.h"
 #include "common.h"
 #include "cdf_channel.h"
 #include "cdf_item.h"
 #include "metadata.h"
+#include "xml.h"
 
 extern GHashTable *cdf_nslist;
 
@@ -85,7 +85,7 @@ itemPtr parseCDFItem(feedParserCtxtPtr ctxt, xmlNodePtr cur, CDFChannelPtr cp) {
 			}
 			
 		} else if((!xmlStrcasecmp(cur->name, BAD_CAST"title"))) {
-			if(tmp = unhtmlize(common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)))) {
+			if(tmp = unhtmlize(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))) {
 				item_set_title(ctxt->item, tmp);
 				g_free(tmp);
 			}

@@ -1,7 +1,7 @@
 /**
- * @file update.h  feed update request processing
+ * @file update.h  generic update request processing
  *
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -113,7 +113,7 @@ typedef struct updateState {
 
 /** structure storing all information about a single update request */
 typedef struct request {
-	/* Set by requester */
+	/* Set when requesting */
 	gchar 		*source;	/**< Location of the source. If it starts with
 					     '|', it is a command. If it contains "://",
 					     then it is parsed as a URL, otherwise it is a
@@ -126,6 +126,7 @@ typedef struct request {
 	guint32		flags;		/**< Flags to be passed to the callback */
 	gint		priority;	/**< priority of the request. Set to 1 for high priority */
 	gboolean	allowRetries;	/**< Allow download retries on network errors */
+	GTimeVal	timestamp;	/**< Timestamp of request start time */
 	
 	/* Set by download system*/
 	gpointer	owner;		/**< Pointer to anything used for lookup when cancelling requests */
@@ -155,22 +156,6 @@ const gchar * update_state_get_etag(updateStatePtr updateState);
 void update_state_set_etag(updateStatePtr updateState, const gchar *etag);
 
 /**
- * Imports an updateState from the given XML node.
- *
- * @param cur		the XML node
- * @param updateState	the update state to set
- */
-void update_state_import(xmlNodePtr cur, updateStatePtr updateState);
-
-/**
- * Exports the given updateState. Adds attributes to the given XML node.
- *
- * @param cur		the XML node
- * @param updateState	the update state to export
- */
-void update_state_export(xmlNodePtr cur, updateStatePtr updateState);
-
-/**
  * Frees the given update state.
  *
  * @param updateState	the update state
@@ -180,7 +165,12 @@ void update_state_free(updateStatePtr updateState);
 /**
  * Initialises the download subsystem, including its thread(s). 
  */
-void update_init(void); 
+void update_init (void); 
+
+/**
+ * Stops all update processing and frees all used memory.
+ */
+void update_deinit (void);
 
 /** 
  * Creates a new request structure.

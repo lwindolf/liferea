@@ -1,7 +1,7 @@
 /**
  * @file mozembed.h common gtkmozembed handling.
  *   
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>   
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -36,6 +36,6 @@ void mozembed_launch_url(GtkWidget *widget, const gchar *url);
 
 gboolean mozembed_launch_inside_possible(void);
 
-void mozembed_set_proxy(gchar *hostname, int port, gchar *username, gchar *password);
+void mozembed_set_proxy (const gchar *hostname, guint port, const gchar *username, const gchar *password);
 
 #endif

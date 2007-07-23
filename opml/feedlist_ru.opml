@@ -12,22 +12,25 @@
     <outline text="Свободное программное обеспечение в России">
 	<outline text="Новости от Linuxcenter.ru" htmlUrl="http://www.linuxcenter.ru/" xmlUrl="http://www.linuxcenter.ru/trans/news.rss" />
 	<outline text="О Mozilla и XUL на русском" htmlUrl="http://www.xul.ru/" xmlUrl="http://www.xul.ru/rss.php" />
+    </outline> 
+
  <!-- lets keep this English block in sync over all feed lists! -->
     <outline text="Международные ленты новостей">
       <outline text="Свободное программное обеспечение">
-	<outline text="Distrowatch releases" htmlUrl="http://www.distrowatch.com/" xmlUrl="http://distrowatch.com/news/dw.rdf" />
-        <outline text="art.gnome.org" htmlUrl="http://art.gnome.org/" xmlUrl="http://art.gnome.org/backend.php" />
-        <outline text="Debian Package a Day" htmlUrl="http://www.livejournal.com/users/debaday/" xmlUrl="http://www.livejournal.com/users/debaday/data/atom" />
-        <outline text="Gnomefiles" htmlUrl="http://www.gnomefiles.org/" xmlUrl="http://www.gnomefiles.org/files/gnomefiles.rdf" />
-        <outline text="GNOME Footnotes" htmlUrl="http://www.gnomedesktop.org/" xmlUrl="http://www.gnomedesktop.org/backend.php" />
-        <outline text="GrokLaw" htmlUrl="http://www.groklaw.net/" xmlUrl="http://www.groklaw.net/backend/GrokLaw.rdf" />
-        <outline text="Linux.com" htmlUrl="http://www.linux.com/" xmlUrl="http://www.linux.com/index.rss" />
-        <outline text="mozillaZine" htmlUrl="http://www.mozillazine.org/" xmlUrl="http://www.mozillazine.org/contents.rdf" />
-        <outline text="Newsforge" htmlUrl="http://www.newsforge.com" xmlUrl="http://www.newsforge.com/newsforge.rss" />
-        <outline text="Planet Debian" htmlUrl="http://planet.debian.org/" xmlUrl="http://planet.debian.org/rss20.xml" />
-        <outline text="Slashdot" htmlUrl="http://slashdot.org"  xmlUrl="http://slashdot.org/slashdot.rss" />
-        <outline text="TuxMobil" htmlUrl="http://tuxmobil.org" xmlUrl="http://tuxmobil.org/tuxmobil_rss.rdf" />      
-     </outline>	
+	      <outline text="OSS">
+        	<outline text="art.gnome.org" htmlUrl="http://art.gnome.org/" xmlUrl="http://art.gnome.org/backend.php" />
+        	<outline text="Debian Package a Day" htmlUrl="http://debaday.debian.net/" xmlUrl="http://debaday.debian.net/feed/atom/" />
+        	<outline text="Gnomefiles" htmlUrl="http://www.gnomefiles.org/" xmlUrl="http://www.gnomefiles.org/files/gnomefiles.rdf" />
+        	<outline text="GNOME Footnotes" htmlUrl="http://www.gnomedesktop.org/" xmlUrl="http://www.gnomedesktop.org/backend.php" />
+        	<outline text="GrokLaw" htmlUrl="http://www.groklaw.net/" xmlUrl="http://www.groklaw.net/backend/GrokLaw.rdf" />
+        	<outline text="Linux.com" htmlUrl="http://www.linux.com/" xmlUrl="http://www.linux.com/index.rss" />
+        	<outline text="mozillaZine" htmlUrl="http://www.mozillazine.org/" xmlUrl="http://www.mozillazine.org/contents.rdf" />
+        	<outline text="Newsforge" htmlUrl="http://www.newsforge.com" xmlUrl="http://www.newsforge.com/newsforge.rss" />
+        	<outline text="Planet Debian" htmlUrl="http://planet.debian.org/" xmlUrl="http://planet.debian.org/rss20.xml" />
+        	<outline text="Slashdot" htmlUrl="http://slashdot.org"  xmlUrl="http://slashdot.org/slashdot.rss" />
+        	<outline text="TuxMobil" htmlUrl="http://tuxmobil.org" xmlUrl="http://tuxmobil.org/tuxmobil_rss.rdf" />      
+	      </outline>	
+      </outline>
      <outline text="Безопасность">
 	<outline text="SecurityFocus Vulnerabilities" htmlUrl="http://www.securityfocus.com/" xmlUrl="http://www.securityfocus.com/rss/vulnerabilities.xml" />
      </outline>	

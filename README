@@ -17,7 +17,8 @@ from the Source Tarball. In the following you will find
 short hints for several platforms. See below to find
 how to compile the tarball.
 
-Debian:		There are official Debian packages.
+Ubuntu/		There are official packages in both Debian and Ubuntu
+Debian:		
 		To install Liferea run:
 
 		   apt-get install liferea
@@ -119,11 +120,10 @@ Dependencies
 ============
 
 The library dependencies for Liferea are: gtk2, gconf2, libxml2,
-libxslt and either libgtkembedmoz, libxul or gtkhtml2.
+libxslt, sqlite3 and either libgtkembedmoz, libxul or gtkhtml2.
 
-If you want to use the Mozilla browser module you need a Mozilla
-installation containing libgtkembedmoz.so. Every up-to-date Firefox
-should bring it.
+If you want to use the Mozilla browser module you need a Mozilla,
+Firefox or XulRunner installation containing libgtkembedmoz.so. 
 
 
 Help Wanted

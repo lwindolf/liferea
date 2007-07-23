@@ -1,7 +1,7 @@
 /**
  * @file node.h common feed list node handling interface
  * 
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -57,11 +57,9 @@ enum {
 typedef struct node {
 	gpointer		data;		/**< node type specific data structure */
 	guint			type;		/**< node type */
+	struct subscription	*subscription;	/**< subscription attached to this node (or NULL) */
 	struct nodeType		*nodeType;	/**< node type implementation */	
-	struct nodeSource	*source;	/**< the feed list plugin instance handling this node */
-
-	struct request		*updateRequest;	/**< update request structure used when downloading content (is not to be listed in the requests list!) */
-	
+	struct nodeSource	*source;	/**< the feed list source handling this node */
 	gchar			*iconFile;	/**< the path of the favicon file */
 
 	/* feed list state properties of this node */
@@ -69,19 +67,17 @@ typedef struct node {
 	GSList			*children;	/**< ordered list of node children */
 	gchar			*id;		/**< unique node identifier string */
 
-	guint			unreadCount;	/**< number of items not yet read */
+	guint			itemCount;	/**< number of items */
+	guint			unreadCount;	/**< number of unread items */
 	guint			popupCount;	/**< number of items to be notified */
 	guint			newCount;	/**< number of recently downloaded items */
 
 	gchar			*title;		/**< the label of the node in the feed list */
 	gpointer		icon;		/**< pointer to pixmap, if there is a favicon */
-	guint			loaded;		/**< counter which is non-zero if items are to be kept in memory */
 	gboolean		available;	/**< availability of this node (usually the last downloading state) */
-	gboolean		needsCacheSave;	/**< flag set when the feed's cache needs to be resaved */
 	gboolean		expanded;	/**< expansion state (for nodes with childs) */
 
 	/* item list state properties of this node */
-	itemSetPtr	itemSet;	/**< The set of items belonging to this node */
 	guint		viewMode;	/**< Viewing mode for this node (one of NODE_VIEW_MODE_*) */
 	gint		sortColumn;	/**< Sorting column. Set to either IS_TITLE, IS_FAVICON, IS_ENCICON or IS_TIME */
 	gboolean	sortReversed;	/**< Sort in the reverse order? */
@@ -96,7 +92,9 @@ enum {
 	NODE_CAPABILITY_RECEIVE_ITEMS		= (1<<4),	/**< is a DnD target for item copies */
 	NODE_CAPABILITY_REORDER			= (1<<5),	/**< allows DnD to reorder childs */
 	NODE_CAPABILITY_SHOW_UNREAD_COUNT	= (1<<6),	/**< display the unread item count in the feed list */
-	NODE_CAPABILITY_SHOW_ITEM_COUNT		= (1<<7)	/**< display the absolute item count in the feed list */
+	NODE_CAPABILITY_SHOW_ITEM_COUNT		= (1<<7),	/**< display the absolute item count in the feed list */
+	NODE_CAPABILITY_UPDATE			= (1<<8),	/**< node type always has a subscription and can be updated */
+	NODE_CAPABILITY_UPDATE_CHILDS		= (1<<9)	/**< childs of this node type can be updated */
 };
 
 /** node type interface */
@@ -108,20 +106,25 @@ typedef struct nodeType {
 	
 	/* For method documentation see the wrappers defined below! 
 	   All methods are mandatory for each node type. */
-	void    (*import)		(nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean trusted);
-	void    (*export)		(nodePtr node, xmlNodePtr cur, gboolean trusted);
-	void	(*initial_load)		(nodePtr node);
-	void	(*load)			(nodePtr node);
-	void 	(*save)			(nodePtr node);
-	void	(*unload)		(nodePtr node);
-	void	(*reset_update_counter)	(nodePtr node);
-	void	(*request_update)	(nodePtr node, guint flags);
-	void 	(*request_auto_update)	(nodePtr node);
-	void	(*remove)		(nodePtr node);
-	void 	(*mark_all_read)	(nodePtr node);
-	gchar * (*render)		(nodePtr node);
-	void	(*request_add)		(nodePtr parent);
-	void	(*request_properties)	(nodePtr node);
+	void    	(*import)		(nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean trusted);
+	void    	(*export)		(nodePtr node, xmlNodePtr cur, gboolean trusted);
+	itemSetPtr	(*load)			(nodePtr node);
+	void 		(*save)			(nodePtr node);
+	void		(*update_counters)	(nodePtr node);
+	void 		(*process_update_result)(nodePtr node, requestPtr request);
+	void		(*remove)		(nodePtr node);
+	void 		(*mark_all_read)	(nodePtr node);
+	gchar *		(*render)		(nodePtr node);
+	void		(*request_add)		(nodePtr parent);
+	void		(*request_properties)	(nodePtr node);
+	
+	/**
+	 * Called to allow node type to clean up it's specific data.
+	 * The node structure itself is destroyed after this call.
+	 *
+	 * @param node		the node
+	 */
+	void		(*free)			(nodePtr node);
 } *nodeTypePtr;
 
 #define NODE_TYPE(node)	(node->nodeType)
@@ -204,6 +207,40 @@ void node_set_type(nodePtr node, nodeTypePtr type);
 void node_set_data(nodePtr node, gpointer data);
 
 /**
+ * Attaches the subscription to the given node.
+ *
+ * @param node		the node
+ * @param subscription	the subscription
+ */
+void node_set_subscription (nodePtr node, struct subscription *subscription);
+
+/**
+ * Helper function to be used with node_foreach_child()
+ * to mass-update subscriptions.
+ *
+ * @param node		the node
+ * @param user_data	update flags
+ */
+void node_update_subscription (nodePtr node, gpointer user_data);
+
+/**
+ * Helper function to be used with node_foreach_child()
+ * to mass-auto-update subscriptions.
+ *
+ * @param node		the node
+ */
+void node_auto_update_subscription (nodePtr node);
+
+/**
+ * Helper function to be used with node_foreach_child()
+ * to mass-auto-update subscriptions.
+ *
+ * @param node		the node
+ * @param now		the current timestamp
+ */
+void node_reset_update_counter (nodePtr node, GTimeVal *now);
+
+/**
  * Determines wether node1 is an ancestor of node2
  *
  * @param node1		the possible ancestor
@@ -230,31 +267,12 @@ const gchar * node_get_title(nodePtr node);
 void node_set_title(nodePtr node, const gchar *title);
 
 /**
- * Query the number of unread items of a node.
+ * Update the number of items and unread items of a node from
+ * the DB. This method ensures propagation to parent folders.
  *
  * @param node	the node
- * 
- * @returns the number of unread items
  */
-guint node_get_unread_count(nodePtr node);
-
-/**
- * Update the number of unread items of a node.
- * This method ensures propagation to parent
- * folders.
- *
- * @param node	the node
- * @param diff	the difference to the current unread count
- */
-void node_update_unread_count(nodePtr node, gint diff);
-
-/**
- * Update the number of new items of a node.
- *
- * @param node	the node
- * @param diff	the difference to the current unread count
- */
-void node_update_new_count(nodePtr node, gint diff);
+void node_update_counters(nodePtr node);
 
 /**
  * Recursively marks all items of the given node as read.
@@ -383,21 +401,6 @@ void node_import(nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean trusted)
 void node_export(nodePtr node, xmlNodePtr cur, gboolean trusted);
 
 /**
- * Initially loads the given node from cache.
- * To be used during startup (initializes vfolders).
- *
- * @param node	the node
- */
-void node_initial_load(nodePtr node);
-
-/**
- * Loads the given node from cache.
- *
- * @param node	the node
- */
-void node_load(nodePtr node);
-
-/**
  * Saves the given node to cache.
  *
  * @param node	the node
@@ -405,11 +408,13 @@ void node_load(nodePtr node);
 void node_save(nodePtr node);
 
 /**
- * Unload the given node from memory.
+ * Passes the completed request structure to the node
+ * type specific processing.
  *
- * @param node	the node
+ * @param node		the node
+ * @param request	the processed request
  */
-void node_unload(nodePtr node);
+void node_process_update_result (nodePtr node, requestPtr request);
 
 /**
  * Removes the given node.
@@ -422,32 +427,30 @@ void node_remove(nodePtr node);
  * Resets the update interval for a given node.
  *
  * @param node	the node
+ * @param now	current time
  */
-void node_reset_update_counter(nodePtr node);
+void node_reset_update_counter(nodePtr node, GTimeVal *now);
 
 /**
- * Merges the given item set into the item set of
- * the given node. Used for node updating.
+ * Loads all items of the given node into memory.
+ * The caller needs to free the item set using itemset_free()
  *
  * @param node	the node
- * @param sp	the item set
- */
-void node_merge_items(nodePtr node, GList *items);
-
-/**
- * Returns the item set of the given node.
  *
- * @param node	the node
+ * @returns the item set
  */
 itemSetPtr node_get_itemset(nodePtr node);
 
 /**
- * Assigns the given item set to the given node.
+ * Merges the given list of items into the nodes item set.
+ * To do so it calls itemset_merge_items(). Additionally it
+ * updates the global feed list new counter and all search
+ * folders.
  *
  * @param node	the node
- * @param sp	the item set
+ * @param items	the items to be merged
  */
-void node_set_itemset(nodePtr node, itemSetPtr sp);
+void node_merge_items (nodePtr node, GList *items);
 
 /**
  * Node content rendering
@@ -457,23 +460,6 @@ void node_set_itemset(nodePtr node, itemSetPtr sp);
  * @returns string with node rendered in HTML
  */
 gchar * node_render(nodePtr node);
-
-/**
- * Node auto-update scheduling (feed list auto update).
- *
- * @param node	the node
- */
-void node_request_auto_update(nodePtr node);
-
-/**
- * Immediate node updating (user requested). The request might
- * be ignored in some cases (e.g. when feed is discontinued or 
- * another request is already running).
- *
- * @param node	the node
- * @param flags	update handling flags
- */
-void node_request_update(nodePtr node, guint flags);
 
 /**
  * Request opening a properties dialog for the given node.
@@ -486,8 +472,9 @@ void node_request_properties(nodePtr node);
  * Called when updating favicons is requested.
  *
  * @param node		the node
+ * @param now		current time
  */
-void node_update_favicon(nodePtr node);
+void node_update_favicon (nodePtr node, GTimeVal *now);
 
 /**
  * Change/Set the sort column of a given node.
@@ -515,7 +502,30 @@ void node_set_view_mode(nodePtr node, guint newMode);
  */
 gboolean node_get_view_mode(nodePtr node);
 
+/**
+ * Allows to check wether an node requires to load
+ * the item link or the content after selecting an item.
+ *
+ * @param node	the node
+ *
+ * @returns TRUE if the item link is to be loaded
+ */
+gboolean node_load_link_preferred(nodePtr node);
+
+/**
+ * Returns the base URL for the given node.
+ * If it is a mixed item set NULL will be returned.
+ *
+ * @param node	the node
+ *
+ * @returns base URL
+ */
+const gchar * node_get_base_url(nodePtr node);
+
 /* child nodes iterating interface */
+
+typedef void 	(*nodeActionFunc)	(nodePtr node);
+typedef void 	(*nodeActionDataFunc)	(nodePtr node, gpointer user_data);
 
 /**
  * Do not call this method directly! Do use

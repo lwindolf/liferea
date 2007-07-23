@@ -1,7 +1,7 @@
 /**
  * @file main.c Liferea main program
  *
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *  
  * Some code like the command line handling was inspired by 
@@ -28,40 +28,38 @@
 #  include <config.h>
 #endif
 
-#ifdef USE_DBUS
-#define DBUS_API_SUBJECT_TO_CHANGE
-#include <dbus/dbus.h>
-#include <dbus/dbus-glib.h>
-#endif
-
 #include <gtk/gtk.h>
 #include <locale.h> /* For setlocale */
 
 #include <string.h>
-#include <string.h>
 #include <stdlib.h>
 #include <signal.h>
 #include <unistd.h>
-#include "interface.h"
-#include "support.h"
-#include "callbacks.h"
-#include "feed.h"
-#include "vfolder.h"
+
 #include "conf.h"
 #include "common.h"
+#include "db.h"
+#include "dbus.h"
+#include "debug.h"
+#include "feed.h"
+#include "feedlist.h"
+#include "script.h"
 #include "social.h"
 #include "update.h"
-#include "debug.h"
-#include "ui/ui_mainwindow.h"
+#include "vfolder.h"
+#include "xml.h"
+#include "ui/ui_feedlist.h"
 #include "ui/ui_htmlview.h"
+#include "ui/ui_mainwindow.h"
 #include "ui/ui_session.h"
-#include "scripting/script.h"
 
 #include "bacon-message-connection.h"
 
 static BaconMessageConnection *bacon_connection = NULL;
 
 gboolean lifereaStarted = FALSE;
+
+gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data);
 
 static void show_help(void) {
 	GString	*str = g_string_new(NULL);
@@ -74,17 +72,9 @@ static void show_help(void) {
 	g_string_append_printf(str, "%s\n", _("                   Start Liferea with its main window in STATE."));
 	g_string_append_printf(str, "%s\n", _("                   STATE may be `shown', `iconified', or `hidden'"));
 	g_string_append_c(str, '\n');
-	g_string_append_printf(str, "%s\n", _("  --debug-all      Print debugging messages of all types"));
-	g_string_append_printf(str, "%s\n", _("  --debug-cache    Print debugging messages for the cache handling"));
-	g_string_append_printf(str, "%s\n", _("  --debug-conf     Print debugging messages of the configuration handling"));
-	g_string_append_printf(str, "%s\n", _("  --debug-gui      Print debugging messages of all GUI functions"));
-	g_string_append_printf(str, "%s\n", _("  --debug-html     Enable HTML debugging (saving to ~/.liferea_1.2/output.xhtml)"));
-	g_string_append_printf(str, "%s\n", _("  --debug-parsing  Print debugging messages of all parsing functions"));
-	g_string_append_printf(str, "%s\n", _("  --debug-plugins  Print debugging messages when loading plugins"));
-	g_string_append_printf(str, "%s\n", _("  --debug-trace    Print debugging messages when entering/leaving functions"));
-	g_string_append_printf(str, "%s\n", _("  --debug-update   Print debugging messages of the feed update processing"));
-	g_string_append_printf(str, "%s\n", _("  --debug-verbose  Print verbose debugging messages"));
-
+	g_string_append_printf(str, "%s\n", _("  --debug-<topic>  Print debugging messages for the given topic"));
+	g_string_append_printf(str, "%s\n", _("                   Possible topics are: all,cache,conf,db,gui,html"));
+	g_string_append_printf(str, "%s\n", _("                   net,parsing,plugins,trace,update,verbose"));
 	g_string_append_c(str, '\n');
 	g_print("%s", str->str);
 	g_string_free(str, TRUE);
@@ -136,7 +126,9 @@ int main(int argc, char *argv[]) {
 	gulong		debug_flags = 0;
 	const char 	*arg;
 	gint		i;
+	LifereaDBus	*dbus = NULL;
 	int mainwindowState = MAINWINDOW_SHOWN;
+	
 #ifdef USE_SM
 	gchar *opt_session_arg = NULL;
 #endif
@@ -189,28 +181,32 @@ int main(int argc, char *argv[]) {
 	for(i = 1; i < argc; ++i) {
 		arg = argv[i];
 		
-		if(!strcmp(arg, "--debug-cache"))
+		if (!strcmp (arg, "--debug-cache"))
 			debug_flags |= DEBUG_CACHE;
-		else if(!strcmp(arg, "--debug-conf"))
+		else if (!strcmp (arg, "--debug-conf"))
 			debug_flags |= DEBUG_CONF;
-		else if(!strcmp(arg, "--debug-update"))
+		else if (!strcmp (arg, "--debug-update"))
 			debug_flags |= DEBUG_UPDATE;
-		else if(!strcmp(arg, "--debug-parsing"))
+		else if (!strcmp (arg, "--debug-parsing"))
 			debug_flags |= DEBUG_PARSING;
-		else if(!strcmp(arg, "--debug-gui"))
+		else if (!strcmp (arg, "--debug-gui"))
 			debug_flags |= DEBUG_GUI;
-		else if(!strcmp(arg, "--debug-html"))
+		else if (!strcmp (arg, "--debug-html"))
 			debug_flags |= DEBUG_HTML;
-		else if(!strcmp(arg, "--debug-plugins"))
+		else if (!strcmp (arg, "--debug-plugins"))
 			debug_flags |= DEBUG_PLUGINS;
-		else if(!strcmp(arg, "--debug-trace"))
+		else if (!strcmp (arg, "--debug-net"))
+			debug_flags |= DEBUG_NET;
+		else if (!strcmp (arg, "--debug-db"))
+			debug_flags |= DEBUG_DB;
+		else if (!strcmp (arg, "--debug-trace"))
 			debug_flags |= DEBUG_TRACE;
-		else if(!strcmp(arg, "--debug-all"))
-			debug_flags |= DEBUG_TRACE|DEBUG_CACHE|DEBUG_CONF|DEBUG_UPDATE|DEBUG_PARSING|DEBUG_GUI|DEBUG_PLUGINS;
-		else if(!strcmp(arg, "--debug-verbose"))
-			debug_flags |= DEBUG_VERBOSE;		
-		else if(!strcmp(arg, "--version") || !strcmp(arg, "-v")) {
-			g_print("liferea %s\n", VERSION);
+		else if (!strcmp (arg, "--debug-all"))
+			debug_flags |= DEBUG_TRACE|DEBUG_CACHE|DEBUG_CONF|DEBUG_UPDATE|DEBUG_PARSING|DEBUG_GUI|DEBUG_PLUGINS|DEBUG_NET|DEBUG_DB;
+		else if (!strcmp (arg, "--debug-verbose"))
+			debug_flags |= DEBUG_VERBOSE;
+		else if (!strcmp (arg, "--version") || !strcmp (arg, "-v")) {
+			g_print ("liferea %s\n", VERSION);
 			return 0;
 		}
 		else if(!strcmp(arg, "--help") || !strcmp(arg, "-h")) {
@@ -243,19 +239,28 @@ int main(int argc, char *argv[]) {
 		}
 	}
 	set_debug_level(debug_flags);
+	
+	debug_start_measurement (DEBUG_DB);
 
 	add_pixmap_directory(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps");
 
 	/* order is important! */
+	rule_init();
+	db_init();			/* initialize sqlite */
+	xml_init ();			/* initialize libxml2 */
 	conf_init();			/* initialize gconf */
 	update_init();			/* initialize the download subsystem */
 	plugin_mgmt_init();		/* get list of plugins and initialize them */
 	ui_htmlview_init();		/* setup HTML widgets */
 	feed_init();			/* register feed types */
-	vfolder_init();			/* register vfolder rules */
 	conf_load();			/* load global feed settings */
 	script_init();			/* setup scripting if supported */
 	social_init();			/* initialized social bookmarking */
+#ifdef USE_DBUS	
+	dbus = liferea_dbus_new ();	
+#else
+	debug0(DEBUG_GUI, "Compiled without DBUS support.");
+#endif
 	ui_mainwindow_init(mainwindowState);	/* setup mainwindow and initialize gconf configured GUI behaviour */
 
 #ifdef USE_SM
@@ -280,35 +285,47 @@ int main(int argc, char *argv[]) {
 	   when running Flash applets in gtkmozembed */
 
 	lifereaStarted = TRUE;
+	
+	debug_end_measurement (DEBUG_DB, "startup");
+	
 	gtk_main();
-		
+	
+	g_object_unref (G_OBJECT (dbus));
 	bacon_message_connection_free(bacon_connection);
 	return 0;
 }
 
-gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data) {
+gboolean
+on_quit (GtkWidget *widget, GdkEvent *event, gpointer user_data)
+{
 
-	debug_enter("on_quit");
+	debug_enter ("on_quit");
 
-	ui_mainwindow_save_position();
-	gtk_widget_hide(mainwindow);
-
-	ui_feedlist_select(NULL);	/* should unload/save selected node and items */
-	feedlist_save();		/* should save feedlist and folder states */
-
-	/* should save all feeds still in memory */	
-	feedlist_foreach(node_unload);
+	/* order is important ! */
+		
+	script_run_for_hook (SCRIPT_HOOK_SHUTDOWN);
 	
-	gtk_widget_destroy(mainwindow);
-	ui_htmlview_deinit();
-	
+	ui_mainwindow_save_position ();
+	gtk_widget_hide (mainwindow);
+
+	ui_feedlist_select (NULL);
+	feedlist_save ();
+	feedlist_free ();
+	itemlist_free ();
+	update_deinit ();
+	db_deinit ();
+	script_deinit ();
+	social_free ();
+
+	gtk_widget_destroy (mainwindow);
 #ifdef USE_SM
 	/* unplug */
-	session_end();
+	session_end ();
 #endif
+	conf_deinit ();
 	
-	gtk_main_quit();
+	gtk_main_quit ();
 	
-	debug_exit("on_quit");
+	debug_exit ("on_quit");
 	return FALSE;
 }

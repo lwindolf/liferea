@@ -1,7 +1,7 @@
 /**
- * @file ui_itemlist.h item list/view handling
+ * @file ui_itemlist.h item list GUI handling
  *
- * Copyright (C) 2004-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
  *	      
  * This library is free software; you can redistribute it and/or
@@ -47,7 +47,19 @@ enum is_columns {
  * Initializes the itemlist. For example, it creates the various
  * columns and renderers needed to show the list.
  */
-GtkWidget* ui_itemlist_new();
+GtkWidget* ui_itemlist_new (void);
+
+// FIXME: use GObject
+void ui_itemlist_destroy (void);
+
+/**
+ * Checks wether the given id is currently displayed.
+ *
+ * @param id	the item id
+ *
+ * @returns TRUE if the item is in the tree view 
+ */
+gboolean ui_itemlist_contains_item(gulong id);
 
 void ui_itemlist_reset_tree_store(void);
 
@@ -198,9 +210,11 @@ void on_popup_remove_selected(gpointer callback_data, guint callback_action, Gtk
  * item in the current item list according to the current 
  * GtkTreeView sorting order.
  *
+ * @param startId	0 or the item id to start from
+ *
  * @returns item if an unread item was found
  */
-itemPtr ui_itemlist_find_unread_item(itemPtr start);
+itemPtr ui_itemlist_find_unread_item(gulong startId);
 
 /**
  * Searches the displayed feed and then all feeds for an unread
@@ -216,11 +230,16 @@ void on_popup_next_unread_item_selected(gpointer callback_data, guint callback_a
 void on_nextbtn_clicked(GtkButton *button, gpointer user_data);
 
 /**
- * Update a single item of the currently displayed item list .
+ * Update a single item of the currently displayed item list.
  *
  * @param item	the item
  */
-void ui_itemlist_update_item(itemPtr item);
+void ui_itemlist_update_item (itemPtr item);
+
+/**
+ * Update all items of the currently displayed item list.
+ */
+void ui_itemlist_update_all_items (void);
 
 /**
  * Launches the configured social bookmarking site for the given item

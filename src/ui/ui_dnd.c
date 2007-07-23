@@ -1,7 +1,7 @@
 /**
  * @file ui_dnd.c everything concerning DnD
  *
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -25,14 +25,15 @@
 
 #include <string.h>		/* For strncmp */
 #include "common.h"
-#include "net/os-support.h"	/* for strsep */
-#include "support.h"
-#include "callbacks.h"
 #include "feed.h"
+#include "feedlist.h"
 #include "debug.h"
 #include "conf.h"
+#include "ui/ui_feedlist.h"
+#include "ui/ui_itemlist.h"
 #include "ui/ui_node.h"
 #include "ui/ui_dnd.h"
+#include "fl_sources/node_source.h"
 
 static gboolean (*old_feed_drop_possible)(GtkTreeDragDest   *drag_dest,
                                           GtkTreePath       *dest_path,
@@ -56,9 +57,10 @@ static gboolean ui_dnd_feed_draggable(GtkTreeDragSource *drag_source, GtkTreePat
 	if(gtk_tree_model_get_iter(GTK_TREE_MODEL(drag_source), &iter, path)) {
 		gtk_tree_model_get(GTK_TREE_MODEL(drag_source), &iter, FS_PTR, &node, -1);
 		
-		/* everything besides "empty" entries may be dragged */		
-		if(node == NULL)
+		/* never drag "empty" entries or nodes of read-only subscription lists*/
+		if (!node || !(NODE_SOURCE_TYPE (node->parent)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST))
 			return FALSE;
+		
 		return TRUE;
 	} else {
 		g_warning("fatal error! could not resolve tree path!");
@@ -108,7 +110,7 @@ static gboolean ui_dnd_feed_drag_data_received(GtkTreeDragDest *drag_dest, GtkTr
 			oldParent->children = g_slist_remove(oldParent->children, node);
 			
 			if(0 == g_slist_length(oldParent->children))
-				ui_node_add_empty_node(ui_node_to_iter(oldParent));
+				ui_node_add_empty_node(ui_node_to_iter(oldParent->id));
 			
 			/* and rebuild new parents child list */
 			if(gtk_tree_model_iter_parent(GTK_TREE_MODEL(drag_dest), &parentIter, &iter)) {
@@ -124,10 +126,6 @@ static gboolean ui_dnd_feed_drag_data_received(GtkTreeDragDest *drag_dest, GtkTr
 			g_slist_free(newParent->children);
 			newParent->children = NULL;
 			node->parent = newParent;
-			node_update_unread_count(oldParent, (-1)*node->unreadCount);
-			node_update_unread_count(newParent, node->unreadCount);
-			ui_node_update(oldParent);
-			ui_node_update(newParent);
 			
 			debug0(DEBUG_GUI, "new new parent child list:");
 				
@@ -174,6 +172,9 @@ static gboolean ui_dnd_feed_drag_data_received(GtkTreeDragDest *drag_dest, GtkTr
 				valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(drag_dest), &iter2);
 				pos++;
 			}
+			
+			node_update_counters (newParent);
+			node_update_counters (oldParent);
 			
 			feedlist_schedule_save();
 			ui_itemlist_prefocus();

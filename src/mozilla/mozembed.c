@@ -1,7 +1,7 @@
 /**
  * @file mozembed.c common gtkmozembed handling.
  *   
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>   
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>   
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * Contains code from the Galeon sources
@@ -32,10 +32,10 @@
 #include <errno.h>
 #include <glib.h>
 #include <gtkmozembed.h>
+
 #include "mozilla/mozsupport.h"
 #include "common.h"
 #include "conf.h"
-#include "support.h"
 #include "debug.h"
 #include "ui/ui_htmlview.h"
 #include "ui/ui_popup.h"
@@ -61,7 +61,11 @@ void mozembed_write(GtkWidget *widget, const gchar *string, guint length, const 
 	/* prevent meta refresh of last document */
 	gtk_moz_embed_stop_load(GTK_MOZ_EMBED(widget));
 	
-	debug1(DEBUG_VERBOSE, "mozilla: HTML string >>>%s<<<", string);
+	/* always prevent following local links in self-generated HTML */
+	g_object_set_data(G_OBJECT(widget), "localDocument", GINT_TO_POINTER(FALSE));
+	
+	if(DEBUG_VERBOSE & debug_level)
+		debug1(DEBUG_HTML, "mozilla: HTML string >>>%s<<<", string);
 	debug0(DEBUG_HTML, "mozilla: start writing...");
 	
 	if((NULL != string) && (length > 0)) {
@@ -169,34 +173,49 @@ static gint mozembed_dom_key_press_cb (GtkMozEmbed *dummy, gpointer dom_event, g
  * mozembed_dom_mouse_click_cb: GTKMOZEMBED SIGNAL, emitted when user 
  * clicks on the document
  */
-static gint mozembed_dom_mouse_click_cb (GtkMozEmbed *dummy, gpointer dom_event, gpointer embed) {
-	gint	button;
-
-	if(-1 == (button = mozsupport_get_mouse_event_button(dom_event))) {
-		g_warning("Cannot determine mouse button!\n");
+static gint
+mozembed_dom_mouse_click_cb (GtkMozEmbed *dummy, gpointer dom_event, gpointer embed) 
+{
+	gint		button;
+	gboolean	isLocalDoc, safeURL = FALSE;
+	
+	if(-1 == (button = mozsupport_get_mouse_event_button (dom_event))) {
+		g_warning ("Cannot determine mouse button!\n");
 		return FALSE;
 	}
 	
+	/* source document in local filesystem? */
+	isLocalDoc = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(GTK_WIDGET(dummy)), "localDocument"));
+
+	/* prevent launching local filesystem links */	
+	if(selectedURL)
+		safeURL = (NULL == strstr(selectedURL, "file://")) || isLocalDoc;
+		
 	/* do we have a right mouse button click? */
-	if(button == 2) {
-		if(NULL == selectedURL)
-			gtk_menu_popup(GTK_MENU(make_html_menu()), NULL, NULL,
-				       NULL, NULL, button, 0);
+	if (button == 2) {
+		if(!selectedURL)
+			gtk_menu_popup (GTK_MENU (make_html_menu ()), NULL, NULL,
+				        NULL, NULL, button, 0);
 		else
-			gtk_menu_popup(GTK_MENU(make_url_menu(selectedURL)), NULL, NULL,
-				       NULL, NULL, button, 0);
+			gtk_menu_popup (GTK_MENU (make_url_menu (safeURL?selectedURL:"")), NULL, NULL,
+				        NULL, NULL, button, 0);
 	
 		return TRUE;
-	/* or a middle button click */
-	} else if(button == 1) {
-		if(NULL != selectedURL) {	
-			ui_tabs_new(selectedURL, selectedURL, FALSE);
+	} else {
+		if (!selectedURL)
+			return FALSE;	/* should never happen */
+			
+		if (!safeURL)
 			return TRUE;
+			
+		/* on middle button click */
+		if (button == 1) {
+			ui_tabs_new (selectedURL, selectedURL, FALSE);
+			return TRUE;
+		/* on left button click */
 		} else {
 			return FALSE;
-		}			
-	} else {
-		return FALSE;
+		}
 	}
 }
 
@@ -207,14 +226,15 @@ static gint mozembed_dom_mouse_click_cb (GtkMozEmbed *dummy, gpointer dom_event,
  * to keep the new document from being loaded. The uri argument is the
  * uri that's going to be loaded.
  */
-static gint mozembed_open_uri_cb (GtkMozEmbed *embed, const char *uri, gpointer data) {
-	
-	if((FALSE == ui_htmlview_is_special_url(uri)) && 
-	   (GPOINTER_TO_INT(g_object_get_data(G_OBJECT(embed), "internal_browsing")) || 
-	    getBooleanConfValue(BROWSE_INSIDE_APPLICATION))) {
+static gint 
+mozembed_open_uri_cb (GtkMozEmbed *embed, const char *uri, gpointer data) 
+{	
+	if ((FALSE == ui_htmlview_is_special_url (uri)) && 
+ 	    (GPOINTER_TO_INT (g_object_get_data (G_OBJECT (embed), "internal_browsing")) ||
+	    getBooleanConfValue (BROWSE_INSIDE_APPLICATION))) {
 		return FALSE;
 	} else {
-		ui_htmlview_launch_URL(GTK_WIDGET(data), (gchar *)uri, UI_HTMLVIEW_LAUNCH_DEFAULT);
+		ui_htmlview_launch_URL (GTK_WIDGET (data), (gchar *) uri, UI_HTMLVIEW_LAUNCH_DEFAULT);
 		return TRUE;
 	}
 }
@@ -321,14 +341,23 @@ void mozembed_deinit(void) {
 
 /* launches the specified URL */
 void mozembed_launch_url(GtkWidget *widget, const gchar *url) {
+	gboolean isLocalDoc;
+
+	/* determine if launched URL is a local one and set the flag to allow following local links */
+	isLocalDoc = (url == strstr(url, "file://"));
+	g_object_set_data(G_OBJECT(widget), "localDocument", GINT_TO_POINTER(isLocalDoc));
 
 	gtk_moz_embed_load_url(GTK_MOZ_EMBED(widget), url); 
 }
 
 gboolean mozembed_launch_inside_possible(void) { return TRUE; }
 
-void mozembed_set_proxy(gchar *hostname, int port, gchar *username, gchar *password) {
-
+void
+mozembed_set_proxy (const gchar *hostname,
+                    guint port,
+                    const gchar *username,
+                    const gchar *password)
+{
 	if(hostname) {
 		debug0(DEBUG_GUI, "setting proxy for Mozilla");
 		mozsupport_preference_set("network.proxy.http", hostname);

@@ -1,7 +1,7 @@
 /**
  * @file node_source.h generic feed list provider interface
  * 
- * Copyright (C) 2005-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2005-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -102,25 +102,29 @@ typedef struct nodeSourceType {
 	gchar *		(*source_get_feedlist)(nodePtr node);
 	
 	/**
-	 * This OPTIONAL callback is called to start a user requested
-	 * update of the source the node belongs to.
+	 * This MANDATARY method is called to force the source to update
+	 * its subscriptions list and the child subscriptions themselves.
 	 */
 	void		(*source_update)(nodePtr node);
 	
 	/**
-	 * This MANDATORY callback is called regularily to allow 
-	 * the the source the node belongs to to auto-update.
+	 * This MANDATARY method is called to request the source to update
+	 * its subscriptions list and the child subscriptions according
+	 * the its update interval.
 	 */
 	void		(*source_auto_update)(nodePtr node);
+	
+	/**
+	 * Frees all data of the given node source instance. To be called
+	 * during node_free() for a source node.
+	 */
+	void		(*free) (nodePtr node);
 } *nodeSourceTypePtr;
 
 /** feed list source instance */
 typedef struct nodeSource {
 	nodeSourceTypePtr	type;		/**< node source type of this source instance */
-	updateStatePtr 		updateState;	/**< the update state (etags, last modified, cookies...) of this source */
-	updateOptionsPtr	updateOptions;	/**< the update options (no proxy, user, pwd) */
 	nodePtr			root;		/**< insertion node of this node source instance */
-	gchar			*url;		/**< URL or filename of the node source instance */
 } *nodeSourcePtr;
 
 /** Use this to cast the node source type from a node structure. */
@@ -134,7 +138,7 @@ typedef struct nodeSource {
  *
  * @returns a newly created root node
  */
-nodePtr node_source_setup_root(void);
+nodePtr node_source_setup_root (void);
 
 /**
  * Registers a node source type.
@@ -143,7 +147,7 @@ nodePtr node_source_setup_root(void);
  *
  * @returns TRUE on success
  */
-gboolean node_source_type_register(nodeSourceTypePtr type);
+gboolean node_source_type_register (nodeSourceTypePtr type);
 
 /**
  * Creates a new source and assigns it to the given new node. 
@@ -152,9 +156,25 @@ gboolean node_source_type_register(nodeSourceTypePtr type);
  *
  * @param node			a newly created node
  * @param nodeSourceType	the node source type
- * @param sourceUrl		URI of the source
  */
-void node_source_new(nodePtr node, nodeSourceTypePtr nodeSourceType, const gchar *sourceUrl);
+void node_source_new (nodePtr node, nodeSourceTypePtr nodeSourceType);
+
+/**
+ * Force the source to update its subscription list and
+ * the child subscriptions themselves.
+ *
+ * @param node			the source node
+ */
+void node_source_update (nodePtr node);
+
+/**
+ * Request the source to update its subscription list and
+ * the child subscriptions if necessary according to the
+ * update interval of the source.
+ *
+ * @param node			the source node
+ */
+void node_source_auto_update (nodePtr node);
 
 /**
  * Launches a source creation dialog. The new source
@@ -162,9 +182,9 @@ void node_source_new(nodePtr node, nodeSourceTypePtr nodeSourceType, const gchar
  *
  * @param node	the parent node
  */
-void ui_node_source_type_dialog(nodePtr node);
+void ui_node_source_type_dialog (nodePtr node);
 
 /* implementation of the node type interface */
-nodeTypePtr node_source_get_node_type(void);
+nodeTypePtr node_source_get_node_type (void);
 
 #endif
