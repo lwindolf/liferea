@@ -28,7 +28,6 @@
 #include "feedlist.h"
 #include "metadata.h"
 #include "subscription.h"
-#include "net/cookies.h"
 #include "ui/ui_mainwindow.h"
 #include "ui/ui_node.h"
 

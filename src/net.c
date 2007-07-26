@@ -34,14 +34,18 @@
 #include <curl/types.h>
 #include <curl/easy.h>
 
-// FIXME: make me static
-int	NET_TIMEOUT;
-char 	*useragent = NULL;
-char	*proxyname = NULL;
-char	*proxyusername = NULL;
-char	*proxypassword = NULL;
-int	proxyport = 0;
-char * CookieCutter (const char *feedurl, FILE * cookies) {
+static CURLSH *share_handle = NULL;
+
+static int	NET_TIMEOUT;
+static char 	*useragent = NULL;
+static char	*proxyname = NULL;
+static char	*proxyusername = NULL;
+static char	*proxypassword = NULL;
+static int	proxyport = 0;
+
+static char *
+CookieCutter (const char *feedurl, FILE * cookies)
+{
 	char buf[4096];					/* File read buffer. */
 	char tmp[512];
 	char *result = NULL;
@@ -211,7 +215,9 @@ char * CookieCutter (const char *feedurl, FILE * cookies) {
 }
 
 
-gchar * cookies_find_matching(const gchar *url) {
+gchar *
+cookies_find_matching (const gchar *url)
+{
 	gchar	*filename;
 	gchar	*result;
 	FILE	*cookies;
@@ -237,12 +243,16 @@ network_init (void)
 	if(0 == (NET_TIMEOUT = getNumericConfValue(NETWORK_TIMEOUT)))
 		NET_TIMEOUT = 30;	/* default network timeout 30s */
 
-	curl_global_init (CURL_GLOBAL_ALL);
+	g_assert(curl_global_init(CURL_GLOBAL_ALL) == 0);
+	share_handle = curl_share_init();
 }
 
 void 
 network_deinit (void)
 {
+	curl_share_cleanup(share_handle);
+	curl_global_cleanup();
+	
 	g_free (useragent);
 	g_free (proxyname);
 	g_free (proxyusername);
@@ -301,24 +311,23 @@ network_set_proxy_auth (gchar *newProxyUsername, gchar *newProxyPassword)
 	ui_htmlview_update_proxy ();
 }
 
-struct MemoryStruct {
-   char *memory;
-   size_t size;
-};
-
 static size_t
-callback (void *ptr, size_t size, size_t nmemb, void *data)
+net_write_callback (void *ptr, size_t size, size_t nmemb, void *data)
 {
-   size_t realsize = size * nmemb;
-   struct MemoryStruct *mem = (struct MemoryStruct *)data;
- 
-   mem->memory = (char *)g_realloc(mem->memory, mem->size + realsize + 1);
-   if (mem->memory) {
-     memcpy(&(mem->memory[mem->size]), ptr, realsize);
-     mem->size += realsize;
-     mem->memory[mem->size] = 0;
-   }
-   return realsize;
+	int realsize = size * nmemb;
+	struct request *request = (struct request*)data;
+
+	if (request->data == NULL)
+		request->data = g_malloc0(realsize+2);
+	else
+		request->data = g_realloc(request->data, request->size + realsize + 2);
+
+	if (request->data != NULL) {
+		memcpy(&(request->data[request->size]), ptr, realsize);
+		request->size += realsize;
+		request->data[request->size] = 0;
+	}
+	return realsize;
 }
 
 /* Downloads a feed specified in the request structure, returns 
@@ -332,78 +341,45 @@ void
 network_process_request (struct request *request)
 {
 	CURL	*curl_handle;
-	struct MemoryStruct chunk;
-	
-	chunk.memory = NULL;
-	chunk.size = 0;
+	long	tmp;
+		
 	debug1(DEBUG_UPDATE, "downloading %s", request->source);
 	
 	g_assert(request->data == NULL);
 	g_assert(request->contentType == NULL);
-
-/*	netioRequest = g_new0(struct feed_request, 1);
-	netioRequest->feedurl = request->source;
-
-	if(request->updateState) {
-		netioRequest->lastmodified = request->updateState->lastModified;
-		netioRequest->etag = request->updateState->etag;
-		netioRequest->cookies = g_strdup(request->updateState->cookies);
-	}
-		
-	netioRequest->problem = 0;
-	netioRequest->netio_error = 0;
-	netioRequest->no_proxy = request->options->dontUseProxy?1:0;
-	netioRequest->content_type = NULL;
-	netioRequest->contentlength = 0;
-	netioRequest->authinfo = NULL;
-	netioRequest->servauth = NULL;
-	netioRequest->lasthttpstatus = 0; 
-	
-	request->data = DownloadFeed(oldurl, netioRequest, 0);
-
-	g_free(oldurl);
-	if(request->data == NULL)
-		netioRequest->problem = 1;
-	request->size = netioRequest->contentlength;
-	request->httpstatus = netioRequest->lasthttpstatus;
-	request->returncode = netioRequest->netio_error;
-	request->source = netioRequest->feedurl;
-	if(request->updateState) {
-		request->updateState->lastModified = netioRequest->lastmodified;
-		netioRequest->lastmodified = NULL;
-		request->updateState->etag = netioRequest->etag;
-		netioRequest->etag = NULL;
-	}
-	request->contentType = netioRequest->content_type;
-	g_free(netioRequest->servauth);
-	g_free(netioRequest->authinfo);
-	g_free(netioRequest->cookies);
-	g_free(netioRequest->lastmodified);
-	g_free(netioRequest->etag);
-	debug4(DEBUG_UPDATE, "download result - HTTP status: %d, error: %d, netio error:%d, data: %d",
-	                     request->httpstatus, 
-			     netioRequest->problem, 
-			     netioRequest->netio_error, 
-			     request->data);
-	g_free(netioRequest);
-*/	
+	request->size = 0;
 
 	curl_handle = curl_easy_init ();
+	curl_easy_setopt (curl_handle, CURLOPT_SHARE, share_handle);
 	curl_easy_setopt (curl_handle, CURLOPT_URL, request->source);
-	curl_easy_setopt (curl_handle, CURLOPT_WRITEFUNCTION, callback);
-	curl_easy_setopt (curl_handle, CURLOPT_WRITEDATA, (void *)&chunk);
+	curl_easy_setopt (curl_handle, CURLOPT_WRITEFUNCTION, net_write_callback);
+	curl_easy_setopt (curl_handle, CURLOPT_WRITEDATA, request);
 	curl_easy_setopt (curl_handle, CURLOPT_USERAGENT, useragent);
+	curl_easy_setopt (curl_handle, CURLOPT_FOLLOWLOCATION,  TRUE);
+	curl_easy_setopt (curl_handle, CURLOPT_TIMECONDITION, CURL_TIMECOND_IFMODSINCE);
+	curl_easy_setopt (curl_handle, CURLOPT_TIMEVALUE, request->updateState->lastModified);
+	curl_easy_setopt (curl_handle, CURLOPT_FILETIME, 1L);
+	if (proxyname) {
+		curl_easy_setopt(curl_handle, CURLOPT_PROXY, proxyname);
+		if (proxyport > 0)
+			curl_easy_setopt(curl_handle, CURLOPT_PROXYPORT, proxyport);
+	}
 	curl_easy_perform (curl_handle);
 g_print("update request processed:\n");
 g_print("    old source: >>>%s<<<\n",request->source);
 
-	g_assert (NULL == request->contentType);	
-	request->data = chunk.memory;
-	request->size = chunk.size;
-	curl_easy_getinfo (curl_handle, CURLINFO_RESPONSE_CODE, &(request->httpstatus));
 	curl_easy_getinfo (curl_handle, CURLINFO_CONTENT_TYPE, &(request->contentType));
 	curl_easy_getinfo (curl_handle, CURLINFO_EFFECTIVE_URL, &(request->source));
+	curl_easy_getinfo (curl_handle, CURLINFO_RESPONSE_CODE, &tmp);
+	request->httpstatus = (guint)tmp;
+
+	curl_easy_getinfo (curl_handle, CURLINFO_FILETIME, &tmp);
+	if (tmp == -1)
+		tmp = 0;
+	request->updateState->lastModified = tmp;
 g_print("    new source: >>>%s<<<\n", request->source);
 	curl_easy_cleanup (curl_handle);	
+	if (request->data)
+		request->data[request->size] = '\0';
 	return;
 }

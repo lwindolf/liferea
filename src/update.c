@@ -84,28 +84,8 @@ updateStatePtr update_state_new(void) {
 	return g_new0(struct updateState, 1);
 }
 
-const gchar * update_state_get_lastmodified(updateStatePtr updateState) { return updateState->lastModified; };
-void update_state_set_lastmodified(updateStatePtr updateState, const gchar *lastModified) {
-
-	g_free(updateState->lastModified);
-	updateState->lastModified = NULL;
-	if(lastModified)
-		updateState->lastModified = g_strdup(lastModified);
-}
-
-const gchar * update_state_get_etag(updateStatePtr updateState) { return updateState->etag; };
-void update_state_set_etag(updateStatePtr updateState, const gchar *etag) {
-
-	g_free(updateState->etag);
-	updateState->etag = NULL;
-	if(etag)
-		updateState->etag = g_strdup(etag);
-}
-
 void update_state_free(updateStatePtr updateState) {
 
-	g_free(updateState->etag);
-	g_free(updateState->lastModified);
 	g_free(updateState->cookies);
 	g_free(updateState);
 }

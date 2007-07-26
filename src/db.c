@@ -1398,9 +1398,6 @@ db_update_state_load (const gchar *id,
 	sqlite3_stmt	*stmt;
 	gint		res;
 	
-	g_assert (NULL == updateState->lastModified);
-	g_assert (NULL == updateState->etag);
-
 	debug2 (DEBUG_DB, "loading subscription %s update state (thread=%p)", id, g_thread_self ());
 	debug_start_measurement (DEBUG_DB);	
 
@@ -1409,8 +1406,7 @@ db_update_state_load (const gchar *id,
 
 	res = sqlite3_step (stmt);
 	if (SQLITE_ROW == res) {
-		updateState->lastModified		= g_strdup (sqlite3_column_text (stmt, 0));
-		updateState->etag			= g_strdup (sqlite3_column_text (stmt, 1));
+		// FIXME: retrieve last modified
 		updateState->lastPoll.tv_sec		= sqlite3_column_int (stmt, 2);
 		updateState->lastFaviconPoll.tv_sec	= sqlite3_column_int (stmt, 3);
 	} else {
@@ -1435,8 +1431,9 @@ db_update_state_save (const gchar *id,
 	stmt = db_get_statement ("updateStateSaveStmt");
 	sqlite3_bind_text (stmt, 1, id, -1, SQLITE_TRANSIENT);
 
-	sqlite3_bind_text (stmt, 2, updateState->lastModified, -1, SQLITE_TRANSIENT);
-	sqlite3_bind_text (stmt, 3, updateState->etag, -1, SQLITE_TRANSIENT);
+	// FIXME: drop etag from DB and make lastModified an INTEGER
+	sqlite3_bind_text (stmt, 2, "", -1, SQLITE_TRANSIENT);
+	sqlite3_bind_text (stmt, 3, "", -1, SQLITE_TRANSIENT);
 	sqlite3_bind_int  (stmt, 4, updateState->lastPoll.tv_sec);
 	sqlite3_bind_int  (stmt, 5, updateState->lastFaviconPoll.tv_sec);
 

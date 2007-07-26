@@ -104,8 +104,7 @@ typedef struct updateOptions {
 
 /** defines all state data an updatable object (e.g. a feed) needs */
 typedef struct updateState {
-	gchar		*lastModified;		/**< Last modified string as sent by the server */
-	gchar		*etag;			/**< E-Tag sent by the server */
+	glong		lastModified;		/**< Last modified string as sent by the server */
 	GTimeVal	lastPoll;		/**< time at which the feed was last updated */
 	GTimeVal	lastFaviconPoll;	/**< time at which the feeds favicon was last updated */
 	gchar		*cookies;		/**< cookies to be used */	
@@ -131,7 +130,7 @@ typedef struct request {
 	/* Set by download system*/
 	gpointer	owner;		/**< Pointer to anything used for lookup when cancelling requests */
 	int		returncode;	/**< Download status (0=success, otherwise error) */
-	glong		httpstatus;	/**< HTTP status. Set to 200 for any valid command, file access, etc.... Set to 0 for unknown */
+	guint		httpstatus;	/**< HTTP status. Set to 200 for any valid command, file access, etc.... Set to 0 for unknown */
 	gint		state;		/**< State of the request (enum request_state) */
 	updateStatePtr	updateState;	/**< Update state of the requested object (etags, last modified...) */
 	gchar		*data;		/**< Downloaded data */

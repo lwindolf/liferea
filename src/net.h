@@ -99,4 +99,14 @@ const gchar * network_get_proxy_password (void);
  */
 void network_process_request (struct request *request);
 
+/**
+ * Returns existing cookies for the given URL or
+ * NULL if no cookies are found.
+ *
+ * @param url		the URL
+ *
+ * @returns cookies (to be free'd using g_free)
+ */
+gchar * cookies_find_matching (const gchar *url);
+
 #endif
