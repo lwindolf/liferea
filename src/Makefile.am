@@ -4,7 +4,12 @@ if WITH_GTKHTML2
 GTKHTML2 = gtkhtml2
 endif
 
-SUBDIRS = net parsers notification ui fl_sources scripting . $(GTKHTML2) mozilla
+if WITH_AVAHI
+SYNC = sync
+SYNC_LIB = sync/liblisync.a
+endif
+
+SUBDIRS = parsers notification ui fl_sources scripting $(SYNC) . $(GTKHTML2) mozilla
 
 AM_CPPFLAGS = \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \
@@ -58,12 +63,12 @@ liferea_bin_SOURCES = \
 	vfolder.c vfolder.h \
 	xml.c xml.h
 
-liferea_bin_LDADD =	net/liblinet.a \
-			parsers/libliparsers.a \
+liferea_bin_LDADD =	parsers/libliparsers.a \
 			fl_sources/libliflsources.a \
 			notification/liblinotification.a \
 			ui/libliui.a \
-			$(PACKAGE_LIBS) $(X_LIBS) $(X_PRE_LIBS) -lX11 $(X_EXTRA_LIBS) $(DBUS_LIBS) $(NM_LIBS) $(INTLLIBS) $(GNUTLS_LIBS) 
+			$(SYNC_LIB) \
+			$(PACKAGE_LIBS) $(X_LIBS) $(X_PRE_LIBS) -lX11 $(X_EXTRA_LIBS) $(DBUS_LIBS) $(NM_LIBS) $(INTLLIBS) $(GNUTLS_LIBS) $(AVAHI_LIBS)
 
 if WITH_DBUS
 

@@ -52,6 +52,7 @@
 #include "ui/ui_htmlview.h"
 #include "ui/ui_mainwindow.h"
 #include "ui/ui_session.h"
+#include "sync/avahi_publisher.h"
 
 #include "bacon-message-connection.h"
 
@@ -123,10 +124,11 @@ static void signal_handler(int sig) {
 }
 
 int main(int argc, char *argv[]) {	
-	gulong		debug_flags = 0;
-	const char 	*arg;
-	gint		i;
-	LifereaDBus	*dbus = NULL;
+	gulong			debug_flags = 0;
+	const char 		*arg;
+	gint			i;
+	LifereaDBus		*dbus = NULL;
+	LifereaAvahiPublisher	*avahiPublisher = NULL;
 	int mainwindowState = MAINWINDOW_SHOWN;
 	
 #ifdef USE_SM
@@ -256,11 +258,21 @@ int main(int argc, char *argv[]) {
 	conf_load();			/* load global feed settings */
 	script_init();			/* setup scripting if supported */
 	social_init();			/* initialized social bookmarking */
+	
 #ifdef USE_DBUS	
 	dbus = liferea_dbus_new ();	
 #else
-	debug0(DEBUG_GUI, "Compiled without DBUS support.");
+	debug0 (DEBUG_GUI, "Compiled without DBUS support.");
 #endif
+
+#ifdef USE_AVAHI
+	debug0 (DEBUG_CACHE, "Registering with AVAHI");
+	avahiPublisher = liferea_avahi_publisher_new ();
+	liferea_avahi_publisher_publish (avahiPublisher, "Liferea Sync Service", 23632);
+#else
+	debug0 (DEBUG_CACHE, "Compiled without AVAHI support");
+#endif
+
 	ui_mainwindow_init(mainwindowState);	/* setup mainwindow and initialize gconf configured GUI behaviour */
 
 #ifdef USE_SM

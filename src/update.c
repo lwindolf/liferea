@@ -330,7 +330,7 @@ gpointer update_request_new(gpointer owner) {
 }
 
 void update_request_free(requestPtr request) {
-
+g_print("update_request_free: %p (%s)\n", request, request->source);
 	requests = g_slist_remove(requests, request);
 	
 	g_free(request->source);

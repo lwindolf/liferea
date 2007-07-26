@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([liferea],[1.4-RC3],[liferea-devel@lists.sourceforge.net])
+AC_INIT([liferea],[1.5.0],[liferea-devel@lists.sourceforge.net])
 AC_CANONICAL_TARGET([])
 AC_CONFIG_SRCDIR([src/feedlist.c])
 
@@ -38,6 +38,7 @@ AC_ARG_ENABLE(gecko,     AS_HELP_STRING([--enable-gecko=ARG],[specify which Geck
 AC_ARG_ENABLE(gnutls,    AS_HELP_STRING([--enable-gnutls],[Attempt to use GNUTLS for SSL support @<:@default=yes@:>@]),,enable_gnutls=yes)
 AC_ARG_ENABLE(libnotify, AS_HELP_STRING([--disable-libnotify],[don't compile the libnotify plugin]),,enable_libnotify=yes)
 AC_ARG_ENABLE(lua,       AS_HELP_STRING([--disable-lua],[don't compile with LUA scripting support]),,enable_lua=yes)
+AC_ARG_ENABLE(avahi,     AS_HELP_STRING([--disable-avahi],[don't compile with AVAHI support]),,enable_avahi=yes)
 
 AC_MSG_CHECKING([for 64bit platform])
 case "$target" in
@@ -158,6 +159,29 @@ else
 fi
 
 AM_CONDITIONAL(WITH_LUA, test "x$enable_lua" = "xyes")
+
+dnl *****
+dnl AVAHI
+dnl *****
+
+if test "x$enable_avahi" = "xyes"; then
+   PKG_CHECK_MODULES(AVAHI,
+      avahi-client >= 0.6
+      avahi-glib >= 0.6,
+      enable_avahi=yes,
+      enable_avahi=no)
+
+   if test "x$enable_avahi" = "xyes"; then
+      AC_DEFINE(USE_AVAHI, 1, [Define if we're using AVAHI.])
+   fi      
+   
+   AC_SUBST(AVAHI_CFLAGS)
+   AC_SUBST(AVAHI_LIBS)
+else
+   enable_avahi=no
+fi
+
+AM_CONDITIONAL(WITH_AVAHI, test "x$enable_avahi" = "xyes")
 
 dnl *********
 dnl XulRunner
@@ -315,7 +339,8 @@ pkg_modules="	gtk+-2.0 >= 2.10.0
 		libxslt >= 1.1.19
 		sqlite3 >= 3.3
 		gmodule-2.0 >= 2.0.0
-		libglade-2.0 >= 2.0.0"
+		libglade-2.0 >= 2.0.0
+		libcurl >= 7.16.0"
 
 PKG_CHECK_MODULES(PACKAGE, [$pkg_modules])
 
@@ -484,11 +509,11 @@ Makefile
 src/Makefile
 src/gtkhtml2/Makefile
 src/mozilla/Makefile
-src/net/Makefile
 src/parsers/Makefile
 src/fl_sources/Makefile
 src/notification/Makefile
 src/scripting/Makefile
+src/sync/Makefile
 src/ui/Makefile
 src/liferea
 doc/Makefile
@@ -521,6 +546,7 @@ echo "Use X Session Management........ : $enable_sm"
 echo "Use DBUS........................ : $enable_dbus"
 echo "Use NetworkManager.............. : $enable_nm"
 echo "GNUTLS SSL/HTTPS Support........ : $enable_gnutls"
+echo "AVAHI Support................... : $enable_avahi"
 echo
 eval eval echo Liferea will be installed in $bindir.
 echo

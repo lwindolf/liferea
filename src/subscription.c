@@ -114,6 +114,7 @@ subscription_favicon_downloaded (gpointer user_data)
 void
 subscription_update_favicon (subscriptionPtr subscription, GTimeVal *now)
 {	
+return;
 	debug1 (DEBUG_UPDATE, "trying to download favicon.ico for \"%s\"", node_get_title (subscription->node));
 	ui_mainwindow_set_status_bar (_("Updating favicon for \"%s\""), node_get_title (subscription->node));
 	subscription->updateState->lastFaviconPoll.tv_sec = now->tv_sec;

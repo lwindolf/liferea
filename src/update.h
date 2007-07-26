@@ -131,7 +131,7 @@ typedef struct request {
 	/* Set by download system*/
 	gpointer	owner;		/**< Pointer to anything used for lookup when cancelling requests */
 	int		returncode;	/**< Download status (0=success, otherwise error) */
-	int		httpstatus;	/**< HTTP status. Set to 200 for any valid command, file access, etc.... Set to 0 for unknown */
+	glong		httpstatus;	/**< HTTP status. Set to 200 for any valid command, file access, etc.... Set to 0 for unknown */
 	gint		state;		/**< State of the request (enum request_state) */
 	updateStatePtr	updateState;	/**< Update state of the requested object (etags, last modified...) */
 	gchar		*data;		/**< Downloaded data */
