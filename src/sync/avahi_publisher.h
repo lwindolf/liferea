@@ -67,7 +67,7 @@ LifereaAvahiPublisher	*liferea_avahi_publisher_new (void);
  * @param name		service name
  * @param port		server port
  */
-gboolean liferea_avahi_publisher_publish (LifereaAvahiPublisher *publisher, const gchar *name, guint port);
+gboolean liferea_avahi_publisher_publish (LifereaAvahiPublisher *publisher, gchar *name, guint port);
 
 G_END_DECLS
 

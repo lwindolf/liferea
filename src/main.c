@@ -266,9 +266,13 @@ int main(int argc, char *argv[]) {
 #endif
 
 #ifdef USE_AVAHI
-	debug0 (DEBUG_CACHE, "Registering with AVAHI");
-	avahiPublisher = liferea_avahi_publisher_new ();
-	liferea_avahi_publisher_publish (avahiPublisher, "Liferea Sync Service", 23632);
+	if (conf_get_bool_value (SYNC_AVAHI_ENABLED)) {
+		debug0 (DEBUG_CACHE, "Registering with AVAHI");
+		avahiPublisher = liferea_avahi_publisher_new ();
+		liferea_avahi_publisher_publish (avahiPublisher, conf_get_str_value (SYNC_AVAHI_SERVICE_NAME), 23632);
+	} else {
+		debug0 (DEBUG_CACHE, "Avahi support available, but disabled by preferences.");
+	}
 #else
 	debug0 (DEBUG_CACHE, "Compiled without AVAHI support");
 #endif

@@ -97,6 +97,9 @@
 
 /* other settings */
 #define DISABLE_DBUS			"/apps/liferea/disable-dbus"
+#define SYNC_AVAHI_ENABLED		"/apps/liferea/sync/use_avahi"
+#define SYNC_AVAHI_SERVICE_NAME		"/apps/liferea/sync/avahi_service_name"
+#define SYNC_AVAHI_PASSWORD		"/apps/liferea/sync/avahi_password"
 
 /* initializing methods */
 void	conf_init (void);

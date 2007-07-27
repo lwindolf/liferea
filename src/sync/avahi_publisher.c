@@ -19,6 +19,7 @@
  */
 
 #include "sync/avahi_publisher.h"
+#include "conf.h"
 
 #include <glib.h>
 #include <glib/gi18n.h>
@@ -198,8 +199,8 @@ create_service (LifereaAvahiPublisher *publisher)
 
 gboolean
 liferea_avahi_publisher_publish (LifereaAvahiPublisher *publisher,
-				const gchar          *name,
-				guint                port)
+				 gchar                 *name,
+				 guint                 port)
 {
 	if (publisher->priv->client == NULL) {
 		g_warning ("The avahi MDNS service is not running") ;
@@ -286,6 +287,16 @@ liferea_avahi_publisher_finalize (GObject *object)
 LifereaAvahiPublisher *
 liferea_avahi_publisher_new (void)
 {
+	gchar	*serviceName;
+	
+	/* check service name preference and set default if necessary */
+	serviceName = conf_get_str_value (SYNC_AVAHI_SERVICE_NAME);
+	if (g_str_equal (serviceName, "")) {
+		g_free (serviceName);
+		serviceName = g_strdup_printf (_("Liferea Sync %s@%s"), g_get_user_name(), g_get_host_name ());
+		conf_set_str_value (SYNC_AVAHI_SERVICE_NAME, serviceName);
+	}
+	g_free (serviceName);
 
 	if (liferea_avahi_publisher) {
 		g_object_ref (liferea_avahi_publisher);
