@@ -481,6 +481,15 @@ void on_minimizetotraybtn_clicked(GtkButton *button, gpointer user_data) {
 	conf_set_bool_value(DONT_MINIMIZE_TO_TRAY, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)));
 }
 
+void
+on_useAvahiSync_toggled (GtkToggleButton *button, gpointer user_data)
+{
+	gboolean enabled = gtk_toggle_button_get_active (button);
+	gtk_widget_set_sensitive (GTK_WIDGET (liferea_dialog_lookup (prefdialog, "avahiServiceNameEntry")), enabled);
+	gtk_widget_set_sensitive (GTK_WIDGET (liferea_dialog_lookup (prefdialog, "avahiServicePasswordEntry")), enabled);
+	conf_set_bool_value (SYNC_AVAHI_ENABLED, enabled);
+}
+
 /*------------------------------------------------------------------------------*/
 /* preferences dialog callbacks 						*/
 /*------------------------------------------------------------------------------*/
@@ -770,6 +779,14 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 		gtk_tree_view_append_column(GTK_TREE_VIEW(widget), column);
 
 		gtk_tree_selection_set_mode(gtk_tree_view_get_selection(GTK_TREE_VIEW(widget)), GTK_SELECTION_SINGLE);
+
+		/* ================= panel 7 "sync" ======================== */
+
+		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (prefdialog, "useAvahiSync")), conf_get_bool_value (SYNC_AVAHI_ENABLED));
+		gtk_entry_set_text (GTK_ENTRY (liferea_dialog_lookup (prefdialog, "avahiServiceNameEntry")), conf_get_str_value (SYNC_AVAHI_SERVICE_NAME));		
+		gtk_entry_set_text (GTK_ENTRY (liferea_dialog_lookup (prefdialog, "avahiServicePasswordEntry")), conf_get_str_value (SYNC_AVAHI_PASSWORD));
+		gtk_widget_set_sensitive (GTK_WIDGET (liferea_dialog_lookup (prefdialog, "avahiServiceNameEntry")), conf_get_bool_value (SYNC_AVAHI_ENABLED));
+		gtk_widget_set_sensitive (GTK_WIDGET (liferea_dialog_lookup (prefdialog, "avahiServicePasswordEntry")), conf_get_bool_value (SYNC_AVAHI_ENABLED));
 	}	
 	gtk_window_present(GTK_WINDOW(prefdialog));
 }
