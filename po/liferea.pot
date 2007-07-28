@@ -1575,7 +1575,7 @@ msgid "_Feed"
 msgstr ""
 
 #: ../src/ui/ui_mainwindow.c:1013
-msgid "Remove _All"
+msgid "Remove _All Items"
 msgstr ""
 
 #: ../src/ui/ui_mainwindow.c:1013
