@@ -1,5 +1,12 @@
 2007-07-??  Lars Lindner  <lars.lindner@gmail.com>
 
+	Version 1.4.0 (Stable)
+
+	* Fixes broken "Update" option in feed list context menu.	
+
+
+2007-07-22  Lars Lindner  <lars.lindner@gmail.com>
+
 	Version 1.4-RC3 (Unstable)
 
 	* Uses correct translation domain for dynamically
