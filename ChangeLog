@@ -3,6 +3,7 @@
 	Version 1.4.0 (Stable)
 
 	* Fixes broken "Update" option in feed list context menu.	
+	* Fixes crashes upon termination.
 
 
 2007-07-22  Lars Lindner  <lars.lindner@gmail.com>

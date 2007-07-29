@@ -621,20 +621,21 @@ update_deinit (void)
 	
 	//update_nm_cleanup ();
 	
-	network_deinit ();
+	//network_deinit ();
 	
 	/* FIXME: terminate update threads to be able to remove the queues
 	
 	g_async_queue_unref (requests_high_prio);
 	g_async_queue_unref (requests_normal_prio);
 	g_async_queue_unref (results);
-	*/
+	
 	
 	g_free (offline_cond);
 	g_free (cond_mutex);
 	
 	g_slist_free (requests);
 	requests = NULL;
+	*/
 	
 	debug_exit ("update_deinit");
 }
