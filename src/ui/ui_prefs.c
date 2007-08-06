@@ -554,6 +554,7 @@ ui_prefs_setup_combo_menu (const gchar *widgetName,
 	
 	listStore = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_INT);
 	widget = liferea_dialog_lookup (prefdialog, widgetName);
+	g_assert (NULL != widget);
 	for (i = 0; options[i] != NULL; i++) {
 		gtk_list_store_append (listStore, &treeiter);
 		gtk_list_store_set (listStore, &treeiter, 0, options[i], 1, i, -1);
@@ -640,7 +641,7 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 		                           startup_update_options, 
 		                           G_CALLBACK (on_feed_startup_update_changed),
 		                           conf_get_int_value(STARTUP_FEED_ACTION));
-					   
+
 		/* cache size setting */
 		widget = liferea_dialog_lookup (prefdialog, "itemCountBtn");
 		itemCount = gtk_spin_button_get_adjustment (GTK_SPIN_BUTTON (widget));
@@ -822,7 +823,7 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 		/* ================= panel 6 "enclosures" ======================== */
 
 		/* menu for download tool */
-		ui_prefs_setup_combo_menu ("enc_download_tool_combo",
+		ui_prefs_setup_combo_menu ("downloadToolCombo",
 		                           enclosure_download_tool_options,
 					   G_CALLBACK (on_enclosure_download_tool_changed),
 					   conf_get_int_value (ENCLOSURE_DOWNLOAD_TOOL));
