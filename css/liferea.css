@@ -305,7 +305,7 @@ div.photoheader {
 }
 
 table.enclosure {
-	background:#CCC;	// fixed color because xspf background is fixed #CCC
+	background:#CCC;	/* fixed color because xspf background is fixed #CCC */
 	width:100%;
 	margin:0;
 	border:0;
