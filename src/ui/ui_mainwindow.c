@@ -394,13 +394,33 @@ on_mainwindow_key_press_event (GtkWidget *widget, GdkEventKey *event, gpointer d
 	return FALSE;
 }
 
+static void radio_action_set_current_value(GtkRadioAction *action, gint current_value)
+{
+	GSList* group;
+	gint value;
+
+	/*gtk_radio_action_set_current_value(action, current_value);*/
+
+	group = gtk_radio_action_get_group(action);
+
+	for(; group; group = g_slist_next(group)) {
+		action = GTK_RADIO_ACTION(group->data);
+		g_object_get(G_OBJECT(action), "value", &value, NULL);
+		if (value == current_value) {
+			gtk_toggle_action_set_active(GTK_TOGGLE_ACTION(action), TRUE);
+			break;
+		}
+	}
+}
+
 void ui_mainwindow_set_layout(guint newMode) {
 	gchar	*htmlWidgetName, *ilWidgetName;
 
 	{
 		GtkRadioAction *action;
-		action = (GtkRadioAction*)gtk_action_group_get_action (mainwindow_priv->generalActions, "NormalView");
-		gtk_radio_action_set_current_value(action, newMode);
+
+		action = GTK_RADIO_ACTION(gtk_action_group_get_action(mainwindow_priv->generalActions, "NormalView"));
+		radio_action_set_current_value(action, newMode);
 	}
 	
 	if(!mainwindow_priv->htmlview) {
