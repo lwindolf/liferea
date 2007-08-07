@@ -181,6 +181,33 @@ static gchar * render_set_theme_colors(gchar *css) {
 	return css;
 }
 
+void render_remove_css_comments(void) {
+	gssize i, len = css->len;
+	gchar *str = css->str;
+	GString *newcss;
+
+	newcss = g_string_new(NULL);
+	i = 0;
+	while (i < len) {
+		if (i+1 < len && str[i] == '/' && str[i+1] == '*') {
+			i += 4;
+			while (i-1 < len && (str[i-2] != '*' || str[i-1] != '/'))
+				i++;
+			continue;
+		}
+		if (i+1 < len && str[i] == '/' && str[i+1] == '/') {
+			i += 2;
+			while (i < len && str[i] != '\n')
+				i++;
+			continue;
+		}
+		newcss = g_string_append_c(newcss, str[i]);
+		i++;
+	}
+	g_string_free(css, TRUE);
+	css = newcss;
+}
+
 const gchar * render_get_css(void) {
 	
 	if(!css) {   
@@ -247,7 +274,10 @@ const gchar * render_get_css(void) {
 		}
 
 		g_free(adblockStyleSheetFile);
-		
+
+		/* remove comments from the CSS to circumvent libgtkhtml2 bug */
+		render_remove_css_comments();
+
 		/* keep the CSS in memory to serve it as a part of each HTML output */
 		g_string_prepend(css, "<style type=\"text/css\">\n<![CDATA[\n");
 		g_string_append(css, "\n]]>\n</style>\n");

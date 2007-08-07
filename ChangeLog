@@ -1,3 +1,12 @@
+2007-08-07  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.2.21 (Stable)
+
+	* Provides a workaround for libgtkhtml2 bug that
+	  causes freezes when parsing CSS comments.
+	  (patch from Jean Diraison)
+
+
 2007-07-12  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.2.20 (Stable)
