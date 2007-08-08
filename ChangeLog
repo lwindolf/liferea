@@ -4,6 +4,12 @@
 
 	* Fixes broken "Update" option in feed list context menu.	
 	* Fixes crashes upon termination.
+	* Fixes SF #1749427 crashes when opening preference dialog.
+	  (reported by Dave C)
+	* Lowers GTK dependency from 2.10 to 2.8 again.
+	  (patch by Eric Anderson)
+	* Automatic migration of older cache directories
+	  to ~/.liferea_1.4 
 
 
 2007-07-22  Lars Lindner  <lars.lindner@gmail.com>

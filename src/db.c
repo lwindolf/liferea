@@ -599,6 +599,7 @@ db_deinit (void)
 	
 	g_hash_table_foreach (statements, db_free_statements, NULL);
 	g_hash_table_destroy (statements);	
+	statements = NULL;
 		
 	if (SQLITE_OK != sqlite3_close (db))
 		g_warning ("DB close failed: %s", sqlite3_errmsg (db));
