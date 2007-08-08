@@ -31,6 +31,8 @@
 #include "node.h"
 #include "xml.h"
 
+extern gboolean cacheMigrated;
+
 static void 
 migrate_copy_dir (const gchar *from,
                   const gchar *to,
@@ -317,6 +319,9 @@ migration_execute (migrationMode mode)
 			break;
 		default:
 			g_error ("Invalid migration mode!");
+			return;
 			break;
 	}
+	
+	cacheMigrated = TRUE;
 }
