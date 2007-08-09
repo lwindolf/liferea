@@ -32,6 +32,7 @@ AC_ARG_ENABLE(sm,        AS_HELP_STRING([--disable-sm],[compile without X sessio
 AC_ARG_ENABLE(dbus,      AS_HELP_STRING([--disable-dbus],[compile without DBUS support]),,enable_dbus=yes)
 AC_ARG_ENABLE(nm,        AS_HELP_STRING([--disable-nm],[compile without NetworkManager support]),,enable_nm=yes)
 AC_ARG_ENABLE(gtkhtml2,  AS_HELP_STRING([--disable-gtkhtml2],[don't compile the gtkhtml2 backend]),,enable_gtkhtml2=yes)
+AC_ARG_ENABLE(webkit,    AS_HELP_STRING([--disable-webkit],[don't compile the webkit backend]),,enable_webkit=yes)
 AC_ARG_ENABLE(xulrunner, AS_HELP_STRING([--disable-xulrunner],[don't compile the xulrunner backend]),,enable_xulrunner=yes)
 AC_ARG_ENABLE(gecko,     AS_HELP_STRING([--disable-gecko],[don't compile the Gecko backend]),,enable_gecko=yes)
 AC_ARG_ENABLE(gecko,     AS_HELP_STRING([--enable-gecko=ARG],[specify which Gecko provider to use ("mozilla", "firefox" or "seamonkey")]),,enable_gecko=yes)
@@ -178,6 +179,20 @@ if test "x$enable_xulrunner" = "xyes" ; then
 fi
 
 AM_CONDITIONAL(WITH_XULRUNNER, test "x$enable_xulrunner" = "xyes")
+ 
+dnl ******
+dnl WebKit
+dnl ******
+
+if test "x$enable_webkit" = "xyes" ; then
+   dnl AC_MSG_CHECKING([for WebKit support])
+   PKG_CHECK_MODULES(WEBKIT, WebKitGdk, enable_webkit=yes, enable_webkit=no)
+   XULRUNNER_HOME="`$PKG_CONFIG --variable=libdir WebKitGdk`"
+   AC_SUBST(WEBKIT_CFLAGS)
+   AC_SUBST(WEBKIT_LIBS)
+fi
+
+AM_CONDITIONAL(WITH_WEBKIT, test "x$enable_webkit" = "xyes")
 
 dnl ********
 dnl GtkHTML2
@@ -286,7 +301,7 @@ else
 fi
 
 dnl For now, require GtkHTML2, Mozilla or XulRunner.
-if test "x$enable_mozilla" != "xyes" -a "x$enable_gtkhtml2" != "xyes" -a "x$enable_xulrunner" != "xyes" ; then
+if test "x$enable_mozilla" != "xyes" -a "x$enable_gtkhtml2" != "xyes" -a "x$enable_xulrunner" != "xyes" -a "x$enable_webkit" != "xyes"; then
 	AC_MSG_ERROR([
 *** You must have either the GtkHTML2, XulRunner or the Mozilla 
 *** development libraries installed in order to build Liferea!
@@ -484,6 +499,7 @@ Makefile
 src/Makefile
 src/gtkhtml2/Makefile
 src/mozilla/Makefile
+src/webkit/Makefile
 src/net/Makefile
 src/parsers/Makefile
 src/fl_sources/Makefile
@@ -512,6 +528,7 @@ else
    echo "Build Mozilla Plugin............ : $enable_mozilla"
 fi
 echo "Build XulRunner Plugin.......... : $enable_xulrunner"
+echo "Build WebKit Plugin............. : $enable_webkit"
 echo "Build GtkHTML Plugin............ : $enable_gtkhtml2"
 echo 
 echo "Build libnotify Plugin.......... : $enable_libnotify"

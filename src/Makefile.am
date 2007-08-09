@@ -4,7 +4,11 @@ if WITH_GTKHTML2
 GTKHTML2 = gtkhtml2
 endif
 
-SUBDIRS = net parsers notification ui fl_sources scripting . $(GTKHTML2) mozilla
+if WITH_WEBKIT
+WEBKIT = webkit
+endif
+
+SUBDIRS = net parsers notification ui fl_sources scripting . $(GTKHTML2) $(WEBKIT) mozilla
 
 AM_CPPFLAGS = \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \

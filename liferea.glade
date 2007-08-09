@@ -3193,7 +3193,7 @@ days</property>
                         <property name="visible">True</property>
                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                         <property name="xalign">0</property>
-                        <property name="label" translatable="yes">&lt;span weight="bold"&gt;Opening Enclosures&lt;/span&gt;	</property>
+                        <property name="label" translatable="yes">&lt;span weight="bold"&gt;Opening Enclosures&lt;/span&gt;</property>
                         <property name="use_markup">True</property>
                       </widget>
                       <packing>
@@ -3237,7 +3237,7 @@ days</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
                                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                                    <property name="label" translatable="yes">gtk-properties</property>
+                                    <property name="label" translatable="no">gtk-properties</property>
                                     <property name="use_stock">True</property>
                                     <property name="response_id">0</property>
                                     <signal name="clicked" handler="on_enc_action_change_btn_clicked"/>
@@ -3253,7 +3253,7 @@ days</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
                                     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                                    <property name="label" translatable="yes">gtk-delete</property>
+                                    <property name="label" translatable="no">gtk-delete</property>
                                     <property name="use_stock">True</property>
                                     <property name="response_id">0</property>
                                     <signal name="clicked" handler="on_enc_action_remove_btn_clicked"/>
