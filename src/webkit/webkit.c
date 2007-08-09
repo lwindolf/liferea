@@ -21,7 +21,6 @@
 #include <webkitgtkpage.h>
 #include <webkitgtkglobal.h>
 
-#include "webkit.h"
 #include "ui/ui_htmlview.h"
 
 static void
