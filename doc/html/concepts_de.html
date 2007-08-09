@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>Basic Concepts</title>
+	<title>Grundlegende Konzepte</title>
 	
 	<link rel="stylesheet" type="text/css" href="reference.css">
 </head>
@@ -9,9 +9,9 @@
 	<!-- navigation header start -->
 	<table width="100%">
 	   <tr>
-	      <!-- back --><td width="50px"><a href="about_en.html">Prev</a></td>
-	      <!-- home --><td style="text-align:center;"><b>Basic Concepts</b></td>
-	      <!-- next --><td width="50px;" style="text-align:right;"><a href="subscriptions_en.html">Next</a></td>
+	      <!-- back --><td width="50px"><a href="about_de.html">Zurück</a></td>
+	      <!-- home --><td style="text-align:center;"><b>Grundlegende Konzepte</b></td>
+	      <!-- next --><td width="50px;" style="text-align:right;"><a href="subscriptions_de.html">Vor</a></td>
 	   </tr>
 	</table>
 	<hr />
@@ -19,130 +19,143 @@
 
 	<!-- content start --> 
 	<p>
-	This section tries to clarify some of the technical jargon used
-	along with feed readers.
+	Der folgende Abschnitt gibt einen Überblick über den technischen
+	Jargon, der im Zusammenhang mit Feed Readern/News Aggregatoren 
+	oft erwähnt wird und so sich auch in dieser Dokumentation und
+	den verschiedenen Liferea-Menüs wiederfindet.
 	</p>
 	
-	<h3>What does "online/offline desktop" news aggregator mean?</h3>
+	<h3>Was heißt "Online/Offline Desktop" News Aggregator?</h3>
 	<p>
-	Feed readers or news aggregators can be realised as web applications
-	or as desktop applications. The place of execution (your computer
-	vs. some webserver) implies certain advantages and disadvantages.
+	Feed Readers oder News Aggregatoren gibt es sowohl als Webanwendung
+	als auch als lokale Desktopanwendung. Der Ort der Ausführung der
+	Anwendung (der lokale Rechner oder ein entfernter Webserver)
+	bestimmt dabei verschiedene Vor- und Nachteile einer Online-
+	bzw. Offline-Lösung.
 	</p>
 	
 	<p>
-	A <b>desktop news aggregator</b> runs on your own PC and stores 
-	aggregated feeds locally. It accesses each news feed and downloads
-	its newest headlines periodically. Note that not all desktop news 
-	aggregators can work offline. Some desktop aggregators retrieve 
-	feeds each time you access them instead of caching them for later
-	use. Liferea as an <b>offline capable</b> desktop aggregator caches
-	feeds and is suitable for use with portable devices (laptops, hand 
-	helds...) that do not have a permanent internet connection.
+	Ein <b>Desktop News Aggregator</b> läuft auf einem PC und speichert
+	die aggregierten Feeds lokal. Zur Aktualisierung lädt er die Feeds
+	periodisch aus dem Internet herunter. Wichtig ist, dass nicht alle
+	Desktop News Aggregator offline arbeiten können. Einige Desktop
+	Aggregatoren laden die Feeds bei jedem Betrachten aus dem Netz,
+	ohne sie für ein späteres Offline-Betrachten lokal zu speichern.
+	Liferea hingegen ist ein <b>offline-fähiger</b> Desktop Aggregator
+	der die Feed-Inhalte lokal speichert und kann somit auch mit
+	portablen Geräten ohne permanente Internetanbindung (wie
+	Laptops, Handhelds...) benutzt werden.
 	</p>
 	
 	<ul>
-	    <li><b>Disadvantages:</b>
+	    <li><b>Nachteile:</b>
 	         <ul>
-		     <li>No implicit state synchronization when used from different client machines</li>
-		     <li>Higher bandwidth usage compared to online aggregators</li>
-		     <li>Need to be installed on each client machines</li>
-		     <li>OS-dependant</li>
+		     <li>Keine implizite Synchronisation bei der Nutzung auf mehreren PCs.</li>
+		     <li>Höhere Bandbreitennutzung verglichen zu Online-Aggregatoren.</li>
+		     <li>Muss als Programm lokal installiert werden.</li>
+		     <li>Abhängig vom installierten Betriebssystem.</li>
 		 </ul>
 	    </li>
-	    <li><b>Advantages:</b>
+	    <li><b>Vorteile:</b>
 	         <ul>
-		     <li>Your cached feed contents are saved on your own (secure) machine.</li>
-		     <li>Your cached feed contents are searchable locally with other tools (e.g. <a href="http://beagle-project.org/Main_Page">Beagle</a>)</li>
-		     <li>Your feed list is not accessible to 3rd parties</li>
-		     <li>Each feed access are done in private.</li>
+		     <li>Die Feed-Inhalte werden auf dem eigenen (sicheren) PC gespeichert.</li>
+		     <li>Die Feed-Inhalte sind lokal mit diversen Tools durchsuchbar (z.B. <a href="http://beagle-project.org/Main_Page">Beagle</a>).</li>
+		     <li>Die Liste der Abonnements ist nicht für Dritte (z.B. dem Anbieter des Online-Aggregator-Angebotes) einsehbar.</li>
+		     <li>Jeder Zugriff auf die Feed-Inhalte bleibt privat.</li>
 		 </ul>
 	    </li>
 	</ul>
 
 	
 	<p>
-	A <b>online news aggregator</b> (for example <a href="http://bloglines.com">Bloglines</a>)
-	is run on a remote webserver which you can access from everywhere
-	as long as you have network access. When you log in to the online
-	news aggregator it usually doesn't need to fetch the most recent
-	headlines of you feed subscriptions because it implements feed 
-	caching	to save bandwidth.
+	Ein <b>Online News Aggregator</b> (wie zum Beispiel <a href="http://bloglines.com">Bloglines</a>)
+	ist eine Anwendung auf einem entfernten Webserver auf die man
+	praktisch von überall zugreifen kann, solange ein Internetzugang
+	verfügbar ist. Nach dem Einloggen muß der Online News Aggregator
+	meist auch nicht erst die Feed-Inhalte von den verschiedenen
+	Quellen herunterladen, sondern die Inhalte sind fast immer 
+	bereits im Cache des Webservers und so wird Bandbreite gespart. 
 	</p>
 	
 	<ul>
-	    <li><b>Disadvantages:</b>
+	    <li><b>Nachteile:</b>
 	         <ul>
-		     <li>You rely on some 3rd party vendor for the news aggregator service.</li>
-		     <li>Often you have to pay for premium features.</li>
-		     <li>No chance to improve/modify/fix the online application.</li>
-		     <li>You need a web browser to access it.</li>
+		     <li>Nutzer verlassen sich auf einen Dritten, nämlich dem Anbieter des Online News Aggregator Angebotes.</li>
+		     <li>Oft muß für fortgeschrittene Funktionen gezahlt werden.</li>
+		     <li>Es gibt keine einfache Möglichkeit die Online-Applikation zu verbessern, zu korrigieren oder nach den eigenen Vorstellungen umzugestalten.</li>
+		     <li>Zugriff nur über einen Webbrowser.</li>
 		 </ul>
 	    </li>
-	    <li><b>Advantages:</b>
+	    <li><b>Vorteile:</b>
 	         <ul>
-		     <li>You get the same feed list and feed states no matter from where you access them.</li>
-		     <li>Practically no bandwidth usage except for the access of the web interface.</li>
-		     <li>Community headline rating systems to categorize content.</li>
-		     <li>Sharing headlines with the community (or specific users).</li>
+		     <li>Unabhängig vom Zugriffsort erhält man stets dieselbe Liste von Abonnements und der Lesezustand der Schlagzeilen bleibt erhalten.</li>
+		     <li>Praktisch keine Bandbreitennutzung zum Herunterladen der Feed-Inhalte.</li>
+		     <li>Community-Schlagzeilenbewertungssysteme die auch das Kategorisieren des Inhaltes erlauben.</li>
+		     <li>Eigene Feed-Inhalte können für alle oder nur spezifische Nutzer des Online-Services freigegeben werden.</li>
 		 </ul>
 	    </li>
 	</ul>
 	
-	<h3>What is a Feed?</h3>
+	<h3>Was ist eigentlich ein Feed?</h3>
 	<p>
-	For a news aggregator a <i>news feed</i> is a distinct information source. A
-	news aggregator usually retrieves <i>news headlines</i> from many news feed <i>subscriptions</i>.
-	The term "news feed" is not very precise as feeds can also provide weblog 
-	postings, podcasts and practically every type of content. The same goes for the
-	term "news headlines": often "article" or "post" would be a
-	better description. Nonetheless the prefix "news" is usually used with the terms
-	"feed", "headline" and "aggregator".
+	Für einen News Aggregator ist ein <i>News Feed</i> eine bestimmte
+	Informationsquelle. Ein News Aggregator bezieht meist <i>Schlagzeilen</i>
+	von einer Vielzahl von News Feed <i>Abonnements</i>. Der Begriff
+	"News Feed" ist nicht sonderlich präzise, da Feeds nicht nur News
+	sondern auch Weblog-Postings, Podcasts und prinzipiell jeden
+	Inhaltstyp anbieten können. Ähnliches gilt für den Begriff 
+	"Schlagzeile": oft wird von "Artikeln" oder "Postings" gesprochen.
+	Nichtsdestotrotz wird der Prefix "News" oft in Zusammenhang mit
+	den Begriffen "Feed", "Schlagzeile" und "Aggregator" verwendet.
 	</p>
 	<p>
-	When you add a new subscription then you have to specify the source of the 
-	feed so that the news aggregator can initially retrieve it. The feed source
-	is usually a HTTP URL. When updating the news feed the aggregator downloads
-	the document served when accessing this URL. There are several <a href="http://en.wikipedia.org/wiki/Extensible_Markup_Language">XML</a>-based and
-	XML-like syndication standards (<a href="http://en.wikipedia.org/wiki/RSS_%28file_format%29">RSS</a>, <a href="http://en.wikipedia.org/wiki/Atom_%28standard%29">Atom</a>...) that define how a feed must
-	look like so that the aggregator knows how to interpret the document
-	contents.
+	Fügt man neue Abonnements zur Feed-Liste hinzu muss die Quelle
+	des Abonnements angegeben werden, damit der News Aggregator 
+	das Feed initial herunterladen kann. Die Feed-Quelle ist meist
+	eine HTTP URL. Beim Aktualisieren des Feeds lädt der News 
+	Aggregator jeweils das unter dieser URL verfügbar Dokument
+	aus dem Netz. Es gibt verschiedene <a href="http://en.wikipedia.org/wiki/Extensible_Markup_Language">XML</a>-basierten und
+	XML-ähnliche Syndication-Standards (<a href="http://en.wikipedia.org/wiki/RSS_%28file_format%29">RSS</a>, <a href="http://en.wikipedia.org/wiki/Atom_%28standard%29">Atom</a>...), die definieren, wie ein Feed aussehen
+	muss, damit ein News Aggregator dessen Inhalte interpretieren kann.
 	</p>
 	<p>
-	As a user you usually do not have to know about the syndication format.
-	You just need to know the source URL of the feed you want to subscribe.
-	</p>
-	
-	<h3>What is the Feed List?</h3>
-	<p>
-	Typical news aggregators present you with a list of your feed subscription.
-	Following the email client interface paradigm the feed list is often
-	presented in the left pane of the news aggregator interface.
-	</p>
-	<p>
-	Depending on the aggregator you use the feed list might be hierarchically
-	organized using folders or categories.
+	Nutzer eines News Aggregators müssen sich üblicherweise nicht mit
+	diesen Syndication-Formaten auseinandersetzen. Es reicht aus, wenn
+	sie die Feed-URL kennen um ein neues Abonnement anzulegen.
 	</p>
 	
-	<h3>What is a Headline?</h3>
+	<h3>Was ist die sogenannte Feed-Liste?</h3>
 	<p>
-	When a news aggregator updates a news feed it download the source document
-	from the source URL of the feed subscription. This source document provides
-	a set of the most recent headlines which then need to be merged against the 
-	current feed cache of the aggregator because the set of headlines provided
-	by the feed source changes over time.
+	Typische News Aggregators verwalten die Feed-Abonnements in
+	einer Baumstruktur: der <i>Feed-Liste</i>. Ähnlich dem typischen 
+	Layout von Email-Clients wird die Feed-Liste meist auf der
+	linken Seite des Fensters dargestellt.
 	</p>
 	<p>
-	Headlines as provided by the feed source are the smallest information
-	unit handled by aggregators.
+	Manche Aggregator, unter anderem Liferea, erlauben die Feed-Liste
+	hierarchisch zu gliedern um z.B. Feed-Kategorien abzubilden, 
+	andere nicht.
 	</p>
 	
-	<h3>What is the Item List?</h3>
+	<h3>Was ist eine Schlagzeile?</h3>
 	<p>
-	In Liferea headlines are also called <i>items</i> and are presented
-	in the so called <i>item list</i>. Following the email client paradigm
-	the item list is often presented in the upper right pane in the news
-	aggregator interface.
+	Um ein Abonnement zu aktualisieren lädt ein News Aggregator
+	das Quelldokument des Feeds aus dem Netz herunter. Dieses Dokument
+	enthält eine Menge der neuesten <i>Schlagzeilen</i>, die von dem
+	Feed angeboten werden, und der News Aggregator pflegt diese nun
+	in die lokal gesicherten Feed-Inhalte ein.
+	</p>
+	<p>
+	Von einem Feed angebotenen Schlagzeilen sind die kleinste 
+	Informationseinheit mit der ein News Aggregator arbeitet.
+	</p>
+	
+	<h3>Was ist die Schlagzeilenliste?</h3>
+	<p>
+	In Liferea werden die Schlagzeilen in der sogenannten
+	<i>Schlagzeilenlist</i> angezeigt. Analog vielen Email-Clients
+	wird die Liste der Schlagzeilen im oberen rechten Bereich des
+	Fensters angezeigt.
 	</p>
 	
 	<!-- content end --> 
@@ -151,9 +164,9 @@
 	<hr />
 	<table width="100%">
 	   <tr>
-	      <!-- back --><td width="50px"><a href="about_en.html">Prev</a></td>
-	      <!-- home --><td style="text-align:center;"><a href="topics_en.html">Contents</a></td>
-	      <!-- next --><td width="50px;" style="text-align:right;"><a href="subscriptions_en.html">Next</a></td>
+	      <!-- back --><td width="50px"><a href="about_de.html">Zurück</a></td>
+	      <!-- home --><td style="text-align:center;"><a href="topics_de.html">Inhalt</a></td>
+	      <!-- next --><td width="50px;" style="text-align:right;"><a href="subscriptions_de.html">Vor</a></td>
 	   </tr>
 	</table>
 	<!-- navigation footer end -->
