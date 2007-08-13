@@ -29,20 +29,34 @@
 	</p>	
 
 	<p align="center">
-	<img src="help_subscribe_1.0.0.png">
+	<img src="help_subscribe_1.4.0.png">
 	</p>
 
 	<p>
-	Abonnements können eine Vielzahl von Quellen haben z.B.
-	eine Feed-URL, ein lokal ausgeführtes Kommando oder vom
-	Rechner aus zugreifbare Datei. In der Mehrzahl der Fälle
-	wird aber eine Feed-URL die Quelle sein. Nachdem der Quelltyp
-	korrekt eingestellt ist kann die Feed-URL, das Kommando
-	oder der Dateiname im Eingabefeld "Quelle" eingetragen
-	werden. Um zum Beispiel Slashdot's RSS News Feed zu abonnieren
-	muß "URL" als Quelltyp ausgewählt werden und die Feed-URL
+	Um zum Beispiel Slashdot's RSS News Feed zu abonnieren
+	ist einfach die Feed-URL
 	"<i><a href="http://slashdot.org/index.rss">http://slashdot.org/index.rss</a></i>"
-	als "Quelle" eingetragen werden.</p>
+	anzugeben. Ist die Feed-URL nicht bekannt kann auch
+	nur die Webseite (z.B. http://slashdot.org) angegeben
+	werden und Liferea versucht die Feed-URL automatisch
+	zu bestimmen.</p>
+
+	<h3>Spezielle Abonnements anlegen</h3>
+
+	<p>
+	Neben dem Abonnement von einfach Feed URLs unterstützt Liferea
+	auch das Abonnieren von Unix-Kommandos, die ein Feed zurückliefern,
+	oder von Dateien die Feeds enthalten. Zusätzlich können Filter
+	(sowohl XSLT Stylesheets als auch Kommandozeilenaufrufe) für
+	Abonnements konfiguriert werden. Dieser zusätzlichen Einstellungen
+	können im erweiterten Dialog eingestellt werden. Dieser kann
+	durch das Anklicken von "Erweitert" im einfachen Abonnieren-Dialog
+	aktiviert werden.
+	</p>
+	
+	<p align="center">
+	<img src="help_subscribe_adv_1.4.0.png">
+	</p>
 	
 	<p>Im Falle von Kommandos und Dateien als Quelltyp können diese 
 	mit Hilfe eines Dateiauswähldialoges mit "Datei auswählen..."
@@ -77,13 +91,12 @@
 	
 	<p>
 	Der Eigenschaften-Dialog ist in fünf Registerkarten unterteilt:
-	"Allgemein", "Quelle", "Cache", "Authentifizierung" und
- 	"Anhänge":</p>
+	"Allgemein", "Quelle", "Archiv", "Download" und	"Advanced":</p>
 
 	<h4>Allgemeine Eigenschaften</h4>
 
 	<p align="center">
-	<img src="help_feed_prop_general_1.0.0.png"/>
+	<img src="help_feed_prop_general_1.4.0.png"/>
 	</p>
 	
 	<p>Die Registerkarte "Allgemein" erlaubt das Ändern des 
@@ -136,7 +149,7 @@
 	<h4>Quelle des Abonnements</h4>
 
 	<p align="center">
-	<img src="help_feed_prop_source_1.0.0.png"/>
+	<img src="help_feed_prop_source_1.4.0.png"/>
 	</p>
 	
 	<p>Die Registerkarte "Quelle" enthält dieselben Dialogelemente
@@ -144,13 +157,13 @@
 	kann hier die Quelle des Abonnements nachträglich verändert
 	werden (z.B. wenn sich die URL der Webseite ändert)</p>
 
-	<h2>Cache-Eigenschaften</h2>
+	<h2>Archiv-Eigenschaften</h2>
 
 	<p align="center">
-	<img src="help_feed_prop_cache_1.0.0.png"/>
+	<img src="help_feed_prop_cache_1.4.0.png"/>
 	</p>
 	
-	<p>Die dritte Registerkarte, "Cache", erlaubt es die
+	<p>Die dritte Registerkarte, "Archiv", erlaubt es die
 	Anzahl zu sichernder Schlagzeilen zu konfigurieren.
 	Diese Einstellungen sind analog zu den globalen 
 	Cache-Einstellungen. Normalerweise ist es ausreichend
@@ -177,10 +190,10 @@
 	gelesen hat verhindert man deren zukünftiges Löschen.
 	</p>
 	
-	<h4>Authentifizierung</h4>
+	<h4>Download Einstellungen</h4>
 	
 	<p align="center">
-	<img src="help_feed_prop_auth_1.0.0.png"/>
+	<img src="help_feed_prop_auth_1.4.0.png"/>
 	</p>
 	
 	<p>
@@ -192,18 +205,70 @@
 	nachfragt sobald eine Abonnement-Quelle Authentifikation erfordert.
 	</p>
 	
-	<h4>Anhänge</h4>
+	<h4>Advanced Einstellungen</h4>
 	
 	<p align="center">
-	<img src="help_feed_prop_enclosures_1.0.0.png"/>
+	<img src="help_feed_prop_adv_1.4.0.png"/>
 	</p>
 
 	<p>
 	In dieser Registerkarte kann der <a href="enclosures_de.html">automatische Download für Anhänge</a> 
 	für dieses Abonnement aktiviert werden.
 	</p>
-	
 
+	<p>
+	Die zweite Checkbox erlaubt es das Verhalten beim Auswählen
+	einer Schlagzeile zu ändern. Per-default wird der Inhalt der
+	Schlagzeile angezeigt. Wird diese Option aktiviert, dann wird
+	beim Auswählen automatisch der Link im internen Browser geladen.
+	</p>
+
+	<h3>Abonnieren von OPML-Quellen, Bloglines- und Google Reader-Accounts</h3>
+	<p>
+	OPML-Quellen bieten Feedlisten an, die man in den News Aggregator 
+	einbinde kann. Um einen OPML-Quelle, einen Bloglines- oder Google Reader-Account
+	zu abonnieren muß "Neue Quelle" aus dem Kontextmenü der Feedliste oder
+	dem "Abonnements" Menü ausgewählt werden. Aus dem folgenden Dialog kann
+	der Typ der hinzuzufügenden Quelle ausgewählt werden.
+	</p>
+
+	<p align="center">
+	<img src="help_source_add_1.4.0.png"/>
+	</p>
+	
+	<h4>OPML-Quellen</h3>
+	<p>
+	Soll eine neue OPML-Quellen ("Planet/BlogRoll/OPML") angelegt werden
+	muß die Quell-URL dieser angegeben werden. Oft müssen zusätzlich nach
+	der ersten Download noch Username und Paßwort angegeben werden.
+	Nach erfolgreicher Abonnierung der OPML-Quelle wird deren Feedliste
+	als Teilbaum in die Feedliste von Liferea eingefügt. Ändert sich
+	die OPML-Quelle später paßt Liferea den Teilbaum entsprechend an
+	und fügt neue Abonnements automatisch hinzu und entfernt alte
+	Abonnements entsprechend.
+	</p>
+	
+	<h4>Bloglines</h4>
+	<p>
+	Soll ein "Bloglines" Account abonniert werden müssen Bloglines Username
+	und Paßwort angegeben werden. Ähnlich wie bei OPML-Quellen lädt Liferea
+	die Bloglines Abonnements und fügt sie automatisch der Feedliste hinzu.
+	<br /><br />
+	<b>Wichtig: Liferea synchronisiert nur die Liste der Bloglines 
+	Abonnements, nicht aber die Lesezustände der verschiedenen Feeds!</b>
+	</p>
+	
+	<h4>Google Reader</h4>
+	<p>
+	Soll ein "Google Reader" Account abonnniert werden müssen Google Reader
+	Username und Paßwort angegeben werden. Wie bei Bloglines und OPML-Quellen
+	fügt Liferea automatisch die Google Reader Abonnements der Feedliste
+	hinzu und aktualisiert sie regelmäßig.
+	<br /><br />
+	<b>Wichtig: Liferea synchronisiert nur die Liste der Google Reader
+	Abonnements, nicht aber die Lesezustände der verschiedenen Feeds!</b>	
+	</p>
+	
 	<!-- navigation footer start -->
 	<hr />
 	<table width="100%">

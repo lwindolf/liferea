@@ -52,6 +52,7 @@ html_doc_pictures_en =	help_feed_default.png \
 			help_prefs_proxy_1.4.0.png \
 			help_search_1.4.0.png \
 			help_subscribe_1.4.0.png \
+			help_source_add_1.4.0.png \
 			help_vfolder_1.4.0.png
 
 EXTRA_DIST =	$(html_doc_en) \

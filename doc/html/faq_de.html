@@ -54,22 +54,17 @@ Liferea mag funktional das richtige Programm sein, ist aber nicht notwendigerwei
 <li>Diese Liste ist sicher nicht komplett!</li>
 </ul>
 </dd>
-<dt>Q: Benutzt man Lifere mit dem Mozilla Rendering Modul wandert der Eingabe-Fokus immer zum HTML Widget. Das stört!</dt>
-<dd>A: 
-In der Tat ist das ein Mozilla-Verhalten und kein Fehler von Liferea. In Bugzilla kann man dazu für die Behebung dieser Fehler votieren: #210373 und #226708.
-</dd>
+
 <dt>Q: Liferea ist fehlerhaft! Es beendet sich nicht wenn ich den Schließen-Button des Fenstermanagers anklicke und das Trayicon aktiviert ist.</dt>
 <dd>A: 
-Wir sehen das als sinnvolles Verhalten und nicht als Fehler. Die Idee ist das die GUI aus zwei visuellen Schnittstellen für zwei verschiedene Benutzungsmodi besteht. Soll eine dieser beiden auf Benutzeranfrage hin geschlossen werden bedeutet das nicht, daß das Ganze - das Programm - beendet werden soll. "Schließen" des Hauptfenster meint das Schließen diese Fensters als solches. "Schließen des Fensters" heißt nicht "Beenden der Applikation".
-<br><br>
-Es gibt eine Reihe weitere Programme die auch diesem Ansatz folgen:
-MS Outlook, licq, akregator, gaim, mail notification...
-<br><br>
-Um dieses Verhalten zu unterbinden kann das Trayicon im Einstellungen Dialog deaktiviert werden.
+Es gibt verschiedene Meinungen wie sich ein Programm mit Trayicon beim
+Schließen des Hauptfensters verhalten soll. Die Defaulteinstellung von
+Liferea ist das Hauptfenster auszublenden wenn das Fenster geschlossen
+wird. Das Verhalten kann jedoch in den Programmeinstellungen umgestellt
+werden.
 </dd>
 
 <dt>Q: I will Cookies!
-
 </dt>
 <dd>A: 
 Liferea unterstützt Cookies wenn diese in Form einer Textdatei unter ~/.liferea/cookies.txt vorliegen. Diese Datei sollte dem Netscape Cookie Format entsprechen. Der leichteste Weg eine solche zu erstellen ist die Cookies erzeugenden Seite mit einer Mozilla-Installation zu besuchen und dann die Cookie-Datei aus dem Mozilla-Profil in das Liferea-Verzeichnis zu kopieren.
@@ -77,23 +72,8 @@ Liferea unterstützt Cookies wenn diese in Form einer Textdatei unter ~/.liferea
 
 <dt>Q: Ich mag die HTML Styles von Liferea nicht!
 </dt>
-<dd>A: Jeder kann eigene Stylesheets anlegen. Dazu muß ein liferea.css (für die 2 Spalten Ansicht) oder/und ein liferea2.css (für die Mail-Ansicht) in ~/.liferea hinterlegt werden. Wenn vorhanden werden diese zusätzlich zu den programmeigenen Stylesheets geladen. Auf diese Weise kann man die Style teilweise oder ganz anpassen. Um mehr über die benutzten CSS Klassen zu erfahren
-einfach in den Default-Stylesheet in &lt;install root&gt;/share/liferea/css nachsehen.
-</dd>
-
-<dt>Q: Wie kann ich ein Abonnement meiner Gmail Inbox anlegen?
-</dt>
-<dd>A: Google bietet ein Atom Feed mit einer Liste aller neuen Nachrichten  unter https://mail.google.com/mail/feed/atom. Da dieses Feed über HTTPS erreichbar ist kann Liferea 1.0 es nicht direkt nutzen. Daher muß ein externes Download-Tool benutzt werden (z.B. curl oder wget). Um dies zu konfigurieren muß im Neues Abonnement Dialog "Kommado" als Quelltyp ausgewählt werden und z.B. das folgende Kommando eingetragen werden: 
-<br><br>
-<tt>curl -s -u username:password https://mail.google.com/mail/feed/atom</tt>
-
-<br><br>
-Dabei sind username und password mit den Gmail Login-Informationen zu ersetzen.
-
-</dd>
-<dt>Q: I muß unbedingt HTTPS Feeds abonnieren! Aber Liferea unterstützt das einfach nicht!.</dt>
-<dd>A: Liferea 1.0 unterstützt kein HTTPS (geplant für 1.1). 
-Wenn trotzdem ein nur über HTTPS erreichbares Abonnement eingerichtet werden soll hilft folgender Trick. Dazu muß im Neues Abonnement Dialog der Quelltyp "Kommando" ausgewählt werden ohne jedoch etwas in das Quellfeld einzutragen. Zusätzlich muß die "Benutze Konvertierungsfilter" Option angeschaltet und als Konvertierunsfilter "curl &lt;your-HTTPS-URL&gt;" angegeben werden. Damit das funktioniert muß natürlich curl oder ein ähnliches Programm installiert sein, daß die heruntergeladenen Daten auf stdout ausgibt. Dieser Idee stammt von Norbert Kiesel.
+<dd>A: Jeder kann eigene Stylesheets anlegen. Dazu muß ein liferea.css in ~/.liferea_1.4 hinterlegt werden. Wenn vorhanden wird dieses zusätzlich zum programmeigenen Stylesheet geladen. Auf diese Weise kann man die Styles teilweise oder ganz anpassen. Um mehr über die benutzten CSS Klassen zu erfahren
+einfach im Default-Stylesheet in &lt;install root&gt;/share/liferea/css nachsehen.
 </dd>
 
 <dt>Q: Das Mozilla Browser Modul funktioniert nicht!</dt>
