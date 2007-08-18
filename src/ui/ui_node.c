@@ -214,7 +214,7 @@ void ui_node_update(nodePtr node) {
 	labeltype &= (NODE_CAPABILITY_SHOW_UNREAD_COUNT |
 	              NODE_CAPABILITY_SHOW_ITEM_COUNT);
 
-	if(!count && (labeltype & NODE_CAPABILITY_SHOW_UNREAD_COUNT))
+	if(count <= 0 && (labeltype & NODE_CAPABILITY_SHOW_UNREAD_COUNT))
 		labeltype -= NODE_CAPABILITY_SHOW_UNREAD_COUNT;
 
 	switch(labeltype) {

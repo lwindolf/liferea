@@ -4,6 +4,8 @@
 	
 	* Added new Belarusian Latin translation
 	  (Ihar Hrachyshka)
+	* Fix to avoid displaying incorrectly calculated
+	  negative unread count values.
 
 
 2007-08-07  Lars Lindner  <lars.lindner@gmail.com>
