@@ -9,10 +9,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Liferea 1.4-RC1\n"
+"Project-Id-Version: Liferea 1.4-20070816\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-08-08 23:59+0200\n"
-"PO-Revision-Date: 2007-07-10 13:21+0200\n"
+"PO-Revision-Date: 2007-08-16 17:52+0200\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.org>\n"
 "Language-Team: French\n"
 "MIME-Version: 1.0\n"
@@ -129,7 +129,6 @@ msgid "<span weight=\"bold\">Notification Settings</span>"
 msgstr "<span weight=\"bold\">Réglages de notification</span>"
 
 #: ../liferea.glade.h:27
-#, fuzzy
 msgid "<span weight=\"bold\">Opening Enclosures</span>"
 msgstr "<span weight=\"bold\">Ouverture des annexes</span>"
 
@@ -886,7 +885,7 @@ msgstr ""
 
 #: ../xslt/feed.xml.in.h:12
 msgid "You may want to validate the feed using"
-msgstr ""
+msgstr "Vous pouvez valider le flux avec"
 
 #: ../xslt/source.xml.in.h:2 ../xslt/folder.xml.in.h:2
 msgid "children with"
@@ -2132,64 +2131,60 @@ msgid "GNOME Default Browser"
 msgstr "Navigateur par défaut de GNOME"
 
 #: ../src/ui/ui_prefs.c:127
-#, fuzzy
 msgid "GNOME default"
-msgstr "Navigateur par défaut de GNOME"
+msgstr "Défaut GNOME"
 
 #: ../src/ui/ui_prefs.c:128
 msgid "Text below icons"
-msgstr ""
+msgstr "Texte sous les icônes"
 
 #: ../src/ui/ui_prefs.c:129
 msgid "Text beside icons"
-msgstr ""
+msgstr "Texte à côté des icônes"
 
 #: ../src/ui/ui_prefs.c:130
 msgid "Icons only"
-msgstr ""
+msgstr "Icônes uniquement"
 
 #: ../src/ui/ui_prefs.c:131
 msgid "Text only"
-msgstr ""
+msgstr "Texte uniquement"
 
 #: ../src/ui/ui_prefs.c:136
-#, fuzzy
 msgid "Update out-dated feeds"
-msgstr "Le statut de mise à jour"
+msgstr "Mettre à jour les flux qui ne le sont pas"
 
 #: ../src/ui/ui_prefs.c:137
 msgid "Force update of all feeds"
-msgstr ""
+msgstr "Forcer une mise à jour de tous les flux"
 
 #: ../src/ui/ui_prefs.c:138
-#, fuzzy
 msgid "No feed update at all"
-msgstr "flux mis à jour"
+msgstr "Aucune mise à jour de flux"
 
 #: ../src/ui/ui_prefs.c:143
-#, fuzzy
 msgid "minutes"
-msgstr "éléments."
+msgstr "minutes"
 
 #: ../src/ui/ui_prefs.c:144
 msgid "hours"
-msgstr ""
+msgstr "heures"
 
 #: ../src/ui/ui_prefs.c:145
 msgid "days"
-msgstr ""
+msgstr "jours"
 
 #: ../src/ui/ui_prefs.c:150
 msgid "Space"
-msgstr ""
+msgstr "Espace"
 
 #: ../src/ui/ui_prefs.c:151
 msgid "<Ctrl> Space"
-msgstr ""
+msgstr "<Ctrl> Espace"
 
 #: ../src/ui/ui_prefs.c:152
 msgid "<Alt> Space"
-msgstr ""
+msgstr "<Alt> Espace"
 
 #: ../src/ui/ui_prefs.c:527
 msgid "Choose download directory"
@@ -2527,38 +2522,3 @@ msgstr "Mise à jour du flux"
 #: ../src/notification/notif_libnotify.c:236
 msgid "Show details"
 msgstr "Montrer les détails"
-
-#, fuzzy
-#~ msgid "gtk-properties"
-#~ msgstr "_Propriétés..."
-
-#~ msgid ""
-#~ "GNOME default\n"
-#~ "Text below icons\n"
-#~ "Text beside icons\n"
-#~ "Icons only\n"
-#~ "Text only"
-#~ msgstr ""
-#~ "Choix par défaut de GNOME\n"
-#~ "Texte sous les icônes\n"
-#~ "Texte à côté des icônes\n"
-#~ "Icônes uniquement\n"
-#~ "Texte uniquement"
-
-#~ msgid ""
-#~ "Space\n"
-#~ "<Ctrl> Space\n"
-#~ "<Alt> Space"
-#~ msgstr ""
-#~ "Espace\n"
-#~ "<Ctrl> Espace\n"
-#~ "<Alt> Espace"
-
-#~ msgid ""
-#~ "Update out-dated feeds\n"
-#~ "Force update of all feeds\n"
-#~ "No feed update at all"
-#~ msgstr ""
-#~ "Mettre à jour les flux qui ne le sont pas\n"
-#~ "Forcer une mise à jour de tous les flux\n"
-#~ "Aucune mise à jour de flux"
