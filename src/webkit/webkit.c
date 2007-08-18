@@ -43,6 +43,17 @@ webkit_write_html (GtkWidget *scrollpane,
 	webkit_gtk_page_load_string (WEBKIT_GTK_PAGE (htmlwidget), string, "application/xhtml", "UTF-8", base);
 }
 
+static void
+webkit_title_changed (WebKitGtkPage *page, const gchar* title, const gchar* url, gpointer user_data)
+{
+	ui_tabs_set_title(GTK_WIDGET(page), title);
+}
+
+static void
+webkit_progress_changed (WebKitGtkPage *page, gint progress, gpointer user_data)
+{
+}
+
 static GtkWidget *
 webkit_new (gboolean forceInternalBrowsing) 
 {
@@ -61,8 +72,9 @@ webkit_new (gboolean forceInternalBrowsing)
 	
 	g_object_set_data(G_OBJECT(scrollpane), "internal_browsing", GINT_TO_POINTER(forceInternalBrowsing));
 
-	// FIXME: signals!		
-	
+	g_signal_connect(htmlwidget, "title-changed", G_CALLBACK(webkit_title_changed), htmlwidget);
+	g_signal_connect(htmlwidget, "load-progress-changed", G_CALLBACK(webkit_progress_changed), htmlwidget);
+
 	gtk_widget_show(htmlwidget);
 	return scrollpane;
 }
