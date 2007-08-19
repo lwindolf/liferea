@@ -725,6 +725,11 @@ time_t parseISO8601Date(gchar *date) {
 			tm.tm_sec = 10*(pos[0]-'0') + pos[1] - '0';
 			pos +=2;
 		}
+		/* Parse second fractions */
+		if (*pos == '.') {
+			while (*pos == '.' || isdigit(pos[0]))
+				pos++;
+		}
 		/* Parse timezone */
 		if (*pos == 'Z')
 			offset = 0;

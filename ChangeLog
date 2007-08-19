@@ -1,3 +1,7 @@
+	* Fix for ISO8601 date format second fraction parsing
+	  that caused missing timezone information for item dates.
+	  (patch from Alexander Hess)
+
 2007-08-18  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.2.22 (Stable)
