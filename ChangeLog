@@ -27,10 +27,11 @@
 	  for production work! This is for testing only.
 	* Fix for ISO8601 date format second fraction parsing
 	  that caused missing timezone information for item dates.
-	  (patch from Alexander Heß)
+	  (patch from Alexander Hess)
 	  
 	Translations
 	
+	* Polish translation (Bart Kreska)
 	* French translation (Vincent Lefevre)
 	* Swedish translation (Daniel Nylander)
 	* Arabic translation (Khaled Hosny)
@@ -38,6 +39,7 @@
 	* Turkish translation (Mehmet Atif Ergun)
 	* Brazilian Portugese translation (Og Maciel)
 	* Belorusian Latin translation (Ihar Hrachyshka)
+	* Italian translation (Dario Conigliaro & Emanuele Grande)
 	* German translation
 	
 

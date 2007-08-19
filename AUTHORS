@@ -61,19 +61,24 @@ Phillip Compton	<pcompton@proteinmedia.com>		Fedora
 Dag Wieers <dag@wieers.com>				Fedora
 
 
-Documentation and Translations
-==============================
+Documentation and Translations for v1.4
+=======================================
 
 Polish			Bart Kreska <wytnijto@smlw.pl>
 Italian			Dario Conigliaro <djdas@djdas.net>
+Italian			Emanuele Grande	<caccolangrifata@gmail.com>
 Brazilian Portugese	Fernando Ike de Oliveira <fike@midstorm.org>
 Arabic			Khaled Hosny <khaledhosny@eglug.org>
 Spanish			Sargate Kanogan <sargate@gmail.com>
 Japanese		Takeshi AIHANA <takeshi.aihana@gmail.com>
+French			Vincent Lefevre 
+Swedish			Daniel Nylander
+Turkish			Mehmet Atif Ergun
+Belorusian Latin	Ihar Hrachyshka <booxter@users.sf.net>
 
 
-Code included from other projects
-=================================
+Code included from other projects for v1.4
+==========================================
 
 Oliver Feiler <kiza@kcore.de>			SnowNews HTTP client
 Anders Carlsson <andersca@gnu.org>		egg tray icon support
