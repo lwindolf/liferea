@@ -72,20 +72,50 @@ nodePtr feedlist_get_root(void) { return rootNode; }
 
 nodePtr feedlist_get_selected(void) { return selectedNode; }
 
-nodePtr feedlist_get_insertion_point(void) { 
+nodePtr
+feedlist_get_insertion_point (void)
+{ 
 
-	g_assert(NULL != rootNode);
+	g_assert (NULL != rootNode);
 
-	if(!selectedNode)
+	if (!selectedNode)
 		return rootNode;
 	
-	if(NODE_TYPE_FOLDER == selectedNode->type)
+	if (IS_FOLDER (selectedNode))
 		return selectedNode;
 	
-	if(selectedNode->parent) 
+	if (selectedNode->parent) 
 		return selectedNode->parent;
 	else
 		return rootNode;
+}
+
+static void
+feedlist_update_node_counters (nodePtr node)
+{
+	if (node->needsRecount) {
+		if (IS_VFOLDER (node))
+			vfolder_update_counters (node);	/* simple vfolder only update */
+		else
+			node_update_counters (node);	/* update with parent propagation */
+	}
+	if (node->needsUpdate)
+		ui_node_update (node->id);
+	if (node->children)
+		node_foreach_child (node, feedlist_update_node_counters);
+}
+
+void
+feedlist_mark_all_read (nodePtr node)
+{
+	if (node != feedlist_get_root ())
+		node_mark_all_read (node);
+	else 
+		node_foreach_child (feedlist_get_root (), node_mark_all_read);
+		
+	feedlist_foreach (feedlist_update_node_counters);
+	itemview_update_all_items ();
+	itemview_update ();
 }
 
 /* statistic handling methods */
@@ -105,12 +135,13 @@ feedlist_get_new_item_count (void)
 	return (newCount > 0)?newCount:0;
 }
 
-static void feedlist_unset_new_items(nodePtr node) {
+static void
+feedlist_unset_new_items (nodePtr node)
+{	
+	if (0 != node->newCount)
+		item_state_set_all_old (node->id);
 	
-	if(0 != node->newCount)
-		itemlist_mark_all_old(node->id);
-	
-	node_foreach_child(node, feedlist_unset_new_items);
+	node_foreach_child (node, feedlist_unset_new_items);
 }
 
 void
@@ -194,7 +225,7 @@ static nodePtr feedlist_unread_scan(nodePtr folder) {
 
 		/* feed match if beyond the selected feed or in second pass... */
 		if((scanState != UNREAD_SCAN_INIT) && (node->unreadCount > 0) &&
-		   (NULL == node->children) && (NODE_TYPE_VFOLDER != node->type)) {
+		   (NULL == node->children) && !IS_VFOLDER(node)) {
 		       return node;
 		}
 
@@ -313,14 +344,16 @@ on_menu_update_all(GtkWidget *widget, gpointer user_data)
 		ui_mainwindow_set_status_bar (_("Liferea is in offline mode. No update possible."));
 }
 
-void on_menu_allread(GtkWidget *widget, gpointer user_data) {
-	
-	if(selectedNode)
-		node_mark_all_read(selectedNode);
+void
+on_menu_allread (GtkWidget *widget, gpointer user_data)
+{	
+	feedlist_mark_all_read (selectedNode);
 }
 
-void on_menu_allfeedsread(GtkWidget *widget, gpointer user_data) {
-	node_foreach_child(feedlist_get_root(), node_mark_all_read);
+void
+on_menu_allfeedsread (GtkWidget *widget, gpointer user_data)
+{
+	feedlist_mark_all_read (feedlist_get_root ());
 }
 
 /* Feedlist saving. Do not call directly to avoid threading 

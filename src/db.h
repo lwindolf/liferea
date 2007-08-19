@@ -137,6 +137,15 @@ void	db_item_mark_read (itemPtr item);
 GSList * db_item_get_duplicates(const gchar *guid);
 
 /**
+ * Returns a list of node ids containing an item with the given GUID. 
+ *
+ * @param guid	the item GUID
+ *
+ * @returns a list of node ids (to be free'd using g_free)
+ */
+GSList * db_item_get_duplicate_nodes(const gchar *guid);
+
+/**
  * Explicitely start a transaction.
  */
 void	db_begin_transaction (void);

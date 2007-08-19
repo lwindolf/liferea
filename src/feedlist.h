@@ -1,7 +1,7 @@
 /**
  * @file feedlist.h feedlist handling
  *
- * Copyright (C) 2005-2006 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2005-2007 Lars Lindner <lars.lindner@gmail.com>
  *	      
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -127,6 +127,14 @@ void feedlist_schedule_save(void);
  * @param node		the node (or NULL for whole feed list)
  */
 void feedlist_reset_update_counters (nodePtr node);
+
+/**
+ * Triggers a recursive mark-all-read on the given node
+ * and updates the feed list afterwards.
+ *
+ * @param node		the node to start with
+ */
+void feedlist_mark_all_read (nodePtr node);
 
 /* feed list iterating interface */
 

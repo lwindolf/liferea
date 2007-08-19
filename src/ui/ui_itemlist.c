@@ -34,6 +34,7 @@
 #include "feedlist.h"
 #include "item.h"
 #include "itemlist.h"
+#include "newsbin.h"
 #include "social.h"
 #include "ui/ui_htmlview.h"
 #include "ui/ui_itemlist.h"
@@ -565,7 +566,8 @@ void on_remove_items_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	nodePtr		node;
 	
 	node = feedlist_get_selected();
-	if(node && ((NODE_TYPE_FEED == node->type) || (NODE_TYPE_NEWSBIN == node->type)))
+	// FIXME: use node type capability check
+	if(node && (IS_FEED (node) || IS_NEWSBIN (node)))
 		itemlist_remove_all_items(node);
 	else
 		ui_show_error_box(_("You must select a feed to delete its items!"));
@@ -607,21 +609,23 @@ void ui_itemlist_select(itemPtr item) {
 	}
 }
 
-static itemPtr ui_itemlist_find_unread_item_from_iter(GtkTreeIter *iter) {
+static itemPtr
+ui_itemlist_find_unread_item_from_iter (GtkTreeIter *iter)
+{
 	itemPtr	item;
 	
-	item = item_load(ui_iter_to_item_id(iter));
-	if(item) {
-		if(!item->readStatus) {
-			if(2 != itemlist_get_view_mode()) {
+	item = item_load (ui_iter_to_item_id (iter));
+	if (item) {
+		if (!item->readStatus) {
+			if (2 != itemlist_get_view_mode ()) {	// FIXME: 2
 				ui_itemlist_select(item);
-				itemlist_set_read_status(item, TRUE);	/* needed when no selection happens (e.g. when the item is already selected) */
+				item_state_set_read (item, TRUE);	/* needed when no selection happens (e.g. when the item is already selected) */
 			} else {
-				itemlist_mark_all_read(item->nodeId);
+				item_state_set_all_read (node_from_id (item->nodeId));
 			}
 			return item;
 		}
-		item_unload(item);
+		item_unload (item);
 	}
 	
 	return NULL;

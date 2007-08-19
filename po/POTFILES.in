@@ -36,6 +36,8 @@ src/htmlview.c
 src/htmlview.h
 src/item.c
 src/item.h
+src/item_state.c
+src/item_state.h
 src/itemlist.c
 src/itemlist.h
 src/itemset.c
@@ -49,6 +51,8 @@ src/net.c
 src/net.h
 src/node.c
 src/node.h
+src/node_type.c
+src/node_type.h
 src/plugin.c
 src/plugin.h
 src/render.c

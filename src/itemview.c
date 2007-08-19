@@ -22,10 +22,12 @@
 #include "common.h"
 #include "conf.h"
 #include "debug.h"
+#include "folder.h"
 #include "htmlview.h"
 #include "itemlist.h"
 #include "itemview.h"
 #include "node.h"
+#include "vfolder.h"
 #include "ui/ui_itemlist.h"
 #include "ui/ui_mainwindow.h"
 
@@ -93,10 +95,12 @@ void itemview_set_mode(guint mode) {
 	}
 }
 
-void itemview_set_displayed_node(nodePtr node) {
+void
+itemview_set_displayed_node (nodePtr node)
+{
 	GtkTreeModel	*model;
 
-	if(node != itemView_priv.node) {
+	if (node != itemView_priv.node) {
 		itemView_priv.node = node;
 
 		/* 1. Perform UI item list preparations ... */
@@ -104,37 +108,30 @@ void itemview_set_displayed_node(nodePtr node) {
 		/* a) Clear item list */
 
 		/* Free the old itemstore and create a new one; this is the only way to disable sorting */
-		ui_itemlist_reset_tree_store();	 /* this also clears the itemlist. */
-		model = GTK_TREE_MODEL(ui_itemlist_get_tree_store());
+		ui_itemlist_reset_tree_store ();	 /* this also clears the itemlist. */
+		model = GTK_TREE_MODEL (ui_itemlist_get_tree_store ());
 
 		/* b) Enable item list columns as necessary */
-		ui_itemlist_enable_encicon_column(FALSE);
+		ui_itemlist_enable_encicon_column (FALSE);
 
 		if(node) {
-			switch(node->type) {
-				case NODE_TYPE_FEED:
-					ui_itemlist_enable_favicon_column(FALSE);
-					break;
-				case NODE_TYPE_VFOLDER:
-				case NODE_TYPE_FOLDER:
-					ui_itemlist_enable_favicon_column(TRUE);
-					break;
-			}
+			if (IS_FOLDER (node) || IS_VFOLDER (node))
+				ui_itemlist_enable_favicon_column (TRUE);
 
 			/* c)  disable sorting for performance reasons, set sort column
 			       and enable sorting again */
 			disableSortingSaving++;
-			gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(model), 
-	                                                     node->sortColumn, 
-	                                                     node->sortReversed?GTK_SORT_DESCENDING:GTK_SORT_ASCENDING);
+			gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE(model), 
+	                                                      node->sortColumn, 
+	                                                      node->sortReversed?GTK_SORT_DESCENDING:GTK_SORT_ASCENDING);
 			disableSortingSaving--;
 		}
 
 		/* 2. Reset view state */
-		itemview_clear();
+		itemview_clear ();
 		
 		/* 3. And repare HTML view */
-		htmlview_set_displayed_node(node);
+		htmlview_set_displayed_node (node);
 	}
 }
 

@@ -289,6 +289,7 @@ open:
 		goto open;
 	}
 	
+	debug_start_measurement (DEBUG_DB);
 	db_begin_transaction ();
 	
 	/* create tables if they do not exist yet */
@@ -412,6 +413,7 @@ open:
 	db_exec ("CREATE INDEX node_idx ON node (node_id);");
 		 
 	db_end_transaction ();
+	debug_end_measurement (DEBUG_DB, "table setup");
 			   
 	/* Cleanup of DB */
 	
@@ -516,6 +518,10 @@ open:
 					
 	db_new_statement ("duplicatesFindStmt",
 	                 "SELECT ROWID FROM items WHERE source_id = ?");
+			 
+	db_new_statement ("duplicateNodesFindStmt",
+	                 "SELECT itemsets.node_id FROM itemsets WHERE itemsets.item_id IN "
+			 "(SELECT items.ROWID FROM items WHERE items.source_id = ?)");
 		       
 	db_new_statement ("duplicatesMarkReadStmt",
  	                 "UPDATE items SET read = 1 WHERE source_id = ?");
@@ -871,6 +877,31 @@ db_item_get_duplicates (const gchar *guid)
 	{
 		gulong id = sqlite3_column_int (stmt, 0);
 		duplicates = g_slist_append (duplicates, GUINT_TO_POINTER (id));
+	}
+
+	debug_end_measurement (DEBUG_DB, "searching for duplicates");
+	
+	return duplicates;
+}
+
+GSList *
+db_item_get_duplicate_nodes (const gchar *guid)
+{
+	GSList		*duplicates = NULL;
+	sqlite3_stmt	*stmt;
+	gint		res;
+
+	debug_start_measurement (DEBUG_DB);
+
+	stmt = db_get_statement ("duplicateNodesFindStmt");
+	res = sqlite3_bind_text (stmt, 1, guid, -1, SQLITE_TRANSIENT);
+	if (SQLITE_OK != res)
+		g_error ("db_item_get_duplicates: sqlite bind failed (error code %d)!", res);
+
+	while (sqlite3_step (stmt) == SQLITE_ROW) 
+	{
+		gchar *id = g_strdup( sqlite3_column_text (stmt, 0));
+		duplicates = g_slist_append (duplicates, id);
 	}
 
 	debug_end_measurement (DEBUG_DB, "searching for duplicates");
@@ -1576,7 +1607,7 @@ db_node_update (nodePtr node)
 	sqlite3_bind_text (stmt, 1, node->id, -1, SQLITE_TRANSIENT);
 	sqlite3_bind_text (stmt, 2, node->parent->id, -1, SQLITE_TRANSIENT);
 	sqlite3_bind_text (stmt, 3, node->title, -1, SQLITE_TRANSIENT);	
-	sqlite3_bind_int  (stmt, 4, node->type);
+	sqlite3_bind_text (stmt, 4, node_type_to_str (node), -1, SQLITE_TRANSIENT);
 	sqlite3_bind_int  (stmt, 5, node->expanded?1:0);
 	sqlite3_bind_int  (stmt, 6, node->viewMode);
 	sqlite3_bind_int  (stmt, 7, node->sortColumn);

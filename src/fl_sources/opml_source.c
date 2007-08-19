@@ -184,18 +184,14 @@ opml_source_check_for_removal (nodePtr node, gpointer user_data)
 {
 	gchar		*expr = NULL;
 
-	switch (node->type) {
-		case NODE_TYPE_FEED:
-			expr = g_strdup_printf ("//outline[ @xmlUrl='%s' ]", subscription_get_source (node->subscription));
-			break;
-		case NODE_TYPE_FOLDER:
-			node_foreach_child_data (node, opml_source_check_for_removal, user_data);
-			expr = g_strdup_printf ("//outline[ (@title='%s') or (@text='%s') or (@description='%s')]", node->title, node->title, node->title);
-			break;
-		default:
-			g_warning ("opml_source_check_for_removal(): This should never happen...");
-			return;
-			break;
+	if (IS_FEED (node)) {
+		expr = g_strdup_printf ("//outline[ @xmlUrl='%s' ]", subscription_get_source (node->subscription));
+	} else if (IS_FOLDER (node)) {
+		node_foreach_child_data (node, opml_source_check_for_removal, user_data);
+		expr = g_strdup_printf ("//outline[ (@title='%s') or (@text='%s') or (@description='%s')]", node->title, node->title, node->title);
+	} else {
+		g_warning ("opml_source_check_for_removal(): This should never happen...");
+		return;
 	}
 	
 	if (!xpath_find ((xmlNodePtr)user_data, expr)) {

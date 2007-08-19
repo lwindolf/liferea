@@ -32,6 +32,7 @@
 #include "debug.h"
 #include "feedlist.h"
 #include "folder.h"
+#include "vfolder.h"
 #include "xml.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_itemlist.h"
@@ -51,7 +52,7 @@ static void export_append_node_tag(nodePtr node, gpointer userdata) {
 	gchar		*tmp;
 
 	// FIXME: use node type capability for this condition
-	if(!internal && ((NODE_TYPE_SOURCE == node->type) || (NODE_TYPE_VFOLDER == node->type)))
+	if (!internal && (IS_NODE_SOURCE (node)) || IS_VFOLDER (node))
 		return;
 	
 	childNode = xmlNewChild(cur, NULL, BAD_CAST"outline", NULL);
@@ -90,7 +91,7 @@ static void export_append_node_tag(nodePtr node, gpointer userdata) {
 	}
 
 	/* 2. add node type specific stuff */
-	node_export(node, childNode, internal);
+	NODE_TYPE (node)->export (node, childNode, internal);
 }
 
 void export_node_children(nodePtr node, xmlNodePtr cur, gboolean trusted) {
@@ -268,7 +269,7 @@ void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, nodeSourcePtr node
 	}
 	
 	/* 3. do node type specific parsing */
-	node_import(node, parentNode, cur, trusted);
+	NODE_TYPE (node)->import (node, parentNode, cur, trusted);
 
 	/* 4. update immediately if necessary */
 	if(needsUpdate && (NODE_TYPE(node) != NULL)) {

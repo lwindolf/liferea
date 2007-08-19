@@ -25,6 +25,7 @@
 #include <libxml/parser.h>
 #include <glib.h>
 #include "node.h"
+#include "node_type.h"
 #include "item.h"
 #include "subscription.h"
 
@@ -211,9 +212,11 @@ gboolean feed_parse(feedParserCtxtPtr ctxt);
 
 /* implementation of the node type interface */
 
+#define IS_FEED(node) (node->type == feed_get_node_type ())
+
 /**
  * Returns the node type implementation for feed nodes.
  */
-nodeTypePtr feed_get_node_type(void);
+nodeTypePtr feed_get_node_type (void);
 
 #endif

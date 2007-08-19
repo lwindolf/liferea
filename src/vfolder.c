@@ -288,13 +288,6 @@ vfolder_remove (nodePtr node)
 	vfolder_free (node);
 }
 
-static void
-vfolder_mark_all_read (nodePtr node) 
-{
-	itemlist_mark_all_read (node->id);
-	node->unreadCount = 0;
-}
-
 nodeTypePtr
 vfolder_get_node_type (void)
 { 
@@ -303,7 +296,6 @@ vfolder_get_node_type (void)
 		NODE_CAPABILITY_SHOW_ITEM_COUNT,
 		"vfolder",
 		NULL,
-		NODE_TYPE_VFOLDER,
 		vfolder_import,
 		vfolder_export,
 		vfolder_load,
@@ -311,7 +303,6 @@ vfolder_get_node_type (void)
 		vfolder_update_unread_count,
 		NULL,			/* process_update_result() */
 		vfolder_remove,
-		vfolder_mark_all_read,
 		node_default_render,
 		ui_vfolder_add,
 		ui_vfolder_properties,

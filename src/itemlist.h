@@ -130,27 +130,6 @@ void itemlist_remove_items(itemSetPtr itemSet, GList *items);
 void itemlist_remove_all_items(struct node *node);
 
 /**
- * Marks all items of the item set as read.
- *
- * @param nodeId	the node whose item list is to be modified
- */
-void itemlist_mark_all_read(const gchar *nodeId);
-
-/**
- * Resets the new flag for all items of the given item set.
- *
- * @param nodeId	the node whose item list is to be modified
- */
-void itemlist_mark_all_old(const gchar *nodeId);
-
-/**
- * Resets the popup flag for all items of the given item set.
- *
- * @param nodeId	the node whose item list is to be modified
- */
-void itemlist_mark_all_popup(const gchar *nodeId);
-
-/**
  * Called from GUI when item list selection changes.
  *
  * @param item	new selected item 

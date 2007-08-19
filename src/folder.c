@@ -26,6 +26,7 @@
 #include "folder.h"
 #include "itemset.h"
 #include "node.h"
+#include "vfolder.h"
 #include "ui/ui_folder.h"
 #include "ui/ui_node.h"
 
@@ -81,10 +82,12 @@ static void folder_save(nodePtr node) {
 	node_foreach_child(node, node_save);
 }
 
-static void folder_add_child_unread_count(nodePtr node, gpointer user_data) {
+static void
+folder_add_child_unread_count (nodePtr node, gpointer user_data)
+{
 	guint	*unreadCount = (guint *)user_data;
 
-	if (NODE_TYPE_VFOLDER != node->type)
+	if (!IS_VFOLDER (node))
 		*unreadCount += node->unreadCount;
 }
 
@@ -104,11 +107,6 @@ static void folder_remove(nodePtr node) {
 	ui_node_remove_node(node);
 }
 
-static void folder_mark_all_read(nodePtr node) {
-
-	node_foreach_child(node, node_mark_all_read);
-}
-
 nodeTypePtr folder_get_node_type(void) { 
 
 	static struct nodeType fnti = {
@@ -120,7 +118,6 @@ nodeTypePtr folder_get_node_type(void) {
 		NODE_CAPABILITY_UPDATE_CHILDS,
 		"folder",
 		NULL,
-		NODE_TYPE_FOLDER,
 		folder_import,
 		folder_export,
 		folder_load,
@@ -128,7 +125,6 @@ nodeTypePtr folder_get_node_type(void) {
 		folder_update_unread_count,
 		NULL,			/* process_update_result */
 		folder_remove,
-		folder_mark_all_read,
 		node_default_render,
 		ui_folder_add,
 		ui_node_rename
@@ -151,7 +147,6 @@ nodeTypePtr root_get_node_type(void) {
 		NODE_CAPABILITY_UPDATE_CHILDS,		
 		"root",
 		NULL,		/* and no need for an icon */
-		NODE_TYPE_ROOT,
 		folder_import,
 		folder_export,
 		folder_load,
@@ -159,7 +154,6 @@ nodeTypePtr root_get_node_type(void) {
 		folder_update_unread_count,
 		NULL,		/* process_update_result() */
 		folder_remove,
-		folder_mark_all_read,
 		node_default_render,
 		ui_folder_add,
 		ui_node_rename,

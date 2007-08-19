@@ -28,6 +28,7 @@
 #include "feedlist.h"
 #include "folder.h"
 #include "node.h"
+#include "node_type.h"
 #include "ui/ui_dialog.h"
 #include "ui/ui_node.h"
 #include "fl_sources/node_source.h"
@@ -129,7 +130,6 @@ node_source_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trust
 			node->data = g_strdup (typeStr);
 		}
 		
-		node->type = NODE_TYPE_SOURCE;
 		node->available = TRUE;
 		node->source = NULL;
 		node_source_new (node, type);
@@ -307,7 +307,6 @@ node_source_get_node_type (void)
 		nodeType = (nodeTypePtr) g_new0 (struct nodeType, 1);
 		nodeType->id			= "source";
 		nodeType->icon			= icons[ICON_DEFAULT];
-		nodeType->type			= NODE_TYPE_SOURCE;
 		nodeType->capabilities		= NODE_CAPABILITY_SHOW_UNREAD_COUNT |
 						  NODE_CAPABILITY_UPDATE_CHILDS |
 						  NODE_CAPABILITY_UPDATE;
@@ -318,7 +317,6 @@ node_source_get_node_type (void)
 		nodeType->update_counters	= folder_get_node_type()->update_counters;
 		nodeType->process_update_result = node_source_process_update_result;
 		nodeType->remove		= node_source_remove;
-		nodeType->mark_all_read		= folder_get_node_type()->mark_all_read;
 		nodeType->render		= node_default_render;
 		nodeType->request_add		= ui_node_source_type_dialog;
 		nodeType->request_properties	= ui_node_rename;
