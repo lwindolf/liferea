@@ -86,7 +86,8 @@
 
 /* networking settings */
 #define NETWORK_TIMEOUT			"/apps/liferea/network-timeout"
-#define USE_PROXY			"/system/http_proxy/use_http_proxy"
+#define GNOME_USE_PROXY			"/system/http_proxy/use_http_proxy"	/* old GNOME proxy enabling key */
+#define GNOME_PROXY_MODE		"/system/proxy/mode"			/* new GNOME proxy mode key */
 #define PROXY_HOST			"/system/http_proxy/host"
 #define PROXY_PORT			"/system/http_proxy/port"
 #define PROXY_USEAUTH			"/system/http_proxy/use_authentication"

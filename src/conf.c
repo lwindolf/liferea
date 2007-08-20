@@ -143,7 +143,8 @@ static void conf_toolbar_style_settings_cb(GConfClient *client, guint cnxn_id, G
 }
 
 static void conf_proxy_reset_settings_cb(GConfClient *client, guint cnxn_id, GConfEntry *entry, gpointer user_data) {
-	gchar	*tmp;
+	gchar		*tmp;
+	gboolean	useGnomeProxy;
 	xmlURIPtr uri;
 	
 	g_free(proxyname);
@@ -155,8 +156,14 @@ static void conf_proxy_reset_settings_cb(GConfClient *client, guint cnxn_id, GCo
 	g_free(proxypassword);
 	proxypassword = NULL;
 	
-	/* first check for a configured GNOME proxy */
-	if(getBooleanConfValue(USE_PROXY)) {
+	/* check for a configured GNOME proxy, note: older
+	   GNOME versions do use the boolean flag GNOME_USE_PROXY
+	   while newer ones use the string key GNOME_PROXY_MODE */
+	tmp = getStringConfValue(GNOME_PROXY_MODE);
+	useGnomeProxy = getBooleanConfValue(GNOME_USE_PROXY) || g_str_equal(tmp, "manual");
+	g_free(tmp);
+
+	if(useGnomeProxy) {
 		proxyname = getStringConfValue(PROXY_HOST);
 		proxyport = getNumericConfValue(PROXY_PORT);
 		debug2(DEBUG_CONF, "using GNOME configured proxy: \"%s\" port \"%d\"", proxyname, proxyport);

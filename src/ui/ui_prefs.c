@@ -462,7 +462,12 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 		g_free(widgetname);
 
 		/* ================= panel 5 "proxy" ======================== */
-		enabled = getBooleanConfValue(USE_PROXY);
+		
+		/* explanation why both gconf keys are checked in conf.c */
+		name = getStringConfValue(GNOME_PROXY_MODE);
+		enabled = g_str_equal(name, "manual") || getBooleanConfValue(GNOME_USE_PROXY);
+		g_free(name);
+		
 		widget = lookup_widget(prefdialog, "enableproxybtn");
 		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), enabled);
 
@@ -672,7 +677,7 @@ static void on_enableproxybtn_clicked(GtkButton *button, gpointer user_data) {
 	
 	enabled = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(prefdialog, "enableproxybtn")));
 	gtk_widget_set_sensitive(GTK_WIDGET(lookup_widget(prefdialog, "proxybox")), enabled);
-	setBooleanConfValue(USE_PROXY, enabled);
+	setBooleanConfValue(GNOME_USE_PROXY, enabled);
 }
 
 void on_proxyhostentry_changed(GtkEditable *editable, gpointer user_data) {

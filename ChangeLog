@@ -1,11 +1,15 @@
 2007-08-??  Lars Lindner  <lars.lindner@gmail.com>	
 
+	Version 1.2.23 (Stable)
+
 	* Fix for ISO8601 date format second fraction parsing
 	  that caused missing timezone information for item dates.
 	  (patch from Alexander Hess)
 	* Fix for incorrect double UTF-8 conversion in the
 	  date format handling. 
 	  (patch from Vincent Lefevre)
+	* Fix for SF #1770409: GNOME proxy settings not handled
+	  correctly (reported by Luca Di Stefano)
 
 
 2007-08-18  Lars Lindner  <lars.lindner@gmail.com>
