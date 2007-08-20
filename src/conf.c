@@ -143,6 +143,7 @@ conf_proxy_reset_settings_cb (GConfClient *client,
                               gpointer user_data)
 {
 	gchar		*proxyname, *proxyusername, *proxypassword, *tmp;
+	gboolean	gnomeUseProxy;
 	guint		proxyport;
 	xmlURIPtr 	uri;
 	
@@ -156,8 +157,15 @@ conf_proxy_reset_settings_cb (GConfClient *client,
 		case 0:
 			debug0 (DEBUG_CONF, "proxy auto detect is configured");
 				
+			/* first check for a configured GNOME proxy, note: older
+			   GNOME versions do use the boolean flag GNOME_USE_PROXY
+			   while newer ones use the string key GNOME_PROXY_MODE */
+			tmp = conf_get_str_value (GNOME_PROXY_MODE);
+			gnomeUseProxy = conf_get_bool_value (GNOME_USE_PROXY) || g_str_equal (tmp, "manual");
+			g_free (tmp);
+			
 			/* first check for a configured GNOME proxy */
-			if (conf_get_bool_value (GNOME_USE_PROXY)) {
+			if (gnomeUseProxy) {
 				proxyname = conf_get_str_value (GNOME_PROXY_HOST);
 				proxyport = conf_get_int_value (GNOME_PROXY_PORT);
 				debug2 (DEBUG_CONF, "using GNOME configured proxy: \"%s\" port \"%d\"", proxyname, proxyport);

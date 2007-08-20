@@ -88,7 +88,8 @@
 #define PROXY_USEAUTH			"/apps/liferea/proxy/use_authentication"
 #define PROXY_USER			"/apps/liferea/proxy/authentication_user"
 #define PROXY_PASSWD			"/apps/liferea/proxy/authentication_password"
-#define GNOME_USE_PROXY			"/system/http_proxy/use_http_proxy"
+#define GNOME_USE_PROXY			"/system/http_proxy/use_http_proxy"	/* old GNOME proxy enabling key */
+#define GNOME_PROXY_MODE		"/system/proxy/mode"			/* new GNOME proxy mode key */
 #define GNOME_PROXY_HOST		"/system/http_proxy/host"
 #define GNOME_PROXY_PORT		"/system/http_proxy/port"
 #define GNOME_PROXY_USEAUTH		"/system/http_proxy/use_authentication"
