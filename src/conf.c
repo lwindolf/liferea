@@ -161,7 +161,7 @@ conf_proxy_reset_settings_cb (GConfClient *client,
 			   GNOME versions do use the boolean flag GNOME_USE_PROXY
 			   while newer ones use the string key GNOME_PROXY_MODE */
 			tmp = conf_get_str_value (GNOME_PROXY_MODE);
-			gnomeUseProxy = conf_get_bool_value (GNOME_USE_PROXY) || g_str_equal (gnomeProxyMode, "manual");
+			gnomeUseProxy = conf_get_bool_value (GNOME_USE_PROXY) || g_str_equal (tmp, "manual");
 			g_free (tmp);				
 			
 			/* first check for a configured GNOME proxy */
