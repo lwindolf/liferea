@@ -130,27 +130,6 @@ void itemlist_remove_items(itemSetPtr itemSet, GList *items);
 void itemlist_remove_all_items(struct node *node);
 
 /**
- * Marks all items of the item set as read.
- *
- * @param nodeId	the node whose item list is to be modified
- */
-void itemlist_mark_all_read(const gchar *nodeId);
-
-/**
- * Resets the new flag for all items of the given item set.
- *
- * @param nodeId	the node whose item list is to be modified
- */
-void itemlist_mark_all_old(const gchar *nodeId);
-
-/**
- * Resets the popup flag for all items of the given item set.
- *
- * @param nodeId	the node whose item list is to be modified
- */
-void itemlist_mark_all_popup(const gchar *nodeId);
-
-/**
  * Called from GUI when item list selection changes.
  *
  * @param item	new selected item 
@@ -162,30 +141,6 @@ void itemlist_selection_changed(itemPtr item);
  * item list. Or does nothing if there are no unread items left.
  */
 void itemlist_select_next_unread(void);
-
-/**
- * Sets the flag status of the given item.
- *
- * @param item		the item
- * @param newStatus	new flag status
- */
-void itemlist_set_flag(itemPtr item, gboolean newStatus);
-
-/**
- * Sets the read status of the given item.
- *
- * @param item		the item
- * @param newStatus	new read status
- */
-void itemlist_set_read_status(itemPtr item, gboolean newStatus);
-
-/**
- * Sets the update status of the given item.
- *
- * @param item		the item
- * @param newStatus	new update status
- */
-void itemlist_set_update_status(itemPtr item, const gboolean newStatus);
 
 /**
  * Toggle the flag of the given item.

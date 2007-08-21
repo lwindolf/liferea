@@ -33,7 +33,7 @@
 #include "conf.h"
 #include "node.h"
 #include "item.h"
-#include "itemlist.h"
+#include "item_state.h"
 #include "plugin.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_mainwindow.h"
@@ -58,20 +58,22 @@ static void notif_libnotify_callback_open ( NotifyNotification *n, gchar *action
 
 }
 
-static void notif_libnotify_callback_mark_read ( NotifyNotification *n, gchar *action, gpointer user_data ) {
-	g_assert(action != NULL);
-	g_assert(strcmp(action, "mark_read") == 0);
+static void
+notif_libnotify_callback_mark_read (NotifyNotification *n, gchar *action, gpointer user_data)
+{
+	g_assert (action != NULL);
+	g_assert (strcmp (action, "mark_read") == 0);
 
-	nodePtr node_p = node_from_id(user_data);
+	nodePtr node = node_from_id (user_data);
 	
-	if(node_p) {
-		itemlist_mark_all_read(node_p->id);
-		itemlist_mark_all_popup(node_p->id);
+	if (node) {
+		item_state_set_all_read (node);
+		item_state_set_all_popup (node->id);
 	} else {
-		ui_show_error_box(_("This feed does not exist anymore!"));
+		ui_show_error_box (_("This feed does not exist anymore!"));
 	}
 	
-	notify_notification_close(n, NULL);
+	notify_notification_close (n, NULL);
 }
 
 static void notif_libnotify_callback_show_details ( NotifyNotification *n, gchar *action, gpointer user_data ) {
