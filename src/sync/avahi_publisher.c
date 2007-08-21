@@ -1,5 +1,5 @@
 /**
- * @file liferea_avahi_publisher.c  cache synchronization using AVAHI
+ * @file avahi_publisher.c  cache synchronization using AVAHI
  * 
  * Copyright (C) 2007 Lars Lindner <lars.lindner@gmail.com>
  *

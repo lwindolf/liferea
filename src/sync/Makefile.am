@@ -9,7 +9,9 @@ INCLUDES = \
 # plugin loading code
 noinst_LIBRARIES = liblisync.a
 
-liblisync_a_SOURCES = avahi_publisher.c avahi_publisher.h 
-
+liblisync_a_SOURCES =	avahi_publisher.c avahi_publisher.h \
+			avahi_browser.c avahi_browser.h
+			
 liblisync_a_CFLAGS = $(PACKAGE_CFLAGS) $(AVAHI_CFLAGS)
+
 
