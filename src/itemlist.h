@@ -143,30 +143,6 @@ void itemlist_selection_changed(itemPtr item);
 void itemlist_select_next_unread(void);
 
 /**
- * Sets the flag status of the given item.
- *
- * @param item		the item
- * @param newStatus	new flag status
- */
-void itemlist_set_flag(itemPtr item, gboolean newStatus);
-
-/**
- * Sets the read status of the given item.
- *
- * @param item		the item
- * @param newStatus	new read status
- */
-void itemlist_set_read_status(itemPtr item, gboolean newStatus);
-
-/**
- * Sets the update status of the given item.
- *
- * @param item		the item
- * @param newStatus	new update status
- */
-void itemlist_set_update_status(itemPtr item, const gboolean newStatus);
-
-/**
  * Toggle the flag of the given item.
  *
  * @param item		the item

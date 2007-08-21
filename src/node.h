@@ -112,15 +112,6 @@ nodePtr node_from_id(const gchar *id);
 void node_add_child(nodePtr parent, nodePtr node, gint position);
 
 /**
- * Interactive node adding (e.g. feed menu->new subscription), 
- * launches some dialog that upon success adds a feed of the
- * given type.
- *
- * @param type		the node type
- */
-void node_request_interactive_add(guint type);
-
-/**
  * Automatic subscription adding (e.g. URL DnD), creates a new feed
  * node and creates a new feed without any user interaction.
  *
@@ -301,28 +292,6 @@ void node_update_counters(nodePtr node);
 gchar * node_default_render(nodePtr node);
 
 /**
- * Do import for the given node and import it as a child of 
- * the given parent node. Used by import_parse_outline() to
- * do node specific import.
- *
- * @param node		the node to import
- * @param parent	its parent node
- * @param cur		outline XML node with attributes
- * @param trusted	set to TRUE if the feedlist is being imported from a trusted source
- */
-void node_import(nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean trusted);
-
-/**
- * Do export the given node. Used by export_OPML_feedlist() to
- * do node specific export.
- *
- * @param node		the node to import
- * @param cur		outline XML node with attributes
- * @param trusted	set to TRUE if the feedlist is being imported from a trusted source
- */
-void node_export(nodePtr node, xmlNodePtr cur, gboolean trusted);
-
-/**
  * Saves the given node to cache.
  *
  * @param node	the node
@@ -337,13 +306,6 @@ void node_save(nodePtr node);
  * @param request	the processed request
  */
 void node_process_update_result (nodePtr node, requestPtr request);
-
-/**
- * Removes the given node.
- *
- * @param node	the node
- */
-void node_remove(nodePtr node);
 
 /**
  * Resets the update interval for a given node.
@@ -382,13 +344,6 @@ void node_merge_items (nodePtr node, GList *items);
  * @returns string with node rendered in HTML
  */
 gchar * node_render(nodePtr node);
-
-/**
- * Request opening a properties dialog for the given node.
- *
- * @param node		the node
- */
-void node_request_properties(nodePtr node);
 
 /**
  * Called when updating favicons is requested.

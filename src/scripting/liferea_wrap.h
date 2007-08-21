@@ -2618,23 +2618,6 @@ fail:
 }
 
 
-static int _wrap_node_request_interactive_add(lua_State* L) {
-  int SWIG_arg = -1;
-  unsigned int arg1 ;
-  
-  if(!lua_isnumber(L,1)) SWIG_fail_arg(1);
-  arg1 = (unsigned int)lua_tonumber(L, 1);
-  node_request_interactive_add(arg1);
-  SWIG_arg=0;
-  
-  return SWIG_arg;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
 static int _wrap_node_request_automatic_add(lua_State* L) {
   int SWIG_arg = -1;
   char *arg1 = (char *) 0 ;
@@ -3128,79 +3111,6 @@ fail:
 }
 
 
-static int _wrap_node_import(lua_State* L) {
-  int SWIG_arg = -1;
-  nodePtr arg1 = (nodePtr) 0 ;
-  nodePtr arg2 = (nodePtr) 0 ;
-  xmlNodePtr arg3 ;
-  int arg4 ;
-  xmlNodePtr *argp3 ;
-  
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
-  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg(2);
-  if(!lua_isuserdata(L,3)) SWIG_fail_arg(3);
-  if(!lua_isnumber(L,4)) SWIG_fail_arg(4);
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_node,0))){
-    SWIG_fail_ptr("node_import",1,SWIGTYPE_p_node);
-  }
-  
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_node,0))){
-    SWIG_fail_ptr("node_import",2,SWIGTYPE_p_node);
-  }
-  
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,3,(void**)&argp3,SWIGTYPE_p_xmlNodePtr,0))){
-    SWIG_fail_ptr("node_import",3,SWIGTYPE_xmlNodePtr);
-  }
-  arg3 = *argp3;
-  
-  arg4 = (int)lua_tonumber(L, 4);
-  node_import(arg1,arg2,arg3,arg4);
-  SWIG_arg=0;
-  
-  return SWIG_arg;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_node_export(lua_State* L) {
-  int SWIG_arg = -1;
-  nodePtr arg1 = (nodePtr) 0 ;
-  xmlNodePtr arg2 ;
-  int arg3 ;
-  xmlNodePtr *argp2 ;
-  
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
-  if(!lua_isuserdata(L,2)) SWIG_fail_arg(2);
-  if(!lua_isnumber(L,3)) SWIG_fail_arg(3);
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_node,0))){
-    SWIG_fail_ptr("node_export",1,SWIGTYPE_p_node);
-  }
-  
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&argp2,SWIGTYPE_p_xmlNodePtr,0))){
-    SWIG_fail_ptr("node_export",2,SWIGTYPE_xmlNodePtr);
-  }
-  arg2 = *argp2;
-  
-  arg3 = (int)lua_tonumber(L, 3);
-  node_export(arg1,arg2,arg3);
-  SWIG_arg=0;
-  
-  return SWIG_arg;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
 static int _wrap_node_save(lua_State* L) {
   int SWIG_arg = -1;
   nodePtr arg1 = (nodePtr) 0 ;
@@ -3242,27 +3152,6 @@ static int _wrap_node_process_update_result(lua_State* L) {
   arg2 = *argp2;
   
   node_process_update_result(arg1,arg2);
-  SWIG_arg=0;
-  
-  return SWIG_arg;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_node_remove(lua_State* L) {
-  int SWIG_arg = -1;
-  nodePtr arg1 = (nodePtr) 0 ;
-  
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_node,0))){
-    SWIG_fail_ptr("node_remove",1,SWIGTYPE_p_node);
-  }
-  
-  node_remove(arg1);
   SWIG_arg=0;
   
   return SWIG_arg;
@@ -3342,27 +3231,6 @@ static int _wrap_node_render(lua_State* L) {
   result = (char *)node_render(arg1);
   SWIG_arg=0;
   lua_pushstring(L,(const char*)result); SWIG_arg++;
-  return SWIG_arg;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_node_request_properties(lua_State* L) {
-  int SWIG_arg = -1;
-  nodePtr arg1 = (nodePtr) 0 ;
-  
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_node,0))){
-    SWIG_fail_ptr("node_request_properties",1,SWIGTYPE_p_node);
-  }
-  
-  node_request_properties(arg1);
-  SWIG_arg=0;
-  
   return SWIG_arg;
   
 fail:
@@ -5446,78 +5314,6 @@ fail:
 }
 
 
-static int _wrap_itemlist_set_flag(lua_State* L) {
-  int SWIG_arg = -1;
-  itemPtr arg1 = (itemPtr) 0 ;
-  int arg2 ;
-  
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
-  if(!lua_isnumber(L,2)) SWIG_fail_arg(2);
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_item,0))){
-    SWIG_fail_ptr("itemlist_set_flag",1,SWIGTYPE_p_item);
-  }
-  
-  arg2 = (int)lua_tonumber(L, 2);
-  itemlist_set_flag(arg1,arg2);
-  SWIG_arg=0;
-  
-  return SWIG_arg;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_itemlist_set_read_status(lua_State* L) {
-  int SWIG_arg = -1;
-  itemPtr arg1 = (itemPtr) 0 ;
-  int arg2 ;
-  
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
-  if(!lua_isnumber(L,2)) SWIG_fail_arg(2);
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_item,0))){
-    SWIG_fail_ptr("itemlist_set_read_status",1,SWIGTYPE_p_item);
-  }
-  
-  arg2 = (int)lua_tonumber(L, 2);
-  itemlist_set_read_status(arg1,arg2);
-  SWIG_arg=0;
-  
-  return SWIG_arg;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_itemlist_set_update_status(lua_State* L) {
-  int SWIG_arg = -1;
-  itemPtr arg1 = (itemPtr) 0 ;
-  int arg2 ;
-  
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
-  if(!lua_isnumber(L,2)) SWIG_fail_arg(2);
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_item,0))){
-    SWIG_fail_ptr("itemlist_set_update_status",1,SWIGTYPE_p_item);
-  }
-  
-  arg2 = (int const)lua_tonumber(L, 2);
-  itemlist_set_update_status(arg1,arg2);
-  SWIG_arg=0;
-  
-  return SWIG_arg;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
 static int _wrap_itemlist_toggle_flag(lua_State* L) {
   int SWIG_arg = -1;
   itemPtr arg1 = (itemPtr) 0 ;
@@ -5618,20 +5414,6 @@ static int _wrap_feedlist_free(lua_State* L) {
   int SWIG_arg = -1;
   
   feedlist_free();
-  SWIG_arg=0;
-  
-  return SWIG_arg;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_feedlist_update(lua_State* L) {
-  int SWIG_arg = -1;
-  
-  feedlist_update();
   SWIG_arg=0;
   
   return SWIG_arg;
@@ -5808,6 +5590,27 @@ static int _wrap_feedlist_reset_update_counters(lua_State* L) {
   }
   
   feedlist_reset_update_counters(arg1);
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_feedlist_mark_all_read(lua_State* L) {
+  int SWIG_arg = -1;
+  nodePtr arg1 = (nodePtr) 0 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_node,0))){
+    SWIG_fail_ptr("feedlist_mark_all_read",1,SWIGTYPE_p_node);
+  }
+  
+  feedlist_mark_all_read(arg1);
   SWIG_arg=0;
   
   return SWIG_arg;
@@ -8256,7 +8059,6 @@ static const struct luaL_reg swig_commands[] = {
     { "node_new", _wrap_node_new},
     { "node_from_id", _wrap_node_from_id},
     { "node_add_child", _wrap_node_add_child},
-    { "node_request_interactive_add", _wrap_node_request_interactive_add},
     { "node_request_automatic_add", _wrap_node_request_automatic_add},
     { "node_request_remove", _wrap_node_request_remove},
     { "node_set_data", _wrap_node_set_data},
@@ -8277,15 +8079,11 @@ static const struct luaL_reg swig_commands[] = {
     { "node_set_id", _wrap_node_set_id},
     { "node_free", _wrap_node_free},
     { "node_default_render", _wrap_node_default_render},
-    { "node_import", _wrap_node_import},
-    { "node_export", _wrap_node_export},
     { "node_save", _wrap_node_save},
     { "node_process_update_result", _wrap_node_process_update_result},
-    { "node_remove", _wrap_node_remove},
     { "node_get_itemset", _wrap_node_get_itemset},
     { "node_merge_items", _wrap_node_merge_items},
     { "node_render", _wrap_node_render},
-    { "node_request_properties", _wrap_node_request_properties},
     { "node_update_favicon", _wrap_node_update_favicon},
     { "node_set_sort_column", _wrap_node_set_sort_column},
     { "node_set_view_mode", _wrap_node_set_view_mode},
@@ -8371,16 +8169,12 @@ static const struct luaL_reg swig_commands[] = {
     { "itemlist_remove_all_items", _wrap_itemlist_remove_all_items},
     { "itemlist_selection_changed", _wrap_itemlist_selection_changed},
     { "itemlist_select_next_unread", _wrap_itemlist_select_next_unread},
-    { "itemlist_set_flag", _wrap_itemlist_set_flag},
-    { "itemlist_set_read_status", _wrap_itemlist_set_read_status},
-    { "itemlist_set_update_status", _wrap_itemlist_set_update_status},
     { "itemlist_toggle_flag", _wrap_itemlist_toggle_flag},
     { "itemlist_toggle_read_status", _wrap_itemlist_toggle_read_status},
     { "icons_set", _wrap_icons_set},
     { "icons_get", _wrap_icons_get},
     { "feedlist_init", _wrap_feedlist_init},
     { "feedlist_free", _wrap_feedlist_free},
-    { "feedlist_update", _wrap_feedlist_update},
     { "feedlist_get_root", _wrap_feedlist_get_root},
     { "feedlist_get_selected", _wrap_feedlist_get_selected},
     { "feedlist_get_insertion_point", _wrap_feedlist_get_insertion_point},
@@ -8392,6 +8186,7 @@ static const struct luaL_reg swig_commands[] = {
     { "feedlist_save", _wrap_feedlist_save},
     { "feedlist_schedule_save", _wrap_feedlist_schedule_save},
     { "feedlist_reset_update_counters", _wrap_feedlist_reset_update_counters},
+    { "feedlist_mark_all_read", _wrap_feedlist_mark_all_read},
     { "feedlist_selection_changed", _wrap_feedlist_selection_changed},
     { "feedlist_find_unread_feed", _wrap_feedlist_find_unread_feed},
     { "on_menu_delete", _wrap_on_menu_delete},
