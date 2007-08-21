@@ -22,17 +22,12 @@
 #define _NEWSBIN_H
 
 #include <gtk/gtk.h>
-#include "node.h"
+#include "node_type.h"
 
 /**
  * Returns a list of the names of all news bins
  */
 GSList * newsbin_get_list(void);
-
-/** 
- * Returns the news bin node type implementation.
- */
-nodeTypePtr newsbin_get_node_type(void);
 
 /* UI callbacks */
 
@@ -41,5 +36,14 @@ void on_newnewsbinbtn_clicked(GtkButton *button, gpointer user_data);
 void on_newsbinnamechange_clicked(GtkButton *button, gpointer user_data);
 
 void on_popup_copy_to_newsbin(gpointer user_data, guint callback_action, GtkWidget *widget);
+
+/* implementation of the node type interface */
+
+#define IS_NEWSBIN(node) (node->type == newsbin_get_node_type ())
+
+/** 
+ * Returns the news bin node type implementation.
+ */
+nodeTypePtr newsbin_get_node_type (void);
 
 #endif

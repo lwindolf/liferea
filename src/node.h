@@ -33,19 +33,6 @@
    user interaction to the feed list node type implementation
    and allows the implementation to change the nodes state. */
 
-// FIXME: remove node type ids and use capabilities instead
-/** node types (also used for feed list tree store) */
-enum {
-	NODE_TYPE_INVALID 	= 0,		/**< invalid type */
-	NODE_TYPE_FOLDER 	= 1,		/**< the folder type */
-	NODE_TYPE_ROOT		= 2,		/**< the feed list root node type */
-
-	NODE_TYPE_VFOLDER 	= 9,		/**< special type for VFolders */
-	NODE_TYPE_FEED		= 10,		/**< any type of feed node */
-	NODE_TYPE_SOURCE	= 11,		/**< feed list source root node */
-	NODE_TYPE_NEWSBIN	= 12		/**< news bin node */
-};
-
 /** node view mode types */
 enum {
 	NODE_VIEW_MODE_NORMAL	= 0,
@@ -56,9 +43,8 @@ enum {
 /** generic feed list node structure */
 typedef struct node {
 	gpointer		data;		/**< node type specific data structure */
-	guint			type;		/**< node type */
 	struct subscription	*subscription;	/**< subscription attached to this node (or NULL) */
-	struct nodeType		*nodeType;	/**< node type implementation */	
+	struct nodeType		*type;		/**< node type implementation */	
 	struct nodeSource	*source;	/**< the feed list source handling this node */
 	gchar			*iconFile;	/**< the path of the favicon file */
 
@@ -81,6 +67,9 @@ typedef struct node {
 	guint		viewMode;	/**< Viewing mode for this node (one of NODE_VIEW_MODE_*) */
 	gint		sortColumn;	/**< Sorting column. Set to either IS_TITLE, IS_FAVICON, IS_ENCICON or IS_TIME */
 	gboolean	sortReversed;	/**< Sort in the reverse order? */
+	
+	gboolean	needsUpdate;	/**< if TRUE: the item list has changed and the nodes feed list representation needs to be updated */
+	gboolean	needsRecount;	/**< if TRUE: the number of unread/total items is currently unknown and needs recounting */
 
 } *nodePtr;
 
@@ -97,46 +86,6 @@ enum {
 	NODE_CAPABILITY_UPDATE_CHILDS		= (1<<9)	/**< childs of this node type can be updated */
 };
 
-/** node type interface */
-typedef struct nodeType {
-	gulong		capabilities;	/**< bitmask of node type capabilities */
-	gchar		*id;		/**< type id (used for type attribute in OPML export) */
-	gpointer	icon;		/**< default icon */
-	guint		type;		/**< numeric node type (FIXME: remove me) */
-	
-	/* For method documentation see the wrappers defined below! 
-	   All methods are mandatory for each node type. */
-	void    	(*import)		(nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean trusted);
-	void    	(*export)		(nodePtr node, xmlNodePtr cur, gboolean trusted);
-	itemSetPtr	(*load)			(nodePtr node);
-	void 		(*save)			(nodePtr node);
-	void		(*update_counters)	(nodePtr node);
-	void 		(*process_update_result)(nodePtr node, requestPtr request);
-	void		(*remove)		(nodePtr node);
-	void 		(*mark_all_read)	(nodePtr node);
-	gchar *		(*render)		(nodePtr node);
-	void		(*request_add)		(nodePtr parent);
-	void		(*request_properties)	(nodePtr node);
-	
-	/**
-	 * Called to allow node type to clean up it's specific data.
-	 * The node structure itself is destroyed after this call.
-	 *
-	 * @param node		the node
-	 */
-	void		(*free)			(nodePtr node);
-} *nodeTypePtr;
-
-#define NODE_TYPE(node)	(node->nodeType)
-
-/**
- * Registers a new node type. Can be used by feed list
- * plugins to register own node types.
- *
- * @param nodeType	node type info 
- */
-void node_type_register(nodeTypePtr nodeType);
- 
 /**
  * Creates a new node structure.
  *
@@ -189,14 +138,6 @@ void node_request_automatic_add(const gchar *source, const gchar *title, const g
  * @param parent	the node
  */
 void node_request_remove(nodePtr node);
-
-/**
- * Changes the node type.
- *
- * @param node	the node
- * @param type	the new type
- */
-void node_set_type(nodePtr node, nodeTypePtr type);
 
 /**
  * Attaches a data structure to the given node.
@@ -332,25 +273,6 @@ const gchar *node_get_id(nodePtr node);
  * @param id 	the id string
  */
 void node_set_id(nodePtr node, const gchar *id);
-
-/** 
- * Maps node type to string. For feed nodes
- * it maps to the feed type string.
- *
- * @param node	the node 
- *
- * @returns type string (or NULL if unknown)
- */
-const gchar *node_type_to_str(nodePtr node);
-
-/** 
- * Maps node type string to type constant.
- *
- * @param type str	the node type as string
- *
- * @returns node type
- */
-nodeTypePtr node_str_to_type(const gchar *str);
 
 /** 
  * Frees a given node structure.

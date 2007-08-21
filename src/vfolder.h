@@ -23,6 +23,7 @@
 
 #include <glib.h>
 #include "rule.h"
+#include "node_type.h"
 
 /* The search folder implementation of Liferea is similar to the
    one in Evolution. Search folders are effectivly permanent searches.
@@ -122,6 +123,12 @@ void vfolder_update_counters (nodePtr node);
 void vfolder_refresh (vfolderPtr vfolder);
 
 /* implementation of the node type interface */
-struct nodeType * vfolder_get_node_type (void);
+
+#define IS_VFOLDER(node) (node->type == vfolder_get_node_type ())
+
+/**
+ * Returns the node type implementation for search folder nodes.
+ */
+nodeTypePtr vfolder_get_node_type (void);
 
 #endif

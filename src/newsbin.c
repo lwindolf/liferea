@@ -164,14 +164,12 @@ newsbin_get_node_type (void)
 		                                  NODE_CAPABILITY_SHOW_ITEM_COUNT;
 		nodeType->id			= "newsbin";
 		nodeType->icon			= icons[ICON_NEWSBIN];
-		nodeType->type			= NODE_TYPE_NEWSBIN;
 		nodeType->load			= feed_get_node_type()->load;		
 		nodeType->import		= newsbin_import;
 		nodeType->export		= feed_get_node_type()->export;
 		nodeType->save			= feed_get_node_type()->save;
 		nodeType->update_counters	= feed_get_node_type()->update_counters;
 		nodeType->remove		= newsbin_remove;
-		nodeType->mark_all_read		= feed_get_node_type()->mark_all_read;
 		nodeType->render		= newsbin_render;
 		nodeType->request_add		= ui_newsbin_add;
 		nodeType->request_properties	= ui_node_rename;

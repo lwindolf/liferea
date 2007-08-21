@@ -21,7 +21,9 @@
 #ifndef _FOLDER_H
 #define _FOLDER_H
 
-#include "node.h"
+#include "node_type.h"
+
+#define IS_FOLDER(node) (node->type == folder_get_node_type ())
 
 /**
  * Returns the implementation of the folder node type.

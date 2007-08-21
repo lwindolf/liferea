@@ -29,11 +29,13 @@
 #include "common.h"
 #include "feed.h"
 #include "feedlist.h"
+#include "folder.h"
 #include "itemlist.h"
 #include "node.h"
 #include "newsbin.h"
 #include "social.h"
 #include "update.h"
+#include "vfolder.h"
 #include "ui/ui_enclosure.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_htmlview.h"
@@ -246,35 +248,51 @@ GtkMenu *ui_popup_make_enclosure_menu(const gchar *url) {
 /* popup callback wrappers */
 
 static void ui_popup_update(gpointer callback_data, guint callback_action, GtkWidget *widget) {
-	subscription_update(((nodePtr)callback_data)->subscription, FEED_REQ_PRIORITY_HIGH);
+	node_update_subscription((nodePtr)callback_data, GUINT_TO_POINTER (FEED_REQ_PRIORITY_HIGH));
 }
 
-static void ui_popup_mark_as_read(gpointer callback_data, guint callback_action, GtkWidget *widget) {
-	node_mark_all_read((nodePtr)callback_data);
+static void
+ui_popup_mark_as_read (gpointer callback_data, guint callback_action, GtkWidget *widget) 
+{
+	feedlist_mark_all_read ((nodePtr)callback_data);
 }
 
-static void ui_popup_add_feed(gpointer callback_data, guint callback_action, GtkWidget *widget) {
-	node_request_interactive_add(NODE_TYPE_FEED);
+static void
+ui_popup_add_feed (gpointer callback_data, guint callback_action, GtkWidget *widget)
+{
+	node_type_request_interactive_add (feed_get_node_type ());
 }
 
-static void ui_popup_add_folder(gpointer callback_data, guint callback_action, GtkWidget *widget) {
-	node_request_interactive_add(NODE_TYPE_FOLDER);
+static void
+ui_popup_add_folder(gpointer callback_data, guint callback_action, GtkWidget *widget)
+{
+	node_type_request_interactive_add (folder_get_node_type ());
 }
 
-static void ui_popup_add_vfolder(gpointer callback_data, guint callback_action, GtkWidget *widget) {
-	node_request_interactive_add(NODE_TYPE_VFOLDER);
+static void
+ui_popup_add_vfolder (gpointer callback_data, guint callback_action, GtkWidget *widget)
+{
+	node_type_request_interactive_add (vfolder_get_node_type ());
 }
 
-static void ui_popup_add_source(gpointer callback_data, guint callback_action, GtkWidget *widget) {
-	node_request_interactive_add(NODE_TYPE_SOURCE);
+static void
+ui_popup_add_source (gpointer callback_data, guint callback_action, GtkWidget *widget)
+{
+	node_type_request_interactive_add (node_source_get_node_type ());
 }
 
-static void ui_popup_add_newsbin(gpointer callback_data, guint callback_action, GtkWidget *widget) {
-	node_request_interactive_add(NODE_TYPE_NEWSBIN);
+static void
+ui_popup_add_newsbin (gpointer callback_data, guint callback_action, GtkWidget *widget)
+{
+	node_type_request_interactive_add (newsbin_get_node_type ());
 }
 
-static void ui_popup_properties(gpointer callback_data, guint callback_action, GtkWidget *widget) {
-	node_request_properties((nodePtr)callback_data);
+static void
+ui_popup_properties (gpointer callback_data, guint callback_action, GtkWidget *widget)
+{
+	nodePtr node = (nodePtr) callback_data;
+	
+	NODE_TYPE (node)->request_properties (node);
 }
 
 static void ui_popup_delete(gpointer callback_data, guint callback_action, GtkWidget *widget) {
@@ -364,9 +382,9 @@ gboolean on_mainfeedlist_button_press_event(GtkWidget *widget,
 			break;
 		case 2:
 			if(node) {
-				node_mark_all_read(node);
-				itemview_update_node_info(node);
-				itemview_update();
+				feedlist_mark_all_read (node);
+				itemview_update_node_info (node);
+				itemview_update ();
 			}
 			break;
 		case 3:

@@ -24,6 +24,7 @@
 #include <glib.h>
 #include <gmodule.h>
 #include "node.h"
+#include "node_type.h"
 
 /* Liferea allows to have different sources in the feed list.
    Sources can but do not need to be single instance only. Sources
@@ -185,6 +186,12 @@ void node_source_auto_update (nodePtr node);
 void ui_node_source_type_dialog (nodePtr node);
 
 /* implementation of the node type interface */
+
+#define IS_NODE_SOURCE(node) (node->type == node_source_get_node_type ())
+
+/** 
+ * Returns the node source node type implementation.
+ */
 nodeTypePtr node_source_get_node_type (void);
 
 #endif

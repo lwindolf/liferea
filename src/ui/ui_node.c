@@ -28,6 +28,7 @@
 #include "conf.h"
 #include "debug.h"
 #include "feedlist.h"
+#include "folder.h"
 #include "ui/ui_dialog.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_node.h"
@@ -164,34 +165,36 @@ void ui_node_check_if_folder_is_empty(const gchar *nodeId) {
 	ui_node_remove_empty_node(iter);
 }
 
-void ui_node_add(nodePtr parent, nodePtr node, gint position) {
+void
+ui_node_add (nodePtr parent, nodePtr node, gint position)
+{
 	GtkTreeIter	*iter, *parentIter = NULL;
 
-	debug2(DEBUG_GUI, "adding node \"%s\" as child of parent=\"%s\"", node_get_title(node), (NULL != parent)?node_get_title(parent):"feed list root");
+	debug2 (DEBUG_GUI, "adding node \"%s\" as child of parent=\"%s\"", node_get_title(node), (NULL != parent)?node_get_title(parent):"feed list root");
 
-	g_assert(NULL != parent);
-	g_assert(NULL == ui_node_to_iter(node->id));
+	g_assert (NULL != parent);
+	g_assert (NULL == ui_node_to_iter (node->id));
 
 	/* if parent is NULL we have the root folder and don't create a new row! */
-	iter = (GtkTreeIter *)g_new0(GtkTreeIter, 1);
+	iter = (GtkTreeIter *)g_new0 (GtkTreeIter, 1);
 	
-	if(parent != feedlist_get_root())
-		parentIter = ui_node_to_iter(parent->id);
+	if (parent != feedlist_get_root ())
+		parentIter = ui_node_to_iter (parent->id);
 
-	if(position < 0)
-		gtk_tree_store_append(feedstore, iter, parentIter);
+	if (position < 0)
+		gtk_tree_store_append (feedstore, iter, parentIter);
 	else
-		gtk_tree_store_insert(feedstore, iter, parentIter, position);
+		gtk_tree_store_insert (feedstore, iter, parentIter, position);
 
-	gtk_tree_store_set(feedstore, iter, FS_PTR, node, -1);
-	ui_node_add_iter(node->id, iter);
-	ui_node_update(node->id);
+	gtk_tree_store_set (feedstore, iter, FS_PTR, node, -1);
+	ui_node_add_iter (node->id, iter);
+	ui_node_update (node->id);
 	
-	if(parent != feedlist_get_root())
-		ui_node_check_if_folder_is_empty(parent->id);
+	if (parent != feedlist_get_root ())
+		ui_node_check_if_folder_is_empty (parent->id);
 
-	if(NODE_TYPE_FOLDER == node->type)
-		ui_node_check_if_folder_is_empty(node->id);
+	if (IS_FOLDER (node))
+		ui_node_check_if_folder_is_empty (node->id);
 }
 
 void ui_node_remove_node(nodePtr node) {

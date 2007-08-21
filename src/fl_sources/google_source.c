@@ -51,15 +51,11 @@ google_source_check_for_removal (nodePtr node, gpointer user_data)
 {
 	gchar		*expr = NULL;
 
-	switch (node->type) {
-		case NODE_TYPE_FEED:
-			expr = g_strdup_printf ("/object/list[@name='subscriptions']/object/string[@name='title'][. = '%s']", node_get_title (node));
-			break;
-		case NODE_TYPE_FOLDER:
-		default:
-			g_warning("opml_source_check_for_removal(): This should never happen...");
-			return;
-			break;
+	if (IS_FEED (node)) {
+		expr = g_strdup_printf ("/object/list[@name='subscriptions']/object/string[@name='title'][. = '%s']", node_get_title (node));
+	} else {
+		g_warning("opml_source_check_for_removal(): This should never happen...");
+		return;
 	}
 	
 	if (!xpath_find ((xmlNodePtr)user_data, expr)) {

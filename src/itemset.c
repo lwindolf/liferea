@@ -53,7 +53,7 @@ itemset_get_max_item_count (itemSetPtr itemSet)
 {
 	nodePtr node = node_from_id (itemSet->nodeId);
 	
-	if (node && NODE_TYPE_FEED == node->type)
+	if (node && IS_FEED (node))
 		return feed_get_max_item_count (node);
 
 	return G_MAXUINT;

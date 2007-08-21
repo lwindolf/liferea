@@ -648,12 +648,6 @@ feed_remove (nodePtr node)
 	db_subscription_remove (node->id);
 }
 
-static void
-feed_mark_all_read (nodePtr node)
-{
-	itemlist_mark_all_read (node->id);
-}
-
 static gchar *
 feed_render (nodePtr node)
 {
@@ -690,7 +684,6 @@ feed_get_node_type (void)
 		NODE_CAPABILITY_UPDATE,
 		"feed",		/* not used, feed format ids are used instead */
 		NULL,
-		NODE_TYPE_FEED,
 		feed_import,
 		feed_export,
 		feed_load,
@@ -698,7 +691,6 @@ feed_get_node_type (void)
 		feed_update_unread_count,
 		feed_process_update_result,
 		feed_remove,
-		feed_mark_all_read,
 		feed_render,
 		feed_add,
 		feed_properties,

@@ -44,6 +44,7 @@ liferea_bin_SOURCES = \
 	html.c html.h \
 	htmlview.c htmlview.h \
 	item.c item.h \
+	item_state.c item_state.h \
 	itemset.c itemset.h \
 	itemlist.c itemlist.h \
 	itemview.c itemview.h \
@@ -52,6 +53,7 @@ liferea_bin_SOURCES = \
 	net.c net.h \
 	newsbin.c newsbin.h \
 	node.c node.h \
+	node_type.c node_type.h \
 	plugin.c plugin.h \
 	render.c render.h \
 	rule.c rule.h \

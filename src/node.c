@@ -41,26 +41,6 @@
 #include "ui/ui_node.h"
 
 static GHashTable *nodes = NULL;
-static GSList *nodeTypes = NULL;
-
-void node_type_register(nodeTypePtr nodeType) {
-
-	/* all attributes and methods are mandatory! */
-	g_assert(nodeType->id);
-	g_assert(0 != nodeType->type);
-	g_assert(nodeType->import);
-	g_assert(nodeType->export);
-	g_assert(nodeType->load);
-	g_assert(nodeType->save);
-	g_assert(nodeType->update_counters);
-	g_assert(nodeType->remove);
-	g_assert(nodeType->mark_all_read);
-	g_assert(nodeType->render);
-	g_assert(nodeType->request_add);
-	g_assert(nodeType->request_properties);
-	
-	nodeTypes = g_slist_append(nodeTypes, (gpointer)nodeType);
-}
 
 /* returns a unique node id */
 gchar * node_new_id() {
@@ -105,7 +85,6 @@ nodePtr node_new(void) {
 	node->sortColumn = IS_TIME;
 	node->sortReversed = TRUE;	/* default sorting is newest date at top */
 	node->available = TRUE;
-	node->type = NODE_TYPE_INVALID;
 	node_set_icon(node, NULL);	/* initialize favicon file name */
 
 	id = node_new_id();
@@ -115,29 +94,10 @@ nodePtr node_new(void) {
 	return node;
 }
 
-static nodeTypePtr node_get_type_impl(guint type) {
-	GSList	*iter = nodeTypes;
-	
-	while(iter) {
-		if(type == ((nodeTypePtr)iter->data)->type)
-			return iter->data;		
-		iter = g_slist_next(iter);
-	}
-	
-	g_error("node_get_type_impl(): fatal unknown node type %u", type);
-	return NULL;
-}
-
-void node_set_type(nodePtr node, nodeTypePtr type) {
-
-	node->nodeType = type;
-	node->type = type?type->type:NODE_TYPE_INVALID;
-}
-
 void node_set_data(nodePtr node, gpointer data) {
 
 	g_assert(NULL == node->data);
-	g_assert(NULL != node->nodeType);
+	g_assert(NULL != node->type);
 
 	node->data = data;
 }
@@ -147,7 +107,7 @@ node_set_subscription (nodePtr node, subscriptionPtr subscription)
 {
 
 	g_assert (NULL == node->subscription);
-	g_assert (NULL != node->nodeType);
+	g_assert (NULL != node->type);
 		
 	node->subscription = subscription;
 	subscription->node = node;
@@ -227,20 +187,21 @@ node_free (nodePtr node)
 	g_free (node);
 }
 
-static void node_calc_counters(nodePtr node) {
-
+static void
+node_calc_counters (nodePtr node)
+{
 	/* vfolder unread counts are not interesting
 	   in the following propagation handling */
-	if(NODE_TYPE_VFOLDER == node->type)
+	if (IS_VFOLDER (node))
 		return;
 
 	/* Order is important! First update all children
 	   so that hierarchical nodes (folders and feed
 	   list sources) can determine their own unread
 	   count as the sum of all childs afterwards */
-	node_foreach_child(node, node_calc_counters);
+	node_foreach_child (node, node_calc_counters);
 	
-	NODE_TYPE(node)->update_counters(node);
+	NODE_TYPE (node)->update_counters (node);
 }
 
 static void node_update_parent_counters(nodePtr node) {
@@ -297,10 +258,11 @@ node_merge_items (nodePtr node, GList *items)
 	feedlist_update_new_item_count (newCount);
 }
 
+// FIXME: bad interface, do not imply node icons are favicons
 void
 node_update_favicon (nodePtr node, GTimeVal *now)
 {
-	if (NODE_TYPE_FEED == node->type) {
+	if (IS_FEED (node)) {
 		debug1 (DEBUG_UPDATE, "favicon of node %s needs to be updated...", node->title);
 		subscription_update_favicon (node->subscription, now);
 	}
@@ -310,43 +272,39 @@ node_update_favicon (nodePtr node, GTimeVal *now)
 		node_foreach_child_data (node, node_update_favicon, now);
 }
 
-/* plugin and import callbacks and helper functions */
-
-const gchar *node_type_to_str(nodePtr node) {
-
-	switch(node->type) {
-		case NODE_TYPE_FEED:
-			g_assert(NULL != node->data);
-			return feed_type_fhp_to_str(((feedPtr)(node->data))->fhp);
-			break;
-		default:
-			return NODE_TYPE(node)->id;
-			break;
-	}
-
-	return NULL;
+itemSetPtr
+node_get_itemset (nodePtr node)
+{
+	return NODE_TYPE (node)->load (node);
 }
 
-nodeTypePtr node_str_to_type(const gchar *str) {
-	GSList	*iter = nodeTypes;
+void
+node_process_update_result (nodePtr node, requestPtr request)
+{
+	if (NODE_TYPE (node)->process_update_result)
+		NODE_TYPE (node)->process_update_result (node, request);
+}
 
-	g_assert(NULL != str);
-
-	if(g_str_equal(str, ""))	/* type maybe "" if initial download is not yet done */
-		return feed_get_node_type();
-
-	if(NULL != feed_type_str_to_fhp(str))
-		return feed_get_node_type();
+void
+node_mark_all_read (nodePtr node)
+{
+	if (0 != node->unreadCount) {
+		item_state_set_all_read (node);
+		node->unreadCount = 0;
+		node->needsUpdate = TRUE;
+	}
 		
-	/* check against all node types */
-	while(iter) {
-		if(g_str_equal(str, ((nodeTypePtr)iter->data)->id))
-			return (nodeTypePtr)iter->data;
-		iter = g_slist_next(iter);
-	}
-
-	return NULL;
+	if (node->children)
+		node_foreach_child (node, node_mark_all_read);
 }
+
+gchar *
+node_render(nodePtr node)
+{
+	return NODE_TYPE (node)->render (node);
+}
+
+/* import callbacks and helper functions */
 
 void node_add_child(nodePtr parent, nodePtr node, gint position) {
 
@@ -373,20 +331,6 @@ void node_add(nodePtr node, nodePtr parent, gint pos, guint flags) {
 
 	node_add_child(parent, node, pos);
 	subscription_update(node->subscription, flags);
-}
-
-/* Interactive node adding (e.g. feed menu->new subscription) */
-void node_request_interactive_add(guint type) {
-	nodeTypePtr	nodeType;
-	nodePtr		parent;
-
-	parent = feedlist_get_insertion_point();
-
-	if(0 == (NODE_TYPE(parent->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS))
-		return;
-
-	nodeType = node_get_type_impl(type);
-	nodeType->request_add(parent);
 }
 
 /* Automatic subscription adding (e.g. URL DnD), creates a new feed node
@@ -428,7 +372,7 @@ node_request_remove (nodePtr node)
 	   search folders */
 	itemlist_remove_all_items (node);
 	
-	node_remove (node);
+	NODE_TYPE (node)->remove (node);
 
 	node->parent->children = g_slist_remove (node->parent->children, node);
 
@@ -469,47 +413,12 @@ gchar * node_default_render(nodePtr node) {
 	return result;
 }
 
-/* wrapper for node type interface */
-
-void node_import(nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean trusted) {
-	NODE_TYPE(node)->import(node, parent, cur, trusted);
-}
-
-void node_export(nodePtr node, xmlNodePtr cur, gboolean trusted) {
-	NODE_TYPE(node)->export(node, cur, trusted);
-}
-
-itemSetPtr node_get_itemset(nodePtr node) {
-	return NODE_TYPE(node)->load(node);
-}
-
-void node_save(nodePtr node) {
-	NODE_TYPE(node)->save(node);
-}
+/* helper functions to be used with node_foreach* */
 
 void
-node_process_update_result (nodePtr node, requestPtr request)
+node_save(nodePtr node)
 {
-	if (NODE_TYPE (node)->process_update_result)
-		NODE_TYPE (node)->process_update_result (node, request);
-}
-
-void node_remove(nodePtr node) {
-	NODE_TYPE(node)->remove(node);
-}
-
-void node_mark_all_read(nodePtr node) {
-
-	if(0 != node->unreadCount)
-		NODE_TYPE(node)->mark_all_read(node);
-}
-
-gchar * node_render(nodePtr node) {
-	return NODE_TYPE(node)->render(node);
-}
-
-void node_request_properties(nodePtr node) {
-	NODE_TYPE(node)->request_properties(node);
+	NODE_TYPE(node)->save(node);
 }
 
 /* node attributes encapsulation */
@@ -580,33 +489,27 @@ void node_set_view_mode(nodePtr node, guint newMode) { node->viewMode = newMode;
 
 gboolean node_get_view_mode(nodePtr node) { return node->viewMode; }
 
-gboolean node_load_link_preferred(nodePtr node) {
+gboolean
+node_load_link_preferred (nodePtr node)
+{
+	if (IS_FEED (node))
+		return ((feedPtr)node->data)->loadItemLink;
 
-	switch(node->type) {
-		case NODE_TYPE_FEED:
-			return ((feedPtr)node->data)->loadItemLink;
-			break;
-		default:
-			return FALSE;
-			break;
-	}
+	return FALSE;
 }
 
-const gchar * node_get_base_url(nodePtr node) {
+const gchar *
+node_get_base_url(nodePtr node)
+{
 	const gchar 	*baseUrl = NULL;
 
-	switch(node->type) {
-		case NODE_TYPE_FEED:
-			baseUrl = feed_get_html_url((feedPtr)node->data);
-			break;
-		default:
-			break;
-	}
+	if (IS_FEED (node))
+		baseUrl = feed_get_html_url ((feedPtr)node->data);
 
 	/* prevent feed scraping commands to end up as base URI */
-	if(!((baseUrl != NULL) &&
-	     (baseUrl[0] != '|') &&
-	     (strstr(baseUrl, "://") != NULL)))
+	if (!((baseUrl != NULL) &&
+	      (baseUrl[0] != '|') &&
+	      (strstr(baseUrl, "://") != NULL)))
 	   	baseUrl = NULL;
 
 	return baseUrl;

@@ -27,11 +27,13 @@
 #include "common.h"
 #include "debug.h"
 #include "feed.h"
+#include "folder.h"
 #include "htmlview.h"
 #include "item.h"
 #include "itemlist.h"
 #include "itemset.h"
 #include "render.h"
+#include "vfolder.h"
 #include "ui/ui_htmlview.h"
 
 extern htmlviewPluginPtr htmlviewPlugin;
@@ -174,7 +176,7 @@ itemset_to_xml (nodePtr node)
 	       xmlNewTextChild (itemSetNode, NULL, "source", subscription_get_source (node->subscription));
 
 	// FIXME: should not be node type specific! Can be fixed by moving the feed link into subscription metadata!
-	if (NODE_TYPE_FEED == node->type)
+	if (IS_FEED (node))
 	       xmlNewTextChild (itemSetNode, NULL, "link", feed_get_html_url (node->data));
 
 	return doc;
@@ -202,8 +204,7 @@ htmlview_render_item (itemPtr item,
 			
 	item_to_xml(item, xmlDocGetRootElement (doc));
 			
-	if (NODE_TYPE_FEED == node->type) 
-	{
+	if (IS_FEED (node)) {
 		xmlNodePtr feed;
 		feed = xmlNewChild(xmlDocGetRootElement(doc), NULL, "feed", NULL);
 		feed_to_xml(node, feed);
@@ -357,8 +358,8 @@ htmlview_update (GtkWidget *widget,
 			   sets displaying everything in summary because of only a
 			   single feed without item descriptions would make no sense. */
 
-			summaryMode = (NODE_TYPE_FOLDER != htmlView_priv.node->type) && 
-	        		      (NODE_TYPE_VFOLDER != htmlView_priv.node->type) && 
+			summaryMode = !IS_FOLDER (htmlView_priv.node) && 
+	        		      !IS_VFOLDER (htmlView_priv.node) && 
 	        		      (htmlView_priv.missingContent > 3);
 
 			/* concatenate all items */
