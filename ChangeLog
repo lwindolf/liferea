@@ -28,6 +28,7 @@
 	* Fix for ISO8601 date format second fraction parsing
 	  that caused missing timezone information for item dates.
 	  (patch from Alexander Hess)
+	* Fixes SF #1768288 Ctrl-N hotkey assigned twice
 	  
 	Translations
 	
