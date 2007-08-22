@@ -29,6 +29,8 @@
 	  that caused missing timezone information for item dates.
 	  (patch from Alexander Hess)
 	* Fixes SF #1768288 Ctrl-N hotkey assigned twice
+	* Fixes SF #1772192 No toolbar labels when displaying text
+	  and icons (reported by Jérôme Guelfucci)
 	  
 	Translations
 	
