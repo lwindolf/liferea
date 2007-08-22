@@ -11,6 +11,8 @@
 	* Fix for SF #1770409: GNOME proxy settings not handled
 	  correctly (reported by Luca Di Stefano)
 	* Fix for SF #1768288: Ctrl-N hotkey assigned twice
+	* Fix for SF #1772192: no labels in toolbar when text 
+	  and icons configured (reported by Jérôme Guelfucci)
 
 
 2007-08-18  Lars Lindner  <lars.lindner@gmail.com>
