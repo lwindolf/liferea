@@ -1212,6 +1212,14 @@ static void ui_mainwindow_create_menus(struct mainwindow *mw) {
 
 	mw->menubar = gtk_ui_manager_get_widget (ui_manager, "/MainwindowMenubar");
 	mw->toolbar = gtk_ui_manager_get_widget (ui_manager, "/maintoolbar");
+	
+	/* what a pain, why is there no markup for this option? */
+	g_object_set (G_OBJECT (gtk_ui_manager_get_widget (ui_manager, "/maintoolbar/newFeedButton")), "is_important", TRUE, NULL);
+	g_object_set (G_OBJECT (gtk_ui_manager_get_widget (ui_manager, "/maintoolbar/nextUnreadButton")), "is_important", TRUE, NULL);
+	g_object_set (G_OBJECT (gtk_ui_manager_get_widget (ui_manager, "/maintoolbar/MarkAsReadButton")), "is_important", TRUE, NULL);
+	g_object_set (G_OBJECT (gtk_ui_manager_get_widget (ui_manager, "/maintoolbar/UpdateAllButton")), "is_important", TRUE, NULL);
+	g_object_set (G_OBJECT (gtk_ui_manager_get_widget (ui_manager, "/maintoolbar/SearchButton")), "is_important", TRUE, NULL);
+	g_object_set (G_OBJECT (gtk_ui_manager_get_widget (ui_manager, "/maintoolbar/PreferencesButton")), "is_important", TRUE, NULL);
 }
 
 void ui_mainwindow_update_feedsinfo(void) {
