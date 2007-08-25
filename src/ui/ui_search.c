@@ -127,7 +127,7 @@ on_searchentry_activate (GtkEntry *entry, gpointer user_data)
 	                                "feed list."));
 	g_string_append_printf (buffer, "</p></div>");
 	htmlview_finish_output (buffer);
-	ui_htmlview_write (ui_mainwindow_get_active_htmlview (), buffer->str, NULL);
+	liferea_htmlview_write (ui_mainwindow_get_active_htmlview (), buffer->str, NULL);
 	g_string_free (buffer, TRUE);
 
 	/* enable vfolder add button */	

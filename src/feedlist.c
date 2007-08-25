@@ -280,39 +280,41 @@ feedlist_unselect (void)
 	ui_mainwindow_update_feed_menu (FALSE, FALSE);
 }
 
-void feedlist_selection_changed(nodePtr node) {
+void
+feedlist_selection_changed (nodePtr node)
+{
 	nodePtr	displayed_node;
 
-	debug_enter("feedlist_selection_changed");
+	debug_enter ("feedlist_selection_changed");
 
-	debug1(DEBUG_GUI, "new selected node: %s", node?node_get_title(node):"none");
-	if(node != selectedNode) {
-		displayed_node = itemlist_get_displayed_node();
+	debug1 (DEBUG_GUI, "new selected node: %s", node?node_get_title (node):"none");
+	if (node != selectedNode) {
+		displayed_node = itemlist_get_displayed_node ();
 
 		/* When the user selects a feed in the feed list we
 		   assume that he got notified of the new items or
 		   isn't interested in the event anymore... */
-		if(0 != newCount)
-			feedlist_reset_new_item_count();
+		if (0 != newCount)
+			feedlist_reset_new_item_count ();
 
-		script_run_for_hook(SCRIPT_HOOK_FEED_UNSELECT);
+		script_run_for_hook (SCRIPT_HOOK_FEED_UNSELECT);
 
 		/* Unload visible items. */
-		itemlist_unload(TRUE);
+		itemlist_unload (TRUE);
 	
 		/* Load items of new selected node. */
 		selectedNode = node;
-		if(selectedNode) {
-			itemlist_set_view_mode(node_get_view_mode(selectedNode));		
-			itemlist_load(selectedNode);
+		if (selectedNode) {
+			itemlist_set_view_mode (node_get_view_mode (selectedNode));		
+			itemlist_load (selectedNode);
 		} else {
-			ui_htmlview_clear(ui_mainwindow_get_active_htmlview());
+			liferea_htmlview_clear (ui_mainwindow_get_active_htmlview ());
 		}
 		
-		script_run_for_hook(SCRIPT_HOOK_FEED_SELECTED);
+		script_run_for_hook (SCRIPT_HOOK_FEED_SELECTED);
 	}
 
-	debug_exit("feedlist_selection_changed");
+	debug_exit ("feedlist_selection_changed");
 }
 
 /* menu callbacks */

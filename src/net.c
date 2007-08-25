@@ -297,7 +297,7 @@ network_set_proxy (gchar *newProxyName, guint newProxyPort)
 	proxyname = newProxyName;
 	proxyport = newProxyPort;
 	
-	ui_htmlview_update_proxy ();
+	liferea_htmlview_update_proxy ();
 }
 
 void
@@ -308,7 +308,7 @@ network_set_proxy_auth (gchar *newProxyUsername, gchar *newProxyPassword)
 	proxyusername = newProxyUsername;
 	proxypassword = newProxyPassword;
 	
-	ui_htmlview_update_proxy ();
+	liferea_htmlview_update_proxy ();
 }
 
 static size_t

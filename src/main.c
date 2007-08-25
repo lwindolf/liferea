@@ -49,7 +49,6 @@
 #include "vfolder.h"
 #include "xml.h"
 #include "ui/ui_feedlist.h"
-#include "ui/ui_htmlview.h"
 #include "ui/ui_mainwindow.h"
 #include "ui/ui_session.h"
 #include "sync/avahi_publisher.h"
@@ -253,7 +252,6 @@ int main(int argc, char *argv[]) {
 	conf_init();			/* initialize gconf */
 	update_init();			/* initialize the download subsystem */
 	plugin_mgmt_init();		/* get list of plugins and initialize them */
-	ui_htmlview_init();		/* setup HTML widgets */
 	feed_init();			/* register feed types */
 	conf_load();			/* load global feed settings */
 	script_init();			/* setup scripting if supported */
@@ -307,14 +305,13 @@ int main(int argc, char *argv[]) {
 	gtk_main();
 	
 	g_object_unref (G_OBJECT (dbus));
-	bacon_message_connection_free(bacon_connection);
+	bacon_message_connection_free (bacon_connection);
 	return 0;
 }
 
 gboolean
 on_quit (GtkWidget *widget, GdkEvent *event, gpointer user_data)
 {
-
 	debug_enter ("on_quit");
 
 	/* order is important ! */

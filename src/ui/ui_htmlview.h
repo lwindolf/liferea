@@ -1,8 +1,7 @@
 /**
- * @file ui_htmlview.h common interface for browser module implementations
- * and module loading functions
+ * @file ui_htmlview.h  Liferea HTML rendering using rendering plugins
  *
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,10 +22,187 @@
 #define _UI_HTMLVIEW_H
 
 #include <glib.h>
+#include <glib-object.h>
 #include <gmodule.h>
 #include <gtk/gtk.h>
-#include "htmlview.h"
 #include "plugin.h"
+
+G_BEGIN_DECLS
+
+#define LIFEREA_HTMLVIEW_TYPE		(liferea_htmlview_get_type ())
+#define LIFEREA_HTMLVIEW(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), LIFEREA_HTMLVIEW_TYPE, LifereaHtmlView))
+#define LIFEREA_HTMLVIEW_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), LIFEREA_HTMLVIEW_TYPE, LifereaHtmlViewClass))
+#define IS_LIFEREA_HTMLVIEW(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), LIFEREA_HTMLVIEW_TYPE))
+#define IS_LIFEREA_HTMLVIEW_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), LIFEREA_HTMLVIEW_TYPE))
+
+typedef struct LifereaHtmlView		LifereaHtmlView;
+typedef struct LifereaHtmlViewClass	LifereaHtmlViewClass;
+typedef struct LifereaHtmlViewPrivate	LifereaHtmlViewPrivate;
+
+struct LifereaHtmlView
+{
+	GObject		parent;
+	
+	/*< private >*/
+	LifereaHtmlViewPrivate	*priv;
+};
+
+struct LifereaHtmlViewClass 
+{
+	GtkObjectClass parent_class;
+};
+
+GType liferea_htmlview_get_type	(void);
+
+/**
+ * Registers an available HTML rendering plugin.
+ *
+ * @param plugin	plugin info structure
+ * @param handle	GModule handle
+ *
+ * @returns TRUE on success
+ */
+gboolean liferea_htmlview_plugin_register (pluginPtr plugin, GModule *handle);
+
+/**
+ * Releases the effectively used HTML rendering plugin.
+ */
+void liferea_htmlview_plugin_deregister (void);
+
+/**
+ * Performs startup setup of htmlview plugins.
+ */
+void liferea_htmlview_plugin_init (void);
+
+/** 
+ * Function to set up the html view widget for the three
+ * and two pane view. 
+ *
+ * @returns a new Liferea HTML widget
+ */
+LifereaHtmlView * liferea_htmlview_new (gboolean forceInternalBrowsing);
+
+/**
+ * Returns the rendering widget for a HTML view. Only
+ * to be used by ui_mainwindow.c for widget reparenting.
+ *
+ * @param htmlview	the HTML view
+ *
+ * @returns the rendering widget
+ */
+GtkWidget *liferea_htmlview_get_widget (LifereaHtmlView *htmlview);
+
+/** 
+ * Loads a emtpy HTML page. Resets any item view state.
+ *
+ * @param htmlview	the HTML view widget to clear
+ */
+void	liferea_htmlview_clear (LifereaHtmlView *htmlview);
+
+/**
+ * Method to display the passed HTML source to the HTML widget.
+ *
+ * @param htmlview	The htmlview widget to be set
+ * @param string	HTML source
+ * @param base		base url for resolving relative links
+ */
+void	liferea_htmlview_write (LifereaHtmlView *htmlview, const gchar *string, const gchar *base);
+
+enum {
+	UI_HTMLVIEW_LAUNCH_DEFAULT,
+	UI_HTMLVIEW_LAUNCH_EXTERNAL,
+	UI_HTMLVIEW_LAUNCH_INTERNAL
+};
+
+/**
+ * Checks if the passed URL is a special internal Liferea
+ * link that should never be handled by the browser. To be
+ * used by HTML rendering plugins.
+ *
+ * @param url		the URL to check
+ * @return		TRUE if it is a special URL
+ */
+gboolean liferea_htmlview_is_special_url (const gchar *url);
+
+/**
+ * Callback for plugins to process on-url events. Depending on 
+ * the link type the link will be copied to the status bar.
+ *
+ * @param url		new URL (or empty string)
+ */
+void	liferea_htmlview_on_url (const gchar *url);
+
+/**
+ * Launches the specified URL in the configured browser or
+ * in inside the HTML widget according to the launchType
+ * parameter.
+ *
+ * @param htmlview	The htmlview widget to be set
+ * @param url		URL to launch
+ * @param launchType    Type of launch request: 0 = default, 1 = external, 2 = internal
+ */
+void	liferea_htmlview_launch_URL (LifereaHtmlView *htmlview, const gchar *url, gint launchType);
+
+/**
+ * Function to change the zoom level of the HTML widget.
+ * 1.0 is a 1:1 zoom.
+ *
+ * @param diff	New zoom
+ */
+void	liferea_htmlview_set_zoom (LifereaHtmlView *htmlview, gfloat zoom);
+
+/**
+ * Function to determine the current zoom level.
+ *
+ * @param htmlview htmlview to examine
+ *
+ * @return the currently set zoom level 
+ */
+gfloat	liferea_htmlview_get_zoom (LifereaHtmlView *htmlview);
+
+/**
+ * Function to execute the commands needed to open up a URL with the
+ * browser specified in the preferences.
+ *
+ * @param the URI to load
+ *
+ * @returns TRUE if the URI was opened, or FALSE if there was an error
+ */
+
+gboolean liferea_htmlview_launch_in_external_browser (const gchar *uri);
+
+/**
+ * Function scrolls down the item views scrolled window.
+ *
+ * @return FALSE if the scrolled window vertical scroll position is at
+ * the maximum and TRUE if the vertical adjustment was increased.
+ */
+gboolean liferea_htmlview_scroll (void);
+
+/**
+ * To be called when HTML view needs to update the proxy settings
+ * of the rendering widget implementation.
+ */
+void liferea_htmlview_update_proxy (void);
+
+/**
+ * To be called when HTML view needs to update the online state
+ * of the rendering widget implementation.
+ *
+ * @param online	the new online state
+ */
+void liferea_htmlview_set_online (gboolean online);
+
+/* glade callbacks */
+void on_popup_launch_link_selected(gpointer callback_data, guint callback_action, GtkWidget *widget);
+void on_popup_copy_url_selected(gpointer callback_data, guint callback_action, GtkWidget *widget);
+void on_popup_subscribe_url_selected(gpointer callback_data, guint callback_action, GtkWidget *widget);
+void on_popup_zoomin_selected(gpointer callback_data, guint callback_action, GtkWidget *widget);
+void on_popup_zoomout_selected(gpointer callback_data, guint callback_action, GtkWidget *widget);
+
+G_END_DECLS
+
+/* interface for HTML rendering plugins */
 
 #define ENCLOSURE_PROTOCOL	"liferea-enclosure://"
 
@@ -42,7 +218,7 @@ typedef struct htmlviewPlugin {
 	void 		(*plugin_init)		(void);
 	void 		(*plugin_deinit) 	(void);
 	
-	GtkWidget*	(*create)		(gboolean forceInternalBrowsing);
+	GtkWidget*	(*create)		(LifereaHtmlView *htmlview, gboolean forceInternalBrowsing);
 	/*void		(*destroy)		(GtkWidget *widget);*/
 	void		(*write)		(GtkWidget *widget, const gchar *string, guint length, const gchar *base, const gchar *contentType);
 	void		(*launch)		(GtkWidget *widget, const gchar *url);
@@ -59,143 +235,5 @@ typedef struct htmlviewPlugin {
         G_MODULE_EXPORT htmlviewPluginPtr htmlview_plugin_get_info() { \
                 return &plugin; \
         }
-
-/** 
- * This function searches the html browser module directory
- * for available modules and builds a list to be displayed in
- * the preferences dialog. Furthermore this function tries
- * to load the configured browser module or if this fails
- * one of the other available modules.
- */
-void	ui_htmlview_init(void);
-
-/**
- * Close/free any resources that were allocated when ui_htmlview_init
- * was called.
- */
-void	ui_htmlview_deinit();
-
-/**
- * Loads a feed list provider plugin.
- *
- * @param plugin	plugin info structure
- * @param handle	GModule handle
- *
- * @returns TRUE on success
- */
-gboolean ui_htmlview_plugin_load(pluginPtr plugin, GModule *handle);
-
-/** 
- * Function to set up the html view widget for the three
- * and two pane view. 
- */
-GtkWidget *ui_htmlview_new(gboolean forceInternalBrowsing);
-
-/* interface for direct HTML writing (item rendering 
-   interface is defined in render.h)... */
-
-/** 
- * Loads a emtpy HTML page. Resets any item view state.
- *
- * @param htmlview	the HTML view widget to clear
- */
-void	ui_htmlview_clear(GtkWidget *htmlview);
-
-/**
- * Method to display the passed HTML source to the HTML widget.
- *
- * @param htmlview	The htmlview widget to be set
- * @param string	HTML source
- * @param base		base url for resolving relative links
- */
-void	ui_htmlview_write(GtkWidget *htmlview, const gchar *string, const gchar *base);
-
-enum {
-	UI_HTMLVIEW_LAUNCH_DEFAULT,
-	UI_HTMLVIEW_LAUNCH_EXTERNAL,
-	UI_HTMLVIEW_LAUNCH_INTERNAL
-};
-
-/**
- * Checks if the passed URL is a special internal Liferea
- * link that should never be handled by the browser.
- *
- * @param url		the URL to check
- * @return		TRUE if it is a special URL
- */
-gboolean ui_htmlview_is_special_url(const gchar *url);
-
-/**
- * Callback to process on-url events. Depending on the
- * link type the link will be copied to the status bar.
- *
- * @param url		new URL (or empty string)
- */
-void	ui_htmlview_on_url(const gchar *url);
-
-/**
- * Launches the specified URL in the configured browser or
- * in case of Mozilla inside the HTML widget.
- *
- * @param htmlview	The htmlview widget to be set
- * @param url		URL to launch
- * @param launchType    Type of launch request: 0 = default, 1 = external, 2 = internal
- */
-void	ui_htmlview_launch_URL(GtkWidget *htmlview, const gchar *url, gint launchType);
-
-/**
- * Function to change the zoom level of the HTML widget.
- * 1.0 is a 1:1 zoom.
- *
- * @param diff	New zoom
- */
-void	ui_htmlview_set_zoom(GtkWidget *htmlview, gfloat zoom);
-
-/**
- * Function to determine the current zoom level.
- *
- * @param htmlview htmlview to examine
- *
- * @return the currently set zoom level 
- */
-gfloat	ui_htmlview_get_zoom(GtkWidget *htmlview);
-
-/**
- * Function to execute the commands needed to open up a URL with the
- * browser specified in the preferences.
- *
- * @param the URI to load
- *
- * @returns TRUE if the URI was opened, or FALSE if there was an error
- */
-
-gboolean ui_htmlview_launch_in_external_browser(const gchar *uri);
-
-/**
- * Function scrolls down the item views scrolled window.
- *
- * @return FALSE if the scrolled window vertical scroll position is at
- * the maximum and TRUE if the vertical adjustment was increased.
- */
-gboolean ui_htmlview_scroll(void);
-
-/**
- * Callback for proxy setting changes.
- */
-void ui_htmlview_update_proxy (void);
-
-/**
- * Callback for online state changes.
- *
- * @param online	the new online state
- */
-void ui_htmlview_online_status_changed(gboolean online);
-
-/* interface.c callbacks */
-void on_popup_launch_link_selected(gpointer callback_data, guint callback_action, GtkWidget *widget);
-void on_popup_copy_url_selected(gpointer callback_data, guint callback_action, GtkWidget *widget);
-void on_popup_subscribe_url_selected(gpointer callback_data, guint callback_action, GtkWidget *widget);
-void on_popup_zoomin_selected(gpointer callback_data, guint callback_action, GtkWidget *widget);
-void on_popup_zoomout_selected(gpointer callback_data, guint callback_action, GtkWidget *widget);
 
 #endif

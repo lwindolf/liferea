@@ -34,6 +34,7 @@
 #include <gtkmozembed.h>
 
 #include "mozilla/mozsupport.h"
+#include "mozilla/mozembed.h"
 #include "common.h"
 #include "conf.h"
 #include "debug.h"
@@ -59,7 +60,8 @@ mozembed_write (GtkWidget *widget, const gchar *string, guint length,
 	gtk_moz_embed_stop_load (GTK_MOZ_EMBED (widget));
 	
 	/* always prevent following local links in self-generated HTML */
-	g_object_set_data (G_OBJECT (widget), "localDocument", GINT_TO_POINTER (FALSE));
+	g_object_set_data (G_OBJECT (widget), "localDocument", GINT_TO_POINTER (FALSE));	
+	g_object_set_data (G_OBJECT (widget), "selectedURL", NULL);
 	
 	if (DEBUG_VERBOSE & debug_level)
 		debug1 (DEBUG_HTML, "mozilla: HTML string >>>%s<<<", string);
@@ -83,7 +85,7 @@ mozembed_write (GtkWidget *widget, const gchar *string, guint length,
 				debug1 (DEBUG_HTML, "mozilla: appending remaining %d bytes", left);
 				gtk_moz_embed_append_data (GTK_MOZ_EMBED (widget), string, left);
 			}
-			left -=4096;
+			left -= 4096;
 		}
 		gtk_moz_embed_close_stream (GTK_MOZ_EMBED (widget));
 	} else {
@@ -116,13 +118,13 @@ mozembed_new_window_cb (GtkMozEmbed *embed, GtkMozEmbed **newEmbed,
 	   correct (e.g. on initial webpage loading when new popups
 	   are requested and the user crosses a link)  */
 	*newEmbed = NULL;
-	
+
 	selectedURL = g_object_get_data (G_OBJECT (embed), "selectedURL");
 	if (selectedURL) {
 		if (conf_get_bool_value (BROWSE_INSIDE_APPLICATION))
 			*newEmbed = GTK_MOZ_EMBED (ui_tabs_new (NULL, NULL, TRUE));
 		else
-			ui_htmlview_launch_in_external_browser (selectedURL);
+			liferea_htmlview_launch_in_external_browser (selectedURL);
 	}
 }
 
@@ -170,7 +172,7 @@ mozembed_link_message_cb(GtkMozEmbed *embed, gpointer user_data)
 	selectedURL = gtk_moz_embed_get_link_message (embed);
 	if (selectedURL) {
 		/* overwrite or clear last status line text */
-		ui_htmlview_on_url (selectedURL);
+		liferea_htmlview_on_url (selectedURL);
 		
 		/* mozilla gives us an empty string when no link is selected */
 		if (0 == strlen (selectedURL)) {
@@ -198,7 +200,7 @@ mozembed_dom_mouse_click_cb (GtkMozEmbed *embed, gpointer dom_event, gpointer us
 	gint		button;
 	gboolean	isLocalDoc, safeURL = FALSE;
 	gchar		*selectedURL;
-	
+
 	if (-1 == (button = mozsupport_get_mouse_event_button (dom_event))) {
 		g_warning ("Cannot determine mouse button!\n");
 		return FALSE;
@@ -250,12 +252,13 @@ mozembed_dom_mouse_click_cb (GtkMozEmbed *embed, gpointer dom_event, gpointer us
 static gint 
 mozembed_open_uri_cb (GtkMozEmbed *embed, const char *uri, gpointer data) 
 {	
-	if ((FALSE == ui_htmlview_is_special_url (uri)) && 
+	if ((FALSE == liferea_htmlview_is_special_url (uri)) && 
  	    (GPOINTER_TO_INT (g_object_get_data (G_OBJECT (embed), "internal_browsing")) ||
 	    getBooleanConfValue (BROWSE_INSIDE_APPLICATION))) {
 		return FALSE;
 	} else {
-		ui_htmlview_launch_URL (GTK_WIDGET (data), (gchar *) uri, UI_HTMLVIEW_LAUNCH_DEFAULT);
+		LifereaHtmlView *htmlview = g_object_get_data (G_OBJECT (data), "htmlview");
+		liferea_htmlview_launch_URL (htmlview, (gchar *) uri, UI_HTMLVIEW_LAUNCH_DEFAULT);
 		return TRUE;
 	}
 }
@@ -263,7 +266,7 @@ mozembed_open_uri_cb (GtkMozEmbed *embed, const char *uri, gpointer data)
 /* Sets up a html view widget using GtkMozEmbed.
    The signal setting was derived from the Galeon source. */
 GtkWidget *
-mozembed_create (gboolean forceInternalBrowsing)
+mozembed_create (LifereaHtmlView *htmlview, gboolean forceInternalBrowsing)
 {
 	GtkWidget	*widget;
 	gchar		*bgColor;
@@ -311,6 +314,7 @@ mozembed_create (gboolean forceInternalBrowsing)
 						
 	}
 	
+	g_object_set_data (G_OBJECT (widget), "htmlview", htmlview);
 	g_object_set_data (G_OBJECT (widget), "internal_browsing", GINT_TO_POINTER (forceInternalBrowsing));
 	
 	/* enforce GTK theme background color as document background */	
@@ -329,6 +333,8 @@ void
 mozembed_init (void)
 {
 	gchar	*profile;
+	
+	debug_enter ("mozembed_init");
 	
 	/* some GtkMozEmbed initialization taken from embed.c from the Galeon sources */
 	
@@ -358,6 +364,8 @@ mozembed_init (void)
 	mozsupport_preference_set_boolean ("accessibility.typeaheadfind.autostart", FALSE);
 	
 	mozsupport_save_prefs ();
+	
+	debug_exit ("mozembed_init");
 }
 
 void

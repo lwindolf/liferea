@@ -24,6 +24,7 @@
 #define UI_MAINWINDOW_H
 
 #include <gtk/gtk.h>
+#include "ui_htmlview.h"
 
 extern GtkWidget	*mainwindow;
 
@@ -49,9 +50,11 @@ void ui_mainwindow_init(int mainwindowState);
 void ui_mainwindow_set_layout(guint newMode);
 
 /**
- * Returns the active HTML view widget 
+ * Method to query the active HTML view
+ *
+ * @returns active HTML view
  */
-GtkWidget *ui_mainwindow_get_active_htmlview(void);
+LifereaHtmlView * ui_mainwindow_get_active_htmlview (void);
 
 /**
  * Sets the toolbar to a particular style

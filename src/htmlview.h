@@ -21,30 +21,29 @@
 #ifndef _HTMLVIEW_H
 #define _HTMLVIEW_H
 
-#include <gtk/gtk.h>
-
 #include "item.h"
 #include "itemview.h"
 #include "node.h"
+#include "ui/ui_htmlview.h"
 
 /* interface for item and item set HTML rendering */
 
 /**
  * Initialize the HTML view 
  */
-void	htmlview_init(void);
+void	htmlview_init (void);
 
 /**
  * To be called to clear the HTML view 
  */
-void	htmlview_clear(void);
+void	htmlview_clear (void);
 
 /**
  * Prepares the HTML view for displaying items of the given node.
  *
  * @param node	the node whose items will be rendered
  */
-void	htmlview_set_displayed_node(nodePtr node);
+void	htmlview_set_displayed_node (nodePtr node);
 
 /**
  * Adds an item to the HTML view for rendering. The item must belong
@@ -54,7 +53,7 @@ void	htmlview_set_displayed_node(nodePtr node);
  *
  * @param item		the item to add to the rendering output
  */
-void	htmlview_add_item(itemPtr item);
+void	htmlview_add_item (itemPtr item);
 
 /**
  * Removes a given item from the HTML view rendering.
@@ -63,7 +62,7 @@ void	htmlview_add_item(itemPtr item);
  *
  * @param item		the item to remove from the rendering output
  */
-void	htmlview_remove_item(itemPtr item);
+void	htmlview_remove_item (itemPtr item);
 
 /**
  * Updates the output of the selected item in the HTML view rendering.
@@ -72,7 +71,7 @@ void	htmlview_remove_item(itemPtr item);
  *
  * @param item		the item to mark for update
  */
-void	htmlview_select_item(itemPtr item);
+void	htmlview_select_item (itemPtr item);
 
 /**
  * Updates the output of a given item in the HTML view rendering.
@@ -81,16 +80,16 @@ void	htmlview_select_item(itemPtr item);
  *
  * @param item		the item to mark for update
  */
-void	htmlview_update_item(itemPtr item);
+void	htmlview_update_item (itemPtr item);
 
 /**
  * Renders all added items to the given HTML view. To be called
  * after one or more calls of htmlview_(add|remove|update)_item.
  *
- * @param widget	HTML widget to render to
+ * @param htmlview	HTML view to render to
  * @param mode		item view mode
  */
-void	htmlview_update(GtkWidget *widget, itemViewMode mode);
+void	htmlview_update (LifereaHtmlView *htmlview, itemViewMode mode);
 
 /** helper methods for HTML output */
 
@@ -102,13 +101,13 @@ void	htmlview_update(GtkWidget *widget, itemViewMode mode);
  * @param css		TRUE if CSS definitions are to be added
  * @param script	TRUE if item menu scripts are to be added
  */
-void	htmlview_start_output(GString *buffer, const gchar *base, gboolean css, gboolean script);
+void	htmlview_start_output (GString *buffer, const gchar *base, gboolean css, gboolean script);
 
 /**
  * Function to add HTML source footer to create a valid HTML source.
  *
  * @param buffer	buffer to add the HTML to
  */
-void	htmlview_finish_output(GString *buffer);
+void	htmlview_finish_output (GString *buffer);
 
 #endif

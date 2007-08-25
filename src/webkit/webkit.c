@@ -18,6 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+
 #include <webkitgtkpage.h>
 #include <webkitgtkglobal.h>
 #include <webkitgtksettings.h>
@@ -29,6 +30,9 @@ static void
 webkit_init (void)
 {
 	webkit_gtk_init ();
+	
+	g_print ("Note: WebKit HTML rendering support is experimental and\n");
+	g_print ("not everything is working properly with WebKit right now!!!\n");
 }
 
 static void webkit_deinit (void) { }
@@ -57,10 +61,10 @@ webkit_progress_changed (WebKitGtkPage *page, gint progress, gpointer user_data)
 }
 
 static void
-webkit_on_url (WebKitGtkPage *page, const gchar *url, gpointer user_data)
+webkit_on_url (WebKitGtkPage *page, const gchar *title, const gchar *url, gpointer user_data)
 {
 	gchar *selectedURL;
-	
+
 	selectedURL = g_object_get_data (G_OBJECT (page), "selectedURL");
 	g_free (selectedURL);
 		
@@ -68,7 +72,7 @@ webkit_on_url (WebKitGtkPage *page, const gchar *url, gpointer user_data)
 		selectedURL = g_strdup (url);
 
 		/* overwrite or clear last status line text */
-		ui_htmlview_on_url (selectedURL);
+		liferea_htmlview_on_url (selectedURL);
 	} else {
 		selectedURL = NULL;
 	}
@@ -77,7 +81,7 @@ webkit_on_url (WebKitGtkPage *page, const gchar *url, gpointer user_data)
 }
 
 static GtkWidget *
-webkit_new (gboolean forceInternalBrowsing) 
+webkit_new (LifereaHtmlView *htmlview, gboolean forceInternalBrowsing) 
 {
 	gulong	handler;
 	GtkWidget *htmlwidget;
@@ -99,12 +103,13 @@ webkit_new (gboolean forceInternalBrowsing)
 	webkit_gtk_page_set_settings (WEBKIT_GTK_PAGE (htmlwidget), settings);
 */
 	gtk_container_add (GTK_CONTAINER (scrollpane), GTK_WIDGET (htmlwidget));
-	
+
+	g_object_set_data (G_OBJECT (scrollpane), "htmlview", htmlview);	
 	g_object_set_data (G_OBJECT (scrollpane), "internal_browsing", GINT_TO_POINTER (forceInternalBrowsing));
 
 	g_signal_connect (htmlwidget, "title-changed", G_CALLBACK (webkit_title_changed), htmlwidget);
 	g_signal_connect (htmlwidget, "load-progress-changed", G_CALLBACK (webkit_progress_changed), htmlwidget);
-	g_signal_connect (htmlwidget, "hovering_over_link", G_CALLBACK (webkit_on_url), htmlwidget);
+	g_signal_connect (htmlwidget, "hovering-over-link", G_CALLBACK (webkit_on_url), htmlwidget);
 
 	gtk_widget_show (htmlwidget);
 	return scrollpane;

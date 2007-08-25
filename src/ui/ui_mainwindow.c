@@ -59,18 +59,18 @@
 #include "ui/ui_update.h"
 
 static struct mainwindow {
-	GtkWindow *window;
-	GtkWidget *menubar;
-	GtkWidget *toolbar;
-	GtkWidget *itemlist;
-	GtkWidget *statusbar_feedsinfo;
-	GtkActionGroup *generalActions;
-	GtkActionGroup *addActions;		/**< all types of "New" options */
-	GtkActionGroup *feedActions;		/**< update and mark read */
-	GtkActionGroup *readWriteActions;	/**< remove and properties */
+	GtkWindow	*window;
+	GtkWidget	*menubar;
+	GtkWidget	*toolbar;
+	GtkWidget	*itemlist;
+	GtkWidget	*statusbar_feedsinfo;
+	GtkActionGroup	*generalActions;
+	GtkActionGroup	*addActions;		/**< all types of "New" options */
+	GtkActionGroup	*feedActions;		/**< update and mark read */
+	GtkActionGroup	*readWriteActions;	/**< remove and properties */
 	
-	GtkWidget *htmlview;			/**< HTML rendering widget */
-	gfloat 	zoom;				/**< HTML rendering widget zoom level */
+	LifereaHtmlView	*htmlview;		/**< HTML rendering widget */
+	gfloat		zoom;			/**< HTML rendering widget zoom level */
 } *mainwindow_priv;
 
 /* all used icons */
@@ -78,45 +78,46 @@ GdkPixbuf *icons[MAX_ICONS];
 
 /* icon from theme names */
 static const gchar *iconThemeNames[] = {
-				NULL,			/* ICON_READ */
-				NULL,			/* ICON_UNREAD */
-				"emblem-important",	/* ICON_FLAG */
-				NULL,			/* ICON_AVAILABLE */
-				NULL,			/* ICON_AVAILABLE_OFFLINE */
-				NULL,			/* ICON_UNAVAILABLE */
-				NULL,			/* ICON_DEFAULT */
-				NULL,			/* ICON_OCS */
-				"folder",		/* ICON_FOLDER */
-				"folder-saved-search",	/* ICON_VFOLDER */
-				NULL,			/* ICON_NEWSBIN */
-				NULL,			/* ICON_EMPTY */
-				NULL,			/* ICON_EMPTY_OFFLINE */
-				NULL,			/* ICON_ONLINE */
-				NULL,			/* ICON_OFFLINE */
-				NULL,			/* ICON_UPDATED */
-				"mail-attachment",	/* ICON_ENCLOSURE */
-				NULL
+	NULL,			/* ICON_READ */
+	NULL,			/* ICON_UNREAD */
+	"emblem-important",	/* ICON_FLAG */
+	NULL,			/* ICON_AVAILABLE */
+	NULL,			/* ICON_AVAILABLE_OFFLINE */
+	NULL,			/* ICON_UNAVAILABLE */
+	NULL,			/* ICON_DEFAULT */
+	NULL,			/* ICON_OCS */
+	"folder",		/* ICON_FOLDER */
+	"folder-saved-search",	/* ICON_VFOLDER */
+	NULL,			/* ICON_NEWSBIN */
+	NULL,			/* ICON_EMPTY */
+	NULL,			/* ICON_EMPTY_OFFLINE */
+	NULL,			/* ICON_ONLINE */
+	NULL,			/* ICON_OFFLINE */
+	NULL,			/* ICON_UPDATED */
+	"mail-attachment",	/* ICON_ENCLOSURE */
+	NULL
 };
 
 /* icon names */
-static const gchar *iconNames[] = {	"read.xpm",		/* ICON_READ */
-				"unread.png",		/* ICON_UNREAD */
-				"flag.png",		/* ICON_FLAG */
-				"available.png",	/* ICON_AVAILABLE */
-				"available_offline.png",	/* ICON_AVAILABLE_OFFLINE */
-				NULL,			/* ICON_UNAVAILABLE */
-				"default.png",		/* ICON_DEFAULT */
-				"ocs.png",		/* ICON_OCS */
-				"directory.png",	/* ICON_FOLDER */
-				"vfolder.png",		/* ICON_VFOLDER */
-				"newsbin.png",		/* ICON_NEWSBIN */
-				"empty.png",		/* ICON_EMPTY */
-				"empty_offline.png",	/* ICON_EMPTY_OFFLINE */
-				"online.png",		/* ICON_ONLINE */
-				"offline.png",		/* ICON_OFFLINE */
-				"edit.png",		/* ICON_UPDATED */
-				"attachment.png",	/* ICON_ENCLOSURE */
-				NULL
+static const gchar *iconNames[] = {
+	"read.xpm",		/* ICON_READ */
+	"unread.png",		/* ICON_UNREAD */
+	"flag.png",		/* ICON_FLAG */
+	"available.png",	/* ICON_AVAILABLE */
+	"available_offline.png",	/* ICON_AVAILABLE_OFFLINE */
+	NULL,			/* ICON_UNAVAILABLE */
+	"default.png",		/* ICON_DEFAULT */
+	"ocs.png",		/* ICON_OCS */
+	"directory.png",	/* ICON_FOLDER */
+	"vfolder.png",		/* ICON_VFOLDER */
+	"newsbin.png",		/* ICON_NEWSBIN */
+	"empty.png",		/* ICON_EMPTY */
+	"empty_offline.png",	/* ICON_EMPTY_OFFLINE */
+	"online.png",		/* ICON_ONLINE */
+	"offline.png",		/* ICON_OFFLINE */
+	"edit.png",		/* ICON_UPDATED */
+	"attachment.png",	/* ICON_ENCLOSURE */
+	NULL
 };
 
 GtkWidget 	*mainwindow;
@@ -127,8 +128,9 @@ static gboolean on_close(GtkWidget *widget, GdkEvent *event, struct mainwindow *
 static void ui_mainwindow_create_menus(struct mainwindow *mw);
 static gboolean on_mainwindow_window_state_event(GtkWidget *widget, GdkEvent *event, gpointer user_data);
 
-GtkWidget *ui_mainwindow_get_active_htmlview(void) {
-
+LifereaHtmlView *
+ui_mainwindow_get_active_htmlview (void)
+{
 	return mainwindow_priv->htmlview;
 }
 
@@ -200,10 +202,11 @@ void on_about_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	gtk_widget_show(dialog);
 }
 
-void on_homepagebtn_clicked(GtkButton *button, gpointer user_data) {
-
+void
+on_homepagebtn_clicked (GtkButton *button, gpointer user_data)
+{
 	/* launch the homepage when button in about dialog is pressed */
-	ui_htmlview_launch_in_external_browser(_("http://liferea.sf.net"));
+	liferea_htmlview_launch_in_external_browser(_("http://liferea.sf.net"));
 }
 
 void on_topics_activate(GtkMenuItem *menuitem, gpointer user_data) {
@@ -299,7 +302,7 @@ on_mainwindow_key_press_event (GtkWidget *widget, GdkEventKey *event, gpointer d
 				
 				if (modifier_matches) {
 					/* Note that this code is duplicated in mozilla/mozilla.cpp! */
-					if (ui_htmlview_scroll () == FALSE)
+					if (liferea_htmlview_scroll () == FALSE)
 						on_next_unread_item_activate (NULL, NULL);
 					return TRUE;
 				}
@@ -413,28 +416,28 @@ static void radio_action_set_current_value(GtkRadioAction *action, gint current_
 	}
 }
 
-void ui_mainwindow_set_layout(guint newMode) {
+void
+ui_mainwindow_set_layout (guint newMode)
+{
 	gchar	*htmlWidgetName, *ilWidgetName;
+	GtkRadioAction *action;
 
-	{
-		GtkRadioAction *action;
-
-		action = GTK_RADIO_ACTION(gtk_action_group_get_action(mainwindow_priv->generalActions, "NormalView"));
-		radio_action_set_current_value(action, newMode);
+	action = GTK_RADIO_ACTION (gtk_action_group_get_action (mainwindow_priv->generalActions, "NormalView"));
+	radio_action_set_current_value (action, newMode);
+	
+	if (!mainwindow_priv->htmlview) {
+		GtkWidget *renderWidget;
+		mainwindow_priv->htmlview = liferea_htmlview_new (FALSE);		
+		renderWidget = liferea_htmlview_get_widget (mainwindow_priv->htmlview);
+		gtk_container_add (GTK_CONTAINER (liferea_shell_lookup ("normalViewHtml")), renderWidget);
+		gtk_widget_show (renderWidget);
 	}
 	
-	if(!mainwindow_priv->htmlview) {
-		mainwindow_priv->htmlview = ui_htmlview_new(FALSE);
-		gtk_container_add(GTK_CONTAINER(liferea_shell_lookup("normalViewHtml")),
-		                  GTK_WIDGET(mainwindow_priv->htmlview));
-		gtk_widget_show(mainwindow_priv->htmlview);
-	}
-	
-	ui_htmlview_clear(mainwindow_priv->htmlview);
+	liferea_htmlview_clear (mainwindow_priv->htmlview);
 
-	debug1(DEBUG_GUI, "Setting item list visibility mode: %d", newMode);
+	debug1 (DEBUG_GUI, "Setting item list visibility mode: %d", newMode);
 	
-	switch(newMode) {
+	switch (newMode) {
 		case NODE_VIEW_MODE_NORMAL:
 			htmlWidgetName = "normalViewHtml";
 			ilWidgetName = "normalViewItems";
@@ -454,48 +457,53 @@ void ui_mainwindow_set_layout(guint newMode) {
 	}
 
 	/* reparenting HTML view */
-	gtk_notebook_set_current_page(GTK_NOTEBOOK(liferea_shell_lookup("itemtabs")), newMode);
-	gtk_widget_reparent(GTK_WIDGET(mainwindow_priv->htmlview), liferea_shell_lookup(htmlWidgetName));
-	gtk_widget_reparent(GTK_WIDGET(mainwindow_priv->itemlist), liferea_shell_lookup(ilWidgetName));
-
+	gtk_notebook_set_current_page (GTK_NOTEBOOK (liferea_shell_lookup ("itemtabs")), newMode);
+	gtk_widget_reparent (liferea_htmlview_get_widget (mainwindow_priv->htmlview), liferea_shell_lookup (htmlWidgetName));
+	gtk_widget_reparent (GTK_WIDGET (mainwindow_priv->itemlist), liferea_shell_lookup (ilWidgetName));
+ 
 	/* grab necessary to force HTML widget update (display must
 	   change from feed description to list of items and vica 
 	   versa */
-	gtk_widget_grab_focus(liferea_shell_lookup("feedlist"));
+	gtk_widget_grab_focus (liferea_shell_lookup ("feedlist"));
 }
 
-void ui_mainwindow_set_toolbar_style(const gchar *toolbar_style) {
-	
-	if(toolbar_style == NULL) /* default to icons */
-		gtk_toolbar_set_style(GTK_TOOLBAR(mainwindow_priv->toolbar), GTK_TOOLBAR_ICONS);
-	else if(!strcmp(toolbar_style, "text"))
-		gtk_toolbar_set_style(GTK_TOOLBAR(mainwindow_priv->toolbar), GTK_TOOLBAR_TEXT);
-	else if(!strcmp(toolbar_style, "both"))
-		gtk_toolbar_set_style(GTK_TOOLBAR(mainwindow_priv->toolbar), GTK_TOOLBAR_BOTH);
-	else if(!strcmp(toolbar_style, "both_horiz") || !strcmp(toolbar_style, "both-horiz") )
-		gtk_toolbar_set_style(GTK_TOOLBAR(mainwindow_priv->toolbar), GTK_TOOLBAR_BOTH_HORIZ);
+void
+ui_mainwindow_set_toolbar_style (const gchar *toolbar_style)
+{	
+	if (toolbar_style == NULL) /* default to icons */
+		gtk_toolbar_set_style (GTK_TOOLBAR(mainwindow_priv->toolbar), GTK_TOOLBAR_ICONS);
+	else if (!strcmp (toolbar_style, "text"))
+		gtk_toolbar_set_style (GTK_TOOLBAR(mainwindow_priv->toolbar), GTK_TOOLBAR_TEXT);
+	else if (!strcmp (toolbar_style, "both"))
+		gtk_toolbar_set_style (GTK_TOOLBAR(mainwindow_priv->toolbar), GTK_TOOLBAR_BOTH);
+	else if (!strcmp (toolbar_style, "both_horiz") || !strcmp (toolbar_style, "both-horiz") )
+		gtk_toolbar_set_style (GTK_TOOLBAR (mainwindow_priv->toolbar), GTK_TOOLBAR_BOTH_HORIZ);
 	else /* default to icons */
-		gtk_toolbar_set_style(GTK_TOOLBAR(mainwindow_priv->toolbar), GTK_TOOLBAR_ICONS);
+		gtk_toolbar_set_style (GTK_TOOLBAR (mainwindow_priv->toolbar), GTK_TOOLBAR_ICONS);
 }
 
-static gboolean on_key_press_event_null_cb(GtkWidget *widget, GdkEventKey *event, gpointer data) {
+static gboolean
+on_key_press_event_null_cb (GtkWidget *widget, GdkEventKey *event, gpointer data)
+{
 	return TRUE;
 }
 
-static gboolean on_notebook_scroll_event_null_cb (GtkWidget *widget, GdkEventScroll *event) {
+static gboolean
+on_notebook_scroll_event_null_cb (GtkWidget *widget, GdkEventScroll *event)
+{
 	GtkNotebook *notebook = GTK_NOTEBOOK (widget);
 
 	GtkWidget* child;
 	GtkWidget* originator;
 
-	if(!notebook->cur_page)
+	if (!notebook->cur_page)
 		return FALSE;
 
-	child = gtk_notebook_get_nth_page(notebook, gtk_notebook_get_current_page(notebook));
+	child = gtk_notebook_get_nth_page (notebook, gtk_notebook_get_current_page (notebook));
 	originator = gtk_get_event_widget ((GdkEvent *)event);
 
 	/* ignore scroll events from the content of the page */
-	if(!originator || gtk_widget_is_ancestor (originator, child))
+	if (!originator || gtk_widget_is_ancestor (originator, child))
 		return FALSE;
 
 	return TRUE;
@@ -567,7 +575,7 @@ static GdkPixbuf* ui_mainwindow_get_theme_icon(GtkIconTheme *icon_theme, const g
 static void
 ui_mainwindow_destroy_cb (gpointer user_data)
 {
-	ui_htmlview_deinit ();
+	liferea_htmlview_plugin_deregister ();
 	ui_tray_enable (FALSE);
 	notification_enable (FALSE);
 }
@@ -674,7 +682,7 @@ ui_mainwindow_init (int mainwindowState)
 		mainwindow_priv->zoom = 100;
 		setNumericConfValue(LAST_ZOOMLEVEL, 100);
 	}
-	ui_htmlview_set_zoom(mainwindow_priv->htmlview, mainwindow_priv->zoom/100.);
+	liferea_htmlview_set_zoom (mainwindow_priv->htmlview, mainwindow_priv->zoom/100.);
 	
 	/* create welcome text */
 	buffer = g_string_new(NULL);
@@ -699,7 +707,7 @@ ui_mainwindow_init (int mainwindowState)
 	g_string_append(buffer,    "</div>");
 				   
 	htmlview_finish_output(buffer);
-	ui_htmlview_write(ui_mainwindow_get_active_htmlview(), buffer->str, NULL);
+	liferea_htmlview_write (ui_mainwindow_get_active_htmlview(), buffer->str, NULL);
 	g_string_free(buffer, TRUE);
 
 	gtk_widget_set_sensitive(GTK_WIDGET(liferea_shell_lookup("feedlist")), TRUE);
@@ -785,50 +793,52 @@ void ui_mainwindow_set_status_bar(const char *format, ...) {
 	g_free(str);
 }
 
-void ui_mainwindow_save_position(void) {
+void
+ui_mainwindow_save_position (void)
+{
 	GtkWidget	*pane;
 	gint		x, y, w, h;
 
-	if(!GTK_WIDGET_VISIBLE(mainwindow))
+	if (!GTK_WIDGET_VISIBLE (mainwindow))
 		return;
 	
-	if(getBooleanConfValue(LAST_WINDOW_MAXIMIZED))
+	if (getBooleanConfValue (LAST_WINDOW_MAXIMIZED))
 		return;
 
-	gtk_window_get_position(GTK_WINDOW(mainwindow), &x, &y);
-	gtk_window_get_size(GTK_WINDOW(mainwindow), &w, &h);
+	gtk_window_get_position (GTK_WINDOW (mainwindow), &x, &y);
+	gtk_window_get_size (GTK_WINDOW (mainwindow), &w, &h);
 
-	if(x+w<0 || y+h<0 ||
-	    x > gdk_screen_width() ||
-	    y > gdk_screen_height())
+	if (x+w<0 || y+h<0 ||
+	    x > gdk_screen_width () ||
+	    y > gdk_screen_height ())
 		return;
 	
 	/* save window position */
-	setNumericConfValue(LAST_WINDOW_X, x);
-	setNumericConfValue(LAST_WINDOW_Y, y);	
+	setNumericConfValue (LAST_WINDOW_X, x);
+	setNumericConfValue (LAST_WINDOW_Y, y);	
 
 	/* save window size */
-	setNumericConfValue(LAST_WINDOW_WIDTH, w);
-	setNumericConfValue(LAST_WINDOW_HEIGHT, h);
+	setNumericConfValue (LAST_WINDOW_WIDTH, w);
+	setNumericConfValue (LAST_WINDOW_HEIGHT, h);
 	
 	/* save pane proportions */
-	if(NULL != (pane = liferea_shell_lookup("leftpane"))) {
-		x = gtk_paned_get_position(GTK_PANED(pane));
-		setNumericConfValue(LAST_VPANE_POS, x);
+	if (NULL != (pane = liferea_shell_lookup ("leftpane"))) {
+		x = gtk_paned_get_position (GTK_PANED (pane));
+		setNumericConfValue (LAST_VPANE_POS, x);
 	}
 	
-	if(NULL != (pane = liferea_shell_lookup("normalViewPane"))) {
-		y = gtk_paned_get_position(GTK_PANED(pane));
-		setNumericConfValue(LAST_HPANE_POS, y);
+	if (NULL != (pane = liferea_shell_lookup ("normalViewPane"))) {
+		y = gtk_paned_get_position (GTK_PANED (pane));
+		setNumericConfValue (LAST_HPANE_POS, y);
 	}
 	
-	if(NULL != (pane = liferea_shell_lookup("wideViewPane"))) {
-		y = gtk_paned_get_position(GTK_PANED(pane));
-		setNumericConfValue(LAST_WPANE_POS, y);
+	if (NULL != (pane = liferea_shell_lookup ("wideViewPane"))) {
+		y = gtk_paned_get_position (GTK_PANED (pane));
+		setNumericConfValue (LAST_WPANE_POS, y);
 	}
 	
 	/* save itemlist properties */
-	setNumericConfValue(LAST_ZOOMLEVEL, (gint)(100.*ui_htmlview_get_zoom(ui_mainwindow_get_active_htmlview())));
+	setNumericConfValue (LAST_ZOOMLEVEL, (gint)(100.* liferea_htmlview_get_zoom (ui_mainwindow_get_active_htmlview ())));
 }
 
 void ui_mainwindow_tray_add() {
