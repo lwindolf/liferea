@@ -211,7 +211,6 @@ dnl ******
 if test "x$enable_webkit" = "xyes" ; then
    dnl AC_MSG_CHECKING([for WebKit support])
    PKG_CHECK_MODULES(WEBKIT, WebKitGdk, enable_webkit=yes, enable_webkit=no)
-   XULRUNNER_HOME="`$PKG_CONFIG --variable=libdir WebKitGdk`"
    AC_SUBST(WEBKIT_CFLAGS)
    AC_SUBST(WEBKIT_LIBS)
 fi
