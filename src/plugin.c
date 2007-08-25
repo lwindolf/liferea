@@ -77,7 +77,7 @@ static pluginPtr plugin_mgmt_load(const gchar * filename) {
 					success = notification_plugin_load(plugin, handle);
 					break;
 				case PLUGIN_TYPE_HTML_RENDERER:
-					success = ui_htmlview_plugin_load(plugin, handle);
+					success = liferea_htmlview_plugin_register (plugin, handle);
 					break;
 				default:
 					if(plugin->type >= PLUGIN_TYPE_MAX) {
@@ -161,6 +161,9 @@ void plugin_mgmt_init(void) {
 	}
 
 	g_assert(NULL != plugins);
+	
+	/* do plugin type specific startup init */
+	liferea_htmlview_plugin_init ();
 
 	debug_exit("plugin_mgmt_init");
 }

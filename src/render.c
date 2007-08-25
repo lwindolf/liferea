@@ -151,23 +151,25 @@ static themeColorPtr render_get_theme_color(const gchar *name, GdkColor themeCol
 	return tc;
 }
 
-static void render_get_theme_colors(void) {
+static void
+render_get_theme_colors (void)
+{
 	GtkWidget	*htmlview;
 	GtkStyle	*style;
 //	GdkColor	*color;
 	
-	htmlview = ui_mainwindow_get_active_htmlview();
-	style = gtk_widget_get_style(htmlview);
-	g_assert(NULL != style);
+	htmlview = liferea_htmlview_get_widget (ui_mainwindow_get_active_htmlview ());
+	style = gtk_widget_get_style (htmlview);
+	g_assert (NULL != style);
 
-	g_assert(NULL == themeColors);
-	themeColors = g_slist_append(themeColors, render_get_theme_color("GTK-COLOR-FG",    style->fg[GTK_STATE_NORMAL]));
-	themeColors = g_slist_append(themeColors, render_get_theme_color("GTK-COLOR-BG",    style->bg[GTK_STATE_NORMAL]));
-	themeColors = g_slist_append(themeColors, render_get_theme_color("GTK-COLOR-LIGHT", style->light[GTK_STATE_NORMAL]));
-	themeColors = g_slist_append(themeColors, render_get_theme_color("GTK-COLOR-DARK",  style->dark[GTK_STATE_NORMAL]));
-	themeColors = g_slist_append(themeColors, render_get_theme_color("GTK-COLOR-MID",   style->mid[GTK_STATE_NORMAL]));
-	themeColors = g_slist_append(themeColors, render_get_theme_color("GTK-COLOR-BASE",  style->base[GTK_STATE_NORMAL]));
-	themeColors = g_slist_append(themeColors, render_get_theme_color("GTK-COLOR-TEXT",  style->text[GTK_STATE_NORMAL]));
+	g_assert (NULL == themeColors);
+	themeColors = g_slist_append (themeColors, render_get_theme_color("GTK-COLOR-FG",    style->fg[GTK_STATE_NORMAL]));
+	themeColors = g_slist_append (themeColors, render_get_theme_color("GTK-COLOR-BG",    style->bg[GTK_STATE_NORMAL]));
+	themeColors = g_slist_append (themeColors, render_get_theme_color("GTK-COLOR-LIGHT", style->light[GTK_STATE_NORMAL]));
+	themeColors = g_slist_append (themeColors, render_get_theme_color("GTK-COLOR-DARK",  style->dark[GTK_STATE_NORMAL]));
+	themeColors = g_slist_append (themeColors, render_get_theme_color("GTK-COLOR-MID",   style->mid[GTK_STATE_NORMAL]));
+	themeColors = g_slist_append (themeColors, render_get_theme_color("GTK-COLOR-BASE",  style->base[GTK_STATE_NORMAL]));
+	themeColors = g_slist_append (themeColors, render_get_theme_color("GTK-COLOR-TEXT",  style->text[GTK_STATE_NORMAL]));
 	
 /*	color = NULL;
 	gtk_widget_style_get(GTK_WIDGET(mainwindow), "link-color", &color, NULL);

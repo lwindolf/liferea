@@ -23,18 +23,19 @@
 #define _MOZEMBED_H
 
 #include "mozsupport.h"
+#include "ui/ui_htmlview.h"
 
-void mozembed_write(GtkWidget *widget, const gchar *string, guint length, const gchar *base, const gchar *contentType);
+void mozembed_write (GtkWidget *widget, const gchar *string, guint length, const gchar *base, const gchar *contentType);
 
-GtkWidget * mozembed_create(gboolean forceInternalBrowsing);
+GtkWidget * mozembed_create (LifereaHtmlView *htmlview, gboolean forceInternalBrowsing);
 
-void mozembed_init(void);
+void mozembed_init (void);
 
-void mozembed_deinit(void);
+void mozembed_deinit (void);
 
-void mozembed_launch_url(GtkWidget *widget, const gchar *url);
+void mozembed_launch_url (GtkWidget *widget, const gchar *url);
 
-gboolean mozembed_launch_inside_possible(void);
+gboolean mozembed_launch_inside_possible (void);
 
 void mozembed_set_proxy (const gchar *hostname, guint port, const gchar *username, const gchar *password);
 

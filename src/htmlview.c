@@ -36,6 +36,10 @@
 #include "vfolder.h"
 #include "ui/ui_htmlview.h"
 
+// FIXME: namespace clash of LifereaHtmlView *htmlview and htmlView_priv 
+// clearly shows the need to merge htmlview.c and src/ui/ui_htmlview.c,
+// maybe with a separate a HTML cache object...
+
 extern htmlviewPluginPtr htmlviewPlugin;
 
 static struct htmlView_priv 
@@ -300,8 +304,7 @@ htmlview_finish_output (GString *buffer)
 }
 
 void
-htmlview_update (GtkWidget *widget,
-                 guint mode) 
+htmlview_update (LifereaHtmlView *htmlview, guint mode) 
 {
 	GSList		*iter;
 	GString		*output;
@@ -312,16 +315,16 @@ htmlview_update (GtkWidget *widget,
 	if (!htmlView_priv.node)
 	{
 		debug0 (DEBUG_HTML, "clearing HTML view as nothing is selected");
-		ui_htmlview_clear (widget);
+		liferea_htmlview_clear (htmlview);
 		return;
 	}
 	
 	/* determine base URL */
-	switch(mode) {
+	switch (mode) {
 		case ITEMVIEW_SINGLE_ITEM:
-			item = itemlist_get_selected();
+			item = itemlist_get_selected ();
 			if(item)
-				baseURL = (gchar *)node_get_base_url(node_from_id(item->nodeId));
+				baseURL = (gchar *)node_get_base_url (node_from_id(item->nodeId));
 			break;
 		default:
 			baseURL = (gchar *) node_get_base_url (htmlView_priv.node);
@@ -337,15 +340,12 @@ htmlview_update (GtkWidget *widget,
 	/* HTML view updating means checking which items
 	   need to be updated, render them and then 
 	   concatenate everything from cache and output it */
-	switch (mode) 
-	{
+	switch (mode) {
 		case ITEMVIEW_SINGLE_ITEM:
 			item = itemlist_get_selected ();
-			if (item) 
-			{
+			if (item) {
 				gchar *html = htmlview_render_item (item, mode, FALSE);
-				if (html)
-				{
+				if (html) {
 					g_string_append (output, html);
 					g_free (html);
 				}
@@ -364,17 +364,14 @@ htmlview_update (GtkWidget *widget,
 
 			/* concatenate all items */
 			iter = htmlView_priv.orderedChunks;
-			while (iter) 
-			{
+			while (iter) {
 				/* try to retrieve item HTML chunk from cache */
 				htmlChunkPtr chunk = (htmlChunkPtr)iter->data;
 				
 				/* if not found: render new item now and add to cache */
-				if (!chunk->html) 
-				{
+				if (!chunk->html) {
 					item = item_load (chunk->id);
-					if (item)
-					{
+					if (item) {
 						debug1 (DEBUG_HTML, "rendering item to HTML view: >>>%s<<<", item_get_title (item));
 						chunk->html = htmlview_render_item (item, mode, summaryMode);
 						item_unload (item);
@@ -390,8 +387,7 @@ htmlview_update (GtkWidget *widget,
 		case ITEMVIEW_NODE_INFO:
 			{
 				gchar *html = node_render (htmlView_priv.node);
-				if (html)
-				{
+				if (html) {
 					g_string_append (output, html);
 					g_free (html);
 				}
@@ -405,7 +401,7 @@ htmlview_update (GtkWidget *widget,
 	htmlview_finish_output (output);
 
 	debug1 (DEBUG_HTML, "writing %d bytes to HTML view", strlen (output->str));
-	ui_htmlview_write (widget, output->str, baseURL);
+	liferea_htmlview_write (htmlview, output->str, baseURL);
 	
 	g_string_free (output, TRUE);
 	g_free (baseURL);

@@ -241,7 +241,7 @@ static void on_url(HtmlView *view, const char *url, gpointer user_data) {
 		absURL = common_build_url(url, g_object_get_data(G_OBJECT(HTML_VIEW(view)->document), "liferea-base-uri"));
 		if(absURL != NULL) {
 			selectedURL = g_strdup(absURL);
-			ui_htmlview_on_url(selectedURL);
+			liferea_htmlview_on_url(selectedURL);
 			xmlFree(absURL);
 		}
 	} else {
@@ -286,9 +286,9 @@ link_clicked (HtmlDocument *doc, const gchar *url, gpointer scrollpane)
 		
 		/* prevent local filesystem links */
 		if (safeURL) {	
+			LifereaHtmlView *htmlview = g_object_get_data (G_OBJECT (scrollpane), "htmlview");
 			kill_old_connections (GTK_WIDGET (scrollpane));
-			ui_htmlview_launch_URL (GTK_WIDGET (scrollpane), absURL,
-			                        GPOINTER_TO_INT (g_object_get_data(G_OBJECT(scrollpane), "internal_browsing")) ?  UI_HTMLVIEW_LAUNCH_INTERNAL: UI_HTMLVIEW_LAUNCH_DEFAULT);
+			liferea_htmlview_launch_URL (htmlview, absURL, GPOINTER_TO_INT (g_object_get_data(G_OBJECT(scrollpane), "internal_browsing")) ?  UI_HTMLVIEW_LAUNCH_INTERNAL: UI_HTMLVIEW_LAUNCH_DEFAULT);
 		}
 		xmlFree (absURL);
 	}
@@ -388,7 +388,7 @@ gtkhtml2_write_html (GtkWidget *scrollpane,
 	gtkhtml2_scroll_to_top (scrollpane);
 }
 
-static GtkWidget* gtkhtml2_new(gboolean forceInternalBrowsing) {
+static GtkWidget* gtkhtml2_new(LifereaHtmlView *htmlview, gboolean forceInternalBrowsing) {
 	gulong	handler;
 	GtkWidget *htmlwidget;
 	GtkWidget *scrollpane;
@@ -401,10 +401,11 @@ static GtkWidget* gtkhtml2_new(gboolean forceInternalBrowsing) {
 	
 	/* create html widget and pack it into the scrolled window */
 	htmlwidget = html_view_new();
-	gtk_container_add (GTK_CONTAINER (scrollpane), GTK_WIDGET(htmlwidget));
+	gtk_container_add (GTK_CONTAINER (scrollpane), GTK_WIDGET (htmlwidget));
 	gtkhtml2_write_html(scrollpane, NULL, 0, "file:///", NULL);
 	
-	g_object_set_data(G_OBJECT(scrollpane), "internal_browsing", GINT_TO_POINTER(forceInternalBrowsing));
+	g_object_set_data (G_OBJECT (scrollpane), "htmlview", htmlview);
+	g_object_set_data (G_OBJECT (scrollpane), "internal_browsing", GINT_TO_POINTER(forceInternalBrowsing));
 	handler = g_signal_connect(G_OBJECT(htmlwidget), "on_url", G_CALLBACK(on_url), NULL);
 		
 	g_signal_connect(G_OBJECT(scrollpane), "destroy", G_CALLBACK(gtkhtml2_destroyed_cb), NULL);

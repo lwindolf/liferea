@@ -505,8 +505,8 @@ itemlist_selection_changed (itemPtr item)
 			item_state_set_updated (item, FALSE);
 
 			if(node_load_link_preferred (node_from_id (item->nodeId))) {
-				ui_htmlview_launch_URL (ui_mainwindow_get_active_htmlview (), 
-				                        item_get_source (itemlist_get_selected ()), UI_HTMLVIEW_LAUNCH_INTERNAL);
+				liferea_htmlview_launch_URL (ui_mainwindow_get_active_htmlview (), 
+				                             item_get_source (itemlist_get_selected ()), UI_HTMLVIEW_LAUNCH_INTERNAL);
 			} else {
 				itemview_set_mode (ITEMVIEW_SINGLE_ITEM);
 				itemview_select_item (item);

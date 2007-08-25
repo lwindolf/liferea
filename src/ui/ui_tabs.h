@@ -1,7 +1,7 @@
 /**
  * @file ui_popup.h browser tabs
  *
- * Copyright (C) 2004-2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2006 Nathan Conrad <conrad@bungled.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -23,10 +23,12 @@
 #define _UI_TABS_H
 
 #include <gtk/gtk.h>
+#include "ui_htmlview.h"
+
 /** 
  * setup of the tab handling 
  */
-void ui_tabs_init(void);
+void ui_tabs_init (void);
 
 /**
  * opens a new tab with the specified URL
@@ -35,28 +37,52 @@ void ui_tabs_init(void);
  * @param title	title of the tab to be created
  * @param activate Should the new tab be put in the foreground?
  *
- * @returns the newly created htmlview
+ * @returns the newly created HTML view
  */
-GtkWidget* ui_tabs_new(const gchar *url, const gchar *title, gboolean activate);
+LifereaHtmlView * ui_tabs_new (const gchar *url, const gchar *title, gboolean activate);
 
 /**
  * makes the headline tab visible 
  */
-void ui_tabs_show_headlines(void);
+void ui_tabs_show_headlines (void);
 
 /**
- * used to determine which htmlview (a tab or the headlines view)
+ * Used to determine which HTML view (a tab or the headlines view)
  * is currently visible and can be used to display HTML that
  * is to be loaded
+ *
+ * @returns HTML view widget
  */
+LifereaHtmlView * ui_tabs_get_active_htmlview (void);
 
-GtkWidget * ui_tabs_get_active_htmlview(void);
+/**
+ * Closes the given tab widget.
+ *
+ * @param tab	the widget
+ */
+void ui_tabs_close_tab (GtkWidget *tab);
 
-void ui_tabs_close_tab(GtkWidget *child);
-void ui_tabs_set_title(GtkWidget *child, const gchar *title);
-void ui_tabs_set_location(GtkWidget *child, const gchar *uri);
+/**
+ * Sets the given title as the title of the given tab widget.
+ * If the title is to long it will be truncated and suffixed
+ * with "..."
+ *
+ * @param tab	the widget
+ * @param title	the title
+ */
+void ui_tabs_set_title (GtkWidget *tab, const gchar *title);
+
+/**
+ * Sets the location URI for the given tab widget. This 
+ * automatically loads the URI in the rendering widget.
+ *
+ * @param tab	the widget
+ * @param uri	the location URI
+ */
+void ui_tabs_set_location (GtkWidget *tab, const gchar *uri);
 
 /* popup menu callbacks */
-void on_popup_open_link_in_tab_selected(gpointer callback_data, guint callback_action, GtkWidget *widget);
+
+void on_popup_open_link_in_tab_selected (gpointer callback_data, guint callback_action, GtkWidget *widget);
 
 #endif
