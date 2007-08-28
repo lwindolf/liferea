@@ -199,7 +199,9 @@ item_state_set_all_read (nodePtr node)
 			while (duplicate) {
 				gchar *nodeId = (gchar *)duplicate->data;
 				nodePtr affectedNode = node_from_id (nodeId);
-				affectedNode->needsRecount = TRUE;
+				if (affectedNode != NULL) {
+					affectedNode->needsRecount = TRUE;
+				}
 				g_free (nodeId);
 				duplicate = g_slist_next (duplicate);
 			}
