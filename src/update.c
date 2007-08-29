@@ -481,59 +481,69 @@ gboolean update_request_cancel_retry(requestPtr request) {
 	return FALSE;
 }
 
-static gboolean update_dequeue_results(gpointer user_data) {
+static gboolean
+update_process_result_idle_cb (gpointer user_data)
+{
+	requestPtr request = (requestPtr)user_data;
+	(request->callback) (request);
+	return FALSE;
+}
+
+static gboolean
+update_dequeue_results (gpointer user_data)
+{
 	requestPtr	request;
-	request_cb	callback;
 
 	results_timer = 0;
 	
-	while(NULL != (request = g_async_queue_try_pop(results))) {
-		callback = request->callback;
+	while (NULL != (request = g_async_queue_try_pop (results))) {
 		request->state = REQUEST_STATE_DEQUEUE;
 
 		/* Handling abandoned requests (e.g. after feed deletion) */
-		if(callback == NULL) {	
-			debug1(DEBUG_UPDATE, "freeing cancelled request (%s)", request->source);
-			update_request_free(request);
+		if (request->callback == NULL) {	
+			debug1 (DEBUG_UPDATE, "freeing cancelled request (%s)", request->source);
+			update_request_free (request);
 			continue;
 		} 
 		
 		/* Retrying in some error cases */
-		if((request->returncode == NET_ERR_UNKNOWN) ||
-		   (request->returncode == NET_ERR_CONN_FAILED) ||
-		   (request->returncode == NET_ERR_SOCK_ERR) ||
-		   (request->returncode == NET_ERR_HOST_NOT_FOUND) ||
-		   (request->returncode == NET_ERR_TIMEOUT)) {
+		if ((request->returncode == NET_ERR_UNKNOWN) ||
+		    (request->returncode == NET_ERR_CONN_FAILED) ||
+		    (request->returncode == NET_ERR_SOCK_ERR) ||
+		    (request->returncode == NET_ERR_HOST_NOT_FOUND) ||
+		    (request->returncode == NET_ERR_TIMEOUT)) {
 
-			if(request->allowRetries && (REQ_MAX_NUMBER_OF_RETRIES <= request->retriesCount)) {
-				debug1(DEBUG_UPDATE, "retrying download (%s)", request->source);
-				update_request_retry(request);
+			if (request->allowRetries && (REQ_MAX_NUMBER_OF_RETRIES <= request->retriesCount)) {
+				debug1 (DEBUG_UPDATE, "retrying download (%s)", request->source);
+				update_request_retry (request);
 			} else {
-				debug1(DEBUG_UPDATE, "retry count exceeded (%s)", request->source);
-				(callback)(request);
+				debug1 (DEBUG_UPDATE, "retry count exceeded (%s)", request->source);
+				g_idle_add (update_process_result_idle_cb, request);
 			}
 			continue;
 		}
 		
 		/* Normal result processing */
-		(callback)(request);
+		g_idle_add (update_process_result_idle_cb, request);
 	}
 	return FALSE;
 }
 
-void update_init(void) {
+void
+update_init (void)
+{
 	gushort	i, count;
 
 	network_init ();
 	
-	requests_high_prio = g_async_queue_new();
-	requests_normal_prio = g_async_queue_new();
-	results = g_async_queue_new();
+	requests_high_prio = g_async_queue_new ();
+	requests_normal_prio = g_async_queue_new ();
+	results = g_async_queue_new ();
 	
-	offline_cond = g_cond_new();
-	cond_mutex = g_mutex_new();
+	offline_cond = g_cond_new ();
+	cond_mutex = g_mutex_new ();
 		
-	if(1 >= (count = getNumericConfValue(UPDATE_THREAD_CONCURRENCY)))
+	if (1 >= (count = getNumericConfValue (UPDATE_THREAD_CONCURRENCY)))
 		count = DEFAULT_UPDATE_THREAD_CONCURRENCY;
 	
 	for (i = 0; i < count; i++) {
