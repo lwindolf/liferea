@@ -164,15 +164,17 @@ mozembed_destroy_brsr_cb (GtkMozEmbed *embed, gpointer user_data)
 static void
 mozembed_link_message_cb(GtkMozEmbed *embed, gpointer user_data)
 {
-	gchar *selectedURL;
+	LifereaHtmlView	*htmlview;
+	gchar		*selectedURL;
 	
+	htmlview = g_object_get_data (G_OBJECT (embed), "htmlview");
 	selectedURL = g_object_get_data (G_OBJECT (embed), "selectedURL");
 	g_free(selectedURL);
 	
 	selectedURL = gtk_moz_embed_get_link_message (embed);
 	if (selectedURL) {
 		/* overwrite or clear last status line text */
-		liferea_htmlview_on_url (selectedURL);
+		liferea_htmlview_on_url (htmlview, selectedURL);
 		
 		/* mozilla gives us an empty string when no link is selected */
 		if (0 == strlen (selectedURL)) {

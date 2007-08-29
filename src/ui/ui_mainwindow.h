@@ -76,6 +76,7 @@ void ui_mainwindow_update_feed_menu(gboolean feedActions, gboolean readWrite);
 
 /** According to the preferences this function enables/disables the menubar */
 void ui_mainwindow_update_menubar(void);
+
 /**
  * Sets the status bar text. Takes printf() like parameters 
  */
