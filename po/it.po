@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: Liferea 1.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-07-06 00:46+0200\n"
-"PO-Revision-Date: 2007-08-18 23:42+0200\n"
+"PO-Revision-Date: 2007-08-27 13:38+0200\n"
 "Last-Translator: Emanuele Grande <<caccolangrifata@gmail.com>>\n"
 "Language-Team: Italian\n"
 "MIME-Version: 1.0\n"
@@ -176,9 +176,7 @@ msgstr "Autenticazione"
 #: ../liferea.glade.h:38
 #, fuzzy
 msgid "Auto-_load item link in configured browser when selecting articles."
-msgstr ""
-"_Carica automaticamente i link degli elementi nel browser interno durante la "
-"lettura degli articoli."
+msgstr "_Carica automaticamente i link degli elementi nel browser quando selezionati."
 
 #: ../liferea.glade.h:39
 msgid "Browser"
@@ -297,7 +295,6 @@ msgid "Convert _using:"
 msgstr "Converti _usando:"
 
 #: ../liferea.glade.h:91
-#, fuzzy
 msgid ""
 "Copyright (c) 2003-2007\n"
 "Lars Lindner <lars.lindner@gmail.com> and \n"
@@ -946,7 +943,6 @@ msgid "Author"
 msgstr "Autore"
 
 #: ../xslt/item.xml.in.h:3
-#, fuzzy
 msgid "Comments"
 msgstr "Commenti"
 
@@ -973,7 +969,7 @@ msgstr "Nessun commento"
 
 #: ../xslt/item.xml.in.h:9
 msgid "Refresh"
-msgstr ""
+msgstr "Aggiorna"
 
 #: ../xslt/item.xml.in.h:10
 #, fuzzy
@@ -1183,16 +1179,14 @@ msgstr ""
 
 #: ../src/export.c:328 ../src/export.c:330
 #, c-format
-msgid ""
-"Empty document! OPML document \"%s\" should not be empty when importing."
-msgstr ""
-"Documento vuoto! Il documento OPML \"%s\" non dovrebbe essere vuoto durante "
-"l'importazione."
 ######################################################################################################################################
 #: ../src/export.c:351 ../src/export.c:353
 #, c-format
-msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
+msgid ""
+"Empty document! OPML document \"%s\" should not be empty when importing.\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
+"Documento vuoto! Il documento OPML \"%s\" non dovrebbe essere vuoto durante "
+"l'importazione."
 "\"%s\" non è un documento OPML valido! Liferea non può importare questo file!"
 
 #: ../src/export.c:372
@@ -1468,15 +1462,15 @@ msgid "not included"
 msgstr "non incluso"
 
 #: ../src/subscription.c:79
-#, fuzzy, c-format
+#, c-format
 msgid "Subscription \"%s\" is already being updated!"
-msgstr "Questo notiziario \"%s\" è già stato aggiornato!"
+msgstr "Il notiziario \"%s\" è già stato aggiornato!"
 
 #: ../src/subscription.c:84
 #, fuzzy, c-format
 msgid ""
 "The subscription \"%s\" was discontinued. Liferea won't update it anymore!"
-msgstr "Il notiziario \"%s\" è stato rimosso. Liferea non lo aggiornerà più|"
+msgstr "Il notiziario \"%s\" è stato rimosso. Liferea non lo aggiornerà più!"
 
 #: ../src/subscription.c:258
 msgid ""
@@ -1842,7 +1836,7 @@ msgstr "Decrementa le dimensioni del testo nella lista degli elementi."
 
 #: ../src/ui/ui_mainwindow.c:1023
 msgid "_Tools"
-msgstr ""
+msgstr "_Strumenti"
 
 #: ../src/ui/ui_mainwindow.c:1024
 #, fuzzy
@@ -2274,7 +2268,7 @@ msgstr ""
 
 #: ../src/ui/ui_script.c:153
 msgid "Sorry, no scripting support available!"
-msgstr ""
+msgstr "Spiacenti, supporto allo script non supportato"
 
 #: ../src/ui/ui_script.c:179
 #, fuzzy
@@ -2376,7 +2370,7 @@ msgstr "%b %d %H:%M"
 
 #: ../src/fl_sources/bloglines_source.glade.h:1
 msgid "Add Bloglines Account"
-msgstr ""
+msgstr "Aggiungi account Bloglines"
 
 #: ../src/fl_sources/bloglines_source.glade.h:2
 msgid "Please enter your Bloglines account settings."
@@ -2441,6 +2435,8 @@ msgstr "Aggiungi OPML/Planet"
 msgid ""
 "Please specify a local file or an URL pointing to a valid OPML feed list."
 msgstr ""
+"Perfavore specificare un file locale o un URL che punti ad una lista "
+"di notiziari OPML valida"
 
 #: ../src/fl_sources/opml_source.glade.h:3
 msgid "_Location"
@@ -2455,15 +2451,17 @@ msgid "Planet, BlogRoll, OPML"
 msgstr ""
 
 #: ../src/fl_sources/opml_source.c:335
+#, fuzzy
 msgid ""
 "Integrate blogrolls or Planets in your feed list. Liferea will automatically "
 "add and remove feeds according to the changes of the source OPML document"
 msgstr ""
+"Integrare blogrolls o Planet nella lista dei notiziari. I notiziari saranno "
+"aggiunti e rimossi automaticamente da Liferea a seconda del documento OPML"
 
 #: ../src/fl_sources/opml_source.c:408
-#, fuzzy
 msgid "Choose OPML File"
-msgstr "Scegliere un file"
+msgstr "Scegliere il file OPML"
 
 #: ../src/fl_sources/opml_source.h:27
 msgid "New OPML Subscription"
@@ -2471,7 +2469,7 @@ msgstr "Nuova Sottoscrizione OPML"
 
 #: ../src/fl_sources/node_source.glade.h:1
 msgid "Select the source type you want to add..."
-msgstr ""
+msgstr "Selezionare il tipo di sorgente che si vuole aggiungere..."
 
 #: ../src/fl_sources/node_source.glade.h:2
 msgid "Source Selection"
@@ -2500,16 +2498,16 @@ msgstr "Questo elemento non esiste più!"
 
 #: ../src/notification/notif_libnotify.c:112
 msgid "This news entry has no headline"
-msgstr ""
+msgstr "La nuova sottoscrizione non ha un headline"
 
 #: ../src/notification/notif_libnotify.c:117
 msgid "Visit"
-msgstr ""
+msgstr "Visita"
 
 #: ../src/notification/notif_libnotify.c:154
 #: ../src/notification/notif_libnotify.c:240
 msgid "Open feed"
-msgstr ""
+msgstr "Apri notiziario"
 
 #: ../src/notification/notif_libnotify.c:157
 #: ../src/notification/notif_libnotify.c:243
