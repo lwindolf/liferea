@@ -542,7 +542,7 @@ feed_free (nodePtr node) {
 /* implementation of feed node update request processing callback */
 
 static void
-feed_process_update_result (nodePtr node, struct request *request)
+feed_process_update_result (nodePtr node, requestPtr request)
 {
 	feedParserCtxtPtr	ctxt;
 	feedPtr			feed = (feedPtr)node->data;
@@ -613,6 +613,8 @@ feed_process_update_result (nodePtr node, struct request *request)
 	}
 
 	script_run_for_hook (SCRIPT_HOOK_FEED_UPDATED);
+	
+	update_request_free (request);
 
 	debug_exit ("feed_process_update_result");
 }

@@ -157,6 +157,7 @@ google_source_subscriptions_cb (requestPtr request)
 
 	node_foreach_child (node, node_update_subscription);
 	db_update_state_save (node->id, request->updateState);
+	update_request_free (request);
 }
 
 static void
@@ -202,6 +203,7 @@ google_source_login_cb (requestPtr request)
 
 	itemview_update_node_info (node);
 	itemview_update ();
+	update_request_free (request);
 }
 
 /* authenticate to receive SID... */

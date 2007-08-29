@@ -270,6 +270,8 @@ opml_source_process_update_result (requestPtr request)
 	}
 	
 	node_foreach_child (node, node_update_subscription);
+	db_update_state_save (node->id, request->updateState);	
+	update_request_free (request);
 }
 
 static void

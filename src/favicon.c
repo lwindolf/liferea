@@ -189,7 +189,7 @@ static void favicon_download_html_cb(requestPtr request) {
 
 static void favicon_download_run(faviconDownloadCtxtPtr ctxt) {
 	gchar		*url;
-	struct request	*request;
+	requestPtr	request;
 
 	debug_enter("favicon_download_run");
 	
