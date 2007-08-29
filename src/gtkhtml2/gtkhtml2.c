@@ -230,23 +230,28 @@ static void url_request(HtmlDocument *doc, const gchar *url, HtmlStream *stream,
 	}
 }
 
-static void on_url(HtmlView *view, const char *url, gpointer user_data) {
+static void
+on_url (HtmlView *view, const char *url, gpointer user_data)
+{
+	LifereaHtmlView *htmlview;
 	xmlChar		*absURL;
 
-	g_free(selectedURL);
+	g_free (selectedURL);
 	selectedURL = NULL;
+	
+	htmlview = g_object_get_data (G_OBJECT (view), "htmlview");
 
-	if(NULL != url) {
-		gdk_window_set_cursor(GDK_WINDOW(gtk_widget_get_parent_window(GTK_WIDGET(view))), link_cursor);
-		absURL = common_build_url(url, g_object_get_data(G_OBJECT(HTML_VIEW(view)->document), "liferea-base-uri"));
-		if(absURL != NULL) {
-			selectedURL = g_strdup(absURL);
-			liferea_htmlview_on_url(selectedURL);
-			xmlFree(absURL);
+	if (url) {
+		gdk_window_set_cursor (GDK_WINDOW (gtk_widget_get_parent_window (GTK_WIDGET (view))), link_cursor);
+		absURL = common_build_url (url, g_object_get_data (G_OBJECT (HTML_VIEW (view)->document), "liferea-base-uri"));
+		if (absURL) {
+			selectedURL = g_strdup (absURL);
+			liferea_htmlview_on_url (htmlview, selectedURL);
+			xmlFree (absURL);
 		}
 	} else {
-		gdk_window_set_cursor(GDK_WINDOW(gtk_widget_get_parent_window(GTK_WIDGET(view))), NULL);
-		ui_mainwindow_set_status_bar("");
+		gdk_window_set_cursor (GDK_WINDOW(gtk_widget_get_parent_window(GTK_WIDGET(view))), NULL);
+		liferea_htmlview_on_url (htmlview, "");
 	}
 }
 
@@ -352,7 +357,7 @@ gtkhtml2_write_html (GtkWidget *scrollpane,
 	html_view_set_document (HTML_VIEW (htmlwidget), doc);
 	
 	g_object_set_data (G_OBJECT (doc), "liferea-base-uri", g_strdup (base));
-	g_object_set_data (G_OBJECT (doc), "localDocument", GINT_TO_POINTER (FALSE));	
+	g_object_set_data (G_OBJECT (doc), "localDocument", GINT_TO_POINTER (FALSE));
 	
 	html_document_clear (doc);
 	/* Gtkhtml2 only responds to text/html documents, thus everything else must be converted to HTML in Liferea's code */

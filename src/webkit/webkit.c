@@ -63,8 +63,10 @@ webkit_progress_changed (WebKitGtkPage *page, gint progress, gpointer user_data)
 static void
 webkit_on_url (WebKitGtkPage *page, const gchar *title, const gchar *url, gpointer user_data)
 {
-	gchar *selectedURL;
+	LifereaHtmlView	*htmlview;
+	gchar		*selectedURL;
 
+	htmlview = g_object_get_data (G_OBJECT (page), "htmlview");
 	selectedURL = g_object_get_data (G_OBJECT (page), "selectedURL");
 	g_free (selectedURL);
 		
@@ -72,7 +74,7 @@ webkit_on_url (WebKitGtkPage *page, const gchar *title, const gchar *url, gpoint
 		selectedURL = g_strdup (url);
 
 		/* overwrite or clear last status line text */
-		liferea_htmlview_on_url (selectedURL);
+		liferea_htmlview_on_url (htmlview, selectedURL);
 	} else {
 		selectedURL = NULL;
 	}
@@ -84,7 +86,7 @@ static GtkWidget *
 webkit_new (LifereaHtmlView *htmlview, gboolean forceInternalBrowsing) 
 {
 	gulong	handler;
-	GtkWidget *htmlwidget;
+	GtkWidget *page;
 	GtkWidget *scrollpane;
 	WebKitGtkSettings *settings;
 	
@@ -94,7 +96,7 @@ webkit_new (LifereaHtmlView *htmlview, gboolean forceInternalBrowsing)
 	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrollpane), GTK_SHADOW_IN);
 	
 	/* create html widget and pack it into the scrolled window */
-	htmlwidget = webkit_gtk_page_new ();
+	page = webkit_gtk_page_new ();
 	
 /*	// empty functions in current webkit code...
 	settings = webkit_gtk_web_settings_copy (webkit_gtk_web_settings_get_global ());
@@ -102,16 +104,16 @@ webkit_new (LifereaHtmlView *htmlview, gboolean forceInternalBrowsing)
 	settings->java_script_can_open_windows_automatically = FALSE;
 	webkit_gtk_page_set_settings (WEBKIT_GTK_PAGE (htmlwidget), settings);
 */
-	gtk_container_add (GTK_CONTAINER (scrollpane), GTK_WIDGET (htmlwidget));
+	gtk_container_add (GTK_CONTAINER (scrollpane), GTK_WIDGET (page));
 
-	g_object_set_data (G_OBJECT (scrollpane), "htmlview", htmlview);	
-	g_object_set_data (G_OBJECT (scrollpane), "internal_browsing", GINT_TO_POINTER (forceInternalBrowsing));
+	g_object_set_data (G_OBJECT (page), "htmlview", htmlview);	
+	g_object_set_data (G_OBJECT (page), "internal_browsing", GINT_TO_POINTER (forceInternalBrowsing));
 
-	g_signal_connect (htmlwidget, "title-changed", G_CALLBACK (webkit_title_changed), htmlwidget);
-	g_signal_connect (htmlwidget, "load-progress-changed", G_CALLBACK (webkit_progress_changed), htmlwidget);
-	g_signal_connect (htmlwidget, "hovering-over-link", G_CALLBACK (webkit_on_url), htmlwidget);
+	g_signal_connect (page, "title-changed", G_CALLBACK (webkit_title_changed), page);
+	g_signal_connect (page, "load-progress-changed", G_CALLBACK (webkit_progress_changed), page);
+	g_signal_connect (page, "hovering-over-link", G_CALLBACK (webkit_on_url), page);
 
-	gtk_widget_show (htmlwidget);
+	gtk_widget_show (page);
 	return scrollpane;
 }
 

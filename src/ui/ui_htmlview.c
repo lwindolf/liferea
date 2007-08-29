@@ -61,6 +61,13 @@ struct LifereaHtmlViewPrivate {
 	GtkWidget	*renderWidget;
 };
 
+enum {
+	STATUSBAR_CHANGED,
+	LAST_SIGNAL
+};
+
+static guint liferea_htmlview_signals[LAST_SIGNAL] = { 0 };
+
 static GObjectClass *parent_class = NULL;
 
 /* -------------------------------------------------------------------- */
@@ -178,6 +185,18 @@ liferea_htmlview_class_init (LifereaHtmlViewClass *klass)
 	parent_class = g_type_class_peek_parent (klass);
 
 	object_class->finalize = liferea_htmlview_finalize;
+	
+	liferea_htmlview_signals[STATUSBAR_CHANGED] = 
+		g_signal_new ("statusbar-changed", 
+		G_OBJECT_CLASS_TYPE (object_class),
+		(GSignalFlags)(G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION),
+		0, 
+		NULL,
+		NULL,
+		g_cclosure_marshal_VOID__STRING,
+		G_TYPE_NONE,
+		1,
+		G_TYPE_STRING);
 
 	g_type_class_add_private (object_class, sizeof(LifereaHtmlViewPrivate));
 }
@@ -273,12 +292,11 @@ static struct internalUriType internalUriTypes[] = {
 	{ NULL,			NULL }
 };
 
-// FIXME: evil, do emit a signal instead!
 void
-liferea_htmlview_on_url (const gchar *url) {
-
-	if (!liferea_htmlview_is_special_url(url))
-		ui_mainwindow_set_status_bar("%s", url);
+liferea_htmlview_on_url (LifereaHtmlView *htmlview, const gchar *url)
+{
+	if (!liferea_htmlview_is_special_url (url))
+		g_signal_emit_by_name (htmlview, "statusbar_changed", url);
 }
 
 void

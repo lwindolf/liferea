@@ -128,16 +128,17 @@ gboolean liferea_htmlview_is_special_url (const gchar *url);
  * Callback for plugins to process on-url events. Depending on 
  * the link type the link will be copied to the status bar.
  *
+ * @param htmlview	the htmlview causing the event
  * @param url		new URL (or empty string)
  */
-void	liferea_htmlview_on_url (const gchar *url);
+void	liferea_htmlview_on_url (LifereaHtmlView *htmlview, const gchar *url);
 
 /**
  * Launches the specified URL in the configured browser or
  * in inside the HTML widget according to the launchType
  * parameter.
  *
- * @param htmlview	The htmlview widget to be set
+ * @param htmlview	the htmlview causing the event
  * @param url		URL to launch
  * @param launchType    Type of launch request: 0 = default, 1 = external, 2 = internal
  */

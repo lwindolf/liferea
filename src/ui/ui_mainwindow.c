@@ -416,6 +416,12 @@ static void radio_action_set_current_value(GtkRadioAction *action, gint current_
 	}
 }
 
+static void
+ui_mainwindow_htmlview_statusbar_changed (gpointer obj, gchar *url)
+{
+	ui_mainwindow_set_status_bar (url);
+}
+
 void
 ui_mainwindow_set_layout (guint newMode)
 {
@@ -428,6 +434,9 @@ ui_mainwindow_set_layout (guint newMode)
 	if (!mainwindow_priv->htmlview) {
 		GtkWidget *renderWidget;
 		mainwindow_priv->htmlview = liferea_htmlview_new (FALSE);		
+		g_signal_connect (mainwindow_priv->htmlview, "statusbar-changed", 
+		                  G_CALLBACK (ui_mainwindow_htmlview_statusbar_changed), 
+		                  mainwindow_priv);
 		renderWidget = liferea_htmlview_get_widget (mainwindow_priv->htmlview);
 		gtk_container_add (GTK_CONTAINER (liferea_shell_lookup ("normalViewHtml")), renderWidget);
 		gtk_widget_show (renderWidget);
@@ -744,7 +753,7 @@ void ui_mainwindow_update_menubar(void) {
 		gtk_widget_show(mainwindow_priv->menubar);
 }
 
-void ui_mainwindow_online_status_changed(int online) {
+void ui_mainwindow_online_status_changed (int online) {
 	GtkWidget	*widget;
 
 	widget = liferea_shell_lookup("onlineimage");
@@ -773,24 +782,30 @@ static void on_work_offline_activate(GtkToggleAction *menuitem, gpointer user_da
 	update_set_online(!gtk_toggle_action_get_active(menuitem));
 }
 
-/* Set the main window status bar to the text given as 
-   statustext. statustext is freed afterwards. */
-void ui_mainwindow_set_status_bar(const char *format, ...) {
-	va_list		args;
-	char 		*str = NULL;
-	GtkWidget	*statusbar;
+gboolean
+ui_mainwindow_set_status_bar_idle_cb (gpointer user_data)
+{
+	gchar	*text = (gchar *)user_data;
 	
-	g_return_if_fail(format != NULL);
+	gtk_label_set_text (GTK_LABEL (GTK_STATUSBAR (liferea_shell_lookup ("statusbar"))->label), text);
+	g_free(text);
+	
+	return FALSE;
+}
 
-	va_start(args, format);
-	str = g_strdup_vprintf(format, args);
-	va_end(args);
+void
+ui_mainwindow_set_status_bar (const char *format, ...)
+{
+	va_list		args;
+	gchar 		*text;
 
-	statusbar = liferea_shell_lookup("statusbar");
-	g_assert(NULL != statusbar);
+	g_return_if_fail (format != NULL);
 
-	gtk_label_set_text(GTK_LABEL(GTK_STATUSBAR(statusbar)->label), str);
-	g_free(str);
+	va_start (args, format);
+	text = g_strdup_vprintf (format, args);
+	va_end (args);
+
+	g_idle_add ((GSourceFunc)ui_mainwindow_set_status_bar_idle_cb, (gpointer)text);
 }
 
 void
