@@ -57,7 +57,9 @@ default_source_source_import (nodePtr node)
 	gchar		*filename10;
 	gchar		*filename12;
 	gchar		*filename13;
-	gchar		*filename;
+	gchar		*filename, *backupFilename;
+	gchar		*content;
+	gssize		length;
 	GSList		*iter, *subscriptions;
 	migrationMode	migration = 0;
 
@@ -71,6 +73,7 @@ default_source_source_import (nodePtr node)
 	filename12 = g_strdup_printf ("%s/.liferea_1.2/feedlist.opml", g_get_home_dir ());
 	filename13 = g_strdup_printf ("%s/.liferea_1.3/feedlist.opml", g_get_home_dir ());
 	filename = default_source_source_get_feedlist (node);
+	backupFilename = g_strdup_printf("%s.backup", filename);
 	
 	if (!g_file_test (filename, G_FILE_TEST_EXISTS)) {
 		/* if feed list is missing, try migration */
@@ -112,11 +115,17 @@ default_source_source_import (nodePtr node)
 			filename = g_strdup_printf(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "opml" G_DIR_SEPARATOR_S "%s", "feedlist.opml");
 		}
 	}
-	
+
 	if (!import_OPML_feedlist (filename, node, node->source, FALSE, TRUE))
-		g_error ("Fatal: Feed list import failed!");
-		
+		g_error ("Fatal: Feed list import failed! You might want to try to restore\n"
+		         "the feed list file %s from the backup in %s", filename, backupFilename);
+
+	/* upon successful import create a backup copy of the feed list */
+	if (g_file_get_contents (filename, &content, &length, NULL))
+		g_file_set_contents (backupFilename, content, length, NULL);			
+
 	g_free (filename);
+	g_free (backupFilename);
 			
 	if (migration)
 		migration_execute (migration);
