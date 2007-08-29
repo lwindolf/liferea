@@ -31,24 +31,26 @@
 #include "node.h"
 #include "xml.h"
 
+extern gboolean cacheMigrated;
+
 static void 
 migrate_copy_dir (const gchar *from,
                   const gchar *to,
                   const gchar *subdir) 
 {
-	gchar *dirname10, *dirname12;
+	gchar *fromDirname, *toDirname;
 	gchar *srcfile, *destfile;
    	GDir *dir;
 		
-	dirname10 = g_strdup_printf("%s" G_DIR_SEPARATOR_S "%s" G_DIR_SEPARATOR_S "%s", g_get_home_dir(), from, subdir);
-	dirname12 = g_strdup_printf("%s" G_DIR_SEPARATOR_S "%s" G_DIR_SEPARATOR_S "%s", g_get_home_dir(), to, subdir);
+	fromDirname = g_strdup_printf("%s" G_DIR_SEPARATOR_S "%s" G_DIR_SEPARATOR_S "%s", g_get_home_dir(), from, subdir);
+	toDirname = g_strdup_printf("%s" G_DIR_SEPARATOR_S "%s" G_DIR_SEPARATOR_S "%s", g_get_home_dir(), to, subdir);
 	
-	dir = g_dir_open(dirname10, 0, NULL);
+	dir = g_dir_open(fromDirname, 0, NULL);
 	while(NULL != (srcfile = (gchar *)g_dir_read_name(dir))) {
 		gchar	*content;
 		gsize	length;
-		destfile = g_strdup_printf("%s" G_DIR_SEPARATOR_S "%s", dirname12, srcfile);
-		srcfile = g_strdup_printf("%s" G_DIR_SEPARATOR_S "%s", dirname10, srcfile);
+		destfile = g_strdup_printf("%s" G_DIR_SEPARATOR_S "%s", toDirname, srcfile);
+		srcfile = g_strdup_printf("%s" G_DIR_SEPARATOR_S "%s", fromDirname, srcfile);
 		g_print("copying %s\n     to %s\n", srcfile, destfile);
 		if(g_file_get_contents(srcfile, &content, &length, NULL))
 			g_file_set_contents(destfile, content, length, NULL);
@@ -58,8 +60,8 @@ migrate_copy_dir (const gchar *from,
 	}
 	g_dir_close(dir);
 	
-	g_free(dirname10);
-	g_free(dirname12);
+	g_free(fromDirname);
+	g_free(toDirname);
 }
 
 static itemPtr
@@ -252,13 +254,13 @@ migrate_items (const gchar *sourceDir)
 }
 
 static void 
-migrate_10_to_13 (void)
+migrate_10_to_14 (void)
 {
 	gchar *sourceDir;
 	
-	g_print("Performing 1.0 -> 1.3 cache migration...\n");
-	migrate_copy_dir (".liferea", ".liferea_1.3", "");
-	migrate_copy_dir (".liferea", ".liferea_1.3", "cache" G_DIR_SEPARATOR_S "favicons");
+	g_print("Performing 1.0 -> 1.4 cache migration...\n");
+	migrate_copy_dir (".liferea", ".liferea_1.4", "");
+	migrate_copy_dir (".liferea", ".liferea_1.4", "cache" G_DIR_SEPARATOR_S "favicons");
 
 	sourceDir = g_strdup_printf("%s" G_DIR_SEPARATOR_S ".liferea" G_DIR_SEPARATOR_S "cache" G_DIR_SEPARATOR_S "feeds", g_get_home_dir());	
 	migrate_items(sourceDir);
@@ -266,33 +268,60 @@ migrate_10_to_13 (void)
 }
 
 static void
-migrate_12_to_13 (void)
+migrate_12_to_14 (void)
 {
 	gchar *sourceDir;
 	
-	g_print("Performing 1.2 -> 1.3 cache migration...\n");
-	migrate_copy_dir (".liferea_1.2", ".liferea_1.3", "");
-	migrate_copy_dir (".liferea_1.2", ".liferea_1.3", "cache" G_DIR_SEPARATOR_S "favicons");
-	migrate_copy_dir (".liferea_1.2", ".liferea_1.3", "cache" G_DIR_SEPARATOR_S "scripts");
-	migrate_copy_dir (".liferea_1.2", ".liferea_1.3", "cache" G_DIR_SEPARATOR_S "plugins");
+	g_print("Performing 1.2 -> 1.4 cache migration...\n");
 	
+	/* copy everything besides the feed cache */
+	migrate_copy_dir (".liferea_1.2", ".liferea_1.4", "");
+	migrate_copy_dir (".liferea_1.2", ".liferea_1.4", "cache" G_DIR_SEPARATOR_S "favicons");
+	migrate_copy_dir (".liferea_1.2", ".liferea_1.4", "cache" G_DIR_SEPARATOR_S "scripts");
+	migrate_copy_dir (".liferea_1.2", ".liferea_1.4", "cache" G_DIR_SEPARATOR_S "plugins");
+	
+	/* migrate feed cache to new DB format */
 	sourceDir = g_strdup_printf("%s" G_DIR_SEPARATOR_S ".liferea_1.2" G_DIR_SEPARATOR_S "cache" G_DIR_SEPARATOR_S "feeds", g_get_home_dir());
 	migrate_items(sourceDir);
 	g_free(sourceDir);
+}
+
+static void
+migrate_13_to_14 (void)
+{
+	g_print("Performing 1.3 -> 1.4 cache migration...\n");	
+	
+	/* close already loaded DB */
+	db_deinit ();
+
+	/* just copying all files */
+	migrate_copy_dir (".liferea_1.3", ".liferea_1.4", "");
+	migrate_copy_dir (".liferea_1.3", ".liferea_1.4", "cache" G_DIR_SEPARATOR_S "favicons");
+	migrate_copy_dir (".liferea_1.3", ".liferea_1.4", "cache" G_DIR_SEPARATOR_S "scripts");
+	migrate_copy_dir (".liferea_1.3", ".liferea_1.4", "cache" G_DIR_SEPARATOR_S "plugins");	
+	
+	/* and reopen the copied one */
+	db_init ();
 }
 
 void
 migration_execute (migrationMode mode)
 {
 	switch (mode) {
-		case MIGRATION_MODE_10_TO_13:
-			migrate_10_to_13 ();
+		case MIGRATION_MODE_10_TO_14:
+			migrate_10_to_14 ();
 			break;
-		case MIGRATION_MODE_12_TO_13:
-			migrate_12_to_13 ();
+		case MIGRATION_MODE_12_TO_14:
+			migrate_12_to_14 ();
+			break;
+		case MIGRATION_MODE_13_TO_14:
+			migrate_13_to_14 ();
 			break;
 		default:
 			g_error ("Invalid migration mode!");
+			return;
 			break;
 	}
+	
+	cacheMigrated = TRUE;
 }
