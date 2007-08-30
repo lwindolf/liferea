@@ -417,7 +417,7 @@ open:
 			   
 	/* Cleanup of DB */
 	
-	db_begin_transaction ();
+	/* db_begin_transaction ();
 	
 	debug_start_measurement (DEBUG_DB);
 	db_exec ("DELETE FROM items WHERE ROWID NOT IN "
@@ -429,12 +429,12 @@ open:
 		 "(SELECT ROWID FROM items);");
 	debug_end_measurement (DEBUG_DB, "cleanup lost itemset entries");
 	
-	/*debug_start_measurement (DEBUG_DB);
+	debug_start_measurement (DEBUG_DB);
 	db_exec ("DELETE FROM itemsets WHERE comment = 0 AND node_id NOT IN "
 	         "(SELECT node_id FROM subscription);");
-	debug_end_measurement (DEBUG_DB, "cleanup lost node entries");*/
+	debug_end_measurement (DEBUG_DB, "cleanup lost node entries");
 	
-	db_end_transaction ();
+	db_end_transaction (); */
 
 	/* prepare statements */
 	
