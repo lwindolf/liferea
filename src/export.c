@@ -1,5 +1,5 @@
 /**
- * @file export.c OPML feedlist import&export
+ * @file export.c OPML feed list import & export
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2004-2007 Lars Lindner <lars.lindner@gmail.com>
@@ -52,7 +52,7 @@ static void export_append_node_tag(nodePtr node, gpointer userdata) {
 	gchar		*tmp;
 
 	// FIXME: use node type capability for this condition
-	if (!internal && (IS_NODE_SOURCE (node)) || IS_VFOLDER (node))
+	if (!internal && (IS_NODE_SOURCE (node) || IS_VFOLDER (node)))
 		return;
 	
 	childNode = xmlNewChild(cur, NULL, BAD_CAST"outline", NULL);
