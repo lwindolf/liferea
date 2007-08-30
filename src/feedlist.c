@@ -283,13 +283,10 @@ feedlist_unselect (void)
 void
 feedlist_selection_changed (nodePtr node)
 {
-	nodePtr	displayed_node;
-
 	debug_enter ("feedlist_selection_changed");
 
 	debug1 (DEBUG_GUI, "new selected node: %s", node?node_get_title (node):"none");
 	if (node != selectedNode) {
-		displayed_node = itemlist_get_displayed_node ();
 
 		/* When the user selects a feed in the feed list we
 		   assume that he got notified of the new items or
