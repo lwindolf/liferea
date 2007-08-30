@@ -265,13 +265,13 @@ itemlist_unload (gboolean markRead)
 		/* 1. Postprocessing for previously selected node, this is necessary
 		   to realize reliable read marking when using condensed mode. It's
 		   important to do this only when the selection really changed. */
-		if(markRead && (2 == node_get_view_mode (itemlist_priv.currentNode))) 
-			item_state_set_all_read (itemlist_priv.currentNode);
+		if (markRead && (2 == node_get_view_mode (itemlist_priv.currentNode)))
+			feedlist_mark_all_read (itemlist_priv.currentNode);
 
-		itemlist_check_for_deferred_action();
+		itemlist_check_for_deferred_action ();
 	}
 
-	itemlist_set_selected(NULL);
+	itemlist_set_selected (NULL);
 	itemlist_priv.currentNode = NULL;
 }
 
