@@ -296,6 +296,9 @@ node_source_free (nodePtr node)
 {
 	if (NULL != NODE_SOURCE_TYPE (node)->free)
 		NODE_SOURCE_TYPE (node)->free (node);
+		
+	g_free (node->source);
+	node->source = NULL;
 }
 
 nodeTypePtr
