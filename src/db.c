@@ -616,20 +616,24 @@ db_deinit (void)
 }
 
 static GSList *
-db_item_metadata_load(gulong id) 
+db_item_metadata_load(itemPtr item) 
 {
 	GSList		*metadata = NULL;
 	sqlite3_stmt 	*stmt;
 	gint		res;
 
 	stmt = db_get_statement ("metadataLoadStmt");
-	res = sqlite3_bind_int (stmt, 1, id);
+	res = sqlite3_bind_int (stmt, 1, item->id);
 	if (SQLITE_OK != res)
 		g_error ("db_item_load_metadata: sqlite bind failed (error code %d)!", res);
 
 	while (sqlite3_step (stmt) == SQLITE_ROW) {
-		metadata = metadata_list_append (metadata, sqlite3_column_text(stmt, 0), 
-		                                           sqlite3_column_text(stmt, 1));
+		const char *key, *value;
+		key = sqlite3_column_text(stmt, 0);
+		value = sqlite3_column_text(stmt, 1);
+		if (g_str_equal (key, "enclosure"))
+			item->hasEnclosure = TRUE;
+		metadata = metadata_list_append (metadata, key, value); 
 	}
 
 	return metadata;
@@ -687,7 +691,7 @@ db_load_item_from_columns (sqlite3_stmt *stmt)
 	item_set_real_source_title	(item, sqlite3_column_text(stmt, 10));
 	item_set_description		(item, sqlite3_column_text(stmt, 11));
 
-	item->metadata = db_item_metadata_load(item->id);
+	item->metadata = db_item_metadata_load(item);
 
 	return item;
 }
