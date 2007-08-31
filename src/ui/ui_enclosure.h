@@ -1,7 +1,7 @@
 /**
  * @file ui_enclosure.h enclosures user interface
  *
- * Copyright (C) 2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2005-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,12 @@
 #define _UI_ENCLOSURE_H
 
 #include <gtk/gtk.h>
- 
+
+typedef struct enclosureDownloadTool {
+	const char	*format;	/**< format string to construct download command */
+	gboolean	niceFilename;	/**< TRUE if format has second %s for output file name */
+} *enclosureDownloadToolPtr; 
+
 typedef struct encType {
 	gchar		*mime;		/* either mime or extension is set */
 	gchar		*extension;

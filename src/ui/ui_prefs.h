@@ -64,19 +64,14 @@ struct browser * prefs_get_browser(void);
 gchar * prefs_get_browser_command(struct browser *browser, gboolean remote, gboolean fallback);
 
 /**
- * Returns a shell command line with exactly two %s format codes
- * that can be used for launching an enclosure download program.
- * The first %s is to be replaced with the output filename, the
- * second %s is to be replaced with the URL to download.
+ * Returns a download tool definition.
  *
- * @return the command string
+ * @return the download tool definition
  */
-const gchar * prefs_get_download_cmd(void);
+struct enclosureDownloadTool * prefs_get_download_tool (void);
 
 /* GUI callbacks */
 
-void 
-on_prefbtn_clicked                     (GtkButton       *button,
-                                        gpointer user_data);
+void on_prefbtn_clicked (GtkButton *button, gpointer user_data);
 
 #endif

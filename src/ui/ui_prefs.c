@@ -55,14 +55,15 @@ extern GSList *socialBookmarkSites;
 static GtkWidget *prefdialog = NULL;
 
 /** tool commands need to take an absolute file path as first %s and an URL as second %s */
-static gchar *enclosure_download_commands[] = {
-	"wget -q -O %s %s",
-	"curl -s -o %s %s",
+static struct enclosureDownloadTool enclosure_download_commands[] = {
+	{ "wget -q -O %s %s", TRUE },
+	{ "curl -s -o %s %s", TRUE },
+	{ "dbus-send --session --dest=org.gnome.gwget.ApplicationService /org/gnome/gwget/Gwget org.gnome.gwget.Application.OpenURI string:%s uint32:0", FALSE },
 	NULL
 };
 
 /** order must match enclosure_download_commands[] */
-static gchar *enclosure_download_tool_options[] = { "wget", "curl", NULL };
+static gchar *enclosure_download_tool_options[] = { "wget", "curl", "gwget", NULL };
 
 static struct browser browsers[] = {
 	{
@@ -225,11 +226,11 @@ prefs_get_browser (void)
 	return browser;
 }
 
-const gchar *
-prefs_get_download_cmd (void)
+enclosureDownloadToolPtr
+prefs_get_download_tool (void)
 {
 	/* FIXME: array boundary check */
-	return enclosure_download_commands[conf_get_int_value (ENCLOSURE_DOWNLOAD_TOOL)];
+	return &(enclosure_download_commands[conf_get_int_value (ENCLOSURE_DOWNLOAD_TOOL)]);
 }
 
 /*------------------------------------------------------------------------------*/
