@@ -174,30 +174,39 @@ static gpointer ui_enclosure_exec(gpointer data) {
 }
 
 /* etp is optional, if it is missing we are in save mode */
-void ui_enclosure_download(encTypePtr etp, const gchar *url, const gchar *filename) {
-	encJobPtr	ejp;
-	gchar *filenameQ, *urlQ;
+void
+ui_enclosure_download (encTypePtr type, const gchar *url, const gchar *filename)
+{
+	enclosureDownloadToolPtr 	tool;
+	encJobPtr			job;
+	gchar 				*filenameQ, *urlQ;
 
 	/* prepare job structure */
-	ejp = g_new0(struct encJob, 1);
-	ejp->filename = g_strdup(filename);
+	job = g_new0 (struct encJob, 1);
+	job->filename = g_strdup (filename);
 
-	filenameQ = g_shell_quote(filename);
-	urlQ = g_shell_quote(url);
-	ejp->download = g_strdup_printf(prefs_get_download_cmd(), filenameQ, urlQ);
-	if(NULL != etp)
-		ejp->run = g_strdup_printf("%s %s", etp->cmd, filenameQ);
-
-	g_free(filenameQ);
-	g_free(urlQ);
+	filenameQ = g_shell_quote (filename);
+	urlQ = g_shell_quote (url);
 	
-	debug2(DEBUG_UPDATE, "downloading %s to %s...", url, filename);
+	tool = prefs_get_download_tool ();
+	if (tool->niceFilename)
+		job->download = g_strdup_printf (tool->format, filenameQ, urlQ);
+	else
+		job->download = g_strdup_printf (tool->format, urlQ);
+		
+	if (type)
+		job->run = g_strdup_printf("%s %s", type->cmd, filenameQ);
+
+	g_free (filenameQ);
+	g_free (urlQ);
+	
+	debug2 (DEBUG_UPDATE, "downloading %s to %s...", url, filename);
 
 	/* free now unnecessary stuff */
-	if((NULL != etp) && (FALSE == etp->permanent))
-		ui_enclosure_remove_type(etp);
+	if (type && !type->permanent)
+		ui_enclosure_remove_type (type);
 	
-	g_thread_create(ui_enclosure_exec, ejp, FALSE, NULL);
+	g_thread_create (ui_enclosure_exec, job, FALSE, NULL);
 }
 
 /* opens a popup menu for the given link */
