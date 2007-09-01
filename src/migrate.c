@@ -226,7 +226,8 @@ migrate_load_from_cache (const gchar *sourceDir, const gchar *id)
 	feed_free_parser_ctxt (ctxt);
 	
 	db_node_update (node);
-	db_subscription_update (node->subscription);
+	if (node->subscription)
+		db_subscription_update (node->subscription);
 	
 	g_print ("\n");
 	
