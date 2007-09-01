@@ -6,7 +6,7 @@ Linux or require many extra libraries to be installed. Liferea
 tries to fill this gap by creating a fast, easy to use, easy to
 install news aggregator for GTK/GNOME.
 
-This documentation was last updated for Liferea version 1.2.
+This documentation was last updated for Liferea version 1.4.
 
 Installation
 ============
@@ -85,7 +85,7 @@ Compiling from Source
 If you want you can compile Liferea. Download the tarball from 
 the SourcForge project page and extract with: 
 
-   tar zxvf liferea-1.2.0.tar.gz 
+   tar zxvf liferea-1.4.0.tar.gz 
 
 Of course you should adjust the filename. After unpacking 
 run the standard autotools commands: 
