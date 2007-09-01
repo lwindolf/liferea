@@ -4,6 +4,8 @@
 
 	* Fixes a crash when migrating from 1.2.
 	  (reported by tsukasa)
+	* Updated Turkish translation (Eren Tuerkay)
+	* New Turkish default feed list (Eren Tuerkay)
 
 
 2007-08-31  Lars Lindner  <lars.lindner@gmail.com>
