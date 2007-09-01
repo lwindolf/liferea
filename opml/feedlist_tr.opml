@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<opml version="1.0">
+  <head>
+    <title>Liferea Haber Kaynakları</title>
+  </head>
+  <body>
+    <outline title="Okunmam&#x131;&#x15F;" text="Okunmam&#x131;&#x15F;" description="Okunmam&#x131;&#x15F;" type="vfolder" id="hlwekgo" sortColumn="time" viewMode="0">
+      <outline type="rule" text="Okunma durumu" rule="unread" value="" additive="true"/>
+    </outline>
+    <outline title="&#xD6;nemli" text="&#xD6;nemli" description="&#xD6;nemli" type="vfolder" id="gnnymgu" sortColumn="time" viewMode="0">
+      <outline type="rule" text="&#x130;&#x15F;aretlenme durumu" rule="flagged" value="" additive="true"/>
+    </outline>
+    <outline title="A&#xE7;&#x131;k Kaynak" text="A&#xE7;&#x131;k Kaynak" description="A&#xE7;&#x131;k Kaynak" type="folder" id="xgxxhcy" sortColumn="time" viewMode="0" expanded="true">
+      <outline title="Pardus Gezegeni" text="Pardus Gezegeni" description="Pardus Gezegeni" type="rss" id="vmaorqs" sortColumn="time" viewMode="0" htmlUrl="http://gezegen.pardus.org.tr" xmlUrl="http://gezegen.pardus.org.tr/rss20.xml" updateInterval="-1"/>
+      <outline title="&#xD6;zg&#xFC;rl&#xFC;k i&#xE7;in... - Anasayfa" text="&#xD6;zg&#xFC;rl&#xFC;k i&#xE7;in... - Anasayfa" description="&#xD6;zg&#xFC;rl&#xFC;k i&#xE7;in... - Anasayfa" type="rss" id="fpwuash" sortColumn="time" viewMode="0" htmlUrl="http://www.ozgurlukicin.com" xmlUrl="http://www.ozgurlukicin.com/rss" updateInterval="-1"/>
+    </outline>
+  </body>
+</opml>

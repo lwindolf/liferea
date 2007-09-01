@@ -2351,7 +2351,7 @@ msgstr ""
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
 #: ../src/fl_sources/default_source.c:88
 msgid "feedlist.opml"
-msgstr "haberkaynaklistesi.opml"
+msgstr "feedlist_tr.opml"
 
 #: ../src/fl_sources/google_source.glade.h:1
 #, fuzzy
