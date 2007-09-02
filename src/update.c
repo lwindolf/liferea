@@ -485,7 +485,12 @@ static gboolean
 update_process_result_idle_cb (gpointer user_data)
 {
 	requestPtr request = (requestPtr)user_data;
-	(request->callback) (request);
+	
+	if (request->callback)
+		(request->callback) (request);
+	else
+		update_request_free (request);
+		
 	return FALSE;
 }
 
