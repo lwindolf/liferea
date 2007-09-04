@@ -212,7 +212,7 @@ void itemview_update_all_items(void) {
 		ui_itemlist_update_all_items();
 		
 	itemView_priv.needsHTMLViewUpdate = TRUE;
-	htmlview_clear();	/* enforce rerendering */
+	htmlview_update_all_items();
 }
 
 void itemview_update_node_info(nodePtr node) {

@@ -83,6 +83,11 @@ void	htmlview_select_item (itemPtr item);
 void	htmlview_update_item (itemPtr item);
 
 /**
+ * Like htmlview_update_item(), processes all items.
+ */
+void	htmlview_update_all_items (void);
+
+/**
  * Renders all added items to the given HTML view. To be called
  * after one or more calls of htmlview_(add|remove|update)_item.
  *

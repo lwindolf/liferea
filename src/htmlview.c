@@ -161,6 +161,18 @@ htmlview_update_item (itemPtr item)
 	}
 }
 
+void
+htmlview_update_all_items (void)
+{
+	GSList	*iter = htmlView_priv.orderedChunks;
+	while (iter) {
+		htmlChunkPtr chunk = (htmlChunkPtr)iter->data;
+		g_free (chunk->html);
+		chunk->html = NULL;
+		iter = g_slist_next (iter);
+	}
+}
+
 // FIXME: bad naming -> unclear concept!
 static xmlDocPtr
 itemset_to_xml (nodePtr node) 

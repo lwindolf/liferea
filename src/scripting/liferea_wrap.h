@@ -1386,28 +1386,29 @@ SWIG_Lua_SetModule(lua_State* L, swig_module_info *module) {
 #define SWIGTYPE_p_GtkTreeView swig_types[15]
 #define SWIGTYPE_p_GtkTreeViewColumn swig_types[16]
 #define SWIGTYPE_p_GtkWidget swig_types[17]
-#define SWIGTYPE_p_f_p_q_const__char_gpointer__void swig_types[18]
-#define SWIGTYPE_p_gpointer swig_types[19]
-#define SWIGTYPE_p_gulong swig_types[20]
-#define SWIGTYPE_p_int swig_types[21]
-#define SWIGTYPE_p_item swig_types[22]
-#define SWIGTYPE_p_itemSetPtr swig_types[23]
-#define SWIGTYPE_p_node swig_types[24]
-#define SWIGTYPE_p_nodeSource swig_types[25]
-#define SWIGTYPE_p_nodeType swig_types[26]
-#define SWIGTYPE_p_p_GdkPixbuf swig_types[27]
-#define SWIGTYPE_p_requestPtr swig_types[28]
-#define SWIGTYPE_p_socialBookmarkSite swig_types[29]
-#define SWIGTYPE_p_subscription swig_types[30]
-#define SWIGTYPE_p_time_t swig_types[31]
-#define SWIGTYPE_p_updateOptionsPtr swig_types[32]
-#define SWIGTYPE_p_xmlNodePtr swig_types[33]
-#define SWIGTYPE_requestPtr swig_types[34]
-#define SWIGTYPE_time_t swig_types[35]
-#define SWIGTYPE_updateOptionsPtr swig_types[36]
-#define SWIGTYPE_xmlNodePtr swig_types[37]
-static swig_type_info *swig_types[39];
-static swig_module_info swig_module = {swig_types, 38, 0, 0, 0, 0};
+#define SWIGTYPE_p_LifereaHtmlView swig_types[18]
+#define SWIGTYPE_p_f_p_q_const__char_gpointer__void swig_types[19]
+#define SWIGTYPE_p_gpointer swig_types[20]
+#define SWIGTYPE_p_gulong swig_types[21]
+#define SWIGTYPE_p_int swig_types[22]
+#define SWIGTYPE_p_item swig_types[23]
+#define SWIGTYPE_p_itemSetPtr swig_types[24]
+#define SWIGTYPE_p_node swig_types[25]
+#define SWIGTYPE_p_nodeSource swig_types[26]
+#define SWIGTYPE_p_nodeType swig_types[27]
+#define SWIGTYPE_p_p_GdkPixbuf swig_types[28]
+#define SWIGTYPE_p_requestPtr swig_types[29]
+#define SWIGTYPE_p_socialBookmarkSite swig_types[30]
+#define SWIGTYPE_p_subscription swig_types[31]
+#define SWIGTYPE_p_time_t swig_types[32]
+#define SWIGTYPE_p_updateOptionsPtr swig_types[33]
+#define SWIGTYPE_p_xmlNodePtr swig_types[34]
+#define SWIGTYPE_requestPtr swig_types[35]
+#define SWIGTYPE_time_t swig_types[36]
+#define SWIGTYPE_updateOptionsPtr swig_types[37]
+#define SWIGTYPE_xmlNodePtr swig_types[38]
+static swig_type_info *swig_types[40];
+static swig_module_info swig_module = {swig_types, 39, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -7358,11 +7359,11 @@ fail:
 
 static int _wrap_ui_mainwindow_get_active_htmlview(lua_State* L) {
   int SWIG_arg = -1;
-  GtkWidget *result = 0 ;
+  LifereaHtmlView *result = 0 ;
   
-  result = (GtkWidget *)ui_mainwindow_get_active_htmlview();
+  result = (LifereaHtmlView *)ui_mainwindow_get_active_htmlview();
   SWIG_arg=0;
-  SWIG_NewPointerObj(L,result,SWIGTYPE_p_GtkWidget,0); SWIG_arg++; 
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_LifereaHtmlView,0); SWIG_arg++; 
   return SWIG_arg;
   
 fail:
@@ -8378,6 +8379,7 @@ static swig_type_info _swigt__p_GtkTreeStore = {"_p_GtkTreeStore", "GtkTreeStore
 static swig_type_info _swigt__p_GtkTreeView = {"_p_GtkTreeView", "GtkTreeView *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_GtkTreeViewColumn = {"_p_GtkTreeViewColumn", "GtkTreeViewColumn *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_GtkWidget = {"_p_GtkWidget", "GtkWidget *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_LifereaHtmlView = {"_p_LifereaHtmlView", "LifereaHtmlView *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_f_p_q_const__char_gpointer__void = {"_p_f_p_q_const__char_gpointer__void", "void (*)(char const *,gpointer)|fileChoosenCallback", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gpointer = {"_p_gpointer", "gpointer *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gulong = {"_p_gulong", "gulong *", 0, 0, (void*)0, 0};
@@ -8418,6 +8420,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_GtkTreeView,
   &_swigt__p_GtkTreeViewColumn,
   &_swigt__p_GtkWidget,
+  &_swigt__p_LifereaHtmlView,
   &_swigt__p_f_p_q_const__char_gpointer__void,
   &_swigt__p_gpointer,
   &_swigt__p_gulong,
@@ -8458,6 +8461,7 @@ static swig_cast_info _swigc__p_GtkTreeStore[] = {  {&_swigt__p_GtkTreeStore, 0,
 static swig_cast_info _swigc__p_GtkTreeView[] = {  {&_swigt__p_GtkTreeView, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_GtkTreeViewColumn[] = {  {&_swigt__p_GtkTreeViewColumn, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_GtkWidget[] = {  {&_swigt__p_GtkWidget, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_LifereaHtmlView[] = {  {&_swigt__p_LifereaHtmlView, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_f_p_q_const__char_gpointer__void[] = {  {&_swigt__p_f_p_q_const__char_gpointer__void, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gpointer[] = {  {&_swigt__p_gpointer, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gulong[] = {  {&_swigt__p_gulong, 0, 0, 0},{0, 0, 0, 0}};
@@ -8498,6 +8502,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_GtkTreeView,
   _swigc__p_GtkTreeViewColumn,
   _swigc__p_GtkWidget,
+  _swigc__p_LifereaHtmlView,
   _swigc__p_f_p_q_const__char_gpointer__void,
   _swigc__p_gpointer,
   _swigc__p_gulong,
