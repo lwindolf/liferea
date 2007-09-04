@@ -40,7 +40,8 @@ enum is_columns {
 	IS_ENCLOSURE,		/**< Flag wether enclosure is attached or not */
 	IS_SOURCE,		/**< Source node pointer */
 	IS_STATE,		/**< Original item state (unread, flagged...) for sorting */
-	IS_LEN			/**< Number of columns in the itemstore */
+	ITEMSTORE_UNREAD,	/**< Flag wether "unread" icon is to be shown */
+	ITEMSTORE_LEN		/**< Number of columns in the itemstore */
 };
 
 /**
