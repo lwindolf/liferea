@@ -105,18 +105,15 @@ itemview_set_displayed_node (nodePtr node)
 
 		/* 1. Perform UI item list preparations ... */
 		
-		/* a) Clear item list */
-
 		/* Free the old itemstore and create a new one; this is the only way to disable sorting */
 		ui_itemlist_reset_tree_store ();	 /* this also clears the itemlist. */
 		model = GTK_TREE_MODEL (ui_itemlist_get_tree_store ());
 
-		/* b) Enable item list columns as necessary */
+		/* Disable attachment icon column (will be enabled when loading first item with an enclosure) */
 		ui_itemlist_enable_encicon_column (FALSE);
 
 		if(node) {
-			if (IS_FOLDER (node) || IS_VFOLDER (node))
-				ui_itemlist_enable_favicon_column (TRUE);
+			ui_itemlist_enable_favicon_column (IS_FOLDER (node) || IS_VFOLDER (node));
 
 			/* c)  disable sorting for performance reasons, set sort column
 			       and enable sorting again */
@@ -215,7 +212,7 @@ void itemview_update_all_items(void) {
 		ui_itemlist_update_all_items();
 		
 	itemView_priv.needsHTMLViewUpdate = TRUE;
-	htmlview_clear();	/* enforce rerendering */
+	htmlview_update_all_items();
 }
 
 void itemview_update_node_info(nodePtr node) {
