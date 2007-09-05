@@ -62,7 +62,8 @@ static struct mainwindow {
 	GtkWindow	*window;
 	GtkWidget	*menubar;
 	GtkWidget	*toolbar;
-	GtkWidget	*itemlist;
+	GtkWidget	*itemlistContainer;	/**< scrolled window holding item list tree view */
+	GtkWidget	*itemlist;		/**< item list tree view */
 	GtkWidget	*statusbar_feedsinfo;
 	GtkActionGroup	*generalActions;
 	GtkActionGroup	*addActions;		/**< all types of "New" options */
@@ -233,32 +234,36 @@ void on_faq_activate(GtkMenuItem *menuitem, gpointer user_data) {
 /*------------------------------------------------------------------------------*/
 
 /* Set cursor to the first item on a treeview. */
-static void on_treeview_set_first(gchar* treename) {
-	GtkTreeView	*treeview;
+static void
+on_treeview_set_first (GtkWidget *treeview)
+{
 	GtkTreePath	*path;
 
-	treeview = GTK_TREE_VIEW(liferea_shell_lookup(treename));
-	path = gtk_tree_path_new_first();
-	gtk_tree_view_set_cursor(treeview, path, NULL, FALSE);
+	path = gtk_tree_path_new_first ();
+	gtk_tree_view_set_cursor (GTK_TREE_VIEW (treeview), path, NULL, FALSE);
 	gtk_tree_path_free(path);
 }
 
 /* Move treeview cursor up and down. */
-void on_treeview_move(gchar* treename, gint step) {
-	GtkTreeView	*treeview;
+void
+on_treeview_move (GtkWidget *treeview, gint step)
+{
 	gboolean	ret;
 
-	treeview = GTK_TREE_VIEW(liferea_shell_lookup(treename));
-	gtk_widget_grab_focus(GTK_WIDGET(treeview));
-	g_signal_emit_by_name(treeview, "move-cursor", GTK_MOVEMENT_DISPLAY_LINES, step, &ret);
+	gtk_widget_grab_focus(treeview);
+	g_signal_emit_by_name(GTK_TREE_VIEW (treeview), "move-cursor", GTK_MOVEMENT_DISPLAY_LINES, step, &ret);
 }
 
-static void on_treeview_prev(gchar* treename) {
-	on_treeview_move(treename, -1);
+static void
+on_treeview_prev (GtkWidget *treeview)
+{
+	on_treeview_move (treeview, -1);
 }
 
-static void on_treeview_next(gchar* treename) {
-	on_treeview_move(treename, 1);
+static void
+on_treeview_next (GtkWidget *treeview)
+{
+	on_treeview_move (treeview, 1);
 }
 
 gboolean
@@ -373,21 +378,21 @@ on_mainwindow_key_press_event (GtkWidget *widget, GdkEventKey *event, gpointer d
 					return TRUE;
 					break;
 				case GDK_f:
-					on_treeview_next ("itemlist");
+					on_treeview_next (mainwindow_priv->itemlist);
 					return TRUE;
 					break;
 				case GDK_b:
-					on_treeview_prev ("itemlist");
+					on_treeview_prev (mainwindow_priv->itemlist);
 					return TRUE;
 					break;
 				case GDK_u:
-					on_treeview_prev ("feedlist");
-					on_treeview_set_first ("itemlist");
+					on_treeview_prev (liferea_shell_lookup ("feedlist"));
+					on_treeview_set_first (mainwindow_priv->itemlist);
 					return TRUE;
 					break;
 				case GDK_d:
-					on_treeview_next ("feedlist");
-					on_treeview_set_first ("itemlist");
+					on_treeview_next (liferea_shell_lookup ("feedlist"));
+					on_treeview_set_first (mainwindow_priv->itemlist);
 					return TRUE;
 					break;
 			}
@@ -468,7 +473,7 @@ ui_mainwindow_set_layout (guint newMode)
 	/* reparenting HTML view */
 	gtk_notebook_set_current_page (GTK_NOTEBOOK (liferea_shell_lookup ("itemtabs")), newMode);
 	gtk_widget_reparent (liferea_htmlview_get_widget (mainwindow_priv->htmlview), liferea_shell_lookup (htmlWidgetName));
-	gtk_widget_reparent (GTK_WIDGET (mainwindow_priv->itemlist), liferea_shell_lookup (ilWidgetName));
+	gtk_widget_reparent (GTK_WIDGET (mainwindow_priv->itemlistContainer), liferea_shell_lookup (ilWidgetName));
  
 	/* grab necessary to force HTML widget update (display must
 	   change from feed description to list of items and vica 
@@ -621,10 +626,11 @@ ui_mainwindow_init (int mainwindowState)
 	/* order important !!! */
 	ui_feedlist_init(liferea_shell_lookup("feedlist"));
 	
-	mw->itemlist = ui_itemlist_new();
+	mw->itemlistContainer = ui_itemlist_new();
+	mw->itemlist = gtk_bin_get_child (GTK_BIN (mw->itemlistContainer));
 	/* initially we pack the item list in the normal view pane,
 	   which is later changed in ui_mainwindow_set_layout() */
-	gtk_container_add(GTK_CONTAINER(liferea_shell_lookup("normalViewItems")), mw->itemlist);
+	gtk_container_add(GTK_CONTAINER(liferea_shell_lookup("normalViewItems")), mw->itemlistContainer);
 	
 	itemview_init();
 	

@@ -543,14 +543,17 @@ void on_remove_items_activate(GtkMenuItem *menuitem, gpointer user_data) {
 		ui_show_error_box(_("You must select a feed to delete its items!"));
 }
 
-void on_remove_item_activate(GtkMenuItem *menuitem, gpointer user_data) {
+void
+on_remove_item_activate (GtkMenuItem *menuitem, gpointer user_data)
+{
 	itemPtr		item;
 	
-	if(NULL != (item = itemlist_get_selected())) {
-		on_treeview_move("itemlist", 1);
-		itemlist_remove_item(item);
+	item = itemlist_get_selected ();
+	if (item) {
+		on_treeview_move (itemlist_treeview, 1);
+		itemlist_remove_item (item);
 	} else {
-		ui_mainwindow_set_status_bar(_("No item has been selected"));
+		ui_mainwindow_set_status_bar (_("No item has been selected"));
 	}
 }
 

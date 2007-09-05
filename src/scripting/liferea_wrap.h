@@ -7795,12 +7795,16 @@ fail:
 
 static int _wrap_on_treeview_move(lua_State* L) {
   int SWIG_arg = -1;
-  char *arg1 = (char *) 0 ;
+  GtkWidget *arg1 = (GtkWidget *) 0 ;
   int arg2 ;
   
-  if(!lua_isstring(L,1)) SWIG_fail_arg(1);
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
   if(!lua_isnumber(L,2)) SWIG_fail_arg(2);
-  arg1 = (char *)lua_tostring(L, 1);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_GtkWidget,0))){
+    SWIG_fail_ptr("on_treeview_move",1,SWIGTYPE_p_GtkWidget);
+  }
+  
   arg2 = (int)lua_tonumber(L, 2);
   on_treeview_move(arg1,arg2);
   SWIG_arg=0;
@@ -8464,7 +8468,6 @@ static swig_lua_const_info swig_constants[] = {
 { SWIG_LUA_INT,     (char *)"IS_SOURCE", (long) IS_SOURCE, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"IS_STATE", (long) IS_STATE, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"ITEMSTORE_UNREAD", (long) ITEMSTORE_UNREAD, 0, 0, 0},
-{ SWIG_LUA_INT,     (char *)"ITEMSTORE_UPDATED", (long) ITEMSTORE_UPDATED, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"ITEMSTORE_LEN", (long) ITEMSTORE_LEN, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"MAINWINDOW_SHOWN", (long) MAINWINDOW_SHOWN, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"MAINWINDOW_MAXIMIZED", (long) MAINWINDOW_MAXIMIZED, 0, 0, 0},
