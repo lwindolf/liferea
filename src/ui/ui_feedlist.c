@@ -242,6 +242,15 @@ void ui_feedlist_init(GtkWidget *feedview) {
 	debug_exit("ui_feedlist_init");
 }
 
+static void
+ui_feedlist_expand_parents (nodePtr parentNode)
+{
+	if (parentNode->parent)
+		ui_feedlist_expand_parents (parentNode->parent);
+		
+	ui_node_set_expansion (parentNode, TRUE);
+}
+
 void
 ui_feedlist_select (nodePtr node)
 {
@@ -258,6 +267,8 @@ ui_feedlist_select (nodePtr node)
 	
 	if (node) {
 		GtkTreePath *path = gtk_tree_model_get_path (GTK_TREE_MODEL (feedstore), ui_node_to_iter(node->id));
+		
+		ui_feedlist_expand_parents (node);
 	
 		if (IS_FOLDER (node))
 			gtk_tree_view_expand_to_path (GTK_TREE_VIEW (treeview), path);
