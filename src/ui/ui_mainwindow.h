@@ -138,10 +138,10 @@ void ui_choose_directory(gchar *title, gchar *buttonName, fileChoosenCallback ca
 /**
  * Move cursor to nth next iter in a tree view.
  *
- * @param treename	widget name of the tree view
+ * @param treeview	tree view widget
  * @param step		how many iters to skip
  */
-void on_treeview_move(gchar* treename, gint step);
+void on_treeview_move (GtkWidget *treeview, gint step);
 
 void on_popup_quit(gpointer callback_data, guint callback_action, GtkWidget *widget);
 
