@@ -68,11 +68,14 @@ gint mozsupport_key_press_cb (GtkWidget *widget, gpointer ev)
      		event->GetShiftKey (&shift);
      		event->GetCtrlKey (&ctrl);
      		event->GetAltKey (&alt);
-		
-		/* Do trigger scrolling if the skimming hotkey is not
-		   <Space> without a modifier, or if a modifier is pressed */
-		if ((0 != conf_get_int_value (BROWSE_KEY_SETTING)) &&
-		    (alt | shift | ctrl)) {
+
+		/* Do trigger scrolling if the skimming hotkey is 
+		  <Space> with a modifier. Other cases (Space+modifier)
+		  are handled in src/ui/ui_mainwindow.c and if we
+		  get <Space> with a modifier here it needs no extra
+		  handling. */
+		if ((0 == conf_get_int_value (BROWSE_KEY_SETTING)) &&
+		    !(alt | shift | ctrl)) {
 			if (mozsupport_scroll_pagedown(widget) == FALSE)
 				on_next_unread_item_activate (NULL, NULL);
 			return TRUE;
