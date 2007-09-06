@@ -305,7 +305,7 @@ on_google_source_selected (GtkDialog *dialog,
 		node_source_new (node, google_source_get_type ());
 		google_source_setup (parent, node);
 		node_set_subscription (node, subscription);
-		subscription_update (subscription, 0);
+		google_source_update (node);
 	}
 
 	gtk_widget_destroy (GTK_WIDGET (dialog));

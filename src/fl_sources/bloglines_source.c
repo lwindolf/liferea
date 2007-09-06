@@ -53,7 +53,7 @@ on_bloglines_source_selected (GtkDialog *dialog,
 		node_source_new (node, bloglines_source_get_type ());
 		opml_source_setup (parent, node);
 		node_set_subscription (node, subscription);
-		subscription_update (subscription, 0);
+		opml_source_update (node);
 	}
 
 	gtk_widget_destroy (GTK_WIDGET (dialog));
