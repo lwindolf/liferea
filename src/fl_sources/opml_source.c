@@ -365,7 +365,7 @@ on_opml_source_selected (GtkDialog *dialog,
 		node_source_new (node, opml_source_get_type());
 		opml_source_setup (parent, node);
 		node_set_subscription (node, subscription_new (gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET (dialog), "location_entry"))), NULL, NULL));
-		subscription_update (node->subscription, 0);
+		opml_source_update (node);
 	}
 
 	gtk_widget_destroy (GTK_WIDGET (dialog));

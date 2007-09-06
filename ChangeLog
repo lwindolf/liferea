@@ -6,6 +6,10 @@
 	* Fixes a bug that prevented the next unread item
 	  selection feature to work correctly with collapsed
 	  folders. (reported by Luis Rodrigo Gallardo Cruz)
+	* Fixes SF #1787003: skim through articles only works
+	  with Ctrl-Space (reported by Chris Conway)
+	* Fixes using the wrong callback when updating new
+	  OPML sources right after subscription.
 
 
 2007-09-05  Lars Lindner  <lars.lindner@gmail.com>
