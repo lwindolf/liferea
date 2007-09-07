@@ -69,8 +69,11 @@ comment_feed_free_cb (gpointer key, gpointer value, gpointer user_data)
 void
 comments_deinit (void)
 {
-	g_hash_table_foreach (commentFeeds, comment_feed_free_cb, NULL);
-	g_hash_table_destroy (commentFeeds);
+	if (commentFeeds) {
+		g_hash_table_foreach (commentFeeds, comment_feed_free_cb, NULL);
+		g_hash_table_destroy (commentFeeds);
+		commentFeeds = NULL;
+	}
 }
 
 /**
