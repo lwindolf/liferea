@@ -216,7 +216,10 @@ script_deinit (void)
 	if (scriptImpl)
 		scriptImpl->deinit ();
 
-	g_hash_table_foreach (scripts, script_hook_free, NULL);
-	// FIXME: foreach hook free script list
-	g_hash_table_destroy (scripts);
+	if (scripts) {
+		g_hash_table_foreach (scripts, script_hook_free, NULL);
+		// FIXME: foreach hook free script list
+		g_hash_table_destroy (scripts);
+		scripts = NULL;
+	}
 }
