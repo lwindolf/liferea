@@ -312,7 +312,7 @@ itemlist_select_next_unread (void)
 	   because no item will be selected and marked read... */
 	if (itemlist_priv.currentNode) {
 		if (NODE_VIEW_MODE_COMBINED == node_get_view_mode (itemlist_priv.currentNode))
-			item_state_set_all_read (itemlist_priv.currentNode);
+			node_mark_all_read (itemlist_priv.currentNode);
 	}
 
 	itemlist_priv.loading++;	/* prevent unwanted selections */
