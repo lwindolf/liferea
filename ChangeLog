@@ -10,6 +10,8 @@
 	  with Ctrl-Space (reported by Chris Conway)
 	* Fixes using the wrong callback when updating new
 	  OPML sources right after subscription.
+	* Fixes "hanging" of next unread item selection feature
+	  in two pane mode view with unread items.
 
 
 2007-09-05  Lars Lindner  <lars.lindner@gmail.com>
