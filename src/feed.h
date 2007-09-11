@@ -35,7 +35,6 @@
    forced to use this node type implementation. */
 
 struct feedHandler;
-struct request;
 
 /** Caching property constants */
 enum cache_limit {

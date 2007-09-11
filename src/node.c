@@ -174,7 +174,7 @@ node_free (nodePtr node)
 	
 	g_hash_table_remove (nodes, node->id);
 	
-	update_cancel_requests ((gpointer) node);
+	update_job_cancel_by_owner (node);
 
 	if (node->subscription)
 		subscription_free (node->subscription);
@@ -279,10 +279,10 @@ node_get_itemset (nodePtr node)
 }
 
 void
-node_process_update_result (nodePtr node, requestPtr request)
+node_process_update_result (nodePtr node, const struct updateResult * const result, updateFlags flags)
 {
 	if (NODE_TYPE (node)->process_update_result)
-		NODE_TYPE (node)->process_update_result (node, request);
+		NODE_TYPE (node)->process_update_result (node, result, flags);
 }
 
 void

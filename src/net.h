@@ -92,11 +92,12 @@ const gchar * network_get_proxy_username (void);
 const gchar * network_get_proxy_password (void);
 
 /**
- * Process the given request. As a result the different
- * member values of the request will be set or changed.
+ * Process the given request.
  *
- * @param request	the request
+ * @param request	the update request
+ * 
+ * @returns update result (to be free'd using update_result_free())
  */
-void network_process_request (struct request *request);
+updateResultPtr network_process_request (const struct updateRequest * const request);
 
 #endif

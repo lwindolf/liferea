@@ -249,37 +249,38 @@ feed_auto_discover (feedParserCtxtPtr ctxt)
 {
 	gchar	*source;
 	
-	if(ctxt->feed->parseErrors)
-		g_string_truncate(ctxt->feed->parseErrors, 0);
+	if (ctxt->feed->parseErrors)
+		g_string_truncate (ctxt->feed->parseErrors, 0);
 	else
 		ctxt->feed->parseErrors = g_string_new(NULL);
 		
-	debug1(DEBUG_UPDATE, "Starting feed auto discovery (%s)", subscription_get_source (ctxt->subscription));
-	if((source = html_auto_discover_feed (ctxt->data, subscription_get_source (ctxt->subscription)))) {
+	debug1 (DEBUG_UPDATE, "Starting feed auto discovery (%s)", subscription_get_source (ctxt->subscription));
+	if ((source = html_auto_discover_feed (ctxt->data, subscription_get_source (ctxt->subscription)))) {
 		/* now download the first feed link found */
-		requestPtr request = update_request_new(0);
-		debug1(DEBUG_UPDATE, "feed link found: %s", source);
-		request->source = g_strdup(source);
+		updateResultPtr result;
+		updateRequestPtr request = update_request_new ();
+		debug1 (DEBUG_UPDATE, "feed link found: %s", source);
+		request->source = g_strdup (source);
 		request->options = ctxt->subscription->updateOptions;
-		update_execute_request_sync(request);
-		if(request->data) {
-			debug0(DEBUG_UPDATE, "feed link download successful!");
-			subscription_set_source(ctxt->subscription, source);
-			ctxt->data = request->data;
-			ctxt->dataLength = request->size;
+		result = update_execute_request_sync (ctxt->subscription, request, 0);
+		if (result->data) {
+			debug0 (DEBUG_UPDATE, "feed link download successful!");
+			subscription_set_source (ctxt->subscription, source);
+			ctxt->data = result->data;
+			ctxt->dataLength = result->size;
 			ctxt->failed = FALSE;
-			feed_parse(ctxt);
+			feed_parse (ctxt);
 		} else {
 			/* if the download fails we do nothing except
 			   unsetting the handler so the original source
 			   will get a "unsupported type" error */
-			debug0(DEBUG_UPDATE, "feed link download failed!");
+			debug0 (DEBUG_UPDATE, "feed link download failed!");
 		}
-		g_free(source);
-		update_request_free(request);
+		g_free (source);
+		update_result_free (result);
 	} else {
-		debug0(DEBUG_UPDATE, "no feed link found!");
-		g_string_append(ctxt->feed->parseErrors, _("The URL you want Liferea to subscribe to points to a webpage and the auto discovery found no feeds on this page. Maybe this webpage just does not support feed auto discovery."));
+		debug0 (DEBUG_UPDATE, "no feed link found!");
+		g_string_append (ctxt->feed->parseErrors, _("The URL you want Liferea to subscribe to points to a webpage and the auto discovery found no feeds on this page. Maybe this webpage just does not support feed auto discovery."));
 	}
 }
 
@@ -542,7 +543,7 @@ feed_free (nodePtr node) {
 /* implementation of feed node update request processing callback */
 
 static void
-feed_process_update_result (nodePtr node, requestPtr request)
+feed_process_update_result (nodePtr node, const struct updateResult * const result, guint32 flags)
 {
 	feedParserCtxtPtr	ctxt;
 	feedPtr			feed = (feedPtr)node->data;
@@ -556,23 +557,23 @@ feed_process_update_result (nodePtr node, requestPtr request)
 	   status and the last update time to cache */
 	node->available = FALSE;
 	
-	if (request->data) {
+	if (result->data) {
 		/* we save all properties that should not be overwritten in all cases */
-		old_update_interval = subscription_get_update_interval(subscription);
-		old_source = g_strdup(subscription_get_source(node->subscription));
+		old_update_interval = subscription_get_update_interval (subscription);
+		old_source = g_strdup (subscription_get_source (subscription));
 
 		/* parse the new downloaded feed into feed and itemSet */
-		ctxt = feed_create_parser_ctxt();
+		ctxt = feed_create_parser_ctxt ();
 		ctxt->feed = feed;
-		ctxt->data = request->data;
-		ctxt->dataLength = request->size;
-		ctxt->subscription = node->subscription;
+		ctxt->data = result->data;
+		ctxt->dataLength = result->size;
+		ctxt->subscription = subscription;
 
 		/* try to parse the feed */
-		if (!feed_parse(ctxt)) {
+		if (!feed_parse (ctxt)) {
 			/* if it doesn't work and it is a new subscription
 			   start feed auto discovery */
-			if (request->flags & FEED_REQ_AUTO_DISCOVER)
+			if (flags & FEED_REQ_AUTO_DISCOVER)
 				feed_auto_discover (ctxt);
 		}
 		
@@ -587,21 +588,21 @@ feed_process_update_result (nodePtr node, requestPtr request)
 			node_merge_items (node, ctxt->items);
 		
 			/* restore user defined properties if necessary */
-			if (request->flags & FEED_REQ_RESET_TITLE)
+			if (flags & FEED_REQ_RESET_TITLE)
 				node_set_title (node, ctxt->title);
 				
-			if (!(request->flags & FEED_REQ_AUTO_DISCOVER))
+			if (!(flags & FEED_REQ_AUTO_DISCOVER))
 				subscription_set_source (subscription, old_source);
 
-			if (request->flags & FEED_REQ_RESET_UPDATE_INT)
+			if (flags & FEED_REQ_RESET_UPDATE_INT)
 				subscription_set_update_interval (subscription, subscription_get_default_update_interval(subscription));
 			else
 				subscription_set_update_interval (subscription, old_update_interval);
 			
-			if (request->flags > 0)
-				db_subscription_update (node->subscription);
+			if (flags > 0)
+				db_subscription_update (subscription);
 
-			ui_mainwindow_set_status_bar (_("\"%s\" updated..."), node_get_title(node));
+			ui_mainwindow_set_status_bar (_("\"%s\" updated..."), node_get_title (node));
 					
 			notification_node_has_new_items (node);
 		}
@@ -609,12 +610,10 @@ feed_process_update_result (nodePtr node, requestPtr request)
 		g_free (old_source);
 		feed_free_parser_ctxt (ctxt);
 	} else {	
-		ui_mainwindow_set_status_bar (_("\"%s\" is not available"), node_get_title(node));
+		ui_mainwindow_set_status_bar (_("\"%s\" is not available"), node_get_title (node));
 	}
 
 	script_run_for_hook (SCRIPT_HOOK_FEED_UPDATED);
-	
-	update_request_free (request);
 
 	debug_exit ("feed_process_update_result");
 }

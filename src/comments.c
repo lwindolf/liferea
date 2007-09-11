@@ -44,18 +44,19 @@ typedef struct commentFeed
 	gchar		*id;			/**< id of the items comments feed (or NULL) */
 	gchar		*error;			/**< description of error if comments download failed (or NULL)*/
 
-	struct request	*updateRequest;		/**< update request structure used when downloading comments */
-	struct updateState *updateState;	/**< update states (etag, last modified, cookies, last polling times...) used when downloading comments */
+	struct updateJob *updateJob;		/**< update job structure used when downloading comments */
+	updateStatePtr	updateState;		/**< update states (etag, last modified, cookies, last polling times...) used when downloading comments */
 } *commentFeedPtr;
 
 static void
 comment_feed_free (commentFeedPtr commentFeed)
 {
-	if (commentFeed->updateRequest)
-		update_cancel_requests (commentFeed);
+	if (commentFeed->updateJob)
+		update_job_cancel_by_owner (commentFeed);
 	if (commentFeed->updateState)
 		update_state_free (commentFeed->updateState);
 	
+	g_free (commentFeed->error);
 	g_free (commentFeed->id);
 	g_free (commentFeed);
 }
@@ -89,14 +90,11 @@ comment_feed_from_id (const gchar *id)
 	return (commentFeedPtr) g_hash_table_lookup (commentFeeds, id);
 }
 
-/**
- * Update reques processing callback.
- */
 static void
-comments_process_update_result (struct request *request) 
+comments_process_update_result (const struct updateResult * const result, gpointer user_data, updateFlags flags) 
 {
 	feedParserCtxtPtr	ctxt;
-	commentFeedPtr		commentFeed = (commentFeedPtr)request->user_data;
+	commentFeedPtr		commentFeed = (commentFeedPtr)user_data;
 	itemPtr			item;
 	nodePtr			node;
 
@@ -106,38 +104,38 @@ comments_process_update_result (struct request *request)
 	g_return_if_fail (item != NULL);
 	
 	/* note this is to update the feed URL on permanent redirects */
-	if(!strcmp(request->source, metadata_list_get(item->metadata, "commentFeedUri"))) {
+	if (!strcmp (result->source, metadata_list_get (item->metadata, "commentFeedUri"))) {
 	
-		debug2(DEBUG_UPDATE, "updating comment feed URL from \"%s\" to \"%s\"", 
-		                     metadata_list_get(item->metadata, "commentFeedUri"), 
-				     request->source);
+		debug2 (DEBUG_UPDATE, "updating comment feed URL from \"%s\" to \"%s\"", 
+		                      metadata_list_get (item->metadata, "commentFeedUri"), 
+				      result->source);
 				     
-		metadata_list_set(&(item->metadata), "commentFeedUri", request->source);
+		metadata_list_set (&(item->metadata), "commentFeedUri", result->source);
 	}
 	
-	if(401 == request->httpstatus) { /* unauthorized */
-		commentFeed->error = g_strdup(_("Authorization Error"));
-	} else if(410 == request->httpstatus) { /* gone */
+	if (401 == result->httpstatus) { /* unauthorized */
+		commentFeed->error = g_strdup (_("Authorization Error"));
+	} else if (410 == result->httpstatus) { /* gone */
 		// FIXME: how to prevent further updates?
-	} else if(304 == request->httpstatus) {
-		debug1(DEBUG_UPDATE, "comment feed \"%s\" did not change", request->source);
-	} else if(request->data) {
-		debug1(DEBUG_UPDATE, "received update result for comment feed \"%s\"", request->source);
+	} else if (304 == result->httpstatus) {
+		debug1(DEBUG_UPDATE, "comment feed \"%s\" did not change", result->source);
+	} else if (result->data) {
+		debug1(DEBUG_UPDATE, "received update result for comment feed \"%s\"", result->source);
 
-		/* parse the new downloaded feed into feed and itemSet */
-		node = node_new();
-		ctxt = feed_create_parser_ctxt();
-		ctxt->subscription = subscription_new(request->source, NULL, NULL);
-		ctxt->feed = feed_new();
-		node_set_type(node, feed_get_node_type());
-		node_set_data(node, ctxt->feed);		
-		node_set_subscription(node, ctxt->subscription);
-		ctxt->data = request->data;
-		ctxt->dataLength = request->size;
-		feed_parse(ctxt);
+		/* parse the new downloaded feed into fake node, subscription and feed */
+		node = node_new ();
+		ctxt = feed_create_parser_ctxt ();
+		ctxt->subscription = subscription_new (result->source, NULL, NULL);
+		ctxt->feed = feed_new ();
+		node_set_type (node, feed_get_node_type ());
+		node_set_data (node, ctxt->feed);		
+		node_set_subscription (node, ctxt->subscription);
+		ctxt->data = result->data;
+		ctxt->dataLength = result->size;
+		feed_parse (ctxt);
 
-		if(ctxt->failed) {
-			debug0(DEBUG_UPDATE, "parsing comment feed failed!");
+		if (ctxt->failed) {
+			debug0 (DEBUG_UPDATE, "parsing comment feed failed!");
 		} else {
 			itemSetPtr	comments;
 			GList		*iter;
@@ -149,59 +147,57 @@ comments_process_update_result (struct request *request)
 				iter = g_list_next (iter);
 			}
 			
-			debug1(DEBUG_UPDATE, "parsing comment feed successful (%d comments downloaded)", g_list_length(ctxt->items));		
-			comments = db_itemset_load(commentFeed->id);
-			itemset_merge_items(comments, ctxt->items);
-			itemset_free(comments);
+			debug1 (DEBUG_UPDATE, "parsing comment feed successful (%d comments downloaded)", g_list_length(ctxt->items));		
+			comments = db_itemset_load (commentFeed->id);
+			itemset_merge_items (comments, ctxt->items);
+			itemset_free (comments);
 		}
 				
-		node_free(ctxt->subscription->node);
-		feed_free_parser_ctxt(ctxt);
+		node_free (ctxt->subscription->node);
+		feed_free_parser_ctxt (ctxt);
 	}
 	
 	/* update error message */
-	g_free(commentFeed->error);
+	g_free (commentFeed->error);
 	commentFeed->error = NULL;
 	
-	if(!(request->httpstatus >= 200) && (request->httpstatus < 400)) {
+	if (!(result->httpstatus >= 200) && (result->httpstatus < 400)) {
 		const gchar * tmp;
 		
 		/* first specific codes (guarantees tmp to be set) */
-		tmp = common_http_error_to_str(request->httpstatus);
+		tmp = common_http_error_to_str (result->httpstatus);
 
 		/* second netio errors */
-		if(common_netio_error_to_str(request->returncode))
-			tmp = common_netio_error_to_str(request->returncode);
+		if (common_netio_error_to_str (result->returncode))
+			tmp = common_netio_error_to_str (result->returncode);
 			
-		commentFeed->error = g_strdup(tmp);
+		commentFeed->error = g_strdup (tmp);
 	}	
 
-	/* clean up request */
-	g_free(request->options);
-	commentFeed->updateRequest = NULL; 
+	/* clean up... */
+	commentFeed->updateJob = NULL;
 
-	/* rerender item */
-	itemview_update_item(item); 
-	itemview_update();
+	/* rerender item with new comments */
+	itemview_update_item (item); 
+	itemview_update ();
 	
 	item_unload (item);
 		
-	debug_exit("comments_process_update_result");
+	debug_exit ("comments_process_update_result");
 }
 
 void
 comments_refresh (itemPtr item) 
 { 
-	commentFeedPtr	commentFeed = NULL;
-	struct request	*request;
-	const gchar	*url;
+	commentFeedPtr		commentFeed = NULL;
+	updateRequestPtr	request;
+	const gchar		*url;
 	
 	if (!update_is_online ())
 		return;
 	
 	url = metadata_list_get (item->metadata, "commentFeedUri");
-	if (url) 
-	{
+	if (url) {
 		debug2 (DEBUG_UPDATE, "Updating comments for item \"%s\" (comment URL: %s)", item->title, url);
 
 		// FIXME: restore update state from DB?		
@@ -211,8 +207,7 @@ comments_refresh (itemPtr item)
 		else
 			item->commentFeedId = node_new_id ();		
 			
-		if (!commentFeed)
-		{			
+		if (!commentFeed) {			
 			commentFeed = g_new0 (struct commentFeed, 1);
 			commentFeed->id = g_strdup (item->commentFeedId);
 			commentFeed->itemId = item->id;
@@ -223,15 +218,12 @@ comments_refresh (itemPtr item)
 			g_hash_table_insert (commentFeeds, commentFeed->id, commentFeed);
 		}
 
-		request = update_request_new (commentFeed);
-		request->user_data = commentFeed;
+		request = update_request_new ();
 		request->options = g_new0 (struct updateOptions, 1);	// FIXME: use copy of parent subscription options
-		request->callback = comments_process_update_result;
 		request->source = g_strdup (url);
-		request->priority = 1;
-		update_execute_request (request);
-		commentFeed->updateRequest = request;
+		commentFeed->updateJob = update_execute_request (commentFeed, request, comments_process_update_result, commentFeed, FEED_REQ_PRIORITY_HIGH);
 
+		/* Item view refresh to change link from "Update" to "Updating..." */
 		itemview_update_item (item); 
 		itemview_update ();
 	}
@@ -264,7 +256,7 @@ comments_to_xml (xmlNodePtr parentNode,
 	}
 
 	xmlNewTextChild (commentsNode, NULL, "updateState", 
-	                 (commentFeed->updateRequest)?"updating":"ok");
+	                 (commentFeed->updateJob)?"updating":"ok");
 		
 	if (commentFeed->error)
 		xmlNewTextChild (commentsNode, NULL, "updateError", commentFeed->error);

@@ -45,7 +45,7 @@ typedef struct subscription {
 	gchar		*source;		/**< current source, can be changed by redirects */
 	gchar		*origSource;		/**< the source given when creating the subscription */
 	updateOptionsPtr updateOptions;		/**< update options for the feed source */
-	struct request	*updateRequest;		/**< update request structure used when downloading the subscribed source */
+	struct updateJob *updateJob;		/**< update request structure used when downloading the subscribed source */
 	
 	gint		updateInterval;		/**< user defined update interval in minutes */	
 	guint		defaultInterval;	/**< optional update interval as specified by the feed */
@@ -62,6 +62,17 @@ typedef struct subscription {
 	gchar		*filtercmd;		/**< feed filter command */
 	gchar		*filterError;		/**< textual description of filter errors */
 } *subscriptionPtr;
+
+/**
+ * Generic update result processing callback type.
+ * This callback must not free the result structure. It will be
+ * free'd by the download system after the callback returns.
+ *
+ * @param node		the subscriptions node
+ * @param result	the update result
+ * @param flags		update result processing flags
+ */
+typedef void (*subscription_update_cb) (nodePtr node, const struct updateResult * const result, guint32 flags);
 
 /**
  * Create a new subscription structure.
@@ -111,7 +122,7 @@ gboolean subscription_can_be_updated(subscriptionPtr subscription);
  * @param flags		request processing flags
  * @param now		current time
  */
-void subscription_prepare_request (subscriptionPtr subscription, struct request *request, guint flags, GTimeVal *now);
+void subscription_prepare_request (subscriptionPtr subscription, updateRequestPtr request, guint flags, GTimeVal *now);
 
 /**
  * Triggers updating a subscription. Will download the 
@@ -133,7 +144,7 @@ void subscription_update (subscriptionPtr subscription, guint flags);
  * @param callback	the callback
  * @param flags		update flags
  */
-void subscription_update_with_callback (subscriptionPtr subscription, gpointer callback, guint flags);
+void subscription_update_with_callback (subscriptionPtr subscription, subscription_update_cb callback, guint flags);
 
 /**
  * Called when auto updating. Checks wether the subscription
@@ -182,7 +193,6 @@ void subscription_set_default_update_interval(subscriptionPtr subscription, guin
  * Reset the update counter for the given subscription.
  *
  * @param subscription	the subscription
- * @param now		current time
  */
 void subscription_reset_update_counter (subscriptionPtr subscription, GTimeVal *now);
 

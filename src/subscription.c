@@ -74,7 +74,7 @@ subscription_new (const gchar *source,
 gboolean
 subscription_can_be_updated (subscriptionPtr subscription)
 {
-	if (subscription->updateRequest) {
+	if (subscription->updateJob) {
 		ui_mainwindow_set_status_bar (_("Subscription \"%s\" is already being updated!"), node_get_title (subscription->node));
 		return FALSE;
 	}
@@ -112,11 +112,11 @@ subscription_favicon_downloaded (gpointer user_data)
 }
 
 void
-subscription_update_favicon (subscriptionPtr subscription, GTimeVal *now)
-{	
+subscription_update_favicon (subscriptionPtr subscription)
+{
 	debug1 (DEBUG_UPDATE, "trying to download favicon.ico for \"%s\"", node_get_title (subscription->node));
 	ui_mainwindow_set_status_bar (_("Updating favicon for \"%s\""), node_get_title (subscription->node));
-	subscription->updateState->lastFaviconPoll.tv_sec = now->tv_sec;
+	g_get_current_time (&subscription->updateState->lastFaviconPoll);
 	db_update_state_save (subscription->node->id, subscription->updateState);
 	favicon_download (subscription->node->id,
 	                  node_get_base_url (subscription->node),
@@ -127,14 +127,14 @@ subscription_update_favicon (subscriptionPtr subscription, GTimeVal *now)
 }
 
 typedef struct subscriptionUpdateCtxt {
-	subscriptionPtr	subscription;
-	request_cb	callback;
+	subscriptionPtr		subscription;
+	subscription_update_cb	callback;
 } *subscriptionUpdateCtxtPtr;
 
 static void
-subscription_process_update_result (requestPtr request)
+subscription_process_update_result (const struct updateResult * const result, gpointer user_data, guint32 flags)
 {
-	subscriptionUpdateCtxtPtr ctxt = (subscriptionUpdateCtxtPtr)request->user_data;
+	subscriptionUpdateCtxtPtr ctxt = (subscriptionUpdateCtxtPtr)user_data;
 	subscriptionPtr	subscription = ctxt->subscription;
 	nodePtr		node = subscription->node;
 	gboolean	processing = FALSE;
@@ -142,62 +142,67 @@ subscription_process_update_result (requestPtr request)
 	/* 1. preprocessing */
 
 	/* update the subscription URL on permanent redirects */
-	if (g_str_equal (request->source, subscription_get_source(subscription))) {
-		subscription_set_source (subscription, request->source);
+	if (result->source && g_str_equal (result->source, subscription_get_source (subscription))) {
+		subscription_set_source (subscription, result->source);
 		ui_mainwindow_set_status_bar (_("The URL of \"%s\" has changed permanently and was updated"), node_get_title(node));
 	}
 
-	if (401 == request->httpstatus) { /* unauthorized */
-		if (request->flags & FEED_REQ_AUTH_DIALOG)
-			ui_auth_dialog_new (subscription, request->flags);
-	} else if (410 == request->httpstatus) { /* gone */
+	if (401 == result->httpstatus) { /* unauthorized */
+		if (flags & FEED_REQ_AUTH_DIALOG)
+			ui_auth_dialog_new (subscription, flags);
+	} else if (410 == result->httpstatus) { /* gone */
 		subscription->discontinued = TRUE;
 		node->available = TRUE;
 		ui_mainwindow_set_status_bar (_("\"%s\" is discontinued. Liferea won't updated it anymore!"), node_get_title (node));
-	} else if (304 == request->httpstatus) {
+	} else if (304 == result->httpstatus) {
 		node->available = TRUE;
 		ui_mainwindow_set_status_bar (_("\"%s\" has not changed since last update"), node_get_title(node));
 	} else {
 		processing = TRUE;
 	}
-	
-	subscription_update_error_status (subscription, request->httpstatus, request->returncode, request->filterErrors);
 
-	if (request->flags & FEED_REQ_DOWNLOAD_FAVICON)
-		subscription_update_favicon (subscription, &request->timestamp);
+	subscription_update_error_status (subscription, result->httpstatus, result->returncode, result->filterErrors);
+
+	if (flags & FEED_REQ_DOWNLOAD_FAVICON)
+		subscription_update_favicon (subscription);
 	
 	/* 2. call subscription/node type specific processing */
 	if (processing) {
 		if (ctxt->callback) {
-			request->user_data = node;
-			(*ctxt->callback) (request);
+			(*ctxt->callback) (node, result, flags);
 		} else {
-			node_process_update_result (node, request);
+			node_process_update_result (node, result, flags);
 		}
 	}
 	
-	/* 3. postprocessing */
-	subscription->updateRequest = NULL;
+	/* 3. generic postprocessing */
+	subscription->updateJob = NULL;
 
+	update_state_set_lastmodified (subscription->updateState, update_state_get_lastmodified (result->updateState));
+	update_state_set_etag (subscription->updateState, update_state_get_etag (result->updateState));
+	update_state_set_cookies (subscription->updateState, update_state_get_cookies (result->updateState));
 	g_get_current_time (&subscription->updateState->lastPoll);
 	db_update_state_save (subscription->node->id, subscription->updateState);
-	feedlist_schedule_save ();
+	
 	itemview_update_node_info (subscription->node);
 	itemview_update ();
+	ui_node_update (subscription->node->id);
+	feedlist_schedule_save ();
 	
 	g_free (ctxt);
 }
 
 void
-subscription_update_with_callback (subscriptionPtr subscription, gpointer callback, guint flags)
+subscription_update_with_callback (subscriptionPtr subscription, subscription_update_cb callback, guint flags)
 {
 	subscriptionUpdateCtxtPtr	ctxt;
-	struct request			*request;
+	updateRequestPtr		request;
+	GTimeVal			now;
 	
 	if (!subscription)
 		return;
 	
-	debug1 (DEBUG_UPDATE, "Scheduling %s to be updated", node_get_title(subscription->node));
+	debug1 (DEBUG_UPDATE, "Scheduling %s to be updated", node_get_title (subscription->node));
 	
 	ctxt = g_new0 (struct subscriptionUpdateCtxt, 1);
 	ctxt->subscription = subscription;
@@ -205,32 +210,27 @@ subscription_update_with_callback (subscriptionPtr subscription, gpointer callba
 	
 	/* Retries that might have long timeouts must be 
 	   cancelled to immediately execute the user request. */
-	if (subscription->updateRequest) {
-		update_request_cancel_retry (subscription->updateRequest);
-		subscription->updateRequest = NULL;
+	if (subscription->updateJob) {
+		update_job_cancel_retry (subscription->updateJob);
+		subscription->updateJob = NULL;
 	}
 	 
 	if (subscription_can_be_updated (subscription)) {
 		ui_mainwindow_set_status_bar (_("Updating \"%s\""), node_get_title (subscription->node));
-		request = update_request_new (subscription);
-		request->user_data = ctxt;
+
+		g_get_current_time (&now);
+		subscription_reset_update_counter (subscription, &now);
+
+		request = update_request_new ();
+		request->updateState = update_state_copy (subscription->updateState);
 		request->options = subscription->updateOptions;
-		request->callback = subscription_process_update_result;
-
-		subscription_reset_update_counter (subscription, &request->timestamp);
-
-		/* prepare request url (strdup because it might be
-  		   changed on permanent HTTP redirection in netio.c) */
 		request->source = g_strdup (subscription_get_source (subscription));
-		request->updateState = subscription->updateState;
-		request->flags = flags;
-		request->priority = (flags & FEED_REQ_PRIORITY_HIGH)? 1 : 0;
 		request->allowRetries = (flags & FEED_REQ_ALLOW_RETRIES)? 1 : 0;
+
 		if (subscription_get_filter (subscription))
 			request->filtercmd = g_strdup (subscription_get_filter (subscription));
-
-		subscription->updateRequest = request;
-		update_execute_request (request);
+		
+		subscription->updateJob = update_execute_request (subscription, request, subscription_process_update_result, ctxt, flags);
 	}
 }
 
@@ -252,24 +252,30 @@ subscription_auto_update (subscriptionPtr subscription)
 
 	interval = subscription_get_update_interval (subscription);
 	
-	if (-2 >= interval)
+	if (-2 >= interval || 0 == interval)
 		return;		/* don't update this subscription */
 		
 	if (-1 == interval)
 		interval = conf_get_int_value (DEFAULT_UPDATE_INTERVAL);
-	
+		
 	if (conf_get_bool_value (ENABLE_FETCH_RETRIES))
 		flags |= FEED_REQ_ALLOW_RETRIES;
 
 	g_get_current_time (&now);
 	
-	if (interval > 0)
-		if (subscription->updateState->lastPoll.tv_sec + interval*60 <= now.tv_sec)
-			subscription_update (subscription, flags);
-
-	/* And check for favicon updating */
 	if (favicon_update_needed (subscription->node->id, subscription->updateState, &now))
-		subscription_update_favicon (subscription, &now);
+		flags |= FEED_REQ_DOWNLOAD_FAVICON;
+			
+	if (subscription->updateState->lastPoll.tv_sec + interval*60 <= now.tv_sec)
+		subscription_update (subscription, flags);
+}
+
+void
+subscription_cancel_update (subscriptionPtr subscription)
+{
+	g_assert (subscription->updateJob);
+	update_job_cancel_by_owner (subscription);
+	subscription->updateJob = NULL;
 }
 
 gint
@@ -502,6 +508,9 @@ subscription_export (subscriptionPtr subscription, xmlNodePtr xml, gboolean trus
 void
 subscription_free (subscriptionPtr subscription)
 {
+	if (!subscription)
+		return;
+		
 	g_free (subscription->updateError);
 	g_free (subscription->filterError);
 	g_free (subscription->httpError);
@@ -510,6 +519,7 @@ subscription_free (subscriptionPtr subscription)
 	g_free (subscription->filtercmd);
 
 	g_free (subscription->updateOptions);
+	update_job_cancel_by_owner (subscription);
 	update_state_free (subscription->updateState);
 	metadata_list_free (subscription->metadata);
 	

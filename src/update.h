@@ -27,15 +27,18 @@
 
 #include <libxml/parser.h>
 
-/* Requests represent feed updates, favicon and enclosure downloads
-   and (if GtkHTML2 is used) HTML browser traffic. A request can be
-   started synchronously or asynchronously. In the latter case it
-   can be cancelled at any time. If the processing of a request is
+/* Update requests do represent feed updates, favicon and enclosure 
+   downloads and (if GtkHTML2 is used) HTML browser traffic. A request can 
+   be started synchronously or asynchronously. In the latter case it
+   can be cancelled at any time. If the processing of a update request is
    done the request callback will be triggered. 
    
    A request can have an update state assigned. This is to support
    the different bandwidth saving methods. For caching along feeds
    there are XML (de)serialization functions for the update state. 
+   
+   For proxy support and authentication an update request can have
+   update options assigned.
    
    Finally the request system has an on/offline state. When offline
    no new network requests are accepted. Filesystem and internal 
@@ -87,13 +90,21 @@ typedef enum {
 	NET_ERR_GZIP_ERR
 } netio_error_type;
 
-struct request;
+struct updateJob;
+struct updateResult;
+
+typedef guint32 updateFlags;
 
 /**
- *  This callback must not free the request structure. It will be
- *  freed by the download system after the callback returns.
+ * Generic update result processing callback type.
+ * This callback must not free the result structure. It will be
+ * free'd by the download system after the callback returns.
+ *
+ * @param result	the update result
+ * @param user_data	update processing callback data
+ * @param flags		update processing flags
  */
-typedef void (*request_cb)(struct request *request);
+typedef void (*update_result_cb) (const struct updateResult * const result, gpointer user_data, updateFlags flags);
 
 /** defines update options to be passed to an update request */
 typedef struct updateOptions {
@@ -111,9 +122,8 @@ typedef struct updateState {
 	gchar		*cookies;		/**< cookies to be used */	
 } *updateStatePtr;
 
-/** structure storing all information about a single update request */
-typedef struct request {
-	/* Set when requesting */
+/** structure describing a HTTP update request */
+typedef struct updateRequest {
 	gchar 		*source;	/**< Location of the source. If it starts with
 					     '|', it is a command. If it contains "://",
 					     then it is parsed as a URL, otherwise it is a
@@ -121,46 +131,56 @@ typedef struct request {
 					     URL. Use file:// and exec:// */
 	updateOptionsPtr options;	/**< Update options for the request */
 	gchar		*filtercmd;	/**< Command will filter output of URL */
-	request_cb	callback;	/**< Function to be called after retreival */
-	gpointer	user_data;	/**< Accessed by the callback. Usually contains the nodePtr the download result is for (to be accessed by the callback). */
-	guint32		flags;		/**< Flags to be passed to the callback */
-	gint		priority;	/**< priority of the request. Set to 1 for high priority */
 	gboolean	allowRetries;	/**< Allow download retries on network errors */
-	GTimeVal	timestamp;	/**< Timestamp of request start time */
+	updateStatePtr	updateState;	/**< Update state of the requested object (etags, last modified...) */
+} *updateRequestPtr;
+
+/** structure to store results of the processing of an update request */
+typedef struct updateResult {
+	gchar 		*source;	/**< Location of the downloaded document, in case of redirects different from 
+					     the one given along with the update request */
 	
-	/* Set by download system*/
-	gpointer	owner;		/**< Pointer to anything used for lookup when cancelling requests */
 	int		returncode;	/**< Download status (0=success, otherwise error) */
 	int		httpstatus;	/**< HTTP status. Set to 200 for any valid command, file access, etc.... Set to 0 for unknown */
-	gint		state;		/**< State of the request (enum request_state) */
-	updateStatePtr	updateState;	/**< Update state of the requested object (etags, last modified...) */
 	gchar		*data;		/**< Downloaded data */
 	size_t		size;		/**< Size of downloaded data */
 	gchar		*contentType;	/**< Content type of received data */
 	gushort		retriesCount;	/**< Count how many retries have been done */	 
 	gchar		*filterErrors;	/**< Error messages from filter execution */
-} *requestPtr;
+	
+	updateStatePtr	updateState;	/**< New update state of the requested object (etags, last modified...) */
+} *updateResultPtr;
 
 /**
  * Creates a new update state structure 
  *
- * @return a newly allocated state structure
+ * @return a new state structure (to be free'd using update_state_free())
  */
-updateStatePtr update_state_new(void);
+updateStatePtr update_state_new (void);
 
 /* update state attribute encapsulation */
-const gchar * update_state_get_lastmodified(updateStatePtr updateState);
-void update_state_set_lastmodified(updateStatePtr updateState, const gchar *lastmodified);
+const gchar * update_state_get_lastmodified (updateStatePtr state);
+void update_state_set_lastmodified (updateStatePtr state, const gchar *lastmodified);
 
-const gchar * update_state_get_etag(updateStatePtr updateState);
-void update_state_set_etag(updateStatePtr updateState, const gchar *etag);
+const gchar * update_state_get_etag (updateStatePtr state);
+void update_state_set_etag (updateStatePtr state, const gchar *etag);
+
+const gchar * update_state_get_cookies (updateStatePtr state);
+void update_state_set_cookies (updateStatePtr state, const gchar *cookies);
+
+/**
+ * Copies the given update state.
+ *
+ * @returns a new update state structure (to be free'd using update_state_free())
+ */
+updateStatePtr update_state_copy (updateStatePtr state);
 
 /**
  * Frees the given update state.
  *
  * @param updateState	the update state
  */
-void update_state_free(updateStatePtr updateState);
+void update_state_free (updateStatePtr updateState);
 
 /**
  * Initialises the download subsystem, including its thread(s). 
@@ -174,66 +194,100 @@ void update_deinit (void);
 
 /** 
  * Creates a new request structure.
- * 
- * @param owner		some pointer identifying the owner
- *			of the request (used to cancel requests)
  *
- * @returns a new request
+ * @returns a new request (to be passed and free'd by update_execute_request())
  */
-gpointer update_request_new(gpointer owner);
+updateRequestPtr update_request_new (void);
 
 /**
- * Used to free a request structure. Frees all members, including data.
+ * Creates a new update result for the given update request.
  *
- * @param request	pointer to a request structure
+ * @param request	the update request
+ *
+ * @returns update result (to be free'd using update_result_free())
  */
-void update_request_free(struct request *request);
+updateResultPtr update_result_new (void);
+
+/**
+ * Free's the given update result.
+ *
+ * @param result	the result
+ */
+void update_result_free (updateResultPtr result);
 
 /**
  * Sets the online status according to mode.
  *
  * @param mode	TRUE for online, FALSE for offline
  */ 
-void update_set_online(gboolean mode);
+void update_set_online (gboolean mode);
 
+// FIXME: wrong namespace... why not network_is_online() ?
 /**
  * Queries the online status.
  *
  * @return TRUE if online
  */
-gboolean update_is_online(void);
+gboolean update_is_online (void);
 
 /**
  * Executes the given request. The request might be
  * delayed if other requests are pending. 
  *
+ * @param owner		request owner (allows cancelling, can be NULL)
  * @param request	the request to execute
+ * @param callback	result processing callback
+ * @param user_data	result processing callback parameters (or NULL)
+ * @param flags		request/result processing flags
+ *
+ * @returns the new update job
  */
-void update_execute_request(struct request *request);
+struct updateJob * update_execute_request (gpointer owner,
+                                           updateRequestPtr request,
+			                   update_result_cb callback,
+			                   gpointer user_data,
+			                   updateFlags flags);
 
 /**
- * Executes the given request. Will block.
+ * Executes the given request. Will block. Free's the
+ * passed update request after processing.
  *
+ * @param owner		request owner (allows cancelling, can be NULL)
  * @param request	the request to execute
+ * @param flags		request/result processing flags
+ *
+ * @returns update processing result (to be free'd using update_result_free())
  */
-void update_execute_request_sync(struct request *request);
+updateResultPtr update_execute_request_sync (gpointer owner,
+                                             updateRequestPtr request,
+			                     updateFlags flags);		     
+
+/* Update job handling */
 
 /**
  * Cancel all pending requests for the given owner.
  *
  * @param owner		pointer passed in update_request_new()
  */
-void update_cancel_requests(gpointer owner);
+void update_job_cancel_by_owner (gpointer owner);
 
 /**
  * Cancel a request if it is waiting to be retried.
- * In case of success, the request is freed when its retry timeout expires,
+ * In case of success, the job is free'd when its retry timeout expires,
  * so it is safe to just forget about it.
  * 
- * @param request	pointer to a request structure
- * @return TRUE if successfully cancelled the request
+ * @param job		the update job
+ *
+ * @return TRUE if successfully cancelled the job
  */
-gboolean update_request_cancel_retry(struct request *request);
+gboolean update_job_cancel_retry (struct updateJob *job);
+
+/**
+ * Method to query the update state of currently processed jobs.
+ *
+ * @returns update job state (see enum request_state)
+ */
+gint update_job_get_state (struct updateJob *job);
 
 #ifdef USE_NM
 /**
@@ -243,12 +297,12 @@ gboolean update_request_cancel_retry(struct request *request);
  * 
  * @return TRUE if successfully initialized NM support
  */
-gboolean update_nm_initialize(void);
+gboolean update_nm_initialize (void);
 
 /**
  * Clean up NetworkManager support
  */
-void update_nm_cleanup(void);
+void update_nm_cleanup (void);
 #endif // USE_NM
 
 #endif

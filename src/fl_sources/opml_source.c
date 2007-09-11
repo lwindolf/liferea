@@ -206,19 +206,18 @@ opml_source_check_for_removal (nodePtr node, gpointer user_data)
 }
 
 static void
-opml_source_process_update_result (requestPtr request)
+opml_source_process_update_result (nodePtr node, const struct updateResult * const result, updateFlags flags)
 {
-	nodePtr		node = (nodePtr)request->user_data;
 	mergeCtxtPtr	mergeCtxt;
 	xmlDocPtr	doc, oldDoc;
 	xmlNodePtr	root, title;
 	
-	debug1 (DEBUG_UPDATE, "OPML download finished data=%d", request->data);
+	debug1 (DEBUG_UPDATE, "OPML download finished data=%d", result->data);
 
 	node->available = FALSE;
 
-	if (request->data) {
-		doc = xml_parse (request->data, request->size, FALSE, NULL);
+	if (result->data) {
+		doc = xml_parse (result->data, result->size, FALSE, NULL);
 		if (doc) {
 			gchar *filename;
 			
@@ -270,12 +269,10 @@ opml_source_process_update_result (requestPtr request)
 	}
 	
 	node_foreach_child (node, node_update_subscription);
-	db_update_state_save (node->id, request->updateState);	
-	update_request_free (request);
 }
 
 static void
-opml_source_schedule_update (nodePtr node, guint flags)
+opml_source_schedule_update (nodePtr node, updateFlags flags)
 {
 	subscription_update_with_callback (node->subscription, opml_source_process_update_result, flags);
 }

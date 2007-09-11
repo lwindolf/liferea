@@ -104,31 +104,22 @@ network_set_proxy_auth (gchar *newProxyUsername, gchar *newProxyPassword)
 	liferea_htmlview_update_proxy ();
 }
 
-/* Downloads a feed specified in the request structure, returns 
-   the downloaded data or NULL in the request structure.
-   If the the webserver reports a permanent redirection, the
-   feed url will be modified and the old URL 'll be freed. The
-   request structure will also contain the HTTP status and the
-   last modified string.
- */
-void 
-network_process_request (struct request *request)
+updateResultPtr
+network_process_request (const struct updateRequest * const request)
 {
+	updateResultPtr 	result;
 	struct feed_request	*netioRequest;
-	gchar *oldurl = g_strdup(request->source);
 	
-	debug1(DEBUG_UPDATE, "downloading %s", request->source);
+	debug1 (DEBUG_UPDATE, "downloading %s", request->source);
 	
-	g_assert(request->data == NULL);
-	g_assert(request->contentType == NULL);
+	/* 1. Prepare request structure for SnowNews code */
+	netioRequest = g_new0 (struct feed_request, 1);
+	netioRequest->feedurl = g_strdup (request->source);
 
-	netioRequest = g_new0(struct feed_request, 1);
-	netioRequest->feedurl = request->source;
-
-	if(request->updateState) {
-		netioRequest->lastmodified = request->updateState->lastModified;
-		netioRequest->etag = request->updateState->etag;
-		netioRequest->cookies = g_strdup(request->updateState->cookies);
+	if (request->updateState) {
+		netioRequest->lastmodified = g_strdup (update_state_get_lastmodified (request->updateState));
+		netioRequest->etag = g_strdup (update_state_get_etag (request->updateState));
+		netioRequest->cookies = g_strdup (update_state_get_cookies (request->updateState));
 	}
 		
 	netioRequest->problem = 0;
@@ -139,33 +130,38 @@ network_process_request (struct request *request)
 	netioRequest->authinfo = NULL;
 	netioRequest->servauth = NULL;
 	netioRequest->lasthttpstatus = 0; /* This might, or might not mean something to someone */
-	
-	request->data = DownloadFeed(oldurl, netioRequest, 0);
 
-	g_free(oldurl);
-	if(request->data == NULL)
+	result = update_result_new ();	
+	result->data = DownloadFeed (request->source, netioRequest, 0);
+
+	/* 2. Fill in SnowNews download results in result structure */
+	
+	if (result->data == NULL)
 		netioRequest->problem = 1;
-	request->size = netioRequest->contentlength;
-	request->httpstatus = netioRequest->lasthttpstatus;
-	request->returncode = netioRequest->netio_error;
-	request->source = netioRequest->feedurl;
-	if(request->updateState) {
-		request->updateState->lastModified = netioRequest->lastmodified;
-		netioRequest->lastmodified = NULL;
-		request->updateState->etag = netioRequest->etag;
-		netioRequest->etag = NULL;
-	}
-	request->contentType = netioRequest->content_type;
-	g_free(netioRequest->servauth);
-	g_free(netioRequest->authinfo);
-	g_free(netioRequest->cookies);
-	g_free(netioRequest->lastmodified);
-	g_free(netioRequest->etag);
-	debug4(DEBUG_UPDATE, "download result - HTTP status: %d, error: %d, netio error:%d, data: %d",
-	                     request->httpstatus, 
-			     netioRequest->problem, 
-			     netioRequest->netio_error, 
-			     request->data);
-	g_free(netioRequest);
-	return;
+		
+	result->size = netioRequest->contentlength;
+	result->httpstatus = netioRequest->lasthttpstatus;
+	result->returncode = netioRequest->netio_error;
+	result->source = netioRequest->feedurl;
+	result->contentType = netioRequest->content_type;
+	
+	result->updateState = update_state_new ();
+	update_state_set_lastmodified (result->updateState, netioRequest->lastmodified);
+	update_state_set_etag (result->updateState, netioRequest->etag);
+	update_state_set_cookies (result->updateState, netioRequest->cookies);
+
+	g_free (netioRequest->servauth);
+	g_free (netioRequest->authinfo);
+	g_free (netioRequest->lastmodified);
+	g_free (netioRequest->etag);
+	g_free (netioRequest->cookies);
+	
+	debug4 (DEBUG_UPDATE, "download result - HTTP status: %d, error: %d, netio error:%d, data: %d",
+	                      result->httpstatus, 
+			      netioRequest->problem, 
+			      result->returncode, 
+			      result->data);
+	g_free (netioRequest);
+	
+	return result;
 }

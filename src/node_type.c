@@ -30,18 +30,18 @@ node_type_register (nodeTypePtr nodeType)
 {
 
 	/* all attributes and methods are mandatory! */
-	g_assert(nodeType->id);
-	g_assert(nodeType->import);
-	g_assert(nodeType->export);
-	g_assert(nodeType->load);
-	g_assert(nodeType->save);
-	g_assert(nodeType->update_counters);
-	g_assert(nodeType->remove);
-	g_assert(nodeType->render);
-	g_assert(nodeType->request_add);
-	g_assert(nodeType->request_properties);
+	g_assert (nodeType->id);
+	g_assert (nodeType->import);
+	g_assert (nodeType->export);
+	g_assert (nodeType->load);
+	g_assert (nodeType->save);
+	g_assert (nodeType->update_counters);
+	g_assert (nodeType->remove);
+	g_assert (nodeType->render);
+	g_assert (nodeType->request_add);
+	g_assert (nodeType->request_properties);
 	
-	nodeTypes = g_slist_append(nodeTypes, (gpointer)nodeType);
+	nodeTypes = g_slist_append (nodeTypes, (gpointer)nodeType);
 }
 
 void

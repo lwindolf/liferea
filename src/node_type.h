@@ -43,7 +43,7 @@ typedef struct nodeType {
 	itemSetPtr	(*load)			(nodePtr node);
 	void 		(*save)			(nodePtr node);
 	void		(*update_counters)	(nodePtr node);
-	void 		(*process_update_result)(nodePtr node, requestPtr request);
+	void 		(*process_update_result)(nodePtr node, const struct updateResult * const result, updateFlags flags);
 	void		(*remove)		(nodePtr node);
 	gchar *		(*render)		(nodePtr node);
 	void		(*request_add)		(nodePtr parent);

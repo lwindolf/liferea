@@ -103,121 +103,123 @@ void favicon_remove_from_cache(const gchar *id) {
 	debug_exit("favicon_remove");
 }
 
-static void favicon_download_icon_cb(requestPtr request) {
-	faviconDownloadCtxtPtr	ctxt = (faviconDownloadCtxtPtr)request->user_data;
+static void
+favicon_download_icon_cb (const struct updateResult * const result, gpointer user_data, updateFlags flags)
+{
+	faviconDownloadCtxtPtr	ctxt = (faviconDownloadCtxtPtr)user_data;
 	gchar		*tmp;
 	GError		*err = NULL;
 	gboolean	success = FALSE;
 	
-	debug4(DEBUG_UPDATE, "icon download processing (%s, %d bytes, content type %s) for favicon %s", request->source, request->size, request->contentType, ctxt->id);
+	debug4 (DEBUG_UPDATE, "icon download processing (%s, %d bytes, content type %s) for favicon %s", result->source, result->size, result->contentType, ctxt->id);
 
-	if(request->data && 
-	   request->size > 0 && 
-	   request->contentType /*&&*/
+	if (result->data && 
+	    result->size > 0 && 
+	    result->contentType /*&&*/
 	   /* the MIME type is wrong much too often, so we cannot check it... */
-	   /*(!strncmp("image", request->contentType, 5))*/) {
-		GdkPixbufLoader *loader = gdk_pixbuf_loader_new();
+	   /*(!strncmp("image", result->contentType, 5))*/) {
+		GdkPixbufLoader *loader = gdk_pixbuf_loader_new ();
 		GdkPixbuf *pixbuf;
-		if(gdk_pixbuf_loader_write(loader, (guchar *)request->data, (gsize)request->size, &err)) {
-			if(gdk_pixbuf_loader_close(loader, &err)) {
-				pixbuf = gdk_pixbuf_loader_get_pixbuf(loader);
-				if(pixbuf) {
-					tmp = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", ctxt->id, "png");
-					debug2(DEBUG_UPDATE, "saving favicon %s to file %s", ctxt->id, tmp);
-					if(!gdk_pixbuf_save(pixbuf, tmp, "png", &err, NULL)) {
-						g_warning("Could not save favicon (id=%s) to file %s!", ctxt->id, tmp);
+		if (gdk_pixbuf_loader_write (loader, (guchar *)result->data, (gsize)result->size, &err)) {
+			if (gdk_pixbuf_loader_close (loader, &err)) {
+				pixbuf = gdk_pixbuf_loader_get_pixbuf (loader);
+				if (pixbuf) {
+					tmp = common_create_cache_filename ("cache" G_DIR_SEPARATOR_S "favicons", ctxt->id, "png");
+					debug2 (DEBUG_UPDATE, "saving favicon %s to file %s", ctxt->id, tmp);
+					if (!gdk_pixbuf_save (pixbuf, tmp, "png", &err, NULL)) {
+						g_warning ("Could not save favicon (id=%s) to file %s!", ctxt->id, tmp);
 					} else {
 						success = TRUE;
 						/* Run favicon-updated callback */
-						if(ctxt->callback)
-							(ctxt->callback)(ctxt->user_data);
+						if (ctxt->callback)
+							(ctxt->callback) (ctxt->user_data);
 					}
-					g_free(tmp);
+					g_free (tmp);
 				} else {
-					debug0(DEBUG_UPDATE, "gdk_pixbuf_loader_get_pixbuf() failed!");
+					debug0 (DEBUG_UPDATE, "gdk_pixbuf_loader_get_pixbuf() failed!");
 				}
 			} else {
-				debug0(DEBUG_UPDATE, "gdk_pixbuf_loader_close() failed!");
+				debug0 (DEBUG_UPDATE, "gdk_pixbuf_loader_close() failed!");
 			}
 		} else {
-			debug0(DEBUG_UPDATE, "gdk_pixbuf_loader_write() failed!");
-			gdk_pixbuf_loader_close(loader, NULL);
+			debug0 (DEBUG_UPDATE, "gdk_pixbuf_loader_write() failed!");
+			gdk_pixbuf_loader_close (loader, NULL);
 		}
 
-		if(err) {
-			g_warning("%s\n", err->message);
-			g_error_free(err);
+		if (err) {
+			g_warning ("%s\n", err->message);
+			g_error_free (err);
 		}
 
-		g_object_unref(loader);
+		g_object_unref (loader);
 	} else {
-		debug1(DEBUG_UPDATE, "No data in download result for favicon %s!", ctxt->id);
+		debug1 (DEBUG_UPDATE, "No data in download result for favicon %s!", ctxt->id);
 	}
 	
-	update_request_free(request);
-	
-	if(!success) {
-		favicon_download_run(ctxt);	/* try next... */
+	if (!success) {
+		favicon_download_run (ctxt);	/* try next... */
 	} else {
-		g_slist_free(ctxt->urls);
-		g_free(ctxt);
+		g_slist_free (ctxt->urls);
+		g_free (ctxt);
 	}
 }
 
-static void favicon_download_html_cb(requestPtr request) {
-	faviconDownloadCtxtPtr	ctxt = (faviconDownloadCtxtPtr)request->user_data;
+static void
+favicon_download_html_cb (const struct updateResult * const result, gpointer user_data, updateFlags flags) {
+	faviconDownloadCtxtPtr	ctxt = (faviconDownloadCtxtPtr)user_data;
 	
-	if(request->size > 0 && request->data) {
-		gchar *iconUri = html_discover_favicon(request->data, request->source);
-		if(iconUri) {
-			debug2(DEBUG_UPDATE, "found link for favicon %s: %s", ctxt->id, iconUri);
-			update_request_free(request);
-			request = update_request_new(ctxt->user_data);
+	if (result->size > 0 && result->data) {
+		gchar *iconUri = html_discover_favicon (result->data, result->source);
+		if (iconUri) {
+			updateRequestPtr request;
+			
+			debug2 (DEBUG_UPDATE, "found link for favicon %s: %s", ctxt->id, iconUri);
+			request = update_request_new ();
 			request->source = iconUri;
 			request->options = ctxt->options;
-			request->callback = &favicon_download_icon_cb;
-			request->user_data = ctxt;
-			update_execute_request(request);
+			update_execute_request (ctxt->user_data, request, favicon_download_icon_cb, ctxt, flags);
+			
 			return;
 		}
 	}
-	debug1(DEBUG_UPDATE, "No link for favicon %s found!", ctxt->id);
+	debug1 (DEBUG_UPDATE, "No link for favicon %s found!", ctxt->id);
 
-	update_request_free(request);
-	favicon_download_run(ctxt);	/* no sucess, try next... */
+	favicon_download_run (ctxt);	/* no sucess, try next... */
 }
 
-static void favicon_download_run(faviconDownloadCtxtPtr ctxt) {
-	gchar		*url;
-	requestPtr	request;
+static void
+favicon_download_run (faviconDownloadCtxtPtr ctxt)
+{
+	gchar			*url;
+	updateRequestPtr	request;
+	update_result_cb	callback;
 
 	debug_enter("favicon_download_run");
 	
-	if(ctxt->urls) {
+	if (ctxt->urls) {
 		url = (gchar *)ctxt->urls->data;
-		ctxt->urls = g_slist_remove(ctxt->urls, url);
-		debug2(DEBUG_UPDATE, "favicon %s trying URL: %s", ctxt->id, url);
+		ctxt->urls = g_slist_remove (ctxt->urls, url);
+		debug2 (DEBUG_UPDATE, "favicon %s trying URL: %s", ctxt->id, url);
 
-		request = update_request_new(ctxt->user_data);
+		request = update_request_new ();
 		request->source = url;
 		request->options = ctxt->options;
-		request->user_data = ctxt;
 
-		if(strstr(url, "/favicon.ico"))
-			request->callback = &favicon_download_icon_cb;	
+		if (strstr (url, "/favicon.ico"))
+			callback = favicon_download_icon_cb;	
 		else
-			request->callback = &favicon_download_html_cb;	
+			callback = favicon_download_html_cb;
 
-		update_execute_request(request);
+		update_execute_request (ctxt->user_data, request, callback, ctxt, 0);
 	} else {
-		debug1(DEBUG_UPDATE, "favicon %s could not be downloaded!", ctxt->id);
+		debug1 (DEBUG_UPDATE, "favicon %s could not be downloaded!", ctxt->id);
 		/* Run favicon-updated callback */
-		if(ctxt->callback)
-			(ctxt->callback)(ctxt->user_data);
-		g_free(ctxt);
+		if (ctxt->callback)
+			(ctxt->callback) (ctxt->user_data);
+		g_free (ctxt);
 	}
 	
-	debug_exit("favicon_download_run");
+	debug_exit ("favicon_download_run");
 }
 
 static gint count_slashes(const gchar *str) {
