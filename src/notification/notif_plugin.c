@@ -31,70 +31,80 @@ static GSList *notificationPlugins = NULL;
 
 typedef	notificationPluginPtr (*infoFunc)();
 
-gboolean notification_plugin_load(pluginPtr plugin, GModule *handle) {
+gboolean
+notification_plugin_register (pluginPtr plugin, GModule *handle)
+{
 	notificationPluginPtr	notificationPlugin = NULL;
 	infoFunc		notification_plugin_get_info;
 	GSList 			*iter;
 
-	if(g_module_symbol(handle, "notification_plugin_get_info", (void*)&notification_plugin_get_info)) {
+	if (g_module_symbol (handle, "notification_plugin_get_info", (void*)&notification_plugin_get_info)) {
 		/* load notification provider plugin info */
-		if(NULL == (notificationPlugin = (*notification_plugin_get_info)()))
+		if (NULL == (notificationPlugin = (*notification_plugin_get_info) ()))
 			return FALSE;
 	}
 
 	/* check notification provider plugin version */
-	if(NOTIFICATION_PLUGIN_API_VERSION != notificationPlugin->api_version) {
-		debug3(DEBUG_PLUGINS, "notification API version mismatch: \"%s\" has version %d should be %d", plugin->name, notificationPlugin->api_version, NOTIFICATION_PLUGIN_API_VERSION);
+	if (NOTIFICATION_PLUGIN_API_VERSION != notificationPlugin->api_version) {
+		debug3 (DEBUG_PLUGINS, "notification API version mismatch: \"%s\" has version %d should be %d", plugin->name, notificationPlugin->api_version, NOTIFICATION_PLUGIN_API_VERSION);
 		return FALSE;
 	} 
 
 	/* check if all mandatory symbols are provided */
-	if(!(notificationPlugin->plugin_init &&
-	     notificationPlugin->plugin_deinit)) {
-		debug1(DEBUG_PLUGINS, "mandatory symbols missing: \"%s\"", plugin->name);
+	if (!(notificationPlugin->plugin_init &&
+	      notificationPlugin->plugin_deinit)) {
+		debug1 (DEBUG_PLUGINS, "mandatory symbols missing: \"%s\"", plugin->name);
 		return FALSE;
 	}
+
+	/* add plugin to notification plugin instance list */
+	notificationPlugins = g_slist_append (notificationPlugins, plugin);
+
+	/* assign the symbols so the caller will accept the plugin */
+	plugin->symbols = notificationPlugin;
+	
+	return TRUE;
+}
+
+static void
+notification_plugin_init_for_type (notificationType type)
+{
+	GSList			*iter;
+	notificationPluginPtr	selectedPlugin = NULL;
 	
 	/* Check for already loaded plugin of same type and with higher priority */
 	iter = notificationPlugins;
-	while(iter) {
+	while (iter) {
 		notificationPluginPtr tmp = ((pluginPtr)iter->data)->symbols;
 
-		if(tmp->type == notificationPlugin->type) {
-			if(tmp->priority > notificationPlugin->priority) {
-				debug2(DEBUG_PLUGINS, "plugin \"%s\" is not better than \"%s\", ignoring it...", plugin->name, ((pluginPtr)iter->data)->name);
-				return FALSE;
-			} else {
-				debug2(DEBUG_PLUGINS, "plugin \"%s\" is better, dropping already loaded one \"%s\"", plugin->name, ((pluginPtr)iter->data)->name);
-				break;
-			}
+		if (tmp->type == type) {
+			if (!selectedPlugin || (tmp->priority > selectedPlugin->priority))
+				selectedPlugin = tmp;
 		}
-		iter = g_slist_next(iter);
+		iter = g_slist_next (iter);
 	}
-
-	if(iter)	
-		notificationPlugins = g_slist_remove(notificationPlugins, iter->data);
-
+	
 	/* Allow the plugin to initialize */
-	if((*notificationPlugin->plugin_init)()) {
-	
-		/* assign the symbols so the caller will accept the plugin */
-		plugin->symbols = notificationPlugin;
-		
-		/* add plugin to notification plugin instance list */
-		notificationPlugins = g_slist_append(notificationPlugins, plugin);
-	} else {
-		debug1(DEBUG_PLUGINS, "notification plugin \"%s\" did not load succesfully", plugin->name);
-		return FALSE;
+	if (selectedPlugin) {
+		if ((*selectedPlugin->plugin_init) ()) {
+			debug2 (DEBUG_PLUGINS, "using \"%s\" for notification type %d", selectedPlugin->name, selectedPlugin->type);
+		} else {
+			debug1 (DEBUG_PLUGINS, "notification plugin \"%s\" did not load succesfully", selectedPlugin->name);
+		}
 	}
-	
-	return TRUE;
+}
+
+void
+notification_plugin_init (void)
+{
+	notification_plugin_init_for_type (NOTIFICATION_TYPE_POPUP);
+	notification_plugin_init_for_type (NOTIFICATION_TYPE_TRAY);
 }
 
 void notification_enable(gboolean enabled) {
 	notificationPluginPtr	plugin;
 	GSList 			*iter;
-	
+
 	iter = notificationPlugins;
 	while(iter) {
 		plugin = ((pluginPtr)iter->data)->symbols;

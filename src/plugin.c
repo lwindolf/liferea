@@ -74,7 +74,7 @@ static pluginPtr plugin_mgmt_load(const gchar * filename) {
 			/* try to load specific plugin type symbols */
 			switch(plugin->type) {
 				case PLUGIN_TYPE_NOTIFICATION:
-					success = notification_plugin_load(plugin, handle);
+					success = notification_plugin_register (plugin, handle);
 					break;
 				case PLUGIN_TYPE_HTML_RENDERER:
 					success = liferea_htmlview_plugin_register (plugin, handle);
@@ -164,6 +164,7 @@ void plugin_mgmt_init(void) {
 	
 	/* do plugin type specific startup init */
 	liferea_htmlview_plugin_init ();
+	notification_plugin_init ();
 
 	debug_exit("plugin_mgmt_init");
 }

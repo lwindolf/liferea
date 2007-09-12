@@ -28,12 +28,12 @@
 #include "item.h"
 #include "plugin.h"
 
-enum {
+typedef enum {
 	NOTIFICATION_TYPE_POPUP,
 	NOTIFICATION_TYPE_TRAY,
-};
+} notificationType;
 
-#define NOTIFICATION_PLUGIN_API_VERSION 2
+#define NOTIFICATION_PLUGIN_API_VERSION 3
 
 typedef struct notificationPlugin {
 	unsigned int	api_version;
@@ -50,6 +50,11 @@ typedef struct notificationPlugin {
 	 * The priority of the plugin. Higher means more suited.
 	 */
 	unsigned int	priority;
+	
+	/**
+	 * Notification plugin name
+	 */
+	gchar		*name;
 	
 	/**
 	 * Called once during plugin initialization.
@@ -113,24 +118,37 @@ typedef struct notificationPlugin {
  *
  * @param enabled   TRUE=enable notifications
  */
-void notification_enable(gboolean enabled);
+void notification_enable (gboolean enabled);
  
 /**
  * "New items" event callback.
  *
  * @param node	the node that has new items
  */
-void notification_node_has_new_items(nodePtr node);
+void notification_node_has_new_items (nodePtr node);
 
 /**
  * "Node removed" event callback
  *
  * @param node	the node that was removed.
  */
-void notification_node_removed(nodePtr node);
+void notification_node_removed (nodePtr node);
 
 /* Plugin loading interface */
 
-gboolean notification_plugin_load(pluginPtr plugin, GModule *handle);
+/**
+ * Registers an available notification plugin
+ *
+ * @param plugin	plugin info
+ * @param handle	module handle
+ *
+ * @returns TRUE on successful plugin loading
+ */
+gboolean notification_plugin_register (pluginPtr plugin, GModule *handle);
+
+/**
+ * Performs startup setup of notification plugins.
+ */
+void notification_plugin_init (void);
 
 #endif
