@@ -1,4 +1,4 @@
-2007-09-??  Lars Lindner  <lars.lindner@gmail.com>
+2007-09-12  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.4.2 (Stable)
 
@@ -12,6 +12,10 @@
 	  OPML sources right after subscription.
 	* Fixes "hanging" of next unread item selection feature
 	  in two pane mode view with unread items.
+	* Fixes an assertion when changing the popup notification
+	  option in the preferences dialog.
+	* Fixes SF #1792568: broken libnotify notifications
+	  (reported by zodmaner)
 
 
 2007-09-05  Lars Lindner  <lars.lindner@gmail.com>

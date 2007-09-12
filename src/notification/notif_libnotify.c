@@ -188,66 +188,57 @@ static void notif_libnotify_enable(void) { }
 
 static void notif_libnotify_disable(void) { }
 
-/*
-	The feed has new items - so iterate threw the feed and create a notification
-	containing all updated news header lines
-*/
-static void notif_libnotify_node_has_new_items(nodePtr node_p) {
-
-	GList *list_p;
-
+static void
+notif_libnotify_node_has_new_items (nodePtr node)
+{	
+	itemSetPtr	itemSet;
+	GList		*iter;
+	
 	NotifyNotification *n;
 
-	GtkRequisition size;
-	gint x, y;
+	GtkRequisition	size;
+	gint		x, y;
 
-	gchar *labelSummary_p;
-	itemPtr item_p;
-	gint item_count;
+	gchar		*labelSummary_p;
+	gint		item_count = 0;
 
-	if(!conf_get_bool_value(SHOW_POPUP_WINDOWS)) {
+	if (!conf_get_bool_value(SHOW_POPUP_WINDOWS))
 		return;
-	}
 
 	/* Count updated feed */
-	item_count = 0;
-	list_p = NULL;
-	// FIXME list_p = node_p->itemSet->items;
-	while(list_p != NULL) {
-		item_p = list_p->data;
-		if( item_p->popupStatus == TRUE && item_p->readStatus == FALSE) {
-			item_count += 1;
-		}
-		list_p = g_list_next(list_p);
+	itemSet = node_get_itemset (node);
+	iter = itemSet->ids;
+	while (iter) {
+		itemPtr item = item_load (GPOINTER_TO_UINT (iter->data));
+		if (item->popupStatus && !item->readStatus)
+			item_count++;
+		item_unload (item);
+		iter = g_list_next (iter);
 	}
+	itemset_free (itemSet);
 
-	if ( item_count == 0 ) {
+	if (item_count == 0)
 		return;
-	}
 
-	labelSummary_p = g_strdup_printf (ngettext("%s has %d new / updated headline\n", "%s has %d new / updated headlines\n", item_count), node_get_title(node_p), item_count );
-
+	labelSummary_p = g_strdup_printf (ngettext ("%s has %d new / updated headline\n", "%s has %d new / updated headlines\n", item_count), 
+	                                  node_get_title (node), item_count);
 	n = notify_notification_new ( _("Feed Update"), labelSummary_p, NULL, NULL);
-
 	g_free(labelSummary_p);
 
-	notify_notification_set_icon_from_pixbuf (n,node_get_icon(node_p));
-
-	notify_notification_set_timeout (n, NOTIFY_EXPIRES_DEFAULT );
-
-	notify_notification_add_action(n, "show_details", _("Show details"),
-									(NotifyActionCallback)notif_libnotify_callback_show_details,
-									node_p->id, NULL);
-	notify_notification_add_action(n, "open", _("Open feed"),
-									(NotifyActionCallback)notif_libnotify_callback_open,
-									node_p->id, NULL);
-	notify_notification_add_action(n, "mark_read", _("Mark all as read"),
-									(NotifyActionCallback)notif_libnotify_callback_mark_read,
-									node_p->id, NULL);
+	notify_notification_set_icon_from_pixbuf (n, node_get_icon (node));
+	notify_notification_set_timeout (n, NOTIFY_EXPIRES_DEFAULT);
+	notify_notification_add_action (n, "show_details", _("Show details"),
+	                                (NotifyActionCallback)notif_libnotify_callback_show_details,
+	                                node->id, NULL);
+	notify_notification_add_action (n, "open", _("Open feed"),
+	                                (NotifyActionCallback)notif_libnotify_callback_open,
+	                                node->id, NULL);
+	notify_notification_add_action (n, "mark_read", _("Mark all as read"),
+	                                (NotifyActionCallback)notif_libnotify_callback_mark_read,
+	                                node->id, NULL);
 	notify_notification_set_category (n, "feed");
 
-	if (ui_tray_get_origin(&x,&y) == TRUE) {
-
+	if (ui_tray_get_origin (&x, &y) == TRUE) {
 		ui_tray_size_request (&size);
 
 		x += size.width / 2;
@@ -257,13 +248,11 @@ static void notif_libnotify_node_has_new_items(nodePtr node_p) {
 		notify_notification_set_hint_int32 (n, "y", y);
 	}
 
-	if (!notify_notification_show (n, NULL)) {
-		fprintf(stderr, "PLUGIN:notif_libnotify.c - failed to send notification via libnotify\n");
-	}
+	if (!notify_notification_show (n, NULL))
+		g_warning ("PLUGIN:notif_libnotify.c - failed to send notification via libnotify");
 }
 	
-static void notif_libnotify_node_removed(nodePtr node) {
-}
+static void notif_libnotify_node_removed(nodePtr node) { }
 
 /* notification plugin definition */
 
@@ -271,6 +260,7 @@ static struct notificationPlugin npi = {
 	NOTIFICATION_PLUGIN_API_VERSION,
 	NOTIFICATION_TYPE_POPUP,
 	10,
+	"libnotify",
 	notif_libnotify_init,
 	notif_libnotify_deinit,
 	notif_libnotify_enable,

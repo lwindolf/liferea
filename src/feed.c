@@ -586,7 +586,7 @@ feed_process_update_result (nodePtr node, const struct updateResult * const resu
 			
 			/* merge the resulting items into the node's item set */
 			node_merge_items (node, ctxt->items);
-		
+			
 			/* restore user defined properties if necessary */
 			if (flags & FEED_REQ_RESET_TITLE)
 				node_set_title (node, ctxt->title);
