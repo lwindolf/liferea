@@ -603,6 +603,9 @@ db_deinit (void)
 
 	debug_enter ("db_deinit");
 	
+	if (FALSE == sqlite3_get_autocommit(db))
+		g_warning ("Fatal: DB not in auto-commit mode. This is a bug. Data may be lost!");
+	
 	if (statements) {
 		g_hash_table_foreach (statements, db_free_statements, NULL);
 		g_hash_table_destroy (statements);	
