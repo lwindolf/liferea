@@ -186,7 +186,7 @@ getOutlineList (feedParserCtxtPtr ctxt, guint tag, char *url)
 
 	request = update_request_new ();
 	request->source = g_strdup (url);
-	request->options = ctxt->subscription->updateOptions;
+	request->options = update_options_copy (ctxt->subscription->updateOptions);
 	
 	update_execute_request (ctxt->subscription, request, ns_blogChannel_download_request_cb, requestData, 0);
 }

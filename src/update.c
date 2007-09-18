@@ -144,15 +144,39 @@ update_state_copy (updateStatePtr state)
 }
 
 void
-update_state_free (updateStatePtr updateState)
+update_state_free (updateStatePtr state)
 {
-	if (!updateState)
+	if (!state)
 		return;
 
-	g_free (updateState->etag);
-	g_free (updateState->lastModified);
-	g_free (updateState->cookies);
-	g_free (updateState);
+	g_free (state->etag);
+	g_free (state->lastModified);
+	g_free (state->cookies);
+	g_free (state);
+}
+
+updateOptionsPtr
+update_options_copy (updateOptionsPtr options)
+{
+	updateOptionsPtr newOptions;
+	
+	newOptions = g_new0 (struct updateOptions, 1);
+	newOptions->username = g_strdup (options->username);
+	newOptions->password = g_strdup (options->password);
+	newOptions->dontUseProxy = options->dontUseProxy;
+	
+	return newOptions;
+}
+
+void
+update_options_free (updateOptionsPtr options)
+{
+	if (!options)
+		return;
+		
+	g_free (options->username);
+	g_free (options->password);
+	g_free (options);
 }
 
 /* update request processing */
@@ -169,6 +193,7 @@ update_request_free (updateRequestPtr request)
 	if (!request)
 		return;
 	
+	update_options_free (request->options);
 	g_free (request->source);
 	g_free (request->filtercmd);
 	g_free (request);

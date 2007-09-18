@@ -41,6 +41,8 @@
 
 #include "common.h"
 #include "debug.h"
+#include "itemlist.h"
+#include "subscription.h"	// FIXME: move+rename FEED_REQ_PRIORITY_HIGH
 #include "update.h"
 #include "ui/ui_htmlview.h"
 #include "ui/ui_popup.h"
@@ -149,84 +151,107 @@ on_submit(HtmlDocument *document, const gchar *action, const gchar *method,
 	gtk_idle_add(on_submit_idle, ctx);
 }
 
-
 typedef struct {
-	HtmlDocument *doc;
-	HtmlStream *stream;
+	HtmlDocument		*doc;	/**< HTML document the stream belongs to */
+	HtmlStream		*stream;/**< currently processed stream */
+	gpointer		view;	/**< HTML view the stream belongs to */
+	struct updateJob	*job;	/**< currently processed HTTP request job (or NULL) */
 } StreamData;
 
-void request_data_kill(struct request *r) {
+static void
+gtkhtml2_view_connection_add (gpointer doc, StreamData *sd)
+{
 	GSList *connection_list;
-	StreamData *sd = (StreamData*)r->user_data;
-	
-	html_stream_close(((StreamData*)r->user_data)->stream);
-	r->callback = NULL;
-	
-	connection_list = g_object_get_data(G_OBJECT(sd->doc), "connection_list");
-	connection_list = g_slist_remove(connection_list, r);
-	g_object_set_data(G_OBJECT(sd->doc), "connection_list", connection_list);
-	g_free(r->user_data);
+		
+	connection_list = g_object_get_data (G_OBJECT (doc), "connection_list");
+	connection_list = g_slist_prepend (connection_list, sd);
+	g_object_set_data (G_OBJECT (doc), "connection_list", connection_list);
 }
 
 static void
-stream_cancel (HtmlStream *stream, gpointer user_data, gpointer cancel_data)
+gtkhtml2_view_connection_remove (gpointer doc, StreamData *sd)
 {
-	struct request *r = (struct request*)cancel_data;
+	GSList *connection_list;
 
-	debug1(DEBUG_UPDATE, "GtkHTML2: Canceling stream: %s", ((struct request*)user_data)->source);
-	update_cancel_requests((gpointer)stream);
+	connection_list = g_object_get_data (G_OBJECT (doc), "connection_list");
+	connection_list = g_slist_remove (connection_list, sd);
+	g_object_set_data (G_OBJECT(doc), "connection_list", connection_list);
+}
+
+static void
+gtkhtml2_view_free_stream_data (StreamData *sd)
+{
+	g_object_ref (sd->stream);
+	html_stream_close (sd->stream);
+	g_free (sd);
+}
+
+static void
+gtkhtml2_view_stream_cancel (HtmlStream *stream, gpointer user_data, gpointer cancel_data)
+{
+	StreamData *sd = (StreamData *)cancel_data;
 	
-	request_data_kill(r);
+	debug1(DEBUG_UPDATE, "GtkHTML2: Canceling stream: %p", sd->stream);
+	gtkhtml2_view_connection_remove (sd->doc, sd);
+	update_job_cancel_by_owner (sd->stream);
+	gtkhtml2_view_free_stream_data (sd);
 }
 
-static void gtkhtml2_url_request_received_cb(struct request *r) {
-
-	if(r->size != 0 && r->data != NULL) {
-		html_stream_set_mime_type(((StreamData*)r->user_data)->stream, r->contentType);
-		html_stream_write(((StreamData*)r->user_data)->stream, r->data, r->size); 
+static void
+gtkhtml2_url_request_received_cb (const struct updateResult * const result, 
+                                  gpointer user_data, 
+				  updateFlags flags)
+{
+	StreamData *sd = (StreamData *)user_data;
+	
+	if (result->size != 0 && result->data) {
+		html_stream_set_mime_type (sd->stream, result->contentType);
+		html_stream_write (sd->stream, result->data, result->size); 
 	}
-	request_data_kill(r);
+	
+	gtkhtml2_view_connection_remove (sd->doc, sd);
+	gtkhtml2_view_free_stream_data (sd);
 }
 
-static void url_request(HtmlDocument *doc, const gchar *url, HtmlStream *stream, gpointer data) {
+static void
+gtkhtml2_view_request_url (HtmlDocument *doc, const gchar *url, HtmlStream *stream, gpointer view)
+{
 	gchar		*absURL, *base;
 	gboolean	isLocalDoc;	
 	
-	g_assert(NULL != stream);
+	g_assert (NULL != stream);
 
-	base = g_object_get_data(G_OBJECT(doc), "liferea-base-uri");
+	base = g_object_get_data (G_OBJECT(doc), "liferea-base-uri");
 
 	/* source document in local filesystem? */
-	isLocalDoc = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(doc), "localDocument"));
+	isLocalDoc = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (doc), "localDocument"));
 
-	if(NULL != strstr(url, "file://") || isLocalDoc)
-		absURL = g_strdup(url + strlen("file://"));
+	if (NULL != strstr(url, "file://") || isLocalDoc)
+		absURL = g_strdup (url + strlen ("file://"));
 	else
-		absURL = common_build_url(url, base);
+		absURL = common_build_url (url, base);
 
-	if(absURL != NULL) {
-		struct request *r;
-		GSList *connection_list;
-		StreamData *sd = g_malloc(sizeof(StreamData));
-
+	if (absURL) {
+		nodePtr displayedNode;
+		updateRequestPtr request;
+		
+		StreamData *sd = g_malloc (sizeof (StreamData));
 		sd->doc = doc;
+		sd->view = view;
 		sd->stream = stream;
+		
+		request = update_request_new();
+		request->source = absURL;
+	
+		displayedNode = itemlist_get_displayed_node ();	
+		if (displayedNode && displayedNode->subscription)
+			request->options = update_options_copy (displayedNode->subscription->updateOptions);
+		else
+			request->options = g_new0 (struct updateOptions, 1);
 
-		r = update_request_new((gpointer)stream);
-		r->options = g_new0(struct updateOptions, 1);
-		// FIXME: set no proxy option and HTTP auth properties
-		// of selected node to allow viewing of inline images...
-		r->source = g_strdup(absURL);
-		r->callback = gtkhtml2_url_request_received_cb;
-		r->user_data = sd;
-		r->priority = 1;
-		update_execute_request(r);
-		html_stream_set_cancel_func (stream, stream_cancel, r);
-		g_free(absURL);
-
-		connection_list = g_object_get_data(G_OBJECT (doc), "connection_list");
-		connection_list = g_slist_prepend(connection_list, r);
-		g_object_set_data(G_OBJECT (doc), "connection_list", connection_list);
+		sd->job = update_execute_request (stream, request, gtkhtml2_url_request_received_cb, sd, FEED_REQ_PRIORITY_HIGH);
+		gtkhtml2_view_connection_add (doc, sd);
+		html_stream_set_cancel_func (stream, gtkhtml2_view_stream_cancel, sd);
 	}
 }
 
@@ -239,7 +264,7 @@ on_url (HtmlView *view, const char *url, gpointer user_data)
 	g_free (selectedURL);
 	selectedURL = NULL;
 	
-	htmlview = g_object_get_data (G_OBJECT (view), "htmlview");
+	htmlview = g_object_get_data (G_OBJECT (user_data), "htmlview");
 
 	if (url) {
 		gdk_window_set_cursor (GDK_WINDOW (gtk_widget_get_parent_window (GTK_WIDGET (view))), link_cursor);
@@ -247,10 +272,10 @@ on_url (HtmlView *view, const char *url, gpointer user_data)
 		if (absURL) {
 			selectedURL = g_strdup (absURL);
 			liferea_htmlview_on_url (htmlview, selectedURL);
-			xmlFree (absURL);
+			g_free (absURL);
 		}
 	} else {
-		gdk_window_set_cursor (GDK_WINDOW(gtk_widget_get_parent_window(GTK_WIDGET(view))), NULL);
+		gdk_window_set_cursor (GDK_WINDOW (gtk_widget_get_parent_window (GTK_WIDGET (view))), NULL);
 		liferea_htmlview_on_url (htmlview, "");
 	}
 }
@@ -260,23 +285,28 @@ static gboolean request_object (HtmlView *view, GtkWidget *widget, gpointer user
 	return FALSE;
 }
 
-static void kill_old_connections (GtkWidget *scrollpane) {
-	GtkWidget *htmlwidget = gtk_bin_get_child(GTK_BIN(scrollpane));
-	HtmlDocument *doc = HTML_VIEW(htmlwidget)->document;
-	GSList *connection_list, *tmp;
-	struct request *r;
-	
-	r = g_object_get_data(G_OBJECT(scrollpane), "html_request");
-	if (r != NULL)
-		r->callback = NULL;
-	g_object_set_data(G_OBJECT(scrollpane), "html_request", NULL);
-	
-	while((tmp = connection_list = g_object_get_data (G_OBJECT (doc), "connection_list")) != NULL)
-		request_data_kill((struct request*)tmp->data);
+static void
+gtkhtml2_view_kill_old_connections (gpointer doc)
+{
+	GSList	*list, *iter;
+
+	/* cancel requests caused by launch_url() */
+	update_job_cancel_by_owner (doc);
+
+	/* cancel indirectly caused requests */
+	iter = list = g_object_get_data (G_OBJECT (doc), "connection_list");
+	while (iter) {
+		StreamData *sd = (StreamData *)iter->data;
+		update_job_cancel_by_owner (sd->stream);
+		gtkhtml2_view_free_stream_data (sd);
+		iter = g_slist_next (iter);
+	}
+	g_slist_free (list);
+	g_object_set_data (G_OBJECT (doc), "connection_list", NULL);
 }
 
 static void
-link_clicked (HtmlDocument *doc, const gchar *url, gpointer scrollpane)
+link_clicked (HtmlDocument *doc, const gchar *url, gpointer view)
 {
 	xmlChar		*absURL;
 	gboolean	safeURL, isLocalDoc;
@@ -291,20 +321,26 @@ link_clicked (HtmlDocument *doc, const gchar *url, gpointer scrollpane)
 		
 		/* prevent local filesystem links */
 		if (safeURL) {	
-			LifereaHtmlView *htmlview = g_object_get_data (G_OBJECT (scrollpane), "htmlview");
-			kill_old_connections (GTK_WIDGET (scrollpane));
-			liferea_htmlview_launch_URL (htmlview, absURL, GPOINTER_TO_INT (g_object_get_data(G_OBJECT(scrollpane), "internal_browsing")) ?  UI_HTMLVIEW_LAUNCH_INTERNAL: UI_HTMLVIEW_LAUNCH_DEFAULT);
+			LifereaHtmlView *htmlview = g_object_get_data (G_OBJECT (view), "htmlview");
+			gtkhtml2_view_kill_old_connections (doc);
+			liferea_htmlview_launch_URL (htmlview, absURL, GPOINTER_TO_INT (g_object_get_data (G_OBJECT (view), "internal_browsing")) ?  UI_HTMLVIEW_LAUNCH_INTERNAL: UI_HTMLVIEW_LAUNCH_DEFAULT);
 		}
 		xmlFree (absURL);
 	}
 }
 
-void gtkhtml2_destroyed_cb(GtkObject *scrollpane, gpointer user_data) {
-	kill_old_connections(GTK_WIDGET(scrollpane));
+void
+gtkhtml2_destroyed_cb (GtkObject *scrollpane, gpointer user_data)
+{
+	HtmlDocument	*doc = HTML_VIEW (user_data)->document;
+	
+	gtkhtml2_view_kill_old_connections (doc);
 }
 
-static void gtkhtml2_title_changed(HtmlDocument *doc, const gchar *new_title, gpointer data) {
-	ui_tabs_set_title(GTK_WIDGET(data), new_title);
+static void
+gtkhtml2_title_changed (HtmlDocument *doc, const gchar *new_title, gpointer data)
+{
+	ui_tabs_set_title (GTK_WIDGET(data), new_title);
 }
 
 /* ---------------------------------------------------------------------------- */
@@ -312,22 +348,26 @@ static void gtkhtml2_title_changed(HtmlDocument *doc, const gchar *new_title, gp
 /* ---------------------------------------------------------------------------- */
 
 /* adds a differences diff to the actual zoom level */
-static void gtkhtml2_change_zoom_level(GtkWidget *scrollpane, gfloat zoomLevel) {
-	GtkWidget *htmlwidget = gtk_bin_get_child(GTK_BIN(scrollpane));
+static void
+gtkhtml2_change_zoom_level (GtkWidget *scrollpane, gfloat zoomLevel)
+{
+	GtkWidget *htmlwidget = gtk_bin_get_child (GTK_BIN (scrollpane));
 	
 	/* Clearing the selection is a workaround to avoid 
 	   crashes when changing the zoomlevel as reported
 	   in SF #1509741 */
-	html_selection_clear(HTML_VIEW(htmlwidget));
+	html_selection_clear (HTML_VIEW (htmlwidget));
 	
-	html_view_set_magnification(HTML_VIEW(htmlwidget), zoomLevel);
+	html_view_set_magnification (HTML_VIEW (htmlwidget), zoomLevel);
 }
 
 /* returns the currently set zoom level */
-static gfloat gtkhtml2_get_zoom_level(GtkWidget *scrollpane) {
-	GtkWidget *htmlwidget = gtk_bin_get_child(GTK_BIN(scrollpane));
+static gfloat
+gtkhtml2_get_zoom_level (GtkWidget *scrollpane)
+{
+	GtkWidget *htmlwidget = gtk_bin_get_child (GTK_BIN (scrollpane));
 	
-	return html_view_get_magnification(HTML_VIEW(htmlwidget));
+	return html_view_get_magnification (HTML_VIEW (htmlwidget));
 }
 
 /* function to write HTML source given as a UTF-8 string. Note: Originally
@@ -340,13 +380,13 @@ gtkhtml2_write_html (GtkWidget *scrollpane,
                      const gchar *base,
                      const gchar *contentType)
 {
-	
+	gpointer	view = scrollpane;	// FIXME: have a real GObject type
 	GtkWidget	*htmlwidget = gtk_bin_get_child (GTK_BIN (scrollpane));
 	HtmlDocument	*doc = HTML_VIEW (htmlwidget)->document;
 
 	/* finalizing older stuff */
 	if (doc) {
-		kill_old_connections (scrollpane);
+		gtkhtml2_view_kill_old_connections (view);
 		html_document_clear (doc);	/* heard rumors that this is necessary... */
 		if (g_object_get_data (G_OBJECT (doc), "liferea-base-uri") != NULL)
 			g_free (g_object_get_data (G_OBJECT (doc), "liferea-base-uri"));
@@ -364,7 +404,7 @@ gtkhtml2_write_html (GtkWidget *scrollpane,
 	html_document_open_stream (doc, "text/html");
 	
 	g_signal_connect (G_OBJECT (doc), "request_url",
-				   GTK_SIGNAL_FUNC (url_request), htmlwidget);
+				   GTK_SIGNAL_FUNC (gtkhtml2_view_request_url), view);
 	
 	g_signal_connect (G_OBJECT (doc), "submit",
 				   GTK_SIGNAL_FUNC (on_submit), scrollpane);
@@ -389,35 +429,37 @@ gtkhtml2_write_html (GtkWidget *scrollpane,
 	
 	html_document_close_stream (doc);
 
-	gtkhtml2_change_zoom_level (scrollpane, gtkhtml2_get_zoom_level (scrollpane));	/* to enforce applying of changed zoom levels */
-	gtkhtml2_scroll_to_top (scrollpane);
+	gtkhtml2_change_zoom_level (view, gtkhtml2_get_zoom_level (view));	/* to enforce applying of changed zoom levels */
+	gtkhtml2_scroll_to_top (view);
 }
 
-static GtkWidget* gtkhtml2_new(LifereaHtmlView *htmlview, gboolean forceInternalBrowsing) {
-	gulong	handler;
-	GtkWidget *htmlwidget;
-	GtkWidget *scrollpane;
-	
-	link_cursor = gdk_cursor_new(GDK_HAND1);
-	scrollpane = gtk_scrolled_window_new(NULL, NULL);
+static GtkWidget *
+gtkhtml2_new (LifereaHtmlView *htmlview, gboolean forceInternalBrowsing)
+{
+	gulong		handler;
+	GtkWidget	*htmlwidget;
+	GtkWidget	*scrollpane;
+		
+	link_cursor = gdk_cursor_new (GDK_HAND1);
+	scrollpane = gtk_scrolled_window_new (NULL, NULL);
 
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrollpane), GTK_POLICY_AUTOMATIC, GTK_POLICY_ALWAYS);
 	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrollpane), GTK_SHADOW_IN);
 	
 	/* create html widget and pack it into the scrolled window */
-	htmlwidget = html_view_new();
+	htmlwidget = html_view_new ();
 	gtk_container_add (GTK_CONTAINER (scrollpane), GTK_WIDGET (htmlwidget));
-	gtkhtml2_write_html(scrollpane, NULL, 0, "file:///", NULL);
+	gtkhtml2_write_html (scrollpane, NULL, 0, "file:///", NULL);
 	
 	g_object_set_data (G_OBJECT (scrollpane), "htmlview", htmlview);
-	g_object_set_data (G_OBJECT (scrollpane), "internal_browsing", GINT_TO_POINTER(forceInternalBrowsing));
-	handler = g_signal_connect(G_OBJECT(htmlwidget), "on_url", G_CALLBACK(on_url), NULL);
+	g_object_set_data (G_OBJECT (scrollpane), "internal_browsing", GINT_TO_POINTER (forceInternalBrowsing));
+	handler = g_signal_connect (G_OBJECT (htmlwidget), "on_url", G_CALLBACK (on_url), scrollpane);
 		
-	g_signal_connect(G_OBJECT(scrollpane), "destroy", G_CALLBACK(gtkhtml2_destroyed_cb), NULL);
-	g_signal_connect(G_OBJECT(htmlwidget), "button-press-event", G_CALLBACK(button_press_event), NULL);
-	g_signal_connect(G_OBJECT(htmlwidget), "request_object", G_CALLBACK(request_object), NULL);
+	g_signal_connect (G_OBJECT (scrollpane), "destroy", G_CALLBACK (gtkhtml2_destroyed_cb), htmlwidget);
+	g_signal_connect (G_OBJECT (htmlwidget), "button-press-event", G_CALLBACK (button_press_event), NULL);
+	g_signal_connect (G_OBJECT (htmlwidget), "request_object", G_CALLBACK (request_object), NULL);
 	
-	gtk_widget_show(htmlwidget);
+	gtk_widget_show (htmlwidget);
 
 	return scrollpane;
 }
@@ -427,42 +469,36 @@ static void gtkhtml2_init () { }
 static void gtkhtml2_deinit () { }
 
 static void
-gtkhtml2_html_received (struct request *r)
+gtkhtml2_html_received (const struct updateResult * const result, gpointer user_data, updateFlags flags)
 {
 	gboolean	isLocalDoc;
 	
-	/* Remove reference to the request structure */
-	g_object_set_data (G_OBJECT (r->user_data), "html_request", NULL);
-	
 	/* If no data was returned... */
-	if (r->size == 0 || r->data == NULL) {
+	if (result->size == 0 || result->data == NULL) {
 		/* Maybe an error message should be displayed.... */
 		return; /* This should nicely exit.... */
 	}
-	ui_tabs_set_location (GTK_WIDGET (r->user_data), r->source);
-	gtkhtml2_write_html (GTK_WIDGET (r->user_data), r->data, r->size,  r->source, r->contentType);
+	ui_tabs_set_location (GTK_WIDGET (user_data), result->source);
+	gtkhtml2_write_html (GTK_WIDGET (user_data), result->data, result->size,  result->source, result->contentType);
 	
 	/* determine if launched URL is a local one and set the flag to allow following local links */
-	isLocalDoc = (r->source == strstr(r->source, "file://"));
-	g_object_set_data (G_OBJECT (HTML_VIEW (gtk_bin_get_child (GTK_BIN (r->user_data)))->document),
+	isLocalDoc = (result->source == strstr(result->source, "file://"));
+	g_object_set_data (G_OBJECT (HTML_VIEW (gtk_bin_get_child (GTK_BIN (user_data)))->document),
 	                   "localDocument", GINT_TO_POINTER (isLocalDoc));
 }
 
 static void
 gtkhtml2_launch_url (GtkWidget *scrollpane, const gchar *url)
 {
-	struct request *r;
+	updateRequestPtr	request;
+	struct updateJob	*job;
 	
-	kill_old_connections (scrollpane);
+	gtkhtml2_view_kill_old_connections (scrollpane);
 	
-	r = update_request_new (NULL);
-	r->options = g_new0 (struct updateOptions, 1);
-	r->source = g_strdup (url);
-	r->callback = gtkhtml2_html_received;
-	r->user_data = scrollpane;
-	r->priority = 1;
-	g_object_set_data (G_OBJECT (scrollpane), "html_request", r);
-	update_execute_request (r);
+	request = update_request_new ();
+	request->options = g_new0 (struct updateOptions, 1);
+	request->source = g_strdup (url);
+	job = update_execute_request (scrollpane, request, gtkhtml2_html_received, scrollpane, FEED_REQ_PRIORITY_HIGH);
 }
 
 static gboolean

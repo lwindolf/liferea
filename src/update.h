@@ -178,9 +178,23 @@ updateStatePtr update_state_copy (updateStatePtr state);
 /**
  * Frees the given update state.
  *
- * @param updateState	the update state
+ * @param state		the update state
  */
-void update_state_free (updateStatePtr updateState);
+void update_state_free (updateStatePtr state);
+
+/**
+ * Copies the given update options.
+ *
+ * @returns a new update options structure (to be free'd using update_options_free())
+ */
+updateOptionsPtr update_options_copy (updateOptionsPtr options);
+
+/**
+ * Frees the given update options
+ *
+ * @param options	the update options
+ */
+void update_options_free (updateOptionsPtr options);
 
 /**
  * Initialises the download subsystem, including its thread(s). 

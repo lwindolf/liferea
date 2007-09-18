@@ -176,7 +176,7 @@ favicon_download_html_cb (const struct updateResult * const result, gpointer use
 			debug2 (DEBUG_UPDATE, "found link for favicon %s: %s", ctxt->id, iconUri);
 			request = update_request_new ();
 			request->source = iconUri;
-			request->options = ctxt->options;
+			request->options = update_options_copy (ctxt->options);
 			update_execute_request (ctxt->user_data, request, favicon_download_icon_cb, ctxt, flags);
 			
 			return;
@@ -203,7 +203,7 @@ favicon_download_run (faviconDownloadCtxtPtr ctxt)
 
 		request = update_request_new ();
 		request->source = url;
-		request->options = ctxt->options;
+		request->options = update_options_copy (ctxt->options);
 
 		if (strstr (url, "/favicon.ico"))
 			callback = favicon_download_icon_cb;	

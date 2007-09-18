@@ -121,7 +121,7 @@ subscription_update_favicon (subscriptionPtr subscription)
 	favicon_download (subscription->node->id,
 	                  node_get_base_url (subscription->node),
 			  subscription_get_source (subscription),
-			  subscription->updateOptions,
+			  subscription->updateOptions,		// FIXME: correct?
 	                  subscription_favicon_downloaded, 
 			  (gpointer)subscription->node);
 }
@@ -223,7 +223,7 @@ subscription_update_with_callback (subscriptionPtr subscription, subscription_up
 
 		request = update_request_new ();
 		request->updateState = update_state_copy (subscription->updateState);
-		request->options = subscription->updateOptions;
+		request->options = update_options_copy (subscription->updateOptions);
 		request->source = g_strdup (subscription_get_source (subscription));
 		request->allowRetries = (flags & FEED_REQ_ALLOW_RETRIES)? 1 : 0;
 
@@ -517,9 +517,9 @@ subscription_free (subscriptionPtr subscription)
 	g_free (subscription->source);
 	g_free (subscription->origSource);
 	g_free (subscription->filtercmd);
-
-	g_free (subscription->updateOptions);
+	
 	update_job_cancel_by_owner (subscription);
+	update_options_free (subscription->updateOptions);
 	update_state_free (subscription->updateState);
 	metadata_list_free (subscription->metadata);
 	

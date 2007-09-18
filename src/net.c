@@ -121,10 +121,13 @@ network_process_request (const struct updateRequest * const request)
 		netioRequest->etag = g_strdup (update_state_get_etag (request->updateState));
 		netioRequest->cookies = g_strdup (update_state_get_cookies (request->updateState));
 	}
-		
+
 	netioRequest->problem = 0;
 	netioRequest->netio_error = 0;
-	netioRequest->no_proxy = request->options->dontUseProxy?1:0;
+	/* FIXME: HTTP auth username and password are encoded in URI, extraction done in netio.c... */
+	if (request->options) {
+		netioRequest->no_proxy = request->options->dontUseProxy?1:0;
+	}
 	netioRequest->content_type = NULL;
 	netioRequest->contentlength = 0;
 	netioRequest->authinfo = NULL;
