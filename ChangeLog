@@ -5,6 +5,8 @@
 	* Fixes compilation problems of GtkHTML2 rendering.
 	* Fixes SF #1798158: problem with 'mark as read' 
 	  option in popup window (reported by zodmaner)
+	* Now removes leading/trailing white spaces from
+	  feed list node titles. (patch from Christian Dywan)
 
 2007-09-12  Lars Lindner  <lars.lindner@gmail.com>
 

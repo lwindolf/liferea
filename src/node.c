@@ -423,10 +423,11 @@ node_save(nodePtr node)
 
 /* node attributes encapsulation */
 
-void node_set_title(nodePtr node, const gchar *title) {
-
-	g_free(node->title);
-	node->title = g_strdup(title);
+void
+node_set_title (nodePtr node, const gchar *title)
+{
+	g_free (node->title);
+	node->title = g_strstrip (g_strdelimit (g_strdup (title), "\r\n", ' '));
 }
 
 const gchar * node_get_title(nodePtr node) { return node->title; }
