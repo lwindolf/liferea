@@ -3,7 +3,8 @@
 	Version 1.4.2b (Stable)
 
 	* Fixes compilation problems of GtkHTML2 rendering.
-
+	* Fixes SF #1798158: problem with 'mark as read' 
+	  option in popup window (reported by zodmaner)
 
 2007-09-12  Lars Lindner  <lars.lindner@gmail.com>
 

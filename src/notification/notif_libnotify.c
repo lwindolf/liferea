@@ -67,7 +67,8 @@ notif_libnotify_callback_mark_read (NotifyNotification *n, gchar *action, gpoint
 	nodePtr node = node_from_id (user_data);
 	
 	if (node) {
-		item_state_set_all_read (node);
+		feedlist_mark_all_read (node);
+		feedlist_reset_new_item_count ();
 		item_state_set_all_popup (node->id);
 	} else {
 		ui_show_error_box (_("This feed does not exist anymore!"));
