@@ -7,6 +7,12 @@
 	  option in popup window (reported by zodmaner)
 	* Now removes leading/trailing white spaces from
 	  feed list node titles. (patch from Christian Dywan)
+	* Fixes broken HTTP authentication. Auth info was
+	  just not passed with HTTP requests. (reported
+	  by Jim Henderson)
+	* Fixes Debian #442798: update interval values
+	  isn't correctly updated. Interval unit is lost.
+	  (reported by Yannick Palanque)
 
 2007-09-12  Lars Lindner  <lars.lindner@gmail.com>
 

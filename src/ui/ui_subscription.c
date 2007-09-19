@@ -246,9 +246,13 @@ on_propdialog_response (GtkDialog *dialog,
 		else if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "updateIntervalSpecific")))) {
 			gint intervalUnit = gtk_combo_box_get_active (GTK_COMBO_BOX (spd->priv->refreshIntervalUnit));
 			gint updateInterval = gtk_spin_button_get_value_as_int (GTK_SPIN_BUTTON (spd->priv->refreshInterval));
-			if (intervalUnit == 1) updateInterval *= 60;	/* hours */
-			if (intervalUnit == 2) updateInterval *= 1440;	/* days */
-			subscription_set_update_interval (subscription, gtk_spin_button_get_value_as_int (GTK_SPIN_BUTTON (spd->priv->refreshInterval)));
+			if (intervalUnit == 1)
+				updateInterval *= 60;	/* hours */
+			if (intervalUnit == 2)
+				updateInterval *= 1440;	/* days */
+			
+			subscription_set_update_interval (subscription, updateInterval);
+			db_subscription_update (subscription);
 		}
 			
 		/* "Archive" handling */
