@@ -378,6 +378,13 @@ itemlist_hide_item (itemPtr item)
 	}
 }
 
+/* function to cancel deferred removal of selected item */
+static void
+itemlist_unhide_item (itemPtr item)
+{
+	itemlist_priv.deferredFilter = FALSE;
+}
+
 /* functions to remove items on remove requests */
 
 extern void itemlist_decrement_vfolder_unread (nodePtr node);	/* FIXME */
@@ -474,6 +481,8 @@ itemlist_update_item (itemPtr item)
 	if (!itemlist_check_item (item)) {
 		itemlist_hide_item (item);
 		return;
+	} else {
+		itemlist_unhide_item (item);
 	}
 	
 	itemview_update_item (item);

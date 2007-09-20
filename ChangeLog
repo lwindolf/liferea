@@ -5,6 +5,8 @@
 	* Fixes assertions in db_item_check() and
 	  db_query_to_sql() for search folders that
 	  do not have rules. (reported by pochu)
+	* Fixes SF #1798880: problem when using Ctrl-u 
+	  inside a search folder matching unread items.
 
 
 2007-09-19  Lars Lindner  <lars.lindner@gmail.com>
