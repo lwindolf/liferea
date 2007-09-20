@@ -1268,11 +1268,11 @@ db_view_create (const gchar *id, queryPtr query)
 	}
 
 	if (query->tables & QUERY_TABLE_NODE)
-		sql = sqlite3_mprintf ("CREATE TEMP VIEW view_%s AS %s AND itemsets.comment != 1;", id, select);
+		sql = sqlite3_mprintf ("CREATE VIEW view_%s AS %s AND itemsets.comment != 1;", id, select);
 	else if (query->tables & QUERY_TABLE_ITEMS)
-		sql = sqlite3_mprintf ("CREATE TEMP VIEW view_%s AS %s AND items.comment != 1;", id, select);
+		sql = sqlite3_mprintf ("CREATE VIEW view_%s AS %s AND items.comment != 1;", id, select);
 	else
-		sql = sqlite3_mprintf ("CREATE TEMP VIEW view_%s AS %s;", id, select);
+		sql = sqlite3_mprintf ("CREATE VIEW view_%s AS %s;", id, select);
 	debug2(DEBUG_DB, "Creating view %s: %s", id, sql);
 	
 	res = sqlite3_exec (db, sql, NULL, NULL, &err);

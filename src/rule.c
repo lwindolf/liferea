@@ -231,7 +231,10 @@ void
 rules_to_view (GSList *rules, const gchar *id)
 {
 	queryPtr	query;
-	
+
+	if (0 == g_slist_length (rules))
+		return;	
+		
 	query = query_create (rules);
 	query->columns = QUERY_COLUMN_ITEM_ID | QUERY_COLUMN_ITEM_READ_STATUS;
 	db_view_create (id, query);
@@ -243,6 +246,9 @@ rules_check_item (GSList *rules, itemPtr item)
 {
 	gboolean	result;
 	queryPtr	query;
+	
+	if (0 == g_slist_length (rules))
+		return;
 	
 	/* first try in memory checks (for "unread" and "important" search folder)... */
 	if (1 == g_slist_length (rules)) {

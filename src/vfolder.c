@@ -115,10 +115,10 @@ vfolder_refresh (vfolderPtr vfolder)
 {
 	g_return_if_fail (NULL != vfolder->node);
 
-	if (vfolder->viewExists)
-		db_view_remove (vfolder->node->id);
-		
-	rules_to_view (vfolder->rules, vfolder->node->id);
+	if (0 != g_slist_length (vfolder->rules)) {
+		db_view_remove (vfolder->node->id);		
+		rules_to_view (vfolder->rules, vfolder->node->id);
+	}
 	
 	vfolder_update_counters (vfolder->node);
 }
@@ -257,8 +257,6 @@ vfolder_free (nodePtr node)
 	
 	vfolders = g_slist_remove (vfolders, vfolder);
 	
-	db_view_remove (vfolder->node->id);
-		
 	/* free vfolder rules */
 	rule = vfolder->rules;
 	while (rule) {

@@ -1,5 +1,14 @@
 2007-09-??  Lars Lindner  <lars.lindner@gmail.com>
 
+	Version 1.4.3 (Stable)
+
+	* Fixes assertions in db_item_check() and
+	  db_query_to_sql() for search folders that
+	  do not have rules. (reported by pochu)
+
+
+2007-09-19  Lars Lindner  <lars.lindner@gmail.com>
+
 	Version 1.4.2b (Stable)
 
 	* Fixes compilation problems of GtkHTML2 rendering.
@@ -13,6 +22,7 @@
 	* Fixes Debian #442798: update interval values
 	  isn't correctly updated. Interval unit is lost.
 	  (reported by Yannick Palanque)
+
 
 2007-09-12  Lars Lindner  <lars.lindner@gmail.com>
 
