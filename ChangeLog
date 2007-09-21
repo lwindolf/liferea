@@ -10,6 +10,8 @@
 	* Fixes Debian #430782: better handling of RSS 2.0
 	  LiveJournal feeds which use lj: prefix for some
 	  HTML elements. (reported by Daniel Jacobowitz)
+	* Fixes SF #1799476: crash when following links.
+	  (reported by jphendrix)
 
 
 2007-09-19  Lars Lindner  <lars.lindner@gmail.com>
