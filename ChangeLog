@@ -2,6 +2,9 @@
 
 	Version 1.4.3 (Stable)
 
+	* Fixes a grave bug that caused continuous feed
+	  downloads when the default update interval is
+	  set to 0, which is to mean disabled.
 	* Fixes assertions in db_item_check() and
 	  db_query_to_sql() for search folders that
 	  do not have rules. (reported by pochu)

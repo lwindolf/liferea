@@ -251,12 +251,11 @@ subscription_auto_update (subscriptionPtr subscription)
 		return;
 
 	interval = subscription_get_update_interval (subscription);
-	
-	if (-2 >= interval || 0 == interval)
-		return;		/* don't update this subscription */
-		
 	if (-1 == interval)
 		interval = conf_get_int_value (DEFAULT_UPDATE_INTERVAL);
+			
+	if (-2 >= interval || 0 == interval)
+		return;		/* don't update this subscription */
 		
 	if (conf_get_bool_value (ENABLE_FETCH_RETRIES))
 		flags |= FEED_REQ_ALLOW_RETRIES;
