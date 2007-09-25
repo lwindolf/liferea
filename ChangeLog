@@ -1,4 +1,14 @@
-2007-09-??  Lars Lindner  <lars.lindner@gmail.com>
+2007-09-25  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.4.3b (Stable)
+
+	* Fixes a data loss problem that causes flagged
+	  items to be dropped out of cache. Normally 
+	  flagged items are never to be dropped.
+	  (reported by Keith Curtis)
+
+
+2007-09-24  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.4.3 (Stable)
 

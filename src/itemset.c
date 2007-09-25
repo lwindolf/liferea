@@ -297,7 +297,7 @@ itemset_merge_items (itemSetPtr itemSet, GList *list)
 	iter = g_list_last (items);
 	while (iter) {
 		itemPtr item = (itemPtr) iter->data;
-		if (toBeDropped > 0) {
+		if (toBeDropped > 0 && !item->flagStatus) {
 			debug2 (DEBUG_UPDATE, "dropping item nr %u (%s)....", item->id, item_get_title (item));
 			droppedItems = g_list_append (droppedItems, item);
 			/* no unloading here, is done in itemlist_remove_items() */
