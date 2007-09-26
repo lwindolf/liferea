@@ -108,8 +108,13 @@ ui_update_cancel (nodePtr node)
 	if (node->children)
 		node_foreach_child (node, ui_update_cancel);
 
-	if (node->subscription)
-		subscription_cancel_update (node->subscription);
+	if (!node->subscription)
+		return;
+		
+	if (!node->subscription->updateJob)
+		return;
+		
+	subscription_cancel_update (node->subscription);
 }
 
 void on_cancel_all_requests_clicked(GtkButton *button, gpointer user_data) {
