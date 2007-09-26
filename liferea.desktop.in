@@ -7,6 +7,5 @@ Icon=liferea
 StartupNotify=true
 Terminal=false
 Type=Application
-Encoding=UTF-8
 Categories=Network;News;
 Version=0.9.4

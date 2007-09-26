@@ -1,3 +1,11 @@
+2007-09-??  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.4.4 (Stable)
+
+	* Removing deprecated "Encoding" entry from
+	  .desktop file (Luis Rodrigo Gallardo Cruz)
+
+
 2007-09-25  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.4.3b (Stable)
