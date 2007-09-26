@@ -114,9 +114,16 @@ ui_feedlist_selection_changed_cb (GtkTreeSelection *selection, gpointer data)
 				     IS_NODE_SOURCE (node)));
 		if(realNode) {			
 			/* FIXME: another workaround to prevent strange window
-			   size increasings after feed selection changing */
-			geometry.min_height = 480;
-			geometry.min_width = 640;
+			   size increasings after feed selection changing 
+			   
+			   Why is this workaround necessary? Missing documentation!!!
+			   
+			   Starting with 1.4.4 changing the minimum size from
+			   640x480 to 50x50. If anyone experiences it there will
+			   be bug reports soon. If there are none over about a month
+			   this should be removed! */
+			geometry.min_height = 50;
+			geometry.min_width = 50;
 			g_assert (mainwindow != NULL);
 			gtk_window_set_geometry_hints (GTK_WINDOW (mainwindow), mainwindow, &geometry, GDK_HINT_MIN_SIZE);
 		
