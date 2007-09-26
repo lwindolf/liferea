@@ -138,8 +138,8 @@ int main(int argc, char *argv[]) {
 	textdomain(GETTEXT_PACKAGE);
 	setlocale(LC_ALL, "");
 #endif
+	/* Do not set program name here as it would be overwritten by Gecko! */
 	
-	g_set_prgname("liferea");
 	gtk_set_locale();
 	g_thread_init(NULL);
 #ifdef USE_DBUS
@@ -260,7 +260,7 @@ int main(int argc, char *argv[]) {
 	debug0(DEBUG_GUI, "Compiled without DBUS support.");
 #endif
 	ui_mainwindow_init(mainwindowState);	/* setup mainwindow and initialize gconf configured GUI behaviour */
-
+	g_set_prgname("liferea");
 #ifdef USE_SM
 	/* This must be after feedlist reading because some session
 	   managers will tell Liferea to exit if Liferea does not

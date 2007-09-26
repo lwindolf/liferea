@@ -4,6 +4,8 @@
 
 	* Removing deprecated "Encoding" entry from
 	  .desktop file (Luis Rodrigo Gallardo Cruz)
+	* Fixed warnings/errors with "gecko" as program
+	  name. Now the correct name "liferea" is used.
 
 
 2007-09-25  Lars Lindner  <lars.lindner@gmail.com>
