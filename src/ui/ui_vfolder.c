@@ -77,7 +77,7 @@ static void on_propdialog_response(GtkDialog *dialog, gint response_id, gpointer
 	if(response_id == GTK_RESPONSE_OK) {	
 		/* update vfolder */
 		ui_itemlist_clear();
-		// FIXME: update vfolder
+		vfolder_refresh (ui_data->vp);
 		itemlist_load(ui_data->np);
 		ui_node_update(ui_data->np->id);
 	}
