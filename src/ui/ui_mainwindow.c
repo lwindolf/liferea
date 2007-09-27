@@ -820,6 +820,26 @@ ui_mainwindow_save_position (void)
 	GtkWidget	*pane;
 	gint		x, y, w, h;
 
+	/* save pane proportions */
+	if (NULL != (pane = liferea_shell_lookup ("leftpane"))) {
+		x = gtk_paned_get_position (GTK_PANED (pane));
+		setNumericConfValue (LAST_VPANE_POS, x);
+	}
+	
+	if (NULL != (pane = liferea_shell_lookup ("normalViewPane"))) {
+		y = gtk_paned_get_position (GTK_PANED (pane));
+		setNumericConfValue (LAST_HPANE_POS, y);
+	}
+	
+	if (NULL != (pane = liferea_shell_lookup ("wideViewPane"))) {
+		y = gtk_paned_get_position (GTK_PANED (pane));
+		setNumericConfValue (LAST_WPANE_POS, y);
+	}
+	
+	/* save itemlist properties */
+	setNumericConfValue (LAST_ZOOMLEVEL, (gint)(100.* liferea_htmlview_get_zoom (ui_mainwindow_get_active_htmlview ())));
+
+	/* The following needs to be skipped when the window is not visible */
 	if (!GTK_WIDGET_VISIBLE (mainwindow))
 		return;
 	
@@ -841,25 +861,6 @@ ui_mainwindow_save_position (void)
 	/* save window size */
 	setNumericConfValue (LAST_WINDOW_WIDTH, w);
 	setNumericConfValue (LAST_WINDOW_HEIGHT, h);
-	
-	/* save pane proportions */
-	if (NULL != (pane = liferea_shell_lookup ("leftpane"))) {
-		x = gtk_paned_get_position (GTK_PANED (pane));
-		setNumericConfValue (LAST_VPANE_POS, x);
-	}
-	
-	if (NULL != (pane = liferea_shell_lookup ("normalViewPane"))) {
-		y = gtk_paned_get_position (GTK_PANED (pane));
-		setNumericConfValue (LAST_HPANE_POS, y);
-	}
-	
-	if (NULL != (pane = liferea_shell_lookup ("wideViewPane"))) {
-		y = gtk_paned_get_position (GTK_PANED (pane));
-		setNumericConfValue (LAST_WPANE_POS, y);
-	}
-	
-	/* save itemlist properties */
-	setNumericConfValue (LAST_ZOOMLEVEL, (gint)(100.* liferea_htmlview_get_zoom (ui_mainwindow_get_active_htmlview ())));
 }
 
 void ui_mainwindow_tray_add() {

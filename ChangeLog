@@ -13,6 +13,9 @@
 	  to retrieve favicons (reported by Daniel
 	  Jacobowitz)
 	* Fixes SF #1803072: Search folders broken
+	* Fixes vertical/horizontal pane position saving
+	  when exiting Liferea while the mainwindow is
+	  not visible. (Keith Curtis)
 
 
 2007-09-25  Lars Lindner  <lars.lindner@gmail.com>
