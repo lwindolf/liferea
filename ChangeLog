@@ -12,6 +12,7 @@
 	* Fixes Debian #443751: Tries to run scripts
 	  to retrieve favicons (reported by Daniel
 	  Jacobowitz)
+	* Fixes SF #1803072: Search folders broken
 
 
 2007-09-25  Lars Lindner  <lars.lindner@gmail.com>
