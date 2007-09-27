@@ -603,6 +603,9 @@ db_deinit (void)
 
 	debug_enter ("db_deinit");
 	
+	if (FALSE == sqlite3_get_autocommit(db))
+		g_warning ("Fatal: DB not in auto-commit mode. This is a bug. Data may be lost!");
+	
 	if (statements) {
 		g_hash_table_foreach (statements, db_free_statements, NULL);
 		g_hash_table_destroy (statements);	
@@ -1265,11 +1268,11 @@ db_view_create (const gchar *id, queryPtr query)
 	}
 
 	if (query->tables & QUERY_TABLE_NODE)
-		sql = sqlite3_mprintf ("CREATE TEMP VIEW view_%s AS %s AND itemsets.comment != 1;", id, select);
+		sql = sqlite3_mprintf ("CREATE VIEW view_%s AS %s AND itemsets.comment != 1;", id, select);
 	else if (query->tables & QUERY_TABLE_ITEMS)
-		sql = sqlite3_mprintf ("CREATE TEMP VIEW view_%s AS %s AND items.comment != 1;", id, select);
+		sql = sqlite3_mprintf ("CREATE VIEW view_%s AS %s AND items.comment != 1;", id, select);
 	else
-		sql = sqlite3_mprintf ("CREATE TEMP VIEW view_%s AS %s;", id, select);
+		sql = sqlite3_mprintf ("CREATE VIEW view_%s AS %s;", id, select);
 	debug2(DEBUG_DB, "Creating view %s: %s", id, sql);
 	
 	res = sqlite3_exec (db, sql, NULL, NULL, &err);

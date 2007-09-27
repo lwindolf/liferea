@@ -174,7 +174,7 @@ node_free (nodePtr node)
 	
 	g_hash_table_remove (nodes, node->id);
 	
-	update_cancel_requests ((gpointer) node);
+	update_job_cancel_by_owner (node);
 
 	if (node->subscription)
 		subscription_free (node->subscription);
@@ -231,7 +231,7 @@ void node_update_counters(nodePtr node) {
 	node_calc_counters(node);
 	
 	if (old != node->unreadCount);
-		ui_node_update (node->id);	
+		ui_node_update (node->id);
 		
 	/* Update the unread count of the parent nodes,
 	   usually them just add all child unread counters */
@@ -279,10 +279,10 @@ node_get_itemset (nodePtr node)
 }
 
 void
-node_process_update_result (nodePtr node, requestPtr request)
+node_process_update_result (nodePtr node, const struct updateResult * const result, updateFlags flags)
 {
 	if (NODE_TYPE (node)->process_update_result)
-		NODE_TYPE (node)->process_update_result (node, request);
+		NODE_TYPE (node)->process_update_result (node, result, flags);
 }
 
 void
@@ -423,10 +423,11 @@ node_save(nodePtr node)
 
 /* node attributes encapsulation */
 
-void node_set_title(nodePtr node, const gchar *title) {
-
-	g_free(node->title);
-	node->title = g_strdup(title);
+void
+node_set_title (nodePtr node, const gchar *title)
+{
+	g_free (node->title);
+	node->title = g_strstrip (g_strdelimit (g_strdup (title), "\r\n", ' '));
 }
 
 const gchar * node_get_title(nodePtr node) { return node->title; }
