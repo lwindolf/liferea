@@ -122,7 +122,7 @@ mozembed_new_window_cb (GtkMozEmbed *embed, GtkMozEmbed **newEmbed,
 	selectedURL = g_object_get_data (G_OBJECT (embed), "selectedURL");
 	if (selectedURL) {
 		if (conf_get_bool_value (BROWSE_INSIDE_APPLICATION))
-			*newEmbed = GTK_MOZ_EMBED (ui_tabs_new (NULL, NULL, TRUE));
+			*newEmbed = GTK_MOZ_EMBED (liferea_htmlview_get_widget (ui_tabs_new (NULL, NULL, TRUE)));
 		else
 			liferea_htmlview_launch_in_external_browser (selectedURL);
 	}

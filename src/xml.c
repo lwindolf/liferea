@@ -86,10 +86,11 @@ xhtml_extract (xmlNodePtr xml, gint xhtmlMode, const gchar *defaultBase)
 	xmlBufferPtr	buf;
 	xmlChar         *xml_base = NULL;
 	gchar		*result = NULL;
-
+	xmlNs		*ns;
+	
 	/* Create the new document and add the div tag*/
-	xmlDocPtr newDoc = xmlNewDoc (BAD_CAST "1.0" );;
-	xmlNodePtr divNode = xmlNewNode (NULL, BAD_CAST "div");;
+	xmlDocPtr newDoc = xmlNewDoc (BAD_CAST "1.0" );
+	xmlNodePtr divNode = xmlNewNode (NULL, BAD_CAST "div");
 	xmlDocSetRootElement (newDoc, divNode);
 	xmlNewNs (divNode, BAD_CAST "http://www.w3.org/1999/xhtml", NULL);
 
@@ -115,7 +116,31 @@ xhtml_extract (xmlNodePtr xml, gint xhtmlMode, const gchar *defaultBase)
 				xmlNodePtr body;
 				oldDoc = xhtml_parse (escapedhtml, strlen (escapedhtml));
 				body = xhtml_find_body (oldDoc);
+	
+				/* Copy namespace from original documents root node. This is
+				   ro determine additional namespaces for item content. For
+				   example to handle RSS 2.0 feeds as provided by LiveJournal:
 
+				   <rss version='2.0' xmlns:lj='http://www.livejournal.org/rss/lj/1.0/'>
+				   <channel>
+				      ...
+				      <item>
+	        			 ...
+  	        			 <description>... &lt;span class=&apos;ljuser&apos; lj:user=&apos;someone&apos; style=&apos;white-space: nowrap;&apos;&gt;&lt;a href=&apos;http://community.livejournal.com/someone/profile&apos;&gt;&lt;img src=&apos;http://stat.livejournal.com/img/community.gif&apos; alt=&apos;[info]&apos; width=&apos;16&apos; height=&apos;16&apos; style=&apos;vertical-align: bottom; border: 0; padding-right: 2px;&apos; /&gt;&lt;/a&gt;&lt;a href=&apos;http://community.livejournal.com/someone/&apos;&gt;&lt;b&gt;someone&lt;/b&gt;&lt;/a&gt;&lt;/span&gt; ...</description>
+					 ...
+				      </item> 
+				      ...
+				   </channel>
+
+				   Then we will want to extract <description> and need to
+				   honour the xmlns:lj definition...
+				*/
+				ns = (xmlDocGetRootElement (xml->doc))->nsDef;
+				while (ns) {
+					xmlNewNs (divNode, ns->href, ns->prefix);
+					ns = ns->next;
+				}
+				
 				if (body) {
 					/* Copy in the html tags */
 					copiedNodes = xmlDocCopyNodeList (newDoc, body->xmlChildrenNode);
