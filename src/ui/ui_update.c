@@ -75,14 +75,14 @@ ui_update_find_requests (nodePtr node) {
 	if (!node->subscription)
 		return;
 		
-	if (node->subscription->updateRequest) {
-		if (REQUEST_STATE_PROCESSING == node->subscription->updateRequest->state) {
+	if (node->subscription->updateJob) {
+		if (REQUEST_STATE_PROCESSING == update_job_get_state (node->subscription->updateJob)) {
 			ui_update_merge_request (node, um1store, um1hash);
 			ui_update_remove_request (node, um2store, um2hash);
 			return;
 		}
 
-		if (REQUEST_STATE_PENDING == node->subscription->updateRequest->state) {
+		if (REQUEST_STATE_PENDING == update_job_get_state (node->subscription->updateJob)) {
 			ui_update_merge_request (node, um2store, um2hash);
 			return;
 		}
@@ -102,18 +102,19 @@ static gboolean ui_update_monitor_update(void *data) {
 	}	
 }
 
-static void ui_update_cancel(nodePtr node) {
+static void
+ui_update_cancel (nodePtr node)
+{
+	if (node->children)
+		node_foreach_child (node, ui_update_cancel);
 
-	if(node->children)
-		node_foreach_child(node, ui_update_cancel);
-
-	if(!node->subscription)
+	if (!node->subscription)
 		return;
-	if(!node->subscription->updateRequest)
+		
+	if (!node->subscription->updateJob)
 		return;
-	
-	node->subscription->updateRequest->callback = NULL;
-	node->subscription->updateRequest = NULL;
+		
+	subscription_cancel_update (node->subscription);
 }
 
 void on_cancel_all_requests_clicked(GtkButton *button, gpointer user_data) {
