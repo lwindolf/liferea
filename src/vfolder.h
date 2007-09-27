@@ -40,7 +40,6 @@
 typedef struct vfolder {
 	GSList		*rules;		/**< list of rules of this search folder */
 	struct node	*node;		/**< the feed list node of this search folder (or NULL) */
-	gboolean	viewExists;	/**< TRUE if DB view was created */
 } *vfolderPtr;
 
 /**
