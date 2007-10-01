@@ -272,13 +272,12 @@ ui_feedlist_select (nodePtr node)
 	focused = gtk_window_get_focus (GTK_WINDOW (mainwindow));
 	gtk_window_set_focus (GTK_WINDOW (mainwindow), treeview);
 	
-	if (node) {
+	if (node && node != feedlist_get_root ()) {
 		GtkTreePath *path = gtk_tree_model_get_path (GTK_TREE_MODEL (feedstore), ui_node_to_iter(node->id));
 		
-		ui_feedlist_expand_parents (node);
-	
-		if (IS_FOLDER (node))
-			gtk_tree_view_expand_to_path (GTK_TREE_VIEW (treeview), path);
+		if (node->parent)
+			ui_feedlist_expand_parents (node->parent);
+
 		gtk_tree_view_scroll_to_cell (GTK_TREE_VIEW (treeview), path, NULL, FALSE, 0.0, 0.0);
 		gtk_tree_view_set_cursor (GTK_TREE_VIEW (treeview), path, NULL, FALSE);
 		gtk_tree_path_free (path);
