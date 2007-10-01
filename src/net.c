@@ -315,17 +315,17 @@ static size_t
 net_write_callback (void *ptr, size_t size, size_t nmemb, void *data)
 {
 	int realsize = size * nmemb;
-	struct request *request = (struct request*)data;
+	updateResultPtr result = (updateResultPtr)data;
 
-	if (request->data == NULL)
-		request->data = g_malloc0(realsize+2);
+	if (result->data == NULL)
+		result->data = g_malloc0 (realsize+2);
 	else
-		request->data = g_realloc(request->data, request->size + realsize + 2);
+		result->data = g_realloc (result->data, result->size + realsize + 2);
 
-	if (request->data != NULL) {
-		memcpy(&(request->data[request->size]), ptr, realsize);
-		request->size += realsize;
-		request->data[request->size] = 0;
+	if (result->data) {
+		memcpy (&(result->data[result->size]), ptr, realsize);
+		result->size += realsize;
+		result->data[result->size] = 0;
 	}
 	return realsize;
 }
@@ -337,27 +337,28 @@ net_write_callback (void *ptr, size_t size, size_t nmemb, void *data)
    request structure will also contain the HTTP status and the
    last modified string.
  */
-void 
-network_process_request (struct request *request)
+updateResultPtr
+network_process_request (const struct updateRequest * const request)
 {
-	CURL	*curl_handle;
-	long	tmp;
+	updateResultPtr	result;
+	CURL		*curl_handle;
+	long		tmp;
+	gchar		*contentType, *effectiveSource;
 		
 	debug1(DEBUG_UPDATE, "downloading %s", request->source);
-	
-	g_assert(request->data == NULL);
-	g_assert(request->contentType == NULL);
-	request->size = 0;
+g_assert(NULL != request);
+	result = update_result_new ();
 
 	curl_handle = curl_easy_init ();
 	curl_easy_setopt (curl_handle, CURLOPT_SHARE, share_handle);
 	curl_easy_setopt (curl_handle, CURLOPT_URL, request->source);
 	curl_easy_setopt (curl_handle, CURLOPT_WRITEFUNCTION, net_write_callback);
-	curl_easy_setopt (curl_handle, CURLOPT_WRITEDATA, request);
+	curl_easy_setopt (curl_handle, CURLOPT_WRITEDATA, result);
 	curl_easy_setopt (curl_handle, CURLOPT_USERAGENT, useragent);
 	curl_easy_setopt (curl_handle, CURLOPT_FOLLOWLOCATION,  TRUE);
 	curl_easy_setopt (curl_handle, CURLOPT_TIMECONDITION, CURL_TIMECOND_IFMODSINCE);
-	curl_easy_setopt (curl_handle, CURLOPT_TIMEVALUE, request->updateState->lastModified);
+	if (request->updateState)
+		curl_easy_setopt (curl_handle, CURLOPT_TIMEVALUE, request->updateState->lastModified);
 	curl_easy_setopt (curl_handle, CURLOPT_FILETIME, 1L);
 	if (proxyname) {
 		curl_easy_setopt(curl_handle, CURLOPT_PROXY, proxyname);
@@ -368,18 +369,23 @@ network_process_request (struct request *request)
 g_print("update request processed:\n");
 g_print("    old source: >>>%s<<<\n",request->source);
 
-	curl_easy_getinfo (curl_handle, CURLINFO_CONTENT_TYPE, &(request->contentType));
-	curl_easy_getinfo (curl_handle, CURLINFO_EFFECTIVE_URL, &(request->source));
-	curl_easy_getinfo (curl_handle, CURLINFO_RESPONSE_CODE, &tmp);
-	request->httpstatus = (guint)tmp;
-
-	curl_easy_getinfo (curl_handle, CURLINFO_FILETIME, &tmp);
-	if (tmp == -1)
-		tmp = 0;
-	request->updateState->lastModified = tmp;
-g_print("    new source: >>>%s<<<\n", request->source);
+	if (CURLE_OK == curl_easy_getinfo (curl_handle, CURLINFO_CONTENT_TYPE, &contentType))
+		result->contentType = g_strdup (contentType);
+	if (CURLE_OK == curl_easy_getinfo (curl_handle, CURLINFO_EFFECTIVE_URL, &effectiveSource))
+		result->source = g_strdup (effectiveSource);
+	if (CURLE_OK == curl_easy_getinfo (curl_handle, CURLINFO_RESPONSE_CODE, &tmp))
+		result->httpstatus = (guint)tmp;
+		
+	if (CURLE_OK == curl_easy_getinfo (curl_handle, CURLINFO_FILETIME, &tmp)) {
+		if (tmp == -1)
+			tmp = 0;
+		update_state_set_lastmodified (result->updateState, tmp);
+	}
+	
+	// FIXME: update_state_set_cookies (result->updateState, ???);
+g_print("    new source: >>>%s<<<\n", result->source);
 	curl_easy_cleanup (curl_handle);	
-	if (request->data)
-		request->data[request->size] = '\0';
-	return;
+	if (result->data)
+		result->data[result->size] = '\0';
+	return result;
 }

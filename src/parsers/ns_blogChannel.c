@@ -86,43 +86,45 @@ static GString * getOutlineContents(xmlNodePtr cur) {
 /* simple function to retrieve an OPML document and 
    parse and output all depth 1 outline tags as
    HTML into a buffer */
-static void ns_blogChannel_download_request_cb(requestPtr request) {
-	struct requestData	*requestData = request->user_data;
+static void
+ns_blogChannel_download_request_cb (const struct updateResult * const result, gpointer user_data, guint32 flags)
+{
+	struct requestData	*requestData = user_data;
 	xmlDocPtr 		doc = NULL;
 	xmlNodePtr 		cur;
 	GString			*buffer = NULL;
 
-	g_assert(NULL != requestData);
+	g_assert (NULL != requestData);
 
-	if(request->data) {
-		buffer = g_string_new(NULL);
+	if (result->data) {
+		buffer = g_string_new (NULL);
 		
-		while(1) {
-			doc = xmlRecoverMemory(request->data, request->size);
+		while (1) {
+			doc = xmlRecoverMemory (result->data, result->size);
 
-			if(NULL == doc)
+			if (NULL == doc)
 				break;
 
-			if(NULL == (cur = xmlDocGetRootElement(doc)))
+			if (NULL == (cur = xmlDocGetRootElement (doc)))
 				break;
 
-			if(!xmlStrcmp(cur->name, BAD_CAST"opml") ||
-			   !xmlStrcmp(cur->name, BAD_CAST"oml") ||
-			   !xmlStrcmp(cur->name, BAD_CAST"outlineDocument")) {
+			if (!xmlStrcmp (cur->name, BAD_CAST"opml") ||
+			    !xmlStrcmp (cur->name, BAD_CAST"oml") ||
+			    !xmlStrcmp (cur->name, BAD_CAST"outlineDocument")) {
 		   		/* nothing */
 			} else
 				break;
 
 			cur = cur->xmlChildrenNode;
-			while(cur) {
-				if(!xmlStrcmp(cur->name, BAD_CAST"body")) {
+			while (cur) {
+				if (!xmlStrcmp (cur->name, BAD_CAST"body")) {
 					/* process all <outline> tags */
 					cur = cur->xmlChildrenNode;
-					while(cur) {
-						if(!xmlStrcmp(cur->name, BAD_CAST"outline")) {
-							GString *tmp = getOutlineContents(cur);
-							g_string_append_printf(buffer, "%s<br />", tmp->str);
-							g_string_free(tmp, TRUE);
+					while (cur) {
+						if (!xmlStrcmp (cur->name, BAD_CAST"outline")) {
+							GString *tmp = getOutlineContents (cur);
+							g_string_append_printf (buffer, "%s<br />", tmp->str);
+							g_string_free (tmp, TRUE);
 						}
 						cur = cur->next;
 					}
@@ -133,66 +135,60 @@ static void ns_blogChannel_download_request_cb(requestPtr request) {
 			break;		
 		}
 
-		if(doc)
-			xmlFreeDoc(doc);
+		if (doc)
+			xmlFreeDoc (doc);
 	}
 
-	if(buffer) {
-		// FIXME: needed? node_load(requestData->ctxt->node);
-		
-		switch(requestData->tag) {
+	if (buffer) {
+		switch (requestData->tag) {
 			case TAG_BLOGROLL:
-				g_string_prepend(buffer, BLOGROLL_START);
+				g_string_prepend (buffer, BLOGROLL_START);
 				break;
 			case TAG_MYSUBSCRIPTIONS:
-				g_string_prepend(buffer, MYSUBSCR_START);
+				g_string_prepend (buffer, MYSUBSCR_START);
 				break;
 		}
 
-		switch(requestData->tag) {
+		switch (requestData->tag) {
 			case TAG_BLOGROLL:
-				g_string_append(buffer, BLOGROLL_END);
-				g_hash_table_insert(requestData->ctxt->tmpdata, g_strdup("bC:blogRoll"), buffer->str);
+				g_string_append (buffer, BLOGROLL_END);
+				g_hash_table_insert (requestData->ctxt->tmpdata, g_strdup ("bC:blogRoll"), buffer->str);
 				break;
 			case TAG_MYSUBSCRIPTIONS:
-				g_string_append(buffer, MYSUBSCR_END);
-				g_hash_table_insert(requestData->ctxt->tmpdata, g_strdup("bC:mySubscriptions"), buffer->str);
+				g_string_append (buffer, MYSUBSCR_END);
+				g_hash_table_insert (requestData->ctxt->tmpdata, g_strdup ("bC:mySubscriptions"), buffer->str);
 				break;
 		}
-		g_string_free(buffer, FALSE);
+		g_string_free (buffer, FALSE);
 
-		buffer = g_string_new(NULL);
-		g_string_append(buffer, g_hash_table_lookup(requestData->ctxt->tmpdata, "bC:blink"));
-		g_string_append(buffer, g_hash_table_lookup(requestData->ctxt->tmpdata, "bC:blogRoll"));
-		g_string_append(buffer, g_hash_table_lookup(requestData->ctxt->tmpdata, "bC:mySubscriptions"));
-		metadata_list_set(&(requestData->ctxt->subscription->metadata), "blogChannel", buffer->str);
-		g_string_free(buffer, TRUE);
-		
-		// FIXME: needed? node_unload(requestData->ctxt->node);
+		buffer = g_string_new (NULL);
+		g_string_append (buffer, g_hash_table_lookup (requestData->ctxt->tmpdata, "bC:blink"));
+		g_string_append (buffer, g_hash_table_lookup (requestData->ctxt->tmpdata, "bC:blogRoll"));
+		g_string_append (buffer, g_hash_table_lookup (requestData->ctxt->tmpdata, "bC:mySubscriptions"));
+		metadata_list_set (&(requestData->ctxt->subscription->metadata), "blogChannel", buffer->str);
+		g_string_free (buffer, TRUE);
 	}
-	g_list_free(requestData->ctxt->items);
-	feed_free_parser_ctxt(requestData->ctxt);
-	g_free(requestData);
-	
-	update_request_free(request);
+	g_list_free (requestData->ctxt->items);
+	feed_free_parser_ctxt (requestData->ctxt);
+	g_free (requestData);
 }
 
-static void getOutlineList(feedParserCtxtPtr ctxt, guint tag, char *url) {
+static void
+getOutlineList (feedParserCtxtPtr ctxt, guint tag, char *url)
+{
 	struct requestData 	*requestData;
-	struct request		*request;
+	updateRequestPtr	request;
 
-	requestData = g_new0(struct requestData, 1);
-	requestData->ctxt = feed_create_parser_ctxt();	
+	requestData = g_new0 (struct requestData, 1);
+	requestData->ctxt = feed_create_parser_ctxt ();	
 	requestData->ctxt->subscription = ctxt->subscription;	// FIXME
 	requestData->tag = tag;
 
-	request = update_request_new(ctxt->subscription);
-	request->source = g_strdup(url);
-	request->callback = ns_blogChannel_download_request_cb;
-	request->user_data = requestData;
+	request = update_request_new ();
+	request->source = g_strdup (url);
 	request->options = ctxt->subscription->updateOptions;
 	
-	update_execute_request(request);
+	update_execute_request (ctxt->subscription, request, ns_blogChannel_download_request_cb, requestData, 0);
 }
 
 static void parse_channel_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur) {

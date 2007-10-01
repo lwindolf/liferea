@@ -285,7 +285,7 @@ node_source_save (nodePtr node)
 }
 
 static void
-node_source_process_update_result (nodePtr node, requestPtr request)
+node_source_process_update_result (nodePtr node, const struct updateResult * const result, guint32 flags)
 {
 	// FIXME: stupid interface, needs clarification
 	g_warning("node_source_process_update_result: This should never happen!");

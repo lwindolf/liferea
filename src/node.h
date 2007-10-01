@@ -299,13 +299,14 @@ gchar * node_default_render(nodePtr node);
 void node_save(nodePtr node);
 
 /**
- * Passes the completed request structure to the node
- * type specific processing.
+ * Passes the result of a completed update request to the node
+ * type specific processing callback.
  *
  * @param node		the node
- * @param request	the processed request
+ * @param result	the update request result
+ * @param flags		update result processing flags
  */
-void node_process_update_result (nodePtr node, requestPtr request);
+void node_process_update_result (nodePtr node, const struct updateResult * const result, updateFlags flags);
 
 /**
  * Resets the update interval for a given node.

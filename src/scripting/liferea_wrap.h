@@ -1397,18 +1397,19 @@ SWIG_Lua_SetModule(lua_State* L, swig_module_info *module) {
 #define SWIGTYPE_p_nodeSource swig_types[26]
 #define SWIGTYPE_p_nodeType swig_types[27]
 #define SWIGTYPE_p_p_GdkPixbuf swig_types[28]
-#define SWIGTYPE_p_requestPtr swig_types[29]
-#define SWIGTYPE_p_socialBookmarkSite swig_types[30]
-#define SWIGTYPE_p_subscription swig_types[31]
-#define SWIGTYPE_p_time_t swig_types[32]
+#define SWIGTYPE_p_socialBookmarkSite swig_types[29]
+#define SWIGTYPE_p_subscription swig_types[30]
+#define SWIGTYPE_p_time_t swig_types[31]
+#define SWIGTYPE_p_updateFlags swig_types[32]
 #define SWIGTYPE_p_updateOptionsPtr swig_types[33]
-#define SWIGTYPE_p_xmlNodePtr swig_types[34]
-#define SWIGTYPE_requestPtr swig_types[35]
+#define SWIGTYPE_p_updateResult swig_types[34]
+#define SWIGTYPE_p_xmlNodePtr swig_types[35]
 #define SWIGTYPE_time_t swig_types[36]
-#define SWIGTYPE_updateOptionsPtr swig_types[37]
-#define SWIGTYPE_xmlNodePtr swig_types[38]
-static swig_type_info *swig_types[40];
-static swig_module_info swig_module = {swig_types, 39, 0, 0, 0, 0};
+#define SWIGTYPE_updateFlags swig_types[37]
+#define SWIGTYPE_updateOptionsPtr swig_types[38]
+#define SWIGTYPE_xmlNodePtr swig_types[39]
+static swig_type_info *swig_types[41];
+static swig_module_info swig_module = {swig_types, 40, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -3137,23 +3138,30 @@ fail:
 static int _wrap_node_process_update_result(lua_State* L) {
   int SWIG_arg = -1;
   nodePtr arg1 = (nodePtr) 0 ;
-  requestPtr arg2 ;
-  requestPtr *argp2 ;
+  struct updateResult *arg2 = (struct updateResult *) (struct updateResult *)0 ;
+  updateFlags arg3 ;
+  updateFlags *argp3 ;
   
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
-  if(!lua_isuserdata(L,2)) SWIG_fail_arg(2);
+  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg(2);
+  if(!lua_isuserdata(L,3)) SWIG_fail_arg(3);
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_node,0))){
     SWIG_fail_ptr("node_process_update_result",1,SWIGTYPE_p_node);
   }
   
   
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&argp2,SWIGTYPE_p_requestPtr,0))){
-    SWIG_fail_ptr("node_process_update_result",2,SWIGTYPE_requestPtr);
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_updateResult,0))){
+    SWIG_fail_ptr("node_process_update_result",2,SWIGTYPE_p_updateResult);
   }
-  arg2 = *argp2;
   
-  node_process_update_result(arg1,arg2);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,3,(void**)&argp3,SWIGTYPE_p_updateFlags,0))){
+    SWIG_fail_ptr("node_process_update_result",3,SWIGTYPE_updateFlags);
+  }
+  arg3 = *argp3;
+  
+  node_process_update_result(arg1,(struct updateResult const *)arg2,arg3);
   SWIG_arg=0;
   
   return SWIG_arg;
@@ -8507,14 +8515,15 @@ static swig_type_info _swigt__p_node = {"_p_node", "struct node *|nodePtr", 0, 0
 static swig_type_info _swigt__p_nodeSource = {"_p_nodeSource", "struct nodeSource *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_nodeType = {"_p_nodeType", "struct nodeType *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_p_GdkPixbuf = {"_p_p_GdkPixbuf", "GdkPixbuf **", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_requestPtr = {"_p_requestPtr", "requestPtr *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_socialBookmarkSite = {"_p_socialBookmarkSite", "socialBookmarkSite *", 0, 0, (void*)&_wrap_class_socialBookmarkSite, 0};
 static swig_type_info _swigt__p_subscription = {"_p_subscription", "struct subscription *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_time_t = {"_p_time_t", "time_t *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_updateFlags = {"_p_updateFlags", "updateFlags *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_updateOptionsPtr = {"_p_updateOptionsPtr", "updateOptionsPtr *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_updateResult = {"_p_updateResult", "struct updateResult *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_xmlNodePtr = {"_p_xmlNodePtr", "xmlNodePtr *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__requestPtr = {"_requestPtr", "requestPtr", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__time_t = {"_time_t", "time_t", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__updateFlags = {"_updateFlags", "updateFlags", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__updateOptionsPtr = {"_updateOptionsPtr", "updateOptionsPtr", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__xmlNodePtr = {"_xmlNodePtr", "xmlNodePtr", 0, 0, (void*)0, 0};
 
@@ -8548,14 +8557,15 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_nodeSource,
   &_swigt__p_nodeType,
   &_swigt__p_p_GdkPixbuf,
-  &_swigt__p_requestPtr,
   &_swigt__p_socialBookmarkSite,
   &_swigt__p_subscription,
   &_swigt__p_time_t,
+  &_swigt__p_updateFlags,
   &_swigt__p_updateOptionsPtr,
+  &_swigt__p_updateResult,
   &_swigt__p_xmlNodePtr,
-  &_swigt__requestPtr,
   &_swigt__time_t,
+  &_swigt__updateFlags,
   &_swigt__updateOptionsPtr,
   &_swigt__xmlNodePtr,
 };
@@ -8589,14 +8599,15 @@ static swig_cast_info _swigc__p_node[] = {  {&_swigt__p_node, 0, 0, 0},{0, 0, 0,
 static swig_cast_info _swigc__p_nodeSource[] = {  {&_swigt__p_nodeSource, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_nodeType[] = {  {&_swigt__p_nodeType, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_p_GdkPixbuf[] = {  {&_swigt__p_p_GdkPixbuf, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_requestPtr[] = {  {&_swigt__p_requestPtr, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_socialBookmarkSite[] = {  {&_swigt__p_socialBookmarkSite, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_subscription[] = {  {&_swigt__p_subscription, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_time_t[] = {  {&_swigt__p_time_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_updateFlags[] = {  {&_swigt__p_updateFlags, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_updateOptionsPtr[] = {  {&_swigt__p_updateOptionsPtr, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_updateResult[] = {  {&_swigt__p_updateResult, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_xmlNodePtr[] = {  {&_swigt__p_xmlNodePtr, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__requestPtr[] = {  {&_swigt__requestPtr, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__time_t[] = {  {&_swigt__time_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__updateFlags[] = {  {&_swigt__updateFlags, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__updateOptionsPtr[] = {  {&_swigt__updateOptionsPtr, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__xmlNodePtr[] = {  {&_swigt__xmlNodePtr, 0, 0, 0},{0, 0, 0, 0}};
 
@@ -8630,14 +8641,15 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_nodeSource,
   _swigc__p_nodeType,
   _swigc__p_p_GdkPixbuf,
-  _swigc__p_requestPtr,
   _swigc__p_socialBookmarkSite,
   _swigc__p_subscription,
   _swigc__p_time_t,
+  _swigc__p_updateFlags,
   _swigc__p_updateOptionsPtr,
+  _swigc__p_updateResult,
   _swigc__p_xmlNodePtr,
-  _swigc__requestPtr,
   _swigc__time_t,
+  _swigc__updateFlags,
   _swigc__updateOptionsPtr,
   _swigc__xmlNodePtr,
 };

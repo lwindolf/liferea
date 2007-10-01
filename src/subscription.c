@@ -27,8 +27,8 @@
 #include "favicon.h"
 #include "feedlist.h"
 #include "metadata.h"
+#include "net.h"
 #include "subscription.h"
-#include "net/cookies.h"
 #include "ui/ui_mainwindow.h"
 #include "ui/ui_node.h"
 
@@ -179,7 +179,6 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	subscription->updateJob = NULL;
 
 	update_state_set_lastmodified (subscription->updateState, update_state_get_lastmodified (result->updateState));
-	update_state_set_etag (subscription->updateState, update_state_get_etag (result->updateState));
 	update_state_set_cookies (subscription->updateState, update_state_get_cookies (result->updateState));
 	g_get_current_time (&subscription->updateState->lastPoll);
 	db_update_state_save (subscription->node->id, subscription->updateState);

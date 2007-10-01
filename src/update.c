@@ -51,16 +51,16 @@
 /* must never be smaller than 2, because first thread works exclusivly on high prio requests */
 #define DEFAULT_UPDATE_THREAD_CONCURRENCY	6
 
-/** global request list, used for lookups when cancelling */
-static GSList *requests = NULL;
+/** global update job list, used for lookups when cancelling */
+static GSList *jobs = NULL;
 
 /** list of update threads */
 static GSList *threads = NULL;
 
 /* communication queues for requesting updates and sending the results */
-static GAsyncQueue	*requests_high_prio = NULL;
-static GAsyncQueue	*requests_normal_prio = NULL;
-static GAsyncQueue	*results = NULL;
+static GAsyncQueue	*pendingHighPrioJobs = NULL;
+static GAsyncQueue	*pendingJobs = NULL;
+static GAsyncQueue	*finishedJobs = NULL;
 
 static guint		results_timer = 0;
 
@@ -75,25 +75,189 @@ static libnm_glib_ctx *nm_ctx = NULL;
 static guint nm_id = 0;
 #endif
 
-static gboolean update_dequeue_results(gpointer user_data);
+static gboolean update_dequeue_finished_jobs (gpointer user_data);
 
 /* update state interface */
 
-updateStatePtr update_state_new(void) {
-
-	return g_new0(struct updateState, 1);
+updateStatePtr
+update_state_new (void)
+{
+	return g_new0 (struct updateState, 1);
 }
 
-void update_state_free(updateStatePtr updateState) {
+glong
+update_state_get_lastmodified (updateStatePtr state)
+{
+	return state->lastModified;
+}
 
-	g_free(updateState->cookies);
-	g_free(updateState);
+void
+update_state_set_lastmodified (updateStatePtr state, glong lastModified)
+{
+	state->lastModified = lastModified;
+}
+
+const gchar *
+update_state_get_cookies (updateStatePtr state)
+{
+	return state->cookies;
+}
+
+void
+update_state_set_cookies (updateStatePtr state, const gchar *cookies)
+{
+	g_free (state->cookies);
+	state->cookies = NULL;
+	if (cookies)
+		state->cookies = g_strdup (cookies);
+}
+
+updateStatePtr
+update_state_copy (updateStatePtr state)
+{
+	updateStatePtr newState;
+	
+	newState = update_state_new ();
+	update_state_set_lastmodified (newState, update_state_get_lastmodified (state));
+	update_state_set_cookies (newState, update_state_get_cookies (state));
+	
+	return newState;
+}
+
+void
+update_state_free (updateStatePtr updateState)
+{
+	if (!updateState)
+		return;
+
+	g_free (updateState->cookies);
+	g_free (updateState);
 }
 
 /* update request processing */
 
+updateRequestPtr
+update_request_new (void)
+{
+	return g_new0 (struct updateRequest, 1);
+}
+
+static void
+update_request_free (updateRequestPtr request)
+{
+	if (!request)
+		return;
+	
+	g_free (request->source);
+	g_free (request->filtercmd);
+	g_free (request);
+}
+
+updateResultPtr
+update_result_new (void)
+{
+	updateResultPtr	result;
+	
+	result = g_new0 (struct updateResult, 1);
+	result->updateState = update_state_new ();
+	
+	return result;
+}
+
+void
+update_result_free (updateResultPtr result)
+{
+	if (!result)
+		return;
+		
+	update_state_free (result->updateState);
+
+	g_free (result->data);
+	g_free (result->contentType);
+	g_free (result->filterErrors);
+	g_free (result);
+}
+
+updateOptionsPtr
+update_options_copy (updateOptionsPtr options)
+{
+	updateOptionsPtr newOptions;
+	
+	newOptions = g_new0 (struct updateOptions, 1);
+	newOptions->username = g_strdup (options->username);
+	newOptions->password = g_strdup (options->password);
+	newOptions->dontUseProxy = options->dontUseProxy;
+	
+	return newOptions;
+}
+
+void
+update_options_free (updateOptionsPtr options)
+{
+	if (!options)
+		return;
+		
+	g_free (options->username);
+	g_free (options->password);
+	g_free (options);
+}
+
+/* update job handling */
+
+typedef struct updateJob {
+	updateRequestPtr	request;
+	updateResultPtr		result;
+	gpointer		owner;		/**< owner of this job (used for matching when cancelling) */
+	update_result_cb	callback;	/**< result processing callback */
+	gpointer		user_data;	/**< result processing user data */
+	updateFlags		flags;		/**< request and result processing flags */
+	gint			state;		/**< State of the job (enum request_state) */	
+	gushort			retriesCount;	/**< Count how many retries have been done */	
+} *updateJobPtr;
+
+static updateJobPtr
+update_job_new (gpointer owner,
+                updateRequestPtr request,
+		update_result_cb callback,
+		gpointer user_data,
+		updateFlags flags)
+{
+	updateJobPtr	job;
+	
+	job = g_new0 (struct updateJob, 1);
+	job->owner = owner;
+	job->request = request;
+	job->callback = callback;
+	job->user_data = user_data;
+	job->flags = flags;	
+	job->state = REQUEST_STATE_INITIALIZED;
+	
+	return job;
+}
+
+gint
+update_job_get_state (updateJobPtr job)
+{
+	return job->state;
+}
+
+static void
+update_job_free (updateJobPtr job)
+{
+	if (!job)
+		return;
+		
+	jobs = g_slist_remove (jobs, job);
+	
+	update_request_free (job->request);
+	update_result_free (job->result);
+	g_free (job);
+}
+
 /* filter idea (and some of the code) was taken from Snownews */
-static char* update_exec_filter_cmd(gchar *cmd, gchar *data, gchar **errorOutput, size_t *size) {
+static gchar *
+update_exec_filter_cmd (gchar *cmd, gchar *data, gchar **errorOutput, size_t *size)
+{
 	int		fd, status;
 	gchar		*command;
 	const gchar	*tmpdir = g_get_tmp_dir();
@@ -142,41 +306,43 @@ static char* update_exec_filter_cmd(gchar *cmd, gchar *data, gchar **errorOutput
 	}
 	/* Clean up. */
 	unlink (tmpfilename);
-	g_free(tmpfilename);
+	g_free (tmpfilename);
 	return out;
 }
 
 static gchar *
-update_apply_xslt (requestPtr request)
+update_apply_xslt (updateJobPtr job)
 {
 	xsltStylesheetPtr	xslt = NULL;
 	xmlOutputBufferPtr	buf;
 	xmlDocPtr		srcDoc = NULL, resDoc = NULL;
 	gchar			*output = NULL;
 
+	g_assert (NULL != job->result);
+	
 	do {
-		srcDoc = xml_parse (request->data, request->size, FALSE, NULL);
+		srcDoc = xml_parse (job->result->data, job->result->size, FALSE, NULL);
 		if (!srcDoc) {
-			g_warning("fatal: parsing request result XML source failed (%s)!", request->filtercmd);
+			g_warning("fatal: parsing request result XML source failed (%s)!", job->request->filtercmd);
 			break;
 		}
 
 		/* load localization stylesheet */
-		xslt = xsltParseStylesheetFile (request->filtercmd);
+		xslt = xsltParseStylesheetFile (job->request->filtercmd);
 		if (!xslt) {
-			g_warning ("fatal: could not load filter stylesheet \"%s\"!", request->filtercmd);
+			g_warning ("fatal: could not load filter stylesheet \"%s\"!", job->request->filtercmd);
 			break;
 		}
 
 		resDoc = xsltApplyStylesheet (xslt, srcDoc, NULL);
 		if (!resDoc) {
-			g_warning ("fatal: applying stylesheet \"%s\" failed!", request->filtercmd);
+			g_warning ("fatal: applying stylesheet \"%s\" failed!", job->request->filtercmd);
 			break;
 		}
 
 		buf = xmlAllocOutputBuffer (NULL);
 		if (-1 == xsltSaveResultTo (buf, resDoc, xslt)) {
-			g_warning ("fatal: retrieving result of filter stylesheet failed (%s)!", request->filtercmd);
+			g_warning ("fatal: retrieving result of filter stylesheet failed (%s)!", job->request->filtercmd);
 			break;
 		}
 		
@@ -196,210 +362,221 @@ update_apply_xslt (requestPtr request)
 	return output;
 }
 
-static void update_apply_filter(requestPtr request) {
+static void
+update_apply_filter (updateJobPtr job)
+{
 	gchar	*filterResult;
 	size_t	len;
 
-	g_free(request->filterErrors);
-	request->filterErrors = NULL;
+	g_assert (NULL == job->result->filterErrors);
 
 	/* we allow two types of filters: XSLT stylesheets and arbitrary commands */
-	if((strlen(request->filtercmd) > 4) &&
-	   (0 == strcmp(".xsl", request->filtercmd + strlen(request->filtercmd) - 4))) {
-		filterResult = update_apply_xslt(request);
-		len = strlen(filterResult);
+	if ((strlen (job->request->filtercmd) > 4) &&
+	    (0 == strcmp (".xsl", job->request->filtercmd + strlen (job->request->filtercmd) - 4))) {
+		filterResult = update_apply_xslt (job);
+		len = strlen (filterResult);
 	} else {
-		filterResult = update_exec_filter_cmd(request->filtercmd, request->data, &(request->filterErrors), &len);
+		filterResult = update_exec_filter_cmd (job->request->filtercmd, job->result->data, &(job->result->filterErrors), &len);
 	}
 
-	if(filterResult) {
-		g_free(request->data);
-		request->data = filterResult;
-		request->size = len;
+	if (filterResult) {
+		g_free (job->result->data);
+		job->result->data = filterResult;
+		job->result->size = len;
 	}
 }
 
-static void update_exec_cmd(requestPtr request) {
+static void
+update_exec_cmd (updateJobPtr job)
+{
 	FILE	*f;
 	int	status;
 	size_t	len;
+	
+	job->result = update_result_new ();
 		
 	/* if the first char is a | we have a pipe else a file */
-	debug1(DEBUG_UPDATE, "executing command \"%s\"...", (request->source) + 1);	
-	f = popen((request->source) + 1, "r");
-	if(f) {
-		while(!feof(f) && !ferror(f)) {
-			request->data = g_realloc(request->data, request->size + 1025);
-			len = fread(&request->data[request->size], 1, 1024, f);
-			if(len > 0)
-				request->size += len;
+	debug1 (DEBUG_UPDATE, "executing command \"%s\"...", (job->request->source) + 1);	
+	f = popen ((job->request->source) + 1, "r");
+	if (f) {
+		while (!feof (f) && !ferror (f)) {
+			job->result->data = g_realloc (job->result->data, job->result->size + 1025);
+			len = fread (&job->result->data[job->result->size], 1, 1024, f);
+			if (len > 0)
+				job->result->size += len;
 		}
-		status = pclose(f);
-		if(WIFEXITED(status) && WEXITSTATUS(status) == 0)
-			request->httpstatus = 200;
+		status = pclose (f);
+		if (WIFEXITED (status) && WEXITSTATUS (status) == 0)
+			job->result->httpstatus = 200;
 		else 
-			request->httpstatus = 404;	/* FIXME: maybe setting request->returncode would be better */
+			job->result->httpstatus = 404;	/* FIXME: maybe setting request->returncode would be better */
 
-		if(request->data)
-			request->data[request->size] = '\0';
+		if (job->result->data)
+			job->result->data[job->result->size] = '\0';
 	} else {
-		ui_mainwindow_set_status_bar(_("Error: Could not open pipe \"%s\""), (request->source) + 1);
-		request->httpstatus = 404;	/* FIXME: maybe setting request->returncode would be better */
+		ui_mainwindow_set_status_bar (_("Error: Could not open pipe \"%s\""), (job->request->source) + 1);
+		job->result->httpstatus = 404;	/* FIXME: maybe setting request->returncode would be better */
 	}
 }
 
-static void update_load_file(requestPtr request) {
-	gchar *filename = request->source;
+static void
+update_load_file (updateJobPtr job)
+{
+	gchar *filename = job->request->source;
 	gchar *anchor;
-
-	if(!strncmp(filename, "file://",7))
+	
+	job->result = update_result_new ();
+	
+	if (!strncmp (filename, "file://",7))
 		filename += 7;
 
-	anchor = strchr(filename, '#');
-	if(anchor)
+	anchor = strchr (filename, '#');
+	if (anchor)
 		*anchor = 0;	 /* strip anchors from filenames */
 
-	if(g_file_test(filename, G_FILE_TEST_EXISTS)) {
+	if (g_file_test (filename, G_FILE_TEST_EXISTS)) {
 		/* we have a file... */
-		if((!g_file_get_contents(filename, &(request->data), &(request->size), NULL)) || (request->data[0] == '\0')) {
-			request->httpstatus = 403;	/* FIXME: maybe setting request->returncode would be better */
-			ui_mainwindow_set_status_bar(_("Error: Could not open file \"%s\""), filename);
+		if ((!g_file_get_contents (filename, &(job->result->data), &(job->result->size), NULL)) || (job->result->data[0] == '\0')) {
+			job->result->httpstatus = 403;	/* FIXME: maybe setting request->returncode would be better */
+			ui_mainwindow_set_status_bar (_("Error: Could not open file \"%s\""), filename);
 		} else {
-			g_assert(NULL != request->data);
-			request->httpstatus = 200;
+			job->result->httpstatus = 200;
 		}
 	} else {
-		ui_mainwindow_set_status_bar(_("Error: There is no file \"%s\""), filename);
-		request->httpstatus = 404;	/* FIXME: maybe setting request->returncode would be better */
+		ui_mainwindow_set_status_bar (_("Error: There is no file \"%s\""), filename);
+		job->result->httpstatus = 404;	/* FIXME: maybe setting request->returncode would be better */
 	}
 }
 
-void update_execute_request_sync(requestPtr request) {
-
-	g_assert(request->data == NULL);
-	g_assert(request->size == 0);
-	
-	if(*(request->source) == '|') {
-		update_exec_cmd(request);
+static void
+update_job_run (updateJobPtr job) 
+{
+	if (*(job->request->source) == '|') {
+		update_exec_cmd (job);
 		
-	} else if(strstr(request->source, "://") && strncmp(request->source, "file://",7)) {
-		network_process_request (request);
-		if(request->httpstatus >= 400) {
-			g_free(request->data);
-			request->data = NULL;
-			request->size = 0;
+	} else if (strstr (job->request->source, "://") && 
+	           strncmp (job->request->source, "file://", 7)) {
+		job->result = network_process_request (job->request);
+		if (job->result->httpstatus >= 400) {
+			g_free (job->result->data);
+			job->result->data = NULL;
+			job->result->size = 0;
 		}
 	} else {
-		update_load_file(request);		
+		update_load_file (job);		
 	}
 
 	/* Finally execute the postfilter */
-	if(request->data && request->filtercmd) 
-		update_apply_filter(request);
+	if (job->result->data && job->request->filtercmd) 
+		update_apply_filter (job);
+		
 }
 
-gpointer update_request_new(gpointer owner) {
-	requestPtr	request;
-
-	request = g_new0(struct request, 1);
-	request->owner = owner;
-	request->state = REQUEST_STATE_INITIALIZED;
-	g_get_current_time (&request->timestamp);
+updateResultPtr
+update_execute_request_sync (gpointer owner, 
+                             updateRequestPtr request, 
+			     guint flags)
+{
+	updateResultPtr	result;
+	updateJobPtr	job;
 	
-	return (gpointer)request;
+	job = update_job_new (owner, request, NULL, NULL, flags);
+	update_job_run (job);
+	result = job->result;
+	job->result = NULL;
+	update_job_free (job);
+			
+	return result;
 }
 
-void update_request_free(requestPtr request) {
+static void *
+update_dequeue_jobs (void *data)
+{
+	updateJobPtr	job;
+	gboolean	high_priority = (gboolean)GPOINTER_TO_INT (data);
 
-	requests = g_slist_remove(requests, request);
-	
-	g_free(request->source);
-	g_free(request->filtercmd);
-	g_free(request->filterErrors);
-	g_free(request->data);
-	g_free(request->contentType);
-	g_free(request);
-}
-
-static void *update_dequeue_requests(void *data) {
-	requestPtr	request;
-	gboolean	high_priority = (gboolean)GPOINTER_TO_INT(data);
-
-	for(;;)	{
+	for (;;) {
 		/* block updating if we are offline */
-		if(!online) {
-			debug0(DEBUG_UPDATE, "now going offline!");
-			g_mutex_lock(cond_mutex);
-			g_cond_wait(offline_cond, cond_mutex);
-	                g_mutex_unlock(cond_mutex);
-			debug0(DEBUG_UPDATE, "going online again!");
+		if (!online) {
+			debug0 (DEBUG_UPDATE, "now going offline!");
+			g_mutex_lock (cond_mutex);
+			g_cond_wait (offline_cond, cond_mutex);
+	                g_mutex_unlock (cond_mutex);
+			debug0 (DEBUG_UPDATE, "going online again!");
 		}
 		
 		/* do update processing */
-		if(DEBUG_VERBOSE & debug_level)
-			debug0(DEBUG_UPDATE, "waiting for request...");
-		if(high_priority) {
-			request = g_async_queue_pop(requests_high_prio);
+		if (DEBUG_VERBOSE & debug_level)
+			debug0 (DEBUG_UPDATE, "waiting for request...");
+		if (high_priority) {
+			job = g_async_queue_pop (pendingHighPrioJobs);
 		} else {
 			do {
-				request = g_async_queue_try_pop(requests_high_prio);
-				if(!request) {
+				job = g_async_queue_try_pop (pendingHighPrioJobs);
+				if (!job) {
 					GTimeVal wait;
-					g_get_current_time(&wait);
-					g_time_val_add(&wait, 500000);
-					request = g_async_queue_timed_pop(requests_normal_prio, &wait);
+					g_get_current_time (&wait);
+					g_time_val_add (&wait, 500000);
+					job = g_async_queue_timed_pop (pendingJobs, &wait);
 				}
-			} while(!request);
+			} while (!job);
 		}
-		g_assert(NULL != request);
-		request->state = REQUEST_STATE_PROCESSING;
+		g_assert (NULL != job);
+		job->state = REQUEST_STATE_PROCESSING;
 
-		debug1(DEBUG_UPDATE, "processing request (%s)", request->source);
-		if(request->callback == NULL) {
-			debug1(DEBUG_UPDATE, "freeing cancelled request (%s)", request->source);
-			update_request_free(request);
+		debug1 (DEBUG_UPDATE, "processing request (%s)", job->request->source);
+		if (job->callback == NULL) {
+			debug1 (DEBUG_UPDATE, "freeing cancelled request (%s)", job->request->source);
+			update_job_free (job);
 		} else {
-			update_execute_request_sync(request);
+			update_job_run (job);
 			
 			/* return the request so the GUI thread can merge the feeds and display the results... */
-			debug1(DEBUG_UPDATE, "request (%s) finished", request->source);
-			g_async_queue_push(results, (gpointer)request);
+			debug1 (DEBUG_UPDATE, "request (%s) finished", job->request->source);
+			g_async_queue_push (finishedJobs, (gpointer)job);
 			if (!results_timer) 
-				results_timer = g_timeout_add_full(G_PRIORITY_DEFAULT_IDLE,
-		                   100, 
-				   update_dequeue_results, 
-				   NULL,
-				   NULL);
+				results_timer = g_timeout_add_full (G_PRIORITY_DEFAULT_IDLE, 100,
+				                                    update_dequeue_finished_jobs, 
+								    NULL, NULL);
 
 		}
 	}
 }
 
-void update_execute_request(requestPtr new_request) {
-
-	g_assert(new_request->data == NULL);
-	g_assert(new_request->size == 0);
-	g_assert(new_request->callback != NULL);
-	g_assert(new_request->options != NULL);
+updateJobPtr
+update_execute_request (gpointer owner, 
+                        updateRequestPtr request, 
+			update_result_cb callback, 
+			gpointer user_data, 
+			updateFlags flags)
+{
+	updateJobPtr job;
 	
-	new_request->state = REQUEST_STATE_PENDING;
+	g_assert (request->options != NULL);
 	
-	requests = g_slist_append(requests, new_request);
+	job = update_job_new (owner, request, callback, user_data, flags);
+	job->state = REQUEST_STATE_PENDING;
 	
-	if(1 == new_request->priority)
-		g_async_queue_push(requests_high_prio, new_request);
+	jobs = g_slist_append (jobs, job);
+	
+	if (flags & FEED_REQ_PRIORITY_HIGH)
+		g_async_queue_push (pendingHighPrioJobs, job);
 	else
-		g_async_queue_push(requests_normal_prio, new_request);
+		g_async_queue_push (pendingJobs, job);
+		
+	return job;
 }
 
-void update_cancel_requests(gpointer owner) {
-	GSList	*iter = requests;
+void
+update_job_cancel_by_owner (gpointer owner)
+{
+	GSList	*iter = jobs;
 
-	while(iter) {
-		requestPtr request = (requestPtr)iter->data;
-		if(request->owner == owner)
-			request->callback = NULL;
-		iter = g_slist_next(iter);
+	while (iter) {
+		updateJobPtr job = (updateJobPtr)iter->data;
+		if (job->owner == owner)
+			job->callback = NULL;
+		iter = g_slist_next (iter);
 	}
 }
 
@@ -420,62 +597,61 @@ update_set_online (gboolean mode)
 	}
 }
 
-gboolean update_is_online(void) {
-
+gboolean
+update_is_online (void)
+{
 	return online;
 }
 
 /* Wrapper for reenqueuing requests in case of retries, for convenient call from g_timeout */
-static gboolean update_requeue_request(gpointer data) {
-	requestPtr request = (requestPtr)data;
+static gboolean
+update_requeue_job (gpointer data)
+{
+	updateJobPtr job = (updateJobPtr)data;
 	
-	if(request->callback == NULL) {
-		debug2(DEBUG_UPDATE, "Freeing request of cancelled retry #%d for \"%s\"", request->retriesCount, request->source);
-		update_request_free(request);
+	if (job->callback == NULL) {
+		debug2(DEBUG_UPDATE, "Freeing request of cancelled retry #%d for \"%s\"", job->retriesCount, job->request->source);
+		update_job_free (job);
 	} else {
-		update_execute_request(request);
+		g_async_queue_push (pendingJobs, job);
 	}
 	return FALSE;
 }
 
 /* Schedules a retry for the given request */
-static void update_request_retry(requestPtr request) {
+static void
+update_job_retry (updateJobPtr job)
+{
 	guint retryDelay;
 	gushort i;	
 
-	/* Normally there should have been no received data, 
-	   hence nothing to free. But depending on the errors
-	   checked above this is not always the case... */
-	if(request->data) {
-		g_free(request->data);
-		request->data = NULL;
+	if (job->result) {
+		update_result_free (job->result);
+		job->result = NULL;
 	}
-	if(request->contentType) {
-		g_free(request->contentType);
-		request->contentType = NULL;
-	}
-
+		
 	/* Note: in case of permanent HTTP redirection leading to a network
 	 * error, retries will be done on the redirected request->source. */
 
 	/* Prepare for a retry: increase counter and calculate delay */
 	retryDelay = REQ_MIN_DELAY_FOR_RETRY;
-	for(i = 0; i < request->retriesCount; i++)
+	for (i = 0; i < job->retriesCount; i++)
 		retryDelay *= 3;
-	if(retryDelay > REQ_MAX_DELAY_FOR_RETRY)
+	if (retryDelay > REQ_MAX_DELAY_FOR_RETRY)
 		retryDelay = REQ_MAX_DELAY_FOR_RETRY;
 
 	/* Requeue the request after the waiting delay */
-	g_timeout_add_full(G_PRIORITY_DEFAULT_IDLE, 1000 * retryDelay, update_requeue_request, request, NULL);
-	request->retriesCount++;
-	ui_mainwindow_set_status_bar(_("Could not download \"%s\". Will retry in %d seconds."), request->source, retryDelay);
+	job->retriesCount++;	
+	g_timeout_add_full (G_PRIORITY_DEFAULT_IDLE, 1000 * retryDelay, update_requeue_job, job, NULL);
+	ui_mainwindow_set_status_bar (_("Could not download \"%s\". Will retry in %d seconds."), job->request->source, retryDelay);
 }
 
-gboolean update_request_cancel_retry(requestPtr request) {
-
-	if(0 < request->retriesCount) {
-		request->callback = NULL;
-		debug2(DEBUG_UPDATE, "cancelling retry #%d (%s)", request->retriesCount, request->source);
+gboolean
+update_job_cancel_retry (updateJobPtr job)
+{
+	if (0 < job->retriesCount) {
+		job->callback = NULL;
+		debug2 (DEBUG_UPDATE, "cancelling retry #%d (%s)", job->retriesCount, job->request->source);
 		return TRUE;
 	}
 	return FALSE;
@@ -484,52 +660,51 @@ gboolean update_request_cancel_retry(requestPtr request) {
 static gboolean
 update_process_result_idle_cb (gpointer user_data)
 {
-	requestPtr request = (requestPtr)user_data;
+	updateJobPtr job = (updateJobPtr)user_data;
 	
-	if (request->callback)
-		(request->callback) (request);
-	else
-		update_request_free (request);
+	if (job->callback)
+		(job->callback) (job->result, job->user_data, job->flags);
+
+	update_job_free (job);
 		
 	return FALSE;
 }
 
 static gboolean
-update_dequeue_results (gpointer user_data)
+update_dequeue_finished_jobs (gpointer user_data)
 {
-	requestPtr	request;
+	updateJobPtr	job;
 
 	results_timer = 0;
 	
-	while (NULL != (request = g_async_queue_try_pop (results))) {
-		request->state = REQUEST_STATE_DEQUEUE;
+	while (NULL != (job = g_async_queue_try_pop (finishedJobs))) {
+		job->state = REQUEST_STATE_DEQUEUE;
 
 		/* Handling abandoned requests (e.g. after feed deletion) */
-		if (request->callback == NULL) {	
-			debug1 (DEBUG_UPDATE, "freeing cancelled request (%s)", request->source);
-			update_request_free (request);
+		if (job->callback == NULL) {	
+			debug1 (DEBUG_UPDATE, "freeing cancelled request (%s)", job->request->source);
+			update_job_free (job);
 			continue;
 		} 
 		
 		/* Retrying in some error cases */
-		if ((request->returncode == NET_ERR_UNKNOWN) ||
-		    (request->returncode == NET_ERR_CONN_FAILED) ||
-		    (request->returncode == NET_ERR_SOCK_ERR) ||
-		    (request->returncode == NET_ERR_HOST_NOT_FOUND) ||
-		    (request->returncode == NET_ERR_TIMEOUT)) {
+		if ((job->result->returncode == NET_ERR_UNKNOWN) ||
+		    (job->result->returncode == NET_ERR_CONN_FAILED) ||
+		    (job->result->returncode == NET_ERR_SOCK_ERR) ||
+		    (job->result->returncode == NET_ERR_HOST_NOT_FOUND) ||
+		    (job->result->returncode == NET_ERR_TIMEOUT)) {
 
-			if (request->allowRetries && (REQ_MAX_NUMBER_OF_RETRIES <= request->retriesCount)) {
-				debug1 (DEBUG_UPDATE, "retrying download (%s)", request->source);
-				update_request_retry (request);
-			} else {
-				debug1 (DEBUG_UPDATE, "retry count exceeded (%s)", request->source);
-				g_idle_add (update_process_result_idle_cb, request);
+			if (job->request->allowRetries && (REQ_MAX_NUMBER_OF_RETRIES <= job->retriesCount)) {
+				debug1 (DEBUG_UPDATE, "retrying download (%s)", job->request->source);
+				update_job_retry (job);
+				continue;
 			}
-			continue;
+
+			debug1 (DEBUG_UPDATE, "retry count exceeded (%s)", job->request->source);
 		}
 		
 		/* Normal result processing */
-		g_idle_add (update_process_result_idle_cb, request);
+		g_idle_add (update_process_result_idle_cb, job);
 	}
 	return FALSE;
 }
@@ -541,69 +716,69 @@ update_init (void)
 
 	network_init ();
 	
-	requests_high_prio = g_async_queue_new ();
-	requests_normal_prio = g_async_queue_new ();
-	results = g_async_queue_new ();
+	pendingHighPrioJobs = g_async_queue_new ();
+	pendingJobs = g_async_queue_new ();
+	finishedJobs = g_async_queue_new ();
 	
 	offline_cond = g_cond_new ();
 	cond_mutex = g_mutex_new ();
 		
-	if (1 >= (count = getNumericConfValue (UPDATE_THREAD_CONCURRENCY)))
+	if (1 >= (count = conf_get_int_value (UPDATE_THREAD_CONCURRENCY)))
 		count = DEFAULT_UPDATE_THREAD_CONCURRENCY;
 	
 	for (i = 0; i < count; i++) {
-		GThread *thread = g_thread_create (update_dequeue_requests, GINT_TO_POINTER((i == 0)), FALSE, NULL);
+		GThread *thread = g_thread_create (update_dequeue_jobs, GINT_TO_POINTER((i == 0)), FALSE, NULL);
 		threads = g_slist_append (threads, thread);
 	}
 }
 
 #ifdef USE_NM
-static void update_network_monitor(libnm_glib_ctx *ctx, gpointer user_data)
+static void
+update_network_monitor (libnm_glib_ctx *ctx, gpointer user_data)
 {
 	libnm_glib_state	state;
 	gboolean online;
 
-	g_return_if_fail(ctx != NULL);
+	g_return_if_fail (ctx != NULL);
 
-	state = libnm_glib_get_network_state(ctx);
-	online = update_is_online();
+	state = libnm_glib_get_network_state (ctx);
+	online = update_is_online ();
 
-	if(online && state == LIBNM_NO_NETWORK_CONNECTION) {
-		debug0(DEBUG_UPDATE, "network manager: no network connection -> going offline");
-		update_set_online(FALSE);
-	} else if(!online && state == LIBNM_ACTIVE_NETWORK_CONNECTION) {
-		debug0(DEBUG_UPDATE, "network manager: active connection -> going online");
-		update_set_online(TRUE);
+	if (online && state == LIBNM_NO_NETWORK_CONNECTION) {
+		debug0 (DEBUG_UPDATE, "network manager: no network connection -> going offline");
+		update_set_online (FALSE);
+	} else if (!online && state == LIBNM_ACTIVE_NETWORK_CONNECTION) {
+		debug0 (DEBUG_UPDATE, "network manager: active connection -> going online");
+		update_set_online (TRUE);
 	}
 }
 
-
-gboolean update_nm_initialize(void)
+gboolean
+update_nm_initialize (void)
 {
-
-	debug0(DEBUG_UPDATE, "network manager: registering network state change callback");
+	debug0 (DEBUG_UPDATE, "network manager: registering network state change callback");
 	
-	if (!nm_ctx)
-	{
-		nm_ctx = libnm_glib_init();
+	if (!nm_ctx) {
+		nm_ctx = libnm_glib_init ();
 		if (!nm_ctx) {
-				fprintf(stderr, "Could not initialize libnm.\n");
-				return FALSE;
-			  }	
+			fprintf (stderr, "Could not initialize libnm.\n");
+			return FALSE;
+		}	
 	}
 
-	nm_id = libnm_glib_register_callback(nm_ctx, update_network_monitor, NULL, NULL);
+	nm_id = libnm_glib_register_callback (nm_ctx, update_network_monitor, NULL, NULL);
 	
 	return TRUE;
 }
 
-void update_nm_cleanup(void)
+void
+update_nm_cleanup (void)
 {
-	debug0(DEBUG_UPDATE, "network manager: unregistering network state change callback");
+	debug0 (DEBUG_UPDATE, "network manager: unregistering network state change callback");
 	
 	if (nm_id != 0 && nm_ctx != NULL) {
-		libnm_glib_unregister_callback(nm_ctx, nm_id);
-		libnm_glib_shutdown(nm_ctx);
+		libnm_glib_unregister_callback (nm_ctx, nm_id);
+		libnm_glib_shutdown (nm_ctx);
 		nm_ctx = NULL;
 		nm_id = 0;
 	}
@@ -621,16 +796,17 @@ update_deinit (void)
 	
 	/* FIXME: terminate update threads to be able to remove the queues
 	
-	g_async_queue_unref (requests_high_prio);
-	g_async_queue_unref (requests_normal_prio);
-	g_async_queue_unref (results);
-	*/
+	g_async_queue_unref (pendingHighPrioJobs);
+	g_async_queue_unref (pendingJobs);
+	g_async_queue_unref (finishedJobs);
+	
 	
 	g_free (offline_cond);
 	g_free (cond_mutex);
 	
-	g_slist_free (requests);
-	requests = NULL;
+	g_slist_free (jobs);
+	jobs = NULL;
+	*/
 	
 	debug_exit ("update_deinit");
 }

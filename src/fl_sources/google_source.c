@@ -114,17 +114,16 @@ google_source_merge_feed(xmlNodePtr match, gpointer user_data)
 }
 
 static void
-google_source_subscriptions_cb (requestPtr request)
+google_source_subscriptions_cb (nodePtr node, const struct updateResult * const result, updateFlags flags)
 {
-	nodePtr		node = (nodePtr)request->user_data;
 	readerPtr	reader = (readerPtr)node->data;
 	xmlNodePtr	root;
 	xmlDocPtr	doc;
 	
-	debug1(DEBUG_UPDATE, "Google Reader subscription list download finished data=%d", request->data);
+	debug1(DEBUG_UPDATE, "Google Reader subscription list download finished data=%d", result->data);
 
-	if (request->data) {
-		doc = xml_parse (request->data, request->size, FALSE, NULL);
+	if (result->data) {
+		doc = xml_parse (result->data, result->size, FALSE, NULL);
 		if(doc) {		
 			root = xmlDocGetRootElement (doc);
 			
@@ -146,24 +145,16 @@ google_source_subscriptions_cb (requestPtr request)
 			node->available = TRUE;
 			xmlFreeDoc (doc);
 		}
-		g_free (request->data);
 	} else {
 		node->available = FALSE;
 	}
-	subscription_update_error_status(node->subscription, request->httpstatus, request->returncode, NULL);
-
-	itemview_update_node_info (node);
-	itemview_update ();
 
 	node_foreach_child (node, node_update_subscription);
-	db_update_state_save (node->id, request->updateState);
-	update_request_free (request);
 }
 
 static void
-google_source_login_cb (requestPtr request)
+google_source_login_cb (nodePtr node, const struct updateResult * const result, updateFlags flags)
 {
-	nodePtr		node = (nodePtr)request->user_data;
 	readerPtr	reader = (readerPtr)node->data;
 	gchar		*tmp;
 	GTimeVal	now;
@@ -177,8 +168,8 @@ google_source_login_cb (requestPtr request)
 	
 	g_assert (!reader->sid);
 	
-	if (request->data)
-		tmp = strstr (request->data, "SID=");
+	if (result->data)
+		tmp = strstr (result->data, "SID=");
 		
 	if (tmp) {
 		reader->sid = tmp;
@@ -197,18 +188,11 @@ google_source_login_cb (requestPtr request)
 		node->available = FALSE;
 		node->subscription->updateError = g_strdup (_("Google Reader login failed!"));
 	}
-	g_free (request->data);
-
-	subscription_update_error_status(node->subscription, request->httpstatus, request->returncode, NULL);
-
-	itemview_update_node_info (node);
-	itemview_update ();
-	update_request_free (request);
 }
 
 /* authenticate to receive SID... */
 static void
-google_source_login (nodePtr node, guint flags)
+google_source_login (nodePtr node, updateFlags flags)
 {
 	gchar		*source;
 	readerPtr	reader = (readerPtr)node->data;
@@ -231,7 +215,7 @@ google_source_login (nodePtr node, guint flags)
 }
 
 static void
-google_source_update_subscription_list (nodePtr node, guint flags)
+google_source_update_subscription_list (nodePtr node, updateFlags flags)
 {
 	readerPtr	reader = (readerPtr)node->data;
 	
