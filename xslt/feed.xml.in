@@ -4,7 +4,7 @@
 /**
  * Rendering stylesheet for Liferea (feed description view)
  *
- * Copyright (C) 2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2006-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -71,14 +71,13 @@
 
     <span class="details" id='pd'>
       <b><_span>Details</_span></b><br />
-      <xsl:value-of select="parseError"/>
+      <xsl:value-of select="parseError" disable-output-escaping='yes'/>
       <script language="javascript" type="text/javascript">document.getElementById('pdl').style.visibility='visible';document.getElementById('pdl').style.display='inline';</script>
 
-       <br />You may want to validate the feed using 
-       <xsl:element name="a">
-          <xsl:attribute name="href">http://feedvalidator.org/check.cgi?url=<xsl:value-of select="feedSource"/></xsl:attribute>
+       <br /><_span>You may want to validate the feed using</_span>
+       <a href="http://feedvalidator.org/check.cgi?url={feedSource}">
        	  FeedValidator
-       </xsl:element>
+       </a>
     </span>
   </div>
 </xsl:if>
@@ -95,7 +94,7 @@
 
     <span class="details" id='fd'>
       <b><_span>Details</_span></b><br />
-      <xsl:value-of select="filterError"/>
+      <xsl:value-of select="filterError" disable-output-escaping='yes'/>
       <script language="javascript" type="text/javascript">document.getElementById('fdl').style.visibility='visible';document.getElementById('fdl').style.display='inline';</script>
     </span>
   </div>
@@ -111,12 +110,9 @@
     <b><_span>Feed:</_span></b>
   </td>
   <td width="100%" valign="middle" class="headright">
-     <xsl:element name="a">
-        <xsl:attribute name="href">
-          <xsl:value-of select="feedLink"/>
-        </xsl:attribute>
+     <a href="{feedLink}">
         <xsl:value-of select="feedTitle"/>
-     </xsl:element>
+     </a>
   </td>
 </tr>
 <tr>
@@ -124,16 +120,16 @@
     <b><_span>Source:</_span></b>
   </td>
   <td width="100%" valign="middle" class="headright">
-     <xsl:element name="a">
-        <xsl:attribute name="href">
-          <xsl:call-template name="strippwd">
-             <xsl:with-param name="string" select="feedSource"/>
-	  </xsl:call-template>
-        </xsl:attribute>
+     <xsl:variable name="href">
         <xsl:call-template name="strippwd">
            <xsl:with-param name="string" select="feedSource"/>
         </xsl:call-template>
-     </xsl:element>
+     </xsl:variable>
+     <a href="{$href}">
+        <xsl:call-template name="strippwd">
+           <xsl:with-param name="string" select="feedSource"/>
+        </xsl:call-template>
+     </a>
   </td>
 </tr>
 </table>
@@ -165,12 +161,7 @@
 <div class='content'>
 
 <p>
-<xsl:element name="img">
-  <xsl:attribute name="class">feed</xsl:attribute>
-  <xsl:attribute name="src">
-     <xsl:value-of select="feedImage"/>
-  </xsl:attribute>
-</xsl:element>
+<img class="feed" src="{feedImage}"/>
 </p>
 
    <xsl:value-of select="feedDescription" disable-output-escaping='yes'/>
