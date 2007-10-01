@@ -274,8 +274,6 @@ static gchar* atom10_parse_link(xmlNodePtr cur, feedParserCtxtPtr ctxt, struct a
 		title = common_utf8_fix(xmlGetNsProp(cur, BAD_CAST"title", NULL));
 		if(title)
 			escTitle = g_markup_escape_text(title, -1);
-		/* FIXME: Display the human readable title from the property "title" */
-		/* This current code was copied from the RSS parser.*/
 		
 		if(!xmlHasNsProp(cur, BAD_CAST"rel", NULL) || !relation || g_str_equal(relation, BAD_CAST"alternate"))
 			alternate = g_strdup(url);
@@ -290,8 +288,11 @@ static gchar* atom10_parse_link(xmlNodePtr cur, feedParserCtxtPtr ctxt, struct a
 				ctxt->item->metadata = metadata_list_append(ctxt->item->metadata, "enclosure", url);
 				ctxt->item->hasEnclosure = TRUE;
 			}
+		} else if(g_str_equal(relation, "related") || g_str_equal(relation, "via")) {	
+			if (ctxt->item)
+				ctxt->item->metadata = metadata_list_append(ctxt->item->metadata, relation, url);
 		} else {
-			/* FIXME: Maybe do something with other links such as "related" and add metadata for "via"? */;
+			/* g_warning("Unhandled Atom link with unexpected relation \"%s\"\n", relation); */
 		}
 		xmlFree(title);
 		xmlFree(baseURL);

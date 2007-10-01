@@ -229,6 +229,33 @@
  </tr>
 </xsl:if>  
 
+<!-- Indicate Atom "via" and "related" links -->
+<xsl:for-each select="attributes/attribute[ @name = 'via' ]">
+<tr>
+ <td valign="top" class='source'> 
+     <_span>Via</_span>
+     <b><span class='source'>
+       <a href="{.}">
+         <xsl:value-of select="."/>
+       </a>
+     </span></b>
+ </td>
+</tr>
+</xsl:for-each>
+<xsl:for-each select="attributes/attribute[ @name = 'related' ]">
+<tr>
+ <td valign="top" class='source'> 
+     <_span>Related</_span>
+     <b><span class='source'>
+       <a href="{.}">
+         <xsl:value-of select="."/>
+       </a>
+     </span></b>
+ </td>
+</tr>
+</xsl:for-each>
+
+<!-- Indicate all duplicates -->
 <xsl:for-each select="duplicates/duplicateNode">
 <tr>
  <td valign="top" class='source'> 

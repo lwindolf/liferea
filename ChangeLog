@@ -1,4 +1,14 @@
-2007-09-??  Lars Lindner  <lars.lindner@gmail.com>
+2007-10-??  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.4.5 (Stable)
+
+	* Parses Atom links with rel="related" and
+	  rel="via" now and displays the links in the
+	  item header. This makes so called "link blogs"
+	  readable with Liferea (SF #1784970).
+
+
+2007-10-01  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.4.4 (Stable)
 
