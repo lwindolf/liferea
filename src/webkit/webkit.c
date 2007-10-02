@@ -69,15 +69,14 @@ webkit_on_url (WebKitGtkPage *page, const gchar *title, const gchar *url, gpoint
 	htmlview = g_object_get_data (G_OBJECT (page), "htmlview");
 	selectedURL = g_object_get_data (G_OBJECT (page), "selectedURL");
 	g_free (selectedURL);
-		
-	if (url) {
-		selectedURL = g_strdup (url);
 
-		/* overwrite or clear last status line text */
-		liferea_htmlview_on_url (htmlview, selectedURL);
-	} else {
-		selectedURL = NULL;
-	}
+	if (url)
+		selectedURL = g_strdup (url);
+	else
+		selectedURL = g_strdup ("");
+	
+	/* overwrite or clear last status line text */
+	liferea_htmlview_on_url (htmlview, selectedURL);
 	
 	g_object_set_data (G_OBJECT (page), "selectedURL", selectedURL);
 }
