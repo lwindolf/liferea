@@ -1154,7 +1154,7 @@ db_query_to_sql (guint id, const queryPtr query)
 	else if (baseTable == QUERY_TABLE_METADATA)
 		columns = g_strdup ("metadata.item_id AS item_id");
 	else if (baseTable == QUERY_TABLE_NODE)
-		columns = g_strdup ("itemsets.ROWID AS item_id");
+		columns = g_strdup ("itemsets.item_id AS item_id");
 	else {
 		g_warning ("Fatal: unknown table constant passed to query construction! (2)");
 		return NULL;
@@ -1194,9 +1194,9 @@ db_query_to_sql (guint id, const queryPtr query)
 		tmp = join;
 		tables -= QUERY_TABLE_NODE;
 		if (baseTable == QUERY_TABLE_ITEMS) {
-			join = g_strdup_printf ("%sINNER JOIN node ON node.node_id = itemsets.node_id ", join);
+			join = g_strdup_printf ("%sINNER JOIN itemsets ON items.ROWID = itemsets.item_id INNER JOIN node ON node.node_id = itemsets.node_id ", join);
 		} else if (baseTable == QUERY_TABLE_METADATA) {
-			join = g_strdup_printf ("%sINNER JOIN itemsets ON itemsets.ROWID = metadata.ROWID INNER JOIN node ON node.node_id  = itemsets.node_id ", join);
+			join = g_strdup_printf ("%sINNER JOIN itemsets ON itemsets.item_id = metadata.item_id INNER JOIN node ON node.node_id = itemsets.node_id ", join);
 		} else {
 			g_warning ("Fatal: unsupported merge combination: node + %d!", baseTable);
 			return NULL;
