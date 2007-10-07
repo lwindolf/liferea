@@ -22,6 +22,7 @@ IT_PROG_INTLTOOL([0.35.0])
 AC_ISC_POSIX
 AC_PROG_CC
 AM_PROG_CC_STDC
+AM_PROG_CC_C_O
 AC_HEADER_STDC
 AC_PROG_INSTALL
 AC_PROG_LN_S
@@ -210,7 +211,7 @@ dnl ******
 
 if test "x$enable_webkit" = "xyes" ; then
    dnl AC_MSG_CHECKING([for WebKit support])
-   PKG_CHECK_MODULES(WEBKIT, WebKitGdk, enable_webkit=yes, enable_webkit=no)
+   PKG_CHECK_MODULES(WEBKIT, WebKitGtk, enable_webkit=yes, enable_webkit=no)
    AC_SUBST(WEBKIT_CFLAGS)
    AC_SUBST(WEBKIT_LIBS)
 fi
