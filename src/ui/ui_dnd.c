@@ -68,24 +68,36 @@ static gboolean ui_dnd_feed_draggable(GtkTreeDragSource *drag_source, GtkTreePat
 	}
 }
 
-/** decides wether a feed cannot be dropped onto a user selection tree position or not */
-static gboolean ui_dnd_feed_drop_possible(GtkTreeDragDest *drag_dest, GtkTreePath *dest_path, GtkSelectionData *selection_data) {
+static gboolean
+ui_dnd_feed_drop_possible (GtkTreeDragDest *drag_dest, GtkTreePath *dest_path, GtkSelectionData *selection_data)
+{
 	GtkTreeIter	iter;
 	
-	debug1(DEBUG_GUI, "DnD check if feed dropping is possible (%d)", dest_path);
-	feedlist_foreach(ui_node_update);
+	debug1 (DEBUG_GUI, "DnD check if feed dropping is possible (%d)", dest_path);
+
 	/* The only situation when we don't want to drop is when a
 	   feed was selected (note you can select drop targets between
 	   feeds/folders, a folder or a feed). Dropping onto a feed
 	   is not possible with GTK 2.0-2.2 because it disallows to
 	   drops as a children but its possible since GTK 2.4 */
 		   	
-	if(((old_feed_drop_possible)(drag_dest, dest_path, selection_data)) == FALSE)
+	if (((old_feed_drop_possible) (drag_dest, dest_path, selection_data)) == FALSE)
 		return FALSE;
 	
-	if(gtk_tree_model_get_iter(GTK_TREE_MODEL(drag_dest), &iter, dest_path)) {
-		/* if we get an iterator its either a folder or the feed 
-		   iterator after the insertion point */
+	if (gtk_tree_model_get_iter (GTK_TREE_MODEL (drag_dest), &iter, dest_path)) {
+	
+		nodePtr node;
+		
+		/* If we get an iterator it's either a possible dropping
+		   candidate (a folder or source node to drop into, or a
+		   iterator to insert after). In any case we have to check
+		   if it is a writeable node source. */
+
+		gtk_tree_model_get (GTK_TREE_MODEL (drag_dest), &iter, FS_PTR, &node, -1);
+
+		/* never drag nodes of read-only subscription lists */
+		if (!node || !(NODE_SOURCE_TYPE (node)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST))
+			return FALSE;		
 	} else {
 		/* we come here if a drop on a feed happens */
 		return FALSE;
