@@ -9,6 +9,7 @@
 	* Fixes incorrect SQL join for search folders
 	  with multiple rules one of which is a node title
 	  match (SF #1803859)
+	* Fixes DnD command line warnings (SF #1799006)
 
 
 2007-10-01  Lars Lindner  <lars.lindner@gmail.com>

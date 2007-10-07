@@ -73,7 +73,7 @@ static gboolean ui_dnd_feed_drop_possible(GtkTreeDragDest *drag_dest, GtkTreePat
 	GtkTreeIter	iter;
 	
 	debug1(DEBUG_GUI, "DnD check if feed dropping is possible (%d)", dest_path);
-	feedlist_foreach(ui_node_update);
+
 	/* The only situation when we don't want to drop is when a
 	   feed was selected (note you can select drop targets between
 	   feeds/folders, a folder or a feed). Dropping onto a feed
@@ -86,6 +86,7 @@ static gboolean ui_dnd_feed_drop_possible(GtkTreeDragDest *drag_dest, GtkTreePat
 	if(gtk_tree_model_get_iter(GTK_TREE_MODEL(drag_dest), &iter, dest_path)) {
 		/* if we get an iterator its either a folder or the feed 
 		   iterator after the insertion point */
+		// FIXME: not true, could be a node source without write permission
 	} else {
 		/* we come here if a drop on a feed happens */
 		return FALSE;
