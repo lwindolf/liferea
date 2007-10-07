@@ -20,6 +20,7 @@
 
 
 #include <webkitgtkpage.h>
+#include <webkitgtkframe.h>
 #include <webkitgtkglobal.h>
 #include <webkitgtksettings.h>
 
@@ -69,17 +70,22 @@ webkit_on_url (WebKitGtkPage *page, const gchar *title, const gchar *url, gpoint
 	htmlview = g_object_get_data (G_OBJECT (page), "htmlview");
 	selectedURL = g_object_get_data (G_OBJECT (page), "selectedURL");
 	g_free (selectedURL);
-		
-	if (url) {
-		selectedURL = g_strdup (url);
 
-		/* overwrite or clear last status line text */
-		liferea_htmlview_on_url (htmlview, selectedURL);
-	} else {
-		selectedURL = NULL;
-	}
+	if (url)
+		selectedURL = g_strdup (url);
+	else
+		selectedURL = g_strdup ("");
+	
+	/* overwrite or clear last status line text */
+	liferea_htmlview_on_url (htmlview, selectedURL);
 	
 	g_object_set_data (G_OBJECT (page), "selectedURL", selectedURL);
+}
+
+static void
+webkit_clicked (GtkWidget *htmlview, gpointer user_data)
+{
+	g_print ("clicked!\n");
 }
 
 static GtkWidget *
@@ -89,6 +95,7 @@ webkit_new (LifereaHtmlView *htmlview, gboolean forceInternalBrowsing)
 	GtkWidget *page;
 	GtkWidget *scrollpane;
 	WebKitGtkSettings *settings;
+	WebKitGtkFrame *frame;
 	
 	scrollpane = gtk_scrolled_window_new(NULL, NULL);
 
@@ -97,6 +104,7 @@ webkit_new (LifereaHtmlView *htmlview, gboolean forceInternalBrowsing)
 	
 	/* create html widget and pack it into the scrolled window */
 	page = webkit_gtk_page_new ();
+	frame = WEBKIT_GTK_FRAME (page);
 	
 /*	// empty functions in current webkit code...
 	settings = webkit_gtk_web_settings_copy (webkit_gtk_web_settings_get_global ());
@@ -112,6 +120,7 @@ webkit_new (LifereaHtmlView *htmlview, gboolean forceInternalBrowsing)
 	g_signal_connect (page, "title-changed", G_CALLBACK (webkit_title_changed), page);
 	g_signal_connect (page, "load-progress-changed", G_CALLBACK (webkit_progress_changed), page);
 	g_signal_connect (page, "hovering-over-link", G_CALLBACK (webkit_on_url), page);
+	g_signal_connect (frame, "clicked", G_CALLBACK (webkit_clicked), page);
 
 	gtk_widget_show (page);
 	return scrollpane;
