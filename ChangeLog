@@ -11,7 +11,9 @@
 	  match (SF #1803859)
 	* Fixes DnD command line warnings (SF #1799006)
 	* Fixes DnD target check to avoid dropping nodes
-	  into read only source sub trees.
+	  into read-only source sub trees.
+	* Fixes crash when using "Select File" from the 
+	  advanced subscribtion dialog (SF #1810825)
 
 
 2007-10-01  Lars Lindner  <lars.lindner@gmail.com>
