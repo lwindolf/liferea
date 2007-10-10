@@ -20,22 +20,22 @@
 
 
 #include <webkitgtkpage.h>
-#include <webkitgtkglobal.h>
+#include <webkitgtkframe.h>
 #include <webkitgtksettings.h>
 
 #include "conf.h"
 #include "ui/ui_htmlview.h"
 
 static void
-webkit_init (void)
+liferea_webkit_init (void)
 {
-	webkit_gtk_init ();
+	webkit_init ();
 	
 	g_print ("Note: WebKit HTML rendering support is experimental and\n");
 	g_print ("not everything is working properly with WebKit right now!!!\n");
 }
 
-static void webkit_deinit (void) { }
+static void liferea_webkit_deinit (void) { }
 
 static void
 webkit_write_html (GtkWidget *scrollpane,
@@ -46,22 +46,22 @@ webkit_write_html (GtkWidget *scrollpane,
 {
 	GtkWidget *htmlwidget = gtk_bin_get_child (GTK_BIN (scrollpane));
 	
-	webkit_gtk_page_load_string (WEBKIT_GTK_PAGE (htmlwidget), string, "application/xhtml", "UTF-8", base);
+	webkit_page_load_string (WEBKIT_PAGE (htmlwidget), string, "application/xhtml", "UTF-8", base);
 }
 
 static void
-webkit_title_changed (WebKitGtkPage *page, const gchar* title, const gchar* url, gpointer user_data)
+webkit_title_changed (WebKitPage *page, const gchar* title, const gchar* url, gpointer user_data)
 {
-	ui_tabs_set_title(GTK_WIDGET(page), title);
+	ui_tabs_set_title (GTK_WIDGET (page), title);
 }
 
 static void
-webkit_progress_changed (WebKitGtkPage *page, gint progress, gpointer user_data)
+webkit_progress_changed (WebKitPage *page, gint progress, gpointer user_data)
 {
 }
 
 static void
-webkit_on_url (WebKitGtkPage *page, const gchar *title, const gchar *url, gpointer user_data)
+webkit_on_url (WebKitPage *page, const gchar *title, const gchar *url, gpointer user_data)
 {
 	LifereaHtmlView	*htmlview;
 	gchar		*selectedURL;
@@ -87,7 +87,7 @@ webkit_new (LifereaHtmlView *htmlview, gboolean forceInternalBrowsing)
 	gulong	handler;
 	GtkWidget *page;
 	GtkWidget *scrollpane;
-	WebKitGtkSettings *settings;
+	WebKitSettings *settings;
 	
 	scrollpane = gtk_scrolled_window_new(NULL, NULL);
 
@@ -95,13 +95,13 @@ webkit_new (LifereaHtmlView *htmlview, gboolean forceInternalBrowsing)
 	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrollpane), GTK_SHADOW_IN);
 	
 	/* create html widget and pack it into the scrolled window */
-	page = webkit_gtk_page_new ();
+	page = webkit_page_new ();
 	
 /*	// empty functions in current webkit code...
-	settings = webkit_gtk_web_settings_copy (webkit_gtk_web_settings_get_global ());
+	settings = webkit_web_settings_copy (webkit_web_settings_get_global ());
 	settings->is_java_script_enabled = !conf_get_bool_value (DISABLE_JAVASCRIPT);
 	settings->java_script_can_open_windows_automatically = FALSE;
-	webkit_gtk_page_set_settings (WEBKIT_GTK_PAGE (htmlwidget), settings);
+	webkit_page_set_settings (WEBKIT_PAGE (htmlwidget), settings);
 */
 	gtk_container_add (GTK_CONTAINER (scrollpane), GTK_WIDGET (page));
 
@@ -111,7 +111,8 @@ webkit_new (LifereaHtmlView *htmlview, gboolean forceInternalBrowsing)
 	g_signal_connect (page, "title-changed", G_CALLBACK (webkit_title_changed), page);
 	g_signal_connect (page, "load-progress-changed", G_CALLBACK (webkit_progress_changed), page);
 	g_signal_connect (page, "hovering-over-link", G_CALLBACK (webkit_on_url), page);
-
+	/* FIXME: clicked callback */
+	
 	gtk_widget_show (page);
 	return scrollpane;
 }
@@ -119,7 +120,7 @@ webkit_new (LifereaHtmlView *htmlview, gboolean forceInternalBrowsing)
 static void
 webkit_launch_url (GtkWidget *scrollpane, const gchar *url)
 {
-	webkit_gtk_page_open (WEBKIT_GTK_PAGE (gtk_bin_get_child (GTK_BIN (scrollpane))), url);
+	webkit_page_open (WEBKIT_PAGE (gtk_bin_get_child (GTK_BIN (scrollpane))), url);
 }
 
 static gboolean
@@ -152,8 +153,8 @@ static struct htmlviewPlugin webkitInfo = {
 	.name		= "WebKit",
 	.priority	= 100,
 	.externalCss	= FALSE,
-	.plugin_init	= webkit_init,
-	.plugin_deinit	= webkit_deinit,
+	.plugin_init	= liferea_webkit_init,
+	.plugin_deinit	= liferea_webkit_deinit,
 	.create		= webkit_new,
 	.write		= webkit_write_html,
 	.launch		= webkit_launch_url,

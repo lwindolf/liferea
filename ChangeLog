@@ -1,4 +1,4 @@
-2007-10-10  Lars Lindner  <lars.lindner@gmail.com>
+2007-10-11  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.4.5 (Stable)
 
@@ -19,6 +19,8 @@
 	  attempts (SF #1791068, SF #1784045).
 	* Fixes instant updating of the item count of
 	  search folders matching flagged items.
+	* Adapted WebKit support to changed function
+	  names in WebKit SVN. 
 
 
 2007-10-01  Lars Lindner  <lars.lindner@gmail.com>
