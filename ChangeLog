@@ -1,4 +1,4 @@
-2007-10-??  Lars Lindner  <lars.lindner@gmail.com>
+2007-10-10  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.4.5 (Stable)
 
@@ -16,7 +16,9 @@
 	  advanced subscribtion dialog (SF #1810825)
 	* Workaround for loosing data on forced termination.
 	  Liferea now reconnects sqlite every 500 write 
-	  attempts.
+	  attempts (SF #1791068, SF #1784045).
+	* Fixes instant updating of the item count of
+	  search folders matching flagged items.
 
 
 2007-10-01  Lars Lindner  <lars.lindner@gmail.com>
