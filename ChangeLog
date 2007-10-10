@@ -14,6 +14,9 @@
 	  into read-only source sub trees.
 	* Fixes crash when using "Select File" from the 
 	  advanced subscribtion dialog (SF #1810825)
+	* Workaround for loosing data on forced termination.
+	  Liferea now reconnects sqlite every 500 write 
+	  attempts.
 
 
 2007-10-01  Lars Lindner  <lars.lindner@gmail.com>

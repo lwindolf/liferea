@@ -31,8 +31,10 @@
 
 /**
  * Open and initialize the DB.
+ *
+ * @param initial	TRUE for initial opening
  */
-void db_init(void);
+void db_init(gboolean initial);
 
 /**
  * Clean up and close the DB.

@@ -29,11 +29,19 @@
 #include "itemset.h"
 #include "metadata.h"
 
-static sqlite3 *db = NULL;
+static sqlite3	*db = NULL;
+static guint	stmtCounter = 0;
+
+/** 
+ * To avoid loosing statements on crashes, close+reopen the DB from time to time,
+ * THIS IS A WORKAROUND TO AVOID A STRANGE EFFECT OF LOOSING ALL TRANSACTIONS ON EXIT. 
+ */
+#define MAX_STATEMENTS_BEFORE_RECONNECT	500
 
 /** value structure of statements hash */ 
 typedef struct statement {
-	sqlite3_stmt	*stmt;
+	sqlite3_stmt	*stmt;	/** the prepared statement */
+	gboolean	write;	/** TRUE if statement modifies DB and should be counted to stmtCounter */
 } statement;
 
 /** hash of all prepared statements */
@@ -56,25 +64,38 @@ db_new_statement (const gchar *name, const gchar *sql)
 	struct statement *statement;
 	
 	statement = g_new0 (struct statement, 1);
+	if (strstr (sql, "INSERT") || strstr (sql, "REPLACE"))
+		statement->write = TRUE;
 	db_prepare_stmt (&statement->stmt, sql);
 	
 	if (!statements)
 		statements = g_hash_table_new (g_str_hash, g_str_equal);
 				
 	g_hash_table_insert (statements, (gpointer)name, (gpointer)statement);
-
 }
 
 static sqlite3_stmt *
 db_get_statement (const gchar *name)
 {
 	struct statement *statement;
-	
+
+redo:
 	statement = (struct statement *) g_hash_table_lookup (statements, name);
 	if (!statement)
-		g_error ("Fatal: unknown prepared statement \"%s\" requested!", name);
+		g_error ("Fatal: unknown prepared statement \"%s\" requested!", name);	
+		
+	if (statement->write)
+		stmtCounter++;
+		
+	if (stmtCounter > MAX_STATEMENTS_BEFORE_RECONNECT) {
+		stmtCounter = 0;
+		debug1 (DEBUG_DB, "DB reconnect after %d DB write actions...\n", MAX_STATEMENTS_BEFORE_RECONNECT); 
+		db_deinit ();
+		db_init (FALSE);
+		goto redo;
+	}
 
-	sqlite3_reset (statement->stmt);	
+	sqlite3_reset (statement->stmt);
 	return statement->stmt;
 }
 
@@ -143,15 +164,17 @@ db_get_schema_version (void)
 }
 
 #define SCHEMA_TARGET_VERSION 5
-
+	
 /* opening or creation of database */
 void
-db_init (void) 
+db_init (gboolean initial) 
 {
 	gchar		*filename;
 	gint		schemaVersion;
 		
 	debug_enter ("db_init");
+	
+	stmtCounter = 0;
 
 open:
 	filename = common_create_cache_filename (NULL, "liferea", "db");
@@ -163,279 +186,281 @@ open:
 	
 	sqlite3_extended_result_codes (db, TRUE);
 	
-	/* create info table/check versioning info */				   
-	schemaVersion = db_get_schema_version ();
-	debug1 (DEBUG_DB, "current DB schema version: %d", schemaVersion);
-	
-	if (-1 == schemaVersion) {
-		/* no schema version available -> first installation without tables... */
-		db_set_schema_version (SCHEMA_TARGET_VERSION);
-		schemaVersion = SCHEMA_TARGET_VERSION;	/* nothing exists yet, tables will be created below */
+	if (initial) {
+		/* create info table/check versioning info */				   
+		schemaVersion = db_get_schema_version ();
+		debug1 (DEBUG_DB, "current DB schema version: %d", schemaVersion);
+
+		if (-1 == schemaVersion) {
+			/* no schema version available -> first installation without tables... */
+			db_set_schema_version (SCHEMA_TARGET_VERSION);
+			schemaVersion = SCHEMA_TARGET_VERSION;	/* nothing exists yet, tables will be created below */
+		}
+
+		if (SCHEMA_TARGET_VERSION < schemaVersion)
+			g_error ("Fatal: The cache database was created by a newer version of Liferea than this one!");
+
+		if (SCHEMA_TARGET_VERSION > schemaVersion) {
+			/* do table migration */	
+			if (db_get_schema_version () == 0) {
+				/* 1.3.2 -> 1.3.3 adding read flag to itemsets relation */
+				debug0 (DEBUG_DB, "migrating from schema version 0 to 1");
+				db_exec ("BEGIN; "
+	        			 "CREATE TEMPORARY TABLE itemsets_backup(item_id,node_id); "
+					 "INSERT INTO itemsets_backup SELECT item_id,node_id FROM itemsets; "
+	        			 "DROP TABLE itemsets; "
+                       			 "CREATE TABLE itemsets ( "
+					 "	item_id		INTEGER, "
+					 "	node_id		TEXT, "
+					 "	read		INTEGER "
+	        			 "); "
+					 "INSERT INTO itemsets SELECT itemsets_backup.item_id,itemsets_backup.node_id,items.read FROM itemsets_backup INNER JOIN items ON itemsets_backup.item_id = items.ROWID; "
+					 "DROP TABLE itemsets_backup; "
+	        			 "REPLACE INTO info (name, value) VALUES ('schemaVersion',1); "
+					 "END;");
+			}
+
+			if (db_get_schema_version () == 1) {
+				/* 1.3.3 -> 1.3.4 adding comment item flag to itemsets relation */
+				debug0 (DEBUG_DB, "migrating from schema version 1 to 2");
+				db_exec ("BEGIN; "
+	        			 "CREATE TEMPORARY TABLE itemsets_backup(item_id,node_id,read); "
+					 "INSERT INTO itemsets_backup SELECT item_id,node_id,read FROM itemsets; "
+	        			 "DROP TABLE itemsets; "
+                       			 "CREATE TABLE itemsets ( "
+					 "	item_id		INTEGER, "
+					 "	node_id		TEXT, "
+					 "	read		INTEGER, "
+					 "      comment		INTEGER "
+	        			 "); "
+					 "INSERT INTO itemsets SELECT itemsets_backup.item_id,itemsets_backup.node_id,itemsets_backup.read,0 FROM itemsets_backup; "
+					 "DROP TABLE itemsets_backup; "
+					 "CREATE TEMPORARY TABLE items_backup(title,read,new,updated,popup,marked,source,source_id,valid_guid,real_source_url,real_source_title,description,date,comment_feed_id);"
+					 "INSERT INTO items_backup SELECT title,read,new,updated,popup,marked,source,source_id,valid_guid,real_source_url,real_source_title,description,date,comment_feed_id FROM items; "
+					 "DROP TABLE items; "
+					 "CREATE TABLE items ("
+			        	 "   title		TEXT,"
+			        	 "   read		INTEGER,"
+			        	 "   new		INTEGER,"
+			        	 "   updated		INTEGER,"
+			        	 "   popup		INTEGER,"
+			        	 "   marked		INTEGER,"
+			        	 "   source		TEXT,"
+			        	 "   source_id		TEXT,"
+			        	 "   valid_guid		INTEGER,"
+			        	 "   real_source_url	TEXT,"
+			        	 "   real_source_title	TEXT,"
+			        	 "   description	TEXT,"
+			        	 "   date		INTEGER,"
+			        	 "   comment_feed_id	INTEGER,"
+					 "   comment            INTEGER"
+			        	 "); "
+					 "INSERT INTO items SELECT title,read,new,updated,popup,marked,source,source_id,valid_guid,real_source_url,real_source_title,description,date,comment_feed_id,0 FROM items_backup; "
+					 "DROP TABLE items_backup; "
+	        			 "REPLACE INTO info (name, value) VALUES ('schemaVersion',2); "
+					 "END;");
+			}
+
+			if (db_get_schema_version () == 2) {
+				/* 1.3.5 -> 1.3.6 adding subscription relation */
+				debug0 (DEBUG_DB, "migrating from schema version 2 to 3");
+				db_exec ("BEGIN; "
+			        	 "CREATE TABLE SUBSCRIPTION ("
+		                	 "   NODE_ID            STRING,"
+		                	 "   PRIMARY KEY (NODE_ID)"
+			        	 "); "
+					 "INSERT INTO subscription SELECT DISTINCT node_id FROM itemsets; "
+					 "REPLACE INTO info (name, value) VALUES ('schemaVersion',3); "
+					 "END;");
+			}
+
+			if (db_get_schema_version () == 3) {
+				/* 1.3.6 -> 1.3.7 adding all necessary attributes to subscription relation */
+				debug0 (DEBUG_DB, "migrating from schema version 3 to 4");
+				db_exec ("BEGIN; "
+			        	 "CREATE TEMPORARY TABLE subscription_backup(node_id); "
+					 "INSERT INTO subscription_backup SELECT node_id FROM subscription; "
+			        	 "DROP TABLE subscription; "
+			        	 "CREATE TABLE subscription ("
+		                	 "   node_id            STRING,"
+					 "   source             STRING,"
+					 "   orig_source        STRING,"
+					 "   filter_cmd         STRING,"
+					 "   update_interval	INTEGER,"
+					 "   default_interval   INTEGER,"
+					 "   discontinued       INTEGER,"
+					 "   available          INTEGER,"
+		                	 "   PRIMARY KEY (node_id)"
+			        	 "); "
+					 "INSERT INTO subscription SELECT node_id,null,null,null,0,0,0,0 FROM subscription_backup; "
+					 "DROP TABLE subscription_backup; "
+					 "REPLACE INTO info (name, value) VALUES ('schemaVersion',4); "
+					 "END;");
+			}
+
+			if (db_get_schema_version () == 4) {
+				/* 1.3.8 -> 1.4-RC1 adding node relation */
+				debug0 (DEBUG_DB, "migrating from schema version 4 to 5");
+				/* table create below... */
+				db_set_schema_version (5);
+			}
+
+			if (SCHEMA_TARGET_VERSION != db_get_schema_version ())
+				g_error ("Fatal: DB schema migration failed! Running with --debug-db could give some hints!");
+
+			db_deinit ();			
+			debug0 (DEBUG_DB, "Reopening DB after migration...");
+			goto open;
+		}
+
+		debug_start_measurement (DEBUG_DB);
+		db_begin_transaction ();
+
+		/* create tables if they do not exist yet */
+		db_exec ("CREATE TABLE items ("
+	        	 "   title		TEXT,"
+	        	 "   read		INTEGER,"
+	        	 "   new		INTEGER,"
+	        	 "   updated		INTEGER,"
+	        	 "   popup		INTEGER,"
+	        	 "   marked		INTEGER,"
+	        	 "   source		TEXT,"
+	        	 "   source_id		TEXT,"
+	        	 "   valid_guid		INTEGER,"
+	        	 "   real_source_url	TEXT,"
+	        	 "   real_source_title	TEXT,"
+	        	 "   description	TEXT,"
+	        	 "   date		INTEGER,"
+	        	 "   comment_feed_id	INTEGER,"
+			 "   comment            INTEGER"
+	        	 ");");
+
+		db_exec ("CREATE INDEX items_idx ON items (source_id);");
+
+		db_exec ("CREATE TABLE itemsets ("
+	        	 "   item_id		INTEGER,"
+	        	 "   node_id		TEXT,"
+	        	 "   read		INTEGER,"
+			 "   comment            INTEGER,"
+	        	 "   PRIMARY KEY (item_id, node_id)"
+	        	 ");");
+
+		db_exec ("CREATE INDEX itemset_idx  ON itemsets (node_id);");
+		db_exec ("CREATE INDEX itemset_idx2 ON itemsets (item_id);");
+
+		db_exec ("CREATE TABLE metadata ("
+	        	 "   item_id		INTEGER,"
+	        	 "   nr              	INTEGER,"
+	        	 "   key             	TEXT,"
+	        	 "   value           	TEXT,"
+	        	 "   PRIMARY KEY (item_id, nr)"
+	        	 ");");
+
+		db_exec ("CREATE INDEX metadata_idx ON metadata (item_id);");
+
+		/* Set up item removal trigger */	
+		db_exec ("DROP TRIGGER item_removal;");
+		db_exec ("CREATE TRIGGER item_removal DELETE ON itemsets "
+	        	 "BEGIN "
+	        	 "   DELETE FROM items WHERE ROWID = old.item_id; "
+			 "   DELETE FROM metadata WHERE item_id = old.item_id; "
+	        	 "END;");
+
+		/* Set up item read state update triggers */
+		db_exec ("DROP TRIGGER item_insert;");
+		db_exec ("CREATE TRIGGER item_insert INSERT ON items "
+	        	 "BEGIN "
+	        	 "   UPDATE itemsets SET read = new.read "
+	        	 "   WHERE item_id = new.ROWID; "
+	        	 "END;");
+
+		db_exec ("DROP TRIGGER item_update;");
+		db_exec ("CREATE TRIGGER item_update UPDATE ON items "
+	        	 "BEGIN "
+	        	 "   UPDATE itemsets SET read = new.read "
+	        	 "   WHERE item_id = new.ROWID; "
+	        	 "END;");
+
+		db_exec ("CREATE TABLE subscription ("
+	        	 "   node_id            STRING,"
+			 "   source             STRING,"
+			 "   orig_source        STRING,"
+			 "   filter_cmd         STRING,"
+			 "   update_interval	INTEGER,"
+			 "   default_interval   INTEGER,"
+			 "   discontinued       INTEGER,"
+			 "   available          INTEGER,"
+	        	 "   PRIMARY KEY (node_id)"
+			 ");");
+
+		db_exec ("CREATE TABLE update_state ("
+	        	 "   node_id            STRING,"
+			 "   last_modified      STRING,"
+			 "   etag               STRING,"
+			 "   last_update        INTEGER,"
+			 "   last_favicon_update INTEGER,"
+	        	 "   PRIMARY KEY (node_id)"
+			 ");");
+
+		db_exec ("CREATE TABLE subscription_metadata ("
+	        	 "   node_id            STRING,"
+			 "   nr                 INTEGER,"
+			 "   key                TEXT,"
+			 "   value              TEXT,"
+			 "   PRIMARY KEY (node_id, nr)"
+			 ");");
+
+		db_exec ("CREATE INDEX subscription_metadata_idx ON subscription_metadata (node_id);");
+
+		/* Set up subscription removal trigger */	
+		db_exec ("DROP TRIGGER subscription_removal;");
+		db_exec ("CREATE TRIGGER subscription_removal DELETE ON subscription "
+	        	 "BEGIN "
+			 "   DELETE FROM node WHERE node_id = old.node_id; "
+	        	 "   DELETE FROM update_state WHERE node_id = old.node_id; "
+			 "   DELETE FROM subscription_metadata WHERE node_id = old.node_id; "
+			 "   DELETE FROM itemsets WHERE node_id = old.node_id; "
+	        	 "END;");
+
+		db_exec ("CREATE TABLE node ("
+	        	 "   node_id		STRING,"
+	        	 "   parent_id		STRING,"
+	        	 "   title		STRING,"
+			 "   type		INTEGER,"
+			 "   expanded           INTEGER,"
+			 "   view_mode		INTEGER,"
+			 "   sort_column	INTEGER,"
+			 "   sort_reversed	INTEGER,"
+			 "   PRIMARY KEY (node_id)"
+	        	 ");");
+
+		db_exec ("CREATE INDEX node_idx ON node (node_id);");
+
+		db_end_transaction ();
+		debug_end_measurement (DEBUG_DB, "table setup");
+
+		/* Cleanup of DB */
+
+		/* db_begin_transaction ();
+
+		debug_start_measurement (DEBUG_DB);
+		db_exec ("DELETE FROM items WHERE ROWID NOT IN "
+			 "(SELECT item_id FROM itemsets);");
+		debug_end_measurement (DEBUG_DB, "cleanup lost items");
+
+		debug_start_measurement (DEBUG_DB);
+		db_exec ("DELETE FROM itemsets WHERE item_id NOT IN "
+			 "(SELECT ROWID FROM items);");
+		debug_end_measurement (DEBUG_DB, "cleanup lost itemset entries");
+
+		debug_start_measurement (DEBUG_DB);
+		db_exec ("DELETE FROM itemsets WHERE comment = 0 AND node_id NOT IN "
+	        	 "(SELECT node_id FROM subscription);");
+		debug_end_measurement (DEBUG_DB, "cleanup lost node entries");
+
+		db_end_transaction (); */
 	}
 	
-	if (SCHEMA_TARGET_VERSION < schemaVersion)
-		g_error ("Fatal: The cache database was created by a newer version of Liferea than this one!");
-		       
-	if (SCHEMA_TARGET_VERSION > schemaVersion) {
-		/* do table migration */	
-		if (db_get_schema_version () == 0) {
-			/* 1.3.2 -> 1.3.3 adding read flag to itemsets relation */
-			debug0 (DEBUG_DB, "migrating from schema version 0 to 1");
-			db_exec ("BEGIN; "
-	        		 "CREATE TEMPORARY TABLE itemsets_backup(item_id,node_id); "
-				 "INSERT INTO itemsets_backup SELECT item_id,node_id FROM itemsets; "
-	        		 "DROP TABLE itemsets; "
-                       		 "CREATE TABLE itemsets ( "
-				 "	item_id		INTEGER, "
-				 "	node_id		TEXT, "
-				 "	read		INTEGER "
-	        		 "); "
-				 "INSERT INTO itemsets SELECT itemsets_backup.item_id,itemsets_backup.node_id,items.read FROM itemsets_backup INNER JOIN items ON itemsets_backup.item_id = items.ROWID; "
-				 "DROP TABLE itemsets_backup; "
-	        		 "REPLACE INTO info (name, value) VALUES ('schemaVersion',1); "
-				 "END;");
-		}
-		
-		if (db_get_schema_version () == 1) {
-			/* 1.3.3 -> 1.3.4 adding comment item flag to itemsets relation */
-			debug0 (DEBUG_DB, "migrating from schema version 1 to 2");
-			db_exec ("BEGIN; "
-	        		 "CREATE TEMPORARY TABLE itemsets_backup(item_id,node_id,read); "
-				 "INSERT INTO itemsets_backup SELECT item_id,node_id,read FROM itemsets; "
-	        		 "DROP TABLE itemsets; "
-                       		 "CREATE TABLE itemsets ( "
-				 "	item_id		INTEGER, "
-				 "	node_id		TEXT, "
-				 "	read		INTEGER, "
-				 "      comment		INTEGER "
-	        		 "); "
-				 "INSERT INTO itemsets SELECT itemsets_backup.item_id,itemsets_backup.node_id,itemsets_backup.read,0 FROM itemsets_backup; "
-				 "DROP TABLE itemsets_backup; "
-				 "CREATE TEMPORARY TABLE items_backup(title,read,new,updated,popup,marked,source,source_id,valid_guid,real_source_url,real_source_title,description,date,comment_feed_id);"
-				 "INSERT INTO items_backup SELECT title,read,new,updated,popup,marked,source,source_id,valid_guid,real_source_url,real_source_title,description,date,comment_feed_id FROM items; "
-				 "DROP TABLE items; "
-				 "CREATE TABLE items ("
-			         "   title		TEXT,"
-			         "   read		INTEGER,"
-			         "   new		INTEGER,"
-			         "   updated		INTEGER,"
-			         "   popup		INTEGER,"
-			         "   marked		INTEGER,"
-			         "   source		TEXT,"
-			         "   source_id		TEXT,"
-			         "   valid_guid		INTEGER,"
-			         "   real_source_url	TEXT,"
-			         "   real_source_title	TEXT,"
-			         "   description	TEXT,"
-			         "   date		INTEGER,"
-			         "   comment_feed_id	INTEGER,"
-				 "   comment            INTEGER"
-			         "); "
-				 "INSERT INTO items SELECT title,read,new,updated,popup,marked,source,source_id,valid_guid,real_source_url,real_source_title,description,date,comment_feed_id,0 FROM items_backup; "
-				 "DROP TABLE items_backup; "
-	        		 "REPLACE INTO info (name, value) VALUES ('schemaVersion',2); "
-				 "END;");
-		}
-		
-		if (db_get_schema_version () == 2) {
-			/* 1.3.5 -> 1.3.6 adding subscription relation */
-			debug0 (DEBUG_DB, "migrating from schema version 2 to 3");
-			db_exec ("BEGIN; "
-			         "CREATE TABLE SUBSCRIPTION ("
-		                 "   NODE_ID            STRING,"
-		                 "   PRIMARY KEY (NODE_ID)"
-			         "); "
-				 "INSERT INTO subscription SELECT DISTINCT node_id FROM itemsets; "
-				 "REPLACE INTO info (name, value) VALUES ('schemaVersion',3); "
-				 "END;");
-		}
-		
-		if (db_get_schema_version () == 3) {
-			/* 1.3.6 -> 1.3.7 adding all necessary attributes to subscription relation */
-			debug0 (DEBUG_DB, "migrating from schema version 3 to 4");
-			db_exec ("BEGIN; "
-			         "CREATE TEMPORARY TABLE subscription_backup(node_id); "
-				 "INSERT INTO subscription_backup SELECT node_id FROM subscription; "
-			         "DROP TABLE subscription; "
-			         "CREATE TABLE subscription ("
-		                 "   node_id            STRING,"
-				 "   source             STRING,"
-				 "   orig_source        STRING,"
-				 "   filter_cmd         STRING,"
-				 "   update_interval	INTEGER,"
-				 "   default_interval   INTEGER,"
-				 "   discontinued       INTEGER,"
-				 "   available          INTEGER,"
-		                 "   PRIMARY KEY (node_id)"
-			         "); "
-				 "INSERT INTO subscription SELECT node_id,null,null,null,0,0,0,0 FROM subscription_backup; "
-				 "DROP TABLE subscription_backup; "
-				 "REPLACE INTO info (name, value) VALUES ('schemaVersion',4); "
-				 "END;");
-		}
-		
-		if (db_get_schema_version () == 4) {
-			/* 1.3.8 -> 1.4-RC1 adding node relation */
-			debug0 (DEBUG_DB, "migrating from schema version 4 to 5");
-			/* table create below... */
-			db_set_schema_version (5);
-		}
-		
-		if (SCHEMA_TARGET_VERSION != db_get_schema_version ())
-			g_error ("Fatal: DB schema migration failed! Running with --debug-db could give some hints!");
-			
-		db_deinit ();			
-		debug0 (DEBUG_DB, "Reopening DB after migration...");
-		goto open;
-	}
-	
-	debug_start_measurement (DEBUG_DB);
-	db_begin_transaction ();
-	
-	/* create tables if they do not exist yet */
-	db_exec ("CREATE TABLE items ("
-	         "   title		TEXT,"
-	         "   read		INTEGER,"
-	         "   new		INTEGER,"
-	         "   updated		INTEGER,"
-	         "   popup		INTEGER,"
-	         "   marked		INTEGER,"
-	         "   source		TEXT,"
-	         "   source_id		TEXT,"
-	         "   valid_guid		INTEGER,"
-	         "   real_source_url	TEXT,"
-	         "   real_source_title	TEXT,"
-	         "   description	TEXT,"
-	         "   date		INTEGER,"
-	         "   comment_feed_id	INTEGER,"
-		 "   comment            INTEGER"
-	         ");");
-			
-	db_exec ("CREATE INDEX items_idx ON items (source_id);");
-
-	db_exec ("CREATE TABLE itemsets ("
-	         "   item_id		INTEGER,"
-	         "   node_id		TEXT,"
-	         "   read		INTEGER,"
-		 "   comment            INTEGER,"
-	         "   PRIMARY KEY (item_id, node_id)"
-	         ");");
-		 
-	db_exec ("CREATE INDEX itemset_idx  ON itemsets (node_id);");
-	db_exec ("CREATE INDEX itemset_idx2 ON itemsets (item_id);");
-	
-	db_exec ("CREATE TABLE metadata ("
-	         "   item_id		INTEGER,"
-	         "   nr              	INTEGER,"
-	         "   key             	TEXT,"
-	         "   value           	TEXT,"
-	         "   PRIMARY KEY (item_id, nr)"
-	         ");");
-			
-	db_exec ("CREATE INDEX metadata_idx ON metadata (item_id);");
-	
-	/* Set up item removal trigger */	
-	db_exec ("DROP TRIGGER item_removal;");
-	db_exec ("CREATE TRIGGER item_removal DELETE ON itemsets "
-	         "BEGIN "
-	         "   DELETE FROM items WHERE ROWID = old.item_id; "
-		 "   DELETE FROM metadata WHERE item_id = old.item_id; "
-	         "END;");
-			   
-	/* Set up item read state update triggers */
-	db_exec ("DROP TRIGGER item_insert;");
-	db_exec ("CREATE TRIGGER item_insert INSERT ON items "
-	         "BEGIN "
-	         "   UPDATE itemsets SET read = new.read "
-	         "   WHERE item_id = new.ROWID; "
-	         "END;");
-
-	db_exec ("DROP TRIGGER item_update;");
-	db_exec ("CREATE TRIGGER item_update UPDATE ON items "
-	         "BEGIN "
-	         "   UPDATE itemsets SET read = new.read "
-	         "   WHERE item_id = new.ROWID; "
-	         "END;");
-	 
-	db_exec ("CREATE TABLE subscription ("
-	         "   node_id            STRING,"
-		 "   source             STRING,"
-		 "   orig_source        STRING,"
-		 "   filter_cmd         STRING,"
-		 "   update_interval	INTEGER,"
-		 "   default_interval   INTEGER,"
-		 "   discontinued       INTEGER,"
-		 "   available          INTEGER,"
-	         "   PRIMARY KEY (node_id)"
-		 ");");
-		 	
-	db_exec ("CREATE TABLE update_state ("
-	         "   node_id            STRING,"
-		 "   last_modified      STRING,"
-		 "   etag               STRING,"
-		 "   last_update        INTEGER,"
-		 "   last_favicon_update INTEGER,"
-	         "   PRIMARY KEY (node_id)"
-		 ");");
-		 
-	db_exec ("CREATE TABLE subscription_metadata ("
-	         "   node_id            STRING,"
-		 "   nr                 INTEGER,"
-		 "   key                TEXT,"
-		 "   value              TEXT,"
-		 "   PRIMARY KEY (node_id, nr)"
-		 ");");
-		 
-	db_exec ("CREATE INDEX subscription_metadata_idx ON subscription_metadata (node_id);");
-	
-	/* Set up subscription removal trigger */	
-	db_exec ("DROP TRIGGER subscription_removal;");
-	db_exec ("CREATE TRIGGER subscription_removal DELETE ON subscription "
-	         "BEGIN "
-		 "   DELETE FROM node WHERE node_id = old.node_id; "
-	         "   DELETE FROM update_state WHERE node_id = old.node_id; "
-		 "   DELETE FROM subscription_metadata WHERE node_id = old.node_id; "
-		 "   DELETE FROM itemsets WHERE node_id = old.node_id; "
-	         "END;");
-		 
-	db_exec ("CREATE TABLE node ("
-	         "   node_id		STRING,"
-	         "   parent_id		STRING,"
-	         "   title		STRING,"
-		 "   type		INTEGER,"
-		 "   expanded           INTEGER,"
-		 "   view_mode		INTEGER,"
-		 "   sort_column	INTEGER,"
-		 "   sort_reversed	INTEGER,"
-		 "   PRIMARY KEY (node_id)"
-	         ");");
-		 
-	db_exec ("CREATE INDEX node_idx ON node (node_id);");
-		 
-	db_end_transaction ();
-	debug_end_measurement (DEBUG_DB, "table setup");
-			   
-	/* Cleanup of DB */
-	
-	/* db_begin_transaction ();
-	
-	debug_start_measurement (DEBUG_DB);
-	db_exec ("DELETE FROM items WHERE ROWID NOT IN "
-		 "(SELECT item_id FROM itemsets);");
-	debug_end_measurement (DEBUG_DB, "cleanup lost items");
-
-	debug_start_measurement (DEBUG_DB);
-	db_exec ("DELETE FROM itemsets WHERE item_id NOT IN "
-		 "(SELECT ROWID FROM items);");
-	debug_end_measurement (DEBUG_DB, "cleanup lost itemset entries");
-	
-	debug_start_measurement (DEBUG_DB);
-	db_exec ("DELETE FROM itemsets WHERE comment = 0 AND node_id NOT IN "
-	         "(SELECT node_id FROM subscription);");
-	debug_end_measurement (DEBUG_DB, "cleanup lost node entries");
-	
-	db_end_transaction (); */
-
 	/* prepare statements */
 	
 	db_new_statement ("itemsetLoadStmt",
