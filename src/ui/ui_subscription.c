@@ -338,19 +338,19 @@ on_selectfileok_clicked (const gchar *filename,
 	SubscriptionDialogPrivate *ui_data = (SubscriptionDialogPrivate *)user_data;
 	gchar *utfname;
 	
-	if(!filename)
+	if (!filename)
 		return;
 	
-	utfname = g_filename_to_utf8(filename, -1, NULL, NULL, NULL);
+	utfname = g_filename_to_utf8 (filename, -1, NULL, NULL, NULL);
 
-	if(utfname) {
-		if(ui_data->selector == 'u')
-			gtk_entry_set_text(GTK_ENTRY(ui_data->sourceEntry), utfname);
+	if (utfname) {
+		if (ui_data->selector == 'u')
+			gtk_entry_set_text (GTK_ENTRY (ui_data->sourceEntry), utfname);
 		else
-			gtk_entry_set_text(GTK_ENTRY(liferea_dialog_lookup(ui_data->dialog, "filterEntry")), utfname);
+			gtk_entry_set_text (GTK_ENTRY (liferea_dialog_lookup (ui_data->dialog, "filterEntry")), utfname);
 	}
 	
-	g_free(utfname);
+	g_free (utfname);
 }
 
 static void
@@ -360,18 +360,18 @@ on_selectfile_pressed (GtkButton *button,
 	SubscriptionDialogPrivate *ui_data = (SubscriptionDialogPrivate *)user_data;
 	const gchar *utfname;
 	gchar *name;
-	
-	if(GTK_WIDGET(button) == ui_data->selectFile) {
+
+	if (GTK_WIDGET (button) == ui_data->selectFile) {
 		ui_data->selector = 'u';
-		utfname = gtk_entry_get_text(GTK_ENTRY(ui_data->sourceEntry));
+		utfname = gtk_entry_get_text (GTK_ENTRY (ui_data->sourceEntry));
 	} else {
 		ui_data->selector = 'f';
-		utfname = gtk_entry_get_text(GTK_ENTRY(liferea_dialog_lookup(ui_data->dialog, "filterEntry")));
+		utfname = gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (ui_data->dialog, "filterEntry")));
 	}
 	
-	name = g_filename_from_utf8(utfname,-1,NULL, NULL, NULL);
-	ui_choose_file(_("Choose File"), GTK_STOCK_OPEN, FALSE, on_selectfileok_clicked, name, NULL, ui_data);
-	g_free(name);
+	name = g_filename_from_utf8 (utfname, -1, NULL, NULL, NULL);
+	ui_choose_file (_("Choose File"), GTK_STOCK_OPEN, FALSE, on_selectfileok_clicked, name, NULL, ui_data);
+	g_free (name);
 }
  
 static void
@@ -677,7 +677,7 @@ new_subscription_dialog_init (NewSubscriptionDialog *nsd)
 	gtk_entry_set_activates_default (GTK_ENTRY (nsd->priv->sourceEntry), TRUE);
 		
 	nsd->priv->selectFile = liferea_dialog_lookup (newdialog,"selectSourceFileButton");
-	g_signal_connect (nsd->priv->selectFile, "clicked", G_CALLBACK (on_selectfile_pressed), nsd);
+	g_signal_connect (nsd->priv->selectFile, "clicked", G_CALLBACK (on_selectfile_pressed), nsd->priv);
 	
 	/* Feed location radio buttons */
 	nsd->priv->fileRadio = liferea_dialog_lookup (newdialog, "feed_loc_file");
