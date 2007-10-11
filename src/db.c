@@ -1304,7 +1304,7 @@ db_view_create (const gchar *id, queryPtr query)
 	if (SQLITE_OK != res) 
 		debug2 (DEBUG_DB, "Create view failed (%s) SQL: %s", err, sql);
 			       
-	g_free (select);
+	sqlite3_free (select);
 	sqlite3_free (sql);
 	sqlite3_free (err);
 }

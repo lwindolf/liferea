@@ -1,5 +1,13 @@
 2007-10-11  Lars Lindner  <lars.lindner@gmail.com>
 
+	Version 1.4.5b (Stable)
+
+	* Fixing wrong deallocation that prevents Liferea
+	  from working with sqlite 3.5.x (SF #1811055).
+
+
+2007-10-11  Lars Lindner  <lars.lindner@gmail.com>
+
 	Version 1.4.5 (Stable)
 
 	* Parses Atom links with rel="related" and
