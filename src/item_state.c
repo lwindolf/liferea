@@ -73,8 +73,8 @@ item_state_set_flagged (itemPtr item, gboolean newStatus)
 {	
 	if (newStatus != item->flagStatus) {
 
-		/* 1. No search folder propagation... */
-					 
+		/* 1. No propagation because we recount search folders in step 3... */
+		
 		/* 2. save state to DB */
 		item->flagStatus = newStatus;
 		db_item_update (item);
@@ -83,6 +83,7 @@ item_state_set_flagged (itemPtr item, gboolean newStatus)
 		itemlist_update_item (item);
 
 		/* 4. no update of feed list necessary... */
+		vfolder_foreach_with_rule ("flagged", vfolder_update_counters);
 
 		/* 5. update notification statistics */
 		feedlist_reset_new_item_count ();
