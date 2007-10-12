@@ -72,7 +72,7 @@ nodePtr node_from_id(const gchar *id) {
 	g_assert(NULL != nodes);
 	node = (nodePtr)g_hash_table_lookup(nodes, id);
 	if(!node)
-		g_warning("Fatal: no node with id \"%s\" found!", id);
+		debug1(DEBUG_GUI, "Fatal: no node with id \"%s\" found!", id);
 		
 	return node;
 }
