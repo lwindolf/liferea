@@ -246,17 +246,16 @@ int main(int argc, char *argv[]) {
 	add_pixmap_directory(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps");
 
 	/* order is important! */
-	rule_init();
-	db_init();			/* initialize sqlite */
+	rule_init ();
+	db_init (TRUE);			/* initialize sqlite */
 	xml_init ();			/* initialize libxml2 */
-	conf_init();			/* initialize gconf */
-	update_init();			/* initialize the download subsystem */
-	plugin_mgmt_init();		/* get list of plugins and initialize them */
-	feed_init();			/* register feed types */
-	conf_load();			/* load global feed settings */
-	script_init();			/* setup scripting if supported */
-	social_init();			/* initialized social bookmarking */
-	
+	conf_init ();			/* initialize gconf */
+	update_init ();			/* initialize the download subsystem */
+	plugin_mgmt_init ();		/* get list of plugins and initialize them */
+	feed_init ();			/* register feed types */
+	conf_load ();			/* load global feed settings */
+	script_init ();			/* setup scripting if supported */
+	social_init ();			/* initialized social bookmarking */
 #ifdef USE_DBUS	
 	dbus = liferea_dbus_new ();	
 #else
