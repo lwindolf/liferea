@@ -41,6 +41,7 @@
 #include "ns_cC.h"
 #include "ns_photo.h"
 #include "ns_wfw.h"
+#include "ns_media.h"
 #include "metadata.h"
 #include "subscription.h"
 #include "xml.h"
@@ -768,7 +769,7 @@ feedHandlerPtr atom10_init_feed_handler(void) {
 		atom10_add_ns_handler(ns_photo_getRSSNsHandler());
 		atom10_add_ns_handler(ns_pb_getRSSNsHandler());
 		atom10_add_ns_handler(ns_wfw_getRSSNsHandler());
-
+		atom10_add_ns_handler(ns_media_getRSSNsHandler());
 	}	
 	/* prepare feed handler structure */
 	fhp->typeStr = "pie";

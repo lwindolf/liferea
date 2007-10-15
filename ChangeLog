@@ -1,8 +1,9 @@
-2007-07-??  Lars Lindner  <lars.lindner@gmail.com>
+2007-11-??  Lars Lindner  <lars.lindner@gmail.com>
 
-	Version 1.4.0 (Stable)
+	Version 1.5.0 (Unstable)
 
-	
+	* Adding Yahoo Media namespace support.
+	* Replacing propietary networking client with libcurl.	
 
 
 2007-07-22  Lars Lindner  <lars.lindner@gmail.com>

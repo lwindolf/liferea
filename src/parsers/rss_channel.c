@@ -41,6 +41,7 @@
 #include "ns_ag.h"
 #include "ns_blogChannel.h"
 #include "ns_cC.h"
+#include "ns_media.h"
 #include "ns_photo.h"
 #include "ns_wfw.h"
 #include "rss_item.h"
@@ -366,6 +367,7 @@ feedHandlerPtr rss_init_feed_handler(void) {
 		rss_add_ns_handler(ns_photo_getRSSNsHandler());
 		rss_add_ns_handler(ns_pb_getRSSNsHandler());
 		rss_add_ns_handler(ns_wfw_getRSSNsHandler());
+		rss_add_ns_handler(ns_media_getRSSNsHandler());
 	}
 							
 	/* prepare feed handler structure */
