@@ -1,7 +1,7 @@
 /**
  * @file ns_cC.c creativeCommon RSS namespace support
  * 
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -54,47 +54,56 @@
    provide a link to the license
 */
 
-static gchar * parse_tag(xmlNodePtr cur) {
+static gchar *
+parse_tag (xmlNodePtr cur)
+{
 	gchar	*buffer = NULL, *tmp;
 	
- 	if(!xmlStrcmp("license", cur->name)) {
- 		if(NULL != (tmp = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)))) {
+ 	if (!xmlStrcmp ("license", cur->name)) {
+ 		tmp = common_utf8_fix (xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1));
+		if (tmp) {
 			/* RSS 2.0 module handling */
-			buffer = g_strdup_printf("<a href=\"%s\">%s</a>", tmp, tmp);
-			g_free(tmp);
+			buffer = g_strdup_printf ("<a href=\"%s\">%s</a>", tmp, tmp);
+			g_free (tmp);
  		} else {
 			/* RSS 1.0 module handling */
-			buffer = g_strdup("Creative Commons");
+			buffer = g_strdup ("Creative Commons");
  		}
  	}	
 	return buffer;
 }
 
-static void parse_channel_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
-
-	gchar * tag = parse_tag(cur);
-	metadata_list_set(&(ctxt->subscription->metadata), "license", tag);
-	g_free(tag);
+static void
+parse_channel_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
+{
+	gchar * tag = parse_tag (cur);
+	metadata_list_set (&(ctxt->subscription->metadata), "license", tag);
+	g_free (tag);
 }
 
-static void parse_item_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
-
-	gchar * tag = parse_tag(cur);
-	metadata_list_set(&(ctxt->item->metadata), "license", tag);
-	g_free(tag);
+static void
+parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
+{
+	gchar * tag = parse_tag (cur);
+	metadata_list_set (&(ctxt->item->metadata), "license", tag);
+	g_free (tag);
 }
 
-static void ns_cC_register_ns(NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash) {
-	g_hash_table_insert(prefixhash, RSS1_CC_PREFIX, nsh);
-	g_hash_table_insert(prefixhash, RSS2_CC_PREFIX, nsh);
-	g_hash_table_insert(urihash, "http://web.resource.org/cc/", nsh);
-	g_hash_table_insert(urihash, "http://backend.userland.com/creativeCommonsRssModule", nsh);
+static void
+ns_cC_register_ns (NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash)
+{
+	g_hash_table_insert (prefixhash, RSS1_CC_PREFIX, nsh);
+	g_hash_table_insert (prefixhash, RSS2_CC_PREFIX, nsh);
+	g_hash_table_insert (urihash, "http://web.resource.org/cc/", nsh);
+	g_hash_table_insert (urihash, "http://backend.userland.com/creativeCommonsRssModule", nsh);
 }
 
-NsHandler *ns_cC_getRSSNsHandler(void) {
+NsHandler *
+ns_cC_get_handler (void)
+{
 	NsHandler 	*nsh;
 	
-	nsh = g_new0(NsHandler, 1);
+	nsh = g_new0 (NsHandler, 1);
 	nsh->prefix 			= RSS1_CC_PREFIX;
 	nsh->registerNs			= ns_cC_register_ns;
 	nsh->parseChannelTag		= parse_channel_tag;

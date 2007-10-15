@@ -40,53 +40,59 @@
   feed info view footer
 */
 
-static void parse_item_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
+static void
+parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
+{
 	gchar		*date, *source, *sourceURL, *tmp;
 	gboolean	sourceTag = FALSE;
 	
-	if(!xmlStrcmp("source", cur->name)) {
+	if (!xmlStrcmp ("source", cur->name)) {
 		sourceTag = TRUE;
-		g_hash_table_insert(ctxt->item->tmpdata, g_strdup("ag:source"), common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
+		g_hash_table_insert (ctxt->item->tmpdata, g_strdup ("ag:source"), common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
 		
-	} else if(!xmlStrcmp("sourceURL", cur->name)) {  
+	} else if (!xmlStrcmp ("sourceURL", cur->name)) {  
 		sourceTag = TRUE;
-		g_hash_table_insert(ctxt->item->tmpdata, g_strdup("ag:sourceURL"), common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));	
+		g_hash_table_insert (ctxt->item->tmpdata, g_strdup ("ag:sourceURL"), common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));	
 	}
 	
-	if(sourceTag) {
-		source = g_hash_table_lookup(ctxt->item->tmpdata, "ag:source");
-		sourceURL = g_hash_table_lookup(ctxt->item->tmpdata, "ag:sourceURL");
+	if (sourceTag) {
+		source = g_hash_table_lookup (ctxt->item->tmpdata, "ag:source");
+		sourceURL = g_hash_table_lookup (ctxt->item->tmpdata, "ag:sourceURL");
 		
-		if(source && sourceURL)
-			tmp = g_strdup_printf("<a href=\"%s\">%s</a>", sourceURL, source);
-		else if(NULL == source)
-			tmp = g_strdup_printf("<a href=\"%s\">%s</a>", sourceURL, sourceURL);
+		if (source && sourceURL)
+			tmp = g_strdup_printf ("<a href=\"%s\">%s</a>", sourceURL, source);
+		else if (!source)
+			tmp = g_strdup_printf ("<a href=\"%s\">%s</a>", sourceURL, sourceURL);
 		else
-			tmp = g_strdup(source);
+			tmp = g_strdup (source);
 	
-		metadata_list_set(&(ctxt->item->metadata), "agSource", tmp);
-	} else if(!xmlStrcmp("timestamp", cur->name)) {
-		if(tmp = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))) {
-			date = common_format_date(parseISO8601Date(tmp), _("%b %d %H:%M"));
-			metadata_list_set(&(ctxt->item->metadata), "agTimestamp", date);
-			g_free(date);
-			g_free(tmp);
+		metadata_list_set (&(ctxt->item->metadata), "agSource", tmp);
+	} else if (!xmlStrcmp ("timestamp", cur->name)) {
+		if (tmp = common_utf8_fix (xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1))) {
+			date = common_format_date (parseISO8601Date (tmp), _("%b %d %H:%M"));
+			metadata_list_set (&(ctxt->item->metadata), "agTimestamp", date);
+			g_free (date);
+			g_free (tmp);
 		}
 	}
 }
 
-static void ns_ag_register_ns(NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash) {
-	g_hash_table_insert(prefixhash, "ag", nsh);
-	g_hash_table_insert(urihash, "http://purl.org/rss/1.0/modules/aggregation/", nsh);
+static void
+ns_ag_register_ns (NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash)
+{
+	g_hash_table_insert (prefixhash, "ag", nsh);
+	g_hash_table_insert (urihash, "http://purl.org/rss/1.0/modules/aggregation/", nsh);
 }
 
-NsHandler *ns_ag_getRSSNsHandler(void) {
+NsHandler *
+ns_ag_get_handler (void)
+{
 	NsHandler 	*nsh;
 	
-	nsh = g_new0(NsHandler, 1);
+	nsh = g_new0 (NsHandler, 1);
 	nsh->registerNs		= ns_ag_register_ns;
-	nsh->prefix			= "ag";
-	nsh->parseItemTag		= parse_item_tag;
+	nsh->prefix		= "ag";
+	nsh->parseItemTag	= parse_item_tag;
 
 	return nsh;
 }

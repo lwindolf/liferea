@@ -41,6 +41,7 @@
 #include "ns_ag.h"
 #include "ns_blogChannel.h"
 #include "ns_cC.h"
+#include "ns_itunes.h"
 #include "ns_media.h"
 #include "ns_photo.h"
 #include "ns_wfw.h"
@@ -321,53 +322,57 @@ static gboolean rss_format_check(xmlDocPtr doc, xmlNodePtr cur) {
 	return FALSE;
 }
 
-static void rss_add_ns_handler(NsHandler *handler) {
-
-	g_assert(NULL != rss_nstable);
-	g_hash_table_insert(rss_nstable, handler->prefix, handler);
-	g_assert(handler->registerNs != NULL);
-	handler->registerNs(handler, rss_nstable, ns_rss_ns_uri_table);
+static void
+rss_add_ns_handler (NsHandler *handler)
+{
+	g_assert (NULL != rss_nstable);
+	g_hash_table_insert (rss_nstable, handler->prefix, handler);
+	g_assert (handler->registerNs != NULL);
+	handler->registerNs (handler, rss_nstable, ns_rss_ns_uri_table);
 }
 
-feedHandlerPtr rss_init_feed_handler(void) {
+feedHandlerPtr
+rss_init_feed_handler (void)
+{
 	feedHandlerPtr	fhp;
 	
-	fhp = g_new0(struct feedHandler, 1);
+	fhp = g_new0 (struct feedHandler, 1);
 
 	/* Note: the tag mapping definitions and namespace registration
 	   infos are shared with rss_item.c */
 	
-	if(RssToMetadataMapping == NULL) {
-		RssToMetadataMapping = g_hash_table_new(g_str_hash, g_str_equal);
-		g_hash_table_insert(RssToMetadataMapping, "copyright", "copyright");
-		g_hash_table_insert(RssToMetadataMapping, "category", "category");
-		g_hash_table_insert(RssToMetadataMapping, "webMaster", "webmaster");
-		g_hash_table_insert(RssToMetadataMapping, "language", "language");
-		g_hash_table_insert(RssToMetadataMapping, "managingEditor", "managingEditor");
-		g_hash_table_insert(RssToMetadataMapping, "lastBuildDate", "contentUpdateDate");
-		g_hash_table_insert(RssToMetadataMapping, "generator", "feedgenerator");
-		g_hash_table_insert(RssToMetadataMapping, "publisher", "webmaster");
-		g_hash_table_insert(RssToMetadataMapping, "author", "author");
-		g_hash_table_insert(RssToMetadataMapping, "comments", "commentsUri");
+	if (!RssToMetadataMapping) {
+		RssToMetadataMapping = g_hash_table_new (g_str_hash, g_str_equal);
+		g_hash_table_insert (RssToMetadataMapping, "copyright", "copyright");
+		g_hash_table_insert (RssToMetadataMapping, "category", "category");
+		g_hash_table_insert (RssToMetadataMapping, "webMaster", "webmaster");
+		g_hash_table_insert (RssToMetadataMapping, "language", "language");
+		g_hash_table_insert (RssToMetadataMapping, "managingEditor", "managingEditor");
+		g_hash_table_insert (RssToMetadataMapping, "lastBuildDate", "contentUpdateDate");
+		g_hash_table_insert (RssToMetadataMapping, "generator", "feedgenerator");
+		g_hash_table_insert (RssToMetadataMapping, "publisher", "webmaster");
+		g_hash_table_insert (RssToMetadataMapping, "author", "author");
+		g_hash_table_insert (RssToMetadataMapping, "comments", "commentsUri");
 	}
 	
-	if(NULL == rss_nstable) {
-		rss_nstable = g_hash_table_new(g_str_hash, g_str_equal);
-		ns_rss_ns_uri_table = g_hash_table_new(g_str_hash, g_str_equal);
-		
-		/* register RSS name space handlers */
-		rss_add_ns_handler(ns_bC_getRSSNsHandler());
-		rss_add_ns_handler(ns_dc_getRSSNsHandler());
-  		rss_add_ns_handler(ns_slash_getRSSNsHandler());
-		rss_add_ns_handler(ns_content_getRSSNsHandler());
-		rss_add_ns_handler(ns_syn_getRSSNsHandler());
-		rss_add_ns_handler(ns_admin_getRSSNsHandler());
-		rss_add_ns_handler(ns_ag_getRSSNsHandler());
-		rss_add_ns_handler(ns_cC_getRSSNsHandler());
-		rss_add_ns_handler(ns_photo_getRSSNsHandler());
-		rss_add_ns_handler(ns_pb_getRSSNsHandler());
-		rss_add_ns_handler(ns_wfw_getRSSNsHandler());
-		rss_add_ns_handler(ns_media_getRSSNsHandler());
+	if (!rss_nstable) {
+		rss_nstable = g_hash_table_new (g_str_hash, g_str_equal);
+		ns_rss_ns_uri_table = g_hash_table_new (g_str_hash, g_str_equal);
+
+		/* register name space handlers */		
+		rss_add_ns_handler (ns_bC_get_handler ());
+		rss_add_ns_handler (ns_dc_get_handler ());
+  		rss_add_ns_handler (ns_slash_get_handler ());
+		rss_add_ns_handler (ns_content_get_handler ());
+		rss_add_ns_handler (ns_syn_get_handler ());
+		rss_add_ns_handler (ns_admin_get_handler ());
+		rss_add_ns_handler (ns_ag_get_handler ());
+		rss_add_ns_handler (ns_cC_get_handler ());
+		rss_add_ns_handler (ns_photo_get_handler ());
+		rss_add_ns_handler (ns_pb_get_handler ());
+		rss_add_ns_handler (ns_wfw_get_handler ());
+		rss_add_ns_handler (ns_media_get_handler ());
+		rss_add_ns_handler (ns_itunes_get_handler ());	
 	}
 							
 	/* prepare feed handler structure */

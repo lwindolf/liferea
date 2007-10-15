@@ -1,7 +1,7 @@
 /**
  * @file ns_admin.c admin namespace support
  *
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,29 +40,34 @@
   feed info view footer
 */
 
-static void parse_channel_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
+static void
+parse_channel_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
+{
 	gchar	*value;
 	
-	value = common_utf8_fix(xmlGetProp(cur, "resource"));	
+	value = common_utf8_fix (xmlGetProp (cur, "resource"));	
 	
-	if(!xmlStrcmp("errorReportsTo", cur->name))
-		metadata_list_set(&(ctxt->subscription->metadata), "errorReportsTo", value);
-	else if(!xmlStrcmp("generatorAgent", cur->name))
-		metadata_list_set(&(ctxt->subscription->metadata), "feedgeneratorUri", value);
+	if (!xmlStrcmp ("errorReportsTo", cur->name))
+		metadata_list_set (&(ctxt->subscription->metadata), "errorReportsTo", value);
+	else if (!xmlStrcmp ("generatorAgent", cur->name))
+		metadata_list_set (&(ctxt->subscription->metadata), "feedgeneratorUri", value);
 	
-	g_free(value);
-	return;
+	g_free (value);
 }
 
-static void ns_admin_register_ns(NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash) {
-	g_hash_table_insert(prefixhash, "admin", nsh);
-	g_hash_table_insert(urihash, "http://webns.net/mvcb/", nsh);
+static void
+ns_admin_register_ns (NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash)
+{
+	g_hash_table_insert (prefixhash, "admin", nsh);
+	g_hash_table_insert (urihash, "http://webns.net/mvcb/", nsh);
 }
 
-NsHandler *ns_admin_getRSSNsHandler(void) {
+NsHandler *
+ns_admin_get_handler (void)
+{
 	NsHandler 	*nsh;
 	
-	nsh = g_new0(NsHandler, 1);
+	nsh = g_new0 (NsHandler, 1);
 	nsh->registerNs		= ns_admin_register_ns;
 	nsh->prefix		= "admin";
 	nsh->parseChannelTag	= parse_channel_tag;;

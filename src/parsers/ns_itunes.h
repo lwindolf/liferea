@@ -1,5 +1,5 @@
 /**
- * @file ns_media.h Yahoo media namespace support
+ * @file ns_itunes.h itunes namespace support
  *
  * Copyright (C) 2007 Lars Lindner <lars.lindner@gmail.com>
  *
@@ -18,11 +18,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _NS_MEDIA_H
-#define _NS_MEDIA_H
+#ifndef _NS_ITUNES_H
+#define _NS_ITUNES_H
 
 #include "metadata.h"
 
-NsHandler *ns_media_get_handler(void);
+NsHandler *ns_itunes_get_handler(void);
 
 #endif

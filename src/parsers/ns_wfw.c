@@ -34,28 +34,33 @@
    Only the comments feed tag is supported.
 */
 
-static void parse_item_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
+static void
+parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
+{
 	gchar	*uri = NULL;
 
- 	if(!xmlStrcmp("commentRss", cur->name) || !xmlStrcmp("commentRSS", cur->name))
-		uri = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+ 	if (!xmlStrcmp ("commentRss", cur->name) || !xmlStrcmp ("commentRSS", cur->name))
+		uri = common_utf8_fix (xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1));
 
-	if(uri) {
-		metadata_list_set(&(ctxt->item->metadata), "commentFeedUri", uri);
-		g_free(uri);
+	if (uri) {
+		metadata_list_set (&(ctxt->item->metadata), "commentFeedUri", uri);
+		g_free (uri);
 	}
 }
 
-static void ns_wfw_register_ns(NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash) {
-
-	g_hash_table_insert(prefixhash, WFW_PREFIX, nsh);
-	g_hash_table_insert(urihash, "http://wellformedweb.org/CommentAPI", nsh);
+static void
+ns_wfw_register_ns (NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash)
+{
+	g_hash_table_insert (prefixhash, WFW_PREFIX, nsh);
+	g_hash_table_insert (urihash, "http://wellformedweb.org/CommentAPI", nsh);
 }
 
-NsHandler *ns_wfw_getRSSNsHandler(void) {
+NsHandler *
+ns_wfw_get_handler (void)
+{
 	NsHandler 	*nsh;
 	
-	nsh = g_new0(NsHandler, 1);
+	nsh = g_new0 (NsHandler, 1);
 	nsh->prefix 			= WFW_PREFIX;
 	nsh->registerNs			= ns_wfw_register_ns;
 	nsh->parseChannelTag		= NULL;

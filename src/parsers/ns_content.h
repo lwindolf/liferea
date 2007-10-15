@@ -1,7 +1,7 @@
 /**
  * @file ns_content.h content namespace support
  *
- * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,6 @@
 
 #include "metadata.h"
 
-NsHandler *ns_content_getRSSNsHandler(void);
+NsHandler *ns_content_get_handler(void);
 
 #endif

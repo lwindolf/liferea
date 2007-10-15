@@ -1,7 +1,7 @@
 /**
  * @file ns_syn.c syndication namespace support
  * 
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -37,52 +37,59 @@
    -------------------------------------------------------
 */
 
-static void ns_syn_parse_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
+static void
+ns_syn_parse_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
+{
 	xmlChar	*tmp;
 	gint	period;
 	gint	frequency = 1;
 	
-	period = subscription_get_default_update_interval(ctxt->subscription);
-	if(!xmlStrcmp(cur->name, BAD_CAST"updatePeriod")) {
-		if(tmp = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)) {
+	period = subscription_get_default_update_interval (ctxt->subscription);
+	if (!xmlStrcmp (cur->name, BAD_CAST"updatePeriod")) {
+		if (tmp = xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1)) {
 
-			if(!xmlStrcmp(tmp, BAD_CAST"hourly"))
+			if (!xmlStrcmp (tmp, BAD_CAST"hourly"))
 				period = 60;
-			else if(!xmlStrcmp(tmp, BAD_CAST"daily"))
+			else if (!xmlStrcmp (tmp, BAD_CAST"daily"))
 				period = 60*24;
-			else if(!xmlStrcmp(tmp, BAD_CAST"weekly"))
+			else if (!xmlStrcmp (tmp, BAD_CAST"weekly"))
 				period = 7*24*60;
-			else if(!xmlStrcmp(tmp, BAD_CAST"monthly"))
+			else if (!xmlStrcmp (tmp, BAD_CAST"monthly"))
 				/* FIXME: not really exact...*/
 				period = 31*7*24*60;	
-			else if(!xmlStrcmp(tmp, BAD_CAST"yearly"))
+			else if (!xmlStrcmp (tmp, BAD_CAST"yearly"))
 				period = 365*24*60;
 
-			xmlFree(tmp);
+			xmlFree (tmp);
 		}
-	} else if(!xmlStrcmp(cur->name, BAD_CAST"updateFrequency")) {
-		if(tmp = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)) {
-			frequency = atoi(tmp);
-			xmlFree(tmp);
+	} else if (!xmlStrcmp (cur->name, BAD_CAST"updateFrequency")) {
+		tmp = xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
+		if (tmp) {
+			frequency = atoi (tmp);
+			xmlFree (tmp);
 		}
 	}
 	
 	/* postprocessing */
-	if(0 != frequency)
+	if (0 != frequency)
 		period /= frequency;
 
-	subscription_set_default_update_interval(ctxt->subscription, period);
+	subscription_set_default_update_interval (ctxt->subscription, period);
 }
 
-static void ns_syn_register_ns(NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash) {
-	g_hash_table_insert(prefixhash, "syn", nsh);
-	g_hash_table_insert(urihash, "http://purl.org/rss/1.0/modules/syndication/", nsh);
+static void
+ns_syn_register_ns (NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash)
+{
+	g_hash_table_insert (prefixhash, "syn", nsh);
+	g_hash_table_insert (urihash, "http://purl.org/rss/1.0/modules/syndication/", nsh);
 }
 
-NsHandler *ns_syn_getRSSNsHandler(void) {
+NsHandler *
+ns_syn_get_handler (void)
+{
 	NsHandler 	*nsh;
 	
-	nsh = g_new0(NsHandler, 1);
+	nsh = g_new0 (NsHandler, 1);
 	nsh->registerNs		= ns_syn_register_ns;
 	nsh->prefix		= "syn";
 	nsh->parseChannelTag	= ns_syn_parse_tag;

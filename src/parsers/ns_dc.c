@@ -145,67 +145,82 @@ static gchar * mapToItemMetadata[] = {
 			  
 
 /* generic tag parsing (used for RSS and Atom) */
-static void parse_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur, gboolean isFeedTag) {
+static void
+parse_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur, gboolean isFeedTag)
+{
 	int 		i, j;
 	gchar		*date, *mapping, *value, *tmp;
 	gboolean	isNotEmpty;
 	
 	/* special handling for the ISO 8601 date item tags */
-	if(!isFeedTag) {
-		if(!xmlStrcmp((const xmlChar *)"date", cur->name)) {
- 			if(date = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))) {
-				i = parseISO8601Date(date);
+	if (!isFeedTag) {
+		if (!xmlStrcmp ((const xmlChar *)"date", cur->name)) {
+ 			if (date = common_utf8_fix (xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1))) {
+				i = parseISO8601Date (date);
 				ctxt->item->time = i;
-				g_free(date);
+				g_free (date);
 			}
 			return;
 		}
 	}
 
 	/* compare with each possible tag name */
-	for(i = 0; taglist[i] != NULL; i++) {
-		if(!xmlStrcmp((const xmlChar *)taglist[i], cur->name)) {
- 			value = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-	 		if(NULL != value) {
+	for (i = 0; taglist[i] != NULL; i++) {
+		if (!xmlStrcmp ((const xmlChar *)taglist[i], cur->name)) {
+ 			value = common_utf8_fix (xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+	 		if (value) {
 				/* check if value consist of whitespaces only */				
-				for(j = 0, tmp = value, isNotEmpty = FALSE; j < g_utf8_strlen(value, -1); j++) {
-					if(!g_unichar_isspace(*tmp)) {
+				for (j = 0, tmp = value, isNotEmpty = FALSE; j < g_utf8_strlen (value, -1); j++) {
+					if (!g_unichar_isspace (*tmp)) {
 						isNotEmpty = TRUE;
 						break;
 					}
-					tmp = g_utf8_next_char(tmp);
+					tmp = g_utf8_next_char (tmp);
 				}
 
-				if(isNotEmpty) {
-					if(isFeedTag) {
-						if(mapping = mapToFeedMetadata[i])
-							ctxt->subscription->metadata = metadata_list_append(ctxt->subscription->metadata, mapping, value);
+				if (isNotEmpty) {
+					if (isFeedTag) {
+						if (mapping = mapToFeedMetadata[i])
+							ctxt->subscription->metadata = metadata_list_append (ctxt->subscription->metadata, mapping, value);
 					} else {
-						if(mapping = mapToItemMetadata[i])
-							ctxt->item->metadata = metadata_list_append(ctxt->item->metadata, mapping, value);
+						if (mapping = mapToItemMetadata[i])
+							ctxt->item->metadata = metadata_list_append (ctxt->item->metadata, mapping, value);
 					}
 				} 
-				g_free(value);
+				g_free (value);
 			}			
 			return;
 		}
 	}
 }
 
-static void parse_channel_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur)	{ parse_tag(ctxt, cur, TRUE); }
-static void parse_item_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur)	{ parse_tag(ctxt, cur, FALSE); }
-
-static void ns_dc_register_ns(NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash) {
-	g_hash_table_insert(prefixhash, "dc", nsh);
-	g_hash_table_insert(urihash, "http://purl.org/dc/elements/1.1/", nsh);
-	g_hash_table_insert(urihash, "http://purl.org/dc/elements/1.0/", nsh);
+static void
+parse_channel_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
+{
+	parse_tag(ctxt, cur, TRUE);
 }
 
-NsHandler *ns_dc_getRSSNsHandler(void) {
+static void
+parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
+{
+	parse_tag(ctxt, cur, FALSE);
+}
+
+static void
+ns_dc_register_ns (NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash)
+{
+	g_hash_table_insert (prefixhash, "dc", nsh);
+	g_hash_table_insert (urihash, "http://purl.org/dc/elements/1.1/", nsh);
+	g_hash_table_insert (urihash, "http://purl.org/dc/elements/1.0/", nsh);
+}
+
+NsHandler *
+ns_dc_get_handler (void)
+{
 	NsHandler 	*nsh;
 	
-	nsh = g_new0(NsHandler, 1);
-	nsh->prefix			= g_strdup("dc");
+	nsh = g_new0 (NsHandler, 1);
+	nsh->prefix			= "dc";
 	nsh->registerNs			= ns_dc_register_ns;
 	nsh->parseChannelTag		= parse_channel_tag;
 	nsh->parseItemTag		= parse_item_tag;

@@ -58,19 +58,19 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 	   (example quoted from specification)
 	*/
   	if (!xmlStrcmp(cur->name, "content")) {
-		if (tmp = common_utf8_fix (xmlGetProp(cur, BAD_CAST"url"))) {
+		if (tmp = common_utf8_fix (xmlGetProp (cur, BAD_CAST"url"))) {
 			/* the following code is duplicated from rss_item.c! */
-			if((strstr(tmp, "://") == NULL) &&
-			   (ctxt->feed->htmlUrl != NULL) &&
-			   (ctxt->feed->htmlUrl[0] != '|') &&
-			   (strstr(ctxt->feed->htmlUrl, "://") != NULL)) {
+			if ((strstr (tmp, "://") == NULL) &&
+			    (ctxt->feed->htmlUrl != NULL) &&
+			    (ctxt->feed->htmlUrl[0] != '|') &&
+			    (strstr (ctxt->feed->htmlUrl, "://") != NULL)) {
 				/* add base URL if necessary and possible */
-				 tmp2 = g_strdup_printf("%s/%s", ctxt->feed->htmlUrl, tmp);
-				 g_free(tmp);
+				 tmp2 = g_strdup_printf ("%s/%s", ctxt->feed->htmlUrl, tmp);
+				 g_free (tmp);
 				 tmp = tmp2;
 			}
 
-			ctxt->item->metadata = metadata_list_append(ctxt->item->metadata, "enclosure", tmp);
+			ctxt->item->metadata = metadata_list_append (ctxt->item->metadata, "enclosure", tmp);
 			ctxt->item->hasEnclosure = TRUE;
 			g_free (tmp);
 		}
@@ -87,12 +87,12 @@ ns_media_register_ns (NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihas
 }
 
 NsHandler *
-ns_media_getRSSNsHandler (void)
+ns_media_get_handler (void)
 {
 	NsHandler 	*nsh;
 	
 	nsh = g_new0 (NsHandler, 1);
-	nsh->prefix		= g_strdup ("media");
+	nsh->prefix		= "media";
 	nsh->registerNs		= ns_media_register_ns;
 	nsh->parseItemTag	= parse_item_tag;
 

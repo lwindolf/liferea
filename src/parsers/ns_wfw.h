@@ -23,6 +23,6 @@
 
 #include "metadata.h"
 
-NsHandler *ns_wfw_getRSSNsHandler(void);
+NsHandler *ns_wfw_get_handler(void);
 
 #endif

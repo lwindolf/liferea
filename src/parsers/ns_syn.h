@@ -1,7 +1,7 @@
 /**
  * @file ns_syn.h syndication namespace support
  * 
- * Copyright (C) 2003, 2004 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -24,6 +24,6 @@
 
 #include "metadata.h"
 
-NsHandler *ns_syn_getRSSNsHandler(void);
+NsHandler *ns_syn_get_handler(void);
 
 #endif

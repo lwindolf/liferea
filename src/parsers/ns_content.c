@@ -35,27 +35,34 @@
    
 */
 
-static void parse_item_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
+static void
+parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
+{
 	gchar *tmp;
 
-  	if(!xmlStrcmp(cur->name, "encoded")) {
-		if(tmp = common_utf8_fix(xhtml_extract (cur, 0, NULL))) {
-			item_set_description(ctxt->item, tmp);
-			g_free(tmp);
+  	if (!xmlStrcmp (cur->name, "encoded")) {
+		tmp = common_utf8_fix (xhtml_extract (cur, 0, NULL));
+		if (tmp) {
+			item_set_description (ctxt->item, tmp);
+			g_free (tmp);
 		}
 	}
 }
 
-static void ns_content_register_ns(NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash) {
-	g_hash_table_insert(prefixhash, "content", nsh);
-	g_hash_table_insert(urihash, "http://purl.org/rss/1.0/modules/content/", nsh);
+static void
+ns_content_register_ns (NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash)
+{
+	g_hash_table_insert (prefixhash, "content", nsh);
+	g_hash_table_insert (urihash, "http://purl.org/rss/1.0/modules/content/", nsh);
 }
 
-NsHandler *ns_content_getRSSNsHandler(void) {
+NsHandler *
+ns_content_get_handler (void)
+{
 	NsHandler 	*nsh;
 	
-	nsh = g_new0(NsHandler, 1);
-	nsh->prefix		= g_strdup("content");
+	nsh = g_new0 (NsHandler, 1);
+	nsh->prefix		= "content";
 	nsh->registerNs		= ns_content_register_ns;
 	nsh->parseItemTag	= parse_item_tag;
 

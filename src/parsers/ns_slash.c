@@ -1,7 +1,7 @@
 /**
  * @file ns_slash.c slash namespace support
  *
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -44,37 +44,45 @@
 
 */
 
-static void parse_item_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
+static void
+parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
+{
 	gchar	*tmp = NULL, *section, *department;
 	
-	if(!xmlStrcmp(BAD_CAST"section", cur->name)) {
-		if(NULL != (tmp = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))))
- 			g_hash_table_insert(ctxt->item->tmpdata, "slash:section", tmp);
+	if (!xmlStrcmp (BAD_CAST"section", cur->name)) {
+		tmp = common_utf8_fix (xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1));
+		if (tmp)
+ 			g_hash_table_insert (ctxt->item->tmpdata, "slash:section", tmp);
 			
-	} else if(!xmlStrcmp(BAD_CAST"department", cur->name)) {
-		if(NULL != (tmp = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))))
+	} else if (!xmlStrcmp (BAD_CAST"department", cur->name)) {
+		tmp = common_utf8_fix(xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1));
+		if (tmp)
  			g_hash_table_insert(ctxt->item->tmpdata, "slash:department", tmp);
 	}
 	
-	if(tmp) {
-		section = g_hash_table_lookup(ctxt->item->tmpdata, "slash:section");
-		department = g_hash_table_lookup(ctxt->item->tmpdata, "slash:department");
-		tmp = g_strdup_printf("%s,%s", section ? section : "",
-		                               department ? department : "" );
-		metadata_list_set(&(ctxt->item->metadata), "slash", tmp);
-		g_free(tmp);
+	if (tmp) {
+		section = g_hash_table_lookup (ctxt->item->tmpdata, "slash:section");
+		department = g_hash_table_lookup (ctxt->item->tmpdata, "slash:department");
+		tmp = g_strdup_printf ("%s,%s", section ? section : "",
+		                                department ? department : "" );
+		metadata_list_set (&(ctxt->item->metadata), "slash", tmp);
+		g_free (tmp);
 	}
 }
 
-static void ns_slash_register_ns(NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash) {
-	g_hash_table_insert(prefixhash, "slash", nsh);
-	g_hash_table_insert(urihash, "http://purl.org/rss/1.0/modules/slash/", nsh);
+static void
+ns_slash_register_ns (NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash)
+{
+	g_hash_table_insert (prefixhash, "slash", nsh);
+	g_hash_table_insert (urihash, "http://purl.org/rss/1.0/modules/slash/", nsh);
 }
 
-NsHandler *ns_slash_getRSSNsHandler(void) {
+NsHandler *
+ns_slash_get_handler (void)
+{
 	NsHandler 	*nsh;
 	
-	nsh = g_new0(NsHandler, 1);
+	nsh = g_new0 (NsHandler, 1);
 	nsh->registerNs		= ns_slash_register_ns;
 	nsh->prefix		= "slash";
 	nsh->parseItemTag	= parse_item_tag;

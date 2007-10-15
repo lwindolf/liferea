@@ -39,9 +39,10 @@
 #include "ns_ag.h"
 #include "ns_blogChannel.h"
 #include "ns_cC.h"
+#include "ns_itunes.h"
 #include "ns_photo.h"
-#include "ns_wfw.h"
 #include "ns_media.h"
+#include "ns_wfw.h"
 #include "metadata.h"
 #include "subscription.h"
 #include "xml.h"
@@ -740,36 +741,39 @@ static gboolean atom10_format_check(xmlDocPtr doc, xmlNodePtr cur) {
 	return xmlStrEqual(cur->name, BAD_CAST"feed") && xmlStrEqual(cur->ns->href, ATOM10_NS);
 }
 
-static void atom10_add_ns_handler(NsHandler *handler) {
-
-	g_assert(NULL != atom10_nstable);
-	g_hash_table_insert(atom10_nstable, handler->prefix, handler);
-	g_assert(handler->registerNs != NULL);
-	handler->registerNs(handler, atom10_nstable, ns_atom10_ns_uri_table);
+static void
+atom10_add_ns_handler (NsHandler *handler)
+{
+	g_assert (NULL != atom10_nstable);
+	g_hash_table_insert (atom10_nstable, handler->prefix, handler);
+	g_assert (handler->registerNs != NULL);
+	handler->registerNs (handler, atom10_nstable, ns_atom10_ns_uri_table);
 }
 
-feedHandlerPtr atom10_init_feed_handler(void) {
+feedHandlerPtr
+atom10_init_feed_handler (void)
+{
 	feedHandlerPtr	fhp;
 	
-	fhp = g_new0(struct feedHandler, 1);
+	fhp = g_new0 (struct feedHandler, 1);
 	
-	if(NULL == atom10_nstable) {
-		atom10_nstable = g_hash_table_new(g_str_hash, g_str_equal);
-		ns_atom10_ns_uri_table = g_hash_table_new(g_str_hash, g_str_equal);
+	if (!atom10_nstable) {
+		atom10_nstable = g_hash_table_new (g_str_hash, g_str_equal);
+		ns_atom10_ns_uri_table = g_hash_table_new (g_str_hash, g_str_equal);
 		
-		/* register RSS name space handlers */		
-		atom10_add_ns_handler(ns_bC_getRSSNsHandler());
-		atom10_add_ns_handler(ns_dc_getRSSNsHandler());
-  		atom10_add_ns_handler(ns_slash_getRSSNsHandler());
-		atom10_add_ns_handler(ns_content_getRSSNsHandler());
-		atom10_add_ns_handler(ns_syn_getRSSNsHandler());
-		atom10_add_ns_handler(ns_admin_getRSSNsHandler());
-		atom10_add_ns_handler(ns_ag_getRSSNsHandler());
-		atom10_add_ns_handler(ns_cC_getRSSNsHandler());
-		atom10_add_ns_handler(ns_photo_getRSSNsHandler());
-		atom10_add_ns_handler(ns_pb_getRSSNsHandler());
-		atom10_add_ns_handler(ns_wfw_getRSSNsHandler());
-		atom10_add_ns_handler(ns_media_getRSSNsHandler());
+		/* register name space handlers */		
+		atom10_add_ns_handler (ns_bC_get_handler ());
+		atom10_add_ns_handler (ns_dc_get_handler ());
+  		atom10_add_ns_handler (ns_slash_get_handler ());
+		atom10_add_ns_handler (ns_content_get_handler ());
+		atom10_add_ns_handler (ns_syn_get_handler ());
+		atom10_add_ns_handler (ns_admin_get_handler ());
+		atom10_add_ns_handler (ns_ag_get_handler ());
+		atom10_add_ns_handler (ns_cC_get_handler ());
+		atom10_add_ns_handler (ns_photo_get_handler ());
+		atom10_add_ns_handler (ns_pb_get_handler ());
+		atom10_add_ns_handler (ns_wfw_get_handler ());
+		atom10_add_ns_handler (ns_media_get_handler ());
 	}	
 	/* prepare feed handler structure */
 	fhp->typeStr = "pie";
@@ -780,4 +784,3 @@ feedHandlerPtr atom10_init_feed_handler(void) {
 
 	return fhp;
 }
-

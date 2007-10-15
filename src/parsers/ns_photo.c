@@ -26,45 +26,54 @@
 #include "common.h"
 #include "ns_photo.h"
 
-static void parse_item_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
+static void
+parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
+{
 	gchar	*tmp, *thumbnail, *imgsrc;
 	
-	if(!xmlStrcmp("thumbnail", cur->name) || !xmlStrcmp("thumb", cur->name)) {
- 		if(NULL != (tmp = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)))) {
-			if(g_utf8_strlen(tmp, -1) > 0)
-	 			g_hash_table_insert(ctxt->item->tmpdata, "photo:thumbnail", tmp);
+	if (!xmlStrcmp ("thumbnail", cur->name) || 
+	    !xmlStrcmp ("thumb", cur->name)) {
+ 		tmp = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+		if (tmp) {
+			if (g_utf8_strlen (tmp, -1) > 0)
+	 			g_hash_table_insert (ctxt->item->tmpdata, "photo:thumbnail", tmp);
 			else
-				g_free(tmp);
+				g_free (tmp);
 		}
-	} else if(!xmlStrcmp("imgsrc", cur->name)) {
- 		if(NULL != (tmp = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)))) {
-			if(g_utf8_strlen(tmp, -1) > 0)
-	 			g_hash_table_insert(ctxt->item->tmpdata, "photo:imgsrc", tmp);				
+	} else if (!xmlStrcmp ("imgsrc", cur->name)) {
+ 		tmp = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+		if (tmp) {
+			if (g_utf8_strlen (tmp, -1) > 0)
+	 			g_hash_table_insert (ctxt->item->tmpdata, "photo:imgsrc", tmp);				
 			else
-				g_free(tmp);
+				g_free (tmp);
 		}
 	}
 	
-	thumbnail = g_hash_table_lookup(ctxt->item->tmpdata, "photo:thumbnail");
-	imgsrc = g_hash_table_lookup(ctxt->item->tmpdata, "photo:imgsrc");
-	if(!thumbnail) {
+	thumbnail = g_hash_table_lookup (ctxt->item->tmpdata, "photo:thumbnail");
+	imgsrc = g_hash_table_lookup (ctxt->item->tmpdata, "photo:imgsrc");
+	if (!thumbnail) {
 		/* we do nothing */
 	} else {
-		tmp = g_strdup_printf("%s,%s", thumbnail, imgsrc?imgsrc:"");
-		metadata_list_set(&(ctxt->item->metadata), "photo", tmp);
-		g_free(tmp);
+		tmp = g_strdup_printf ("%s,%s", thumbnail, imgsrc?imgsrc:"");
+		metadata_list_set (&(ctxt->item->metadata), "photo", tmp);
+		g_free (tmp);
 	}
 }
 
-static void ns_pb_register_ns(NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash) {
-	g_hash_table_insert(prefixhash, "pb", nsh);
-	g_hash_table_insert(urihash, "http://snaplog.com/backend/PhotoBlog.html", nsh);
+static void
+ns_pb_register_ns (NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash)
+{
+	g_hash_table_insert (prefixhash, "pb", nsh);
+	g_hash_table_insert (urihash, "http://snaplog.com/backend/PhotoBlog.html", nsh);
 }
 
-NsHandler *ns_pb_getRSSNsHandler(void) {
+NsHandler *
+ns_pb_get_handler (void)
+{
 	NsHandler 	*nsh;
 	
-	nsh = g_new0(NsHandler, 1);
+	nsh = g_new0 (NsHandler, 1);
 	nsh->registerNs			= ns_pb_register_ns;
 	nsh->prefix			= "pb";
 	nsh->parseItemTag		= parse_item_tag;
@@ -72,15 +81,19 @@ NsHandler *ns_pb_getRSSNsHandler(void) {
 	return nsh;
 }
 
-static void ns_photo_register_ns(NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash) {
-	g_hash_table_insert(prefixhash, "photo", nsh);
-	g_hash_table_insert(urihash, "http://www.pheed.com/pheed/", nsh);
+static void
+ns_photo_register_ns (NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash)
+{
+	g_hash_table_insert (prefixhash, "photo", nsh);
+	g_hash_table_insert (urihash, "http://www.pheed.com/pheed/", nsh);
 }
 
-NsHandler *ns_photo_getRSSNsHandler(void) {
+NsHandler *
+ns_photo_get_handler (void)
+{
 	NsHandler 	*nsh;
 	
-	nsh = g_new0(NsHandler, 1);
+	nsh = g_new0 (NsHandler, 1);
 	nsh->registerNs			= ns_photo_register_ns;
 	nsh->prefix			= "photo";
 	nsh->parseItemTag		= parse_item_tag;

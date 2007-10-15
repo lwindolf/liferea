@@ -1,7 +1,7 @@
 /**
  * @file ns_blogChannel.c blogChannel namespace support
  *
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -54,30 +54,36 @@ struct requestData {
 */
 
 /* returns a HTML string containing the text and attributes of the outline */
-static GString * getOutlineContents(xmlNodePtr cur) {
+static GString *
+getOutlineContents (xmlNodePtr cur)
+{
 	GString		*buffer;
 	gchar		*value;
 	
-	buffer = g_string_new(NULL);
+	buffer = g_string_new (NULL);
 
-	if(NULL != (value = common_utf8_fix(xmlGetProp(cur, BAD_CAST"text")))) {
-		g_string_append(buffer, value);
-		g_free(value);
+	value = common_utf8_fix (xmlGetProp (cur, BAD_CAST"text"));
+	if (value) {
+		g_string_append (buffer, value);
+		g_free (value);
 	}
 	
-	if(NULL != (value = common_utf8_fix(xmlGetProp(cur, BAD_CAST"url")))) {
-		g_string_append_printf(buffer, "&nbsp;<a href=\"%s\">%s</a>", value, value);
-		g_free(value);
+	value = common_utf8_fix (xmlGetProp (cur, BAD_CAST"url"));
+	if (value) {
+		g_string_append_printf (buffer, "&nbsp;<a href=\"%s\">%s</a>", value, value);
+		g_free (value);
 	}
 
-	if(NULL != (value = common_utf8_fix(xmlGetProp(cur, BAD_CAST"htmlUrl")))) {
-		g_string_append_printf(buffer, "&nbsp;(<a href=\"%s\">HTML</a>)", value);
-		g_free(value);
+	value = common_utf8_fix(xmlGetProp(cur, BAD_CAST"htmlUrl"));
+	if (value) {
+		g_string_append_printf (buffer, "&nbsp;(<a href=\"%s\">HTML</a>)", value);
+		g_free (value);
 	}
 			
-	if(NULL != (value = common_utf8_fix(xmlGetProp(cur, BAD_CAST"xmlUrl")))) {
-		g_string_append_printf(buffer, "&nbsp;(<a href=\"%s\">XML</a>)", value);
-		g_free(value);
+	value = common_utf8_fix(xmlGetProp(cur, BAD_CAST"xmlUrl"));
+	if (value) {
+		g_string_append_printf (buffer, "&nbsp;(<a href=\"%s\">XML</a>)", value);
+		g_free (value);
 	}		
 
 	return buffer;
@@ -191,35 +197,40 @@ getOutlineList (feedParserCtxtPtr ctxt, guint tag, char *url)
 	update_execute_request (ctxt->subscription, request, ns_blogChannel_download_request_cb, requestData, 0);
 }
 
-static void parse_channel_tag(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
+static void
+parse_channel_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
+{
 	xmlChar			*string;
 	
-	string = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
+	string = xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
 
-	if(!xmlStrcmp("blogRoll", cur->name)) {	
-		getOutlineList(ctxt, TAG_BLOGROLL, string);
+	if (!xmlStrcmp ("blogRoll", cur->name)) {	
+		getOutlineList (ctxt, TAG_BLOGROLL, string);
 		
-	} else if(!xmlStrcmp("mySubscriptions", cur->name)) {
-		getOutlineList(ctxt, TAG_MYSUBSCRIPTIONS, string);
+	} else if (!xmlStrcmp ("mySubscriptions", cur->name)) {
+		getOutlineList (ctxt, TAG_MYSUBSCRIPTIONS, string);
 		
-	} else if(!xmlStrcmp("blink", cur->name)) {
-		// nothing to do...
-	}
-
-	if(string)
-		xmlFree(string);
+	} 
+	
+	/* We are not handling the "blink" tag */
+	
+	if (string)
+		xmlFree (string);
 }
 
-static void ns_blogChannel_register_ns(NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash) {
-
-	g_hash_table_insert(prefixhash, "blogChannel", nsh);
-	g_hash_table_insert(urihash, "http://backend.userland.com/blogChannelModule", nsh);
+static void
+ns_blogChannel_register_ns (NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash)
+{
+	g_hash_table_insert (prefixhash, "blogChannel", nsh);
+	g_hash_table_insert (urihash, "http://backend.userland.com/blogChannelModule", nsh);
 }
 
-NsHandler *ns_bC_getRSSNsHandler(void) {
+NsHandler *
+ns_bC_get_handler (void)
+{
 	NsHandler 	*nsh;
 	
-	nsh = g_new0(NsHandler, 1);
+	nsh = g_new0 (NsHandler, 1);
 	nsh->registerNs 	= ns_blogChannel_register_ns;
 	nsh->prefix		= "blogChannel";
 	nsh->parseChannelTag	= parse_channel_tag;

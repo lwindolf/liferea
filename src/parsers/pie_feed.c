@@ -299,25 +299,28 @@ static gboolean pie_format_check(xmlDocPtr doc, xmlNodePtr cur) {
 		return FALSE;
 }
 
-static void pie_add_ns_handler(NsHandler *handler) {
-
-	g_assert(NULL != pie_nstable);
-	g_hash_table_insert(pie_nstable, handler->prefix, handler);
-	g_assert(handler->registerNs != NULL);
-	handler->registerNs(handler, pie_nstable, ns_pie_ns_uri_table);
+static void
+pie_add_ns_handler (NsHandler *handler)
+{
+	g_assert (NULL != pie_nstable);
+	g_hash_table_insert (pie_nstable, handler->prefix, handler);
+	g_assert (handler->registerNs != NULL);
+	handler->registerNs (handler, pie_nstable, ns_pie_ns_uri_table);
 }
 
-feedHandlerPtr pie_init_feed_handler(void) {
+feedHandlerPtr
+pie_init_feed_handler (void)
+{
 	feedHandlerPtr	fhp;
 	
-	fhp = g_new0(struct feedHandler, 1);
+	fhp = g_new0 (struct feedHandler, 1);
 	
-	if(NULL == pie_nstable) {
-		pie_nstable = g_hash_table_new(g_str_hash, g_str_equal);
-		ns_pie_ns_uri_table = g_hash_table_new(g_str_hash, g_str_equal);
+	if (!pie_nstable) {
+		pie_nstable = g_hash_table_new (g_str_hash, g_str_equal);
+		ns_pie_ns_uri_table = g_hash_table_new (g_str_hash, g_str_equal);
 		
 		/* register RSS name space handlers */
-		pie_add_ns_handler(ns_dc_getRSSNsHandler());
+		pie_add_ns_handler (ns_dc_get_handler ());
 	}	
 
 
