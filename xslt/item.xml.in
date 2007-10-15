@@ -346,6 +346,18 @@
     <xsl:value-of select="description" disable-output-escaping='yes'/>
   </p>
   
+  <!-- photo namespace handling -->
+  <xsl:if test="attributes/attribute[ @name = 'photo' ]">
+     <xsl:element name="img">
+        <xsl:attribute name="src">
+	   <xsl:call-template name="substring-after-last">
+	     <xsl:with-param name="input"  select="attributes/attribute[ @name = 'photo' ]" />
+	     <xsl:with-param name="substr" select="','" />
+	   </xsl:call-template>
+        </xsl:attribute>
+     </xsl:element>
+  </xsl:if>
+  
   <!-- comment handling -->
   <xsl:if test="attributes/attribute[ @name = 'commentFeedUri' ]"> 
      <p>     
