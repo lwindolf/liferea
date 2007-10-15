@@ -31,17 +31,18 @@
 #include "debug.h"
 #include "feed.h"
 #include "feedlist.h"
-#include "ns_dc.h"
-#include "ns_content.h"
-#include "ns_slash.h"
-#include "ns_syn.h"
 #include "ns_admin.h"
 #include "ns_ag.h"
 #include "ns_blogChannel.h"
 #include "ns_cC.h"
+#include "ns_content.h"
+#include "ns_dc.h"
 #include "ns_itunes.h"
 #include "ns_photo.h"
 #include "ns_media.h"
+#include "ns_slash.h"
+#include "ns_syn.h"
+#include "ns_trackback.h"
 #include "ns_wfw.h"
 #include "metadata.h"
 #include "subscription.h"
@@ -774,6 +775,7 @@ atom10_init_feed_handler (void)
 		atom10_add_ns_handler (ns_pb_get_handler ());
 		atom10_add_ns_handler (ns_wfw_get_handler ());
 		atom10_add_ns_handler (ns_media_get_handler ());
+		atom10_add_ns_handler (ns_trackback_get_handler ());
 	}	
 	/* prepare feed handler structure */
 	fhp->typeStr = "pie";
