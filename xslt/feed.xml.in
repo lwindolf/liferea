@@ -160,9 +160,11 @@
 
 <div class='content'>
 
+<xsl:if test="feedImage">
 <p>
 <img class="feed" src="{feedImage}"/>
 </p>
+</xsl:if>
 
    <xsl:value-of select="feedDescription" disable-output-escaping='yes'/>
 
