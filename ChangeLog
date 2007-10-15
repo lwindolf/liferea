@@ -2,8 +2,10 @@
 
 	Version 1.5.0 (Unstable)
 
-	* Adding Yahoo Media namespace support.
-	* Replacing propietary networking client with libcurl.	
+	* Adds Yahoo Media namespace support.
+	* Adds iTunes namespace support.
+	* Adds trackback namespace support.
+	* Replaces propietary networking client with libcurl.	
 
 
 2007-07-22  Lars Lindner  <lars.lindner@gmail.com>

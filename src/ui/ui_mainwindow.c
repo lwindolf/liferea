@@ -719,8 +719,26 @@ ui_mainwindow_init (int mainwindowState)
 				   "into the right pane.</p>"));
 	g_string_append(buffer,    "</td></tr></table>");
 
+	g_string_append(buffer,    "</div>");	
+	g_string_append(buffer,    "<div style=\"background:#ffc;border:1px solid black;margin:8px;padding:8px\">");
+	g_string_append(buffer,    "<p><b>Important:</b> This is an <b>UNSTABLE</b> test release. Use it only "
+	                           "if you want to help with the development of Liferea and if you are willing "
+				   "to do some debugging if it crashes. And it will crash, and hang, and eat memory and "
+				   "it might even kill your cat!</p>"
+				   "<p>What currently doesn't work:"
+				   "<ul>"
+				   "   <li>HTTP cookies</li>"
+				   "</ul>"
+				   "</p>"
+				   "<p>New/Improved Functionality:"
+				   "<ul>"
+				   "   <li>Yahoo Media, iTunes and trackback namespace support</li>"
+				   "   <li>libcurl as networking client</li>"
+				   "   <li>faster item list loading</li>"
+				   "</ul>"
+				   "</p>");
 	g_string_append(buffer,    "</div>");
-				   
+	
 	htmlview_finish_output(buffer);
 	liferea_htmlview_write (ui_mainwindow_get_active_htmlview(), buffer->str, NULL);
 	g_string_free(buffer, TRUE);
