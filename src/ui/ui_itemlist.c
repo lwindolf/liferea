@@ -205,7 +205,7 @@ ui_itemlist_update_item (itemPtr item)
 
 	direction_marker = common_get_direction_mark (node_from_id (item->nodeId)->title);	
 
-	title = item->title && strlen (item->title) ? item->title : _("<i>*** No title ***</i>");
+	title = item->title && strlen (item->title) ? item->title : _("*** No title ***");
 	title = g_strstrip (g_strdup_printf ("%s%s", direction_marker, title));
 
 	state_icon = item->flagStatus ? ICON_FLAG :
