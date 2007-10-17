@@ -210,7 +210,7 @@ ui_itemlist_update_iter (GtkTreeIter *iter,
 
 	/* Label and state icon */
 	if(!item->title || !strlen(item->title)) {
-		esc_title = g_strdup(_("<i>*** No title ***</i>"));
+		esc_title = g_strdup(_("*** No title ***"));
 	} else {
 		/* we escape here to use Pango markup (the parsing ensures that
 		   titles never contain escaped HTML) */
