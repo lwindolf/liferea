@@ -122,48 +122,6 @@
 </tr>
 </table>
 
-<!-- enclosures -->
-<xsl:for-each select="attributes/attribute[ @name = 'enclosure' ]">
-<table class="enclosure" cellpadding="0" cellspacing="0">
-
-<tr>
-  <td valign="middle" class="headleft">
-    <a class="favicon" href="liferea-enclosure://load?{.}">
-      <img border="0" class="enclosurebtn" src="{$pixmapsDir}attachment.png"/>
-    </a>
-  </td>
-  <td width="99%">
-   <xsl:choose>
-    <xsl:when test="contains(.,'mp3') or contains(.,'ogg')">
-      <span class="xspf_player">
-        <xsl:variable name="song">
-          <xsl:call-template name="substring-after-last">
-            <xsl:with-param name="input"  select="." />
-            <xsl:with-param name="substr" select="'/'" />
-          </xsl:call-template>
-        </xsl:variable>
-        <xsl:variable name="player">
-          <xsl:call-template name="substring-after-last">
-            <xsl:with-param name="input"  select="." />
-            <xsl:with-param name="substr" select="'/'" />
-          </xsl:call-template>
-        </xsl:variable>
-        <object type="application/x-shockwave-flash" width="400" height="15"
-           data="{$pixmapsDir}../media/xspf_player_slim.swf?song_title={$song}&amp;song_url={.}&amp;player_title=Click+to+play+{$player}...">
-          <xsl:call-template name="enclosure"/>
-        </object>
-      </span>
-     </xsl:when>
-     <xsl:otherwise>
-       <xsl:call-template name="enclosure"/>
-     </xsl:otherwise> 
-   </xsl:choose>
-  </td>
-</tr>
-
-</table>
-</xsl:for-each>
-
 <!-- header metadata (author + categories + date + source feed) -->
 <table class='headmeta' cellspacing="0" cellpadding="0">
 
@@ -423,18 +381,6 @@
 
 <!-- ==================================================================== -->
 
-<!-- enclosure rendering -->
-<xsl:template name="enclosure">
-  <a class="enclosure" href="{.}">
-    <xsl:call-template name="substring-after-last">
-      <xsl:with-param name="input"  select="." />
-      <xsl:with-param name="substr" select="'/'" />
-    </xsl:call-template>
-  </a>
-</xsl:template>
-
-<!-- ==================================================================== -->
-
 <!-- comment rendering -->
 <xsl:template match="comments/item">
    <div class="comment">
@@ -473,16 +419,6 @@
         <br/><br/>
         <xsl:value-of select="description" disable-output-escaping='yes'/>
       </xsl:if>
-
-      <!-- enclosures -->
-      <xsl:for-each select="attributes/attribute[ @name = 'enclosure' ]">
-        (<a class="enclosure" href="{.}">
-          <xsl:call-template name="substring-after-last">
-            <xsl:with-param name="input"  select="." />
-            <xsl:with-param name="substr" select="'/'" />
-          </xsl:call-template>
-        </a>)
-      </xsl:for-each>
 
     </td>
   </tr>
