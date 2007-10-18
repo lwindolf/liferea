@@ -6,6 +6,8 @@
 	* Adds iTunes namespace support.
 	* Adds trackback namespace support.
 	* Replaces propietary networking client with libcurl.	
+	* Removes XSPF media player in favour of external 
+	  music playing solution.
 
 
 2007-07-22  Lars Lindner  <lars.lindner@gmail.com>

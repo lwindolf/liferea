@@ -75,21 +75,10 @@ Japanese		Takeshi AIHANA <takeshi.aihana@gmail.com>
 Code included from other projects
 =================================
 
-Oliver Feiler <kiza@kcore.de>			SnowNews HTTP client
 Anders Carlsson <andersca@gnu.org>		egg tray icon support
 Bastien Nocera <hadess@hadess.net>		bacon message connection
 Evolution Team					AM/PM time formatting
 
 If we forgot to list you here, leave us a message on
 the mailing list and we'll include your name and email!
-
-
-Included Software
-=================
-
-The Liferea package includes the XSPF Web Music Player. This Flash
-applet is included in binary form and can be found in the media
-subdirectory which also contains the license of the music player.
-The XSPF Web Music Player was written by Fabricio Zuardi and can be 
-found at http://musicplayer.sourceforge.net.
 
