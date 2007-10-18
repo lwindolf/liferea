@@ -70,6 +70,7 @@ static struct mainwindow {
 	GtkActionGroup	*feedActions;		/**< update and mark read */
 	GtkActionGroup	*readWriteActions;	/**< remove and properties */
 	
+	GtkWidget	*enclosureView;		/**< Enclosure list widget */
 	LifereaHtmlView	*htmlview;		/**< HTML rendering widget */
 	gfloat		zoom;			/**< HTML rendering widget zoom level */
 } *mainwindow_priv;
@@ -430,7 +431,7 @@ ui_mainwindow_htmlview_statusbar_changed (gpointer obj, gchar *url)
 void
 ui_mainwindow_set_layout (guint newMode)
 {
-	gchar	*htmlWidgetName, *ilWidgetName;
+	gchar	*htmlWidgetName, *ilWidgetName, *encViewWidgetName;
 	GtkRadioAction *action;
 
 	action = GTK_RADIO_ACTION (gtk_action_group_get_action (mainwindow_priv->generalActions, "NormalView"));
@@ -455,14 +456,17 @@ ui_mainwindow_set_layout (guint newMode)
 		case NODE_VIEW_MODE_NORMAL:
 			htmlWidgetName = "normalViewHtml";
 			ilWidgetName = "normalViewItems";
+			encViewWidgetName = "normalViewEncExpander";
 			break;
 		case NODE_VIEW_MODE_WIDE:
 			htmlWidgetName = "wideViewHtml";
 			ilWidgetName = "wideViewItems";
+			encViewWidgetName = "wideViewEncExpander";
 			break;
 		case NODE_VIEW_MODE_COMBINED:
 			htmlWidgetName = "combinedViewHtml";
 			ilWidgetName = "normalViewItems";
+			encViewWidgetName = "normalViewEncExpander"; /* doesn't matter because it is not used in this mode */
 			break;
 		default:
 			g_warning("fatal: illegal viewing mode!");
@@ -474,6 +478,7 @@ ui_mainwindow_set_layout (guint newMode)
 	gtk_notebook_set_current_page (GTK_NOTEBOOK (liferea_shell_lookup ("itemtabs")), newMode);
 	gtk_widget_reparent (liferea_htmlview_get_widget (mainwindow_priv->htmlview), liferea_shell_lookup (htmlWidgetName));
 	gtk_widget_reparent (GTK_WIDGET (mainwindow_priv->itemlistContainer), liferea_shell_lookup (ilWidgetName));
+	// FIXME: reparent enclosure view widget into correct expander (envViewWidgetName)
  
 	/* grab necessary to force HTML widget update (display must
 	   change from feed description to list of items and vica 
@@ -660,7 +665,6 @@ ui_mainwindow_init (int mainwindowState)
 	
 	ui_tray_enable(getBooleanConfValue(SHOW_TRAY_ICON));			/* init tray icon */
 	ui_dnd_setup_URL_receiver(mainwindow);	/* setup URL dropping support */
-	ui_enclosure_init();
 
 	feedlist_init();
 	

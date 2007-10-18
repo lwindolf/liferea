@@ -70,10 +70,40 @@
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkViewport" id="normalViewHtml">
+                              <widget class="GtkVBox" id="vbox5">
                                 <property name="visible">True</property>
+                                <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                                 <child>
-                                  <placeholder/>
+                                  <widget class="GtkViewport" id="normalViewHtml">
+                                    <property name="visible">True</property>
+                                    <child>
+                                      <placeholder/>
+                                    </child>
+                                  </widget>
+                                </child>
+                                <child>
+                                  <widget class="GtkExpander" id="normalViewEncExpander">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                                    <child>
+                                      <placeholder/>
+                                    </child>
+                                    <child>
+                                      <widget class="GtkLabel" id="label7">
+                                        <property name="visible">True</property>
+                                        <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                                        <property name="label" translatable="yes">expander</property>
+                                      </widget>
+                                      <packing>
+                                        <property name="type">label_item</property>
+                                      </packing>
+                                    </child>
+                                  </widget>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="position">1</property>
+                                  </packing>
                                 </child>
                               </widget>
                               <packing>
@@ -82,9 +112,6 @@
                               </packing>
                             </child>
                           </widget>
-                          <packing>
-                            <property name="tab_expand">False</property>
-                          </packing>
                         </child>
                         <child>
                           <widget class="GtkLabel" id="label30">
@@ -93,7 +120,6 @@
                           </widget>
                           <packing>
                             <property name="type">tab</property>
-                            <property name="tab_expand">False</property>
                             <property name="tab_fill">False</property>
                           </packing>
                         </child>
@@ -115,10 +141,40 @@
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkViewport" id="wideViewHtml">
+                              <widget class="GtkVBox" id="vbox6">
                                 <property name="visible">True</property>
+                                <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                                 <child>
-                                  <placeholder/>
+                                  <widget class="GtkViewport" id="wideViewHtml">
+                                    <property name="visible">True</property>
+                                    <child>
+                                      <placeholder/>
+                                    </child>
+                                  </widget>
+                                </child>
+                                <child>
+                                  <widget class="GtkExpander" id="wideViewEncExpander">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                                    <child>
+                                      <placeholder/>
+                                    </child>
+                                    <child>
+                                      <widget class="GtkLabel" id="label8">
+                                        <property name="visible">True</property>
+                                        <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                                        <property name="label" translatable="yes">expander</property>
+                                      </widget>
+                                      <packing>
+                                        <property name="type">label_item</property>
+                                      </packing>
+                                    </child>
+                                  </widget>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="position">1</property>
+                                  </packing>
                                 </child>
                               </widget>
                               <packing>
@@ -129,7 +185,6 @@
                           </widget>
                           <packing>
                             <property name="position">1</property>
-                            <property name="tab_expand">False</property>
                           </packing>
                         </child>
                         <child>
@@ -140,7 +195,6 @@
                           <packing>
                             <property name="type">tab</property>
                             <property name="position">1</property>
-                            <property name="tab_expand">False</property>
                             <property name="tab_fill">False</property>
                           </packing>
                         </child>
@@ -237,7 +291,6 @@
                           </widget>
                           <packing>
                             <property name="position">2</property>
-                            <property name="tab_expand">False</property>
                           </packing>
                         </child>
                         <child>
@@ -248,16 +301,12 @@
                           <packing>
                             <property name="type">tab</property>
                             <property name="position">2</property>
-                            <property name="tab_expand">False</property>
                             <property name="tab_fill">False</property>
                           </packing>
                         </child>
                       </widget>
                     </child>
                   </widget>
-                  <packing>
-                    <property name="tab_expand">False</property>
-                  </packing>
                 </child>
                 <child>
                   <widget class="GtkLabel" id="label162">
@@ -266,7 +315,6 @@
                   </widget>
                   <packing>
                     <property name="type">tab</property>
-                    <property name="tab_expand">False</property>
                     <property name="tab_fill">False</property>
                   </packing>
                 </child>
@@ -553,9 +601,6 @@ days</property>
                   </packing>
                 </child>
               </widget>
-              <packing>
-                <property name="tab_expand">False</property>
-              </packing>
             </child>
             <child>
               <widget class="GtkLabel" id="label66">
@@ -564,7 +609,6 @@ days</property>
               </widget>
               <packing>
                 <property name="type">tab</property>
-                <property name="tab_expand">False</property>
                 <property name="tab_fill">False</property>
               </packing>
             </child>
@@ -855,7 +899,6 @@ days</property>
               </widget>
               <packing>
                 <property name="position">1</property>
-                <property name="tab_expand">False</property>
               </packing>
             </child>
             <child>
@@ -866,7 +909,6 @@ days</property>
               <packing>
                 <property name="type">tab</property>
                 <property name="position">1</property>
-                <property name="tab_expand">False</property>
                 <property name="tab_fill">False</property>
               </packing>
             </child>
@@ -990,7 +1032,6 @@ days</property>
               </widget>
               <packing>
                 <property name="position">2</property>
-                <property name="tab_expand">False</property>
               </packing>
             </child>
             <child>
@@ -1001,7 +1042,6 @@ days</property>
               <packing>
                 <property name="type">tab</property>
                 <property name="position">2</property>
-                <property name="tab_expand">False</property>
                 <property name="tab_fill">False</property>
               </packing>
             </child>
@@ -1118,7 +1158,6 @@ days</property>
               </widget>
               <packing>
                 <property name="position">3</property>
-                <property name="tab_expand">False</property>
               </packing>
             </child>
             <child>
@@ -1129,7 +1168,6 @@ days</property>
               <packing>
                 <property name="type">tab</property>
                 <property name="position">3</property>
-                <property name="tab_expand">False</property>
                 <property name="tab_fill">False</property>
               </packing>
             </child>
@@ -1170,7 +1208,6 @@ days</property>
               </widget>
               <packing>
                 <property name="position">4</property>
-                <property name="tab_expand">False</property>
               </packing>
             </child>
             <child>
@@ -1181,7 +1218,6 @@ days</property>
               <packing>
                 <property name="type">tab</property>
                 <property name="position">4</property>
-                <property name="tab_expand">False</property>
                 <property name="tab_fill">False</property>
               </packing>
             </child>
@@ -1885,7 +1921,6 @@ No feed update at all</property>
                 </child>
               </widget>
               <packing>
-                <property name="tab_expand">False</property>
                 <property name="tab_fill">False</property>
               </packing>
             </child>
@@ -1896,7 +1931,6 @@ No feed update at all</property>
               </widget>
               <packing>
                 <property name="type">tab</property>
-                <property name="tab_expand">False</property>
                 <property name="tab_fill">False</property>
               </packing>
             </child>
@@ -2039,7 +2073,6 @@ No feed update at all</property>
               </widget>
               <packing>
                 <property name="position">1</property>
-                <property name="tab_expand">False</property>
               </packing>
             </child>
             <child>
@@ -2050,7 +2083,6 @@ No feed update at all</property>
               <packing>
                 <property name="type">tab</property>
                 <property name="position">1</property>
-                <property name="tab_expand">False</property>
                 <property name="tab_fill">False</property>
               </packing>
             </child>
@@ -2218,7 +2250,6 @@ No feed update at all</property>
               </widget>
               <packing>
                 <property name="position">2</property>
-                <property name="tab_expand">False</property>
                 <property name="tab_fill">False</property>
               </packing>
             </child>
@@ -2230,7 +2261,6 @@ No feed update at all</property>
               <packing>
                 <property name="type">tab</property>
                 <property name="position">2</property>
-                <property name="tab_expand">False</property>
                 <property name="tab_fill">False</property>
               </packing>
             </child>
@@ -2450,7 +2480,6 @@ No feed update at all</property>
               </widget>
               <packing>
                 <property name="position">3</property>
-                <property name="tab_expand">False</property>
               </packing>
             </child>
             <child>
@@ -2461,7 +2490,6 @@ No feed update at all</property>
               <packing>
                 <property name="type">tab</property>
                 <property name="position">3</property>
-                <property name="tab_expand">False</property>
                 <property name="tab_fill">False</property>
               </packing>
             </child>
@@ -2733,7 +2761,6 @@ Text only</property>
               </widget>
               <packing>
                 <property name="position">4</property>
-                <property name="tab_expand">False</property>
               </packing>
             </child>
             <child>
@@ -2744,7 +2771,6 @@ Text only</property>
               <packing>
                 <property name="type">tab</property>
                 <property name="position">4</property>
-                <property name="tab_expand">False</property>
                 <property name="tab_fill">False</property>
               </packing>
             </child>
@@ -3046,7 +3072,6 @@ Text only</property>
               </widget>
               <packing>
                 <property name="position">5</property>
-                <property name="tab_expand">False</property>
               </packing>
             </child>
             <child>
@@ -3057,7 +3082,6 @@ Text only</property>
               <packing>
                 <property name="type">tab</property>
                 <property name="position">5</property>
-                <property name="tab_expand">False</property>
                 <property name="tab_fill">False</property>
               </packing>
             </child>
@@ -3304,7 +3328,6 @@ Text only</property>
               </widget>
               <packing>
                 <property name="position">6</property>
-                <property name="tab_expand">False</property>
               </packing>
             </child>
             <child>
@@ -3315,7 +3338,6 @@ Text only</property>
               <packing>
                 <property name="type">tab</property>
                 <property name="position">6</property>
-                <property name="tab_expand">False</property>
                 <property name="tab_fill">False</property>
               </packing>
             </child>
@@ -3453,7 +3475,6 @@ Text only</property>
               </widget>
               <packing>
                 <property name="position">7</property>
-                <property name="tab_expand">False</property>
               </packing>
             </child>
             <child>
@@ -3465,7 +3486,6 @@ Text only</property>
               <packing>
                 <property name="type">tab</property>
                 <property name="position">7</property>
-                <property name="tab_expand">False</property>
                 <property name="tab_fill">False</property>
               </packing>
             </child>
@@ -3895,9 +3915,6 @@ Nathan J. Conrad &lt;t98502@users.sourceforge.net&gt;
                   </packing>
                 </child>
               </widget>
-              <packing>
-                <property name="tab_expand">False</property>
-              </packing>
             </child>
             <child>
               <widget class="GtkLabel" id="label55">
@@ -3906,7 +3923,6 @@ Nathan J. Conrad &lt;t98502@users.sourceforge.net&gt;
               </widget>
               <packing>
                 <property name="type">tab</property>
-                <property name="tab_expand">False</property>
                 <property name="tab_fill">False</property>
               </packing>
             </child>
@@ -3981,7 +3997,6 @@ at http://musicplayer.sourceforge.net</property>
               </widget>
               <packing>
                 <property name="position">1</property>
-                <property name="tab_expand">False</property>
               </packing>
             </child>
             <child>
@@ -3992,7 +4007,6 @@ at http://musicplayer.sourceforge.net</property>
               <packing>
                 <property name="type">tab</property>
                 <property name="position">1</property>
-                <property name="tab_expand">False</property>
                 <property name="tab_fill">False</property>
               </packing>
             </child>
@@ -4030,7 +4044,6 @@ Og Maciel &lt;ogmaciel@ubuntu.com&gt;
               </widget>
               <packing>
                 <property name="position">2</property>
-                <property name="tab_expand">False</property>
               </packing>
             </child>
             <child>
@@ -4041,7 +4054,6 @@ Og Maciel &lt;ogmaciel@ubuntu.com&gt;
               <packing>
                 <property name="type">tab</property>
                 <property name="position">2</property>
-                <property name="tab_expand">False</property>
                 <property name="tab_fill">False</property>
               </packing>
             </child>

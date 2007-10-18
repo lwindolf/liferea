@@ -25,12 +25,12 @@
 #include "common.h"
 #include "db.h"
 #include "debug.h"
+#include "enclosure.h"
 #include "feed.h"
 #include "itemlist.h"
 #include "itemset.h"
 #include "metadata.h"
 #include "node.h"
-#include "ui/ui_enclosure.h"
 
 void
 itemset_foreach (itemSetPtr itemSet, itemActionFunc callback)
@@ -207,7 +207,7 @@ itemset_merge_item (itemSetPtr itemSet, GList *items, itemPtr item)
 			GSList *iter = metadata_list_get_values (item->metadata, "enclosure");
 			while (iter) {
 				debug1 (DEBUG_UPDATE, "download enclosure (%s)", (gchar *)iter->data);
-				ui_enclosure_save (NULL, g_strdup (iter->data), NULL);
+				enclosure_save_as_file (NULL, g_strdup (iter->data), NULL);
 				iter = g_slist_next (iter);
 			}
 		}

@@ -23,24 +23,7 @@
 
 #include <gtk/gtk.h>
 
-typedef struct enclosureDownloadTool {
-	const char	*format;	/**< format string to construct download command */
-	gboolean	niceFilename;	/**< TRUE if format has second %s for output file name */
-} *enclosureDownloadToolPtr; 
-
-typedef struct encType {
-	gchar		*mime;		/* either mime or extension is set */
-	gchar		*extension;
-	gchar		*cmd;		/* the command to launch the enclosure type */
-	gboolean	permanent;	/* if TRUE definition is deleted after opening and 
-					   not added to the permanent list of type configs */
-} *encTypePtr;
-
-/** loads the enclosure type configuration */
-void ui_enclosure_init(void);
-
-/** returns all configured enclosure types */
-GSList * ui_enclosure_get_types(void);
+#include "enclosure.h"		// FIXME: should not be necessary
 
 /** 
  * Opens a popup menu for the given link 
@@ -49,19 +32,12 @@ GSList * ui_enclosure_get_types(void);
  */
 void ui_enclosure_new_popup(const gchar *url);
 
-/** 
- * Downloads a given enclosure URL into a file
- *  
- * @param type		NULL or pointer to type structure
- * @param url		valid HTTP URL
- * @param filename	valid filename
- */
-void ui_enclosure_save(encTypePtr type, const gchar *url, const gchar *filename);
-
 /* popup menu callbacks */
 void on_popup_open_enclosure(gpointer callback_data, guint callback_action, GtkWidget *widget);
 void on_popup_save_enclosure(gpointer callback_data, guint callback_action, GtkWidget *widget);
 
-void ui_enclosure_change_type(gpointer type);
-void ui_enclosure_remove_type(gpointer type);
+// FIXME: these do not belong here!
+void ui_enclosure_change_type (encTypePtr type);
+void ui_enclosure_remove_type (encTypePtr type);
+
 #endif /* _UI_ENCLOSURE_H */

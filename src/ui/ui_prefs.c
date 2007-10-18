@@ -29,6 +29,7 @@
 
 #include "common.h"
 #include "conf.h"
+#include "enclosure.h"
 #include "favicon.h"
 #include "feedlist.h"
 #include "itemlist.h"
@@ -485,17 +486,19 @@ void on_enc_action_change_btn_clicked(GtkButton *button, gpointer user_data) {
 	}
 }
 
-void on_enc_action_remove_btn_clicked(GtkButton *button, gpointer user_data) {
+void
+on_enc_action_remove_btn_clicked (GtkButton *button, gpointer user_data)
+{
 	GtkTreeModel		*model;
 	GtkTreeSelection	*selection;
 	GtkTreeIter		iter;
 	gpointer		type;
 
-	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(liferea_dialog_lookup(prefdialog, "enc_action_view")));
-	if(gtk_tree_selection_get_selected(selection, &model, &iter)) {
-		gtk_tree_model_get(model, &iter, FTS_PTR, &type, -1);
-		gtk_tree_store_remove(GTK_TREE_STORE(model), &iter);
-		ui_enclosure_remove_type(type);
+	selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (liferea_dialog_lookup (prefdialog, "enc_action_view")));
+	if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
+		gtk_tree_model_get (model, &iter, FTS_PTR, &type, -1);
+		gtk_tree_store_remove (GTK_TREE_STORE (model), &iter);
+		enclosure_mime_type_remove (type);
 	}
 }
 
@@ -842,8 +845,8 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 
 		/* set up list of configured enclosure types */
 		treestore = gtk_tree_store_new(FTS_LEN, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_POINTER);
-		list = ui_enclosure_get_types();
-		while(NULL != list) {
+		list = (GSList *)enclosure_mime_types_get ();
+		while (list) {
 			GtkTreeIter *newIter = g_new0(GtkTreeIter, 1);
 			gtk_tree_store_append(treestore, newIter, NULL);
 			gtk_tree_store_set(treestore, newIter,
