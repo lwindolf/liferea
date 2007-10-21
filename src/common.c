@@ -406,6 +406,9 @@ static void common_init_cache_path(void) {
 
 	g_free(cachePath);
 	/* lifereaUserPath reused globally */
+	
+	/* ensure reasonable default umask */
+	umask (077);
 }
 
 const gchar * common_get_cache_path(void) {

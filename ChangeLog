@@ -7,6 +7,8 @@
 	  updated properly (reported by cpapp)
 	* Fixes Debian #445457 segfaults when clicking on
 	  empty folder (reported by Luis Rodrigo Gallardo Cruz)
+	* Fixes security issue that feedlist.opml backup file
+	  has permissions 0644 instead if 0600.
 	* Updated Japanese translation (Takeshi AIHANA)
 
 
