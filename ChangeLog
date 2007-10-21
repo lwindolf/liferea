@@ -5,6 +5,8 @@
 	* Fixes visible markup in "no title" item titles.
 	* Fixes SF #1809742 unread count in tray icon not
 	  updated properly (reported by cpapp)
+	* Fixes Debian #445457 segfaults when clicking on
+	  empty folder (reported by Luis Rodrigo Gallardo Cruz)
 	* Updated Japanese translation (Takeshi AIHANA)
 
 

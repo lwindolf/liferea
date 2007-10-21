@@ -310,7 +310,8 @@ feedlist_selection_changed (nodePtr node)
 			liferea_htmlview_clear (ui_mainwindow_get_active_htmlview ());
 		}
 		
-		script_run_for_hook (SCRIPT_HOOK_FEED_SELECTED);
+		if (selectedNode)
+			script_run_for_hook (SCRIPT_HOOK_FEED_SELECTED);
 	}
 
 	debug_exit ("feedlist_selection_changed");
