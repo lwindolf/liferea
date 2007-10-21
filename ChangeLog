@@ -3,6 +3,8 @@
 	Version 1.4.6 (Stable)
 
 	* Fixes visible markup in "no title" item titles.
+	* Fixes SF #1809742 unread count in tray icon not
+	  updated properly (reported by cpapp)
 	* Updated Japanese translation (Takeshi AIHANA)
 
 
