@@ -135,15 +135,15 @@ gboolean export_OPML_feedlist(const gchar *filename, nodePtr node, gboolean trus
 			error = TRUE;
 		}
 		
-		if(trusted)
-			old_umask = umask(077);
+		if(!trusted)
+			old_umask = umask(022);	/* give read permissions for other, per-default we wouldn't give it... */
 			
 		if(-1 == xml_save_to_file (doc, backupFilename)) {
 			g_warning("Could not export to OPML file! Feed list changes will be lost!");
 			error = TRUE;
 		}
 		
-		if(trusted)
+		if(!trusted)
 			umask(old_umask);
 			
 		xmlFreeDoc(doc);

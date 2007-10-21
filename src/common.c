@@ -394,7 +394,7 @@ static void common_check_dir(gchar *path) {
 static void common_init_cache_path(void) {
 	gchar *cachePath;
 
-	lifereaUserPath = g_strdup_printf("%s" G_DIR_SEPARATOR_S ".liferea_1.3", g_get_home_dir());
+	lifereaUserPath = g_strdup_printf("%s" G_DIR_SEPARATOR_S ".liferea_1.4", g_get_home_dir());
 	cachePath = g_strdup_printf("%s" G_DIR_SEPARATOR_S "cache", lifereaUserPath);
 
 	common_check_dir(g_strdup(lifereaUserPath));
@@ -406,6 +406,9 @@ static void common_init_cache_path(void) {
 
 	g_free(cachePath);
 	/* lifereaUserPath reused globally */
+	
+	/* ensure reasonable default umask */
+	umask (077);
 }
 
 const gchar * common_get_cache_path(void) {
