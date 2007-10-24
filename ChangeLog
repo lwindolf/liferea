@@ -10,6 +10,8 @@
 	* Fixes security issue that feedlist.opml backup file
 	  has permissions 0644 instead if 0600.
 	* Updated Japanese translation (Takeshi AIHANA)
+	* Fixes Ubuntu #156303 segfault on mark-all-read
+	  (reported by snmartin)
 
 
 2007-10-11  Lars Lindner  <lars.lindner@gmail.com>

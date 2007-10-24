@@ -179,38 +179,41 @@ item_state_set_updated (itemPtr item, const gboolean newStatus)
 void
 item_state_set_all_read (nodePtr node) 
 {
-	itemSetPtr	itemSet = node_get_itemset (node);
+	itemSetPtr	itemSet;
 	
 	if (!node->unreadCount)
 		return;
-		
+	
+	itemSet = node_get_itemset (node);
 	GList *iter = itemSet->ids;
 	while (iter) {
 		gulong id = GPOINTER_TO_UINT (iter->data);
 		itemPtr item = item_load (id);
-		if (!item->readStatus) {
-			db_item_mark_read (item);
-			itemlist_update_item (item);
-			node_from_id (item->nodeId)->needsRecount = TRUE;
-			
-			debug_start_measurement (DEBUG_GUI);
-			
-			GSList *duplicates = db_item_get_duplicate_nodes (item->sourceId);
-			GSList *duplicate = duplicates;
-			while (duplicate) {
-				gchar *nodeId = (gchar *)duplicate->data;
-				nodePtr affectedNode = node_from_id (nodeId);
-				if (affectedNode != NULL) {
-					affectedNode->needsRecount = TRUE;
+		if (item) {
+			if (!item->readStatus) {
+				db_item_mark_read (item);
+				itemlist_update_item (item);
+				node_from_id (item->nodeId)->needsRecount = TRUE;
+
+				debug_start_measurement (DEBUG_GUI);
+
+				GSList *duplicates = db_item_get_duplicate_nodes (item->sourceId);
+				GSList *duplicate = duplicates;
+				while (duplicate) {
+					gchar *nodeId = (gchar *)duplicate->data;
+					nodePtr affectedNode = node_from_id (nodeId);
+					if (affectedNode != NULL) {
+						affectedNode->needsRecount = TRUE;
+					}
+					g_free (nodeId);
+					duplicate = g_slist_next (duplicate);
 				}
-				g_free (nodeId);
-				duplicate = g_slist_next (duplicate);
+				g_slist_free(duplicates);
+
+				debug_end_measurement (DEBUG_GUI, "mark read of duplicates");
 			}
-			g_slist_free(duplicates);
-			
-			debug_end_measurement (DEBUG_GUI, "mark read of duplicates");
+			item_unload (item);
 		}
-		item_unload (item);
 		iter = g_list_next (iter);
 	}
 		
