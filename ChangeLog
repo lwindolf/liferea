@@ -13,6 +13,8 @@
 	* Fixes Ubuntu #156303 segfault on mark-all-read
 	  (reported by snmartin)
 	* Build fix for NetworkManager 0.7.x (Jeremy Katz)
+	* Fixes SF #1787007: looses user-defined feed titles
+	  on updates (reported by several users)
 
 
 2007-10-11  Lars Lindner  <lars.lindner@gmail.com>
