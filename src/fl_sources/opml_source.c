@@ -268,7 +268,7 @@ opml_source_process_update_result (nodePtr node, const struct updateResult * con
 		}
 	}
 	
-	node_foreach_child (node, node_update_subscription);
+	node_foreach_child_data (node, node_update_subscription, GUINT_TO_POINTER (0));
 }
 
 static void
