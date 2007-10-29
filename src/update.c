@@ -35,7 +35,7 @@
 #include <string.h>
 
 #ifdef USE_NM
-#include <NetworkManager/libnm_glib.h>
+#include <libnm_glib.h>
 #endif
 
 #include "common.h"
