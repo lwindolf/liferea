@@ -2006,8 +2006,8 @@ msgstr ""
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
-msgstr[0] " (% nova)"
-msgstr[1] " (% noves)"
+msgstr[0] " (%d nova)"
+msgstr[1] " (%d noves)"
 
 #: ../src/ui/ui_mainwindow.c:1234
 #, c-format

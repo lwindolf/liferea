@@ -1,3 +1,11 @@
+2007-11-??  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.4.7 (Stable)
+
+	* Fixes SF #1821179 crash with Catalan locale.
+	  (reported by frango)
+
+
 2007-10-29  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.4.6 (Stable)
