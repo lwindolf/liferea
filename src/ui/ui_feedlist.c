@@ -137,7 +137,7 @@ ui_feedlist_selection_changed_cb (GtkTreeSelection *selection, gpointer data)
 		/* update feed list and item list states */
 		feedlist_selection_changed (node);
 		
-		if (realNode)
+		if (node)
 			ui_mainwindow_update_feed_menu (TRUE, (NODE_SOURCE_TYPE (node->source->root)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST));
 		else
 			ui_mainwindow_update_feed_menu (FALSE, 0);
