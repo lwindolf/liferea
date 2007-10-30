@@ -4,6 +4,8 @@
 
 	* Fixes SF #1821179 crash with Catalan locale.
 	  (reported by frango)
+	* Fixes disabled mark-all-read toolbar button when
+	  a folder is selected.
 
 
 2007-10-29  Lars Lindner  <lars.lindner@gmail.com>
