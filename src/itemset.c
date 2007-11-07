@@ -267,7 +267,9 @@ itemset_merge_items (itemSetPtr itemSet, GList *list)
 	/* 2. Preload all items for merging comparison */
 	iter = itemSet->ids;
 	while (iter) {
-		items = g_list_append (items, item_load (GPOINTER_TO_UINT (iter->data)));
+		itemPtr item = item_load (GPOINTER_TO_UINT (iter->data));
+		if (item)
+			items = g_list_append (items, item);
 		iter = g_list_next (iter);
 	}
  
