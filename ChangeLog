@@ -6,6 +6,8 @@
 	  (reported by frango)
 	* Fixes disabled mark-all-read toolbar button when
 	  a folder is selected.
+	* Fixes SF #1825113 crash when removing folders
+	  when child feeds are in update.
 
 
 2007-10-29  Lars Lindner  <lars.lindner@gmail.com>
