@@ -8,6 +8,7 @@
 	  a folder is selected.
 	* Fixes SF #1825113 crash when removing folders
 	  when child feeds are in update.
+	* Added kget download manager support SF #1824344.
 
 	Translations
 	

@@ -59,11 +59,12 @@ static struct enclosureDownloadTool enclosure_download_commands[] = {
 	{ "wget -q -O %s %s", TRUE },
 	{ "curl -s -o %s %s", TRUE },
 	{ "dbus-send --session --dest=org.gnome.gwget.ApplicationService /org/gnome/gwget/Gwget org.gnome.gwget.Application.OpenURI string:%s uint32:0", FALSE },
+	{ "kget %s", FALSE },
 	NULL
 };
 
 /** order must match enclosure_download_commands[] */
-static gchar *enclosure_download_tool_options[] = { "wget", "curl", "gwget", NULL };
+static gchar *enclosure_download_tool_options[] = { "wget", "curl", "gwget", "kget", NULL };
 
 static struct browser browsers[] = {
 	{
