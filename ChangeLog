@@ -9,6 +9,11 @@
 	* Fixes SF #1825113 crash when removing folders
 	  when child feeds are in update.
 
+	Translations
+	
+	* Updated Polish translation (Bart Kreska)
+	* Updated French translation (Vincent Lefevre)
+
 
 2007-10-29  Lars Lindner  <lars.lindner@gmail.com>
 
