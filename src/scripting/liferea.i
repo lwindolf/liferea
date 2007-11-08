@@ -7,6 +7,7 @@
 #include "../item_state.h"
 #include "../itemlist.h" 
 #include "../social.h"
+#include "../subscription.h"
 
 #include "../ui/ui_feedlist.h"
 #include "../ui/ui_itemlist.h"
@@ -25,6 +26,7 @@
 %include "../itemlist.h"
 %include "../feedlist.h"
 %include "../social.h"
+%include "../subscription.h"
 
 %include "../ui/ui_feedlist.h"
 %include "../ui/ui_itemlist.h"
