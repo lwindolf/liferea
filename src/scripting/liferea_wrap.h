@@ -1388,28 +1388,32 @@ SWIG_Lua_SetModule(lua_State* L, swig_module_info *module) {
 #define SWIGTYPE_p_GtkWidget swig_types[17]
 #define SWIGTYPE_p_LifereaHtmlView swig_types[18]
 #define SWIGTYPE_p_f_p_q_const__char_gpointer__void swig_types[19]
-#define SWIGTYPE_p_gpointer swig_types[20]
-#define SWIGTYPE_p_gulong swig_types[21]
-#define SWIGTYPE_p_int swig_types[22]
-#define SWIGTYPE_p_item swig_types[23]
-#define SWIGTYPE_p_itemSetPtr swig_types[24]
-#define SWIGTYPE_p_node swig_types[25]
-#define SWIGTYPE_p_nodeSource swig_types[26]
-#define SWIGTYPE_p_nodeType swig_types[27]
-#define SWIGTYPE_p_p_GdkPixbuf swig_types[28]
-#define SWIGTYPE_p_socialBookmarkSite swig_types[29]
-#define SWIGTYPE_p_subscription swig_types[30]
-#define SWIGTYPE_p_time_t swig_types[31]
-#define SWIGTYPE_p_updateFlags swig_types[32]
-#define SWIGTYPE_p_updateOptionsPtr swig_types[33]
-#define SWIGTYPE_p_updateResult swig_types[34]
-#define SWIGTYPE_p_xmlNodePtr swig_types[35]
-#define SWIGTYPE_time_t swig_types[36]
-#define SWIGTYPE_updateFlags swig_types[37]
-#define SWIGTYPE_updateOptionsPtr swig_types[38]
-#define SWIGTYPE_xmlNodePtr swig_types[39]
-static swig_type_info *swig_types[41];
-static swig_module_info swig_module = {swig_types, 40, 0, 0, 0, 0};
+#define SWIGTYPE_p_f_p_struct_node_q_const__p_q_const__struct_updateResult_guint32__void swig_types[20]
+#define SWIGTYPE_p_gpointer swig_types[21]
+#define SWIGTYPE_p_gulong swig_types[22]
+#define SWIGTYPE_p_int swig_types[23]
+#define SWIGTYPE_p_item swig_types[24]
+#define SWIGTYPE_p_itemSetPtr swig_types[25]
+#define SWIGTYPE_p_node swig_types[26]
+#define SWIGTYPE_p_nodeSource swig_types[27]
+#define SWIGTYPE_p_nodeType swig_types[28]
+#define SWIGTYPE_p_p_GdkPixbuf swig_types[29]
+#define SWIGTYPE_p_socialBookmarkSite swig_types[30]
+#define SWIGTYPE_p_subscription swig_types[31]
+#define SWIGTYPE_p_time_t swig_types[32]
+#define SWIGTYPE_p_updateFlags swig_types[33]
+#define SWIGTYPE_p_updateJob swig_types[34]
+#define SWIGTYPE_p_updateOptionsPtr swig_types[35]
+#define SWIGTYPE_p_updateResult swig_types[36]
+#define SWIGTYPE_p_updateStatePtr swig_types[37]
+#define SWIGTYPE_p_xmlNodePtr swig_types[38]
+#define SWIGTYPE_time_t swig_types[39]
+#define SWIGTYPE_updateFlags swig_types[40]
+#define SWIGTYPE_updateOptionsPtr swig_types[41]
+#define SWIGTYPE_updateStatePtr swig_types[42]
+#define SWIGTYPE_xmlNodePtr swig_types[43]
+static swig_type_info *swig_types[45];
+static swig_module_info swig_module = {swig_types, 44, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -1426,6 +1430,7 @@ static swig_module_info swig_module = {swig_types, 40, 0, 0, 0, 0};
 #include "../item.h"
 #include "../itemlist.h" 
 #include "../social.h"
+#include "../subscription.h"
 
 #include "../ui/ui_feedlist.h"
 #include "../ui/ui_itemlist.h"
@@ -6186,6 +6191,1373 @@ fail:
 }
 
 
+static int _wrap_subscription_node_set(lua_State* L) {
+  int SWIG_arg = -1;
+  struct subscription *arg1 = (struct subscription *) 0 ;
+  nodePtr arg2 = (nodePtr) 0 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg(2);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_node_set",1,SWIGTYPE_p_subscription);
+  }
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_node,0))){
+    SWIG_fail_ptr("subscription_node_set",2,SWIGTYPE_p_node);
+  }
+  
+  if (arg1) (arg1)->node = arg2;
+  
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_node_get(lua_State* L) {
+  int SWIG_arg = -1;
+  struct subscription *arg1 = (struct subscription *) 0 ;
+  nodePtr result;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_node_get",1,SWIGTYPE_p_subscription);
+  }
+  
+  result = (nodePtr) ((arg1)->node);
+  SWIG_arg=0;
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_node,0); SWIG_arg++; 
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_source_set(lua_State* L) {
+  int SWIG_arg = -1;
+  struct subscription *arg1 = (struct subscription *) 0 ;
+  char *arg2 = (char *) 0 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  if(!lua_isstring(L,2)) SWIG_fail_arg(2);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_source_set",1,SWIGTYPE_p_subscription);
+  }
+  
+  arg2 = (char *)lua_tostring(L, 2);
+  {
+    if (arg1->source) free((char *)arg1->source);
+    if (arg2) {
+      arg1->source = (char *) malloc(strlen((const char *)arg2)+1);
+      strcpy((char *)arg1->source, (const char *)arg2);
+    } else {
+      arg1->source = 0;
+    }
+  }
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_source_get(lua_State* L) {
+  int SWIG_arg = -1;
+  struct subscription *arg1 = (struct subscription *) 0 ;
+  char *result = 0 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_source_get",1,SWIGTYPE_p_subscription);
+  }
+  
+  result = (char *) ((arg1)->source);
+  SWIG_arg=0;
+  lua_pushstring(L,(const char*)result); SWIG_arg++;
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_origSource_set(lua_State* L) {
+  int SWIG_arg = -1;
+  struct subscription *arg1 = (struct subscription *) 0 ;
+  char *arg2 = (char *) 0 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  if(!lua_isstring(L,2)) SWIG_fail_arg(2);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_origSource_set",1,SWIGTYPE_p_subscription);
+  }
+  
+  arg2 = (char *)lua_tostring(L, 2);
+  {
+    if (arg1->origSource) free((char *)arg1->origSource);
+    if (arg2) {
+      arg1->origSource = (char *) malloc(strlen((const char *)arg2)+1);
+      strcpy((char *)arg1->origSource, (const char *)arg2);
+    } else {
+      arg1->origSource = 0;
+    }
+  }
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_origSource_get(lua_State* L) {
+  int SWIG_arg = -1;
+  struct subscription *arg1 = (struct subscription *) 0 ;
+  char *result = 0 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_origSource_get",1,SWIGTYPE_p_subscription);
+  }
+  
+  result = (char *) ((arg1)->origSource);
+  SWIG_arg=0;
+  lua_pushstring(L,(const char*)result); SWIG_arg++;
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_updateOptions_set(lua_State* L) {
+  int SWIG_arg = -1;
+  struct subscription *arg1 = (struct subscription *) 0 ;
+  updateOptionsPtr arg2 ;
+  updateOptionsPtr *argp2 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  if(!lua_isuserdata(L,2)) SWIG_fail_arg(2);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_updateOptions_set",1,SWIGTYPE_p_subscription);
+  }
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&argp2,SWIGTYPE_p_updateOptionsPtr,0))){
+    SWIG_fail_ptr("subscription_updateOptions_set",2,SWIGTYPE_updateOptionsPtr);
+  }
+  arg2 = *argp2;
+  
+  if (arg1) (arg1)->updateOptions = arg2;
+  
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_updateOptions_get(lua_State* L) {
+  int SWIG_arg = -1;
+  struct subscription *arg1 = (struct subscription *) 0 ;
+  updateOptionsPtr result;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_updateOptions_get",1,SWIGTYPE_p_subscription);
+  }
+  
+  result =  ((arg1)->updateOptions);
+  SWIG_arg=0;
+  {
+    updateOptionsPtr * resultptr;
+    resultptr = (updateOptionsPtr *) malloc(sizeof(updateOptionsPtr));
+    memmove(resultptr, &result, sizeof(updateOptionsPtr));
+    SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_updateOptionsPtr,1); SWIG_arg++;
+  }
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_updateJob_set(lua_State* L) {
+  int SWIG_arg = -1;
+  struct subscription *arg1 = (struct subscription *) 0 ;
+  struct updateJob *arg2 = (struct updateJob *) 0 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg(2);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_updateJob_set",1,SWIGTYPE_p_subscription);
+  }
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_updateJob,0))){
+    SWIG_fail_ptr("subscription_updateJob_set",2,SWIGTYPE_p_updateJob);
+  }
+  
+  if (arg1) (arg1)->updateJob = arg2;
+  
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_updateJob_get(lua_State* L) {
+  int SWIG_arg = -1;
+  struct subscription *arg1 = (struct subscription *) 0 ;
+  struct updateJob *result = 0 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_updateJob_get",1,SWIGTYPE_p_subscription);
+  }
+  
+  result = (struct updateJob *) ((arg1)->updateJob);
+  SWIG_arg=0;
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_updateJob,0); SWIG_arg++; 
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_updateInterval_set(lua_State* L) {
+  int SWIG_arg = -1;
+  struct subscription *arg1 = (struct subscription *) 0 ;
+  int arg2 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  if(!lua_isnumber(L,2)) SWIG_fail_arg(2);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_updateInterval_set",1,SWIGTYPE_p_subscription);
+  }
+  
+  arg2 = (int)lua_tonumber(L, 2);
+  if (arg1) (arg1)->updateInterval = arg2;
+  
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_updateInterval_get(lua_State* L) {
+  int SWIG_arg = -1;
+  struct subscription *arg1 = (struct subscription *) 0 ;
+  int result;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_updateInterval_get",1,SWIGTYPE_p_subscription);
+  }
+  
+  result = (int) ((arg1)->updateInterval);
+  SWIG_arg=0;
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_defaultInterval_set(lua_State* L) {
+  int SWIG_arg = -1;
+  struct subscription *arg1 = (struct subscription *) 0 ;
+  unsigned int arg2 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  if(!lua_isnumber(L,2)) SWIG_fail_arg(2);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_defaultInterval_set",1,SWIGTYPE_p_subscription);
+  }
+  
+  arg2 = (unsigned int)lua_tonumber(L, 2);
+  if (arg1) (arg1)->defaultInterval = arg2;
+  
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_defaultInterval_get(lua_State* L) {
+  int SWIG_arg = -1;
+  struct subscription *arg1 = (struct subscription *) 0 ;
+  unsigned int result;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_defaultInterval_get",1,SWIGTYPE_p_subscription);
+  }
+  
+  result = (unsigned int) ((arg1)->defaultInterval);
+  SWIG_arg=0;
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_metadata_set(lua_State* L) {
+  int SWIG_arg = -1;
+  struct subscription *arg1 = (struct subscription *) 0 ;
+  GSList *arg2 = (GSList *) 0 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg(2);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_metadata_set",1,SWIGTYPE_p_subscription);
+  }
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_GSList,0))){
+    SWIG_fail_ptr("subscription_metadata_set",2,SWIGTYPE_p_GSList);
+  }
+  
+  if (arg1) (arg1)->metadata = arg2;
+  
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_metadata_get(lua_State* L) {
+  int SWIG_arg = -1;
+  struct subscription *arg1 = (struct subscription *) 0 ;
+  GSList *result = 0 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_metadata_get",1,SWIGTYPE_p_subscription);
+  }
+  
+  result = (GSList *) ((arg1)->metadata);
+  SWIG_arg=0;
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_GSList,0); SWIG_arg++; 
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_updateError_set(lua_State* L) {
+  int SWIG_arg = -1;
+  struct subscription *arg1 = (struct subscription *) 0 ;
+  char *arg2 = (char *) 0 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  if(!lua_isstring(L,2)) SWIG_fail_arg(2);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_updateError_set",1,SWIGTYPE_p_subscription);
+  }
+  
+  arg2 = (char *)lua_tostring(L, 2);
+  {
+    if (arg1->updateError) free((char *)arg1->updateError);
+    if (arg2) {
+      arg1->updateError = (char *) malloc(strlen((const char *)arg2)+1);
+      strcpy((char *)arg1->updateError, (const char *)arg2);
+    } else {
+      arg1->updateError = 0;
+    }
+  }
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_updateError_get(lua_State* L) {
+  int SWIG_arg = -1;
+  struct subscription *arg1 = (struct subscription *) 0 ;
+  char *result = 0 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_updateError_get",1,SWIGTYPE_p_subscription);
+  }
+  
+  result = (char *) ((arg1)->updateError);
+  SWIG_arg=0;
+  lua_pushstring(L,(const char*)result); SWIG_arg++;
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_httpError_set(lua_State* L) {
+  int SWIG_arg = -1;
+  struct subscription *arg1 = (struct subscription *) 0 ;
+  char *arg2 = (char *) 0 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  if(!lua_isstring(L,2)) SWIG_fail_arg(2);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_httpError_set",1,SWIGTYPE_p_subscription);
+  }
+  
+  arg2 = (char *)lua_tostring(L, 2);
+  {
+    if (arg1->httpError) free((char *)arg1->httpError);
+    if (arg2) {
+      arg1->httpError = (char *) malloc(strlen((const char *)arg2)+1);
+      strcpy((char *)arg1->httpError, (const char *)arg2);
+    } else {
+      arg1->httpError = 0;
+    }
+  }
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_httpError_get(lua_State* L) {
+  int SWIG_arg = -1;
+  struct subscription *arg1 = (struct subscription *) 0 ;
+  char *result = 0 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_httpError_get",1,SWIGTYPE_p_subscription);
+  }
+  
+  result = (char *) ((arg1)->httpError);
+  SWIG_arg=0;
+  lua_pushstring(L,(const char*)result); SWIG_arg++;
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_httpErrorCode_set(lua_State* L) {
+  int SWIG_arg = -1;
+  struct subscription *arg1 = (struct subscription *) 0 ;
+  int arg2 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  if(!lua_isnumber(L,2)) SWIG_fail_arg(2);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_httpErrorCode_set",1,SWIGTYPE_p_subscription);
+  }
+  
+  arg2 = (int)lua_tonumber(L, 2);
+  if (arg1) (arg1)->httpErrorCode = arg2;
+  
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_httpErrorCode_get(lua_State* L) {
+  int SWIG_arg = -1;
+  struct subscription *arg1 = (struct subscription *) 0 ;
+  int result;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_httpErrorCode_get",1,SWIGTYPE_p_subscription);
+  }
+  
+  result = (int) ((arg1)->httpErrorCode);
+  SWIG_arg=0;
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_updateState_set(lua_State* L) {
+  int SWIG_arg = -1;
+  struct subscription *arg1 = (struct subscription *) 0 ;
+  updateStatePtr arg2 ;
+  updateStatePtr *argp2 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  if(!lua_isuserdata(L,2)) SWIG_fail_arg(2);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_updateState_set",1,SWIGTYPE_p_subscription);
+  }
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&argp2,SWIGTYPE_p_updateStatePtr,0))){
+    SWIG_fail_ptr("subscription_updateState_set",2,SWIGTYPE_updateStatePtr);
+  }
+  arg2 = *argp2;
+  
+  if (arg1) (arg1)->updateState = arg2;
+  
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_updateState_get(lua_State* L) {
+  int SWIG_arg = -1;
+  struct subscription *arg1 = (struct subscription *) 0 ;
+  updateStatePtr result;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_updateState_get",1,SWIGTYPE_p_subscription);
+  }
+  
+  result =  ((arg1)->updateState);
+  SWIG_arg=0;
+  {
+    updateStatePtr * resultptr;
+    resultptr = (updateStatePtr *) malloc(sizeof(updateStatePtr));
+    memmove(resultptr, &result, sizeof(updateStatePtr));
+    SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_updateStatePtr,1); SWIG_arg++;
+  }
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_discontinued_set(lua_State* L) {
+  int SWIG_arg = -1;
+  struct subscription *arg1 = (struct subscription *) 0 ;
+  int arg2 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  if(!lua_isnumber(L,2)) SWIG_fail_arg(2);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_discontinued_set",1,SWIGTYPE_p_subscription);
+  }
+  
+  arg2 = (int)lua_tonumber(L, 2);
+  if (arg1) (arg1)->discontinued = arg2;
+  
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_discontinued_get(lua_State* L) {
+  int SWIG_arg = -1;
+  struct subscription *arg1 = (struct subscription *) 0 ;
+  int result;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_discontinued_get",1,SWIGTYPE_p_subscription);
+  }
+  
+  result = (int) ((arg1)->discontinued);
+  SWIG_arg=0;
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_filtercmd_set(lua_State* L) {
+  int SWIG_arg = -1;
+  struct subscription *arg1 = (struct subscription *) 0 ;
+  char *arg2 = (char *) 0 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  if(!lua_isstring(L,2)) SWIG_fail_arg(2);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_filtercmd_set",1,SWIGTYPE_p_subscription);
+  }
+  
+  arg2 = (char *)lua_tostring(L, 2);
+  {
+    if (arg1->filtercmd) free((char *)arg1->filtercmd);
+    if (arg2) {
+      arg1->filtercmd = (char *) malloc(strlen((const char *)arg2)+1);
+      strcpy((char *)arg1->filtercmd, (const char *)arg2);
+    } else {
+      arg1->filtercmd = 0;
+    }
+  }
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_filtercmd_get(lua_State* L) {
+  int SWIG_arg = -1;
+  struct subscription *arg1 = (struct subscription *) 0 ;
+  char *result = 0 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_filtercmd_get",1,SWIGTYPE_p_subscription);
+  }
+  
+  result = (char *) ((arg1)->filtercmd);
+  SWIG_arg=0;
+  lua_pushstring(L,(const char*)result); SWIG_arg++;
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_filterError_set(lua_State* L) {
+  int SWIG_arg = -1;
+  struct subscription *arg1 = (struct subscription *) 0 ;
+  char *arg2 = (char *) 0 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  if(!lua_isstring(L,2)) SWIG_fail_arg(2);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_filterError_set",1,SWIGTYPE_p_subscription);
+  }
+  
+  arg2 = (char *)lua_tostring(L, 2);
+  {
+    if (arg1->filterError) free((char *)arg1->filterError);
+    if (arg2) {
+      arg1->filterError = (char *) malloc(strlen((const char *)arg2)+1);
+      strcpy((char *)arg1->filterError, (const char *)arg2);
+    } else {
+      arg1->filterError = 0;
+    }
+  }
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_filterError_get(lua_State* L) {
+  int SWIG_arg = -1;
+  struct subscription *arg1 = (struct subscription *) 0 ;
+  char *result = 0 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_filterError_get",1,SWIGTYPE_p_subscription);
+  }
+  
+  result = (char *) ((arg1)->filterError);
+  SWIG_arg=0;
+  lua_pushstring(L,(const char*)result); SWIG_arg++;
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_new_subscription(lua_State* L) {
+  int SWIG_arg = -1;
+  struct subscription *result = 0 ;
+  
+  result = (struct subscription *)(struct subscription *) calloc(1, sizeof(struct subscription));
+  SWIG_arg=0;
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_subscription,1); SWIG_arg++; 
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_delete_subscription(lua_State* L) {
+  int SWIG_arg = -1;
+  struct subscription *arg1 = (struct subscription *) 0 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("delete_subscription",1,SWIGTYPE_p_subscription);
+  }
+  
+  free((char *) arg1);
+  
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static void swig_delete_subscription(void *obj) {
+struct subscription *arg1 = (struct subscription *) obj;
+free((char *) arg1);
+}
+static swig_lua_method swig_subscription_methods[] = {
+    {0,0}
+};
+static swig_lua_attribute swig_subscription_attributes[] = {
+    { "node",_wrap_subscription_node_get, _wrap_subscription_node_set},
+    { "source",_wrap_subscription_source_get, _wrap_subscription_source_set},
+    { "origSource",_wrap_subscription_origSource_get, _wrap_subscription_origSource_set},
+    { "updateOptions",_wrap_subscription_updateOptions_get, _wrap_subscription_updateOptions_set},
+    { "updateJob",_wrap_subscription_updateJob_get, _wrap_subscription_updateJob_set},
+    { "updateInterval",_wrap_subscription_updateInterval_get, _wrap_subscription_updateInterval_set},
+    { "defaultInterval",_wrap_subscription_defaultInterval_get, _wrap_subscription_defaultInterval_set},
+    { "metadata",_wrap_subscription_metadata_get, _wrap_subscription_metadata_set},
+    { "updateError",_wrap_subscription_updateError_get, _wrap_subscription_updateError_set},
+    { "httpError",_wrap_subscription_httpError_get, _wrap_subscription_httpError_set},
+    { "httpErrorCode",_wrap_subscription_httpErrorCode_get, _wrap_subscription_httpErrorCode_set},
+    { "updateState",_wrap_subscription_updateState_get, _wrap_subscription_updateState_set},
+    { "discontinued",_wrap_subscription_discontinued_get, _wrap_subscription_discontinued_set},
+    { "filtercmd",_wrap_subscription_filtercmd_get, _wrap_subscription_filtercmd_set},
+    { "filterError",_wrap_subscription_filterError_get, _wrap_subscription_filterError_set},
+    {0,0,0}
+};
+static swig_lua_class *swig_subscription_bases[] = {0};
+swig_lua_class _wrap_class_subscription = { "subscription", &SWIGTYPE_p_subscription,_wrap_new_subscription, swig_delete_subscription, swig_subscription_methods, swig_subscription_attributes, swig_subscription_bases };
+
+static int _wrap_subscription_new(lua_State* L) {
+  int SWIG_arg = -1;
+  char *arg1 = (char *) 0 ;
+  char *arg2 = (char *) 0 ;
+  updateOptionsPtr arg3 ;
+  subscriptionPtr result;
+  updateOptionsPtr *argp3 ;
+  
+  if(!lua_isstring(L,1)) SWIG_fail_arg(1);
+  if(!lua_isstring(L,2)) SWIG_fail_arg(2);
+  if(!lua_isuserdata(L,3)) SWIG_fail_arg(3);
+  arg1 = (char *)lua_tostring(L, 1);
+  arg2 = (char *)lua_tostring(L, 2);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,3,(void**)&argp3,SWIGTYPE_p_updateOptionsPtr,0))){
+    SWIG_fail_ptr("subscription_new",3,SWIGTYPE_updateOptionsPtr);
+  }
+  arg3 = *argp3;
+  
+  result = (subscriptionPtr)subscription_new((char const *)arg1,(char const *)arg2,arg3);
+  SWIG_arg=0;
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_subscription,0); SWIG_arg++; 
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_import(lua_State* L) {
+  int SWIG_arg = -1;
+  xmlNodePtr arg1 ;
+  int arg2 ;
+  subscriptionPtr result;
+  xmlNodePtr *argp1 ;
+  
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg(1);
+  if(!lua_isnumber(L,2)) SWIG_fail_arg(2);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_xmlNodePtr,0))){
+    SWIG_fail_ptr("subscription_import",1,SWIGTYPE_xmlNodePtr);
+  }
+  arg1 = *argp1;
+  
+  arg2 = (int)lua_tonumber(L, 2);
+  result = (subscriptionPtr)subscription_import(arg1,arg2);
+  SWIG_arg=0;
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_subscription,0); SWIG_arg++; 
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_export(lua_State* L) {
+  int SWIG_arg = -1;
+  subscriptionPtr arg1 = (subscriptionPtr) 0 ;
+  xmlNodePtr arg2 ;
+  int arg3 ;
+  xmlNodePtr *argp2 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  if(!lua_isuserdata(L,2)) SWIG_fail_arg(2);
+  if(!lua_isnumber(L,3)) SWIG_fail_arg(3);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_export",1,SWIGTYPE_p_subscription);
+  }
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&argp2,SWIGTYPE_p_xmlNodePtr,0))){
+    SWIG_fail_ptr("subscription_export",2,SWIGTYPE_xmlNodePtr);
+  }
+  arg2 = *argp2;
+  
+  arg3 = (int)lua_tonumber(L, 3);
+  subscription_export(arg1,arg2,arg3);
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_can_be_updated(lua_State* L) {
+  int SWIG_arg = -1;
+  subscriptionPtr arg1 = (subscriptionPtr) 0 ;
+  int result;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_can_be_updated",1,SWIGTYPE_p_subscription);
+  }
+  
+  result = (int)subscription_can_be_updated(arg1);
+  SWIG_arg=0;
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_update(lua_State* L) {
+  int SWIG_arg = -1;
+  subscriptionPtr arg1 = (subscriptionPtr) 0 ;
+  unsigned int arg2 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  if(!lua_isnumber(L,2)) SWIG_fail_arg(2);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_update",1,SWIGTYPE_p_subscription);
+  }
+  
+  arg2 = (unsigned int)lua_tonumber(L, 2);
+  subscription_update(arg1,arg2);
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_update_with_callback(lua_State* L) {
+  int SWIG_arg = -1;
+  subscriptionPtr arg1 = (subscriptionPtr) 0 ;
+  subscription_update_cb arg2 = (subscription_update_cb) 0 ;
+  unsigned int arg3 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg(2);
+  if(!lua_isnumber(L,3)) SWIG_fail_arg(3);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_update_with_callback",1,SWIGTYPE_p_subscription);
+  }
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_f_p_struct_node_q_const__p_q_const__struct_updateResult_guint32__void,0))){
+    SWIG_fail_ptr("subscription_update_with_callback",2,SWIGTYPE_p_f_p_struct_node_q_const__p_q_const__struct_updateResult_guint32__void);
+  }
+  
+  arg3 = (unsigned int)lua_tonumber(L, 3);
+  subscription_update_with_callback(arg1,arg2,arg3);
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_auto_update(lua_State* L) {
+  int SWIG_arg = -1;
+  subscriptionPtr arg1 = (subscriptionPtr) 0 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_auto_update",1,SWIGTYPE_p_subscription);
+  }
+  
+  subscription_auto_update(arg1);
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_get_update_interval(lua_State* L) {
+  int SWIG_arg = -1;
+  subscriptionPtr arg1 = (subscriptionPtr) 0 ;
+  int result;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_get_update_interval",1,SWIGTYPE_p_subscription);
+  }
+  
+  result = (int)subscription_get_update_interval(arg1);
+  SWIG_arg=0;
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_set_update_interval(lua_State* L) {
+  int SWIG_arg = -1;
+  subscriptionPtr arg1 = (subscriptionPtr) 0 ;
+  int arg2 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  if(!lua_isnumber(L,2)) SWIG_fail_arg(2);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_set_update_interval",1,SWIGTYPE_p_subscription);
+  }
+  
+  arg2 = (int)lua_tonumber(L, 2);
+  subscription_set_update_interval(arg1,arg2);
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_get_default_update_interval(lua_State* L) {
+  int SWIG_arg = -1;
+  subscriptionPtr arg1 = (subscriptionPtr) 0 ;
+  unsigned int result;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_get_default_update_interval",1,SWIGTYPE_p_subscription);
+  }
+  
+  result = (unsigned int)subscription_get_default_update_interval(arg1);
+  SWIG_arg=0;
+  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_set_default_update_interval(lua_State* L) {
+  int SWIG_arg = -1;
+  subscriptionPtr arg1 = (subscriptionPtr) 0 ;
+  unsigned int arg2 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  if(!lua_isnumber(L,2)) SWIG_fail_arg(2);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_set_default_update_interval",1,SWIGTYPE_p_subscription);
+  }
+  
+  arg2 = (unsigned int)lua_tonumber(L, 2);
+  subscription_set_default_update_interval(arg1,arg2);
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_reset_update_counter(lua_State* L) {
+  int SWIG_arg = -1;
+  subscriptionPtr arg1 = (subscriptionPtr) 0 ;
+  GTimeVal *arg2 = (GTimeVal *) 0 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg(2);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_reset_update_counter",1,SWIGTYPE_p_subscription);
+  }
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_GTimeVal,0))){
+    SWIG_fail_ptr("subscription_reset_update_counter",2,SWIGTYPE_p_GTimeVal);
+  }
+  
+  subscription_reset_update_counter(arg1,arg2);
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_set_cookies(lua_State* L) {
+  int SWIG_arg = -1;
+  subscriptionPtr arg1 = (subscriptionPtr) 0 ;
+  char *arg2 = (char *) 0 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  if(!lua_isstring(L,2)) SWIG_fail_arg(2);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_set_cookies",1,SWIGTYPE_p_subscription);
+  }
+  
+  arg2 = (char *)lua_tostring(L, 2);
+  subscription_set_cookies(arg1,(char const *)arg2);
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_get_source(lua_State* L) {
+  int SWIG_arg = -1;
+  subscriptionPtr arg1 = (subscriptionPtr) 0 ;
+  char *result = 0 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_get_source",1,SWIGTYPE_p_subscription);
+  }
+  
+  result = (char *)subscription_get_source(arg1);
+  SWIG_arg=0;
+  lua_pushstring(L,(const char*)result); SWIG_arg++;
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_set_source(lua_State* L) {
+  int SWIG_arg = -1;
+  subscriptionPtr arg1 = (subscriptionPtr) 0 ;
+  char *arg2 = (char *) 0 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  if(!lua_isstring(L,2)) SWIG_fail_arg(2);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_set_source",1,SWIGTYPE_p_subscription);
+  }
+  
+  arg2 = (char *)lua_tostring(L, 2);
+  subscription_set_source(arg1,(char const *)arg2);
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_get_orig_source(lua_State* L) {
+  int SWIG_arg = -1;
+  subscriptionPtr arg1 = (subscriptionPtr) 0 ;
+  char *result = 0 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_get_orig_source",1,SWIGTYPE_p_subscription);
+  }
+  
+  result = (char *)subscription_get_orig_source(arg1);
+  SWIG_arg=0;
+  lua_pushstring(L,(const char*)result); SWIG_arg++;
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_set_orig_source(lua_State* L) {
+  int SWIG_arg = -1;
+  subscriptionPtr arg1 = (subscriptionPtr) 0 ;
+  char *arg2 = (char *) 0 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  if(!lua_isstring(L,2)) SWIG_fail_arg(2);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_set_orig_source",1,SWIGTYPE_p_subscription);
+  }
+  
+  arg2 = (char *)lua_tostring(L, 2);
+  subscription_set_orig_source(arg1,(char const *)arg2);
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_get_filter(lua_State* L) {
+  int SWIG_arg = -1;
+  subscriptionPtr arg1 = (subscriptionPtr) 0 ;
+  char *result = 0 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_get_filter",1,SWIGTYPE_p_subscription);
+  }
+  
+  result = (char *)subscription_get_filter(arg1);
+  SWIG_arg=0;
+  lua_pushstring(L,(const char*)result); SWIG_arg++;
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_set_filter(lua_State* L) {
+  int SWIG_arg = -1;
+  subscriptionPtr arg1 = (subscriptionPtr) 0 ;
+  char *arg2 = (char *) 0 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  if(!lua_isstring(L,2)) SWIG_fail_arg(2);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_set_filter",1,SWIGTYPE_p_subscription);
+  }
+  
+  arg2 = (char *)lua_tostring(L, 2);
+  subscription_set_filter(arg1,(char const *)arg2);
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_update_error_status(lua_State* L) {
+  int SWIG_arg = -1;
+  subscriptionPtr arg1 = (subscriptionPtr) 0 ;
+  int arg2 ;
+  int arg3 ;
+  char *arg4 = (char *) 0 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  if(!lua_isnumber(L,2)) SWIG_fail_arg(2);
+  if(!lua_isnumber(L,3)) SWIG_fail_arg(3);
+  if(!lua_isstring(L,4)) SWIG_fail_arg(4);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_update_error_status",1,SWIGTYPE_p_subscription);
+  }
+  
+  arg2 = (int)lua_tonumber(L, 2);
+  arg3 = (int)lua_tonumber(L, 3);
+  arg4 = (char *)lua_tostring(L, 4);
+  subscription_update_error_status(arg1,arg2,arg3,arg4);
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_free(lua_State* L) {
+  int SWIG_arg = -1;
+  subscriptionPtr arg1 = (subscriptionPtr) 0 ;
+  
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_free",1,SWIGTYPE_p_subscription);
+  }
+  
+  subscription_free(arg1);
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_feedstore_set(lua_State* L) {
   int SWIG_arg = -1;
   GtkTreeStore *arg1 = (GtkTreeStore *) 0 ;
@@ -8223,6 +9595,59 @@ static const struct luaL_reg swig_commands[] = {
     { "social_get_url", _wrap_social_get_url},
     { "social_set_site", _wrap_social_set_site},
     { "social_get_site", _wrap_social_get_site},
+    { "subscription_node_set", _wrap_subscription_node_set},
+    { "subscription_node_get", _wrap_subscription_node_get},
+    { "subscription_source_set", _wrap_subscription_source_set},
+    { "subscription_source_get", _wrap_subscription_source_get},
+    { "subscription_origSource_set", _wrap_subscription_origSource_set},
+    { "subscription_origSource_get", _wrap_subscription_origSource_get},
+    { "subscription_updateOptions_set", _wrap_subscription_updateOptions_set},
+    { "subscription_updateOptions_get", _wrap_subscription_updateOptions_get},
+    { "subscription_updateJob_set", _wrap_subscription_updateJob_set},
+    { "subscription_updateJob_get", _wrap_subscription_updateJob_get},
+    { "subscription_updateInterval_set", _wrap_subscription_updateInterval_set},
+    { "subscription_updateInterval_get", _wrap_subscription_updateInterval_get},
+    { "subscription_defaultInterval_set", _wrap_subscription_defaultInterval_set},
+    { "subscription_defaultInterval_get", _wrap_subscription_defaultInterval_get},
+    { "subscription_metadata_set", _wrap_subscription_metadata_set},
+    { "subscription_metadata_get", _wrap_subscription_metadata_get},
+    { "subscription_updateError_set", _wrap_subscription_updateError_set},
+    { "subscription_updateError_get", _wrap_subscription_updateError_get},
+    { "subscription_httpError_set", _wrap_subscription_httpError_set},
+    { "subscription_httpError_get", _wrap_subscription_httpError_get},
+    { "subscription_httpErrorCode_set", _wrap_subscription_httpErrorCode_set},
+    { "subscription_httpErrorCode_get", _wrap_subscription_httpErrorCode_get},
+    { "subscription_updateState_set", _wrap_subscription_updateState_set},
+    { "subscription_updateState_get", _wrap_subscription_updateState_get},
+    { "subscription_discontinued_set", _wrap_subscription_discontinued_set},
+    { "subscription_discontinued_get", _wrap_subscription_discontinued_get},
+    { "subscription_filtercmd_set", _wrap_subscription_filtercmd_set},
+    { "subscription_filtercmd_get", _wrap_subscription_filtercmd_get},
+    { "subscription_filterError_set", _wrap_subscription_filterError_set},
+    { "subscription_filterError_get", _wrap_subscription_filterError_get},
+    { "new_subscription", _wrap_new_subscription},
+    { "delete_subscription", _wrap_delete_subscription},
+    { "subscription_new", _wrap_subscription_new},
+    { "subscription_import", _wrap_subscription_import},
+    { "subscription_export", _wrap_subscription_export},
+    { "subscription_can_be_updated", _wrap_subscription_can_be_updated},
+    { "subscription_update", _wrap_subscription_update},
+    { "subscription_update_with_callback", _wrap_subscription_update_with_callback},
+    { "subscription_auto_update", _wrap_subscription_auto_update},
+    { "subscription_get_update_interval", _wrap_subscription_get_update_interval},
+    { "subscription_set_update_interval", _wrap_subscription_set_update_interval},
+    { "subscription_get_default_update_interval", _wrap_subscription_get_default_update_interval},
+    { "subscription_set_default_update_interval", _wrap_subscription_set_default_update_interval},
+    { "subscription_reset_update_counter", _wrap_subscription_reset_update_counter},
+    { "subscription_set_cookies", _wrap_subscription_set_cookies},
+    { "subscription_get_source", _wrap_subscription_get_source},
+    { "subscription_set_source", _wrap_subscription_set_source},
+    { "subscription_get_orig_source", _wrap_subscription_get_orig_source},
+    { "subscription_set_orig_source", _wrap_subscription_set_orig_source},
+    { "subscription_get_filter", _wrap_subscription_get_filter},
+    { "subscription_set_filter", _wrap_subscription_set_filter},
+    { "subscription_update_error_status", _wrap_subscription_update_error_status},
+    { "subscription_free", _wrap_subscription_free},
     { "feedstore_set", _wrap_feedstore_set},
     { "feedstore_get", _wrap_feedstore_get},
     { "ui_feedlist_select", _wrap_ui_feedlist_select},
@@ -8347,6 +9772,14 @@ static swig_lua_const_info swig_constants[] = {
 { SWIG_LUA_INT,     (char *)"ICON_UPDATED", (long) ICON_UPDATED, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"ICON_ENCLOSURE", (long) ICON_ENCLOSURE, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"MAX_ICONS", (long) MAX_ICONS, 0, 0, 0},
+{ SWIG_LUA_INT,     (char *)"FEED_REQ_RESET_TITLE", (long) FEED_REQ_RESET_TITLE, 0, 0, 0},
+{ SWIG_LUA_INT,     (char *)"FEED_REQ_RESET_UPDATE_INT", (long) FEED_REQ_RESET_UPDATE_INT, 0, 0, 0},
+{ SWIG_LUA_INT,     (char *)"FEED_REQ_AUTO_DISCOVER", (long) FEED_REQ_AUTO_DISCOVER, 0, 0, 0},
+{ SWIG_LUA_INT,     (char *)"FEED_REQ_PRIORITY_HIGH", (long) FEED_REQ_PRIORITY_HIGH, 0, 0, 0},
+{ SWIG_LUA_INT,     (char *)"FEED_REQ_DOWNLOAD_FAVICON", (long) FEED_REQ_DOWNLOAD_FAVICON, 0, 0, 0},
+{ SWIG_LUA_INT,     (char *)"FEED_REQ_AUTH_DIALOG", (long) FEED_REQ_AUTH_DIALOG, 0, 0, 0},
+{ SWIG_LUA_INT,     (char *)"FEED_REQ_ALLOW_RETRIES", (long) FEED_REQ_ALLOW_RETRIES, 0, 0, 0},
+{ SWIG_LUA_INT,     (char *)"FEED_REQ_NO_PROXY", (long) FEED_REQ_NO_PROXY, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"FS_LABEL", (long) FS_LABEL, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"FS_ICON", (long) FS_ICON, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"FS_PTR", (long) FS_PTR, 0, 0, 0},
@@ -8393,6 +9826,7 @@ static swig_type_info _swigt__p_GtkTreeViewColumn = {"_p_GtkTreeViewColumn", "Gt
 static swig_type_info _swigt__p_GtkWidget = {"_p_GtkWidget", "GtkWidget *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_LifereaHtmlView = {"_p_LifereaHtmlView", "LifereaHtmlView *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_f_p_q_const__char_gpointer__void = {"_p_f_p_q_const__char_gpointer__void", "void (*)(char const *,gpointer)|fileChoosenCallback", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_f_p_struct_node_q_const__p_q_const__struct_updateResult_guint32__void = {"_p_f_p_struct_node_q_const__p_q_const__struct_updateResult_guint32__void", "void (*)(struct node *,struct updateResult const *const,guint32)|subscription_update_cb", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gpointer = {"_p_gpointer", "gpointer *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gulong = {"_p_gulong", "gulong *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_int = {"_p_int", "int *", 0, 0, (void*)0, 0};
@@ -8403,15 +9837,18 @@ static swig_type_info _swigt__p_nodeSource = {"_p_nodeSource", "struct nodeSourc
 static swig_type_info _swigt__p_nodeType = {"_p_nodeType", "struct nodeType *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_p_GdkPixbuf = {"_p_p_GdkPixbuf", "GdkPixbuf **", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_socialBookmarkSite = {"_p_socialBookmarkSite", "socialBookmarkSite *", 0, 0, (void*)&_wrap_class_socialBookmarkSite, 0};
-static swig_type_info _swigt__p_subscription = {"_p_subscription", "struct subscription *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_subscription = {"_p_subscription", "struct subscription *|subscriptionPtr", 0, 0, (void*)&_wrap_class_subscription, 0};
 static swig_type_info _swigt__p_time_t = {"_p_time_t", "time_t *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_updateFlags = {"_p_updateFlags", "updateFlags *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_updateJob = {"_p_updateJob", "struct updateJob *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_updateOptionsPtr = {"_p_updateOptionsPtr", "updateOptionsPtr *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_updateResult = {"_p_updateResult", "struct updateResult *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_updateStatePtr = {"_p_updateStatePtr", "updateStatePtr *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_xmlNodePtr = {"_p_xmlNodePtr", "xmlNodePtr *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__time_t = {"_time_t", "time_t", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__updateFlags = {"_updateFlags", "updateFlags", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__updateOptionsPtr = {"_updateOptionsPtr", "updateOptionsPtr", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__updateStatePtr = {"_updateStatePtr", "updateStatePtr", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__xmlNodePtr = {"_xmlNodePtr", "xmlNodePtr", 0, 0, (void*)0, 0};
 
 static swig_type_info *swig_type_initial[] = {
@@ -8435,6 +9872,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_GtkWidget,
   &_swigt__p_LifereaHtmlView,
   &_swigt__p_f_p_q_const__char_gpointer__void,
+  &_swigt__p_f_p_struct_node_q_const__p_q_const__struct_updateResult_guint32__void,
   &_swigt__p_gpointer,
   &_swigt__p_gulong,
   &_swigt__p_int,
@@ -8448,12 +9886,15 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_subscription,
   &_swigt__p_time_t,
   &_swigt__p_updateFlags,
+  &_swigt__p_updateJob,
   &_swigt__p_updateOptionsPtr,
   &_swigt__p_updateResult,
+  &_swigt__p_updateStatePtr,
   &_swigt__p_xmlNodePtr,
   &_swigt__time_t,
   &_swigt__updateFlags,
   &_swigt__updateOptionsPtr,
+  &_swigt__updateStatePtr,
   &_swigt__xmlNodePtr,
 };
 
@@ -8477,6 +9918,7 @@ static swig_cast_info _swigc__p_GtkTreeViewColumn[] = {  {&_swigt__p_GtkTreeView
 static swig_cast_info _swigc__p_GtkWidget[] = {  {&_swigt__p_GtkWidget, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_LifereaHtmlView[] = {  {&_swigt__p_LifereaHtmlView, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_f_p_q_const__char_gpointer__void[] = {  {&_swigt__p_f_p_q_const__char_gpointer__void, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_f_p_struct_node_q_const__p_q_const__struct_updateResult_guint32__void[] = {  {&_swigt__p_f_p_struct_node_q_const__p_q_const__struct_updateResult_guint32__void, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gpointer[] = {  {&_swigt__p_gpointer, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gulong[] = {  {&_swigt__p_gulong, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_int[] = {  {&_swigt__p_int, 0, 0, 0},{0, 0, 0, 0}};
@@ -8490,12 +9932,15 @@ static swig_cast_info _swigc__p_socialBookmarkSite[] = {  {&_swigt__p_socialBook
 static swig_cast_info _swigc__p_subscription[] = {  {&_swigt__p_subscription, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_time_t[] = {  {&_swigt__p_time_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_updateFlags[] = {  {&_swigt__p_updateFlags, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_updateJob[] = {  {&_swigt__p_updateJob, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_updateOptionsPtr[] = {  {&_swigt__p_updateOptionsPtr, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_updateResult[] = {  {&_swigt__p_updateResult, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_updateStatePtr[] = {  {&_swigt__p_updateStatePtr, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_xmlNodePtr[] = {  {&_swigt__p_xmlNodePtr, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__time_t[] = {  {&_swigt__time_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__updateFlags[] = {  {&_swigt__updateFlags, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__updateOptionsPtr[] = {  {&_swigt__updateOptionsPtr, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__updateStatePtr[] = {  {&_swigt__updateStatePtr, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__xmlNodePtr[] = {  {&_swigt__xmlNodePtr, 0, 0, 0},{0, 0, 0, 0}};
 
 static swig_cast_info *swig_cast_initial[] = {
@@ -8519,6 +9964,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_GtkWidget,
   _swigc__p_LifereaHtmlView,
   _swigc__p_f_p_q_const__char_gpointer__void,
+  _swigc__p_f_p_struct_node_q_const__p_q_const__struct_updateResult_guint32__void,
   _swigc__p_gpointer,
   _swigc__p_gulong,
   _swigc__p_int,
@@ -8532,12 +9978,15 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_subscription,
   _swigc__p_time_t,
   _swigc__p_updateFlags,
+  _swigc__p_updateJob,
   _swigc__p_updateOptionsPtr,
   _swigc__p_updateResult,
+  _swigc__p_updateStatePtr,
   _swigc__p_xmlNodePtr,
   _swigc__time_t,
   _swigc__updateFlags,
   _swigc__updateOptionsPtr,
+  _swigc__updateStatePtr,
   _swigc__xmlNodePtr,
 };
 

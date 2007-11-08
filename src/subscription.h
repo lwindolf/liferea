@@ -114,17 +114,6 @@ void subscription_export (subscriptionPtr subscription, xmlNodePtr xml, gboolean
 gboolean subscription_can_be_updated(subscriptionPtr subscription);
 
 /**
- * Prepares a given request structure for an update of the
- * given subscription with the specified request flags
- *
- * @param subscription	the subscription
- * @param request	an uninitialized request
- * @param flags		request processing flags
- * @param now		current time
- */
-void subscription_prepare_request (subscriptionPtr subscription, updateRequestPtr request, guint flags, GTimeVal *now);
-
-/**
  * Triggers updating a subscription. Will download the 
  * the document indicated by the source URL of the subscription.
  * Will call the node type specific update callback to process
