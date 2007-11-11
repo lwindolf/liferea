@@ -58,7 +58,7 @@ typedef struct feed {
 	gboolean	noIncremental;		/**< Do merging for this feed but drop old items */
 	
 	/* feed parsing state */
-	gboolean	valid;			/**< FALSE if libxml2 recovery mode was used to create this item set*/
+	gboolean	valid;			/**< FALSE if libxml2 recovery mode was used on last feed parsing */
 	GString		*parseErrors;		/**< textual description of parsing errors */
 	time_t		time;			/**< Feeds modified date */
 

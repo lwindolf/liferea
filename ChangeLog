@@ -9,6 +9,8 @@
 	* Fixes SF #1825113 crash when removing folders
 	  when child feeds are in update.
 	* Fixes drag&drop into empty folders.
+	* Fixes handling of updated items. Now updated items
+	  are replaced and marked again appropriately.
 	* Added kget download manager support SF #1824344.
 
 	Translations

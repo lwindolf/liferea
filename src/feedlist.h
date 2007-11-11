@@ -84,16 +84,19 @@ guint feedlist_get_unread_item_count (void);
 guint feedlist_get_new_item_count (void);
 
 /**
- * Increase the global feed list new item counter.
- *
- * @param newCount	value to add
- */
-void feedlist_update_new_item_count (guint addValue);
-
-/**
  * Reset the global feed list new item counter.
  */
 void feedlist_reset_new_item_count (void);
+
+/**
+ * To be called when a feed is updated and has
+ * new or dropped items forcing a node unread count
+ * update for all affected nodes in the feed list.
+ *
+ * @param node		the updated node
+ * @param newCount	number of new and unread items
+ */
+void feedlist_node_was_updated (nodePtr node, guint newCount);
 
 /**
  * Helper function to query the feed list root node.
