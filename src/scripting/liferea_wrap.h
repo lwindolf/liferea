@@ -3203,34 +3203,6 @@ fail:
 }
 
 
-static int _wrap_node_merge_items(lua_State* L) {
-  int SWIG_arg = -1;
-  nodePtr arg1 = (nodePtr) 0 ;
-  GList *arg2 = (GList *) 0 ;
-  
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
-  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg(2);
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_node,0))){
-    SWIG_fail_ptr("node_merge_items",1,SWIGTYPE_p_node);
-  }
-  
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_GList,0))){
-    SWIG_fail_ptr("node_merge_items",2,SWIGTYPE_p_GList);
-  }
-  
-  node_merge_items(arg1,arg2);
-  SWIG_arg=0;
-  
-  return SWIG_arg;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
 static int _wrap_node_render(lua_State* L) {
   int SWIG_arg = -1;
   nodePtr arg1 = (nodePtr) 0 ;
@@ -5513,13 +5485,10 @@ fail:
 }
 
 
-static int _wrap_feedlist_update_new_item_count(lua_State* L) {
+static int _wrap_feedlist_reset_new_item_count(lua_State* L) {
   int SWIG_arg = -1;
-  unsigned int arg1 ;
   
-  if(!lua_isnumber(L,1)) SWIG_fail_arg(1);
-  arg1 = (unsigned int)lua_tonumber(L, 1);
-  feedlist_update_new_item_count(arg1);
+  feedlist_reset_new_item_count();
   SWIG_arg=0;
   
   return SWIG_arg;
@@ -5530,10 +5499,20 @@ fail:
 }
 
 
-static int _wrap_feedlist_reset_new_item_count(lua_State* L) {
+static int _wrap_feedlist_node_was_updated(lua_State* L) {
   int SWIG_arg = -1;
+  nodePtr arg1 = (nodePtr) 0 ;
+  unsigned int arg2 ;
   
-  feedlist_reset_new_item_count();
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg(1);
+  if(!lua_isnumber(L,2)) SWIG_fail_arg(2);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_node,0))){
+    SWIG_fail_ptr("feedlist_node_was_updated",1,SWIGTYPE_p_node);
+  }
+  
+  arg2 = (unsigned int)lua_tonumber(L, 2);
+  feedlist_node_was_updated(arg1,arg2);
   SWIG_arg=0;
   
   return SWIG_arg;
@@ -9467,7 +9446,6 @@ static const struct luaL_reg swig_commands[] = {
     { "node_save", _wrap_node_save},
     { "node_process_update_result", _wrap_node_process_update_result},
     { "node_get_itemset", _wrap_node_get_itemset},
-    { "node_merge_items", _wrap_node_merge_items},
     { "node_render", _wrap_node_render},
     { "node_update_favicon", _wrap_node_update_favicon},
     { "node_set_sort_column", _wrap_node_set_sort_column},
@@ -9565,8 +9543,8 @@ static const struct luaL_reg swig_commands[] = {
     { "feedlist_get_insertion_point", _wrap_feedlist_get_insertion_point},
     { "feedlist_get_unread_item_count", _wrap_feedlist_get_unread_item_count},
     { "feedlist_get_new_item_count", _wrap_feedlist_get_new_item_count},
-    { "feedlist_update_new_item_count", _wrap_feedlist_update_new_item_count},
     { "feedlist_reset_new_item_count", _wrap_feedlist_reset_new_item_count},
+    { "feedlist_node_was_updated", _wrap_feedlist_node_was_updated},
     { "feedlist_remove_node", _wrap_feedlist_remove_node},
     { "feedlist_save", _wrap_feedlist_save},
     { "feedlist_schedule_save", _wrap_feedlist_schedule_save},
