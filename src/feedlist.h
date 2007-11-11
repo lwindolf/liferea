@@ -1,7 +1,7 @@
 /**
  * @file feedlist.h feedlist handling
  *
- * Copyright (C) 2005-2006 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2005-2007 Lars Lindner <lars.lindner@gmail.com>
  *	      
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -84,16 +84,19 @@ guint feedlist_get_unread_item_count (void);
 guint feedlist_get_new_item_count (void);
 
 /**
- * Increase the global feed list new item counter.
- *
- * @param newCount	value to add
- */
-void feedlist_update_new_item_count (guint addValue);
-
-/**
  * Reset the global feed list new item counter.
  */
 void feedlist_reset_new_item_count (void);
+
+/**
+ * To be called when a feed is updated and has
+ * new or dropped items forcing a node unread count
+ * update for all affected nodes in the feed list.
+ *
+ * @param node		the updated node
+ * @param newCount	number of new and unread items
+ */
+void feedlist_node_was_updated (nodePtr node, guint newCount);
 
 /**
  * Helper function to query the feed list root node.
@@ -127,6 +130,14 @@ void feedlist_schedule_save(void);
  * @param node		the node (or NULL for whole feed list)
  */
 void feedlist_reset_update_counters (nodePtr node);
+
+/**
+ * Triggers a recursive mark-all-read on the given node
+ * and updates the feed list afterwards.
+ *
+ * @param node		the node to start with
+ */
+void feedlist_mark_all_read (nodePtr node);
 
 /* feed list iterating interface */
 

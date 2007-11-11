@@ -61,7 +61,7 @@ itemset_get_max_item_count (itemSetPtr itemSet)
 
 /* Generic merge logic suitable for feeds */
 static gboolean
-itemset_generic_merge_check (GList *items, itemPtr newItem) 
+itemset_generic_merge_check (GList *items, itemPtr newItem, gboolean allowUpdates)
 {
 	GList		*oldItemIdIter = items;
 	itemPtr		oldItem = NULL;
@@ -122,20 +122,20 @@ itemset_generic_merge_check (GList *items, itemPtr newItem)
 	} else {
 		/* if the item was found but has other contents -> update contents */
 		if (!equal) {
-//			if (((feedPtr)(node_from_id(itemSet->nodeId)->data))->valid) {
-//				/* no item_set_new_status() - we don't treat changed items as new items! */
-//				item_set_title (oldItem, item_get_title (newItem));
-//				item_set_description (oldItem, item_get_description (newItem));
-//				oldItem->time = newItem->time;
-//				oldItem->updateStatus = TRUE;
-//				// FIXME: this does not remove metadata from DB
-//				metadata_list_free (oldItem->metadata);
-//				oldItem->metadata = newItem->metadata;
-//				newItem->metadata = NULL;
-//				debug0 (DEBUG_CACHE, "-> item already existing and was updated");
-//			} else {
-//				debug0 (DEBUG_CACHE, "-> item updates not merged because of parser errors");
-//			}
+			if (allowUpdates) {
+				/* no item_set_new_status() - we don't treat changed items as new items! */
+				item_set_title (oldItem, item_get_title (newItem));
+				item_set_description (oldItem, item_get_description (newItem));
+				oldItem->time = newItem->time;
+				oldItem->updateStatus = TRUE;
+				// FIXME: this does not remove metadata from DB
+				metadata_list_free (oldItem->metadata);
+				oldItem->metadata = newItem->metadata;
+				newItem->metadata = NULL;
+				debug0 (DEBUG_CACHE, "-> item already existing and was updated");
+			} else {
+				debug0 (DEBUG_CACHE, "-> item updates not merged because of parser errors");
+			}
 		} else {
 			debug0 (DEBUG_CACHE, "-> item already exists");
 		}
@@ -149,13 +149,13 @@ itemset_generic_merge_check (GList *items, itemPtr newItem)
  * into the itemset or if it was already added.
  */
 static gboolean
-itemset_merge_check (GList *items, itemPtr item)
+itemset_merge_check (GList *items, itemPtr item, gboolean allowUpdates)
 {
-	return itemset_generic_merge_check (items, item);	
+	return itemset_generic_merge_check (items, item, allowUpdates);
 }
 
 static gboolean
-itemset_merge_item (itemSetPtr itemSet, GList *items, itemPtr item)
+itemset_merge_item (itemSetPtr itemSet, GList *items, itemPtr item, gboolean allowUpdates)
 {
 	gboolean	merge;
 	nodePtr		node;
@@ -163,7 +163,7 @@ itemset_merge_item (itemSetPtr itemSet, GList *items, itemPtr item)
 	debug2 (DEBUG_UPDATE, "trying to merge \"%s\" to node id \"%s\"", item_get_title (item), itemSet->nodeId);
 	
 	/* first try to merge with existing item */
-	merge = itemset_merge_check (items, item);
+	merge = itemset_merge_check (items, item, allowUpdates);
 
 	/* if it is a new item add it to the item set */	
 	if (merge) {
@@ -230,7 +230,7 @@ itemset_sort_by_date (gconstpointer a, gconstpointer b)
 }
 
 guint
-itemset_merge_items (itemSetPtr itemSet, GList *list)
+itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates)
 {
 	GList	*iter, *droppedItems = NULL, *items = NULL;
 	guint	max, toBeDropped, newCount = 0;
@@ -281,7 +281,7 @@ itemset_merge_items (itemSetPtr itemSet, GList *list)
 	   to be done bottom to top. */
 	iter = g_list_last (list);
 	while (iter) {
-		if (itemset_merge_item (itemSet, items, ((itemPtr)iter->data)))
+		if (itemset_merge_item (itemSet, items, (itemPtr)iter->data, allowUpdates))
 			newCount++;
 		iter = g_list_previous (iter);
 	}

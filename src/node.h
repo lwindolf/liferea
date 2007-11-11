@@ -327,17 +327,6 @@ void node_reset_update_counter(nodePtr node, GTimeVal *now);
 itemSetPtr node_get_itemset(nodePtr node);
 
 /**
- * Merges the given list of items into the nodes item set.
- * To do so it calls itemset_merge_items(). Additionally it
- * updates the global feed list new counter and all search
- * folders.
- *
- * @param node	the node
- * @param items	the items to be merged
- */
-void node_merge_items (nodePtr node, GList *items);
-
-/**
  * Node content rendering
  *
  * @param node	the node

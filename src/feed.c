@@ -261,7 +261,7 @@ feed_auto_discover (feedParserCtxtPtr ctxt)
 		updateRequestPtr request = update_request_new ();
 		debug1 (DEBUG_UPDATE, "feed link found: %s", source);
 		request->source = g_strdup (source);
-		request->options = ctxt->subscription->updateOptions;
+		request->options = update_options_copy (ctxt->subscription->updateOptions);
 		result = update_execute_request_sync (ctxt->subscription, request, 0);
 		if (result->data) {
 			debug0 (DEBUG_UPDATE, "feed link download successful!");
@@ -582,10 +582,18 @@ feed_process_update_result (nodePtr node, const struct updateResult * const resu
 			                                       "XML Parser Output:<br /><div class='xmlparseroutput'>"));
 			g_string_append (feed->parseErrors, "</div>");
 		} else {
+			itemSetPtr	itemSet;
+			guint		newCount;
+			
 			node->available = TRUE;
 			
 			/* merge the resulting items into the node's item set */
-			node_merge_items (node, ctxt->items);
+			itemSet = node_get_itemset (node);	
+			newCount = itemset_merge_items (itemSet, ctxt->items, ctxt->feed->valid);
+			itemlist_merge_itemset (itemSet);
+			itemset_free (itemSet);
+
+			feedlist_node_was_updated (node, newCount);
 			
 			/* restore user defined properties if necessary */
 			if (flags & FEED_REQ_RESET_TITLE)

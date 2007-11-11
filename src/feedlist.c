@@ -146,7 +146,7 @@ feedlist_unset_new_items (nodePtr node)
 	node_foreach_child (node, feedlist_unset_new_items);
 }
 
-void
+static void
 feedlist_update_new_item_count (guint addValue)
 {
 	newCount += addValue;
@@ -163,6 +163,18 @@ feedlist_reset_new_item_count (void)
 		ui_tray_update ();
 		ui_mainwindow_update_feedsinfo ();
 	}
+}
+
+void
+feedlist_node_was_updated (nodePtr node, guint newCount)
+{
+	if (newCount) {
+		vfolder_foreach_with_rule ("unread", vfolder_update_counters);
+		vfolder_foreach_with_rule ("flagged", vfolder_update_counters);
+	}
+			
+	node_update_counters (node);
+	feedlist_update_new_item_count (newCount);
 }
 
 void feedlist_remove_node(nodePtr node) {
