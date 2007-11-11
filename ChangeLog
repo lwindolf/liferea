@@ -1,4 +1,4 @@
-2007-11-??  Lars Lindner  <lars.lindner@gmail.com>
+2007-11-11  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.4.7 (Stable)
 
@@ -11,6 +11,8 @@
 	* Fixes drag&drop into empty folders.
 	* Fixes handling of updated items. Now updated items
 	  are replaced and marked again appropriately.
+	* Fixes problems with search folders with more than
+	  one rule.
 	* Added kget download manager support SF #1824344.
 
 	Translations

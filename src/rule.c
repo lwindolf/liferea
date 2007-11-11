@@ -209,7 +209,7 @@ query_create (GSList *rules)
 			condition->sql = NULL;
 		} else {
 			gchar *old = query->conditions;
-			query->conditions = g_strdup_printf ("%s AND %s", old, condition->sql);
+			query->conditions = g_strdup_printf ("%s OR %s", old, condition->sql);
 			g_free (old);
 		}
 		query->tables |= condition->tables;
