@@ -1,3 +1,12 @@
+2007-11-??  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.4.8 (Stable)
+
+	* Now never loads duplicates when using recursive
+	  folder view. This avoids duplicate removal problems
+	  when using Mark-All-Read on such a view.
+
+
 2007-11-11  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.4.7 (Stable)

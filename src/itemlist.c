@@ -46,13 +46,14 @@
 #include "ui/ui_node.h"
 
 /* This is a simple controller implementation for itemlist handling. 
-   It manages the currently displayed itemset, realizes filtering
-   and provides synchronisation for backend and GUI access to this 
-   itemset.  
+   It manages the currently displayed itemset, realizes filtering,
+   duplicate elimination and provides synchronisation for backend 
+   and GUI access to this itemset.  
  */
  
 static struct itemlist_priv 
 {
+	GHashTable	*guids;			/**< list of GUID to avoid having duplicates in currently loaded list */
 	GSList	 	*filter;		/**< currently active filter rule */
 	nodePtr		currentNode;		/**< the node whose own or its child items are currently displayed */
 	gulong		selectedId;		/**< the currently selected (and displayed) item id */
@@ -65,13 +66,53 @@ static struct itemlist_priv
 	gboolean 	deferredFilter;		/**< TRUE if selected item needs to be filtered on unselecting */
 } itemlist_priv;
 
+static void
+itemlist_filter_free (void)
+{
+	GSList *iter = itemlist_priv.filter;
+	while (iter) {
+		rule_free (iter->data);
+		iter = g_slist_next (iter);
+	}
+	g_slist_free (itemlist_priv.filter);
+	itemlist_priv.filter = NULL;
+}
+
+static void
+itemlist_duplicate_list_add_item (itemPtr item)
+{
+	if (!item->validGuid)
+		return;
+	if (!itemlist_priv.guids)
+		itemlist_priv.guids = g_hash_table_new (g_str_hash, g_str_equal);
+	g_hash_table_insert (itemlist_priv.guids, g_strdup (item->sourceId), GUINT_TO_POINTER (item->id));
+}
+
+static gboolean
+itemlist_duplicate_list_check_item (itemPtr item)
+{
+	if (!itemlist_priv.guids || !item->validGuid)
+		return TRUE;
+
+	return (NULL == g_hash_table_lookup (itemlist_priv.guids, item->sourceId));
+}
+
+static void
+itemlist_duplicate_list_free (void)
+{
+	if (itemlist_priv.guids) {
+		g_hash_table_destroy (itemlist_priv.guids);
+		itemlist_priv.guids = NULL;
+	}
+}
+
 void
 itemlist_free (void)
 {
 	ui_itemlist_destroy (); 
 	
-	// FIXME: free filter rules
-	g_slist_free (itemlist_priv.filter);
+	itemlist_filter_free ();
+	itemlist_duplicate_list_free ();
 }
 
 itemPtr
@@ -127,7 +168,7 @@ itemlist_check_for_deferred_action (void)
 
 // FIXME: is this an item set method?
 static gboolean
-itemlist_check_item (itemPtr item)
+itemlist_filter_check_item (itemPtr item)
 {
 	/* use search folder rule list in case of a search folder */
 	if ((itemlist_priv.currentNode != NULL) &&
@@ -145,10 +186,15 @@ itemlist_check_item (itemPtr item)
 static void
 itemlist_merge_item (itemPtr item) 
 {
-	if (itemlist_check_item (item)) {
-		itemlist_priv.hasEnclosures |= item->hasEnclosure;
-		itemview_add_item (item);
-	}
+	if (!itemlist_duplicate_list_check_item (item))
+		return;		
+		
+	if (!itemlist_filter_check_item (item))
+		return;
+		
+	itemlist_priv.hasEnclosures |= item->hasEnclosure;
+	itemlist_duplicate_list_add_item (item);
+	itemview_add_item (item);
 }
 
 /**
@@ -207,23 +253,17 @@ itemlist_load (nodePtr node)
 	debug_enter ("itemlist_load");
 
 	g_return_if_fail (NULL != node);
-
+	
 	debug1 (DEBUG_GUI, "loading item list with node \"%s\"", node_get_title (node));
+
+	g_assert (!itemlist_priv.guids);
+	g_assert (!itemlist_priv.filter);
+	itemlist_priv.hasEnclosures = FALSE;
 
 	/* 1. Filter check. Don't continue if folder is selected and 
 	   no folder viewing is configured. If folder viewing is enabled
-	   set up a "unread items only" rule depending on the prefences. */	
-	   
-	iter = itemlist_priv.filter;
-	while (iter) {
-		rule_free (iter->data);
-		iter = g_slist_next (iter);
-	}
-	g_slist_free (itemlist_priv.filter);
-	itemlist_priv.filter = NULL;
-	
-	itemlist_priv.hasEnclosures = FALSE;
-	   
+	   set up a "unread items only" rule depending on the prefences. */
+
 	/* for folders and other heirarchic nodes do filtering */
 	if (IS_FOLDER (node) || node->children) {
 		if (0 == conf_get_int_value (FOLDER_DISPLAY_MODE))
@@ -272,6 +312,8 @@ itemlist_unload (gboolean markRead)
 	}
 
 	itemlist_set_selected (NULL);
+	itemlist_filter_free ();
+	itemlist_duplicate_list_free ();
 	itemlist_priv.currentNode = NULL;
 }
 
@@ -478,7 +520,7 @@ itemlist_remove_all_items (nodePtr node)
 void
 itemlist_update_item (itemPtr item)
 {
-	if (!itemlist_check_item (item)) {
+	if (!itemlist_filter_check_item (item)) {
 		itemlist_hide_item (item);
 		return;
 	} else {
