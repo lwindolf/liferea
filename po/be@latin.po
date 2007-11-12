@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.2.20\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-08 23:59+0200\n"
+"POT-Creation-Date: 2007-11-12 12:32+0200\n"
 "PO-Revision-Date: 2007-08-19 13:26+0300\n"
 "Last-Translator:  <ihar.hrachyshka@gmail.com>\n"
 "Language-Team: Belarusian Latin\n"
@@ -391,7 +391,7 @@ msgid "Headlines"
 msgstr "Zahałoŭki"
 
 #. GTK theme support
-#: ../liferea.glade.h:116 ../src/main.c:176
+#: ../liferea.glade.h:116 ../src/main.c:175
 msgid "Liferea"
 msgstr "Liferea"
 
@@ -421,7 +421,7 @@ msgstr "Maksymalnaja _kolkaść vynikovych elementaŭ:"
 msgid "New Folder"
 msgstr "Novy kataloh"
 
-#: ../liferea.glade.h:122 ../src/node.c:409
+#: ../liferea.glade.h:122 ../src/node.c:333
 msgid "New Subscription"
 msgstr "Novaja padpiska"
 
@@ -552,7 +552,7 @@ msgstr "Pakažy _padručnaje vakno z novymi zahałoŭkami."
 msgid "Show a status _icon in the notification area (system tray)."
 msgstr "Pakazvaj _ikonu stanu ŭ abšary nahadvańniaŭ (systemnym trai)."
 
-#: ../liferea.glade.h:151 ../xslt/item.xml.in.h:11
+#: ../liferea.glade.h:151 ../xslt/item.xml.in.h:12
 msgid "Source"
 msgstr "Krynica"
 
@@ -921,26 +921,34 @@ msgid "Refresh"
 msgstr "Aktualizuj"
 
 #: ../xslt/item.xml.in.h:10
+msgid "Related"
+msgstr "Padobnyja"
+
+#: ../xslt/item.xml.in.h:11
 msgid "Section"
 msgstr "Raździeł"
 
-#: ../xslt/item.xml.in.h:12
+#: ../xslt/item.xml.in.h:13
 msgid "Updating..."
 msgstr "Aktualizacyja..."
 
-#: ../xslt/item.xml.in.h:13
+#: ../xslt/item.xml.in.h:14
+msgid "Via"
+msgstr "Ad"
+
+#: ../xslt/item.xml.in.h:15
 msgid "bookmark"
 msgstr "zakładka"
 
-#: ../xslt/item.xml.in.h:14
+#: ../xslt/item.xml.in.h:16
 msgid "comments"
 msgstr "kamentary"
 
-#: ../xslt/item.xml.in.h:15
+#: ../xslt/item.xml.in.h:17
 msgid "flag"
 msgstr "ściah"
 
-#: ../xslt/item.xml.in.h:16
+#: ../xslt/item.xml.in.h:18
 msgid "search"
 msgstr "pošuk"
 
@@ -961,7 +969,7 @@ msgid "Search Folder:"
 msgstr "Kataloh pošuku:"
 
 #. unauthorized
-#: ../src/comments.c:116
+#: ../src/comments.c:117
 msgid "Authorization Error"
 msgstr "Pamyłka aŭtaryzacyi"
 
@@ -990,12 +998,12 @@ msgstr "%b %d %l:%M %p"
 msgid "%b %d %Y"
 msgstr "%b %d %Y"
 
-#: ../src/common.c:383
+#: ../src/common.c:388
 #, c-format
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "Niemahčyma stvaryć kataloh padručnaj pamiaci \"%s\"!"
 
-#: ../src/common.c:431
+#: ../src/common.c:439
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box."
@@ -1003,96 +1011,96 @@ msgstr ""
 "Tabie nie dazvolena čytać hety kanał. Kali łaska, aktualizuj nazvu "
 "karystalnika j parol u dyjalohavym aknie ŭłaścivaściaŭ kanału."
 
-#: ../src/common.c:433
+#: ../src/common.c:441
 msgid "Payment Required"
 msgstr "Patrabujecca apłata"
 
-#: ../src/common.c:434
+#: ../src/common.c:442
 msgid "Access Forbidden"
 msgstr "Dostup zabaronieny"
 
-#: ../src/common.c:435
+#: ../src/common.c:443
 msgid "Resource Not Found"
 msgstr "Resurs nia znojdzieny"
 
-#: ../src/common.c:436
+#: ../src/common.c:444
 msgid "Method Not Allowed"
 msgstr "Metad nie dazvoleny"
 
-#: ../src/common.c:437
+#: ../src/common.c:445
 msgid "Not Acceptable"
 msgstr "Nie pryjmalna"
 
-#: ../src/common.c:438
+#: ../src/common.c:446
 msgid "Proxy Authentication Required"
 msgstr "Patrabujecca aŭtaryzacyja dla proxy"
 
-#: ../src/common.c:439
+#: ../src/common.c:447
 msgid "Request Time-Out"
 msgstr "Skončyŭsia termin čakańnia zapytu"
 
-#: ../src/common.c:440
+#: ../src/common.c:448
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "Źnik. Resurs nie isnuje. Kali łaska, adpišysia!"
 
-#: ../src/common.c:445
+#: ../src/common.c:453
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr "Kanał niedastupny: Server vymahaje niepadtrymanaje pieranakiravańnie!"
 
-#: ../src/common.c:446
+#: ../src/common.c:454
 msgid "Client Error"
 msgstr "Pamyłka klijenta"
 
-#: ../src/common.c:447
+#: ../src/common.c:455
 msgid "Server Error"
 msgstr "Pamyłka servera"
 
-#: ../src/common.c:448
+#: ../src/common.c:456
 msgid "(unknown networking error happened)"
 msgstr "(adbyłasia nieviadomaja sietkavaja pamyłka)"
 
-#: ../src/common.c:459
+#: ../src/common.c:467
 msgid "URL is invalid"
 msgstr "Spasyłka niapravilnaja"
 
-#: ../src/common.c:460
+#: ../src/common.c:468
 msgid "Unsupported network protocol"
 msgstr "Niepadtrymany sietkavy pratakoł"
 
-#: ../src/common.c:463
+#: ../src/common.c:471
 msgid "Error connecting to remote host"
 msgstr "Pamyłka spałučeńnia z addalenym kamputaram"
 
-#: ../src/common.c:464
+#: ../src/common.c:472
 msgid "Hostname could not be found"
 msgstr "Niemahčyma znajści nazvu kamputara"
 
-#: ../src/common.c:465
+#: ../src/common.c:473
 msgid "Network connection was refused by the remote host"
 msgstr "Addaleny kamputar admoviŭ u sietkavym spałučeńni"
 
-#: ../src/common.c:466
+#: ../src/common.c:474
 msgid "Remote host did not finish sending data"
 msgstr "Addaleny kamputar nia skončyŭ dasyłać źviestki"
 
 #. Transfer errors
-#: ../src/common.c:468
+#: ../src/common.c:476
 msgid "Too many HTTP redirects were encountered"
 msgstr "Adbyłosia nadta šmat pieranakiravańniaŭ HTTP"
 
-#: ../src/common.c:471
+#: ../src/common.c:479
 msgid "Remote host sent an invalid response"
 msgstr "Addaleny kamputar dasłaŭ niapravilny adkaz"
 
-#: ../src/common.c:478
+#: ../src/common.c:486
 msgid "Authentication failed"
 msgstr "Pamyłka aŭtaryzacyi"
 
-#: ../src/common.c:480
+#: ../src/common.c:488
 msgid "Webserver's authentication method incompatible with Liferea"
 msgstr "Metad aŭtaryzacyi na web-servery niesumiaščalny ź Liferea"
 
-#: ../src/common.c:525
+#: ../src/common.c:533
 msgid ""
 "Unexpected end of character sequence or corrupt UTF-8 encoding! Some "
 "characters were dropped!"
@@ -1100,65 +1108,65 @@ msgstr ""
 "Niečakany kaniec paśladoŭnaści znakaŭ albo kiepskaje kadavańnie UTF-8! "
 "Niekatoryja znaki praihnaravanyja!"
 
-#: ../src/common.c:631
+#: ../src/common.c:639
 #, c-format
 msgid "Couldn't find pixmap file: %s"
 msgstr "Niemahčyma znajści fajł pikselnaj mapy: %s"
 
-#: ../src/export.c:152
+#: ../src/export.c:153
 #, c-format
 msgid "Error renaming %s to %s\n"
 msgstr "Pamyłka źmieny nazvy %s na %s\n"
 
-#: ../src/export.c:322 ../src/export.c:324
+#: ../src/export.c:323 ../src/export.c:325
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
 msgstr ""
 "Pamyłka XML pry čytańni padručnaha fajłu! Niemahčyma impartavać \"%s\"!"
 
-#: ../src/export.c:329 ../src/export.c:331
+#: ../src/export.c:330 ../src/export.c:332
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr ""
 "Pusty dakument! Dakument OPML \"%s\" nie pavinny być pustym pry impartavańni."
 
-#: ../src/export.c:352 ../src/export.c:354
+#: ../src/export.c:353 ../src/export.c:355
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 "\"%s\" nie źjaŭlajecca pravilnym dakumentam OPML! Liferea nia moža "
 "impartavać hety fajł!"
 
-#: ../src/export.c:373
+#: ../src/export.c:374
 msgid "Imported feed list"
 msgstr "Śpis impartavanych kanałaŭ"
 
-#: ../src/export.c:385
+#: ../src/export.c:386
 msgid "Import Feed List"
 msgstr "Impartuj śpis kanałaŭ"
 
-#: ../src/export.c:385
+#: ../src/export.c:386
 msgid "Import"
 msgstr "Impartuj"
 
-#: ../src/export.c:392
+#: ../src/export.c:393
 msgid "Error while exporting feed list!"
 msgstr "Pamyłka pry ekspartavańni śpisu kanałaŭ!"
 
-#: ../src/export.c:394
+#: ../src/export.c:395
 msgid "Feed List exported!"
 msgstr "Śpis kanałaŭ ekspartavany!"
 
-#: ../src/export.c:400
+#: ../src/export.c:401
 msgid "Export Feed List"
 msgstr "Ekspartuj śpis kanałaŭ"
 
-#: ../src/export.c:400
+#: ../src/export.c:401
 msgid "Export"
 msgstr "Ekspartuj"
 
-#: ../src/feed.c:282
+#: ../src/feed.c:283
 msgid ""
 "The URL you want Liferea to subscribe to points to a webpage and the auto "
 "discovery found no feeds on this page. Maybe this webpage just does not "
@@ -1168,29 +1176,28 @@ msgstr ""
 "sieciŭnuju staronku, i aŭtapošuk nie znajšoŭ kanałaŭ na hetaj staroncy. "
 "Moža, hetaja sieciŭnaja staronka nie padtrymvaje aŭtapošuku kanałaŭ."
 
-#: ../src/feed.c:313
+#: ../src/feed.c:314
 #, c-format
 msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
-msgstr ""
-"Pamyłka XML pry čytańni kanału! Niemahčyma zahruzić kanał \"%s\"!"
+msgstr "Pamyłka XML pry čytańni kanału! Niemahčyma zahruzić kanał \"%s\"!"
 
-#: ../src/feed.c:318
+#: ../src/feed.c:319
 msgid "Empty document!"
 msgstr "Pusty dakument!"
 
-#: ../src/feed.c:327
+#: ../src/feed.c:328
 msgid "Invalid XML!"
 msgstr "Niapravilny XML!"
 
-#: ../src/feed.c:367
+#: ../src/feed.c:368
 msgid "Source points to HTML document."
 msgstr "Krynica pakazvaje na dakument HTML."
 
-#: ../src/feed.c:370
+#: ../src/feed.c:371
 msgid "Could not determine the feed type."
 msgstr "Niemahčyma vyznačyć typ kanału."
 
-#: ../src/feed.c:580
+#: ../src/feed.c:581
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!</"
@@ -1200,35 +1207,35 @@ msgstr ""
 "viadzie da resursu ŭ adnym z padtrymanych farmataŭ syndykacyi!</p>Vyjście "
 "raźbiralnika XML:<br /><div class='xmlparseroutput'>"
 
-#: ../src/feed.c:604
+#: ../src/feed.c:613
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" aktualizavany..."
 
-#: ../src/feed.c:612
+#: ../src/feed.c:621
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" niedastupny"
 
-#: ../src/feedlist.c:297
+#: ../src/feedlist.c:342
 msgid "You have to select a feed entry"
 msgstr "Ty pavinny abrać zapis kanału"
 
-#: ../src/feedlist.c:304 ../src/feedlist.c:313
+#: ../src/feedlist.c:349 ../src/feedlist.c:358
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea u adłučanym režymie. Aktualizacyja niemahčymaja."
 
-#: ../src/feedlist.c:439
+#: ../src/feedlist.c:486
 msgid ""
 "This version of Liferea uses a new cache format and has migrated your feed "
 "cache. The cache content of v1.2 in ~/.liferea_1.2 was not deleted "
 "automatically. Please remove this directory manually once you are sure "
 "migration was successful!"
 msgstr ""
-"Hetaja versija Liferea vykarystoŭvaje padručnuju pamiać u novym farmacie, tamu "
-"tvaje padručnyja fajły byli skanvertavanyja. Padručnyja fajły versii 1.2 u "
-"~/.liferea_1.2 nie byli vydalenyja aŭtamatyčna. Vydal hety kataloh samastojna, "
-"jak tolki ŭpeŭniśsia ŭ paśpiachovaści mihracyi!"
+"Hetaja versija Liferea vykarystoŭvaje padručnuju pamiać u novym farmacie, "
+"tamu tvaje padručnyja fajły byli skanvertavanyja. Padručnyja fajły versii "
+"1.2 u ~/.liferea_1.2 nie byli vydalenyja aŭtamatyčna. Vydal hety kataloh "
+"samastojna, jak tolki ŭpeŭniśsia ŭ paśpiachovaści mihracyi!"
 
 #: ../src/html.c:154
 msgid "Feed link auto discovery failed! No feed links found!"
@@ -1237,145 +1244,144 @@ msgstr ""
 "znojdzienyja!"
 
 #. if we don't find a feed with unread items do nothing
-#: ../src/itemlist.c:337
+#: ../src/itemlist.c:338
 msgid "There are no unread items "
 msgstr "Nia niečytanych elementaŭ "
 
-#: ../src/main.c:69
+#: ../src/main.c:68
 msgid "  --version        Print version information and exit"
 msgstr "  --version        Pakažy źviestki ab versii i vyjdzi"
 
-#: ../src/main.c:70
+#: ../src/main.c:69
 msgid "  --help           Print this help and exit"
 msgstr "  --help           Pakažy hetuju dapamohu j vyjdzi"
 
-#: ../src/main.c:71
+#: ../src/main.c:70
 msgid "  --mainwindow-state=STATE"
 msgstr "  --mainwindow-state=STAN"
 
-#: ../src/main.c:72
+#: ../src/main.c:71
 msgid "                   Start Liferea with its main window in STATE."
 msgstr "                   Startuj Liferea z hałoŭnym aknom u STANIE."
 
-#: ../src/main.c:73
+#: ../src/main.c:72
 msgid "                   STATE may be `shown', `iconified', or `hidden'"
 msgstr "                   STAN moža być `shown', `iconified' albo `hidden'"
 
-#: ../src/main.c:75
+#: ../src/main.c:74
 msgid "  --debug-<topic>  Print debugging messages for the given topic"
 msgstr ""
-"  --debug-<tema>  Pakazvaj debugavyja paviedamleńni dla peŭnaj temy"
-"pamiaćciu"
+"  --debug-<tema>  Pakazvaj debugavyja paviedamleńni dla peŭnaj temypamiaćciu"
 
-#: ../src/main.c:76
+#: ../src/main.c:75
 msgid "                   Possible topics are: all,cache,conf,db,gui,html"
 msgstr ""
-"Mahčymyja temy: \"all\" (usie), \"cache\" (padručnaja pamiać), \"conf\" "
-"(kanfihuracyja), \"db\" (baza źviestak), \"gui\" (interfejs), \"html\" "
-"(HTML)"
+"Mahčymyja temy: \"all\" (usie), \"cache\" (padručnaja pamiać), \"conf"
+"\" (kanfihuracyja), \"db\" (baza źviestak), \"gui\" (interfejs), \"html"
+"\" (HTML)"
 
-#: ../src/main.c:77
+#: ../src/main.c:76
 msgid "                   net,parsing,plugins,trace,update,verbose"
 msgstr ""
-"\"net\" (sietka), \"parsing\" (razbor), \"plugins\" (pluginy), "
-"\"trace\" (trejs), \"update\" (aktualizacyja), \"verbose\" (padrabiaznaść)"
+"\"net\" (sietka), \"parsing\" (razbor), \"plugins\" (pluginy), \"trace"
+"\" (trejs), \"update\" (aktualizacyja), \"verbose\" (padrabiaznaść)"
 
-#: ../src/main.c:157
+#: ../src/main.c:156
 msgid "Liferea seems to be running already!"
 msgstr "Liferea ŭžo pracuje!"
 
-#: ../src/main.c:227
+#: ../src/main.c:226
 #, c-format
 msgid "The --mainwindow-state argument must be given a parameter.\n"
 msgstr "Arhumentu --mainwindow-state treba pieradavać parametar.\n"
 
-#: ../src/main.c:235
+#: ../src/main.c:234
 #, c-format
 msgid "The --session argument must be given a parameter.\n"
 msgstr "Arhumentu --session treba pieradavać parametar.\n"
 
-#: ../src/main.c:238
+#: ../src/main.c:237
 #, c-format
 msgid "Liferea encountered an unknown argument: %s\n"
 msgstr "Liferea napatkała nieviadomy arhument: %s\n"
 
-#: ../src/rule.c:301
+#: ../src/rule.c:307
 msgid "Item"
 msgstr "Element"
 
-#: ../src/rule.c:301
+#: ../src/rule.c:307
 msgid "does contain"
 msgstr "źmiaščaje"
 
-#: ../src/rule.c:301
+#: ../src/rule.c:307
 msgid "does not contain"
 msgstr "nie źmiaščaje"
 
-#: ../src/rule.c:302
+#: ../src/rule.c:308
 msgid "Item title"
 msgstr "Zahałovak elementu"
 
-#: ../src/rule.c:302 ../src/rule.c:303 ../src/rule.c:304
+#: ../src/rule.c:308 ../src/rule.c:309 ../src/rule.c:310
 msgid "does match"
 msgstr "adpaviadaje"
 
-#: ../src/rule.c:302 ../src/rule.c:303 ../src/rule.c:304
+#: ../src/rule.c:308 ../src/rule.c:309 ../src/rule.c:310
 msgid "does not match"
 msgstr "nie adpaviadaje"
 
-#: ../src/rule.c:303
+#: ../src/rule.c:309
 msgid "Item body"
 msgstr "Cieła elementu"
 
-#: ../src/rule.c:304
+#: ../src/rule.c:310
 msgid "Feed title"
 msgstr "Zahałovak kanału"
 
-#: ../src/rule.c:305
+#: ../src/rule.c:311
 msgid "Read status"
 msgstr "Stan pračytanaści"
 
-#: ../src/rule.c:305
+#: ../src/rule.c:311
 msgid "is unread"
 msgstr "nie pračytany"
 
-#: ../src/rule.c:305
+#: ../src/rule.c:311
 msgid "is read"
 msgstr "pračytany"
 
-#: ../src/rule.c:306
+#: ../src/rule.c:312
 msgid "Flag status"
 msgstr "Stan ściahu"
 
-#: ../src/rule.c:306
+#: ../src/rule.c:312
 msgid "is flagged"
 msgstr "zaznačany"
 
-#: ../src/rule.c:306
+#: ../src/rule.c:312
 msgid "is unflagged"
 msgstr "nie zaznačany"
 
-#: ../src/rule.c:307
+#: ../src/rule.c:313
 msgid "Update status"
 msgstr "Stan aktualizavanaści"
 
-#: ../src/rule.c:307
+#: ../src/rule.c:313
 msgid "was updated"
 msgstr "byŭ aktualizavany"
 
-#: ../src/rule.c:307
+#: ../src/rule.c:313
 msgid "was not updated"
 msgstr "nia byŭ aktualizavany"
 
-#: ../src/rule.c:308
+#: ../src/rule.c:314
 msgid "Podcast"
 msgstr "Podcast"
 
-#: ../src/rule.c:308
+#: ../src/rule.c:314
 msgid "included"
 msgstr "ułučany"
 
-#: ../src/rule.c:308
+#: ../src/rule.c:314
 msgid "not included"
 msgstr "nia ŭłučany"
 
@@ -1411,12 +1417,12 @@ msgstr "\"%s\" skončyŭ pracu. Liferea bolš nia budzie aktualizoŭvać jaho!"
 msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\" nie źmianiŭsia ad apošniaj aktualizacyi"
 
-#: ../src/subscription.c:214
+#: ../src/subscription.c:219
 #, c-format
 msgid "Updating \"%s\""
 msgstr "Aktualizacyja \"%s\""
 
-#: ../src/subscription.c:419
+#: ../src/subscription.c:424
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
@@ -1424,33 +1430,33 @@ msgstr ""
 "Pry čytańni hetaj padpiski ŭźnikli prablemy. Pravier adras spasyłki i "
 "vyjście ŭ kansoli."
 
-#: ../src/update.c:131
+#: ../src/update.c:297
 #, c-format
 msgid "Error opening temp file %s to use for filtering!"
 msgstr "Pamyłka adčynieńnia časovaha fajłu %s dziela filtracyi!"
 
-#: ../src/update.c:154
+#: ../src/update.c:320
 #, c-format
 msgid "%s exited with status %d"
 msgstr "%s vyjšaŭ sa statusam %d"
 
-#: ../src/update.c:160 ../src/update.c:161 ../src/update.c:266
+#: ../src/update.c:326 ../src/update.c:327 ../src/update.c:439
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "Pamyłka: Niemahčyma adčynić trubu \"%s\""
 
 #. FIXME: maybe setting request->returncode would be better
-#: ../src/update.c:286
+#: ../src/update.c:463
 #, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr "Pamyłka: Niemahčyma adčynić fajł \"%s\""
 
-#: ../src/update.c:292
+#: ../src/update.c:468
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "Pamyłka: Fajł \"%s\" nie isnuje"
 
-#: ../src/update.c:490
+#: ../src/update.c:668
 #, c-format
 msgid "Could not download \"%s\". Will retry in %d seconds."
 msgstr ""
@@ -1460,11 +1466,11 @@ msgstr ""
 msgid "New Search Folder"
 msgstr "Novy kataloh pošuku"
 
-#: ../src/xml.c:358
+#: ../src/xml.c:383
 msgid "[There were more errors. Output was truncated!]"
 msgstr "[Byli jašče pamyłki. Vyjście abatnutaje!]"
 
-#: ../src/xml.c:499
+#: ../src/xml.c:524
 msgid "XML Parser: Could not parse document:\n"
 msgstr "Raźbiralnik XML: Niemahčyma razabrać dakument:\n"
 
@@ -1491,40 +1497,40 @@ msgstr "\"%s\" nie źjaŭlajecca pravilnym fajłam kanfihuracyi typu dałučeńn
 msgid "Enclosure download finished: \"%s\""
 msgstr "Zahruzka dałučeńnia skončanaja: \"%s\""
 
-#: ../src/ui/ui_enclosure.c:229 ../src/ui/ui_enclosure.c:391
-#: ../src/ui/ui_subscription.c:369
+#: ../src/ui/ui_enclosure.c:238 ../src/ui/ui_enclosure.c:400
+#: ../src/ui/ui_subscription.c:373
 msgid "Choose File"
 msgstr "Abiary fajł"
 
-#: ../src/ui/ui_enclosure.c:284
+#: ../src/ui/ui_enclosure.c:293
 #, c-format
 msgid "<b>File Extension .%s</b>"
 msgstr "<b>Pašyreńnie fajłu .%s</b>"
 
-#: ../src/ui/ui_enclosure.c:286
+#: ../src/ui/ui_enclosure.c:295
 #, c-format
 msgid "<b>%s</b>"
 msgstr "<b>%s</b>"
 
-#: ../src/ui/ui_feedlist.c:284
+#: ../src/ui/ui_feedlist.c:315
 msgid "Deleting entry"
 msgstr "Vydaleńnie elementu"
 
-#: ../src/ui/ui_feedlist.c:285
+#: ../src/ui/ui_feedlist.c:316
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "Ty ŭpeŭnieny, što chočaš vydalić \"%s\" i jaho źmieściva?"
 
-#: ../src/ui/ui_feedlist.c:285
+#: ../src/ui/ui_feedlist.c:316
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Ty ŭpeŭnieny, što chočaš vydalić \"%s\"?"
 
-#: ../src/ui/ui_feedlist.c:292
+#: ../src/ui/ui_feedlist.c:323
 msgid "Deletion Confirmation"
 msgstr "Paćvierdžańnie vydaleńnia"
 
-#: ../src/ui/ui_htmlview.c:81
+#: ../src/ui/ui_htmlview.c:96
 msgid ""
 "Sorry, I was not able to load any installed browser plugin! Try the --debug-"
 "plugins option to get debug information!"
@@ -1533,39 +1539,39 @@ msgstr ""
 "Pasprabuj opcyju --debug-plugins, kab atrymać debugavyja źviestki!"
 
 #. FIXME: bad because this is not only used for item links!
-#: ../src/ui/ui_htmlview.c:202
+#: ../src/ui/ui_htmlview.c:309
 msgid "This item does not have a link assigned!"
 msgstr "Hety element nia maje suadniesienaje spasyłki!"
 
-#: ../src/ui/ui_htmlview.c:297 ../src/ui/ui_htmlview.c:317
+#: ../src/ui/ui_htmlview.c:408 ../src/ui/ui_htmlview.c:428
 #, c-format
 msgid "Browser command failed: %s"
 msgstr "Pamyłka zahadu hartača: %s"
 
-#: ../src/ui/ui_htmlview.c:320
+#: ../src/ui/ui_htmlview.c:431
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Startujecca: \"%s\""
 
-#: ../src/ui/ui_itemlist.c:211
-msgid "<i>*** No title ***</i>"
-msgstr "<i>*** Biaz nazvy ***</i>"
+#: ../src/ui/ui_itemlist.c:213
+msgid "*** No title ***"
+msgstr "*** Biaz nazvy ***"
 
-#: ../src/ui/ui_itemlist.c:332
+#: ../src/ui/ui_itemlist.c:334
 msgid "Date"
 msgstr "Data"
 
-#: ../src/ui/ui_itemlist.c:343 ../src/ui/ui_itemlist.c:346
+#: ../src/ui/ui_itemlist.c:345 ../src/ui/ui_itemlist.c:348
 msgid "Headline"
 msgstr "Zahałovak"
 
-#: ../src/ui/ui_itemlist.c:487 ../src/ui/ui_itemlist.c:510
-#: ../src/ui/ui_itemlist.c:581 ../src/ui/ui_itemlist.c:729
-#: ../src/ui/ui_itemlist.c:747
+#: ../src/ui/ui_itemlist.c:486 ../src/ui/ui_itemlist.c:509
+#: ../src/ui/ui_itemlist.c:584 ../src/ui/ui_itemlist.c:734
+#: ../src/ui/ui_itemlist.c:753
 msgid "No item has been selected"
 msgstr "Elementy nie zaznačanyja"
 
-#: ../src/ui/ui_itemlist.c:504
+#: ../src/ui/ui_itemlist.c:503
 msgid "This item has no link specified!"
 msgstr "Hety element nia maje akreślenaje spasyłki!"
 
@@ -1573,44 +1579,44 @@ msgstr "Hety element nia maje akreślenaje spasyłki!"
 msgid "You must select a feed to delete its items!"
 msgstr "Ty pavinny abrać kanał, dla jakoha vydalić elementy!"
 
-#: ../src/ui/ui_itemlist.c:757
+#: ../src/ui/ui_itemlist.c:764
 msgid "No link selected!"
 msgstr "Spasyłka nie zaznačanaja!"
 
 #. launch the homepage when button in about dialog is pressed
-#: ../src/ui/ui_mainwindow.c:206
+#: ../src/ui/ui_mainwindow.c:210
 msgid "http://liferea.sf.net"
 msgstr "http://liferea.sf.net"
 
-#: ../src/ui/ui_mainwindow.c:210
+#: ../src/ui/ui_mainwindow.c:214
 msgid "topics_en.html"
 msgstr "topics_en.html"
 
-#: ../src/ui/ui_mainwindow.c:211
+#: ../src/ui/ui_mainwindow.c:215
 msgid "Help Topics"
 msgstr "Temy dapamohi"
 
-#: ../src/ui/ui_mainwindow.c:217
+#: ../src/ui/ui_mainwindow.c:221
 msgid "reference_en.html"
 msgstr "reference_en.html"
 
-#: ../src/ui/ui_mainwindow.c:218
+#: ../src/ui/ui_mainwindow.c:222
 msgid "Quick Reference"
 msgstr "Chutki ahlad"
 
-#: ../src/ui/ui_mainwindow.c:223
+#: ../src/ui/ui_mainwindow.c:227
 msgid "faq_en.html"
 msgstr "faq_en.html"
 
-#: ../src/ui/ui_mainwindow.c:224
+#: ../src/ui/ui_mainwindow.c:228
 msgid "FAQ"
 msgstr "Pytańni j adkazy"
 
-#: ../src/ui/ui_mainwindow.c:689
+#: ../src/ui/ui_mainwindow.c:712
 msgid "Liferea - Linux Feed Reader"
 msgstr "Liferea - Čytač kanałaŭ dla Linuksa"
 
-#: ../src/ui/ui_mainwindow.c:691
+#: ../src/ui/ui_mainwindow.c:714
 msgid ""
 "<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news "
 "feeds.</p><p>The left pane contains the list of your subscriptions. To add a "
@@ -1624,83 +1630,83 @@ msgstr ""
 "abiary jaho ŭ spisie kanałaŭ, i tady zahałoŭki buduć pakazanyja ŭ pravaj "
 "paneli.</p>"
 
-#: ../src/ui/ui_mainwindow.c:745
+#: ../src/ui/ui_mainwindow.c:768
 msgid "Liferea is now online"
 msgstr "Liferea ciapier spałučany"
 
-#: ../src/ui/ui_mainwindow.c:747
+#: ../src/ui/ui_mainwindow.c:770
 msgid "Work Offline"
 msgstr "Pracuj adłučana"
 
-#: ../src/ui/ui_mainwindow.c:749
+#: ../src/ui/ui_mainwindow.c:772
 msgid "Liferea is now offline"
 msgstr "Liferea ciapier adłučany"
 
-#: ../src/ui/ui_mainwindow.c:751
+#: ../src/ui/ui_mainwindow.c:774
 msgid "Work Online"
 msgstr "Pracuj spałučana"
 
-#: ../src/ui/ui_mainwindow.c:1012
+#: ../src/ui/ui_mainwindow.c:1044
 msgid "_Subscriptions"
 msgstr "_Padpiski"
 
-#: ../src/ui/ui_mainwindow.c:1013
+#: ../src/ui/ui_mainwindow.c:1045
 msgid "Update _All"
 msgstr "Aktualizuj _usie"
 
-#: ../src/ui/ui_mainwindow.c:1013
+#: ../src/ui/ui_mainwindow.c:1045
 msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr "Aktualizoŭvaje ŭsie padpiski. Katalohi OCS nie aktualizoŭvajucca."
 
-#: ../src/ui/ui_mainwindow.c:1015
+#: ../src/ui/ui_mainwindow.c:1047
 msgid "Mark All As _Read"
 msgstr "Paznač usie jak _čytanyja"
 
-#: ../src/ui/ui_mainwindow.c:1015
+#: ../src/ui/ui_mainwindow.c:1047
 msgid "Marks read every item of every subscription."
 msgstr "Paznačaje čytanym kožny element z kožnaje padpiski."
 
-#: ../src/ui/ui_mainwindow.c:1017
+#: ../src/ui/ui_mainwindow.c:1049
 msgid "_Import Feed List..."
 msgstr "_Impartuj śpis kanałaŭ..."
 
-#: ../src/ui/ui_mainwindow.c:1017
+#: ../src/ui/ui_mainwindow.c:1049
 msgid "Imports an OPML feed list."
 msgstr "Impartuje śpis kanałaŭ u farmacie OPML."
 
-#: ../src/ui/ui_mainwindow.c:1018
+#: ../src/ui/ui_mainwindow.c:1050
 msgid "_Export Feed List..."
 msgstr "_Ekspartuj śpis kanałaŭ..."
 
-#: ../src/ui/ui_mainwindow.c:1018
+#: ../src/ui/ui_mainwindow.c:1050
 msgid "Exports the feed list as OPML."
 msgstr "Ekspartuje śpis kanałaŭ u farmacie OPML."
 
-#: ../src/ui/ui_mainwindow.c:1019
+#: ../src/ui/ui_mainwindow.c:1051
 msgid "_Quit"
 msgstr "_Vyjdzi"
 
-#: ../src/ui/ui_mainwindow.c:1021
+#: ../src/ui/ui_mainwindow.c:1053
 msgid "_Feed"
 msgstr "Kanał"
 
-#: ../src/ui/ui_mainwindow.c:1022
+#: ../src/ui/ui_mainwindow.c:1054
 msgid "Remove _All Items"
 msgstr "Vydal _usie elementy"
 
-#: ../src/ui/ui_mainwindow.c:1022
+#: ../src/ui/ui_mainwindow.c:1054
 msgid "Removes all items of the currently selected feed."
 msgstr "Vydalaje ŭsie elementy z dziejna abranaha kanału."
 
-#: ../src/ui/ui_mainwindow.c:1025
+#: ../src/ui/ui_mainwindow.c:1057
 msgid "_Item"
 msgstr "_Element"
 
-#: ../src/ui/ui_mainwindow.c:1026
+#: ../src/ui/ui_mainwindow.c:1058
 msgid "_Next Unread Item"
 msgstr "_Nastupny niečytany element"
 
-#: ../src/ui/ui_mainwindow.c:1026
+#: ../src/ui/ui_mainwindow.c:1058
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -1708,208 +1714,208 @@ msgstr ""
 "Pierskokvaje da nastupnaha niečytanaha elementu. Kali treba, abiraje "
 "nastupny kanał ź niečytanymi elementami."
 
-#: ../src/ui/ui_mainwindow.c:1028
+#: ../src/ui/ui_mainwindow.c:1060
 msgid "Toggle _Read Status"
 msgstr "Źmiani _stan pračytanaści"
 
-#: ../src/ui/ui_mainwindow.c:1028
+#: ../src/ui/ui_mainwindow.c:1060
 msgid "Toggles the read status of the selected item."
 msgstr "Źmianiaje stan pračytanaści abranaha elementu."
 
-#: ../src/ui/ui_mainwindow.c:1030
+#: ../src/ui/ui_mainwindow.c:1062
 msgid "Toggle Item _Flag"
 msgstr "Źmiani ś_ciah elementu"
 
-#: ../src/ui/ui_mainwindow.c:1030
+#: ../src/ui/ui_mainwindow.c:1062
 msgid "Toggles the flag status of the selected item."
 msgstr "Źmianiaje stan ściahu dla abranaha elementu."
 
-#: ../src/ui/ui_mainwindow.c:1032
+#: ../src/ui/ui_mainwindow.c:1064
 msgid "R_emove"
 msgstr "_Vydal"
 
-#: ../src/ui/ui_mainwindow.c:1032
+#: ../src/ui/ui_mainwindow.c:1064
 msgid "Removes the selected item."
 msgstr "Vydalaje abrany element."
 
-#: ../src/ui/ui_mainwindow.c:1034
+#: ../src/ui/ui_mainwindow.c:1066
 msgid "_Launch In Browser"
 msgstr "_Adčyni ŭ hartačy"
 
-#: ../src/ui/ui_mainwindow.c:1034
+#: ../src/ui/ui_mainwindow.c:1066
 msgid "Launches the item's link in the configured browser."
 msgstr "Adčyniaja spasyłku elementu ŭ skanfihuravanym hartačy."
 
-#: ../src/ui/ui_mainwindow.c:1037
+#: ../src/ui/ui_mainwindow.c:1069
 msgid "_View"
 msgstr "_Vyhlad"
 
-#: ../src/ui/ui_mainwindow.c:1038
+#: ../src/ui/ui_mainwindow.c:1070
 msgid "_Increase Text Size"
 msgstr "Pa_vialič pamier tekstu"
 
-#: ../src/ui/ui_mainwindow.c:1038
+#: ../src/ui/ui_mainwindow.c:1070
 msgid "Increases the text size of the item view."
 msgstr "Pavialičvaje pamier tekstu ŭ vyhladzie elementaŭ."
 
-#: ../src/ui/ui_mainwindow.c:1040
+#: ../src/ui/ui_mainwindow.c:1072
 msgid "_Decrease Text Size"
 msgstr "Pa_mienš pamier tekstu"
 
-#: ../src/ui/ui_mainwindow.c:1040
+#: ../src/ui/ui_mainwindow.c:1072
 msgid "Decreases the text size of the item view."
 msgstr "Pamianšaje pamier tekstu ŭ vyhladzie elementaŭ."
 
-#: ../src/ui/ui_mainwindow.c:1043
+#: ../src/ui/ui_mainwindow.c:1075
 msgid "_Tools"
 msgstr "_Pryładździe"
 
-#: ../src/ui/ui_mainwindow.c:1044
+#: ../src/ui/ui_mainwindow.c:1076
 msgid "_Update Monitor"
 msgstr "_Manitor aktualizacyj"
 
-#: ../src/ui/ui_mainwindow.c:1044
+#: ../src/ui/ui_mainwindow.c:1076
 msgid "Show a list of all feeds currently in the update queue"
 msgstr ""
 "Pakažy śpis usich kanałaŭ, što dziejna znachdziacca ŭ čarzie na aktualizacyju"
 
-#: ../src/ui/ui_mainwindow.c:1046
+#: ../src/ui/ui_mainwindow.c:1078
 msgid "_Script Manager"
 msgstr "_Kiraŭnik skryptoŭ"
 
-#: ../src/ui/ui_mainwindow.c:1046
+#: ../src/ui/ui_mainwindow.c:1078
 msgid "Allows to configure and edit LUA hook scripts"
 msgstr "Dazvalaje skanfihuravać i adredahavać skrypty LUA"
 
-#: ../src/ui/ui_mainwindow.c:1048
+#: ../src/ui/ui_mainwindow.c:1080
 msgid "_Preferences"
 msgstr "_Nałady"
 
-#: ../src/ui/ui_mainwindow.c:1048
+#: ../src/ui/ui_mainwindow.c:1080
 msgid "Edit Preferences."
 msgstr "Redahuj nałady."
 
-#: ../src/ui/ui_mainwindow.c:1051
+#: ../src/ui/ui_mainwindow.c:1083
 msgid "_Search"
 msgstr "_Šukaj"
 
-#: ../src/ui/ui_mainwindow.c:1052
+#: ../src/ui/ui_mainwindow.c:1084
 msgid "Search All Feeds..."
 msgstr "Šukaj va ŭsich kanałach..."
 
-#: ../src/ui/ui_mainwindow.c:1052
+#: ../src/ui/ui_mainwindow.c:1084
 msgid "Show the search dialog."
 msgstr "Pakažy dyjalohavaje vakno pošuku."
 
-#: ../src/ui/ui_mainwindow.c:1053
+#: ../src/ui/ui_mainwindow.c:1085
 msgid "Search With ..."
 msgstr "Šukaj u..."
 
-#: ../src/ui/ui_mainwindow.c:1055
+#: ../src/ui/ui_mainwindow.c:1087
 msgid "_Help"
 msgstr "_Dapamoha"
 
-#: ../src/ui/ui_mainwindow.c:1056
+#: ../src/ui/ui_mainwindow.c:1088
 msgid "_Contents"
 msgstr "_Źmieściva"
 
-#: ../src/ui/ui_mainwindow.c:1056
+#: ../src/ui/ui_mainwindow.c:1088
 msgid "View help for this application."
 msgstr "Pakažy dapamohu dla hetaje aplikacyi."
 
-#: ../src/ui/ui_mainwindow.c:1057
+#: ../src/ui/ui_mainwindow.c:1089
 msgid "_Quick Reference"
 msgstr "_Chutki ahlad"
 
-#: ../src/ui/ui_mainwindow.c:1057
+#: ../src/ui/ui_mainwindow.c:1089
 msgid "View a list of all Liferea shortcuts."
 msgstr "Pakažy śpis usich skarotaŭ Liferea."
 
-#: ../src/ui/ui_mainwindow.c:1059
+#: ../src/ui/ui_mainwindow.c:1091
 msgid "_FAQ"
 msgstr "_Pytańni j adkazy"
 
-#: ../src/ui/ui_mainwindow.c:1059
+#: ../src/ui/ui_mainwindow.c:1091
 msgid "View the FAQ for this application."
 msgstr "Pakažy Pytańni j Adkazy dla hetaje aplikacyi."
 
-#: ../src/ui/ui_mainwindow.c:1060
+#: ../src/ui/ui_mainwindow.c:1092
 msgid "_About"
 msgstr "_Ab prahramie"
 
-#: ../src/ui/ui_mainwindow.c:1060
+#: ../src/ui/ui_mainwindow.c:1092
 msgid "Shows an about dialog."
 msgstr "Pakazvaje dyjalohavaje vakno sa źviestkami ab prahramie."
 
-#: ../src/ui/ui_mainwindow.c:1064
+#: ../src/ui/ui_mainwindow.c:1096
 msgid "_Normal View"
 msgstr "_Zvyčajny vyhlad"
 
-#: ../src/ui/ui_mainwindow.c:1064
+#: ../src/ui/ui_mainwindow.c:1096
 msgid "Set view mode to mail client mode."
 msgstr "Vyznač režym ahladu paštovaha klijenta."
 
-#: ../src/ui/ui_mainwindow.c:1066
+#: ../src/ui/ui_mainwindow.c:1098
 msgid "_Wide View"
 msgstr "Š_yroki vyhlad"
 
-#: ../src/ui/ui_mainwindow.c:1066
+#: ../src/ui/ui_mainwindow.c:1098
 msgid "Set view mode to use three vertical panes."
 msgstr "Vyznač režym ahladu z tryma vertykalnymi panelami."
 
-#: ../src/ui/ui_mainwindow.c:1068
+#: ../src/ui/ui_mainwindow.c:1100
 msgid "_Combined View"
 msgstr "_Kambinavany vyhlad"
 
-#: ../src/ui/ui_mainwindow.c:1068
+#: ../src/ui/ui_mainwindow.c:1100
 msgid "Set view mode to two pane mode."
 msgstr "Vyznač režym ahladu z dvuma panelami."
 
-#: ../src/ui/ui_mainwindow.c:1073
+#: ../src/ui/ui_mainwindow.c:1105
 msgid "_New Subscription..."
 msgstr "_Novaja padpiska..."
 
-#: ../src/ui/ui_mainwindow.c:1073
+#: ../src/ui/ui_mainwindow.c:1105
 msgid "Adds a subscription to the feed list."
 msgstr "Dadaje padpisku ŭ śpis kanałaŭ."
 
-#: ../src/ui/ui_mainwindow.c:1075
+#: ../src/ui/ui_mainwindow.c:1107
 msgid "New _Folder..."
 msgstr "Novy _kataloh..."
 
-#: ../src/ui/ui_mainwindow.c:1075
+#: ../src/ui/ui_mainwindow.c:1107
 msgid "Adds a folder to the feed list."
 msgstr "Dadaje kataloh u śpis kanałaŭ."
 
-#: ../src/ui/ui_mainwindow.c:1076
+#: ../src/ui/ui_mainwindow.c:1108
 msgid "New S_earch Folder..."
 msgstr "Novy kataloh _pošuku..."
 
-#: ../src/ui/ui_mainwindow.c:1076
+#: ../src/ui/ui_mainwindow.c:1108
 msgid "Adds a new search folder to the feed list."
 msgstr "Dadaje novy kataloh pošuku ŭ śpis kanałaŭ."
 
-#: ../src/ui/ui_mainwindow.c:1077
+#: ../src/ui/ui_mainwindow.c:1109
 msgid "New _Source..."
 msgstr "Novaja _krynica..."
 
-#: ../src/ui/ui_mainwindow.c:1077
+#: ../src/ui/ui_mainwindow.c:1109
 msgid "Adds a new feed list source."
 msgstr "Dadaje novuju krynicu śpisu kanałaŭ."
 
-#: ../src/ui/ui_mainwindow.c:1078
+#: ../src/ui/ui_mainwindow.c:1110
 msgid "New _News Bin..."
 msgstr "Novy _koš navinaŭ..."
 
-#: ../src/ui/ui_mainwindow.c:1078
+#: ../src/ui/ui_mainwindow.c:1110
 msgid "Adds a new news bin."
 msgstr "Dadaje novy koš navinaŭ."
 
-#: ../src/ui/ui_mainwindow.c:1082
+#: ../src/ui/ui_mainwindow.c:1114
 msgid "_Mark As Read"
 msgstr "/_Zaznač jak pračytanaje"
 
-#: ../src/ui/ui_mainwindow.c:1082
+#: ../src/ui/ui_mainwindow.c:1114
 msgid ""
 "Marks all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
@@ -1917,41 +1923,41 @@ msgstr ""
 "Zaznačaje ŭsie elementy abranaje padpiski albo ŭsich padpisak abranaha "
 "katalohu jak pračytanyja."
 
-#: ../src/ui/ui_mainwindow.c:1084
+#: ../src/ui/ui_mainwindow.c:1116
 msgid "_Update"
 msgstr "_Aktualizuj"
 
-#: ../src/ui/ui_mainwindow.c:1084
+#: ../src/ui/ui_mainwindow.c:1116
 msgid ""
 "Updates the selected subscription or all subscriptions of the selected "
 "folder."
 msgstr "Aktualizuje abranuju padpisku albo ŭsie padpiski z abranaha katalohu."
 
-#: ../src/ui/ui_mainwindow.c:1089
+#: ../src/ui/ui_mainwindow.c:1121
 msgid "_Properties..."
 msgstr "_Ułaścivaści..."
 
-#: ../src/ui/ui_mainwindow.c:1089
+#: ../src/ui/ui_mainwindow.c:1121
 msgid "Opens the property dialog for the selected subscription."
 msgstr "Adčyniaje dyjalohavaje vakno ŭłaścivaściaŭ dla abranaje padpiski."
 
-#: ../src/ui/ui_mainwindow.c:1090
+#: ../src/ui/ui_mainwindow.c:1122
 msgid "_Remove"
 msgstr "_Vydal"
 
-#: ../src/ui/ui_mainwindow.c:1090
+#: ../src/ui/ui_mainwindow.c:1122
 msgid "Removes the selected subscription."
 msgstr "Vydalaje abranuju padpisku."
 
-#: ../src/ui/ui_mainwindow.c:1094
+#: ../src/ui/ui_mainwindow.c:1126
 msgid "_Work Offline"
 msgstr "_Pracuj adłučana"
 
-#: ../src/ui/ui_mainwindow.c:1094
+#: ../src/ui/ui_mainwindow.c:1126
 msgid "This option allows you to disable subscription updating."
 msgstr "Hetaja opcyja adklučaje aktualizacyi padpisak."
 
-#: ../src/ui/ui_mainwindow.c:1228
+#: ../src/ui/ui_mainwindow.c:1268
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
@@ -1959,7 +1965,7 @@ msgstr[0] " (%d novy)"
 msgstr[1] " (%d novyja)"
 msgstr[2] " (%d novych)"
 
-#: ../src/ui/ui_mainwindow.c:1234
+#: ../src/ui/ui_mainwindow.c:1274
 #, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
@@ -1967,232 +1973,232 @@ msgstr[0] "%d niepračytany%s"
 msgstr[1] "%d niepračytanyja%s"
 msgstr[2] "%d niepračytanych%s"
 
-#: ../src/ui/ui_node.c:110
+#: ../src/ui/ui_node.c:111
 msgid "<i>(empty)</i>"
 msgstr "<i>(pusty)</i>"
 
-#: ../src/ui/ui_popup.c:121
+#: ../src/ui/ui_popup.c:123
 msgid "/Launch Item In _Tab"
 msgstr "/Adčyni element u _kartcy"
 
-#: ../src/ui/ui_popup.c:122
+#: ../src/ui/ui_popup.c:124
 msgid "/_Launch Item In Browser"
 msgstr "/_Adčyni element u _hartačy"
 
-#: ../src/ui/ui_popup.c:129
+#: ../src/ui/ui_popup.c:131
 #, c-format
 msgid "/Copy to News Bin/%s"
 msgstr "/Skapijuj u koš navinaŭ/%s"
 
 #. menu option for social bookmark creation
-#: ../src/ui/ui_popup.c:137 ../src/ui/ui_popup.c:160
+#: ../src/ui/ui_popup.c:139 ../src/ui/ui_popup.c:162
 #, c-format
 msgid "/_Bookmark Link at %s"
 msgstr "/_Zrabi zakładku dla spasyłki na %s"
 
-#: ../src/ui/ui_popup.c:139
+#: ../src/ui/ui_popup.c:141
 msgid "/Copy Item _URL to Clipboard"
 msgstr "/Skapijuj adras elementu ŭ bufer"
 
-#: ../src/ui/ui_popup.c:142
+#: ../src/ui/ui_popup.c:144
 msgid "/Toggle _Read Status"
 msgstr "/Źmiani _stan pračytanaści"
 
-#: ../src/ui/ui_popup.c:143
+#: ../src/ui/ui_popup.c:145
 msgid "/Toggle Item _Flag"
 msgstr "/Źmiani ś_ciah elementu"
 
-#: ../src/ui/ui_popup.c:144
+#: ../src/ui/ui_popup.c:146
 msgid "/R_emove Item"
 msgstr "/_Vydal element"
 
-#: ../src/ui/ui_popup.c:150
+#: ../src/ui/ui_popup.c:152
 msgid "/_Increase Text Size"
 msgstr "/Pa_vialič pamier tekstu"
 
-#: ../src/ui/ui_popup.c:151
+#: ../src/ui/ui_popup.c:153
 msgid "/_Decrease Text Size"
 msgstr "/Pa_mienš pamier tekstu"
 
-#: ../src/ui/ui_popup.c:156
+#: ../src/ui/ui_popup.c:158
 msgid "/Launch Link In _Tab"
 msgstr "/Adčyni spasyłku ŭ _kartcy"
 
-#: ../src/ui/ui_popup.c:157
+#: ../src/ui/ui_popup.c:159
 msgid "/_Launch Link In Browser"
 msgstr "/_Adčyni spasyłku ŭ hartačy"
 
-#: ../src/ui/ui_popup.c:162
+#: ../src/ui/ui_popup.c:164
 msgid "/_Copy Link Location"
 msgstr "/_Skapijuj adras spasyłki"
 
-#: ../src/ui/ui_popup.c:164
+#: ../src/ui/ui_popup.c:166
 msgid "/_Subscribe..."
 msgstr "/_Padpišysia..."
 
-#: ../src/ui/ui_popup.c:170
+#: ../src/ui/ui_popup.c:172
 msgid "/Toggle _Online|Offline"
 msgstr "/Źmiani _stan spałučanaści"
 
-#: ../src/ui/ui_popup.c:171
+#: ../src/ui/ui_popup.c:173
 msgid "/_Update All"
 msgstr "/_Aktualizuj usie"
 
-#: ../src/ui/ui_popup.c:172
+#: ../src/ui/ui_popup.c:174
 msgid "/_Preferences..."
 msgstr "/_Nałady..."
 
-#: ../src/ui/ui_popup.c:174
+#: ../src/ui/ui_popup.c:176
 msgid "/_Show|Hide Window"
 msgstr "/_Pakažy/Schavaj vakno"
 
-#: ../src/ui/ui_popup.c:175
+#: ../src/ui/ui_popup.c:177
 msgid "/_Quit"
 msgstr "/_Vyjdzi"
 
-#: ../src/ui/ui_popup.c:181
+#: ../src/ui/ui_popup.c:183
 msgid "/Open Enclosure..."
 msgstr "/Adčyni dałučeńnie..."
 
-#: ../src/ui/ui_popup.c:182
+#: ../src/ui/ui_popup.c:184
 msgid "/Save As..."
 msgstr "/Zapišy jak..."
 
-#: ../src/ui/ui_popup.c:295
+#: ../src/ui/ui_popup.c:313
 msgid "/_Update"
 msgstr "/_Aktualizuj"
 
-#: ../src/ui/ui_popup.c:297
+#: ../src/ui/ui_popup.c:315
 msgid "/_Update Folder"
 msgstr "/_Aktualizuj kataloh"
 
-#: ../src/ui/ui_popup.c:299
+#: ../src/ui/ui_popup.c:317
 msgid "/_Mark All As Read"
 msgstr "/_Zaznač usie jak pračytanyja"
 
-#: ../src/ui/ui_popup.c:303
+#: ../src/ui/ui_popup.c:321
 msgid "/_New"
 msgstr "/_Novy"
 
-#: ../src/ui/ui_popup.c:304
+#: ../src/ui/ui_popup.c:322
 msgid "/_New/New _Subscription..."
 msgstr "/_Novy/Novaja _padpiska..."
 
-#: ../src/ui/ui_popup.c:305
+#: ../src/ui/ui_popup.c:323
 msgid "/_New/New _Folder..."
 msgstr "/_Novy/Novy _kataloh..."
 
-#: ../src/ui/ui_popup.c:306
+#: ../src/ui/ui_popup.c:324
 msgid "/_New/New S_earch Folder..."
 msgstr "/_Novy/Novy kataloh p_ošuku..."
 
-#: ../src/ui/ui_popup.c:307
+#: ../src/ui/ui_popup.c:325
 msgid "/_New/New S_ource..."
 msgstr "/_Novy/Novaja krynica..."
 
-#: ../src/ui/ui_popup.c:308
+#: ../src/ui/ui_popup.c:326
 msgid "/_New/New _News Bin..."
 msgstr "/_Novy/Novy _koš navinaŭ..."
 
-#: ../src/ui/ui_popup.c:314
+#: ../src/ui/ui_popup.c:332
 msgid "/_Delete"
 msgstr "/_Vydal"
 
-#: ../src/ui/ui_popup.c:316
+#: ../src/ui/ui_popup.c:334
 msgid "/_Properties..."
 msgstr "/_Ułaścivaści..."
 
-#: ../src/ui/ui_prefs.c:69
+#: ../src/ui/ui_prefs.c:71
 msgid "GNOME Default Browser"
 msgstr "Zmoŭčany hartač GNOME'a"
 
-#: ../src/ui/ui_prefs.c:127
+#: ../src/ui/ui_prefs.c:129
 msgid "GNOME default"
 msgstr "zmoŭčany dla GNOME'a"
 
-#: ../src/ui/ui_prefs.c:128
+#: ../src/ui/ui_prefs.c:130
 msgid "Text below icons"
 msgstr "Tekst pad ikonami"
 
-#: ../src/ui/ui_prefs.c:129
+#: ../src/ui/ui_prefs.c:131
 msgid "Text beside icons"
 msgstr "Tekst pa bakoch ikonaŭ"
 
-#: ../src/ui/ui_prefs.c:130
+#: ../src/ui/ui_prefs.c:132
 msgid "Icons only"
 msgstr "Tolki ikony"
 
-#: ../src/ui/ui_prefs.c:131
+#: ../src/ui/ui_prefs.c:133
 msgid "Text only"
 msgstr "Tolki tekst"
 
-#: ../src/ui/ui_prefs.c:136
+#: ../src/ui/ui_prefs.c:138
 msgid "Update out-dated feeds"
 msgstr "Aktualizuj nieaktualnyja kanały"
 
-#: ../src/ui/ui_prefs.c:137
+#: ../src/ui/ui_prefs.c:139
 msgid "Force update of all feeds"
 msgstr "Prymusova aktualizuj usie kanały"
 
-#: ../src/ui/ui_prefs.c:138
+#: ../src/ui/ui_prefs.c:140
 msgid "No feed update at all"
 msgstr "Naohuł biez aktualizacyj kanału"
 
-#: ../src/ui/ui_prefs.c:143
+#: ../src/ui/ui_prefs.c:145
 msgid "minutes"
 msgstr "chvilin"
 
-#: ../src/ui/ui_prefs.c:144
+#: ../src/ui/ui_prefs.c:146
 msgid "hours"
 msgstr "hadzin"
 
-#: ../src/ui/ui_prefs.c:145
+#: ../src/ui/ui_prefs.c:147
 msgid "days"
 msgstr "dzion"
 
-#: ../src/ui/ui_prefs.c:150
+#: ../src/ui/ui_prefs.c:152
 msgid "Space"
 msgstr "Prabieł"
 
-#: ../src/ui/ui_prefs.c:151
+#: ../src/ui/ui_prefs.c:153
 msgid "<Ctrl> Space"
 msgstr "<Ctrl> Prabieł"
 
-#: ../src/ui/ui_prefs.c:152
+#: ../src/ui/ui_prefs.c:154
 msgid "<Alt> Space"
 msgstr "<Alt> Prabieł"
 
-#: ../src/ui/ui_prefs.c:527
+#: ../src/ui/ui_prefs.c:528
 msgid "Choose download directory"
 msgstr "Abiary kataloh dziela zahruzak"
 
 #. This allows the user to choose their own browser by typing in the command.
-#: ../src/ui/ui_prefs.c:602
+#: ../src/ui/ui_prefs.c:603
 msgid "Manual"
 msgstr "Admysłovy"
 
-#: ../src/ui/ui_prefs.c:612
+#: ../src/ui/ui_prefs.c:613
 msgid "Browser default"
 msgstr "Zmoŭčanaje dla hartača"
 
-#: ../src/ui/ui_prefs.c:617
+#: ../src/ui/ui_prefs.c:618
 msgid "Existing window"
 msgstr "Najaŭnaje vakno"
 
-#: ../src/ui/ui_prefs.c:622
+#: ../src/ui/ui_prefs.c:623
 msgid "New window"
 msgstr "Novaje vakno"
 
-#: ../src/ui/ui_prefs.c:627 ../src/ui/ui_tabs.c:196 ../src/ui/ui_tabs.c:199
-#: ../src/ui/ui_tabs.c:219 ../src/ui/ui_tabs.c:353
+#: ../src/ui/ui_prefs.c:628 ../src/ui/ui_tabs.c:207 ../src/ui/ui_tabs.c:210
+#: ../src/ui/ui_tabs.c:233 ../src/ui/ui_tabs.c:380
 msgid "New tab"
 msgstr "Novaja kartka"
 
-#: ../src/ui/ui_prefs.c:851
+#: ../src/ui/ui_prefs.c:852
 msgid "Type"
 msgstr "Typ"
 
-#: ../src/ui/ui_prefs.c:854
+#: ../src/ui/ui_prefs.c:855
 msgid "Program"
 msgstr "Prahrama"
 
@@ -2263,11 +2269,11 @@ msgstr ""
 "kliknuć knopku \"Kataloh pošuku\" ŭ dyjalohavym aknie pošuku, i tady Liferea "
 "dadaść kataloh pošuku ŭ tvoj śpis kanałaŭ."
 
-#: ../src/ui/ui_search.c:243
+#: ../src/ui/ui_search.c:244
 msgid "Create a new search feed."
 msgstr "Stvary novy kanał pošuku."
 
-#: ../src/ui/ui_subscription.c:441
+#: ../src/ui/ui_subscription.c:445
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minute."
 msgid_plural ""
@@ -2276,7 +2282,7 @@ msgstr[0] "Vydaviec hetaha kanału raić intervał aktualizacyi ŭ %d chvilinu."
 msgstr[1] "Vydaviec hetaha kanału raić intervał aktualizacyi ŭ %d chvilin."
 msgstr[2] "Vydaviec hetaha kanału raić intervał aktualizacyi ŭ %d chvilin."
 
-#: ../src/ui/ui_subscription.c:445
+#: ../src/ui/ui_subscription.c:449
 msgid "This feed specifies no default update interval."
 msgstr "Dla hetaha kanału nie akreśleny zmoŭčany intervał aktualizacyi."
 
@@ -2366,7 +2372,7 @@ msgstr ""
 "na Bloglines u vyhladzie abaronienaha ad źmienaŭ dreva ŭ śpisie kanałaŭ."
 
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
-#: ../src/fl_sources/default_source.c:106
+#: ../src/fl_sources/default_source.c:109
 msgid "feedlist.opml"
 msgstr "feedlist.opml"
 
@@ -2382,21 +2388,22 @@ msgstr "Uviadzi nałady tvajho kontu na Google Reader'y."
 msgid "_Username (Email)"
 msgstr "_Nazva karystalnika (Email)"
 
-#: ../src/fl_sources/google_source.c:201
+#: ../src/fl_sources/google_source.c:189
 msgid "Google Reader login failed!"
 msgstr "Pamyłka ŭruchamleńnia kontu na Google Reader'y!"
 
-#: ../src/fl_sources/google_source.c:349
+#: ../src/fl_sources/google_source.c:331
 msgid "Google Reader"
 msgstr "Google Reader"
 
-#: ../src/fl_sources/google_source.c:350
+#: ../src/fl_sources/google_source.c:332
 msgid ""
 "Integrate the feed list of your Google Reader account. Liferea will present "
 "your Google Reader subscription as a read-only subtree in the feed list."
 msgstr ""
-"Intehruj śpis kanałaŭ z kontam na Google Reader'y. Liferea pakaža tvaju padpisku "
-"na Google Reader'y ŭ vyhladzie abaronienaha ad źmienaŭ dreva ŭ śpisie kanałaŭ."
+"Intehruj śpis kanałaŭ z kontam na Google Reader'y. Liferea pakaža tvaju "
+"padpisku na Google Reader'y ŭ vyhladzie abaronienaha ad źmienaŭ dreva ŭ "
+"śpisie kanałaŭ."
 
 #: ../src/fl_sources/opml_source.glade.h:1
 msgid "Add OPML/Planet"
@@ -2416,11 +2423,11 @@ msgstr "_Adras"
 msgid "_Select File"
 msgstr "_Abiary fajł"
 
-#: ../src/fl_sources/opml_source.c:332
+#: ../src/fl_sources/opml_source.c:327
 msgid "Planet, BlogRoll, OPML"
 msgstr "Planet, BlogRoll, OPML"
 
-#: ../src/fl_sources/opml_source.c:333
+#: ../src/fl_sources/opml_source.c:328
 msgid ""
 "Integrate blogrolls or Planets in your feed list. Liferea will automatically "
 "add and remove feeds according to the changes of the source OPML document"
@@ -2429,7 +2436,7 @@ msgstr ""
 "aŭtamatyčna dadavać i vydalać kanały zhodna sa źmienami kryničnaha dakumentu "
 "OPML."
 
-#: ../src/fl_sources/opml_source.c:407
+#: ../src/fl_sources/opml_source.c:402
 msgid "Choose OPML File"
 msgstr "Abiary fajł OPML"
 
@@ -2461,30 +2468,30 @@ msgid "Cookie for %s has expired!"
 msgstr "Ciestak dla %s sastareŭ!"
 
 #: ../src/notification/notif_libnotify.c:53
-#: ../src/notification/notif_libnotify.c:71
-#: ../src/notification/notif_libnotify.c:138
+#: ../src/notification/notif_libnotify.c:74
+#: ../src/notification/notif_libnotify.c:141
 msgid "This feed does not exist anymore!"
 msgstr "Hety kanał bolš nie isnuje!"
 
-#: ../src/notification/notif_libnotify.c:111
+#: ../src/notification/notif_libnotify.c:114
 msgid "This news entry has no headline"
 msgstr "Hety element navinaŭ nia maje zahałoŭka"
 
-#: ../src/notification/notif_libnotify.c:116
+#: ../src/notification/notif_libnotify.c:119
 msgid "Visit"
 msgstr "Naviedaj"
 
-#: ../src/notification/notif_libnotify.c:155
-#: ../src/notification/notif_libnotify.c:239
+#: ../src/notification/notif_libnotify.c:158
+#: ../src/notification/notif_libnotify.c:234
 msgid "Open feed"
 msgstr "Adčyni kanał"
 
-#: ../src/notification/notif_libnotify.c:158
-#: ../src/notification/notif_libnotify.c:242
+#: ../src/notification/notif_libnotify.c:161
+#: ../src/notification/notif_libnotify.c:237
 msgid "Mark all as read"
 msgstr "Zaznač usie jak pračytanyja"
 
-#: ../src/notification/notif_libnotify.c:226
+#: ../src/notification/notif_libnotify.c:224
 #, c-format
 msgid "%s has %d new / updated headline\n"
 msgid_plural "%s has %d new / updated headlines\n"
@@ -2492,11 +2499,11 @@ msgstr[0] "%s maje %d novy / aktualizavany zahałovak\n"
 msgstr[1] "%s maje %d novyja / aktualizavanyja zahałoŭki\n"
 msgstr[2] "%s maje %d novych / aktualizavanych zahałoŭkaŭ\n"
 
-#: ../src/notification/notif_libnotify.c:228
+#: ../src/notification/notif_libnotify.c:226
 msgid "Feed Update"
 msgstr "Aktualizacyja kanału"
 
-#: ../src/notification/notif_libnotify.c:236
+#: ../src/notification/notif_libnotify.c:231
 msgid "Show details"
 msgstr "Pakažy padrabiaznaści"
 
@@ -2624,5 +2631,3 @@ msgstr "Pakažy padrabiaznaści"
 
 #~ msgid "Liferea notification"
 #~ msgstr "Nahadvańnie Liferea"
-
- 	  	 
