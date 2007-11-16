@@ -131,23 +131,6 @@ typedef struct subscriptionUpdateCtxt {
 	subscription_update_cb	callback;
 } *subscriptionUpdateCtxtPtr;
 
-static gboolean
-subscription_update_ui (gpointer user_data)
-{
-	subscriptionPtr subscription = (subscriptionPtr)user_data;
-	
-	debug_enter ("subscription_update_ui");
-	
-	itemview_update_node_info (subscription->node);
-	itemview_update ();
-	ui_node_update (subscription->node->id);
-	feedlist_schedule_save ();
-	
-	debug_exit ("subscription_update_ui");
-	
-	return FALSE;
-}
-
 static void
 subscription_process_update_result (const struct updateResult * const result, gpointer user_data, guint32 flags)
 {
@@ -201,7 +184,10 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	g_get_current_time (&subscription->updateState->lastPoll);
 	db_update_state_save (subscription->node->id, subscription->updateState);
 	
-	g_idle_add (subscription_update_ui, subscription);
+	itemview_update_node_info (subscription->node);
+	itemview_update ();
+	ui_node_update (subscription->node->id);
+	feedlist_schedule_save ();
 	
 	g_free (ctxt);
 }
