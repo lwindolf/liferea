@@ -105,7 +105,6 @@ static void parseChannel(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 		else if(!xmlStrcmp(cur->name, BAD_CAST"ttl")) {
  			if(NULL != (tmp = common_utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE)))) {
 				subscription_set_default_update_interval(ctxt->subscription, atoi(tmp));
-				subscription_set_update_interval(ctxt->subscription, atoi(tmp));
 				g_free(tmp);
 			}
 		}
