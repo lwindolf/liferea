@@ -136,6 +136,12 @@ ui_mainwindow_get_active_htmlview (void)
 	return mainwindow_priv->htmlview;
 }
 
+GtkWidget *
+ui_mainwindow_get_active_enclosure_list_view (void)
+{
+	return mainwindow_priv->enclosureView;
+}
+
 extern htmlviewPluginPtr htmlviewPlugin;
 
 /* simple dialogs */
@@ -191,17 +197,14 @@ void on_popup_quit(gpointer callback_data, guint callback_action, GtkWidget *wid
 	(void)on_quit(NULL, NULL, NULL);
 }
 
-void on_about_activate(GtkMenuItem *menuitem, gpointer user_data) {
+void
+on_about_activate (GtkMenuItem *menuitem, gpointer user_data)
+{
 	GtkWidget *dialog;
-	GtkLabel *versionLabel;
-	gchar *text;
 
 	dialog = liferea_dialog_new (NULL, "aboutdialog");
-	versionLabel = GTK_LABEL(liferea_dialog_lookup(dialog, "version_label"));
-	text = g_strdup_printf("%s %s", PACKAGE, VERSION);;
-	gtk_label_set_text(versionLabel,text);
-	g_free(text);
-	gtk_widget_show(dialog);
+	gtk_about_dialog_set_version (GTK_ABOUT_DIALOG (dialog), VERSION);
+	gtk_widget_show (dialog);
 }
 
 void
@@ -478,7 +481,7 @@ ui_mainwindow_set_layout (guint newMode)
 	gtk_notebook_set_current_page (GTK_NOTEBOOK (liferea_shell_lookup ("itemtabs")), newMode);
 	gtk_widget_reparent (liferea_htmlview_get_widget (mainwindow_priv->htmlview), liferea_shell_lookup (htmlWidgetName));
 	gtk_widget_reparent (GTK_WIDGET (mainwindow_priv->itemlistContainer), liferea_shell_lookup (ilWidgetName));
-	// FIXME: reparent enclosure view widget into correct expander (envViewWidgetName)
+	gtk_widget_reparent (GTK_WIDGET (mainwindow_priv->enclosureView), liferea_shell_lookup (encViewWidgetName));
  
 	/* grab necessary to force HTML widget update (display must
 	   change from feed description to list of items and vica 
@@ -630,6 +633,9 @@ ui_mainwindow_init (int mainwindowState)
 
 	/* order important !!! */
 	ui_feedlist_init(liferea_shell_lookup("feedlist"));
+	
+	mw->enclosureView = enclosure_list_view_new ();
+	gtk_container_add (GTK_CONTAINER (liferea_shell_lookup ("normalViewEncExpander")), mw->enclosureView);
 	
 	mw->itemlistContainer = ui_itemlist_new();
 	mw->itemlist = gtk_bin_get_child (GTK_BIN (mw->itemlistContainer));

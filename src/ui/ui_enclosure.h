@@ -1,5 +1,5 @@
 /**
- * @file ui_enclosure.h enclosures user interface
+ * @file enclosure-list-view.h enclosures list view
  *
  * Copyright (C) 2005-2007 Lars Lindner <lars.lindner@gmail.com>
  *
@@ -18,12 +18,59 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _UI_ENCLOSURE_H
-#define _UI_ENCLOSURE_H
+#ifndef _ENCLOSURE_LIST_VIEW_H
+#define _ENCLOSURE_LIST_VIEW_H
 
 #include <gtk/gtk.h>
+#include <glib-object.h>
+#include <glib.h>
+
+G_BEGIN_DECLS
 
 #include "enclosure.h"		// FIXME: should not be necessary
+
+#define ENCLOSURE_LIST_VIEW_TYPE		(enclosure_list_view_get_type ())
+#define ENCLOSURE_LIST_VIEW(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), ENCLOSURE_LIST_VIEW_TYPE, EnclosureListView))
+#define ENCLOSURE_LIST_VIEW_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), ENCLOSURE_LIST_VIEW_TYPE, EnclosureListViewClass))
+#define IS_ENCLOSURE_LIST_VIEW(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), ENCLOSURE_LIST_VIEW_TYPE))
+#define IS_ENCLOSURE_LIST_VIEW_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), ENCLOSURE_LIST_VIEW_TYPE))
+
+typedef struct EnclosureListView		EnclosureListView;
+typedef struct EnclosureListViewClass	EnclosureListViewClass;
+typedef struct EnclosureListViewPrivate	EnclosureListViewPrivate;
+
+struct EnclosureListView
+{
+	GObject		parent;
+	
+	/*< private >*/
+	EnclosureListViewPrivate	*priv;
+};
+
+struct EnclosureListViewClass 
+{
+	GtkObjectClass parent_class;
+};
+
+GType enclosure_list_view_get_type	(void);
+
+/**
+ * Sets up a new enclosure list view.
+ *
+ * @returns a new widget to be inserted into the GUI
+ */
+GtkWidget * enclosure_list_view_new (void);
+
+/**
+ * Loads the enclosure list of the given item into the
+ * given enclosure list view widget.
+ *
+ * @param elv	the enclosure list view widget
+ * @param item	the item
+ */
+void enclosure_list_view_load (GtkWidget *elv, itemPtr item);
+
+/* related menu creation and callbacks */
 
 /** 
  * Opens a popup menu for the given link 
@@ -32,7 +79,6 @@
  */
 void ui_enclosure_new_popup(const gchar *url);
 
-/* popup menu callbacks */
 void on_popup_open_enclosure(gpointer callback_data, guint callback_action, GtkWidget *widget);
 void on_popup_save_enclosure(gpointer callback_data, guint callback_action, GtkWidget *widget);
 

@@ -57,6 +57,13 @@ void ui_mainwindow_set_layout(guint newMode);
 LifereaHtmlView * ui_mainwindow_get_active_htmlview (void);
 
 /**
+ * Determine currently active enclosure list view.
+ *
+ * @returns the active enclosure list view
+ */
+GtkWidget * ui_mainwindow_get_active_enclosure_list_view (void);
+
+/**
  * Sets the toolbar to a particular style
  *
  * @param toolbar_style text string containing the type of style to use

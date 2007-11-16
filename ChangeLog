@@ -8,6 +8,9 @@
 	* Replaces propietary networking client with libcurl.	
 	* Removes XSPF media player in favour of external 
 	  music playing solution.
+	* New option to pass enclosure URLs to external
+	  programs instead of downloading the enclosures.
+	  (patch by goyko)
 
 
 2007-07-22  Lars Lindner  <lars.lindner@gmail.com>

@@ -29,12 +29,155 @@
 #include "conf.h"
 #include "debug.h"
 #include "enclosure.h"
+#include "item.h"
 #include "ui/ui_dialog.h"
 #include "ui/ui_popup.h"
 #include "ui/ui_prefs.h"
 #include "ui/ui_enclosure.h"
 
-// FIXME: rewrite to enclosure list view class
+/* enclosure list view implementation */
+
+enum {
+	ES_NAME_STR,
+	ES_LEN
+};
+
+static void enclosure_list_view_class_init	(EnclosureListViewClass *klass);
+static void enclosure_list_view_init		(EnclosureListView *ld);
+
+#define ENCLOSURE_LIST_VIEW_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object), ENCLOSURE_LIST_VIEW_TYPE, EnclosureListViewPrivate))
+
+struct EnclosureListViewPrivate {
+	itemPtr		item;
+
+	GtkWidget	*container;
+	GtkWidget	*treeview;
+	GtkTreeStore	*treestore;
+};
+
+static GObjectClass *parent_class = NULL;
+
+GType
+enclosure_list_view_get_type (void) 
+{
+	static GType type = 0;
+
+	if (G_UNLIKELY (type == 0)) 
+	{
+		static const GTypeInfo our_info = 
+		{
+			sizeof (EnclosureListViewClass),
+			NULL, /* base_init */
+			NULL, /* base_finalize */
+			(GClassInitFunc) enclosure_list_view_class_init,
+			NULL,
+			NULL, /* class_data */
+			sizeof (EnclosureListView),
+			0, /* n_preallocs */
+			(GInstanceInitFunc) enclosure_list_view_init
+		};
+
+		type = g_type_register_static (G_TYPE_OBJECT,
+					       "EnclosureListView",
+					       &our_info, 0);
+	}
+
+	return type;
+}
+
+static void
+enclosure_list_view_finalize (GObject *object)
+{
+	EnclosureListView *ls = ENCLOSURE_LIST_VIEW (object);
+
+	G_OBJECT_CLASS (parent_class)->finalize (object);
+}
+
+static void
+enclosure_list_view_destroy_cb (GtkWidget *widget, EnclosureListView *elv)
+{
+	g_object_unref (elv);
+}
+
+static void
+enclosure_list_view_class_init (EnclosureListViewClass *klass)
+{
+	GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+	parent_class = g_type_class_peek_parent (klass);
+
+	object_class->finalize = enclosure_list_view_finalize;
+
+	g_type_class_add_private (object_class, sizeof(EnclosureListViewPrivate));
+}
+
+static void
+enclosure_list_view_init (EnclosureListView *elv)
+{
+	elv->priv = ENCLOSURE_LIST_VIEW_GET_PRIVATE (elv);
+}
+
+
+GtkWidget *
+enclosure_list_view_new () 
+{
+	EnclosureListView	*elv;
+	GtkCellRenderer		*renderer;
+	GtkTreeViewColumn 	*column;
+	GtkTreeSelection	*select;
+		
+	elv = ENCLOSURE_LIST_VIEW (g_object_new (ENCLOSURE_LIST_VIEW_TYPE, NULL));
+	elv->priv->container = gtk_scrolled_window_new (NULL, NULL);
+	gtk_widget_show (elv->priv->container);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (elv->priv->container), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (elv->priv->container), GTK_SHADOW_IN);
+
+	elv->priv->treeview = gtk_tree_view_new ();
+	gtk_container_add (GTK_CONTAINER (elv->priv->container), elv->priv->treeview);
+	gtk_widget_show (elv->priv->treeview);
+	gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (elv->priv->treeview), TRUE);
+	
+	elv->priv->treestore = gtk_tree_store_new (ES_LEN,
+	                                           G_TYPE_STRING /* ES_NAME_STR */
+	                                           );
+	gtk_tree_view_set_model (GTK_TREE_VIEW (elv->priv->treeview), GTK_TREE_MODEL(elv->priv->treestore));
+
+	renderer = gtk_cell_renderer_text_new ();
+	column = gtk_tree_view_column_new_with_attributes (_("NAME"), renderer, 
+	                                                   "text", ES_NAME_STR,
+							   NULL);
+	gtk_tree_view_append_column (GTK_TREE_VIEW (elv->priv->treeview), column);
+	gtk_tree_view_column_set_sort_column_id (column, ES_NAME_STR);
+	g_object_set(column, "resizable", TRUE, NULL);
+	
+#if GTK_CHECK_VERSION(2,6,0)
+	g_object_set(renderer, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
+#endif
+
+	/* Setup the selection handler */
+/*	select = gtk_tree_view_get_selection(GTK_TREE_VIEW(itemlist));
+	gtk_tree_selection_set_mode(select, GTK_SELECTION_SINGLE);
+	g_signal_connect(G_OBJECT(select), "changed",
+	                 G_CALLBACK(on_itemlist_selection_changed), NULL);
+	g_signal_connect((gpointer)itemlist, "button_press_event",
+	                 G_CALLBACK(on_itemlist_button_press_event), NULL);
+	g_signal_connect((gpointer)itemlist, "row_activated",
+	                 G_CALLBACK(on_Itemlist_row_activated), NULL);
+	*/	  
+
+	g_signal_connect_object (elv->priv->container, "destroy", G_CALLBACK (enclosure_list_view_destroy_cb), elv, 0);
+
+	return elv->priv->container;
+}
+
+void
+enclosure_list_view_load (GtkWidget *elv, itemPtr item)
+{
+	// FIXME
+	g_print ("nr of enc: %d", g_slist_length(metadata_list_get_values (item->metadata, "enclosure")));
+}
+
+/* callback for preferences and enclosure type handling */
 
 void
 ui_enclosure_new_popup (const gchar *url)
@@ -47,10 +190,10 @@ on_selectcmdok_clicked (const gchar *filename, gpointer user_data)
 {
 	GtkWidget	*dialog = (GtkWidget *)user_data;
 	gchar		*utfname;
-	
+
 	if (!filename)
 		return;
-	
+
 	utfname = g_filename_to_utf8 (filename, -1, NULL, NULL, NULL);
 	if (utfname) {
 		gtk_entry_set_text (GTK_ENTRY (liferea_dialog_lookup (dialog, "enc_cmd_entry")), utfname);	
@@ -64,7 +207,7 @@ on_selectcmd_pressed (GtkButton *button, gpointer user_data)
 	GtkWidget	*dialog = (GtkWidget *)user_data;
 	const gchar	*utfname;
 	gchar 		*name;
-	
+
 	utfname = gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (dialog,"enc_cmd_entry")));
 	name = g_filename_from_utf8 (utfname, -1, NULL, NULL, NULL);
 	if (name) {
@@ -80,7 +223,7 @@ on_adddialog_response (GtkDialog *dialog, gint response_id, gpointer user_data)
 	gchar		*tmp, *url;
 	gboolean	new = FALSE;
 	encTypePtr	etp;
-	
+
 	if (response_id == GTK_RESPONSE_OK) {
 		etp = g_object_get_data (G_OBJECT (dialog), "type");
 		tmp = g_object_get_data (G_OBJECT (dialog), "typestr");
@@ -98,6 +241,7 @@ on_adddialog_response (GtkDialog *dialog, gint response_id, gpointer user_data)
 		}
 		etp->cmd = g_strdup (gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET (dialog), "enc_cmd_entry"))));
 		etp->permanent = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "enc_always_btn")));
+		etp->remote = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "enc_remote_open_btn")));
 		if (new)
 			enclosure_mime_type_add (etp);
 
@@ -115,15 +259,16 @@ ui_enclosure_add (encTypePtr type, gchar *url, gchar *typestr)
 {
 	GtkWidget	*dialog;
 	gchar		*tmp;
-	
+
 	dialog = liferea_dialog_new (NULL, "enchandlerdialog");
-	
+
 	if (type) {
 		typestr = type->mime?type->mime:type->extension;
 		gtk_entry_set_text (GTK_ENTRY (liferea_dialog_lookup (dialog, "enc_cmd_entry")), type->cmd);
 		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (dialog, "enc_always_btn")), TRUE);
+		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET(dialog), "enc_remote_open_btn")), type->remote);
 	}
-	
+
 	if (!strchr(typestr, '/')) 
 		tmp = g_strdup_printf (_("<b>File Extension .%s</b>"), typestr);
 	else
@@ -137,7 +282,7 @@ ui_enclosure_add (encTypePtr type, gchar *url, gchar *typestr)
 	g_signal_connect (G_OBJECT(dialog), "response", G_CALLBACK(on_adddialog_response), type);
 	g_signal_connect (G_OBJECT(liferea_dialog_lookup(dialog, "enc_cmd_select_btn")), "clicked", G_CALLBACK(on_selectcmd_pressed), dialog);
 	gtk_widget_show (dialog);
-	
+
 }
 
 void
@@ -147,7 +292,7 @@ on_popup_open_enclosure (gpointer callback_data, guint callback_action, GtkWidge
 	gboolean	found = FALSE, mime = FALSE;
 	encTypePtr	etp = NULL;
 	GSList		*iter;
-	
+
 	/* When opening enclosures we need the type to determine
 	   the configured launch command. The format of the enclosure
 	   info: <url>[,<mime type] */	
@@ -157,14 +302,14 @@ on_popup_open_enclosure (gpointer callback_data, guint callback_action, GtkWidge
 		typestr = g_strdup (typestr++);
 		mime = TRUE;
 	}
-	
+
 	/* without a type we use the file extension */
 	if (!mime) {
 		typestr = strrchr (url, '.');
 		if (typestr)
 			typestr = g_strdup (typestr + 1);
 	}
-	
+
 	/* if we have no such thing we map to "data" */
 	if (!typestr)
 		typestr = g_strdup ("data");

@@ -559,26 +559,27 @@ on_remove_item_activate (GtkMenuItem *menuitem, gpointer user_data)
 
 void on_popup_remove_selected(gpointer callback_data, guint callback_action, GtkWidget *widget) { on_remove_item_activate(NULL, NULL); }
 
-void ui_itemlist_select(itemPtr item) {
-
-	if(item) {
-		GtkTreeStore		*itemstore = ui_itemlist_get_tree_store();
+void
+ui_itemlist_select (itemPtr item)
+{
+	if (item) {
+		GtkTreeStore		*itemstore = ui_itemlist_get_tree_store ();
 		GtkWidget		*treeview;
 		GtkTreeSelection	*selection;
 		GtkTreeIter		iter;
 		GtkTreePath		*path;
 		
-		g_return_if_fail(ui_item_id_to_iter(item->id, &iter));
+		g_return_if_fail (ui_item_id_to_iter (item->id, &iter));
 
 		treeview = itemlist_treeview;
-		selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
+		selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (treeview));
 
-		path = gtk_tree_model_get_path(GTK_TREE_MODEL(itemstore), &iter);
-		gtk_tree_view_scroll_to_cell(GTK_TREE_VIEW(treeview), path, NULL, FALSE, 0.0, 0.0);
-		gtk_tree_view_set_cursor(GTK_TREE_VIEW(treeview), path, NULL, FALSE);
-		gtk_tree_path_free(path);
+		path = gtk_tree_model_get_path (GTK_TREE_MODEL (itemstore), &iter);
+		gtk_tree_view_scroll_to_cell (GTK_TREE_VIEW (treeview), path, NULL, FALSE, 0.0, 0.0);
+		gtk_tree_view_set_cursor (GTK_TREE_VIEW (treeview), path, NULL, FALSE);
+		gtk_tree_path_free (path);
 	} else {
-		gtk_tree_selection_unselect_all(gtk_tree_view_get_selection(GTK_TREE_VIEW(itemlist_treeview)));
+		gtk_tree_selection_unselect_all (gtk_tree_view_get_selection (GTK_TREE_VIEW (itemlist_treeview)));
 	}
 }
 

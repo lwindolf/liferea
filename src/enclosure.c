@@ -81,6 +81,7 @@ enclosure_mime_types_load (void)
 									etp->mime = xmlGetProp (cur, BAD_CAST"mime");
 									etp->extension = xmlGetProp (cur, BAD_CAST"extension");
 									etp->cmd = xmlGetProp (cur, BAD_CAST"cmd");
+									etp->remote = xmlStrcmp(BAD_CAST"false", xmlGetProp(cur, BAD_CAST"remote"));
 									etp->permanent = TRUE;
 									types = g_slist_append (types, etp);
 								}
@@ -117,6 +118,7 @@ enclosure_mime_types_save (void)
 		etp = (encTypePtr)iter->data;
 		cur = xmlNewChild (root, NULL, BAD_CAST"type", NULL);
 		xmlNewProp (cur, BAD_CAST"cmd", etp->cmd);
+		xmlNewProp (cur, BAD_CAST"remote", etp->remote?"true":"false");
 		if (etp->mime)
 			xmlNewProp (cur, BAD_CAST"mime", etp->mime);
 		if (etp->extension)
@@ -222,8 +224,22 @@ enclosure_download (encTypePtr type, const gchar *url, const gchar *filename)
 	else
 		job->download = g_strdup_printf (tool->format, urlQ);
 		
-	if (type)
-		job->run = g_strdup_printf ("%s %s", type->cmd, filenameQ);
+	if (type) {
+	
+		/* Argh... If the remote flag is set we do not want to download
+		   the enclosure ourselves but just want to pass the URL
+		   to the configured command */
+		   	
+		if (type->remote) {
+			g_free (job->download);
+			job->download = NULL;
+		}
+		
+		if (type->remote)
+			job->run = g_strdup_printf ("%s %s", type->cmd, urlQ);
+		else
+			job->run = g_strdup_printf ("%s %s", type->cmd, filenameQ);
+	}
 
 	g_free (filenameQ);
 	g_free (urlQ);

@@ -159,15 +159,17 @@ void itemview_remove_item(itemPtr item) {
 	htmlview_remove_item(item);
 }
 
-void itemview_select_item(itemPtr item) {
-
-	if(!itemView_priv.node)
+void
+itemview_select_item (itemPtr item)
+{
+	if (!itemView_priv.node)
 		return;
 		
 	itemView_priv.needsHTMLViewUpdate = TRUE;
 
-	ui_itemlist_select(item);
-	htmlview_select_item(item);
+	ui_itemlist_select (item);
+	htmlview_select_item (item);
+	enclosure_list_view_load (ui_mainwindow_get_active_enclosure_list_view (), item);
 }
 
 void itemview_update_item(itemPtr item) {

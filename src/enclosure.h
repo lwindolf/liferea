@@ -27,11 +27,12 @@ typedef struct enclosureDownloadTool {
 } *enclosureDownloadToolPtr; 
 
 typedef struct encType {
-	gchar		*mime;		/* either mime or extension is set */
+	gchar		*mime;		/**< either mime or extension is set */
 	gchar		*extension;
-	gchar		*cmd;		/* the command to launch the enclosure type */
-	gboolean	permanent;	/* if TRUE definition is deleted after opening and 
-					   not added to the permanent list of type configs */
+	gchar		*cmd;		/**< the command to launch the enclosure type */
+	gboolean	permanent;	/**< if TRUE definition is deleted after opening and 
+					     not added to the permanent list of type configs */
+	gboolean	remote;		/**< if TRUE enclosure is to be opened without downloading (pass URL only) */
 } *encTypePtr;
 
 /**
