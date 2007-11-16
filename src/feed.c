@@ -549,7 +549,6 @@ feed_process_update_result (nodePtr node, const struct updateResult * const resu
 	feedPtr			feed = (feedPtr)node->data;
 	subscriptionPtr		subscription = (subscriptionPtr)node->subscription;
 	gchar			*old_source;
-	gint			old_update_interval;
 
 	debug_enter ("feed_process_update_result");
 	
@@ -559,8 +558,7 @@ feed_process_update_result (nodePtr node, const struct updateResult * const resu
 	
 	if (result->data) {
 		/* we save all properties that should not be overwritten in all cases */
-		old_update_interval = subscription_get_update_interval (subscription);
-		old_source = g_strdup (subscription_get_source (subscription));
+		old_source = g_strdup (subscription_get_source (subscription));	// FIXME: stupid concept?
 
 		/* parse the new downloaded feed into feed and itemSet */
 		ctxt = feed_create_parser_ctxt ();
@@ -602,10 +600,17 @@ feed_process_update_result (nodePtr node, const struct updateResult * const resu
 			if (!(flags & FEED_REQ_AUTO_DISCOVER))
 				subscription_set_source (subscription, old_source);
 
-			if (flags & FEED_REQ_RESET_UPDATE_INT)
-				subscription_set_update_interval (subscription, subscription_get_default_update_interval(subscription));
-			else
-				subscription_set_update_interval (subscription, old_update_interval);
+			if (flags & FEED_REQ_RESET_UPDATE_INT) {
+				/* The following check is to prevent the rare case
+				   that a high-frequency/volume feed provides a feed-
+				   specific update interval that is lower than the
+				   users preferred update interval. This e.g. 1min
+				   updates might be bad for laptop users... */
+				if (subscription_get_default_update_interval (subscription) < conf_get_int_value (DEFAULT_UPDATE_INTERVAL))
+					subscription_set_update_interval (subscription, conf_get_int_value (DEFAULT_UPDATE_INTERVAL));
+				else
+					subscription_set_update_interval (subscription, subscription_get_default_update_interval(subscription));
+			}
 			
 			if (flags > 0)
 				db_subscription_update (subscription);

@@ -5,6 +5,11 @@
 	* Now never loads duplicates when using recursive
 	  folder view. This avoids duplicate removal problems
 	  when using Mark-All-Read on such a view.
+	* Fixes CVE-2005-4791: LD_LIBRARY_PATH problem in
+	  Liferea starter script.
+	* Fixes SF #1832671: use default update interval
+	  even if feed specifies one if it is larger than
+	  the feed specific one.
 
 	Translations
 
