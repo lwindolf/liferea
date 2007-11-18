@@ -51,6 +51,7 @@
 #include "ui/ui_feedlist.h"
 #include "ui/ui_mainwindow.h"
 #include "ui/ui_session.h"
+#include "ui/ui_shell.h"
 
 #include "bacon-message-connection.h"
 
@@ -113,12 +114,10 @@ static void fatal_signal_handler(int sig) {
 	_exit(1);
 }
 
-static void signal_handler(int sig) {
-
-	on_quit(NULL, NULL, NULL);
-
-	signal(sig, SIG_DFL);
-	raise(sig);
+static void
+signal_handler (int sig)
+{
+	g_idle_add (quit, NULL);
 }
 
 int main(int argc, char *argv[]) {	
@@ -326,5 +325,12 @@ on_quit (GtkWidget *widget, GdkEvent *event, gpointer user_data)
 	gtk_main_quit ();
 	
 	debug_exit ("on_quit");
+	return FALSE;
+}
+
+gboolean
+quit (gpointer user_data)
+{
+	on_quit (NULL, NULL, NULL);
 	return FALSE;
 }

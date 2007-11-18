@@ -72,6 +72,7 @@ void liferea_shell_create (void);
 
 // FIXME:
 gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data);
+gboolean quit(gpointer user_data);
 
 G_END_DECLS
  

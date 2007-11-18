@@ -304,7 +304,7 @@ void session_save_yourself(SmcConn conn, SmPointer data, int save_type,
 void session_die(SmcConn conn, SmPointer data) {
 	gaim_debug(GAIM_DEBUG_INFO, "Session Management",
 			   "Received die");
-	on_quit(NULL, NULL, NULL);
+	g_idle_add (quit, NULL);
 }
 
 void session_save_complete(SmcConn conn, SmPointer data) {

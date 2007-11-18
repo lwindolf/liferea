@@ -10,6 +10,10 @@
 	* Fixes SF #1832671: use default update interval
 	  even if feed specifies one if it is larger than
 	  the feed specific one.
+	* Fixes failing DB close when terminated by session
+	  manager or SIGHUP/TERM/INT which causes long startup
+	  durations (>30s) on next start due to leftover
+	  sqlite journal file.
 
 	Translations
 
