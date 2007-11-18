@@ -1283,9 +1283,12 @@ db_item_check (guint id, const queryPtr query)
 void
 db_view_create (const gchar *id, queryPtr query)
 {
-	gchar	*select, *sql, *err;
-	gint	res;
+	gchar		*select, *sql, *checkSql, *err = NULL;
+	sqlite3_stmt	*viewCheckStmt;
+	gint		res;
+	gboolean	exists = FALSE;
 
+	/* Prepare SQL for view creation */
 	select = db_query_to_sql (0, query);
 	if (!select) {
 		g_warning ("View query creation failed!");
@@ -1293,16 +1296,46 @@ db_view_create (const gchar *id, queryPtr query)
 	}
 
 	if (query->tables & QUERY_TABLE_NODE)
-		sql = sqlite3_mprintf ("CREATE VIEW view_%s AS %s AND itemsets.comment != 1;", id, select);
+		sql = sqlite3_mprintf ("CREATE VIEW view_%s AS %s AND itemsets.comment != 1", id, select);
 	else if (query->tables & QUERY_TABLE_ITEMS)
-		sql = sqlite3_mprintf ("CREATE VIEW view_%s AS %s AND items.comment != 1;", id, select);
+		sql = sqlite3_mprintf ("CREATE VIEW view_%s AS %s AND items.comment != 1", id, select);
 	else
-		sql = sqlite3_mprintf ("CREATE VIEW view_%s AS %s;", id, select);
-	debug2(DEBUG_DB, "Creating view %s: %s", id, sql);
+		sql = sqlite3_mprintf ("CREATE VIEW view_%s AS %s", id, select);
+	debug2 (DEBUG_DB, "Checking for view %s (SQL=%s)", id, sql);
 	
-	res = sqlite3_exec (db, sql, NULL, NULL, &err);
-	if (SQLITE_OK != res) 
-		debug2 (DEBUG_DB, "Create view failed (%s) SQL: %s", err, sql);
+	/* Check if view already exists with exactly the same SQL */
+	checkSql = sqlite3_mprintf ("SELECT sql FROM sqlite_master WHERE name = 'view_%s';", id);
+	db_prepare_stmt (&viewCheckStmt, checkSql);
+	sqlite3_reset (viewCheckStmt);
+	res = sqlite3_step (viewCheckStmt);
+	if (SQLITE_ROW == res) {
+		const gchar *currentSql = sqlite3_column_text (viewCheckStmt, 0);
+		if (currentSql) {
+			/* Note: this check only works if the above CREATE VIEW
+			   SQL statements do not end with a semicolon */
+			exists = (0 == strcmp (sql, currentSql));
+		}
+	}
+	sqlite3_finalize (viewCheckStmt);
+	sqlite3_free (checkSql);
+
+	if (SQLITE_ROW == res && !exists) {
+	
+		/* This means there is a view with the same name
+		   but not with the expected SQL query. Whatever the
+		   reason for this is we do not need it... */
+		debug1 (DEBUG_DB, "Found old view with id %s but with wrong SQL, dropping it...", id);
+		db_view_remove (id);
+	}
+
+	if (!exists) {
+		/* Create the view with the prepared SQL */
+		res = sqlite3_exec (db, sql, NULL, NULL, &err);
+		if (SQLITE_OK != res) 
+			debug2 (DEBUG_DB, "Create view failed (%s) SQL: %s", err, sql);
+	} else {
+		debug1 (DEBUG_DB, "No need to create view %s as it already exists.", id);
+	}
 			       
 	sqlite3_free (select);
 	sqlite3_free (sql);
@@ -1314,7 +1347,8 @@ db_view_remove (const gchar *id)
 {
 	gchar	*sql, *err;
 	gint	res;
-		
+	
+	debug1 (DEBUG_DB, "Dropping view \"%s\"", id);
 	sql = sqlite3_mprintf ("DROP VIEW view_%s;", id);	
 	res = sqlite3_exec (db, sql, NULL, NULL, &err);
 	if (SQLITE_OK != res) 
@@ -1405,7 +1439,7 @@ db_view_get_item_count (const gchar *id)
 	res = sqlite3_prepare_v2 (db, sql, -1, &viewCountStmt, NULL);
 	sqlite3_free (sql);
 	if (SQLITE_OK != res) {
-		debug2 (DEBUG_DB, "couldn't determine view %s item count (error=%d)", id, res);
+		debug3 (DEBUG_DB, "couldn't determine view %s item count (error=%d, %s)", id, res, sqlite3_errmsg (db));
 		return 0;
 	}
 	
