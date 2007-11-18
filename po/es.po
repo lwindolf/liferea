@@ -1644,7 +1644,7 @@ msgid ""
 msgstr ""
 "<p>Bienvenido a <b>Liferea</b>, un lector de noticias en línea para el "
 "escritorio.</p><p>El panel izquierdo contiene la lista de canales a los que "
-"está suscrito. Para añadir un canal elija Canales -&gt; Nueva suscripción. "
+"está suscrito. Para añadir un canal elija Suscripciones -&gt; Nueva suscripción. "
 "Para ver los titulares de un canal, elíjalo de la lista. Sus titulares se "
 "mostrarán en el panel derecho.</p>"
 
