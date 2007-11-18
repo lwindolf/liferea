@@ -51,6 +51,7 @@ debug_get_prefix (unsigned long flag)
 	if (flag & DEBUG_TRACE)		return "TRACE";
 	if (flag & DEBUG_NET)		return "NET";
 	if (flag & DEBUG_DB)		return "DB";
+	if (flag & DEBUG_PERF)		return "PERF";
 	return "";	
 }
 
@@ -76,35 +77,37 @@ debug_start_measurement_func (const char * function)
 	g_get_current_time (startTime);
 }
 
-void
+unsigned long
 debug_end_measurement_func (const char * function,
                             unsigned long flags, 
-			    gchar *name)
+			    const char *name)
 {
 	GTimeVal	*startTime = NULL;
 	GTimeVal	endTime;
 		
 	if (!function)
-		return;
+		return 0;
 		
 	if (!startTimes)
-		return;
+		return 0;
 	
 	startTime = g_hash_table_lookup (startTimes, function);
 
 	if (!startTime) 
-		return;
+		return 0;
 		
 	g_get_current_time (&endTime);
 	g_time_val_add (&endTime, (-1) * startTime->tv_usec);
 	
 	if ((0 == endTime.tv_sec - startTime->tv_sec) &&
 	    (0 == endTime.tv_usec/1000))
-		return;
+		return 0;
 	
 	g_print ("%s: %s took %01ld,%03lds\n", debug_get_prefix (flags), name, 
 	                                     endTime.tv_sec - startTime->tv_sec, 
 					     endTime.tv_usec/1000);
+					     
+	return ((endTime.tv_sec - startTime->tv_sec)*1000 + endTime.tv_usec/1000);
 }
  
 void
@@ -184,4 +187,25 @@ debug_printf (const char    * strloc,
 	fflush (NULL);
 
 	g_free (string);
+}
+
+void
+debug_enter (const char *name) 
+{
+	debug1 (DEBUG_TRACE, "+ %s", name);
+	
+	if (debug_level & DEBUG_PERF)
+		debug_start_measurement_func (name);
+}
+
+void
+debug_exit (const char *name)
+{
+	debug1 (DEBUG_TRACE, "- %s", name);
+	
+	if (debug_level & DEBUG_PERF) {
+		unsigned long duration = debug_end_measurement_func (name, DEBUG_PERF, name);
+		if (duration > 250)
+			debug2 (DEBUG_PERF, "function \"%s\" is slow! Took %dms.", name, duration);
+	}
 }

@@ -36,7 +36,8 @@ typedef enum
 	DEBUG_HTML		= (1<<7),
 	DEBUG_NET		= (1<<8),
 	DEBUG_DB		= (1<<9),
-	DEBUG_VERBOSE		= (1<<10)
+	DEBUG_PERF		= (1<<10),
+	DEBUG_VERBOSE		= (1<<11)
 }
 DebugFlags;
 
@@ -58,9 +59,11 @@ extern void debug_start_measurement_func (const char * function);
  * @param level		debugging flags that enable the measurement
  * @param name		name of the measurement
  *
+ * @returns duration in milliseconds
+ *
  * Not thread-safe!
  */
-extern void debug_end_measurement_func (const char * function, unsigned long flags, char *name);
+extern unsigned long debug_end_measurement_func (const char * function, unsigned long flags, const char *name);
 
 #define debug_end_measurement(level, name) if ((debug_level) & level) debug_end_measurement_func (PRETTY_FUNCTION, level, name)
 
@@ -91,7 +94,24 @@ extern void debug_printf (const char * strloc, const char * function, unsigned l
 #define debug5(level, fmt, A, B, C, D, E) if ((debug_level) & level) debug_printf (G_STRLOC, PRETTY_FUNCTION, level,fmt, A, B, C, D, E)
 #define debug6(level, fmt, A, B, C, D, E, F) if ((debug_level) & level) debug_printf (G_STRLOC, PRETTY_FUNCTION, level,fmt, A, B, C, D, E, F)
 
-#define debug_enter(A)  debug0 (DEBUG_TRACE, "+ "A)
-#define debug_exit(A)   debug0 (DEBUG_TRACE, "- "A)
+/**
+ * Trace method to trace function entering when function name
+ * tracing is enabled (--debug-trace|--debug-all). Also implements
+ * slow function detection when performance trace (--debug-perf)
+ * is active.
+ *
+ * @param name		function name
+ */
+extern void debug_enter (const char *name);
+
+/**
+ * Trace method to trace function exiting when function name
+ * tracing is enabled (--debug-trace|--debug-all). Also implements
+ * slow function detection when performance trace (--debug-perf)
+ * is active.
+ *
+ * @param name		function name
+ */
+extern void debug_exit (const char *name);
 
 #endif
