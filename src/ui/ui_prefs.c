@@ -254,8 +254,10 @@ on_folderhidereadbtn_toggled (GtkToggleButton *togglebutton, gpointer user_data)
 	gboolean enabled = gtk_toggle_button_get_active (togglebutton);
 	conf_set_bool_value (FOLDER_DISPLAY_HIDE_READ, enabled);
 	displayedNode = itemlist_get_displayed_node ();
-	if (displayedNode)
+	if (displayedNode) {
+		itemlist_unload (FALSE);
 		itemlist_load (displayedNode);
+	}
 }
 
 void
