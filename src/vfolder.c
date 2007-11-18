@@ -115,10 +115,8 @@ vfolder_refresh (vfolderPtr vfolder)
 {
 	g_return_if_fail (NULL != vfolder->node);
 
-	if (0 != g_slist_length (vfolder->rules)) {
-		db_view_remove (vfolder->node->id);		
+	if (0 != g_slist_length (vfolder->rules))
 		rules_to_view (vfolder->rules, vfolder->node->id);
-	}
 	
 	vfolder_update_counters (vfolder->node);
 }
