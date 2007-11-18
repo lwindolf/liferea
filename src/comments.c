@@ -230,18 +230,18 @@ comments_refresh (itemPtr item)
 }
 
 void
-comments_to_xml (xmlNodePtr parentNode,
-                 const gchar *id)
+comments_to_xml (xmlNodePtr parentNode, const gchar *id)
 {
 	xmlNodePtr	commentsNode;
 	commentFeedPtr	commentFeed;
 	itemSetPtr	itemSet;
 	GList		*iter;
-
-	commentsNode = xmlNewChild (parentNode, NULL, "comments", NULL);
 	
 	commentFeed = comment_feed_from_id (id);
-	g_return_if_fail (commentFeed != NULL);
+	if (!commentFeed)
+		return;
+
+	commentsNode = xmlNewChild (parentNode, NULL, "comments", NULL);
 	
 	itemSet = db_itemset_load (id);
 	g_return_if_fail (itemSet != NULL);
