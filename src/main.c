@@ -198,6 +198,8 @@ int main(int argc, char *argv[]) {
 			debug_flags |= DEBUG_NET;
 		else if (!strcmp (arg, "--debug-db"))
 			debug_flags |= DEBUG_DB;
+		else if (!strcmp (arg, "--debug-perf"))
+			debug_flags |= DEBUG_PERF;
 		else if (!strcmp (arg, "--debug-trace"))
 			debug_flags |= DEBUG_TRACE;
 		else if (!strcmp (arg, "--debug-all"))
