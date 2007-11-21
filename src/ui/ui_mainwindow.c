@@ -68,7 +68,8 @@ static struct mainwindow {
 	GtkActionGroup	*generalActions;
 	GtkActionGroup	*addActions;		/**< all types of "New" options */
 	GtkActionGroup	*feedActions;		/**< update and mark read */
-	GtkActionGroup	*readWriteActions;	/**< remove and properties */
+	GtkActionGroup	*readWriteActions;	/**< node remove and properties, node itemset items remove */
+	GtkActionGroup	*itemActions;		/**< item state toggline, single item remove */
 	
 	GtkWidget	*enclosureView;		/**< Enclosure list widget */
 	LifereaHtmlView	*htmlview;		/**< HTML rendering widget */
@@ -1085,14 +1086,6 @@ static const GtkActionEntry ui_mainwindow_action_entries[] = {
 	{"ItemMenu", NULL, N_("_Item")},
 	{"NextUnreadItem", GTK_STOCK_GO_FORWARD, N_("_Next Unread Item"), "<control>N", N_("Jumps to the next unread item. If necessary selects the next feed with unread items."),
 	 G_CALLBACK(on_next_unread_item_activate)},
-	{"ToggleItemReadStatus", "gtk-apply", N_("Toggle _Read Status"), "<control>U", N_("Toggles the read status of the selected item."),
-	 G_CALLBACK(on_toggle_unread_status)},
-	{"ToggleItemFlag", NULL, N_("Toggle Item _Flag"), "<control>T", N_("Toggles the flag status of the selected item."),
-	 G_CALLBACK(on_toggle_item_flag)},
-	{"RemoveSelectedItem", "gtk-delete", N_("R_emove"), NULL, N_("Removes the selected item."),
-	 G_CALLBACK(on_remove_item_activate)},
-	{"LaunchItemInBrowser", NULL, N_("_Launch In Browser"), NULL, N_("Launches the item's link in the configured browser."),
-	 G_CALLBACK(on_popup_launchitem_selected)},
 
 	{"ViewMenu", NULL, N_("_View")},
 	{"ZoomIn", "gtk-zoom-in", N_("_Increase Text Size"), "<control>plus", N_("Increases the text size of the item view."),
@@ -1148,6 +1141,17 @@ static const GtkActionEntry ui_mainwindow_feed_action_entries[] = {
 static const GtkActionEntry ui_mainwindow_read_write_action_entries[] = {
 	{"Properties", "gtk-properties", N_("_Properties..."), NULL, N_("Opens the property dialog for the selected subscription."), G_CALLBACK(on_menu_properties)},
 	{"DeleteSelected", "gtk-delete", N_("_Remove"), NULL, N_("Removes the selected subscription."), G_CALLBACK(on_menu_delete)}
+};
+
+static const GtkActionEntry ui_mainwindow_item_action_entries[] = {
+	{"ToggleItemReadStatus", "gtk-apply", N_("Toggle _Read Status"), "<control>U", N_("Toggles the read status of the selected item."),
+	 G_CALLBACK(on_toggle_unread_status)},
+	{"ToggleItemFlag", NULL, N_("Toggle Item _Flag"), "<control>T", N_("Toggles the flag status of the selected item."),
+	 G_CALLBACK(on_toggle_item_flag)},
+	{"RemoveSelectedItem", "gtk-delete", N_("R_emove"), NULL, N_("Removes the selected item."),
+	 G_CALLBACK(on_remove_item_activate)},
+	{"LaunchItemInBrowser", NULL, N_("_Launch In Browser"), NULL, N_("Launches the item's link in the configured browser."),
+	 G_CALLBACK(on_popup_launchitem_selected)}
 };
 
 static const GtkToggleActionEntry ui_mainwindow_action_toggle_entries[] = {
@@ -1261,9 +1265,15 @@ static void ui_mainwindow_create_menus(struct mainwindow *mw) {
 	gtk_action_group_set_translation_domain (mw->readWriteActions, PACKAGE);
 	gtk_action_group_add_actions (mw->readWriteActions, ui_mainwindow_read_write_action_entries, G_N_ELEMENTS (ui_mainwindow_read_write_action_entries), mw);
 	gtk_ui_manager_insert_action_group (ui_manager, mw->readWriteActions, 0);
+	
+	mw->itemActions = gtk_action_group_new ("ItemActions");
+	gtk_action_group_set_translation_domain (mw->itemActions, PACKAGE);
+	gtk_action_group_add_actions (mw->itemActions, ui_mainwindow_item_action_entries, G_N_ELEMENTS (ui_mainwindow_item_action_entries), mw);
+	gtk_ui_manager_insert_action_group (ui_manager, mw->itemActions, 0);
 
 	accel_group = gtk_ui_manager_get_accel_group (ui_manager);
 	gtk_window_add_accel_group (mw->window, accel_group);
+	g_object_unref (accel_group);
 
 	if(!gtk_ui_manager_add_ui_from_string(ui_manager, ui_mainwindow_ui_desc, -1, &error))
 		g_error("building menus failed: %s", error->message);

@@ -140,7 +140,7 @@ ui_feedlist_selection_changed_cb (GtkTreeSelection *selection, gpointer data)
 		if (node)
 			ui_mainwindow_update_feed_menu (TRUE, (NODE_SOURCE_TYPE (node->source->root)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST));
 		else
-			ui_mainwindow_update_feed_menu (FALSE, 0);
+			ui_mainwindow_update_feed_menu (FALSE, FALSE);
 	} else {
 		/* If we cannot get the new selection we keep the old one
 		   this happens when we're doing drag&drop for example. */
