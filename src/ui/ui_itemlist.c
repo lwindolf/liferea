@@ -765,16 +765,18 @@ on_popup_social_bm_link_selected (gpointer selectedUrl, guint callback_action, G
 	}
 }
 
-void on_itemlist_selection_changed(GtkTreeSelection *selection, gpointer data) {
+void
+on_itemlist_selection_changed (GtkTreeSelection *selection, gpointer data)
+{
 	GtkTreeIter 	iter;
 	GtkTreeModel	*model;
 	itemPtr		item = NULL;
 
-	if(gtk_tree_selection_get_selected(selection, &model, &iter))
-		item = item_load(ui_iter_to_item_id(&iter));
+	if (gtk_tree_selection_get_selected (selection, &model, &iter))
+		item = item_load (ui_iter_to_item_id (&iter));
 
-	if(item)
-		itemlist_selection_changed(item);
+	if (item)
+		itemlist_selection_changed (item);
 }
 
 void itemlist_sort_column_changed_cb(GtkTreeSortable *treesortable, gpointer user_data) {
