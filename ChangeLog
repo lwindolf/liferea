@@ -1,4 +1,4 @@
-2007-11-??  Lars Lindner  <lars.lindner@gmail.com>
+2007-11-22  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.4.8 (Stable)
 
@@ -14,6 +14,8 @@
 	  manager or SIGHUP/TERM/INT which causes long startup
 	  durations (>30s) on next start due to leftover
 	  sqlite journal file.
+	* Patch SF #1835414 from goyko that improves menu enabling
+	  and disabling for the "Item" menu options.
 
 	Translations
 

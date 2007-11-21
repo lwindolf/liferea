@@ -276,6 +276,7 @@ itemlist_load (nodePtr node)
 	itemlist_priv.loading++;
 	itemlist_priv.viewMode = node_get_view_mode (node);
 	ui_mainwindow_set_layout (itemlist_priv.viewMode);
+	ui_mainwindow_update_item_menu (FALSE);
 
 	/* Set the new displayed node... */
 	itemlist_priv.currentNode = node;
@@ -566,6 +567,7 @@ itemlist_selection_changed (itemPtr item)
 		}
 
 		ui_node_update (item->nodeId);
+		ui_mainwindow_update_item_menu (NULL != item);
 
 		feedlist_reset_new_item_count ();
 	}
