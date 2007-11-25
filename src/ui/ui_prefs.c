@@ -560,7 +560,7 @@ ui_prefs_setup_combo_menu (const gchar *widgetName,
 	g_assert (NULL != widget);
 	for (i = 0; options[i] != NULL; i++) {
 		gtk_list_store_append (listStore, &treeiter);
-		gtk_list_store_set (listStore, &treeiter, 0, options[i], 1, i, -1);
+		gtk_list_store_set (listStore, &treeiter, 0, _(options[i]), 1, i, -1);
 	}
 	gtk_combo_box_set_model (GTK_COMBO_BOX (widget), GTK_TREE_MODEL (listStore));
 	if (-1 <= defaultValue)
