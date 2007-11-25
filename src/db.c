@@ -54,6 +54,11 @@ db_prepare_stmt (sqlite3_stmt **stmt, const gchar *sql)
 	const char	*left;
 
 	res = sqlite3_prepare_v2 (db, sql, -1, stmt, &left);
+	if ((SQLITE_BUSY == res) ||
+	    (SQLITE_LOCKED == res)) {
+		g_warning ("The Liferea cache DB seems to be used by another instance (error code=%d)! Only one accessing instance is allowed.", res);
+	    	exit(1);
+	}
 	if (SQLITE_OK != res)
 		g_error ("Failure while preparing statement, (error=%d, %s) SQL: \"%s\"", res, sqlite3_errmsg(db), sql);
 }
