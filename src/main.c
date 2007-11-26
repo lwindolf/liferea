@@ -128,6 +128,7 @@ int main(int argc, char *argv[]) {
 	LifereaDBus		*dbus = NULL;
 	LifereaAvahiPublisher	*avahiPublisher = NULL;
 	int mainwindowState = MAINWINDOW_SHOWN;
+	gchar *accels_file = NULL;
 	
 #ifdef USE_SM
 	gchar *opt_session_arg = NULL;
@@ -257,6 +258,9 @@ int main(int argc, char *argv[]) {
 	conf_load ();			/* load global feed settings */
 	script_init ();			/* setup scripting if supported */
 	social_init ();			/* initialized social bookmarking */
+	accels_file = g_build_filename (common_get_cache_path(), "accels", NULL);
+	gtk_accel_map_load (accels_file);
+	g_free (accels_file);
 #ifdef USE_DBUS	
 	dbus = liferea_dbus_new ();	
 #else

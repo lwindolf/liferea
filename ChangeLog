@@ -11,6 +11,9 @@
 	* New option to pass enclosure URLs to external
 	  programs instead of downloading the enclosures.
 	  (patch by goyko)
+	* Now dumps accelerator key list to ~/.liferea/accels
+	  to support accelerator restoring on non-GNOME setups.
+	  (patch by goyko)
 
 
 2007-07-22  Lars Lindner  <lars.lindner@gmail.com>

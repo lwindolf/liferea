@@ -1069,6 +1069,25 @@ void ui_choose_directory(gchar *title, gchar *buttonName, fileChoosenCallback ca
 	ui_choose_file_or_dir(title, buttonName, FALSE, TRUE, callback, currentPath, NULL, user_data);
 }
 
+gboolean
+ui_save_accels(gpointer data)
+{
+	gchar *accels_file = NULL;
+
+	accels_file = g_build_filename (common_get_cache_path(), "accels", NULL);
+	gtk_accel_map_save (accels_file);
+	g_free (accels_file);
+	return FALSE;
+}
+
+void
+on_accel_change (GtkAccelMap *object, gchar *accel_path,
+		guint accel_key, GdkModifierType accel_mode,
+		gpointer user_data)
+{
+	g_idle_add (ui_save_accels, NULL);
+}
+
 static const GtkActionEntry ui_mainwindow_action_entries[] = {
 	{"SubscriptionsMenu", NULL, N_("_Subscriptions")},
 	{"UpdateAll", "gtk-refresh", N_("Update _All"), "<control>A", N_("Updates all subscriptions. This does not update OCS directories."),
@@ -1283,6 +1302,10 @@ static void ui_mainwindow_create_menus(struct mainwindow *mw) {
 	mw->menubar = gtk_ui_manager_get_widget (ui_manager, "/MainwindowMenubar");
 	mw->toolbar = gtk_ui_manager_get_widget (ui_manager, "/maintoolbar");
 	
+	/* Trigger saving of accels file */
+	g_signal_connect(gtk_accel_map_get(), "changed",
+			G_CALLBACK(on_accel_change), NULL);
+
 	/* what a pain, why is there no markup for this option? */
 	g_object_set (G_OBJECT (gtk_ui_manager_get_widget (ui_manager, "/maintoolbar/newFeedButton")), "is_important", TRUE, NULL);
 	g_object_set (G_OBJECT (gtk_ui_manager_get_widget (ui_manager, "/maintoolbar/nextUnreadButton")), "is_important", TRUE, NULL);
