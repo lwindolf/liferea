@@ -24,6 +24,7 @@
 #endif
 
 #include <string.h>
+#include <gdk/gdkkeysyms.h>
 
 #include "common.h"
 #include "itemlist.h"
@@ -184,6 +185,20 @@ on_tab_history_forward (GtkWidget *widget, gpointer user_data)
 	gtk_entry_set_text (GTK_ENTRY (tab->urlentry), url);
 }
 
+static gboolean
+on_tab_key_press (GtkWidget *widget, GdkEventKey *event, gpointer data)
+{
+	guint modifiers;
+
+	modifiers = gtk_accelerator_get_default_mod_mask ();
+	if ((event->keyval == GDK_w) && ((event->state & modifiers) == GDK_CONTROL_MASK)) {
+		ui_tabs_close_tab ((GtkWidget *)data);
+		return TRUE;
+	}
+	
+	return FALSE;
+}
+
 void
 ui_tabs_init (void)
 {
@@ -292,6 +307,8 @@ ui_tabs_new (const gchar *url, const gchar *title, gboolean activate)
 	gtk_widget_show_all (vbox);
 	
 	i = gtk_notebook_append_page (GTK_NOTEBOOK (liferea_shell_lookup ("browsertabs")), vbox, label);
+	g_signal_connect (gtk_notebook_get_nth_page (GTK_NOTEBOOK (liferea_shell_lookup ("browsertabs")), i), 
+	                  "key-press-event", G_CALLBACK (on_tab_key_press), (gpointer) widget);
 	gtk_notebook_set_show_tabs (GTK_NOTEBOOK (liferea_shell_lookup ("browsertabs")), TRUE);
 	
 	if (activate && (i != -1))
@@ -346,7 +363,6 @@ ui_tabs_close_tab (GtkWidget *child)
 	gtk_notebook_remove_page(GTK_NOTEBOOK(liferea_shell_lookup("browsertabs")), n);
 
 	ui_tabs_history_free (tab->history);
-	g_object_unref (tab->htmlview);
 	g_free (tab);	
 	
 	/* check if all tabs are closed */

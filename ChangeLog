@@ -2,6 +2,8 @@
 
 	Version 1.4.9 (Stable)
 
+	* Adds a Ctrl-W binding to close browser tabs.
+	  (patch from Gustavo Chain)
 	* Fixes SF #1836691 core dump when sqlite DB file is
 	  already locked (reported by Kees Cook)
 	* Fixes missing translation of combo boxes in
