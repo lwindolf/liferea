@@ -319,45 +319,6 @@ on_mainwindow_key_press_event (GtkWidget *widget, GdkEventKey *event, gpointer d
 				break;
 		}
 
-		/* menu hotkeys (duplicated so they work with hidden menu */
-		if (GDK_CONTROL_MASK == (event->state & default_modifiers)) {
-			switch (event->keyval) {
-				case GDK_KP_Add:
-					on_popup_zoomin_selected (NULL, 0, NULL);
-					return TRUE;
-					break;
-				case GDK_KP_Subtract:
-					on_popup_zoomout_selected (NULL, 0, NULL);
-					return TRUE;
-					break;
-				case GDK_period:
-				case GDK_n:
-					on_next_unread_item_activate (NULL, NULL);
-					return TRUE;
-					break;
-				case GDK_r:
-					on_menu_allread (NULL, NULL);
-					return TRUE;
-					break;
-				case GDK_t:
-					on_toggle_item_flag (NULL, NULL);
-					return TRUE;
-					break;
-				case GDK_u:
-					on_toggle_unread_status (NULL, NULL);
-					return TRUE;
-					break;
-				case GDK_a:
-					on_menu_update_all (NULL, NULL);
-					return TRUE;
-					break;
-				case GDK_f:
-					on_searchbtn_clicked (NULL, NULL);
-					return TRUE;
-					break;
-			}
-		}
-
 		/* prevent usage of navigation keys in entries */
 		focusw = gtk_window_get_focus (GTK_WINDOW (widget));
 		if (GTK_IS_ENTRY (focusw))
@@ -773,11 +734,18 @@ void ui_mainwindow_update_toolbar(void) {
 		gtk_widget_show(mainwindow_priv->toolbar);
 }
 
-void ui_mainwindow_update_feed_menu(gboolean feedActions, gboolean readWrite) {
-	
-	gtk_action_group_set_sensitive(mainwindow_priv->addActions, readWrite);
-	gtk_action_group_set_sensitive(mainwindow_priv->feedActions, feedActions);
-	gtk_action_group_set_sensitive(mainwindow_priv->readWriteActions, readWrite);
+void
+ui_mainwindow_update_feed_menu (gboolean feedActions, gboolean readWrite)
+{	
+	gtk_action_group_set_sensitive (mainwindow_priv->addActions, readWrite);
+	gtk_action_group_set_sensitive (mainwindow_priv->feedActions, feedActions);
+	gtk_action_group_set_sensitive (mainwindow_priv->readWriteActions, readWrite);
+}
+
+void
+ui_mainwindow_update_item_menu (gboolean itemActions)
+{	
+	gtk_action_group_set_sensitive (mainwindow_priv->itemActions, itemActions);
 }
 
 void ui_mainwindow_update_menubar(void) {
