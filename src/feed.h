@@ -51,7 +51,6 @@ typedef struct feed {
 	/* feed properties that need to be saved */	// FIXME: move to metadata
 	gchar		*htmlUrl;		/**< URL of HTML version of the feed */
 	gchar		*imageUrl;		/**< URL of the optional feed image */
-	gchar		*description;		/**< HTML string describing the feed */
 
 	/* feed cache state properties */
 	gint		cacheLimit;		/**< Amount of cache to save: See the cache_limit enum */
@@ -169,12 +168,6 @@ guint feed_get_max_item_count(nodePtr node);
  */
 feedHandlerPtr feed_type_str_to_fhp(const gchar *str);
 const gchar *feed_type_fhp_to_str(feedHandlerPtr fhp);
-
-const gchar * feed_get_title(feedPtr feed);
-void feed_set_title(feedPtr feed, const gchar * title);
-
-const gchar * feed_get_description(feedPtr feed);
-void feed_set_description(feedPtr feed, const gchar *description);
 
 const gchar * feed_get_html_url(feedPtr feed);
 

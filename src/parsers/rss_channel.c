@@ -121,10 +121,11 @@ static void parseChannel(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 				g_free(tmp);
 			}
 		}
-		else if(!xmlStrcmp(cur->name, BAD_CAST"description")) {
- 			if(NULL != (tmp = common_utf8_fix(xhtml_extract (cur, 0, NULL)))) {
-				feed_set_description(ctxt->feed, tmp);
-				g_free(tmp);
+		else if (!xmlStrcmp (cur->name, BAD_CAST"description")) {
+ 			tmp = common_utf8_fix (xhtml_extract (cur, 0, NULL));
+			if (tmp) {
+				metadata_list_set (&ctxt->subscription->metadata, "description", tmp);
+				g_free (tmp);
 			}
 		}
 		

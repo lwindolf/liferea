@@ -86,11 +86,11 @@ static void parseCDFChannel(feedParserCtxtPtr ctxt, xmlNodePtr cur, CDFChannelPt
 				ctxt->title = tmp;
 			}
 			
-		} else if(!xmlStrcasecmp(cur->name, BAD_CAST "abstract")) {
-			tmp = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE));
-			if(tmp) {
-				feed_set_description(ctxt->feed, tmp);
-				xmlFree(tmp);
+		} else if (!xmlStrcasecmp(cur->name, BAD_CAST "abstract")) {
+			tmp = common_utf8_fix (xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, TRUE));
+			if (tmp) {
+				metadata_list_set (&ctxt->subscription->metadata, "description", tmp);
+				xmlFree (tmp);
 			}
 			
 		} else {		

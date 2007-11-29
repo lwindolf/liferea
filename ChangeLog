@@ -8,6 +8,8 @@
 	  already locked (reported by Kees Cook)
 	* Fixes a crash when marking search folders as read.
 	  (reported by goyko)
+	* Fixes loose of feed description text after restarts.
+	  (reported by Vincent Lefevre)
 	* Fixes missing translation of combo boxes in
 	  preferences dialog (reported by Vincent Lefevre)
 	* Update of Japanese translation (Takeshi AIHANA)

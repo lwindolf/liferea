@@ -8782,6 +8782,23 @@ fail:
 }
 
 
+static int _wrap_ui_mainwindow_update_item_menu(lua_State* L) {
+  int SWIG_arg = -1;
+  int arg1 ;
+  
+  if(!lua_isnumber(L,1)) SWIG_fail_arg(1);
+  arg1 = (int)lua_tonumber(L, 1);
+  ui_mainwindow_update_item_menu(arg1);
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_ui_mainwindow_update_menubar(lua_State* L) {
   int SWIG_arg = -1;
   
@@ -9681,6 +9698,7 @@ static const struct luaL_reg swig_commands[] = {
     { "ui_mainwindow_set_toolbar_style", _wrap_ui_mainwindow_set_toolbar_style},
     { "ui_mainwindow_update_toolbar", _wrap_ui_mainwindow_update_toolbar},
     { "ui_mainwindow_update_feed_menu", _wrap_ui_mainwindow_update_feed_menu},
+    { "ui_mainwindow_update_item_menu", _wrap_ui_mainwindow_update_item_menu},
     { "ui_mainwindow_update_menubar", _wrap_ui_mainwindow_update_menubar},
     { "ui_mainwindow_set_status_bar", _wrap_ui_mainwindow_set_status_bar},
     { "ui_mainwindow_update_feedsinfo", _wrap_ui_mainwindow_update_feedsinfo},
