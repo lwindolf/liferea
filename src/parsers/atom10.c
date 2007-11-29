@@ -613,13 +613,15 @@ static void atom10_parse_feed_rights(xmlNodePtr cur, feedParserCtxtPtr ctxt, str
 	}
 }
 
-static void atom10_parse_feed_subtitle(xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10ParserState *state) {
+static void
+atom10_parse_feed_subtitle (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10ParserState *state)
+{
 	gchar *subtitle;
 	
-	subtitle = atom10_parse_text_construct(cur, TRUE);
-	if(subtitle) {
-		feed_set_description(ctxt->feed, subtitle);
-		g_free(subtitle);
+	subtitle = atom10_parse_text_construct (cur, TRUE);
+	if (subtitle) {
+ 		metadata_list_set (&ctxt->subscription->metadata, "description", subtitle);
+		g_free (subtitle);
 	}
 }
 

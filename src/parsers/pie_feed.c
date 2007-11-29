@@ -219,11 +219,11 @@ static void pie_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 					ctxt->subscription->metadata = metadata_list_append(ctxt->subscription->metadata, "author", tmp);
 					g_free(tmp);
 				}
-			} else if(!xmlStrcmp(cur->name, BAD_CAST"tagline")) {
-				tmp = common_utf8_fix(pie_parse_content_construct(cur));
-				if(tmp) {
-					feed_set_description(ctxt->feed, tmp);
-					g_free(tmp);				
+			} else if (!xmlStrcmp (cur->name, BAD_CAST"tagline")) {
+				tmp = common_utf8_fix (pie_parse_content_construct (cur));
+				if (tmp) {
+					metadata_list_set (&ctxt->subscription->metadata, "description", tmp);
+					g_free (tmp);				
 				}
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"generator")) {
 				tmp = unhtmlize(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1));

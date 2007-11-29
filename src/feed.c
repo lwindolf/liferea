@@ -394,11 +394,12 @@ feed_add_xml_attributes (nodePtr node, xmlNodePtr feedNode)
 	xmlNewTextChild (feedNode, NULL, "feedId", node_get_id (node));
 	xmlNewTextChild (feedNode, NULL, "feedTitle", node_get_title (node));
 
-	if (feed->description)
-		xmlNewTextChild (feedNode, NULL, "feedDescription", feed->description);
-
 	if (feed_get_image_url (feed))
 		xmlNewTextChild (feedNode, NULL, "feedImage", feed_get_image_url (feed));
+		
+	tmp = (gchar *)metadata_list_get (node->subscription->metadata, "description");
+	if (tmp)
+		xmlNewTextChild (feedNode, NULL, "feedDescription", tmp);
 
 	// FIXME: move subscription stuff to subscription.c
 	if (node->subscription) {
@@ -484,15 +485,6 @@ feedHandlerPtr feed_get_fhp(feedPtr feed) {
 	return feed->fhp;
 }
 
-const gchar * feed_get_description(feedPtr feed) { return feed->description; }
-void feed_set_description(feedPtr fp, const gchar *description) {
-	g_free(fp->description);
-	if(description != NULL)
-		fp->description = g_strdup(description);
-	else
-		fp->description = NULL;
-}
-
 const gchar * feed_get_html_url(feedPtr feed) { return feed->htmlUrl; };
 void feed_set_html_url(feedPtr feed, const gchar *base, const gchar *htmlUrl) {
 	g_free(feed->htmlUrl);
@@ -536,7 +528,6 @@ feed_free (nodePtr node) {
 		g_string_free(feed->parseErrors, TRUE);
 	g_free(feed->htmlUrl);
 	g_free(feed->imageUrl);
-	g_free(feed->description);
 	g_free(feed);
 }
 
