@@ -6,6 +6,8 @@
 	  (patch from Gustavo Chain)
 	* Fixes SF #1836691 core dump when sqlite DB file is
 	  already locked (reported by Kees Cook)
+	* Fixes a crash when marking search folders as read.
+	  (reported by goyko)
 	* Fixes missing translation of combo boxes in
 	  preferences dialog (reported by Vincent Lefevre)
 	* Update of Japanese translation (Takeshi AIHANA)
