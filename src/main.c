@@ -152,27 +152,6 @@ int main(int argc, char *argv[]) {
 #endif
 	gtk_init(&argc, &argv);
 	
-	bacon_connection = bacon_message_connection_new("liferea");
-	if(bacon_connection)	{
-		if(!bacon_message_connection_get_is_server(bacon_connection)) {
-			g_warning(_("Liferea seems to be running already!"));
-			
-		  	debug0(DEBUG_VERBOSE, "Startup as bacon client...");
-			bacon_message_connection_send(bacon_connection, "raise");
-			bacon_message_connection_free(bacon_connection);
-			
-			gdk_notify_startup_complete();
-			exit(0);
-		} else {
-		  	debug0(DEBUG_VERBOSE, "Startup as bacon server...");
-			bacon_message_connection_set_callback(bacon_connection,
-							      on_bacon_message_received,
-							      NULL);
-		}
-	} else {
-		g_warning("Cannot create IPC connection for Liferea!");
-	}
-	
 	/* GTK theme support */
 	g_set_application_name(_("Liferea"));
 	gtk_window_set_default_icon_name("liferea");
@@ -242,6 +221,30 @@ int main(int argc, char *argv[]) {
 		}
 	}
 	set_debug_level(debug_flags);
+	
+	/* Note: bacon connection check needs to be done after the
+	   command line parameter checking to allow help and version
+	   switches to be used when we are already running */
+	bacon_connection = bacon_message_connection_new("liferea");
+	if(bacon_connection)	{
+		if(!bacon_message_connection_get_is_server(bacon_connection)) {
+			g_warning(_("Liferea seems to be running already!"));
+			
+		  	debug0(DEBUG_VERBOSE, "Startup as bacon client...");
+			bacon_message_connection_send(bacon_connection, "raise");
+			bacon_message_connection_free(bacon_connection);
+			
+			gdk_notify_startup_complete();
+			exit(0);
+		} else {
+		  	debug0(DEBUG_VERBOSE, "Startup as bacon server...");
+			bacon_message_connection_set_callback(bacon_connection,
+							      on_bacon_message_received,
+							      NULL);
+		}
+	} else {
+		g_warning("Cannot create IPC connection for Liferea!");
+	}
 	
 	debug_start_measurement (DEBUG_DB);
 
