@@ -10,6 +10,9 @@
 	  (reported by goyko)
 	* Fixes loose of feed description text after restarts.
 	  (reported by Vincent Lefevre)
+	* Fixes impossible use of --version/--help when 
+	  Liferea is already running due to wrong check order.
+	  (reported by Gustavo Chain) 
 	* Fixes missing translation of combo boxes in
 	  preferences dialog (reported by Vincent Lefevre)
 	* Update of Japanese translation (Takeshi AIHANA)
