@@ -267,6 +267,7 @@ on_trayiconoptionbtn_clicked (GtkButton *button, gpointer user_data)
 	conf_set_bool_value (SHOW_TRAY_ICON, enabled);
 	gtk_widget_set_sensitive (liferea_dialog_lookup (prefdialog, "newcountintraybtn"), enabled);
 	gtk_widget_set_sensitive (liferea_dialog_lookup (prefdialog, "minimizetotraybtn"), enabled);
+	gtk_widget_set_sensitive (liferea_dialog_lookup (prefdialog, "startintraybtn"), enabled);
 }
 
 void
@@ -544,6 +545,12 @@ void on_minimizetotraybtn_clicked(GtkButton *button, gpointer user_data) {
 }
 
 void
+on_startintraybtn_clicked (GtkButton *button, gpointer user_data)
+{
+	conf_set_bool_value (START_IN_TRAY, gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (button)));
+}
+
+void
 on_useAvahiSync_toggled (GtkToggleButton *button, gpointer user_data)
 {
 	gboolean enabled = gtk_toggle_button_get_active (button);
@@ -747,19 +754,23 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 
 		/* ================== panel 4 "GUI" ================ */
 
-		widget = liferea_dialog_lookup(prefdialog, "popupwindowsoptionbtn");
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), conf_get_bool_value(SHOW_POPUP_WINDOWS));
+		widget = liferea_dialog_lookup (prefdialog, "popupwindowsoptionbtn");
+		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), conf_get_bool_value (SHOW_POPUP_WINDOWS));
 		
-		widget = liferea_dialog_lookup(prefdialog, "trayiconoptionbtn");
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), conf_get_bool_value(SHOW_TRAY_ICON));
+		widget = liferea_dialog_lookup (prefdialog, "trayiconoptionbtn");
+		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), conf_get_bool_value (SHOW_TRAY_ICON));
 
-		widget = liferea_dialog_lookup(prefdialog, "newcountintraybtn");
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), conf_get_bool_value(SHOW_NEW_COUNT_IN_TRAY));
-		gtk_widget_set_sensitive(liferea_dialog_lookup(prefdialog, "newcountintraybtn"), conf_get_bool_value(SHOW_TRAY_ICON));
+		widget = liferea_dialog_lookup (prefdialog, "newcountintraybtn");
+		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), conf_get_bool_value (SHOW_NEW_COUNT_IN_TRAY));
+		gtk_widget_set_sensitive (liferea_dialog_lookup (prefdialog, "newcountintraybtn"), conf_get_bool_value (SHOW_TRAY_ICON));
 
-		widget = liferea_dialog_lookup(prefdialog, "minimizetotraybtn");
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), conf_get_bool_value(DONT_MINIMIZE_TO_TRAY));
-		gtk_widget_set_sensitive(liferea_dialog_lookup(prefdialog, "minimizetotraybtn"), conf_get_bool_value(SHOW_TRAY_ICON));
+		widget = liferea_dialog_lookup (prefdialog, "minimizetotraybtn");
+		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), conf_get_bool_value (DONT_MINIMIZE_TO_TRAY));
+		gtk_widget_set_sensitive (liferea_dialog_lookup (prefdialog, "minimizetotraybtn"), conf_get_bool_value (SHOW_TRAY_ICON));
+		
+		widget = liferea_dialog_lookup (prefdialog, "startintraybtn");
+		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), conf_get_bool_value (START_IN_TRAY));
+		gtk_widget_set_sensitive (liferea_dialog_lookup (prefdialog, "startintraybtn"), conf_get_bool_value (SHOW_TRAY_ICON));
 
 		/* menu / tool bar settings */	
 		for(i = 1; i <= 3; i++) {

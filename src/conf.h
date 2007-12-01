@@ -65,6 +65,7 @@
 #define SHOW_TRAY_ICON			"/apps/liferea/trayicon"
 #define SHOW_NEW_COUNT_IN_TRAY		"/apps/liferea/trayicon-new-count"
 #define DONT_MINIMIZE_TO_TRAY		"/apps/liferea/dont-minimize-to-tray"
+#define START_IN_TRAY			"/apps/liferea/start-in-tray"
 #define SHOW_POPUP_WINDOWS		"/apps/liferea/show-popup-windows"
 #define POPUP_PLACEMENT			"/apps/liferea/popup-placement"
 #define DISABLE_MENUBAR			"/apps/liferea/disable-menubar"

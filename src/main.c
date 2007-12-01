@@ -127,8 +127,8 @@ int main(int argc, char *argv[]) {
 	gint			i;
 	LifereaDBus		*dbus = NULL;
 	LifereaAvahiPublisher	*avahiPublisher = NULL;
-	int mainwindowState = MAINWINDOW_SHOWN;
-	gchar *accels_file = NULL;
+	int			mainwindowState;
+	gchar			*accels_file = NULL;
 	
 #ifdef USE_SM
 	gchar *opt_session_arg = NULL;
@@ -278,6 +278,11 @@ int main(int argc, char *argv[]) {
 #else
 	debug0 (DEBUG_CACHE, "Compiled without AVAHI support");
 #endif
+
+	if (conf_get_bool_value (SHOW_TRAY_ICON) && conf_get_bool_value (START_IN_TRAY))
+		mainwindowState = MAINWINDOW_ICONIFIED;
+	else
+		mainwindowState = MAINWINDOW_SHOWN;
 
 	ui_mainwindow_init(mainwindowState);	/* setup mainwindow and initialize gconf configured GUI behaviour */
 	g_set_prgname("liferea");
