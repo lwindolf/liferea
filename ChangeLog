@@ -1,5 +1,14 @@
 2007-12-??  Lars Lindner  <lars.lindner@gmail.com>
 
+	Version 1.4.10 (Stable)
+
+	* Fixes SF #1842579: feed:// URI handling broken
+	  for URIs without protocol part. Such URIs are
+	  used by Firefox 3.0 (reported by Phil Ringnalda)
+	
+
+2007-12-02  Lars Lindner  <lars.lindner@gmail.com>
+
 	Version 1.4.9 (Stable)
 
 	* Adds a Ctrl-W binding to close browser tabs.
@@ -16,6 +25,9 @@
 	* Fixes an assertion when changing search folder rules.
 	* Fixes broken negative search folders rules
 	  (Debian #453521, reported by Erich Schubert)
+
+	Translations
+
 	* Fixes missing translation of combo boxes in
 	  preferences dialog (reported by Vincent Lefevre)
 	* Update of Japanese translation (Takeshi AIHANA)
