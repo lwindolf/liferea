@@ -59,11 +59,9 @@ extern void debug_start_measurement_func (const char * function);
  * @param level		debugging flags that enable the measurement
  * @param name		name of the measurement
  *
- * @returns duration in milliseconds
- *
  * Not thread-safe!
  */
-extern unsigned long debug_end_measurement_func (const char * function, unsigned long flags, const char *name);
+extern void debug_end_measurement_func (const char * function, unsigned long flags, const char *name);
 
 #define debug_end_measurement(level, name) if ((debug_level) & level) debug_end_measurement_func (PRETTY_FUNCTION, level, name)
 
