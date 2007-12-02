@@ -13,6 +13,7 @@
 	* Fixes impossible use of --version/--help when 
 	  Liferea is already running due to wrong check order.
 	  (reported by Gustavo Chain) 
+	* Fixes an assertion when changing search folder rules.
 	* Fixes missing translation of combo boxes in
 	  preferences dialog (reported by Vincent Lefevre)
 	* Update of Japanese translation (Takeshi AIHANA)

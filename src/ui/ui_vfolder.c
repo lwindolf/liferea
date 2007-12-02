@@ -53,11 +53,13 @@ struct changeRequest {
 	GtkWidget			*paramHBox;	/* used for rule type change */
 };
 
-static void on_propdialog_response(GtkDialog *dialog, gint response_id, gpointer user_data) {
+static void
+on_propdialog_response (GtkDialog *dialog, gint response_id, gpointer user_data)
+{
 	struct fp_vfolder_ui_data	*ui_data = (struct fp_vfolder_ui_data*)user_data;
 	GSList				*iter, *unused_rules;
 	
-	if(response_id == GTK_RESPONSE_OK) {
+	if (response_id == GTK_RESPONSE_OK) {
 		node_set_title (ui_data->np, gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET (dialog), "feedNameEntry"))));
 		unused_rules = ui_data->vp->rules;
 		ui_data->vp->rules = ui_data->newRules;
@@ -67,23 +69,24 @@ static void on_propdialog_response(GtkDialog *dialog, gint response_id, gpointer
 
 	/* delete old or unused rules */	
 	iter = unused_rules;
-	while(iter != NULL) {
-		vfolder_remove_rule(ui_data->vp, (rulePtr)iter->data);
-		rule_free((rulePtr)iter->data);
-		iter = g_slist_next(iter);
+	while (iter) {
+		vfolder_remove_rule (ui_data->vp, (rulePtr)iter->data);
+		rule_free ((rulePtr)iter->data);
+		iter = g_slist_next (iter);
 	}
-	g_slist_free(unused_rules);
+	g_slist_free (unused_rules);
 
-	if(response_id == GTK_RESPONSE_OK) {	
+	if (response_id == GTK_RESPONSE_OK) {	
 		/* update vfolder */
 		ui_itemlist_clear();
 		vfolder_refresh (ui_data->vp);
-		itemlist_load(ui_data->np);
-		ui_node_update(ui_data->np->id);
+		itemlist_unload (FALSE);
+		itemlist_load (ui_data->np);
+		ui_node_update (ui_data->np->id);
 	}
 	
-	g_free(ui_data);
-	gtk_widget_destroy(GTK_WIDGET(dialog));
+	g_free (ui_data);
+	gtk_widget_destroy (GTK_WIDGET (dialog));
 }
 
 static void ui_vfolder_destroy_param_widget(GtkWidget *widget, gpointer data) {
