@@ -54,6 +54,7 @@ subscription_new (const gchar *source,
 	subscription->defaultInterval = -1;
 	
 	if (source) {
+		gboolean feedPrefix = FALSE;
 		gchar *uri = g_strdup (source);
 		g_strstrip (uri);	/* strip confusing whitespaces */
 		
@@ -62,6 +63,7 @@ subscription_new (const gchar *source,
 			gchar *tmp = uri;
 			uri = g_strdup (uri + strlen (FEED_PROTOCOL_PREFIX));
 			g_free (tmp);
+			feedPrefix = TRUE;
 		}
 
 		/* strip feed protocol prefix variant 2 */
@@ -69,10 +71,12 @@ subscription_new (const gchar *source,
 			gchar *tmp = uri;
 			uri = g_strdup (uri + strlen (FEED_PROTOCOL_PREFIX2));
 			g_free (tmp);
+			feedPrefix = TRUE;
 		}
 			
-		/* ensure protocol prefix */
-		if (!strstr (uri, "://")) {
+		/* ensure protocol prefix (but only for feed:[//] URIs to avoid 
+		   breaking local file and command line subscriptions) */
+		if (feedPrefix && !strstr (uri, "://")) {
 			gchar *tmp = uri;
 			uri = g_strdup_printf ("http://%s", uri);
 			g_free (tmp);
