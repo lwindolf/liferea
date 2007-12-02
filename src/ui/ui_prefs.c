@@ -278,7 +278,7 @@ on_popupwindowsoptionbtn_clicked (GtkButton *button, gpointer user_data)
 	notification_enable (conf_get_bool_value (SHOW_POPUP_WINDOWS));
 }
 
-void
+static void
 on_feed_startup_update_changed (gpointer user_data)
 {
 	conf_set_int_value (STARTUP_FEED_ACTION, gtk_combo_box_get_active (GTK_COMBO_BOX (liferea_dialog_lookup (prefdialog, "startupActionCombo"))));
@@ -324,7 +324,7 @@ on_disablejavascript_toggled (GtkToggleButton *togglebutton, gpointer user_data)
 	conf_set_bool_value (DISABLE_JAVASCRIPT, gtk_toggle_button_get_active (togglebutton));
 }
 
-void
+static void
 on_socialsite_changed (GtkOptionMenu *optionmenu, gpointer user_data)
 {
 	social_set_site ((gchar *)user_data);
@@ -463,7 +463,7 @@ on_proxypasswordentry_changed (GtkEditable *editable, gpointer user_data)
 	conf_set_str_value (PROXY_PASSWD, gtk_editable_get_chars (editable,0,-1));
 }
 
-void
+static void
 on_skim_key_changed (gpointer user_data) 
 {
 	conf_set_int_value (BROWSE_KEY_SETTING, gtk_combo_box_get_active (GTK_COMBO_BOX (user_data)));
