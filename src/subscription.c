@@ -32,7 +32,9 @@
 #include "ui/ui_mainwindow.h"
 #include "ui/ui_node.h"
 
+/* The allowed feed protocol prefixes (see http://25hoursaday.com/draft-obasanjo-feed-URI-scheme-02.html) */
 #define FEED_PROTOCOL_PREFIX "feed://"
+#define FEED_PROTOCOL_PREFIX2 "feed:"
 
 subscriptionPtr
 subscription_new (const gchar *source,
@@ -55,10 +57,17 @@ subscription_new (const gchar *source,
 		gchar *uri = g_strdup (source);
 		g_strstrip (uri);	/* strip confusing whitespaces */
 		
-		/* strip feed protocol prefix */
+		/* strip feed protocol prefix variant 1 */
 		if (uri == strstr (uri, FEED_PROTOCOL_PREFIX)) {
 			gchar *tmp = uri;
 			uri = g_strdup (uri + strlen (FEED_PROTOCOL_PREFIX));
+			g_free (tmp);
+		}
+
+		/* strip feed protocol prefix variant 2 */
+		if (uri == strstr (uri, FEED_PROTOCOL_PREFIX2)) {
+			gchar *tmp = uri;
+			uri = g_strdup (uri + strlen (FEED_PROTOCOL_PREFIX2));
 			g_free (tmp);
 		}
 			
