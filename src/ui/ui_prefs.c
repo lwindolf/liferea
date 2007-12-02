@@ -594,7 +594,7 @@ static void ui_pref_destroyed_cb(GtkWidget *widget, void *data) {
 }
 
 void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
-	GtkWidget		*widget, *entry, *menu, *combo;
+	GtkWidget		*widget, *entry, *menu;
 	GtkAdjustment		*itemCount;
 	GtkTreeStore		*treestore;
 	GtkTreeViewColumn 	*column;
@@ -652,9 +652,6 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 		gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_browser_place_changed), GINT_TO_POINTER(3));
 
 		gtk_option_menu_set_menu(GTK_OPTION_MENU(liferea_dialog_lookup(prefdialog, "browserlocpopup")), menu);
-
-		/* Create the toolbar style combo */
-		combo = liferea_dialog_lookup(prefdialog, "toolbarcombo");
 
 		/* ================== panel 1 "feeds" ==================== */
 
@@ -792,14 +789,14 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 		g_free(widgetname);
 
 		/* select currently active toolbar style option */
-		name = conf_get_str_value(TOOLBAR_STYLE);
+		name = conf_get_str_value (TOOLBAR_STYLE);
 		for (i = 0; gui_toolbar_style_values[i] != NULL; ++i) {
-			if (strcmp(name, gui_toolbar_style_values[i]) == 0)
+			if (strcmp (name, gui_toolbar_style_values[i]) == 0)
 				break;
 		}
 		g_free (name);
 
-		/* Invalid key value. Revert to default */
+		/* On invalid key value: revert to default */
 		if (gui_toolbar_style_values[i] == NULL)
 			i = 0;
 
