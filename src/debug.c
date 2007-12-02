@@ -77,37 +77,40 @@ debug_start_measurement_func (const char * function)
 	g_get_current_time (startTime);
 }
 
-unsigned long
+void
 debug_end_measurement_func (const char * function,
                             unsigned long flags, 
 			    const char *name)
 {
 	GTimeVal	*startTime = NULL;
 	GTimeVal	endTime;
+	unsigned long	duration = 0;
 		
 	if (!function)
-		return 0;
+		return;
 		
 	if (!startTimes)
-		return 0;
+		return;
 	
 	startTime = g_hash_table_lookup (startTimes, function);
 
 	if (!startTime) 
-		return 0;
+		return;
 		
 	g_get_current_time (&endTime);
 	g_time_val_add (&endTime, (-1) * startTime->tv_usec);
 	
 	if ((0 == endTime.tv_sec - startTime->tv_sec) &&
 	    (0 == endTime.tv_usec/1000))
-		return 0;
+		return;
 	
 	g_print ("%s: %s took %01ld,%03lds\n", debug_get_prefix (flags), name, 
 	                                     endTime.tv_sec - startTime->tv_sec, 
 					     endTime.tv_usec/1000);
 					     
-	return ((endTime.tv_sec - startTime->tv_sec)*1000 + endTime.tv_usec/1000);
+	duration = (endTime.tv_sec - startTime->tv_sec)*1000 + endTime.tv_usec/1000;
+	if (duration > 250)
+		debug2 (DEBUG_PERF, "function \"%s\" is slow! Took %dms.", name, duration);
 }
  
 void
@@ -203,9 +206,6 @@ debug_exit (const char *name)
 {
 	debug1 (DEBUG_TRACE, "- %s", name);
 	
-	if (debug_level & DEBUG_PERF) {
-		unsigned long duration = debug_end_measurement_func (name, DEBUG_PERF, name);
-		if (duration > 250)
-			debug2 (DEBUG_PERF, "function \"%s\" is slow! Took %dms.", name, duration);
-	}
+	if (debug_level & DEBUG_PERF)
+		debug_end_measurement_func (name, DEBUG_PERF, name);
 }
