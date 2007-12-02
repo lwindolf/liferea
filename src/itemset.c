@@ -226,6 +226,16 @@ itemset_sort_by_date (gconstpointer a, gconstpointer b)
 	itemPtr item2 = (itemPtr)b;
 	
 	g_assert(item1 && item2);
+	
+	/* We have a problem here if all items of the feed
+	   do have no date, then this comparison is useless.
+	   To avoid such a case we alternatively compare by
+	   item id (which should be an ever-increasing number)
+	   and thereby indicate merge order as a secondary
+	   order criterion */
+	if(item1->time == item2->time)
+		return item1->id < item2->id;
+		
 	return item1->time < item2->time;
 }
 
@@ -239,7 +249,7 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates)
 	
 	debug2 (DEBUG_UPDATE, "old item set %p of (node id=%s):", itemSet, itemSet->nodeId);
 	
-	/* 1. Avoid cache wrapping
+	/* 1. Avoid cache wrapping (if feed size > cache size)
 	
 	   Truncate the new itemset if it is longer than
 	   the maximum cache size which could cause items
@@ -273,7 +283,7 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates)
 		iter = g_list_next (iter);
 	}
  
-	/* 3. Merge items
+	/* 3. Merge received items to existing item set
 	 
 	   Items are given in top to bottom display order. 
 	   Adding them in this order would mean to reverse 
@@ -287,7 +297,8 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates)
 	}
 	g_list_free (list);
 	
-	/* 4. Apply cache limit and unload items */
+	/* 4. Apply cache limit for effective item set size
+	      and unload older items as necessary. */
 	
 	if (newCount + g_list_length (items) > max)
 		toBeDropped = newCount + g_list_length (items) - max;

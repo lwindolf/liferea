@@ -79,12 +79,22 @@ itemlist_filter_free (void)
 }
 
 static void
+itemlist_duplicate_list_remove_item (itemPtr item)
+{
+	if (!item->validGuid)
+		return;
+	if (!itemlist_priv.guids)
+		return;
+	g_hash_table_remove (itemlist_priv.guids, item->sourceId);
+}
+
+static void
 itemlist_duplicate_list_add_item (itemPtr item)
 {
 	if (!item->validGuid)
 		return;
 	if (!itemlist_priv.guids)
-		itemlist_priv.guids = g_hash_table_new (g_str_hash, g_str_equal);
+		itemlist_priv.guids = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
 	g_hash_table_insert (itemlist_priv.guids, g_strdup (item->sourceId), GUINT_TO_POINTER (item->id));
 }
 
@@ -445,7 +455,9 @@ itemlist_remove_item (itemPtr item)
 		itemlist_priv.deferredRemove = FALSE;
 		itemview_select_item (NULL);
 	}
-	
+
+	itemlist_duplicate_list_remove_item (item);
+		
 	itemview_remove_item (item);
 	itemview_update ();
 
@@ -507,8 +519,10 @@ itemlist_remove_all_items (nodePtr node)
 		
 	db_itemset_remove_all (node->id);
 	
-	if (node == itemlist_priv.currentNode)
+	if (node == itemlist_priv.currentNode) {
 		itemview_update ();
+		itemlist_duplicate_list_free ();
+	}
 	
 	/* Search folders updating */
 	if (node->unreadCount)

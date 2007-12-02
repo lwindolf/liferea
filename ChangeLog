@@ -5,6 +5,10 @@
 	* Fixes SF #1842579: feed:// URI handling broken
 	  for URIs without protocol part. Such URIs are
 	  used by Firefox 3.0 (reported by Phil Ringnalda)
+	* Fixes a memory leak in the item list loading
+	  duplicate elimination handling.
+	* Fixes SF #1832389: cache limit causes flipping
+	  between old items (reported by Mike Auty)
 	
 
 2007-12-02  Lars Lindner  <lars.lindner@gmail.com>
