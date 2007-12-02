@@ -52,15 +52,24 @@ subscription_new (const gchar *source,
 	subscription->defaultInterval = -1;
 	
 	if (source) {
-		gchar *tmp, *uri = g_strdup (source);
+		gchar *uri = g_strdup (source);
 		g_strstrip (uri);	/* strip confusing whitespaces */
 		
 		/* strip feed protocol prefix */
-		tmp = uri;
-		if (tmp == strstr (tmp, FEED_PROTOCOL_PREFIX))
-			tmp += strlen (FEED_PROTOCOL_PREFIX);
+		if (uri == strstr (uri, FEED_PROTOCOL_PREFIX)) {
+			gchar *tmp = uri;
+			uri = g_strdup (uri + strlen (FEED_PROTOCOL_PREFIX));
+			g_free (tmp);
+		}
 			
-		subscription_set_source (subscription, tmp);
+		/* ensure protocol prefix */
+		if (!strstr (uri, "://")) {
+			gchar *tmp = uri;
+			uri = g_strdup_printf ("http://%s", uri);
+			g_free (tmp);
+		}
+			
+		subscription_set_source (subscription, uri);
 		g_free (uri);
 	}
 	
