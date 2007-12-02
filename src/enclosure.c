@@ -52,6 +52,7 @@
  */
 
 static GSList *types = NULL;
+static gboolean typesLoaded = FALSE;
 
 static void
 enclosure_mime_types_load (void)
@@ -60,6 +61,8 @@ enclosure_mime_types_load (void)
 	xmlNodePtr	cur;
 	encTypePtr	etp;
 	gchar		*filename;
+	
+	typesLoaded = TRUE;
 	
 	filename = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "mime.xml", common_get_cache_path());
 	if (g_file_test (filename, G_FILE_TEST_EXISTS)) {
@@ -139,10 +142,9 @@ enclosure_mime_types_save (void)
 const GSList const *
 enclosure_mime_types_get (void)
 {
-	if (!types)
+	if (!typesLoaded)
 		enclosure_mime_types_load ();
 		
-	g_assert (NULL != types);
 	return types;
 }
 
