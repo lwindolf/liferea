@@ -192,31 +192,82 @@ rule_condition_item_has_enclosure (rulePtr rule)
 	return condition;
 }
 
+static void
+rule_merge_sql (gchar **sql, const gchar *operator, const gchar *condition)
+{
+	if (!*sql) {
+		*sql = g_strdup (condition);
+	} else {
+		gchar *old = *sql;
+		*sql = g_strdup_printf ("%s %s %s", old, operator, condition);
+		g_free (old);
+	}
+}
+
 static queryPtr
 query_create (GSList *rules)
 {
 	queryPtr	query;
 	conditionPtr	condition;
+	GSList		*iter;
+	GSList		*additive = NULL;
+	GSList		*negative = NULL;
 	
+	/* First process all rules to SQL conditions and sort
+	   them into the additive and negative lists. While 
+	   doing so also collect the necessary the table set. */
 	query = g_new0 (struct query, 1);
-	while (rules) {
-		rulePtr rule = (rulePtr)rules->data;
+	iter = rules;
+	while (iter) {
+		rulePtr rule = (rulePtr)iter->data;
 		conditionPtr condition;
 		
 		condition = (*((ruleConditionFunc)rule->ruleInfo->queryFunc)) (rule);
-		if (!query->conditions) {
-			query->conditions = condition->sql;
-			condition->sql = NULL;
+		
+		/* Negate the SQL condition if necessary */
+		if (rule->additive) {
+			additive = g_slist_append (additive, condition->sql);
 		} else {
-			gchar *old = query->conditions;
-			query->conditions = g_strdup_printf ("%s OR %s", old, condition->sql);
-			g_free (old);
+			gchar *tmp = condition->sql;
+			condition->sql = g_strdup_printf ("NOT(%s)", condition->sql);
+			g_free (tmp);
+			
+			negative = g_slist_append (negative, condition->sql);
 		}
+
 		query->tables |= condition->tables;
-		g_free (condition->sql);
 		g_free (condition);
-		rules = g_slist_next (rules);
+		iter = g_slist_next (iter);
 	}
+	
+	/* Constructing query by ... */
+	  
+	/* a) OR'ing all additive matches */
+	iter = additive;
+	while (iter) {
+		gchar *sql = (gchar *)iter->data;
+		rule_merge_sql (&query->conditions, "OR", sql);
+		g_free (sql);
+		iter = g_slist_next (iter);
+	}
+	g_slist_free (additive);
+	
+	/* b) and AND'ing all negative matches to the positive match list */		
+	if (negative) {
+		gchar *tmp = query->conditions;
+		query->conditions = g_strdup_printf ("(%s)", query->conditions);
+		g_free (tmp);
+
+		iter = negative;
+		while (iter) {
+			gchar *sql = (gchar *)iter->data;
+			rule_merge_sql (&query->conditions, "AND", sql);
+			g_free (sql);
+			iter = g_slist_next (iter);
+		}
+		g_slist_free (negative);
+	}
+	
 	return query;
 }
 
