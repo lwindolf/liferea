@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-06 00:46+0200\n"
+"POT-Creation-Date: 2007-06-20 01:42+0200\n"
 "PO-Revision-Date: 2007-01-12 03:00+0100\n"
 "Last-Translator: Mehmet Atif Ergun <mehmetaergun@gmail.com>\n"
 "Language-Team: ubuntu-l10n-tr <ubuntu-tr@lists.ubuntu.com>\n"
@@ -432,7 +432,7 @@ msgstr "En Fazla Sonuç _Sayısı"
 msgid "New Folder"
 msgstr "Yeni Klasör"
 
-#: ../liferea.glade.h:128 ../src/node.c:372
+#: ../liferea.glade.h:128 ../src/node.c:365
 msgid "New Subscription"
 msgstr "Yeni Abonelik"
 
@@ -993,37 +993,45 @@ msgstr "Arama Klasörü:"
 msgid "Authorization Error"
 msgstr "Doğrulama"
 
+#: ../src/common.c:398
+msgid "[There were more errors. Output was truncated!]"
+msgstr "[Daha fazla hata vardı. Çıktı kısaltılmıştı!]"
+
+#: ../src/common.c:526
+msgid "XML Parser: Could not parse document:\n"
+msgstr "XML Ayrıştırıcısı: Dosya ayrıştırılamadı:\n"
+
 #. translation hint: date format for today, reorder format codes as necessary
-#: ../src/common.c:150
+#: ../src/common.c:634
 msgid "Today %l:%M %p"
 msgstr "Bugün %H:%M"
 
 #. translation hint: date format for yesterday, reorder format codes as necessary
-#: ../src/common.c:163
+#: ../src/common.c:647
 msgid "Yesterday %l:%M %p"
 msgstr "Dün %H:%M"
 
 #. translation hint: date format for dates older than 2 days but not older than a week, reorder format codes as necessary
-#: ../src/common.c:178
+#: ../src/common.c:662
 msgid "%a %l:%M %p"
 msgstr "%a %H:%M"
 
 #. translation hint: date format for dates older than a week but from this year, reorder format codes as necessary
-#: ../src/common.c:189
+#: ../src/common.c:673
 msgid "%b %d %l:%M %p"
 msgstr "%d %b %H:%M"
 
 #. translation hint: date format for dates from the last years, reorder format codes as necessary
-#: ../src/common.c:194
+#: ../src/common.c:678
 msgid "%b %d %Y"
 msgstr "%d %b %Y"
 
-#: ../src/common.c:394
+#: ../src/common.c:878
 #, c-format
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "Bellek klasörü \"%s\" yaratılamadı!"
 
-#: ../src/common.c:442
+#: ../src/common.c:926
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box."
@@ -1031,96 +1039,96 @@ msgstr ""
 "Bu haber kaynağını yükleme izniniz yok. Lütfen kullanıcı adınızı ve "
 "şifrenizi haber kaynak özellikleri diyalog kutusunu kullanarak güncelleyiniz."
 
-#: ../src/common.c:444
+#: ../src/common.c:928
 msgid "Payment Required"
 msgstr "Ödeme Gerekli"
 
-#: ../src/common.c:445
+#: ../src/common.c:929
 msgid "Access Forbidden"
 msgstr "Giriş Yasak"
 
-#: ../src/common.c:446
+#: ../src/common.c:930
 msgid "Resource Not Found"
 msgstr "Kaynak Bulunamadı"
 
-#: ../src/common.c:447
+#: ../src/common.c:931
 msgid "Method Not Allowed"
 msgstr "Yönteme İzin Verilmiyor"
 
-#: ../src/common.c:448
+#: ../src/common.c:932
 msgid "Not Acceptable"
 msgstr "Kabul Edilemez"
 
-#: ../src/common.c:449
+#: ../src/common.c:933
 msgid "Proxy Authentication Required"
 msgstr "Vekil Sunucu Kimlik Doğrulaması Gerekli"
 
-#: ../src/common.c:450
+#: ../src/common.c:934
 msgid "Request Time-Out"
 msgstr "İstek Zaman Aşımına Uğradı"
 
-#: ../src/common.c:451
+#: ../src/common.c:935
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "Yokoldu. Kaynak mevcut değil. Lütfen aboneliğinizi iptal edin!"
 
-#: ../src/common.c:456
+#: ../src/common.c:940
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr "Haber kaynağı müsait değil: Sunucu, desteklenmeyen yönlendirme istedi!"
 
-#: ../src/common.c:457
+#: ../src/common.c:941
 msgid "Client Error"
 msgstr "Alıcı Hatası"
 
-#: ../src/common.c:458
+#: ../src/common.c:942
 msgid "Server Error"
 msgstr "Sunucu Hatası"
 
-#: ../src/common.c:459
+#: ../src/common.c:943
 msgid "(unknown networking error happened)"
 msgstr "(bilinmeyen ağ hatasıyla karşılaşıldı)"
 
-#: ../src/common.c:470
+#: ../src/common.c:954
 msgid "URL is invalid"
 msgstr "Adres geçersiz"
 
-#: ../src/common.c:471
+#: ../src/common.c:955
 msgid "Unsupported network protocol"
 msgstr "Ağ protokolü desteklenmiyor"
 
-#: ../src/common.c:474
+#: ../src/common.c:958
 msgid "Error connecting to remote host"
 msgstr "Uzak bilgisayara bağlanırken hata"
 
-#: ../src/common.c:475
+#: ../src/common.c:959
 msgid "Hostname could not be found"
 msgstr "Bilgisayar adı bulunamadı"
 
-#: ../src/common.c:476
+#: ../src/common.c:960
 msgid "Network connection was refused by the remote host"
 msgstr "Ağ bağlantısı uzak bilgisayar tarafından reddedildi"
 
-#: ../src/common.c:477
+#: ../src/common.c:961
 msgid "Remote host did not finish sending data"
 msgstr "Uzak bilgisayar bilgi göndermeyi bitirmedi"
 
 #. Transfer errors
-#: ../src/common.c:479
+#: ../src/common.c:963
 msgid "Too many HTTP redirects were encountered"
 msgstr "Çok fazla HTTP yeniden yönlendirmesiyle karşılaşıldı"
 
-#: ../src/common.c:482
+#: ../src/common.c:966
 msgid "Remote host sent an invalid response"
 msgstr "Uzak bilgisayar geçersiz cevap verdi"
 
-#: ../src/common.c:489
+#: ../src/common.c:973
 msgid "Authentication failed"
 msgstr "kimlik doğrulaması başarısız"
 
-#: ../src/common.c:491
+#: ../src/common.c:975
 msgid "Webserver's authentication method incompatible with Liferea"
 msgstr "Sunucunun kimlik doğrulama yöntemi Liferea ile uyumsuz"
 
-#: ../src/common.c:536
+#: ../src/common.c:1020
 msgid ""
 "Unexpected end of character sequence or corrupt UTF-8 encoding! Some "
 "characters were dropped!"
@@ -1128,62 +1136,62 @@ msgstr ""
 "Karakter sırası beklenmeyen bir şekilde sonlandı ya da UTF-8 kodlaması "
 "bozuk! Bazı karakterler alınmadı!"
 
-#: ../src/common.c:642
+#: ../src/common.c:1126
 #, c-format
 msgid "Couldn't find pixmap file: %s"
 msgstr "Pixmap dosyasını bulamadı: %s"
 
-#: ../src/export.c:152
+#: ../src/export.c:151
 #, fuzzy, c-format
 msgid "Error renaming %s to %s\n"
 msgstr "İsim değiştirilirken hata"
 
-#: ../src/export.c:321 ../src/export.c:323
+#: ../src/export.c:316 ../src/export.c:318
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
 msgstr "Bellek dosyası okunurken XML hatası! \"%s\" içeri aktarılamadı!"
 
-#: ../src/export.c:328 ../src/export.c:330
+#: ../src/export.c:323 ../src/export.c:325
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr "Boş dosya! \"%s\" isimli OPML dosyası içeri aktarılırken boş olmamalı."
 
-#: ../src/export.c:351 ../src/export.c:353
+#: ../src/export.c:346 ../src/export.c:348
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 "\"%s\" geçerli bir OPML dosyası değil! Liferea bu dosyayı içeri aktaramıyor!"
 
-#: ../src/export.c:372
+#: ../src/export.c:367
 msgid "Imported feed list"
 msgstr ""
 
-#: ../src/export.c:384
+#: ../src/export.c:379
 msgid "Import Feed List"
 msgstr "Haber Kaynak Listesini İçeri Aktar"
 
-#: ../src/export.c:384
+#: ../src/export.c:379
 msgid "Import"
 msgstr "Içeri Aktar"
 
-#: ../src/export.c:391
+#: ../src/export.c:386
 msgid "Error while exporting feed list!"
 msgstr "Haber kaynak listesini "
 
-#: ../src/export.c:393
+#: ../src/export.c:388
 msgid "Feed List exported!"
 msgstr "Haber Kaynak Listesi dışarı aktarıldı!"
 
-#: ../src/export.c:399
+#: ../src/export.c:394
 msgid "Export Feed List"
 msgstr "Haber Kaynak Listesini Dışarı Aktar"
 
-#: ../src/export.c:399
+#: ../src/export.c:394
 msgid "Export"
 msgstr "Dışarı Aktar"
 
-#: ../src/feed.c:282
+#: ../src/feed.c:346
 #, fuzzy
 msgid ""
 "The URL you want Liferea to subscribe to points to a webpage and the auto "
@@ -1194,47 +1202,47 @@ msgstr ""
 "ve otomatik keşif bu sayfada haber kaynağı bulamadı. Belki de bu web sayfası "
 "haber kaynaklarının otomatik keşfini desteklemiyordur.</p>"
 
-#: ../src/feed.c:313
+#: ../src/feed.c:377
 #, fuzzy, c-format
 msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
 msgstr ""
 "<p>Haber kaynağı okunurken XML hatası! Haber kaynağı \"%s\" yüklenemedi!</p>"
 
-#: ../src/feed.c:318
+#: ../src/feed.c:382
 #, fuzzy
 msgid "Empty document!"
 msgstr "<p>Boş dosya!</p>"
 
-#: ../src/feed.c:327
+#: ../src/feed.c:391
 #, fuzzy
 msgid "Invalid XML!"
 msgstr "<p>Geçersiz XML!</p>"
 
-#: ../src/feed.c:367
+#: ../src/feed.c:431
 msgid "Source points to HTML document."
 msgstr ""
 
-#: ../src/feed.c:370
+#: ../src/feed.c:434
 #, fuzzy
 msgid "Could not determine the feed type."
 msgstr "<p>Haber kaynak türünü belirleyemedi.</p>"
 
-#: ../src/feed.c:558
+#: ../src/feed.c:619
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "\"%s\" için adres süresiz değiştirildi ve güncelleniyor"
 
-#: ../src/feed.c:567
+#: ../src/feed.c:628
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr "\"%s\" durdurulmuş. Liferea bunu artık güncellemeyecek"
 
-#: ../src/feed.c:570
+#: ../src/feed.c:631
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\" son güncellemeden beri değişmemiş"
 
-#: ../src/feed.c:592
+#: ../src/feed.c:653
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!</"
@@ -1244,30 +1252,30 @@ msgstr ""
 "toplama formatlarından birinde sağlandığından emin olun!</p>XML Ayrıştırıcı "
 "Çıktısı: <br /><div class='xmlparseroutput'>"
 
-#: ../src/feed.c:616
+#: ../src/feed.c:677
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" güncellendi..."
 
-#: ../src/feed.c:625
+#: ../src/feed.c:686
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" müsait değil"
 
-#: ../src/feed.c:686
+#: ../src/feed.c:747
 #, c-format
 msgid "Updating \"%s\""
 msgstr "\"%s\" güncelleniyor"
 
-#: ../src/feedlist.c:296
+#: ../src/feedlist.c:295
 msgid "You have to select a feed entry"
 msgstr "Bir haber kaynağı seçmeniz gerekiyor"
 
-#: ../src/feedlist.c:303 ../src/feedlist.c:312
+#: ../src/feedlist.c:302 ../src/feedlist.c:311
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea çevrim dışı. Güncelleme olanaksız."
 
-#: ../src/feedlist.c:439
+#: ../src/feedlist.c:436
 #, fuzzy
 msgid ""
 "This version of Liferea uses a new cache format and has migrated your feed "
@@ -1345,83 +1353,83 @@ msgstr "--session değişkeni için bir parametre gerekli.\n"
 msgid "Liferea encountered an unknown argument: %s\n"
 msgstr "Liferea, bilinmeyen bir değişkenle karşılaştı: %s\n"
 
-#: ../src/rule.c:301
+#: ../src/rule.c:260
 msgid "Item"
 msgstr "Madde"
 
-#: ../src/rule.c:301
+#: ../src/rule.c:260
 msgid "does contain"
 msgstr "içeriyor"
 
-#: ../src/rule.c:301
+#: ../src/rule.c:260
 msgid "does not contain"
 msgstr "içermiyor"
 
-#: ../src/rule.c:302
+#: ../src/rule.c:261
 msgid "Item title"
 msgstr "Madde başlığı"
 
-#: ../src/rule.c:302 ../src/rule.c:303 ../src/rule.c:304
+#: ../src/rule.c:261 ../src/rule.c:262 ../src/rule.c:263
 msgid "does match"
 msgstr "uyuyor"
 
-#: ../src/rule.c:302 ../src/rule.c:303 ../src/rule.c:304
+#: ../src/rule.c:261 ../src/rule.c:262 ../src/rule.c:263
 msgid "does not match"
 msgstr "uymuyor"
 
-#: ../src/rule.c:303
+#: ../src/rule.c:262
 msgid "Item body"
 msgstr "Madde içeriği"
 
-#: ../src/rule.c:304
+#: ../src/rule.c:263
 msgid "Feed title"
 msgstr "Haber başlığı"
 
-#: ../src/rule.c:305
+#: ../src/rule.c:264
 msgid "Read status"
 msgstr "Okunma durumu"
 
-#: ../src/rule.c:305
+#: ../src/rule.c:264
 msgid "is unread"
 msgstr "okunmamış"
 
-#: ../src/rule.c:305
+#: ../src/rule.c:264
 msgid "is read"
 msgstr "okunmuş"
 
-#: ../src/rule.c:306
+#: ../src/rule.c:265
 msgid "Flag status"
 msgstr "İşaretlenme durumu"
 
-#: ../src/rule.c:306
+#: ../src/rule.c:265
 msgid "is flagged"
 msgstr "işaretli"
 
-#: ../src/rule.c:306
+#: ../src/rule.c:265
 msgid "is unflagged"
 msgstr "işaretsiz"
 
-#: ../src/rule.c:307
+#: ../src/rule.c:266
 msgid "Update status"
 msgstr "Güncelleme durumu"
 
-#: ../src/rule.c:307
+#: ../src/rule.c:266
 msgid "was updated"
 msgstr "güncellenmiş"
 
-#: ../src/rule.c:307
+#: ../src/rule.c:266
 msgid "was not updated"
 msgstr "güncellenmemiş"
 
-#: ../src/rule.c:308
+#: ../src/rule.c:267
 msgid "Podcast"
 msgstr "Podcast"
 
-#: ../src/rule.c:308
+#: ../src/rule.c:267
 msgid "included"
 msgstr "ekli"
 
-#: ../src/rule.c:308
+#: ../src/rule.c:267
 msgid "not included"
 msgstr "ekli değil"
 
@@ -1450,33 +1458,33 @@ msgstr ""
 msgid "Updating favicon for \"%s\""
 msgstr "\"%s\" için haber kaynak simgesi güncelleniyor"
 
-#: ../src/update.c:131
+#: ../src/update.c:130
 #, c-format
 msgid "Error opening temp file %s to use for filtering!"
 msgstr "Filtrelemede kullanmak için %s geçici dosyasını açarken hata!"
 
-#: ../src/update.c:154
+#: ../src/update.c:153
 #, c-format
 msgid "%s exited with status %d"
 msgstr "%s , %d durumunda çıktı"
 
-#: ../src/update.c:160 ../src/update.c:161 ../src/update.c:266
+#: ../src/update.c:159 ../src/update.c:160 ../src/update.c:260
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "Hata: Pipe \"%s\" açılamadı"
 
 #. FIXME: maybe setting request->returncode would be better
-#: ../src/update.c:286
+#: ../src/update.c:280
 #, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr "Hata: Dosya \"%s\" açılamadı"
 
-#: ../src/update.c:292
+#: ../src/update.c:286
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "Hata: \"%s\" Böyle bir dosya yok"
 
-#: ../src/update.c:489
+#: ../src/update.c:483
 #, c-format
 msgid "Could not download \"%s\". Will retry in %d seconds."
 msgstr "\"%s\" indirilemedi. %d saniye sonra tekrar denenecek."
@@ -1484,14 +1492,6 @@ msgstr "\"%s\" indirilemedi. %d saniye sonra tekrar denenecek."
 #: ../src/vfolder.c:52
 msgid "New Search Folder"
 msgstr "Yeni Arama Klasörü"
-
-#: ../src/xml.c:358
-msgid "[There were more errors. Output was truncated!]"
-msgstr "[Daha fazla hata vardı. Çıktı kısaltılmıştı!]"
-
-#: ../src/xml.c:499
-msgid "XML Parser: Could not parse document:\n"
-msgstr "XML Ayrıştırıcısı: Dosya ayrıştırılamadı:\n"
 
 #: ../src/ui/eggtrayicon.c:133
 msgid "Orientation"
@@ -1549,7 +1549,7 @@ msgstr "\"%s\"yi silmek istediğinizden emin misiniz?"
 msgid "Deletion Confirmation"
 msgstr "Silme Onayı"
 
-#: ../src/ui/ui_htmlview.c:81
+#: ../src/ui/ui_htmlview.c:80
 msgid ""
 "Sorry, I was not able to load any installed browser plugin! Try the --debug-"
 "plugins option to get debug information!"
@@ -1558,16 +1558,16 @@ msgstr ""
 "almak için --debug-plugins seçeneğini deneyiniz!"
 
 #. FIXME: bad because this is not only used for item links!
-#: ../src/ui/ui_htmlview.c:202
+#: ../src/ui/ui_htmlview.c:201
 msgid "This item does not have a link assigned!"
 msgstr "Bu haber için belirlenmiş link yok!"
 
-#: ../src/ui/ui_htmlview.c:297 ../src/ui/ui_htmlview.c:317
+#: ../src/ui/ui_htmlview.c:295 ../src/ui/ui_htmlview.c:315
 #, c-format
 msgid "Browser command failed: %s"
 msgstr "Tarayıcı komutu başarısız oldu: %s"
 
-#: ../src/ui/ui_htmlview.c:320
+#: ../src/ui/ui_htmlview.c:318
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Başlıyor: \"%s\""
@@ -1631,11 +1631,11 @@ msgstr "faq_en.html"
 msgid "FAQ"
 msgstr "SSS"
 
-#: ../src/ui/ui_mainwindow.c:669
+#: ../src/ui/ui_mainwindow.c:657
 msgid "Liferea - Linux Feed Reader"
 msgstr "Liferea - Linux Haber Okuyucusu"
 
-#: ../src/ui/ui_mainwindow.c:671
+#: ../src/ui/ui_mainwindow.c:659
 msgid ""
 "<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news "
 "feeds.</p><p>The left pane contains the list of your subscriptions. To add a "
@@ -1650,87 +1650,87 @@ msgstr ""
 "geçirmek için haber kaynak listesinde onu seçin. Haber başlıkları sağ panoda "
 "gözükecektir.</p>"
 
-#: ../src/ui/ui_mainwindow.c:725
+#: ../src/ui/ui_mainwindow.c:736
 msgid "Liferea is now online"
 msgstr "Liferea şimdi çevrimiçi"
 
-#: ../src/ui/ui_mainwindow.c:727
+#: ../src/ui/ui_mainwindow.c:738
 msgid "Work Offline"
 msgstr "Çevrimdışı çalış"
 
-#: ../src/ui/ui_mainwindow.c:729
+#: ../src/ui/ui_mainwindow.c:740
 msgid "Liferea is now offline"
 msgstr "Liferea şimdi çevrimdışı"
 
-#: ../src/ui/ui_mainwindow.c:731
+#: ../src/ui/ui_mainwindow.c:742
 msgid "Work Online"
 msgstr "Çevrimiçi çalış"
 
-#: ../src/ui/ui_mainwindow.c:992
+#: ../src/ui/ui_mainwindow.c:1003
 #, fuzzy
 msgid "_Subscriptions"
 msgstr "Yeni Abonelik"
 
-#: ../src/ui/ui_mainwindow.c:993
+#: ../src/ui/ui_mainwindow.c:1004
 msgid "Update _All"
 msgstr "_Hepsini Güncelle"
 
-#: ../src/ui/ui_mainwindow.c:993
+#: ../src/ui/ui_mainwindow.c:1004
 msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr "Bütün abonelikleri günceller. Bu, OCS dizinlerini güncellemez."
 
-#: ../src/ui/ui_mainwindow.c:995
+#: ../src/ui/ui_mainwindow.c:1006
 msgid "Mark All As _Read"
 msgstr "Hepsini _Okundu Olarak İşaretle"
 
-#: ../src/ui/ui_mainwindow.c:995
+#: ../src/ui/ui_mainwindow.c:1006
 msgid "Marks read every item of every subscription."
 msgstr "Her aboneliğin her öğesini okundu olarak işaretler."
 
-#: ../src/ui/ui_mainwindow.c:997
+#: ../src/ui/ui_mainwindow.c:1008
 msgid "_Import Feed List..."
 msgstr "Haber Kaynak Listesini _İçeri Aktar..."
 
-#: ../src/ui/ui_mainwindow.c:997
+#: ../src/ui/ui_mainwindow.c:1008
 msgid "Imports an OPML feed list."
 msgstr "OPML haber kaynak listesini içeri aktarır."
 
-#: ../src/ui/ui_mainwindow.c:998
+#: ../src/ui/ui_mainwindow.c:1009
 msgid "_Export Feed List..."
 msgstr "Haber kaynak listesini _Dışarı Aktar..."
 
-#: ../src/ui/ui_mainwindow.c:998
+#: ../src/ui/ui_mainwindow.c:1009
 msgid "Exports the feed list as OPML."
 msgstr "Haber kaynak listesini OPML dosyası olarak dışarı aktarır."
 
-#: ../src/ui/ui_mainwindow.c:999
+#: ../src/ui/ui_mainwindow.c:1010
 msgid "_Quit"
 msgstr "_Çık"
 
-#: ../src/ui/ui_mainwindow.c:1001
+#: ../src/ui/ui_mainwindow.c:1012
 #, fuzzy
 msgid "_Feed"
 msgstr "_Haber Kaynakları"
 
-#: ../src/ui/ui_mainwindow.c:1002
+#: ../src/ui/ui_mainwindow.c:1013
 #, fuzzy
-msgid "Remove _All Items"
+msgid "Remove _All"
 msgstr "_Hepsini Sil"
 
-#: ../src/ui/ui_mainwindow.c:1002
+#: ../src/ui/ui_mainwindow.c:1013
 msgid "Removes all items of the currently selected feed."
 msgstr "Seçili haber kaynağındaki bütün öğeleri siler."
 
-#: ../src/ui/ui_mainwindow.c:1005
+#: ../src/ui/ui_mainwindow.c:1016
 #, fuzzy
 msgid "_Item"
 msgstr "_Maddeler"
 
-#: ../src/ui/ui_mainwindow.c:1006
+#: ../src/ui/ui_mainwindow.c:1017
 msgid "_Next Unread Item"
 msgstr "_Sonraki Okunmamış Madde"
 
-#: ../src/ui/ui_mainwindow.c:1006
+#: ../src/ui/ui_mainwindow.c:1017
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -1738,211 +1738,211 @@ msgstr ""
 "Bir sonraki okunmamış öğeye atlar. Eğer gerekiyorsa, okunmamış öğeleri olan "
 "bir sonraki haber kaynağını seçer."
 
-#: ../src/ui/ui_mainwindow.c:1008
+#: ../src/ui/ui_mainwindow.c:1019
 msgid "Toggle _Read Status"
 msgstr "_Okunma Durumunu Değiştir"
 
-#: ../src/ui/ui_mainwindow.c:1008
+#: ../src/ui/ui_mainwindow.c:1019
 msgid "Toggles the read status of the selected item."
 msgstr "Seçili öğenin okunma durumunu değiştirir."
 
-#: ../src/ui/ui_mainwindow.c:1010
+#: ../src/ui/ui_mainwindow.c:1021
 msgid "Toggle Item _Flag"
 msgstr "Madde _İşaretini Değiştir"
 
-#: ../src/ui/ui_mainwindow.c:1010
+#: ../src/ui/ui_mainwindow.c:1021
 msgid "Toggles the flag status of the selected item."
 msgstr "Seçili öğenin işaretini ekler ya da siler"
 
-#: ../src/ui/ui_mainwindow.c:1012
+#: ../src/ui/ui_mainwindow.c:1023
 #, fuzzy
 msgid "R_emove"
 msgstr "/Maddeyi _Sil"
 
-#: ../src/ui/ui_mainwindow.c:1012
+#: ../src/ui/ui_mainwindow.c:1023
 msgid "Removes the selected item."
 msgstr "Seçili öğeyi siler."
 
-#: ../src/ui/ui_mainwindow.c:1014
+#: ../src/ui/ui_mainwindow.c:1025
 msgid "_Launch In Browser"
 msgstr "Tarayıcıda _Aç"
 
-#: ../src/ui/ui_mainwindow.c:1014
+#: ../src/ui/ui_mainwindow.c:1025
 msgid "Launches the item's link in the configured browser."
 msgstr "Maddenin linkini ayarlı tarayıcıda açar."
 
-#: ../src/ui/ui_mainwindow.c:1017
+#: ../src/ui/ui_mainwindow.c:1028
 msgid "_View"
 msgstr "_Görüntüle"
 
-#: ../src/ui/ui_mainwindow.c:1018
+#: ../src/ui/ui_mainwindow.c:1029
 msgid "_Increase Text Size"
 msgstr "Metin Boyutunu _Büyüt"
 
-#: ../src/ui/ui_mainwindow.c:1018
+#: ../src/ui/ui_mainwindow.c:1029
 msgid "Increases the text size of the item view."
 msgstr "Madde görünümünün metin boyutunu büyütür."
 
-#: ../src/ui/ui_mainwindow.c:1020
+#: ../src/ui/ui_mainwindow.c:1031
 msgid "_Decrease Text Size"
 msgstr "Metin Boyutunu _Küçült"
 
-#: ../src/ui/ui_mainwindow.c:1020
+#: ../src/ui/ui_mainwindow.c:1031
 msgid "Decreases the text size of the item view."
 msgstr "Madde görünümünün metin boyutunu küçültür."
 
-#: ../src/ui/ui_mainwindow.c:1023
+#: ../src/ui/ui_mainwindow.c:1034
 msgid "_Tools"
 msgstr ""
 
-#: ../src/ui/ui_mainwindow.c:1024
+#: ../src/ui/ui_mainwindow.c:1035
 #, fuzzy
 msgid "_Update Monitor"
 msgstr "Güncelleme Denetçisi"
 
-#: ../src/ui/ui_mainwindow.c:1024
+#: ../src/ui/ui_mainwindow.c:1035
 msgid "Show a list of all feeds currently in the update queue"
 msgstr "Güncelleme kuyruğundaki bütün haber kaynalarının bir listesini göster"
 
-#: ../src/ui/ui_mainwindow.c:1026
+#: ../src/ui/ui_mainwindow.c:1037
 #, fuzzy
 msgid "_Script Manager"
 msgstr "Senaryo Yöneticisi"
 
-#: ../src/ui/ui_mainwindow.c:1026
+#: ../src/ui/ui_mainwindow.c:1037
 msgid "Allows to configure and edit LUA hook scripts"
 msgstr "LUA kanca senaryolarını düzenlemeyi ve ayarlamayı sağlar"
 
-#: ../src/ui/ui_mainwindow.c:1028
+#: ../src/ui/ui_mainwindow.c:1039
 msgid "_Preferences"
 msgstr "_Seçenekler"
 
-#: ../src/ui/ui_mainwindow.c:1028
+#: ../src/ui/ui_mainwindow.c:1039
 msgid "Edit Preferences."
 msgstr "Seçenekleri Düzenle."
 
-#: ../src/ui/ui_mainwindow.c:1031
+#: ../src/ui/ui_mainwindow.c:1042
 msgid "_Search"
 msgstr "_Ara"
 
-#: ../src/ui/ui_mainwindow.c:1032
+#: ../src/ui/ui_mainwindow.c:1043
 msgid "Search All Feeds..."
 msgstr "Bütün Maddeleri Ara..."
 
-#: ../src/ui/ui_mainwindow.c:1032
+#: ../src/ui/ui_mainwindow.c:1043
 msgid "Show the search dialog."
 msgstr "Arama penceresini göster."
 
-#: ../src/ui/ui_mainwindow.c:1033
+#: ../src/ui/ui_mainwindow.c:1044
 msgid "Search With ..."
 msgstr "Kullanarak Ara..."
 
-#: ../src/ui/ui_mainwindow.c:1035
+#: ../src/ui/ui_mainwindow.c:1046
 msgid "_Help"
 msgstr "_Yardım"
 
-#: ../src/ui/ui_mainwindow.c:1036
+#: ../src/ui/ui_mainwindow.c:1047
 msgid "_Contents"
 msgstr "_İçindekiler"
 
-#: ../src/ui/ui_mainwindow.c:1036
+#: ../src/ui/ui_mainwindow.c:1047
 msgid "View help for this application."
 msgstr "Bu uygulamanın yardımını görüntüle."
 
-#: ../src/ui/ui_mainwindow.c:1037
+#: ../src/ui/ui_mainwindow.c:1048
 msgid "_Quick Reference"
 msgstr "_Hızlı Başvuru"
 
-#: ../src/ui/ui_mainwindow.c:1037
+#: ../src/ui/ui_mainwindow.c:1048
 msgid "View a list of all Liferea shortcuts."
 msgstr "Liferea kısaollarının bir listesini göster."
 
-#: ../src/ui/ui_mainwindow.c:1039
+#: ../src/ui/ui_mainwindow.c:1050
 msgid "_FAQ"
 msgstr "_SSS"
 
-#: ../src/ui/ui_mainwindow.c:1039
+#: ../src/ui/ui_mainwindow.c:1050
 msgid "View the FAQ for this application."
 msgstr "Bu uygulamanın sıkça sorulan sorularını göster"
 
-#: ../src/ui/ui_mainwindow.c:1040
+#: ../src/ui/ui_mainwindow.c:1051
 msgid "_About"
 msgstr "_Hakkında"
 
-#: ../src/ui/ui_mainwindow.c:1040
+#: ../src/ui/ui_mainwindow.c:1051
 msgid "Shows an about dialog."
 msgstr "Hakkında penceresini gösterir."
 
-#: ../src/ui/ui_mainwindow.c:1044
+#: ../src/ui/ui_mainwindow.c:1055
 msgid "_Normal View"
 msgstr "_Normal Görünüm"
 
-#: ../src/ui/ui_mainwindow.c:1044
+#: ../src/ui/ui_mainwindow.c:1055
 msgid "Set view mode to mail client mode."
 msgstr "Görünüm modunu, posta istemci moduna ayarla."
 
-#: ../src/ui/ui_mainwindow.c:1046
+#: ../src/ui/ui_mainwindow.c:1057
 msgid "_Wide View"
 msgstr "_Geniş Görünüm"
 
-#: ../src/ui/ui_mainwindow.c:1046
+#: ../src/ui/ui_mainwindow.c:1057
 msgid "Set view mode to use three vertical panes."
 msgstr "Görünüm modunu, üç dikey pano kullanacak şekilde ayarla."
 
-#: ../src/ui/ui_mainwindow.c:1048
+#: ../src/ui/ui_mainwindow.c:1059
 msgid "_Combined View"
 msgstr "_Birleşik Görünüm"
 
-#: ../src/ui/ui_mainwindow.c:1048
+#: ../src/ui/ui_mainwindow.c:1059
 msgid "Set view mode to two pane mode."
 msgstr "Görünüm modunu iki pano moduna ayarla."
 
-#: ../src/ui/ui_mainwindow.c:1053
+#: ../src/ui/ui_mainwindow.c:1064
 msgid "_New Subscription..."
 msgstr "_Yeni Abonelik..."
 
-#: ../src/ui/ui_mainwindow.c:1053
+#: ../src/ui/ui_mainwindow.c:1064
 msgid "Adds a subscription to the feed list."
 msgstr "Haber kaynak listesine yeni abonelik ekler."
 
-#: ../src/ui/ui_mainwindow.c:1055
+#: ../src/ui/ui_mainwindow.c:1066
 msgid "New _Folder..."
 msgstr "Yeni _Klasör..."
 
-#: ../src/ui/ui_mainwindow.c:1055
+#: ../src/ui/ui_mainwindow.c:1066
 msgid "Adds a folder to the feed list."
 msgstr "Haber kaynak listesine yeni klasör ekler."
 
-#: ../src/ui/ui_mainwindow.c:1056
+#: ../src/ui/ui_mainwindow.c:1067
 msgid "New S_earch Folder..."
 msgstr "Yeni A_rama Klasörü..."
 
-#: ../src/ui/ui_mainwindow.c:1056
+#: ../src/ui/ui_mainwindow.c:1067
 msgid "Adds a new search folder to the feed list."
 msgstr "Haber kaynak listesine yeni arama klasörü ekler."
 
-#: ../src/ui/ui_mainwindow.c:1057
+#: ../src/ui/ui_mainwindow.c:1068
 msgid "New _Source..."
 msgstr "Yeni _Kaynak..."
 
-#: ../src/ui/ui_mainwindow.c:1057
+#: ../src/ui/ui_mainwindow.c:1068
 msgid "Adds a new feed list source."
 msgstr "Yeni haber kaynağı ekler."
 
-#: ../src/ui/ui_mainwindow.c:1058
+#: ../src/ui/ui_mainwindow.c:1069
 msgid "New _News Bin..."
 msgstr "Yeni _Haber Sepeti..."
 
-#: ../src/ui/ui_mainwindow.c:1058
+#: ../src/ui/ui_mainwindow.c:1069
 msgid "Adds a new news bin."
 msgstr "Yeni haber sepeti ekler."
 
-#: ../src/ui/ui_mainwindow.c:1062
+#: ../src/ui/ui_mainwindow.c:1073
 #, fuzzy
 msgid "_Mark As Read"
 msgstr "/_Hepsini Okundu Olarak İşaretle"
 
-#: ../src/ui/ui_mainwindow.c:1062
+#: ../src/ui/ui_mainwindow.c:1073
 msgid ""
 "Marks all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
@@ -1950,50 +1950,50 @@ msgstr ""
 "Seçili abonelikteki bütün öğeleri, ya da seçili klasördeki bütün "
 "abonelikleri okudu olarak işaretler."
 
-#: ../src/ui/ui_mainwindow.c:1064
+#: ../src/ui/ui_mainwindow.c:1075
 #, fuzzy
 msgid "_Update"
 msgstr "/_Güncelle"
 
-#: ../src/ui/ui_mainwindow.c:1064
+#: ../src/ui/ui_mainwindow.c:1075
 msgid ""
 "Updates the selected subscription or all subscriptions of the selected "
 "folder."
 msgstr "Seçili aboneliği ya da seçili klasördeki bütün abonelikleri günceller."
 
-#: ../src/ui/ui_mainwindow.c:1069
+#: ../src/ui/ui_mainwindow.c:1080
 msgid "_Properties..."
 msgstr "_Özellikler"
 
-#: ../src/ui/ui_mainwindow.c:1069
+#: ../src/ui/ui_mainwindow.c:1080
 msgid "Opens the property dialog for the selected subscription."
 msgstr "Seçili abonelik için özellikler penceresini açar."
 
-#: ../src/ui/ui_mainwindow.c:1070
+#: ../src/ui/ui_mainwindow.c:1081
 #, fuzzy
 msgid "_Remove"
 msgstr "_Hepsini Sil"
 
-#: ../src/ui/ui_mainwindow.c:1070
+#: ../src/ui/ui_mainwindow.c:1081
 msgid "Removes the selected subscription."
 msgstr "Seçili aboneliği siler."
 
-#: ../src/ui/ui_mainwindow.c:1074
+#: ../src/ui/ui_mainwindow.c:1085
 msgid "_Work Offline"
 msgstr "_Çevrimdışı Çalış"
 
-#: ../src/ui/ui_mainwindow.c:1074
+#: ../src/ui/ui_mainwindow.c:1085
 msgid "This option allows you to disable subscription updating."
 msgstr "Bu seçenek, abonelik güncellenmesini devreden çıkarmanızı sağlar."
 
-#: ../src/ui/ui_mainwindow.c:1208
+#: ../src/ui/ui_mainwindow.c:1219
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
 msgstr[0] " (%d yeni)"
 msgstr[1] " (%d yeni)"
 
-#: ../src/ui/ui_mainwindow.c:1214
+#: ../src/ui/ui_mainwindow.c:1225
 #, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
@@ -2092,47 +2092,47 @@ msgstr "/Eki Aç..."
 msgid "/Save As..."
 msgstr "/Farklı Kaydet..."
 
-#: ../src/ui/ui_popup.c:295
+#: ../src/ui/ui_popup.c:294
 msgid "/_Update Folder"
 msgstr "/Klasörü _Güncelle"
 
-#: ../src/ui/ui_popup.c:298
+#: ../src/ui/ui_popup.c:297
 msgid "/_Update"
 msgstr "/_Güncelle"
 
-#: ../src/ui/ui_popup.c:300
+#: ../src/ui/ui_popup.c:299
 msgid "/_Mark All As Read"
 msgstr "/_Hepsini Okundu Olarak İşaretle"
 
-#: ../src/ui/ui_popup.c:304
+#: ../src/ui/ui_popup.c:303
 msgid "/_New"
 msgstr "/_Yeni"
 
-#: ../src/ui/ui_popup.c:305
+#: ../src/ui/ui_popup.c:304
 msgid "/_New/New _Subscription..."
 msgstr "/_Yeni/Yeni _Abonelik..."
 
-#: ../src/ui/ui_popup.c:306
+#: ../src/ui/ui_popup.c:305
 msgid "/_New/New _Folder..."
 msgstr "/_Yeni/Yeni _Klasör..."
 
-#: ../src/ui/ui_popup.c:307
+#: ../src/ui/ui_popup.c:306
 msgid "/_New/New S_earch Folder..."
 msgstr "/_Yeni/Yeni A_rama Klasörü..."
 
-#: ../src/ui/ui_popup.c:308
+#: ../src/ui/ui_popup.c:307
 msgid "/_New/New S_ource..."
 msgstr "/_Yeni/Yeni K_aynak..."
 
-#: ../src/ui/ui_popup.c:309
+#: ../src/ui/ui_popup.c:308
 msgid "/_New/New _News Bin..."
 msgstr "/_Yeni/Yeni _Haber Sepeti..."
 
-#: ../src/ui/ui_popup.c:315
+#: ../src/ui/ui_popup.c:314
 msgid "/_Delete"
 msgstr "/_Sil"
 
-#: ../src/ui/ui_popup.c:317
+#: ../src/ui/ui_popup.c:316
 msgid "/_Properties..."
 msgstr "/_Özellikler..."
 
@@ -2266,18 +2266,18 @@ msgstr[1] ""
 msgid "This feed specifies no default update interval."
 msgstr "Bu haber kaynağının öntanımlı güncelleme aralığı yok."
 
-#: ../src/ui/ui_tray.c:205
+#: ../src/ui/ui_tray.c:177
 #, c-format
 msgid "%d new item"
 msgid_plural "%d new items"
 msgstr[0] "%d yeni madde"
 msgstr[1] "%d yeni madde"
 
-#: ../src/ui/ui_tray.c:212
+#: ../src/ui/ui_tray.c:184
 msgid "No new items"
 msgstr "Yeni madde yok"
 
-#: ../src/ui/ui_tray.c:216
+#: ../src/ui/ui_tray.c:188
 #, c-format
 msgid ""
 "%s\n"
@@ -2292,7 +2292,7 @@ msgstr[1] ""
 "%s\n"
 "%d okunmamış madd"
 
-#: ../src/ui/ui_tray.c:218
+#: ../src/ui/ui_tray.c:190
 #, c-format
 msgid ""
 "%s\n"
@@ -2327,7 +2327,6 @@ msgid "Please enter your Bloglines account settings."
 msgstr "Bloglines hesap ayarlarınızı giriniz."
 
 #: ../src/fl_sources/bloglines_source.glade.h:3
-#: ../src/fl_sources/google_source.glade.h:3
 msgid "_Password"
 msgstr "_Şifre"
 
@@ -2335,11 +2334,11 @@ msgstr "_Şifre"
 msgid "_Username"
 msgstr "_Kullanıcı adı"
 
-#: ../src/fl_sources/bloglines_source.c:93
+#: ../src/fl_sources/bloglines_source.c:51
 msgid "Bloglines"
 msgstr "Bloglines"
 
-#: ../src/fl_sources/bloglines_source.c:94
+#: ../src/fl_sources/bloglines_source.c:52
 msgid ""
 "Integrate the feed list of your Bloglines account. Liferea will present your "
 "Bloglines subscription as a read-only subtree in the feed list."
@@ -2352,40 +2351,6 @@ msgstr ""
 #: ../src/fl_sources/default_source.c:88
 msgid "feedlist.opml"
 msgstr "feedlist_tr.opml"
-
-#: ../src/fl_sources/google_source.glade.h:1
-#, fuzzy
-msgid "Add Google Reader Account"
-msgstr "Bloglines Hesabı Ekle"
-
-#: ../src/fl_sources/google_source.glade.h:2
-#, fuzzy
-msgid "Please enter your Google Reader account settings."
-msgstr "Bloglines hesap ayarlarınızı giriniz."
-
-#: ../src/fl_sources/google_source.glade.h:4
-#, fuzzy
-msgid "_Username (Email)"
-msgstr "_Kullanıcı adı"
-
-#: ../src/fl_sources/google_source.c:190
-msgid "Google Reader login failed!"
-msgstr ""
-
-#: ../src/fl_sources/google_source.c:322
-#, fuzzy
-msgid "Google Reader"
-msgstr "Haber Okuyucusu"
-
-#: ../src/fl_sources/google_source.c:323
-#, fuzzy
-msgid ""
-"Integrate the feed list of your Google Reader account. Liferea will present "
-"your Google Reader subscription as a read-only subtree in the feed list."
-msgstr ""
-"Haber kaynak listenizi Bloglines hesabınızla birleştir. Liferea, Bloglines "
-"aboneliğinizi, haber kaynağı listesinde salt okunur bir altağaç olarak "
-"sunacak."
 
 #: ../src/fl_sources/opml_source.glade.h:1
 msgid "Add OPML/Planet"
@@ -2406,11 +2371,11 @@ msgstr "_Yer"
 msgid "_Select File"
 msgstr "_Dosya Seç"
 
-#: ../src/fl_sources/opml_source.c:334
+#: ../src/fl_sources/opml_source.c:322
 msgid "Planet, BlogRoll, OPML"
 msgstr "Planet, BlogRoll, OPML"
 
-#: ../src/fl_sources/opml_source.c:335
+#: ../src/fl_sources/opml_source.c:323
 msgid ""
 "Integrate blogrolls or Planets in your feed list. Liferea will automatically "
 "add and remove feeds according to the changes of the source OPML document"
@@ -2419,14 +2384,14 @@ msgstr ""
 "kaynak OPML dosyasındaki değişikliklere göre otomatik olarak haber "
 "kaynaklarını ekleyecek ya da çıkaracak"
 
-#: ../src/fl_sources/opml_source.c:408
+#: ../src/fl_sources/opml_source.h:26
+msgid "New OPML Subscription"
+msgstr "Yeni OPML Aboneliği"
+
+#: ../src/fl_sources/opml_source-cb.c:94
 #, fuzzy
 msgid "Choose OPML File"
 msgstr "Dosya Seç"
-
-#: ../src/fl_sources/opml_source.h:27
-msgid "New OPML Subscription"
-msgstr "Yeni OPML Aboneliği"
 
 #: ../src/fl_sources/node_source.glade.h:1
 msgid "Select the source type you want to add..."
@@ -2436,11 +2401,11 @@ msgstr "Eklemek istediğiniz kaynak tipini seçiniz..."
 msgid "Source Selection"
 msgstr "Kaynak Seçimi"
 
-#: ../src/fl_sources/node_source.c:214
+#: ../src/fl_sources/node_source.c:222
 msgid "No feed list source types found!"
 msgstr "Hiçbir haber kaynak türü bulunamadı!"
 
-#: ../src/fl_sources/node_source.c:245
+#: ../src/fl_sources/node_source.c:254
 msgid "Source Type"
 msgstr "Kaynak Türü"
 
@@ -2492,6 +2457,32 @@ msgstr "Haber başlığı"
 #, fuzzy
 msgid "Show details"
 msgstr "Detaylar"
+
+#, fuzzy
+#~ msgid "Add Google Reader Account"
+#~ msgstr "Bloglines Hesabı Ekle"
+
+#, fuzzy
+#~ msgid "Please enter your Google Reader account settings."
+#~ msgstr "Bloglines hesap ayarlarınızı giriniz."
+
+#, fuzzy
+#~ msgid "_Username (Email)"
+#~ msgstr "_Kullanıcı adı"
+
+#, fuzzy
+#~ msgid "Google Reader"
+#~ msgstr "Haber Okuyucusu"
+
+#, fuzzy
+#~ msgid ""
+#~ "Integrate the feed list of your Google Reader account. Liferea will "
+#~ "present your Google Reader subscription as a read-only subtree in the "
+#~ "feed list."
+#~ msgstr ""
+#~ "Haber kaynak listenizi Bloglines hesabınızla birleştir. Liferea, "
+#~ "Bloglines aboneliğinizi, haber kaynağı listesinde salt okunur bir altağaç "
+#~ "olarak sunacak."
 
 #~ msgid "_Program"
 #~ msgstr "_Program"
