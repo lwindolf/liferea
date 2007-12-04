@@ -439,15 +439,11 @@ itemlist_unhide_item (itemPtr item)
 }
 
 /* functions to remove items on remove requests */
-
-extern void itemlist_decrement_vfolder_unread (nodePtr node);	/* FIXME */
-
 void
 itemlist_remove_item (itemPtr item) 
 {
 	/* update search folder counters */
-	if (!item->readStatus)
-		vfolder_foreach_with_item (item->id, itemlist_decrement_vfolder_unread);
+	vfolder_foreach (vfolder_update_counters);
 
 	if (itemlist_priv.selectedId == item->id) {
 		itemlist_set_selected (NULL);
@@ -488,12 +484,10 @@ void
 itemlist_remove_items (itemSetPtr itemSet, GList *items)
 {
 	GList		*iter = items;
-	gboolean	unread = FALSE, flagged = FALSE;
 	
 	while (iter) {
 		itemPtr item = (itemPtr) iter->data;
-		unread |= !item->readStatus;
-		flagged |= item->flagStatus;
+
 		if (itemlist_priv.selectedId != item->id) {
 			/* don't call itemlist_remove_item() here, because it's to slow */
 			itemview_remove_item (item);
@@ -524,10 +518,7 @@ itemlist_remove_all_items (nodePtr node)
 		itemlist_duplicate_list_free ();
 	}
 	
-	/* Search folders updating */
-	if (node->unreadCount)
-		vfolder_foreach_with_rule ("unread", vfolder_update_counters);
-	vfolder_foreach_with_rule ("flagged", vfolder_update_counters);
+	vfolder_foreach (vfolder_update_counters);
 	
 	node_update_counters (node);
 }

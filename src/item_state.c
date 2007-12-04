@@ -34,40 +34,6 @@ item_state_set_recount_flag (nodePtr node)
 	node->needsRecount = TRUE;
 }
 
-/* non static becauses used from itemlist.c (FIXME) */
-void
-itemlist_decrement_vfolder_unread (nodePtr node)
-{
-	node->unreadCount--;
-	node->itemCount--;
-	ui_node_update (node->id);
-}
-
-static void
-itemlist_increment_vfolder_unread (nodePtr node)
-{
-	node->unreadCount++;
-	node->itemCount++;
-	ui_node_update (node->id);
-}
-
-static void
-itemlist_decrement_vfolder_count (nodePtr node)
-{
-	if (node->itemCount > 0)
-		node->itemCount--;
-	else
-		node->itemCount = 0;
-	ui_node_update (node->id);
-}
-
-static void
-itemlist_increment_vfolder_count (nodePtr node)
-{
-	node->itemCount++;
-	ui_node_update (node->id);
-}
-
 void
 item_state_set_flagged (itemPtr item, gboolean newStatus) 
 {	
@@ -83,7 +49,7 @@ item_state_set_flagged (itemPtr item, gboolean newStatus)
 		itemlist_update_item (item);
 
 		/* 4. no update of feed list necessary... */
-		vfolder_foreach_with_rule ("flagged", vfolder_update_counters);
+		vfolder_foreach (vfolder_update_counters);
 
 		/* 5. update notification statistics */
 		feedlist_reset_new_item_count ();
@@ -98,29 +64,24 @@ item_state_set_read (itemPtr item, gboolean newStatus)
 {
 	if (newStatus != item->readStatus) {
 		debug_start_measurement (DEBUG_GUI);
-
-		/* 1. remove propagate to vfolders (must happen before changing the item state) */
-		if (newStatus)
-			vfolder_foreach_with_item (item->id, itemlist_decrement_vfolder_unread);
-				
-		/* 2. save state to DB */
+		
+		/* 1. save state to DB */
 		item->readStatus = newStatus;
 		db_item_update (item);
 		
-		/* 3. add propagate to vfolders (must happen after changing the item state) */
-		if (!newStatus)
-			vfolder_foreach_with_item (item->id, itemlist_increment_vfolder_unread);
+		/* 2. add propagate to vfolders (must happen after changing the item state) */
+		vfolder_foreach (vfolder_update_counters);
 			
-		/* 4. update item list GUI state */
+		/* 3. update item list GUI state */
 		itemlist_update_item (item);
 
-		/* 5. updated feed list unread counters */
+		/* 4. updated feed list unread counters */
 		node_update_counters (node_from_id (item->nodeId));
 		
-		/* 6. update notification statistics */
+		/* 5. update notification statistics */
 		feedlist_reset_new_item_count ();
 
-		/* 7. duplicate state propagation */
+		/* 6. duplicate state propagation */
 		if (item->validGuid) {
 			GSList *duplicates, *iter;
 			
