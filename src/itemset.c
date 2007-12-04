@@ -59,7 +59,7 @@ itemset_get_max_item_count (itemSetPtr itemSet)
 	return G_MAXUINT;
 }
 
-/* Generic merge logic suitable for feeds */
+/* Generic merge logic suitable for feeds (returns TRUE if merging instead of updating is necessary) */
 static gboolean
 itemset_generic_merge_check (GList *items, itemPtr newItem, gboolean allowUpdates)
 {
@@ -170,7 +170,7 @@ itemset_merge_item (itemSetPtr itemSet, GList *items, itemPtr item, gboolean all
 		g_assert (itemSet->nodeId);
 		g_assert (!item->nodeId);
 		g_assert (!item->id);
-		item->nodeId = itemSet->nodeId;
+		item->nodeId = g_strdup (itemSet->nodeId);
 		
 		/* step 1: write item to DB */
 		db_item_update (item);
@@ -226,7 +226,27 @@ itemset_sort_by_date (gconstpointer a, gconstpointer b)
 	itemPtr item2 = (itemPtr)b;
 	
 	g_assert(item1 && item2);
-	return item1->time < item2->time;
+	
+	/* We have a problem here if all items of the feed
+	   do have no date, then this comparison is useless.
+	   To avoid such a case we alternatively compare by
+	   item id (which should be an ever-increasing number)
+	   and thereby indicate merge order as a secondary
+	   order criterion */
+	if (item1->time == item2->time) {
+		if (item1->id < item2->id)
+			return 1;
+		if (item1->id > item2->id) 
+			return -1;
+		return 0;
+	}
+		
+	if (item1->time < item2->time)
+		return 1;
+	if (item1->time > item2->time)
+		return -1;
+	
+	return 0;
 }
 
 guint
@@ -239,7 +259,7 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates)
 	
 	debug2 (DEBUG_UPDATE, "old item set %p of (node id=%s):", itemSet, itemSet->nodeId);
 	
-	/* 1. Avoid cache wrapping
+	/* 1. Avoid cache wrapping (if feed size > cache size)
 	
 	   Truncate the new itemset if it is longer than
 	   the maximum cache size which could cause items
@@ -273,7 +293,7 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates)
 		iter = g_list_next (iter);
 	}
  
-	/* 3. Merge items
+	/* 3. Merge received items to existing item set
 	 
 	   Items are given in top to bottom display order. 
 	   Adding them in this order would mean to reverse 
@@ -281,16 +301,19 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates)
 	   to be done bottom to top. */
 	iter = g_list_last (list);
 	while (iter) {
-		if (itemset_merge_item (itemSet, items, (itemPtr)iter->data, allowUpdates))
+		if (itemset_merge_item (itemSet, items, (itemPtr)iter->data, allowUpdates)) {
 			newCount++;
+			items = g_list_prepend (items, iter->data);
+		}
 		iter = g_list_previous (iter);
 	}
 	g_list_free (list);
 	
-	/* 4. Apply cache limit and unload items */
+	/* 4. Apply cache limit for effective item set size
+	      and unload older items as necessary. */
 	
-	if (newCount + g_list_length (items) > max)
-		toBeDropped = newCount + g_list_length (items) - max;
+	if (g_list_length (items) > max)
+		toBeDropped = g_list_length (items) - max;
 	else
 		toBeDropped = 0;
 		
@@ -302,7 +325,7 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates)
 		if (toBeDropped > 0 && !item->flagStatus) {
 			debug2 (DEBUG_UPDATE, "dropping item nr %u (%s)....", item->id, item_get_title (item));
 			droppedItems = g_list_append (droppedItems, item);
-			/* no unloading here, is done in itemlist_remove_items() */
+			/* no unloading here, it's done in itemlist_remove_items() */
 			toBeDropped--;
 		} else {
 			item_unload (item);
