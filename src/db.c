@@ -439,7 +439,14 @@ open:
 			 "   PRIMARY KEY (node_id)"
 	        	 ");");
 
-		db_exec ("CREATE INDEX node_idx ON node (node_id);");
+		db_exec ("CREATE TABLE view_state ("
+		         "   node_id            STRING,"
+			 "   unread             INTEGER,"
+			 "   count              INTEGER,"
+			 "   PRIMARY KEY (node_id)"
+			 ");");
+			 
+		/* view counting triggers are set up in the view preparation code (see db_view_create()) */
 
 		db_end_transaction ();
 		debug_end_measurement (DEBUG_DB, "table setup");
@@ -1285,6 +1292,151 @@ db_item_check (guint id, const queryPtr query)
 	return (SQLITE_ROW == res);
 }
 
+static void
+db_view_create_triggers (const gchar *id)
+{
+	gchar	*sql, *err;
+	gint	res;
+
+	/* we use REPLACE so we need to have before and after INSERT triggers... */
+	err = NULL;
+	sql = sqlite3_mprintf ("CREATE TRIGGER view_%s_insert_before BEFORE INSERT ON items "
+	                       "BEGIN"
+			       "   UPDATE view_state SET count = ("
+			       "      (SELECT count FROM view_state WHERE node_id = '%s') -"
+			       "      (SELECT count(*) FROM view_%s WHERE item_id = new.ROWID)"
+			       "   ) WHERE node_id = '%s';"
+			       "   UPDATE view_state SET unread = ("
+			       "      (SELECT unread FROM view_state WHERE node_id = '%s') -"
+			       "      (SELECT count(*) FROM view_%s WHERE item_id = new.ROWID AND item_read = 0)"
+			       "   ) WHERE node_id = '%s';"
+	                       "END;", id, id, id, id, id, id, id);
+	res = sqlite3_exec (db, sql, NULL, NULL, &err);
+	if (SQLITE_OK != res)
+		g_warning ("Trigger setup \"view_%s_insert_before\" failed (error code %d: %s) SQL: %s!", id, res, err, sql);
+	sqlite3_free (sql);
+	sqlite3_free (err);	
+	
+	err = NULL;
+	sql = sqlite3_mprintf ("CREATE TRIGGER view_%s_insert_after AFTER INSERT ON items "
+	                       "BEGIN"
+			       "   UPDATE view_state SET count = ("
+			       "      (SELECT count FROM view_state WHERE node_id = '%s') +"
+			       "      (SELECT count(*) FROM view_%s WHERE item_id = new.ROWID)"
+			       "   ) WHERE node_id = '%s';"
+			       "   UPDATE view_state SET unread = ("
+			       "      (SELECT unread FROM view_state WHERE node_id = '%s') +"
+			       "      (SELECT count(*) FROM view_%s WHERE item_id = new.ROWID AND item_read = 0)"
+			       "   ) WHERE node_id = '%s';"
+	                       "END;", id, id, id, id, id, id, id);
+	res = sqlite3_exec (db, sql, NULL, NULL, &err);
+	if (SQLITE_OK != res)
+		g_warning ("Trigger setup \"view_%s_insert_after\" failed (error code %d: %s) SQL: %s!", id, res, err, sql);
+	sqlite3_free (sql);
+	sqlite3_free (err);	
+
+	err = NULL;
+	sql = sqlite3_mprintf ("CREATE TRIGGER view_%s_delete BEFORE DELETE ON items "
+	                       "BEGIN"
+			       "   UPDATE view_state SET count = ("
+			       "      (SELECT count FROM view_state WHERE node_id = '%s') -"
+			       "      (SELECT count(*) FROM view_%s WHERE item_id = old.ROWID)"
+			       "   ) WHERE node_id = '%s';"
+			       "   UPDATE view_state SET unread = ("
+			       "      (SELECT unread FROM view_state WHERE node_id = '%s') -"
+			       "      (SELECT count(*) FROM view_%s WHERE item_id = old.ROWID AND item_read = 0)"
+			       "   ) WHERE node_id = '%s';"
+	                       "END;", id, id, id, id, id, id, id);
+	res = sqlite3_exec (db, sql, NULL, NULL, &err);
+	if (SQLITE_OK != res)
+		g_warning ("Trigger setup \"view_%s_delete\" failed (error code %d: %s) SQL: %s!", id, res, err, sql);
+	sqlite3_free (sql);
+	sqlite3_free (err);
+
+	err = NULL;
+	sql = sqlite3_mprintf ("CREATE TRIGGER view_%s_update_before BEFORE UPDATE ON items "
+	                       "BEGIN"
+			       "   UPDATE view_state SET count = ("
+			       "      (SELECT count FROM view_state WHERE node_id = '%s') -"
+			       "      (SELECT count(*) FROM view_%s WHERE item_id = new.ROWID)"
+			       "   ) WHERE node_id = '%s';"
+			       "   UPDATE view_state SET unread = ("
+			       "      (SELECT unread FROM view_state WHERE node_id = '%s') -"
+			       "      (SELECT count(*) FROM view_%s WHERE item_id = new.ROWID AND item_read = 0)"
+			       "   ) WHERE node_id = '%s';"
+	                       "END;", id, id, id, id, id, id, id);
+	res = sqlite3_exec (db, sql, NULL, NULL, &err);
+	if (SQLITE_OK != res)
+		g_warning ("Trigger setup \"view_%s_update_before\" failed (error code %d: %s) SQL: %s!", id, res, err, sql);
+	sqlite3_free (sql);
+	sqlite3_free (err);	
+
+	err = NULL;
+	sql = sqlite3_mprintf ("CREATE TRIGGER view_%s_update_after AFTER UPDATE ON items "
+	                       "BEGIN"
+			       "   UPDATE view_state SET count = ("
+			       "      (SELECT count FROM view_state WHERE node_id = '%s') +"
+			       "      (SELECT count(*) FROM view_%s WHERE item_id = new.ROWID)"
+			       "   ) WHERE node_id = '%s';"
+			       "   UPDATE view_state SET unread = ("
+			       "      (SELECT unread FROM view_state WHERE node_id = '%s') +"
+			       "      (SELECT count(*) FROM view_%s WHERE item_id = new.ROWID AND item_read = 0)"
+			       "   ) WHERE node_id = '%s';"
+	                       "END;", id, id, id, id, id, id, id);
+	res = sqlite3_exec (db, sql, NULL, NULL, &err);
+	if (SQLITE_OK != res)
+		g_warning ("Trigger setup \"view_%s_update_after\" failed (error code %d: %s) SQL: %s!", id, res, err, sql);
+	sqlite3_free (sql);
+	sqlite3_free (err);
+}
+
+static void
+db_view_remove_triggers (const gchar *id)
+{
+	gchar	*sql, *err;
+	gint	res;
+	
+	err = NULL;
+	sql = sqlite3_mprintf ("DROP TRIGGER view_%s_insert_before;", id);
+	res = sqlite3_exec (db, sql, NULL, NULL, &err);
+	if (SQLITE_OK != res) 
+		debug2 (DEBUG_DB, "Dropping trigger failed (%s) SQL: %s", err, sql);
+	sqlite3_free (sql);
+	sqlite3_free (err);
+
+	err = NULL;
+	sql = sqlite3_mprintf ("DROP TRIGGER view_%s_insert_after;", id);
+	res = sqlite3_exec (db, sql, NULL, NULL, &err);
+	if (SQLITE_OK != res) 
+		debug2 (DEBUG_DB, "Dropping trigger failed (%s) SQL: %s", err, sql);
+	sqlite3_free (sql);
+	sqlite3_free (err);
+	
+	err = NULL;
+	sql = sqlite3_mprintf ("DROP TRIGGER view_%s_delete;", id);
+	res = sqlite3_exec (db, sql, NULL, NULL, &err);
+	if (SQLITE_OK != res) 
+		debug2 (DEBUG_DB, "Dropping trigger failed (%s) SQL: %s", err, sql);
+	sqlite3_free (sql);
+	sqlite3_free (err);
+	
+	err = NULL;
+	sql = sqlite3_mprintf ("DROP TRIGGER view_%s_update_before;", id);
+	res = sqlite3_exec (db, sql, NULL, NULL, &err);
+	if (SQLITE_OK != res) 
+		debug2 (DEBUG_DB, "Dropping trigger failed (%s) SQL: %s", err, sql);
+	sqlite3_free (sql);
+	sqlite3_free (err);
+	
+	err = NULL;
+	sql = sqlite3_mprintf ("DROP TRIGGER view_%s_update_after;", id);
+	res = sqlite3_exec (db, sql, NULL, NULL, &err);
+	if (SQLITE_OK != res) 
+		debug2 (DEBUG_DB, "Dropping trigger failed (%s) SQL: %s", err, sql);
+	sqlite3_free (sql);
+	sqlite3_free (err);	
+}
+
 void
 db_view_create (const gchar *id, queryPtr query)
 {
@@ -1306,6 +1458,8 @@ db_view_create (const gchar *id, queryPtr query)
 		sql = sqlite3_mprintf ("CREATE VIEW view_%s AS %s AND items.comment != 1", id, select);
 	else
 		sql = sqlite3_mprintf ("CREATE VIEW view_%s AS %s", id, select);
+	sqlite3_free (select);
+	
 	debug2 (DEBUG_DB, "Checking for view %s (SQL=%s)", id, sql);
 	
 	/* Check if view already exists with exactly the same SQL */
@@ -1338,13 +1492,23 @@ db_view_create (const gchar *id, queryPtr query)
 		res = sqlite3_exec (db, sql, NULL, NULL, &err);
 		if (SQLITE_OK != res) 
 			debug2 (DEBUG_DB, "Create view failed (%s) SQL: %s", err, sql);
+		sqlite3_free (sql);
+		sqlite3_free (err);
 	} else {
 		debug1 (DEBUG_DB, "No need to create view %s as it already exists.", id);
 	}
-			       
-	sqlite3_free (select);
+	
+	/* Unconditionally recreate the view specific triggers */
+	db_view_remove_triggers (id);
+	db_view_create_triggers (id);
+	
+	/* Initialize view counters */
+	sql = sqlite3_mprintf ("REPLACE INTO view_state (node_id, unread, count) VALUES ('%s', "
+	                       "   (SELECT count(*) FROM view_%s WHERE item_read = 0),"
+			       "   (SELECT count(*) FROM view_%s)"
+	                       ");", id, id, id); 
+	db_exec (sql);
 	sqlite3_free (sql);
-	sqlite3_free (err);
 }
 
 void
@@ -1440,7 +1604,7 @@ db_view_get_item_count (const gchar *id)
 
 	debug_start_measurement (DEBUG_DB);
 
-	sql = sqlite3_mprintf ("SELECT COUNT(*) FROM view_%s;", id);
+	sql = sqlite3_mprintf ("SELECT count FROM view_state WHERE node_id = '%s';", id);
 	res = sqlite3_prepare_v2 (db, sql, -1, &viewCountStmt, NULL);
 	sqlite3_free (sql);
 	if (SQLITE_OK != res) {
@@ -1473,7 +1637,7 @@ db_view_get_unread_count (const gchar *id)
 
 	debug_start_measurement (DEBUG_DB);
 
-	sql = sqlite3_mprintf ("SELECT COUNT(*) FROM view_%s WHERE item_read = 0;", id);
+	sql = sqlite3_mprintf ("SELECT unread FROM view_state WHERE node_id = '%s';", id);
 	res = sqlite3_prepare_v2 (db, sql, -1, &viewCountStmt, NULL);
 	sqlite3_free (sql);
 	if (SQLITE_OK != res) {
