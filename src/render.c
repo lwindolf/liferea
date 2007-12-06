@@ -156,7 +156,7 @@ render_get_theme_colors (void)
 {
 	GtkWidget	*htmlview;
 	GtkStyle	*style;
-//	GdkColor	*color;
+	GdkColor	*color;
 	
 	htmlview = liferea_htmlview_get_widget (ui_mainwindow_get_active_htmlview ());
 	style = gtk_widget_get_style (htmlview);
@@ -171,17 +171,21 @@ render_get_theme_colors (void)
 	themeColors = g_slist_append (themeColors, render_get_theme_color("GTK-COLOR-BASE",  style->base[GTK_STATE_NORMAL]));
 	themeColors = g_slist_append (themeColors, render_get_theme_color("GTK-COLOR-TEXT",  style->text[GTK_STATE_NORMAL]));
 	
-/*	color = NULL;
-	gtk_widget_style_get(GTK_WIDGET(mainwindow), "link-color", &color, NULL);
-	if(color)
-		themeColors = g_slist_append(themeColors, render_get_theme_color("GTK-COLOR-NORMAL-LINK", *color));
-	g_free(color);
+	color = NULL;
+	gtk_widget_style_get (GTK_WIDGET (mainwindow), "link-color", &color, NULL);
+	if (color) {
+		themeColors = g_slist_append (themeColors, render_get_theme_color ("GTK-COLOR-NORMAL-LINK", *color));
+		debug0 (DEBUG_HTML, "successfully set the color for links");
+		g_free (color);
+	}
 
 	color = NULL;	
 	gtk_widget_style_get(GTK_WIDGET(mainwindow), "visited-link-color", &color, NULL);
-	if(color)
+	if (color) {
 		themeColors = g_slist_append(themeColors, render_get_theme_color("GTK-COLOR-VISITED-LINK", *color));
-	g_free(color);*/
+		debug0 (DEBUG_HTML, "successfully set the color for visited links");
+		g_free (color);
+	}
 }
 
 static gchar * render_set_theme_colors(gchar *css) {

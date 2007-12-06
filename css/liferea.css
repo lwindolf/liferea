@@ -42,6 +42,8 @@
    GTK-COLOR-MID
    GTK-COLOR-BASE
    GTK-COLOR-TEXT
+   GTK-COLOR-NORMAL-LINK	(does only work with GTK 2.10+)
+   GTK-COLOR-VISITED-LINK	(does only work with GTK 2.10+)
    
    General note: relative positioning breaks link in GtkHTML2!
  */
@@ -60,6 +62,14 @@ blockquote {
         font-style: italic;
         margin: 5px 20px;
 	clear:both;
+}
+
+a {
+	color: #GTK-COLOR-NORMAL-LINK;
+}
+
+a:visited {
+	color: #GTK-COLOR-VISITED-LINK;
 }
 
 dd {
