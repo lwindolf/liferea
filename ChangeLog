@@ -9,6 +9,9 @@
 	  duplicate elimination handling.
 	* Fixes SF #1832389: cache limit causes flipping
 	  between old items (reported by Mike Auty)
+	* Update of default feed lists to be distro
+	  neutral. Removes Debian/Ubuntu feeds. 
+	  (patch SF #1843737 by Brian Pepple)
 	
 
 2007-12-02  Lars Lindner  <lars.lindner@gmail.com>
