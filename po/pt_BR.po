@@ -1,15 +1,15 @@
 # Brazilian Portuguese translation of liferea.
 # Copyright (C) 2005 Free Software Foundation, Inc.
 # Fernando Ike <fernando@ikenet.com.br>, 2005.
-# Og Maciel <ogmaciel@ubuntu.com>, 2007.
+# Og Maciel <ogmaciel@gnome.org>, 2007.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-08-09 20:21+0200\n"
-"PO-Revision-Date: 2007-07-08 23:44-0500\n"
-"Last-Translator: Og Maciel <ogmaciel@ubuntu.com>\n"
+"PO-Revision-Date: 2007-12-08 00:18-0500\n"
+"Last-Translator: Og Maciel <ogmaciel@gnome.org>\n"
 "Language-Team: Brazilian Portuguese <gnome-l10n-br@listas.cipsga.org.br>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -69,12 +69,8 @@ msgid "<b>text/plain</b>"
 msgstr "<b>text/plain</b>"
 
 #: ../liferea.glade.h:14
-msgid ""
-"<i>This option can cause significant delays when loading folders containing "
-"many feeds.</i>"
-msgstr ""
-"<i>Esta opção pode causar atrasos significantes no carregamento de pastas "
-"contendo muitas fontes de notícias.</i>"
+msgid "<i>This option can cause significant delays when loading folders containing many feeds.</i>"
+msgstr "<i>Esta opção pode causar atrasos significantes no carregamento de pastas contendo muitas fontes de notícias.</i>"
 
 #: ../liferea.glade.h:15
 msgid "<span color=\"blue\" underline=\"single\">Liferea Homepage</span>"
@@ -102,9 +98,7 @@ msgstr "<span weight=\"bold\">Nome da Fonte de Notícias</span>"
 
 #: ../liferea.glade.h:21
 msgid "<span weight=\"bold\">Feed Update Settings</span>"
-msgstr ""
-"<span weight=\"bold\">Configurações de Atualização de Fontes de Notícias</"
-"span>"
+msgstr "<span weight=\"bold\">Configurações de Atualização de Fontes de Notícias</span>"
 
 #: ../liferea.glade.h:22
 msgid "<span weight=\"bold\">Folder Display Settings</span>"
@@ -120,15 +114,13 @@ msgstr "<span weight=\"bold\">Configurações do Navegador Interno</span>"
 
 #: ../liferea.glade.h:25
 msgid "<span weight=\"bold\">Menu and Toolbar Settings</span>"
-msgstr ""
-"<span weight=\"bold\">Configurações do Menu e Barra de Ferramentas</span>"
+msgstr "<span weight=\"bold\">Configurações do Menu e Barra de Ferramentas</span>"
 
 #: ../liferea.glade.h:26
 msgid "<span weight=\"bold\">Notification Settings</span>"
 msgstr "<span weight=\"bold\">Configuração de Notificações</span>"
 
 #: ../liferea.glade.h:27
-#, fuzzy
 msgid "<span weight=\"bold\">Opening Enclosures</span>"
 msgstr "<span weight=\"bold\">Abrindo Componentes</span>"
 
@@ -174,9 +166,7 @@ msgstr "Autenticação"
 
 #: ../liferea.glade.h:38
 msgid "Auto-_load item link in configured browser when selecting articles."
-msgstr ""
-"Carregar automaticamente o _link do item no browser configurado quando "
-"selecionando artigos."
+msgstr "Carregar automaticamente o _link do item no browser configurado quando selecionando artigos."
 
 #: ../liferea.glade.h:39
 msgid "Browser"
@@ -281,8 +271,7 @@ msgstr ""
 "Software Incluído\n"
 "\n"
 "Liferea usa o Reprodutor de Música para Web XSPF para \n"
-"permitir reprodução direta de podcast. Este reprodutor foi escrto por "
-"Fabricio Zuardi e pode ser encontrado  \n"
+"permitir reprodução direta de podcast. Este reprodutor foi escrto por Fabricio Zuardi e pode ser encontrado  \n"
 "em http://musicplayer.sourceforge.net"
 
 #: ../liferea.glade.h:89
@@ -344,22 +333,15 @@ msgid "Enclosures"
 msgstr "Componentes"
 
 #: ../liferea.glade.h:105
-msgid ""
-"Enter a search string Liferea should find either in a items title or in its "
-"content."
-msgstr ""
-"Digite o termo que o Liferea deve pesquisar nos títulos de itens ou seus "
-"conteúdos."
+msgid "Enter a search string Liferea should find either in a items title or in its content."
+msgstr "Digite o termo que o Liferea deve pesquisar nos títulos de itens ou seus conteúdos."
 
 #: ../liferea.glade.h:106
-msgid ""
-"Enter a website location to use feed autodiscovery or in case you know it "
-"the exact feed location."
-msgstr ""
-"Digite o endereço de website para usar na pesquisa automática ou caso você "
-"conheça, o endereço exato da fonte de notícias."
+msgid "Enter a website location to use feed autodiscovery or in case you know it the exact feed location."
+msgstr "Digite o endereço de website para usar na pesquisa automática ou caso você conheça, o endereço exato da fonte de notícias."
 
-#: ../liferea.glade.h:108 ../src/ui/ui_auth.c:181
+#: ../liferea.glade.h:108
+#: ../src/ui/ui_auth.c:181
 #, no-c-format
 msgid "Enter the username and password for \"%s\" (%s):"
 msgstr "Digite o nome de usuário e senha para \"%s\" (%s):"
@@ -393,7 +375,8 @@ msgid "Headlines"
 msgstr "Manchetes"
 
 #. GTK theme support
-#: ../liferea.glade.h:116 ../src/main.c:176
+#: ../liferea.glade.h:116
+#: ../src/main.c:176
 msgid "Liferea"
 msgstr "Liferea"
 
@@ -402,14 +385,8 @@ msgid "Liferea Preferences"
 msgstr "Preferências do Liferea"
 
 #: ../liferea.glade.h:118
-msgid ""
-"Liferea can use external filter plugins in order to access feeds and "
-"directories in non-supported formats.  See the documentation for more "
-"information."
-msgstr ""
-"Liferea pode usar plug-ins de filtros externos para acessar fontes de "
-"notícias e diretórios com formatos não suportados.  Leia a documentação para "
-"maiores informações."
+msgid "Liferea can use external filter plugins in order to access feeds and directories in non-supported formats.  See the documentation for more information."
+msgstr "Liferea pode usar plug-ins de filtros externos para acessar fontes de notícias e diretórios com formatos não suportados.  Leia a documentação para maiores informações."
 
 #: ../liferea.glade.h:119
 msgid "Liferea is a news aggregator for GTK+"
@@ -423,27 +400,19 @@ msgstr "_Número Máximo de Itens por Resultado:"
 msgid "New Folder"
 msgstr "Nova Pasta"
 
-#: ../liferea.glade.h:122 ../src/node.c:409
+#: ../liferea.glade.h:122
+#: ../src/node.c:409
 msgid "New Subscription"
 msgstr "Nova Assinatura"
 
 #. Feed update interval hint in preference dialog.
 #: ../liferea.glade.h:124
-msgid ""
-"Note: <i>Please remember to set a reasonable refresh time. Usually it is a "
-"waste of bandwidth to poll feeds more often than each hour.</i>"
-msgstr ""
-"Nota: <i>Lembre-se de definir um intervalo de atualização razoável. "
-"Geralmente é um desperdício de banda atualizar fontes de notícias com uma "
-"frequência maior que uma vez por hora.</i>"
+msgid "Note: <i>Please remember to set a reasonable refresh time. Usually it is a waste of bandwidth to poll feeds more often than each hour.</i>"
+msgstr "Nota: <i>Lembre-se de definir um intervalo de atualização razoável. Geralmente é um desperdício de banda atualizar fontes de notícias com uma frequência maior que uma vez por hora.</i>"
 
 #: ../liferea.glade.h:125
-msgid ""
-"Note: <i>The username and password will be saved to your Liferea feedlist "
-"file without using encryption.</i>"
-msgstr ""
-"Nota: <i>O nome do usuário e senha serão salvos em seu arquivo de lista de "
-"fonte de notícias sem criptografia.</i>"
+msgid "Note: <i>The username and password will be saved to your Liferea feedlist file without using encryption.</i>"
+msgstr "Nota: <i>O nome do usuário e senha serão salvos em seu arquivo de lista de fonte de notícias sem criptografia.</i>"
 
 #: ../liferea.glade.h:126
 msgid ""
@@ -451,19 +420,11 @@ msgid ""
 "matches. They are removed if at least one removing rule matches."
 msgstr ""
 "Nota: Itens serão adicionados à pasta virtual se coincidir com pelo menos\n"
-"uma regra aditiva. Eles serão removidos se ao menos uma regra de remoção "
-"coincidir."
+"uma regra aditiva. Eles serão removidos se ao menos uma regra de remoção coincidir."
 
 #: ../liferea.glade.h:128
-msgid ""
-"Note: Liferea will generate a feed subscription which is used to query the "
-"search engine results for the specified search string. You can keep this "
-"feed permanently and update it like any other subscription.  "
-msgstr ""
-"Nota: O Liferea criará uma assintatura de fonte de notícias que poderá ser "
-"usado para consultar os resultados dos motores de busca pela frase "
-"específica. Você poderá manter esta fonte de notícias em definitivo e "
-"atualizá-la como qualquer outra assinatura.  "
+msgid "Note: Liferea will generate a feed subscription which is used to query the search engine results for the specified search string. You can keep this feed permanently and update it like any other subscription.  "
+msgstr "Nota: O Liferea criará uma assintatura de fonte de notícias que poderá ser usado para consultar os resultados dos motores de busca pela frase específica. Você poderá manter esta fonte de notícias em definitivo e atualizá-la como qualquer outra assinatura.  "
 
 #: ../liferea.glade.h:129
 msgid "Online/Offline Button"
@@ -502,11 +463,8 @@ msgid "Reuse existing script"
 msgstr "Reusar script existente"
 
 #: ../liferea.glade.h:138
-msgid ""
-"Saves this search as a search folder, which will appear in the feed list."
-msgstr ""
-"Salva esta pesquisa como uma pasta virtual, a qual aparecerá na lista de "
-"fontes de notícias."
+msgid "Saves this search as a search folder, which will appear in the feed list."
+msgstr "Salva esta pesquisa como uma pasta virtual, a qual aparecerá na lista de fontes de notícias."
 
 #: ../liferea.glade.h:139
 msgid "Script Manager"
@@ -556,7 +514,8 @@ msgstr "Exibe uma janela instantânea com novas manchetes."
 msgid "Show a status _icon in the notification area (system tray)."
 msgstr "Exibe um _icone na área de notificação (bandeja do sistema)."
 
-#: ../liferea.glade.h:151 ../xslt/item.xml.in.h:11
+#: ../liferea.glade.h:151
+#: ../xslt/item.xml.in.h:11
 msgid "Source"
 msgstr "Fonte"
 
@@ -565,12 +524,8 @@ msgid "Source Type:"
 msgstr "Tipo de Fonte:"
 
 #: ../liferea.glade.h:153
-msgid ""
-"Starts searching for the specified text in all feeds. The search result will "
-"appear in the item list."
-msgstr ""
-"Procura o texto especificado em todas as fontes de notícias. O resultado da "
-"busca aparecerá na lista de itens."
+msgid "Starts searching for the specified text in all feeds. The search result will appear in the item list."
+msgstr "Procura o texto especificado em todas as fontes de notícias. O resultado da busca aparecerá na lista de itens."
 
 #: ../liferea.glade.h:154
 msgid "Subscription Properties"
@@ -581,19 +536,13 @@ msgid "T_erminate instead of minimizing to tray icon."
 msgstr "Finalizar invés de minimizar para o ícone da band_eja"
 
 #: ../liferea.glade.h:156
-msgid ""
-"The cache setting controls if the contents of feeds are saved when Liferea "
-"exits. Marked items are always saved to the cache."
-msgstr ""
-"As configurações de controle do cache se o conteúdo das fontes de notícias "
-"forem salvos quando Liferea fechar. Os itens marcados são sempre salvos no "
-"cache."
+msgid "The cache setting controls if the contents of feeds are saved when Liferea exits. Marked items are always saved to the cache."
+msgstr "As configurações de controle do cache se o conteúdo das fontes de notícias forem salvos quando Liferea fechar. Os itens marcados são sempre salvos no cache."
 
 #: ../liferea.glade.h:158
 #, no-c-format
 msgid "This feed provider suggests an update interval of %d minutes."
-msgstr ""
-"Esta fonte de notícias sugere um intervalo de atualização de %d minutos."
+msgstr "Esta fonte de notícias sugere um intervalo de atualização de %d minutos."
 
 #: ../liferea.glade.h:159
 msgid "Toolbar _button labels:"
@@ -628,14 +577,8 @@ msgid "View Headlines"
 msgstr "Ver Manchetes"
 
 #: ../liferea.glade.h:167
-msgid ""
-"What should Liferea do with this enclosure? Please enter the command you "
-"want to be executed below. The downloaded file will be supplied as an "
-"argument for this command:"
-msgstr ""
-"O que deve fazer o Liferea com este componente? Por favor, digite abaixo o "
-"comando a ser executado. O Arquivo baixado será usado como um argumento para "
-"este comando."
+msgid "What should Liferea do with this enclosure? Please enter the command you want to be executed below. The downloaded file will be supplied as an argument for this command:"
+msgstr "O que deve fazer o Liferea com este componente? Por favor, digite abaixo o comando a ser executado. O Arquivo baixado será usado como um argumento para este comando."
 
 #: ../liferea.glade.h:168
 msgid "_Auto Detect (GNOME or environment)"
@@ -752,9 +695,7 @@ msgstr "Pesqui_sar por:"
 
 #: ../liferea.glade.h:197
 msgid "_Show the items of all child feeds when a folder is selected."
-msgstr ""
-"Exibir os itens de todas as fontes de notícias quando uma pasta é "
-"_selecionada."
+msgstr "Exibir os itens de todas as fontes de notícias quando uma pasta é _selecionada."
 
 #: ../liferea.glade.h:198
 msgid "_Skim through articles with:"
@@ -820,7 +761,7 @@ msgstr "Leitor de Fontes de Notícias"
 
 #: ../liferea.desktop.in.h:3
 msgid "Liferea Feed Reader"
-msgstr "Leitor de Fontes de Notícias Liferea"
+msgstr "Agregador de Notícias Liferea"
 
 #: ../xslt/feed.xml.in.h:1
 msgid "Copyright"
@@ -846,18 +787,14 @@ msgstr "Detalhes de Erro do Analisador"
 msgid "Publisher"
 msgstr "Editores"
 
-#: ../xslt/feed.xml.in.h:7 ../xslt/source.xml.in.h:1
+#: ../xslt/feed.xml.in.h:7
+#: ../xslt/source.xml.in.h:1
 msgid "Source:"
 msgstr "Fontes:"
 
 #: ../xslt/feed.xml.in.h:8
-msgid ""
-"The last update of this subscription failed!<br/><b>HTTP error code <xsl:"
-"value-of select=\"httpErrorCode\"/>: <xsl:value-of select=\"httpError\"/></b>"
-msgstr ""
-"A última atualização desta assinatura falhou!<br/><b>Código de erro HTTP "
-"<xsl:value-of select=\"httpErrorCode\"/>: <xsl:value-of select=\"httpError\"/"
-"></b>"
+msgid "The last update of this subscription failed!<br/><b>HTTP error code <xsl:value-of select=\"httpErrorCode\"/>: <xsl:value-of select=\"httpError\"/></b>"
+msgstr "A última atualização desta assinatura falhou!<br/><b>Código de erro HTTP <xsl:value-of select=\"httpErrorCode\"/>: <xsl:value-of select=\"httpError\"/></b>"
 
 #: ../xslt/feed.xml.in.h:9
 msgid "There were errors while filtering this feed!"
@@ -868,22 +805,20 @@ msgid "There were errors while parsing this feed!"
 msgstr "Alguns erros foram encontrados ao processar esta fonte de notícias!"
 
 #: ../xslt/feed.xml.in.h:11
-msgid ""
-"This feed is discontinued. It's no longer available. Liferea won't update it "
-"anymore but you can still access the cached headlines."
-msgstr ""
-"Esta fonte de notícias foi interrompida, e não está mais disponível. Liferea "
-"não a atualizará mais, mas você poderá ainda acessar as manchetes no cache."
+msgid "This feed is discontinued. It's no longer available. Liferea won't update it anymore but you can still access the cached headlines."
+msgstr "Esta fonte de notícias foi interrompida, e não está mais disponível. Liferea não a atualizará mais, mas você poderá ainda acessar as manchetes no cache."
 
 #: ../xslt/feed.xml.in.h:12
 msgid "You may want to validate the feed using"
-msgstr ""
+msgstr "Talvez você queira validar a fonte de notícias usando"
 
-#: ../xslt/source.xml.in.h:2 ../xslt/folder.xml.in.h:2
+#: ../xslt/source.xml.in.h:2
+#: ../xslt/folder.xml.in.h:2
 msgid "children with"
 msgstr "crianças com"
 
-#: ../xslt/source.xml.in.h:3 ../xslt/folder.xml.in.h:3
+#: ../xslt/source.xml.in.h:3
+#: ../xslt/folder.xml.in.h:3
 #: ../xslt/vfolder.xml.in.h:2
 msgid "unread headlines"
 msgstr "manchetes não lidas"
@@ -953,12 +888,8 @@ msgid "search"
 msgstr "pesquisar"
 
 #: ../xslt/newsbin.xml.in.h:1
-msgid ""
-"Add items to this news bin by selecting \"Copy to News Bin\" from the item "
-"list context menu."
-msgstr ""
-"Adicione itens à este recipiente de notícias selecionando \"Copiar para o "
-"Recipiente de Notícias\" da lista de itens no menu de contexto."
+msgid "Add items to this news bin by selecting \"Copy to News Bin\" from the item list context menu."
+msgstr "Adicione itens à este recipiente de notícias selecionando \"Copiar para o Recipiente de Notícias\" da lista de itens no menu de contexto."
 
 #: ../xslt/newsbin.xml.in.h:2
 msgid "News Bin:"
@@ -1004,13 +935,8 @@ msgid "Cannot create cache directory \"%s\"!"
 msgstr "Não foi possível criar o diretório de cache \"%s\"!"
 
 #: ../src/common.c:431
-msgid ""
-"You are unauthorized to download this feed. Please update your username and "
-"password in the feed properties dialog box."
-msgstr ""
-"Você não está autorizado a fazer o download desta fonte de notícias. Por "
-"favor, atualize o seu nome de usuário e senha na caixa de propriedades da "
-"fonte de notícias."
+msgid "You are unauthorized to download this feed. Please update your username and password in the feed properties dialog box."
+msgstr "Você não está autorizado a fazer o download desta fonte de notícias. Por favor, atualize o seu nome de usuário e senha na caixa de propriedades da fonte de notícias."
 
 #: ../src/common.c:433
 msgid "Payment Required"
@@ -1046,9 +972,7 @@ msgstr "Esse fonte não existe. Por favor, remova a assinatura!"
 
 #: ../src/common.c:445
 msgid "Feed not available: Server requested unsupported redirection!"
-msgstr ""
-"Fonte de notícias não disponível: Servidor solicitou um redirecionamento não "
-"suportado!"
+msgstr "Fonte de notícias não disponível: Servidor solicitou um redirecionamento não suportado!"
 
 #: ../src/common.c:446
 msgid "Client Error"
@@ -1104,12 +1028,8 @@ msgid "Webserver's authentication method incompatible with Liferea"
 msgstr "Métdodo de autentição do servidor de web é incompatível com o Liferea"
 
 #: ../src/common.c:525
-msgid ""
-"Unexpected end of character sequence or corrupt UTF-8 encoding! Some "
-"characters were dropped!"
-msgstr ""
-"Fim inesperado da sequência de caracteres ou codificação UTF-8 corrompida!  "
-"Alguns caracteres foram perdidos!"
+msgid "Unexpected end of character sequence or corrupt UTF-8 encoding! Some characters were dropped!"
+msgstr "Fim inesperado da sequência de caracteres ou codificação UTF-8 corrompida!  Alguns caracteres foram perdidos!"
 
 #: ../src/common.c:631
 #, c-format
@@ -1121,25 +1041,23 @@ msgstr "Não foi possível localizar o arquivo de imagem: %s"
 msgid "Error renaming %s to %s\n"
 msgstr "Erro ao renomear %s para %s\n"
 
-#: ../src/export.c:322 ../src/export.c:324
+#: ../src/export.c:322
+#: ../src/export.c:324
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
-msgstr ""
-"Erro de XML ao ler o arquivo do cache! Não foi possível importar \"%s\"!"
+msgstr "Erro de XML ao ler o arquivo do cache! Não foi possível importar \"%s\"!"
 
-#: ../src/export.c:329 ../src/export.c:331
+#: ../src/export.c:329
+#: ../src/export.c:331
 #, c-format
-msgid ""
-"Empty document! OPML document \"%s\" should not be empty when importing."
-msgstr ""
-"Documento vazio! O documento OPML \"%s\" não deve estar vazio ao importar."
+msgid "Empty document! OPML document \"%s\" should not be empty when importing."
+msgstr "Documento vazio! O documento OPML \"%s\" não deve estar vazio ao importar."
 
-#: ../src/export.c:352 ../src/export.c:354
+#: ../src/export.c:352
+#: ../src/export.c:354
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
-msgstr ""
-"\"%s\" não é um documento OPML válido! Liferea não pode importar este "
-"arquivo!"
+msgstr "\"%s\" não é um documento OPML válido! Liferea não pode importar este arquivo!"
 
 #: ../src/export.c:373
 msgid "Imported feed list"
@@ -1170,22 +1088,13 @@ msgid "Export"
 msgstr "Exportar"
 
 #: ../src/feed.c:282
-msgid ""
-"The URL you want Liferea to subscribe to points to a webpage and the auto "
-"discovery found no feeds on this page. Maybe this webpage just does not "
-"support feed auto discovery."
-msgstr ""
-"O URL que você deseja assinar pelo Liferea aponta para uma página de web e o "
-"pesquisador automático não encontrou nenhuma fonte de notícias nesta página. "
-"Talvez esta página de  web não tenha suporte à pesquisa automática de fontes "
-"de notícias."
+msgid "The URL you want Liferea to subscribe to points to a webpage and the auto discovery found no feeds on this page. Maybe this webpage just does not support feed auto discovery."
+msgstr "O URL que você deseja assinar pelo Liferea aponta para uma página de web e o pesquisador automático não encontrou nenhuma fonte de notícias nesta página. Talvez esta página de  web não tenha suporte à pesquisa automática de fontes de notícias."
 
 #: ../src/feed.c:313
 #, c-format
 msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
-msgstr ""
-"Erro de XML ao ler fonte de notícias! Não foi possível carregar a fonte de "
-"notícias \"%s\"!"
+msgstr "Erro de XML ao ler fonte de notícias! Não foi possível carregar a fonte de notícias \"%s\"!"
 
 #: ../src/feed.c:318
 msgid "Empty document!"
@@ -1204,15 +1113,8 @@ msgid "Could not determine the feed type."
 msgstr "Não foi possível determinar o tipo de fonte de notícias."
 
 #: ../src/feed.c:580
-msgid ""
-"<p>Could not detect the type of this feed! Please check if the source really "
-"points to a resource provided in one of the supported syndication formats!</"
-"p>XML Parser Output:<br /><div class='xmlparseroutput'>"
-msgstr ""
-"<p>Não foi possível detectar o tipo desta fonte de notícias! Por favor, "
-"verifique se a fonte realmente aponta para um recurso fornecido em um dos "
-"formatos de sindicato suportados!</p> Saída do Analisador de XML:<br /><div "
-"class='xmlparseroutput'>"
+msgid "<p>Could not detect the type of this feed! Please check if the source really points to a resource provided in one of the supported syndication formats!</p>XML Parser Output:<br /><div class='xmlparseroutput'>"
+msgstr "<p>Não foi possível detectar o tipo desta fonte de notícias! Por favor, verifique se a fonte realmente aponta para um recurso fornecido em um dos formatos de sindicato suportados!</p> Saída do Analisador de XML:<br /><div class='xmlparseroutput'>"
 
 #: ../src/feed.c:604
 #, c-format
@@ -1228,28 +1130,18 @@ msgstr "\"%s\" não está disponível"
 msgid "You have to select a feed entry"
 msgstr "Você deve selecionar uma fonte de notícias"
 
-#: ../src/feedlist.c:304 ../src/feedlist.c:313
+#: ../src/feedlist.c:304
+#: ../src/feedlist.c:313
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea está em modo offline. Não é possível atualizar."
 
 #: ../src/feedlist.c:439
-msgid ""
-"This version of Liferea uses a new cache format and has migrated your feed "
-"cache. The cache content of v1.2 in ~/.liferea_1.2 was not deleted "
-"automatically. Please remove this directory manually once you are sure "
-"migration was successful!"
-msgstr ""
-"Esta versão do Lifera usa um novo formato de cache e atualizou o seu cache "
-"de fontes de notícias. O conteúdo do cache da versão v1.2 em ~/.liferea_1,2 "
-"não foi apagado automaticamente. Por favor, remova este diretório "
-"manualmente uma vez que você tenha verificado se a atualização foi feita com "
-"sucesso!"
+msgid "This version of Liferea uses a new cache format and has migrated your feed cache. The cache content of v1.2 in ~/.liferea_1.2 was not deleted automatically. Please remove this directory manually once you are sure migration was successful!"
+msgstr "Esta versão do Lifera usa um novo formato de cache e atualizou o seu cache de fontes de notícias. O conteúdo do cache versão v1.2 em ~/.liferea_1.2 não foi excluído automaticamente. Por favor, remova este diretório manualmente uma vez que você tenha verificado se a atualização foi feita com sucesso!"
 
 #: ../src/html.c:154
 msgid "Feed link auto discovery failed! No feed links found!"
-msgstr ""
-"A pesquisa automática por links de fontes de notícias falhou! Nenhum link de "
-"fonte de notícias foi encontrado!"
+msgstr "A pesquisa automática por links de fontes de notícias falhou! Nenhum link de fonte de notícias foi encontrado!"
 
 #. if we don't find a feed with unread items do nothing
 #: ../src/itemlist.c:337
@@ -1274,8 +1166,7 @@ msgstr "                   Inicia o liferea com a janela principal no ESTADO."
 
 #: ../src/main.c:73
 msgid "                   STATE may be `shown', `iconified', or `hidden'"
-msgstr ""
-"                   ESTADO pode ser \"mostrado\", \"ícone\", ou \"oculto\""
+msgstr "                   ESTADO pode ser \"mostrado\", \"ícone\", ou \"oculto\""
 
 #: ../src/main.c:75
 msgid "  --debug-<topic>  Print debugging messages for the given topic"
@@ -1296,8 +1187,7 @@ msgstr "Parece que o Liferea já está em execução!"
 #: ../src/main.c:227
 #, c-format
 msgid "The --mainwindow-state argument must be given a parameter.\n"
-msgstr ""
-"É necessário passar um argumento para o parâmetro --mainwindow-state.\n"
+msgstr "É necessário passar um argumento para o parâmetro --mainwindow-state.\n"
 
 #: ../src/main.c:235
 #, c-format
@@ -1325,11 +1215,15 @@ msgstr "não contém"
 msgid "Item title"
 msgstr "Título do item"
 
-#: ../src/rule.c:302 ../src/rule.c:303 ../src/rule.c:304
+#: ../src/rule.c:302
+#: ../src/rule.c:303
+#: ../src/rule.c:304
 msgid "does match"
 msgstr "combina"
 
-#: ../src/rule.c:302 ../src/rule.c:303 ../src/rule.c:304
+#: ../src/rule.c:302
+#: ../src/rule.c:303
+#: ../src/rule.c:304
 msgid "does not match"
 msgstr "não combina"
 
@@ -1396,11 +1290,8 @@ msgstr "A fonte de notícias \"%s\" já está sendo atualizada!"
 
 #: ../src/subscription.c:83
 #, c-format
-msgid ""
-"The subscription \"%s\" was discontinued. Liferea won't update it anymore!"
-msgstr ""
-"A fonte de notícias \"%s\" foi interrompida e não será mais atualizada pelo "
-"Liferea!"
+msgid "The subscription \"%s\" was discontinued. Liferea won't update it anymore!"
+msgstr "A fonte de notícias \"%s\" foi interrompida e não será mais atualizada pelo Liferea!"
 
 #: ../src/subscription.c:118
 #, c-format
@@ -1428,12 +1319,8 @@ msgid "Updating \"%s\""
 msgstr "Atualizando \"%s\""
 
 #: ../src/subscription.c:419
-msgid ""
-"There was a problem while reading this subscription. Please check the URL "
-"and console output."
-msgstr ""
-"Foi encontrado um problema ao ler esta assinatura. Por favor, verifique o "
-"URL e a saída no console."
+msgid "There was a problem while reading this subscription. Please check the URL and console output."
+msgstr "Foi encontrado um problema ao ler esta assinatura. Por favor, verifique o URL e a saída no console."
 
 #: ../src/update.c:131
 #, c-format
@@ -1445,7 +1332,9 @@ msgstr "Erro ao abrir arquivo temporário %s para usar no filtro!"
 msgid "%s exited with status %d"
 msgstr "%s saiu com status %d"
 
-#: ../src/update.c:160 ../src/update.c:161 ../src/update.c:266
+#: ../src/update.c:160
+#: ../src/update.c:161
+#: ../src/update.c:266
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "Erro: Não foi possível abrir a linha de processamento \"%s\""
@@ -1501,7 +1390,8 @@ msgstr "\"%s\" não é um tipo de arquivo válido de configuração de component
 msgid "Enclosure download finished: \"%s\""
 msgstr "Download do componente completo: \"%s\""
 
-#: ../src/ui/ui_enclosure.c:229 ../src/ui/ui_enclosure.c:391
+#: ../src/ui/ui_enclosure.c:229
+#: ../src/ui/ui_enclosure.c:391
 #: ../src/ui/ui_subscription.c:369
 msgid "Choose File"
 msgstr "Escolher Arquivo"
@@ -1523,31 +1413,28 @@ msgstr "Apagando entrada"
 #: ../src/ui/ui_feedlist.c:285
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
-msgstr "Você realmente deseja apagar \"%s\" e seu conteúdo?"
+msgstr "Você realmente deseja excluir \"%s\" e seu conteúdo?"
 
 #: ../src/ui/ui_feedlist.c:285
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
-msgstr "Você realmente deseja apagar \"%s\"?"
+msgstr "Você realmente deseja excluir \"%s\"?"
 
 #: ../src/ui/ui_feedlist.c:292
 msgid "Deletion Confirmation"
 msgstr "Confirmar Exclusão"
 
 #: ../src/ui/ui_htmlview.c:81
-msgid ""
-"Sorry, I was not able to load any installed browser plugin! Try the --debug-"
-"plugins option to get debug information!"
-msgstr ""
-"Desculpe, não foi possível carregar nenhum dos plug-ins instalados do "
-"navegador! Tente a opção --debug-plugins para obter informações de depuração!"
+msgid "Sorry, I was not able to load any installed browser plugin! Try the --debug-plugins option to get debug information!"
+msgstr "Desculpe, não foi possível carregar nenhum dos plug-ins instalados do navegador! Tente a opção --debug-plugins para obter informações de depuração!"
 
 #. FIXME: bad because this is not only used for item links!
 #: ../src/ui/ui_htmlview.c:202
 msgid "This item does not have a link assigned!"
 msgstr "Este item não possui um link designado!"
 
-#: ../src/ui/ui_htmlview.c:297 ../src/ui/ui_htmlview.c:317
+#: ../src/ui/ui_htmlview.c:297
+#: ../src/ui/ui_htmlview.c:317
 #, c-format
 msgid "Browser command failed: %s"
 msgstr "Falha ao iniciar o navegador: %s"
@@ -1565,12 +1452,15 @@ msgstr "<i>*** Sem título ***</i>"
 msgid "Date"
 msgstr "Data"
 
-#: ../src/ui/ui_itemlist.c:343 ../src/ui/ui_itemlist.c:346
+#: ../src/ui/ui_itemlist.c:343
+#: ../src/ui/ui_itemlist.c:346
 msgid "Headline"
 msgstr "Manchetes"
 
-#: ../src/ui/ui_itemlist.c:487 ../src/ui/ui_itemlist.c:510
-#: ../src/ui/ui_itemlist.c:581 ../src/ui/ui_itemlist.c:729
+#: ../src/ui/ui_itemlist.c:487
+#: ../src/ui/ui_itemlist.c:510
+#: ../src/ui/ui_itemlist.c:581
+#: ../src/ui/ui_itemlist.c:729
 #: ../src/ui/ui_itemlist.c:747
 msgid "No item has been selected"
 msgstr "Nenhum item foi selecionado"
@@ -1581,7 +1471,7 @@ msgstr "Este item não possui um link específico"
 
 #: ../src/ui/ui_itemlist.c:571
 msgid "You must select a feed to delete its items!"
-msgstr "Selecione um fonte para apagar seus itens!"
+msgstr "Selecione uma fonte para excluir seus itens!"
 
 #: ../src/ui/ui_itemlist.c:757
 msgid "No link selected!"
@@ -1621,19 +1511,8 @@ msgid "Liferea - Linux Feed Reader"
 msgstr "Liferea - Leitor de Fontes de Notícias do Linux"
 
 #: ../src/ui/ui_mainwindow.c:691
-msgid ""
-"<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news "
-"feeds.</p><p>The left pane contains the list of your subscriptions. To add a "
-"subscription select Feeds -&gt; New Subscription. To browse the headlines of "
-"a feed select it in the feed list and the headlines will be loaded into the "
-"right pane.</p>"
-msgstr ""
-"<p>Seja bem-vindo ao <b>Liferea</b>, um agregador de fontes de notícias "
-"online para a área de trabalho. </p><p>O painel esquerdo contém uma lista "
-"com suas assinaturas. Para adicionar uma assinatura, selecione Fontes de "
-"Notícias -&gt; Nova Assinatura. Para navegar pelas manchetes de uma fonte de "
-"notícias, selecione-a na lista de fontes de notícias e as manchetes serão "
-"carregadas no painel direito.</p>"
+msgid "<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news feeds.</p><p>The left pane contains the list of your subscriptions. To add a subscription select Feeds -&gt; New Subscription. To browse the headlines of a feed select it in the feed list and the headlines will be loaded into the right pane.</p>"
+msgstr "<p>Seja bem-vindo ao <b>Liferea</b>, um agregador de fontes de notícias online para a área de trabalho. </p><p>O painel esquerdo contém uma lista com suas assinaturas. Para adicionar uma assinatura, selecione Fontes de Notícias -&gt; Nova Assinatura. Para navegar pelas manchetes de uma fonte de notícias, selecione-a na lista de fontes de notícias e as manchetes serão carregadas no painel direito.</p>"
 
 #: ../src/ui/ui_mainwindow.c:745
 msgid "Liferea is now online"
@@ -1712,12 +1591,8 @@ msgid "_Next Unread Item"
 msgstr "_Avançar Para Item Não Lido"
 
 #: ../src/ui/ui_mainwindow.c:1026
-msgid ""
-"Jumps to the next unread item. If necessary selects the next feed with "
-"unread items."
-msgstr ""
-"Avança para o próximo item não lido. Se for necessário, seleciona a próxima "
-"fonte de notícias com itens ainda não lidos."
+msgid "Jumps to the next unread item. If necessary selects the next feed with unread items."
+msgstr "Avança para o próximo item não lido. Se for necessário, seleciona a próxima fonte de notícias com itens ainda não lidos."
 
 #: ../src/ui/ui_mainwindow.c:1028
 msgid "Toggle _Read Status"
@@ -1920,23 +1795,16 @@ msgid "_Mark As Read"
 msgstr "_Marcar Como Lido"
 
 #: ../src/ui/ui_mainwindow.c:1082
-msgid ""
-"Marks all items of the selected subscription or of all subscriptions of the "
-"selected folder as read."
-msgstr ""
-"Marca todos os itens da assinatura selecionada ou todas as assinaturas da "
-"pasta selecionada como lidos."
+msgid "Marks all items of the selected subscription or of all subscriptions of the selected folder as read."
+msgstr "Marca todos os itens da assinatura selecionada ou todas as assinaturas da pasta selecionada como lidos."
 
 #: ../src/ui/ui_mainwindow.c:1084
 msgid "_Update"
 msgstr "_Atualizar"
 
 #: ../src/ui/ui_mainwindow.c:1084
-msgid ""
-"Updates the selected subscription or all subscriptions of the selected "
-"folder."
-msgstr ""
-"Atualiza a assinatura selecionada ou todas assinaturas da pasta selecionada. "
+msgid "Updates the selected subscription or all subscriptions of the selected folder."
+msgstr "Atualiza a assinatura selecionada ou todas assinaturas da pasta selecionada. "
 
 #: ../src/ui/ui_mainwindow.c:1089
 msgid "_Properties..."
@@ -1994,7 +1862,8 @@ msgid "/Copy to News Bin/%s"
 msgstr "/Copia para o Recipiente de Notícias/%s"
 
 #. menu option for social bookmark creation
-#: ../src/ui/ui_popup.c:137 ../src/ui/ui_popup.c:160
+#: ../src/ui/ui_popup.c:137
+#: ../src/ui/ui_popup.c:160
 #, c-format
 msgid "/_Bookmark Link at %s"
 msgstr "/_Salvar Link em %s"
@@ -2105,7 +1974,7 @@ msgstr "/_Nova/Novo Recipiente de _Notícias..."
 
 #: ../src/ui/ui_popup.c:314
 msgid "/_Delete"
-msgstr "/_Apagar"
+msgstr "/_Excluir"
 
 #: ../src/ui/ui_popup.c:316
 msgid "/_Properties..."
@@ -2116,64 +1985,60 @@ msgid "GNOME Default Browser"
 msgstr "Navegador Padrão do GNOME"
 
 #: ../src/ui/ui_prefs.c:127
-#, fuzzy
 msgid "GNOME default"
-msgstr "Navegador Padrão do GNOME"
+msgstr "GNOME padrão"
 
 #: ../src/ui/ui_prefs.c:128
 msgid "Text below icons"
-msgstr ""
+msgstr "Texto abaixo dos ícones"
 
 #: ../src/ui/ui_prefs.c:129
 msgid "Text beside icons"
-msgstr ""
+msgstr "Texto ao lado dos ícones"
 
 #: ../src/ui/ui_prefs.c:130
 msgid "Icons only"
-msgstr ""
+msgstr "Somente ícones"
 
 #: ../src/ui/ui_prefs.c:131
 msgid "Text only"
-msgstr ""
+msgstr "Somente texto"
 
 #: ../src/ui/ui_prefs.c:136
-#, fuzzy
 msgid "Update out-dated feeds"
-msgstr "Atualizar status"
+msgstr "Atualizar fontes de notícias desatualizadas"
 
 #: ../src/ui/ui_prefs.c:137
 msgid "Force update of all feeds"
-msgstr ""
+msgstr "Forçar a atualização de todas as fontes de notícias"
 
 #: ../src/ui/ui_prefs.c:138
-#, fuzzy
 msgid "No feed update at all"
-msgstr "fonte de notícias atualizada"
+msgstr "Nenhuma atualização de fontes de notícias"
 
 #: ../src/ui/ui_prefs.c:143
-#, fuzzy
 msgid "minutes"
-msgstr "itens."
+msgstr "minutos"
 
 #: ../src/ui/ui_prefs.c:144
 msgid "hours"
-msgstr ""
+msgstr "horas"
 
 #: ../src/ui/ui_prefs.c:145
 msgid "days"
-msgstr ""
+msgstr "dias"
 
 #: ../src/ui/ui_prefs.c:150
 msgid "Space"
-msgstr ""
+msgstr "Espaço"
 
 #: ../src/ui/ui_prefs.c:151
 msgid "<Ctrl> Space"
-msgstr ""
+msgstr "<Ctrl> Espaço"
 
 #: ../src/ui/ui_prefs.c:152
 msgid "<Alt> Space"
-msgstr ""
+msgstr "<Alt> Espaço"
 
 #: ../src/ui/ui_prefs.c:527
 msgid "Choose download directory"
@@ -2196,8 +2061,11 @@ msgstr "Janela existente"
 msgid "New window"
 msgstr "Nova Janela"
 
-#: ../src/ui/ui_prefs.c:627 ../src/ui/ui_tabs.c:196 ../src/ui/ui_tabs.c:199
-#: ../src/ui/ui_tabs.c:219 ../src/ui/ui_tabs.c:353
+#: ../src/ui/ui_prefs.c:627
+#: ../src/ui/ui_tabs.c:196
+#: ../src/ui/ui_tabs.c:199
+#: ../src/ui/ui_tabs.c:219
+#: ../src/ui/ui_tabs.c:353
 msgid "New tab"
 msgstr "Nova aba"
 
@@ -2265,16 +2133,8 @@ msgstr[1] "%d Resultados da Pesquisa por \"%s\""
 
 #: ../src/ui/ui_search.c:123
 #, c-format
-msgid ""
-"The item list now contains all items matching the specified search pattern. "
-"If you want to save this search result permanently you can click the "
-"\"Search Folder\" button in the search dialog and Liferea will add a search "
-"folder to your feed list."
-msgstr ""
-"A lista de itens agora contém todos os itens que combinam com o resultado da "
-"pesquisa. Se você quiser salvar este resultado permanentemente, clique no "
-"botão \"Pasta Virtual\" no diálogo da pesquisa e o Liferea adicionará uma "
-"Pasta Virtual na sua lista de fontes de notícias."
+msgid "The item list now contains all items matching the specified search pattern. If you want to save this search result permanently you can click the \"Search Folder\" button in the search dialog and Liferea will add a search folder to your feed list."
+msgstr "A lista de itens agora contém todos os itens que combinam com o resultado da pesquisa. Se você quiser salvar este resultado permanentemente, clique no botão \"Pasta Virtual\" no diálogo da pesquisa e o Liferea adicionará uma Pasta Virtual na sua lista de fontes de notícias."
 
 #: ../src/ui/ui_search.c:243
 msgid "Create a new search feed."
@@ -2283,19 +2143,13 @@ msgstr "Criar uma nova pesquisa de fontes de notícias."
 #: ../src/ui/ui_subscription.c:441
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minute."
-msgid_plural ""
-"The provider of this feed suggests an update interval of %d minutes."
-msgstr[0] ""
-"O fornecedor desta fonte de notícias sugere um intervalo de atualização de %"
-"d minuto."
-msgstr[1] ""
-"O fornecedor desta fonte de notícias sugere um intervalo de atualização de %"
-"d minutos."
+msgid_plural "The provider of this feed suggests an update interval of %d minutes."
+msgstr[0] "O fornecedor desta fonte de notícias sugere um intervalo de atualização de %d minuto."
+msgstr[1] "O fornecedor desta fonte de notícias sugere um intervalo de atualização de %d minutos."
 
 #: ../src/ui/ui_subscription.c:445
 msgid "This feed specifies no default update interval."
-msgstr ""
-"Esta fonte de notícias não possui um intervalo de atualização definido."
+msgstr "Esta fonte de notícias não possui um intervalo de atualização definido."
 
 #: ../src/ui/ui_tray.c:205
 #, c-format
@@ -2371,13 +2225,8 @@ msgid "Bloglines"
 msgstr "Bloglines"
 
 #: ../src/fl_sources/bloglines_source.c:87
-msgid ""
-"Integrate the feed list of your Bloglines account. Liferea will present your "
-"Bloglines subscription as a read-only subtree in the feed list."
-msgstr ""
-"Integrar a lista de fonte de notícias de sua conta no Bloglines. Liferea "
-"apresentará sua assinatura do Bloglines como uma árvore secundária (somente "
-"com permissão de leitura) na lista de fontes de notícias."
+msgid "Integrate the feed list of your Bloglines account. Liferea will present your Bloglines subscription as a read-only subtree in the feed list."
+msgstr "Integrar a lista de fonte de notícias de sua conta no Bloglines. Liferea apresentará sua assinatura do Bloglines como uma árvore secundária (somente com permissão de leitura) na lista de fontes de notícias."
 
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
 #: ../src/fl_sources/default_source.c:106
@@ -2405,24 +2254,16 @@ msgid "Google Reader"
 msgstr "Google Reader"
 
 #: ../src/fl_sources/google_source.c:350
-msgid ""
-"Integrate the feed list of your Google Reader account. Liferea will present "
-"your Google Reader subscription as a read-only subtree in the feed list."
-msgstr ""
-"Integrar a lista de fonte de notícias de sua conta no Google Reader. Liferea "
-"apresentará sua assinatura do Google Reader como uma árvore secundária "
-"(somente com permissão de leitura) na lista de fontes de notícias."
+msgid "Integrate the feed list of your Google Reader account. Liferea will present your Google Reader subscription as a read-only subtree in the feed list."
+msgstr "Integrar a lista de fonte de notícias de sua conta no Google Reader. Liferea apresentará sua assinatura do Google Reader como uma árvore secundária (somente com permissão de leitura) na lista de fontes de notícias."
 
 #: ../src/fl_sources/opml_source.glade.h:1
 msgid "Add OPML/Planet"
 msgstr "Adicionar OPML/Planeta"
 
 #: ../src/fl_sources/opml_source.glade.h:2
-msgid ""
-"Please specify a local file or an URL pointing to a valid OPML feed list."
-msgstr ""
-"Por favor especifique um arquivo local ou URL apontando para uma lista "
-"válida de feed OPML."
+msgid "Please specify a local file or an URL pointing to a valid OPML feed list."
+msgstr "Por favor especifique um arquivo local ou URL apontando para uma lista válida de feed OPML."
 
 #: ../src/fl_sources/opml_source.glade.h:3
 msgid "_Location"
@@ -2437,13 +2278,8 @@ msgid "Planet, BlogRoll, OPML"
 msgstr "Planeta, BlogRoll (lista de blogs), OPML"
 
 #: ../src/fl_sources/opml_source.c:333
-msgid ""
-"Integrate blogrolls or Planets in your feed list. Liferea will automatically "
-"add and remove feeds according to the changes of the source OPML document"
-msgstr ""
-"Integrar blogrolls (lista de blogs) ou Planetas em sua lista de fontes de "
-"notícias. Liferea adicionará ou removerá fontes de notícias automaticamente "
-"de acordo com as atualizações na fonte do documento OPML"
+msgid "Integrate blogrolls or Planets in your feed list. Liferea will automatically add and remove feeds according to the changes of the source OPML document"
+msgstr "Integrar blogrolls (lista de blogs) ou Planetas em sua lista de fontes de notícias. Liferea adicionará ou removerá fontes de notícias automaticamente de acordo com as atualizações na fonte do documento OPML"
 
 #: ../src/fl_sources/opml_source.c:407
 msgid "Choose OPML File"
@@ -2519,7 +2355,6 @@ msgstr "Mostrar detalhes"
 #, fuzzy
 #~ msgid "gtk-properties"
 #~ msgstr "_Propriedades..."
-
 #~ msgid ""
 #~ "GNOME default\n"
 #~ "Text below icons\n"
@@ -2532,7 +2367,6 @@ msgstr "Mostrar detalhes"
 #~ "Texto ao lado dos ícones\n"
 #~ "Somente ícones\n"
 #~ "Somente texto"
-
 #~ msgid ""
 #~ "Space\n"
 #~ "<Ctrl> Space\n"
@@ -2541,7 +2375,6 @@ msgstr "Mostrar detalhes"
 #~ "Espaço\n"
 #~ "<Ctrl> Espaço\n"
 #~ "<Alt> Espaço"
-
 #~ msgid ""
 #~ "Update out-dated feeds\n"
 #~ "Force update of all feeds\n"
@@ -2550,3 +2383,4 @@ msgstr "Mostrar detalhes"
 #~ "Atualizar fontes de notícias desatualizadas\n"
 #~ "Forçar atualização de todas as fontes de notícias\n"
 #~ "Não atualize"
+
