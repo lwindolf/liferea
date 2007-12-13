@@ -110,6 +110,7 @@ on_searchentry_activate (GtkEntry *entry, gpointer user_data)
 	/* switch to item list view and inform user in HTML view */
 	ui_feedlist_select (NULL);
 	itemlist_set_view_mode (0);
+	itemlist_unload (FALSE);
 	itemlist_load (searchResult);
 
 	buffer = g_string_new (NULL);
