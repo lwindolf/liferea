@@ -525,7 +525,7 @@ xml_parse_feed (feedParserCtxtPtr fpc)
 		g_string_append (fpc->feed->parseErrors, "\n");
 	}
 
-	fpc->feed->valid = (errors->errorCount > 0);
+	fpc->feed->valid = !(errors->errorCount > 0);
 	g_free (errors);
 	
 	return fpc->doc;

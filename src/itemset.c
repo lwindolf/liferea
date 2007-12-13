@@ -132,6 +132,7 @@ itemset_generic_merge_check (GList *items, itemPtr newItem, gboolean allowUpdate
 				metadata_list_free (oldItem->metadata);
 				oldItem->metadata = newItem->metadata;
 				newItem->metadata = NULL;
+				db_item_update (oldItem);
 				debug0 (DEBUG_CACHE, "-> item already existing and was updated");
 			} else {
 				debug0 (DEBUG_CACHE, "-> item updates not merged because of parser errors");
