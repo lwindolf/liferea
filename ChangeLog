@@ -11,6 +11,8 @@
 	  between old items (reported by Mike Auty)
 	* Fixes SF #1850139: assertion when searching for
 	  feed item (reported by Mlind)
+	* Fixes broken indication of updated items.
+	  (patch by Chris Siebenmann)
 
 	Translations
 

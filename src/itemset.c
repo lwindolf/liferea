@@ -132,6 +132,7 @@ itemset_generic_merge_check (GList *items, itemPtr newItem, gboolean allowUpdate
 				metadata_list_free (oldItem->metadata);
 				oldItem->metadata = newItem->metadata;
 				newItem->metadata = NULL;
+				db_item_update (oldItem);
 				debug0 (DEBUG_CACHE, "-> item already existing and was updated");
 			} else {
 				debug0 (DEBUG_CACHE, "-> item updates not merged because of parser errors");
@@ -298,7 +299,8 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates)
 	   Items are given in top to bottom display order. 
 	   Adding them in this order would mean to reverse 
 	   their order in the merged list, so merging needs
-	   to be done bottom to top. */
+	   to be done bottom to top. During this step the
+	   item list (items) may exceed the cache limit. */
 	iter = g_list_last (list);
 	while (iter) {
 		if (itemset_merge_item (itemSet, items, (itemPtr)iter->data, allowUpdates)) {
@@ -318,8 +320,7 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates)
 		toBeDropped = 0;
 		
 	debug3 (DEBUG_UPDATE, "%u new items, cache limit is %u -> dropping %u items", newCount, max, toBeDropped);
-	items = g_list_sort (items, itemset_sort_by_date);
-	iter = g_list_last (items);
+	iter = items = g_list_sort (items, itemset_sort_by_date);
 	while (iter) {
 		itemPtr item = (itemPtr) iter->data;
 		if (toBeDropped > 0 && !item->flagStatus) {
@@ -330,7 +331,7 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates)
 		} else {
 			item_unload (item);
 		}
-		iter = g_list_previous (iter);
+		iter = g_list_next (iter);
 	}
 	
 	if (droppedItems) {
