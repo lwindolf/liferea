@@ -1445,12 +1445,12 @@ msgstr "Erro: Não foi possível abrir o ficheiro \"%s\""
 #: ../src/update.c:292
 #, c-format
 msgid "Error: There is no file \"%s\""
-msgstr "Erro: O ficheiro \\"%s\\" não existe"
+msgstr "Erro: O ficheiro \"%s\" não existe"
 
 #: ../src/update.c:490
 #, c-format
 msgid "Could not download \"%s\". Will retry in %d seconds."
-msgstr "Não foi possível transferir \\"%s\\". Uma nova tentativa será efectuada"
+msgstr "Não foi possível transferir \"%s\". Uma nova tentativa será efectuada"
 "dentro de %d segundos."
 
 #: ../src/vfolder.c:52
