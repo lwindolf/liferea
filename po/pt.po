@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-08-09 20:21+0200\n"
-"PO-Revision-Date: 2007-12-16 13:20-0100\n"
+"PO-Revision-Date: 2007-12-17 22:34-0100\n"
 "Last-Translator: António Lima <amrlima@gmail.com>\n"
 "Language-Team: Portuguese <liferea-devel@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -531,27 +531,27 @@ msgstr "Seleccionar Ficheiro..."
 
 #: ../liferea.glade.h:145
 msgid "Show Menu _And Toolbar"
-msgstr "Mostra Menu e B_arra de Ferramentas"
+msgstr "Apresenta Menu e B_arra de Ferramentas"
 
 #: ../liferea.glade.h:146
 msgid "Show _Menu Only"
-msgstr "Mostra Somente o _Menu"
+msgstr "Apresenta Somente o _Menu"
 
 #: ../liferea.glade.h:147
 msgid "Show _Toolbar Only"
-msgstr "Mostra Apena_s a Barra de Ferramentas"
+msgstr "Apresenta Apena_s a Barra de Ferramentas"
 
 #: ../liferea.glade.h:148
 msgid "Show _number of new items in the tray icon."
-msgstr "Mostrar _número de novos itens no ícone da bandeja."
+msgstr "Apresentar _número de novos itens no ícone da bandeja."
 
 #: ../liferea.glade.h:149
 msgid "Show a _popup window with new headlines."
-msgstr "Mostra uma janela de _popup com novos títulos."
+msgstr "Apresenta uma janela de _popup com novos títulos."
 
 #: ../liferea.glade.h:150
 msgid "Show a status _icon in the notification area (system tray)."
-msgstr "Mostra um _ícone na área de notificação (bandeja do sistema)."
+msgstr "Apresenta um _ícone na área de notificação (bandeja do sistema)."
 
 #: ../liferea.glade.h:151 ../xslt/item.xml.in.h:11
 msgid "Source"
@@ -748,7 +748,7 @@ msgstr "Pesqui_sar por:"
 
 #: ../liferea.glade.h:197
 msgid "_Show the items of all child feeds when a folder is selected."
-msgstr "Mostrar os itens de todas as fontes quando uma pasta é _seleccionada."
+msgstr "Apresentar os itens de todas as fontes quando uma pasta é _seleccionada."
 
 #: ../liferea.glade.h:198
 msgid "_Skim through articles with:"
@@ -1261,7 +1261,7 @@ msgstr "                   Inicia o Liferea com a janela principal no ESTADO."
 
 #: ../src/main.c:73
 msgid "                   STATE may be `shown', `iconified', or `hidden'"
-msgstr "                   ESTADO pode ser \"mostrado\", \"ícone\", ou \"oculto\""
+msgstr "                   ESTADO pode ser \"apresentado\", \"ícone\", ou \"oculto\""
 
 #: ../src/main.c:75
 msgid "  --debug-<topic>  Print debugging messages for the given topic"
@@ -1835,7 +1835,7 @@ msgstr "_Sobre"
 
 #: ../src/ui/ui_mainwindow.c:1060
 msgid "Shows an about dialog."
-msgstr "Mostra o diálogo 'sobre'."
+msgstr "Apresenta o diálogo 'sobre'."
 
 #: ../src/ui/ui_mainwindow.c:1064
 msgid "_Normal View"
@@ -2492,7 +2492,7 @@ msgstr "Actualização de Fonte"
 
 #: ../src/notification/notif_libnotify.c:236
 msgid "Show details"
-msgstr "Mostrar detalhes"
+msgstr "Apresentar detalhes"
 
 #, fuzzy
 #~ msgid "gtk-properties"
