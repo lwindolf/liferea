@@ -168,7 +168,7 @@ db_get_schema_version (void)
 	return schemaVersion;
 }
 
-#define SCHEMA_TARGET_VERSION 5
+#define SCHEMA_TARGET_VERSION 6
 	
 /* opening or creation of database */
 void
@@ -306,8 +306,30 @@ open:
 			if (db_get_schema_version () == 4) {
 				/* 1.3.8 -> 1.4-RC1 adding node relation */
 				debug0 (DEBUG_DB, "migrating from schema version 4 to 5");
-				/* table create below... */
+				/* table created below... */
 				db_set_schema_version (5);
+			}
+			
+			if (db_get_schema_version () == 5) {
+				/* 1.4.9 -> 1.4.10 adding parent_item_id to itemset relation */
+				debug0 (DEBUG_DB, "migrating from schema version 5 to 6 (this drops all comments)");
+				db_exec ("BEGIN; "
+				         "DELETE FROM itemsets WHERE comment = 1; "
+				         "CREATE TEMPORARY TABLE itemsets_backup(item_id,node_id,read,comment); "
+					 "INSERT INTO itemsets_backup SELECT item_id,node_id,read,comment FROM itemsets; "
+					 "DROP TABLE itemsets; "
+					 "CREATE TABLE itemsets ("
+			        	 "   item_id		INTEGER,"
+					 "   parent_item_id     INTEGER,"
+			        	 "   node_id		TEXT,"
+			        	 "   read		INTEGER,"
+					 "   comment            INTEGER,"
+			        	 "   PRIMARY KEY (item_id, node_id)"
+			        	 "); "
+					 "INSERT INTO itemsets SELECT item_id,0,node_id,read,comment FROM itemsets_backup; "
+					 "DROP TABLE itemsets_backup; "
+					 "REPLACE INTO info (name, value) VALUES ('schemaVersion',6); "
+					 "END;");
 			}
 
 			if (SCHEMA_TARGET_VERSION != db_get_schema_version ())
@@ -336,14 +358,16 @@ open:
 	        	 "   real_source_title	TEXT,"
 	        	 "   description	TEXT,"
 	        	 "   date		INTEGER,"
-	        	 "   comment_feed_id	INTEGER,"
+	        	 "   comment_feed_id	TEXT,"
 			 "   comment            INTEGER"
 	        	 ");");
 
 		db_exec ("CREATE INDEX items_idx ON items (source_id);");
+		db_exec ("CREATE INDEX items_idx2 ON items (comment_feed_id);");
 
 		db_exec ("CREATE TABLE itemsets ("
 	        	 "   item_id		INTEGER,"
+			 "   parent_item_id     INTEGER,"
 	        	 "   node_id		TEXT,"
 	        	 "   read		INTEGER,"
 			 "   comment            INTEGER,"
@@ -352,7 +376,7 @@ open:
 
 		db_exec ("CREATE INDEX itemset_idx  ON itemsets (node_id);");
 		db_exec ("CREATE INDEX itemset_idx2 ON itemsets (item_id);");
-
+		
 		db_exec ("CREATE TABLE metadata ("
 	        	 "   item_id		INTEGER,"
 	        	 "   nr              	INTEGER,"
@@ -368,6 +392,7 @@ open:
 		db_exec ("CREATE TRIGGER item_removal DELETE ON itemsets "
 	        	 "BEGIN "
 	        	 "   DELETE FROM items WHERE ROWID = old.item_id; "
+			 "   DELETE FROM itemsets WHERE parent_item_id = old.item_id; "
 			 "   DELETE FROM metadata WHERE item_id = old.item_id; "
 	        	 "END;");
 
@@ -452,9 +477,8 @@ open:
 		debug_end_measurement (DEBUG_DB, "table setup");
 
 		/* Cleanup of DB */
-
-		/* db_begin_transaction ();
-
+	
+		/*
 		debug_start_measurement (DEBUG_DB);
 		db_exec ("DELETE FROM items WHERE ROWID NOT IN "
 			 "(SELECT item_id FROM itemsets);");
@@ -469,8 +493,7 @@ open:
 		db_exec ("DELETE FROM itemsets WHERE comment = 0 AND node_id NOT IN "
 	        	 "(SELECT node_id FROM subscription);");
 		debug_end_measurement (DEBUG_DB, "cleanup lost node entries");
-
-		db_end_transaction (); */
+		*/
 	}
 	
 	/* prepare statements */
@@ -479,7 +502,13 @@ open:
 	                  "SELECT item_id FROM itemsets WHERE node_id = ?");
 		       
 	db_new_statement ("itemsetInsertStmt",
-	                  "INSERT INTO itemsets (item_id,node_id,read,comment) VALUES (?,?,?,?)");
+	                  "INSERT INTO itemsets ("
+			  "item_id,"
+			  "parent_item_id,"
+			  "node_id,"
+			  "read,"
+			  "comment"
+			  ") VALUES (?,?,?,?,?)");
 	
 	db_new_statement ("itemsetReadCountStmt",
 	                  "SELECT COUNT(*) FROM itemsets "
@@ -525,99 +554,100 @@ open:
 		          "items.comment_feed_id,"
 		          "items.comment,"
 		          "itemsets.item_id,"
+			  "itemsets.parent_item_id, "
 		          "itemsets.node_id"
 	                  " FROM items INNER JOIN itemsets "
 	                  "ON items.ROWID = itemsets.item_id "
 	                  "WHERE items.ROWID = ?");      
 	
 	db_new_statement ("itemUpdateStmt",
-	               "REPLACE INTO items ("
-	               "title,"
-	               "read,"
-	               "new,"
-	               "updated,"
-	               "popup,"
-	               "marked,"
-	               "source,"
-	               "source_id,"
-	               "valid_guid,"
-	               "real_source_url,"
-	               "real_source_title,"
-	               "description,"
-	               "date,"
-		       "comment_feed_id,"
-		       "comment,"
-	               "ROWID"
-	               ") values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+	                  "REPLACE INTO items ("
+	                  "title,"
+	                  "read,"
+	                  "new,"
+	                  "updated,"
+	                  "popup,"
+	                  "marked,"
+	                  "source,"
+	                  "source_id,"
+	                  "valid_guid,"
+	                  "real_source_url,"
+	                  "real_source_title,"
+	                  "description,"
+	                  "date,"
+		          "comment_feed_id,"
+		          "comment,"
+	                  "ROWID"
+	                  ") values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			
 	db_new_statement ("itemMarkReadStmt",
-	                 "UPDATE items SET read = 1 WHERE ROWID = ?");
+	                  "UPDATE items SET read = 1 WHERE ROWID = ?");
 					
 	db_new_statement ("duplicatesFindStmt",
-	                 "SELECT ROWID FROM items WHERE source_id = ?");
+	                  "SELECT ROWID FROM items WHERE source_id = ?");
 			 
 	db_new_statement ("duplicateNodesFindStmt",
-	                 "SELECT itemsets.node_id FROM itemsets WHERE itemsets.item_id IN "
-			 "(SELECT items.ROWID FROM items WHERE items.source_id = ?)");
+	                  "SELECT itemsets.node_id FROM itemsets WHERE itemsets.item_id IN "
+			  "(SELECT items.ROWID FROM items WHERE items.source_id = ?)");
 		       
 	db_new_statement ("duplicatesMarkReadStmt",
- 	                 "UPDATE items SET read = 1 WHERE source_id = ?");
+ 	                  "UPDATE items SET read = 1 WHERE source_id = ?");
 						
 	db_new_statement ("metadataLoadStmt",
-	                 "SELECT key,value,nr FROM metadata WHERE item_id = ? ORDER BY nr");
+	                  "SELECT key,value,nr FROM metadata WHERE item_id = ? ORDER BY nr");
 			
 	db_new_statement ("metadataUpdateStmt",
-	                 "REPLACE INTO metadata (item_id,nr,key,value) VALUES (?,?,?,?)");
+	                  "REPLACE INTO metadata (item_id,nr,key,value) VALUES (?,?,?,?)");
 			
 	db_new_statement ("updateStateLoadStmt",
-	                 "SELECT "
-	                 "last_modified,"
-	                 "etag,"
-	                 "last_update,"
-	                 "last_favicon_update "
-			 "FROM update_state "
-			 "WHERE node_id = ?");
+	                  "SELECT "
+	                  "last_modified,"
+	                  "etag,"
+	                  "last_update,"
+	                  "last_favicon_update "
+	                  "FROM update_state "
+			  "WHERE node_id = ?");
 			 
 	db_new_statement ("updateStateSaveStmt",
-	                 "REPLACE INTO update_state "
-			 "(node_id,last_modified,etag,last_update,last_favicon_update) "
-			 "VALUES (?,?,?,?,?)");
+	                  "REPLACE INTO update_state "
+			  "(node_id,last_modified,etag,last_update,last_favicon_update) "
+			  "VALUES (?,?,?,?,?)");
 			 
 	db_new_statement ("subscriptionUpdateStmt",
-	                 "REPLACE INTO subscription ("
-			 "node_id,"
-			 "source,"
-			 "orig_source,"
-			 "filter_cmd,"
-			 "update_interval,"
-			 "default_interval,"
-			 "discontinued,"
-			 "available"
-			 ") VALUES (?,?,?,?,?,?,?,?)");
+	                  "REPLACE INTO subscription ("
+			  "node_id,"
+			  "source,"
+			  "orig_source,"
+			  "filter_cmd,"
+			  "update_interval,"
+			  "default_interval,"
+			  "discontinued,"
+			  "available"
+			  ") VALUES (?,?,?,?,?,?,?,?)");
 			 
 	db_new_statement ("subscriptionRemoveStmt",
-	                 "DELETE FROM subscription WHERE node_id = ?");
+	                  "DELETE FROM subscription WHERE node_id = ?");
 			 
 	db_new_statement ("subscriptionListLoadStmt",
-	                 "SELECT node_id FROM subscription");
+	                  "SELECT node_id FROM subscription");
 			 
 	db_new_statement ("subscriptionLoadStmt",
-	                 "SELECT "
-			 "node_id,"
-			 "source,"
-			 "orig_source,"
-			 "filter_cmd,"
-			 "update_interval,"
-			 "default_interval,"
-			 "discontinued,"
-			 "available "
-			 "FROM subscription");
+	                  "SELECT "
+			  "node_id,"
+			  "source,"
+			  "orig_source,"
+			  "filter_cmd,"
+			  "update_interval,"
+			  "default_interval,"
+			  "discontinued,"
+			  "available "
+			  "FROM subscription");
 	
 	db_new_statement ("subscriptionMetadataLoadStmt",
-	                 "SELECT key,value,nr FROM subscription_metadata WHERE node_id = ? ORDER BY nr");
+	                  "SELECT key,value,nr FROM subscription_metadata WHERE node_id = ? ORDER BY nr");
 			
 	db_new_statement ("subscriptionMetadataUpdateStmt",
-	                 "REPLACE INTO subscription_metadata (node_id,nr,key,value) VALUES (?,?,?,?)");
+	                  "REPLACE INTO subscription_metadata (node_id,nr,key,value) VALUES (?,?,?,?)");
 	
 	db_new_statement ("nodeUpdateStmt",
 	                  "REPLACE INTO node (node_id,parent_id,title,type,expanded,view_mode,sort_column,sort_reversed) VALUES (?,?,?,?,?,?,?,?)");
@@ -724,7 +754,8 @@ db_load_item_from_columns (sqlite3_stmt *stmt)
 	item->commentFeedId	= g_strdup(sqlite3_column_text(stmt, 13));
 	item->isComment		= sqlite3_column_int(stmt, 14);
 	item->id		= sqlite3_column_int(stmt, 15);
-	item->nodeId		= g_strdup(sqlite3_column_text(stmt, 16));
+	item->parentItemId	= sqlite3_column_int(stmt, 16);
+	item->nodeId		= g_strdup(sqlite3_column_text(stmt, 17));
 
 	item_set_title			(item, sqlite3_column_text(stmt, 0));
 	item_set_source			(item, sqlite3_column_text(stmt, 6));
@@ -852,9 +883,10 @@ db_item_update (itemPtr item)
 		/* insert item <-> node relation */
 		stmt = db_get_statement ("itemsetInsertStmt");
 		sqlite3_bind_int  (stmt, 1, item->id);
-		sqlite3_bind_text (stmt, 2, item->nodeId, -1, SQLITE_TRANSIENT);
-		sqlite3_bind_int  (stmt, 3, item->readStatus);
-		sqlite3_bind_int  (stmt, 4, item->isComment?1:0);
+		sqlite3_bind_int  (stmt, 2, item->parentItemId);
+		sqlite3_bind_text (stmt, 3, item->nodeId, -1, SQLITE_TRANSIENT);
+		sqlite3_bind_int  (stmt, 4, item->readStatus);
+		sqlite3_bind_int  (stmt, 5, item->isComment?1:0);
 		res = sqlite3_step (stmt);
 		if (SQLITE_DONE != res) 
 			g_warning ("Insert in \"itemsets\" table failed (error code=%d, %s)", res, sqlite3_errmsg (db));

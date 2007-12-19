@@ -1,4 +1,4 @@
-2007-12-??  Lars Lindner  <lars.lindner@gmail.com>
+2007-12-19  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.4.10 (Stable)
 
@@ -13,6 +13,11 @@
 	  feed item (reported by Mlind)
 	* Fixes broken indication of updated items.
 	  (patch by Chris Siebenmann)
+	* Fixes removal of comments along with parent items.
+	  This was broken with earlier releases and causes
+	  uncontrolled DB file growth.
+	* On migration from 1.4.9 or older versions it drops
+	  all comment items to clean up the database.
 
 	Translations
 

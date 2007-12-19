@@ -143,7 +143,9 @@ comments_process_update_result (const struct updateResult * const result, gpoint
 			/* before merging mark all downloaded items as comments */
 			iter = ctxt->items;
 			while (iter) {
-				((itemPtr) iter->data)->isComment = TRUE;
+				itemPtr comment = (itemPtr) iter->data;
+				comment->isComment = TRUE;
+				comment->parentItemId = commentFeed->itemId;				
 				iter = g_list_next (iter);
 			}
 			
@@ -151,6 +153,9 @@ comments_process_update_result (const struct updateResult * const result, gpoint
 			comments = db_itemset_load (commentFeed->id);
 			itemset_merge_items (comments, ctxt->items, ctxt->feed->valid);
 			itemset_free (comments);
+			
+			/* No comment feed truncating as comment items are automatically
+			   dropped when the parent items are removed from cache. */
 		}
 				
 		node_free (ctxt->subscription->node);
