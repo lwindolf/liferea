@@ -312,7 +312,9 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates)
 	g_list_free (list);
 	
 	/* 4. Apply cache limit for effective item set size
-	      and unload older items as necessary. */
+	      and unload older items as necessary. In this step
+	      it is important never to drop flagged items and 
+	      to drop the oldest items only. */
 	
 	if (g_list_length (items) > max)
 		toBeDropped = g_list_length (items) - max;
@@ -320,7 +322,8 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates)
 		toBeDropped = 0;
 		
 	debug3 (DEBUG_UPDATE, "%u new items, cache limit is %u -> dropping %u items", newCount, max, toBeDropped);
-	iter = items = g_list_sort (items, itemset_sort_by_date);
+	items = g_list_sort (items, itemset_sort_by_date);
+	iter = g_list_last (items);
 	while (iter) {
 		itemPtr item = (itemPtr) iter->data;
 		if (toBeDropped > 0 && !item->flagStatus) {
@@ -331,7 +334,7 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates)
 		} else {
 			item_unload (item);
 		}
-		iter = g_list_next (iter);
+		iter = g_list_previous (iter);
 	}
 	
 	if (droppedItems) {
