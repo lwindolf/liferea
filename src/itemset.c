@@ -299,7 +299,8 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates)
 	   Items are given in top to bottom display order. 
 	   Adding them in this order would mean to reverse 
 	   their order in the merged list, so merging needs
-	   to be done bottom to top. */
+	   to be done bottom to top. During this step the
+	   item list (items) may exceed the cache limit. */
 	iter = g_list_last (list);
 	while (iter) {
 		if (itemset_merge_item (itemSet, items, (itemPtr)iter->data, allowUpdates)) {
@@ -311,7 +312,9 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates)
 	g_list_free (list);
 	
 	/* 4. Apply cache limit for effective item set size
-	      and unload older items as necessary. */
+	      and unload older items as necessary. In this step
+	      it is important never to drop flagged items and 
+	      to drop the oldest items only. */
 	
 	if (g_list_length (items) > max)
 		toBeDropped = g_list_length (items) - max;
