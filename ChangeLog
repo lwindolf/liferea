@@ -2,6 +2,11 @@
 
 	Version 1.4.11 (Stable)
 
+	* Fixes SF #1795739: Unread count on systray icon
+	  is wrong (reported by smglchatguru)
+
+	Translations
+
 	* Update of European Portugese translation (Antonio Lima)
 
 
