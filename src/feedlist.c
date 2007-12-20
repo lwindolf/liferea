@@ -150,6 +150,14 @@ static void
 feedlist_update_new_item_count (guint addValue)
 {
 	newCount += addValue;
+	
+	/* On subsequent feed updates with cache drops
+	   more new items can be reported than effectively
+	   were merged. The simplest way to catch this case
+	   is by checking for new count > unread count here. */
+	if(newCount > rootNode->unreadCount)
+		newCount = rootNode->unreadCount;
+		
 	ui_tray_update ();
 	ui_mainwindow_update_feedsinfo ();
 }
