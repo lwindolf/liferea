@@ -296,7 +296,7 @@ void
 liferea_htmlview_on_url (LifereaHtmlView *htmlview, const gchar *url)
 {
 	if (!liferea_htmlview_is_special_url (url))
-		g_signal_emit_by_name (htmlview, "statusbar_changed", url);
+		g_signal_emit_by_name (htmlview, "statusbar-changed", url);
 }
 
 void

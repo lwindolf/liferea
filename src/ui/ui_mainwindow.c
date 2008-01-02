@@ -393,6 +393,12 @@ ui_mainwindow_htmlview_statusbar_changed (gpointer obj, gchar *url)
 	ui_mainwindow_set_status_bar (url);
 }
 
+static void
+ui_mainwindow_htmlview_link_statusbar_changed (gpointer obj, gchar *url)
+{
+	gtk_label_set_text (GTK_LABEL (GTK_STATUSBAR (liferea_shell_lookup ("statusbar_links"))->label), url);
+}
+
 void
 ui_mainwindow_set_layout (guint newMode)
 {
@@ -406,7 +412,7 @@ ui_mainwindow_set_layout (guint newMode)
 		GtkWidget *renderWidget;
 		mainwindow_priv->htmlview = liferea_htmlview_new (FALSE);		
 		g_signal_connect (mainwindow_priv->htmlview, "statusbar-changed", 
-		                  G_CALLBACK (ui_mainwindow_htmlview_statusbar_changed), 
+		                  G_CALLBACK (ui_mainwindow_htmlview_link_statusbar_changed), 
 		                  mainwindow_priv);
 		renderWidget = liferea_htmlview_get_widget (mainwindow_priv->htmlview);
 		gtk_container_add (GTK_CONTAINER (liferea_shell_lookup ("normalViewHtml")), renderWidget);

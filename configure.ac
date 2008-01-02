@@ -522,6 +522,7 @@ AM_CONDITIONAL(USE_GNUTLS, test "x$enable_gnutls" = "xyes")
 AC_CONFIG_FILES([
 Makefile
 src/Makefile
+src/glibcurl/Makefile
 src/gtkhtml2/Makefile
 src/mozilla/Makefile
 src/webkit/Makefile
