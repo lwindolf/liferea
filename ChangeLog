@@ -1,4 +1,4 @@
-2007-12-??  Lars Lindner  <lars.lindner@gmail.com>
+2008-01-??  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.5.0 (Unstable)
 
@@ -18,6 +18,10 @@
 	  minimized in the tray icon. (patch by Gustavo Chain)
 	* Split of status bar to separate link display
 	  and update messages. (patch by Lars Strojny)
+	* Raises WebKit dependency to at least r28711.
+	  Updates the code to the renamed interfaces.
+	  Adds link context menu support for WebKit.
+	  (patch by Lars Strojny)
 
 
 2007-07-22  Lars Lindner  <lars.lindner@gmail.com>
