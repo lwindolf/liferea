@@ -4,6 +4,8 @@
 
 	* Fixes SF #1795739: Unread count on systray icon
 	  is wrong (reported by smglchatguru)
+	* Fixes crash when selecting news bins.
+	  (reported by Luis Rodrigo Gallardo Cruz)
 
 	Translations
 

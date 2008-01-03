@@ -255,7 +255,15 @@ node_update_favicon (nodePtr node, GTimeVal *now)
 itemSetPtr
 node_get_itemset (nodePtr node)
 {
-	return NODE_TYPE (node)->load (node);
+	itemSetPtr itemSet;
+	
+	debug_enter ("node_get_itemset");
+	
+	itemSet = NODE_TYPE (node)->load (node);
+	
+	debug_exit ("node_get_itemset");
+	
+	return itemSet;
 }
 
 void
