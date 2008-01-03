@@ -33,10 +33,10 @@
 
 	<!-- the following search folders should also be in sync for all feed lists -->
 	<!-- Do only translate the @text attributes in all of the following <outline> tags! -->
-	<outline text="Unread" title="Unread" description="Unread" type="vfolder" htmlUrl="" xmlUrl="vfolder">
+	<outline text="Sin leer" title="Unread" description="Unread" type="vfolder" htmlUrl="" xmlUrl="vfolder">
 		<outline type="rule" text="Read status" rule="unread" value="" additive="true"/>
 	</outline>
-	<outline text="Important" title="Important" description="Important" type="vfolder" htmlUrl="" xmlUrl="vfolder">
+	<outline text="Importantes" title="Important" description="Important" type="vfolder" htmlUrl="" xmlUrl="vfolder">
 		<outline type="rule" text="Flag status" rule="flagged" value="" additive="true"/>
 	</outline>
 	<!-- end of search folder block -->
