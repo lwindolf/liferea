@@ -396,13 +396,13 @@ feed_add_xml_attributes (nodePtr node, xmlNodePtr feedNode)
 
 	if (feed_get_image_url (feed))
 		xmlNewTextChild (feedNode, NULL, "feedImage", feed_get_image_url (feed));
-		
-	tmp = (gchar *)metadata_list_get (node->subscription->metadata, "description");
-	if (tmp)
-		xmlNewTextChild (feedNode, NULL, "feedDescription", tmp);
 
 	// FIXME: move subscription stuff to subscription.c
 	if (node->subscription) {
+		tmp = (gchar *)metadata_list_get (node->subscription->metadata, "description");
+		if (tmp)
+			xmlNewTextChild (feedNode, NULL, "feedDescription", tmp);
+			
 		xmlNewTextChild (feedNode, NULL, "feedSource", subscription_get_source (node->subscription));
 		xmlNewTextChild (feedNode, NULL, "feedOrigSource", subscription_get_orig_source (node->subscription));
 
@@ -577,7 +577,7 @@ feed_process_update_result (nodePtr node, const struct updateResult * const resu
 			node->available = TRUE;
 			
 			/* merge the resulting items into the node's item set */
-			itemSet = node_get_itemset (node);	
+			itemSet = node_get_itemset (node);
 			newCount = itemset_merge_items (itemSet, ctxt->items, ctxt->feed->valid);
 			itemlist_merge_itemset (itemSet);
 			itemset_free (itemSet);
