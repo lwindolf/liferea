@@ -51,19 +51,30 @@ liferea_webkit_deinit (void)
  */
 static void
 webkit_write_html (GtkWidget   *scrollpane,
-                   const gchar *string,
+					const gchar *string,
 		           guint       length,
 		           const gchar *base,
 		           const gchar *content_type)
 {
 	GtkWidget *htmlwidget = gtk_bin_get_child (GTK_BIN (scrollpane));
-	// WebKit does not like application/xhtml+xml: http://bugs.webkit.org/show_bug.cgi?id=9677
-	content_type = g_ascii_strcasecmp (content_type,"application/xhtml+xml") == 0 ? "application/xhtml" : content_type;
+	/**
+	 * WebKit does not like content type application/xhtml+xml. See
+	 * http://bugs.webkit.org/show_bug.cgi?id=9677 for details.
+	 */
+	content_type = 
+		g_ascii_strcasecmp (content_type, "application/xhtml+xml") == 0
+		? "application/xhtml"
+		: content_type;
 	webkit_web_view_load_string (WEBKIT_WEB_VIEW (htmlwidget), string, content_type, "UTF-8", base);
 }
 
 static void
-webkit_title_changed (WebKitWebView *view, const gchar* title, const gchar* url, gpointer user_data)
+webkit_title_changed (
+	WebKitWebView *view,
+	const gchar* title,
+	const gchar* url,
+	gpointer user_data
+)
 {
 	ui_tabs_set_title (GTK_WIDGET (view), title);
 }
@@ -104,23 +115,26 @@ static gboolean
 webkit_link_clicked (WebKitWebView *view, WebKitWebFrame *frame, WebKitNetworkRequest *request)
 {
 	const gchar *uri;
-	
+
 	g_return_if_fail (WEBKIT_IS_WEB_VIEW (view));
 	g_return_if_fail (WEBKIT_IS_NETWORK_REQUEST (request));
 
-	/** Bug in WebKit. See http://bugs.webkit.org/show_bug.cgi?id=16654 for details */
-	g_signal_stop_emission_by_name (WEBKIT_WEB_VIEW (view), "navigation-requested");
 
-	uri = webkit_network_request_get_uri (WEBKIT_NETWORK_REQUEST (request));
+	if (!conf_get_bool_value (BROWSE_INSIDE_APPLICATION)) {
 
-	LifereaHtmlView *htmlview = g_object_get_data (G_OBJECT (view), "htmlview");
-	liferea_htmlview_launch_URL (
-		htmlview, uri, GPOINTER_TO_INT (g_object_get_data (G_OBJECT (view), "internal_browsing"))
-		? UI_HTMLVIEW_LAUNCH_INTERNAL
-		: UI_HTMLVIEW_LAUNCH_DEFAULT
-	);
+		uri = webkit_network_request_get_uri (WEBKIT_NETWORK_REQUEST (request));
+		liferea_htmlview_launch_in_external_browser (uri);
 
-	return TRUE;
+		/** 
+		 * Bug in WebKit. Stop emitting signal when external browser is called.
+		 * So the boolean return will not be respected. See 
+		 * http://bugs.webkit.org/show_bug.cgi?id=16654 for details 
+		 */
+		g_signal_stop_emission_by_name (WEBKIT_WEB_VIEW (view), "navigation-requested");
+		return TRUE;
+	}
+
+	return FALSE;
 }
 
 /**
