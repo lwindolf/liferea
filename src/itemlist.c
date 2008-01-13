@@ -569,9 +569,9 @@ itemlist_selection_changed (itemPtr item)
 				itemview_select_item (item);
 				itemview_update ();
 			}
+			ui_node_update (item->nodeId);
 		}
-
-		ui_node_update (item->nodeId);
+		
 		ui_mainwindow_update_item_menu (NULL != item);
 
 		feedlist_reset_new_item_count ();

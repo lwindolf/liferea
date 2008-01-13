@@ -66,6 +66,7 @@ static gboolean ui_item_id_to_iter(gulong id, GtkTreeIter *iter) {
 	GtkTreeIter *old_iter;
 
 	old_iter = g_hash_table_lookup(item_id_to_iter, GUINT_TO_POINTER(id));
+g_print("resolved item id %lu to %p\n", id, old_iter);
 	if(!old_iter) {
 		return FALSE;
 	} else {
@@ -596,7 +597,11 @@ void ui_itemlist_select(itemPtr item) {
 		GtkTreeIter		iter;
 		GtkTreePath		*path;
 		
-		g_return_if_fail(ui_item_id_to_iter(item->id, &iter));
+		if(!ui_item_id_to_iter(item->id, &iter))
+			/* This is an evil hack to fix SF #1870052: crash
+			   upon hitting <enter> when no headline selected.
+			   FIXME: This code is rotten! Rewrite it! Now! */
+			itemlist_selection_changed(NULL);
 
 		treeview = itemlist_treeview;
 		selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));

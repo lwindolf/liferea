@@ -6,6 +6,8 @@
 	  is wrong (reported by smglchatguru)
 	* Fixes crash when selecting news bins.
 	  (reported by Luis Rodrigo Gallardo Cruz)
+	* Fixes SF #1870052: Crash upon hitting <enter> with no 
+	  headline selected (reported by Justin Blanchard)
 
 	Translations
 
