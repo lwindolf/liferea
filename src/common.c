@@ -37,7 +37,7 @@
 #  include <config.h>
 #endif
 
-#define _XOPEN_SOURCE /* glibc2 needs this (man strptime) */
+#define _XOPEN_SOURCE	600 /* glibc2 needs this (man strptime) */
 
 #include <libxml/uri.h>
 
