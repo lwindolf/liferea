@@ -251,8 +251,11 @@ time_t parseISO8601Date(gchar *date) {
 	if(TRUE == success) {
 		if((time_t)(-1) != (t = mktime(&tm))) {
 			/* Correct for the local timezone*/
+			struct tm tmp_tm;
+			
 			t = t - offset;
-			t2 = mktime(gmtime(&t));
+			gmtime_r(&t, &tmp_tm);
+			t2 = mktime(&tmp_tm);
 			t = t - (t2 - t);
 			
 			return t;
