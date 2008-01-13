@@ -10,6 +10,8 @@
 	  headline selected (reported by Justin Blanchard)
 	* Fixes SF #1868054: _XOPEN_SOURCE defined incorrectly
 	  (reported by Steve Bellovin)
+	* Fixes SF #1868052: gmtime reentrancy problem
+	  (reported by Steve Bellovin)
 
 	Translations
 
