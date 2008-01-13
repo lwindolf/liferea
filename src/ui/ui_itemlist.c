@@ -66,7 +66,6 @@ static gboolean ui_item_id_to_iter(gulong id, GtkTreeIter *iter) {
 	GtkTreeIter *old_iter;
 
 	old_iter = g_hash_table_lookup(item_id_to_iter, GUINT_TO_POINTER(id));
-g_print("resolved item id %lu to %p\n", id, old_iter);
 	if(!old_iter) {
 		return FALSE;
 	} else {
