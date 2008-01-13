@@ -1,7 +1,7 @@
 /**
- * @file update.h  generic update request processing
+ * @file update.h  generic update request and state processing
  *
- * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -64,32 +64,6 @@ typedef enum {
 	REQUEST_STATE_FINISHED		/**< request processing finished */
 } request_state;
 
-typedef enum {
-	NET_ERR_OK = 0,
-	/* Init errors */
-	NET_ERR_URL_INVALID,
-	/* Connect errors */
-	NET_ERR_PROTO_INVALID,
-	NET_ERR_SOCK_ERR,
-	NET_ERR_HOST_NOT_FOUND,
-	NET_ERR_CONN_REFUSED,
-	NET_ERR_CONN_FAILED,
-	NET_ERR_TIMEOUT,
-	NET_ERR_UNKNOWN,
-	/* Transfer errors */
-	NET_ERR_REDIRECT_COUNT_ERR,
-	NET_ERR_REDIRECT_ERR,
-	NET_ERR_HTTP_410,
-	NET_ERR_HTTP_404,
-	NET_ERR_HTTP_NON_200,
-	NET_ERR_HTTP_PROTO_ERR,
-	NET_ERR_AUTH_FAILED,
-	NET_ERR_AUTH_NO_AUTHINFO,
-	NET_ERR_AUTH_GEN_AUTH_ERR,
-	NET_ERR_AUTH_UNSUPPORTED,
-	NET_ERR_GZIP_ERR
-} netio_error_type;
-
 struct updateJob;
 struct updateResult;
 
@@ -149,6 +123,18 @@ typedef struct updateResult {
 	
 	updateStatePtr	updateState;	/**< New update state of the requested object (etags, last modified...) */
 } *updateResultPtr;
+
+/** structure describing an HTTP update job */
+typedef struct updateJob {
+	updateRequestPtr	request;
+	updateResultPtr		result;
+	gpointer		owner;		/**< owner of this job (used for matching when cancelling) */
+	update_result_cb	callback;	/**< result processing callback */
+	gpointer		user_data;	/**< result processing user data */
+	updateFlags		flags;		/**< request and result processing flags */
+	gint			state;		/**< State of the job (enum request_state) */	
+	gushort			retryCount;	/**< Count how many retries have been done */	
+} *updateJobPtr;
 
 /**
  * Creates a new update state structure 
@@ -225,21 +211,6 @@ updateResultPtr update_result_new (void);
 void update_result_free (updateResultPtr result);
 
 /**
- * Sets the online status according to mode.
- *
- * @param mode	TRUE for online, FALSE for offline
- */ 
-void update_set_online (gboolean mode);
-
-// FIXME: wrong namespace... why not network_is_online() ?
-/**
- * Queries the online status.
- *
- * @return TRUE if online
- */
-gboolean update_is_online (void);
-
-/**
  * Executes the given request. The request might be
  * delayed if other requests are pending. 
  *
@@ -257,19 +228,10 @@ struct updateJob * update_execute_request (gpointer owner,
 			                   gpointer user_data,
 			                   updateFlags flags);
 
-/**
- * Executes the given request. Will block. Free's the
- * passed update request after processing.
- *
- * @param owner		request owner (allows cancelling, can be NULL)
- * @param request	the request to execute
- * @param flags		request/result processing flags
- *
- * @returns update processing result (to be free'd using update_result_free())
- */
-updateResultPtr update_execute_request_sync (gpointer owner,
-                                             updateRequestPtr request,
-			                     updateFlags flags);		     
+// FIXME: remove me
+updateResultPtr update_execute_request_sync (gpointer owner, 
+                                             updateRequestPtr request, 
+			                     guint flags);
 
 /* Update job handling */
 

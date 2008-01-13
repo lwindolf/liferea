@@ -1,7 +1,7 @@
 /**
- * @file update.c  generic update request processing
+ * @file update.c  generic update request and state processing
  *
- * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -48,34 +48,16 @@
 #include "ui/ui_mainwindow.h"
 #include "ui/ui_tray.h"
 
-/* must never be smaller than 2, because first thread works exclusivly on high prio requests */
-#define DEFAULT_UPDATE_THREAD_CONCURRENCY	6
-
 /** global update job list, used for lookups when cancelling */
 static GSList *jobs = NULL;
 
-/** list of update threads */
-static GSList *threads = NULL;
-
-/* communication queues for requesting updates and sending the results */
-static GAsyncQueue	*pendingHighPrioJobs = NULL;
-static GAsyncQueue	*pendingJobs = NULL;
-static GAsyncQueue	*finishedJobs = NULL;
-
 static guint		results_timer = 0;
-
-/* condition mutex for offline mode */
-static GMutex	*cond_mutex = NULL;
-static GCond	*offline_cond = NULL;
-static gboolean	online = TRUE;
 
 #ifdef USE_NM
 /* State for NM support */
 static libnm_glib_ctx *nm_ctx = NULL;
 static guint nm_id = 0;
 #endif
-
-static gboolean update_dequeue_finished_jobs (gpointer user_data);
 
 /* update state interface */
 
@@ -204,17 +186,6 @@ update_options_free (updateOptionsPtr options)
 
 /* update job handling */
 
-typedef struct updateJob {
-	updateRequestPtr	request;
-	updateResultPtr		result;
-	gpointer		owner;		/**< owner of this job (used for matching when cancelling) */
-	update_result_cb	callback;	/**< result processing callback */
-	gpointer		user_data;	/**< result processing user data */
-	updateFlags		flags;		/**< request and result processing flags */
-	gint			state;		/**< State of the job (enum request_state) */	
-	gushort			retriesCount;	/**< Count how many retries have been done */	
-} *updateJobPtr;
-
 static updateJobPtr
 update_job_new (gpointer owner,
                 updateRequestPtr request,
@@ -227,6 +198,7 @@ update_job_new (gpointer owner,
 	job = g_new0 (struct updateJob, 1);
 	job->owner = owner;
 	job->request = request;
+	job->result = update_result_new ();
 	job->callback = callback;
 	job->user_data = user_data;
 	job->flags = flags;	
@@ -456,7 +428,7 @@ update_job_run (updateJobPtr job)
 		
 	} else if (strstr (job->request->source, "://") && 
 	           strncmp (job->request->source, "file://", 7)) {
-		job->result = network_process_request (job->request);
+		network_process_request (job);
 		if (job->result->httpstatus >= 400) {
 			g_free (job->result->data);
 			job->result->data = NULL;
@@ -489,59 +461,30 @@ update_execute_request_sync (gpointer owner,
 	return result;
 }
 
-static void *
-update_dequeue_jobs (void *data)
+/*static void *
+update_dequeue_job (updateJobPtr job)
 {
-	updateJobPtr	job;
-	gboolean	high_priority = (gboolean)GPOINTER_TO_INT (data);
 
-	for (;;) {
-		/* block updating if we are offline */
-		if (!online) {
-			debug0 (DEBUG_UPDATE, "now going offline!");
-			g_mutex_lock (cond_mutex);
-			g_cond_wait (offline_cond, cond_mutex);
-	                g_mutex_unlock (cond_mutex);
-			debug0 (DEBUG_UPDATE, "going online again!");
-		}
-		
-		/* do update processing */
-		if (DEBUG_VERBOSE & debug_level)
-			debug0 (DEBUG_UPDATE, "waiting for request...");
-		if (high_priority) {
-			job = g_async_queue_pop (pendingHighPrioJobs);
-		} else {
-			do {
-				job = g_async_queue_try_pop (pendingHighPrioJobs);
-				if (!job) {
-					GTimeVal wait;
-					g_get_current_time (&wait);
-					g_time_val_add (&wait, 500000);
-					job = g_async_queue_timed_pop (pendingJobs, &wait);
-				}
-			} while (!job);
-		}
-		g_assert (NULL != job);
-		job->state = REQUEST_STATE_PROCESSING;
+	g_assert (NULL != job);
+	job->state = REQUEST_STATE_PROCESSING;
 
-		debug1 (DEBUG_UPDATE, "processing request (%s)", job->request->source);
-		if (job->callback == NULL) {
-			debug1 (DEBUG_UPDATE, "freeing cancelled request (%s)", job->request->source);
-			update_job_free (job);
-		} else {
-			update_job_run (job);
+	debug1 (DEBUG_UPDATE, "processing request (%s)", job->request->source);
+	if (job->callback == NULL) {
+		debug1 (DEBUG_UPDATE, "freeing cancelled request (%s)", job->request->source);
+		update_job_free (job);
+	} else {
+		update_job_run (job);
 			
-			/* return the request so the GUI thread can merge the feeds and display the results... */
-			debug1 (DEBUG_UPDATE, "request (%s) finished", job->request->source);
-			g_async_queue_push (finishedJobs, (gpointer)job);
-			if (!results_timer) 
-				results_timer = g_timeout_add_full (G_PRIORITY_DEFAULT_IDLE, 100,
-				                                    update_dequeue_finished_jobs, 
-								    NULL, NULL);
-
+	
+	debug1 (DEBUG_UPDATE, "request (%s) finished", job->request->source);
+		g_async_queue_push (finishedJobs, (gpointer)job);
+		if (!results_timer) 
+			results_timer = g_timeout_add_full (G_PRIORITY_DEFAULT_IDLE, 100,
+			                                    update_dequeue_finished_jobs, 
+							    NULL, NULL);
 		}
 	}
-}
+}*/
 
 updateJobPtr
 update_execute_request (gpointer owner, 
@@ -555,14 +498,9 @@ update_execute_request (gpointer owner,
 	g_assert (request->options != NULL);
 	
 	job = update_job_new (owner, request, callback, user_data, flags);
-	job->state = REQUEST_STATE_PENDING;
-	
+	job->state = REQUEST_STATE_PENDING;	
 	jobs = g_slist_append (jobs, job);
-	
-	if (flags & FEED_REQ_PRIORITY_HIGH)
-		g_async_queue_push (pendingHighPrioJobs, job);
-	else
-		g_async_queue_push (pendingJobs, job);
+	update_job_run (job);
 		
 	return job;
 }
@@ -580,40 +518,17 @@ update_job_cancel_by_owner (gpointer owner)
 	}
 }
 
-void
-update_set_online (gboolean mode)
-{
-	if (online != mode) {
-		online = mode;
-		if (online) {
-			g_mutex_lock (cond_mutex);
-			g_cond_signal (offline_cond);
-			g_mutex_unlock (cond_mutex);
-		}
-		debug1 (DEBUG_UPDATE, "Changing online mode to %s", mode?"online":"offline");
-		ui_mainwindow_online_status_changed (mode);
-		liferea_htmlview_set_online (mode);
-		ui_tray_update ();
-	}
-}
-
-gboolean
-update_is_online (void)
-{
-	return online;
-}
-
 /* Wrapper for reenqueuing requests in case of retries, for convenient call from g_timeout */
 static gboolean
-update_requeue_job (gpointer data)
+update_job_retry_cb (gpointer data)
 {
 	updateJobPtr job = (updateJobPtr)data;
 	
 	if (job->callback == NULL) {
-		debug2(DEBUG_UPDATE, "Freeing request of cancelled retry #%d for \"%s\"", job->retriesCount, job->request->source);
+		debug2(DEBUG_UPDATE, "Freeing request of cancelled retry #%d for \"%s\"", job->retryCount, job->request->source);
 		update_job_free (job);
 	} else {
-		g_async_queue_push (pendingJobs, job);
+		// FIXME:
 	}
 	return FALSE;
 }
@@ -635,23 +550,23 @@ update_job_retry (updateJobPtr job)
 
 	/* Prepare for a retry: increase counter and calculate delay */
 	retryDelay = REQ_MIN_DELAY_FOR_RETRY;
-	for (i = 0; i < job->retriesCount; i++)
+	for (i = 0; i < job->retryCount; i++)
 		retryDelay *= 3;
 	if (retryDelay > REQ_MAX_DELAY_FOR_RETRY)
 		retryDelay = REQ_MAX_DELAY_FOR_RETRY;
 
 	/* Requeue the request after the waiting delay */
-	job->retriesCount++;	
-	g_timeout_add_full (G_PRIORITY_DEFAULT_IDLE, 1000 * retryDelay, update_requeue_job, job, NULL);
+	job->retryCount++;	
+	g_timeout_add_full (G_PRIORITY_DEFAULT_IDLE, 1000 * retryDelay, update_job_retry_cb, job, NULL);
 	ui_mainwindow_set_status_bar (_("Could not download \"%s\". Will retry in %d seconds."), job->request->source, retryDelay);
 }
 
 gboolean
 update_job_cancel_retry (updateJobPtr job)
 {
-	if (0 < job->retriesCount) {
+	if (0 < job->retryCount) {
 		job->callback = NULL;
-		debug2 (DEBUG_UPDATE, "cancelling retry #%d (%s)", job->retriesCount, job->request->source);
+		debug2 (DEBUG_UPDATE, "cancelling retry #%d (%s)", job->retryCount, job->request->source);
 		return TRUE;
 	}
 	return FALSE;
@@ -670,43 +585,35 @@ update_process_result_idle_cb (gpointer user_data)
 	return FALSE;
 }
 
-static gboolean
-update_dequeue_finished_jobs (gpointer user_data)
+void
+update_process_finished_job (updateJobPtr job)
 {
-	updateJobPtr	job;
+	job->state = REQUEST_STATE_DEQUEUE;
 
-	results_timer = 0;
-	
-	while (NULL != (job = g_async_queue_try_pop (finishedJobs))) {
-		job->state = REQUEST_STATE_DEQUEUE;
+	// Handling abandoned requests (e.g. after feed deletion) 
+	if (job->callback == NULL) {	
+		debug1 (DEBUG_UPDATE, "freeing cancelled request (%s)", job->request->source);
+		update_job_free (job);
+		return;
+	} 
+		
+	// Retrying in some error cases 
+	/*if ((job->result->returncode == NET_ERR_UNKNOWN) ||
+	    (job->result->returncode == NET_ERR_CONN_FAILED) ||
+	    (job->result->returncode == NET_ERR_SOCK_ERR) ||
+	    (job->result->returncode == NET_ERR_HOST_NOT_FOUND) ||
+	    (job->result->returncode == NET_ERR_TIMEOUT)) {
 
-		/* Handling abandoned requests (e.g. after feed deletion) */
-		if (job->callback == NULL) {	
-			debug1 (DEBUG_UPDATE, "freeing cancelled request (%s)", job->request->source);
-			update_job_free (job);
+		if (job->request->allowRetries && (REQ_MAX_NUMBER_OF_RETRIES <= job->retryCount)) {
+			debug1 (DEBUG_UPDATE, "retrying download (%s)", job->request->source);
+			update_job_retry (job);
 			continue;
-		} 
-		
-		/* Retrying in some error cases */
-		if ((job->result->returncode == NET_ERR_UNKNOWN) ||
-		    (job->result->returncode == NET_ERR_CONN_FAILED) ||
-		    (job->result->returncode == NET_ERR_SOCK_ERR) ||
-		    (job->result->returncode == NET_ERR_HOST_NOT_FOUND) ||
-		    (job->result->returncode == NET_ERR_TIMEOUT)) {
-
-			if (job->request->allowRetries && (REQ_MAX_NUMBER_OF_RETRIES <= job->retriesCount)) {
-				debug1 (DEBUG_UPDATE, "retrying download (%s)", job->request->source);
-				update_job_retry (job);
-				continue;
-			}
-
-			debug1 (DEBUG_UPDATE, "retry count exceeded (%s)", job->request->source);
 		}
+
+		debug1 (DEBUG_UPDATE, "retry count exceeded (%s)", job->request->source);
+	}*/
 		
-		/* Normal result processing */
-		g_idle_add (update_process_result_idle_cb, job);
-	}
-	return FALSE;
+	g_idle_add (update_process_result_idle_cb, job);
 }
 
 void
@@ -716,20 +623,7 @@ update_init (void)
 
 	network_init ();
 	
-	pendingHighPrioJobs = g_async_queue_new ();
-	pendingJobs = g_async_queue_new ();
-	finishedJobs = g_async_queue_new ();
-	
-	offline_cond = g_cond_new ();
-	cond_mutex = g_mutex_new ();
-		
-	if (1 >= (count = conf_get_int_value (UPDATE_THREAD_CONCURRENCY)))
-		count = DEFAULT_UPDATE_THREAD_CONCURRENCY;
-	
-	for (i = 0; i < count; i++) {
-		GThread *thread = g_thread_create (update_dequeue_jobs, GINT_TO_POINTER((i == 0)), FALSE, NULL);
-		threads = g_slist_append (threads, thread);
-	}
+
 }
 
 #ifdef USE_NM
@@ -742,14 +636,14 @@ update_network_monitor (libnm_glib_ctx *ctx, gpointer user_data)
 	g_return_if_fail (ctx != NULL);
 
 	state = libnm_glib_get_network_state (ctx);
-	online = update_is_online ();
+	online = network_is_online ();
 
 	if (online && state == LIBNM_NO_NETWORK_CONNECTION) {
 		debug0 (DEBUG_UPDATE, "network manager: no network connection -> going offline");
-		update_set_online (FALSE);
+		network_set_online (FALSE);
 	} else if (!online && state == LIBNM_ACTIVE_NETWORK_CONNECTION) {
 		debug0 (DEBUG_UPDATE, "network manager: active connection -> going online");
-		update_set_online (TRUE);
+		network_set_online (TRUE);
 	}
 }
 
@@ -790,20 +684,11 @@ update_deinit (void)
 {
 	debug_enter ("update_deinit");
 	
-	//update_nm_cleanup ();
+	//update_nm_cleanup ();	// FIXME
 	
 	network_deinit ();
 	
-	/* FIXME: terminate update threads to be able to remove the queues
-	
-	g_async_queue_unref (pendingHighPrioJobs);
-	g_async_queue_unref (pendingJobs);
-	g_async_queue_unref (finishedJobs);
-	
-	
-	g_free (offline_cond);
-	g_free (cond_mutex);
-	
+	/* FIXME: 	
 	g_slist_free (jobs);
 	jobs = NULL;
 	*/

@@ -32,7 +32,7 @@
 #include "conf.h"
 #include "eggtrayicon.h"
 #include "feedlist.h"
-#include "update.h"
+#include "net.h"
 #include "ui/ui_dnd.h"
 #include "ui/ui_mainwindow.h"
 #include "ui/ui_popup.h"
@@ -186,41 +186,42 @@ ui_tray_icon_set (gint newItems, GdkPixbuf *icon)
    	}
 }
 
-void ui_tray_update(void) {
+void
+ui_tray_update (void)
+{
 	gint	newItems, unreadItems;
 	gchar	*msg, *tmp;
 	
-	if(!trayIcon_priv)
+	if (!trayIcon_priv)
 		return;
 
-	newItems = feedlist_get_new_item_count();
-	unreadItems = feedlist_get_unread_item_count();
+	newItems = feedlist_get_new_item_count ();
+	unreadItems = feedlist_get_unread_item_count ();
 		
-	if(newItems != 0) {
-		if(update_is_online())
-			ui_tray_icon_set(newItems, icons[ICON_AVAILABLE]);
+	if (newItems != 0) {
+		if (network_is_online ())
+			ui_tray_icon_set (newItems, icons[ICON_AVAILABLE]);
 		else
-			ui_tray_icon_set(newItems, icons[ICON_AVAILABLE_OFFLINE]);
+			ui_tray_icon_set (newItems, icons[ICON_AVAILABLE_OFFLINE]);
 			
-		msg = g_strdup_printf(ngettext("%d new item", "%d new items", newItems), newItems);
+		msg = g_strdup_printf (ngettext ("%d new item", "%d new items", newItems), newItems);
 	} else {
-		if(update_is_online())
-			ui_tray_icon_set(newItems, icons[ICON_EMPTY]);
+		if (network_is_online ())
+			ui_tray_icon_set (newItems, icons[ICON_EMPTY]);
 		else
-			ui_tray_icon_set(newItems, icons[ICON_EMPTY_OFFLINE]);
+			ui_tray_icon_set (newItems, icons[ICON_EMPTY_OFFLINE]);
 			
-		msg = g_strdup(_("No new items"));
+		msg = g_strdup (_("No new items"));
 	}
 
-	if(unreadItems != 0) {
-		tmp = g_strdup_printf(ngettext("%s\n%d unread item", "%s\n%d unread items", unreadItems), msg, unreadItems);
-	} else {
-		tmp = g_strdup_printf(_("%s\nNo unread items"), msg);
-	}
+	if (unreadItems != 0)
+		tmp = g_strdup_printf (ngettext("%s\n%d unread item", "%s\n%d unread items", unreadItems), msg, unreadItems);
+	else
+		tmp = g_strdup_printf (_("%s\nNo unread items"), msg);
 
-	ui_tray_tooltip_set(tmp);
-	g_free(tmp);
-	g_free(msg);
+	ui_tray_tooltip_set (tmp);
+	g_free (tmp);
+	g_free (msg);
 }
 
 /* a click on the systray icon should show the program window

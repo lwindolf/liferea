@@ -54,7 +54,6 @@
 #define DEFAULT_MAX_ITEMS		"/apps/liferea/maxitemcount"
 #define DEFAULT_UPDATE_INTERVAL		"/apps/liferea/default-update-interval"
 #define STARTUP_FEED_ACTION		"/apps/liferea/startup_feed_action"
-#define UPDATE_THREAD_CONCURRENCY	"/apps/liferea/update-thread-concurrency"
 #define ENABLE_FETCH_RETRIES		"/apps/liferea/enable-fetch-retries"
 
 /* folder handling settings */

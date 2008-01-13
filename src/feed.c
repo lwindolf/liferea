@@ -262,6 +262,7 @@ feed_auto_discover (feedParserCtxtPtr ctxt)
 		debug1 (DEBUG_UPDATE, "feed link found: %s", source);
 		request->source = g_strdup (source);
 		request->options = update_options_copy (ctxt->subscription->updateOptions);
+		// FIXME: do callback implementation using update_execute_request()
 		result = update_execute_request_sync (ctxt->subscription, request, 0);
 		if (result->data) {
 			debug0 (DEBUG_UPDATE, "feed link download successful!");

@@ -38,8 +38,8 @@
 #include "feedlist.h"
 #include "itemlist.h"
 #include "itemview.h"
+#include "net.h"
 #include "script.h"
-#include "update.h"
 #include "ui/ui_script.h"
 #include "ui/ui_dialog.h"
 #include "ui/ui_dnd.h"
@@ -633,9 +633,9 @@ ui_mainwindow_init (int mainwindowState)
 	icons[ICON_UNAVAILABLE] = gtk_widget_render_icon(widget, GTK_STOCK_DIALOG_ERROR, GTK_ICON_SIZE_MENU, "");
 	gtk_widget_destroy(widget);
 
-	ui_mainwindow_update_toolbar();
-	ui_mainwindow_update_menubar();
-	ui_mainwindow_online_status_changed(update_is_online());
+	ui_mainwindow_update_toolbar ();
+	ui_mainwindow_update_menubar ();
+	ui_mainwindow_online_status_changed (network_is_online ());
 	
 	ui_tray_enable(getBooleanConfValue(SHOW_TRAY_ICON));			/* init tray icon */
 	ui_dnd_setup_URL_receiver(mainwindow);	/* setup URL dropping support */
@@ -781,14 +781,16 @@ void ui_mainwindow_online_status_changed (int online) {
 	    !online);
 }
 
-void on_onlinebtn_clicked(GtkButton *button, gpointer user_data) {
-	
-	update_set_online(!update_is_online());
+void
+on_onlinebtn_clicked (GtkButton *button, gpointer user_data)
+{	
+	network_set_online (!network_is_online ());
 }
 
-static void on_work_offline_activate(GtkToggleAction *menuitem, gpointer user_data) {
-	
-	update_set_online(!gtk_toggle_action_get_active(menuitem));
+static void
+on_work_offline_activate (GtkToggleAction *menuitem, gpointer user_data)
+{
+	network_set_online (!gtk_toggle_action_get_active (menuitem));
 }
 
 gboolean

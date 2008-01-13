@@ -26,10 +26,10 @@
 
 #include <dbus/dbus-glib.h>
 #include "dbus.h"
+#include "feedlist.h"
+#include "net.h"
 #include "node.h"
 #include "subscription.h"
-#include "update.h"
-#include "feedlist.h"
 
 G_DEFINE_TYPE(LifereaDBus, liferea_dbus, G_TYPE_OBJECT)
 
@@ -39,7 +39,7 @@ gboolean liferea_dbus_ping(LifereaDBus *self, gboolean *ret, GError **err) {
 }
 
 gboolean liferea_dbus_set_online(LifereaDBus *self, gboolean online, gboolean *ret, GError **err) {
-	update_set_online(online);
+	network_set_online(online);
 	*ret = TRUE;
 	return TRUE;
 }

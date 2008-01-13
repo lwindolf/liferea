@@ -153,15 +153,6 @@ gchar * common_create_cache_filename(const gchar *folder, const gchar *filename,
 const gchar * common_http_error_to_str(gint httpstatus);
 
 /**
- * Returns explanation string for the given network error code.
- *
- * @param netstatus	network error status
- *
- * @returns explanation string
- */
-const gchar * common_netio_error_to_str(gint netstatus);
-
-/**
  * Encodes all non URI conformant characters in the passed
  * string to be included in a HTTP URI.
  *

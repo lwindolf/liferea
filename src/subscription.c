@@ -428,13 +428,13 @@ subscription_update_error_status (subscriptionPtr subscription,
 	    (NULL == subscription->filterError))
 		return;
 	
-	if ((200 != httpstatus) || (resultcode != NET_ERR_OK)) {	
+	if ((200 != httpstatus) || (resultcode != 0)) {
 		/* first specific codes (guarantees tmp to be set) */
 		errmsg = common_http_error_to_str (httpstatus);
 
 		/* second netio errors */
-		if (common_netio_error_to_str (resultcode))
-			errmsg = common_netio_error_to_str (resultcode);
+		if (network_strerror (resultcode))
+			errmsg = network_strerror (resultcode);
 
 		errorFound = TRUE;
 		subscription->httpError = g_strdup (errmsg);

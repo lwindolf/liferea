@@ -13,7 +13,7 @@ SYNC = sync
 SYNC_LIB = sync/liblisync.a
 endif
 
-SUBDIRS = parsers notification ui fl_sources scripting $(SYNC) . $(GTKHTML2) $(WEBKIT) mozilla
+SUBDIRS = parsers notification ui fl_sources scripting glibcurl $(SYNC) . $(GTKHTML2) $(WEBKIT) mozilla
 
 AM_CPPFLAGS = \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \
@@ -74,6 +74,7 @@ liferea_bin_LDADD =	parsers/libliparsers.a \
 			fl_sources/libliflsources.a \
 			notification/liblinotification.a \
 			ui/libliui.a \
+			glibcurl/libglibcurl.a \
 			$(SYNC_LIB) \
 			$(PACKAGE_LIBS) $(X_LIBS) $(X_PRE_LIBS) -lX11 $(X_EXTRA_LIBS) $(DBUS_LIBS) $(NM_LIBS) $(INTLLIBS) $(GNUTLS_LIBS) $(AVAHI_LIBS)
 

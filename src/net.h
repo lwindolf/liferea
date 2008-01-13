@@ -92,13 +92,11 @@ const gchar * network_get_proxy_username (void);
 const gchar * network_get_proxy_password (void);
 
 /**
- * Process the given request.
+ * Process the given update job.
  *
  * @param request	the update request
- * 
- * @returns update result (to be free'd using update_result_free())
  */
-updateResultPtr network_process_request (const struct updateRequest * const request);
+void network_process_request (const updateJobPtr const job);
 
 /**
  * Returns existing cookies for the given URL or
@@ -109,5 +107,28 @@ updateResultPtr network_process_request (const struct updateRequest * const requ
  * @returns cookies (to be free'd using g_free)
  */
 gchar * cookies_find_matching (const gchar *url);
+
+/**
+ * Returns explanation string for the given network error code.
+ *
+ * @param netstatus	network error status
+ *
+ * @returns explanation string
+ */
+const gchar * network_strerror(gint netstatus);
+
+/**
+ * Sets the online status according to mode.
+ *
+ * @param mode	TRUE for online, FALSE for offline
+ */ 
+void network_set_online (gboolean mode);
+
+/**
+ * Queries the online status.
+ *
+ * @return TRUE if online
+ */
+gboolean network_is_online (void);
 
 #endif

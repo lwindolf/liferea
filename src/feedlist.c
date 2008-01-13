@@ -200,7 +200,7 @@ feedlist_auto_update (void *data)
 	
 	debug_enter ("feedlist_auto_update");
 
-	if (update_is_online ())
+	if (network_is_online ())
 		node_auto_update_subscription (feedlist_get_root ());
 	else
 		debug0 (DEBUG_UPDATE, "no update processing because we are offline!");
@@ -347,7 +347,7 @@ on_menu_update(GtkWidget *widget, gpointer user_data)
 		return;
 	}
 
-	if (update_is_online ()) 
+	if (network_is_online ()) 
 		node_update_subscription (selectedNode, GUINT_TO_POINTER (FEED_REQ_PRIORITY_HIGH));
 	else
 		ui_mainwindow_set_status_bar (_("Liferea is in offline mode. No update possible."));
@@ -356,7 +356,7 @@ on_menu_update(GtkWidget *widget, gpointer user_data)
 void
 on_menu_update_all(GtkWidget *widget, gpointer user_data)
 { 
-	if (update_is_online ()) 
+	if (network_is_online ()) 
 		node_update_subscription (feedlist_get_root(), GUINT_TO_POINTER (FEED_REQ_PRIORITY_HIGH));
 	else
 		ui_mainwindow_set_status_bar (_("Liferea is in offline mode. No update possible."));

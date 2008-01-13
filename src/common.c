@@ -463,37 +463,6 @@ const gchar * common_http_error_to_str(gint httpstatus) {
 	return tmp;
 }
 
-const gchar * common_netio_error_to_str(gint netstatus) {
-	gchar	*tmp = NULL;
-	
-	switch(netstatus) {
-		case NET_ERR_URL_INVALID:    tmp = _("URL is invalid"); break;
-		case NET_ERR_PROTO_INVALID:  tmp = _("Unsupported network protocol"); break;
-		case NET_ERR_UNKNOWN:
-		case NET_ERR_CONN_FAILED:
-		case NET_ERR_SOCK_ERR:       tmp = _("Error connecting to remote host"); break;
-		case NET_ERR_HOST_NOT_FOUND: tmp = _("Hostname could not be found"); break;
-		case NET_ERR_CONN_REFUSED:   tmp = _("Network connection was refused by the remote host"); break;
-		case NET_ERR_TIMEOUT:        tmp = _("Remote host did not finish sending data"); break;
-		/* Transfer errors */
-		case NET_ERR_REDIRECT_COUNT_ERR: tmp = _("Too many HTTP redirects were encountered"); break;
-		case NET_ERR_REDIRECT_ERR:
-		case NET_ERR_HTTP_PROTO_ERR: 
-		case NET_ERR_GZIP_ERR:           tmp = _("Remote host sent an invalid response"); break;
-		/* These are handled by HTTP error codes...
-		   case NET_ERR_HTTP_410:
-		   case NET_ERR_HTTP_404:
-		   case NET_ERR_HTTP_NON_200:
-		*/
-		case NET_ERR_AUTH_FAILED:
-		case NET_ERR_AUTH_NO_AUTHINFO: tmp = _("Authentication failed"); break;
-		case NET_ERR_AUTH_GEN_AUTH_ERR:
-		case NET_ERR_AUTH_UNSUPPORTED: tmp = _("Webserver's authentication method incompatible with Liferea"); break;
-	}
-	
-	return tmp;
-}
-
 static gchar * byte_to_hex(unsigned char nr) {
 	gchar *result = NULL;
 

@@ -1,7 +1,7 @@
 /**
  * @file net.c HTTP network access
  * 
- * Copyright (C) 2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2008 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,6 +30,8 @@
 #include <time.h>
 #include "common.h"
 
+#include "glibcurl/glibcurl.h"
+
 #include <curl/curl.h>
 #include <curl/types.h>
 #include <curl/easy.h>
@@ -42,6 +44,8 @@ static char	*proxyname = NULL;
 static char	*proxyusername = NULL;
 static char	*proxypassword = NULL;
 static int	proxyport = 0;
+
+static gboolean	online = FALSE;
 
 static char *
 CookieCutter (const char *feedurl, FILE * cookies)
@@ -237,21 +241,127 @@ cookies_find_matching (const gchar *url)
 	return result;
 }
 
+static size_t
+network_write_callback (void *ptr, size_t size, size_t nmemb, void *data)
+{
+	int realsize = size * nmemb;
+	updateResultPtr result = (updateResultPtr)data;
+
+	if (result->data == NULL)
+		result->data = g_malloc0 (realsize+2);
+	else
+		result->data = g_realloc (result->data, result->size + realsize + 2);
+
+	if (result->data) {
+		memcpy (&(result->data[result->size]), ptr, realsize);
+		result->size += realsize;
+		result->data[result->size] = 0;
+	}
+	return realsize;
+}
+
+/* Downloads a feed specified in the request structure, returns 
+   the downloaded data or NULL in the request structure.
+   If the the webserver reports a permanent redirection, the
+   feed url will be modified and the old URL 'll be freed. The
+   request structure will also contain the HTTP status and the
+   last modified string.
+ */
+void
+network_process_request (const updateJobPtr const job)
+{
+	CURL		*curl_handle;
+		
+	debug1(DEBUG_UPDATE, "downloading %s", job->request->source);
+g_assert(NULL != job->request);
+
+	curl_handle = curl_easy_init ();
+	curl_easy_setopt (curl_handle, CURLOPT_URL, job->request->source);
+	curl_easy_setopt (curl_handle, CURLOPT_WRITEFUNCTION, network_write_callback);
+	curl_easy_setopt (curl_handle, CURLOPT_WRITEDATA, job->result);
+	curl_easy_setopt (curl_handle, CURLOPT_PRIVATE, job);
+	curl_easy_setopt (curl_handle, CURLOPT_AUTOREFERER, 1);
+	curl_easy_setopt (curl_handle, CURLOPT_USERAGENT, useragent);
+	curl_easy_setopt (curl_handle, CURLOPT_FOLLOWLOCATION,  TRUE);
+	curl_easy_setopt (curl_handle, CURLOPT_TIMECONDITION, CURL_TIMECOND_IFMODSINCE);
+	if (job->request->updateState)
+		curl_easy_setopt (curl_handle, CURLOPT_TIMEVALUE, job->request->updateState->lastModified);
+	curl_easy_setopt (curl_handle, CURLOPT_FILETIME, 1L);
+	if (proxyname) {
+		curl_easy_setopt(curl_handle, CURLOPT_PROXY, proxyname);
+		if (proxyport > 0)
+			curl_easy_setopt(curl_handle, CURLOPT_PROXYPORT, proxyport);
+	}
+	glibcurl_add (curl_handle);
+g_print("update request processed:\n");
+g_print("    old source: >>>%s<<<\n", job->request->source);
+
+}
+
+void
+network_glibcurl_callback (void *data)
+{
+	CURLMsg*	msg;
+ 	gint		inQueue;
+	updateJobPtr	job;
+
+	while (1) {
+		msg = curl_multi_info_read(glibcurl_handle(), &inQueue);
+		if (msg == 0)
+			break;
+			
+		curl_easy_getinfo(msg->easy_handle, CURLINFO_PRIVATE, &job);
+		
+		if (msg->msg != CURLMSG_DONE) {
+			continue;
+		} else {
+			if (msg->data.result == CURLE_OK) 
+g_print("curl download done!\n");
+			else
+g_print("curl download failed: status code %d\n", msg->data.result);
+
+			long		tmp;
+			gchar		*contentType, *effectiveSource;
+
+			if (CURLE_OK == curl_easy_getinfo (msg->easy_handle, CURLINFO_CONTENT_TYPE, &contentType))
+				job->result->contentType = g_strdup (contentType);
+			if (CURLE_OK == curl_easy_getinfo (msg->easy_handle, CURLINFO_EFFECTIVE_URL, &effectiveSource))
+				job->result->source = g_strdup (effectiveSource);
+			if (CURLE_OK == curl_easy_getinfo (msg->easy_handle, CURLINFO_RESPONSE_CODE, &tmp))
+				job->result->httpstatus = (guint)tmp;
+			if (CURLE_OK == curl_easy_getinfo (msg->easy_handle, CURLINFO_FILETIME, &tmp)) {
+				if (tmp == -1)
+					tmp = 0;
+				update_state_set_lastmodified (job->result->updateState, tmp);
+			}
+
+			// FIXME: update_state_set_cookies (job->result->updateState, ???);
+g_print("    new source: >>>%s<<<\n", job->result->source);
+			curl_easy_cleanup (msg->easy_handle);	
+g_print("    %d bytes downloaded\n", job->result->size);
+
+			update_process_finished_job (job);
+		}
+	}
+}
+
 void
 network_init (void)
 {
-	if(0 == (NET_TIMEOUT = getNumericConfValue(NETWORK_TIMEOUT)))
+	if (0 == (NET_TIMEOUT = getNumericConfValue (NETWORK_TIMEOUT)))
 		NET_TIMEOUT = 30;	/* default network timeout 30s */
 
-	g_assert(curl_global_init(CURL_GLOBAL_ALL) == 0);
-	share_handle = curl_share_init();
+/*	g_assert(curl_global_init(CURL_GLOBAL_ALL) == 0);
+	share_handle = curl_share_init();*/
+	
+	glibcurl_init ();
+	glibcurl_set_callback (network_glibcurl_callback, 0);
 }
 
 void 
 network_deinit (void)
 {
-	curl_share_cleanup(share_handle);
-	curl_global_cleanup();
+	glibcurl_cleanup ();
 	
 	g_free (useragent);
 	g_free (proxyname);
@@ -311,81 +421,51 @@ network_set_proxy_auth (gchar *newProxyUsername, gchar *newProxyPassword)
 	liferea_htmlview_update_proxy ();
 }
 
-static size_t
-net_write_callback (void *ptr, size_t size, size_t nmemb, void *data)
-{
-	int realsize = size * nmemb;
-	updateResultPtr result = (updateResultPtr)data;
+const gchar * network_strerror(gint netstatus) {
+	gchar	*tmp = NULL;
+	
+	switch(netstatus) {
+/*		case NET_ERR_URL_INVALID:    tmp = _("URL is invalid"); break;
+		case NET_ERR_PROTO_INVALID:  tmp = _("Unsupported network protocol"); break;
+		case NET_ERR_UNKNOWN:
+		case NET_ERR_CONN_FAILED:
+		case NET_ERR_SOCK_ERR:       tmp = _("Error connecting to remote host"); break;
+		case NET_ERR_HOST_NOT_FOUND: tmp = _("Hostname could not be found"); break;
+		case NET_ERR_CONN_REFUSED:   tmp = _("Network connection was refused by the remote host"); break;
+		case NET_ERR_TIMEOUT:        tmp = _("Remote host did not finish sending data"); break;
 
-	if (result->data == NULL)
-		result->data = g_malloc0 (realsize+2);
-	else
-		result->data = g_realloc (result->data, result->size + realsize + 2);
+		case NET_ERR_REDIRECT_COUNT_ERR: tmp = _("Too many HTTP redirects were encountered"); break;
+		case NET_ERR_REDIRECT_ERR:
+		case NET_ERR_HTTP_PROTO_ERR: 
+		case NET_ERR_GZIP_ERR:           tmp = _("Remote host sent an invalid response"); break;
 
-	if (result->data) {
-		memcpy (&(result->data[result->size]), ptr, realsize);
-		result->size += realsize;
-		result->data[result->size] = 0;
-	}
-	return realsize;
-}
-
-/* Downloads a feed specified in the request structure, returns 
-   the downloaded data or NULL in the request structure.
-   If the the webserver reports a permanent redirection, the
-   feed url will be modified and the old URL 'll be freed. The
-   request structure will also contain the HTTP status and the
-   last modified string.
- */
-updateResultPtr
-network_process_request (const struct updateRequest * const request)
-{
-	updateResultPtr	result;
-	CURL		*curl_handle;
-	long		tmp;
-	gchar		*contentType, *effectiveSource;
-		
-	debug1(DEBUG_UPDATE, "downloading %s", request->source);
-g_assert(NULL != request);
-	result = update_result_new ();
-
-	curl_handle = curl_easy_init ();
-	curl_easy_setopt (curl_handle, CURLOPT_SHARE, share_handle);
-	curl_easy_setopt (curl_handle, CURLOPT_URL, request->source);
-	curl_easy_setopt (curl_handle, CURLOPT_WRITEFUNCTION, net_write_callback);
-	curl_easy_setopt (curl_handle, CURLOPT_WRITEDATA, result);
-	curl_easy_setopt (curl_handle, CURLOPT_USERAGENT, useragent);
-	curl_easy_setopt (curl_handle, CURLOPT_FOLLOWLOCATION,  TRUE);
-	curl_easy_setopt (curl_handle, CURLOPT_TIMECONDITION, CURL_TIMECOND_IFMODSINCE);
-	if (request->updateState)
-		curl_easy_setopt (curl_handle, CURLOPT_TIMEVALUE, request->updateState->lastModified);
-	curl_easy_setopt (curl_handle, CURLOPT_FILETIME, 1L);
-	if (proxyname) {
-		curl_easy_setopt(curl_handle, CURLOPT_PROXY, proxyname);
-		if (proxyport > 0)
-			curl_easy_setopt(curl_handle, CURLOPT_PROXYPORT, proxyport);
-	}
-	curl_easy_perform (curl_handle);
-g_print("update request processed:\n");
-g_print("    old source: >>>%s<<<\n",request->source);
-
-	if (CURLE_OK == curl_easy_getinfo (curl_handle, CURLINFO_CONTENT_TYPE, &contentType))
-		result->contentType = g_strdup (contentType);
-	if (CURLE_OK == curl_easy_getinfo (curl_handle, CURLINFO_EFFECTIVE_URL, &effectiveSource))
-		result->source = g_strdup (effectiveSource);
-	if (CURLE_OK == curl_easy_getinfo (curl_handle, CURLINFO_RESPONSE_CODE, &tmp))
-		result->httpstatus = (guint)tmp;
-		
-	if (CURLE_OK == curl_easy_getinfo (curl_handle, CURLINFO_FILETIME, &tmp)) {
-		if (tmp == -1)
-			tmp = 0;
-		update_state_set_lastmodified (result->updateState, tmp);
+		case NET_ERR_AUTH_FAILED:
+		case NET_ERR_AUTH_NO_AUTHINFO: tmp = _("Authentication failed"); break;
+		case NET_ERR_AUTH_GEN_AUTH_ERR:
+		case NET_ERR_AUTH_UNSUPPORTED: tmp = _("Webserver's authentication method incompatible with Liferea"); break;
+	*/
+		default:
+			tmp = _("Network error");
+			break;
 	}
 	
-	// FIXME: update_state_set_cookies (result->updateState, ???);
-g_print("    new source: >>>%s<<<\n", result->source);
-	curl_easy_cleanup (curl_handle);	
-	if (result->data)
-		result->data[result->size] = '\0';
-	return result;
+	return tmp;
+}
+
+void
+network_set_online (gboolean mode)
+{
+	if (online != mode) {
+		online = mode;
+		debug1 (DEBUG_UPDATE, "Changing online mode to %s", mode?"online":"offline");
+		ui_mainwindow_online_status_changed (mode);
+		liferea_htmlview_set_online (mode);
+		ui_tray_update ();
+	}
+}
+
+gboolean
+network_is_online (void)
+{
+	return online;
 }

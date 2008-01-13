@@ -31,10 +31,10 @@
 #include "feedlist.h"
 #include "folder.h"
 #include "itemlist.h"
-#include "node.h"
+#include "net.h"
 #include "newsbin.h"
+#include "node.h"
 #include "social.h"
-#include "update.h"
 #include "vfolder.h"
 #include "ui/ui_enclosure.h"
 #include "ui/ui_feedlist.h"
@@ -185,22 +185,26 @@ void ui_popup_update_menues(void) {
 }
 
 /* function to generate a generic menu specified by its number */
-static GtkMenu *make_menu(GtkItemFactoryEntry *menu_items, gint nmenu_items, gpointer cb_data) {
+static GtkMenu *
+make_menu (GtkItemFactoryEntry *menu_items, gint nmenu_items, gpointer cb_data)
+{
 	GtkWidget 		*menu, *toggle;
 	GtkItemFactory 		*item_factory;
 	
-	item_factory = gtk_item_factory_new(GTK_TYPE_MENU, "<popup>", NULL);
-	gtk_item_factory_create_items(item_factory, nmenu_items, menu_items, cb_data);
-	menu = gtk_item_factory_get_widget(item_factory, "<popup>");
+	item_factory = gtk_item_factory_new (GTK_TYPE_MENU, "<popup>", NULL);
+	gtk_item_factory_create_items (item_factory, nmenu_items, menu_items, cb_data);
+	menu = gtk_item_factory_get_widget (item_factory, "<popup>");
 	
 	/* set toggled state for work offline and show window buttons in 
 	   the tray popup menu */
-	if(NULL != (toggle = gtk_item_factory_get_widget(item_factory, TOGGLE_WORK_OFFLINE)))
-		GTK_CHECK_MENU_ITEM(toggle)->active = !update_is_online();
-	if(NULL != (toggle = gtk_item_factory_get_widget(item_factory, TOGGLE_SHOW_WINDOW)))
-		GTK_CHECK_MENU_ITEM(toggle)->active = 
-			!(gdk_window_get_state(GTK_WIDGET(mainwindow)->window) & GDK_WINDOW_STATE_ICONIFIED) && GTK_WIDGET_VISIBLE(mainwindow);
-	return GTK_MENU(menu);
+	toggle = gtk_item_factory_get_widget(item_factory, TOGGLE_WORK_OFFLINE);
+	if (toggle)
+		GTK_CHECK_MENU_ITEM (toggle)->active = !network_is_online ();
+	toggle = gtk_item_factory_get_widget (item_factory, TOGGLE_SHOW_WINDOW);
+	if (toggle)
+		GTK_CHECK_MENU_ITEM (toggle)->active = !(gdk_window_get_state (GTK_WIDGET(mainwindow)->window) & GDK_WINDOW_STATE_ICONIFIED) && GTK_WIDGET_VISIBLE (mainwindow);
+		
+	return GTK_MENU (menu);
 }
 
 /** function to generate popup menus for the item list depending

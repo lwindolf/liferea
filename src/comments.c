@@ -26,6 +26,7 @@
 #include "feed.h"
 #include "itemview.h"
 #include "metadata.h"
+#include "net.h"
 #include "update.h"
 
 /* Comment feeds in Liferea are simple flat lists of items attached
@@ -173,8 +174,8 @@ comments_process_update_result (const struct updateResult * const result, gpoint
 		tmp = common_http_error_to_str (result->httpstatus);
 
 		/* second netio errors */
-		if (common_netio_error_to_str (result->returncode))
-			tmp = common_netio_error_to_str (result->returncode);
+		if (network_strerror (result->returncode))
+			tmp = network_strerror (result->returncode);
 			
 		commentFeed->error = g_strdup (tmp);
 	}	
@@ -198,7 +199,7 @@ comments_refresh (itemPtr item)
 	updateRequestPtr	request;
 	const gchar		*url;
 	
-	if (!update_is_online ())
+	if (!network_is_online ())
 		return;
 	
 	url = metadata_list_get (item->metadata, "commentFeedUri");
