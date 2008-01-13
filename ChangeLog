@@ -8,6 +8,8 @@
 	  (reported by Luis Rodrigo Gallardo Cruz)
 	* Fixes SF #1870052: Crash upon hitting <enter> with no 
 	  headline selected (reported by Justin Blanchard)
+	* Fixes SF #1868054: _XOPEN_SOURCE defined incorrectly
+	  (reported by Steve Bellovin)
 
 	Translations
 
