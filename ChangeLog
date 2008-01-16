@@ -16,8 +16,6 @@
 	  (patch by goyko)
 	* New preference option to always start Liferea
 	  minimized in the tray icon. (patch by Gustavo Chain)
-	* Split of status bar to separate link display
-	  and update messages. (patch by Lars Strojny)
 	* Raises WebKit dependency to at least r28711.
 	  Updates the code to the renamed interfaces.
 	  Adds link context menu support for WebKit.

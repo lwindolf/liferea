@@ -329,7 +329,6 @@
         <child>
           <widget class="GtkHBox" id="hbox30">
             <property name="visible">True</property>
-            <property name="spacing">10</property>
             <child>
               <widget class="GtkButton" id="onlinebtn">
                 <property name="visible">True</property>
@@ -353,24 +352,9 @@
               </packing>
             </child>
             <child>
-              <widget class="GtkHBox" id="statusbar_box">
+              <widget class="GtkStatusbar" id="statusbar">
                 <property name="visible">True</property>
-                <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                <child>
-                  <widget class="GtkStatusbar" id="statusbar_links">
-                    <property name="visible">True</property>
-                    <property name="has_resize_grip">False</property>
-                  </widget>
-                </child>
-                <child>
-                  <widget class="GtkStatusbar" id="statusbar">
-                    <property name="visible">True</property>
-                    <property name="has_resize_grip">False</property>
-                  </widget>
-                  <packing>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
+                <property name="has_resize_grip">False</property>
               </widget>
               <packing>
                 <property name="position">1</property>
