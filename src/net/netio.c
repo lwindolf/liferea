@@ -282,9 +282,9 @@ void *NetConnectGnutls(int *fd) {
 	} while ((ret == GNUTLS_E_AGAIN) || (ret == GNUTLS_E_INTERRUPTED));
 	
 	if (ret < 0) {
+		debug1(DEBUG_NET, "Fatal: failed to set up SSL session for socket %d (GnuTLS error code %d)", fd, ret);
 		close(*fd);
-		*fd = -1;
-		debug1(DEBUG_NET, "Fatal: failed to set up SSL session for socket %d", fd);
+		*fd = -1;		
 		return NULL;
 	}
 	debug2(DEBUG_NET, "SSL session %p set up for socket %d", session, fd);
