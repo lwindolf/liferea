@@ -1,4 +1,12 @@
-2008-01-??  Lars Lindner  <lars.lindner@gmail.com>
+2008-02-??  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.4.12 (Stable)
+
+	* Removes versioned notification plugin soname.
+	  (patch by Marcin Banasiak)
+
+
+2008-01-16  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.4.11 (Stable)
 
