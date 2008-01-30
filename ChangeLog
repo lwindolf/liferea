@@ -2,6 +2,9 @@
 
 	Version 1.4.12 (Stable)
 
+	* Added support for OPML blogrolls with "xmlURL"
+	  (instead of "xmlUrl") feed attributes as created
+	  by LiveJournal blogroll exports.
 	* Removes versioned notification plugin soname.
 	  (patch by Marcin Banasiak)
 

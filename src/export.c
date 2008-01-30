@@ -256,7 +256,9 @@ void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, nodeSourcePtr node
 		tmp = xmlGetProp (cur, BAD_CAST"xmlUrl");
 		if (!tmp)
 			tmp = xmlGetProp (cur, BAD_CAST"xmlurl");	/* AmphetaDesk */
-		
+		if (!tmp)
+			tmp = xmlGetProp (cur, BAD_CAST"xmlURL");	/* LiveJournal */		
+			
 		if (tmp) {
 			debug0(DEBUG_CACHE, "-> URL found assuming type feed");
 			node_set_type(node, feed_get_node_type());
