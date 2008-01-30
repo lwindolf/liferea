@@ -5,6 +5,9 @@
 	* Added support for OPML blogrolls with "xmlURL"
 	  (instead of "xmlUrl") feed attributes as created
 	  by LiveJournal blogroll exports.
+	* Fixes SF #1879861: browser skimming hotkey doesn't
+	  work correctly when used in search folders.
+	  (reported by darthanubis)
 	* Removes versioned notification plugin soname.
 	  (patch by Marcin Banasiak)
 

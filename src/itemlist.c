@@ -348,7 +348,7 @@ itemlist_find_unread_item (void)
 	
 	if (itemlist_priv.selectedId)
 		result = ui_itemlist_find_unread_item (itemlist_priv.selectedId);
-		
+	
 	if (!result)
 		result = ui_itemlist_find_unread_item (0);
 
@@ -395,7 +395,7 @@ itemlist_select_next_unread (void)
 	itemlist_priv.loading--;
 	
 	if (result)
-		itemlist_selection_changed (result);
+		ui_itemlist_select (result);
 }
 
 /* menu commands */
@@ -547,8 +547,6 @@ itemlist_selection_changed (itemPtr item)
 		/* folder&vfolder postprocessing to remove/filter unselected items no
 		   more matching the display rules because they have changed state */
 		itemlist_check_for_deferred_action ();
-		
-		itemlist_priv.selectedId = 0;
 
 		debug1 (DEBUG_GUI, "item list selection changed to \"%s\"", item_get_title (item));
 		
