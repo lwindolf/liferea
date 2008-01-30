@@ -587,28 +587,6 @@ ui_itemlist_select (itemPtr item)
 	}
 }
 
-static itemPtr
-ui_itemlist_find_unread_item_from_iter (GtkTreeIter *iter)
-{
-	itemPtr	item;
-	
-	item = item_load (ui_iter_to_item_id (iter));
-	if (item) {
-		if (!item->readStatus) {
-			if (2 != itemlist_get_view_mode ()) {	// FIXME: 2
-				ui_itemlist_select(item);
-				item_state_set_read (item, TRUE);	/* needed when no selection happens (e.g. when the item is already selected) */
-			} else {
-				item_state_set_all_read (node_from_id (item->nodeId));
-			}
-			return item;
-		}
-		item_unload (item);
-	}
-	
-	return NULL;
-}
-
 itemPtr ui_itemlist_find_unread_item(gulong startId) {
 	GtkTreeStore		*itemstore;
 	GtkTreeIter		iter;
@@ -622,10 +600,12 @@ itemPtr ui_itemlist_find_unread_item(gulong startId) {
 		valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(itemstore), &iter);
 	
 	while(valid) {
-		itemPtr	item;
-		item = ui_itemlist_find_unread_item_from_iter(&iter);
-		if(item)
-			return item;
+		itemPtr	item = item_load (ui_iter_to_item_id (&iter));
+		if (item) {
+			if (!item->readStatus)
+				return item;
+			item_unload (item);
+		}
 		valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(itemstore), &iter);
 	}
 
