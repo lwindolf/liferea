@@ -58,7 +58,7 @@ static guint	results_timer = 0;
    limit of the glibcurl code. */
 static GAsyncQueue *pendingJobs = NULL;
 static guint numberOfActiveJobs = 0;
-#define MAX_ACTIVE_JOBS	25
+#define MAX_ACTIVE_JOBS	5
 
 #ifdef USE_NM
 /* State for NM support */
