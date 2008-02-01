@@ -475,6 +475,11 @@ update_dequeue_job (gpointer user_data)
 	
 	if (!pendingJobs)
 		return FALSE;	/* we must be in shutdown */
+		
+	if (numberOfActiveJobs > MAX_ACTIVE_JOBS)
+		return TRUE;	/* let's continue later */
+		
+	numberOfActiveJobs++;
 
 	job = (updateJobPtr)g_async_queue_try_pop(pendingJobs);
 	if(!job)
@@ -596,6 +601,9 @@ void
 update_process_finished_job (updateJobPtr job)
 {
 	job->state = REQUEST_STATE_DEQUEUE;
+	
+	numberOfActiveJobs--;
+	g_assert(numberOfActiveJobs >= 0);
 
 	/* Handling abandoned requests (e.g. after feed deletion) */
 	if (job->callback == NULL) {	
