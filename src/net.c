@@ -273,7 +273,7 @@ network_process_request (const updateJobPtr const job)
 	CURL		*curl_handle;
 		
 	debug1(DEBUG_UPDATE, "downloading %s", job->request->source);
-g_assert(NULL != job->request);
+	g_assert(NULL != job->request);
 
 	curl_handle = curl_easy_init ();
 	curl_easy_setopt (curl_handle, CURLOPT_URL, job->request->source);
@@ -293,9 +293,6 @@ g_assert(NULL != job->request);
 			curl_easy_setopt(curl_handle, CURLOPT_PROXYPORT, proxyport);
 	}
 	glibcurl_add (curl_handle);
-g_print("update request processed:\n");
-g_print("    old source: >>>%s<<<\n", job->request->source);
-
 }
 
 void
@@ -316,9 +313,9 @@ network_glibcurl_callback (void *data)
 			continue;
 		} else {
 			if (msg->data.result == CURLE_OK) 
-g_print("curl download done!\n");
+				debug0(DEBUG_UPDATE, "curl download done!");
 			else
-g_print("curl download failed: status code %d\n", msg->data.result);
+				debug1(DEBUG_UPDATE, "curl download failed: status code %d", msg->data.result);
 
 			long		tmp;
 			gchar		*contentType, *effectiveSource;
@@ -336,10 +333,9 @@ g_print("curl download failed: status code %d\n", msg->data.result);
 			}
 
 			// FIXME: update_state_set_cookies (job->result->updateState, ???);
-g_print("    new source: >>>%s<<<\n", job->result->source);
+			debug1(DEBUG_UPDATE, "source after download: >>>%s<<<\n", job->result->source);
+			debug1(DEBUG_UPDATE, "%d bytes downloaded", job->result->size);
 			curl_easy_cleanup (msg->easy_handle);	
-g_print("    %d bytes downloaded\n", job->result->size);
-
 			update_process_finished_job (job);
 		}
 	}
