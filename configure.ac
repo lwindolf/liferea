@@ -355,7 +355,7 @@ pkg_modules="	gtk+-2.0 >= 2.10.0
 		sqlite3 >= 3.3
 		gmodule-2.0 >= 2.0.0
 		libglade-2.0 >= 2.0.0
-		libcurl >= 7.16.0"
+		libcurl >= 7.15.0"
 
 PKG_CHECK_MODULES(PACKAGE, [$pkg_modules])
 
