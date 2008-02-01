@@ -1129,7 +1129,7 @@ static const GtkActionEntry ui_mainwindow_feed_action_entries[] = {
 };
 
 static const GtkActionEntry ui_mainwindow_read_write_action_entries[] = {
-	{"Properties", "gtk-properties", N_("_Properties..."), NULL, N_("Opens the property dialog for the selected subscription."), G_CALLBACK(on_menu_properties)},
+	{"Properties", "gtk-properties", N_("_Properties"), NULL, N_("Opens the property dialog for the selected subscription."), G_CALLBACK(on_menu_properties)},
 	{"DeleteSelected", "gtk-delete", N_("_Remove"), NULL, N_("Removes the selected subscription."), G_CALLBACK(on_menu_delete)}
 };
 
