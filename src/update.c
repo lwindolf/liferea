@@ -476,15 +476,15 @@ update_dequeue_job (gpointer user_data)
 	if (!pendingJobs)
 		return FALSE;	/* we must be in shutdown */
 		
-	if (numberOfActiveJobs > MAX_ACTIVE_JOBS)
+	if (numberOfActiveJobs >= MAX_ACTIVE_JOBS)
 		return TRUE;	/* let's continue later */
 		
-	numberOfActiveJobs++;
-
 	job = (updateJobPtr)g_async_queue_try_pop(pendingJobs);
 	if(!job)
 		return TRUE;	/* no request at the moment */
-	
+
+	numberOfActiveJobs++;
+
 	job->state = REQUEST_STATE_PROCESSING;
 
 	debug1 (DEBUG_UPDATE, "processing request (%s)", job->request->source);
