@@ -49,9 +49,16 @@
 #include "ui/ui_tray.h"
 
 /** global update job list, used for lookups when cancelling */
-static GSList *jobs = NULL;
+static GSList	*jobs = NULL;
 
-static guint		results_timer = 0;
+static guint	results_timer = 0;
+
+/* We use a communication queue for limiting the number 
+   of concurrent requests to avoid hitting the file descriptor
+   limit of the glibcurl code. */
+static GAsyncQueue *pendingJobs = NULL;
+static guint numberOfActiveJobs = 0;
+#define MAX_ACTIVE_JOBS	25
 
 #ifdef USE_NM
 /* State for NM support */
@@ -461,11 +468,18 @@ update_execute_request_sync (gpointer owner,
 	return result;
 }
 
-/*static void *
-update_dequeue_job (updateJobPtr job)
+static gboolean
+update_dequeue_job (gpointer user_data)
 {
+	updateJobPtr job;
+	
+	if (!pendingJobs)
+		return FALSE;	/* we must be in shutdown */
 
-	g_assert (NULL != job);
+	job = (updateJobPtr)g_async_queue_try_pop(pendingJobs);
+	if(!job)
+		return TRUE;	/* no request at the moment */
+	
 	job->state = REQUEST_STATE_PROCESSING;
 
 	debug1 (DEBUG_UPDATE, "processing request (%s)", job->request->source);
@@ -474,17 +488,10 @@ update_dequeue_job (updateJobPtr job)
 		update_job_free (job);
 	} else {
 		update_job_run (job);
-			
-	
-	debug1 (DEBUG_UPDATE, "request (%s) finished", job->request->source);
-		g_async_queue_push (finishedJobs, (gpointer)job);
-		if (!results_timer) 
-			results_timer = g_timeout_add_full (G_PRIORITY_DEFAULT_IDLE, 100,
-			                                    update_dequeue_finished_jobs, 
-							    NULL, NULL);
-		}
 	}
-}*/
+		
+	return TRUE;
+}
 
 updateJobPtr
 update_execute_request (gpointer owner, 
@@ -500,7 +507,7 @@ update_execute_request (gpointer owner,
 	job = update_job_new (owner, request, callback, user_data, flags);
 	job->state = REQUEST_STATE_PENDING;	
 	jobs = g_slist_append (jobs, job);
-	update_job_run (job);
+	g_async_queue_push (pendingJobs, (gpointer)job);
 		
 	return job;
 }
@@ -590,14 +597,14 @@ update_process_finished_job (updateJobPtr job)
 {
 	job->state = REQUEST_STATE_DEQUEUE;
 
-	// Handling abandoned requests (e.g. after feed deletion) 
+	/* Handling abandoned requests (e.g. after feed deletion) */
 	if (job->callback == NULL) {	
 		debug1 (DEBUG_UPDATE, "freeing cancelled request (%s)", job->request->source);
 		update_job_free (job);
 		return;
 	} 
 		
-	// Retrying in some error cases 
+	// FIXME: Retrying in some error cases 
 	/*if ((job->result->returncode == NET_ERR_UNKNOWN) ||
 	    (job->result->returncode == NET_ERR_CONN_FAILED) ||
 	    (job->result->returncode == NET_ERR_SOCK_ERR) ||
@@ -621,9 +628,10 @@ update_init (void)
 {
 	gushort	i, count;
 
+	pendingJobs = g_async_queue_new ();
 	network_init ();
 	
-
+	g_timeout_add (500, update_dequeue_job, NULL);
 }
 
 #ifdef USE_NM
@@ -688,10 +696,12 @@ update_deinit (void)
 	
 	network_deinit ();
 	
-	/* FIXME: 	
+	// FIXME: cancel all jobs
+	
+	g_async_queue_unref (pendingJobs);
+	
 	g_slist_free (jobs);
 	jobs = NULL;
-	*/
 	
 	debug_exit ("update_deinit");
 }
