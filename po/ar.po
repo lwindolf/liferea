@@ -2051,8 +2051,8 @@ msgid "/_Update All"
 msgstr "/_حدّث الكل"
 
 #: ../src/ui/ui_popup.c:172
-msgid "/_Preferences..."
-msgstr "/_تفضيلات..."
+msgid "/_Preferences"
+msgstr "/_تفضيلات"
 
 #: ../src/ui/ui_popup.c:174
 msgid "/_Show|Hide Window"
@@ -2111,8 +2111,8 @@ msgid "/_Delete"
 msgstr "/ا_حذف"
 
 #: ../src/ui/ui_popup.c:316
-msgid "/_Properties..."
-msgstr "/ال_خصائص..."
+msgid "/_Properties"
+msgstr "/ال_خصائص"
 
 #: ../src/ui/ui_prefs.c:77
 msgid "GNOME Default Browser"

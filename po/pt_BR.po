@@ -1972,8 +1972,8 @@ msgstr ""
 "Atualiza a assinatura selecionada ou todas assinaturas da pasta selecionada. "
 
 #: ../src/ui/ui_mainwindow.c:1080
-msgid "_Properties..."
-msgstr "_Propriedades..."
+msgid "_Properties"
+msgstr "_Propriedades"
 
 #: ../src/ui/ui_mainwindow.c:1080
 msgid "Opens the property dialog for the selected subscription."
@@ -2081,8 +2081,8 @@ msgid "/_Update All"
 msgstr "/At_ualizar Todos"
 
 #: ../src/ui/ui_popup.c:172
-msgid "/_Preferences..."
-msgstr "/_Preferências..."
+msgid "/_Preferences"
+msgstr "/_Preferências"
 
 #: ../src/ui/ui_popup.c:174
 msgid "/_Show|Hide Window"

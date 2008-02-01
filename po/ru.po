@@ -1887,8 +1887,8 @@ msgid ""
 msgstr "Обновить выбранную ленту или все ленты в выбранной папке."
 
 #: ../src/ui/ui_mainwindow.c:1080
-msgid "_Properties..."
-msgstr "Свойства..."
+msgid "_Properties"
+msgstr "Свойства"
 
 #: ../src/ui/ui_mainwindow.c:1080
 msgid "Opens the property dialog for the selected subscription."
@@ -1998,8 +1998,8 @@ msgid "/_Update All"
 msgstr "/Обновить все"
 
 #: ../src/ui/ui_popup.c:172
-msgid "/_Preferences..."
-msgstr "/Свойства ..."
+msgid "/_Preferences"
+msgstr "/Свойства "
 
 #: ../src/ui/ui_popup.c:174
 msgid "/_Show|Hide Window"

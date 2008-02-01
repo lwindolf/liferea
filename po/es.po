@@ -1986,8 +1986,8 @@ msgstr ""
 "canales que contenga."
 
 #: ../src/ui/ui_mainwindow.c:1080
-msgid "_Properties..."
-msgstr "_Propiedades..."
+msgid "_Properties"
+msgstr "_Propiedades"
 
 #: ../src/ui/ui_mainwindow.c:1080
 msgid "Opens the property dialog for the selected subscription."
@@ -2095,8 +2095,8 @@ msgid "/_Update All"
 msgstr "/_Actualizar todo"
 
 #: ../src/ui/ui_popup.c:172
-msgid "/_Preferences..."
-msgstr "/_Preferencias..."
+msgid "/_Preferences"
+msgstr "/_Preferencias"
 
 #: ../src/ui/ui_popup.c:174
 msgid "/_Show|Hide Window"

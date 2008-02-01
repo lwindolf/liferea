@@ -1964,8 +1964,8 @@ msgid ""
 msgstr "選択した購読または選択したフォルダにある全ての購読を更新します"
 
 #: ../src/ui/ui_mainwindow.c:1080
-msgid "_Properties..."
-msgstr "プロパティ(_P)..."
+msgid "_Properties"
+msgstr "プロパティ(_P)"
 
 #: ../src/ui/ui_mainwindow.c:1080
 msgid "Opens the property dialog for the selected subscription."
@@ -2073,8 +2073,8 @@ msgid "/_Update All"
 msgstr "/全て更新(_U)"
 
 #: ../src/ui/ui_popup.c:172
-msgid "/_Preferences..."
-msgstr "/設定(_P)..."
+msgid "/_Preferences"
+msgstr "/設定(_P)"
 
 #: ../src/ui/ui_popup.c:174
 msgid "/_Show|Hide Window"
