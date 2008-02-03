@@ -197,6 +197,14 @@ enclosure_list_view_load (EnclosureListView *elv, itemPtr item)
 	gchar *text = g_strdup_printf (ngettext("%d attachment", "%d attachments", len), len);
 	gtk_expander_set_label (GTK_EXPANDER (expander), text);
 	g_free (text);
+
+	gtk_tree_store_clear (elv->priv->treestore);	
+	while (list) {
+		GtkTreeIter iter;		
+		gtk_tree_store_append (elv->priv->treestore, &iter, NULL);
+		gtk_tree_store_set (elv->priv->treestore, &iter, ES_NAME_STR, list->data, -1);
+		list = list->next;
+	}
 }
 
 void
