@@ -71,9 +71,9 @@ static struct mainwindow {
 	GtkActionGroup	*readWriteActions;	/**< node remove and properties, node itemset items remove */
 	GtkActionGroup	*itemActions;		/**< item state toggline, single item remove */
 	
-	GtkWidget	*enclosureView;		/**< Enclosure list widget */
-	LifereaHtmlView	*htmlview;		/**< HTML rendering widget */
-	gfloat		zoom;			/**< HTML rendering widget zoom level */
+	EnclosureListView	*enclosureView;		/**< Enclosure list widget */
+	LifereaHtmlView		*htmlview;		/**< HTML rendering widget */
+	gfloat			zoom;			/**< HTML rendering widget zoom level */
 } *mainwindow_priv;
 
 /* all used icons */
@@ -137,7 +137,7 @@ ui_mainwindow_get_active_htmlview (void)
 	return mainwindow_priv->htmlview;
 }
 
-GtkWidget *
+EnclosureListView *
 ui_mainwindow_get_active_enclosure_list_view (void)
 {
 	return mainwindow_priv->enclosureView;
@@ -444,7 +444,7 @@ ui_mainwindow_set_layout (guint newMode)
 	gtk_notebook_set_current_page (GTK_NOTEBOOK (liferea_shell_lookup ("itemtabs")), newMode);
 	gtk_widget_reparent (liferea_htmlview_get_widget (mainwindow_priv->htmlview), liferea_shell_lookup (htmlWidgetName));
 	gtk_widget_reparent (GTK_WIDGET (mainwindow_priv->itemlistContainer), liferea_shell_lookup (ilWidgetName));
-	gtk_widget_reparent (GTK_WIDGET (mainwindow_priv->enclosureView), liferea_shell_lookup (encViewWidgetName));
+	gtk_widget_reparent (enclosure_list_view_get_widget (mainwindow_priv->enclosureView), liferea_shell_lookup (encViewWidgetName));
  
 	/* grab necessary to force HTML widget update (display must
 	   change from feed description to list of items and vica 
@@ -598,7 +598,8 @@ ui_mainwindow_init (int mainwindowState)
 	ui_feedlist_init(liferea_shell_lookup("feedlist"));
 	
 	mw->enclosureView = enclosure_list_view_new ();
-	gtk_container_add (GTK_CONTAINER (liferea_shell_lookup ("normalViewEncExpander")), mw->enclosureView);
+	gtk_container_add (GTK_CONTAINER (liferea_shell_lookup ("normalViewEncExpander")),
+	                                  enclosure_list_view_get_widget (mw->enclosureView));
 	
 	mw->itemlistContainer = ui_itemlist_new();
 	mw->itemlist = gtk_bin_get_child (GTK_BIN (mw->itemlistContainer));

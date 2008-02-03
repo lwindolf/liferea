@@ -1,7 +1,7 @@
 /**
  * @file enclosure-list-view.h enclosures list view
  *
- * Copyright (C) 2005-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2005-2008 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@
 
 G_BEGIN_DECLS
 
+#include "item.h"
 #include "enclosure.h"		// FIXME: should not be necessary
 
 #define ENCLOSURE_LIST_VIEW_TYPE		(enclosure_list_view_get_type ())
@@ -57,18 +58,28 @@ GType enclosure_list_view_get_type	(void);
 /**
  * Sets up a new enclosure list view.
  *
- * @returns a new widget to be inserted into the GUI
+ * @returns a new enclosure list view
  */
-GtkWidget * enclosure_list_view_new (void);
+EnclosureListView * enclosure_list_view_new (void);
+
+/**
+ * Returns the rendering widget for a HTML view. Only
+ * to be used by ui_mainwindow.c for widget reparenting.
+ *
+ * @param elv	the enclosure list view
+ *
+ * @returns the rendering widget
+ */
+GtkWidget * enclosure_list_view_get_widget (EnclosureListView *elv);
 
 /**
  * Loads the enclosure list of the given item into the
  * given enclosure list view widget.
  *
- * @param elv	the enclosure list view widget
+ * @param elv	the enclosure list view
  * @param item	the item
  */
-void enclosure_list_view_load (GtkWidget *elv, itemPtr item);
+void enclosure_list_view_load (EnclosureListView *elv, itemPtr item);
 
 /* related menu creation and callbacks */
 

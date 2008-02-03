@@ -1,7 +1,7 @@
 /**
  * @file enclosure-list-view.c enclosures/podcast handling GUI
  *
- * Copyright (C) 2005-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2005-2008 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,6 +30,7 @@
 #include "debug.h"
 #include "enclosure.h"
 #include "item.h"
+#include "metadata.h"
 #include "ui/ui_dialog.h"
 #include "ui/ui_popup.h"
 #include "ui/ui_prefs.h"
@@ -118,7 +119,7 @@ enclosure_list_view_init (EnclosureListView *elv)
 }
 
 
-GtkWidget *
+EnclosureListView *
 enclosure_list_view_new () 
 {
 	EnclosureListView	*elv;
@@ -167,14 +168,44 @@ enclosure_list_view_new ()
 
 	g_signal_connect_object (elv->priv->container, "destroy", G_CALLBACK (enclosure_list_view_destroy_cb), elv, 0);
 
+	return elv;
+}
+
+GtkWidget *
+enclosure_list_view_get_widget (EnclosureListView *elv)
+{
 	return elv->priv->container;
 }
 
 void
-enclosure_list_view_load (GtkWidget *elv, itemPtr item)
+enclosure_list_view_load (EnclosureListView *elv, itemPtr item)
 {
-	// FIXME
-	g_print ("nr of enc: %d", g_slist_length(metadata_list_get_values (item->metadata, "enclosure")));
+	GtkWidget	*expander;
+	GSList		*list;
+	guint		len;
+
+	expander = gtk_widget_get_parent (elv->priv->container);
+	list = metadata_list_get_values (item->metadata, "enclosure");
+	len = g_slist_length (list);
+	if (len > 0) {
+		gtk_widget_show_all (expander);
+	} else {
+		gtk_widget_hide (expander);
+		return;
+	}
+	
+	gchar *text = g_strdup_printf (ngettext("%d attachment", "%d attachments", len), len);
+	gtk_expander_set_label (GTK_EXPANDER (expander), text);
+	g_free (text);
+}
+
+void
+enclosure_list_view_hide (EnclosureListView *elv)
+{
+	GtkWidget	*expander;
+	
+	expander = gtk_widget_get_parent (elv->priv->container);
+	gtk_widget_hide (expander);
 }
 
 /* callback for preferences and enclosure type handling */

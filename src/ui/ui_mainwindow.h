@@ -24,6 +24,7 @@
 #define UI_MAINWINDOW_H
 
 #include <gtk/gtk.h>
+#include "ui_enclosure.h"
 #include "ui_htmlview.h"
 
 extern GtkWidget	*mainwindow;
@@ -61,7 +62,7 @@ LifereaHtmlView * ui_mainwindow_get_active_htmlview (void);
  *
  * @returns the active enclosure list view
  */
-GtkWidget * ui_mainwindow_get_active_enclosure_list_view (void);
+EnclosureListView * ui_mainwindow_get_active_enclosure_list_view (void);
 
 /**
  * Sets the toolbar to a particular style

@@ -79,10 +79,13 @@ void itemview_init(void) {
 	htmlview_init();
 }
 
-void itemview_clear(void) {
+void
+itemview_clear (void) 
+{
 
-	ui_itemlist_clear();
-	htmlview_clear();
+	ui_itemlist_clear ();
+	htmlview_clear ();
+	enclosure_list_view_hide (ui_mainwindow_get_active_enclosure_list_view ());
 	
 	itemView_priv.needsHTMLViewUpdate = TRUE;
 }
@@ -127,7 +130,7 @@ itemview_set_displayed_node (nodePtr node)
 		/* 2. Reset view state */
 		itemview_clear ();
 		
-		/* 3. And repare HTML view */
+		/* 3. And prepare HTML view */
 		htmlview_set_displayed_node (node);
 	}
 }
