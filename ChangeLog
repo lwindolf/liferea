@@ -1,5 +1,13 @@
 2008-02-??  Lars Lindner  <lars.lindner@gmail.com>
 
+	Version 1.4.13 (Stable)
+
+	* Fixes SF #1886797: crash on format string
+	  (patch by Giandomenico De Tullio)
+
+
+2008-02-01  Lars Lindner  <lars.lindner@gmail.com>
+
 	Version 1.4.12 (Stable)
 
 	* Added support for OPML blogrolls with "xmlURL"
