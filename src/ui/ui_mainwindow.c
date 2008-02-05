@@ -391,7 +391,7 @@ static void radio_action_set_current_value(GtkRadioAction *action, gint current_
 static void
 ui_mainwindow_htmlview_statusbar_changed (gpointer obj, gchar *url)
 {
-	ui_mainwindow_set_status_bar (url);
+	ui_mainwindow_set_status_bar ("%s", url);
 }
 
 void
