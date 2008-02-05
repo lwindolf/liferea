@@ -276,17 +276,20 @@ itemlist_load (nodePtr node)
 
 	/* for folders and other heirarchic nodes do filtering */
 	if (IS_FOLDER (node) || node->children) {
+		ui_mainwindow_update_allitems_actions (FALSE, 0 != node->unreadCount);
+		
 		if (0 == conf_get_int_value (FOLDER_DISPLAY_MODE))
 			return;
 	
 		if (conf_get_bool_value (FOLDER_DISPLAY_HIDE_READ))
 			itemlist_priv.filter = g_slist_append (NULL, rule_new (NULL, "unread", "", TRUE));
+	} else {
+		ui_mainwindow_update_allitems_actions (0 != node->itemCount, 0 != node->unreadCount);
 	}
 
 	itemlist_priv.loading++;
 	itemlist_priv.viewMode = node_get_view_mode (node);
 	ui_mainwindow_set_layout (itemlist_priv.viewMode);
-	ui_mainwindow_update_item_menu (FALSE);
 
 	/* Set the new displayed node... */
 	itemlist_priv.currentNode = node;
@@ -569,9 +572,6 @@ itemlist_selection_changed (itemPtr item)
 			}
 			ui_node_update (item->nodeId);
 		}
-
-		
-		ui_mainwindow_update_item_menu (NULL != item);
 
 		feedlist_reset_new_item_count ();
 	}

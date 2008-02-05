@@ -730,6 +730,7 @@ void on_itemlist_selection_changed(GtkTreeSelection *selection, gpointer data) {
 	if(gtk_tree_selection_get_selected(selection, &model, &iter))
 		item = item_load(ui_iter_to_item_id(&iter));
 
+	ui_mainwindow_update_item_menu (NULL != item);
 	if(item)
 		itemlist_selection_changed(item);
 }

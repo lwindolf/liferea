@@ -241,6 +241,8 @@ void itemview_update(void) {
 		itemView_priv.needsHTMLViewUpdate = FALSE;
 		htmlview_update(ui_mainwindow_get_active_htmlview(), itemView_priv.mode);
 	}
+	if (itemView_priv.node)
+		ui_mainwindow_update_allitems_actions(0 != itemView_priv.node->itemCount, 0 != itemView_priv.node->unreadCount);
 }
 
 /* date format handling (not sure if this is the right place) */

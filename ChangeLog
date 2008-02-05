@@ -20,6 +20,8 @@
 	  Updates the code to the renamed interfaces.
 	  Adds link context menu support for WebKit.
 	  (patch by Lars Strojny)
+	* Context sensitive toolbar/menubar menu options.
+	  (patches by goyko)
 
 
 2007-07-22  Lars Lindner  <lars.lindner@gmail.com>

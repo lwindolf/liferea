@@ -296,6 +296,7 @@ feedlist_unselect (void)
 	itemlist_unload (FALSE /* mark all read */);
 	ui_feedlist_select (NULL);
 	ui_mainwindow_update_feed_menu (FALSE, FALSE);
+	ui_mainwindow_update_allitems_actions (FALSE, FALSE);
 }
 
 void

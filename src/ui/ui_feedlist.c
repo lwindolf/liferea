@@ -137,10 +137,13 @@ ui_feedlist_selection_changed_cb (GtkTreeSelection *selection, gpointer data)
 		/* update feed list and item list states */
 		feedlist_selection_changed (node);
 		
-		if (node)
+		if (node) {
+			ui_mainwindow_update_update_menu ((NODE_TYPE (node)->capabilities & NODE_CAPABILITY_UPDATE) ||
+			                                  (NODE_TYPE (node)->capabilities & NODE_CAPABILITY_UPDATE_CHILDS));
 			ui_mainwindow_update_feed_menu (TRUE, (NODE_SOURCE_TYPE (node->source->root)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST));
-		else
+		} else {
 			ui_mainwindow_update_feed_menu (FALSE, FALSE);
+		}
 	} else {
 		/* If we cannot get the new selection we keep the old one
 		   this happens when we're doing drag&drop for example. */
@@ -243,8 +246,9 @@ void ui_feedlist_init(GtkWidget *feedview) {
 	                  G_CALLBACK (ui_feedlist_selection_changed_cb),
                 	  liferea_shell_lookup ("feedlist"));
 	
-	ui_dnd_setup_feedlist(feedstore);			
-	ui_mainwindow_update_feed_menu(FALSE, FALSE);
+	ui_dnd_setup_feedlist (feedstore);
+	ui_mainwindow_update_feed_menu (FALSE, FALSE);
+	ui_mainwindow_update_allitems_actions (FALSE, FALSE);
 
 	debug_exit("ui_feedlist_init");
 }

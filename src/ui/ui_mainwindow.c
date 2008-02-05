@@ -595,7 +595,12 @@ ui_mainwindow_init (int mainwindowState)
 		gtk_paned_set_position(GTK_PANED(liferea_shell_lookup("wideViewPane")), getNumericConfValue(LAST_WPANE_POS));
 
 	/* order important !!! */
-	ui_feedlist_init(liferea_shell_lookup("feedlist"));
+	
+	/* On start, no item or feed is selected, so Item menu should be insensitive: */
+	ui_mainwindow_update_item_menu (FALSE);
+
+	/* order important !!! */
+	ui_feedlist_init (liferea_shell_lookup ("feedlist"));
 	
 	mw->enclosureView = enclosure_list_view_new ();
 	gtk_container_add (GTK_CONTAINER (liferea_shell_lookup ("normalViewEncExpander")),
@@ -734,6 +739,19 @@ void ui_mainwindow_update_toolbar(void) {
 		gtk_widget_hide(mainwindow_priv->toolbar);
 	else
 		gtk_widget_show(mainwindow_priv->toolbar);
+}
+
+void
+ui_mainwindow_update_allitems_actions (gboolean isNotEmpty, gboolean isRead)
+{
+	gtk_action_set_sensitive (gtk_action_group_get_action (mainwindow_priv->generalActions, "RemoveAllItems"), isNotEmpty);
+	gtk_action_set_sensitive (gtk_action_group_get_action (mainwindow_priv->feedActions, "MarkFeedAsRead"), isRead);
+}
+
+void
+ui_mainwindow_update_update_menu (gboolean isUpdateable)
+{
+	gtk_action_set_sensitive (gtk_action_group_get_action (mainwindow_priv->feedActions, "UpdateSelected"),	isUpdateable);
 }
 
 void
