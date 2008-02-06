@@ -17,6 +17,8 @@
 	* Added support for OPML blogrolls with "xmlURL"
 	  (instead of "xmlUrl") feed attributes as created
 	  by LiveJournal blogroll exports.
+	* Fix for missing statusbar signal.
+	  (patch by Gustavo Chain)
 	* Fixes SF #1879861: browser skimming hotkey doesn't
 	  work correctly when used in search folders.
 	  (reported by darthanubis)
