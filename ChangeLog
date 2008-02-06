@@ -2,6 +2,8 @@
 
 	Version 1.4.13 (Stable)
 
+	* WebKitGtk interface updates for SVN r28711.
+	  (patch by Lars Strojny)
 	* Fixes SF #1886797: crash on format string
 	  (patch by Giandomenico De Tullio)
 	* Fixes SF #1884048: crashes on empty comment feed URI

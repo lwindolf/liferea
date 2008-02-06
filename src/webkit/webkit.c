@@ -19,9 +19,7 @@
  */
 
 
-#include <webkitgtkpage.h>
-#include <webkitgtkframe.h>
-#include <webkitgtksettings.h>
+#include <webkit.h>
 
 #include "conf.h"
 #include "ui/ui_htmlview.h"
@@ -50,18 +48,18 @@ webkit_write_html (GtkWidget *scrollpane,
 }
 
 static void
-webkit_title_changed (WebKitPage *page, const gchar* title, const gchar* url, gpointer user_data)
+webkit_title_changed (WebKitWebView *page, const gchar* title, const gchar* url, gpointer user_data)
 {
 	ui_tabs_set_title (GTK_WIDGET (page), title);
 }
 
 static void
-webkit_progress_changed (WebKitPage *page, gint progress, gpointer user_data)
+webkit_progress_changed (WebKitWebView *page, gint progress, gpointer user_data)
 {
 }
 
 static void
-webkit_on_url (WebKitPage *page, const gchar *title, const gchar *url, gpointer user_data)
+webkit_on_url (WebKitWebView *page, const gchar *title, const gchar *url, gpointer user_data)
 {
 	LifereaHtmlView	*htmlview;
 	gchar		*selectedURL;
@@ -87,7 +85,9 @@ webkit_new (LifereaHtmlView *htmlview, gboolean forceInternalBrowsing)
 	gulong	handler;
 	GtkWidget *page;
 	GtkWidget *scrollpane;
+/*
 	WebKitSettings *settings;
+*/
 	
 	scrollpane = gtk_scrolled_window_new(NULL, NULL);
 
@@ -95,7 +95,7 @@ webkit_new (LifereaHtmlView *htmlview, gboolean forceInternalBrowsing)
 	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrollpane), GTK_SHADOW_IN);
 	
 	/* create html widget and pack it into the scrolled window */
-	page = webkit_page_new ();
+	page = webkit_web_view_new ();
 	
 /*	// empty functions in current webkit code...
 	settings = webkit_web_settings_copy (webkit_web_settings_get_global ());
