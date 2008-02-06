@@ -104,7 +104,7 @@ comments_process_update_result (const struct updateResult * const result, gpoint
 	g_return_if_fail (item != NULL);
 	
 	/* note this is to update the feed URL on permanent redirects */
-	if (!strcmp (result->source, metadata_list_get (item->metadata, "commentFeedUri"))) {
+	if (result->source && !strcmp (result->source, metadata_list_get (item->metadata, "commentFeedUri"))) {
 	
 		debug2 (DEBUG_UPDATE, "updating comment feed URL from \"%s\" to \"%s\"", 
 		                      metadata_list_get (item->metadata, "commentFeedUri"), 
