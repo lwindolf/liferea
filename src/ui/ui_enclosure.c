@@ -118,6 +118,33 @@ enclosure_list_view_init (EnclosureListView *elv)
 	elv->priv = ENCLOSURE_LIST_VIEW_GET_PRIVATE (elv);
 }
 
+static gboolean
+on_enclosure_list_button_press (GtkWidget *treeview, GdkEventButton *event, gpointer user_data)
+{
+	GdkEventButton		*eb = (GdkEventButton *)event;
+	GtkTreePath		*path;
+	GtkTreeIter		iter;
+	EnclosureListView 	*elv = (EnclosureListView *)user_data;
+	
+	if ((event->type != GDK_BUTTON_PRESS) || (3 != eb->button))
+		return FALSE;
+
+	/* avoid handling header clicks */
+	if (event->window != gtk_tree_view_get_bin_window (GTK_TREE_VIEW (treeview)))
+		return FALSE;
+
+	if (!gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (treeview), (gint)event->x, (gint)event->y, &path, NULL, NULL, NULL))
+		return FALSE;
+
+	if (gtk_tree_model_get_iter (GTK_TREE_MODEL (elv->priv->treestore), &iter, path)) {
+		gchar *uri;
+		
+		gtk_tree_model_get (elv->priv->treestore, &iter, ES_NAME_STR, &uri, -1);
+		gtk_menu_popup (ui_popup_make_enclosure_menu (uri), NULL, NULL, NULL, NULL, eb->button, eb->time);
+	}
+	
+	return TRUE;
+}
 
 EnclosureListView *
 enclosure_list_view_new () 
@@ -148,23 +175,13 @@ enclosure_list_view_new ()
 	                                                   "text", ES_NAME_STR,
 							   NULL);
 	gtk_tree_view_append_column (GTK_TREE_VIEW (elv->priv->treeview), column);
+	gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (elv->priv->treeview), FALSE);
 	gtk_tree_view_column_set_sort_column_id (column, ES_NAME_STR);
-	g_object_set(column, "resizable", TRUE, NULL);
-	
-#if GTK_CHECK_VERSION(2,6,0)
-	g_object_set(renderer, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
-#endif
+	g_object_set (column, "resizable", TRUE, NULL);
+	g_object_set (renderer, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
 
-	/* Setup the selection handler */
-/*	select = gtk_tree_view_get_selection(GTK_TREE_VIEW(itemlist));
-	gtk_tree_selection_set_mode(select, GTK_SELECTION_SINGLE);
-	g_signal_connect(G_OBJECT(select), "changed",
-	                 G_CALLBACK(on_itemlist_selection_changed), NULL);
-	g_signal_connect((gpointer)itemlist, "button_press_event",
-	                 G_CALLBACK(on_itemlist_button_press_event), NULL);
-	g_signal_connect((gpointer)itemlist, "row_activated",
-	                 G_CALLBACK(on_Itemlist_row_activated), NULL);
-	*/	  
+	g_signal_connect ((gpointer)elv->priv->treeview, "button_press_event",
+	                  G_CALLBACK (on_enclosure_list_button_press), (gpointer)elv);
 
 	g_signal_connect_object (elv->priv->container, "destroy", G_CALLBACK (enclosure_list_view_destroy_cb), elv, 0);
 

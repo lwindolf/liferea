@@ -321,9 +321,7 @@ ui_itemlist_new(void)
 	gtk_tree_view_append_column(GTK_TREE_VIEW(itemlist), column);
 	gtk_tree_view_column_set_sort_column_id(column, IS_LABEL);
 	g_object_set(column, "resizable", TRUE, NULL);
-#if GTK_CHECK_VERSION(2,6,0)
 	g_object_set(renderer, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
-#endif
 
 	/* And connect signals */	
 	g_signal_connect(G_OBJECT(GTK_TREE_VIEW(itemlist)), "key-press-event", G_CALLBACK(ui_itemlist_key_press_cb), NULL);
