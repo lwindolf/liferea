@@ -1,7 +1,7 @@
 /**
  * @file item.c common item handling
  *
- * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *	      
  * This program is free software; you can redistribute it and/or modify
@@ -29,6 +29,7 @@
 #include <stdlib.h>
 
 #include "comments.h"
+#include "common.h"
 #include "db.h"
 #include "debug.h"
 #include "item.h"
@@ -51,15 +52,17 @@ itemPtr item_load(gulong id) {
 	return db_item_load(id);
 }
 
-itemPtr item_copy(itemPtr item) {
-	itemPtr copy = item_new();
+itemPtr
+item_copy (itemPtr item)
+{
+	itemPtr copy = item_new ();
 
-	item_set_title(copy, item->title);
-	item_set_source(copy, item->source);
-	item_set_real_source_url(copy, item->real_source_url);
-	item_set_real_source_title(copy, item->real_source_title);
-	item_set_description(copy, item->description);
-	item_set_id(copy, item->sourceId);
+	item_set_title (copy, item->title);
+	item_set_source (copy, item->source);
+	item_set_real_source_url (copy, item->real_source_url);
+	item_set_real_source_title (copy, item->real_source_title);
+	item_set_description (copy, item->description);
+	item_set_id (copy, item->sourceId);
 	
 	copy->updateStatus = item->updateStatus;
 	copy->readStatus = item->readStatus;
@@ -74,23 +77,67 @@ itemPtr item_copy(itemPtr item) {
 	copy->sourceNr = item->id;
 
 	/* this copies metadata */
-	copy->metadata = metadata_list_copy(item->metadata);
+	copy->metadata = metadata_list_copy (item->metadata);
 	
-	// FIXME: deep copy of comments
+	/* no deep copy of comments necessary as they are automatically 
+	   retrieved when reading the article */
 
 	return copy;
 }
 
-void item_set_title(itemPtr item, const gchar * title) {
-
-	g_free(item->title);
-	item->title = g_strdup(title);
+void
+item_set_title (itemPtr item, const gchar * title)
+{
+	g_free (item->title);
+	item->title = g_strdup (title);
 }
 
-void item_set_description(itemPtr item, const gchar * description) {
+/**
+ * The current item content merging implementation is purely size based.
+ * We expect all texts to be UTF-8 more or less (but equally) HTML encoded
+ * which can simply be length-compared. The longer the text the more
+ * interesting content...
+ */
+void
+item_set_description (itemPtr item, const gchar *description)
+{
+	gboolean	overwrite = FALSE;
+	gboolean	isHTML = FALSE;
+	
+	if (!description)
+		return;
+	
+	if (item->description) {
+		if (strlen (description) > strlen (item->description))
+			overwrite = TRUE;
+	} else {
+		/* no description yet */
+		overwrite = TRUE;
+	}
+	
+	if (!overwrite)
+		return;
 
-	g_free(item->description);
-	item->description = g_strdup(description);
+	g_free (item->description);
+	
+	/* We have the old text vs. HTML problem here. Many feed generators
+	   provide plain text with line breaks making everything unreadable
+	   when presented as HTML. So we do some simply HTML detection and
+	   if it fails we replace all line breaks with <br/> */
+	   
+	// FIXME: find a better detector solution! XPath?
+	if (strstr (description, "<b>"))
+		isHTML = TRUE;
+	else if (strstr (description, "<i>"))
+		isHTML = TRUE;
+	else if (strstr (description, "<p>"))
+		isHTML = TRUE;
+	else if (strstr (description, "<a href="))
+		isHTML = TRUE;
+		
+	item->description = g_strdup (description);
+	if (isHTML)
+		item->description = common_strreplace (item->description, "\n", "<br/>");
 }
 
 void item_set_source(itemPtr item, const gchar * source) { 

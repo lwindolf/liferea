@@ -404,14 +404,12 @@ static void atom10_parse_entry_rights(xmlNodePtr cur, feedParserCtxtPtr ctxt, st
    <content> description we show the <summary> content */
 static void atom10_parse_entry_summary(xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10ParserState *state) {
 		
-	if(!item_get_description(ctxt->item)) {
-		gchar *summary = atom10_parse_text_construct(cur, TRUE);
-		if(summary) {
-			item_set_description(ctxt->item, summary);
-			g_free(summary);
-		}
-		/* FIXME: set a flag to show a "Read more" link to the user; but where? */
+	gchar *summary = atom10_parse_text_construct(cur, TRUE);
+	if(summary) {
+		item_set_description(ctxt->item, summary);
+		g_free(summary);
 	}
+	/* FIXME: set a flag to show a "Read more" link to the user; but where? */
 }
 
 static void atom10_parse_entry_title(xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10ParserState *state) {

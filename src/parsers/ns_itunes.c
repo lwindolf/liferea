@@ -45,7 +45,7 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 		}
 	}
 	
-	if (!xmlStrcmp (cur->name, "summary") && !item_get_description(ctxt->item)) {
+	if (!xmlStrcmp (cur->name, "summary")) {
 		tmp = common_utf8_fix (xhtml_extract (cur, 0, NULL));
 		item_set_description (ctxt->item, tmp);
 		g_free (tmp);

@@ -1,7 +1,7 @@
 /**
  * @file item.h common item handling
  * 
- * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -60,6 +60,7 @@ typedef struct item {
 	gchar		*real_source_url;	/**< (optional) URL of the real source (e.g. if listed in search engine result) */
 	gchar		*real_source_title;	/**< (optional) title of the real source */
 	gchar		*description;		/**< XHTML string containing the item's description */
+	gchar		*descriptionSource;	/**< Namespace indicator for the descriptions origin. Used for merging descriptions. */
 	
 	GSList		*metadata;		/**< Metadata of this item */
 	GHashTable	*tmpdata;		/**< Temporary data hash used during stateful parsing */
@@ -133,8 +134,17 @@ const gchar *	item_get_real_source_title(itemPtr item);
 
 /** Sets the item title */
 void		item_set_title(itemPtr item, const gchar * title);
-/** Sets the item description */
-void		item_set_description(itemPtr item, const gchar * description);
+
+/**
+ * Sets the item description. If called more than once it
+ * will merge the new description against the old one deciding
+ * on the best to keep.
+ *
+ * @param item		the item
+ * @param description	the content
+ */
+void item_set_description (itemPtr item, const gchar *description);
+
 /** Sets the item source */
 void		item_set_source(itemPtr item, const gchar * source);
 /** Sets the item real source */
