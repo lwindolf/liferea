@@ -172,7 +172,11 @@ itemview_select_item (itemPtr item)
 
 	ui_itemlist_select (item);
 	htmlview_select_item (item);
-	enclosure_list_view_load (ui_mainwindow_get_active_enclosure_list_view (), item);
+
+	if (item)
+		enclosure_list_view_load (ui_mainwindow_get_active_enclosure_list_view (), item);
+	else
+		enclosure_list_view_hide (ui_mainwindow_get_active_enclosure_list_view ());
 }
 
 void itemview_update_item(itemPtr item) {

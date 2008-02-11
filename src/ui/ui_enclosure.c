@@ -139,7 +139,7 @@ on_enclosure_list_button_press (GtkWidget *treeview, GdkEventButton *event, gpoi
 	if (gtk_tree_model_get_iter (GTK_TREE_MODEL (elv->priv->treestore), &iter, path)) {
 		gchar *uri;
 		
-		gtk_tree_model_get (elv->priv->treestore, &iter, ES_NAME_STR, &uri, -1);
+		gtk_tree_model_get (GTK_TREE_MODEL (elv->priv->treestore), &iter, ES_NAME_STR, &uri, -1);
 		gtk_menu_popup (ui_popup_make_enclosure_menu (uri), NULL, NULL, NULL, NULL, eb->button, eb->time);
 	}
 	
@@ -202,7 +202,7 @@ enclosure_list_view_load (EnclosureListView *elv, itemPtr item)
 	guint		len;
 
 	expander = gtk_widget_get_parent (elv->priv->container);
-	list = metadata_list_get_values (item->metadata, "enclosure");
+	list = metadata_list_get_values (item->metadata, "enclosure");		
 	len = g_slist_length (list);
 	if (len > 0) {
 		gtk_widget_show_all (expander);

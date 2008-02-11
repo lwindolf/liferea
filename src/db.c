@@ -88,7 +88,7 @@ redo:
 	statement = (struct statement *) g_hash_table_lookup (statements, name);
 	if (!statement)
 		g_error ("Fatal: unknown prepared statement \"%s\" requested!", name);	
-		
+
 	if (statement->write)
 		stmtCounter++;
 		
