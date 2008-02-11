@@ -30,12 +30,6 @@
 #include "common.h"
 #include "metadata.h"
 
-#define TABLE_START	"<div class=\"feedfoottitle\">additional Dublin Core information</div><table class=\"addfoot\">"
-#define FIRSTTD		"<tr class=\"feedfoot\"><td class=\"feedfootname\"><span class=\"feedfootname\">"
-#define NEXTTD		"</span></td><td class=\"feedfootvalue\"><span class=\"feedfootvalue\">"
-#define LASTTD		"</span></td></tr>"
-#define TABLE_END	"</table>"
-
 #define TYPE_DIRECTORY	0
 #define TYPE_CHANNEL	1
 #define TYPE_FORMAT	2
@@ -131,7 +125,7 @@ static gchar * mapToItemMetadata[] = {
 				"creator",		/* creator */
 				"category",		/* subject */
 				"description",		/* description */
-				"publisher",			/* publisher */
+				"publisher",		/* publisher */
 				"contributor",		/* contributor */				
 				NULL,			/* date (won't be processed...) */
 				NULL,			/* type */
