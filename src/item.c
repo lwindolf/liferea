@@ -124,19 +124,22 @@ item_set_description (itemPtr item, const gchar *description)
 	   provide plain text with line breaks making everything unreadable
 	   when presented as HTML. So we do some simply HTML detection and
 	   if it fails we replace all line breaks with <br/> */
-	   
+
+	// FIXME: doesn't even work because XHTML conversion alreadey
+	// added <div><p></p></div> wrapping...
+		   
 	// FIXME: find a better detector solution! XPath?
 	if (strstr (description, "<b>"))
 		isHTML = TRUE;
 	else if (strstr (description, "<i>"))
 		isHTML = TRUE;
-	else if (strstr (description, "<p>"))
-		isHTML = TRUE;
+//	else if (strstr (description, "<p>"))
+//		isHTML = TRUE;
 	else if (strstr (description, "<a href="))
 		isHTML = TRUE;
 		
 	item->description = g_strdup (description);
-	if (isHTML)
+	if (!isHTML)
 		item->description = common_strreplace (item->description, "\n", "<br/>");
 }
 
