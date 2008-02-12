@@ -22,6 +22,7 @@
 	  (patch by Lars Strojny)
 	* Context sensitive toolbar/menubar menu options.
 	  (patches by goyko)
+	* Now raises window on new subscription via DBUS.
 
 
 2007-07-22  Lars Lindner  <lars.lindner@gmail.com>

@@ -30,6 +30,7 @@
 #include "net.h"
 #include "node.h"
 #include "subscription.h"
+#include "ui/ui_mainwindow.h"
 
 G_DEFINE_TYPE(LifereaDBus, liferea_dbus, G_TYPE_OBJECT)
 
@@ -45,6 +46,7 @@ gboolean liferea_dbus_set_online(LifereaDBus *self, gboolean online, gboolean *r
 }
 
 gboolean liferea_dbus_subscribe(LifereaDBus *self, gchar *url, gboolean *ret, GError **err) {
+	ui_mainwindow_show ();
 	node_request_automatic_add(url, NULL, NULL, NULL, FEED_REQ_RESET_TITLE | FEED_REQ_RESET_UPDATE_INT);
 	*ret = TRUE;
 	return TRUE;
