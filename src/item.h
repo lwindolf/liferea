@@ -60,7 +60,6 @@ typedef struct item {
 	gchar		*real_source_url;	/**< (optional) URL of the real source (e.g. if listed in search engine result) */
 	gchar		*real_source_title;	/**< (optional) title of the real source */
 	gchar		*description;		/**< XHTML string containing the item's description */
-	gchar		*descriptionSource;	/**< Namespace indicator for the descriptions origin. Used for merging descriptions. */
 	
 	GSList		*metadata;		/**< Metadata of this item */
 	GHashTable	*tmpdata;		/**< Temporary data hash used during stateful parsing */
