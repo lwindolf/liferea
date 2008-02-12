@@ -97,4 +97,6 @@ void on_popup_save_enclosure(gpointer callback_data, guint callback_action, GtkW
 void ui_enclosure_change_type (encTypePtr type);
 void ui_enclosure_remove_type (encTypePtr type);
 
+G_END_DECLS
+
 #endif /* _UI_ENCLOSURE_H */
