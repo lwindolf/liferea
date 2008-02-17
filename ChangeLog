@@ -1,4 +1,4 @@
-2008-01-??  Lars Lindner  <lars.lindner@gmail.com>
+2008-02-??  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.5.0 (Unstable)
 
@@ -23,6 +23,8 @@
 	* Context sensitive toolbar/menubar menu options.
 	  (patches by goyko)
 	* Now raises window on new subscription via DBUS.
+	* New "Copy Link Location" option for enclosure
+	  context menu. (patch by Jon Forsberg)
 
 
 2007-07-22  Lars Lindner  <lars.lindner@gmail.com>

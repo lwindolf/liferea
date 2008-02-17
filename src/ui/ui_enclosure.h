@@ -92,6 +92,7 @@ void ui_enclosure_new_popup(const gchar *url);
 
 void on_popup_open_enclosure(gpointer callback_data, guint callback_action, GtkWidget *widget);
 void on_popup_save_enclosure(gpointer callback_data, guint callback_action, GtkWidget *widget);
+void on_popup_copy_enclosure(gpointer callback_data, guint callback_action, GtkWidget *widget);
 
 // FIXME: these do not belong here!
 void ui_enclosure_change_type (encTypePtr type);

@@ -425,3 +425,10 @@ ui_enclosure_change_type (encTypePtr type)
 {
 	ui_enclosure_add (type, NULL, NULL);
 }
+
+void
+on_popup_copy_enclosure (gpointer callback_data, guint callback_action, GtkWidget *widget)
+{
+        gtk_clipboard_set_text (gtk_clipboard_get (GDK_SELECTION_PRIMARY), callback_data, -1);
+        gtk_clipboard_set_text (gtk_clipboard_get (GDK_SELECTION_CLIPBOARD), callback_data, -1);
+}

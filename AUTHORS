@@ -54,6 +54,7 @@ Emilio Pozuelo Monfort <pochu@ubuntu.com>		new DBUS query methods
 goyko <kirilov-georgi@users.sf.net>			Support for enclosure URL open
 Gustavo Chain <g@0xff.cl>				Starting minimized to tray
 Lars Strojny <larsml@strojny.net>			Statusbar improvements
+Jon Forsberg <zzed2004@users.sf.net>			Enclosure context menu patch
 
 Maintainer Credits
 ==================
