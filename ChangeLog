@@ -8,6 +8,9 @@
 	  (patch by Giandomenico De Tullio)
 	* Fixes SF #1884048: crashes on empty comment feed URI
 	  (reported by djotaku4)
+	* Workaround for Debian #454184: crash on startup
+	  when Gecko widget not visible.
+	  (patch from Luis Rodrigo Gallardo Cruz)
 
 
 2008-02-01  Lars Lindner  <lars.lindner@gmail.com>

@@ -112,29 +112,39 @@ gint mozsupport_get_mouse_event_button(gpointer event) {
 }
 
 extern "C" void
-mozsupport_set_zoom (GtkWidget *embed, gfloat aZoom) {
+mozsupport_set_zoom (GtkWidget *embed, gfloat aZoom)
+{
 	nsCOMPtr<nsIWebBrowser>		mWebBrowser;	
 	nsCOMPtr<nsIDOMWindow> 		mDOMWindow;
 	
-	gtk_moz_embed_get_nsIWebBrowser(GTK_MOZ_EMBED(embed), getter_AddRefs(mWebBrowser));
-	mWebBrowser->GetContentDOMWindow(getter_AddRefs(mDOMWindow));	
-	if(NULL == mDOMWindow) {
-		g_warning("could not retrieve DOM window...");
+	gtk_moz_embed_get_nsIWebBrowser (GTK_MOZ_EMBED (embed), getter_AddRefs (mWebBrowser));
+	if (NULL == mWebBrowser) {
+		g_warning ("mozsupport_set_zoom(): Could not retrieve browser...");
+		return;
+	}
+	mWebBrowser->GetContentDOMWindow (getter_AddRefs (mDOMWindow));
+	if (NULL == mDOMWindow) {
+		g_warning ("mozsupport_set_zoom(): Could not retrieve DOM window...");
 		return;
 	}
 	mDOMWindow->SetTextZoom (aZoom);
 }
 
 extern "C" gfloat
-mozsupport_get_zoom (GtkWidget *embed) {
+mozsupport_get_zoom (GtkWidget *embed)
+{
 	nsCOMPtr<nsIWebBrowser>		mWebBrowser;	
 	nsCOMPtr<nsIDOMWindow> 		mDOMWindow;
 	float zoom;
 	
-	gtk_moz_embed_get_nsIWebBrowser(GTK_MOZ_EMBED(embed), getter_AddRefs(mWebBrowser));
-	mWebBrowser->GetContentDOMWindow(getter_AddRefs(mDOMWindow));	
-	if(NULL == mDOMWindow) {
-		g_warning("could not retrieve DOM window...");
+	gtk_moz_embed_get_nsIWebBrowser (GTK_MOZ_EMBED (embed), getter_AddRefs (mWebBrowser));
+	if (NULL == mWebBrowser) {
+		g_warning ("mozsupport_get_zoom(): Could not retrieve browser...");
+		return 1.0;
+	}
+	mWebBrowser->GetContentDOMWindow (getter_AddRefs (mDOMWindow));	
+	if (NULL == mDOMWindow) {
+		g_warning ("mozsupport_get_zoom(): Could not retrieve DOM window...");
 		return 1.0;
 	}
 	mDOMWindow->GetTextZoom (&zoom);	
