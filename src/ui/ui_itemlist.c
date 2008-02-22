@@ -1,7 +1,7 @@
 /**
  * @file ui_itemlist.c item list GUI handling
  *  
- * Copyright (C) 2004-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2008 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This library is free software; you can redistribute it and/or
@@ -268,73 +268,70 @@ ui_itemlist_new(void)
 	GtkWidget 		*itemlist;
 	GtkWidget 		*ilscrolledwindow;
 	
-	ilscrolledwindow = gtk_scrolled_window_new(NULL, NULL);
-	gtk_widget_show(ilscrolledwindow);
-	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW (ilscrolledwindow), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
-	gtk_scrolled_window_set_shadow_type(GTK_SCROLLED_WINDOW (ilscrolledwindow), GTK_SHADOW_IN);
+	ilscrolledwindow = gtk_scrolled_window_new (NULL, NULL);
+	gtk_widget_show (ilscrolledwindow);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (ilscrolledwindow), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (ilscrolledwindow), GTK_SHADOW_IN);
 
-	itemlist_treeview = itemlist = gtk_tree_view_new();
-	gtk_container_add(GTK_CONTAINER(ilscrolledwindow), itemlist);
-	gtk_widget_show(itemlist);
-	gtk_widget_set_name(itemlist, "itemlist");
-	gtk_tree_view_set_rules_hint(GTK_TREE_VIEW(itemlist), TRUE);
+	itemlist_treeview = itemlist = gtk_tree_view_new ();
+	gtk_container_add (GTK_CONTAINER (ilscrolledwindow), itemlist);
+	gtk_widget_show (itemlist);
+	gtk_widget_set_name (itemlist, "itemlist");
+	gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (itemlist), TRUE);
 	
-	g_object_set_data(G_OBJECT(mainwindow), "itemlist", itemlist);
+	g_object_set_data (G_OBJECT (mainwindow), "itemlist", itemlist);
 
-	item_id_to_iter = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, g_free);
+	item_id_to_iter = g_hash_table_new_full (g_direct_hash, g_direct_equal, NULL, g_free);
 
-	itemstore = ui_itemlist_get_tree_store();
+	itemstore = ui_itemlist_get_tree_store ();
 
-	gtk_tree_view_set_model(GTK_TREE_VIEW(itemlist), GTK_TREE_MODEL(itemstore));
+	gtk_tree_view_set_model (GTK_TREE_VIEW (itemlist), GTK_TREE_MODEL (itemstore));
 
-	renderer = gtk_cell_renderer_pixbuf_new();
-	column = gtk_tree_view_column_new_with_attributes("", renderer, "pixbuf", IS_STATEICON, NULL);
-	gtk_tree_view_append_column(GTK_TREE_VIEW(itemlist), column);
-	gtk_tree_view_column_set_sort_column_id(column, IS_STATE);
+	renderer = gtk_cell_renderer_pixbuf_new ();
+	column = gtk_tree_view_column_new_with_attributes ("", renderer, "pixbuf", IS_STATEICON, NULL);
+	gtk_tree_view_append_column (GTK_TREE_VIEW (itemlist), column);
+	gtk_tree_view_column_set_sort_column_id (column, IS_STATE);	
 	
-	renderer = gtk_cell_renderer_pixbuf_new();
-	column = gtk_tree_view_column_new_with_attributes("", renderer, "pixbuf", IS_ENCICON, NULL);
-	gtk_tree_view_append_column(GTK_TREE_VIEW(itemlist), column);
+	renderer = gtk_cell_renderer_pixbuf_new ();
+	column = gtk_tree_view_column_new_with_attributes ("", renderer, "pixbuf", IS_ENCICON, NULL);
+	gtk_tree_view_append_column (GTK_TREE_VIEW (itemlist), column);
 
-	renderer = gtk_cell_renderer_text_new();
-	column = gtk_tree_view_column_new_with_attributes(_("Date"), renderer, 
-	                                                  "text", IS_TIME_STR,
-							  "weight", ITEMSTORE_UNREAD,
-							  NULL);
-	gtk_tree_view_append_column(GTK_TREE_VIEW(itemlist), column);
+	renderer = gtk_cell_renderer_text_new ();
+	column = gtk_tree_view_column_new_with_attributes (_("Date"), renderer, 
+	                                                   "text", IS_TIME_STR,
+							   "weight", ITEMSTORE_UNREAD,
+							   NULL);
+	gtk_tree_view_append_column (GTK_TREE_VIEW(itemlist), column);
 	gtk_tree_view_column_set_sort_column_id(column, IS_TIME);
-	g_object_set(column, "resizable", TRUE, NULL);
+	g_object_set (column, "resizable", TRUE, NULL);
 	
-	renderer = gtk_cell_renderer_pixbuf_new();
-	column = gtk_tree_view_column_new_with_attributes("", renderer, "pixbuf", IS_FAVICON, NULL);
-	gtk_tree_view_column_set_sort_column_id(column, IS_SOURCE);
-	gtk_tree_view_append_column(GTK_TREE_VIEW(itemlist), column);
+	renderer = gtk_cell_renderer_pixbuf_new ();
+	column = gtk_tree_view_column_new_with_attributes ("", renderer, "pixbuf", IS_FAVICON, NULL);
+	gtk_tree_view_column_set_sort_column_id (column, IS_SOURCE);
+	gtk_tree_view_append_column (GTK_TREE_VIEW (itemlist), column);
 	
-	column = gtk_tree_view_column_new();
-	gtk_tree_view_column_set_title(column, _("Headline"));
-
-	renderer = gtk_cell_renderer_text_new();
-	column = gtk_tree_view_column_new_with_attributes(_("Headline"), renderer, 
-	                                                  "text", IS_LABEL,
-							  "weight", ITEMSTORE_UNREAD,					  
-							  NULL);
-	gtk_tree_view_append_column(GTK_TREE_VIEW(itemlist), column);
-	gtk_tree_view_column_set_sort_column_id(column, IS_LABEL);
-	g_object_set(column, "resizable", TRUE, NULL);
-	g_object_set(renderer, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
+	renderer = gtk_cell_renderer_text_new ();
+	column = gtk_tree_view_column_new_with_attributes (_("Headline"), renderer, 
+	                                                   "text", IS_LABEL,
+							   "weight", ITEMSTORE_UNREAD,					  
+							   NULL);
+	gtk_tree_view_append_column (GTK_TREE_VIEW (itemlist), column);
+	gtk_tree_view_column_set_sort_column_id (column, IS_LABEL);
+	g_object_set (column, "resizable", TRUE, NULL);
+	g_object_set (renderer, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
 
 	/* And connect signals */	
-	g_signal_connect(G_OBJECT(GTK_TREE_VIEW(itemlist)), "key-press-event", G_CALLBACK(ui_itemlist_key_press_cb), NULL);
+	g_signal_connect (G_OBJECT (GTK_TREE_VIEW (itemlist)), "key-press-event", G_CALLBACK (ui_itemlist_key_press_cb), NULL);
 	
 	/* Setup the selection handler */
-	select = gtk_tree_view_get_selection(GTK_TREE_VIEW(itemlist));
-	gtk_tree_selection_set_mode(select, GTK_SELECTION_SINGLE);
-	g_signal_connect(G_OBJECT(select), "changed",
-	                 G_CALLBACK(on_itemlist_selection_changed), NULL);
-	g_signal_connect((gpointer)itemlist, "button_press_event",
-	                 G_CALLBACK(on_itemlist_button_press_event), NULL);
-	g_signal_connect((gpointer)itemlist, "row_activated",
-	                 G_CALLBACK(on_Itemlist_row_activated), NULL);
+	select = gtk_tree_view_get_selection (GTK_TREE_VIEW (itemlist));
+	gtk_tree_selection_set_mode (select, GTK_SELECTION_SINGLE);
+	g_signal_connect (G_OBJECT (select), "changed",
+	                  G_CALLBACK (on_itemlist_selection_changed), NULL);
+	g_signal_connect ((gpointer)itemlist, "button_press_event",
+	                  G_CALLBACK (on_itemlist_button_press_event), NULL);
+	g_signal_connect ((gpointer)itemlist, "row_activated",
+	                  G_CALLBACK (on_Itemlist_row_activated), NULL);
 		  
 	return ilscrolledwindow;
 }
@@ -368,7 +365,7 @@ ui_itemlist_prefocus (void)
 	gtk_widget_grab_focus (itemlist);
 
 	itemselection = gtk_tree_view_get_selection (GTK_TREE_VIEW (itemlist));
-	if(itemselection)
+	if (itemselection)
 		gtk_tree_selection_unselect_all (itemselection);
 	
 	if (focus_widget)
