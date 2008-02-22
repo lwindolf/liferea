@@ -31,6 +31,7 @@ bin_PROGRAMS = liferea-bin
 bin_SCRIPTS = liferea liferea-add-feed
 
 liferea_bin_SOURCES = \
+	attention.c attention.h \
 	bacon-message-connection.c \
 	bacon-message-connection.h \
 	comments.c comments.h \

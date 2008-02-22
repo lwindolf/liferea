@@ -23,7 +23,8 @@
 #endif
 
 #include <string.h>
- 
+
+#include "attention.h"
 #include "comments.h"
 #include "common.h"
 #include "conf.h"
@@ -35,6 +36,7 @@
 #include "itemlist.h"
 #include "itemset.h"
 #include "itemview.h"
+#include "metadata.h"
 #include "node.h"
 #include "rule.h"
 #include "script.h"
@@ -64,6 +66,8 @@ static struct itemlist_priv
 
 	gboolean 	deferredRemove;		/**< TRUE if selected item needs to be removed from cache on unselecting */
 	gboolean 	deferredFilter;		/**< TRUE if selected item needs to be filtered on unselecting */
+	
+	AttentionProfile *ap;			/**< category statistics handling object */
 } itemlist_priv;
 
 static void
@@ -571,6 +575,12 @@ itemlist_selection_changed (itemPtr item)
 				itemview_update ();
 			}
 			ui_node_update (item->nodeId);
+			
+			// FIXME: move this to some serious object initialisation
+			if (!itemlist_priv.ap)
+				itemlist_priv.ap = attention_profile_get ();
+			
+			attention_profile_add_read (itemlist_priv.ap, metadata_list_get_values (item->metadata, "category"));
 		}
 
 		feedlist_reset_new_item_count ();

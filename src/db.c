@@ -1,7 +1,7 @@
 /**
  * @file db.c sqlite backend
  * 
- * Copyright (C) 2007  Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2008  Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -168,7 +168,7 @@ db_get_schema_version (void)
 	return schemaVersion;
 }
 
-#define SCHEMA_TARGET_VERSION 6
+#define SCHEMA_TARGET_VERSION 7
 	
 /* opening or creation of database */
 void
@@ -331,6 +331,13 @@ open:
 					 "REPLACE INTO info (name, value) VALUES ('schemaVersion',6); "
 					 "END;");
 			}
+			
+			if (db_get_schema_version () == 6) {
+				/* 1.4.12 -> 1.4.13 adding attention_stats relation */
+				debug0 (DEBUG_DB, "migrating from schema version 6 to 7");
+				/* table created below... */
+				db_set_schema_version (7);
+			}			
 
 			if (SCHEMA_TARGET_VERSION != db_get_schema_version ())
 				g_error ("Fatal: DB schema migration failed! Running with --debug-db could give some hints!");
@@ -386,6 +393,13 @@ open:
 	        	 ");");
 
 		db_exec ("CREATE INDEX metadata_idx ON metadata (item_id);");
+		
+		db_exec ("CREATE TABLE attention_stats ("
+		         "   category_id	TEXT,"
+		         "   category_name	TEXT,"
+			 "   count              INTEGER,"
+			 "   PRIMARY KEY (category_id)"
+			 ");");
 
 		/* Set up item removal trigger */	
 		db_exec ("DROP TRIGGER item_removal;");
@@ -651,6 +665,12 @@ open:
 	
 	db_new_statement ("nodeUpdateStmt",
 	                  "REPLACE INTO node (node_id,parent_id,title,type,expanded,view_mode,sort_column,sort_reversed) VALUES (?,?,?,?,?,?,?,?)");
+			  
+	db_new_statement ("attentionStatsLoadStmt",
+	                  "SELECT category_id,category_name,count FROM attention_stats");
+			  
+	db_new_statement ("attentionStatUpdateStmt",
+	                  "REPLACE INTO attention_stats (category_id,category_name,count) VALUES (?,?,?)");
 
 	g_assert (sqlite3_get_autocommit (db));
 	
@@ -1884,5 +1904,53 @@ db_node_update (nodePtr node)
 		g_warning ("Could not update subscription info %s in DB (error code %d)!", node->id, res);
 		
 	debug_end_measurement (DEBUG_DB, "subscription_update");
+}
+
+void
+db_attention_stat_save (categoryStatPtr stat)
+{
+	sqlite3_stmt	*stmt;
+	gint		res;
 	
+	debug_start_measurement (DEBUG_DB);
+	
+	stmt = db_get_statement ("attentionStatUpdateStmt");
+	sqlite3_bind_text (stmt, 1, stat->id, -1, SQLITE_TRANSIENT);
+	sqlite3_bind_text (stmt, 2, stat->name, -1, SQLITE_TRANSIENT);
+	sqlite3_bind_int  (stmt, 3, stat->count);
+	
+	res = sqlite3_step (stmt);
+	if (SQLITE_DONE != res)
+		g_warning ("Could not save attention statistic data for category %s in DB (error code %d: %s)!", stat->name, res, sqlite3_errmsg (db));
+	
+	debug_end_measurement (DEBUG_DB, "attention_stat_save");
+}
+
+GHashTable *
+db_attention_stats_load (void)
+{
+	GHashTable	*stats;
+	sqlite3_stmt	*stmt;
+	gint		res;
+	
+	debug_start_measurement (DEBUG_DB);
+
+	stats = g_hash_table_new (g_str_hash, g_str_equal);
+	stmt = db_get_statement ("attentionStatsLoadStmt");
+
+	while (sqlite3_step (stmt) == SQLITE_ROW) {
+		categoryStatPtr stat = g_new0 (struct categoryStat, 1);
+		stat->id = g_strdup (sqlite3_column_text (stmt, 0));
+		stat->name = g_strdup (sqlite3_column_text (stmt, 1));
+		stat->count = sqlite3_column_int (stmt, 2);
+		g_hash_table_insert (stats, stat->id, (gpointer)stat);
+
+		debug (DEBUG_DB, "attention stat for %s (%s) = %d\n", sqlite3_column_text(stmt, 0),
+		                            sqlite3_column_text(stmt, 1),
+					    sqlite3_column_int(stmt, 2));
+	}
+	
+	debug_end_measurement (DEBUG_DB, "attention_stats_load");
+	
+	return stats;
 }
