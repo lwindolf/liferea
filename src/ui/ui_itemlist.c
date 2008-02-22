@@ -341,9 +341,6 @@ ui_itemlist_new(void)
 	gtk_tree_view_column_set_sort_column_id(column, IS_SOURCE);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(itemlist), column);
 	
-	column = gtk_tree_view_column_new();
-	gtk_tree_view_column_set_title(column, _("Headline"));
-
 	renderer = gtk_cell_renderer_text_new();
 	column = gtk_tree_view_column_new_with_attributes(_("Headline"), renderer, "markup", IS_LABEL, NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(itemlist), column);
