@@ -1945,9 +1945,10 @@ db_attention_stats_load (void)
 		stat->count = sqlite3_column_int (stmt, 2);
 		g_hash_table_insert (stats, stat->id, (gpointer)stat);
 
-		debug (DEBUG_DB, "attention stat for %s (%s) = %d\n", sqlite3_column_text(stmt, 0),
-		                            sqlite3_column_text(stmt, 1),
-					    sqlite3_column_int(stmt, 2));
+		debug3 (DEBUG_DB, "attention stat for %s (%s) = %d\n",
+		                  sqlite3_column_text(stmt, 0),
+		                  sqlite3_column_text(stmt, 1),
+		                  sqlite3_column_int(stmt, 2));
 	}
 	
 	debug_end_measurement (DEBUG_DB, "attention_stats_load");
