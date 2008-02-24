@@ -61,7 +61,7 @@ webkit_write_html (GtkWidget   *scrollpane,
 	 * WebKit does not like content type application/xhtml+xml. See
 	 * http://bugs.webkit.org/show_bug.cgi?id=9677 for details.
 	 */
-	content_type = 
+	content_type =
 		g_ascii_strcasecmp (content_type, "application/xhtml+xml") == 0
 		? "application/xhtml"
 		: content_type;
@@ -95,12 +95,12 @@ webkit_on_url (WebKitWebView *view, const gchar *title, const gchar *url, gpoint
 
 	htmlview    = g_object_get_data (G_OBJECT (view), "htmlview");
 	selectedURL = g_object_get_data (G_OBJECT (view), "selectedURL");
-	
+
 	selectedURL = url ? g_strdup (url) : g_strdup ("");
-	
+
 	/* overwrite or clear last status line text */
 	liferea_htmlview_on_url (htmlview, selectedURL);
-	
+
 	g_object_set_data (G_OBJECT (view), "selectedURL", selectedURL);
 	g_free (selectedURL);
 }
@@ -124,13 +124,6 @@ webkit_link_clicked (WebKitWebView *view, WebKitWebFrame *frame, WebKitNetworkRe
 
 		uri = webkit_network_request_get_uri (WEBKIT_NETWORK_REQUEST (request));
 		liferea_htmlview_launch_in_external_browser (uri);
-
-		/** 
-		 * Bug in WebKit. Stop emitting signal when external browser is called.
-		 * So the boolean return will not be respected. See 
-		 * http://bugs.webkit.org/show_bug.cgi?id=16654 for details 
-		 */
-		g_signal_stop_emission_by_name (WEBKIT_WEB_VIEW (view), "navigation-requested");
 		return TRUE;
 	}
 
@@ -146,20 +139,20 @@ webkit_link_clicked (WebKitWebView *view, WebKitWebFrame *frame, WebKitNetworkRe
  * FIXME: there is currently no API for settings present (http://bugs.webkit.org/show_bug.cgi?id=16219)
  */
 static GtkWidget *
-webkit_new (LifereaHtmlView *htmlview, gboolean forceInternalBrowsing) 
+webkit_new (LifereaHtmlView *htmlview, gboolean forceInternalBrowsing)
 {
 	gulong	  handler;
 	GtkWidget *view;
 	GtkWidget *scrollpane;
-	
+
 	scrollpane = gtk_scrolled_window_new (NULL, NULL);
 
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrollpane), GTK_POLICY_AUTOMATIC, GTK_POLICY_ALWAYS);
 	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrollpane), GTK_SHADOW_IN);
-	
+
 	/** Create HTML widget and pack it into the scrolled window */
 	view = webkit_web_view_new ();
-	
+
 /*	// empty functions in current webkit code...
 	settings = webkit_web_settings_copy (webkit_web_settings_get_global ());
 	settings->is_java_script_enabled = !conf_get_bool_value (DISABLE_JAVASCRIPT);
