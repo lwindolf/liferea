@@ -19,7 +19,7 @@
  */
 
 
-#include <webkit.h>
+#include <webkit/webkit.h>
 
 #include "conf.h"
 #include "ui/ui_htmlview.h"
