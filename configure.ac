@@ -211,7 +211,7 @@ dnl ******
 
 if test "x$enable_webkit" = "xyes" ; then
    dnl AC_MSG_CHECKING([for WebKit support])
-   PKG_CHECK_MODULES(WEBKIT, WebKitGtk, enable_webkit=yes, enable_webkit=no)
+   PKG_CHECK_MODULES(WEBKIT, webkit-1.0, enable_webkit=yes, enable_webkit=no)
    AC_SUBST(WEBKIT_CFLAGS)
    AC_SUBST(WEBKIT_LIBS)
 fi
