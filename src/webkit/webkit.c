@@ -135,8 +135,6 @@ webkit_link_clicked (WebKitWebView *view, WebKitWebFrame *frame, WebKitNetworkRe
  *
  * Initializes the WebKit HTML rendering engine. Creates a GTK scrollpane widget
  * and embeds WebKitWebView into it.
- *
- * FIXME: there is currently no API for settings present (http://bugs.webkit.org/show_bug.cgi?id=16219)
  */
 static GtkWidget *
 webkit_new (LifereaHtmlView *htmlview, gboolean forceInternalBrowsing)
@@ -144,6 +142,7 @@ webkit_new (LifereaHtmlView *htmlview, gboolean forceInternalBrowsing)
 	gulong	  handler;
 	GtkWidget *view;
 	GtkWidget *scrollpane;
+	WebKitWebSettings *settings;
 
 	scrollpane = gtk_scrolled_window_new (NULL, NULL);
 
@@ -153,12 +152,15 @@ webkit_new (LifereaHtmlView *htmlview, gboolean forceInternalBrowsing)
 	/** Create HTML widget and pack it into the scrolled window */
 	view = webkit_web_view_new ();
 
-/*	// empty functions in current webkit code...
-	settings = webkit_web_settings_copy (webkit_web_settings_get_global ());
-	settings->is_java_script_enabled = !conf_get_bool_value (DISABLE_JAVASCRIPT);
-	settings->java_script_can_open_windows_automatically = FALSE;
-	webkit_page_set_settings (WEBKIT_WEB_VIEW (htmlwidget), settings);
-*/
+	settings = webkit_web_settings_new ();
+	g_object_set (settings, "default-font-size", 11, NULL);
+	g_object_set (settings, "minimum-font-size", 7, NULL);
+	/**
+	 * FIXME: JavaScript might be disabled
+	 * g_object_set (settings, "javascript-enabled", !conf_get_bool_value (DISABLE_JAVASCRIPT), NULL);
+	 */
+	webkit_web_view_set_settings (view, settings);
+
 	gtk_container_add (GTK_CONTAINER (scrollpane), GTK_WIDGET (view));
 
 	/** Pass LifereaHtmlView into the WebKitWebView object */
