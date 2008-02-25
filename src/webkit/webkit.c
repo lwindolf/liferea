@@ -25,6 +25,8 @@
 #include "common.h"
 #include "ui/ui_htmlview.h"
 
+static gfloat current_zoom_level;
+
 /**
  * HTML plugin init callback
  */
@@ -198,7 +200,18 @@ webkit_launch_inside_possible (void)
  */
 static void
 webkit_change_zoom_level (GtkWidget *scrollpane, gfloat zoomLevel)
-{}
+{
+	GtkWidget *view;
+	WebKitWebSettings *settings;
+	if (zoomLevel > 10 || zoomLevel == 0) {
+		return NULL;
+	}
+	current_zoom_level = zoomLevel;
+	view = gtk_bin_get_child (GTK_BIN (scrollpane));
+	settings = webkit_web_settings_new ();
+	g_object_set (settings, "default-font-size", (guint)(11 * zoomLevel), NULL);
+	webkit_web_view_set_settings (view, settings);
+}
 
 /**
  * FIXME: No API, see http://bugs.webkit.org/show_bug.cgi?id=14998
@@ -206,7 +219,7 @@ webkit_change_zoom_level (GtkWidget *scrollpane, gfloat zoomLevel)
 static gfloat
 webkit_get_zoom_level (GtkWidget *scrollpane)
 {
-	return 1.0;
+	return current_zoom_level;
 }
 
 /**
