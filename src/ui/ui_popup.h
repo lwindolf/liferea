@@ -1,7 +1,7 @@
 /**
  * @file ui_popup.h popup menus
  *
- * Copyright (C) 2003-2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -23,27 +23,64 @@
 #define _UI_POPUP_H
 
 #include <gtk/gtk.h>
-#include "ui_mainwindow.h"
+
 #include "item.h"
 
-/* prepares the popup menues */
-void ui_popup_update_menues(void);
+/**
+ * Updates dynamic popup menues. Needs to be called at least
+ * once before using the popup creation methods below.
+ */
+void ui_popup_update_menues (void);
 
-/* function to generate popup menus for the item list depending
-   on the list mode given in itemlist_mode */
-GtkMenu *make_item_menu(itemPtr ip);
+/**
+ * Creates a popup menu with options for the item list and the
+ * given selected item.
+ * (Open Link, Copy Item, Copy Link...)
+ *
+ * @param item	the selected item
+ *
+ * @returns a new popup menu
+ */
+GtkMenu * ui_popup_make_item_menu (itemPtr item);
 
-/* popup menu generating functions for the HTML view */
-GtkMenu *make_html_menu(void);
-GtkMenu *make_url_menu(char* url);
+/**
+ * Creates a popup menu with options for the HTML view context menu.
+ * (Currently only zooming options)
+ *
+ * @returns a new popup menu
+ */
+GtkMenu * ui_popup_make_html_menu (void);
 
-/** Create the popup menu for the systray icon */
-GtkMenu *ui_popup_make_systray_menu(void);
+/**
+ * Creates a popup menu with options for a HTML link context menu.
+ * (Copy link, Open Link...)
+ *
+ * @param url	the link URL
+ *
+ * @returns a new popup menu
+ */
+GtkMenu * ui_popup_make_url_menu (const gchar * url);
 
-/** popup menu generation for the enclosure popup menu */
-GtkMenu *ui_popup_make_enclosure_menu(const gchar *enclosure);
+/**
+ * Creates a popup menu for the systray icon.
+ * (Offline mode, Close, Minimize...)
+ *
+ * @returns a new popup menu
+ */
+GtkMenu * ui_popup_make_systray_menu (void);
+
+/**
+ * Creates a popup menu for the enclosure list view.
+ * (Save As, Open With...)
+ *
+ * @param url	the enclosure URL
+ *
+ * @returns a new popup menu
+ */
+GtkMenu * ui_popup_make_enclosure_menu (const gchar *url);
 
 /* GUI callbacks */
+
 gboolean
 on_mainfeedlist_button_press_event     (GtkWidget       *widget,
                                         GdkEventButton  *event,

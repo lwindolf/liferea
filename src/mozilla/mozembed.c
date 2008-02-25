@@ -219,10 +219,10 @@ mozembed_dom_mouse_click_cb (GtkMozEmbed *embed, gpointer dom_event, gpointer us
 	/* do we have a right mouse button click? */
 	if (button == 2) {
 		if(!selectedURL)
-			gtk_menu_popup (GTK_MENU (make_html_menu ()), NULL, NULL,
+			gtk_menu_popup (GTK_MENU (ui_popup_make_html_menu ()), NULL, NULL,
 				        NULL, NULL, button, 0);
 		else
-			gtk_menu_popup (GTK_MENU (make_url_menu (safeURL?selectedURL:"")), NULL, NULL,
+			gtk_menu_popup (GTK_MENU (ui_popup_make_url_menu (safeURL?selectedURL:"")), NULL, NULL,
 				        NULL, NULL, button, 0);
 	
 		return TRUE;

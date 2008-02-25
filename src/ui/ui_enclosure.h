@@ -83,13 +83,6 @@ void enclosure_list_view_load (EnclosureListView *elv, itemPtr item);
 
 /* related menu creation and callbacks */
 
-/** 
- * Opens a popup menu for the given link 
- *
- * @param url		valid HTTP URL
- */
-void ui_enclosure_new_popup(const gchar *url);
-
 void on_popup_open_enclosure(gpointer callback_data, guint callback_action, GtkWidget *widget);
 void on_popup_save_enclosure(gpointer callback_data, guint callback_action, GtkWidget *widget);
 void on_popup_copy_enclosure(gpointer callback_data, guint callback_action, GtkWidget *widget);

@@ -80,11 +80,11 @@ button_press_event (HtmlView *view, GdkEventButton *event, gpointer userdata)
 			safeURL = (NULL == strstr(selectedURL, "file://")) || isLocalDoc;
 			
 		if (!selectedURL) {
-			gtk_menu_popup (GTK_MENU (make_html_menu ()), NULL, NULL,
+			gtk_menu_popup (GTK_MENU (ui_popup_make_html_menu ()), NULL, NULL,
 				        NULL, NULL, event->button, event->time);
 		} else {
 			gdk_window_set_cursor (GDK_WINDOW (gtk_widget_get_parent_window (GTK_WIDGET (view))), NULL);
-			gtk_menu_popup (GTK_MENU (make_url_menu (safeURL?selectedURL:"")), NULL, NULL,
+			gtk_menu_popup (GTK_MENU (ui_popup_make_url_menu (safeURL?selectedURL:"")), NULL, NULL,
 				        NULL, NULL, event->button, event->time);
 		}
 		g_free (selectedURL);

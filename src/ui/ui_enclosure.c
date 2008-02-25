@@ -235,12 +235,6 @@ enclosure_list_view_hide (EnclosureListView *elv)
 
 /* callback for preferences and enclosure type handling */
 
-void
-ui_enclosure_new_popup (const gchar *url)
-{	
-	gtk_menu_popup (ui_popup_make_enclosure_menu (url), NULL, NULL, NULL, NULL, 0, gtk_get_current_event_time());
-}
-
 static void
 on_selectcmdok_clicked (const gchar *filename, gpointer user_data)
 {

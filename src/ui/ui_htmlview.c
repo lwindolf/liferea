@@ -37,7 +37,6 @@
 #include "plugin.h"
 #include "social.h"
 #include "render.h"
-#include "ui/ui_enclosure.h"
 #include "ui/ui_htmlview.h"
 #include "ui/ui_itemlist.h"
 #include "ui/ui_mainwindow.h"
@@ -316,11 +315,7 @@ liferea_htmlview_launch_URL (LifereaHtmlView *htmlview, const gchar *url, gint l
 		  
 	/* first catch all links with special URLs... */
 	if (liferea_htmlview_is_special_url (url)) {
-		if (url == strstr (url, ENCLOSURE_PROTOCOL)) {
-			ui_enclosure_new_popup (url);
-			return;
-		}
-		
+	
 		/* it is a generic item list URI type */		
 		uriType = internalUriTypes;
 		while (uriType->suffix) {

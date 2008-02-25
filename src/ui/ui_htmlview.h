@@ -205,8 +205,6 @@ G_END_DECLS
 
 /* interface for HTML rendering plugins */
 
-#define ENCLOSURE_PROTOCOL	"liferea-enclosure://"
-
 #define HTMLVIEW_PLUGIN_API_VERSION 13
 
 typedef struct htmlviewPlugin {
