@@ -1,7 +1,7 @@
 /**
- * @file rule.c DB based item matching rule handling
+ * @file rule.c  DB based item matching rule handling
  *
- * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -205,7 +205,7 @@ rule_merge_sql (gchar **sql, const gchar *operator, const gchar *condition)
 }
 
 static queryPtr
-query_create (GSList *rules)
+query_create (GSList *rules, gboolean anyMatch)
 {
 	queryPtr	query;
 	conditionPtr	condition;
@@ -242,11 +242,11 @@ query_create (GSList *rules)
 	
 	/* Constructing query by ... */
 	  
-	/* a) OR'ing all additive matches */
+	/* a) joining all additive matches (OR'ing and AND'ing according to "any or all rules matching" parameter) */
 	iter = additive;
 	while (iter) {
 		gchar *sql = (gchar *)iter->data;
-		rule_merge_sql (&query->conditions, "OR", sql);
+		rule_merge_sql (&query->conditions, anyMatch?"OR":"AND", sql);
 		g_free (sql);
 		iter = g_slist_next (iter);
 	}
@@ -279,21 +279,21 @@ query_free (queryPtr query)
 }
 
 void
-rules_to_view (GSList *rules, const gchar *id)
+rules_to_view (GSList *rules, gboolean anyMatch, const gchar *id)
 {
 	queryPtr	query;
 
 	if (0 == g_slist_length (rules))
 		return;	
 		
-	query = query_create (rules);
+	query = query_create (rules, anyMatch);
 	query->columns = QUERY_COLUMN_ITEM_ID | QUERY_COLUMN_ITEM_READ_STATUS;
 	db_view_create (id, query);
 	query_free (query);
 }
 
 gboolean
-rules_check_item (GSList *rules, itemPtr item)
+rules_check_item (GSList *rules, gboolean anyMatch, itemPtr item)
 {
 	gboolean	result;
 	queryPtr	query;
@@ -312,7 +312,7 @@ rules_check_item (GSList *rules, itemPtr item)
 	}
 
 	/* if not possible query DB */
-	query = query_create (rules);	
+	query = query_create (rules, anyMatch);	
 	query->columns = QUERY_COLUMN_ITEM_ID;
 	result = db_item_check (item->id, query);
 	query_free (query);

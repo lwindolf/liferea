@@ -1,7 +1,7 @@
 /**
- * @file vfolder.c search folder node type
+ * @file vfolder.c  search folder node type
  *
- * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,6 +46,7 @@ vfolder_new (nodePtr node)
 
 	vfolder = g_new0 (struct vfolder, 1);
 	vfolder->node = node;
+	vfolder->anyMatch = TRUE;
 	vfolders = g_slist_append (vfolders, vfolder);
 
 	if (!node->title)
@@ -62,7 +63,16 @@ static void
 vfolder_import_rules (xmlNodePtr cur,
                       vfolderPtr vfolder)
 {
-	xmlChar		*type, *ruleId, *value, *additive;
+	xmlChar		*matchType, *type, *ruleId, *value, *additive;
+	
+	matchType = xmlGetProp (cur, BAD_CAST"matchType");
+	if (matchType) {
+		/* currently we now only OR or AND'ing the rules,
+		   "any" is the value for OR'ing, "all" for AND'ing */
+		vfolder->anyMatch = (0 != xmlStrcmp (matchType, BAD_CAST"all"));
+	} else {
+		vfolder->anyMatch = TRUE;
+	}
 	
 	/* process any children */
 	cur = cur->xmlChildrenNode;
@@ -116,7 +126,7 @@ vfolder_refresh (vfolderPtr vfolder)
 	g_return_if_fail (NULL != vfolder->node);
 
 	if (0 != g_slist_length (vfolder->rules))
-		rules_to_view (vfolder->rules, vfolder->node->id);
+		rules_to_view (vfolder->rules, vfolder->anyMatch, vfolder->node->id);
 	
 	vfolder_update_counters (vfolder->node);
 }
@@ -196,6 +206,8 @@ vfolder_export (nodePtr node,
 	debug_enter ("vfolder_export");
 	
 	g_assert (TRUE == trusted);
+	
+	xmlNewProp (cur, BAD_CAST"matchType", BAD_CAST (vfolder->anyMatch?"any":"all"));
 
 	iter = vfolder->rules;
 	while (iter) {

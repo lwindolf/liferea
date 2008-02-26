@@ -1,7 +1,7 @@
 /**
- * @file vfolder.h search folder node type
+ * @file vfolder.h  search folder node type
  *
- * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,6 +40,7 @@
 typedef struct vfolder {
 	GSList		*rules;		/**< list of rules of this search folder */
 	struct node	*node;		/**< the feed list node of this search folder (or NULL) */
+	gboolean	anyMatch;	/**< TRUE means only one of the rules must match for item inclusion */
 } *vfolderPtr;
 
 /**

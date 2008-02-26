@@ -1,7 +1,7 @@
 /**
- * @file itemlist.c itemlist handling
+ * @file itemlist.c  itemlist handling
  *
- * Copyright (C) 2004-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2008 Lars Lindner <lars.lindner@gmail.com>
  *	      
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -185,13 +185,14 @@ static gboolean
 itemlist_filter_check_item (itemPtr item)
 {
 	/* use search folder rule list in case of a search folder */
-	if ((itemlist_priv.currentNode != NULL) &&
-	    IS_VFOLDER (itemlist_priv.currentNode))
-		return rules_check_item (((vfolderPtr)itemlist_priv.currentNode->data)->rules, item);
+	if (itemlist_priv.currentNode && IS_VFOLDER (itemlist_priv.currentNode)) {
+		vfolderPtr vfolder = (vfolderPtr)itemlist_priv.currentNode->data;
+		return rules_check_item (vfolder->rules, vfolder->anyMatch, item);
+	}
 
 	/* apply the item list filter if available */
 	if (itemlist_priv.filter)
-		return rules_check_item (itemlist_priv.filter, item);
+		return rules_check_item (itemlist_priv.filter, TRUE /* OR logic */, item);
 	
 	/* otherwise keep the item */
 	return TRUE;

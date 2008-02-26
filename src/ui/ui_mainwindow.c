@@ -235,6 +235,11 @@ void on_faq_activate(GtkMenuItem *menuitem, gpointer user_data) {
 	g_free(filename);
 }
 
+void
+on_menu_attention_profile (GtkMenuItem *menuitem, gpointer user_data)
+{
+}
+
 /*------------------------------------------------------------------------------*/
 /* keyboard navigation	 							*/
 /*------------------------------------------------------------------------------*/
@@ -1107,6 +1112,8 @@ static const GtkActionEntry ui_mainwindow_action_entries[] = {
 	 G_CALLBACK(on_menu_show_update_monitor)},
 	{"ShowScriptManager", NULL, N_("_Script Manager"), NULL, N_("Allows to configure and edit LUA hook scripts"),
 	 G_CALLBACK(on_menu_show_script_manager)},
+	{"ShowAttentionProfile", NULL, N_("Attention Profile"), NULL, N_("Presents statistics on your most read categories"),
+	 G_CALLBACK(on_menu_attention_profile)},
 	{"ShowPreferences", GTK_STOCK_PREFERENCES, N_("_Preferences"), NULL, N_("Edit Preferences."),
 	 G_CALLBACK(on_prefbtn_clicked)},
 	 
@@ -1217,6 +1224,7 @@ static const char *ui_mainwindow_ui_desc =
 "    <menu action='ToolsMenu'>"
 "      <menuitem action='ShowUpdateMonitor'/>"
 "      <menuitem action='ShowScriptManager'/>"
+"      <menuitem action='ShowAttentionProfile'/>"
 "      <menuitem action='ShowPreferences'/>"
 "    </menu>"
 "    <menu action='SearchMenu'>"

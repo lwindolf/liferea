@@ -1,7 +1,7 @@
 /**
- * @file rule.h DB item match rule handling
+ * @file rule.h  DB item match rule handling
  *
- * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -73,19 +73,21 @@ rulePtr rule_new (struct vfolder *vfolder, const gchar *ruleId, const gchar *val
  * with the given id.
  *
  * @param rules		the rule list
+ * @param anyMatch	FALSE if all rules have to match
  * @param id		the view id
  */
-void rules_to_view (GSList *rules, const gchar *id);
+void rules_to_view (GSList *rules, gboolean anyMatch, const gchar *id);
 
 /**
- * Checks if the given item id matches the given rules.
+ * Checks if the given item matches the given rules.
  *
  * @param rules		the rule list
+ * @param anyMatch	FALSE if all rules have to match the item
  * @param item		the item
  *
  * @returns TRUE if the item matches the rules
  */
-gboolean rules_check_item (GSList *rules, itemPtr item);
+gboolean rules_check_item (GSList *rules, gboolean anyMatch, itemPtr item);
 
 /** 
  * Free's the given rule structure 
