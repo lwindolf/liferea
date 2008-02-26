@@ -60,7 +60,9 @@ static struct trayIcon_priv {
 
 static void ui_tray_install(void);
 
-void ui_tray_tooltip_set(gchar *message) {
+void
+ui_tray_tooltip_set (const gchar *message)
+{
 	GtkTooltipsData	*data = NULL;
 	
 	g_assert(trayIcon_priv->toolTips);
@@ -318,7 +320,9 @@ void ui_tray_enable(gboolean enabled) {
 	}
 }
 
-int ui_tray_get_count() {
+guint
+ui_tray_get_count(void)
+{
 	return trayIcon_priv?trayIcon_priv->trayCount:0;
 }
 

@@ -1,7 +1,7 @@
 /**
- * @file ui_tray.h tray icon handling
+ * @file ui_tray.h  tray icon handling
  *
- * Copyright (C) 2004-2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2008 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,42 +17,53 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */ 
+ 
+#ifndef _UI_TRAY_H
+#define _UI_TRAY_H
 
 #include <glib.h>
 
 /**
  * Enforce tray icon state update.
  */
-void ui_tray_update(void);
+void ui_tray_update (void);
 
 /**
  * Set the tooltip message in the systray
- * @param message new message
+ *
+ * @param message	new message
  */
-void ui_tray_tooltip_set(gchar *message);
+void ui_tray_tooltip_set (const gchar *message);
 
 /**
  * Enable or disable the systray icon
- * @param enabled set to TRUE to show icon, or false to hide it
+ *
+ * @param enabled	TRUE to show icon, or FALSE to hide it
  */
-void ui_tray_enable(gboolean enabled);
+void ui_tray_enable (gboolean enabled);
 
 /**
+ * Determine number of active tray icons.
+ *
  * @returns the current number of enabled systray icons
  */
-int ui_tray_get_count();
+guint ui_tray_get_count (void);
 
 /**
- * Determine position of tray icon ( libnotify )
+ * Determine position of tray icon (for libnotify)
  *
- * @param x horizontal position
- * @param y vertical position
+ * @param x	horizontal position
+ * @param y	vertical position
+ *
+ * @returns FALSE on error
  */
-gboolean ui_tray_get_origin(gint *x, gint *y);
+gboolean ui_tray_get_origin (gint *x, gint *y);
 
 /**
- * Determine size of tray icon ( libnotify )
+ * Determine size of tray icon (for libnotify)
  *
- * @param requisition requisition
+ * @param requisition	the requisition
  */
 void ui_tray_size_request (GtkRequisition *requisition);
+
+#endif
