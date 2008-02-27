@@ -712,13 +712,15 @@ ui_mainwindow_init (int mainwindowState)
 				   "<p>What currently doesn't work:"
 				   "<ul>"
 				   "   <li>HTTP cookies</li>"
+				   "   <li>SSL and proxy auth</li>"
 				   "</ul>"
 				   "</p>"
 				   "<p>New/Improved Functionality:"
 				   "<ul>"
 				   "   <li>Yahoo Media, iTunes and trackback namespace support</li>"
 				   "   <li>libcurl as networking client</li>"
-				   "   <li>faster item list loading</li>"
+				   "   <li>Somewhat faster item list loading</li>"
+				   "   <li>Search folder rules with optional AND-logic</li>"
 				   "</ul>"
 				   "</p>");
 	g_string_append(buffer,    "</div>");
