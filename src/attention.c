@@ -36,9 +36,12 @@ struct AttentionProfilePrivate {
 	gulong		totalCount;	/**< absolute count of registered item selections */
 
 	GHashTable	*categoryStats;	/**< per category item views (key = upper case category name, value = counter) */
+	GSList		*categoryList;	/**< list of all known categories */
 };
 
 static GObjectClass *parent_class = NULL;
+
+static AttentionProfile *singleton = NULL;
 
 GType
 attention_profile_get_type (void) 
@@ -74,6 +77,8 @@ attention_profile_finalize (GObject *object)
 	AttentionProfile *ap = ATTENTION_PROFILE (object);
 	
 	g_hash_table_destroy (ap->priv->categoryStats);
+	g_slist_free (ap->priv->categoryList);
+	ap = NULL;
 
 	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -101,10 +106,13 @@ attention_profile_get (void)
 {
 	AttentionProfile *ap = NULL;
 	
-	ap = ATTENTION_PROFILE (g_object_new (ATTENTION_PROFILE_TYPE, NULL));
+	if (singleton)
+		return singleton;
+	
+	singleton = ap = ATTENTION_PROFILE (g_object_new (ATTENTION_PROFILE_TYPE, NULL));
 	
 	ap->priv->totalCount = 0;
-	ap->priv->categoryStats = db_attention_stats_load ();
+	db_attention_stats_load (&ap->priv->categoryStats, &ap->priv->categoryList);
 	
 	return ap;
 }
@@ -124,8 +132,15 @@ attention_profile_add_read (AttentionProfile *ap, GSList *categories)
 			stat->id = id;
 			stat->name = g_strdup ((gchar *)categories->data);
 			g_hash_table_insert (ap->priv->categoryStats, id, (gpointer)stat);
+			ap->priv->categoryList = g_slist_append (ap->priv->categoryList, stat);
 		}
 		db_attention_stat_save (stat);
 		categories = g_slist_next (categories);
 	}
+}
+
+GSList *
+attention_profile_get_categories (AttentionProfile *ap)
+{
+	return ap->priv->categoryList;
 }

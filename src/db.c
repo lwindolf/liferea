@@ -1926,16 +1926,15 @@ db_attention_stat_save (categoryStatPtr stat)
 	debug_end_measurement (DEBUG_DB, "attention_stat_save");
 }
 
-GHashTable *
-db_attention_stats_load (void)
+void
+db_attention_stats_load (GHashTable **statHash, GSList **statList)
 {
-	GHashTable	*stats;
 	sqlite3_stmt	*stmt;
 	gint		res;
 	
 	debug_start_measurement (DEBUG_DB);
 
-	stats = g_hash_table_new (g_str_hash, g_str_equal);
+	*statHash = g_hash_table_new (g_str_hash, g_str_equal);
 	stmt = db_get_statement ("attentionStatsLoadStmt");
 
 	while (sqlite3_step (stmt) == SQLITE_ROW) {
@@ -1943,7 +1942,8 @@ db_attention_stats_load (void)
 		stat->id = g_strdup (sqlite3_column_text (stmt, 0));
 		stat->name = g_strdup (sqlite3_column_text (stmt, 1));
 		stat->count = sqlite3_column_int (stmt, 2);
-		g_hash_table_insert (stats, stat->id, (gpointer)stat);
+		g_hash_table_insert (*statHash, stat->id, (gpointer)stat);
+		*statList = g_slist_append (*statList, (gpointer)stat);
 
 		debug3 (DEBUG_DB, "attention stat for %s (%s) = %d\n",
 		                  sqlite3_column_text(stmt, 0),
@@ -1952,6 +1952,4 @@ db_attention_stats_load (void)
 	}
 	
 	debug_end_measurement (DEBUG_DB, "attention_stats_load");
-	
-	return stats;
 }

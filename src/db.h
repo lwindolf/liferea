@@ -329,8 +329,9 @@ void db_attention_stat_save (categoryStatPtr stat);
 /**
  * Loads attention statistics of all categories.
  *
- * @returns a hash table containing all category statistics.
+ * @param statHash	a hash table to add all category statistics.
+ * @param statList	a list to add all category statistics
  */
-GHashTable * db_attention_stats_load (void);
+void db_attention_stats_load (GHashTable **statHash, GSList **statList);
 
 #endif

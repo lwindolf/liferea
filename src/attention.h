@@ -67,7 +67,7 @@ struct AttentionProfileClass
 GType attention_profile_get_type	(void);
 
 /**
- * Returns the attention profile.
+ * Returns the singleton attention profile.
  *
  * @returns the attention profile
  */
@@ -83,6 +83,15 @@ AttentionProfile * attention_profile_get (void);
  * @param categories	list of category names
  */
 void attention_profile_add_read (AttentionProfile *ap, GSList *categories);
+
+/**
+ * Returns a list of all currently known category statistics.
+ *
+ * @param ap		the attention profile
+ *
+ * @returns list of category statistics
+ */
+GSList * attention_profile_get_categories (AttentionProfile *ap);
 
 G_END_DECLS
 

@@ -11,6 +11,7 @@ noinst_LIBRARIES = libliui.a
 libliui_a_CFLAGS = $(PACKAGE_CFLAGS) $(DBUS_CFLAGS)
 libliui_a_SOURCES = \
 	eggtrayicon.c eggtrayicon.h \
+	ui_attention.c ui_attention.h \
 	ui_auth.c ui_auth.h \
 	ui_dialog.c ui_dialog.h \
 	ui_dnd.c ui_dnd.h \

@@ -238,6 +238,7 @@ void on_faq_activate(GtkMenuItem *menuitem, gpointer user_data) {
 void
 on_menu_attention_profile (GtkMenuItem *menuitem, gpointer user_data)
 {
+	attention_profile_dialog_open (attention_profile_get ());
 }
 
 /*------------------------------------------------------------------------------*/
