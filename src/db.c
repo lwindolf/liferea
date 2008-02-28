@@ -176,6 +176,7 @@ db_init (gboolean initial)
 {
 	gchar		*filename;
 	gint		schemaVersion;
+	gint		res;
 		
 	debug_enter ("db_init");
 	
@@ -184,9 +185,9 @@ db_init (gboolean initial)
 open:
 	filename = common_create_cache_filename (NULL, "liferea", "db");
 	debug1 (DEBUG_DB, "Opening DB file %s...", filename);
-	if (!sqlite3_open (filename, &db)) {
-		debug1 (DEBUG_CACHE, "Data base file %s was not found... Creating new one.", filename);
-	}
+	res = sqlite3_open (filename, &db);
+	if (SQLITE_OK != res)
+		debug3 (DEBUG_CACHE, "Data base file %s could not be opened (error code %d: %s)...", filename, res, sqlite3_errmsg (db));
 	g_free (filename);
 	
 	sqlite3_extended_result_codes (db, TRUE);
