@@ -115,8 +115,17 @@ vfolder_load (nodePtr node)
 void
 vfolder_update_counters (nodePtr node) 
 {
-	node->unreadCount = db_view_get_unread_count (node->id);
-	node->itemCount = db_view_get_item_count (node->id);
+	vfolderPtr vfolder = (vfolderPtr)node->data;
+	
+	/* Avoid throwing a "view unread count failed (error code 101, not an error)"
+	   warning in the database when there are no rules yet. */
+	if (vfolder->rules) {
+		node->unreadCount = db_view_get_unread_count (node->id);
+		node->itemCount = db_view_get_item_count (node->id);
+	} else {
+		node->unreadCount = 0;
+		node->itemCount = 0;
+	}
 	ui_node_update (node->id);
 }
 
