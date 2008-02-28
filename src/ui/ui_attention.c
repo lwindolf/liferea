@@ -43,6 +43,7 @@ struct AttentionProfileDialogPrivate {
 enum {
 	APS_NAME_STR,
 	APS_COUNT_STR,
+	APS_COUNT,
 	APS_LEN
 };
 
@@ -137,6 +138,7 @@ attention_profile_dialog_update (void *data)
 		gtk_tree_store_set (apd->priv->treestore, treeIter,
 		                    APS_NAME_STR, stat->name,
 				    APS_COUNT_STR, tmp,
+				    APS_COUNT, stat->count,
 				    -1);
 		g_free (tmp);
 		
@@ -163,7 +165,8 @@ attention_profile_dialog_open (AttentionProfile *ap)
 	apd->priv->treeview = liferea_dialog_lookup (apd->priv->dialog, "attentiontreeview");
 	apd->priv->treestore = gtk_tree_store_new (APS_LEN,
 	                                           G_TYPE_STRING,	/* APS_NAME_STR */
-						   G_TYPE_STRING	/* APS_COUNT_STR */
+						   G_TYPE_STRING,	/* APS_COUNT_STR */
+						   G_TYPE_INT		/* APS_COUNT */
 	                                           );
 	gtk_tree_view_set_model (GTK_TREE_VIEW (apd->priv->treeview), GTK_TREE_MODEL(apd->priv->treestore));
 	
@@ -173,6 +176,7 @@ attention_profile_dialog_open (AttentionProfile *ap)
 							   NULL);
 	gtk_tree_view_append_column (GTK_TREE_VIEW (apd->priv->treeview), column);
 	gtk_tree_view_column_set_sort_column_id (column, APS_NAME_STR);
+	gtk_tree_view_column_set_expand (column, TRUE);
 	g_object_set (column, "resizable", TRUE, NULL);
 	g_object_set (renderer, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
 
@@ -181,7 +185,7 @@ attention_profile_dialog_open (AttentionProfile *ap)
 	                                                   "text", APS_COUNT_STR,
 							   NULL);
 	gtk_tree_view_append_column (GTK_TREE_VIEW (apd->priv->treeview), column);
-	gtk_tree_view_column_set_sort_column_id (column, APS_COUNT_STR);
+	gtk_tree_view_column_set_sort_column_id (column, APS_COUNT);
 
 	g_signal_connect_object (apd->priv->dialog, "destroy", G_CALLBACK (attention_profile_dialog_destroy_cb), apd, 0);
 	
