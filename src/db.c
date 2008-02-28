@@ -1252,7 +1252,7 @@ db_query_to_sql (guint id, const queryPtr query)
 		tmp = join;
 		tables -= QUERY_TABLE_METADATA;
 		if (baseTable == QUERY_TABLE_ITEMS) {
-			join = g_strdup_printf ("%sINNER JOIN metadata ON items.ROWID = metadata.ROWID ", join);
+			join = g_strdup_printf ("%sINNER JOIN metadata ON items.ROWID = metadata.item_id ", join);
 		} else {
 			g_warning ("Fatal: unsupported merge combination: metadata + %d!", baseTable);
 			return NULL;

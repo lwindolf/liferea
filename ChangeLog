@@ -1,3 +1,11 @@
+2008-03-??  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.4.14 (Stable)
+
+	* Fixes SQL join when matching item metadata 
+	  in a search folder.
+
+
 2008-02-24  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.4.13 (Stable)
