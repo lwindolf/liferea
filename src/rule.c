@@ -186,7 +186,7 @@ rule_condition_item_has_enclosure (rulePtr rule)
 	conditionPtr	condition;
 	
 	condition = g_new0 (struct condition, 1);
-	condition->tables = QUERY_TABLE_METADATA;
+	condition->tables = QUERY_TABLE_METADATA | QUERY_TABLE_ITEMS;
 	condition->sql = g_strdup ("metadata.key = 'enclosure'");
 	
 	return condition;
@@ -198,7 +198,7 @@ rule_condition_item_has_category (rulePtr rule)
 	conditionPtr	condition;
 	
 	condition = g_new0 (struct condition, 1);
-	condition->tables = QUERY_TABLE_METADATA;
+	condition->tables = QUERY_TABLE_METADATA | QUERY_TABLE_ITEMS;
 	condition->sql = g_strdup_printf ("(metadata.key = 'category' AND metadata.value = '%s')", rule->value);
 	
 	return condition;
@@ -341,8 +341,7 @@ rule_add (ruleConditionFunc queryFunc,
           gchar *title,
           gchar *positive,
           gchar *negative,
-          gboolean needsParameter,	/* has parameters */
-	  guint queryTables)
+          gboolean needsParameter)
 {
 
 	ruleFunctions = (ruleInfoPtr) g_realloc (ruleFunctions, sizeof (struct ruleInfo) * (nrOfRuleFunctions + 1));
@@ -353,12 +352,9 @@ rule_add (ruleConditionFunc queryFunc,
 	ruleFunctions[nrOfRuleFunctions].title = title;
 	ruleFunctions[nrOfRuleFunctions].positive = positive;
 	ruleFunctions[nrOfRuleFunctions].negative = negative;
-	ruleFunctions[nrOfRuleFunctions].needsParameter = needsParameter;
-	
+	ruleFunctions[nrOfRuleFunctions].needsParameter = needsParameter;	
 	ruleFunctions[nrOfRuleFunctions].checkFunc = checkFunc;
-
 	ruleFunctions[nrOfRuleFunctions].queryFunc = queryFunc;	
-	ruleFunctions[nrOfRuleFunctions].queryTables = queryTables;
 	nrOfRuleFunctions++;
 }
 
@@ -367,18 +363,18 @@ rule_init (void)
 {
 	debug_enter ("rule_init");
 
-	/*        SQL condition builder function	in-memory check function	feedlist.opml rule id           rule menu label         positive menu option    negative menu option    has value    table */ 
-	/*        =================================================================================================================================================================================================*/
+	/*        SQL condition builder function	in-memory check function	feedlist.opml rule id           rule menu label         positive menu option    negative menu option    has param */ 
+	/*        ========================================================================================================================================================================================*/
 	
-	rule_add (rule_condition_item_match,		NULL,				ITEM_MATCH_RULE_ID,		_("Item"),		_("does contain"),	_("does not contain"),	TRUE, QUERY_TABLE_ITEMS);
-	rule_add (rule_condition_item_title_match,	NULL,				ITEM_TITLE_MATCH_RULE_ID,	_("Item title"),	_("does match"),	_("does not match"),	TRUE, QUERY_TABLE_ITEMS);
-	rule_add (rule_condition_item_description_match, NULL,				ITEM_DESC_MATCH_RULE_ID,	_("Item body"),		_("does match"),	_("does not match"),	TRUE, QUERY_TABLE_ITEMS);
-	rule_add (rule_condition_feed_title_match,	NULL,				"feed_title",			_("Feed title"),	_("does match"),	_("does not match"),	TRUE, QUERY_TABLE_NODE);
-	rule_add (rule_condition_item_is_unread,	rule_check_item_is_unread,	"unread",			_("Read status"),	_("is unread"),		_("is read"),		FALSE, QUERY_TABLE_ITEMS);
-	rule_add (rule_condition_item_is_flagged,	rule_check_item_is_flagged,	"flagged",			_("Flag status"),	_("is flagged"),	_("is unflagged"),	FALSE, QUERY_TABLE_ITEMS);
-	rule_add (rule_condition_item_was_updated,	NULL, 				"updated",			_("Update status"),	_("was updated"),	_("was not updated"),	FALSE, QUERY_TABLE_ITEMS);
-	rule_add (rule_condition_item_has_enclosure,	NULL,				"enclosure",			_("Podcast"),		_("included"),		_("not included"),	FALSE, QUERY_TABLE_METADATA);
-	rule_add (rule_condition_item_has_category,	NULL,				"category",			_("Category"),		_("is set"),		_("is not set"),	TRUE, QUERY_TABLE_METADATA);
+	rule_add (rule_condition_item_match,		NULL,				ITEM_MATCH_RULE_ID,		_("Item"),		_("does contain"),	_("does not contain"),	TRUE);
+	rule_add (rule_condition_item_title_match,	NULL,				ITEM_TITLE_MATCH_RULE_ID,	_("Item title"),	_("does match"),	_("does not match"),	TRUE);
+	rule_add (rule_condition_item_description_match, NULL,				ITEM_DESC_MATCH_RULE_ID,	_("Item body"),		_("does match"),	_("does not match"),	TRUE);
+	rule_add (rule_condition_feed_title_match,	NULL,				"feed_title",			_("Feed title"),	_("does match"),	_("does not match"),	TRUE);
+	rule_add (rule_condition_item_is_unread,	rule_check_item_is_unread,	"unread",			_("Read status"),	_("is unread"),		_("is read"),		FALSE);
+	rule_add (rule_condition_item_is_flagged,	rule_check_item_is_flagged,	"flagged",			_("Flag status"),	_("is flagged"),	_("is unflagged"),	FALSE);
+	rule_add (rule_condition_item_was_updated,	NULL, 				"updated",			_("Update status"),	_("was updated"),	_("was not updated"),	FALSE);
+	rule_add (rule_condition_item_has_enclosure,	NULL,				"enclosure",			_("Podcast"),		_("included"),		_("not included"),	FALSE);
+	rule_add (rule_condition_item_has_category,	NULL,				"category",			_("Category"),		_("is set"),		_("is not set"),	TRUE);
 
 	debug_exit ("rule_init");
 }
