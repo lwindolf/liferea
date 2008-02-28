@@ -89,7 +89,7 @@ rule_condition_feed_title_match (rulePtr rule)
 {
 	conditionPtr	condition;
 
-	condition = g_new0(struct condition, 1);
+	condition = g_new0 (struct condition, 1);
 	condition->tables = QUERY_TABLE_NODE;
 	condition->sql = g_strdup_printf ("node.title LIKE '%%%s%%'", rule->value);
 	
@@ -101,7 +101,7 @@ rule_condition_item_title_match (rulePtr rule)
 {
 	conditionPtr	condition;
 
-	condition = g_new0(struct condition, 1);
+	condition = g_new0 (struct condition, 1);
 	condition->tables = QUERY_TABLE_ITEMS;
 	condition->sql = g_strdup_printf ("items.title LIKE '%%%s%%'", rule->value);
 	
@@ -113,7 +113,7 @@ rule_condition_item_description_match (rulePtr rule)
 {
 	conditionPtr	condition;
 	
-	condition = g_new0(struct condition, 1);
+	condition = g_new0 (struct condition, 1);
 	condition->tables = QUERY_TABLE_ITEMS;
 	condition->sql = g_strdup_printf ("items.description LIKE '%%%s%%'", rule->value);
 	
@@ -125,7 +125,7 @@ rule_condition_item_match (rulePtr rule)
 {
 	conditionPtr	condition;
 	
-	condition = g_new0(struct condition, 1);
+	condition = g_new0 (struct condition, 1);
 	condition->tables = QUERY_TABLE_ITEMS;
 	condition->sql = g_strdup_printf ("(items.title LIKE '%%%s%%' OR items.description LIKE '%%%s%%')", rule->value, rule->value);
 	
@@ -137,7 +137,7 @@ rule_condition_item_is_unread (rulePtr rule)
 {
 	conditionPtr	condition;
 	
-	condition = g_new0(struct condition, 1);
+	condition = g_new0 (struct condition, 1);
 	condition->tables = QUERY_TABLE_ITEMS;
 	condition->sql = g_strdup ("items.read = 0");
 	
@@ -155,7 +155,7 @@ rule_condition_item_is_flagged (rulePtr rule)
 {
 	conditionPtr	condition;
 	
-	condition = g_new0(struct condition, 1);
+	condition = g_new0 (struct condition, 1);
 	condition->tables = QUERY_TABLE_ITEMS;
 	condition->sql = g_strdup ("items.marked = 1");
 	
@@ -173,7 +173,7 @@ rule_condition_item_was_updated (rulePtr rule)
 {
 	conditionPtr	condition;
 	
-	condition = g_new0(struct condition, 1);
+	condition = g_new0 (struct condition, 1);
 	condition->tables = QUERY_TABLE_ITEMS;
 	condition->sql = g_strdup ("items.updated = 1");
 	
@@ -185,9 +185,21 @@ rule_condition_item_has_enclosure (rulePtr rule)
 {
 	conditionPtr	condition;
 	
-	condition = g_new0(struct condition, 1);
+	condition = g_new0 (struct condition, 1);
 	condition->tables = QUERY_TABLE_METADATA;
 	condition->sql = g_strdup ("metadata.key = 'enclosure'");
+	
+	return condition;
+}
+
+static conditionPtr
+rule_condition_item_has_category (rulePtr rule)
+{
+	conditionPtr	condition;
+	
+	condition = g_new0 (struct condition, 1);
+	condition->tables = QUERY_TABLE_METADATA;
+	condition->sql = g_strdup_printf ("(metadata.key = 'category' AND metadata.value = '%s')", rule->value);
 	
 	return condition;
 }
@@ -355,6 +367,9 @@ rule_init (void)
 {
 	debug_enter ("rule_init");
 
+	/*        SQL condition builder function	in-memory check function	feedlist.opml rule id           rule menu label         positive menu option    negative menu option    has value    table */ 
+	/*        =================================================================================================================================================================================================*/
+	
 	rule_add (rule_condition_item_match,		NULL,				ITEM_MATCH_RULE_ID,		_("Item"),		_("does contain"),	_("does not contain"),	TRUE, QUERY_TABLE_ITEMS);
 	rule_add (rule_condition_item_title_match,	NULL,				ITEM_TITLE_MATCH_RULE_ID,	_("Item title"),	_("does match"),	_("does not match"),	TRUE, QUERY_TABLE_ITEMS);
 	rule_add (rule_condition_item_description_match, NULL,				ITEM_DESC_MATCH_RULE_ID,	_("Item body"),		_("does match"),	_("does not match"),	TRUE, QUERY_TABLE_ITEMS);
@@ -363,6 +378,7 @@ rule_init (void)
 	rule_add (rule_condition_item_is_flagged,	rule_check_item_is_flagged,	"flagged",			_("Flag status"),	_("is flagged"),	_("is unflagged"),	FALSE, QUERY_TABLE_ITEMS);
 	rule_add (rule_condition_item_was_updated,	NULL, 				"updated",			_("Update status"),	_("was updated"),	_("was not updated"),	FALSE, QUERY_TABLE_ITEMS);
 	rule_add (rule_condition_item_has_enclosure,	NULL,				"enclosure",			_("Podcast"),		_("included"),		_("not included"),	FALSE, QUERY_TABLE_METADATA);
+	rule_add (rule_condition_item_has_category,	NULL,				"category",			_("Category"),		_("is set"),		_("is not set"),	TRUE, QUERY_TABLE_METADATA);
 
 	debug_exit ("rule_init");
 }
