@@ -36,7 +36,7 @@ struct AttentionProfileDialogPrivate {
 	GtkWidget	*treeview;
 	GtkTreeStore	*treestore;
 	GHashTable	*categoryToIter;
-	
+
 	guint		updateTimeout;
 };
 
@@ -52,13 +52,13 @@ static AttentionProfileDialog *singleton = NULL;
 static GObjectClass *parent_class = NULL;
 
 GType
-attention_profile_dialog_get_type (void) 
+attention_profile_dialog_get_type (void)
 {
 	static GType type = 0;
 
-	if (G_UNLIKELY (type == 0)) 
+	if (G_UNLIKELY (type == 0))
 	{
-		static const GTypeInfo our_info = 
+		static const GTypeInfo our_info =
 		{
 			sizeof (AttentionProfileDialogClass),
 			NULL, /* base_init */
@@ -120,13 +120,13 @@ attention_profile_dialog_update (void *data)
 {
 	AttentionProfileDialog	*apd = ATTENTION_PROFILE_DIALOG (data);
 	GSList			*iter;
-	
+
 	iter = attention_profile_get_categories (apd->priv->ap);
 	while (iter) {
 		categoryStatPtr	stat = (categoryStatPtr)iter->data;
 		GtkTreeIter	*treeIter;
 		gchar		*tmp;
-		
+
 		treeIter = g_hash_table_lookup (apd->priv->categoryToIter, stat->id);
 		if (!treeIter) {
 			treeIter = g_new0 (GtkTreeIter, 1);
@@ -141,7 +141,7 @@ attention_profile_dialog_update (void *data)
 				    APS_COUNT, stat->count,
 				    -1);
 		g_free (tmp);
-		
+
 		iter = g_slist_next (iter);
 	}
 
@@ -149,16 +149,16 @@ attention_profile_dialog_update (void *data)
 }
 
 AttentionProfileDialog *
-attention_profile_dialog_open (AttentionProfile *ap) 
+attention_profile_dialog_open (AttentionProfile *ap)
 {
 	AttentionProfileDialog	*apd;
 	GtkCellRenderer		*renderer;
-	GtkTreeViewColumn 	*column;
+	GtkTreeViewColumn	*column;
 	GtkTreeSelection	*select;
-	
+
 	if (singleton)
 		return singleton;
-		
+
 	singleton = apd = ATTENTION_PROFILE_DIALOG (g_object_new (ATTENTION_PROFILE_DIALOG_TYPE, NULL));
 	apd->priv->ap = ap;
 	apd->priv->dialog = liferea_dialog_new (NULL, "attentiondialog");
@@ -169,9 +169,9 @@ attention_profile_dialog_open (AttentionProfile *ap)
 						   G_TYPE_INT		/* APS_COUNT */
 	                                           );
 	gtk_tree_view_set_model (GTK_TREE_VIEW (apd->priv->treeview), GTK_TREE_MODEL(apd->priv->treestore));
-	
+
 	renderer = gtk_cell_renderer_text_new ();
-	column = gtk_tree_view_column_new_with_attributes (_("Category"), renderer, 
+	column = gtk_tree_view_column_new_with_attributes (_("Category"), renderer,
 	                                                   "text", APS_NAME_STR,
 							   NULL);
 	gtk_tree_view_append_column (GTK_TREE_VIEW (apd->priv->treeview), column);
@@ -181,20 +181,20 @@ attention_profile_dialog_open (AttentionProfile *ap)
 	g_object_set (renderer, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
 
 	renderer = gtk_cell_renderer_text_new ();
-	column = gtk_tree_view_column_new_with_attributes (_("Count"), renderer, 
+	column = gtk_tree_view_column_new_with_attributes (_("Count"), renderer,
 	                                                   "text", APS_COUNT_STR,
 							   NULL);
 	gtk_tree_view_append_column (GTK_TREE_VIEW (apd->priv->treeview), column);
 	gtk_tree_view_column_set_sort_column_id (column, APS_COUNT);
 
 	g_signal_connect_object (apd->priv->dialog, "destroy", G_CALLBACK (attention_profile_dialog_destroy_cb), apd, 0);
-	
+
 	gtk_widget_show_all (GTK_WIDGET (apd->priv->dialog));
 
 	attention_profile_dialog_update (apd);
-		
+
 	apd->priv->updateTimeout = g_timeout_add_seconds (5, attention_profile_dialog_update, apd);
-	
+
 	return apd;
 }
 
