@@ -168,7 +168,7 @@ db_get_schema_version (void)
 	return schemaVersion;
 }
 
-#define SCHEMA_TARGET_VERSION 7
+#define SCHEMA_TARGET_VERSION 6
 	
 /* opening or creation of database */
 void
@@ -332,13 +332,6 @@ open:
 					 "REPLACE INTO info (name, value) VALUES ('schemaVersion',6); "
 					 "END;");
 			}
-			
-			if (db_get_schema_version () == 6) {
-				/* 1.4.12 -> 1.4.13 adding attention_stats relation */
-				debug0 (DEBUG_DB, "migrating from schema version 6 to 7");
-				/* table created below... */
-				db_set_schema_version (7);
-			}			
 
 			if (SCHEMA_TARGET_VERSION != db_get_schema_version ())
 				g_error ("Fatal: DB schema migration failed! Running with --debug-db could give some hints!");
