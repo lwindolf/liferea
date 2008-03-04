@@ -4,6 +4,8 @@
 
 	* Fixes SQL join when matching item metadata 
 	  in a search folder.
+	* Added workaround for negative search folder
+	  unread count values.
 
 
 2008-02-24  Lars Lindner  <lars.lindner@gmail.com>
