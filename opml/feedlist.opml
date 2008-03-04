@@ -5,7 +5,7 @@
 </head>
 <body>
 	<!-- lets keep this default English block in sync over all feed lists! -->
-	<outline text="International">		<!-- translate this for localized feed list -->
+	<outline text="Example Feeds">		<!-- translate this for localized feed list -->
 		<outline text="Open Source">		<!-- translate this for localized feed list -->
 			<outline text="art.gnome.org" htmlUrl="http://art.gnome.org/" xmlUrl="http://art.gnome.org/backend.php" />
 			<outline text="Gnomefiles" htmlUrl="http://www.gnomefiles.org/" xmlUrl="http://www.gnomefiles.org/files/gnomefiles.rdf" />
@@ -17,7 +17,10 @@
 			<outline text="Planet GNOME" htmlUrl="http://planet.gnome.org/" xmlUrl="http://planet.gnome.org/atom.xml" />	
 			<outline text="Slashdot" htmlUrl="http://slashdot.org"  xmlUrl="http://slashdot.org/slashdot.rss" />
 			<outline text="TuxMobil" htmlUrl="http://tuxmobil.org" xmlUrl="http://tuxmobil.org/tuxmobil_rss.rdf" />      
-		</outline>	
+		</outline>
+		<outline text="Podcasts">		<!-- translate this for localized feed list -->
+			<outline text="EscapePod" htmlUrl="http://escapepod.org" xmlUrl="http://escapepod.org/podcast.xml"/>
+		</outline>
 	</outline>
 	<!-- end of default block -->
 

@@ -1701,6 +1701,13 @@ db_view_get_unread_count (const gchar *id)
 
 	sqlite3_finalize (viewCountStmt);
 	
+	/* FIXME: there is still a bug causing negative search
+	   folder count results (propably caused by search folders
+	   with more than one rule). As a workaround we check for
+	   negative values here... */
+	if (count < 0)
+		count = 0;
+	
 	debug_end_measurement (DEBUG_DB, "view unread counting");
 	
 	return count;
