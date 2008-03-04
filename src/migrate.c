@@ -1,7 +1,7 @@
 /**
  * @file migrate.c migration between different cache versions
  * 
- * Copyright (C) 2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2008  Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
  */
 
 #include <glib.h>
+#include <glib/gstdio.h>
 #include <libxml/uri.h>
 #include "common.h"
 #include "db.h"
@@ -51,10 +52,14 @@ migrate_copy_dir (const gchar *from,
 		gsize	length;
 		destfile = g_strdup_printf("%s" G_DIR_SEPARATOR_S "%s", toDirname, srcfile);
 		srcfile = g_strdup_printf("%s" G_DIR_SEPARATOR_S "%s", fromDirname, srcfile);
-		g_print("copying %s\n     to %s\n", srcfile, destfile);
-		if(g_file_get_contents(srcfile, &content, &length, NULL))
-			g_file_set_contents(destfile, content, length, NULL);
-		g_free(content);
+		if (g_file_test (srcfile, G_FILE_TEST_IS_REGULAR)) {
+			g_print("copying %s\n     to %s\n", srcfile, destfile);
+			if(g_file_get_contents(srcfile, &content, &length, NULL))
+				g_file_set_contents(destfile, content, length, NULL);
+			g_free(content);
+		} else {
+			g_print("skipping %s\n", srcfile);
+		}
 		g_free(destfile);
 		g_free(srcfile);
 	}

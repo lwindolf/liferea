@@ -6,6 +6,9 @@
 	  in a search folder.
 	* Added workaround for negative search folder
 	  unread count values.
+	* Fixes Debian #469245: hanging on cache migration 
+	  from 1.0 when copying deprecated named pipe
+	  "new_subscription" (reported by Oliver Berger).
 
 
 2008-02-24  Lars Lindner  <lars.lindner@gmail.com>
