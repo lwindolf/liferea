@@ -1,3 +1,5 @@
+[encoding: UTF-8]
+
 # List of source files containing translatable strings.
 
 liferea.glade
@@ -20,6 +22,7 @@ src/db.c
 src/db.h
 src/debug.c
 src/debug.h
+src/enclosure.c
 src/export.c
 src/export.h
 src/favicon.c
@@ -69,6 +72,8 @@ src/xml.c
 src/xml.h
 src/ui/eggtrayicon.c
 src/ui/eggtrayicon.h
+src/ui/ui_attention.c
+src/ui/ui_attention.h
 src/ui/ui_auth.c
 src/ui/ui_auth.h
 src/ui/ui_dialog.c
@@ -171,3 +176,7 @@ src/notification/notif_libnotify.h
 src/notification/notif_plugin.c
 src/notification/notif_plugin.h
 src/scripting/lua.c
+src/sync/avahi_browser.c
+src/sync/avahi_browser.h
+src/sync/avahi_publisher.c
+src/sync/avahi_publisher.h
