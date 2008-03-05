@@ -1,7 +1,7 @@
 /**
  * @file enclosure.h enclosure/podcast support
  *
- * Copyright (C) 2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2008 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,11 +21,13 @@
 #ifndef _ENCLOSURE_H
 #define _ENCLOSURE_H
 
+/** structure describing a supported download tool */
 typedef struct enclosureDownloadTool {
 	const char	*format;	/**< format string to construct download command */
 	gboolean	niceFilename;	/**< TRUE if format has second %s for output file name */
 } *enclosureDownloadToolPtr; 
 
+/** structure describing the preferences for a MIME type or file extension */
 typedef struct encType {
 	gchar		*mime;		/**< either mime or extension is set */
 	gchar		*extension;
@@ -34,6 +36,39 @@ typedef struct encType {
 					     not added to the permanent list of type configs */
 	gboolean	remote;		/**< if TRUE enclosure is to be opened without downloading (pass URL only) */
 } *encTypePtr;
+
+/** structure describing an enclosure and its states */
+typedef struct enclosure {
+	gchar		*url;		/**< enclosure download URI (absolute path) */
+	gchar		*mime;		/**< enclosure MIME type (optional, can be NULL) */
+	gsize		size;		/**< enclosure size (optional, can be 0) */
+	gboolean	downloaded;	/**< flag indicating we have downloaded the enclosure */
+} *enclosurePtr;
+
+/**
+ * Parses enclosure description.
+ *
+ * @param str		the enclosure description
+ *
+ * @returns new enclosure structure (to be free'd using enclosure_free)
+ */
+enclosurePtr enclosure_from_string (const gchar *str);
+
+/**
+ * Serialize enclosure to string.
+ *
+ * @param enclosure	the enclosure
+ *
+ * @returns new string (to be free'd using g_free)
+ */
+gchar * enclosure_to_string (const enclosurePtr enclosure);
+
+/**
+ * Free all memory associated with the enclosure.
+ *
+ * @oparam enclosure	the enclosure
+ */
+void enclosure_free (enclosurePtr enclosure);
 
 /**
  * Returns all configured enclosure types.

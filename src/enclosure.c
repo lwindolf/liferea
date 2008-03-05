@@ -54,6 +54,30 @@
 static GSList *types = NULL;
 static gboolean typesLoaded = FALSE;
 
+enclosurePtr
+enclosure_from_string (const gchar *str)
+{
+	enclosurePtr enclosure;
+	
+	enclosure = g_new0 (struct enclosure, 1);
+	enclosure->url = g_strdup (str);
+	return enclosure;
+}
+
+gchar *
+enclosure_to_string (enclosurePtr enclosure)
+{
+	return g_strdup (enclosure->url);
+}
+
+void
+enclosure_free (enclosurePtr enclosure)
+{
+	g_free (enclosure->url);
+	g_free (enclosure->mime);
+	g_free (enclosure);
+}
+
 static void
 enclosure_mime_types_load (void)
 {
