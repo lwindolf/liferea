@@ -539,6 +539,11 @@ xslt/Makefile
 man/Makefile
 man/pl/Makefile
 pixmaps/Makefile
+pixmaps/16x16/Makefile
+pixmaps/22x22/Makefile
+pixmaps/24x24/Makefile
+pixmaps/32x32/Makefile
+pixmaps/scalable/Makefile
 opml/Makefile
 po/Makefile.in
 liferea.spec
