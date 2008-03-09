@@ -1,3 +1,4 @@
+SUBDIRS = 16x16 22x22 24x24 32x32 scalable
 EXTRA_DIST = \
 	attachment.png	\
 	available.png   \
@@ -16,7 +17,6 @@ EXTRA_DIST = \
 	edit.png	\
 	technorati.png	\
 	arrow.png	\
-	liferea.png	\
 	fl_opml.png	\
 	fl_google.png	\
 	fl_bloglines.png \
@@ -28,9 +28,6 @@ EXTRA_DIST = \
 
 lifereadistpixdir = $(datadir)/$(PACKAGE)/pixmaps
 lifereadistpix_DATA = $(EXTRA_DIST)
-
-distpixmapdir = $(datadir)/icons/hicolor/48x48/apps
-distpixmap_DATA = liferea.png
 
 gtk_update_icon_cache = gtk-update-icon-cache -f -t $(datadir)/icons/hicolor
 
