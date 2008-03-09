@@ -1,4 +1,4 @@
-SUBDIRS = 16x16 22x22 24x24 32x32 scalable
+SUBDIRS = 16x16 22x22 24x24 32x32 48x48 scalable
 EXTRA_DIST = \
 	attachment.png	\
 	available.png   \

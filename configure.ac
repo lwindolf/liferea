@@ -543,6 +543,7 @@ pixmaps/16x16/Makefile
 pixmaps/22x22/Makefile
 pixmaps/24x24/Makefile
 pixmaps/32x32/Makefile
+pixmaps/48x48/Makefile
 pixmaps/scalable/Makefile
 opml/Makefile
 po/Makefile.in
