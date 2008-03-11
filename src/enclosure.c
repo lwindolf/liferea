@@ -65,9 +65,19 @@ enclosure_from_string (const gchar *str)
 }
 
 gchar *
+enclosure_values_to_string (const gchar *url, const gchar *mime, gsize size, gboolean downloaded)
+{
+	// FIXME: encode all infos
+	return g_strdup (url);
+}
+
+gchar *
 enclosure_to_string (enclosurePtr enclosure)
 {
-	return g_strdup (enclosure->url);
+	return enclosure_values_to_string (enclosure->url,
+	                                   enclosure->mime,
+	                                   enclosure->size,
+	                                   enclosure->downloaded);
 }
 
 void

@@ -55,9 +55,21 @@ typedef struct enclosure {
 enclosurePtr enclosure_from_string (const gchar *str);
 
 /**
- * Serialize enclosure to string.
+ * Serialize enclosure infos to string.
  *
- * @param enclosure	the enclosure
+ * @param url		the enclosure URL
+ * @param mime		the MIME type (optional, can be NULL)
+ * @param size  	the enclosure size (optional, can be 0)
+ * @param downloaded	downloading state (TRUE=downloaded)
+ *
+ * @returns new string (to be free'd using g_free)
+ */
+gchar * enclosure_values_to_string (const gchar *url, const gchar *mime, gsize size, gboolean downloaded);
+
+/**
+ * Serialize enclosre to string.
+ *
+ * @param encloszre	the enclosure
  *
  * @returns new string (to be free'd using g_free)
  */

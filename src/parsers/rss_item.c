@@ -1,7 +1,7 @@
 /**
  * @file rss_item.c RSS/RDF item parsing 
  *
- * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@
 #include <string.h>
 
 #include "common.h"
+#include "enclosure.h"
 #include "rss_item.h"
 #include "metadata.h"
 #include "xml.h"
@@ -102,7 +103,7 @@ itemPtr parseRSSItem(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 					 tmp = tmp2;
 				}
 		
-				ctxt->item->metadata = metadata_list_append(ctxt->item->metadata, "enclosure", tmp);
+				ctxt->item->metadata = metadata_list_append(ctxt->item->metadata, "enclosure", enclosure_values_to_string (tmp, NULL, 0, FALSE));
 				ctxt->item->hasEnclosure = TRUE;
 				g_free(tmp);
 			}

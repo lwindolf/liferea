@@ -2,7 +2,7 @@
  * @file atom10.c Atom 1.0 Parser
  * 
  * Copyright (C) 2005-2006 Nathan Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +29,7 @@
 #include "conf.h"
 #include "common.h"
 #include "debug.h"
+#include "enclosure.h"
 #include "feed.h"
 #include "feedlist.h"
 #include "ns_admin.h"
@@ -288,7 +289,7 @@ static gchar* atom10_parse_link(xmlNodePtr cur, feedParserCtxtPtr ctxt, struct a
 			}
 		} else if(g_str_equal(relation, "enclosure")) {
 			if (ctxt->item) {
-				ctxt->item->metadata = metadata_list_append(ctxt->item->metadata, "enclosure", url);
+				ctxt->item->metadata = metadata_list_append(ctxt->item->metadata, "enclosure", enclosure_values_to_string(url, NULL, 0, FALSE));
 				ctxt->item->hasEnclosure = TRUE;
 			}
 		} else if(g_str_equal(relation, "related") || g_str_equal(relation, "via")) {	
