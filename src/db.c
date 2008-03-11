@@ -1681,7 +1681,7 @@ db_view_get_unread_count (const gchar *id)
 	gchar		*sql;
 	sqlite3_stmt	*viewCountStmt;	
 	gint		res;
-	guint		count = 0;
+	gint		count = 0;
 
 	debug_start_measurement (DEBUG_DB);
 
@@ -1712,7 +1712,7 @@ db_view_get_unread_count (const gchar *id)
 	
 	debug_end_measurement (DEBUG_DB, "view unread counting");
 	
-	return count;
+	return (guint)count;
 }
 
 gboolean
