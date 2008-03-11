@@ -1,7 +1,7 @@
 /**
  * @file db.c sqlite backend
  * 
- * Copyright (C) 2007  Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2008  Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -176,6 +176,7 @@ db_init (gboolean initial)
 {
 	gchar		*filename;
 	gint		schemaVersion;
+	gint		res;
 		
 	debug_enter ("db_init");
 	
@@ -184,9 +185,9 @@ db_init (gboolean initial)
 open:
 	filename = common_create_cache_filename (NULL, "liferea", "db");
 	debug1 (DEBUG_DB, "Opening DB file %s...", filename);
-	if (!sqlite3_open (filename, &db)) {
-		debug1 (DEBUG_CACHE, "Data base file %s was not found... Creating new one.", filename);
-	}
+	res = sqlite3_open (filename, &db);
+	if (SQLITE_OK != res)
+		debug3 (DEBUG_CACHE, "Data base file %s could not be opened (error code %d: %s)...", filename, res, sqlite3_errmsg (db));
 	g_free (filename);
 	
 	sqlite3_extended_result_codes (db, TRUE);
@@ -1237,7 +1238,7 @@ db_query_to_sql (guint id, const queryPtr query)
 		} else if (query->tables & QUERY_TABLE_NODE) {
 			tmp = columns;
 			columns = g_strdup_printf ("%s,itemsets.read AS item_read", tmp);
-			g_free (tmp);	
+			g_free (tmp);
 		} else {
 			//g_warning ("Fatal: neither items nor itemsets included in query tables!");
 		}
@@ -1665,7 +1666,7 @@ db_view_get_unread_count (const gchar *id)
 	gchar		*sql;
 	sqlite3_stmt	*viewCountStmt;	
 	gint		res;
-	guint		count = 0;
+	gint		count = 0;
 
 	debug_start_measurement (DEBUG_DB);
 
@@ -1696,7 +1697,7 @@ db_view_get_unread_count (const gchar *id)
 	
 	debug_end_measurement (DEBUG_DB, "view unread counting");
 	
-	return count;
+	return (guint)count;
 }
 
 gboolean
