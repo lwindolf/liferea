@@ -2,7 +2,7 @@
  * @file ui_node.c GUI folder handling
  * 
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2004-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2008 Lars Lindner <lars.lindner@gmail.com>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -234,8 +234,8 @@ void ui_node_update(const gchar *nodeId) {
 	labeltype = NODE_TYPE(node)->capabilities;
 	labeltype &= (NODE_CAPABILITY_SHOW_UNREAD_COUNT |
         	      NODE_CAPABILITY_SHOW_ITEM_COUNT);
-
-	if(node->unreadCount <= 0 && (labeltype & NODE_CAPABILITY_SHOW_UNREAD_COUNT))
+	
+	if(node->unreadCount == 0 && (labeltype & NODE_CAPABILITY_SHOW_UNREAD_COUNT))
 		labeltype -= NODE_CAPABILITY_SHOW_UNREAD_COUNT;
 
 	switch(labeltype) {
