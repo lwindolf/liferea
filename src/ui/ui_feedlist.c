@@ -208,7 +208,7 @@ void ui_feedlist_init(GtkWidget *feedview) {
 	                               G_TYPE_STRING,
 	                               GDK_TYPE_PIXBUF,
 	                               G_TYPE_POINTER,
-	                               G_TYPE_INT);
+	                               G_TYPE_UINT);
 
 	ui_feedlist_set_model(GTK_TREE_VIEW(feedview), feedstore);
 
