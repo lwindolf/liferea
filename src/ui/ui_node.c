@@ -243,11 +243,11 @@ void ui_node_update(const gchar *nodeId) {
 		     NODE_CAPABILITY_SHOW_ITEM_COUNT:
 	     		/* treat like show unread count */
 		case NODE_CAPABILITY_SHOW_UNREAD_COUNT:
-			label = g_markup_printf_escaped("<span weight=\"bold\">%s (%d)</span>",
+			label = g_markup_printf_escaped("<span weight=\"bold\">%s (%u)</span>",
 			                        	node_get_title(node), node->unreadCount);
 			break;
 		case NODE_CAPABILITY_SHOW_ITEM_COUNT:
-			label = g_markup_printf_escaped("%s (%d)", node_get_title(node), node->itemCount);
+			label = g_markup_printf_escaped("%s (%u)", node_get_title(node), node->itemCount);
 		     	break;
 		default:
 			label = g_markup_printf_escaped("%s", node_get_title(node));
