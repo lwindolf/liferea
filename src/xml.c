@@ -472,6 +472,26 @@ xpath_foreach_match (xmlNodePtr node, gchar *expr, xpathMatchFunc func, gpointer
 	return FALSE;
 }
 
+gchar *
+xml_get_attribute (xmlNodePtr node, const gchar *name)
+{
+	/* For RSS we use libxml2 in recovery mode and we need to
+	   ensure to never get invalid characters, which is why we
+	   use common_utf8_fix() on each result here... */
+	   
+	return common_utf8_fix (xmlGetProp (node, BAD_CAST name));
+}
+
+gchar *
+xml_get_ns_attribute (xmlNodePtr node, const gchar *name, const gchar *namespace)
+{
+	/* For RSS we use libxml2 in recovery mode and we need to
+	   ensure to never get invalid characters, which is why we
+	   use common_utf8_fix() on each result here... */
+	   
+	return common_utf8_fix (xmlGetNsProp (node, BAD_CAST name, BAD_CAST namespace));
+}
+
 xmlDocPtr
 xml_parse (gchar *data, size_t length, gboolean recovery, errorCtxtPtr errCtx)
 {

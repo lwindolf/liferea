@@ -118,6 +118,28 @@ typedef void (*xpathMatchFunc)(xmlNodePtr match, gpointer user_data);
  */
 gboolean xpath_foreach_match (xmlNodePtr node, gchar *expr, xpathMatchFunc func, gpointer user_data);
 
+/**
+ * Return the value of a attribute.
+ *
+ * @param node		XML node
+ * @param name		attribute name
+ *
+ * @returns the attribute value (or NULL) to be free'd with g_free
+ */
+gchar * xml_get_attribute (xmlNodePtr node, const gchar *name);
+
+/**
+ * Return the value of a attribute.
+ * This is the namespace sensitive version of xml_get_attribute().
+ *
+ * @param node		XML node
+ * @param name		attribute name
+ * @param namespace	attribute namespace
+ *
+ * @returns the attribute value (or NULL) to be free'd with g_free
+ */
+gchar * xml_get_ns_attribute (xmlNodePtr node, const gchar *name, const gchar *namespace);
+
 /** used to keep track of error messages during parsing */
 typedef struct errorCtxt {
 	GString		*msg;		/**< message buffer */
