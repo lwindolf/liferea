@@ -289,7 +289,13 @@ static gchar* atom10_parse_link(xmlNodePtr cur, feedParserCtxtPtr ctxt, struct a
 			}
 		} else if(g_str_equal(relation, "enclosure")) {
 			if (ctxt->item) {
-				ctxt->item->metadata = metadata_list_append(ctxt->item->metadata, "enclosure", enclosure_values_to_string(url, NULL, 0, FALSE));
+				gsize length = 0;
+				gchar *lengthStr = common_utf8_fix (xmlGetNsProp (cur, BAD_CAST"length", NULL));
+				if (lengthStr)
+					length = atol (lengthStr);
+				g_free (lengthStr);
+				
+				ctxt->item->metadata = metadata_list_append(ctxt->item->metadata, "enclosure", enclosure_values_to_string(url, type, length, FALSE /* not yet downloaded */));
 				ctxt->item->hasEnclosure = TRUE;
 			}
 		} else if(g_str_equal(relation, "related") || g_str_equal(relation, "via")) {	

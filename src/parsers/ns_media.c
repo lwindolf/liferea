@@ -1,7 +1,7 @@
 /**
  * @file ns_media.c Yahoo media namespace support
  *
- * Copyright (C) 2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2008 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@
 
 #include "ns_media.h"
 #include "common.h"
+#include "enclosure.h"
 #include "xml.h"
 
 /* a namespace documentation can be found at 
@@ -59,7 +60,13 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 	*/
   	if (!xmlStrcmp(cur->name, "content")) {
 		if (tmp = common_utf8_fix (xmlGetProp (cur, BAD_CAST"url"))) {
-			/* the following code is duplicated from rss_item.c! */
+			/* the following code is duplicated from rss_item.c! */		
+			gchar *type = common_utf8_fix (xmlGetProp (cur, BAD_CAST"type"));
+			gchar *lengthStr = common_utf8_fix (xmlGetProp (cur, BAD_CAST"length"));
+			gsize length = 0;
+			if (lengthStr)
+				length = atol (lengthStr);
+					
 			if ((strstr (tmp, "://") == NULL) &&
 			    (ctxt->feed->htmlUrl != NULL) &&
 			    (ctxt->feed->htmlUrl[0] != '|') &&
@@ -70,9 +77,11 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 				 tmp = tmp2;
 			}
 
-			ctxt->item->metadata = metadata_list_append (ctxt->item->metadata, "enclosure", tmp);
+			ctxt->item->metadata = metadata_list_append (ctxt->item->metadata, "enclosure", enclosure_values_to_string (tmp, type, length, FALSE /* not yet downloaded */));
 			ctxt->item->hasEnclosure = TRUE;
 			g_free (tmp);
+			g_free (type);
+			g_free (lengthStr);
 		}
 	}
 	

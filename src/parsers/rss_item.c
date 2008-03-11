@@ -93,6 +93,12 @@ itemPtr parseRSSItem(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 		else if(!xmlStrcmp(cur->name, BAD_CAST"enclosure")) {
 			/* RSS 0.93 allows multiple enclosures */
 			if(tmp = common_utf8_fix(xmlGetProp(cur, BAD_CAST"url"))) {
+				gchar *type = common_utf8_fix (xmlGetProp (cur, BAD_CAST"type"));
+				gchar *lengthStr = common_utf8_fix (xmlGetProp (cur, BAD_CAST"length"));
+				gsize length = 0;
+				if (lengthStr)
+					length = atol (lengthStr);
+				
 				if((strstr(tmp, "://") == NULL) &&
 				   (ctxt->feed->htmlUrl != NULL) &&
 				   (ctxt->feed->htmlUrl[0] != '|') &&
@@ -103,9 +109,11 @@ itemPtr parseRSSItem(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 					 tmp = tmp2;
 				}
 		
-				ctxt->item->metadata = metadata_list_append(ctxt->item->metadata, "enclosure", enclosure_values_to_string (tmp, NULL, 0, FALSE));
+				ctxt->item->metadata = metadata_list_append(ctxt->item->metadata, "enclosure", enclosure_values_to_string (tmp, type, length, FALSE));
 				ctxt->item->hasEnclosure = TRUE;
-				g_free(tmp);
+				g_free (tmp);
+				g_free (type);
+				g_free (lengthStr);
 			}
 		} 
 		else if(!xmlStrcmp(cur->name, BAD_CAST"guid")) {
