@@ -1,7 +1,7 @@
 /**
  * @file ns_trackback.c trackback namespace support
  *
- * Copyright (C) 2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2008 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@
 
 #include "ns_trackback.h"
 #include "common.h"
+#include "xml.h"
 
 /* a namespace documentation can be found at 
    http://madskills.com/public/xml/rss/module/trackback/
@@ -36,11 +37,11 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 	
 	/* We ignore the "ping" tag */
 
-  	if (xmlStrcmp(cur->name, "about"))
+  	if (xmlStrcmp (cur->name, "about"))
 		return;
 		
 	/* RSS 1.0 */
-	tmp = common_utf8_fix (xmlGetProp (cur, BAD_CAST"about"));
+	tmp = xml_get_attribute (cur, "about");
 		
 	/* RSS 2.0 */
 	if (!tmp)

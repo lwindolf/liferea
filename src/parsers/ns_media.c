@@ -25,7 +25,6 @@
 #include <string.h>
 
 #include "ns_media.h"
-#include "common.h"
 #include "enclosure.h"
 #include "xml.h"
 
@@ -59,10 +58,11 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 	   (example quoted from specification)
 	*/
   	if (!xmlStrcmp(cur->name, "content")) {
-		if (tmp = common_utf8_fix (xmlGetProp (cur, BAD_CAST"url"))) {
+		tmp = xml_get_attribute (cur, "url");
+		if (tmp) {
 			/* the following code is duplicated from rss_item.c! */		
-			gchar *type = common_utf8_fix (xmlGetProp (cur, BAD_CAST"type"));
-			gchar *lengthStr = common_utf8_fix (xmlGetProp (cur, BAD_CAST"length"));
+			gchar *type = xml_get_attribute (cur, "type");
+			gchar *lengthStr = xml_get_attribute (cur, "length");
 			gsize length = 0;
 			if (lengthStr)
 				length = atol (lengthStr);

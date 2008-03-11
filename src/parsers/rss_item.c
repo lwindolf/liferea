@@ -39,32 +39,35 @@ extern GHashTable	*rss_nstable;
 extern GHashTable	*ns_rss_ns_uri_table;
 
 /* method to parse standard tags for each item element */
-itemPtr parseRSSItem(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
+itemPtr
+parseRSSItem (feedParserCtxtPtr ctxt, xmlNodePtr cur)
+{
 	gchar			*tmp, *tmp2, *tmp3;
 	NsHandler		*nsh;
 	parseItemTagFunc	pf;
 	
 	g_assert(NULL != cur);
 
-	ctxt->item = item_new();
-	ctxt->item->tmpdata = g_hash_table_new_full(g_str_hash, g_str_equal, NULL, g_free);
+	ctxt->item = item_new ();
+	ctxt->item->tmpdata = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, g_free);
 	
 	/* try to get an item about id */
-	if(tmp = xmlGetProp(cur, BAD_CAST"about")) {
-		item_set_id(ctxt->item, tmp);
-		item_set_source(ctxt->item, tmp);
-		g_free(tmp);
+	tmp = xml_get_attribute (cur, "about");
+	if (tmp) {
+		item_set_id (ctxt->item, tmp);
+		item_set_source (ctxt->item, tmp);
+		g_free (tmp);
 	}
 	
 	cur = cur->xmlChildrenNode;
-	while(cur) {
-		if(cur->type != XML_ELEMENT_NODE || !cur->name) {
+	while (cur) {
+		if (cur->type != XML_ELEMENT_NODE || !cur->name) {
 			cur = cur->next;
 			continue;
 		}
 		
 		/* check namespace of this tag */
-		if(cur->ns) {
+		if (cur->ns) {
 			if((cur->ns->href && (nsh = (NsHandler *)g_hash_table_lookup(ns_rss_ns_uri_table, (gpointer)cur->ns->href))) ||
 			   (cur->ns->prefix && (nsh = (NsHandler *)g_hash_table_lookup(rss_nstable, (gpointer)cur->ns->prefix)))) {
 				if(pf = nsh->parseItemTag)
@@ -92,9 +95,10 @@ itemPtr parseRSSItem(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 		} 
 		else if(!xmlStrcmp(cur->name, BAD_CAST"enclosure")) {
 			/* RSS 0.93 allows multiple enclosures */
-			if(tmp = common_utf8_fix(xmlGetProp(cur, BAD_CAST"url"))) {
-				gchar *type = common_utf8_fix (xmlGetProp (cur, BAD_CAST"type"));
-				gchar *lengthStr = common_utf8_fix (xmlGetProp (cur, BAD_CAST"length"));
+			tmp = xml_get_attribute (cur, "url");
+			if (tmp) {
+				gchar *type = xml_get_attribute (cur, "type");
+				gchar *lengthStr = xml_get_attribute (cur, "length");
 				gsize length = 0;
 				if (lengthStr)
 					length = atol (lengthStr);
@@ -121,7 +125,7 @@ itemPtr parseRSSItem(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 				if(tmp = xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1)) {
 					item_set_id(ctxt->item, tmp);
 					ctxt->item->validGuid = TRUE;
-					tmp2 = xmlGetProp(cur, "isPermaLink");
+					tmp2 = xml_get_attribute (cur, "isPermaLink");
 					if(!item_get_source(ctxt->item) && (tmp2 == NULL || !xmlStrcmp(tmp2, BAD_CAST"true")))
 						item_set_source(ctxt->item, tmp); /* Per the RSS 2.0 spec. */
 					if(tmp2)
@@ -151,9 +155,10 @@ itemPtr parseRSSItem(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 			}
 		}
 		else if(!xmlStrcmp(cur->name, BAD_CAST"source")) {
-			if(tmp = common_utf8_fix(xmlGetProp(cur, BAD_CAST"url"))) {
-				item_set_real_source_url(ctxt->item, tmp);
-				g_free(tmp);
+			tmp = xml_get_attribute (cur, "url");
+			if (tmp) {
+				item_set_real_source_url (ctxt->item, tmp);
+				g_free (tmp);
 			}
 			if(tmp = unhtmlize(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1))) {
 				item_set_real_source_title(ctxt->item, tmp);

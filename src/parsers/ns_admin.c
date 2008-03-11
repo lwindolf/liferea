@@ -1,7 +1,7 @@
 /**
  * @file ns_admin.c admin namespace support
  *
- * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
-
 #include <string.h>
+
 #include "ns_admin.h"
-#include "common.h"
 #include "metadata.h"
+#include "xml.h"
 
 /* you can find an admin namespace spec at:
    http://web.resource.org/rss/1.0/modules/admin/
@@ -45,7 +42,7 @@ parse_channel_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 {
 	gchar	*value;
 	
-	value = common_utf8_fix (xmlGetProp (cur, "resource"));	
+	value = xml_get_attribute (cur, "resource");
 	
 	if (!xmlStrcmp ("errorReportsTo", cur->name))
 		metadata_list_set (&(ctxt->subscription->metadata), "errorReportsTo", value);

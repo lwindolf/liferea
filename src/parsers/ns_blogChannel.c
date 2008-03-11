@@ -1,7 +1,7 @@
 /**
  * @file ns_blogChannel.c blogChannel namespace support
  *
- * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +18,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
-
 #include <string.h>
 
 #include "ns_blogChannel.h"
-#include "common.h"
 #include "update.h"
 #include "feed.h"
+#include "xml.h"
 
 #define BLOGROLL_START		"<p><div class=\"blogchanneltitle\"><b>BlogRoll</b></div></p>"
 #define BLOGROLL_END		"" 
@@ -62,25 +58,25 @@ getOutlineContents (xmlNodePtr cur)
 	
 	buffer = g_string_new (NULL);
 
-	value = common_utf8_fix (xmlGetProp (cur, BAD_CAST"text"));
+	value = xml_get_attribute (cur, "text");
 	if (value) {
 		g_string_append (buffer, value);
 		g_free (value);
 	}
 	
-	value = common_utf8_fix (xmlGetProp (cur, BAD_CAST"url"));
+	value = xml_get_attribute (cur, "url");
 	if (value) {
 		g_string_append_printf (buffer, "&nbsp;<a href=\"%s\">%s</a>", value, value);
 		g_free (value);
 	}
 
-	value = common_utf8_fix(xmlGetProp(cur, BAD_CAST"htmlUrl"));
+	value = xml_get_attribute (cur, "htmlUrl");
 	if (value) {
 		g_string_append_printf (buffer, "&nbsp;(<a href=\"%s\">HTML</a>)", value);
 		g_free (value);
 	}
 			
-	value = common_utf8_fix(xmlGetProp(cur, BAD_CAST"xmlUrl"));
+	value = xml_get_attribute (cur, "xmlUrl");
 	if (value) {
 		g_string_append_printf (buffer, "&nbsp;(<a href=\"%s\">XML</a>)", value);
 		g_free (value);
