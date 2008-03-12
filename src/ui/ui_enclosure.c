@@ -40,6 +40,10 @@
 
 enum {
 	ES_NAME_STR,
+	ES_MIME_STR,
+	ES_DOWNLOADED,
+	ES_SIZE,
+	ES_SIZE_STR,
 	ES_LEN
 };
 
@@ -166,7 +170,11 @@ enclosure_list_view_new ()
 	gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (elv->priv->treeview), TRUE);
 	
 	elv->priv->treestore = gtk_tree_store_new (ES_LEN,
-	                                           G_TYPE_STRING /* ES_NAME_STR */
+	                                           G_TYPE_STRING,	/* ES_NAME_STR */
+						   G_TYPE_STRING,	/* ES_MIME_STR */
+						   G_TYPE_BOOLEAN,	/* ES_DOWNLOADED */
+						   G_TYPE_ULONG,	/* ES_SIZE */
+						   G_TYPE_STRING	/* ES_SIZE_STRING */
 	                                           );
 	gtk_tree_view_set_model (GTK_TREE_VIEW (elv->priv->treeview), GTK_TREE_MODEL(elv->priv->treestore));
 
@@ -217,9 +225,25 @@ enclosure_list_view_load (EnclosureListView *elv, itemPtr item)
 
 	gtk_tree_store_clear (elv->priv->treestore);	
 	while (list) {
-		GtkTreeIter iter;		
-		gtk_tree_store_append (elv->priv->treestore, &iter, NULL);
-		gtk_tree_store_set (elv->priv->treestore, &iter, ES_NAME_STR, list->data, -1);
+		gchar *sizeStr;
+		enclosurePtr enclosure;
+		GtkTreeIter iter;
+		
+		enclosure = enclosure_from_string (list->data);
+		if (enclosure) {
+			sizeStr = g_strdup_printf ("%d", enclosure->size);	// FIXME: pretty format kB/MB/GB...
+			gtk_tree_store_append (elv->priv->treestore, &iter, NULL);
+			gtk_tree_store_set (elv->priv->treestore, &iter, 
+			                    ES_NAME_STR, enclosure->url,
+					    ES_MIME_STR, enclosure->mime,
+			                    ES_DOWNLOADED, enclosure->downloaded,
+					    ES_SIZE, enclosure->size,
+					    ES_SIZE_STR, sizeStr,
+					    -1);
+			enclosure_free (enclosure);
+			g_free (sizeStr);
+		}
+		
 		list = list->next;
 	}
 }

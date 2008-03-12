@@ -1,7 +1,7 @@
 /**
  * @file enclosure.c enclosures/podcast support
  *
- * Copyright (C) 2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2008 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -54,21 +54,59 @@
 static GSList *types = NULL;
 static gboolean typesLoaded = FALSE;
 
+/* The internal enclosure encoding format is either
+
+      <url>
+      
+   or 
+   
+      enc:<downloaded flag>:<mime type>:<length in byte>:<url>
+      
+   Examples:
+   
+      "http://somewhere.com/cool.mp3"
+      "enc::::http://somewhere.com/cool.mp3"
+      "enc:0:audio/ogg:237423414:http://somewhere.com/cool.ogg"
+      "enc:1:x-application/pdf::https://secret.site.us/defense-plan.pdf"      
+  */
+      
+
 enclosurePtr
 enclosure_from_string (const gchar *str)
 {
-	enclosurePtr enclosure;
+	gchar 		**fields;
+	enclosurePtr	enclosure;
 	
 	enclosure = g_new0 (struct enclosure, 1);
-	enclosure->url = g_strdup (str);
+	
+	/* legacy URL, migration case... */
+	if (strstr (str, "enc:") != str) {
+		enclosure->url = g_strdup (str);
+		return enclosure;
+	}
+	
+	fields = g_regex_split_simple ("^enc:([01]?):([^:]+):(\\d+):(.*)", str, 0, 0);
+	if (6 > g_strv_length (fields)) {
+		g_warning ("Dropping incorrectly encoded enclosure: >>>%s<<< (nr of fields=%d)\n", str, g_strv_length (fields));
+		return NULL;
+	}
+	
+	enclosure->downloaded = ('1' == *fields[1]);
+	if (strlen (fields[2]))
+		enclosure->mime = g_strdup (fields[2]);
+	if (strlen (fields[3]))
+		enclosure->size = atol (fields[3]);
+	enclosure->url = g_strdup (fields[4]);
+
+	g_strfreev (fields);
+
 	return enclosure;
 }
 
 gchar *
 enclosure_values_to_string (const gchar *url, const gchar *mime, gsize size, gboolean downloaded)
 {
-	// FIXME: encode all infos
-	return g_strdup (url);
+	return g_strdup_printf ("enc:%s:%s:%d:%s", downloaded?"1":"0", mime, size, url);
 }
 
 gchar *
