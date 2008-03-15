@@ -37,7 +37,6 @@
 #include "ui/ui_itemlist.h"
 #include "ui/ui_mainwindow.h"
 #include "ui/ui_search.h"
-#include "ui/ui_vfolder.h"
 
 static GtkWidget	*searchdialog = NULL;
 static GtkWidget 	*searchEngineDialog = NULL;

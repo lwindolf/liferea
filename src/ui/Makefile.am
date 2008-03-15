@@ -11,6 +11,8 @@ noinst_LIBRARIES = libliui.a
 libliui_a_CFLAGS = $(PACKAGE_CFLAGS) $(DBUS_CFLAGS)
 libliui_a_SOURCES = \
 	eggtrayicon.c eggtrayicon.h \
+	rule_editor.c rule_editor.h \
+	search_folder_dialog.c search_folder_dialog.h \
 	ui_attention.c ui_attention.h \
 	ui_auth.c ui_auth.h \
 	ui_dialog.c ui_dialog.h \
@@ -31,5 +33,4 @@ libliui_a_SOURCES = \
 	ui_subscription.c ui_subscription.h \
 	ui_tabs.c ui_tabs.h \
 	ui_tray.c ui_tray.h \
-	ui_update.c ui_update.h \
-	ui_vfolder.c ui_vfolder.h 
+	ui_update.c ui_update.h 

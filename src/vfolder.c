@@ -31,8 +31,9 @@
 #include "itemlist.h"
 #include "node.h"
 #include "vfolder.h"
+#include "ui/ui_feedlist.h"
 #include "ui/ui_node.h"
-#include "ui/ui_vfolder.h"
+#include "ui/search_folder_dialog.h"
 
 /** The list of all existing vfolders. Used for updating vfolder information upon item changes */
 static GSList		*vfolders = NULL;
@@ -305,6 +306,26 @@ vfolder_remove (nodePtr node)
 	vfolder_free (node);
 }
 
+static void
+vfolder_properties (nodePtr node)
+{
+	search_folder_dialog_new (node);
+}
+
+static void
+vfolder_add (nodePtr parent)
+{
+	nodePtr	node;
+
+	node = node_new ();
+	vfolder_new (node);
+
+	node_add_child (NULL, node, 0);
+	feedlist_schedule_save ();
+	ui_feedlist_select (node);	
+	vfolder_properties (node);
+}
+
 nodeTypePtr
 vfolder_get_node_type (void)
 { 
@@ -321,8 +342,8 @@ vfolder_get_node_type (void)
 		NULL,			/* process_update_result() */
 		vfolder_remove,
 		node_default_render,
-		ui_vfolder_add,
-		ui_vfolder_properties,
+		vfolder_add,
+		vfolder_properties,
 		vfolder_free
 	};
 	nti.icon = icons[ICON_VFOLDER];

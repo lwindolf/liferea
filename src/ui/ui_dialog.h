@@ -21,7 +21,8 @@
  
 #ifndef _UI_DIALOG_H
 #define _UI_DIALOG_H
- 
+
+#include <gtk/gtk.h> 
 #include <glib-object.h>
 #include <glib.h>
 

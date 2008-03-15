@@ -49,7 +49,6 @@
 #include "ui/ui_shell.h"
 #include "ui/ui_subscription.h"
 #include "ui/ui_tabs.h"
-#include "ui/ui_vfolder.h"
 #include "fl_sources/node_source.h"
 
 extern GHashTable	*feedHandler;
