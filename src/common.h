@@ -248,10 +248,10 @@ char * common_strcasestr(const char *phaystack, const char *pneedle);
 /**
  * Get file modification timestamp
  *
- * @param *file		The file name
+ * @param *file		the file name
  *
- * @returns int Modification timestamp
+ * @returns modification timestamp
  */
-time_t common_get_mod_time(char *file);
+time_t common_get_mod_time(const gchar *file);
 
 #endif

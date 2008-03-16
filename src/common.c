@@ -796,8 +796,13 @@ char *common_strcasestr (const char *phaystack, const char *pneedle)
 }
 
 /* Getting file modtime */
-time_t common_get_mod_time(char *file) {
-	struct stat attribute;
-	stat(file, &attribute);
-	return mktime(gmtime(&(attribute.st_mtime)));
+time_t
+common_get_mod_time (const gchar *file)
+{
+	struct stat	attribute;
+	struct tm	tm;
+	
+	stat (file, &attribute);
+	gmtime_r (&(attribute.st_mtime), &tm);
+	return mktime (&tm);
 }
