@@ -72,6 +72,12 @@ src/xml.c
 src/xml.h
 src/ui/eggtrayicon.c
 src/ui/eggtrayicon.h
+src/ui/rule_editor.c
+src/ui/rule_editor.h
+src/ui/search_dialog.c
+src/ui/search_dialog.h
+src/ui/search_folder_dialog.h
+src/ui/search_folder_dialog.c
 src/ui/ui_attention.c
 src/ui/ui_attention.h
 src/ui/ui_auth.c
@@ -114,8 +120,6 @@ src/ui/ui_tray.c
 src/ui/ui_tray.h
 src/ui/ui_update.c
 src/ui/ui_update.h
-src/ui/ui_vfolder.c
-src/ui/ui_vfolder.h
 src/parsers/atom10.c
 src/parsers/atom10.h
 src/parsers/cdf_channel.c
