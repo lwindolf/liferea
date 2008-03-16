@@ -231,16 +231,17 @@ render_remove_css_comments (void)
 
 const gchar *
 render_get_css (gboolean externalCss)
-{	
-	if(!css) {   
+{
+
+	if(!css) {
 		gchar	*styleSheetFile, *defaultStyleSheetFile, *adblockStyleSheetFile;
 		gchar	*font = NULL;
 		gchar	*fontsize = NULL;
 		gchar	*tmp;
 
-		render_get_theme_colors();		
+		render_get_theme_colors();
 
-    		css = g_string_new(NULL);
+		css = g_string_new(NULL);
 
 		/* font configuration support */
 		font = getStringConfValue(USER_FONT);
@@ -268,18 +269,18 @@ render_get_css (gboolean externalCss)
 
 			g_free(font);
 			g_string_append(css, "}\n");
-		}	
+		}
 
 		defaultStyleSheetFile = g_strdup(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "css" G_DIR_SEPARATOR_S "liferea.css");
 		styleSheetFile = g_strdup_printf("%s" G_DIR_SEPARATOR_S "liferea.css", common_get_cache_path());
 
-		if(g_file_get_contents(defaultStyleSheetFile, &tmp, NULL, NULL)) {
+		if (g_file_get_contents(defaultStyleSheetFile, &tmp, NULL, NULL)) {
 			tmp = render_set_theme_colors(tmp);
 			g_string_append(css, tmp);
 			g_free(tmp);
 		}
 
-		if(g_file_get_contents(styleSheetFile, &tmp, NULL, NULL)) {
+		if (g_file_get_contents(styleSheetFile, &tmp, NULL, NULL)) {
 			tmp = render_set_theme_colors(tmp);
 			g_string_append(css, tmp);
 			g_free(tmp);
@@ -290,28 +291,28 @@ render_get_css (gboolean externalCss)
 
 		adblockStyleSheetFile = g_strdup(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "css" G_DIR_SEPARATOR_S "adblock.css");
 
-		if(g_file_get_contents(adblockStyleSheetFile, &tmp, NULL, NULL)) {
+		if (g_file_get_contents(adblockStyleSheetFile, &tmp, NULL, NULL)) {
 			g_string_append(css, tmp);
 			g_free(tmp);
 		}
 
 		g_free(adblockStyleSheetFile);
-		
+
 		/* remove comments from the CSS to circumvent libgtkhtml2 freezing bug */
- 		render_remove_css_comments();	
-		
-		if(externalCss) {
+		render_remove_css_comments();
+
+		if (externalCss) {
 			/* dump CSS to cache file and create a <style> tag to use the it */
 			gchar *filename = common_create_cache_filename("cache", "style", "css");
-			if(!g_file_set_contents(filename, css->str, -1, NULL))
+			if (!g_file_set_contents(filename, css->str, -1, NULL))
 				g_warning("Cannot write temporary CSS file \"%s\"!", filename);
-			
+
 			g_string_free(css, TRUE);
-			
+
 			css = g_string_new("<style type=\"text/css\"> @import url(file://");
 			g_string_append(css, filename);
 			g_string_append(css, "); </style> ");
-			
+
 			g_free(filename);
 		} else {
 			/* keep the CSS in memory to serve it as a part of each HTML output */
@@ -319,7 +320,7 @@ render_get_css (gboolean externalCss)
 			g_string_append(css, "\n]]>\n</style>\n");
 		}
 	}
-	
+
 	return css->str;
 }
 
