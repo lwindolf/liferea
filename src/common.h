@@ -97,7 +97,7 @@ gchar * common_format_nice_date(time_t date);
  *
  * @returns timestamp
  */
-time_t 	parseISO8601Date(gchar *date);
+time_t	parseISO8601Date(gchar *date);
 
 /**
  * Parses a RFC822 format date. This FAILS if a timezone string is
@@ -106,7 +106,7 @@ time_t 	parseISO8601Date(gchar *date);
  *
  * @returns timestamp (GMT, no daylight savings time)
  */
-time_t 	parseRFC822Date(gchar *date);
+time_t	parseRFC822Date(gchar *date);
 
 /**
  * Creates a date string from the given timestamp.
@@ -244,5 +244,13 @@ gchar *common_strreplace(gchar *string, const gchar *delimiter, const gchar *rep
  * @returns first found position or NULL 
  */
 char * common_strcasestr(const char *phaystack, const char *pneedle);
-
 #endif
+
+/**
+ * Get file modification timestamp
+ *
+ * @param *file The file name
+ * @return int Modification timestamp
+ */
+time_t common_get_mod_time(char *file);
+

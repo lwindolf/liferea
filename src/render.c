@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
- 
+
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
 #endif
@@ -59,7 +59,7 @@ void render_init(void) {
 	debug1(DEBUG_HTML, "XSLT localisation: setlocale(LC_MESSAGES, NULL) reports '%s'", setlocale(LC_MESSAGES, NULL));
 	lang = g_strsplit(setlocale(LC_MESSAGES, NULL), "@", 0);
 	shortlang = g_strsplit(setlocale(LC_MESSAGES, NULL), "_", 0);
-	
+
 	langParams = render_parameter_new();
 	render_parameter_add(langParams, "lang='%s'", lang[0]);
 	render_parameter_add(langParams, "shortlang='%s'", shortlang[0]);
@@ -67,10 +67,10 @@ void render_init(void) {
 
 	g_strfreev(shortlang);
 	g_strfreev(lang);
-	
+
 	/* prepare rendering default parameters */
 	defaultParams = g_strdup_printf("search_link_enable='%s'", getBooleanConfValue(SEARCH_ENGINE_HIDE_LINK)?"false":"true");
-	
+
 	if(!stylesheets)
 		stylesheets = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
 }
@@ -80,40 +80,40 @@ xsltStylesheetPtr render_load_stylesheet(const gchar *xsltName) {
 	xsltStylesheetPtr	xslt;
 	xmlDocPtr		xsltDoc, resDoc;
 	gchar			*filename;
-	
+
 	if(!stylesheets)
 		render_init();
 
-	/* try to serve the stylesheet from the cache */	
+	/* try to serve the stylesheet from the cache */
 	xslt = (xsltStylesheetPtr)g_hash_table_lookup(stylesheets, xsltName);
 	if(xslt)
 		return xslt;
-	
+
 	/* or load and translate it... */
-	
+
 	/* 1. load localization stylesheet */
-	if(NULL == (i18n_filter = xsltParseStylesheetFile(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "xslt" G_DIR_SEPARATOR_S "i18n-filter.xslt"))) {
+	if (NULL == (i18n_filter = xsltParseStylesheetFile(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "xslt" G_DIR_SEPARATOR_S "i18n-filter.xslt"))) {
 		g_warning("fatal: could not load localization stylesheet!");
 		return NULL;
 	}
-	
+
 	/* 2. load and localize the rendering stylesheet */
 	filename = g_strjoin(NULL, PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "xslt" G_DIR_SEPARATOR_S, xsltName, ".xml", NULL);
-	
-	if(NULL == (xsltDoc = xmlParseFile(filename)))
+
+	if (NULL == (xsltDoc = xmlParseFile(filename)))
 		g_warning("fatal: could not load rendering stylesheet (%s)!", xsltName);
-		
+
 	g_free(filename);
 
 	if(NULL == (resDoc = xsltApplyStylesheet(i18n_filter, xsltDoc, (const gchar **)langParams->params)))
 		g_warning("fatal: applying localization stylesheet failed (%s)!", xsltName);
-		
+
 	//xsltSaveResultToFile(stdout, resDoc, i18n_filter);
-	
+
 	/* 3. create localized rendering stylesheet */
 	if(NULL == (xslt = xsltParseStylesheetDoc(resDoc)))
 		g_warning("fatal: could not load rendering stylesheet (%s)!", xsltName);
-		
+
 	xmlFreeDoc(xsltDoc);
 	xsltFreeStylesheet(i18n_filter);
 
@@ -123,6 +123,7 @@ xsltStylesheetPtr render_load_stylesheet(const gchar *xsltName) {
 
 /** cached CSS definitions */
 static GString	*css = NULL;
+static time_t lastCssModification = 0;
 
 /** widget background theme colors as 8bit HTML RGB code */
 
@@ -134,20 +135,19 @@ typedef struct themeColor {
 static GSList *themeColors = NULL;
 
 /* Determining of theme colors, to be inserted in CSS */
-
 static themeColorPtr render_get_theme_color(const gchar *name, GdkColor themeColor) {
 	themeColorPtr	tc;
 	gushort		r, g, b;
-	
+
 	r = themeColor.red / 256;
 	g = themeColor.green / 256;
 	b = themeColor.blue / 256;
-	
+
 	tc = g_new0(struct themeColor, 1);
 	tc->name = name;
 	tc->value = g_strdup_printf("%.2X%.2X%.2X", r, g, b);
 	debug2(DEBUG_HTML, "theme color \"%s\" is %s", tc->name, tc->value);
-	
+
 	return tc;
 }
 
@@ -157,7 +157,7 @@ render_get_theme_colors (void)
 	GtkWidget	*htmlview;
 	GtkStyle	*style;
 	GdkColor	*color;
-	
+
 	htmlview = liferea_htmlview_get_widget (ui_mainwindow_get_active_htmlview ());
 	style = gtk_widget_get_style (htmlview);
 	g_assert (NULL != style);
@@ -170,7 +170,7 @@ render_get_theme_colors (void)
 	themeColors = g_slist_append (themeColors, render_get_theme_color("GTK-COLOR-MID",   style->mid[GTK_STATE_NORMAL]));
 	themeColors = g_slist_append (themeColors, render_get_theme_color("GTK-COLOR-BASE",  style->base[GTK_STATE_NORMAL]));
 	themeColors = g_slist_append (themeColors, render_get_theme_color("GTK-COLOR-TEXT",  style->text[GTK_STATE_NORMAL]));
-	
+
 	color = NULL;
 	gtk_widget_style_get (GTK_WIDGET (mainwindow), "link-color", &color, NULL);
 	if (color) {
@@ -179,7 +179,7 @@ render_get_theme_colors (void)
 		g_free (color);
 	}
 
-	color = NULL;	
+	color = NULL;
 	gtk_widget_style_get(GTK_WIDGET(mainwindow), "visited-link-color", &color, NULL);
 	if (color) {
 		themeColors = g_slist_append(themeColors, render_get_theme_color("GTK-COLOR-VISITED-LINK", *color));
@@ -203,43 +203,53 @@ static gchar * render_set_theme_colors(gchar *css) {
 static void
 render_remove_css_comments (void)
 {
- 	gssize i, len = css->len;
- 	gchar *str = css->str;
- 	GString *newcss;
- 
- 	newcss = g_string_new(NULL);
- 	i = 0;
- 	while (i < len) {
- 		if (i+1 < len && str[i] == '/' && str[i+1] == '*') {
- 			i += 4;
- 			while (i-1 < len && (str[i-2] != '*' || str[i-1] != '/'))
- 				i++;
- 			continue;
- 		}
- 		if (i+1 < len && str[i] == '/' && str[i+1] == '/') {
- 			i += 2;
- 			while (i < len && str[i] != '\n')
- 				i++;
- 			continue;
- 		}
- 		newcss = g_string_append_c(newcss, str[i]);
- 		i++;
- 	}
- 	g_string_free(css, TRUE);
- 	css = newcss;
+	gssize i, len = css->len;
+	gchar *str = css->str;
+	GString *newcss;
+
+	newcss = g_string_new(NULL);
+	i = 0;
+	while (i < len) {
+		if (i+1 < len && str[i] == '/' && str[i+1] == '*') {
+			i += 4;
+			while (i-1 < len && (str[i-2] != '*' || str[i-1] != '/'))
+				i++;
+			continue;
+		}
+		if (i+1 < len && str[i] == '/' && str[i+1] == '/') {
+			i += 2;
+			while (i < len && str[i] != '\n')
+				i++;
+			continue;
+		}
+		newcss = g_string_append_c(newcss, str[i]);
+		i++;
+	}
+	g_string_free(css, TRUE);
+	css = newcss;
 }
 
 const gchar *
 render_get_css (gboolean externalCss)
 {
+	gchar *styleSheetFile;
+	time_t newLastModification;
 
-	if(!css) {
-		gchar	*styleSheetFile, *defaultStyleSheetFile, *adblockStyleSheetFile;
+	styleSheetFile      = g_strdup_printf("%s" G_DIR_SEPARATOR_S "liferea.css", common_get_cache_path());
+	newLastModification = common_get_mod_time((char *)styleSheetFile);
+
+	if (!css || lastCssModification != newLastModification) {
+		gchar	*defaultStyleSheetFile, *adblockStyleSheetFile;
 		gchar	*font = NULL;
 		gchar	*fontsize = NULL;
 		gchar	*tmp;
 
-		render_get_theme_colors();
+		// Update last modification timestamp
+		lastCssModification = newLastModification;
+
+		if (themeColors == NULL) {
+			render_get_theme_colors();
+		}
 
 		css = g_string_new(NULL);
 
@@ -272,7 +282,6 @@ render_get_css (gboolean externalCss)
 		}
 
 		defaultStyleSheetFile = g_strdup(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "css" G_DIR_SEPARATOR_S "liferea.css");
-		styleSheetFile = g_strdup_printf("%s" G_DIR_SEPARATOR_S "liferea.css", common_get_cache_path());
 
 		if (g_file_get_contents(defaultStyleSheetFile, &tmp, NULL, NULL)) {
 			tmp = render_set_theme_colors(tmp);
@@ -287,7 +296,6 @@ render_get_css (gboolean externalCss)
 		}
 
 		g_free(defaultStyleSheetFile);
-		g_free(styleSheetFile);
 
 		adblockStyleSheetFile = g_strdup(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "css" G_DIR_SEPARATOR_S "adblock.css");
 
@@ -320,6 +328,8 @@ render_get_css (gboolean externalCss)
 			g_string_append(css, "\n]]>\n</style>\n");
 		}
 	}
+
+	g_free(styleSheetFile);
 
 	return css->str;
 }

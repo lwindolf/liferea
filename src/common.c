@@ -794,3 +794,10 @@ char *common_strcasestr (const char *phaystack, const char *pneedle)
  ret0:
 	return 0;
 }
+
+/* Getting file modtime */
+time_t common_get_mod_time(char *file) {
+	struct stat attribute;
+	stat(file, &attribute);
+	return mktime(gmtime(&(attribute.st_mtime)));
+}
