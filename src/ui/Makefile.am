@@ -12,6 +12,7 @@ libliui_a_CFLAGS = $(PACKAGE_CFLAGS) $(DBUS_CFLAGS)
 libliui_a_SOURCES = \
 	eggtrayicon.c eggtrayicon.h \
 	rule_editor.c rule_editor.h \
+	search_engine_dialog.c search_engine_dialog.h \
 	search_folder_dialog.c search_folder_dialog.h \
 	ui_attention.c ui_attention.h \
 	ui_auth.c ui_auth.h \

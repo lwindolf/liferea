@@ -583,8 +583,6 @@ ui_mainwindow_init (int mainwindowState)
 	debug_enter("ui_mainwindow_init");
 	
 	liferea_shell_create ();
-	
-	ui_search_init();
 
 	mw = ui_mainwindow_new();
 	mainwindow = GTK_WIDGET(mw->window);

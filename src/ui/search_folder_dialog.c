@@ -150,7 +150,7 @@ search_folder_dialog_new (nodePtr node)
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (dialog, sfd->priv->vfolder->anyMatch?"anyRuleRadioBtn":"allRuleRadioBtn")), TRUE);
 	
 	/* Set up rule list vbox */
-	gtk_container_add (GTK_CONTAINER (liferea_dialog_lookup (dialog, "ruleview")), rule_editor_get_widget (sfd->priv->re));
+	gtk_container_add (GTK_CONTAINER (liferea_dialog_lookup (dialog, "ruleview_vfolder_dialog")), rule_editor_get_widget (sfd->priv->re));
 
 	/* bind buttons */
 	g_signal_connect (liferea_dialog_lookup (dialog, "addrulebtn"), "clicked", G_CALLBACK (on_addrulebtn_clicked), sfd);
