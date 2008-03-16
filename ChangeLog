@@ -1,3 +1,21 @@
+2008-03-16  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.5.1 (Unstable)
+
+	* New high quality icons in different sizes and SVG.
+	  These icons are licensed under the Creative
+	  Commons Share Alike license as they were derived
+	  from the Tango icon set. (Jeff Fortin)
+	* Icon installation to correct hicolor directories.
+	  (Lars Strojny)
+	* New advanced search dialog functionality.
+	  (Lars Lindner)
+
+	Translation
+
+	* Update of German translation (Lars Strojny)
+
+
 2008-03-04  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.5.0 (Unstable)

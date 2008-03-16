@@ -240,9 +240,12 @@ vfolder_export (nodePtr node,
 	debug_exit ("vfolder_export");
 }
 
-/* Method thats adds a rule to a vfolder. To be used
-   on loading time or when creating searching. Does 
-   not process items. Just sets up the vfolder */
+void
+vfolder_add_existing_rule (vfolderPtr vfolder, rulePtr rule)
+{
+	vfolder->rules = g_slist_append (vfolder->rules, rule);
+}
+
 void
 vfolder_add_rule (vfolderPtr vfolder,
                   const gchar *ruleId,
@@ -252,15 +255,12 @@ vfolder_add_rule (vfolderPtr vfolder,
 	rulePtr		rule;
 	
 	rule = rule_new (vfolder, ruleId, value, additive);
-	if(rule)
-		vfolder->rules = g_slist_append(vfolder->rules, rule);
+	if (rule)
+		vfolder_add_existing_rule (vfolder, rule);
 	else
-		g_warning("unknown search folder rule id: \"%s\"", ruleId);
+		g_warning ("unknown search folder rule id: \"%s\"", ruleId);
 }
 
-/* Method that remove a rule from a vfolder. To be used
-   when deleting or changing vfolders. Does not process
-   items. */
 void
 vfolder_remove_rule (vfolderPtr vfolder, rulePtr rule) 
 {

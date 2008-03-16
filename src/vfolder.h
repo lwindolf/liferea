@@ -53,7 +53,16 @@ typedef struct vfolder {
 vfolderPtr vfolder_new (struct node *node);
 
 /**
- * Method thats adds a rule to a search folder. To be used
+ * Method that adds an existing rule to a search folder.
+ * To be used when editing search folders.
+ *
+ * @param vfdoler	search folder
+ * @param rule		rule to add
+ */
+void vfolder_add_existing_rule (vfolderPtr vfolder, rulePtr rule);
+
+/**
+ * Method that creates and adds a rule to a search folder. To be used
  * on loading time, when creating searches or when editing
  * search folder properties.
  *  

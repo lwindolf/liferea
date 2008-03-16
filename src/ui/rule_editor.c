@@ -21,6 +21,8 @@
  
 #include "ui/rule_editor.h"
 
+#include "rule.h"
+
 static void rule_editor_class_init	(RuleEditorClass *klass);
 static void rule_editor_init		(RuleEditor *ld);
 
@@ -73,6 +75,15 @@ static void
 rule_editor_finalize (GObject *object)
 {
 	RuleEditor *re = RULE_EDITOR (object);
+	
+	/* delete rules */	
+	GSList *iter = re->priv->newRules;
+	while (iter) {
+		rule_free ((rulePtr)iter->data);
+		iter = g_slist_next (iter);
+	}
+	g_slist_free (re->priv->newRules);
+	re->priv->newRules = NULL;
 
 	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -309,20 +320,27 @@ rule_editor_new (vfolderPtr vfolder)
 void
 rule_editor_save (RuleEditor *re, vfolderPtr vfolder)
 {
-	GSList	*iter, *unused_rules;
+	GSList	*iter;
 	
-	unused_rules = vfolder->rules;
-	vfolder->rules = re->priv->newRules;
-// FIXME:	vfolder->anyMatch = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (re->priv->anyRuleRadioBtn));
-	
-	/* delete old or unused rules */	
-	iter = unused_rules;
+	/* delete all old rules */	
+	iter = vfolder->rules;
 	while (iter) {
-		vfolder_remove_rule (vfolder, (rulePtr)iter->data);
 		rule_free ((rulePtr)iter->data);
 		iter = g_slist_next (iter);
 	}
-	g_slist_free (unused_rules);
+	g_slist_free (vfolder->rules);
+	vfolder->rules = NULL;
+	
+	/* and add all rules from editor */
+	iter = re->priv->newRules;
+	while (iter) {
+		rulePtr rule = (rulePtr)iter->data;
+		vfolder_add_rule (vfolder, rule->ruleInfo->ruleId, rule->value, rule->additive);
+		iter = g_slist_next (iter);
+	}
+
+/* FIXME: move the following code from search_folder_dialog.c and search_dialog.c here:
+	vfolder->anyMatch = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (re->priv->anyRuleRadioBtn));	*/
 }
 
 GtkWidget *

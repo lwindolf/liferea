@@ -1,7 +1,7 @@
 /**
- * @file ui_search.c everything about searching
+ * @file ui_search.c  search engine handling
  *
- * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,24 +18,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
-
-#include <string.h>
-#include <gtk/gtk.h>
-
 #include "common.h"
 #include "feedlist.h"
 #include "itemlist.h"
 #include "node.h"
-#include "rule.h"
 #include "vfolder.h"
 #include "ui/ui_dialog.h"
-#include "ui/ui_feedlist.h"
-#include "ui/ui_htmlview.h"
-#include "ui/ui_itemlist.h"
-#include "ui/ui_mainwindow.h"
 #include "ui/ui_search.h"
 
 static GtkWidget	*searchdialog = NULL;
@@ -48,111 +36,6 @@ typedef struct searchEngine {
 } *searchEnginePtr;
 
 static GSList	*searchEngines = NULL;
-
-/*------------------------------------------------------------------------------*/
-/* search dialog callbacks							*/
-/*------------------------------------------------------------------------------*/
-
-static void
-ui_search_destroyed_cb(GtkWidget *widget, void *data)
-{
-	searchdialog = NULL;
-}
-
-void
-on_searchbtn_clicked (GtkButton *button, gpointer user_data)
-{
-	GtkWidget	*searchentry;
-
-	if (!searchdialog) {
-		searchdialog = liferea_dialog_new (NULL, "simplysearchdialog");
-		g_signal_connect (G_OBJECT (searchdialog), "destroy", G_CALLBACK (ui_search_destroyed_cb), NULL);
-	}
-	
-	searchentry = liferea_dialog_lookup (searchdialog, "searchentry");
-	gtk_window_set_focus (GTK_WINDOW (searchdialog), searchentry);
-}
-
-void
-on_searchentry_activate (GtkEntry *entry, gpointer user_data)
-{
-	/* do not use passed entry because callback is used from a button too */
-	GtkWidget		*searchentry;
-	G_CONST_RETURN gchar	*searchstring;
-	GString			*buffer;
-	vfolderPtr		vfolder;
-	
-	searchentry = liferea_dialog_lookup (searchdialog, "searchentry");
-	searchstring = gtk_entry_get_text (GTK_ENTRY(searchentry));
-
-	/* remove last search */
-	ui_itemlist_clear ();
-	
-	if (searchResult) {
-		/* Unload from itemlist (necessary on subsequent loads */
-		if (searchResult == itemlist_get_displayed_node ())
-			itemlist_unload (FALSE);
-			
-		node_free (searchResult);
-	}
-
-	/* create new search */
-	searchResult = node_new ();
-	vfolder = vfolder_new (searchResult);
-	
-	node_set_title (searchResult, searchstring);
-	vfolder_add_rule (vfolder, "exact", searchstring, TRUE);
-
-	/* calculate vfolder item set */
-	vfolder_refresh (vfolder);
-
-	/* switch to item list view and inform user in HTML view */
-	ui_feedlist_select (NULL);
-	itemlist_set_view_mode (0);
-	itemlist_unload (FALSE);
-	itemlist_load (searchResult);
-
-	buffer = g_string_new (NULL);
-	htmlview_start_output (buffer, NULL, TRUE, FALSE);
-	g_string_append_printf (buffer, "<div class='content'><h2>");
-	g_string_append_printf (buffer, ngettext("%d Search Result for \"%s\"", 
-	                                         "%d Search Results for \"%s\"",
-	                                         searchResult->itemCount),
-	                        searchResult->itemCount, searchstring);
-	g_string_append_printf (buffer, "</h2><p>");
-	g_string_append_printf (buffer, _("The item list now contains all items matching the "
-	                                "specified search pattern. If you want to save this search "
-	                                "result permanently you can click the \"Search Folder\" button in "
-	                                "the search dialog and Liferea will add a search folder to your "
-	                                "feed list."));
-	g_string_append_printf (buffer, "</p></div>");
-	htmlview_finish_output (buffer);
-	liferea_htmlview_write (ui_mainwindow_get_active_htmlview (), buffer->str, NULL);
-	g_string_free (buffer, TRUE);
-
-	/* enable vfolder add button */	
-	gtk_widget_set_sensitive (liferea_dialog_lookup (searchdialog, "vfolderaddbtn"), TRUE);
-}
-
-void on_searchentry_changed(GtkEditable *editable, gpointer user_data) {
-	gchar *searchtext;
-	
-	/* just to disable the start search button when search string is empty... */
-	searchtext = gtk_editable_get_chars(editable,0,-1);
-	gtk_widget_set_sensitive(liferea_dialog_lookup(searchdialog, "searchstartbtn"), searchtext && (0 < strlen(searchtext)));
-		
-}
-
-void on_newVFolder_clicked(GtkButton *button, gpointer user_data) {
-	
-	if(searchResult) {
-		nodePtr node = searchResult;
-		searchResult = NULL;
-		node_add_child(NULL, node, 0);
-		feedlist_schedule_save();
-		ui_feedlist_select(node);
-	}
-}
 
 void
 on_new_vfolder_activate (GtkMenuItem *menuitem, gpointer user_data)

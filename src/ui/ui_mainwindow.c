@@ -2,7 +2,7 @@
  * @file ui_mainwindow.c some functions concerning the main window 
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2004-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2008 Lars Lindner <lars.lindner@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -40,6 +40,7 @@
 #include "itemview.h"
 #include "net.h"
 #include "script.h"
+#include "ui/search_dialog.h"
 #include "ui/ui_script.h"
 #include "ui/ui_dialog.h"
 #include "ui/ui_dnd.h"
@@ -717,10 +718,8 @@ ui_mainwindow_init (int mainwindowState)
 				   "</p>"
 				   "<p>New/Improved Functionality:"
 				   "<ul>"
-				   "   <li>Yahoo Media, iTunes and trackback namespace support</li>"
-				   "   <li>libcurl as networking client</li>"
-				   "   <li>Somewhat faster item list loading</li>"
-				   "   <li>Search folder rules with optional AND-logic</li>"
+	                           "   <li>Automatic database cleanup on each startup.</li>"
+				   "   <li>New advanced search dialog to make complex searches.</li>"
 				   "</ul>"
 				   "</p>");
 	g_string_append(buffer,    "</div>");
@@ -800,6 +799,12 @@ void ui_mainwindow_online_status_changed (int online) {
 	gtk_toggle_action_set_active(
 	    GTK_TOGGLE_ACTION(gtk_action_group_get_action(mainwindow_priv->generalActions,"ToggleOfflineMode")),
 	    !online);
+}
+
+void
+on_searchbtn_clicked (GtkButton *button, gpointer user_data)
+{
+	simple_search_dialog_open ();
 }
 
 void

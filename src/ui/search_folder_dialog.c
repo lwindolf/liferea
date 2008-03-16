@@ -101,12 +101,13 @@ search_folder_dialog_init (SearchFolderDialog *sfd)
 static void
 on_propdialog_response (GtkDialog *dialog, gint response_id, gpointer user_data)
 {
-	SearchFolderDialog	*sfd = (SearchFolderDialog *)user_data;
+	SearchFolderDialog	*sfd = SEARCH_FOLDER_DIALOG (user_data);
 	
 	if (response_id == GTK_RESPONSE_OK) {	
 		/* save new search folder settings */
 		node_set_title (sfd->priv->node, gtk_entry_get_text (GTK_ENTRY (sfd->priv->nameEntry)));
 		rule_editor_save (sfd->priv->re, sfd->priv->vfolder);
+		sfd->priv->vfolder->anyMatch = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (dialog, "anyRuleRadioBtn")));
 
 		/* update search folder */
 		ui_itemlist_clear ();
@@ -122,7 +123,7 @@ on_propdialog_response (GtkDialog *dialog, gint response_id, gpointer user_data)
 static void
 on_addrulebtn_clicked (GtkButton *button, gpointer user_data)
 {
-	SearchFolderDialog *sfd = (SearchFolderDialog *)user_data;
+	SearchFolderDialog *sfd = SEARCH_FOLDER_DIALOG (user_data);
 		
 	rule_editor_add_rule (sfd->priv->re, NULL);
 }
