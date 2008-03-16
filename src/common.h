@@ -244,13 +244,14 @@ gchar *common_strreplace(gchar *string, const gchar *delimiter, const gchar *rep
  * @returns first found position or NULL 
  */
 char * common_strcasestr(const char *phaystack, const char *pneedle);
-#endif
 
 /**
  * Get file modification timestamp
  *
- * @param *file The file name
- * @return int Modification timestamp
+ * @param *file		The file name
+ *
+ * @returns int Modification timestamp
  */
 time_t common_get_mod_time(char *file);
 
+#endif
