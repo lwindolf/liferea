@@ -185,10 +185,8 @@ ui_subscription_dialog_decode_source (SubscriptionDialogPrivate *ui_data)
 		source = ui_subscription_create_url (g_strdup (gtk_entry_get_text (GTK_ENTRY (ui_data->sourceEntry))),
 		                                     ui_data->authcheckbox &&
 		                                     gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (ui_data->authcheckbox)),
-		                                     ui_data->username && 
-		                                     gtk_entry_get_text (GTK_ENTRY (ui_data->username)),
-		                                     ui_data->password &&
-		                                     gtk_entry_get_text (GTK_ENTRY (ui_data->password)));
+		                                     ui_data->username?gtk_entry_get_text (GTK_ENTRY (ui_data->username)):NULL,
+		                                     ui_data->password?gtk_entry_get_text (GTK_ENTRY (ui_data->password)):NULL);
 	else if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (ui_data->cmdRadio)))
 		source = g_strdup_printf ("|%s", gtk_entry_get_text (GTK_ENTRY (ui_data->sourceEntry)));
 
