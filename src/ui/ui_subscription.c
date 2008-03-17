@@ -1,7 +1,7 @@
 /**
  * @file ui_subscription.c subscription dialogs
  *
- * Copyright (C) 2004-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2008 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -183,11 +183,12 @@ ui_subscription_dialog_decode_source (SubscriptionDialogPrivate *ui_data)
 		
 	else if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (ui_data->urlRadio)))
 		source = ui_subscription_create_url (g_strdup (gtk_entry_get_text (GTK_ENTRY (ui_data->sourceEntry))),
-		                                    ui_data->authcheckbox &&
-		                                    gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (ui_data->authcheckbox)),
-		                                    gtk_entry_get_text (GTK_ENTRY (ui_data->username)),
-		                                    gtk_entry_get_text (GTK_ENTRY (ui_data->password)));
-					    
+		                                     ui_data->authcheckbox &&
+		                                     gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (ui_data->authcheckbox)),
+		                                     ui_data->username && 
+		                                     gtk_entry_get_text (GTK_ENTRY (ui_data->username)),
+		                                     ui_data->password &&
+		                                     gtk_entry_get_text (GTK_ENTRY (ui_data->password)));
 	else if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (ui_data->cmdRadio)))
 		source = g_strdup_printf ("|%s", gtk_entry_get_text (GTK_ENTRY (ui_data->sourceEntry)));
 
