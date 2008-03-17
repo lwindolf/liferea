@@ -4,6 +4,9 @@
 
 	* Fixes assertion when creating subscriptions using
 	  the advanced subscription dialog.
+	* Fixes Debian #433393: subscription not update
+	  anymore when number of flagged items = cache limit.
+	  (reported by Eddy Petrisor)
 	* Update of Portugese translation (Antonio Lima)
 
 
