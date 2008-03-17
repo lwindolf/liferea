@@ -1,3 +1,12 @@
+2008-03-??  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.4.15 (Stable)
+
+	* Fixes assertion when creating subscriptions using
+	  the advanced subscription dialog.
+	* Update of Portugese translation (Antonio Lima)
+
+
 2008-03-12  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.4.14 (Stable)
