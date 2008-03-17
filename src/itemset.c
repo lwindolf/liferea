@@ -1,7 +1,7 @@
 /**
  * @file itemset.c handling sets of items
  * 
- * Copyright (C) 2005-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2005-2008 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -61,7 +61,16 @@ itemset_get_max_item_count (itemSetPtr itemSet)
 
 #define MAX_MERGE_COUNT 100	/**< 100 items per feed is the default use case */
 
-/* Generic merge logic suitable for feeds (returns TRUE if merging instead of updating is necessary) */
+/**
+ * Generic merge logic suitable for feeds
+ *
+ * @param items		existing items
+ * @param newItem	new item to merge
+ * @param allowUpdates	TRUE if item content update is to be
+ *      		allowed for existing items
+ *
+ * @returns TRUE if merging instead of updating is necessary) 
+ */
 static gboolean
 itemset_generic_merge_check (GList *items, itemPtr newItem, gboolean allowUpdates)
 {
@@ -263,19 +272,50 @@ guint
 itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates)
 {
 	GList	*iter, *droppedItems = NULL, *items = NULL;
-	guint	max, toBeDropped, newCount = 0;
+	guint	max, toBeDropped, newCount = 0, flagCount = 0;
 
 	debug_start_measurement (DEBUG_UPDATE);
 	
 	debug2 (DEBUG_UPDATE, "old item set %p of (node id=%s):", itemSet, itemSet->nodeId);
 	
-	/* 1. Avoid cache wrapping (if feed size > cache size)
+	/* 1. Preparation: determine effective maximum cache size 
+	
+	   The problem here is that the configured maximum cache
+	   size might not always be sufficient. We need to check
+	   border use cases in the following. */
+	   
+	max = itemset_get_max_item_count (itemSet);
+
+	/* Preload all items for flag counting and later merging comparison */
+	iter = itemSet->ids;
+	while (iter) {
+		itemPtr item = item_load (GPOINTER_TO_UINT (iter->data));
+		if (item) {
+			items = g_list_append (items, item);
+			if (item->flagStatus)
+				flagCount++;
+		}
+		iter = g_list_next (iter);
+	}
+	
+	/* Case #1: Avoid having to many flagged items. We count the 
+	   flagged items and check if they are fewer than 
+	   
+	      <cache limit> - <downloaded items> 
+	      
+	   to ensure that all new items fit in a feed cache full of
+	   flagged items. */
+	if (max < g_list_length (list) + flagCount) {
+		max = flagCount + g_list_length (list);
+		debug2 (DEBUG_UPDATE, "too many flagged items -> increasing cache limit to %u (node id=%s)", max, itemSet->nodeId);
+	}
+	
+	/* 2. Avoid cache wrapping (if feed size > cache size)
 	
 	   Truncate the new itemset if it is longer than
 	   the maximum cache size which could cause items
 	   to be dropped and added again on subsequent 
 	   merges with the same feed content */
-	max = itemset_get_max_item_count (itemSet);
 	if (g_list_length (list) > max) {
 		debug2 (DEBUG_UPDATE, "item list too long (%u, max=%u) for merging!", g_list_length (list), max);
 		guint i = 0;
@@ -293,15 +333,6 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates)
 		}
 		g_list_free (copy);
 	}	 
-	
-	/* 2. Preload all items for merging comparison */
-	iter = itemSet->ids;
-	while (iter) {
-		itemPtr item = item_load (GPOINTER_TO_UINT (iter->data));
-		if (item)
-			items = g_list_append (items, item);
-		iter = g_list_next (iter);
-	}
  
 	/* 3. Merge received items to existing item set
 	 
