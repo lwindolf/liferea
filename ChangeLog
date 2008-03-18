@@ -10,6 +10,8 @@
 	* Fixes OpenSuSE #371307: possible undefined behaviour
 	  when decoding authentication data.
 	  (reported by Christoph Thiel)
+	* Fixes SF #1912774: news.yv valid feed "is not available"
+	  (patch by Luis Rodrigo Gallardo Cruz)
 	* Update of Portugese translation (Antonio Lima)
 
 

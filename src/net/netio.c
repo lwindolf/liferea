@@ -220,7 +220,7 @@ static int NetReadHeaderLine(int my_socket, void *proto_data, enum netio_proto p
 			}
 			if (*ci == '\r' || *ci == '\n' ) {
 				strncpy(headerline, *nextstr, 1+(ci-*nextstr));
-				headerline[2+(ci-*nextstr)] = '\0';
+				headerline[1+(ci-*nextstr)] = '\0';
 				*nextstr = ci+1;
 				return 0;
 			}
@@ -232,7 +232,7 @@ static int NetReadHeaderLine(int my_socket, void *proto_data, enum netio_proto p
 	if (*nextstr != NULL) {
 		int dead;
 		dead = *nextstr-recvbuf;
-		memmove(recvbuf, nextstr, *recvbufused-(dead));
+		memmove(recvbuf, *nextstr, *recvbufused-(dead));
 		*recvbufused -= dead;
 	}
 	*nextstr = recvbuf;
@@ -255,7 +255,7 @@ static int NetReadHeaderLine(int my_socket, void *proto_data, enum netio_proto p
 		}
 		if (*ci == '\r' || *ci == '\n' ) {
 			strncpy(headerline, *nextstr, 1+(ci-*nextstr));
-			headerline[2+(ci-*nextstr)] = '\0';
+			headerline[1+(ci-*nextstr)] = '\0';
 			*nextstr = ci+1;
 			return 0;
 		}
