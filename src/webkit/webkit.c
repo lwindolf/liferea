@@ -53,10 +53,10 @@ liferea_webkit_deinit (void)
  */
 static void
 webkit_write_html (GtkWidget   *scrollpane,
-					const gchar *string,
-		           guint       length,
-		           const gchar *base,
-		           const gchar *content_type)
+				   const gchar *string,
+				   guint       length,
+				   const gchar *base,
+				   const gchar *content_type)
 {
 	GtkWidget *htmlwidget = gtk_bin_get_child (GTK_BIN (scrollpane));
 	/**
@@ -121,9 +121,7 @@ webkit_link_clicked (WebKitWebView *view, WebKitWebFrame *frame, WebKitNetworkRe
 	g_return_if_fail (WEBKIT_IS_WEB_VIEW (view));
 	g_return_if_fail (WEBKIT_IS_NETWORK_REQUEST (request));
 
-
 	if (!conf_get_bool_value (BROWSE_INSIDE_APPLICATION)) {
-
 		uri = webkit_network_request_get_uri (WEBKIT_NETWORK_REQUEST (request));
 		liferea_htmlview_launch_in_external_browser (uri);
 		return TRUE;
