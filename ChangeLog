@@ -7,6 +7,9 @@
 	* Fixes Debian #433393: subscription not update
 	  anymore when number of flagged items = cache limit.
 	  (reported by Eddy Petrisor)
+	* Fixes OpenSuSE #371307: possible undefined behaviour
+	  when decoding authentication data.
+	  (reported by Christoph Thiel)
 	* Update of Portugese translation (Antonio Lima)
 
 

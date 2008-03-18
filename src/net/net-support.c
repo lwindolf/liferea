@@ -131,7 +131,7 @@ char * ConstructDigestAuth (char * username, char * password, char * url, char *
 	cnonce = GetRandomBytes();
 	
 	if (!authdata)
-		return;
+		return NULL;
 	
 	token = authdata;
 	while (1) {
