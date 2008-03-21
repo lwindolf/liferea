@@ -108,6 +108,9 @@ feedlist_update_node_counters (nodePtr node)
 void
 feedlist_mark_all_read (nodePtr node)
 {
+	if (!node)
+		return;
+
 	feedlist_reset_new_item_count ();
 
 	if (node != feedlist_get_root ())
