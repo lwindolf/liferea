@@ -268,6 +268,9 @@ node_process_update_result (nodePtr node, const struct updateResult * const resu
 void
 node_mark_all_read (nodePtr node)
 {
+	if (!node)
+		return;
+
 	if (0 != node->unreadCount) {
 		item_state_set_all_read (node);
 		node->unreadCount = 0;
