@@ -242,9 +242,9 @@ ui_popup_make_url_menu (const gchar *url)
 }
 
 GtkMenu *
-ui_popup_make_enclosure_menu (const gchar *url)
+ui_popup_make_enclosure_menu (enclosurePtr enclosure)
 {
-	return ui_popup_make_menu (enclosure_menu_items, enclosure_menu_len, g_strdup (url));
+	return ui_popup_make_menu (enclosure_menu_items, enclosure_menu_len, enclosure);
 }
 
 /* popup menu generation for the tray icon */

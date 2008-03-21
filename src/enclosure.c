@@ -240,10 +240,11 @@ enclosure_mime_type_remove (encTypePtr type)
 	enclosure_mime_types_save ();
 }
 
+/** enclosure downloading/launching job parameters */
 typedef struct encJob {
-	gchar	*download;	/* command to download */
-	gchar	*run;		/* command to run after download */
-	gchar	*filename;	/* filename the result is saved to */
+	gchar	*download;	/**< (optional) command to download */
+	gchar	*run;		/**< command to run the downloaded file or the URL with */
+	gchar	*filename;	/**< filename the result is saved to */
 } *encJobPtr;
 
 static gpointer
@@ -253,17 +254,21 @@ enclosure_exec (gpointer data)
 	GError		*error = NULL;
 	gint		status;
 	
-	debug1 (DEBUG_UPDATE, "running \"%s\"", ejp->download);
-	g_spawn_command_line_sync (ejp->download, NULL, NULL, &status, &error);
+	/* Download is optional when just passing URLs */
+	if (ejp->download) {
+		debug1 (DEBUG_UPDATE, "running download command \"%s\"", ejp->download);
+		g_spawn_command_line_sync (ejp->download, NULL, NULL, &status, &error);
+	}
+	
 	if (error && (0 != error->code)) {
-		g_warning ("command \"%s\" failed with exitcode %d!", ejp->download, status);
+		g_warning ("Download command \"%s\" failed with exitcode %d!", ejp->download, status);
 	} else {
 		if (ejp->run) {
 			/* execute */
-			debug1 (DEBUG_UPDATE, "running \"%s\"", ejp->run);
+			debug1 (DEBUG_UPDATE, "running launch command \"%s\"", ejp->run);
 			g_spawn_command_line_async (ejp->run, &error);
 			if (error && (0 != error->code))
-				g_warning ("command \"%s\" failed!", ejp->run);
+				g_warning ("Launch command \"%s\" failed!", ejp->run);
 		} else {
 			/* just saving */
 			ui_mainwindow_set_status_bar (_("Enclosure download finished: \"%s\""), ejp->filename);
@@ -318,7 +323,10 @@ enclosure_download (encTypePtr type, const gchar *url, const gchar *filename)
 	g_free (filenameQ);
 	g_free (urlQ);
 	
-	debug2 (DEBUG_UPDATE, "downloading %s to %s...", url, filename);
+	if (type->remote)
+		debug1 (DEBUG_UPDATE, "passing URL %s to command...", url);
+	else
+		debug2 (DEBUG_UPDATE, "downloading %s to %s...", url, filename);
 
 	/* free now unnecessary stuff */
 	if (type && !type->permanent)

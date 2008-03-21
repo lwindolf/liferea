@@ -44,6 +44,7 @@ enum {
 	ES_DOWNLOADED,
 	ES_SIZE,
 	ES_SIZE_STR,
+	ES_PTR,
 	ES_LEN
 };
 
@@ -53,9 +54,9 @@ static void enclosure_list_view_init		(EnclosureListView *ld);
 #define ENCLOSURE_LIST_VIEW_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object), ENCLOSURE_LIST_VIEW_TYPE, EnclosureListViewPrivate))
 
 struct EnclosureListViewPrivate {
-	itemPtr		item;
+	GSList		*enclosures;		/**< list of currently presented enclosures */
 
-	GtkWidget	*container;
+	GtkWidget	*container;		/**< container the list is embedded in */
 	GtkWidget	*treeview;
 	GtkTreeStore	*treestore;
 };
@@ -141,10 +142,10 @@ on_enclosure_list_button_press (GtkWidget *treeview, GdkEventButton *event, gpoi
 		return FALSE;
 
 	if (gtk_tree_model_get_iter (GTK_TREE_MODEL (elv->priv->treestore), &iter, path)) {
-		gchar *uri;
+		enclosurePtr enclosure;
 		
-		gtk_tree_model_get (GTK_TREE_MODEL (elv->priv->treestore), &iter, ES_NAME_STR, &uri, -1);
-		gtk_menu_popup (ui_popup_make_enclosure_menu (uri), NULL, NULL, NULL, NULL, eb->button, eb->time);
+		gtk_tree_model_get (GTK_TREE_MODEL (elv->priv->treestore), &iter, ES_PTR, &enclosure, -1);
+		gtk_menu_popup (ui_popup_make_enclosure_menu (enclosure), NULL, NULL, NULL, NULL, eb->button, eb->time);
 	}
 	
 	return TRUE;
@@ -174,7 +175,8 @@ enclosure_list_view_new ()
 						   G_TYPE_STRING,	/* ES_MIME_STR */
 						   G_TYPE_BOOLEAN,	/* ES_DOWNLOADED */
 						   G_TYPE_ULONG,	/* ES_SIZE */
-						   G_TYPE_STRING	/* ES_SIZE_STRING */
+						   G_TYPE_STRING,	/* ES_SIZE_STRING */
+						   G_TYPE_POINTER	/* ES_PTR */
 	                                           );
 	gtk_tree_view_set_model (GTK_TREE_VIEW (elv->priv->treeview), GTK_TREE_MODEL(elv->priv->treestore));
 
@@ -209,21 +211,35 @@ enclosure_list_view_load (EnclosureListView *elv, itemPtr item)
 	GSList		*list;
 	guint		len;
 
+	/* cleanup old content */
+	gtk_tree_store_clear (elv->priv->treestore);
+	list = elv->priv->enclosures;
+	while (list) {
+		enclosure_free ((enclosurePtr)list->data);
+		list = g_slist_next (list);
+	}
+	g_slist_free (elv->priv->enclosures);
+	elv->priv->enclosures = NULL;	
+
+	list = metadata_list_get_values (item->metadata, "enclosure");
+	
+	/* decide visibility of the list */
 	expander = gtk_widget_get_parent (elv->priv->container);
-	list = metadata_list_get_values (item->metadata, "enclosure");		
+	list = metadata_list_get_values (item->metadata, "enclosure");
 	len = g_slist_length (list);
-	if (len > 0) {
-		gtk_widget_show_all (expander);
-	} else {
+	if (len == 0) {
 		gtk_widget_hide (expander);
 		return;
-	}
+	}	
 	
+	gtk_widget_show_all (expander);
+
+	/* update list title */
 	gchar *text = g_strdup_printf (ngettext("%d attachment", "%d attachments", len), len);
 	gtk_expander_set_label (GTK_EXPANDER (expander), text);
 	g_free (text);
 
-	gtk_tree_store_clear (elv->priv->treestore);	
+	/* load list into tree view */	
 	while (list) {
 		gchar *sizeStr;
 		enclosurePtr enclosure;
@@ -239,10 +255,11 @@ enclosure_list_view_load (EnclosureListView *elv, itemPtr item)
 			                    ES_DOWNLOADED, enclosure->downloaded,
 					    ES_SIZE, enclosure->size,
 					    ES_SIZE_STR, sizeStr,
+					    ES_PTR, enclosure,
 					    -1);
-			enclosure_free (enclosure);
 			g_free (sizeStr);
 		}
+		elv->priv->enclosures = g_slist_append (elv->priv->enclosures, enclosure);
 		
 		list = list->next;
 	}
@@ -294,22 +311,23 @@ on_selectcmd_pressed (GtkButton *button, gpointer user_data)
 static void
 on_adddialog_response (GtkDialog *dialog, gint response_id, gpointer user_data)
 {
-	gchar		*tmp, *url;
+	gchar		*typestr;
 	gboolean	new = FALSE;
+	enclosurePtr	enclosure;
 	encTypePtr	etp;
 
 	if (response_id == GTK_RESPONSE_OK) {
 		etp = g_object_get_data (G_OBJECT (dialog), "type");
-		tmp = g_object_get_data (G_OBJECT (dialog), "typestr");
-		url = g_object_get_data (G_OBJECT (dialog), "url");
+		typestr = g_object_get_data (G_OBJECT (dialog), "typestr");
+		enclosure = g_object_get_data (G_OBJECT (dialog), "enclosure");
 
 		if (!etp) {
 			new = TRUE;
 			etp = g_new0 (struct encType, 1);
-			if (!strchr(tmp, '/'))
-				etp->extension = tmp;
+			if (!strchr (typestr, '/'))
+				etp->extension = g_strdup (typestr);
 			else
-				etp->mime = tmp;
+				etp->mime = g_strdup (typestr);
 		} else {
 			g_free (etp->cmd);
 		}
@@ -321,15 +339,17 @@ on_adddialog_response (GtkDialog *dialog, gint response_id, gpointer user_data)
 
 		/* now we have ensured an existing type configuration and
 		   can launch the URL for which we configured the type */
-		if (url)
-			on_popup_open_enclosure (g_strdup_printf ("%s%s%s", url, etp->mime?",":"", etp->mime?etp->mime:""), 0, NULL);
+		if (enclosure)
+			on_popup_open_enclosure (enclosure, 0, NULL);
+			
+		g_free (typestr);
 	}
 	gtk_widget_destroy (GTK_WIDGET (dialog));
 }
 
 /* either type or url and typestr are optional */
 static void
-ui_enclosure_add (encTypePtr type, gchar *url, gchar *typestr)
+ui_enclosure_type_setup (encTypePtr type, enclosurePtr enclosure, gchar *typestr)
 {
 	GtkWidget	*dialog;
 	gchar		*tmp;
@@ -350,8 +370,8 @@ ui_enclosure_add (encTypePtr type, gchar *url, gchar *typestr)
 	gtk_label_set_markup_with_mnemonic (GTK_LABEL (liferea_dialog_lookup (dialog, "enc_type_label")), tmp);
 	g_free (tmp);
 
-	g_object_set_data (G_OBJECT(dialog), "typestr", typestr);
-	g_object_set_data (G_OBJECT(dialog), "url", url);
+	g_object_set_data (G_OBJECT(dialog), "typestr", g_strdup (typestr));
+	g_object_set_data (G_OBJECT(dialog), "enclosure", enclosure);
 	g_object_set_data (G_OBJECT(dialog), "type", type);
 	g_signal_connect (G_OBJECT(dialog), "response", G_CALLBACK(on_adddialog_response), type);
 	g_signal_connect (G_OBJECT(liferea_dialog_lookup(dialog, "enc_cmd_select_btn")), "clicked", G_CALLBACK(on_selectcmd_pressed), dialog);
@@ -362,50 +382,53 @@ ui_enclosure_add (encTypePtr type, gchar *url, gchar *typestr)
 void
 on_popup_open_enclosure (gpointer callback_data, guint callback_action, GtkWidget *widget)
 {
-	gchar		*typestr, *url = (gchar *)callback_data;
-	gboolean	found = FALSE, mime = FALSE;
+	gchar		*typestr;
+	enclosurePtr	enclosure = (enclosurePtr)callback_data;
+	gboolean	found = FALSE;
 	encTypePtr	etp = NULL;
 	GSList		*iter;
 
-	/* When opening enclosures we need the type to determine
-	   the configured launch command. The format of the enclosure
-	   info: <url>[,<mime type] */	
-	typestr = strrchr(url, ',');
-	if (typestr) {
-		*typestr = 0;
-		typestr = g_strdup (typestr++);
-		mime = TRUE;
-	}
-
-	/* without a type we use the file extension */
-	if (!mime) {
-		typestr = strrchr (url, '.');
-		if (typestr)
-			typestr = g_strdup (typestr + 1);
-	}
-
-	/* if we have no such thing we map to "data" */
+	/* 1.) Always try to determine the file extension... */
+	
+	/* FIXME: improve this to match only '.' not followed by '/' chars */
+	typestr = strrchr (enclosure->url, '.');
+	if (typestr)
+		typestr = g_strdup (typestr + 1);
+			
+	/* if we found no extension we map to dummy type "data" */
 	if (!typestr)
 		typestr = g_strdup ("data");
 
-	debug3 (DEBUG_CACHE, "url:%s, type:%s mime:%s", url, typestr, mime?"TRUE":"FALSE");
-		
-	/* search for type configuration */
+	debug2 (DEBUG_CACHE, "url:%s, mime:%s", enclosure->url, enclosure->mime);
+	
+	/* FIXME: improve following check to first try to match
+	   MIME types and if no match was found to check for
+	   file extensions afterwards... */
+	   
+	/* 2.) Search for type configuration based on MIME or file extension... */
 	iter = (GSList *)enclosure_mime_types_get ();
 	while (iter) {
 		etp = (encTypePtr)(iter->data);
-		if ((NULL != ((TRUE == mime)?etp->mime:etp->extension)) &&
-		    (0 == strcmp(typestr, (TRUE == mime)?etp->mime:etp->extension))) {
-		   	found = TRUE;
-		   	break;
+		if (enclosure->mime && etp->mime) {
+			/* match know MIME types */
+			if (!strcmp(enclosure->mime, etp->mime)) {
+				found = TRUE;
+				break;
+			}
+		} else {
+			/* match known file extensions */
+			if (!strcmp(typestr, etp->extension)) {
+				found = TRUE;
+				break;
+			}
 		}
 		iter = g_slist_next (iter);
 	}
 	
-	if (TRUE == found)
-		enclosure_save_as_file (etp, url, NULL);
+	if (found)
+		enclosure_save_as_file (etp, enclosure->url, NULL);
 	else
-		ui_enclosure_add (NULL, url, g_strdup (typestr));
+		ui_enclosure_type_setup (NULL, enclosure, typestr);
 		
 	g_free (typestr);
 }
@@ -427,26 +450,29 @@ on_encsave_clicked (const gchar *filename, gpointer user_data)
 void
 on_popup_save_enclosure (gpointer callback_data, guint callback_action, GtkWidget *widget)
 {
-	gchar	*filename = (gchar *)callback_data;
+	enclosurePtr	enclosure = (enclosurePtr)callback_data;
+	gchar		*filename;
 
-	filename = strrchr ((char *)callback_data, '/');
+	filename = strrchr (enclosure->url, '/');
 	if (filename)
 		filename++; /* Skip the slash to find the filename */
 	else
-		filename = callback_data;
+		filename = enclosure->url;
 		
-	ui_choose_file (_("Choose File"), GTK_STOCK_SAVE_AS, TRUE, on_encsave_clicked, NULL, filename, callback_data);
+	ui_choose_file (_("Choose File"), GTK_STOCK_SAVE_AS, TRUE, on_encsave_clicked, NULL, filename, enclosure->url);
 }
 
 void
 ui_enclosure_change_type (encTypePtr type)
 {
-	ui_enclosure_add (type, NULL, NULL);
+	ui_enclosure_type_setup (type, NULL, NULL);
 }
 
 void
 on_popup_copy_enclosure (gpointer callback_data, guint callback_action, GtkWidget *widget)
 {
-        gtk_clipboard_set_text (gtk_clipboard_get (GDK_SELECTION_PRIMARY), callback_data, -1);
-        gtk_clipboard_set_text (gtk_clipboard_get (GDK_SELECTION_CLIPBOARD), callback_data, -1);
+	enclosurePtr enclosure = (enclosurePtr)callback_data;
+	
+        gtk_clipboard_set_text (gtk_clipboard_get (GDK_SELECTION_PRIMARY), enclosure->url, -1);
+        gtk_clipboard_set_text (gtk_clipboard_get (GDK_SELECTION_CLIPBOARD), enclosure->url, -1);
 }

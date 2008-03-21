@@ -25,6 +25,7 @@
 #include <gtk/gtk.h>
 
 #include "item.h"
+#include "enclosure.h"
 
 /**
  * Updates dynamic popup menues. Needs to be called at least
@@ -73,11 +74,11 @@ GtkMenu * ui_popup_make_systray_menu (void);
  * Creates a popup menu for the enclosure list view.
  * (Save As, Open With...)
  *
- * @param url	the enclosure URL
+ * @param enclosure	the enclosure
  *
  * @returns a new popup menu
  */
-GtkMenu * ui_popup_make_enclosure_menu (const gchar *url);
+GtkMenu * ui_popup_make_enclosure_menu (enclosurePtr enclosure);
 
 /* GUI callbacks */
 
