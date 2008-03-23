@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-06-20 01:42+0200\n"
+"POT-Creation-Date: 2008-03-12 19:07+0100\n"
 "PO-Revision-Date: 2007-04-19 21:41+0200\n"
 "Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
@@ -48,20 +48,20 @@ msgid "<b>Feed Source</b>"
 msgstr "<b>Font del canal</b>"
 
 #: ../liferea.glade.h:8
+msgid "<b>Find Items that meet the following criteria</b>"
+msgstr ""
+
+#: ../liferea.glade.h:9
 msgid "<b>Hook</b>"
 msgstr "<b>Lligam</b>"
 
-#: ../liferea.glade.h:9
+#: ../liferea.glade.h:10
 msgid "<b>Pending Requests</b>"
 msgstr "<b>Sol·licituds pendents</b>"
 
-#: ../liferea.glade.h:10
+#: ../liferea.glade.h:11
 msgid "<b>Registered Scripts</b>"
 msgstr "<b>Scripts registrats</b>"
-
-#: ../liferea.glade.h:11
-msgid "<b>Rule</b>"
-msgstr "<b>Regla</b>"
 
 #: ../liferea.glade.h:12
 msgid "<b>Script Code</b>"
@@ -80,63 +80,64 @@ msgstr ""
 "carpetes amb molts canals.</i>"
 
 #: ../liferea.glade.h:15
-msgid "<span color=\"blue\" underline=\"single\">Liferea Homepage</span>"
-msgstr "<span color=\"blue\" underline=\"single\">Lloc web del Liferea</span>"
-
-#: ../liferea.glade.h:16
 msgid "<span weight=\"bold\">Downloading Enclosures</span>"
 msgstr "<span weight=\"bold\">Baixada de les adjuncions</span>"
 
-#: ../liferea.glade.h:17
+#: ../liferea.glade.h:16
 msgid "<span weight=\"bold\">External Browser Settings</span>"
 msgstr "<span weight=\"bold\">Paràmetres del navegador extern</span>"
 
-#: ../liferea.glade.h:18
+#: ../liferea.glade.h:17
 msgid "<span weight=\"bold\">Feed Cache Handling</span>"
 msgstr "<span weight=\"bold\">Gestió de la memòria cau del canal</span>"
 
-#: ../liferea.glade.h:19
+#: ../liferea.glade.h:18
 msgid "<span weight=\"bold\">Feed Icons (Favicons)</span>"
 msgstr "<span weight=\"bold\">Icones dels canals (Favicons)</span>"
 
-#: ../liferea.glade.h:20
+#: ../liferea.glade.h:19
 msgid "<span weight=\"bold\">Feed Name</span>"
 msgstr "<span weight=\"bold\">Nom del canal</span>"
 
-#: ../liferea.glade.h:21
+#: ../liferea.glade.h:20
 msgid "<span weight=\"bold\">Feed Update Settings</span>"
 msgstr "<span weight=\"bold\">Paràmetres d'actualització dels canals</span>"
 
-#: ../liferea.glade.h:22
+#: ../liferea.glade.h:21
 msgid "<span weight=\"bold\">Folder Display Settings</span>"
 msgstr ""
 "<span weight=\"bold\">Paràmetres de visualització de les carpetes</span>"
 
-#: ../liferea.glade.h:23
+#: ../liferea.glade.h:22
 msgid "<span weight=\"bold\">HTTP Proxy Server</span>"
 msgstr "<span weight=\"bold\">Servidor intermediari HTTP</span>"
 
-#: ../liferea.glade.h:24
+#: ../liferea.glade.h:23
 msgid "<span weight=\"bold\">Internal Browser Settings</span>"
 msgstr "<span weight=\"bold\">Paràmetres del navegador intern</span>"
 
-#: ../liferea.glade.h:25
+#: ../liferea.glade.h:24
 #, fuzzy
 msgid "<span weight=\"bold\">Menu and Toolbar Settings</span>"
 msgstr "<span weight=\"bold\">Paràmetres del menú</span>"
 
-#: ../liferea.glade.h:26
+#: ../liferea.glade.h:25
 msgid "<span weight=\"bold\">Notification Settings</span>"
 msgstr "<span weight=\"bold\">Paràmetres de notificació</span>"
 
-#: ../liferea.glade.h:27
+#: ../liferea.glade.h:26
 #, fuzzy
 msgid "<span weight=\"bold\">Opening Enclosures</span>"
 msgstr "<span weight=\"bold\">Obertura de les adjuncions</span>"
 
-#: ../liferea.glade.h:28
+#: ../liferea.glade.h:27
 msgid "<span weight=\"bold\">Reading Headlines</span>"
 msgstr "<span weight=\"bold\">Lectura dels titulars</span>"
+
+#: ../liferea.glade.h:28
+#, fuzzy
+msgid "<span weight=\"bold\">Synchronized with Nearby Hosts</span>"
+msgstr "<span weight=\"bold\">Nom del canal</span>"
 
 #: ../liferea.glade.h:29
 msgid "<span weight=\"bold\">Update Interval</span>"
@@ -147,8 +148,8 @@ msgid "<span weight=\"bold\">Web Integration</span>"
 msgstr "<span weight=\"bold\">Integració web</span>"
 
 #: ../liferea.glade.h:31
-msgid "About"
-msgstr "Quant a"
+msgid "A_ny Rule Matches"
+msgstr ""
 
 #: ../liferea.glade.h:32
 msgid "Add Script"
@@ -170,134 +171,48 @@ msgstr "Arxiu"
 msgid "At _startup:"
 msgstr "A l'_inici:"
 
-#: ../liferea.glade.h:37
+#: ../liferea.glade.h:37 ../src/ui/ui_mainwindow.c:1119
+#, fuzzy
+msgid "Attention Profile"
+msgstr "Ha fallat l'autenticació"
+
+#: ../liferea.glade.h:38
 msgid "Authentication"
 msgstr "Autenticació"
 
-#: ../liferea.glade.h:38
+#: ../liferea.glade.h:39
 #, fuzzy
 msgid "Auto-_load item link in configured browser when selecting articles."
 msgstr ""
 "Carrega _l'element de l'enllaç automàticament al navegador intern quan es "
 "llegeixin articles."
 
-#: ../liferea.glade.h:39
+#: ../liferea.glade.h:40
+msgid ""
+"Bart Kreska <bartkreska@users.sourceforge.net>\n"
+"Dario Conigliaro <djdas@djdas.net>\n"
+"Fernando Ike de Oliveira <fike@midstorm.org>\n"
+"Khaled Hosny <khaledhosny@eglug.org>\n"
+"Sargate Kanogan <sargate@gmail.com>\n"
+"Takeshi AIHANA <takeshi.aihana@gmail.com>\n"
+"Vincent Lefèvre <vincent@vinc17.org>\n"
+"Oleg Maloglovets <oleg@koleso-auto.ru>\n"
+"Og Maciel <ogmaciel@ubuntu.com>\n"
+msgstr ""
+
+#: ../liferea.glade.h:50
 msgid "Browser"
 msgstr "Navegador"
 
-#: ../liferea.glade.h:40
+#: ../liferea.glade.h:51
 msgid "Cancel _All"
 msgstr "Cancel·la-ho _tot"
 
-#. I removed the email addresses. Looks much cleaner.
-#: ../liferea.glade.h:42
-msgid ""
-"Code, Patches, Debugging\n"
-"\n"
-"James Doherty\n"
-"Jeremy Messenger\n"
-"John McKnight\n"
-"Tomasz Maka\n"
-"Karl Soderstrom\n"
-"Christophe Barbe\n"
-"Juho Snellman\n"
-"Roshan Revankar\n"
-"Oliver Feiler\n"
-"Niklas Morberg\n"
-"Johannes Schlueter\n"
-"Pierre Phaneuf\n"
-"ahmed el-helw\n"
-"James Bowes\n"
-"Marc Deslauriers\n"
-"Amit D. Chaudhary\n"
-"Christoph Hohmann\n"
-"Raphael Slinckx\n"
-"Bjorn Monnens\n"
-"Thomas de Grenier de Latour\n"
-"Aristotle Pagaltzis\n"
-"Norman Jonas\n"
-"Sebastian Droege\n"
-"Daniel Gryniewicz\n"
-"Remi Cardona\n"
-"Frederic Peters\n"
-"Don Malcolm\n"
-"Ed Catmur\n"
-"Chris Pirillo\n"
-"Eric Anderson\n"
-"and many more...\n"
-"\n"
-"Code from other projects\n"
-"\n"
-"Anders Carlsson (tray icon support)\n"
-"Philippe Martin, Brion Vibber (favicon support)\n"
-"Jonathan Blandford (GtkTreeModelFilter)\n"
-"Kristian Rietveld (GtkTreeModelFilter)\n"
-"\n"
-"Included Software\n"
-"\n"
-"Liferea uses the XSPF Web Music Player to \n"
-"allow direct podcast playback. This player was \n"
-"written by Fabricio Zuardi and can be found \n"
-"at http://musicplayer.sourceforge.net"
-msgstr ""
-"Codi, pedaços, depuració\n"
-"\n"
-"James Doherty\n"
-"Jeremy Messenger\n"
-"John McKnight\n"
-"Tomasz Maka\n"
-"Karl Soderstrom\n"
-"Christophe Barbe\n"
-"Juho Snellman\n"
-"Roshan Revankar\n"
-"Oliver Feiler\n"
-"Niklas Morberg\n"
-"Johannes Schlueter\n"
-"Pierre Phaneuf\n"
-"ahmed el-helw\n"
-"James Bowes\n"
-"Marc Deslauriers\n"
-"Amit D. Chaudhary\n"
-"Christoph Hohmann\n"
-"Raphael Slinckx\n"
-"Bjorn Monnens\n"
-"Thomas de Grenier de Latour\n"
-"Aristotle Pagaltzis\n"
-"Norman Jonas\n"
-"Sebastian Droege\n"
-"Daniel Gryniewicz\n"
-"Remi Cardona\n"
-"Frederic Peters\n"
-"Don Malcolm\n"
-"Ed Catmur\n"
-"Chris Pirillo\n"
-"Eric Anderson\n"
-"i molts més...\n"
-"\n"
-"Codi d'altres projectes\n"
-"\n"
-"Anders Carlsson (implementació de la icona d'estat)\n"
-"Philippe Martin, Brion Vibber (implementació de les icones dels canals)\n"
-"Jonathan Blandford (GtkTreeModelFilter)\n"
-"Kristian Rietveld (GtkTreeModelFilter)\n"
-"\n"
-"Programari inclòs\n"
-"\n"
-"El Liferea utilitza el reproductor de música \n"
-"web XSPF per permetre la reproducció directe \n"
-"de podcasts. Aquest reproductor l'ha escrit \n"
-"en Fabricio Zuardi i es pot trobar a \n"
-"http://musicplayer.sourceforge.net"
-
-#: ../liferea.glade.h:89
-msgid "Contributors"
-msgstr "Contribuïdors"
-
-#: ../liferea.glade.h:90
+#: ../liferea.glade.h:52
 msgid "Convert _using:"
 msgstr "Converteix _utilitzant:"
 
-#: ../liferea.glade.h:91
+#: ../liferea.glade.h:53
 #, fuzzy
 msgid ""
 "Copyright (c) 2003-2007\n"
@@ -308,47 +223,47 @@ msgstr ""
 "Lars Lindner <lars.lindner@gmx.net> i \n"
 "Nathan J. Conrad <t98502@users.sourceforge.net>\n"
 
-#: ../liferea.glade.h:95
+#: ../liferea.glade.h:57
 msgid "Create News Bin"
 msgstr "Crea un contenidor de notícies"
 
-#: ../liferea.glade.h:96
+#: ../liferea.glade.h:58
 msgid "Create Search Engine Feed"
 msgstr "Crea un canal de motor de cerca"
 
-#: ../liferea.glade.h:97
+#: ../liferea.glade.h:59
 msgid "Create new script"
 msgstr "Crea un script nou"
 
-#: ../liferea.glade.h:98
+#: ../liferea.glade.h:60
 msgid "Default Feed Refresh _Interval:"
 msgstr "_Temps predeterminat d'actualització dels canals:"
 
-#: ../liferea.glade.h:99
+#: ../liferea.glade.h:61
 msgid "Default _number of items per feed to save:"
 msgstr "_Nombre predeterminat d'elements a desar per canal:"
 
-#: ../liferea.glade.h:100
+#: ../liferea.glade.h:62
 msgid "Di_sable cache"
 msgstr "_Inhabilita la memòria cau"
 
-#: ../liferea.glade.h:101
+#: ../liferea.glade.h:63
 msgid "Download"
 msgstr "Baixades"
 
-#: ../liferea.glade.h:102
+#: ../liferea.glade.h:64
 msgid "Downloading Enclosure"
 msgstr "Baixada de les adjuncions"
 
-#: ../liferea.glade.h:103
+#: ../liferea.glade.h:65
 msgid "Downloading an enclosure of type:"
 msgstr "Baixada d'una adjunció del tipus:"
 
-#: ../liferea.glade.h:104
+#: ../liferea.glade.h:66
 msgid "Enclosures"
 msgstr "Adjuncions"
 
-#: ../liferea.glade.h:105
+#: ../liferea.glade.h:67
 msgid ""
 "Enter a search string Liferea should find either in a items title or in its "
 "content."
@@ -356,7 +271,7 @@ msgstr ""
 "Entreu una cadena de cerca que el Liferea hauria de trobar en els títols "
 "d'elements o en el seu contingut."
 
-#: ../liferea.glade.h:106
+#: ../liferea.glade.h:68
 msgid ""
 "Enter a website location to use feed autodiscovery or in case you know it "
 "the exact feed location."
@@ -364,59 +279,58 @@ msgstr ""
 "Escriviu la ubicació d'un lloc web per a utilitzar la descoberta automàtica "
 "del canal, o en cas que la conegueu, la ubicació exacta del canal."
 
-#: ../liferea.glade.h:108 ../src/ui/ui_auth.c:181
+#: ../liferea.glade.h:70 ../src/ui/ui_auth.c:181
 #, no-c-format
 msgid "Enter the username and password for \"%s\" (%s):"
 msgstr "Entreu el nom d'usuari i la contrasenya per a «%s» (%s):"
 
-#: ../liferea.glade.h:109
+#: ../liferea.glade.h:71
 msgid "Exec Command"
 msgstr "Executa una ordre"
 
-#: ../liferea.glade.h:110
+#: ../liferea.glade.h:72
 msgid "Feed _Name:"
 msgstr "_Nom del canal:"
 
-#: ../liferea.glade.h:111
+#: ../liferea.glade.h:73
 msgid "Feeds"
 msgstr "Canals"
 
-#: ../liferea.glade.h:112
+#: ../liferea.glade.h:74
 msgid "Folders"
 msgstr "Carpetes"
 
-#. Toolbar style options in preferences.
-#: ../liferea.glade.h:114
-msgid ""
-"GNOME default\n"
-"Text below icons\n"
-"Text beside icons\n"
-"Icons only\n"
-"Text only"
-msgstr ""
-
-#: ../liferea.glade.h:119
+#: ../liferea.glade.h:75
 msgid "GUI"
 msgstr "Interfície gràfica"
 
-#: ../liferea.glade.h:120
+#: ../liferea.glade.h:76
 msgid "General"
 msgstr "General"
 
-#: ../liferea.glade.h:121
+#: ../liferea.glade.h:77
 msgid "Headlines"
 msgstr "Titulars"
 
+#: ../liferea.glade.h:78
+msgid "Info zu Glade"
+msgstr ""
+
 #. GTK theme support
-#: ../liferea.glade.h:122 ../src/main.c:175
+#: ../liferea.glade.h:79 ../src/main.c:156
 msgid "Liferea"
 msgstr "Liferea"
 
-#: ../liferea.glade.h:123
+#: ../liferea.glade.h:80
+#, fuzzy
+msgid "Liferea Homepage"
+msgstr "Lector de canals Liferea"
+
+#: ../liferea.glade.h:81
 msgid "Liferea Preferences"
 msgstr "Preferències del Liferea"
 
-#: ../liferea.glade.h:124
+#: ../liferea.glade.h:82
 msgid ""
 "Liferea can use external filter plugins in order to access feeds and "
 "directories in non-supported formats.  See the documentation for more "
@@ -426,24 +340,24 @@ msgstr ""
 "canals i carpetes que utilitzin formats no implementats. Vegeu la "
 "documentació per a més informació."
 
-#: ../liferea.glade.h:125
+#: ../liferea.glade.h:83
 msgid "Liferea is a news aggregator for GTK+"
 msgstr "El Liferea és un agregador de notícies per al GTK+"
 
-#: ../liferea.glade.h:126
+#: ../liferea.glade.h:84
 msgid "Maximal _Number Of Result Items:"
 msgstr "_Nombre màxim de resultats:"
 
-#: ../liferea.glade.h:127
+#: ../liferea.glade.h:85
 msgid "New Folder"
 msgstr "Carpeta nova"
 
-#: ../liferea.glade.h:128 ../src/node.c:365
+#: ../liferea.glade.h:86 ../src/node.c:333
 msgid "New Subscription"
 msgstr "Subscripció nova"
 
 #. Feed update interval hint in preference dialog.
-#: ../liferea.glade.h:130
+#: ../liferea.glade.h:88
 #, fuzzy
 msgid ""
 "Note: <i>Please remember to set a reasonable refresh time. Usually it is a "
@@ -454,7 +368,7 @@ msgstr ""
 "inhabilitar l'actualització automàtica per defecte establiu l'interval a 0 "
 "minuts.</i>"
 
-#: ../liferea.glade.h:131
+#: ../liferea.glade.h:89
 msgid ""
 "Note: <i>The username and password will be saved to your Liferea feedlist "
 "file without using encryption.</i>"
@@ -462,16 +376,7 @@ msgstr ""
 "Nota: <i>Es desarà, sense xifrar, el nom d'usuari i la contrasenya al fitxer "
 "de la vostra llista de canals del Liferea.</i>"
 
-#: ../liferea.glade.h:132
-msgid ""
-"Note: Items are added to the search folder if at least one additive rule\n"
-"matches. They are removed if at least one removing rule matches."
-msgstr ""
-"Nota: els elements s'afegiran a la carpeta de cerca si coincideixen almenys\n"
-"amb una regla d'addició. Si al contrari coincideixen almenys amb una regla \n"
-"de supressió, se suprimiran de la carpeta de cerca."
-
-#: ../liferea.glade.h:134
+#: ../liferea.glade.h:90
 msgid ""
 "Note: Liferea will generate a feed subscription which is used to query the "
 "search engine results for the specified search string. You can keep this "
@@ -482,115 +387,112 @@ msgstr ""
 "cerca especificada. Podeu mantenir aquest canal permanentment i actualitzar-"
 "lo de la mateixa manera que qualsevol altra subscripció.  "
 
-#: ../liferea.glade.h:135
+#: ../liferea.glade.h:91
 msgid "Online/Offline Button"
 msgstr "Botó de en línia/fora de línia"
 
-#: ../liferea.glade.h:136
+#: ../liferea.glade.h:92
 msgid "Open links in Liferea's _window."
 msgstr "Obre els enllaços en la _finestra del Liferea."
 
-#: ../liferea.glade.h:137
+#: ../liferea.glade.h:93
 msgid "Proxy"
 msgstr "Servidor intermediari"
 
-#: ../liferea.glade.h:138
+#: ../liferea.glade.h:94
 msgid "Proxy Pass_word:"
 msgstr "_Contrasenya del servidor intermediari:"
 
-#: ../liferea.glade.h:139
+#: ../liferea.glade.h:95
 msgid "Proxy _Host:"
 msgstr "_Ordinador del servidor intermediari:"
 
-#: ../liferea.glade.h:140
+#: ../liferea.glade.h:96
 msgid "Proxy _Port:"
 msgstr "_Port del servidor intermediari:"
 
-#: ../liferea.glade.h:141
+#: ../liferea.glade.h:97
 msgid "Proxy _Username:"
 msgstr "_Usuari del servidor intermediari:"
 
-#: ../liferea.glade.h:142
+#: ../liferea.glade.h:98
 msgid "Rename"
 msgstr "Canvia el nom"
 
-#: ../liferea.glade.h:143
+#: ../liferea.glade.h:99
 msgid "Reuse existing script"
 msgstr "Reutilitza un script existent"
 
-#: ../liferea.glade.h:144
+#: ../liferea.glade.h:100
 msgid ""
 "Saves this search as a search folder, which will appear in the feed list."
 msgstr ""
 "Desa aquesta cerca com a carpeta de cerca, que apareixerà en la llista de "
 "canals."
 
-#: ../liferea.glade.h:145
+#: ../liferea.glade.h:101
 msgid "Script Manager"
 msgstr "Gestor d'scripts"
 
-#: ../liferea.glade.h:146
+#: ../liferea.glade.h:102
 msgid "Search All Feeds"
 msgstr "Cerca a tots els canals"
 
-#: ../liferea.glade.h:147
+#: ../liferea.glade.h:103
 msgid "Search Folder"
 msgstr "Carpeta de cerca"
 
-#: ../liferea.glade.h:148
+#: ../liferea.glade.h:104
 msgid "Search Folder Properties"
 msgstr "Propietats de la carpeta de cerca"
 
-#: ../liferea.glade.h:149
+#: ../liferea.glade.h:105
 msgid "Search _Link for"
 msgstr "Cerca un en_llaç per a"
 
-#: ../liferea.glade.h:150
+#: ../liferea.glade.h:106
+#, fuzzy
+msgid "Search _Name:"
+msgstr "_Nom del canal:"
+
+#: ../liferea.glade.h:107
 msgid "Select File..."
 msgstr "Seleccioneu el fitxer..."
 
-#: ../liferea.glade.h:151
+#: ../liferea.glade.h:108
 msgid "Show Menu _And Toolbar"
 msgstr "Mostra el menú _i la barra d'eines"
 
-#: ../liferea.glade.h:152
+#: ../liferea.glade.h:109
 msgid "Show _Menu Only"
 msgstr "Mostra només el _menú"
 
-#: ../liferea.glade.h:153
+#: ../liferea.glade.h:110
 msgid "Show _Toolbar Only"
 msgstr "Mostra només la _barra d'eines"
 
-#: ../liferea.glade.h:154
+#: ../liferea.glade.h:111
 msgid "Show _number of new items in the tray icon."
 msgstr ""
 
-#: ../liferea.glade.h:155
+#: ../liferea.glade.h:112
 msgid "Show a _popup window with new headlines."
 msgstr "Mostra una finestra _emergent amb els titulars nous."
 
-#: ../liferea.glade.h:156
+#: ../liferea.glade.h:113
 msgid "Show a status _icon in the notification area (system tray)."
 msgstr ""
 "Mostra una _icona d'estat en l'àrea de notificació (safata del sistema)."
 
-#: ../liferea.glade.h:157 ../xslt/item.xml.in.h:11
+#: ../liferea.glade.h:114 ../xslt/item.xml.in.h:12
 msgid "Source"
 msgstr "Font"
 
-#: ../liferea.glade.h:158
+#: ../liferea.glade.h:115
 msgid "Source Type:"
 msgstr "Tipus de font:"
 
-#. Headline skimming hotkey preference combo box values. Propably don't need translation.
-#: ../liferea.glade.h:160
-msgid ""
-"Space\n"
-"<Ctrl> Space\n"
-"<Alt> Space"
-msgstr ""
-
-#: ../liferea.glade.h:163
+#: ../liferea.glade.h:116
 msgid ""
 "Starts searching for the specified text in all feeds. The search result will "
 "appear in the item list."
@@ -598,15 +500,19 @@ msgstr ""
 "Inicia la cerca del text especificat a tots els canals. Els resultats de la "
 "cerca apareixeran en la llista d'elements."
 
-#: ../liferea.glade.h:164
+#: ../liferea.glade.h:117
 msgid "Subscription Properties"
 msgstr "Propietats de la subscripció"
 
-#: ../liferea.glade.h:165
+#: ../liferea.glade.h:118
+msgid "Sync"
+msgstr ""
+
+#: ../liferea.glade.h:119
 msgid "T_erminate instead of minimizing to tray icon."
 msgstr ""
 
-#: ../liferea.glade.h:166
+#: ../liferea.glade.h:120
 msgid ""
 "The cache setting controls if the contents of feeds are saved when Liferea "
 "exits. Marked items are always saved to the cache."
@@ -615,133 +521,149 @@ msgstr ""
 "desen quan es surt del Liferea. Els elements marcats es desen sempre a la "
 "memòria cau."
 
-#: ../liferea.glade.h:168
+#: ../liferea.glade.h:122
 #, no-c-format
 msgid "This feed provider suggests an update interval of %d minutes."
 msgstr ""
 "El proveïdor d'aquest canal suggereix un temps d'actualització de %d minuts."
 
-#: ../liferea.glade.h:169
+#: ../liferea.glade.h:123
+msgid ""
+"This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as\n"
+"published by the Free Software Foundation; either version 2 of the\n"
+"License, or (at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, "
+"USA."
+msgstr ""
+
+#: ../liferea.glade.h:136
 msgid "Toolbar _button labels:"
 msgstr ""
 
-#: ../liferea.glade.h:170
-msgid "Translation"
-msgstr "Traducció"
-
-#: ../liferea.glade.h:171
+#: ../liferea.glade.h:137
 msgid "Update Monitor"
 msgstr "Actualitza el monitor"
 
-#. Preference dialog menu options for feed update behaviour on startup.
-#: ../liferea.glade.h:173
-msgid ""
-"Update out-dated feeds\n"
-"Force update of all feeds\n"
-"No feed update at all"
-msgstr ""
-
-#: ../liferea.glade.h:176
+#: ../liferea.glade.h:138
 msgid "Use HTTP _authentication"
 msgstr "Utilitza _autenticació HTTP"
 
 # és una casella de verificació
-#: ../liferea.glade.h:177
+#: ../liferea.glade.h:139
 #, fuzzy
 msgid "Use Proxy Au_thentication"
 msgstr "El servidor intermediari requereix _autenticació"
 
-#: ../liferea.glade.h:178
+#: ../liferea.glade.h:140
 msgid "Use conversion _filter"
 msgstr "_Utilitza un filtre de conversió"
 
-#: ../liferea.glade.h:179
+#: ../liferea.glade.h:141
 msgid "User_name:"
 msgstr "_Nom d'usuari:"
 
-#: ../liferea.glade.h:180
+#: ../liferea.glade.h:142
 msgid "View Headlines"
 msgstr "Visualitza els titulars"
 
-#: ../liferea.glade.h:181
+#: ../liferea.glade.h:143
+#, fuzzy
 msgid ""
 "What should Liferea do with this enclosure? Please enter the command you "
-"want to be executed below. The downloaded file will be supplied as an "
+"want to be executed below. Downloaded enclosures will be supplied as an "
 "argument for this command:"
 msgstr ""
 "Què voleu que faci el Liferea amb una adjunció d'aquest tipus? Escriviu aquí "
 "sota l'ordre que voleu que s'executi. El fitxer baixat s'utilitzarà com a "
 "argument d'aquesta ordre:"
 
-#: ../liferea.glade.h:182
+#: ../liferea.glade.h:144
+msgid "_All Rules Must Match"
+msgstr ""
+
+#: ../liferea.glade.h:145
 msgid "_Auto Detect (GNOME or environment)"
 msgstr ""
 
-#: ../liferea.glade.h:183
+#: ../liferea.glade.h:146
 msgid "_Automatically download all enclosures of this feed."
 msgstr "_Baixa automàticament totes les adjuncions d'aquest canal."
 
-#: ../liferea.glade.h:184
+#: ../liferea.glade.h:147
 msgid "_Browse"
 msgstr "_Navega"
 
-#: ../liferea.glade.h:185
+#: ../liferea.glade.h:148
 msgid "_Browser:"
 msgstr "_Navegador:"
 
-#: ../liferea.glade.h:186
+#: ../liferea.glade.h:149
 msgid "_Command"
 msgstr "_Ordre"
 
-#: ../liferea.glade.h:187
+#: ../liferea.glade.h:150
 msgid "_Default cache settings"
 msgstr "Paràmetres per _defecte de la memòria cau"
 
-#: ../liferea.glade.h:188
+#: ../liferea.glade.h:151
 msgid "_Disable Javascript."
 msgstr "_Inhabilita el Javascript."
 
-#: ../liferea.glade.h:189
-msgid "_Do this automatically for files like this from now on."
+#: ../liferea.glade.h:152
+#, fuzzy
+msgid "_Do this automatically for enclosures like this from now on."
 msgstr "_Fes el mateix per als tipus de fitxer semblants a partir d'ara."
 
-#: ../liferea.glade.h:190
+#: ../liferea.glade.h:153
 msgid "_Don't update this feed automatically."
 msgstr "_No actualitzis aquest canal automàticament."
 
-#: ../liferea.glade.h:191
+#: ../liferea.glade.h:154
 msgid "_Don't use proxy for download"
 msgstr "_No utilitzis el servidor intermediari per les baixades"
 
-#: ../liferea.glade.h:192
+#: ../liferea.glade.h:155
 msgid "_Download using"
 msgstr "_Baixa-les utilitzant"
 
-#: ../liferea.glade.h:193
+#: ../liferea.glade.h:156
+msgid "_Enable Local LAN Synchronization"
+msgstr ""
+
+#: ../liferea.glade.h:157
 msgid "_Feed specific update interval of"
 msgstr "Temps d'actualització específic del _canal"
 
-#: ../liferea.glade.h:194
+#: ../liferea.glade.h:158
 msgid "_Folder name:"
 msgstr "Nom de la _carpeta:"
 
-#: ../liferea.glade.h:195
+#: ../liferea.glade.h:159
 msgid "_Hide read items."
 msgstr "_Oculta els elements llegits."
 
-#: ../liferea.glade.h:196
+#: ../liferea.glade.h:160
 msgid "_Limit cache to"
 msgstr "_Limita la memòria cau a"
 
-#: ../liferea.glade.h:197
+#: ../liferea.glade.h:161
 msgid "_Local File"
 msgstr "Fitxer _local"
 
-#: ../liferea.glade.h:198
+#: ../liferea.glade.h:162
 msgid "_Manual Setting:"
 msgstr ""
 
-#: ../liferea.glade.h:200
+#: ../liferea.glade.h:164
 #, no-c-format
 msgid ""
 "_Manual:\n"
@@ -750,96 +672,115 @@ msgstr ""
 "_Manual:\n"
 "(per l'URL utilitzeu %s)"
 
-#: ../liferea.glade.h:202
-msgid "_Name:"
-msgstr "_Nom:"
-
-#: ../liferea.glade.h:203
+#: ../liferea.glade.h:166
 msgid "_New Name:"
 msgstr "Nom _nou:"
 
-#: ../liferea.glade.h:204
+#: ../liferea.glade.h:167
 msgid "_News Bin Name:"
 msgstr "_Nom del contenidor de notícies:"
 
-#: ../liferea.glade.h:205
+#: ../liferea.glade.h:168
 #, fuzzy
 msgid "_No Proxy"
 msgstr "Servidor intermediari"
 
-#: ../liferea.glade.h:206
+#: ../liferea.glade.h:169
 msgid "_Open link in:"
 msgstr "_Obre l'enllaç a:"
 
-#: ../liferea.glade.h:207
+#: ../liferea.glade.h:170
+msgid "_Pass URL and do not download enclosure."
+msgstr ""
+
+#: ../liferea.glade.h:171 ../src/fl_sources/bloglines_source.glade.h:3
+#: ../src/fl_sources/google_source.glade.h:3
+msgid "_Password"
+msgstr "_Contrasenya"
+
+#: ../liferea.glade.h:172
 msgid "_Password:"
 msgstr "_Contrasenya:"
 
-#: ../liferea.glade.h:208
+#: ../liferea.glade.h:173
 msgid "_Post Bookmarks to"
 msgstr "_Publica les adreces d'interès a"
 
-#: ../liferea.glade.h:209
+#: ../liferea.glade.h:174
 msgid "_Save downloads in"
 msgstr "_Desa les baixades a"
 
-#: ../liferea.glade.h:210
+#: ../liferea.glade.h:175
 msgid "_Search for:"
 msgstr "_Cerca:"
 
-#: ../liferea.glade.h:211
+#: ../liferea.glade.h:176
+#, fuzzy
+msgid "_Service Name"
+msgstr "Gestor d'scripts"
+
+#: ../liferea.glade.h:177
 msgid "_Show the items of all child feeds when a folder is selected."
 msgstr ""
 "_Mostra els elements de tots els canals fills en seleccionar una carpeta."
 
-#: ../liferea.glade.h:212
+#: ../liferea.glade.h:178
 msgid "_Skim through articles with:"
 msgstr "_Fulleja els articles amb:"
 
-#: ../liferea.glade.h:213
+#: ../liferea.glade.h:179
 msgid "_Source:"
 msgstr "_Font:"
 
-#: ../liferea.glade.h:214
+#: ../liferea.glade.h:180
+msgid "_Start in tray icon."
+msgstr ""
+
+#: ../liferea.glade.h:181
 msgid "_URL"
 msgstr "_URL"
 
-#: ../liferea.glade.h:215
+#: ../liferea.glade.h:182
 msgid "_Unlimited cache"
 msgstr "_Memòria cau il·limitada"
 
-#: ../liferea.glade.h:216
+#: ../liferea.glade.h:183
 msgid "_Update all favicons now"
 msgstr "_Actualitza totes les icones dels canals ara"
 
-#: ../liferea.glade.h:217
+#: ../liferea.glade.h:184
 msgid "_Use global default update interval."
 msgstr "_Utilitza el temps d'actualització global."
 
-#: ../liferea.glade.h:218
+#: ../liferea.glade.h:185
 msgid "combined view"
 msgstr "visualització combinada"
 
-#: ../liferea.glade.h:219
+#: ../liferea.glade.h:186
 msgid "enter any search string you want"
 msgstr "escriviu la cadena que voleu cercar"
 
-#: ../liferea.glade.h:220
+#: ../liferea.glade.h:187
+msgid "expander"
+msgstr ""
+
+#: ../liferea.glade.h:188
+msgid "gtk-close"
+msgstr ""
+
+#: ../liferea.glade.h:189
+msgid "gtk-save-as"
+msgstr ""
+
+#: ../liferea.glade.h:190
 msgid "items."
 msgstr "elements."
 
-#: ../liferea.glade.h:221
-msgid ""
-"minutes\n"
-"hours\n"
-"days"
-msgstr ""
-
-#: ../liferea.glade.h:224
+#: ../liferea.glade.h:191
 msgid "normal view"
 msgstr "visualització normal"
 
-#: ../liferea.glade.h:225
+#: ../liferea.glade.h:192
 msgid "wide view"
 msgstr "visualització àmplia"
 
@@ -909,6 +850,10 @@ msgstr ""
 "l'actualitzarà més, però encara podeu accedir als titulars que hi ha a la "
 "memòria cau."
 
+#: ../xslt/feed.xml.in.h:12
+msgid "You may want to validate the feed using"
+msgstr ""
+
 #: ../xslt/source.xml.in.h:2 ../xslt/folder.xml.in.h:2
 msgid "children with"
 msgstr "fill amb"
@@ -962,27 +907,36 @@ msgid "Refresh"
 msgstr ""
 
 #: ../xslt/item.xml.in.h:10
+#, fuzzy
+msgid "Related"
+msgstr "Canvia el nom"
+
+#: ../xslt/item.xml.in.h:11
 msgid "Section"
 msgstr "Secció"
 
-#: ../xslt/item.xml.in.h:12
+#: ../xslt/item.xml.in.h:13
 #, fuzzy
 msgid "Updating..."
 msgstr "S'està actualitzant «%s»"
 
-#: ../xslt/item.xml.in.h:13
+#: ../xslt/item.xml.in.h:14
+msgid "Via"
+msgstr ""
+
+#: ../xslt/item.xml.in.h:15
 msgid "bookmark"
 msgstr "adreça d'interès"
 
-#: ../xslt/item.xml.in.h:14
+#: ../xslt/item.xml.in.h:16
 msgid "comments"
 msgstr "comentaris"
 
-#: ../xslt/item.xml.in.h:15
+#: ../xslt/item.xml.in.h:17
 msgid "flag"
 msgstr "senyalador"
 
-#: ../xslt/item.xml.in.h:16
+#: ../xslt/item.xml.in.h:18
 msgid "search"
 msgstr "cerca"
 
@@ -1003,54 +957,46 @@ msgid "Search Folder:"
 msgstr "Carpeta de cerca:"
 
 #. unauthorized
-#: ../src/comments.c:116
+#: ../src/comments.c:118
 #, fuzzy
 msgid "Authorization Error"
 msgstr "Autenticació"
 
-#: ../src/common.c:398
-msgid "[There were more errors. Output was truncated!]"
-msgstr "[Hi ha hagut altres errors. S'ha truncat la sortida]"
-
-#: ../src/common.c:526
-msgid "XML Parser: Could not parse document:\n"
-msgstr "Analitzador XML: no s'ha pogut analitzar el document:\n"
-
 # FIXME és correcte el format de la traducció? (dpm)
 #. translation hint: date format for today, reorder format codes as necessary
-#: ../src/common.c:634
+#: ../src/common.c:149
 msgid "Today %l:%M %p"
 msgstr "Avui a les %H:%M"
 
 # FIXME és correcte el format de la traducció? (dpm)
 #. translation hint: date format for yesterday, reorder format codes as necessary
-#: ../src/common.c:647
+#: ../src/common.c:160
 msgid "Yesterday %l:%M %p"
 msgstr "Ahir a les %H:%M"
 
 # FIXME és correcte el format de la traducció? (dpm)
 #. translation hint: date format for dates older than 2 days but not older than a week, reorder format codes as necessary
-#: ../src/common.c:662
+#: ../src/common.c:173
 msgid "%a %l:%M %p"
 msgstr "%a %H:%M"
 
 # FIXME és correcte el format de la traducció? (dpm)
 #. translation hint: date format for dates older than a week but from this year, reorder format codes as necessary
-#: ../src/common.c:673
+#: ../src/common.c:182
 msgid "%b %d %l:%M %p"
 msgstr "%b %d %H:%M"
 
 #. translation hint: date format for dates from the last years, reorder format codes as necessary
-#: ../src/common.c:678
+#: ../src/common.c:185
 msgid "%b %d %Y"
 msgstr "%b %d %Y"
 
-#: ../src/common.c:878
+#: ../src/common.c:391
 #, c-format
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "No s'ha pogut crear el directori de memòria cau «%s»"
 
-#: ../src/common.c:926
+#: ../src/common.c:442
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box."
@@ -1058,99 +1004,57 @@ msgstr ""
 "No esteu autoritzat a descarregar aquest canal. Actualitzeu el vostre nom "
 "d'usuari i la contrasenya en el quadre de diàleg de les propietats del canal."
 
-#: ../src/common.c:928
+#: ../src/common.c:444
 msgid "Payment Required"
 msgstr "Es requereix pagament"
 
-#: ../src/common.c:929
+#: ../src/common.c:445
 msgid "Access Forbidden"
 msgstr "Accés prohibit"
 
-#: ../src/common.c:930
+#: ../src/common.c:446
 msgid "Resource Not Found"
 msgstr "No s'ha trobat el recurs"
 
-#: ../src/common.c:931
+#: ../src/common.c:447
 msgid "Method Not Allowed"
 msgstr "No es permet utilitzar aquest mètode"
 
-#: ../src/common.c:932
+#: ../src/common.c:448
 msgid "Not Acceptable"
 msgstr "No acceptable"
 
-#: ../src/common.c:933
+#: ../src/common.c:449
 msgid "Proxy Authentication Required"
 msgstr "Es requereix autenticació a través de servidor intermediari"
 
-#: ../src/common.c:934
+#: ../src/common.c:450
 msgid "Request Time-Out"
 msgstr "S'ha esgotat el temps de la sol·licitud"
 
-#: ../src/common.c:935
+#: ../src/common.c:451
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "Se n'ha anat. El recurs ja no existeix. Cancel·leu la subscripció."
 
-#: ../src/common.c:940
+#: ../src/common.c:456
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "El canal no està disponible: el servidor ha sol·licitat una redirecció no "
 "implementada"
 
-#: ../src/common.c:941
+#: ../src/common.c:457
 msgid "Client Error"
 msgstr "Error del client"
 
-#: ../src/common.c:942
+#: ../src/common.c:458
 msgid "Server Error"
 msgstr "Error del servidor"
 
-#: ../src/common.c:943
+#: ../src/common.c:459
 msgid "(unknown networking error happened)"
 msgstr "(s'ha produït un error de xarxa desconegut)"
 
-#: ../src/common.c:954
-msgid "URL is invalid"
-msgstr "L'URL és invàlid"
-
-#: ../src/common.c:955
-msgid "Unsupported network protocol"
-msgstr "Protocol de xarxa no implementat"
-
-#: ../src/common.c:958
-msgid "Error connecting to remote host"
-msgstr "S'ha produït un error en connectar-se a l'ordinador remot"
-
-#: ../src/common.c:959
-msgid "Hostname could not be found"
-msgstr "No s'ha pogut trobar el nom de l'ordinador"
-
-#: ../src/common.c:960
-msgid "Network connection was refused by the remote host"
-msgstr "L'ordinador remot ha rebutjat la connexió de xarxa"
-
-#: ../src/common.c:961
-msgid "Remote host did not finish sending data"
-msgstr "L'ordinador remot no ha acabat d'enviar les dades"
-
-#. Transfer errors
-#: ../src/common.c:963
-msgid "Too many HTTP redirects were encountered"
-msgstr "S'han trobat massa redireccionaments HTTP"
-
-#: ../src/common.c:966
-msgid "Remote host sent an invalid response"
-msgstr "L'ordinador remot ha enviat una resposta invàlida"
-
-#: ../src/common.c:973
-msgid "Authentication failed"
-msgstr "Ha fallat l'autenticació"
-
-#: ../src/common.c:975
-msgid "Webserver's authentication method incompatible with Liferea"
-msgstr ""
-"El mètode d'autenticació del servidor web és incompatible amb el Liferea"
-
-#: ../src/common.c:1020
+#: ../src/common.c:505
 msgid ""
 "Unexpected end of character sequence or corrupt UTF-8 encoding! Some "
 "characters were dropped!"
@@ -1158,24 +1062,35 @@ msgstr ""
 "Codificació UTF-8 corrompuda o fi de seqüència de caràcter inesperada. S'han "
 "perdut alguns caràcters"
 
-#: ../src/common.c:1126
+#: ../src/common.c:611
 #, c-format
 msgid "Couldn't find pixmap file: %s"
 msgstr "No s'ha pogut trobar el fitxer de mapa de píxels: %s"
 
-#: ../src/export.c:151
+#: ../src/enclosure.c:129
+#, c-format
+msgid "\"%s\" is not a valid enclosure type config file!"
+msgstr "«%s» no és un un fitxer de configuració de tipus d'adjunció vàlid"
+
+#. just saving
+#: ../src/enclosure.c:231
+#, c-format
+msgid "Enclosure download finished: \"%s\""
+msgstr "S'ha acabat la baixada de l'adjunt: «%s»"
+
+#: ../src/export.c:153
 #, c-format
 msgid "Error renaming %s to %s\n"
 msgstr "S'ha produït un error en canviar el nom de %s a %s\n"
 
-#: ../src/export.c:316 ../src/export.c:318
+#: ../src/export.c:325 ../src/export.c:327
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
 msgstr ""
 "S'ha produït un error XML en llegir el fitxer de memòria cau. No s'ha pogut "
 "importar «%s»"
 
-#: ../src/export.c:323 ../src/export.c:325
+#: ../src/export.c:332 ../src/export.c:334
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
@@ -1183,40 +1098,40 @@ msgstr ""
 "El document és buit. El document OPML «%s» no hauria d'ésser buit en importar-"
 "lo."
 
-#: ../src/export.c:346 ../src/export.c:348
+#: ../src/export.c:355 ../src/export.c:357
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr "«%s» és un document OPML invàlid. El Liferea no el pot importar."
 
-#: ../src/export.c:367
+#: ../src/export.c:376
 msgid "Imported feed list"
 msgstr "Llista de canals importats"
 
-#: ../src/export.c:379
+#: ../src/export.c:388
 msgid "Import Feed List"
 msgstr "Importa la llista de canals"
 
-#: ../src/export.c:379
+#: ../src/export.c:388
 msgid "Import"
 msgstr "Importa"
 
-#: ../src/export.c:386
+#: ../src/export.c:395
 msgid "Error while exporting feed list!"
 msgstr "S'ha produït un error en exportar la llista de canals"
 
-#: ../src/export.c:388
+#: ../src/export.c:397
 msgid "Feed List exported!"
 msgstr "S'ha exportat la llista de canals"
 
-#: ../src/export.c:394
+#: ../src/export.c:403
 msgid "Export Feed List"
 msgstr "Exporta la llista de canals"
 
-#: ../src/export.c:394
+#: ../src/export.c:403
 msgid "Export"
 msgstr "Exporta"
 
-#: ../src/feed.c:346
+#: ../src/feed.c:284
 #, fuzzy
 msgid ""
 "The URL you want Liferea to subscribe to points to a webpage and the auto "
@@ -1227,48 +1142,33 @@ msgstr ""
 "web i el descobridor automàtic no hi ha trobat cap canal. Potser aquesta "
 "pàgina web no permet el descobriment automàtic del canal.</p>"
 
-#: ../src/feed.c:377
+#: ../src/feed.c:315
 #, fuzzy, c-format
 msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
 msgstr ""
 "<p>S'ha produït un error XML en llegir el canal. No s'ha pogut carregar «%s»</"
 "p>"
 
-#: ../src/feed.c:382
+#: ../src/feed.c:320
 #, fuzzy
 msgid "Empty document!"
 msgstr "<p>El document és buit</b>"
 
-#: ../src/feed.c:391
+#: ../src/feed.c:329
 #, fuzzy
 msgid "Invalid XML!"
 msgstr "<p>XML no vàlid</p>"
 
-#: ../src/feed.c:431
+#: ../src/feed.c:369
 msgid "Source points to HTML document."
 msgstr ""
 
-#: ../src/feed.c:434
+#: ../src/feed.c:372
 #, fuzzy
 msgid "Could not determine the feed type."
 msgstr "<p>No s'ha pogut determinar el tipus de canal.</p>"
 
-#: ../src/feed.c:619
-#, c-format
-msgid "The URL of \"%s\" has changed permanently and was updated"
-msgstr "L'URL de «%s» ha canviat permanentment i s'ha actualitzat"
-
-#: ../src/feed.c:628
-#, c-format
-msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
-msgstr "«%s» ja no es manté. El Liferea no l'actualitzarà més"
-
-#: ../src/feed.c:631
-#, c-format
-msgid "\"%s\" has not changed since last update"
-msgstr "«%s» no ha canviat des de l'última actualització"
-
-#: ../src/feed.c:653
+#: ../src/feed.c:571
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!</"
@@ -1278,31 +1178,26 @@ msgstr ""
 "apunti realment a un recurs proporcionat per un dels formats de sindicació "
 "permesos.</p>Sortida de l'analitzador XML:<br /><div class='xmlparseroutput'>"
 
-#: ../src/feed.c:677
+#: ../src/feed.c:610
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "s'ha actualitzat «%s»..."
 
-#: ../src/feed.c:686
+#: ../src/feed.c:618
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "no està disponible «%s»"
 
-#: ../src/feed.c:747
-#, c-format
-msgid "Updating \"%s\""
-msgstr "S'està actualitzant «%s»"
-
-#: ../src/feedlist.c:295
+#: ../src/feedlist.c:347
 msgid "You have to select a feed entry"
 msgstr "Heu de seleccionar una entrada del canal"
 
-#: ../src/feedlist.c:302 ../src/feedlist.c:311
+#: ../src/feedlist.c:354 ../src/feedlist.c:363
 msgid "Liferea is in offline mode. No update possible."
 msgstr ""
 "El Liferea està en mode de fora de línia. No és possible fer actualitzacions."
 
-#: ../src/feedlist.c:436
+#: ../src/feedlist.c:491
 #, fuzzy
 msgid ""
 "This version of Liferea uses a new cache format and has migrated your feed "
@@ -1316,167 +1211,218 @@ msgstr ""
 "cop estigueu segur que la migració ha estat satisfactòria podeu suprimir "
 "aquest directori manualment."
 
-#: ../src/html.c:153
+#: ../src/html.c:154
 msgid "Feed link auto discovery failed! No feed links found!"
 msgstr ""
 "Ha fallat la descoberta automàtica de l'enllaç a un canal. No s'ha trobat "
 "cap enllaç a un canal."
 
 #. if we don't find a feed with unread items do nothing
-#: ../src/itemlist.c:336
+#: ../src/itemlist.c:399
 msgid "There are no unread items "
 msgstr "No hi ha elements sense llegir "
 
-#: ../src/main.c:68
+#: ../src/main.c:70
 msgid "  --version        Print version information and exit"
 msgstr "  --version        Mostra informació sobre la versió i surt"
 
-#: ../src/main.c:69
+#: ../src/main.c:71
 msgid "  --help           Print this help and exit"
 msgstr "  --help           Mostra aquesta ajuda i surt"
 
-#: ../src/main.c:70
+#: ../src/main.c:72
 msgid "  --mainwindow-state=STATE"
 msgstr "  --mainwindow-state=ESTAT"
 
-#: ../src/main.c:71
+#: ../src/main.c:73
 msgid "                   Start Liferea with its main window in STATE."
 msgstr ""
 "                   Inicia el Liferea amb la seva finestra principal en "
 "l'ESTAT."
 
-#: ../src/main.c:72
+#: ../src/main.c:74
 msgid "                   STATE may be `shown', `iconified', or `hidden'"
 msgstr ""
 "                   ESTAT pot ser «shown» (visible), «iconified» (iconificada), "
 "o «hidden» (amagada)"
 
-#: ../src/main.c:74
+#: ../src/main.c:76
 #, fuzzy
 msgid "  --debug-<topic>  Print debugging messages for the given topic"
 msgstr ""
 "  --debug-cache    Mostra missatges de depuració de la gestió de la memòria "
 "cau"
 
-#: ../src/main.c:75
+#: ../src/main.c:77
 msgid "                   Possible topics are: all,cache,conf,db,gui,html"
 msgstr ""
 
-#: ../src/main.c:76
+#: ../src/main.c:78
 msgid "                   net,parsing,plugins,trace,update,verbose"
 msgstr ""
 
-#: ../src/main.c:156
-msgid "Liferea seems to be running already!"
-msgstr "Sembla que el Liferea ja està funcionant"
-
-#: ../src/main.c:226
+#: ../src/main.c:209
 #, c-format
 msgid "The --mainwindow-state argument must be given a parameter.\n"
 msgstr "L'argument de --mainwindow-state necessita un paràmetre.\n"
 
-#: ../src/main.c:234
+#: ../src/main.c:217
 #, c-format
 msgid "The --session argument must be given a parameter.\n"
 msgstr "L'argument de --session necessita un paràmetre.\n"
 
-#: ../src/main.c:237
+#: ../src/main.c:220
 #, c-format
 msgid "Liferea encountered an unknown argument: %s\n"
 msgstr "El Liferea ha trobat un argument desconegut: %s\n"
 
-#: ../src/rule.c:260
+#: ../src/main.c:231
+msgid "Liferea seems to be running already!"
+msgstr "Sembla que el Liferea ja està funcionant"
+
+#. Cast time_t tunix to int.
+#. Print cookie expire warning.
+#: ../src/net.c:197
+#, c-format
+msgid "Cookie for %s has expired!"
+msgstr "La galeta per a %s ha vençut"
+
+#: ../src/net.c:444
+msgid "Network error"
+msgstr ""
+
+#. SQL condition builder function	in-memory check function	feedlist.opml rule id           rule menu label         positive menu option    negative menu option    has param
+#. ========================================================================================================================================================================================
+#: ../src/rule.c:369
 msgid "Item"
 msgstr "Element"
 
-#: ../src/rule.c:260
+#: ../src/rule.c:369
 msgid "does contain"
 msgstr "conté"
 
-#: ../src/rule.c:260
+#: ../src/rule.c:369
 msgid "does not contain"
 msgstr "no conté"
 
-#: ../src/rule.c:261
+#: ../src/rule.c:370
 msgid "Item title"
 msgstr "Títol de l'element"
 
-#: ../src/rule.c:261 ../src/rule.c:262 ../src/rule.c:263
+#: ../src/rule.c:370 ../src/rule.c:371 ../src/rule.c:372
 msgid "does match"
 msgstr "coincideix"
 
-#: ../src/rule.c:261 ../src/rule.c:262 ../src/rule.c:263
+#: ../src/rule.c:370 ../src/rule.c:371 ../src/rule.c:372
 msgid "does not match"
 msgstr "no coincideix"
 
-#: ../src/rule.c:262
+#: ../src/rule.c:371
 msgid "Item body"
 msgstr "Cos de l'element"
 
-#: ../src/rule.c:263
+#: ../src/rule.c:372
 msgid "Feed title"
 msgstr "Títol del canal"
 
-#: ../src/rule.c:264
+#: ../src/rule.c:373
 msgid "Read status"
 msgstr "Estat de lectura"
 
-#: ../src/rule.c:264
+#: ../src/rule.c:373
 msgid "is unread"
 msgstr "no està llegit"
 
-#: ../src/rule.c:264
+#: ../src/rule.c:373
 msgid "is read"
 msgstr "està llegit"
 
-#: ../src/rule.c:265
+#: ../src/rule.c:374
 msgid "Flag status"
 msgstr "Estat de senyalament"
 
-#: ../src/rule.c:265
+#: ../src/rule.c:374
 msgid "is flagged"
 msgstr "està senyalat"
 
-#: ../src/rule.c:265
+#: ../src/rule.c:374
 msgid "is unflagged"
 msgstr "no està senyalat"
 
-#: ../src/rule.c:266
+#: ../src/rule.c:375
 msgid "Update status"
 msgstr "Estat d'actualització"
 
-#: ../src/rule.c:266
+#: ../src/rule.c:375
 msgid "was updated"
 msgstr "s'ha actualitzat"
 
-#: ../src/rule.c:266
+#: ../src/rule.c:375
 msgid "was not updated"
 msgstr "no s'ha actualitzat"
 
-#: ../src/rule.c:267
+#: ../src/rule.c:376
 msgid "Podcast"
 msgstr "Podcast"
 
-#: ../src/rule.c:267
+#: ../src/rule.c:376
 msgid "included"
 msgstr "inclòs"
 
-#: ../src/rule.c:267
+#: ../src/rule.c:376
 msgid "not included"
 msgstr "exclòs"
 
-#: ../src/subscription.c:79
+#: ../src/rule.c:377 ../src/ui/ui_attention.c:174
+msgid "Category"
+msgstr ""
+
+#: ../src/rule.c:377
+#, fuzzy
+msgid "is set"
+msgstr "està llegit"
+
+#: ../src/rule.c:377
+msgid "is not set"
+msgstr ""
+
+#: ../src/subscription.c:100
 #, fuzzy, c-format
 msgid "Subscription \"%s\" is already being updated!"
 msgstr "Ja s'està actualitzant el canal «%s»"
 
-#: ../src/subscription.c:84
+#: ../src/subscription.c:105
 #, fuzzy, c-format
 msgid ""
 "The subscription \"%s\" was discontinued. Liferea won't update it anymore!"
 msgstr "El canal «%s» ja no es manté. El Liferea no l'actualitzarà més."
 
-#: ../src/subscription.c:258
+#: ../src/subscription.c:140
+#, fuzzy, c-format
+msgid "Updating favicon for \"%s\""
+msgstr "S'està actualitzant la icona del canal «%s»"
+
+#: ../src/subscription.c:169
+#, c-format
+msgid "The URL of \"%s\" has changed permanently and was updated"
+msgstr "L'URL de «%s» ha canviat permanentment i s'ha actualitzat"
+
+#: ../src/subscription.c:178
+#, c-format
+msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
+msgstr "«%s» ja no es manté. El Liferea no l'actualitzarà més"
+
+#: ../src/subscription.c:181
+#, c-format
+msgid "\"%s\" has not changed since last update"
+msgstr "«%s» no ha canviat des de l'última actualització"
+
+#: ../src/subscription.c:240
+#, c-format
+msgid "Updating \"%s\""
+msgstr "S'està actualitzant «%s»"
+
+#: ../src/subscription.c:445
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
@@ -1484,46 +1430,49 @@ msgstr ""
 "S'ha produït un problema en llegir aquesta subscripció. Verifiqueu l'URL i "
 "la sortida del terminal."
 
-#: ../src/subscription.c:274
-#, fuzzy, c-format
-msgid "Updating favicon for \"%s\""
-msgstr "S'està actualitzant la icona del canal «%s»"
-
-#: ../src/update.c:130
+#: ../src/update.c:254
 #, c-format
 msgid "Error opening temp file %s to use for filtering!"
 msgstr ""
 "S'ha produït un error en obrir el fitxer %s a utilitzar per al filtratge"
 
-#: ../src/update.c:153
+#: ../src/update.c:277
 #, c-format
 msgid "%s exited with status %d"
 msgstr "%s ha sortit amb l'estat %d"
 
-#: ../src/update.c:159 ../src/update.c:160 ../src/update.c:260
+#: ../src/update.c:283 ../src/update.c:284 ../src/update.c:396
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "Error: no s'ha pogut obrir el conducte «%s»"
 
 #. FIXME: maybe setting request->returncode would be better
-#: ../src/update.c:280
+#: ../src/update.c:420
 #, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr "Error: no s'ha pogut obrir el fitxer «%s»"
 
-#: ../src/update.c:286
+#: ../src/update.c:425
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "Error: no hi ha cap fitxer «%s»"
 
-#: ../src/update.c:483
+#: ../src/update.c:573
 #, c-format
 msgid "Could not download \"%s\". Will retry in %d seconds."
 msgstr "No s'ha pogut baixar «%s». Es tornarà a intentar d'aquí %d segons."
 
-#: ../src/vfolder.c:52
+#: ../src/vfolder.c:53
 msgid "New Search Folder"
 msgstr "Carpeta de cerca nova"
+
+#: ../src/xml.c:383
+msgid "[There were more errors. Output was truncated!]"
+msgstr "[Hi ha hagut altres errors. S'ha truncat la sortida]"
+
+#: ../src/xml.c:544
+msgid "XML Parser: Could not parse document:\n"
+msgstr "Analitzador XML: no s'ha pogut analitzar el document:\n"
 
 #: ../src/ui/eggtrayicon.c:133
 msgid "Orientation"
@@ -1533,55 +1482,60 @@ msgstr "Orientació"
 msgid "The orientation of the tray."
 msgstr "L'orientació de la safata."
 
+#: ../src/ui/ui_attention.c:184
+#, fuzzy
+msgid "Count"
+msgstr "comentaris"
+
 #: ../src/ui/ui_auth.c:182
 msgid "Unknown source"
 msgstr "Font desconeguda"
 
-#: ../src/ui/ui_enclosure.c:74
-#, c-format
-msgid "\"%s\" is not a valid enclosure type config file!"
-msgstr "«%s» no és un un fitxer de configuració de tipus d'adjunció vàlid"
+#: ../src/ui/ui_enclosure.c:174
+msgid "NAME"
+msgstr ""
 
-#. just saving
-#: ../src/ui/ui_enclosure.c:165
+#: ../src/ui/ui_enclosure.c:214
 #, c-format
-msgid "Enclosure download finished: \"%s\""
-msgstr "S'ha acabat la baixada de l'adjunt: «%s»"
+msgid "%d attachment"
+msgid_plural "%d attachments"
+msgstr[0] ""
+msgstr[1] ""
 
-#: ../src/ui/ui_enclosure.c:229 ../src/ui/ui_enclosure.c:391
-#: ../src/ui/ui_subscription.c:369
+#: ../src/ui/ui_enclosure.c:264 ../src/ui/ui_enclosure.c:414
+#: ../src/ui/ui_subscription.c:373
 msgid "Choose File"
 msgstr "Escolliu un fitxer"
 
-#: ../src/ui/ui_enclosure.c:284
+#: ../src/ui/ui_enclosure.c:323
 #, c-format
 msgid "<b>File Extension .%s</b>"
 msgstr "<b>Extensió de fitxer .%s</b>"
 
-#: ../src/ui/ui_enclosure.c:286
+#: ../src/ui/ui_enclosure.c:325
 #, c-format
 msgid "<b>%s</b>"
 msgstr "<b>%s</b>"
 
-#: ../src/ui/ui_feedlist.c:284
+#: ../src/ui/ui_feedlist.c:317
 msgid "Deleting entry"
 msgstr "Supressió de l'entrada"
 
-#: ../src/ui/ui_feedlist.c:285
+#: ../src/ui/ui_feedlist.c:318
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "Esteu segur que voleu suprimir «%s» i el seu contingut?"
 
-#: ../src/ui/ui_feedlist.c:285
+#: ../src/ui/ui_feedlist.c:318
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Esteu segur que voleu suprimir «%s»?"
 
-#: ../src/ui/ui_feedlist.c:292
+#: ../src/ui/ui_feedlist.c:325
 msgid "Deletion Confirmation"
 msgstr "Confirmació de la supressió"
 
-#: ../src/ui/ui_htmlview.c:80
+#: ../src/ui/ui_htmlview.c:95
 msgid ""
 "Sorry, I was not able to load any installed browser plugin! Try the --debug-"
 "plugins option to get debug information!"
@@ -1590,84 +1544,85 @@ msgstr ""
 "l'opció --debug-plugins per obtenir informació de depuració"
 
 #. FIXME: bad because this is not only used for item links!
-#: ../src/ui/ui_htmlview.c:201
+#: ../src/ui/ui_htmlview.c:308
 msgid "This item does not have a link assigned!"
 msgstr "Aquest element no te cap enllaç assignat"
 
-#: ../src/ui/ui_htmlview.c:295 ../src/ui/ui_htmlview.c:315
+#: ../src/ui/ui_htmlview.c:403 ../src/ui/ui_htmlview.c:423
 #, c-format
 msgid "Browser command failed: %s"
 msgstr "Ha fallat l'ordre del navegador: %s"
 
-#: ../src/ui/ui_htmlview.c:318
+#: ../src/ui/ui_htmlview.c:426
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "S'està iniciant: «%s»"
 
-#: ../src/ui/ui_itemlist.c:211
-msgid "<i>*** No title ***</i>"
+#: ../src/ui/ui_itemlist.c:208
+#, fuzzy
+msgid "*** No title ***"
 msgstr "<i>*** Sense títol ***</i>"
 
-#: ../src/ui/ui_itemlist.c:332
+#: ../src/ui/ui_itemlist.c:300
 msgid "Date"
 msgstr "Data"
 
-#: ../src/ui/ui_itemlist.c:343 ../src/ui/ui_itemlist.c:346
+#: ../src/ui/ui_itemlist.c:314
 msgid "Headline"
 msgstr "Titular"
 
-#: ../src/ui/ui_itemlist.c:487 ../src/ui/ui_itemlist.c:510
-#: ../src/ui/ui_itemlist.c:581 ../src/ui/ui_itemlist.c:729
-#: ../src/ui/ui_itemlist.c:747
+#: ../src/ui/ui_itemlist.c:453 ../src/ui/ui_itemlist.c:476
+#: ../src/ui/ui_itemlist.c:551 ../src/ui/ui_itemlist.c:686
+#: ../src/ui/ui_itemlist.c:705
 msgid "No item has been selected"
 msgstr "No s'ha seleccionat cap element"
 
-#: ../src/ui/ui_itemlist.c:504
+#: ../src/ui/ui_itemlist.c:470
 msgid "This item has no link specified!"
 msgstr "Aquest enllaç no te cap enllaç especificat"
 
-#: ../src/ui/ui_itemlist.c:571
+#: ../src/ui/ui_itemlist.c:538
 msgid "You must select a feed to delete its items!"
 msgstr "Heu de seleccionar un canal per a poder suprimir els seus elements"
 
-#: ../src/ui/ui_itemlist.c:757
+#: ../src/ui/ui_itemlist.c:716
 msgid "No link selected!"
 msgstr "No s'ha seleccionat cap enllaç"
 
 #. launch the homepage when button in about dialog is pressed
-#: ../src/ui/ui_mainwindow.c:206
+#: ../src/ui/ui_mainwindow.c:216
 msgid "http://liferea.sf.net"
 msgstr "http://liferea.sf.net"
 
-#: ../src/ui/ui_mainwindow.c:210
+#: ../src/ui/ui_mainwindow.c:220
 msgid "topics_en.html"
 msgstr "topics_en.html"
 
-#: ../src/ui/ui_mainwindow.c:211
+#: ../src/ui/ui_mainwindow.c:221
 msgid "Help Topics"
 msgstr "Temes d'ajuda (en anglès)"
 
-#: ../src/ui/ui_mainwindow.c:217
+#: ../src/ui/ui_mainwindow.c:227
 msgid "reference_en.html"
 msgstr "reference_en.html"
 
-#: ../src/ui/ui_mainwindow.c:218
+#: ../src/ui/ui_mainwindow.c:228
 msgid "Quick Reference"
 msgstr "Referència ràpida (en anglès)"
 
-#: ../src/ui/ui_mainwindow.c:223
+#: ../src/ui/ui_mainwindow.c:233
 msgid "faq_en.html"
 msgstr "faq_en.html"
 
-#: ../src/ui/ui_mainwindow.c:224
+#: ../src/ui/ui_mainwindow.c:234
 msgid "FAQ"
 msgstr "PMF (en anglès)"
 
-#: ../src/ui/ui_mainwindow.c:657
+#: ../src/ui/ui_mainwindow.c:698
 msgid "Liferea - Linux Feed Reader"
 msgstr "Liferea - Lector de canals per a Linux"
 
-#: ../src/ui/ui_mainwindow.c:659
+#: ../src/ui/ui_mainwindow.c:700
 msgid ""
 "<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news "
 "feeds.</p><p>The left pane contains the list of your subscriptions. To add a "
@@ -1682,88 +1637,88 @@ msgstr ""
 "canal, seleccioneu-lo a la llista de canals i els seus titulars es "
 "carregaran al quadre de la dreta.</p>"
 
-#: ../src/ui/ui_mainwindow.c:736
+#: ../src/ui/ui_mainwindow.c:794
 msgid "Liferea is now online"
 msgstr "El Liferea està en línia"
 
-#: ../src/ui/ui_mainwindow.c:738
+#: ../src/ui/ui_mainwindow.c:796
 msgid "Work Offline"
 msgstr "Treballa fora de línia"
 
-#: ../src/ui/ui_mainwindow.c:740
+#: ../src/ui/ui_mainwindow.c:798
 msgid "Liferea is now offline"
 msgstr "El Liferea està fora de línia"
 
-#: ../src/ui/ui_mainwindow.c:742
+#: ../src/ui/ui_mainwindow.c:800
 msgid "Work Online"
 msgstr "Treballa en línia"
 
-#: ../src/ui/ui_mainwindow.c:1003
+#: ../src/ui/ui_mainwindow.c:1091
 #, fuzzy
 msgid "_Subscriptions"
 msgstr "Subscripció nova"
 
-#: ../src/ui/ui_mainwindow.c:1004
+#: ../src/ui/ui_mainwindow.c:1092
 msgid "Update _All"
 msgstr "_Actualitza'ls tots"
 
-#: ../src/ui/ui_mainwindow.c:1004
+#: ../src/ui/ui_mainwindow.c:1092
 msgid "Updates all subscriptions. This does not update OCS directories."
 msgstr ""
 "Actualitza totes les subscripcions. Els directoris OCS no s'actualitzaran."
 
-#: ../src/ui/ui_mainwindow.c:1006
+#: ../src/ui/ui_mainwindow.c:1094
 msgid "Mark All As _Read"
 msgstr "Marca'ls tots com a _llegits"
 
-#: ../src/ui/ui_mainwindow.c:1006
+#: ../src/ui/ui_mainwindow.c:1094
 msgid "Marks read every item of every subscription."
 msgstr "Marca cada element de cada subscripció com a llegit."
 
-#: ../src/ui/ui_mainwindow.c:1008
+#: ../src/ui/ui_mainwindow.c:1096
 msgid "_Import Feed List..."
 msgstr "_Importa una llista de canals..."
 
-#: ../src/ui/ui_mainwindow.c:1008
+#: ../src/ui/ui_mainwindow.c:1096
 msgid "Imports an OPML feed list."
 msgstr "Importa una llista de canals OPML."
 
-#: ../src/ui/ui_mainwindow.c:1009
+#: ../src/ui/ui_mainwindow.c:1097
 msgid "_Export Feed List..."
 msgstr "_Exporta la llista de canals..."
 
-#: ../src/ui/ui_mainwindow.c:1009
+#: ../src/ui/ui_mainwindow.c:1097
 msgid "Exports the feed list as OPML."
 msgstr "Exporta la llista de canals com a OPML."
 
-#: ../src/ui/ui_mainwindow.c:1010
+#: ../src/ui/ui_mainwindow.c:1098
 msgid "_Quit"
 msgstr "_Surt"
 
-#: ../src/ui/ui_mainwindow.c:1012
+#: ../src/ui/ui_mainwindow.c:1100
 #, fuzzy
 msgid "_Feed"
 msgstr "_Canals"
 
-#: ../src/ui/ui_mainwindow.c:1013
+#: ../src/ui/ui_mainwindow.c:1101
 #, fuzzy
-msgid "Remove _All"
+msgid "Remove _All Items"
 msgstr "Suprimeix-los tots"
 
-#: ../src/ui/ui_mainwindow.c:1013
+#: ../src/ui/ui_mainwindow.c:1101
 msgid "Removes all items of the currently selected feed."
 msgstr "Suprimeix tots els elements del canal seleccionat."
 
-#: ../src/ui/ui_mainwindow.c:1016
+#: ../src/ui/ui_mainwindow.c:1104
 #, fuzzy
 msgid "_Item"
 msgstr "_Elements"
 
-#: ../src/ui/ui_mainwindow.c:1017
+#: ../src/ui/ui_mainwindow.c:1105
 msgid "_Next Unread Item"
 msgstr "Element sense llegir _següent"
 
-#: ../src/ui/ui_mainwindow.c:1017
+#: ../src/ui/ui_mainwindow.c:1105
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -1771,213 +1726,184 @@ msgstr ""
 "Salta al següent element sense llegir. Si és necessari selecciona el següent "
 "canal amb elements sense llegir."
 
-#: ../src/ui/ui_mainwindow.c:1019
-msgid "Toggle _Read Status"
-msgstr "Commuta l'estat de _lectura"
-
-#: ../src/ui/ui_mainwindow.c:1019
-msgid "Toggles the read status of the selected item."
-msgstr "Commuta l'estat de lectura de l'element seleccionat."
-
-#: ../src/ui/ui_mainwindow.c:1021
-msgid "Toggle Item _Flag"
-msgstr "Commuta el _senyalador de l'element"
-
-#: ../src/ui/ui_mainwindow.c:1021
-msgid "Toggles the flag status of the selected item."
-msgstr "Commuta l'estat del senyalador de l'element seleccionat."
-
-#: ../src/ui/ui_mainwindow.c:1023
-#, fuzzy
-msgid "R_emove"
-msgstr "/_Suprimeix l'element"
-
-#: ../src/ui/ui_mainwindow.c:1023
-msgid "Removes the selected item."
-msgstr "Suprimeix l'element seleccionat."
-
-#: ../src/ui/ui_mainwindow.c:1025
-msgid "_Launch In Browser"
-msgstr "_Obre'l en el navegador"
-
-#: ../src/ui/ui_mainwindow.c:1025
-msgid "Launches the item's link in the configured browser."
-msgstr "Obre l'enllaç de l'element en el navegador preestablert."
-
-#: ../src/ui/ui_mainwindow.c:1028
+#: ../src/ui/ui_mainwindow.c:1108
 msgid "_View"
 msgstr "_Visualitza"
 
-#: ../src/ui/ui_mainwindow.c:1029
+#: ../src/ui/ui_mainwindow.c:1109
 msgid "_Increase Text Size"
 msgstr "_Augmenta la mida del text"
 
-#: ../src/ui/ui_mainwindow.c:1029
+#: ../src/ui/ui_mainwindow.c:1109
 msgid "Increases the text size of the item view."
 msgstr "Augmenta la mida del text de l'element visualitzat."
 
-#: ../src/ui/ui_mainwindow.c:1031
+#: ../src/ui/ui_mainwindow.c:1111
 msgid "_Decrease Text Size"
 msgstr "_Redueix la mida del text"
 
-#: ../src/ui/ui_mainwindow.c:1031
+#: ../src/ui/ui_mainwindow.c:1111
 msgid "Decreases the text size of the item view."
 msgstr "Redueix la mida del text de l'element visualitzat."
 
-#: ../src/ui/ui_mainwindow.c:1034
+#: ../src/ui/ui_mainwindow.c:1114
 msgid "_Tools"
 msgstr ""
 
-#: ../src/ui/ui_mainwindow.c:1035
+#: ../src/ui/ui_mainwindow.c:1115
 #, fuzzy
 msgid "_Update Monitor"
 msgstr "Actualitza el monitor"
 
-#: ../src/ui/ui_mainwindow.c:1035
+#: ../src/ui/ui_mainwindow.c:1115
 msgid "Show a list of all feeds currently in the update queue"
 msgstr ""
 "Mostra una llista de tots els canals que hi ha a la cua d'actualització"
 
-#: ../src/ui/ui_mainwindow.c:1037
+#: ../src/ui/ui_mainwindow.c:1117
 #, fuzzy
 msgid "_Script Manager"
 msgstr "Gestor d'scripts"
 
-#: ../src/ui/ui_mainwindow.c:1037
+#: ../src/ui/ui_mainwindow.c:1117
 msgid "Allows to configure and edit LUA hook scripts"
 msgstr "Us permet configurar i editar els scripts de lligam LUA"
 
-#: ../src/ui/ui_mainwindow.c:1039
+#: ../src/ui/ui_mainwindow.c:1119
+msgid "Presents statistics on your most read categories"
+msgstr ""
+
+#: ../src/ui/ui_mainwindow.c:1121
 msgid "_Preferences"
 msgstr "_Preferències"
 
-#: ../src/ui/ui_mainwindow.c:1039
+#: ../src/ui/ui_mainwindow.c:1121
 msgid "Edit Preferences."
 msgstr "Edita les preferències."
 
-#: ../src/ui/ui_mainwindow.c:1042
+#: ../src/ui/ui_mainwindow.c:1124
 msgid "_Search"
 msgstr "_Cerca"
 
-#: ../src/ui/ui_mainwindow.c:1043
+#: ../src/ui/ui_mainwindow.c:1125
 msgid "Search All Feeds..."
 msgstr "Cerca a tots els canals..."
 
-#: ../src/ui/ui_mainwindow.c:1043
+#: ../src/ui/ui_mainwindow.c:1125
 msgid "Show the search dialog."
 msgstr "Mostra el diàleg de cerca."
 
-#: ../src/ui/ui_mainwindow.c:1044
+#: ../src/ui/ui_mainwindow.c:1126
 msgid "Search With ..."
 msgstr "Cerca amb ..."
 
-#: ../src/ui/ui_mainwindow.c:1046
+#: ../src/ui/ui_mainwindow.c:1128
 msgid "_Help"
 msgstr "A_juda"
 
-#: ../src/ui/ui_mainwindow.c:1047
+#: ../src/ui/ui_mainwindow.c:1129
 msgid "_Contents"
 msgstr "_Continguts"
 
-#: ../src/ui/ui_mainwindow.c:1047
+#: ../src/ui/ui_mainwindow.c:1129
 msgid "View help for this application."
 msgstr "Visualitza l'ajuda d'aquesta aplicació."
 
-#: ../src/ui/ui_mainwindow.c:1048
+#: ../src/ui/ui_mainwindow.c:1130
 msgid "_Quick Reference"
 msgstr "_Referència ràpida"
 
-#: ../src/ui/ui_mainwindow.c:1048
+#: ../src/ui/ui_mainwindow.c:1130
 msgid "View a list of all Liferea shortcuts."
 msgstr "Visualitza una llista de totes les dreceres del Liferea."
 
-#: ../src/ui/ui_mainwindow.c:1050
+#: ../src/ui/ui_mainwindow.c:1132
 msgid "_FAQ"
 msgstr "_PMF"
 
-#: ../src/ui/ui_mainwindow.c:1050
+#: ../src/ui/ui_mainwindow.c:1132
 msgid "View the FAQ for this application."
 msgstr "Visualitza les PMF d'aquesta aplicació."
 
-#: ../src/ui/ui_mainwindow.c:1051
+#: ../src/ui/ui_mainwindow.c:1133
 msgid "_About"
 msgstr "_Quant a"
 
-#: ../src/ui/ui_mainwindow.c:1051
+#: ../src/ui/ui_mainwindow.c:1133
 msgid "Shows an about dialog."
 msgstr "Mostra el diàleg de quant a."
 
-#: ../src/ui/ui_mainwindow.c:1055
+#: ../src/ui/ui_mainwindow.c:1137
 msgid "_Normal View"
 msgstr "Visualització _normal"
 
-#: ../src/ui/ui_mainwindow.c:1055
+#: ../src/ui/ui_mainwindow.c:1137
 msgid "Set view mode to mail client mode."
 msgstr ""
 "Estableix el mode de visualització semblant al mode del client de correu."
 
-#: ../src/ui/ui_mainwindow.c:1057
+#: ../src/ui/ui_mainwindow.c:1139
 msgid "_Wide View"
 msgstr "Visualització àmpli_a"
 
-#: ../src/ui/ui_mainwindow.c:1057
+#: ../src/ui/ui_mainwindow.c:1139
 msgid "Set view mode to use three vertical panes."
 msgstr "Estableix el mode de visualització a tres quadres verticals."
 
-#: ../src/ui/ui_mainwindow.c:1059
+#: ../src/ui/ui_mainwindow.c:1141
 msgid "_Combined View"
 msgstr "Visualització _combinada"
 
-#: ../src/ui/ui_mainwindow.c:1059
+#: ../src/ui/ui_mainwindow.c:1141
 msgid "Set view mode to two pane mode."
 msgstr "Estableix el mode de visualització a dos quadres."
 
-#: ../src/ui/ui_mainwindow.c:1064
+#: ../src/ui/ui_mainwindow.c:1146
 msgid "_New Subscription..."
 msgstr "Subscripció _nova..."
 
-#: ../src/ui/ui_mainwindow.c:1064
+#: ../src/ui/ui_mainwindow.c:1146
 msgid "Adds a subscription to the feed list."
 msgstr "Afegeix una subscripció a la llista de canals."
 
-#: ../src/ui/ui_mainwindow.c:1066
+#: ../src/ui/ui_mainwindow.c:1148
 msgid "New _Folder..."
 msgstr "_Carpeta nova..."
 
-#: ../src/ui/ui_mainwindow.c:1066
+#: ../src/ui/ui_mainwindow.c:1148
 msgid "Adds a folder to the feed list."
 msgstr "Afegeix una carpeta a la llista de canals."
 
-#: ../src/ui/ui_mainwindow.c:1067
+#: ../src/ui/ui_mainwindow.c:1149
 msgid "New S_earch Folder..."
 msgstr "Carpeta de c_erca nova..."
 
-#: ../src/ui/ui_mainwindow.c:1067
+#: ../src/ui/ui_mainwindow.c:1149
 msgid "Adds a new search folder to the feed list."
 msgstr "Afegeix una carpeta de cerca nova a la llista de canals."
 
-#: ../src/ui/ui_mainwindow.c:1068
+#: ../src/ui/ui_mainwindow.c:1150
 msgid "New _Source..."
 msgstr "_Font nova..."
 
-#: ../src/ui/ui_mainwindow.c:1068
+#: ../src/ui/ui_mainwindow.c:1150
 msgid "Adds a new feed list source."
 msgstr "Afegeix una font de llista de canals nova."
 
-#: ../src/ui/ui_mainwindow.c:1069
+#: ../src/ui/ui_mainwindow.c:1151
 msgid "New _News Bin..."
 msgstr "C_ontenidor de notícies nou..."
 
-#: ../src/ui/ui_mainwindow.c:1069
+#: ../src/ui/ui_mainwindow.c:1151
 msgid "Adds a new news bin."
 msgstr "Afegeix un contenidor de notícies nou."
 
-#: ../src/ui/ui_mainwindow.c:1073
+#: ../src/ui/ui_mainwindow.c:1155
 #, fuzzy
 msgid "_Mark As Read"
 msgstr "/_Marca'ls tots com a llegits"
 
-#: ../src/ui/ui_mainwindow.c:1073
+#: ../src/ui/ui_mainwindow.c:1155
 msgid ""
 "Marks all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
@@ -1985,12 +1911,12 @@ msgstr ""
 "Marca com a llegits tots els elements de la subscripció seleccionada o de "
 "totes les subscripcions de la carpeta seleccionada."
 
-#: ../src/ui/ui_mainwindow.c:1075
+#: ../src/ui/ui_mainwindow.c:1157
 #, fuzzy
 msgid "_Update"
 msgstr "/_Actualitza"
 
-#: ../src/ui/ui_mainwindow.c:1075
+#: ../src/ui/ui_mainwindow.c:1157
 msgid ""
 "Updates the selected subscription or all subscriptions of the selected "
 "folder."
@@ -1998,217 +1924,315 @@ msgstr ""
 "Actualitza la subscripció seleccionada o totes les subscripcions de la "
 "carpeta seleccionada."
 
-#: ../src/ui/ui_mainwindow.c:1080
+#: ../src/ui/ui_mainwindow.c:1162
 msgid "_Properties"
 msgstr "_Propietats"
 
-#: ../src/ui/ui_mainwindow.c:1080
+#: ../src/ui/ui_mainwindow.c:1162
 msgid "Opens the property dialog for the selected subscription."
 msgstr "Obre el diàleg de propietats de la subscripció seleccionada."
 
-#: ../src/ui/ui_mainwindow.c:1081
+#: ../src/ui/ui_mainwindow.c:1163
 #, fuzzy
 msgid "_Remove"
 msgstr "Suprimeix-los tots"
 
-#: ../src/ui/ui_mainwindow.c:1081
+#: ../src/ui/ui_mainwindow.c:1163
 msgid "Removes the selected subscription."
 msgstr "Suprimeix la subscripció seleccionada."
 
-#: ../src/ui/ui_mainwindow.c:1085
+#: ../src/ui/ui_mainwindow.c:1167
+msgid "Toggle _Read Status"
+msgstr "Commuta l'estat de _lectura"
+
+#: ../src/ui/ui_mainwindow.c:1167
+msgid "Toggles the read status of the selected item."
+msgstr "Commuta l'estat de lectura de l'element seleccionat."
+
+#: ../src/ui/ui_mainwindow.c:1169
+msgid "Toggle Item _Flag"
+msgstr "Commuta el _senyalador de l'element"
+
+#: ../src/ui/ui_mainwindow.c:1169
+msgid "Toggles the flag status of the selected item."
+msgstr "Commuta l'estat del senyalador de l'element seleccionat."
+
+#: ../src/ui/ui_mainwindow.c:1171
+#, fuzzy
+msgid "R_emove"
+msgstr "/_Suprimeix l'element"
+
+#: ../src/ui/ui_mainwindow.c:1171
+msgid "Removes the selected item."
+msgstr "Suprimeix l'element seleccionat."
+
+#: ../src/ui/ui_mainwindow.c:1173
+msgid "_Launch In Browser"
+msgstr "_Obre'l en el navegador"
+
+#: ../src/ui/ui_mainwindow.c:1173
+msgid "Launches the item's link in the configured browser."
+msgstr "Obre l'enllaç de l'element en el navegador preestablert."
+
+#: ../src/ui/ui_mainwindow.c:1178
 msgid "_Work Offline"
 msgstr "_Treballa fora de línia"
 
-#: ../src/ui/ui_mainwindow.c:1085
+#: ../src/ui/ui_mainwindow.c:1178
 msgid "This option allows you to disable subscription updating."
 msgstr ""
 "Aquesta opció us permet inhabilitar l'actualització de les subscripcions."
 
-#: ../src/ui/ui_mainwindow.c:1219
+#: ../src/ui/ui_mainwindow.c:1331
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
 msgstr[0] " (%d nova)"
 msgstr[1] " (%d noves)"
 
-#: ../src/ui/ui_mainwindow.c:1225
+#: ../src/ui/ui_mainwindow.c:1337
 #, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
 msgstr[0] "%d sense llegir%s"
 msgstr[1] "%d sense llegir%s"
 
-#: ../src/ui/ui_node.c:110
+#: ../src/ui/ui_node.c:111
 msgid "<i>(empty)</i>"
 msgstr "<i>(buit)</i>"
 
-#: ../src/ui/ui_popup.c:121
+#: ../src/ui/ui_popup.c:125
 msgid "/Launch Item In _Tab"
 msgstr "/Obre l'element en una _pestanya"
 
-#: ../src/ui/ui_popup.c:122
+#: ../src/ui/ui_popup.c:126
 msgid "/_Launch Item In Browser"
 msgstr "/_Obre l'element en el navegador"
 
-#: ../src/ui/ui_popup.c:129
+#: ../src/ui/ui_popup.c:133
 #, c-format
 msgid "/Copy to News Bin/%s"
 msgstr "/Copia'l al contenidor de notícies/%s"
 
 #. menu option for social bookmark creation
-#: ../src/ui/ui_popup.c:137 ../src/ui/ui_popup.c:160
+#: ../src/ui/ui_popup.c:141 ../src/ui/ui_popup.c:164
 #, c-format
 msgid "/_Bookmark Link at %s"
 msgstr "/_Publica l'enllaç a %s"
 
-#: ../src/ui/ui_popup.c:139
+#: ../src/ui/ui_popup.c:143
 msgid "/Copy Item _URL to Clipboard"
 msgstr "/Copia l'URL de l'element al porta-retalls"
 
-#: ../src/ui/ui_popup.c:142
+#: ../src/ui/ui_popup.c:146
 #, fuzzy
 msgid "/Toggle _Read Status"
 msgstr "Commuta l'estat de _lectura"
 
-#: ../src/ui/ui_popup.c:143
+#: ../src/ui/ui_popup.c:147
 msgid "/Toggle Item _Flag"
 msgstr "/Commuta el _senyalador de l'element"
 
-#: ../src/ui/ui_popup.c:144
+#: ../src/ui/ui_popup.c:148
 msgid "/R_emove Item"
 msgstr "/_Suprimeix l'element"
 
-#: ../src/ui/ui_popup.c:150
+#: ../src/ui/ui_popup.c:154
 msgid "/_Increase Text Size"
 msgstr "/_Augmenta la mida del text"
 
-#: ../src/ui/ui_popup.c:151
+#: ../src/ui/ui_popup.c:155
 msgid "/_Decrease Text Size"
 msgstr "/_Redueix la mida del text"
 
-#: ../src/ui/ui_popup.c:156
+#: ../src/ui/ui_popup.c:160
 msgid "/Launch Link In _Tab"
 msgstr "/Obre l'enllaç en una _pestanya"
 
-#: ../src/ui/ui_popup.c:157
+#: ../src/ui/ui_popup.c:161
 msgid "/_Launch Link In Browser"
 msgstr "/_Obre l'enllaç en el navegador"
 
-#: ../src/ui/ui_popup.c:162
+#: ../src/ui/ui_popup.c:166
 msgid "/_Copy Link Location"
 msgstr "/_Copia la ubicació de l'enllaç"
 
-#: ../src/ui/ui_popup.c:164
+#: ../src/ui/ui_popup.c:168
 msgid "/_Subscribe..."
 msgstr "/_Subscriu..."
 
-#: ../src/ui/ui_popup.c:170
+#: ../src/ui/ui_popup.c:174
 msgid "/Toggle _Online|Offline"
 msgstr "/Commuta _En línia|Fora de línia"
 
-#: ../src/ui/ui_popup.c:171
+#: ../src/ui/ui_popup.c:175
 msgid "/_Update All"
 msgstr "/_Actualitza-ho tot"
 
-#: ../src/ui/ui_popup.c:172
+#: ../src/ui/ui_popup.c:176
 msgid "/_Preferences"
 msgstr "/_Preferències"
 
-#: ../src/ui/ui_popup.c:174
+#: ../src/ui/ui_popup.c:178
 msgid "/_Show|Hide Window"
 msgstr "/_Mostra|Amaga la finestra"
 
-#: ../src/ui/ui_popup.c:175
+#: ../src/ui/ui_popup.c:179
 msgid "/_Quit"
 msgstr "/_Surt"
 
-#: ../src/ui/ui_popup.c:181
+#: ../src/ui/ui_popup.c:185
 msgid "/Open Enclosure..."
 msgstr "/Obre l'adjunció..."
 
-#: ../src/ui/ui_popup.c:182
+#: ../src/ui/ui_popup.c:186
 msgid "/Save As..."
 msgstr "/Anomena i desa..."
 
-#: ../src/ui/ui_popup.c:294
-msgid "/_Update Folder"
-msgstr "/_Actualitza la carpeta"
+#: ../src/ui/ui_popup.c:187
+#, fuzzy
+msgid "/Copy Link Location"
+msgstr "/_Copia la ubicació de l'enllaç"
 
-#: ../src/ui/ui_popup.c:297
+#: ../src/ui/ui_popup.c:329
 msgid "/_Update"
 msgstr "/_Actualitza"
 
-#: ../src/ui/ui_popup.c:299
+#: ../src/ui/ui_popup.c:331
+msgid "/_Update Folder"
+msgstr "/_Actualitza la carpeta"
+
+#: ../src/ui/ui_popup.c:333
 msgid "/_Mark All As Read"
 msgstr "/_Marca'ls tots com a llegits"
 
-#: ../src/ui/ui_popup.c:303
+#: ../src/ui/ui_popup.c:337
 msgid "/_New"
 msgstr "/_Nou"
 
-#: ../src/ui/ui_popup.c:304
+#: ../src/ui/ui_popup.c:338
 msgid "/_New/New _Subscription..."
 msgstr "/_Nou/_Subscripció nova..."
 
-#: ../src/ui/ui_popup.c:305
+#: ../src/ui/ui_popup.c:339
 msgid "/_New/New _Folder..."
 msgstr "/_Nou/_Carpeta nova..."
 
-#: ../src/ui/ui_popup.c:306
+#: ../src/ui/ui_popup.c:340
 msgid "/_New/New S_earch Folder..."
 msgstr "/_Nou/Carpeta de c_erca nova..."
 
-#: ../src/ui/ui_popup.c:307
+#: ../src/ui/ui_popup.c:341
 msgid "/_New/New S_ource..."
 msgstr "/_Nou/_Font nova..."
 
-#: ../src/ui/ui_popup.c:308
+#: ../src/ui/ui_popup.c:342
 msgid "/_New/New _News Bin..."
 msgstr "/_Nou/C_ontenidor de notícies nou..."
 
-#: ../src/ui/ui_popup.c:314
+#: ../src/ui/ui_popup.c:348
 msgid "/_Delete"
 msgstr "/_Suprimeix"
 
-#: ../src/ui/ui_popup.c:316
+#: ../src/ui/ui_popup.c:350
 msgid "/_Properties..."
 msgstr "/_Propietats..."
 
-#: ../src/ui/ui_prefs.c:77
+#: ../src/ui/ui_prefs.c:72
 msgid "GNOME Default Browser"
 msgstr ""
 
-#: ../src/ui/ui_prefs.c:471
+#: ../src/ui/ui_prefs.c:130
+msgid "GNOME default"
+msgstr ""
+
+#: ../src/ui/ui_prefs.c:131
+msgid "Text below icons"
+msgstr ""
+
+#: ../src/ui/ui_prefs.c:132
+msgid "Text beside icons"
+msgstr ""
+
+#: ../src/ui/ui_prefs.c:133
+msgid "Icons only"
+msgstr ""
+
+#: ../src/ui/ui_prefs.c:134
+msgid "Text only"
+msgstr ""
+
+#: ../src/ui/ui_prefs.c:139
+#, fuzzy
+msgid "Update out-dated feeds"
+msgstr "Actualitza tots els canals"
+
+#: ../src/ui/ui_prefs.c:140
+#, fuzzy
+msgid "Force update of all feeds"
+msgstr "Actualitza tots els canals"
+
+#: ../src/ui/ui_prefs.c:141
+#, fuzzy
+msgid "No feed update at all"
+msgstr "s'ha actualitzat"
+
+#: ../src/ui/ui_prefs.c:146
+#, fuzzy
+msgid "minutes"
+msgstr "minuts."
+
+#: ../src/ui/ui_prefs.c:147
+msgid "hours"
+msgstr ""
+
+#: ../src/ui/ui_prefs.c:148
+msgid "days"
+msgstr ""
+
+#: ../src/ui/ui_prefs.c:153
+msgid "Space"
+msgstr "Tecla espaiadora"
+
+#: ../src/ui/ui_prefs.c:154
+msgid "<Ctrl> Space"
+msgstr "<Control> tecla espaiadora"
+
+#: ../src/ui/ui_prefs.c:155
+msgid "<Alt> Space"
+msgstr "<Alternativa> tecla espaiadora"
+
+#: ../src/ui/ui_prefs.c:534
 msgid "Choose download directory"
 msgstr "Escolliu el directori de baixada"
 
 #. This allows the user to choose their own browser by typing in the command.
-#: ../src/ui/ui_prefs.c:522
+#: ../src/ui/ui_prefs.c:624
 msgid "Manual"
 msgstr "Manual"
 
-#: ../src/ui/ui_prefs.c:532
+#: ../src/ui/ui_prefs.c:634
 msgid "Browser default"
 msgstr "Predeterminat pel navegador"
 
-#: ../src/ui/ui_prefs.c:537
+#: ../src/ui/ui_prefs.c:639
 msgid "Existing window"
 msgstr "Finestra existent"
 
-#: ../src/ui/ui_prefs.c:542
+#: ../src/ui/ui_prefs.c:644
 msgid "New window"
 msgstr "Finestra nova"
 
-#: ../src/ui/ui_prefs.c:547 ../src/ui/ui_tabs.c:196 ../src/ui/ui_tabs.c:199
-#: ../src/ui/ui_tabs.c:219 ../src/ui/ui_tabs.c:353
+#: ../src/ui/ui_prefs.c:649 ../src/ui/ui_tabs.c:222 ../src/ui/ui_tabs.c:225
+#: ../src/ui/ui_tabs.c:248 ../src/ui/ui_tabs.c:396
 msgid "New tab"
 msgstr "Pestanya nova"
 
-#: ../src/ui/ui_prefs.c:765
+#: ../src/ui/ui_prefs.c:874
 msgid "Type"
 msgstr "Tipus"
 
-#: ../src/ui/ui_prefs.c:768
+#: ../src/ui/ui_prefs.c:877
 msgid "Program"
 msgstr "Programa"
 
@@ -2275,6 +2299,7 @@ msgstr[0] "%d resultats de cerca per a «%s»"
 msgstr[1] "%d resultats de cerca per a «%s»"
 
 #: ../src/ui/ui_search.c:124
+#, c-format
 msgid ""
 "The item list now contains all items matching the specified search pattern. "
 "If you want to save this search result permanently you can click the "
@@ -2286,11 +2311,11 @@ msgstr ""
 "permanentment podeu fer clic al botó «Carpeta de cerca» en el diàleg de cerca "
 "i el Liferea afegirà una carpeta de cerca a la vostra llista de canals."
 
-#: ../src/ui/ui_search.c:244
+#: ../src/ui/ui_search.c:245
 msgid "Create a new search feed."
 msgstr "Crea un canal de cerca nou."
 
-#: ../src/ui/ui_subscription.c:441
+#: ../src/ui/ui_subscription.c:445
 #, fuzzy, c-format
 msgid "The provider of this feed suggests an update interval of %d minute."
 msgid_plural ""
@@ -2302,22 +2327,22 @@ msgstr[1] ""
 "El proveïdor d'aquest canal suggereix un interval d'actualització de %d "
 "minuts."
 
-#: ../src/ui/ui_subscription.c:445
+#: ../src/ui/ui_subscription.c:449
 msgid "This feed specifies no default update interval."
 msgstr "Aquest canal no especifica cap interval d'actualització per defecte."
 
-#: ../src/ui/ui_tray.c:177
+#: ../src/ui/ui_tray.c:209
 #, c-format
 msgid "%d new item"
 msgid_plural "%d new items"
 msgstr[0] "%d element nou"
 msgstr[1] "%d elements nous"
 
-#: ../src/ui/ui_tray.c:184
+#: ../src/ui/ui_tray.c:216
 msgid "No new items"
 msgstr "No hi ha elements nous"
 
-#: ../src/ui/ui_tray.c:188
+#: ../src/ui/ui_tray.c:220
 #, c-format
 msgid ""
 "%s\n"
@@ -2332,7 +2357,7 @@ msgstr[1] ""
 "%s\n"
 "%d elements no llegits"
 
-#: ../src/ui/ui_tray.c:190
+#: ../src/ui/ui_tray.c:222
 #, c-format
 msgid ""
 "%s\n"
@@ -2341,20 +2366,20 @@ msgstr ""
 "%s\n"
 "No hi ha elements per llegir"
 
-#: ../src/parsers/atom10.c:111
+#: ../src/parsers/atom10.c:117
 msgid "Liferea is unable to display this item's content."
 msgstr "El Liferea no pot mostrar el contingut d'aquest element."
 
-#: ../src/parsers/atom10.c:117
+#: ../src/parsers/atom10.c:123
 #, c-format
 msgid "<p><a href=\"%s\">View this item's content.</a></p>"
 msgstr "<p><a href=\"%s\">Visualitza el contingut de l'element.</a></p>"
 
-#: ../src/parsers/atom10.c:249
+#: ../src/parsers/atom10.c:259
 msgid "Invalid Atom feed: unknown author"
 msgstr "Canal de tipus Atom invàlid: autor desconegut"
 
-#: ../src/parsers/ns_ag.c:70
+#: ../src/parsers/ns_ag.c:72
 msgid "%b %d %H:%M"
 msgstr "%b %d %H:%M"
 
@@ -2366,19 +2391,15 @@ msgstr "Afegeix un compte de Bloglines"
 msgid "Please enter your Bloglines account settings."
 msgstr "Entreu els vostres paràmetres del compte a Bloglines"
 
-#: ../src/fl_sources/bloglines_source.glade.h:3
-msgid "_Password"
-msgstr "_Contrasenya"
-
 #: ../src/fl_sources/bloglines_source.glade.h:4
 msgid "_Username"
 msgstr "Nom d'_usuari"
 
-#: ../src/fl_sources/bloglines_source.c:51
+#: ../src/fl_sources/bloglines_source.c:86
 msgid "Bloglines"
 msgstr "Bloglines"
 
-#: ../src/fl_sources/bloglines_source.c:52
+#: ../src/fl_sources/bloglines_source.c:87
 msgid ""
 "Integrate the feed list of your Bloglines account. Liferea will present your "
 "Bloglines subscription as a read-only subtree in the feed list."
@@ -2388,9 +2409,44 @@ msgstr ""
 "lectura en la llista de canals."
 
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
-#: ../src/fl_sources/default_source.c:88
+#: ../src/fl_sources/default_source.c:109
 msgid "feedlist.opml"
 msgstr "feedlist_ca.opml"
+
+#: ../src/fl_sources/google_source.glade.h:1
+#, fuzzy
+msgid "Add Google Reader Account"
+msgstr "Afegeix un compte de Bloglines"
+
+#: ../src/fl_sources/google_source.glade.h:2
+#, fuzzy
+msgid "Please enter your Google Reader account settings."
+msgstr "Entreu els vostres paràmetres del compte a Bloglines"
+
+#: ../src/fl_sources/google_source.glade.h:4
+#, fuzzy
+msgid "_Username (Email)"
+msgstr "Nom d'_usuari"
+
+#: ../src/fl_sources/google_source.c:189
+#, fuzzy
+msgid "Google Reader login failed!"
+msgstr "Lector de canals"
+
+#: ../src/fl_sources/google_source.c:331
+#, fuzzy
+msgid "Google Reader"
+msgstr "Lector de canals"
+
+#: ../src/fl_sources/google_source.c:332
+#, fuzzy
+msgid ""
+"Integrate the feed list of your Google Reader account. Liferea will present "
+"your Google Reader subscription as a read-only subtree in the feed list."
+msgstr ""
+"Integreu la llista de canals del vostre compte a Bloglines. El Liferea us "
+"mostrarà les vostres subscripcions al Bloglines com a subarbre de només "
+"lectura en la llista de canals."
 
 #: ../src/fl_sources/opml_source.glade.h:1
 msgid "Add OPML/Planet"
@@ -2411,11 +2467,11 @@ msgstr "_Ubicació"
 msgid "_Select File"
 msgstr "_Seleccioneu un fitxer"
 
-#: ../src/fl_sources/opml_source.c:322
+#: ../src/fl_sources/opml_source.c:327
 msgid "Planet, BlogRoll, OPML"
 msgstr "Planeta, llista de blocs, OPML"
 
-#: ../src/fl_sources/opml_source.c:323
+#: ../src/fl_sources/opml_source.c:328
 msgid ""
 "Integrate blogrolls or Planets in your feed list. Liferea will automatically "
 "add and remove feeds according to the changes of the source OPML document"
@@ -2424,14 +2480,14 @@ msgstr ""
 "Liferea afegirà o suprimirà canals d'acord amb els canvis del document OPML "
 "font"
 
-#: ../src/fl_sources/opml_source.h:26
-msgid "New OPML Subscription"
-msgstr "Subscripció a un OPML nova"
-
-#: ../src/fl_sources/opml_source-cb.c:94
+#: ../src/fl_sources/opml_source.c:402
 #, fuzzy
 msgid "Choose OPML File"
 msgstr "Escolliu un fitxer"
+
+#: ../src/fl_sources/opml_source.h:27
+msgid "New OPML Subscription"
+msgstr "Subscripció a un OPML nova"
 
 #: ../src/fl_sources/node_source.glade.h:1
 msgid "Select the source type you want to add..."
@@ -2441,113 +2497,216 @@ msgstr "Seleccioneu el tipus de font que voleu afegir..."
 msgid "Source Selection"
 msgstr "Selecció de la font"
 
-#: ../src/fl_sources/node_source.c:222
+#: ../src/fl_sources/node_source.c:214
 msgid "No feed list source types found!"
 msgstr "No s'ha trobat cap tipus de font de llista de canals"
 
-#: ../src/fl_sources/node_source.c:254
+#: ../src/fl_sources/node_source.c:245
 msgid "Source Type"
 msgstr "Tipus de font"
 
-#. Cast time_t tunix to int.
-#. Print cookie expire warning.
-#: ../src/net/cookies.c:190
-#, c-format
-msgid "Cookie for %s has expired!"
-msgstr "La galeta per a %s ha vençut"
-
 #: ../src/notification/notif_libnotify.c:53
-#: ../src/notification/notif_libnotify.c:71
-#: ../src/notification/notif_libnotify.c:137
+#: ../src/notification/notif_libnotify.c:74
+#: ../src/notification/notif_libnotify.c:141
 msgid "This feed does not exist anymore!"
 msgstr "Aquest canal ja no existeix"
 
-#: ../src/notification/notif_libnotify.c:112
+#: ../src/notification/notif_libnotify.c:114
+#, c-format
 msgid "This news entry has no headline"
 msgstr ""
 
-#: ../src/notification/notif_libnotify.c:117
+#: ../src/notification/notif_libnotify.c:119
 msgid "Visit"
 msgstr ""
 
-#: ../src/notification/notif_libnotify.c:154
-#: ../src/notification/notif_libnotify.c:240
+#: ../src/notification/notif_libnotify.c:158
+#: ../src/notification/notif_libnotify.c:234
 msgid "Open feed"
 msgstr ""
 
-#: ../src/notification/notif_libnotify.c:157
-#: ../src/notification/notif_libnotify.c:243
+#: ../src/notification/notif_libnotify.c:161
+#: ../src/notification/notif_libnotify.c:237
 #, fuzzy
 msgid "Mark all as read"
 msgstr "Marca'ls tots com a _llegits"
 
-#: ../src/notification/notif_libnotify.c:227
+#: ../src/notification/notif_libnotify.c:224
 #, c-format
 msgid "%s has %d new / updated headline\n"
 msgid_plural "%s has %d new / updated headlines\n"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/notification/notif_libnotify.c:229
+#: ../src/notification/notif_libnotify.c:226
 #, fuzzy
 msgid "Feed Update"
 msgstr "Títol del canal"
 
-#: ../src/notification/notif_libnotify.c:237
+#: ../src/notification/notif_libnotify.c:231
 #, fuzzy
 msgid "Show details"
 msgstr "Detalls"
 
-#, fuzzy
-#~ msgid "Update out-dated feeds"
-#~ msgstr "Actualitza tots els canals"
+#: ../src/sync/avahi_browser.c:297 ../src/sync/avahi_publisher.c:296
+#, c-format
+msgid "Liferea Sync %s@%s"
+msgstr ""
 
-#, fuzzy
-#~ msgid "Force update of all feeds"
-#~ msgstr "Actualitza tots els canals"
+#~ msgid "<b>Rule</b>"
+#~ msgstr "<b>Regla</b>"
 
-#, fuzzy
-#~ msgid "No feed update at all"
-#~ msgstr "s'ha actualitzat"
-
-#, fuzzy
-#~ msgid "minutes"
-#~ msgstr "minuts."
-
-#~ msgid "Space"
-#~ msgstr "Tecla espaiadora"
-
-#~ msgid "<Ctrl> Space"
-#~ msgstr "<Control> tecla espaiadora"
-
-#~ msgid "<Alt> Space"
-#~ msgstr "<Alternativa> tecla espaiadora"
-
-#, fuzzy
-#~ msgid "Add Google Reader Account"
-#~ msgstr "Afegeix un compte de Bloglines"
-
-#, fuzzy
-#~ msgid "Please enter your Google Reader account settings."
-#~ msgstr "Entreu els vostres paràmetres del compte a Bloglines"
-
-#, fuzzy
-#~ msgid "_Username (Email)"
-#~ msgstr "Nom d'_usuari"
-
-#, fuzzy
-#~ msgid "Google Reader"
-#~ msgstr "Lector de canals"
-
-#, fuzzy
-#~ msgid ""
-#~ "Integrate the feed list of your Google Reader account. Liferea will "
-#~ "present your Google Reader subscription as a read-only subtree in the "
-#~ "feed list."
+#~ msgid "<span color=\"blue\" underline=\"single\">Liferea Homepage</span>"
 #~ msgstr ""
-#~ "Integreu la llista de canals del vostre compte a Bloglines. El Liferea us "
-#~ "mostrarà les vostres subscripcions al Bloglines com a subarbre de només "
-#~ "lectura en la llista de canals."
+#~ "<span color=\"blue\" underline=\"single\">Lloc web del Liferea</span>"
+
+#~ msgid "About"
+#~ msgstr "Quant a"
+
+#~ msgid ""
+#~ "Code, Patches, Debugging\n"
+#~ "\n"
+#~ "James Doherty\n"
+#~ "Jeremy Messenger\n"
+#~ "John McKnight\n"
+#~ "Tomasz Maka\n"
+#~ "Karl Soderstrom\n"
+#~ "Christophe Barbe\n"
+#~ "Juho Snellman\n"
+#~ "Roshan Revankar\n"
+#~ "Oliver Feiler\n"
+#~ "Niklas Morberg\n"
+#~ "Johannes Schlueter\n"
+#~ "Pierre Phaneuf\n"
+#~ "ahmed el-helw\n"
+#~ "James Bowes\n"
+#~ "Marc Deslauriers\n"
+#~ "Amit D. Chaudhary\n"
+#~ "Christoph Hohmann\n"
+#~ "Raphael Slinckx\n"
+#~ "Bjorn Monnens\n"
+#~ "Thomas de Grenier de Latour\n"
+#~ "Aristotle Pagaltzis\n"
+#~ "Norman Jonas\n"
+#~ "Sebastian Droege\n"
+#~ "Daniel Gryniewicz\n"
+#~ "Remi Cardona\n"
+#~ "Frederic Peters\n"
+#~ "Don Malcolm\n"
+#~ "Ed Catmur\n"
+#~ "Chris Pirillo\n"
+#~ "Eric Anderson\n"
+#~ "and many more...\n"
+#~ "\n"
+#~ "Code from other projects\n"
+#~ "\n"
+#~ "Anders Carlsson (tray icon support)\n"
+#~ "Philippe Martin, Brion Vibber (favicon support)\n"
+#~ "Jonathan Blandford (GtkTreeModelFilter)\n"
+#~ "Kristian Rietveld (GtkTreeModelFilter)\n"
+#~ "\n"
+#~ "Included Software\n"
+#~ "\n"
+#~ "Liferea uses the XSPF Web Music Player to \n"
+#~ "allow direct podcast playback. This player was \n"
+#~ "written by Fabricio Zuardi and can be found \n"
+#~ "at http://musicplayer.sourceforge.net"
+#~ msgstr ""
+#~ "Codi, pedaços, depuració\n"
+#~ "\n"
+#~ "James Doherty\n"
+#~ "Jeremy Messenger\n"
+#~ "John McKnight\n"
+#~ "Tomasz Maka\n"
+#~ "Karl Soderstrom\n"
+#~ "Christophe Barbe\n"
+#~ "Juho Snellman\n"
+#~ "Roshan Revankar\n"
+#~ "Oliver Feiler\n"
+#~ "Niklas Morberg\n"
+#~ "Johannes Schlueter\n"
+#~ "Pierre Phaneuf\n"
+#~ "ahmed el-helw\n"
+#~ "James Bowes\n"
+#~ "Marc Deslauriers\n"
+#~ "Amit D. Chaudhary\n"
+#~ "Christoph Hohmann\n"
+#~ "Raphael Slinckx\n"
+#~ "Bjorn Monnens\n"
+#~ "Thomas de Grenier de Latour\n"
+#~ "Aristotle Pagaltzis\n"
+#~ "Norman Jonas\n"
+#~ "Sebastian Droege\n"
+#~ "Daniel Gryniewicz\n"
+#~ "Remi Cardona\n"
+#~ "Frederic Peters\n"
+#~ "Don Malcolm\n"
+#~ "Ed Catmur\n"
+#~ "Chris Pirillo\n"
+#~ "Eric Anderson\n"
+#~ "i molts més...\n"
+#~ "\n"
+#~ "Codi d'altres projectes\n"
+#~ "\n"
+#~ "Anders Carlsson (implementació de la icona d'estat)\n"
+#~ "Philippe Martin, Brion Vibber (implementació de les icones dels canals)\n"
+#~ "Jonathan Blandford (GtkTreeModelFilter)\n"
+#~ "Kristian Rietveld (GtkTreeModelFilter)\n"
+#~ "\n"
+#~ "Programari inclòs\n"
+#~ "\n"
+#~ "El Liferea utilitza el reproductor de música \n"
+#~ "web XSPF per permetre la reproducció directe \n"
+#~ "de podcasts. Aquest reproductor l'ha escrit \n"
+#~ "en Fabricio Zuardi i es pot trobar a \n"
+#~ "http://musicplayer.sourceforge.net"
+
+#~ msgid "Contributors"
+#~ msgstr "Contribuïdors"
+
+#~ msgid ""
+#~ "Note: Items are added to the search folder if at least one additive rule\n"
+#~ "matches. They are removed if at least one removing rule matches."
+#~ msgstr ""
+#~ "Nota: els elements s'afegiran a la carpeta de cerca si coincideixen "
+#~ "almenys\n"
+#~ "amb una regla d'addició. Si al contrari coincideixen almenys amb una "
+#~ "regla \n"
+#~ "de supressió, se suprimiran de la carpeta de cerca."
+
+#~ msgid "Translation"
+#~ msgstr "Traducció"
+
+#~ msgid "_Name:"
+#~ msgstr "_Nom:"
+
+#~ msgid "URL is invalid"
+#~ msgstr "L'URL és invàlid"
+
+#~ msgid "Unsupported network protocol"
+#~ msgstr "Protocol de xarxa no implementat"
+
+#~ msgid "Error connecting to remote host"
+#~ msgstr "S'ha produït un error en connectar-se a l'ordinador remot"
+
+#~ msgid "Hostname could not be found"
+#~ msgstr "No s'ha pogut trobar el nom de l'ordinador"
+
+#~ msgid "Network connection was refused by the remote host"
+#~ msgstr "L'ordinador remot ha rebutjat la connexió de xarxa"
+
+#~ msgid "Remote host did not finish sending data"
+#~ msgstr "L'ordinador remot no ha acabat d'enviar les dades"
+
+#~ msgid "Too many HTTP redirects were encountered"
+#~ msgstr "S'han trobat massa redireccionaments HTTP"
+
+#~ msgid "Remote host sent an invalid response"
+#~ msgstr "L'ordinador remot ha enviat una resposta invàlida"
+
+#~ msgid "Webserver's authentication method incompatible with Liferea"
+#~ msgstr ""
+#~ "El mètode d'autenticació del servidor web és incompatible amb el Liferea"
 
 #, fuzzy
 #~ msgid "gtk-properties"
