@@ -1,3 +1,10 @@
+2008-03-??  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.5.2 (Unstable)
+
+	* Removing now unnecessary build dependency on gnutls.
+
+
 2008-03-16  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.5.1 (Unstable)
