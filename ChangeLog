@@ -2,6 +2,8 @@
 
 	Version 1.5.2 (Unstable)
 
+	* Fixes broken update interval unit selection in
+	  subscription properties dialog.
 	* Removing now unnecessary build dependency on gnutls.
 
 

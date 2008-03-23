@@ -17,6 +17,7 @@ libliui_a_SOURCES = \
 	search_folder_dialog.c search_folder_dialog.h \
 	ui_attention.c ui_attention.h \
 	ui_auth.c ui_auth.h \
+	ui_common.c ui_common.h \
 	ui_dialog.c ui_dialog.h \
 	ui_dnd.c ui_dnd.h \
 	ui_enclosure.c ui_enclosure.h \

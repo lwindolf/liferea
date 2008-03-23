@@ -34,6 +34,7 @@
 #include "feedlist.h"
 #include "itemlist.h"
 #include "social.h"
+#include "ui/ui_common.h"
 #include "ui/ui_dialog.h"
 #include "ui/ui_enclosure.h"
 #include "ui/ui_itemlist.h"
@@ -142,6 +143,9 @@ static gchar * startup_update_options[] = {
 	NULL
 };
 
+/* Note: these update interval literal should be kept in sync with the 
+   ones in ui_subscription.c! */
+    
 static gchar * default_update_interval_unit_options[] = {
 	N_("minutes"),
 	N_("hours"),
@@ -563,31 +567,6 @@ on_useAvahiSync_toggled (GtkToggleButton *button, gpointer user_data)
 /* preferences dialog callbacks 						*/
 /*------------------------------------------------------------------------------*/
 
-static void
-ui_prefs_setup_combo_menu (const gchar *widgetName,
-                           gchar **options,
-                           GCallback callback,
-                           gint defaultValue)
-{
-	GtkListStore	*listStore;
-	GtkTreeIter	treeiter;
-	GtkWidget	*widget;
-	guint		i;
-	
-	listStore = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_INT);
-	widget = liferea_dialog_lookup (prefdialog, widgetName);
-	g_assert (NULL != widget);
-	for (i = 0; options[i] != NULL; i++) {
-		gtk_list_store_append (listStore, &treeiter);
-		gtk_list_store_set (listStore, &treeiter, 0, _(options[i]), 1, i, -1);
-	}
-	gtk_combo_box_set_model (GTK_COMBO_BOX (widget), GTK_TREE_MODEL (listStore));
-	if (-1 <= defaultValue)
-		gtk_combo_box_set_active (GTK_COMBO_BOX (widget), defaultValue);
-		
-	g_signal_connect (G_OBJECT (widget), "changed", callback, widget);
-}
-
 static void ui_pref_destroyed_cb(GtkWidget *widget, void *data) {
 
 	prefdialog = NULL;
@@ -656,10 +635,10 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 		/* ================== panel 1 "feeds" ==================== */
 
 		/* menu for feed startup update action */
-		ui_prefs_setup_combo_menu ("startupActionCombo", 
-		                           startup_update_options, 
-		                           G_CALLBACK (on_feed_startup_update_changed),
-		                           conf_get_int_value(STARTUP_FEED_ACTION));
+		ui_common_setup_combo_menu (liferea_dialog_lookup (prefdialog, "startupActionCombo"),
+		                            startup_update_options, 
+		                            G_CALLBACK (on_feed_startup_update_changed),
+		                            conf_get_int_value(STARTUP_FEED_ACTION));
 
 		/* cache size setting */
 		widget = liferea_dialog_lookup (prefdialog, "itemCountBtn");
@@ -667,10 +646,10 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 		gtk_adjustment_set_value (itemCount, conf_get_int_value (DEFAULT_MAX_ITEMS));
 
 		/* set default update interval spin button and unit combo box */
-		ui_prefs_setup_combo_menu ("refreshIntervalUnitComboBox",
-		                           default_update_interval_unit_options,
-		                           G_CALLBACK (on_default_update_interval_unit_changed),
-					   -1);
+		ui_common_setup_combo_menu (liferea_dialog_lookup (prefdialog, "refreshIntervalUnitComboBox"),
+		                            default_update_interval_unit_options,
+		                            G_CALLBACK (on_default_update_interval_unit_changed),
+					    -1);
 					   
 		widget = liferea_dialog_lookup (prefdialog, "refreshIntervalUnitComboBox");
 		tmp = conf_get_int_value (DEFAULT_UPDATE_INTERVAL);
@@ -695,10 +674,10 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 
 		/* ================== panel 3 "headlines" ==================== */
 
-		ui_prefs_setup_combo_menu ("skimKeyCombo",
-		                           browser_skim_key_options,
-		                           G_CALLBACK (on_skim_key_changed),
-		                           conf_get_int_value (BROWSE_KEY_SETTING));
+		ui_common_setup_combo_menu (liferea_dialog_lookup (prefdialog, "skimKeyCombo"),
+		                            browser_skim_key_options,
+		                            G_CALLBACK (on_skim_key_changed),
+		                            conf_get_int_value (BROWSE_KEY_SETTING));
 					  
 		/* Setup social bookmarking list */
 		i = 0;
@@ -801,10 +780,10 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 			i = 0;
 
 		/* create toolbar style menu */
-		ui_prefs_setup_combo_menu ("toolbarCombo",
-		                           gui_toolbar_style_options,
-		                           G_CALLBACK (on_gui_toolbar_style_changed),
-		                           i);
+		ui_common_setup_combo_menu (liferea_dialog_lookup (prefdialog, "toolbarCombo"),
+		                            gui_toolbar_style_options,
+		                            G_CALLBACK (on_gui_toolbar_style_changed),
+		                            i);
 
 		/* ================= panel 5 "proxy" ======================== */
 		proxyport = g_strdup_printf ("%d", conf_get_int_value (PROXY_PORT));
@@ -846,10 +825,10 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 		/* ================= panel 6 "enclosures" ======================== */
 
 		/* menu for download tool */
-		ui_prefs_setup_combo_menu ("downloadToolCombo",
-		                           enclosure_download_tool_options,
-					   G_CALLBACK (on_enclosure_download_tool_changed),
-					   conf_get_int_value (ENCLOSURE_DOWNLOAD_TOOL));
+		ui_common_setup_combo_menu (liferea_dialog_lookup (prefdialog, "downloadToolCombo"),
+		                            enclosure_download_tool_options,
+		                            G_CALLBACK (on_enclosure_download_tool_changed),
+		                            conf_get_int_value (ENCLOSURE_DOWNLOAD_TOOL));
 
 		/* set enclosure download path entry */	
 		gtk_entry_set_text(GTK_ENTRY(liferea_dialog_lookup(prefdialog, "save_download_entry")), conf_get_str_value(ENCLOSURE_DOWNLOAD_PATH));

@@ -35,10 +35,21 @@
 #include "feedlist.h"
 #include "node.h"
 #include "update.h"
+#include "ui/ui_common.h"
 #include "ui/ui_dialog.h"
 #include "ui/ui_mainwindow.h"	/* for ui_choose_file() */
 #include "ui/ui_node.h"
 #include "ui/ui_subscription.h"
+
+/* Note: these update interval literal should be kept in sync with the 
+   ones in ui_prefs.c! */
+    
+static gchar * default_update_interval_unit_options[] = {
+	N_("minutes"),
+	N_("hours"),
+	N_("days"),
+	NULL
+};
 
 /** common private structure for all subscription dialogs */
 struct SubscriptionDialogPrivate {
@@ -526,7 +537,13 @@ subscription_prop_dialog_init (SubscriptionPropDialog *spd)
 	
 	spd->priv = SUBSCRIPTION_PROP_DIALOG_GET_PRIVATE (spd);
 	spd->priv->dialog = propdialog = liferea_dialog_new (NULL, "propdialog");
-	
+
+	/* set default update interval spin button and unit combo box */
+	ui_common_setup_combo_menu (liferea_dialog_lookup (propdialog, "refreshIntervalUnitComboBox"),
+	                            default_update_interval_unit_options,
+	                            NULL /* no callback */,
+	                            -1 /* default value */ );	
+
 	spd->priv->feedNameEntry = liferea_dialog_lookup (propdialog, "feedNameEntry");
 	spd->priv->refreshInterval = liferea_dialog_lookup (propdialog, "refreshIntervalSpinButton");
 	spd->priv->refreshIntervalUnit = liferea_dialog_lookup (propdialog, "refreshIntervalUnitComboBox");
