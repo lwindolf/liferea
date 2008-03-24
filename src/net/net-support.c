@@ -272,7 +272,7 @@ int NetSupportAuth (struct feed_request * cur_ptr, char * authdata, char * url, 
 	return 0;
 }
 
-/* HTTP header may only contain ASCII characters.
+/* HTTP token may only contain ASCII characters.
  *
  * Ensure that we don't hit the terminating \0 in a string
  * with the for loop.
@@ -291,6 +291,8 @@ int checkValidHTTPHeader (const unsigned char * header, int size) {
 		if (((header[i] < 32) || (header[i] > 127)) &&
 			(header[i] != '\t') && (header[i] != '\r') && (header[i] != '\n'))
 			return -1;
+		if (header[i] == ':')
+			break;
 	}
 	return 0;
 }

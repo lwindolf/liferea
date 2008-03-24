@@ -16,6 +16,9 @@
 	  versions (reported by Thomas Zajic)
 	* Fixes SF #1919640: segfault when 'Ctrl-R' pressed
 	  without selection (patch by Patrick Bogen)
+	* Merged patch from OpenBSD (SF #1924623) to correctly
+	  handle feeds served with non-ASCII HTTP headers.
+	  (reported by viq)
 
 	Translations
 
