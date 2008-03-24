@@ -150,6 +150,9 @@ void ui_node_check_if_folder_is_empty(const gchar *nodeId) {
 	(this state is possible after a drag&drop action) */
 
 	iter = ui_node_to_iter(nodeId);
+	if (!iter)
+		return;
+		
 	count = gtk_tree_model_iter_n_children(GTK_TREE_MODEL(feedstore), iter);
 	
 	/* case 1 */
