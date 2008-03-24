@@ -3,8 +3,10 @@
 	Version 1.5.2 (Unstable)
 
 	* Fixes broken update interval unit selection in
-	  subscription properties dialog.
-	* Removing now unnecessary build dependency on gnutls.
+	  subscription properties dialog. (Lars Lindner)
+	* Removing now unnecessary build dependency on gnutls. (Lars Lindner)
+	* Relicensing icons under CC-SA 3.0 to comply with Debian's license
+	  requirements. (Lars Strojny)
 
 
 2008-03-16  Lars Lindner  <lars.lindner@gmail.com>
