@@ -137,7 +137,9 @@ void ui_node_remove_empty_node(GtkTreeIter *parent) {
    folders-problem, so we simply pack an (empty) entry into each
    empty folder like Nautilus does... */
    
-void ui_node_check_if_folder_is_empty(const gchar *nodeId) {
+void
+ui_node_check_if_folder_is_empty (const gchar *nodeId)
+{
 	GtkTreeIter	*iter;
 	int		count;
 
@@ -149,20 +151,23 @@ void ui_node_check_if_folder_is_empty(const gchar *nodeId) {
 	2. remove an "(empty)" entry from a non empty folder
 	(this state is possible after a drag&drop action) */
 
-	iter = ui_node_to_iter(nodeId);
-	count = gtk_tree_model_iter_n_children(GTK_TREE_MODEL(feedstore), iter);
+	iter = ui_node_to_iter (nodeId);
+	if (!iter)
+		return;
+		
+	count = gtk_tree_model_iter_n_children (GTK_TREE_MODEL (feedstore), iter);
 	
 	/* case 1 */
-	if(0 == count) {
-		ui_node_add_empty_node(iter);
+	if (0 == count) {
+		ui_node_add_empty_node (iter);
 		return;
 	}
 	
-	if(1 == count)
+	if (1 == count)
 		return;
 	
 	/* else we could have case 2 */
-	ui_node_remove_empty_node(iter);
+	ui_node_remove_empty_node (iter);
 }
 
 void
