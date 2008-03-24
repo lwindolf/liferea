@@ -89,7 +89,7 @@ static const gchar *iconThemeNames[] = {
 	NULL,			/* ICON_AVAILABLE_OFFLINE */
 	NULL,			/* ICON_UNAVAILABLE */
 	NULL,			/* ICON_DEFAULT */
-	NULL,			/* ICON_OCS */
+	NULL,			/* ICON_FOLDER_EMPTY */
 	"folder",		/* ICON_FOLDER */
 	"folder-saved-search",	/* ICON_VFOLDER */
 	NULL,			/* ICON_NEWSBIN */
@@ -111,7 +111,7 @@ static const gchar *iconNames[] = {
 	"available_offline.png",	/* ICON_AVAILABLE_OFFLINE */
 	NULL,			/* ICON_UNAVAILABLE */
 	"default.png",		/* ICON_DEFAULT */
-	"ocs.png",		/* ICON_OCS */
+	"folder_empty.png",	/* ICON_FOLDER_EMPTY */
 	"directory.png",	/* ICON_FOLDER */
 	"vfolder.png",		/* ICON_VFOLDER */
 	"newsbin.png",		/* ICON_NEWSBIN */
@@ -1092,7 +1092,7 @@ on_accel_change (GtkAccelMap *object, gchar *accel_path,
 
 static const GtkActionEntry ui_mainwindow_action_entries[] = {
 	{"SubscriptionsMenu", NULL, N_("_Subscriptions")},
-	{"UpdateAll", "gtk-refresh", N_("Update _All"), "<control>A", N_("Updates all subscriptions. This does not update OCS directories."),
+	{"UpdateAll", "gtk-refresh", N_("Update _All"), "<control>A", N_("Updates all subscriptions."),
 	 G_CALLBACK(on_menu_update_all)},
 	{"MarkAllFeedsAsRead", "gtk-apply", N_("Mark All As _Read"), NULL, N_("Marks read every item of every subscription."),
 	 G_CALLBACK(on_menu_allfeedsread)},

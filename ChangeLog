@@ -7,6 +7,10 @@
 	* Removing now unnecessary build dependency on gnutls. (Lars Lindner)
 	* Relicensing icons under CC-SA 3.0 to comply with Debian's license
 	  requirements. (Lars Strojny)
+	* Splitting icon for "no new items" in tray and empty
+	  folder item to allow better icon theming. Added new icon 
+	  file "folder_empty.png".
+	* Removing old unused icons "ocs.png" and "grayflag.png"
 	* New Czech translation (Martin Picek)
 
 2008-03-16  Lars Lindner  <lars.lindner@gmail.com>

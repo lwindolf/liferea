@@ -8,7 +8,7 @@ EXTRA_DIST = \
 	empty.png       \
 	empty_offline.png \
 	flag.png        \
-	ocs.png         \
+	folder_empty.png \
 	read.xpm        \
 	unread.png      \
 	online.png	\
@@ -23,8 +23,7 @@ EXTRA_DIST = \
 	newsbin.png	\
 	comments.png	\
 	bookmark.png	\
-	tag.png		\
-	grayflag.png
+	tag.png	
 
 lifereadistpixdir = $(datadir)/$(PACKAGE)/pixmaps
 lifereadistpix_DATA = $(EXTRA_DIST)

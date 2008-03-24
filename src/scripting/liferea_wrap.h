@@ -1429,44 +1429,45 @@ SWIG_Lua_InstallConstants(lua_State* L, swig_lua_const_info constants[]) {
 
 /* -------- TYPES TABLE (BEGIN) -------- */
 
-#define SWIGTYPE_p_GHashTable swig_types[0]
-#define SWIGTYPE_p_GList swig_types[1]
-#define SWIGTYPE_p_GSList swig_types[2]
-#define SWIGTYPE_p_GTimeVal swig_types[3]
-#define SWIGTYPE_p_GtkButton swig_types[4]
-#define SWIGTYPE_p_GtkMenuItem swig_types[5]
-#define SWIGTYPE_p_GtkRadioAction swig_types[6]
-#define SWIGTYPE_p_GtkTreeIter swig_types[7]
-#define SWIGTYPE_p_GtkTreePath swig_types[8]
-#define SWIGTYPE_p_GtkTreeSelection swig_types[9]
-#define SWIGTYPE_p_GtkTreeSortable swig_types[10]
-#define SWIGTYPE_p_GtkTreeStore swig_types[11]
-#define SWIGTYPE_p_GtkTreeView swig_types[12]
-#define SWIGTYPE_p_GtkTreeViewColumn swig_types[13]
-#define SWIGTYPE_p_GtkWidget swig_types[14]
-#define SWIGTYPE_p_LifereaHtmlView swig_types[15]
-#define SWIGTYPE_p_f_p_q_const__char_gpointer__void swig_types[16]
-#define SWIGTYPE_p_f_p_struct_node_q_const__p_q_const__struct_updateResult_guint32__void swig_types[17]
-#define SWIGTYPE_p_gpointer swig_types[18]
-#define SWIGTYPE_p_gulong swig_types[19]
-#define SWIGTYPE_p_int swig_types[20]
-#define SWIGTYPE_p_item swig_types[21]
-#define SWIGTYPE_p_itemSetPtr swig_types[22]
-#define SWIGTYPE_p_node swig_types[23]
-#define SWIGTYPE_p_nodeSource swig_types[24]
-#define SWIGTYPE_p_nodeType swig_types[25]
-#define SWIGTYPE_p_p_GdkPixbuf swig_types[26]
-#define SWIGTYPE_p_socialBookmarkSite swig_types[27]
-#define SWIGTYPE_p_subscription swig_types[28]
-#define SWIGTYPE_p_time_t swig_types[29]
-#define SWIGTYPE_p_updateFlags swig_types[30]
-#define SWIGTYPE_p_updateJob swig_types[31]
-#define SWIGTYPE_p_updateOptionsPtr swig_types[32]
-#define SWIGTYPE_p_updateResult swig_types[33]
-#define SWIGTYPE_p_updateStatePtr swig_types[34]
-#define SWIGTYPE_p_xmlNodePtr swig_types[35]
-static swig_type_info *swig_types[37];
-static swig_module_info swig_module = {swig_types, 36, 0, 0, 0, 0};
+#define SWIGTYPE_p_EnclosureListView swig_types[0]
+#define SWIGTYPE_p_GHashTable swig_types[1]
+#define SWIGTYPE_p_GList swig_types[2]
+#define SWIGTYPE_p_GSList swig_types[3]
+#define SWIGTYPE_p_GTimeVal swig_types[4]
+#define SWIGTYPE_p_GtkButton swig_types[5]
+#define SWIGTYPE_p_GtkMenuItem swig_types[6]
+#define SWIGTYPE_p_GtkRadioAction swig_types[7]
+#define SWIGTYPE_p_GtkTreeIter swig_types[8]
+#define SWIGTYPE_p_GtkTreePath swig_types[9]
+#define SWIGTYPE_p_GtkTreeSelection swig_types[10]
+#define SWIGTYPE_p_GtkTreeSortable swig_types[11]
+#define SWIGTYPE_p_GtkTreeStore swig_types[12]
+#define SWIGTYPE_p_GtkTreeView swig_types[13]
+#define SWIGTYPE_p_GtkTreeViewColumn swig_types[14]
+#define SWIGTYPE_p_GtkWidget swig_types[15]
+#define SWIGTYPE_p_LifereaHtmlView swig_types[16]
+#define SWIGTYPE_p_f_p_q_const__char_gpointer__void swig_types[17]
+#define SWIGTYPE_p_f_p_struct_node_q_const__p_q_const__struct_updateResult_guint32__void swig_types[18]
+#define SWIGTYPE_p_gpointer swig_types[19]
+#define SWIGTYPE_p_gulong swig_types[20]
+#define SWIGTYPE_p_int swig_types[21]
+#define SWIGTYPE_p_item swig_types[22]
+#define SWIGTYPE_p_itemSetPtr swig_types[23]
+#define SWIGTYPE_p_node swig_types[24]
+#define SWIGTYPE_p_nodeSource swig_types[25]
+#define SWIGTYPE_p_nodeType swig_types[26]
+#define SWIGTYPE_p_p_GdkPixbuf swig_types[27]
+#define SWIGTYPE_p_socialBookmarkSite swig_types[28]
+#define SWIGTYPE_p_subscription swig_types[29]
+#define SWIGTYPE_p_time_t swig_types[30]
+#define SWIGTYPE_p_updateFlags swig_types[31]
+#define SWIGTYPE_p_updateJob swig_types[32]
+#define SWIGTYPE_p_updateOptionsPtr swig_types[33]
+#define SWIGTYPE_p_updateResult swig_types[34]
+#define SWIGTYPE_p_updateStatePtr swig_types[35]
+#define SWIGTYPE_p_xmlNodePtr swig_types[36]
+static swig_type_info *swig_types[38];
+static swig_module_info swig_module = {swig_types, 37, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -4734,6 +4735,70 @@ fail:
 }
 
 
+static int _wrap_item_parentItemId_set(lua_State* L) {
+  int SWIG_arg = -1;
+  struct item *arg1 = (struct item *) 0 ;
+  gulong arg2 ;
+  gulong *argp2 ;
+  
+  SWIG_check_num_args("parentItemId",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("parentItemId",1,"struct item *");
+  if(!lua_isuserdata(L,2)) SWIG_fail_arg("parentItemId",2,"gulong");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_item,0))){
+    SWIG_fail_ptr("item_parentItemId_set",1,SWIGTYPE_p_item);
+  }
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&argp2,SWIGTYPE_p_gulong,0))){
+    SWIG_fail_ptr("item_parentItemId_set",2,SWIGTYPE_p_gulong);
+  }
+  arg2 = *argp2;
+  
+  if (arg1) (arg1)->parentItemId = arg2;
+  
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_item_parentItemId_get(lua_State* L) {
+  int SWIG_arg = -1;
+  struct item *arg1 = (struct item *) 0 ;
+  gulong result;
+  
+  SWIG_check_num_args("parentItemId",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("parentItemId",1,"struct item *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_item,0))){
+    SWIG_fail_ptr("item_parentItemId_get",1,SWIGTYPE_p_item);
+  }
+  
+  result =  ((arg1)->parentItemId);
+  SWIG_arg=0;
+  {
+    gulong * resultptr;
+    resultptr = (gulong *) malloc(sizeof(gulong));
+    memmove(resultptr, &result, sizeof(gulong));
+    SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_gulong,1); SWIG_arg++;
+  }
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_item_isComment_set(lua_State* L) {
   int SWIG_arg = -1;
   struct item *arg1 = (struct item *) 0 ;
@@ -4980,6 +5045,7 @@ static swig_lua_attribute swig_item_attributes[] = {
     { "tmpdata", _wrap_item_tmpdata_get, _wrap_item_tmpdata_set},
     { "time", _wrap_item_time_get, _wrap_item_time_set},
     { "commentFeedId", _wrap_item_commentFeedId_get, _wrap_item_commentFeedId_set},
+    { "parentItemId", _wrap_item_parentItemId_get, _wrap_item_parentItemId_set},
     { "isComment", _wrap_item_isComment_get, _wrap_item_isComment_set},
     { "nodeId", _wrap_item_nodeId_get, _wrap_item_nodeId_set},
     { "sourceNr", _wrap_item_sourceNr_get, _wrap_item_sourceNr_set},
@@ -9842,12 +9908,12 @@ fail:
 
 static int _wrap_ui_mainwindow_get_active_enclosure_list_view(lua_State* L) {
   int SWIG_arg = -1;
-  GtkWidget *result = 0 ;
+  EnclosureListView *result = 0 ;
   
   SWIG_check_num_args("ui_mainwindow_get_active_enclosure_list_view",0,0)
-  result = (GtkWidget *)ui_mainwindow_get_active_enclosure_list_view();
+  result = (EnclosureListView *)ui_mainwindow_get_active_enclosure_list_view();
   SWIG_arg=0;
-  SWIG_NewPointerObj(L,result,SWIGTYPE_p_GtkWidget,0); SWIG_arg++; 
+  SWIG_NewPointerObj(L,result,SWIGTYPE_p_EnclosureListView,0); SWIG_arg++; 
   return SWIG_arg;
   
   if(0) SWIG_fail;
@@ -10848,7 +10914,7 @@ static swig_lua_const_info swig_constants[] = {
 { SWIG_LUA_INT,     (char *)"ICON_AVAILABLE_OFFLINE", (long) ICON_AVAILABLE_OFFLINE, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"ICON_UNAVAILABLE", (long) ICON_UNAVAILABLE, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"ICON_DEFAULT", (long) ICON_DEFAULT, 0, 0, 0},
-{ SWIG_LUA_INT,     (char *)"ICON_OCS", (long) ICON_OCS, 0, 0, 0},
+{ SWIG_LUA_INT,     (char *)"ICON_FOLDER_EMPTY", (long) ICON_FOLDER_EMPTY, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"ICON_FOLDER", (long) ICON_FOLDER, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"ICON_VFOLDER", (long) ICON_VFOLDER, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"ICON_NEWSBIN", (long) ICON_NEWSBIN, 0, 0, 0},
@@ -10894,6 +10960,7 @@ static swig_lua_const_info swig_constants[] = {
 
 /* -------- TYPE CONVERSION AND EQUIVALENCE RULES (BEGIN) -------- */
 
+static swig_type_info _swigt__p_EnclosureListView = {"_p_EnclosureListView", "EnclosureListView *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_GHashTable = {"_p_GHashTable", "GHashTable *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_GList = {"_p_GList", "GList *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_GSList = {"_p_GSList", "GSList *", 0, 0, (void*)0, 0};
@@ -10932,6 +10999,7 @@ static swig_type_info _swigt__p_updateStatePtr = {"_p_updateStatePtr", "updateSt
 static swig_type_info _swigt__p_xmlNodePtr = {"_p_xmlNodePtr", "xmlNodePtr *", 0, 0, (void*)0, 0};
 
 static swig_type_info *swig_type_initial[] = {
+  &_swigt__p_EnclosureListView,
   &_swigt__p_GHashTable,
   &_swigt__p_GList,
   &_swigt__p_GSList,
@@ -10970,6 +11038,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_xmlNodePtr,
 };
 
+static swig_cast_info _swigc__p_EnclosureListView[] = {  {&_swigt__p_EnclosureListView, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_GHashTable[] = {  {&_swigt__p_GHashTable, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_GList[] = {  {&_swigt__p_GList, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_GSList[] = {  {&_swigt__p_GSList, 0, 0, 0},{0, 0, 0, 0}};
@@ -11008,6 +11077,7 @@ static swig_cast_info _swigc__p_updateStatePtr[] = {  {&_swigt__p_updateStatePtr
 static swig_cast_info _swigc__p_xmlNodePtr[] = {  {&_swigt__p_xmlNodePtr, 0, 0, 0},{0, 0, 0, 0}};
 
 static swig_cast_info *swig_cast_initial[] = {
+  _swigc__p_EnclosureListView,
   _swigc__p_GHashTable,
   _swigc__p_GList,
   _swigc__p_GSList,

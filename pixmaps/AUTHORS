@@ -1,25 +1,26 @@
 The authorship or origin of the included images:
 
-available.png	taken from feedicons.com (Matt Brett http://feedicons.com)
+default.png	taken from feedicons.com (Matt Brett http://feedicons.com)
+folder_empty.png derived from default.png (Lars Lindner <lars.lindner@gmail.com>)
 
-empty.png,	modified GNOME stock icons (Lars Lindner <lars.lindner@gmx.net>)
+empty.png,	modified GNOME stock icons (Lars Lindner <lars.lindner@gmail.com>)
 vfolder.png	
 
-updating.png,	GNOME stock icons
+updating.png,	copy of GNOME stock icons
 directory.png,
 attachment.png,
 edit.png,
 unread.png
 
 online.png	taken from GnomeDB
-offline.png	derived from online.png (Lars Lindner <lars.lindner@gmx.net>)
+offline.png	derived from online.png (Lars Lindner <lars.lindner@gmail.com>)
 
 liferea.png	(news-reader-48.png) Jakub Steiner <jimmac@ximian.com>
 fl_opml.png	OPML icon (Chris Pirillo <chris@lockergnome.com>)
 fl_google.png	copy of the Google website favicon.ico (as of 26.06.2007)
 fl_bloglines.png copy of the Bloglines website favicon.ico (as of 28.06.2007)
 
-newsbin.png	created for Liferea, Lars Lindner <lars.lindner@gmx.net>
+newsbin.png	created for Liferea, Lars Lindner <lars.lindner@gmail.com>
 
 16x16/liferea.png, 22x22/liferea.png, 24x24/liferea.png, 32x32/liferea.png, 
 48x48/liferea.png and scalable/liferea.svg: Jeff Fortin <nekohayo@gmail.com>,
