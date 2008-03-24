@@ -7,7 +7,7 @@
 	* Removing now unnecessary build dependency on gnutls. (Lars Lindner)
 	* Relicensing icons under CC-SA 3.0 to comply with Debian's license
 	  requirements. (Lars Strojny)
-
+	* New Czech translation (Martin Picek)
 
 2008-03-16  Lars Lindner  <lars.lindner@gmail.com>
 
