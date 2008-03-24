@@ -2231,7 +2231,7 @@ msgstr "Integrovat seznam vašich kanálů z Bloglines. Liferea bude brát vaše
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
 #: ../src/fl_sources/default_source.c:109
 msgid "feedlist.opml"
-msgstr "Seznam kanálů.opml"
+msgstr "feedlist.opml"
 
 #: ../src/fl_sources/google_source.glade.h:1
 msgid "Add Google Reader Account"
