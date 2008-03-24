@@ -16,7 +16,11 @@
 	  versions (reported by Thomas Zajic)
 	* Fixes SF #1919640: segfault when 'Ctrl-R' pressed
 	  without selection (patch by Patrick Bogen)
+
+	Translations
+
 	* Update of Portugese translation (Antonio Lima)
+	* New Czech translation (Martin Picek)
 
 
 2008-03-12  Lars Lindner  <lars.lindner@gmail.com>
