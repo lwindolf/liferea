@@ -11,6 +11,7 @@
 	  folder item to allow better icon theming. Added new icon 
 	  file "folder_empty.png".
 	* Removing old unused icons "ocs.png" and "grayflag.png"
+	* Fixes broken updating feeds with local files as source.
 	* New Czech translation (Martin Picek)
 
 2008-03-16  Lars Lindner  <lars.lindner@gmail.com>

@@ -420,11 +420,14 @@ update_load_file (updateJobPtr job)
 			ui_mainwindow_set_status_bar (_("Error: Could not open file \"%s\""), filename);
 		} else {
 			job->result->httpstatus = 200;
+			debug2 (DEBUG_UPDATE, "Successfully read %d bytes from file %s.", job->result->size, filename);
 		}
 	} else {
 		ui_mainwindow_set_status_bar (_("Error: There is no file \"%s\""), filename);
 		job->result->httpstatus = 404;	/* FIXME: maybe setting request->returncode would be better */
 	}
+	
+	update_process_finished_job (job);
 }
 
 static void
@@ -442,6 +445,7 @@ update_job_run (updateJobPtr job)
 			job->result->size = 0;
 		}
 	} else {
+		debug1 (DEBUG_UPDATE, "Recognized file URI: %s", job->request->source);
 		update_load_file (job);		
 	}
 
