@@ -714,7 +714,7 @@ update_deinit (void)
 {
 	debug_enter ("update_deinit");
 	
-	//update_nm_cleanup ();	// FIXME
+	update_nm_cleanup ();
 	
 	network_deinit ();
 	
