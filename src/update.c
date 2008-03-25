@@ -435,6 +435,11 @@ update_load_file (updateJobPtr job)
 static void
 update_job_run (updateJobPtr job) 
 {
+	/* Here we decide on the source type and the proper execution
+	   methods which then do anything they want with the job and
+	   pass the processed job to update_process_finished_job()
+	   for result dequeuing */
+	   
 	if (*(job->request->source) == '|') {
 		update_exec_cmd (job);
 		
@@ -450,11 +455,6 @@ update_job_run (updateJobPtr job)
 		debug1 (DEBUG_UPDATE, "Recognized file URI: %s", job->request->source);
 		update_load_file (job);		
 	}
-
-	/* Finally execute the postfilter */
-	if (job->result->data && job->request->filtercmd) 
-		update_apply_filter (job);
-		
 }
 
 updateResultPtr
@@ -617,7 +617,11 @@ update_process_finished_job (updateJobPtr job)
 		update_job_free (job);
 		return;
 	} 
-		
+
+	/* Finally execute the postfilter */
+	if (job->result->data && job->request->filtercmd) 
+		update_apply_filter (job);
+	
 	// FIXME: Retrying in some error cases 
 	/*if ((job->result->returncode == NET_ERR_UNKNOWN) ||
 	    (job->result->returncode == NET_ERR_CONN_FAILED) ||
