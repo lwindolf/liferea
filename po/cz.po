@@ -1,8 +1,10 @@
+# Czech translation of Liferea 1.5.x.
+# Copyright (C) 2008 Martin Picek <picek.martin@gnome-cesko.cz>.
 msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 1.5.1\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2008-03-23 23:07+0100\n"
+"PO-Revision-Date: 2008-03-25 11:40+0100\n"
 "Last-Translator: Martin Picek <picek.martin@gnome-cesko.cz>\n"
 "Language-Team: Czech GNOME Translation Team\n"
 "MIME-Version: 1.0\n"
@@ -67,7 +69,7 @@ msgstr "<b>text/plain</b>"
 
 #: ../liferea.glade.h:14
 msgid "<i>This option can cause significant delays when loading folders containing many feeds.</i>"
-msgstr "<i>Tato volba může způsobit významné zpoždění při načítání složek obsahujících mnoho kanálů.</i>"
+msgstr "Tato volba může způsobit významné zpoždění při načítání složek obsahujících mnoho kanálů."
 
 #: ../liferea.glade.h:15
 msgid "<span weight=\"bold\">Downloading Enclosures</span>"
@@ -168,7 +170,7 @@ msgstr "Autentizace"
 
 #: ../liferea.glade.h:39
 msgid "Auto-_load item link in configured browser when selecting articles."
-msgstr "Automaticky načíst č_lánek v nastaveném prohlížeči při výběru článku."
+msgstr "Automaticky načíst č_lánek v nastaveném prohlížeči při jeho _označení."
 
 #: ../liferea.glade.h:40
 msgid ""
@@ -233,11 +235,11 @@ msgstr "Výchozí _interval aktualizace kanálů:"
 
 #: ../liferea.glade.h:61
 msgid "Default _number of items per feed to save:"
-msgstr "Výchozí počet uložených člá_nků v jednom kanálu:"
+msgstr "Výchozí _počet uložených článků v jednom kanálu:"
 
 #: ../liferea.glade.h:62
 msgid "Di_sable cache"
-msgstr "Zakázat vyrovnáva_cí paměť"
+msgstr "_Zakázat vyrovnávací paměť"
 
 #: ../liferea.glade.h:63
 msgid "Download"
@@ -295,7 +297,7 @@ msgstr "Obecné"
 
 #: ../liferea.glade.h:77
 msgid "Headlines"
-msgstr "Titulky"
+msgstr "Články"
 
 #: ../liferea.glade.h:78
 msgid "Info zu Glade"
@@ -355,7 +357,7 @@ msgstr "Tlačítka Připojit a Odpojit"
 
 #: ../liferea.glade.h:92
 msgid "Open links in Liferea's _window."
-msgstr "Ote_vírat odkazy v okně Liferea."
+msgstr "Otevírat odkazy v okně _Liferea."
 
 #: ../liferea.glade.h:93
 msgid "Proxy"
@@ -419,7 +421,7 @@ msgstr "Vybrat soubor…"
 
 #: ../liferea.glade.h:108
 msgid "Show Menu _And Toolbar"
-msgstr "Zobrazovat n_abídku a lištu nástrojů"
+msgstr "Zobrazovat nabídku _a lištu nástrojů"
 
 #: ../liferea.glade.h:109
 msgid "Show _Menu Only"
@@ -427,7 +429,7 @@ msgstr "Zobrazovat pouze _nabídku"
 
 #: ../liferea.glade.h:110
 msgid "Show _Toolbar Only"
-msgstr "Zobrazovat pouze liš_tu nástrojů"
+msgstr "Zobrazovat pouze _lištu nástrojů"
 
 #: ../liferea.glade.h:111
 msgid "Show _number of new items in the tray icon."
@@ -435,7 +437,7 @@ msgstr "Zobrazovat počet _nových článků ve stavové ikonce."
 
 #: ../liferea.glade.h:112
 msgid "Show a _popup window with new headlines."
-msgstr "Zo_brazovat vyskakovací okno s novými články."
+msgstr "Zobrazovat _vyskakovací okno s novými články."
 
 #: ../liferea.glade.h:113
 msgid "Show a status _icon in the notification area (system tray)."
@@ -464,7 +466,7 @@ msgstr "Synchronizace"
 
 #: ../liferea.glade.h:119
 msgid "T_erminate instead of minimizing to tray icon."
-msgstr "Ukonč_ovat namísto minimalizování do stavové ikonky."
+msgstr "_Ukončovat namísto minimalizování do stavové ikonky."
 
 #: ../liferea.glade.h:120
 msgid "The cache setting controls if the contents of feeds are saved when Liferea exits. Marked items are always saved to the cache."
@@ -527,7 +529,7 @@ msgstr "Použít konverzní _filtr"
 
 #: ../liferea.glade.h:141
 msgid "User_name:"
-msgstr "Uživatelské jmé_no:"
+msgstr "_Uživatelské jméno:"
 
 #: ../liferea.glade.h:142
 msgid "View Headlines"
@@ -551,7 +553,7 @@ msgstr "_Automaticky stahovat všechny přílohy tohoto kanálu."
 
 #: ../liferea.glade.h:147
 msgid "_Browse"
-msgstr "_Prohlížet"
+msgstr "P_rohlížet"
 
 #: ../liferea.glade.h:148
 msgid "_Browser:"
@@ -559,7 +561,7 @@ msgstr "_Prohlížeč:"
 
 #: ../liferea.glade.h:149
 msgid "_Command"
-msgstr "Příka_z"
+msgstr "_Příkaz"
 
 #: ../liferea.glade.h:150
 msgid "_Default cache settings"
@@ -567,7 +569,7 @@ msgstr "_Výchozí nastavení vyrovnávací paměti"
 
 #: ../liferea.glade.h:151
 msgid "_Disable Javascript."
-msgstr "_Zakázat JavaScript."
+msgstr "Zakázat _JavaScript."
 
 #: ../liferea.glade.h:152
 msgid "_Do this automatically for enclosures like this from now on."
@@ -575,7 +577,7 @@ msgstr "O_d těď toto provádět se všemi podobnými přílohami automaticky."
 
 #: ../liferea.glade.h:153
 msgid "_Don't update this feed automatically."
-msgstr "_Neaktualizovat tento kanál automaticky."
+msgstr "Neaktualizovat tento kanál _automaticky."
 
 #: ../liferea.glade.h:154
 msgid "_Don't use proxy for download"
@@ -583,7 +585,7 @@ msgstr "_Nepoužívat proxy pro stahování"
 
 #: ../liferea.glade.h:155
 msgid "_Download using"
-msgstr "S_tahovat pomocí"
+msgstr "Stahovat _pomocí"
 
 #: ../liferea.glade.h:156
 msgid "_Enable Local LAN Synchronization"
@@ -591,7 +593,7 @@ msgstr "Povol_it  místní synchronizaci LAN"
 
 #: ../liferea.glade.h:157
 msgid "_Feed specific update interval of"
-msgstr "Speci_fický interval aktualizace kanálu"
+msgstr "_Specifický interval aktualizace kanálu"
 
 #: ../liferea.glade.h:158
 msgid "_Folder name:"
@@ -636,7 +638,7 @@ msgstr "Žád_ná proxy"
 
 #: ../liferea.glade.h:169
 msgid "_Open link in:"
-msgstr "Otevírat odkazy v:"
+msgstr "Otevírat _odkazy v:"
 
 #: ../liferea.glade.h:170
 msgid "_Pass URL and do not download enclosure."
@@ -658,7 +660,7 @@ msgstr "_Posílat záložky do"
 
 #: ../liferea.glade.h:174
 msgid "_Save downloads in"
-msgstr "_Stahovat do"
+msgstr "Stahovat _do"
 
 #: ../liferea.glade.h:175
 msgid "_Search for:"
@@ -674,7 +676,7 @@ msgstr "Zobrazovat články ze všech vnořených kanálů, je-li vybrána _slo�
 
 #: ../liferea.glade.h:178
 msgid "_Skim through articles with:"
-msgstr "Otevírat články kláve_sou:"
+msgstr "_Otevírat články klávesou:"
 
 #: ../liferea.glade.h:179
 msgid "_Source:"
@@ -690,7 +692,7 @@ msgstr "_URL"
 
 #: ../liferea.glade.h:182
 msgid "_Unlimited cache"
-msgstr "Ne_omezená vyrovnávací paměť"
+msgstr "_Neomezená vyrovnávací paměť"
 
 #: ../liferea.glade.h:183
 msgid "_Update all favicons now"
@@ -698,7 +700,7 @@ msgstr "Akt_ualizovat všechny ikonky"
 
 #: ../liferea.glade.h:184
 msgid "_Use global default update interval."
-msgstr "Po_užít výchozí interval aktualizace."
+msgstr "Použít _výchozí interval aktualizace."
 
 #: ../liferea.glade.h:185
 msgid "combined view"
@@ -1609,7 +1611,7 @@ msgstr "_Nástroje"
 
 #: ../src/ui/ui_mainwindow.c:1115
 msgid "_Update Monitor"
-msgstr "_Sledování aktualizací"
+msgstr "Sledování _aktualizací"
 
 #: ../src/ui/ui_mainwindow.c:1115
 msgid "Show a list of all feeds currently in the update queue"
@@ -1617,7 +1619,7 @@ msgstr "Zobrazit seznam všech kanálů ve frontě na aktualizaci"
 
 #: ../src/ui/ui_mainwindow.c:1117
 msgid "_Script Manager"
-msgstr "_Správa skriptů"
+msgstr "Správa _skriptů"
 
 #: ../src/ui/ui_mainwindow.c:1117
 msgid "Allows to configure and edit LUA hook scripts"
@@ -1827,9 +1829,9 @@ msgstr "Zakázat aktualizaci odběrů."
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
-msgstr[0] "%d nový"
-msgstr[1] "%d nové"
-msgstr[2] "%d nových"
+msgstr[0] " %d nový"
+msgstr[1] " %d nové"
+msgstr[2] " %d nových"
 
 #: ../src/ui/ui_mainwindow.c:1337
 #, c-format
@@ -2318,7 +2320,7 @@ msgstr "Tento kanál neobsahuje žádný článek"
 
 #: ../src/notification/notif_libnotify.c:119
 msgid "Visit"
-msgstr "Navštívit"
+msgstr "Zobrazit"
 
 #: ../src/notification/notif_libnotify.c:158
 #: ../src/notification/notif_libnotify.c:234
@@ -2340,7 +2342,7 @@ msgstr[2] "%s má %d nových nebo aktualizovaných článků\n"
 
 #: ../src/notification/notif_libnotify.c:226
 msgid "Feed Update"
-msgstr "Aktualizovat kanál"
+msgstr "Aktualizovaný kanál"
 
 #: ../src/notification/notif_libnotify.c:231
 msgid "Show details"
