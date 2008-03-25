@@ -178,7 +178,10 @@ updateOptionsPtr update_options_copy (updateOptionsPtr options);
 void update_options_free (updateOptionsPtr options);
 
 /**
- * Initialises the download subsystem, including its thread(s). 
+ * Initialises the download subsystem. 
+ *
+ * Must be called before gtk_init() and after thread initialization
+ * as threads are used and for proper network-manager initialization.
  */
 void update_init (void); 
 
@@ -267,21 +270,5 @@ gboolean update_job_cancel_retry (struct updateJob *job);
  * @returns update job state (see enum request_state)
  */
 gint update_job_get_state (struct updateJob *job);
-
-#ifdef USE_NM
-/**
- * Initialize NetworkManager support
- * Set up NM support, so that offline state can be set based on availability of
- * a network
- * 
- * @return TRUE if successfully initialized NM support
- */
-gboolean update_nm_initialize (void);
-
-/**
- * Clean up NetworkManager support
- */
-void update_nm_cleanup (void);
-#endif // USE_NM
 
 #endif

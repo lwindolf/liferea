@@ -147,9 +147,14 @@ int main(int argc, char *argv[]) {
 #ifdef USE_DBUS
 	dbus_g_thread_init();
 #endif
-#ifdef USE_NM
-	update_nm_initialize();
-#endif
+	/* Configuration necessary for network options, so it
+	   has to be initialized before update_init() */
+	conf_init ();
+	
+	/* We need to do the network initialization here to allow
+	   network-manager to be setup before gtk_init() */	   
+	update_init();
+
 	gtk_init(&argc, &argv);
 	
 	/* GTK theme support */
@@ -254,8 +259,6 @@ int main(int argc, char *argv[]) {
 	rule_init ();
 	db_init (TRUE);			/* initialize sqlite */
 	xml_init ();			/* initialize libxml2 */
-	conf_init ();			/* initialize gconf */
-	update_init ();			/* initialize the download subsystem */
 	plugin_mgmt_init ();		/* get list of plugins and initialize them */
 	feed_init ();			/* register feed types */
 	conf_load ();			/* load global feed settings */

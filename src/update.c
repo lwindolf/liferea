@@ -645,17 +645,6 @@ update_process_finished_job (updateJobPtr job)
 	g_idle_add (update_process_result_idle_cb, job);
 }
 
-void
-update_init (void)
-{
-	gushort	i, count;
-
-	pendingJobs = g_async_queue_new ();
-	network_init ();
-	
-	g_timeout_add (500, update_dequeue_job, NULL);
-}
-
 #ifdef USE_NM
 static void
 update_network_monitor (libnm_glib_ctx *ctx, gpointer user_data)
@@ -677,7 +666,7 @@ update_network_monitor (libnm_glib_ctx *ctx, gpointer user_data)
 	}
 }
 
-gboolean
+static gboolean
 update_nm_initialize (void)
 {
 	debug0 (DEBUG_UPDATE, "network manager: registering network state change callback");
@@ -695,7 +684,7 @@ update_nm_initialize (void)
 	return TRUE;
 }
 
-void
+static void
 update_nm_cleanup (void)
 {
 	debug0 (DEBUG_UPDATE, "network manager: unregistering network state change callback");
@@ -710,12 +699,28 @@ update_nm_cleanup (void)
 #endif
 
 void
+update_init (void)
+{
+	gushort	i, count;
+
+	pendingJobs = g_async_queue_new ();
+	network_init ();
+	
+	g_timeout_add (500, update_dequeue_job, NULL);
+	
+#ifdef USE_NM	
+	update_nm_initialize ();
+#endif
+}
+
+void
 update_deinit (void)
 {
 	debug_enter ("update_deinit");
-	
+
+#ifdef USE_NM	
 	update_nm_cleanup ();
-	
+#endif	
 	network_deinit ();
 	
 	// FIXME: cancel all jobs
