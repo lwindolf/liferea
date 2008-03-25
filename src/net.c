@@ -303,19 +303,19 @@ network_glibcurl_callback (void *data)
 	updateJobPtr	job;
 
 	while (1) {
-		msg = curl_multi_info_read(glibcurl_handle(), &inQueue);
+		msg = curl_multi_info_read (glibcurl_handle (), &inQueue);
 		if (msg == 0)
 			break;
 			
-		curl_easy_getinfo(msg->easy_handle, CURLINFO_PRIVATE, &job);
+		curl_easy_getinfo (msg->easy_handle, CURLINFO_PRIVATE, &job);
 		
 		if (msg->msg != CURLMSG_DONE) {
 			continue;
 		} else {
 			if (msg->data.result == CURLE_OK) 
-				debug0(DEBUG_UPDATE, "curl download done!");
+				debug0 (DEBUG_UPDATE, "curl download done!");
 			else
-				debug1(DEBUG_UPDATE, "curl download failed: status code %d", msg->data.result);
+				debug1 (DEBUG_UPDATE, "curl download failed: status code %d", msg->data.result);
 
 			long		tmp;
 			gchar		*contentType, *effectiveSource;
@@ -333,8 +333,8 @@ network_glibcurl_callback (void *data)
 			}
 
 			// FIXME: update_state_set_cookies (job->result->updateState, ???);
-			debug1(DEBUG_UPDATE, "source after download: >>>%s<<<\n", job->result->source);
-			debug1(DEBUG_UPDATE, "%d bytes downloaded", job->result->size);
+			debug1 (DEBUG_UPDATE, "source after download: >>>%s<<<\n", job->result->source);
+			debug1 (DEBUG_UPDATE, "%d bytes downloaded", job->result->size);
 			curl_easy_cleanup (msg->easy_handle);
 			
 			/* Throw away all received data in case of HTTP errors */

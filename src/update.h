@@ -236,6 +236,14 @@ updateResultPtr update_execute_request_sync (gpointer owner,
 /* Update job handling */
 
 /**
+ * To be called when an update job has been executed. Triggers
+ * the job specific result processing callback.
+ *
+ * @param job		the update job
+ */
+void update_process_finished_job (updateJobPtr job);
+
+/**
  * Cancel all pending requests for the given owner.
  *
  * @param owner		pointer passed in update_request_new()
