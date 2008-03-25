@@ -396,6 +396,8 @@ update_exec_cmd (updateJobPtr job)
 		ui_mainwindow_set_status_bar (_("Error: Could not open pipe \"%s\""), (job->request->source) + 1);
 		job->result->httpstatus = 404;	/* FIXME: maybe setting request->returncode would be better */
 	}
+	
+	update_process_finished_job (job);
 }
 
 static void
