@@ -335,7 +335,15 @@ network_glibcurl_callback (void *data)
 			// FIXME: update_state_set_cookies (job->result->updateState, ???);
 			debug1(DEBUG_UPDATE, "source after download: >>>%s<<<\n", job->result->source);
 			debug1(DEBUG_UPDATE, "%d bytes downloaded", job->result->size);
-			curl_easy_cleanup (msg->easy_handle);	
+			curl_easy_cleanup (msg->easy_handle);
+			
+			/* Throw away all received data in case of HTTP errors */
+			if (job->result->httpstatus >= 400) {
+				g_free (job->result->data);
+				job->result->data = NULL;
+				job->result->size = 0;
+			}
+				
 			update_process_finished_job (job);
 		}
 	}

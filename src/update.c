@@ -433,27 +433,31 @@ update_load_file (updateJobPtr job)
 }
 
 static void
-update_job_run (updateJobPtr job) 
+update_job_run (updateJobPtr job)
 {
 	/* Here we decide on the source type and the proper execution
 	   methods which then do anything they want with the job and
 	   pass the processed job to update_process_finished_job()
 	   for result dequeuing */
-	   
+	
+	/* everything starting with '|' is a local command */
 	if (*(job->request->source) == '|') {
+		debug1 (DEBUG_UPDATE, "Recognized local command: %s", job->request->source);
 		update_exec_cmd (job);
-		
-	} else if (strstr (job->request->source, "://") && 
-	           strncmp (job->request->source, "file://", 7)) {
+		return;
+	}
+	
+	/* if it has a protocol "://" prefix, but not "file://" it is an URI */
+	if (strstr (job->request->source, "://") && strncmp (job->request->source, "file://", 7)) {
 		network_process_request (job);
-		if (job->result->httpstatus >= 400) {
-			g_free (job->result->data);
-			job->result->data = NULL;
-			job->result->size = 0;
-		}
-	} else {
+		return;
+	}
+	
+	/* otherwise it must be a local file... */
+	{
 		debug1 (DEBUG_UPDATE, "Recognized file URI: %s", job->request->source);
-		update_load_file (job);		
+		update_load_file (job);
+		return;
 	}
 }
 
