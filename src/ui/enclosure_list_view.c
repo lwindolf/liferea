@@ -18,12 +18,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
-
 #include <gtk/gtk.h>
 #include <string.h>
+
+#include "enclosure_list_view.h"
 
 #include "common.h"
 #include "conf.h"
@@ -34,7 +32,6 @@
 #include "ui/ui_dialog.h"
 #include "ui/ui_popup.h"
 #include "ui/ui_prefs.h"
-#include "ui/ui_enclosure.h"
 
 /* enclosure list view implementation */
 

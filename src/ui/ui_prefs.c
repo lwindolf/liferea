@@ -2,7 +2,7 @@
  * @file ui_prefs.c program preferences
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2004-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2008 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,9 +34,9 @@
 #include "feedlist.h"
 #include "itemlist.h"
 #include "social.h"
+#include "ui/enclosure_list_view.h"
 #include "ui/ui_common.h"
 #include "ui/ui_dialog.h"
-#include "ui/ui_enclosure.h"
 #include "ui/ui_itemlist.h"
 #include "ui/ui_mainwindow.h"
 #include "ui/ui_prefs.h"

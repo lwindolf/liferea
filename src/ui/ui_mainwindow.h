@@ -24,8 +24,9 @@
 #define UI_MAINWINDOW_H
 
 #include <gtk/gtk.h>
-#include "ui_enclosure.h"
-#include "ui_htmlview.h"
+
+#include "ui/enclosure_list_view.h"
+#include "ui/ui_htmlview.h"
 
 extern GtkWidget	*mainwindow;
 

@@ -44,7 +44,6 @@
 #include "ui/ui_script.h"
 #include "ui/ui_dialog.h"
 #include "ui/ui_dnd.h"
-#include "ui/ui_enclosure.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_htmlview.h"
 #include "ui/ui_itemlist.h"

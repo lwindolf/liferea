@@ -49,7 +49,6 @@
 #include "parsers/pie_feed.h"
 #include "ui/ui_auth.h"
 #include "ui/ui_subscription.h"
-#include "ui/ui_enclosure.h"
 #include "ui/ui_mainwindow.h"
 #include "ui/ui_node.h"
 #include "notification/notif_plugin.h"

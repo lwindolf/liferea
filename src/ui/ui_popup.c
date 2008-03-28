@@ -36,7 +36,7 @@
 #include "node.h"
 #include "social.h"
 #include "vfolder.h"
-#include "ui/ui_enclosure.h"
+#include "ui/enclosure_list_view.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_htmlview.h"
 #include "ui/ui_itemlist.h"
