@@ -13,9 +13,13 @@
 	* Removing old unused icons "ocs.png" and "grayflag.png"
 	* Fixes broken updating feeds with local files as source.
 
+	Translations
+
 	* Common wording for text matching rules is now
 	  "contains" (and not "matches") (Jeff Fortin)
 	* New Czech translation (Martin Picek)
+	* Updated French translation (Vincent Lefevre)
+
 
 2008-03-16  Lars Lindner  <lars.lindner@gmail.com>
 
