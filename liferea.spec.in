@@ -61,6 +61,11 @@ gconftool-2 --makefile-uninstall-rule \
 %dir %{_datadir}/%{name}/dtd
 %dir %{_datadir}/%{name}/opml
 %dir %{_datadir}/%{name}/pixmaps
+%dir %{_datadir}/%{name}/pixmaps/16x16
+%dir %{_datadir}/%{name}/pixmaps/22x22
+%dir %{_datadir}/%{name}/pixmaps/24x24
+%dir %{_datadir}/%{name}/pixmaps/32x32
+%dir %{_datadir}/%{name}/pixmaps/48x48
 %dir %{_datadir}/%{name}/doc
 %dir %{_datadir}/%{name}/doc/html
 %dir %{_datadir}/%{name}/xslt
@@ -68,6 +73,11 @@ gconftool-2 --makefile-uninstall-rule \
 %{_datadir}/%{name}/dtd/html.ent
 %{_datadir}/%{name}/opml/feedlist*.opml
 %{_datadir}/%{name}/pixmaps/*
+%{_datadir}/%{name}/pixmaps/16x16/*
+%{_datadir}/%{name}/pixmaps/22x22/*
+%{_datadir}/%{name}/pixmaps/24x24/*
+%{_datadir}/%{name}/pixmaps/32x32/*
+%{_datadir}/%{name}/pixmaps/48x48/*
 %{_datadir}/pixmaps/%{name}.png
 %{_datadir}/%{name}/doc/html/*.html
 %{_datadir}/%{name}/doc/html/*.png
