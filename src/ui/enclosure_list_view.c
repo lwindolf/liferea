@@ -177,15 +177,30 @@ enclosure_list_view_new ()
 	                                           );
 	gtk_tree_view_set_model (GTK_TREE_VIEW (elv->priv->treeview), GTK_TREE_MODEL(elv->priv->treestore));
 
+	/* explicitely no translation for invisible column headers... */
+	
 	renderer = gtk_cell_renderer_text_new ();
-	column = gtk_tree_view_column_new_with_attributes (_("NAME"), renderer, 
+	column = gtk_tree_view_column_new_with_attributes ("Size", renderer, 
+	                                                   "text", ES_SIZE_STR,
+							   NULL);
+	gtk_tree_view_append_column (GTK_TREE_VIEW (elv->priv->treeview), column);
+		
+	renderer = gtk_cell_renderer_text_new ();
+	column = gtk_tree_view_column_new_with_attributes ("URL", renderer, 
 	                                                   "text", ES_NAME_STR,
 							   NULL);
 	gtk_tree_view_append_column (GTK_TREE_VIEW (elv->priv->treeview), column);
-	gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (elv->priv->treeview), FALSE);
 	gtk_tree_view_column_set_sort_column_id (column, ES_NAME_STR);
-	g_object_set (column, "resizable", TRUE, NULL);
+	gtk_tree_view_column_set_expand (column, TRUE);
 	g_object_set (renderer, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
+	
+	renderer = gtk_cell_renderer_text_new ();
+	column = gtk_tree_view_column_new_with_attributes ("MIME", renderer, 
+	                                                   "text", ES_MIME_STR,
+							   NULL);
+	gtk_tree_view_append_column (GTK_TREE_VIEW (elv->priv->treeview), column);
+	
+	gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (elv->priv->treeview), FALSE);
 
 	g_signal_connect ((gpointer)elv->priv->treeview, "button_press_event",
 	                  G_CALLBACK (on_enclosure_list_button_press), (gpointer)elv);
@@ -244,7 +259,29 @@ enclosure_list_view_load (EnclosureListView *elv, itemPtr item)
 		
 		enclosure = enclosure_from_string (list->data);
 		if (enclosure) {
-			sizeStr = g_strdup_printf ("%d", enclosure->size);	// FIXME: pretty format kB/MB/GB...
+			guint size = enclosure->size;
+			
+			/* The following literals are the enclosure list size units */
+			gchar *unit = _(" Bytes");
+			if (size > 1024) {
+				size /= 1024;
+				unit = _("kB");
+			}
+			if (size > 1024) {
+				size /= 1024;
+				unit = _("MB");
+			}
+			if (size > 1024) {
+				size /= 1024;
+				unit = _("GB");
+			}			
+			
+			/* The following literal is the format string for enclosure sizes (number + unit string) */
+			if (size > 0)
+				sizeStr = g_strdup_printf (_("%d%s"), size, unit);
+			else
+				sizeStr = g_strdup_printf ("");
+			
 			gtk_tree_store_append (elv->priv->treestore, &iter, NULL);
 			gtk_tree_store_set (elv->priv->treestore, &iter, 
 			                    ES_NAME_STR, enclosure->url,
