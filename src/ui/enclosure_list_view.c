@@ -285,7 +285,7 @@ enclosure_list_view_load (EnclosureListView *elv, itemPtr item)
 			gtk_tree_store_append (elv->priv->treestore, &iter, NULL);
 			gtk_tree_store_set (elv->priv->treestore, &iter, 
 			                    ES_NAME_STR, enclosure->url,
-					    ES_MIME_STR, enclosure->mime,
+					    ES_MIME_STR, enclosure->mime?enclosure->mime:"",
 			                    ES_DOWNLOADED, enclosure->downloaded,
 					    ES_SIZE, enclosure->size,
 					    ES_SIZE_STR, sizeStr,
