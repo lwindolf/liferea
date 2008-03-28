@@ -367,9 +367,9 @@ rule_init (void)
 	/*        ========================================================================================================================================================================================*/
 	
 	rule_add (rule_condition_item_match,		NULL,				ITEM_MATCH_RULE_ID,		_("Item"),		_("does contain"),	_("does not contain"),	TRUE);
-	rule_add (rule_condition_item_title_match,	NULL,				ITEM_TITLE_MATCH_RULE_ID,	_("Item title"),	_("does match"),	_("does not match"),	TRUE);
-	rule_add (rule_condition_item_description_match, NULL,				ITEM_DESC_MATCH_RULE_ID,	_("Item body"),		_("does match"),	_("does not match"),	TRUE);
-	rule_add (rule_condition_feed_title_match,	NULL,				"feed_title",			_("Feed title"),	_("does match"),	_("does not match"),	TRUE);
+	rule_add (rule_condition_item_title_match,	NULL,				ITEM_TITLE_MATCH_RULE_ID,	_("Item title"),	_("does contain"),	_("does not contain"),	TRUE);
+	rule_add (rule_condition_item_description_match, NULL,				ITEM_DESC_MATCH_RULE_ID,	_("Item body"),		_("does contain"),	_("does not contain"),	TRUE);
+	rule_add (rule_condition_feed_title_match,	NULL,				"feed_title",			_("Feed title"),	_("does contain"),	_("does not contain"),	TRUE);
 	rule_add (rule_condition_item_is_unread,	rule_check_item_is_unread,	"unread",			_("Read status"),	_("is unread"),		_("is read"),		FALSE);
 	rule_add (rule_condition_item_is_flagged,	rule_check_item_is_flagged,	"flagged",			_("Flag status"),	_("is flagged"),	_("is unflagged"),	FALSE);
 	rule_add (rule_condition_item_was_updated,	NULL, 				"updated",			_("Update status"),	_("was updated"),	_("was not updated"),	FALSE);
