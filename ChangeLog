@@ -12,6 +12,8 @@
 	  file "folder_empty.png".
 	* Removing old unused icons "ocs.png" and "grayflag.png"
 	* Fixes broken updating feeds with local files as source.
+	* Improves padding and width of search and search folder
+	  dialogs (patch by Jeff Fortin)
 
 	Translations
 
