@@ -446,15 +446,20 @@ ui_mainwindow_set_layout (guint newMode)
 			break;
 	}
 
-	/* reparenting HTML view */
+	/* Reparenting HTML view. This avoids the overhead of new browser instances. */
 	gtk_notebook_set_current_page (GTK_NOTEBOOK (liferea_shell_lookup ("itemtabs")), newMode);
 	gtk_widget_reparent (liferea_htmlview_get_widget (mainwindow_priv->htmlview), liferea_shell_lookup (htmlWidgetName));
 	gtk_widget_reparent (GTK_WIDGET (mainwindow_priv->itemlistContainer), liferea_shell_lookup (ilWidgetName));
-	gtk_widget_reparent (enclosure_list_view_get_widget (mainwindow_priv->enclosureView), liferea_shell_lookup (encViewWidgetName));
+	
+	/* Recreate the enclosure list view GtkTreeView. No reparenting here to 
+	   get minimized columns for the new list with auto-layouting */
+	gtk_widget_destroy (enclosure_list_view_get_widget (mainwindow_priv->enclosureView));
+	mainwindow_priv->enclosureView = enclosure_list_view_new ();
+	gtk_container_add (GTK_CONTAINER (liferea_shell_lookup (encViewWidgetName)), 
+	                   enclosure_list_view_get_widget (mainwindow_priv->enclosureView));
  
 	/* grab necessary to force HTML widget update (display must
-	   change from feed description to list of items and vica 
-	   versa */
+	   change from feed description to list of items and vica versa */
 	gtk_widget_grab_focus (liferea_shell_lookup ("feedlist"));
 }
 
