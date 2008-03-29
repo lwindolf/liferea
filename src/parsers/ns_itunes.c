@@ -33,7 +33,7 @@
 */
 
 static void
-parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
+ns_itunes_parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 {
 	gchar *tmp;
 	
@@ -71,6 +71,21 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 }
 
 static void
+ns_itunes_parse_channel_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
+{
+	gchar *tmp;
+	const gchar *old;
+
+	if (!xmlStrcmp (cur->name, "summary") || !xmlStrcmp (cur->name, "subtitle")) {
+		tmp = common_utf8_fix (xhtml_extract (cur, 0, NULL));
+		old = metadata_list_get (&ctxt->subscription->metadata, "description");
+		if (!old || strlen (old) < strlen (tmp))
+			metadata_list_set (&ctxt->subscription->metadata, "description", tmp);
+		g_free (tmp);
+	}
+}
+
+static void
 ns_itunes_register_ns (NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash)
 {
 	g_hash_table_insert (prefixhash, "itunes", nsh);
@@ -85,7 +100,8 @@ ns_itunes_get_handler (void)
 	nsh = g_new0 (NsHandler, 1);
 	nsh->prefix		= "itunes";
 	nsh->registerNs		= ns_itunes_register_ns;
-	nsh->parseItemTag	= parse_item_tag;
+	nsh->parseItemTag	= ns_itunes_parse_item_tag;
+	nsh->parseChannelTag	= ns_itunes_parse_channel_tag;
 
 	return nsh;
 }
