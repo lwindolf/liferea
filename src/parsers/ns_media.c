@@ -81,7 +81,7 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 			/* gravatars are often supplied as media:content with medium='image'
 			   so we treat do not treat such occurences as enclosures */
 			if (medium && !strcmp (medium, "image")) {
-				metadata_list_set (&(ctxt->item->metadata), "photo", tmp);
+				metadata_list_set (&(ctxt->item->metadata), "gravatar", tmp);
 			} else {
 				ctxt->item->metadata = metadata_list_append (ctxt->item->metadata, "enclosure", enclosure_values_to_string (tmp, type, length, FALSE /* not yet downloaded */));
 				ctxt->item->hasEnclosure = TRUE;

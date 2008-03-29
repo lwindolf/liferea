@@ -4,7 +4,7 @@
 /**
  * Rendering stylesheet for Liferea (item view: item rendering)
  *
- * Copyright (C) 2006-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2008 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -301,6 +301,12 @@
 <div class='content'>
   <!-- the items content -->
   <p>
+    <!-- optional gravatar -->
+    <xsl:if test="attributes/attribute[ @name = 'gravatar' ]">
+       <img align='left' class='gravatar' src="{attributes/attribute[ @name = 'gravatar' ]}"/>
+    </xsl:if>
+    
+    <!-- the real text content -->
     <xsl:value-of select="description" disable-output-escaping='yes'/>
   </p>
   
