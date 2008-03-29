@@ -63,6 +63,7 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 			/* the following code is duplicated from rss_item.c! */		
 			gchar *type = xml_get_attribute (cur, "type");
 			gchar *lengthStr = xml_get_attribute (cur, "length");
+			gchar *medium = xml_get_attribute (cur, "medium");
 			gsize length = 0;
 			if (lengthStr)
 				length = atol (lengthStr);
@@ -76,11 +77,18 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 				 g_free (tmp);
 				 tmp = tmp2;
 			}
-
-			ctxt->item->metadata = metadata_list_append (ctxt->item->metadata, "enclosure", enclosure_values_to_string (tmp, type, length, FALSE /* not yet downloaded */));
-			ctxt->item->hasEnclosure = TRUE;
+			
+			/* gravatars are often supplied as media:content with medium='image'
+			   so we treat do not treat such occurences as enclosures */
+			if (medium && !strcmp (medium, "image")) {
+				metadata_list_set (&(ctxt->item->metadata), "photo", tmp);
+			} else {
+				ctxt->item->metadata = metadata_list_append (ctxt->item->metadata, "enclosure", enclosure_values_to_string (tmp, type, length, FALSE /* not yet downloaded */));
+				ctxt->item->hasEnclosure = TRUE;
+			}
 			g_free (tmp);
 			g_free (type);
+			g_free (medium);
 			g_free (lengthStr);
 		}
 	}
