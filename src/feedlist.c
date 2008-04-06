@@ -66,6 +66,9 @@ static gboolean feedlistLoading = TRUE;
 /** flag is set when any cache migration was done on startup */
 gboolean cacheMigrated = FALSE;
 
+/** auto update timer callback id */
+static guint autoUpdateTimer = 0;
+
 static void feedlist_unselect(void);
 
 nodePtr feedlist_get_root(void) { return rootNode; }
@@ -480,7 +483,7 @@ void feedlist_init(void) {
 	}
 
 	/* 5. Start automatic updating */
- 	(void)g_timeout_add(10000, feedlist_auto_update, NULL);
+ 	autoUpdateTimer = g_timeout_add(10000, feedlist_auto_update, NULL);
 
 	/* 6. Finally save the new feed list state */
 	feedlistLoading = FALSE;
@@ -508,6 +511,7 @@ feedlist_free_node (nodePtr node)
 void
 feedlist_free (void)
 {
+	g_source_remove (autoUpdateTimer);
 	feedlist_foreach (feedlist_free_node);
 	node_free (rootNode);
 	rootNode = NULL;
