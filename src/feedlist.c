@@ -1,7 +1,7 @@
 /**
  * @file feedlist.c feedlist handling
  *
- * Copyright (C) 2005-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2005-2008 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *	      
  * This program is free software; you can redistribute it and/or modify
@@ -65,6 +65,9 @@ static gboolean feedlistLoading = TRUE;
 
 /** flag is set when any cache migration was done on startup */
 gboolean cacheMigrated = FALSE;
+
+/** auto update timer callback id */
+static guint autoUpdateTimer = 0;
 
 static void feedlist_unselect(void);
 
@@ -484,7 +487,7 @@ void feedlist_init(void) {
 	}
 
 	/* 5. Start automatic updating */
- 	(void)g_timeout_add(10000, feedlist_auto_update, NULL);
+ 	autoUpdateTimer = g_timeout_add(10000, feedlist_auto_update, NULL);
 
 	/* 6. Finally save the new feed list state */
 	feedlistLoading = FALSE;
@@ -512,6 +515,7 @@ feedlist_free_node (nodePtr node)
 void
 feedlist_free (void)
 {
+	g_source_remove (autoUpdateTimer);
 	feedlist_foreach (feedlist_free_node);
 	node_free (rootNode);
 	rootNode = NULL;
