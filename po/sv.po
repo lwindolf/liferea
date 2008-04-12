@@ -2258,7 +2258,7 @@ msgstr ""
 "Artikellistan innehåller nu alla artiklar som matchar det angivna "
 "sökmönstret. Om du vill spara dessa sökningresultat permanent kan du klicka "
 "på knappen \"Sökmapp\" i sökfönstret, så skapar Liferea en sökmapp i din "
-"kanallista.</h2>"
+"kanallista."
 
 #: ../src/ui/ui_search.c:243
 msgid "Create a new search feed."
