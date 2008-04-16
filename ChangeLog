@@ -19,6 +19,8 @@
 	* Merged patch from OpenBSD (SF #1924623) to correctly
 	  handle feeds served with non-ASCII HTTP headers.
 	  (reported by viq)
+	* Merged patch from Arnold Noronha that fixes 
+	  deallocation of GdkColor instances.
 
 	Translations
 

@@ -177,7 +177,7 @@ render_get_theme_colors (void)
 	if (color) {
 		themeColors = g_slist_append (themeColors, render_get_theme_color ("GTK-COLOR-NORMAL-LINK", *color));
 		debug0 (DEBUG_HTML, "successfully set the color for links");
-		g_free (color);
+		gdk_color_free (color);
 	}
 
 	color = NULL;	
@@ -185,7 +185,7 @@ render_get_theme_colors (void)
 	if (color) {
 		themeColors = g_slist_append(themeColors, render_get_theme_color("GTK-COLOR-VISITED-LINK", *color));
 		debug0 (DEBUG_HTML, "successfully set the color for visited links");
-		g_free (color);
+		gdk_color_free (color);
 	}
 	*/
 }
