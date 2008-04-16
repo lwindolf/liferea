@@ -710,6 +710,10 @@ update_init (void)
 	
 #ifdef USE_NM	
 	update_nm_initialize ();
+	
+	/* network manager will set online state right after initialization... */
+#else
+	network_set_online (TRUE);
 #endif
 }
 
