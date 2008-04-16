@@ -2259,8 +2259,8 @@ msgstr "Hiçbir senaryo seçili değil"
 #, fuzzy, c-format
 msgid "%d Search Result for \"%s\""
 msgid_plural "%d Search Results for \"%s\""
-msgstr[0] "\"%s\" için %d Arama Sonucu"
-msgstr[1] "\"%s\" için %d Arama Sonucu"
+msgstr[0] "%d arama sonucu. Aranan: \"%s\""
+msgstr[1] "%d arama sonucu. Aranan: \"%s\""
 
 #: ../src/ui/ui_search.c:124
 #, c-format
