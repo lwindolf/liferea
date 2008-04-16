@@ -1,7 +1,7 @@
 /**
  * @file feedlist.c feedlist handling
  *
- * Copyright (C) 2005-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2005-2008 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *	      
  * This program is free software; you can redistribute it and/or modify
