@@ -29,6 +29,8 @@
 	* Update of Russian translation (Justin Forest)
 	* Fixes Debian #475603: invalid XHTML displayed
 	  in HTML view when searching (Swedish only).
+	* Fixes SF #1940695: crash when using Turkish
+	  translation (patch by serkan)
 
 
 2008-03-12  Lars Lindner  <lars.lindner@gmail.com>
