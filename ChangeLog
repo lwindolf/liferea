@@ -1,3 +1,10 @@
+2008-??-??  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.4.16 (Stable)
+
+	* Fixed wrong language code of Czech translation.
+	  (reported by Martin Picek)
+
 2008-04-17  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.4.15 (Stable)
