@@ -62,33 +62,38 @@ static gboolean is_gconf_error(GError **err) {
 }
 
 /* called once on startup */
-void conf_init() {
-	
+void
+conf_init (void)
+{	
 	/* Construct the User-Agent string of Liferea. This is done here in program init,
 	   because we need to do it exactly once and it will never change while the program
 	   is running. */
-	if (g_getenv("LANG") != NULL) {
+	if (g_getenv("LANG")) {
 		/* e.g. Liferea/0.3.8 (Linux; de_DE; (http://liferea.sf.net/) */
-		network_set_user_agent (g_strdup_printf("Liferea/%s (%s; %s; %s)", VERSION, OSNAME, g_getenv("LANG"), HOMEPAGE));
+		network_set_user_agent (g_strdup_printf ("Liferea/%s (%s; %s; %s)", VERSION, OSNAME, g_getenv("LANG"), HOMEPAGE));
 	} else {
 		/* "Liferea/" + VERSION + "(" OS + "; " + HOMEPAGE + ")" */
-		network_set_user_agent( g_strdup_printf("Liferea/%s (%s; %s)", VERSION, OSNAME, HOMEPAGE));
+		network_set_user_agent (g_strdup_printf ("Liferea/%s (%s; %s)", VERSION, OSNAME, HOMEPAGE));
 	}
+
+	/* call g_type_init(), GConf for some reason refuses to do so itself 
+	   and we use GConf before initializing GTK which would call g_type_init() itself */
+	g_type_init ();
 	
 	/* initialize GConf client */
-	client = gconf_client_get_default();
-	gconf_client_add_dir(client, PATH, GCONF_CLIENT_PRELOAD_NONE, NULL);
-	gconf_client_add_dir(client, "/apps/liferea/proxy", GCONF_CLIENT_PRELOAD_NONE, NULL);
-	gconf_client_add_dir(client, "/system/http_proxy", GCONF_CLIENT_PRELOAD_NONE, NULL);
-	gconf_client_add_dir(client, "/desktop/gnome/interface", GCONF_CLIENT_PRELOAD_NONE, NULL);
+	client = gconf_client_get_default ();
+	gconf_client_add_dir (client, PATH, GCONF_CLIENT_PRELOAD_NONE, NULL);
+	gconf_client_add_dir (client, "/apps/liferea/proxy", GCONF_CLIENT_PRELOAD_NONE, NULL);
+	gconf_client_add_dir (client, "/system/http_proxy", GCONF_CLIENT_PRELOAD_NONE, NULL);
+	gconf_client_add_dir (client, "/desktop/gnome/interface", GCONF_CLIENT_PRELOAD_NONE, NULL);
 	
-	gconf_client_notify_add(client, "/apps/liferea/proxy", conf_proxy_reset_settings_cb, NULL, NULL, NULL);
-	gconf_client_notify_add(client, "/system/http_proxy", conf_proxy_reset_settings_cb, NULL, NULL, NULL);
-	gconf_client_notify_add(client, "/desktop/gnome/interface/toolbar_style", conf_toolbar_style_settings_cb, NULL, NULL, NULL);
-	gconf_client_notify_add(client, SHOW_TRAY_ICON, conf_tray_settings_cb, NULL, NULL, NULL);
+	gconf_client_notify_add (client, "/apps/liferea/proxy", conf_proxy_reset_settings_cb, NULL, NULL, NULL);
+	gconf_client_notify_add (client, "/system/http_proxy", conf_proxy_reset_settings_cb, NULL, NULL, NULL);
+	gconf_client_notify_add (client, "/desktop/gnome/interface/toolbar_style", conf_toolbar_style_settings_cb, NULL, NULL, NULL);
+	gconf_client_notify_add (client, SHOW_TRAY_ICON, conf_tray_settings_cb, NULL, NULL, NULL);
 	
 	/* Load settings into static buffers */
-	conf_proxy_reset_settings_cb(NULL, 0, NULL, NULL);
+	conf_proxy_reset_settings_cb (NULL, 0, NULL, NULL);
 }
 
 void
