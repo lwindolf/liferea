@@ -25,7 +25,9 @@
 #include <string.h>
 
 #include "ns_itunes.h"
+
 #include "common.h"
+#include "metadata.h"
 #include "xml.h"
 
 /* a namespace documentation can be found at 
@@ -78,7 +80,7 @@ ns_itunes_parse_channel_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 
 	if (!xmlStrcmp (cur->name, "summary") || !xmlStrcmp (cur->name, "subtitle")) {
 		tmp = common_utf8_fix (xhtml_extract (cur, 0, NULL));
-		old = metadata_list_get (&ctxt->subscription->metadata, "description");
+		old = metadata_list_get (ctxt->subscription->metadata, "description");
 		if (!old || strlen (old) < strlen (tmp))
 			metadata_list_set (&ctxt->subscription->metadata, "description", tmp);
 		g_free (tmp);
