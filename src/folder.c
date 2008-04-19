@@ -1,7 +1,7 @@
 /**
- * @file folder.c feed list callbacks for folders
+ * @file folder.c  feed list callbacks for folders
  * 
- * Copyright (C) 2006-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2008 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -123,7 +123,6 @@ nodeTypePtr folder_get_node_type(void) {
 		folder_load,
 		folder_save,
 		folder_update_unread_count,
-		NULL,			/* process_update_result */
 		folder_remove,
 		node_default_render,
 		ui_folder_add,
@@ -152,7 +151,6 @@ nodeTypePtr root_get_node_type(void) {
 		folder_load,
 		folder_save,
 		folder_update_unread_count,
-		NULL,		/* process_update_result() */
 		folder_remove,
 		node_default_render,
 		ui_folder_add,

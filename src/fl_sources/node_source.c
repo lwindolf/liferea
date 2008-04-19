@@ -1,7 +1,7 @@
 /**
- * @file node_source.c generic feed list provider implementation
+ * @file node_source.c  generic feed list provider implementation
  * 
- * Copyright (C) 2005-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2005-2008 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -285,13 +285,6 @@ node_source_save (nodePtr node)
 }
 
 static void
-node_source_process_update_result (nodePtr node, const struct updateResult * const result, guint32 flags)
-{
-	// FIXME: stupid interface, needs clarification
-	g_warning("node_source_process_update_result: This should never happen!");
-}
-
-static void
 node_source_free (nodePtr node)
 {
 	if (NULL != NODE_SOURCE_TYPE (node)->free)
@@ -319,15 +312,12 @@ node_source_get_node_type (void)
 		nodeType->load			= folder_get_node_type()->load;
 		nodeType->save			= node_source_save;
 		nodeType->update_counters	= folder_get_node_type()->update_counters;
-		nodeType->process_update_result = node_source_process_update_result;
 		nodeType->remove		= node_source_remove;
 		nodeType->render		= node_default_render;
 		nodeType->request_add		= ui_node_source_type_dialog;
 		nodeType->request_properties	= ui_node_rename;
-		nodeType->process_update_result	= node_source_process_update_result;
 		nodeType->free			= node_source_free;
 	}
 
 	return nodeType; 
 }
-

@@ -1,7 +1,7 @@
 /**
- * @file feed.h common feed handling interface
+ * @file feed.h  common feed handling interface
  * 
- * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -24,15 +24,24 @@
 
 #include <libxml/parser.h>
 #include <glib.h>
-#include "node.h"
-#include "node_type.h"
-#include "item.h"
-#include "subscription.h"
 
-/* The feed node type can be used by all feed list sources
-   serving real feeds that are downloaded from the web, are provided
-   by local files or executed commands. Feed list sources are not
-   forced to use this node type implementation. */
+#include "node_type.h"
+#include "subscription_type.h"
+
+/*
+ * The feed concept in Liferea comprises several standalone concepts:
+ *
+ * 1.) A "feed" is an XML document to be parsed
+ *
+ * 2.) A "feed" is a node in the feed list.
+ *
+ * 3.) A "feed" is a way of updating a subscription.
+ *
+ * The feed interface provides default methods on all those
+ * three concepts that are used per-default but might be
+ * overwritten by node source, node type or subscription
+ * type specific implementations.
+ */
 
 struct feedHandler;
 
@@ -57,6 +66,7 @@ typedef struct feed {
 	gboolean	noIncremental;		/**< Do merging for this feed but drop old items */
 	
 	/* feed parsing state */
+
 	gboolean	valid;			/**< FALSE if libxml2 recovery mode was used on last feed parsing */
 	GString		*parseErrors;		/**< textual description of parsing errors */
 	time_t		time;			/**< Feeds modified date */
@@ -202,12 +212,19 @@ void feed_set_etag(feedPtr feed, const gchar *etag);
  */
 gboolean feed_parse(feedParserCtxtPtr ctxt);
 
-/* implementation of the node type interface */
+/* implementation of the default subscription type interface */
+
+/**
+ * Returns the subscription type implementation for simple feed nodes.
+ */
+subscriptionTypePtr feed_get_subscription_type (void);
+
+/* implementation of the default node type interface */
 
 #define IS_FEED(node) (node->type == feed_get_node_type ())
 
 /**
- * Returns the node type implementation for feed nodes.
+ * Returns the node type implementation for simple feed nodes.
  */
 nodeTypePtr feed_get_node_type (void);
 

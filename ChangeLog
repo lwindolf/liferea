@@ -14,6 +14,8 @@
 	* Fixes broken updating feeds with local files as source.
 	* Improves padding and width of search and search folder
 	  dialogs (patch by Jeff Fortin)
+	* Fixes incorrect initial online state when compiled
+	  without NetworkManager support. (Paul Keusemann)
 
 	Translations
 

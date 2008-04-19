@@ -25,9 +25,8 @@
 
 /**
  * Liferea supports different types of nodes in the feed 
- * list. For those node types there can be totally different
- * implementations which just have to follow the interface
- * defined here.
+ * list. The type of a feed list node determines how the user
+ * can interact with it.
  */
 
 /** node type interface */
@@ -43,7 +42,6 @@ typedef struct nodeType {
 	itemSetPtr	(*load)			(nodePtr node);
 	void 		(*save)			(nodePtr node);
 	void		(*update_counters)	(nodePtr node);
-	void 		(*process_update_result)(nodePtr node, const struct updateResult * const result, updateFlags flags);
 	void		(*remove)		(nodePtr node);
 	gchar *		(*render)		(nodePtr node);
 	void		(*request_add)		(nodePtr parent);
@@ -61,8 +59,8 @@ typedef struct nodeType {
 #define NODE_TYPE(node)	(node->type)
 
 /**
- * Registers a new node type. Can be used by feed list
- * plugins to register own node types.
+ * Registers a new node type. Can be used by node source
+ * implementations to register own node types.
  *
  * @param nodeType	node type info 
  */
@@ -74,6 +72,8 @@ void node_type_register(nodeTypePtr nodeType);
  * @param node	the node
  * @param type	the new type
  */
+// FIXME: remove this wrapper, pointless as type is always a simple
+// unrelated attribute that never causes dynamic behaviour
 void node_set_type(nodePtr node, nodeTypePtr type);
 
 /** 

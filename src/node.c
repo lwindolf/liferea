@@ -259,13 +259,6 @@ node_get_itemset (nodePtr node)
 }
 
 void
-node_process_update_result (nodePtr node, const struct updateResult * const result, updateFlags flags)
-{
-	if (NODE_TYPE (node)->process_update_result)
-		NODE_TYPE (node)->process_update_result (node, result, flags);
-}
-
-void
 node_mark_all_read (nodePtr node)
 {
 	if (!node)

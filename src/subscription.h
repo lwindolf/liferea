@@ -1,7 +1,7 @@
 /**
- * @file subscription.h common subscription handling interface
+ * @file subscription.h  common subscription handling interface
  * 
- * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,6 +41,7 @@ enum feed_request_flags {
 /** Common structure to hold all information about a single subscription. */
 typedef struct subscription {
 	nodePtr		node;			/**< the feed list node the subscription is attached to */
+	struct subscriptionType *type;		/**< the subscription type */
 	
 	gchar		*source;		/**< current source, can be changed by redirects */
 	gchar		*origSource;		/**< the source given when creating the subscription */

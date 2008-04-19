@@ -1,7 +1,7 @@
 /**
- * @file opml_source.c OPML Planet/Blogroll feed list source
+ * @file opml_source.c  OPML Planet/Blogroll feed list source
  * 
- * Copyright (C) 2006-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2008 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,69 +41,7 @@
 /** default OPML update interval = once a day */
 #define OPML_SOURCE_UPDATE_INTERVAL 60*60*24
 
-static void ui_opml_source_get_source_url (nodePtr parent);
-
-gchar * opml_source_get_feedlist(nodePtr node) {
-
-	return common_create_cache_filename("cache" G_DIR_SEPARATOR_S "plugins", node->id, "opml");
-}
-
-void opml_source_import(nodePtr node) {
-	gchar		*filename;
-
-	debug_enter("opml_source_import");
-
-	opml_source_setup(NULL, node);
-	
-	debug1(DEBUG_CACHE, "starting import of opml source instance (id=%s)", node->id);
-	filename = opml_source_get_feedlist(node);
-	if(g_file_test(filename, G_FILE_TEST_EXISTS)) {
-		import_OPML_feedlist(filename, node, node->source, FALSE, TRUE);
-	} else {
-		g_warning("cannot open \"%s\"", filename);
-		node->available = FALSE;
-	}
-	g_free(filename);
-	
-	subscription_set_update_interval (node->subscription, OPML_SOURCE_UPDATE_INTERVAL);
-
-	debug_exit("opml_source_import");
-}
-
-void opml_source_export(nodePtr node) {
-	gchar		*filename;
-	
-	debug_enter("opml_source_export");
-
-	/* Although the OPML structure won't change, it needs to
-	   be saved so that the feed ids are saved to disk after
-	   the first import or updates of the source OPML. */
-
-	g_assert(node == node->source->root);
-
-	filename = opml_source_get_feedlist(node);	   
-	export_OPML_feedlist(filename, node, TRUE);
-	g_free(filename);
-	
-	debug1(DEBUG_CACHE, "adding OPML source: title=%s", node_get_title(node));
-	
-	debug_exit("opml_source_export");
-}
-
-void opml_source_remove(nodePtr node) {
-	gchar		*filename;
-	
-	g_assert(node == node->source->root);
-
-	/* step 1: delete all feed cache files */
-	node_foreach_child(node, node_request_remove);
-	g_assert(!node->children);
-	
-	/* step 2: delete source instance OPML cache file */
-	filename = opml_source_get_feedlist(node);
-	unlink(filename);
-	g_free(filename);
-}
+/* OPML subscription list helper functions */
 
 typedef struct mergeCtxt {
 	nodePtr		rootNode;	/* root node of the OPML feed list source */
@@ -205,9 +143,18 @@ opml_source_check_for_removal (nodePtr node, gpointer user_data)
 	g_free (expr);
 }
 
+/* OPML subscription type implementation */
+
 static void
-opml_source_process_update_result (nodePtr node, const struct updateResult * const result, updateFlags flags)
+opml_subscription_prepare_update_request (subscriptionPtr subscription, const struct updateRequest *request)
 {
+	/* Nothing to do here for simple OPML subscriptions */
+}
+
+static void
+opml_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
+{
+	nodePtr		node = subscription->node;
 	mergeCtxtPtr	mergeCtxt;
 	xmlDocPtr	doc, oldDoc;
 	xmlNodePtr	root, title;
@@ -271,16 +218,84 @@ opml_source_process_update_result (nodePtr node, const struct updateResult * con
 	node_foreach_child_data (node, node_update_subscription, GUINT_TO_POINTER (0));
 }
 
-static void
-opml_source_schedule_update (nodePtr node, updateFlags flags)
-{
-	subscription_update_with_callback (node->subscription, opml_source_process_update_result, flags);
+/* subscription type definition */
+
+static struct subscriptionType opmlSubscriptionType = {
+	opml_subscription_prepare_update_request,
+	opml_subscription_process_update_result,
+	NULL	/* free */
+};
+
+/* OPML source type implementation */
+
+static void ui_opml_source_get_source_url (nodePtr parent);
+
+gchar * opml_source_get_feedlist(nodePtr node) {
+
+	return common_create_cache_filename("cache" G_DIR_SEPARATOR_S "plugins", node->id, "opml");
+}
+
+void opml_source_import(nodePtr node) {
+	gchar		*filename;
+
+	debug_enter("opml_source_import");
+
+	opml_source_setup(NULL, node);
+	
+	debug1(DEBUG_CACHE, "starting import of opml source instance (id=%s)", node->id);
+	filename = opml_source_get_feedlist(node);
+	if(g_file_test(filename, G_FILE_TEST_EXISTS)) {
+		import_OPML_feedlist(filename, node, node->source, FALSE, TRUE);
+	} else {
+		g_warning("cannot open \"%s\"", filename);
+		node->available = FALSE;
+	}
+	g_free(filename);
+	
+	subscription_set_update_interval (node->subscription, OPML_SOURCE_UPDATE_INTERVAL);
+
+	debug_exit("opml_source_import");
+}
+
+void opml_source_export(nodePtr node) {
+	gchar		*filename;
+	
+	debug_enter("opml_source_export");
+
+	/* Although the OPML structure won't change, it needs to
+	   be saved so that the feed ids are saved to disk after
+	   the first import or updates of the source OPML. */
+
+	g_assert(node == node->source->root);
+
+	filename = opml_source_get_feedlist(node);	   
+	export_OPML_feedlist(filename, node, TRUE);
+	g_free(filename);
+	
+	debug1(DEBUG_CACHE, "adding OPML source: title=%s", node_get_title(node));
+	
+	debug_exit("opml_source_export");
+}
+
+void opml_source_remove(nodePtr node) {
+	gchar		*filename;
+	
+	g_assert(node == node->source->root);
+
+	/* step 1: delete all feed cache files */
+	node_foreach_child(node, node_request_remove);
+	g_assert(!node->children);
+	
+	/* step 2: delete source instance OPML cache file */
+	filename = opml_source_get_feedlist(node);
+	unlink(filename);
+	g_free(filename);
 }
 
 void
 opml_source_update (nodePtr node)
 {
-	opml_source_schedule_update (node, 0);  // FIXME: 0 ?
+	subscription_update (node->subscription, 0);  // FIXME: 0 ?
 }
 
 void
@@ -292,26 +307,29 @@ opml_source_auto_update (nodePtr node)
 	
 	/* do daily updates for the feed list and feed updates according to the default interval */
 	if (node->subscription->updateState->lastPoll.tv_sec + OPML_SOURCE_UPDATE_INTERVAL <= now.tv_sec)
-		opml_source_schedule_update (node, 0);
+		opml_source_update (node);
 }
 
-/** called during import and when subscribing, we will do
-    node_add_child() only when subscribing */
+/**
+ * Shared actions needed during import and when subscribing, 
+ * Only node_add_child() will be done only when subscribing.
+ */
 void
 opml_source_setup (nodePtr parent, nodePtr node)
 {
 	gchar	*filename;
 	
 	node_set_type(node, node_source_get_node_type());
+	node->subscription->type = &opmlSubscriptionType;
 	
 	filename = g_strdup_printf ("%s.png", NODE_SOURCE_TYPE (node)->id);
 	node->icon = create_pixbuf (filename);
 	g_free (filename);
 	
-	if(parent) {
+	if (parent) {
 		gint pos;
-		ui_feedlist_get_target_folder(&pos);
-		node_add_child(parent, node, pos);
+		ui_feedlist_get_target_folder (&pos);
+		node_add_child (parent, node, pos);
 	}
 }
 

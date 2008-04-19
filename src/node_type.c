@@ -1,7 +1,7 @@
 /**
  * @file node_type.c  node type handling
  * 
- * Copyright (C) 2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2008 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ void
 node_type_register (nodeTypePtr nodeType)
 {
 
-	/* all attributes and methods are mandatory! */
+	/* all attributes and methods except free() are mandatory! */
 	g_assert (nodeType->id);
 	g_assert (nodeType->import);
 	g_assert (nodeType->export);

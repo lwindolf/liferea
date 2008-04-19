@@ -339,7 +339,6 @@ vfolder_get_node_type (void)
 		vfolder_load,
 		vfolder_save,
 		vfolder_update_unread_count,
-		NULL,			/* process_update_result() */
 		vfolder_remove,
 		node_default_render,
 		vfolder_add,

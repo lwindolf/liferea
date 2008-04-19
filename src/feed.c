@@ -1,7 +1,7 @@
 /**
- * @file feed.c common feed handling
+ * @file feed.c  common feed handling
  * 
- * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -61,7 +61,7 @@ struct feed_type {
 	gchar *id_str;
 };
 
-/* initializing function, only called upon startup */
+/* parser initializing function, only called upon startup */
 void feed_init(void) {
 
 	metadata_init();
@@ -531,14 +531,14 @@ feed_free (nodePtr node) {
 	g_free(feed);
 }
 
-/* implementation of feed node update request processing callback */
+/* implementation of subscription type interface */
 
 static void
-feed_process_update_result (nodePtr node, const struct updateResult * const result, guint32 flags)
+feed_process_update_result (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
 {
 	feedParserCtxtPtr	ctxt;
+	nodePtr			node = subscription->node;
 	feedPtr			feed = (feedPtr)node->data;
-	subscriptionPtr		subscription = (subscriptionPtr)node->subscription;
 	gchar			*old_source;
 
 	debug_enter ("feed_process_update_result");
@@ -622,6 +622,12 @@ feed_process_update_result (nodePtr node, const struct updateResult * const resu
 	debug_exit ("feed_process_update_result");
 }
 
+void
+feed_prepare_update_request (subscriptionPtr subscription, const struct updateRequest *request)
+{
+	/* Nothing to do. Feeds require no subscription extra handling. */
+}
+
 /* implementation of the node type interface */
 
 static itemSetPtr
@@ -681,6 +687,18 @@ feed_properties (nodePtr node)
 	ui_subscription_prop_dialog_new (node->subscription);
 }
 
+subscriptionTypePtr
+feed_get_subscription_type (void)
+{
+	static struct subscriptionType sti = {
+		feed_prepare_update_request,
+		feed_process_update_result,
+		NULL  // FIXME
+	};
+	
+	return &sti;
+}
+
 nodeTypePtr
 feed_get_node_type (void)
 { 
@@ -694,7 +712,6 @@ feed_get_node_type (void)
 		feed_load,
 		feed_save,
 		feed_update_unread_count,
-		feed_process_update_result,
 		feed_remove,
 		feed_render,
 		feed_add,

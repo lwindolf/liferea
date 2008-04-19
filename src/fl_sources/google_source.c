@@ -1,7 +1,7 @@
 /**
- * @file google_source.c Google reader feed list source support
+ * @file google_source.c  Google reader feed list source support
  * 
- * Copyright (C) 2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2008 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@ typedef struct reader {
 
 static void google_source_update_subscription_list (nodePtr node, guint flags);
 
-/* source logic */
+/* subscription list merging functions */
 
 static void
 google_source_check_for_removal (nodePtr node, gpointer user_data)
@@ -113,57 +113,55 @@ google_source_merge_feed(xmlNodePtr match, gpointer user_data)
 		xmlFree (title);
 }
 
-static void
-google_source_subscriptions_cb (nodePtr node, const struct updateResult * const result, updateFlags flags)
-{
-	readerPtr	reader = (readerPtr)node->data;
-	xmlNodePtr	root;
-	xmlDocPtr	doc;
-	
-	debug1(DEBUG_UPDATE, "Google Reader subscription list download finished data=%d", result->data);
+/* OPML subscription type implementation */
 
+static void
+google_subscription_opml_cb (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
+{
+	readerPtr	reader = (readerPtr)subscription->node->data;
+	
 	if (result->data) {
-		doc = xml_parse (result->data, result->size, FALSE, NULL);
+		xmlDocPtr doc = xml_parse (result->data, result->size, FALSE, NULL);
 		if(doc) {		
-			root = xmlDocGetRootElement (doc);
+			xmlNodePtr root = xmlDocGetRootElement (doc);
 			
 			/* Go through all existing nodes and remove those whose
 			   URLs are not in new feed list. Also removes those URLs
 			   from the list that have corresponding existing nodes. */
-			node_foreach_child_data (node, google_source_check_for_removal, (gpointer)root);
+			node_foreach_child_data (subscription->node, google_source_check_for_removal, (gpointer)root);
 						
-			opml_source_export (node);	/* save new feed list tree to disk 
-			                                   to ensure correct document in 
-							   next step */
+			opml_source_export (subscription->node);	/* save new feed list tree to disk 
+									   to ensure correct document in 
+									   next step */
 
 			xpath_foreach_match (root, "/object/list[@name='subscriptions']/object",
 			                     google_source_merge_feed,
 			                     (gpointer)reader);
 						   
-			opml_source_export (node);	/* save new feeds to feed list */
+			opml_source_export (subscription->node);	/* save new feeds to feed list */
 						   
-			node->available = TRUE;
+			subscription->node->available = TRUE;
 			xmlFreeDoc (doc);
 		}
 	} else {
-		node->available = FALSE;
+		subscription->node->available = FALSE;
 	}
 
-	node_foreach_child_data (node, node_update_subscription, GUINT_TO_POINTER (0));
+	node_foreach_child_data (subscription->node, node_update_subscription, GUINT_TO_POINTER (0));
 }
 
 static void
-google_source_login_cb (nodePtr node, const struct updateResult * const result, updateFlags flags)
+google_subscription_login_cb (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
 {
-	readerPtr	reader = (readerPtr)node->data;
+	readerPtr	reader = (readerPtr)subscription->node->data;
 	gchar		*tmp;
 	GTimeVal	now;
 	
 	debug0 (DEBUG_UPDATE, "google login processing...");
 	
-	if (node->subscription->updateError) {
-		g_free (node->subscription->updateError);
-		node->subscription->updateError = NULL;
+	if (subscription->updateError) {
+		g_free (subscription->updateError);
+		subscription->updateError = NULL;
 	}
 	
 	g_assert (!reader->sid);
@@ -178,79 +176,95 @@ google_source_login_cb (nodePtr node, const struct updateResult * const result, 
 			*tmp = '\0';
 		reader->sid = g_strdup_printf ("Cookie: %s\r\n", reader->sid);
 		debug1 (DEBUG_UPDATE, "google reader SID found: %s", reader->sid);
-		node->available = TRUE;
+		subscription->node->available = TRUE;
 		
 		/* now that we are authenticated retrigger updating to start data retrieval */
 		g_get_current_time (&now);
-		google_source_update_subscription_list (node, 0);
+		subscription_update (subscription, 0);
 	} else {
 		debug0 (DEBUG_UPDATE, "google reader login failed! no SID found in result!");
-		node->available = FALSE;
-		node->subscription->updateError = g_strdup (_("Google Reader login failed!"));
+		subscription->node->available = FALSE;
+		subscription->updateError = g_strdup (_("Google Reader login failed!"));
 	}
 }
 
-/* authenticate to receive SID... */
 static void
-google_source_login (nodePtr node, updateFlags flags)
+google_opml_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
 {
-	gchar		*source;
-	readerPtr	reader = (readerPtr)node->data;
+	readerPtr	reader = (readerPtr)subscription->node->data;
 	
-	if (!reader) {
-		node->data = reader = g_new0 (struct reader, 1);
-		reader->root = node;
-	} else {
-		g_free (reader->sid);
-		reader->sid = NULL;
-	}
-
-	source = g_strdup_printf ("https://www.google.com/accounts/ClientLogin?service=reader&Email=%s&Passwd=%s&source=liferea&continue=http://www.google.com",
-	                          node->subscription->updateOptions->username,
-	                          node->subscription->updateOptions->password);
-	debug2 (DEBUG_UPDATE, "login to Google Reader source %s (node id %s)", source, node->id);
-	subscription_set_source (node->subscription, source);
-	subscription_update_with_callback (node->subscription, google_source_login_cb, flags);
-	g_free (source);
+	/* Note: the subscription update design supports only request->response pairs
+	   and doesn't anticipate multi-step login procedures. Therefore we have only
+	   one result callback and must use the "reader" structure to determine what
+	   currently needs to be done. */
+	   
+	if (reader)
+		google_subscription_opml_cb (subscription, result, flags);
+	else
+		google_subscription_login_cb (subscription, result, flags);
 }
 
 static void
-google_source_update_subscription_list (nodePtr node, updateFlags flags)
+google_opml_subscription_prepare_update_request (subscriptionPtr subscription, const struct updateRequest *request)
 {
-	readerPtr	reader = (readerPtr)node->data;
+	readerPtr	reader = (readerPtr)subscription->node->data;
 	
 	if (!reader) {
-		/* not logged in yet, successful login will
-		   trigger an update automatically, so return
-		   after calling async login method ... */
-		google_source_login (node, flags);
+		gchar *source;
+
+		/* We are not logged in yet, we need to perform a login first and retrigger the update later... */
+		
+		subscription->node->data = reader = g_new0 (struct reader, 1);
+		reader->root = subscription->node;
+
+		source = g_strdup_printf ("https://www.google.com/accounts/ClientLogin?service=reader&Email=%s&Passwd=%s&source=liferea&continue=http://www.google.com",
+	                        	  subscription->updateOptions->username,
+	                        	  subscription->updateOptions->password);
+					  
+		debug2 (DEBUG_UPDATE, "login to Google Reader source %s (node id %s)", source, subscription->node->id);
+		subscription_set_source (subscription, source);
+		
+		g_free (source);
 		return;
 	}
 
-	debug1 (DEBUG_UPDATE, "updating Google Reader subscription (node id %s)", node->id);
-	subscription_set_source (node->subscription, "http://www.google.com/reader/api/0/subscription/list");
-	subscription_set_cookies (node->subscription, reader->sid);
-	subscription_update_with_callback (node->subscription, google_source_subscriptions_cb, flags);
+	debug1 (DEBUG_UPDATE, "updating Google Reader subscription (node id %s)", subscription->node->id);
+	subscription_set_source (subscription, "http://www.google.com/reader/api/0/subscription/list");
+	subscription_set_cookies (subscription, reader->sid);
 }
 
-/** called during import and when subscribing, we will do
-    node_add_child() only when subscribing */
-void google_source_setup(nodePtr parent, nodePtr node) {
+/* OPML subscription type definition */
 
-	node->icon = create_pixbuf("fl_google.png");
+static struct subscriptionType googleReaderOpmlSubscriptionType = {
+	google_opml_subscription_prepare_update_request,
+	google_opml_subscription_process_update_result,
+	NULL	/* free */
+};
+
+/** 
+ * Shared actions needed during import and when subscribing,
+ * Only node_add_child() will be done only when subscribing.
+ */
+void
+google_source_setup (nodePtr parent, nodePtr node)
+{
+	node->icon = create_pixbuf ("fl_google.png");
+	node->subscription->type = &googleReaderOpmlSubscriptionType;
 	
-	node_set_type(node, node_source_get_node_type());
-	if(parent) {
+	node_set_type (node, node_source_get_node_type ());
+	if (parent) {
 		gint pos;
-		ui_feedlist_get_target_folder(&pos);
-		node_add_child(parent, node, pos);
+		ui_feedlist_get_target_folder (&pos);
+		node_add_child (parent, node, pos);
 	}
 }
+
+/* node source type implementation */
 
 static void
 google_source_update (nodePtr node)
 {
-	google_source_update_subscription_list (node, 0);  // FIXME: 0 ?
+	subscription_update (node->subscription, 0);  // FIXME: 0 ?
 }
 
 static void
@@ -262,7 +276,7 @@ google_source_auto_update (nodePtr node)
 	
 	/* do daily updates for the feed list and feed updates according to the default interval */
 	if (node->subscription->updateState->lastPoll.tv_sec + GOOGLE_SOURCE_UPDATE_INTERVAL <= now.tv_sec)
-		google_source_update_subscription_list (node, 0);
+		google_source_update (node);
 }
 
 static void google_source_init (void) { }

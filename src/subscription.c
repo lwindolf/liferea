@@ -44,6 +44,7 @@ subscription_new (const gchar *source,
 	subscriptionPtr	subscription;
 	
 	subscription = g_new0 (struct subscription, 1);
+	subscription->type = feed_get_subscription_type ();
 	subscription->updateOptions = options;
 	
 	if (!subscription->updateOptions)
@@ -148,16 +149,10 @@ subscription_update_favicon (subscriptionPtr subscription)
 			  (gpointer)subscription->node);
 }
 
-typedef struct subscriptionUpdateCtxt {
-	subscriptionPtr		subscription;
-	subscription_update_cb	callback;
-} *subscriptionUpdateCtxtPtr;
-
 static void
 subscription_process_update_result (const struct updateResult * const result, gpointer user_data, guint32 flags)
 {
-	subscriptionUpdateCtxtPtr ctxt = (subscriptionUpdateCtxtPtr)user_data;
-	subscriptionPtr	subscription = ctxt->subscription;
+	subscriptionPtr subscription = (subscriptionPtr)user_data;
 	nodePtr		node = subscription->node;
 	gboolean	processing = FALSE;
 	
@@ -188,14 +183,9 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	if (flags & FEED_REQ_DOWNLOAD_FAVICON)
 		subscription_update_favicon (subscription);
 	
-	/* 2. call subscription/node type specific processing */
-	if (processing) {
-		if (ctxt->callback) {
-			(*ctxt->callback) (node, result, flags);
-		} else {
-			node_process_update_result (node, result, flags);
-		}
-	}
+	/* 2. call subscription type specific processing */
+	if (processing)
+		SUBSCRIPTION_TYPE (subscription)->process_update_result (subscription, result, flags);
 	
 	/* 3. generic postprocessing */
 	subscription->updateJob = NULL;
@@ -209,14 +199,11 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	itemview_update ();
 	ui_node_update (subscription->node->id);
 	feedlist_schedule_save ();
-	
-	g_free (ctxt);
 }
 
 void
-subscription_update_with_callback (subscriptionPtr subscription, subscription_update_cb callback, guint flags)
+subscription_update (subscriptionPtr subscription, guint flags)
 {
-	subscriptionUpdateCtxtPtr	ctxt;
 	updateRequestPtr		request;
 	GTimeVal			now;
 	
@@ -224,10 +211,6 @@ subscription_update_with_callback (subscriptionPtr subscription, subscription_up
 		return;
 	
 	debug1 (DEBUG_UPDATE, "Scheduling %s to be updated", node_get_title (subscription->node));
-	
-	ctxt = g_new0 (struct subscriptionUpdateCtxt, 1);
-	ctxt->subscription = subscription;
-	ctxt->callback = callback;
 	
 	/* Retries that might have long timeouts must be 
 	   cancelled to immediately execute the user request. */
@@ -250,15 +233,11 @@ subscription_update_with_callback (subscriptionPtr subscription, subscription_up
 
 		if (subscription_get_filter (subscription))
 			request->filtercmd = g_strdup (subscription_get_filter (subscription));
-		
-		subscription->updateJob = update_execute_request (subscription, request, subscription_process_update_result, ctxt, flags);
-	}
-}
 
-void
-subscription_update (subscriptionPtr subscription, guint flags)
-{
-	subscription_update_with_callback (subscription, NULL, flags);
+		SUBSCRIPTION_TYPE (subscription)->prepare_update_request (subscription, request);
+		
+		subscription->updateJob = update_execute_request (subscription, request, subscription_process_update_result, subscription, flags);
+	}
 }
 
 void
