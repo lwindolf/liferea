@@ -27,6 +27,7 @@
 #include "debug.h"
 #include "feedlist.h"
 #include "node.h"
+#include "update.h"
 #include "xml.h"
 #include "ui/ui_dialog.h"
 #include "fl_sources/google_source.h"
@@ -230,7 +231,7 @@ google_opml_subscription_prepare_update_request (subscriptionPtr subscription, c
 
 	debug1 (DEBUG_UPDATE, "updating Google Reader subscription (node id %s)", subscription->node->id);
 	subscription_set_source (subscription, "http://www.google.com/reader/api/0/subscription/list");
-	subscription_set_cookies (subscription, reader->sid);
+	update_state_set_cookies (subscription->updateState, reader->sid);
 }
 
 /* OPML subscription type definition */

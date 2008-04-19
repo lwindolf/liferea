@@ -187,22 +187,6 @@ void subscription_set_default_update_interval(subscriptionPtr subscription, guin
 void subscription_reset_update_counter (subscriptionPtr subscription, GTimeVal *now);
 
 /**
- * Allows to explicitely set the cookies for the next 
- * update request. This method needs to be called after
- * subscription_set_source() which always resets the cookies
- * property. Note: update requests handled by the default
- * subscription result processing callback will overwrite
- * the cookies again in case of permanent redirects, so it
- * is necessary to set cookies before each request if 
- * different cookies than the source specific ones are
- * necessary.
- *
- * @param subscription	the subscription
- * @param cookies	the cookies
- */
-void subscription_set_cookies (subscriptionPtr subscription, const gchar *cookies);
-
-/**
  * Get the source URL of a given subscription
  *
  * @param subscription	the subscription

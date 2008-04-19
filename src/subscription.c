@@ -329,17 +329,6 @@ subscription_get_filter (subscriptionPtr subscription)
 }
 
 void
-subscription_set_cookies (subscriptionPtr subscription, const gchar *cookies)
-{
-	g_free (subscription->updateState->cookies);
-
-	if (cookies)
-		subscription->updateState->cookies = g_strdup(cookies);
-	else
-		subscription->updateState->cookies = NULL;
-}
-
-void
 subscription_set_orig_source (subscriptionPtr subscription, const gchar *source)
 {
 	g_free (subscription->origSource);
@@ -356,9 +345,9 @@ subscription_set_source (subscriptionPtr subscription, const gchar *source)
 	
 	if ('|' != source[0])
 		/* check if we've got matching cookies ... */
-		subscription_set_cookies (subscription, cookies_find_matching (source));
+		update_state_set_cookies (subscription->updateState, cookies_find_matching (source));
 	else 
-		subscription_set_cookies (subscription, NULL);
+		update_state_set_cookies (subscription->updateState, NULL);
 	
 	if (NULL == subscription_get_orig_source (subscription))
 		subscription_set_orig_source (subscription, source);
