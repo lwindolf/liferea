@@ -66,6 +66,7 @@ liferea_bin_SOURCES = \
 	script.c script.h \
 	social.c social.h \
 	subscription.c subscription.h \
+	subscription_type.h \
 	update.c update.h \
 	main.c \
 	vfolder.c vfolder.h \
