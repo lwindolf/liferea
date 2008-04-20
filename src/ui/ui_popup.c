@@ -138,7 +138,7 @@ ui_popup_update_menues (void)
 
 	addPopupOption (&item_menu_items, &item_menu_len, "/",					NULL, NULL, 					0, "<Separator>", 0);	
 	/* menu option for social bookmark creation */
-	path = ui_popup_create_path (_("/_Bookmark Link at %s"), social_get_site ());
+	path = ui_popup_create_path (_("/_Bookmark Link at %s"), social_get_bookmark_site ());
 	addPopupOption (&item_menu_items, &item_menu_len, path,					NULL, on_popup_social_bm_item_selected,		0, NULL, 0);
 	addPopupOption (&item_menu_items, &item_menu_len, _("/Copy Item _URL to Clipboard"),     NULL, on_popup_copy_URL_clipboard,     		0, NULL, 0);
 	
@@ -161,7 +161,7 @@ ui_popup_update_menues (void)
 	addPopupOption (&url_menu_items, &url_menu_len, _("/_Launch Link In Browser"),	NULL, on_popup_launch_link_selected, 		0, NULL, 0);
 	addPopupOption (&url_menu_items, &url_menu_len, "/",				NULL, NULL,		                	0, "<Separator>", 0);
 	/* menu option for social bookmark creation */
-	path = ui_popup_create_path (_("/_Bookmark Link at %s"), social_get_site ());
+	path = ui_popup_create_path (_("/_Bookmark Link at %s"), social_get_bookmark_site ());
 	addPopupOption (&url_menu_items, &url_menu_len, path,				NULL, on_popup_social_bm_link_selected,  	0, NULL, 0);
 	addPopupOption (&url_menu_items, &url_menu_len, _("/_Copy Link Location"),	NULL, on_popup_copy_url_selected,		0, NULL, 0);
 	addPopupOption (&url_menu_items, &url_menu_len, "/",				NULL, NULL,		                	0, "<Separator>", 0);

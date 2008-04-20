@@ -1,7 +1,7 @@
 /**
- * @file ui_itemlist.h item list GUI handling
+ * @file ui_itemlist.h  item list GUI handling
  *
- * Copyright (C) 2004-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2008 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
  *	      
  * This library is free software; you can redistribute it and/or
@@ -242,12 +242,21 @@ void ui_itemlist_update_item (itemPtr item);
  */
 void ui_itemlist_update_all_items (void);
 
+// FIXME: the following two functions have nothing to do with the "item list"!
+
+/**
+ * Launches the configured link search engine for the given item
+ *
+ * @param item	the item
+ */
+void ui_itemlist_search_item_link (itemPtr item);
+
 /**
  * Launches the configured social bookmarking site for the given item
  *
  * @param item	the item
  */
-void ui_itemlist_add_item_bookmark(itemPtr item);
+void ui_itemlist_add_item_bookmark (itemPtr item);
 
 /**
  * Copies the selected items URL to the clipboard.

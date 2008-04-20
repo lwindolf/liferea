@@ -688,9 +688,17 @@ void on_popup_copy_URL_clipboard(void) {
 }
 
 void
+ui_itemlist_search_item_link (itemPtr item)
+{
+	gchar *url = social_get_link_search_url (item_get_source (item));
+	liferea_htmlview_launch_URL (ui_mainwindow_get_active_htmlview (), url, UI_HTMLVIEW_LAUNCH_DEFAULT);
+	g_free (url);
+}
+
+void
 ui_itemlist_add_item_bookmark (itemPtr item)
 {
-	gchar *url = social_get_url (item_get_source (item), item_get_title (item));
+	gchar *url = social_get_bookmark_url (item_get_source (item), item_get_title (item));
 	liferea_htmlview_launch_URL (ui_mainwindow_get_active_htmlview (), url, UI_HTMLVIEW_LAUNCH_EXTERNAL);
 	g_free (url);
 }
@@ -709,7 +717,7 @@ void
 on_popup_social_bm_link_selected (gpointer selectedUrl, guint callback_action, GtkWidget *widget)
 {	
 	if (selectedUrl) {
-		gchar *url = social_get_url (selectedUrl, "");
+		gchar *url = social_get_bookmark_url (selectedUrl, "");
 		liferea_htmlview_launch_URL (ui_mainwindow_get_active_htmlview (), url, UI_HTMLVIEW_LAUNCH_EXTERNAL);
 		g_free (url);
 	} else {

@@ -1,7 +1,7 @@
 /**
- * @file conf.h Liferea configuration (gconf access)
+ * @file conf.h  Liferea configuration (gconf access)
  *
- * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004,2005 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -39,9 +39,9 @@
 #define REFOCUS_TIMEOUT			"/apps/liferea/refocus-timeout"
 #define DISABLE_JAVASCRIPT		"/apps/liferea/disable-javascript"
 #define SOCIAL_BM_SITE			"/apps/liferea/social-bm-site"
-#define SOCIAL_BM_HIDE_LINK		"/apps/liferea/social-bm-hide-link"
-#define SEARCH_ENGINE			"/apps/liferea/search-engine"
-#define SEARCH_ENGINE_HIDE_LINK		"/apps/liferea/search-engine-hide-link"
+#define SOCIAL_BM_HIDE			"/apps/liferea/social-bm-hide"
+#define SOCIAL_LINK_SEARCH_SITE		"/apps/liferea/social-link-search-site"
+#define SOCIAL_LINK_SEARCH_HIDE		"/apps/liferea/social-link-search-hide"
 
 /* enclosure handling */
 #define ENCLOSURE_DOWNLOAD_TOOL		"/apps/liferea/enclosure-download-tool"

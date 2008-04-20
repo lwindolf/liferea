@@ -52,7 +52,8 @@ enum fts_columns {
 };
 
 extern GSList *htmlviewPlugins;
-extern GSList *socialBookmarkSites;
+extern GSList *bookmarkSites;	/* from social.c */
+extern GSList *linkSearchSites;	/* from social.c */
 
 static GtkWidget *prefdialog = NULL;
 
@@ -331,7 +332,13 @@ on_disablejavascript_toggled (GtkToggleButton *togglebutton, gpointer user_data)
 static void
 on_socialsite_changed (GtkOptionMenu *optionmenu, gpointer user_data)
 {
-	social_set_site ((gchar *)user_data);
+	social_set_bookmark_site ((gchar *)user_data);
+}
+
+static void
+on_linksearchsite_changed (GtkOptionMenu *optionmenu, gpointer user_data)
+{
+	social_set_link_search_site ((gchar *)user_data);
 }
 
 static void
@@ -681,22 +688,42 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 					  
 		/* Setup social bookmarking list */
 		i = 0;
-		name = conf_get_str_value(SOCIAL_BM_SITE);
-		menu = gtk_menu_new();
-		list = socialBookmarkSites;
-		while(list) {
-			socialBookmarkSitePtr siter = list->data;
-			if(name && !strcmp(siter->name, name))
+		name = conf_get_str_value (SOCIAL_BM_SITE);
+		menu = gtk_menu_new ();
+		list = bookmarkSites;
+		while (list) {
+			socialSitePtr siter = list->data;
+			if (name && !strcmp (siter->name, name))
 				tmp = i;
-			entry = gtk_menu_item_new_with_label(siter->name);
-			gtk_widget_show(entry);
-			gtk_container_add(GTK_CONTAINER(menu), entry);
-			gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_socialsite_changed), (gpointer)siter->name);
-			list = g_slist_next(list);
+			entry = gtk_menu_item_new_with_label (siter->name);
+			gtk_widget_show (entry);
+			gtk_container_add (GTK_CONTAINER (menu), entry);
+			gtk_signal_connect (GTK_OBJECT (entry), "activate", GTK_SIGNAL_FUNC (on_socialsite_changed), (gpointer)siter->name);
+			list = g_slist_next (list);
 			i++;
 		}
-		gtk_option_menu_set_menu(GTK_OPTION_MENU(liferea_dialog_lookup(prefdialog, "socialpopup")), menu);
-		gtk_option_menu_set_history(GTK_OPTION_MENU(liferea_dialog_lookup(prefdialog, "socialpopup")), tmp);
+		gtk_option_menu_set_menu (GTK_OPTION_MENU (liferea_dialog_lookup (prefdialog, "socialpopup")), menu);
+		gtk_option_menu_set_history (GTK_OPTION_MENU (liferea_dialog_lookup (prefdialog, "socialpopup")), tmp);
+		
+		/* Setup link cosmos search engine list */
+		i = 0;
+		name = conf_get_str_value (SOCIAL_LINK_SEARCH_SITE);
+		menu = gtk_menu_new ();
+		list = linkSearchSites;
+		while (list) {
+			socialSitePtr siter = list->data;
+			if (name && !strcmp (siter->name, name))
+				tmp = i;
+			entry = gtk_menu_item_new_with_label (siter->name);
+			gtk_widget_show (entry);
+			gtk_container_add (GTK_CONTAINER (menu), entry);
+			gtk_signal_connect (GTK_OBJECT (entry), "activate", GTK_SIGNAL_FUNC (on_linksearchsite_changed), (gpointer)siter->name);
+			list = g_slist_next (list);
+			i++;
+		}
+		gtk_option_menu_set_menu (GTK_OPTION_MENU (liferea_dialog_lookup (prefdialog, "searchpopup")), menu);
+		gtk_option_menu_set_history (GTK_OPTION_MENU (liferea_dialog_lookup (prefdialog, "searchpopup")), tmp);
+		
 
 		/* ================== panel 4 "browser" ==================== */
 

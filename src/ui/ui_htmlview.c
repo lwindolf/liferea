@@ -287,6 +287,7 @@ static struct internalUriType internalUriTypes[] = {
 	/* { "tag",		FIXME }, */
 	{ "flag",		itemlist_toggle_flag },
 	{ "bookmark",		ui_itemlist_add_item_bookmark },
+	{ "link-search",	ui_itemlist_search_item_link },
 	{ "refresh-comments",	comments_refresh },
 	{ NULL,			NULL }
 };

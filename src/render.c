@@ -1,7 +1,7 @@
 /**
- * @file render.c generic XSLT rendering handling
+ * @file render.c  generic XSLT rendering handling
  * 
- * Copyright (C) 2006-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2008 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -69,7 +69,7 @@ void render_init(void) {
 	g_strfreev(lang);
 
 	/* prepare rendering default parameters */
-	defaultParams = g_strdup_printf("search_link_enable='%s'", getBooleanConfValue(SEARCH_ENGINE_HIDE_LINK)?"false":"true");
+	defaultParams = g_strdup_printf("search_link_enable='%s'", conf_get_bool_value (SOCIAL_LINK_SEARCH_HIDE)?"false":"true");
 
 	if(!stylesheets)
 		stylesheets = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);

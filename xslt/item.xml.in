@@ -280,12 +280,11 @@
     </a>
   </xsl:if>
 
-  <!-- Technorati link -->
-  <a class="technorati"
-     href="http://www.technorati.com/cosmos/search.html?url={source}">
-    <img class="technoratibtn" border="0" alt="[Technorati]"
-         src="{$pixmapsDir}technorati.png"/>
-    <_span>search</_span>
+  <!-- link cosmos search -->
+  <a class="linksearch"
+     href="liferea-link-search://{sourceId}-{nr}">
+    <img border="0" class="linksearchbtn" src="{$pixmapsDir}technorati.png"/>
+    <_span>link cosmos</_span>
   </a>
 
  </td><!-- end of comment and search engine link -->

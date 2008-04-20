@@ -716,13 +716,14 @@ ui_mainwindow_init (int mainwindowState)
 				   "it might even kill your cat!</p>"
 				   "<p>What currently doesn't work:"
 				   "<ul>"
-				   "   <li>SSL and proxy auth</li>"
+				   "   <li>Nothing :-)</li>"
 				   "</ul>"
 				   "</p>"
 				   "<p>New/Improved Functionality:"
 				   "<ul>"
 				   "   <li>HTTP cookies</li>"
 				   "   <li>Google Reader subscriptions do work again</li>"
+				   "   <li>SSL and proxy auth</li>"				   
 				   "</ul>"
 				   "</p>");
 	g_string_append(buffer,    "</div>");

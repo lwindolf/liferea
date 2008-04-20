@@ -1,7 +1,7 @@
 /**
- * @file social.h social networking integration
+ * @file social.h  social networking integration
  * 
- * Copyright (C) 2006-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2008 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,12 +23,12 @@
 
 #include <glib.h>
 
-typedef struct socialBookmarkSite {
+typedef struct socialSite {
 	gchar		*name;		/**< Descriptive name for HTML rendering and preferences */
 	gchar		*url;		/**< URL format string with %s for title and URL insertion */
 	gboolean	title;		/**< TRUE if title submission supported */
 	gboolean	titleFirst;	/**< TRUE if title %s comes first */
-} *socialBookmarkSitePtr;
+} *socialSitePtr;
 
 /**
  * Initialize social bookmarking support.
@@ -41,35 +41,64 @@ void social_init (void);
 void social_free (void);
 
 /**
- * Add a new site to the default social bookmark site list.
+ * Add a new site to the social bookmarking site list.
  *
  * @param name		descriptive name
  * @param url		valid HTTP GET URL with one or two %s format codes
  * @param title		TRUE if site accepts titles (URL must have two %s format codes!)
  * @param titleFirst	TRUE if title is first format code (title must be TRUE)
  */
-void social_register_site(gchar *name, gchar *url, gboolean title, gboolean titleFirst);
+void social_register_bookmark_site (gchar *name, gchar *url, gboolean title, gboolean titleFirst);
 
 /**
- * Returns a social bookmarking link for the configured service
+ * Returns a social bookmarking link for the configured site
  *
  * @param link		the link to encode (mandatory)
  * @param title		the title to encode (mandatory)
  *
  * @returns new URL string
  */
-gchar * social_get_url(const gchar *link, const gchar *title);
+gchar * social_get_bookmark_url (const gchar *link, const gchar *title);
 
 /**
- * Changes the current social bookmarking configuration to the given service.
+ * Changes the current social bookmarking configuration to the given site.
  *
- * @param name		name (id) of the social bookmarking service
+ * @param name		name (id) of the link search site
  */
-void social_set_site(const gchar *name);
+void social_set_link_search_site (const gchar *name);
 
 /**
  * Returns the name of the currently configured social bookmarking site.
  */
-const gchar * social_get_site(void);
+const gchar * social_get_bookmark_site (void);
+
+/**
+ * Add a new site to the link cosmos search engine list.
+ *
+ * @param name		descriptive name
+ * @param url		valid HTTP GET URL with one %s format code
+ */
+void social_register_link_search_site (gchar *name, gchar *url);
+
+/**
+ * Returns a link for the configured link cosmos search engine
+ *
+ * @param link		the link to encode (mandatory)
+ *
+ * @returns new URL string
+ */
+gchar * social_get_link_search_url (const gchar *link);
+
+/**
+ * Changes the current link search engine configuration to the given site.
+ *
+ * @param name		name (id) of the link search engine
+ */
+void social_set_link_search_site (const gchar *name);
+
+/**
+ * Returns the name of the currently configured link search engine .
+ */
+const gchar * social_get_link_search_site (void);
 
 #endif
