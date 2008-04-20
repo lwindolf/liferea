@@ -284,9 +284,10 @@ network_process_request (const updateJobPtr const job)
 	curl_easy_setopt (curl_handle, CURLOPT_USERAGENT, useragent);
 	curl_easy_setopt (curl_handle, CURLOPT_FOLLOWLOCATION,  TRUE);
 	curl_easy_setopt (curl_handle, CURLOPT_TIMECONDITION, CURL_TIMECOND_IFMODSINCE);
-	curl_easy_setopt (curl_handle, CURLOPT_COOKIE, update_state_get_cookies (job->request->updateState));
-	if (job->request->updateState)
+	if (job->request->updateState) {
+		curl_easy_setopt (curl_handle, CURLOPT_COOKIE, update_state_get_cookies (job->request->updateState));
 		curl_easy_setopt (curl_handle, CURLOPT_TIMEVALUE, job->request->updateState->lastModified);
+	}
 	curl_easy_setopt (curl_handle, CURLOPT_FILETIME, 1L);
 	if (proxyname) {
 		curl_easy_setopt(curl_handle, CURLOPT_PROXY, proxyname);
