@@ -253,6 +253,8 @@ void opml_source_import(nodePtr node) {
 	g_free(filename);
 	
 	subscription_set_update_interval (node->subscription, OPML_SOURCE_UPDATE_INTERVAL);
+	
+	node->subscription->type = &opmlSubscriptionType;
 
 	debug_exit("opml_source_import");
 }
@@ -320,7 +322,6 @@ opml_source_setup (nodePtr parent, nodePtr node)
 	gchar	*filename;
 	
 	node_set_type(node, node_source_get_node_type());
-	node->subscription->type = &opmlSubscriptionType;
 	
 	filename = g_strdup_printf ("%s.png", NODE_SOURCE_TYPE (node)->id);
 	node->icon = create_pixbuf (filename);

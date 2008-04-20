@@ -284,6 +284,7 @@ network_process_request (const updateJobPtr const job)
 	curl_easy_setopt (curl_handle, CURLOPT_USERAGENT, useragent);
 	curl_easy_setopt (curl_handle, CURLOPT_FOLLOWLOCATION,  TRUE);
 	curl_easy_setopt (curl_handle, CURLOPT_TIMECONDITION, CURL_TIMECOND_IFMODSINCE);
+	curl_easy_setopt (curl_handle, CURLOPT_COOKIE, update_state_get_cookies (job->request->updateState));
 	if (job->request->updateState)
 		curl_easy_setopt (curl_handle, CURLOPT_TIMEVALUE, job->request->updateState->lastModified);
 	curl_easy_setopt (curl_handle, CURLOPT_FILETIME, 1L);
@@ -298,9 +299,10 @@ network_process_request (const updateJobPtr const job)
 void
 network_glibcurl_callback (void *data)
 {
-	CURLMsg*	msg;
- 	gint		inQueue;
-	updateJobPtr	job;
+	CURLMsg*		msg;
+	struct curl_slist	*cookies;
+ 	gint			inQueue;
+	updateJobPtr		job;
 
 	while (1) {
 		msg = curl_multi_info_read (glibcurl_handle (), &inQueue);
@@ -332,7 +334,21 @@ network_glibcurl_callback (void *data)
 				update_state_set_lastmodified (job->result->updateState, tmp);
 			}
 
-			// FIXME: update_state_set_cookies (job->result->updateState, ???);
+			/* extract cookies */
+			if (CURLE_OK == curl_easy_getinfo (msg->easy_handle, CURLINFO_COOKIELIST, &cookies)) {
+				gchar *cookieStr = NULL;
+				struct curl_slist *cookie = cookies;
+				while (cookie) {
+					gchar *tmp = cookieStr;
+					cookieStr = g_strdup_printf ("%s%s%s", tmp?tmp:"", tmp?";":"", cookie);
+					g_free (tmp);
+					cookie++;
+				}
+				if (cookieStr)
+					update_state_set_cookies (job->result->updateState, cookieStr);
+				curl_slist_free_all (cookies);
+			}
+			
 			debug1 (DEBUG_UPDATE, "source after download: >>>%s<<<\n", job->result->source);
 			debug1 (DEBUG_UPDATE, "%d bytes downloaded", job->result->size);
 			curl_easy_cleanup (msg->easy_handle);

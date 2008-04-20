@@ -172,10 +172,10 @@ google_subscription_login_cb (subscriptionPtr subscription, const struct updateR
 		
 	if (tmp) {
 		reader->sid = tmp;
-		tmp = strchr(tmp, '\n');
-		if(tmp)
+		tmp = strchr (tmp, '\n');
+		if (tmp)
 			*tmp = '\0';
-		reader->sid = g_strdup_printf ("Cookie: %s\r\n", reader->sid);
+		reader->sid = g_strdup (reader->sid);
 		debug1 (DEBUG_UPDATE, "google reader SID found: %s", reader->sid);
 		subscription->node->available = TRUE;
 		
@@ -199,7 +199,7 @@ google_opml_subscription_process_update_result (subscriptionPtr subscription, co
 	   one result callback and must use the "reader" structure to determine what
 	   currently needs to be done. */
 	   
-	if (reader)
+	if (reader->sid)
 		google_subscription_opml_cb (subscription, result, flags);
 	else
 		google_subscription_login_cb (subscription, result, flags);
@@ -250,7 +250,6 @@ void
 google_source_setup (nodePtr parent, nodePtr node)
 {
 	node->icon = create_pixbuf ("fl_google.png");
-	node->subscription->type = &googleReaderOpmlSubscriptionType;
 	
 	node_set_type (node, node_source_get_node_type ());
 	if (parent) {
@@ -283,6 +282,14 @@ google_source_auto_update (nodePtr node)
 static void google_source_init (void) { }
 
 static void google_source_deinit (void) { }
+
+void
+google_source_import (nodePtr node)
+{
+	opml_source_import (node);
+	
+	node->subscription->type = &googleReaderOpmlSubscriptionType;
+}
 
 /* GUI callbacks */
 
@@ -351,7 +358,7 @@ static struct nodeSourceType nst = {
 	google_source_deinit,
 	ui_google_source_get_account_info,
 	opml_source_remove,
-	opml_source_import,
+	google_source_import,
 	opml_source_export,
 	opml_source_get_feedlist,
 	google_source_update,
