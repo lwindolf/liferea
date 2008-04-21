@@ -785,6 +785,9 @@ void ui_mainwindow_update_menubar(void) {
 void ui_mainwindow_online_status_changed (int online) {
 	GtkWidget	*widget;
 
+	if (!mainwindow_priv)
+		return;
+
 	widget = liferea_shell_lookup("onlineimage");
 
 	if(online) {
