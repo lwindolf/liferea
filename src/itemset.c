@@ -59,8 +59,6 @@ itemset_get_max_item_count (itemSetPtr itemSet)
 	return G_MAXUINT;
 }
 
-#define MAX_MERGE_COUNT 100	/**< 100 items per feed is the default use case */
-
 /**
  * Generic merge logic suitable for feeds
  *
@@ -77,7 +75,6 @@ itemset_generic_merge_check (GList *items, itemPtr newItem, gboolean allowUpdate
 	GList		*oldItemIdIter = items;
 	itemPtr		oldItem = NULL;
 	gboolean	found, equal = FALSE;
-	guint		count = 0;
 
 	/* determine if we should add it... */
 	debug1 (DEBUG_CACHE, "check new item for merging: \"%s\"", item_get_title (newItem));
@@ -85,12 +82,6 @@ itemset_generic_merge_check (GList *items, itemPtr newItem, gboolean allowUpdate
 	/* compare to every existing item in this feed */
 	found = FALSE;
 	while (oldItemIdIter) {
-		/* For performance reasons limit this check to the first n items 
-		   (where n >> 15), we expect only recent items to be remerged. */
-		count++;
-		if (count > MAX_MERGE_COUNT)
-			break;
-			
 		oldItem = (itemPtr)(oldItemIdIter->data);
 		
 		/* try to compare the two items */
