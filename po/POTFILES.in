@@ -75,6 +75,8 @@ src/xml.c
 src/xml.h
 src/ui/eggtrayicon.c
 src/ui/eggtrayicon.h
+src/ui/enclosure_list_view.c
+src/ui/enclosure_list_view.h
 src/ui/rule_editor.c
 src/ui/rule_editor.h
 src/ui/search_dialog.c
@@ -89,8 +91,6 @@ src/ui/ui_dialog.c
 src/ui/ui_dialog.h
 src/ui/ui_dnd.c
 src/ui/ui_dnd.h
-src/ui/ui_enclosure.c
-src/ui/ui_enclosure.h
 src/ui/ui_feedlist.c
 src/ui/ui_feedlist.h
 src/ui/ui_folder.c
