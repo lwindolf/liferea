@@ -1,5 +1,5 @@
 /**
- * @file ui_subscription.c subscription dialogs
+ * @file ui_subscription.c  default subscription dialogs for feed subscriptions
  *
  * Copyright (C) 2004-2008 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
@@ -279,8 +279,13 @@ on_propdialog_response (GtkDialog *dialog,
 		subscription->updateOptions->dontUseProxy = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(liferea_dialog_lookup(GTK_WIDGET(dialog), "dontUseProxyCheck")));
 
 		/* "Advanced" options */
-		feed->encAutoDownload = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(liferea_dialog_lookup(GTK_WIDGET(dialog), "enclosureDownloadCheck")));
-		feed->loadItemLink = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(liferea_dialog_lookup(GTK_WIDGET(dialog), "loadItemLinkCheck")));
+		feed->encAutoDownload = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "enclosureDownloadCheck")));
+		feed->loadItemLink = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "loadItemLinkCheck")));
+		feed->enforcePopup = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "enforcePopupCheck")));
+		feed->preventPopup = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "preventPopupCheck")));
+		
+		if (feed->enforcePopup && feed->preventPopup)
+			feed->enforcePopup = FALSE;
 
 		ui_node_update (node->id);
 		feedlist_schedule_save ();
@@ -526,8 +531,11 @@ ui_subscription_prop_dialog_load (SubscriptionPropDialog *spd,
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(liferea_dialog_lookup(spd->priv->dialog, "dontUseProxyCheck")), subscription->updateOptions->dontUseProxy);
 
 	/* Advanced */	
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(liferea_dialog_lookup(spd->priv->dialog, "enclosureDownloadCheck")), feed->encAutoDownload);
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(liferea_dialog_lookup(spd->priv->dialog, "loadItemLinkCheck")), feed->loadItemLink);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (spd->priv->dialog, "enclosureDownloadCheck")), feed->encAutoDownload);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (spd->priv->dialog, "loadItemLinkCheck")), feed->loadItemLink);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (spd->priv->dialog, "enforcePopupCheck")), feed->enforcePopup);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (spd->priv->dialog, "preventPopupCheck")), feed->preventPopup);
+
 }
 
 static void

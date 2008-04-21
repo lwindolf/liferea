@@ -1,5 +1,5 @@
 /**
- * @file ui_subscription.h subscription dialogs
+ * @file ui_subscription.h  default subscription dialogs for feed subscriptions
  *
  * Copyright (C) 2007 Lars Lindner <lars.lindner@gmail.com>
  *

@@ -1,8 +1,8 @@
 /**
- * @file notif_plugin.h generic notification interface
+ * @file notif_plugin.h  generic notification interface
  * 
  * Copyright (C) 2006 Norman Jonas <liferea.sf.net@devport.codepilot.net>
- * Copyright (C) 2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2006-2008 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -89,8 +89,12 @@ typedef struct notificationPlugin {
 	 * This callback notifies the plugin that the given
 	 * node was updated and contains new items (items
 	 * with newStatus set to TRUE.
+	 *
+	 * @param node		the updated node
+	 * @param enforced	TRUE if popup is to be enforced
+	 *			regardless of global preference
 	 */
-	void 	(*node_has_new_items)(nodePtr node);
+	void 	(*node_has_new_items)(nodePtr node, gboolean enforced);
 	
 	/**
 	 * This callback notifies the plugin that the given
@@ -123,9 +127,11 @@ void notification_enable (gboolean enabled);
 /**
  * "New items" event callback.
  *
- * @param node	the node that has new items
+ * @param node		the node that has new items
+ * @param enforced	TRUE if notification is to be enforced
+ * 			regardless of global preference
  */
-void notification_node_has_new_items (nodePtr node);
+void notification_node_has_new_items (nodePtr node, gboolean enforced);
 
 /**
  * "Node removed" event callback

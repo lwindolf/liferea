@@ -1,7 +1,7 @@
 /**
- * @file notif_plugin.c generic notification interface
+ * @file notif_plugin.c  generic notification interface
  * 
- * Copyright (C) 2006-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2008 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -113,14 +113,14 @@ void notification_enable(gboolean enabled) {
 	}
 }
 
-void notification_node_has_new_items(nodePtr node) { 
+void notification_node_has_new_items(nodePtr node, gboolean enforced) { 
 	notificationPluginPtr	plugin;
 	GSList 			*iter;
 	
 	iter = notificationPlugins;
 	while(iter) {
 		plugin = ((pluginPtr)iter->data)->symbols;
-		(*plugin->node_has_new_items)(node);
+		(*plugin->node_has_new_items)(node, enforced);
 		iter = g_slist_next(iter);
 	}
 }

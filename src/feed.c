@@ -155,6 +155,17 @@ feed_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trusted)
 	if (tmp && !xmlStrcmp (tmp, BAD_CAST"true"))
 		feed->loadItemLink = TRUE;
 	xmlFree (tmp);
+
+	/* popup enforcement/prevention flags */
+	tmp = xmlGetProp (xml, BAD_CAST"enforcePopup");
+	if (tmp && !xmlStrcmp (tmp, BAD_CAST"true"))
+		feed->enforcePopup = TRUE;
+	xmlFree (tmp);
+	
+	tmp = xmlGetProp (xml, BAD_CAST"preventPopup");
+	if (tmp && !xmlStrcmp (tmp, BAD_CAST"true"))
+		feed->preventPopup = TRUE;
+	xmlFree (tmp);
 							
 	title = xmlGetProp (xml, BAD_CAST"title");
 	if (!title || !xmlStrcmp (title, BAD_CAST"")) {
@@ -208,6 +219,12 @@ feed_export (nodePtr node, xmlNodePtr xml, gboolean trusted)
 			
 		if (feed->loadItemLink)
 			xmlNewProp (xml, BAD_CAST"loadItemLink", BAD_CAST"true");
+			
+		if (feed->enforcePopup)
+			xmlNewProp (xml, BAD_CAST"enforcePopup", BAD_CAST"true");
+			
+		if (feed->preventPopup)
+			xmlNewProp (xml, BAD_CAST"preventPopup", BAD_CAST"true");
 	}
 
 	if (node->subscription)
@@ -607,8 +624,9 @@ feed_process_update_result (subscriptionPtr subscription, const struct updateRes
 				db_subscription_update (subscription);
 
 			ui_mainwindow_set_status_bar (_("\"%s\" updated..."), node_get_title (node));
-					
-			notification_node_has_new_items (node);
+	
+			if (!feed->preventPopup)				
+				notification_node_has_new_items (node, feed->enforcePopup);
 		}
 				
 		g_free (old_source);

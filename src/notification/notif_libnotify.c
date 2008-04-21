@@ -190,7 +190,7 @@ static void notif_libnotify_enable(void) { }
 static void notif_libnotify_disable(void) { }
 
 static void
-notif_libnotify_node_has_new_items (nodePtr node)
+notif_libnotify_node_has_new_items (nodePtr node, gboolean enforced)
 {	
 	itemSetPtr	itemSet;
 	GList		*iter;
@@ -203,7 +203,7 @@ notif_libnotify_node_has_new_items (nodePtr node)
 	gchar		*labelSummary_p;
 	gint		item_count = 0;
 
-	if (!conf_get_bool_value(SHOW_POPUP_WINDOWS))
+	if (!conf_get_bool_value(SHOW_POPUP_WINDOWS) && !enforced)
 		return;
 
 	/* Count updated feed */

@@ -72,8 +72,10 @@ typedef struct feed {
 	time_t		time;			/**< Feeds modified date */
 
 	/* feed specific behaviour settings */
-	gboolean	encAutoDownload;	/**< enclosure auto download flag */
-	gboolean	loadItemLink;		/**< automatic item link load flag */
+	gboolean	encAutoDownload;	/**< if TRUE do automatically download enclosures */
+	gboolean	loadItemLink;		/**< if TRUE do automatically load the item link into the HTML pane */
+	gboolean	enforcePopup;		/**< if TRUE enforce popup notifications for this feed */
+	gboolean	preventPopup;		/**< if TRUE prevents popup notifications for this feed */
 } *feedPtr;
 
 /** Holds all information used on feed parsing time */
