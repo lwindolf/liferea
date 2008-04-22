@@ -4,6 +4,9 @@
 
 	* Fixed wrong language code of Czech translation.
 	  (reported by Martin Picek)
+	* Fixes SF #1920860: crash after memory corruption when
+	  parsing feed with invalid encoding (reported by mumrel)
+
 
 2008-04-17  Lars Lindner  <lars.lindner@gmail.com>
 

@@ -622,6 +622,9 @@ itemPtr ui_itemlist_find_unread_item(gulong startId) {
 		valid = ui_item_id_to_iter(startId, &iter);
 	else
 		valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(itemstore), &iter);
+		
+	if (!valid)
+		g_warning ("Fatal: ui_itemlist_find_unread_item() could not determine start GtkTreeIter!");
 	
 	while(valid) {
 		itemPtr	item;
@@ -630,6 +633,8 @@ itemPtr ui_itemlist_find_unread_item(gulong startId) {
 			if (!item->readStatus)
 				return item;
 			item_unload (item);
+		} else {
+			g_warning ("Fatal: ui_itemlist_find_unread_item(): invalid GtkTreeIter in lookup hash!");
 		}
 		valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(itemstore), &iter);
 	}
