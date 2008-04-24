@@ -131,7 +131,7 @@ update_request_new (void)
 	return g_new0 (struct updateRequest, 1);
 }
 
-static void
+void
 update_request_free (updateRequestPtr request)
 {
 	if (!request)

@@ -1,7 +1,7 @@
 /**
  * @file subscription.c common subscription handling
  * 
- * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -234,9 +234,10 @@ subscription_update (subscriptionPtr subscription, guint flags)
 		if (subscription_get_filter (subscription))
 			request->filtercmd = g_strdup (subscription_get_filter (subscription));
 
-		SUBSCRIPTION_TYPE (subscription)->prepare_update_request (subscription, request);
-		
-		subscription->updateJob = update_execute_request (subscription, request, subscription_process_update_result, subscription, flags);
+		if (SUBSCRIPTION_TYPE (subscription)->prepare_update_request (subscription, request))
+			subscription->updateJob = update_execute_request (subscription, request, subscription_process_update_result, subscription, flags);
+		else
+			update_request_free (request);
 	}
 }
 

@@ -640,10 +640,12 @@ feed_process_update_result (subscriptionPtr subscription, const struct updateRes
 	debug_exit ("feed_process_update_result");
 }
 
-void
+static gboolean
 feed_prepare_update_request (subscriptionPtr subscription, const struct updateRequest *request)
 {
 	/* Nothing to do. Feeds require no subscription extra handling. */
+	
+	return TRUE;
 }
 
 /* implementation of the node type interface */

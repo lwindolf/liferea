@@ -32,10 +32,34 @@
 /** subscription type interface */
 typedef struct subscriptionType {
 
-	/* For method documentation see the wrappers defined below! 
-	   All methods are mandatory for each subscription type. */
-	void	(*prepare_update_request)(subscriptionPtr subscription, const struct updateRequest * request);
-	void 	(*process_update_result)(subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags);
+	/* Note: the default implementation of this interface is
+	   provided by feed.c */
+
+	/**
+	 * Preparation callback for a update type. Allows a specific
+	 * subscription type implementation to make changes to the
+	 * already created update request (e.g. URI adaptions or
+	 * setting cookies).
+	 *
+	 * This callback also allows the subscription type implementation
+	 * to cancel a request (e.g. when it is clear that an update
+	 * is not necessary due to some implicit node source state).
+	 *
+	 * @param subscription	the subscription that is being updated
+	 * @param request	the request
+	 *
+	 * @returns FALSE if the request is to be aborted
+	 */
+	gboolean (*prepare_update_request)(subscriptionPtr subscription, const struct updateRequest * request);
+	
+	/**
+	 * Subscription type specific update result processing callback.
+	 *
+	 * @param subscription	the subscription that was updated
+	 * @param result	the update result
+	 * @param flags		the update flags
+	 */
+	void (*process_update_result)(subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags);
 	
 	/**
 	 * Called to allow subscription type to clean up it's specific data.

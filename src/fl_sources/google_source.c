@@ -205,7 +205,7 @@ google_opml_subscription_process_update_result (subscriptionPtr subscription, co
 		google_subscription_login_cb (subscription, result, flags);
 }
 
-static void
+static gboolean
 google_opml_subscription_prepare_update_request (subscriptionPtr subscription, const struct updateRequest *request)
 {
 	readerPtr	reader = (readerPtr)subscription->node->data;
@@ -226,12 +226,14 @@ google_opml_subscription_prepare_update_request (subscriptionPtr subscription, c
 		subscription_set_source (subscription, source);
 		
 		g_free (source);
-		return;
+		return TRUE;
 	}
 
 	debug1 (DEBUG_UPDATE, "updating Google Reader subscription (node id %s)", subscription->node->id);
 	subscription_set_source (subscription, "http://www.google.com/reader/api/0/subscription/list");
 	update_state_set_cookies (subscription->updateState, reader->sid);
+	
+	return TRUE;
 }
 
 /* OPML subscription type definition */

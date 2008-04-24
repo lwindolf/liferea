@@ -198,6 +198,13 @@ void update_deinit (void);
 updateRequestPtr update_request_new (void);
 
 /**
+ * Free's the given update request.
+ *
+ * @param request	the update request
+ */
+void update_request_free (updateRequestPtr request);
+
+/**
  * Creates a new update result for the given update request.
  *
  * @param request	the update request
