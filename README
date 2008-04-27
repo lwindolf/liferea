@@ -36,9 +36,9 @@ SuSE:		Since SuSE 10.1 there are official Liferea package.
 		
 		http://ftp.gwdg.de/pub/linux/misc/suser-guru/rpm/packages/Network/liferea/
 
-Gentoo:		There is an ebuild available at:
+Gentoo:		The Gentoo portage tree provides ebuilds for Liferea:
 
-		http://www.breakmygentoo.net/ebuilds/
+		http://sources.gentoo.org/viewcvs.py/gentoo-x86/net-news/liferea/
 
 FreeBSD:	There are Liferea packages (built by Hye-Shik Chang) at
 		
