@@ -136,7 +136,7 @@ update_request_free (updateRequestPtr request)
 {
 	if (!request)
 		return;
-	
+	g_free (request->postdata);
 	g_free (request->source);
 	g_free (request->filtercmd);
 	g_free (request);

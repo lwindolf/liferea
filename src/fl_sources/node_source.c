@@ -266,6 +266,14 @@ node_source_auto_update (nodePtr node)
 	NODE_SOURCE_TYPE (node)->source_auto_update (node);
 }
 
+void
+node_source_item_state_mark_read (nodePtr node, itemPtr item, gboolean newStatus)
+{
+	if (node->source && node->source->type &&
+	    node->source->type->item_mark_read)
+		node->source->type->item_mark_read (node, item, newStatus);
+}
+
 /* implementation of the node type interface */
 
 static void

@@ -120,6 +120,13 @@ typedef struct nodeSourceType {
 	 * during node_free() for a source node.
 	 */
 	void		(*free) (nodePtr node);
+
+	/**
+	 * Mark an item as read. OPTIONAL.
+	 */
+	void            (*item_mark_read)(nodePtr node, itemPtr item,
+					  gboolean newStatus);
+	
 } *nodeSourceTypePtr;
 
 /** feed list source instance */
@@ -176,6 +183,16 @@ void node_source_update (nodePtr node);
  * @param node			the source node
  */
 void node_source_auto_update (nodePtr node);
+
+/**
+ * Inform the source that the item has been marked as read/unread.
+ * @param node the parent node
+ * @param item the item whose read status has changed
+ * @param newStatus the new read status of the item
+ */
+void node_source_item_state_mark_read(nodePtr node, 
+				      itemPtr item,
+				      gboolean newStatus);
 
 /**
  * Launches a source creation dialog. The new source

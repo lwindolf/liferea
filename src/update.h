@@ -102,6 +102,7 @@ typedef struct updateRequest {
 					     then it is parsed as a URL, otherwise it is a
 					     filename. Eventually, everything should be a
 					     URL. Use file:// and exec:// */
+	gchar           *postdata;      /**< HTTP POST request data (NULL for non-POST requests) */
 	updateOptionsPtr options;	/**< Update options for the request */
 	gchar		*filtercmd;	/**< Command will filter output of URL */
 	gboolean	allowRetries;	/**< Allow download retries on network errors */

@@ -145,10 +145,11 @@ opml_source_check_for_removal (nodePtr node, gpointer user_data)
 
 /* OPML subscription type implementation */
 
-static void
+static gboolean
 opml_subscription_prepare_update_request (subscriptionPtr subscription, const struct updateRequest *request)
 {
 	/* Nothing to do here for simple OPML subscriptions */
+	return TRUE;
 }
 
 static void

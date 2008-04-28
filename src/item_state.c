@@ -62,6 +62,8 @@ item_state_set_flagged (itemPtr item, gboolean newStatus)
 void
 item_state_set_read (itemPtr item, gboolean newStatus) 
 {
+	nodePtr parent;
+
 	if (newStatus != item->readStatus) {
 		debug_start_measurement (DEBUG_GUI);
 		
@@ -69,6 +71,10 @@ item_state_set_read (itemPtr item, gboolean newStatus)
 		item->readStatus = newStatus;
 		db_item_update (item);
 		
+		parent = node_from_id (item->nodeId);
+		g_assert (parent);
+		node_source_item_state_mark_read (parent, item, newStatus);
+
 		/* 2. add propagate to vfolders (must happen after changing the item state) */
 		vfolder_foreach (vfolder_update_counters);
 			
@@ -86,8 +92,7 @@ item_state_set_read (itemPtr item, gboolean newStatus)
 			GSList *duplicates, *iter;
 			
 			duplicates = iter = db_item_get_duplicates (item->sourceId);
-			while (iter)
-			{
+			while (iter) {
 				itemPtr duplicate = item_load (GPOINTER_TO_UINT (iter->data));
 				
 				/* The check on node_from_id() is an evil workaround
@@ -95,8 +100,7 @@ item_state_set_read (itemPtr item, gboolean newStatus)
 				   associated node in the feed list. This should be 
 				   fixed by having the feed list in the DB too, so
 				   we can clean up correctly after crashes. */
-				if (duplicate && node_from_id (duplicate->nodeId))
-				{
+				if (duplicate && node_from_id (duplicate->nodeId)) {
 					item_state_set_read (duplicate, newStatus);
 					db_item_update (duplicate);
 					item_unload (duplicate);

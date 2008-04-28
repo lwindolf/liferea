@@ -284,6 +284,8 @@ network_process_request (const updateJobPtr const job)
 	curl_easy_setopt (curl_handle, CURLOPT_USERAGENT, useragent);
 	curl_easy_setopt (curl_handle, CURLOPT_FOLLOWLOCATION,  TRUE);
 	curl_easy_setopt (curl_handle, CURLOPT_TIMECONDITION, CURL_TIMECOND_IFMODSINCE);
+	if (job->request->postdata)
+		curl_easy_setopt (curl_handle, CURLOPT_POSTFIELDS, job->request->postdata);	
 	if (job->request->updateState) {
 		curl_easy_setopt (curl_handle, CURLOPT_COOKIE, update_state_get_cookies (job->request->updateState));
 		curl_easy_setopt (curl_handle, CURLOPT_TIMEVALUE, job->request->updateState->lastModified);
@@ -341,7 +343,7 @@ network_glibcurl_callback (void *data)
 				struct curl_slist *cookie = cookies;
 				while (cookie) {
 					gchar *tmp = cookieStr;
-					cookieStr = g_strdup_printf ("%s%s%s", tmp?tmp:"", tmp?";":"", cookie);
+					cookieStr = g_strdup_printf ("%s%s%s", tmp?tmp:"", tmp?";":"", cookieStr);
 					g_free (tmp);
 					cookie++;
 				}
