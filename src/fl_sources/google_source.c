@@ -103,7 +103,8 @@ google_source_edit_free (editPtr edit)
 void google_source_edit_process(readerPtr reader);
 
 static void
-google_source_edit_action_complete(const struct updateResult* const result, gpointer userdata, updateFlags flags) { 
+google_source_edit_action_complete(const struct updateResult* const result, gpointer userdata, updateFlags flags) 
+{ 
 	readerPtr reader = (readerPtr) userdata;
 	static int count = 1;
 
@@ -430,7 +431,8 @@ google_source_merge_feed (xmlNodePtr match, gpointer user_data)
  * retrieve the subscription's source and set the request's source to that.
  */
 static void
-google_source_login (subscriptionPtr subscription, guint32 flags) { 
+google_source_login (subscriptionPtr subscription, guint32 flags) 
+{ 
 	readerPtr reader = (readerPtr) subscription->node->data;
 	gchar *source;
 	
