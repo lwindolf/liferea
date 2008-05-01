@@ -375,7 +375,7 @@ google_source_merge_feed (xmlNodePtr match, gpointer user_data)
 	GSList		*iter;
 	xmlNodePtr	xml;
 	xmlChar		*title, *id ;
-	gchar           *url ;
+	gchar           *url, *origUrl ;
 
 	xml = xpath_find (match, "./string[@name='title']");
 	if (xml)
@@ -384,8 +384,8 @@ google_source_merge_feed (xmlNodePtr match, gpointer user_data)
 	xml = xpath_find (match, "./string[@name='id']");
 	if (xml)
 		id = xmlNodeListGetString (xml->doc, xml->xmlChildrenNode, 1);
-	url = g_strdup_printf ("http://www.google.com/reader/atom/%s",id);
-		
+	url = g_strdup(id+5);
+
 	/* check if node to be merged already exists */
 	iter = reader->root->children;
 	while (iter) {
@@ -602,7 +602,7 @@ google_source_item_retrieve_status (xmlNodePtr entry, gpointer userdata)
 
 	itemPtr item;
 	xmlChar* id;
-
+	
 	xml = entry->children;
 	g_assert (xml);
 	g_assert (g_str_equal (xml->name, "id"));
@@ -632,7 +632,7 @@ google_source_item_retrieve_status (xmlNodePtr entry, gpointer userdata)
 
 		/* this is extremely inefficient, multiple times loading */
 		itemPtr item = item_load (GPOINTER_TO_UINT (iter->data));
-		if (g_str_equal (item->sourceId, id)) {
+		if (g_str_equal (item->sourceId, id) && item->readStatus != read) {
 
 			__mark_read_hack = TRUE;
 			item_state_set_read (item, read);
@@ -698,6 +698,12 @@ google_feed_subscription_prepare_update_request (subscriptionPtr subscription,
 		return FALSE;
 	}
 	debug0 (DEBUG_UPDATE, "Setting cookies for a Google Reader subscription");
+
+	if ( !g_str_equal(request->source, GOOGLE_SOURCE_BROADCAST_FRIENDS_URI) ) { 
+		gchar* newUrl = g_strdup_printf("http://www.google.com/reader/atom/feed/%s", request->source) ;
+		g_free (request->source) ;
+		request->source = newUrl ;
+	}
 	update_state_set_cookies (request->updateState, reader->sid);
 	return TRUE;
 }
