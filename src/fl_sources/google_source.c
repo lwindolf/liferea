@@ -56,7 +56,7 @@ typedef struct reader {
 		READER_STATE_NONE = 0,
 		READER_STATE_IN_PROGRESS,
 		READER_STATE_ACTIVE
-	} login_state ; 
+	} loginState ; 
 } *readerPtr;
 
 /**
@@ -67,7 +67,7 @@ typedef struct reader {
  */
 typedef struct edit { 
 	gchar* guid;		/**< guid of the item to edit */
-	gchar* feed_url;	/**< url of the feed containing the item, or the "stream" to get the list for */
+	gchar* feedUrl;	/**< url of the feed containing the item, or the "stream" to get the list for */
 	enum { 
 		EDIT_ACTION_MARK_READ,
 		EDIT_ACTION_MARK_UNREAD,
@@ -96,7 +96,7 @@ void
 google_source_edit_free (editPtr edit)
 { 
 	g_free (edit->guid);
-	g_free (edit->feed_url);
+	g_free (edit->feedUrl);
 	g_free (edit);
 }
 
@@ -142,7 +142,7 @@ google_source_edit_token_cb (const struct updateResult * const result, gpointer 
 	request->options = update_options_copy (reader->root->subscription->updateOptions) ;
 	request->source = source; /* already strdup-ed */
 	update_state_set_cookies (request->updateState, reader->sid);
-	gchar* tmp = g_strdup_printf ("%s", edit->feed_url); 
+	gchar* tmp = g_strdup_printf ("%s", edit->feedUrl); 
 	gchar* s_escaped = common_uri_escape (tmp);
 	g_free (tmp);
 	
@@ -272,10 +272,11 @@ google_source_edit_push_safe (nodePtr root, editPtr edit)
 	readerPtr reader = (readerPtr) root->data ; 
 
 	/** @todo any flags I should specify? */
-	if (!reader || reader->login_state == READER_STATE_NONE) {
+	if (!reader || reader->loginState == READER_STATE_NONE) {
 		google_source_login (root->subscription, 0);
+		subscription_update(root->subscription, 0) ;
 		google_source_edit_push_ (root->data, edit);
-	} else if (reader->login_state == READER_STATE_IN_PROGRESS) {
+	} else if (reader->loginState == READER_STATE_IN_PROGRESS) {
 		google_source_edit_push_ (root->data, edit);
 	} else { 
 		google_source_edit_push_ (root->data, edit);
@@ -301,7 +302,7 @@ google_source_item_mark_read (nodePtr node, itemPtr item,
 	nodePtr root = google_source_get_root_from_node (node);
 	editPtr edit = google_source_edit_new ();
 	edit->guid = g_strdup (item->sourceId);
-	edit->feed_url = g_strdup (node->subscription->source + 
+	edit->feedUrl = g_strdup (node->subscription->source + 
 	                           strlen ("http://www.google.com/reader/atom/"));
 	edit->action = newStatus ? EDIT_ACTION_MARK_READ :
 	                           EDIT_ACTION_MARK_UNREAD;
@@ -316,7 +317,7 @@ google_source_item_mark_read (nodePtr node, itemPtr item,
 		 */
 		edit = google_source_edit_new ();
 		edit->guid = g_strdup (item->sourceId);
-		edit->feed_url = g_strdup (node->subscription->source + 
+		edit->feedUrl = g_strdup (node->subscription->source + 
 		                           strlen ("http://www.google.com/reader/atom/"));
 		edit->action = EDIT_ACTION_TRACKING_MARK_UNREAD;
 		google_source_edit_push_safe (root, edit);
@@ -516,7 +517,7 @@ google_subscription_login_cb (subscriptionPtr subscription, const struct updateR
 		/* now that we are authenticated retrigger updating to start data retrieval */
 		g_get_current_time (&now);
 
-		reader->login_state = READER_STATE_ACTIVE;
+		reader->loginState = READER_STATE_ACTIVE;
 		subscription_update (subscription, 0);
 
 		/* process any edits waiting in queue */
@@ -526,7 +527,7 @@ google_subscription_login_cb (subscriptionPtr subscription, const struct updateR
 		debug0 (DEBUG_UPDATE, "google reader login failed! no SID found in result!");
 		subscription->node->available = FALSE;
 		subscription->updateError = g_strdup (_("Google Reader login failed!"));
-		reader->login_state = READER_STATE_NONE;
+		reader->loginState = READER_STATE_NONE;
 	}
 }
 
@@ -547,32 +548,27 @@ google_opml_subscription_process_update_result (subscriptionPtr subscription, co
 }
 
 static gboolean
-google_opml_subscription_prepare_update_request (subscriptionPtr subscription, const struct updateRequest *request)
+google_opml_subscription_prepare_update_request (subscriptionPtr subscription, struct updateRequest *request)
 {
 	readerPtr	reader = (readerPtr)subscription->node->data;
 	
-	if (!reader) {
-		gchar *source;
-
-		/* We are not logged in yet, we need to perform a login first and retrigger the update later... */
+	if (!reader || !reader->sid) {
+		google_source_login(subscription, 0) ;
 		
-		subscription->node->data = reader = g_new0 (struct reader, 1);
-		reader->root = subscription->node;
+		/* this seems like a hack, but its the only way to do it as of now */
+		g_free(request->source) ;
+		request->source = g_strdup(subscription->source) ;
 
-		source = g_strdup_printf ("https://www.google.com/accounts/ClientLogin?service=reader&Email=%s&Passwd=%s&source=liferea&continue=http://www.google.com",
-	                        	  subscription->updateOptions->username,
-	                        	  subscription->updateOptions->password);
-					  
-		debug2 (DEBUG_UPDATE, "login to Google Reader source %s (node id %s)", source, subscription->node->id);
-		subscription_set_source (subscription, source);
-		
-		g_free (source);
 		return TRUE;
 	}
 
 	debug1 (DEBUG_UPDATE, "updating Google Reader subscription (node id %s)", subscription->node->id);
-	subscription_set_source (subscription, "http://www.google.com/reader/api/0/subscription/list");
-	update_state_set_cookies (subscription->updateState, reader->sid);
+	
+	/** @todo should be replaced with neater code */
+	g_free(request->source) ; 
+	request->source = g_strdup("http://www.google.com/reader/api/0/subscription/list");
+	
+	update_state_set_cookies (request->updateState, reader->sid);
 	
 	return TRUE;
 }
@@ -686,7 +682,8 @@ google_feed_subscription_prepare_update_request (subscriptionPtr subscription,
 	
 	if (!reader ||!reader->sid) { 
 		google_source_login (google_source_get_root_from_node (subscription->node)->subscription, 0);
-		return TRUE;
+		subscription_update(google_source_get_root_from_node (subscription->node)->subscription, 0) ;
+		return FALSE;
 	}
 	debug0 (DEBUG_UPDATE, "Setting cookies for a Google Reader subscription");
 	update_state_set_cookies (request->updateState, reader->sid);

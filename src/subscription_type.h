@@ -50,7 +50,7 @@ typedef struct subscriptionType {
 	 *
 	 * @returns FALSE if the request is to be aborted
 	 */
-	gboolean (*prepare_update_request)(subscriptionPtr subscription, const struct updateRequest * request);
+	gboolean (*prepare_update_request)(subscriptionPtr subscription, struct updateRequest * request);
 	
 	/**
 	 * Subscription type specific update result processing callback.
