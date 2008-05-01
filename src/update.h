@@ -206,6 +206,14 @@ updateRequestPtr update_request_new (void);
 void update_request_free (updateRequestPtr request);
 
 /**
+ * Sets the source for an updateRequest
+ * 
+ * @param request       the update request
+ * @param source        the new source
+ */
+void update_request_set_source(updateRequestPtr request, gchar* source);
+
+/**
  * Creates a new update result for the given update request.
  *
  * @param request	the update request

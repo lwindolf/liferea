@@ -566,11 +566,9 @@ google_opml_subscription_prepare_update_request (subscriptionPtr subscription, s
 	
 	if (!reader || !reader->sid) {
 		google_source_login(subscription, 0) ;
-		
-		/* this seems like a hack, but its the only way to do it as of now */
-		g_free(request->source) ;
-		request->source = g_strdup(subscription->source) ;
 
+		/* The subscription is updated, but the request has not yet been updated */
+		update_request_set_source(request, subscription->source); 
 		return TRUE;
 	}
 
@@ -701,8 +699,8 @@ google_feed_subscription_prepare_update_request (subscriptionPtr subscription,
 
 	if ( !g_str_equal(request->source, GOOGLE_SOURCE_BROADCAST_FRIENDS_URI) ) { 
 		gchar* newUrl = g_strdup_printf("http://www.google.com/reader/atom/feed/%s", request->source) ;
-		g_free (request->source) ;
-		request->source = newUrl ;
+		update_request_set_source(request, newUrl) ;
+		g_free (newUrl);
 	}
 	update_state_set_cookies (request->updateState, reader->sid);
 	return TRUE;

@@ -142,6 +142,13 @@ update_request_free (updateRequestPtr request)
 	g_free (request);
 }
 
+void
+update_request_set_source(updateRequestPtr request, gchar* source) 
+{
+	g_free (request->source);
+	request->source = g_strdup(source) ;
+}
+
 updateResultPtr
 update_result_new (void)
 {
