@@ -106,11 +106,6 @@ static void
 google_source_edit_action_complete(const struct updateResult* const result, gpointer userdata, updateFlags flags) 
 { 
 	readerPtr reader = (readerPtr) userdata;
-	static int count = 1;
-
-	/** @todo if request failed, then wait and resend request */
-	printf ("Got result #%d: [%s]\n", count, result->data);
-	count++;
 
 	/* process anything else waiting on the edit queue */
 	google_source_edit_process (reader);
@@ -356,15 +351,12 @@ google_source_add_shared (readerPtr reader)
 	node_set_type (node, feed_get_node_type ());
 	node_set_data (node, feed_new ());
 
-
 	node_set_subscription (node, subscription_new (GOOGLE_SOURCE_BROADCAST_FRIENDS_URI, NULL, NULL));
-	node_add_child (reader->root, node, -1);
 	node->subscription->type = &googleReaderFeedSubscriptionType;
+	node_add_child (reader->root, node, -1);
 	update_state_set_cookies (node->subscription->updateState, reader->sid);
-	
+
 	subscription_update (node->subscription, FEED_REQ_RESET_TITLE);
-	
-	feedlist_schedule_save ();
 }
 
 static void
@@ -482,7 +474,8 @@ google_subscription_opml_cb (subscriptionPtr subscription, const struct updateRe
 			xpath_foreach_match (root, "/object/list[@name='subscriptions']/object",
 			                     google_source_merge_feed,
 			                     (gpointer)reader);
-						   
+			google_source_add_shared (reader) ;
+
 			opml_source_export (subscription->node);	/* save new feeds to feed list */
 						   
 			subscription->node->available = TRUE;
@@ -495,7 +488,6 @@ google_subscription_opml_cb (subscriptionPtr subscription, const struct updateRe
 
 	node_foreach_child_data (subscription->node, node_update_subscription, GUINT_TO_POINTER (0));
 
-	google_source_add_shared (reader) ;
 }
 
 static void
