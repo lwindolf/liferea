@@ -37,7 +37,7 @@
 
 /** default Google reader subscription list update interval = once a day */
 #define GOOGLE_SOURCE_UPDATE_INTERVAL 60*60*24
-
+#define GOOGLE_SOURCE_BROADCAST_FRIENDS_URI "http://www.google.com/reader/atom/user/-/state/com.google/broadcast-friends" 
 /**
  * when this is set to true, and google_source_item_mark_read is called, 
  * it will do nothing. This is a small hack, so that whenever google source
@@ -231,6 +231,8 @@ google_source_check_for_removal (nodePtr node, gpointer user_data)
 {
 	gchar		*expr = NULL;
 
+	if ( g_str_equal(node->subscription->source, GOOGLE_SOURCE_BROADCAST_FRIENDS_URI) ) 
+		return ; 
 	if (IS_FEED (node)) {
 		expr = g_strdup_printf ("/object/list[@name='subscriptions']/object/string[@name='title'][. = '%s']", node_get_title (node));
 	} else {
@@ -332,14 +334,13 @@ google_source_add_shared (readerPtr reader)
 	gchar* title = "Friend's Shared Items"; 
 	GSList * iter = NULL ; 
 	nodePtr node ; 
-	const gchar* shared_uri = "http://www.google.com/reader/atom/user/-/state/com.google/broadcast-friends" ;
 
 	iter = reader->root->children; 
 	while (iter) { 
 		node = (nodePtr)iter->data ; 
 		if (!node->subscription || !node->subscription->source) 
 			continue;
-		if (g_str_equal (node->subscription->source, title)) {
+		if (g_str_equal (node->subscription->source, GOOGLE_SOURCE_BROADCAST_FRIENDS_URI)) {
 			update_state_set_cookies (node->subscription->updateState, 
 			                          reader->sid);
 			return;
@@ -355,7 +356,7 @@ google_source_add_shared (readerPtr reader)
 	node_set_data (node, feed_new ());
 
 
-	node_set_subscription (node, subscription_new (shared_uri, NULL, NULL));
+	node_set_subscription (node, subscription_new (GOOGLE_SOURCE_BROADCAST_FRIENDS_URI, NULL, NULL));
 	node_add_child (reader->root, node, -1);
 	node->subscription->type = &googleReaderFeedSubscriptionType;
 	update_state_set_cookies (node->subscription->updateState, reader->sid);
@@ -422,6 +423,12 @@ google_source_merge_feed (xmlNodePtr match, gpointer user_data)
 		xmlFree (title);
 }
 
+/**
+ * Initialize the reader and subscription for a login. Note that this does not do the
+ * actual updating. You can follow this call up with a call to subscription_update to 
+ * complete the call. If from a prepare_update_request, then use the following hack:
+ * retrieve the subscription's source and set the request's source to that.
+ */
 static void
 google_source_login (subscriptionPtr subscription, guint32 flags) { 
 	readerPtr reader = (readerPtr) subscription->node->data;
@@ -675,7 +682,7 @@ google_feed_subscription_process_update_result (subscriptionPtr subscription,
 
 static gboolean
 google_feed_subscription_prepare_update_request (subscriptionPtr subscription, 
-                                                 const struct updateRequest *request)
+                                                 struct updateRequest *request)
 {
 	debug0 (DEBUG_UPDATE, "preparing google reader feed subscription for update\n");
 	readerPtr reader = (readerPtr) google_source_get_root_from_node (subscription->node)->data; 
@@ -740,11 +747,14 @@ static void google_source_deinit (void) { }
 void
 google_source_import (nodePtr node)
 {
+	GSList *iter; 
 	opml_source_import (node);
 	
 	node->subscription->type = &googleReaderOpmlSubscriptionType;
 	/** @todo get specific information like reader->sid from this? */ 
-
+	
+	for(iter = node->children; iter; iter = g_slist_next(iter) )
+		((nodePtr) iter->data)->subscription->type = &googleReaderFeedSubscriptionType; 
 }
 
 void
