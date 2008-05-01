@@ -794,7 +794,7 @@ on_google_source_selected (GtkDialog *dialog,
 		subscription = subscription_new ("http://www.google.com/reader", NULL, NULL);
 		subscription->updateOptions->username = g_strdup (gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "userEntry"))));
 		subscription->updateOptions->password = g_strdup (gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "passwordEntry"))));
-		
+		subscription->type = &googleReaderOpmlSubscriptionType ; 
 		node = node_new ();
 		node_set_title (node, "Google Reader");
 		node_source_new (node, google_source_get_type ());
