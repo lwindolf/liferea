@@ -357,6 +357,7 @@ google_source_add_shared (readerPtr reader)
 	update_state_set_cookies (node->subscription->updateState, reader->sid);
 
 	subscription_update (node->subscription, FEED_REQ_RESET_TITLE);
+	subscription_update_favicon (node->subscription);
 }
 
 static void
@@ -409,6 +410,7 @@ google_source_merge_feed (xmlNodePtr match, gpointer user_data)
 		 * status inherently.
 		 */
 		subscription_update (node->subscription,  FEED_REQ_RESET_TITLE);
+		subscription_update_favicon (node->subscription);
 	}
 
 cleanup:
