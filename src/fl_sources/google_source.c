@@ -622,16 +622,18 @@ google_source_item_retrieve_status (xmlNodePtr entry, gpointer userdata)
 
 		/* this is extremely inefficient, multiple times loading */
 		itemPtr item = item_load (GPOINTER_TO_UINT (iter->data));
-		if (g_str_equal (item->sourceId, id) && item->readStatus != read) {
+		if (item && item->sourceId) {
+			if (g_str_equal (item->sourceId, id) && item->readStatus != read) {
 
-			__mark_read_hack = TRUE;
-			item_state_set_read (item, read);
-			__mark_read_hack = FALSE;
+				__mark_read_hack = TRUE;
+				item_state_set_read (item, read);
+				__mark_read_hack = FALSE;
 
-			item_unload (item);
-			goto cleanup;
+				item_unload (item);
+				goto cleanup;
+			}
 		}
-		item_unload (item);
+		if (item) item_unload (item) ;
 	}
 
 	debug1 (DEBUG_UPDATE, "google_source_item_retrieve_status(): [%s] didn't get an item :( \n", id);
