@@ -3,6 +3,7 @@
  *
  * Copyright (C) 2004-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2008 Marc Wiriadisastra <mwiriadi@users.sf.net>
  *
  * The preference handling was taken from the Galeon source
  *
@@ -29,21 +30,39 @@
 #  include <config.h>
 #endif
 
-#define MOZILLA_INTERNAL_API
+// for GLUE we _must_ not use MOZILLA_INTERNAL_API 
+#ifndef XPCOM_GLUE
+#  define MOZILLA_INTERNAL_API
+#endif
 
 #include "mozsupport.h"
 #include <gtk/gtk.h>
 #include <gtkmozembed.h>
 #include <gtkmozembed_internal.h>
 
-#include "nsIWebBrowser.h"
-#include "nsIDOMMouseEvent.h"
-#include "dom/nsIDOMKeyEvent.h"
-#include "nsIDOMWindow.h"
-#include "nsIPrefService.h"
-#include "nsIServiceManager.h"
-#include "nsIIOService.h"
-#include "necko/nsNetCID.h"
+// if we use the glue (since 1.9), we must explicitly get the gtkmozembed symbols
+#ifdef XPCOM_GLUE
+#  include <gtkmozembed_glue.cpp>
+#endif
+
+// some includes were moved with 1.9, so we need to switch here
+#ifdef XPCOM_GLUE
+#include <nsIDOMKeyEvent.h>
+#include <nsNetCID.h>
+#else
+#include <dom/nsIDOMKeyEvent.h>
+#include <necko/nsNetCID.h>
+#endif
+
+#include <nsIWebBrowser.h>
+#include <nsIDOMMouseEvent.h>
+#include <nsIDOMWindow.h>
+#include <nsIPrefService.h>
+#include <nsIServiceManager.h>
+#include <nsIIOService.h>
+#include <nsCOMPtr.h>
+
+#include <nsServiceManagerUtils.h>
 
 extern "C" {
 #include "conf.h"

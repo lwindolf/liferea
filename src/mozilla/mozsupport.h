@@ -1,7 +1,7 @@
 /**
  * @file mozsupport.h Liferea GtkMozEmbed support
  *
- * Copyright (C) 2004-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2006 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -48,6 +48,13 @@ gboolean mozsupport_preference_set_boolean (const char *preference_name,
 gboolean mozsupport_preference_set_int (const char *preference_name,
 				     int new_int_value);
 void mozsupport_set_offline_mode (gboolean offline);
+
+/* helpers for binaries linked against XPCOM_GLUE */
+#ifdef XPCOM_GLUE
+gboolean mozsupport_xpcom_init ();
+gboolean mozsupport_xpcom_shutdown ();
+#endif
+
 #ifdef __cplusplus
 }
 #endif 

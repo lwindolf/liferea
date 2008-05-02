@@ -1,7 +1,7 @@
 /**
  * @file mozilla.c a Mozilla/Firefox browser module implementation
  *   
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>   
+ * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * Contains code from the Galeon sources
@@ -32,14 +32,16 @@
 #include "mozembed.h"
 #include "plugin.h"
 
-static void mozilla_init(void) {
-
+static void
+mozilla_init (void)
+{
+#ifndef XPCOM_GLUE
 	/* Avoid influencing the component loading by $MOZILLA_FIVE_HOME */
-	g_unsetenv("MOZILLA_FIVE_HOME");
+	g_unsetenv ("MOZILLA_FIVE_HOME");
 
-	gtk_moz_embed_set_comp_path(MOZILLA_LIB_ROOT);
-
-	mozembed_init();	
+	gtk_moz_embed_set_comp_path (MOZILLA_LIB_ROOT);
+#endif
+	mozembed_init ();	
 }
 
 static struct htmlviewPlugin mozillaInfo = {

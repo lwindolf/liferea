@@ -335,11 +335,17 @@ void
 mozembed_init (void)
 {
 	gchar	*profile;
-	
+
+	// if we use the glue we need to initialize the GRE
+	// explicitely.
+#ifdef XPCOM_GLUE
+	debug_enter ("mozembed_init (XPCOM_GLUE)");
+	g_assert (mozsupport_xpcom_init ());
+#else
 	debug_enter ("mozembed_init");
-	
-	/* some GtkMozEmbed initialization taken from embed.c from the Galeon sources */
-	
+#endif	
+	/* some GtkMozEmbed initialization taken from embed.c from the Galeon sources */	
+
 	/* init mozilla home */
 	g_assert (g_thread_supported ());
 	
@@ -374,6 +380,10 @@ void
 mozembed_deinit (void)
 {
 	gtk_moz_embed_pop_startup ();
+	
+#ifdef XPCOM_GLUE
+	g_assert (mozsupport_xpcom_shutdown ());
+#endif
 }
 
 /* launches the specified URL */
