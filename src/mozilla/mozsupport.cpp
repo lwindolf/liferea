@@ -3,6 +3,7 @@
  *
  * Copyright (C) 2004-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2008 Marc Wiriadisastra <mwiriadi@users.sf.net>
  *
  * The preference handling was taken from the Galeon source
  *
@@ -29,21 +30,40 @@
 #  include <config.h>
 #endif
 
-#define MOZILLA_INTERNAL_API
+// for GLUE we _must_ not use MOZILLA_INTERNAL_API 
+#ifndef XPCOM_GLUE
+#  define MOZILLA_INTERNAL_API
+#endif
 
 #include "mozsupport.h"
 #include <gtk/gtk.h>
+
 #include <gtkmozembed.h>
 #include <gtkmozembed_internal.h>
 
-#include "nsIWebBrowser.h"
-#include "nsIDOMMouseEvent.h"
-#include "dom/nsIDOMKeyEvent.h"
-#include "nsIDOMWindow.h"
-#include "nsIPrefService.h"
-#include "nsIServiceManager.h"
-#include "nsIIOService.h"
-#include "necko/nsNetCID.h"
+// if we use the glue (since 1.9), we must explicitly get the gtkmozembed symbols
+#ifdef XPCOM_GLUE
+#  include <gtkmozembed_glue.cpp>
+#endif
+
+// some includes were moved with 1.9, so we need to switch here
+#ifdef XPCOM_GLUE
+#include <nsIDOMKeyEvent.h>
+#include <nsNetCID.h>
+#else
+#include <dom/nsIDOMKeyEvent.h>
+#include <necko/nsNetCID.h>
+#endif
+
+#include <nsIWebBrowser.h>
+#include <nsIDOMMouseEvent.h>
+#include <nsIDOMWindow.h>
+#include <nsIPrefService.h>
+#include <nsIServiceManager.h>
+#include <nsIIOService.h>
+#include <nsCOMPtr.h>
+
+#include <nsServiceManagerUtils.h>
 
 extern "C" {
 #include "conf.h"
@@ -286,4 +306,49 @@ mozsupport_set_offline_mode (gboolean offline)
 	}
 	//return FALSE;
 }
+
+
+/* helpers for binaries linked against XPCOM_GLUE */
+#ifdef XPCOM_GLUE
+
+/**
+ * load xpcom through glue.
+ * When using the glue you have to call this method before doing
+ * anything else. It finds the GRE, loads the xpcom libs,
+ * maps the gtkmozbemd symbols and intializes xpcom by setting
+ * the path and component path.
+ *
+ * the caller still has to call gtk_moz_embed_push_startup ()
+ */
+extern "C" gboolean
+mozsupport_xpcom_init ()
+{
+	static const GREVersionRange greVersion = {
+		"1.9a", PR_TRUE,
+		"1.9.*", PR_TRUE
+	};
+	char xpcomLocation[4096];
+	nsresult rv = GRE_GetGREPathWithProperties (&greVersion, 1, nsnull, 0, xpcomLocation, 4096);
+	NS_ENSURE_SUCCESS (rv, NS_SUCCEEDED (rv));
+	// Startup the XPCOM Glue that links us up with XPCOM.
+	rv = XPCOMGlueStartup(xpcomLocation);
+	NS_ENSURE_SUCCESS (rv, NS_SUCCEEDED (rv));
+	rv = GTKEmbedGlueStartup();
+	NS_ENSURE_SUCCESS (rv, NS_SUCCEEDED (rv));
+	rv = GTKEmbedGlueStartupInternal();
+	NS_ENSURE_SUCCESS (rv, NS_SUCCEEDED (rv));
+	char *lastSlash = strrchr (xpcomLocation, '/');
+	if (lastSlash)
+		*lastSlash = '\0';
+	gtk_moz_embed_set_path (xpcomLocation);
+
+	return TRUE;
+}
+
+extern "C" gboolean
+mozsupport_xpcom_shutdown ()
+{
+	return NS_SUCCEEDED (XPCOMGlueShutdown ());
+}
+#endif
 

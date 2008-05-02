@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([liferea],[1.4.15],[liferea-devel@lists.sourceforge.net])
+AC_INIT([liferea],[1.4.16],[liferea-devel@lists.sourceforge.net])
 AC_CANONICAL_TARGET([])
 AC_CONFIG_SRCDIR([src/feedlist.c])
 
@@ -166,17 +166,30 @@ dnl XulRunner
 dnl *********
 
 if test "x$enable_xulrunner" = "xyes" ; then
-   dnl AC_MSG_CHECKING([for XulRunner support])
-   PKG_CHECK_MODULES(XULRUNNER, xulrunner-gtkmozembed, enable_xulrunner=yes, enable_xulrunner=no)
-   XULRUNNER_HOME="`$PKG_CONFIG --variable=libdir xulrunner-gtkmozembed`"
-   AC_SUBST([XULRUNNER_HOME])
-   AC_SUBST(XULRUNNER_CFLAGS)
-   AC_SUBST(XULRUNNER_LIBS)
-
-   MOZILLA_LIB_ROOT=`$PKG_CONFIG --libs-only-L xulrunner-gtkmozembed | awk '{print $1}' |  cut -c 3-`
+ 
+   AC_MSG_CHECKING([for XulRunner 1.9+ support])  
+   PKG_CHECK_MODULES(XULRUNNER, xulrunner-embedding, XULRUNNER_PROVIDER=xulrunner-embedding, XULRUNNER_PROVIDER=)
    
-   dnl the Mozilla XPCOM access means C++
-   AC_PROG_CXX
+   if test "x$XULRUNNER_PROVIDER" = "x" ; then
+      AC_MSG_CHECKING([for XulRunner 1.8 support])  
+      PKG_CHECK_MODULES(XULRUNNER, xulrunner-gtkmozembed, XULRUNNER_PROVIDER=xulrunner-gtkmozembed, XULRUNNER_PROVIDER=)
+   fi
+   
+   if test "x$XULRUNNER_PROVIDER" = "x" ; then
+      enable_xulrunner=no
+   else
+      enable_xulrunner=yes
+      
+      XULRUNNER_HOME="`$PKG_CONFIG --variable=libdir $XULRUNNER_PROVIDER`"
+      AC_SUBST([XULRUNNER_HOME])
+      AC_SUBST(XULRUNNER_CFLAGS)
+      AC_SUBST(XULRUNNER_LIBS)
+
+      MOZILLA_LIB_ROOT=`$PKG_CONFIG --libs-only-L $XULRUNNER_PROVIDER | awk '{print $1}' |  cut -c 3-`
+   
+      dnl the Mozilla XPCOM access means C++
+      AC_PROG_CXX
+   fi
 fi
 
 AM_CONDITIONAL(WITH_XULRUNNER, test "x$enable_xulrunner" = "xyes")
@@ -199,7 +212,6 @@ dnl GtkHTML2
 dnl ********
  
 if test "x$enable_gtkhtml2" = "xyes"; then
-   dnl AC_MSG_CHECKING([for GtkHTML2 support])
    PKG_CHECK_MODULES([GTKHTML2], libgtkhtml-2.0 >= 2.0.0,enable_gtkhtml2=yes,enable_gtkhtml2=no)
    AC_SUBST(GTKHTML2_CFLAGS)
    AC_SUBST(GTKHTML2_LIBS)
@@ -215,18 +227,18 @@ dnl *******
 
 if test "x$enable_gecko" = "xyes" -o "x$enable_gecko" = "xmozilla" ; then
    gecko_provider=mozilla
+   AC_MSG_CHECKING([for Gecko provider $gecko_provider]) 
    PKG_CHECK_MODULES(MOZILLA, $gecko_provider-gtkmozembed, enable_mozilla=yes, enable_mozilla=no)
-   AC_MSG_RESULT($gecko_provider: $enable_mozilla)
 fi
 if test "x$enable_mozilla" != "xyes" -a \( "x$enable_gecko" = "xyes" -o "x$enable_gecko" = "xfirefox" \) ; then
    gecko_provider=firefox
+   AC_MSG_CHECKING([for Gecko provider $gecko_provider]) 
    PKG_CHECK_MODULES(MOZILLA, $gecko_provider-gtkmozembed, enable_mozilla=yes, enable_mozilla=no)
-   AC_MSG_RESULT($gecko_provider: $enable_mozilla)
 fi
 if test "x$enable_mozilla" != "xyes" -a \( "x$enable_gecko" = "xyes" -o "x$enable_gecko" = "xseamonkey" \) ; then
    gecko_provider=seamonkey
+   AC_MSG_CHECKING([for Gecko provider $gecko_provider]) 
    PKG_CHECK_MODULES(MOZILLA, $gecko_provider-gtkmozembed, enable_mozilla=yes, enable_mozilla=no)
-   AC_MSG_RESULT($gecko_provider: $enable_mozilla)
 fi
 
 AM_CONDITIONAL(WITH_MOZILLA, test "x$enable_mozilla" = "xyes")
@@ -300,10 +312,10 @@ else
    enable_mozilla=no
 fi
 
-dnl For now, require GtkHTML2, Mozilla or XulRunner.
+dnl For now, require GtkHTML2, Mozilla, XulRunner or WebKit.
 if test "x$enable_mozilla" != "xyes" -a "x$enable_gtkhtml2" != "xyes" -a "x$enable_xulrunner" != "xyes" -a "x$enable_webkit" != "xyes"; then
 	AC_MSG_ERROR([
-*** You must have either the GtkHTML2, XulRunner or the Mozilla 
+*** You must have either GtkHTML2, XulRunner, Mozilla or WebKit
 *** development libraries installed in order to build Liferea!
 ])
 fi
@@ -393,9 +405,10 @@ AC_SUBST(DBUS_CFLAGS)
 AC_SUBST(DBUS_LIBS)
 AM_CONDITIONAL(WITH_DBUS, test "x$enable_dbus" = "xyes")
 
-dnl ****
+dnl **************
 dnl NetworkManager
-dnl ****
+dnl **************
+
 if test "x$enable_nm" = "xyes"; then
    AC_MSG_NOTICE([checking for NetworkManager])
    PKG_CHECK_MODULES([NM], [dbus-glib-1 libnm_glib],enable_nm=yes,enable_nm=no)
