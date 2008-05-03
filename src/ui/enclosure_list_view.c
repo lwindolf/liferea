@@ -292,8 +292,9 @@ enclosure_list_view_load (EnclosureListView *elv, itemPtr item)
 					    ES_PTR, enclosure,
 					    -1);
 			g_free (sizeStr);
+
+			elv->priv->enclosures = g_slist_append (elv->priv->enclosures, enclosure);
 		}
-		elv->priv->enclosures = g_slist_append (elv->priv->enclosures, enclosure);
 		
 		list = list->next;
 	}

@@ -6,6 +6,7 @@
 	  global popup notification preference.
 	* Fixes SF #1920860: crash after memory corruption when
 	  parsing feed with invalid encoding (reported by mumrel)
+	* Fixes a crash when selecting items with enclosures.
 
 
 2008-04-20  Lars Lindner  <lars.lindner@gmail.com>
