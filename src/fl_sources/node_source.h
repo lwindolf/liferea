@@ -1,7 +1,7 @@
 /**
- * @file node_source.h generic feed list provider interface
+ * @file node_source.h  generic node source interface
  * 
- * Copyright (C) 2005-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2005-2008 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,11 +26,17 @@
 #include "node.h"
 #include "node_type.h"
 
-/* Liferea allows to have different sources in the feed list.
-   Sources can but do not need to be single instance only. Sources
+/* Liferea allows to have different sources in the feed list. These
+   sources are called "node sources" henceforth. Node sources can 
+   (but do not need to) be single instance only. Node sources do
    provide a subtree of the feed list that can be read-only
-   or not. A source might allow or not allow to add sub folders
-   and reorder (DnD) folder contents.
+   or not. A node source might allow or not allow to add sub folders
+   and reorder (DnD) folder contents. A node source might allow 
+   hierarchic grouping of its subtree or not. These properties
+   are determined by the node source type capability flags.
+   
+   The node source concept itself is a node type. The implementation
+   of this node type can be found in node_source.c.
 
    The default node source type must be capable of serving as the root
    node for all other source types. This mean it has to ensure to load
@@ -42,13 +48,14 @@
    A source type implementation can omit all callbacks marked as 
    optional. */
 
-#define NODE_SOURCE_TYPE_API_VERSION 5
+#define NODE_SOURCE_TYPE_API_VERSION 6
 
 enum {
 	NODE_SOURCE_CAPABILITY_IS_ROOT			= (1<<0),	/**< flag only for default feed list source */
 	NODE_SOURCE_CAPABILITY_MULTI_INSTANCES		= (1<<1),	/**< allows multiple source instances */
 	NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION		= (1<<2),	/**< feed list source is user created */
-	NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST	= (1<<3)	/**< the feed list tree of the source can be changed */
+	NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST	= (1<<3),	/**< the feed list tree of the source can be changed */
+	NODE_SOURCE_CAPABILITY_HIERARCHIC_FEEDLIST	= (1<<4)	/**< the feed list tree of the source can have hierarchic folders */
 };
 
 /** feed list node source type */
@@ -122,11 +129,35 @@ typedef struct nodeSourceType {
 	void		(*free) (nodePtr node);
 
 	/**
-	 * Mark an item as read. OPTIONAL.
+	 * Mark an item as read. This is to allow node source type 
+	 * implementations to synchronize remote item states.
+	 *
+	 * This is an OPTIONAL method.
 	 */
-	void            (*item_mark_read)(nodePtr node, itemPtr item,
-					  gboolean newStatus);
-	
+	void            (*item_mark_read)(nodePtr node, itemPtr item, gboolean newStatus);
+
+	/**
+	 * Add a new folder to the feed list provided by node
+	 * source. OPTIONAL, but must be implemented when
+	 * NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST and
+	 * NODE_SOURCE_CAPABILITY_HIERARCHIC_FEEDLIST are set.
+	 */
+	void		(*add_folder) (nodePtr node, nodePtr parent, const gchar *title);
+
+	/**
+	 * Add a new subscription to the feed list provided
+	 * by the node source. OPTIONAL method, that must be implemented
+	 * when NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST is set.
+	 */
+	void		(*add_subscription) (nodePtr node, nodePtr parent, struct subscription *subscription);
+	 
+	/**
+	 * Removes an existing node (subscription or folder) from the feed list 
+	 * provided by the node source. OPTIONAL method that must be
+	 * implemented when NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST is set.
+	 */
+	void		(*remove_node) (nodePtr node, nodePtr child);
+
 } *nodeSourceTypePtr;
 
 /** feed list source instance */
@@ -186,13 +217,38 @@ void node_source_auto_update (nodePtr node);
 
 /**
  * Inform the source that the item has been marked as read/unread.
- * @param node the parent node
- * @param item the item whose read status has changed
- * @param newStatus the new read status of the item
+ *
+ * @param node		the source node
+ * @param item		the item whose read status has changed
+ * @param newStatus	the new read status of the item
  */
-void node_source_item_state_mark_read(nodePtr node, 
-				      itemPtr item,
-				      gboolean newStatus);
+void node_source_item_state_mark_read (nodePtr node, itemPtr item, gboolean newStatus);
+
+/**
+ * Called when a new subscription has been added to the node source.
+ *
+ * @param node		the source node
+ * @param parent	the parent node
+ * @param subscription	the new subscription
+ */
+void node_source_add_subscription (nodePtr node, nodePtr parent, struct subscription *subscription);
+
+/**
+ * Called when an existing subscription is to be removed from a node source.
+ *
+ * @param node		the source node
+ * @param child		the child node to remove
+ */
+void node_source_remove_node (nodePtr node, nodePtr child);
+
+/**
+ * Called when a new folder is to be added to a node source feed list.
+ *
+ * @param node		the source node
+ * @param parent	the parent node
+ * @param title		the folder title
+ */
+void node_source_add_folder (nodePtr node, nodePtr parent, gchar *title);
 
 /**
  * Launches a source creation dialog. The new source
