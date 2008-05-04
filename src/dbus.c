@@ -28,50 +28,61 @@
 #include "dbus.h"
 #include "feedlist.h"
 #include "net.h"
-#include "node.h"
 #include "subscription.h"
-#include "ui/ui_mainwindow.h"
 
 G_DEFINE_TYPE(LifereaDBus, liferea_dbus, G_TYPE_OBJECT)
 
-gboolean liferea_dbus_ping(LifereaDBus *self, gboolean *ret, GError **err) {
+gboolean
+liferea_dbus_ping (LifereaDBus *self, gboolean *ret, GError **err)
+{
 	*ret = TRUE;
 	return TRUE;
 }
 
-gboolean liferea_dbus_set_online(LifereaDBus *self, gboolean online, gboolean *ret, GError **err) {
-	network_set_online(online);
+gboolean
+liferea_dbus_set_online (LifereaDBus *self, gboolean online, gboolean *ret, GError **err)
+{
+	network_set_online (online);
 	*ret = TRUE;
 	return TRUE;
 }
 
-gboolean liferea_dbus_subscribe(LifereaDBus *self, gchar *url, gboolean *ret, GError **err) {
+gboolean
+liferea_dbus_subscribe (LifereaDBus *self, gchar *url, gboolean *ret, GError **err)
+{
 	ui_mainwindow_show ();
-	node_request_automatic_add(url, NULL, NULL, NULL, FEED_REQ_RESET_TITLE | FEED_REQ_RESET_UPDATE_INT);
+	feedlist_add_subscription (url, NULL, NULL, NULL, FEED_REQ_RESET_TITLE | FEED_REQ_RESET_UPDATE_INT);
 	*ret = TRUE;
 	return TRUE;
 }
 
-gboolean liferea_dbus_get_unread_items(LifereaDBus *self, guint *ret, GError **err) {
-	*ret = feedlist_get_unread_item_count();
+gboolean
+liferea_dbus_get_unread_items (LifereaDBus *self, guint *ret, GError **err)
+{
+	*ret = feedlist_get_unread_item_count ();
 	return TRUE;
 }
 
-gboolean liferea_dbus_get_new_items(LifereaDBus *self, guint *ret, GError **err) {
-	*ret = feedlist_get_new_item_count();
+gboolean
+liferea_dbus_get_new_items (LifereaDBus *self, guint *ret, GError **err)
+{
+	*ret = feedlist_get_new_item_count ();
 	return TRUE;
 }
 
 #include "dbus_wrap.c"
 
-static void liferea_dbus_init(LifereaDBus *obj) {
-}
+static void liferea_dbus_init(LifereaDBus *obj) { }
 
-static void liferea_dbus_class_init(LifereaDBusClass *klass) {
+static void
+liferea_dbus_class_init (LifereaDBusClass *klass)
+{
 	dbus_g_object_type_install_info (LIFEREA_DBUS_TYPE, &dbus_glib_liferea_dbus_object_info);
 }
 
-LifereaDBus* liferea_dbus_new() {
+LifereaDBus*
+liferea_dbus_new (void)
+{
 	LifereaDBus *obj = NULL;
 	DBusGConnection *bus;
 	DBusGProxy *bus_proxy;

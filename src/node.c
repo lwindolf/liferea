@@ -282,62 +282,21 @@ node_render(nodePtr node)
 
 /* import callbacks and helper functions */
 
-void node_add_child(nodePtr parent, nodePtr node, gint position) {
+void
+node_add_child (nodePtr parent, nodePtr node, gint position)
+{
+	if (!parent)
+		parent = ui_feedlist_get_target_folder (&position);
 
-	if(!parent)
-		parent = ui_feedlist_get_target_folder(&position);	
-
-	parent->children = g_slist_insert(parent->children, node, position);
+	parent->children = g_slist_insert (parent->children, node, position);
 	node->parent = parent;
 	
-	/* new node may be provided by another feed list handler, if 
-	   not they are handled by the parents handler */
-	if(!node->source)
+	/* new nodes may be provided by another node source, if 
+	   not they are handled by the parents node source */
+	if (!node->source)
 		node->source = parent->source;
 	
-	ui_node_add(parent, node, position);	
-}
-
-/* To be called by node type implementations to add nodes */
-void node_add(nodePtr node, nodePtr parent, gint pos, guint flags) {
-
-	debug1(DEBUG_GUI, "new node will be added to folder \"%s\"", node_get_title(parent));
-
-	ui_feedlist_get_target_folder(&pos);
-
-	node_add_child(parent, node, pos);
-	subscription_update(node->subscription, flags);
-}
-
-/* Automatic subscription adding (e.g. URL DnD), creates a new feed node
-   without any user interaction. */
-void
-node_request_automatic_add (const gchar *source, const gchar *title, const gchar *filter, updateOptionsPtr options, gint flags)
-{
-	nodePtr		node, parent;
-	gint		pos;
-
-	g_assert(NULL != source);
-
-	parent = feedlist_get_insertion_point();
-
-	if(0 == (NODE_SOURCE_TYPE(parent->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS))
-		return;
-
-	node = node_new ();
-	node_set_type (node,feed_get_node_type ());
-	node_set_title (node, title?title:_("New Subscription"));
-	node_set_data (node, feed_new ());
-	node_set_subscription (node, subscription_new (source, filter, options));
-	db_subscription_update (node->subscription);
-
-	ui_feedlist_get_target_folder (&pos);
-	node_add_child (parent, node, pos);
-	subscription_update (node->subscription, flags);
-	feedlist_schedule_save ();
-	ui_feedlist_select (node);
-	
-	script_run_for_hook (SCRIPT_HOOK_NEW_SUBSCRIPTION);
+	ui_node_add (parent, node, position);	
 }
 
 void
@@ -347,6 +306,8 @@ node_request_remove (nodePtr node)
 	   and item counters for all parent folders and matching 
 	   search folders */
 	itemlist_remove_all_items (node);
+	
+	node_source_remove_node (node->source->root, node);
 	
 	NODE_TYPE (node)->remove (node);
 
@@ -455,11 +416,11 @@ void node_set_id(nodePtr node, const gchar *id) {
 
 const gchar *node_get_id(nodePtr node) { return node->id; }
 
-void node_set_sort_column(nodePtr node, gint sortColumn, gboolean reversed) {
-
+void
+node_set_sort_column (nodePtr node, gint sortColumn, gboolean reversed)
+{
 	node->sortColumn = sortColumn;
 	node->sortReversed = reversed;
-	feedlist_schedule_save();
 }
 
 void node_set_view_mode(nodePtr node, guint newMode) { node->viewMode = newMode; }

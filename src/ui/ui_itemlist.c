@@ -738,16 +738,19 @@ void on_itemlist_selection_changed(GtkTreeSelection *selection, gpointer data) {
 		itemlist_selection_changed(item);
 }
 
-void itemlist_sort_column_changed_cb(GtkTreeSortable *treesortable, gpointer user_data) {
+void
+itemlist_sort_column_changed_cb (GtkTreeSortable *treesortable, gpointer user_data)
+{
 	gint		sortColumn;
 	GtkSortType	sortType;
 	gboolean	sorted;
 	
-	if(feedlist_get_selected() == NULL || disableSortingSaving != 0)
+	if (feedlist_get_selected () == NULL || disableSortingSaving != 0)
 		return;
 	
-	sorted = gtk_tree_sortable_get_sort_column_id(treesortable, &sortColumn, &sortType);
-	node_set_sort_column(feedlist_get_selected(), sortColumn, sortType == GTK_SORT_DESCENDING);
+	sorted = gtk_tree_sortable_get_sort_column_id (treesortable, &sortColumn, &sortType);
+	node_set_sort_column (feedlist_get_selected (), sortColumn, sortType == GTK_SORT_DESCENDING);
+	feedlist_schedule_save ();
 }
 
 /* needed because switching does sometimes returns to the tree 

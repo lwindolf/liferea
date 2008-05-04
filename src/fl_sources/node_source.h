@@ -142,14 +142,23 @@ typedef struct nodeSourceType {
 	 * NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST and
 	 * NODE_SOURCE_CAPABILITY_HIERARCHIC_FEEDLIST are set.
 	 */
-	void		(*add_folder) (nodePtr node, nodePtr parent, const gchar *title);
+	nodePtr		(*add_folder) (nodePtr node, nodePtr parent, const gchar *title);
 
 	/**
 	 * Add a new subscription to the feed list provided
 	 * by the node source. OPTIONAL method, that must be implemented
 	 * when NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST is set.
+	 *
+	 * The implementation could propagate the added subscription 
+	 * to a remote feed list service.
+	 *
+	 * The implementation MUST create and return a new child node 
+	 * setup with the given subscription which might be changed as necessary.
+	 *
+	 * The returned node will be automatically added to the feed list UI.
+	 * Initial update and state saving will be triggered automatically.
 	 */
-	void		(*add_subscription) (nodePtr node, nodePtr parent, struct subscription *subscription);
+	nodePtr		(*add_subscription) (nodePtr node, nodePtr parent, struct subscription *subscription);
 	 
 	/**
 	 * Removes an existing node (subscription or folder) from the feed list 
@@ -230,8 +239,10 @@ void node_source_item_state_mark_read (nodePtr node, itemPtr item, gboolean newS
  * @param node		the source node
  * @param parent	the parent node
  * @param subscription	the new subscription
+ *
+ * @returns a new node intialized with the new subscription
  */
-void node_source_add_subscription (nodePtr node, nodePtr parent, struct subscription *subscription);
+nodePtr node_source_add_subscription (nodePtr node, nodePtr parent, struct subscription *subscription);
 
 /**
  * Called when an existing subscription is to be removed from a node source.
@@ -247,8 +258,10 @@ void node_source_remove_node (nodePtr node, nodePtr child);
  * @param node		the source node
  * @param parent	the parent node
  * @param title		the folder title
+ *
+ * @returns a new node representing the new folder
  */
-void node_source_add_folder (nodePtr node, nodePtr parent, gchar *title);
+nodePtr node_source_add_folder (nodePtr node, nodePtr parent, const gchar *title);
 
 /**
  * Launches a source creation dialog. The new source

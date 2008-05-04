@@ -1,7 +1,7 @@
 /**
- * @file feedlist.h feedlist handling
+ * @file feedlist.h  feed list handling
  *
- * Copyright (C) 2005-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2005-2008 Lars Lindner <lars.lindner@gmail.com>
  *	      
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -106,12 +106,30 @@ void feedlist_node_was_updated (nodePtr node, guint newCount);
 nodePtr feedlist_get_root(void);
 
 /**
+ * Adds a new subscription to the feed list without any user interaction.
+ *
+ * @param source	the subscriptions source URL
+ * @param title		NULL or the node title
+ * @param filter	NULL or the filter for the subscription
+ * @param options	NULL or the update options
+ * @param flags		download request flags
+ */
+void feedlist_add_subscription (const gchar *source, const gchar *title, const gchar *filter, updateOptionsPtr options, gint flags);
+
+/**
+ * Adds a folder to the feed list without any user interaction.
+ *
+ * @param title		the title of the new folder.
+ */
+void feedlist_add_folder (const gchar *title);
+
+/**
  * Removes the given node from the feed list and 
  * triggers the permanent removal of the node from cache.
  *
  * @param node		the node to remove
  */
-void feedlist_remove_node(nodePtr node);
+void feedlist_remove_node (nodePtr node);
 
 /**
  * Synchronously saves the feed list. Only to be used upon exit!

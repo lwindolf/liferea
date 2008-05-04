@@ -2859,44 +2859,6 @@ fail:
 }
 
 
-static int _wrap_node_request_automatic_add(lua_State* L) {
-  int SWIG_arg = -1;
-  char *arg1 = (char *) 0 ;
-  char *arg2 = (char *) 0 ;
-  char *arg3 = (char *) 0 ;
-  updateOptionsPtr arg4 ;
-  int arg5 ;
-  updateOptionsPtr *argp4 ;
-  
-  SWIG_check_num_args("node_request_automatic_add",5,5)
-  if(!lua_isstring(L,1)) SWIG_fail_arg("node_request_automatic_add",1,"char const *");
-  if(!lua_isstring(L,2)) SWIG_fail_arg("node_request_automatic_add",2,"char const *");
-  if(!lua_isstring(L,3)) SWIG_fail_arg("node_request_automatic_add",3,"char const *");
-  if(!lua_isuserdata(L,4)) SWIG_fail_arg("node_request_automatic_add",4,"updateOptionsPtr");
-  if(!lua_isnumber(L,5)) SWIG_fail_arg("node_request_automatic_add",5,"int");
-  arg1 = (char *)lua_tostring(L, 1);
-  arg2 = (char *)lua_tostring(L, 2);
-  arg3 = (char *)lua_tostring(L, 3);
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,4,(void**)&argp4,SWIGTYPE_p_updateOptionsPtr,0))){
-    SWIG_fail_ptr("node_request_automatic_add",4,SWIGTYPE_p_updateOptionsPtr);
-  }
-  arg4 = *argp4;
-  
-  arg5 = (int)lua_tonumber(L, 5);
-  node_request_automatic_add((char const *)arg1,(char const *)arg2,(char const *)arg3,arg4,arg5);
-  SWIG_arg=0;
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
 static int _wrap_node_request_remove(lua_State* L) {
   int SWIG_arg = -1;
   nodePtr arg1 = (nodePtr) 0 ;
@@ -6322,6 +6284,64 @@ static int _wrap_feedlist_node_was_updated(lua_State* L) {
   
   arg2 = (unsigned int)lua_tonumber(L, 2);
   feedlist_node_was_updated(arg1,arg2);
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_feedlist_add_subscription(lua_State* L) {
+  int SWIG_arg = -1;
+  char *arg1 = (char *) 0 ;
+  char *arg2 = (char *) 0 ;
+  char *arg3 = (char *) 0 ;
+  updateOptionsPtr arg4 ;
+  int arg5 ;
+  updateOptionsPtr *argp4 ;
+  
+  SWIG_check_num_args("feedlist_add_subscription",5,5)
+  if(!lua_isstring(L,1)) SWIG_fail_arg("feedlist_add_subscription",1,"char const *");
+  if(!lua_isstring(L,2)) SWIG_fail_arg("feedlist_add_subscription",2,"char const *");
+  if(!lua_isstring(L,3)) SWIG_fail_arg("feedlist_add_subscription",3,"char const *");
+  if(!lua_isuserdata(L,4)) SWIG_fail_arg("feedlist_add_subscription",4,"updateOptionsPtr");
+  if(!lua_isnumber(L,5)) SWIG_fail_arg("feedlist_add_subscription",5,"int");
+  arg1 = (char *)lua_tostring(L, 1);
+  arg2 = (char *)lua_tostring(L, 2);
+  arg3 = (char *)lua_tostring(L, 3);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,4,(void**)&argp4,SWIGTYPE_p_updateOptionsPtr,0))){
+    SWIG_fail_ptr("feedlist_add_subscription",4,SWIGTYPE_p_updateOptionsPtr);
+  }
+  arg4 = *argp4;
+  
+  arg5 = (int)lua_tonumber(L, 5);
+  feedlist_add_subscription((char const *)arg1,(char const *)arg2,(char const *)arg3,arg4,arg5);
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_feedlist_add_folder(lua_State* L) {
+  int SWIG_arg = -1;
+  char *arg1 = (char *) 0 ;
+  
+  SWIG_check_num_args("feedlist_add_folder",1,1)
+  if(!lua_isstring(L,1)) SWIG_fail_arg("feedlist_add_folder",1,"char const *");
+  arg1 = (char *)lua_tostring(L, 1);
+  feedlist_add_folder((char const *)arg1);
   SWIG_arg=0;
   
   return SWIG_arg;
@@ -9841,6 +9861,30 @@ fail:
 }
 
 
+static int _wrap_ui_itemlist_search_item_link(lua_State* L) {
+  int SWIG_arg = -1;
+  itemPtr arg1 = (itemPtr) 0 ;
+  
+  SWIG_check_num_args("ui_itemlist_search_item_link",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("ui_itemlist_search_item_link",1,"itemPtr");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_item,0))){
+    SWIG_fail_ptr("ui_itemlist_search_item_link",1,SWIGTYPE_p_item);
+  }
+  
+  ui_itemlist_search_item_link(arg1);
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_ui_itemlist_add_item_bookmark(lua_State* L) {
   int SWIG_arg = -1;
   itemPtr arg1 = (itemPtr) 0 ;
@@ -10812,7 +10856,6 @@ static const struct luaL_reg swig_commands[] = {
     { "node_new", _wrap_node_new},
     { "node_from_id", _wrap_node_from_id},
     { "node_add_child", _wrap_node_add_child},
-    { "node_request_automatic_add", _wrap_node_request_automatic_add},
     { "node_request_remove", _wrap_node_request_remove},
     { "node_set_data", _wrap_node_set_data},
     { "node_set_subscription", _wrap_node_set_subscription},
@@ -10894,6 +10937,8 @@ static const struct luaL_reg swig_commands[] = {
     { "feedlist_get_new_item_count", _wrap_feedlist_get_new_item_count},
     { "feedlist_reset_new_item_count", _wrap_feedlist_reset_new_item_count},
     { "feedlist_node_was_updated", _wrap_feedlist_node_was_updated},
+    { "feedlist_add_subscription", _wrap_feedlist_add_subscription},
+    { "feedlist_add_folder", _wrap_feedlist_add_folder},
     { "feedlist_remove_node", _wrap_feedlist_remove_node},
     { "feedlist_save", _wrap_feedlist_save},
     { "feedlist_schedule_save", _wrap_feedlist_schedule_save},
@@ -10976,6 +11021,7 @@ static const struct luaL_reg swig_commands[] = {
     { "on_nextbtn_clicked", _wrap_on_nextbtn_clicked},
     { "ui_itemlist_update_item", _wrap_ui_itemlist_update_item},
     { "ui_itemlist_update_all_items", _wrap_ui_itemlist_update_all_items},
+    { "ui_itemlist_search_item_link", _wrap_ui_itemlist_search_item_link},
     { "ui_itemlist_add_item_bookmark", _wrap_ui_itemlist_add_item_bookmark},
     { "on_popup_copy_URL_clipboard", _wrap_on_popup_copy_URL_clipboard},
     { "on_popup_social_bm_item_selected", _wrap_on_popup_social_bm_item_selected},

@@ -215,29 +215,31 @@ void ui_dnd_setup_feedlist(GtkTreeStore *feedstore) {
 /* ---------------------------------------------------------------------------- */
 
 /* method to receive URLs which were dropped anywhere in the main window */
-static void ui_dnd_URL_received(GtkWidget *widget, GdkDragContext *context, gint x, gint y, GtkSelectionData *data, guint info, guint time) {
+static void
+ui_dnd_URL_received (GtkWidget *widget, GdkDragContext *context, gint x, gint y, GtkSelectionData *data, guint info, guint time)
+{
 	gchar		*tmp1, *tmp2, *freeme;
 	
 	g_return_if_fail (data->data != NULL);
 		
-	if((data->length >= 0) && (data->format == 8)) {
+	if ((data->length >= 0) && (data->format == 8)) {
 		/* extra handling to accept multiple drops (same code in ui_feedlist.c) */	
-		freeme = tmp1 = g_strdup(data->data);
-		while((tmp2 = strsep(&tmp1, "\n\r"))) {
-			if(strlen(tmp2))
-				node_request_automatic_add(g_strdup(tmp2),
-					                   NULL,
-				                           NULL, 
-							   NULL,
-					                   FEED_REQ_RESET_TITLE |
-			                                   FEED_REQ_RESET_UPDATE_INT | 
-					                   FEED_REQ_AUTO_DISCOVER | 
-					                   FEED_REQ_PRIORITY_HIGH);
+		freeme = tmp1 = g_strdup (data->data);
+		while ((tmp2 = strsep (&tmp1, "\n\r"))) {
+			if (strlen (tmp2))
+				feedlist_add_subscription (g_strdup (tmp2),
+					                    NULL,
+				                            NULL, 
+							    NULL,
+					                    FEED_REQ_RESET_TITLE |
+			                                    FEED_REQ_RESET_UPDATE_INT | 
+					                    FEED_REQ_AUTO_DISCOVER | 
+					                    FEED_REQ_PRIORITY_HIGH);
 		}
-		g_free(freeme);
-		gtk_drag_finish(context, TRUE, FALSE, time);		
+		g_free (freeme);
+		gtk_drag_finish (context, TRUE, FALSE, time);		
 	} else {
-		gtk_drag_finish(context, FALSE, FALSE, time);
+		gtk_drag_finish (context, FALSE, FALSE, time);
 	}
 }
 

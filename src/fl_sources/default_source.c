@@ -30,6 +30,7 @@
 #include "export.h"
 #include "feed.h"
 #include "feedlist.h"
+#include "folder.h"
 #include "migrate.h"
 #include "plugin.h"
 #include "update.h"
@@ -183,6 +184,33 @@ default_source_auto_update (nodePtr node)
 	node_foreach_child (node, node_auto_update_subscription);
 }
 
+static nodePtr
+default_source_add_subscription (nodePtr node, nodePtr parent, subscriptionPtr subscription)
+{
+	/* For the local feed list source subscriptions are always
+	   feed subscriptions implemented by the feed node and 
+	   subscription type... */
+	nodePtr child = node_new ();
+	node_set_type (child, feed_get_node_type ());
+	node_set_title (child, _("New Subscription"));
+	node_set_data (child, feed_new ());
+	node_set_subscription (child, subscription);	/* feed subscription type is implicit */
+	
+	return child;
+}
+
+static nodePtr
+default_source_add_folder (nodePtr node, nodePtr parent, const gchar *title)
+{
+	/* For the local feed list source folders are always 
+	   real folders implemented by the folder node type... */
+	nodePtr child = node_new ();
+	node_set_title (child, title);
+	node_set_type (child, folder_get_node_type());
+	
+	return child;
+}
+
 static void default_source_init (void) { }
 static void default_source_deinit (void) { }
 
@@ -204,7 +232,9 @@ static struct nodeSourceType nst = {
 	.source_get_feedlist	= default_source_source_get_feedlist,
 	.source_update		= default_source_update,
 	.source_auto_update	= default_source_auto_update,
-	.free 			= NULL
+	.free 			= NULL,
+	.add_subscription	= default_source_add_subscription,
+	.add_folder		= default_source_add_folder
 };
 
 nodeSourceTypePtr default_source_get_type (void) { return &nst; }

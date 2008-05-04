@@ -23,7 +23,7 @@
 
 #include "common.h"
 #include "feed.h"
-#include "node.h"
+#include "feedlist.h"
 #include "ui/ui_dialog.h"
 
 static void search_engine_dialog_class_init	(SearchEngineDialogClass *klass);
@@ -114,17 +114,17 @@ on_search_engine_dialog_response (GtkDialog *dialog, gint responseId, gpointer u
 		else
 			searchUri = g_strdup_printf (sed->priv->uriFmt, searchtext);
 
-		node_request_automatic_add (searchUri, 
-					    NULL, 
-					    NULL, 
-					    NULL,
-		                            /*FEED_REQ_SHOW_PROPDIALOG | <- not needed*/
-		                            FEED_REQ_RESET_TITLE |
-		                            FEED_REQ_RESET_UPDATE_INT | 
-		                            FEED_REQ_AUTO_DISCOVER | 
-					    FEED_REQ_PRIORITY_HIGH |
-					    FEED_REQ_DOWNLOAD_FAVICON |
-					    FEED_REQ_AUTH_DIALOG);
+		feedlist_add_subscription (searchUri, 
+					   NULL, 
+					   NULL, 
+					   NULL,
+		                           /*FEED_REQ_SHOW_PROPDIALOG | <- not needed*/
+		                           FEED_REQ_RESET_TITLE |
+		                           FEED_REQ_RESET_UPDATE_INT | 
+		                           FEED_REQ_AUTO_DISCOVER | 
+					   FEED_REQ_PRIORITY_HIGH |
+					   FEED_REQ_DOWNLOAD_FAVICON |
+					   FEED_REQ_AUTH_DIALOG);
 		g_free (searchUri);
 		g_free (searchtext);
 	}

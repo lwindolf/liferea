@@ -1,5 +1,5 @@
 /**
- * @file feedlist.c feedlist handling
+ * @file feedlist.c  feed list handling
  *
  * Copyright (C) 2005-2008 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
@@ -187,16 +187,68 @@ feedlist_node_was_updated (nodePtr node, guint newCount)
 	feedlist_update_new_item_count (newCount);
 }
 
-void feedlist_remove_node(nodePtr node) {
+void
+feedlist_add_folder (const gchar *title)
+{
+	nodePtr		node, parent;
+	gint		pos;
+	
+	g_assert (NULL != title);
 
-	debug_enter("feedlist_remove_node");
+	parent = feedlist_get_insertion_point ();
+	
+	if(0 == (NODE_SOURCE_TYPE (parent->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS))
+		return;	
+		
+	node = node_source_add_folder (parent->source->root, parent, title);
+	g_assert (NULL != node);
+	
+	ui_feedlist_get_target_folder (&pos);
+	node_add_child (parent, node, pos);
+	
+	feedlist_schedule_save ();
+	ui_feedlist_select (node);
+}
 
+void
+feedlist_add_subscription (const gchar *source, const gchar *title, const gchar *filter, updateOptionsPtr options, gint flags)
+{
+	nodePtr		node, parent;
+	gint		pos;
+
+	g_assert (NULL != source);
+
+	parent = feedlist_get_insertion_point ();
+
+	if(0 == (NODE_SOURCE_TYPE (parent->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS))
+		return;
+
+	node = node_source_add_subscription (parent->source->root, parent, subscription_new (source, filter, options));
+	g_assert (NULL != node);
+	
+	/* override default title with a better one if available (e.g. on import)... */
+	if (title)
+		node_set_title (node, title);
+		
+	db_subscription_update (node->subscription);
+
+	ui_feedlist_get_target_folder (&pos);
+	node_add_child (parent, node, pos);
+	subscription_update (node->subscription, flags);
+	
+	feedlist_schedule_save ();
+	ui_feedlist_select (node);
+	
+	script_run_for_hook (SCRIPT_HOOK_NEW_SUBSCRIPTION);
+}
+
+void
+feedlist_remove_node (nodePtr node)
+{
 	if(node == selectedNode)
 		feedlist_unselect();
 
 	node_request_remove(node);
-
-	debug_exit("feedlist_remove_node");
 }
 
 static gboolean

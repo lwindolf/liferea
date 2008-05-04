@@ -650,41 +650,39 @@ new_subscription_dialog_class_init (NewSubscriptionDialogClass *klass)
 }
 
 static void
-on_newdialog_response (GtkDialog *dialog,
-                       gint response_id, 
-		       gpointer user_data) 
+on_newdialog_response (GtkDialog *dialog, gint response_id, gpointer user_data) 
 {
 	NewSubscriptionDialog *nsd = (NewSubscriptionDialog *)user_data;
 	
-	if(response_id == GTK_RESPONSE_OK) {
+	if (response_id == GTK_RESPONSE_OK) {
 		gchar *source = NULL;
 		const gchar *filter = NULL;
 		updateOptionsPtr options;
 
 		/* Source */
-		source = ui_subscription_dialog_decode_source(nsd->priv);
+		source = ui_subscription_dialog_decode_source (nsd->priv);
 
 		/* Filter handling */
-		filter = gtk_entry_get_text(GTK_ENTRY(liferea_dialog_lookup(nsd->priv->dialog, "filterEntry")));
-		if(!gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(liferea_dialog_lookup(nsd->priv->dialog, "filterCheckbox"))) ||
-		   !strcmp(filter,"")) { /* Maybe this should be a test to see if the file exists? */
+		filter = gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (nsd->priv->dialog, "filterEntry")));
+		if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (nsd->priv->dialog, "filterCheckbox"))) ||
+		    !strcmp(filter,"")) { /* Maybe this should be a test to see if the file exists? */
 			filter = NULL;
 		} 
 		
-		options = g_new0(struct updateOptions, 1);
-		options->dontUseProxy = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(liferea_dialog_lookup(GTK_WIDGET(dialog), "dontUseProxyCheck")));
+		options = g_new0 (struct updateOptions, 1);
+		options->dontUseProxy = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup(GTK_WIDGET (dialog), "dontUseProxyCheck")));
 		
-		node_request_automatic_add(source, NULL, filter, options,
+		feedlist_add_subscription (source, NULL, filter, options,
 					   FEED_REQ_RESET_TITLE | 
 					   FEED_REQ_RESET_UPDATE_INT | 
 					   FEED_REQ_AUTO_DISCOVER | 
 					   FEED_REQ_PRIORITY_HIGH | 
 					   FEED_REQ_DOWNLOAD_FAVICON | 
 					   FEED_REQ_AUTH_DIALOG);
-		g_free(source);
+		g_free (source);
 	}
 
-	g_object_unref(nsd);
+	g_object_unref (nsd);
 }
 
 static void
@@ -792,25 +790,23 @@ simple_subscription_dialog_class_init (SimpleSubscriptionDialogClass *klass)
 }
 
 static void
-on_simple_newdialog_response (GtkDialog *dialog,
-                              gint response_id,
-			      gpointer user_data) 
+on_simple_newdialog_response (GtkDialog *dialog, gint response_id, gpointer user_data) 
 {
 	SimpleSubscriptionDialog *ssd = (SimpleSubscriptionDialog *)user_data;
 	gchar *source = NULL;
 	
 	if (response_id == GTK_RESPONSE_OK) {
-		source = ui_subscription_create_url( g_strdup (gtk_entry_get_text (GTK_ENTRY(ssd->priv->sourceEntry))),
-		                                     FALSE /* auth */, NULL /* user */, NULL /* passwd */);
+		source = ui_subscription_create_url (g_strdup (gtk_entry_get_text (GTK_ENTRY(ssd->priv->sourceEntry))),
+		                                      FALSE /* auth */, NULL /* user */, NULL /* passwd */);
 
-		node_request_automatic_add(source, NULL, NULL, NULL,
+		feedlist_add_subscription (source, NULL, NULL, NULL,
 					   FEED_REQ_RESET_TITLE | 
 					   FEED_REQ_RESET_UPDATE_INT | 
 					   FEED_REQ_AUTO_DISCOVER | 
 					   FEED_REQ_PRIORITY_HIGH | 
 					   FEED_REQ_DOWNLOAD_FAVICON | 
 					   FEED_REQ_AUTH_DIALOG);
-		g_free(source);
+		g_free (source);
 	}
 	
 	if (response_id == GTK_RESPONSE_APPLY) /* misused for "Advanced" */

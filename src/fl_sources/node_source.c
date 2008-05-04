@@ -271,9 +271,39 @@ node_source_auto_update (nodePtr node)
 void
 node_source_item_state_mark_read (nodePtr node, itemPtr item, gboolean newStatus)
 {
-	if (node->source && node->source->type &&
-	    node->source->type->item_mark_read)
-		node->source->type->item_mark_read (node, item, newStatus);
+	if (NODE_SOURCE_TYPE (node)->item_mark_read)
+		NODE_SOURCE_TYPE (node)->item_mark_read (node, item, newStatus);
+}
+
+nodePtr
+node_source_add_subscription (nodePtr node, nodePtr parent, subscriptionPtr subscription)
+{
+	if (NODE_SOURCE_TYPE (node)->add_subscription)
+		return NODE_SOURCE_TYPE (node)->add_subscription (node, parent, subscription);
+	else
+		g_warning ("node_source_add_subscription(): called on node source type that doesn't implement me!");
+		
+	return NULL;
+}
+
+nodePtr
+node_source_add_folder (nodePtr node, nodePtr parent, const gchar *title)
+{
+	if (NODE_SOURCE_TYPE (node)->add_folder)
+		return NODE_SOURCE_TYPE (node)->add_folder (node, parent, title);
+	else
+		g_warning ("node_source_add_folder(): called on node source type that doesn't implement me!");
+
+	return NULL;
+}
+
+void
+node_source_remove_node (nodePtr node, nodePtr child)
+{
+	if (NODE_SOURCE_TYPE (node)->remove_node)
+		NODE_SOURCE_TYPE (node)->remove_node (node, child);
+	else
+		g_warning ("node_source_remove_node(): called on node source type that doesn't implement me!");
 }
 
 /* implementation of the node type interface */

@@ -1,7 +1,7 @@
 /**
- * @file node.h common feed list node handling interface
+ * @file node.h  feed list node interface
  * 
- * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -29,9 +29,13 @@
    and HTML view. The feed list is a view of all available
    nodes. The feed list allows nodes of different types.
 
-   According to the node's type the interface propagates
+   According to the node's type this interface propagates
    user interaction to the feed list node type implementation
-   and allows the implementation to change the nodes state. */
+   and allows the implementation to change the nodes state. 
+ 
+   This interface is to hide the node type and node source type
+   complexity for the GUI, scripting and updating functionality.
+ */
 
 /** node view mode types */
 enum {
@@ -105,24 +109,14 @@ nodePtr node_from_id(const gchar *id);
  * parent node is given the parent node of the currently
  * selected feed or the selected folder will be used.
  *
+ * To be used on import and to add special node types!
+ *
  * @param parent	the parent node (optional can be NULL)
  * @param node		the node
  * @param position	insert position (optional can be 0)
  */
 void node_add_child(nodePtr parent, nodePtr node, gint position);
 
-/**
- * Automatic subscription adding (e.g. URL DnD), creates a new feed
- * node and creates a new feed without any user interaction.
- *
- * @param source	the subscriptions source URL
- * @param title		NULL or the node title
- * @param filter	NULL or the filter for the subscription
- * @param options	NULL or the update options
- * @param flags		download request flags
- */
-void node_request_automatic_add(const gchar *source, const gchar *title, const gchar *filter, updateOptionsPtr options, gint flags);
-	
 /**
  * Removes the given node from the feed list.
  *
