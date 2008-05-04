@@ -1,5 +1,5 @@
 /**
- * @file node_source.c  generic feed list provider implementation
+ * @file node_source.c  generic node source provider implementation
  * 
  * Copyright (C) 2005-2008 Lars Lindner <lars.lindner@gmail.com>
  *
@@ -36,63 +36,68 @@
 
 static GSList	*nodeSourceTypes = NULL;
 
-static nodeSourceTypePtr node_source_type_find(gchar *typeStr, guint capabilities) {
+static nodeSourceTypePtr
+node_source_type_find (gchar *typeStr, guint capabilities)
+{
 	GSList *iter = nodeSourceTypes;
 	
-	while(iter) {
+	while (iter) {
 		nodeSourceTypePtr type = (nodeSourceTypePtr)iter->data;
-		if(((NULL == typeStr) || !strcmp(type->id, typeStr)) &&
-		   ((0 == capabilities) || (type->capabilities & capabilities)))
+		if (((NULL == typeStr) || !strcmp(type->id, typeStr)) &&
+		    ((0 == capabilities) || (type->capabilities & capabilities)))
 			return type;
-		iter = g_slist_next(iter);
+		iter = g_slist_next (iter);
 	}
 	
-	g_warning("Could not find source type \"%s\"\n!", typeStr);
+	g_warning ("Could not find source type \"%s\"\n!", typeStr);
 	return NULL;
 }
 
-nodePtr node_source_setup_root(void) {
+nodePtr
+node_source_setup_root (void)
+{
 	nodePtr	rootNode;
 	nodeSourceTypePtr type;
 	
-	debug_enter("node_source_setup_root");
+	debug_enter ("node_source_setup_root");
 
-	type = node_source_type_find(NULL, NODE_SOURCE_CAPABILITY_IS_ROOT);
-	if(!type) 
-		g_error("No root capable node source found!");
+	type = node_source_type_find (NULL, NODE_SOURCE_CAPABILITY_IS_ROOT);
+	if (!type) 
+		g_error ("No root capable node source found!");
 		
-	rootNode = node_new();
-	node_set_type(rootNode, root_get_node_type());
-	rootNode->title = g_strdup("root");
-	rootNode->source = g_new0(struct nodeSource, 1);
+	rootNode = node_new ();
+	node_set_type (rootNode, root_get_node_type());
+	rootNode->title = g_strdup ("root");
+	rootNode->source = g_new0 (struct nodeSource, 1);
 	rootNode->source->root = rootNode;
 	rootNode->source->type = type;
-	type->source_import(rootNode);
+	type->source_import (rootNode);
 	
-	debug_exit("node_source_setup_root");
+	debug_exit ("node_source_setup_root");
 	
 	return rootNode;
 }
 
-gboolean node_source_type_register(nodeSourceTypePtr type) {
-
+gboolean
+node_source_type_register (nodeSourceTypePtr type)
+{
 	/* check feed list provider plugin version */
-	if(NODE_SOURCE_TYPE_API_VERSION != type->api_version) {
-		debug3(DEBUG_PLUGINS, "feed list source API version mismatch: \"%s\" has version %d should be %d", type->name, type->api_version, NODE_SOURCE_TYPE_API_VERSION);
+	if (NODE_SOURCE_TYPE_API_VERSION != type->api_version) {
+		debug3 (DEBUG_PLUGINS, "feed list source API version mismatch: \"%s\" has version %d should be %d", type->name, type->api_version, NODE_SOURCE_TYPE_API_VERSION);
 		return FALSE;
 	} 
 
 	/* check if all mandatory functions are provided */
-	if(!(type->source_type_init &&
-	     type->source_type_deinit)) {
-		debug1(DEBUG_PLUGINS, "mandatory functions missing: \"%s\"", type->name);
+	if (!(type->source_type_init &&
+	      type->source_type_deinit)) {
+		debug1 (DEBUG_PLUGINS, "mandatory functions missing: \"%s\"", type->name);
 		return FALSE;
 	}
 
 	/* allow the plugin to initialize */
-	type->source_type_init();
+	type->source_type_init ();
 
-	nodeSourceTypes = g_slist_append(nodeSourceTypes, type);
+	nodeSourceTypes = g_slist_append (nodeSourceTypes, type);
 	
 	return TRUE;
 }
@@ -171,9 +176,7 @@ node_source_new (nodePtr node, nodeSourceTypePtr type)
 /* source instance creation dialog */
 
 static void
-on_node_source_type_selected (GtkDialog *dialog,
-                              gint response_id,
-			      gpointer user_data)
+on_node_source_type_selected (GtkDialog *dialog, gint response_id, gpointer user_data)
 {
 	GtkTreeSelection	*selection;
 	GtkTreeModel		*model;
@@ -193,8 +196,7 @@ on_node_source_type_selected (GtkDialog *dialog,
 }
 
 static void
-on_node_source_type_dialog_destroy (GtkDialog *dialog,
-                                    gpointer user_data) 
+on_node_source_type_dialog_destroy (GtkDialog *dialog, gpointer user_data) 
 {
 	g_object_unref (user_data);
 }
