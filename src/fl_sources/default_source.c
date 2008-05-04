@@ -1,7 +1,7 @@
 /**
- * @file default_source.c default static feedlist provider
+ * @file default_source.c  default static feedlist provider
  * 
- * Copyright (C) 2005-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2005-2008 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -46,13 +46,14 @@ static gboolean feedlistImport = FALSE;
 
 extern gboolean cacheMigrated;	/* feedlist.c */
 
-static gchar * default_source_source_get_feedlist(nodePtr node) {
-
-	return common_create_cache_filename(NULL, "feedlist", "opml");
+static gchar *
+default_source_source_get_feedlist (nodePtr node)
+{
+	return common_create_cache_filename (NULL, "feedlist", "opml");
 }
 
 static void
-default_source_source_import (nodePtr node) 
+default_source_import (nodePtr node) 
 {
 	gchar		*filename10;
 	gchar		*filename12;
@@ -151,21 +152,23 @@ default_source_source_import (nodePtr node)
 	debug_exit ("default_source_source_import");
 }
 
-static void default_source_source_export(nodePtr node) {
+static void
+default_source_export (nodePtr node)
+{
 	gchar	*filename;
 	
-	if(feedlistImport)
+	if (feedlistImport)
 		return;
 
-	debug_enter("default_source_source_export");
+	debug_enter ("default_source_source_export");
 	
-	g_assert(node->source->root == feedlist_get_root());
+	g_assert (node->source->root == feedlist_get_root ());
 
-	filename = default_source_source_get_feedlist(node);
-	export_OPML_feedlist(filename, node->source->root, TRUE);
-	g_free(filename);
+	filename = default_source_source_get_feedlist (node);
+	export_OPML_feedlist (filename, node->source->root, TRUE);
+	g_free (filename);
 
-	debug_exit("default_source_source_export");
+	debug_exit ("default_source_source_export");
 }
 
 static void
@@ -186,22 +189,22 @@ static void default_source_deinit (void) { }
 /* feed list provider plugin definition */
 
 static struct nodeSourceType nst = {
-	NODE_SOURCE_TYPE_API_VERSION,
-	"fl_default",
-	"Static Feed List",
-	"The default feed list source. Should never be added manually. If you see this then something went wrong!",
-	NODE_SOURCE_CAPABILITY_IS_ROOT |
-	NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST,
-	default_source_init,
-	default_source_deinit,
-	NULL,	/* ui_add */
-	NULL,	/* remove */
-	default_source_source_import,
-	default_source_source_export,
-	default_source_source_get_feedlist,
-	default_source_update,
-	default_source_auto_update,
-	NULL	/* free */
+	.api_version		= NODE_SOURCE_TYPE_API_VERSION,
+	.id			= "fl_default",
+	.name			= "Static Feed List",
+	.description		= "The default feed list source. Should never be added manually. If you see this then something went wrong!",
+	.capabilities		= NODE_SOURCE_CAPABILITY_IS_ROOT |
+				  NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST,
+	.source_type_init	= default_source_init,
+	.source_type_deinit	= default_source_deinit,
+	.source_new		= NULL,
+	.source_delete		= NULL,
+	.source_import		= default_source_import,
+	.source_export		= default_source_export,
+	.source_get_feedlist	= default_source_source_get_feedlist,
+	.source_update		= default_source_update,
+	.source_auto_update	= default_source_auto_update,
+	.free 			= NULL
 };
 
-nodeSourceTypePtr default_source_get_type(void) { return &nst; }
+nodeSourceTypePtr default_source_get_type (void) { return &nst; }
