@@ -641,7 +641,7 @@ feed_process_update_result (subscriptionPtr subscription, const struct updateRes
 }
 
 static gboolean
-feed_prepare_update_request (subscriptionPtr subscription, const struct updateRequest *request)
+feed_prepare_update_request (subscriptionPtr subscription, struct updateRequest *request)
 {
 	/* Nothing to do. Feeds require no subscription extra handling. */
 	
