@@ -260,7 +260,7 @@ itemset_sort_by_date (gconstpointer a, gconstpointer b)
 }
 
 guint
-itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates)
+itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates, gboolean markAsRead)
 {
 	GList	*iter, *droppedItems = NULL, *items = NULL;
 	guint	max, toBeDropped, newCount = 0, flagCount = 0;
@@ -334,7 +334,12 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates)
 	   item list (items) may exceed the cache limit. */
 	iter = g_list_last (list);
 	while (iter) {
-		if (itemset_merge_item (itemSet, items, (itemPtr)iter->data, allowUpdates)) {
+		itemPtr item = (itemPtr)iter->data;
+		
+		if (markAsRead)
+			item->readStatus = TRUE;
+			
+		if (itemset_merge_item (itemSet, items, item, allowUpdates)) {
 			newCount++;
 			items = g_list_prepend (items, iter->data);
 		}

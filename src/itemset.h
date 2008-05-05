@@ -1,7 +1,7 @@
 /**
- * @file itemset.h interface to handle sets of items
+ * @file itemset.h  interface to handle sets of items
  * 
- * Copyright (C) 2005-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2005-2008 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -55,10 +55,11 @@ void itemset_foreach (itemSetPtr itemSet, itemActionFunc callback);
  * @param itemSet	the item set to merge into
  * @param items		a list of items to merge
  * @param allowUpdates	TRUE if older items may be replaced
+ * @param markAsRead	TRUE if all new items should be marked as read
  *
  * @returns the number of new merged items
  */
-guint itemset_merge_items(itemSetPtr itemSet, GList *items, gboolean allowUpdates);
+guint itemset_merge_items(itemSetPtr itemSet, GList *items, gboolean allowUpdates, gboolean markAsRead);
 
 /**
  * Frees the given item set and all items it contains.

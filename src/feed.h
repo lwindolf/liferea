@@ -76,6 +76,7 @@ typedef struct feed {
 	gboolean	loadItemLink;		/**< if TRUE do automatically load the item link into the HTML pane */
 	gboolean	enforcePopup;		/**< if TRUE enforce popup notifications for this feed */
 	gboolean	preventPopup;		/**< if TRUE prevents popup notifications for this feed */
+	gboolean	markAsRead;		/**< if TRUE downloaded items are automatically marked as read */
 } *feedPtr;
 
 /** Holds all information used on feed parsing time */

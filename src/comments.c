@@ -152,7 +152,7 @@ comments_process_update_result (const struct updateResult * const result, gpoint
 			
 			debug1 (DEBUG_UPDATE, "parsing comment feed successful (%d comments downloaded)", g_list_length(ctxt->items));		
 			comments = db_itemset_load (commentFeed->id);
-			itemset_merge_items (comments, ctxt->items, ctxt->feed->valid);
+			itemset_merge_items (comments, ctxt->items, ctxt->feed->valid, FALSE);
 			itemset_free (comments);
 			
 			/* No comment feed truncating as comment items are automatically

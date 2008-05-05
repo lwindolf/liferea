@@ -166,6 +166,11 @@ feed_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trusted)
 	if (tmp && !xmlStrcmp (tmp, BAD_CAST"true"))
 		feed->preventPopup = TRUE;
 	xmlFree (tmp);
+
+	tmp = xmlGetProp (xml, BAD_CAST"markAsRead");
+	if (tmp && !xmlStrcmp (tmp, BAD_CAST"true"))
+		feed->markAsRead = TRUE;
+	xmlFree (tmp);
 							
 	title = xmlGetProp (xml, BAD_CAST"title");
 	if (!title || !xmlStrcmp (title, BAD_CAST"")) {
@@ -225,6 +230,9 @@ feed_export (nodePtr node, xmlNodePtr xml, gboolean trusted)
 			
 		if (feed->preventPopup)
 			xmlNewProp (xml, BAD_CAST"preventPopup", BAD_CAST"true");
+			
+		if (feed->markAsRead)
+			xmlNewProp (xml, BAD_CAST"markAsRead", BAD_CAST"true");
 	}
 
 	if (node->subscription)
@@ -595,7 +603,7 @@ feed_process_update_result (subscriptionPtr subscription, const struct updateRes
 			
 			/* merge the resulting items into the node's item set */
 			itemSet = node_get_itemset (node);
-			newCount = itemset_merge_items (itemSet, ctxt->items, ctxt->feed->valid);
+			newCount = itemset_merge_items (itemSet, ctxt->items, ctxt->feed->valid, ctxt->feed->markAsRead);
 			itemlist_merge_itemset (itemSet);
 			itemset_free (itemSet);
 
