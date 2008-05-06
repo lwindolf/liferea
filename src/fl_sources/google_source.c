@@ -107,6 +107,9 @@ google_source_edit_action_complete(const struct updateResult* const result, gpoi
 { 
 	readerPtr reader = (readerPtr) userdata;
 
+	if ( result->data == NULL || !g_str_equal(result->data, "OK")) 
+		debug1(DEBUG_UPDATE, "The edit action failed with result: %s\n", result->data);
+	
 	/* process anything else waiting on the edit queue */
 	google_source_edit_process (reader);
 }
@@ -126,6 +129,7 @@ google_source_edit_token_cb (const struct updateResult * const result, gpointer 
 	readerPtr reader = (readerPtr) userdata; 
 	const gchar* token = result->data; 
 
+	printf("token is %s\n", token);
 	if (g_queue_is_empty (reader->editQueue))
 		return;
 
@@ -300,8 +304,7 @@ google_source_item_mark_read (nodePtr node, itemPtr item,
 	nodePtr root = google_source_get_root_from_node (node);
 	editPtr edit = google_source_edit_new ();
 	edit->guid = g_strdup (item->sourceId);
-	edit->feedUrl = g_strdup (node->subscription->source + 
-	                           strlen ("http://www.google.com/reader/atom/"));
+	edit->feedUrl = g_strdup_printf ("feed/%s", node->subscription->source);
 	edit->action = newStatus ? EDIT_ACTION_MARK_READ :
 	                           EDIT_ACTION_MARK_UNREAD;
 
@@ -778,6 +781,22 @@ google_source_remove (nodePtr node)
 	opml_source_remove (node);
 }
 
+
+nodePtr
+google_source_add_subscription(nodePtr node, nodePtr parent, subscriptionPtr subscription) 
+{ 
+	nodePtr child = node_new ();
+	node_set_type (child, feed_get_node_type ());
+	node_set_data (child, feed_new ());
+
+	node_set_subscription(node, subscription) ;
+	node->subscription->type = &googleReaderFeedSubscriptionType;
+	
+	node_set_title(node, "New Subscription") ;
+	
+	return child ; 
+}
+
 /* GUI callbacks */
 
 static void
@@ -840,7 +859,7 @@ static struct nodeSourceType nst = {
 	N_("Google Reader"),
 	N_("Integrate the feed list of your Google Reader account. Liferea will "
 	   "present your Google Reader subscription as a read-only subtree in the feed list."),
-	NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION,
+	NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION | NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST,
 	google_source_init,
 	google_source_deinit,
 	ui_google_source_get_account_info,
@@ -851,7 +870,10 @@ static struct nodeSourceType nst = {
 	google_source_update,
 	google_source_auto_update,
 	google_source_free,
-	google_source_item_mark_read
+	google_source_item_mark_read,
+	NULL, /* add_folder */
+	google_source_add_subscription,
+	NULL /* remove_subscription */
 };
 
 nodeSourceTypePtr
