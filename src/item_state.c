@@ -159,6 +159,7 @@ item_state_set_all_read (nodePtr node)
 				db_item_mark_read (item);
 				itemlist_update_item (item);
 				node_from_id (item->nodeId)->needsRecount = TRUE;
+				node_source_item_state_mark_read (node_from_id(item->nodeId), item, TRUE);
 
 				debug_start_measurement (DEBUG_GUI);
 
