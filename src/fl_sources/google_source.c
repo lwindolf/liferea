@@ -568,9 +568,7 @@ google_opml_subscription_prepare_update_request (subscriptionPtr subscription, s
 
 	debug1 (DEBUG_UPDATE, "updating Google Reader subscription (node id %s)", subscription->node->id);
 	
-	/** @todo should be replaced with neater code */
-	g_free(request->source) ; 
-	request->source = g_strdup("http://www.google.com/reader/api/0/subscription/list");
+	update_request_set_source(request, "http://www.google.com/reader/api/0/subscription/list");
 	
 	update_state_set_cookies (request->updateState, reader->sid);
 	
