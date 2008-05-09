@@ -34,6 +34,7 @@
 #include "fl_sources/google_source.h"
 #include "fl_sources/node_source.h"
 #include "fl_sources/opml_source.h"
+#include <libxml/xpath.h>
 
 /** default Google reader subscription list update interval = once a day */
 #define GOOGLE_SOURCE_UPDATE_INTERVAL 60*60*24
@@ -318,8 +319,7 @@ google_source_item_mark_read (nodePtr node, itemPtr item,
 		 */
 		edit = google_source_edit_new ();
 		edit->guid = g_strdup (item->sourceId);
-		edit->feedUrl = g_strdup (node->subscription->source + 
-		                           strlen ("http://www.google.com/reader/atom/"));
+		edit->feedUrl = g_strdup_printf ("feed/%s", node->subscription->source);
 		edit->action = EDIT_ACTION_TRACKING_MARK_UNREAD;
 		google_source_edit_push_safe (root, edit);
 	}
@@ -646,11 +646,68 @@ cleanup:
 }
 
 static void
+google_source_xml_unlink_node(xmlNodePtr node, gpointer data) 
+{
+	xmlUnlinkNode(node) ;
+	xmlFreeNode(node) ;
+}
+
+/**
+ * This is identical to xpath_foreach_match, except that it takes the context
+ * as parameter.
+ */
+static void
+google_source_xpath_foreach_match(gchar* expr, xmlXPathContextPtr xpathCtxt, xpathMatchFunc func, gpointer user_data) 
+{
+	xmlXPathObjectPtr xpathObj = NULL;
+	xpathObj = xmlXPathEval (expr, xpathCtxt);
+	
+	if (xpathObj && xpathObj->nodesetval && xpathObj->nodesetval->nodeMax) {
+		int	i;
+		for (i = 0; i < xpathObj->nodesetval->nodeNr; i++)
+			(*func) (xpathObj->nodesetval->nodeTab[i], user_data);
+	}
+	
+	if (xpathObj)
+		xmlXPathFreeObject (xpathObj);
+}
+static void
 google_feed_subscription_process_update_result (subscriptionPtr subscription,
                                                 const struct updateResult* const result, 
                                                 updateFlags flags)
 {
-	feed_get_subscription_type ()->process_update_result (subscription, result, flags);
+
+	updateResultPtr resultCopy ;
+
+	resultCopy = update_result_new() ;
+	resultCopy->source = g_strdup(result->source); 
+	resultCopy->returncode = result->returncode;
+	resultCopy->httpstatus = result->httpstatus;
+	resultCopy->contentType = g_strdup(result->contentType);
+	resultCopy->retriesCount = result->retriesCount ;
+	resultCopy->updateState = update_state_copy(result->updateState);
+
+	/* update the XML by removing 'read', 'reading-list' etc. as labels. */
+	xmlDocPtr doc = xml_parse (result->data, result->size, FALSE, NULL);
+	xmlXPathContextPtr xpathCtxt = xmlXPathNewContext (doc) ;
+	xmlXPathRegisterNs(xpathCtxt, "atom", "http://www.w3.org/2005/Atom");
+	google_source_xpath_foreach_match("/atom:feed/atom:entry/atom:category[@scheme='http://www.google.com/reader/']", xpathCtxt, google_source_xml_unlink_node, NULL);
+	xmlXPathFreeContext(xpathCtxt);
+
+	/* good now we have removed the read and unread labels. */
+
+	xmlChar    *newXml; 
+	int        newXmlSize ;
+	
+	xmlDocDumpMemory(doc, &newXml, &newXmlSize) ;
+
+	resultCopy->data = g_strndup(newXml, newXmlSize);
+	resultCopy->size = newXmlSize ;
+
+	xmlFree(newXml) ;
+
+	feed_get_subscription_type ()->process_update_result (subscription, resultCopy, flags);
+	update_result_free(resultCopy);
 
 	if (result->data) {
 		xmlDocPtr doc = xml_parse (result->data, result->size, FALSE, NULL);
