@@ -72,7 +72,8 @@ typedef struct edit {
 	enum { 
 		EDIT_ACTION_MARK_READ,
 		EDIT_ACTION_MARK_UNREAD,
-		EDIT_ACTION_TRACKING_MARK_UNREAD /**< every UNREAD request, should be followed by tracking-kept-unread */
+		EDIT_ACTION_TRACKING_MARK_UNREAD, /**< every UNREAD request, should be followed by tracking-kept-unread */
+		EDIT_ACTION_ADD_SUBSCRIPTION
 	} action;
 		
 } *editPtr ; 
@@ -163,8 +164,8 @@ google_source_edit_token_cb (const struct updateResult * const result, gpointer 
 	else if (edit->action == EDIT_ACTION_TRACKING_MARK_UNREAD) {
 		a_escaped = common_uri_escape ("user/-/state/com.google/tracking-kept-unread");
 		postdata = g_strdup_printf ("i=%s&s=%s&a=%s&ac=edit-tags&async=true&T=%s", i_escaped, s_escaped, a_escaped, token);
-	} else {
-		g_assert (FALSE);
+	} else if (edit->action == EDIT_ACTION_ADD_SUBSCRIPTION) {
+		postdata = g_strdup_printf ("s=%s&ac=subscribe&token=%s", s_escaped, token);
 	}
 	
 	g_free (s_escaped);
@@ -677,63 +678,64 @@ google_feed_subscription_process_update_result (subscriptionPtr subscription,
                                                 updateFlags flags)
 {
 
-	updateResultPtr resultCopy ;
-
-	resultCopy = update_result_new() ;
-	resultCopy->source = g_strdup(result->source); 
-	resultCopy->returncode = result->returncode;
-	resultCopy->httpstatus = result->httpstatus;
-	resultCopy->contentType = g_strdup(result->contentType);
-	resultCopy->retriesCount = result->retriesCount ;
-	resultCopy->updateState = update_state_copy(result->updateState);
-
-	/* update the XML by removing 'read', 'reading-list' etc. as labels. */
-	xmlDocPtr doc = xml_parse (result->data, result->size, FALSE, NULL);
-	xmlXPathContextPtr xpathCtxt = xmlXPathNewContext (doc) ;
-	xmlXPathRegisterNs(xpathCtxt, "atom", "http://www.w3.org/2005/Atom");
-	google_source_xpath_foreach_match("/atom:feed/atom:entry/atom:category[@scheme='http://www.google.com/reader/']", xpathCtxt, google_source_xml_unlink_node, NULL);
-	xmlXPathFreeContext(xpathCtxt);
-
-	/* good now we have removed the read and unread labels. */
-
-	xmlChar    *newXml; 
-	int        newXmlSize ;
-	
-	xmlDocDumpMemory(doc, &newXml, &newXmlSize) ;
-
-	resultCopy->data = g_strndup(newXml, newXmlSize);
-	resultCopy->size = newXmlSize ;
-
-	xmlFree(newXml) ;
-
-	feed_get_subscription_type ()->process_update_result (subscription, resultCopy, flags);
-	update_result_free(resultCopy);
-
-	if (result->data) {
+	if ( result->data ) { 
+		updateResultPtr resultCopy ;
+		
+		resultCopy = update_result_new() ;
+		resultCopy->source = g_strdup(result->source); 
+		resultCopy->returncode = result->returncode;
+		resultCopy->httpstatus = result->httpstatus;
+		resultCopy->contentType = g_strdup(result->contentType);
+		resultCopy->retriesCount = result->retriesCount ;
+		resultCopy->updateState = update_state_copy(result->updateState);
+		
+		/* update the XML by removing 'read', 'reading-list' etc. as labels. */
 		xmlDocPtr doc = xml_parse (result->data, result->size, FALSE, NULL);
-		if (doc) {		
-			int i ; 
-			xmlNodePtr root = xmlDocGetRootElement (doc);
-			xmlNodePtr entry = root->children ; 
-
-			while (entry) { 
-				if (!g_str_equal (entry->name, "entry")) {
-					entry = entry->next;
-					continue; /* not an entry */
-				}
-
-				google_source_item_retrieve_status (entry, subscription);
-				entry = entry->next;
-			}
-
-			xmlFreeDoc (doc);
-		} else { 
-			debug0 (DEBUG_UPDATE, "google_feed_subscription_process_update_result(): Couldn't parse XML!");
-			g_warning ("google_feed_subscription_process_update_result(): Couldn't parse XML!");
-		}
+		xmlXPathContextPtr xpathCtxt = xmlXPathNewContext (doc) ;
+		xmlXPathRegisterNs(xpathCtxt, "atom", "http://www.w3.org/2005/Atom");
+		google_source_xpath_foreach_match("/atom:feed/atom:entry/atom:category[@scheme='http://www.google.com/reader/']", xpathCtxt, google_source_xml_unlink_node, NULL);
+		xmlXPathFreeContext(xpathCtxt);
+		
+		/* good now we have removed the read and unread labels. */
+		
+		xmlChar    *newXml; 
+		int        newXmlSize ;
+		
+		xmlDocDumpMemory(doc, &newXml, &newXmlSize) ;
+		
+		resultCopy->data = g_strndup(newXml, newXmlSize);
+		resultCopy->size = newXmlSize ;
+		
+		xmlFree(newXml) ;
+		xmlFreeDoc(doc) ;
+		
+		feed_get_subscription_type ()->process_update_result (subscription, resultCopy, flags);
+		update_result_free(resultCopy);
 	} else { 
-		debug0 (DEBUG_UPDATE, "google_feed_subscription_process_update_result(): No data!");
-		g_warning ("google_feed_subscription_process_update_result(): No data!");
+		feed_get_subscription_type()->process_update_result(subscription, result, flags);
+		return ; 
+	}
+
+	xmlDocPtr doc = xml_parse (result->data, result->size, FALSE, NULL);
+	if (doc) {		
+		int i ; 
+		xmlNodePtr root = xmlDocGetRootElement (doc);
+		xmlNodePtr entry = root->children ; 
+		
+		while (entry) { 
+			if (!g_str_equal (entry->name, "entry")) {
+				entry = entry->next;
+				continue; /* not an entry */
+			}
+			
+			google_source_item_retrieve_status (entry, subscription);
+			entry = entry->next;
+		}
+		
+		xmlFreeDoc (doc);
+	} else { 
+		debug0 (DEBUG_UPDATE, "google_feed_subscription_process_update_result(): Couldn't parse XML!");
+		g_warning ("google_feed_subscription_process_update_result(): Couldn't parse XML!");
 	}
 }
 
@@ -842,16 +844,27 @@ google_source_remove (nodePtr node)
 nodePtr
 google_source_add_subscription(nodePtr node, nodePtr parent, subscriptionPtr subscription) 
 { 
+	debug_enter("google_source_add_subscription") ;
 	nodePtr child = node_new ();
+	debug0(DEBUG_UPDATE, "GoogleSource: Adding a new subscription"); 
 	node_set_type (child, feed_get_node_type ());
 	node_set_data (child, feed_new ());
 
-	node_set_subscription(node, subscription) ;
-	node->subscription->type = &googleReaderFeedSubscriptionType;
+	node_set_subscription(child, subscription) ;
+	child->subscription->type = &googleReaderFeedSubscriptionType;
 	
-	node_set_title(node, "New Subscription") ;
+	node_set_title(child, _("New Subscription")) ;
 	
+	debug_exit("google_source_add_subscription") ;
 	return child ; 
+}
+
+void
+google_source_remove_node(nodePtr node, nodePtr child) 
+{ 
+	debug_enter("google_source_remove_node");
+	
+	debug_exit("google_source_remove_node");
 }
 
 /* GUI callbacks */
@@ -930,7 +943,7 @@ static struct nodeSourceType nst = {
 	google_source_item_mark_read,
 	NULL, /* add_folder */
 	google_source_add_subscription,
-	NULL /* remove_subscription */
+	google_source_remove_node
 };
 
 nodeSourceTypePtr
