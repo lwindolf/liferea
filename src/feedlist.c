@@ -220,7 +220,7 @@ feedlist_add_subscription (const gchar *source, const gchar *title, const gchar 
 
 	parent = feedlist_get_insertion_point ();
 
-	if(0 == (NODE_SOURCE_TYPE (parent->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS))
+	if (0 == (NODE_TYPE (parent->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS))
 		return;
 
 	node = node_source_add_subscription (parent->source->root, parent, subscription_new (source, filter, options));
