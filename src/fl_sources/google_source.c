@@ -36,6 +36,9 @@
 #include "fl_sources/opml_source.h"
 #include <libxml/xpath.h>
 #include "google_source_edit.h"
+#include "subscription.h"
+#include "item_state.h"
+#include "libxml/xpath.h"
 
 /** default Google reader subscription list update interval = once a day */
 #define GOOGLE_SOURCE_UPDATE_INTERVAL 60*60*24
@@ -47,7 +50,8 @@
  * any network calls.
  */
 static gboolean __mark_read_hack = FALSE ;
-
+static struct subscriptionType googleReaderFeedSubscriptionType;
+static struct subscriptionType googleReaderOpmlSubscriptionType;
 
 readerPtr google_source_reader_new(nodePtr node) 
 {
@@ -56,6 +60,7 @@ readerPtr google_source_reader_new(nodePtr node)
 	reader->editQueue = g_queue_new(); 
 	reader->loginState = READER_STATE_NONE; 
 	reader->dumbTest = g_strdup("a big, fat, dumb test\n");
+	return reader;
 }
 
 void google_source_reader_free(readerPtr reader) 
@@ -63,8 +68,6 @@ void google_source_reader_free(readerPtr reader)
 	g_queue_free(reader->editQueue) ;
 	g_free(reader);
 }
-
-static void google_source_update_subscription_list (nodePtr node, guint flags);
 
 /* subscription list merging functions */
 
@@ -103,9 +106,6 @@ google_source_get_root_from_node (nodePtr node)
 	return node;
 }
 
-void google_source_login (subscriptionPtr subscription, guint32 flags);
-
-
 /**
  * Mark an item as read on the google server.
  */
@@ -127,7 +127,6 @@ google_source_item_mark_read (nodePtr node, itemPtr item,
 				     newStatus);
 }
 
-static struct subscriptionType googleReaderFeedSubscriptionType;
  
 static void
 google_source_add_shared (readerPtr reader)
@@ -173,7 +172,7 @@ google_source_merge_feed (xmlNodePtr match, gpointer user_data)
 	GSList		*iter;
 	xmlNodePtr	xml;
 	xmlChar		*title, *id ;
-	gchar           *url, *origUrl ;
+	gchar           *url ;
 
 	xml = xpath_find (match, "./string[@name='title']");
 	if (xml)
@@ -394,7 +393,6 @@ google_source_item_retrieve_status (xmlNodePtr entry, gpointer userdata)
 	xmlNodePtr xml;
 	nodePtr node = subscription->node;
 
-	itemPtr item;
 	xmlChar* id;
 	
 	xml = entry->children;
@@ -422,8 +420,6 @@ google_source_item_retrieve_status (xmlNodePtr entry, gpointer userdata)
 	itemSetPtr itemset = node_get_itemset(node);
 	GList *iter = itemset->ids;
 	for (; iter; iter = g_list_next(iter)) {
-		gchar *itemid = (gchar*) iter->data;
-
 		/* this is extremely inefficient, multiple times loading */
 		itemPtr item = item_load (GPOINTER_TO_UINT (iter->data));
 		if (item && item->sourceId) {
@@ -461,7 +457,7 @@ static void
 google_source_xpath_foreach_match(gchar* expr, xmlXPathContextPtr xpathCtxt, xpathMatchFunc func, gpointer user_data) 
 {
 	xmlXPathObjectPtr xpathObj = NULL;
-	xpathObj = xmlXPathEval (expr, xpathCtxt);
+	xpathObj = xmlXPathEval ((xmlChar*)expr, xpathCtxt);
 	
 	if (xpathObj && xpathObj->nodesetval && xpathObj->nodesetval->nodeMax) {
 		int	i;
@@ -503,7 +499,7 @@ google_feed_subscription_process_update_result (subscriptionPtr subscription,
 		
 		xmlDocDumpMemory(doc, &newXml, &newXmlSize) ;
 		
-		resultCopy->data = g_strndup(newXml, newXmlSize);
+		resultCopy->data = g_strndup((gchar*)newXml, newXmlSize);
 		resultCopy->size = newXmlSize ;
 		
 		xmlFree(newXml) ;
@@ -633,7 +629,7 @@ google_source_export (nodePtr node)
 gchar* 
 google_source_get_feedlist (nodePtr node)
 {
-	opml_source_get_feedlist (node);
+	return opml_source_get_feedlist (node);
 }
 
 void 
