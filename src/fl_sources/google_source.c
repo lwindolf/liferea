@@ -35,6 +35,7 @@
 #include "fl_sources/node_source.h"
 #include "fl_sources/opml_source.h"
 #include <libxml/xpath.h>
+#include "google_source_edit.h"
 
 /** default Google reader subscription list update interval = once a day */
 #define GOOGLE_SOURCE_UPDATE_INTERVAL 60*60*24
@@ -45,183 +46,22 @@
  * wants to set and item as read/unread within this file, it should not do 
  * any network calls.
  */
-gboolean __mark_read_hack = FALSE ;
+static gboolean __mark_read_hack = FALSE ;
 
 
-typedef struct reader {
-	nodePtr		root;	/**< the root node in the feed list */
-	gchar		*sid;	/**< session id */
-	GTimeVal	*lastSubscriptionListUpdate;
-	GQueue          *editQueue;
-	enum { 
-		READER_STATE_NONE = 0,
-		READER_STATE_IN_PROGRESS,
-		READER_STATE_ACTIVE
-	} loginState ; 
-} *readerPtr;
-
-/**
- * A structure to indicate an edit to the google reader "database".
- * These edits are put in a queue and processed in sequential order
- * so that google does not end up processing the requests in an 
- * unintended order.
- */
-typedef struct edit { 
-	gchar* guid;		/**< guid of the item to edit */
-	gchar* feedUrl;	/**< url of the feed containing the item, or the "stream" to get the list for */
-	enum { 
-		EDIT_ACTION_MARK_READ,
-		EDIT_ACTION_MARK_UNREAD,
-		EDIT_ACTION_TRACKING_MARK_UNREAD, /**< every UNREAD request, should be followed by tracking-kept-unread */
-		EDIT_ACTION_ADD_SUBSCRIPTION
-	} action;
-		
-} *editPtr ; 
-
-/**
- * Create an edit structure.
- *
- * @return editPtr newly allocated edit structure
- */
-editPtr 
-google_source_edit_new (void)
+readerPtr google_source_reader_new(nodePtr node) 
 {
-	editPtr edit = g_new0 (struct edit, 1);
-	return edit;
+	readerPtr reader = g_new0(struct reader, 1) ;
+	reader->root = node; 
+	reader->editQueue = g_queue_new(); 
+	reader->loginState = READER_STATE_NONE; 
+	reader->dumbTest = g_strdup("a big, fat, dumb test\n");
 }
 
-/**
- * Free an allocated edit structure
- * @param edit the a pointer to the edit structure to delete.
- */
-void 
-google_source_edit_free (editPtr edit)
-{ 
-	g_free (edit->guid);
-	g_free (edit->feedUrl);
-	g_free (edit);
-}
-
-void google_source_edit_process(readerPtr reader);
-
-static void
-google_source_edit_action_complete(const struct updateResult* const result, gpointer userdata, updateFlags flags) 
-{ 
-	readerPtr reader = (readerPtr) userdata;
-
-	if ( result->data == NULL || !g_str_equal(result->data, "OK")) 
-		debug1(DEBUG_UPDATE, "The edit action failed with result: %s\n", result->data);
-	
-	/* process anything else waiting on the edit queue */
-	google_source_edit_process (reader);
-}
-
-/**
- * Callback from an token request, and sends the actual edit request
- * in processing
- */
-static void
-google_source_edit_token_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
-{ 
-	if (result->returncode != 0) { 
-		printf ("sigh... something went wrong.\n");
-		return;
-	}
-
-	readerPtr reader = (readerPtr) userdata; 
-	const gchar* token = result->data; 
-
-	printf("token is %s\n", token);
-	if (g_queue_is_empty (reader->editQueue))
-		return;
-
-	editPtr edit = g_queue_peek_head (reader->editQueue);
-	gchar* source = NULL ; 
-	gchar* postdata = NULL ; 
-	source = g_strdup_printf ("http://www.google.com/reader/api/0/edit-tag?client=liferea");
-	updateRequestPtr request = update_request_new ();
-	request->updateState = update_state_copy (reader->root->subscription->updateState);
-	request->options = update_options_copy (reader->root->subscription->updateOptions) ;
-	request->source = source; /* already strdup-ed */
-	update_state_set_cookies (request->updateState, reader->sid);
-	gchar* tmp = g_strdup_printf ("%s", edit->feedUrl); 
-	gchar* s_escaped = common_uri_escape (tmp);
-	g_free (tmp);
-	
-	gchar* a_escaped;
-	gchar* i_escaped = common_uri_escape (edit->guid);
-	
-	if (edit->action == EDIT_ACTION_MARK_UNREAD) {
-		a_escaped = common_uri_escape ("user/-/state/com.google/kept-unread");
-		gchar *r_escaped = common_uri_escape ("user/-/state/com.google/read");
-		postdata = g_strdup_printf ("i=%s&s=%s&a=%s&r=%s&ac=edit-tags&T=%s", i_escaped, s_escaped, a_escaped, r_escaped, token);
-		g_free (r_escaped);
-	}
-	else if (edit->action == EDIT_ACTION_MARK_READ) { 
-		a_escaped = common_uri_escape ("user/-/state/com.google/read");
-		postdata = g_strdup_printf ("i=%s&s=%s&a=%s&ac=edit-tags&T=%s", i_escaped, s_escaped, a_escaped, token);
-	}
-	else if (edit->action == EDIT_ACTION_TRACKING_MARK_UNREAD) {
-		a_escaped = common_uri_escape ("user/-/state/com.google/tracking-kept-unread");
-		postdata = g_strdup_printf ("i=%s&s=%s&a=%s&ac=edit-tags&async=true&T=%s", i_escaped, s_escaped, a_escaped, token);
-	} else if (edit->action == EDIT_ACTION_ADD_SUBSCRIPTION) {
-		postdata = g_strdup_printf ("s=%s&ac=subscribe&token=%s", s_escaped, token);
-	}
-	
-	g_free (s_escaped);
-	g_free (a_escaped); 
-	g_free (i_escaped);
-	
-	debug1 (DEBUG_UPDATE, "google_source: postdata [%s]", postdata);
-
-	if (postdata) 
-		request->postdata = g_strdup (postdata);
-
-	update_execute_request (reader, request, google_source_edit_action_complete, 
-	                        reader, 0);
-
-	edit = g_queue_pop_head (reader->editQueue);
-	google_source_edit_free (edit) ;
-
-	g_free (postdata); 
-}
-
-/**
- * process the topmost element on the queue (if there are any).
- */
-void
-google_source_edit_process (readerPtr reader)
-{ 
-	g_assert (reader);
-	if (g_queue_is_empty (reader->editQueue))
-		return;
-	
-	/*
- 	* Google reader has a system of tokens. So first, I need to request a 
- 	* token from google, before I can make the actual edit request. The
- 	* code here is the token code, the actual edit commands are in 
- 	* google_source_edit_token_cb
-	 */
-	updateRequestPtr request = update_request_new ();
-	request->updateState = update_state_copy (reader->root->subscription->updateState);
-	request->options = update_options_copy (reader->root->subscription->updateOptions);
-	request->source = g_strdup ("http://www.google.com/reader/api/0/token");
-	update_state_set_cookies (request->updateState, reader->sid);
-
-	update_execute_request (reader, request, google_source_edit_token_cb, 
-	                        reader, 0);
-}
-
-/**
- * Push an edit action onto the processing queue. This is
- * a helper function, use google_source_edit_push_safe instead,
- * as this may not work if the reader is not yet connected.
- */
-void
-google_source_edit_push_ (readerPtr reader, editPtr edit)
-{ 
-	g_assert (reader->editQueue);
-	g_queue_push_tail (reader->editQueue, edit) ;
+void google_source_reader_free(readerPtr reader) 
+{
+	g_queue_free(reader->editQueue) ;
+	g_free(reader);
 }
 
 static void google_source_update_subscription_list (nodePtr node, guint flags);
@@ -263,31 +103,8 @@ google_source_get_root_from_node (nodePtr node)
 	return node;
 }
 
-static void google_source_login (subscriptionPtr subscription, guint32 flags);
+void google_source_login (subscriptionPtr subscription, guint32 flags);
 
-/**
- * Add an edit action onto the edit queue. The edit action may not be 
- * immediately processed if we are not yet connected to google, or if
- * there are other edits on the queue.
- */
-static void 
-google_source_edit_push_safe (nodePtr root, editPtr edit)
-{
-	readerPtr reader = (readerPtr) root->data ; 
-
-	/** @todo any flags I should specify? */
-	if (!reader || reader->loginState == READER_STATE_NONE) {
-		google_source_login (root->subscription, 0);
-		subscription_update(root->subscription, 0) ;
-		google_source_edit_push_ (root->data, edit);
-	} else if (reader->loginState == READER_STATE_IN_PROGRESS) {
-		google_source_edit_push_ (root->data, edit);
-	} else { 
-		google_source_edit_push_ (root->data, edit);
-		google_source_edit_process (root->data);
-	}
-	
-}
 
 /**
  * Mark an item as read on the google server.
@@ -303,27 +120,11 @@ google_source_item_mark_read (nodePtr node, itemPtr item,
 	 */
 	if (__mark_read_hack)
 		return;
-	nodePtr root = google_source_get_root_from_node (node);
-	editPtr edit = google_source_edit_new ();
-	edit->guid = g_strdup (item->sourceId);
-	edit->feedUrl = g_strdup_printf ("feed/%s", node->subscription->source);
-	edit->action = newStatus ? EDIT_ACTION_MARK_READ :
-	                           EDIT_ACTION_MARK_UNREAD;
-
-	google_source_edit_push_safe (root, edit);
-
-	if (newStatus == FALSE) { 
-		/*
-		 * According to the Google Reader API, to mark an item unread, 
-		 * I also need to mark it as tracking-kept-unread in a separate
-		 * network call.
-		 */
-		edit = google_source_edit_new ();
-		edit->guid = g_strdup (item->sourceId);
-		edit->feedUrl = g_strdup_printf ("feed/%s", node->subscription->source);
-		edit->action = EDIT_ACTION_TRACKING_MARK_UNREAD;
-		google_source_edit_push_safe (root, edit);
-	}
+	nodePtr root = google_source_get_root_from_node(node);
+	google_source_edit_mark_read((readerPtr)root->data, 
+				     item->sourceId, 
+				     node->subscription->source,
+				     newStatus);
 }
 
 static struct subscriptionType googleReaderFeedSubscriptionType;
@@ -431,29 +232,26 @@ cleanup:
  * complete the call. If from a prepare_update_request, then use the following hack:
  * retrieve the subscription's source and set the request's source to that.
  */
-static void
+void
 google_source_login (subscriptionPtr subscription, guint32 flags) 
 { 
 	readerPtr reader = (readerPtr) subscription->node->data;
 	gchar *source;
-	
+	g_assert(reader);
 	
 	/* We are not logged in yet, we need to perform a login first and retrigger the update later... */
 	
-	if (!reader) {
-		subscription->node->data = reader = g_new0 (struct reader, 1);
-		reader->root = subscription->node;
-		reader->editQueue = g_queue_new ();
+	if (reader->loginState != READER_STATE_NONE) {
+		debug1(DEBUG_UPDATE, "Logging in while login state is %d\n", 
+			     reader->loginState);
 	}
+
 	source = g_strdup_printf ("https://www.google.com/accounts/ClientLogin?service=reader&Email=%s&Passwd=%s&source=liferea&continue=http://www.google.com",
 	                     	  subscription->updateOptions->username,
 	                          subscription->updateOptions->password);
 	
-	debug2 (DEBUG_UPDATE, "login to Google Reader source %s (node id %s)", source, subscription->node->id);
 	subscription_set_source (subscription, source);
-	
 	g_free (source);
-	
 }
 
 /* OPML subscription type implementation */
@@ -500,7 +298,7 @@ static void
 google_subscription_login_cb (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
 {
 	readerPtr	reader = (readerPtr)subscription->node->data;
-	gchar		*tmp;
+	gchar		*tmp = NULL;
 	GTimeVal	now;
 	
 	debug0 (DEBUG_UPDATE, "google login processing...");
@@ -562,14 +360,16 @@ google_opml_subscription_prepare_update_request (subscriptionPtr subscription, s
 {
 	readerPtr	reader = (readerPtr)subscription->node->data;
 	
-	if (!reader || !reader->sid) {
+	g_assert(reader);
+	printf("Got dumbTest: %s\n", reader->dumbTest);
+	if (reader->loginState == READER_STATE_NONE) {
+		debug0(DEBUG_UPDATE, "GoogleSource: login");
 		google_source_login(subscription, 0) ;
 
 		/* The subscription is updated, but the request has not yet been updated */
 		update_request_set_source(request, subscription->source); 
 		return TRUE;
 	}
-
 	debug1 (DEBUG_UPDATE, "updating Google Reader subscription (node id %s)", subscription->node->id);
 	
 	update_request_set_source(request, "http://www.google.com/reader/api/0/subscription/list");
@@ -746,7 +546,8 @@ google_feed_subscription_prepare_update_request (subscriptionPtr subscription,
 	debug0 (DEBUG_UPDATE, "preparing google reader feed subscription for update\n");
 	readerPtr reader = (readerPtr) google_source_get_root_from_node (subscription->node)->data; 
 	
-	if (!reader ||!reader->sid) { 
+	g_assert(reader); 
+	if (reader->loginState == READER_STATE_NONE) { 
 		google_source_login (google_source_get_root_from_node (subscription->node)->subscription, 0);
 		subscription_update(google_source_get_root_from_node (subscription->node)->subscription, 0) ;
 		return FALSE;
@@ -783,6 +584,7 @@ google_source_setup (nodePtr parent, nodePtr node)
 		ui_feedlist_get_target_folder (&pos);
 		node_add_child (parent, node, pos);
 	}
+	node->data = google_source_reader_new(node);
 }
 
 /* node source type implementation */
@@ -816,8 +618,8 @@ google_source_import (nodePtr node)
 	opml_source_import (node);
 	
 	node->subscription->type = &googleReaderOpmlSubscriptionType;
-	/** @todo get specific information like reader->sid from this? */ 
-	
+	if (!node->data) node->data = google_source_reader_new (node) ;
+
 	for(iter = node->children; iter; iter = g_slist_next(iter) )
 		((nodePtr) iter->data)->subscription->type = &googleReaderFeedSubscriptionType; 
 }
@@ -854,6 +656,8 @@ google_source_add_subscription(nodePtr node, nodePtr parent, subscriptionPtr sub
 	child->subscription->type = &googleReaderFeedSubscriptionType;
 	
 	node_set_title(child, _("New Subscription")) ;
+
+	google_source_edit_add_subscription(google_source_get_root_from_node(node)->data, subscription->source);
 	
 	debug_exit("google_source_add_subscription") ;
 	return child ; 
@@ -904,6 +708,7 @@ static void
 ui_google_source_get_account_info (nodePtr parent)
 {
 	GtkWidget	*dialog;
+
 	
 	dialog = liferea_dialog_new (PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "google_source.glade", "google_source_dialog");
 	
@@ -917,8 +722,8 @@ google_source_free (nodePtr node)
 {
 	readerPtr reader = (readerPtr) node->data;
 	
-	g_free (reader->sid);	
-	g_free (reader);
+	google_source_reader_free(reader);
+	node->data = NULL ;
 }
 
 /* node source type definition */

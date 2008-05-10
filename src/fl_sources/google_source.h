@@ -23,9 +23,28 @@
 
 #include "fl_sources/node_source.h"
 
+
+typedef struct reader {
+	nodePtr		root;	/**< the root node in the feed list */
+	gchar		*sid;	/**< session id */
+	GTimeVal	*lastSubscriptionListUpdate;
+	GQueue          *editQueue;
+	enum { 
+		READER_STATE_NONE = 0,
+		READER_STATE_IN_PROGRESS,
+		READER_STATE_ACTIVE
+	} loginState ; 
+	gchar           *dumbTest ; 
+} *readerPtr;
+
+
 /**
  * Returns Google Reader source type implementation info.
  */
 nodeSourceTypePtr google_source_get_type(void);
+
+readerPtr google_source_reader_new(nodePtr node); 
+void google_source_reader_free() ;
+void google_source_login(subscriptionPtr subscription, guint32 flags);
 
 #endif
