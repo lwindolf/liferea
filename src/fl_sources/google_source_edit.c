@@ -42,11 +42,11 @@ google_source_edit_action_complete(
 }
 
 static void
-google_source_api_edit_subscription(editPtr edit, updateRequestPtr request, const gchar* token) 
+google_source_api_add_subscription(editPtr edit, updateRequestPtr request, const gchar* token) 
 {
-	update_request_set_source(request, "http://www.google.com/reader/api/0/subscription/edit?client=liferea");
+	update_request_set_source(request, "http://www.google.com/reader/api/0/subscription/quickadd?client=liferea");
 	gchar* s_escaped = common_uri_escape(edit->feedUrl) ;
-	gchar* postdata = g_strdup_printf("s=feed%%2F%s&ac=subscribe&token=%s",
+	gchar* postdata = g_strdup_printf("quickadd=%s&ac=subscribe&T=%s",
 					  s_escaped, token) ;
 	g_free(s_escaped);
 	
@@ -117,7 +117,7 @@ google_source_edit_token_cb (const struct updateResult * const result, gpointer 
 	     edit->action == EDIT_ACTION_TRACKING_MARK_UNREAD ) 
 	  google_source_api_edit_tag (edit, request, token);
 	else if (edit->action == EDIT_ACTION_ADD_SUBSCRIPTION ) 
-	  google_source_api_edit_subscription(edit, request, token);
+	  google_source_api_add_subscription(edit, request, token);
 		
 	update_execute_request (reader, request, google_source_edit_action_complete, 
 	                        reader, 0);
