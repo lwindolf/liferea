@@ -333,13 +333,15 @@ ui_popup_node_menu (nodePtr node, gboolean validSelection)
 		addPopupOption (&menu_items, &menu_len, _("/_Mark All As Read"),	NULL, ui_popup_mark_as_read, 	0, "<StockItem>", GTK_STOCK_APPLY);
 	}
 
-	if (NODE_TYPE (node->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS) {
-		addPopupOption (&menu_items, &menu_len, _("/_New"),				NULL, 0, 			0, "<Branch>", 0);
-		addPopupOption (&menu_items, &menu_len, _("/_New/New _Subscription..."),	NULL, ui_popup_add_feed, 	0, NULL, 0);
-		addPopupOption (&menu_items, &menu_len, _("/_New/New _Folder..."),		NULL, ui_popup_add_folder, 	0, NULL, 0);
-		addPopupOption (&menu_items, &menu_len, _("/_New/New S_earch Folder..."),	NULL, ui_popup_add_vfolder,	0, NULL, 0);
-		addPopupOption (&menu_items, &menu_len, _("/_New/New S_ource..."), 		NULL, ui_popup_add_source, 	0, NULL, 0);
-		addPopupOption (&menu_items, &menu_len, _("/_New/New _News Bin..."), 		NULL, ui_popup_add_newsbin, 	0, NULL, 0);
+	if (NODE_SOURCE_TYPE (node->parent->source->root)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST) {
+		if (NODE_TYPE (node->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS) {
+			addPopupOption (&menu_items, &menu_len, _("/_New"),				NULL, 0, 			0, "<Branch>", 0);
+			addPopupOption (&menu_items, &menu_len, _("/_New/New _Subscription..."),	NULL, ui_popup_add_feed, 	0, NULL, 0);
+			addPopupOption (&menu_items, &menu_len, _("/_New/New _Folder..."),		NULL, ui_popup_add_folder, 	0, NULL, 0);
+			addPopupOption (&menu_items, &menu_len, _("/_New/New S_earch Folder..."),	NULL, ui_popup_add_vfolder,	0, NULL, 0);
+			addPopupOption (&menu_items, &menu_len, _("/_New/New S_ource..."), 		NULL, ui_popup_add_source, 	0, NULL, 0);
+			addPopupOption (&menu_items, &menu_len, _("/_New/New _News Bin..."), 		NULL, ui_popup_add_newsbin, 	0, NULL, 0);
+		}
 	}
 
 	if (validSelection) {
