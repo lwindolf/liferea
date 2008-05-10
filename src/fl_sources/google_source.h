@@ -34,7 +34,6 @@ typedef struct reader {
 		READER_STATE_IN_PROGRESS,
 		READER_STATE_ACTIVE
 	} loginState ; 
-	gchar           *dumbTest ; 
 } *readerPtr;
 
 

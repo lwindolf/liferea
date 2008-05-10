@@ -59,7 +59,6 @@ readerPtr google_source_reader_new(nodePtr node)
 	reader->root = node; 
 	reader->editQueue = g_queue_new(); 
 	reader->loginState = READER_STATE_NONE; 
-	reader->dumbTest = g_strdup("a big, fat, dumb test\n");
 	return reader;
 }
 
@@ -360,7 +359,6 @@ google_opml_subscription_prepare_update_request (subscriptionPtr subscription, s
 	readerPtr	reader = (readerPtr)subscription->node->data;
 	
 	g_assert(reader);
-	printf("Got dumbTest: %s\n", reader->dumbTest);
 	if (reader->loginState == READER_STATE_NONE) {
 		debug0(DEBUG_UPDATE, "GoogleSource: login");
 		google_source_login(subscription, 0) ;
