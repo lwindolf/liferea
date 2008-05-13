@@ -716,10 +716,8 @@ ui_mainwindow_init (int mainwindowState)
 				   "it might even kill your cat!</p>"
 				   "<p>New/Improved Functionality:"
 				   "<ul>"
-				   "   <li>HTTP cookies</li>"
-				   "   <li>Google Reader subscriptions do work again</li>"
-				   "   <li>Link search engine can now be configured</li>"
-				   "   <li>SSL and proxy auth</li>"				   
+				   "   <li>Google Reader synchronization improved (but still in work).</li>"
+				   "   <li>New subscription options to control popups.</li>"
 				   "</ul>"
 				   "</p>");
 	g_string_append(buffer,    "</div>");
