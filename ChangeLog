@@ -1,3 +1,11 @@
+2008-??-??  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.5.4 (Unstable)
+
+	* Fixes crash of context menu when used with
+	  empty feed list introduced with 1.5.3
+
+
 2008-05-14  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.5.3 (Unstable)
