@@ -2,6 +2,9 @@
 
 	Version 1.5.3 (Unstable)
 
+	* Introduced experimental solution for Google Reader
+	  subscription adding/deleting and item downloading
+	  through Google Reader. (Arnold Noronha)
 	* Adds new feed subscription properties to overrule the
 	  global popup notification preference.
 	* Adds new feed subscription property to mark all items
