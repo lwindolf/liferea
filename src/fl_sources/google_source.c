@@ -78,7 +78,7 @@ google_source_check_for_removal (nodePtr node, gpointer user_data)
 	if ( g_str_equal(node->subscription->source, GOOGLE_SOURCE_BROADCAST_FRIENDS_URI) ) 
 		return ; 
 	if (IS_FEED (node)) {
-		expr = g_strdup_printf ("/object/list[@name='subscriptions']/object/string[@name='title'][. = '%s']", node_get_title (node));
+		expr = g_strdup_printf ("/object/list[@name='subscriptions']/object/string[@name='id'][. = 'feed/%s']", node->subscription->source);
 	} else {
 		g_warning("opml_source_check_for_removal(): This should never happen...");
 		return;
