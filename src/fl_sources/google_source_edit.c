@@ -100,7 +100,7 @@ google_source_edit_import_helper(xmlNodePtr match, gpointer userdata)
 	}
 
 	debug3(DEBUG_CACHE, "Found edit request: %d %s %s \n", edit->action, edit->feedUrl, edit->guid);
-	google_source_edit_push(reader, edit) ;
+	google_source_edit_push(reader, edit, FALSE) ;
 }
 void
 google_source_edit_import(readerPtr reader) 
@@ -118,7 +118,7 @@ google_source_edit_import(readerPtr reader)
 	xpath_foreach_match(root, "/edits/edit", google_source_edit_import_helper, 
 		reader);
 
-	unlink(file); 
+	g_unlink(file); 
 	xmlFreeDoc(doc);
 	g_free(file); 	
 }
@@ -248,14 +248,15 @@ google_source_edit_process (readerPtr reader)
 }
 
 void
-google_source_edit_push_ (readerPtr reader, editPtr edit)
+google_source_edit_push_ (readerPtr reader, editPtr edit, gboolean head)
 { 
 	g_assert (reader->editQueue);
-	g_queue_push_tail (reader->editQueue, edit) ;
+	if (head) g_queue_push_head (reader->editQueue, edit) ;
+	else      g_queue_push_tail (reader->editQueue, edit) ;
 }
 
 void 
-google_source_edit_push (readerPtr reader, editPtr edit)
+google_source_edit_push (readerPtr reader, editPtr edit, gboolean head)
 {
 	g_assert(reader);
 	nodePtr root = reader->root ;
@@ -264,16 +265,15 @@ google_source_edit_push (readerPtr reader, editPtr edit)
 	if (reader->loginState == READER_STATE_NONE) {
 		google_source_login (root->subscription, 0);
 		subscription_update(root->subscription, 0) ;
-		google_source_edit_push_ (reader, edit);
+		google_source_edit_push_ (reader, edit, head);
 	} else if (reader->loginState == READER_STATE_IN_PROGRESS) {
-		google_source_edit_push_ (reader, edit);
+		google_source_edit_push_ (reader, edit, head);
 	} else { 
-		google_source_edit_push_ (reader, edit);
+		google_source_edit_push_ (reader, edit, head);
 		google_source_edit_process (reader);
 	}
 	
 }
-
 
 void
 google_source_edit_mark_read (
@@ -289,7 +289,7 @@ google_source_edit_mark_read (
 	edit->action = newStatus ? EDIT_ACTION_MARK_READ :
 	                           EDIT_ACTION_MARK_UNREAD;
 
-	google_source_edit_push (reader, edit);
+	google_source_edit_push (reader, edit, FALSE);
 
 	if (newStatus == FALSE) { 
 		/*
@@ -301,7 +301,7 @@ google_source_edit_mark_read (
 		edit->guid = g_strdup (guid);
 		edit->feedUrl = g_strdup (feedUrl);
 		edit->action = EDIT_ACTION_TRACKING_MARK_UNREAD;
-		google_source_edit_push (reader, edit);
+		google_source_edit_push (reader, edit, FALSE);
 	}
 }
 
@@ -314,6 +314,6 @@ void google_source_edit_add_subscription(
 	edit->action = EDIT_ACTION_ADD_SUBSCRIPTION ; 
 	edit->feedUrl = g_strdup(feedUrl) ;
 
-	google_source_edit_push(reader, edit);
+	google_source_edit_push(reader, edit, TRUE);
 }
 

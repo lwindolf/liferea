@@ -56,9 +56,10 @@ void google_source_edit_process(readerPtr reader);
  * @param reader The reader structure whose queue you want to push
  *               onto.
  * @param edit   The edit to push.
+ * @param head   Whether to push the edit to the head.
  */
 void
-google_source_edit_push (readerPtr reader, editPtr edit) ;
+google_source_edit_push (readerPtr reader, editPtr edit, gboolean head) ;
 
 
 /** Edit wrappers */
