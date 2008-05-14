@@ -263,7 +263,6 @@ google_source_edit_push (readerPtr reader, editPtr edit, gboolean head)
 
 	/** @todo any flags I should specify? */
 	if (reader->loginState == READER_STATE_NONE) {
-		google_source_login (root->subscription, 0);
 		subscription_update(root->subscription, 0) ;
 		google_source_edit_push_ (reader, edit, head);
 	} else if (reader->loginState == READER_STATE_IN_PROGRESS) {
@@ -317,3 +316,16 @@ void google_source_edit_add_subscription(
 	google_source_edit_push(reader, edit, TRUE);
 }
 
+
+
+gboolean google_source_edit_is_in_queue(readerPtr reader, const gchar* guid) 
+{
+	/* this is inefficient, but works for the timebeing */
+	GSList *cur = reader->editQueue->head ; 
+	for(; cur; cur = g_list_next(cur)) { 
+		editPtr edit = cur->data ; 
+		if (edit->guid && g_str_equal(edit->guid, guid))
+			return TRUE;
+	}
+	return FALSE;
+}

@@ -96,3 +96,12 @@ void google_source_edit_add_subscription(readerPtr reader, const gchar* feedUrl)
  * @param feedUrl the feed to remove
  */
 void google_source_edit_remove_subscription(readerPtr reader, const gchar* feedUrl) ;
+
+/**
+ * See if an item with give guid is being modified 
+ * in the queue.
+ *
+ * @param reader the Reader structure
+ * @param guid the guid of the item
+ */
+gboolean google_source_edit_is_in_queue(readerPtr reader, const gchar* guid) ;

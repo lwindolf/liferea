@@ -226,7 +226,7 @@ cleanup:
 
 /**
  * Initialize the reader and subscription for a login. Note that this does not do the
- * actual updating. You can follow this call up with a call to subscription_update to 
+ * actual updating. You *MUST* follow this call up with a call to subscription_update to 
  * complete the call. If from a prepare_update_request, then use the following hack:
  * retrieve the subscription's source and set the request's source to that.
  */
@@ -247,7 +247,8 @@ google_source_login (subscriptionPtr subscription, guint32 flags)
 	source = g_strdup_printf ("https://www.google.com/accounts/ClientLogin?service=reader&Email=%s&Passwd=%s&source=liferea&continue=http://www.google.com",
 	                     	  subscription->updateOptions->username,
 	                          subscription->updateOptions->password);
-	
+
+	reader->loginState = READER_STATE_IN_PROGRESS ;
 	subscription_set_source (subscription, source);
 	g_free (source);
 }
@@ -363,6 +364,7 @@ google_opml_subscription_prepare_update_request (subscriptionPtr subscription, s
 		debug0(DEBUG_UPDATE, "GoogleSource: login");
 		google_source_login(subscription, 0) ;
 
+		reader->loginState = READER_STATE_IN_PROGRESS ;
 		/* The subscription is updated, but the request has not yet been updated */
 		update_request_set_source(request, subscription->source); 
 		return TRUE;
@@ -388,6 +390,7 @@ static void
 google_source_item_retrieve_status (xmlNodePtr entry, gpointer userdata)
 {
 	subscriptionPtr subscription = (subscriptionPtr) userdata;
+	readerPtr reader = (readerPtr) subscription->node->data ;
 	xmlNodePtr xml;
 	nodePtr node = subscription->node;
 
@@ -421,8 +424,8 @@ google_source_item_retrieve_status (xmlNodePtr entry, gpointer userdata)
 		/* this is extremely inefficient, multiple times loading */
 		itemPtr item = item_load (GPOINTER_TO_UINT (iter->data));
 		if (item && item->sourceId) {
-			if (g_str_equal (item->sourceId, id) && item->readStatus != read) {
-
+			if (g_str_equal (item->sourceId, id) && item->readStatus != read && !google_source_edit_is_in_queue(reader, id)) {
+				
 				__mark_read_hack = TRUE;
 				item_state_set_read (item, read);
 				__mark_read_hack = FALSE;
@@ -542,7 +545,6 @@ google_feed_subscription_prepare_update_request (subscriptionPtr subscription,
 	
 	g_assert(reader); 
 	if (reader->loginState == READER_STATE_NONE) { 
-		google_source_login (google_source_get_root_from_node (subscription->node)->subscription, 0);
 		subscription_update(google_source_get_root_from_node (subscription->node)->subscription, 0) ;
 		return FALSE;
 	}
