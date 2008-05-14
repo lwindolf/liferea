@@ -9,6 +9,10 @@
 
 #include "google_source.h"
 #include "google_source_edit.h"
+#include "config.h"
+#include <libxml/xmlwriter.h>
+#include <libxml/xmlreader.h>
+#include "xml.h"
 
 editPtr 
 google_source_edit_new (void)
@@ -23,6 +27,100 @@ google_source_edit_free (editPtr edit)
 	g_free (edit->guid);
 	g_free (edit->feedUrl);
 	g_free (edit);
+}
+
+gchar* google_source_edit_get_cachefile (readerPtr reader) 
+{
+	return common_create_cache_filename("cache" G_DIR_SEPARATOR_S "plugins", reader->root->id, "edits.xml");
+}
+
+static void
+google_source_edit_export_helper (editPtr edit, xmlTextWriterPtr writer) 
+{
+	xmlTextWriterStartElement(writer, BAD_CAST "edit") ;
+
+	gchar* action = g_strdup_printf("%d", edit->action) ;
+	xmlTextWriterWriteElement(writer, BAD_CAST "action", action);
+	g_free(action);
+	if (edit->feedUrl) 
+		xmlTextWriterWriteElement(writer, BAD_CAST "feedUrl", edit->feedUrl ) ;
+	if (edit->guid) 
+		xmlTextWriterWriteElement(writer, BAD_CAST "guid", edit->guid);
+	xmlTextWriterEndElement(writer);
+}
+void
+google_source_edit_export (readerPtr reader) 
+{ 
+	xmlTextWriterPtr writer;
+	gchar            *file = google_source_edit_get_cachefile(reader);
+	writer = xmlNewTextWriterFilename(file, 0);
+	if ( writer == NULL ) {
+		g_warning("Could not create edit cache file\n");
+		g_assert(FALSE);
+		return ;
+	}
+	xmlTextWriterStartDocument(writer, NULL, "UTF-8", NULL);
+
+	xmlTextWriterStartElement(writer, BAD_CAST "edits");
+	xmlTextWriterWriteAttribute(writer, BAD_CAST "version", 
+				    BAD_CAST PACKAGE_VERSION);
+
+	while ( !g_queue_is_empty(reader->editQueue) ) {
+		editPtr edit = g_queue_pop_head(reader->editQueue);
+		google_source_edit_export_helper(edit, writer);
+	}
+	
+	xmlTextWriterEndElement(writer);
+	xmlTextWriterEndDocument(writer);
+	xmlFreeTextWriter(writer);
+}
+
+
+void
+google_source_edit_import_helper(xmlNodePtr match, gpointer userdata) 
+{
+	readerPtr reader = (readerPtr) userdata ;
+	editPtr edit;
+	xmlNodePtr cur; 
+
+	edit = google_source_edit_new() ;
+	
+	cur = match->children ; 
+	while (cur) {
+		xmlChar *content = xmlNodeGetContent(cur);
+		if ( g_str_equal((gchar*) cur->name, "action")) {
+			edit->action = atoi(content) ;
+		} else if ( g_str_equal((gchar*) cur->name, "guid") ){ 
+			edit->guid = g_strdup((gchar*) content);
+		} else if ( g_str_equal((gchar*) cur->name, "feedUrl")) {
+			edit->feedUrl = g_strdup((gchar*) content);
+		}
+		if (content) xmlFree(content);
+		cur = cur->next;
+	}
+
+	debug3(DEBUG_CACHE, "Found edit request: %d %s %s \n", edit->action, edit->feedUrl, edit->guid);
+	google_source_edit_push(reader, edit) ;
+}
+void
+google_source_edit_import(readerPtr reader) 
+{
+	xmlTextReaderPtr xmlReader; 
+	editPtr edit; 
+	gchar* file = google_source_edit_get_cachefile(reader);
+
+	xmlDocPtr doc = xmlReadFile(file, NULL, 0) ;
+	if ( doc == NULL ) 
+		return ; 
+
+	xmlNodePtr root = xmlDocGetRootElement(doc);
+	
+	xpath_foreach_match(root, "/edits/edit", google_source_edit_import_helper, 
+		reader);
+
+	unlink(file); 
+	xmlFreeDoc(doc);
+	g_free(file); 	
 }
 
 static void
