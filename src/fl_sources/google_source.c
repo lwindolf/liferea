@@ -390,7 +390,7 @@ static void
 google_source_item_retrieve_status (xmlNodePtr entry, gpointer userdata)
 {
 	subscriptionPtr subscription = (subscriptionPtr) userdata;
-	readerPtr reader = (readerPtr) subscription->node->data ;
+	readerPtr reader = (readerPtr) google_source_get_root_from_node(subscription->node)->data ;
 	xmlNodePtr xml;
 	nodePtr node = subscription->node;
 
