@@ -667,9 +667,8 @@ google_source_add_subscription(nodePtr node, nodePtr parent, subscriptionPtr sub
 void
 google_source_remove_node(nodePtr node, nodePtr child) 
 { 
-	debug_enter("google_source_remove_node");
-	
-	debug_exit("google_source_remove_node");
+	if (!child->subscription || !child->subscription->source ) return ; 
+	google_source_edit_remove_subscription(google_source_get_root_from_node(node)->data, child->subscription->source); 
 }
 
 /* GUI callbacks */

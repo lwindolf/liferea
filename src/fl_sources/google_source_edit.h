@@ -23,7 +23,8 @@ typedef struct edit {
 		EDIT_ACTION_MARK_READ,
 		EDIT_ACTION_MARK_UNREAD,
 		EDIT_ACTION_TRACKING_MARK_UNREAD, /**< every UNREAD request, should be followed by tracking-kept-unread */
-		EDIT_ACTION_ADD_SUBSCRIPTION
+		EDIT_ACTION_ADD_SUBSCRIPTION,
+		EDIT_ACTION_REMOVE_SUBSCRIPTION
 	} action;
 		
 } *editPtr ; 

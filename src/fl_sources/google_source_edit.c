@@ -12,6 +12,7 @@
 #include "config.h"
 #include <libxml/xmlwriter.h>
 #include <libxml/xmlreader.h>
+#include <glib/gstdio.h>
 #include "xml.h"
 
 editPtr 
@@ -105,8 +106,6 @@ google_source_edit_import_helper(xmlNodePtr match, gpointer userdata)
 void
 google_source_edit_import(readerPtr reader) 
 {
-	xmlTextReaderPtr xmlReader; 
-	editPtr edit; 
 	gchar* file = google_source_edit_get_cachefile(reader);
 
 	xmlDocPtr doc = xmlReadFile(file, NULL, 0) ;
@@ -151,6 +150,15 @@ google_source_api_add_subscription(editPtr edit, updateRequestPtr request, const
 	request->postdata = postdata ;
 }
 
+static void
+google_source_api_remove_subscription(editPtr edit, updateRequestPtr request, const gchar* token) 
+{
+	update_request_set_source(request, "http://www.google.com/reader/api/0/subscription/edit?client=liferea");
+	gchar* s_escaped = g_uri_escape_string(edit->feedUrl, NULL, TRUE);
+	g_assert(!request->postdata);
+	request->postdata = g_strdup_printf("s=feed%%2F%s&i=null&ac=unsubscribe&T=%s",s_escaped, token);
+	g_free(s_escaped);
+}
 static void 
 google_source_api_edit_tag(editPtr edit, updateRequestPtr request, const gchar*token) 
 {
@@ -213,10 +221,12 @@ google_source_edit_token_cb (const struct updateResult * const result, gpointer 
 	if ( edit->action == EDIT_ACTION_MARK_READ || 
 	     edit->action == EDIT_ACTION_MARK_UNREAD || 
 	     edit->action == EDIT_ACTION_TRACKING_MARK_UNREAD ) 
-	  google_source_api_edit_tag (edit, request, token);
+		google_source_api_edit_tag (edit, request, token);
 	else if (edit->action == EDIT_ACTION_ADD_SUBSCRIPTION ) 
-	  google_source_api_add_subscription(edit, request, token);
-		
+		google_source_api_add_subscription(edit, request, token);
+	else if (edit->action == EDIT_ACTION_REMOVE_SUBSCRIPTION )
+		google_source_api_remove_subscription(edit, request, token) ;
+
 	update_execute_request (reader, request, google_source_edit_action_complete, 
 	                        reader, 0);
 
@@ -317,6 +327,13 @@ void google_source_edit_add_subscription(
 }
 
 
+void google_source_edit_remove_subscription(readerPtr reader, const gchar* feedUrl) 
+{
+	editPtr edit = google_source_edit_new(); 
+	edit->action = EDIT_ACTION_REMOVE_SUBSCRIPTION ;
+	edit->feedUrl = g_strdup(feedUrl) ;
+	google_source_edit_push(reader, edit, TRUE) ;
+}
 
 gboolean google_source_edit_is_in_queue(readerPtr reader, const gchar* guid) 
 {
