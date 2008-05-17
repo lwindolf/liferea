@@ -37,13 +37,23 @@ typedef struct reader {
 } *readerPtr;
 
 
+enum googleSourceUpdateFlags { 
+	/**
+	 * Update only the subscription list, and not each node underneath it.
+	 * Note: Uses higher 16 bits to avoid conflict.
+	 */
+	GOOGLE_SOURCE_UPDATE_ONLY_LIST = (1<<16),
+
+	/**
+	 * Only login, do not do any updates. 
+	 */
+	GOOGLE_SOURCE_UPDATE_ONLY_LOGIN = ( 1<<17)
+} ;
+
 /**
  * Returns Google Reader source type implementation info.
  */
 nodeSourceTypePtr google_source_get_type(void);
 
-readerPtr google_source_reader_new(nodePtr node); 
-void google_source_reader_free() ;
-void google_source_login(subscriptionPtr subscription, guint32 flags);
 
 #endif

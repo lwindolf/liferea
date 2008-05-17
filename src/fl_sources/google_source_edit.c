@@ -15,6 +15,11 @@
 #include <glib/gstdio.h>
 #include "xml.h"
 
+typedef struct editCtxt { 
+	readerPtr reader ;
+	editPtr edit; 
+} *editCtxtPtr; 
+
 editPtr 
 google_source_edit_new (void)
 {
@@ -30,6 +35,14 @@ google_source_edit_free (editPtr edit)
 	g_free (edit);
 }
 
+editCtxtPtr
+google_source_edit_context_new(readerPtr reader, editPtr edit)
+{
+	editCtxtPtr ctxt = g_new0(struct editCtxt, 1);
+	ctxt->reader = reader;
+	ctxt->edit = edit;
+	return ctxt ;
+}
 gchar* google_source_edit_get_cachefile (readerPtr reader) 
 {
 	return common_create_cache_filename("cache" G_DIR_SEPARATOR_S "plugins", reader->root->id, "edits.xml");
@@ -128,12 +141,23 @@ google_source_edit_action_complete(
 	gpointer userdata, 
 	updateFlags flags) 
 { 
-	readerPtr reader = (readerPtr) userdata;
+	editCtxtPtr editCtxt = (editCtxtPtr) userdata ; 
+	readerPtr   reader = editCtxt->reader;
+	editPtr     edit   = editCtxt->edit ;
 
-	if ( result->data == NULL || !g_str_equal(result->data, "OK")) 
+	if ( result->data == NULL || !g_str_equal(result->data, "OK")) {
+		if ( edit->callback ) 
+			(*edit->callback)(reader, edit, FALSE);
 		debug1(DEBUG_UPDATE, "The edit action failed with result: %s\n",
 		       result->data);
+	}
 	
+	if ( edit->callback )
+		edit->callback(reader, edit, TRUE);
+
+	google_source_edit_free(edit) ;
+	g_free(editCtxt);
+
 	/* process anything else waiting on the edit queue */
 	google_source_edit_process (reader);
 }
@@ -228,10 +252,9 @@ google_source_edit_token_cb (const struct updateResult * const result, gpointer 
 		google_source_api_remove_subscription(edit, request, token) ;
 
 	update_execute_request (reader, request, google_source_edit_action_complete, 
-	                        reader, 0);
+	                        google_source_edit_context_new(reader, edit), 0);
 
 	edit = g_queue_pop_head (reader->editQueue);
-	google_source_edit_free (edit) ;
 }
 
 void
@@ -273,7 +296,7 @@ google_source_edit_push (readerPtr reader, editPtr edit, gboolean head)
 
 	/** @todo any flags I should specify? */
 	if (reader->loginState == READER_STATE_NONE) {
-		subscription_update(root->subscription, 0) ;
+		subscription_update(root->subscription, GOOGLE_SOURCE_UPDATE_ONLY_LOGIN) ;
 		google_source_edit_push_ (reader, edit, head);
 	} else if (reader->loginState == READER_STATE_IN_PROGRESS) {
 		google_source_edit_push_ (reader, edit, head);
@@ -315,6 +338,29 @@ google_source_edit_mark_read (
 }
 
 
+void update_subscription_list_callback(readerPtr reader, editPtr edit, gboolean success) 
+{
+	if ( success ) { 
+
+		/*
+		 * It is possible that Google changed the name of the URL that
+		 * was sent to it. In that case, I need to recover the URL 
+		 * from the list. But a node with the old URL has already 
+		 * been created. Allow the subscription update call to fix that.
+		 */
+		GSList* cur = reader->root->children ;
+		for( ; cur ; cur = g_slist_next(cur))  {
+			nodePtr node = (nodePtr) cur->data ; 
+			if ( g_str_equal(node->subscription->source, edit->feedUrl) ) {
+				subscription_set_source(node->subscription, "");
+			}
+		}
+		
+		debug0(DEBUG_UPDATE, "Add subscription was successful\n");
+		subscription_update(reader->root->subscription, GOOGLE_SOURCE_UPDATE_ONLY_LIST);
+	} else 
+		debug0(DEBUG_UPDATE, "Failed to add subscription\n");
+}
 void google_source_edit_add_subscription(
 	readerPtr reader, 
 	const gchar* feedUrl)
@@ -322,7 +368,7 @@ void google_source_edit_add_subscription(
 	editPtr edit = google_source_edit_new() ;
 	edit->action = EDIT_ACTION_ADD_SUBSCRIPTION ; 
 	edit->feedUrl = g_strdup(feedUrl) ;
-
+	edit->callback = update_subscription_list_callback ;
 	google_source_edit_push(reader, edit, TRUE);
 }
 
@@ -338,7 +384,7 @@ void google_source_edit_remove_subscription(readerPtr reader, const gchar* feedU
 gboolean google_source_edit_is_in_queue(readerPtr reader, const gchar* guid) 
 {
 	/* this is inefficient, but works for the timebeing */
-	GSList *cur = reader->editQueue->head ; 
+	GList *cur = reader->editQueue->head ; 
 	for(; cur; cur = g_list_next(cur)) { 
 		editPtr edit = cur->data ; 
 		if (edit->guid && g_str_equal(edit->guid, guid))

@@ -289,7 +289,8 @@ google_subscription_opml_cb (subscriptionPtr subscription, const struct updateRe
 		debug0 (DEBUG_UPDATE, "google_subscription_opml_cb(): ERROR: failed to get subscription list!\n");
 	}
 
-	node_foreach_child_data (subscription->node, node_update_subscription, GUINT_TO_POINTER (0));
+	if (!(flags & GOOGLE_SOURCE_UPDATE_ONLY_LIST))
+		node_foreach_child_data (subscription->node, node_update_subscription, GUINT_TO_POINTER (0));
 
 }
 
@@ -325,7 +326,8 @@ google_subscription_login_cb (subscriptionPtr subscription, const struct updateR
 		g_get_current_time (&now);
 
 		reader->loginState = READER_STATE_ACTIVE;
-		subscription_update (subscription, 0);
+		if ( ! (flags & GOOGLE_SOURCE_UPDATE_ONLY_LOGIN) ) 
+			subscription_update (subscription, flags);
 
 		/* process any edits waiting in queue */
 		google_source_edit_process (reader);

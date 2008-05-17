@@ -1,6 +1,6 @@
 
 #include "google_source.h"
-
+#include <glib.h>
 /**
  * A structure to indicate an edit to the google reader "database".
  * These edits are put in a queue and processed in sequential order
@@ -19,6 +19,10 @@ typedef struct edit {
 	 */
 	gchar* feedUrl;	
 
+	/**
+	 * A callback function on completion of the edit.
+	 */
+	void (*callback) (readerPtr reader, struct edit* edit, gboolean success);
 	enum { 
 		EDIT_ACTION_MARK_READ,
 		EDIT_ACTION_MARK_UNREAD,
