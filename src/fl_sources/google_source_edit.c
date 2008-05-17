@@ -143,7 +143,7 @@ static void
 google_source_api_add_subscription(editPtr edit, updateRequestPtr request, const gchar* token) 
 {
 	update_request_set_source(request, "http://www.google.com/reader/api/0/subscription/quickadd?client=liferea");
-	gchar* s_escaped = common_uri_escape(edit->feedUrl) ;
+	gchar* s_escaped = g_uri_escape_string(edit->feedUrl, NULL, TRUE) ;
 	gchar* postdata = g_strdup_printf("quickadd=%s&ac=subscribe&T=%s",
 					  s_escaped, token) ;
 	g_free(s_escaped);

@@ -551,9 +551,12 @@ google_feed_subscription_prepare_update_request (subscriptionPtr subscription,
 	debug0 (DEBUG_UPDATE, "Setting cookies for a Google Reader subscription");
 
 	if ( !g_str_equal(request->source, GOOGLE_SOURCE_BROADCAST_FRIENDS_URI) ) { 
-		gchar* newUrl = g_strdup_printf("http://www.google.com/reader/atom/feed/%s", request->source) ;
+		gchar* source_escaped = g_uri_escape_string(request->source,
+							    NULL, TRUE);
+		gchar* newUrl = g_strdup_printf("http://www.google.com/reader/atom/feed/%s", source_escaped) ;
 		update_request_set_source(request, newUrl) ;
 		g_free (newUrl);
+		g_free(source_escaped);
 	}
 	update_state_set_cookies (request->updateState, reader->sid);
 	return TRUE;
@@ -645,6 +648,7 @@ google_source_add_subscription(nodePtr node, nodePtr parent, subscriptionPtr sub
 { 
 	debug_enter("google_source_add_subscription") ;
 	nodePtr child = node_new ();
+
 	debug0(DEBUG_UPDATE, "GoogleSource: Adding a new subscription"); 
 	node_set_type (child, feed_get_node_type ());
 	node_set_data (child, feed_new ());
