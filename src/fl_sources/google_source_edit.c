@@ -156,23 +156,23 @@ google_source_api_edit_tag(editPtr edit, updateRequestPtr request, const gchar*t
 {
 	update_request_set_source(request, "http://www.google.com/reader/api/0/edit-tag?client=liferea"); 
 
-	gchar* s_escaped = common_uri_escape (edit->feedUrl);
+	gchar* s_escaped = g_uri_escape_string (edit->feedUrl, NULL, TRUE);
 	gchar* a_escaped = NULL ;
-	gchar* i_escaped = common_uri_escape (edit->guid);
+	gchar* i_escaped = g_uri_escape_string (edit->guid, NULL, TRUE);
 	gchar* postdata = NULL ;
 
 	if (edit->action == EDIT_ACTION_MARK_UNREAD) {
-		a_escaped = common_uri_escape ("user/-/state/com.google/kept-unread");
-		gchar *r_escaped = common_uri_escape ("user/-/state/com.google/read");
+		a_escaped = g_uri_escape_string ("user/-/state/com.google/kept-unread", NULL, TRUE);
+		gchar *r_escaped = g_uri_escape_string ("user/-/state/com.google/read", NULL, TRUE);
 		postdata = g_strdup_printf ("i=%s&s=feed%%2F%s&a=%s&r=%s&ac=edit-tags&T=%s", i_escaped, s_escaped, a_escaped, r_escaped, token);
 		g_free (r_escaped);
 	}
 	else if (edit->action == EDIT_ACTION_MARK_READ) { 
-		a_escaped = common_uri_escape ("user/-/state/com.google/read");
+		a_escaped = g_uri_escape_string ("user/-/state/com.google/read", NULL, TRUE);
 		postdata = g_strdup_printf ("i=%s&s=feed%%2F%s&a=%s&ac=edit-tags&T=%s", i_escaped, s_escaped, a_escaped, token);
 	}
 	else if (edit->action == EDIT_ACTION_TRACKING_MARK_UNREAD) {
-		a_escaped = common_uri_escape ("user/-/state/com.google/tracking-kept-unread");
+		a_escaped = g_uri_escape_string ("user/-/state/com.google/tracking-kept-unread", NULL, TRUE);
 		postdata = g_strdup_printf ("i=%s&s=feed%%2F%s&a=%s&ac=edit-tags&async=true&T=%s", i_escaped, s_escaped, a_escaped, token);
 	}  else g_assert(FALSE);
 	
