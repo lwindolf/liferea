@@ -1,7 +1,8 @@
 /**
- * @file metadata.h Metadata storage API
+ * @file metadata.h  handling of typed item and feed metadata
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2008 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,15 +45,6 @@ typedef struct NsHandler {
 	parseItemTagFunc	parseItemTag;		/**< item tag parsing method */
 	parseChannelTagFunc	parseChannelTag;	/**< channel tag parsing method */
 } NsHandler;
-
-/* -------------------------------------------------------- */
-/* interface definitions for namespace rendering handler    */
-/* -------------------------------------------------------- */
-
-/** 
- * Initialize the metadata types to allow format checks.
- */
-void metadata_init(void);
 
 /** 
  * Appends a value to the value list of a specific metadata type 

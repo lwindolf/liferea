@@ -1,5 +1,5 @@
 /**
- * @file metadata.c Metadata storage API
+ * @file metadata.c  handling of typed item and feed meta data
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2004-2008 Lars Lindner <lars.lindner@gmail.com>
@@ -43,27 +43,89 @@ enum {
 	METADATA_TYPE_HTML = 3		/**< metadata is XHTML content and valid to be embedded in XML */
 };
 
-static GHashTable *metadata_types = NULL;
+static GHashTable *metadataTypes = NULL;	/**< hash table with all registered meta data types */
 
 struct pair {
 	gchar		*strid;		/** metadata type id */
 	GSList		*data;		/** list of metadata values */
 };
 
-static void metadata_type_register(const gchar *name, gint type) {
-
-	if(!metadata_types)
-		metadata_types = g_hash_table_new(g_str_hash, g_str_equal);
+static void
+metadata_type_register (const gchar *name, gint type)
+{
+	if (!metadataTypes)
+		metadataTypes = g_hash_table_new (g_str_hash, g_str_equal);
 		
-	g_hash_table_insert(metadata_types, (gpointer)name, GINT_TO_POINTER(type));
+	g_hash_table_insert (metadataTypes, (gpointer)name, GINT_TO_POINTER (type));
 }
 
-static gint metadata_get_type(const gchar *name) {
-	gint	type;
+static void
+metadata_init (void)
+{
+	/* register metadata types to check validity on adding */
+	
+	/* generic types */
+	metadata_type_register ("author",		METADATA_TYPE_HTML);
+	metadata_type_register ("contributor",		METADATA_TYPE_HTML);
+	metadata_type_register ("copyright",		METADATA_TYPE_HTML);
+	metadata_type_register ("language",		METADATA_TYPE_HTML);
+	metadata_type_register ("pubDate",		METADATA_TYPE_ASCII);
+	metadata_type_register ("contentUpdateDate",	METADATA_TYPE_ASCII);
+	metadata_type_register ("managingEditor",	METADATA_TYPE_HTML);
+	metadata_type_register ("webmaster",		METADATA_TYPE_HTML);
+	metadata_type_register ("feedgenerator",	METADATA_TYPE_HTML);
+	metadata_type_register ("imageUrl",		METADATA_TYPE_URL);
+	metadata_type_register ("textInput",		METADATA_TYPE_HTML);
+	metadata_type_register ("errorReportsTo",	METADATA_TYPE_HTML);
+	metadata_type_register ("feedgeneratorUri",	METADATA_TYPE_URL);
+	metadata_type_register ("category",		METADATA_TYPE_HTML);
+	metadata_type_register ("enclosure",		METADATA_TYPE_URL);
+	metadata_type_register ("commentsUri",		METADATA_TYPE_URL);
+	metadata_type_register ("commentFeedUri",	METADATA_TYPE_URL);
+	metadata_type_register ("feedTitle",		METADATA_TYPE_HTML);
+	
+	/* types for aggregation NS */
+	metadata_type_register ("agSource",		METADATA_TYPE_URL);
+	metadata_type_register ("agTimestamp",		METADATA_TYPE_ASCII);
 
-	type = GPOINTER_TO_INT(g_hash_table_lookup(metadata_types, (gpointer)name));
-	if(0 == type)
-		debug1(DEBUG_PARSING, "unknown metadata type (%s)", name);
+	/* types for blog channel */
+	metadata_type_register ("blogChannel",		METADATA_TYPE_HTML);
+
+	/* types for creative commons */
+	metadata_type_register ("license",		METADATA_TYPE_HTML);
+	
+	/* types for Dublin Core (some dc tags are mapped to feed and item metadata types) */
+	metadata_type_register ("creator",		METADATA_TYPE_HTML);
+	metadata_type_register ("publisher",		METADATA_TYPE_HTML);
+	metadata_type_register ("type",			METADATA_TYPE_HTML);
+	metadata_type_register ("format",		METADATA_TYPE_HTML);
+	metadata_type_register ("identifier",		METADATA_TYPE_HTML);
+	metadata_type_register ("source",		METADATA_TYPE_URL);
+	metadata_type_register ("coverage",		METADATA_TYPE_HTML);
+	
+	/* types for photo blogs */
+	metadata_type_register ("photo", 		METADATA_TYPE_URL);
+
+	/* types for slash */
+	metadata_type_register ("slash",		METADATA_TYPE_HTML);
+	
+	/* type for gravatars */
+	metadata_type_register ("gravatar",		METADATA_TYPE_URL);
+
+	return;
+}
+
+static gint
+metadata_get_type (const gchar *name)
+{
+	gint	type;
+	
+	if (!metadataTypes)
+		metadata_init ();
+
+	type = GPOINTER_TO_INT (g_hash_table_lookup (metadataTypes, (gpointer)name));
+	if (0 == type)
+		debug1 (DEBUG_PARSING, "unknown metadata type (%s)", name);
 	
 	return type;
 }
@@ -257,60 +319,4 @@ GSList * metadata_parse_xml_nodes(xmlNodePtr cur) {
 		attribute = attribute->next;
 	}
 	return metadata;
-}
-
-void
-metadata_init (void)
-{
-	/* register metadata types to check validity on adding */
-	
-	/* generic types */
-	metadata_type_register ("author",		METADATA_TYPE_HTML);
-	metadata_type_register ("contributor",		METADATA_TYPE_HTML);
-	metadata_type_register ("copyright",		METADATA_TYPE_HTML);
-	metadata_type_register ("language",		METADATA_TYPE_HTML);
-	metadata_type_register ("pubDate",		METADATA_TYPE_ASCII);
-	metadata_type_register ("contentUpdateDate",	METADATA_TYPE_ASCII);
-	metadata_type_register ("managingEditor",	METADATA_TYPE_HTML);
-	metadata_type_register ("webmaster",		METADATA_TYPE_HTML);
-	metadata_type_register ("feedgenerator",	METADATA_TYPE_HTML);
-	metadata_type_register ("imageUrl",		METADATA_TYPE_URL);
-	metadata_type_register ("textInput",		METADATA_TYPE_HTML);
-	metadata_type_register ("errorReportsTo",	METADATA_TYPE_HTML);
-	metadata_type_register ("feedgeneratorUri",	METADATA_TYPE_URL);
-	metadata_type_register ("category",		METADATA_TYPE_HTML);
-	metadata_type_register ("enclosure",		METADATA_TYPE_URL);
-	metadata_type_register ("commentsUri",		METADATA_TYPE_URL);
-	metadata_type_register ("commentFeedUri",	METADATA_TYPE_URL);
-	metadata_type_register ("feedTitle",		METADATA_TYPE_HTML);
-	
-	/* types for aggregation NS */
-	metadata_type_register ("agSource",		METADATA_TYPE_URL);
-	metadata_type_register ("agTimestamp",		METADATA_TYPE_ASCII);
-
-	/* types for blog channel */
-	metadata_type_register ("blogChannel",		METADATA_TYPE_HTML);
-
-	/* types for creative commons */
-	metadata_type_register ("license",		METADATA_TYPE_HTML);
-	
-	/* types for Dublin Core (some dc tags are mapped to feed and item metadata types) */
-	metadata_type_register ("creator",		METADATA_TYPE_HTML);
-	metadata_type_register ("publisher",		METADATA_TYPE_HTML);
-	metadata_type_register ("type",			METADATA_TYPE_HTML);
-	metadata_type_register ("format",		METADATA_TYPE_HTML);
-	metadata_type_register ("identifier",		METADATA_TYPE_HTML);
-	metadata_type_register ("source",		METADATA_TYPE_URL);
-	metadata_type_register ("coverage",		METADATA_TYPE_HTML);
-	
-	/* types for photo blogs */
-	metadata_type_register ("photo", 		METADATA_TYPE_URL);
-
-	/* types for slash */
-	metadata_type_register ("slash",			METADATA_TYPE_HTML);
-	
-	/* type for gravatars */
-	metadata_type_register ("gravatar",		METADATA_TYPE_URL);
-
-	return;
 }

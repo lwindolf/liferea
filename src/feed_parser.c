@@ -29,23 +29,25 @@
 #include "parsers/atom10.h"
 #include "parsers/pie_feed.h"
 
-/* auto detection lookup table */
-static GSList *feedhandlers = NULL;
+static GSList *feedHandlers = NULL;	/**< list of available parser implementations */
 
 struct feed_type {
 	gint id_num;
 	gchar *id_str;
 };
 
-static void
-feed_parser_init (void)
+static GSList *
+feed_parsers_get_list (void)
 {
-	metadata_init ();	// FIXME: doesn't belong here
+	if (feedHandlers)
+		return feedHandlers;
 	
-	feedhandlers = g_slist_append (feedhandlers, rss_init_feed_handler ());
-	feedhandlers = g_slist_append (feedhandlers, cdf_init_feed_handler ());
-	feedhandlers = g_slist_append (feedhandlers, atom10_init_feed_handler ());  /* Must be before pie */
-	feedhandlers = g_slist_append (feedhandlers, pie_init_feed_handler ());
+	feedHandlers = g_slist_append (feedHandlers, rss_init_feed_handler ());
+	feedHandlers = g_slist_append (feedHandlers, cdf_init_feed_handler ());
+	feedHandlers = g_slist_append (feedHandlers, atom10_init_feed_handler ());  /* Must be before pie */
+	feedHandlers = g_slist_append (feedHandlers, pie_init_feed_handler ());
+	
+	return feedHandlers;
 }
 
 /* feed type registration */
@@ -53,7 +55,7 @@ feed_parser_init (void)
 const gchar *
 feed_type_fhp_to_str (feedHandlerPtr fhp)
 {
-	if (fhp == NULL)
+	if (!fhp)
 		return NULL;
 	return fhp->typeStr;
 }
@@ -64,13 +66,10 @@ feed_type_str_to_fhp (const gchar *str)
 	GSList *iter;
 	feedHandlerPtr fhp = NULL;
 	
-	if (str == NULL)
+	if (!str)
 		return NULL;
 
-	if (!feedhandlers)
-		feed_parser_init ();
-	
-	for(iter = feedhandlers; iter != NULL; iter = iter->next) {
+	for(iter = feed_parsers_get_list (); iter != NULL; iter = iter->next) {
 		fhp = (feedHandlerPtr)iter->data;
 		if(!strcmp(str, fhp->typeStr))
 			return fhp;
@@ -198,11 +197,8 @@ feed_parse (feedParserCtxtPtr ctxt)
 		if(!cur)
 			break;
 		
-		if (!feedhandlers)
-			feed_parser_init ();
-		
 		/* determine the syndication format and start parser */
-		GSList *handlerIter = feedhandlers;
+		GSList *handlerIter = feed_parsers_get_list ();
 		while(handlerIter) {
 			feedHandlerPtr handler = (feedHandlerPtr)(handlerIter->data);
 			if(handler && handler->checkFormat && (*(handler->checkFormat))(ctxt->doc, cur)) {
