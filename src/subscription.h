@@ -25,6 +25,14 @@
 #include "node.h"
 #include "update.h"
 
+/** Caching property constants */
+enum cache_limit {
+	/* Values > 0 are used to specify certain limits */
+	CACHE_DISABLE = 0,
+	CACHE_DEFAULT = -1,
+	CACHE_UNLIMITED = -2,
+};
+
 /** Flags used in the request structure */
 enum feed_request_flags {
 	FEED_REQ_RESET_TITLE		= (1<<0),	/**< Feed's title should be reset to default upon update */

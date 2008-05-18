@@ -1,7 +1,7 @@
 /**
- * @file rss_channel.h some tolerant and generic RSS/RDF channel parsing
+ * @file rss_channel.h  some tolerant and generic RSS/RDF channel parsing
  *
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2005-2006 Nathan Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -22,7 +22,7 @@
 #ifndef _RSS_CHANNEL_H
 #define _RSS_CHANNEL_H
 
-#include "feed.h"
+#include "feed_parser.h"
 
 feedHandlerPtr	rss_init_feed_handler(void);
 

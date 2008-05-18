@@ -23,7 +23,8 @@
 
 #include <glib.h>
 #include <libxml/tree.h>
-#include "feed.h"
+
+#include "feed_parser.h"
 
 /* -------------------------------------------------------- */
 /* interface definitions for namespace parsing handler      */

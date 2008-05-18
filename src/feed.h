@@ -32,31 +32,21 @@
  * The feed concept in Liferea comprises several standalone concepts:
  *
  * 1.) A "feed" is an XML document to be parsed
+ *     (-> see feed_parser.h)
  *
  * 2.) A "feed" is a node in the feed list.
  *
  * 3.) A "feed" is a way of updating a subscription.
  *
- * The feed interface provides default methods on all those
- * three concepts that are used per-default but might be
- * overwritten by node source, node type or subscription
- * type specific implementations.
+ * The feed.h interface provides default methods for 2.) and 3.) that 
+ * are used per-default but might be overwritten by node source, node 
+ * type or subscription type specific implementations.
  */
-
-struct feedHandler;
-
-/** Caching property constants */
-enum cache_limit {
-	/* Values > 0 are used to specify certain limits */
-	CACHE_DISABLE = 0,
-	CACHE_DEFAULT = -1,
-	CACHE_UNLIMITED = -2,
-};
 
 /** Common structure to hold all information about a single feed. */
 typedef struct feed {
-	struct feedHandler *fhp;     		/**< Feed handler saved by the ->typeStr attribute. */
-	
+	struct feedHandler *fhp;		/**< Feed format parsing handler. */
+
 	/* feed properties that need to be saved */	// FIXME: move to metadata
 	gchar		*htmlUrl;		/**< URL of HTML version of the feed */
 	gchar		*imageUrl;		/**< URL of the optional feed image */
@@ -79,52 +69,6 @@ typedef struct feed {
 	gboolean	markAsRead;		/**< if TRUE downloaded items are automatically marked as read */
 } *feedPtr;
 
-/** Holds all information used on feed parsing time */
-typedef struct feedParserCtxt {
-	subscriptionPtr	subscription;	/**< the subscription the feed belongs to (optional) */
-	feedPtr		feed;		/**< the feed structure to fill */
-	GList		*items;		/**< the list of new items */
-	struct item	*item;		/**< the item currently parsed (or NULL) */
-	gboolean	recovery;	/**< TRUE if tolerant parsing needed (use only for RSS 0.9x!) */
-
-	GHashTable	*tmpdata;	/**< tmp data hash used during stateful parsing */
-
-	gchar		*title;		/**< resulting feed/channel title */
-
-	gchar		*data;		/**< data buffer to parse */
-	gsize		dataLength;	/**< length of the data buffer */
-
-	xmlDocPtr	doc;		/**< the parsed data buffer */
-	gboolean	failed;		/**< TRUE if parsing failed because feed type could not be detected */
-} *feedParserCtxtPtr;
-
-/* ------------------------------------------------------------ */
-/* feed handler interface					*/
-/* ------------------------------------------------------------ */
-
-/** a function which parses the feed data given with the feed ptr feed */
-typedef void 	(*feedParserFunc)	(feedParserCtxtPtr ctxt, xmlNodePtr cur);
-typedef gboolean (*checkFormatFunc)	(xmlDocPtr doc, xmlNodePtr cur); /**< Returns true if correct format */
-
-typedef struct feedHandler {
-	const gchar	*typeStr;	/**< string representation of the feed type */
-	int		icon;		/**< Icon number used for available nodes without an own favicon */
-	feedParserFunc	feedParser;	/**< feed type parse function */
-	checkFormatFunc	checkFormat;	/**< Parser for the feed type*/
-	gboolean	merge;		/**< TRUE if feed type supports merging */
-	gboolean	noXML;		/**< TRUE if feed type isn't guaranteed to be XML */
-} *feedHandlerPtr;
-
-/* ------------------------------------------------------------ */
-/* feed creation/modification interface				*/
-/* ------------------------------------------------------------ */
-
-/** 
- * Initializes feed parsing handlers. Should be called 
- * only once on program startup.
- */
-void feed_init(void);
-
 /**
  * Create a new feed structure.
  *
@@ -144,23 +88,6 @@ feedPtr feed_new(void);
  */
 xmlDocPtr feed_to_xml(nodePtr node, xmlNodePtr feedNode);
 
-/* feed parsing */
-
-/**
- * Creates a new feed parsing context.
- *
- * @returns a new feed parsing context
- */
-feedParserCtxtPtr feed_create_parser_ctxt(void);
-
-/**
- * Frees the given parser context. Note: it does
- * not free the list of new items!
- *
- * @param ctxt		the feed parsing context
- */
-void feed_free_parser_ctxt(feedParserCtxtPtr ctxt);
-
 /**
  * Returns the feed-specific maximum cache size.
  * If none is set it returns the global default 
@@ -172,16 +99,13 @@ void feed_free_parser_ctxt(feedParserCtxtPtr ctxt);
  */
 guint feed_get_max_item_count(nodePtr node);
 
-/* ------------------------------------------------------------ */
-/* feed property get/set 					*/
-/* ------------------------------------------------------------ */
-
 /**
- * Lookup a feed type string from the feed type number
+ * Returns the HTML URL of the given feed.
+ *
+ * @param feed		the feed
+ *
+ * @returns the HTML URL or NULL
  */
-feedHandlerPtr feed_type_str_to_fhp(const gchar *str);
-const gchar *feed_type_fhp_to_str(feedHandlerPtr fhp);
-
 const gchar * feed_get_html_url(feedPtr feed);
 
 /**
@@ -198,36 +122,17 @@ void feed_set_html_url(feedPtr feed, const gchar *base, const gchar *url);
 const gchar * feed_get_image_url(feedPtr feed);
 void feed_set_image_url(feedPtr feed, const gchar *url);
 
-const gchar * feed_get_lastmodified(feedPtr feed);
-void feed_set_lastmodified(feedPtr feed, const gchar *lastmodified);
-
-const gchar * feed_get_etag(feedPtr feed);
-void feed_set_etag(feedPtr feed, const gchar *etag);
-
-/**
- * General feed source parsing function. Parses the passed feed source
- * and tries to determine the source type. 
- *
- * @param ctxt		feed parsing context
- *
- * @returns FALSE if auto discovery is indicated, 
- *          TRUE if feed type was recognized
- */
-gboolean feed_parse(feedParserCtxtPtr ctxt);
-
-/* implementation of the default subscription type interface */
-
 /**
  * Returns the subscription type implementation for simple feed nodes.
+ * This subscription type is used as the default subscription type.
  */
 subscriptionTypePtr feed_get_subscription_type (void);
-
-/* implementation of the default node type interface */
 
 #define IS_FEED(node) (node->type == feed_get_node_type ())
 
 /**
  * Returns the node type implementation for simple feed nodes.
+ * This node type is the default node type for non-folder nodes.
  */
 nodeTypePtr feed_get_node_type (void);
 

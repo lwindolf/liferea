@@ -1,5 +1,5 @@
 /**
- * @file atom10.c Atom 1.0 Parser
+ * @file atom10.c  Atom 1.0 Parser
  * 
  * Copyright (C) 2005-2006 Nathan Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
@@ -19,18 +19,13 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
-
-#include <sys/time.h>
 #include <string.h>
 
 #include "conf.h"
 #include "common.h"
 #include "debug.h"
 #include "enclosure.h"
-#include "feed.h"
+#include "feed_parser.h"
 #include "feedlist.h"
 #include "ns_admin.h"
 #include "ns_ag.h"

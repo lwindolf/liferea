@@ -1,7 +1,7 @@
 /**
- * @file xml.h XML helper methods for Liferea
+ * @file xml.h  XML helper methods for Liferea
  * 
- * Copyright (C) 2003-2007  Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2008  Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006  Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -26,7 +26,7 @@
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 
-#include "feed.h"
+#include "feed_parser.h"
 
 /**
  * Initialize XML parsing.

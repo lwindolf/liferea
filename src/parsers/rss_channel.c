@@ -1,7 +1,7 @@
 /**
- * @file rss_channel.c some tolerant and generic RSS/RDF channel parsing
+ * @file rss_channel.c  some tolerant and generic RSS/RDF channel parsing
  *
- * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2005-2006 Nathan Conrad <t98502@users.sourceforge.net> 
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -19,18 +19,13 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
-
-#include <sys/time.h>
 #include <string.h>
 #include <stdlib.h>
 
 #include "conf.h"
 #include "common.h"
 #include "rss_channel.h"
-#include "feed.h"
+#include "feed_parser.h"
 #include "feedlist.h"
 #include "metadata.h"
 #include "ns_admin.h"

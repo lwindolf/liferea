@@ -1,5 +1,5 @@
 /**
- * @file feed.c  common feed handling
+ * @file feed.c  feed node and subscription type
  * 
  * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
@@ -35,7 +35,6 @@
 #include "favicon.h"
 #include "feed.h"
 #include "feedlist.h"
-#include "html.h"
 #include "itemlist.h"
 #include "metadata.h"
 #include "node.h"
@@ -43,70 +42,23 @@
 #include "script.h"
 #include "update.h"
 #include "xml.h"
-#include "parsers/cdf_channel.h"
-#include "parsers/rss_channel.h"
-#include "parsers/atom10.h"
-#include "parsers/pie_feed.h"
 #include "ui/ui_auth.h"
 #include "ui/ui_subscription.h"
 #include "ui/ui_mainwindow.h"
 #include "ui/ui_node.h"
 #include "notification/notif_plugin.h"
 
-/* auto detection lookup table */
-static GSList *feedhandlers = NULL;
-
-struct feed_type {
-	gint id_num;
-	gchar *id_str;
-};
-
-/* parser initializing function, only called upon startup */
-void feed_init(void) {
-
-	metadata_init();
-	feedhandlers = g_slist_append(feedhandlers, rss_init_feed_handler());
-	feedhandlers = g_slist_append(feedhandlers, cdf_init_feed_handler());
-	feedhandlers = g_slist_append(feedhandlers, atom10_init_feed_handler());  /* Must be before pie */
-	feedhandlers = g_slist_append(feedhandlers, pie_init_feed_handler());
-}
-
-/* function to create a new feed structure */
-feedPtr feed_new(void) {
+feedPtr
+feed_new (void)
+{
 	feedPtr		feed;
 	
-	feed = g_new0(struct feed, 1);
+	feed = g_new0 (struct feed, 1);
 
 	feed->cacheLimit = CACHE_DEFAULT;
 	feed->valid = TRUE;
 
 	return feed;
-}
-
-/* ------------------------------------------------------------ */
-/* feed type registration					*/
-/* ------------------------------------------------------------ */
-
-const gchar *feed_type_fhp_to_str(feedHandlerPtr fhp) {
-	if (fhp == NULL)
-		return NULL;
-	return fhp->typeStr;
-}
-
-feedHandlerPtr feed_type_str_to_fhp(const gchar *str) {
-	GSList *iter;
-	feedHandlerPtr fhp = NULL;
-	
-	if(str == NULL)
-		return NULL;
-
-	for(iter = feedhandlers; iter != NULL; iter = iter->next) {
-		fhp = (feedHandlerPtr)iter->data;
-		if(!strcmp(str, fhp->typeStr))
-			return fhp;
-	}
-
-	return NULL;
 }
 
 static void
@@ -208,7 +160,7 @@ feed_export (nodePtr node, xmlNodePtr xml, gboolean trusted)
 	if (node->subscription)
 		subscription_export (node->subscription, xml, trusted);
 
-	if(trusted) {
+	if (trusted) {
 		if (feed->cacheLimit >= 0)
 			cacheLimit = g_strdup_printf ("%d", feed->cacheLimit);
 		if (feed->cacheLimit == CACHE_UNLIMITED)
@@ -241,173 +193,6 @@ feed_export (nodePtr node, xmlNodePtr xml, gboolean trusted)
 			subscription_get_update_interval (node->subscription),
 		        (cacheLimit != NULL ? cacheLimit : ""));
 	g_free (cacheLimit);
-}
-
-feedParserCtxtPtr feed_create_parser_ctxt(void) {
-	feedParserCtxtPtr ctxt;
-
-	ctxt = g_new0(struct feedParserCtxt, 1);
-	ctxt->tmpdata = g_hash_table_new_full(g_str_hash, g_str_equal, NULL, g_free);
-	return ctxt;
-}
-
-void feed_free_parser_ctxt(feedParserCtxtPtr ctxt) {
-
-	if(NULL != ctxt) {
-		/* Don't free the itemset! */
-		g_hash_table_destroy(ctxt->tmpdata);
-		g_free(ctxt);
-	}
-}
-
-/**
- * This function tries to find a feed link for a given HTTP URI. It
- * tries to download it. If it finds a valid feed source it parses
- * this source instead into the given feed parsing context. It also
- * replaces the HTTP URI with the found feed source.
- *
- * @param ctxt		feed parsing context
- */
-static void
-feed_auto_discover (feedParserCtxtPtr ctxt)
-{
-	gchar	*source;
-	
-	if (ctxt->feed->parseErrors)
-		g_string_truncate (ctxt->feed->parseErrors, 0);
-	else
-		ctxt->feed->parseErrors = g_string_new(NULL);
-		
-	debug1 (DEBUG_UPDATE, "Starting feed auto discovery (%s)", subscription_get_source (ctxt->subscription));
-	if ((source = html_auto_discover_feed (ctxt->data, subscription_get_source (ctxt->subscription)))) {
-		/* now download the first feed link found */
-		updateResultPtr result;
-		updateRequestPtr request = update_request_new ();
-		debug1 (DEBUG_UPDATE, "feed link found: %s", source);
-		request->source = g_strdup (source);
-		request->options = update_options_copy (ctxt->subscription->updateOptions);
-		// FIXME: do callback implementation using update_execute_request()
-		result = update_execute_request_sync (ctxt->subscription, request, 0);
-		if (result->data) {
-			debug0 (DEBUG_UPDATE, "feed link download successful!");
-			subscription_set_source (ctxt->subscription, source);
-			ctxt->data = result->data;
-			ctxt->dataLength = result->size;
-			ctxt->failed = FALSE;
-			feed_parse (ctxt);
-		} else {
-			/* if the download fails we do nothing except
-			   unsetting the handler so the original source
-			   will get a "unsupported type" error */
-			debug0 (DEBUG_UPDATE, "feed link download failed!");
-		}
-		g_free (source);
-		update_result_free (result);
-	} else {
-		debug0 (DEBUG_UPDATE, "no feed link found!");
-		g_string_append (ctxt->feed->parseErrors, _("The URL you want Liferea to subscribe to points to a webpage and the auto discovery found no feeds on this page. Maybe this webpage just does not support feed auto discovery."));
-	}
-}
-
-/**
- * General feed source parsing function. Parses the passed feed source
- * and tries to determine the source type. 
- *
- * @param ctxt		feed parsing context
- *
- * @returns FALSE if auto discovery is indicated, 
- *          TRUE if feed type was recognized and parsing was successful
- */
-gboolean feed_parse(feedParserCtxtPtr ctxt) {
-	xmlNodePtr	cur;
-	gboolean	success = FALSE;
-
-	debug_enter("feed_parse");
-
-	g_assert(NULL == ctxt->items);
-	
-	ctxt->failed = TRUE;	/* reset on success ... */
-
-	if(ctxt->feed->parseErrors)
-		g_string_truncate(ctxt->feed->parseErrors, 0);
-	else
-		ctxt->feed->parseErrors = g_string_new(NULL);
-
-	/* try to parse buffer with XML and to create a DOM tree */	
-	do {
-		if(NULL == xml_parse_feed (ctxt)) {
-			g_string_append_printf (ctxt->feed->parseErrors, _("XML error while reading feed! Feed \"%s\" could not be loaded!"), subscription_get_source (ctxt->subscription));
-			break;
-		}
-		
-		if(NULL == (cur = xmlDocGetRootElement(ctxt->doc))) {
-			g_string_append(ctxt->feed->parseErrors, _("Empty document!"));
-			break;
-		}
-		
-		while(cur && xmlIsBlankNode(cur)) {
-			cur = cur->next;
-		}
-		
-		if(!cur->name) {
-			g_string_append(ctxt->feed->parseErrors, _("Invalid XML!"));
-			break;
-		}
-		
-		if(!cur)
-			break;
-			
-		/* determine the syndication format and start parser */
-		GSList *handlerIter = feedhandlers;
-		while(handlerIter) {
-			feedHandlerPtr handler = (feedHandlerPtr)(handlerIter->data);
-			if(handler && handler->checkFormat && (*(handler->checkFormat))(ctxt->doc, cur)) {
-				/* free old temp. parsing data, don't free right after parsing because
-				   it can be used until the last feed request is finished, move me 
-				   to the place where the last request in list otherRequests is 
-				   finished :-) */
-				g_hash_table_destroy(ctxt->tmpdata);
-				ctxt->tmpdata = g_hash_table_new_full(g_str_hash, g_str_equal, NULL, g_free);
-				
-				/* we always drop old metadata */
-				metadata_list_free(ctxt->subscription->metadata);
-				ctxt->subscription->metadata = NULL;
-				ctxt->failed = FALSE;
-
-				ctxt->feed->fhp = handler;
-				(*(handler->feedParser))(ctxt, cur);		/* parse it */
-
-				break;
-			}
-			handlerIter = handlerIter->next;
-		}
-	} while(0);
-	
-	/* if we don't have a feed type here we don't have a feed source yet or
-	   the feed source is no more valid and we need to start auto discovery */
-	if(!ctxt->feed->fhp) {
-		/* test if we have a HTML page */
-		if((strstr(ctxt->data, "<html>") || strstr(ctxt->data, "<HTML>") ||
-		    strstr(ctxt->data, "<html ") || strstr(ctxt->data, "<HTML "))) {
-			debug0(DEBUG_UPDATE, "HTML document detected!");
-			g_string_append(ctxt->feed->parseErrors, _("Source points to HTML document."));
-		} else {
-			debug0(DEBUG_UPDATE, "neither a known feed type nor a HTML document!");
-			g_string_append(ctxt->feed->parseErrors, _("Could not determine the feed type."));
-		}
-	} else {
-		debug1(DEBUG_UPDATE, "discovered feed format: %s", feed_type_fhp_to_str(ctxt->feed->fhp));
-		success = TRUE;
-	}
-	
-	if(ctxt->doc) {
-		xmlFreeDoc(ctxt->doc);
-		ctxt->doc = NULL;
-	}
-		
-	debug_exit("feed_parse");
-	
-	return success;
 }
 
 static void
@@ -501,59 +286,45 @@ guint feed_get_max_item_count(nodePtr node) {
 	}
 }
 
+/* feed attributes encapsulation */
 
-/* ---------------------------------------------------------------------------- */
-/* feed attributes encapsulation						*/
-/* ---------------------------------------------------------------------------- */
+const gchar * feed_get_html_url (feedPtr feed) { return feed->htmlUrl; };
 
-feedHandlerPtr feed_get_fhp(feedPtr feed) {
-	return feed->fhp;
-}
-
-const gchar * feed_get_html_url(feedPtr feed) { return feed->htmlUrl; };
-void feed_set_html_url(feedPtr feed, const gchar *base, const gchar *htmlUrl) {
-	g_free(feed->htmlUrl);
+void
+feed_set_html_url (feedPtr feed, const gchar *base, const gchar *htmlUrl)
+{
+	g_free (feed->htmlUrl);
 	feed->htmlUrl = NULL;
 
-	if(htmlUrl) {
-		if(strstr(htmlUrl, "://")) {
+	if (htmlUrl) {
+		if (strstr (htmlUrl, "://")) {
 			/* absolute URI can be used directly */
-			feed->htmlUrl = g_strchomp(g_strdup(htmlUrl));
+			feed->htmlUrl = g_strchomp (g_strdup (htmlUrl));
 		} else {
 			/* relative URI part needs to be expanded */
 			gchar *tmp, *source;
 			
-			source = g_strdup(base);
-			tmp = strrchr(source, '/');
-			if(tmp)
+			source = g_strdup (base);
+			tmp = strrchr (source, '/');
+			if (tmp)
 				*(tmp+1) = '\0';
 
-			feed->htmlUrl = common_build_url(htmlUrl, source);
-			g_free(source);
+			feed->htmlUrl = common_build_url (htmlUrl, source);
+			g_free (source);
 		}
 	}
 }
 
-const gchar * feed_get_image_url(feedPtr feed) { return feed->imageUrl; };
-void feed_set_image_url(feedPtr feed, const gchar *imageUrl) {
+const gchar * feed_get_image_url (feedPtr feed) { return feed->imageUrl; };
 
-	g_free(feed->imageUrl);
-	if(imageUrl != NULL)
-		feed->imageUrl = g_strchomp(g_strdup(imageUrl));
+void
+feed_set_image_url (feedPtr feed, const gchar *imageUrl)
+{
+	g_free (feed->imageUrl);
+	if (imageUrl)
+		feed->imageUrl = g_strchomp (g_strdup (imageUrl));
 	else
 		feed->imageUrl = NULL;
-}
-
-/* method to free a feed structure */
-static void
-feed_free (nodePtr node) {
-	feedPtr	feed = (feedPtr)node->data;
-
-	if(feed->parseErrors)
-		g_string_free(feed->parseErrors, TRUE);
-	g_free(feed->htmlUrl);
-	g_free(feed->imageUrl);
-	g_free(feed);
 }
 
 /* implementation of subscription type interface */
@@ -713,6 +484,18 @@ static void
 feed_properties (nodePtr node)
 {
 	ui_subscription_prop_dialog_new (node->subscription);
+}
+
+static void
+feed_free (nodePtr node)
+{
+	feedPtr	feed = (feedPtr)node->data;
+
+	if (feed->parseErrors)
+		g_string_free(feed->parseErrors, TRUE);
+	g_free (feed->htmlUrl);
+	g_free (feed->imageUrl);
+	g_free (feed);
 }
 
 subscriptionTypePtr

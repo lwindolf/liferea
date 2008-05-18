@@ -1,7 +1,7 @@
 /**
  * @file cdf_channel.c CDF channel parsing
  *
- * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,10 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
-
 /* CDF is evil. There is only one outdated specification of it and its
    example is not even well-formed XML! Also, it seems to rely on
    things being case insensitive. Some people seem to make the tags
@@ -32,7 +28,6 @@
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 #include "common.h"
-#include "feed.h"
 #include "feedlist.h"
 #include "cdf_channel.h"
 #include "cdf_item.h"

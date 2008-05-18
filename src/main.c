@@ -41,7 +41,6 @@
 #include "db.h"
 #include "dbus.h"
 #include "debug.h"
-#include "feed.h"
 #include "feedlist.h"
 #include "script.h"
 #include "social.h"
@@ -260,7 +259,6 @@ int main(int argc, char *argv[]) {
 	db_init (TRUE);			/* initialize sqlite */
 	xml_init ();			/* initialize libxml2 */
 	plugin_mgmt_init ();		/* get list of plugins and initialize them */
-	feed_init ();			/* register feed types */
 	conf_load ();			/* load global feed settings */
 	script_init ();			/* setup scripting if supported */
 	social_init ();			/* initialized social bookmarking */

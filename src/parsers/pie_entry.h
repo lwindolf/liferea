@@ -1,7 +1,7 @@
 /**
- * @file pie_entry.h Atom 0.3 entry tag parsing 
+ * @file pie_entry.h  Atom 0.3 entry tag parsing 
  *
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,10 +21,8 @@
 #ifndef _PIE_ENTRY_H
 #define _PIE_ENTRY_H
 
-#include <libxml/tree.h>
-
 #include "item.h"
-#include "feed.h"
+#include "feed_parser.h"
 
 itemPtr parseEntry(feedParserCtxtPtr ctxt, xmlNodePtr cur);
 
