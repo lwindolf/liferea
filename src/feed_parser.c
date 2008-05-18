@@ -50,8 +50,6 @@ feed_parsers_get_list (void)
 	return feedHandlers;
 }
 
-/* feed type registration */
-
 const gchar *
 feed_type_fhp_to_str (feedHandlerPtr fhp)
 {
