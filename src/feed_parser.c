@@ -101,11 +101,9 @@ feed_free_parser_ctxt (feedParserCtxtPtr ctxt)
  * tries to download it. If it finds a valid feed source it parses
  * this source instead into the given feed parsing context. It also
  * replaces the HTTP URI with the found feed source.
- *
- * @param ctxt		feed parsing context
  */
 void
-feed_auto_discover (feedParserCtxtPtr ctxt)
+feed_parser_auto_discover (feedParserCtxtPtr ctxt)
 {
 	gchar	*source;
 	
@@ -115,32 +113,16 @@ feed_auto_discover (feedParserCtxtPtr ctxt)
 		ctxt->feed->parseErrors = g_string_new(NULL);
 		
 	debug1 (DEBUG_UPDATE, "Starting feed auto discovery (%s)", subscription_get_source (ctxt->subscription));
+	
 	if ((source = html_auto_discover_feed (ctxt->data, subscription_get_source (ctxt->subscription)))) {
-		/* now download the first feed link found */
-		updateResultPtr result;
-		updateRequestPtr request = update_request_new ();
-		debug1 (DEBUG_UPDATE, "feed link found: %s", source);
-		request->source = g_strdup (source);
-		request->options = update_options_copy (ctxt->subscription->updateOptions);
-		// FIXME: do callback implementation using update_execute_request()
-		result = update_execute_request_sync (ctxt->subscription, request, 0);
-		if (result->data) {
-			debug0 (DEBUG_UPDATE, "feed link download successful!");
-			subscription_set_source (ctxt->subscription, source);
-			ctxt->data = result->data;
-			ctxt->dataLength = result->size;
-			ctxt->failed = FALSE;
-			feed_parse (ctxt);
-		} else {
-			/* if the download fails we do nothing except
-			   unsetting the handler so the original source
-			   will get a "unsupported type" error */
-			debug0 (DEBUG_UPDATE, "feed link download failed!");
-		}
+
+		debug1 (DEBUG_UPDATE, "Discovered link: %s", source);
+		ctxt->failed = FALSE;
+		subscription_set_source (ctxt->subscription, source);
+		subscription_update (ctxt->subscription, FEED_REQ_RESET_TITLE | FEED_REQ_RESET_UPDATE_INT);
 		g_free (source);
-		update_result_free (result);
 	} else {
-		debug0 (DEBUG_UPDATE, "no feed link found!");
+		debug0 (DEBUG_UPDATE, "No feed link found!");
 		g_string_append (ctxt->feed->parseErrors, _("The URL you want Liferea to subscribe to points to a webpage and the auto discovery found no feeds on this page. Maybe this webpage just does not support feed auto discovery."));
 	}
 }

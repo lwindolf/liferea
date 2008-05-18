@@ -468,23 +468,6 @@ update_job_run (updateJobPtr job)
 	}
 }
 
-updateResultPtr
-update_execute_request_sync (gpointer owner, 
-                             updateRequestPtr request, 
-			     guint flags)
-{
-	updateResultPtr	result;
-	updateJobPtr	job;
-	
-	job = update_job_new (owner, request, NULL, NULL, flags);
-	update_job_run (job);
-	result = job->result;
-	job->result = NULL;
-	update_job_free (job);
-			
-	return result;
-}
-
 static gboolean
 update_dequeue_job (gpointer user_data)
 {

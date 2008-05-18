@@ -4,6 +4,7 @@
 
 	* Fixes crash of context menu when used with
 	  empty feed list introduced with 1.5.3
+	* Fixes memory corruption during failed feed auto discovery.
 
 
 2008-05-14  Lars Lindner  <lars.lindner@gmail.com>

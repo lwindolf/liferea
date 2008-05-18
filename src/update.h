@@ -241,16 +241,11 @@ void update_result_free (updateResultPtr result);
  *
  * @returns the new update job
  */
-struct updateJob * update_execute_request (gpointer owner,
-                                           updateRequestPtr request,
-			                   update_result_cb callback,
-			                   gpointer user_data,
-			                   updateFlags flags);
-
-// FIXME: remove me
-updateResultPtr update_execute_request_sync (gpointer owner, 
-                                             updateRequestPtr request, 
-			                     guint flags);
+updateJobPtr update_execute_request (gpointer owner,
+                                     updateRequestPtr request,
+                                     update_result_cb callback,
+                                     gpointer user_data,
+                                     updateFlags flags);
 
 /* Update job handling */
 
@@ -278,13 +273,13 @@ void update_job_cancel_by_owner (gpointer owner);
  *
  * @return TRUE if successfully cancelled the job
  */
-gboolean update_job_cancel_retry (struct updateJob *job);
+gboolean update_job_cancel_retry (updateJobPtr job);
 
 /**
  * Method to query the update state of currently processed jobs.
  *
  * @returns update job state (see enum request_state)
  */
-gint update_job_get_state (struct updateJob *job);
+gint update_job_get_state (updateJobPtr job);
 
 #endif

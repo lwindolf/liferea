@@ -339,10 +339,6 @@ feed_process_update_result (subscriptionPtr subscription, const struct updateRes
 
 	debug_enter ("feed_process_update_result");
 	
-	/* no matter what the result of the update is we need to save update
-	   status and the last update time to cache */
-	node->available = FALSE;
-	
 	if (result->data) {
 		/* we save all properties that should not be overwritten in all cases */
 		old_source = g_strdup (subscription_get_source (subscription));	// FIXME: stupid concept?
@@ -359,14 +355,18 @@ feed_process_update_result (subscriptionPtr subscription, const struct updateRes
 			/* if it doesn't work and it is a new subscription
 			   start feed auto discovery */
 			if (flags & FEED_REQ_AUTO_DISCOVER)
-				feed_auto_discover (ctxt);
+				feed_parser_auto_discover (ctxt);
 		}
 		
 		if (ctxt->failed) {
+			node->available = FALSE;
+
 			g_string_prepend (feed->parseErrors, _("<p>Could not detect the type of this feed! Please check if the source really points to a resource provided in one of the supported syndication formats!</p>"
 			                                       "XML Parser Output:<br /><div class='xmlparseroutput'>"));
 			g_string_append (feed->parseErrors, "</div>");
-		} else {
+		}
+		
+		if (!ctxt->failed && !(flags & FEED_REQ_AUTO_DISCOVER)) {
 			itemSetPtr	itemSet;
 			guint		newCount;
 			
@@ -410,7 +410,9 @@ feed_process_update_result (subscriptionPtr subscription, const struct updateRes
 				
 		g_free (old_source);
 		feed_free_parser_ctxt (ctxt);
-	} else {	
+	} else {
+		node->available = FALSE;
+		
 		ui_mainwindow_set_status_bar (_("\"%s\" is not available"), node_get_title (node));
 	}
 

@@ -125,6 +125,6 @@ gboolean feed_parse (feedParserCtxtPtr ctxt);
  *
  * @param ctxt		feed parsing context
  */
-void feed_auto_discover (feedParserCtxtPtr ctxt);
+void feed_parser_auto_discover (feedParserCtxtPtr ctxt);
 
 #endif
