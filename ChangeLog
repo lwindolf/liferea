@@ -6,6 +6,7 @@
 	  empty feed list introduced with 1.5.3
 	* Fixes memory corruption during failed feed auto discovery.
 	* Fixes some memory leaks (Arnold Noronha)
+	* Fixes CSS check error handling (Arnold Noronha)
 
 
 2008-05-14  Lars Lindner  <lars.lindner@gmail.com>

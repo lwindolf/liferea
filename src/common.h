@@ -250,7 +250,7 @@ char * common_strcasestr(const char *phaystack, const char *pneedle);
  *
  * @param *file		the file name
  *
- * @returns modification timestamp
+ * @returns modification timestamp (or 0 if file doesn't exist)
  */
 time_t common_get_mod_time(const gchar *file);
 

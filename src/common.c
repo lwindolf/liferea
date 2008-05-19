@@ -795,14 +795,17 @@ char *common_strcasestr (const char *phaystack, const char *pneedle)
 	return 0;
 }
 
-/* Getting file modtime */
 time_t
 common_get_mod_time (const gchar *file)
 {
 	struct stat	attribute;
 	struct tm	tm;
-	
-	stat (file, &attribute);
-	gmtime_r (&(attribute.st_mtime), &tm);
-	return mktime (&tm);
+
+	if (stat (file, &attribute) == 0) {
+		gmtime_r (&(attribute.st_mtime), &tm);
+		return mktime (&tm);
+	} else {
+		/* this is no error as this method is used to check for files */
+		return 0;
+	}
 }
