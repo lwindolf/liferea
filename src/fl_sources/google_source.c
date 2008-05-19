@@ -436,6 +436,7 @@ google_source_item_retrieve_status (xmlNodePtr entry, gpointer userdata)
 			if (g_str_equal (label, "read")) {
 				debug1 (DEBUG_UPDATE, "%s will be marked as read\n", id);
 				read = TRUE;
+				xmlFree (label);
 				break;
 			}
 			xmlFree (label);

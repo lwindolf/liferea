@@ -68,6 +68,8 @@ google_source_edit_export (readerPtr reader)
 	xmlTextWriterPtr writer;
 	gchar            *file = google_source_edit_get_cachefile(reader);
 	writer = xmlNewTextWriterFilename(file, 0);
+	g_free(file) ;
+	file = NULL ;
 	if ( writer == NULL ) {
 		g_warning("Could not create edit cache file\n");
 		g_assert(FALSE);
@@ -122,8 +124,10 @@ google_source_edit_import(readerPtr reader)
 	gchar* file = google_source_edit_get_cachefile(reader);
 
 	xmlDocPtr doc = xmlReadFile(file, NULL, 0) ;
-	if ( doc == NULL ) 
+	if ( doc == NULL ) {
+		g_free(file);
 		return ; 
+	}
 
 	xmlNodePtr root = xmlDocGetRootElement(doc);
 	
