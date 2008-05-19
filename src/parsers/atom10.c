@@ -300,8 +300,10 @@ atom10_parse_link (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10ParserSt
 					length = atol (lengthStr);
 				g_free (lengthStr);
 				
-				ctxt->item->metadata = metadata_list_append (ctxt->item->metadata, "enclosure", enclosure_values_to_string(url, type, length, FALSE /* not yet downloaded */));
+				gchar *encStr = enclosure_values_to_string (url, type, length, FALSE /* not yet downloaded */);
+				ctxt->item->metadata = metadata_list_append (ctxt->item->metadata, "enclosure", encStr);
 				ctxt->item->hasEnclosure = TRUE;
+				g_free (encStr);
 			}
 		} else if (g_str_equal (relation, "related") || g_str_equal (relation, "via")) {	
 			if (ctxt->item)
