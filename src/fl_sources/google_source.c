@@ -486,8 +486,10 @@ google_source_xpath_foreach_match(gchar* expr, xmlXPathContextPtr xpathCtxt, xpa
 	
 	if (xpathObj && xpathObj->nodesetval && xpathObj->nodesetval->nodeMax) {
 		int	i;
-		for (i = 0; i < xpathObj->nodesetval->nodeNr; i++)
+		for (i = 0; i < xpathObj->nodesetval->nodeNr; i++) {
 			(*func) (xpathObj->nodesetval->nodeTab[i], user_data);
+			xpathObj->nodesetval->nodeTab[i] = NULL ;
+		}
 	}
 	
 	if (xpathObj)
