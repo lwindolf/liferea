@@ -105,10 +105,9 @@ google_source_migrate_node(nodePtr node, gpointer userdata)
 		itemPtr item = item_load (GPOINTER_TO_UINT (iter->data));
 		if (item && item->sourceId) {
 			if (!g_str_has_prefix(item->sourceId, "tag:google.com")) {
-				debug1(DEBUG_UPDATE, "Node with sourceId [%s] will be deleted.", item->sourceId);
+				debug1(DEBUG_UPDATE, "Item with sourceId [%s] will be deleted.", item->sourceId);
 				db_item_remove(GPOINTER_TO_UINT(iter->data));
-			} else
-				debug1(DEBUG_UPDATE, "Node with sourceId [%s] will not be deleted.", item->sourceId) ;
+			} 
 		}
 		if (item) item_unload (item) ;
 	}
