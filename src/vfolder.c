@@ -74,7 +74,8 @@ vfolder_import_rules (xmlNodePtr cur,
 	} else {
 		vfolder->anyMatch = TRUE;
 	}
-	
+	xmlFree (matchType);
+
 	/* process any children */
 	cur = cur->xmlChildrenNode;
 	while (cur) {
