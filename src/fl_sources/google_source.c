@@ -49,7 +49,7 @@
  * wants to set and item as read/unread within this file, it should not do 
  * any network calls.
  */
-static gboolean __mark_read_hack = FALSE ;
+static gboolean googleReaderBlockEditHack = FALSE ;
 static struct subscriptionType googleReaderFeedSubscriptionType;
 static struct subscriptionType googleReaderOpmlSubscriptionType;
 
@@ -159,7 +159,7 @@ google_source_item_mark_read (nodePtr node, itemPtr item,
 	 * may call item_state_set_read without any network calls being
 	 * made. @see google_source_edit_action_cb
 	 */
-	if (__mark_read_hack)
+	if (googleReaderBlockEditHack)
 		return;
 	nodePtr root = google_source_get_root_from_node(node);
 	google_source_edit_mark_read((readerPtr)root->data, 
@@ -472,9 +472,9 @@ google_source_item_retrieve_status (xmlNodePtr entry, gpointer userdata)
 		if (item && item->sourceId) {
 			if (g_str_equal (item->sourceId, id) && item->readStatus != read && !google_source_edit_is_in_queue(reader, id)) {
 				
-				__mark_read_hack = TRUE;
+				googleReaderBlockEditHack = TRUE;
 				item_state_set_read (item, read);
-				__mark_read_hack = FALSE;
+				googleReaderBlockEditHack = FALSE;
 
 				item_unload (item);
 				goto cleanup;
@@ -688,7 +688,9 @@ google_source_get_feedlist (nodePtr node)
 void 
 google_source_remove (nodePtr node)
 { 
+	googleReaderBlockEditHack = TRUE ; 
 	opml_source_remove (node);
+	googleReaderBlockEditHack = FALSE ;
 }
 
 
@@ -717,6 +719,8 @@ void
 google_source_remove_node(nodePtr node, nodePtr child) 
 { 
 	if (child == node || !child->subscription || !child->subscription->source ) return ; 
+
+	if (googleReaderBlockEditHack) return ;
 	google_source_edit_remove_subscription(google_source_get_root_from_node(node)->data, child->subscription->source); 
 }
 
