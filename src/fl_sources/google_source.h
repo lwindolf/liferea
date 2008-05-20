@@ -25,6 +25,7 @@
 
 
 typedef struct reader {
+	int             id; /**< A unique identifier for this reader */
 	nodePtr		root;	/**< the root node in the feed list */
 	gchar		*sid;	/**< session id */
 	GTimeVal	*lastSubscriptionListUpdate;
@@ -55,5 +56,11 @@ enum googleSourceUpdateFlags {
  */
 nodeSourceTypePtr google_source_get_type(void);
 
-
+/**
+ * Return the Google Source reader structure from the readerId
+ *
+ * @param  readerId the unique reader id
+ * @return a pointer to the reader structure, or NULL if not found
+ */
+readerPtr google_source_reader_from_id(int readerId) ;
 #endif

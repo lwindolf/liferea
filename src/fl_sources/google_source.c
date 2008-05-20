@@ -53,17 +53,38 @@ static gboolean __mark_read_hack = FALSE ;
 static struct subscriptionType googleReaderFeedSubscriptionType;
 static struct subscriptionType googleReaderOpmlSubscriptionType;
 
+static int     readerIdCounter = 0 ;
+static GSList  *readerList ;
+ 
+
 readerPtr google_source_reader_new(nodePtr node) 
 {
 	readerPtr reader = g_new0(struct reader, 1) ;
 	reader->root = node; 
 	reader->editQueue = g_queue_new(); 
 	reader->loginState = READER_STATE_NONE; 
+	reader->id = ++readerIdCounter;
+	readerList = g_slist_prepend(readerList, reader);
 	return reader;
+}
+
+readerPtr google_source_reader_from_id(int readerId) 
+{
+	GSList* cur = readerList ; 
+	for( ; cur ; cur = g_slist_next(cur) ) {
+		readerPtr reader = (readerPtr) cur->data ;
+		if ( reader->id == readerId ) return reader; 
+	}
 }
 
 void google_source_reader_free(readerPtr reader) 
 {
+	if (!reader) return ;
+
+	GSList* pointer = g_slist_find(readerList, reader); 
+	g_assert(pointer);
+	readerList = g_slist_delete_link(readerList, pointer) ;
+
 	g_queue_free(reader->editQueue) ;
 	g_free(reader);
 }

@@ -16,7 +16,7 @@
 #include "xml.h"
 
 typedef struct editCtxt { 
-	readerPtr reader ;
+	int     readerId ;
 	editPtr edit; 
 } *editCtxtPtr; 
 
@@ -39,7 +39,7 @@ editCtxtPtr
 google_source_edit_context_new(readerPtr reader, editPtr edit)
 {
 	editCtxtPtr ctxt = g_new0(struct editCtxt, 1);
-	ctxt->reader = reader;
+	ctxt->readerId = reader->id;
 	ctxt->edit = edit;
 	return ctxt ;
 }
@@ -146,21 +146,28 @@ google_source_edit_action_complete(
 	updateFlags flags) 
 { 
 	editCtxtPtr editCtxt = (editCtxtPtr) userdata ; 
-	readerPtr   reader = editCtxt->reader;
+	readerPtr   reader = google_source_reader_from_id(editCtxt->readerId);
 	editPtr     edit   = editCtxt->edit ;
+	
+	g_free(editCtxt);
 
+	if (!reader) {
+		google_source_edit_free(edit);
+		return ; /* probably got deleted before this callback */
+	}
 	if ( result->data == NULL || !g_str_equal(result->data, "OK")) {
 		if ( edit->callback ) 
 			(*edit->callback)(reader, edit, FALSE);
 		debug1(DEBUG_UPDATE, "The edit action failed with result: %s\n",
 		       result->data);
+		google_source_edit_free(edit);
+		return ; /** @todo start a timer for next processing */
 	}
 	
 	if ( edit->callback )
 		edit->callback(reader, edit, TRUE);
 
 	google_source_edit_free(edit) ;
-	g_free(editCtxt);
 
 	/* process anything else waiting on the edit queue */
 	google_source_edit_process (reader);
@@ -234,10 +241,10 @@ google_source_edit_token_cb (const struct updateResult * const result, gpointer 
 		return;
 	}
 
-	readerPtr reader = (readerPtr) userdata; 
+	readerPtr reader = google_source_reader_from_id(GPOINTER_TO_INT(userdata)); 
 	const gchar* token = result->data; 
 
-	if (g_queue_is_empty (reader->editQueue))
+	if (!reader || g_queue_is_empty (reader->editQueue))
 		return;
 
 	editPtr edit = g_queue_peek_head (reader->editQueue);
@@ -281,7 +288,7 @@ google_source_edit_process (readerPtr reader)
 	update_state_set_cookies (request->updateState, reader->sid);
 
 	update_execute_request (reader, request, google_source_edit_token_cb, 
-	                        reader, 0);
+	                        (gpointer) (reader->id), 0);
 }
 
 void
