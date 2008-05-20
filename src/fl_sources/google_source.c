@@ -560,7 +560,8 @@ google_feed_subscription_process_update_result (subscriptionPtr subscription,
 		feed_get_subscription_type()->process_update_result(subscription, result, flags);
 		return ; 
 	}
-
+	
+	debug_start_measurement(DEBUG_UPDATE);
 	xmlDocPtr doc = xml_parse (result->data, result->size, FALSE, NULL);
 	if (doc) {		
 		xmlNodePtr root = xmlDocGetRootElement (doc);
@@ -581,6 +582,7 @@ google_feed_subscription_process_update_result (subscriptionPtr subscription,
 		debug0 (DEBUG_UPDATE, "google_feed_subscription_process_update_result(): Couldn't parse XML!");
 		g_warning ("google_feed_subscription_process_update_result(): Couldn't parse XML!");
 	}
+	debug_end_measurement(DEBUG_UPDATE, "time taken to update statuses");
 }
 
 static gboolean
@@ -714,7 +716,7 @@ google_source_add_subscription(nodePtr node, nodePtr parent, subscriptionPtr sub
 void
 google_source_remove_node(nodePtr node, nodePtr child) 
 { 
-	if (!child->subscription || !child->subscription->source ) return ; 
+	if (child == node || !child->subscription || !child->subscription->source ) return ; 
 	google_source_edit_remove_subscription(google_source_get_root_from_node(node)->data, child->subscription->source); 
 }
 
