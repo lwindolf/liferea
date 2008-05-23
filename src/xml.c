@@ -237,27 +237,54 @@ xhtml_is_well_formed (const gchar *data)
 	return result;
 }
 
+static GSList *strippers = NULL;
+
+static void
+xhtml_stripper_add (const gchar *pattern)
+{
+	GError *err = NULL;
+	GRegex *expr;
+	
+	expr = g_regex_new (pattern, G_REGEX_CASELESS | G_REGEX_DOTALL | G_REGEX_OPTIMIZE, 0, &err);
+	if (err) {
+		g_warning ("xhtml_strip_setup: %s\n", err->message);
+		g_error_free (err);
+	}
+	strippers = g_slist_append (strippers, expr);
+}
+
 gchar *
 xhtml_strip_dhtml (const gchar *html)
 {
-	gchar *tmp;
+	GSList	*iter;
+	gchar	*result;
 
-	// FIXME: move to XSLT stylesheet that post processes
-	// generated XHTML. The solution below might break harmless
-	// escaped HTML.
+	if (!strippers) {
+		xhtml_stripper_add ("\\s+onload='[^']+'");
+		xhtml_stripper_add ("\\s+onload=\"[^\"]+\"");
+		xhtml_stripper_add ("<\\s*script\\s*>.*</\\s*script\\s*>");
+		xhtml_stripper_add ("<\\s*meta\\s*>.*</\\s*meta\\s*>");
+		xhtml_stripper_add ("<\\s*iframe[^>]*\\s*>.*</\\s*iframe\\s*>");
+	}
 	
 	/* remove some nasty DHTML stuff from the given HTML content */
-	tmp = g_strdup (html);
-	tmp = common_strreplace (tmp, " onload=", " no_onload=");
-	tmp = common_strreplace (tmp, " onLoad=", " no_onLoad=");
-	tmp = common_strreplace (tmp, "script>", "no_script>");		
-	tmp = common_strreplace (tmp, "<script ", "<no_script ");
-	tmp = common_strreplace (tmp, "<meta ", "<no_meta ");
-	tmp = common_strreplace (tmp, "/meta>", "/no_meta>");
-	tmp = common_strreplace (tmp, "<iframe ", "<no_iframe ");
-	tmp = common_strreplace (tmp, "/iframe>", "/no_iframe>");
-	
-	return tmp;
+	result = g_strdup (html);
+	iter = strippers;
+	while (iter) {
+		GError *err = NULL;
+		GRegex *expr = (GRegex *)iter->data;
+		gchar *tmp = result;
+		result = g_regex_replace (expr, tmp, -1, 0, "", 0, &err);
+		if (err) {
+			g_warning ("xhtml_strip_dhtml: %s\n", err->message);
+			g_error_free (err);
+			err = NULL;
+		}
+		g_free (tmp);
+		iter = g_slist_next (iter);
+	}
+
+	return result;
 }
 
 typedef struct {

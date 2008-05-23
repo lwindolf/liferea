@@ -7,6 +7,8 @@
 	* Fixes memory corruption during failed feed auto discovery.
 	* Fixes some memory leaks (Arnold Noronha)
 	* Fixes CSS check error handling (Arnold Noronha)
+	* Fixes Debian #474736: Launches <iframe> links in titles.
+	  (reported by Eric Cooper)
 
 
 2008-05-14  Lars Lindner  <lars.lindner@gmail.com>
