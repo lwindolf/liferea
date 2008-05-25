@@ -9,6 +9,8 @@
 	* Fixes CSS check error handling (Arnold Noronha)
 	* Fixes Debian #474736: Launches <iframe> links in titles.
 	  (reported by Eric Cooper)
+	* Fixes incorrect XulRunner 1.9 detection as described in 
+	  comments to Debian #480807 (reported by Mike Hommey)
 
 
 2008-05-14  Lars Lindner  <lars.lindner@gmail.com>
