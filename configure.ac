@@ -168,7 +168,7 @@ dnl *********
 if test "x$enable_xulrunner" = "xyes" ; then
  
    AC_MSG_CHECKING([for XulRunner 1.9+ support])  
-   PKG_CHECK_MODULES(XULRUNNER, xulrunner-embedding, XULRUNNER_PROVIDER=xulrunner-embedding, XULRUNNER_PROVIDER=)
+   PKG_CHECK_MODULES(XULRUNNER, libxul-embedding, XULRUNNER_PROVIDER=libxul-embedding, XULRUNNER_PROVIDER=)
    
    if test "x$XULRUNNER_PROVIDER" = "x" ; then
       AC_MSG_CHECKING([for XulRunner 1.8 support])  
