@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2004-2007 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2008 Marc Wiriadisastra <mwiriadi@users.sf.net>
+ * Copyright (C) 2008 Alexander Sack <asac@ubuntu.com>
  *
  * The preference handling was taken from the Galeon source
  *
