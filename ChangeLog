@@ -6,6 +6,7 @@
 	  (reported by Martin Picek)
 	* Fixes SF #1920860: crash after memory corruption when
 	  parsing feed with invalid encoding (reported by mumrel)
+	* Build support for XulRunner 1.9 (patch from Alexander Sack)
 
 
 2008-04-17  Lars Lindner  <lars.lindner@gmail.com>
