@@ -105,24 +105,24 @@ nodePtr node_new(void);
 nodePtr node_from_id(const gchar *id);
 
 /**
- * Sets a nodes parent and updates the feed list. If no
- * parent node is given the parent node of the currently
- * selected feed or the selected folder will be used.
+ * Sets a nodes parent. If no parent node is given the 
+ * parent node of the currently selected feed or the 
+ * selected folder will be used.
  *
- * To be used on import and to add special node types!
+ * To be used before calling feedlist_node_added()
  *
- * @param parent	the parent node (optional can be NULL)
  * @param node		the node
+ * @param parent	the parent node (optional can be NULL)
  * @param position	insert position (optional can be 0)
  */
-void node_add_child(nodePtr parent, nodePtr node, gint position);
+void node_set_parent (nodePtr node, nodePtr parent, gint position);
 
 /**
- * Removes the given node from the feed list.
+ * Removes all data associated with the given node.
  *
- * @param parent	the node
+ * @param node		the node
  */
-void node_request_remove(nodePtr node);
+void node_remove (nodePtr node);
 
 /**
  * Attaches a data structure to the given node.

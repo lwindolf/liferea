@@ -117,8 +117,6 @@ node_source_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trust
 	if (typeStr) {
 		debug2 (DEBUG_CACHE, "creating node source instance (type=%s,id=%s)", typeStr, node->id);
 
-		node_add_child (parent, node, -1);
-		
 		node->available = FALSE;
 
 		/* scan for matching node source and create new instance */
@@ -139,6 +137,8 @@ node_source_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trust
 		node->source = NULL;
 		node_source_new (node, type);
 		node_set_subscription (node, subscription_import (xml, trusted));
+		node_set_parent (node, parent, -1);
+		feedlist_node_imported (node);
 				
 		type->source_import (node);	// FIXME: pass trusted flag?
 	} else {

@@ -106,15 +106,14 @@ void feedlist_node_was_updated (nodePtr node, guint newCount);
 nodePtr feedlist_get_root(void);
 
 /**
- * Adds a new subscription to the feed list without any user interaction.
+ * Adds a new subscription to the feed list.
  *
  * @param source	the subscriptions source URL
- * @param title		NULL or the node title
  * @param filter	NULL or the filter for the subscription
  * @param options	NULL or the update options
  * @param flags		download request flags
  */
-void feedlist_add_subscription (const gchar *source, const gchar *title, const gchar *filter, updateOptionsPtr options, gint flags);
+void feedlist_add_subscription (const gchar *source, const gchar *filter, updateOptionsPtr options, gint flags);
 
 /**
  * Adds a folder to the feed list without any user interaction.
@@ -124,12 +123,51 @@ void feedlist_add_subscription (const gchar *source, const gchar *title, const g
 void feedlist_add_folder (const gchar *title);
 
 /**
- * Removes the given node from the feed list and 
- * triggers the permanent removal of the node from cache.
+ * Notifies the feed list controller that a new node
+ * was added to the feed list. This method will insert
+ * the new node into the feed list view and select 
+ * the new node.
+ *
+ * This method is used for all node types (feeds, folders...).
+ * 
+ * Before calling this method the node must be given
+ * a parent node using node_set_parent().
+ *
+ * @param node		the new node
+ */
+void feedlist_node_added (nodePtr node);
+
+/**
+ * Notifies the feed list controller that a new node
+ * was added to the feed list. Similar to feedlist_node_added()
+ * the new node will be added to the feed list but the
+ * selection won't be changed.
+ *
+ * This method is used for all node types (feeds, folders...).
+ * 
+ * Before calling this method the node must be given
+ * a parent node using node_set_parent().
+ *
+ * @param node		the new node
+ */
+void feedlist_node_imported (nodePtr node);
+
+/**
+ * Removes the given node from the feed list.
  *
  * @param node		the node to remove
  */
 void feedlist_remove_node (nodePtr node);
+
+/**
+ * Notifies the feed list controller that an existing
+ * node was removed from it's source (feed list subtree)
+ * and is to be destroyed and to be removed from the 
+ * feed list view.
+ *
+ * @param node		the removed node
+ */
+void feedlist_node_removed (nodePtr node);
 
 /**
  * Synchronously saves the feed list. Only to be used upon exit!

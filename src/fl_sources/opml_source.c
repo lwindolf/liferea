@@ -73,7 +73,7 @@ opml_source_merge_feed (xmlNodePtr match, gpointer user_data)
 
 	if (!xpath_find (mergeCtxt->xmlNode, expr)) {
 		debug2(DEBUG_UPDATE, "adding %s (%s)", title, url);
-		node = node_new();
+		node = node_new ();
 		node_set_title (node, title);
 		if (url) {
 			node_set_type (node, feed_get_node_type ());
@@ -82,7 +82,9 @@ opml_source_merge_feed (xmlNodePtr match, gpointer user_data)
 		} else {
 			node_set_type (node, folder_get_node_type ());
 		}
-		node_add_child (mergeCtxt->parent, node, -1);
+		node_set_parent (node, mergeCtxt->parent, -1);
+		feedlist_node_imported (node);
+		
 		subscription_update (node->subscription, FEED_REQ_RESET_TITLE);
 	}		
 	
@@ -134,9 +136,7 @@ opml_source_check_for_removal (nodePtr node, gpointer user_data)
 	
 	if (!xpath_find ((xmlNodePtr)user_data, expr)) {
 		debug1 (DEBUG_UPDATE, "removing %s...", node_get_title (node));
-		if (feedlist_get_selected () == node)
-			ui_feedlist_select (NULL);
-		node_request_remove (node);
+		feedlist_node_removed (node);
 	} else {
 		debug1 (DEBUG_UPDATE, "keeping %s...", node_get_title (node));
 	}
@@ -280,19 +280,19 @@ void opml_source_export(nodePtr node) {
 	debug_exit("opml_source_export");
 }
 
-void opml_source_remove(nodePtr node) {
+void
+opml_source_remove (nodePtr node)
+{
 	gchar		*filename;
 	
-	g_assert(node == node->source->root);
-
-	/* step 1: delete all feed cache files */
-	node_foreach_child(node, node_request_remove);
-	g_assert(!node->children);
+	/* step 1: delete all child nodes */
+	node_foreach_child (node, feedlist_node_removed);
+	g_assert (!node->children);
 	
 	/* step 2: delete source instance OPML cache file */
-	filename = opml_source_get_feedlist(node);
-	unlink(filename);
-	g_free(filename);
+	filename = opml_source_get_feedlist (node);
+	unlink (filename);
+	g_free (filename);
 }
 
 void
@@ -331,7 +331,8 @@ opml_source_setup (nodePtr parent, nodePtr node)
 	if (parent) {
 		gint pos;
 		ui_feedlist_get_target_folder (&pos);
-		node_add_child (parent, node, pos);
+		node_set_parent (node, parent, pos);
+		feedlist_node_added (node);
 	}
 }
 

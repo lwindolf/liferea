@@ -228,7 +228,6 @@ ui_dnd_URL_received (GtkWidget *widget, GdkDragContext *context, gint x, gint y,
 		while ((tmp2 = strsep (&tmp1, "\n\r"))) {
 			if (strlen (tmp2))
 				feedlist_add_subscription (g_strdup (tmp2),
-					                    NULL,
 				                            NULL, 
 							    NULL,
 					                    FEED_REQ_RESET_TITLE |

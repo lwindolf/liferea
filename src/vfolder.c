@@ -200,7 +200,9 @@ vfolder_import (nodePtr node,
 
 	vfolder = vfolder_new (node);
 	vfolder_import_rules (cur, vfolder);
-	node_add_child (parent, node, -1);
+	node_set_parent (node, parent, -1);
+	feedlist_node_imported (node);
+	
 	vfolder_refresh (vfolder);
 }
 
@@ -303,8 +305,7 @@ vfolder_update_unread_count (nodePtr node)
 static void
 vfolder_remove (nodePtr node) 
 {
-	ui_node_remove_node (node);
-	vfolder_free (node);
+	db_view_remove (node->id);
 }
 
 static void
@@ -319,11 +320,10 @@ vfolder_add (nodePtr parent)
 	nodePtr	node;
 
 	node = node_new ();
+	node_set_parent (node, NULL, -1);
 	vfolder_new (node);
+	feedlist_node_added (node);
 
-	node_add_child (NULL, node, 0);
-	feedlist_schedule_save ();
-	ui_feedlist_select (node);	
 	vfolder_properties (node);
 }
 

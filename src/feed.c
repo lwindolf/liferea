@@ -143,7 +143,8 @@ feed_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trusted)
 		        typeStr, 
 		        subscription_get_update_interval (node->subscription));
 
-	node_add_child (parent, node, -1);
+	node_set_parent (node, parent, -1);
+	feedlist_node_imported (node);
 }
 
 static void

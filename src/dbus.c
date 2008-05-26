@@ -51,7 +51,7 @@ gboolean
 liferea_dbus_subscribe (LifereaDBus *self, gchar *url, gboolean *ret, GError **err)
 {
 	ui_mainwindow_show ();
-	feedlist_add_subscription (url, NULL, NULL, NULL, FEED_REQ_RESET_TITLE | FEED_REQ_RESET_UPDATE_INT);
+	feedlist_add_subscription (url, NULL, NULL, FEED_REQ_RESET_TITLE | FEED_REQ_RESET_UPDATE_INT);
 	*ret = TRUE;
 	return TRUE;
 }

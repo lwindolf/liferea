@@ -50,15 +50,17 @@ static itemSetPtr folder_load(nodePtr node) {
 	return itemSet;
 }
 
-static void folder_import(nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean trusted) {
-	
-	node_set_data(node, NULL);
-	node_add_child(parent, node, -1);
+static void
+folder_import (nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean trusted)
+{	
+	node_set_data (node, NULL);
+	node_set_parent (node, parent, -1);
+	feedlist_node_imported (node);
 	
 	cur = cur->xmlChildrenNode;
-	while(cur) {
-		if(!xmlStrcmp(cur->name, BAD_CAST"outline"))
-			import_parse_outline(cur, node, node->source, trusted);
+	while (cur) {
+		if (!xmlStrcmp (cur->name, BAD_CAST"outline"))
+			import_parse_outline (cur, node, node->source, trusted);
 		cur = cur->next;				
 	}
 }
@@ -97,14 +99,12 @@ static void folder_update_unread_count(nodePtr node) {
 	node_foreach_child_data(node, folder_add_child_unread_count, &node->unreadCount);
 }
 
-static void folder_remove(nodePtr node) {
-
-	/* remove all children */
-	node_foreach_child(node, node_request_remove);
-	g_assert(!node->children);
-	
-	/* remove the folder */
-	ui_node_remove_node(node);
+static void
+folder_remove (nodePtr node)
+{
+	/* Just remove all children */
+	node_foreach_child (node, feedlist_node_removed);
+	g_assert (!node->children);
 }
 
 nodeTypePtr folder_get_node_type(void) { 

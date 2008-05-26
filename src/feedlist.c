@@ -190,7 +190,7 @@ feedlist_node_was_updated (nodePtr node, guint newCount)
 void
 feedlist_add_folder (const gchar *title)
 {
-	nodePtr		node, parent;
+	nodePtr		parent;
 	gint		pos;
 	
 	g_assert (NULL != title);
@@ -200,55 +200,69 @@ feedlist_add_folder (const gchar *title)
 	if(0 == (NODE_SOURCE_TYPE (parent->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS))
 		return;	
 		
-	node = node_source_add_folder (parent->source->root, parent, title);
-	g_assert (NULL != node);
-	
-	ui_feedlist_get_target_folder (&pos);
-	node_add_child (parent, node, pos);
-	
-	feedlist_schedule_save ();
-	ui_feedlist_select (node);
+	node_source_add_folder (parent->source->root, parent, title);
 }
 
 void
-feedlist_add_subscription (const gchar *source, const gchar *title, const gchar *filter, updateOptionsPtr options, gint flags)
+feedlist_add_subscription (const gchar *source, const gchar *filter, updateOptionsPtr options, gint flags)
 {
-	nodePtr		node, parent;
+	nodePtr		parent;
 	gint		pos;
 
 	g_assert (NULL != source);
 
 	parent = feedlist_get_insertion_point ();
 
-	if (0 == (NODE_TYPE (parent->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS))
+	if (0 == (NODE_TYPE (parent->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS)) {
+		g_warning ("feedlist_add_subscription: this should never happen!");
 		return;
+	}
 
-	node = node_source_add_subscription (parent->source->root, parent, subscription_new (source, filter, options));
-	g_assert (NULL != node);
-	
-	/* override default title with a better one if available (e.g. on import)... */
-	if (title)
-		node_set_title (node, title);
-		
-	db_subscription_update (node->subscription);
+	node_source_add_subscription (parent->source->root, parent, subscription_new (source, filter, options));
+}
 
-	ui_feedlist_get_target_folder (&pos);
-	node_add_child (parent, node, pos);
-	subscription_update (node->subscription, flags);
-	
+void
+feedlist_node_imported (nodePtr node)
+{
+	gint	pos;
+
+	ui_node_add (node->parent, node, g_slist_index (node->parent->children, node));
 	feedlist_schedule_save ();
+}
+
+void
+feedlist_node_added (nodePtr node)
+{
+	if (node->subscription)
+		db_subscription_update (node->subscription);
+	
+	feedlist_node_imported (node);
+	
 	ui_feedlist_select (node);
 	
-	script_run_for_hook (SCRIPT_HOOK_NEW_SUBSCRIPTION);
+	if (node->subscription)
+		script_run_for_hook (SCRIPT_HOOK_NEW_SUBSCRIPTION);
 }
 
 void
 feedlist_remove_node (nodePtr node)
 {
-	if(node == selectedNode)
-		feedlist_unselect();
+	node_source_remove_node (node->source->root, node);
+}
 
-	node_request_remove(node);
+void
+feedlist_node_removed (nodePtr node)
+{
+	if (node == selectedNode)
+		feedlist_unselect ();
+		
+	ui_node_remove_node (node);
+
+	node_remove (node);
+
+	node->parent->children = g_slist_remove (node->parent->children, node);
+
+	node_free (node);
 }
 
 static gboolean

@@ -43,12 +43,6 @@ newsbin_get_list (void)
 }
 
 static void
-newsbin_new(nodePtr node)
-{
-	feedlist_schedule_save();
-}
-
-static void
 newsbin_import (nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean trusted)
 {
 	feed_get_node_type ()->import (node, parent, cur, trusted);
@@ -104,20 +98,14 @@ void
 on_newnewsbinbtn_clicked (GtkButton *button, gpointer user_data)
 {
 	nodePtr		newsbin;
-	int		pos;
 	
-	newsbin = node_new();
-	node_set_title(newsbin, (gchar *)gtk_entry_get_text(GTK_ENTRY(liferea_dialog_lookup(newnewsbindialog, "nameentry"))));
-	node_set_type(newsbin, newsbin_get_node_type());
-	node_set_data(newsbin, (gpointer)feed_new());
-	newsbin_new(newsbin);
+	newsbin = node_new ();
+	node_set_title (newsbin, (gchar *)gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (newnewsbindialog, "nameentry"))));
+	node_set_type (newsbin, newsbin_get_node_type ());
+	node_set_data (newsbin, (gpointer)feed_new ());
 
-	ui_feedlist_get_target_folder(&pos);
-	node_add_child(feedlist_get_insertion_point(), newsbin, pos);
-	feedlist_schedule_save();
-	ui_feedlist_select(newsbin);
-	
 	newsbin_list = g_slist_append(newsbin_list, newsbin);
+	
 	ui_popup_update_menues();
 }
 

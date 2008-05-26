@@ -195,6 +195,8 @@ default_source_add_subscription (nodePtr node, nodePtr parent, subscriptionPtr s
 	node_set_title (child, _("New Subscription"));
 	node_set_data (child, feed_new ());
 	node_set_subscription (child, subscription);	/* feed subscription type is implicit */
+	node_set_parent (child, parent, -1);
+	feedlist_node_added (child);
 	
 	return child;
 }
@@ -207,8 +209,17 @@ default_source_add_folder (nodePtr node, nodePtr parent, const gchar *title)
 	nodePtr child = node_new ();
 	node_set_title (child, title);
 	node_set_type (child, folder_get_node_type());
+	node_set_parent (child, parent, -1);
+	feedlist_node_added (child);
 	
 	return child;
+}
+
+static void
+default_source_remove_node (nodePtr node, nodePtr child)
+{
+	/* The default source can always immediately serve remove requests. */
+	feedlist_node_removed (child);
 }
 
 static void default_source_init (void) { }
@@ -234,7 +245,8 @@ static struct nodeSourceType nst = {
 	.source_auto_update	= default_source_auto_update,
 	.free 			= NULL,
 	.add_subscription	= default_source_add_subscription,
-	.add_folder		= default_source_add_folder
+	.add_folder		= default_source_add_folder,
+	.remove_node		= default_source_remove_node
 };
 
 nodeSourceTypePtr default_source_get_type (void) { return &nst; }

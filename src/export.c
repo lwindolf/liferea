@@ -369,17 +369,17 @@ gboolean import_OPML_feedlist(const gchar *filename, nodePtr parentNode, nodeSou
 
 /* UI stuff */
 
-void on_import_activate_cb(const gchar *filename, gpointer user_data) {
-	
-	if(filename) {
-		nodePtr node = node_new();
-		node_set_title(node, _("Imported feed list"));
-		node_set_type(node, folder_get_node_type());
+void
+on_import_activate_cb (const gchar *filename, gpointer user_data)
+{	
+	if (filename) {
+		nodePtr node = node_new ();
+		node_set_title (node, _("Imported feed list"));
+		node_set_type (node, folder_get_node_type ());
+		node_set_parent (node, NULL, 0);
+		feedlist_node_imported (node);
 		
-		/* add the new folder to the model */
-		node_add_child(NULL, node, 0);
-		
-		import_OPML_feedlist(filename, node, node->source, TRUE /* show errors */, FALSE /* not trusted */);
+		import_OPML_feedlist (filename, node, node->source, TRUE /* show errors */, FALSE /* not trusted */);
 	}
 }
 

@@ -674,7 +674,7 @@ on_newdialog_response (GtkDialog *dialog, gint response_id, gpointer user_data)
 		options = g_new0 (struct updateOptions, 1);
 		options->dontUseProxy = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup(GTK_WIDGET (dialog), "dontUseProxyCheck")));
 		
-		feedlist_add_subscription (source, NULL, filter, options,
+		feedlist_add_subscription (source, filter, options,
 					   FEED_REQ_RESET_TITLE | 
 					   FEED_REQ_RESET_UPDATE_INT | 
 					   FEED_REQ_AUTO_DISCOVER | 
@@ -801,7 +801,7 @@ on_simple_newdialog_response (GtkDialog *dialog, gint response_id, gpointer user
 		source = ui_subscription_create_url (g_strdup (gtk_entry_get_text (GTK_ENTRY(ssd->priv->sourceEntry))),
 		                                      FALSE /* auth */, NULL /* user */, NULL /* passwd */);
 
-		feedlist_add_subscription (source, NULL, NULL, NULL,
+		feedlist_add_subscription (source, NULL, NULL,
 					   FEED_REQ_RESET_TITLE | 
 					   FEED_REQ_RESET_UPDATE_INT | 
 					   FEED_REQ_AUTO_DISCOVER | 

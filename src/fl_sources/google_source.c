@@ -107,9 +107,7 @@ google_source_check_for_removal (nodePtr node, gpointer user_data)
 	
 	if (!xpath_find ((xmlNodePtr)user_data, expr)) {
 		debug1 (DEBUG_UPDATE, "removing %s...", node_get_title (node));
-		if (feedlist_get_selected() == node)
-			ui_feedlist_select (NULL);
-		node_request_remove (node);
+		feedlist_node_removed (node);
 	} else {
 		debug1 (DEBUG_UPDATE, "keeping %s...", node_get_title (node));
 	}
@@ -198,9 +196,10 @@ google_source_add_shared (readerPtr reader)
 
 	node_set_subscription (node, subscription_new (GOOGLE_SOURCE_BROADCAST_FRIENDS_URI, NULL, NULL));
 	node->subscription->type = &googleReaderFeedSubscriptionType;
-	node_add_child (reader->root, node, -1);
+	node_set_parent (node, reader->root, -1);
+	feedlist_node_imported (node);
+	
 	update_state_set_cookies (node->subscription->updateState, reader->sid);
-
 	subscription_update (node->subscription, FEED_REQ_RESET_TITLE);
 	subscription_update_favicon (node->subscription);
 }
@@ -246,8 +245,10 @@ google_source_merge_feed (xmlNodePtr match, gpointer user_data)
 		node_set_data (node, feed_new ());
 		
 		node_set_subscription (node, subscription_new (url, NULL, NULL));
-		node->subscription->type = &googleReaderFeedSubscriptionType ;
-		node_add_child (reader->root, node, -1);
+		node->subscription->type = &googleReaderFeedSubscriptionType;
+		node_set_parent (node, reader->root, -1);
+		feedlist_node_imported (node);
+		
 		update_state_set_cookies (node->subscription->updateState, reader->sid);
 		/**
 		 * @todo mark the ones as read immediately after this is done
@@ -619,7 +620,7 @@ static struct subscriptionType googleReaderFeedSubscriptionType = {
 
 /** 
  * Shared actions needed during import and when subscribing,
- * Only node_add_child() will be done only when subscribing.
+ * Only feedlist_node_added() will be done only when subscribing. (FIXME)
  */
 void
 google_source_setup (nodePtr parent, nodePtr node)
@@ -630,7 +631,8 @@ google_source_setup (nodePtr parent, nodePtr node)
 	if (parent) {
 		gint pos;
 		ui_feedlist_get_target_folder (&pos);
-		node_add_child (parent, node, pos);
+		node_set_parent (node, parent, pos);
+		feedlist_node_added (node);
 	}
 	node->data = google_source_reader_new(node);
 }

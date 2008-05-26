@@ -364,6 +364,7 @@ void update_subscription_list_callback(readerPtr reader, editPtr edit, gboolean 
 			nodePtr node = (nodePtr) cur->data ; 
 			if ( g_str_equal(node->subscription->source, edit->feedUrl) ) {
 				subscription_set_source(node->subscription, "");
+				feedlist_node_added (node);
 			}
 		}
 		
@@ -383,12 +384,36 @@ void google_source_edit_add_subscription(
 	google_source_edit_push(reader, edit, TRUE);
 }
 
+void
+google_source_edit_remove_callback (readerPtr reader, editPtr edit, gboolean success)
+{
+	if (success) {	
+		// FIXME: code duplicated from update_subscription_list_callback ()
+		
+		/*
+		 * It is possible that Google changed the name of the URL that
+		 * was sent to it. In that case, I need to recover the URL 
+		 * from the list. But a node with the old URL has already 
+		 * been created. Allow the subscription update call to fix that.
+		 */
+		GSList* cur = reader->root->children ;
+		for( ; cur ; cur = g_slist_next(cur))  {
+			nodePtr node = (nodePtr) cur->data ; 
+			if ( g_str_equal(node->subscription->source, edit->feedUrl) ) {
+				feedlist_node_removed (node);
+			}
+		}
+	} else {
+		debug0 (DEBUG_UPDATE, "Failed to remove subscription");
+	}
+}
 
 void google_source_edit_remove_subscription(readerPtr reader, const gchar* feedUrl) 
 {
 	editPtr edit = google_source_edit_new(); 
 	edit->action = EDIT_ACTION_REMOVE_SUBSCRIPTION ;
 	edit->feedUrl = g_strdup(feedUrl) ;
+	edit->callback = update_subscription_list_callback;
 	google_source_edit_push(reader, edit, TRUE) ;
 }
 

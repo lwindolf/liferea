@@ -116,7 +116,6 @@ on_search_engine_dialog_response (GtkDialog *dialog, gint responseId, gpointer u
 
 		feedlist_add_subscription (searchUri, 
 					   NULL, 
-					   NULL, 
 					   NULL,
 		                           /*FEED_REQ_SHOW_PROPDIALOG | <- not needed*/
 		                           FEED_REQ_RESET_TITLE |

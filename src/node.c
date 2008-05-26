@@ -283,7 +283,7 @@ node_render(nodePtr node)
 /* import callbacks and helper functions */
 
 void
-node_add_child (nodePtr parent, nodePtr node, gint position)
+node_set_parent (nodePtr node, nodePtr parent, gint position)
 {
 	if (!parent)
 		parent = ui_feedlist_get_target_folder (&position);
@@ -295,25 +295,17 @@ node_add_child (nodePtr parent, nodePtr node, gint position)
 	   not they are handled by the parents node source */
 	if (!node->source)
 		node->source = parent->source;
-	
-	ui_node_add (parent, node, position);	
 }
 
 void
-node_request_remove (nodePtr node)
+node_remove (nodePtr node)
 {
-	/* using itemlist_remove_all_items() ensure correct unread
+	/* using itemlist_remove_all_items() ensures correct unread
 	   and item counters for all parent folders and matching 
 	   search folders */
 	itemlist_remove_all_items (node);
 	
-	node_source_remove_node (node->source->root, node);
-	
 	NODE_TYPE (node)->remove (node);
-
-	node->parent->children = g_slist_remove (node->parent->children, node);
-
-	node_free (node);
 }
 
 static xmlDocPtr node_to_xml(nodePtr node) {

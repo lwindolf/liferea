@@ -186,9 +186,8 @@ on_search_dialog_response (GtkDialog *dialog, gint responseId, gpointer user_dat
 		nodePtr node = sd->priv->searchResult;
 		sd->priv->searchResult = NULL;
 		sd->priv->vfolder = NULL;
-		node_add_child (NULL, node, 0);
-		feedlist_schedule_save ();
-		ui_feedlist_select (node);	
+		node_set_parent (node, NULL, 0);
+		feedlist_node_added (node, FALSE);
 	}
 	
 	if (1 != responseId)
