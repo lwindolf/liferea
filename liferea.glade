@@ -2035,7 +2035,7 @@ days</property>
                   <widget class="GtkLabel" id="label59">
                     <property name="visible">True</property>
                     <property name="ypad">5</property>
-                    <property name="label" translatable="yes">Copyright (c) 2003-2007
+                    <property name="label" translatable="yes">Copyright (c) 2003-2008
 Lars Lindner &lt;lars.lindner@gmail.com&gt; and 
 Nathan J. Conrad &lt;t98502@users.sourceforge.net&gt;
 </property>
