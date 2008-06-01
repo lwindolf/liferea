@@ -24,21 +24,25 @@
 #include "fl_sources/node_source.h"
 
 
-typedef struct reader {
-	int             id; /**< A unique identifier for this reader */
-	nodePtr		root;	/**< the root node in the feed list */
+/**
+ * A nodeSource specific for Google Reader
+ */
+typedef struct GoogleSource {
+	nodePtr	        root;	/**< the root node in the feed list */
 	gchar		*sid;	/**< session id */
 	GTimeVal	*lastSubscriptionListUpdate;
 	GQueue          *editQueue;
-	enum { 
-		READER_STATE_NONE = 0,
-		READER_STATE_IN_PROGRESS,
-		READER_STATE_ACTIVE
-	} loginState ; 
-} *readerPtr;
+	int             loginState; /**< The current login state */
+} *GoogleSourcePtr;
 
+ 
+enum { 
+	GOOGLE_SOURCE_STATE_NONE = 0,
+	GOOGLE_SOURCE_STATE_IN_PROGRESS,
+	GOOGLE_SOURCE_STATE_ACTIVE
+} ;
 
-enum googleSourceUpdateFlags { 
+enum  { 
 	/**
 	 * Update only the subscription list, and not each node underneath it.
 	 * Note: Uses higher 16 bits to avoid conflict.
@@ -56,11 +60,5 @@ enum googleSourceUpdateFlags {
  */
 nodeSourceTypePtr google_source_get_type(void);
 
-/**
- * Return the Google Source reader structure from the readerId
- *
- * @param  readerId the unique reader id
- * @return a pointer to the reader structure, or NULL if not found
- */
-readerPtr google_source_reader_from_id(int readerId) ;
+
 #endif

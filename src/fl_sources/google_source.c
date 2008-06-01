@@ -49,44 +49,28 @@
  * wants to set and item as read/unread within this file, it should not do 
  * any network calls.
  */
-static gboolean googleReaderBlockEditHack = FALSE ;
-static struct subscriptionType googleReaderFeedSubscriptionType;
-static struct subscriptionType googleReaderOpmlSubscriptionType;
+static gboolean googleSourceBlockEditHack = FALSE ;
+static struct subscriptionType googleSourceFeedSubscriptionType;
+static struct subscriptionType googleSourceOpmlSubscriptionType;
 
-static int     readerIdCounter = 0 ;
-static GSList  *readerList ;
- 
 
-readerPtr google_source_reader_new(nodePtr node) 
+/** create a google source with given node as root */ 
+GoogleSourcePtr google_source_new(nodePtr node) 
 {
-	readerPtr reader = g_new0(struct reader, 1) ;
-	reader->root = node; 
-	reader->editQueue = g_queue_new(); 
-	reader->loginState = READER_STATE_NONE; 
-	reader->id = ++readerIdCounter;
-	readerList = g_slist_prepend(readerList, reader);
-	return reader;
+	GoogleSourcePtr source = g_new0(struct GoogleSource, 1) ;
+	source->root = node; 
+	source->editQueue = g_queue_new(); 
+	source->loginState = GOOGLE_SOURCE_STATE_NONE; 
+	return source;
 }
 
-readerPtr google_source_reader_from_id(int readerId) 
+
+void google_source_free(GoogleSourcePtr gsource) 
 {
-	GSList* cur = readerList ; 
-	for( ; cur ; cur = g_slist_next(cur) ) {
-		readerPtr reader = (readerPtr) cur->data ;
-		if ( reader->id == readerId ) return reader; 
-	}
-}
+	if (!gsource) return ;
 
-void google_source_reader_free(readerPtr reader) 
-{
-	if (!reader) return ;
-
-	GSList* pointer = g_slist_find(readerList, reader); 
-	g_assert(pointer);
-	readerList = g_slist_delete_link(readerList, pointer) ;
-
-	g_queue_free(reader->editQueue) ;
-	g_free(reader);
+	g_queue_free(gsource->editQueue) ;
+	g_free(gsource);
 }
 
 /* subscription list merging functions */
@@ -138,10 +122,8 @@ google_source_migrate_node(nodePtr node, gpointer userdata)
 static nodePtr
 google_source_get_root_from_node (nodePtr node)
 { 
-	while (node->parent->source == node->source) {
+	while (node->parent->source == node->source) 
 		node = node->parent;
-	}
-
 	return node;
 }
 
@@ -157,31 +139,34 @@ google_source_item_mark_read (nodePtr node, itemPtr item,
 	 * may call item_state_set_read without any network calls being
 	 * made. @see google_source_edit_action_cb
 	 */
-	if (googleReaderBlockEditHack)
+	if (googleSourceBlockEditHack)
 		return;
 	nodePtr root = google_source_get_root_from_node(node);
-	google_source_edit_mark_read((readerPtr)root->data, 
+	google_source_edit_mark_read((GoogleSourcePtr)root->data, 
 				     item->sourceId, 
 				     node->subscription->source,
 				     newStatus);
 }
 
  
+/**
+ * Add "broadcast-friends" to the list of subscriptions if required 
+ */
 static void
-google_source_add_shared (readerPtr reader)
+google_source_add_broadcast_subscription (GoogleSourcePtr gsource)
 {
 	gchar* title = "Friend's Shared Items"; 
 	GSList * iter = NULL ; 
 	nodePtr node ; 
 
-	iter = reader->root->children; 
+	iter = gsource->root->children; 
 	while (iter) { 
 		node = (nodePtr)iter->data ; 
 		if (!node->subscription || !node->subscription->source) 
 			continue;
 		if (g_str_equal (node->subscription->source, GOOGLE_SOURCE_BROADCAST_FRIENDS_URI)) {
 			update_state_set_cookies (node->subscription->updateState, 
-			                          reader->sid);
+			                          gsource->sid);
 			return;
 		}
 		iter = g_slist_next (iter);
@@ -195,11 +180,11 @@ google_source_add_shared (readerPtr reader)
 	node_set_data (node, feed_new ());
 
 	node_set_subscription (node, subscription_new (GOOGLE_SOURCE_BROADCAST_FRIENDS_URI, NULL, NULL));
-	node->subscription->type = &googleReaderFeedSubscriptionType;
-	node_set_parent (node, reader->root, -1);
+	node->subscription->type = &googleSourceFeedSubscriptionType;
+	node_set_parent (node, gsource->root, -1);
 	feedlist_node_imported (node);
 	
-	update_state_set_cookies (node->subscription->updateState, reader->sid);
+	update_state_set_cookies (node->subscription->updateState, gsource->sid);
 	subscription_update (node->subscription, FEED_REQ_RESET_TITLE);
 	subscription_update_favicon (node->subscription);
 }
@@ -207,7 +192,7 @@ google_source_add_shared (readerPtr reader)
 static void
 google_source_merge_feed (xmlNodePtr match, gpointer user_data)
 {
-	readerPtr	reader = (readerPtr)user_data;
+	GoogleSourcePtr	gsource = (GoogleSourcePtr)user_data;
 	nodePtr		node;
 	GSList		*iter;
 	xmlNodePtr	xml;
@@ -224,12 +209,12 @@ google_source_merge_feed (xmlNodePtr match, gpointer user_data)
 	url = g_strdup(id+5);
 
 	/* check if node to be merged already exists */
-	iter = reader->root->children;
+	iter = gsource->root->children;
 	while (iter) {
 		node = (nodePtr)iter->data;
 		if (g_str_equal (node->subscription->source, url)) {
-			update_state_set_cookies (node->subscription->updateState, reader->sid);
-			node->subscription->type = &googleReaderFeedSubscriptionType;
+			update_state_set_cookies (node->subscription->updateState, gsource->sid);
+			node->subscription->type = &googleSourceFeedSubscriptionType;
 			goto cleanup ;
 		}
 		iter = g_slist_next (iter);
@@ -245,11 +230,11 @@ google_source_merge_feed (xmlNodePtr match, gpointer user_data)
 		node_set_data (node, feed_new ());
 		
 		node_set_subscription (node, subscription_new (url, NULL, NULL));
-		node->subscription->type = &googleReaderFeedSubscriptionType;
-		node_set_parent (node, reader->root, -1);
+		node->subscription->type = &googleSourceFeedSubscriptionType;
+		node_set_parent (node, gsource->root, -1);
 		feedlist_node_imported (node);
 		
-		update_state_set_cookies (node->subscription->updateState, reader->sid);
+		update_state_set_cookies (node->subscription->updateState, gsource->sid);
 		/**
 		 * @todo mark the ones as read immediately after this is done
 		 * the feed as retrieved by this has the read and unread
@@ -276,22 +261,22 @@ cleanup:
 void
 google_source_login (subscriptionPtr subscription, guint32 flags) 
 { 
-	readerPtr reader = (readerPtr) subscription->node->data;
+	GoogleSourcePtr gsource = (GoogleSourcePtr) subscription->node->data;
 	gchar *source;
-	g_assert(reader);
+	g_assert(gsource);
 	
 	/* We are not logged in yet, we need to perform a login first and retrigger the update later... */
 	
-	if (reader->loginState != READER_STATE_NONE) {
+	if (gsource->loginState != GOOGLE_SOURCE_STATE_NONE) {
 		debug1(DEBUG_UPDATE, "Logging in while login state is %d\n", 
-			     reader->loginState);
+			     gsource->loginState);
 	}
 
 	source = g_strdup_printf ("https://www.google.com/accounts/ClientLogin?service=reader&Email=%s&Passwd=%s&source=liferea&continue=http://www.google.com",
 	                     	  subscription->updateOptions->username,
 	                          subscription->updateOptions->password);
 
-	reader->loginState = READER_STATE_IN_PROGRESS ;
+	gsource->loginState = GOOGLE_SOURCE_STATE_IN_PROGRESS ;
 	subscription_set_source (subscription, source);
 	g_free (source);
 }
@@ -301,7 +286,7 @@ google_source_login (subscriptionPtr subscription, guint32 flags)
 static void
 google_subscription_opml_cb (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
 {
-	readerPtr	reader = (readerPtr)subscription->node->data;
+	GoogleSourcePtr	gsource = (GoogleSourcePtr)subscription->node->data;
 	
 	if (result->data) {
 		xmlDocPtr doc = xml_parse (result->data, result->size, FALSE, NULL);
@@ -320,8 +305,8 @@ google_subscription_opml_cb (subscriptionPtr subscription, const struct updateRe
 
 			xpath_foreach_match (root, "/object/list[@name='subscriptions']/object",
 			                     google_source_merge_feed,
-			                     (gpointer)reader);
-			google_source_add_shared (reader) ;
+			                     (gpointer)gsource);
+			google_source_add_broadcast_subscription (gsource) ;
 
 			opml_source_export (subscription->node);	/* save new feeds to feed list */
 						   
@@ -341,7 +326,7 @@ google_subscription_opml_cb (subscriptionPtr subscription, const struct updateRe
 static void
 google_subscription_login_cb (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
 {
-	readerPtr	reader = (readerPtr)subscription->node->data;
+	GoogleSourcePtr	gsource = (GoogleSourcePtr)subscription->node->data;
 	gchar		*tmp = NULL;
 	GTimeVal	now;
 	
@@ -352,49 +337,49 @@ google_subscription_login_cb (subscriptionPtr subscription, const struct updateR
 		subscription->updateError = NULL;
 	}
 	
-	g_assert (!reader->sid);
+	g_assert (!gsource->sid);
 	
 	if (result->data)
 		tmp = strstr (result->data, "SID=");
 		
 	if (tmp) {
-		reader->sid = tmp;
+		gsource->sid = tmp;
 		tmp = strchr (tmp, '\n');
 		if (tmp)
 			*tmp = '\0';
-		reader->sid = g_strdup (reader->sid);
-		debug1 (DEBUG_UPDATE, "google reader SID found: %s", reader->sid);
+		gsource->sid = g_strdup (gsource->sid);
+		debug1 (DEBUG_UPDATE, "google reader SID found: %s", gsource->sid);
 		subscription->node->available = TRUE;
 		
 		/* now that we are authenticated retrigger updating to start data retrieval */
 		g_get_current_time (&now);
 
-		reader->loginState = READER_STATE_ACTIVE;
+		gsource->loginState = GOOGLE_SOURCE_STATE_ACTIVE;
 		if ( ! (flags & GOOGLE_SOURCE_UPDATE_ONLY_LOGIN) ) 
 			subscription_update (subscription, flags);
 
 		/* process any edits waiting in queue */
-		google_source_edit_process (reader);
+		google_source_edit_process (gsource);
 
 	} else {
 		debug0 (DEBUG_UPDATE, "google reader login failed! no SID found in result!");
 		subscription->node->available = FALSE;
 		subscription->updateError = g_strdup (_("Google Reader login failed!"));
-		reader->loginState = READER_STATE_NONE;
+		gsource->loginState = GOOGLE_SOURCE_STATE_NONE;
 	}
 }
 
 static void
 google_opml_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
 {
-	readerPtr	reader = (readerPtr)subscription->node->data;
+	GoogleSourcePtr	gsource = (GoogleSourcePtr)subscription->node->data;
 	
 	/* Note: the subscription update design supports only request->response pairs
 	   and doesn't anticipate multi-step login procedures. Therefore we have only
 	   one result callback and must use the "reader" structure to determine what
 	   currently needs to be done. */
 	   
-	if (reader->sid)
+	if (gsource->sid)
 		google_subscription_opml_cb (subscription, result, flags);
 	else
 		google_subscription_login_cb (subscription, result, flags);
@@ -403,14 +388,14 @@ google_opml_subscription_process_update_result (subscriptionPtr subscription, co
 static gboolean
 google_opml_subscription_prepare_update_request (subscriptionPtr subscription, struct updateRequest *request)
 {
-	readerPtr	reader = (readerPtr)subscription->node->data;
+	GoogleSourcePtr	gsource = (GoogleSourcePtr)subscription->node->data;
 	
-	g_assert(reader);
-	if (reader->loginState == READER_STATE_NONE) {
+	g_assert(gsource);
+	if (gsource->loginState == GOOGLE_SOURCE_STATE_NONE) {
 		debug0(DEBUG_UPDATE, "GoogleSource: login");
 		google_source_login(subscription, 0) ;
 
-		reader->loginState = READER_STATE_IN_PROGRESS ;
+		gsource->loginState = GOOGLE_SOURCE_STATE_IN_PROGRESS ;
 		/* The subscription is updated, but the request has not yet been updated */
 		update_request_set_source(request, subscription->source); 
 		return TRUE;
@@ -419,14 +404,14 @@ google_opml_subscription_prepare_update_request (subscriptionPtr subscription, s
 	
 	update_request_set_source(request, "http://www.google.com/reader/api/0/subscription/list");
 	
-	update_state_set_cookies (request->updateState, reader->sid);
+	update_state_set_cookies (request->updateState, gsource->sid);
 	
 	return TRUE;
 }
 
 /* OPML subscription type definition */
 
-static struct subscriptionType googleReaderOpmlSubscriptionType = {
+static struct subscriptionType googleSourceOpmlSubscriptionType = {
 	google_opml_subscription_prepare_update_request,
 	google_opml_subscription_process_update_result,
 	NULL	/* free */
@@ -436,7 +421,7 @@ static void
 google_source_item_retrieve_status (xmlNodePtr entry, gpointer userdata)
 {
 	subscriptionPtr subscription = (subscriptionPtr) userdata;
-	readerPtr reader = (readerPtr) google_source_get_root_from_node(subscription->node)->data ;
+	GoogleSourcePtr gsource = (GoogleSourcePtr) google_source_get_root_from_node(subscription->node)->data ;
 	xmlNodePtr xml;
 	nodePtr node = subscription->node;
 
@@ -471,11 +456,11 @@ google_source_item_retrieve_status (xmlNodePtr entry, gpointer userdata)
 		/* this is extremely inefficient, multiple times loading */
 		itemPtr item = item_load (GPOINTER_TO_UINT (iter->data));
 		if (item && item->sourceId) {
-			if (g_str_equal (item->sourceId, id) && item->readStatus != read && !google_source_edit_is_in_queue(reader, id)) {
+			if (g_str_equal (item->sourceId, id) && item->readStatus != read && !google_source_edit_is_in_queue(gsource, id)) {
 				
-				googleReaderBlockEditHack = TRUE;
+				googleSourceBlockEditHack = TRUE;
 				item_state_set_read (item, read);
-				googleReaderBlockEditHack = FALSE;
+				googleSourceBlockEditHack = FALSE;
 
 				item_unload (item);
 				goto cleanup;
@@ -591,10 +576,10 @@ google_feed_subscription_prepare_update_request (subscriptionPtr subscription,
                                                  struct updateRequest *request)
 {
 	debug0 (DEBUG_UPDATE, "preparing google reader feed subscription for update\n");
-	readerPtr reader = (readerPtr) google_source_get_root_from_node (subscription->node)->data; 
+	GoogleSourcePtr gsource = (GoogleSourcePtr) google_source_get_root_from_node (subscription->node)->data; 
 	
-	g_assert(reader); 
-	if (reader->loginState == READER_STATE_NONE) { 
+	g_assert(gsource); 
+	if (gsource->loginState == GOOGLE_SOURCE_STATE_NONE) { 
 		subscription_update(google_source_get_root_from_node (subscription->node)->subscription, 0) ;
 		return FALSE;
 	}
@@ -608,11 +593,11 @@ google_feed_subscription_prepare_update_request (subscriptionPtr subscription,
 		g_free (newUrl);
 		g_free(source_escaped);
 	}
-	update_state_set_cookies (request->updateState, reader->sid);
+	update_state_set_cookies (request->updateState, gsource->sid);
 	return TRUE;
 }
 
-static struct subscriptionType googleReaderFeedSubscriptionType = {
+static struct subscriptionType googleSourceFeedSubscriptionType = {
 	google_feed_subscription_prepare_update_request,
 	google_feed_subscription_process_update_result,
 	NULL  /* free */
@@ -634,7 +619,7 @@ google_source_setup (nodePtr parent, nodePtr node)
 		node_set_parent (node, parent, pos);
 		feedlist_node_added (node);
 	}
-	node->data = google_source_reader_new(node);
+	node->data = (gpointer) google_source_new(node);
 }
 
 /* node source type implementation */
@@ -667,11 +652,11 @@ google_source_import (nodePtr node)
 	GSList *iter; 
 	opml_source_import (node);
 	
-	node->subscription->type = &googleReaderOpmlSubscriptionType;
-	if (!node->data) node->data = google_source_reader_new (node) ;
+	node->subscription->type = &googleSourceOpmlSubscriptionType;
+	if (!node->data) node->data = (gpointer) google_source_new (node) ;
 
 	for(iter = node->children; iter; iter = g_slist_next(iter) )
-		((nodePtr) iter->data)->subscription->type = &googleReaderFeedSubscriptionType; 
+		((nodePtr) iter->data)->subscription->type = &googleSourceFeedSubscriptionType; 
 	google_source_edit_import(node->data) ;
 }
 
@@ -690,9 +675,9 @@ google_source_get_feedlist (nodePtr node)
 void 
 google_source_remove (nodePtr node)
 { 
-	googleReaderBlockEditHack = TRUE ; 
+	googleSourceBlockEditHack = TRUE ; 
 	opml_source_remove (node);
-	googleReaderBlockEditHack = FALSE ;
+	googleSourceBlockEditHack = FALSE ;
 }
 
 
@@ -707,7 +692,7 @@ google_source_add_subscription(nodePtr node, nodePtr parent, subscriptionPtr sub
 	node_set_data (child, feed_new ());
 
 	node_set_subscription(child, subscription) ;
-	child->subscription->type = &googleReaderFeedSubscriptionType;
+	child->subscription->type = &googleSourceFeedSubscriptionType;
 	
 	node_set_title(child, _("New Subscription")) ;
 
@@ -722,7 +707,7 @@ google_source_remove_node(nodePtr node, nodePtr child)
 { 
 	if (child == node || !child->subscription || !child->subscription->source ) return ; 
 
-	if (googleReaderBlockEditHack) return ;
+	if (googleSourceBlockEditHack) return ;
 	google_source_edit_remove_subscription(google_source_get_root_from_node(node)->data, child->subscription->source); 
 }
 
@@ -740,7 +725,7 @@ on_google_source_selected (GtkDialog *dialog,
 		subscription = subscription_new ("http://www.google.com/reader", NULL, NULL);
 		subscription->updateOptions->username = g_strdup (gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "userEntry"))));
 		subscription->updateOptions->password = g_strdup (gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "passwordEntry"))));
-		subscription->type = &googleReaderOpmlSubscriptionType ; 
+		subscription->type = &googleSourceOpmlSubscriptionType ; 
 		node = node_new ();
 		node_set_title (node, "Google Reader");
 		node_source_new (node, google_source_get_type ());
@@ -773,11 +758,11 @@ ui_google_source_get_account_info (nodePtr parent)
 }
 
 static void
-google_source_free (nodePtr node)
+google_source_cleanup (nodePtr node)
 {
-	readerPtr reader = (readerPtr) node->data;
+	GoogleSourcePtr reader = (GoogleSourcePtr) node->data;
 	google_source_edit_export(reader);
-	google_source_reader_free(reader);
+	google_source_free(reader);
 	node->data = NULL ;
 }
 
@@ -799,7 +784,7 @@ static struct nodeSourceType nst = {
 	google_source_get_feedlist,
 	google_source_update,
 	google_source_auto_update,
-	google_source_free,
+	google_source_cleanup,
 	google_source_item_mark_read,
 	NULL, /* add_folder */
 	google_source_add_subscription,
