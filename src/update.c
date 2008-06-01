@@ -193,7 +193,9 @@ update_request_free (updateRequestPtr request)
 	if (!request)
 		return;
 	
+	update_state_free (request->updateState);
 	update_options_free (request->options);
+	
 	g_free (request->source);
 	g_free (request->filtercmd);
 	g_free (request);
