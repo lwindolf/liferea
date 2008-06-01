@@ -206,7 +206,7 @@ google_source_merge_feed (xmlNodePtr match, gpointer user_data)
 	xml = xpath_find (match, "./string[@name='id']");
 	if (xml)
 		id = xmlNodeListGetString (xml->doc, xml->xmlChildrenNode, 1);
-	url = g_strdup(id+5);
+	url = g_strdup(id+strlen("feed/"));
 
 	/* check if node to be merged already exists */
 	iter = gsource->root->children;
@@ -242,7 +242,8 @@ google_source_merge_feed (xmlNodePtr match, gpointer user_data)
 		 */
 		subscription_update (node->subscription,  FEED_REQ_RESET_TITLE);
 		subscription_update_favicon (node->subscription);
-	}
+	} else 
+		g_warning("Unable to parse subscription information from Google");
 
 cleanup:
 	if (id)
@@ -265,9 +266,9 @@ google_source_login (subscriptionPtr subscription, guint32 flags)
 	gchar *source;
 	g_assert(gsource);
 	
-	/* We are not logged in yet, we need to perform a login first and retrigger the update later... */
-	
 	if (gsource->loginState != GOOGLE_SOURCE_STATE_NONE) {
+		/* this should not happen, as of now, we assume the session
+		 * doesn't expire. */
 		debug1(DEBUG_UPDATE, "Logging in while login state is %d\n", 
 			     gsource->loginState);
 	}
@@ -312,6 +313,9 @@ google_subscription_opml_cb (subscriptionPtr subscription, const struct updateRe
 						   
 			subscription->node->available = TRUE;
 			xmlFreeDoc (doc);
+		} else { 
+			/** @todo The session seems to have expired */
+			g_warning("Unable to parse OPML list from google, the session might have expired.\n");
 		}
 	} else {
 		subscription->node->available = FALSE;
@@ -352,8 +356,6 @@ google_subscription_login_cb (subscriptionPtr subscription, const struct updateR
 		subscription->node->available = TRUE;
 		
 		/* now that we are authenticated retrigger updating to start data retrieval */
-		g_get_current_time (&now);
-
 		gsource->loginState = GOOGLE_SOURCE_STATE_ACTIVE;
 		if ( ! (flags & GOOGLE_SOURCE_UPDATE_ONLY_LOGIN) ) 
 			subscription_update (subscription, flags);
@@ -364,6 +366,8 @@ google_subscription_login_cb (subscriptionPtr subscription, const struct updateR
 	} else {
 		debug0 (DEBUG_UPDATE, "google reader login failed! no SID found in result!");
 		subscription->node->available = FALSE;
+
+		g_free(subscription->updateError);
 		subscription->updateError = g_strdup (_("Google Reader login failed!"));
 		gsource->loginState = GOOGLE_SOURCE_STATE_NONE;
 	}
@@ -441,7 +445,7 @@ google_source_item_retrieve_status (xmlNodePtr entry, gpointer userdata)
 				continue;
 
 			if (g_str_equal (label, "read")) {
-				debug1 (DEBUG_UPDATE, "%s will be marked as read\n", id);
+				debug1 (DEBUG_UPDATE, "Google Reader item '%s' will be marked as read", id);
 				read = TRUE;
 				xmlFree (label);
 				break;
@@ -684,6 +688,7 @@ google_source_remove (nodePtr node)
 nodePtr
 google_source_add_subscription(nodePtr node, nodePtr parent, subscriptionPtr subscription) 
 { 
+	g_assert(!googleSourceBlockEditHack);
 	debug_enter("google_source_add_subscription") ;
 	nodePtr child = node_new ();
 
@@ -705,9 +710,11 @@ google_source_add_subscription(nodePtr node, nodePtr parent, subscriptionPtr sub
 void
 google_source_remove_node(nodePtr node, nodePtr child) 
 { 
-	if (child == node || !child->subscription || !child->subscription->source ) return ; 
-
-	if (googleSourceBlockEditHack) return ;
+	if (child == node) { 
+		feedlist_node_removed(child);
+		return; 
+	}
+	g_assert(!googleSourceBlockEditHack);
 	google_source_edit_remove_subscription(google_source_get_root_from_node(node)->data, child->subscription->source); 
 }
 
