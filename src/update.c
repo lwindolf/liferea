@@ -137,9 +137,8 @@ update_request_free (updateRequestPtr request)
 	if (!request)
 		return;
 	
-	/* Never free update state, as it was only 
-	   linked from subscription properties! */
-	  
+	update_state_free (request->updateState);
+	
 	g_free (request->postdata);
 	g_free (request->source);
 	g_free (request->filtercmd);
