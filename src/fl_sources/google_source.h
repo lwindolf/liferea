@@ -56,6 +56,35 @@ enum  {
 } ;
 
 /**
+ * Google Source API URL's
+ * In each of the following, the _URL indicates the URL to use, and _POST
+ * indicates the corresponging postdata to send.
+ * @see http://code.google.com/p/pyrfeed/wiki/GoogleReaderAPI
+ */
+
+/**
+ * Google Reader Login api.
+ * @param Email The google account email id.
+ * @param Passwd The google account password.
+ * @return The return data has a line "SID=xxxx" which should be stored to be
+ *         used as a cookie in future requests. 
+ */ 
+#define GOOGLE_READER_LOGIN_URL "https://www.google.com/accounts/ClientLogin" 
+#define GOOGLE_READER_LOGIN_POST "service=reader&Email=%s&Passwd=%s&source=liferea&continue=http://www.google.com"
+
+/**
+ * Acts like a feed, indicating all the posts shared by the Google Reader
+ * friends. Does not take any params, but 'sid' cookie needs to be set.
+ */
+#define GOOGLE_READER_BROADCAST_FRIENDS_URL "http://www.google.com/reader/atom/user/-/state/com.google/broadcast-friends" 
+
+/**
+ * Get a list of subscriptions.
+ */
+#define GOOGLE_READER_SUBSCRIPTION_LIST_URL "http://www.google.com/reader/api/0/subscription/list"
+
+
+/**
  * Returns Google Reader source type implementation info.
  */
 nodeSourceTypePtr google_source_get_type(void);

@@ -42,7 +42,7 @@
 
 /** default Google reader subscription list update interval = once a day */
 #define GOOGLE_SOURCE_UPDATE_INTERVAL 60*60*24
-#define GOOGLE_SOURCE_BROADCAST_FRIENDS_URI "http://www.google.com/reader/atom/user/-/state/com.google/broadcast-friends" 
+
 /**
  * when this is set to true, and google_source_item_mark_read is called, 
  * it will do nothing. This is a small hack, so that whenever google source
@@ -80,7 +80,7 @@ google_source_check_for_removal (nodePtr node, gpointer user_data)
 {
 	gchar		*expr = NULL;
 
-	if ( g_str_equal(node->subscription->source, GOOGLE_SOURCE_BROADCAST_FRIENDS_URI) ) 
+	if ( g_str_equal(node->subscription->source, GOOGLE_READER_BROADCAST_FRIENDS_URL) ) 
 		return ; 
 	if (IS_FEED (node)) {
 		expr = g_strdup_printf ("/object/list[@name='subscriptions']/object/string[@name='id'][. = 'feed/%s']", node->subscription->source);
@@ -164,7 +164,7 @@ google_source_add_broadcast_subscription (GoogleSourcePtr gsource)
 		node = (nodePtr)iter->data ; 
 		if (!node->subscription || !node->subscription->source) 
 			continue;
-		if (g_str_equal (node->subscription->source, GOOGLE_SOURCE_BROADCAST_FRIENDS_URI)) {
+		if (g_str_equal (node->subscription->source, GOOGLE_READER_BROADCAST_FRIENDS_URL)) {
 			update_state_set_cookies (node->subscription->updateState, 
 			                          gsource->sid);
 			return;
@@ -179,7 +179,7 @@ google_source_add_broadcast_subscription (GoogleSourcePtr gsource)
 	node_set_type (node, feed_get_node_type ());
 	node_set_data (node, feed_new ());
 
-	node_set_subscription (node, subscription_new (GOOGLE_SOURCE_BROADCAST_FRIENDS_URI, NULL, NULL));
+	node_set_subscription (node, subscription_new (GOOGLE_READER_BROADCAST_FRIENDS_URL, NULL, NULL));
 	node->subscription->type = &googleSourceFeedSubscriptionType;
 	node_set_parent (node, gsource->root, -1);
 	feedlist_node_imported (node);
@@ -273,7 +273,11 @@ google_source_login (subscriptionPtr subscription, guint32 flags)
 			     gsource->loginState);
 	}
 
-	source = g_strdup_printf ("https://www.google.com/accounts/ClientLogin?service=reader&Email=%s&Passwd=%s&source=liferea&continue=http://www.google.com",
+	/* @todo: The following is a severe security issue, since the password
+	 * is being sent in the URL itself. As of now, since 'subscription'
+	 * does not have a postdata support, I don't have much choice. */
+	source = g_strdup_printf ( GOOGLE_READER_LOGIN_URL "?" 
+				   GOOGLE_READER_LOGIN_POST,
 	                     	  subscription->updateOptions->username,
 	                          subscription->updateOptions->password);
 
@@ -406,7 +410,7 @@ google_opml_subscription_prepare_update_request (subscriptionPtr subscription, s
 	}
 	debug1 (DEBUG_UPDATE, "updating Google Reader subscription (node id %s)", subscription->node->id);
 	
-	update_request_set_source(request, "http://www.google.com/reader/api/0/subscription/list");
+	update_request_set_source(request, GOOGLE_READER_SUBSCRIPTION_LIST_URL);
 	
 	update_state_set_cookies (request->updateState, gsource->sid);
 	
@@ -589,7 +593,7 @@ google_feed_subscription_prepare_update_request (subscriptionPtr subscription,
 	}
 	debug0 (DEBUG_UPDATE, "Setting cookies for a Google Reader subscription");
 
-	if ( !g_str_equal(request->source, GOOGLE_SOURCE_BROADCAST_FRIENDS_URI) ) { 
+	if ( !g_str_equal(request->source, GOOGLE_READER_BROADCAST_FRIENDS_URL) ) { 
 		gchar* source_escaped = g_uri_escape_string(request->source,
 							    NULL, TRUE);
 		gchar* newUrl = g_strdup_printf("http://www.google.com/reader/atom/feed/%s", source_escaped) ;
