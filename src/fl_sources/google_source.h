@@ -121,7 +121,7 @@ enum  {
  * @param a The tag to add. 
  * @param T a token obtained using GOOGLE_READER_TOKEN_URL
  */
-#define GOOGLE_READER_EDIT_TAG_ADD_TAG "i=%s&s=feed%%2F%s&a=%s&ac=edit-tags&T=%s"
+#define GOOGLE_READER_EDIT_TAG_ADD_TAG "i=%s&s=feed%%2F%s&a=%s&ac=edit-tags&T=%s&async=true"
 
 
 /**
@@ -134,7 +134,7 @@ enum  {
  * @param r The tag to remove
  * @param T a token obtained using GOOGLE_READER_TOKEN_URL
  */
-#define GOOGLE_READER_EDIT_TAG_AR_TAG "i=%s&s=feed%%2F%s&a=%s&r=%s&ac=edit-tags&T=%s"
+#define GOOGLE_READER_EDIT_TAG_AR_TAG "i=%s&s=feed%%2F%s&a=%s&r=%s&ac=edit-tags&T=%s&async=true"
 
 
 /** A set of tags (states) defined by Google reader */

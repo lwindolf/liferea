@@ -241,7 +241,7 @@ google_source_api_edit_tag(GoogleSourceActionPtr action, updateRequestPtr reques
 	}
 	else if (action->actionType == EDIT_ACTION_TRACKING_MARK_UNREAD) {
 		a_escaped = g_uri_escape_string (GOOGLE_READER_TAG_TRACKING_KEPT_UNREAD, NULL, TRUE);
-		postdata = g_strdup_printf (GOOGLE_READER_EDIT_TAG_ADD_TAG "&async=true", i_escaped, s_escaped, a_escaped, token);
+		postdata = g_strdup_printf (GOOGLE_READER_EDIT_TAG_ADD_TAG, i_escaped, s_escaped, a_escaped, token);
 	}  else g_assert(FALSE);
 	
 	g_free (s_escaped);
