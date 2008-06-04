@@ -59,7 +59,7 @@ GoogleSourcePtr google_source_new(nodePtr node)
 {
 	GoogleSourcePtr source = g_new0(struct GoogleSource, 1) ;
 	source->root = node; 
-	source->editQueue = g_queue_new(); 
+	source->actionQueue = g_queue_new(); 
 	source->loginState = GOOGLE_SOURCE_STATE_NONE; 
 	return source;
 }
@@ -69,7 +69,7 @@ void google_source_free(GoogleSourcePtr gsource)
 {
 	if (!gsource) return ;
 
-	g_queue_free(gsource->editQueue) ;
+	g_queue_free(gsource->actionQueue) ;
 	g_free(gsource);
 }
 

@@ -102,8 +102,8 @@ google_source_edit_export (GoogleSourcePtr gsource)
 	xmlTextWriterWriteAttribute(writer, BAD_CAST "version", 
 				    BAD_CAST PACKAGE_VERSION);
 
-	while ( !g_queue_is_empty(gsource->editQueue) ) {
-		GoogleSourceActionPtr action = g_queue_pop_head(gsource->editQueue);
+	while ( !g_queue_is_empty(gsource->actionQueue) ) {
+		GoogleSourceActionPtr action = g_queue_pop_head(gsource->actionQueue);
 		google_source_edit_export_helper(action, writer);
 	}
 	
@@ -283,10 +283,10 @@ google_source_edit_token_cb (const struct updateResult * const result, gpointer 
 
 	token = result->data; 
 
-	if (!gsource || g_queue_is_empty (gsource->editQueue))
+	if (!gsource || g_queue_is_empty (gsource->actionQueue))
 		return;
 
-	action = g_queue_peek_head (gsource->editQueue);
+	action = g_queue_peek_head (gsource->actionQueue);
 
 	request = update_request_new ();
 	request->updateState = update_state_copy (gsource->root->subscription->updateState);
@@ -305,7 +305,7 @@ google_source_edit_token_cb (const struct updateResult * const result, gpointer 
 	update_execute_request (gsource, request, google_source_edit_action_complete, 
 	                        google_source_action_context_new(gsource, action), 0);
 
-	action = g_queue_pop_head (gsource->editQueue);
+	action = g_queue_pop_head (gsource->actionQueue);
 }
 
 void
@@ -314,7 +314,7 @@ google_source_edit_process (GoogleSourcePtr gsource)
 	updateRequestPtr request; 
 	
 	g_assert (gsource);
-	if (g_queue_is_empty (gsource->editQueue))
+	if (g_queue_is_empty (gsource->actionQueue))
 		return;
 	
 	/*
@@ -336,9 +336,9 @@ google_source_edit_process (GoogleSourcePtr gsource)
 void
 google_source_edit_push_ (GoogleSourcePtr gsource, GoogleSourceActionPtr action, gboolean head)
 { 
-	g_assert (gsource->editQueue);
-	if (head) g_queue_push_head (gsource->editQueue, action) ;
-	else      g_queue_push_tail (gsource->editQueue, action) ;
+	g_assert (gsource->actionQueue);
+	if (head) g_queue_push_head (gsource->actionQueue, action) ;
+	else      g_queue_push_tail (gsource->actionQueue, action) ;
 }
 
 void 
@@ -458,7 +458,7 @@ void google_source_edit_remove_subscription(GoogleSourcePtr gsource, const gchar
 gboolean google_source_edit_is_in_queue(GoogleSourcePtr gsource, const gchar* guid) 
 {
 	/* this is inefficient, but works for the timebeing */
-	GList *cur = gsource->editQueue->head ; 
+	GList *cur = gsource->actionQueue->head ; 
 	for(; cur; cur = g_list_next(cur)) { 
 		GoogleSourceActionPtr action = cur->data ; 
 		if (action->guid && g_str_equal(action->guid, guid))
