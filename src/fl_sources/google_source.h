@@ -96,8 +96,8 @@ enum  {
  * @param URL The feed URL, or the page URL for feed autodiscovery.
  * @param T   a token obtained using GOOGLE_READER_TOKEN_URL
  */
-#define GOOGLE_READER_ADD_SUBSCRIPTION_URL "http://www.google.com/reader/api/0/subscription/quickadd?client=liferea"
-#define GOOGLE_READER_ADD_SUBSCRIPTION_POST "quickadd=%s&ac=subscribe&T=%s"
+#define GOOGLE_READER_ADD_SUBSCRIPTION_URL "http://www.google.com/reader/api/0/subscription/edit?client=liferea"
+#define GOOGLE_READER_ADD_SUBSCRIPTION_POST "s=feed%%2F%s&i=null&ac=subscribe&T=%s"
 
 /**
  * Unsubscribe from a subscription.

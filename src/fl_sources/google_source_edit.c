@@ -205,7 +205,8 @@ google_source_api_add_subscription(GoogleSourceActionPtr action, updateRequestPt
 	gchar* postdata = g_strdup_printf(GOOGLE_READER_ADD_SUBSCRIPTION_POST,
 					  s_escaped, token) ;
 	g_free(s_escaped);
-	
+
+	debug1 (DEBUG_UPDATE, "google_source: postdata [%s]", postdata);
 	request->postdata = postdata ;
 }
 
