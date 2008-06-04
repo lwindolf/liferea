@@ -200,9 +200,9 @@ google_source_edit_action_complete(
 static void
 google_source_api_add_subscription(GoogleSourceActionPtr action, updateRequestPtr request, const gchar* token) 
 {
-	update_request_set_source(request, "http://www.google.com/reader/api/0/subscription/quickadd?client=liferea");
+	update_request_set_source(request, GOOGLE_READER_ADD_SUBSCRIPTION_URL);
 	gchar* s_escaped = g_uri_escape_string(action->feedUrl, NULL, TRUE) ;
-	gchar* postdata = g_strdup_printf("quickadd=%s&ac=subscribe&T=%s",
+	gchar* postdata = g_strdup_printf(GOOGLE_READER_ADD_SUBSCRIPTION_POST,
 					  s_escaped, token) ;
 	g_free(s_escaped);
 	
@@ -212,16 +212,16 @@ google_source_api_add_subscription(GoogleSourceActionPtr action, updateRequestPt
 static void
 google_source_api_remove_subscription(GoogleSourceActionPtr action, updateRequestPtr request, const gchar* token) 
 {
-	update_request_set_source(request, "http://www.google.com/reader/api/0/subscription/edit?client=liferea");
+	update_request_set_source(request, GOOGLE_READER_REMOVE_SUBSCRIPTION_URL);
 	gchar* s_escaped = g_uri_escape_string(action->feedUrl, NULL, TRUE);
 	g_assert(!request->postdata);
-	request->postdata = g_strdup_printf("s=feed%%2F%s&i=null&ac=unsubscribe&T=%s",s_escaped, token);
+	request->postdata = g_strdup_printf(GOOGLE_READER_REMOVE_SUBSCRIPTION_POST, s_escaped, token);
 	g_free(s_escaped);
 }
 static void 
 google_source_api_edit_tag(GoogleSourceActionPtr action, updateRequestPtr request, const gchar*token) 
 {
-	update_request_set_source(request, "http://www.google.com/reader/api/0/edit-tag?client=liferea"); 
+	update_request_set_source(request, GOOGLE_READER_EDIT_TAG_URL); 
 
 	gchar* s_escaped = g_uri_escape_string (action->feedUrl, NULL, TRUE);
 	gchar* a_escaped = NULL ;
@@ -229,18 +229,18 @@ google_source_api_edit_tag(GoogleSourceActionPtr action, updateRequestPtr reques
 	gchar* postdata = NULL ;
 
 	if (action->actionType == EDIT_ACTION_MARK_UNREAD) {
-		a_escaped = g_uri_escape_string ("user/-/state/com.google/kept-unread", NULL, TRUE);
-		gchar *r_escaped = g_uri_escape_string ("user/-/state/com.google/read", NULL, TRUE);
-		postdata = g_strdup_printf ("i=%s&s=feed%%2F%s&a=%s&r=%s&ac=edit-tags&T=%s", i_escaped, s_escaped, a_escaped, r_escaped, token);
+		a_escaped = g_uri_escape_string (GOOGLE_READER_TAG_KEPT_UNREAD, NULL, TRUE);
+		gchar *r_escaped = g_uri_escape_string (GOOGLE_READER_TAG_READ, NULL, TRUE);
+		postdata = g_strdup_printf (GOOGLE_READER_EDIT_TAG_AR_TAG, i_escaped, s_escaped, a_escaped, r_escaped, token);
 		g_free (r_escaped);
 	}
 	else if (action->actionType == EDIT_ACTION_MARK_READ) { 
-		a_escaped = g_uri_escape_string ("user/-/state/com.google/read", NULL, TRUE);
-		postdata = g_strdup_printf ("i=%s&s=feed%%2F%s&a=%s&ac=edit-tags&T=%s", i_escaped, s_escaped, a_escaped, token);
+		a_escaped = g_uri_escape_string (GOOGLE_READER_TAG_READ, NULL, TRUE);
+		postdata = g_strdup_printf (GOOGLE_READER_EDIT_TAG_ADD_TAG, i_escaped, s_escaped, a_escaped, token);
 	}
 	else if (action->actionType == EDIT_ACTION_TRACKING_MARK_UNREAD) {
-		a_escaped = g_uri_escape_string ("user/-/state/com.google/tracking-kept-unread", NULL, TRUE);
-		postdata = g_strdup_printf ("i=%s&s=feed%%2F%s&a=%s&ac=edit-tags&async=true&T=%s", i_escaped, s_escaped, a_escaped, token);
+		a_escaped = g_uri_escape_string (GOOGLE_READER_TAG_TRACKING_KEPT_UNREAD, NULL, TRUE);
+		postdata = g_strdup_printf (GOOGLE_READER_EDIT_TAG_ADD_TAG "&async=true", i_escaped, s_escaped, a_escaped, token);
 	}  else g_assert(FALSE);
 	
 	g_free (s_escaped);
@@ -326,7 +326,7 @@ google_source_edit_process (GoogleSourcePtr gsource)
 	request = update_request_new ();
 	request->updateState = update_state_copy (gsource->root->subscription->updateState);
 	request->options = update_options_copy (gsource->root->subscription->updateOptions);
-	request->source = g_strdup ("http://www.google.com/reader/api/0/token");
+	request->source = g_strdup (GOOGLE_READER_TOKEN_URL);
 	update_state_set_cookies (request->updateState, gsource->sid);
 
 	update_execute_request (gsource, request, google_source_edit_token_cb, 

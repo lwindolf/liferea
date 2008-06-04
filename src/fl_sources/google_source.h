@@ -60,6 +60,8 @@ enum  {
  * In each of the following, the _URL indicates the URL to use, and _POST
  * indicates the corresponging postdata to send.
  * @see http://code.google.com/p/pyrfeed/wiki/GoogleReaderAPI
+ * However as of now, the GoogleReaderAPI documentation seems outdated, some of
+ * mark read/unread API does not work as mentioned in the documentation.
  */
 
 /**
@@ -83,7 +85,63 @@ enum  {
  */
 #define GOOGLE_READER_SUBSCRIPTION_LIST_URL "http://www.google.com/reader/api/0/subscription/list"
 
+/**
+ * Get a token for an edit operation. (@todo A token can actually be used
+ * for multiple transactions.)
+ */
+#define GOOGLE_READER_TOKEN_URL "http://www.google.com/reader/api/0/token"
 
+/**
+ * Add a subscription
+ * @param URL The feed URL, or the page URL for feed autodiscovery.
+ * @param T   a token obtained using GOOGLE_READER_TOKEN_URL
+ */
+#define GOOGLE_READER_ADD_SUBSCRIPTION_URL "http://www.google.com/reader/api/0/subscription/quickadd?client=liferea"
+#define GOOGLE_READER_ADD_SUBSCRIPTION_POST "quickadd=%s&ac=subscribe&T=%s"
+
+/**
+ * Unsubscribe from a subscription.
+ * @param url The feed URL
+ * @param T   a token obtained using GOOGLE_READER_TOKEN_URL
+ */
+#define GOOGLE_READER_REMOVE_SUBSCRIPTION_URL "http://www.google.com/reader/api/0/subscription/edit?client=liferea"
+#define GOOGLE_READER_REMOVE_SUBSCRIPTION_POST "s=feed%%2F%s&i=null&ac=unsubscribe&T=%s"
+
+/**
+ * Edit the tags associated with an item. The parameters to this _have_ to be
+ * sent as post data. 
+ */
+#define GOOGLE_READER_EDIT_TAG_URL "http://www.google.com/reader/api/0/edit-tag?client=liferea"
+
+/**
+ * Postdata for adding a tag when using GOOGLE_READER_EDIT_TAG_URL.
+ * @param i The guid of the item.
+ * @param s The URL of the subscription containing the item. (Note that the 
+ *          following string adds the "feed/" prefix to this.)
+ * @param a The tag to add. 
+ * @param T a token obtained using GOOGLE_READER_TOKEN_URL
+ */
+#define GOOGLE_READER_EDIT_TAG_ADD_TAG "i=%s&s=feed%%2F%s&a=%s&r=%s&ac=edit-tags&T=%s"
+
+
+/**
+ * Postdata for adding a tag, and removing another tag at the same time, 
+ * when using GOOGLE_READER_EDIT_TAG_URL.
+ * @param i The guid of the item.
+ * @param s The URL of the subscription containing the item. (Note that the 
+ *          following string adds the "feed/" prefix to this.)
+ * @param a The tag to add. 
+ * @param r The tag to remove
+ * @param T a token obtained using GOOGLE_READER_TOKEN_URL
+ */
+#define GOOGLE_READER_EDIT_TAG_AR_TAG "i=%s&s=feed%%2F%s&a=%s&r=%s&ac=edit-tags&T=%s"
+
+
+/** A set of tags (states) defined by Google reader */
+
+#define GOOGLE_READER_TAG_KEPT_UNREAD          "user/-/state/com.google/kept-unread"
+#define GOOGLE_READER_TAG_READ                 "user/-/state/com.google/kept-unread"
+#define GOOGLE_READER_TAG_TRACKING_KEPT_UNREAD "user/-/state/com.google/tracking-kept-unread"
 /**
  * Returns Google Reader source type implementation info.
  */
