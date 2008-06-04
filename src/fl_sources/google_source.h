@@ -121,7 +121,7 @@ enum  {
  * @param a The tag to add. 
  * @param T a token obtained using GOOGLE_READER_TOKEN_URL
  */
-#define GOOGLE_READER_EDIT_TAG_ADD_TAG "i=%s&s=feed%%2F%s&a=%s&r=%s&ac=edit-tags&T=%s"
+#define GOOGLE_READER_EDIT_TAG_ADD_TAG "i=%s&s=feed%%2F%s&a=%s&ac=edit-tags&T=%s"
 
 
 /**
@@ -140,7 +140,7 @@ enum  {
 /** A set of tags (states) defined by Google reader */
 
 #define GOOGLE_READER_TAG_KEPT_UNREAD          "user/-/state/com.google/kept-unread"
-#define GOOGLE_READER_TAG_READ                 "user/-/state/com.google/kept-unread"
+#define GOOGLE_READER_TAG_READ                 "user/-/state/com.google/read"
 #define GOOGLE_READER_TAG_TRACKING_KEPT_UNREAD "user/-/state/com.google/tracking-kept-unread"
 /**
  * Returns Google Reader source type implementation info.
