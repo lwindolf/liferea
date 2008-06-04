@@ -26,42 +26,44 @@
  * so that google does not end up processing the requests in an 
  * unintended order.
  */
-typedef struct edit {
+typedef struct GoogleSourceAction {
 	/**
-	 * The guid of the item to edit.
+	 * The guid of the item to edit. This will be ignored if the 
+	 * edit is acting on an subscription rather than an item.
 	 */
 	gchar* guid;
 
 	/**
-	 * The feed url to containing the item. Or the url of the subscription
-	 * to edit.
+	 * A MANDATORY feed url to containing the item, or the url of the 
+	 * subscription to edit. 
 	 */
 	gchar* feedUrl;	
 
 	/**
 	 * A callback function on completion of the edit.
 	 */
-	void (*callback) (GoogleSourcePtr gsource, struct edit* edit, gboolean success);
+	void (*callback) (GoogleSourcePtr gsource, struct GoogleSourceAction* edit, gboolean success);
 	enum { 
 		EDIT_ACTION_MARK_READ,
 		EDIT_ACTION_MARK_UNREAD,
 		EDIT_ACTION_TRACKING_MARK_UNREAD, /**< every UNREAD request, should be followed by tracking-kept-unread */
 		EDIT_ACTION_ADD_SUBSCRIPTION,
 		EDIT_ACTION_REMOVE_SUBSCRIPTION
-	} action;
+	} actionType;
 		
-} *editPtr ; 
+} *GoogleSourceActionPtr ; 
 
+typedef struct GoogleSourceAction* editPtr ;
 /**
  * Create a new instance of edit.
  */
-editPtr google_source_edit_new () ; 
+GoogleSourceActionPtr google_source_action_new () ; 
 
 /**
  * Free an allocated edit structure
  * @param edit the a pointer to the edit structure to delete.
  */
-void google_source_edit_free (editPtr edit); 
+void google_source_action_free (GoogleSourceActionPtr edit); 
 
 /**
  * Process the waiting edits on the edit queue. Call this if the state of
@@ -69,7 +71,7 @@ void google_source_edit_free (editPtr edit);
  * 
  * @param gsource The GoogleSource whose editQueue should be processed.
  */
-void google_source_edit_process(GoogleSourcePtr gsource);
+void google_source_edit_process (GoogleSourcePtr gsource);
 
 
 /**
@@ -83,7 +85,7 @@ void google_source_edit_process(GoogleSourcePtr gsource);
  * @param head   Whether to push the edit to the head.
  */
 void
-google_source_edit_push (GoogleSourcePtr gsource, editPtr edit, gboolean head) ;
+google_source_edit_push (GoogleSourcePtr gsource, GoogleSourceActionPtr edit, gboolean head) ;
 
 
 /** Edit wrappers */

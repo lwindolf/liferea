@@ -35,52 +35,52 @@
 #include <glib/gstdio.h>
 #include "xml.h"
 
-typedef struct editCtxt { 
+typedef struct GoogleSourceActionCtxt { 
 	gchar   *nodeId ;
-	editPtr edit; 
-} *editCtxtPtr; 
+	GoogleSourceActionPtr action; 
+} *GoogleSourceActionCtxtPtr; 
 
-editPtr 
-google_source_edit_new (void)
+GoogleSourceActionPtr 
+google_source_action_new (void)
 {
-	editPtr edit = g_new0 (struct edit, 1);
-	return edit;
+	GoogleSourceActionPtr action = g_new0 (struct GoogleSourceAction, 1);
+	return action;
 }
 
 void 
-google_source_edit_free (editPtr edit)
+google_source_action_free (GoogleSourceActionPtr action)
 { 
-	g_free (edit->guid);
-	g_free (edit->feedUrl);
-	g_free (edit);
+	g_free (action->guid);
+	g_free (action->feedUrl);
+	g_free (action);
 }
 
-editCtxtPtr
-google_source_edit_context_new(GoogleSourcePtr gsource, editPtr edit)
+GoogleSourceActionCtxtPtr
+google_source_action_context_new(GoogleSourcePtr gsource, GoogleSourceActionPtr action)
 {
-	editCtxtPtr ctxt = g_new0(struct editCtxt, 1);
+	GoogleSourceActionCtxtPtr ctxt = g_new0(struct GoogleSourceActionCtxt, 1);
 	ctxt->nodeId = g_strdup(gsource->root->id);
-	ctxt->edit = edit;
+	ctxt->action = action;
 	return ctxt;
 }
 
 gchar* google_source_edit_get_cachefile (GoogleSourcePtr gsource) 
 {
-	return common_create_cache_filename("cache" G_DIR_SEPARATOR_S "plugins", gsource->root->id, "edits.xml");
+	return common_create_cache_filename("cache" G_DIR_SEPARATOR_S "plugins", gsource->root->id, "savedactions.xml");
 }
 
 static void
-google_source_edit_export_helper (editPtr edit, xmlTextWriterPtr writer) 
+google_source_edit_export_helper (GoogleSourceActionPtr action, xmlTextWriterPtr writer) 
 {
-	xmlTextWriterStartElement(writer, BAD_CAST "edit") ;
+	xmlTextWriterStartElement(writer, BAD_CAST "action") ;
 
-	gchar* action = g_strdup_printf("%d", edit->action) ;
-	xmlTextWriterWriteElement(writer, BAD_CAST "action", action);
-	g_free(action);
-	if (edit->feedUrl) 
-		xmlTextWriterWriteElement(writer, BAD_CAST "feedUrl", edit->feedUrl ) ;
-	if (edit->guid) 
-		xmlTextWriterWriteElement(writer, BAD_CAST "guid", edit->guid);
+	gchar* actionType = g_strdup_printf("%d", action->actionType) ;
+	xmlTextWriterWriteElement(writer, BAD_CAST "action", actionType);
+	g_free(actionType);
+	if (action->feedUrl) 
+		xmlTextWriterWriteElement(writer, BAD_CAST "feedUrl", action->feedUrl ) ;
+	if (action->guid) 
+		xmlTextWriterWriteElement(writer, BAD_CAST "guid", action->guid);
 	xmlTextWriterEndElement(writer);
 }
 void
@@ -98,13 +98,13 @@ google_source_edit_export (GoogleSourcePtr gsource)
 	}
 	xmlTextWriterStartDocument(writer, NULL, "UTF-8", NULL);
 
-	xmlTextWriterStartElement(writer, BAD_CAST "edits");
+	xmlTextWriterStartElement(writer, BAD_CAST "actions");
 	xmlTextWriterWriteAttribute(writer, BAD_CAST "version", 
 				    BAD_CAST PACKAGE_VERSION);
 
 	while ( !g_queue_is_empty(gsource->editQueue) ) {
-		editPtr edit = g_queue_pop_head(gsource->editQueue);
-		google_source_edit_export_helper(edit, writer);
+		GoogleSourceActionPtr action = g_queue_pop_head(gsource->editQueue);
+		google_source_edit_export_helper(action, writer);
 	}
 	
 	xmlTextWriterEndElement(writer);
@@ -117,27 +117,27 @@ void
 google_source_edit_import_helper(xmlNodePtr match, gpointer userdata) 
 {
 	GoogleSourcePtr gsource = (GoogleSourcePtr) userdata ;
-	editPtr edit;
+	GoogleSourceActionPtr action;
 	xmlNodePtr cur; 
 
-	edit = google_source_edit_new() ;
+	action = google_source_action_new() ;
 	
 	cur = match->children ; 
 	while (cur) {
 		xmlChar *content = xmlNodeGetContent(cur);
 		if ( g_str_equal((gchar*) cur->name, "action")) {
-			edit->action = atoi(content) ;
+			action->actionType = atoi(content) ;
 		} else if ( g_str_equal((gchar*) cur->name, "guid") ){ 
-			edit->guid = g_strdup((gchar*) content);
+			action->guid = g_strdup((gchar*) content);
 		} else if ( g_str_equal((gchar*) cur->name, "feedUrl")) {
-			edit->feedUrl = g_strdup((gchar*) content);
+			action->feedUrl = g_strdup((gchar*) content);
 		}
 		if (content) xmlFree(content);
 		cur = cur->next;
 	}
 
-	debug3(DEBUG_CACHE, "Found edit request: %d %s %s \n", edit->action, edit->feedUrl, edit->guid);
-	google_source_edit_push(gsource, edit, FALSE) ;
+	debug3(DEBUG_CACHE, "Found edit request: %d %s %s \n", action->actionType, action->feedUrl, action->guid);
+	google_source_edit_push(gsource, action, FALSE) ;
 }
 void
 google_source_edit_import(GoogleSourcePtr gsource) 
@@ -152,7 +152,7 @@ google_source_edit_import(GoogleSourcePtr gsource)
 
 	xmlNodePtr root = xmlDocGetRootElement(doc);
 	
-	xpath_foreach_match(root, "/edits/edit", google_source_edit_import_helper, 
+	xpath_foreach_match(root, "/actions/action", google_source_edit_import_helper, 
 		gsource);
 
 	g_unlink(file); 
@@ -166,42 +166,42 @@ google_source_edit_action_complete(
 	gpointer userdata, 
 	updateFlags flags) 
 { 
-	editCtxtPtr     editCtxt = (editCtxtPtr) userdata ; 
+	GoogleSourceActionCtxtPtr     editCtxt = (GoogleSourceActionCtxtPtr) userdata ; 
 	nodePtr         node = node_from_id(editCtxt->nodeId);
 	GoogleSourcePtr gsource; 
-	editPtr         edit   = editCtxt->edit ;
+	GoogleSourceActionPtr         action   = editCtxt->action ;
 	
 	g_free(editCtxt);
 
 	if (!node) {
-		google_source_edit_free(edit);
+		google_source_action_free(action);
 		return ; /* probably got deleted before this callback */
 	} 
 	gsource = (GoogleSourcePtr) node->data;
 		
 	if ( result->data == NULL || !g_str_equal(result->data, "OK")) {
-		if ( edit->callback ) 
-			(*edit->callback)(gsource, edit, FALSE);
+		if ( action->callback ) 
+			(*action->callback)(gsource, action, FALSE);
 		debug1(DEBUG_UPDATE, "The edit action failed with result: %s\n",
 		       result->data);
-		google_source_edit_free(edit);
+		google_source_action_free(action);
 		return ; /** @todo start a timer for next processing */
 	}
 	
-	if ( edit->callback )
-		edit->callback(gsource, edit, TRUE);
+	if ( action->callback )
+		action->callback(gsource, action, TRUE);
 
-	google_source_edit_free(edit) ;
+	google_source_action_free(action) ;
 
 	/* process anything else waiting on the edit queue */
 	google_source_edit_process (gsource);
 }
 
 static void
-google_source_api_add_subscription(editPtr edit, updateRequestPtr request, const gchar* token) 
+google_source_api_add_subscription(GoogleSourceActionPtr action, updateRequestPtr request, const gchar* token) 
 {
 	update_request_set_source(request, "http://www.google.com/reader/api/0/subscription/quickadd?client=liferea");
-	gchar* s_escaped = g_uri_escape_string(edit->feedUrl, NULL, TRUE) ;
+	gchar* s_escaped = g_uri_escape_string(action->feedUrl, NULL, TRUE) ;
 	gchar* postdata = g_strdup_printf("quickadd=%s&ac=subscribe&T=%s",
 					  s_escaped, token) ;
 	g_free(s_escaped);
@@ -210,35 +210,35 @@ google_source_api_add_subscription(editPtr edit, updateRequestPtr request, const
 }
 
 static void
-google_source_api_remove_subscription(editPtr edit, updateRequestPtr request, const gchar* token) 
+google_source_api_remove_subscription(GoogleSourceActionPtr action, updateRequestPtr request, const gchar* token) 
 {
 	update_request_set_source(request, "http://www.google.com/reader/api/0/subscription/edit?client=liferea");
-	gchar* s_escaped = g_uri_escape_string(edit->feedUrl, NULL, TRUE);
+	gchar* s_escaped = g_uri_escape_string(action->feedUrl, NULL, TRUE);
 	g_assert(!request->postdata);
 	request->postdata = g_strdup_printf("s=feed%%2F%s&i=null&ac=unsubscribe&T=%s",s_escaped, token);
 	g_free(s_escaped);
 }
 static void 
-google_source_api_edit_tag(editPtr edit, updateRequestPtr request, const gchar*token) 
+google_source_api_edit_tag(GoogleSourceActionPtr action, updateRequestPtr request, const gchar*token) 
 {
 	update_request_set_source(request, "http://www.google.com/reader/api/0/edit-tag?client=liferea"); 
 
-	gchar* s_escaped = g_uri_escape_string (edit->feedUrl, NULL, TRUE);
+	gchar* s_escaped = g_uri_escape_string (action->feedUrl, NULL, TRUE);
 	gchar* a_escaped = NULL ;
-	gchar* i_escaped = g_uri_escape_string (edit->guid, NULL, TRUE);
+	gchar* i_escaped = g_uri_escape_string (action->guid, NULL, TRUE);
 	gchar* postdata = NULL ;
 
-	if (edit->action == EDIT_ACTION_MARK_UNREAD) {
+	if (action->actionType == EDIT_ACTION_MARK_UNREAD) {
 		a_escaped = g_uri_escape_string ("user/-/state/com.google/kept-unread", NULL, TRUE);
 		gchar *r_escaped = g_uri_escape_string ("user/-/state/com.google/read", NULL, TRUE);
 		postdata = g_strdup_printf ("i=%s&s=feed%%2F%s&a=%s&r=%s&ac=edit-tags&T=%s", i_escaped, s_escaped, a_escaped, r_escaped, token);
 		g_free (r_escaped);
 	}
-	else if (edit->action == EDIT_ACTION_MARK_READ) { 
+	else if (action->actionType == EDIT_ACTION_MARK_READ) { 
 		a_escaped = g_uri_escape_string ("user/-/state/com.google/read", NULL, TRUE);
 		postdata = g_strdup_printf ("i=%s&s=feed%%2F%s&a=%s&ac=edit-tags&T=%s", i_escaped, s_escaped, a_escaped, token);
 	}
-	else if (edit->action == EDIT_ACTION_TRACKING_MARK_UNREAD) {
+	else if (action->actionType == EDIT_ACTION_TRACKING_MARK_UNREAD) {
 		a_escaped = g_uri_escape_string ("user/-/state/com.google/tracking-kept-unread", NULL, TRUE);
 		postdata = g_strdup_printf ("i=%s&s=feed%%2F%s&a=%s&ac=edit-tags&async=true&T=%s", i_escaped, s_escaped, a_escaped, token);
 	}  else g_assert(FALSE);
@@ -264,7 +264,7 @@ google_source_edit_token_cb (const struct updateResult * const result, gpointer 
 	nodePtr          node;
 	GoogleSourcePtr  gsource;
 	const gchar*     token;
-	editPtr          edit;
+	GoogleSourceActionPtr          action;
 	updateRequestPtr request; 
 
 	if (result->returncode != 0) { 
@@ -286,26 +286,26 @@ google_source_edit_token_cb (const struct updateResult * const result, gpointer 
 	if (!gsource || g_queue_is_empty (gsource->editQueue))
 		return;
 
-	edit = g_queue_peek_head (gsource->editQueue);
+	action = g_queue_peek_head (gsource->editQueue);
 
 	request = update_request_new ();
 	request->updateState = update_state_copy (gsource->root->subscription->updateState);
 	request->options = update_options_copy (gsource->root->subscription->updateOptions) ;
 	update_state_set_cookies (request->updateState, gsource->sid);
 
-	if ( edit->action == EDIT_ACTION_MARK_READ || 
-	     edit->action == EDIT_ACTION_MARK_UNREAD || 
-	     edit->action == EDIT_ACTION_TRACKING_MARK_UNREAD ) 
-		google_source_api_edit_tag (edit, request, token);
-	else if (edit->action == EDIT_ACTION_ADD_SUBSCRIPTION ) 
-		google_source_api_add_subscription(edit, request, token);
-	else if (edit->action == EDIT_ACTION_REMOVE_SUBSCRIPTION )
-		google_source_api_remove_subscription(edit, request, token) ;
+	if ( action->actionType == EDIT_ACTION_MARK_READ || 
+	     action->actionType == EDIT_ACTION_MARK_UNREAD || 
+	     action->actionType == EDIT_ACTION_TRACKING_MARK_UNREAD ) 
+		google_source_api_edit_tag (action, request, token);
+	else if (action->actionType == EDIT_ACTION_ADD_SUBSCRIPTION ) 
+		google_source_api_add_subscription(action, request, token);
+	else if (action->actionType == EDIT_ACTION_REMOVE_SUBSCRIPTION )
+		google_source_api_remove_subscription(action, request, token) ;
 
 	update_execute_request (gsource, request, google_source_edit_action_complete, 
-	                        google_source_edit_context_new(gsource, edit), 0);
+	                        google_source_action_context_new(gsource, action), 0);
 
-	edit = g_queue_pop_head (gsource->editQueue);
+	action = g_queue_pop_head (gsource->editQueue);
 }
 
 void
@@ -334,19 +334,19 @@ google_source_edit_process (GoogleSourcePtr gsource)
 }
 
 void
-google_source_edit_push_ (GoogleSourcePtr gsource, editPtr edit, gboolean head)
+google_source_edit_push_ (GoogleSourcePtr gsource, GoogleSourceActionPtr action, gboolean head)
 { 
 	g_assert (gsource->editQueue);
-	if (head) g_queue_push_head (gsource->editQueue, edit) ;
-	else      g_queue_push_tail (gsource->editQueue, edit) ;
+	if (head) g_queue_push_head (gsource->editQueue, action) ;
+	else      g_queue_push_tail (gsource->editQueue, action) ;
 }
 
 void 
-google_source_edit_push (GoogleSourcePtr gsource, editPtr edit, gboolean head)
+google_source_edit_push (GoogleSourcePtr gsource, GoogleSourceActionPtr action, gboolean head)
 {
 	g_assert(gsource);
 	nodePtr root = gsource->root ;
-	google_source_edit_push_ (gsource, edit, head) ;
+	google_source_edit_push_ (gsource, action, head) ;
 
 	/** @todo any flags I should specify? */
 	if (gsource->loginState == GOOGLE_SOURCE_STATE_NONE) 
@@ -363,14 +363,14 @@ google_source_edit_mark_read (
 	const gchar *feedUrl,
 	gboolean newStatus)
 {
-	editPtr edit = google_source_edit_new ();
+	GoogleSourceActionPtr action = google_source_action_new ();
 
-	edit->guid = g_strdup (guid);
-	edit->feedUrl = g_strdup (feedUrl);
-	edit->action = newStatus ? EDIT_ACTION_MARK_READ :
+	action->guid = g_strdup (guid);
+	action->feedUrl = g_strdup (feedUrl);
+	action->actionType = newStatus ? EDIT_ACTION_MARK_READ :
 	                           EDIT_ACTION_MARK_UNREAD;
 
-	google_source_edit_push (gsource, edit, FALSE);
+	google_source_edit_push (gsource, action, FALSE);
 
 	if (newStatus == FALSE) { 
 		/*
@@ -378,16 +378,16 @@ google_source_edit_mark_read (
 		 * I also need to mark it as tracking-kept-unread in a separate
 		 * network call.
 		 */
-		edit = google_source_edit_new ();
-		edit->guid = g_strdup (guid);
-		edit->feedUrl = g_strdup (feedUrl);
-		edit->action = EDIT_ACTION_TRACKING_MARK_UNREAD;
-		google_source_edit_push (gsource, edit, FALSE);
+		action = google_source_action_new ();
+		action->guid = g_strdup (guid);
+		action->feedUrl = g_strdup (feedUrl);
+		action->actionType = EDIT_ACTION_TRACKING_MARK_UNREAD;
+		google_source_edit_push (gsource, action, FALSE);
 	}
 }
 
 
-void update_subscription_list_callback(GoogleSourcePtr gsource, editPtr edit, gboolean success) 
+void update_subscription_list_callback(GoogleSourcePtr gsource, GoogleSourceActionPtr action, gboolean success) 
 {
 	if ( success ) { 
 
@@ -400,7 +400,7 @@ void update_subscription_list_callback(GoogleSourcePtr gsource, editPtr edit, gb
 		GSList* cur = gsource->root->children ;
 		for( ; cur ; cur = g_slist_next(cur))  {
 			nodePtr node = (nodePtr) cur->data ; 
-			if ( g_str_equal(node->subscription->source, edit->feedUrl) ) {
+			if ( g_str_equal(node->subscription->source, action->feedUrl) ) {
 				subscription_set_source(node->subscription, "");
 				feedlist_node_added (node);
 			}
@@ -415,15 +415,15 @@ void google_source_edit_add_subscription(
 	GoogleSourcePtr gsource, 
 	const gchar* feedUrl)
 {
-	editPtr edit = google_source_edit_new() ;
-	edit->action = EDIT_ACTION_ADD_SUBSCRIPTION ; 
-	edit->feedUrl = g_strdup(feedUrl) ;
-	edit->callback = update_subscription_list_callback ;
-	google_source_edit_push(gsource, edit, TRUE);
+	GoogleSourceActionPtr action = google_source_action_new() ;
+	action->actionType = EDIT_ACTION_ADD_SUBSCRIPTION ; 
+	action->feedUrl = g_strdup(feedUrl) ;
+	action->callback = update_subscription_list_callback ;
+	google_source_edit_push(gsource, action, TRUE);
 }
 
 void
-google_source_edit_remove_callback (GoogleSourcePtr gsource, editPtr edit, gboolean success)
+google_source_edit_remove_callback (GoogleSourcePtr gsource, GoogleSourceActionPtr action, gboolean success)
 {
 	if (success) {	
 		// FIXME: code duplicated from update_subscription_list_callback ()
@@ -437,7 +437,7 @@ google_source_edit_remove_callback (GoogleSourcePtr gsource, editPtr edit, gbool
 		GSList* cur = gsource->root->children ;
 		for( ; cur ; cur = g_slist_next(cur))  {
 			nodePtr node = (nodePtr) cur->data ; 
-			if ( g_str_equal(node->subscription->source, edit->feedUrl) ) {
+			if ( g_str_equal(node->subscription->source, action->feedUrl) ) {
 				feedlist_node_removed (node);
 			}
 		}
@@ -448,11 +448,11 @@ google_source_edit_remove_callback (GoogleSourcePtr gsource, editPtr edit, gbool
 
 void google_source_edit_remove_subscription(GoogleSourcePtr gsource, const gchar* feedUrl) 
 {
-	editPtr edit = google_source_edit_new(); 
-	edit->action = EDIT_ACTION_REMOVE_SUBSCRIPTION ;
-	edit->feedUrl = g_strdup(feedUrl) ;
-	edit->callback = update_subscription_list_callback;
-	google_source_edit_push(gsource, edit, TRUE) ;
+	GoogleSourceActionPtr action = google_source_action_new(); 
+	action->actionType = EDIT_ACTION_REMOVE_SUBSCRIPTION ;
+	action->feedUrl = g_strdup(feedUrl) ;
+	action->callback = update_subscription_list_callback;
+	google_source_edit_push(gsource, action, TRUE) ;
 }
 
 gboolean google_source_edit_is_in_queue(GoogleSourcePtr gsource, const gchar* guid) 
@@ -460,8 +460,8 @@ gboolean google_source_edit_is_in_queue(GoogleSourcePtr gsource, const gchar* gu
 	/* this is inefficient, but works for the timebeing */
 	GList *cur = gsource->editQueue->head ; 
 	for(; cur; cur = g_list_next(cur)) { 
-		editPtr edit = cur->data ; 
-		if (edit->guid && g_str_equal(edit->guid, guid))
+		GoogleSourceActionPtr action = cur->data ; 
+		if (action->guid && g_str_equal(action->guid, guid))
 			return TRUE;
 	}
 	return FALSE;
