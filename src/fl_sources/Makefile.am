@@ -15,6 +15,7 @@ libliflsources_a_SOURCES = node_source.c node_source.h \
                            google_source.c google_source.h \
 			   google_source_edit.c google_source_edit.h \
 			   google_source_feed.c \
+			   google_source_opml.c \
                            opml_source.c opml_source.h \
 			   bloglines_source.c bloglines_source.h 
 

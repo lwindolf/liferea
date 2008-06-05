@@ -162,6 +162,8 @@ nodeSourceTypePtr google_source_get_type(void);
  */
 gboolean googleSourceBlockEditHack;
 
+extern struct subscriptionType googleSourceFeedSubscriptionType;
+extern struct subscriptionType googleSourceOpmlSubscriptionType;
 
 /**
  * Mark an item as read on the Google Reader server.
