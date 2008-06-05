@@ -165,6 +165,10 @@ gboolean googleSourceBlockEditHack;
 
 /**
  * Mark an item as read on the Google Reader server.
+ *
+ * @param node The node which contains the item
+ * @param item The item to whose status needs to be changed
+ * @param newStatus TRUE to mark the item as read, FALSE to mark as unread
  */
 void 
 google_source_item_mark_read(nodePtr node, itemPtr item, gboolean newStatus);
@@ -172,8 +176,19 @@ google_source_item_mark_read(nodePtr node, itemPtr item, gboolean newStatus);
 /**
  * Get the root node (the nodeSource) from any given subnode. A convenience
  * function.
+ *
+ * @param node The node whose nodeSource is to be found
+ * @return The nodeSource
  */
 nodePtr
 google_source_get_root_from_node(nodePtr node);
 
+/**
+ * Migrate a google source child-node from a Liferea 1.4 style read-only
+ * google source nodes.
+ *
+ * @param node The node to migrate (not the nodeSource!)
+ */
+void
+google_source_migrate_node(nodePtr node);
 #endif

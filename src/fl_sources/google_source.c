@@ -98,26 +98,6 @@ google_source_check_for_removal (nodePtr node, gpointer user_data)
 	g_free (expr);
 }
 
-static void
-google_source_migrate_node(nodePtr node, gpointer userdata) 
-{
-	/* scan the node for bad ID's, if so, brutally remove the node */
-	itemSetPtr itemset = node_get_itemset(node);
-	GList *iter = itemset->ids;
-	for (; iter; iter = g_list_next(iter)) {
-		itemPtr item = item_load (GPOINTER_TO_UINT (iter->data));
-		if (item && item->sourceId) {
-			if (!g_str_has_prefix(item->sourceId, "tag:google.com")) {
-				debug1(DEBUG_UPDATE, "Item with sourceId [%s] will be deleted.", item->sourceId);
-				db_item_remove(GPOINTER_TO_UINT(iter->data));
-			} 
-		}
-		if (item) item_unload (item) ;
-	}
-
-	/* cleanup */
-	itemset_free(itemset);
-}
 
 nodePtr
 google_source_get_root_from_node (nodePtr node)
@@ -280,7 +260,7 @@ google_subscription_opml_cb (subscriptionPtr subscription, const struct updateRe
 			   URLs are not in new feed list. Also removes those URLs
 			   from the list that have corresponding existing nodes. */
 			node_foreach_child_data (subscription->node, google_source_check_for_removal, (gpointer)root);
-			node_foreach_child_data (subscription->node, google_source_migrate_node, (gpointer) root);
+			node_foreach_child (subscription->node, google_source_migrate_node);
 						
 			opml_source_export (subscription->node);	/* save new feed list tree to disk 
 									   to ensure correct document in 
@@ -404,12 +384,6 @@ static struct subscriptionType googleSourceOpmlSubscriptionType = {
 };
 
 
-static void
-google_source_xml_unlink_node(xmlNodePtr node, gpointer data) 
-{
-	xmlUnlinkNode(node) ;
-	xmlFreeNode(node) ;
-}
 
 
 /** 

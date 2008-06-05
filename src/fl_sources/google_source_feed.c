@@ -12,6 +12,27 @@
 #include "subscription.h"
 #include "node.h"
 
+void
+google_source_migrate_node(nodePtr node) 
+{
+	/* scan the node for bad ID's, if so, brutally remove the node */
+	itemSetPtr itemset = node_get_itemset(node);
+	GList *iter = itemset->ids;
+	for (; iter; iter = g_list_next(iter)) {
+		itemPtr item = item_load (GPOINTER_TO_UINT (iter->data));
+		if (item && item->sourceId) {
+			if (!g_str_has_prefix(item->sourceId, "tag:google.com")) {
+				debug1(DEBUG_UPDATE, "Item with sourceId [%s] will be deleted.", item->sourceId);
+				db_item_remove(GPOINTER_TO_UINT(iter->data));
+			} 
+		}
+		if (item) item_unload (item) ;
+	}
+
+	/* cleanup */
+	itemset_free(itemset);
+}
+
 static void
 google_source_xml_unlink_node(xmlNodePtr node, gpointer data) 
 {
@@ -36,9 +57,6 @@ google_source_item_mark_read (nodePtr node, itemPtr item,
 				     node->subscription->source,
 				     newStatus);
 }
-
- 
-
 
 static void
 google_source_item_retrieve_status (xmlNodePtr entry, gpointer userdata)
@@ -221,3 +239,4 @@ struct subscriptionType googleSourceFeedSubscriptionType = {
 	google_feed_subscription_process_update_result,
 	NULL  /* free */
 };
+
