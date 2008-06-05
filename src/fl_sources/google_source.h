@@ -55,12 +55,11 @@ enum  {
 	 * Note: Uses higher 16 bits to avoid conflict.
 	 */
 	GOOGLE_SOURCE_UPDATE_ONLY_LIST = (1<<16),
-
 	/**
 	 * Only login, do not do any updates. 
 	 */
-	GOOGLE_SOURCE_UPDATE_ONLY_LOGIN = ( 1<<17)
-} ;
+	GOOGLE_SOURCE_UPDATE_ONLY_LOGIN = (1<<17)
+};
 
 /**
  * Google Source API URL's
