@@ -94,9 +94,9 @@ google_source_item_mark_read (nodePtr node, itemPtr item,
 	if (googleSourceBlockEditHack)
 		return;
 
-	const gchar* sourceUrl = item_get_real_source_url(item);
+	const gchar* sourceUrl = metadata_list_get(item->metadata, "GoogleBroadcastOrigFeed");
 	if (!sourceUrl) sourceUrl = node->subscription->source;
-	debug1(DEBUG_UPDATE, "GoogleSource: real source is %s", sourceUrl);
+	debug1(DEBUG_UPDATE, "GoogleSource: original source is %s", sourceUrl);
 	nodePtr root = google_source_get_root_from_node(node);
 	google_source_edit_mark_read((GoogleSourcePtr)root->data, 
 				     item->sourceId, 
@@ -105,7 +105,7 @@ google_source_item_mark_read (nodePtr node, itemPtr item,
 }
 
 static void
-google_source_set_real_source_url(const xmlNodePtr node, gpointer userdata)
+google_source_set_orig_source(const xmlNodePtr node, gpointer userdata)
 {
 	itemPtr item = (itemPtr) userdata ;
 	xmlChar*   value = xmlNodeGetContent(node);
@@ -113,7 +113,7 @@ google_source_set_real_source_url(const xmlNodePtr node, gpointer userdata)
 	debug1(DEBUG_UPDATE, "GoogleSource: Got %s as id while updating", value);
 	const gchar*     prefix = "tag:google.com,2005:reader/feed/";
 	if (g_str_has_prefix(value, prefix)) {
-		item_set_real_source_url(item, value + strlen(prefix));
+		metadata_list_set(&item->metadata, "GoogleBroadcastOrigFeed", value + strlen(prefix));
 		db_item_update(item);
 	}
 }
@@ -163,12 +163,11 @@ google_source_item_retrieve_status (const xmlNodePtr entry, gpointer userdata)
 				googleSourceBlockEditHack = FALSE;
 
 				if (g_str_equal(subscription->source, GOOGLE_READER_BROADCAST_FRIENDS_URL)) {
-					/* set the real_source, hopefully this is the correct thing to do */
 					xmlXPathContextPtr xpathCtxt = xmlXPathNewContext (entry->doc) ;
 					xmlXPathRegisterNs(xpathCtxt, "atom", "http://www.w3.org/2005/Atom");
 					xpathCtxt->node = entry;
 
-					google_source_xpath_foreach_match("./atom:source/atom:id", xpathCtxt, google_source_set_real_source_url, item);
+					google_source_xpath_foreach_match("./atom:source/atom:id", xpathCtxt, google_source_set_orig_source, item);
 
 					/* free up xpath related data */
 					if (xpathCtxt) xmlXPathFreeContext(xpathCtxt);
