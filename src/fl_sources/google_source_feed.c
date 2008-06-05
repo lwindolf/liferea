@@ -12,6 +12,28 @@
 #include "subscription.h"
 #include "node.h"
 
+/**
+ * This is identical to xpath_foreach_match, except that it takes the context
+ * as parameter.
+ */
+static void
+google_source_xpath_foreach_match(gchar* expr, xmlXPathContextPtr xpathCtxt, xpathMatchFunc func, gpointer user_data) 
+{
+	xmlXPathObjectPtr xpathObj = NULL;
+	xpathObj = xmlXPathEval ((xmlChar*)expr, xpathCtxt);
+	
+	if (xpathObj && xpathObj->nodesetval && xpathObj->nodesetval->nodeMax) {
+		int	i;
+		for (i = 0; i < xpathObj->nodesetval->nodeNr; i++) {
+			(*func) (xpathObj->nodesetval->nodeTab[i], user_data);
+			xpathObj->nodesetval->nodeTab[i] = NULL ;
+		}
+	}
+	
+	if (xpathObj)
+		xmlXPathFreeObject (xpathObj);
+}
+
 void
 google_source_migrate_node(nodePtr node) 
 {
@@ -51,15 +73,32 @@ google_source_item_mark_read (nodePtr node, itemPtr item,
 	 */
 	if (googleSourceBlockEditHack)
 		return;
+
+	const gchar* sourceUrl = item_get_real_source_url(item);
+	if (!sourceUrl) sourceUrl = node->subscription->source;
+	debug1(DEBUG_UPDATE, "GoogleSource: real source is %s", sourceUrl);
 	nodePtr root = google_source_get_root_from_node(node);
 	google_source_edit_mark_read((GoogleSourcePtr)root->data, 
 				     item->sourceId, 
-				     node->subscription->source,
+				     sourceUrl,
 				     newStatus);
 }
 
 static void
-google_source_item_retrieve_status (xmlNodePtr entry, gpointer userdata)
+google_source_set_real_source_url(const xmlNodePtr node, gpointer userdata)
+{
+	itemPtr item = (itemPtr) userdata ;
+	xmlChar*   value = xmlNodeGetContent(node);
+	
+	debug1(DEBUG_UPDATE, "GoogleSource: Got %s as id while updating", value);
+	const gchar*     prefix = "tag:google.com,2005:reader/feed/";
+	if (g_str_has_prefix(value, prefix)) {
+		item_set_real_source_url(item, value + strlen(prefix));
+		db_item_update(item);
+	}
+}
+static void
+google_source_item_retrieve_status (const xmlNodePtr entry, gpointer userdata)
 {
 	subscriptionPtr subscription = (subscriptionPtr) userdata;
 	GoogleSourcePtr gsource = (GoogleSourcePtr) google_source_get_root_from_node(subscription->node)->data ;
@@ -97,12 +136,23 @@ google_source_item_retrieve_status (xmlNodePtr entry, gpointer userdata)
 		/* this is extremely inefficient, multiple times loading */
 		itemPtr item = item_load (GPOINTER_TO_UINT (iter->data));
 		if (item && item->sourceId) {
-			if (g_str_equal (item->sourceId, id) && item->readStatus != read && !google_source_edit_is_in_queue(gsource, id)) {
+			if (g_str_equal (item->sourceId, id) && !google_source_edit_is_in_queue(gsource, id)) {
 				
 				googleSourceBlockEditHack = TRUE;
 				item_state_set_read (item, read);
 				googleSourceBlockEditHack = FALSE;
 
+				if (g_str_equal(subscription->source, GOOGLE_READER_BROADCAST_FRIENDS_URL)) {
+					/* set the real_source, hopefully this is the correct thing to do */
+					xmlXPathContextPtr xpathCtxt = xmlXPathNewContext (entry->doc) ;
+					xmlXPathRegisterNs(xpathCtxt, "atom", "http://www.w3.org/2005/Atom");
+					xpathCtxt->node = entry;
+
+					google_source_xpath_foreach_match("./atom:source/atom:id", xpathCtxt, google_source_set_real_source_url, item);
+
+					/* free up xpath related data */
+					if (xpathCtxt) xmlXPathFreeContext(xpathCtxt);
+				}
 				item_unload (item);
 				goto cleanup;
 			}
@@ -110,34 +160,12 @@ google_source_item_retrieve_status (xmlNodePtr entry, gpointer userdata)
 		if (item) item_unload (item) ;
 	}
 
-	debug1 (DEBUG_UPDATE, "google_source_item_retrieve_status(): [%s] didn't get an item :( \n", id);
 cleanup:
 	itemset_free (itemset);
 	xmlFree (id);
 }
 
 
-/**
- * This is identical to xpath_foreach_match, except that it takes the context
- * as parameter.
- */
-static void
-google_source_xpath_foreach_match(gchar* expr, xmlXPathContextPtr xpathCtxt, xpathMatchFunc func, gpointer user_data) 
-{
-	xmlXPathObjectPtr xpathObj = NULL;
-	xpathObj = xmlXPathEval ((xmlChar*)expr, xpathCtxt);
-	
-	if (xpathObj && xpathObj->nodesetval && xpathObj->nodesetval->nodeMax) {
-		int	i;
-		for (i = 0; i < xpathObj->nodesetval->nodeNr; i++) {
-			(*func) (xpathObj->nodesetval->nodeTab[i], user_data);
-			xpathObj->nodesetval->nodeTab[i] = NULL ;
-		}
-	}
-	
-	if (xpathObj)
-		xmlXPathFreeObject (xpathObj);
-}
 static void
 google_feed_subscription_process_update_result (subscriptionPtr subscription,
                                                 const struct updateResult* const result, 
