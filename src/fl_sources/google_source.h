@@ -33,6 +33,13 @@ typedef struct GoogleSource {
 	GTimeVal	*lastSubscriptionListUpdate;
 	GQueue          *actionQueue;
 	int             loginState; /**< The current login state */
+
+	/**
+	 * While doing any kind of updating on the the OPML, what was the last
+	 * timestamp that was encountered. The idea is to have a fast and clean
+	 * way to decide what feeds are outdated.
+	 */ 
+	GTimeVal        *opmlLastTimestampEncountered;
 } *GoogleSourcePtr;
 
  
@@ -147,5 +154,27 @@ enum  {
  */
 nodeSourceTypePtr google_source_get_type(void);
 
+
+/**
+ * when this is set to true, and google_source_item_mark_read is called, 
+ * it will do nothing. This is a small hack, so that whenever google source
+ * wants to set and item as read/unread within this file, it should not do 
+ * any network calls.
+ */
+gboolean googleSourceBlockEditHack;
+
+
+/**
+ * Mark an item as read on the Google Reader server.
+ */
+void 
+google_source_item_mark_read(nodePtr node, itemPtr item, gboolean newStatus);
+
+/**
+ * Get the root node (the nodeSource) from any given subnode. A convenience
+ * function.
+ */
+nodePtr
+google_source_get_root_from_node(nodePtr node);
 
 #endif
