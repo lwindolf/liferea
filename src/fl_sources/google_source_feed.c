@@ -31,6 +31,9 @@
 #include "subscription.h"
 #include "node.h"
 #include "google_source_edit.h"
+#include "metadata.h"
+#include "db.h"
+#include "item_state.h"
 
 /**
  * This is identical to xpath_foreach_match, except that it takes the context
@@ -116,6 +119,23 @@ google_source_set_orig_source(const xmlNodePtr node, gpointer userdata)
 		metadata_list_set(&item->metadata, "GoogleBroadcastOrigFeed", value + strlen(prefix));
 		db_item_update(item);
 	}
+	xmlFree(value);
+}
+
+static void
+google_source_set_shared_by(xmlNodePtr node, gpointer userdata) 
+{
+	itemPtr     item    = (itemPtr) userdata;
+	xmlChar     *value  = xmlNodeGetContent(node);
+	xmlChar     *apos   = strrchr(value, '\'');
+	if (!apos) return;
+
+	gchar* name = g_strndup(value, apos-value);
+	metadata_list_set(&item->metadata, "sharedby", name);
+	db_item_update(item);
+	
+	g_free(name);
+	xmlFree(value);
 }
 static void
 google_source_item_retrieve_status (const xmlNodePtr entry, gpointer userdata)
@@ -169,6 +189,9 @@ google_source_item_retrieve_status (const xmlNodePtr entry, gpointer userdata)
 
 					google_source_xpath_foreach_match("./atom:source/atom:id", xpathCtxt, google_source_set_orig_source, item);
 
+					/* who is sharing this? */
+					google_source_xpath_foreach_match("./atom:link[@rel='via']/@title", xpathCtxt, google_source_set_shared_by, item);
+						
 					/* free up xpath related data */
 					if (xpathCtxt) xmlXPathFreeContext(xpathCtxt);
 				}

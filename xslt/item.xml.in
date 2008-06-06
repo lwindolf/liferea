@@ -187,6 +187,17 @@
  </tr>
 </xsl:if>  
 
+<xsl:if test="attributes/attribute[ @name = 'sharedby' ]">
+ <tr>
+   <td valign="top" class='sharedby'>
+     <_span>Shared by</_span>
+     <b><span class='sharedby'>
+       <xsl:value-of select="attributes/attribute[ @name = 'sharedby' ]" disable-output-escaping='yes'/>
+     </span></b>
+   </td>
+ </tr>
+</xsl:if>  
+
 <!-- Indicate Atom "via" and "related" links -->
 <xsl:for-each select="attributes/attribute[ @name = 'via' ]">
 <tr>
