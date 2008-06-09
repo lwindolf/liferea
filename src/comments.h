@@ -46,12 +46,4 @@ void comments_refresh (itemPtr item);
  */
 void comments_to_xml (xmlNodePtr parentNode, const gchar *id);
 
-/**
- * Removes a comment feed from DB and free's all memory. Usually
- * called when removing the parent item.
- *
- * @param id		the comment feed id
- */
-void comments_remove (const gchar *id);
-
 #endif
