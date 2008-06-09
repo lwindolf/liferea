@@ -146,7 +146,7 @@ comments_process_update_result (const struct updateResult * const result, gpoint
 				itemPtr comment = (itemPtr) iter->data;
 				comment->isComment = TRUE;
 				comment->parentItemId = commentFeed->itemId;
-				comment->parentNodeId = g_strdup (commentFeed->id);
+				comment->parentNodeId = g_strdup (item->nodeId);
 				iter = g_list_next (iter);
 			}
 			

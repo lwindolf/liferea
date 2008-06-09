@@ -181,6 +181,8 @@ itemset_merge_item (itemSetPtr itemSet, GList *items, itemPtr item, gboolean all
 		g_assert (!item->nodeId);
 		g_assert (!item->id);
 		item->nodeId = g_strdup (itemSet->nodeId);
+		if (!item->parentNodeId)
+			item->parentNodeId = g_strdup (itemSet->nodeId);
 		
 		/* step 1: write item to DB */
 		db_item_update (item);
