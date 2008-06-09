@@ -168,7 +168,7 @@ db_get_schema_version (void)
 	return schemaVersion;
 }
 
-#define SCHEMA_TARGET_VERSION 6
+#define SCHEMA_TARGET_VERSION 7
 	
 /* opening or creation of database */
 void
@@ -315,6 +315,8 @@ open:
 				/* 1.4.9 -> 1.4.10 adding parent_item_id to itemset relation */
 				debug0 (DEBUG_DB, "migrating from schema version 5 to 6 (this drops all comments)");
 				db_exec ("BEGIN; "
+				         "DROP TRIGGER item_removal; "
+					 "DROP TRIGGER item_insert; "
 				         "DELETE FROM itemsets WHERE comment = 1; "
 				         "CREATE TEMPORARY TABLE itemsets_backup(item_id,node_id,read,comment); "
 					 "INSERT INTO itemsets_backup SELECT item_id,node_id,read,comment FROM itemsets; "
@@ -330,6 +332,31 @@ open:
 					 "INSERT INTO itemsets SELECT item_id,0,node_id,read,comment FROM itemsets_backup; "
 					 "DROP TABLE itemsets_backup; "
 					 "REPLACE INTO info (name, value) VALUES ('schemaVersion',6); "
+					 "END;");
+			}
+			
+			if (db_get_schema_version () == 6) {
+				/* 1.4.15 -> 1.4.16 adding parent_node_id to itemset relation */
+				debug0 (DEBUG_DB, "migrating from schema version 5 to 6 (this drops all comments)");
+				db_exec ("BEGIN; "
+				         "DROP TRIGGER item_removal; "
+					 "DROP TRIGGER item_insert; "
+				         "DELETE FROM itemsets WHERE comment = 1; "
+				         "CREATE TEMPORARY TABLE itemsets_backup(item_id,node_id,read,comment); "
+					 "INSERT INTO itemsets_backup SELECT item_id,node_id,read,comment FROM itemsets; "
+					 "DROP TABLE itemsets; "
+					 "CREATE TABLE itemsets ("
+			        	 "   item_id		INTEGER,"
+					 "   parent_item_id     INTEGER,"
+			        	 "   node_id		TEXT,"
+					 "   parent_node_id     TEXT,"
+			        	 "   read		INTEGER,"
+					 "   comment            INTEGER,"
+			        	 "   PRIMARY KEY (item_id, node_id)"
+			        	 "); "
+					 "INSERT INTO itemsets SELECT item_id,0,node_id,node_id,read,comment FROM itemsets_backup; "
+					 "DROP TABLE itemsets_backup; "
+					 "REPLACE INTO info (name, value) VALUES ('schemaVersion',7); "
 					 "END;");
 			}
 
@@ -370,6 +397,7 @@ open:
 	        	 "   item_id		INTEGER,"
 			 "   parent_item_id     INTEGER,"
 	        	 "   node_id		TEXT,"
+			 "   comment_feed_id	TEXT,"
 	        	 "   read		INTEGER,"
 			 "   comment            INTEGER,"
 	        	 "   PRIMARY KEY (item_id, node_id)"
@@ -388,12 +416,11 @@ open:
 
 		db_exec ("CREATE INDEX metadata_idx ON metadata (item_id);");
 
-		/* Set up item removal trigger */	
+		/* Set up item removal trigger (does not remove comments!) */
 		db_exec ("DROP TRIGGER item_removal;");
 		db_exec ("CREATE TRIGGER item_removal DELETE ON itemsets "
 	        	 "BEGIN "
 	        	 "   DELETE FROM items WHERE ROWID = old.item_id; "
-			 "   DELETE FROM itemsets WHERE parent_item_id = old.item_id; "
 			 "   DELETE FROM metadata WHERE item_id = old.item_id; "
 	        	 "END;");
 
@@ -450,7 +477,6 @@ open:
 			 "   DELETE FROM node WHERE node_id = old.node_id; "
 	        	 "   DELETE FROM update_state WHERE node_id = old.node_id; "
 			 "   DELETE FROM subscription_metadata WHERE node_id = old.node_id; "
-			 "   DELETE FROM itemsets WHERE node_id = old.node_id; "
 	        	 "END;");
 
 		db_exec ("CREATE TABLE node ("
@@ -507,9 +533,10 @@ open:
 			  "item_id,"
 			  "parent_item_id,"
 			  "node_id,"
+			  "parent_node_id,"
 			  "read,"
 			  "comment"
-			  ") VALUES (?,?,?,?,?)");
+			  ") VALUES (?,?,?,?,?,?)");
 	
 	db_new_statement ("itemsetReadCountStmt",
 	                  "SELECT COUNT(*) FROM itemsets "
@@ -520,10 +547,10 @@ open:
 		          "WHERE node_id = ?");
 		       
 	db_new_statement ("itemsetRemoveStmt",
-	                  "DELETE FROM itemsets WHERE item_id = ?");
+	                  "DELETE FROM itemsets WHERE parent_item_id = ?");
 			
 	db_new_statement ("itemsetRemoveAllStmt",
-	                  "DELETE FROM itemsets WHERE node_id = ?");
+	                  "DELETE FROM itemsets WHERE parent_node_id = ?");
 
 	db_new_statement ("itemsetMarkAllUpdatedStmt",
 	                  "UPDATE items SET updated = 0 WHERE ROWID IN "
@@ -556,7 +583,8 @@ open:
 		          "items.comment,"
 		          "itemsets.item_id,"
 			  "itemsets.parent_item_id, "
-		          "itemsets.node_id"
+		          "itemsets.node_id, "
+			  "itemsets.parent_node_id "
 	                  " FROM items INNER JOIN itemsets "
 	                  "ON items.ROWID = itemsets.item_id "
 	                  "WHERE items.ROWID = ?");      
@@ -743,20 +771,21 @@ db_item_metadata_update(itemPtr item)
 static itemPtr
 db_load_item_from_columns (sqlite3_stmt *stmt) 
 {
-	itemPtr item = item_new();
+	itemPtr item = item_new ();
 	
-	item->readStatus	= sqlite3_column_int(stmt, 1)?TRUE:FALSE;
-	item->newStatus		= sqlite3_column_int(stmt, 2)?TRUE:FALSE;
-	item->updateStatus	= sqlite3_column_int(stmt, 3)?TRUE:FALSE;
-	item->popupStatus	= sqlite3_column_int(stmt, 4)?TRUE:FALSE;
-	item->flagStatus	= sqlite3_column_int(stmt, 5)?TRUE:FALSE;
-	item->validGuid		= sqlite3_column_int(stmt, 8)?TRUE:FALSE;
-	item->time		= sqlite3_column_int(stmt, 12);
-	item->commentFeedId	= g_strdup(sqlite3_column_text(stmt, 13));
-	item->isComment		= sqlite3_column_int(stmt, 14);
-	item->id		= sqlite3_column_int(stmt, 15);
-	item->parentItemId	= sqlite3_column_int(stmt, 16);
-	item->nodeId		= g_strdup(sqlite3_column_text(stmt, 17));
+	item->readStatus	= sqlite3_column_int (stmt, 1)?TRUE:FALSE;
+	item->newStatus		= sqlite3_column_int (stmt, 2)?TRUE:FALSE;
+	item->updateStatus	= sqlite3_column_int (stmt, 3)?TRUE:FALSE;
+	item->popupStatus	= sqlite3_column_int (stmt, 4)?TRUE:FALSE;
+	item->flagStatus	= sqlite3_column_int (stmt, 5)?TRUE:FALSE;
+	item->validGuid		= sqlite3_column_int (stmt, 8)?TRUE:FALSE;
+	item->time		= sqlite3_column_int (stmt, 12);
+	item->commentFeedId	= g_strdup (sqlite3_column_text (stmt, 13));
+	item->isComment		= sqlite3_column_int (stmt, 14);
+	item->id		= sqlite3_column_int (stmt, 15);
+	item->parentItemId	= sqlite3_column_int (stmt, 16);
+	item->nodeId		= g_strdup (sqlite3_column_text (stmt, 17));
+	item->parentNodeId	= g_strdup (sqlite3_column_text (stmt, 18));
 
 	item_set_title			(item, sqlite3_column_text(stmt, 0));
 	item_set_source			(item, sqlite3_column_text(stmt, 6));
@@ -765,7 +794,7 @@ db_load_item_from_columns (sqlite3_stmt *stmt)
 	item_set_real_source_title	(item, sqlite3_column_text(stmt, 10));
 	item_set_description		(item, sqlite3_column_text(stmt, 11));
 
-	item->metadata = db_item_metadata_load(item);
+	item->metadata = db_item_metadata_load (item);
 
 	return item;
 }
@@ -875,9 +904,9 @@ db_item_update (itemPtr item)
 	
 	debug3 (DEBUG_DB, "update of item \"%s\" (id=%lu, thread=%p)", item->title, item->id, g_thread_self());
 	debug_start_measurement (DEBUG_DB);
-
-	if(!item->id) {
-		db_item_set_id(item);
+	
+	if (!item->id) {
+		db_item_set_id (item);
 
 		debug1(DEBUG_DB, "insert into table \"itemsets\": \"%s\"", item->title);	
 		
@@ -886,8 +915,9 @@ db_item_update (itemPtr item)
 		sqlite3_bind_int  (stmt, 1, item->id);
 		sqlite3_bind_int  (stmt, 2, item->parentItemId);
 		sqlite3_bind_text (stmt, 3, item->nodeId, -1, SQLITE_TRANSIENT);
-		sqlite3_bind_int  (stmt, 4, item->readStatus);
-		sqlite3_bind_int  (stmt, 5, item->isComment?1:0);
+		sqlite3_bind_text (stmt, 4, item->parentNodeId, -1, SQLITE_TRANSIENT);
+		sqlite3_bind_int  (stmt, 5, item->readStatus);
+		sqlite3_bind_int  (stmt, 6, item->isComment?1:0);
 		res = sqlite3_step (stmt);
 		if (SQLITE_DONE != res) 
 			g_warning ("Insert in \"itemsets\" table failed (error code=%d, %s)", res, sqlite3_errmsg (db));

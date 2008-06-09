@@ -1,4 +1,4 @@
-2008-??-??  Lars Lindner  <lars.lindner@gmail.com>
+2008-06-10  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.4.16 (Stable)
 
@@ -7,6 +7,17 @@
 	* Fixes SF #1920860: crash after memory corruption when
 	  parsing feed with invalid encoding (reported by mumrel)
 	* Build support for XulRunner 1.9 (patch from Alexander Sack)
+	* Significant speed improvement for the cache conversion
+	  necessary when upgrading from 1.4.9. Fixes 100% CPU
+	  during startup problem.
+	* Fixes comment removal bug.
+	* Drops all comments from cache to cleanup stale comments.
+	* Changes DB schema to better handle comments during 
+	  item and subscription deletion. This makes the cache
+	  version incompatible to 1.4.15!
+
+	Translations
+
 	* Update of French translation (Vincent Lefevre)
 
 

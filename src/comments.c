@@ -145,11 +145,12 @@ comments_process_update_result (const struct updateResult * const result, gpoint
 			while (iter) {
 				itemPtr comment = (itemPtr) iter->data;
 				comment->isComment = TRUE;
-				comment->parentItemId = commentFeed->itemId;				
+				comment->parentItemId = commentFeed->itemId;
+				comment->parentNodeId = g_strdup (commentFeed->id);
 				iter = g_list_next (iter);
 			}
 			
-			debug1 (DEBUG_UPDATE, "parsing comment feed successful (%d comments downloaded)", g_list_length(ctxt->items));		
+			debug1 (DEBUG_UPDATE, "parsing comment feed successful (%d comments downloaded)", g_list_length(ctxt->items));
 			comments = db_itemset_load (commentFeed->id);
 			itemset_merge_items (comments, ctxt->items, ctxt->feed->valid);
 			itemset_free (comments);
@@ -267,16 +268,4 @@ comments_to_xml (xmlNodePtr parentNode, const gchar *id)
 		xmlNewTextChild (commentsNode, NULL, "updateError", commentFeed->error);
 			
 	itemset_free (itemSet);
-}
-
-void
-comments_remove (const gchar *id)
-{
-	commentFeedPtr commentFeed;
-
-	db_itemset_remove_all (id);
-	
-	commentFeed = comment_feed_from_id (id);
-	g_return_if_fail (commentFeed != NULL);
-	comment_feed_free (commentFeed);
 }
