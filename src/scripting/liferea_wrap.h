@@ -4946,6 +4946,66 @@ fail:
 }
 
 
+static int _wrap_item_parentNodeId_set(lua_State* L) {
+  int SWIG_arg = -1;
+  struct item *arg1 = (struct item *) 0 ;
+  char *arg2 = (char *) 0 ;
+  
+  SWIG_check_num_args("parentNodeId",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("parentNodeId",1,"struct item *");
+  if(!lua_isstring(L,2)) SWIG_fail_arg("parentNodeId",2,"char *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_item,0))){
+    SWIG_fail_ptr("item_parentNodeId_set",1,SWIGTYPE_p_item);
+  }
+  
+  arg2 = (char *)lua_tostring(L, 2);
+  {
+    if (arg1->parentNodeId) free((char *)arg1->parentNodeId);
+    if (arg2) {
+      arg1->parentNodeId = (char *) malloc(strlen((const char *)arg2)+1);
+      strcpy((char *)arg1->parentNodeId, (const char *)arg2);
+    } else {
+      arg1->parentNodeId = 0;
+    }
+  }
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_item_parentNodeId_get(lua_State* L) {
+  int SWIG_arg = -1;
+  struct item *arg1 = (struct item *) 0 ;
+  char *result = 0 ;
+  
+  SWIG_check_num_args("parentNodeId",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("parentNodeId",1,"struct item *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_item,0))){
+    SWIG_fail_ptr("item_parentNodeId_get",1,SWIGTYPE_p_item);
+  }
+  
+  result = (char *) ((arg1)->parentNodeId);
+  SWIG_arg=0;
+  lua_pushstring(L,(const char*)result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_item_sourceNr_set(lua_State* L) {
   int SWIG_arg = -1;
   struct item *arg1 = (struct item *) 0 ;
@@ -5082,6 +5142,7 @@ static swig_lua_attribute swig_item_attributes[] = {
     { "parentItemId", _wrap_item_parentItemId_get, _wrap_item_parentItemId_set},
     { "isComment", _wrap_item_isComment_get, _wrap_item_isComment_set},
     { "nodeId", _wrap_item_nodeId_get, _wrap_item_nodeId_set},
+    { "parentNodeId", _wrap_item_parentNodeId_get, _wrap_item_parentNodeId_set},
     { "sourceNr", _wrap_item_sourceNr_get, _wrap_item_sourceNr_set},
     {0,0,0}
 };
