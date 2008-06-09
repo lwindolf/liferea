@@ -65,13 +65,15 @@ typedef struct item {
 	GHashTable	*tmpdata;		/**< Temporary data hash used during stateful parsing */
 	time_t		time;			/**< Last modified date of the headline */
 
+	gchar		*commentFeedId;		/**< Id of the comment feed of this item (or NULL if there is no comment feed) */
+	
 	/* comment item properties */
-	gchar		*commentFeedId;		/**< Id of the comment feed the item belongs to (or NULL if no comment item)*/
 	gulong		parentItemId;		/**< Id of the parent item the item belongs to(or 0 if no comment item) */
 	gboolean	isComment;		/**< TRUE if item is from a comment feed */
 
 	/* item source properties */
-	gchar		*nodeId;		/**< Node id the containing node */
+	gchar		*nodeId;		/**< Node id the containing node. Might be a comment feed id. */
+	gchar		*parentNodeId;		/**< Real parent node id. Always a feed list node id. */
 	gulong 		sourceNr;		/**< Either equal to nr or the number of the item this one is a copy of */
 } *itemPtr;
 

@@ -1,7 +1,7 @@
 /**
  * @file comments.h comment feed handling
  * 
- * Copyright (C) 2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2008 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,13 +45,5 @@ void comments_refresh (itemPtr item);
  * @param id		the comment feed id
  */
 void comments_to_xml (xmlNodePtr parentNode, const gchar *id);
-
-/**
- * Removes a comment feed from DB and free's all memory. Usually
- * called when removing the parent item.
- *
- * @param id		the comment feed id
- */
-void comments_remove (const gchar *id);
 
 #endif

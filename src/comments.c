@@ -1,7 +1,7 @@
 /**
  * @file comments.c comment feed handling
  * 
- * Copyright (C) 2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2008 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -146,11 +146,12 @@ comments_process_update_result (const struct updateResult * const result, gpoint
 			while (iter) {
 				itemPtr comment = (itemPtr) iter->data;
 				comment->isComment = TRUE;
-				comment->parentItemId = commentFeed->itemId;				
+				comment->parentItemId = commentFeed->itemId;
+				comment->parentNodeId = g_strdup (item->nodeId);
 				iter = g_list_next (iter);
 			}
 			
-			debug1 (DEBUG_UPDATE, "parsing comment feed successful (%d comments downloaded)", g_list_length(ctxt->items));		
+			debug1 (DEBUG_UPDATE, "parsing comment feed successful (%d comments downloaded)", g_list_length(ctxt->items));
 			comments = db_itemset_load (commentFeed->id);
 			itemset_merge_items (comments, ctxt->items, ctxt->feed->valid, FALSE);
 			itemset_free (comments);

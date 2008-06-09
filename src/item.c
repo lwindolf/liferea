@@ -194,6 +194,7 @@ item_unload (itemPtr item)
 	g_free (item->description);
 	g_free (item->commentFeedId);
 	g_free (item->nodeId);
+	g_free (item->parentNodeId);
 	
 	g_assert (NULL == item->tmpdata);	/* should be free after rendering */
 	metadata_list_free (item->metadata);
