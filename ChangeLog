@@ -1,3 +1,12 @@
+2008-06-12  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.4.16b (Stable)
+
+	* Fixes SF #1990601: schema creation bug introduced 
+	  in 1.4.16. Only affects first installations.
+	  (reported by Yaakov Selkowitz)
+
+
 2008-06-10  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.4.16 (Stable)

@@ -399,7 +399,7 @@ open:
 	        	 "   item_id		INTEGER,"
 			 "   parent_item_id     INTEGER,"
 	        	 "   node_id		TEXT,"
-			 "   comment_feed_id	TEXT,"
+			 "   parent_node_id     TEXT,"
 	        	 "   read		INTEGER,"
 			 "   comment            INTEGER,"
 	        	 "   PRIMARY KEY (item_id, node_id)"
