@@ -43,7 +43,7 @@ typedef struct GoogleSourceActionCtxt {
 GoogleSourceActionPtr 
 google_source_action_new (void)
 {
-	GoogleSourceActionPtr action = g_new0 (struct GoogleSourceAction, 1);
+	GoogleSourceActionPtr action = g_slice_new0 (struct GoogleSourceAction);
 	return action;
 }
 
@@ -52,18 +52,24 @@ google_source_action_free (GoogleSourceActionPtr action)
 { 
 	g_free (action->guid);
 	g_free (action->feedUrl);
-	g_free (action);
+	g_slice_free (struct GoogleSourceAction, action);
 }
 
 GoogleSourceActionCtxtPtr
 google_source_action_context_new(GoogleSourcePtr gsource, GoogleSourceActionPtr action)
 {
-	GoogleSourceActionCtxtPtr ctxt = g_new0(struct GoogleSourceActionCtxt, 1);
+	GoogleSourceActionCtxtPtr ctxt = g_slice_new0(struct GoogleSourceActionCtxt);
 	ctxt->nodeId = g_strdup(gsource->root->id);
 	ctxt->action = action;
 	return ctxt;
 }
 
+void
+google_source_action_context_free(GoogleSourceActionCtxtPtr ctxt)
+{
+	g_free(ctxt->nodeId);
+	g_slice_free(struct GoogleSourceActionCtxt, ctxt);
+}
 gchar* google_source_edit_get_cachefile (GoogleSourcePtr gsource) 
 {
 	return common_create_cache_filename("cache" G_DIR_SEPARATOR_S "plugins", gsource->root->id, "savedactions.xml");
@@ -144,6 +150,12 @@ google_source_edit_import(GoogleSourcePtr gsource)
 {
 	gchar* file = google_source_edit_get_cachefile(gsource);
 
+	if ( !g_file_test(file, G_FILE_TEST_IS_REGULAR) ) {
+		debug0(DEBUG_UPDATE, "GoogleSource: saved actions file not found.");
+		g_free(file);
+		return;
+	}
+
 	xmlDocPtr doc = xmlReadFile(file, NULL, 0) ;
 	if ( doc == NULL ) {
 		g_free(file);
@@ -171,7 +183,7 @@ google_source_edit_action_complete(
 	GoogleSourcePtr gsource; 
 	GoogleSourceActionPtr         action   = editCtxt->action ;
 	
-	g_free(editCtxt);
+	google_source_action_context_free(editCtxt);
 
 	if (!node) {
 		google_source_action_free(action);
