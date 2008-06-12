@@ -106,6 +106,10 @@ enclosure_from_string (const gchar *str)
 gchar *
 enclosure_values_to_string (const gchar *url, const gchar *mime, gsize size, gboolean downloaded)
 {
+	/* There are websites out there encoding -1 as size */
+	if (size < 0)
+		size = 0;
+		
 	return g_strdup_printf ("enc:%s:%s:%d:%s", downloaded?"1":"0", mime, size, url);
 }
 
