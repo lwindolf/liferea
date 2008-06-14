@@ -265,7 +265,7 @@ node_mark_all_read (nodePtr node)
 		return;
 
 	if (0 != node->unreadCount) {
-		item_state_set_all_read (node);
+		itemset_mark_read (node);
 		node->unreadCount = 0;
 		node->needsUpdate = TRUE;
 	}

@@ -1,7 +1,7 @@
 /**
- * @file item_state.c   item state handling
+ * @file item_state.c   item state controller interface
  * 
- * Copyright (C) 2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2008 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,37 +25,53 @@
 #include "node.h"
 
  /**
- * Sets the flag status of the given item.
+ * Request to change the flag state of the given item.
  *
  * @param item		the item
- * @param newStatus	new flag status
+ * @param newState	new flag state
  */
-void item_state_set_flagged (itemPtr item, gboolean newStatus);
+void item_set_flag_state (itemPtr item, gboolean newState);
 
 /**
- * Sets the read status of the given item.
+ * Notifies the item list controller that the flag 
+ * state of the given item has changed.
  *
  * @param item		the item
- * @param newStatus	new read status
+ * @param newState	new flag state
  */
-void item_state_set_read (itemPtr item, gboolean newStatus);
+void item_flag_state_changed (itemPtr item, gboolean newState);
 
 /**
- * Sets the update status of the given item.
+ * Request to change the read state of the given item.
  *
  * @param item		the item
- * @param newStatus	new update status
+ * @param newState	new read state
  */
-void item_state_set_updated (itemPtr item, const gboolean newStatus);
+void item_set_read_state (itemPtr item, gboolean newState);
 
 /**
- * Marks all items in the given nodes item list read.
- * Does not update the GUI to avoid excessive GUI updates.
- * You need to call feedlist_update() to do so.
+ * Notifies the item list controller that the read 
+ * state of the given item has changed.
+ *
+ * @param item		the item
+ * @param newState	new read status
+ */
+void item_read_state_changed (itemPtr item, gboolean newState);
+
+/**
+ * Request to change the update state of the given item.
+ *
+ * @param item		the item
+ * @param newState	new update state
+ */
+void item_set_updated_state (itemPtr item, const gboolean newState);
+
+/**
+ * Requests to mark read all items in the given nodes item list.
  *
  * @param nodeId	the node whose item list is to be modified
  */
-void item_state_set_all_read (nodePtr node);
+void itemset_mark_read (nodePtr node);
 
 /**
  * Resets the new flag for all items of the given item set.

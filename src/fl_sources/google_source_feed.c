@@ -179,7 +179,7 @@ google_source_item_retrieve_status (const xmlNodePtr entry, gpointer userdata)
 			if (g_str_equal (item->sourceId, id) && !google_source_edit_is_in_queue(gsource, id)) {
 				
 				googleSourceBlockEditHack = TRUE;
-				item_state_set_read (item, read);
+				item_read_state_changed (item, read);
 				googleSourceBlockEditHack = FALSE;
 
 				if (g_str_equal(subscription->source, GOOGLE_READER_BROADCAST_FRIENDS_URL)) {

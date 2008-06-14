@@ -411,14 +411,14 @@ itemlist_select_next_unread (void)
 void
 itemlist_toggle_flag (itemPtr item) 
 {
-	item_state_set_flagged (item, !(item->flagStatus));
+	item_set_flag_state (item, !(item->flagStatus));
 	itemview_update ();
 }
 
 void
 itemlist_toggle_read_status (itemPtr item) 
 {
-	item_state_set_read (item, !(item->readStatus));
+	item_set_read_state (item, !(item->readStatus));
 	itemview_update ();
 }
 
@@ -564,8 +564,8 @@ itemlist_selection_changed (itemPtr item)
 		if (item) {
 			comments_refresh (item);
 
-			item_state_set_read (item, TRUE);
-			item_state_set_updated (item, FALSE);
+			item_set_read_state (item, TRUE);
+			item_set_updated_state (item, FALSE);
 
 			if(node_load_link_preferred (node_from_id (item->nodeId))) {
 				liferea_htmlview_launch_URL (ui_mainwindow_get_active_htmlview (), 

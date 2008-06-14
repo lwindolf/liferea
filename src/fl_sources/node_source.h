@@ -129,13 +129,21 @@ typedef struct nodeSourceType {
 	void		(*free) (nodePtr node);
 
 	/**
+	 * Changes the flag state of an item.  This is to allow node source type 
+	 * implementations to synchronize remote item states.
+	 *
+	 * This is an MANDATORY method.
+	 */
+	void		(*item_set_flag) (nodePtr node, itemPtr item, gboolean newState);
+
+	/**
 	 * Mark an item as read. This is to allow node source type 
 	 * implementations to synchronize remote item states.
 	 *
-	 * This is an OPTIONAL method.
+	 * This is an MANDATORY method.
 	 */
-	void            (*item_mark_read)(nodePtr node, itemPtr item, gboolean newStatus);
-
+	void            (*item_mark_read) (nodePtr node, itemPtr item, gboolean newState);
+	
 	/**
 	 * Add a new folder to the feed list provided by node
 	 * source. OPTIONAL, but must be implemented when
@@ -223,15 +231,6 @@ void node_source_update (nodePtr node);
  * @param node			the source node
  */
 void node_source_auto_update (nodePtr node);
-
-/**
- * Inform the source that the item has been marked as read/unread.
- *
- * @param node		the source node
- * @param item		the item whose read status has changed
- * @param newStatus	the new read status of the item
- */
-void node_source_item_state_mark_read (nodePtr node, itemPtr item, gboolean newStatus);
 
 /**
  * Called when a new subscription has been added to the node source.

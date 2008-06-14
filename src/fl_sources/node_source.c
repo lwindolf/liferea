@@ -268,13 +268,6 @@ node_source_auto_update (nodePtr node)
 	NODE_SOURCE_TYPE (node)->source_auto_update (node);
 }
 
-void
-node_source_item_state_mark_read (nodePtr node, itemPtr item, gboolean newStatus)
-{
-	if (NODE_SOURCE_TYPE (node)->item_mark_read)
-		NODE_SOURCE_TYPE (node)->item_mark_read (node, item, newStatus);
-}
-
 nodePtr
 node_source_add_subscription (nodePtr node, nodePtr parent, subscriptionPtr subscription)
 {
@@ -304,6 +297,20 @@ node_source_remove_node (nodePtr node, nodePtr child)
 		NODE_SOURCE_TYPE (node)->remove_node (node, child);
 	else
 		g_warning ("node_source_remove_node(): called on node source type that doesn't implement me!");
+}
+
+void
+node_source_item_mark_read (nodePtr node, itemPtr item, gboolean newState)
+{
+	/* Item read state changes are optional for node source
+	   implementations. If they are supported the implementation
+	   has to call item_read_state_changed(), otherwise we do
+	   call it here. */
+	   
+	if (NODE_SOURCE_TYPE (node)->item_mark_read)
+		NODE_SOURCE_TYPE (node)->item_mark_read (node, item, newState);
+	else
+		item_read_state_changed (item, newState);
 }
 
 /* implementation of the node type interface */

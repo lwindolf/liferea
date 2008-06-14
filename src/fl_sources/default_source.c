@@ -225,7 +225,7 @@ default_source_remove_node (nodePtr node, nodePtr child)
 static void default_source_init (void) { }
 static void default_source_deinit (void) { }
 
-/* feed list provider plugin definition */
+/* node source type definition */
 
 static struct nodeSourceType nst = {
 	.api_version		= NODE_SOURCE_TYPE_API_VERSION,

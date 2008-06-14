@@ -369,6 +369,15 @@ google_source_edit_push (GoogleSourcePtr gsource, GoogleSourceActionPtr action, 
 		google_source_edit_process (gsource);
 }
 
+void update_read_state_callback(GoogleSourcePtr gsource, GoogleSourceActionPtr action, gboolean success) 
+{
+	if (success) {
+		// FIXME: call item_read_state_changed (item, newState);
+	} else {
+		debug0 (DEBUG_UPDATE, "Failed to change item state!\n");
+	}
+}
+
 void
 google_source_edit_mark_read (
 	GoogleSourcePtr gsource, 
@@ -382,7 +391,8 @@ google_source_edit_mark_read (
 	action->feedUrl = g_strdup (feedUrl);
 	action->actionType = newStatus ? EDIT_ACTION_MARK_READ :
 	                           EDIT_ACTION_MARK_UNREAD;
-
+	action->callback = update_read_state_callback;
+	
 	google_source_edit_push (gsource, action, FALSE);
 
 	if (newStatus == FALSE) { 
