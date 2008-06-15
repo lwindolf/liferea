@@ -103,7 +103,7 @@ static void
 folder_remove (nodePtr node)
 {
 	/* Just remove all children */
-	node_foreach_child (node, feedlist_node_removed);
+	node_foreach_child (node, feedlist_remove_node);
 	g_assert (!node->children);
 }
 

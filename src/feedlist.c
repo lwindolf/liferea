@@ -255,10 +255,10 @@ feedlist_node_removed (nodePtr node)
 {
 	if (node == selectedNode)
 		feedlist_unselect ();
-		
-	ui_node_remove_node (node);
 
 	node_remove (node);
+
+	ui_node_remove_node (node);
 
 	node->parent->children = g_slist_remove (node->parent->children, node);
 
