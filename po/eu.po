@@ -1535,7 +1535,7 @@ msgstr "Exekuzioa: \"%s\""
 #: ../src/ui/ui_itemlist.c:208
 #, fuzzy
 msgid "*** No title ***"
-msgstr "<i>*** Titulurik ez ***</i>"
+msgstr "*** Titulurik ez ***"
 
 #: ../src/ui/ui_itemlist.c:300
 msgid "Date"

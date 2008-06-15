@@ -1520,7 +1520,7 @@ msgstr "Startar: \"%s\""
 #: ../src/ui/ui_itemlist.c:208
 #, fuzzy
 msgid "*** No title ***"
-msgstr "<i>*** Ingen titel ***</i>"
+msgstr "*** Ingen titel ***"
 
 #: ../src/ui/ui_itemlist.c:300
 msgid "Date"

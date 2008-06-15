@@ -1,7 +1,7 @@
 # German translation for Liferea.
 # Copyright (C) 2003
 # This file is distributed under the same license as the Liferea package.
-# Lars Linder <lars.lindner@gmail.com>, 2003-2007.
+# Lars Linder <lars.lindner@gmail.com>, 2003-2008.
 #
 #
 msgid ""
@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Liferea 1.5.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-03-12 19:07+0100\n"
-"PO-Revision-Date: 2008-04-21 23:38+0100\n"
+"PO-Revision-Date: 2008-06-16 00:54+0100\n"
 "Last-Translator: Lars Lindner <lars.lindner@gmail.com>\n"
 "Language-Team: German\n"
 "MIME-Version: 1.0\n"
@@ -1416,7 +1416,7 @@ msgstr "Starte: \"%s\""
 
 #: ../src/ui/ui_itemlist.c:208
 msgid "*** No title ***"
-msgstr "<i>*** Kein Titel ***</i>"
+msgstr "*** Kein Titel ***"
 
 #: ../src/ui/ui_itemlist.c:300
 msgid "Date"

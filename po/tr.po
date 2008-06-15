@@ -1531,7 +1531,7 @@ msgstr "Başlıyor: \"%s\""
 #: ../src/ui/ui_itemlist.c:208
 #, fuzzy
 msgid "*** No title ***"
-msgstr "<i>*** Başlık yok ***</i>"
+msgstr "*** Başlık yok ***"
 
 #: ../src/ui/ui_itemlist.c:300
 msgid "Date"

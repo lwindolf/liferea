@@ -1528,7 +1528,7 @@ msgstr "A iniciar: \"%s\""
 #: ../src/ui/ui_itemlist.c:208
 #, fuzzy
 msgid "*** No title ***"
-msgstr "<i>*** Sem título ***</i>"
+msgstr "*** Sem título ***"
 
 #: ../src/ui/ui_itemlist.c:300
 msgid "Date"

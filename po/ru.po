@@ -1508,7 +1508,7 @@ msgstr "Запуск: \"%s\""
 #: ../src/ui/ui_itemlist.c:208
 #, fuzzy
 msgid "*** No title ***"
-msgstr "<i>*** Без заголовка ***</i>"
+msgstr "*** Без заголовка ***"
 
 #: ../src/ui/ui_itemlist.c:300
 msgid "Date"

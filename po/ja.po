@@ -1531,7 +1531,7 @@ msgstr "起動中: \"%s\""
 #: ../src/ui/ui_itemlist.c:208
 #, fuzzy
 msgid "*** No title ***"
-msgstr "<i>*** タイトルなし ***</i>"
+msgstr "*** タイトルなし ***"
 
 #: ../src/ui/ui_itemlist.c:300
 msgid "Date"
