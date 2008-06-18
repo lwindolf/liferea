@@ -717,7 +717,6 @@ ui_mainwindow_init (int mainwindowState)
 				   "<p>New/Improved Functionality:"
 				   "<ul>"
 				   "   <li>Google Reader synchronization improved (but still in work).</li>"
-				   "   <li>New subscription options to control popups.</li>"
 				   "</ul>"
 				   "</p>");
 	g_string_append(buffer,    "</div>");
