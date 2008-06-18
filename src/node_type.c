@@ -19,6 +19,7 @@
  */
  
 #include "feed.h"
+#include "feed_parser.h"
 #include "feedlist.h"
 #include "node_type.h"
 #include "fl_sources/node_source.h"
@@ -53,6 +54,8 @@ node_set_type (nodePtr node, nodeTypePtr type)
 const gchar *
 node_type_to_str (nodePtr node)
 {
+	/* To distinguish differen feed formats (Atom, RSS...) we do
+	   return different type identifiers for feed subscriptions... */
 	if (IS_FEED (node)) {
 		g_assert (NULL != node->data);
 		return feed_type_fhp_to_str (((feedPtr)(node->data))->fhp);
