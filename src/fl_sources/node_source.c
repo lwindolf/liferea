@@ -313,6 +313,20 @@ node_source_item_mark_read (nodePtr node, itemPtr item, gboolean newState)
 		item_read_state_changed (item, newState);
 }
 
+void
+node_source_item_set_flag (nodePtr node, itemPtr item, gboolean newState)
+{
+	/* Item flag state changes are optional for node source
+	   implementations. If they are supported the implementation
+	   has to call item_flag_state_changed(), otherwise we do
+	   call it here. */
+	   
+	if (NODE_SOURCE_TYPE (node)->item_set_flag)
+		NODE_SOURCE_TYPE (node)->item_set_flag (node, item, newState);
+	else
+		item_flag_state_changed (item, newState);
+}
+
 /* implementation of the node type interface */
 
 static void

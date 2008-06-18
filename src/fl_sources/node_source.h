@@ -263,6 +263,24 @@ void node_source_remove_node (nodePtr node, nodePtr child);
 nodePtr node_source_add_folder (nodePtr node, nodePtr parent, const gchar *title);
 
 /**
+ * Called when the read state of an item changes.
+ *
+ * @param node		the source node 
+ * @param item		the affected item
+ * @param newState	the new item read state
+ */
+void node_source_item_mark_read (nodePtr node, itemPtr item, gboolean newState);
+
+/**
+ * Called when the flag state of an item changes.
+ *
+ * @param node		the source node 
+ * @param item		the affected item
+ * @param newState	the new item flag state
+ */
+void node_source_item_set_flag (nodePtr node, itemPtr item, gboolean newState);
+
+/**
  * Launches a source creation dialog. The new source
  * instance will be added to the given node.
  *

@@ -38,13 +38,10 @@ item_state_set_recount_flag (nodePtr node)
 void
 item_set_flag_state (itemPtr item, gboolean newState) 
 {	
-	nodePtr node;
-	
 	if (newState == item->flagStatus)
 		return;
 
-	node = node_from_id (item->nodeId);	
-	NODE_SOURCE_TYPE (node)->item_set_flag (node, item, newState);
+	node_source_item_set_flag (node_from_id (item->nodeId), item, newState);
 }
 
 void
