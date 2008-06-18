@@ -270,15 +270,3 @@ comments_to_xml (xmlNodePtr parentNode, const gchar *id)
 			
 	itemset_free (itemSet);
 }
-
-void
-comments_remove (const gchar *id)
-{
-	commentFeedPtr commentFeed;
-
-	db_itemset_remove_all (id);
-	
-	commentFeed = comment_feed_from_id (id);
-	g_return_if_fail (commentFeed != NULL);
-	comment_feed_free (commentFeed);
-}
