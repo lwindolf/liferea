@@ -100,10 +100,10 @@ migrate_item_parse_cache (xmlNodePtr cur,
 			item_set_source(item, tmp);
 			
 		else if(!xmlStrcmp(cur->name, BAD_CAST"real_source_url"))
-			item_set_real_source_url(item, tmp);
+			metadata_list_set(&(item->metadata), "realSourceUrl", tmp);
 			
 		else if(!xmlStrcmp(cur->name, BAD_CAST"real_source_title"))
-			item_set_real_source_title(item, tmp);
+			metadata_list_set(&(item->metadata), "realSourceTitle", tmp);
 			
 		else if(!xmlStrcmp(cur->name, BAD_CAST"id"))
 			item_set_id(item, tmp);

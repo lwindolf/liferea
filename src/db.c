@@ -384,8 +384,8 @@ open:
 	        	 "   source		TEXT,"
 	        	 "   source_id		TEXT,"
 	        	 "   valid_guid		INTEGER,"
-	        	 "   real_source_url	TEXT,"
-	        	 "   real_source_title	TEXT,"
+	        	 "   real_source_url	TEXT,"		/* FIXME: drop this deprecated column on next DB migration! */
+	        	 "   real_source_title	TEXT,"		/* FIXME: drop this deprecated column on next DB migration! */
 	        	 "   description	TEXT,"
 	        	 "   date		INTEGER,"
 	        	 "   comment_feed_id	TEXT,"
@@ -586,8 +586,6 @@ open:
 	                  "items.source,"
 	                  "items.source_id,"
 	                  "items.valid_guid,"
-	                  "items.real_source_url,"
-	                  "items.real_source_title,"
 	                  "items.description,"
 	                  "items.date,"
 		          "items.comment_feed_id,"
@@ -611,14 +609,12 @@ open:
 	                  "source,"
 	                  "source_id,"
 	                  "valid_guid,"
-	                  "real_source_url,"
-	                  "real_source_title,"
 	                  "description,"
 	                  "date,"
 		          "comment_feed_id,"
 		          "comment,"
 	                  "ROWID"
-	                  ") values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+	                  ") values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			
 	db_new_statement ("itemMarkReadStmt",
 	                  "UPDATE items SET read = 1 WHERE ROWID = ?");
@@ -796,20 +792,18 @@ db_load_item_from_columns (sqlite3_stmt *stmt)
 	item->popupStatus	= sqlite3_column_int (stmt, 4)?TRUE:FALSE;
 	item->flagStatus	= sqlite3_column_int (stmt, 5)?TRUE:FALSE;
 	item->validGuid		= sqlite3_column_int (stmt, 8)?TRUE:FALSE;
-	item->time		= sqlite3_column_int (stmt, 12);
-	item->commentFeedId	= g_strdup (sqlite3_column_text (stmt, 13));
-	item->isComment		= sqlite3_column_int (stmt, 14);
-	item->id		= sqlite3_column_int (stmt, 15);
-	item->parentItemId	= sqlite3_column_int (stmt, 16);
-	item->nodeId		= g_strdup (sqlite3_column_text (stmt, 17));
-	item->parentNodeId	= g_strdup (sqlite3_column_text (stmt, 18));
+	item->time		= sqlite3_column_int (stmt, 10);
+	item->commentFeedId	= g_strdup (sqlite3_column_text (stmt, 11));
+	item->isComment		= sqlite3_column_int (stmt, 12);
+	item->id		= sqlite3_column_int (stmt, 13);
+	item->parentItemId	= sqlite3_column_int (stmt, 14);
+	item->nodeId		= g_strdup (sqlite3_column_text (stmt, 15));
+	item->parentNodeId	= g_strdup (sqlite3_column_text (stmt, 16));
 
 	item_set_title			(item, sqlite3_column_text(stmt, 0));
 	item_set_source			(item, sqlite3_column_text(stmt, 6));
 	item_set_id			(item, sqlite3_column_text(stmt, 7));	
-	item_set_real_source_url	(item, sqlite3_column_text(stmt, 9));
-	item_set_real_source_title	(item, sqlite3_column_text(stmt, 10));
-	item_set_description		(item, sqlite3_column_text(stmt, 11));
+	item_set_description		(item, sqlite3_column_text(stmt, 9));
 
 	item->metadata = db_item_metadata_load (item);
 
@@ -952,13 +946,11 @@ db_item_update (itemPtr item)
 	sqlite3_bind_text (stmt, 7,  item->source, -1, SQLITE_TRANSIENT);
 	sqlite3_bind_text (stmt, 8,  item->sourceId, -1, SQLITE_TRANSIENT);
 	sqlite3_bind_int  (stmt, 9,  item->validGuid?1:0);
-	sqlite3_bind_text (stmt, 10, item->real_source_url, -1, SQLITE_TRANSIENT);
-	sqlite3_bind_text (stmt, 11, item->real_source_title, -1, SQLITE_TRANSIENT);
-	sqlite3_bind_text (stmt, 12, item->description, -1, SQLITE_TRANSIENT);
-	sqlite3_bind_int  (stmt, 13, item->time);
-	sqlite3_bind_text (stmt, 14, item->commentFeedId, -1, SQLITE_TRANSIENT);
-	sqlite3_bind_int  (stmt, 15, item->isComment?1:0);
-	sqlite3_bind_int  (stmt, 16, item->id);
+	sqlite3_bind_text (stmt, 10, item->description, -1, SQLITE_TRANSIENT);
+	sqlite3_bind_int  (stmt, 11, item->time);
+	sqlite3_bind_text (stmt, 12, item->commentFeedId, -1, SQLITE_TRANSIENT);
+	sqlite3_bind_int  (stmt, 13, item->isComment?1:0);
+	sqlite3_bind_int  (stmt, 14, item->id);
 	res = sqlite3_step (stmt);
 
 	if (SQLITE_DONE != res) 

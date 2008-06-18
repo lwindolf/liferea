@@ -153,11 +153,12 @@ parseRSSItem (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 		else if(!xmlStrcmp(cur->name, BAD_CAST"source")) {
 			tmp = xml_get_attribute (cur, "url");
 			if (tmp) {
-				item_set_real_source_url (ctxt->item, tmp);
+				metadata_list_set (&(ctxt->item->metadata), "realSourceUrl", g_strchomp (tmp));
 				g_free (tmp);
 			}
-			if(tmp = unhtmlize(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1))) {
-				item_set_real_source_title(ctxt->item, tmp);
+			tmp = unhtmlize (xmlNodeListGetString (ctxt->doc, cur->xmlChildrenNode, 1));
+			if (tmp) {
+				metadata_list_set (&(ctxt->item->metadata), "realSourceTitle", g_strchomp (tmp));
 				g_free(tmp);
 			}
 		}

@@ -4316,126 +4316,6 @@ fail:
 }
 
 
-static int _wrap_item_real_source_url_set(lua_State* L) {
-  int SWIG_arg = -1;
-  struct item *arg1 = (struct item *) 0 ;
-  char *arg2 = (char *) 0 ;
-  
-  SWIG_check_num_args("real_source_url",2,2)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("real_source_url",1,"struct item *");
-  if(!lua_isstring(L,2)) SWIG_fail_arg("real_source_url",2,"char *");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_item,0))){
-    SWIG_fail_ptr("item_real_source_url_set",1,SWIGTYPE_p_item);
-  }
-  
-  arg2 = (char *)lua_tostring(L, 2);
-  {
-    if (arg1->real_source_url) free((char *)arg1->real_source_url);
-    if (arg2) {
-      arg1->real_source_url = (char *) malloc(strlen((const char *)arg2)+1);
-      strcpy((char *)arg1->real_source_url, (const char *)arg2);
-    } else {
-      arg1->real_source_url = 0;
-    }
-  }
-  SWIG_arg=0;
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_item_real_source_url_get(lua_State* L) {
-  int SWIG_arg = -1;
-  struct item *arg1 = (struct item *) 0 ;
-  char *result = 0 ;
-  
-  SWIG_check_num_args("real_source_url",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("real_source_url",1,"struct item *");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_item,0))){
-    SWIG_fail_ptr("item_real_source_url_get",1,SWIGTYPE_p_item);
-  }
-  
-  result = (char *) ((arg1)->real_source_url);
-  SWIG_arg=0;
-  lua_pushstring(L,(const char*)result); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_item_real_source_title_set(lua_State* L) {
-  int SWIG_arg = -1;
-  struct item *arg1 = (struct item *) 0 ;
-  char *arg2 = (char *) 0 ;
-  
-  SWIG_check_num_args("real_source_title",2,2)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("real_source_title",1,"struct item *");
-  if(!lua_isstring(L,2)) SWIG_fail_arg("real_source_title",2,"char *");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_item,0))){
-    SWIG_fail_ptr("item_real_source_title_set",1,SWIGTYPE_p_item);
-  }
-  
-  arg2 = (char *)lua_tostring(L, 2);
-  {
-    if (arg1->real_source_title) free((char *)arg1->real_source_title);
-    if (arg2) {
-      arg1->real_source_title = (char *) malloc(strlen((const char *)arg2)+1);
-      strcpy((char *)arg1->real_source_title, (const char *)arg2);
-    } else {
-      arg1->real_source_title = 0;
-    }
-  }
-  SWIG_arg=0;
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_item_real_source_title_get(lua_State* L) {
-  int SWIG_arg = -1;
-  struct item *arg1 = (struct item *) 0 ;
-  char *result = 0 ;
-  
-  SWIG_check_num_args("real_source_title",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("real_source_title",1,"struct item *");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_item,0))){
-    SWIG_fail_ptr("item_real_source_title_get",1,SWIGTYPE_p_item);
-  }
-  
-  result = (char *) ((arg1)->real_source_title);
-  SWIG_arg=0;
-  lua_pushstring(L,(const char*)result); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
 static int _wrap_item_description_set(lua_State* L) {
   int SWIG_arg = -1;
   struct item *arg1 = (struct item *) 0 ;
@@ -4911,6 +4791,66 @@ fail:
 }
 
 
+static int _wrap_item_parentNodeId_set(lua_State* L) {
+  int SWIG_arg = -1;
+  struct item *arg1 = (struct item *) 0 ;
+  char *arg2 = (char *) 0 ;
+  
+  SWIG_check_num_args("parentNodeId",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("parentNodeId",1,"struct item *");
+  if(!lua_isstring(L,2)) SWIG_fail_arg("parentNodeId",2,"char *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_item,0))){
+    SWIG_fail_ptr("item_parentNodeId_set",1,SWIGTYPE_p_item);
+  }
+  
+  arg2 = (char *)lua_tostring(L, 2);
+  {
+    if (arg1->parentNodeId) free((char *)arg1->parentNodeId);
+    if (arg2) {
+      arg1->parentNodeId = (char *) malloc(strlen((const char *)arg2)+1);
+      strcpy((char *)arg1->parentNodeId, (const char *)arg2);
+    } else {
+      arg1->parentNodeId = 0;
+    }
+  }
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_item_parentNodeId_get(lua_State* L) {
+  int SWIG_arg = -1;
+  struct item *arg1 = (struct item *) 0 ;
+  char *result = 0 ;
+  
+  SWIG_check_num_args("parentNodeId",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("parentNodeId",1,"struct item *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_item,0))){
+    SWIG_fail_ptr("item_parentNodeId_get",1,SWIGTYPE_p_item);
+  }
+  
+  result = (char *) ((arg1)->parentNodeId);
+  SWIG_arg=0;
+  lua_pushstring(L,(const char*)result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_item_sourceNr_set(lua_State* L) {
   int SWIG_arg = -1;
   struct item *arg1 = (struct item *) 0 ;
@@ -5037,8 +4977,6 @@ static swig_lua_attribute swig_item_attributes[] = {
     { "source", _wrap_item_source_get, _wrap_item_source_set},
     { "sourceId", _wrap_item_sourceId_get, _wrap_item_sourceId_set},
     { "validGuid", _wrap_item_validGuid_get, _wrap_item_validGuid_set},
-    { "real_source_url", _wrap_item_real_source_url_get, _wrap_item_real_source_url_set},
-    { "real_source_title", _wrap_item_real_source_title_get, _wrap_item_real_source_title_set},
     { "description", _wrap_item_description_get, _wrap_item_description_set},
     { "metadata", _wrap_item_metadata_get, _wrap_item_metadata_set},
     { "tmpdata", _wrap_item_tmpdata_get, _wrap_item_tmpdata_set},
@@ -5047,6 +4985,7 @@ static swig_lua_attribute swig_item_attributes[] = {
     { "parentItemId", _wrap_item_parentItemId_get, _wrap_item_parentItemId_set},
     { "isComment", _wrap_item_isComment_get, _wrap_item_isComment_set},
     { "nodeId", _wrap_item_nodeId_get, _wrap_item_nodeId_set},
+    { "parentNodeId", _wrap_item_parentNodeId_get, _wrap_item_parentNodeId_set},
     { "sourceNr", _wrap_item_sourceNr_get, _wrap_item_sourceNr_set},
     {0,0,0}
 };
@@ -5273,56 +5212,6 @@ fail:
 }
 
 
-static int _wrap_item_get_real_source_url(lua_State* L) {
-  int SWIG_arg = -1;
-  itemPtr arg1 = (itemPtr) 0 ;
-  char *result = 0 ;
-  
-  SWIG_check_num_args("item_get_real_source_url",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("item_get_real_source_url",1,"itemPtr");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_item,0))){
-    SWIG_fail_ptr("item_get_real_source_url",1,SWIGTYPE_p_item);
-  }
-  
-  result = (char *)item_get_real_source_url(arg1);
-  SWIG_arg=0;
-  lua_pushstring(L,(const char*)result); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_item_get_real_source_title(lua_State* L) {
-  int SWIG_arg = -1;
-  itemPtr arg1 = (itemPtr) 0 ;
-  char *result = 0 ;
-  
-  SWIG_check_num_args("item_get_real_source_title",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("item_get_real_source_title",1,"itemPtr");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_item,0))){
-    SWIG_fail_ptr("item_get_real_source_title",1,SWIGTYPE_p_item);
-  }
-  
-  result = (char *)item_get_real_source_title(arg1);
-  SWIG_arg=0;
-  lua_pushstring(L,(const char*)result); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
 static int _wrap_item_set_title(lua_State* L) {
   int SWIG_arg = -1;
   itemPtr arg1 = (itemPtr) 0 ;
@@ -5404,60 +5293,6 @@ fail:
 }
 
 
-static int _wrap_item_set_real_source_url(lua_State* L) {
-  int SWIG_arg = -1;
-  itemPtr arg1 = (itemPtr) 0 ;
-  char *arg2 = (char *) 0 ;
-  
-  SWIG_check_num_args("item_set_real_source_url",2,2)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("item_set_real_source_url",1,"itemPtr");
-  if(!lua_isstring(L,2)) SWIG_fail_arg("item_set_real_source_url",2,"char const *");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_item,0))){
-    SWIG_fail_ptr("item_set_real_source_url",1,SWIGTYPE_p_item);
-  }
-  
-  arg2 = (char *)lua_tostring(L, 2);
-  item_set_real_source_url(arg1,(char const *)arg2);
-  SWIG_arg=0;
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_item_set_real_source_title(lua_State* L) {
-  int SWIG_arg = -1;
-  itemPtr arg1 = (itemPtr) 0 ;
-  char *arg2 = (char *) 0 ;
-  
-  SWIG_check_num_args("item_set_real_source_title",2,2)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("item_set_real_source_title",1,"itemPtr");
-  if(!lua_isstring(L,2)) SWIG_fail_arg("item_set_real_source_title",2,"char const *");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_item,0))){
-    SWIG_fail_ptr("item_set_real_source_title",1,SWIGTYPE_p_item);
-  }
-  
-  arg2 = (char *)lua_tostring(L, 2);
-  item_set_real_source_title(arg1,(char const *)arg2);
-  SWIG_arg=0;
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
 static int _wrap_item_set_id(lua_State* L) {
   int SWIG_arg = -1;
   itemPtr arg1 = (itemPtr) 0 ;
@@ -5518,21 +5353,21 @@ fail:
 }
 
 
-static int _wrap_item_state_set_flagged(lua_State* L) {
+static int _wrap_item_set_flag_state(lua_State* L) {
   int SWIG_arg = -1;
   itemPtr arg1 = (itemPtr) 0 ;
   int arg2 ;
   
-  SWIG_check_num_args("item_state_set_flagged",2,2)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("item_state_set_flagged",1,"itemPtr");
-  if(!lua_isnumber(L,2)) SWIG_fail_arg("item_state_set_flagged",2,"int");
+  SWIG_check_num_args("item_set_flag_state",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("item_set_flag_state",1,"itemPtr");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("item_set_flag_state",2,"int");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_item,0))){
-    SWIG_fail_ptr("item_state_set_flagged",1,SWIGTYPE_p_item);
+    SWIG_fail_ptr("item_set_flag_state",1,SWIGTYPE_p_item);
   }
   
   arg2 = (int)lua_tonumber(L, 2);
-  item_state_set_flagged(arg1,arg2);
+  item_set_flag_state(arg1,arg2);
   SWIG_arg=0;
   
   return SWIG_arg;
@@ -5545,21 +5380,21 @@ fail:
 }
 
 
-static int _wrap_item_state_set_read(lua_State* L) {
+static int _wrap_item_flag_state_changed(lua_State* L) {
   int SWIG_arg = -1;
   itemPtr arg1 = (itemPtr) 0 ;
   int arg2 ;
   
-  SWIG_check_num_args("item_state_set_read",2,2)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("item_state_set_read",1,"itemPtr");
-  if(!lua_isnumber(L,2)) SWIG_fail_arg("item_state_set_read",2,"int");
+  SWIG_check_num_args("item_flag_state_changed",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("item_flag_state_changed",1,"itemPtr");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("item_flag_state_changed",2,"int");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_item,0))){
-    SWIG_fail_ptr("item_state_set_read",1,SWIGTYPE_p_item);
+    SWIG_fail_ptr("item_flag_state_changed",1,SWIGTYPE_p_item);
   }
   
   arg2 = (int)lua_tonumber(L, 2);
-  item_state_set_read(arg1,arg2);
+  item_flag_state_changed(arg1,arg2);
   SWIG_arg=0;
   
   return SWIG_arg;
@@ -5572,21 +5407,75 @@ fail:
 }
 
 
-static int _wrap_item_state_set_updated(lua_State* L) {
+static int _wrap_item_set_read_state(lua_State* L) {
   int SWIG_arg = -1;
   itemPtr arg1 = (itemPtr) 0 ;
   int arg2 ;
   
-  SWIG_check_num_args("item_state_set_updated",2,2)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("item_state_set_updated",1,"itemPtr");
-  if(!lua_isnumber(L,2)) SWIG_fail_arg("item_state_set_updated",2,"int const");
+  SWIG_check_num_args("item_set_read_state",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("item_set_read_state",1,"itemPtr");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("item_set_read_state",2,"int");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_item,0))){
-    SWIG_fail_ptr("item_state_set_updated",1,SWIGTYPE_p_item);
+    SWIG_fail_ptr("item_set_read_state",1,SWIGTYPE_p_item);
+  }
+  
+  arg2 = (int)lua_tonumber(L, 2);
+  item_set_read_state(arg1,arg2);
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_item_read_state_changed(lua_State* L) {
+  int SWIG_arg = -1;
+  itemPtr arg1 = (itemPtr) 0 ;
+  int arg2 ;
+  
+  SWIG_check_num_args("item_read_state_changed",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("item_read_state_changed",1,"itemPtr");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("item_read_state_changed",2,"int");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_item,0))){
+    SWIG_fail_ptr("item_read_state_changed",1,SWIGTYPE_p_item);
+  }
+  
+  arg2 = (int)lua_tonumber(L, 2);
+  item_read_state_changed(arg1,arg2);
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_item_set_updated_state(lua_State* L) {
+  int SWIG_arg = -1;
+  itemPtr arg1 = (itemPtr) 0 ;
+  int arg2 ;
+  
+  SWIG_check_num_args("item_set_updated_state",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("item_set_updated_state",1,"itemPtr");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("item_set_updated_state",2,"int const");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_item,0))){
+    SWIG_fail_ptr("item_set_updated_state",1,SWIGTYPE_p_item);
   }
   
   arg2 = (int const)lua_tonumber(L, 2);
-  item_state_set_updated(arg1,arg2);
+  item_set_updated_state(arg1,arg2);
   SWIG_arg=0;
   
   return SWIG_arg;
@@ -5599,18 +5488,18 @@ fail:
 }
 
 
-static int _wrap_item_state_set_all_read(lua_State* L) {
+static int _wrap_itemset_mark_read(lua_State* L) {
   int SWIG_arg = -1;
   nodePtr arg1 = (nodePtr) 0 ;
   
-  SWIG_check_num_args("item_state_set_all_read",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("item_state_set_all_read",1,"nodePtr");
+  SWIG_check_num_args("itemset_mark_read",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("itemset_mark_read",1,"nodePtr");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_node,0))){
-    SWIG_fail_ptr("item_state_set_all_read",1,SWIGTYPE_p_node);
+    SWIG_fail_ptr("itemset_mark_read",1,SWIGTYPE_p_node);
   }
   
-  item_state_set_all_read(arg1);
+  itemset_mark_read(arg1);
   SWIG_arg=0;
   
   return SWIG_arg;
@@ -10964,19 +10853,17 @@ static const struct luaL_reg swig_commands[] = {
     { "item_get_title", _wrap_item_get_title},
     { "item_get_description", _wrap_item_get_description},
     { "item_get_source", _wrap_item_get_source},
-    { "item_get_real_source_url", _wrap_item_get_real_source_url},
-    { "item_get_real_source_title", _wrap_item_get_real_source_title},
     { "item_set_title", _wrap_item_set_title},
     { "item_set_description", _wrap_item_set_description},
     { "item_set_source", _wrap_item_set_source},
-    { "item_set_real_source_url", _wrap_item_set_real_source_url},
-    { "item_set_real_source_title", _wrap_item_set_real_source_title},
     { "item_set_id", _wrap_item_set_id},
     { "item_to_xml", _wrap_item_to_xml},
-    { "item_state_set_flagged", _wrap_item_state_set_flagged},
-    { "item_state_set_read", _wrap_item_state_set_read},
-    { "item_state_set_updated", _wrap_item_state_set_updated},
-    { "item_state_set_all_read", _wrap_item_state_set_all_read},
+    { "item_set_flag_state", _wrap_item_set_flag_state},
+    { "item_flag_state_changed", _wrap_item_flag_state_changed},
+    { "item_set_read_state", _wrap_item_set_read_state},
+    { "item_read_state_changed", _wrap_item_read_state_changed},
+    { "item_set_updated_state", _wrap_item_set_updated_state},
+    { "itemset_mark_read", _wrap_itemset_mark_read},
     { "item_state_set_all_old", _wrap_item_state_set_all_old},
     { "item_state_set_all_popup", _wrap_item_state_set_all_popup},
     { "itemlist_free", _wrap_itemlist_free},

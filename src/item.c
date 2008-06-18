@@ -19,10 +19,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
-
 #include <glib.h>
 #include <time.h>
 #include <string.h> /* For memset() */
@@ -59,8 +55,6 @@ item_copy (itemPtr item)
 
 	item_set_title (copy, item->title);
 	item_set_source (copy, item->source);
-	item_set_real_source_url (copy, item->real_source_url);
-	item_set_real_source_title (copy, item->real_source_title);
 	item_set_description (copy, item->description);
 	item_set_id (copy, item->sourceId);
 	
@@ -152,24 +146,6 @@ void item_set_source(itemPtr item, const gchar * source) {
 		item->source = NULL;
 }
 
-void item_set_real_source_url(itemPtr item, const gchar * source) { 
-
-	g_free(item->real_source_url);
-	if(source)
-		item->real_source_url = g_strchomp(g_strdup(source));
-	else
-		item->real_source_url = NULL;
-}
-
-void item_set_real_source_title(itemPtr item, const gchar * source) { 
-
-	g_free(item->real_source_title);
-	if(source)
-		item->real_source_title = g_strchomp(g_strdup(source));
-	else
-		item->real_source_title = NULL;
-}
-
 void item_set_id(itemPtr item, const gchar * id) {
 	g_free(item->sourceId);
 	item->sourceId = g_strdup(id);
@@ -179,8 +155,6 @@ const gchar *	item_get_id(itemPtr item) { return item->sourceId; }
 const gchar *	item_get_title(itemPtr item) {return item->title; }
 const gchar *	item_get_description(itemPtr item) { return item->description; }
 const gchar *	item_get_source(itemPtr item) { return item->source; }
-const gchar *	item_get_real_source_url(itemPtr item) { return item->real_source_url; }
-const gchar *	item_get_real_source_title(itemPtr item) { return item->real_source_title; }
 
 void
 item_unload (itemPtr item) 
@@ -189,8 +163,6 @@ item_unload (itemPtr item)
 	g_free (item->title);
 	g_free (item->source);
 	g_free (item->sourceId);
-	g_free (item->real_source_url);
-	g_free (item->real_source_title);
 	g_free (item->description);
 	g_free (item->commentFeedId);
 	g_free (item->nodeId);
@@ -227,12 +199,6 @@ void item_to_xml(itemPtr item, xmlNodePtr parentNode) {
 	
 	if(item_get_source(item))
 		xmlNewTextChild(itemNode, NULL, "source", item_get_source(item));
-
-	if(item_get_real_source_title(item))
-		xmlNewTextChild(itemNode, NULL, "real_source_title", item_get_real_source_title(item));
-
-	if(item_get_real_source_url(item))
-		xmlNewTextChild(itemNode, NULL, "real_source_url", item_get_real_source_url(item));
 
 	tmp = g_strdup_printf("%ld", item->id);
 	xmlNewTextChild(itemNode, NULL, "nr", tmp);

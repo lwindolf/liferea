@@ -25,6 +25,7 @@
 #include "feed.h"
 #include "feedlist.h"
 #include "itemlist.h"
+#include "metadata.h"
 #include "newsbin.h"
 #include "render.h"
 #include "vfolder.h"
@@ -128,10 +129,10 @@ on_popup_copy_to_newsbin (gpointer user_data, guint callback_action, GtkWidget *
 		
 		/* To provide a hint in the rendered output what the orginial 
 		   feed was the original website link/title are added */		
-		if(!copy->real_source_url)
-			copy->real_source_url = g_strdup(node_get_base_url(node_from_id(item->nodeId)));
-		if(!copy->real_source_title)
-			copy->real_source_title = g_strdup(node_get_title(node_from_id(item->nodeId)));
+		if(!metadata_list_get (copy->metadata, "realSourceUrl"))
+			metadata_list_set (&(copy->metadata), "realSourceUrl", node_get_base_url(node_from_id(item->nodeId)));
+		if(!metadata_list_get (copy->metadata, "realSourceTitle"))
+			metadata_list_set (&(copy->metadata), "realSourceTitle", node_get_title(node_from_id(item->nodeId)));
 		
 		/* do the same as in node_merge_item(s) */
 		db_item_update(copy);

@@ -57,8 +57,6 @@ typedef struct item {
 	gchar		*source;		/**< URL to the post online */
 	gchar		*sourceId;		/**< "Unique" syndication item identifier, for example <guid> in RSS */
 	gboolean	validGuid;		/**< TRUE if id of this item is a GUID and can be used for duplicate detection */
-	gchar		*real_source_url;	/**< (optional) URL of the real source (e.g. if listed in search engine result) */
-	gchar		*real_source_title;	/**< (optional) title of the real source */
 	gchar		*description;		/**< XHTML string containing the item's description */
 	
 	GSList		*metadata;		/**< Metadata of this item */
@@ -128,10 +126,6 @@ const gchar *	item_get_title(itemPtr item);
 const gchar *	item_get_description(itemPtr item);
 /** Returns the source of item. */
 const gchar *	item_get_source(itemPtr item);
-/** Returns the real source of item. */
-const gchar *	item_get_real_source_url(itemPtr item);
-/** Returns the real source title of item. */
-const gchar *	item_get_real_source_title(itemPtr item);
 
 /** Sets the item title */
 void		item_set_title(itemPtr item, const gchar * title);
@@ -148,10 +142,6 @@ void item_set_description (itemPtr item, const gchar *description);
 
 /** Sets the item source */
 void		item_set_source(itemPtr item, const gchar * source);
-/** Sets the item real source */
-void		item_set_real_source_url(itemPtr item, const gchar * source);
-/** Sets the item real source title */
-void		item_set_real_source_title(itemPtr item, const gchar * source);
 /** Sets the item id */
 void		item_set_id(itemPtr item, const gchar * id);
 

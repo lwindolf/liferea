@@ -133,13 +133,13 @@
 </tr> 
 </xsl:if>
 
-<xsl:if test="real_source_url">
+<xsl:if test="attributes/attribute[ @name = 'realSourceUrl' ]">
 <tr>
  <td valign="top" class='source'> 
      <_span>Source</_span>
      <b><span class='source'>
-       <a href="{real_source_url}">
-         <xsl:value-of select="real_source_title"/>
+       <a href="{attributes/attribute[ @name = 'realSourceUrl' ]}">
+         <xsl:value-of select="attributes/attribute[ @name = 'realSourceTitle' ]"/>
        </a>
      </span></b>
  </td>
