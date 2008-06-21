@@ -172,15 +172,6 @@ enum  {
  */
 nodeSourceTypePtr google_source_get_type(void);
 
-
-/**
- * when this is set to true, and google_source_item_mark_read is called, 
- * it will do nothing. This is a small hack, so that whenever google source
- * wants to set and item as read/unread within this file, it should not do 
- * any network calls.
- */
-gboolean googleSourceBlockEditHack;
-
 extern struct subscriptionType googleSourceFeedSubscriptionType;
 extern struct subscriptionType googleSourceOpmlSubscriptionType;
 

@@ -89,14 +89,6 @@ void
 google_source_item_mark_read (nodePtr node, itemPtr item, 
                               gboolean newStatus)
 {
-	/**
-	 * This global is an internal hack so that this source file
-	 * may call item_state_set_read without any network calls being
-	 * made. @see google_source_edit_action_cb
-	 */
-	if (googleSourceBlockEditHack)
-		return;
-
 	const gchar* sourceUrl = metadata_list_get(item->metadata, "GoogleBroadcastOrigFeed");
 	if (!sourceUrl) sourceUrl = node->subscription->source;
 	debug1(DEBUG_UPDATE, "GoogleSource: original source is %s", sourceUrl);
@@ -105,6 +97,7 @@ google_source_item_mark_read (nodePtr node, itemPtr item,
 				     item->sourceId, 
 				     sourceUrl,
 				     newStatus);
+	item_read_state_changed(item, newStatus);
 }
 
 static void
@@ -178,9 +171,7 @@ google_source_item_retrieve_status (const xmlNodePtr entry, gpointer userdata)
 		if (item && item->sourceId) {
 			if (g_str_equal (item->sourceId, id) && !google_source_edit_is_in_queue(gsource, id)) {
 				
-				googleSourceBlockEditHack = TRUE;
 				item_read_state_changed (item, read);
-				googleSourceBlockEditHack = FALSE;
 
 				if (g_str_equal(subscription->source, GOOGLE_READER_BROADCAST_FRIENDS_URL)) {
 					xmlXPathContextPtr xpathCtxt = xmlXPathNewContext (entry->doc) ;
