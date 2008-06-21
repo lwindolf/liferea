@@ -30,6 +30,26 @@
 #include "google_source.h"
 #include "subscription.h"
 #include "node.h"
+#include "feedlist.h"
+#include "opml_source.h"
+#include "metadata.h"
+
+/**
+ * Find a node by the source id.
+ */
+
+nodePtr
+google_source_get_node_by_source(GoogleSourcePtr gsource, const gchar *source) 
+{
+	nodePtr node;
+	GSList  *iter = gsource->root->children;
+	for ( ; iter; iter = g_slist_next(iter)) {
+		node = (nodePtr)iter->data;
+		if (g_str_equal(node->subscription->source, source))
+			return node;
+	}
+	return NULL;
+}
 
 /**
  * Add "broadcast-friends" to the list of subscriptions if required 
@@ -209,11 +229,101 @@ google_subscription_opml_cb (subscriptionPtr subscription, const struct updateRe
 
 }
 
+/** functions for an efficient updating mechanism */
+
+
+static void
+google_source_quick_update_helper(xmlNodePtr match, gpointer userdata) 
+{
+	GoogleSourcePtr gsource = (GoogleSourcePtr) userdata;
+	xmlNodePtr      xmlNode;
+	xmlChar         *id, *newestItemTimestamp;
+	nodePtr         node = NULL; 
+	const gchar     *oldNewestItemTimestamp;
+
+	xmlNode = xpath_find(match, "./string[@name='id']");
+	id = xmlNodeGetContent(xmlNode); 
+
+	if (g_str_has_prefix(id, "feed/") )
+		node = google_source_get_node_by_source(gsource, 
+						    id+strlen("feed/"));
+	else if (g_str_has_suffix(id, "broadcast-friends")) 
+		node = google_source_get_node_by_source(gsource, id);
+	else {
+		xmlFree(id);
+		return;
+	}
+
+	if (node == NULL) {
+		xmlFree(id);
+		return;
+	}
+
+	xmlNode = xpath_find(match,"./number[@name='newestItemTimestampUsec']");
+	newestItemTimestamp = xmlNodeGetContent(xmlNode);
+
+	oldNewestItemTimestamp = g_hash_table_lookup(
+		gsource->lastTimestampMap, node->subscription->source);
+
+	if (!oldNewestItemTimestamp ||
+	    (newestItemTimestamp && 
+	     !g_str_equal(newestItemTimestamp, oldNewestItemTimestamp))) { 
+		debug3(DEBUG_UPDATE, "GoogleSource: autoupdating %s "
+		       "[oldtimestamp%s, timestamp %s]", 
+		       id, oldNewestItemTimestamp, newestItemTimestamp);
+		g_hash_table_insert(gsource->lastTimestampMap,
+				    g_strdup(node->subscription->source), 
+				    g_strdup(newestItemTimestamp));
+				    
+		subscription_update (node->subscription, 0);
+	}
+
+	if (newestItemTimestamp) xmlFree (newestItemTimestamp);
+	xmlFree (id);
+}
+
+static void
+google_source_quick_update_cb(const struct updateResult* const result, gpointer userdata, updateFlags flasg) 
+{
+	GoogleSourcePtr gsource = (GoogleSourcePtr) userdata;
+	xmlDocPtr       doc;
+
+	if (!result->data) { 
+		/* what do I do? */
+		debug0(DEBUG_UPDATE, "GoogleSource: Unable to get unread counts, this update is aborted.");
+		return;
+	}
+	doc = xml_parse(result->data, result->size, FALSE, NULL);
+	if (!doc) {
+		debug0(DEBUG_UPDATE, "GoogleSource: The XML failed to parse, maybe the session has expired. (FIXME)");
+		return;
+	}
+
+	xpath_foreach_match(xmlDocGetRootElement(doc),
+			    "/object/list[@name='unreadcounts']/object", 
+			    google_source_quick_update_helper, gsource);
+}
+
+gboolean
+google_source_quick_update(gpointer data) 
+{
+	GoogleSourcePtr gsource = (GoogleSourcePtr) data;
+	
+	updateRequestPtr request = update_request_new();
+	request->updateState = update_state_copy(gsource->root->subscription->updateState);
+	request->options = update_options_copy(gsource->root->subscription->updateOptions);
+	update_state_set_cookies(request->updateState, gsource->sid);
+	update_request_set_source(request, GOOGLE_READER_UNREAD_COUNTS_URL);
+	
+	update_execute_request (gsource, request, google_source_quick_update_cb,
+				gsource, 0);
+
+	return TRUE;
+}
+
 static void
 google_opml_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
 {
-	GoogleSourcePtr	gsource = (GoogleSourcePtr)subscription->node->data;
-	
 	google_subscription_opml_cb (subscription, result, flags);
 }
 

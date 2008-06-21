@@ -40,6 +40,12 @@ typedef struct GoogleSource {
 	 * way to decide what feeds are outdated.
 	 */ 
 	GTimeVal        *opmlLastTimestampEncountered;
+
+	/**
+	 * A map from a subscription source to a timestamp when it was last 
+	 * updated (provided by Google).
+	 */
+	GHashTable      *lastTimestampMap; 
 } *GoogleSourcePtr;
 
  
@@ -114,6 +120,12 @@ enum  {
 #define GOOGLE_READER_REMOVE_SUBSCRIPTION_POST "s=feed%%2F%s&i=null&ac=unsubscribe&T=%s"
 
 /**
+ * A list of subscriptions with the unread counters, and the last updated
+ * timestamps.
+ */
+#define GOOGLE_READER_UNREAD_COUNTS_URL "http://www.google.com/reader/api/0/unread-count?all=true&client=liferea"
+
+/**
  * Edit the tags associated with an item. The parameters to this _have_ to be
  * sent as post data. 
  */
@@ -143,11 +155,18 @@ enum  {
 #define GOOGLE_READER_EDIT_TAG_AR_TAG "i=%s&s=feed%%2F%s&a=%s&r=%s&ac=edit-tags&T=%s&async=true"
 
 
+
 /** A set of tags (states) defined by Google reader */
 
 #define GOOGLE_READER_TAG_KEPT_UNREAD          "user/-/state/com.google/kept-unread"
 #define GOOGLE_READER_TAG_READ                 "user/-/state/com.google/read"
 #define GOOGLE_READER_TAG_TRACKING_KEPT_UNREAD "user/-/state/com.google/tracking-kept-unread"
+
+/**
+ * Interval (in seconds) for doing a Quick Update. 
+ */
+#define GOOGLE_SOURCE_QUICK_UPDATE_INTERVAL 600  /* 10 minutes */
+
 /**
  * Returns Google Reader source type implementation info.
  */
@@ -184,6 +203,15 @@ google_source_item_mark_read(nodePtr node, itemPtr item, gboolean newStatus);
  */
 nodePtr
 google_source_get_root_from_node(nodePtr node);
+
+/**
+ * Tries to update the entire source quickly, by updating only those feeds
+ * which are known to be updated. Suitable for g_timeout_add.
+ *
+ * @param data a GoogleSourcePtr for which to do the quick update.
+ */
+gboolean
+google_source_quick_update(gpointer gsource) ;
 
 /**
  * Migrate a google source child-node from a Liferea 1.4 style read-only

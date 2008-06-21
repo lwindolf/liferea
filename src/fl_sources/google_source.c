@@ -58,6 +58,7 @@ GoogleSourcePtr google_source_new(nodePtr node)
 	source->root = node; 
 	source->actionQueue = g_queue_new(); 
 	source->loginState = GOOGLE_SOURCE_STATE_NONE; 
+	source->lastTimestampMap = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
 	return source;
 }
 
@@ -67,6 +68,7 @@ void google_source_free(GoogleSourcePtr gsource)
 	if (!gsource) return ;
 
 	g_queue_free(gsource->actionQueue) ;
+	g_hash_table_unref (gsource->lastTimestampMap);
 	g_free(gsource);
 }
 
@@ -115,6 +117,9 @@ google_source_login_cb (const struct updateResult * const result, gpointer userd
 
 		/* process any edits waiting in queue */
 		google_source_edit_process (gsource);
+
+		/* add a timeout for quick uptating. @todo Config option? */
+		g_timeout_add_seconds(GOOGLE_SOURCE_QUICK_UPDATE_INTERVAL, google_source_quick_update, gsource);
 
 	} else {
 		debug0 (DEBUG_UPDATE, "google reader login failed! no SID found in result!");
@@ -245,7 +250,7 @@ google_source_remove (nodePtr node)
 }
 
 
-nodePtr
+static nodePtr
 google_source_add_subscription(nodePtr node, nodePtr parent, subscriptionPtr subscription) 
 { 
 	g_assert(!googleSourceBlockEditHack);
@@ -267,7 +272,7 @@ google_source_add_subscription(nodePtr node, nodePtr parent, subscriptionPtr sub
 	return child ; 
 }
 
-void
+static void
 google_source_remove_node(nodePtr node, nodePtr child) 
 { 
 	if (child == node) { 
@@ -336,26 +341,27 @@ google_source_cleanup (nodePtr node)
 /* node source type definition */
 
 static struct nodeSourceType nst = {
-	NODE_SOURCE_TYPE_API_VERSION,
-	"fl_google",
-	N_("Google Reader"),
-	N_("Integrate the feed list of your Google Reader account. Liferea will "
+	.api_version         = NODE_SOURCE_TYPE_API_VERSION,
+	.id                  = "fl_google",
+	.name                = N_("Google Reader"),
+	.description         = N_("Integrate the feed list of your Google Reader account. Liferea will "
 	   "present your Google Reader subscription as a read-only subtree in the feed list."),
-	NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION | NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST,
-	google_source_init,
-	google_source_deinit,
-	ui_google_source_get_account_info,
-	google_source_remove,
-	google_source_import,
-	google_source_export,
-	google_source_get_feedlist,
-	google_source_update,
-	google_source_auto_update,
-	google_source_cleanup,
-	google_source_item_mark_read,
-	NULL, /* add_folder */
-	google_source_add_subscription,
-	google_source_remove_node
+	.capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION | NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST,
+	.source_type_init    = google_source_init,
+	.source_type_deinit  = google_source_deinit,
+	.source_new          = ui_google_source_get_account_info,
+	.source_delete       = google_source_remove,
+	.source_import       = google_source_import,
+	.source_export       = google_source_export,
+	.source_get_feedlist = google_source_get_feedlist,
+	.source_update       = google_source_update,
+	.source_auto_update  = google_source_auto_update,
+	.free                = google_source_cleanup,
+	.item_set_flag       = NULL,
+	.item_mark_read      = google_source_item_mark_read,
+	.add_folder          = NULL, 
+	.add_subscription    = google_source_add_subscription,
+	.remove_node         = google_source_remove_node
 };
 
 nodeSourceTypePtr

@@ -207,7 +207,6 @@ cleanup:
 	xmlFree (id);
 }
 
-
 static void
 google_feed_subscription_process_update_result (subscriptionPtr subscription,
                                                 const struct updateResult* const result, 
