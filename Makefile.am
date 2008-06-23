@@ -32,10 +32,7 @@ EXTRA_DIST = \
 	$(desktop_DATA) \
 	$(schema_DATA) \
 	$(css_DATA) \
-	$(dtd_DATA) \
-	intltool-extract.in \
-	intltool-merge.in \
-	intltool-update.in
+	$(dtd_DATA) 
 
 install-data-local:
 if GCONF_SCHEMAS_INSTALL
