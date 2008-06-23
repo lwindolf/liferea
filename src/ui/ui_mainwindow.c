@@ -833,6 +833,8 @@ static gboolean
 ui_mainwindow_unlock_status_bar_cb (gpointer user_data)
 {
 	statusBarLocked = FALSE;
+	
+	return FALSE;
 }
 
 static gboolean
