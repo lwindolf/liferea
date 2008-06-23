@@ -9,10 +9,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Liferea 1.4.16-20080528\n"
+"Project-Id-Version: Liferea 1.4.16-20080622\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-28 15:36+0200\n"
-"PO-Revision-Date: 2008-05-28 15:38+0200\n"
+"POT-Creation-Date: 2008-06-23 01:04+0200\n"
+"PO-Revision-Date: 2008-06-23 01:05+0200\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.org>\n"
 "Language-Team: French\n"
 "MIME-Version: 1.0\n"
@@ -295,11 +295,11 @@ msgstr "Convertir _en utilisant :"
 
 #: ../liferea.glade.h:91
 msgid ""
-"Copyright (c) 2003-2007\n"
+"Copyright (c) 2003-2008\n"
 "Lars Lindner <lars.lindner@gmail.com> and \n"
 "Nathan J. Conrad <t98502@users.sourceforge.net>\n"
 msgstr ""
-"Copyright (c) 2003-2007\n"
+"Copyright (c) 2003-2008\n"
 "Lars Lindner <lars.lindner@gmail.com> et \n"
 "Nathan J. Conrad <t98502@users.sourceforge.net>\n"
 
@@ -1453,33 +1453,33 @@ msgstr ""
 "Un problème est survenu pendant la lecture de cet abonnement. Veuillez "
 "vérifier l'URL et la sortie sur la console."
 
-#: ../src/update.c:297
+#: ../src/update.c:299
 #, c-format
 msgid "Error opening temp file %s to use for filtering!"
 msgstr "Erreur en ouvrant le fichier temporaire %s pour le filtrage !"
 
-#: ../src/update.c:320
+#: ../src/update.c:322
 #, c-format
 msgid "%s exited with status %d"
 msgstr "%s s'est terminé avec le code de retour %d"
 
-#: ../src/update.c:326 ../src/update.c:327 ../src/update.c:439
+#: ../src/update.c:328 ../src/update.c:329 ../src/update.c:441
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "Erreur : impossible d'ouvrir le tuyau \"%s\""
 
 #. FIXME: maybe setting request->returncode would be better
-#: ../src/update.c:463
+#: ../src/update.c:465
 #, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr "Erreur : impossible d'ouvrir le fichier \"%s\""
 
-#: ../src/update.c:468
+#: ../src/update.c:470
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "Erreur : il n'y a pas de fichier \"%s\""
 
-#: ../src/update.c:668
+#: ../src/update.c:670
 #, c-format
 msgid "Could not download \"%s\". Will retry in %d seconds."
 msgstr "Impossible de télécharger \"%s\". Nouvelle tentative dans %d secondes."
