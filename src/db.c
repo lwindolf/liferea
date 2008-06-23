@@ -524,7 +524,7 @@ open:
 			db_exec ("INSERT INTO tmp_id SELECT item_id FROM itemsets WHERE item_id NOT IN (SELECT ROWID FROM items);");
 			/* limit to 1000 items as it is very slow */
 			db_exec ("DELETE FROM itemsets WHERE item_id IN (SELECT id FROM tmp_id LIMIT 1000);");
-			db_exec ("DROP TEMP TABLE tmp_id;");
+			db_exec ("DROP TABLE tmp_id;");
 
 			debug0 (DEBUG_DB, "Checking for items without a subscription...\n");
 			db_exec ("DELETE FROM itemsets WHERE comment = 0 AND node_id NOT IN "
