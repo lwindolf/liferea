@@ -382,43 +382,36 @@ ui_itemlist_add_item (itemPtr item)
 
 	exists = ui_item_id_to_iter (item->id, &old_iter);
 	
-	if (exists && !item->newStatus) 
-	{
-		/* nothing to do */
-	} 
-	else 
-	{
-		GtkTreeIter *iter = &old_iter;
-		gint state = 0;
-		
-		node = node_from_id (item->nodeId);
-		if(!node)
-			return;	/* comment items do cause this... maybe filtering them earlier would be a good idea... */
-		
-		if (!exists) 
-		{
-			iter = g_new0 (GtkTreeIter, 1);
-			gtk_tree_store_prepend (itemstore, iter, NULL);
-			g_hash_table_insert (item_id_to_iter, GUINT_TO_POINTER (item->id), (gpointer)iter);
-		}
-		
-		if (item->flagStatus)
-			state += 2;
-		if (!item->readStatus)
-			state += 1;
+	GtkTreeIter *iter = &old_iter;
+	gint state = 0;
 
-		gtk_tree_store_set (itemstore, iter,
-		                	       IS_TIME, item->time,
-		                	       IS_NR, item->id,
-					       IS_PARENT, node,
-		                               IS_FAVICON, node->icon,
-		                               IS_ENCICON, item->hasEnclosure?icons[ICON_ENCLOSURE]:NULL,
-					       IS_ENCLOSURE, item->hasEnclosure,
-					       IS_SOURCE, node,
-					       IS_STATE, state,
-		                	       -1);
-		ui_itemlist_update_item (item);
+	node = node_from_id (item->nodeId);
+	if(!node)
+		return;	/* comment items do cause this... maybe filtering them earlier would be a good idea... */
+
+	if (!exists) 
+	{
+		iter = g_new0 (GtkTreeIter, 1);
+		gtk_tree_store_prepend (itemstore, iter, NULL);
+		g_hash_table_insert (item_id_to_iter, GUINT_TO_POINTER (item->id), (gpointer)iter);
 	}
+
+	if (item->flagStatus)
+		state += 2;
+	if (!item->readStatus)
+		state += 1;
+
+	gtk_tree_store_set (itemstore, iter,
+		                       IS_TIME, item->time,
+		                       IS_NR, item->id,
+				       IS_PARENT, node,
+		                       IS_FAVICON, node->icon,
+		                       IS_ENCICON, item->hasEnclosure?icons[ICON_ENCLOSURE]:NULL,
+				       IS_ENCLOSURE, item->hasEnclosure,
+				       IS_SOURCE, node,
+				       IS_STATE, state,
+		                       -1);
+	ui_itemlist_update_item (item);
 }
 
 void ui_itemlist_enable_favicon_column(gboolean enabled) {

@@ -48,7 +48,6 @@ typedef struct item {
 
 	/* those fields should not be accessed directly. Accessors are provided. */
 	gboolean 	readStatus;		/**< TRUE if the item has been read */
-	gboolean	newStatus;		/**< TRUE if the item was downloaded and is to be counted by the tray icon */
 	gboolean	popupStatus;		/**< TRUE if the item was downloaded and is yet to be displayed by the popup notification feature */
 	gboolean	updateStatus;		/**< TRUE if the item content was updated */
 	gboolean 	flagStatus;		/**< TRUE if the item has been flagged */

@@ -200,14 +200,6 @@ itemset_mark_read (nodePtr node)
 }
 
 void
-item_state_set_all_old (const gchar *nodeId)
-{
-	db_itemset_mark_all_old (nodeId);
-	
-	/* No GUI updating necessary... */
-}
-
-void
 item_state_set_all_popup (const gchar *nodeId)
 {
 	db_itemset_mark_all_popup (nodeId);

@@ -37,7 +37,6 @@ itemPtr item_new(void) {
 	itemPtr		item;
 	
 	item = g_new0(struct item, 1);
-	item->newStatus = TRUE;
 	item->popupStatus = TRUE;
 	
 	return item;
@@ -60,7 +59,6 @@ item_copy (itemPtr item)
 	
 	copy->updateStatus = item->updateStatus;
 	copy->readStatus = item->readStatus;
-	copy->newStatus = FALSE;
 	copy->popupStatus = FALSE;
 	copy->flagStatus = item->flagStatus;
 	copy->time = item->time;

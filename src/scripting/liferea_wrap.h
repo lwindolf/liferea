@@ -3818,59 +3818,6 @@ fail:
 }
 
 
-static int _wrap_item_newStatus_set(lua_State* L) {
-  int SWIG_arg = -1;
-  struct item *arg1 = (struct item *) 0 ;
-  int arg2 ;
-  
-  SWIG_check_num_args("newStatus",2,2)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("newStatus",1,"struct item *");
-  if(!lua_isnumber(L,2)) SWIG_fail_arg("newStatus",2,"int");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_item,0))){
-    SWIG_fail_ptr("item_newStatus_set",1,SWIGTYPE_p_item);
-  }
-  
-  arg2 = (int)lua_tonumber(L, 2);
-  if (arg1) (arg1)->newStatus = arg2;
-  
-  SWIG_arg=0;
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_item_newStatus_get(lua_State* L) {
-  int SWIG_arg = -1;
-  struct item *arg1 = (struct item *) 0 ;
-  int result;
-  
-  SWIG_check_num_args("newStatus",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("newStatus",1,"struct item *");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_item,0))){
-    SWIG_fail_ptr("item_newStatus_get",1,SWIGTYPE_p_item);
-  }
-  
-  result = (int) ((arg1)->newStatus);
-  SWIG_arg=0;
-  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
 static int _wrap_item_popupStatus_set(lua_State* L) {
   int SWIG_arg = -1;
   struct item *arg1 = (struct item *) 0 ;
@@ -4968,7 +4915,6 @@ static swig_lua_method swig_item_methods[] = {
 static swig_lua_attribute swig_item_attributes[] = {
     { "id", _wrap_item_id_get, _wrap_item_id_set},
     { "readStatus", _wrap_item_readStatus_get, _wrap_item_readStatus_set},
-    { "newStatus", _wrap_item_newStatus_get, _wrap_item_newStatus_set},
     { "popupStatus", _wrap_item_popupStatus_get, _wrap_item_popupStatus_set},
     { "updateStatus", _wrap_item_updateStatus_get, _wrap_item_updateStatus_set},
     { "flagStatus", _wrap_item_flagStatus_get, _wrap_item_flagStatus_set},
@@ -10174,6 +10120,27 @@ fail:
 }
 
 
+static int _wrap_ui_mainwindow_set_important_status_bar(lua_State* L) {
+  int SWIG_arg = -1;
+  char *arg1 = (char *) 0 ;
+  void *arg2 = 0 ;
+  
+  SWIG_check_num_args("ui_mainwindow_set_important_status_bar",1,1)
+  if(!lua_isstring(L,1)) SWIG_fail_arg("ui_mainwindow_set_important_status_bar",1,"char const *");
+  arg1 = (char *)lua_tostring(L, 1);
+  ui_mainwindow_set_important_status_bar((char const *)arg1,arg2);
+  SWIG_arg=0;
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_ui_mainwindow_update_feedsinfo(lua_State* L) {
   int SWIG_arg = -1;
   
@@ -10995,6 +10962,7 @@ static const struct luaL_reg swig_commands[] = {
     { "ui_mainwindow_update_item_menu", _wrap_ui_mainwindow_update_item_menu},
     { "ui_mainwindow_update_menubar", _wrap_ui_mainwindow_update_menubar},
     { "ui_mainwindow_set_status_bar", _wrap_ui_mainwindow_set_status_bar},
+    { "ui_mainwindow_set_important_status_bar", _wrap_ui_mainwindow_set_important_status_bar},
     { "ui_mainwindow_update_feedsinfo", _wrap_ui_mainwindow_update_feedsinfo},
     { "ui_mainwindow_online_status_changed", _wrap_ui_mainwindow_online_status_changed},
     { "ui_mainwindow_save_position", _wrap_ui_mainwindow_save_position},

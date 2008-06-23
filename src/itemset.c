@@ -204,7 +204,6 @@ itemset_merge_item (itemSetPtr itemSet, GList *items, itemPtr item, gboolean all
 			
 			if (g_slist_length (duplicates) > 1) {
 				item->readStatus = TRUE;	/* no unread counting... */
-				item->newStatus = FALSE;	/* no new counting and enclosure download... */
 				item->popupStatus = FALSE;	/* no notification... */
 			}
 			
@@ -215,7 +214,8 @@ itemset_merge_item (itemSetPtr itemSet, GList *items, itemPtr item, gboolean all
 		   is enabled we start the download. Enclosures added
 		   by updated items are not supported. */
 		node = node_from_id (itemSet->nodeId);
-		if (node && (((feedPtr)node->data)->encAutoDownload) && item->newStatus) {
+		if (node && (((feedPtr)node->data)->encAutoDownload)) {
+// FIXME: check enclosure download state!!!!
 			GSList *iter = metadata_list_get_values (item->metadata, "enclosure");
 			while (iter) {
 				debug1 (DEBUG_UPDATE, "download enclosure (%s)", (gchar *)iter->data);

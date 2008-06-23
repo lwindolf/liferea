@@ -80,7 +80,6 @@ migrate_item_parse_cache (xmlNodePtr cur,
 	
 	item = item_new();
 	item->popupStatus = FALSE;
-	item->newStatus = FALSE;
 	
 	cur = cur->xmlChildrenNode;
 	while(cur) {

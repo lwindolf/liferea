@@ -379,7 +379,7 @@ open:
 		db_exec ("CREATE TABLE items ("
 	        	 "   title		TEXT,"
 	        	 "   read		INTEGER,"
-	        	 "   new		INTEGER,"
+	        	 "   new		INTEGER,"	/* FIXME: drop this deprecated column on next DB migration! */
 	        	 "   updated		INTEGER,"
 	        	 "   popup		INTEGER,"
 	        	 "   marked		INTEGER,"
@@ -572,10 +572,6 @@ open:
 			
 	db_new_statement ("itemsetRemoveAllStmt",
 	                  "DELETE FROM itemsets WHERE parent_node_id = ?");
-
-	db_new_statement ("itemsetMarkAllOldStmt",
-	                  "UPDATE items SET new = 0 WHERE ROWID IN "
-			  "(SELECT item_id FROM itemsets WHERE node_id = ?)");
 
 	db_new_statement ("itemsetMarkAllPopupStmt",
 	                  "UPDATE items SET popup = 0 WHERE ROWID IN "
@@ -793,7 +789,7 @@ db_load_item_from_columns (sqlite3_stmt *stmt)
 	itemPtr item = item_new ();
 	
 	item->readStatus	= sqlite3_column_int (stmt, 1)?TRUE:FALSE;
-	item->newStatus		= sqlite3_column_int (stmt, 2)?TRUE:FALSE;
+	/* newStatus isn't used anymore, FIXME: drop column on migration */
 	item->updateStatus	= sqlite3_column_int (stmt, 3)?TRUE:FALSE;
 	item->popupStatus	= sqlite3_column_int (stmt, 4)?TRUE:FALSE;
 	item->flagStatus	= sqlite3_column_int (stmt, 5)?TRUE:FALSE;
@@ -945,7 +941,7 @@ db_item_update (itemPtr item)
 	stmt = db_get_statement ("itemUpdateStmt");
 	sqlite3_bind_text (stmt, 1,  item->title, -1, SQLITE_TRANSIENT);
 	sqlite3_bind_int  (stmt, 2,  item->readStatus?1:0);
-	sqlite3_bind_int  (stmt, 3,  item->newStatus?1:0);
+	/* FIXME: newStatus is not used anymore, drop column on next migration */
 	sqlite3_bind_int  (stmt, 4,  item->updateStatus?1:0);
 	sqlite3_bind_int  (stmt, 5,  item->popupStatus?1:0);
 	sqlite3_bind_int  (stmt, 6,  item->flagStatus?1:0);
@@ -1079,22 +1075,6 @@ db_item_mark_read (itemPtr item)
 		if (SQLITE_DONE != res)
 			g_warning ("marking duplicates read failed (error code=%d, %s)", res, sqlite3_errmsg (db));
 	}
-}
-
-void 
-db_itemset_mark_all_old (const gchar *id) 
-{
-	sqlite3_stmt	*stmt;
-	gint		res;
-	
-	debug1 (DEBUG_DB, "marking all items old for item set with %s", id);
-		
-	stmt = db_get_statement ("itemsetMarkAllOldStmt");
-	sqlite3_bind_text (stmt, 1, id, -1, SQLITE_TRANSIENT);
-	res = sqlite3_step (stmt);
-
-	if (SQLITE_DONE != res)
-		g_warning ("marking all items old failed (error code=%d, %s)", res, sqlite3_errmsg(db));
 }
 
 void 
