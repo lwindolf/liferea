@@ -370,10 +370,12 @@ open:
 			goto open;
 		}
 
+		/* Schema creation */
+		
 		debug_start_measurement (DEBUG_DB);
 		db_begin_transaction ();
 
-		/* create tables if they do not exist yet */
+		/* 1. Create tables if they do not exist yet */
 		db_exec ("CREATE TABLE items ("
 	        	 "   title		TEXT,"
 	        	 "   read		INTEGER,"
@@ -425,29 +427,6 @@ open:
 			 "   PRIMARY KEY (category_id)"
 			 ");");
 
-		/* Set up item removal trigger (does not remove comments!) */
-		db_exec ("DROP TRIGGER item_removal;");
-		db_exec ("CREATE TRIGGER item_removal DELETE ON itemsets "
-	        	 "BEGIN "
-	        	 "   DELETE FROM items WHERE ROWID = old.item_id; "
-			 "   DELETE FROM metadata WHERE item_id = old.item_id; "
-	        	 "END;");
-
-		/* Set up item read state update triggers */
-		db_exec ("DROP TRIGGER item_insert;");
-		db_exec ("CREATE TRIGGER item_insert INSERT ON items "
-	        	 "BEGIN "
-	        	 "   UPDATE itemsets SET read = new.read "
-	        	 "   WHERE item_id = new.ROWID; "
-	        	 "END;");
-
-		db_exec ("DROP TRIGGER item_update;");
-		db_exec ("CREATE TRIGGER item_update UPDATE ON items "
-	        	 "BEGIN "
-	        	 "   UPDATE itemsets SET read = new.read "
-	        	 "   WHERE item_id = new.ROWID; "
-	        	 "END;");
-
 		db_exec ("CREATE TABLE subscription ("
 	        	 "   node_id            STRING,"
 			 "   source             STRING,"
@@ -479,15 +458,6 @@ open:
 
 		db_exec ("CREATE INDEX subscription_metadata_idx ON subscription_metadata (node_id);");
 
-		/* Set up subscription removal trigger */	
-		db_exec ("DROP TRIGGER subscription_removal;");
-		db_exec ("CREATE TRIGGER subscription_removal DELETE ON subscription "
-	        	 "BEGIN "
-			 "   DELETE FROM node WHERE node_id = old.node_id; "
-	        	 "   DELETE FROM update_state WHERE node_id = old.node_id; "
-			 "   DELETE FROM subscription_metadata WHERE node_id = old.node_id; "
-	        	 "END;");
-
 		db_exec ("CREATE TABLE node ("
 	        	 "   node_id		STRING,"
 	        	 "   parent_id		STRING,"
@@ -507,24 +477,34 @@ open:
 			 "   PRIMARY KEY (node_id)"
 			 ");");
 			 
-		/* view counting triggers are set up in the view preparation code (see db_view_create()) */
-
 		db_end_transaction ();
 		debug_end_measurement (DEBUG_DB, "table setup");
-
-		/* Cleanup of DB */
+		
+		/* 2. Removing old triggers */
+		db_exec ("DROP TRIGGER item_insert;");
+		db_exec ("DROP TRIGGER item_update;");
+		db_exec ("DROP TRIGGER item_removal;");
+		db_exec ("DROP TRIGGER subscription_removal;");
+		
+		/* 3. Cleanup of DB */
 
 		if (initial) {	
 			debug0 (DEBUG_DB, "Checking for items not referenced in table 'itemsets'...\n");
-			db_exec ("DELETE FROM items WHERE ROWID NOT IN "
-				 "(SELECT item_id FROM itemsets);");
+			db_exec ("BEGIN "
+			         "   CREATE TEMP TABLE tmp_id ( id );"
+				 "   INSERT INTO tmp_id SELECT ROWID FROM items WHERE ROWID NOT IN (SELECT item_id FROM itemsets);"
+				 "   DELETE FROM items WHERE ROWID IN (SELECT id FROM tmp_id LIMIT 1000);"
+				 "   DROP TABLE tmp_id;"
+				 "END;");
 				 
 			debug0 (DEBUG_DB, "Checking for invalid item ids in table 'itemsets'...\n");
-			db_exec ("CREATE TEMP TABLE tmp_id ( id );");
-			db_exec ("INSERT INTO tmp_id SELECT item_id FROM itemsets WHERE item_id NOT IN (SELECT ROWID FROM items);");
-			/* limit to 1000 items as it is very slow */
-			db_exec ("DELETE FROM itemsets WHERE item_id IN (SELECT id FROM tmp_id LIMIT 1000);");
-			db_exec ("DROP TABLE tmp_id;");
+			db_exec ("BEGIN "
+			         "   CREATE TEMP TABLE tmp_id ( id );"
+			         "   INSERT INTO tmp_id SELECT item_id FROM itemsets WHERE item_id NOT IN (SELECT ROWID FROM items);"
+			         /* limit to 1000 items as it is very slow */
+			         "   DELETE FROM itemsets WHERE item_id IN (SELECT id FROM tmp_id LIMIT 1000);"
+			         "   DROP TABLE tmp_id;"
+				 "END;");
 
 			debug0 (DEBUG_DB, "Checking for items without a subscription...\n");
 			db_exec ("DELETE FROM itemsets WHERE comment = 0 AND node_id NOT IN "
@@ -532,6 +512,36 @@ open:
 				 
 			debug0 (DEBUG_DB, "DB cleanup finished. Continuing startup.\n");
 		}
+		
+		/* 4. Creating triggers (after cleanup so it is not slowed down by triggers) */
+
+		db_exec ("CREATE TRIGGER item_insert INSERT ON items "
+	        	 "BEGIN "
+	        	 "   UPDATE itemsets SET read = new.read "
+	        	 "   WHERE item_id = new.ROWID; "
+	        	 "END;");
+
+		db_exec ("CREATE TRIGGER item_update UPDATE ON items "
+	        	 "BEGIN "
+	        	 "   UPDATE itemsets SET read = new.read "
+	        	 "   WHERE item_id = new.ROWID; "
+	        	 "END;");
+
+		/* This trigger does explicitely not remove comments! */
+		db_exec ("CREATE TRIGGER item_removal DELETE ON itemsets "
+	        	 "BEGIN "
+	        	 "   DELETE FROM items WHERE ROWID = old.item_id; "
+			 "   DELETE FROM metadata WHERE item_id = old.item_id; "
+	        	 "END;");
+		
+		db_exec ("CREATE TRIGGER subscription_removal DELETE ON subscription "
+	        	 "BEGIN "
+			 "   DELETE FROM node WHERE node_id = old.node_id; "
+	        	 "   DELETE FROM update_state WHERE node_id = old.node_id; "
+			 "   DELETE FROM subscription_metadata WHERE node_id = old.node_id; "
+	        	 "END;");
+
+		/* Note: view counting triggers are set up in the view preparation code (see db_view_create()) */		
 	}
 	
 	/* prepare statements */
@@ -563,10 +573,6 @@ open:
 	db_new_statement ("itemsetRemoveAllStmt",
 	                  "DELETE FROM itemsets WHERE parent_node_id = ?");
 
-	db_new_statement ("itemsetMarkAllUpdatedStmt",
-	                  "UPDATE items SET updated = 0 WHERE ROWID IN "
-			  "(SELECT item_id FROM itemsets WHERE node_id = ?)");
-			
 	db_new_statement ("itemsetMarkAllOldStmt",
 	                  "UPDATE items SET new = 0 WHERE ROWID IN "
 			  "(SELECT item_id FROM itemsets WHERE node_id = ?)");
@@ -617,7 +623,7 @@ open:
 	                  ") values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			
 	db_new_statement ("itemMarkReadStmt",
-	                  "UPDATE items SET read = 1 WHERE ROWID = ?");
+	                  "UPDATE items SET read = 1, updated = 0 WHERE ROWID = ?");
 					
 	db_new_statement ("duplicatesFindStmt",
 	                  "SELECT ROWID FROM items WHERE source_id = ?");
@@ -627,7 +633,7 @@ open:
 			  "(SELECT items.ROWID FROM items WHERE items.source_id = ?)");
 		       
 	db_new_statement ("duplicatesMarkReadStmt",
- 	                  "UPDATE items SET read = 1 WHERE source_id = ?");
+ 	                  "UPDATE items SET read = 1, updated = 0 WHERE source_id = ?");
 						
 	db_new_statement ("metadataLoadStmt",
 	                  "SELECT key,value,nr FROM metadata WHERE item_id = ? ORDER BY nr");
@@ -1073,22 +1079,6 @@ db_item_mark_read (itemPtr item)
 		if (SQLITE_DONE != res)
 			g_warning ("marking duplicates read failed (error code=%d, %s)", res, sqlite3_errmsg (db));
 	}
-}
-
-void 
-db_itemset_mark_all_updated (const gchar *id) 
-{
-	sqlite3_stmt	*stmt;
-	gint		res;
-	
-	debug1 (DEBUG_DB, "marking all items updared for item set with %s", id);
-		
-	stmt = db_get_statement ("itemsetMarkAllUpdatedStmt");
-	sqlite3_bind_text (stmt, 1, id, -1, SQLITE_TRANSIENT);
-	res = sqlite3_step (stmt);
-
-	if (SQLITE_DONE != res)
-		g_warning ("marking all items updated failed (error code=%d, %s)", res, sqlite3_errmsg (db));
 }
 
 void 

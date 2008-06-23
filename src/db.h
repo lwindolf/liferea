@@ -63,11 +63,10 @@ void		db_itemset_remove_all(const gchar *id);
 
 /**
  * Mass items state changing methods. Mark all items of
- * a given item set as read/updated/old/popup.
+ * a given item set as old/popup.
  *
  * @param id	the node id
  */
-void		db_itemset_mark_all_updated(const gchar *id);
 void		db_itemset_mark_all_old(const gchar *id);
 void		db_itemset_mark_all_popup(const gchar *id);
 
