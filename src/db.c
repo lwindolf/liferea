@@ -1052,6 +1052,7 @@ db_item_mark_read (itemPtr item)
 	gint		res;
 	
 	item->readStatus = TRUE;
+	item->updateStatus = FALSE;
 	
 	if (!item->validGuid)
 	{

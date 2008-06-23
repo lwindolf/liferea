@@ -5407,33 +5407,6 @@ fail:
 }
 
 
-static int _wrap_item_set_updated_state(lua_State* L) {
-  int SWIG_arg = -1;
-  itemPtr arg1 = (itemPtr) 0 ;
-  int arg2 ;
-  
-  SWIG_check_num_args("item_set_updated_state",2,2)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("item_set_updated_state",1,"itemPtr");
-  if(!lua_isnumber(L,2)) SWIG_fail_arg("item_set_updated_state",2,"int const");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_item,0))){
-    SWIG_fail_ptr("item_set_updated_state",1,SWIGTYPE_p_item);
-  }
-  
-  arg2 = (int const)lua_tonumber(L, 2);
-  item_set_updated_state(arg1,arg2);
-  SWIG_arg=0;
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
 static int _wrap_itemset_mark_read(lua_State* L) {
   int SWIG_arg = -1;
   nodePtr arg1 = (nodePtr) 0 ;
@@ -5446,26 +5419,6 @@ static int _wrap_itemset_mark_read(lua_State* L) {
   }
   
   itemset_mark_read(arg1);
-  SWIG_arg=0;
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_item_state_set_all_old(lua_State* L) {
-  int SWIG_arg = -1;
-  char *arg1 = (char *) 0 ;
-  
-  SWIG_check_num_args("item_state_set_all_old",1,1)
-  if(!lua_isstring(L,1)) SWIG_fail_arg("item_state_set_all_old",1,"char const *");
-  arg1 = (char *)lua_tostring(L, 1);
-  item_state_set_all_old((char const *)arg1);
   SWIG_arg=0;
   
   return SWIG_arg;
@@ -10829,9 +10782,7 @@ static const struct luaL_reg swig_commands[] = {
     { "item_flag_state_changed", _wrap_item_flag_state_changed},
     { "item_set_read_state", _wrap_item_set_read_state},
     { "item_read_state_changed", _wrap_item_read_state_changed},
-    { "item_set_updated_state", _wrap_item_set_updated_state},
     { "itemset_mark_read", _wrap_itemset_mark_read},
-    { "item_state_set_all_old", _wrap_item_state_set_all_old},
     { "item_state_set_all_popup", _wrap_item_state_set_all_popup},
     { "itemlist_free", _wrap_itemlist_free},
     { "itemlist_get_displayed_node", _wrap_itemlist_get_displayed_node},

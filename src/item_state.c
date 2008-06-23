@@ -69,7 +69,12 @@ item_flag_state_changed (itemPtr item, gboolean newState)
 void
 item_set_read_state (itemPtr item, gboolean newState) 
 {
-	if (newState == item->readStatus)
+	/* Read and update state are coupled insofar as they
+	   are changed by the same user actions. So we do something
+	   here if either the read state has changed or the
+	   updated flag is set (which is always just reset). */
+	   
+	if (newState == item->readStatus && !item->updateStatus)
 		return;
 	
 	node_source_item_mark_read (node_from_id (item->nodeId), item, newState);
@@ -82,8 +87,9 @@ item_read_state_changed (itemPtr item, gboolean newState)
 
 	debug_start_measurement (DEBUG_GUI);
 
-	/* 1. save state to DB */
+	/* 1. apply to DB */
 	item->readStatus = newState;
+	item->updateStatus = FALSE;
 	db_item_update (item);
 
 	/* 2. add propagate to vfolders (must happen after changing the item state) */
@@ -112,7 +118,7 @@ item_read_state_changed (itemPtr item, gboolean newState)
 			   associated node in the feed list. This should be 
 			   fixed by having the feed list in the DB too, so
 			   we can clean up correctly after crashes. */
-			if (duplicate && node_from_id (duplicate->nodeId)) {
+			if (duplicate && duplicate->id != item->id && node_from_id (duplicate->nodeId)) {
 				item_set_read_state (duplicate, newState);
 				item_unload (duplicate);
 			}
@@ -122,25 +128,6 @@ item_read_state_changed (itemPtr item, gboolean newState)
 	}
 
 	debug_end_measurement (DEBUG_GUI, "set read status");
-}
-
-void
-item_set_updated_state (itemPtr item, const gboolean newState) 
-{ 	
-	if (newState != item->updateStatus)
-		return;
-
-	/* 1. save state to DB */
-	item->updateStatus = newState;
-	db_item_update (item);
-
-	/* 2. update item list state */
-	itemlist_update_item (item);
-
-	/* 3. update notification statistics */
-	feedlist_reset_new_item_count ();
-
-	/* no duplicate state propagation necessary */
 }
 
 /**
@@ -169,8 +156,6 @@ itemset_mark_read (nodePtr node)
 				nodePtr node;
 				
 				node = node_from_id(item->nodeId);				
-				db_item_mark_read (item);
-				itemlist_update_item (item);
 				item_state_set_recount_flag (node);
 				node_source_item_mark_read (node, item, TRUE);
 

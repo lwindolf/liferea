@@ -565,7 +565,6 @@ itemlist_selection_changed (itemPtr item)
 			comments_refresh (item);
 
 			item_set_read_state (item, TRUE);
-			item_set_updated_state (item, FALSE);
 
 			if(node_load_link_preferred (node_from_id (item->nodeId))) {
 				liferea_htmlview_launch_URL (ui_mainwindow_get_active_htmlview (), 

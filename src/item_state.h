@@ -59,26 +59,11 @@ void item_set_read_state (itemPtr item, gboolean newState);
 void item_read_state_changed (itemPtr item, gboolean newState);
 
 /**
- * Request to change the update state of the given item.
- *
- * @param item		the item
- * @param newState	new update state
- */
-void item_set_updated_state (itemPtr item, const gboolean newState);
-
-/**
  * Requests to mark read all items in the given nodes item list.
  *
  * @param nodeId	the node whose item list is to be modified
  */
 void itemset_mark_read (nodePtr node);
-
-/**
- * Resets the new flag for all items of the given item set.
- *
- * @param nodeId	the node whose item list is to be modified
- */
-void item_state_set_all_old (const gchar *nodeId);
 
 /**
  * Resets the popup flag for all items of the given item set.
