@@ -450,7 +450,7 @@ on_popup_launchitem_selected (void)
 				       
 		item_unload (item);
 	} else {
-		ui_mainwindow_set_status_bar (_("No item has been selected"));
+		ui_mainwindow_set_important_status_bar (_("No item has been selected"));
 	}
 }
 
@@ -473,7 +473,7 @@ on_popup_launchitem_in_tab_selected (void)
 	} 
 	else 
 	{
-		ui_mainwindow_set_status_bar (_("No item has been selected"));
+		ui_mainwindow_set_important_status_bar (_("No item has been selected"));
 	}
 }
 
@@ -548,7 +548,7 @@ on_remove_item_activate (GtkMenuItem *menuitem, gpointer user_data)
 		on_treeview_move (itemlist_treeview, 1);
 		itemlist_remove_item (item);
 	} else {
-		ui_mainwindow_set_status_bar (_("No item has been selected"));
+		ui_mainwindow_set_important_status_bar (_("No item has been selected"));
 	}
 }
 
@@ -683,7 +683,7 @@ void on_popup_copy_URL_clipboard(void) {
 		gtk_clipboard_set_text(gtk_clipboard_get(GDK_SELECTION_PRIMARY), item_get_source(item), -1);
 		gtk_clipboard_set_text(gtk_clipboard_get(GDK_SELECTION_CLIPBOARD), item_get_source(item), -1);
 	} else {
-		ui_mainwindow_set_status_bar(_("No item has been selected"));
+		ui_mainwindow_set_important_status_bar(_("No item has been selected"));
 	}
 }
 
@@ -710,7 +710,7 @@ void on_popup_social_bm_item_selected(void) {
 	if(item)
 		ui_itemlist_add_item_bookmark(item);
 	else
-		ui_mainwindow_set_status_bar(_("No item has been selected"));
+		ui_mainwindow_set_important_status_bar(_("No item has been selected"));
 }
 
 void
@@ -721,7 +721,7 @@ on_popup_social_bm_link_selected (gpointer selectedUrl, guint callback_action, G
 		liferea_htmlview_launch_URL (ui_mainwindow_get_active_htmlview (), url, UI_HTMLVIEW_LAUNCH_EXTERNAL);
 		g_free (url);
 	} else {
-		ui_mainwindow_set_status_bar (_("No link selected!"));
+		ui_mainwindow_set_important_status_bar (_("No link selected!"));
 	}
 }
 

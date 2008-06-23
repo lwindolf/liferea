@@ -94,9 +94,16 @@ void ui_mainwindow_update_item_menu (gboolean itemActions);
 void ui_mainwindow_update_menubar(void);
 
 /**
- * Sets the status bar text. Takes printf() like parameters 
+ * Sets the status bar text. Takes printf() like parameters.
  */
-void ui_mainwindow_set_status_bar(const char *format, ...);
+void ui_mainwindow_set_status_bar (const char *format, ...);
+
+/**
+ * Similar to ui_mainwindow_set_status_message(), but ensures
+ * that messages stay visible and avoids that those messages
+ * are overwritten by unimportant ones.
+ */
+void ui_mainwindow_set_important_status_bar (const char *format, ...);
 
 void ui_mainwindow_update_feedsinfo(void);
 

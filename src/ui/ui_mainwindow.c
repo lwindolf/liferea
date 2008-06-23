@@ -397,7 +397,7 @@ static void radio_action_set_current_value(GtkRadioAction *action, gint current_
 static void
 ui_mainwindow_htmlview_statusbar_changed (gpointer obj, gchar *url)
 {
-	ui_mainwindow_set_status_bar ("%s", url);
+	ui_mainwindow_set_important_status_bar ("%s", url);
 }
 
 void
@@ -819,12 +819,49 @@ on_work_offline_activate (GtkToggleAction *menuitem, gpointer user_data)
 	network_set_online (!gtk_toggle_action_get_active (menuitem));
 }
 
-gboolean
-ui_mainwindow_set_status_bar_idle_cb (gpointer user_data)
-{
-	gchar	*text = (gchar *)user_data;
+/* About the statusbar implementation: we used to context
+   types (one for important messages and one for the rest).
+   We only allow one message of both types on the stack at
+   once. And to ensure important messages are visible we
+   disable adding unimportant messages for a certain interval
+   (5s) after an important message was added. */
 
-	gtk_label_set_text (GTK_LABEL (GTK_STATUSBAR (liferea_shell_lookup ("statusbar"))->label), text);
+static gboolean statusBarLocked = FALSE;
+static guint	statusBarLockTimer = 0;
+
+static gboolean
+ui_mainwindow_unlock_status_bar_cb (gpointer user_data)
+{
+	statusBarLocked = FALSE;
+}
+
+static gboolean
+ui_mainwindow_set_status_bar_important_cb (gpointer user_data)
+{
+	gchar		*text = (gchar *)user_data;
+	guint		id;
+	GtkStatusbar	*statusbar;
+	
+	statusbar = GTK_STATUSBAR (liferea_shell_lookup ("statusbar"));
+	id = gtk_statusbar_get_context_id (statusbar, "important");
+	gtk_statusbar_pop (statusbar, id);
+	gtk_statusbar_push (statusbar, id, text);
+	g_free(text);
+
+	return FALSE;
+}
+
+static gboolean
+ui_mainwindow_set_status_bar_default_cb (gpointer user_data)
+{
+	gchar		*text = (gchar *)user_data;
+	guint		id;
+	GtkStatusbar	*statusbar;
+
+	statusbar = GTK_STATUSBAR (liferea_shell_lookup ("statusbar"));
+	id = gtk_statusbar_get_context_id (statusbar, "default");
+	gtk_statusbar_pop (statusbar, id);
+	gtk_statusbar_push (statusbar, id, text);
 	g_free(text);
 
 	return FALSE;
@@ -835,6 +872,9 @@ ui_mainwindow_set_status_bar (const char *format, ...)
 {
 	va_list		args;
 	gchar		*text;
+	
+	if (statusBarLocked)
+		return;
 
 	g_return_if_fail (format != NULL);
 
@@ -842,7 +882,33 @@ ui_mainwindow_set_status_bar (const char *format, ...)
 	text = g_strdup_vprintf (format, args);
 	va_end (args);
 
-	g_idle_add ((GSourceFunc)ui_mainwindow_set_status_bar_idle_cb, (gpointer)text);
+	g_idle_add ((GSourceFunc)ui_mainwindow_set_status_bar_default_cb, (gpointer)text);
+}
+
+void
+ui_mainwindow_set_important_status_bar (const char *format, ...)
+{
+	va_list		args;
+	gchar		*text;
+	
+	g_return_if_fail (format != NULL);
+
+	va_start (args, format);
+	text = g_strdup_vprintf (format, args);
+	va_end (args);
+
+	statusBarLocked = FALSE;
+	g_source_remove (statusBarLockTimer);
+	
+	/* URL hover messages are reset with an empty string, so 
+	   we must locking the status bar on empty strings! */
+	if (!g_str_equal (text, "")) {
+		/* Realize 5s locking for important messages... */
+		statusBarLocked = TRUE;
+		statusBarLockTimer = g_timeout_add_seconds (5, ui_mainwindow_unlock_status_bar_cb, NULL);
+	}
+	
+	g_idle_add ((GSourceFunc)ui_mainwindow_set_status_bar_important_cb, (gpointer)text);
 }
 
 void

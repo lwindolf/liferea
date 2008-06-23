@@ -401,7 +401,7 @@ liferea_htmlview_external_browser_execute (const gchar *cmd, const gchar *uri, g
 	g_shell_parse_argv (tmp, &argc, &argv, &error);
 	g_free (tmp);
 	if (error && (0 != error->code)) {
-		ui_mainwindow_set_status_bar (_("Browser command failed: %s"), error->message);
+		ui_mainwindow_set_important_status_bar (_("Browser command failed: %s"), error->message);
 		debug2 (DEBUG_GUI, "Browser command failed: %s : %s", tmp, error->message);
 		g_error_free (error);
 		return FALSE;
@@ -421,7 +421,7 @@ liferea_htmlview_external_browser_execute (const gchar *cmd, const gchar *uri, g
   
 	if (error && (0 != error->code)) {
 		debug2 (DEBUG_GUI, "Browser command failed: %s : %s", tmp, error->message);
-		ui_mainwindow_set_status_bar (_("Browser command failed: %s"), error->message);
+		ui_mainwindow_set_important_status_bar (_("Browser command failed: %s"), error->message);
 		g_error_free (error);
 	} else if (status == 0) {
 		ui_mainwindow_set_status_bar (_("Starting: \"%s\""), tmp);
@@ -460,8 +460,8 @@ liferea_htmlview_launch_in_external_browser (const gchar *uri)
 	/* if it failed try to execute asynchronously... */		
 	cmd = prefs_get_browser_command (browser, FALSE /* remote */, TRUE /* fallback */);
 	if (!cmd) {
-	 	ui_mainwindow_set_status_bar ("fatal: cannot retrieve browser command!");
-		g_warning ("fatal: cannot retrieve browser command!");
+	 	ui_mainwindow_set_important_status_bar ("Fatal: cannot retrieve browser command!");
+		g_warning ("Fatal: cannot retrieve browser command!");
 		return FALSE;
 	}
 	done = liferea_htmlview_external_browser_execute (cmd, uri, browser?browser->escapeRemote:FALSE, FALSE);
