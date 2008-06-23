@@ -210,12 +210,9 @@ itemset_merge_item (itemSetPtr itemSet, GList *items, itemPtr item, gboolean all
 			g_slist_free (duplicates);
 		}
 
-		/* step 4: If a new item has enclosures and auto downloading
-		   is enabled we start the download. Enclosures added
-		   by updated items are not supported. */
+		/* step 4: Check item for new enclosures to download */
 		node = node_from_id (itemSet->nodeId);
 		if (node && (((feedPtr)node->data)->encAutoDownload)) {
-// FIXME: check enclosure download state!!!!
 			GSList *iter = metadata_list_get_values (item->metadata, "enclosure");
 			while (iter) {
 				debug1 (DEBUG_UPDATE, "download enclosure (%s)", (gchar *)iter->data);
