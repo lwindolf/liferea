@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-12 19:07+0100\n"
+"POT-Creation-Date: 2008-06-19 00:19+0200\n"
 "PO-Revision-Date: 2007-05-28 17:24+0200\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
@@ -149,66 +149,62 @@ msgid "A_ny Rule Matches"
 msgstr ""
 
 #: ../liferea.glade.h:32
+msgid "About"
+msgstr "Honi buruz"
+
+#: ../liferea.glade.h:33
 msgid "Add Script"
 msgstr "Gehitu script-a"
 
-#: ../liferea.glade.h:33
+#: ../liferea.glade.h:34
 msgid "Advanced"
 msgstr "Aurreratua"
 
-#: ../liferea.glade.h:34
+#: ../liferea.glade.h:35
+#, fuzzy
+msgid "Advanced Search"
+msgstr "Aurreratua"
+
+#: ../liferea.glade.h:36
 msgid "Advanced..."
 msgstr "Aurreratua..."
 
-#: ../liferea.glade.h:35
+#: ../liferea.glade.h:37
 msgid "Archive"
 msgstr "Artxiboa"
 
-#: ../liferea.glade.h:36
+#: ../liferea.glade.h:38
 msgid "At _startup:"
 msgstr "_Abioan:"
 
-#: ../liferea.glade.h:37 ../src/ui/ui_mainwindow.c:1119
+#: ../liferea.glade.h:39 ../src/ui/ui_mainwindow.c:1122
 #, fuzzy
 msgid "Attention Profile"
 msgstr "Huts egin du autentifikatzean"
 
-#: ../liferea.glade.h:38
+#: ../liferea.glade.h:40
 msgid "Authentication"
 msgstr "Autentifikazioa"
 
-#: ../liferea.glade.h:39
+#: ../liferea.glade.h:41
 msgid "Auto-_load item link in configured browser when selecting articles."
 msgstr ""
 "_Kargatu automatikoki esteka konfiguratutako web arakatzailean artikuluak "
 "hautatzean."
 
-#: ../liferea.glade.h:40
-msgid ""
-"Bart Kreska <bartkreska@users.sourceforge.net>\n"
-"Dario Conigliaro <djdas@djdas.net>\n"
-"Fernando Ike de Oliveira <fike@midstorm.org>\n"
-"Khaled Hosny <khaledhosny@eglug.org>\n"
-"Sargate Kanogan <sargate@gmail.com>\n"
-"Takeshi AIHANA <takeshi.aihana@gmail.com>\n"
-"Vincent Lefèvre <vincent@vinc17.org>\n"
-"Oleg Maloglovets <oleg@koleso-auto.ru>\n"
-"Og Maciel <ogmaciel@ubuntu.com>\n"
-msgstr ""
-
-#: ../liferea.glade.h:50
+#: ../liferea.glade.h:42
 msgid "Browser"
 msgstr "Arakatzailea"
 
-#: ../liferea.glade.h:51
+#: ../liferea.glade.h:43
 msgid "Cancel _All"
 msgstr "_Utzi dena"
 
-#: ../liferea.glade.h:52
+#: ../liferea.glade.h:44
 msgid "Convert _using:"
 msgstr "Bihurtu _honekin:"
 
-#: ../liferea.glade.h:53
+#: ../liferea.glade.h:45
 #, fuzzy
 msgid ""
 "Copyright (c) 2003-2007\n"
@@ -219,47 +215,47 @@ msgstr ""
 "Lars Lindner <lars.lindner@gmx.net> eta \n"
 "Nathan J. Conrad <t98502@users.sourceforge.net>\n"
 
-#: ../liferea.glade.h:57
+#: ../liferea.glade.h:49
 msgid "Create News Bin"
 msgstr "Sortu 'Albisteen erretilua'"
 
-#: ../liferea.glade.h:58
+#: ../liferea.glade.h:50
 msgid "Create Search Engine Feed"
 msgstr "Sortu bilaketaren iturri-motorra"
 
-#: ../liferea.glade.h:59
+#: ../liferea.glade.h:51
 msgid "Create new script"
 msgstr "Sortu script berria"
 
-#: ../liferea.glade.h:60
+#: ../liferea.glade.h:52
 msgid "Default Feed Refresh _Interval:"
 msgstr "Iturria freskatzeko _bitarte lehenetsia:"
 
-#: ../liferea.glade.h:61
+#: ../liferea.glade.h:53
 msgid "Default _number of items per feed to save:"
 msgstr "Iturrien elementu _kopuru lehenetsia gordetzeko:"
 
-#: ../liferea.glade.h:62
+#: ../liferea.glade.h:54
 msgid "Di_sable cache"
 msgstr "_Desgaitu cachea"
 
-#: ../liferea.glade.h:63
+#: ../liferea.glade.h:55
 msgid "Download"
 msgstr "Deskargatu"
 
-#: ../liferea.glade.h:64
+#: ../liferea.glade.h:56
 msgid "Downloading Enclosure"
 msgstr "Eranskina deskargatzen"
 
-#: ../liferea.glade.h:65
+#: ../liferea.glade.h:57
 msgid "Downloading an enclosure of type:"
 msgstr "Mota honetako eranskina deskargatzen:"
 
-#: ../liferea.glade.h:66
+#: ../liferea.glade.h:58
 msgid "Enclosures"
 msgstr "Eranskinak"
 
-#: ../liferea.glade.h:67
+#: ../liferea.glade.h:59
 msgid ""
 "Enter a search string Liferea should find either in a items title or in its "
 "content."
@@ -267,7 +263,7 @@ msgstr ""
 "Sartu bilaketako testua Lifereak elementuen tituluen artean edo beraien "
 "edukien artean bilatzeko."
 
-#: ../liferea.glade.h:68
+#: ../liferea.glade.h:60
 msgid ""
 "Enter a website location to use feed autodiscovery or in case you know it "
 "the exact feed location."
@@ -275,58 +271,54 @@ msgstr ""
 "Sartu web gunearen helbidea iturrien aurkikuntza automatikoa erabiltzeko, "
 "edo jakinez gero iturriaren helbide zuzena erabiltzeko."
 
-#: ../liferea.glade.h:70 ../src/ui/ui_auth.c:181
+#: ../liferea.glade.h:62 ../src/ui/ui_auth.c:181
 #, no-c-format
 msgid "Enter the username and password for \"%s\" (%s):"
 msgstr "Sartu \"%s\"(e)n erabiltzaile-izena eta pasahitza (%s):"
 
-#: ../liferea.glade.h:71
+#: ../liferea.glade.h:63
 msgid "Exec Command"
 msgstr "Exekutatu komandoa"
 
-#: ../liferea.glade.h:72
+#: ../liferea.glade.h:64
 msgid "Feed _Name:"
 msgstr "Iturriaren _izena:"
 
-#: ../liferea.glade.h:73
+#: ../liferea.glade.h:65
 msgid "Feeds"
 msgstr "Iturriak"
 
-#: ../liferea.glade.h:74
+#: ../liferea.glade.h:66
 msgid "Folders"
 msgstr "Karpetak"
 
-#: ../liferea.glade.h:75
+#: ../liferea.glade.h:67
 msgid "GUI"
 msgstr "GUI"
 
-#: ../liferea.glade.h:76
+#: ../liferea.glade.h:68
 msgid "General"
 msgstr "Orokorra"
 
-#: ../liferea.glade.h:77
+#: ../liferea.glade.h:69
 msgid "Headlines"
 msgstr "Goiburuak"
 
-#: ../liferea.glade.h:78
-msgid "Info zu Glade"
-msgstr ""
-
 #. GTK theme support
-#: ../liferea.glade.h:79 ../src/main.c:156
+#: ../liferea.glade.h:70 ../src/main.c:160
 msgid "Liferea"
 msgstr "Liferea"
 
-#: ../liferea.glade.h:80
+#: ../liferea.glade.h:71
 #, fuzzy
 msgid "Liferea Homepage"
 msgstr "Liferea iturri irakurlea"
 
-#: ../liferea.glade.h:81
+#: ../liferea.glade.h:72
 msgid "Liferea Preferences"
 msgstr "Liferea hobespenak"
 
-#: ../liferea.glade.h:82
+#: ../liferea.glade.h:73
 msgid ""
 "Liferea can use external filter plugins in order to access feeds and "
 "directories in non-supported formats.  See the documentation for more "
@@ -335,24 +327,25 @@ msgstr ""
 "Lifereak kanpoko iragazki-osagaia erabil dezake onartu gabe dauden formatuko "
 "iturri eta direktorioak atzitzeko. Ikusi dokumentazioa xehetasun gehiagorako."
 
-#: ../liferea.glade.h:83
+#: ../liferea.glade.h:74
 msgid "Liferea is a news aggregator for GTK+"
 msgstr "Liferea albisteen biltzailea da 'GTK+'entzako"
 
-#: ../liferea.glade.h:84
+#: ../liferea.glade.h:75
 msgid "Maximal _Number Of Result Items:"
 msgstr "Emaitzen kopuru _maximoa:"
 
-#: ../liferea.glade.h:85
+#: ../liferea.glade.h:76
 msgid "New Folder"
 msgstr "Karpeta berria"
 
-#: ../liferea.glade.h:86 ../src/node.c:333
+#: ../liferea.glade.h:77 ../src/fl_sources/default_source.c:195
+#: ../src/fl_sources/google_source.c:262
 msgid "New Subscription"
 msgstr "Harpidetza berria"
 
 #. Feed update interval hint in preference dialog.
-#: ../liferea.glade.h:88
+#: ../liferea.glade.h:79
 #, fuzzy
 msgid ""
 "Note: <i>Please remember to set a reasonable refresh time. Usually it is a "
@@ -362,7 +355,7 @@ msgstr ""
 "iturrien ilarra 15 minuturo eguneratzea. Eguneraketa automatiko lehenetsia "
 "desgaitzeko ezarri bitartea 0 minututan.</i>"
 
-#: ../liferea.glade.h:89
+#: ../liferea.glade.h:80
 msgid ""
 "Note: <i>The username and password will be saved to your Liferea feedlist "
 "file without using encryption.</i>"
@@ -370,7 +363,7 @@ msgstr ""
 "Oharra: <i>erabiltzaile-izena eta pasahitza diskoan gordeko dira zifratu "
 "gabe.</i>"
 
-#: ../liferea.glade.h:90
+#: ../liferea.glade.h:81
 msgid ""
 "Note: Liferea will generate a feed subscription which is used to query the "
 "search engine results for the specified search string. You can keep this "
@@ -380,110 +373,101 @@ msgstr ""
 "erabil daiteke. Iturri hau betirako gorde eta beste edozein iturri bezala "
 "egunera dezakezu."
 
-#: ../liferea.glade.h:91
+#: ../liferea.glade.h:82
 msgid "Online/Offline Button"
 msgstr "Linean/'Lineaz kanpo' botoia"
 
-#: ../liferea.glade.h:92
+#: ../liferea.glade.h:83
 msgid "Open links in Liferea's _window."
 msgstr "Ireki estekak Liferea-ren _leihoan."
 
-#: ../liferea.glade.h:93
+#: ../liferea.glade.h:84
 msgid "Proxy"
 msgstr "Proxy-a"
 
-#: ../liferea.glade.h:94
+#: ../liferea.glade.h:85
 msgid "Proxy Pass_word:"
 msgstr "Proxy _pasahitza:"
 
-#: ../liferea.glade.h:95
+#: ../liferea.glade.h:86
 msgid "Proxy _Host:"
 msgstr "Proxy-_ostalaria:"
 
-#: ../liferea.glade.h:96
+#: ../liferea.glade.h:87
 msgid "Proxy _Port:"
 msgstr "Proxy-_ataka:"
 
-#: ../liferea.glade.h:97
+#: ../liferea.glade.h:88
 msgid "Proxy _Username:"
 msgstr "Proxy _erabiltzaile-izena:"
 
-#: ../liferea.glade.h:98
+#: ../liferea.glade.h:89
 msgid "Rename"
 msgstr "Izena aldatu"
 
-#: ../liferea.glade.h:99
+#: ../liferea.glade.h:90
 msgid "Reuse existing script"
 msgstr "Berrerabili existitzen den script-a"
 
-#: ../liferea.glade.h:100
-msgid ""
-"Saves this search as a search folder, which will appear in the feed list."
-msgstr ""
-"Gorde bilaketa hau bilaketaren karpetan, iturrien zerrendan agertuko da."
-
-#: ../liferea.glade.h:101
+#: ../liferea.glade.h:91
 msgid "Script Manager"
 msgstr "Script-kudeatzailea"
 
-#: ../liferea.glade.h:102
+#: ../liferea.glade.h:92
 msgid "Search All Feeds"
 msgstr "Bilatu iturri denak"
 
-#: ../liferea.glade.h:103
-msgid "Search Folder"
-msgstr "Bilaketaren karpeta"
-
-#: ../liferea.glade.h:104
+#: ../liferea.glade.h:93
 msgid "Search Folder Properties"
 msgstr "Bilaketa karpetaren propietateak"
 
-#: ../liferea.glade.h:105
-msgid "Search _Link for"
+#: ../liferea.glade.h:94
+#, fuzzy
+msgid "Search _Link Cosmos with"
 msgstr "Bilatu honen _esteka: "
 
-#: ../liferea.glade.h:106
+#: ../liferea.glade.h:95
 #, fuzzy
 msgid "Search _Name:"
 msgstr "Iturriaren _izena:"
 
-#: ../liferea.glade.h:107
+#: ../liferea.glade.h:96
 msgid "Select File..."
 msgstr "Hautatu fitxategia..."
 
-#: ../liferea.glade.h:108
+#: ../liferea.glade.h:97
 msgid "Show Menu _And Toolbar"
 msgstr "Erakutsi menua _eta tresna-barra"
 
-#: ../liferea.glade.h:109
+#: ../liferea.glade.h:98
 msgid "Show _Menu Only"
 msgstr "Erakutsi _menua soilik"
 
-#: ../liferea.glade.h:110
+#: ../liferea.glade.h:99
 msgid "Show _Toolbar Only"
 msgstr "Erakutsi _tresna-barra soilik"
 
-#: ../liferea.glade.h:111
+#: ../liferea.glade.h:100
 msgid "Show _number of new items in the tray icon."
 msgstr "Erakutsi elementu berrien kopurua erretiluko ikonoan."
 
-#: ../liferea.glade.h:112
+#: ../liferea.glade.h:101
 msgid "Show a _popup window with new headlines."
 msgstr "Erakutsi _laster-leihoa goiburu berriekin."
 
-#: ../liferea.glade.h:113
+#: ../liferea.glade.h:102
 msgid "Show a status _icon in the notification area (system tray)."
 msgstr "Erakutsi egoerako _ikonoa jakinarazpen arean (sistemako erretilua)."
 
-#: ../liferea.glade.h:114 ../xslt/item.xml.in.h:12
+#: ../liferea.glade.h:103 ../xslt/item.xml.in.h:13
 msgid "Source"
 msgstr "Iturburua"
 
-#: ../liferea.glade.h:115
+#: ../liferea.glade.h:104
 msgid "Source Type:"
 msgstr "Iturburu mota:"
 
-#: ../liferea.glade.h:116
+#: ../liferea.glade.h:105
 msgid ""
 "Starts searching for the specified text in all feeds. The search result will "
 "appear in the item list."
@@ -491,19 +475,19 @@ msgstr ""
 "Hasi emandako testuaren bilaketa iturri guztietan. Emaitza elementuen "
 "zerrendan agertuko da."
 
-#: ../liferea.glade.h:117
+#: ../liferea.glade.h:106
 msgid "Subscription Properties"
 msgstr "Harpidetzaren propietateak"
 
-#: ../liferea.glade.h:118
+#: ../liferea.glade.h:107
 msgid "Sync"
 msgstr ""
 
-#: ../liferea.glade.h:119
+#: ../liferea.glade.h:108
 msgid "T_erminate instead of minimizing to tray icon."
 msgstr "_Amaitu, erretiluko ikonora minimizatu ordez."
 
-#: ../liferea.glade.h:120
+#: ../liferea.glade.h:109
 msgid ""
 "The cache setting controls if the contents of feeds are saved when Liferea "
 "exits. Marked items are always saved to the cache."
@@ -511,12 +495,12 @@ msgstr ""
 "Iturrien edukia gordeko diren Liferea amaitzean kontrolatzen du cachearen "
 "ezarpenak. Markatutako elementuak beti gordetzen dira cachean."
 
-#: ../liferea.glade.h:122
+#: ../liferea.glade.h:111
 #, no-c-format
 msgid "This feed provider suggests an update interval of %d minutes."
 msgstr "Iturri honen hornitzaileak %d minututako bitartea gomendatzen du."
 
-#: ../liferea.glade.h:123
+#: ../liferea.glade.h:112
 msgid ""
 "This program is free software; you can redistribute it and/or modify\n"
 "it under the terms of the GNU General Public License as\n"
@@ -534,36 +518,36 @@ msgid ""
 "USA."
 msgstr ""
 
-#: ../liferea.glade.h:136
+#: ../liferea.glade.h:125
 msgid "Toolbar _button labels:"
 msgstr ""
 
-#: ../liferea.glade.h:137
+#: ../liferea.glade.h:126
 msgid "Update Monitor"
 msgstr "Eguneraketaren monitorea"
 
-#: ../liferea.glade.h:138
+#: ../liferea.glade.h:127
 msgid "Use HTTP _authentication"
 msgstr "Erabili HTTP _autentifikazioa"
 
-#: ../liferea.glade.h:139
+#: ../liferea.glade.h:128
 #, fuzzy
 msgid "Use Proxy Au_thentication"
 msgstr "Erabili proxy autentifikazioa"
 
-#: ../liferea.glade.h:140
+#: ../liferea.glade.h:129
 msgid "Use conversion _filter"
 msgstr "Erabili bihurtzeko _iragazkia"
 
-#: ../liferea.glade.h:141
+#: ../liferea.glade.h:130
 msgid "User_name:"
 msgstr "_Erabiltzaile-izena:"
 
-#: ../liferea.glade.h:142
+#: ../liferea.glade.h:131
 msgid "View Headlines"
 msgstr "Ikusi goiburuak"
 
-#: ../liferea.glade.h:143
+#: ../liferea.glade.h:132
 #, fuzzy
 msgid ""
 "What should Liferea do with this enclosure? Please enter the command you "
@@ -574,84 +558,95 @@ msgstr ""
 "nahi duzun komandoa. Deskargatutako fitxategia argumentu gisa pasatuko zaio "
 "komando honi:"
 
-#: ../liferea.glade.h:144
+#: ../liferea.glade.h:133
+#, fuzzy
+msgid "_Advanced..."
+msgstr "Aurreratua..."
+
+#: ../liferea.glade.h:134
 msgid "_All Rules Must Match"
 msgstr ""
 
-#: ../liferea.glade.h:145
+#: ../liferea.glade.h:135
 msgid "_Auto Detect (GNOME or environment)"
 msgstr ""
 
-#: ../liferea.glade.h:146
+#: ../liferea.glade.h:136
 msgid "_Automatically download all enclosures of this feed."
 msgstr "Deskargatu automatikoki iturriaren eranskin guztiak."
 
-#: ../liferea.glade.h:147
+#: ../liferea.glade.h:137
 msgid "_Browse"
 msgstr "_Arakatu"
 
-#: ../liferea.glade.h:148
+#: ../liferea.glade.h:138
 msgid "_Browser:"
 msgstr "_Arakatzailea:"
 
-#: ../liferea.glade.h:149
+#: ../liferea.glade.h:139
 msgid "_Command"
 msgstr "_Komandoa"
 
-#: ../liferea.glade.h:150
+#: ../liferea.glade.h:140
 msgid "_Default cache settings"
 msgstr "Cachearen ezarpen _lehenetsia"
 
-#: ../liferea.glade.h:151
+#: ../liferea.glade.h:141
 msgid "_Disable Javascript."
 msgstr "_Desgaitu Javascript."
 
-#: ../liferea.glade.h:152
+#: ../liferea.glade.h:142
 #, fuzzy
 msgid "_Do this automatically for enclosures like this from now on."
 msgstr "_Landu hau automatikoki fitxategi honen antzekoentzat."
 
-#: ../liferea.glade.h:153
+#: ../liferea.glade.h:143
 msgid "_Don't update this feed automatically."
 msgstr "_Ez eguneratu iturri hau automatikoki."
 
-#: ../liferea.glade.h:154
+#: ../liferea.glade.h:144
 msgid "_Don't use proxy for download"
 msgstr "_Ez erabili proxy-rik deskargatzean"
 
-#: ../liferea.glade.h:155
+#: ../liferea.glade.h:145
 msgid "_Download using"
 msgstr "_Deskargatu honekin"
 
-#: ../liferea.glade.h:156
+#: ../liferea.glade.h:146
 msgid "_Enable Local LAN Synchronization"
 msgstr ""
 
-#: ../liferea.glade.h:157
+#: ../liferea.glade.h:147
+#, fuzzy
+msgid "_Enforce popup notification for this subscription."
+msgstr ""
+"Hautatutako harpidetzaren propietateen elkarrizketa-koadroa irekitzen du."
+
+#: ../liferea.glade.h:148
 msgid "_Feed specific update interval of"
 msgstr "Iturria eguneratzeko bitartea: "
 
-#: ../liferea.glade.h:158
+#: ../liferea.glade.h:149
 msgid "_Folder name:"
 msgstr "_Karpeta-izena:"
 
-#: ../liferea.glade.h:159
+#: ../liferea.glade.h:150
 msgid "_Hide read items."
 msgstr "_Ezkutatu irakurritako elementuak."
 
-#: ../liferea.glade.h:160
+#: ../liferea.glade.h:151
 msgid "_Limit cache to"
 msgstr "Mugatu _cachea: "
 
-#: ../liferea.glade.h:161
+#: ../liferea.glade.h:152
 msgid "_Local File"
 msgstr "_Fitxategi lokala"
 
-#: ../liferea.glade.h:162
+#: ../liferea.glade.h:153
 msgid "_Manual Setting:"
 msgstr ""
 
-#: ../liferea.glade.h:164
+#: ../liferea.glade.h:155
 #, no-c-format
 msgid ""
 "_Manual:\n"
@@ -660,114 +655,116 @@ msgstr ""
 "_Eskuz:\n"
 "(%s - URL)"
 
-#: ../liferea.glade.h:166
+#: ../liferea.glade.h:157
+#, fuzzy
+msgid "_Mark downloaded items as read."
+msgstr "_Markatu hautatutakoak irakurritako gisa"
+
+#: ../liferea.glade.h:158
+msgid "_Never do popup notification for this subscription."
+msgstr ""
+
+#: ../liferea.glade.h:159
 msgid "_New Name:"
 msgstr "Izen berria:"
 
-#: ../liferea.glade.h:167
+#: ../liferea.glade.h:160
 msgid "_News Bin Name:"
 msgstr "_Albisteen erretiluaren izena:"
 
-#: ../liferea.glade.h:168
+#: ../liferea.glade.h:161
 #, fuzzy
 msgid "_No Proxy"
 msgstr "Proxy-a"
 
-#: ../liferea.glade.h:169
+#: ../liferea.glade.h:162
 msgid "_Open link in:"
 msgstr "_Ireki esteka:"
 
-#: ../liferea.glade.h:170
+#: ../liferea.glade.h:163
 msgid "_Pass URL and do not download enclosure."
 msgstr ""
 
-#: ../liferea.glade.h:171 ../src/fl_sources/bloglines_source.glade.h:3
+#: ../liferea.glade.h:164 ../src/fl_sources/bloglines_source.glade.h:3
 #: ../src/fl_sources/google_source.glade.h:3
 msgid "_Password"
 msgstr "_Pasahitza"
 
-#: ../liferea.glade.h:172
+#: ../liferea.glade.h:165
 msgid "_Password:"
 msgstr "_Pasahitza:"
 
-#: ../liferea.glade.h:173
+#: ../liferea.glade.h:166
 msgid "_Post Bookmarks to"
 msgstr "_Bidali laster-markak honi"
 
-#: ../liferea.glade.h:174
+#: ../liferea.glade.h:167
 msgid "_Save downloads in"
 msgstr "_Gorde deskargak hemen:"
 
-#: ../liferea.glade.h:175
+#: ../liferea.glade.h:168
+#, fuzzy
+msgid "_Search Folder..."
+msgstr "Bilaketaren karpeta"
+
+#: ../liferea.glade.h:169
 msgid "_Search for:"
 msgstr "_Bilatu:"
 
-#: ../liferea.glade.h:176
+#: ../liferea.glade.h:170
 #, fuzzy
 msgid "_Service Name"
 msgstr "Script-kudeatzailea"
 
-#: ../liferea.glade.h:177
+#: ../liferea.glade.h:171
 msgid "_Show the items of all child feeds when a folder is selected."
 msgstr "_Erakutsi iturri ume guztien elementuak karpeta bat hautatzean."
 
-#: ../liferea.glade.h:178
+#: ../liferea.glade.h:172
 msgid "_Skim through articles with:"
 msgstr "_Aurreratu artikuluetan honekin:"
 
-#: ../liferea.glade.h:179
+#: ../liferea.glade.h:173
 msgid "_Source:"
 msgstr "_Iturburua:"
 
-#: ../liferea.glade.h:180
+#: ../liferea.glade.h:174
 msgid "_Start in tray icon."
 msgstr ""
 
-#: ../liferea.glade.h:181
+#: ../liferea.glade.h:175
 msgid "_URL"
 msgstr "_URLa"
 
-#: ../liferea.glade.h:182
+#: ../liferea.glade.h:176
 msgid "_Unlimited cache"
 msgstr "Cache _mugagabea"
 
-#: ../liferea.glade.h:183
+#: ../liferea.glade.h:177
 msgid "_Update all favicons now"
 msgstr "_Eguneratu ikono guztiak orain"
 
-#: ../liferea.glade.h:184
+#: ../liferea.glade.h:178
 msgid "_Use global default update interval."
 msgstr "_Erabili eguneratzeko bitarte orokor lehenetsia."
 
-#: ../liferea.glade.h:185
+#: ../liferea.glade.h:179
 msgid "combined view"
 msgstr "ikuspegi konbinatua"
 
-#: ../liferea.glade.h:186
+#: ../liferea.glade.h:180
 msgid "enter any search string you want"
 msgstr "sartu edozein kate bilatzeko"
 
-#: ../liferea.glade.h:187
-msgid "expander"
-msgstr ""
-
-#: ../liferea.glade.h:188
-msgid "gtk-close"
-msgstr ""
-
-#: ../liferea.glade.h:189
-msgid "gtk-save-as"
-msgstr ""
-
-#: ../liferea.glade.h:190
+#: ../liferea.glade.h:181
 msgid "items."
 msgstr "elementu."
 
-#: ../liferea.glade.h:191
+#: ../liferea.glade.h:182
 msgid "normal view"
 msgstr "ikuspegi normala"
 
-#: ../liferea.glade.h:192
+#: ../liferea.glade.h:183
 msgid "wide view"
 msgstr "ikuspegi zabala"
 
@@ -900,30 +897,34 @@ msgstr "Izena aldatu"
 msgid "Section"
 msgstr "Sekzioa"
 
-#: ../xslt/item.xml.in.h:13
+#: ../xslt/item.xml.in.h:12
+msgid "Shared by"
+msgstr ""
+
+#: ../xslt/item.xml.in.h:14
 #, fuzzy
 msgid "Updating..."
 msgstr "\"%s\" eguneratzen"
 
-#: ../xslt/item.xml.in.h:14
+#: ../xslt/item.xml.in.h:15
 msgid "Via"
 msgstr ""
 
-#: ../xslt/item.xml.in.h:15
+#: ../xslt/item.xml.in.h:16
 msgid "bookmark"
 msgstr "laster-marka"
 
-#: ../xslt/item.xml.in.h:16
+#: ../xslt/item.xml.in.h:17
 msgid "comments"
 msgstr "iruzkinak"
 
-#: ../xslt/item.xml.in.h:17
+#: ../xslt/item.xml.in.h:18
 msgid "flag"
 msgstr "bandera"
 
-#: ../xslt/item.xml.in.h:18
-msgid "search"
-msgstr "bilatu"
+#: ../xslt/item.xml.in.h:19
+msgid "link cosmos"
+msgstr ""
 
 #: ../xslt/newsbin.xml.in.h:1
 msgid ""
@@ -1048,13 +1049,13 @@ msgstr ""
 msgid "Couldn't find pixmap file: %s"
 msgstr "Ezin izan da pixmap fitxategia aurkitu: %s"
 
-#: ../src/enclosure.c:129
+#: ../src/enclosure.c:171
 #, c-format
 msgid "\"%s\" is not a valid enclosure type config file!"
 msgstr "\"%s\" ez da baliozko konfigurazio-fitxategien eranskina"
 
 #. just saving
-#: ../src/enclosure.c:231
+#: ../src/enclosure.c:278
 #, c-format
 msgid "Enclosure download finished: \"%s\""
 msgstr "Amaitu da eranskina deskargatzea: \"%s\""
@@ -1085,7 +1086,7 @@ msgstr ""
 "\"%s\" ez da baliozko OPML dokumentua! Lifereak ezin du fitxategi hau "
 "inportatu."
 
-#: ../src/export.c:376
+#: ../src/export.c:377
 msgid "Imported feed list"
 msgstr "Inportatutako iturrien zerrenda"
 
@@ -1113,42 +1114,7 @@ msgstr "Esportatu iturrien zerrenda"
 msgid "Export"
 msgstr "Esportatu"
 
-#: ../src/feed.c:284
-#, fuzzy
-msgid ""
-"The URL you want Liferea to subscribe to points to a webpage and the auto "
-"discovery found no feeds on this page. Maybe this webpage just does not "
-"support feed auto discovery."
-msgstr ""
-"<p>Lifereak ez du aurkitu albisteen iturririk emandako URLan. Agian web "
-"gunea honek ez du iturrien aurkikuntza automatikoak onartzen.</p>"
-
-#: ../src/feed.c:315
-#, fuzzy, c-format
-msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
-msgstr ""
-"<p>XML errorea iturria irakurtzean. \"%s\" iturria ezin izan da kargatu.</p>"
-
-#: ../src/feed.c:320
-#, fuzzy
-msgid "Empty document!"
-msgstr "<p>Dokumentu hutsa</p>"
-
-#: ../src/feed.c:329
-#, fuzzy
-msgid "Invalid XML!"
-msgstr "<p>XML baliogabea</p>"
-
-#: ../src/feed.c:369
-msgid "Source points to HTML document."
-msgstr ""
-
-#: ../src/feed.c:372
-#, fuzzy
-msgid "Could not determine the feed type."
-msgstr "<p>Ezin izan da iturri mota zehaztu</p>"
-
-#: ../src/feed.c:571
+#: ../src/feed.c:365
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!</"
@@ -1158,25 +1124,25 @@ msgstr ""
 "harpidetzeko formatuetako batera zuzentzen duela.</p>XML analizatzailearen "
 "irteera:<br /><div class='xmlparseroutput'>"
 
-#: ../src/feed.c:610
+#: ../src/feed.c:406
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" eguneratua..."
 
-#: ../src/feed.c:618
+#: ../src/feed.c:417
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" ez dago erabilgarri"
 
-#: ../src/feedlist.c:347
+#: ../src/feedlist.c:419
 msgid "You have to select a feed entry"
 msgstr "Iturri sarrera bat hautatu behar duzu"
 
-#: ../src/feedlist.c:354 ../src/feedlist.c:363
+#: ../src/feedlist.c:426 ../src/feedlist.c:435
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea lineaz kanpoko moduan dago. Ezin da eguneraketarik burutua."
 
-#: ../src/feedlist.c:491
+#: ../src/feedlist.c:563
 #, fuzzy
 msgid ""
 "This version of Liferea uses a new cache format and has migrated your feed "
@@ -1200,56 +1166,56 @@ msgstr ""
 msgid "There are no unread items "
 msgstr "Ez dago irakurri gabeko elementurik "
 
-#: ../src/main.c:70
+#: ../src/main.c:69
 msgid "  --version        Print version information and exit"
 msgstr "  --version         Bistaratu bertsioaren informazioa eta irten"
 
-#: ../src/main.c:71
+#: ../src/main.c:70
 msgid "  --help           Print this help and exit"
 msgstr "  --help          Bistaratu laguntza hau eta irten"
 
-#: ../src/main.c:72
+#: ../src/main.c:71
 msgid "  --mainwindow-state=STATE"
 msgstr "  --mainwindow-state=EGOERA"
 
-#: ../src/main.c:73
+#: ../src/main.c:72
 msgid "                   Start Liferea with its main window in STATE."
 msgstr "                   Abiatu Liferea bere leiho nagusia EGOERAn dagoela."
 
-#: ../src/main.c:74
+#: ../src/main.c:73
 msgid "                   STATE may be `shown', `iconified', or `hidden'"
 msgstr ""
 "                   EGOERA `shown', `iconified', edo `hidden' izan daiteke"
 
-#: ../src/main.c:76
+#: ../src/main.c:75
 #, fuzzy
 msgid "  --debug-<topic>  Print debugging messages for the given topic"
 msgstr "  --debug-cache    Bistaratu cache kudeatzailearen arazketa mezuaki"
 
-#: ../src/main.c:77
+#: ../src/main.c:76
 msgid "                   Possible topics are: all,cache,conf,db,gui,html"
 msgstr ""
 
-#: ../src/main.c:78
+#: ../src/main.c:77
 msgid "                   net,parsing,plugins,trace,update,verbose"
 msgstr ""
 
-#: ../src/main.c:209
+#: ../src/main.c:213
 #, c-format
 msgid "The --mainwindow-state argument must be given a parameter.\n"
 msgstr "--mainwindow-state argumentuak parametro bat eman behar du.\n"
 
-#: ../src/main.c:217
+#: ../src/main.c:221
 #, c-format
 msgid "The --session argument must be given a parameter.\n"
 msgstr "--session argumentuak parametro bat eman behar du.\n"
 
-#: ../src/main.c:220
+#: ../src/main.c:224
 #, c-format
 msgid "Liferea encountered an unknown argument: %s\n"
 msgstr "Liferea-k argumentu ezezaguna aurkitu du: %s\n"
 
-#: ../src/main.c:231
+#: ../src/main.c:235
 msgid "Liferea seems to be running already!"
 msgstr "Badirudi Liferea jadanik exekutatzen ari dela!"
 
@@ -1260,7 +1226,7 @@ msgstr "Badirudi Liferea jadanik exekutatzen ari dela!"
 msgid "Cookie for %s has expired!"
 msgstr "%s cookia iraungitu da."
 
-#: ../src/net.c:444
+#: ../src/net.c:471
 msgid "Network error"
 msgstr ""
 
@@ -1270,25 +1236,17 @@ msgstr ""
 msgid "Item"
 msgstr "Elementua"
 
-#: ../src/rule.c:369
+#: ../src/rule.c:369 ../src/rule.c:370 ../src/rule.c:371 ../src/rule.c:372
 msgid "does contain"
 msgstr "hau dauka"
 
-#: ../src/rule.c:369
+#: ../src/rule.c:369 ../src/rule.c:370 ../src/rule.c:371 ../src/rule.c:372
 msgid "does not contain"
 msgstr "hau ez dauka"
 
 #: ../src/rule.c:370
 msgid "Item title"
 msgstr "Elementuaren titulua"
-
-#: ../src/rule.c:370 ../src/rule.c:371 ../src/rule.c:372
-msgid "does match"
-msgstr "bat dator"
-
-#: ../src/rule.c:370 ../src/rule.c:371 ../src/rule.c:372
-msgid "does not match"
-msgstr "ez dator bat"
 
 #: ../src/rule.c:371
 msgid "Item body"
@@ -1360,43 +1318,43 @@ msgstr "irakurrita"
 msgid "is not set"
 msgstr ""
 
-#: ../src/subscription.c:100
+#: ../src/subscription.c:101
 #, fuzzy, c-format
 msgid "Subscription \"%s\" is already being updated!"
 msgstr "\"%s\" iturria jadanik eguneratzen ari da."
 
-#: ../src/subscription.c:105
+#: ../src/subscription.c:106
 #, fuzzy, c-format
 msgid ""
 "The subscription \"%s\" was discontinued. Liferea won't update it anymore!"
 msgstr "\"%s\" iturria etenda dago. Liferea ezingo du eguneratu gehiago."
 
-#: ../src/subscription.c:140
+#: ../src/subscription.c:141
 #, fuzzy, c-format
 msgid "Updating favicon for \"%s\""
 msgstr "\"%s\" iturriaren ikonoa eguneratzen"
 
-#: ../src/subscription.c:169
+#: ../src/subscription.c:164
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "\"%s\"ren URLa betirako aldatu da eta eguneratu egin da"
 
-#: ../src/subscription.c:178
+#: ../src/subscription.c:173
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr "\"%s\" etenda dago. Lifereak ez du gehiago eguneratuko."
 
-#: ../src/subscription.c:181
+#: ../src/subscription.c:176
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\" ez da aldatu azken eguneraketatik"
 
-#: ../src/subscription.c:240
+#: ../src/subscription.c:223
 #, c-format
 msgid "Updating \"%s\""
 msgstr "\"%s\" eguneratzen"
 
-#: ../src/subscription.c:445
+#: ../src/subscription.c:414
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
@@ -1404,47 +1362,52 @@ msgstr ""
 "Arazoak daude harpidetza hau irakurtzean. Egiaztatu URLa eta kontsolako "
 "irteera."
 
-#: ../src/update.c:254
+#: ../src/update.c:265
 #, c-format
 msgid "Error opening temp file %s to use for filtering!"
 msgstr ""
 "Errorea aldi baterako %s fitxategia irakurtzean iragazteko erabiltzeko."
 
-#: ../src/update.c:277
+#: ../src/update.c:288
 #, c-format
 msgid "%s exited with status %d"
 msgstr "%s %d egoerarekin irten da"
 
-#: ../src/update.c:283 ../src/update.c:284 ../src/update.c:396
+#: ../src/update.c:294 ../src/update.c:295 ../src/update.c:407
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "Errorea: ezin izan da \"%s\" kanalizazioa ireki"
 
 #. FIXME: maybe setting request->returncode would be better
-#: ../src/update.c:420
+#: ../src/update.c:433
 #, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr "Errorea: ezin izan da \"%s\" fitxategia ireki"
 
-#: ../src/update.c:425
+#: ../src/update.c:439
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "Errorea: ez dago \"%s\" fitxategia"
 
-#: ../src/update.c:573
+#: ../src/update.c:577
 #, c-format
 msgid "Could not download \"%s\". Will retry in %d seconds."
 msgstr "Ezin izan da \"%s\" deskargatu. Saiatu berriro %d segundo barru."
 
-#: ../src/vfolder.c:53
+#: ../src/vfolder.c:54
 msgid "New Search Folder"
 msgstr "Bilaketaren karpeta berria"
 
-#: ../src/xml.c:383
+#: ../src/xml.c:411
 msgid "[There were more errors. Output was truncated!]"
 msgstr "[Errore batzuk gertatu dira. Irteera moztu egin da]"
 
-#: ../src/xml.c:544
+#: ../src/xml.c:574
+#, c-format
+msgid "Invalid encoding in feed \"%s\"!"
+msgstr ""
+
+#: ../src/xml.c:580
 msgid "XML Parser: Could not parse document:\n"
 msgstr "XML analizatzailea: ezin izan da dokumentua analizatu:\n"
 
@@ -1456,6 +1419,78 @@ msgstr "Orientazioa"
 msgid "The orientation of the tray."
 msgstr "Erretiluaren orientazioa."
 
+#. update list title
+#: ../src/ui/enclosure_list_view.c:250
+#, c-format
+msgid "%d attachment"
+msgid_plural "%d attachments"
+msgstr[0] ""
+msgstr[1] ""
+
+#. The following literals are the enclosure list size units
+#: ../src/ui/enclosure_list_view.c:265
+msgid " Bytes"
+msgstr ""
+
+#: ../src/ui/enclosure_list_view.c:268
+msgid "kB"
+msgstr ""
+
+#: ../src/ui/enclosure_list_view.c:272
+msgid "MB"
+msgstr ""
+
+#: ../src/ui/enclosure_list_view.c:276
+msgid "GB"
+msgstr ""
+
+#: ../src/ui/enclosure_list_view.c:281
+#, c-format
+msgid "%d%s"
+msgstr ""
+
+#: ../src/ui/enclosure_list_view.c:340 ../src/ui/enclosure_list_view.c:497
+#: ../src/ui/ui_subscription.c:389
+msgid "Choose File"
+msgstr "Aukeratu fitxategia"
+
+#: ../src/ui/enclosure_list_view.c:402
+#, c-format
+msgid "<b>File Extension .%s</b>"
+msgstr "<b>Fitxategiaren luzapena. %s</b>"
+
+#: ../src/ui/enclosure_list_view.c:404
+#, c-format
+msgid "<b>%s</b>"
+msgstr "<b>%s</b>"
+
+#: ../src/ui/search_dialog.c:66
+#, fuzzy, c-format
+msgid "%d Search Result for \"%s\""
+msgid_plural "%d Search Results for \"%s\""
+msgstr[0] "\"%2$s\" bilaketaren emaitzak: %1$d"
+msgstr[1] "\"%2$s\" bilaketaren emaitzak: %1$d"
+
+#: ../src/ui/search_dialog.c:71
+#, fuzzy, c-format
+msgid "%d Search Result"
+msgid_plural "%d Search Results"
+msgstr[0] "\"%2$s\" bilaketaren emaitzak: %1$d"
+msgstr[1] "\"%2$s\" bilaketaren emaitzak: %1$d"
+
+#: ../src/ui/search_dialog.c:77
+#, c-format
+msgid ""
+"The item list now contains all items matching the specified search pattern. "
+"If you want to save this search result permanently you can click the "
+"\"Search Folder\" button in the search dialog and Liferea will add a search "
+"folder to your feed list."
+msgstr ""
+"Elementuen zerrendak bilaketako ereduarekin bat datozen elementu guztiak "
+"ditu. Bilaketaren emaitza gordetzea nahi izanez gero egin klik bilaketaren "
+"elkarrizketa-koadroko \"Bilaketaren karpeta\"  botoian eta Liferea-k "
+"bilaketaren karpeta bat gehituko dio iturrien zerrendari."
+
 #: ../src/ui/ui_attention.c:184
 #, fuzzy
 msgid "Count"
@@ -1465,47 +1500,21 @@ msgstr "iruzkinak"
 msgid "Unknown source"
 msgstr "Iturburu ezeaguna"
 
-#: ../src/ui/ui_enclosure.c:174
-msgid "NAME"
-msgstr ""
-
-#: ../src/ui/ui_enclosure.c:214
-#, c-format
-msgid "%d attachment"
-msgid_plural "%d attachments"
-msgstr[0] ""
-msgstr[1] ""
-
-#: ../src/ui/ui_enclosure.c:264 ../src/ui/ui_enclosure.c:414
-#: ../src/ui/ui_subscription.c:373
-msgid "Choose File"
-msgstr "Aukeratu fitxategia"
-
-#: ../src/ui/ui_enclosure.c:323
-#, c-format
-msgid "<b>File Extension .%s</b>"
-msgstr "<b>Fitxategiaren luzapena. %s</b>"
-
-#: ../src/ui/ui_enclosure.c:325
-#, c-format
-msgid "<b>%s</b>"
-msgstr "<b>%s</b>"
-
-#: ../src/ui/ui_feedlist.c:317
+#: ../src/ui/ui_feedlist.c:316
 msgid "Deleting entry"
 msgstr "Sarrera ezabatzen"
 
-#: ../src/ui/ui_feedlist.c:318
+#: ../src/ui/ui_feedlist.c:317
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "Ziur zaude \"%s\" eta bere edukia ezabatzea nahi duzula?"
 
-#: ../src/ui/ui_feedlist.c:318
+#: ../src/ui/ui_feedlist.c:317
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Ziur zaude \"%s\" ezabatzea nahi duzula?"
 
-#: ../src/ui/ui_feedlist.c:325
+#: ../src/ui/ui_feedlist.c:324
 msgid "Deletion Confirmation"
 msgstr "Berretsi ezabatzea"
 
@@ -1518,16 +1527,16 @@ msgstr ""
 "plugins aukerarekin arazketari buruzko informazioa lortzeko."
 
 #. FIXME: bad because this is not only used for item links!
-#: ../src/ui/ui_htmlview.c:308
+#: ../src/ui/ui_htmlview.c:309
 msgid "This item does not have a link assigned!"
 msgstr "Elementuak ez du estekarik esleituta."
 
-#: ../src/ui/ui_htmlview.c:403 ../src/ui/ui_htmlview.c:423
+#: ../src/ui/ui_htmlview.c:404 ../src/ui/ui_htmlview.c:424
 #, c-format
 msgid "Browser command failed: %s"
 msgstr "Arakatzailearen komandoak huts egin du: %s"
 
-#: ../src/ui/ui_htmlview.c:426
+#: ../src/ui/ui_htmlview.c:427
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Exekuzioa: \"%s\""
@@ -1547,7 +1556,7 @@ msgstr "Goiburua"
 
 #: ../src/ui/ui_itemlist.c:453 ../src/ui/ui_itemlist.c:476
 #: ../src/ui/ui_itemlist.c:551 ../src/ui/ui_itemlist.c:686
-#: ../src/ui/ui_itemlist.c:705
+#: ../src/ui/ui_itemlist.c:713
 msgid "No item has been selected"
 msgstr "Ez da elementurik hautatu"
 
@@ -1559,7 +1568,7 @@ msgstr "Elementu honek ez du zehaztutako estekarik."
 msgid "You must select a feed to delete its items!"
 msgstr "Iturri bat hautatu behar duzu bere edukia ezabatzeko."
 
-#: ../src/ui/ui_itemlist.c:716
+#: ../src/ui/ui_itemlist.c:724
 msgid "No link selected!"
 msgstr "Ez da estekarik hautatu."
 
@@ -1592,11 +1601,11 @@ msgstr "faq_en.html"
 msgid "FAQ"
 msgstr "MEG"
 
-#: ../src/ui/ui_mainwindow.c:698
+#: ../src/ui/ui_mainwindow.c:701
 msgid "Liferea - Linux Feed Reader"
 msgstr "Liferea - Linux iturri irakurgailua"
 
-#: ../src/ui/ui_mainwindow.c:700
+#: ../src/ui/ui_mainwindow.c:703
 msgid ""
 "<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news "
 "feeds.</p><p>The left pane contains the list of your subscriptions. To add a "
@@ -1610,89 +1619,88 @@ msgstr ""
 "arakatzeko hautatu iturria ezkerreko paneleko iturrien zerrendatik eta "
 "goiburuak eskuineko panelean kargatuko dira.</p>"
 
-#: ../src/ui/ui_mainwindow.c:794
+#: ../src/ui/ui_mainwindow.c:791
 msgid "Liferea is now online"
 msgstr "Liferea orain linean dago"
 
-#: ../src/ui/ui_mainwindow.c:796
+#: ../src/ui/ui_mainwindow.c:793
 msgid "Work Offline"
 msgstr "Lan egin lineaz kanpo"
 
-#: ../src/ui/ui_mainwindow.c:798
+#: ../src/ui/ui_mainwindow.c:795
 msgid "Liferea is now offline"
 msgstr "Liferea lineaz kanpo dago"
 
-#: ../src/ui/ui_mainwindow.c:800
+#: ../src/ui/ui_mainwindow.c:797
 msgid "Work Online"
 msgstr "Lan egin linean"
 
-#: ../src/ui/ui_mainwindow.c:1091
+#: ../src/ui/ui_mainwindow.c:1094
 #, fuzzy
 msgid "_Subscriptions"
 msgstr "Harpidetza berria"
 
-#: ../src/ui/ui_mainwindow.c:1092
+#: ../src/ui/ui_mainwindow.c:1095
 msgid "Update _All"
 msgstr "Eguneratu _denak"
 
-#: ../src/ui/ui_mainwindow.c:1092
-msgid "Updates all subscriptions. This does not update OCS directories."
-msgstr ""
-"Harpidetza guztiak eguneratzen ditu. Honek ez ditu OCS direktorioak "
-"eguneratzen."
+#: ../src/ui/ui_mainwindow.c:1095
+#, fuzzy
+msgid "Updates all subscriptions."
+msgstr "Harpidetza berria"
 
-#: ../src/ui/ui_mainwindow.c:1094
+#: ../src/ui/ui_mainwindow.c:1097
 msgid "Mark All As _Read"
 msgstr "_Markatu denak irakurritako gisa"
 
-#: ../src/ui/ui_mainwindow.c:1094
+#: ../src/ui/ui_mainwindow.c:1097
 msgid "Marks read every item of every subscription."
 msgstr "Markatu irakurrita gisa harpidetza bakoitzeko elementu bakoitza"
 
-#: ../src/ui/ui_mainwindow.c:1096
+#: ../src/ui/ui_mainwindow.c:1099
 msgid "_Import Feed List..."
 msgstr "_Inportatu iturrien zerrenda..."
 
-#: ../src/ui/ui_mainwindow.c:1096
+#: ../src/ui/ui_mainwindow.c:1099
 msgid "Imports an OPML feed list."
 msgstr "Iturrien OPML zerrenda inportatzen du"
 
-#: ../src/ui/ui_mainwindow.c:1097
+#: ../src/ui/ui_mainwindow.c:1100
 msgid "_Export Feed List..."
 msgstr "_Esportatu iturrien zerrenda"
 
-#: ../src/ui/ui_mainwindow.c:1097
+#: ../src/ui/ui_mainwindow.c:1100
 msgid "Exports the feed list as OPML."
 msgstr "Esportatu iturrien zerrenda OPML gisa."
 
-#: ../src/ui/ui_mainwindow.c:1098
+#: ../src/ui/ui_mainwindow.c:1101
 msgid "_Quit"
 msgstr "I_rten"
 
-#: ../src/ui/ui_mainwindow.c:1100
+#: ../src/ui/ui_mainwindow.c:1103
 #, fuzzy
 msgid "_Feed"
 msgstr "_Iturriak"
 
-#: ../src/ui/ui_mainwindow.c:1101
+#: ../src/ui/ui_mainwindow.c:1104
 #, fuzzy
 msgid "Remove _All Items"
 msgstr "Kendu _denak"
 
-#: ../src/ui/ui_mainwindow.c:1101
+#: ../src/ui/ui_mainwindow.c:1104
 msgid "Removes all items of the currently selected feed."
 msgstr "Unean hautatutako iturritik elemen tu guztiak kentzen ditu."
 
-#: ../src/ui/ui_mainwindow.c:1104
+#: ../src/ui/ui_mainwindow.c:1107
 #, fuzzy
 msgid "_Item"
 msgstr "_Elementuak"
 
-#: ../src/ui/ui_mainwindow.c:1105
+#: ../src/ui/ui_mainwindow.c:1108
 msgid "_Next Unread Item"
 msgstr "_Hurrengo irakurri gabeko elementua"
 
-#: ../src/ui/ui_mainwindow.c:1105
+#: ../src/ui/ui_mainwindow.c:1108
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -1700,182 +1708,182 @@ msgstr ""
 "Joan hurrengo irakurri gabeko elementua. Beharrezkoa izanez gero, irakurri "
 "gabeko elementuak dituen hurrengo iturria hautatuko du."
 
-#: ../src/ui/ui_mainwindow.c:1108
+#: ../src/ui/ui_mainwindow.c:1111
 msgid "_View"
 msgstr "_Ikusi"
 
-#: ../src/ui/ui_mainwindow.c:1109
+#: ../src/ui/ui_mainwindow.c:1112
 msgid "_Increase Text Size"
 msgstr "_Handitu testuaren tamaina"
 
-#: ../src/ui/ui_mainwindow.c:1109
+#: ../src/ui/ui_mainwindow.c:1112
 msgid "Increases the text size of the item view."
 msgstr "Testuaren tamaina handitzen du elementuaren ikuspegian."
 
-#: ../src/ui/ui_mainwindow.c:1111
+#: ../src/ui/ui_mainwindow.c:1114
 msgid "_Decrease Text Size"
 msgstr "_Gutxiagotu testu-tamaina"
 
-#: ../src/ui/ui_mainwindow.c:1111
+#: ../src/ui/ui_mainwindow.c:1114
 msgid "Decreases the text size of the item view."
 msgstr "Testuaren tamaina gutxiagotzen du elementuaren ikuspegian."
 
-#: ../src/ui/ui_mainwindow.c:1114
+#: ../src/ui/ui_mainwindow.c:1117
 msgid "_Tools"
 msgstr ""
 
-#: ../src/ui/ui_mainwindow.c:1115
+#: ../src/ui/ui_mainwindow.c:1118
 #, fuzzy
 msgid "_Update Monitor"
 msgstr "Eguneraketaren monitorea"
 
-#: ../src/ui/ui_mainwindow.c:1115
+#: ../src/ui/ui_mainwindow.c:1118
 msgid "Show a list of all feeds currently in the update queue"
 msgstr "Erakutsi eguneratzeko ilaran unean dauden iturri guztien zerrenda"
 
-#: ../src/ui/ui_mainwindow.c:1117
+#: ../src/ui/ui_mainwindow.c:1120
 #, fuzzy
 msgid "_Script Manager"
 msgstr "Script-kudeatzailea"
 
-#: ../src/ui/ui_mainwindow.c:1117
+#: ../src/ui/ui_mainwindow.c:1120
 msgid "Allows to configure and edit LUA hook scripts"
 msgstr "LUA script-ak konfiguratzea eta editatzea baimentzen du"
 
-#: ../src/ui/ui_mainwindow.c:1119
+#: ../src/ui/ui_mainwindow.c:1122
 msgid "Presents statistics on your most read categories"
 msgstr ""
 
-#: ../src/ui/ui_mainwindow.c:1121
+#: ../src/ui/ui_mainwindow.c:1124
 msgid "_Preferences"
 msgstr "_Hobespenak"
 
-#: ../src/ui/ui_mainwindow.c:1121
+#: ../src/ui/ui_mainwindow.c:1124
 msgid "Edit Preferences."
 msgstr "Editatu hobespenak."
 
-#: ../src/ui/ui_mainwindow.c:1124
+#: ../src/ui/ui_mainwindow.c:1127
 msgid "_Search"
 msgstr "_Bilatu"
 
-#: ../src/ui/ui_mainwindow.c:1125
+#: ../src/ui/ui_mainwindow.c:1128
 msgid "Search All Feeds..."
 msgstr "Bilatu iturri guztiak..."
 
-#: ../src/ui/ui_mainwindow.c:1125
+#: ../src/ui/ui_mainwindow.c:1128
 msgid "Show the search dialog."
 msgstr "Erakutsi bilaketaren elkarrizketa-koadroa."
 
-#: ../src/ui/ui_mainwindow.c:1126
+#: ../src/ui/ui_mainwindow.c:1129
 msgid "Search With ..."
 msgstr "Bilatu honekin..."
 
-#: ../src/ui/ui_mainwindow.c:1128
+#: ../src/ui/ui_mainwindow.c:1131
 msgid "_Help"
 msgstr "_Laguntza"
 
-#: ../src/ui/ui_mainwindow.c:1129
+#: ../src/ui/ui_mainwindow.c:1132
 msgid "_Contents"
 msgstr "_Edukia"
 
-#: ../src/ui/ui_mainwindow.c:1129
+#: ../src/ui/ui_mainwindow.c:1132
 msgid "View help for this application."
 msgstr "Ikusi aplikazio honen laguntza."
 
-#: ../src/ui/ui_mainwindow.c:1130
+#: ../src/ui/ui_mainwindow.c:1133
 msgid "_Quick Reference"
 msgstr "_Erreferentzia azkarra"
 
-#: ../src/ui/ui_mainwindow.c:1130
+#: ../src/ui/ui_mainwindow.c:1133
 msgid "View a list of all Liferea shortcuts."
 msgstr "Ikusi Liferearen laster-tekla guztien zerrenda."
 
-#: ../src/ui/ui_mainwindow.c:1132
+#: ../src/ui/ui_mainwindow.c:1135
 msgid "_FAQ"
 msgstr "_MEG"
 
-#: ../src/ui/ui_mainwindow.c:1132
+#: ../src/ui/ui_mainwindow.c:1135
 msgid "View the FAQ for this application."
 msgstr "Ikusi aplikazio honen Maiz Egindako Galderak (MEG)."
 
-#: ../src/ui/ui_mainwindow.c:1133
+#: ../src/ui/ui_mainwindow.c:1136
 msgid "_About"
 msgstr "Honi _buruz"
 
-#: ../src/ui/ui_mainwindow.c:1133
+#: ../src/ui/ui_mainwindow.c:1136
 msgid "Shows an about dialog."
 msgstr "Erakutsi 'honi buruz' elkarrizketa-koadroa."
 
-#: ../src/ui/ui_mainwindow.c:1137
+#: ../src/ui/ui_mainwindow.c:1140
 msgid "_Normal View"
 msgstr "_Ikuspegi normala"
 
-#: ../src/ui/ui_mainwindow.c:1137
+#: ../src/ui/ui_mainwindow.c:1140
 msgid "Set view mode to mail client mode."
 msgstr "Ezarri ikuspegi modua posta bezero moduan."
 
-#: ../src/ui/ui_mainwindow.c:1139
+#: ../src/ui/ui_mainwindow.c:1142
 msgid "_Wide View"
 msgstr "_Ikuspegi zabala"
 
-#: ../src/ui/ui_mainwindow.c:1139
+#: ../src/ui/ui_mainwindow.c:1142
 msgid "Set view mode to use three vertical panes."
 msgstr "Ezarri ikuspegi modua hiru panel bertikal erabiltzeko."
 
-#: ../src/ui/ui_mainwindow.c:1141
+#: ../src/ui/ui_mainwindow.c:1144
 msgid "_Combined View"
 msgstr "Ikuspegi _konbinatua"
 
-#: ../src/ui/ui_mainwindow.c:1141
+#: ../src/ui/ui_mainwindow.c:1144
 msgid "Set view mode to two pane mode."
 msgstr "Ezarri ikuspegi modua bi panelekin."
 
-#: ../src/ui/ui_mainwindow.c:1146
+#: ../src/ui/ui_mainwindow.c:1149
 msgid "_New Subscription..."
 msgstr "_Harpidetza berria..."
 
-#: ../src/ui/ui_mainwindow.c:1146
+#: ../src/ui/ui_mainwindow.c:1149
 msgid "Adds a subscription to the feed list."
 msgstr "Harpidetza bat gehitzen du iturrien zerrendara."
 
-#: ../src/ui/ui_mainwindow.c:1148
+#: ../src/ui/ui_mainwindow.c:1151
 msgid "New _Folder..."
 msgstr "_Karpeta berria..."
 
-#: ../src/ui/ui_mainwindow.c:1148
+#: ../src/ui/ui_mainwindow.c:1151
 msgid "Adds a folder to the feed list."
 msgstr "Karpeta bat gehitzen du iturrien zerrendara."
 
-#: ../src/ui/ui_mainwindow.c:1149
+#: ../src/ui/ui_mainwindow.c:1152
 msgid "New S_earch Folder..."
 msgstr "_Bilaketa karpeta berria..."
 
-#: ../src/ui/ui_mainwindow.c:1149
+#: ../src/ui/ui_mainwindow.c:1152
 msgid "Adds a new search folder to the feed list."
 msgstr "Bilaketako karpeta berri bat gehitzen du iturrien zerrendan."
 
-#: ../src/ui/ui_mainwindow.c:1150
+#: ../src/ui/ui_mainwindow.c:1153
 msgid "New _Source..."
 msgstr "_Iturburu berria..."
 
-#: ../src/ui/ui_mainwindow.c:1150
+#: ../src/ui/ui_mainwindow.c:1153
 msgid "Adds a new feed list source."
 msgstr "Iturrien zerrenda berria gehitzen du."
 
-#: ../src/ui/ui_mainwindow.c:1151
+#: ../src/ui/ui_mainwindow.c:1154
 msgid "New _News Bin..."
 msgstr "_Albisteen erretilu berria..."
 
-#: ../src/ui/ui_mainwindow.c:1151
+#: ../src/ui/ui_mainwindow.c:1154
 msgid "Adds a new news bin."
 msgstr "Albisteen erretilu berria gehitzen du."
 
-#: ../src/ui/ui_mainwindow.c:1155
+#: ../src/ui/ui_mainwindow.c:1158
 #, fuzzy
 msgid "_Mark As Read"
 msgstr "/_Markatu denak irakurritako gisa"
 
-#: ../src/ui/ui_mainwindow.c:1155
+#: ../src/ui/ui_mainwindow.c:1158
 msgid ""
 "Marks all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
@@ -1883,86 +1891,86 @@ msgstr ""
 "Hautatutako harpidetzaren edo karpetaren harpidetza guztien elementu guztiak "
 "markatzen ditu irakurritako gisa."
 
-#: ../src/ui/ui_mainwindow.c:1157
+#: ../src/ui/ui_mainwindow.c:1160
 #, fuzzy
 msgid "_Update"
 msgstr "/_Eguneratu"
 
-#: ../src/ui/ui_mainwindow.c:1157
+#: ../src/ui/ui_mainwindow.c:1160
 msgid ""
 "Updates the selected subscription or all subscriptions of the selected "
 "folder."
 msgstr ""
 "Hautatutako harpidetzak edo karpetan harpidetza guztiak eguneratzen ditu."
 
-#: ../src/ui/ui_mainwindow.c:1162
+#: ../src/ui/ui_mainwindow.c:1165
 #, fuzzy
 msgid "_Properties"
 msgstr "/_Propietateak"
 
-#: ../src/ui/ui_mainwindow.c:1162
+#: ../src/ui/ui_mainwindow.c:1165
 msgid "Opens the property dialog for the selected subscription."
 msgstr ""
 "Hautatutako harpidetzaren propietateen elkarrizketa-koadroa irekitzen du."
 
-#: ../src/ui/ui_mainwindow.c:1163
+#: ../src/ui/ui_mainwindow.c:1166
 #, fuzzy
 msgid "_Remove"
 msgstr "Kendu _denak"
 
-#: ../src/ui/ui_mainwindow.c:1163
+#: ../src/ui/ui_mainwindow.c:1166
 msgid "Removes the selected subscription."
 msgstr "Hautatutako harpidetza ezabatzen du."
 
-#: ../src/ui/ui_mainwindow.c:1167
+#: ../src/ui/ui_mainwindow.c:1170
 msgid "Toggle _Read Status"
 msgstr "Txandakatu irakurketaren egoera"
 
-#: ../src/ui/ui_mainwindow.c:1167
+#: ../src/ui/ui_mainwindow.c:1170
 msgid "Toggles the read status of the selected item."
 msgstr "Hautatutako elementuaren irakurketaren egoera aldatzen du."
 
-#: ../src/ui/ui_mainwindow.c:1169
+#: ../src/ui/ui_mainwindow.c:1172
 msgid "Toggle Item _Flag"
 msgstr "Txandakatu elementuaren bandera"
 
-#: ../src/ui/ui_mainwindow.c:1169
+#: ../src/ui/ui_mainwindow.c:1172
 msgid "Toggles the flag status of the selected item."
 msgstr "Hautatutako elementuaren banderaren egoera aldatzen du."
 
-#: ../src/ui/ui_mainwindow.c:1171
+#: ../src/ui/ui_mainwindow.c:1174
 #, fuzzy
 msgid "R_emove"
 msgstr "/_Kendu elementua"
 
-#: ../src/ui/ui_mainwindow.c:1171
+#: ../src/ui/ui_mainwindow.c:1174
 msgid "Removes the selected item."
 msgstr "Kandu hautatutako elementua."
 
-#: ../src/ui/ui_mainwindow.c:1173
+#: ../src/ui/ui_mainwindow.c:1176
 msgid "_Launch In Browser"
 msgstr "_Abiarazi arakatzailean"
 
-#: ../src/ui/ui_mainwindow.c:1173
+#: ../src/ui/ui_mainwindow.c:1176
 msgid "Launches the item's link in the configured browser."
 msgstr "Bistaratu elementuaren esteka konfiguratutako arakatzailean."
 
-#: ../src/ui/ui_mainwindow.c:1178
+#: ../src/ui/ui_mainwindow.c:1181
 msgid "_Work Offline"
 msgstr "_Lan egin lineaz kanpo"
 
-#: ../src/ui/ui_mainwindow.c:1178
+#: ../src/ui/ui_mainwindow.c:1181
 msgid "This option allows you to disable subscription updating."
 msgstr "Aukera honek harpidetzen eguneraketa desgaitzea baimentzen du."
 
-#: ../src/ui/ui_mainwindow.c:1331
+#: ../src/ui/ui_mainwindow.c:1334
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
 msgstr[0] " (berri %d)"
 msgstr[1] " (%d berri)"
 
-#: ../src/ui/ui_mainwindow.c:1337
+#: ../src/ui/ui_mainwindow.c:1340
 #, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
@@ -2066,146 +2074,146 @@ msgstr "/Gorde honela..."
 msgid "/Copy Link Location"
 msgstr "/_Kopiatu estekaren helbidea"
 
-#: ../src/ui/ui_popup.c:329
+#: ../src/ui/ui_popup.c:341
 msgid "/_Update"
 msgstr "/_Eguneratu"
 
-#: ../src/ui/ui_popup.c:331
+#: ../src/ui/ui_popup.c:343
 msgid "/_Update Folder"
 msgstr "/_Eguneratu karpeta"
 
-#: ../src/ui/ui_popup.c:333
+#: ../src/ui/ui_popup.c:345
 msgid "/_Mark All As Read"
 msgstr "/_Markatu denak irakurritako gisa"
 
-#: ../src/ui/ui_popup.c:337
+#: ../src/ui/ui_popup.c:350
 msgid "/_New"
 msgstr "/_Berria"
 
-#: ../src/ui/ui_popup.c:338
+#: ../src/ui/ui_popup.c:351
 msgid "/_New/New _Subscription..."
 msgstr "/_Berria/_Harpidetza berria..."
 
-#: ../src/ui/ui_popup.c:339
+#: ../src/ui/ui_popup.c:354
 msgid "/_New/New _Folder..."
 msgstr "/_Berria/_Karpeta berria..."
 
-#: ../src/ui/ui_popup.c:340
+#: ../src/ui/ui_popup.c:357
 msgid "/_New/New S_earch Folder..."
 msgstr "/_Berria/_Bilaketako karpeta berria..."
 
-#: ../src/ui/ui_popup.c:341
+#: ../src/ui/ui_popup.c:358
 msgid "/_New/New S_ource..."
 msgstr "/_Berria/_Iturburu berria..."
 
-#: ../src/ui/ui_popup.c:342
+#: ../src/ui/ui_popup.c:359
 msgid "/_New/New _News Bin..."
 msgstr "/_Berria/_Albisteen erretilu berria..."
 
-#: ../src/ui/ui_popup.c:348
+#: ../src/ui/ui_popup.c:366
 msgid "/_Delete"
 msgstr "/_Ezabatu"
 
-#: ../src/ui/ui_popup.c:350
+#: ../src/ui/ui_popup.c:367
 #, fuzzy
 msgid "/_Properties..."
 msgstr "_Propietateak..."
 
-#: ../src/ui/ui_prefs.c:72
+#: ../src/ui/ui_prefs.c:74
 msgid "GNOME Default Browser"
 msgstr ""
 
-#: ../src/ui/ui_prefs.c:130
+#: ../src/ui/ui_prefs.c:132
 msgid "GNOME default"
 msgstr ""
 
-#: ../src/ui/ui_prefs.c:131
+#: ../src/ui/ui_prefs.c:133
 msgid "Text below icons"
 msgstr ""
 
-#: ../src/ui/ui_prefs.c:132
+#: ../src/ui/ui_prefs.c:134
 msgid "Text beside icons"
 msgstr ""
 
-#: ../src/ui/ui_prefs.c:133
+#: ../src/ui/ui_prefs.c:135
 msgid "Icons only"
 msgstr ""
 
-#: ../src/ui/ui_prefs.c:134
+#: ../src/ui/ui_prefs.c:136
 msgid "Text only"
 msgstr ""
 
-#: ../src/ui/ui_prefs.c:139
+#: ../src/ui/ui_prefs.c:141
 #, fuzzy
 msgid "Update out-dated feeds"
 msgstr "Eguneratu iturri guztiak"
 
-#: ../src/ui/ui_prefs.c:140
+#: ../src/ui/ui_prefs.c:142
 #, fuzzy
 msgid "Force update of all feeds"
 msgstr "Eguneratu iturri guztiak"
 
-#: ../src/ui/ui_prefs.c:141
+#: ../src/ui/ui_prefs.c:143
 #, fuzzy
 msgid "No feed update at all"
 msgstr "Eguneraketa"
 
-#: ../src/ui/ui_prefs.c:146
+#: ../src/ui/ui_prefs.c:151 ../src/ui/ui_subscription.c:48
 #, fuzzy
 msgid "minutes"
 msgstr "minutu."
 
-#: ../src/ui/ui_prefs.c:147
+#: ../src/ui/ui_prefs.c:152 ../src/ui/ui_subscription.c:49
 msgid "hours"
 msgstr ""
 
-#: ../src/ui/ui_prefs.c:148
+#: ../src/ui/ui_prefs.c:153 ../src/ui/ui_subscription.c:50
 msgid "days"
 msgstr ""
 
-#: ../src/ui/ui_prefs.c:153
+#: ../src/ui/ui_prefs.c:158
 msgid "Space"
 msgstr "Espazioa"
 
-#: ../src/ui/ui_prefs.c:154
+#: ../src/ui/ui_prefs.c:159
 msgid "<Ctrl> Space"
 msgstr "<Ctrl> Espazioa"
 
-#: ../src/ui/ui_prefs.c:155
+#: ../src/ui/ui_prefs.c:160
 msgid "<Alt> Space"
 msgstr "<Alt> Espazioa"
 
-#: ../src/ui/ui_prefs.c:534
+#: ../src/ui/ui_prefs.c:545
 msgid "Choose download directory"
 msgstr "Aukeratu deskargatzeko direktorioa"
 
 #. This allows the user to choose their own browser by typing in the command.
-#: ../src/ui/ui_prefs.c:624
+#: ../src/ui/ui_prefs.c:610
 msgid "Manual"
 msgstr "Eskuz"
 
-#: ../src/ui/ui_prefs.c:634
+#: ../src/ui/ui_prefs.c:620
 msgid "Browser default"
 msgstr "Arakatzaile lehenetsia"
 
-#: ../src/ui/ui_prefs.c:639
+#: ../src/ui/ui_prefs.c:625
 msgid "Existing window"
 msgstr "Lehendik dagoen leihoan"
 
-#: ../src/ui/ui_prefs.c:644
+#: ../src/ui/ui_prefs.c:630
 msgid "New window"
 msgstr "Leiho berrian"
 
-#: ../src/ui/ui_prefs.c:649 ../src/ui/ui_tabs.c:222 ../src/ui/ui_tabs.c:225
+#: ../src/ui/ui_prefs.c:635 ../src/ui/ui_tabs.c:222 ../src/ui/ui_tabs.c:225
 #: ../src/ui/ui_tabs.c:248 ../src/ui/ui_tabs.c:396
 msgid "New tab"
 msgstr "Fitxa berrian"
 
-#: ../src/ui/ui_prefs.c:874
+#: ../src/ui/ui_prefs.c:880
 msgid "Type"
 msgstr "Mota"
 
-#: ../src/ui/ui_prefs.c:877
+#: ../src/ui/ui_prefs.c:883
 msgid "Program"
 msgstr "Programa"
 
@@ -2264,31 +2272,11 @@ msgstr "Script-kudeatzailea"
 msgid "No script selected!"
 msgstr "Ez da script-ik hautatu."
 
-#: ../src/ui/ui_search.c:119
-#, fuzzy, c-format
-msgid "%d Search Result for \"%s\""
-msgid_plural "%d Search Results for \"%s\""
-msgstr[0] "\"%2$s\" bilaketaren emaitzak: %1$d"
-msgstr[1] "\"%2$s\" bilaketaren emaitzak: %1$d"
-
-#: ../src/ui/ui_search.c:124
-#, c-format
-msgid ""
-"The item list now contains all items matching the specified search pattern. "
-"If you want to save this search result permanently you can click the "
-"\"Search Folder\" button in the search dialog and Liferea will add a search "
-"folder to your feed list."
-msgstr ""
-"Elementuen zerrendak bilaketako ereduarekin bat datozen elementu guztiak "
-"ditu. Bilaketaren emaitza gordetzea nahi izanez gero egin klik bilaketaren "
-"elkarrizketa-koadroko \"Bilaketaren karpeta\"  botoian eta Liferea-k "
-"bilaketaren karpeta bat gehituko dio iturrien zerrendari."
-
-#: ../src/ui/ui_search.c:245
+#: ../src/ui/ui_search.c:137
 msgid "Create a new search feed."
 msgstr "Sortu bilaketaren iturri berria."
 
-#: ../src/ui/ui_subscription.c:445
+#: ../src/ui/ui_subscription.c:461
 #, fuzzy, c-format
 msgid "The provider of this feed suggests an update interval of %d minute."
 msgid_plural ""
@@ -2298,7 +2286,7 @@ msgstr[0] ""
 msgstr[1] ""
 "Iturriaren hornitzaileak %d minututako bitartea gomendatzen du eguneratzeko."
 
-#: ../src/ui/ui_subscription.c:449
+#: ../src/ui/ui_subscription.c:465
 msgid "This feed specifies no default update interval."
 msgstr "Iturri honek ez du egunerstzeko bitarte lehenetsirik zehazten."
 
@@ -2337,16 +2325,16 @@ msgstr ""
 "%s\n"
 "Ez dago irakurri gabeko elementurik"
 
-#: ../src/parsers/atom10.c:117
+#: ../src/parsers/atom10.c:112
 msgid "Liferea is unable to display this item's content."
 msgstr "Liferea-k ezin du elementu honen edukia bistaratu."
 
-#: ../src/parsers/atom10.c:123
+#: ../src/parsers/atom10.c:118
 #, c-format
 msgid "<p><a href=\"%s\">View this item's content.</a></p>"
 msgstr "<p><a href=\"%s\">Ikusi elementuaren edukia.</a></p>"
 
-#: ../src/parsers/atom10.c:259
+#: ../src/parsers/atom10.c:254
 msgid "Invalid Atom feed: unknown author"
 msgstr "Atom iturri baliogabea: egile ezezaguna"
 
@@ -2380,7 +2368,7 @@ msgstr ""
 "zerrendan."
 
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
-#: ../src/fl_sources/default_source.c:109
+#: ../src/fl_sources/default_source.c:111
 msgid "feedlist.opml"
 msgstr "feedlist_eu.opml"
 
@@ -2399,17 +2387,17 @@ msgstr "Sartu zure Bloglines kontuaren ezarpenak."
 msgid "_Username (Email)"
 msgstr "_Erabiltzaile-izena"
 
-#: ../src/fl_sources/google_source.c:189
+#: ../src/fl_sources/google_source.c:124
 #, fuzzy
 msgid "Google Reader login failed!"
 msgstr "Iturri irakurlea"
 
-#: ../src/fl_sources/google_source.c:331
+#: ../src/fl_sources/google_source.c:341
 #, fuzzy
 msgid "Google Reader"
 msgstr "Iturri irakurlea"
 
-#: ../src/fl_sources/google_source.c:332
+#: ../src/fl_sources/google_source.c:342
 #, fuzzy
 msgid ""
 "Integrate the feed list of your Google Reader account. Liferea will present "
@@ -2438,11 +2426,11 @@ msgstr "_Kokalekua"
 msgid "_Select File"
 msgstr "_Hautatu fitxategia"
 
-#: ../src/fl_sources/opml_source.c:327
+#: ../src/fl_sources/opml_source.c:348
 msgid "Planet, BlogRoll, OPML"
 msgstr "Planet, BlogRoll, OPML"
 
-#: ../src/fl_sources/opml_source.c:328
+#: ../src/fl_sources/opml_source.c:349
 msgid ""
 "Integrate blogrolls or Planets in your feed list. Liferea will automatically "
 "add and remove feeds according to the changes of the source OPML document"
@@ -2451,7 +2439,7 @@ msgstr ""
 "automatikoki iturriak gehituko eta kenduko ditu OPML dokumentuaren jatorria "
 "aldatzen den heinean."
 
-#: ../src/fl_sources/opml_source.c:402
+#: ../src/fl_sources/opml_source.c:423
 msgid "Choose OPML File"
 msgstr "Aukeratu OPML fitxategia"
 
@@ -2467,11 +2455,11 @@ msgstr "Hautatu iturburu mota gehitzeko..."
 msgid "Source Selection"
 msgstr "Iturburuaren hautapena"
 
-#: ../src/fl_sources/node_source.c:214
+#: ../src/fl_sources/node_source.c:216
 msgid "No feed list source types found!"
 msgstr "Ez da iturrien zerrendaren iturburu motarik aurkitu."
 
-#: ../src/fl_sources/node_source.c:245
+#: ../src/fl_sources/node_source.c:247
 msgid "Source Type"
 msgstr "Iturburu mota"
 
@@ -2520,15 +2508,58 @@ msgstr "Erakutsi xehetasunak"
 msgid "Liferea Sync %s@%s"
 msgstr ""
 
+#~ msgid ""
+#~ "Saves this search as a search folder, which will appear in the feed list."
+#~ msgstr ""
+#~ "Gorde bilaketa hau bilaketaren karpetan, iturrien zerrendan agertuko da."
+
+#~ msgid "search"
+#~ msgstr "bilatu"
+
+#, fuzzy
+#~ msgid ""
+#~ "The URL you want Liferea to subscribe to points to a webpage and the auto "
+#~ "discovery found no feeds on this page. Maybe this webpage just does not "
+#~ "support feed auto discovery."
+#~ msgstr ""
+#~ "<p>Lifereak ez du aurkitu albisteen iturririk emandako URLan. Agian web "
+#~ "gunea honek ez du iturrien aurkikuntza automatikoak onartzen.</p>"
+
+#, fuzzy
+#~ msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
+#~ msgstr ""
+#~ "<p>XML errorea iturria irakurtzean. \"%s\" iturria ezin izan da kargatu.</"
+#~ "p>"
+
+#, fuzzy
+#~ msgid "Empty document!"
+#~ msgstr "<p>Dokumentu hutsa</p>"
+
+#, fuzzy
+#~ msgid "Invalid XML!"
+#~ msgstr "<p>XML baliogabea</p>"
+
+#, fuzzy
+#~ msgid "Could not determine the feed type."
+#~ msgstr "<p>Ezin izan da iturri mota zehaztu</p>"
+
+#~ msgid "does match"
+#~ msgstr "bat dator"
+
+#~ msgid "does not match"
+#~ msgstr "ez dator bat"
+
+#~ msgid "Updates all subscriptions. This does not update OCS directories."
+#~ msgstr ""
+#~ "Harpidetza guztiak eguneratzen ditu. Honek ez ditu OCS direktorioak "
+#~ "eguneratzen."
+
 #~ msgid "<b>Rule</b>"
 #~ msgstr "<b>Araua</b>"
 
 #~ msgid "<span color=\"blue\" underline=\"single\">Liferea Homepage</span>"
 #~ msgstr ""
 #~ "<span color=\"blue\" underline=\"single\"> Liferea-ren gune nagusia</span>"
-
-#~ msgid "About"
-#~ msgstr "Honi buruz"
 
 #~ msgid ""
 #~ "Code, Patches, Debugging\n"
@@ -2676,9 +2707,6 @@ msgstr ""
 
 #~ msgid "Remove _Selected"
 #~ msgstr "Kendu _hautatutakoa"
-
-#~ msgid "_Mark Selected As Read"
-#~ msgstr "_Markatu hautatutakoak irakurritako gisa"
 
 #~ msgid "Update _Selected"
 #~ msgstr "Eguneratu _hautatutakoa"
