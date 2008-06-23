@@ -429,10 +429,10 @@ void update_subscription_list_callback(GoogleSourcePtr gsource, GoogleSourceActi
 			}
 		}
 		
-		debug0(DEBUG_UPDATE, "Add subscription was successful\n");
+		debug0(DEBUG_UPDATE, "Subscription list was updated successful\n");
 		subscription_update(gsource->root->subscription, GOOGLE_SOURCE_UPDATE_ONLY_LIST);
 	} else 
-		debug0(DEBUG_UPDATE, "Failed to add subscription\n");
+		debug0(DEBUG_UPDATE, "Failed to update subscriptions\n");
 }
 void google_source_edit_add_subscription(
 	GoogleSourcePtr gsource, 

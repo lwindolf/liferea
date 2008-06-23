@@ -281,6 +281,7 @@ google_source_remove_node(nodePtr node, nodePtr child)
 	}
 	g_assert(!googleSourceBlockEditHack);
 	google_source_edit_remove_subscription(google_source_get_root_from_node(node)->data, child->subscription->source); 
+	feedlist_node_removed(child);
 }
 
 /* GUI callbacks */
