@@ -119,7 +119,7 @@ google_source_login_cb (const struct updateResult * const result, gpointer userd
 		google_source_edit_process (gsource);
 
 		/* add a timeout for quick uptating. @todo Config option? */
-		g_timeout_add_seconds(GOOGLE_SOURCE_QUICK_UPDATE_INTERVAL, google_source_quick_update, gsource);
+		g_timeout_add_seconds(GOOGLE_SOURCE_QUICK_UPDATE_INTERVAL, google_source_quick_update_timeout, g_strdup(gsource->root->id));
 
 	} else {
 		debug0 (DEBUG_UPDATE, "google reader login failed! no SID found in result!");

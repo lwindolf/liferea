@@ -304,11 +304,9 @@ google_source_quick_update_cb(const struct updateResult* const result, gpointer 
 			    google_source_quick_update_helper, gsource);
 }
 
-gboolean
-google_source_quick_update(gpointer data) 
+static gboolean
+google_source_quick_update(GoogleSourcePtr gsource) 
 {
-	GoogleSourcePtr gsource = (GoogleSourcePtr) data;
-	
 	updateRequestPtr request = update_request_new();
 	request->updateState = update_state_copy(gsource->root->subscription->updateState);
 	request->options = update_options_copy(gsource->root->subscription->updateOptions);
@@ -320,6 +318,18 @@ google_source_quick_update(gpointer data)
 
 	return TRUE;
 }
+
+gboolean
+google_source_quick_update_timeout (gpointer nodeId) 
+{
+	nodePtr node = node_from_id((gchar*) nodeId) ;
+	if (!node) { 
+		g_free(nodeId);
+		return FALSE ;
+	}
+	return google_source_quick_update(node->data);
+}
+
 
 static void
 google_opml_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)

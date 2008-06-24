@@ -197,12 +197,15 @@ google_source_get_root_from_node(nodePtr node);
 
 /**
  * Tries to update the entire source quickly, by updating only those feeds
- * which are known to be updated. Suitable for g_timeout_add.
+ * which are known to be updated. Suitable for g_timeout_add. This is an 
+ * internal function.
  *
- * @param data a GoogleSourcePtr for which to do the quick update.
+ * @param data A pointer to a node id of the source. This pointer will
+ *             be g_free'd if the update fails and the function will return
+ *             FALSE.  
  */
 gboolean
-google_source_quick_update(gpointer gsource) ;
+google_source_quick_update_timeout(gpointer gsource) ;
 
 /**
  * Migrate a google source child-node from a Liferea 1.4 style read-only
