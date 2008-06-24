@@ -19,10 +19,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
-
 #include <gtk/gtk.h>
 #include "common.h"
 #include "conf.h"
@@ -37,6 +33,8 @@
 
 static GHashTable	*flIterHash = NULL;	/* hash table used for fast node id <-> tree iter lookup */
 static GtkWidget	*nodenamedialog = NULL;
+
+extern GtkTreeStore *feedstore;
 
 GtkTreeIter * ui_node_to_iter(const gchar *nodeId) {
 
@@ -64,9 +62,7 @@ void ui_node_add_iter(const gchar *nodeId, GtkTreeIter *iter) {
 	g_hash_table_insert(flIterHash, (gpointer)nodeId, (gpointer)iter);
 }
 
-/*
- * Expansion & Collapsing
- */
+/* Expansion & Collapsing */
 
 gboolean ui_node_is_folder_expanded(const gchar *nodeId) {
 	GtkTreePath	*path;

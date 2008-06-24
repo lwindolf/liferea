@@ -1,7 +1,7 @@
 /**
  * @file ui_feedlist.c GUI feed list handling
  *
- * Copyright (C) 2004-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2008 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2005 Raphaël Slinckx <raphael@slinckx.net>
  * 
@@ -20,27 +20,15 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
-
-#include <errno.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 
 #include "common.h"
-#include "conf.h"
 #include "debug.h"
-#include "favicon.h"
 #include "feed.h"
 #include "feedlist.h"
 #include "folder.h"
 #include "newsbin.h"
-#include "update.h"
 #include "vfolder.h"
 #include "ui/ui_dnd.h"
 #include "ui/ui_feedlist.h"
@@ -56,16 +44,19 @@ extern GHashTable	*feedHandler;
 GtkTreeModel		*filter;
 GtkTreeStore		*feedstore = NULL;
 
-static void ui_feedlist_row_changed_cb(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter) {
+static void
+ui_feedlist_row_changed_cb(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter)
+{
 	nodePtr node;
 	
-	gtk_tree_model_get(model, iter, FS_PTR, &node, -1);
-	if(node)
+	gtk_tree_model_get (model, iter, FS_PTR, &node, -1);
+	if (node)
 		ui_node_update_iter(node->id, iter);
 }
 
 nodePtr
-ui_feedlist_get_target_folder (int *pos) {
+ui_feedlist_get_target_folder (int *pos)
+{
 	nodePtr		node;
 	GtkTreeIter	*iter = NULL;
 	GtkTreePath 	*path;
@@ -111,7 +102,7 @@ ui_feedlist_selection_changed_cb (GtkTreeSelection *selection, gpointer data)
 		                     IS_NEWSBIN (node) || 
 				     IS_VFOLDER (node) || 
 				     IS_NODE_SOURCE (node)));
-		if(realNode) {			
+		if (realNode) {			
 			/* FIXME: another workaround to prevent strange window
 			   size increasings after feed selection changing 
 			   
@@ -157,7 +148,7 @@ ui_feedlist_row_activated_cb (GtkTreeView *tv, GtkTreePath *path, GtkTreeViewCol
 	
 	gtk_tree_model_get_iter (gtk_tree_view_get_model (tv), &iter, path);
 	gtk_tree_model_get (gtk_tree_view_get_model (tv), &iter, FS_PTR, &node, -1);
-	if(node && IS_FOLDER (node)) {
+	if (node && IS_FOLDER (node)) {
 		if (gtk_tree_view_row_expanded (tv, path))
 			gtk_tree_view_collapse_row (tv, path);
 		else
@@ -166,78 +157,69 @@ ui_feedlist_row_activated_cb (GtkTreeView *tv, GtkTreePath *path, GtkTreeViewCol
 
 }
 
-static gboolean ui_feedlist_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer data) {
-
-	if((event->type == GDK_KEY_PRESS) &&
-	   (event->state == 0) &&
-	   (event->keyval == GDK_Delete)) {
-		nodePtr np = feedlist_get_selected();
-		
-		if(NULL != np) {
-			if(event->state & GDK_SHIFT_MASK)
-				feedlist_remove_node(np);
+static gboolean
+ui_feedlist_key_press_cb (GtkWidget *widget, GdkEventKey *event, gpointer data)
+{
+	if ((event->type == GDK_KEY_PRESS) &&
+	    (event->state == 0) &&
+	    (event->keyval == GDK_Delete)) {
+		nodePtr node = feedlist_get_selected ();
+				
+		if(node) {
+			if (event->state & GDK_SHIFT_MASK)
+				feedlist_remove_node (node);
 			else
-				ui_feedlist_delete_prompt(np);
+				ui_feedlist_delete_prompt (node);
 			return TRUE;
 		}
 	}
 	return FALSE;
 }
 
-static void ui_feedlist_set_model(GtkTreeView *feedview, GtkTreeStore *feedstore) {
-	GtkTreeModel	*model;
-		
-	model = GTK_TREE_MODEL(feedstore);
-	gtk_tree_view_set_model(GTK_TREE_VIEW(feedview), model);
-	g_signal_connect(G_OBJECT(feedstore), "row-changed", G_CALLBACK(ui_feedlist_row_changed_cb), NULL);
-}
-
 /* sets up the entry list store and connects it to the entry list
    view in the main window */
-void ui_feedlist_init(GtkWidget *feedview) {
+void
+ui_feedlist_init (GtkWidget *treeview)
+{
 	GtkCellRenderer		*textRenderer;
 	GtkCellRenderer		*iconRenderer;	
 	GtkTreeViewColumn 	*column;
 	GtkTreeSelection	*select;	
 	
-	debug_enter("ui_feedlist_init");
-
-	g_assert(mainwindow != NULL);
-	g_assert(feedview != NULL);
+	debug_enter ("ui_feedlist_init");
 
 	/* Set up store */
-	feedstore = gtk_tree_store_new(FS_LEN,
-	                               G_TYPE_STRING,
-	                               GDK_TYPE_PIXBUF,
-	                               G_TYPE_POINTER,
-	                               G_TYPE_UINT);
+	feedstore = gtk_tree_store_new (FS_LEN,
+	                                G_TYPE_STRING,
+	                                GDK_TYPE_PIXBUF,
+	                                G_TYPE_POINTER,
+	                                G_TYPE_UINT);
 
-	ui_feedlist_set_model(GTK_TREE_VIEW(feedview), feedstore);
+	gtk_tree_view_set_model (GTK_TREE_VIEW (treeview), GTK_TREE_MODEL (feedstore));
+	g_signal_connect (G_OBJECT (feedstore), "row-changed", G_CALLBACK (ui_feedlist_row_changed_cb), NULL);
 
 	/* we only render the state and title */
-	iconRenderer = gtk_cell_renderer_pixbuf_new();
-	textRenderer = gtk_cell_renderer_text_new();
+	iconRenderer = gtk_cell_renderer_pixbuf_new ();
+	textRenderer = gtk_cell_renderer_text_new ();
 
-	column = gtk_tree_view_column_new();
+	column = gtk_tree_view_column_new ();
 	
-	gtk_tree_view_column_pack_start(column, iconRenderer, FALSE);
-	gtk_tree_view_column_pack_start(column, textRenderer, TRUE);
+	gtk_tree_view_column_pack_start (column, iconRenderer, FALSE);
+	gtk_tree_view_column_pack_start (column, textRenderer, TRUE);
 	
-	gtk_tree_view_column_add_attribute(column, iconRenderer, "pixbuf", FS_ICON);
-	gtk_tree_view_column_add_attribute(column, textRenderer, "markup", FS_LABEL);
+	gtk_tree_view_column_add_attribute (column, iconRenderer, "pixbuf", FS_ICON);
+	gtk_tree_view_column_add_attribute (column, textRenderer, "markup", FS_LABEL);
 	
-	gtk_tree_view_column_set_resizable(column, TRUE);
-	gtk_tree_view_append_column(GTK_TREE_VIEW(feedview), column);
+	gtk_tree_view_column_set_resizable (column, TRUE);
+	gtk_tree_view_append_column (GTK_TREE_VIEW (treeview), column);
 	
-	g_object_set(textRenderer, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
+	g_object_set (textRenderer, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
 
-	/* And connect signals */
-	g_signal_connect(G_OBJECT(feedview), "row-activated", G_CALLBACK(ui_feedlist_row_activated_cb), NULL);
-	g_signal_connect(G_OBJECT(feedview), "key-press-event", G_CALLBACK(ui_feedlist_key_press_cb), NULL);
+	g_signal_connect (G_OBJECT (treeview), "row-activated", G_CALLBACK (ui_feedlist_row_activated_cb), NULL);
+	g_signal_connect (G_OBJECT (treeview), "key-press-event", G_CALLBACK (ui_feedlist_key_press_cb), NULL);
 
-	/* Setup the selection handler for the main view */
-	select = gtk_tree_view_get_selection(GTK_TREE_VIEW(feedview));
-	gtk_tree_selection_set_mode(select, GTK_SELECTION_SINGLE);
+	select = gtk_tree_view_get_selection (GTK_TREE_VIEW (treeview));
+	gtk_tree_selection_set_mode (select, GTK_SELECTION_SINGLE);
 	
 	g_signal_connect (G_OBJECT (select), "changed",
 	                  G_CALLBACK (ui_feedlist_selection_changed_cb),
@@ -247,7 +229,7 @@ void ui_feedlist_init(GtkWidget *feedview) {
 	ui_mainwindow_update_feed_menu (FALSE, FALSE);
 	ui_mainwindow_update_allitems_actions (FALSE, FALSE);
 
-	debug_exit("ui_feedlist_init");
+	debug_exit ("ui_feedlist_init");
 }
 
 static void
@@ -262,47 +244,48 @@ ui_feedlist_expand_parents (nodePtr parentNode)
 void
 ui_feedlist_select (nodePtr node)
 {
-	GtkWidget		*treeview;
+	GtkTreeView		*treeview;
 	GtkWidget		*focused;
+	GtkTreeModel		*model;
 
-	treeview = liferea_shell_lookup ("feedlist");
+	treeview = GTK_TREE_VIEW (liferea_shell_lookup ("feedlist"));
+	model = gtk_tree_view_get_model (treeview);
 	
 	/* To work around a GTK+ bug. If the treeview is not
 	   focused, setting the selected item will always select the
 	   first item! */
 	focused = gtk_window_get_focus (GTK_WINDOW (mainwindow));
-	gtk_window_set_focus (GTK_WINDOW (mainwindow), treeview);
+	gtk_window_set_focus (GTK_WINDOW (mainwindow), GTK_WIDGET (treeview));
 	
 	if (node && node != feedlist_get_root ()) {
-		GtkTreePath *path = gtk_tree_model_get_path (GTK_TREE_MODEL (feedstore), ui_node_to_iter(node->id));
+		GtkTreePath *path = gtk_tree_model_get_path (model, ui_node_to_iter(node->id));
 		
 		if (node->parent)
 			ui_feedlist_expand_parents (node->parent);
 
-		gtk_tree_view_scroll_to_cell (GTK_TREE_VIEW (treeview), path, NULL, FALSE, 0.0, 0.0);
-		gtk_tree_view_set_cursor (GTK_TREE_VIEW (treeview), path, NULL, FALSE);
+		gtk_tree_view_scroll_to_cell (treeview, path, NULL, FALSE, 0.0, 0.0);
+		gtk_tree_view_set_cursor (treeview, path, NULL, FALSE);
 		gtk_tree_path_free (path);
 
  	} else {
-		GtkTreeSelection *selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
+		GtkTreeSelection *selection = gtk_tree_view_get_selection (treeview);
 		gtk_tree_selection_unselect_all (selection);
 	}
 	
 	gtk_window_set_focus (GTK_WINDOW (mainwindow), focused);
 }
 
-/*------------------------------------------------------------------------------*/
-/* delete entry callbacks 							*/
-/*------------------------------------------------------------------------------*/
+/* delete feed callbacks */
 
-static void ui_feedlist_delete_response_cb(GtkDialog *dialog, gint response_id, gpointer user_data) {
-	
-	switch(response_id) {
+static void
+ui_feedlist_delete_response_cb (GtkDialog *dialog, gint response_id, gpointer user_data)
+{	
+	switch (response_id) {
 		case GTK_RESPONSE_YES:
-			feedlist_remove_node((nodePtr)user_data);
+			feedlist_remove_node ((nodePtr)user_data);
 			break;
 	}
-	gtk_widget_destroy(GTK_WIDGET(dialog));
+	gtk_widget_destroy (GTK_WIDGET (dialog));
 }
 
 void
