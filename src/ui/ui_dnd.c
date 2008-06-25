@@ -19,11 +19,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
-
-#include <string.h>		/* For strncmp */
+#include <string.h>		/* For strcmp */
 #include "common.h"
 #include "feed.h"
 #include "feedlist.h"
@@ -35,6 +31,20 @@
 #include "ui/ui_dnd.h"
 #include "fl_sources/node_source.h"
 
+/* 
+    Why does Liferea need such a complex DnD handling (for the feed list)?
+
+     -> Because parts of the feed list might be un-draggable.
+     -> Because drag source and target might be different node sources.
+     -> Because removal at drag source and insertion at drop target
+        must be atomic to avoid subscription losses.
+	
+    For simplicity the DnD code reuses the UI node removal and insertion
+    methods that asynchronously apply the actions at the node source.
+    
+    (FIXME: implement the last part)
+ */
+
 static gboolean (*old_feed_drop_possible)(GtkTreeDragDest   *drag_dest,
                                           GtkTreePath       *dest_path,
                                           GtkSelectionData  *selection_data);
@@ -43,9 +53,7 @@ static gboolean (*old_feed_drag_data_received)(GtkTreeDragDest *drag_dest,
                                                GtkTreePath *dest,
                                                GtkSelectionData *selection_data);
 
-/* ---------------------------------------------------------------------------- */
 /* GtkTreeDragSource/GtkTreeDragDest implementation				*/
-/* ---------------------------------------------------------------------------- */
 
 /** decides wether a feed cannot be dragged or not */
 static gboolean
