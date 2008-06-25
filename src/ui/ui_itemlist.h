@@ -62,6 +62,14 @@ void ui_itemlist_destroy (void);
  */
 gboolean ui_itemlist_contains_item(gulong id);
 
+/**
+ * Changes the sorting column (and direction).
+ *
+ * @param sortColumn	new sort column
+ * @param sortReversed	TRUE for ascending order
+ */
+void ui_itemlist_set_sort_column (gint sortColumn, gboolean sortReversed);
+
 void ui_itemlist_reset_tree_store(void);
 
 /**

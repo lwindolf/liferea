@@ -31,8 +31,6 @@
 #include "ui/ui_itemlist.h"
 #include "ui/ui_mainwindow.h"
 
-gint disableSortingSaving;		/* set in ui_itemlist.c to disable sort-changed callback */
-
 static struct itemView_priv {
 	gboolean	htmlOnly;		/**< TRUE if HTML only mode */
 	guint		mode;			/**< current item view mode */
@@ -101,38 +99,29 @@ void itemview_set_mode(guint mode) {
 void
 itemview_set_displayed_node (nodePtr node)
 {
-	GtkTreeModel	*model;
-
-	if (node != itemView_priv.node) {
-		itemView_priv.node = node;
-
-		/* 1. Perform UI item list preparations ... */
+	if (node == itemView_priv.node)
+		return;
 		
-		/* Free the old itemstore and create a new one; this is the only way to disable sorting */
-		ui_itemlist_reset_tree_store ();	 /* this also clears the itemlist. */
-		model = GTK_TREE_MODEL (ui_itemlist_get_tree_store ());
+	itemView_priv.node = node;
 
-		/* Disable attachment icon column (will be enabled when loading first item with an enclosure) */
-		ui_itemlist_enable_encicon_column (FALSE);
+	/* 1. Perform UI item list preparations ... */
 
-		if(node) {
-			ui_itemlist_enable_favicon_column (IS_FOLDER (node) || IS_VFOLDER (node));
+	/* Free the old itemstore and create a new one; this is the only way to disable sorting */
+	ui_itemlist_reset_tree_store ();	 /* this also clears the itemlist. */
 
-			/* c)  disable sorting for performance reasons, set sort column
-			       and enable sorting again */
-			disableSortingSaving++;
-			gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE(model), 
-	                                                      node->sortColumn, 
-	                                                      node->sortReversed?GTK_SORT_DESCENDING:GTK_SORT_ASCENDING);
-			disableSortingSaving--;
-		}
+	/* Disable attachment icon column (will be enabled when loading first item with an enclosure) */
+	ui_itemlist_enable_encicon_column (FALSE);
 
-		/* 2. Reset view state */
-		itemview_clear ();
-		
-		/* 3. And prepare HTML view */
-		htmlview_set_displayed_node (node);
+	if(node) {
+		ui_itemlist_enable_favicon_column (IS_FOLDER (node) || IS_VFOLDER (node));
+		ui_itemlist_set_sort_column (node->sortColumn, node->sortReversed);
 	}
+
+	/* 2. Reset view state */
+	itemview_clear ();
+
+	/* 3. And prepare HTML view */
+	htmlview_set_displayed_node (node);
 }
 
 void itemview_add_item(itemPtr item) {
