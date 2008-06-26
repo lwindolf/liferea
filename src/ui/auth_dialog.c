@@ -23,7 +23,7 @@
 #include <string.h> 
 #include "common.h"
 #include "subscription.h"
-#include "ui/ui_auth.h"
+#include "ui/auth_dialog.h"
 #include "ui/ui_dialog.h"
 
 static void auth_dialog_class_init	(AuthDialogClass *klass);

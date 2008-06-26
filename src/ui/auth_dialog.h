@@ -1,5 +1,5 @@
 /**
- * @file ui_auth.h authentication dialog
+ * @file auth_dialog.h  authentication support dialog
  *
  * Copyright (C) 2007 Lars Lindner <lars.lindner@gmail.com>
  *
