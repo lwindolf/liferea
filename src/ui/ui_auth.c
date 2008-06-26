@@ -1,7 +1,7 @@
 /**
  * @file ui_auth.c authentication dialog
  *
- * Copyright (C) 2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2008 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,19 +18,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
  
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
-
 #include <gtk/gtk.h>
 #include <libxml/uri.h>
 #include <string.h> 
 #include "common.h"
-#include "feed.h"
-#include "node.h"
-#include "conf.h"
-#include "update.h"
-#include "debug.h"
+#include "subscription.h"
 #include "ui/ui_auth.h"
 #include "ui/ui_dialog.h"
 
@@ -47,7 +39,7 @@ struct AuthDialogPrivate {
 	GtkWidget *username;
 	GtkWidget *password;	
 	
-	gint flags;	// FIXME?
+	gint flags;
 };
 
 static GObjectClass *parent_class = NULL;
