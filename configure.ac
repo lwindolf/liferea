@@ -207,6 +207,11 @@ if test "x$enable_xulrunner" = "xyes" ; then
       AC_SUBST([XULRUNNER_HOME])
       AC_SUBST(XULRUNNER_CFLAGS)
       AC_SUBST(XULRUNNER_LIBS)
+      
+      if test "x$XULRUNNER_HOME" = "x" ; then
+      	AC_MSG_RESULT([Fatal: XulRunner enabled, but XULRUNNER_HOME is empty!])
+      	exit 1
+      fi
 
       MOZILLA_LIB_ROOT=`$PKG_CONFIG --libs-only-L $XULRUNNER_PROVIDER | awk '{print $1}' |  cut -c 3-`
    
