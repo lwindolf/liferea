@@ -572,6 +572,7 @@ void
 feedlist_free (void)
 {
 	g_source_remove (autoUpdateTimer);
+	g_source_remove (feedlist_save_timer);
 	feedlist_foreach (feedlist_free_node);
 	node_free (rootNode);
 	rootNode = NULL;
