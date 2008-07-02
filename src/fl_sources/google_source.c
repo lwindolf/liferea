@@ -275,13 +275,21 @@ google_source_add_subscription(nodePtr node, nodePtr parent, subscriptionPtr sub
 static void
 google_source_remove_node(nodePtr node, nodePtr child) 
 { 
+	gchar           *source; 
+	GoogleSourcePtr gsource = node->data; 
 	if (child == node) { 
 		feedlist_node_removed(child);
 		return; 
 	}
-	g_assert(!googleSourceBlockEditHack);
-	google_source_edit_remove_subscription(google_source_get_root_from_node(node)->data, child->subscription->source); 
+
+	source = g_strdup(child->subscription->source);
+
 	feedlist_node_removed(child);
+
+	/* propagate the removal only if there aren't other copies */
+	if (!google_source_get_node_by_source(gsource, source)) 
+		google_source_edit_remove_subscription(gsource, source); 
+	g_free(source);
 }
 
 /* GUI callbacks */

@@ -196,6 +196,14 @@ nodePtr
 google_source_get_root_from_node(nodePtr node);
 
 /**
+ * Find a child node with the given source URL.
+ *
+ * @param gsource pointer to GoogleSource to access.
+ * @param source  the source URL to search
+ */
+nodePtr
+google_source_get_node_from_source(GoogleSourcePtr gsource, const gchar* source);
+/**
  * Tries to update the entire source quickly, by updating only those feeds
  * which are known to be updated. Suitable for g_timeout_add. This is an 
  * internal function.
