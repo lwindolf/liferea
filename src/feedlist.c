@@ -440,6 +440,7 @@ on_menu_allfeedsread (GtkWidget *widget, gpointer user_data)
 /* Feedlist saving. Do not call directly to avoid threading 
    problems. Use feedlist_schedule_save() instead! */
 static gboolean feedlist_schedule_save_cb(gpointer user_data) {
+	g_return_if_fail(NULL != rootNode);
 
 	/* step 1: request each node to save its state */
 	feedlist_foreach(node_save);
@@ -571,8 +572,11 @@ feedlist_free_node (nodePtr node)
 void
 feedlist_free (void)
 {
-	g_source_remove (autoUpdateTimer);
-	g_source_remove (feedlist_save_timer);
+	if (autoUpdateTimer)
+		g_source_remove (autoUpdateTimer);
+	if (feedlist_save_timer)
+		g_source_remove (feedlist_save_timer);
+		
 	feedlist_foreach (feedlist_free_node);
 	node_free (rootNode);
 	rootNode = NULL;
