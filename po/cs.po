@@ -4,9 +4,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 1.5.1\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2008-03-25 11:40+0100\n"
+"PO-Revision-Date: 2008-07-04 21:43+0100\n"
 "Last-Translator: Martin Picek <picek.martin@gnome-cesko.cz>\n"
-"Language-Team: Czech GNOME Translation Team\n"
+"Language-Team: Martin Picek <picek.martin@gnome-cesko.cz>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -69,7 +69,7 @@ msgstr "<b>text/plain</b>"
 
 #: ../liferea.glade.h:14
 msgid "<i>This option can cause significant delays when loading folders containing many feeds.</i>"
-msgstr "Tato volba může způsobit významné zpoždění při načítání složek obsahujících mnoho kanálů."
+msgstr "<small>Tato volba může způsobit významné zpoždění při načítání složek obsahujících mnoho kanálů.</small>"
 
 #: ../liferea.glade.h:15
 msgid "<span weight=\"bold\">Downloading Enclosures</span>"
@@ -341,11 +341,11 @@ msgstr "Nový odběr"
 #. Feed update interval hint in preference dialog.
 #: ../liferea.glade.h:88
 msgid "Note: <i>Please remember to set a reasonable refresh time. Usually it is a waste of bandwidth to poll feeds more often than each hour.</i>"
-msgstr "Poznámka: Nastavte prosím rozumný čas aktualizace. Obvykle je plýtváním aktualizovat kanály častěji než jednou za hodinu."
+msgstr "<small>Poznámka: Nastavte prosím rozumný čas aktualizace. Obvykle je plýtváním aktualizovat kanály častěji než jednou za hodinu.</small>"
 
 #: ../liferea.glade.h:89
 msgid "Note: <i>The username and password will be saved to your Liferea feedlist file without using encryption.</i>"
-msgstr "Poznámka: Uživatelské jméno a heslo budou uloženy v seznamu kanálů bez použití šifrování."
+msgstr "<small>Poznámka: Uživatelské jméno a heslo budou uloženy v seznamu kanálů bez použití šifrování.</small>"
 
 #: ../liferea.glade.h:90
 msgid "Note: Liferea will generate a feed subscription which is used to query the search engine results for the specified search string. You can keep this feed permanently and update it like any other subscription.  "
@@ -553,7 +553,7 @@ msgstr "_Automaticky stahovat všechny přílohy tohoto kanálu."
 
 #: ../liferea.glade.h:147
 msgid "_Browse"
-msgstr "P_rohlížet"
+msgstr "_Procházet"
 
 #: ../liferea.glade.h:148
 msgid "_Browser:"
@@ -601,7 +601,7 @@ msgstr "_Název složky:"
 
 #: ../liferea.glade.h:159
 msgid "_Hide read items."
-msgstr "S_krývat přečtené články."
+msgstr "Skrývat _přečtené články."
 
 #: ../liferea.glade.h:160
 msgid "_Limit cache to"
@@ -696,7 +696,7 @@ msgstr "_Neomezená vyrovnávací paměť"
 
 #: ../liferea.glade.h:183
 msgid "_Update all favicons now"
-msgstr "Akt_ualizovat všechny ikonky"
+msgstr "_Aktualizovat všechny ikonky"
 
 #: ../liferea.glade.h:184
 msgid "_Use global default update interval."
@@ -1215,11 +1215,11 @@ msgstr "Stav přečtení"
 
 #: ../src/rule.c:373
 msgid "is unread"
-msgstr "je přečtený"
+msgstr "je nepřečtený"
 
 #: ../src/rule.c:373
 msgid "is read"
-msgstr "je nepřečtený"
+msgstr "je přečtený"
 
 #: ../src/rule.c:374
 msgid "Flag status"
@@ -1819,7 +1819,7 @@ msgstr "Otevřít odkaz článku v nastaveném prohlížeči."
 
 #: ../src/ui/ui_mainwindow.c:1178
 msgid "_Work Offline"
-msgstr "_Odpojit od sítě"
+msgstr "O_dpojit od sítě"
 
 #: ../src/ui/ui_mainwindow.c:1178
 msgid "This option allows you to disable subscription updating."
@@ -1907,11 +1907,11 @@ msgstr "/_Odebírat…"
 
 #: ../src/ui/ui_popup.c:174
 msgid "/Toggle _Online|Offline"
-msgstr "/Přepnout přip_ojení k síti"
+msgstr "/_Přepnout připojení k síti"
 
 #: ../src/ui/ui_popup.c:175
 msgid "/_Update All"
-msgstr "/Akt_ualizovat vše"
+msgstr "/_Aktualizovat vše"
 
 #: ../src/ui/ui_popup.c:176
 msgid "/_Preferences"
@@ -1919,7 +1919,7 @@ msgstr "/_Nastavení"
 
 #: ../src/ui/ui_popup.c:178
 msgid "/_Show|Hide Window"
-msgstr "/Zobrazit nebo _skrýt okno"
+msgstr "/_Zobrazit nebo skrýt okno"
 
 #: ../src/ui/ui_popup.c:179
 msgid "/_Quit"
@@ -2233,7 +2233,7 @@ msgstr "Integrovat seznam vašich kanálů z Bloglines. Liferea bude brát vaše
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
 #: ../src/fl_sources/default_source.c:109
 msgid "feedlist.opml"
-msgstr "feedlist.opml"
+msgstr "feedlist_cs.opml"
 
 #: ../src/fl_sources/google_source.glade.h:1
 msgid "Add Google Reader Account"
