@@ -1481,28 +1481,25 @@ SWIG_Lua_dostring(lua_State *L, const char* str) {
 #define SWIGTYPE_p_GtkWidget swig_types[15]
 #define SWIGTYPE_p_LifereaHtmlView swig_types[16]
 #define SWIGTYPE_p_f_p_q_const__char_gpointer__void swig_types[17]
-#define SWIGTYPE_p_f_p_struct_node_q_const__p_q_const__struct_updateResult_guint32__void swig_types[18]
-#define SWIGTYPE_p_gpointer swig_types[19]
-#define SWIGTYPE_p_gulong swig_types[20]
-#define SWIGTYPE_p_int swig_types[21]
-#define SWIGTYPE_p_item swig_types[22]
-#define SWIGTYPE_p_itemSetPtr swig_types[23]
-#define SWIGTYPE_p_node swig_types[24]
-#define SWIGTYPE_p_nodeSource swig_types[25]
-#define SWIGTYPE_p_nodeType swig_types[26]
-#define SWIGTYPE_p_p_GdkPixbuf swig_types[27]
-#define SWIGTYPE_p_socialSite swig_types[28]
-#define SWIGTYPE_p_subscription swig_types[29]
-#define SWIGTYPE_p_subscriptionType swig_types[30]
-#define SWIGTYPE_p_time_t swig_types[31]
-#define SWIGTYPE_p_updateFlags swig_types[32]
-#define SWIGTYPE_p_updateJob swig_types[33]
-#define SWIGTYPE_p_updateOptionsPtr swig_types[34]
-#define SWIGTYPE_p_updateResult swig_types[35]
-#define SWIGTYPE_p_updateStatePtr swig_types[36]
-#define SWIGTYPE_p_xmlNodePtr swig_types[37]
-static swig_type_info *swig_types[39];
-static swig_module_info swig_module = {swig_types, 38, 0, 0, 0, 0};
+#define SWIGTYPE_p_gpointer swig_types[18]
+#define SWIGTYPE_p_gulong swig_types[19]
+#define SWIGTYPE_p_int swig_types[20]
+#define SWIGTYPE_p_item swig_types[21]
+#define SWIGTYPE_p_itemSetPtr swig_types[22]
+#define SWIGTYPE_p_node swig_types[23]
+#define SWIGTYPE_p_nodeSource swig_types[24]
+#define SWIGTYPE_p_nodeType swig_types[25]
+#define SWIGTYPE_p_p_GdkPixbuf swig_types[26]
+#define SWIGTYPE_p_socialSite swig_types[27]
+#define SWIGTYPE_p_subscription swig_types[28]
+#define SWIGTYPE_p_subscriptionType swig_types[29]
+#define SWIGTYPE_p_time_t swig_types[30]
+#define SWIGTYPE_p_updateJob swig_types[31]
+#define SWIGTYPE_p_updateOptionsPtr swig_types[32]
+#define SWIGTYPE_p_updateStatePtr swig_types[33]
+#define SWIGTYPE_p_xmlNodePtr swig_types[34]
+static swig_type_info *swig_types[36];
+static swig_module_info swig_module = {swig_types, 35, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -3386,46 +3383,6 @@ static int _wrap_node_save(lua_State* L) {
   }
   
   node_save(arg1);
-  SWIG_arg=0;
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_node_process_update_result(lua_State* L) {
-  int SWIG_arg = -1;
-  nodePtr arg1 = (nodePtr) 0 ;
-  struct updateResult *arg2 = (struct updateResult *) (struct updateResult *)0 ;
-  updateFlags arg3 ;
-  updateFlags *argp3 ;
-  
-  SWIG_check_num_args("node_process_update_result",3,3)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("node_process_update_result",1,"nodePtr");
-  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("node_process_update_result",2,"struct updateResult const *const");
-  if(!lua_isuserdata(L,3)) SWIG_fail_arg("node_process_update_result",3,"updateFlags");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_node,0))){
-    SWIG_fail_ptr("node_process_update_result",1,SWIGTYPE_p_node);
-  }
-  
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_updateResult,0))){
-    SWIG_fail_ptr("node_process_update_result",2,SWIGTYPE_p_updateResult);
-  }
-  
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,3,(void**)&argp3,SWIGTYPE_p_updateFlags,0))){
-    SWIG_fail_ptr("node_process_update_result",3,SWIGTYPE_p_updateFlags);
-  }
-  arg3 = *argp3;
-  
-  node_process_update_result(arg1,(struct updateResult const *)arg2,arg3);
   SWIG_arg=0;
   
   return SWIG_arg;
@@ -8157,40 +8114,6 @@ fail:
 }
 
 
-static int _wrap_subscription_update_with_callback(lua_State* L) {
-  int SWIG_arg = -1;
-  subscriptionPtr arg1 = (subscriptionPtr) 0 ;
-  subscription_update_cb arg2 = (subscription_update_cb) 0 ;
-  unsigned int arg3 ;
-  
-  SWIG_check_num_args("subscription_update_with_callback",3,3)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("subscription_update_with_callback",1,"subscriptionPtr");
-  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("subscription_update_with_callback",2,"subscription_update_cb");
-  if(!lua_isnumber(L,3)) SWIG_fail_arg("subscription_update_with_callback",3,"unsigned int");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
-    SWIG_fail_ptr("subscription_update_with_callback",1,SWIGTYPE_p_subscription);
-  }
-  
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_f_p_struct_node_q_const__p_q_const__struct_updateResult_guint32__void,0))){
-    SWIG_fail_ptr("subscription_update_with_callback",2,SWIGTYPE_p_f_p_struct_node_q_const__p_q_const__struct_updateResult_guint32__void);
-  }
-  
-  arg3 = (unsigned int)lua_tonumber(L, 3);
-  subscription_update_with_callback(arg1,arg2,arg3);
-  SWIG_arg=0;
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
 static int _wrap_subscription_auto_update(lua_State* L) {
   int SWIG_arg = -1;
   subscriptionPtr arg1 = (subscriptionPtr) 0 ;
@@ -8963,11 +8886,17 @@ fail:
 }
 
 
-static int _wrap_ui_itemlist_reset_tree_store(lua_State* L) {
+static int _wrap_ui_itemlist_set_sort_column(lua_State* L) {
   int SWIG_arg = -1;
+  int arg1 ;
+  int arg2 ;
   
-  SWIG_check_num_args("ui_itemlist_reset_tree_store",0,0)
-  ui_itemlist_reset_tree_store();
+  SWIG_check_num_args("ui_itemlist_set_sort_column",2,2)
+  if(!lua_isnumber(L,1)) SWIG_fail_arg("ui_itemlist_set_sort_column",1,"int");
+  if(!lua_isnumber(L,2)) SWIG_fail_arg("ui_itemlist_set_sort_column",2,"int");
+  arg1 = (int)lua_tonumber(L, 1);
+  arg2 = (int)lua_tonumber(L, 2);
+  ui_itemlist_set_sort_column(arg1,arg2);
   SWIG_arg=0;
   
   return SWIG_arg;
@@ -8980,14 +8909,13 @@ fail:
 }
 
 
-static int _wrap_ui_itemlist_get_tree_store(lua_State* L) {
+static int _wrap_ui_itemlist_reset_tree_store(lua_State* L) {
   int SWIG_arg = -1;
-  GtkTreeStore *result = 0 ;
   
-  SWIG_check_num_args("ui_itemlist_get_tree_store",0,0)
-  result = (GtkTreeStore *)ui_itemlist_get_tree_store();
+  SWIG_check_num_args("ui_itemlist_reset_tree_store",0,0)
+  ui_itemlist_reset_tree_store();
   SWIG_arg=0;
-  SWIG_NewPointerObj(L,result,SWIGTYPE_p_GtkTreeStore,0); SWIG_arg++; 
+  
   return SWIG_arg;
   
   if(0) SWIG_fail;
@@ -10754,7 +10682,6 @@ static const struct luaL_reg swig_commands[] = {
     { "node_free", _wrap_node_free},
     { "node_default_render", _wrap_node_default_render},
     { "node_save", _wrap_node_save},
-    { "node_process_update_result", _wrap_node_process_update_result},
     { "node_get_itemset", _wrap_node_get_itemset},
     { "node_render", _wrap_node_render},
     { "node_update_favicon", _wrap_node_update_favicon},
@@ -10842,7 +10769,6 @@ static const struct luaL_reg swig_commands[] = {
     { "subscription_export", _wrap_subscription_export},
     { "subscription_can_be_updated", _wrap_subscription_can_be_updated},
     { "subscription_update", _wrap_subscription_update},
-    { "subscription_update_with_callback", _wrap_subscription_update_with_callback},
     { "subscription_auto_update", _wrap_subscription_auto_update},
     { "subscription_get_update_interval", _wrap_subscription_get_update_interval},
     { "subscription_set_update_interval", _wrap_subscription_set_update_interval},
@@ -10870,8 +10796,8 @@ static const struct luaL_reg swig_commands[] = {
     { "ui_itemlist_new", _wrap_ui_itemlist_new},
     { "ui_itemlist_destroy", _wrap_ui_itemlist_destroy},
     { "ui_itemlist_contains_item", _wrap_ui_itemlist_contains_item},
+    { "ui_itemlist_set_sort_column", _wrap_ui_itemlist_set_sort_column},
     { "ui_itemlist_reset_tree_store", _wrap_ui_itemlist_reset_tree_store},
-    { "ui_itemlist_get_tree_store", _wrap_ui_itemlist_get_tree_store},
     { "ui_itemlist_prefocus", _wrap_ui_itemlist_prefocus},
     { "ui_itemlist_select", _wrap_ui_itemlist_select},
     { "ui_itemlist_add_item", _wrap_ui_itemlist_add_item},
@@ -11037,7 +10963,6 @@ static swig_type_info _swigt__p_GtkTreeViewColumn = {"_p_GtkTreeViewColumn", "Gt
 static swig_type_info _swigt__p_GtkWidget = {"_p_GtkWidget", "GtkWidget *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_LifereaHtmlView = {"_p_LifereaHtmlView", "LifereaHtmlView *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_f_p_q_const__char_gpointer__void = {"_p_f_p_q_const__char_gpointer__void", "fileChoosenCallback|void (*)(char const *,gpointer)", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_f_p_struct_node_q_const__p_q_const__struct_updateResult_guint32__void = {"_p_f_p_struct_node_q_const__p_q_const__struct_updateResult_guint32__void", "void (*)(struct node *,struct updateResult const *const,guint32)|subscription_update_cb", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gpointer = {"_p_gpointer", "gpointer *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gulong = {"_p_gulong", "gulong *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_int = {"_p_int", "int *", 0, 0, (void*)0, 0};
@@ -11051,10 +10976,8 @@ static swig_type_info _swigt__p_socialSite = {"_p_socialSite", "struct socialSit
 static swig_type_info _swigt__p_subscription = {"_p_subscription", "subscriptionPtr|struct subscription *|subscription *", 0, 0, (void*)&_wrap_class_subscription, 0};
 static swig_type_info _swigt__p_subscriptionType = {"_p_subscriptionType", "struct subscriptionType *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_time_t = {"_p_time_t", "time_t *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_updateFlags = {"_p_updateFlags", "updateFlags *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_updateJob = {"_p_updateJob", "struct updateJob *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_updateOptionsPtr = {"_p_updateOptionsPtr", "updateOptionsPtr *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_updateResult = {"_p_updateResult", "struct updateResult *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_updateStatePtr = {"_p_updateStatePtr", "updateStatePtr *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_xmlNodePtr = {"_p_xmlNodePtr", "xmlNodePtr *", 0, 0, (void*)0, 0};
 
@@ -11077,7 +11000,6 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_GtkWidget,
   &_swigt__p_LifereaHtmlView,
   &_swigt__p_f_p_q_const__char_gpointer__void,
-  &_swigt__p_f_p_struct_node_q_const__p_q_const__struct_updateResult_guint32__void,
   &_swigt__p_gpointer,
   &_swigt__p_gulong,
   &_swigt__p_int,
@@ -11091,10 +11013,8 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_subscription,
   &_swigt__p_subscriptionType,
   &_swigt__p_time_t,
-  &_swigt__p_updateFlags,
   &_swigt__p_updateJob,
   &_swigt__p_updateOptionsPtr,
-  &_swigt__p_updateResult,
   &_swigt__p_updateStatePtr,
   &_swigt__p_xmlNodePtr,
 };
@@ -11117,7 +11037,6 @@ static swig_cast_info _swigc__p_GtkTreeViewColumn[] = {  {&_swigt__p_GtkTreeView
 static swig_cast_info _swigc__p_GtkWidget[] = {  {&_swigt__p_GtkWidget, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_LifereaHtmlView[] = {  {&_swigt__p_LifereaHtmlView, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_f_p_q_const__char_gpointer__void[] = {  {&_swigt__p_f_p_q_const__char_gpointer__void, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_f_p_struct_node_q_const__p_q_const__struct_updateResult_guint32__void[] = {  {&_swigt__p_f_p_struct_node_q_const__p_q_const__struct_updateResult_guint32__void, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gpointer[] = {  {&_swigt__p_gpointer, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gulong[] = {  {&_swigt__p_gulong, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_int[] = {  {&_swigt__p_int, 0, 0, 0},{0, 0, 0, 0}};
@@ -11131,10 +11050,8 @@ static swig_cast_info _swigc__p_socialSite[] = {  {&_swigt__p_socialSite, 0, 0, 
 static swig_cast_info _swigc__p_subscription[] = {  {&_swigt__p_subscription, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_subscriptionType[] = {  {&_swigt__p_subscriptionType, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_time_t[] = {  {&_swigt__p_time_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_updateFlags[] = {  {&_swigt__p_updateFlags, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_updateJob[] = {  {&_swigt__p_updateJob, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_updateOptionsPtr[] = {  {&_swigt__p_updateOptionsPtr, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_updateResult[] = {  {&_swigt__p_updateResult, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_updateStatePtr[] = {  {&_swigt__p_updateStatePtr, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_xmlNodePtr[] = {  {&_swigt__p_xmlNodePtr, 0, 0, 0},{0, 0, 0, 0}};
 
@@ -11157,7 +11074,6 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_GtkWidget,
   _swigc__p_LifereaHtmlView,
   _swigc__p_f_p_q_const__char_gpointer__void,
-  _swigc__p_f_p_struct_node_q_const__p_q_const__struct_updateResult_guint32__void,
   _swigc__p_gpointer,
   _swigc__p_gulong,
   _swigc__p_int,
@@ -11171,10 +11087,8 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_subscription,
   _swigc__p_subscriptionType,
   _swigc__p_time_t,
-  _swigc__p_updateFlags,
   _swigc__p_updateJob,
   _swigc__p_updateOptionsPtr,
-  _swigc__p_updateResult,
   _swigc__p_updateStatePtr,
   _swigc__p_xmlNodePtr,
 };
