@@ -134,17 +134,6 @@ gboolean subscription_can_be_updated(subscriptionPtr subscription);
 void subscription_update (subscriptionPtr subscription, guint flags);
 
 /**
- * Like subscription_update() updates a given subscription, but
- * allows to specify another result processing callback then the
- * one defined by the node type of the subscription.
- *
- * @param subscription	the subscription
- * @param callback	the callback
- * @param flags		update flags
- */
-void subscription_update_with_callback (subscriptionPtr subscription, subscription_update_cb callback, guint flags);
-
-/**
  * Called when auto updating. Checks wether the subscription
  * needs to be updated (according to it's update interval) and
  * if necessary calls subscription_update().
