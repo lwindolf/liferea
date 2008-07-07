@@ -31,6 +31,7 @@
 
 static sqlite3	*db = NULL;
 static guint	stmtCounter = 0;
+static gboolean	transaction = FALSE;	/**< single transaction lock, prevents DB re-opening during transaction */
 
 /** 
  * To avoid loosing statements on crashes, close+reopen the DB from time to time,
@@ -92,7 +93,7 @@ redo:
 	if (statement->write)
 		stmtCounter++;
 		
-	if (stmtCounter > MAX_STATEMENTS_BEFORE_RECONNECT) {
+	if (!transaction && (stmtCounter > MAX_STATEMENTS_BEFORE_RECONNECT)) {
 		stmtCounter = 0;
 		debug1 (DEBUG_DB, "DB reconnect after %d DB write actions...\n", MAX_STATEMENTS_BEFORE_RECONNECT); 
 		db_deinit ();
@@ -1174,6 +1175,8 @@ db_begin_transaction (void)
 	res = sqlite3_exec (db, sql, NULL, NULL, &err);
 	if (SQLITE_OK != res) 
 		g_warning ("Transaction begin failed (%s) SQL: %s", err, sql);
+	else
+		transaction = TRUE;
 	sqlite3_free (sql);
 	sqlite3_free (err);
 }
@@ -1188,6 +1191,8 @@ db_end_transaction (void)
 	res = sqlite3_exec (db, sql, NULL, NULL, &err);
 	if (SQLITE_OK != res) 
 		g_warning ("Transaction end failed (%s) SQL: %s", err, sql);
+	else
+		transaction = FALSE;
 	sqlite3_free (sql);
 	sqlite3_free (err);
 }
