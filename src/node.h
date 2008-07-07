@@ -1,5 +1,5 @@
 /**
- * @file node.h  feed list node interface
+ * @file node.h  hierarchic feed list node interface
  * 
  * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
@@ -291,16 +291,6 @@ gchar * node_default_render(nodePtr node);
  * @param node	the node
  */
 void node_save(nodePtr node);
-
-/**
- * Passes the result of a completed update request to the node
- * type specific processing callback.
- *
- * @param node		the node
- * @param result	the update request result
- * @param flags		update result processing flags
- */
-void node_process_update_result (nodePtr node, const struct updateResult * const result, updateFlags flags);
 
 /**
  * Resets the update interval for a given node.
