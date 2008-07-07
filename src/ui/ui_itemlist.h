@@ -73,13 +73,6 @@ void ui_itemlist_set_sort_column (gint sortColumn, gboolean sortReversed);
 void ui_itemlist_reset_tree_store(void);
 
 /**
- * This returns the GtkTreeStore that is internal to the
- * ui_itemlist. This is currently used for setting and getting the
- * sort column.
- */
-GtkTreeStore * ui_itemlist_get_tree_store(void);
-
-/**
  * Unselect all items in the list and scroll to top. This is typically
  * called when changing feed.
  */
