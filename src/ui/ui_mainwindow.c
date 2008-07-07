@@ -900,7 +900,8 @@ ui_mainwindow_set_important_status_bar (const char *format, ...)
 	va_end (args);
 
 	statusBarLocked = FALSE;
-	g_source_remove (statusBarLockTimer);
+	if (statusBarLockTimer)
+		g_source_remove (statusBarLockTimer);
 	
 	/* URL hover messages are reset with an empty string, so 
 	   we must locking the status bar on empty strings! */
