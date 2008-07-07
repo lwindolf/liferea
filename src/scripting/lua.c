@@ -28,13 +28,15 @@
 
 static lua_State *luaVM = NULL;
 
-static void lua_init(void) {
+static void
+lua_init (void)
+{
 	int i;
 
-	luaVM = lua_open();
+	luaVM = lua_open ();
 	
 	#if defined(LUA_VERSION_NUM) && LUA_VERSION_NUM >= 501
-	luaL_openlibs(luaVM);	/* LUA 5.1 allows loading all default modules... */
+	luaL_openlibs (luaVM);	/* LUA 5.1 allows loading all default modules... */
 	#endif
 	
 	luaL_reg lualibs[] = {
@@ -54,32 +56,37 @@ static void lua_init(void) {
 		{NULL,		NULL}
 	};
 	
-	for(i=0; lualibs[i].func != 0 ; i++) {
-		lua_pushcfunction(luaVM, lualibs[i].func);
-		lua_pushstring(luaVM, lualibs[i].name);
-		lua_call(luaVM, 1, 0);
+	for (i=0; lualibs[i].func != 0 ; i++) {
+		lua_pushcfunction (luaVM, lualibs[i].func);
+		lua_pushstring (luaVM, lualibs[i].name);
+		lua_call (luaVM, 1, 0);
 	}
 }
 
-static void lua_run_cmd(const gchar *cmd) {
+static void
+lua_run_cmd (const gchar *cmd)
+{
 	#if defined(LUA_VERSION_NUM) && LUA_VERSION_NUM >= 501
-	luaL_dostring(luaVM, cmd);
+	luaL_dostring (luaVM, cmd);
 	#else
-	lua_dostring(luaVM, cmd);
+	lua_dostring (luaVM, cmd);
 	#endif
 }
 
-static void lua_run_script(const gchar *filename) {
+static void
+lua_run_script (const gchar *filename)
+{
 	#if defined(LUA_VERSION_NUM) && LUA_VERSION_NUM >=501
-	luaL_dofile(luaVM, filename);
+	luaL_dofile (luaVM, filename);
 	#else
-	lua_dofile(luaVM, filename);
+	lua_dofile (luaVM, filename);
 	#endif
 }
 
-static void lua_deinit(void) {
-
-	lua_close(luaVM);
+static void
+lua_deinit (void)
+{
+	lua_close (luaVM);
 }
 
 static struct scriptSupportImpl ssi = {
