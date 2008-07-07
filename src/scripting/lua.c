@@ -1,7 +1,7 @@
 /**
  * @file script.c LUA scripting plugin implementation
  *
- * Copyright (C) 2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2006-2008 Lars Lindner <lars.lindner@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -33,18 +33,23 @@ static void lua_init(void) {
 
 	luaVM = lua_open();
 	
+	#if defined(LUA_VERSION_NUM) && LUA_VERSION_NUM >= 501
+	luaL_openlibs(luaVM);	/* LUA 5.1 allows loading all default modules... */
+	#endif
+	
 	luaL_reg lualibs[] = {
+		#if defined(LUA_VERSION_NUM) && LUA_VERSION_NUM >= 501
+		#else
+		/* LUA 5.0 forces us to load all modules ourselves... */
 		{"base",	luaopen_base},
 		{"table",	luaopen_table},
 		{"io",		luaopen_io}, 
 		{"string",	luaopen_string},
 		{"math",	luaopen_math},
 		{"debug",	luaopen_debug},
-		#if defined(LUA_VERSION_NUM) && LUA_VERSION_NUM >= 501
-		{"package", luaopen_package},
-		#else
-		{"package", luaopen_loadlib},
+		{"package",	luaopen_loadlib},
 		#endif
+		/* This loads swig generated Liferea module... */
 		{SWIG_name,	SWIG_init},
 		{NULL,		NULL}
 	};
