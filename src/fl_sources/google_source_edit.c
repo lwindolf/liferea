@@ -236,24 +236,40 @@ google_source_api_edit_tag(GoogleSourceActionPtr action, updateRequestPtr reques
 {
 	update_request_set_source(request, GOOGLE_READER_EDIT_TAG_URL); 
 
+	gchar* prefix = "feed" ; 
 	gchar* s_escaped = g_uri_escape_string (action->feedUrl, NULL, TRUE);
 	gchar* a_escaped = NULL ;
 	gchar* i_escaped = g_uri_escape_string (action->guid, NULL, TRUE);
 	gchar* postdata = NULL ;
 
+	/*
+	 * If the source of the item is a feed then the source *id* will be of
+	 * the form tag:google.com,2005:reader/feed/http://foo.com/bar
+	 * If the item is a shared link it is of the form
+	 * tag:google.com,2005:reader/user/<sharer's-id>/source/com.google/link
+	 * It is possible that there are items other thank link that has
+	 * the ../user/.. id. The GR API requires the strings after ..:reader/
+	 * while GoogleSourceAction only gives me after :reader/feed/ (or 
+	 * :reader/user/ as the case might be). I therefore need to guess
+	 * the prefix ('feed/' or 'user/') from just this information. 
+	 */
+
+	if (strstr(action->feedUrl, "://") == NULL) 
+		prefix = "user" ;
+
 	if (action->actionType == EDIT_ACTION_MARK_UNREAD) {
 		a_escaped = g_uri_escape_string (GOOGLE_READER_TAG_KEPT_UNREAD, NULL, TRUE);
 		gchar *r_escaped = g_uri_escape_string (GOOGLE_READER_TAG_READ, NULL, TRUE);
-		postdata = g_strdup_printf (GOOGLE_READER_EDIT_TAG_AR_TAG, i_escaped, s_escaped, a_escaped, r_escaped, token);
+		postdata = g_strdup_printf (GOOGLE_READER_EDIT_TAG_AR_TAG, i_escaped, prefix, s_escaped, a_escaped, r_escaped, token);
 		g_free (r_escaped);
 	}
 	else if (action->actionType == EDIT_ACTION_MARK_READ) { 
 		a_escaped = g_uri_escape_string (GOOGLE_READER_TAG_READ, NULL, TRUE);
-		postdata = g_strdup_printf (GOOGLE_READER_EDIT_TAG_ADD_TAG, i_escaped, s_escaped, a_escaped, token);
+		postdata = g_strdup_printf (GOOGLE_READER_EDIT_TAG_ADD_TAG, i_escaped, prefix, s_escaped, a_escaped, token);
 	}
 	else if (action->actionType == EDIT_ACTION_TRACKING_MARK_UNREAD) {
 		a_escaped = g_uri_escape_string (GOOGLE_READER_TAG_TRACKING_KEPT_UNREAD, NULL, TRUE);
-		postdata = g_strdup_printf (GOOGLE_READER_EDIT_TAG_ADD_TAG, i_escaped, s_escaped, a_escaped, token);
+		postdata = g_strdup_printf (GOOGLE_READER_EDIT_TAG_ADD_TAG, i_escaped, prefix, s_escaped, a_escaped, token);
 	}  else g_assert(FALSE);
 	
 	g_free (s_escaped);
@@ -280,7 +296,7 @@ google_source_edit_token_cb (const struct updateResult * const result, gpointer 
 	GoogleSourceActionPtr          action;
 	updateRequestPtr request; 
 
-	if (result->returncode != 0) { 
+	if (result->returncode != 0 || result->data == NULL) { 
 		/* What is the behaviour that should go here? */
 		return;
 	}

@@ -107,9 +107,10 @@ google_source_set_orig_source(const xmlNodePtr node, gpointer userdata)
 	xmlChar*   value = xmlNodeGetContent(node);
 	
 	debug1(DEBUG_UPDATE, "GoogleSource: Got %s as id while updating", value);
-	const gchar*     prefix = "tag:google.com,2005:reader/feed/";
-	if (g_str_has_prefix(value, prefix)) {
-		metadata_list_set(&item->metadata, "GoogleBroadcastOrigFeed", value + strlen(prefix));
+	const gchar*     prefix1 = "tag:google.com,2005:reader/feed/";
+	const gchar*     prefix2 = "tag:google.com,2005:reader/user/";
+	if (g_str_has_prefix(value, prefix1) || g_str_has_prefix(value, prefix2)) {
+		metadata_list_set(&item->metadata, "GoogleBroadcastOrigFeed", value + strlen(prefix1));
 		db_item_update(item);
 	}
 	xmlFree(value);

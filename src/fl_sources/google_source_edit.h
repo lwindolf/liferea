@@ -37,21 +37,35 @@ typedef struct GoogleSourceAction {
 	 * A MANDATORY feed url to containing the item, or the url of the 
 	 * subscription to edit. 
 	 */
-	gchar* feedUrl;	
+	gchar* feedUrl;
+
+	/**
+	 * The source type. Currently known types are "feed" and "user".
+	 * "user" sources are used, for example, for items that are links (as
+	 * opposed to posts) in broadcast-friends. The unique id of the source
+	 * is of the form <feedUrlType>/<feedUrl>.
+	 */
+	gchar* feedUrlType; 
 
 	/**
 	 * A callback function on completion of the edit.
 	 */
 	void (*callback) (GoogleSourcePtr gsource, struct GoogleSourceAction* edit, gboolean success);
-	enum { 
-		EDIT_ACTION_MARK_READ,
-		EDIT_ACTION_MARK_UNREAD,
-		EDIT_ACTION_TRACKING_MARK_UNREAD, /**< every UNREAD request, should be followed by tracking-kept-unread */
-		EDIT_ACTION_ADD_SUBSCRIPTION,
-		EDIT_ACTION_REMOVE_SUBSCRIPTION
-	} actionType;
-		
+
+	/**
+	 * The type of this GoogleSourceAction.
+	 */
+	int actionType ; 
 } *GoogleSourceActionPtr ; 
+
+enum { 
+	EDIT_ACTION_MARK_READ,
+	EDIT_ACTION_MARK_UNREAD,
+	EDIT_ACTION_TRACKING_MARK_UNREAD, /**< every UNREAD request, should be followed by tracking-kept-unread */
+	EDIT_ACTION_ADD_SUBSCRIPTION,
+	EDIT_ACTION_REMOVE_SUBSCRIPTION
+} ;
+		
 
 typedef struct GoogleSourceAction* editPtr ;
 /**

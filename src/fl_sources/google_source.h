@@ -134,25 +134,37 @@ enum  {
 /**
  * Postdata for adding a tag when using GOOGLE_READER_EDIT_TAG_URL.
  * @param i The guid of the item.
+ * @param prefix The prefix to 's'. For normal feeds this will be "feed", for
+ *          links etc, this should be "user".
  * @param s The URL of the subscription containing the item. (Note that the 
  *          following string adds the "feed/" prefix to this.)
  * @param a The tag to add. 
  * @param T a token obtained using GOOGLE_READER_TOKEN_URL
  */
-#define GOOGLE_READER_EDIT_TAG_ADD_TAG "i=%s&s=feed%%2F%s&a=%s&ac=edit-tags&T=%s&async=true"
-
+#define GOOGLE_READER_EDIT_TAG_ADD_TAG "i=%s&s=%s%%2F%s&a=%s&ac=edit-tags&T=%s&async=true"
 
 /**
  * Postdata for adding a tag, and removing another tag at the same time, 
  * when using GOOGLE_READER_EDIT_TAG_URL.
  * @param i The guid of the item.
+ * @param prefix The prefix to 's'. @see GOOGLE_READER_EDIT_TAG_ADD_TAG
  * @param s The URL of the subscription containing the item. (Note that the 
- *          following string adds the "feed/" prefix to this.)
+ *          final value of s is feed + "/" + this string)
  * @param a The tag to add. 
  * @param r The tag to remove
  * @param T a token obtained using GOOGLE_READER_TOKEN_URL
  */
-#define GOOGLE_READER_EDIT_TAG_AR_TAG "i=%s&s=feed%%2F%s&a=%s&r=%s&ac=edit-tags&T=%s&async=true"
+#define GOOGLE_READER_EDIT_TAG_AR_TAG "i=%s&s=%s%%2F%s&a=%s&r=%s&ac=edit-tags&T=%s&async=true"
+
+/**
+ * Postdata for adding a tag, and removing another tag at the same time, for a 
+ * _link_ item, when using GOOGLE_READER_EDIT_TAG_URL
+ * @param i The guid of the link (as provided by google)
+ * @param a The tag to add
+ * @param r The tag to remove
+ * @param T a token obtained using GOOGLE_READER_TOKEN_URL
+ */
+#define GOOGLE_READER_EDIT_TAG_ADD_TAG_FOR_LINK "i=%s&s=user%2F-%2Fsource%2Fcom.google%2Flink&a=%s&r=%s&ac=edit-tags&T=%s&async=true"
 
 
 
