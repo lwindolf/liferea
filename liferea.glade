@@ -5279,9 +5279,7 @@ and many more...
 Code from other projects
 
 Anders Carlsson (tray icon support)
-Philippe Martin, Brion Vibber (favicon support)
-Jonathan Blandford (GtkTreeModelFilter)
-Kristian Rietveld (GtkTreeModelFilter)</property>
+Philippe Martin, Brion Vibber (favicon support)</property>
     <property name="documenters">Lars Lindner</property>
     <property name="translator_credits">Bart Kreska &lt;bartkreska@users.sourceforge.net&gt;
 Dario Conigliaro &lt;djdas@djdas.net&gt;
@@ -5292,6 +5290,7 @@ Takeshi AIHANA &lt;takeshi.aihana@gmail.com&gt;
 Vincent Lefèvre &lt;vincent@vinc17.org&gt;
 Oleg Maloglovets &lt;oleg@koleso-auto.ru&gt;
 Og Maciel &lt;ogmaciel@ubuntu.com&gt;
+Martin Picek &lt;picek.martin@gnome-cesko.cz&gt;
 </property>
     <child internal-child="vbox">
       <widget class="GtkVBox" id="dialog-vbox23">
