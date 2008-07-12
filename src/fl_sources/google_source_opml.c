@@ -330,7 +330,7 @@ google_source_quick_update_timeout (gpointer nodeId)
 
 	/* also use this timeout to start/continue the GoogleSourceAction 
 	 * queue which could have got stalled due to an error */
-	google_source_edit_process() ;
+	google_source_edit_process(node->data) ;
 
 	return google_source_quick_update(node->data);
 }
