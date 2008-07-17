@@ -134,7 +134,7 @@
   </td>
   <td width="99%">
    <xsl:choose>
-    <xsl:when test="contains(.,'mp3') or contains(.,'ogg')">
+    <xsl:when test="contains(.,'mp3')">
       <span class="xspf_player">
         <xsl:variable name="song">
           <xsl:call-template name="substring-after-last">

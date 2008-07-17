@@ -7,6 +7,9 @@
 	  solves the problem that the "os" module isn't
 	  loaded on some setups.
 	* Fixes autocommit warning during migration.
+	* Fixes SF #2020621: Can't play Ogg/Vorbis audio
+	  enclosures. Now doesn't present XSPF for those.
+	  (reported by Nick Daly)
 	* Update of French translation (Vincent Lefevre)
 	* Update of Czech translation (Martin Picek)
 
