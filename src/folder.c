@@ -110,6 +110,7 @@ folder_remove (nodePtr node)
 nodeTypePtr folder_get_node_type(void) { 
 
 	static struct nodeType fnti = {
+		NODE_CAPABILITY_SHOW_ITEM_FAVICONS |
 		NODE_CAPABILITY_ADD_CHILDS |
 		NODE_CAPABILITY_REMOVE_CHILDS |
 		NODE_CAPABILITY_SUBFOLDERS |

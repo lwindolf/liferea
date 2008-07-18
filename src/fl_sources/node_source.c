@@ -366,6 +366,7 @@ node_source_get_node_type (void)
 		nodeType->id			= "source";
 		nodeType->icon			= icons[ICON_DEFAULT];
 		nodeType->capabilities		= NODE_CAPABILITY_SHOW_UNREAD_COUNT |
+						  NODE_CAPABILITY_SHOW_ITEM_FAVICONS |
 						  NODE_CAPABILITY_UPDATE_CHILDS |
 						  NODE_CAPABILITY_UPDATE |
 						  NODE_CAPABILITY_ADD_CHILDS |
