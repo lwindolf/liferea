@@ -29,6 +29,8 @@ src/favicon.c
 src/favicon.h
 src/feed.c
 src/feed.h
+src/feed_parser.c
+src/feed_parser.h
 src/feedlist.c
 src/feedlist.h
 src/folder.c
