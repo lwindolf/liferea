@@ -1,5 +1,5 @@
 /**
- * @file folder.c  feed list callbacks for folders
+ * @file folder.c  sub folders for hierarchic node sources
  * 
  * Copyright (C) 2006-2008 Lars Lindner <lars.lindner@gmail.com>
  *
@@ -19,7 +19,6 @@
  */
 
 #include "common.h"
-#include "conf.h"
 #include "debug.h"
 #include "export.h"
 #include "feedlist.h"
@@ -30,23 +29,27 @@
 #include "ui/ui_folder.h"
 #include "ui/ui_node.h"
 
-static void folder_merge_child_items(nodePtr node, gpointer user_data) {
+static void
+folder_merge_child_items (nodePtr node, gpointer user_data)
+{
 	itemSetPtr	folderItemSet = (itemSetPtr)user_data;
 	itemSetPtr	nodeItemSet;
 
-	nodeItemSet = node_get_itemset(node);
-	folderItemSet->ids = g_list_concat(folderItemSet->ids, nodeItemSet->ids);
+	nodeItemSet = node_get_itemset (node);
+	folderItemSet->ids = g_list_concat (folderItemSet->ids, nodeItemSet->ids);
 	nodeItemSet->ids = NULL;
-	itemset_free(nodeItemSet);
+	itemset_free (nodeItemSet);
 }
 
-static itemSetPtr folder_load(nodePtr node) {
+static itemSetPtr
+folder_load (nodePtr node)
+{
 	itemSetPtr	itemSet;
 	
-	itemSet = g_new0(struct itemSet, 1);
+	itemSet = g_new0 (struct itemSet, 1);
 	itemSet->nodeId = node->id;
 
-	node_foreach_child_data(node, folder_merge_child_items, itemSet);
+	node_foreach_child_data (node, folder_merge_child_items, itemSet);
 	return itemSet;
 }
 
@@ -65,23 +68,25 @@ folder_import (nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean trusted)
 	}
 }
 
-static void folder_export(nodePtr node, xmlNodePtr cur, gboolean trusted) {
-	
-	if(trusted) {
-		if(ui_node_is_expanded(node->id))
-			xmlNewProp(cur, BAD_CAST"expanded", BAD_CAST"true");
+static void
+folder_export (nodePtr node, xmlNodePtr cur, gboolean trusted)
+{	
+	if (trusted) {
+		if (ui_node_is_expanded (node->id))
+			xmlNewProp (cur, BAD_CAST"expanded", BAD_CAST"true");
 		else
-			xmlNewProp(cur, BAD_CAST"collapsed", BAD_CAST"true");
+			xmlNewProp (cur, BAD_CAST"collapsed", BAD_CAST"true");
 	}
 
-	debug1(DEBUG_CACHE, "adding folder: title=%s", node_get_title(node));
-	export_node_children(node, cur, trusted);	
+	debug1 (DEBUG_CACHE, "adding folder: title=%s", node_get_title(node));
+	export_node_children (node, cur, trusted);	
 }
 
-static void folder_save(nodePtr node) {
-	
+static void
+folder_save (nodePtr node)
+{	
 	/* A folder has no own state but must give all childs the chance to save theirs */
-	node_foreach_child(node, node_save);
+	node_foreach_child (node, node_save);
 }
 
 static void
@@ -93,10 +98,11 @@ folder_add_child_unread_count (nodePtr node, gpointer user_data)
 		*unreadCount += node->unreadCount;
 }
 
-static void folder_update_unread_count(nodePtr node) {
-
+static void
+folder_update_unread_count(nodePtr node)
+{
 	node->unreadCount = 0;
-	node_foreach_child_data(node, folder_add_child_unread_count, &node->unreadCount);
+	node_foreach_child_data (node, folder_add_child_unread_count, &node->unreadCount);
 }
 
 static void
@@ -107,8 +113,9 @@ folder_remove (nodePtr node)
 	g_assert (!node->children);
 }
 
-nodeTypePtr folder_get_node_type(void) { 
-
+nodeTypePtr
+folder_get_node_type (void)
+{
 	static struct nodeType fnti = {
 		NODE_CAPABILITY_SHOW_ITEM_FAVICONS |
 		NODE_CAPABILITY_ADD_CHILDS |
@@ -134,8 +141,9 @@ nodeTypePtr folder_get_node_type(void) {
 	return &fnti; 
 }
 
-nodeTypePtr root_get_node_type(void) { 
-
+nodeTypePtr
+root_get_node_type (void)
+{
 	/* the root node is identical to the folder type,
 	   just a different node type... */
 	static struct nodeType rnti = {
