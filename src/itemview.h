@@ -1,7 +1,7 @@
 /**
- * @file itemview.h    item display interface abstraction
+ * @file itemview.h  viewing feed content in different presentation modes
  * 
- * Copyright (C) 2006-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2008 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

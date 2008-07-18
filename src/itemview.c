@@ -1,7 +1,7 @@
 /**
- * @file itemview.c    item display interface abstraction
+ * @file itemview.c  viewing feed content in different presentation modes
  * 
- * Copyright (C) 2006-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2008 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -113,7 +113,7 @@ itemview_set_displayed_node (nodePtr node)
 	ui_itemlist_enable_encicon_column (FALSE);
 
 	if(node) {
-		ui_itemlist_enable_favicon_column (IS_FOLDER (node) || IS_VFOLDER (node));
+		ui_itemlist_enable_favicon_column (NODE_TYPE (node)->capabilities & NODE_CAPABILITY_HAS_CHILDS);
 		ui_itemlist_set_sort_column (node->sortColumn, node->sortReversed);
 	}
 
