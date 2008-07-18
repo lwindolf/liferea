@@ -73,13 +73,13 @@ void ui_node_add_empty_node(GtkTreeIter *parent);
 void ui_node_remove_empty_node(GtkTreeIter *parent);
 
 /**
- * Determines the expansion state of a folder.
+ * Determines the expansion state of a feed list tree node.
  *
- * @param nodeId	the node id of the folder
+ * @param nodeId	the node id
  *
- * @returns TRUE if the folder is expanded
+ * @returns TRUE if the node is expanded
  */
-gboolean ui_node_is_folder_expanded(const gchar *nodeId);
+gboolean ui_node_is_expanded(const gchar *nodeId);
 
 /**
  * Checks if the given folder node has children 

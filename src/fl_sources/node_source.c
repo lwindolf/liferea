@@ -154,10 +154,19 @@ node_source_export (nodePtr node, xmlNodePtr xml, gboolean trusted)
 	debug_enter ("node_source_export");
 
 	debug2 (DEBUG_CACHE, "node source export for node %s, id=%s", node->title, NODE_SOURCE_TYPE (node)->id);
+	
+	/* If the node source type was loaded using the dummy node source
+	   type we need to restore the original node source type id from
+	   temporarily saved into node->data */
 	if (!strcmp (NODE_SOURCE_TYPE (node)->id, NODE_SOURCE_TYPE_DUMMY_ID))
 		xmlNewProp (xml, BAD_CAST"sourceType", BAD_CAST (node->data));
 	else
 		xmlNewProp (xml, BAD_CAST"sourceType", BAD_CAST (NODE_SOURCE_TYPE(node)->id));
+		
+	if (ui_node_is_expanded (node->id))
+		xmlNewProp (xml, BAD_CAST"expanded", BAD_CAST"true");
+	else
+		xmlNewProp (xml, BAD_CAST"collapsed", BAD_CAST"true");
 		
 	subscription_export (node->subscription, xml, trusted);
 

@@ -69,16 +69,15 @@ ui_node_add_iter (const gchar *nodeId, GtkTreeIter *iter)
 /* Expansion & Collapsing */
 
 gboolean
-ui_node_is_folder_expanded (const gchar *nodeId)
+ui_node_is_expanded (const gchar *nodeId)
 {
-	GtkTreePath	*path;
 	GtkTreeIter	*iter;
 	gboolean 	expanded = FALSE;
 
 	iter = ui_node_to_iter (nodeId);
 	if (iter) {
 		GtkTreeView *treeview = GTK_TREE_VIEW (liferea_shell_lookup ("feedlist"));
-		path = gtk_tree_model_get_path (gtk_tree_view_get_model (treeview), iter);
+		GtkTreePath *path = gtk_tree_model_get_path (gtk_tree_view_get_model (treeview), iter);
 		expanded = gtk_tree_view_row_expanded (treeview, path);
 		gtk_tree_path_free (path);
 	}
@@ -222,7 +221,7 @@ ui_node_remove_node (nodePtr node)
 		return;	/* must be tolerant because of DnD handling */
 
 	if (node->parent)
-		parentExpanded = ui_node_is_folder_expanded (node->parent->id); /* If the folder becomes empty, the folder would collapse */
+		parentExpanded = ui_node_is_expanded (node->parent->id); /* If the folder becomes empty, the folder would collapse */
 	
 	gtk_tree_store_remove (feedstore, iter);
 	g_hash_table_remove (flIterHash, node->id);

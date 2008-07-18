@@ -68,7 +68,7 @@ folder_import (nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean trusted)
 static void folder_export(nodePtr node, xmlNodePtr cur, gboolean trusted) {
 	
 	if(trusted) {
-		if(ui_node_is_folder_expanded(node->id))
+		if(ui_node_is_expanded(node->id))
 			xmlNewProp(cur, BAD_CAST"expanded", BAD_CAST"true");
 		else
 			xmlNewProp(cur, BAD_CAST"collapsed", BAD_CAST"true");

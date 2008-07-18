@@ -4,7 +4,10 @@
 
 	* Raises glib dependency to 2.16
 	* Improvements to Google Reader support (Arnold Noronha)
-
+	* Fixes the favicon column display for Google Reader
+	  and Bloglines subscriptions.
+	* Fixes expansion state saving for Google Reader and
+	  Bloglines subscriptions.
 
 2008-06-18  Lars Lindner  <lars.lindner@gmail.com>
 
