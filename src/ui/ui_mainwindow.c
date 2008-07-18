@@ -716,7 +716,9 @@ ui_mainwindow_init (int mainwindowState)
 				   "it might even kill your cat!</p>"
 				   "<p>New/Improved Functionality:"
 				   "<ul>"
-				   "   <li>Google Reader synchronization improved (but still in work).</li>"
+				   "   <li>Google Reader synchronization is now feature complete.</li>"
+				   "   <li>Google Reader/Bloglines node expansion saving fixed.</li>"
+				   "   <li>Google Reader/Bloglines nodes now have the favicon column enabled.</li>"
 				   "</ul>"
 				   "</p>");
 	g_string_append(buffer,    "</div>");
