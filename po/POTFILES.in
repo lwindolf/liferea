@@ -81,12 +81,14 @@ src/ui/rule_editor.c
 src/ui/rule_editor.h
 src/ui/search_dialog.c
 src/ui/search_dialog.h
+src/ui/search_engine_dialog.c
+src/ui/search_engine_dialog.h
 src/ui/search_folder_dialog.h
 src/ui/search_folder_dialog.c
 src/ui/ui_attention.c
 src/ui/ui_attention.h
-src/ui/ui_auth.c
-src/ui/ui_auth.h
+src/ui/auth_dialog.c
+src/ui/auth_dialog.h
 src/ui/ui_dialog.c
 src/ui/ui_dialog.h
 src/ui/ui_dnd.c
