@@ -1,7 +1,7 @@
 /**
- * @file social.c social networking integration
+ * @file social.c  social networking integration
  * 
- * Copyright (C) 2006-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2008 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,6 +48,13 @@ social_register_bookmark_site (gchar *name, gchar *url, gboolean title, gboolean
 	newSite->titleFirst = titleFirst;
 
 	bookmarkSites = g_slist_append (bookmarkSites, newSite);
+}
+
+/** For compatibility with 1.4 scripts */
+void
+social_register_site (gchar *name, gchar *url, gboolean title, gboolean titleFirst)
+{
+	social_register_bookmark_site (name, url, title, titleFirst);
 }
 
 void

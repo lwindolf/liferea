@@ -6514,6 +6514,34 @@ fail:
 }
 
 
+static int _wrap_social_register_site(lua_State* L) {
+  int SWIG_arg = 0;
+  char *arg1 = (char *) 0 ;
+  char *arg2 = (char *) 0 ;
+  int arg3 ;
+  int arg4 ;
+  
+  SWIG_check_num_args("social_register_site",4,4)
+  if(!lua_isstring(L,1)) SWIG_fail_arg("social_register_site",1,"char *");
+  if(!lua_isstring(L,2)) SWIG_fail_arg("social_register_site",2,"char *");
+  if(!lua_isnumber(L,3)) SWIG_fail_arg("social_register_site",3,"int");
+  if(!lua_isnumber(L,4)) SWIG_fail_arg("social_register_site",4,"int");
+  arg1 = (char *)lua_tostring(L, 1);
+  arg2 = (char *)lua_tostring(L, 2);
+  arg3 = (int)lua_tonumber(L, 3);
+  arg4 = (int)lua_tonumber(L, 4);
+  social_register_site(arg1,arg2,arg3,arg4);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_social_register_bookmark_site(lua_State* L) {
   int SWIG_arg = 0;
   char *arg1 = (char *) 0 ;
@@ -10280,6 +10308,7 @@ static const struct luaL_reg swig_commands[] = {
     { "on_menu_allfeedsread", _wrap_on_menu_allfeedsread},
     { "social_init", _wrap_social_init},
     { "social_free", _wrap_social_free},
+    { "social_register_site", _wrap_social_register_site},
     { "social_register_bookmark_site", _wrap_social_register_bookmark_site},
     { "social_get_bookmark_url", _wrap_social_get_bookmark_url},
     { "social_set_link_search_site", _wrap_social_set_link_search_site},
