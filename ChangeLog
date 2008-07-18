@@ -3,6 +3,7 @@
 	Version 1.5.5 (Unstable)
 
 	* Raises glib dependency to 2.16
+	* Improvements to Google Reader support (Arnold Noronha)
 
 
 2008-06-18  Lars Lindner  <lars.lindner@gmail.com>
