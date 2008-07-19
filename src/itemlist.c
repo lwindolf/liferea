@@ -18,10 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
-
 #include <string.h>
 
 #include "attention.h"
@@ -44,8 +40,8 @@
 #include "ui/ui_feedlist.h"
 #include "ui/ui_itemlist.h"
 #include "ui/ui_htmlview.h"
-#include "ui/ui_mainwindow.h"
 #include "ui/ui_node.h"
+#include "ui/ui_shell.h"
 
 /* This is a simple controller implementation for itemlist handling. 
    It manages the currently displayed itemset, realizes filtering,
@@ -281,7 +277,7 @@ itemlist_load (nodePtr node)
 
 	/* for folders and other heirarchic nodes do filtering */
 	if (IS_FOLDER (node) || node->children) {
-		ui_mainwindow_update_allitems_actions (FALSE, 0 != node->unreadCount);
+		liferea_shell_update_allitems_actions (FALSE, 0 != node->unreadCount);
 		
 		if (0 == conf_get_int_value (FOLDER_DISPLAY_MODE))
 			return;
@@ -289,12 +285,12 @@ itemlist_load (nodePtr node)
 		if (conf_get_bool_value (FOLDER_DISPLAY_HIDE_READ))
 			itemlist_priv.filter = g_slist_append (NULL, rule_new (NULL, "unread", "", TRUE));
 	} else {
-		ui_mainwindow_update_allitems_actions (0 != node->itemCount, 0 != node->unreadCount);
+		liferea_shell_update_allitems_actions (0 != node->itemCount, 0 != node->unreadCount);
 	}
 
 	itemlist_priv.loading++;
 	itemlist_priv.viewMode = node_get_view_mode (node);
-	ui_mainwindow_set_layout (itemlist_priv.viewMode);
+	liferea_shell_set_layout (itemlist_priv.viewMode);
 
 	/* Set the new displayed node... */
 	itemlist_priv.currentNode = node;
@@ -396,7 +392,7 @@ itemlist_select_next_unread (void)
 				result = itemlist_find_unread_item ();	/* find first unread item */
 		} else {
 			/* if we don't find a feed with unread items do nothing */
-			ui_mainwindow_set_status_bar (_("There are no unread items "));
+			liferea_shell_set_status_bar (_("There are no unread items "));
 		}
 	}
 
@@ -566,8 +562,8 @@ itemlist_selection_changed (itemPtr item)
 
 			item_set_read_state (item, TRUE);
 
-			if(node_load_link_preferred (node_from_id (item->nodeId))) {
-				liferea_htmlview_launch_URL (ui_mainwindow_get_active_htmlview (), 
+			if (node_load_link_preferred (node_from_id (item->nodeId))) {
+				liferea_htmlview_launch_URL (liferea_shell_get_active_htmlview (), 
 				                             item_get_source (itemlist_get_selected ()), UI_HTMLVIEW_LAUNCH_INTERNAL);
 			} else {
 				itemview_set_mode (ITEMVIEW_SINGLE_ITEM);
@@ -610,7 +606,7 @@ itemlist_set_view_mode (guint newMode)
 		itemlist_unload (FALSE);
 		
 		node_set_view_mode (node, itemlist_priv.viewMode);
-		ui_mainwindow_set_layout (itemlist_priv.viewMode);
+		liferea_shell_set_layout (itemlist_priv.viewMode);
 		itemlist_load (node);
 	}
 }

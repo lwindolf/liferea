@@ -79,7 +79,7 @@ gint mozsupport_key_press_cb (GtkWidget *widget, gpointer ev)
 	/* This key interception is necessary to catch
 	   spaces which are an internal Mozilla key binding.
 	   All other combinations like Ctrl-Space, Alt-Space
-	   can be caught with the GTK code in ui_mainwindow.c.
+	   can be caught with the GTK code in src/ui/ui_shell.c.
 	   This is a bad case of code duplication... */
 	
 	event->GetCharCode (&keyCode);
@@ -90,7 +90,7 @@ gint mozsupport_key_press_cb (GtkWidget *widget, gpointer ev)
 
 		/* Do trigger scrolling if the skimming hotkey is 
 		  <Space> with a modifier. Other cases (Space+modifier)
-		  are handled in src/ui/ui_mainwindow.c and if we
+		  are handled in src/ui/ui_shell.c and if we
 		  get <Space> with a modifier here it needs no extra
 		  handling. */
 		if ((0 == conf_get_int_value (BROWSE_KEY_SETTING)) &&

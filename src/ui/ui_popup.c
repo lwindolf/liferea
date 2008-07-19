@@ -19,10 +19,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
-
 #include <libxml/uri.h>
 #include <string.h>
 
@@ -40,7 +36,6 @@
 #include "ui/ui_feedlist.h"
 #include "ui/ui_htmlview.h"
 #include "ui/ui_itemlist.h"
-#include "ui/ui_mainwindow.h"
 #include "ui/ui_popup.h"
 #include "ui/ui_prefs.h"
 #include "ui/ui_shell.h"
@@ -91,17 +86,32 @@ static void addPopupOption(GtkItemFactoryEntry **menu, gint *menu_len, gchar *pa
 /* list of dynamically allocated menu paths */
 static GSList *dynamic_menu_items = NULL;
 
-static gchar * ui_popup_create_path(gchar *fmt, ...) {
+static gchar *
+ui_popup_create_path (gchar *fmt, ...)
+{
 	va_list		params;
 	gchar		*path;
 	
-	va_start(params, fmt);
-	path = g_strdup_vprintf(fmt, params);
-	va_end(params);
+	va_start (params, fmt);
+	path = g_strdup_vprintf (fmt, params);
+	va_end (params);
 	
-	dynamic_menu_items = g_slist_append(dynamic_menu_items, path);
+	dynamic_menu_items = g_slist_append (dynamic_menu_items, path);
 	return path;
 }
+
+static void
+on_popup_quit (gpointer callback_data, guint callback_action, GtkWidget *widget)
+{
+	liferea_shutdown ();
+}
+
+static void
+on_toggle_visibility (gpointer callback_data, guint callback_action, GtkWidget *widget)
+{
+	liferea_shell_toggle_visibility ();
+}
+
 
 /* prepares the popup menues */
 void
@@ -175,7 +185,7 @@ ui_popup_update_menues (void)
 	addPopupOption (&tray_menu_items, &tray_menu_len, _("/_Update All"),		NULL, on_menu_update_all,		0, "<StockItem>", GTK_STOCK_REFRESH);
 	addPopupOption (&tray_menu_items, &tray_menu_len, _("/_Preferences"),		NULL, on_prefbtn_clicked,		0, "<StockItem>", GTK_STOCK_PREFERENCES);
 	addPopupOption (&tray_menu_items, &tray_menu_len, "/",	                	NULL, NULL,		                0, "<Separator>", 0);
-	addPopupOption (&tray_menu_items, &tray_menu_len, _("/_Show|Hide Window"),	NULL, ui_mainwindow_toggle_visibility,		0, NULL, 0);
+	addPopupOption (&tray_menu_items, &tray_menu_len, _("/_Show|Hide Window"),	NULL, on_toggle_visibility,		0, NULL, 0);
 	addPopupOption (&tray_menu_items, &tray_menu_len, _("/_Quit"),	        	NULL, on_popup_quit,		                0, "<StockItem>", GTK_STOCK_QUIT);
 	
 	/* System tray popup menu */
@@ -191,21 +201,22 @@ ui_popup_update_menues (void)
 static GtkMenu *
 ui_popup_make_menu (GtkItemFactoryEntry *menu_items, gint nmenu_items, gpointer cb_data)
 {
-	GtkWidget 		*menu, *toggle;
+	GtkWidget 		*mainwindow, *menu, *toggle;
 	GtkItemFactory 		*item_factory;
 	
 	item_factory = gtk_item_factory_new (GTK_TYPE_MENU, "<popup>", NULL);
 	gtk_item_factory_create_items (item_factory, nmenu_items, menu_items, cb_data);
 	menu = gtk_item_factory_get_widget (item_factory, "<popup>");
+	mainwindow = liferea_shell_get_window ();
 	
 	/* set toggled state for work offline and show window buttons in 
 	   the tray popup menu */
-	toggle = gtk_item_factory_get_widget(item_factory, TOGGLE_WORK_OFFLINE);
+	toggle = gtk_item_factory_get_widget (item_factory, TOGGLE_WORK_OFFLINE);
 	if (toggle)
 		GTK_CHECK_MENU_ITEM (toggle)->active = !network_is_online ();
 	toggle = gtk_item_factory_get_widget (item_factory, TOGGLE_SHOW_WINDOW);
 	if (toggle)
-		GTK_CHECK_MENU_ITEM (toggle)->active = !(gdk_window_get_state (GTK_WIDGET(mainwindow)->window) & GDK_WINDOW_STATE_ICONIFIED) && GTK_WIDGET_VISIBLE (mainwindow);
+		GTK_CHECK_MENU_ITEM (toggle)->active = !(gdk_window_get_state (mainwindow->window) & GDK_WINDOW_STATE_ICONIFIED) && GTK_WIDGET_VISIBLE (mainwindow);
 		
 	return GTK_MENU (menu);
 }

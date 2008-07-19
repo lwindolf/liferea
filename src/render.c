@@ -39,7 +39,7 @@
 #include "itemset.h"
 #include "render.h"
 #include "ui/ui_htmlview.h"
-#include "ui/ui_mainwindow.h"
+#include "ui/ui_shell.h"
 
 static renderParamPtr	langParams = NULL;	/* the current locale settings (for localization stylesheet) */
 static gchar		*defaultParams = NULL;	/* some default parameters (for rendering stylesheets) */
@@ -158,7 +158,7 @@ render_get_theme_colors (void)
 	GtkStyle	*style;
 	GdkColor	*color;
 
-	htmlview = liferea_htmlview_get_widget (ui_mainwindow_get_active_htmlview ());
+	htmlview = liferea_htmlview_get_widget (liferea_shell_get_active_htmlview ());
 	style = gtk_widget_get_style (htmlview);
 	g_assert (NULL != style);
 
@@ -172,7 +172,7 @@ render_get_theme_colors (void)
 	themeColors = g_slist_append (themeColors, render_get_theme_color("GTK-COLOR-TEXT",  style->text[GTK_STATE_NORMAL]));
 
 	color = NULL;
-	gtk_widget_style_get (GTK_WIDGET (mainwindow), "link-color", &color, NULL);
+	gtk_widget_style_get (liferea_shell_get_window (), "link-color", &color, NULL);
 	if (color) {
 		themeColors = g_slist_append (themeColors, render_get_theme_color ("GTK-COLOR-NORMAL-LINK", *color));
 		debug0 (DEBUG_HTML, "successfully set the color for links");
@@ -180,9 +180,9 @@ render_get_theme_colors (void)
 	}
 
 	color = NULL;
-	gtk_widget_style_get(GTK_WIDGET(mainwindow), "visited-link-color", &color, NULL);
+	gtk_widget_style_get (liferea_shell_get_window (), "visited-link-color", &color, NULL);
 	if (color) {
-		themeColors = g_slist_append(themeColors, render_get_theme_color("GTK-COLOR-VISITED-LINK", *color));
+		themeColors = g_slist_append (themeColors, render_get_theme_color("GTK-COLOR-VISITED-LINK", *color));
 		debug0 (DEBUG_HTML, "successfully set the color for visited links");
 		gdk_color_free (color);
 	}

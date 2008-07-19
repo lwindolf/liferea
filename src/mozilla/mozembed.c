@@ -40,11 +40,10 @@
 #include "debug.h"
 #include "ui/ui_htmlview.h"
 #include "ui/ui_popup.h"
+#include "ui/ui_shell.h"
 #include "ui/ui_tabs.h"
 
 #define EMPTY "<html><body></body></html>"
-
-extern GtkWidget *mainwindow;
 
 /* function to write HTML source into the widget */
 void
@@ -270,7 +269,7 @@ mozembed_open_uri_cb (GtkMozEmbed *embed, const char *uri, gpointer data)
 GtkWidget *
 mozembed_create (LifereaHtmlView *htmlview, gboolean forceInternalBrowsing)
 {
-	GtkWidget	*widget;
+	GtkWidget	*mainwindow, *widget;
 	gchar		*bgColor;
 	int		i;
 	
@@ -320,6 +319,7 @@ mozembed_create (LifereaHtmlView *htmlview, gboolean forceInternalBrowsing)
 	g_object_set_data (G_OBJECT (widget), "internal_browsing", GINT_TO_POINTER (forceInternalBrowsing));
 	
 	/* enforce GTK theme background color as document background */	
+	mainwindow = liferea_shell_get_window ();
 	bgColor = g_strdup_printf ("#%.2x%.2x%.2x",
 	                           mainwindow->style->base[GTK_STATE_NORMAL].red >> 8,
 	                           mainwindow->style->base[GTK_STATE_NORMAL].green >> 8,

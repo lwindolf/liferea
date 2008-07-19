@@ -39,7 +39,7 @@
 #include "render.h"
 #include "ui/ui_htmlview.h"
 #include "ui/ui_itemlist.h"
-#include "ui/ui_mainwindow.h"
+#include "ui/ui_shell.h"
 #include "ui/ui_tabs.h"
 #include "ui/ui_prefs.h"
 
@@ -48,8 +48,6 @@ typedef htmlviewPluginPtr (*infoFunction)();
 htmlviewPluginPtr htmlviewPlugin;
 
 GSList *htmlviewPlugins = NULL;
-
-extern GtkWidget *mainwindow;
 
 static void liferea_htmlview_class_init	(LifereaHtmlViewClass *klass);
 static void liferea_htmlview_init	(LifereaHtmlView *htmlview);
@@ -401,7 +399,7 @@ liferea_htmlview_external_browser_execute (const gchar *cmd, const gchar *uri, g
 	g_shell_parse_argv (tmp, &argc, &argv, &error);
 	g_free (tmp);
 	if (error && (0 != error->code)) {
-		ui_mainwindow_set_important_status_bar (_("Browser command failed: %s"), error->message);
+		liferea_shell_set_important_status_bar (_("Browser command failed: %s"), error->message);
 		debug2 (DEBUG_GUI, "Browser command failed: %s : %s", tmp, error->message);
 		g_error_free (error);
 		return FALSE;
@@ -421,10 +419,10 @@ liferea_htmlview_external_browser_execute (const gchar *cmd, const gchar *uri, g
   
 	if (error && (0 != error->code)) {
 		debug2 (DEBUG_GUI, "Browser command failed: %s : %s", tmp, error->message);
-		ui_mainwindow_set_important_status_bar (_("Browser command failed: %s"), error->message);
+		liferea_shell_set_important_status_bar (_("Browser command failed: %s"), error->message);
 		g_error_free (error);
 	} else if (status == 0) {
-		ui_mainwindow_set_status_bar (_("Starting: \"%s\""), tmp);
+		liferea_shell_set_status_bar (_("Starting: \"%s\""), tmp);
 		done = TRUE;
 	}
   
@@ -460,7 +458,7 @@ liferea_htmlview_launch_in_external_browser (const gchar *uri)
 	/* if it failed try to execute asynchronously... */		
 	cmd = prefs_get_browser_command (browser, FALSE /* remote */, TRUE /* fallback */);
 	if (!cmd) {
-	 	ui_mainwindow_set_important_status_bar ("Fatal: cannot retrieve browser command!");
+		liferea_shell_set_important_status_bar ("Fatal: cannot retrieve browser command!");
 		g_warning ("Fatal: cannot retrieve browser command!");
 		return FALSE;
 	}
@@ -474,7 +472,7 @@ liferea_htmlview_scroll (void)
 {
 	LifereaHtmlView *htmlview;
 	
-	htmlview = ui_mainwindow_get_active_htmlview ();
+	htmlview = liferea_shell_get_active_htmlview ();
 	return (htmlviewPlugin->scrollPagedown) (htmlview->priv->renderWidget);
 }
 

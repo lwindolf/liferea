@@ -48,7 +48,7 @@ enum is_columns {
  * Initializes the itemlist. For example, it creates the various
  * columns and renderers needed to show the list.
  */
-GtkWidget* ui_itemlist_new (void);
+GtkWidget* ui_itemlist_new (GtkWidget *mainwindow);
 
 // FIXME: use GObject
 void ui_itemlist_destroy (void);

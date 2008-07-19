@@ -41,7 +41,6 @@
 
 #include "common.h"
 #include "debug.h"
-#include "ui/ui_mainwindow.h"
 #include "ui/ui_shell.h"
 
 #define GAIM_DEBUG_ALL 0
@@ -304,7 +303,7 @@ void session_save_yourself(SmcConn conn, SmPointer data, int save_type,
 void session_die(SmcConn conn, SmPointer data) {
 	gaim_debug(GAIM_DEBUG_INFO, "Session Management",
 			   "Received die");
-	g_idle_add (quit, NULL);
+	liferea_shutdown ();
 }
 
 void session_save_complete(SmcConn conn, SmPointer data) {

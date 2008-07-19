@@ -29,6 +29,7 @@
 #include "feedlist.h"
 #include "net.h"
 #include "subscription.h"
+#include "ui/ui_shell.h"
 
 G_DEFINE_TYPE(LifereaDBus, liferea_dbus, G_TYPE_OBJECT)
 
@@ -50,7 +51,7 @@ liferea_dbus_set_online (LifereaDBus *self, gboolean online, gboolean *ret, GErr
 gboolean
 liferea_dbus_subscribe (LifereaDBus *self, gchar *url, gboolean *ret, GError **err)
 {
-	ui_mainwindow_show ();
+	liferea_shell_present ();
 	feedlist_add_subscription (url, NULL, NULL, FEED_REQ_RESET_TITLE | FEED_REQ_RESET_UPDATE_INT);
 	*ret = TRUE;
 	return TRUE;

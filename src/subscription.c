@@ -29,8 +29,8 @@
 #include "metadata.h"
 #include "net.h"
 #include "subscription.h"
-#include "ui/ui_mainwindow.h"
 #include "ui/ui_node.h"
+#include "ui/ui_shell.h"
 
 /* The allowed feed protocol prefixes (see http://25hoursaday.com/draft-obasanjo-feed-URI-scheme-02.html) */
 #define FEED_PROTOCOL_PREFIX "feed://"
@@ -98,12 +98,12 @@ gboolean
 subscription_can_be_updated (subscriptionPtr subscription)
 {
 	if (subscription->updateJob) {
-		ui_mainwindow_set_status_bar (_("Subscription \"%s\" is already being updated!"), node_get_title (subscription->node));
+		liferea_shell_set_status_bar (_("Subscription \"%s\" is already being updated!"), node_get_title (subscription->node));
 		return FALSE;
 	}
 	
 	if (subscription->discontinued) {
-		ui_mainwindow_set_status_bar (_("The subscription \"%s\" was discontinued. Liferea won't update it anymore!"), node_get_title (subscription->node));
+		liferea_shell_set_status_bar (_("The subscription \"%s\" was discontinued. Liferea won't update it anymore!"), node_get_title (subscription->node));
 		return FALSE;
 	}
 
@@ -138,7 +138,7 @@ void
 subscription_update_favicon (subscriptionPtr subscription)
 {
 	debug1 (DEBUG_UPDATE, "trying to download favicon.ico for \"%s\"", node_get_title (subscription->node));
-	ui_mainwindow_set_status_bar (_("Updating favicon for \"%s\""), node_get_title (subscription->node));
+	liferea_shell_set_status_bar (_("Updating favicon for \"%s\""), node_get_title (subscription->node));
 	g_get_current_time (&subscription->updateState->lastFaviconPoll);
 	db_update_state_save (subscription->node->id, subscription->updateState);
 	favicon_download (subscription->node->id,
@@ -161,7 +161,7 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	/* update the subscription URL on permanent redirects */
 	if (result->source && g_str_equal (result->source, subscription_get_source (subscription))) {
 		subscription_set_source (subscription, result->source);
-		ui_mainwindow_set_status_bar (_("The URL of \"%s\" has changed permanently and was updated"), node_get_title(node));
+		liferea_shell_set_status_bar (_("The URL of \"%s\" has changed permanently and was updated"), node_get_title(node));
 	}
 
 	if (401 == result->httpstatus) { /* unauthorized */
@@ -170,10 +170,10 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	} else if (410 == result->httpstatus) { /* gone */
 		subscription->discontinued = TRUE;
 		node->available = TRUE;
-		ui_mainwindow_set_status_bar (_("\"%s\" is discontinued. Liferea won't updated it anymore!"), node_get_title (node));
+		liferea_shell_set_status_bar (_("\"%s\" is discontinued. Liferea won't updated it anymore!"), node_get_title (node));
 	} else if (304 == result->httpstatus) {
 		node->available = TRUE;
-		ui_mainwindow_set_status_bar (_("\"%s\" has not changed since last update"), node_get_title(node));
+		liferea_shell_set_status_bar (_("\"%s\" has not changed since last update"), node_get_title(node));
 	} else {
 		processing = TRUE;
 	}
@@ -220,7 +220,7 @@ subscription_update (subscriptionPtr subscription, guint flags)
 	}
 	 
 	if (subscription_can_be_updated (subscription)) {
-		ui_mainwindow_set_status_bar (_("Updating \"%s\""), node_get_title (subscription->node));
+		liferea_shell_set_status_bar (_("Updating \"%s\""), node_get_title (subscription->node));
 
 		g_get_current_time (&now);
 		subscription_reset_update_counter (subscription, &now);

@@ -41,14 +41,13 @@
 #include "db.h"
 #include "dbus.h"
 #include "debug.h"
-#include "feedlist.h"
+#include "feedlist.h"		// FIXME: should not be necessary
 #include "script.h"
 #include "social.h"
 #include "update.h"
-#include "vfolder.h"
+#include "vfolder.h"		// FIXME: should not be necessary
 #include "xml.h"
-#include "ui/ui_feedlist.h"
-#include "ui/ui_mainwindow.h"
+#include "ui/ui_feedlist.h"	// FIXME: should not be necessary
 #include "ui/ui_session.h"
 #include "ui/ui_shell.h"
 #include "sync/avahi_publisher.h"
@@ -58,8 +57,6 @@
 static BaconMessageConnection *bacon_connection = NULL;
 
 gboolean lifereaStarted = FALSE;
-
-gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data);
 
 static void show_help(void) {
 	GString	*str = g_string_new(NULL);
@@ -80,20 +77,21 @@ static void show_help(void) {
 	g_string_free(str, TRUE);
 }
 
-/* bacon message callback */
-static void on_bacon_message_received(const char *message, gpointer data) {
-
+/** bacon message callback */
+static void
+on_bacon_message_received (const char *message, gpointer data)
+{
 	debug1(DEBUG_GUI, "bacon message received >>>%s<<<", message);
 	
 	/* Currently we only know a single simple command "raise"
 	   which tells the program to raise the window because
 	   another instance was requested which is not supported */
 	   
-	if(g_str_equal(message, "raise")) {
-		debug0(DEBUG_GUI, "-> raise window requested");
-		gtk_window_present(GTK_WINDOW(mainwindow));
+	if (g_str_equal (message, "raise")) {
+		debug0 (DEBUG_GUI, "-> raise window requested");
+		liferea_shell_present ();
 	} else {
-		g_warning("Received unknown bacon command: >>>%s<<<", message);
+		g_warning ("Received unknown bacon command: >>>%s<<<", message);
 	}
 }
 
@@ -117,34 +115,35 @@ static void fatal_signal_handler(int sig) {
 static void
 signal_handler (int sig)
 {
-	g_idle_add (quit, NULL);
+	liferea_shutdown ();
 }
 
-int main(int argc, char *argv[]) {	
+int
+main (int argc, char *argv[])
+{
 	gulong			debug_flags = 0;
 	const char 		*arg;
 	gint			i;
 	LifereaDBus		*dbus = NULL;
 	LifereaAvahiPublisher	*avahiPublisher = NULL;
-	int			mainwindowState;
-	gchar			*accels_file = NULL;
+	int			initialState = MAINWINDOW_SHOWN;
 	
 #ifdef USE_SM
 	gchar *opt_session_arg = NULL;
 #endif
 
 #ifdef ENABLE_NLS
-	bindtextdomain(GETTEXT_PACKAGE, PACKAGE_LOCALE_DIR);
-	bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
-	textdomain(GETTEXT_PACKAGE);
-	setlocale(LC_ALL, "");
+	bindtextdomain (GETTEXT_PACKAGE, PACKAGE_LOCALE_DIR);
+	bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+	textdomain (GETTEXT_PACKAGE);
+	setlocale (LC_ALL, "");
 #endif
 	/* Do not set program name here as it would be overwritten by Gecko! */
 	
-	gtk_set_locale();
-	g_thread_init(NULL);
+	gtk_set_locale ();
+	g_thread_init (NULL);
 #ifdef USE_DBUS
-	dbus_g_thread_init();
+	dbus_g_thread_init ();
 #endif
 	/* Configuration necessary for network options, so it
 	   has to be initialized before update_init() */
@@ -152,17 +151,17 @@ int main(int argc, char *argv[]) {
 	
 	/* We need to do the network initialization here to allow
 	   network-manager to be setup before gtk_init() */	   
-	update_init();
+	update_init ();
 
-	gtk_init(&argc, &argv);
+	gtk_init (&argc, &argv);
 	
 	/* GTK theme support */
-	g_set_application_name(_("Liferea"));
-	gtk_window_set_default_icon_name("liferea");
+	g_set_application_name (_("Liferea"));
+	gtk_window_set_default_icon_name ("liferea");
 	
 	/* parse arguments  */
 	debug_flags = 0;
-	for(i = 1; i < argc; ++i) {
+	for (i = 1; i < argc; ++i) {
 		arg = argv[i];
 		
 		if (!strcmp (arg, "--debug-cache"))
@@ -200,15 +199,15 @@ int main(int argc, char *argv[]) {
 			return 0;
 		}
 		else if(!strcmp(arg, "--iconify")) {
-			mainwindowState = MAINWINDOW_ICONIFIED;
+			initialState = MAINWINDOW_ICONIFIED;
 		} else if(!strncmp(arg, "--mainwindow-state=",19)) {
 			const gchar *param = arg + 19;
 			if (g_str_equal(param, "iconified"))
-				mainwindowState = MAINWINDOW_ICONIFIED;
+				initialState = MAINWINDOW_ICONIFIED;
 			else if (g_str_equal(param, "hidden"))
-				mainwindowState = MAINWINDOW_HIDDEN;
+				initialState = MAINWINDOW_HIDDEN;
 			else if (g_str_equal(param, "shown"))
-				mainwindowState = MAINWINDOW_SHOWN;
+				initialState = MAINWINDOW_SHOWN;
 			else
 				fprintf(stderr, _("The --mainwindow-state argument must be given a parameter.\n"));
 #ifdef USE_SM
@@ -224,35 +223,33 @@ int main(int argc, char *argv[]) {
 			fprintf(stderr, _("Liferea encountered an unknown argument: %s\n"), arg);
 		}
 	}
-	set_debug_level(debug_flags);
+	set_debug_level (debug_flags);
 	
 	/* Note: bacon connection check needs to be done after the
 	   command line parameter checking to allow help and version
 	   switches to be used when we are already running */
-	bacon_connection = bacon_message_connection_new("liferea");
-	if(bacon_connection)	{
-		if(!bacon_message_connection_get_is_server(bacon_connection)) {
+	bacon_connection = bacon_message_connection_new ("liferea");
+	if (bacon_connection)	{
+		if (!bacon_message_connection_get_is_server (bacon_connection)) {
 			g_warning(_("Liferea seems to be running already!"));
 			
 		  	debug0(DEBUG_VERBOSE, "Startup as bacon client...");
-			bacon_message_connection_send(bacon_connection, "raise");
-			bacon_message_connection_free(bacon_connection);
+			bacon_message_connection_send (bacon_connection, "raise");
+			bacon_message_connection_free (bacon_connection);
 			
-			gdk_notify_startup_complete();
-			exit(0);
+			gdk_notify_startup_complete ();
+			exit (0);
 		} else {
-		  	debug0(DEBUG_VERBOSE, "Startup as bacon server...");
-			bacon_message_connection_set_callback(bacon_connection,
-							      on_bacon_message_received,
-							      NULL);
+		  	debug0 (DEBUG_VERBOSE, "Startup as bacon server...");
+			bacon_message_connection_set_callback (bacon_connection,
+							       on_bacon_message_received,
+							       NULL);
 		}
 	} else {
-		g_warning("Cannot create IPC connection for Liferea!");
+		g_warning ("Cannot create IPC connection for Liferea!");
 	}
 	
 	debug_start_measurement (DEBUG_DB);
-
-	add_pixmap_directory(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps");
 
 	/* order is important! */
 	rule_init ();
@@ -262,9 +259,6 @@ int main(int argc, char *argv[]) {
 	conf_load ();			/* load global feed settings */
 	script_init ();			/* setup scripting if supported */
 	social_init ();			/* initialized social bookmarking */
-	accels_file = g_build_filename (common_get_cache_path(), "accels", NULL);
-	gtk_accel_map_load (accels_file);
-	g_free (accels_file);
 #ifdef USE_DBUS	
 	dbus = liferea_dbus_new ();	
 #else
@@ -283,28 +277,30 @@ int main(int argc, char *argv[]) {
 	debug0 (DEBUG_CACHE, "Compiled without AVAHI support");
 #endif
 
-	if (conf_get_bool_value (SHOW_TRAY_ICON) && conf_get_bool_value (START_IN_TRAY))
-		mainwindowState = MAINWINDOW_ICONIFIED;
-	else
-		mainwindowState = MAINWINDOW_SHOWN;
+	if (conf_get_bool_value (SHOW_TRAY_ICON) &&
+	    conf_get_bool_value (START_IN_TRAY))
+		initialState = MAINWINDOW_ICONIFIED;
 
-	ui_mainwindow_init(mainwindowState);	/* setup mainwindow and initialize gconf configured GUI behaviour */
-	g_set_prgname("liferea");
+	liferea_shell_create (initialState);
+	g_set_prgname ("liferea");
+	
+	script_run_for_hook (SCRIPT_HOOK_STARTUP);
+	
 #ifdef USE_SM
 	/* This must be after feedlist reading because some session
 	   managers will tell Liferea to exit if Liferea does not
 	   respond to SM requests within a minute or two. This starts
 	   the main loop soon after opening the SM connection. */
-	session_init(BIN_DIR G_DIR_SEPARATOR_S "liferea", opt_session_arg);
-	session_set_cmd(NULL, mainwindowState);
+	session_init (BIN_DIR G_DIR_SEPARATOR_S "liferea", opt_session_arg);
+	session_set_cmd (NULL, initialState);
 #endif
-	signal(SIGTERM, signal_handler);
-	signal(SIGINT, signal_handler);
-	signal(SIGHUP, signal_handler);
+	signal (SIGTERM, signal_handler);
+	signal (SIGINT, signal_handler);
+	signal (SIGHUP, signal_handler);
 
 #ifndef G_OS_WIN32
-	signal(SIGBUS, fatal_signal_handler);
-	signal(SIGSEGV, fatal_signal_handler);
+	signal (SIGBUS, fatal_signal_handler);
+	signal (SIGSEGV, fatal_signal_handler);
 #endif
 
 	/* Note: we explicitely do not use the gdk_thread_*
@@ -315,26 +311,27 @@ int main(int argc, char *argv[]) {
 	
 	debug_end_measurement (DEBUG_DB, "startup");
 	
-	gtk_main();
+	gtk_main ();
 	
 	g_object_unref (G_OBJECT (dbus));
 	bacon_message_connection_free (bacon_connection);
 	return 0;
 }
 
-gboolean
-on_quit (GtkWidget *widget, GdkEvent *event, gpointer user_data)
+static gboolean
+on_shutdown (gpointer user_data)
 {
-	debug_enter ("on_quit");
+	debug_enter ("liferea_shutdown");
 
 	/* order is important ! */
 		
 	script_run_for_hook (SCRIPT_HOOK_SHUTDOWN);
 	
-	ui_mainwindow_save_position ();
-	gtk_widget_hide (mainwindow);
-
+	// FIXME: move the following three calls to the liferea shell destroy callback
+	liferea_shell_save_position ();
+	gtk_widget_hide (liferea_shell_get_window ());
 	ui_feedlist_select (NULL);
+	
 	feedlist_save ();
 	feedlist_free ();
 	itemlist_free ();
@@ -343,7 +340,7 @@ on_quit (GtkWidget *widget, GdkEvent *event, gpointer user_data)
 	script_deinit ();
 	social_free ();
 
-	gtk_widget_destroy (mainwindow);
+	liferea_shell_destroy ();
 #ifdef USE_SM
 	/* unplug */
 	session_end ();
@@ -352,13 +349,12 @@ on_quit (GtkWidget *widget, GdkEvent *event, gpointer user_data)
 	
 	gtk_main_quit ();
 	
-	debug_exit ("on_quit");
+	debug_exit ("liferea_shutdown");
 	return FALSE;
 }
 
-gboolean
-quit (gpointer user_data)
+void
+liferea_shutdown (void)
 {
-	on_quit (NULL, NULL, NULL);
-	return FALSE;
+	g_idle_add (on_shutdown, NULL);
 }

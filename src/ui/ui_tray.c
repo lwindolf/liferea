@@ -34,7 +34,6 @@
 #include "feedlist.h"
 #include "net.h"
 #include "ui/ui_dnd.h"
-#include "ui/ui_mainwindow.h"
 #include "ui/ui_popup.h"
 #include "ui/ui_tray.h"
 
@@ -228,18 +227,17 @@ ui_tray_update (void)
 
 /* a click on the systray icon should show the program window
    if invisible or hide it if visible */
-static void tray_icon_pressed(GtkWidget *button, GdkEventButton *event, EggTrayIcon *icon) {
-	
-	switch(event->button) {
+static void
+tray_icon_pressed (GtkWidget *button, GdkEventButton *event, EggTrayIcon *icon)
+{	
+	switch (event->button) {
 		case 1:
-			ui_mainwindow_toggle_visibility(NULL, NULL);
+			liferea_shell_toggle_visibility ();
 			break;
 		case 3:
-			gtk_menu_popup(ui_popup_make_systray_menu(), NULL, NULL, NULL, NULL, event->button, event->time);
+			gtk_menu_popup (ui_popup_make_systray_menu (), NULL, NULL, NULL, NULL, event->button, event->time);
 			break;
 	}
-						  
-	return;
 }
 
 static gboolean ui_tray_create_cb() {
@@ -250,9 +248,10 @@ static gboolean ui_tray_create_cb() {
 }
 
 
-static void ui_tray_embedded_cb(GtkWidget *widget, void *data) {
-
-	ui_mainwindow_tray_add();
+static void
+ui_tray_embedded_cb(GtkWidget *widget, void *data)
+{
+	/* Nothing to do */
 }
 
 
@@ -262,7 +261,8 @@ static void ui_tray_destroyed_cb(GtkWidget *widget, void *data) {
 	g_free(trayIcon_priv);
 	trayIcon_priv = NULL;
 	
-	ui_mainwindow_tray_remove();
+	if (0 == ui_tray_get_count ())
+		liferea_shell_present ();
 	
 	/* And make it re-appear when the notification area reappears */
 	g_idle_add(ui_tray_create_cb, NULL);
@@ -306,7 +306,8 @@ static void ui_tray_remove(void) {
 	g_free(trayIcon_priv);
 	trayIcon_priv = NULL;
 
-	ui_mainwindow_tray_remove();
+	if (0 == ui_tray_get_count ())
+		liferea_shell_present ();
 }
 
 void ui_tray_enable(gboolean enabled) {

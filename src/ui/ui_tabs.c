@@ -19,10 +19,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
-
 #include <string.h>
 #include <gdk/gdkkeysyms.h>
 
@@ -30,7 +26,6 @@
 #include "itemlist.h"
 #include "ui/ui_htmlview.h"
 #include "ui/ui_itemlist.h"
-#include "ui/ui_mainwindow.h"
 #include "ui/ui_shell.h"
 #include "ui/ui_tabs.h"
 
@@ -409,7 +404,7 @@ ui_tabs_get_active_htmlview (void)
 	
 	current = gtk_notebook_get_current_page (GTK_NOTEBOOK (liferea_shell_lookup ("browsertabs")));
 	if (0 == current)
-		return ui_mainwindow_get_active_htmlview ();
+		return liferea_shell_get_active_htmlview ();
 		
 	tab = g_object_get_data (G_OBJECT (gtk_notebook_get_nth_page (GTK_NOTEBOOK (liferea_shell_lookup ("browsertabs")), current)), "tabInfo");
 	return tab->htmlview;

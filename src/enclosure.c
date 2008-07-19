@@ -30,6 +30,7 @@
 #include "enclosure.h"
 #include "xml.h"
 #include "ui/ui_prefs.h"	// FIXME: remove this!
+#include "ui/ui_shell.h"
 
 /*
    Liferea manages a MIME type configuration to allow
@@ -275,7 +276,7 @@ enclosure_exec (gpointer data)
 				g_warning ("Launch command \"%s\" failed!", ejp->run);
 		} else {
 			/* just saving */
-			ui_mainwindow_set_status_bar (_("Enclosure download finished: \"%s\""), ejp->filename);
+			liferea_shell_set_status_bar (_("Enclosure download finished: \"%s\""), ejp->filename);
 		}
 	}
 	g_free (ejp->download);

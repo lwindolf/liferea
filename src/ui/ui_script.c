@@ -24,7 +24,7 @@
 #include "script.h"
 #include "ui/ui_script.h"
 #include "ui/ui_dialog.h"
-#include "ui/ui_mainwindow.h"
+#include "ui/ui_shell.h"
 
 typedef struct hookInfo {
 	gchar		*name;

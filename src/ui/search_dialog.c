@@ -33,7 +33,6 @@
 #include "ui/ui_dialog.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_itemlist.h"
-#include "ui/ui_mainwindow.h"
 
 /* shared functions */
 
@@ -81,7 +80,7 @@ search_load_results (nodePtr searchResult, const gchar *searchString)
 	                                "feed list."));
 	g_string_append_printf (buffer, "</p></div>");
 	htmlview_finish_output (buffer);
-	liferea_htmlview_write (ui_mainwindow_get_active_htmlview (), buffer->str, NULL);
+	liferea_htmlview_write (liferea_shell_get_active_htmlview (), buffer->str, NULL);
 	g_string_free (buffer, TRUE);
 }
 

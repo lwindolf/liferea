@@ -1,5 +1,5 @@
 /**
- * @file net.c HTTP network access
+ * @file net.c  HTTP network access
  * 
  * Copyright (C) 2007-2008 Lars Lindner <lars.lindner@gmail.com>
  *
@@ -19,22 +19,23 @@
  */
 
 #include "net.h"
-#include "conf.h"
-#include "debug.h"
-#include "ui/ui_htmlview.h"
 
 #include <glib.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "common.h"
-
-#include "glibcurl/glibcurl.h"
 
 #include <curl/curl.h>
 #include <curl/types.h>
 #include <curl/easy.h>
+
+#include "common.h"
+#include "conf.h"
+#include "debug.h"
+#include "ui/ui_htmlview.h"
+#include "ui/ui_shell.h"
+#include "glibcurl/glibcurl.h"
 
 static CURLSH *share_handle = NULL;
 
@@ -481,9 +482,7 @@ network_set_online (gboolean mode)
 	if (online != mode) {
 		online = mode;
 		debug1 (DEBUG_UPDATE, "Changing online mode to %s", mode?"online":"offline");
-		ui_mainwindow_online_status_changed (mode);
-		liferea_htmlview_set_online (mode);
-		ui_tray_update ();
+		liferea_shell_online_status_changed (mode);
 	}
 }
 

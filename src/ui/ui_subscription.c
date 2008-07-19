@@ -19,10 +19,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
  
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
-
 #include <gtk/gtk.h>
 #include <libxml/uri.h>
 #include <string.h> 
@@ -37,7 +33,6 @@
 #include "update.h"
 #include "ui/ui_common.h"
 #include "ui/ui_dialog.h"
-#include "ui/ui_mainwindow.h"	/* for ui_choose_file() */
 #include "ui/ui_node.h"
 #include "ui/ui_subscription.h"
 

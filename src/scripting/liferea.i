@@ -11,7 +11,6 @@
 
 #include "../ui/ui_feedlist.h"
 #include "../ui/ui_itemlist.h"
-#include "../ui/ui_mainwindow.h"
 #include "../ui/ui_node.h"
 %}
  
@@ -30,5 +29,4 @@
 
 %include "../ui/ui_feedlist.h"
 %include "../ui/ui_itemlist.h"
-%include "../ui/ui_mainwindow.h"
 %include "../ui/ui_node.h"

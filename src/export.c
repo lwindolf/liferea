@@ -36,7 +36,7 @@
 #include "xml.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_itemlist.h"
-#include "ui/ui_mainwindow.h"
+#include "ui/ui_shell.h"
 #include "fl_sources/node_source.h"
 
 struct exportData {

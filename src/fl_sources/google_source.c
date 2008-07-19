@@ -30,6 +30,7 @@
 #include "node.h"
 #include "update.h"
 #include "xml.h"
+#include "ui/ui_common.h"
 #include "ui/ui_dialog.h"
 #include "fl_sources/google_source.h"
 #include "fl_sources/node_source.h"
@@ -179,7 +180,7 @@ google_source_login (GoogleSourcePtr gsource, guint32 flags)
 void
 google_source_setup (nodePtr parent, nodePtr node)
 {
-	node->icon = create_pixbuf ("fl_google.png");
+	node->icon = ui_common_create_pixbuf ("fl_google.png");
 	
 	node_set_type (node, node_source_get_node_type ());
 	if (parent) {

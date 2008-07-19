@@ -32,7 +32,6 @@
 #include "vfolder.h"
 #include "ui/ui_dnd.h"
 #include "ui/ui_feedlist.h"
-#include "ui/ui_mainwindow.h"
 #include "ui/ui_node.h"
 #include "ui/ui_shell.h"
 #include "ui/ui_subscription.h"
@@ -102,7 +101,9 @@ ui_feedlist_selection_changed_cb (GtkTreeSelection *selection, gpointer data)
 		                     IS_NEWSBIN (node) || 
 				     IS_VFOLDER (node) || 
 				     IS_NODE_SOURCE (node)));
-		if (realNode) {			
+		if (realNode) {
+			GtkWidget *mainwindow = liferea_shell_get_window ();
+			
 			/* FIXME: another workaround to prevent strange window
 			   size increasings after feed selection changing 
 			   
@@ -113,8 +114,7 @@ ui_feedlist_selection_changed_cb (GtkTreeSelection *selection, gpointer data)
 			   be bug reports soon. If there are none over about a month
 			   this should be removed! */
 			geometry.min_height = 50;
-			geometry.min_width = 50;
-			g_assert (mainwindow != NULL);
+			geometry.min_width = 50;			
 			gtk_window_set_geometry_hints (GTK_WINDOW (mainwindow), mainwindow, &geometry, GDK_HINT_MIN_SIZE);
 		
 			ui_tabs_show_headlines ();
@@ -128,11 +128,11 @@ ui_feedlist_selection_changed_cb (GtkTreeSelection *selection, gpointer data)
 		feedlist_selection_changed (node);
 		
 		if (node) {
-			ui_mainwindow_update_update_menu ((NODE_TYPE (node)->capabilities & NODE_CAPABILITY_UPDATE) ||
+			liferea_shell_update_update_menu ((NODE_TYPE (node)->capabilities & NODE_CAPABILITY_UPDATE) ||
 			                                  (NODE_TYPE (node)->capabilities & NODE_CAPABILITY_UPDATE_CHILDS));
-			ui_mainwindow_update_feed_menu (TRUE, (NODE_SOURCE_TYPE (node->source->root)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST));
+			liferea_shell_update_feed_menu (TRUE, (NODE_SOURCE_TYPE (node->source->root)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST));
 		} else {
-			ui_mainwindow_update_feed_menu (FALSE, FALSE);
+			liferea_shell_update_feed_menu (FALSE, FALSE);
 		}
 	} else {
 		/* If we cannot get the new selection we keep the old one
@@ -179,7 +179,7 @@ ui_feedlist_key_press_cb (GtkWidget *widget, GdkEventKey *event, gpointer data)
 /* sets up the entry list store and connects it to the entry list
    view in the main window */
 void
-ui_feedlist_init (GtkWidget *treeview)
+ui_feedlist_init (GtkTreeView *treeview)
 {
 	GtkCellRenderer		*textRenderer;
 	GtkCellRenderer		*iconRenderer;	
@@ -195,7 +195,7 @@ ui_feedlist_init (GtkWidget *treeview)
 	                                G_TYPE_POINTER,
 	                                G_TYPE_UINT);
 
-	gtk_tree_view_set_model (GTK_TREE_VIEW (treeview), GTK_TREE_MODEL (feedstore));
+	gtk_tree_view_set_model (treeview, GTK_TREE_MODEL (feedstore));
 	g_signal_connect (G_OBJECT (feedstore), "row-changed", G_CALLBACK (ui_feedlist_row_changed_cb), NULL);
 
 	/* we only render the state and title */
@@ -211,14 +211,14 @@ ui_feedlist_init (GtkWidget *treeview)
 	gtk_tree_view_column_add_attribute (column, textRenderer, "markup", FS_LABEL);
 	
 	gtk_tree_view_column_set_resizable (column, TRUE);
-	gtk_tree_view_append_column (GTK_TREE_VIEW (treeview), column);
+	gtk_tree_view_append_column (treeview, column);
 	
 	g_object_set (textRenderer, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
 
 	g_signal_connect (G_OBJECT (treeview), "row-activated", G_CALLBACK (ui_feedlist_row_activated_cb), NULL);
 	g_signal_connect (G_OBJECT (treeview), "key-press-event", G_CALLBACK (ui_feedlist_key_press_cb), NULL);
 
-	select = gtk_tree_view_get_selection (GTK_TREE_VIEW (treeview));
+	select = gtk_tree_view_get_selection (treeview);
 	gtk_tree_selection_set_mode (select, GTK_SELECTION_SINGLE);
 	
 	g_signal_connect (G_OBJECT (select), "changed",
@@ -226,8 +226,8 @@ ui_feedlist_init (GtkWidget *treeview)
                 	  liferea_shell_lookup ("feedlist"));
 	
 	ui_dnd_setup_feedlist (feedstore);
-	ui_mainwindow_update_feed_menu (FALSE, FALSE);
-	ui_mainwindow_update_allitems_actions (FALSE, FALSE);
+	liferea_shell_update_feed_menu (FALSE, FALSE);
+	liferea_shell_update_allitems_actions (FALSE, FALSE);
 
 	debug_exit ("ui_feedlist_init");
 }
@@ -245,17 +245,19 @@ void
 ui_feedlist_select (nodePtr node)
 {
 	GtkTreeView		*treeview;
-	GtkWidget		*focused;
 	GtkTreeModel		*model;
-
+	GtkWindow		*mainwindow;
+	GtkWidget		*focused;
+	
+	mainwindow = GTK_WINDOW (liferea_shell_get_window ());
 	treeview = GTK_TREE_VIEW (liferea_shell_lookup ("feedlist"));
 	model = gtk_tree_view_get_model (treeview);
 	
 	/* To work around a GTK+ bug. If the treeview is not
 	   focused, setting the selected item will always select the
 	   first item! */
-	focused = gtk_window_get_focus (GTK_WINDOW (mainwindow));
-	gtk_window_set_focus (GTK_WINDOW (mainwindow), GTK_WIDGET (treeview));
+	focused = gtk_window_get_focus (mainwindow);
+	gtk_window_set_focus (mainwindow, GTK_WIDGET (treeview));
 	
 	if (node && node != feedlist_get_root ()) {
 		GtkTreePath *path = gtk_tree_model_get_path (model, ui_node_to_iter(node->id));
@@ -272,7 +274,7 @@ ui_feedlist_select (nodePtr node)
 		gtk_tree_selection_unselect_all (selection);
 	}
 	
-	gtk_window_set_focus (GTK_WINDOW (mainwindow), focused);
+	gtk_window_set_focus (mainwindow, focused);
 }
 
 /* delete feed callbacks */
@@ -292,21 +294,23 @@ void
 ui_feedlist_delete_prompt (nodePtr node)
 {
 	GtkWidget	*dialog;
+	GtkWindow	*mainwindow;
 	gchar		*text;
 	
 	g_assert (node == feedlist_get_selected ());
 
-	ui_mainwindow_set_status_bar ("%s \"%s\"", _("Deleting entry"), node_get_title (node));
+	liferea_shell_set_status_bar ("%s \"%s\"", _("Deleting entry"), node_get_title (node));
 	text = g_strdup_printf (IS_FOLDER (node)?_("Are you sure that you want to delete \"%s\" and its contents?"):_("Are you sure that you want to delete \"%s\"?"), node_get_title (node));
 
-	dialog = gtk_message_dialog_new (GTK_WINDOW (mainwindow),
+	mainwindow = GTK_WINDOW (liferea_shell_get_window ());
+	dialog = gtk_message_dialog_new (mainwindow,
 	                                 GTK_DIALOG_DESTROY_WITH_PARENT | GTK_DIALOG_MODAL,
 	                                 GTK_MESSAGE_QUESTION,
 	                                 GTK_BUTTONS_YES_NO,
 	                                 "%s", text);
 	gtk_window_set_title (GTK_WINDOW (dialog), _("Deletion Confirmation"));
 	gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
-	gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (mainwindow));
+	gtk_window_set_transient_for (GTK_WINDOW (dialog), mainwindow);
 
 	g_free (text);
 	

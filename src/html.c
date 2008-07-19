@@ -22,8 +22,8 @@
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
 #endif
-#define _GNU_SOURCE
 
+#define _GNU_SOURCE
 
 #include <ctype.h>
 #include <stdlib.h>
@@ -33,7 +33,7 @@
 #include "debug.h"
 #include "html.h"
 #include "xml.h"
-#include "ui/ui_mainwindow.h"
+#include "ui/ui_shell.h"
 
 enum {
 	LINK_FAVICON,

@@ -27,7 +27,6 @@
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 #include <glib.h>
-#include <gtk/gtk.h>
 
 extern gboolean lifereaStarted;
 
@@ -190,23 +189,6 @@ xmlChar * common_uri_unescape(const xmlChar *url);
  * @returns new string with resulting absolute URL
  */
 xmlChar * common_build_url(const gchar *url, const gchar *baseURL);
-
-/**
- * Adds a directory to the list of pixmap directories
- * to be searched when using create_pixbuf()
- *
- * @param directory	directory path name
- */
-void	add_pixmap_directory (const gchar *directory);
-
-/**
- * Takes a filename and tries to load the image into a GdkPixbuf. 
- *
- * @param filename	the filename
- *
- * @returns a new pixbuf or NULL
- */
-GdkPixbuf*  create_pixbuf (const gchar *filename);
 
 /**
  * Analyzes the given string and returns the LTR/RTL

@@ -38,8 +38,8 @@
 #include "ui/ui_common.h"
 #include "ui/ui_dialog.h"
 #include "ui/ui_itemlist.h"
-#include "ui/ui_mainwindow.h"
 #include "ui/ui_prefs.h"
+#include "ui/ui_shell.h"
 #include "ui/ui_tray.h"
 #include "notification/notif_plugin.h"
 
@@ -349,7 +349,7 @@ on_gui_toolbar_style_changed (gpointer user_data)
 	conf_set_str_value (TOOLBAR_STYLE, gui_toolbar_style_values[value]);
 
 	style = conf_get_toolbar_style ();
-	ui_mainwindow_set_toolbar_style (style);
+	liferea_shell_set_toolbar_style (style);
 	g_free (style);
 }
 
@@ -387,29 +387,31 @@ on_default_update_interval_unit_changed (gpointer user_data)
 	on_default_update_interval_value_changed (NULL, NULL);
 }
 
-void on_menuselection_clicked(GtkButton *button, gpointer user_data) {
-	gint		active_button;
+void
+on_menuselection_clicked (GtkButton *button, gpointer user_data)
+{
+	gint active_button;
 	
-	active_button = GPOINTER_TO_INT(gtk_object_get_data(GTK_OBJECT(button), "option_number"));
-	switch(active_button) {
+	active_button = GPOINTER_TO_INT (gtk_object_get_data (GTK_OBJECT(button), "option_number"));
+	switch (active_button) {
 		case 1:
-			conf_set_bool_value(DISABLE_MENUBAR, FALSE);
-			conf_set_bool_value(DISABLE_TOOLBAR, FALSE);
+			conf_set_bool_value (DISABLE_MENUBAR, FALSE);
+			conf_set_bool_value (DISABLE_TOOLBAR, FALSE);
 			break;
 		case 2:
-			conf_set_bool_value(DISABLE_MENUBAR, FALSE);
-			conf_set_bool_value(DISABLE_TOOLBAR, TRUE);
+			conf_set_bool_value (DISABLE_MENUBAR, FALSE);
+			conf_set_bool_value (DISABLE_TOOLBAR, TRUE);
 			break;
 		case 3:
-			conf_set_bool_value(DISABLE_MENUBAR, TRUE);
-			conf_set_bool_value(DISABLE_TOOLBAR, FALSE);
+			conf_set_bool_value (DISABLE_MENUBAR, TRUE);
+			conf_set_bool_value (DISABLE_TOOLBAR, FALSE);
 			break;
 		default:
 			break;
 	}
 	
-	ui_mainwindow_update_menubar();
-	ui_mainwindow_update_toolbar();
+	liferea_shell_update_menubar ();
+	liferea_shell_update_toolbar ();
 }
 
 static void

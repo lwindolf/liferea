@@ -1469,43 +1469,40 @@ SWIG_Lua_dostring(lua_State *L, const char* str) {
 
 /* -------- TYPES TABLE (BEGIN) -------- */
 
-#define SWIGTYPE_p_EnclosureListView swig_types[0]
-#define SWIGTYPE_p_GHashTable swig_types[1]
-#define SWIGTYPE_p_GList swig_types[2]
-#define SWIGTYPE_p_GSList swig_types[3]
-#define SWIGTYPE_p_GTimeVal swig_types[4]
-#define SWIGTYPE_p_GtkButton swig_types[5]
-#define SWIGTYPE_p_GtkMenuItem swig_types[6]
-#define SWIGTYPE_p_GtkRadioAction swig_types[7]
-#define SWIGTYPE_p_GtkTreeIter swig_types[8]
-#define SWIGTYPE_p_GtkTreePath swig_types[9]
-#define SWIGTYPE_p_GtkTreeSelection swig_types[10]
-#define SWIGTYPE_p_GtkTreeSortable swig_types[11]
-#define SWIGTYPE_p_GtkTreeStore swig_types[12]
-#define SWIGTYPE_p_GtkTreeView swig_types[13]
-#define SWIGTYPE_p_GtkTreeViewColumn swig_types[14]
-#define SWIGTYPE_p_GtkWidget swig_types[15]
-#define SWIGTYPE_p_LifereaHtmlView swig_types[16]
-#define SWIGTYPE_p_f_p_q_const__char_gpointer__void swig_types[17]
-#define SWIGTYPE_p_gpointer swig_types[18]
-#define SWIGTYPE_p_gulong swig_types[19]
-#define SWIGTYPE_p_int swig_types[20]
-#define SWIGTYPE_p_item swig_types[21]
-#define SWIGTYPE_p_itemSetPtr swig_types[22]
-#define SWIGTYPE_p_node swig_types[23]
-#define SWIGTYPE_p_nodeSource swig_types[24]
-#define SWIGTYPE_p_nodeType swig_types[25]
-#define SWIGTYPE_p_p_GdkPixbuf swig_types[26]
-#define SWIGTYPE_p_socialSite swig_types[27]
-#define SWIGTYPE_p_subscription swig_types[28]
-#define SWIGTYPE_p_subscriptionType swig_types[29]
-#define SWIGTYPE_p_time_t swig_types[30]
-#define SWIGTYPE_p_updateJob swig_types[31]
-#define SWIGTYPE_p_updateOptionsPtr swig_types[32]
-#define SWIGTYPE_p_updateStatePtr swig_types[33]
-#define SWIGTYPE_p_xmlNodePtr swig_types[34]
-static swig_type_info *swig_types[36];
-static swig_module_info swig_module = {swig_types, 35, 0, 0, 0, 0};
+#define SWIGTYPE_p_GHashTable swig_types[0]
+#define SWIGTYPE_p_GList swig_types[1]
+#define SWIGTYPE_p_GSList swig_types[2]
+#define SWIGTYPE_p_GTimeVal swig_types[3]
+#define SWIGTYPE_p_GtkButton swig_types[4]
+#define SWIGTYPE_p_GtkMenuItem swig_types[5]
+#define SWIGTYPE_p_GtkRadioAction swig_types[6]
+#define SWIGTYPE_p_GtkTreeIter swig_types[7]
+#define SWIGTYPE_p_GtkTreePath swig_types[8]
+#define SWIGTYPE_p_GtkTreeSelection swig_types[9]
+#define SWIGTYPE_p_GtkTreeSortable swig_types[10]
+#define SWIGTYPE_p_GtkTreeStore swig_types[11]
+#define SWIGTYPE_p_GtkTreeView swig_types[12]
+#define SWIGTYPE_p_GtkTreeViewColumn swig_types[13]
+#define SWIGTYPE_p_GtkWidget swig_types[14]
+#define SWIGTYPE_p_gpointer swig_types[15]
+#define SWIGTYPE_p_gulong swig_types[16]
+#define SWIGTYPE_p_int swig_types[17]
+#define SWIGTYPE_p_item swig_types[18]
+#define SWIGTYPE_p_itemSetPtr swig_types[19]
+#define SWIGTYPE_p_node swig_types[20]
+#define SWIGTYPE_p_nodeSource swig_types[21]
+#define SWIGTYPE_p_nodeType swig_types[22]
+#define SWIGTYPE_p_p_GdkPixbuf swig_types[23]
+#define SWIGTYPE_p_socialSite swig_types[24]
+#define SWIGTYPE_p_subscription swig_types[25]
+#define SWIGTYPE_p_subscriptionType swig_types[26]
+#define SWIGTYPE_p_time_t swig_types[27]
+#define SWIGTYPE_p_updateJob swig_types[28]
+#define SWIGTYPE_p_updateOptionsPtr swig_types[29]
+#define SWIGTYPE_p_updateStatePtr swig_types[30]
+#define SWIGTYPE_p_xmlNodePtr swig_types[31]
+static swig_type_info *swig_types[33];
+static swig_module_info swig_module = {swig_types, 32, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -1529,7 +1526,6 @@ static swig_module_info swig_module = {swig_types, 35, 0, 0, 0, 0};
 
 #include "../ui/ui_feedlist.h"
 #include "../ui/ui_itemlist.h"
-#include "../ui/ui_mainwindow.h"
 #include "../ui/ui_node.h"
 
 #ifdef __cplusplus
@@ -8190,13 +8186,13 @@ fail:
 
 static int _wrap_ui_feedlist_init(lua_State* L) {
   int SWIG_arg = 0;
-  GtkWidget *arg1 = (GtkWidget *) 0 ;
+  GtkTreeView *arg1 = (GtkTreeView *) 0 ;
   
   SWIG_check_num_args("ui_feedlist_init",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("ui_feedlist_init",1,"GtkWidget *");
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("ui_feedlist_init",1,"GtkTreeView *");
   
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_GtkWidget,0))){
-    SWIG_fail_ptr("ui_feedlist_init",1,SWIGTYPE_p_GtkWidget);
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_GtkTreeView,0))){
+    SWIG_fail_ptr("ui_feedlist_init",1,SWIGTYPE_p_GtkTreeView);
   }
   
   ui_feedlist_init(arg1);
@@ -8452,10 +8448,17 @@ fail:
 
 static int _wrap_ui_itemlist_new(lua_State* L) {
   int SWIG_arg = 0;
+  GtkWidget *arg1 = (GtkWidget *) 0 ;
   GtkWidget *result = 0 ;
   
-  SWIG_check_num_args("ui_itemlist_new",0,0)
-  result = (GtkWidget *)ui_itemlist_new();
+  SWIG_check_num_args("ui_itemlist_new",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("ui_itemlist_new",1,"GtkWidget *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_GtkWidget,0))){
+    SWIG_fail_ptr("ui_itemlist_new",1,SWIGTYPE_p_GtkWidget);
+  }
+  
+  result = (GtkWidget *)ui_itemlist_new(arg1);
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_GtkWidget,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -9354,602 +9357,6 @@ fail:
 }
 
 
-static int _wrap_mainwindow_set(lua_State* L) {
-  int SWIG_arg = 0;
-  GtkWidget *arg1 = (GtkWidget *) 0 ;
-  
-  SWIG_check_num_args("mainwindow",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("mainwindow",1,"GtkWidget *");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_GtkWidget,0))){
-    SWIG_fail_ptr("mainwindow_set",1,SWIGTYPE_p_GtkWidget);
-  }
-  
-  mainwindow = arg1;
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_mainwindow_get(lua_State* L) {
-  int SWIG_arg = 0;
-  GtkWidget *result = 0 ;
-  
-  SWIG_check_num_args("mainwindow",0,0)
-  result = (GtkWidget *)mainwindow;
-  SWIG_NewPointerObj(L,result,SWIGTYPE_p_GtkWidget,0); SWIG_arg++; 
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_ui_mainwindow_init(lua_State* L) {
-  int SWIG_arg = 0;
-  int arg1 ;
-  
-  SWIG_check_num_args("ui_mainwindow_init",1,1)
-  if(!lua_isnumber(L,1)) SWIG_fail_arg("ui_mainwindow_init",1,"int");
-  arg1 = (int)lua_tonumber(L, 1);
-  ui_mainwindow_init(arg1);
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_ui_mainwindow_set_layout(lua_State* L) {
-  int SWIG_arg = 0;
-  unsigned int arg1 ;
-  
-  SWIG_check_num_args("ui_mainwindow_set_layout",1,1)
-  if(!lua_isnumber(L,1)) SWIG_fail_arg("ui_mainwindow_set_layout",1,"unsigned int");
-  arg1 = (unsigned int)lua_tonumber(L, 1);
-  ui_mainwindow_set_layout(arg1);
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_ui_mainwindow_get_active_htmlview(lua_State* L) {
-  int SWIG_arg = 0;
-  LifereaHtmlView *result = 0 ;
-  
-  SWIG_check_num_args("ui_mainwindow_get_active_htmlview",0,0)
-  result = (LifereaHtmlView *)ui_mainwindow_get_active_htmlview();
-  SWIG_NewPointerObj(L,result,SWIGTYPE_p_LifereaHtmlView,0); SWIG_arg++; 
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_ui_mainwindow_get_active_enclosure_list_view(lua_State* L) {
-  int SWIG_arg = 0;
-  EnclosureListView *result = 0 ;
-  
-  SWIG_check_num_args("ui_mainwindow_get_active_enclosure_list_view",0,0)
-  result = (EnclosureListView *)ui_mainwindow_get_active_enclosure_list_view();
-  SWIG_NewPointerObj(L,result,SWIGTYPE_p_EnclosureListView,0); SWIG_arg++; 
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_ui_mainwindow_set_toolbar_style(lua_State* L) {
-  int SWIG_arg = 0;
-  char *arg1 = (char *) 0 ;
-  
-  SWIG_check_num_args("ui_mainwindow_set_toolbar_style",1,1)
-  if(!lua_isstring(L,1)) SWIG_fail_arg("ui_mainwindow_set_toolbar_style",1,"char const *");
-  arg1 = (char *)lua_tostring(L, 1);
-  ui_mainwindow_set_toolbar_style((char const *)arg1);
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_ui_mainwindow_update_toolbar(lua_State* L) {
-  int SWIG_arg = 0;
-  
-  SWIG_check_num_args("ui_mainwindow_update_toolbar",0,0)
-  ui_mainwindow_update_toolbar();
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_ui_mainwindow_update_feed_menu(lua_State* L) {
-  int SWIG_arg = 0;
-  int arg1 ;
-  int arg2 ;
-  
-  SWIG_check_num_args("ui_mainwindow_update_feed_menu",2,2)
-  if(!lua_isnumber(L,1)) SWIG_fail_arg("ui_mainwindow_update_feed_menu",1,"int");
-  if(!lua_isnumber(L,2)) SWIG_fail_arg("ui_mainwindow_update_feed_menu",2,"int");
-  arg1 = (int)lua_tonumber(L, 1);
-  arg2 = (int)lua_tonumber(L, 2);
-  ui_mainwindow_update_feed_menu(arg1,arg2);
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_ui_mainwindow_update_item_menu(lua_State* L) {
-  int SWIG_arg = 0;
-  int arg1 ;
-  
-  SWIG_check_num_args("ui_mainwindow_update_item_menu",1,1)
-  if(!lua_isnumber(L,1)) SWIG_fail_arg("ui_mainwindow_update_item_menu",1,"int");
-  arg1 = (int)lua_tonumber(L, 1);
-  ui_mainwindow_update_item_menu(arg1);
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_ui_mainwindow_update_menubar(lua_State* L) {
-  int SWIG_arg = 0;
-  
-  SWIG_check_num_args("ui_mainwindow_update_menubar",0,0)
-  ui_mainwindow_update_menubar();
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_ui_mainwindow_set_status_bar(lua_State* L) {
-  int SWIG_arg = 0;
-  char *arg1 = (char *) 0 ;
-  void *arg2 = 0 ;
-  
-  SWIG_check_num_args("ui_mainwindow_set_status_bar",1,1)
-  if(!lua_isstring(L,1)) SWIG_fail_arg("ui_mainwindow_set_status_bar",1,"char const *");
-  arg1 = (char *)lua_tostring(L, 1);
-  ui_mainwindow_set_status_bar((char const *)arg1,arg2);
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_ui_mainwindow_set_important_status_bar(lua_State* L) {
-  int SWIG_arg = 0;
-  char *arg1 = (char *) 0 ;
-  void *arg2 = 0 ;
-  
-  SWIG_check_num_args("ui_mainwindow_set_important_status_bar",1,1)
-  if(!lua_isstring(L,1)) SWIG_fail_arg("ui_mainwindow_set_important_status_bar",1,"char const *");
-  arg1 = (char *)lua_tostring(L, 1);
-  ui_mainwindow_set_important_status_bar((char const *)arg1,arg2);
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_ui_mainwindow_update_feedsinfo(lua_State* L) {
-  int SWIG_arg = 0;
-  
-  SWIG_check_num_args("ui_mainwindow_update_feedsinfo",0,0)
-  ui_mainwindow_update_feedsinfo();
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_ui_mainwindow_online_status_changed(lua_State* L) {
-  int SWIG_arg = 0;
-  int arg1 ;
-  
-  SWIG_check_num_args("ui_mainwindow_online_status_changed",1,1)
-  if(!lua_isnumber(L,1)) SWIG_fail_arg("ui_mainwindow_online_status_changed",1,"int");
-  arg1 = (int)lua_tonumber(L, 1);
-  ui_mainwindow_online_status_changed(arg1);
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_ui_mainwindow_save_position(lua_State* L) {
-  int SWIG_arg = 0;
-  
-  SWIG_check_num_args("ui_mainwindow_save_position",0,0)
-  ui_mainwindow_save_position();
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_ui_mainwindow_tray_add(lua_State* L) {
-  int SWIG_arg = 0;
-  
-  SWIG_check_num_args("ui_mainwindow_tray_add",0,0)
-  ui_mainwindow_tray_add();
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_ui_mainwindow_tray_remove(lua_State* L) {
-  int SWIG_arg = 0;
-  
-  SWIG_check_num_args("ui_mainwindow_tray_remove",0,0)
-  ui_mainwindow_tray_remove();
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_ui_mainwindow_show(lua_State* L) {
-  int SWIG_arg = 0;
-  
-  SWIG_check_num_args("ui_mainwindow_show",0,0)
-  ui_mainwindow_show();
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_on_onlinebtn_clicked(lua_State* L) {
-  int SWIG_arg = 0;
-  GtkButton *arg1 = (GtkButton *) 0 ;
-  gpointer arg2 ;
-  gpointer *argp2 ;
-  
-  SWIG_check_num_args("on_onlinebtn_clicked",2,2)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("on_onlinebtn_clicked",1,"GtkButton *");
-  if(!lua_isuserdata(L,2)) SWIG_fail_arg("on_onlinebtn_clicked",2,"gpointer");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_GtkButton,0))){
-    SWIG_fail_ptr("on_onlinebtn_clicked",1,SWIGTYPE_p_GtkButton);
-  }
-  
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&argp2,SWIGTYPE_p_gpointer,0))){
-    SWIG_fail_ptr("on_onlinebtn_clicked",2,SWIGTYPE_p_gpointer);
-  }
-  arg2 = *argp2;
-  
-  on_onlinebtn_clicked(arg1,arg2);
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_ui_mainwindow_toggle_visibility(lua_State* L) {
-  int SWIG_arg = 0;
-  GtkMenuItem *arg1 = (GtkMenuItem *) 0 ;
-  gpointer arg2 ;
-  gpointer *argp2 ;
-  
-  SWIG_check_num_args("ui_mainwindow_toggle_visibility",2,2)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("ui_mainwindow_toggle_visibility",1,"GtkMenuItem *");
-  if(!lua_isuserdata(L,2)) SWIG_fail_arg("ui_mainwindow_toggle_visibility",2,"gpointer");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_GtkMenuItem,0))){
-    SWIG_fail_ptr("ui_mainwindow_toggle_visibility",1,SWIGTYPE_p_GtkMenuItem);
-  }
-  
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&argp2,SWIGTYPE_p_gpointer,0))){
-    SWIG_fail_ptr("ui_mainwindow_toggle_visibility",2,SWIGTYPE_p_gpointer);
-  }
-  arg2 = *argp2;
-  
-  ui_mainwindow_toggle_visibility(arg1,arg2);
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_ui_choose_file(lua_State* L) {
-  int SWIG_arg = 0;
-  char *arg1 = (char *) 0 ;
-  char *arg2 = (char *) 0 ;
-  int arg3 ;
-  fileChoosenCallback arg4 = (fileChoosenCallback) 0 ;
-  char *arg5 = (char *) 0 ;
-  char *arg6 = (char *) 0 ;
-  gpointer arg7 ;
-  gpointer *argp7 ;
-  
-  SWIG_check_num_args("ui_choose_file",7,7)
-  if(!lua_isstring(L,1)) SWIG_fail_arg("ui_choose_file",1,"char *");
-  if(!lua_isstring(L,2)) SWIG_fail_arg("ui_choose_file",2,"char *");
-  if(!lua_isnumber(L,3)) SWIG_fail_arg("ui_choose_file",3,"int");
-  if(!SWIG_isptrtype(L,4)) SWIG_fail_arg("ui_choose_file",4,"fileChoosenCallback");
-  if(!lua_isstring(L,5)) SWIG_fail_arg("ui_choose_file",5,"char const *");
-  if(!lua_isstring(L,6)) SWIG_fail_arg("ui_choose_file",6,"char const *");
-  if(!lua_isuserdata(L,7)) SWIG_fail_arg("ui_choose_file",7,"gpointer");
-  arg1 = (char *)lua_tostring(L, 1);
-  arg2 = (char *)lua_tostring(L, 2);
-  arg3 = (int)lua_tonumber(L, 3);
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,4,(void**)&arg4,SWIGTYPE_p_f_p_q_const__char_gpointer__void,0))){
-    SWIG_fail_ptr("ui_choose_file",4,SWIGTYPE_p_f_p_q_const__char_gpointer__void);
-  }
-  
-  arg5 = (char *)lua_tostring(L, 5);
-  arg6 = (char *)lua_tostring(L, 6);
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,7,(void**)&argp7,SWIGTYPE_p_gpointer,0))){
-    SWIG_fail_ptr("ui_choose_file",7,SWIGTYPE_p_gpointer);
-  }
-  arg7 = *argp7;
-  
-  ui_choose_file(arg1,arg2,arg3,arg4,(char const *)arg5,(char const *)arg6,arg7);
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_ui_choose_directory(lua_State* L) {
-  int SWIG_arg = 0;
-  char *arg1 = (char *) 0 ;
-  char *arg2 = (char *) 0 ;
-  fileChoosenCallback arg3 = (fileChoosenCallback) 0 ;
-  char *arg4 = (char *) 0 ;
-  gpointer arg5 ;
-  gpointer *argp5 ;
-  
-  SWIG_check_num_args("ui_choose_directory",5,5)
-  if(!lua_isstring(L,1)) SWIG_fail_arg("ui_choose_directory",1,"char *");
-  if(!lua_isstring(L,2)) SWIG_fail_arg("ui_choose_directory",2,"char *");
-  if(!SWIG_isptrtype(L,3)) SWIG_fail_arg("ui_choose_directory",3,"fileChoosenCallback");
-  if(!lua_isstring(L,4)) SWIG_fail_arg("ui_choose_directory",4,"char const *");
-  if(!lua_isuserdata(L,5)) SWIG_fail_arg("ui_choose_directory",5,"gpointer");
-  arg1 = (char *)lua_tostring(L, 1);
-  arg2 = (char *)lua_tostring(L, 2);
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,3,(void**)&arg3,SWIGTYPE_p_f_p_q_const__char_gpointer__void,0))){
-    SWIG_fail_ptr("ui_choose_directory",3,SWIGTYPE_p_f_p_q_const__char_gpointer__void);
-  }
-  
-  arg4 = (char *)lua_tostring(L, 4);
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,5,(void**)&argp5,SWIGTYPE_p_gpointer,0))){
-    SWIG_fail_ptr("ui_choose_directory",5,SWIGTYPE_p_gpointer);
-  }
-  arg5 = *argp5;
-  
-  ui_choose_directory(arg1,arg2,arg3,(char const *)arg4,arg5);
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_on_treeview_move(lua_State* L) {
-  int SWIG_arg = 0;
-  GtkWidget *arg1 = (GtkWidget *) 0 ;
-  int arg2 ;
-  
-  SWIG_check_num_args("on_treeview_move",2,2)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("on_treeview_move",1,"GtkWidget *");
-  if(!lua_isnumber(L,2)) SWIG_fail_arg("on_treeview_move",2,"int");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_GtkWidget,0))){
-    SWIG_fail_ptr("on_treeview_move",1,SWIGTYPE_p_GtkWidget);
-  }
-  
-  arg2 = (int)lua_tonumber(L, 2);
-  on_treeview_move(arg1,arg2);
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_on_popup_quit(lua_State* L) {
-  int SWIG_arg = 0;
-  gpointer arg1 ;
-  unsigned int arg2 ;
-  GtkWidget *arg3 = (GtkWidget *) 0 ;
-  gpointer *argp1 ;
-  
-  SWIG_check_num_args("on_popup_quit",3,3)
-  if(!lua_isuserdata(L,1)) SWIG_fail_arg("on_popup_quit",1,"gpointer");
-  if(!lua_isnumber(L,2)) SWIG_fail_arg("on_popup_quit",2,"unsigned int");
-  if(!SWIG_isptrtype(L,3)) SWIG_fail_arg("on_popup_quit",3,"GtkWidget *");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_gpointer,0))){
-    SWIG_fail_ptr("on_popup_quit",1,SWIGTYPE_p_gpointer);
-  }
-  arg1 = *argp1;
-  
-  arg2 = (unsigned int)lua_tonumber(L, 2);
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,3,(void**)&arg3,SWIGTYPE_p_GtkWidget,0))){
-    SWIG_fail_ptr("on_popup_quit",3,SWIGTYPE_p_GtkWidget);
-  }
-  
-  on_popup_quit(arg1,arg2,arg3);
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_ui_show_info_box(lua_State* L) {
-  int SWIG_arg = 0;
-  char *arg1 = (char *) 0 ;
-  void *arg2 = 0 ;
-  
-  SWIG_check_num_args("ui_show_info_box",1,1)
-  if(!lua_isstring(L,1)) SWIG_fail_arg("ui_show_info_box",1,"char const *");
-  arg1 = (char *)lua_tostring(L, 1);
-  ui_show_info_box((char const *)arg1,arg2);
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_ui_show_error_box(lua_State* L) {
-  int SWIG_arg = 0;
-  char *arg1 = (char *) 0 ;
-  void *arg2 = 0 ;
-  
-  SWIG_check_num_args("ui_show_error_box",1,1)
-  if(!lua_isstring(L,1)) SWIG_fail_arg("ui_show_error_box",1,"char const *");
-  arg1 = (char *)lua_tostring(L, 1);
-  ui_show_error_box((char const *)arg1,arg2);
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
 static int _wrap_ui_node_to_iter(lua_State* L) {
   int SWIG_arg = 0;
   char *arg1 = (char *) 0 ;
@@ -10381,31 +9788,6 @@ static const struct luaL_reg swig_commands[] = {
     { "on_popup_copy_URL_clipboard", _wrap_on_popup_copy_URL_clipboard},
     { "on_popup_social_bm_item_selected", _wrap_on_popup_social_bm_item_selected},
     { "on_popup_social_bm_link_selected", _wrap_on_popup_social_bm_link_selected},
-    { "ui_mainwindow_init", _wrap_ui_mainwindow_init},
-    { "ui_mainwindow_set_layout", _wrap_ui_mainwindow_set_layout},
-    { "ui_mainwindow_get_active_htmlview", _wrap_ui_mainwindow_get_active_htmlview},
-    { "ui_mainwindow_get_active_enclosure_list_view", _wrap_ui_mainwindow_get_active_enclosure_list_view},
-    { "ui_mainwindow_set_toolbar_style", _wrap_ui_mainwindow_set_toolbar_style},
-    { "ui_mainwindow_update_toolbar", _wrap_ui_mainwindow_update_toolbar},
-    { "ui_mainwindow_update_feed_menu", _wrap_ui_mainwindow_update_feed_menu},
-    { "ui_mainwindow_update_item_menu", _wrap_ui_mainwindow_update_item_menu},
-    { "ui_mainwindow_update_menubar", _wrap_ui_mainwindow_update_menubar},
-    { "ui_mainwindow_set_status_bar", _wrap_ui_mainwindow_set_status_bar},
-    { "ui_mainwindow_set_important_status_bar", _wrap_ui_mainwindow_set_important_status_bar},
-    { "ui_mainwindow_update_feedsinfo", _wrap_ui_mainwindow_update_feedsinfo},
-    { "ui_mainwindow_online_status_changed", _wrap_ui_mainwindow_online_status_changed},
-    { "ui_mainwindow_save_position", _wrap_ui_mainwindow_save_position},
-    { "ui_mainwindow_tray_add", _wrap_ui_mainwindow_tray_add},
-    { "ui_mainwindow_tray_remove", _wrap_ui_mainwindow_tray_remove},
-    { "ui_mainwindow_show", _wrap_ui_mainwindow_show},
-    { "on_onlinebtn_clicked", _wrap_on_onlinebtn_clicked},
-    { "ui_mainwindow_toggle_visibility", _wrap_ui_mainwindow_toggle_visibility},
-    { "ui_choose_file", _wrap_ui_choose_file},
-    { "ui_choose_directory", _wrap_ui_choose_directory},
-    { "on_treeview_move", _wrap_on_treeview_move},
-    { "on_popup_quit", _wrap_on_popup_quit},
-    { "ui_show_info_box", _wrap_ui_show_info_box},
-    { "ui_show_error_box", _wrap_ui_show_error_box},
     { "ui_node_to_iter", _wrap_ui_node_to_iter},
     { "ui_node_update_iter", _wrap_ui_node_update_iter},
     { "ui_node_add", _wrap_ui_node_add},
@@ -10423,7 +9805,6 @@ static const struct luaL_reg swig_commands[] = {
 static swig_lua_var_info swig_variables[] = {
     { "icons", _wrap_icons_get, _wrap_icons_set },
     { "feedstore", _wrap_feedstore_get, _wrap_feedstore_set },
-    { "mainwindow", _wrap_mainwindow_get, _wrap_mainwindow_set },
     {0,0,0}
 };
 
@@ -10489,16 +9870,11 @@ static swig_lua_const_info swig_constants[] = {
 { SWIG_LUA_INT,     (char *)"IS_STATE", (long) IS_STATE, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"ITEMSTORE_UNREAD", (long) ITEMSTORE_UNREAD, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"ITEMSTORE_LEN", (long) ITEMSTORE_LEN, 0, 0, 0},
-{ SWIG_LUA_INT,     (char *)"MAINWINDOW_SHOWN", (long) MAINWINDOW_SHOWN, 0, 0, 0},
-{ SWIG_LUA_INT,     (char *)"MAINWINDOW_MAXIMIZED", (long) MAINWINDOW_MAXIMIZED, 0, 0, 0},
-{ SWIG_LUA_INT,     (char *)"MAINWINDOW_ICONIFIED", (long) MAINWINDOW_ICONIFIED, 0, 0, 0},
-{ SWIG_LUA_INT,     (char *)"MAINWINDOW_HIDDEN", (long) MAINWINDOW_HIDDEN, 0, 0, 0},
     {0,0,0,0,0,0}
 };
 
 /* -------- TYPE CONVERSION AND EQUIVALENCE RULES (BEGIN) -------- */
 
-static swig_type_info _swigt__p_EnclosureListView = {"_p_EnclosureListView", "EnclosureListView *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_GHashTable = {"_p_GHashTable", "GHashTable *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_GList = {"_p_GList", "GList *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_GSList = {"_p_GSList", "GSList *", 0, 0, (void*)0, 0};
@@ -10514,8 +9890,6 @@ static swig_type_info _swigt__p_GtkTreeStore = {"_p_GtkTreeStore", "GtkTreeStore
 static swig_type_info _swigt__p_GtkTreeView = {"_p_GtkTreeView", "GtkTreeView *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_GtkTreeViewColumn = {"_p_GtkTreeViewColumn", "GtkTreeViewColumn *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_GtkWidget = {"_p_GtkWidget", "GtkWidget *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_LifereaHtmlView = {"_p_LifereaHtmlView", "LifereaHtmlView *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_f_p_q_const__char_gpointer__void = {"_p_f_p_q_const__char_gpointer__void", "fileChoosenCallback|void (*)(char const *,gpointer)", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gpointer = {"_p_gpointer", "gpointer *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gulong = {"_p_gulong", "gulong *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_int = {"_p_int", "int *", 0, 0, (void*)0, 0};
@@ -10535,7 +9909,6 @@ static swig_type_info _swigt__p_updateStatePtr = {"_p_updateStatePtr", "updateSt
 static swig_type_info _swigt__p_xmlNodePtr = {"_p_xmlNodePtr", "xmlNodePtr *", 0, 0, (void*)0, 0};
 
 static swig_type_info *swig_type_initial[] = {
-  &_swigt__p_EnclosureListView,
   &_swigt__p_GHashTable,
   &_swigt__p_GList,
   &_swigt__p_GSList,
@@ -10551,8 +9924,6 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_GtkTreeView,
   &_swigt__p_GtkTreeViewColumn,
   &_swigt__p_GtkWidget,
-  &_swigt__p_LifereaHtmlView,
-  &_swigt__p_f_p_q_const__char_gpointer__void,
   &_swigt__p_gpointer,
   &_swigt__p_gulong,
   &_swigt__p_int,
@@ -10572,7 +9943,6 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_xmlNodePtr,
 };
 
-static swig_cast_info _swigc__p_EnclosureListView[] = {  {&_swigt__p_EnclosureListView, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_GHashTable[] = {  {&_swigt__p_GHashTable, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_GList[] = {  {&_swigt__p_GList, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_GSList[] = {  {&_swigt__p_GSList, 0, 0, 0},{0, 0, 0, 0}};
@@ -10588,8 +9958,6 @@ static swig_cast_info _swigc__p_GtkTreeStore[] = {  {&_swigt__p_GtkTreeStore, 0,
 static swig_cast_info _swigc__p_GtkTreeView[] = {  {&_swigt__p_GtkTreeView, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_GtkTreeViewColumn[] = {  {&_swigt__p_GtkTreeViewColumn, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_GtkWidget[] = {  {&_swigt__p_GtkWidget, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_LifereaHtmlView[] = {  {&_swigt__p_LifereaHtmlView, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_f_p_q_const__char_gpointer__void[] = {  {&_swigt__p_f_p_q_const__char_gpointer__void, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gpointer[] = {  {&_swigt__p_gpointer, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gulong[] = {  {&_swigt__p_gulong, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_int[] = {  {&_swigt__p_int, 0, 0, 0},{0, 0, 0, 0}};
@@ -10609,7 +9977,6 @@ static swig_cast_info _swigc__p_updateStatePtr[] = {  {&_swigt__p_updateStatePtr
 static swig_cast_info _swigc__p_xmlNodePtr[] = {  {&_swigt__p_xmlNodePtr, 0, 0, 0},{0, 0, 0, 0}};
 
 static swig_cast_info *swig_cast_initial[] = {
-  _swigc__p_EnclosureListView,
   _swigc__p_GHashTable,
   _swigc__p_GList,
   _swigc__p_GSList,
@@ -10625,8 +9992,6 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_GtkTreeView,
   _swigc__p_GtkTreeViewColumn,
   _swigc__p_GtkWidget,
-  _swigc__p_LifereaHtmlView,
-  _swigc__p_f_p_q_const__char_gpointer__void,
   _swigc__p_gpointer,
   _swigc__p_gulong,
   _swigc__p_int,

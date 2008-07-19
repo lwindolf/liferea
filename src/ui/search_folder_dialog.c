@@ -107,7 +107,7 @@ on_propdialog_response (GtkDialog *dialog, gint response_id, gpointer user_data)
 		/* save new search folder settings */
 		node_set_title (sfd->priv->node, gtk_entry_get_text (GTK_ENTRY (sfd->priv->nameEntry)));
 		rule_editor_save (sfd->priv->re, sfd->priv->vfolder);
-		sfd->priv->vfolder->anyMatch = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (dialog, "anyRuleRadioBtn")));
+		sfd->priv->vfolder->anyMatch = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "anyRuleRadioBtn")));
 
 		/* update search folder */
 		ui_itemlist_clear ();

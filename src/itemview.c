@@ -17,6 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+
 #include <string.h>
 
 #include "common.h"
@@ -29,7 +30,7 @@
 #include "node.h"
 #include "vfolder.h"
 #include "ui/ui_itemlist.h"
-#include "ui/ui_mainwindow.h"
+#include "ui/ui_shell.h"
 
 static struct itemView_priv {
 	gboolean	htmlOnly;		/**< TRUE if HTML only mode */
@@ -83,7 +84,7 @@ itemview_clear (void)
 
 	ui_itemlist_clear ();
 	htmlview_clear ();
-	enclosure_list_view_hide (ui_mainwindow_get_active_enclosure_list_view ());
+	enclosure_list_view_hide (liferea_shell_get_active_enclosure_list_view ());
 	
 	itemView_priv.needsHTMLViewUpdate = TRUE;
 }
@@ -163,9 +164,9 @@ itemview_select_item (itemPtr item)
 	htmlview_select_item (item);
 
 	if (item)
-		enclosure_list_view_load (ui_mainwindow_get_active_enclosure_list_view (), item);
+		enclosure_list_view_load (liferea_shell_get_active_enclosure_list_view (), item);
 	else
-		enclosure_list_view_hide (ui_mainwindow_get_active_enclosure_list_view ());
+		enclosure_list_view_hide (liferea_shell_get_active_enclosure_list_view ());
 }
 
 void itemview_update_item(itemPtr item) {
@@ -228,14 +229,15 @@ void itemview_update_node_info(nodePtr node) {
 	/* Just setting the update flag, because node info is not cached */
 }
 
-void itemview_update(void) {
-
-	if(itemView_priv.needsHTMLViewUpdate) {
+void
+itemview_update (void)
+{
+	if (itemView_priv.needsHTMLViewUpdate) {
 		itemView_priv.needsHTMLViewUpdate = FALSE;
-		htmlview_update(ui_mainwindow_get_active_htmlview(), itemView_priv.mode);
+		htmlview_update (liferea_shell_get_active_htmlview (), itemView_priv.mode);
 	}
 	if (itemView_priv.node)
-		ui_mainwindow_update_allitems_actions(0 != itemView_priv.node->itemCount, 0 != itemView_priv.node->unreadCount);
+		liferea_shell_update_allitems_actions (0 != itemView_priv.node->itemCount, 0 != itemView_priv.node->unreadCount);
 }
 
 /* date format handling (not sure if this is the right place) */

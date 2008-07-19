@@ -36,8 +36,8 @@
 #include "vfolder.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_htmlview.h"
-#include "ui/ui_mainwindow.h"
 #include "ui/ui_node.h"
+#include "ui/ui_shell.h"
 #include "ui/ui_subscription.h"
 #include "ui/ui_tray.h"
 #include "fl_sources/bloglines_source.h"
@@ -152,11 +152,11 @@ feedlist_update_new_item_count (guint addValue)
 	   more new items can be reported than effectively
 	   were merged. The simplest way to catch this case
 	   is by checking for new count > unread count here. */
-	if(newCount > rootNode->unreadCount)
+	if (newCount > rootNode->unreadCount)
 		newCount = rootNode->unreadCount;
 		
 	ui_tray_update ();
-	ui_mainwindow_update_feedsinfo ();
+	liferea_shell_update_unread_stats ();
 }
 
 void
@@ -165,7 +165,7 @@ feedlist_reset_new_item_count (void)
 	if (newCount) {
 		newCount = 0;
 		ui_tray_update ();
-		ui_mainwindow_update_feedsinfo ();
+		liferea_shell_update_unread_stats ();
 	}
 }
 
@@ -357,8 +357,8 @@ feedlist_unselect (void)
 		
 	itemlist_unload (FALSE /* mark all read */);
 	ui_feedlist_select (NULL);
-	ui_mainwindow_update_feed_menu (FALSE, FALSE);
-	ui_mainwindow_update_allitems_actions (FALSE, FALSE);
+	liferea_shell_update_feed_menu (FALSE, FALSE);
+	liferea_shell_update_allitems_actions (FALSE, FALSE);
 }
 
 void
@@ -386,7 +386,7 @@ feedlist_selection_changed (nodePtr node)
 			itemlist_set_view_mode (node_get_view_mode (selectedNode));		
 			itemlist_load (selectedNode);
 		} else {
-			liferea_htmlview_clear (ui_mainwindow_get_active_htmlview ());
+			liferea_htmlview_clear (liferea_shell_get_active_htmlview ());
 		}
 		
 		if (selectedNode)
@@ -413,7 +413,7 @@ on_menu_update(GtkWidget *widget, gpointer user_data)
 	if (network_is_online ()) 
 		node_update_subscription (selectedNode, GUINT_TO_POINTER (FEED_REQ_PRIORITY_HIGH));
 	else
-		ui_mainwindow_set_status_bar (_("Liferea is in offline mode. No update possible."));
+		liferea_shell_set_status_bar (_("Liferea is in offline mode. No update possible."));
 }
 
 void
@@ -422,7 +422,7 @@ on_menu_update_all(GtkWidget *widget, gpointer user_data)
 	if (network_is_online ()) 
 		node_update_subscription (feedlist_get_root(), GUINT_TO_POINTER (FEED_REQ_PRIORITY_HIGH));
 	else
-		ui_mainwindow_set_status_bar (_("Liferea is in offline mode. No update possible."));
+		liferea_shell_set_status_bar (_("Liferea is in offline mode. No update possible."));
 }
 
 void

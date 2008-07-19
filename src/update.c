@@ -45,7 +45,7 @@
 #include "update.h"
 #include "xml.h"
 #include "ui/ui_htmlview.h"
-#include "ui/ui_mainwindow.h"
+#include "ui/ui_shell.h"
 #include "ui/ui_tray.h"
 
 /** global update job list, used for lookups when cancelling */
@@ -404,7 +404,7 @@ update_exec_cmd (updateJobPtr job)
 		if (job->result->data)
 			job->result->data[job->result->size] = '\0';
 	} else {
-		ui_mainwindow_set_status_bar (_("Error: Could not open pipe \"%s\""), (job->request->source) + 1);
+		liferea_shell_set_status_bar (_("Error: Could not open pipe \"%s\""), (job->request->source) + 1);
 		job->result->httpstatus = 404;	/* FIXME: maybe setting request->returncode would be better */
 	}
 	
@@ -430,13 +430,13 @@ update_load_file (updateJobPtr job)
 		/* we have a file... */
 		if ((!g_file_get_contents (filename, &(job->result->data), &(job->result->size), NULL)) || (job->result->data[0] == '\0')) {
 			job->result->httpstatus = 403;	/* FIXME: maybe setting request->returncode would be better */
-			ui_mainwindow_set_status_bar (_("Error: Could not open file \"%s\""), filename);
+			liferea_shell_set_status_bar (_("Error: Could not open file \"%s\""), filename);
 		} else {
 			job->result->httpstatus = 200;
 			debug2 (DEBUG_UPDATE, "Successfully read %d bytes from file %s.", job->result->size, filename);
 		}
 	} else {
-		ui_mainwindow_set_status_bar (_("Error: There is no file \"%s\""), filename);
+		liferea_shell_set_status_bar (_("Error: There is no file \"%s\""), filename);
 		job->result->httpstatus = 404;	/* FIXME: maybe setting request->returncode would be better */
 	}
 	

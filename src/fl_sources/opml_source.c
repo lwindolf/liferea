@@ -31,6 +31,7 @@
 #include "folder.h"
 #include "node.h"
 #include "xml.h"
+#include "ui/ui_common.h"
 #include "ui/ui_dialog.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_node.h"
@@ -322,10 +323,10 @@ opml_source_setup (nodePtr parent, nodePtr node)
 {
 	gchar	*filename;
 	
-	node_set_type(node, node_source_get_node_type());
+	node_set_type (node, node_source_get_node_type ());
 	
 	filename = g_strdup_printf ("%s.png", NODE_SOURCE_TYPE (node)->id);
-	node->icon = create_pixbuf (filename);
+	node->icon = ui_common_create_pixbuf (filename);
 	g_free (filename);
 	
 	if (parent) {

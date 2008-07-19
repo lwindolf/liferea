@@ -32,9 +32,10 @@
 #include "itemview.h"
 #include "newsbin.h"
 #include "social.h"
+#include "ui/ui_common.h"
 #include "ui/ui_htmlview.h"
 #include "ui/ui_itemlist.h"
-#include "ui/ui_mainwindow.h"
+#include "ui/ui_shell.h"
 #include "ui/ui_popup.h"
 #include "ui/ui_tabs.h"
 
@@ -269,7 +270,7 @@ ui_itemlist_key_press_cb (GtkWidget *widget,
 }
 
 GtkWidget * 
-ui_itemlist_new (void) 
+ui_itemlist_new (GtkWidget *mainwindow) 
 {
 	GtkCellRenderer		*renderer;
 	GtkTreeViewColumn 	*column;
@@ -363,7 +364,7 @@ ui_itemlist_prefocus (void)
 	   one for the selected item)!!! */
 
 	/* we need to restore the focus after we temporarily select the itemlist */
-	focus_widget = gtk_window_get_focus (GTK_WINDOW (mainwindow));
+	focus_widget = gtk_window_get_focus (GTK_WINDOW (liferea_shell_get_window ()));
 
 	/* prevent marking as unread before focussing, which leads to a selection */
 	gtk_widget_grab_focus (GTK_WIDGET (itemlist_treeview));
@@ -449,7 +450,7 @@ on_popup_launchitem_selected (void)
 				       
 		item_unload (item);
 	} else {
-		ui_mainwindow_set_important_status_bar (_("No item has been selected"));
+		liferea_shell_set_important_status_bar (_("No item has been selected"));
 	}
 }
 
@@ -469,7 +470,7 @@ on_popup_launchitem_in_tab_selected (void)
 			
 		item_unload (item);
 	} else {
-		ui_mainwindow_set_important_status_bar (_("No item has been selected"));
+		liferea_shell_set_important_status_bar (_("No item has been selected"));
 	}
 }
 
@@ -545,10 +546,10 @@ on_remove_item_activate (GtkMenuItem *menuitem, gpointer user_data)
 	
 	item = itemlist_get_selected ();
 	if (item) {
-		on_treeview_move (GTK_WIDGET (itemlist_treeview), 1);
+		ui_common_treeview_move_cursor (itemlist_treeview, 1);
 		itemlist_remove_item (item);
 	} else {
-		ui_mainwindow_set_important_status_bar (_("No item has been selected"));
+		liferea_shell_set_important_status_bar (_("No item has been selected"));
 	}
 }
 
@@ -695,7 +696,7 @@ on_popup_copy_URL_clipboard (void)
 		gtk_clipboard_set_text (gtk_clipboard_get (GDK_SELECTION_PRIMARY), item_get_source (item), -1);
 		gtk_clipboard_set_text (gtk_clipboard_get (GDK_SELECTION_CLIPBOARD), item_get_source (item), -1);
 	} else {
-		ui_mainwindow_set_important_status_bar (_("No item has been selected"));
+		liferea_shell_set_important_status_bar (_("No item has been selected"));
 	}
 }
 
@@ -703,7 +704,7 @@ void
 ui_itemlist_search_item_link (itemPtr item)
 {
 	gchar *url = social_get_link_search_url (item_get_source (item));
-	liferea_htmlview_launch_URL (ui_mainwindow_get_active_htmlview (), url, UI_HTMLVIEW_LAUNCH_DEFAULT);
+	liferea_htmlview_launch_URL (liferea_shell_get_active_htmlview (), url, UI_HTMLVIEW_LAUNCH_DEFAULT);
 	g_free (url);
 }
 
@@ -711,7 +712,7 @@ void
 ui_itemlist_add_item_bookmark (itemPtr item)
 {
 	gchar *url = social_get_bookmark_url (item_get_source (item), item_get_title (item));
-	liferea_htmlview_launch_URL (ui_mainwindow_get_active_htmlview (), url, UI_HTMLVIEW_LAUNCH_EXTERNAL);
+	liferea_htmlview_launch_URL (liferea_shell_get_active_htmlview (), url, UI_HTMLVIEW_LAUNCH_EXTERNAL);
 	g_free (url);
 }
 
@@ -724,7 +725,7 @@ on_popup_social_bm_item_selected (void)
 	if (item)
 		ui_itemlist_add_item_bookmark (item);
 	else
-		ui_mainwindow_set_important_status_bar (_("No item has been selected"));
+		liferea_shell_set_important_status_bar (_("No item has been selected"));
 }
 
 void
@@ -732,10 +733,10 @@ on_popup_social_bm_link_selected (gpointer selectedUrl, guint callback_action, G
 {	
 	if (selectedUrl) {
 		gchar *url = social_get_bookmark_url (selectedUrl, "");
-		liferea_htmlview_launch_URL (ui_mainwindow_get_active_htmlview (), url, UI_HTMLVIEW_LAUNCH_EXTERNAL);
+		liferea_htmlview_launch_URL (liferea_shell_get_active_htmlview (), url, UI_HTMLVIEW_LAUNCH_EXTERNAL);
 		g_free (url);
 	} else {
-		ui_mainwindow_set_important_status_bar (_("No link selected!"));
+		liferea_shell_set_important_status_bar (_("No link selected!"));
 	}
 }
 
@@ -749,7 +750,7 @@ on_itemlist_selection_changed (GtkTreeSelection *selection, gpointer data)
 	if (gtk_tree_selection_get_selected (selection, &model, &iter))
 		item = item_load (ui_iter_to_item_id (&iter));
 
-	ui_mainwindow_update_item_menu (NULL != item);
+	liferea_shell_update_item_menu (NULL != item);
 	if (item)
 		itemlist_selection_changed (item);
 }

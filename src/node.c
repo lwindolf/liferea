@@ -204,24 +204,26 @@ node_calc_counters (nodePtr node)
 	NODE_TYPE (node)->update_counters (node);
 }
 
-static void node_update_parent_counters(nodePtr node) {
+static void
+node_update_parent_counters (nodePtr node)
+{
 	guint old;
 
-	if(!node)
+	if (!node)
 		return;
 		
 	old = node->unreadCount;
 
-	NODE_TYPE(node)->update_counters(node);
+	NODE_TYPE (node)->update_counters (node);
 	
 	if (old != node->unreadCount) {
 		ui_node_update (node->id);
 		ui_tray_update ();
-		ui_mainwindow_update_feedsinfo ();
+		liferea_shell_update_unread_stats ();
 	}
 	
-	if(node->parent)
-		node_update_parent_counters(node->parent);
+	if (node->parent)
+		node_update_parent_counters (node->parent);
 }
 
 void node_update_counters(nodePtr node) {

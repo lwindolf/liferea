@@ -36,7 +36,7 @@
 #include "item_state.h"
 #include "plugin.h"
 #include "ui/ui_feedlist.h"
-#include "ui/ui_mainwindow.h"
+#include "ui/ui_shell.h"
 #include "ui/ui_tray.h"
 
 #include "notification/notif_plugin.h"
@@ -54,8 +54,7 @@ static void notif_libnotify_callback_open ( NotifyNotification *n, gchar *action
 
 	notify_notification_close(n, NULL);
 
-	ui_mainwindow_show();
-
+	liferea_shell_present ();
 }
 
 static void

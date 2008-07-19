@@ -48,7 +48,7 @@ void ui_feedlist_select(nodePtr node);
  * Initializes the feed list. For example, it creates the various
  * columns and renderers needed to show the list.
  */
-void ui_feedlist_init(GtkWidget *mainview);
+void ui_feedlist_init (GtkTreeView *treeview);
 
 /* Selects the proper destination for a new feed based on which feed
  * is currently selected.

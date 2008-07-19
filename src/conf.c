@@ -33,7 +33,7 @@
 #include "conf.h"
 #include "debug.h"
 #include "update.h"
-#include "ui/ui_mainwindow.h"
+#include "ui/ui_shell.h"
 #include "ui/ui_tray.h"
 
 #define MAX_GCONF_PATHLEN	256
@@ -133,10 +133,10 @@ conf_toolbar_style_settings_cb (GConfClient *client,
                                 GConfEntry *entry,
                                 gpointer user_data) 
 {
-	gchar *style = conf_get_toolbar_style();
+	gchar *style = conf_get_toolbar_style ();
 
-	if (style != NULL) {
-		ui_mainwindow_set_toolbar_style (style);
+	if (style) {
+		liferea_shell_set_toolbar_style (style);
 		g_free (style);
 	}
 }
