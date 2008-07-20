@@ -21,7 +21,6 @@
 
 #include <string.h>
 
-#include "conf.h"
 #include "common.h"
 #include "debug.h"
 #include "enclosure.h"
