@@ -41,16 +41,17 @@ static struct itemView_priv {
 						     updated, used to delay HTML updates */
 } itemView_priv;
 
-void itemview_init(void) {
-
+void
+itemview_init (void)
+{
 	/* Determine date format code */
 	
-	itemView_priv.userDefinedDateFmt = getStringConfValue(DATE_FORMAT);
+	itemView_priv.userDefinedDateFmt = conf_get_str_value (DATE_FORMAT);
 	
 	/* We now have an empty string or a format string... */
-	if(itemView_priv.userDefinedDateFmt && !strlen(itemView_priv.userDefinedDateFmt)) {
+	if (itemView_priv.userDefinedDateFmt && !strlen (itemView_priv.userDefinedDateFmt)) {
 	   	/* It's empty and useless... */
-		g_free(itemView_priv.userDefinedDateFmt);
+		g_free (itemView_priv.userDefinedDateFmt);
 		itemView_priv.userDefinedDateFmt = NULL;
 	}
 	
@@ -66,16 +67,15 @@ void itemview_init(void) {
 	   result must be converted back to UTF-8 so that it can be
 	   displayed by the itemlist correctly. */
 
-	if(itemView_priv.userDefinedDateFmt) {
-		debug1(DEBUG_GUI, "new user defined date format: >>>%s<<<", itemView_priv.userDefinedDateFmt);
+	if (itemView_priv.userDefinedDateFmt) {
+		debug1 (DEBUG_GUI, "new user defined date format: >>>%s<<<", itemView_priv.userDefinedDateFmt);
 		gchar *tmp = itemView_priv.userDefinedDateFmt;
-		itemView_priv.userDefinedDateFmt = g_locale_from_utf8(tmp, -1, NULL, NULL, NULL);
-		g_free(tmp);
+		itemView_priv.userDefinedDateFmt = g_locale_from_utf8 (tmp, -1, NULL, NULL, NULL);
+		g_free (tmp);
 	}
 	
 	/* Setup HTML widget */
-
-	htmlview_init();
+	htmlview_init ();
 }
 
 void
@@ -89,11 +89,12 @@ itemview_clear (void)
 	itemView_priv.needsHTMLViewUpdate = TRUE;
 }
 
-void itemview_set_mode(guint mode) {
-
-	if(itemView_priv.mode != mode) {
+void
+itemview_set_mode (guint mode)
+{
+	if (itemView_priv.mode != mode) {
 		itemView_priv.mode = mode;
-		htmlview_clear();	/* drop HTML rendering cache */
+		htmlview_clear ();	/* drop HTML rendering cache */
 	}
 }
 
@@ -113,7 +114,7 @@ itemview_set_displayed_node (nodePtr node)
 	/* Disable attachment icon column (will be enabled when loading first item with an enclosure) */
 	ui_itemlist_enable_encicon_column (FALSE);
 
-	if(node) {
+	if (node) {
 		ui_itemlist_enable_favicon_column (NODE_TYPE (node)->capabilities & NODE_CAPABILITY_SHOW_ITEM_FAVICONS);
 		ui_itemlist_set_sort_column (node->sortColumn, node->sortReversed);
 	}
@@ -125,31 +126,33 @@ itemview_set_displayed_node (nodePtr node)
 	htmlview_set_displayed_node (node);
 }
 
-void itemview_add_item(itemPtr item) {
-
-	if(ITEMVIEW_ALL_ITEMS != itemView_priv.mode)
+void
+itemview_add_item (itemPtr item)
+{
+	if (ITEMVIEW_ALL_ITEMS != itemView_priv.mode)
 		/* add item in 3 pane mode */
-		ui_itemlist_add_item(item);
+		ui_itemlist_add_item (item);
 	else
 		/* force HTML update in 2 pane mode */
 		itemView_priv.needsHTMLViewUpdate = TRUE;
 		
-	htmlview_add_item(item);
+	htmlview_add_item (item);
 }
 
-void itemview_remove_item(itemPtr item) {
-
-	if(!ui_itemlist_contains_item(item->id))
+void
+itemview_remove_item (itemPtr item)
+{
+	if (!ui_itemlist_contains_item (item->id))
 		return;
 
-	if(ITEMVIEW_ALL_ITEMS != itemView_priv.mode)
+	if (ITEMVIEW_ALL_ITEMS != itemView_priv.mode)
 		/* remove item in 3 pane mode */
-		ui_itemlist_remove_item(item);
+		ui_itemlist_remove_item (item);
 	else
 		/* force HTML update in 2 pane mode */
 		itemView_priv.needsHTMLViewUpdate = TRUE;
 
-	htmlview_remove_item(item);
+	htmlview_remove_item (item);
 }
 
 void
@@ -169,26 +172,27 @@ itemview_select_item (itemPtr item)
 		enclosure_list_view_hide (liferea_shell_get_active_enclosure_list_view ());
 }
 
-void itemview_update_item(itemPtr item) {
-
-	if(!itemView_priv.node)
+void
+itemview_update_item (itemPtr item)
+{
+	if (!itemView_priv.node)
 		return;
 		
 	/* Always update the GtkTreeView (bail-out done in ui_itemlist_update_item() */
-	if(ITEMVIEW_ALL_ITEMS != itemView_priv.mode)
-		ui_itemlist_update_item(item);
+	if (ITEMVIEW_ALL_ITEMS != itemView_priv.mode)
+		ui_itemlist_update_item (item);
 
 	/* Bail out if no HTML update necessary */
-	switch(itemView_priv.mode) {
+	switch (itemView_priv.mode) {
 		case ITEMVIEW_ALL_ITEMS:
 			/* No HTML update needed if 2 pane mode and item not in item set */
-			if(!ui_itemlist_contains_item(item->id))
+			if (!ui_itemlist_contains_item (item->id))
 				return;
 			break;
 		case ITEMVIEW_SINGLE_ITEM:		
 			/* No HTML update needed if 3 pane mode and item not displayed */
-			if((item != itemlist_get_selected()) && 
-			   !ui_itemlist_contains_item(item->id))
+			if ((item != itemlist_get_selected ()) && 
+			    !ui_itemlist_contains_item (item->id))
 				return;
 			break;
 		default:
@@ -198,31 +202,33 @@ void itemview_update_item(itemPtr item) {
 	}
 	
 	itemView_priv.needsHTMLViewUpdate = TRUE;
-	htmlview_update_item(item);
+	htmlview_update_item (item);
 }
 
-void itemview_update_all_items(void) {
-
-	if(!itemView_priv.node)
+void
+itemview_update_all_items (void)
+{
+	if (!itemView_priv.node)
 		return;
 		
 	/* Always update the GtkTreeView (bail-out done in ui_itemlist_update_item() */
-	if(ITEMVIEW_ALL_ITEMS != itemView_priv.mode)
-		ui_itemlist_update_all_items();
+	if (ITEMVIEW_ALL_ITEMS != itemView_priv.mode)
+		ui_itemlist_update_all_items ();
 		
 	itemView_priv.needsHTMLViewUpdate = TRUE;
-	htmlview_update_all_items();
+	htmlview_update_all_items ();
 }
 
-void itemview_update_node_info(nodePtr node) {
-
-	if(!itemView_priv.node)
+void
+itemview_update_node_info (nodePtr node)
+{
+	if (!itemView_priv.node)
 		return;
 	
-	if(itemView_priv.node != node)
+	if (itemView_priv.node != node)
 		return;
 
-	if(ITEMVIEW_NODE_INFO != itemView_priv.mode)
+	if (ITEMVIEW_NODE_INFO != itemView_priv.mode)
 		return;
 
 	itemView_priv.needsHTMLViewUpdate = TRUE;
@@ -242,13 +248,15 @@ itemview_update (void)
 
 /* date format handling (not sure if this is the right place) */
 
-gchar * itemview_format_date(time_t date) {
+gchar *
+itemview_format_date (time_t date)
+{
 	gchar		*timestr;
 
-	if(itemView_priv.userDefinedDateFmt)
-		timestr = common_format_date(date, itemView_priv.userDefinedDateFmt);
+	if (itemView_priv.userDefinedDateFmt)
+		timestr = common_format_date (date, itemView_priv.userDefinedDateFmt);
 	else
-		timestr = common_format_nice_date(date);
+		timestr = common_format_nice_date (date);
 	
 	return timestr;
 }
