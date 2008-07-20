@@ -372,7 +372,7 @@ network_glibcurl_callback (void *data)
 void
 network_init (void)
 {
-	if (0 == (NET_TIMEOUT = getNumericConfValue (NETWORK_TIMEOUT)))
+	if (0 == (NET_TIMEOUT = conf_get_int_value (NETWORK_TIMEOUT)))
 		NET_TIMEOUT = 30;	/* default network timeout 30s */
 
 /*	g_assert(curl_global_init(CURL_GLOBAL_ALL) == 0);

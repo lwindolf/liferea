@@ -116,7 +116,6 @@ void	conf_load (void);
  *
  * @returns boolean value (FALSE on failure)
  */
-#define getBooleanConfValue(key) conf_get_bool_value(key)
 gboolean conf_get_bool_value (const gchar *key);
 
 /**
@@ -126,7 +125,6 @@ gboolean conf_get_bool_value (const gchar *key);
  *
  * @returns string value (NULL on failure, to be free'd using g_free)
  */
-#define getStringConfValue(key) conf_get_str_value(key)
 gchar *	conf_get_str_value (const gchar *key);
 
 /**
@@ -136,7 +134,6 @@ gchar *	conf_get_str_value (const gchar *key);
  *
  * @returns integer value (0 on failure)
  */
-#define getNumericConfValue(key) conf_get_int_value(key)
 gint conf_get_int_value (const gchar *key);
 
 /**
@@ -145,7 +142,6 @@ gint conf_get_int_value (const gchar *key);
  * @param key	the configuration key
  * @param value	the new boolean value
  */
-#define setBooleanConfValue(key,value) conf_set_bool_value(key,value)
 void conf_set_bool_value (const gchar *key, gboolean value);
 
 /**
@@ -155,7 +151,6 @@ void conf_set_bool_value (const gchar *key, gboolean value);
  * @param key	the configuration key
  * @param value	the new string value
  */
-#define setStringConfValue(key,value) conf_set_str_value(key,value)
 void conf_set_str_value (const gchar *key, const gchar *value);
 
 /**
@@ -164,7 +159,6 @@ void conf_set_str_value (const gchar *key, const gchar *value);
  * @param key	the configuration key
  * @param value	the new integer value
  */
-#define setNumericConfValue(key,value) conf_set_int_value(key,value)
 void conf_set_int_value (const gchar *key, gint value);
 
 /**

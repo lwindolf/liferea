@@ -255,7 +255,7 @@ mozembed_open_uri_cb (GtkMozEmbed *embed, const char *uri, gpointer data)
 {	
 	if ((FALSE == liferea_htmlview_is_special_url (uri)) && 
  	    (GPOINTER_TO_INT (g_object_get_data (G_OBJECT (embed), "internal_browsing")) ||
-	    getBooleanConfValue (BROWSE_INSIDE_APPLICATION))) {
+	     conf_get_bool_value (BROWSE_INSIDE_APPLICATION))) {
 		return FALSE;
 	} else {
 		LifereaHtmlView *htmlview = g_object_get_data (G_OBJECT (data), "htmlview");

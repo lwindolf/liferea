@@ -308,7 +308,7 @@ liferea_htmlview_launch_URL (LifereaHtmlView *htmlview, const gchar *url, gint l
 		return;
 	}
 	
-	debug3 (DEBUG_GUI, "launch URL: %s  %s %d", getBooleanConfValue (BROWSE_INSIDE_APPLICATION)?"true":"false",
+	debug3 (DEBUG_GUI, "launch URL: %s  %s %d", conf_get_bool_value (BROWSE_INSIDE_APPLICATION)?"true":"false",
 		  (htmlviewPlugin->launchInsidePossible) ()?"true":"false",
 		  launchType);
 		  
@@ -349,7 +349,7 @@ liferea_htmlview_launch_URL (LifereaHtmlView *htmlview, const gchar *url, gint l
 		return;
 	}
 	
-	if((launchType == UI_HTMLVIEW_LAUNCH_INTERNAL || getBooleanConfValue (BROWSE_INSIDE_APPLICATION)) &&
+	if((launchType == UI_HTMLVIEW_LAUNCH_INTERNAL || conf_get_bool_value (BROWSE_INSIDE_APPLICATION)) &&
 	   (htmlviewPlugin->launchInsidePossible) () &&
 	   (launchType != UI_HTMLVIEW_LAUNCH_EXTERNAL)) {
 		(htmlviewPlugin->launch) (htmlview->priv->renderWidget, url);

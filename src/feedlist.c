@@ -529,7 +529,7 @@ void feedlist_init(void) {
 
 	/* 4. Check if feeds do need updating. */
 	debug0(DEBUG_UPDATE, "Performing initial feed update");
-	switch(getNumericConfValue(STARTUP_FEED_ACTION)) {
+	switch (conf_get_int_value (STARTUP_FEED_ACTION)) {
 		case 1: /* Update all feeds */
 			debug0(DEBUG_UPDATE, "initial update: updating all feeds");
 			node_update_subscription (feedlist_get_root (), GUINT_TO_POINTER (0));

@@ -194,7 +194,7 @@ liferea_shell_restore_position (GtkWidget *window)	// FIXME: pass shell object
 		gtk_window_resize (GTK_WINDOW (window), w, h);
 	}
 
-	if (getBooleanConfValue (LAST_WINDOW_MAXIMIZED))
+	if (conf_get_bool_value (LAST_WINDOW_MAXIMIZED))
 		gtk_window_maximize (GTK_WINDOW (window));
 	else
 		gtk_window_unmaximize (GTK_WINDOW (window));

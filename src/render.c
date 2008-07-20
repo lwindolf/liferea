@@ -254,10 +254,10 @@ render_get_css (gboolean externalCss)
 		css = g_string_new(NULL);
 
 		/* font configuration support */
-		font = getStringConfValue(USER_FONT);
+		font = conf_get_str_value (USER_FONT);
 		if(0 == strlen(font)) {
 			g_free(font);
-			font = getStringConfValue(DEFAULT_FONT);
+			font = conf_get_str_value (DEFAULT_FONT);
 		}
 
 		if(font) {
