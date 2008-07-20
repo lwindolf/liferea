@@ -41,7 +41,6 @@
 #include "db.h"
 #include "dbus.h"
 #include "debug.h"
-#include "feedlist.h"		// FIXME: should not be necessary
 #include "script.h"
 #include "social.h"
 #include "update.h"
@@ -327,13 +326,9 @@ on_shutdown (gpointer user_data)
 		
 	script_run_for_hook (SCRIPT_HOOK_SHUTDOWN);
 	
-	// FIXME: move the following three calls to the liferea shell destroy callback
-	liferea_shell_save_position ();
-	gtk_widget_hide (liferea_shell_get_window ());
+	// FIXME: move the following to the liferea shell destroy callback
 	ui_feedlist_select (NULL);
 	
-	feedlist_save ();
-	feedlist_free ();
 	itemlist_free ();
 	update_deinit ();
 	db_deinit ();

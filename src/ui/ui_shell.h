@@ -77,8 +77,7 @@ GType liferea_shell_get_type	(void);
 GtkWidget * liferea_shell_lookup (const gchar *name);
 
 /**
- * Initially setup shell which can be afterwards 
- * accessed by the global liferea_shell object.
+ * Set up the Liferea main window.
  *
  * @param initialState	state code MAINWINDOW_*
  */

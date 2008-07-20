@@ -26,15 +26,39 @@
 
 #include "node.h"
 
-/** 
- * Initializes the feed list handling.
- */
-void feedlist_init (void);
+G_BEGIN_DECLS
+
+#define FEEDLIST_TYPE		(feedlist_get_type ())
+#define FEEDLIST(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), FEEDLIST_TYPE, FeedList))
+#define FEEDLIST_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), FEEDLIST_TYPE, FeedListClass))
+#define IS_FEEDLIST(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), FEEDLIST_TYPE))
+#define IS_FEEDLIST_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), FEEDLIST_TYPE))
+
+typedef struct FeedList		FeedList;
+typedef struct FeedListClass	FeedListClass;
+typedef struct FeedListPrivate	FeedListPrivate;
+
+struct FeedList
+{
+	GObject		parent;
+	
+	/*< private >*/
+	FeedListPrivate	*priv;
+};
+
+struct FeedListClass 
+{
+	GObjectClass parent_class;	
+};
+
+GType feedlist_get_type (void);
 
 /**
- * Destroys the feed list structure.
+ * Set up the feed list.
+ *
+ * @returns the feed list instance
  */
-void feedlist_free (void);
+FeedList * feedlist_create (void);
 
 /**
  * Get feed list root node.
@@ -57,12 +81,27 @@ nodePtr feedlist_get_selected (void);
  */
 nodePtr feedlist_get_insertion_point (void);
 
-/** statistic counter handling methods */
+/**
+ * Query overall number of of unread items.
+ *
+ * @returns overall number of unread items.
+ */
 guint feedlist_get_unread_item_count (void);
+
+/**
+ * Query overall number of new items.
+ *
+ * Note: result might be slightly off, but error
+ * won't aggregate over time.
+ *
+ * @returns overall number of new items.
+ */
 guint feedlist_get_new_item_count (void);
 
 /**
  * Reset the global feed list new item counter.
+ *
+ * @todo: use signal instead
  */
 void feedlist_reset_new_item_count (void);
 
@@ -73,6 +112,8 @@ void feedlist_reset_new_item_count (void);
  *
  * @param node		the updated node
  * @param newCount	number of new and unread items
+ *
+ * @todo: use signal instead
  */
 void feedlist_node_was_updated (nodePtr node, guint newCount);
 
@@ -81,7 +122,7 @@ void feedlist_node_was_updated (nodePtr node, guint newCount);
  *
  * @returns the feed list root node
  */
-nodePtr feedlist_get_root(void);
+nodePtr feedlist_get_root (void);
 
 /**
  * Adds a new subscription to the feed list.
@@ -150,13 +191,13 @@ void feedlist_node_removed (nodePtr node);
 /**
  * Synchronously saves the feed list. Only to be used upon exit!
  */
-void feedlist_save(void);
+void feedlist_save (void);
 
 /**
  * Schedules a save requests for the feed list within the next 5s.
  * Triggers state saving for all feed list sources.
  */
-void feedlist_schedule_save(void);
+void feedlist_schedule_save (void);
 
 /**
  * Resets the update counter of all childs of the given node
@@ -201,7 +242,7 @@ void feedlist_mark_all_read (nodePtr node);
  *
  * @param node		the new selected node
  */
-void feedlist_selection_changed(nodePtr node);
+void feedlist_selection_changed (nodePtr node);
 
 /** 
  * Tries to find the first node with an unread item in the given folder.
@@ -210,6 +251,8 @@ void feedlist_selection_changed(nodePtr node);
  * 
  * @return a found node or NULL
  */
-nodePtr	feedlist_find_unread_feed(nodePtr folder);
+nodePtr	feedlist_find_unread_feed (nodePtr folder);
+
+G_END_DECLS
 
 #endif

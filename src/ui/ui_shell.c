@@ -65,7 +65,7 @@ struct LifereaShellPrivate {
 	GtkWidget	*toolbar;
 	GtkWidget	*itemlistContainer;	/**< scrolled window holding item list tree view */
 	GtkTreeView	*itemlist;		// FIXME: replace with real item list object
-	GtkTreeView	*feedlist;		// FIXME: replace with real feed list object
+	GtkTreeView	*feedlistView;		// FIXME: replace with real feed list object
 	GtkStatusbar	*statusbar;
 	GtkWidget	*statusbar_feedsinfo;
 	GtkActionGroup	*generalActions;
@@ -74,14 +74,14 @@ struct LifereaShellPrivate {
 	GtkActionGroup	*readWriteActions;	/**< node remove and properties, node itemset items remove */
 	GtkActionGroup	*itemActions;		/**< item state toggline, single item remove */
 	
+	FeedList		*feedlist;
 	EnclosureListView	*enclosureView;		/**< Enclosure list widget */
 	LifereaHtmlView		*htmlview;		/**< HTML rendering widget */
 	gfloat			zoom;			/**< HTML rendering widget zoom level */
 };
 
 static GObjectClass *parent_class = NULL;
-
-LifereaShell *shell = NULL;
+static LifereaShell *shell = NULL;
 
 GType
 liferea_shell_get_type (void) 
@@ -597,12 +597,12 @@ on_key_press_event (GtkWidget *widget, GdkEventKey *event, gpointer data)
 					return TRUE;
 					break;
 				case GDK_u:
-					ui_common_treeview_move_cursor (shell->priv->feedlist, -1);
+					ui_common_treeview_move_cursor (shell->priv->feedlistView, -1);
 					ui_common_treeview_move_cursor_to_first (shell->priv->itemlist);
 					return TRUE;
 					break;
 				case GDK_d:
-					ui_common_treeview_move_cursor (shell->priv->feedlist, 1);
+					ui_common_treeview_move_cursor (shell->priv->feedlistView, 1);
 					ui_common_treeview_move_cursor_to_first (shell->priv->itemlist);
 					return TRUE;
 					break;
@@ -707,6 +707,8 @@ on_menu_quit (GtkMenuItem *menuitem, gpointer user_data)
 static void
 on_destroy_cb (gpointer user_data)
 {
+	liferea_shell_save_position ();
+	gtk_widget_hide (liferea_shell_get_window ());
 	liferea_htmlview_plugin_deregister ();
 	ui_tray_enable (FALSE);
 	notification_enable (FALSE);
@@ -1073,8 +1075,8 @@ liferea_shell_create (int initialState)
 	/* 6.) setup feed list */
 
 	debug0 (DEBUG_GUI, "Setting up feed list");
-	shell->priv->feedlist = GTK_TREE_VIEW (liferea_shell_lookup ("feedlist"));
-	ui_feedlist_init (shell->priv->feedlist);
+	shell->priv->feedlistView = GTK_TREE_VIEW (liferea_shell_lookup ("feedlist"));
+	ui_feedlist_init (shell->priv->feedlistView);
 
 	/* 7.) setup menu sensivity */
 	
@@ -1085,7 +1087,7 @@ liferea_shell_create (int initialState)
 
 	/* necessary to prevent selection signals when filling the feed list
 	   and setting the 2/3 pane mode view */
-	gtk_widget_set_sensitive (GTK_WIDGET (shell->priv->feedlist), FALSE);
+	gtk_widget_set_sensitive (GTK_WIDGET (shell->priv->feedlistView), FALSE);
 	
 	/* 8.) setup item view */
 	
@@ -1180,7 +1182,7 @@ liferea_shell_create (int initialState)
 	ui_tray_enable (conf_get_bool_value (SHOW_TRAY_ICON));			/* init tray icon */
 	ui_dnd_setup_URL_receiver (GTK_WIDGET (shell->priv->window));	/* setup URL dropping support */
 
-	feedlist_init ();
+	shell->priv->feedlist = feedlist_create ();
 	
 	ui_popup_update_menues ();		/* create popup menues */
 			
@@ -1257,7 +1259,7 @@ liferea_shell_create (int initialState)
 	liferea_htmlview_write (shell->priv->htmlview, buffer->str, NULL);
 	g_string_free (buffer, TRUE);
 
-	gtk_widget_set_sensitive (GTK_WIDGET (shell->priv->feedlist), TRUE);
+	gtk_widget_set_sensitive (GTK_WIDGET (shell->priv->feedlistView), TRUE);
 	
 	debug_exit ("liferea_shell_create");
 }
@@ -1354,7 +1356,7 @@ liferea_shell_set_layout (guint newMode)
  
 	/* grab necessary to force HTML widget update (display must
 	   change from feed description to list of items and vica versa */
-	gtk_widget_grab_focus (GTK_WIDGET (shell->priv->feedlist));
+	gtk_widget_grab_focus (GTK_WIDGET (shell->priv->feedlistView));
 }
 
 GtkWidget *
