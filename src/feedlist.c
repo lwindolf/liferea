@@ -1,5 +1,5 @@
 /**
- * @file feedlist.c  feed list handling
+ * @file feedlist.c  subscriptions as an hierarchic tree
  *
  * Copyright (C) 2005-2008 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
@@ -394,47 +394,6 @@ feedlist_selection_changed (nodePtr node)
 	}
 
 	debug_exit ("feedlist_selection_changed");
-}
-
-/* menu callbacks */
-
-void on_menu_delete(GtkWidget *widget, gpointer user_data) {
-	ui_feedlist_delete_prompt(selectedNode);
-}
-
-void
-on_menu_update(GtkWidget *widget, gpointer user_data)
-{
-	if (!selectedNode) {
-		ui_show_error_box(_("You have to select a feed entry"));
-		return;
-	}
-
-	if (network_is_online ()) 
-		node_update_subscription (selectedNode, GUINT_TO_POINTER (FEED_REQ_PRIORITY_HIGH));
-	else
-		liferea_shell_set_status_bar (_("Liferea is in offline mode. No update possible."));
-}
-
-void
-on_menu_update_all(GtkWidget *widget, gpointer user_data)
-{ 
-	if (network_is_online ()) 
-		node_update_subscription (feedlist_get_root(), GUINT_TO_POINTER (FEED_REQ_PRIORITY_HIGH));
-	else
-		liferea_shell_set_status_bar (_("Liferea is in offline mode. No update possible."));
-}
-
-void
-on_menu_allread (GtkWidget *widget, gpointer user_data)
-{	
-	feedlist_mark_all_read (selectedNode);
-}
-
-void
-on_menu_allfeedsread (GtkWidget *widget, gpointer user_data)
-{
-	feedlist_mark_all_read (feedlist_get_root ());
 }
 
 /* Feedlist saving. Do not call directly to avoid threading 

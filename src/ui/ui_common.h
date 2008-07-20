@@ -23,6 +23,30 @@
 
 #include <gtk/gtk.h>
 
+/* list of all icons used in Liferea */
+enum allicons {
+	ICON_READ,
+	ICON_UNREAD,
+	ICON_FLAG,
+	ICON_AVAILABLE,
+	ICON_AVAILABLE_OFFLINE,
+	ICON_UNAVAILABLE,
+	ICON_DEFAULT,
+	ICON_FOLDER_EMPTY,
+	ICON_FOLDER,
+	ICON_VFOLDER,
+	ICON_NEWSBIN,
+	ICON_EMPTY,
+	ICON_EMPTY_OFFLINE,
+	ICON_ONLINE,
+	ICON_OFFLINE,
+	ICON_UPDATED,
+	ICON_ENCLOSURE,
+	MAX_ICONS
+};
+
+extern GdkPixbuf *icons[MAX_ICONS];	// FIXME!
+
 /**
  * Helper function to set up a combo box option menu.
  * To be used to initialize dialogs.

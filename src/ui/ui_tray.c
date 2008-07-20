@@ -33,6 +33,7 @@
 #include "eggtrayicon.h"
 #include "feedlist.h"
 #include "net.h"
+#include "ui/ui_common.h"
 #include "ui/ui_dnd.h"
 #include "ui/ui_popup.h"
 #include "ui/ui_tray.h"

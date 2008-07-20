@@ -29,6 +29,7 @@
 #include "folder.h"
 #include "node.h"
 #include "node_type.h"
+#include "ui/ui_common.h"
 #include "ui/ui_dialog.h"
 #include "ui/ui_node.h"
 #include "fl_sources/node_source.h"

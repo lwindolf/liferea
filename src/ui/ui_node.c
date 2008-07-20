@@ -24,6 +24,7 @@
 #include "debug.h"
 #include "feedlist.h"
 #include "folder.h"
+#include "ui/ui_common.h"
 #include "ui/ui_dialog.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_node.h"

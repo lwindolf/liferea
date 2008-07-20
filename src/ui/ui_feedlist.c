@@ -328,6 +328,46 @@ on_menu_properties (GtkMenuItem *menuitem, gpointer user_data)
 	NODE_TYPE (node)->request_properties (node);
 }
 
+void on_menu_delete(GtkWidget *widget, gpointer user_data)
+{
+	ui_feedlist_delete_prompt (feedlist_get_selected());
+}
+
+void
+on_menu_update (GtkWidget *widget, gpointer user_data)
+{
+	if (!feedlist_get_selected ()) {
+		ui_show_error_box (_("You have to select a feed entry"));
+		return;
+	}
+
+	if (network_is_online ()) 
+		node_update_subscription (feedlist_get_selected (), GUINT_TO_POINTER (FEED_REQ_PRIORITY_HIGH));
+	else
+		liferea_shell_set_status_bar (_("Liferea is in offline mode. No update possible."));
+}
+
+void
+on_menu_update_all(GtkWidget *widget, gpointer user_data)
+{ 
+	if (network_is_online ()) 
+		node_update_subscription (feedlist_get_root(), GUINT_TO_POINTER (FEED_REQ_PRIORITY_HIGH));
+	else
+		liferea_shell_set_status_bar (_("Liferea is in offline mode. No update possible."));
+}
+
+void
+on_menu_allread (GtkWidget *widget, gpointer user_data)
+{	
+	feedlist_mark_all_read (feedlist_get_selected ());
+}
+
+void
+on_menu_allfeedsread (GtkWidget *widget, gpointer user_data)
+{
+	feedlist_mark_all_read (feedlist_get_root ());
+}
+
 void
 on_newbtn_clicked (GtkButton *button, gpointer user_data)
 {	

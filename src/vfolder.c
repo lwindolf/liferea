@@ -18,10 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
-
 #include "common.h"
 #include "conf.h"
 #include "db.h"
@@ -31,6 +27,7 @@
 #include "itemlist.h"
 #include "node.h"
 #include "vfolder.h"
+#include "ui/ui_common.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_node.h"
 #include "ui/search_folder_dialog.h"

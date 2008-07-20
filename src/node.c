@@ -36,6 +36,7 @@
 #include "update.h"
 #include "vfolder.h"
 #include "fl_sources/node_source.h"
+#include "ui/ui_common.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_itemlist.h"
 #include "ui/ui_node.h"

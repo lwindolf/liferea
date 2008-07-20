@@ -71,28 +71,21 @@ nodePtr ui_feedlist_get_target_folder(int *pos);
  */
 void ui_feedlist_delete_prompt(nodePtr ptr);
 
-/** 
- * @name menu and dialog callbacks 
- * @{
- */
+void on_newbtn_clicked (GtkButton *button, gpointer user_data);
 
-void on_newbtn_clicked(GtkButton *button, gpointer user_data);
+void on_menu_delete (GtkWidget *widget, gpointer user_data);
 
-/** Feed properties menu creating callback */
-void on_menu_properties(GtkMenuItem *menuitem, gpointer user_data);
+void on_menu_update (GtkWidget *widget, gpointer user_data);
+void on_menu_update_all (GtkWidget *widget, gpointer user_data);
 
-/** New feed menu creating callback */
-void on_menu_feed_new(GtkMenuItem *menuitem, gpointer user_data);
+void on_menu_allread (GtkWidget *widget, gpointer user_data);
+void on_menu_allfeedsread (GtkWidget *widget, gpointer user_data);
 
-/** New folder menu creating callback */
-void on_menu_folder_new(GtkMenuItem *menuitem, gpointer user_data);
+void on_menu_properties (GtkMenuItem *menuitem, gpointer user_data);
+void on_menu_feed_new (GtkMenuItem *menuitem, gpointer user_data);
+void on_menu_folder_new (GtkMenuItem *menuitem, gpointer user_data);
 
-/** New plugin menu creating callback */
-void on_new_plugin_activate(GtkMenuItem *menuitem, gpointer user_data);
-
-/** New newsbin menu creating callback */
-void on_new_newsbin_activate(GtkMenuItem *menuitem, gpointer user_data);
-
-/*@}*/
+void on_new_plugin_activate (GtkMenuItem *menuitem, gpointer user_data);
+void on_new_newsbin_activate (GtkMenuItem *menuitem, gpointer user_data);
 
 #endif

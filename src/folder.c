@@ -26,6 +26,7 @@
 #include "itemset.h"
 #include "node.h"
 #include "vfolder.h"
+#include "ui/ui_common.h"
 #include "ui/ui_folder.h"
 #include "ui/ui_node.h"
 

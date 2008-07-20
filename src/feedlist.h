@@ -1,5 +1,5 @@
 /**
- * @file feedlist.h  feed list handling
+ * @file feedlist.h  subscriptions as an hierarchic tree
  *
  * Copyright (C) 2005-2008 Lars Lindner <lars.lindner@gmail.com>
  *	      
@@ -21,32 +21,10 @@
 #ifndef _FEEDLIST_H
 #define _FEEDLIST_H
 
-#include <gtk/gtk.h>
+#include <glib-object.h>
+#include <glib.h>
+
 #include "node.h"
-
-/* feed list icons */
-enum allicons {
-	ICON_READ,
-	ICON_UNREAD,
-	ICON_FLAG,
-	ICON_AVAILABLE,
-	ICON_AVAILABLE_OFFLINE,
-	ICON_UNAVAILABLE,
-	ICON_DEFAULT,
-	ICON_FOLDER_EMPTY,
-	ICON_FOLDER,
-	ICON_VFOLDER,
-	ICON_NEWSBIN,
-	ICON_EMPTY,
-	ICON_EMPTY_OFFLINE,
-	ICON_ONLINE,
-	ICON_OFFLINE,
-	ICON_UPDATED,
-	ICON_ENCLOSURE,
-	MAX_ICONS
-};
-
-extern GdkPixbuf *icons[MAX_ICONS];
 
 /** 
  * Initializes the feed list handling.
@@ -233,14 +211,5 @@ void feedlist_selection_changed(nodePtr node);
  * @return a found node or NULL
  */
 nodePtr	feedlist_find_unread_feed(nodePtr folder);
-
-/* menu callbacks */
-void on_menu_delete(GtkWidget *widget, gpointer user_data);
-
-void on_menu_update(GtkWidget *widget, gpointer user_data);
-void on_menu_update_all(GtkWidget *widget, gpointer user_data);
-
-void on_menu_allread(GtkWidget *widget, gpointer user_data);
-void on_menu_allfeedsread(GtkWidget *widget, gpointer user_data);
 
 #endif

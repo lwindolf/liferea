@@ -19,8 +19,8 @@
  */
 
 #include "common.h"
-#include "feedlist.h"
 #include "fl_sources/node_source.h"
+#include "ui/ui_common.h"
 
 static gchar * dummy_source_get_feedlist(nodePtr node) { return NULL; }
 
