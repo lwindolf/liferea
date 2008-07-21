@@ -934,14 +934,54 @@ liferea_shell_get_theme_icon (GtkIconTheme *icon_theme, const gchar *name, gint 
 	return pixbuf;
 }
 
+static void
+liferea_shell_restore_state (void)
+{
+	gchar *toolbar_style, *accels_file;
+	
+	debug0 (DEBUG_GUI, "Setting toolbar style");
+	
+	toolbar_style = conf_get_toolbar_style ();	
+	liferea_shell_set_toolbar_style (toolbar_style);
+	g_free (toolbar_style);
+
+	debug0 (DEBUG_GUI, "Loading accelerators");
+	
+	accels_file = g_build_filename (common_get_cache_path(), "accels", NULL);
+	gtk_accel_map_load (accels_file);
+	g_free (accels_file);	
+
+	debug0 (DEBUG_GUI, "Restoring window position");
+	
+	liferea_shell_restore_position ();
+
+	debug0 (DEBUG_GUI, "Setting zoom level");
+	
+	shell->priv->zoom = conf_get_int_value (LAST_ZOOMLEVEL);
+
+	if (0 == shell->priv->zoom) {	/* workaround for scheme problem with the last releases */
+		shell->priv->zoom = 100;
+		conf_set_int_value (LAST_ZOOMLEVEL, 100);
+	}
+	liferea_htmlview_set_zoom (shell->priv->htmlview, shell->priv->zoom/100.);
+	
+	debug0 (DEBUG_GUI, "Loading pane proportions");
+		
+	if (0 != conf_get_int_value (LAST_VPANE_POS))
+		gtk_paned_set_position (GTK_PANED (liferea_shell_lookup ("leftpane")), conf_get_int_value (LAST_VPANE_POS));
+	if (0 != conf_get_int_value (LAST_HPANE_POS))
+		gtk_paned_set_position (GTK_PANED (liferea_shell_lookup ("normalViewPane")), conf_get_int_value (LAST_HPANE_POS));
+	if (0 != conf_get_int_value (LAST_WPANE_POS))
+		gtk_paned_set_position (GTK_PANED (liferea_shell_lookup ("wideViewPane")), conf_get_int_value (LAST_WPANE_POS));
+}
+
 void
 liferea_shell_create (int initialState)
 {
 	GtkUIManager	*ui_manager;
 	GtkAccelGroup	*accel_group;
 	GError		*error = NULL;	
-	GtkWidget	*widget, *statusbar;
-	gchar		*toolbar_style, *accels_file;
+	GtkWidget	*widget;
 	int		i;
 	GString		*buffer;
 	GtkIconTheme	*icon_theme;
@@ -953,8 +993,6 @@ liferea_shell_create (int initialState)
 	g_object_new (LIFEREA_SHELL_TYPE, NULL);
 	
 	shell->priv->window = GTK_WINDOW (liferea_shell_lookup ("mainwindow"));
-	
-	toolbar_style = conf_get_toolbar_style ();
 
 	// FIXME: do we use this anywhere?
 	gtk_widget_set_name (liferea_shell_lookup ("feedlist"), "feedlist");
@@ -992,11 +1030,6 @@ liferea_shell_create (int initialState)
 	gtk_action_group_add_actions (shell->priv->itemActions, ui_mainwindow_item_action_entries, G_N_ELEMENTS (ui_mainwindow_item_action_entries), shell->priv);
 	gtk_ui_manager_insert_action_group (ui_manager, shell->priv->itemActions, 0);
 
-	/* load saved accels from disk */
-	accels_file = g_build_filename (common_get_cache_path(), "accels", NULL);
-	gtk_accel_map_load (accels_file);
-	g_free (accels_file);	
-	
 	accel_group = gtk_ui_manager_get_accel_group (ui_manager);
 	gtk_window_add_accel_group (GTK_WINDOW (shell->priv->window), accel_group);
 	g_object_unref (accel_group);
@@ -1027,8 +1060,7 @@ liferea_shell_create (int initialState)
 	gtk_box_reorder_child (GTK_BOX (liferea_shell_lookup ("vbox1")), shell->priv->toolbar, 0);
 	gtk_box_pack_start (GTK_BOX (liferea_shell_lookup ("vbox1")), shell->priv->menubar, FALSE, FALSE, 0);
 	gtk_box_reorder_child (GTK_BOX (liferea_shell_lookup ("vbox1")), shell->priv->menubar, 0);
-	liferea_shell_set_toolbar_style (toolbar_style);
-	g_free (toolbar_style);
+
 	gtk_widget_show_all(GTK_WIDGET(shell->priv->toolbar));
 
 	g_signal_connect ((gpointer) liferea_shell_lookup ("itemtabs"), "key_press_event",
@@ -1052,33 +1084,20 @@ liferea_shell_create (int initialState)
 	shell->priv->statusbar = GTK_STATUSBAR (liferea_shell_lookup ("statusbar"));
 	shell->priv->statusbar_feedsinfo = gtk_label_new("");
 	gtk_widget_show(shell->priv->statusbar_feedsinfo);
-	gtk_box_pack_start (GTK_BOX (statusbar), shell->priv->statusbar_feedsinfo, FALSE, FALSE, 5);
-
-	liferea_shell_restore_position ();
+	gtk_box_pack_start (GTK_BOX (shell->priv->statusbar), shell->priv->statusbar_feedsinfo, FALSE, FALSE, 5);
 	
 	/* 4.) setup tabs */
 	
 	debug0 (DEBUG_GUI, "Setting up tabbing");	
 	ui_tabs_init ();
 	
-	/* 5.) load pane layout proportions */
-	
-	debug0 (DEBUG_GUI, "Loading pane proportions");
-	
-	if (0 != conf_get_int_value (LAST_VPANE_POS))
-		gtk_paned_set_position (GTK_PANED (liferea_shell_lookup ("leftpane")), conf_get_int_value (LAST_VPANE_POS));
-	if (0 != conf_get_int_value (LAST_HPANE_POS))
-		gtk_paned_set_position (GTK_PANED (liferea_shell_lookup ("normalViewPane")), conf_get_int_value (LAST_HPANE_POS));
-	if (0 != conf_get_int_value (LAST_WPANE_POS))
-		gtk_paned_set_position (GTK_PANED (liferea_shell_lookup ("wideViewPane")), conf_get_int_value (LAST_WPANE_POS));
-		
-	/* 6.) setup feed list */
+	/* 5.) setup feed list */
 
 	debug0 (DEBUG_GUI, "Setting up feed list");
 	shell->priv->feedlistView = GTK_TREE_VIEW (liferea_shell_lookup ("feedlist"));
 	ui_feedlist_init (shell->priv->feedlistView);
 
-	/* 7.) setup menu sensivity */
+	/* 6.) setup menu sensivity */
 	
 	debug0 (DEBUG_GUI, "Initialising menues");
 		
@@ -1089,7 +1108,7 @@ liferea_shell_create (int initialState)
 	   and setting the 2/3 pane mode view */
 	gtk_widget_set_sensitive (GTK_WIDGET (shell->priv->feedlistView), FALSE);
 	
-	/* 8.) setup item view */
+	/* 7.) setup item view */
 	
 	debug0 (DEBUG_GUI, "Setting up item view");
 	shell->priv->enclosureView = enclosure_list_view_new ();
@@ -1104,7 +1123,7 @@ liferea_shell_create (int initialState)
 	
 	itemview_init ();
 	
-	/* 9.) load icons as required */
+	/* 8.) load icons as required */
 	
 	debug0 (DEBUG_GUI, "Loading icons");
 	
@@ -1168,18 +1187,11 @@ liferea_shell_create (int initialState)
 	icons[ICON_UNAVAILABLE] = gtk_widget_render_icon (widget, GTK_STOCK_DIALOG_ERROR, GTK_ICON_SIZE_MENU, "");
 	gtk_widget_destroy (widget);
 	
-	
-	
-	
-	
-	
-	
-
 	liferea_shell_update_toolbar ();
 	liferea_shell_update_menubar ();
 	liferea_shell_online_status_changed (network_is_online ());
 	
-	ui_tray_enable (conf_get_bool_value (SHOW_TRAY_ICON));			/* init tray icon */
+	ui_tray_enable (conf_get_bool_value (SHOW_TRAY_ICON));		/* init tray icon */
 	ui_dnd_setup_URL_receiver (GTK_WIDGET (shell->priv->window));	/* setup URL dropping support */
 
 	shell->priv->feedlist = feedlist_create ();
@@ -1209,15 +1221,6 @@ liferea_shell_create (int initialState)
 	ui_feedlist_select (NULL);
 	/* Initialize the UI with respect to the viewing mode */
 	liferea_shell_set_layout (2);	/* FIXME: set user defined default viewing mode */
-
-	/* set zooming properties */
-	shell->priv->zoom = conf_get_int_value (LAST_ZOOMLEVEL);
-
-	if (0 == shell->priv->zoom) {	/* workaround for scheme problem with the last releases */
-		shell->priv->zoom = 100;
-		conf_set_int_value (LAST_ZOOMLEVEL, 100);
-	}
-	liferea_htmlview_set_zoom (shell->priv->htmlview, shell->priv->zoom/100.);
 
 	/* create welcome text */
 	buffer = g_string_new (NULL);
@@ -1260,6 +1263,8 @@ liferea_shell_create (int initialState)
 	g_string_free (buffer, TRUE);
 
 	gtk_widget_set_sensitive (GTK_WIDGET (shell->priv->feedlistView), TRUE);
+	
+	liferea_shell_restore_state ();
 	
 	debug_exit ("liferea_shell_create");
 }
