@@ -169,7 +169,9 @@ liferea_shell_restore_position (void)
 
 	w = conf_get_int_value (LAST_WINDOW_WIDTH);
 	h = conf_get_int_value (LAST_WINDOW_HEIGHT);
-
+	
+	debug4 (DEBUG_GUI, "Retrieved saved setting: size %dx%d position %d:%d", w, h, x, y);
+	
 	/* Restore position only if the width and height were saved */
 	if (w != 0 && h != 0) {
 	
@@ -182,6 +184,8 @@ liferea_shell_restore_position (void)
 			y = gdk_screen_height () - 100;
 		else if (y + w < 0)
 			y  = 100;
+			
+		debug4 (DEBUG_GUI, "Restoring to size %dx%d position %d:%d", w, h, x, y);
 
 		gtk_window_move (GTK_WINDOW (shell->priv->window), x, y);
 
@@ -220,6 +224,8 @@ liferea_shell_save_position (void)
 		y = gtk_paned_get_position (GTK_PANED (pane));
 		conf_set_int_value (LAST_WPANE_POS, y);
 	}
+	
+	debug4 (DEBUG_GUI, "Saving window size and position: %dx%d %d:%d", w, h, x, y);
 
 	/* save itemlist properties */
 	conf_set_int_value (LAST_ZOOMLEVEL, (gint)(100.* liferea_htmlview_get_zoom (liferea_shell_get_active_htmlview ())));
@@ -705,16 +711,6 @@ on_menu_quit (GtkMenuItem *menuitem, gpointer user_data)
 }
 
 static void
-on_destroy_cb (gpointer user_data)
-{
-	liferea_shell_save_position ();
-	gtk_widget_hide (liferea_shell_get_window ());
-	liferea_htmlview_plugin_deregister ();
-	ui_tray_enable (FALSE);
-	notification_enable (FALSE);
-}
-
-static void
 on_important_status_message (gpointer obj, gchar *url)
 {
 	liferea_shell_set_important_status_bar ("%s", url);
@@ -1075,7 +1071,6 @@ liferea_shell_create (int initialState)
 	g_signal_connect (G_OBJECT (shell->priv->window), "delete_event", G_CALLBACK(on_close), shell->priv);
 	g_signal_connect (G_OBJECT (shell->priv->window), "window_state_event", G_CALLBACK(on_window_state_event), shell->priv);
 	g_signal_connect (G_OBJECT (shell->priv->window), "key_press_event", G_CALLBACK(on_key_press_event), shell->priv);
-	g_signal_connect (G_OBJECT (shell->priv->window), "destroy", G_CALLBACK (on_destroy_cb), NULL);
 	
 	/* 3.) setup status bar */
 	
@@ -1272,6 +1267,12 @@ liferea_shell_create (int initialState)
 void
 liferea_shell_destroy (void)
 {
+	liferea_shell_save_position ();
+	gtk_widget_hide (liferea_shell_get_window ());
+	liferea_htmlview_plugin_deregister ();
+	ui_tray_enable (FALSE);
+	notification_enable (FALSE);
+
 	gtk_widget_destroy (GTK_WIDGET (shell->priv->window));
 }
 
