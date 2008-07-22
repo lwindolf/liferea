@@ -75,9 +75,9 @@ long common_parse_long(gchar *str, long def);
  * Returns a formatted date string for the given timestamp.
  *
  * @param t		the timestamp
- * @param date_format	a strptime format string (encoded in user locale!)
+ * @param date_format	a strptime format string (encoded in UTF-8)
  *
- * @returns a new formatted date string (encoded in user locale!)
+ * @returns a new formatted date string (encoded in UTF-8)
  */
 gchar * common_format_date(time_t date, const gchar *date_format);
 
@@ -88,7 +88,7 @@ gchar * common_format_date(time_t date, const gchar *date_format);
  *
  * @param t		the timestamp
  *
- * @returns a new formatted date string (encoded in user locale!)
+ * @returns a new formatted date string (encoded in UTF-8)
  */
 gchar * common_format_nice_date(time_t date);
 

@@ -1,3 +1,12 @@
+2008-08-??  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.4.18 (Stable)
+
+	* Fixes SF #1800030: Fix date format problem in non
+	  UTF-8 locale for date strings representing dates
+	  older one week. (patch by Micky Hatya)
+
+
 2008-07-22  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.4.17 (Stable)

@@ -1,7 +1,7 @@
 /**
  * @file common.c common routines for Liferea
  * 
- * Copyright (C) 2003-2007  Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2008  Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006  Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2004       Karl Soderstrom <ks@xanadunet.net>
  *
@@ -179,10 +179,10 @@ gchar * common_format_nice_date(time_t date) {
 	if (!done) {
 		if (then.tm_year == now.tm_year) {
 			/* translation hint: date format for dates older than a week but from this year, reorder format codes as necessary */
-			e_strftime_fix_am_pm (buf, TIMESTRLEN, _("%b %d %l:%M %p"), &then);
+			e_utf8_strftime_fix_am_pm (buf, TIMESTRLEN, _("%b %d %l:%M %p"), &then);
 		} else {
 			/* translation hint: date format for dates from the last years, reorder format codes as necessary */
-			e_strftime_fix_am_pm (buf, TIMESTRLEN, _("%b %d %Y"), &then);
+			e_utf8_strftime_fix_am_pm (buf, TIMESTRLEN, _("%b %d %Y"), &then);
 		}
 	}
 
