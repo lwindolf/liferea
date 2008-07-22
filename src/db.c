@@ -419,29 +419,6 @@ open:
 
 		db_exec ("CREATE INDEX metadata_idx ON metadata (item_id);");
 
-		/* Set up item removal trigger (does not remove comments!) */
-		db_exec ("DROP TRIGGER item_removal;");
-		db_exec ("CREATE TRIGGER item_removal DELETE ON itemsets "
-	        	 "BEGIN "
-	        	 "   DELETE FROM items WHERE ROWID = old.item_id; "
-			 "   DELETE FROM metadata WHERE item_id = old.item_id; "
-	        	 "END;");
-
-		/* Set up item read state update triggers */
-		db_exec ("DROP TRIGGER item_insert;");
-		db_exec ("CREATE TRIGGER item_insert INSERT ON items "
-	        	 "BEGIN "
-	        	 "   UPDATE itemsets SET read = new.read "
-	        	 "   WHERE item_id = new.ROWID; "
-	        	 "END;");
-
-		db_exec ("DROP TRIGGER item_update;");
-		db_exec ("CREATE TRIGGER item_update UPDATE ON items "
-	        	 "BEGIN "
-	        	 "   UPDATE itemsets SET read = new.read "
-	        	 "   WHERE item_id = new.ROWID; "
-	        	 "END;");
-
 		db_exec ("CREATE TABLE subscription ("
 	        	 "   node_id            STRING,"
 			 "   source             STRING,"
@@ -473,15 +450,6 @@ open:
 
 		db_exec ("CREATE INDEX subscription_metadata_idx ON subscription_metadata (node_id);");
 
-		/* Set up subscription removal trigger */	
-		db_exec ("DROP TRIGGER subscription_removal;");
-		db_exec ("CREATE TRIGGER subscription_removal DELETE ON subscription "
-	        	 "BEGIN "
-			 "   DELETE FROM node WHERE node_id = old.node_id; "
-	        	 "   DELETE FROM update_state WHERE node_id = old.node_id; "
-			 "   DELETE FROM subscription_metadata WHERE node_id = old.node_id; "
-	        	 "END;");
-
 		db_exec ("CREATE TABLE node ("
 	        	 "   node_id		STRING,"
 	        	 "   parent_id		STRING,"
@@ -501,29 +469,71 @@ open:
 			 "   PRIMARY KEY (node_id)"
 			 ");");
 			 
-		/* view counting triggers are set up in the view preparation code (see db_view_create()) */
-
 		db_end_transaction ();
 		debug_end_measurement (DEBUG_DB, "table setup");
 
-		/* Cleanup of DB */
-	
-		/*
-		debug_start_measurement (DEBUG_DB);
-		db_exec ("DELETE FROM items WHERE ROWID NOT IN "
-			 "(SELECT item_id FROM itemsets);");
-		debug_end_measurement (DEBUG_DB, "cleanup lost items");
+		/* 2. Removing old triggers */
+		db_exec ("DROP TRIGGER item_insert;");
+		db_exec ("DROP TRIGGER item_update;");
+		db_exec ("DROP TRIGGER item_removal;");
+		db_exec ("DROP TRIGGER subscription_removal;");
+		
+		/* 3. Cleanup of DB */
 
-		debug_start_measurement (DEBUG_DB);
-		db_exec ("DELETE FROM itemsets WHERE item_id NOT IN "
-			 "(SELECT ROWID FROM items);");
-		debug_end_measurement (DEBUG_DB, "cleanup lost itemset entries");
+		if (initial) {	
+			debug0 (DEBUG_DB, "Checking for items not referenced in table 'itemsets'...\n");
+			db_exec ("BEGIN "
+			         "   CREATE TEMP TABLE tmp_id ( id );"
+				 "   INSERT INTO tmp_id SELECT ROWID FROM items WHERE ROWID NOT IN (SELECT item_id FROM itemsets);"
+				 "   DELETE FROM items WHERE ROWID IN (SELECT id FROM tmp_id LIMIT 1000);"
+				 "   DROP TABLE tmp_id;"
+				 "END;");
+				 
+			debug0 (DEBUG_DB, "Checking for invalid item ids in table 'itemsets'...\n");
+			db_exec ("BEGIN "
+			         "   CREATE TEMP TABLE tmp_id ( id );"
+			         "   INSERT INTO tmp_id SELECT item_id FROM itemsets WHERE item_id NOT IN (SELECT ROWID FROM items);"
+			         /* limit to 1000 items as it is very slow */
+			         "   DELETE FROM itemsets WHERE item_id IN (SELECT id FROM tmp_id LIMIT 1000);"
+			         "   DROP TABLE tmp_id;"
+				 "END;");
 
-		debug_start_measurement (DEBUG_DB);
-		db_exec ("DELETE FROM itemsets WHERE comment = 0 AND node_id NOT IN "
-	        	 "(SELECT node_id FROM subscription);");
-		debug_end_measurement (DEBUG_DB, "cleanup lost node entries");
-		*/
+			debug0 (DEBUG_DB, "Checking for items without a subscription...\n");
+			db_exec ("DELETE FROM itemsets WHERE comment = 0 AND node_id NOT IN "
+		        	 "(SELECT node_id FROM subscription);");
+				 
+			debug0 (DEBUG_DB, "DB cleanup finished. Continuing startup.\n");
+		}
+		
+		/* 4. Creating triggers (after cleanup so it is not slowed down by triggers) */
+
+		db_exec ("CREATE TRIGGER item_insert INSERT ON items "
+	        	 "BEGIN "
+	        	 "   UPDATE itemsets SET read = new.read "
+	        	 "   WHERE item_id = new.ROWID; "
+	        	 "END;");
+
+		db_exec ("CREATE TRIGGER item_update UPDATE ON items "
+	        	 "BEGIN "
+	        	 "   UPDATE itemsets SET read = new.read "
+	        	 "   WHERE item_id = new.ROWID; "
+	        	 "END;");
+
+		/* This trigger does explicitely not remove comments! */
+		db_exec ("CREATE TRIGGER item_removal DELETE ON itemsets "
+	        	 "BEGIN "
+	        	 "   DELETE FROM items WHERE ROWID = old.item_id; "
+			 "   DELETE FROM metadata WHERE item_id = old.item_id; "
+	        	 "END;");
+		
+		db_exec ("CREATE TRIGGER subscription_removal DELETE ON subscription "
+	        	 "BEGIN "
+			 "   DELETE FROM node WHERE node_id = old.node_id; "
+	        	 "   DELETE FROM update_state WHERE node_id = old.node_id; "
+			 "   DELETE FROM subscription_metadata WHERE node_id = old.node_id; "
+	        	 "END;");
+
+		/* Note: view counting triggers are set up in the view preparation code (see db_view_create()) */		
 	}
 	
 	/* prepare statements */

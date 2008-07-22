@@ -6,6 +6,8 @@
 	  module loading function provided by LUA 5.1. This
 	  solves the problem that the "os" module isn't
 	  loaded on some setups.
+	* New DB cleanup handling that removes stale rows
+	  in the "items", "itemsets" and "subscription" table.
 	* Fixes autocommit warning during migration.
 	* Fixes SF #2020621: Can't play Ogg/Vorbis audio
 	  enclosures. Now doesn't present XSPF for those.
