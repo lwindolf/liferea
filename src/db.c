@@ -491,7 +491,7 @@ open:
 
 		if (initial) {	
 			debug0 (DEBUG_DB, "Checking for items not referenced in table 'itemsets'...\n");
-			db_exec ("BEGIN "
+			db_exec ("BEGIN; "
 			         "   CREATE TEMP TABLE tmp_id ( id );"
 				 "   INSERT INTO tmp_id SELECT ROWID FROM items WHERE ROWID NOT IN (SELECT item_id FROM itemsets);"
 				 "   DELETE FROM items WHERE ROWID IN (SELECT id FROM tmp_id LIMIT 1000);"
@@ -499,7 +499,7 @@ open:
 				 "END;");
 				 
 			debug0 (DEBUG_DB, "Checking for invalid item ids in table 'itemsets'...\n");
-			db_exec ("BEGIN "
+			db_exec ("BEGIN; "
 			         "   CREATE TEMP TABLE tmp_id ( id );"
 			         "   INSERT INTO tmp_id SELECT item_id FROM itemsets WHERE item_id NOT IN (SELECT ROWID FROM items);"
 			         /* limit to 1000 items as it is very slow */
