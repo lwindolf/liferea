@@ -225,8 +225,6 @@ liferea_shell_save_position (void)
 		conf_set_int_value (LAST_WPANE_POS, y);
 	}
 	
-	debug4 (DEBUG_GUI, "Saving window size and position: %dx%d %d:%d", w, h, x, y);
-
 	/* save itemlist properties */
 	conf_set_int_value (LAST_ZOOMLEVEL, (gint)(100.* liferea_htmlview_get_zoom (liferea_shell_get_active_htmlview ())));
 
@@ -244,6 +242,8 @@ liferea_shell_save_position (void)
 	    x > gdk_screen_width () ||
 	    y > gdk_screen_height ())
 		return;
+
+	debug4 (DEBUG_GUI, "Saving window size and position: %dx%d %d:%d", w, h, x, y);
 
 	/* save window position */
 	conf_set_int_value (LAST_WINDOW_X, x);
@@ -1268,7 +1268,6 @@ void
 liferea_shell_destroy (void)
 {
 	liferea_shell_save_position ();
-	gtk_widget_hide (liferea_shell_get_window ());
 	liferea_htmlview_plugin_deregister ();
 	ui_tray_enable (FALSE);
 	notification_enable (FALSE);
