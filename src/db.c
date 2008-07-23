@@ -560,7 +560,7 @@ open:
 		          "WHERE node_id = ?");
 		       
 	db_new_statement ("itemsetRemoveStmt",
-	                  "DELETE FROM itemsets WHERE parent_item_id = ?");
+	                  "DELETE FROM itemsets WHERE item_id = ? OR parent_item_id = ?");
 			
 	db_new_statement ("itemsetRemoveAllStmt",
 	                  "DELETE FROM itemsets WHERE parent_node_id = ?");
@@ -975,6 +975,7 @@ db_item_remove (gulong id)
 	
 	stmt = db_get_statement ("itemsetRemoveStmt");
 	sqlite3_bind_int (stmt, 1, id);
+	sqlite3_bind_int (stmt, 2, id);
 	res = sqlite3_step (stmt);
 
 	if (SQLITE_DONE != res)

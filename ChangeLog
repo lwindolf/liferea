@@ -5,6 +5,9 @@
 	* Fixes SF #1800030: Fix date format problem in non
 	  UTF-8 locale for date strings representing dates
 	  older one week. (patch by Micky Hatya)
+	* Fixes a bug that causes the single item removal
+	  to have no effect at all. This also can cause 
+	  reappearing of old items and wrong unread counts.
 
 
 2008-07-22  Lars Lindner  <lars.lindner@gmail.com>
