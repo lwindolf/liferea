@@ -113,7 +113,11 @@ db_exec (const gchar *sql)
 	
 	debug1 (DEBUG_DB, "executing SQL: %s", sql);
 	res = sqlite3_exec (db, sql, NULL, NULL, &err);
-	debug2 (DEBUG_DB, " -> result: %d (%s)", res, err?err:"success");	
+	if (1 >= res) {
+		debug2 (DEBUG_DB, " -> result: %d (%s)", res, err?err:"success");
+	} else {
+		g_warning ("Unexpected status on SQL execution: %d (%s)", res, err?err:"success");
+	}
 	sqlite3_free (err);
 }
 
@@ -569,7 +573,7 @@ open:
 		          "WHERE node_id = ?");
 		       
 	db_new_statement ("itemsetRemoveStmt",
-	                  "DELETE FROM itemsets WHERE parent_item_id = ?");
+	                  "DELETE FROM itemsets WHERE item_id = ? OR parent_item_id = ?");
 			
 	db_new_statement ("itemsetRemoveAllStmt",
 	                  "DELETE FROM itemsets WHERE parent_node_id = ?");
