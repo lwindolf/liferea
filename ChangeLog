@@ -1,4 +1,4 @@
-2008-08-??  Lars Lindner  <lars.lindner@gmail.com>
+2008-07-27  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.4.18 (Stable)
 
@@ -8,6 +8,10 @@
 	* Fixes a bug that causes the single item removal
 	  to have no effect at all. This also can cause 
 	  reappearing of old items and wrong unread counts.
+	* Fixes the 100% CPU usage of the previous versions
+	  that was cost by exorbitant merging costs due to
+	  the cache dropping not working anymore due to the
+	  item removal issue mentioned above.
 
 
 2008-07-22  Lars Lindner  <lars.lindner@gmail.com>
