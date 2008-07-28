@@ -55,24 +55,10 @@ itemview_init (void)
 		itemView_priv.userDefinedDateFmt = NULL;
 	}
 	
-	/* NOTE: This code is partially broken. In the case of a user
-	   supplied format string, such a string is in UTF-8. The
-	   strftime function expects the user locale as its input, BUT
-	   the user's locale may have an alternate representation of '%'
-	   (For example UCS16 has 2 byte characters, although this may be
-	   handled by glibc correctly) or may not be able to represent a
-	   character used in the string. We shall hope that the user's
-	   locale has neither of these problems and convert the format
-	   string to the user's locale before calling strftime. The
-	   result must be converted back to UTF-8 so that it can be
-	   displayed by the itemlist correctly. */
-
-	if (itemView_priv.userDefinedDateFmt) {
-		debug1 (DEBUG_GUI, "new user defined date format: >>>%s<<<", itemView_priv.userDefinedDateFmt);
-		gchar *tmp = itemView_priv.userDefinedDateFmt;
-		itemView_priv.userDefinedDateFmt = g_locale_from_utf8 (tmp, -1, NULL, NULL, NULL);
-		g_free (tmp);
-	}
+	if (itemView_priv.userDefinedDateFmt)
+		debug1 (DEBUG_GUI, "user defined date format is: >>>%s<<<", itemView_priv.userDefinedDateFmt);
+	else
+		debug0 (DEBUG_GUI, "using default date format");
 	
 	/* Setup HTML widget */
 	htmlview_init ();
