@@ -153,7 +153,7 @@ google_source_fix_broadcast_item (xmlNodePtr entry, itemPtr item)
 	
 	/* who is sharing this? */
 	google_source_xpath_foreach_match("./atom:link[@rel='via']/@title", xpathCtxt, google_source_set_shared_by, item);
-	
+
 	/* free up xpath related data */
 	if (xpathCtxt) xmlXPathFreeContext(xpathCtxt);
 }
@@ -240,6 +240,12 @@ google_feed_subscription_process_update_result (subscriptionPtr subscription,
 		xmlXPathContextPtr xpathCtxt = xmlXPathNewContext (doc) ;
 		xmlXPathRegisterNs(xpathCtxt, "atom", "http://www.w3.org/2005/Atom");
 		google_source_xpath_foreach_match("/atom:feed/atom:entry/atom:category[@scheme='http://www.google.com/reader/']", xpathCtxt, google_source_xml_unlink_node, NULL);
+
+
+		/* delete the via link for broadcast subscription */
+		if (g_str_equal(subscription->source, GOOGLE_READER_BROADCAST_FRIENDS_URL)) 
+			google_source_xpath_foreach_match("/atom:feed/atom:entry/atom:link[@rel='via']/@href", xpathCtxt, google_source_xml_unlink_node, NULL);
+		
 		xmlXPathFreeContext(xpathCtxt);
 		
 		/* good now we have removed the read and unread labels. */
