@@ -144,6 +144,20 @@ enum  {
 #define GOOGLE_READER_EDIT_TAG_ADD_TAG "i=%s&s=%s%%2F%s&a=%s&ac=edit-tags&T=%s&async=true"
 
 /**
+ * Postdata for removing  a tag, when using GOOGLE_READER_EDIT_TAG_URL. Do
+ * not use for removing the "read" tag, see GOOGLE_READER_EDIT_TAG_AR_TAG 
+ * for that.
+ *
+ * @param i The guid of the item.
+ * @param prefix The prefix to 's'. @see GOOGLE_READER_EDIT_TAG_ADD_TAG
+ * @param s The URL of the subscription containing the item. (Note that the 
+ *          final value of s is feed + "/" + this string)
+ * @param r The tag to remove
+ * @param T a token obtained using GOOGLE_READER_TOKEN_URL
+ */
+#define GOOGLE_READER_EDIT_TAG_REMOVE_TAG "i=%s&s=%s%%2F%s&r=%s&ac=edit-tags&T=%s&async=true"
+
+/**
  * Postdata for adding a tag, and removing another tag at the same time, 
  * when using GOOGLE_READER_EDIT_TAG_URL.
  * @param i The guid of the item.
@@ -173,6 +187,8 @@ enum  {
 #define GOOGLE_READER_TAG_KEPT_UNREAD          "user/-/state/com.google/kept-unread"
 #define GOOGLE_READER_TAG_READ                 "user/-/state/com.google/read"
 #define GOOGLE_READER_TAG_TRACKING_KEPT_UNREAD "user/-/state/com.google/tracking-kept-unread"
+#define GOOGLE_READER_TAG_STARRED              "user/-/state/com.google/starred"
+
 
 /**
  * Interval (in seconds) for doing a Quick Update. 
@@ -188,7 +204,17 @@ extern struct subscriptionType googleSourceFeedSubscriptionType;
 extern struct subscriptionType googleSourceOpmlSubscriptionType;
 
 /**
- * Mark an item as read on the Google Reader server.
+ * Set the flagged state on an item.
+ *
+ * @param node The node which contains the item
+ * @param item The item to whose status needs to be changed
+ * @param newStatus TRUE to mark the item as read, FALSE to mark as unread
+ */
+void 
+google_source_item_set_flag(nodePtr node, itemPtr item, gboolean newStatus);
+
+/**
+ * Mark an item as read.
  *
  * @param node The node which contains the item
  * @param item The item to whose status needs to be changed

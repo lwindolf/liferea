@@ -85,13 +85,24 @@ google_source_xml_unlink_node(xmlNodePtr node, gpointer data)
 	xmlFreeNode(node) ;
 }
 
+void 
+google_source_item_set_flag(nodePtr node, itemPtr item, gboolean newStatus)
+{
+	const gchar* sourceUrl = metadata_list_get(item->metadata, "GoogleBroadcastOrigFeed");
+	if (!sourceUrl) sourceUrl = node->subscription->source;
+	nodePtr root = google_source_get_root_from_node(node);
+	google_source_edit_mark_starred((GoogleSourcePtr)root->data, 
+				     item->sourceId, 
+				     sourceUrl,
+				     newStatus);
+	item_flag_state_changed(item, newStatus);
+}
 void
 google_source_item_mark_read (nodePtr node, itemPtr item, 
                               gboolean newStatus)
 {
 	const gchar* sourceUrl = metadata_list_get(item->metadata, "GoogleBroadcastOrigFeed");
 	if (!sourceUrl) sourceUrl = node->subscription->source;
-	debug1(DEBUG_UPDATE, "GoogleSource: original source is %s", sourceUrl);
 	nodePtr root = google_source_get_root_from_node(node);
 	google_source_edit_mark_read((GoogleSourcePtr)root->data, 
 				     item->sourceId, 
@@ -132,6 +143,21 @@ google_source_set_shared_by(xmlNodePtr node, gpointer userdata)
 	xmlFree(value);
 }
 static void
+google_source_fix_broadcast_item (xmlNodePtr entry, itemPtr item) 
+{
+	xmlXPathContextPtr xpathCtxt = xmlXPathNewContext (entry->doc) ;
+	xmlXPathRegisterNs(xpathCtxt, "atom", "http://www.w3.org/2005/Atom");
+	xpathCtxt->node = entry;
+	
+	google_source_xpath_foreach_match("./atom:source/atom:id", xpathCtxt, google_source_set_orig_source, item);
+	
+	/* who is sharing this? */
+	google_source_xpath_foreach_match("./atom:link[@rel='via']/@title", xpathCtxt, google_source_set_shared_by, item);
+	
+	/* free up xpath related data */
+	if (xpathCtxt) xmlXPathFreeContext(xpathCtxt);
+}
+static void
 google_source_item_retrieve_status (const xmlNodePtr entry, gpointer userdata)
 {
 	subscriptionPtr subscription = (subscriptionPtr) userdata;
@@ -148,18 +174,19 @@ google_source_item_retrieve_status (const xmlNodePtr entry, gpointer userdata)
 	id = xmlNodeGetContent (xml);
 
 	gboolean read = FALSE;
+	gboolean starred = FALSE;
+
 	for (xml = entry->children; xml; xml = xml->next ) {
 		if (g_str_equal (xml->name, "category")) {
 			xmlChar* label = xmlGetProp (xml, "label");
 			if (!label)
 				continue;
 
-			if (g_str_equal (label, "read")) {
-				debug1 (DEBUG_UPDATE, "Google Reader item '%s' will be marked as read", id);
+			if (g_str_equal (label, "read"))
 				read = TRUE;
-				xmlFree (label);
-				break;
-			}
+			else if (g_str_equal(label, "starred")) 
+				starred = TRUE;
+
 			xmlFree (label);
 		}
 	}
@@ -173,20 +200,12 @@ google_source_item_retrieve_status (const xmlNodePtr entry, gpointer userdata)
 			if (g_str_equal (item->sourceId, id) && !google_source_edit_is_in_queue(gsource, id)) {
 				
 				item_read_state_changed (item, read);
+				item_flag_state_changed (item, starred);
 
-				if (g_str_equal(subscription->source, GOOGLE_READER_BROADCAST_FRIENDS_URL)) {
-					xmlXPathContextPtr xpathCtxt = xmlXPathNewContext (entry->doc) ;
-					xmlXPathRegisterNs(xpathCtxt, "atom", "http://www.w3.org/2005/Atom");
-					xpathCtxt->node = entry;
-
-					google_source_xpath_foreach_match("./atom:source/atom:id", xpathCtxt, google_source_set_orig_source, item);
-
-					/* who is sharing this? */
-					google_source_xpath_foreach_match("./atom:link[@rel='via']/@title", xpathCtxt, google_source_set_shared_by, item);
-						
-					/* free up xpath related data */
-					if (xpathCtxt) xmlXPathFreeContext(xpathCtxt);
-				}
+				if (g_str_equal(subscription->source, 
+						GOOGLE_READER_BROADCAST_FRIENDS_URL)) 
+					google_source_fix_broadcast_item(entry, item);
+				
 				item_unload (item);
 				goto cleanup;
 			}

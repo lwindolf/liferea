@@ -209,6 +209,9 @@ google_source_edit_action_complete(
 	google_source_edit_process (gsource);
 }
 
+/* the following google_source_api_* functions are simply funtions that 
+   convert a GoogleSourceActionPtr to a updateRequestPtr */
+ 
 static void
 google_source_api_add_subscription(GoogleSourceActionPtr action, updateRequestPtr request, const gchar* token) 
 {
@@ -270,7 +273,21 @@ google_source_api_edit_tag(GoogleSourceActionPtr action, updateRequestPtr reques
 	else if (action->actionType == EDIT_ACTION_TRACKING_MARK_UNREAD) {
 		a_escaped = g_uri_escape_string (GOOGLE_READER_TAG_TRACKING_KEPT_UNREAD, NULL, TRUE);
 		postdata = g_strdup_printf (GOOGLE_READER_EDIT_TAG_ADD_TAG, i_escaped, prefix, s_escaped, a_escaped, token);
-	}  else g_assert(FALSE);
+	}  
+	else if (action->actionType == EDIT_ACTION_MARK_STARRED) { 
+		a_escaped = g_uri_escape_string (GOOGLE_READER_TAG_STARRED, NULL, TRUE) ;
+		postdata = g_strdup_printf (
+			GOOGLE_READER_EDIT_TAG_ADD_TAG, i_escaped, prefix,
+			s_escaped, a_escaped, token);
+	}
+	else if (action->actionType == EDIT_ACTION_MARK_UNSTARRED) {
+		gchar* r_escaped = g_uri_escape_string(GOOGLE_READER_TAG_STARRED, NULL, TRUE);
+		postdata = g_strdup_printf (
+			GOOGLE_READER_EDIT_TAG_REMOVE_TAG, i_escaped, prefix,
+			s_escaped, r_escaped, token);
+	}
+	
+	else g_assert(FALSE);
 	
 	g_free (s_escaped);
 	g_free (a_escaped); 
@@ -324,7 +341,9 @@ google_source_edit_token_cb (const struct updateResult * const result, gpointer 
 
 	if ( action->actionType == EDIT_ACTION_MARK_READ || 
 	     action->actionType == EDIT_ACTION_MARK_UNREAD || 
-	     action->actionType == EDIT_ACTION_TRACKING_MARK_UNREAD ) 
+	     action->actionType == EDIT_ACTION_TRACKING_MARK_UNREAD ||
+	     action->actionType == EDIT_ACTION_MARK_STARRED || 
+	     action->actionType == EDIT_ACTION_MARK_UNSTARRED ) 
 		google_source_api_edit_tag (action, request, token);
 	else if (action->actionType == EDIT_ACTION_ADD_SUBSCRIPTION ) 
 		google_source_api_add_subscription(action, request, token);
@@ -385,7 +404,8 @@ google_source_edit_push (GoogleSourcePtr gsource, GoogleSourceActionPtr action, 
 		google_source_edit_process (gsource);
 }
 
-void update_read_state_callback(GoogleSourcePtr gsource, GoogleSourceActionPtr action, gboolean success) 
+static void 
+update_read_state_callback(GoogleSourcePtr gsource, GoogleSourceActionPtr action, gboolean success) 
 {
 	if (success) {
 		// FIXME: call item_read_state_changed (item, newState);
@@ -424,7 +444,33 @@ google_source_edit_mark_read (
 		google_source_edit_push (gsource, action, FALSE);
 	}
 }
+static void
+update_starred_state_callback(GoogleSourcePtr gsource, GoogleSourceActionPtr action, gboolean success) 
+{
+	if (success) {
+		// FIXME: call item_flag_changed (item, newState);
+	} else {
+		debug0 (DEBUG_UPDATE, "Failed to change item state!\n");
+	}
+}
 
+void
+google_source_edit_mark_starred (
+	GoogleSourcePtr gsource, 
+	const gchar *guid,
+	const gchar *feedUrl,
+	gboolean newStatus)
+{
+	GoogleSourceActionPtr action = google_source_action_new ();
+
+	action->guid = g_strdup (guid);
+	action->feedUrl = g_strdup (feedUrl);
+	action->actionType = newStatus ? EDIT_ACTION_MARK_STARRED :
+	                           EDIT_ACTION_MARK_UNSTARRED;
+	action->callback = update_starred_state_callback;
+	
+	google_source_edit_push (gsource, action, FALSE);
+}
 
 void update_subscription_list_callback(GoogleSourcePtr gsource, GoogleSourceActionPtr action, gboolean success) 
 {
