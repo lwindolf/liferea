@@ -44,14 +44,6 @@
 /** default Google reader subscription list update interval = once a day */
 #define GOOGLE_SOURCE_UPDATE_INTERVAL 60*60*24
 
-/**
- * when this is set to true, and google_source_item_mark_read is called, 
- * it will do nothing. This is a small hack, so that whenever google source
- * wants to set and item as read/unread within this file, it should not do 
- * any network calls.
- */
-gboolean googleSourceBlockEditHack = FALSE ;
-
 /** create a google source with given node as root */ 
 GoogleSourcePtr google_source_new(nodePtr node) 
 {
@@ -242,16 +234,13 @@ google_source_get_feedlist (nodePtr node)
 void 
 google_source_remove (nodePtr node)
 { 
-	googleSourceBlockEditHack = TRUE ; 
 	opml_source_remove (node);
-	googleSourceBlockEditHack = FALSE ;
 }
 
 
 static nodePtr
 google_source_add_subscription(nodePtr node, nodePtr parent, subscriptionPtr subscription) 
 { 
-	g_assert(!googleSourceBlockEditHack);
 	debug_enter("google_source_add_subscription") ;
 	nodePtr child = node_new ();
 
