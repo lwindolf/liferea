@@ -153,9 +153,6 @@ google_source_login (GoogleSourcePtr gsource, guint32 flags)
 	}
 
 	request = update_request_new();
-	/* @todo: The following is a severe security issue, since the password
-	 * is being sent in the URL itself. As of now, since 'subscription'
-	 * does not have a postdata support, I don't have much choice. */
 
 	update_request_set_source(request, GOOGLE_READER_LOGIN_URL);
 	request->postdata = g_strdup_printf (GOOGLE_READER_LOGIN_POST,
