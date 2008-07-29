@@ -382,6 +382,10 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates, gbo
 		g_list_free (droppedItems);
 	}
 	
+	/* 5. Sanity check to detect merging bugs */
+	if (g_list_length (items) > itemset_get_max_item_count (itemSet) + flagCount)
+		g_warning ("Fatal: Item merging bug! Resulting item list is too long! Cache limit does not work. This is a severe program bug!");
+	
 	g_list_free (items);
 	
 	debug_end_measurement (DEBUG_UPDATE, "merge itemset");
