@@ -265,7 +265,7 @@ guint
 itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates)
 {
 	GList	*iter, *droppedItems = NULL, *items = NULL;
-	guint	max, toBeDropped, newCount = 0, flagCount = 0;
+	guint	max, length, toBeDropped, newCount = 0, flagCount = 0;
 
 	debug_start_measurement (DEBUG_UPDATE);
 	
@@ -277,6 +277,7 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates)
 	   size might not always be sufficient. We need to check
 	   border use cases in the following. */
 	   
+	length = g_list_length (list);
 	max = itemset_get_max_item_count (itemSet);
 
 	/* Preload all items for flag counting and later merging comparison */
@@ -291,15 +292,19 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates)
 		iter = g_list_next (iter);
 	}
 	
-	/* Case #1: Avoid having to many flagged items. We count the 
+	/* Case #1: Avoid having too many flagged items. We count the 
 	   flagged items and check if they are fewer than 
 	   
 	      <cache limit> - <downloaded items> 
 	      
 	   to ensure that all new items fit in a feed cache full of
-	   flagged items. */
-	if (max < g_list_length (list) + flagCount) {
-		max = flagCount + g_list_length (list);
+	   flagged items.
+	   
+	   This handling MUST NOT be invoked when the number of items 
+	   is larger then the cache size, otherwise we would never 
+	   remove any items for large feeds. */
+	if ((length < max) && (max < length + flagCount)) {
+		max = flagCount + length;
 		debug2 (DEBUG_UPDATE, "too many flagged items -> increasing cache limit to %u (node id=%s)", max, itemSet->nodeId);
 	}
 	
@@ -309,7 +314,7 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates)
 	   the maximum cache size which could cause items
 	   to be dropped and added again on subsequent 
 	   merges with the same feed content */
-	if (g_list_length (list) > max) {
+	if (length > max) {
 		debug2 (DEBUG_UPDATE, "item list too long (%u, max=%u) for merging!", g_list_length (list), max);
 		guint i = 0;
 		GList *iter, *copy;
