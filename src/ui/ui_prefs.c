@@ -368,8 +368,8 @@ on_default_update_interval_value_changed (GtkSpinButton *spinbutton, gpointer us
 	gint		updateInterval, intervalUnit;
 	GtkWidget	*unitWidget, *valueWidget;
 
-	unitWidget = liferea_dialog_lookup (prefdialog, "refreshIntervalUnitComboBox");
-	valueWidget = liferea_dialog_lookup (prefdialog, "refreshIntervalSpinButton");
+	unitWidget = liferea_dialog_lookup (prefdialog, "globalRefreshIntervalUnitComboBox");
+	valueWidget = liferea_dialog_lookup (prefdialog, "globalRefreshIntervalSpinButton");
 	intervalUnit = gtk_combo_box_get_active (GTK_COMBO_BOX (unitWidget));
 	updateInterval = gtk_spin_button_get_value_as_int (GTK_SPIN_BUTTON (valueWidget));
 
@@ -387,6 +387,7 @@ on_default_update_interval_unit_changed (gpointer user_data)
 	on_default_update_interval_value_changed (NULL, NULL);
 }
 
+/*
 void
 on_menuselection_clicked (GtkButton *button, gpointer user_data)
 {
@@ -412,7 +413,7 @@ on_menuselection_clicked (GtkButton *button, gpointer user_data)
 	
 	liferea_shell_update_menubar ();
 	liferea_shell_update_toolbar ();
-}
+}*/
 
 static void
 on_updateallfavicons_clicked (GtkButton *button, gpointer user_data)
@@ -572,6 +573,13 @@ on_useAvahiSync_toggled (GtkToggleButton *button, gpointer user_data)
 	conf_set_bool_value (SYNC_AVAHI_ENABLED, enabled);
 }
 
+void
+on_hidetoolbar_toggled (GtkToggleButton *button, gpointer user_data)
+{
+	conf_set_bool_value (DISABLE_TOOLBAR, gtk_toggle_button_get_active (button));
+	liferea_shell_update_toolbar ();
+}
+
 /*------------------------------------------------------------------------------*/
 /* preferences dialog callbacks 						*/
 /*------------------------------------------------------------------------------*/
@@ -655,12 +663,12 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 		gtk_adjustment_set_value (itemCount, conf_get_int_value (DEFAULT_MAX_ITEMS));
 
 		/* set default update interval spin button and unit combo box */
-		ui_common_setup_combo_menu (liferea_dialog_lookup (prefdialog, "refreshIntervalUnitComboBox"),
+		ui_common_setup_combo_menu (liferea_dialog_lookup (prefdialog, "globalRefreshIntervalUnitComboBox"),
 		                            default_update_interval_unit_options,
 		                            G_CALLBACK (on_default_update_interval_unit_changed),
 					    -1);
 					   
-		widget = liferea_dialog_lookup (prefdialog, "refreshIntervalUnitComboBox");
+		widget = liferea_dialog_lookup (prefdialog, "globalRefreshIntervalUnitComboBox");
 		tmp = conf_get_int_value (DEFAULT_UPDATE_INTERVAL);
 		if (tmp % 1440 == 0) {		/* days */
 			gtk_combo_box_set_active (GTK_COMBO_BOX (widget), 2);
@@ -671,7 +679,7 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 		} else {			/* minutes */
 			gtk_combo_box_set_active (GTK_COMBO_BOX (widget), 0);
 		}
-		widget = liferea_dialog_lookup (prefdialog,"refreshIntervalSpinButton");
+		widget = liferea_dialog_lookup (prefdialog,"globalRefreshIntervalSpinButton");
 		gtk_spin_button_set_value (GTK_SPIN_BUTTON (widget), tmp);
 		g_signal_connect (G_OBJECT (widget), "changed", G_CALLBACK (on_default_update_interval_value_changed), NULL);
 
@@ -777,24 +785,9 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), conf_get_bool_value (START_IN_TRAY));
 		gtk_widget_set_sensitive (liferea_dialog_lookup (prefdialog, "startintraybtn"), conf_get_bool_value (SHOW_TRAY_ICON));
 
-		/* menu / tool bar settings */	
-		for(i = 1; i <= 3; i++) {
-			/* Set fields in the radio widgets so that they know their option # and the pref dialog */
-			widgetname = g_strdup_printf("%s%d", "menuradiobtn", i);
-			widget = liferea_dialog_lookup(prefdialog, widgetname);
-			gtk_object_set_data(GTK_OBJECT(widget), "option_number", GINT_TO_POINTER(i));
-			g_free(widgetname);
-		}
-
-		/* select currently active menu option */
-		tmp = 1;
-		if(conf_get_bool_value(DISABLE_TOOLBAR)) tmp = 2;
-		if(conf_get_bool_value(DISABLE_MENUBAR)) tmp = 3;
-
-		widgetname = g_strdup_printf("%s%d", "menuradiobtn", tmp);
-		widget = liferea_dialog_lookup(prefdialog, widgetname);
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), TRUE);
-		g_free(widgetname);
+		/* tool bar settings */	
+		widget = liferea_dialog_lookup (prefdialog, "hidetoolbarbtn");
+		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), conf_get_bool_value(DISABLE_TOOLBAR));
 
 		/* select currently active toolbar style option */
 		name = conf_get_str_value (TOOLBAR_STYLE);

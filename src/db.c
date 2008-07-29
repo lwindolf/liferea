@@ -177,7 +177,7 @@ db_get_schema_version (void)
 	
 /* opening or creation of database */
 void
-db_init (gboolean initial) 
+db_init (gboolean initial) 	// FIXME: argh... why does the init function need an initial flag?
 {
 	gchar		*filename;
 	gint		schemaVersion;

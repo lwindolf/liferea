@@ -65,7 +65,7 @@ struct LifereaShellPrivate {
 	GtkWidget	*toolbar;
 	GtkWidget	*itemlistContainer;	/**< scrolled window holding item list tree view */
 	GtkTreeView	*itemlist;		// FIXME: replace with real item list object
-	GtkTreeView	*feedlistView;		// FIXME: replace with real feed list object
+	GtkTreeView	*feedlistView;
 	GtkStatusbar	*statusbar;
 	GtkWidget	*statusbar_feedsinfo;
 	GtkActionGroup	*generalActions;
@@ -272,24 +272,10 @@ liferea_shell_set_toolbar_style (const gchar *toolbar_style)
 void
 liferea_shell_update_toolbar (void)
 {
-	/* to avoid "locking out" the user */
-	if (conf_get_bool_value (DISABLE_MENUBAR) &&
-	    conf_get_bool_value (DISABLE_TOOLBAR))
-		conf_set_bool_value (DISABLE_TOOLBAR, FALSE);
-
-	if (conf_get_bool_value(DISABLE_TOOLBAR))
+	if (conf_get_bool_value (DISABLE_TOOLBAR))
 		gtk_widget_hide (shell->priv->toolbar);
 	else
 		gtk_widget_show (shell->priv->toolbar);
-}
-
-void
-liferea_shell_update_menubar (void)
-{
-	if (conf_get_bool_value (DISABLE_MENUBAR))
-		gtk_widget_hide (shell->priv->menubar);
-	else
-		gtk_widget_show (shell->priv->menubar);
 }
 
 void
@@ -808,7 +794,7 @@ static const GtkActionEntry ui_mainwindow_add_action_entries[] = {
 };
 
 static const GtkActionEntry ui_mainwindow_feed_action_entries[] = {
-	{"MarkFeedAsRead", "gtk-apply", N_("_Mark As Read"), "<control>R", N_("Marks all items of the selected subscription or of all subscriptions of the selected folder as read."), 
+	{"MarkFeedAsRead", "gtk-apply", N_("_Mark Items Read"), "<control>R", N_("Marks all items of the selected feed list node / in the item list as read."), 
 	 G_CALLBACK(on_menu_allread)},
 	{"UpdateSelected", "gtk-refresh", N_("_Update"), NULL, N_("Updates the selected subscription or all subscriptions of the selected folder."),
 	 G_CALLBACK(on_menu_update)}
@@ -906,8 +892,6 @@ static const char *ui_mainwindow_ui_desc =
 "    <toolitem name='MarkAsReadButton' action='MarkFeedAsRead'/>"
 "    <toolitem name='UpdateAllButton' action='UpdateAll'/>"
 "    <toolitem name='SearchButton' action='SearchFeeds'/>"
-//"    <toolitem name='ViewingModeButton' action='ToggleCondensedMode'/>"
-"    <toolitem name='PreferencesButton' action='ShowPreferences'/>"
 "    <separator/>"
 "  </toolbar>"
 "</ui>";
@@ -1046,7 +1030,6 @@ liferea_shell_create (int initialState)
 	g_object_set (G_OBJECT (gtk_ui_manager_get_widget (ui_manager, "/maintoolbar/MarkAsReadButton")), "is_important", TRUE, NULL);
 	g_object_set (G_OBJECT (gtk_ui_manager_get_widget (ui_manager, "/maintoolbar/UpdateAllButton")), "is_important", TRUE, NULL);
 	g_object_set (G_OBJECT (gtk_ui_manager_get_widget (ui_manager, "/maintoolbar/SearchButton")), "is_important", TRUE, NULL);
-	g_object_set (G_OBJECT (gtk_ui_manager_get_widget (ui_manager, "/maintoolbar/PreferencesButton")), "is_important", TRUE, NULL);
 
 	/* 2.) setup containers */
 	
@@ -1183,7 +1166,6 @@ liferea_shell_create (int initialState)
 	gtk_widget_destroy (widget);
 	
 	liferea_shell_update_toolbar ();
-	liferea_shell_update_menubar ();
 	liferea_shell_online_status_changed (network_is_online ());
 	
 	ui_tray_enable (conf_get_bool_value (SHOW_TRAY_ICON));		/* init tray icon */
@@ -1246,9 +1228,8 @@ liferea_shell_create (int initialState)
 				   "it might even kill your cat!</p>"
 				   "<p>New/Improved Functionality:"
 				   "<ul>"
-				   "   <li>Google Reader synchronization is now feature complete.</li>"
-				   "   <li>Google Reader/Bloglines node expansion saving fixed.</li>"
-				   "   <li>Google Reader/Bloglines nodes now have the favicon column enabled.</li>"
+				   "   <li>Fixed several runtime assertions.</li>"
+				   "   <li>Fixed window state saving.</li>"
 				   "</ul>"
 				   "</p>");
 	g_string_append (buffer,   "</div>");

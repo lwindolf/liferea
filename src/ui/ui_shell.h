@@ -125,13 +125,6 @@ void liferea_shell_set_toolbar_style (const gchar *toolbar_style);
  */
 void liferea_shell_update_toolbar (void);
 
-/**
- * According to the preferences this function enables/disables the menubar 
- * 
- * @todo: use signal instead
- */
-void liferea_shell_update_menubar (void);
-
 /** 
  * Update the sensitivity of options affecting single feeds.
  *

@@ -126,19 +126,6 @@ To change the gconftool target use the - -config-source=blah option to gconftool
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/liferea/disable-menubar</key>
-      <applyto>/apps/liferea/disable-menubar</applyto>
-      <owner>liferea</owner>
-      <type>bool</type>
-      <default>false</default>
-      <locale name="C">
-        <short>Disable displaying the menubar in the Liferea main
-	   window</short>
-        <long>Disable displaying the menubar in the Liferea main
-        window.</long>
-      </locale>
-    </schema>
-    <schema>
       <key>/schemas/apps/liferea/disable-toolbar</key>
       <applyto>/apps/liferea/disable-toolbar</applyto>
       <owner>liferea</owner>

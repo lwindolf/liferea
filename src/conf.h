@@ -67,7 +67,6 @@
 #define START_IN_TRAY			"/apps/liferea/start-in-tray"
 #define SHOW_POPUP_WINDOWS		"/apps/liferea/show-popup-windows"
 #define POPUP_PLACEMENT			"/apps/liferea/popup-placement"
-#define DISABLE_MENUBAR			"/apps/liferea/disable-menubar"
 #define DISABLE_TOOLBAR			"/apps/liferea/disable-toolbar"
 #define TOOLBAR_STYLE			"/apps/liferea/toolbar-style"
 #define LAST_WINDOW_X			"/apps/liferea/last-window-x"
