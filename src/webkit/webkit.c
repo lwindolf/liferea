@@ -25,8 +25,6 @@
 #include "common.h"
 #include "ui/ui_htmlview.h"
 
-static gfloat current_zoom_level;
-
 /**
  * HTML plugin init callback
  */
@@ -121,13 +119,13 @@ webkit_link_clicked (WebKitWebView *view, WebKitWebFrame *frame, WebKitNetworkRe
 	g_return_if_fail (WEBKIT_IS_WEB_VIEW (view));
 	g_return_if_fail (WEBKIT_IS_NETWORK_REQUEST (request));
 
-	if (!conf_get_bool_value (BROWSE_INSIDE_APPLICATION)) {
-		uri = webkit_network_request_get_uri (WEBKIT_NETWORK_REQUEST (request));
-		liferea_htmlview_launch_in_external_browser (uri);
-		return TRUE;
+	if (conf_get_bool_value (BROWSE_INSIDE_APPLICATION)) {
+		return FALSE;
 	}
 
-	return FALSE;
+	uri = webkit_network_request_get_uri (WEBKIT_NETWORK_REQUEST (request));
+	liferea_htmlview_launch_in_external_browser (uri);
+	return TRUE;
 }
 
 /**
@@ -139,7 +137,6 @@ webkit_link_clicked (WebKitWebView *view, WebKitWebFrame *frame, WebKitNetworkRe
 static GtkWidget *
 webkit_new (LifereaHtmlView *htmlview, gboolean forceInternalBrowsing)
 {
-	gulong	  handler;
 	GtkWidget *view;
 	GtkWidget *scrollpane;
 	WebKitWebSettings *settings;
@@ -155,11 +152,10 @@ webkit_new (LifereaHtmlView *htmlview, gboolean forceInternalBrowsing)
 	settings = webkit_web_settings_new ();
 	g_object_set (settings, "default-font-size", 11, NULL);
 	g_object_set (settings, "minimum-font-size", 7, NULL);
-	/**
-	 * FIXME: JavaScript might be disabled
-	 * g_object_set (settings, "javascript-enabled", !conf_get_bool_value (DISABLE_JAVASCRIPT), NULL);
-	 */
-	webkit_web_view_set_settings (view, settings);
+	g_object_set (settings, "enable-scripts", !conf_get_bool_value (DISABLE_JAVASCRIPT), NULL);
+
+	webkit_web_view_set_settings (WEBKIT_WEB_VIEW (view), WEBKIT_WEB_SETTINGS (settings));
+	webkit_web_view_set_full_content_zoom (WEBKIT_WEB_VIEW (view), TRUE);
 
 	gtk_container_add (GTK_CONTAINER (scrollpane), GTK_WIDGET (view));
 
@@ -193,31 +189,20 @@ webkit_launch_inside_possible (void)
 	return TRUE;
 }
 
-/**
- * FIXME: No API, see http://bugs.webkit.org/show_bug.cgi?id=14998
- */
 static void
-webkit_change_zoom_level (GtkWidget *scrollpane, gfloat zoomLevel)
+webkit_change_zoom_level (GtkWidget *scrollpane, gfloat zoom_level)
 {
 	GtkWidget *view;
-	WebKitWebSettings *settings;
-	if (zoomLevel > 10 || zoomLevel == 0) {
-		return NULL;
-	}
-	current_zoom_level = zoomLevel;
 	view = gtk_bin_get_child (GTK_BIN (scrollpane));
-	settings = webkit_web_settings_new ();
-	g_object_set (settings, "default-font-size", (guint)(11 * zoomLevel), NULL);
-	webkit_web_view_set_settings (view, settings);
+	webkit_web_view_set_zoom_level (view, zoom_level);
 }
 
-/**
- * FIXME: No API, see http://bugs.webkit.org/show_bug.cgi?id=14998
- */
 static gfloat
 webkit_get_zoom_level (GtkWidget *scrollpane)
 {
-	return current_zoom_level;
+	GtkWidget *view;
+	view = WEBKIT_WEB_VIEW (gtk_bin_get_child (GTK_BIN (scrollpane)));
+	return webkit_web_view_get_zoom_level (view);
 }
 
 /**
