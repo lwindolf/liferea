@@ -137,7 +137,7 @@ webkit_link_clicked (WebKitWebView *view, WebKitWebFrame *frame, WebKitNetworkRe
 static GtkWidget *
 webkit_new (LifereaHtmlView *htmlview, gboolean forceInternalBrowsing)
 {
-	GtkWidget *view;
+	WebKitWebView *view;
 	GtkWidget *scrollpane;
 	WebKitWebSettings *settings;
 
@@ -170,7 +170,7 @@ webkit_new (LifereaHtmlView *htmlview, gboolean forceInternalBrowsing)
 	g_signal_connect (view, "hovering-over-link", G_CALLBACK (webkit_on_url), view);
 	g_signal_connect (view, "navigation-requested", G_CALLBACK (webkit_link_clicked), view);
 
-	gtk_widget_show (view);
+	gtk_widget_show (GTK_WIDGET (view));
 	return scrollpane;
 }
 
@@ -192,15 +192,15 @@ webkit_launch_inside_possible (void)
 static void
 webkit_change_zoom_level (GtkWidget *scrollpane, gfloat zoom_level)
 {
-	GtkWidget *view;
-	view = gtk_bin_get_child (GTK_BIN (scrollpane));
+	WebKitWebView *view;
+	view = WEBKIT_WEB_VIEW (gtk_bin_get_child (GTK_BIN (scrollpane)));
 	webkit_web_view_set_zoom_level (view, zoom_level);
 }
 
 static gfloat
 webkit_get_zoom_level (GtkWidget *scrollpane)
 {
-	GtkWidget *view;
+	WebKitWebView *view;
 	view = WEBKIT_WEB_VIEW (gtk_bin_get_child (GTK_BIN (scrollpane)));
 	return webkit_web_view_get_zoom_level (view);
 }
