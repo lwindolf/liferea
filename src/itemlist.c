@@ -57,7 +57,7 @@ static struct itemlist_priv
 	gulong		selectedId;		/**< the currently selected (and displayed) item id */
 	gboolean	hasEnclosures;		/**< TRUE if at least one item of the current itemset has an enclosure */
 	
-	guint 		viewMode;		/**< current viewing mode */
+	nodeViewType	viewMode;		/**< current viewing mode */
 	guint 		loading;		/**< if >0 prevents selection effects when loading the item list */
 
 	gboolean 	deferredRemove;		/**< TRUE if selected item needs to be removed from cache on unselecting */

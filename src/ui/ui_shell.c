@@ -78,6 +78,7 @@ struct LifereaShellPrivate {
 	EnclosureListView	*enclosureView;		/**< Enclosure list widget */
 	LifereaHtmlView		*htmlview;		/**< HTML rendering widget */
 	gfloat			zoom;			/**< HTML rendering widget zoom level */
+	guint			currentLayoutMode;	/**< layout mode (3 pane, 2 pane, wide view) */
 };
 
 static GObjectClass *parent_class = NULL;
@@ -971,7 +972,8 @@ liferea_shell_create (int initialState)
 	/* 1.) object setup */
 
 	g_object_new (LIFEREA_SHELL_TYPE, NULL);
-	
+
+	shell->priv->currentLayoutMode = NODE_VIEW_MODE_INVALID;
 	shell->priv->window = GTK_WINDOW (liferea_shell_lookup ("mainwindow"));
 
 	// FIXME: do we use this anywhere?
@@ -1197,7 +1199,7 @@ liferea_shell_create (int initialState)
 	     unselected... strange. */
 	ui_feedlist_select (NULL);
 	/* Initialize the UI with respect to the viewing mode */
-	liferea_shell_set_layout (2);	/* FIXME: set user defined default viewing mode */
+	liferea_shell_set_layout (NODE_VIEW_MODE_COMBINED);	/* FIXME: set user defined default viewing mode */
 
 	/* create welcome text */
 	buffer = g_string_new (NULL);
@@ -1283,10 +1285,14 @@ liferea_shell_toggle_visibility (void)
 }
 
 void
-liferea_shell_set_layout (guint newMode)
+liferea_shell_set_layout (nodeViewType newMode)
 {
 	gchar	*htmlWidgetName, *ilWidgetName, *encViewWidgetName;
 	GtkRadioAction *action;
+	
+	if (newMode == shell->priv->currentLayoutMode)
+		return;
+	shell->priv->currentLayoutMode = newMode;
 
 	action = GTK_RADIO_ACTION (gtk_action_group_get_action (shell->priv->generalActions, "NormalView"));
 	gtk_radio_action_set_current_value (action, newMode);

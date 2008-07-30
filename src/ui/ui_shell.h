@@ -26,6 +26,7 @@
 #include <glib-object.h>
 #include <glib.h>
 
+#include "node.h"
 #include "ui/enclosure_list_view.h"
 #include "ui/ui_htmlview.h"
 
@@ -101,9 +102,9 @@ void liferea_shell_toggle_visibility (void);
 /**
  * Switches the layout for the given viewing mode.
  *
- * @param newMode	new view mode (0 = normal, 1 = wide, 2 = combined)
+ * @param newMode	new view mode (NODE_VIEW_MODE_*)
  */
-void liferea_shell_set_layout (guint newMode);
+void liferea_shell_set_layout (nodeViewType newMode);
 
 /**
  * Saves the current main window position to be

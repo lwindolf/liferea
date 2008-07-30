@@ -38,11 +38,12 @@
  */
 
 /** node view mode types */
-enum {
+typedef enum {
+	NODE_VIEW_MODE_INVALID	= -1,
 	NODE_VIEW_MODE_NORMAL	= 0,
 	NODE_VIEW_MODE_WIDE	= 1,
 	NODE_VIEW_MODE_COMBINED	= 2
-};
+} nodeViewType;
 
 /** generic feed list node structure */
 typedef struct node {
