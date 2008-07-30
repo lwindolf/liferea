@@ -23,6 +23,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "mozilla/mozembed.h"
+
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
 #endif
@@ -34,13 +36,12 @@
 #include <gtkmozembed.h>
 
 #include "mozilla/mozsupport.h"
-#include "mozilla/mozembed.h"
 #include "common.h"
 #include "conf.h"
 #include "debug.h"
+#include "ui/liferea_shell.h"
 #include "ui/ui_htmlview.h"
 #include "ui/ui_popup.h"
-#include "ui/ui_shell.h"
 #include "ui/ui_tabs.h"
 
 #define EMPTY "<html><body></body></html>"

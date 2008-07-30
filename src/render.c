@@ -39,7 +39,7 @@
 #include "itemset.h"
 #include "render.h"
 #include "ui/ui_htmlview.h"
-#include "ui/ui_shell.h"
+#include "ui/liferea_shell.h"
 
 static renderParamPtr	langParams = NULL;	/* the current locale settings (for localization stylesheet) */
 static gchar		*defaultParams = NULL;	/* some default parameters (for rendering stylesheets) */

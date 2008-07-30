@@ -22,6 +22,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
+ 
+#include "ui/ui_session.h"
 
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
@@ -41,7 +43,7 @@
 
 #include "common.h"
 #include "debug.h"
-#include "ui/ui_shell.h"
+#include "ui/liferea_shell.h"
 
 #define GAIM_DEBUG_ALL 0
 #define GAIM_DEBUG_INFO 1

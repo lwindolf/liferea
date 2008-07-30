@@ -19,12 +19,14 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include "ui/ui_script.h"
+
 #include <string.h>
+
 #include "common.h"
 #include "script.h"
-#include "ui/ui_script.h"
+#include "ui/liferea_shell.h"
 #include "ui/ui_dialog.h"
-#include "ui/ui_shell.h"
 
 typedef struct hookInfo {
 	gchar		*name;

@@ -24,6 +24,8 @@
 #  include <config.h>
 #endif
 
+#include "ui/liferea_shell.h"
+
 #include <gtk/gtk.h>
 #include <gdk/gdk.h>
 #include <gdk/gdkkeysyms.h>
@@ -43,7 +45,6 @@
 #include "ui/ui_prefs.h"
 #include "ui/ui_script.h"
 #include "ui/ui_search.h"
-#include "ui/ui_shell.h"
 #include "ui/ui_update.h"
 
 /* FIXME: evil! */

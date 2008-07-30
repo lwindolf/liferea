@@ -19,6 +19,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "update.h"
+
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
 #endif
@@ -42,10 +44,9 @@
 #include "conf.h"
 #include "debug.h"
 #include "net.h"
-#include "update.h"
 #include "xml.h"
 #include "ui/ui_htmlview.h"
-#include "ui/ui_shell.h"
+#include "ui/liferea_shell.h"
 #include "ui/ui_tray.h"
 
 /** global update job list, used for lookups when cancelling */

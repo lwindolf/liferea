@@ -18,6 +18,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "subscription.h"
+
 #include <string.h>
 
 #include "common.h"
@@ -28,9 +30,8 @@
 #include "feedlist.h"
 #include "metadata.h"
 #include "net.h"
-#include "subscription.h"
+#include "ui/liferea_shell.h"
 #include "ui/ui_node.h"
-#include "ui/ui_shell.h"
 
 /* The allowed feed protocol prefixes (see http://25hoursaday.com/draft-obasanjo-feed-URI-scheme-02.html) */
 #define FEED_PROTOCOL_PREFIX "feed://"

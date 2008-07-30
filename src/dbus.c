@@ -29,7 +29,7 @@
 #include "feedlist.h"
 #include "net.h"
 #include "subscription.h"
-#include "ui/ui_shell.h"
+#include "ui/liferea_shell.h"
 
 G_DEFINE_TYPE(LifereaDBus, liferea_dbus, G_TYPE_OBJECT)
 

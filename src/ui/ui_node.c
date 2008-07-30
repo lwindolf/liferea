@@ -19,17 +19,19 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+#include "ui/ui_node.h"
+
 #include <gtk/gtk.h>
+
 #include "common.h"
 #include "debug.h"
 #include "feedlist.h"
 #include "folder.h"
+#include "ui/liferea_shell.h"
 #include "ui/ui_common.h"
 #include "ui/ui_dialog.h"
 #include "ui/ui_feedlist.h"
-#include "ui/ui_node.h"
 #include "ui/ui_popup.h"
-#include "ui/ui_shell.h"
 
 static GHashTable	*flIterHash = NULL;	/* hash table used for fast node id <-> tree iter lookup */
 static GtkWidget	*nodenamedialog = NULL;

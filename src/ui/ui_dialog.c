@@ -27,7 +27,7 @@
 #include <glade/glade.h>
 
 #include "ui/ui_dialog.h"
-#include "ui/ui_shell.h"
+#include "ui/liferea_shell.h"
 
 static void liferea_dialog_class_init	(LifereaDialogClass *klass);
 static void liferea_dialog_init		(LifereaDialog *ld);

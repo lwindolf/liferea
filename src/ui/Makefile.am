@@ -13,6 +13,7 @@ libliui_a_SOURCES = \
 	auth_dialog.c auth_dialog.h \
 	eggtrayicon.c eggtrayicon.h \
 	enclosure_list_view.c enclosure_list_view.h \
+	liferea_shell.c liferea_shell.h \
 	rule_editor.c rule_editor.h \
 	search_dialog.c search_dialog.h \
 	search_engine_dialog.c search_engine_dialog.h \
@@ -31,7 +32,6 @@ libliui_a_SOURCES = \
 	ui_script.c ui_script.h \
 	ui_search.c ui_search.h \
 	ui_session.c ui_session.h \
-	ui_shell.c ui_shell.h \
 	ui_subscription.c ui_subscription.h \
 	ui_tabs.c ui_tabs.h \
 	ui_tray.c ui_tray.h \

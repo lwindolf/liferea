@@ -30,7 +30,7 @@
 #include "enclosure.h"
 #include "xml.h"
 #include "ui/ui_prefs.h"	// FIXME: remove this!
-#include "ui/ui_shell.h"
+#include "ui/liferea_shell.h"
 
 /*
    Liferea manages a MIME type configuration to allow

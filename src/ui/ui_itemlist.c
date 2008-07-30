@@ -19,6 +19,7 @@
  * the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+#include "ui/ui_itemlist.h"
 
 #include <string.h>
 #include <gdk/gdkkeysyms.h>
@@ -32,10 +33,9 @@
 #include "itemview.h"
 #include "newsbin.h"
 #include "social.h"
+#include "ui/liferea_shell.h"
 #include "ui/ui_common.h"
 #include "ui/ui_htmlview.h"
-#include "ui/ui_itemlist.h"
-#include "ui/ui_shell.h"
 #include "ui/ui_popup.h"
 #include "ui/ui_tabs.h"
 

@@ -2,7 +2,6 @@
 %{
 #include "../node.h"
 #include "../feed.h"
-#include "../feedlist.h"
 #include "../item.h"
 #include "../item_state.h"
 #include "../itemlist.h" 
@@ -23,7 +22,6 @@
 %include "../item.h"
 %include "../item_state.h"
 %include "../itemlist.h"
-%include "../feedlist.h"
 %include "../social.h"
 %include "../subscription.h"
 

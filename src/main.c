@@ -48,7 +48,7 @@
 #include "xml.h"
 #include "ui/ui_feedlist.h"	// FIXME: should not be necessary
 #include "ui/ui_session.h"
-#include "ui/ui_shell.h"
+#include "ui/liferea_shell.h"
 #include "sync/avahi_publisher.h"
 
 #include "bacon-message-connection.h"

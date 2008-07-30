@@ -37,11 +37,11 @@
 #include "rule.h"
 #include "script.h"
 #include "vfolder.h"
+#include "ui/liferea_shell.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_itemlist.h"
 #include "ui/ui_htmlview.h"
 #include "ui/ui_node.h"
-#include "ui/ui_shell.h"
 
 /* This is a simple controller implementation for itemlist handling. 
    It manages the currently displayed itemset, realizes filtering,

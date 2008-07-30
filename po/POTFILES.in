@@ -79,6 +79,8 @@ src/ui/eggtrayicon.c
 src/ui/eggtrayicon.h
 src/ui/enclosure_list_view.c
 src/ui/enclosure_list_view.h
+src/ui/liferea_shell.c
+src/ui/liferea_shell.h
 src/ui/rule_editor.c
 src/ui/rule_editor.h
 src/ui/search_dialog.c
@@ -117,8 +119,6 @@ src/ui/ui_search.c
 src/ui/ui_search.h
 src/ui/ui_session.c
 src/ui/ui_session.h
-src/ui/ui_shell.c
-src/ui/ui_shell.h
 src/ui/ui_subscription.c
 src/ui/ui_subscription.h
 src/ui/ui_tabs.c

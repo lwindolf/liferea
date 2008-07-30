@@ -1492,16 +1492,17 @@ SWIG_Lua_dostring(lua_State *L, const char* str) {
 #define SWIGTYPE_p_node swig_types[20]
 #define SWIGTYPE_p_nodeSource swig_types[21]
 #define SWIGTYPE_p_nodeType swig_types[22]
-#define SWIGTYPE_p_socialSite swig_types[23]
-#define SWIGTYPE_p_subscription swig_types[24]
-#define SWIGTYPE_p_subscriptionType swig_types[25]
-#define SWIGTYPE_p_time_t swig_types[26]
-#define SWIGTYPE_p_updateJob swig_types[27]
-#define SWIGTYPE_p_updateOptionsPtr swig_types[28]
-#define SWIGTYPE_p_updateStatePtr swig_types[29]
-#define SWIGTYPE_p_xmlNodePtr swig_types[30]
-static swig_type_info *swig_types[32];
-static swig_module_info swig_module = {swig_types, 31, 0, 0, 0, 0};
+#define SWIGTYPE_p_nodeViewType swig_types[23]
+#define SWIGTYPE_p_socialSite swig_types[24]
+#define SWIGTYPE_p_subscription swig_types[25]
+#define SWIGTYPE_p_subscriptionType swig_types[26]
+#define SWIGTYPE_p_time_t swig_types[27]
+#define SWIGTYPE_p_updateJob swig_types[28]
+#define SWIGTYPE_p_updateOptionsPtr swig_types[29]
+#define SWIGTYPE_p_updateStatePtr swig_types[30]
+#define SWIGTYPE_p_xmlNodePtr swig_types[31]
+static swig_type_info *swig_types[33];
+static swig_module_info swig_module = {swig_types, 32, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -1516,7 +1517,6 @@ static swig_module_info swig_module = {swig_types, 31, 0, 0, 0, 0};
 
 #include "../node.h"
 #include "../feed.h"
-#include "../feedlist.h"
 #include "../item.h"
 #include "../item_state.h"
 #include "../itemlist.h" 
@@ -5593,435 +5593,6 @@ fail:
 }
 
 
-static int _wrap_feedlist_init(lua_State* L) {
-  int SWIG_arg = 0;
-  
-  SWIG_check_num_args("feedlist_init",0,0)
-  feedlist_init();
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_feedlist_free(lua_State* L) {
-  int SWIG_arg = 0;
-  
-  SWIG_check_num_args("feedlist_free",0,0)
-  feedlist_free();
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_feedlist_get_root(lua_State* L) {
-  int SWIG_arg = 0;
-  nodePtr result;
-  
-  SWIG_check_num_args("feedlist_get_root",0,0)
-  result = (nodePtr)feedlist_get_root();
-  SWIG_NewPointerObj(L,result,SWIGTYPE_p_node,0); SWIG_arg++; 
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_feedlist_get_selected(lua_State* L) {
-  int SWIG_arg = 0;
-  nodePtr result;
-  
-  SWIG_check_num_args("feedlist_get_selected",0,0)
-  result = (nodePtr)feedlist_get_selected();
-  SWIG_NewPointerObj(L,result,SWIGTYPE_p_node,0); SWIG_arg++; 
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_feedlist_get_insertion_point(lua_State* L) {
-  int SWIG_arg = 0;
-  nodePtr result;
-  
-  SWIG_check_num_args("feedlist_get_insertion_point",0,0)
-  result = (nodePtr)feedlist_get_insertion_point();
-  SWIG_NewPointerObj(L,result,SWIGTYPE_p_node,0); SWIG_arg++; 
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_feedlist_get_unread_item_count(lua_State* L) {
-  int SWIG_arg = 0;
-  unsigned int result;
-  
-  SWIG_check_num_args("feedlist_get_unread_item_count",0,0)
-  result = (unsigned int)feedlist_get_unread_item_count();
-  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_feedlist_get_new_item_count(lua_State* L) {
-  int SWIG_arg = 0;
-  unsigned int result;
-  
-  SWIG_check_num_args("feedlist_get_new_item_count",0,0)
-  result = (unsigned int)feedlist_get_new_item_count();
-  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_feedlist_reset_new_item_count(lua_State* L) {
-  int SWIG_arg = 0;
-  
-  SWIG_check_num_args("feedlist_reset_new_item_count",0,0)
-  feedlist_reset_new_item_count();
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_feedlist_node_was_updated(lua_State* L) {
-  int SWIG_arg = 0;
-  nodePtr arg1 = (nodePtr) 0 ;
-  unsigned int arg2 ;
-  
-  SWIG_check_num_args("feedlist_node_was_updated",2,2)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("feedlist_node_was_updated",1,"nodePtr");
-  if(!lua_isnumber(L,2)) SWIG_fail_arg("feedlist_node_was_updated",2,"unsigned int");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_node,0))){
-    SWIG_fail_ptr("feedlist_node_was_updated",1,SWIGTYPE_p_node);
-  }
-  
-  arg2 = (unsigned int)lua_tonumber(L, 2);
-  feedlist_node_was_updated(arg1,arg2);
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_feedlist_add_subscription(lua_State* L) {
-  int SWIG_arg = 0;
-  char *arg1 = (char *) 0 ;
-  char *arg2 = (char *) 0 ;
-  updateOptionsPtr arg3 ;
-  int arg4 ;
-  updateOptionsPtr *argp3 ;
-  
-  SWIG_check_num_args("feedlist_add_subscription",4,4)
-  if(!lua_isstring(L,1)) SWIG_fail_arg("feedlist_add_subscription",1,"char const *");
-  if(!lua_isstring(L,2)) SWIG_fail_arg("feedlist_add_subscription",2,"char const *");
-  if(!lua_isuserdata(L,3)) SWIG_fail_arg("feedlist_add_subscription",3,"updateOptionsPtr");
-  if(!lua_isnumber(L,4)) SWIG_fail_arg("feedlist_add_subscription",4,"int");
-  arg1 = (char *)lua_tostring(L, 1);
-  arg2 = (char *)lua_tostring(L, 2);
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,3,(void**)&argp3,SWIGTYPE_p_updateOptionsPtr,0))){
-    SWIG_fail_ptr("feedlist_add_subscription",3,SWIGTYPE_p_updateOptionsPtr);
-  }
-  arg3 = *argp3;
-  
-  arg4 = (int)lua_tonumber(L, 4);
-  feedlist_add_subscription((char const *)arg1,(char const *)arg2,arg3,arg4);
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_feedlist_add_folder(lua_State* L) {
-  int SWIG_arg = 0;
-  char *arg1 = (char *) 0 ;
-  
-  SWIG_check_num_args("feedlist_add_folder",1,1)
-  if(!lua_isstring(L,1)) SWIG_fail_arg("feedlist_add_folder",1,"char const *");
-  arg1 = (char *)lua_tostring(L, 1);
-  feedlist_add_folder((char const *)arg1);
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_feedlist_node_added(lua_State* L) {
-  int SWIG_arg = 0;
-  nodePtr arg1 = (nodePtr) 0 ;
-  
-  SWIG_check_num_args("feedlist_node_added",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("feedlist_node_added",1,"nodePtr");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_node,0))){
-    SWIG_fail_ptr("feedlist_node_added",1,SWIGTYPE_p_node);
-  }
-  
-  feedlist_node_added(arg1);
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_feedlist_node_imported(lua_State* L) {
-  int SWIG_arg = 0;
-  nodePtr arg1 = (nodePtr) 0 ;
-  
-  SWIG_check_num_args("feedlist_node_imported",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("feedlist_node_imported",1,"nodePtr");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_node,0))){
-    SWIG_fail_ptr("feedlist_node_imported",1,SWIGTYPE_p_node);
-  }
-  
-  feedlist_node_imported(arg1);
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_feedlist_remove_node(lua_State* L) {
-  int SWIG_arg = 0;
-  nodePtr arg1 = (nodePtr) 0 ;
-  
-  SWIG_check_num_args("feedlist_remove_node",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("feedlist_remove_node",1,"nodePtr");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_node,0))){
-    SWIG_fail_ptr("feedlist_remove_node",1,SWIGTYPE_p_node);
-  }
-  
-  feedlist_remove_node(arg1);
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_feedlist_node_removed(lua_State* L) {
-  int SWIG_arg = 0;
-  nodePtr arg1 = (nodePtr) 0 ;
-  
-  SWIG_check_num_args("feedlist_node_removed",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("feedlist_node_removed",1,"nodePtr");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_node,0))){
-    SWIG_fail_ptr("feedlist_node_removed",1,SWIGTYPE_p_node);
-  }
-  
-  feedlist_node_removed(arg1);
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_feedlist_save(lua_State* L) {
-  int SWIG_arg = 0;
-  
-  SWIG_check_num_args("feedlist_save",0,0)
-  feedlist_save();
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_feedlist_schedule_save(lua_State* L) {
-  int SWIG_arg = 0;
-  
-  SWIG_check_num_args("feedlist_schedule_save",0,0)
-  feedlist_schedule_save();
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_feedlist_reset_update_counters(lua_State* L) {
-  int SWIG_arg = 0;
-  nodePtr arg1 = (nodePtr) 0 ;
-  
-  SWIG_check_num_args("feedlist_reset_update_counters",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("feedlist_reset_update_counters",1,"nodePtr");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_node,0))){
-    SWIG_fail_ptr("feedlist_reset_update_counters",1,SWIGTYPE_p_node);
-  }
-  
-  feedlist_reset_update_counters(arg1);
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_feedlist_mark_all_read(lua_State* L) {
-  int SWIG_arg = 0;
-  nodePtr arg1 = (nodePtr) 0 ;
-  
-  SWIG_check_num_args("feedlist_mark_all_read",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("feedlist_mark_all_read",1,"nodePtr");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_node,0))){
-    SWIG_fail_ptr("feedlist_mark_all_read",1,SWIGTYPE_p_node);
-  }
-  
-  feedlist_mark_all_read(arg1);
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_feedlist_selection_changed(lua_State* L) {
-  int SWIG_arg = 0;
-  nodePtr arg1 = (nodePtr) 0 ;
-  
-  SWIG_check_num_args("feedlist_selection_changed",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("feedlist_selection_changed",1,"nodePtr");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_node,0))){
-    SWIG_fail_ptr("feedlist_selection_changed",1,SWIGTYPE_p_node);
-  }
-  
-  feedlist_selection_changed(arg1);
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
-static int _wrap_feedlist_find_unread_feed(lua_State* L) {
-  int SWIG_arg = 0;
-  nodePtr arg1 = (nodePtr) 0 ;
-  nodePtr result;
-  
-  SWIG_check_num_args("feedlist_find_unread_feed",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("feedlist_find_unread_feed",1,"nodePtr");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_node,0))){
-    SWIG_fail_ptr("feedlist_find_unread_feed",1,SWIGTYPE_p_node);
-  }
-  
-  result = (nodePtr)feedlist_find_unread_feed(arg1);
-  SWIG_NewPointerObj(L,result,SWIGTYPE_p_node,0); SWIG_arg++; 
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
 static int _wrap_socialSite_name_set(lua_State* L) {
   int SWIG_arg = 0;
   struct socialSite *arg1 = (struct socialSite *) 0 ;
@@ -9642,27 +9213,6 @@ static const struct luaL_reg swig_commands[] = {
     { "itemlist_select_next_unread", _wrap_itemlist_select_next_unread},
     { "itemlist_toggle_flag", _wrap_itemlist_toggle_flag},
     { "itemlist_toggle_read_status", _wrap_itemlist_toggle_read_status},
-    { "feedlist_init", _wrap_feedlist_init},
-    { "feedlist_free", _wrap_feedlist_free},
-    { "feedlist_get_root", _wrap_feedlist_get_root},
-    { "feedlist_get_selected", _wrap_feedlist_get_selected},
-    { "feedlist_get_insertion_point", _wrap_feedlist_get_insertion_point},
-    { "feedlist_get_unread_item_count", _wrap_feedlist_get_unread_item_count},
-    { "feedlist_get_new_item_count", _wrap_feedlist_get_new_item_count},
-    { "feedlist_reset_new_item_count", _wrap_feedlist_reset_new_item_count},
-    { "feedlist_node_was_updated", _wrap_feedlist_node_was_updated},
-    { "feedlist_add_subscription", _wrap_feedlist_add_subscription},
-    { "feedlist_add_folder", _wrap_feedlist_add_folder},
-    { "feedlist_node_added", _wrap_feedlist_node_added},
-    { "feedlist_node_imported", _wrap_feedlist_node_imported},
-    { "feedlist_remove_node", _wrap_feedlist_remove_node},
-    { "feedlist_node_removed", _wrap_feedlist_node_removed},
-    { "feedlist_save", _wrap_feedlist_save},
-    { "feedlist_schedule_save", _wrap_feedlist_schedule_save},
-    { "feedlist_reset_update_counters", _wrap_feedlist_reset_update_counters},
-    { "feedlist_mark_all_read", _wrap_feedlist_mark_all_read},
-    { "feedlist_selection_changed", _wrap_feedlist_selection_changed},
-    { "feedlist_find_unread_feed", _wrap_feedlist_find_unread_feed},
     { "social_init", _wrap_social_init},
     { "social_free", _wrap_social_free},
     { "social_register_site", _wrap_social_register_site},
@@ -9763,6 +9313,7 @@ static swig_lua_var_info swig_variables[] = {
 };
 
 static swig_lua_const_info swig_constants[] = {
+{ SWIG_LUA_INT,     (char *)"NODE_VIEW_MODE_INVALID", (long) NODE_VIEW_MODE_INVALID, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"NODE_VIEW_MODE_NORMAL", (long) NODE_VIEW_MODE_NORMAL, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"NODE_VIEW_MODE_WIDE", (long) NODE_VIEW_MODE_WIDE, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"NODE_VIEW_MODE_COMBINED", (long) NODE_VIEW_MODE_COMBINED, 0, 0, 0},
@@ -9834,6 +9385,7 @@ static swig_type_info _swigt__p_itemSetPtr = {"_p_itemSetPtr", "itemSetPtr *", 0
 static swig_type_info _swigt__p_node = {"_p_node", "struct node *|node *|nodePtr", 0, 0, (void*)&_wrap_class_node, 0};
 static swig_type_info _swigt__p_nodeSource = {"_p_nodeSource", "struct nodeSource *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_nodeType = {"_p_nodeType", "struct nodeType *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_nodeViewType = {"_p_nodeViewType", "enum nodeViewType *|nodeViewType *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_socialSite = {"_p_socialSite", "struct socialSite *|socialSite *", 0, 0, (void*)&_wrap_class_socialSite, 0};
 static swig_type_info _swigt__p_subscription = {"_p_subscription", "subscriptionPtr|struct subscription *|subscription *", 0, 0, (void*)&_wrap_class_subscription, 0};
 static swig_type_info _swigt__p_subscriptionType = {"_p_subscriptionType", "struct subscriptionType *", 0, 0, (void*)0, 0};
@@ -9867,6 +9419,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_node,
   &_swigt__p_nodeSource,
   &_swigt__p_nodeType,
+  &_swigt__p_nodeViewType,
   &_swigt__p_socialSite,
   &_swigt__p_subscription,
   &_swigt__p_subscriptionType,
@@ -9900,6 +9453,7 @@ static swig_cast_info _swigc__p_itemSetPtr[] = {  {&_swigt__p_itemSetPtr, 0, 0, 
 static swig_cast_info _swigc__p_node[] = {  {&_swigt__p_node, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_nodeSource[] = {  {&_swigt__p_nodeSource, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_nodeType[] = {  {&_swigt__p_nodeType, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_nodeViewType[] = {  {&_swigt__p_nodeViewType, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_socialSite[] = {  {&_swigt__p_socialSite, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_subscription[] = {  {&_swigt__p_subscription, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_subscriptionType[] = {  {&_swigt__p_subscriptionType, 0, 0, 0},{0, 0, 0, 0}};
@@ -9933,6 +9487,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_node,
   _swigc__p_nodeSource,
   _swigc__p_nodeType,
+  _swigc__p_nodeViewType,
   _swigc__p_socialSite,
   _swigc__p_subscription,
   _swigc__p_subscriptionType,

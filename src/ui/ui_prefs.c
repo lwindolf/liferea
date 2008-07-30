@@ -19,6 +19,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "ui/ui_prefs.h"
+
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
 #endif
@@ -35,11 +37,10 @@
 #include "itemlist.h"
 #include "social.h"
 #include "ui/enclosure_list_view.h"
+#include "ui/liferea_shell.h"
 #include "ui/ui_common.h"
 #include "ui/ui_dialog.h"
 #include "ui/ui_itemlist.h"
-#include "ui/ui_prefs.h"
-#include "ui/ui_shell.h"
 #include "ui/ui_tray.h"
 #include "notification/notif_plugin.h"
 

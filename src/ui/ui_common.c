@@ -21,7 +21,7 @@
 #include "ui/ui_common.h"
 
 #include "common.h"
-#include "ui/ui_shell.h"
+#include "ui/liferea_shell.h"
 
 void
 ui_common_setup_combo_menu (GtkWidget *widget,

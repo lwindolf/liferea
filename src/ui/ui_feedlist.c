@@ -20,6 +20,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+#include "ui/ui_feedlist.h"
+
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 
@@ -30,10 +32,9 @@
 #include "folder.h"
 #include "newsbin.h"
 #include "vfolder.h"
+#include "ui/liferea_shell.h"
 #include "ui/ui_dnd.h"
-#include "ui/ui_feedlist.h"
 #include "ui/ui_node.h"
-#include "ui/ui_shell.h"
 #include "ui/ui_subscription.h"
 #include "ui/ui_tabs.h"
 #include "fl_sources/node_source.h"

@@ -34,7 +34,7 @@
 #include "conf.h"
 #include "debug.h"
 #include "ui/ui_htmlview.h"
-#include "ui/ui_shell.h"
+#include "ui/liferea_shell.h"
 #include "glibcurl/glibcurl.h"
 
 static CURLSH *share_handle = NULL;

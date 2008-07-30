@@ -33,7 +33,6 @@
 #include "debug.h"
 #include "html.h"
 #include "xml.h"
-#include "ui/ui_shell.h"
 
 enum {
 	LINK_FAVICON,

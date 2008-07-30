@@ -29,8 +29,8 @@
 #include "itemview.h"
 #include "node.h"
 #include "vfolder.h"
+#include "ui/liferea_shell.h"
 #include "ui/ui_itemlist.h"
-#include "ui/ui_shell.h"
 
 static struct itemView_priv {
 	gboolean	htmlOnly;		/**< TRUE if HTML only mode */

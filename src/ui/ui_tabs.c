@@ -19,15 +19,16 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+#include "ui/ui_tabs.h"
+
 #include <string.h>
 #include <gdk/gdkkeysyms.h>
 
 #include "common.h"
 #include "itemlist.h"
+#include "ui/liferea_shell.h"
 #include "ui/ui_htmlview.h"
 #include "ui/ui_itemlist.h"
-#include "ui/ui_shell.h"
-#include "ui/ui_tabs.h"
 
 extern GtkWidget	*mainwindow;
 

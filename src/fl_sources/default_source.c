@@ -38,7 +38,6 @@
 #include "fl_sources/node_source.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_node.h"
-#include "ui/ui_shell.h"
 #include "ui/ui_subscription.h"
 #include "ui/ui_tray.h"
 
