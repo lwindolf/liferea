@@ -444,9 +444,7 @@ on_popup_launchitem_selected (void)
 
 	item = itemlist_get_selected ();
 	if (item) {
-		liferea_htmlview_launch_URL (ui_tabs_get_active_htmlview (), 
-		                             (gchar *)item_get_source (item), 
-		                             UI_HTMLVIEW_LAUNCH_DEFAULT);
+		liferea_htmlview_launch_URL (NULL, (gchar *)item_get_source (item), UI_HTMLVIEW_LAUNCH_DEFAULT);
 				       
 		item_unload (item);
 	} else {
@@ -464,7 +462,7 @@ on_popup_launchitem_in_tab_selected (void)
 	if (item) {
 		link = item_get_source (item);
 		if (link)
-			ui_tabs_new (link, link, FALSE);
+			browser_tabs_add_new (link, link, FALSE);
 		else
 			ui_show_error_box (_("This item has no link specified!"));
 			
@@ -704,7 +702,7 @@ void
 ui_itemlist_search_item_link (itemPtr item)
 {
 	gchar *url = social_get_link_search_url (item_get_source (item));
-	liferea_htmlview_launch_URL (liferea_shell_get_active_htmlview (), url, UI_HTMLVIEW_LAUNCH_DEFAULT);
+	liferea_htmlview_launch_URL (NULL, url, UI_HTMLVIEW_LAUNCH_DEFAULT);
 	g_free (url);
 }
 
@@ -712,7 +710,7 @@ void
 ui_itemlist_add_item_bookmark (itemPtr item)
 {
 	gchar *url = social_get_bookmark_url (item_get_source (item), item_get_title (item));
-	liferea_htmlview_launch_URL (liferea_shell_get_active_htmlview (), url, UI_HTMLVIEW_LAUNCH_EXTERNAL);
+	liferea_htmlview_launch_URL (NULL, url, UI_HTMLVIEW_LAUNCH_EXTERNAL);
 	g_free (url);
 }
 
@@ -733,7 +731,7 @@ on_popup_social_bm_link_selected (gpointer selectedUrl, guint callback_action, G
 {	
 	if (selectedUrl) {
 		gchar *url = social_get_bookmark_url (selectedUrl, "");
-		liferea_htmlview_launch_URL (liferea_shell_get_active_htmlview (), url, UI_HTMLVIEW_LAUNCH_EXTERNAL);
+		liferea_htmlview_launch_URL (NULL, url, UI_HTMLVIEW_LAUNCH_EXTERNAL);
 		g_free (url);
 	} else {
 		liferea_shell_set_important_status_bar (_("No link selected!"));

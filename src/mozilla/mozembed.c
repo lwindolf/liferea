@@ -1,7 +1,7 @@
 /**
  * @file mozembed.c common gtkmozembed handling.
  *   
- * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>   
+ * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>   
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * Contains code from the Galeon sources
@@ -31,11 +31,11 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include <errno.h>
 #include <glib.h>
 #include <gtkmozembed.h>
 
 #include "mozilla/mozsupport.h"
+#include "browser.h"
 #include "common.h"
 #include "conf.h"
 #include "debug.h"
@@ -122,9 +122,9 @@ mozembed_new_window_cb (GtkMozEmbed *embed, GtkMozEmbed **newEmbed,
 	selectedURL = g_object_get_data (G_OBJECT (embed), "selectedURL");
 	if (selectedURL) {
 		if (conf_get_bool_value (BROWSE_INSIDE_APPLICATION))
-			*newEmbed = GTK_MOZ_EMBED (liferea_htmlview_get_widget (ui_tabs_new (NULL, NULL, TRUE)));
+			*newEmbed = GTK_MOZ_EMBED (liferea_htmlview_get_widget (browser_tabs_add_new (NULL, NULL, TRUE)));
 		else
-			liferea_htmlview_launch_in_external_browser (selectedURL);
+			browser_launch_URL_external (selectedURL);
 	}
 }
 
@@ -135,7 +135,9 @@ mozembed_title_changed_cb (GtkMozEmbed *embed, gpointer user_data)
 	
 	newTitle = gtk_moz_embed_get_title (embed);
 	if (newTitle) {
-		ui_tabs_set_title (GTK_WIDGET (user_data), newTitle);
+		LifereaHtmlView	*htmlview;
+		htmlview = g_object_get_data (G_OBJECT (embed), "htmlview");
+		liferea_htmlview_title_changed (htmlview, newTitle);
 		g_free (newTitle);
 	}
 }
@@ -146,15 +148,20 @@ mozembed_location_changed_cb (GtkMozEmbed *embed, gpointer user_data)
 	gchar *newLocation;
 	
 	newLocation = gtk_moz_embed_get_location (embed);
-	if (newLocation)
-		ui_tabs_set_location (GTK_WIDGET (embed), newLocation);
-	g_free (newLocation);
+	if (newLocation) {
+		LifereaHtmlView	*htmlview;
+		htmlview = g_object_get_data (G_OBJECT (embed), "htmlview");
+		liferea_htmlview_location_changed (htmlview, newLocation);
+		g_free (newLocation);
+	}
 }
 
 static void
 mozembed_destroy_brsr_cb (GtkMozEmbed *embed, gpointer user_data)
 {
-	ui_tabs_close_tab (GTK_WIDGET (embed));
+	LifereaHtmlView	*htmlview;
+	htmlview = g_object_get_data (G_OBJECT (embed), "htmlview");	
+	liferea_htmlview_close (htmlview);
 }
 
 /**
@@ -235,7 +242,9 @@ mozembed_dom_mouse_click_cb (GtkMozEmbed *embed, gpointer dom_event, gpointer us
 			
 		/* on middle button click */
 		if (button == 1) {
-			ui_tabs_new (selectedURL, selectedURL, FALSE);
+			LifereaHtmlView	*htmlview;
+			htmlview = g_object_get_data (G_OBJECT (embed), "htmlview");
+			liferea_htmlview_open (htmlview, selectedURL);
 			return TRUE;
 		/* on left button click */
 		} else {

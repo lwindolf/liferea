@@ -45,6 +45,7 @@
 #include "ui/ui_prefs.h"
 #include "ui/ui_script.h"
 #include "ui/ui_search.h"
+#include "ui/ui_tabs.h"
 #include "ui/ui_update.h"
 
 /* FIXME: evil! */
@@ -77,7 +78,8 @@ struct LifereaShellPrivate {
 	
 	FeedList		*feedlist;
 	EnclosureListView	*enclosureView;		/**< Enclosure list widget */
-	LifereaHtmlView		*htmlview;		/**< HTML rendering widget */
+	LifereaHtmlView		*htmlview;		/**< HTML rendering widget used for item display */
+	BrowserTabs		*tabs;
 	gfloat			zoom;			/**< HTML rendering widget zoom level */
 	guint			currentLayoutMode;	/**< layout mode (3 pane, 2 pane, wide view) */
 };
@@ -666,7 +668,7 @@ static void
 on_topics_activate (GtkMenuItem *menuitem, gpointer user_data)
 {
 	gchar *filename = g_strdup_printf ("file://" PACKAGE_DATA_DIR "/" PACKAGE "/doc/html/%s", _("topics_en.html"));
-	ui_tabs_new (filename, _("Help Topics"), TRUE);
+	browser_tabs_add_new (filename, _("Help Topics"), TRUE);
 	g_free (filename);
 }
 
@@ -674,7 +676,7 @@ static void
 on_quick_reference_activate (GtkMenuItem *menuitem, gpointer user_data)
 {
 	gchar *filename = g_strdup_printf ("file://" PACKAGE_DATA_DIR "/" PACKAGE "/doc/html/%s", _("reference_en.html"));
-	ui_tabs_new (filename, _("Quick Reference"), TRUE);
+	browser_tabs_add_new (filename, _("Quick Reference"), TRUE);
 	g_free (filename);
 }
 
@@ -682,7 +684,7 @@ static void
 on_faq_activate (GtkMenuItem *menuitem, gpointer user_data)
 {
 	gchar *filename = g_strdup_printf ("file://" PACKAGE_DATA_DIR "/" PACKAGE "/doc/html/%s", _("faq_en.html"));
-	ui_tabs_new (filename, _("FAQ"), TRUE);
+	browser_tabs_add_new (filename, _("FAQ"), TRUE);
 	g_free (filename);
 }
 
@@ -1069,8 +1071,8 @@ liferea_shell_create (int initialState)
 	
 	/* 4.) setup tabs */
 	
-	debug0 (DEBUG_GUI, "Setting up tabbing");	
-	ui_tabs_init ();
+	debug0 (DEBUG_GUI, "Setting up tabbed browsing");	
+	shell->priv->tabs = browser_tabs_create (GTK_NOTEBOOK (liferea_shell_lookup ("browsertabs")));
 	
 	/* 5.) setup feed list */
 
@@ -1255,6 +1257,7 @@ liferea_shell_destroy (void)
 	liferea_htmlview_plugin_deregister ();
 	ui_tray_enable (FALSE);
 	notification_enable (FALSE);
+	g_object_unref (shell->priv->tabs);
 
 	gtk_widget_destroy (GTK_WIDGET (shell->priv->window));
 }

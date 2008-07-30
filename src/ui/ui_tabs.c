@@ -27,8 +27,11 @@
 #include "common.h"
 #include "itemlist.h"
 #include "ui/liferea_shell.h"
+#include "ui/ui_tabs.h"
 #include "ui/ui_htmlview.h"
 #include "ui/ui_itemlist.h"
+
+/* single tab history handling */
 
 /** structure holding all URLs visited in a tab */
 typedef struct tabHistory {
@@ -46,16 +49,14 @@ typedef struct tabInfo {
 	tabHistory	*history;	/** the tabs history */
 } tabInfo;
 
-/* tab history handling */
-
 static tabHistory *
-ui_tabs_history_new (void)
+browser_tab_history_new (void)
 {	
 	return (tabHistory *)g_new0 (tabHistory, 1);
 }
 
 static void
-ui_tabs_history_free (tabHistory *history)
+browser_tab_history_free (tabHistory *history)
 {
 	GList	*iter;
 
@@ -70,7 +71,7 @@ ui_tabs_history_free (tabHistory *history)
 }
 
 static gchar *
-ui_tabs_history_forward (tabInfo *tab)
+browser_tab_history_forward (tabInfo *tab)
 {
 	GList	*url = tab->history->current;
 
@@ -84,7 +85,7 @@ ui_tabs_history_forward (tabInfo *tab)
 }
 
 static gchar *
-ui_tabs_history_back (tabInfo *tab)
+browser_tab_history_back (tabInfo *tab)
 {
 	GList	*url = tab->history->current;
 
@@ -98,7 +99,7 @@ ui_tabs_history_back (tabInfo *tab)
 }
 
 static void
-ui_tabs_history_add_location (tabInfo *tab, const gchar *url)
+browser_tab_history_add_location (tabInfo *tab, const gchar *url)
 {
 	GList 	*iter;
 
@@ -128,7 +129,7 @@ ui_tabs_history_add_location (tabInfo *tab, const gchar *url)
 	tab->history->current = g_list_last (tab->history->locations);
 }
 
-/* tab handling */
+/* single tab callbacks */
 
 static gboolean
 on_tab_url_entry_activate (GtkWidget *widget, gpointer user_data)
@@ -140,12 +141,6 @@ on_tab_url_entry_activate (GtkWidget *widget, gpointer user_data)
 	liferea_htmlview_launch_URL (tab->htmlview, url, UI_HTMLVIEW_LAUNCH_INTERNAL);
 
 	return TRUE;
-}
-
-static void
-on_tab_close_clicked (GtkWidget *widget, gpointer user_data)
-{
-	ui_tabs_close_tab (widget);
 }
 
 static void
@@ -163,7 +158,7 @@ on_tab_history_back (GtkWidget *widget, gpointer user_data)
 	tabInfo		*tab = (tabInfo *)user_data;
 	gchar		*url;
 
-	url = ui_tabs_history_back (tab),
+	url = browser_tab_history_back (tab),
 	liferea_htmlview_launch_URL (tab->htmlview, url, UI_HTMLVIEW_LAUNCH_INTERNAL);
 	gtk_entry_set_text (GTK_ENTRY (tab->urlentry), url);
 }
@@ -174,10 +169,12 @@ on_tab_history_forward (GtkWidget *widget, gpointer user_data)
 	tabInfo		*tab = (tabInfo *)user_data;
 	gchar		*url;
 
-	url = ui_tabs_history_forward (tab),
+	url = browser_tab_history_forward (tab),
 	liferea_htmlview_launch_URL (tab->htmlview, url, UI_HTMLVIEW_LAUNCH_INTERNAL);
 	gtk_entry_set_text (GTK_ENTRY (tab->urlentry), url);
 }
+
+static void browser_tabs_close_tab (tabInfo *tab);
 
 static gboolean
 on_tab_key_press (GtkWidget *widget, GdkEventKey *event, gpointer data)
@@ -186,22 +183,103 @@ on_tab_key_press (GtkWidget *widget, GdkEventKey *event, gpointer data)
 
 	modifiers = gtk_accelerator_get_default_mod_mask ();
 	if ((event->keyval == GDK_w) && ((event->state & modifiers) == GDK_CONTROL_MASK)) {
-		ui_tabs_close_tab ((GtkWidget *)data);
+		browser_tabs_close_tab ((tabInfo *)data);
 		return TRUE;
 	}
 	
 	return FALSE;
 }
 
-void
-ui_tabs_init (void)
+/* browser tabs object */
+
+static void browser_tabs_class_init	(BrowserTabsClass *klass);
+static void browser_tabs_init		(BrowserTabs *ls);
+
+#define BROWSER_TABS_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object), BROWSER_TABS_TYPE, BrowserTabsPrivate))
+
+struct BrowserTabsPrivate {
+	GtkNotebook	*notebook;
+};
+
+static GObjectClass *parent_class = NULL;
+static BrowserTabs *tabs = NULL;
+
+GType
+browser_tabs_get_type (void) 
 {
-	gtk_notebook_set_show_tabs (GTK_NOTEBOOK(liferea_shell_lookup ("browsertabs")), FALSE);
-	g_signal_connect ((gpointer)liferea_shell_lookup ("browsertabs"), "switch-page", G_CALLBACK (on_tab_switched), NULL);
+	static GType type = 0;
+
+	if (G_UNLIKELY (type == 0)) 
+	{
+		static const GTypeInfo our_info = 
+		{
+			sizeof (BrowserTabsClass),
+			NULL, /* base_init */
+			NULL, /* base_finalize */
+			(GClassInitFunc) browser_tabs_class_init,
+			NULL,
+			NULL, /* class_data */
+			sizeof (BrowserTabs),
+			0, /* n_preallocs */
+			(GInstanceInitFunc) browser_tabs_init
+		};
+
+		type = g_type_register_static (G_TYPE_OBJECT,
+					       "BrowserTabs",
+					       &our_info, 0);
+	}
+
+	return type;
+}
+
+static void
+browser_tabs_finalize (GObject *object)
+{
+	BrowserTabs *ls = BROWSER_TABS (object);
+	
+	// FIXME: free tabInfo structures!
+	gtk_widget_destroy (GTK_WIDGET (tabs->priv->notebook));
+	
+	G_OBJECT_CLASS (parent_class)->finalize (object);
+}
+
+static void
+browser_tabs_class_init (BrowserTabsClass *klass)
+{
+	GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+	parent_class = g_type_class_peek_parent (klass);
+
+	object_class->finalize = browser_tabs_finalize;
+
+	g_type_class_add_private (object_class, sizeof(BrowserTabsPrivate));
+}
+
+static void
+browser_tabs_init (BrowserTabs *bt)
+{
+	/* globally accessible singleton */
+	g_assert (NULL == tabs);
+	tabs = bt;
+	
+	tabs->priv = BROWSER_TABS_GET_PRIVATE (tabs);
+}
+
+BrowserTabs *
+browser_tabs_create (GtkNotebook *notebook)
+{
+	g_object_new (BROWSER_TABS_TYPE, NULL);
+	
+	tabs->priv->notebook = notebook;
+	
+	gtk_notebook_set_show_tabs (tabs->priv->notebook, FALSE);
+	g_signal_connect ((gpointer)tabs->priv->notebook, "switch-page", G_CALLBACK (on_tab_switched), NULL);
+	
+	return tabs;
 }
 
 static gchar *
-ui_tabs_condense_text (const gchar* title)
+browser_tabs_condense_text (const gchar* title)
 {
 	int i;
 	gchar *tmp, *tmp2;
@@ -230,33 +308,91 @@ ui_tabs_condense_text (const gchar* title)
 	return tmp;
 }
 
-LifereaHtmlView *
-ui_tabs_new (const gchar *url, const gchar *title, gboolean activate)
+/* HTML view signal handlers */
+
+static void
+on_htmlview_location_changed (gpointer object, gchar *uri, gpointer user_data)
 {
-	GtkWidget 	*widget, *label, *vbox, *toolbar, *htmlframe, *image;
-	LifereaHtmlView	*htmlview;
+	tabInfo	*tab = (tabInfo *)user_data;
+	
+	browser_tab_history_add_location (tab, uri);
+	gtk_entry_set_text (GTK_ENTRY (tab->urlentry), uri);
+}
+
+static void
+on_htmlview_title_changed (gpointer object, gchar *title, gpointer user_data)
+{
+	tabInfo		*tab = (tabInfo *)user_data;
+	gchar		*text;
+	GtkWidget	*label;
+	
+	text = browser_tabs_condense_text (title?title:_("New tab"));
+	label = gtk_label_new (text);
+	gtk_widget_show (label);
+	gtk_notebook_set_tab_label (tabs->priv->notebook, tab->widget, label);
+	g_free (text);
+}
+
+static void
+on_htmlview_open_tab (gpointer object, gchar *url, gpointer user_data)
+{
+	browser_tabs_add_new (url, url, FALSE);
+}
+
+static void
+on_htmlview_close_tab (gpointer object, gpointer user_data)
+{
+	browser_tabs_close_tab((tabInfo *)user_data);
+}
+
+static void
+browser_tabs_close_tab (tabInfo *tab)
+{	
+	int		n;
+
+	n = gtk_notebook_get_current_page (tabs->priv->notebook);
+	gtk_notebook_remove_page (tabs->priv->notebook, n);
+
+	browser_tab_history_free (tab->history);
+	g_free (tab);	
+	
+	/* check if all tabs are closed */
+	if (1 == gtk_notebook_get_n_pages (tabs->priv->notebook))
+		gtk_notebook_set_show_tabs (tabs->priv->notebook, FALSE);
+}
+
+/* single tab creation */
+
+LifereaHtmlView *
+browser_tabs_add_new (const gchar *url, const gchar *title, gboolean activate)
+{
+	GtkWidget 	*widget, *label, *toolbar, *htmlframe, *image;
 	tabInfo		*tab;
 	gchar		*tmp;
 	int		i;
 
-	tmp = ui_tabs_condense_text (title != NULL ? title : _("New tab"));
+	tab = g_new0 (tabInfo, 1);
+	tab->widget = gtk_vbox_new (FALSE, 0);
+	tab->htmlview = liferea_htmlview_new (TRUE);
+	tab->history = browser_tab_history_new ();
+
+	g_object_set_data (G_OBJECT (tab->widget), "tabInfo", tab);	
+
+	g_signal_connect (tab->htmlview, "title-changed", G_CALLBACK (on_htmlview_title_changed), tab);
+	g_signal_connect (tab->htmlview, "location-changed", G_CALLBACK (on_htmlview_location_changed), tab);
+	g_signal_connect (tab->htmlview, "open-tab", G_CALLBACK (on_htmlview_open_tab), tab);
+	g_signal_connect (tab->htmlview, "close-tab", G_CALLBACK (on_htmlview_close_tab), tab);
+	
+	/* create tab widgets */
+
+	tmp = browser_tabs_condense_text (title?title:_("New tab"));
 	label = gtk_label_new (tmp);
 	gtk_widget_show (label);
 	g_free (tmp);
 	
-	/* create widgets */
-	vbox = gtk_vbox_new (FALSE, 0);
-	htmlview = liferea_htmlview_new (TRUE);
 	toolbar = gtk_hbox_new (FALSE, 6);
-
-	tab = g_new0 (tabInfo, 1);
-	tab->widget = vbox;
-	tab->htmlview = htmlview;
-	tab->history = ui_tabs_history_new ();
 	
-	g_object_set_data (G_OBJECT (vbox), "tabInfo", tab);
-
-	widget = gtk_button_new ();
+	widget = gtk_button_new ();	
 	gtk_button_set_relief (GTK_BUTTON (widget), GTK_RELIEF_NONE);
 	image = gtk_image_new_from_stock ("gtk-go-back", GTK_ICON_SIZE_BUTTON);
 	gtk_widget_show (image);
@@ -277,8 +413,8 @@ ui_tabs_new (const gchar *url, const gchar *title, gboolean activate)
 	tab->forward = widget;
 
 	widget = gtk_entry_new ();
-	gtk_entry_set_text (GTK_ENTRY (widget), url ? url : "");
-	g_object_set_data (G_OBJECT (vbox), "url_entry", widget);
+	gtk_entry_set_text (GTK_ENTRY (widget), url?url:"");
+	g_object_set_data (G_OBJECT (tab->widget), "url_entry", widget);
 	
 	gtk_box_pack_start (GTK_BOX (toolbar), widget, TRUE, TRUE, 0);
 	g_signal_connect ((gpointer)widget, "activate", G_CALLBACK (on_tab_url_entry_activate), (gpointer)tab);
@@ -290,35 +426,35 @@ ui_tabs_new (const gchar *url, const gchar *title, gboolean activate)
 	gtk_widget_show (image);
 	gtk_container_add (GTK_CONTAINER (widget), image);
 	gtk_box_pack_end (GTK_BOX (toolbar), widget, FALSE, FALSE, 0);
-	g_signal_connect ((gpointer)widget, "clicked", G_CALLBACK (on_tab_close_clicked), (gpointer)tab);
+	g_signal_connect ((gpointer)widget, "clicked", G_CALLBACK (on_htmlview_close_tab), (gpointer)tab);
 	
 	htmlframe = gtk_frame_new (NULL);
 	gtk_frame_set_shadow_type (GTK_FRAME (htmlframe), GTK_SHADOW_IN);
-	gtk_container_add (GTK_CONTAINER (htmlframe), liferea_htmlview_get_widget (htmlview));
+	gtk_container_add (GTK_CONTAINER (htmlframe), liferea_htmlview_get_widget (tab->htmlview));
 	
-	gtk_box_pack_start (GTK_BOX (vbox), toolbar, FALSE, FALSE, 0);
-	gtk_box_pack_end (GTK_BOX (vbox), htmlframe, TRUE, TRUE, 0);
-	gtk_widget_show_all (vbox);
+	gtk_box_pack_start (GTK_BOX (tab->widget), toolbar, FALSE, FALSE, 0);
+	gtk_box_pack_end (GTK_BOX (tab->widget), htmlframe, TRUE, TRUE, 0);
+	gtk_widget_show_all (tab->widget);
 	
-	i = gtk_notebook_append_page (GTK_NOTEBOOK (liferea_shell_lookup ("browsertabs")), vbox, label);
-	g_signal_connect (gtk_notebook_get_nth_page (GTK_NOTEBOOK (liferea_shell_lookup ("browsertabs")), i), 
-	                  "key-press-event", G_CALLBACK (on_tab_key_press), (gpointer) widget);
-	gtk_notebook_set_show_tabs (GTK_NOTEBOOK (liferea_shell_lookup ("browsertabs")), TRUE);
+	i = gtk_notebook_append_page (tabs->priv->notebook, tab->widget, label);
+	g_signal_connect (gtk_notebook_get_nth_page (tabs->priv->notebook, i), 
+	                  "key-press-event", G_CALLBACK (on_tab_key_press), (gpointer)tab);
+	gtk_notebook_set_show_tabs (tabs->priv->notebook, TRUE);
 	
 	if (activate && (i != -1))
-		gtk_notebook_set_current_page (GTK_NOTEBOOK (liferea_shell_lookup ("browsertabs")), i);
+		gtk_notebook_set_current_page (tabs->priv->notebook, i);
 	 
 	if (url) {
-		ui_tabs_history_add_location (tab, (gchar *)url);
-		liferea_htmlview_launch_URL (htmlview, (gchar *)url, UI_HTMLVIEW_LAUNCH_INTERNAL);
+		browser_tab_history_add_location (tab, (gchar *)url);
+		liferea_htmlview_launch_URL (tab->htmlview, (gchar *)url, UI_HTMLVIEW_LAUNCH_INTERNAL);
 	}
-	return htmlview;
+	return tab->htmlview;
 }
 
 void
 ui_tabs_show_headlines (void)
 {
-	gtk_notebook_set_current_page (GTK_NOTEBOOK (liferea_shell_lookup ("browsertabs")), 0);
+	gtk_notebook_set_current_page (tabs->priv->notebook, 0);
 }
 
 /** This method is used to find the tab infos for a given
@@ -344,73 +480,16 @@ ui_tabs_find_notebook_child (GtkWidget *parent)
 	return tab;
 }
 
-void
-ui_tabs_close_tab (GtkWidget *child)
-{
-	tabInfo		*tab;
-	int		n;
-
-	if (NULL == (tab = ui_tabs_find_notebook_child(child)))
-		return;
-	
-	n = gtk_notebook_get_current_page(GTK_NOTEBOOK(liferea_shell_lookup("browsertabs")));
-	gtk_notebook_remove_page(GTK_NOTEBOOK(liferea_shell_lookup("browsertabs")), n);
-
-	ui_tabs_history_free (tab->history);
-	g_free (tab);	
-	
-	/* check if all tabs are closed */
-	if(1 == gtk_notebook_get_n_pages(GTK_NOTEBOOK(liferea_shell_lookup("browsertabs"))))
-		gtk_notebook_set_show_tabs(GTK_NOTEBOOK(liferea_shell_lookup("browsertabs")), FALSE);
-}
-
-void
-ui_tabs_set_location (GtkWidget *child, const gchar *uri)
-{
-	tabInfo		*tab;
-	
-	if (NULL == (tab = ui_tabs_find_notebook_child (child)))
-		return;
-	
-	ui_tabs_history_add_location (tab, uri);
-
-	gtk_entry_set_text (GTK_ENTRY (tab->urlentry), uri);
-}
-
-void
-ui_tabs_set_title (GtkWidget *child, const gchar *title)
-{
-	tabInfo		*tab;
-	gchar		*text;
-	GtkWidget	*label;
-	
-	if (NULL == (tab = ui_tabs_find_notebook_child (child)))
-		return;
-	
-	text = ui_tabs_condense_text (title != NULL ? title : _("New tab"));
-	label = gtk_label_new (text);
-	gtk_widget_show (label);
-	gtk_notebook_set_tab_label (GTK_NOTEBOOK (liferea_shell_lookup ("browsertabs")),
-	                            tab->widget, label);
-	g_free (text);
-}
-
 LifereaHtmlView *
-ui_tabs_get_active_htmlview (void)
+browser_tabs_get_active_htmlview (void)
 {
 	tabInfo		*tab;
 	gint		current;
 	
-	current = gtk_notebook_get_current_page (GTK_NOTEBOOK (liferea_shell_lookup ("browsertabs")));
+	current = gtk_notebook_get_current_page (tabs->priv->notebook);
 	if (0 == current)
 		return liferea_shell_get_active_htmlview ();
 		
-	tab = g_object_get_data (G_OBJECT (gtk_notebook_get_nth_page (GTK_NOTEBOOK (liferea_shell_lookup ("browsertabs")), current)), "tabInfo");
+	tab = g_object_get_data (G_OBJECT (gtk_notebook_get_nth_page (tabs->priv->notebook, current)), "tabInfo");
 	return tab->htmlview;
-}
-
-void
-on_popup_open_link_in_tab_selected (gpointer url, guint callback_action, GtkWidget *widget)
-{
-	ui_tabs_new ((gchar *)url, (gchar *)url, FALSE);
 }

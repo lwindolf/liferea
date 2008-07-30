@@ -2,7 +2,7 @@
  * @file gtkhtml2.c GtkHTML2 browser module implementation for Liferea
  *
  * Copyright (C) 2004-2006 Nathan Conrad <conrad@bungled.net>
- * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>  
+ * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>  
  * Copyright (C) 2004 Juho Snellman <jsnell@users.sourceforge.net>
  * 
  * Note large portions of this code (callbacks and html widget
@@ -340,7 +340,8 @@ gtkhtml2_destroyed_cb (GtkObject *scrollpane, gpointer user_data)
 static void
 gtkhtml2_title_changed (HtmlDocument *doc, const gchar *new_title, gpointer data)
 {
-	ui_tabs_set_title (GTK_WIDGET(data), new_title);
+	LifereaHtmlView *htmlview = g_object_get_data (G_OBJECT (data), "htmlview");
+	liferea_htmlview_title_changed (htmlview, new_title);
 }
 
 /* ---------------------------------------------------------------------------- */
@@ -472,13 +473,15 @@ static void
 gtkhtml2_html_received (const struct updateResult * const result, gpointer user_data, updateFlags flags)
 {
 	gboolean	isLocalDoc;
+	LifereaHtmlView	*htmlview;
 	
 	/* If no data was returned... */
 	if (result->size == 0 || result->data == NULL) {
 		/* Maybe an error message should be displayed.... */
 		return; /* This should nicely exit.... */
 	}
-	ui_tabs_set_location (GTK_WIDGET (user_data), result->source);
+	htmlview = g_object_get_data (G_OBJECT (data), "htmlview");
+	liferea_htmlview_location_changed (htmlview, result->source);
 	gtkhtml2_write_html (GTK_WIDGET (user_data), result->data, result->size,  result->source, result->contentType);
 	
 	/* determine if launched URL is a local one and set the flag to allow following local links */

@@ -61,6 +61,10 @@ struct LifereaHtmlViewPrivate {
 
 enum {
 	STATUSBAR_CHANGED,
+	TITLE_CHANGED,
+	LOCATION_CHANGED,
+	OPEN_TAB,
+	CLOSE_TAB,
 	LAST_SIGNAL
 };
 
@@ -196,7 +200,54 @@ liferea_htmlview_class_init (LifereaHtmlViewClass *klass)
 		1,
 		G_TYPE_STRING);
 
-	g_type_class_add_private (object_class, sizeof(LifereaHtmlViewPrivate));
+	liferea_htmlview_signals[TITLE_CHANGED] = 
+		g_signal_new ("title-changed", 
+		G_OBJECT_CLASS_TYPE (object_class),
+		(GSignalFlags)(G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION),
+		0, 
+		NULL,
+		NULL,
+		g_cclosure_marshal_VOID__STRING,
+		G_TYPE_NONE,
+		1,
+		G_TYPE_STRING);
+
+	liferea_htmlview_signals[LOCATION_CHANGED] = 
+		g_signal_new ("location-changed", 
+		G_OBJECT_CLASS_TYPE (object_class),
+		(GSignalFlags)(G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION),
+		0, 
+		NULL,
+		NULL,
+		g_cclosure_marshal_VOID__STRING,
+		G_TYPE_NONE,
+		1,
+		G_TYPE_STRING);
+
+	liferea_htmlview_signals[OPEN_TAB] = 
+		g_signal_new ("open-tab", 
+		G_OBJECT_CLASS_TYPE (object_class),
+		(GSignalFlags)(G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION),
+		0, 
+		NULL,
+		NULL,
+		g_cclosure_marshal_VOID__STRING,
+		G_TYPE_NONE,
+		1,
+		G_TYPE_STRING);
+
+	liferea_htmlview_signals[CLOSE_TAB] = 
+		g_signal_new ("close-tab", 
+		G_OBJECT_CLASS_TYPE (object_class),
+		(GSignalFlags)(G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION),
+		0, 
+		NULL,
+		NULL,
+		g_cclosure_marshal_VOID__VOID,
+		G_TYPE_NONE,
+		0);
+		
+	g_type_class_add_private (object_class, sizeof (LifereaHtmlViewPrivate));
 }
 
 static void
@@ -212,7 +263,7 @@ liferea_htmlview_new (gboolean forceInternalBrowsing)
 	GtkWidget *renderWidget;
 		
 	htmlview = LIFEREA_HTMLVIEW (g_object_new (LIFEREA_HTMLVIEW_TYPE, NULL));
-	htmlview->priv->renderWidget = htmlviewPlugin->create (htmlview, forceInternalBrowsing);	
+	htmlview->priv->renderWidget = htmlviewPlugin->create (htmlview, forceInternalBrowsing);
 	liferea_htmlview_clear (htmlview);
 	
 	return htmlview;
@@ -295,7 +346,31 @@ void
 liferea_htmlview_on_url (LifereaHtmlView *htmlview, const gchar *url)
 {
 	if (!liferea_htmlview_is_special_url (url))
-		g_signal_emit_by_name (htmlview, "statusbar-changed", url);
+		g_signal_emit_by_name (htmlview, "statusbar-changed", g_strdup (url));
+}
+
+void
+liferea_htmlview_title_changed (LifereaHtmlView *htmlview, const gchar *title)
+{
+	g_signal_emit_by_name (htmlview, "title-changed", g_strdup (title));
+}
+
+void
+liferea_htmlview_location_changed (LifereaHtmlView *htmlview, const gchar *location)
+{
+	g_signal_emit_by_name (htmlview, "location-changed", g_strdup (location));
+}
+
+void
+liferea_htmlview_open (LifereaHtmlView *htmlview, const gchar *url)
+{
+	g_signal_emit_by_name (htmlview, "open-tab", g_strdup (url));
+}
+
+void
+liferea_htmlview_close (LifereaHtmlView *htmlview)
+{
+	g_signal_emit_by_name (htmlview, "close-tab");
 }
 
 void
@@ -303,7 +378,10 @@ liferea_htmlview_launch_URL (LifereaHtmlView *htmlview, const gchar *url, gint l
 {
 	struct internalUriType	*uriType;
 	
-	if (NULL == url) {
+	if (!htmlview)
+		htmlview = browser_tabs_get_active_htmlview ();
+	
+	if (!url) {
 		/* FIXME: bad because this is not only used for item links! */
 		ui_show_error_box (_("This item does not have a link assigned!"));
 		return;
@@ -355,7 +433,7 @@ liferea_htmlview_launch_URL (LifereaHtmlView *htmlview, const gchar *url, gint l
 	   (launchType != UI_HTMLVIEW_LAUNCH_EXTERNAL)) {
 		(htmlviewPlugin->launch) (htmlview->priv->renderWidget, url);
 	} else {
-		(void)liferea_htmlview_launch_in_external_browser (url);
+		(void)browser_launch_URL_external (url);
 	}
 }
 
@@ -369,103 +447,6 @@ gfloat
 liferea_htmlview_get_zoom (LifereaHtmlView *htmlview)
 {
 	return (htmlviewPlugin->zoomLevelGet) (htmlview->priv->renderWidget);
-}
-
-static gboolean
-liferea_htmlview_external_browser_execute (const gchar *cmd, const gchar *uri, gboolean remoteEscape, gboolean sync)
-{
-	GError		*error = NULL;
-	gchar 		*tmpUri, *tmp, **argv, **iter;
-	gint 		argc;
-	gint		status = 0;
-	gboolean 	done = FALSE;
-  
-	g_assert (cmd != NULL);
-	g_assert (uri != NULL);
-
-	/* If the command is using the X remote API we must
-	   escaped all ',' in the URL */
-	if (remoteEscape)
-		tmpUri = common_strreplace (g_strdup (uri), ",", "%2C");
-	else
-		tmpUri = g_strdup (uri);
-
-	/* If there is no %s in the command, then just append %s */
-	if (strstr (cmd, "%s"))
-		tmp = g_strdup (cmd);
-	else
-		tmp = g_strdup_printf ("%s %%s", cmd);
-  
-	/* Parse and substitute the %s in the command */
-	g_shell_parse_argv (tmp, &argc, &argv, &error);
-	g_free (tmp);
-	if (error && (0 != error->code)) {
-		liferea_shell_set_important_status_bar (_("Browser command failed: %s"), error->message);
-		debug2 (DEBUG_GUI, "Browser command failed: %s : %s", tmp, error->message);
-		g_error_free (error);
-		return FALSE;
-	}
-  
-	if (argv) {
-		for (iter = argv; *iter != NULL; iter++)
-			*iter = common_strreplace (*iter, "%s", tmpUri);
-	}
-
-	tmp = g_strjoinv (" ", argv);
-	debug2 (DEBUG_GUI, "Running the browser-remote %s command '%s'", sync ? "sync" : "async", tmp);
-	if (sync)
-		g_spawn_sync (NULL, argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, NULL, &status, &error);
-	else 
-		g_spawn_async (NULL, argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, &error);
-  
-	if (error && (0 != error->code)) {
-		debug2 (DEBUG_GUI, "Browser command failed: %s : %s", tmp, error->message);
-		liferea_shell_set_important_status_bar (_("Browser command failed: %s"), error->message);
-		g_error_free (error);
-	} else if (status == 0) {
-		liferea_shell_set_status_bar (_("Starting: \"%s\""), tmp);
-		done = TRUE;
-	}
-  
-	g_free (tmpUri);
-	g_free (tmp);
-	g_strfreev (argv);
-  
-	return done;
-}
-
-gboolean
-liferea_htmlview_launch_in_external_browser (const gchar *uri)
-{
-	struct browser	*browser;
-	gchar		*cmd = NULL;
-	gboolean	done = FALSE;	
-	
-	g_assert (uri != NULL);
-	
-	browser = prefs_get_browser ();
-	if (browser) {
-		/* try to execute synchronously... */
-		cmd = prefs_get_browser_command (browser, TRUE /* remote */, FALSE /* fallback */);
-		if (cmd) {
-			done = liferea_htmlview_external_browser_execute (cmd, uri, browser->escapeRemote, TRUE);
-			g_free (cmd);
-		}
-	}
-	
-	if (done)
-		return TRUE;
-	
-	/* if it failed try to execute asynchronously... */		
-	cmd = prefs_get_browser_command (browser, FALSE /* remote */, TRUE /* fallback */);
-	if (!cmd) {
-		liferea_shell_set_important_status_bar ("Fatal: cannot retrieve browser command!");
-		g_warning ("Fatal: cannot retrieve browser command!");
-		return FALSE;
-	}
-	done = liferea_htmlview_external_browser_execute (cmd, uri, browser?browser->escapeRemote:FALSE, FALSE);
-	g_free (cmd);
-	return done;
 }
 
 gboolean
@@ -501,7 +482,7 @@ liferea_htmlview_set_online (gboolean online)
 void
 on_popup_launch_link_selected (gpointer url, guint callback_action, GtkWidget *widget)
 {
-	liferea_htmlview_launch_URL (ui_tabs_get_active_htmlview(), url, UI_HTMLVIEW_LAUNCH_EXTERNAL);
+	liferea_htmlview_launch_URL (NULL, url, UI_HTMLVIEW_LAUNCH_EXTERNAL);
 }
 
 void
@@ -531,7 +512,7 @@ on_popup_zoomin_selected (gpointer callback_data, guint callback_action, GtkWidg
 	LifereaHtmlView	*htmlview;
 	gfloat		zoom;
 	
-	htmlview = ui_tabs_get_active_htmlview ();
+	htmlview = browser_tabs_get_active_htmlview ();
 	zoom = liferea_htmlview_get_zoom (htmlview);
 	zoom *= 1.2;
 	
@@ -544,7 +525,7 @@ on_popup_zoomout_selected (gpointer callback_data, guint callback_action, GtkWid
 	LifereaHtmlView	*htmlview;
 	gfloat		zoom;
 
-	htmlview = ui_tabs_get_active_htmlview ();	
+	htmlview = browser_tabs_get_active_htmlview ();	
 	zoom = liferea_htmlview_get_zoom (htmlview);
 	zoom /= 1.2;
 	

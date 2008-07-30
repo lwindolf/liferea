@@ -1,7 +1,7 @@
 /**
- * @file ui_popup.h browser tabs
+ * @file browser_tabs.h  internal browsing using multiple tabs
  *
- * Copyright (C) 2004-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2008 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2006 Nathan Conrad <conrad@bungled.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -19,19 +19,52 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifndef _UI_TABS_H
-#define _UI_TABS_H
+#ifndef _BROWSER_TABS_H
+#define _BROWSER_TABS_H
 
 #include <gtk/gtk.h>
+
 #include "ui_htmlview.h"
 
-/** 
- * setup of the tab handling 
- */
-void ui_tabs_init (void);
+G_BEGIN_DECLS
+
+#define BROWSER_TABS_TYPE		(browser_tabs_get_type ())
+#define BROWSER_TABS(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), BROWSER_TABS_TYPE, BrowserTabs))
+#define BROWSER_TABS_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), BROWSER_TABS_TYPE, BrowserTabsClass))
+#define IS_BROWSER_TABS(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BROWSER_TABS_TYPE))
+#define IS_BROWSER_TABS_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), BROWSER_TABS_TYPE))
+
+typedef struct BrowserTabs		BrowserTabs;
+typedef struct BrowserTabsClass		BrowserTabsClass;
+typedef struct BrowserTabsPrivate	BrowserTabsPrivate;
+
+extern BrowserTabs *browser_tabs;
+
+struct BrowserTabs
+{
+	GObject		parent;
+	
+	/*< private >*/
+	BrowserTabsPrivate	*priv;
+};
+
+struct BrowserTabsClass 
+{
+	GtkObjectClass parent_class;
+};
+
+GType browser_tabs_get_type (void);
 
 /**
- * opens a new tab with the specified URL
+ * Returns the singleton browser tabs instance.
+ *
+ * @param notebook	GtkNotebook widget to use
+ */
+BrowserTabs * browser_tabs_create (GtkNotebook *notebook);
+
+/**
+ * Adds a new tab with the specified URL and title. This is to
+ * be used for displaying help pages only.
  *
  * @param url	URL to be loaded in new tab (can be NULL to do nothing)
  * @param title	title of the tab to be created
@@ -39,7 +72,7 @@ void ui_tabs_init (void);
  *
  * @returns the newly created HTML view
  */
-LifereaHtmlView * ui_tabs_new (const gchar *url, const gchar *title, gboolean activate);
+LifereaHtmlView * browser_tabs_add_new (const gchar *url, const gchar *title, gboolean activate);
 
 /**
  * makes the headline tab visible 
@@ -53,36 +86,8 @@ void ui_tabs_show_headlines (void);
  *
  * @returns HTML view widget
  */
-LifereaHtmlView * ui_tabs_get_active_htmlview (void);
+LifereaHtmlView * browser_tabs_get_active_htmlview (void);
 
-/**
- * Closes the given tab widget.
- *
- * @param tab	the widget
- */
-void ui_tabs_close_tab (GtkWidget *tab);
-
-/**
- * Sets the given title as the title of the given tab widget.
- * If the title is to long it will be truncated and suffixed
- * with "..."
- *
- * @param tab	the widget
- * @param title	the title
- */
-void ui_tabs_set_title (GtkWidget *tab, const gchar *title);
-
-/**
- * Sets the location URI for the given tab widget. This 
- * automatically loads the URI in the rendering widget.
- *
- * @param tab	the widget
- * @param uri	the location URI
- */
-void ui_tabs_set_location (GtkWidget *tab, const gchar *uri);
-
-/* popup menu callbacks */
-
-void on_popup_open_link_in_tab_selected (gpointer callback_data, guint callback_action, GtkWidget *widget);
+G_END_DECLS
 
 #endif

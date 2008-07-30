@@ -76,7 +76,10 @@ webkit_title_changed (
 	gpointer user_data
 )
 {
-	ui_tabs_set_title (GTK_WIDGET (view), title);
+	LifereaHtmlView	*htmlview;
+	
+	htmlview = g_object_get_data (G_OBJECT (view), "htmlview");
+	liferea_htmlview_title_changed (htmlview, title);
 }
 
 static void
@@ -124,7 +127,7 @@ webkit_link_clicked (WebKitWebView *view, WebKitWebFrame *frame, WebKitNetworkRe
 	}
 
 	uri = webkit_network_request_get_uri (WEBKIT_NETWORK_REQUEST (request));
-	liferea_htmlview_launch_in_external_browser (uri);
+	browser_launch_URL_external (uri);
 	return TRUE;
 }
 

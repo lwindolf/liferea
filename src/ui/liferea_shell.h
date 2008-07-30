@@ -200,7 +200,11 @@ void liferea_shell_online_status_changed(int online);
 GtkWidget * liferea_shell_get_window (void);
 
 /**
- * Method to query the active HTML view
+ * Method to query the active item pane HTML view. Used to
+ * get the HTML view to do item rendering.
+ *
+ * Note: this method differs from browser_tabs_get_active_htmlview()
+ * because it ignores any open selected tab. 
  *
  * @returns active HTML view
  */

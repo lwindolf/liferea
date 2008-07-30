@@ -34,6 +34,7 @@ liferea_bin_SOURCES = \
 	attention.c attention.h \
 	bacon-message-connection.c \
 	bacon-message-connection.h \
+	browser.c browser.h \
 	comments.c comments.h \
 	common.c common.h \
 	conf.c conf.h \

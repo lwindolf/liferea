@@ -113,6 +113,11 @@ on_toggle_visibility (gpointer callback_data, guint callback_action, GtkWidget *
 	liferea_shell_toggle_visibility ();
 }
 
+void
+on_popup_open_link_in_tab_selected (gpointer url, guint callback_action, GtkWidget *widget)
+{
+	browser_tabs_add_new ((gchar *)url, (gchar *)url, FALSE);
+}
 
 /* prepares the popup menues */
 void

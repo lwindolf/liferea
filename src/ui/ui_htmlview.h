@@ -1,7 +1,7 @@
 /**
  * @file ui_htmlview.h  Liferea HTML rendering using rendering plugins
  *
- * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -131,18 +131,26 @@ gboolean liferea_htmlview_is_special_url (const gchar *url);
  * @param htmlview	the htmlview causing the event
  * @param url		new URL (or empty string)
  */
-void	liferea_htmlview_on_url (LifereaHtmlView *htmlview, const gchar *url);
+void liferea_htmlview_on_url (LifereaHtmlView *htmlview, const gchar *url);
+
+void liferea_htmlview_title_changed (LifereaHtmlView *htmlview, const gchar *title);
+
+void liferea_htmlview_location_changed (LifereaHtmlView *htmlview, const gchar *location);
+
+void liferea_htmlview_open (LifereaHtmlView *htmlview, const gchar *url);
+
+void liferea_htmlview_close (LifereaHtmlView *htmlview);
 
 /**
  * Launches the specified URL in the configured browser or
  * in inside the HTML widget according to the launchType
  * parameter.
  *
- * @param htmlview	the htmlview causing the event
+ * @param htmlview	optional html view (if NULL currently active one is used)
  * @param url		URL to launch
  * @param launchType    Type of launch request: 0 = default, 1 = external, 2 = internal
  */
-void	liferea_htmlview_launch_URL (LifereaHtmlView *htmlview, const gchar *url, gint launchType);
+void liferea_htmlview_launch_URL (LifereaHtmlView *htmlview, const gchar *url, gint launchType);
 
 /**
  * Function to change the zoom level of the HTML widget.
@@ -150,7 +158,7 @@ void	liferea_htmlview_launch_URL (LifereaHtmlView *htmlview, const gchar *url, g
  *
  * @param diff	New zoom
  */
-void	liferea_htmlview_set_zoom (LifereaHtmlView *htmlview, gfloat zoom);
+void liferea_htmlview_set_zoom (LifereaHtmlView *htmlview, gfloat zoom);
 
 /**
  * Function to determine the current zoom level.
@@ -159,18 +167,7 @@ void	liferea_htmlview_set_zoom (LifereaHtmlView *htmlview, gfloat zoom);
  *
  * @return the currently set zoom level 
  */
-gfloat	liferea_htmlview_get_zoom (LifereaHtmlView *htmlview);
-
-/**
- * Function to execute the commands needed to open up a URL with the
- * browser specified in the preferences.
- *
- * @param the URI to load
- *
- * @returns TRUE if the URI was opened, or FALSE if there was an error
- */
-
-gboolean liferea_htmlview_launch_in_external_browser (const gchar *uri);
+gfloat liferea_htmlview_get_zoom (LifereaHtmlView *htmlview);
 
 /**
  * Function scrolls down the item views scrolled window.
