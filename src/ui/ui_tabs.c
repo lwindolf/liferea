@@ -1,7 +1,7 @@
 /**
- * @file ui_tabs.c browser tabs
+ * @file browser_tabs.c  internal browsing using multiple tabs
  *
- * Copyright (C) 2004-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2008 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2006 Nathan Conrad <conrad@bungled.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -29,8 +29,6 @@
 #include "ui/liferea_shell.h"
 #include "ui/ui_htmlview.h"
 #include "ui/ui_itemlist.h"
-
-extern GtkWidget	*mainwindow;
 
 /** structure holding all URLs visited in a tab */
 typedef struct tabHistory {
