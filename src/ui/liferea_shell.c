@@ -712,8 +712,8 @@ liferea_shell_online_status_changed (int online)
 {
 	GtkWidget	*widget;
 
-	if (!shell->priv)
-		return;
+	if (!shell)
+		return;	// FIXME: this check shouldn't be necessary
 
 	widget = liferea_shell_lookup ("onlineimage");
 
