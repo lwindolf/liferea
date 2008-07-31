@@ -61,6 +61,7 @@ static struct itemlist_priv
 	
 	guint 		viewMode;		/**< current viewing mode */
 	guint 		loading;		/**< if >0 prevents selection effects when loading the item list */
+	itemPtr		invalidSelection;	/**< if set then the next selection might need to do an unselect first */
 
 	gboolean 	deferredRemove;		/**< TRUE if selected item needs to be removed from cache on unselecting */
 	gboolean 	deferredFilter;		/**< TRUE if selected item needs to be filtered on unselecting */
@@ -395,7 +396,7 @@ itemlist_select_next_unread (void)
 	itemlist_priv.loading--;
 	
 	if (result)
-		ui_itemlist_select (result);
+		itemview_select_item (result);
 }
 
 /* menu commands */
@@ -573,6 +574,12 @@ itemlist_selection_changed (itemPtr item)
 		ui_mainwindow_update_item_menu (NULL != item);
 
 		feedlist_reset_new_item_count ();
+	} else {
+		/* If this happens we got an unwanted item selection
+		   caused by some automatic feed selection. We need
+		   to unselect before making the next selection, 
+		   otherwise it could fail */
+		itemview_set_invalid_selection (item);
 	}
 
 	debug_end_measurement (DEBUG_GUI, "itemlist selection");
