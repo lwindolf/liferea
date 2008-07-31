@@ -39,6 +39,8 @@ static struct itemView_priv {
 	gchar 		*userDefinedDateFmt;	/**< user defined date formatting string */
 	gboolean	needsHTMLViewUpdate;	/**< flag to be set when HTML rendering is to be 
 						     updated, used to delay HTML updates */
+						     
+	itemPtr		resetSelection;		/**< if set indicates an incorrect item selection */
 } itemView_priv;
 
 void
@@ -142,13 +144,26 @@ itemview_remove_item (itemPtr item)
 }
 
 void
+itemview_set_invalid_selection (itemPtr item)
+{
+	debug0 (DEBUG_GUI, "Setting marker for unwanted selection!");
+	itemView_priv.resetSelection = item;
+}
+
+void
 itemview_select_item (itemPtr item)
 {
 	if (!itemView_priv.node)
 		return;
 		
 	itemView_priv.needsHTMLViewUpdate = TRUE;
-
+	
+	if (itemView_priv.resetSelection == item) {
+		debug0 (DEBUG_GUI, "Fixing unwanted selection!");
+		ui_itemlist_select (NULL);
+		itemView_priv.resetSelection = NULL;
+	}
+		
 	ui_itemlist_select (item);
 	htmlview_select_item (item);
 
