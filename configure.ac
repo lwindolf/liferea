@@ -13,6 +13,8 @@ AM_MAINTAINER_MODE
 
 AC_PREREQ(2.59)
 
+LIFEREA_CONFIG_NICE(config.nice)
+
 dnl Work around libtool bug (fixed in the version 1.5a?)
 AC_DEFUN([AC_PROVIDE_AC_LIBTOOL_DLOPEN], )
 AC_LIBTOOL_DLOPEN
