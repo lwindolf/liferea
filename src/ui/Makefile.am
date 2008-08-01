@@ -10,6 +10,8 @@ noinst_LIBRARIES = libliui.a
 
 libliui_a_CFLAGS = $(PACKAGE_CFLAGS) $(DBUS_CFLAGS)
 libliui_a_SOURCES = \
+	attention_profile_dialog.c \
+	attention_profile_dialog.h \
 	auth_dialog.c auth_dialog.h \
 	eggtrayicon.c eggtrayicon.h \
 	enclosure_list_view.c enclosure_list_view.h \
@@ -18,7 +20,6 @@ libliui_a_SOURCES = \
 	search_dialog.c search_dialog.h \
 	search_engine_dialog.c search_engine_dialog.h \
 	search_folder_dialog.c search_folder_dialog.h \
-	ui_attention.c ui_attention.h \
 	ui_common.c ui_common.h \
 	ui_dialog.c ui_dialog.h \
 	ui_dnd.c ui_dnd.h \

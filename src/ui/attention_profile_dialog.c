@@ -18,10 +18,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
+#include "ui/attention_profile_dialog.h"
+
 #include <glib.h>
 
 #include "common.h"
-#include "ui/ui_attention.h"
 #include "ui/ui_dialog.h"
 
 static void attention_profile_dialog_class_init	(AttentionProfileDialogClass *klass);

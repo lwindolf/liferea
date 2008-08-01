@@ -1,5 +1,5 @@
 /**
- * @file ui_attention.h  attention profile dialog
+ * @file attention_profile_dialog.h  attention profile dialog
  * 
  * Copyright (C) 2008 Lars Lindner <lars.lindner@gmail.com>
  * 
