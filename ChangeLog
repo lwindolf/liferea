@@ -2,6 +2,9 @@
 
 	Version 1.5.6 (Unstable)
 
+	* The LUA scripting support now exposes a global
+	  variable "calling_hook" to determine which script
+	  hook was triggered. (patch by Rene Koecher)
 	* Updated Czech translation (Martin Picek)
 
 2008-07-18  Lars Lindner  <lars.lindner@gmail.com>

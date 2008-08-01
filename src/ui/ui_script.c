@@ -312,5 +312,5 @@ void
 on_scriptRunBtn_clicked (GtkButton *button, gpointer user_data)
 {
 	if (selectedScript)
-		script_run (selectedScript);
+		script_run (selectedScript, selectedHookType);
 }

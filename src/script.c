@@ -37,6 +37,50 @@ static scriptSupportImplPtr scriptImpl = NULL;
 
 gboolean script_support_enabled(void) { return (scriptImpl != NULL); }
 
+static gchar *script_get_name_for_hook (hookType hook)
+{
+	switch (hook)
+	{
+		case SCRIPT_HOOK_INVALID:
+			return NULL;
+			break;
+
+		case SCRIPT_HOOK_STARTUP:
+			return g_strdup("startup");
+			break;
+
+		case SCRIPT_HOOK_FEED_UPDATED:
+			return g_strdup("feed_updated");
+			break;
+
+		case SCRIPT_HOOK_ITEM_SELECTED:
+			return g_strdup("item_selected");
+			break;
+
+		case SCRIPT_HOOK_FEED_SELECTED:
+			return g_strdup("feed_selcted");
+			break;
+
+		case SCRIPT_HOOK_ITEM_UNSELECT:
+			return g_strdup("item_unselect");
+			break;
+
+		case SCRIPT_HOOK_FEED_UNSELECT:
+			return g_strdup("feed_unselect");
+			break;
+
+		case SCRIPT_HOOK_SHUTDOWN:
+			return g_strdup("shutdown");
+			break;
+
+		case SCRIPT_HOOK_NEW_SUBSCRIPTION:
+			return g_strdup("feed_added");
+			break;
+	}
+
+	return NULL;
+}
+
 static void script_config_load_hook_script(xmlNodePtr match, gpointer user_data) {
 	gint	type = GPOINTER_TO_INT(user_data);
 	gchar	*name;
@@ -154,12 +198,14 @@ void script_run_cmd(const gchar *cmd) {
 		scriptImpl->run_cmd(cmd);
 }
 
-void script_run(const gchar *name) {
+void script_run(const gchar *name, hookType hook) {
 	
 	if(scriptImpl) {
 		gchar	*filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "scripts", name, "lua");
-		scriptImpl->run_script(filename);
+		gchar	*hook_name = script_get_name_for_hook(hook);
+		scriptImpl->run_script(filename, hook_name);
 		g_free(filename);
+		g_free(hook_name);
 	}
 }
 
@@ -168,7 +214,7 @@ void script_run_for_hook(hookType type) {
 
 	hook = g_hash_table_lookup(scripts, GINT_TO_POINTER(type));
 	while(hook) {
-		script_run((gchar *)hook->data);
+		script_run((gchar *)hook->data, type);
 		hook = g_slist_next(hook);
 	}
 }

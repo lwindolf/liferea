@@ -31,7 +31,7 @@ typedef struct scriptSupportImpl {
 	void		(*init)		(void);			/**< called on startup */
 	void		(*deinit)	(void);			/**< called on shutdown */
 	void		(*run_cmd)	(const gchar *cmd);	/**< runs the given command */
-	void		(*run_script)	(const gchar *file);	/**< runs the given script */
+	void		(*run_script)	(const gchar *file, const gchar *for_hook);	/**< runs the given script */
 } *scriptSupportImplPtr;
 
 #define SCRIPT_SUPPORT_API_VERSION 1
@@ -84,8 +84,9 @@ void script_run_cmd(const gchar *cmd);
  * Run a single script from the script repository.
  *
  * @param name		the script name
+ * @param hook		type of the calling hook
  */
-void script_run(const gchar *name);
+void script_run(const gchar *name, hookType hook);
 
 /**
  * Run all scripts defined for the given hook id.
