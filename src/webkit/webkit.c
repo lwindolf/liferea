@@ -31,30 +31,35 @@
 static void
 liferea_webkit_init (void)
 {
-	g_print ("Note: WebKit HTML rendering support is experimental and\n");
-	g_print ("not everything is working properly with WebKit right now!!!\n");
+	g_print ("NOTE: WebKit HTML rendering support is under development\n");
+	g_print ("The following functionality is currently missing or not working:\n");
+	g_print ("  - Context menus are not customized\n");
+	g_print ("  - Some links in feed items are not clickable\n");
 }
 
 /**
- * HTML plugin de-init callback
+ * HTML plugin shutdown callback
  */
 static void
-liferea_webkit_deinit (void)
+liferea_webkit_shutdown (void)
 {
-	g_print ("Shutting down WebKit\n");
+	g_print ("Shutting down WebKit rendering engine\n");
 }
 
 /**
- * Load HTML string
+ * Load HTML string into the rendering scrollpane
  *
- * Load an HTML string into the view frame. This is used to render newsfeed entries.
+ * Load an HTML string into the view frame. This is used to render newsfeed
+ * entries
  */
 static void
-webkit_write_html (GtkWidget   *scrollpane,
-				   const gchar *string,
-				   guint       length,
-				   const gchar *base,
-				   const gchar *content_type)
+webkit_write_html (
+	GtkWidget *scrollpane,
+	const gchar *string,
+	const guint length,
+	const gchar *base,
+	const gchar *content_type
+)
 {
 	GtkWidget *htmlwidget = gtk_bin_get_child (GTK_BIN (scrollpane));
 	/**
@@ -71,13 +76,13 @@ webkit_write_html (GtkWidget   *scrollpane,
 static void
 webkit_title_changed (
 	WebKitWebView *view,
-	const gchar* title,
-	const gchar* url,
+	const gchar *title,
+	const gchar *url,
 	gpointer user_data
 )
 {
 	LifereaHtmlView	*htmlview;
-	
+
 	htmlview = g_object_get_data (G_OBJECT (view), "htmlview");
 	liferea_htmlview_title_changed (htmlview, title);
 }
@@ -94,18 +99,18 @@ static void
 webkit_on_url (WebKitWebView *view, const gchar *title, const gchar *url, gpointer user_data)
 {
 	LifereaHtmlView	*htmlview;
-	gchar		    *selectedURL;
+	gchar *selected_url;
 
 	htmlview    = g_object_get_data (G_OBJECT (view), "htmlview");
-	selectedURL = g_object_get_data (G_OBJECT (view), "selectedURL");
+	selected_url = g_object_get_data (G_OBJECT (view), "selected_url");
 
-	selectedURL = url ? g_strdup (url) : g_strdup ("");
+	selected_url = url ? g_strdup (url) : g_strdup ("");
 
 	/* overwrite or clear last status line text */
-	liferea_htmlview_on_url (htmlview, selectedURL);
+	liferea_htmlview_on_url (htmlview, selected_url);
 
-	g_object_set_data (G_OBJECT (view), "selectedURL", selectedURL);
-	g_free (selectedURL);
+	g_object_set_data (G_OBJECT (view), "selected_url", selected_url);
+	g_free (selected_url);
 }
 
 /**
@@ -138,7 +143,7 @@ webkit_link_clicked (WebKitWebView *view, WebKitWebFrame *frame, WebKitNetworkRe
  * and embeds WebKitWebView into it.
  */
 static GtkWidget *
-webkit_new (LifereaHtmlView *htmlview, gboolean forceInternalBrowsing)
+webkit_new (LifereaHtmlView *htmlview, gboolean force_internal_browsing)
 {
 	WebKitWebView *view;
 	GtkWidget *scrollpane;
@@ -146,32 +151,82 @@ webkit_new (LifereaHtmlView *htmlview, gboolean forceInternalBrowsing)
 
 	scrollpane = gtk_scrolled_window_new (NULL, NULL);
 
-	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrollpane), GTK_POLICY_AUTOMATIC, GTK_POLICY_ALWAYS);
-	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrollpane), GTK_SHADOW_IN);
+	gtk_scrolled_window_set_policy (
+		GTK_SCROLLED_WINDOW (scrollpane),
+		GTK_POLICY_AUTOMATIC,
+		GTK_POLICY_ALWAYS
+	);
+	gtk_scrolled_window_set_shadow_type (
+		GTK_SCROLLED_WINDOW (scrollpane),
+		GTK_SHADOW_IN
+	);
 
 	/** Create HTML widget and pack it into the scrolled window */
-	view = webkit_web_view_new ();
+	view = WEBKIT_WEB_VIEW (webkit_web_view_new ());
 
 	settings = webkit_web_settings_new ();
-	g_object_set (settings, "default-font-size", 11, NULL);
-	g_object_set (settings, "minimum-font-size", 7, NULL);
-	g_object_set (settings, "enable-scripts", !conf_get_bool_value (DISABLE_JAVASCRIPT), NULL);
+	g_object_set (
+		settings,
+		"default-font-size",
+		11,
+		NULL
+	);
+	g_object_set (
+		settings,
+		"minimum-font-size",
+		7,
+		NULL
+	);
+	g_object_set (
+		settings,
+		"enable-scripts",
+		!conf_get_bool_value (DISABLE_JAVASCRIPT),
+		NULL
+	);
 
-	webkit_web_view_set_settings (WEBKIT_WEB_VIEW (view), WEBKIT_WEB_SETTINGS (settings));
+	webkit_web_view_set_settings (view, WEBKIT_WEB_SETTINGS (settings));
 	webkit_web_view_set_full_content_zoom (WEBKIT_WEB_VIEW (view), TRUE);
 
 	gtk_container_add (GTK_CONTAINER (scrollpane), GTK_WIDGET (view));
 
 	/** Pass LifereaHtmlView into the WebKitWebView object */
-	g_object_set_data (G_OBJECT (view), "htmlview", htmlview);
+	g_object_set_data (
+		G_OBJECT (view),
+		"htmlview",
+		htmlview
+	);
 	/** Pass internal browsing param */
-	g_object_set_data (G_OBJECT (view), "internal_browsing", GINT_TO_POINTER (forceInternalBrowsing));
+	g_object_set_data (
+		G_OBJECT (view),
+		"internal_browsing",
+		GINT_TO_POINTER (force_internal_browsing)
+	);
 
 	/** Connect signal callbacks */
-	g_signal_connect (view, "title-changed", G_CALLBACK (webkit_title_changed), view);
-	g_signal_connect (view, "load-progress-changed", G_CALLBACK (webkit_progress_changed), view);
-	g_signal_connect (view, "hovering-over-link", G_CALLBACK (webkit_on_url), view);
-	g_signal_connect (view, "navigation-requested", G_CALLBACK (webkit_link_clicked), view);
+	g_signal_connect (
+		view,
+		"title-changed",
+		G_CALLBACK (webkit_title_changed),
+		view
+	);
+	g_signal_connect (
+		view,
+		"load-progress-changed",
+		G_CALLBACK (webkit_progress_changed),
+		view
+	);
+	g_signal_connect (
+		view,
+		"hovering-over-link",
+		G_CALLBACK (webkit_on_url),
+		view
+	);
+	g_signal_connect (
+		view,
+		"navigation-requested",
+		G_CALLBACK (webkit_link_clicked),
+		view
+	);
 
 	gtk_widget_show (GTK_WIDGET (view));
 	return scrollpane;
@@ -183,15 +238,24 @@ webkit_new (LifereaHtmlView *htmlview, gboolean forceInternalBrowsing)
 static void
 webkit_launch_url (GtkWidget *scrollpane, const gchar *url)
 {
-	webkit_web_view_open (WEBKIT_WEB_VIEW (gtk_bin_get_child (GTK_BIN (scrollpane))), url);
+	webkit_web_view_open (
+		WEBKIT_WEB_VIEW (gtk_bin_get_child (GTK_BIN (scrollpane))),
+		url
+	);
 }
 
+/**
+ * Return TRUE to indicate to allow internals browsing
+ */
 static gboolean
 webkit_launch_inside_possible (void)
 {
 	return TRUE;
 }
 
+/**
+ * Change zoom level of the HTML scrollpane
+ */
 static void
 webkit_change_zoom_level (GtkWidget *scrollpane, gfloat zoom_level)
 {
@@ -200,6 +264,9 @@ webkit_change_zoom_level (GtkWidget *scrollpane, gfloat zoom_level)
 	webkit_web_view_set_zoom_level (view, zoom_level);
 }
 
+/**
+ * Return current zoom level as a float
+ */
 static gfloat
 webkit_get_zoom_level (GtkWidget *scrollpane)
 {
@@ -217,10 +284,10 @@ static gboolean
 webkit_scroll_pagedown (GtkWidget *scrollpane)
 {
 	GtkScrolledWindow *itemview;
-	GtkAdjustment     *vertical_adjustment;
-	gdouble           old_value;
-	gdouble	          new_value;
-	gdouble	          limit;
+	GtkAdjustment *vertical_adjustment;
+	gdouble old_value;
+	gdouble	new_value;
+	gdouble	limit;
 
 	itemview = GTK_SCROLLED_WINDOW (scrollpane);
 	g_assert (NULL != itemview);
@@ -228,10 +295,14 @@ webkit_scroll_pagedown (GtkWidget *scrollpane)
 	old_value = gtk_adjustment_get_value (vertical_adjustment);
 	new_value = old_value + vertical_adjustment->page_increment;
 	limit = vertical_adjustment->upper - vertical_adjustment->page_size;
-	if (new_value > limit)
+	if (new_value > limit) {
 		new_value = limit;
+	}
 	gtk_adjustment_set_value (vertical_adjustment, new_value);
-	gtk_scrolled_window_set_vadjustment (GTK_SCROLLED_WINDOW (itemview), vertical_adjustment);
+	gtk_scrolled_window_set_vadjustment (
+		GTK_SCROLLED_WINDOW (itemview),
+		vertical_adjustment
+	);
 	return (new_value > old_value);
 }
 
@@ -241,7 +312,7 @@ static struct htmlviewPlugin webkitInfo = {
 	.priority	= 100,
 	.externalCss	= FALSE,
 	.plugin_init	= liferea_webkit_init,
-	.plugin_deinit	= liferea_webkit_deinit,
+	.plugin_deinit	= liferea_webkit_shutdown,
 	.create		= webkit_new,
 	.write		= webkit_write_html,
 	.launch		= webkit_launch_url,
