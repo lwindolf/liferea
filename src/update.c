@@ -575,7 +575,7 @@ update_job_retry (updateJobPtr job)
 	/* Requeue the request after the waiting delay */
 	job->retryCount++;	
 	g_timeout_add_full (G_PRIORITY_DEFAULT_IDLE, 1000 * retryDelay, update_job_retry_cb, job, NULL);
-	ui_mainwindow_set_status_bar (_("Could not download \"%s\". Will retry in %d seconds."), job->request->source, retryDelay);
+	liferea_shell_set_status_bar (_("Could not download \"%s\". Will retry in %d seconds."), job->request->source, retryDelay);
 }
 
 gboolean
