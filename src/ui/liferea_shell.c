@@ -661,7 +661,7 @@ static void
 on_homepagebtn_clicked (GtkButton *button, gpointer user_data)
 {
 	/* launch the homepage when button in about dialog is pressed */
-	liferea_htmlview_launch_in_external_browser(_("http://liferea.sf.net"));
+	browser_launch_URL_external (_("http://liferea.sf.net"));
 }
 
 static void
@@ -1094,10 +1094,6 @@ liferea_shell_create (int initialState)
 	/* 7.) setup item view */
 	
 	debug0 (DEBUG_GUI, "Setting up item view");
-	shell->priv->enclosureView = enclosure_list_view_new ();
-	gtk_container_add (GTK_CONTAINER (liferea_shell_lookup ("normalViewEncExpander")),
-	                                  enclosure_list_view_get_widget (shell->priv->enclosureView));
-	
 	shell->priv->itemlistContainer = ui_itemlist_new (GTK_WIDGET (shell->priv->window));
 	shell->priv->itemlist = GTK_TREE_VIEW (gtk_bin_get_child (GTK_BIN (shell->priv->itemlistContainer)));
 	/* initially we pack the item list in the normal view pane,
@@ -1291,7 +1287,7 @@ liferea_shell_toggle_visibility (void)
 void
 liferea_shell_set_layout (nodeViewType newMode)
 {
-	gchar	*htmlWidgetName, *ilWidgetName, *encViewWidgetName;
+	gchar	*htmlWidgetName, *ilWidgetName, *encViewVBoxName;
 	GtkRadioAction *action;
 	
 	if (newMode == shell->priv->currentLayoutMode)
@@ -1320,17 +1316,17 @@ liferea_shell_set_layout (nodeViewType newMode)
 		case NODE_VIEW_MODE_NORMAL:
 			htmlWidgetName = "normalViewHtml";
 			ilWidgetName = "normalViewItems";
-			encViewWidgetName = "normalViewEncExpander";
+			encViewVBoxName = "normalViewVBox";
 			break;
 		case NODE_VIEW_MODE_WIDE:
 			htmlWidgetName = "wideViewHtml";
 			ilWidgetName = "wideViewItems";
-			encViewWidgetName = "wideViewEncExpander";
+			encViewVBoxName = "wideViewVBox";
 			break;
 		case NODE_VIEW_MODE_COMBINED:
 			htmlWidgetName = "combinedViewHtml";
-			ilWidgetName = "normalViewItems";
-			encViewWidgetName = "normalViewEncExpander"; /* doesn't matter because it is not used in this mode */
+			ilWidgetName = NULL;
+			encViewVBoxName = NULL;
 			break;
 		default:
 			g_warning("fatal: illegal viewing mode!");
@@ -1343,12 +1339,17 @@ liferea_shell_set_layout (nodeViewType newMode)
 	gtk_widget_reparent (liferea_htmlview_get_widget (shell->priv->htmlview), liferea_shell_lookup (htmlWidgetName));
 	gtk_widget_reparent (GTK_WIDGET (shell->priv->itemlistContainer), liferea_shell_lookup (ilWidgetName));
 	
-	/* Recreate the enclosure list view GtkTreeView. No reparenting here to 
-	   get minimized columns for the new list with auto-layouting */
-	gtk_widget_destroy (enclosure_list_view_get_widget (shell->priv->enclosureView));
-	shell->priv->enclosureView = enclosure_list_view_new ();
-	gtk_container_add (GTK_CONTAINER (liferea_shell_lookup (encViewWidgetName)), 
-	                   enclosure_list_view_get_widget (shell->priv->enclosureView));
+	/* Create a new enclosure list GtkTreeView. */
+	if (shell->priv->enclosureView) {
+		gtk_widget_destroy (enclosure_list_view_get_widget (shell->priv->enclosureView));
+		shell->priv->enclosureView = NULL;
+	}
+		
+	if (encViewVBoxName) {
+		shell->priv->enclosureView = enclosure_list_view_new ();
+		gtk_container_add (GTK_CONTAINER (liferea_shell_lookup (encViewVBoxName)),
+		                   enclosure_list_view_get_widget (shell->priv->enclosureView));
+	}
  
 	/* grab necessary to force HTML widget update (display must
 	   change from feed description to list of items and vica versa */
