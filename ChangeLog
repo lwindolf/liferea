@@ -5,6 +5,7 @@
 	* Fixes a cache limit bug when merging items of
 	  feeds with more items than the cache allows.
 	  (reported by Dennis Nezic)
+	* Fixes po/LINGUAS which missed "hu".
 	* Workaround for SF #1995329: Next-Unread item
 	  selection doesn't always work (reported by
 	  several users).
