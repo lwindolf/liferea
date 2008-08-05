@@ -257,7 +257,10 @@ network_write_callback (void *ptr, size_t size, size_t nmemb, void *data)
 		memcpy (&(result->data[result->size]), ptr, realsize);
 		result->size += realsize;
 		result->data[result->size] = 0;
+	} else {
+		realsize = 0;
 	}
+	
 	return realsize;
 }
 
