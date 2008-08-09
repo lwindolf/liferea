@@ -4,12 +4,21 @@
     <title>Liferea Default Feed List</title>
   </head>
   <body>
-	<outline text="Beispiel Abonnements">
+	<outline text="Beispiel-Abonnements">
 		<outline text="Deutsch">
-			<outline text="Tagesschau" htmlUrl="http://www.tagesschau.de/" xmlUrl="http://www.tagesschau.de/newsticker.rdf" />
-			<outline text="Netzeitung" htmlUrl="http://www.netzzeitung.de" xmlUrl="http://www.netzeitung.de/export/news/rss/titelseite.xml" />
-			<outline text="Heise Online" htmlUrl="http://www.heise.de" xmlUrl="http://www.heise.de/newsticker/heise.rdf" />
-			<outline text="golem.de" htmlUrl="http://golem.de" xmlUrl="http://www.golem.de/rss.php?feed=RSS1.0" />
+			<outline text="News">
+				<outline text="Tagesschau" htmlUrl="http://www.tagesschau.de/" xmlUrl="http://www.tagesschau.de/newsticker.rdf" />
+				<outline text="Netzeitung" htmlUrl="http://www.netzzeitung.de" xmlUrl="http://www.netzeitung.de/export/news/rss/titelseite.xml" />
+				<outline text="Heise Online" htmlUrl="http://www.heise.de" xmlUrl="http://www.heise.de/newsticker/heise.rdf" />
+				<outline text="golem.de" htmlUrl="http://golem.de" xmlUrl="http://www.golem.de/rss.php?feed=RSS1.0" />
+			</outline>
+			<outline text="Podcasts">
+				<outline text="Chaos Radio" htmlUrl="http://blog.chaosradio.ccc.de/" xmlUrl="http://chaosradio.ccc.de/chaosradio-complete.rss" />
+				<outline text="Stiftung Warentest" htmlUrl="http://www.test.de" xmlUrl="http://www.test.de/rss/presse/audio-podcast/" />
+				<outline text="BoDCast" htmlUrl="http://www.bod.de" xmlUrl="http://www.bod.de/bodcast/feed.xml"/>
+				<outline text="SWR2 Campus" htmlUrl="http://www.swr2.de/campus" xmlUrl="http://podcast24.de/xmlausgabe.php?id=1128"/>
+				<outline text="Sportal" htmlUrl="http://www.earpaper.de/loudblog/?cat=3" xmlUrl="http://www.earpaper.de/loudblog/podcast.php?cat=sportalradioshow"/>
+			</outline>
 		</outline>
  
  		<!-- lets keep this default English block in sync over all feed lists! -->
