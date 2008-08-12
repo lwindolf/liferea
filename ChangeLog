@@ -9,6 +9,10 @@
 	* Workaround for SF #1995329: Next-Unread item
 	  selection doesn't always work (reported by
 	  several users).
+	* Removing broken 'updated' state handling.
+	  Manually resetting update states didn't work
+	  persistently. Also many users confused the
+	  'updated' flag with the read status.
 
 
 2008-07-27  Lars Lindner  <lars.lindner@gmail.com>
