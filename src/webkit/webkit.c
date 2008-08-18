@@ -2,7 +2,7 @@
  * @file webkit.c WebKit browser module for Liferea
  *
  * Copyright (C) 2007 Lars Lindner <lars.lindner@gmail.com>
- * Copyright (C) 2008 Lars Strojny <larsml@strojny.net>
+ * Copyright (C) 2008 Lars Strojny <lars@strojny.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
