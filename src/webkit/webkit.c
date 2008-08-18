@@ -62,14 +62,6 @@ webkit_write_html (
 )
 {
 	GtkWidget *htmlwidget = gtk_bin_get_child (GTK_BIN (scrollpane));
-	/**
-	 * WebKit does not like content type application/xhtml+xml. See
-	 * http://bugs.webkit.org/show_bug.cgi?id=9677 for details.
-	 */
-	content_type =
-		g_ascii_strcasecmp (content_type, "application/xhtml+xml") == 0
-		? "application/xhtml"
-		: content_type;
 	webkit_web_view_load_string (WEBKIT_WEB_VIEW (htmlwidget), string, content_type, "UTF-8", base);
 }
 
