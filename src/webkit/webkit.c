@@ -61,7 +61,8 @@ webkit_write_html (
 	const gchar *content_type
 )
 {
-	GtkWidget *htmlwidget = gtk_bin_get_child (GTK_BIN (scrollpane));
+	GtkWidget *htmlwidget;
+	htmlwidget = gtk_bin_get_child (GTK_BIN (scrollpane));
 	webkit_web_view_load_string (WEBKIT_WEB_VIEW (htmlwidget), string, content_type, "UTF-8", base);
 }
 
