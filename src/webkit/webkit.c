@@ -34,7 +34,6 @@ liferea_webkit_init (void)
 	g_print ("NOTE: WebKit HTML rendering support is under development\n");
 	g_print ("The following functionality is currently missing or not working:\n");
 	g_print ("  - Context menus are not customized\n");
-	g_print ("  - Some links in feed items are not clickable\n");
 }
 
 /**
