@@ -306,11 +306,12 @@ webkit_scroll_pagedown (GtkWidget *scrollpane)
 	return (new_value > old_value);
 }
 
-static struct htmlviewPlugin webkitInfo = {
+static struct
+htmlviewPlugin webkitInfo = {
 	.api_version	= HTMLVIEW_PLUGIN_API_VERSION,
 	.name		= "WebKit",
 	.priority	= 100,
-	.externalCss	= FALSE,
+	.externalCss	= TRUE,
 	.plugin_init	= liferea_webkit_init,
 	.plugin_deinit	= liferea_webkit_shutdown,
 	.create		= webkit_new,
@@ -324,7 +325,8 @@ static struct htmlviewPlugin webkitInfo = {
 	.setOffLine	= NULL
 };
 
-static struct plugin pi = {
+static struct
+plugin pi = {
 	PLUGIN_API_VERSION,
 	"WebKit Rendering Plugin",
 	PLUGIN_TYPE_HTML_RENDERER,
