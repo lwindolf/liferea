@@ -29,9 +29,9 @@
 #include "db.h"
 #include "debug.h"
 #include "item.h"
-#include "itemview.h"
 #include "metadata.h"
 #include "xml.h"
+#include "ui/itemview.h"
 
 itemPtr item_new(void) {
 	itemPtr		item;

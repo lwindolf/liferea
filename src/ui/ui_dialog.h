@@ -56,7 +56,7 @@ GType liferea_dialog_get_type	(void);
 /**
  * Convenience wrapper to create a new dialog and set up its GUI
  *
- * @param filename	path of glade widget file (or NULL for default)
+ * @param filename	name of glade widget file (or NULL for default)
  * @param name		the dialog name
  *
  * @returns the dialog widget

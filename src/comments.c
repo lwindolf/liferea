@@ -19,15 +19,16 @@
  */
 
 #include <string.h>
+
 #include "comments.h"
 #include "common.h"
 #include "db.h"
 #include "debug.h"
 #include "feed.h"
-#include "itemview.h"
 #include "metadata.h"
 #include "net.h"
 #include "update.h"
+#include "ui/itemview.h"
 
 /* Comment feeds in Liferea are simple flat lists of items attached
    to a single item. Each item that has a comment feed URL in its 

@@ -25,10 +25,9 @@
  
 #include <glib-object.h>
 #include <glib.h>
+#include <gtk/gtk.h>
 
 #include "node.h"
-#include "ui/enclosure_list_view.h"
-#include "ui/ui_htmlview.h"
 
 /** possible main window states */
 enum mainwindowState {
@@ -98,13 +97,6 @@ void liferea_shell_present (void);
  * Toggles main window visibility.
  */ 
 void liferea_shell_toggle_visibility (void);
-
-/**
- * Switches the layout for the given viewing mode.
- *
- * @param newMode	new view mode (NODE_VIEW_MODE_*)
- */
-void liferea_shell_set_layout (nodeViewType newMode);
 
 /**
  * Saves the current main window position to be
@@ -198,24 +190,6 @@ void liferea_shell_online_status_changed(int online);
  * @returns main window widget
  */
 GtkWidget * liferea_shell_get_window (void);
-
-/**
- * Method to query the active item pane HTML view. Used to
- * get the HTML view to do item rendering.
- *
- * Note: this method differs from browser_tabs_get_active_htmlview()
- * because it ignores any open selected tab. 
- *
- * @returns active HTML view
- */
-LifereaHtmlView * liferea_shell_get_active_htmlview (void);
-
-/**
- * Determine currently active enclosure list view.
- *
- * @returns the active enclosure list view
- */
-EnclosureListView * liferea_shell_get_active_enclosure_list_view (void);
 
 // FIXME:
 void on_onlinebtn_clicked (GtkButton *button, gpointer user_data);

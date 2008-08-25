@@ -111,7 +111,7 @@ liferea_dialog_lookup (GtkWidget *widget, const gchar *name)
 	
 	if (!widget)
 		return NULL;
-
+		
 	ld = LIFEREA_DIALOG (g_object_get_data (G_OBJECT (widget), "LifereaDialog"));
 		
 	if (!IS_LIFEREA_DIALOG (ld)) {
@@ -130,13 +130,14 @@ GtkWidget *
 liferea_dialog_new (const gchar *filename, const gchar *name) 
 {
 	LifereaDialog	*ld;
+	gchar 		*path;
 	
 	ld = LIFEREA_DIALOG (g_object_new (LIFEREA_DIALOG_TYPE, NULL));
 
-	if (filename)
-		ld->priv->xml = glade_xml_new (filename, name, GETTEXT_PACKAGE);
-	else
-		ld->priv->xml = glade_xml_new (PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "liferea.glade", name, GETTEXT_PACKAGE);
+	path = g_strdup_printf ("%s%s", PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S, filename?filename:"liferea.glade");
+	ld->priv->xml = glade_xml_new (path, name, GETTEXT_PACKAGE);
+	g_free (path);
+	
 	g_return_val_if_fail (ld->priv->xml != NULL, NULL);
 
 	ld->priv->dialog = glade_xml_get_widget (ld->priv->xml, name);

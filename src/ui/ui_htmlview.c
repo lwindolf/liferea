@@ -390,7 +390,8 @@ liferea_htmlview_launch_URL (LifereaHtmlView *htmlview, const gchar *url, gint l
 	debug3 (DEBUG_GUI, "launch URL: %s  %s %d", conf_get_bool_value (BROWSE_INSIDE_APPLICATION)?"true":"false",
 		  (htmlviewPlugin->launchInsidePossible) ()?"true":"false",
 		  launchType);
-		  
+
+	// FIXME: check if htmlview is an internal (item viewer...) first before handling special links
 	/* first catch all links with special URLs... */
 	if (liferea_htmlview_is_special_url (url)) {
 	
@@ -450,11 +451,8 @@ liferea_htmlview_get_zoom (LifereaHtmlView *htmlview)
 }
 
 gboolean
-liferea_htmlview_scroll (void)
+liferea_htmlview_scroll (LifereaHtmlView *htmlview)
 {
-	LifereaHtmlView *htmlview;
-	
-	htmlview = liferea_shell_get_active_htmlview ();
 	return (htmlviewPlugin->scrollPagedown) (htmlview->priv->renderWidget);
 }
 

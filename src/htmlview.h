@@ -22,8 +22,8 @@
 #define _HTMLVIEW_H
 
 #include "item.h"
-#include "itemview.h"
 #include "node.h"
+#include "ui/itemview.h"
 #include "ui/ui_htmlview.h"
 
 /* interface for item and item set HTML rendering */

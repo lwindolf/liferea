@@ -148,6 +148,18 @@ on_enclosure_list_button_press (GtkWidget *treeview, GdkEventButton *event, gpoi
 	return TRUE;
 }
 
+static gboolean
+on_enclosure_list_activate (GtkTreeView *treeview, GtkTreePath *path, GtkTreeViewColumn *column, gpointer user_data)
+{
+	enclosurePtr	enclosure;
+	GtkTreeIter	iter;
+	GtkTreeModel	*model;
+		
+	gtk_tree_selection_get_selected (gtk_tree_view_get_selection (treeview), &model, &iter);
+	gtk_tree_model_get (model, &iter, ES_PTR, &enclosure, -1);
+	on_popup_open_enclosure (enclosure, 0, NULL);
+}
+
 EnclosureListView *
 enclosure_list_view_new () 
 {
@@ -155,15 +167,18 @@ enclosure_list_view_new ()
 	GtkCellRenderer		*renderer;
 	GtkTreeViewColumn 	*column;
 	GtkTreeSelection	*select;
+	GtkWidget		*widget;
 		
 	elv = ENCLOSURE_LIST_VIEW (g_object_new (ENCLOSURE_LIST_VIEW_TYPE, NULL));
-	elv->priv->container = gtk_scrolled_window_new (NULL, NULL);
-	gtk_widget_show (elv->priv->container);
-	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (elv->priv->container), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
-	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (elv->priv->container), GTK_SHADOW_IN);
+	elv->priv->container = gtk_expander_new (_("Attachments"));	
+	
+	widget = gtk_scrolled_window_new (NULL, NULL);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (widget), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (widget), GTK_SHADOW_IN);
+	gtk_container_add (GTK_CONTAINER (elv->priv->container), widget);
 
 	elv->priv->treeview = gtk_tree_view_new ();
-	gtk_container_add (GTK_CONTAINER (elv->priv->container), elv->priv->treeview);
+	gtk_container_add (GTK_CONTAINER (widget), elv->priv->treeview);
 	gtk_widget_show (elv->priv->treeview);
 	gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (elv->priv->treeview), TRUE);
 	
@@ -204,6 +219,9 @@ enclosure_list_view_new ()
 
 	g_signal_connect ((gpointer)elv->priv->treeview, "button_press_event",
 	                  G_CALLBACK (on_enclosure_list_button_press), (gpointer)elv);
+			  
+	g_signal_connect ((gpointer)elv->priv->treeview, "row-activated",
+	                  G_CALLBACK (on_enclosure_list_activate), (gpointer)elv);
 
 	g_signal_connect_object (elv->priv->container, "destroy", G_CALLBACK (enclosure_list_view_destroy_cb), elv, 0);
 
@@ -219,7 +237,6 @@ enclosure_list_view_get_widget (EnclosureListView *elv)
 void
 enclosure_list_view_load (EnclosureListView *elv, itemPtr item)
 {
-	GtkWidget	*expander;
 	GSList		*list;
 	guint		len;
 
@@ -236,19 +253,18 @@ enclosure_list_view_load (EnclosureListView *elv, itemPtr item)
 	list = metadata_list_get_values (item->metadata, "enclosure");
 	
 	/* decide visibility of the list */
-	expander = gtk_widget_get_parent (elv->priv->container);
 	list = metadata_list_get_values (item->metadata, "enclosure");
 	len = g_slist_length (list);
 	if (len == 0) {
-		gtk_widget_hide (expander);
+		enclosure_list_view_hide (elv);
 		return;
 	}	
 	
-	gtk_widget_show_all (expander);
+	gtk_widget_show_all (elv->priv->container);
 
 	/* update list title */
 	gchar *text = g_strdup_printf (ngettext("%d attachment", "%d attachments", len), len);
-	gtk_expander_set_label (GTK_EXPANDER (expander), text);
+	gtk_expander_set_label (GTK_EXPANDER (elv->priv->container), text);
 	g_free (text);
 
 	/* load list into tree view */	
@@ -303,10 +319,10 @@ enclosure_list_view_load (EnclosureListView *elv, itemPtr item)
 void
 enclosure_list_view_hide (EnclosureListView *elv)
 {
-	GtkWidget	*expander;
+	if (!elv)
+		return;
 	
-	expander = gtk_widget_get_parent (elv->priv->container);
-	gtk_widget_hide (expander);
+	gtk_widget_hide (GTK_WIDGET (elv->priv->container));
 }
 
 /* callback for preferences and enclosure type handling */

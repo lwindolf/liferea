@@ -1,14 +1,11 @@
 ## Process this file with automake to produce Makefile.in
 
-SUBDIRS = doc man opml pixmaps po src xslt
+SUBDIRS = doc man opml pixmaps po src xslt glade
 
 desktop_in_files = liferea.desktop.in
 desktopdir = $(datadir)/applications
 desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
 @INTLTOOL_DESKTOP_RULE@
-
-gladedir = $(pkgdatadir)
-glade_DATA = liferea.glade
 
 schemadir   = @GCONF_SCHEMA_FILE_DIR@
 schema_DATA = liferea.schemas
@@ -22,8 +19,6 @@ dtddir = $(pkgdatadir)/dtd
 dtd_DATA = dtd/html.ent
 
 EXTRA_DIST = \
-	$(glade_DATA) \
-	liferea.gladep \
 	liferea.spec \
 	src/liferea \
 	src/liferea-add-feed \

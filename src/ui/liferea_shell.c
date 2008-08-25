@@ -38,6 +38,7 @@
 #include "feedlist.h"
 #include "itemlist.h"
 #include "net.h"
+#include "ui/itemview.h"
 #include "ui/ui_common.h"
 #include "ui/ui_dialog.h"
 #include "ui/ui_feedlist.h"
@@ -65,8 +66,6 @@ struct LifereaShellPrivate {
 	GtkWindow	*window;		/**< Liferea main window */
 	GtkWidget	*menubar;
 	GtkWidget	*toolbar;
-	GtkWidget	*itemlistContainer;	/**< scrolled window holding item list tree view */
-	GtkTreeView	*itemlist;		// FIXME: replace with real item list object
 	GtkTreeView	*feedlistView;
 	GtkStatusbar	*statusbar;
 	GtkWidget	*statusbar_feedsinfo;
@@ -76,12 +75,9 @@ struct LifereaShellPrivate {
 	GtkActionGroup	*readWriteActions;	/**< node remove and properties, node itemset items remove */
 	GtkActionGroup	*itemActions;		/**< item state toggline, single item remove */
 	
-	FeedList		*feedlist;
-	EnclosureListView	*enclosureView;		/**< Enclosure list widget */
-	LifereaHtmlView		*htmlview;		/**< HTML rendering widget used for item display */
-	BrowserTabs		*tabs;
-	gfloat			zoom;			/**< HTML rendering widget zoom level */
-	guint			currentLayoutMode;	/**< layout mode (3 pane, 2 pane, wide view) */
+	FeedList	*feedlist;
+	ItemView	*itemview;
+	BrowserTabs	*tabs;
 };
 
 static GObjectClass *parent_class = NULL;
@@ -229,9 +225,6 @@ liferea_shell_save_position (void)
 		conf_set_int_value (LAST_WPANE_POS, y);
 	}
 	
-	/* save itemlist properties */
-	conf_set_int_value (LAST_ZOOMLEVEL, (gint)(100.* liferea_htmlview_get_zoom (liferea_shell_get_active_htmlview ())));
-
 	/* The following needs to be skipped when the window is not visible */
 	if (!GTK_WIDGET_VISIBLE (shell->priv->window))
 		return;
@@ -552,9 +545,7 @@ on_key_press_event (GtkWidget *widget, GdkEventKey *event, gpointer data)
 				}
 				
 				if (modifier_matches) {
-					/* Note that this code is duplicated in mozilla/mozilla.cpp! */
-					if (liferea_htmlview_scroll () == FALSE)
-						on_next_unread_item_activate (NULL, NULL);
+					itemview_scroll ();
 					return TRUE;
 				}
 				break;
@@ -585,21 +576,21 @@ on_key_press_event (GtkWidget *widget, GdkEventKey *event, gpointer data)
 					return TRUE;
 					break;
 				case GDK_f:
-					ui_common_treeview_move_cursor (shell->priv->itemlist, 1);
+					itemview_move_cursor (1);
 					return TRUE;
 					break;
 				case GDK_b:
-					ui_common_treeview_move_cursor (shell->priv->itemlist, -1);
+					itemview_move_cursor (-1);
 					return TRUE;
 					break;
 				case GDK_u:
 					ui_common_treeview_move_cursor (shell->priv->feedlistView, -1);
-					ui_common_treeview_move_cursor_to_first (shell->priv->itemlist);
+					itemview_move_cursor_to_first ();
 					return TRUE;
 					break;
 				case GDK_d:
 					ui_common_treeview_move_cursor (shell->priv->feedlistView, 1);
-					ui_common_treeview_move_cursor_to_first (shell->priv->itemlist);
+					itemview_move_cursor_to_first ();
 					return TRUE;
 					break;
 			}
@@ -698,12 +689,6 @@ static void
 on_menu_quit (GtkMenuItem *menuitem, gpointer user_data)
 {
 	liferea_shutdown ();
-}
-
-static void
-on_important_status_message (gpointer obj, gchar *url)
-{
-	liferea_shell_set_important_status_bar ("%s", url);
 }
 
 // FIXME: change to signal callback
@@ -939,16 +924,6 @@ liferea_shell_restore_state (void)
 	
 	liferea_shell_restore_position ();
 
-	debug0 (DEBUG_GUI, "Setting zoom level");
-	
-	shell->priv->zoom = conf_get_int_value (LAST_ZOOMLEVEL);
-
-	if (0 == shell->priv->zoom) {	/* workaround for scheme problem with the last releases */
-		shell->priv->zoom = 100;
-		conf_set_int_value (LAST_ZOOMLEVEL, 100);
-	}
-	liferea_htmlview_set_zoom (shell->priv->htmlview, shell->priv->zoom/100.);
-	
 	debug0 (DEBUG_GUI, "Loading pane proportions");
 		
 	if (0 != conf_get_int_value (LAST_VPANE_POS))
@@ -967,7 +942,6 @@ liferea_shell_create (int initialState)
 	GError		*error = NULL;	
 	GtkWidget	*widget;
 	int		i;
-	GString		*buffer;
 	GtkIconTheme	*icon_theme;
 	
 	debug_enter ("liferea_shell_create");
@@ -976,7 +950,6 @@ liferea_shell_create (int initialState)
 
 	g_object_new (LIFEREA_SHELL_TYPE, NULL);
 
-	shell->priv->currentLayoutMode = NODE_VIEW_MODE_INVALID;
 	shell->priv->window = GTK_WINDOW (liferea_shell_lookup ("mainwindow"));
 
 	// FIXME: do we use this anywhere?
@@ -1094,13 +1067,8 @@ liferea_shell_create (int initialState)
 	/* 7.) setup item view */
 	
 	debug0 (DEBUG_GUI, "Setting up item view");
-	shell->priv->itemlistContainer = ui_itemlist_new (GTK_WIDGET (shell->priv->window));
-	shell->priv->itemlist = GTK_TREE_VIEW (gtk_bin_get_child (GTK_BIN (shell->priv->itemlistContainer)));
-	/* initially we pack the item list in the normal view pane,
-	   which is later changed in liferea_shell_set_layout() */
-	gtk_container_add (GTK_CONTAINER (liferea_shell_lookup ("normalViewItems")), shell->priv->itemlistContainer);
-	
-	itemview_init ();
+
+	shell->priv->itemview = itemview_create (ui_itemlist_new (GTK_WIDGET (shell->priv->window)));
 	
 	/* 8.) load icons as required */
 	
@@ -1193,52 +1161,6 @@ liferea_shell_create (int initialState)
 		gtk_widget_hide (GTK_WIDGET (shell->priv->window));
 	}
 
-	/* force two pane mode */
-	/*   For some reason, this causes the first item to be selected and then
-	     unselected... strange. */
-	ui_feedlist_select (NULL);
-	/* Initialize the UI with respect to the viewing mode */
-	liferea_shell_set_layout (NODE_VIEW_MODE_COMBINED);	/* FIXME: set user defined default viewing mode */
-
-	/* create welcome text */
-	buffer = g_string_new (NULL);
-	htmlview_start_output (buffer, NULL, TRUE, FALSE);
-	g_string_append (buffer,   "<div style=\"padding:8px\">"
-				   "<table class=\"headmeta\" style=\"border:solid 1px #aaa;font-size:120%\" border=\"0\" cellspacing=\"0\" cellpadding=\"5px\"><tr><td>"
-				   // Display application icon
-				   "<img src=\""
-				   PACKAGE_DATA_DIR G_DIR_SEPARATOR_S "icons" G_DIR_SEPARATOR_S
-				   "hicolor" G_DIR_SEPARATOR_S "48x48" G_DIR_SEPARATOR_S "apps"
-				   G_DIR_SEPARATOR_S "liferea.png\" />"
-				   "</td><td><h3>");
-	g_string_append (buffer,   _("Liferea - Linux Feed Reader"));
-	g_string_append (buffer,   "</h3></td></tr><tr><td colspan=\"2\">");
-	g_string_append (buffer,   _("<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news "
-				   "feeds.</p>"
-				   "<p>The left pane contains the list of your subscriptions. To add a "
-				   "subscription select Feeds -&gt; New Subscription. To browse the headlines "
-				   "of a feed select it in the feed list and the headlines will be loaded "
-				   "into the right pane.</p>"));
-	g_string_append (buffer,   "</td></tr></table>");
-
-	g_string_append (buffer,   "</div>");
-	g_string_append (buffer,   "<div style=\"background:#ffc;border:1px solid black;margin:8px;padding:8px\">");
-	g_string_append (buffer,   "<p><b>Important:</b> This is an <b>UNSTABLE</b> test release. Use it only "
-	                           "if you want to help with the development of Liferea and if you are willing "
-				   "to do some debugging if it crashes. And it will crash, and hang, and eat memory and "
-				   "it might even kill your cat!</p>"
-				   "<p>New/Improved Functionality:"
-				   "<ul>"
-				   "   <li>Fixed several runtime assertions.</li>"
-				   "   <li>Fixed window state saving.</li>"
-				   "</ul>"
-				   "</p>");
-	g_string_append (buffer,   "</div>");
-
-	htmlview_finish_output (buffer);
-	liferea_htmlview_write (shell->priv->htmlview, buffer->str, NULL);
-	g_string_free (buffer, TRUE);
-
 	gtk_widget_set_sensitive (GTK_WIDGET (shell->priv->feedlistView), TRUE);
 	
 	liferea_shell_restore_state ();
@@ -1284,93 +1206,8 @@ liferea_shell_toggle_visibility (void)
 	}
 }
 
-void
-liferea_shell_set_layout (nodeViewType newMode)
-{
-	gchar	*htmlWidgetName, *ilWidgetName, *encViewVBoxName;
-	GtkRadioAction *action;
-	
-	if (newMode == shell->priv->currentLayoutMode)
-		return;
-	shell->priv->currentLayoutMode = newMode;
-
-	action = GTK_RADIO_ACTION (gtk_action_group_get_action (shell->priv->generalActions, "NormalView"));
-	gtk_radio_action_set_current_value (action, newMode);
-	
-	if (!shell->priv->htmlview) {
-		GtkWidget *renderWidget;
-		shell->priv->htmlview = liferea_htmlview_new (FALSE);		
-		g_signal_connect (shell->priv->htmlview, "statusbar-changed", 
-		                  G_CALLBACK (on_important_status_message), 
-		                  shell->priv);
-		renderWidget = liferea_htmlview_get_widget (shell->priv->htmlview);
-		gtk_container_add (GTK_CONTAINER (liferea_shell_lookup ("normalViewHtml")), renderWidget);
-		gtk_widget_show (renderWidget);
-	}
-	
-	liferea_htmlview_clear (shell->priv->htmlview);
-
-	debug1 (DEBUG_GUI, "Setting item list layout mode: %d", newMode);
-	
-	switch (newMode) {
-		case NODE_VIEW_MODE_NORMAL:
-			htmlWidgetName = "normalViewHtml";
-			ilWidgetName = "normalViewItems";
-			encViewVBoxName = "normalViewVBox";
-			break;
-		case NODE_VIEW_MODE_WIDE:
-			htmlWidgetName = "wideViewHtml";
-			ilWidgetName = "wideViewItems";
-			encViewVBoxName = "wideViewVBox";
-			break;
-		case NODE_VIEW_MODE_COMBINED:
-			htmlWidgetName = "combinedViewHtml";
-			ilWidgetName = NULL;
-			encViewVBoxName = NULL;
-			break;
-		default:
-			g_warning("fatal: illegal viewing mode!");
-			return;
-			break;
-	}
-
-	/* Reparenting HTML view. This avoids the overhead of new browser instances. */
-	gtk_notebook_set_current_page (GTK_NOTEBOOK (liferea_shell_lookup ("itemtabs")), newMode);
-	gtk_widget_reparent (liferea_htmlview_get_widget (shell->priv->htmlview), liferea_shell_lookup (htmlWidgetName));
-	gtk_widget_reparent (GTK_WIDGET (shell->priv->itemlistContainer), liferea_shell_lookup (ilWidgetName));
-	
-	/* Create a new enclosure list GtkTreeView. */
-	if (shell->priv->enclosureView) {
-		gtk_widget_destroy (enclosure_list_view_get_widget (shell->priv->enclosureView));
-		shell->priv->enclosureView = NULL;
-	}
-		
-	if (encViewVBoxName) {
-		shell->priv->enclosureView = enclosure_list_view_new ();
-		gtk_container_add (GTK_CONTAINER (liferea_shell_lookup (encViewVBoxName)),
-		                   enclosure_list_view_get_widget (shell->priv->enclosureView));
-	}
- 
-	/* grab necessary to force HTML widget update (display must
-	   change from feed description to list of items and vica versa */
-	gtk_widget_grab_focus (GTK_WIDGET (shell->priv->feedlistView));
-}
-
 GtkWidget *
 liferea_shell_get_window (void)
 {
 	return GTK_WIDGET (shell->priv->window);
 }
-
-LifereaHtmlView *
-liferea_shell_get_active_htmlview (void)
-{
-	return shell->priv->htmlview;
-}
-
-EnclosureListView *
-liferea_shell_get_active_enclosure_list_view (void)
-{
-	return shell->priv->enclosureView;
-}
-

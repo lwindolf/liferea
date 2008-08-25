@@ -80,7 +80,7 @@ search_load_results (nodePtr searchResult, const gchar *searchString)
 	                                "feed list."));
 	g_string_append_printf (buffer, "</p></div>");
 	htmlview_finish_output (buffer);
-	liferea_htmlview_write (liferea_shell_get_active_htmlview (), buffer->str, NULL);
+	itemview_display_info (buffer->str);
 	g_string_free (buffer, TRUE);
 }
 

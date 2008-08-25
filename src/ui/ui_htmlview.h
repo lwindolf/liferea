@@ -163,19 +163,21 @@ void liferea_htmlview_set_zoom (LifereaHtmlView *htmlview, gfloat zoom);
 /**
  * Function to determine the current zoom level.
  *
- * @param htmlview htmlview to examine
+ * @param htmlview	htmlview to examine
  *
  * @return the currently set zoom level 
  */
 gfloat liferea_htmlview_get_zoom (LifereaHtmlView *htmlview);
 
 /**
- * Function scrolls down the item views scrolled window.
+ * Function scrolls down the given HTML view if possible.
+ *
+ * @param htmlview	htmlview to scroll
  *
  * @return FALSE if the scrolled window vertical scroll position is at
  * the maximum and TRUE if the vertical adjustment was increased.
  */
-gboolean liferea_htmlview_scroll (void);
+gboolean liferea_htmlview_scroll (LifereaHtmlView *htmlview);
 
 /**
  * To be called when HTML view needs to update the proxy settings

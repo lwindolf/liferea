@@ -45,8 +45,6 @@ src/itemlist.c
 src/itemlist.h
 src/itemset.c
 src/itemset.h
-src/itemview.c
-src/itemview.h
 src/main.c
 src/metadata.c
 src/metadata.h
@@ -79,6 +77,8 @@ src/ui/eggtrayicon.c
 src/ui/eggtrayicon.h
 src/ui/enclosure_list_view.c
 src/ui/enclosure_list_view.h
+src/ui/itemview.c
+src/ui/itemview.h
 src/ui/liferea_shell.c
 src/ui/liferea_shell.h
 src/ui/rule_editor.c

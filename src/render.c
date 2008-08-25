@@ -39,6 +39,7 @@
 #include "itemset.h"
 #include "render.h"
 #include "ui/ui_htmlview.h"
+#include "ui/itemview.h"
 #include "ui/liferea_shell.h"
 
 static renderParamPtr	langParams = NULL;	/* the current locale settings (for localization stylesheet) */
@@ -154,13 +155,10 @@ static themeColorPtr render_get_theme_color(const gchar *name, GdkColor themeCol
 static void
 render_get_theme_colors (void)
 {
-	GtkWidget	*htmlview;
 	GtkStyle	*style;
 	GdkColor	*color;
 
-	htmlview = liferea_htmlview_get_widget (liferea_shell_get_active_htmlview ());
-	style = gtk_widget_get_style (htmlview);
-	g_assert (NULL != style);
+	style = itemview_get_style ();
 
 	g_assert (NULL == themeColors);
 	themeColors = g_slist_append (themeColors, render_get_theme_color("GTK-COLOR-FG",    style->fg[GTK_STATE_NORMAL]));

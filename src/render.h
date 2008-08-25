@@ -1,7 +1,7 @@
 /**
- * @file render.h generic XSLT rendering handling
+ * @file render.h  generic XSLT rendering handling
  * 
- * Copyright (C) 2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2006-2008 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,8 +22,8 @@
 #define _RENDER_H
 
 #include <gtk/gtk.h>
+
 #include "item.h"
-#include "itemview.h"
 
 /** render parameter type */
 typedef struct renderParam {

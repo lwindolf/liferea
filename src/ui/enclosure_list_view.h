@@ -81,6 +81,13 @@ GtkWidget * enclosure_list_view_get_widget (EnclosureListView *elv);
  */
 void enclosure_list_view_load (EnclosureListView *elv, itemPtr item);
 
+/**
+ * Hides the enclosure list view.
+ *
+ * @param elv	the enclosure list view
+ */
+void enclosure_list_view_hide (EnclosureListView *elv);
+
 /* related menu creation and callbacks */
 
 void on_popup_open_enclosure(gpointer callback_data, guint callback_action, GtkWidget *widget);

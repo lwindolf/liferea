@@ -55,7 +55,6 @@ liferea_bin_SOURCES = \
 	item_state.c item_state.h \
 	itemset.c itemset.h \
 	itemlist.c itemlist.h \
-	itemview.c itemview.h \
 	metadata.c metadata.h \
 	migrate.c migrate.h \
 	net.c net.h \

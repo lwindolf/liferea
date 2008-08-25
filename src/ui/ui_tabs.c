@@ -488,7 +488,7 @@ browser_tabs_get_active_htmlview (void)
 	
 	current = gtk_notebook_get_current_page (tabs->priv->notebook);
 	if (0 == current)
-		return liferea_shell_get_active_htmlview ();
+		return NULL;	/* never return the first page widget (because it is the item view) */
 		
 	tab = g_object_get_data (G_OBJECT (gtk_notebook_get_nth_page (tabs->priv->notebook, current)), "tabInfo");
 	return tab->htmlview;

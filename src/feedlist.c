@@ -28,12 +28,12 @@
 #include "feedlist.h"
 #include "folder.h"
 #include "itemlist.h"
-#include "itemview.h"
 #include "newsbin.h"
 #include "node.h"
 #include "script.h"
 #include "update.h"
 #include "vfolder.h"
+#include "ui/itemview.h"
 #include "ui/liferea_shell.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_htmlview.h"
@@ -549,7 +549,7 @@ feedlist_selection_changed (nodePtr node)
 	debug_enter ("feedlist_selection_changed");
 
 	debug1 (DEBUG_GUI, "new selected node: %s", node?node_get_title (node):"none");
-	if (!IS_SELECTED (node)) {
+	if (node != SELECTED) {
 
 		/* When the user selects a feed in the feed list we
 		   assume that he got notified of the new items or
@@ -568,7 +568,7 @@ feedlist_selection_changed (nodePtr node)
 			itemlist_set_view_mode (node_get_view_mode (SELECTED));		
 			itemlist_load (SELECTED);
 		} else {
-			liferea_htmlview_clear (liferea_shell_get_active_htmlview ());
+			itemview_clear ();
 		}
 		
 		if (SELECTED)

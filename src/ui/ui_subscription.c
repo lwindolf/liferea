@@ -18,6 +18,10 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif
  
 #include <gtk/gtk.h>
 #include <libxml/uri.h>
@@ -36,7 +40,7 @@
 #include "ui/ui_node.h"
 #include "ui/ui_subscription.h"
 
-/* Note: these update interval literal should be kept in sync with the 
+/* Note: these update interval literals should be kept in sync with the 
    ones in ui_prefs.c! */
     
 static gchar * default_update_interval_unit_options[] = {
@@ -688,7 +692,7 @@ new_subscription_dialog_init (NewSubscriptionDialog *nsd)
 	GtkWidget	*newdialog;
 	
 	nsd->priv = NEW_SUBSCRIPTION_DIALOG_GET_PRIVATE (nsd);
-	nsd->priv->dialog = newdialog = liferea_dialog_new (NULL, "newdialog");
+	nsd->priv->dialog = newdialog = liferea_dialog_new ("new_subscription.glade", "newdialog");
 	
 	/* Setup source entry */
 	nsd->priv->sourceEntry = liferea_dialog_lookup (newdialog,"sourceEntry");
@@ -818,7 +822,7 @@ simple_subscription_dialog_init (SimpleSubscriptionDialog *ssd)
 	GtkWidget	*newdialog;
 	
 	ssd->priv = SIMPLE_SUBSCRIPTION_DIALOG_GET_PRIVATE (ssd);
-	ssd->priv->dialog = newdialog = liferea_dialog_new (NULL, "simplenewdialog");
+	ssd->priv->dialog = newdialog = liferea_dialog_new ("simple_subscription.glade", "simplenewdialog");
 	
 	/* Setup source entry */
 	ssd->priv->sourceEntry = liferea_dialog_lookup (newdialog, "sourceEntry");

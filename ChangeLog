@@ -5,6 +5,8 @@
 	* The LUA scripting support now exposes a global
 	  variable "calling_hook" to determine which script
 	  hook was triggered. (patch by Rene Koecher)
+	* Fixed problem of some feed links not clickable
+	  when using WebKit for HTML rendering (Lars Strojny)
 	* Updated Czech translation (Martin Picek)
 
 2008-07-18  Lars Lindner  <lars.lindner@gmail.com>

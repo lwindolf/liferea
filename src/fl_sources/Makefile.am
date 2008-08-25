@@ -20,8 +20,3 @@ libliflsources_a_SOURCES = node_source.c node_source.h \
 			   bloglines_source.c bloglines_source.h 
 
 libliflsources_a_CFLAGS = $(PACKAGE_FLAGS)
-
-gladedir = $(pkgdatadir)
-glade_DATA = google_source.glade node_source.glade opml_source.glade bloglines_source.glade
-
-EXTRA_DIST = $(glade_DATA)

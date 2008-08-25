@@ -31,12 +31,12 @@
 #include "folder.h"
 #include "itemlist.h"
 #include "itemset.h"
-#include "itemview.h"
 #include "metadata.h"
 #include "node.h"
 #include "rule.h"
 #include "script.h"
 #include "vfolder.h"
+#include "ui/itemview.h"
 #include "ui/liferea_shell.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_itemlist.h"
@@ -291,7 +291,7 @@ itemlist_load (nodePtr node)
 
 	itemlist_priv.loading++;
 	itemlist_priv.viewMode = node_get_view_mode (node);
-	liferea_shell_set_layout (itemlist_priv.viewMode);
+	itemview_set_layout (itemlist_priv.viewMode);
 
 	/* Set the new displayed node... */
 	itemlist_priv.currentNode = node;
@@ -564,8 +564,7 @@ itemlist_selection_changed (itemPtr item)
 			item_set_read_state (item, TRUE);
 
 			if (node_load_link_preferred (node_from_id (item->nodeId))) {
-				liferea_htmlview_launch_URL (liferea_shell_get_active_htmlview (), 
-				                             item_get_source (itemlist_get_selected ()), UI_HTMLVIEW_LAUNCH_INTERNAL);
+				itemview_launch_URL (item_get_source (itemlist_get_selected ()));
 			} else {
 				itemview_set_mode (ITEMVIEW_SINGLE_ITEM);
 				itemview_select_item (item);
@@ -613,7 +612,7 @@ itemlist_set_view_mode (guint newMode)
 		itemlist_unload (FALSE);
 		
 		node_set_view_mode (node, itemlist_priv.viewMode);
-		liferea_shell_set_layout (itemlist_priv.viewMode);
+		itemview_set_layout (itemlist_priv.viewMode);
 		itemlist_load (node);
 	}
 }

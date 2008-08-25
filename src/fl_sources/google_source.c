@@ -318,7 +318,7 @@ ui_google_source_get_account_info (nodePtr parent)
 	GtkWidget	*dialog;
 
 	
-	dialog = liferea_dialog_new (PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "google_source.glade", "google_source_dialog");
+	dialog = liferea_dialog_new ("google_source.glade", "google_source_dialog");
 	
 	g_signal_connect (G_OBJECT (dialog), "response",
 			  G_CALLBACK (on_google_source_selected), 
