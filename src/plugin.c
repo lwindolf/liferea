@@ -160,8 +160,6 @@ void plugin_mgmt_init(void) {
 		error = NULL;
 	}
 
-	g_assert(NULL != plugins);
-	
 	/* do plugin type specific startup init */
 	liferea_htmlview_plugin_init ();
 	notification_plugin_init ();
