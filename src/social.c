@@ -115,6 +115,7 @@ social_init (void)
 	social_register_site ("MesFavs",	"http://mesfavs.com/bookmarks.php/?action=add&address=%s&title=%s", TRUE, FALSE);
 	social_register_site ("netvouz",	"http://netvouz.com/action/submitBookmark?url=%s&title=%s", TRUE, FALSE);
 	social_register_site ("Newsvine",	"http://www.newsvine.com/_wine/save?u=%s&h=%s", TRUE, FALSE);
+	social_register_site ("PownceLink",	"http://pownce.com/send/link/?url=%s&note_body=%s", TRUE, FALSE);
 	social_register_site ("Raw Sugar", 	"http://www.rawsugar.com/tagger/?turl=%s&tttl=%s&editorInitialized=1", TRUE, FALSE);
 	social_register_site ("reddit",		"http://reddit.com/submit?url=%s&title=%s", TRUE, FALSE);
 	social_register_site ("Rojo",		"http://www.rojo.com/add-subscription/?resource=%s", FALSE, FALSE);

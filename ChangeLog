@@ -16,6 +16,8 @@
 	  Manually resetting update states didn't work
 	  persistently. Also many users confused the
 	  'updated' flag with the read status.
+	* Added pownce.com social bookmarking support.
+	  (patch by zodmaner, SF #2090554)
 
 
 2008-07-27  Lars Lindner  <lars.lindner@gmail.com>
