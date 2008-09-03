@@ -186,7 +186,7 @@ if test "x$enable_xulrunner" = "xyes" ; then
       AC_SUBST(XULRUNNER_LIBS)
       
       if test "x$XULRUNNER_HOME" = "x" ; then
-      	AC_MSG_RESULT([Fatal: XulRunner enabled, but XULRUNNER_HOME is empty!])
+      	AC_MSG_RESULT([Fatal: XulRunner enabled, but library directory could not be determined! This usually happens when running against unstable versions of XulRunner 1.9 which is not supported in all Linux distros. Please compile against a stable build of XulRunner 1.9 instead.])
       	exit 1
       fi
 
