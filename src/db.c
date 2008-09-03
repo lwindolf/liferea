@@ -498,9 +498,11 @@ open:
 			         "   DROP TABLE tmp_id;"
 				 "END;");
 
-			debug0 (DEBUG_DB, "Checking for items without a subscription...\n");
+			/* Note: do not check on subscriptions here, as non-subscription node
+			   types (e.g. news bin) do contain items too. */
+			debug0 (DEBUG_DB, "Checking for items without a feed list node...\n");
 			db_exec ("DELETE FROM itemsets WHERE comment = 0 AND node_id NOT IN "
-		        	 "(SELECT node_id FROM subscription);");
+		        	 "(SELECT node_id FROM node);");
 				 
 			debug0 (DEBUG_DB, "DB cleanup finished. Continuing startup.\n");
 		}

@@ -1,4 +1,4 @@
-2008-08-??  Lars Lindner  <lars.lindner@gmail.com>
+2008-09-03  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.4.19 (Stable)
 
@@ -6,6 +6,9 @@
 	  feeds with more items than the cache allows.
 	  (reported by Dennis Nezic)
 	* Fixes po/LINGUAS which missed "hu".
+	* Fixes a bug introduced with 1.4.18 which caused
+	  news bins to drop everything on startup.
+	  (reported by tsukasa)
 	* Workaround for SF #1995329: Next-Unread item
 	  selection doesn't always work (reported by
 	  several users).
