@@ -2,6 +2,8 @@
 
 	Version 1.4.20 (Stable)
 
+	* Fixes SF #2042420: "Toggle Read Status" item list
+	  popup menu option (reported by Jeff Fortin)
 	* Added new Slovakian translation (Pavol Klacansky)
 
 

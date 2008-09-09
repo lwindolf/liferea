@@ -141,7 +141,7 @@ void ui_popup_update_menues(void) {
 	addPopupOption(&item_menu_items, &item_menu_len, _("/Copy Item _URL to Clipboard"),     NULL, on_popup_copy_URL_clipboard,     		0, NULL, 0);
 	
 	addPopupOption(&item_menu_items, &item_menu_len, "/",					NULL, NULL, 					0, "<Separator>", 0);
-	addPopupOption(&item_menu_items, &item_menu_len, _("/Toggle _Read Status"),		NULL, on_popup_toggle_read, 			0, "<Separator>", GTK_STOCK_APPLY);
+	addPopupOption(&item_menu_items, &item_menu_len, _("/Toggle _Read Status"),		NULL, on_popup_toggle_read, 			0, "<StockItem>", GTK_STOCK_APPLY);
 	addPopupOption(&item_menu_items, &item_menu_len, _("/Toggle Item _Flag"),		NULL, on_popup_toggle_flag, 			0, NULL, 0);
 	addPopupOption(&item_menu_items, &item_menu_len, _("/R_emove Item"),			NULL, on_popup_remove_selected,			0, "<StockItem>", GTK_STOCK_DELETE);
 
