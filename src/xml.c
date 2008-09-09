@@ -519,17 +519,9 @@ xml_parse_feed (feedParserCtxtPtr fpc)
 	errors = g_new0 (struct errorCtxt, 1);
 	errors->msg = fpc->feed->parseErrors;
 	
-	if (!g_utf8_validate (fpc->data, -1, NULL)) {
-		/* We never collect invalid encoding error output to avoid getting
-		   nasty characters inside our error buffer, so we issue a simple
-		   warning here */
-		debug1 (DEBUG_PARSING, "xml_parse_feed(): invalid UTF-8 encoding while parsing \"%s\"!", fpc->subscription->node->title);
-		g_string_append_printf (fpc->feed->parseErrors, _("Invalid encoding in feed \"%s\"!"), fpc->subscription->node->title);
-	}
-	
 	fpc->doc = xml_parse (fpc->data, (size_t)fpc->dataLength, fpc->recovery, errors);
 	if (!fpc->doc) {
-		debug1 (DEBUG_PARSING, "xmlReadMemory: could not parse feed \"%s\"!", fpc->subscription->node->title);
+		debug1 (DEBUG_PARSING, "xml_parser_feed(): could not parse feed \"%s\"!", fpc->subscription->node->title);
 		g_string_prepend (fpc->feed->parseErrors, _("XML Parser: Could not parse document:\n"));
 		g_string_append (fpc->feed->parseErrors, "\n");
 	}

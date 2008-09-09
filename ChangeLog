@@ -4,6 +4,8 @@
 
 	* Fixes SF #2042420: "Toggle Read Status" item list
 	  popup menu option (reported by Jeff Fortin)
+	* Fixes SF #2027445: Incorrect invalid encoding errors.
+	  (reported by Roman Beslik)
 	* Added new Slovakian translation (Pavol Klacansky)
 
 
