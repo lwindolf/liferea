@@ -942,6 +942,7 @@ liferea_shell_create (int initialState)
 	GError		*error = NULL;	
 	GtkWidget	*widget;
 	int		i;
+	GString		*buffer;
 	GtkIconTheme	*icon_theme;
 	
 	debug_enter ("liferea_shell_create");
@@ -1164,6 +1165,55 @@ liferea_shell_create (int initialState)
 	gtk_widget_set_sensitive (GTK_WIDGET (shell->priv->feedlistView), TRUE);
 	
 	liferea_shell_restore_state ();
+	
+	/* 9. Create welcome text */
+
+	/* force two pane mode */
+	/*   For some reason, this causes the first item to be selected and then
+	     unselected... strange. */
+	ui_feedlist_select (NULL);
+	
+	itemview_set_layout (NODE_VIEW_MODE_COMBINED);
+	
+	buffer = g_string_new (NULL);
+	htmlview_start_output (buffer, NULL, TRUE, FALSE);
+	g_string_append (buffer,   "<div style=\"padding:8px\">"
+				   "<table class=\"headmeta\" style=\"border:solid 1px #aaa;font-size:120%\" border=\"0\" cellspacing=\"0\" cellpadding=\"5px\"><tr><td>"
+				   // Display application icon
+				   "<img src=\""
+				   PACKAGE_DATA_DIR G_DIR_SEPARATOR_S "icons" G_DIR_SEPARATOR_S
+				   "hicolor" G_DIR_SEPARATOR_S "48x48" G_DIR_SEPARATOR_S "apps"
+				   G_DIR_SEPARATOR_S "liferea.png\" />"
+				   "</td><td><h3>");
+	g_string_append (buffer,   _("Liferea - Linux Feed Reader"));
+	g_string_append (buffer,   "</h3></td></tr><tr><td colspan=\"2\">");
+	g_string_append (buffer,   _("<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news "
+				   "feeds.</p>"
+				   "<p>The left pane contains the list of your subscriptions. To add a "
+				   "subscription select Feeds -&gt; New Subscription. To browse the headlines "
+				   "of a feed select it in the feed list and the headlines will be loaded "
+				   "into the right pane.</p>"));
+	g_string_append (buffer,   "</td></tr></table>");
+
+	g_string_append (buffer,   "</div>");
+	g_string_append (buffer,   "<div style=\"background:#ffc;border:1px solid black;margin:8px;padding:8px\">");
+	g_string_append (buffer,   "<p><b>Important:</b> This is an <b>UNSTABLE</b> test release. Use it only "
+	                           "if you want to help with the development of Liferea and if you are willing "
+				   "to do some debugging if it crashes. And it will crash, and hang, and eat memory and "
+				   "it might even kill your cat!</p>"
+				   "<p>New/Improved Functionality:"
+				   "<ul>"
+				   "   <li>Fixed several runtime assertions.</li>"
+				   "   <li>Fixed window state saving.</li>"
+				   "   <li>Fixed resizing of enclosure list.</li>"
+				   "   <li>Improved Webkit support.</li>"
+				   "</ul>"
+				   "</p>");
+	g_string_append (buffer,   "</div>");
+
+	htmlview_finish_output (buffer);
+	itemview_display_info (buffer->str);
+	g_string_free (buffer, TRUE);
 	
 	debug_exit ("liferea_shell_create");
 }

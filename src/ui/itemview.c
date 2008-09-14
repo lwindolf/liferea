@@ -382,12 +382,15 @@ itemview_set_layout (nodeViewType newMode)
 		GtkWidget *renderWidget;
 		
 		debug0 (DEBUG_GUI, "Creating HTML widget");
-		ivp->htmlview = liferea_htmlview_new (FALSE);		
+		ivp->htmlview = liferea_htmlview_new (FALSE);
 		g_signal_connect (ivp->htmlview, "statusbar-changed", 
 		                  G_CALLBACK (on_important_status_message), NULL);
 		renderWidget = liferea_htmlview_get_widget (ivp->htmlview);
 		gtk_container_add (GTK_CONTAINER (liferea_shell_lookup ("normalViewHtml")), renderWidget);
 		gtk_widget_show (renderWidget);
+		
+		/* Set initial zoom */
+		liferea_htmlview_set_zoom (itemview->priv->htmlview, itemview->priv->zoom/100.);
 	} else {	
 		liferea_htmlview_clear (ivp->htmlview);
 	}
@@ -441,8 +444,6 @@ itemview_set_layout (nodeViewType newMode)
 ItemView *
 itemview_create (GtkWidget *ilc)
 {
-	GString	*buffer;
-
 	/* 1. Create widgets, load preferences */
 	
 	g_object_new (ITEMVIEW_TYPE, NULL);
@@ -454,7 +455,7 @@ itemview_create (GtkWidget *ilc)
 	itemview->priv->userDefinedDateFmt = conf_get_str_value (DATE_FORMAT);
 
 	/* initially we pack the item list in the normal view pane,
-	   which is later changed in liferea_shell_set_layout() */
+	   which is later changed in itemview_set_layout() */
 	gtk_container_add (GTK_CONTAINER (liferea_shell_lookup ("normalViewItems")), itemview->priv->itemlistContainer);
 
 	/* 2. Sanity checks on the settings... */
@@ -476,57 +477,8 @@ itemview_create (GtkWidget *ilc)
 		conf_set_int_value (LAST_ZOOMLEVEL, 100);
 	}
 	
-	/* 3. Setup HTML widget */
+	/* 3. Prepare HTML rendering */
 	htmlview_init ();	
-
-	/* 4. Create welcome text */
-
-	/* force two pane mode */
-	/*   For some reason, this causes the first item to be selected and then
-	     unselected... strange. */
-	ui_feedlist_select (NULL);
-	
-	itemview_set_layout (NODE_VIEW_MODE_COMBINED);
-	
-	buffer = g_string_new (NULL);
-	htmlview_start_output (buffer, NULL, TRUE, FALSE);
-	g_string_append (buffer,   "<div style=\"padding:8px\">"
-				   "<table class=\"headmeta\" style=\"border:solid 1px #aaa;font-size:120%\" border=\"0\" cellspacing=\"0\" cellpadding=\"5px\"><tr><td>"
-				   // Display application icon
-				   "<img src=\""
-				   PACKAGE_DATA_DIR G_DIR_SEPARATOR_S "icons" G_DIR_SEPARATOR_S
-				   "hicolor" G_DIR_SEPARATOR_S "48x48" G_DIR_SEPARATOR_S "apps"
-				   G_DIR_SEPARATOR_S "liferea.png\" />"
-				   "</td><td><h3>");
-	g_string_append (buffer,   _("Liferea - Linux Feed Reader"));
-	g_string_append (buffer,   "</h3></td></tr><tr><td colspan=\"2\">");
-	g_string_append (buffer,   _("<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news "
-				   "feeds.</p>"
-				   "<p>The left pane contains the list of your subscriptions. To add a "
-				   "subscription select Feeds -&gt; New Subscription. To browse the headlines "
-				   "of a feed select it in the feed list and the headlines will be loaded "
-				   "into the right pane.</p>"));
-	g_string_append (buffer,   "</td></tr></table>");
-
-	g_string_append (buffer,   "</div>");
-	g_string_append (buffer,   "<div style=\"background:#ffc;border:1px solid black;margin:8px;padding:8px\">");
-	g_string_append (buffer,   "<p><b>Important:</b> This is an <b>UNSTABLE</b> test release. Use it only "
-	                           "if you want to help with the development of Liferea and if you are willing "
-				   "to do some debugging if it crashes. And it will crash, and hang, and eat memory and "
-				   "it might even kill your cat!</p>"
-				   "<p>New/Improved Functionality:"
-				   "<ul>"
-				   "   <li>Fixed several runtime assertions.</li>"
-				   "   <li>Fixed window state saving.</li>"
-				   "</ul>"
-				   "</p>");
-	g_string_append (buffer,   "</div>");
-
-	htmlview_finish_output (buffer);
-	itemview_display_info (buffer->str);
-	g_string_free (buffer, TRUE);
-
-	liferea_htmlview_set_zoom (itemview->priv->htmlview, itemview->priv->zoom/100.);
 }
 
 GtkStyle *
