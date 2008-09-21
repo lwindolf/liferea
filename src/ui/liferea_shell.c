@@ -473,7 +473,7 @@ static gboolean
 on_close (GtkWidget *widget, GdkEvent *event, gpointer user_data)
 {
 	if ((ui_tray_get_count() == 0) || (conf_get_bool_value (DONT_MINIMIZE_TO_TRAY))) {
-		shutdown ();
+		liferea_shutdown ();
 		return TRUE;
 	}
 		
