@@ -380,8 +380,11 @@ open:
 		
 		/* 3. Cleanup of DB */
 
-		if (initial) {	
-			debug0 (DEBUG_DB, "Checking for items not referenced in table 'itemsets'...\n");
+		if (initial) {
+			gchar *sql;
+			sqlite3_stmt *stmt;
+			
+			debug0 (DEBUG_DB, "Checking for items not referenced in table 'itemsets'...");
 			db_exec ("BEGIN; "
 			         "   CREATE TEMP TABLE tmp_id ( id );"
 				 "   INSERT INTO tmp_id SELECT ROWID FROM items WHERE ROWID NOT IN (SELECT item_id FROM itemsets);"
@@ -389,7 +392,7 @@ open:
 				 "   DROP TABLE tmp_id;"
 				 "END;");
 				 
-			debug0 (DEBUG_DB, "Checking for invalid item ids in table 'itemsets'...\n");
+			debug0 (DEBUG_DB, "Checking for invalid item ids in table 'itemsets'...");
 			db_exec ("BEGIN; "
 			         "   CREATE TEMP TABLE tmp_id ( id );"
 			         "   INSERT INTO tmp_id SELECT item_id FROM itemsets WHERE item_id NOT IN (SELECT ROWID FROM items);"
@@ -400,14 +403,27 @@ open:
 
 			/* Note: do not check on subscriptions here, as non-subscription node
 			   types (e.g. news bin) do contain items too. */
-			debug0 (DEBUG_DB, "Checking for items without a feed list node...\n");
+			debug0 (DEBUG_DB, "Checking for items without a feed list node...");
 			db_exec ("DELETE FROM itemsets WHERE comment = 0 AND node_id NOT IN "
 		        	 "(SELECT node_id FROM node);");
 				 
-			debug0 (DEBUG_DB, "Dropping views not listed in feed list.\n");
-			
-				 
-			debug0 (DEBUG_DB, "DB cleanup finished. Continuing startup.\n");
+			debug0 (DEBUG_DB, "Checking for stale views not listed in feed list.");
+			sql = sqlite3_mprintf("SELECT name FROM sqlite_master WHERE type='view' AND name not in ("
+			                      "SELECT \"view_\"||node_id FROM node WHERE type='vfolder');");
+			res = sqlite3_prepare_v2 (db, sql, -1, &stmt, NULL);
+			sqlite3_free (sql);
+			if (SQLITE_OK != res) {
+				debug1 (DEBUG_DB, "Could not check for stale views (error=%d)", res);
+			} else {
+				sqlite3_reset (stmt);
+
+				while (sqlite3_step (stmt) == SQLITE_ROW)
+					db_view_remove (sqlite3_column_text (stmt, 0) + strlen("view_"));
+				
+				sqlite3_finalize (stmt);
+			}
+	 
+			debug0 (DEBUG_DB, "DB cleanup finished. Continuing startup.");
 		}
 		
 		/* 4. Creating triggers (after cleanup so it is not slowed down by triggers) */
@@ -599,9 +615,6 @@ open:
 	db_new_statement ("nodeUpdateStmt",
 	                  "REPLACE INTO node (node_id,parent_id,title,type,expanded,view_mode,sort_column,sort_reversed) VALUES (?,?,?,?,?,?,?,?)");
 			  
-	db_new_statement ("removeViewState",
-	                  "DELETE FROM view_state WHERE node_id = ?");
-
 	g_assert (sqlite3_get_autocommit (db));
 	
 	debug_exit ("db_init");
@@ -1503,20 +1516,19 @@ db_view_create (const gchar *id, queryPtr query)
 void
 db_view_remove (const gchar *id)
 {
-	sqlite3_stmt	*stmt;
-	gchar		*sql, *err;
-	gint		res;
+	gchar	*sql, *err;
+	gint	res;
 	
 	debug1 (DEBUG_DB, "Dropping view \"%s\"", id);
 	
 	db_view_remove_triggers (id);
 	
-	stmt = db_get_statement ("removeViewState");
-	sqlite3_bind_text (stmt, 1, id, -1, SQLITE_TRANSIENT);
-	res = sqlite3_step (stmt);
-	if (SQLITE_DONE != res)
+	sql = sqlite3_mprintf ("DELETE FROM view_state WHERE node_id='%s';", id);
+	res = sqlite3_exec (db, sql, NULL, NULL, &err);
+	if (SQLITE_OK != res)
 		g_warning ("Removing view state failed (%s) SQL: %s", err, sql);
 
+	sqlite3_free (sql);
 	sqlite3_free (err);
 		
 	sql = sqlite3_mprintf ("DROP VIEW view_%s;", id);	
