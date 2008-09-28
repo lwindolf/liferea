@@ -1,4 +1,4 @@
-2008-09-??  Lars Lindner  <lars.lindner@gmail.com>
+2008-09-28  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.4.20 (Stable)
 
@@ -6,6 +6,8 @@
 	  popup menu option (reported by Jeff Fortin)
 	* Fixes SF #2027445: Incorrect invalid encoding errors.
 	  (reported by Roman Beslik)
+	* Fixes "lost" views. View in the cache database that
+	  are not used anymore will be dropped on startup.
 	* Added new Slovakian translation (Pavol Klacansky)
 
 
