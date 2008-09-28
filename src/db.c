@@ -504,6 +504,9 @@ open:
 			db_exec ("DELETE FROM itemsets WHERE comment = 0 AND node_id NOT IN "
 		        	 "(SELECT node_id FROM node);");
 				 
+			debug0 (DEBUG_DB, "Dropping views not listed in feed list.\n");
+			
+				 
 			debug0 (DEBUG_DB, "DB cleanup finished. Continuing startup.\n");
 		}
 		
@@ -1601,6 +1604,9 @@ db_view_remove (const gchar *id)
 	gint	res;
 	
 	debug1 (DEBUG_DB, "Dropping view \"%s\"", id);
+	
+	db_view_remove_triggers (id);
+		
 	sql = sqlite3_mprintf ("DROP VIEW view_%s;", id);	
 	res = sqlite3_exec (db, sql, NULL, NULL, &err);
 	if (SQLITE_OK != res) 
