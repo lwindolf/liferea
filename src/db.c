@@ -211,110 +211,10 @@ open:
 		if (SCHEMA_TARGET_VERSION < schemaVersion)
 			g_error ("Fatal: The cache database was created by a newer version of Liferea than this one!");
 
-		if (SCHEMA_TARGET_VERSION > schemaVersion) {
-			/* do table migration */	
-			if (db_get_schema_version () == 0) {
-				/* 1.3.2 -> 1.3.3 adding read flag to itemsets relation */
-				debug0 (DEBUG_DB, "migrating from schema version 0 to 1");
-				db_exec ("BEGIN; "
-	        			 "CREATE TEMPORARY TABLE itemsets_backup(item_id,node_id); "
-					 "INSERT INTO itemsets_backup SELECT item_id,node_id FROM itemsets; "
-	        			 "DROP TABLE itemsets; "
-                       			 "CREATE TABLE itemsets ( "
-					 "	item_id		INTEGER, "
-					 "	node_id		TEXT, "
-					 "	read		INTEGER "
-	        			 "); "
-					 "INSERT INTO itemsets SELECT itemsets_backup.item_id,itemsets_backup.node_id,items.read FROM itemsets_backup INNER JOIN items ON itemsets_backup.item_id = items.ROWID; "
-					 "DROP TABLE itemsets_backup; "
-	        			 "REPLACE INTO info (name, value) VALUES ('schemaVersion',1); "
-					 "END;");
-			}
-
-			if (db_get_schema_version () == 1) {
-				/* 1.3.3 -> 1.3.4 adding comment item flag to itemsets relation */
-				debug0 (DEBUG_DB, "migrating from schema version 1 to 2");
-				db_exec ("BEGIN; "
-	        			 "CREATE TEMPORARY TABLE itemsets_backup(item_id,node_id,read); "
-					 "INSERT INTO itemsets_backup SELECT item_id,node_id,read FROM itemsets; "
-	        			 "DROP TABLE itemsets; "
-                       			 "CREATE TABLE itemsets ( "
-					 "	item_id		INTEGER, "
-					 "	node_id		TEXT, "
-					 "	read		INTEGER, "
-					 "      comment		INTEGER "
-	        			 "); "
-					 "INSERT INTO itemsets SELECT itemsets_backup.item_id,itemsets_backup.node_id,itemsets_backup.read,0 FROM itemsets_backup; "
-					 "DROP TABLE itemsets_backup; "
-					 "CREATE TEMPORARY TABLE items_backup(title,read,new,updated,popup,marked,source,source_id,valid_guid,real_source_url,real_source_title,description,date,comment_feed_id);"
-					 "INSERT INTO items_backup SELECT title,read,new,updated,popup,marked,source,source_id,valid_guid,real_source_url,real_source_title,description,date,comment_feed_id FROM items; "
-					 "DROP TABLE items; "
-					 "CREATE TABLE items ("
-			        	 "   title		TEXT,"
-			        	 "   read		INTEGER,"
-			        	 "   new		INTEGER,"
-			        	 "   updated		INTEGER,"
-			        	 "   popup		INTEGER,"
-			        	 "   marked		INTEGER,"
-			        	 "   source		TEXT,"
-			        	 "   source_id		TEXT,"
-			        	 "   valid_guid		INTEGER,"
-			        	 "   real_source_url	TEXT,"
-			        	 "   real_source_title	TEXT,"
-			        	 "   description	TEXT,"
-			        	 "   date		INTEGER,"
-			        	 "   comment_feed_id	INTEGER,"
-					 "   comment            INTEGER"
-			        	 "); "
-					 "INSERT INTO items SELECT title,read,new,updated,popup,marked,source,source_id,valid_guid,real_source_url,real_source_title,description,date,comment_feed_id,0 FROM items_backup; "
-					 "DROP TABLE items_backup; "
-	        			 "REPLACE INTO info (name, value) VALUES ('schemaVersion',2); "
-					 "END;");
-			}
-
-			if (db_get_schema_version () == 2) {
-				/* 1.3.5 -> 1.3.6 adding subscription relation */
-				debug0 (DEBUG_DB, "migrating from schema version 2 to 3");
-				db_exec ("BEGIN; "
-			        	 "CREATE TABLE SUBSCRIPTION ("
-		                	 "   NODE_ID            STRING,"
-		                	 "   PRIMARY KEY (NODE_ID)"
-			        	 "); "
-					 "INSERT INTO subscription SELECT DISTINCT node_id FROM itemsets; "
-					 "REPLACE INTO info (name, value) VALUES ('schemaVersion',3); "
-					 "END;");
-			}
-
-			if (db_get_schema_version () == 3) {
-				/* 1.3.6 -> 1.3.7 adding all necessary attributes to subscription relation */
-				debug0 (DEBUG_DB, "migrating from schema version 3 to 4");
-				db_exec ("BEGIN; "
-			        	 "CREATE TEMPORARY TABLE subscription_backup(node_id); "
-					 "INSERT INTO subscription_backup SELECT node_id FROM subscription; "
-			        	 "DROP TABLE subscription; "
-			        	 "CREATE TABLE subscription ("
-		                	 "   node_id            STRING,"
-					 "   source             STRING,"
-					 "   orig_source        STRING,"
-					 "   filter_cmd         STRING,"
-					 "   update_interval	INTEGER,"
-					 "   default_interval   INTEGER,"
-					 "   discontinued       INTEGER,"
-					 "   available          INTEGER,"
-		                	 "   PRIMARY KEY (node_id)"
-			        	 "); "
-					 "INSERT INTO subscription SELECT node_id,null,null,null,0,0,0,0 FROM subscription_backup; "
-					 "DROP TABLE subscription_backup; "
-					 "REPLACE INTO info (name, value) VALUES ('schemaVersion',4); "
-					 "END;");
-			}
-
-			if (db_get_schema_version () == 4) {
-				/* 1.3.8 -> 1.4-RC1 adding node relation */
-				debug0 (DEBUG_DB, "migrating from schema version 4 to 5");
-				/* table created below... */
-				db_set_schema_version (5);
-			}
+		if (SCHEMA_TARGET_VERSION > schemaVersion) {		
+			/* do table migration */
+			if (db_get_schema_version () < 5)
+				g_error ("This version of Liferea doesn't support migrating from such an old DB file!");
 			
 			if (db_get_schema_version () == 5) {
 				/* 1.4.9 -> 1.4.10 adding parent_item_id to itemset relation */
@@ -493,8 +393,11 @@ open:
 		
 		/* 3. Cleanup of DB */
 
-		if (initial) {	
-			debug0 (DEBUG_DB, "Checking for items not referenced in table 'itemsets'...\n");
+		if (initial) {
+			gchar *sql;
+			sqlite3_stmt *stmt;
+			
+			debug0 (DEBUG_DB, "Checking for items not referenced in table 'itemsets'...");
 			db_exec ("BEGIN; "
 			         "   CREATE TEMP TABLE tmp_id ( id );"
 				 "   INSERT INTO tmp_id SELECT ROWID FROM items WHERE ROWID NOT IN (SELECT item_id FROM itemsets);"
@@ -502,7 +405,7 @@ open:
 				 "   DROP TABLE tmp_id;"
 				 "END;");
 				 
-			debug0 (DEBUG_DB, "Checking for invalid item ids in table 'itemsets'...\n");
+			debug0 (DEBUG_DB, "Checking for invalid item ids in table 'itemsets'...");
 			db_exec ("BEGIN; "
 			         "   CREATE TEMP TABLE tmp_id ( id );"
 			         "   INSERT INTO tmp_id SELECT item_id FROM itemsets WHERE item_id NOT IN (SELECT ROWID FROM items);"
@@ -517,7 +420,23 @@ open:
 			db_exec ("DELETE FROM itemsets WHERE comment = 0 AND node_id NOT IN "
 		        	 "(SELECT node_id FROM node);");
 				 
-			debug0 (DEBUG_DB, "DB cleanup finished. Continuing startup.\n");
+			debug0 (DEBUG_DB, "Checking for stale views not listed in feed list.");
+			sql = sqlite3_mprintf("SELECT name FROM sqlite_master WHERE type='view' AND name not in ("
+			                      "SELECT \"view_\"||node_id FROM node WHERE type='vfolder');");
+			res = sqlite3_prepare_v2 (db, sql, -1, &stmt, NULL);
+			sqlite3_free (sql);
+			if (SQLITE_OK != res) {
+				debug1 (DEBUG_DB, "Could not check for stale views (error=%d)", res);
+			} else {
+				sqlite3_reset (stmt);
+
+				while (sqlite3_step (stmt) == SQLITE_ROW)
+					db_view_remove (sqlite3_column_text (stmt, 0) + strlen("view_"));
+				
+				sqlite3_finalize (stmt);
+			}
+	 
+			debug0 (DEBUG_DB, "DB cleanup finished. Continuing startup.");
 		}
 		
 		/* 4. Creating triggers (after cleanup so it is not slowed down by triggers) */
@@ -1572,6 +1491,17 @@ db_view_remove (const gchar *id)
 	gint	res;
 	
 	debug1 (DEBUG_DB, "Dropping view \"%s\"", id);
+	
+	db_view_remove_triggers (id);
+	
+	sql = sqlite3_mprintf ("DELETE FROM view_state WHERE node_id='%s';", id);
+	res = sqlite3_exec (db, sql, NULL, NULL, &err);
+	if (SQLITE_OK != res)
+		g_warning ("Removing view state failed (%s) SQL: %s", err, sql);
+
+	sqlite3_free (sql);
+	sqlite3_free (err);
+		
 	sql = sqlite3_mprintf ("DROP VIEW view_%s;", id);	
 	res = sqlite3_exec (db, sql, NULL, NULL, &err);
 	if (SQLITE_OK != res) 
