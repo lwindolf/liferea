@@ -8,6 +8,7 @@
 	  (reported by Roman Beslik)
 	* Fixes "lost" views. View in the cache database that
 	  are not used anymore will be dropped on startup.
+	  (reported by Maik Zumstrull)
 	* Added new Slovakian translation (Pavol Klacansky)
 
 
