@@ -1,3 +1,11 @@
+2008-10-22  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.4.20b (Stable)
+
+	* Merges patch SF #2186087: Corrected XPCOM clue
+	  handling for XulRunner 1.9 (derived from Fedora
+	  patch created by Marc Wiriadisastra)
+
 2008-09-28  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.4.20 (Stable)

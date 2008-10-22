@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([liferea],[1.4.20],[liferea-devel@lists.sourceforge.net])
+AC_INIT([liferea],[1.4.21],[liferea-devel@lists.sourceforge.net])
 AC_CANONICAL_TARGET([])
 AC_CONFIG_SRCDIR([src/feedlist.c])
 
@@ -35,6 +35,7 @@ AC_ARG_ENABLE(nm,        AS_HELP_STRING([--disable-nm],[compile without NetworkM
 AC_ARG_ENABLE(gtkhtml2,  AS_HELP_STRING([--disable-gtkhtml2],[don't compile the gtkhtml2 backend]),,enable_gtkhtml2=yes)
 AC_ARG_ENABLE(webkit,    AS_HELP_STRING([--disable-webkit],[don't compile the webkit backend]),,enable_webkit=yes)
 AC_ARG_ENABLE(xulrunner, AS_HELP_STRING([--disable-xulrunner],[don't compile the xulrunner backend]),,enable_xulrunner=yes)
+AC_ARG_ENABLE(xulhome_check, AS_HELP_STRING([--disable-xulhome-check],[ignore XULRUNNER_HOME check result]),,enable_xulhome_check=yes)
 AC_ARG_ENABLE(gecko,     AS_HELP_STRING([--disable-gecko],[don't compile the Gecko backend]),,enable_gecko=yes)
 AC_ARG_ENABLE(gecko,     AS_HELP_STRING([--enable-gecko=ARG],[specify which Gecko provider to use ("mozilla", "firefox" or "seamonkey")]),,enable_gecko=yes)
 AC_ARG_ENABLE(gnutls,    AS_HELP_STRING([--enable-gnutls],[Attempt to use GNUTLS for SSL support @<:@default=yes@:>@]),,enable_gnutls=yes)
@@ -185,8 +186,8 @@ if test "x$enable_xulrunner" = "xyes" ; then
       AC_SUBST(XULRUNNER_CFLAGS)
       AC_SUBST(XULRUNNER_LIBS)
       
-      if test "x$XULRUNNER_HOME" = "x" ; then
-      	AC_MSG_RESULT([Fatal: XulRunner enabled, but library directory could not be determined! This usually happens when running against unstable versions of XulRunner 1.9 which is not supported in all Linux distros. Please compile against a stable build of XulRunner 1.9 instead.])
+      if test "x$XULRUNNER_HOME" = "x" -a "x$enable_xulhome_check" = "xyes" ; then
+      	AC_MSG_RESULT([Fatal: XulRunner enabled, but library directory could not be determined! This usually happens when running against unstable versions of XulRunner 1.9 which is not supported in all Linux distros. Please compile against a stable build of XulRunner 1.9 instead (or void your warranty by rerunning with --disable-xulhome-check).])
       	exit 1
       fi
 

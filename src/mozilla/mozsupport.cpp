@@ -352,3 +352,48 @@ mozsupport_xpcom_shutdown ()
 }
 #endif
 
+
+/* helpers for binaries linked against XPCOM_GLUE */
+#ifdef XPCOM_GLUE
+
+/**
+ * load xpcom through glue.
+ * When using the glue you have to call this method before doing
+ * anything else. It finds the GRE, loads the xpcom libs,
+ * maps the gtkmozbemd symbols and intializes xpcom by setting
+ * the path and component path.
+ *
+ * the caller still has to call gtk_moz_embed_push_startup()
+ */
+extern "C" gboolean
+mozsupport_xpcom_init ()
+{
+	static const GREVersionRange greVersion = {
+		"1.9a", PR_TRUE,
+		"1.9.*", PR_TRUE
+	};
+	char xpcomLocation[4096];
+	nsresult rv = GRE_GetGREPathWithProperties(&greVersion, 1, nsnull, 0, xpcomLocation, 4096);
+	NS_ENSURE_SUCCESS (rv, NS_SUCCEEDED(rv));
+	// Startup the XPCOM Glue that links us up with XPCOM.
+	rv = XPCOMGlueStartup(xpcomLocation);
+	NS_ENSURE_SUCCESS (rv, NS_SUCCEEDED(rv));
+	rv = GTKEmbedGlueStartup();
+	NS_ENSURE_SUCCESS (rv, NS_SUCCEEDED(rv));
+	rv = GTKEmbedGlueStartupInternal();
+	NS_ENSURE_SUCCESS (rv, NS_SUCCEEDED(rv));
+	char *lastSlash = strrchr(xpcomLocation, '/');
+	if (lastSlash)
+		*lastSlash = '\0';
+	gtk_moz_embed_set_path(xpcomLocation);
+
+	return TRUE;
+}
+
+extern "C" gboolean
+mozsupport_xpcom_shutdown ()
+{
+	return NS_SUCCEEDED(XPCOMGlueShutdown());
+}
+#endif
+
