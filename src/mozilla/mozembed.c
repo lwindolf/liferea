@@ -367,7 +367,7 @@ mozembed_init (void)
 	/* this prevents popup dialogs and gives IE-like HTML error pages instead */
 	mozsupport_preference_set_boolean ("browser.xul.error_pages.enabled", TRUE);
 
-	/* prevent typahead finding to allow Liferea keyboard navigation */
+	/* prevent type-ahead finding to allow Liferea keyboard navigation */
 	mozsupport_preference_set_boolean ("accessibility.typeaheadfind", FALSE);
 	mozsupport_preference_set_boolean ("accessibility.typeaheadfind.autostart", FALSE);
 	
