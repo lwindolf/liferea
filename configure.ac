@@ -34,26 +34,9 @@ AC_SYS_LARGEFILE
 AC_ARG_ENABLE(sm,        AS_HELP_STRING([--disable-sm],[compile without X session management support]),,enable_sm=yes)
 AC_ARG_ENABLE(dbus,      AS_HELP_STRING([--disable-dbus],[compile without DBUS support]),,enable_dbus=yes)
 AC_ARG_ENABLE(nm,        AS_HELP_STRING([--disable-nm],[compile without NetworkManager support]),,enable_nm=yes)
-AC_ARG_ENABLE(gtkhtml2,  AS_HELP_STRING([--disable-gtkhtml2],[don't compile the gtkhtml2 backend]),,enable_gtkhtml2=yes)
-AC_ARG_ENABLE(webkit,    AS_HELP_STRING([--disable-webkit],[don't compile the webkit backend]),,enable_webkit=yes)
-AC_ARG_ENABLE(xulrunner, AS_HELP_STRING([--disable-xulrunner],[don't compile the xulrunner backend]),,enable_xulrunner=yes)
-AC_ARG_ENABLE(gecko,     AS_HELP_STRING([--disable-gecko],[don't compile the Gecko backend]),,enable_gecko=yes)
-AC_ARG_ENABLE(gecko,     AS_HELP_STRING([--enable-gecko=ARG],[specify which Gecko provider to use ("mozilla", "firefox" or "seamonkey")]),,enable_gecko=yes)
 AC_ARG_ENABLE(libnotify, AS_HELP_STRING([--disable-libnotify],[don't compile the libnotify plugin]),,enable_libnotify=yes)
 AC_ARG_ENABLE(lua,       AS_HELP_STRING([--disable-lua],[don't compile with LUA scripting support]),,enable_lua=yes)
 AC_ARG_ENABLE(avahi,     AS_HELP_STRING([--disable-avahi],[don't compile with AVAHI support]),,enable_avahi=yes)
-
-AC_MSG_CHECKING([for 64bit platform])
-case "$target" in
-   x86_64-*-*)
-     enable_gtkhtml2=no
-     AC_MSG_RESULT([yes -> disabling GtkHTML2])
-     ;;
-   *)
-     AC_MSG_RESULT([no])
-     ;;
-esac
-
 
 AC_MSG_CHECKING([for some Win32 platform])
 case "$host" in
@@ -80,17 +63,7 @@ AC_SUBST(SO_PREFIX)
 AC_SUBST(SO_EXT)
 AC_DEFINE_UNQUOTED(LIBPREFIX, "$SO_PREFIX", [Platform dependent library prefix])
 
-AC_CHECK_FUNCS([strsep getaddrinfo fsync])
-
-case "$host_os" in
-        *solaris*)
-                AC_CHECK_LIB(resolv, res_init)
-                ;;
-	*cygwin*)
-		AC_CHECK_FUNC(res_init,,[AC_CHECK_LIB(resolv,res_init)])
-		AC_CHECK_LIB(resolv,res_9_init)
-		;;
-esac
+AC_CHECK_FUNCS([strsep fsync])
 
 dnl Search for X libraries
 AC_PATH_XTRA
@@ -186,169 +159,14 @@ fi
 
 AM_CONDITIONAL(WITH_AVAHI, test "x$enable_avahi" = "xyes")
 
-dnl *********
-dnl XulRunner
-dnl *********
-
-if test "x$enable_xulrunner" = "xyes" ; then
- 
-   AC_MSG_CHECKING([for XulRunner 1.9+ support])  
-   PKG_CHECK_MODULES(XULRUNNER, libxul-embedding, XULRUNNER_PROVIDER=libxul-embedding, XULRUNNER_PROVIDER=)
-   
-   if test "x$XULRUNNER_PROVIDER" = "x" ; then
-      AC_MSG_CHECKING([for XulRunner 1.8 support])  
-      PKG_CHECK_MODULES(XULRUNNER, xulrunner-gtkmozembed, XULRUNNER_PROVIDER=xulrunner-gtkmozembed, XULRUNNER_PROVIDER=)
-   fi
-   
-   if test "x$XULRUNNER_PROVIDER" = "x" ; then
-      enable_xulrunner=no
-   else
-      enable_xulrunner=yes
-      
-      XULRUNNER_HOME="`$PKG_CONFIG --variable=libdir $XULRUNNER_PROVIDER`"
-      AC_SUBST([XULRUNNER_HOME])
-      AC_SUBST(XULRUNNER_CFLAGS)
-      AC_SUBST(XULRUNNER_LIBS)
-      
-      if test "x$XULRUNNER_HOME" = "x" ; then
-      	AC_MSG_RESULT([Fatal: XulRunner enabled, but library directory could not be determined! This usually happens when running against unstable versions of XulRunner 1.9 which is not supported in all Linux distros. Please compile against a stable build of XulRunner 1.9 instead.])
-      	exit 1
-      fi
-
-      MOZILLA_LIB_ROOT=`$PKG_CONFIG --libs-only-L $XULRUNNER_PROVIDER | awk '{print $1}' |  cut -c 3-`
-   
-      dnl the Mozilla XPCOM access means C++
-      AC_PROG_CXX
-   fi
-fi
-
-AM_CONDITIONAL(WITH_XULRUNNER, test "x$enable_xulrunner" = "xyes")
- 
 dnl ******
 dnl WebKit
 dnl ******
 
-if test "x$enable_webkit" = "xyes" ; then
-   dnl AC_MSG_CHECKING([for WebKit support])
-   PKG_CHECK_MODULES(WEBKIT, webkit-1.0, enable_webkit=yes, enable_webkit=no)
-   AC_SUBST(WEBKIT_CFLAGS)
-   AC_SUBST(WEBKIT_LIBS)
-fi
-
-AM_CONDITIONAL(WITH_WEBKIT, test "x$enable_webkit" = "xyes")
-
-dnl ********
-dnl GtkHTML2
-dnl ********
- 
-if test "x$enable_gtkhtml2" = "xyes"; then
-   PKG_CHECK_MODULES([GTKHTML2], libgtkhtml-2.0 >= 2.0.0,enable_gtkhtml2=yes,enable_gtkhtml2=no)
-   AC_SUBST(GTKHTML2_CFLAGS)
-   AC_SUBST(GTKHTML2_LIBS)
-else
-   enable_gtkhtml2=no
-fi
-
-AM_CONDITIONAL(WITH_GTKHTML2, test "x$enable_gtkhtml2" = "xyes")
-
-dnl *******
-dnl Mozilla
-dnl *******
-
-if test "x$enable_gecko" = "xyes" -o "x$enable_gecko" = "xmozilla" ; then
-   gecko_provider=mozilla
-   AC_MSG_CHECKING([for Gecko provider $gecko_provider]) 
-   PKG_CHECK_MODULES(MOZILLA, $gecko_provider-gtkmozembed, enable_mozilla=yes, enable_mozilla=no)
-fi
-if test "x$enable_mozilla" != "xyes" -a \( "x$enable_gecko" = "xyes" -o "x$enable_gecko" = "xfirefox" \) ; then
-   gecko_provider=firefox
-   AC_MSG_CHECKING([for Gecko provider $gecko_provider]) 
-   PKG_CHECK_MODULES(MOZILLA, $gecko_provider-gtkmozembed, enable_mozilla=yes, enable_mozilla=no)
-fi
-if test "x$enable_mozilla" != "xyes" -a \( "x$enable_gecko" = "xyes" -o "x$enable_gecko" = "xseamonkey" \) ; then
-   gecko_provider=seamonkey
-   AC_MSG_CHECKING([for Gecko provider $gecko_provider]) 
-   PKG_CHECK_MODULES(MOZILLA, $gecko_provider-gtkmozembed, enable_mozilla=yes, enable_mozilla=no)
-fi
-
-AM_CONDITIONAL(WITH_MOZILLA, test "x$enable_mozilla" = "xyes")
-
-if test "x$enable_mozilla" = "xyes" ; then
-   dnl AC_MSG_CHECKING([for Mozilla support])
-
-   dnl AC_MSG_RESULT([$gecko_provider found!])
-
-   dnl the Mozilla XPCOM access means C++
-   AC_PROG_CXX
-   
-   dnl Note: with the infos from mozilla-gtkmozembed.pc
-   dnl we got all includes and libraries for the C interface
-   dnl to Mozilla, but not the XPCOM headers we also need.
-   dnl Galeon's configure.in uses several hundred lines 
-   dnl of macros to come around this. Which I would like to
-   dnl avoid. So this might be not very portable...
-   
-   MOZILLA_INCLUDE_ROOT=`$PKG_CONFIG --cflags-only-I $gecko_provider-gtkmozembed | awk '{print $1}' | sed "s/^-I//"`
-   MOZILLA_INCLUDE_ROOT=`dirname $MOZILLA_INCLUDE_ROOT`
-   MOZILLA_LIB_ROOT=`$PKG_CONFIG --libs-only-L $gecko_provider-gtkmozembed | awk '{print $1}' |  cut -c 3-`
-   
-   dnl Maybe we don't need all of this...
-   MOZILLA_CFLAGS="$MOZILLA_CFLAGS \
--I$MOZILLA_INCLUDE_ROOT \
--I$MOZILLA_INCLUDE_ROOT/appcomps \
--I$MOZILLA_INCLUDE_ROOT/caps \
--I$MOZILLA_INCLUDE_ROOT/content \
--I$MOZILLA_INCLUDE_ROOT/cookie \
--I$MOZILLA_INCLUDE_ROOT/docshell \
--I$MOZILLA_INCLUDE_ROOT/dom \
--I$MOZILLA_INCLUDE_ROOT/exthandler \
--I$MOZILLA_INCLUDE_ROOT/find \
--I$MOZILLA_INCLUDE_ROOT/gfx \
--I$MOZILLA_INCLUDE_ROOT/gtkembedmoz \
--I$MOZILLA_INCLUDE_ROOT/helperAppDlg \
--I$MOZILLA_INCLUDE_ROOT/history \
--I$MOZILLA_INCLUDE_ROOT/java \
--I$MOZILLA_INCLUDE_ROOT/js \
--I$MOZILLA_INCLUDE_ROOT/jsconsole \
--I$MOZILLA_INCLUDE_ROOT/layout \
--I$MOZILLA_INCLUDE_ROOT/mimetype \
--I$MOZILLA_INCLUDE_ROOT/mozxfer \
--I$MOZILLA_INCLUDE_ROOT/necko \
--I$MOZILLA_INCLUDE_ROOT/necko2 \
--I$MOZILLA_INCLUDE_ROOT/nkcache \
--I$MOZILLA_INCLUDE_ROOT/oji \
--I$MOZILLA_INCLUDE_ROOT/pref \
--I$MOZILLA_INCLUDE_ROOT/progressDlg \
--I$MOZILLA_INCLUDE_ROOT/sidebar \
--I$MOZILLA_INCLUDE_ROOT/string \
--I$MOZILLA_INCLUDE_ROOT/shistory \
--I$MOZILLA_INCLUDE_ROOT/typeaheadfind \
--I$MOZILLA_INCLUDE_ROOT/uconv \
--I$MOZILLA_INCLUDE_ROOT/uriloader \
--I$MOZILLA_INCLUDE_ROOT/wallet \
--I$MOZILLA_INCLUDE_ROOT/webbrowserpersist \
--I$MOZILLA_INCLUDE_ROOT/webbrwsr \
--I$MOZILLA_INCLUDE_ROOT/webshell \
--I$MOZILLA_INCLUDE_ROOT/widget \
--I$MOZILLA_INCLUDE_ROOT/windowwatcher \
--I$MOZILLA_INCLUDE_ROOT/xpcom \
--I$MOZILLA_INCLUDE_ROOT/xpconnect"
-
-   AC_SUBST(MOZILLA_CFLAGS)
-   AC_SUBST(MOZILLA_LIBS)   
-   AC_SUBST(MOZILLA_LIB_ROOT)
-   AC_DEFINE_UNQUOTED([MOZILLA_LIB_ROOT], ["${MOZILLA_LIB_ROOT}"], [Mozilla component path])
-else
-   enable_mozilla=no
-fi
-
-dnl For now, require GtkHTML2, Mozilla, XulRunner or WebKit.
-if test "x$enable_mozilla" != "xyes" -a "x$enable_gtkhtml2" != "xyes" -a "x$enable_xulrunner" != "xyes" -a "x$enable_webkit" != "xyes"; then
-	AC_MSG_ERROR([
-*** You must have either GtkHTML2, XulRunner, Mozilla or WebKit
-*** development libraries installed in order to build Liferea!
-])
-fi
+dnl AC_MSG_CHECKING([for WebKit support])
+PKG_CHECK_MODULES(WEBKIT, webkit-1.0, enable_webkit=yes, enable_webkit=no)
+AC_SUBST(WEBKIT_CFLAGS)
+AC_SUBST(WEBKIT_LIBS)
 
 dnl Checking for gconftool-2
 AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
@@ -457,8 +275,6 @@ AC_CONFIG_FILES([
 Makefile
 src/Makefile
 src/glibcurl/Makefile
-src/gtkhtml2/Makefile
-src/mozilla/Makefile
 src/webkit/Makefile
 src/parsers/Makefile
 src/fl_sources/Makefile
@@ -489,15 +305,6 @@ AC_OUTPUT
 echo
 echo "$PACKAGE $VERSION"
 echo
-if test "x$enable_mozilla" = "xyes"; then
-   echo "Build Mozilla Plugin............ : $enable_mozilla ($gecko_provider)"
-else
-   echo "Build Mozilla Plugin............ : $enable_mozilla"
-fi
-echo "Build XulRunner Plugin.......... : $enable_xulrunner"
-echo "Build WebKit Plugin............. : $enable_webkit"
-echo "Build GtkHTML Plugin............ : $enable_gtkhtml2"
-echo 
 echo "Build libnotify Plugin.......... : $enable_libnotify"
 echo "Build LUA scripting Plugin ..... : $enable_lua"
 echo

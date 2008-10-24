@@ -1,19 +1,11 @@
 ## Process this file with automake to produce Makefile.in
 
-if WITH_GTKHTML2
-GTKHTML2 = gtkhtml2
-endif
-
-if WITH_WEBKIT
-WEBKIT = webkit
-endif
-
 if WITH_AVAHI
 SYNC = sync
 SYNC_LIB = sync/liblisync.a
 endif
 
-SUBDIRS = parsers notification ui fl_sources scripting glibcurl $(SYNC) . $(GTKHTML2) $(WEBKIT) mozilla
+SUBDIRS = parsers notification ui fl_sources scripting glibcurl $(SYNC) . webkit
 
 AM_CPPFLAGS = \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \

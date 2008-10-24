@@ -120,11 +120,7 @@ Dependencies
 ============
 
 The library dependencies for Liferea are: gtk2, gconf2, libxml2,
-libxslt, sqlite3 and either libgtkembedmoz, libxul or gtkhtml2.
-
-If you want to use the Mozilla browser module you need a Mozilla,
-Firefox or XulRunner installation containing libgtkembedmoz.so. 
-
+libxslt, sqlite3 and Webkit.
 
 Help Wanted
 ===========
