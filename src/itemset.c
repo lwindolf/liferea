@@ -64,17 +64,19 @@ itemset_get_max_item_count (itemSetPtr itemSet)
  *
  * @param items		existing items
  * @param newItem	new item to merge
+ * @param maxChecks     maximum number of item checks
  * @param allowUpdates	TRUE if item content update is to be
  *      		allowed for existing items
  *
  * @returns TRUE if merging instead of updating is necessary) 
  */
 static gboolean
-itemset_generic_merge_check (GList *items, itemPtr newItem, gboolean allowUpdates)
+itemset_generic_merge_check (GList *items, itemPtr newItem, gint maxChecks, gboolean allowUpdates)
 {
 	GList		*oldItemIdIter = items;
 	itemPtr		oldItem = NULL;
 	gboolean	found, equal = FALSE;
+	gint		i = 0;
 
 	/* determine if we should add it... */
 	debug1 (DEBUG_CACHE, "check new item for merging: \"%s\"", item_get_title (newItem));
@@ -122,6 +124,11 @@ itemset_generic_merge_check (GList *items, itemPtr newItem, gboolean allowUpdate
 			found = TRUE;
 			break;
 		}
+		
+		if (i++ > maxChecks) {
+			found = FALSE;
+			break;
+		}
 
 		oldItemIdIter = g_list_next (oldItemIdIter);
 	}
@@ -154,18 +161,8 @@ itemset_generic_merge_check (GList *items, itemPtr newItem, gboolean allowUpdate
 	return !found;
 }
 
-/**
- * Determine wether a given item is to be merged
- * into the itemset or if it was already added.
- */
 static gboolean
-itemset_merge_check (GList *items, itemPtr item, gboolean allowUpdates)
-{
-	return itemset_generic_merge_check (items, item, allowUpdates);
-}
-
-static gboolean
-itemset_merge_item (itemSetPtr itemSet, GList *items, itemPtr item, gboolean allowUpdates)
+itemset_merge_item (itemSetPtr itemSet, GList *items, itemPtr item, gint maxChecks, gboolean allowUpdates)
 {
 	gboolean	merge;
 	nodePtr		node;
@@ -173,7 +170,7 @@ itemset_merge_item (itemSetPtr itemSet, GList *items, itemPtr item, gboolean all
 	debug2 (DEBUG_UPDATE, "trying to merge \"%s\" to node id \"%s\"", item_get_title (item), itemSet->nodeId);
 	
 	/* first try to merge with existing item */
-	merge = itemset_merge_check (items, item, allowUpdates);
+	merge = itemset_generic_merge_check (items, item, maxChecks, allowUpdates);
 
 	/* if it is a new item add it to the item set */	
 	if (merge) {
@@ -291,6 +288,10 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates)
 		}
 		iter = g_list_next (iter);
 	}
+	debug1(DEBUG_UPDATE, "current cache size: %d\n", g_list_length(itemSet->ids));
+	debug1(DEBUG_UPDATE, "current cache limit: %d\n", max);
+	debug1(DEBUG_UPDATE, "downloaded feed size: %d\n", g_list_length(list));
+	debug1(DEBUG_UPDATE, "flag count: %d", flagCount);
 	
 	/* Case #1: Avoid having too many flagged items. We count the 
 	   flagged items and check if they are fewer than 
@@ -315,7 +316,7 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates)
 	   to be dropped and added again on subsequent 
 	   merges with the same feed content */
 	if (length > max) {
-		debug2 (DEBUG_UPDATE, "item list too long (%u, max=%u) for merging!", g_list_length (list), max);
+		debug2 (DEBUG_UPDATE, "item list too long (%u, max=%u) for merging!", length, max);
 		guint i = 0;
 		GList *iter, *copy;
 		iter = copy = g_list_copy (list);
@@ -341,13 +342,15 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates)
 	   item list (items) may exceed the cache limit. */
 	iter = g_list_last (list);
 	while (iter) {
-		if (itemset_merge_item (itemSet, items, (itemPtr)iter->data, allowUpdates)) {
+		if (itemset_merge_item (itemSet, items, (itemPtr)iter->data, length, allowUpdates)) {
 			newCount++;
 			items = g_list_prepend (items, iter->data);
 		}
 		iter = g_list_previous (iter);
 	}
 	g_list_free (list);
+	
+	debug1(DEBUG_UPDATE, "added %d new items", newCount);
 	
 	/* 4. Apply cache limit for effective item set size
 	      and unload older items as necessary. In this step
@@ -358,7 +361,14 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates)
 		toBeDropped = g_list_length (items) - max;
 	else
 		toBeDropped = 0;
-		
+
+	/* Let's never drop more than 50 items at one time to avoid
+	   long duration migrations. It is ok to drop only some of the
+	   items here, because we can drop the rest during future
+	   feed updates. */
+	if(toBeDropped > 50)
+		toBeDropped = 50;
+	
 	debug3 (DEBUG_UPDATE, "%u new items, cache limit is %u -> dropping %u items", newCount, max, toBeDropped);
 	items = g_list_sort (items, itemset_sort_by_date);
 	iter = g_list_last (items);
