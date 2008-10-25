@@ -220,7 +220,6 @@ ui_itemlist_update_item (itemPtr item)
 
 	state_icon = item->flagStatus ? ICON_FLAG :
 	             !item->readStatus ? ICON_UNREAD :
-		     item->updateStatus ? ICON_UPDATED :
 		     ICON_READ;
 
 	gtk_tree_store_set (GTK_TREE_STORE (gtk_tree_view_get_model (itemlist_treeview)),
