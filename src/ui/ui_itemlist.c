@@ -224,10 +224,6 @@ ui_itemlist_update_iter (GtkTreeIter *iter,
 		time_str = g_strdup_printf("<span weight=\"bold\">%s</span>", esc_time_str);
 		label = g_strdup_printf("%s<span weight=\"bold\">%s</span>", direction_marker, esc_title);
 		icon = icons[ICON_UNREAD];
-	} else if(TRUE == item->updateStatus) {
-		time_str = g_strdup_printf("<span weight=\"bold\" color=\"#333\">%s</span>", esc_time_str);
-		label = g_strdup_printf("%s<span weight=\"bold\" color=\"#333\">%s</span>", direction_marker, esc_title);
-		icon = icons[ICON_UPDATED];
 	} else {
 		time_str = g_strdup(esc_time_str);
 		label = g_strdup_printf("%s%s", direction_marker, esc_title);

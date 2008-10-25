@@ -5,6 +5,9 @@
 	* Merges patch SF #2186087: Corrected XPCOM clue
 	  handling for XulRunner 1.9 (derived from Fedora
 	  patch created by Marc Wiriadisastra)
+	* Removes gray colouring of updated item titles.
+	  This often confused users to believe the item
+	  state was unread.
 
 2008-09-28  Lars Lindner  <lars.lindner@gmail.com>
 
