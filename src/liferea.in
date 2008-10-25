@@ -14,19 +14,6 @@ fi
 
 params="$@"
 
-#
-# If we run with Gecko or XulRunner we need to set 
-# LD_LIBRARY_PATH (WebKit and GtkHTML do not need this).
-#
-if [ "@MOZILLA_LIB_ROOT@" != "" ]; then
-	if [ "$LD_LIBRARY_PATH" = "" ]; then
-		LD_LIBRARY_PATH=@MOZILLA_LIB_ROOT@
-	else
-		LD_LIBRARY_PATH=@MOZILLA_LIB_ROOT@:$LD_LIBRARY_PATH
-	fi
-	export LD_LIBRARY_PATH
-fi
-
 if [ -z "$DBUS_SESSION_BUS_ADDRESS" ]; then
 	eval `dbus-launch`
 	export DBUS_SESSION_BUS_ADDRESS
