@@ -1,7 +1,9 @@
-2008-??-??  Lars Lindner  <lars.lindner@gmail.com>
+2008-10-26  Lars Lindner  <lars.lindner@gmail.com>
 
-	Version 1.4.22 (Stable)
+	Version 1.4.21b (Stable)
 
+	* Fixes compile issue with XulRunner 1.9 cause by
+	  applying patch SF #2186087 twice (reported by Sven Hartge)
 	* Fixes for French translation (Vincent Lefevre)
 
 
