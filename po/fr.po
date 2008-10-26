@@ -9,10 +9,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Liferea 1.4.16-20080622\n"
+"Project-Id-Version: Liferea 1.4.21\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-23 01:04+0200\n"
-"PO-Revision-Date: 2008-06-23 01:05+0200\n"
+"POT-Creation-Date: 2008-10-26 01:31+0200\n"
+"PO-Revision-Date: 2008-10-26 01:32+0200\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.org>\n"
 "Language-Team: French\n"
 "MIME-Version: 1.0\n"
@@ -1249,7 +1249,7 @@ msgstr ""
 "Liferea est en mode déconnecté. Il n'est pas possible de faire de mise à "
 "jour."
 
-#: ../src/feedlist.c:493
+#: ../src/feedlist.c:495
 msgid ""
 "This version of Liferea uses a new cache format and has migrated your feed "
 "cache. The cache content of v1.2 in ~/.liferea_1.2 was not deleted "
@@ -1268,7 +1268,7 @@ msgstr ""
 "été trouvé !"
 
 #. if we don't find a feed with unread items do nothing
-#: ../src/itemlist.c:391
+#: ../src/itemlist.c:392
 msgid "There are no unread items "
 msgstr "Il n'y a aucun élément non lu "
 
@@ -1492,12 +1492,7 @@ msgstr "Nouveau dossier de recherche"
 msgid "[There were more errors. Output was truncated!]"
 msgstr "[Il y avait d'autres erreurs. La sortie a été tronquée !]"
 
-#: ../src/xml.c:527
-#, c-format
-msgid "Invalid encoding in feed \"%s\"!"
-msgstr "Encodage invalide dans le flux \"%s\" !"
-
-#: ../src/xml.c:533
+#: ../src/xml.c:525
 msgid "XML Parser: Could not parse document:\n"
 msgstr "Analyseur syntaxique XML : impossible d'analyser le document :\n"
 
@@ -1585,29 +1580,29 @@ msgstr "Exécution de : \"%s\""
 msgid "*** No title ***"
 msgstr "*** Pas de titre ***"
 
-#: ../src/ui/ui_itemlist.c:334
+#: ../src/ui/ui_itemlist.c:330
 msgid "Date"
 msgstr "Date"
 
-#: ../src/ui/ui_itemlist.c:345
+#: ../src/ui/ui_itemlist.c:341
 msgid "Headline"
 msgstr "Titre"
 
-#: ../src/ui/ui_itemlist.c:483 ../src/ui/ui_itemlist.c:506
-#: ../src/ui/ui_itemlist.c:581 ../src/ui/ui_itemlist.c:721
-#: ../src/ui/ui_itemlist.c:740
+#: ../src/ui/ui_itemlist.c:479 ../src/ui/ui_itemlist.c:502
+#: ../src/ui/ui_itemlist.c:577 ../src/ui/ui_itemlist.c:717
+#: ../src/ui/ui_itemlist.c:736
 msgid "No item has been selected"
 msgstr "Aucun élément n'a été sélectionné"
 
-#: ../src/ui/ui_itemlist.c:500
+#: ../src/ui/ui_itemlist.c:496
 msgid "This item has no link specified!"
 msgstr "Cet élément n'a pas de lien spécifié !"
 
-#: ../src/ui/ui_itemlist.c:568
+#: ../src/ui/ui_itemlist.c:564
 msgid "You must select a feed to delete its items!"
 msgstr "Vous devez sélectionner un flux pour effacer ses éléments !"
 
-#: ../src/ui/ui_itemlist.c:751
+#: ../src/ui/ui_itemlist.c:747
 msgid "No link selected!"
 msgstr "Aucun lien sélectionné !"
 
@@ -1992,8 +1987,8 @@ msgstr "Cette option vous permet de désactiver la mise à jour des abonnements.
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
-msgstr[0] "%d nouveau"
-msgstr[1] "%d nouveaux"
+msgstr[0] " (%d nouveau)"
+msgstr[1] " (%d nouveaux)"
 
 #: ../src/ui/ui_mainwindow.c:1291
 #, c-format
@@ -2535,3 +2530,6 @@ msgstr "Mise à jour du flux"
 #: ../src/notification/notif_libnotify.c:231
 msgid "Show details"
 msgstr "Montrer les détails"
+
+#~ msgid "Invalid encoding in feed \"%s\"!"
+#~ msgstr "Encodage invalide dans le flux \"%s\" !"
