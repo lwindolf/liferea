@@ -2,6 +2,8 @@
 
 SUBDIRS = doc man opml pixmaps po src xslt
 
+ACLOCAL_AMFLAGS = -I m4
+
 desktop_in_files = liferea.desktop.in
 desktopdir = $(datadir)/applications
 desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
