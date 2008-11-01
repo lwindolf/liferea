@@ -125,10 +125,10 @@ itemset_generic_merge_check (GList *items, itemPtr newItem, gint maxChecks, gboo
 			break;
 		}
 		
-		if (i++ > maxChecks) {
+/*		if (i++ > maxChecks) {
 			found = FALSE;
 			break;
-		}
+		}*/
 
 		oldItemIdIter = g_list_next (oldItemIdIter);
 	}
@@ -344,7 +344,7 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates, gbo
 		if (markAsRead)
 			item->readStatus = TRUE;
 			
-		if (itemset_merge_item (itemSet, items, item, allowUpdates)) {
+		if (itemset_merge_item (itemSet, items, item, length, allowUpdates)) {
 			newCount++;
 			items = g_list_prepend (items, iter->data);
 		}
