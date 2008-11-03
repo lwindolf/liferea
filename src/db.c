@@ -216,12 +216,18 @@ open:
 			if (db_get_schema_version () < 5)
 				g_error ("This version of Liferea doesn't support migrating from such an old DB file!");
 			
+			if (db_get_schema_version () == 5 || db_get_schema_version () == 6) {
+				debug0 (DEBUG_DB, "dropping triggers in preparation of database migration");
+				db_exec ("BEGIN; "
+				         "DROP TRIGGER item_removal; "
+					 "DROP TRIGGER item_insert; "
+					 "END;");
+			}
+
 			if (db_get_schema_version () == 5) {
 				/* 1.4.9 -> 1.4.10 adding parent_item_id to itemset relation */
 				debug0 (DEBUG_DB, "migrating from schema version 5 to 6 (this drops all comments)");
 				db_exec ("BEGIN; "
-				         "DROP TRIGGER item_removal; "
-					 "DROP TRIGGER item_insert; "
 				         "DELETE FROM itemsets WHERE comment = 1; "
 					 "DELETE FROM items WHERE comment = 1; "
 				         "CREATE TEMPORARY TABLE itemsets_backup(item_id,node_id,read,comment); "
@@ -243,10 +249,8 @@ open:
 			
 			if (db_get_schema_version () == 6) {
 				/* 1.4.15 -> 1.4.16 adding parent_node_id to itemset relation */
-				debug0 (DEBUG_DB, "migrating from schema version 5 to 6 (this drops all comments)");
+				debug0 (DEBUG_DB, "migrating from schema version 6 to 7 (this drops all comments)");
 				db_exec ("BEGIN; "
-				         "DROP TRIGGER item_removal; "
-					 "DROP TRIGGER item_insert; "
 				         "DELETE FROM itemsets WHERE comment = 1; "
 					 "DELETE FROM items WHERE comment = 1; "
 				         "CREATE TEMPORARY TABLE itemsets_backup(item_id,node_id,read,comment); "
