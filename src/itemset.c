@@ -125,10 +125,10 @@ itemset_generic_merge_check (GList *items, itemPtr newItem, gint maxChecks, gboo
 			break;
 		}
 		
-		if (i++ > maxChecks) {
+/*		if (i++ > maxChecks) {
 			found = FALSE;
 			break;
-		}
+		}*/
 
 		oldItemIdIter = g_list_next (oldItemIdIter);
 	}
