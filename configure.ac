@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([liferea],[1.4.21b],[liferea-devel@lists.sourceforge.net])
+AC_INIT([liferea],[1.4.22],[liferea-devel@lists.sourceforge.net])
 AC_CANONICAL_TARGET([])
 AC_CONFIG_SRCDIR([src/feedlist.c])
 
@@ -446,8 +446,7 @@ AC_OUTPUT
 echo
 echo "$PACKAGE $VERSION"
 echo
-echo "Build Mozilla Plugin............ : $enable_mozilla"
-echo "Build XulRunner Plugin.......... : $enable_xulrunner"
+echo "Build Mozilla Plugin............ : $enable_gecko"
 echo "Build WebKit Plugin............. : $enable_webkit"
 echo "Build GtkHTML Plugin............ : $enable_gtkhtml2"
 echo 
