@@ -1,4 +1,4 @@
-2008-11-??  Lars Lindner  <lars.lindner@gmail.com>
+2008-11-08  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.4.22 (Stable)
 
@@ -11,9 +11,6 @@
 	* Removes gray colouring of updated item titles.
 	  This often confused users to believe the item
 	  state was unread.
-	* Performance optimization: huge cache drops are now
-	  splitted over several feed updates (each time only
-	  50 items are dropped).
 	* Fixes for French translation (Vincent Lefevre)
 
 
