@@ -260,7 +260,6 @@ LifereaHtmlView *
 liferea_htmlview_new (gboolean forceInternalBrowsing)
 {
 	LifereaHtmlView *htmlview;
-	GtkWidget *renderWidget;
 		
 	htmlview = LIFEREA_HTMLVIEW (g_object_new (LIFEREA_HTMLVIEW_TYPE, NULL));
 	htmlview->priv->renderWidget = htmlviewPlugin->create (htmlview, forceInternalBrowsing);
@@ -269,7 +268,7 @@ liferea_htmlview_new (gboolean forceInternalBrowsing)
 	return htmlview;
 }
 
-// evil method!
+// FIXME: evil method!
 GtkWidget *
 liferea_htmlview_get_widget (LifereaHtmlView *htmlview)
 {
