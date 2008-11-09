@@ -224,7 +224,7 @@ fi
 AM_CONDITIONAL(WITH_GTKHTML2, test "x$enable_gtkhtml2" = "xyes")
 
 dnl For now, require GtkHTML2, Mozilla, XulRunner or WebKit.
-if test "x$enable_mozilla" != "xyes" -a "x$enable_gtkhtml2" != "xyes" -a "x$enable_xulrunner" != "xyes" -a "x$enable_webkit" != "xyes"; then
+if test "x$enable_gecko" != "xyes" -a "x$enable_gtkhtml2" != "xyes" -a "x$enable_webkit" != "xyes"; then
 	AC_MSG_ERROR([
 *** You must have either GtkHTML2, XulRunner, Mozilla or WebKit
 *** development libraries installed in order to build Liferea!
