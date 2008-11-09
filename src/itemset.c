@@ -368,8 +368,8 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates, gbo
 	   long duration migrations. It is ok to drop only some of the
 	   items here, because we can drop the rest during future
 	   feed updates. */
-	if(toBeDropped > 50)
-		toBeDropped = 50;
+	//if(toBeDropped > 50)
+	//	toBeDropped = 50;
 	
 	debug3 (DEBUG_UPDATE, "%u new items, cache limit is %u -> dropping %u items", newCount, max, toBeDropped);
 	items = g_list_sort (items, itemset_sort_by_date);
