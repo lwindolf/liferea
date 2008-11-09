@@ -333,7 +333,7 @@
   </xsl:if>
   
   <!-- comment handling -->
-  <xsl:if test="attributes/attribute[ @name = 'commentFeedUri' ]"> 
+  <xsl:if test="attributes/attribute[ @name = 'commentFeedUri' ] and not(./commentsSuppressed)"> 
      <p>     
      <xsl:choose>
         <xsl:when test="count(comments/item) = 0">

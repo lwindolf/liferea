@@ -2,6 +2,8 @@
 
 	Version 1.5.6 (Unstable)
 
+	* New feed property that disables loading comments.
+	  (patch by Maik Zumstrull)
 	* The LUA scripting support now exposes a global
 	  variable "calling_hook" to determine which script
 	  hook was triggered. (patch by Rene Koecher)

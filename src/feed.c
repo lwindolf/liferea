@@ -108,12 +108,18 @@ feed_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trusted)
 		feed->loadItemLink = TRUE;
 	xmlFree (tmp);
 
+	/* comment feed handling flag */
+	tmp = xmlGetProp (xml, BAD_CAST"ignoreComments");
+	if (tmp && !xmlStrcmp (tmp, BAD_CAST"true"))
+		feed->ignoreComments = TRUE;
+	xmlFree (tmp);
+
 	/* popup enforcement/prevention flags */
 	tmp = xmlGetProp (xml, BAD_CAST"enforcePopup");
 	if (tmp && !xmlStrcmp (tmp, BAD_CAST"true"))
 		feed->enforcePopup = TRUE;
 	xmlFree (tmp);
-	
+
 	tmp = xmlGetProp (xml, BAD_CAST"preventPopup");
 	if (tmp && !xmlStrcmp (tmp, BAD_CAST"true"))
 		feed->preventPopup = TRUE;
@@ -177,6 +183,9 @@ feed_export (nodePtr node, xmlNodePtr xml, gboolean trusted)
 			
 		if (feed->loadItemLink)
 			xmlNewProp (xml, BAD_CAST"loadItemLink", BAD_CAST"true");
+			
+		if (feed->ignoreComments)
+			xmlNewProp (xml, BAD_CAST"ignoreComments", BAD_CAST"true");
 			
 		if (feed->enforcePopup)
 			xmlNewProp (xml, BAD_CAST"enforcePopup", BAD_CAST"true");

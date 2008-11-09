@@ -253,6 +253,15 @@ void item_to_xml(itemPtr item, xmlNodePtr parentNode) {
 
 	metadata_add_xml_nodes(item->metadata, itemNode);
 	
-	if (item->commentFeedId)
-		comments_to_xml (itemNode, item->commentFeedId);
+	if (item->commentFeedId) {
+		nodePtr feedNode = node_from_id (item->parentNodeId);
+		feedPtr feed = (feedPtr)feedNode->data;
+		if (feed) {
+			if (!feed->ignoreComments) {
+				comments_to_xml (itemNode, item->commentFeedId);
+			} else {
+				xmlNewTextChild(itemNode, NULL, "commentsSuppressed", "true");
+			}
+		}
+	}
 }

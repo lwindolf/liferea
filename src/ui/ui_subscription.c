@@ -280,6 +280,7 @@ on_propdialog_response (GtkDialog *dialog,
 		/* "Advanced" options */
 		feed->encAutoDownload = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "enclosureDownloadCheck")));
 		feed->loadItemLink = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "loadItemLinkCheck")));
+		feed->ignoreComments = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "ignoreCommentFeeds")));
 		feed->enforcePopup = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "enforcePopupCheck")));
 		feed->preventPopup = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "preventPopupCheck")));
 		feed->markAsRead = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "markAsReadCheck")));
@@ -533,6 +534,7 @@ ui_subscription_prop_dialog_load (SubscriptionPropDialog *spd,
 	/* Advanced */	
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (spd->priv->dialog, "enclosureDownloadCheck")), feed->encAutoDownload);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (spd->priv->dialog, "loadItemLinkCheck")), feed->loadItemLink);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (spd->priv->dialog, "ignoreCommentFeeds")), feed->ignoreComments);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (spd->priv->dialog, "enforcePopupCheck")), feed->enforcePopup);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (spd->priv->dialog, "preventPopupCheck")), feed->preventPopup);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (spd->priv->dialog, "markAsReadCheck")), feed->markAsRead);
