@@ -163,10 +163,11 @@ dnl *****
 dnl Gecko
 dnl *****
 
+GECKO_DEFINES
+
 if test "x$enable_gecko" = "xyes"; then
 
 GECKO_INIT([GECKO])
-GECKO_DEFINES
 
 AC_SUBST([GECKO])
 AC_SUBST([GECKO_FLAVOUR])
@@ -183,6 +184,8 @@ libxul*) gecko_min_version=1.9; is_xulrunner=yes ;;
 *) AC_MSG_ERROR([$gecko_cv_gecko is not supported])
 esac
 
+fi
+
 AM_CONDITIONAL(WITH_XULRUNNER, test "x$is_xulrunner" = "xyes")
 AM_CONDITIONAL(WITH_MOZILLA, test "x$is_mozilla" = "xyes")
 
@@ -192,8 +195,6 @@ if test "x$is_xulrunner" = "xyes"; then
 fi
 if test "x$is_mozilla" = "xyes"; then
 	PKG_CHECK_MODULES([MOZILLA],[${gecko_cv_gecko}-xpcom >= $gecko_min_version $gecko_cv_extra_pkg_dependencies])
-fi
-
 fi
  
 dnl ******

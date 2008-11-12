@@ -2,6 +2,8 @@
 
 	Version 1.4.22 (Stable)
 
+	* Fixes SF #2266119: configure error if gecko disabled.
+	  (reported by Vincent Lefevre)
 	* Fixes a XulRunner build issue with new gecko.m4 macro.
 	  (suggested by Peter van der Does)
 	* Fixes a DB migration issue that might occur when
