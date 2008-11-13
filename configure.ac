@@ -178,7 +178,7 @@ AC_SUBST([GECKO_EXTRA_LIBS])
 AC_SUBST([GECKO_GLUE_LIBS])
 
 case "$GECKO" in
-xulrunner) gecko_min_version=1.8; is_xulrunne=yes ;;
+xulrunner) gecko_min_version=1.8; is_xulrunner=yes ;;
 libxul*) gecko_min_version=1.9; is_xulrunner=yes ;;
 *firefox) gecko_min_version=1.5; is_mozilla=yes ;;
 *) AC_MSG_ERROR([$gecko_cv_gecko is not supported])
