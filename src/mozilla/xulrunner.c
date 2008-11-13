@@ -30,7 +30,7 @@
 
 static void xulrunner_init(void) {
 	
-#ifndef XPCOM_CLUE
+#ifndef XPCOM_GLUE
 	/* gtk_moz_embed_set_comp_path() must not be called
 	   without a component path for XulRunner. Passing
 	   NULL will crash Liferea. */

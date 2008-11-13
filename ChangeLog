@@ -2,8 +2,10 @@
 
 	Version 1.4.22 (Stable)
 
-	* Fixes a type in configure.ac
-	  (suggested by Peter van Does)
+	* Fixes a typo in XulRunner initialization #ifdef
+	  (suggested by Peter van der Does)
+	* Fixes a typo in configure.ac
+	  (suggested by Peter van der Does)
 	* Fixes SF #2266119: configure error if gecko disabled.
 	  (reported by Vincent Lefevre)
 	* Fixes a XulRunner build issue with new gecko.m4 macro.
