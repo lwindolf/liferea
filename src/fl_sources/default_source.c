@@ -197,6 +197,7 @@ default_source_add_subscription (nodePtr node, nodePtr parent, subscriptionPtr s
 	node_set_parent (child, parent, -1);
 	feedlist_node_added (child);
 	
+	subscription_update (subscription, FEED_REQ_RESET_TITLE);
 	return child;
 }
 
