@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([liferea],[1.5.6],[liferea-devel@lists.sourceforge.net])
+AC_INIT([liferea],[1.5.7],[liferea-devel@lists.sourceforge.net])
 AC_CANONICAL_TARGET([])
 AC_CONFIG_SRCDIR([src/feedlist.c])
 
@@ -159,15 +159,6 @@ fi
 
 AM_CONDITIONAL(WITH_AVAHI, test "x$enable_avahi" = "xyes")
 
-dnl ******
-dnl WebKit
-dnl ******
-
-dnl AC_MSG_CHECKING([for WebKit support])
-PKG_CHECK_MODULES(WEBKIT, webkit-1.0, enable_webkit=yes, enable_webkit=no)
-AC_SUBST(WEBKIT_CFLAGS)
-AC_SUBST(WEBKIT_LIBS)
-
 dnl Checking for gconftool-2
 AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
 
@@ -192,7 +183,8 @@ pkg_modules="	gtk+-2.0 >= 2.10.0
 		sqlite3 >= 3.3
 		gmodule-2.0 >= 2.0.0
 		libglade-2.0 >= 2.0.0
-		libcurl >= 7.15.0"
+		libcurl >= 7.15.0
+		webkit-1.0"
 
 PKG_CHECK_MODULES(PACKAGE, [$pkg_modules])
 

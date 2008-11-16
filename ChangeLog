@@ -1,3 +1,11 @@
+2008-??-??  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.5.7 (Unstable)
+
+	* Changes optional dependency on WebKit to mandatory
+	  one. (suggested by Leon Nardella)
+
+
 2008-11-09  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.5.6 (Unstable)
