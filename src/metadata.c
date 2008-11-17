@@ -115,6 +115,9 @@ metadata_init (void)
 	/* for RSS 2.0 real source and newsbin real source info */
 	metadata_type_register ("realSourceUrl",	METADATA_TYPE_URL);
 	metadata_type_register ("realSourceTitle",	METADATA_TYPE_URL);
+	
+	/* for trackback URL */
+	metadata_type_register ("related",		METADATA_TYPE_URL);
 
 	return;
 }
