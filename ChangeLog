@@ -4,6 +4,7 @@
 
 	* Changes optional dependency on WebKit to mandatory
 	  one. (suggested by Leon Nardella)
+	* Webkit support is not a plugin anymore.
 
 
 2008-11-09  Lars Lindner  <lars.lindner@gmail.com>
