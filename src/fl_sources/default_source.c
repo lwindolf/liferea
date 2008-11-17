@@ -32,7 +32,6 @@
 #include "feedlist.h"
 #include "folder.h"
 #include "migrate.h"
-#include "plugin.h"
 #include "update.h"
 #include "fl_sources/default_source.h"
 #include "fl_sources/node_source.h"

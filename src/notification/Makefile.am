@@ -8,19 +8,18 @@ INCLUDES = \
 	$(PACKAGE_CFLAGS) \
 	$(DBUS_CFLAGS)
 
-# plugin loading code
-noinst_LIBRARIES = liblinotification.a
+# generic notification support
+noinst_LIBRARIES = libnotification.a
 
-liblinotification_a_SOURCES = notif_plugin.c notif_plugin.h 
-
-liblinotification_a_CFLAGS = $(PACKAGE_CFLAGS)
+libnotification_a_SOURCES = notification.c notification.h 
+libnotification_a_CFLAGS = $(PACKAGE_CFLAGS)
 
 if WITH_LIBNOTIFY
 
 # libnotify popup plugin
 liblinotiflibnotify_la_LIBADD = $(PACKAGE_LIBS) $(LIBNOTIFY_LIBS)
 liblinotiflibnotify_la_CFLAGS = $(PACKAGE_CFLAGS) $(LIBNOTIFY_CFLAGS)
-liblinotiflibnotify_la_SOURCES = notif_libnotify.c notif_libnotify.h notif_plugin.h 
+liblinotiflibnotify_la_SOURCES = libnotify.c libnotify.h notification.h
 liblinotiflibnotify_la_LDFLAGS = -avoid-version -module
 
 pkglib_LTLIBRARIES = liblinotiflibnotify.la

@@ -33,7 +33,7 @@
 #include "ui/ui_dialog.h"
 #include "ui/ui_node.h"
 #include "fl_sources/node_source.h"
-#include "notification/notif_plugin.h"
+#include "notification/notification.h"
 
 static GSList	*nodeSourceTypes = NULL;
 

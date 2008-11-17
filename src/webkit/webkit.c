@@ -23,7 +23,7 @@
 
 #include "conf.h"
 #include "common.h"
-#include "ui/ui_htmlview.h"
+#include "ui/liferea_htmlview.h"
 
 /**
  * HTML plugin init callback
@@ -299,13 +299,10 @@ webkit_scroll_pagedown (GtkWidget *scrollpane)
 }
 
 static struct
-htmlviewPlugin webkitInfo = {
-	.api_version	= HTMLVIEW_PLUGIN_API_VERSION,
-	.name		= "WebKit",
-	.priority	= 100,
+htmlviewImpl webkitImpl = {
 	.externalCss	= TRUE,
-	.plugin_init	= liferea_webkit_init,
-	.plugin_deinit	= liferea_webkit_shutdown,
+	.init		= liferea_webkit_init,
+	.deinit		= liferea_webkit_shutdown,
 	.create		= webkit_new,
 	.write		= webkit_write_html,
 	.launch		= webkit_launch_url,
@@ -317,13 +314,4 @@ htmlviewPlugin webkitInfo = {
 	.setOffLine	= NULL
 };
 
-static struct
-plugin pi = {
-	PLUGIN_API_VERSION,
-	"WebKit Rendering Plugin",
-	PLUGIN_TYPE_HTML_RENDERER,
-	&webkitInfo
-};
-
-DECLARE_PLUGIN (pi);
-DECLARE_HTMLVIEW_PLUGIN (webkitInfo);
+DECLARE_HTMLVIEW_IMPL (webkitImpl);

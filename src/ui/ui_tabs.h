@@ -24,7 +24,7 @@
 
 #include <gtk/gtk.h>
 
-#include "ui_htmlview.h"
+#include "liferea_htmlview.h"
 
 G_BEGIN_DECLS
 

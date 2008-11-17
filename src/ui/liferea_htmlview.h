@@ -1,5 +1,5 @@
 /**
- * @file ui_htmlview.h  Liferea HTML rendering using rendering plugins
+ * @file liferea_htmlview.h  Liferea embedded HTML rendering
  *
  * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
  *
@@ -18,14 +18,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _UI_HTMLVIEW_H
-#define _UI_HTMLVIEW_H
+#ifndef _LIFEREA_HTMLVIEW_H
+#define _LIFEREA_HTMLVIEW_H
 
-#include <glib.h>
-#include <glib-object.h>
-#include <gmodule.h>
 #include <gtk/gtk.h>
-#include "plugin.h"
 
 G_BEGIN_DECLS
 
@@ -53,26 +49,6 @@ struct LifereaHtmlViewClass
 };
 
 GType liferea_htmlview_get_type	(void);
-
-/**
- * Registers an available HTML rendering plugin.
- *
- * @param plugin	plugin info structure
- * @param handle	GModule handle
- *
- * @returns TRUE on success
- */
-gboolean liferea_htmlview_plugin_register (pluginPtr plugin, GModule *handle);
-
-/**
- * Releases the effectively used HTML rendering plugin.
- */
-void liferea_htmlview_plugin_deregister (void);
-
-/**
- * Performs startup setup of htmlview plugins.
- */
-void liferea_htmlview_plugin_init (void);
 
 /** 
  * Function to set up the html view widget for the three
@@ -202,22 +178,15 @@ void on_popup_zoomout_selected(gpointer callback_data, guint callback_action, Gt
 
 G_END_DECLS
 
-/* interface for HTML rendering plugins */
-
-#define HTMLVIEW_PLUGIN_API_VERSION 13
-
-typedef struct htmlviewPlugin {
-	guint 		api_version;
-	char 		*name;			/**< name to be stored in preferences */
-	guint		priority;		/**< to allow automatically selecting from multiple available renderers */
+/** interface for HTML rendering support implementation */
+typedef struct htmlviewImpl {
 	gboolean	externalCss;		/**< TRUE if browser plugin support loading CSS from file */
 	
-	/* plugin loading and unloading methods */
-	void 		(*plugin_init)		(void);
-	void 		(*plugin_deinit) 	(void);
+	/* loading and unloading methods */
+	void 		(*init)		(void);
+	void 		(*deinit) 	(void);
 	
 	GtkWidget*	(*create)		(LifereaHtmlView *htmlview, gboolean forceInternalBrowsing);
-	/*void		(*destroy)		(GtkWidget *widget);*/
 	void		(*write)		(GtkWidget *widget, const gchar *string, guint length, const gchar *base, const gchar *contentType);
 	void		(*launch)		(GtkWidget *widget, const gchar *url);
 	gboolean	(*launchInsidePossible)	(void);
@@ -226,12 +195,12 @@ typedef struct htmlviewPlugin {
 	gboolean	(*scrollPagedown)	(GtkWidget *widget);
 	void		(*setProxy)		(const gchar *hostname, guint port, const gchar *username, const gchar *password);
 	void		(*setOffLine)		(gboolean offline);
-} *htmlviewPluginPtr;
+} *htmlviewImplPtr;
 
-/* Use this macro to declare a html rendering plugin. */
-#define DECLARE_HTMLVIEW_PLUGIN(plugin) \
-        G_MODULE_EXPORT htmlviewPluginPtr htmlview_plugin_get_info() { \
-                return &plugin; \
+/* Use this macro to declare a html rendering support implementation. */
+#define DECLARE_HTMLVIEW_IMPL(impl) \
+        htmlviewImplPtr htmlview_get_impl() { \
+                return &impl; \
         }
 
 #endif

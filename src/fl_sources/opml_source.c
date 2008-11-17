@@ -37,7 +37,7 @@
 #include "ui/ui_node.h"
 #include "fl_sources/opml_source.h"
 #include "fl_sources/node_source.h"
-#include "notification/notif_plugin.h"
+#include "notification/notification.h"
 
 /** default OPML update interval = once a day */
 #define OPML_SOURCE_UPDATE_INTERVAL 60*60*24

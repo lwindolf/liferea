@@ -45,7 +45,7 @@
 #include "debug.h"
 #include "net.h"
 #include "xml.h"
-#include "ui/ui_htmlview.h"
+#include "ui/liferea_htmlview.h"
 #include "ui/liferea_shell.h"
 #include "ui/ui_tray.h"
 

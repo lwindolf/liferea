@@ -24,7 +24,7 @@
 #include "item.h"
 #include "node.h"
 #include "ui/itemview.h"
-#include "ui/ui_htmlview.h"
+#include "ui/liferea_htmlview.h"
 
 /* interface for item and item set HTML rendering */
 

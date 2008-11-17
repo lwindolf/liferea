@@ -38,7 +38,7 @@
 #include "itemlist.h"
 #include "itemset.h"
 #include "render.h"
-#include "ui/ui_htmlview.h"
+#include "ui/liferea_htmlview.h"
 #include "ui/itemview.h"
 #include "ui/liferea_shell.h"
 

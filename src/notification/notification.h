@@ -1,5 +1,5 @@
 /**
- * @file notif_plugin.h  generic notification interface
+ * @file notification.h  generic notification interface
  * 
  * Copyright (C) 2006 Norman Jonas <liferea.sf.net@devport.codepilot.net>
  * Copyright (C) 2006-2008 Lars Lindner <lars.lindner@gmail.com>
@@ -19,8 +19,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _NOTIF_PLUGIN_H
-#define _NOTIF_PLUGIN_H
+#ifndef _NOTIFICATION_H
+#define _NOTIFICATION_H
 
 #include <glib.h>
 #include <gmodule.h>

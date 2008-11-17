@@ -32,10 +32,9 @@
    of Liferea plugins as well as enabling/disabling of 
    single plugins. */
     
-#define PLUGIN_API_VERSION 10
+#define PLUGIN_API_VERSION 11
 
 enum {
-	PLUGIN_TYPE_HTML_RENDERER,
 	PLUGIN_TYPE_PARSER,
 	PLUGIN_TYPE_FEEDLIST_PROVIDER,
 	PLUGIN_TYPE_NOTIFICATION,

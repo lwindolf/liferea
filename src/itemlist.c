@@ -40,7 +40,7 @@
 #include "ui/liferea_shell.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_itemlist.h"
-#include "ui/ui_htmlview.h"
+#include "ui/liferea_htmlview.h"
 #include "ui/ui_node.h"
 
 /* This is a simple controller implementation for itemlist handling. 

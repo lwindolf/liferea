@@ -1,8 +1,7 @@
 /**
- * @file ui_htmlview.c common interface for browser module implementations
- * and module loading functions
+ * @file liferea_htmlview.c  Liferea embedded HTML rendering
  *
- * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net> 
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -20,15 +19,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "ui/ui_htmlview.h"
-
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
+#include "ui/liferea_htmlview.h"
 
 #include <string.h>
 #include <glib.h>
-#include <gmodule.h>
 #include "comments.h"
 #include "common.h"
 #include "conf.h"
@@ -36,7 +30,6 @@
 #include "feed.h"
 #include "itemlist.h"
 #include "net.h"
-#include "plugin.h"
 #include "social.h"
 #include "render.h"
 #include "ui/liferea_shell.h"
@@ -44,11 +37,9 @@
 #include "ui/ui_tabs.h"
 #include "ui/ui_prefs.h"
 
-/* function types for the imported symbols */
-typedef htmlviewPluginPtr (*infoFunction)();
-htmlviewPluginPtr htmlviewPlugin;
+static htmlviewImplPtr htmlviewImpl = NULL;
 
-GSList *htmlviewPlugins = NULL;
+extern htmlviewImplPtr htmlview_get_impl();
 
 static void liferea_htmlview_class_init	(LifereaHtmlViewClass *klass);
 static void liferea_htmlview_init	(LifereaHtmlView *htmlview);
@@ -71,71 +62,6 @@ enum {
 static guint liferea_htmlview_signals[LAST_SIGNAL] = { 0 };
 
 static GObjectClass *parent_class = NULL;
-
-/* -------------------------------------------------------------------- */
-/* module loading and initialisation					*/
-/* -------------------------------------------------------------------- */
-
-void
-liferea_htmlview_plugin_init (void)
-{
-	GSList		*iter;
-		
-	/* Find best HTML renderer plugin */
-	iter = htmlviewPlugins;
-	while (iter) {
-		htmlviewPluginPtr tmp = ((pluginPtr)iter->data)->symbols;
-		if (!htmlviewPlugin || (htmlviewPlugin->priority < tmp->priority))
-			htmlviewPlugin = tmp;
-		iter = g_slist_next (iter);
-	}
-	
-	if (htmlviewPlugin) {
-		debug1 (DEBUG_PLUGINS, "using \"%s\" for HTML rendering...", htmlviewPlugin->name);
-		htmlviewPlugin->plugin_init ();
-		liferea_htmlview_update_proxy ();
-	} else {
-		g_error (_("Sorry, I was not able to load any installed browser plugin! Try the --debug-plugins option to get debug information!"));
-	}
-}
-
-void
-liferea_htmlview_plugin_deregister (void)
-{
-	(htmlviewPlugin->plugin_deinit) ();
-}
-
-gboolean
-liferea_htmlview_plugin_register (pluginPtr plugin, GModule *handle)
-{
-	infoFunction		htmlview_plugin_get_info;
-
-	if(g_module_symbol(handle, "htmlview_plugin_get_info", (void*)&htmlview_plugin_get_info)) {
-		/* load feed list provider plugin info */
-		if (NULL == (htmlviewPlugin = (*htmlview_plugin_get_info) ()))
-			return FALSE; 
-	}
-
-	/* check feed list provider plugin version */
-	if (HTMLVIEW_PLUGIN_API_VERSION != htmlviewPlugin->api_version) {
-		debug3(DEBUG_PLUGINS, "html view API version mismatch: \"%s\" has version %d should be %d", htmlviewPlugin->name, htmlviewPlugin->api_version, HTMLVIEW_PLUGIN_API_VERSION);
-		return FALSE;
-	} 
-
-	/* check if all mandatory symbols are provided */
-	if (!(htmlviewPlugin->plugin_init &&
-	      htmlviewPlugin->plugin_deinit)) {
-		debug1 (DEBUG_PLUGINS, "mandatory symbols missing: \"%s\"", htmlviewPlugin->name);
-		return FALSE;
-	}
-
-	/* assign the symbols so the caller will accept the plugin */
-	plugin->symbols = htmlviewPlugin;
-
-	htmlviewPlugins = g_slist_append (htmlviewPlugins, plugin);
-	
-	return TRUE;
-}
 
 /* -------------------------------------------------------------------- */
 /* Liferea HTML rendering object					*/
@@ -254,6 +180,9 @@ static void
 liferea_htmlview_init (LifereaHtmlView *htmlview)
 {
 	htmlview->priv = LIFEREA_HTMLVIEW_GET_PRIVATE (htmlview);
+	
+	if (!htmlviewImpl)
+		htmlviewImpl = htmlview_get_impl ();
 }
 
 LifereaHtmlView *
@@ -262,7 +191,7 @@ liferea_htmlview_new (gboolean forceInternalBrowsing)
 	LifereaHtmlView *htmlview;
 		
 	htmlview = LIFEREA_HTMLVIEW (g_object_new (LIFEREA_HTMLVIEW_TYPE, NULL));
-	htmlview->priv->renderWidget = htmlviewPlugin->create (htmlview, forceInternalBrowsing);
+	htmlview->priv->renderWidget = htmlviewImpl->create (htmlview, forceInternalBrowsing);
 	liferea_htmlview_clear (htmlview);
 	
 	return htmlview;
@@ -297,10 +226,10 @@ liferea_htmlview_write (LifereaHtmlView *htmlview, const gchar *string, const gc
 		
 		/* to prevent crashes inside the browser */
 		buffer = common_utf8_fix (buffer);
-		(htmlviewPlugin->write) (htmlview->priv->renderWidget, buffer, strlen (buffer), baseURL, "application/xhtml+xml");
+		(htmlviewImpl->write) (htmlview->priv->renderWidget, buffer, strlen (buffer), baseURL, "application/xhtml+xml");
 		g_free (buffer);
 	} else {
-		(htmlviewPlugin->write) (htmlview->priv->renderWidget, string, strlen (string), baseURL, "application/xhtml+xml");
+		(htmlviewImpl->write) (htmlview->priv->renderWidget, string, strlen (string), baseURL, "application/xhtml+xml");
 	}
 }
 
@@ -387,7 +316,7 @@ liferea_htmlview_launch_URL (LifereaHtmlView *htmlview, const gchar *url, gint l
 	}
 	
 	debug3 (DEBUG_GUI, "launch URL: %s  %s %d", conf_get_bool_value (BROWSE_INSIDE_APPLICATION)?"true":"false",
-		  (htmlviewPlugin->launchInsidePossible) ()?"true":"false",
+		  (htmlviewImpl->launchInsidePossible) ()?"true":"false",
 		  launchType);
 
 	// FIXME: check if htmlview is an internal (item viewer...) first before handling special links
@@ -429,9 +358,9 @@ liferea_htmlview_launch_URL (LifereaHtmlView *htmlview, const gchar *url, gint l
 	}
 	
 	if((launchType == UI_HTMLVIEW_LAUNCH_INTERNAL || conf_get_bool_value (BROWSE_INSIDE_APPLICATION)) &&
-	   (htmlviewPlugin->launchInsidePossible) () &&
+	   (htmlviewImpl->launchInsidePossible) () &&
 	   (launchType != UI_HTMLVIEW_LAUNCH_EXTERNAL)) {
-		(htmlviewPlugin->launch) (htmlview->priv->renderWidget, url);
+		(htmlviewImpl->launch) (htmlview->priv->renderWidget, url);
 	} else {
 		(void)browser_launch_URL_external (url);
 	}
@@ -440,36 +369,36 @@ liferea_htmlview_launch_URL (LifereaHtmlView *htmlview, const gchar *url, gint l
 void
 liferea_htmlview_set_zoom (LifereaHtmlView *htmlview, gfloat diff)
 {
-	(htmlviewPlugin->zoomLevelSet) (htmlview->priv->renderWidget, diff); 
+	(htmlviewImpl->zoomLevelSet) (htmlview->priv->renderWidget, diff); 
 }
 
 gfloat
 liferea_htmlview_get_zoom (LifereaHtmlView *htmlview)
 {
-	return (htmlviewPlugin->zoomLevelGet) (htmlview->priv->renderWidget);
+	return (htmlviewImpl->zoomLevelGet) (htmlview->priv->renderWidget);
 }
 
 gboolean
 liferea_htmlview_scroll (LifereaHtmlView *htmlview)
 {
-	return (htmlviewPlugin->scrollPagedown) (htmlview->priv->renderWidget);
+	return (htmlviewImpl->scrollPagedown) (htmlview->priv->renderWidget);
 }
 
 void
 liferea_htmlview_update_proxy (void)
 {
-	if (htmlviewPlugin && htmlviewPlugin->setProxy)
-		(htmlviewPlugin->setProxy) (network_get_proxy_host (),
-		                            network_get_proxy_port (),
-					    network_get_proxy_username (),
-					    network_get_proxy_password ());
+	if (htmlviewImpl)
+		(htmlviewImpl->setProxy) (network_get_proxy_host (),
+		                          network_get_proxy_port (),
+					  network_get_proxy_username (),
+					  network_get_proxy_password ());
 }
 
 void
 liferea_htmlview_set_online (gboolean online)
 {
-	if (htmlviewPlugin && htmlviewPlugin->setOffLine)
-		(htmlviewPlugin->setOffLine) (!online);
+	if (htmlviewImpl)
+		(htmlviewImpl->setOffLine) (!online);
 }
 
 /* -------------------------------------------------------------------- */

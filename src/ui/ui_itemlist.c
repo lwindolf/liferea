@@ -35,7 +35,7 @@
 #include "social.h"
 #include "ui/liferea_shell.h"
 #include "ui/ui_common.h"
-#include "ui/ui_htmlview.h"
+#include "ui/liferea_htmlview.h"
 #include "ui/ui_popup.h"
 #include "ui/ui_tabs.h"
 

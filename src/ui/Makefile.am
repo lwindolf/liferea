@@ -16,6 +16,7 @@ libliui_a_SOURCES = \
 	eggtrayicon.c eggtrayicon.h \
 	enclosure_list_view.c enclosure_list_view.h \
 	itemview.c itemview.h \
+	liferea_htmlview.c liferea_htmlview.h \
 	liferea_shell.c liferea_shell.h \
 	rule_editor.c rule_editor.h \
 	search_dialog.c search_dialog.h \
@@ -26,7 +27,6 @@ libliui_a_SOURCES = \
 	ui_dnd.c ui_dnd.h \
 	ui_feedlist.c ui_feedlist.h \
 	ui_folder.c ui_folder.h \
-	ui_htmlview.c ui_htmlview.h \
 	ui_itemlist.c ui_itemlist.h \
 	ui_node.c ui_node.h \
 	ui_popup.c ui_popup.h \

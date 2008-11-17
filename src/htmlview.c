@@ -34,13 +34,11 @@
 #include "itemset.h"
 #include "render.h"
 #include "vfolder.h"
-#include "ui/ui_htmlview.h"
+#include "ui/liferea_htmlview.h"
 
 // FIXME: namespace clash of LifereaHtmlView *htmlview and htmlView_priv 
 // clearly shows the need to merge htmlview.c and src/ui/ui_htmlview.c,
 // maybe with a separate a HTML cache object...
-
-extern htmlviewPluginPtr htmlviewPlugin;
 
 static struct htmlView_priv 
 {
@@ -243,6 +241,8 @@ htmlview_render_item (itemPtr item,
 	return output;
 }
 
+extern htmlviewImplPtr htmlview_get_impl();
+
 void 
 htmlview_start_output (GString *buffer,
                        const gchar *base,
@@ -265,7 +265,7 @@ htmlview_start_output (GString *buffer,
 	}
 
 	if (css)
-		g_string_append (buffer, render_get_css (htmlviewPlugin->externalCss));
+		g_string_append (buffer, render_get_css (htmlview_get_impl()->externalCss));
 	
 	/* add predefined scripts to be used for item menu */
 	if (script) 

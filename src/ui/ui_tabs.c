@@ -28,7 +28,6 @@
 #include "itemlist.h"
 #include "ui/liferea_shell.h"
 #include "ui/ui_tabs.h"
-#include "ui/ui_htmlview.h"
 #include "ui/ui_itemlist.h"
 
 /* single tab history handling */

@@ -46,7 +46,7 @@
 #include "ui/auth_dialog.h"
 #include "ui/ui_subscription.h"
 #include "ui/ui_node.h"
-#include "notification/notif_plugin.h"
+#include "notification/notification.h"
 
 feedPtr
 feed_new (void)

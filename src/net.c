@@ -33,7 +33,7 @@
 #include "common.h"
 #include "conf.h"
 #include "debug.h"
-#include "ui/ui_htmlview.h"
+#include "ui/liferea_htmlview.h"
 #include "ui/liferea_shell.h"
 #include "glibcurl/glibcurl.h"
 

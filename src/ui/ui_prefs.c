@@ -42,7 +42,7 @@
 #include "ui/ui_dialog.h"
 #include "ui/ui_itemlist.h"
 #include "ui/ui_tray.h"
-#include "notification/notif_plugin.h"
+#include "notification/notification.h"
 
 /* file type tree store column ids */
 enum fts_columns {

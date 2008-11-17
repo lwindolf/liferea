@@ -36,7 +36,7 @@
 #include "ui/itemview.h"
 #include "ui/liferea_shell.h"
 #include "ui/ui_feedlist.h"
-#include "ui/ui_htmlview.h"
+#include "ui/liferea_htmlview.h"
 #include "ui/ui_node.h"
 #include "ui/ui_subscription.h"
 #include "ui/ui_tray.h"
@@ -46,7 +46,7 @@
 #include "fl_sources/google_source.h"
 #include "fl_sources/node_source.h"
 #include "fl_sources/opml_source.h"
-#include "notification/notif_plugin.h"
+#include "notification/notification.h"
 
 // FIXME: doesn't match here!
 /** flag is set when any cache migration was done on startup */

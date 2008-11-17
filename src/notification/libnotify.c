@@ -39,7 +39,7 @@
 #include "ui/ui_feedlist.h"
 #include "ui/ui_tray.h"
 
-#include "notification/notif_plugin.h"
+#include "notification/notification.h"
 
 static void notif_libnotify_callback_open ( NotifyNotification *n, gchar *action, gpointer user_data ) {
 	g_assert(action != NULL);

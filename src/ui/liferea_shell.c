@@ -49,9 +49,6 @@
 #include "ui/ui_tabs.h"
 #include "ui/ui_update.h"
 
-/* FIXME: evil! */
-extern htmlviewPluginPtr htmlviewPlugin;
-
 /* all used icons (FIXME: evil) */
 GdkPixbuf *icons[MAX_ICONS];
 
@@ -524,18 +521,13 @@ on_key_press_event (GtkWidget *widget, GdkEventKey *event, gpointer data)
 					case 0:
 						modifier_matches = ((event->state & default_modifiers) == 0);
 						/* Hack to make space handled in the module. This is necessary
-						   because the GtkMozEmbed code must be able to catch spaces
+						   because the HTML widget code must be able to catch spaces
 						   for input fields.
 						   
-						   By ignoring the space here it will be passed to the GtkMozEmbed
+						   By ignoring the space here it will be passed to the HTML
 						   widget which in turn will pass it back if it is not eaten by
 						   any input field currently focussed. */
-						if (!strcmp (htmlviewPlugin->name, "Mozilla") ||
-						    !strcmp (htmlviewPlugin->name, "XulRunner"))
-							return FALSE;
-
-						/* GtkHTML2 does handle <Space> correctly */
-						break;
+						return FALSE;
 					case 1:
 						modifier_matches = ((event->state & GDK_CONTROL_MASK) == GDK_CONTROL_MASK);
 						break;
@@ -714,7 +706,8 @@ liferea_shell_online_status_changed (int online)
 	gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (gtk_action_group_get_action (shell->priv->generalActions, "ToggleOfflineMode")), !online);
 
 	/* Propagate new online status to other interested widgets */
-	liferea_htmlview_set_online (online);
+// FIXME: bad design, HTML view implementation needs to register for network events itself
+//	liferea_htmlview_set_online (online);
 	ui_tray_update ();
 }
 
@@ -778,7 +771,7 @@ static const GtkActionEntry ui_mainwindow_add_action_entries[] = {
 	 G_CALLBACK(on_menu_feed_new)},
 	{"NewFolder", NULL, N_("New _Folder..."), NULL, N_("Adds a folder to the feed list."), G_CALLBACK(on_menu_folder_new)},
 	{"NewVFolder", NULL, N_("New S_earch Folder..."), NULL, N_("Adds a new search folder to the feed list."), G_CALLBACK(on_new_vfolder_activate)},
-	{"NewPlugin", NULL, N_("New _Source..."), NULL, N_("Adds a new feed list source."), G_CALLBACK(on_new_plugin_activate)},
+	{"NewSource", NULL, N_("New _Source..."), NULL, N_("Adds a new feed list source."), G_CALLBACK(on_new_plugin_activate)},
 	{"NewNewsBin", NULL, N_("New _News Bin..."), NULL, N_("Adds a new news bin."), G_CALLBACK(on_new_newsbin_activate)}
 };
 
@@ -820,7 +813,7 @@ static const char *ui_mainwindow_ui_desc =
 "      <menuitem action='NewSubscription'/>"
 "      <menuitem action='NewFolder'/>"
 "      <menuitem action='NewVFolder'/>"
-"      <menuitem action='NewPlugin'/>"
+"      <menuitem action='NewSource'/>"
 "      <menuitem action='NewNewsBin'/>"
 "      <separator/>"
 "      <menuitem action='ImportFeedList'/>"
@@ -1222,7 +1215,6 @@ void
 liferea_shell_destroy (void)
 {
 	liferea_shell_save_position ();
-	liferea_htmlview_plugin_deregister ();
 	ui_tray_enable (FALSE);
 	notification_enable (FALSE);
 	g_object_unref (shell->priv->tabs);

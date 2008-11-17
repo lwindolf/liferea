@@ -37,7 +37,7 @@
 #include "ui/enclosure_list_view.h"
 #include "ui/liferea_shell.h"
 #include "ui/ui_feedlist.h"
-#include "ui/ui_htmlview.h"
+#include "ui/liferea_htmlview.h"
 #include "ui/ui_itemlist.h"
 #include "ui/ui_prefs.h"
 #include "ui/ui_tabs.h"

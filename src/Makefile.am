@@ -5,7 +5,7 @@ SYNC = sync
 SYNC_LIB = sync/liblisync.a
 endif
 
-SUBDIRS = parsers notification ui fl_sources scripting glibcurl $(SYNC) . webkit
+SUBDIRS = parsers notification ui fl_sources scripting glibcurl $(SYNC) webkit .
 
 AM_CPPFLAGS = \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \
@@ -67,11 +67,14 @@ liferea_bin_SOURCES = \
 
 liferea_bin_LDADD =	parsers/libliparsers.a \
 			fl_sources/libliflsources.a \
-			notification/liblinotification.a \
+			notification/libnotification.a \
 			ui/libliui.a \
 			glibcurl/libglibcurl.a \
+			webkit/libwebkit.a \
 			$(SYNC_LIB) \
-			$(PACKAGE_LIBS) $(X_LIBS) $(X_PRE_LIBS) -lX11 $(X_EXTRA_LIBS) $(DBUS_LIBS) $(NM_LIBS) $(INTLLIBS) $(GNUTLS_LIBS) $(AVAHI_LIBS)
+			$(PACKAGE_LIBS) $(X_LIBS) $(X_PRE_LIBS) -lX11 $(X_EXTRA_LIBS) \
+			$(DBUS_LIBS) $(NM_LIBS) $(INTLLIBS) $(GNUTLS_LIBS) $(AVAHI_LIBS) \
+			$(WEBKIT_LIBS) $(LIBNOTIFY_LIBS)
 
 if WITH_DBUS
 

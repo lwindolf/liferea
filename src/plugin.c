@@ -31,11 +31,7 @@
 #include "debug.h"
 #include "node.h"
 #include "plugin.h"
-#include "ui/ui_htmlview.h"
-#include "fl_sources/node_source.h"
-#include "notification/notif_plugin.h"
-
-/* plugin managment */
+#include "notification/notification.h"
 
 /** list of all loaded plugins */
 static GSList *plugins = NULL;
@@ -75,9 +71,6 @@ static pluginPtr plugin_mgmt_load(const gchar * filename) {
 			switch(plugin->type) {
 				case PLUGIN_TYPE_NOTIFICATION:
 					success = notification_plugin_register (plugin, handle);
-					break;
-				case PLUGIN_TYPE_HTML_RENDERER:
-					success = liferea_htmlview_plugin_register (plugin, handle);
 					break;
 				default:
 					if(plugin->type >= PLUGIN_TYPE_MAX) {
@@ -161,7 +154,6 @@ void plugin_mgmt_init(void) {
 	}
 
 	/* do plugin type specific startup init */
-	liferea_htmlview_plugin_init ();
 	notification_plugin_init ();
 
 	debug_exit("plugin_mgmt_init");
