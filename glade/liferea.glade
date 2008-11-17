@@ -3420,7 +3420,7 @@
                     <property name="visible">True</property>
                     <property name="label" translatable="yes">Search _Name:</property>
                     <property name="use_underline">True</property>
-                    <property name="mnemonic_widget">feedNameEntry</property>
+                    <property name="mnemonic_widget">searchNameEntryLabel</property>
                   </widget>
                   <packing>
                     <property name="expand">False</property>
@@ -3428,7 +3428,7 @@
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkEntry" id="feedNameEntry1">
+                  <widget class="GtkEntry" id="searchNameEntry">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="invisible_char">*</property>

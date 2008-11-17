@@ -144,7 +144,7 @@ search_folder_dialog_new (nodePtr node)
 	dialog = liferea_dialog_new (NULL, "vfolderdialog");
 	
 	/* Setup search folder name */
-	sfd->priv->nameEntry = liferea_dialog_lookup (dialog, "feedNameEntry");
+	sfd->priv->nameEntry = liferea_dialog_lookup (dialog, "searchNameEntry");
 	gtk_entry_set_text (GTK_ENTRY (sfd->priv->nameEntry), node_get_title (node));
 	
 	/* Set up rule match type */
