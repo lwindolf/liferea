@@ -251,7 +251,6 @@ main (int argc, char *argv[])
 	debug_start_measurement (DEBUG_DB);
 
 	/* order is important! */
-	rule_init ();
 	db_init (TRUE);			/* initialize sqlite */
 	xml_init ();			/* initialize libxml2 */
 	plugin_mgmt_init ();		/* get list of plugins and initialize them */

@@ -48,6 +48,10 @@ typedef gboolean (*ruleCheckFunc)	(rulePtr rule, itemPtr item);
 struct ruleInfo *ruleFunctions = NULL;
 gint nrOfRuleFunctions = 0;
 
+static void rule_init (void);
+
+/* rule creation */
+
 rulePtr
 rule_new (struct vfolder *vfolder,
           const gchar *ruleId,
@@ -57,6 +61,9 @@ rule_new (struct vfolder *vfolder,
 	ruleInfoPtr	ruleInfo;
 	rulePtr		rule;
 	int		i;
+	
+	if (!ruleFunctions)
+		rule_init ();
 	
 	for (i = 0, ruleInfo = ruleFunctions; i < nrOfRuleFunctions; i++, ruleInfo++) 
 	{
@@ -80,9 +87,7 @@ rule_free (rulePtr rule)
 	g_free (rule);
 }
 
-/* -------------------------------------------------------------------- */
-/* rule conditions							*/
-/* -------------------------------------------------------------------- */
+/* rule conditions */
 
 static conditionPtr
 rule_condition_feed_title_match (rulePtr rule) 
@@ -358,7 +363,7 @@ rule_add (ruleConditionFunc queryFunc,
 	nrOfRuleFunctions++;
 }
 
-void
+static void
 rule_init (void) 
 {
 	debug_enter ("rule_init");
