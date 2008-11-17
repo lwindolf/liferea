@@ -25,8 +25,6 @@
 #include <time.h>
 #include <glib.h>
 
-#include <libxml/parser.h>
-
 /* Update requests do represent feed updates, favicon and enclosure 
    downloads and (if GtkHTML2 is used) HTML browser traffic. A request can 
    be started synchronously or asynchronously. In the latter case it
