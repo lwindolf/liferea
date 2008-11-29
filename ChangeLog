@@ -1,3 +1,10 @@
+2008-11-29  Lars Lindner  <lars.lindner@gmail.com>
+
+	Version 1.4.23 (Stable)
+
+	* Fixes unsubstituted variable in start script.
+	  (reported by Peter van der Does)
+
 2008-11-08  Lars Lindner  <lars.lindner@gmail.com>
 
 	Version 1.4.22 (Stable)
