@@ -4,6 +4,8 @@
 
 	* Fixes unsubstituted variable in start script.
 	  (reported by Peter van der Does)
+	* Fixes Debian #494741: Crashes on exit after closing
+	  update monitor dialog with ESC. (reported by ygrek)
 
 2008-11-08  Lars Lindner  <lars.lindner@gmail.com>
 

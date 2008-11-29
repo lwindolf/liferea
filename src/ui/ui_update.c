@@ -122,12 +122,20 @@ void on_cancel_all_requests_clicked(GtkButton *button, gpointer user_data) {
 	feedlist_foreach(ui_update_cancel);
 }
 
-void on_close_update_monitor_clicked(GtkButton *button, gpointer user_data) {
-
-	gtk_widget_destroy(umdialog);
-	umdialog = NULL;
+static void
+on_update_monitor_destroyed_cb(GtkWidget *widget, void *data)
+{
 	g_hash_table_destroy(um1hash);
 	g_hash_table_destroy(um2hash);
+	um1hash = NULL;
+	um2hash = NULL;
+	umdialog = NULL;
+}
+
+void
+on_close_update_monitor_clicked(GtkButton *button, gpointer user_data)
+{
+	gtk_widget_destroy(umdialog);
 }
  
 void on_menu_show_update_monitor(GtkWidget *widget, gpointer user_data) {
@@ -137,7 +145,8 @@ void on_menu_show_update_monitor(GtkWidget *widget, gpointer user_data) {
 
 	if(!umdialog) {
 		umdialog = liferea_dialog_new (NULL, "updatedialog");
-				
+		g_signal_connect (G_OBJECT (umdialog), "destroy", G_CALLBACK (on_update_monitor_destroyed_cb), NULL);
+		
 		/* Set up left store and view */
 		view = GTK_TREE_VIEW(liferea_dialog_lookup(umdialog, "left"));
 		um1store = gtk_tree_store_new(UM_LEN, GDK_TYPE_PIXBUF, G_TYPE_STRING);
