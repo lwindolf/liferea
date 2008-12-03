@@ -1,7 +1,7 @@
 /**
  * @file main.c Liferea main program
  *
- * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *  
  * Some code like the command line handling was inspired by 
@@ -55,7 +55,13 @@
 
 static BaconMessageConnection *bacon_connection = NULL;
 
-gboolean lifereaStarted = FALSE;
+static enum {
+	STATE_STARTING,
+	STATE_STARTED,
+	STATE_SHUTDOWN
+} runState = STATE_STARTING;
+
+gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data);
 
 static void show_help(void) {
 	GString	*str = g_string_new(NULL);
@@ -305,7 +311,7 @@ main (int argc, char *argv[])
 	   locking in Liferea because it freezes the program
 	   when running Flash applets in gtkmozembed */
 
-	lifereaStarted = TRUE;
+	runState = STATE_STARTING;
 	
 	debug_end_measurement (DEBUG_DB, "startup");
 	
@@ -320,6 +326,12 @@ static gboolean
 on_shutdown (gpointer user_data)
 {
 	debug_enter ("liferea_shutdown");
+
+	/* prevents signal handler from calling us a second time */
+	if (runState == STATE_SHUTDOWN)
+		return FALSE;
+		
+	runState = STATE_SHUTDOWN;
 
 	/* order is important ! */
 		
