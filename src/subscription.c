@@ -185,9 +185,6 @@ subscription_process_update_result (const struct updateResult * const result, gp
 
 	subscription_update_error_status (subscription, result->httpstatus, result->returncode, result->filterErrors);
 
-	if (flags & FEED_REQ_DOWNLOAD_FAVICON)
-		subscription_update_favicon (subscription);
-	
 	/* 2. call subscription/node type specific processing */
 	if (processing) {
 		if (ctxt->callback) {
@@ -196,8 +193,13 @@ subscription_process_update_result (const struct updateResult * const result, gp
 			node_process_update_result (node, result, flags);
 		}
 	}
+
+	/* 3. call favicon updating after subscription processing
+	      to ensure we have valid baseUrl for feed nodes... */
+	if (flags & FEED_REQ_DOWNLOAD_FAVICON)
+		subscription_update_favicon (subscription);
 	
-	/* 3. generic postprocessing */
+	/* 4. generic postprocessing */
 	subscription->updateJob = NULL;
 
 	update_state_set_lastmodified (subscription->updateState, update_state_get_lastmodified (result->updateState));
