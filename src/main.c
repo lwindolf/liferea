@@ -57,7 +57,11 @@
 
 static BaconMessageConnection *bacon_connection = NULL;
 
-gboolean lifereaStarted = FALSE;
+static enum {
+	STATE_STARTING,
+	STATE_STARTED,
+	STATE_SHUTDOWN
+} runState = STATE_STARTING;
 
 gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data);
 
@@ -286,7 +290,7 @@ int main(int argc, char *argv[]) {
 	   locking in Liferea because it freezes the program
 	   when running Flash applets in gtkmozembed */
 
-	lifereaStarted = TRUE;
+	runState = STATE_STARTING;
 	
 	debug_end_measurement (DEBUG_DB, "startup");
 	
@@ -301,6 +305,12 @@ gboolean
 on_quit (GtkWidget *widget, GdkEvent *event, gpointer user_data)
 {
 	debug_enter ("on_quit");
+	
+	/* prevents signal handler from calling us a second time */
+	if (runState == STATE_SHUTDOWN)
+		return FALSE;
+		
+	runState = STATE_SHUTDOWN;
 
 	/* order is important ! */
 		
