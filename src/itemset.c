@@ -285,9 +285,9 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates, gbo
 		}
 		iter = g_list_next (iter);
 	}
-	debug1(DEBUG_UPDATE, "current cache size: %d\n", g_list_length(itemSet->ids));
-	debug1(DEBUG_UPDATE, "current cache limit: %d\n", max);
-	debug1(DEBUG_UPDATE, "downloaded feed size: %d\n", g_list_length(list));
+	debug1(DEBUG_UPDATE, "current cache size: %d", g_list_length(itemSet->ids));
+	debug1(DEBUG_UPDATE, "current cache limit: %d", max);
+	debug1(DEBUG_UPDATE, "downloaded feed size: %d", g_list_length(list));
 	debug1(DEBUG_UPDATE, "flag count: %d", flagCount);
 	
 	/* Case #1: Avoid having too many flagged items. We count the 
