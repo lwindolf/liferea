@@ -2196,6 +2196,7 @@
                                             <property name="use_underline">True</property>
                                             <property name="response_id">0</property>
                                             <property name="draw_indicator">True</property>
+                                            <signal name="clicked" handler="on_startintraybtn_clicked"/>
                                           </widget>
                                           <packing>
                                             <property name="position">2</property>
