@@ -60,6 +60,7 @@
                             <child>
                               <widget class="GtkViewport" id="normalViewItems">
                                 <property name="visible">True</property>
+                                <property name="shadow_type">GTK_SHADOW_NONE</property>
                                 <child>
                                   <placeholder/>
                                 </child>
@@ -76,6 +77,7 @@
                                 <child>
                                   <widget class="GtkViewport" id="normalViewHtml">
                                     <property name="visible">True</property>
+                                    <property name="shadow_type">GTK_SHADOW_NONE</property>
                                     <child>
                                       <placeholder/>
                                     </child>
@@ -110,6 +112,7 @@
                             <child>
                               <widget class="GtkViewport" id="wideViewItems">
                                 <property name="visible">True</property>
+                                <property name="shadow_type">GTK_SHADOW_NONE</property>
                                 <child>
                                   <placeholder/>
                                 </child>
@@ -126,6 +129,7 @@
                                 <child>
                                   <widget class="GtkViewport" id="wideViewHtml">
                                     <property name="visible">True</property>
+                                    <property name="shadow_type">GTK_SHADOW_NONE</property>
                                     <child>
                                       <placeholder/>
                                     </child>
@@ -238,6 +242,7 @@
                             <child>
                               <widget class="GtkViewport" id="combinedViewHtml">
                                 <property name="visible">True</property>
+                                <property name="shadow_type">GTK_SHADOW_NONE</property>
                                 <child>
                                   <placeholder/>
                                 </child>

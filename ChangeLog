@@ -7,6 +7,8 @@
 	* Webkit support is not a plugin anymore.
 	* Fixes title not showing in search folder properties.
 	* Fixes trace warning about unknown metadata type "related".
+	* Fixes double edge shadows for the HTML view panes.
+	  (Kai Willadsen)
 
 
 2008-11-09  Lars Lindner  <lars.lindner@gmail.com>
