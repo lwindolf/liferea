@@ -15,6 +15,9 @@
 	* Changes initial window state from iconified to hidden
 	  when "Start in Tray" preference is enabled.
 	  (patch by Kai Willadsen)
+	* Fixes short period with wrong window size and position
+	  during startup.
+	  (patch by Kai Willadsen)
 
 
 2008-11-09  Lars Lindner  <lars.lindner@gmail.com>

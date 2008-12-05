@@ -1138,6 +1138,8 @@ liferea_shell_create (int initialState)
 	
 	ui_popup_update_menues ();		/* create popup menues */
 			
+	liferea_shell_restore_state ();
+	
 	if (initialState == MAINWINDOW_ICONIFIED || 
 	    (initialState == MAINWINDOW_HIDDEN && ui_tray_get_count () == 0)) {
 		gtk_window_iconify (shell->priv->window);
@@ -1156,8 +1158,6 @@ liferea_shell_create (int initialState)
 	}
 
 	gtk_widget_set_sensitive (GTK_WIDGET (shell->priv->feedlistView), TRUE);
-	
-	liferea_shell_restore_state ();
 	
 	/* 9. Create welcome text */
 
