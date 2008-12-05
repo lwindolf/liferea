@@ -8,10 +8,13 @@
 	* Fixes title not showing in search folder properties.
 	* Fixes trace warning about unknown metadata type "related".
 	* Fixes double edge shadows for the HTML view panes.
-	  (Kai Willadsen)
+	  (patch by Kai Willadsen)
 	* Fixes broken "Start In Tray" preference option which
 	  was not connected to signal handler.
-	  (Kai Willadsen)
+	  (patch by Kai Willadsen)
+	* Changes initial window state from iconified to hidden
+	  when "Start in Tray" preference is enabled.
+	  (patch by Kai Willadsen)
 
 
 2008-11-09  Lars Lindner  <lars.lindner@gmail.com>

@@ -283,7 +283,7 @@ main (int argc, char *argv[])
 
 	if (conf_get_bool_value (SHOW_TRAY_ICON) &&
 	    conf_get_bool_value (START_IN_TRAY))
-		initialState = MAINWINDOW_ICONIFIED;
+		initialState = MAINWINDOW_HIDDEN;
 
 	liferea_shell_create (initialState);
 	g_set_prgname ("liferea");
