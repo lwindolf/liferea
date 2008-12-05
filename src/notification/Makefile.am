@@ -19,7 +19,7 @@ if WITH_LIBNOTIFY
 # libnotify popup plugin
 liblinotiflibnotify_la_LIBADD = $(PACKAGE_LIBS) $(LIBNOTIFY_LIBS)
 liblinotiflibnotify_la_CFLAGS = $(PACKAGE_CFLAGS) $(LIBNOTIFY_CFLAGS)
-liblinotiflibnotify_la_SOURCES = libnotify.c libnotify.h notification.h
+liblinotiflibnotify_la_SOURCES = libnotify.c notification.h
 liblinotiflibnotify_la_LDFLAGS = -avoid-version -module
 
 pkglib_LTLIBRARIES = liblinotiflibnotify.la
