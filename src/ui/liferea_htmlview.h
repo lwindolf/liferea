@@ -183,10 +183,6 @@ void on_popup_launch_link_selected(gpointer callback_data, guint callback_action
 void on_popup_copy_url_selected(gpointer callback_data, guint callback_action, GtkWidget *widget);
 void on_popup_subscribe_url_selected(gpointer callback_data, guint callback_action, GtkWidget *widget);
 
-// FIXME: these are menu callbacks! wrong name and wrong file!!!
-void on_popup_zoomin_selected(gpointer callback_data, guint callback_action, GtkWidget *widget);
-void on_popup_zoomout_selected(gpointer callback_data, guint callback_action, GtkWidget *widget);
-
 G_END_DECLS
 
 /** interface for HTML rendering support implementation */

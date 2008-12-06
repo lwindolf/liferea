@@ -440,18 +440,6 @@ liferea_htmlview_do_zoom (LifereaHtmlView *htmlview, gboolean in)
 	liferea_htmlview_set_zoom (htmlview, factor * liferea_htmlview_get_zoom (htmlview));
 }
 
-void
-on_popup_zoomin_selected (gpointer callback_data, guint callback_action, GtkWidget *widget)
-{
-//	liferea_htmlview_do_zoom (liferea_shell_get_active_htmlview (), TRUE);
-}
-
-void
-on_popup_zoomout_selected (gpointer callback_data, guint callback_action, GtkWidget *widget)
-{
-//	liferea_htmlview_do_zoom (liferea_shell_get_active_htmlview (), FALSE);
-}
-
 static void
 on_popup_zoomin_activate (GtkWidget *widget, gpointer user_data)
 {

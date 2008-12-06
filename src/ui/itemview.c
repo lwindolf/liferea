@@ -492,3 +492,9 @@ itemview_launch_URL (const gchar *url)
 {
 	liferea_htmlview_launch_URL (itemview->priv->htmlview, url, UI_HTMLVIEW_LAUNCH_INTERNAL);
 }
+
+void
+itemview_do_zoom (gboolean in)
+{
+	liferea_htmlview_do_zoom (itemview->priv->htmlview, in);
+}

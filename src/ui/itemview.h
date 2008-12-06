@@ -37,7 +37,7 @@
    are refreshed automatically.
    
    The view consist of an optional GtkTreeView presenting
-   the list of the relevent items and a HTML widget rendering
+   the list of the relevant items and a HTML widget rendering
    a feed info, a single item or multiple items at once. */
 
 G_BEGIN_DECLS
@@ -227,6 +227,13 @@ GtkStyle * itemview_get_style (void);
  * @param url	the link to load
  */
 void itemview_launch_URL (const gchar *url);
+
+/**
+ * Requests the item view to change zoom level.
+ *
+ * @param in	TRUE if zooming in, FALSE for zooming out
+ */
+void itemview_do_zoom (gboolean in);
 
 G_END_DECLS
 

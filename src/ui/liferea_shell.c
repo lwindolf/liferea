@@ -683,6 +683,18 @@ on_menu_quit (GtkMenuItem *menuitem, gpointer user_data)
 	liferea_shutdown ();
 }
 
+static void
+on_menu_zoomin_selected (gpointer callback_data, guint callback_action, GtkWidget *widget)
+{
+	itemview_do_zoom (TRUE);
+}
+
+static void
+on_menu_zoomout_selected (gpointer callback_data, guint callback_action, GtkWidget *widget)
+{
+	itemview_do_zoom (FALSE);
+}
+
 // FIXME: change to signal callback
 void
 liferea_shell_online_status_changed (int online)
@@ -731,9 +743,9 @@ static const GtkActionEntry ui_mainwindow_action_entries[] = {
 
 	{"ViewMenu", NULL, N_("_View")},
 	{"ZoomIn", "gtk-zoom-in", N_("_Increase Text Size"), "<control>plus", N_("Increases the text size of the item view."),
-	 G_CALLBACK(on_popup_zoomin_selected)},
+	 G_CALLBACK(on_menu_zoomin_selected)},
 	{"ZoomOut", "gtk-zoom-out", N_("_Decrease Text Size"), "<control>minus", N_("Decreases the text size of the item view."),
-	 G_CALLBACK(on_popup_zoomout_selected)},
+	 G_CALLBACK(on_menu_zoomout_selected)},
 
 	{"ToolsMenu", NULL, N_("_Tools")},
 	{"ShowUpdateMonitor", NULL, N_("_Update Monitor"), NULL, N_("Show a list of all feeds currently in the update queue"),
