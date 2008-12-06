@@ -45,16 +45,6 @@ void ui_popup_update_menues (void);
 GtkMenu * ui_popup_make_item_menu (itemPtr item);
 
 /**
- * Creates a popup menu with options for a HTML link context menu.
- * (Copy link, Open Link...)
- *
- * @param url	the link URL
- *
- * @returns a new popup menu
- */
-GtkMenu * ui_popup_make_url_menu (const gchar * url);
-
-/**
  * Creates a popup menu for the systray icon.
  * (Offline mode, Close, Minimize...)
  *

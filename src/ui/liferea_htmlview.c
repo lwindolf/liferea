@@ -401,43 +401,40 @@ liferea_htmlview_set_online (gboolean online)
 		(htmlviewImpl->setOffLine) (!online);
 }
 
-/* -------------------------------------------------------------------- */
-/* glade callbacks 							*/
-/* -------------------------------------------------------------------- */
-
-void
-on_popup_launch_link_selected (gpointer url, guint callback_action, GtkWidget *widget)
-{
-	liferea_htmlview_launch_URL (NULL, url, UI_HTMLVIEW_LAUNCH_EXTERNAL);
-}
-
-void
-on_popup_copy_url_selected (gpointer url, guint callback_action, GtkWidget *widget)
-{
-	GtkClipboard *clipboard;
-
-	clipboard = gtk_clipboard_get (GDK_SELECTION_PRIMARY);
-	gtk_clipboard_set_text (clipboard, url, -1);
- 
-	clipboard = gtk_clipboard_get (GDK_SELECTION_CLIPBOARD);
-	gtk_clipboard_set_text (clipboard, url, -1);
-	
-	g_free (url);
-}
-
-void
-on_popup_subscribe_url_selected (gpointer url, guint callback_action, GtkWidget *widget)
-{
-	feedlist_add_subscription (url, NULL, NULL, NULL, FEED_REQ_RESET_TITLE | FEED_REQ_RESET_UPDATE_INT);
-	g_free (url);
-}
-
 void
 liferea_htmlview_do_zoom (LifereaHtmlView *htmlview, gboolean in)
 {
 	gfloat factor = in?1.2:0.8;
 	
 	liferea_htmlview_set_zoom (htmlview, factor * liferea_htmlview_get_zoom (htmlview));
+}
+
+/* popup callbacks and popup handling */
+
+static void
+on_popup_launch_link_activate (GtkWidget *widget, gpointer user_data)
+{
+	liferea_htmlview_launch_URL (NULL, (gchar *)user_data, UI_HTMLVIEW_LAUNCH_EXTERNAL);
+}
+
+static void
+on_popup_copy_url_activate (GtkWidget *widget, gpointer user_data)
+{
+	GtkClipboard *clipboard;
+
+	clipboard = gtk_clipboard_get (GDK_SELECTION_PRIMARY);
+	gtk_clipboard_set_text (clipboard, (gchar *)user_data, -1);
+ 
+	clipboard = gtk_clipboard_get (GDK_SELECTION_CLIPBOARD);
+	gtk_clipboard_set_text (clipboard, (gchar *)user_data, -1);
+}
+
+static void
+on_popup_subscribe_url_activate (GtkWidget *widget, gpointer user_data)
+{
+	feedlist_add_subscription ((gchar *)user_data, NULL, NULL, NULL, 
+	                           FEED_REQ_RESET_TITLE |
+	                           FEED_REQ_RESET_UPDATE_INT);
 }
 
 static void
@@ -453,20 +450,44 @@ on_popup_zoomout_activate (GtkWidget *widget, gpointer user_data)
 }
 
 static void
-menu_add_option (GtkMenu *menu, const gchar *label, const gchar *stock, gpointer cb, LifereaHtmlView *htmlview)
+on_popup_open_link_in_tab_activate (GtkWidget *widget, gpointer user_data)
+{
+	browser_tabs_add_new ((gchar *)user_data, (gchar *)user_data, FALSE);
+}
+
+static void
+on_popup_social_bm_link_activate (GtkWidget *widget, gpointer user_data)
+{	
+	gchar *url = social_get_bookmark_url ((gchar *)user_data, "");
+	liferea_htmlview_launch_URL (NULL, url, UI_HTMLVIEW_LAUNCH_EXTERNAL);
+	g_free (url);
+}
+
+static void
+menu_add_option (GtkMenu *menu, const gchar *label, const gchar *stock, gpointer cb, gpointer user_data)
 {
 	GtkWidget *item, *image;
 
 	image = gtk_image_new_from_stock (stock, GTK_ICON_SIZE_MENU);
 	item = gtk_image_menu_item_new_with_mnemonic (label);
 	gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item), image);
-	g_signal_connect (item, "activate", G_CALLBACK (cb), htmlview);
+	g_signal_connect (item, "activate", G_CALLBACK (cb), user_data);
 	gtk_widget_show (item);
 	gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
 }
 
+static void
+menu_add_separator (GtkMenu *menu)
+{
+	GtkWidget *widget;
+	
+	widget = gtk_separator_menu_item_new ();
+	gtk_widget_show (widget);
+	gtk_menu_shell_append (GTK_MENU_SHELL (menu), widget);
+}
+
 void
-liferea_htmlview_prepare_context_menu (LifereaHtmlView *htmlview, GtkMenu *menu, gboolean link)
+liferea_htmlview_prepare_context_menu (LifereaHtmlView *htmlview, GtkMenu *menu, gchar *link)
 {
 	/* first drop all menu items that are provided by the browser widget (necessary for WebKit) */
 	GList *item, *items;
@@ -476,8 +497,24 @@ liferea_htmlview_prepare_context_menu (LifereaHtmlView *htmlview, GtkMenu *menu,
 		item = g_list_next (item);
 	}
 	g_list_free (items);
-	
+
 	/* and now add all we want to see */
-	menu_add_option (menu, N_("_Increase Text Size"), "gtk-zoom-in", G_CALLBACK (on_popup_zoomin_activate), htmlview);
-	menu_add_option (menu, N_("_Decrease Text Size"), "gtk-zoom-out", G_CALLBACK (on_popup_zoomout_activate), htmlview);
+	if (link) {
+		gchar *path;
+		
+		menu_add_option (menu, _("Launch Link In _Tab"), NULL, G_CALLBACK (on_popup_open_link_in_tab_activate), link);
+		menu_add_option (menu, _("_Launch Link In Browser"), NULL, G_CALLBACK (on_popup_launch_link_activate), link);
+		menu_add_separator (menu);
+		
+		path = g_strdup_printf (_("_Bookmark Link at %s"), social_get_bookmark_site ());
+		menu_add_option (menu, path, NULL, on_popup_social_bm_link_activate, link);
+		g_free (path);
+		
+		menu_add_option (menu, _("_Copy Link Location"), "gtk-copy", G_CALLBACK (on_popup_copy_url_activate), link);
+		menu_add_separator (menu);
+		menu_add_option (menu, _("_Subscribe..."), "gtk-add", G_CALLBACK (on_popup_subscribe_url_activate), link);
+	} else {
+		menu_add_option (menu, _("_Increase Text Size"), "gtk-zoom-in", G_CALLBACK (on_popup_zoomin_activate), htmlview);
+		menu_add_option (menu, _("_Decrease Text Size"), "gtk-zoom-out", G_CALLBACK (on_popup_zoomout_activate), htmlview);
+	}
 }

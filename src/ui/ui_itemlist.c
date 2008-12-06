@@ -726,18 +726,6 @@ on_popup_social_bm_item_selected (void)
 }
 
 void
-on_popup_social_bm_link_selected (gpointer selectedUrl, guint callback_action, GtkWidget *widget)
-{	
-	if (selectedUrl) {
-		gchar *url = social_get_bookmark_url (selectedUrl, "");
-		liferea_htmlview_launch_URL (NULL, url, UI_HTMLVIEW_LAUNCH_EXTERNAL);
-		g_free (url);
-	} else {
-		liferea_shell_set_important_status_bar (_("No link selected!"));
-	}
-}
-
-void
 on_itemlist_selection_changed (GtkTreeSelection *selection, gpointer data)
 {
 	GtkTreeIter 	iter;

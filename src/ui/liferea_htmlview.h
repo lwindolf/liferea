@@ -160,9 +160,11 @@ gboolean liferea_htmlview_scroll (LifereaHtmlView *htmlview);
  *
  * @param htmlview	the html view
  * @param menu		the menu to fill
- * @param link		TRUE if link context menu
+ * @param link		NULL or a valid URL string if this is 
+ *			to be a link context menu (to be free'd
+ *			using g_free)
  */
-void liferea_htmlview_prepare_context_menu (LifereaHtmlView *htmlview, GtkMenu *menu, gboolean link);
+void liferea_htmlview_prepare_context_menu (LifereaHtmlView *htmlview, GtkMenu *menu, gchar *link);
 
 /**
  * To be called when HTML view needs to update the proxy settings
@@ -177,11 +179,6 @@ void liferea_htmlview_update_proxy (void);
  * @param online	the new online state
  */
 void liferea_htmlview_set_online (gboolean online);
-
-/* glade callbacks */
-void on_popup_launch_link_selected(gpointer callback_data, guint callback_action, GtkWidget *widget);
-void on_popup_copy_url_selected(gpointer callback_data, guint callback_action, GtkWidget *widget);
-void on_popup_subscribe_url_selected(gpointer callback_data, guint callback_action, GtkWidget *widget);
 
 G_END_DECLS
 

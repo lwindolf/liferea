@@ -20,6 +20,7 @@
  */
 
 #include <webkit/webkit.h>
+#include <string.h>
 
 #include "conf.h"
 #include "common.h"
@@ -141,9 +142,19 @@ static void
 webkit_on_menu (WebKitWebView *view, GtkMenu *menu)
 {
 	LifereaHtmlView	*htmlview;
+	gchar		*selected_url;
 
-	htmlview    = g_object_get_data (G_OBJECT (view), "htmlview");
-	liferea_htmlview_prepare_context_menu (htmlview, menu, false /* link menu */);
+	htmlview = g_object_get_data (G_OBJECT (view), "htmlview");
+	
+	selected_url = g_object_get_data (G_OBJECT (view), "selected_url");	
+	
+	/* don't pass empty URLs */
+	if (selected_url && strlen (selected_url) == 0)
+		selected_url = NULL;
+	else
+		selected_url = g_strdup (selected_url);
+		
+	liferea_htmlview_prepare_context_menu (htmlview, menu, selected_url);
 }
 
 /**

@@ -50,10 +50,6 @@
 /* item list menues */
 static gint item_menu_len = 0;
 static GtkItemFactoryEntry *item_menu_items;
-static gint html_menu_len = 0;
-static GtkItemFactoryEntry *html_menu_items;
-static gint url_menu_len = 0;
-static GtkItemFactoryEntry *url_menu_items;
 
 /* tray menu */
 static gint tray_menu_len = 0;
@@ -113,12 +109,6 @@ on_toggle_visibility (gpointer callback_data, guint callback_action, GtkWidget *
 	liferea_shell_toggle_visibility ();
 }
 
-void
-on_popup_open_link_in_tab_selected (gpointer url, guint callback_action, GtkWidget *widget)
-{
-	browser_tabs_add_new ((gchar *)url, (gchar *)url, FALSE);
-}
-
 /* prepares the popup menues */
 void
 ui_popup_update_menues (void)
@@ -162,21 +152,6 @@ ui_popup_update_menues (void)
 	addPopupOption (&item_menu_items, &item_menu_len, _("/Toggle _Read Status"),		NULL, on_popup_toggle_read, 			0, "<StockItem>", GTK_STOCK_APPLY);
 	addPopupOption (&item_menu_items, &item_menu_len, _("/Toggle Item _Flag"),		NULL, on_popup_toggle_flag, 			0, NULL, 0);
 	addPopupOption (&item_menu_items, &item_menu_len, _("/R_emove Item"),			NULL, on_popup_remove_selected,			0, "<StockItem>", GTK_STOCK_DELETE);
-
-	/* HTML view popup menues */
-
-	g_free (url_menu_items);
-	url_menu_items = NULL;
-	url_menu_len = 0;
-	addPopupOption (&url_menu_items, &url_menu_len, _("/Launch Link In _Tab"),	NULL, on_popup_open_link_in_tab_selected,	0, NULL, 0);
-	addPopupOption (&url_menu_items, &url_menu_len, _("/_Launch Link In Browser"),	NULL, on_popup_launch_link_selected, 		0, NULL, 0);
-	addPopupOption (&url_menu_items, &url_menu_len, "/",				NULL, NULL,		                	0, "<Separator>", 0);
-	/* menu option for social bookmark creation */
-	path = ui_popup_create_path (_("/_Bookmark Link at %s"), social_get_bookmark_site ());
-	addPopupOption (&url_menu_items, &url_menu_len, path,				NULL, on_popup_social_bm_link_selected,  	0, NULL, 0);
-	addPopupOption (&url_menu_items, &url_menu_len, _("/_Copy Link Location"),	NULL, on_popup_copy_url_selected,		0, NULL, 0);
-	addPopupOption (&url_menu_items, &url_menu_len, "/",				NULL, NULL,		                	0, "<Separator>", 0);
-	addPopupOption (&url_menu_items, &url_menu_len, _("/_Subscribe..."),		NULL, on_popup_subscribe_url_selected, 		0, "<StockItem>", GTK_STOCK_ADD);
 
 	/* System tray popup menu */
 	g_free (tray_menu_items);
@@ -231,18 +206,12 @@ ui_popup_make_item_menu (itemPtr item)
 {
 	GtkMenu 	*menu;
 
-	if (2 == itemlist_get_view_mode ())
-		menu = ui_popup_make_menu (html_menu_items, html_menu_len, item);
-	else
+	if (2 == itemlist_get_view_mode ()) {
+		// FIXME: menu = ui_popup_make_menu (html_menu_items, html_menu_len, item);
+	} else
 		menu = ui_popup_make_menu (item_menu_items, item_menu_len, item);
 
 	return menu;
-}
-
-GtkMenu *
-ui_popup_make_url_menu (const gchar *url)
-{
-	return ui_popup_make_menu (url_menu_items, url_menu_len, g_strdup (url));
 }
 
 GtkMenu *
