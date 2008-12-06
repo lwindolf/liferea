@@ -77,7 +77,7 @@ LifereaHtmlView * browser_tabs_add_new (const gchar *url, const gchar *title, gb
 /**
  * makes the headline tab visible 
  */
-void ui_tabs_show_headlines (void);
+void browser_tabs_show_headlines (void);
 
 /**
  * Used to determine which HTML view (a tab or the headlines view)

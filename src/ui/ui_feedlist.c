@@ -32,11 +32,11 @@
 #include "folder.h"
 #include "newsbin.h"
 #include "vfolder.h"
+#include "ui/browser_tabs.h"
 #include "ui/liferea_shell.h"
 #include "ui/ui_dnd.h"
 #include "ui/ui_node.h"
 #include "ui/ui_subscription.h"
-#include "ui/ui_tabs.h"
 #include "fl_sources/node_source.h"
 
 extern GHashTable	*feedHandler;
@@ -118,7 +118,7 @@ ui_feedlist_selection_changed_cb (GtkTreeSelection *selection, gpointer data)
 			geometry.min_width = 50;			
 			gtk_window_set_geometry_hints (GTK_WINDOW (mainwindow), mainwindow, &geometry, GDK_HINT_MIN_SIZE);
 		
-			ui_tabs_show_headlines ();
+			browser_tabs_show_headlines ();
 			
 			/* workaround to ensure the feedlist is focussed when we click it
 			   (Mozilla might prevent this, ui_itemlist_display() depends on this */

@@ -33,11 +33,11 @@
 #include "itemview.h"
 #include "newsbin.h"
 #include "social.h"
+#include "ui/browser_tabs.h"
+#include "ui/liferea_htmlview.h"
 #include "ui/liferea_shell.h"
 #include "ui/ui_common.h"
-#include "ui/liferea_htmlview.h"
 #include "ui/ui_popup.h"
-#include "ui/ui_tabs.h"
 
 static GHashTable 	*item_id_to_iter = NULL;	/** hash table used for fast item id->tree iter lookup */
 

@@ -13,6 +13,7 @@ libliui_a_SOURCES = \
 	attention_profile_dialog.c \
 	attention_profile_dialog.h \
 	auth_dialog.c auth_dialog.h \
+	browser_tabs.c browser_tabs.h \
 	eggtrayicon.c eggtrayicon.h \
 	enclosure_list_view.c enclosure_list_view.h \
 	itemview.c itemview.h \
@@ -35,6 +36,5 @@ libliui_a_SOURCES = \
 	ui_search.c ui_search.h \
 	ui_session.c ui_session.h \
 	ui_subscription.c ui_subscription.h \
-	ui_tabs.c ui_tabs.h \
 	ui_tray.c ui_tray.h \
 	ui_update.c ui_update.h 

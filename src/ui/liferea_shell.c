@@ -38,6 +38,7 @@
 #include "feedlist.h"
 #include "itemlist.h"
 #include "net.h"
+#include "ui/browser_tabs.h"
 #include "ui/itemview.h"
 #include "ui/ui_common.h"
 #include "ui/ui_dialog.h"
@@ -46,7 +47,6 @@
 #include "ui/ui_prefs.h"
 #include "ui/ui_script.h"
 #include "ui/ui_search.h"
-#include "ui/ui_tabs.h"
 #include "ui/ui_update.h"
 
 /* all used icons (FIXME: evil) */

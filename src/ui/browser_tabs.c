@@ -19,7 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#include "ui/ui_tabs.h"
+#include "ui/browser_tabs.h"
 
 #include <string.h>
 #include <gdk/gdkkeysyms.h>
@@ -27,7 +27,6 @@
 #include "common.h"
 #include "itemlist.h"
 #include "ui/liferea_shell.h"
-#include "ui/ui_tabs.h"
 #include "ui/ui_itemlist.h"
 
 /* single tab history handling */
@@ -451,7 +450,7 @@ browser_tabs_add_new (const gchar *url, const gchar *title, gboolean activate)
 }
 
 void
-ui_tabs_show_headlines (void)
+browser_tabs_show_headlines (void)
 {
 	gtk_notebook_set_current_page (tabs->priv->notebook, 0);
 }
@@ -486,7 +485,6 @@ browser_tabs_get_active_htmlview (void)
 	gint		current;
 	
 	current = gtk_notebook_get_current_page (tabs->priv->notebook);
-g_print("notebook: %d\n", current);
 	if (0 == current)
 		return NULL;	/* never return the first page widget (because it is the item view) */
 		

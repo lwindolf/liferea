@@ -32,9 +32,9 @@
 #include "net.h"
 #include "social.h"
 #include "render.h"
+#include "ui/browser_tabs.h"
 #include "ui/liferea_shell.h"
 #include "ui/ui_itemlist.h"
-#include "ui/ui_tabs.h"
 #include "ui/ui_prefs.h"
 
 static htmlviewImplPtr htmlviewImpl = NULL;
