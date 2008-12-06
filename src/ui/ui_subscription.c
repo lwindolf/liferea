@@ -23,7 +23,8 @@
 #  include <config.h>
 #endif
  
-#include <gtk/gtk.h>
+#include "ui/ui_subscription.h"
+
 #include <libxml/uri.h>
 #include <string.h> 
 
@@ -35,10 +36,9 @@
 #include "feedlist.h"
 #include "node.h"
 #include "update.h"
+#include "ui/liferea_dialog.h"
 #include "ui/ui_common.h"
-#include "ui/ui_dialog.h"
 #include "ui/ui_node.h"
-#include "ui/ui_subscription.h"
 
 /* Note: these update interval literals should be kept in sync with the 
    ones in ui_prefs.c! */

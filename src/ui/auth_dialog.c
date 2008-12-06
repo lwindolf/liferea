@@ -17,14 +17,15 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
- 
-#include <gtk/gtk.h>
+
+#include "ui/auth_dialog.h"
+
 #include <libxml/uri.h>
 #include <string.h> 
+
 #include "common.h"
 #include "subscription.h"
-#include "ui/auth_dialog.h"
-#include "ui/ui_dialog.h"
+#include "ui/liferea_dialog.h"
 
 static void auth_dialog_class_init	(AuthDialogClass *klass);
 static void auth_dialog_init		(AuthDialog *ad);

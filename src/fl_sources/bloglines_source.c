@@ -1,7 +1,7 @@
 /**
- * @file bloglines_source.c Bloglines feed list source support
+ * @file bloglines_source.c  Bloglines feed list source support
  * 
- * Copyright (C) 2006-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2008 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,14 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <glib.h>
+#include "fl_sources/bloglines_source.h"
+
 #include <gtk/gtk.h>
 #include <unistd.h>
 
-#include "conf.h"
+#include "common.h"
 #include "subscription.h"
-#include "ui/ui_dialog.h"
-#include "fl_sources/bloglines_source.h"
-#include "fl_sources/node_source.h"
+#include "ui/liferea_dialog.h"
 #include "fl_sources/opml_source.h"
 
 static void bloglines_source_init (void) { }

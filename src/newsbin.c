@@ -1,7 +1,7 @@
 /**
  * @file newsbin.c  news bin node type implementation
  * 
- * Copyright (C) 2006-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2008 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "newsbin.h"
+
 #include <gtk/gtk.h>
 
 #include "common.h"
@@ -26,10 +28,9 @@
 #include "feedlist.h"
 #include "itemlist.h"
 #include "metadata.h"
-#include "newsbin.h"
 #include "render.h"
 #include "vfolder.h"
-#include "ui/ui_dialog.h"
+#include "ui/liferea_dialog.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_node.h"
 #include "ui/ui_popup.h"

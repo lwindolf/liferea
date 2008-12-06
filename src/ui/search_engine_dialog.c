@@ -24,7 +24,7 @@
 #include "common.h"
 #include "feed.h"
 #include "feedlist.h"
-#include "ui/ui_dialog.h"
+#include "ui/liferea_dialog.h"
 
 static void search_engine_dialog_class_init	(SearchEngineDialogClass *klass);
 static void search_engine_dialog_init		(SearchEngineDialog *ld);

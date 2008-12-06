@@ -21,15 +21,13 @@
 
 #include "ui/ui_node.h"
 
-#include <gtk/gtk.h>
-
 #include "common.h"
 #include "debug.h"
 #include "feedlist.h"
 #include "folder.h"
+#include "ui/liferea_dialog.h"
 #include "ui/liferea_shell.h"
 #include "ui/ui_common.h"
-#include "ui/ui_dialog.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_popup.h"
 

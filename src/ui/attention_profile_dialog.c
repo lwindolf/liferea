@@ -23,7 +23,7 @@
 #include <glib.h>
 
 #include "common.h"
-#include "ui/ui_dialog.h"
+#include "ui/liferea_dialog.h"
 
 static void attention_profile_dialog_class_init	(AttentionProfileDialogClass *klass);
 static void attention_profile_dialog_init	(AttentionProfileDialog *apd);

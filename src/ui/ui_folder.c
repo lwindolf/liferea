@@ -19,10 +19,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#include <gtk/gtk.h>
+#include "ui/ui_folder.h"
 
 #include "feedlist.h"
-#include "ui/ui_dialog.h"
+#include "ui/liferea_dialog.h"
 
 static GtkWidget	*newfolderdialog = NULL;
 

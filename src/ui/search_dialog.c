@@ -29,8 +29,8 @@
 #include "node.h"
 #include "rule.h"
 #include "vfolder.h"
+#include "ui/liferea_dialog.h"
 #include "ui/rule_editor.h"
-#include "ui/ui_dialog.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_itemlist.h"
 

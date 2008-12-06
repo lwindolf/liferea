@@ -18,16 +18,15 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#include <glib.h>
+#include "ui/ui_update.h" 
 
 #include "common.h"
 #include "feedlist.h"
 #include "node.h"
 #include "subscription.h"
 #include "update.h"
-#include "ui/ui_dialog.h"
+#include "ui/liferea_dialog.h"
 #include "ui/ui_node.h"
-#include "ui/ui_update.h" 
 
 enum {
 	UM_FAVICON,

@@ -18,6 +18,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "fl_sources/node_source.h"
+
 #include <gmodule.h>
 #include <gtk/gtk.h>
 #include <string.h>
@@ -29,10 +31,9 @@
 #include "folder.h"
 #include "node.h"
 #include "node_type.h"
+#include "ui/liferea_dialog.h"
 #include "ui/ui_common.h"
-#include "ui/ui_dialog.h"
 #include "ui/ui_node.h"
-#include "fl_sources/node_source.h"
 #include "notification/notification.h"
 
 static GSList	*nodeSourceTypes = NULL;

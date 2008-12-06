@@ -17,14 +17,15 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+ 
+#include "ui/ui_search.h"
 
 #include "common.h"
 #include "feedlist.h"
 #include "itemlist.h"
 #include "node.h"
 #include "vfolder.h"
-#include "ui/ui_dialog.h"
-#include "ui/ui_search.h"
+#include "ui/liferea_dialog.h"
 
 static GtkWidget	*searchdialog = NULL;
 static GtkWidget 	*searchEngineDialog = NULL;

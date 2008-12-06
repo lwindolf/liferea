@@ -22,8 +22,6 @@
 #define _ENCLOSURE_LIST_VIEW_H
 
 #include <gtk/gtk.h>
-#include <glib-object.h>
-#include <glib.h>
 
 G_BEGIN_DECLS
 

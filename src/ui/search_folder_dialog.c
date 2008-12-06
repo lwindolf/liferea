@@ -21,12 +21,10 @@
 
 #include "ui/search_folder_dialog.h"
 
-#include <gtk/gtk.h>
-
 #include "vfolder.h"
+#include "ui/liferea_dialog.h"
 #include "ui/liferea_shell.h"
 #include "ui/rule_editor.h"
-#include "ui/ui_dialog.h"
 
 static void search_folder_dialog_class_init	(SearchFolderDialogClass *klass);
 static void search_folder_dialog_init		(SearchFolderDialog *ld);

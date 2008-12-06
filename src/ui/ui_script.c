@@ -1,7 +1,7 @@
 /**
  * @file ui_script.c UI dialogs concerning script configuration
  *
- * Copyright (C) 2006-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2008 Lars Lindner <lars.lindner@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -25,8 +25,8 @@
 
 #include "common.h"
 #include "script.h"
+#include "ui/liferea_dialog.h"
 #include "ui/liferea_shell.h"
-#include "ui/ui_dialog.h"
 
 typedef struct hookInfo {
 	gchar		*name;

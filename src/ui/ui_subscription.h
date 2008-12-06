@@ -21,8 +21,7 @@
 #ifndef _UI_SUBSCRIPTION_H
 #define _UI_SUBSCRIPTION_H
 
-#include <glib-object.h>
-#include <glib.h>
+#include <gtk/gtk.h>
 
 #include "subscription.h"
 

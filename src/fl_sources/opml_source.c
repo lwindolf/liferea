@@ -18,12 +18,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <glib.h>
+#include "fl_sources/opml_source.h"
+
 #include <gtk/gtk.h>
 #include <unistd.h>
 
 #include "common.h"
-#include "db.h"
 #include "debug.h"
 #include "export.h"
 #include "feed.h"
@@ -31,13 +31,10 @@
 #include "folder.h"
 #include "node.h"
 #include "xml.h"
+#include "ui/liferea_dialog.h"
 #include "ui/ui_common.h"
-#include "ui/ui_dialog.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_node.h"
-#include "fl_sources/opml_source.h"
-#include "fl_sources/node_source.h"
-#include "notification/notification.h"
 
 /** default OPML update interval = once a day */
 #define OPML_SOURCE_UPDATE_INTERVAL 60*60*24

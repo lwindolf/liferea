@@ -19,27 +19,26 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "fl_sources/google_source.h"
+
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <string.h>
+#include <libxml/xpath.h>
 
 #include "common.h"
-#include "conf.h"
 #include "debug.h"
 #include "feedlist.h"
+#include "item_state.h"
 #include "node.h"
+#include "subscription.h"
 #include "update.h"
 #include "xml.h"
+#include "ui/liferea_dialog.h"
 #include "ui/ui_common.h"
-#include "ui/ui_dialog.h"
-#include "fl_sources/google_source.h"
 #include "fl_sources/node_source.h"
 #include "fl_sources/opml_source.h"
-#include <libxml/xpath.h>
-#include "google_source_edit.h"
-#include "subscription.h"
-#include "item_state.h"
-#include "libxml/xpath.h"
+#include "fl_sources/google_source_edit.h"
 
 /** default Google reader subscription list update interval = once a day */
 #define GOOGLE_SOURCE_UPDATE_INTERVAL 60*60*24

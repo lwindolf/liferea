@@ -18,10 +18,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <gtk/gtk.h>
-#include <string.h>
-
 #include "enclosure_list_view.h"
+
+#include <string.h>
 
 #include "common.h"
 #include "conf.h"
@@ -29,7 +28,7 @@
 #include "enclosure.h"
 #include "item.h"
 #include "metadata.h"
-#include "ui/ui_dialog.h"
+#include "ui/liferea_dialog.h"
 #include "ui/ui_popup.h"
 #include "ui/ui_prefs.h"
 

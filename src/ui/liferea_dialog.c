@@ -23,10 +23,10 @@
 #  include <config.h>
 #endif
 
-#include <gtk/gtk.h>
+#include "ui/liferea_dialog.h"
+
 #include <glade/glade.h>
 
-#include "ui/ui_dialog.h"
 #include "ui/liferea_shell.h"
 
 static void liferea_dialog_class_init	(LifereaDialogClass *klass);

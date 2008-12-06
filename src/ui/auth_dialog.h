@@ -1,7 +1,7 @@
 /**
  * @file auth_dialog.h  authentication support dialog
  *
- * Copyright (C) 2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2008 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,8 +21,9 @@
 #ifndef _UI_AUTH_H
 #define _UI_AUTH_H
 
-#include <glib-object.h>
-#include <glib.h>
+#include <gtk/gtk.h>
+
+#include "subscription.h"
 
 G_BEGIN_DECLS
 
