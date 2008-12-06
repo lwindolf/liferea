@@ -486,6 +486,7 @@ browser_tabs_get_active_htmlview (void)
 	gint		current;
 	
 	current = gtk_notebook_get_current_page (tabs->priv->notebook);
+g_print("notebook: %d\n", current);
 	if (0 == current)
 		return NULL;	/* never return the first page widget (because it is the item view) */
 		

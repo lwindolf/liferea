@@ -1,7 +1,7 @@
 /**
  * @file webkit.c WebKit browser module for Liferea
  *
- * Copyright (C) 2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2008 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2008 Lars Strojny <lars@strojny.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -129,6 +129,24 @@ webkit_link_clicked (WebKitWebView *view, WebKitWebFrame *frame, WebKitNetworkRe
 }
 
 /**
+ * WebKitWebView::populate-popup:
+ * @web_view: the object on which the signal is emitted
+ * @menu: the context menu
+ *
+ * When a context menu is about to be displayed this signal is emitted.
+ *
+ * Add menu items to #menu to extend the context menu.
+ */
+static void
+webkit_on_menu (WebKitWebView *view, GtkMenu *menu)
+{
+	LifereaHtmlView	*htmlview;
+
+	htmlview    = g_object_get_data (G_OBJECT (view), "htmlview");
+	liferea_htmlview_prepare_context_menu (htmlview, menu, false /* link menu */);
+}
+
+/**
  * Initializes WebKit
  *
  * Initializes the WebKit HTML rendering engine. Creates a GTK scrollpane widget
@@ -217,6 +235,12 @@ webkit_new (LifereaHtmlView *htmlview, gboolean force_internal_browsing)
 		view,
 		"navigation-requested",
 		G_CALLBACK (webkit_link_clicked),
+		view
+	);
+	g_signal_connect (
+		view,
+		"populate-popup",
+		G_CALLBACK (webkit_on_menu),
 		view
 	);
 

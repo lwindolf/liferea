@@ -45,14 +45,6 @@ void ui_popup_update_menues (void);
 GtkMenu * ui_popup_make_item_menu (itemPtr item);
 
 /**
- * Creates a popup menu with options for the HTML view context menu.
- * (Currently only zooming options)
- *
- * @returns a new popup menu
- */
-GtkMenu * ui_popup_make_html_menu (void);
-
-/**
  * Creates a popup menu with options for a HTML link context menu.
  * (Copy link, Open Link...)
  *

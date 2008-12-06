@@ -433,27 +433,63 @@ on_popup_subscribe_url_selected (gpointer url, guint callback_action, GtkWidget 
 }
 
 void
+liferea_htmlview_do_zoom (LifereaHtmlView *htmlview, gboolean in)
+{
+	gfloat factor = in?1.2:0.8;
+	
+	liferea_htmlview_set_zoom (htmlview, factor * liferea_htmlview_get_zoom (htmlview));
+}
+
+void
 on_popup_zoomin_selected (gpointer callback_data, guint callback_action, GtkWidget *widget)
 {
-	LifereaHtmlView	*htmlview;
-	gfloat		zoom;
-	
-	htmlview = browser_tabs_get_active_htmlview ();
-	zoom = liferea_htmlview_get_zoom (htmlview);
-	zoom *= 1.2;
-	
-	liferea_htmlview_set_zoom (htmlview, zoom);
+//	liferea_htmlview_do_zoom (liferea_shell_get_active_htmlview (), TRUE);
 }
 
 void
 on_popup_zoomout_selected (gpointer callback_data, guint callback_action, GtkWidget *widget)
 {
-	LifereaHtmlView	*htmlview;
-	gfloat		zoom;
+//	liferea_htmlview_do_zoom (liferea_shell_get_active_htmlview (), FALSE);
+}
 
-	htmlview = browser_tabs_get_active_htmlview ();	
-	zoom = liferea_htmlview_get_zoom (htmlview);
-	zoom /= 1.2;
+static void
+on_popup_zoomin_activate (GtkWidget *widget, gpointer user_data)
+{
+	liferea_htmlview_do_zoom (LIFEREA_HTMLVIEW (user_data), TRUE);
+}
+
+static void
+on_popup_zoomout_activate (GtkWidget *widget, gpointer user_data)
+{
+	liferea_htmlview_do_zoom (LIFEREA_HTMLVIEW (user_data), FALSE);
+}
+
+static void
+menu_add_option (GtkMenu *menu, const gchar *label, const gchar *stock, gpointer cb, LifereaHtmlView *htmlview)
+{
+	GtkWidget *item, *image;
+
+	image = gtk_image_new_from_stock (stock, GTK_ICON_SIZE_MENU);
+	item = gtk_image_menu_item_new_with_mnemonic (label);
+	gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item), image);
+	g_signal_connect (item, "activate", G_CALLBACK (cb), htmlview);
+	gtk_widget_show (item);
+	gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+}
+
+void
+liferea_htmlview_prepare_context_menu (LifereaHtmlView *htmlview, GtkMenu *menu, gboolean link)
+{
+	/* first drop all menu items that are provided by the browser widget (necessary for WebKit) */
+	GList *item, *items;
+	item = items = gtk_container_get_children(GTK_CONTAINER(menu));
+	while (item) {
+		gtk_widget_destroy (GTK_WIDGET (item->data));
+		item = g_list_next (item);
+	}
+	g_list_free (items);
 	
-	liferea_htmlview_set_zoom (htmlview, zoom);
+	/* and now add all we want to see */
+	menu_add_option (menu, N_("_Increase Text Size"), "gtk-zoom-in", G_CALLBACK (on_popup_zoomin_activate), htmlview);
+	menu_add_option (menu, N_("_Decrease Text Size"), "gtk-zoom-out", G_CALLBACK (on_popup_zoomout_activate), htmlview);
 }

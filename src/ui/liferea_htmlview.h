@@ -156,6 +156,15 @@ gfloat liferea_htmlview_get_zoom (LifereaHtmlView *htmlview);
 gboolean liferea_htmlview_scroll (LifereaHtmlView *htmlview);
 
 /**
+ * Prepares a GtkMenu to be used as a context menu for the HTML view.
+ *
+ * @param htmlview	the html view
+ * @param menu		the menu to fill
+ * @param link		TRUE if link context menu
+ */
+void liferea_htmlview_prepare_context_menu (LifereaHtmlView *htmlview, GtkMenu *menu, gboolean link);
+
+/**
  * To be called when HTML view needs to update the proxy settings
  * of the rendering widget implementation.
  */
@@ -173,6 +182,8 @@ void liferea_htmlview_set_online (gboolean online);
 void on_popup_launch_link_selected(gpointer callback_data, guint callback_action, GtkWidget *widget);
 void on_popup_copy_url_selected(gpointer callback_data, guint callback_action, GtkWidget *widget);
 void on_popup_subscribe_url_selected(gpointer callback_data, guint callback_action, GtkWidget *widget);
+
+// FIXME: these are menu callbacks! wrong name and wrong file!!!
 void on_popup_zoomin_selected(gpointer callback_data, guint callback_action, GtkWidget *widget);
 void on_popup_zoomout_selected(gpointer callback_data, guint callback_action, GtkWidget *widget);
 

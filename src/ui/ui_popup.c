@@ -164,11 +164,6 @@ ui_popup_update_menues (void)
 	addPopupOption (&item_menu_items, &item_menu_len, _("/R_emove Item"),			NULL, on_popup_remove_selected,			0, "<StockItem>", GTK_STOCK_DELETE);
 
 	/* HTML view popup menues */
-	g_free (html_menu_items);
-	html_menu_items = NULL;
-	html_menu_len = 0;
-	addPopupOption (&html_menu_items, &html_menu_len, _("/_Increase Text Size"),	NULL, on_popup_zoomin_selected,		0, "<StockItem>", GTK_STOCK_ZOOM_IN);
-	addPopupOption (&html_menu_items, &html_menu_len, _("/_Decrease Text Size"),	NULL, on_popup_zoomout_selected,	0, "<StockItem>", GTK_STOCK_ZOOM_OUT);
 
 	g_free (url_menu_items);
 	url_menu_items = NULL;
@@ -242,14 +237,6 @@ ui_popup_make_item_menu (itemPtr item)
 		menu = ui_popup_make_menu (item_menu_items, item_menu_len, item);
 
 	return menu;
-}
-
-/* popup menu generating functions for the HTML view */
-
-GtkMenu *
-ui_popup_make_html_menu (void)
-{
-	return ui_popup_make_menu (html_menu_items, html_menu_len, NULL);
 }
 
 GtkMenu *
