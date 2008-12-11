@@ -283,21 +283,21 @@ void favicon_download(const gchar *id, const gchar *html_url, const gchar *sourc
 	
 	/* case 3. */
 	if(html_url) {
-		if(2 < count_slashes(html_url)) {
-			tmp = tmp2 = g_strdup(html_url);
-			tmp = strstr(tmp, "://");
-			if(tmp) {
-				tmp = strchr(tmp + 3, '/');
-				if(tmp) {
-					*tmp = 0;
-					tmp = tmp2;
-					tmp2 = g_strdup_printf("%s/favicon.ico", tmp);
-					ctxt->urls = g_slist_append(ctxt->urls, tmp2);
-					debug1(DEBUG_UPDATE, "(3) adding favicon source URL: %s", tmp2);
-				}
-			}
-			g_free(tmp);
+		tmp = tmp2 = g_strdup(html_url);
+		/* skip protocol prefix */
+		tmp = strstr(tmp, "://");
+		if(tmp) {
+			/* find end of domain name */
+			tmp = strchr(tmp + 3, '/');
+			if(tmp)
+				*tmp = 0;
+				
+			tmp = tmp2;
+			tmp2 = g_strdup_printf("%s/favicon.ico", tmp);
+			ctxt->urls = g_slist_append(ctxt->urls, tmp2);
+			debug1(DEBUG_UPDATE, "(3) adding favicon source URL: %s", tmp2);
 		}
+		g_free(tmp);
 	}
 	
 	if(*source_url != '|' && 2 < count_slashes(source_url)) {
