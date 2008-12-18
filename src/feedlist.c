@@ -421,6 +421,8 @@ feedlist_node_added (nodePtr node)
 	if (node->subscription)
 		db_subscription_update (node->subscription);
 	
+	db_node_update(node);
+
 	feedlist_node_imported (node);
 	
 	ui_feedlist_select (node);
