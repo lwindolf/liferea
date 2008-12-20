@@ -596,9 +596,6 @@ open:
 	db_new_statement ("subscriptionRemoveStmt",
 	                  "DELETE FROM subscription WHERE node_id = ?");
 			 
-	db_new_statement ("subscriptionListLoadStmt",
-	                  "SELECT node_id FROM subscription");
-			 
 	db_new_statement ("subscriptionLoadStmt",
 	                  "SELECT "
 			  "node_id,"
@@ -1807,20 +1804,6 @@ db_subscription_remove (const gchar *id)
 		g_warning ("Could not remove subscription %s from DB (error code %d)!", id, res);
 
 	debug_end_measurement (DEBUG_DB, "subscription remove");
-}
-
-GSList *
-db_subscription_list_load (void)
-{
-	sqlite3_stmt	*stmt;
-	GSList		*list = NULL;
-
-	stmt = db_get_statement ("subscriptionListLoadStmt");
-	while (sqlite3_step (stmt) == SQLITE_ROW) {
-		list = g_slist_append(list, g_strdup (sqlite3_column_text (stmt, 0)));
-	}
-
-	return list;
 }
 
 void

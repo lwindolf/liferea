@@ -291,13 +291,6 @@ void db_subscription_update (subscriptionPtr subscription);
 void db_subscription_remove (const gchar *id);
 
 /**
- * Returns a list of all subscription node ids.
- *
- * @returns a list of strings (values must be free'd by caller)
- */
-GSList * db_subscription_list_load (void);
-
-/**
  * Loads the node with the given node id from the DB.
  *
  * @param id		the node id
