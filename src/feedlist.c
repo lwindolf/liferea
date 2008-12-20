@@ -41,10 +41,6 @@
 #include "fl_sources/node_source.h"
 #include "notification/notification.h"
 
-// FIXME: doesn't match here!
-/** flag is set when any cache migration was done on startup */
-gboolean cacheMigrated = FALSE;
-
 static void feedlist_class_init	(FeedListClass *klass);
 static void feedlist_init	(FeedList *fl);
 
@@ -222,12 +218,6 @@ feedlist_init (FeedList *fl)
 	/* 6. Finally save the new feed list state */
 	feedlist->priv->loading = FALSE;
 	feedlist_schedule_save();
-	
-	if (cacheMigrated)
-		ui_show_info_box (_("This version of Liferea uses a new cache format and has migrated your "
-		                    "feed cache. The cache content of v1.2 in ~/.liferea_1.2 was "
-		                    "not deleted automatically. Please remove this directory "
-		                    "manually once you are sure migration was successful!"));
 	
 	debug_exit("feedlist_init");	
 }

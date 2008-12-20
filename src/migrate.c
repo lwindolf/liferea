@@ -18,9 +18,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "migrate.h"
+
 #include <glib.h>
 #include <glib/gstdio.h>
 #include <libxml/uri.h>
+
 #include "common.h"
 #include "db.h"
 #include "debug.h"
@@ -28,11 +31,9 @@
 #include "item.h"
 #include "itemset.h"
 #include "metadata.h"
-#include "migrate.h"
 #include "node.h"
 #include "xml.h"
-
-extern gboolean cacheMigrated;
+#include "ui/ui_common.h"
 
 static void 
 migrate_copy_dir (const gchar *from,
@@ -328,5 +329,8 @@ migration_execute (migrationMode mode)
 			break;
 	}
 	
-	cacheMigrated = TRUE;
+	ui_show_info_box (_("This version of Liferea uses a new cache format and has migrated your "
+	                    "feed cache. The cache content of v1.2 in ~/.liferea_1.2 was "
+	                    "not deleted automatically. Please remove this directory "
+	                    "manually once you are sure migration was successful!"));
 }

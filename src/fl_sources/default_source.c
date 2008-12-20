@@ -42,8 +42,6 @@
 /** lock to prevent feed list saving while loading */
 static gboolean feedlistImport = FALSE;
 
-extern gboolean cacheMigrated;	/* feedlist.c */
-
 static gchar *
 default_source_source_get_feedlist (nodePtr node)
 {
