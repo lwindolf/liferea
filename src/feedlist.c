@@ -28,7 +28,6 @@
 #include "feedlist.h"
 #include "folder.h"
 #include "itemlist.h"
-#include "newsbin.h"
 #include "node.h"
 #include "script.h"
 #include "update.h"
@@ -40,12 +39,7 @@
 #include "ui/ui_node.h"
 #include "ui/ui_subscription.h"
 #include "ui/ui_tray.h"
-#include "fl_sources/bloglines_source.h"
-#include "fl_sources/default_source.h"
-#include "fl_sources/dummy_source.h"
-#include "fl_sources/google_source.h"
 #include "fl_sources/node_source.h"
-#include "fl_sources/opml_source.h"
 #include "notification/notification.h"
 
 // FIXME: doesn't match here!
@@ -188,28 +182,14 @@ feedlist_init (FeedList *fl)
 {
 	debug_enter("feedlist_init");
 	
-	/* 0. Prepare globally accessible singleton */
+	/* 1. Prepare globally accessible singleton */
 	g_assert (NULL == feedlist);
 	feedlist = fl;
 	
 	feedlist->priv = FEEDLIST_GET_PRIVATE (fl);
 	feedlist->priv->loading = TRUE;
 	
-	/* 1. Register standard node and source types */
-	node_type_register (feed_get_node_type ());
-	node_type_register (root_get_node_type ());
-	node_type_register (folder_get_node_type ());
-	node_type_register (vfolder_get_node_type ());
-	node_type_register (node_source_get_node_type ());
-	node_type_register (newsbin_get_node_type ());
-	
-	node_source_type_register (default_source_get_type ());
-	node_source_type_register (dummy_source_get_type ());
-	node_source_type_register (opml_source_get_type ());
-	node_source_type_register (bloglines_source_get_type ());
-	node_source_type_register (google_source_get_type ());
-
-	/* 2. Set up a root node and import the feed list plugins structure. */
+	/* 2. Set up a root node and import the feed list source structure. */
 	debug0 (DEBUG_CACHE, "Setting up root node");
 	ROOTNODE = node_source_setup_root ();
 
@@ -381,7 +361,7 @@ feedlist_add_folder (const gchar *title)
 	g_assert (NULL != title);
 
 	parent = feedlist_get_insertion_point ();
-	
+
 	if(0 == (NODE_SOURCE_TYPE (parent->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS))
 		return;	
 		

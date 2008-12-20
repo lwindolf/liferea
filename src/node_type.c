@@ -21,12 +21,15 @@
 #include "feed.h"
 #include "feed_parser.h"
 #include "feedlist.h"
+#include "folder.h"
+#include "newsbin.h"
 #include "node_type.h"
+#include "vfolder.h"
 #include "fl_sources/node_source.h"
 
 static GSList *nodeTypes = NULL;
 
-void
+static void
 node_type_register (nodeTypePtr nodeType)
 {
 
@@ -70,6 +73,14 @@ node_str_to_type (const gchar *str)
 	GSList	*iter = nodeTypes;
 
 	g_assert (NULL != str);
+	
+	/* initialize known node types the first time... */
+	node_type_register (feed_get_node_type ());
+	node_type_register (root_get_node_type ());
+	node_type_register (folder_get_node_type ());
+	node_type_register (vfolder_get_node_type ());
+	node_type_register (node_source_get_node_type ());
+	node_type_register (newsbin_get_node_type ());
 
 	if (g_str_equal (str, ""))	/* type maybe "" if initial download is not yet done */
 		return feed_get_node_type ();

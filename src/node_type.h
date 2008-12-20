@@ -59,14 +59,6 @@ typedef struct nodeType {
 #define NODE_TYPE(node)	(node->type)
 
 /**
- * Registers a new node type. Can be used by node source
- * implementations to register own node types.
- *
- * @param nodeType	node type info 
- */
-void node_type_register(nodeTypePtr nodeType);
-
-/**
  * Changes the node type.
  *
  * @param node	the node

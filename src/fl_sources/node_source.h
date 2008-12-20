@@ -197,15 +197,6 @@ typedef struct nodeSource {
 nodePtr node_source_setup_root (void);
 
 /**
- * Registers a node source type.
- *
- * @param nodeSourceType	node source type
- *
- * @returns TRUE on success
- */
-gboolean node_source_type_register (nodeSourceTypePtr type);
-
-/**
  * Creates a new source and assigns it to the given new node. 
  * To be used to prepare a source node before adding it to the 
  * feed list.

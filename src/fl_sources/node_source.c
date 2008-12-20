@@ -34,6 +34,11 @@
 #include "ui/liferea_dialog.h"
 #include "ui/ui_common.h"
 #include "ui/ui_node.h"
+#include "fl_sources/bloglines_source.h"
+#include "fl_sources/default_source.h"
+#include "fl_sources/dummy_source.h"
+#include "fl_sources/google_source.h"
+#include "fl_sources/opml_source.h"
 #include "notification/notification.h"
 
 static GSList	*nodeSourceTypes = NULL;
@@ -55,32 +60,7 @@ node_source_type_find (gchar *typeStr, guint capabilities)
 	return NULL;
 }
 
-nodePtr
-node_source_setup_root (void)
-{
-	nodePtr	rootNode;
-	nodeSourceTypePtr type;
-	
-	debug_enter ("node_source_setup_root");
-
-	type = node_source_type_find (NULL, NODE_SOURCE_CAPABILITY_IS_ROOT);
-	if (!type) 
-		g_error ("No root capable node source found!");
-		
-	rootNode = node_new ();
-	node_set_type (rootNode, root_get_node_type());
-	rootNode->title = g_strdup ("root");
-	rootNode->source = g_new0 (struct nodeSource, 1);
-	rootNode->source->root = rootNode;
-	rootNode->source->type = type;
-	type->source_import (rootNode);
-	
-	debug_exit ("node_source_setup_root");
-	
-	return rootNode;
-}
-
-gboolean
+static gboolean
 node_source_type_register (nodeSourceTypePtr type)
 {
 	/* check feed list provider plugin version */
@@ -102,6 +82,38 @@ node_source_type_register (nodeSourceTypePtr type)
 	nodeSourceTypes = g_slist_append (nodeSourceTypes, type);
 	
 	return TRUE;
+}
+
+nodePtr
+node_source_setup_root (void)
+{
+	nodePtr	rootNode;
+	nodeSourceTypePtr type;
+	
+	debug_enter ("node_source_setup_root");
+	
+	/* we need to register all source types once before doing anything... */
+	node_source_type_register (default_source_get_type ());
+	node_source_type_register (dummy_source_get_type ());
+	node_source_type_register (opml_source_get_type ());
+	node_source_type_register (bloglines_source_get_type ());
+	node_source_type_register (google_source_get_type ());
+
+	type = node_source_type_find (NULL, NODE_SOURCE_CAPABILITY_IS_ROOT);
+	if (!type) 
+		g_error ("No root capable node source found!");
+		
+	rootNode = node_new ();
+	node_set_type (rootNode, root_get_node_type());
+	rootNode->title = g_strdup ("root");
+	rootNode->source = g_new0 (struct nodeSource, 1);
+	rootNode->source->root = rootNode;
+	rootNode->source->type = type;
+	type->source_import (rootNode);
+	
+	debug_exit ("node_source_setup_root");
+	
+	return rootNode;
 }
 
 static void
