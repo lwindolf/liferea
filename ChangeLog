@@ -18,6 +18,11 @@
 	* Fixes short period with wrong window size and position
 	  during startup.
 	  (patch by Kai Willadsen)
+	* Fixes temporarily missing subscriptions in Google Reader
+	  subscriptions due to a subscription cleanup.
+	  (reported by Arnold Noronha)
+	* Fixes loosing items of newly added Google Reader subscriptions.
+	  (Arnold Noronha)
 
 
 2008-11-09  Lars Lindner  <lars.lindner@gmail.com>
@@ -35,6 +40,7 @@
 	* Dropped GtkHTML2 support.
 	* Only supported HTML renderer is now WebKit.
 	* Updated Czech translation (Martin Picek)
+
 
 2008-07-18  Lars Lindner  <lars.lindner@gmail.com>
 
