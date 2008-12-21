@@ -19,14 +19,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
+#include "export.h"
 
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <libxml/tree.h>
-#include <string.h>
 
 #include "common.h"
 #include "debug.h"
@@ -34,8 +29,7 @@
 #include "folder.h"
 #include "vfolder.h"
 #include "xml.h"
-#include "ui/ui_feedlist.h"
-#include "ui/ui_itemlist.h"
+#include "ui/ui_itemlist.h"	// FIXME: evil include
 #include "fl_sources/node_source.h"
 
 struct exportData {
