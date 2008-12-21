@@ -175,7 +175,7 @@ feedlist_init_node (nodePtr node)
 static void
 feedlist_init (FeedList *fl)
 {
-	debug_enter("feedlist_init");
+	debug_enter ("feedlist_init");
 	
 	/* 1. Prepare globally accessible singleton */
 	g_assert (NULL == feedlist);
@@ -200,7 +200,7 @@ feedlist_init (FeedList *fl)
 	debug0 (DEBUG_UPDATE, "Performing initial feed update");
 	switch (conf_get_int_value (STARTUP_FEED_ACTION)) {
 		case 1: /* Update all feeds */
-			debug0(DEBUG_UPDATE, "initial update: updating all feeds");
+			debug0 (DEBUG_UPDATE, "initial update: updating all feeds");
 			node_update_subscription (feedlist_get_root (), GUINT_TO_POINTER (0));
 			break;
 		case 2:
@@ -217,9 +217,9 @@ feedlist_init (FeedList *fl)
 
 	/* 6. Finally save the new feed list state */
 	feedlist->priv->loading = FALSE;
-	feedlist_schedule_save();
+	feedlist_schedule_save ();
 	
-	debug_exit("feedlist_init");	
+	debug_exit ("feedlist_init");	
 }
 
 static void feedlist_unselect(void);

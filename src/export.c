@@ -44,7 +44,9 @@ struct exportData {
 };
 
 /* Used for exporting, this adds a folder or feed's node to the XML tree */
-static void export_append_node_tag(nodePtr node, gpointer userdata) {
+static void
+export_append_node_tag (nodePtr node, gpointer userdata)
+{
 	xmlNodePtr 	cur = ((struct exportData*)userdata)->cur;
 	gboolean	internal = ((struct exportData*)userdata)->trusted;
 	xmlNodePtr	childNode;
@@ -54,113 +56,117 @@ static void export_append_node_tag(nodePtr node, gpointer userdata) {
 	if (!internal && (IS_NODE_SOURCE (node) || IS_VFOLDER (node)))
 		return;
 	
-	childNode = xmlNewChild(cur, NULL, BAD_CAST"outline", NULL);
+	childNode = xmlNewChild (cur, NULL, BAD_CAST"outline", NULL);
 
 	/* 1. write generic node attributes */
-	xmlNewProp(childNode, BAD_CAST"title", BAD_CAST node_get_title(node));
-	xmlNewProp(childNode, BAD_CAST"text", BAD_CAST node_get_title(node)); /* The OPML spec requires "text" */
-	xmlNewProp(childNode, BAD_CAST"description", BAD_CAST node_get_title(node));
+	xmlNewProp (childNode, BAD_CAST"title", BAD_CAST node_get_title(node));
+	xmlNewProp (childNode, BAD_CAST"text", BAD_CAST node_get_title(node)); /* The OPML spec requires "text" */
+	xmlNewProp (childNode, BAD_CAST"description", BAD_CAST node_get_title(node));
 	
-	if(node_type_to_str(node)) 
-		xmlNewProp(childNode, BAD_CAST"type", BAD_CAST node_type_to_str(node));
+	if (node_type_to_str (node)) 
+		xmlNewProp (childNode, BAD_CAST"type", BAD_CAST node_type_to_str (node));
 
 	/* Don't add the following tags if we are exporting to other applications */
-	if(internal) {
-		xmlNewProp(childNode, BAD_CAST"id", BAD_CAST node_get_id(node));
+	if (internal) {
+		xmlNewProp (childNode, BAD_CAST"id", BAD_CAST node_get_id (node));
 
-		switch(node->sortColumn) {
+		switch (node->sortColumn) {
 			case IS_LABEL:
-				xmlNewProp(childNode, BAD_CAST"sortColumn", BAD_CAST"title");
+				xmlNewProp (childNode, BAD_CAST"sortColumn", BAD_CAST"title");
 				break;
 			case IS_TIME:
-				xmlNewProp(childNode, BAD_CAST"sortColumn", BAD_CAST"time");
+				xmlNewProp (childNode, BAD_CAST"sortColumn", BAD_CAST"time");
 				break;
 			case IS_PARENT:
 			case IS_SOURCE:
-				xmlNewProp(childNode, BAD_CAST"sortColumn", BAD_CAST"parent");
+				xmlNewProp (childNode, BAD_CAST"sortColumn", BAD_CAST"parent");
 				break;
 		}
 
-		if(FALSE == node->sortReversed)
-			xmlNewProp(childNode, BAD_CAST"sortReversed", BAD_CAST"false");
+		if (FALSE == node->sortReversed)
+			xmlNewProp (childNode, BAD_CAST"sortReversed", BAD_CAST"false");
 			
-		tmp = g_strdup_printf("%u", node_get_view_mode(node));
-		xmlNewProp(childNode, BAD_CAST"viewMode", BAD_CAST tmp);
-		g_free(tmp);
+		tmp = g_strdup_printf ("%u", node_get_view_mode(node));
+		xmlNewProp (childNode, BAD_CAST"viewMode", BAD_CAST tmp);
+		g_free (tmp);
 	}
 
 	/* 2. add node type specific stuff */
 	NODE_TYPE (node)->export (node, childNode, internal);
 }
 
-void export_node_children(nodePtr node, xmlNodePtr cur, gboolean trusted) {
+void
+export_node_children (nodePtr node, xmlNodePtr cur, gboolean trusted)
+{
 	struct exportData	params;
 	
 	params.cur = cur;
 	params.trusted = trusted;
-	node_foreach_child_data(node, export_append_node_tag, &params);
+	node_foreach_child_data (node, export_append_node_tag, &params);
 }
 
-gboolean export_OPML_feedlist(const gchar *filename, nodePtr node, gboolean trusted) {
+gboolean
+export_OPML_feedlist (const gchar *filename, nodePtr node, gboolean trusted)
+{
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur, opmlNode;
 	gboolean	error = FALSE;
 	gchar		*backupFilename;
 	int		old_umask = 0;
 
-	debug_enter("export_OPML_feedlist");
+	debug_enter ("export_OPML_feedlist");
 	
-	backupFilename = g_strdup_printf("%s~", filename);
+	backupFilename = g_strdup_printf ("%s~", filename);
 	
-	doc = xmlNewDoc("1.0");
-	if(doc) {	
-		opmlNode = xmlNewDocNode(doc, NULL, BAD_CAST"opml", NULL);
-		if(opmlNode) {
-			xmlNewProp(opmlNode, BAD_CAST"version", BAD_CAST"1.0");
+	doc = xmlNewDoc ("1.0");
+	if (doc) {	
+		opmlNode = xmlNewDocNode (doc, NULL, BAD_CAST"opml", NULL);
+		if (opmlNode) {
+			xmlNewProp (opmlNode, BAD_CAST"version", BAD_CAST"1.0");
 			
 			/* create head */
-			cur = xmlNewChild(opmlNode, NULL, BAD_CAST"head", NULL);
-			if(cur)
-				xmlNewTextChild(cur, NULL, BAD_CAST"title", BAD_CAST"Liferea Feed List Export");
+			cur = xmlNewChild (opmlNode, NULL, BAD_CAST"head", NULL);
+			if (cur)
+				xmlNewTextChild (cur, NULL, BAD_CAST"title", BAD_CAST"Liferea Feed List Export");
 			
 			/* create body with feed list */
-			cur = xmlNewChild(opmlNode, NULL, BAD_CAST"body", NULL);
-			if(cur)
-				export_node_children(node, cur, trusted);
+			cur = xmlNewChild (opmlNode, NULL, BAD_CAST"body", NULL);
+			if (cur)
+				export_node_children (node, cur, trusted);
 			
-			xmlDocSetRootElement(doc, opmlNode);		
+			xmlDocSetRootElement (doc, opmlNode);		
 		} else {
-			g_warning("could not create XML feed node for feed cache document!");
+			g_warning ("could not create XML feed node for feed cache document!");
 			error = TRUE;
 		}
 		
-		if(!trusted)
-			old_umask = umask(022);	/* give read permissions for other, per-default we wouldn't give it... */
+		if (!trusted)
+			old_umask = umask (022);	/* give read permissions for other, per-default we wouldn't give it... */
 			
-		if(-1 == xml_save_to_file (doc, backupFilename)) {
-			g_warning("Could not export to OPML file! Feed list changes will be lost!");
+		if (-1 == xml_save_to_file (doc, backupFilename)) {
+			g_warning ("Could not export to OPML file! Feed list changes will be lost!");
 			error = TRUE;
 		}
 		
-		if(!trusted)
-			umask(old_umask);
+		if (!trusted)
+			umask (old_umask);
 			
-		xmlFreeDoc(doc);
+		xmlFreeDoc (doc);
 		
-		if(!error) {
-			if(rename(backupFilename, filename) < 0) {
-				g_warning(_("Error renaming %s to %s\n"), backupFilename, filename);
+		if (!error) {
+			if (rename (backupFilename, filename) < 0) {
+				g_warning (_("Error renaming %s to %s\n"), backupFilename, filename);
 				error = TRUE;
 			}
 		}
 	} else {
-		g_warning("Could not create XML document!");
+		g_warning ("Could not create XML document!");
 		error = TRUE;
 	}
 	
-	g_free(backupFilename);
+	g_free (backupFilename);
 	
-	debug_exit("export_OPML_feedlist");
+	debug_exit ("export_OPML_feedlist");
 	return !error;
 }
 
