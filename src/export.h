@@ -1,7 +1,7 @@
 /**
- * @file export.h OPML feedlist import&export
+ * @file export.h  OPML feedlist import&export
  * 
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,9 +21,7 @@
 #ifndef _EXPORT_H
 #define _EXPORT_H
 
-#include <gtk/gtk.h>
 #include "node.h"
-#include "fl_sources/node_source.h"
 
 /**
  * Exports a given feed list tree. Can be used to export
@@ -46,7 +44,7 @@ gboolean export_OPML_feedlist(const gchar *filename, nodePtr node, gboolean inte
  *
  * @param parentNode	the parent node
  * @param cur		the outline XML node
- * @param nodeSource	the node source
+ * @param trusted	set to TRUE if the feedlist is being to a trusted source
  */
 void export_node_children(nodePtr node, xmlNodePtr cur, gboolean trusted);
 
@@ -55,13 +53,12 @@ void export_node_children(nodePtr node, xmlNodePtr cur, gboolean trusted);
  *
  * @param filename	path to file that will be read for importing
  * @param parentNode	node of the parent folder
- * @param nodeSource	the feed list source instance to handle the nodes
  * @param showErrors	set to TRUE if errors should generate a error dialog
  * @param trusted	set to TRUE if the feedlist is being imported from a trusted source
  *
  * @returns TRUE on success
  */
-gboolean import_OPML_feedlist(const gchar *filename, nodePtr parentNode, nodeSourcePtr nodeSource, gboolean showErrors, gboolean trusted);
+gboolean import_OPML_feedlist(const gchar *filename, nodePtr parentNode, gboolean showErrors, gboolean trusted);
 
 /**
  * Parses the given outline XML node and depending on the
@@ -69,15 +66,18 @@ gboolean import_OPML_feedlist(const gchar *filename, nodePtr parentNode, nodeSou
  *
  * @param cur		the outline XML node
  * @param parentNode	the parent node
- * @param nodeSource	the node source
  * @param trusted	set to TRUE if the feedlist is being imported from a trusted source
  */
-void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, nodeSourcePtr nodeSource, gboolean trusted);
+void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, gboolean trusted);
 
-/* GUI dialog callbacks */
+/**
+ * Called when user requested dialog to import an OPML file.
+ */
+void import_OPML_file (void);
 
-void on_import_activate(GtkMenuItem *menuitem, gpointer user_data);
-
-void on_export_activate(GtkMenuItem *menuitem, gpointer user_data);
+/**
+ * Called when user requested dialog to save an OPML file.
+ */
+void export_OPML_file (void);
 
 #endif

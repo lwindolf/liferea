@@ -695,6 +695,18 @@ on_menu_zoomout_selected (gpointer callback_data, guint callback_action, GtkWidg
 	itemview_do_zoom (FALSE);
 }
 
+static void
+on_menu_import (gpointer callback_data, guint callback_action, GtkWidget *widget)
+{
+	import_OPML_file ();
+}
+
+static void
+on_menu_export (gpointer callback_data, guint callback_action, GtkWidget *widget)
+{
+	export_OPML_file ();
+}
+
 // FIXME: change to signal callback
 void
 liferea_shell_online_status_changed (int online)
@@ -729,8 +741,8 @@ static const GtkActionEntry ui_mainwindow_action_entries[] = {
 	 G_CALLBACK(on_menu_update_all)},
 	{"MarkAllFeedsAsRead", "gtk-apply", N_("Mark All As _Read"), NULL, N_("Marks read every item of every subscription."),
 	 G_CALLBACK(on_menu_allfeedsread)},
-	{"ImportFeedList", "gtk-open", N_("_Import Feed List..."), NULL, N_("Imports an OPML feed list."), G_CALLBACK(on_import_activate)},
-	{"ExportFeedList", "gtk-save-as", N_("_Export Feed List..."), NULL, N_("Exports the feed list as OPML."), G_CALLBACK(on_export_activate)},
+	{"ImportFeedList", "gtk-open", N_("_Import Feed List..."), NULL, N_("Imports an OPML feed list."), G_CALLBACK(on_menu_import)},
+	{"ExportFeedList", "gtk-save-as", N_("_Export Feed List..."), NULL, N_("Exports the feed list as OPML."), G_CALLBACK(on_menu_export)},
 	{"Quit",GTK_STOCK_QUIT, N_("_Quit"), "<control>Q", NULL, G_CALLBACK(on_menu_quit)},
 
 	{"FeedMenu", NULL, N_("_Feed")},

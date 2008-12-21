@@ -164,7 +164,9 @@ gboolean export_OPML_feedlist(const gchar *filename, nodePtr node, gboolean trus
 	return !error;
 }
 
-void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, nodeSourcePtr nodeSource, gboolean trusted) {
+void
+import_parse_outline (xmlNodePtr cur, nodePtr parentNode, gboolean trusted)
+{
 	gchar		*title, *typeStr, *tmp, *sortStr;
 	nodePtr		node;
 	gboolean	needsUpdate = FALSE;
@@ -172,85 +174,88 @@ void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, nodeSourcePtr node
 	debug_enter("import_parse_outline");
 
 	/* 1. do general node parsing */	
-	node = node_new();
-	node->source = nodeSource;
+	node = node_new ();
 	node->parent = parentNode;
-
+	node->source = parentNode->source;
+	
 	/* The id should only be used from feedlist.opml. Otherwise,
 	   it could cause corruption if the same id was imported
 	   multiple times. */
-	if(trusted) {
+	if (trusted) {
 		gchar *id = NULL;
-		id = xmlGetProp(cur, BAD_CAST"id");
-		if(id) {
+		id = xmlGetProp (cur, BAD_CAST"id");
+		if (id) {
 			node_set_id(node, id);
-			xmlFree(id);
-		} else
+			xmlFree (id);
+		} else {
 			needsUpdate = TRUE;
+		}
 	} else {
 		needsUpdate = TRUE;
 	}
 	
 	/* title */
-	title = xmlGetProp(cur, BAD_CAST"title");
-	if(!title || !xmlStrcmp(title, BAD_CAST"")) {
-		if(title)
-			xmlFree(title);
-		title = xmlGetProp(cur, BAD_CAST"text");
+	title = xmlGetProp (cur, BAD_CAST"title");
+	if (!title || !xmlStrcmp (title, BAD_CAST"")) {
+		if (title)
+			xmlFree (title);
+		title = xmlGetProp (cur, BAD_CAST"text");
 	}
-	node_set_title(node, title);
 
-	if(title)
-		xmlFree(title);
+	if (title) {
+		node_set_title (node, title);
+		xmlFree (title);
+	}
 
 	/* sorting order */
-	sortStr = xmlGetProp(cur, BAD_CAST"sortColumn");
-	if(sortStr) {
-		if(!xmlStrcmp(sortStr, "title"))
+	sortStr = xmlGetProp (cur, BAD_CAST"sortColumn");
+	if (sortStr) {
+		if (!xmlStrcmp (sortStr, "title"))
 			node->sortColumn = IS_LABEL;
-		else if(!xmlStrcmp(sortStr, "time"))
+		else if (!xmlStrcmp (sortStr, "time"))
 			node->sortColumn = IS_TIME;
-		else if(!xmlStrcmp(sortStr, "parent"))
+		else if (!xmlStrcmp (sortStr, "parent"))
 			node->sortColumn = IS_PARENT;
-		xmlFree(sortStr);
+		xmlFree (sortStr);
 	}
-	sortStr = xmlGetProp(cur, BAD_CAST"sortReversed");
-	if(sortStr && !xmlStrcmp(sortStr, BAD_CAST"false"))
-		node->sortReversed = FALSE;
-	if(sortStr)
-		xmlFree(sortStr);
+	sortStr = xmlGetProp (cur, BAD_CAST"sortReversed");
+	if (sortStr) {
+		if(!xmlStrcmp (sortStr, BAD_CAST"false"))
+			node->sortReversed = FALSE;
+		xmlFree (sortStr);
+	}
 	
 	/* viewing mode */
-	tmp = xmlGetProp(cur, BAD_CAST"twoPane");	/* migration for old setting... */
-	if(tmp && !xmlStrcmp(tmp, BAD_CAST"true"))
-		node_set_view_mode(node, 2);
-	if(tmp)
-		xmlFree(tmp);
+	tmp = xmlGetProp (cur, BAD_CAST"twoPane");	/* migration for old setting... */
+	if (tmp) {
+		if(!xmlStrcmp (tmp, BAD_CAST"true"))
+			node_set_view_mode (node, 2);
+		xmlFree (tmp);
+	}
 		
-	tmp = xmlGetProp(cur, BAD_CAST"viewMode");
-	if(tmp) {
-		node_set_view_mode(node, atoi(tmp));
-		xmlFree(tmp);
+	tmp = xmlGetProp (cur, BAD_CAST"viewMode");
+	if (tmp) {
+		node_set_view_mode (node, atoi (tmp));
+		xmlFree (tmp);
 	}
 	
 	/* expansion state */		
-	if(xmlHasProp(cur, BAD_CAST"expanded"))
+	if (xmlHasProp (cur, BAD_CAST"expanded"))
 		node->expanded = TRUE;
-	else if(xmlHasProp(cur, BAD_CAST"collapsed"))
+	else if (xmlHasProp (cur, BAD_CAST"collapsed"))
 		node->expanded = FALSE;
 	else 
 		node->expanded = TRUE;
 
 	/* 2. determine node type */
-	typeStr = xmlGetProp(cur, BAD_CAST"type");
-	if(typeStr) {
-		debug1(DEBUG_CACHE, "-> node type tag found: \"%s\"", typeStr);
-		node_set_type(node, node_str_to_type(typeStr));
-		xmlFree(typeStr);
+	typeStr = xmlGetProp (cur, BAD_CAST"type");
+	if (typeStr) {
+		node_set_type (node, node_str_to_type (typeStr));
+		xmlFree (typeStr);
 	} 
 	
 	/* if we didn't find a type attribute we use heuristics */
-	if(!node->type) {
+	if (!node->type) {
 		/* check for a source URL */
 		tmp = xmlGetProp (cur, BAD_CAST"xmlUrl");
 		if (!tmp)
@@ -259,13 +264,13 @@ void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, nodeSourcePtr node
 			tmp = xmlGetProp (cur, BAD_CAST"xmlURL");	/* LiveJournal */
 		
 		if (tmp) {
-			debug0(DEBUG_CACHE, "-> URL found assuming type feed");
-			node_set_type(node, feed_get_node_type());
-			xmlFree(tmp);
+			debug0 (DEBUG_CACHE, "-> URL found assuming type feed");
+			node_set_type (node, feed_get_node_type());
+			xmlFree (tmp);
 		} else {
 			/* if the outline has no type and URL it just has to be a folder */
-			node_set_type(node, folder_get_node_type());
-			debug0(DEBUG_CACHE, "-> must be a folder");
+			node_set_type (node, folder_get_node_type());
+			debug0 (DEBUG_CACHE, "-> must be a folder");
 		}
 	}
 	
@@ -273,8 +278,8 @@ void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, nodeSourcePtr node
 	NODE_TYPE (node)->import (node, parentNode, cur, trusted);
 
 	/* 4. update immediately if necessary */
-	if(needsUpdate && (NODE_TYPE(node) != NULL)) {
-		debug1(DEBUG_CACHE, "seems to be an import, setting new id: %s and doing first download...", node_get_id(node));
+	if (needsUpdate && (NODE_TYPE(node))) {
+		debug1 (DEBUG_CACHE, "seems to be an import, setting new id: %s and doing first download...", node_get_id(node));
 		subscription_update (node->subscription,
 		                     (xmlHasProp(cur, BAD_CAST"updateInterval") ? 0 : FEED_REQ_RESET_UPDATE_INT)
 		                      | FEED_REQ_DOWNLOAD_FAVICON
@@ -284,91 +289,98 @@ void import_parse_outline(xmlNodePtr cur, nodePtr parentNode, nodeSourcePtr node
 	/* 5. save node info to DB */
 	db_node_update (node);
 
-	debug_exit("import_parse_outline");
+	debug_exit ("import_parse_outline");
 }
 
-static void import_parse_body(xmlNodePtr n, nodePtr parentNode, nodeSourcePtr nodeSource, gboolean trusted) {
+static void
+import_parse_body (xmlNodePtr n, nodePtr parentNode, gboolean trusted)
+{
 	xmlNodePtr cur;
 	
 	cur = n->xmlChildrenNode;
-	while(cur) {
-		if((!xmlStrcmp(cur->name, BAD_CAST"outline")))
-			import_parse_outline(cur, parentNode, nodeSource, trusted);
+	while (cur) {
+		if (!xmlStrcmp (cur->name, BAD_CAST"outline"))
+			import_parse_outline (cur, parentNode, trusted);
 		cur = cur->next;
 	}
 }
 
-static void import_parse_OPML(xmlNodePtr n, nodePtr parentNode, nodeSourcePtr nodeSource, gboolean trusted) {
+static void
+import_parse_OPML (xmlNodePtr n, nodePtr parentNode, gboolean trusted)
+{
 	xmlNodePtr cur;
 	
 	cur = n->xmlChildrenNode;
-	while(cur) {
+	while (cur) {
 		/* we ignore the head */
-		if((!xmlStrcmp(cur->name, BAD_CAST"body"))) {
-			import_parse_body(cur, parentNode, nodeSource, trusted);
+		if (!xmlStrcmp (cur->name, BAD_CAST"body")) {
+			import_parse_body (cur, parentNode, trusted);
 		}
 		cur = cur->next;
 	}	
 }
 
-gboolean import_OPML_feedlist(const gchar *filename, nodePtr parentNode, nodeSourcePtr nodeSource, gboolean showErrors, gboolean trusted) {
+gboolean
+import_OPML_feedlist (const gchar *filename, nodePtr parentNode, gboolean showErrors, gboolean trusted)
+{
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur;
 	gboolean	error = FALSE;
 	
-	debug1(DEBUG_CACHE, "Importing OPML file: %s", filename);
+	debug1 (DEBUG_CACHE, "Importing OPML file: %s", filename);
 	
 	/* read the feed list */
-	if(NULL == (doc = xmlParseFile(filename))) {
-		if(showErrors)
-			ui_show_error_box(_("XML error while reading cache file! Could not import \"%s\"!"), filename);
+	doc = xmlParseFile (filename);
+	if (!doc) {
+		if (showErrors)
+			ui_show_error_box (_("XML error while reading cache file! Could not import \"%s\"!"), filename);
 		else
-			g_warning(_("XML error while reading cache file! Could not import \"%s\"!"), filename);
+			g_warning (_("XML error while reading cache file! Could not import \"%s\"!"), filename);
 		error = TRUE;
 	} else {
-		if(NULL == (cur = xmlDocGetRootElement(doc))) {
-			if(showErrors)
-				ui_show_error_box(_("Empty document! OPML document \"%s\" should not be empty when importing."), filename);
+		cur = xmlDocGetRootElement (doc);
+		if (!cur) {
+			if (showErrors)
+				ui_show_error_box (_("Empty document! OPML document \"%s\" should not be empty when importing."), filename);
 			else
-				g_warning(_("Empty document! OPML document \"%s\" should not be empty when importing."), filename);
+				g_warning (_("Empty document! OPML document \"%s\" should not be empty when importing."), filename);
 			error = TRUE;
 		} else {
-			if(!trusted) {
+			if (!trusted) {
 				/* set title only when importing as folder and not as OPML source */
 				xmlNodePtr title = xpath_find (cur, "/opml/head/title"); 
-				if(title) {
-					xmlChar *titleStr = common_utf8_fix(xmlNodeListGetString(title->doc, title->xmlChildrenNode, 1));
-					if(titleStr) {
-						node_set_title(parentNode, titleStr);
-						xmlFree(titleStr);
+				if (title) {
+					xmlChar *titleStr = common_utf8_fix (xmlNodeListGetString (title->doc, title->xmlChildrenNode, 1));
+					if (titleStr) {
+						node_set_title (parentNode, titleStr);
+						xmlFree (titleStr);
 					}
 				}
 			}
 		
-			while(cur) {
-				if(!xmlIsBlankNode(cur)) {
-					if(!xmlStrcmp(cur->name, BAD_CAST"opml")) {
-						import_parse_OPML(cur, parentNode, nodeSource, trusted);
+			while (cur) {
+				if (!xmlIsBlankNode (cur)) {
+					if (!xmlStrcmp (cur->name, BAD_CAST"opml")) {
+						import_parse_OPML (cur, parentNode, trusted);
 					} else {
-						if(showErrors)
-							ui_show_error_box(_("\"%s\" is not a valid OPML document! Liferea cannot import this file!"), filename);
+						if (showErrors)
+							ui_show_error_box (_("\"%s\" is not a valid OPML document! Liferea cannot import this file!"), filename);
 						else
-							g_warning(_("\"%s\" is not a valid OPML document! Liferea cannot import this file!"), filename);
+							g_warning (_("\"%s\" is not a valid OPML document! Liferea cannot import this file!"), filename);
 					}
 				}
 				cur = cur->next;
 			}
 		}
-		xmlFreeDoc(doc);
+		xmlFreeDoc (doc);
 	}
 	
 	return !error;
 }
 
-
 /* UI stuff */
 
-void
+static void
 on_import_activate_cb (const gchar *filename, gpointer user_data)
 {	
 	if (filename) {
@@ -378,26 +390,30 @@ on_import_activate_cb (const gchar *filename, gpointer user_data)
 		node_set_parent (node, NULL, 0);
 		feedlist_node_imported (node);
 		
-		import_OPML_feedlist (filename, node, node->source, TRUE /* show errors */, FALSE /* not trusted */);
+		import_OPML_feedlist (filename, node, TRUE /* show errors */, FALSE /* not trusted */);
 	}
 }
 
-void on_import_activate(GtkMenuItem *menuitem, gpointer user_data) {
+void
+import_OPML_file (void)
+{
 
 	ui_choose_file(_("Import Feed List"), _("Import"), FALSE, on_import_activate_cb, NULL, NULL, NULL);
 }
 
-static void on_export_activate_cb(const gchar *filename, gpointer user_data) {
-
-	if(filename) {
-		if(FALSE == export_OPML_feedlist(filename, feedlist_get_root(), FALSE))
-			ui_show_error_box(_("Error while exporting feed list!"));
+static void
+on_export_activate_cb (const gchar *filename, gpointer user_data)
+{
+	if (filename) {
+		if (!export_OPML_feedlist (filename, feedlist_get_root (), FALSE))
+			ui_show_error_box (_("Error while exporting feed list!"));
 		else 
-			ui_show_info_box(_("Feed List exported!"));
+			ui_show_info_box (_("Feed List exported!"));
 	}
 }
 
-void on_export_activate(GtkMenuItem *menuitem, gpointer user_data) {
-	
-	ui_choose_file(_("Export Feed List"), _("Export"), TRUE, on_export_activate_cb,  NULL, "feedlist.opml", NULL);
+void
+export_OPML_file (void)
+{
+	ui_choose_file (_("Export Feed List"), _("Export"), TRUE, on_export_activate_cb,  NULL, "feedlist.opml", NULL);
 }

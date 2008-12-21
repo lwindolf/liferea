@@ -244,7 +244,7 @@ void opml_source_import(nodePtr node) {
 	debug1(DEBUG_CACHE, "starting import of opml source instance (id=%s)", node->id);
 	filename = opml_source_get_feedlist(node);
 	if(g_file_test(filename, G_FILE_TEST_EXISTS)) {
-		import_OPML_feedlist(filename, node, node->source, FALSE, TRUE);
+		import_OPML_feedlist(filename, node, FALSE, TRUE);
 	} else {
 		g_warning("cannot open \"%s\"", filename);
 		node->available = FALSE;

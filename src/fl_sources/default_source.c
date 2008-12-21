@@ -112,7 +112,7 @@ default_source_import (nodePtr node)
 		}
 	}
 
-	if (!import_OPML_feedlist (filename, node, node->source, FALSE, TRUE))
+	if (!import_OPML_feedlist (filename, node, FALSE, TRUE))
 		g_error ("Fatal: Feed list import failed! You might want to try to restore\n"
 		         "the feed list file %s from the backup in %s", filename, backupFilename);
 
