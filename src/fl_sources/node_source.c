@@ -110,7 +110,6 @@ node_source_setup_root (void)
 	rootNode->source->root = rootNode;
 	rootNode->source->type = type;
 	type->source_import (rootNode);
-g_print("root=%p cap=%d\n", rootNode, NODE_SOURCE_TYPE(rootNode)->capabilities);	
 
 	debug_exit ("node_source_setup_root");
 	
