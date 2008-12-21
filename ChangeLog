@@ -23,6 +23,8 @@
 	  (reported by Arnold Noronha)
 	* Fixes loosing items of newly added Google Reader subscriptions.
 	  (Arnold Noronha)
+	* Fixes bug that prevented creating folders
+	  (reported by Arnold Noronha)
 
 
 2008-11-09  Lars Lindner  <lars.lindner@gmail.com>
