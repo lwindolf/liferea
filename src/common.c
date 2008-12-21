@@ -384,31 +384,34 @@ time_t parseRFC822Date(gchar *date) {
 	return 0;
 }
 
-static void common_check_dir(gchar *path) {
-
-	if(!g_file_test(path, G_FILE_TEST_IS_DIR)) {
-		if(0 != g_mkdir_with_parents(path, S_IRUSR | S_IWUSR | S_IXUSR)) {
-			g_error(_("Cannot create cache directory \"%s\"!"), path);
+static void
+common_check_dir (gchar *path)
+{
+	if (!g_file_test (path, G_FILE_TEST_IS_DIR)) {
+		if (0 != g_mkdir_with_parents (path, S_IRUSR | S_IWUSR | S_IXUSR)) {
+			g_error (_("Cannot create cache directory \"%s\"!"), path);
 		}
 	}
-	g_free(path);
+	g_free (path);
 }
 
-static void common_init_cache_path(void) {
+static void
+common_init_cache_path (void)
+{
 	gchar *cachePath;
 
-	lifereaUserPath = g_strdup_printf("%s" G_DIR_SEPARATOR_S ".liferea_1.4", g_get_home_dir());
-	cachePath = g_strdup_printf("%s" G_DIR_SEPARATOR_S "cache", lifereaUserPath);
+	lifereaUserPath = g_build_filename (g_get_home_dir(), ".liferea_1.4", NULL);
+	cachePath = g_build_filename (lifereaUserPath, "cache", NULL);
 
-	common_check_dir(g_strdup(lifereaUserPath));
-	common_check_dir(g_strdup(cachePath));
-	common_check_dir(g_strdup_printf("%s" G_DIR_SEPARATOR_S "feeds", cachePath));
-	common_check_dir(g_strdup_printf("%s" G_DIR_SEPARATOR_S "favicons", cachePath));
-	common_check_dir(g_strdup_printf("%s" G_DIR_SEPARATOR_S "plugins", cachePath));
-	common_check_dir(g_strdup_printf("%s" G_DIR_SEPARATOR_S "scripts", cachePath));
+	common_check_dir (g_strdup (lifereaUserPath));
+	common_check_dir (g_strdup (cachePath));
+	common_check_dir (g_build_filename (cachePath, "feeds", NULL));
+	common_check_dir (g_build_filename (cachePath, "favicons", NULL));
+	common_check_dir (g_build_filename (cachePath, "plugins", NULL));
+	common_check_dir (g_build_filename (cachePath, "scripts", NULL));
 
-	g_free(cachePath);
-	/* lifereaUserPath reused globally */
+	g_free (cachePath);
+	/* lifereaUserPath is reused globally */
 	
 	/* ensure reasonable default umask */
 	umask (077);

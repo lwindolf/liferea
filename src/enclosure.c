@@ -147,7 +147,7 @@ enclosure_mime_types_load (void)
 	
 	typesLoaded = TRUE;
 	
-	filename = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "mime.xml", common_get_cache_path());
+	filename = g_build_filename (common_get_cache_path (), "mime.xml", NULL);
 	if (g_file_test (filename, G_FILE_TEST_EXISTS)) {
 		doc = xmlParseFile (filename);
 		if (!doc) {
@@ -214,7 +214,7 @@ enclosure_mime_types_save (void)
 	
 	xmlDocSetRootElement (doc, root);
 	
-	filename = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "mime.xml", common_get_cache_path ());
+	filename = g_build_filename (common_get_cache_path (), "mime.xml", NULL);
 	if (-1 == xmlSaveFormatFileEnc (filename, doc, NULL, 1))
 		g_warning ("Could not save to enclosure type config file!");
 	g_free (filename);
@@ -364,7 +364,7 @@ enclosure_save_as_file (encTypePtr type, const gchar *url, const gchar *filename
 			filename = url;
 		else
 			filename++;
-		filename = g_strdup_printf ("%s%s%s", conf_get_str_value (ENCLOSURE_DOWNLOAD_PATH), G_DIR_SEPARATOR_S, filename);
+		filename = g_build_filename (conf_get_str_value (ENCLOSURE_DOWNLOAD_PATH), filename, NULL);
 	}
 	enclosure_download (type, url, filename);
 }

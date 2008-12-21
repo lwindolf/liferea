@@ -233,8 +233,8 @@ render_get_css (gboolean externalCss)
 	gchar *styleSheetFile;
 	time_t newLastModification;
 
-	styleSheetFile      = g_strdup_printf("%s" G_DIR_SEPARATOR_S "liferea.css", common_get_cache_path());
-	newLastModification = common_get_mod_time((char *)styleSheetFile);
+	styleSheetFile      = g_build_filename (common_get_cache_path (), "liferea.css", NULL);
+	newLastModification = common_get_mod_time ((char *)styleSheetFile);
 
 	if (!css || lastCssModification != newLastModification) {
 		gchar	*defaultStyleSheetFile, *adblockStyleSheetFile;
@@ -279,7 +279,7 @@ render_get_css (gboolean externalCss)
 			g_string_append(css, "}\n");
 		}
 
-		defaultStyleSheetFile = g_strdup(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "css" G_DIR_SEPARATOR_S "liferea.css");
+		defaultStyleSheetFile = g_build_filename (PACKAGE_DATA_DIR, PACKAGE, "css", "liferea.css", NULL);
 
 		if (g_file_get_contents(defaultStyleSheetFile, &tmp, NULL, NULL)) {
 			tmp = render_set_theme_colors(tmp);
@@ -295,7 +295,7 @@ render_get_css (gboolean externalCss)
 
 		g_free(defaultStyleSheetFile);
 
-		adblockStyleSheetFile = g_strdup(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "css" G_DIR_SEPARATOR_S "adblock.css");
+		adblockStyleSheetFile = g_build_filename(PACKAGE_DATA_DIR, PACKAGE, "css", "adblock.css", NULL);
 
 		if (g_file_get_contents(adblockStyleSheetFile, &tmp, NULL, NULL)) {
 			g_string_append(css, tmp);

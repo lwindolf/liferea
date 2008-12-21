@@ -1109,8 +1109,8 @@ liferea_shell_create (int initialState)
 		NULL,			/* ICON_NEWSBIN */
 		NULL,			/* ICON_EMPTY */
 		NULL,			/* ICON_EMPTY_OFFLINE */
-		NULL,			/* ICON_ONLINE */
-		NULL,			/* ICON_OFFLINE */
+		"gtk-connect",		/* ICON_ONLINE */
+		"gtk-disconnect",	/* ICON_OFFLINE */
 		NULL,			/* ICON_UPDATED */
 		"mail-attachment",	/* ICON_ENCLOSURE */
 		NULL

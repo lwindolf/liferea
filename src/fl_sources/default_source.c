@@ -102,13 +102,13 @@ default_source_import (nodePtr node)
 		g_free (filename);
 		
 		/* "feedlist.opml" is translatable so that translators can provide a localized default feed list */
-		filename = g_strdup_printf (PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "opml" G_DIR_SEPARATOR_S "%s", _("feedlist.opml"));
+		filename = g_build_filename (PACKAGE_DATA_DIR, PACKAGE, "opml", _("feedlist.opml"), NULL);
 		
 		/* sanity check to catch wrong filenames supplied in translations */
 		if (!g_file_test (filename, G_FILE_TEST_EXISTS)) {
 			g_warning ("Configured localized feed list \"%s\" does not exist!", filename);
 			g_free (filename);
-			filename = g_strdup_printf(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "opml" G_DIR_SEPARATOR_S "%s", "feedlist.opml");
+			filename = g_build_filename (PACKAGE_DATA_DIR, PACKAGE, "opml", "feedlist.opml", NULL);
 		}
 	}
 

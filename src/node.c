@@ -367,18 +367,19 @@ node_set_title (nodePtr node, const gchar *title)
 
 const gchar * node_get_title(nodePtr node) { return node->title; }
 
-void node_set_icon(nodePtr node, gpointer icon) {
-
-	if(node->icon) 
-		g_object_unref(node->icon);
+void
+node_set_icon (nodePtr node, gpointer icon)
+{
+	if (node->icon) 
+		g_object_unref (node->icon);
 	node->icon = icon;
 	
-	if(node->iconFile)
-		g_free(node->iconFile);
-	if(node->icon)
-		node->iconFile = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", node->id, "png");
+	g_free (node->iconFile);
+	
+	if (node->icon)
+		node->iconFile = common_create_cache_filename ("cache" G_DIR_SEPARATOR_S "favicons", node->id, "png");
 	else
-		node->iconFile = g_strdup(PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "default.png");
+		node->iconFile = g_build_filename (PACKAGE_DATA_DIR, PACKAGE, "pixmaps", "default.png", NULL);
 }
 
 /** determines the nodes favicon or default icon */

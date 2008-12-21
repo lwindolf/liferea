@@ -257,7 +257,7 @@ on_scriptAddBtn_clicked (GtkButton *button, gpointer user_data)
 	/* add existing script files to reuse popup */
 	menu = gtk_menu_new ();
 	
-	dirname = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "cache" G_DIR_SEPARATOR_S "scripts", common_get_cache_path ());
+	dirname = g_build_filename (common_get_cache_path (), "cache", "scripts", NULL);
 	dir = g_dir_open (dirname, 0, NULL);
 	while (NULL != (file = (gchar *)g_dir_read_name (dir))) {
 		file = g_strdup (file);

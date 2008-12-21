@@ -257,7 +257,7 @@ update_exec_filter_cmd (gchar *cmd, gchar *data, gchar **errorOutput, size_t *si
 	FILE		*file, *p;
 	
 	*errorOutput = NULL;
-	tmpfilename = g_strdup_printf("%s" G_DIR_SEPARATOR_S "liferea-XXXXXX", tmpdir);
+	tmpfilename = g_build_filename (tmpdir, "liferea-XXXXXX", NULL);
 	
 	fd = g_mkstemp(tmpfilename);
 	

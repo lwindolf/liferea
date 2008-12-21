@@ -134,7 +134,7 @@ liferea_dialog_new (const gchar *filename, const gchar *name)
 	
 	ld = LIFEREA_DIALOG (g_object_new (LIFEREA_DIALOG_TYPE, NULL));
 
-	path = g_strdup_printf ("%s%s", PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S, filename?filename:"liferea.glade");
+	path = g_build_filename (PACKAGE_DATA_DIR, PACKAGE, filename?filename:"liferea.glade", NULL);
 	ld->priv->xml = glade_xml_new (path, name, GETTEXT_PACKAGE);
 	g_free (path);
 	

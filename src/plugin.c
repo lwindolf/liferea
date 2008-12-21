@@ -38,24 +38,26 @@ static GSList *plugins = NULL;
 
 typedef	pluginPtr (*infoFunc)();
 
-static pluginPtr plugin_mgmt_load(const gchar * filename) {
+static pluginPtr
+plugin_mgmt_load (const gchar * filename)
+{
 	pluginPtr	plugin = NULL;
 	GModule		*handle = NULL;
 	infoFunc	plugin_get_info;
 	gboolean	success = FALSE;
 	gchar		*path;
 
-	path = g_strdup_printf(PACKAGE_LIB_DIR G_DIR_SEPARATOR_S "%s", filename);
+	path = g_build_filename (PACKAGE_LIB_DIR, filename, NULL);
 
 #if GLIB_CHECK_VERSION(2,3,3)
-	handle = g_module_open(path, G_MODULE_BIND_LOCAL);
+	handle = g_module_open (path, G_MODULE_BIND_LOCAL);
 #else
-	handle = g_module_open(path, 0);
+	handle = g_module_open (path, 0);
 #endif
 
-	g_free(path);
+	g_free (path);
 
-	if(!handle) {
+	if (!handle) {
 		debug3(DEBUG_PLUGINS, "Cannot open %s%s (%s)!", PACKAGE_LIB_DIR G_DIR_SEPARATOR_S, filename, g_module_error());
 		return NULL;
 	}

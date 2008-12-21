@@ -44,30 +44,30 @@ migrate_copy_dir (const gchar *from,
 	gchar *srcfile, *destfile;
    	GDir *dir;
 		
-	fromDirname = g_strdup_printf("%s" G_DIR_SEPARATOR_S "%s" G_DIR_SEPARATOR_S "%s", g_get_home_dir(), from, subdir);
-	toDirname = g_strdup_printf("%s" G_DIR_SEPARATOR_S "%s" G_DIR_SEPARATOR_S "%s", g_get_home_dir(), to, subdir);
+	fromDirname = g_build_filename (g_get_home_dir (), from, subdir, NULL);
+	toDirname = g_build_filename (g_get_home_dir (), to, subdir, NULL);
 	
-	dir = g_dir_open(fromDirname, 0, NULL);
-	while(NULL != (srcfile = (gchar *)g_dir_read_name(dir))) {
+	dir = g_dir_open (fromDirname, 0, NULL);
+	while (NULL != (srcfile = (gchar *)g_dir_read_name (dir))) {
 		gchar	*content;
 		gsize	length;
-		destfile = g_strdup_printf("%s" G_DIR_SEPARATOR_S "%s", toDirname, srcfile);
-		srcfile = g_strdup_printf("%s" G_DIR_SEPARATOR_S "%s", fromDirname, srcfile);
+		destfile = g_build_filename (toDirname, srcfile, NULL);
+		srcfile = g_build_filename (fromDirname, srcfile, NULL);
 		if (g_file_test (srcfile, G_FILE_TEST_IS_REGULAR)) {
-			g_print("copying %s\n     to %s\n", srcfile, destfile);
-			if(g_file_get_contents(srcfile, &content, &length, NULL))
-				g_file_set_contents(destfile, content, length, NULL);
-			g_free(content);
+			g_print ("copying %s\n     to %s\n", srcfile, destfile);
+			if (g_file_get_contents (srcfile, &content, &length, NULL))
+				g_file_set_contents (destfile, content, length, NULL);
+			g_free (content);
 		} else {
 			g_print("skipping %s\n", srcfile);
 		}
-		g_free(destfile);
-		g_free(srcfile);
+		g_free (destfile);
+		g_free (srcfile);
 	}
 	g_dir_close(dir);
 	
-	g_free(fromDirname);
-	g_free(toDirname);
+	g_free (fromDirname);
+	g_free (toDirname);
 }
 
 static itemPtr
@@ -164,7 +164,7 @@ migrate_load_from_cache (const gchar *sourceDir, const gchar *id)
 	ctxt->subscription = node->subscription;
 	ctxt->feed = (feedPtr)node->data;
 		
-	filename = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "%s", sourceDir, node->id);
+	filename = g_build_filename (sourceDir, node->id, NULL);
 	debug2 (DEBUG_CACHE, "loading cache file \"%s\" (feed \"%s\")", filename, subscription_get_source(ctxt->subscription));
 	
 	if ((!g_file_get_contents (filename, &ctxt->data, &ctxt->dataLength, NULL)) || (*ctxt->data == 0)) {
@@ -264,13 +264,13 @@ migrate_10_to_14 (void)
 {
 	gchar *sourceDir;
 	
-	g_print("Performing 1.0 -> 1.4 cache migration...\n");
+	g_print ("Performing 1.0 -> 1.4 cache migration...\n");
 	migrate_copy_dir (".liferea", ".liferea_1.4", "");
 	migrate_copy_dir (".liferea", ".liferea_1.4", "cache" G_DIR_SEPARATOR_S "favicons");
 
-	sourceDir = g_strdup_printf("%s" G_DIR_SEPARATOR_S ".liferea" G_DIR_SEPARATOR_S "cache" G_DIR_SEPARATOR_S "feeds", g_get_home_dir());	
-	migrate_items(sourceDir);
-	g_free(sourceDir);
+	sourceDir = g_build_filename (g_get_home_dir(), ".liferea", "cache", "feeds", NULL);
+	migrate_items (sourceDir);
+	g_free (sourceDir);
 }
 
 static void
@@ -287,9 +287,9 @@ migrate_12_to_14 (void)
 	migrate_copy_dir (".liferea_1.2", ".liferea_1.4", "cache" G_DIR_SEPARATOR_S "plugins");
 	
 	/* migrate feed cache to new DB format */
-	sourceDir = g_strdup_printf("%s" G_DIR_SEPARATOR_S ".liferea_1.2" G_DIR_SEPARATOR_S "cache" G_DIR_SEPARATOR_S "feeds", g_get_home_dir());
-	migrate_items(sourceDir);
-	g_free(sourceDir);
+	sourceDir = g_build_filename (g_get_home_dir(), ".liferea_1.2", "cache", "feeds", NULL);
+	migrate_items (sourceDir);
+	g_free (sourceDir);
 }
 
 static void
