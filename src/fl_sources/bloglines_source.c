@@ -47,7 +47,7 @@ on_bloglines_source_selected (GtkDialog *dialog,
 		subscription->updateOptions->username = g_strdup (gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "userEntry"))));
 		subscription->updateOptions->password = g_strdup (gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "passwordEntry"))));
 
-		node = node_new ();
+		node = node_new (node_source_get_node_type ());
 		node_set_title (node, "Bloglines");
 		node_source_new (node, bloglines_source_get_type ());
 		opml_source_setup (parent, node);

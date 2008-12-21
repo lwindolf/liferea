@@ -76,9 +76,8 @@ google_source_add_broadcast_subscription (GoogleSourcePtr gsource)
 
 	/* aha! add it! */
 
-	node = node_new ();
+	node = node_new (feed_get_node_type ());
 	node_set_title (node, title);
-	node_set_type (node, feed_get_node_type ());
 	node_set_data (node, feed_new ());
 
 	node_set_subscription (node, subscription_new (GOOGLE_READER_BROADCAST_FRIENDS_URL, NULL, NULL));
@@ -154,9 +153,8 @@ google_source_merge_feed (xmlNodePtr match, gpointer user_data)
 	if (id && title) {
 
 		debug2 (DEBUG_UPDATE, "adding %s (%s)", title, url);
-		node = node_new ();
+		node = node_new (feed_get_node_type ());
 		node_set_title (node, title);
-		node_set_type (node, feed_get_node_type ());
 		node_set_data (node, feed_new ());
 		
 		node_set_subscription (node, subscription_new (url, NULL, NULL));

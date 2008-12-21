@@ -71,15 +71,14 @@ opml_source_merge_feed (xmlNodePtr match, gpointer user_data)
 
 	if (!xpath_find (mergeCtxt->xmlNode, expr)) {
 		debug2(DEBUG_UPDATE, "adding %s (%s)", title, url);
-		node = node_new ();
-		node_set_title (node, title);
 		if (url) {
-			node_set_type (node, feed_get_node_type ());
+			node = node_new (feed_get_node_type ());
 			node_set_data (node, feed_new ());
 			node_set_subscription (node, subscription_new (url, NULL, NULL));
 		} else {
-			node_set_type (node, folder_get_node_type ());
+			node = node_new (folder_get_node_type ());
 		}
+		node_set_title (node, title);
 		node_set_parent (node, mergeCtxt->parent, -1);
 		feedlist_node_imported (node);
 		
@@ -320,8 +319,6 @@ opml_source_setup (nodePtr parent, nodePtr node)
 {
 	gchar	*filename;
 	
-	node_set_type (node, node_source_get_node_type ());
-	
 	filename = g_strdup_printf ("%s.png", NODE_SOURCE_TYPE (node)->id);
 	node->icon = ui_common_create_pixbuf (filename);
 	g_free (filename);
@@ -376,7 +373,7 @@ on_opml_source_selected (GtkDialog *dialog,
 	nodePtr node, parent = (nodePtr)user_data;
 
 	if (response_id == GTK_RESPONSE_OK) {
-		node = node_new ();
+		node = node_new (node_source_get_node_type ());
 		node_set_title (node, OPML_SOURCE_DEFAULT_TITLE);
 		node_source_new (node, opml_source_get_type());
 		opml_source_setup (parent, node);

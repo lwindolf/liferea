@@ -2700,10 +2700,17 @@ static swig_lua_class _wrap_class_node = { "node", &SWIGTYPE_p_node,_wrap_new_no
 
 static int _wrap_node_new(lua_State* L) {
   int SWIG_arg = 0;
+  struct nodeType *arg1 = (struct nodeType *) 0 ;
   nodePtr result;
   
-  SWIG_check_num_args("node_new",0,0)
-  result = (nodePtr)node_new();
+  SWIG_check_num_args("node_new",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("node_new",1,"struct nodeType *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_nodeType,0))){
+    SWIG_fail_ptr("node_new",1,SWIGTYPE_p_nodeType);
+  }
+  
+  result = (nodePtr)node_new(arg1);
   SWIG_NewPointerObj(L,result,SWIGTYPE_p_node,0); SWIG_arg++; 
   return SWIG_arg;
   
@@ -9317,17 +9324,6 @@ static swig_lua_const_info swig_constants[] = {
 { SWIG_LUA_INT,     (char *)"NODE_VIEW_MODE_NORMAL", (long) NODE_VIEW_MODE_NORMAL, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"NODE_VIEW_MODE_WIDE", (long) NODE_VIEW_MODE_WIDE, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"NODE_VIEW_MODE_COMBINED", (long) NODE_VIEW_MODE_COMBINED, 0, 0, 0},
-{ SWIG_LUA_INT,     (char *)"NODE_CAPABILITY_SHOW_ITEM_FAVICONS", (long) NODE_CAPABILITY_SHOW_ITEM_FAVICONS, 0, 0, 0},
-{ SWIG_LUA_INT,     (char *)"NODE_CAPABILITY_ADD_CHILDS", (long) NODE_CAPABILITY_ADD_CHILDS, 0, 0, 0},
-{ SWIG_LUA_INT,     (char *)"NODE_CAPABILITY_REMOVE_CHILDS", (long) NODE_CAPABILITY_REMOVE_CHILDS, 0, 0, 0},
-{ SWIG_LUA_INT,     (char *)"NODE_CAPABILITY_SUBFOLDERS", (long) NODE_CAPABILITY_SUBFOLDERS, 0, 0, 0},
-{ SWIG_LUA_INT,     (char *)"NODE_CAPABILITY_REMOVE_ITEMS", (long) NODE_CAPABILITY_REMOVE_ITEMS, 0, 0, 0},
-{ SWIG_LUA_INT,     (char *)"NODE_CAPABILITY_RECEIVE_ITEMS", (long) NODE_CAPABILITY_RECEIVE_ITEMS, 0, 0, 0},
-{ SWIG_LUA_INT,     (char *)"NODE_CAPABILITY_REORDER", (long) NODE_CAPABILITY_REORDER, 0, 0, 0},
-{ SWIG_LUA_INT,     (char *)"NODE_CAPABILITY_SHOW_UNREAD_COUNT", (long) NODE_CAPABILITY_SHOW_UNREAD_COUNT, 0, 0, 0},
-{ SWIG_LUA_INT,     (char *)"NODE_CAPABILITY_SHOW_ITEM_COUNT", (long) NODE_CAPABILITY_SHOW_ITEM_COUNT, 0, 0, 0},
-{ SWIG_LUA_INT,     (char *)"NODE_CAPABILITY_UPDATE", (long) NODE_CAPABILITY_UPDATE, 0, 0, 0},
-{ SWIG_LUA_INT,     (char *)"NODE_CAPABILITY_UPDATE_CHILDS", (long) NODE_CAPABILITY_UPDATE_CHILDS, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"CACHE_DISABLE", (long) CACHE_DISABLE, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"CACHE_DEFAULT", (long) CACHE_DEFAULT, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"CACHE_UNLIMITED", (long) CACHE_UNLIMITED, 0, 0, 0},

@@ -78,11 +78,14 @@ nodePtr node_from_id(const gchar *id) {
 	return node;
 }
 
-nodePtr node_new(void) {
+nodePtr node_new(nodeTypePtr type) {
 	nodePtr	node;
 	gchar	*id;
+	
+	g_assert (NULL != type);
 
 	node = (nodePtr)g_new0(struct node, 1);
+	node->type = type;
 	node->sortColumn = IS_TIME;
 	node->sortReversed = TRUE;	/* default sorting is newest date at top */
 	node->available = TRUE;

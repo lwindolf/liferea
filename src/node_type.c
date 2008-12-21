@@ -17,13 +17,15 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+
+#include "node_type.h"
  
 #include "feed.h"
 #include "feed_parser.h"
 #include "feedlist.h"
 #include "folder.h"
 #include "newsbin.h"
-#include "node_type.h"
+#include "node.h"
 #include "vfolder.h"
 #include "fl_sources/node_source.h"
 
@@ -48,16 +50,10 @@ node_type_register (nodeTypePtr nodeType)
 	nodeTypes = g_slist_append (nodeTypes, (gpointer)nodeType);
 }
 
-void
-node_set_type (nodePtr node, nodeTypePtr type) 
-{
-	node->type = type;
-}
-
 const gchar *
 node_type_to_str (nodePtr node)
 {
-	/* To distinguish differen feed formats (Atom, RSS...) we do
+	/* To distinguish different feed formats (Atom, RSS...) we do
 	   return different type identifiers for feed subscriptions... */
 	if (IS_FEED (node)) {
 		g_assert (NULL != node->data);

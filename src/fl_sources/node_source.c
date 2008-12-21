@@ -103,8 +103,7 @@ node_source_setup_root (void)
 	if (!type) 
 		g_error ("No root capable node source found!");
 		
-	rootNode = node_new ();
-	node_set_type (rootNode, root_get_node_type());
+	rootNode = node_new (root_get_node_type());
 	rootNode->title = g_strdup ("root");
 	rootNode->source = g_new0 (struct nodeSource, 1);
 	rootNode->source->root = rootNode;

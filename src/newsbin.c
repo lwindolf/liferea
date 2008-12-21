@@ -101,9 +101,8 @@ on_newnewsbinbtn_clicked (GtkButton *button, gpointer user_data)
 {
 	nodePtr		newsbin;
 	
-	newsbin = node_new ();
+	newsbin = node_new (newsbin_get_node_type ());
 	node_set_title (newsbin, (gchar *)gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (newnewsbindialog, "nameentry"))));
-	node_set_type (newsbin, newsbin_get_node_type ());
 	node_set_data (newsbin, (gpointer)feed_new ());
 
 	newsbin_list = g_slist_append(newsbin_list, newsbin);

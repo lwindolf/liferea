@@ -49,7 +49,6 @@ vfolder_new (nodePtr node)
 
 	if (!node->title)
 		node_set_title (node, _("New Search Folder"));	/* set default title */
-	node_set_type (node, vfolder_get_node_type());
 	node_set_data (node, (gpointer) vfolder);
 
 	debug_exit ("vfolder_new");
@@ -316,7 +315,7 @@ vfolder_add (nodePtr parent)
 {
 	nodePtr	node;
 
-	node = node_new ();
+	node = node_new (vfolder_get_node_type ());
 	node_set_parent (node, NULL, -1);
 	vfolder_new (node);
 	feedlist_node_added (node);

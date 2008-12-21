@@ -169,8 +169,7 @@ void
 google_source_setup (nodePtr parent, nodePtr node)
 {
 	node->icon = ui_common_create_pixbuf ("fl_google.png");
-	
-	node_set_type (node, node_source_get_node_type ());
+
 	if (parent) {
 		gint pos;
 		ui_feedlist_get_target_folder (&pos);
@@ -241,10 +240,9 @@ static nodePtr
 google_source_add_subscription(nodePtr node, nodePtr parent, subscriptionPtr subscription) 
 { 
 	debug_enter("google_source_add_subscription") ;
-	nodePtr child = node_new ();
+	nodePtr child = node_new (feed_get_node_type ());
 
 	debug0(DEBUG_UPDATE, "GoogleSource: Adding a new subscription"); 
-	node_set_type (child, feed_get_node_type ());
 	node_set_data (child, feed_new ());
 
 	node_set_subscription(child, subscription) ;
@@ -293,7 +291,7 @@ on_google_source_selected (GtkDialog *dialog,
 		subscription->updateOptions->username = g_strdup (gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "userEntry"))));
 		subscription->updateOptions->password = g_strdup (gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "passwordEntry"))));
 		subscription->type = &googleSourceOpmlSubscriptionType ; 
-		node = node_new ();
+		node = node_new (node_source_get_node_type ());
 		node_set_title (node, "Google Reader");
 		node_source_new (node, google_source_get_type ());
 		google_source_setup (parent, node);

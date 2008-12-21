@@ -78,26 +78,12 @@ typedef struct node {
 
 } *nodePtr;
 
-enum {
-	NODE_CAPABILITY_SHOW_ITEM_FAVICONS	= (1<<0),	/**< display favicons in item list (useful for recursively viewed leaf node) */
-	NODE_CAPABILITY_ADD_CHILDS		= (1<<1),	/**< allows adding new childs */
-	NODE_CAPABILITY_REMOVE_CHILDS		= (1<<2),	/**< allows removing it's childs */
-	NODE_CAPABILITY_SUBFOLDERS		= (1<<3),	/**< allows creating/removing sub folders */
-	NODE_CAPABILITY_REMOVE_ITEMS		= (1<<4),	/**< allows removing of single items */
-	NODE_CAPABILITY_RECEIVE_ITEMS		= (1<<5),	/**< is a DnD target for item copies */
-	NODE_CAPABILITY_REORDER			= (1<<6),	/**< allows DnD to reorder childs */
-	NODE_CAPABILITY_SHOW_UNREAD_COUNT	= (1<<7),	/**< display the unread item count in the feed list */
-	NODE_CAPABILITY_SHOW_ITEM_COUNT		= (1<<8),	/**< display the absolute item count in the feed list */
-	NODE_CAPABILITY_UPDATE			= (1<<9),	/**< node type always has a subscription and can be updated */
-	NODE_CAPABILITY_UPDATE_CHILDS		= (1<<10)	/**< childs of this node type can be updated */
-};
-
 /**
  * Creates a new node structure.
  *
  * @returns the new node
  */
-nodePtr node_new(void);
+nodePtr node_new(struct nodeType *type);
 
 /**
  * Node lookup by node id.

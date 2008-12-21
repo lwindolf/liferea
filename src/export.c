@@ -169,12 +169,42 @@ import_parse_outline (xmlNodePtr cur, nodePtr parentNode, gboolean trusted)
 {
 	gchar		*title, *typeStr, *tmp, *sortStr;
 	nodePtr		node;
+	nodeTypePtr	type = NULL;
 	gboolean	needsUpdate = FALSE;
 	
 	debug_enter("import_parse_outline");
 
-	/* 1. do general node parsing */	
-	node = node_new ();
+	/* 1. determine node type */
+	typeStr = xmlGetProp (cur, BAD_CAST"type");
+	if (typeStr) {
+		type = node_str_to_type (typeStr);
+		xmlFree (typeStr);
+	} 
+	
+	/* if we didn't find a type attribute we use heuristics */
+	if (!type) {
+		/* check for a source URL */
+		tmp = xmlGetProp (cur, BAD_CAST"xmlUrl");
+		if (!tmp)
+			tmp = xmlGetProp (cur, BAD_CAST"xmlurl");	/* AmphetaDesk */
+		if (!tmp)
+			tmp = xmlGetProp (cur, BAD_CAST"xmlURL");	/* LiveJournal */
+		
+		if (tmp) {
+			debug0 (DEBUG_CACHE, "-> URL found assuming type feed");
+			type = feed_get_node_type();
+			xmlFree (tmp);
+		} else {
+			/* if the outline has no type and URL it just has to be a folder */
+			type = folder_get_node_type();
+			debug0 (DEBUG_CACHE, "-> must be a folder");
+		}
+	}
+	
+	g_assert (NULL != type);
+	
+	/* 2. do general node parsing */	
+	node = node_new (type);
 	node->parent = parentNode;
 	node->source = parentNode->source;
 	
@@ -185,7 +215,7 @@ import_parse_outline (xmlNodePtr cur, nodePtr parentNode, gboolean trusted)
 		gchar *id = NULL;
 		id = xmlGetProp (cur, BAD_CAST"id");
 		if (id) {
-			node_set_id(node, id);
+			node_set_id (node, id);
 			xmlFree (id);
 		} else {
 			needsUpdate = TRUE;
@@ -247,33 +277,6 @@ import_parse_outline (xmlNodePtr cur, nodePtr parentNode, gboolean trusted)
 	else 
 		node->expanded = TRUE;
 
-	/* 2. determine node type */
-	typeStr = xmlGetProp (cur, BAD_CAST"type");
-	if (typeStr) {
-		node_set_type (node, node_str_to_type (typeStr));
-		xmlFree (typeStr);
-	} 
-	
-	/* if we didn't find a type attribute we use heuristics */
-	if (!node->type) {
-		/* check for a source URL */
-		tmp = xmlGetProp (cur, BAD_CAST"xmlUrl");
-		if (!tmp)
-			tmp = xmlGetProp (cur, BAD_CAST"xmlurl");	/* AmphetaDesk */
-		if (!tmp)
-			tmp = xmlGetProp (cur, BAD_CAST"xmlURL");	/* LiveJournal */
-		
-		if (tmp) {
-			debug0 (DEBUG_CACHE, "-> URL found assuming type feed");
-			node_set_type (node, feed_get_node_type());
-			xmlFree (tmp);
-		} else {
-			/* if the outline has no type and URL it just has to be a folder */
-			node_set_type (node, folder_get_node_type());
-			debug0 (DEBUG_CACHE, "-> must be a folder");
-		}
-	}
-	
 	/* 3. do node type specific parsing */
 	NODE_TYPE (node)->import (node, parentNode, cur, trusted);
 
@@ -384,9 +387,8 @@ static void
 on_import_activate_cb (const gchar *filename, gpointer user_data)
 {	
 	if (filename) {
-		nodePtr node = node_new ();
+		nodePtr node = node_new (folder_get_node_type ());
 		node_set_title (node, _("Imported feed list"));
-		node_set_type (node, folder_get_node_type ());
 		node_set_parent (node, NULL, 0);
 		feedlist_node_imported (node);
 		

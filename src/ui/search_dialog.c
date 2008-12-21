@@ -160,7 +160,7 @@ static void
 search_dialog_init (SearchDialog *sd)
 {
 	sd->priv = SEARCH_DIALOG_GET_PRIVATE (sd);
-	sd->priv->searchResult = node_new ();
+	sd->priv->searchResult = node_new (vfolder_get_node_type ());
 	sd->priv->vfolder = vfolder_new (sd->priv->searchResult);
 	node_set_title (sd->priv->searchResult, "Saved Search");
 }
@@ -334,7 +334,7 @@ on_simple_search_dialog_response (GtkDialog *dialog, gint responseId, gpointer u
 		}
 		
 		/* Create new search... */
-		ssd->priv->searchResult = node_new ();
+		ssd->priv->searchResult = node_new (vfolder_get_node_type ());
 		ssd->priv->vfolder = vfolder_new (ssd->priv->searchResult);
 	
 		node_set_title (ssd->priv->searchResult, searchString);

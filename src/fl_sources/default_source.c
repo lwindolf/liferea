@@ -170,8 +170,7 @@ default_source_add_subscription (nodePtr node, nodePtr parent, subscriptionPtr s
 	/* For the local feed list source subscriptions are always
 	   feed subscriptions implemented by the feed node and 
 	   subscription type... */
-	nodePtr child = node_new ();
-	node_set_type (child, feed_get_node_type ());
+	nodePtr child = node_new (feed_get_node_type ());
 	node_set_title (child, _("New Subscription"));
 	node_set_data (child, feed_new ());
 	node_set_subscription (child, subscription);	/* feed subscription type is implicit */
@@ -187,9 +186,8 @@ default_source_add_folder (nodePtr node, nodePtr parent, const gchar *title)
 {
 	/* For the local feed list source folders are always 
 	   real folders implemented by the folder node type... */
-	nodePtr child = node_new ();
+	nodePtr child = node_new (folder_get_node_type());
 	node_set_title (child, title);
-	node_set_type (child, folder_get_node_type());
 	node_set_parent (child, parent, -1);
 	feedlist_node_added (child);
 	

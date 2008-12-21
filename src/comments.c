@@ -125,11 +125,10 @@ comments_process_update_result (const struct updateResult * const result, gpoint
 		debug1(DEBUG_UPDATE, "received update result for comment feed \"%s\"", result->source);
 
 		/* parse the new downloaded feed into fake node, subscription and feed */
-		node = node_new ();
+		node = node_new (feed_get_node_type ());
 		ctxt = feed_create_parser_ctxt ();
 		ctxt->subscription = subscription_new (result->source, NULL, NULL);
 		ctxt->feed = feed_new ();
-		node_set_type (node, feed_get_node_type ());
 		node_set_data (node, ctxt->feed);		
 		node_set_subscription (node, ctxt->subscription);
 		ctxt->data = result->data;
