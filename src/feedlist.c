@@ -351,7 +351,7 @@ feedlist_add_folder (const gchar *title)
 
 	parent = feedlist_get_insertion_point ();
 
-	if(0 == (NODE_SOURCE_TYPE (parent->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS))
+	if(0 == (NODE_TYPE (parent->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS))
 		return;	
 		
 	node_source_add_folder (parent->source->root, parent, title);
