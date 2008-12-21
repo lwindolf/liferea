@@ -11,8 +11,6 @@ EXTRA_DIST = \
 	folder_empty.png \
 	read.xpm        \
 	unread.png      \
-	online.png	\
-	offline.png	\
 	vfolder.png     \
 	edit.png	\
 	technorati.png	\
