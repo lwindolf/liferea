@@ -204,7 +204,13 @@ webkit_new (LifereaHtmlView *htmlview, gboolean force_internal_browsing)
 		!conf_get_bool_value (DISABLE_JAVASCRIPT),
 		NULL
 	);
-
+	g_object_set (
+		settings,
+		"enable-plugins",
+		FALSE,
+		NULL
+	);
+	
 	webkit_web_view_set_settings (view, WEBKIT_WEB_SETTINGS (settings));
 	webkit_web_view_set_full_content_zoom (WEBKIT_WEB_VIEW (view), TRUE);
 
