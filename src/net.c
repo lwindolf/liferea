@@ -40,10 +40,10 @@
 static CURLSH *share_handle = NULL;
 
 static int	NET_TIMEOUT;
-static char 	*useragent = NULL;
-static char	*proxyname = NULL;
-static char	*proxyusername = NULL;
-static char	*proxypassword = NULL;
+static gchar 	*useragent = NULL;
+static gchar	*proxyname = NULL;
+static gchar	*proxyusername = NULL;
+static gchar	*proxypassword = NULL;
 static int	proxyport = 0;
 
 static gboolean	online = FALSE;

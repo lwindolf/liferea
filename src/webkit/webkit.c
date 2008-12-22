@@ -333,6 +333,11 @@ webkit_scroll_pagedown (GtkWidget *scrollpane)
 	return (new_value > old_value);
 }
 
+static void
+webkit_set_proxy (const gchar *host, guint port, const gchar *user, const gchar *pwd)
+{
+}
+
 static struct
 htmlviewImpl webkitImpl = {
 	.externalCss	= TRUE,
@@ -345,7 +350,7 @@ htmlviewImpl webkitImpl = {
 	.zoomLevelGet	= webkit_get_zoom_level,
 	.zoomLevelSet	= webkit_change_zoom_level,
 	.scrollPagedown	= webkit_scroll_pagedown,
-	.setProxy	= NULL,
+	.setProxy	= webkit_set_proxy,
 	.setOffLine	= NULL
 };
 
