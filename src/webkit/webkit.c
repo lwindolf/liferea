@@ -96,6 +96,8 @@ webkit_on_url (WebKitWebView *view, const gchar *title, const gchar *url, gpoint
 
 	htmlview    = g_object_get_data (G_OBJECT (view), "htmlview");
 	selected_url = g_object_get_data (G_OBJECT (view), "selected_url");
+	if (selected_url)
+		g_free (selected_url);
 
 	selected_url = url ? g_strdup (url) : g_strdup ("");
 
@@ -103,7 +105,6 @@ webkit_on_url (WebKitWebView *view, const gchar *title, const gchar *url, gpoint
 	liferea_htmlview_on_url (htmlview, selected_url);
 
 	g_object_set_data (G_OBJECT (view), "selected_url", selected_url);
-	g_free (selected_url);
 }
 
 /**
