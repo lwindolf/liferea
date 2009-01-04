@@ -1,7 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 
 AC_INIT([liferea],[1.4.23],[liferea-devel@lists.sourceforge.net])
-AC_CANONICAL_TARGET([])
+AC_CANONICAL_HOST
 AC_CONFIG_SRCDIR([src/feedlist.c])
 
 AC_ENABLE_SHARED(yes)
