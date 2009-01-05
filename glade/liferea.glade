@@ -1301,7 +1301,6 @@
             <property name="border_width">5</property>
             <child>
               <widget class="GtkVBox" id="vbox3">
-                <property name="visible">True</property>
                 <property name="border_width">12</property>
                 <property name="spacing">18</property>
                 <child>
@@ -2896,7 +2895,6 @@
             </child>
             <child>
               <widget class="GtkVBox" id="vbox8">
-                <property name="visible">True</property>
                 <property name="border_width">12</property>
                 <property name="spacing">18</property>
                 <child>
@@ -3426,7 +3424,6 @@
                     <property name="visible">True</property>
                     <property name="label" translatable="yes">Search _Name:</property>
                     <property name="use_underline">True</property>
-                    <property name="mnemonic_widget">searchNameEntryLabel</property>
                   </widget>
                   <packing>
                     <property name="expand">False</property>
