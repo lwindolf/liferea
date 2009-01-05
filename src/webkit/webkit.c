@@ -69,8 +69,8 @@ webkit_write_html (
 static void
 webkit_title_changed (
 	WebKitWebView *view,
+	WebKitWebFrame *frame,
 	const gchar *title,
-	const gchar *url,
 	gpointer user_data
 )
 {

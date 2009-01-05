@@ -30,6 +30,8 @@
 	* Fixes cross compilation issue with configure.ac using
 	  AC_CANONICAL_TARGET instead of AC_CANONICAL_HOST
 	  (patch by Diego E. Petteno)
+	* Adapted Webkit support for new "title-changed" signature.
+	  Tested with Webkit v1.02
 
 
 2008-11-09  Lars Lindner  <lars.lindner@gmail.com>
