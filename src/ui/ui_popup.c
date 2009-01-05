@@ -196,19 +196,12 @@ ui_popup_make_menu (GtkItemFactoryEntry *menu_items, gint nmenu_items, gpointer 
 	return GTK_MENU (menu);
 }
 
-/**
- * Function to generate popup menus for the item list 
- * depending on the list mode given in itemlist_mode 
- */
 GtkMenu *
 ui_popup_make_item_menu (itemPtr item)
 {
 	GtkMenu 	*menu;
 
-	if (2 == itemlist_get_view_mode ()) {
-		// FIXME: menu = ui_popup_make_menu (html_menu_items, html_menu_len, item);
-	} else
-		menu = ui_popup_make_menu (item_menu_items, item_menu_len, item);
+	menu = ui_popup_make_menu (item_menu_items, item_menu_len, item);
 
 	return menu;
 }
