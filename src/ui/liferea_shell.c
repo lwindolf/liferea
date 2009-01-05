@@ -64,7 +64,11 @@ struct LifereaShellPrivate {
 	GtkWidget	*menubar;
 	GtkWidget	*toolbar;
 	GtkTreeView	*feedlistView;
-	GtkStatusbar	*statusbar;
+	
+	GtkStatusbar	*statusbar;		/**< main window status bar */
+	gboolean	statusbarLocked;	/**< flag locking important message on status bar */
+	guint		statusbarLockTimer;	/**< timer id for status bar lock reset timer */
+
 	GtkWidget	*statusbar_feedsinfo;
 	GtkActionGroup	*generalActions;
 	GtkActionGroup	*addActions;		/**< all types of "New" options */
@@ -350,14 +354,10 @@ liferea_shell_update_unread_stats (void)
    out-dated high priority message.  
  */
 
-// FIXME: move to private shell object members
-static gboolean statusBarLocked = FALSE;
-static guint	statusBarLockTimer = 0;
-
 static gboolean
 liferea_shell_unlock_status_bar_cb (gpointer user_data)
 {
-	statusBarLocked = FALSE;
+	shell->priv->statusbarLocked = FALSE;
 	
 	return FALSE;
 }
@@ -400,7 +400,7 @@ liferea_shell_set_status_bar (const char *format, ...)
 	va_list		args;
 	gchar		*text;
 	
-	if (statusBarLocked)
+	if (shell->priv->statusbarLocked)
 		return;
 
 	g_return_if_fail (format != NULL);
@@ -424,16 +424,18 @@ liferea_shell_set_important_status_bar (const char *format, ...)
 	text = g_strdup_vprintf (format, args);
 	va_end (args);
 
-	statusBarLocked = FALSE;
-	if (statusBarLockTimer)
-		g_source_remove (statusBarLockTimer);
+	shell->priv->statusbarLocked = FALSE;
+	if (shell->priv->statusbarLockTimer) {
+		g_source_remove (shell->priv->statusbarLockTimer);
+		shell->priv->statusbarLockTimer = 0;
+	}
 	
 	/* URL hover messages are reset with an empty string, so 
 	   we must locking the status bar on empty strings! */
 	if (!g_str_equal (text, "")) {
 		/* Realize 5s locking for important messages... */
-		statusBarLocked = TRUE;
-		statusBarLockTimer = g_timeout_add_seconds (5, liferea_shell_unlock_status_bar_cb, NULL);
+		shell->priv->statusbarLocked = TRUE;
+		shell->priv->statusbarLockTimer = g_timeout_add_seconds (5, liferea_shell_unlock_status_bar_cb, NULL);
 	}
 	
 	g_idle_add ((GSourceFunc)liferea_shell_set_status_bar_important_cb, (gpointer)text);
@@ -1056,6 +1058,8 @@ liferea_shell_create (int initialState)
 	debug0 (DEBUG_GUI, "Setting up status bar");
 	
 	shell->priv->statusbar = GTK_STATUSBAR (liferea_shell_lookup ("statusbar"));
+	shell->priv->statusbarLocked = FALSE;
+	shell->priv->statusbarLockTimer = 0;
 	shell->priv->statusbar_feedsinfo = gtk_label_new("");
 	gtk_widget_show(shell->priv->statusbar_feedsinfo);
 	gtk_box_pack_start (GTK_BOX (shell->priv->statusbar), shell->priv->statusbar_feedsinfo, FALSE, FALSE, 5);
