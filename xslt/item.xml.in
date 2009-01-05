@@ -104,7 +104,7 @@
       </xsl:choose>   
     </xsl:variable>
     
-    <a class="favicon" href="{/itemset/feed/feedLink}">
+    <a class="favicon" href="{/itemset/feed/attributes/attribute[ @name = 'homepage' ]}">
       <img src="{$favicon}"/>
     </a>
   </td>
@@ -154,7 +154,7 @@
  <td valign="top" class='source'> 
      <_span>Feed</_span>
      <b><span class='source'>
-       <a href="{/itemset/feed/feedLink}">
+       <a href="{/itemset/feed/attributes/attribute[ @name = 'homepage' ]}">
          <xsl:value-of select="/itemset/feed/feedTitle"/>
        </a>
      </span></b>

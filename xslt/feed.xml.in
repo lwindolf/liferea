@@ -110,7 +110,7 @@
     <b><_span>Feed:</_span></b>
   </td>
   <td width="100%" valign="middle" class="headright">
-     <a href="{feedLink}">
+     <a href="{attributes/attribute[ @name = 'homepage' ]}">
         <xsl:value-of select="feedTitle"/>
      </a>
   </td>
@@ -160,13 +160,13 @@
 
 <div class='content'>
 
-<xsl:if test="feedImage">
+<xsl:if test="attributes/attribute[ @name = 'imageUrl' ]">
 <p>
-<img class="feed" src="{feedImage}"/>
+<img class="feed" src="{attributes/attribute[ @name = 'imageUrl' ]}"/>
 </p>
 </xsl:if>
 
-   <xsl:value-of select="feedDescription" disable-output-escaping='yes'/>
+   <xsl:value-of select="attributes/attribute[@name = 'description']" disable-output-escaping='yes'/>
 
    <xsl:value-of select="attributes/attribute[@name = 'textInput']" disable-output-escaping='yes'/>
 </div>

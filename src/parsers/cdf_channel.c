@@ -1,7 +1,7 @@
 /**
  * @file cdf_channel.c CDF channel parsing
  *
- * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2009 Lars Lindner <lars.lindner@gmail.com>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,14 +52,14 @@ static void parseCDFChannel(feedParserCtxtPtr ctxt, xmlNodePtr cur, CDFChannelPt
 			tmp = common_utf8_fix(xmlGetProp(cur, BAD_CAST"HREF"));
 			if(tmp) {
 				tmp = common_utf8_fix(xmlGetProp(cur, BAD_CAST"href"));
-				feed_set_image_url(ctxt->feed, tmp);
+				metadata_list_set (&ctxt->subscription->metadata, "imageUrl", tmp);
 				g_free(tmp);
 			}
 
 		} else if((!xmlStrcasecmp(cur->name, BAD_CAST"a"))) {
 			xmlChar *value = xmlGetProp(cur, BAD_CAST"HREF");
 			if(value) {
-				feed_set_html_url(ctxt->feed, subscription_get_source(ctxt->subscription), (gchar *)value);
+				subscription_set_homepage (ctxt->subscription, (gchar *)value);
 				xmlFree(value);
 			}
 

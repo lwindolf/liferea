@@ -1,7 +1,7 @@
 /**
  * @file feed.c  feed node and subscription type
  * 
- * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2009 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -85,12 +85,6 @@ feed_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trusted)
 		feed->cacheLimit = common_parse_long (cacheLimitStr, CACHE_DEFAULT);
 	xmlFree (cacheLimitStr);
 	
-	/* Obtain the htmlUrl */
-	htmlUrlStr = xmlGetProp (xml, BAD_CAST"htmlUrl");
-	if (htmlUrlStr && xmlStrcmp (htmlUrlStr, ""))
-		feed_set_html_url (feed, "", htmlUrlStr);
-	xmlFree (htmlUrlStr);
-	
 	tmp = xmlGetProp (xml, BAD_CAST"noIncremental");
 	if (tmp && !xmlStrcmp (tmp, BAD_CAST"true"))
 		feed->noIncremental = TRUE;
@@ -159,11 +153,6 @@ feed_export (nodePtr node, xmlNodePtr xml, gboolean trusted)
 	feedPtr feed = (feedPtr) node->data;
 	gchar *cacheLimit = NULL;
 
-	if (feed_get_html_url (feed))
-		xmlNewProp (xml, BAD_CAST"htmlUrl", BAD_CAST feed_get_html_url (feed));
-	else
-		xmlNewProp (xml, BAD_CAST"htmlUrl", BAD_CAST "");
-
 	if (node->subscription)
 		subscription_export (node->subscription, xml, trusted);
 
@@ -214,15 +203,8 @@ feed_add_xml_attributes (nodePtr node, xmlNodePtr feedNode)
 	xmlNewTextChild (feedNode, NULL, "feedId", node_get_id (node));
 	xmlNewTextChild (feedNode, NULL, "feedTitle", node_get_title (node));
 
-	if (feed_get_image_url (feed))
-		xmlNewTextChild (feedNode, NULL, "feedImage", feed_get_image_url (feed));
-
 	// FIXME: move subscription stuff to subscription.c
 	if (node->subscription) {
-		tmp = (gchar *)metadata_list_get (node->subscription->metadata, "description");
-		if (tmp)
-			xmlNewTextChild (feedNode, NULL, "feedDescription", tmp);
-			
 		xmlNewTextChild (feedNode, NULL, "feedSource", subscription_get_source (node->subscription));
 		xmlNewTextChild (feedNode, NULL, "feedOrigSource", subscription_get_orig_source (node->subscription));
 
@@ -246,18 +228,16 @@ feed_add_xml_attributes (nodePtr node, xmlNodePtr feedNode)
 		if (node->subscription->filterError)
 			xmlNewTextChild (feedNode, NULL, "filterError", node->subscription->filterError);
 	
-		metadata_add_xml_nodes(node->subscription->metadata, feedNode);	
+		metadata_add_xml_nodes (node->subscription->metadata, feedNode);
 	}
 
 	tmp = g_strdup_printf("%d", node->available?1:0);
 	xmlNewTextChild(feedNode, NULL, "feedStatus", tmp);
 	g_free(tmp);
 
-	tmp = g_strdup_printf("file://%s", node_get_favicon_file(node));
+	tmp = g_strdup_printf("file://%s", node_get_favicon_file (node));
 	xmlNewTextChild(feedNode, NULL, "favicon", tmp);
 	g_free(tmp);
-		
-	xmlNewTextChild(feedNode, NULL, "feedLink", feed_get_html_url(feed));
 
 	if(feed->parseErrors && (strlen(feed->parseErrors->str) > 0))
 		xmlNewTextChild(feedNode, NULL, "parseError", feed->parseErrors->str);
@@ -296,47 +276,6 @@ feed_get_max_item_count (nodePtr node)
 			return feed->cacheLimit;
 			break;
 	}
-}
-
-/* feed attributes encapsulation */
-
-const gchar * feed_get_html_url (feedPtr feed) { return feed->htmlUrl; };
-
-void
-feed_set_html_url (feedPtr feed, const gchar *base, const gchar *htmlUrl)
-{
-	g_free (feed->htmlUrl);
-	feed->htmlUrl = NULL;
-
-	if (htmlUrl) {
-		if (strstr (htmlUrl, "://")) {
-			/* absolute URI can be used directly */
-			feed->htmlUrl = g_strchomp (g_strdup (htmlUrl));
-		} else {
-			/* relative URI part needs to be expanded */
-			gchar *tmp, *source;
-			
-			source = g_strdup (base);
-			tmp = strrchr (source, '/');
-			if (tmp)
-				*(tmp+1) = '\0';
-
-			feed->htmlUrl = common_build_url (htmlUrl, source);
-			g_free (source);
-		}
-	}
-}
-
-const gchar * feed_get_image_url (feedPtr feed) { return feed->imageUrl; };
-
-void
-feed_set_image_url (feedPtr feed, const gchar *imageUrl)
-{
-	g_free (feed->imageUrl);
-	if (imageUrl)
-		feed->imageUrl = g_strchomp (g_strdup (imageUrl));
-	else
-		feed->imageUrl = NULL;
 }
 
 /* implementation of subscription type interface */
@@ -508,7 +447,6 @@ feed_free (nodePtr node)
 	if (feed->parseErrors)
 		g_string_free(feed->parseErrors, TRUE);
 	g_free (feed->htmlUrl);
-	g_free (feed->imageUrl);
 	g_free (feed);
 }
 

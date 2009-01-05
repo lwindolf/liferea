@@ -26,7 +26,6 @@
 #include "db.h"
 #include "debug.h"
 #include "favicon.h"
-#include "feed.h"
 #include "feedlist.h"
 #include "folder.h"
 #include "itemset.h"
@@ -440,8 +439,7 @@ node_get_base_url(nodePtr node)
 {
 	const gchar 	*baseUrl = NULL;
 
-	if (IS_FEED (node))
-		baseUrl = feed_get_html_url ((feedPtr)node->data);
+	baseUrl = subscription_get_homepage (node->subscription);
 
 	/* prevent feed scraping commands to end up as base URI */
 	if (!((baseUrl != NULL) &&

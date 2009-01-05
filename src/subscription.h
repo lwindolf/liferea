@@ -1,7 +1,7 @@
 /**
  * @file subscription.h  common subscription handling interface
  * 
- * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2009 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -216,6 +216,25 @@ const gchar * subscription_get_orig_source(subscriptionPtr subscription);
  * @param source	the new original source URL
  */ 
 void subscription_set_orig_source(subscriptionPtr subscription, const gchar *source);
+
+/**
+ * Returns the homepage URL of the given subscription.
+ *
+ * @param subscription	the subscription
+ *
+ * @returns the homepage URL or NULL
+ */
+const gchar * subscription_get_homepage(subscriptionPtr subscription);
+
+/**
+ * Set the homepage URL of the given subscription. If the passed
+ * URL is a relative one it will be expanded using the
+ * given base URL.
+ *
+ * @param subscription	the subscription
+ * @param url		the new HTML URL
+ */
+void subscription_set_homepage(subscriptionPtr subscription, const gchar *url);
 
 /**
  * Get the configured filter command for a given subscription

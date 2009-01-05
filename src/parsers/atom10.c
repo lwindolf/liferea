@@ -2,7 +2,7 @@
  * @file atom10.c  Atom 1.0 Parser
  * 
  * Copyright (C) 2005-2006 Nathan Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2009 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -287,7 +287,7 @@ atom10_parse_link (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10ParserSt
 			alternate = g_strdup (url);
 		else if (g_str_equal (relation, "replies")) {
 			if (!type || g_str_equal (type, BAD_CAST"application/atom+xml")) {
-				gchar *commentUri = common_build_url (url, feed_get_html_url (ctxt->feed));
+				gchar *commentUri = common_build_url (url, subscription_get_homepage (ctxt->subscription));
 				if (ctxt->item)
 					metadata_list_set (&ctxt->item->metadata, "commentFeedUri", commentUri);
 			}
@@ -629,7 +629,7 @@ atom10_parse_feed_link (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10Par
 	
 	href = atom10_parse_link (cur, ctxt, state);
 	if (href) {
-		feed_set_html_url (ctxt->feed, subscription_get_source (ctxt->subscription), href);
+		subscription_set_homepage (ctxt->subscription, href);
 		/* Set the default base to the feed's HTML URL if not set yet */
 		if (xmlNodeGetBase (cur->doc, xmlDocGetRootElement (cur->doc)) == NULL)
 			xmlNodeSetBase (xmlDocGetRootElement (cur->doc), href);
@@ -644,8 +644,7 @@ atom10_parse_feed_logo (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10Par
 	
 	logoUrl = atom10_parse_text_construct (cur, FALSE);
 	if (logoUrl) {
-		/* FIXME: Verify URL is not evil... */
-		feed_set_image_url (ctxt->feed, logoUrl);
+		metadata_list_set (&ctxt->subscription->metadata, "imageUrl", logoUrl);
 		g_free (logoUrl);
 	}
 }

@@ -75,6 +75,7 @@ metadata_init (void)
 	metadata_type_register ("webmaster",		METADATA_TYPE_HTML);
 	metadata_type_register ("feedgenerator",	METADATA_TYPE_HTML);
 	metadata_type_register ("imageUrl",		METADATA_TYPE_URL);
+	metadata_type_register ("homepage",		METADATA_TYPE_URL);
 	metadata_type_register ("textInput",		METADATA_TYPE_HTML);
 	metadata_type_register ("errorReportsTo",	METADATA_TYPE_HTML);
 	metadata_type_register ("feedgeneratorUri",	METADATA_TYPE_URL);
@@ -158,6 +159,9 @@ GSList * metadata_list_append(GSList *metadata, const gchar *strid, const gchar 
 			} else {
 				checked_data = common_uri_escape(data);
 			}
+			
+			/* finally strip whitespace */
+			checked_data = g_strchomp (checked_data);
 			break;
 		default:
 			debug1(DEBUG_CACHE, "Unknown metadata type \"%s\", this is a program bug! Treating as HTML.", strid);

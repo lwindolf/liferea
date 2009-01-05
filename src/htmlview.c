@@ -186,12 +186,13 @@ itemset_to_xml (nodePtr node)
 	xmlNewTextChild (itemSetNode, NULL, "favicon", node_get_favicon_file (node));
 	xmlNewTextChild (itemSetNode, NULL, "title", node_get_title (node));
 
-	if (node->subscription && subscription_get_source (node->subscription))
-	       xmlNewTextChild (itemSetNode, NULL, "source", subscription_get_source (node->subscription));
-
-	// FIXME: should not be node type specific! Can be fixed by moving the feed link into subscription metadata!
-	if (IS_FEED (node))
-	       xmlNewTextChild (itemSetNode, NULL, "link", feed_get_html_url (node->data));
+	if (node->subscription) {
+		if (subscription_get_source (node->subscription))
+			xmlNewTextChild (itemSetNode, NULL, "source", subscription_get_source (node->subscription));
+			
+		if (subscription_get_homepage (node->subscription))
+			xmlNewTextChild (itemSetNode, NULL, "link", subscription_get_homepage (node->subscription));
+	}
 
 	return doc;
 }

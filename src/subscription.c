@@ -327,6 +327,12 @@ subscription_get_source (subscriptionPtr subscription)
 }
 
 const gchar *
+subscription_get_homepage (subscriptionPtr subscription)
+{
+	return metadata_list_get (subscription->metadata, "homepage");
+}
+
+const gchar *
 subscription_get_filter (subscriptionPtr subscription)
 {
 	return subscription->filtercmd;
@@ -355,6 +361,32 @@ subscription_set_source (subscriptionPtr subscription, const gchar *source)
 	
 	if (NULL == subscription_get_orig_source (subscription))
 		subscription_set_orig_source (subscription, source);
+}
+
+void
+subscription_set_homepage (subscriptionPtr subscription, const gchar *newHtmlUrl)
+{
+	gchar 	*htmlUrl = (gchar *)newHtmlUrl;
+	
+	if (htmlUrl) {
+		if (strstr (htmlUrl, "://")) {
+			/* absolute URI can be used directly */
+			htmlUrl = g_strchomp (g_strdup (htmlUrl));
+		} else {
+			/* relative URI part needs to be expanded */
+			gchar *tmp, *source;
+			
+			source = g_strdup (subscription_get_source (subscription));
+			tmp = strrchr (source, '/');
+			if (tmp)
+				*(tmp+1) = '\0';
+
+			htmlUrl = common_build_url (htmlUrl, source);
+			g_free (source);
+		}
+		
+		metadata_list_set (&subscription->metadata, "homepage", htmlUrl);
+	}
 }
 
 void
@@ -421,7 +453,7 @@ subscriptionPtr
 subscription_import (xmlNodePtr xml, gboolean trusted)
 {
 	subscriptionPtr	subscription;
-	xmlChar		*source, *filter, *intervalStr, *tmp;
+	xmlChar		*source, *homepage, *filter, *intervalStr, *tmp;
 
 	subscription = subscription_new (NULL, NULL, NULL);
 	
@@ -440,7 +472,12 @@ subscription_import (xmlNodePtr xml, gboolean trusted)
 	
 		subscription_set_source (subscription, source);
 		xmlFree (source);
-	
+
+		homepage = xmlGetProp (xml, BAD_CAST "htmlUrl");
+		if (homepage && xmlStrcmp (homepage, ""))
+			subscription_set_homepage (subscription, homepage);
+		xmlFree (homepage);
+
 		if ((filter = xmlGetProp (xml, BAD_CAST "filtercmd"))) {
 			if (!trusted) {
 				/* FIXME: Display warning dialog asking if the command
@@ -478,6 +515,11 @@ subscription_export (subscriptionPtr subscription, xmlNodePtr xml, gboolean trus
 	gchar *interval = g_strdup_printf ("%d", subscription_get_update_interval (subscription));
 
 	xmlNewProp (xml, BAD_CAST "xmlUrl", BAD_CAST subscription_get_source (subscription));
+
+	if (subscription_get_homepage (subscription))
+		xmlNewProp (xml, BAD_CAST"htmlUrl", BAD_CAST subscription_get_homepage (subscription));
+	else
+		xmlNewProp (xml, BAD_CAST"htmlUrl", BAD_CAST "");
 	
 	if (subscription_get_filter (subscription))
 		xmlNewProp (xml, BAD_CAST"filtercmd", BAD_CAST subscription_get_filter (subscription));

@@ -1,7 +1,7 @@
 /**
  * @file rss_channel.c  some tolerant and generic RSS/RDF channel parsing
  *
- * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2009 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2005-2006 Nathan Conrad <t98502@users.sourceforge.net> 
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -115,7 +115,7 @@ static void parseChannel(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 		}
 		else if(!xmlStrcmp(cur->name, BAD_CAST"link")) {
  			if(NULL != (tmp = unhtmlize(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE)))) {
-				feed_set_html_url(ctxt->feed, subscription_get_source(ctxt->subscription), tmp);
+				subscription_set_homepage (ctxt->subscription, tmp);
 				g_free(tmp);
 			}
 		}
@@ -262,7 +262,7 @@ static void rss_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 			/* save link to channel image */
 			if((!xmlStrcmp(cur->name, BAD_CAST"image"))) {
 				if(NULL != (tmp = parseImage(cur))) {
-					feed_set_image_url(ctxt->feed, tmp);
+					metadata_list_set (&ctxt->subscription->metadata, "imageUrl", tmp);
 					g_free(tmp);
 				}
 				

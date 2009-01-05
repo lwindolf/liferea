@@ -1,7 +1,7 @@
 /**
  * @file feed.h  common feed handling interface
  * 
- * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2009 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -49,7 +49,6 @@ typedef struct feed {
 
 	/* feed properties that need to be saved */	// FIXME: move to metadata
 	gchar		*htmlUrl;		/**< URL of HTML version of the feed */
-	gchar		*imageUrl;		/**< URL of the optional feed image */
 
 	/* feed cache state properties */
 	gint		cacheLimit;		/**< Amount of cache to save: See the cache_limit enum */
@@ -99,29 +98,6 @@ xmlDocPtr feed_to_xml(nodePtr node, xmlNodePtr feedNode);
  * @returns max item count
  */
 guint feed_get_max_item_count(nodePtr node);
-
-/**
- * Returns the HTML URL of the given feed.
- *
- * @param feed		the feed
- *
- * @returns the HTML URL or NULL
- */
-const gchar * feed_get_html_url(feedPtr feed);
-
-/**
- * Set the HTML URL of the given feed. If the passed
- * URL is a relative one it will be expanded using the
- * given base URL.
- *
- * @param feed		the feed
- * @param base		base URL for expansion
- * @param url		the new HTML URL
- */
-void feed_set_html_url(feedPtr feed, const gchar *base, const gchar *url);
-
-const gchar * feed_get_image_url(feedPtr feed);
-void feed_set_image_url(feedPtr feed, const gchar *url);
 
 /**
  * Returns the subscription type implementation for simple feed nodes.
