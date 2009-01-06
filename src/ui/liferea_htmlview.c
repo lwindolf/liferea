@@ -1,7 +1,7 @@
 /**
  * @file liferea_htmlview.c  Liferea embedded HTML rendering
  *
- * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2009 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net> 
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -364,6 +364,10 @@ g_print("url: %s\n");
 	if((launchType == UI_HTMLVIEW_LAUNCH_INTERNAL || conf_get_bool_value (BROWSE_INSIDE_APPLICATION)) &&
 	   (htmlviewImpl->launchInsidePossible) () &&
 	   (launchType != UI_HTMLVIEW_LAUNCH_EXTERNAL)) {
+	   
+	   	/* before loading external content suppress internal link schema again */
+		htmlview->priv->internal = FALSE;
+		
 		(htmlviewImpl->launch) (htmlview->priv->renderWidget, url);
 	} else {
 		(void)browser_launch_URL_external (url);
