@@ -77,7 +77,7 @@ typedef struct feed {
 feedPtr feed_new(void);
 
 /**
- * Serialization helper function for rendering and caching purposes.
+ * Serialization helper function for rendering purposes.
  *
  * @param node		the feed node to serialize
  * @param feedNode	XML node to add feed attributes to,
@@ -86,7 +86,7 @@ feedPtr feed_new(void);
  * 
  * @returns a new XML document (if feedNode was NULL)
  */
-xmlDocPtr feed_to_xml(nodePtr node, xmlNodePtr feedNode);
+xmlDocPtr feed_to_xml(nodePtr node, xmlNodePtr xml);
 
 /**
  * Returns the feed-specific maximum cache size.

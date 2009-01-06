@@ -4,7 +4,10 @@
 
 	* Fixes missing CSS when running with WebKit > 1.02.
 	* Fixes issue preventing feeds being dropped into folders.
-
+	* Fixes a problem with updated item descriptions that are
+	  shorter than the previous ones (those were incorrectly
+	  dropped). Now an updated description is always used.
+	  (reported by Arnold Noronha)
 
 2009-01-05  Lars Lindner  <lars.lindner@gmail.com>
 

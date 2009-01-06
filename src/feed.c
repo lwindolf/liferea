@@ -200,33 +200,8 @@ feed_add_xml_attributes (nodePtr node, xmlNodePtr feedNode)
 	xmlNewTextChild (feedNode, NULL, "feedId", node_get_id (node));
 	xmlNewTextChild (feedNode, NULL, "feedTitle", node_get_title (node));
 
-	// FIXME: move subscription stuff to subscription.c
-	if (node->subscription) {
-		xmlNewTextChild (feedNode, NULL, "feedSource", subscription_get_source (node->subscription));
-		xmlNewTextChild (feedNode, NULL, "feedOrigSource", subscription_get_orig_source (node->subscription));
-
-		tmp = g_strdup_printf ("%d", subscription_get_default_update_interval (node->subscription));
-		xmlNewTextChild (feedNode, NULL, "feedUpdateInterval", tmp);
-		g_free (tmp);
-	
-		tmp = g_strdup_printf ("%d", node->subscription->discontinued?1:0);
-		xmlNewTextChild (feedNode, NULL, "feedDiscontinued", tmp);
-		g_free (tmp);
-
-		if (node->subscription->updateError)
-			xmlNewTextChild (feedNode, NULL, "updateError", node->subscription->updateError);
-		if (node->subscription->httpError) {
-			xmlNewTextChild (feedNode, NULL, "httpError", node->subscription->httpError);
-
-			tmp = g_strdup_printf ("%d", node->subscription->httpErrorCode);
-			xmlNewTextChild (feedNode, NULL, "httpErrorCode", tmp);
-			g_free (tmp);
-		}
-		if (node->subscription->filterError)
-			xmlNewTextChild (feedNode, NULL, "filterError", node->subscription->filterError);
-	
-		metadata_add_xml_nodes (node->subscription->metadata, feedNode);
-	}
+	if (node->subscription)
+		subscription_to_xml (node->subscription, feedNode);
 
 	tmp = g_strdup_printf("%d", node->available?1:0);
 	xmlNewTextChild(feedNode, NULL, "feedStatus", tmp);
