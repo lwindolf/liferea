@@ -23,9 +23,6 @@
 #  include <config.h>
 #endif
 
-#include <glib.h>
-#include <libxml/xmlmemory.h>
-#include <libxml/uri.h>
 #include <string.h>
 
 #include "conf.h"
