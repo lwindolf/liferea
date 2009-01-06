@@ -88,10 +88,10 @@ ui_dnd_feed_drop_possible (GtkTreeDragDest *drag_dest, GtkTreePath *dest_path, G
 		   	
 	if (!(old_feed_drop_possible) (drag_dest, dest_path, selection_data))
 		return FALSE;
-	
-	if (gtk_tree_model_get_iter (GTK_TREE_MODEL (drag_dest), &iter, dest_path))
+
+	if (!gtk_tree_model_get_iter (GTK_TREE_MODEL (drag_dest), &iter, dest_path))
 		return FALSE;
-		
+
 	/* If we get an iterator it's either a possible dropping
 	   candidate (a folder or source node to drop into, or a
 	   iterator to insert after). In any case we have to check

@@ -3,6 +3,7 @@
 	Version 1.5.8 (Unstable)
 
 	* Fixes missing CSS when running with WebKit > 1.02.
+	* Fixes issue preventing feeds being dropped into folders.
 
 
 2009-01-05  Lars Lindner  <lars.lindner@gmail.com>
