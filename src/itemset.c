@@ -141,7 +141,13 @@ itemset_generic_merge_check (GList *items, itemPtr newItem, gint maxChecks, gboo
 			if (allowUpdates) {
 				/* no item_set_new_status() - we don't treat changed items as new items! */
 				item_set_title (oldItem, item_get_title (newItem));
-				item_set_description (oldItem, item_get_description (newItem));
+				
+				/* don't use item_set_description as it does some unwanted length handling 
+				   and we want to enforce the new description */
+				g_free (oldItem->description);
+				oldItem->description = newItem->description;
+				newItem->description = NULL;
+				
 				oldItem->time = newItem->time;
 				oldItem->updateStatus = TRUE;
 				// FIXME: this does not remove metadata from DB
