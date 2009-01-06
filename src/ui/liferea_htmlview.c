@@ -48,6 +48,7 @@ static void liferea_htmlview_init	(LifereaHtmlView *htmlview);
 
 struct LifereaHtmlViewPrivate {
 	GtkWidget	*renderWidget;
+	gboolean	internal;	/**< TRUE if internal view presenting generated HTML with special links */
 };
 
 enum {
@@ -180,6 +181,7 @@ static void
 liferea_htmlview_init (LifereaHtmlView *htmlview)
 {
 	htmlview->priv = LIFEREA_HTMLVIEW_GET_PRIVATE (htmlview);
+	htmlview->priv->internal = FALSE;
 	
 	if (!htmlviewImpl)
 		htmlviewImpl = htmlview_get_impl ();
@@ -208,6 +210,8 @@ void
 liferea_htmlview_write (LifereaHtmlView *htmlview, const gchar *string, const gchar *base)
 { 
 	const gchar	*baseURL = base;
+	
+	htmlview->priv->internal = TRUE;	/* enables special links */
 	
 	if (baseURL == NULL)
 		baseURL = "file:///";
@@ -306,7 +310,7 @@ liferea_htmlview_launch_URL (LifereaHtmlView *htmlview, const gchar *url, gint l
 {
 	struct internalUriType	*uriType;
 	
-	g_return_if_fail (!url);
+	g_return_if_fail (url);
 	
 	if (!htmlview)
 		htmlview = browser_tabs_get_active_htmlview ();
@@ -314,43 +318,47 @@ liferea_htmlview_launch_URL (LifereaHtmlView *htmlview, const gchar *url, gint l
 	debug3 (DEBUG_GUI, "launch URL: %s  %s %d", conf_get_bool_value (BROWSE_INSIDE_APPLICATION)?"true":"false",
 		  (htmlviewImpl->launchInsidePossible) ()?"true":"false",
 		  launchType);
-
-	// FIXME: check if htmlview is an internal (item viewer...) first before handling special links
+g_print("url: %s\n");
 	/* first catch all links with special URLs... */
 	if (liferea_htmlview_is_special_url (url)) {
+		if (htmlview->priv->internal) {
 	
-		/* it is a generic item list URI type */		
-		uriType = internalUriTypes;
-		while (uriType->suffix) {
-			if (!strncmp(url + strlen("liferea-"), uriType->suffix, strlen(uriType->suffix))) {
-				gchar *nodeid, *itemnr;
-				nodeid = strstr (url, "://");
-				if (nodeid) {
-					nodeid += 3;
-					itemnr = nodeid;
-					itemnr = strchr (nodeid, '-');
-					if (itemnr) {
-						itemPtr item;
-						
-						*itemnr = 0;
-						itemnr++;
-									
-						item = item_load (atol (itemnr));
-						if (item) {
-							(*uriType->func) (item);
-							item_unload (item);
-						} else {
-							g_warning ("Fatal: no item with id (node=%s, item=%s) found!!!", nodeid, itemnr);
-						}
+			/* it is a generic item list URI type */		
+			uriType = internalUriTypes;
+			while (uriType->suffix) {
+				if (!strncmp(url + strlen("liferea-"), uriType->suffix, strlen(uriType->suffix))) {
+					gchar *nodeid, *itemnr;
+					nodeid = strstr (url, "://");
+					if (nodeid) {
+						nodeid += 3;
+						itemnr = nodeid;
+						itemnr = strchr (nodeid, '-');
+						if (itemnr) {
+							itemPtr item;
 
-						return;
+							*itemnr = 0;
+							itemnr++;
+
+							item = item_load (atol (itemnr));
+							if (item) {
+								(*uriType->func) (item);
+								item_unload (item);
+							} else {
+								g_warning ("Fatal: no item with id (node=%s, item=%s) found!!!", nodeid, itemnr);
+							}
+
+							return;
+						}
 					}
 				}
+				uriType++;
 			}
-			uriType++;
+			g_warning ("Internal error: unhandled protocol in URL \"%s\"!", url);
+			return;
+		} else {
+			g_warning ("Security: Prevented external HTML document to use internal link scheme (%s)!", url);
+			return;
 		}
-		g_warning ("Internal error: unhandled protocol in URL \"%s\"!", url);
-		return;
 	}
 	
 	if((launchType == UI_HTMLVIEW_LAUNCH_INTERNAL || conf_get_bool_value (BROWSE_INSIDE_APPLICATION)) &&
