@@ -364,6 +364,5 @@ google_opml_subscription_prepare_update_request (subscriptionPtr subscription, s
 
 struct subscriptionType googleSourceOpmlSubscriptionType = {
 	google_opml_subscription_prepare_update_request,
-	google_opml_subscription_process_update_result,
-	NULL	/* free */
+	google_opml_subscription_process_update_result
 };

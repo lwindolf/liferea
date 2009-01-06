@@ -60,14 +60,7 @@ typedef struct subscriptionType {
 	 * @param flags		the update flags
 	 */
 	void (*process_update_result)(subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags);
-	
-	/**
-	 * Called to allow subscription type to clean up it's specific data.
-	 * The subscription structure itself is destroyed after this call.
-	 *
-	 * @param subscription		the subscription
-	 */
-	void	(*free)			(subscriptionPtr subscription);
+
 } *subscriptionTypePtr;
 
 #define SUBSCRIPTION_TYPE(subscription)	(subscription->type)

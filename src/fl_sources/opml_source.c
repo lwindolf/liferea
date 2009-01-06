@@ -220,8 +220,7 @@ opml_subscription_process_update_result (subscriptionPtr subscription, const str
 
 static struct subscriptionType opmlSubscriptionType = {
 	opml_subscription_prepare_update_request,
-	opml_subscription_process_update_result,
-	NULL	/* free */
+	opml_subscription_process_update_result
 };
 
 /* OPML source type implementation */

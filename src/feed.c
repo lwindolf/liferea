@@ -442,7 +442,7 @@ feed_free (nodePtr node)
 	feedPtr	feed = (feedPtr)node->data;
 
 	if (feed->parseErrors)
-		g_string_free(feed->parseErrors, TRUE);
+		g_string_free (feed->parseErrors, TRUE);
 	g_free (feed->htmlUrl);
 	g_free (feed);
 }
@@ -452,8 +452,7 @@ feed_get_subscription_type (void)
 {
 	static struct subscriptionType sti = {
 		feed_prepare_update_request,
-		feed_process_update_result,
-		NULL  // FIXME
+		feed_process_update_result
 	};
 	
 	return &sti;
