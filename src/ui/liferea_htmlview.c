@@ -306,14 +306,10 @@ liferea_htmlview_launch_URL (LifereaHtmlView *htmlview, const gchar *url, gint l
 {
 	struct internalUriType	*uriType;
 	
+	g_return_if_fail (!url);
+	
 	if (!htmlview)
 		htmlview = browser_tabs_get_active_htmlview ();
-	
-	if (!url) {
-		/* FIXME: bad because this is not only used for item links! */
-		ui_show_error_box (_("This item does not have a link assigned!"));
-		return;
-	}
 	
 	debug3 (DEBUG_GUI, "launch URL: %s  %s %d", conf_get_bool_value (BROWSE_INSIDE_APPLICATION)?"true":"false",
 		  (htmlviewImpl->launchInsidePossible) ()?"true":"false",
