@@ -1,7 +1,7 @@
 /**
  * @file ui_tray.c tray icon handling
  * 
- * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2009 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004 Christophe Barbe <christophe.barbe@ufies.org>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -33,8 +33,8 @@
 #include "eggtrayicon.h"
 #include "feedlist.h"
 #include "net.h"
+#include "ui/liferea_shell.h"
 #include "ui/ui_common.h"
-#include "ui/ui_dnd.h"
 #include "ui/ui_popup.h"
 #include "ui/ui_tray.h"
 
@@ -285,7 +285,7 @@ static void ui_tray_install(void) {
 	g_signal_connect(G_OBJECT(trayIcon_priv->widget), "destroy",
 	                 G_CALLBACK(ui_tray_destroyed_cb), NULL);
 	
-	ui_dnd_setup_URL_receiver(trayIcon_priv->eventBox);
+	liferea_shell_setup_URL_receiver (trayIcon_priv->eventBox);
 	
 	gtk_container_add(GTK_CONTAINER(trayIcon_priv->widget), trayIcon_priv->eventBox);
 	g_object_ref(G_OBJECT(trayIcon_priv->widget));

@@ -30,6 +30,7 @@
 #include <gdk/gdk.h>
 #include <gdk/gdkkeysyms.h>
 #include <glade/glade.h>
+#include <string.h>		/* strcmp() and strsep() */
 
 #include "common.h"
 #include "conf.h"
@@ -737,6 +738,52 @@ liferea_shell_online_status_changed (int online)
 	ui_tray_update ();
 }
 
+/* methods to receive URLs which were dropped anywhere in the main window */
+static void
+liferea_shell_URL_received (GtkWidget *widget, GdkDragContext *context, gint x, gint y, GtkSelectionData *data, guint info, guint time)
+{
+	gchar		*tmp1, *tmp2, *freeme;
+	
+	g_return_if_fail (data->data != NULL);
+		
+	if ((data->length >= 0) && (data->format == 8)) {
+		/* extra handling to accept multiple drops */	
+		freeme = tmp1 = g_strdup (data->data);
+		while ((tmp2 = strsep (&tmp1, "\n\r"))) {
+			if (strlen (tmp2))
+				feedlist_add_subscription (g_strdup (tmp2), NULL, NULL,
+				                           FEED_REQ_RESET_TITLE |
+				                           FEED_REQ_RESET_UPDATE_INT | 
+				                           FEED_REQ_AUTO_DISCOVER | 
+				                           FEED_REQ_PRIORITY_HIGH);
+		}
+		g_free (freeme);
+		gtk_drag_finish (context, TRUE, FALSE, time);		
+	} else {
+		gtk_drag_finish (context, FALSE, FALSE, time);
+	}
+}
+
+void
+liferea_shell_setup_URL_receiver (GtkWidget *widget)
+{
+	GtkTargetEntry target_table[] = {
+		{ "STRING",     		0, 0 },
+		{ "text/plain", 		0, 0 },
+		{ "text/uri-list",		0, 1 },
+		{ "_NETSCAPE_URL",		0, 1 },
+		{ "application/x-rootwin-drop", 0, 2 }
+	};
+
+	/* doesn't work with GTK_DEST_DEFAULT_DROP... */
+	gtk_drag_dest_set (widget, GTK_DEST_DEFAULT_ALL,
+	                   target_table, sizeof (target_table)/sizeof (target_table[0]),
+	                   GDK_ACTION_COPY | GDK_ACTION_MOVE | GDK_ACTION_LINK);
+		       
+	gtk_signal_connect (GTK_OBJECT (widget), "drag_data_received",
+	                    G_CALLBACK (liferea_shell_URL_received), NULL);
+}
+
 static const GtkActionEntry ui_mainwindow_action_entries[] = {
 	{"SubscriptionsMenu", NULL, N_("_Subscriptions")},
 	{"UpdateAll", "gtk-refresh", N_("Update _All"), "<control>A", N_("Updates all subscriptions."),
@@ -1160,7 +1207,7 @@ liferea_shell_create (int initialState)
 	liferea_shell_online_status_changed (network_is_online ());
 	
 	ui_tray_enable (conf_get_bool_value (SHOW_TRAY_ICON));		/* init tray icon */
-	ui_dnd_setup_URL_receiver (GTK_WIDGET (shell->priv->window));	/* setup URL dropping support */
+	liferea_shell_setup_URL_receiver (GTK_WIDGET (shell->priv->window));	/* setup URL dropping support */
 
 	shell->priv->feedlist = feedlist_create ();
 	

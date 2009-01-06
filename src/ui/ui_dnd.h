@@ -27,7 +27,4 @@
 /** sets up DnD for the feedlist model */
 void ui_dnd_setup_feedlist(GtkTreeStore *feedstore);
 
-/** sets up URL DnD support */
-void ui_dnd_setup_URL_receiver(GtkWidget *mainwindow);
-
 #endif

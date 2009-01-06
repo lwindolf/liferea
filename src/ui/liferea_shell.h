@@ -194,6 +194,13 @@ GtkWidget * liferea_shell_get_window (void);
 // FIXME:
 void on_onlinebtn_clicked (GtkButton *button, gpointer user_data);
 
+/**
+ * Helper method to set up URL drop receiver
+ *
+ * @param widget	a widget that can receive URL drops
+ */
+void liferea_shell_setup_URL_receiver (GtkWidget *widget);
+
 void liferea_shutdown (void);
 
 G_END_DECLS
