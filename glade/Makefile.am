@@ -2,6 +2,7 @@
 
 gladedir = $(pkgdatadir)
 glade_DATA = liferea.glade \
+	auth.glade \
 	new_subscription.glade \
 	simple_subscription.glade \
 	bloglines_source.glade \
