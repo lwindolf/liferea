@@ -9,6 +9,10 @@
 	  dropped). Now an updated description is always used.
 	  (reported by Arnold Noronha)
 	* Fixes broken subscription authentication dialog.
+	* Fixes SF #2423648: Google Reader subscription doesn't
+	  work when password has & in it.
+	  (reported by Martin Mueller)
+
 
 2009-01-05  Lars Lindner  <lars.lindner@gmail.com>
 

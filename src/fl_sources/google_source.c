@@ -83,15 +83,9 @@ google_source_login_cb (const struct updateResult * const result, gpointer userd
 		
 	debug0 (DEBUG_UPDATE, "google login processing...");
 	
-	if (result->returncode != 0) {
-		debug0(DEBUG_UPDATE, "GoogleSource: Unable to login, perhaps wrong details?");
-		/* @todo Need to inform the user through UI */
-		return;
-	}
-	
 	g_assert (!gsource->sid);
 	
-	if (result->data)
+	if (result->data && result->returncode == 0)
 		tmp = strstr (result->data, "SID=");
 		
 	if (tmp) {
@@ -117,9 +111,11 @@ google_source_login_cb (const struct updateResult * const result, gpointer userd
 		debug0 (DEBUG_UPDATE, "google reader login failed! no SID found in result!");
 		subscription->node->available = FALSE;
 
-		g_free(subscription->updateError);
+		g_free (subscription->updateError);
 		subscription->updateError = g_strdup (_("Google Reader login failed!"));
 		gsource->loginState = GOOGLE_SOURCE_STATE_NONE;
+		
+		ui_auth_dialog_new (subscription, flags);
 	}
 }
 
@@ -132,9 +128,9 @@ google_source_login_cb (const struct updateResult * const result, gpointer userd
 void
 google_source_login (GoogleSourcePtr gsource, guint32 flags) 
 { 
-	gchar *source;
-	updateRequestPtr request;
-	subscriptionPtr subscription = gsource->root->subscription;
+	gchar			*source, *username, *password;
+	updateRequestPtr	request;
+	subscriptionPtr		subscription = gsource->root->subscription;
 	
 	if (gsource->loginState != GOOGLE_SOURCE_STATE_NONE) {
 		/* this should not happen, as of now, we assume the session
@@ -146,10 +142,16 @@ google_source_login (GoogleSourcePtr gsource, guint32 flags)
 	request = update_request_new();
 
 	update_request_set_source(request, GOOGLE_READER_LOGIN_URL);
-	request->postdata = g_strdup_printf (GOOGLE_READER_LOGIN_POST,
-	                     	  subscription->updateOptions->username,
-	                          subscription->updateOptions->password);
+
+	/* escape user and password as both are passed using an URI */
+	username = common_encode_uri_string (subscription->updateOptions->username);
+	password = common_encode_uri_string (subscription->updateOptions->password);
+
+	request->postdata = g_strdup_printf (GOOGLE_READER_LOGIN_POST, username, password);
 	request->options = update_options_copy(subscription->updateOptions);
+	
+	g_free (username);
+	g_free (password);
 
 	gsource->loginState = GOOGLE_SOURCE_STATE_IN_PROGRESS ;
 
