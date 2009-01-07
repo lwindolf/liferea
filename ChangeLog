@@ -8,6 +8,7 @@
 	  shorter than the previous ones (those were incorrectly
 	  dropped). Now an updated description is always used.
 	  (reported by Arnold Noronha)
+	* Fixes broken subscription authentication dialog.
 
 2009-01-05  Lars Lindner  <lars.lindner@gmail.com>
 
