@@ -145,8 +145,8 @@ google_source_login (GoogleSourcePtr gsource, guint32 flags)
 	update_request_set_source (request, GOOGLE_READER_LOGIN_URL);
 
 	/* escape user and password as both are passed using an URI */
-	username = common_encode_uri_string (subscription->updateOptions->username);
-	password = common_encode_uri_string (subscription->updateOptions->password);
+	username = g_uri_escape_string (subscription->updateOptions->username, NULL, TRUE);
+	password = g_uri_escape_string (subscription->updateOptions->password, NULL, TRUE);
 
 	request->postdata = g_strdup_printf (GOOGLE_READER_LOGIN_POST, username, password);
 	request->options = update_options_copy (subscription->updateOptions);
