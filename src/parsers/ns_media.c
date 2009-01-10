@@ -1,7 +1,7 @@
 /**
- * @file ns_media.c Yahoo media namespace support
+ * @file ns_media.c  Yahoo media namespace support
  *
- * Copyright (C) 2007-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2009 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -80,11 +80,14 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 			
 			/* gravatars are often supplied as media:content with medium='image'
 			   so we treat do not treat such occurences as enclosures */
-			if (medium && !strcmp (medium, "image")) {
+			if (medium && !strcmp (medium, "image") && strstr (tmp, "www.gravatar.com")) {
 				metadata_list_set (&(ctxt->item->metadata), "gravatar", tmp);
 			} else {
-				ctxt->item->metadata = metadata_list_append (ctxt->item->metadata, "enclosure", enclosure_values_to_string (tmp, type, length, FALSE /* not yet downloaded */));
-				ctxt->item->hasEnclosure = TRUE;
+				/* Never add enclosures for images already contained in the description */
+				if (!(ctxt->item->description && strstr (ctxt->item->description, tmp))) {
+					ctxt->item->metadata = metadata_list_append (ctxt->item->metadata, "enclosure", enclosure_values_to_string (tmp, type, length, FALSE /* not yet downloaded */));
+					ctxt->item->hasEnclosure = TRUE;
+				}
 			}
 			g_free (tmp);
 			g_free (type);
