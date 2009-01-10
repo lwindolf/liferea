@@ -12,6 +12,9 @@
 	* Fixes SF #2423648: Google Reader subscription doesn't
 	  work when password has & in it.
 	  (reported by Martin Mueller)
+	* Fixes image handling in the gravatar support. Avoids
+	  including images twice now.
+	  (reported by Arnold Noronha)
 
 
 2009-01-05  Lars Lindner  <lars.lindner@gmail.com>
