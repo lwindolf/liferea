@@ -473,63 +473,6 @@ static gchar * byte_to_hex(unsigned char nr) {
 	return result;
 }
 
-gchar * common_encode_uri_string(gchar *string) {
-	gchar		*newURIString;
-	gchar		*hex, *tmp = NULL;
-	int		i, j, len, bytes;
-
-	/* the UTF-8 string is casted to ASCII to treat
-	   the characters bytewise and convert non-ASCII
-	   compatible chars to URI hexcodes */
-	newURIString = g_strdup("");
-	len = strlen(string);
-	for(i = 0; i < len; i++) {
-		if(g_ascii_isalnum(string[i]) || strchr("-_.!~*'()", (int)string[i]))
-		   	tmp = g_strdup_printf("%s%c", newURIString, string[i]);
-		else if(string[i] == ' ')
-			tmp = g_strdup_printf("%s%%20", newURIString);
-		else if((unsigned char)string[i] <= 127) {
-			tmp = g_strdup_printf("%s%s", newURIString, hex = byte_to_hex(string[i]));g_free(hex);
-		} else {
-			bytes = 0;
-			if(((unsigned char)string[i] >= 192) && ((unsigned char)string[i] <= 223))
-				bytes = 2;
-			else if(((unsigned char)string[i] > 223) && ((unsigned char)string[i] <= 239))
-				bytes = 3;
-			else if(((unsigned char)string[i] > 239) && ((unsigned char)string[i] <= 247))
-				bytes = 4;
-			else if(((unsigned char)string[i] > 247) && ((unsigned char)string[i] <= 251))
-				bytes = 5;
-			else if(((unsigned char)string[i] > 247) && ((unsigned char)string[i] <= 251))
-				bytes = 6;
-				
-			if(0 != bytes) {
-				if((i + (bytes - 1)) > len) {
-					g_warning(_("Unexpected end of character sequence or corrupt UTF-8 encoding! Some characters were dropped!"));
-					break;
-				}
-
-				for(j=0; j < (bytes - 1); j++) {
-					tmp = g_strdup_printf("%s%s", newURIString, hex = byte_to_hex((unsigned char)string[i++]));
-					g_free(hex);
-					g_free(newURIString);
-					newURIString = tmp;
-				}
-				tmp = g_strdup_printf("%s%s", newURIString, hex = byte_to_hex((unsigned char)string[i]));
-				g_free(hex);
-			} else {
-				/* sh..! */
-				g_error("Internal error while converting UTF-8 chars to HTTP URI!");
-			}
-		}
-		g_free(newURIString); 
-		newURIString = tmp;
-	}
-	g_free(string);
-
-	return newURIString;
-}
-
 xmlChar * common_uri_escape(const xmlChar *url) {
 	xmlChar	*result;
 

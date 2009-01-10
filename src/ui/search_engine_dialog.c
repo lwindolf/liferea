@@ -107,8 +107,7 @@ on_search_engine_dialog_response (GtkDialog *dialog, gint responseId, gpointer u
 	
 	if (GTK_RESPONSE_OK == responseId) {
 		resultCountAdjust = gtk_spin_button_get_adjustment (GTK_SPIN_BUTTON (sed->priv->resultCount));
-		searchtext = (gchar *)g_strdup (gtk_entry_get_text (GTK_ENTRY (sed->priv->query)));
-		searchtext = common_encode_uri_string (searchtext);
+		searchtext = g_uri_escape_string (gtk_entry_get_text (GTK_ENTRY (sed->priv->query)), NULL, TRUE);
 		if (sed->priv->limitSupported)
 			searchUri = g_strdup_printf (sed->priv->uriFmt, searchtext, (int)gtk_adjustment_get_value (resultCountAdjust));
 		else
