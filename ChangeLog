@@ -15,6 +15,7 @@
 	* Fixes image handling in the gravatar support. Avoids
 	  including images twice now.
 	  (reported by Arnold Noronha)
+	* Fixes missing feed list save after removing feed list elements.
 
 
 2009-01-05  Lars Lindner  <lars.lindner@gmail.com>

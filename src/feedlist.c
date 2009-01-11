@@ -419,6 +419,8 @@ feedlist_node_removed (nodePtr node)
 	node->parent->children = g_slist_remove (node->parent->children, node);
 
 	node_free (node);
+	
+	feedlist_schedule_save ();
 }
 
 /* next unread scanning */
