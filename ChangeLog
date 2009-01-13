@@ -5,8 +5,8 @@
 	* Fixes cross compilation issue with configure.ac using
 	  AC_CANONICAL_TARGET instead of AC_CANONICAL_HOST
 	  (patch by Diego E. Petteno)
-	* New Greek translation
-	  (Evgenia Petoumenou)
+	* New Greek translation (Evgenia Petoumenou)
+	* New Albanian translation (Besnik Bleta)
 
 
 2008-12-11  Lars Lindner  <lars.lindner@gmail.com>
