@@ -77,7 +77,7 @@ static void addPopupOption(GtkItemFactoryEntry **menu, gint *menu_len, gchar *pa
 #define TOGGLE_CONDENSED_VIEW	"/Condensed View"
 
 #define TOGGLE_WORK_OFFLINE     "/Work Offline"
-#define TOGGLE_SHOW_WINDOW      "/Show Window"
+#define TOGGLE_SHOW_WINDOW      "/Show Liferea"
 
 /* list of dynamically allocated menu paths */
 static GSList *dynamic_menu_items = NULL;
@@ -156,14 +156,14 @@ ui_popup_update_menues (void)
 	g_free (tray_menu_items);
 	tray_menu_items = NULL;
 	tray_menu_len = 0;
-	addPopupOption (&tray_menu_items, &tray_menu_len, _("/Toggle _Online|Offline"),	NULL, on_onlinebtn_clicked,		0, NULL, 0);
+	addPopupOption (&tray_menu_items, &tray_menu_len, _(TOGGLE_WORK_OFFLINE),	NULL, on_onlinebtn_clicked,		0, "<ToggleItem>", 0);
 	addPopupOption (&tray_menu_items, &tray_menu_len, _("/_Update All"),		NULL, on_menu_update_all,		0, "<StockItem>", GTK_STOCK_REFRESH);
 	addPopupOption (&tray_menu_items, &tray_menu_len, _("/_Preferences"),		NULL, on_prefbtn_clicked,		0, "<StockItem>", GTK_STOCK_PREFERENCES);
 	addPopupOption (&tray_menu_items, &tray_menu_len, "/",	                	NULL, NULL,		                0, "<Separator>", 0);
-	addPopupOption (&tray_menu_items, &tray_menu_len, _("/_Show|Hide Window"),	NULL, on_toggle_visibility,		0, NULL, 0);
+	addPopupOption (&tray_menu_items, &tray_menu_len, _(TOGGLE_SHOW_WINDOW),	NULL, on_toggle_visibility,		0, "<ToggleItem>", 0);
 	addPopupOption (&tray_menu_items, &tray_menu_len, _("/_Quit"),	        	NULL, on_popup_quit,		                0, "<StockItem>", GTK_STOCK_QUIT);
 	
-	/* System tray popup menu */
+	/* Enclosure popup menu */
 	g_free (enclosure_menu_items);
 	enclosure_menu_items = NULL;
 	enclosure_menu_len = 0;

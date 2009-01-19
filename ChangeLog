@@ -20,6 +20,8 @@
 	  (reported by Leon Nardella)
 	* Fixes news bin creation dialog problems.
 	  (reported by Emilio Pozuelo Monfort)
+	* Fixes non-standard options in tray icon menu.
+	  (patch by Emilio Pozuelo Monfort)
 
 
 2009-01-05  Lars Lindner  <lars.lindner@gmail.com>

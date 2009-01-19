@@ -51,6 +51,7 @@ mooonz <mooonz@users.sf.net>				improved DBUS support
 Ori Avtalion <oavtal@bezeqint.net>			Preference for toolbar style
 Eric Anderson <ejona86@gmail.com>			Main menu improval
 Emilio Pozuelo Monfort <pochu@ubuntu.com>		new DBUS query methods
+							improved tray icon menu
 goyko <kirilov-georgi@users.sf.net>			Support for enclosure URL open
 Gustavo Chain <g@0xff.cl>				Starting minimized to tray
 Lars Strojny <lars@strojny.net>			Statusbar improvements
