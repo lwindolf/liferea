@@ -176,7 +176,6 @@ import_parse_outline (xmlNodePtr cur, nodePtr parentNode, gboolean trusted)
 	typeStr = xmlGetProp (cur, BAD_CAST"type");
 	if (typeStr) {
 		type = node_str_to_type (typeStr);
-		g_print("type %s is %p\n", typeStr, type);
 		xmlFree (typeStr);
 	} 
 	

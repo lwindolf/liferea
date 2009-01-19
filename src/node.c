@@ -37,7 +37,6 @@
 #include "update.h"
 #include "vfolder.h"
 #include "fl_sources/node_source.h"
-#include "ui/ui_common.h"
 
 static GHashTable *nodes = NULL;
 
@@ -387,9 +386,6 @@ gpointer node_get_icon(nodePtr node) {
 
 	if(!icon)
 		icon = NODE_TYPE(node)->icon;
-
-	if(!node->available)
-		icon = icons[ICON_UNAVAILABLE];
 
 	return icon;
 }

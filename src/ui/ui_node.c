@@ -277,7 +277,7 @@ ui_node_update (const gchar *nodeId)
 
 	gtk_tree_store_set (feedstore, iter, FS_LABEL, label,
 	                                     FS_UNREAD, node->unreadCount,
-	                                     FS_ICON, node_get_icon (node),
+	                                     FS_ICON, node->available?node_get_icon (node):icons[ICON_UNAVAILABLE],
 	                                     -1);
 	g_free (label);
 
