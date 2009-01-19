@@ -18,6 +18,8 @@
 	* Fixes missing feed list save after removing feed list elements.
 	* Fixes bug that converted search folders to useless nodes.
 	  (reported by Leon Nardella)
+	* Fixes news bin creation dialog problems.
+	  (reported by Emilio Pozuelo Monfort)
 
 
 2009-01-05  Lars Lindner  <lars.lindner@gmail.com>
