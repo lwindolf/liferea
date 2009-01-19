@@ -415,9 +415,17 @@ node_set_sort_column (nodePtr node, gint sortColumn, gboolean reversed)
 	node->sortReversed = reversed;
 }
 
-void node_set_view_mode(nodePtr node, guint newMode) { node->viewMode = newMode; }
+void
+node_set_view_mode (nodePtr node, nodeViewType viewMode)
+{
+	node->viewMode = viewMode;
+}
 
-gboolean node_get_view_mode(nodePtr node) { return node->viewMode; }
+nodeViewType
+node_get_view_mode (nodePtr node)
+{
+	return node->viewMode;
+}
 
 gboolean
 node_load_link_preferred (nodePtr node)

@@ -62,7 +62,7 @@ typedef struct node {
 	gboolean		expanded;	/**< expansion state (for nodes with childs) */
 
 	/* item list state properties of this node */
-	guint			viewMode;	/**< Viewing mode for this node (one of NODE_VIEW_MODE_*) */
+	nodeViewType		viewMode;	/**< Viewing mode for this node (one of NODE_VIEW_MODE_*) */
 	nodeViewSortType	sortColumn;	/**< Node specific item view sort attribute. */
 	gboolean		sortReversed;	/**< Sort in the reverse order? */
 	
@@ -321,18 +321,18 @@ void node_set_sort_column(nodePtr node, gint sortColumn, gboolean reversed);
  * Change/Set the viewing mode of a given node.
  *
  * @param node		the node
- * @param newMode	viewing mode (0 = normal, 1 = wide, 2 = combined)
+ * @param newMode	viewing mode (NODE_VIEW_MODE_*)
  */
-void node_set_view_mode(nodePtr node, guint newMode);
+void node_set_view_mode(nodePtr node, nodeViewType newMode);
 
 /**
  * Query the viewing mode setting of a given mode.
  *
  * @param node 	the node
  *
- * @returns viewing mode (0 = normal, 1 = wide, 2 = combined)
+ * @returns viewing mode (NODE_VIEW_MODE_*)
  */
-gboolean node_get_view_mode(nodePtr node);
+nodeViewType node_get_view_mode(nodePtr node);
 
 /**
  * Allows to check wether an node requires to load
