@@ -74,8 +74,6 @@ static void addPopupOption(GtkItemFactoryEntry **menu, gint *menu_len, gchar *pa
 	(*menu + *menu_len - 1)->extra_data		= extra_data;
 }
 
-#define TOGGLE_CONDENSED_VIEW	"/Condensed View"
-
 #define TOGGLE_WORK_OFFLINE     "/Work Offline"
 #define TOGGLE_SHOW_WINDOW      "/Show Liferea"
 
