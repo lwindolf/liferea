@@ -90,10 +90,10 @@ ui_newsbin_add (void)
 	if (!newnewsbindialog || !G_IS_OBJECT (newnewsbindialog))
 		newnewsbindialog = liferea_dialog_new (NULL, "newnewsbindialog");
 
-	nameentry = liferea_dialog_lookup(newnewsbindialog, "nameentry");
-	gtk_entry_set_text(GTK_ENTRY(nameentry), "");
-		
-	gtk_widget_show(newnewsbindialog);
+	nameentry = liferea_dialog_lookup (newnewsbindialog, "newsbinnameentry");
+	gtk_entry_set_text (GTK_ENTRY (nameentry), "");
+
+	gtk_window_present (GTK_WINDOW (newnewsbindialog));
 	
 	return TRUE;
 }
@@ -104,12 +104,14 @@ on_newnewsbinbtn_clicked (GtkButton *button, gpointer user_data)
 	nodePtr		newsbin;
 	
 	newsbin = node_new (newsbin_get_node_type ());
-	node_set_title (newsbin, (gchar *)gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (newnewsbindialog, "nameentry"))));
+	node_set_title (newsbin, (gchar *)gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (newnewsbindialog, "newsbinnameentry"))));
 	node_set_data (newsbin, (gpointer)feed_new ());
 
 	newsbin_list = g_slist_append(newsbin_list, newsbin);
 	
-	ui_popup_update_menues();
+	feedlist_node_added (newsbin);
+	
+	ui_popup_update_menues();	// FIXME: emit signal in FeedList controller
 }
 
 void 
