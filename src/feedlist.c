@@ -395,11 +395,13 @@ feedlist_node_imported (nodePtr node)
 void
 feedlist_node_added (nodePtr node)
 {
-	gint	position;
+	gint	position = -1;
 	
 	g_assert (NULL == node->parent);
 	
-	ui_feedlist_get_target_folder ((SELECTED)->id, &position);
+	if (SELECTED)
+		ui_feedlist_get_target_folder ((SELECTED)->id, &position);
+		
 	node_set_parent (node, feedlist_get_parent_node (), position);
 	
 	if (node->subscription)
