@@ -1,7 +1,7 @@
 /**
  * @file node.h  hierarchic feed list node interface
  * 
- * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2009 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -23,6 +23,7 @@
 #define _NODE_H
 
 #include "itemset.h"
+#include "node_view.h"
 #include "update.h"
 
 /* Liferea's GUI consists of three parts. Feed list, item list
@@ -36,14 +37,6 @@
    This interface is to hide the node type and node source type
    complexity for the GUI, scripting and updating functionality.
  */
-
-/** node view mode types */
-typedef enum {
-	NODE_VIEW_MODE_INVALID	= -1,
-	NODE_VIEW_MODE_NORMAL	= 0,
-	NODE_VIEW_MODE_WIDE	= 1,
-	NODE_VIEW_MODE_COMBINED	= 2
-} nodeViewType;
 
 /** generic feed list node structure */
 typedef struct node {
@@ -69,9 +62,9 @@ typedef struct node {
 	gboolean		expanded;	/**< expansion state (for nodes with childs) */
 
 	/* item list state properties of this node */
-	guint		viewMode;	/**< Viewing mode for this node (one of NODE_VIEW_MODE_*) */
-	gint		sortColumn;	/**< Sorting column. Set to either IS_TITLE, IS_FAVICON, IS_ENCICON or IS_TIME */
-	gboolean	sortReversed;	/**< Sort in the reverse order? */
+	guint			viewMode;	/**< Viewing mode for this node (one of NODE_VIEW_MODE_*) */
+	nodeViewSortType	sortColumn;	/**< Node specific item view sort attribute. */
+	gboolean		sortReversed;	/**< Sort in the reverse order? */
 	
 	gboolean	needsUpdate;	/**< if TRUE: the item list has changed and the nodes feed list representation needs to be updated */
 	gboolean	needsRecount;	/**< if TRUE: the number of unread/total items is currently unknown and needs recounting */

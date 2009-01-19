@@ -16,6 +16,8 @@
 	  including images twice now.
 	  (reported by Arnold Noronha)
 	* Fixes missing feed list save after removing feed list elements.
+	* Fixes bug that converted search folders to useless nodes.
+	  (reported by Leon Nardella)
 
 
 2009-01-05  Lars Lindner  <lars.lindner@gmail.com>

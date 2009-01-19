@@ -1,8 +1,8 @@
 /**
- * @file ui_folder.h GUI folder handling
+ * @file ui_folder.h  GUI folder handling
  * 
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2004-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2009 Lars Lindner <lars.lindner@gmail.com>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,9 +29,9 @@
  * Start interaction to create a new sub folder
  * attached to the given parent node.
  *
- * @param parent	the node
+ * @returns TRUE on success
  */
-void ui_folder_add(nodePtr parent);
+gboolean ui_folder_add (void);
 
 /**
  * Start interaction to change the properties of 

@@ -1,7 +1,7 @@
 /**
- * @file ui_feedlist.h GUI feed list handling
+ * @file ui_feedlist.h  GUI feed list handling
  * 
- * Copyright (C) 2004-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2009 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2005 Raphaël Slinckx <raphael@slinckx.net>
  *
@@ -50,16 +50,16 @@ void ui_feedlist_select(nodePtr node);
  */
 void ui_feedlist_init (GtkTreeView *treeview);
 
-/* Selects the proper destination for a new feed based on which feed
- * is currently selected.
+/* Selects the proper destination for a new subscription based on 
+ * which feed list node is currently selected.
  *
- * @param pos a pointer to an integer that will be set to where the
- * item should be created. If it is set to -1, then it should be
- * appended. 0 means prepend.
- *
- * @returns folder into which the feed should be inserted
+ * @param nodeId	the id of the currently selected node
+ * @param pos		a pointer to an integer that will be set 
+ *			to where the item should be created. If it 
+ *			is set to -1, then it should be appended. 
+ *			0 means prepend.
  */
-nodePtr ui_feedlist_get_target_folder(int *pos);
+void ui_feedlist_get_target_folder (const gchar *nodeId, int *pos);
 
 /**
  * Prompt the user for confirmation of a folder or feed, and

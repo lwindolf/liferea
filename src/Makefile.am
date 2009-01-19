@@ -53,6 +53,7 @@ liferea_bin_SOURCES = \
 	newsbin.c newsbin.h \
 	node.c node.h \
 	node_type.c node_type.h \
+	node_view.h \
 	plugin.c plugin.h \
 	render.c render.h \
 	rule.c rule.h \

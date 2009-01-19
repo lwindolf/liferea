@@ -236,8 +236,8 @@ feedlist_get_selected (void)
 	return SELECTED;
 }
 
-nodePtr
-feedlist_get_insertion_point (void)
+static nodePtr
+feedlist_get_parent_node (void)
 { 
 
 	g_assert (NULL != ROOTNODE);
@@ -252,6 +252,16 @@ feedlist_get_insertion_point (void)
 		return SELECTED->parent;
 
 	return ROOTNODE;
+}
+
+gboolean
+feedlist_is_writable (void)
+{
+	nodePtr node;
+	
+	node = feedlist_get_parent_node ();
+	
+	return (0 != (NODE_TYPE (node->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS));
 }
 
 static void
@@ -349,11 +359,11 @@ feedlist_add_folder (const gchar *title)
 	
 	g_assert (NULL != title);
 
-	parent = feedlist_get_insertion_point ();
+	parent = feedlist_get_parent_node ();
 
 	if(0 == (NODE_TYPE (parent->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS))
 		return;	
-		
+
 	node_source_add_folder (parent->source->root, parent, title);
 }
 
@@ -365,7 +375,7 @@ feedlist_add_subscription (const gchar *source, const gchar *filter, updateOptio
 
 	g_assert (NULL != source);
 
-	parent = feedlist_get_insertion_point ();
+	parent = feedlist_get_parent_node ();
 
 	if (0 == (NODE_TYPE (parent->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS)) {
 		g_warning ("feedlist_add_subscription: this should never happen!");
@@ -378,15 +388,20 @@ feedlist_add_subscription (const gchar *source, const gchar *filter, updateOptio
 void
 feedlist_node_imported (nodePtr node)
 {
-	gint	pos;
-
-	ui_node_add (node->parent, node, g_slist_index (node->parent->children, node));
+	ui_node_add (node);	
 	feedlist_schedule_save ();
 }
 
 void
 feedlist_node_added (nodePtr node)
 {
+	gint	position;
+	
+	g_assert (NULL == node->parent);
+	
+	ui_feedlist_get_target_folder ((SELECTED)->id, &position);
+	node_set_parent (node, feedlist_get_parent_node (), position);
+	
 	if (node->subscription)
 		db_subscription_update (node->subscription);
 	

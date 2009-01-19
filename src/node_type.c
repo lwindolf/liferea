@@ -66,17 +66,19 @@ node_type_to_str (nodePtr node)
 nodeTypePtr
 node_str_to_type (const gchar *str)
 {
-	GSList	*iter = nodeTypes;
+	GSList	*iter;
 
 	g_assert (NULL != str);
 	
 	/* initialize known node types the first time... */
-	node_type_register (feed_get_node_type ());
-	node_type_register (root_get_node_type ());
-	node_type_register (folder_get_node_type ());
-	node_type_register (vfolder_get_node_type ());
-	node_type_register (node_source_get_node_type ());
-	node_type_register (newsbin_get_node_type ());
+	if (!nodeTypes) {
+		node_type_register (feed_get_node_type ());
+		node_type_register (root_get_node_type ());
+		node_type_register (folder_get_node_type ());
+		node_type_register (vfolder_get_node_type ());
+		node_type_register (node_source_get_node_type ());
+		node_type_register (newsbin_get_node_type ());
+	}
 
 	if (g_str_equal (str, ""))	/* type maybe "" if initial download is not yet done */
 		return feed_get_node_type ();
@@ -85,6 +87,7 @@ node_str_to_type (const gchar *str)
 		return feed_get_node_type ();
 		
 	/* check against all node types */
+	iter = nodeTypes;
 	while (iter) {
 		if (g_str_equal (str, ((nodeTypePtr)iter->data)->id))
 			return (nodeTypePtr)iter->data;
@@ -95,15 +98,12 @@ node_str_to_type (const gchar *str)
 }
 
 /* Interactive node adding (e.g. feed menu->new subscription) */
-void
+gboolean
 node_type_request_interactive_add (nodeTypePtr nodeType)
 {
-	nodePtr		parent;
 
-	parent = feedlist_get_insertion_point ();
+	if (!feedlist_is_writable ())
+		return FALSE;
 
-	if (0 == (NODE_TYPE (parent->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS))
-		return;
-
-	nodeType->request_add (parent);
+	return nodeType->request_add ();
 }

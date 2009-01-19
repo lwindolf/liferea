@@ -2,7 +2,7 @@
  * @file export.c  OPML feed list import & export
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2004-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2009 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,6 @@
 #include "folder.h"
 #include "vfolder.h"
 #include "xml.h"
-#include "ui/ui_itemlist.h"	// FIXME: evil include
 #include "fl_sources/node_source.h"
 
 struct exportData {
@@ -65,14 +64,13 @@ export_append_node_tag (nodePtr node, gpointer userdata)
 		xmlNewProp (childNode, BAD_CAST"id", BAD_CAST node_get_id (node));
 
 		switch (node->sortColumn) {
-			case IS_LABEL:
+			case NODE_VIEW_SORT_BY_TITLE:
 				xmlNewProp (childNode, BAD_CAST"sortColumn", BAD_CAST"title");
 				break;
-			case IS_TIME:
+			case NODE_VIEW_SORT_BY_TIME:
 				xmlNewProp (childNode, BAD_CAST"sortColumn", BAD_CAST"time");
 				break;
-			case IS_PARENT:
-			case IS_SOURCE:
+			case NODE_VIEW_SORT_BY_PARENT:
 				xmlNewProp (childNode, BAD_CAST"sortColumn", BAD_CAST"parent");
 				break;
 		}
@@ -178,6 +176,7 @@ import_parse_outline (xmlNodePtr cur, nodePtr parentNode, gboolean trusted)
 	typeStr = xmlGetProp (cur, BAD_CAST"type");
 	if (typeStr) {
 		type = node_str_to_type (typeStr);
+		g_print("type %s is %p\n", typeStr, type);
 		xmlFree (typeStr);
 	} 
 	
@@ -205,8 +204,7 @@ import_parse_outline (xmlNodePtr cur, nodePtr parentNode, gboolean trusted)
 	
 	/* 2. do general node parsing */	
 	node = node_new (type);
-	node->parent = parentNode;
-	node->source = parentNode->source;
+	node_set_parent (node, parentNode, -1);
 	
 	/* The id should only be used from feedlist.opml. Otherwise,
 	   it could cause corruption if the same id was imported
@@ -241,11 +239,11 @@ import_parse_outline (xmlNodePtr cur, nodePtr parentNode, gboolean trusted)
 	sortStr = xmlGetProp (cur, BAD_CAST"sortColumn");
 	if (sortStr) {
 		if (!xmlStrcmp (sortStr, "title"))
-			node->sortColumn = IS_LABEL;
-		else if (!xmlStrcmp (sortStr, "time"))
-			node->sortColumn = IS_TIME;
+			node->sortColumn = NODE_VIEW_SORT_BY_TITLE;
 		else if (!xmlStrcmp (sortStr, "parent"))
-			node->sortColumn = IS_PARENT;
+			node->sortColumn = NODE_VIEW_SORT_BY_PARENT;
+		else
+			node->sortColumn = NODE_VIEW_SORT_BY_TIME;
 		xmlFree (sortStr);
 	}
 	sortStr = xmlGetProp (cur, BAD_CAST"sortReversed");
@@ -276,11 +274,17 @@ import_parse_outline (xmlNodePtr cur, nodePtr parentNode, gboolean trusted)
 		node->expanded = FALSE;
 	else 
 		node->expanded = TRUE;
+		
+	/* 3. add to GUI parent */
+	feedlist_node_imported (node);
 
-	/* 3. do node type specific parsing */
+	/* 4. import child nodes */
+	// FIXME: move code from folder.c here
+	
+	/* 5. do node type specific parsing */
 	NODE_TYPE (node)->import (node, parentNode, cur, trusted);
-
-	/* 4. update immediately if necessary */
+	
+	/* 6. update immediately if necessary */
 	if (needsUpdate && (NODE_TYPE(node))) {
 		debug1 (DEBUG_CACHE, "seems to be an import, setting new id: %s and doing first download...", node_get_id(node));
 		subscription_update (node->subscription,
@@ -389,8 +393,7 @@ on_import_activate_cb (const gchar *filename, gpointer user_data)
 	if (filename) {
 		nodePtr node = node_new (folder_get_node_type ());
 		node_set_title (node, _("Imported feed list"));
-		node_set_parent (node, NULL, 0);
-		feedlist_node_imported (node);
+		feedlist_node_added (node);
 		
 		import_OPML_feedlist (filename, node, TRUE /* show errors */, FALSE /* not trusted */);
 	}

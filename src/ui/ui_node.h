@@ -1,8 +1,8 @@
 /**
- * @file ui_node.h GUI folder handling
+ * @file ui_node.h  GUI feed list handling
  * 
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2004-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2004-2009 Lars Lindner <lars.lindner@gmail.com>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,15 +41,11 @@ GtkTreeIter * ui_node_to_iter(const gchar *nodeId);
 void ui_node_update_iter(const gchar *nodeId, GtkTreeIter *iter);
 
 /**
- * Add a node to the feedlist
+ * Add a node to the feedlist tree view
  *
- * @param parent	the parent of the new folder, or NULL to 
- *			insert in the root folder
- * @param node		the node to add
- * @param position	the position in which the folder should be 
- *			added, or -1 to append the folder to the parent.
+s * @param node		the node to add
  */
-void ui_node_add(nodePtr parent, nodePtr node, gint position);
+void ui_node_add (nodePtr node);
 
 /**
  * Remove a node from the feedlist and free its ui_data.

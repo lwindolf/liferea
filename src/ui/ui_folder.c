@@ -26,8 +26,8 @@
 
 static GtkWidget	*newfolderdialog = NULL;
 
-void
-ui_folder_add (nodePtr parent)
+gboolean
+ui_folder_add (void)
 {
 	GtkWidget	*foldernameentry;
 	
@@ -38,6 +38,8 @@ ui_folder_add (nodePtr parent)
 	gtk_entry_set_text (GTK_ENTRY (foldernameentry), "");
 		
 	gtk_widget_show (newfolderdialog);
+	
+	return TRUE;
 }
 
 void

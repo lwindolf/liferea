@@ -31,7 +31,7 @@
 #include "ui/enclosure_list_view.h"
 #include "ui/liferea_htmlview.h"
 
-/* Liferea presents item in a dynamic view. The view layout
+/* Liferea presents items in a dynamic view. The view layout
    changes according to the subscription preferences and if
    the user requests it on-the-fly. Also the view contents
    are refreshed automatically.

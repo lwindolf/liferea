@@ -60,7 +60,7 @@ typedef struct nodeType {
 	void		(*update_counters)	(nodePtr node);
 	void		(*remove)		(nodePtr node);
 	gchar *		(*render)		(nodePtr node);
-	void		(*request_add)		(nodePtr parent);
+	gboolean	(*request_add)		(void);
 	void		(*request_properties)	(nodePtr node);
 	
 	/**
@@ -99,7 +99,9 @@ nodeTypePtr node_str_to_type(const gchar *str);
  * given type.
  *
  * @param nodeType		the node type
+ *
+ * @returns TRUE on success
  */
-void node_type_request_interactive_add(nodeTypePtr nodeType);
+gboolean node_type_request_interactive_add(nodeTypePtr nodeType);
 
 #endif

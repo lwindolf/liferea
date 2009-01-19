@@ -1,7 +1,7 @@
 /**
  * @file ui_subscription.h  default subscription dialogs for feed subscriptions
  *
- * Copyright (C) 2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2009 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -92,11 +92,9 @@ GType new_subscription_dialog_get_type	(void);
  * Create a new complex subscription dialog. Used only
  * when requested by user from simple subscription dialog.
  *
- * @param parentNode	the parent node for the new subscription
- *
  * @returns dialog instance
  */
-NewSubscriptionDialog *ui_complex_subscription_dialog_new	(nodePtr parentNode);
+NewSubscriptionDialog *ui_complex_subscription_dialog_new (void);
 
 
 #define SIMPLE_SUBSCRIPTION_DIALOG_TYPE			(simple_subscription_dialog_get_type ())
@@ -121,16 +119,14 @@ struct SimpleSubscriptionDialogClass
 	GtkObjectClass parent_class;
 };
 
-GType simple_subscription_dialog_get_type	(void);
+GType simple_subscription_dialog_get_type (void);
 
 /**
  * Create a simple subscription dialog.
  *
- * @param parentNode	the parent node for the new subscription
- *
  * @returns dialog instance
  */
-SimpleSubscriptionDialog *ui_subscription_dialog_new	(nodePtr parentNode);
+SimpleSubscriptionDialog *ui_subscription_dialog_new (void);
 
 
 G_END_DECLS

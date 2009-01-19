@@ -1,7 +1,7 @@
 /**
  * @file folder.c  sub folders for hierarchic node sources
  * 
- * Copyright (C) 2006-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2009 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,10 +57,9 @@ folder_load (nodePtr node)
 static void
 folder_import (nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean trusted)
 {	
-	node_set_data (node, NULL);
-	node_set_parent (node, parent, -1);
-	feedlist_node_imported (node);
+	/* Nothing to do for folders. */	
 	
+	// FIXME: the following is not folder stuff!
 	cur = cur->xmlChildrenNode;
 	while (cur) {
 		if (!xmlStrcmp (cur->name, BAD_CAST"outline"))
@@ -72,6 +71,9 @@ folder_import (nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean trusted)
 static void
 folder_export (nodePtr node, xmlNodePtr cur, gboolean trusted)
 {	
+	/* Nothing to do for folders */
+	
+	// FIXME: The following is not folder stuff!
 	if (trusted) {
 		if (ui_node_is_expanded (node->id))
 			xmlNewProp (cur, BAD_CAST"expanded", BAD_CAST"true");

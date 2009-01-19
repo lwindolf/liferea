@@ -1,7 +1,7 @@
 /**
  * @file ui_itemlist.h  item list GUI handling
  *
- * Copyright (C) 2004-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2009 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
  *	      
  * This library is free software; you can redistribute it and/or
@@ -25,24 +25,9 @@
 
 #include <gtk/gtk.h>
 #include <time.h>
-#include "item.h"
 
-/** Enumeration of the columns in the itemstore. */
-enum is_columns {
-	IS_TIME,		/**< Time of item creation */ /* This is set to the first item so that default sorting is by time */
-	IS_TIME_STR,		/**< Time of item creation as a string*/
-	IS_LABEL,		/**< Displayed name */
-	IS_STATEICON,		/**< Pixbuf reference to the item's state icon */
-	IS_NR,			/**< Item id, to lookup item ptr from parent feed */
-	IS_PARENT,		/**< Parent node pointer */
-	IS_FAVICON,		/**< Pixbuf reference to the item's feed's icon */
-	IS_ENCICON,		/**< Pixbuf reference to the item's enclosure icon */
-	IS_ENCLOSURE,		/**< Flag wether enclosure is attached or not */
-	IS_SOURCE,		/**< Source node pointer */
-	IS_STATE,		/**< Original item state (unread, flagged...) for sorting */
-	ITEMSTORE_UNREAD,	/**< Flag wether "unread" icon is to be shown */
-	ITEMSTORE_LEN		/**< Number of columns in the itemstore */
-};
+#include "item.h"
+#include "node_view.h"
 
 /**
  * Initializes the itemlist. For example, it creates the various
@@ -63,12 +48,12 @@ void ui_itemlist_destroy (void);
 gboolean ui_itemlist_contains_item(gulong id);
 
 /**
- * Changes the sorting column (and direction).
+ * Changes the sorting type (and direction).
  *
- * @param sortColumn	new sort column
+ * @param sortType	new sort type
  * @param sortReversed	TRUE for ascending order
  */
-void ui_itemlist_set_sort_column (gint sortColumn, gboolean sortReversed);
+void ui_itemlist_set_sort_column (nodeViewSortType sortType, gboolean sortReversed);
 
 void ui_itemlist_reset_tree_store(void);
 

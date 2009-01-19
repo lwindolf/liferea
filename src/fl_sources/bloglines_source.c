@@ -1,7 +1,7 @@
 /**
  * @file bloglines_source.c  Bloglines feed list source support
  * 
- * Copyright (C) 2006-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2009 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ on_bloglines_source_selected (GtkDialog *dialog,
                               gint response_id,
                               gpointer user_data) 
 {
-	nodePtr		node, parent = (nodePtr) user_data;
+	nodePtr		node;
 	subscriptionPtr	subscription;
 
 	if (response_id == GTK_RESPONSE_OK) {
@@ -50,8 +50,9 @@ on_bloglines_source_selected (GtkDialog *dialog,
 		node = node_new (node_source_get_node_type ());
 		node_set_title (node, "Bloglines");
 		node_source_new (node, bloglines_source_get_type ());
-		opml_source_setup (parent, node);
 		node_set_subscription (node, subscription);
+		feedlist_node_added (node);
+		
 		opml_source_update (node);
 	}
 
@@ -66,7 +67,7 @@ on_bloglines_source_dialog_destroy (GtkDialog *dialog,
 }
 
 static void
-ui_bloglines_source_get_account_info (nodePtr parent)
+ui_bloglines_source_get_account_info (void)
 {
 	GtkWidget	*dialog;
 	
@@ -74,7 +75,7 @@ ui_bloglines_source_get_account_info (nodePtr parent)
 	
 	g_signal_connect (G_OBJECT (dialog), "response",
 			  G_CALLBACK (on_bloglines_source_selected), 
-			  (gpointer) parent);
+			  NULL);
 }
 
 /* node source type definition */

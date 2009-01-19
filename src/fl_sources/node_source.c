@@ -1,7 +1,7 @@
 /**
  * @file node_source.c  generic node source provider implementation
  * 
- * Copyright (C) 2005-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2005-2009 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -150,9 +150,7 @@ node_source_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trust
 		node->source = NULL;
 		node_source_new (node, type);
 		node_set_subscription (node, subscription_import (xml, trusted));
-		node_set_parent (node, parent, -1);
-		feedlist_node_imported (node);
-				
+	
 		type->source_import (node);	// FIXME: pass trusted flag?
 	} else {
 		g_warning ("No source type given for node \"%s\". Ignoring it.", node_get_title (node));
@@ -203,7 +201,6 @@ on_node_source_type_selected (GtkDialog *dialog, gint response_id, gpointer user
 	GtkTreeSelection	*selection;
 	GtkTreeModel		*model;
 	GtkTreeIter		iter;
-	nodePtr 		parent = (nodePtr) user_data;
 	nodeSourceTypePtr	type;
 	
 	if (response_id == GTK_RESPONSE_OK) {
@@ -211,7 +208,7 @@ on_node_source_type_selected (GtkDialog *dialog, gint response_id, gpointer user
 		g_assert (NULL != selection);
 		gtk_tree_selection_get_selected (selection, &model, &iter);
 		gtk_tree_model_get (model, &iter, 1, &type, -1);
-		type->source_new (parent);
+		type->source_new ();
 	}
 	
 	gtk_widget_destroy (GTK_WIDGET (dialog));
@@ -223,8 +220,8 @@ on_node_source_type_dialog_destroy (GtkDialog *dialog, gpointer user_data)
 	g_object_unref (user_data);
 }
 
-void
-ui_node_source_type_dialog (nodePtr parent)
+static gboolean
+ui_node_source_type_dialog (void)
 {
 	GSList 			*iter = nodeSourceTypes;
 	GtkWidget 		*dialog, *treeview;
@@ -275,7 +272,9 @@ ui_node_source_type_dialog (nodePtr parent)
 
 	g_signal_connect (G_OBJECT (dialog), "response",
 			  G_CALLBACK (on_node_source_type_selected), 
-			  (gpointer)parent);
+			  NULL);
+			  
+	return TRUE;
 }
 
 void

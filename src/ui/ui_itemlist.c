@@ -1,7 +1,7 @@
 /**
  * @file ui_itemlist.c item list GUI handling
  *  
- * Copyright (C) 2004-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2009 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This library is free software; you can redistribute it and/or
@@ -38,6 +38,23 @@
 #include "ui/liferea_shell.h"
 #include "ui/ui_common.h"
 #include "ui/ui_popup.h"
+
+/** Enumeration of the columns in the itemstore. */
+enum is_columns {
+	IS_TIME,		/**< Time of item creation */
+	IS_TIME_STR,		/**< Time of item creation as a string*/
+	IS_LABEL,		/**< Displayed name */
+	IS_STATEICON,		/**< Pixbuf reference to the item's state icon */
+	IS_NR,			/**< Item id, to lookup item ptr from parent feed */
+	IS_PARENT,		/**< Parent node pointer */
+	IS_FAVICON,		/**< Pixbuf reference to the item's feed's icon */
+	IS_ENCICON,		/**< Pixbuf reference to the item's enclosure icon */
+	IS_ENCLOSURE,		/**< Flag wether enclosure is attached or not */
+	IS_SOURCE,		/**< Source node pointer */
+	IS_STATE,		/**< Original item state (unread, flagged...) for sorting */
+	ITEMSTORE_UNREAD,	/**< Flag wether "unread" icon is to be shown */
+	ITEMSTORE_LEN		/**< Number of columns in the itemstore */
+};
 
 static GHashTable 	*item_id_to_iter = NULL;	/** hash table used for fast item id->tree iter lookup */
 
@@ -109,8 +126,22 @@ ui_itemlist_favicon_sort_func (GtkTreeModel *model, GtkTreeIter *a, GtkTreeIter 
 }
 
 void
-ui_itemlist_set_sort_column (gint sortColumn, gboolean sortReversed)
+ui_itemlist_set_sort_column (nodeViewSortType sortType, gboolean sortReversed)
 {
+	gint sortColumn;
+	
+	switch (sortType) {
+		case NODE_VIEW_SORT_BY_TITLE:
+			sortColumn = IS_LABEL;
+			break;
+		case NODE_VIEW_SORT_BY_PARENT:
+			sortColumn = IS_PARENT;
+			break;
+		default:
+			sortColumn = IS_TIME;
+			break;
+	}
+	
 	/* Disable sort order save callback because this
 	   is not a user triggered save and doesn't need
 	   to be written to disk (FIXME: improve me) */
@@ -751,8 +782,19 @@ itemlist_sort_column_changed_cb (GtkTreeSortable *treesortable, gpointer user_da
 		return;
 	
 	sorted = gtk_tree_sortable_get_sort_column_id (treesortable, &sortColumn, &sortType);
-	node_set_sort_column (feedlist_get_selected (), sortColumn, sortType == GTK_SORT_DESCENDING);
-	
+	switch (sortColumn) {
+		case IS_TIME:
+			node_set_sort_column (feedlist_get_selected (), NODE_VIEW_SORT_BY_TIME, sortType == GTK_SORT_DESCENDING);
+			break;
+		case IS_LABEL:
+			node_set_sort_column (feedlist_get_selected (), NODE_VIEW_SORT_BY_TITLE, sortType == GTK_SORT_DESCENDING);
+			break;
+		case IS_PARENT:
+		case IS_SOURCE:
+			node_set_sort_column (feedlist_get_selected (), NODE_VIEW_SORT_BY_PARENT, sortType == GTK_SORT_DESCENDING);
+			break;
+	}
+
 	/* FIXME: improve me save only when necessary to get
 	   rid of disabelSortingSaving global */
 	feedlist_schedule_save ();

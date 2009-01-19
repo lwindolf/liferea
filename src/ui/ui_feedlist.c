@@ -1,7 +1,7 @@
 /**
  * @file ui_feedlist.c GUI feed list handling
  *
- * Copyright (C) 2004-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2009 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2005 Raphaël Slinckx <raphael@slinckx.net>
  * 
@@ -54,32 +54,24 @@ ui_feedlist_row_changed_cb(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *
 		ui_node_update_iter(node->id, iter);
 }
 
-nodePtr
-ui_feedlist_get_target_folder (int *pos)
+void
+ui_feedlist_get_target_folder (const gchar *nodeId, int *pos)
 {
-	nodePtr		node;
 	GtkTreeIter	*iter = NULL;
 	GtkTreePath 	*path;
 	gint		*indices;
 
+	g_assert (NULL != nodeId);
 	g_assert (NULL != pos);
 	
 	*pos = -1;
-	node = feedlist_get_selected ();
-	if (!node)
-		return feedlist_get_root ();
 
-	if (IS_FOLDER (node)) {
-		return node;
-	} else {
-		iter = ui_node_to_iter (node->id);
-		path = gtk_tree_model_get_path (gtk_tree_view_get_model (GTK_TREE_VIEW (liferea_shell_lookup ("feedlist"))), iter);
-		indices = gtk_tree_path_get_indices (path);
-		if (pos)
-			*pos = indices[gtk_tree_path_get_depth (path)-1] + 1;
-		gtk_tree_path_free (path);
-		return node->parent;
-	}
+	iter = ui_node_to_iter (nodeId);
+	path = gtk_tree_model_get_path (gtk_tree_view_get_model (GTK_TREE_VIEW (liferea_shell_lookup ("feedlist"))), iter);
+	indices = gtk_tree_path_get_indices (path);
+	if (pos)
+		*pos = indices[gtk_tree_path_get_depth (path)-1] + 1;
+	gtk_tree_path_free (path);
 }
 
 static void

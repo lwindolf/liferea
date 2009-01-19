@@ -1,7 +1,7 @@
 /**
  * @file ui_subscription.c  default subscription dialogs for feed subscriptions
  *
- * Copyright (C) 2004-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2009 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -19,10 +19,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
- 
 #include "ui/ui_subscription.h"
 
 #include <libxml/uri.h>
@@ -54,7 +50,6 @@ static gchar * default_update_interval_unit_options[] = {
 struct SubscriptionDialogPrivate {
 
 	subscriptionPtr subscription;	/** used only for "properties" dialog */
-	nodePtr		parentNode;	/** used only for "new" dialogs */
 
 	gint selector; /* Desiginates which fileselection dialog box is open.
 				   Set to 'u' for source
@@ -726,12 +721,11 @@ new_subscription_dialog_init (NewSubscriptionDialog *nsd)
 }
 
 NewSubscriptionDialog *
-ui_complex_subscription_dialog_new (nodePtr parent) 
+ui_complex_subscription_dialog_new (void) 
 {
 	NewSubscriptionDialog *nsd;
 	
 	nsd = NEW_SUBSCRIPTION_DIALOG (g_object_new (NEW_SUBSCRIPTION_DIALOG_TYPE, NULL));
-	nsd->priv->parentNode = parent;
 	return nsd;
 }
 
@@ -813,7 +807,7 @@ on_simple_newdialog_response (GtkDialog *dialog, gint response_id, gpointer user
 	}
 	
 	if (response_id == GTK_RESPONSE_APPLY) /* misused for "Advanced" */
-		ui_complex_subscription_dialog_new (ssd->priv->parentNode);
+		ui_complex_subscription_dialog_new ();
 		
 	g_object_unref (ssd);
 }
@@ -838,11 +832,10 @@ simple_subscription_dialog_init (SimpleSubscriptionDialog *ssd)
 }
 
 SimpleSubscriptionDialog *
-ui_subscription_dialog_new (nodePtr parent) 
+ui_subscription_dialog_new (void) 
 {
 	SimpleSubscriptionDialog *ssd;
 	
 	ssd = SIMPLE_SUBSCRIPTION_DIALOG (g_object_new (SIMPLE_SUBSCRIPTION_DIALOG_TYPE, NULL));
-	ssd->priv->parentNode = parent;
 	return ssd;
 }

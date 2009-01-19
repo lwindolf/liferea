@@ -139,9 +139,6 @@ feed_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trusted)
 	        	subscription_get_source (node->subscription), 
 		        typeStr, 
 		        subscription_get_update_interval (node->subscription));
-
-	node_set_parent (node, parent, -1);
-	feedlist_node_imported (node);
 }
 
 static void
@@ -399,10 +396,11 @@ feed_render (nodePtr node)
 	return output;
 }
 
-static void
-feed_add (nodePtr parentNode)
+static gboolean
+feed_add (void)
 {
-	ui_subscription_dialog_new (parentNode);
+	ui_subscription_dialog_new ();
+	return TRUE;
 }
 
 static void

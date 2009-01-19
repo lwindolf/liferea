@@ -1,7 +1,7 @@
 /**
  * @file node.c  hierarchic feed list node handling
  * 
- * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2009 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -26,19 +26,18 @@
 #include "db.h"
 #include "debug.h"
 #include "favicon.h"
+#include "feed.h"	// FIXME
 #include "feedlist.h"
 #include "folder.h"
 #include "itemset.h"
 #include "node.h"
+#include "node_view.h"
 #include "render.h"
 #include "script.h"
 #include "update.h"
 #include "vfolder.h"
 #include "fl_sources/node_source.h"
 #include "ui/ui_common.h"
-#include "ui/ui_feedlist.h"
-#include "ui/ui_itemlist.h"
-#include "ui/ui_node.h"
 
 static GHashTable *nodes = NULL;
 
@@ -85,7 +84,7 @@ nodePtr node_new(nodeTypePtr type) {
 
 	node = (nodePtr)g_new0(struct node, 1);
 	node->type = type;
-	node->sortColumn = IS_TIME;
+	node->sortColumn = NODE_VIEW_SORT_BY_TIME;
 	node->sortReversed = TRUE;	/* default sorting is newest date at top */
 	node->available = TRUE;
 	node_set_icon(node, NULL);	/* initialize favicon file name */
@@ -290,8 +289,7 @@ node_render(nodePtr node)
 void
 node_set_parent (nodePtr node, nodePtr parent, gint position)
 {
-	if (!parent)
-		parent = ui_feedlist_get_target_folder (&position);
+	g_assert (NULL != parent);
 
 	parent->children = g_slist_insert (parent->children, node, position);
 	node->parent = parent;

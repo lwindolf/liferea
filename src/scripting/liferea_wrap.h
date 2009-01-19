@@ -1492,7 +1492,7 @@ SWIG_Lua_dostring(lua_State *L, const char* str) {
 #define SWIGTYPE_p_node swig_types[20]
 #define SWIGTYPE_p_nodeSource swig_types[21]
 #define SWIGTYPE_p_nodeType swig_types[22]
-#define SWIGTYPE_p_nodeViewType swig_types[23]
+#define SWIGTYPE_p_nodeViewSortType swig_types[23]
 #define SWIGTYPE_p_socialSite swig_types[24]
 #define SWIGTYPE_p_subscription swig_types[25]
 #define SWIGTYPE_p_subscriptionType swig_types[26]
@@ -2449,17 +2449,23 @@ fail:
 static int _wrap_node_sortColumn_set(lua_State* L) {
   int SWIG_arg = 0;
   struct node *arg1 = (struct node *) 0 ;
-  int arg2 ;
+  nodeViewSortType arg2 ;
+  nodeViewSortType *argp2 ;
   
   SWIG_check_num_args("sortColumn",2,2)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("sortColumn",1,"struct node *");
-  if(!lua_isnumber(L,2)) SWIG_fail_arg("sortColumn",2,"int");
+  if(!lua_isuserdata(L,2)) SWIG_fail_arg("sortColumn",2,"nodeViewSortType");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_node,0))){
     SWIG_fail_ptr("node_sortColumn_set",1,SWIGTYPE_p_node);
   }
   
-  arg2 = (int)lua_tonumber(L, 2);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&argp2,SWIGTYPE_p_nodeViewSortType,0))){
+    SWIG_fail_ptr("node_sortColumn_set",2,SWIGTYPE_p_nodeViewSortType);
+  }
+  arg2 = *argp2;
+  
   if (arg1) (arg1)->sortColumn = arg2;
   
   return SWIG_arg;
@@ -2475,7 +2481,7 @@ fail:
 static int _wrap_node_sortColumn_get(lua_State* L) {
   int SWIG_arg = 0;
   struct node *arg1 = (struct node *) 0 ;
-  int result;
+  nodeViewSortType result;
   
   SWIG_check_num_args("sortColumn",1,1)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("sortColumn",1,"struct node *");
@@ -2484,8 +2490,13 @@ static int _wrap_node_sortColumn_get(lua_State* L) {
     SWIG_fail_ptr("node_sortColumn_get",1,SWIGTYPE_p_node);
   }
   
-  result = (int) ((arg1)->sortColumn);
-  lua_pushnumber(L, (lua_Number) result); SWIG_arg++;
+  result =  ((arg1)->sortColumn);
+  {
+    nodeViewSortType * resultptr;
+    resultptr = (nodeViewSortType *) malloc(sizeof(nodeViewSortType));
+    memmove(resultptr, &result, sizeof(nodeViewSortType));
+    SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_nodeViewSortType,1); SWIG_arg++;
+  }
   return SWIG_arg;
   
   if(0) SWIG_fail;
@@ -7086,6 +7097,38 @@ fail:
 }
 
 
+static int _wrap_subscription_to_xml(lua_State* L) {
+  int SWIG_arg = 0;
+  subscriptionPtr arg1 = (subscriptionPtr) 0 ;
+  xmlNodePtr arg2 ;
+  xmlNodePtr *argp2 ;
+  
+  SWIG_check_num_args("subscription_to_xml",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("subscription_to_xml",1,"subscriptionPtr");
+  if(!lua_isuserdata(L,2)) SWIG_fail_arg("subscription_to_xml",2,"xmlNodePtr");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_to_xml",1,SWIGTYPE_p_subscription);
+  }
+  
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&argp2,SWIGTYPE_p_xmlNodePtr,0))){
+    SWIG_fail_ptr("subscription_to_xml",2,SWIGTYPE_p_xmlNodePtr);
+  }
+  arg2 = *argp2;
+  
+  subscription_to_xml(arg1,arg2);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_subscription_can_be_updated(lua_State* L) {
   int SWIG_arg = 0;
   subscriptionPtr arg1 = (subscriptionPtr) 0 ;
@@ -7389,6 +7432,56 @@ fail:
 }
 
 
+static int _wrap_subscription_get_homepage(lua_State* L) {
+  int SWIG_arg = 0;
+  subscriptionPtr arg1 = (subscriptionPtr) 0 ;
+  char *result = 0 ;
+  
+  SWIG_check_num_args("subscription_get_homepage",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("subscription_get_homepage",1,"subscriptionPtr");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_get_homepage",1,SWIGTYPE_p_subscription);
+  }
+  
+  result = (char *)subscription_get_homepage(arg1);
+  lua_pushstring(L,(const char*)result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
+static int _wrap_subscription_set_homepage(lua_State* L) {
+  int SWIG_arg = 0;
+  subscriptionPtr arg1 = (subscriptionPtr) 0 ;
+  char *arg2 = (char *) 0 ;
+  
+  SWIG_check_num_args("subscription_set_homepage",2,2)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("subscription_set_homepage",1,"subscriptionPtr");
+  if(!lua_isstring(L,2)) SWIG_fail_arg("subscription_set_homepage",2,"char const *");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_set_homepage",1,SWIGTYPE_p_subscription);
+  }
+  
+  arg2 = (char *)lua_tostring(L, 2);
+  subscription_set_homepage(arg1,(char const *)arg2);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_subscription_get_filter(lua_State* L) {
   int SWIG_arg = 0;
   subscriptionPtr arg1 = (subscriptionPtr) 0 ;
@@ -7582,18 +7675,20 @@ fail:
 
 static int _wrap_ui_feedlist_get_target_folder(lua_State* L) {
   int SWIG_arg = 0;
-  int *arg1 = (int *) 0 ;
-  nodePtr result;
+  char *arg1 = (char *) 0 ;
+  int *arg2 = (int *) 0 ;
   
-  SWIG_check_num_args("ui_feedlist_get_target_folder",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("ui_feedlist_get_target_folder",1,"int *");
+  SWIG_check_num_args("ui_feedlist_get_target_folder",2,2)
+  if(!lua_isstring(L,1)) SWIG_fail_arg("ui_feedlist_get_target_folder",1,"char const *");
+  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("ui_feedlist_get_target_folder",2,"int *");
+  arg1 = (char *)lua_tostring(L, 1);
   
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_int,0))){
-    SWIG_fail_ptr("ui_feedlist_get_target_folder",1,SWIGTYPE_p_int);
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_int,0))){
+    SWIG_fail_ptr("ui_feedlist_get_target_folder",2,SWIGTYPE_p_int);
   }
   
-  result = (nodePtr)ui_feedlist_get_target_folder(arg1);
-  SWIG_NewPointerObj(L,result,SWIGTYPE_p_node,0); SWIG_arg++; 
+  ui_feedlist_get_target_folder((char const *)arg1,arg2);
+  
   return SWIG_arg;
   
   if(0) SWIG_fail;
@@ -8047,13 +8142,19 @@ fail:
 
 static int _wrap_ui_itemlist_set_sort_column(lua_State* L) {
   int SWIG_arg = 0;
-  int arg1 ;
+  nodeViewSortType arg1 ;
   int arg2 ;
+  nodeViewSortType *argp1 ;
   
   SWIG_check_num_args("ui_itemlist_set_sort_column",2,2)
-  if(!lua_isnumber(L,1)) SWIG_fail_arg("ui_itemlist_set_sort_column",1,"int");
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("ui_itemlist_set_sort_column",1,"nodeViewSortType");
   if(!lua_isnumber(L,2)) SWIG_fail_arg("ui_itemlist_set_sort_column",2,"int");
-  arg1 = (int)lua_tonumber(L, 1);
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_nodeViewSortType,0))){
+    SWIG_fail_ptr("ui_itemlist_set_sort_column",1,SWIGTYPE_p_nodeViewSortType);
+  }
+  arg1 = *argp1;
+  
   arg2 = (int)lua_tonumber(L, 2);
   ui_itemlist_set_sort_column(arg1,arg2);
   
@@ -8939,25 +9040,15 @@ fail:
 static int _wrap_ui_node_add(lua_State* L) {
   int SWIG_arg = 0;
   nodePtr arg1 = (nodePtr) 0 ;
-  nodePtr arg2 = (nodePtr) 0 ;
-  int arg3 ;
   
-  SWIG_check_num_args("ui_node_add",3,3)
+  SWIG_check_num_args("ui_node_add",1,1)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("ui_node_add",1,"nodePtr");
-  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("ui_node_add",2,"nodePtr");
-  if(!lua_isnumber(L,3)) SWIG_fail_arg("ui_node_add",3,"int");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_node,0))){
     SWIG_fail_ptr("ui_node_add",1,SWIGTYPE_p_node);
   }
   
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_node,0))){
-    SWIG_fail_ptr("ui_node_add",2,SWIGTYPE_p_node);
-  }
-  
-  arg3 = (int)lua_tonumber(L, 3);
-  ui_node_add(arg1,arg2,arg3);
+  ui_node_add(arg1);
   
   return SWIG_arg;
   
@@ -9233,6 +9324,7 @@ static const struct luaL_reg swig_commands[] = {
     { "subscription_new", _wrap_subscription_new},
     { "subscription_import", _wrap_subscription_import},
     { "subscription_export", _wrap_subscription_export},
+    { "subscription_to_xml", _wrap_subscription_to_xml},
     { "subscription_can_be_updated", _wrap_subscription_can_be_updated},
     { "subscription_update", _wrap_subscription_update},
     { "subscription_auto_update", _wrap_subscription_auto_update},
@@ -9245,6 +9337,8 @@ static const struct luaL_reg swig_commands[] = {
     { "subscription_set_source", _wrap_subscription_set_source},
     { "subscription_get_orig_source", _wrap_subscription_get_orig_source},
     { "subscription_set_orig_source", _wrap_subscription_set_orig_source},
+    { "subscription_get_homepage", _wrap_subscription_get_homepage},
+    { "subscription_set_homepage", _wrap_subscription_set_homepage},
     { "subscription_get_filter", _wrap_subscription_get_filter},
     { "subscription_set_filter", _wrap_subscription_set_filter},
     { "subscription_update_error_status", _wrap_subscription_update_error_status},
@@ -9320,10 +9414,6 @@ static swig_lua_var_info swig_variables[] = {
 };
 
 static swig_lua_const_info swig_constants[] = {
-{ SWIG_LUA_INT,     (char *)"NODE_VIEW_MODE_INVALID", (long) NODE_VIEW_MODE_INVALID, 0, 0, 0},
-{ SWIG_LUA_INT,     (char *)"NODE_VIEW_MODE_NORMAL", (long) NODE_VIEW_MODE_NORMAL, 0, 0, 0},
-{ SWIG_LUA_INT,     (char *)"NODE_VIEW_MODE_WIDE", (long) NODE_VIEW_MODE_WIDE, 0, 0, 0},
-{ SWIG_LUA_INT,     (char *)"NODE_VIEW_MODE_COMBINED", (long) NODE_VIEW_MODE_COMBINED, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"CACHE_DISABLE", (long) CACHE_DISABLE, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"CACHE_DEFAULT", (long) CACHE_DEFAULT, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"CACHE_UNLIMITED", (long) CACHE_UNLIMITED, 0, 0, 0},
@@ -9340,19 +9430,6 @@ static swig_lua_const_info swig_constants[] = {
 { SWIG_LUA_INT,     (char *)"FS_PTR", (long) FS_PTR, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"FS_UNREAD", (long) FS_UNREAD, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"FS_LEN", (long) FS_LEN, 0, 0, 0},
-{ SWIG_LUA_INT,     (char *)"IS_TIME", (long) IS_TIME, 0, 0, 0},
-{ SWIG_LUA_INT,     (char *)"IS_TIME_STR", (long) IS_TIME_STR, 0, 0, 0},
-{ SWIG_LUA_INT,     (char *)"IS_LABEL", (long) IS_LABEL, 0, 0, 0},
-{ SWIG_LUA_INT,     (char *)"IS_STATEICON", (long) IS_STATEICON, 0, 0, 0},
-{ SWIG_LUA_INT,     (char *)"IS_NR", (long) IS_NR, 0, 0, 0},
-{ SWIG_LUA_INT,     (char *)"IS_PARENT", (long) IS_PARENT, 0, 0, 0},
-{ SWIG_LUA_INT,     (char *)"IS_FAVICON", (long) IS_FAVICON, 0, 0, 0},
-{ SWIG_LUA_INT,     (char *)"IS_ENCICON", (long) IS_ENCICON, 0, 0, 0},
-{ SWIG_LUA_INT,     (char *)"IS_ENCLOSURE", (long) IS_ENCLOSURE, 0, 0, 0},
-{ SWIG_LUA_INT,     (char *)"IS_SOURCE", (long) IS_SOURCE, 0, 0, 0},
-{ SWIG_LUA_INT,     (char *)"IS_STATE", (long) IS_STATE, 0, 0, 0},
-{ SWIG_LUA_INT,     (char *)"ITEMSTORE_UNREAD", (long) ITEMSTORE_UNREAD, 0, 0, 0},
-{ SWIG_LUA_INT,     (char *)"ITEMSTORE_LEN", (long) ITEMSTORE_LEN, 0, 0, 0},
     {0,0,0,0,0,0}
 };
 
@@ -9381,7 +9458,7 @@ static swig_type_info _swigt__p_itemSetPtr = {"_p_itemSetPtr", "itemSetPtr *", 0
 static swig_type_info _swigt__p_node = {"_p_node", "struct node *|node *|nodePtr", 0, 0, (void*)&_wrap_class_node, 0};
 static swig_type_info _swigt__p_nodeSource = {"_p_nodeSource", "struct nodeSource *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_nodeType = {"_p_nodeType", "struct nodeType *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_nodeViewType = {"_p_nodeViewType", "enum nodeViewType *|nodeViewType *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_nodeViewSortType = {"_p_nodeViewSortType", "nodeViewSortType *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_socialSite = {"_p_socialSite", "struct socialSite *|socialSite *", 0, 0, (void*)&_wrap_class_socialSite, 0};
 static swig_type_info _swigt__p_subscription = {"_p_subscription", "subscriptionPtr|struct subscription *|subscription *", 0, 0, (void*)&_wrap_class_subscription, 0};
 static swig_type_info _swigt__p_subscriptionType = {"_p_subscriptionType", "struct subscriptionType *", 0, 0, (void*)0, 0};
@@ -9415,7 +9492,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_node,
   &_swigt__p_nodeSource,
   &_swigt__p_nodeType,
-  &_swigt__p_nodeViewType,
+  &_swigt__p_nodeViewSortType,
   &_swigt__p_socialSite,
   &_swigt__p_subscription,
   &_swigt__p_subscriptionType,
@@ -9449,7 +9526,7 @@ static swig_cast_info _swigc__p_itemSetPtr[] = {  {&_swigt__p_itemSetPtr, 0, 0, 
 static swig_cast_info _swigc__p_node[] = {  {&_swigt__p_node, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_nodeSource[] = {  {&_swigt__p_nodeSource, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_nodeType[] = {  {&_swigt__p_nodeType, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_nodeViewType[] = {  {&_swigt__p_nodeViewType, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_nodeViewSortType[] = {  {&_swigt__p_nodeViewSortType, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_socialSite[] = {  {&_swigt__p_socialSite, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_subscription[] = {  {&_swigt__p_subscription, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_subscriptionType[] = {  {&_swigt__p_subscriptionType, 0, 0, 0},{0, 0, 0, 0}};
@@ -9483,7 +9560,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_node,
   _swigc__p_nodeSource,
   _swigc__p_nodeType,
-  _swigc__p_nodeViewType,
+  _swigc__p_nodeViewSortType,
   _swigc__p_socialSite,
   _swigc__p_subscription,
   _swigc__p_subscriptionType,

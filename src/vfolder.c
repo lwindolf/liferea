@@ -1,7 +1,7 @@
 /**
  * @file vfolder.c  search folder node type
  *
- * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2009 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -196,9 +196,6 @@ vfolder_import (nodePtr node,
 
 	vfolder = vfolder_new (node);
 	vfolder_import_rules (cur, vfolder);
-	node_set_parent (node, parent, -1);
-	feedlist_node_imported (node);
-	
 	vfolder_refresh (vfolder);
 }
 
@@ -310,17 +307,18 @@ vfolder_properties (nodePtr node)
 	search_folder_dialog_new (node);
 }
 
-static void
-vfolder_add (nodePtr parent)
+static gboolean
+vfolder_add (void)
 {
 	nodePtr	node;
 
 	node = node_new (vfolder_get_node_type ());
-	node_set_parent (node, NULL, -1);
 	vfolder_new (node);
 	feedlist_node_added (node);
 
 	vfolder_properties (node);
+	
+	return TRUE;
 }
 
 nodeTypePtr

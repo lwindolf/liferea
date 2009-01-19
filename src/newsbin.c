@@ -1,7 +1,7 @@
 /**
  * @file newsbin.c  news bin node type implementation
  * 
- * Copyright (C) 2006-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2009 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -82,8 +82,8 @@ newsbin_render (nodePtr node)
 	return output;
 }
 
-static void
-ui_newsbin_add (nodePtr parent)
+static gboolean
+ui_newsbin_add (void)
 {
 	GtkWidget	*nameentry;
 	
@@ -94,6 +94,8 @@ ui_newsbin_add (nodePtr parent)
 	gtk_entry_set_text(GTK_ENTRY(nameentry), "");
 		
 	gtk_widget_show(newnewsbindialog);
+	
+	return TRUE;
 }
 
 void 

@@ -1,7 +1,7 @@
 /**
- * @file opml_source.h OPML Planet/Blogroll feed list provider
+ * @file opml_source.h  OPML Planet/Blogroll feed list provider
  * 
- * Copyright (C) 2005-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2005-2009 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,14 +57,6 @@ void opml_source_export(nodePtr node);
  * @param node		the node of the OPML source
  */
 void opml_source_remove(nodePtr node);
-
-/**
- * Sets up the given node as a OPML source node.
- *
- * @param parent	parent node (or NULL when importing)
- * @param node		the node
- */
-void opml_source_setup(nodePtr parent, nodePtr node);
 
 /**
  * Force update of the OPML source and all child subscriptions of the given node.

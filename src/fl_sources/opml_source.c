@@ -1,7 +1,7 @@
 /**
  * @file opml_source.c  OPML Planet/Blogroll feed list source
  * 
- * Copyright (C) 2006-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2009 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -79,8 +79,7 @@ opml_source_merge_feed (xmlNodePtr match, gpointer user_data)
 			node = node_new (folder_get_node_type ());
 		}
 		node_set_title (node, title);
-		node_set_parent (node, mergeCtxt->parent, -1);
-		feedlist_node_imported (node);
+		feedlist_node_added (node);
 		
 		subscription_update (node->subscription, FEED_REQ_RESET_TITLE);
 	}		
@@ -232,12 +231,16 @@ gchar * opml_source_get_feedlist(nodePtr node) {
 	return common_create_cache_filename("cache" G_DIR_SEPARATOR_S "plugins", node->id, "opml");
 }
 
-void opml_source_import(nodePtr node) {
-	gchar		*filename;
+void
+opml_source_import (nodePtr node)
+{
+	gchar	*filename;
 
 	debug_enter("opml_source_import");
 
-	opml_source_setup(NULL, node);
+	filename = g_strdup_printf ("%s.png", NODE_SOURCE_TYPE (node)->id);
+	node->icon = ui_common_create_pixbuf (filename);
+	g_free (filename);
 	
 	debug1(DEBUG_CACHE, "starting import of opml source instance (id=%s)", node->id);
 	filename = opml_source_get_feedlist(node);
@@ -309,27 +312,6 @@ opml_source_auto_update (nodePtr node)
 		opml_source_update (node);
 }
 
-/**
- * Shared actions needed during import and when subscribing, 
- * Only node_add_child() will be done only when subscribing.
- */
-void
-opml_source_setup (nodePtr parent, nodePtr node)
-{
-	gchar	*filename;
-	
-	filename = g_strdup_printf ("%s.png", NODE_SOURCE_TYPE (node)->id);
-	node->icon = ui_common_create_pixbuf (filename);
-	g_free (filename);
-	
-	if (parent) {
-		gint pos;
-		ui_feedlist_get_target_folder (&pos);
-		node_set_parent (node, parent, pos);
-		feedlist_node_added (node);
-	}
-}
-
 static void opml_source_init(void) { }
 
 static void opml_source_deinit(void) { }
@@ -369,14 +351,15 @@ on_opml_source_selected (GtkDialog *dialog,
                          gint response_id,
                          gpointer user_data)
 {
-	nodePtr node, parent = (nodePtr)user_data;
+	nodePtr node;
 
 	if (response_id == GTK_RESPONSE_OK) {
 		node = node_new (node_source_get_node_type ());
 		node_set_title (node, OPML_SOURCE_DEFAULT_TITLE);
 		node_source_new (node, opml_source_get_type());
-		opml_source_setup (parent, node);
 		node_set_subscription (node, subscription_new (gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET (dialog), "location_entry"))), NULL, NULL));
+		feedlist_node_added (node);
+		
 		opml_source_update (node);
 	}
 

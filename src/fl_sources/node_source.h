@@ -1,7 +1,7 @@
 /**
  * @file node_source.h  generic node source interface
  * 
- * Copyright (C) 2005-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2005-2009 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -77,7 +77,7 @@ typedef struct nodeSourceType {
 	 * the parent source node_request_add_*() implementation. 
 	 * Mandatory for all sources except the root source.
 	 */
-	void 		(*source_new)(nodePtr parent);
+	void 		(*source_new)(void);
 
 	/**
 	 * This OPTIONAL callback is used to delete an instance
@@ -270,14 +270,6 @@ void node_source_item_mark_read (nodePtr node, itemPtr item, gboolean newState);
  * @param newState	the new item flag state
  */
 void node_source_item_set_flag (nodePtr node, itemPtr item, gboolean newState);
-
-/**
- * Launches a source creation dialog. The new source
- * instance will be added to the given node.
- *
- * @param node	the parent node
- */
-void ui_node_source_type_dialog (nodePtr node);
 
 /* implementation of the node type interface */
 

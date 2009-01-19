@@ -180,21 +180,23 @@ ui_node_check_if_folder_is_empty (const gchar *nodeId)
 }
 
 void
-ui_node_add (nodePtr parent, nodePtr node, gint position)
+ui_node_add (nodePtr node)
 {
+	gint		position;
 	GtkTreeIter	*iter, *parentIter = NULL;
 
-	debug2 (DEBUG_GUI, "adding node \"%s\" as child of parent=\"%s\"", node_get_title(node), (NULL != parent)?node_get_title(parent):"feed list root");
+	debug2 (DEBUG_GUI, "adding node \"%s\" as child of parent=\"%s\"", node_get_title(node), (NULL != node->parent)?node_get_title(node->parent):"feed list root");
 
-	g_assert (NULL != parent);
+	g_assert (NULL != node->parent);
 	g_assert (NULL == ui_node_to_iter (node->id));
 
 	/* if parent is NULL we have the root folder and don't create a new row! */
 	iter = (GtkTreeIter *)g_new0 (GtkTreeIter, 1);
 	
-	if (parent != feedlist_get_root ())
-		parentIter = ui_node_to_iter (parent->id);
+	if (node->parent != feedlist_get_root ())
+		parentIter = ui_node_to_iter (node->parent->id);
 
+	position = g_slist_index (node->parent->children, node);
 	if (position < 0)
 		gtk_tree_store_append (feedstore, iter, parentIter);
 	else
@@ -204,8 +206,8 @@ ui_node_add (nodePtr parent, nodePtr node, gint position)
 	ui_node_add_iter (node->id, iter);
 	ui_node_update (node->id);
 	
-	if (parent != feedlist_get_root ())
-		ui_node_check_if_folder_is_empty (parent->id);
+	if (node->parent != feedlist_get_root ())
+		ui_node_check_if_folder_is_empty (node->parent->id);
 
 	if (IS_FOLDER (node))
 		ui_node_check_if_folder_is_empty (node->id);

@@ -160,21 +160,14 @@ google_source_login (GoogleSourcePtr gsource, guint32 flags)
 }
 
 /** 
- * Shared actions needed during import and when subscribing,
- * Only feedlist_node_added() will be done only when subscribing. (FIXME)
+ * Setting up a google reader source node after import or when subscribing.
  */
 void
 google_source_setup (nodePtr parent, nodePtr node)
 {
 	node->icon = ui_common_create_pixbuf ("fl_google.png");
-
-	if (parent) {
-		gint pos;
-		ui_feedlist_get_target_folder (&pos);
-		node_set_parent (node, parent, pos);
-		feedlist_node_added (node);
-	}
 	node->data = (gpointer) google_source_new(node);
+	feedlist_node_added (node);
 }
 
 /* node source type implementation */
