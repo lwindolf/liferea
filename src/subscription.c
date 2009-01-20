@@ -500,7 +500,7 @@ subscription_import (xmlNodePtr xml, gboolean trusted)
 		if (tmp && !xmlStrcmp (tmp, BAD_CAST "true"))
 			subscription->updateOptions->dontUseProxy = TRUE;
 		xmlFree (tmp);
-		
+	
 		/* authentication options */
 		subscription->updateOptions->username = xmlGetProp (xml, BAD_CAST "username");
 		subscription->updateOptions->password = xmlGetProp (xml, BAD_CAST "password");

@@ -290,6 +290,18 @@ network_process_request (const updateJobPtr const job)
 	curl_easy_setopt (curl_handle, CURLOPT_TIMECONDITION, CURL_TIMECOND_IFMODSINCE);
 	if (job->request->postdata)
 		curl_easy_setopt (curl_handle, CURLOPT_POSTFIELDS, job->request->postdata);	
+
+	if (job->request->options &&
+	    job->request->options->username &&
+	    job->request->options->password) {
+	    	gchar *authstr;
+		
+		authstr = g_strdup_printf ("%s:%s", job->request->options->username, job->request->options->password);
+	    	curl_easy_setopt (curl_handle, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
+		curl_easy_setopt (curl_handle, CURLOPT_USERPWD, authstr);
+		g_free (authstr);
+	}
+
 	if (job->request->updateState) {
 		curl_easy_setopt (curl_handle, CURLOPT_COOKIE, update_state_get_cookies (job->request->updateState));
 		curl_easy_setopt (curl_handle, CURLOPT_TIMEVALUE, job->request->updateState->lastModified);

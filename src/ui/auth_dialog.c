@@ -103,32 +103,14 @@ on_authdialog_response (GtkDialog *dialog,
 	AuthDialog *ad = (AuthDialog *)user_data;
 	
 	if (response_id == GTK_RESPONSE_OK) {
-		xmlURIPtr uri;
-		xmlChar *user, *pass, *sourceUrl;
-
-		/* Source */
-		uri = xmlParseURI (BAD_CAST subscription_get_source (ad->priv->subscription));
+		g_assert (NULL != ad->priv->subscription->updateOptions);
 		
-		if (!uri) {
-			g_warning ("Error when parsing authentication URL! Authentication settings lost.");
-			g_object_unref (ad);
-			return;
-		}
-		if (uri->user)
-			xmlFree (uri->user);
-
-		user = BAD_CAST gtk_entry_get_text (GTK_ENTRY (ad->priv->username));
-		pass = BAD_CAST gtk_entry_get_text (GTK_ENTRY (ad->priv->password));
-		uri->user = g_strdup_printf ("%s:%s", user, pass);
-
-		sourceUrl = xmlSaveUri (uri);
-		if (sourceUrl) {
-			subscription_set_source (ad->priv->subscription, sourceUrl);
-			xmlFree (sourceUrl);
-		}
-
+		g_free (ad->priv->subscription->updateOptions->username);
+		g_free (ad->priv->subscription->updateOptions->password);
+		
+		ad->priv->subscription->updateOptions->username = g_strdup (BAD_CAST gtk_entry_get_text (GTK_ENTRY (ad->priv->username)));
+		ad->priv->subscription->updateOptions->password = g_strdup (BAD_CAST gtk_entry_get_text (GTK_ENTRY (ad->priv->password)));
 		subscription_update (ad->priv->subscription, ad->priv->flags);
-		xmlFreeURI (uri);
 	}
 
 	g_object_unref (ad);
