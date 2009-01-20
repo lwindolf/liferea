@@ -1,7 +1,7 @@
 /**
  * @file feedlist.c  subscriptions as an hierarchic tree
  *
- * Copyright (C) 2005-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2005-2009 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *	      
  * This program is free software; you can redistribute it and/or modify
@@ -364,7 +364,7 @@ feedlist_add_folder (const gchar *title)
 	if(0 == (NODE_TYPE (parent->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS))
 		return;	
 
-	node_source_add_folder (parent->source->root, parent, title);
+	node_source_add_folder (parent->source->root, title);
 }
 
 void
@@ -382,7 +382,7 @@ feedlist_add_subscription (const gchar *source, const gchar *filter, updateOptio
 		return;
 	}
 
-	node_source_add_subscription (parent->source->root, parent, subscription_new (source, filter, options));
+	node_source_add_subscription (parent->source->root, subscription_new (source, filter, options));
 }
 
 void

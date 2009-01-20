@@ -150,7 +150,7 @@ typedef struct nodeSourceType {
 	 * NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST and
 	 * NODE_SOURCE_CAPABILITY_HIERARCHIC_FEEDLIST are set.
 	 */
-	nodePtr		(*add_folder) (nodePtr node, nodePtr parent, const gchar *title);
+	nodePtr		(*add_folder) (nodePtr node, const gchar *title);
 
 	/**
 	 * Add a new subscription to the feed list provided
@@ -166,7 +166,7 @@ typedef struct nodeSourceType {
 	 * The returned node will be automatically added to the feed list UI.
 	 * Initial update and state saving will be triggered automatically.
 	 */
-	nodePtr		(*add_subscription) (nodePtr node, nodePtr parent, struct subscription *subscription);
+	nodePtr		(*add_subscription) (nodePtr node, struct subscription *subscription);
 	 
 	/**
 	 * Removes an existing node (subscription or folder) from the feed list 
@@ -227,12 +227,11 @@ void node_source_auto_update (nodePtr node);
  * Called when a new subscription has been added to the node source.
  *
  * @param node		the source node
- * @param parent	the parent node
  * @param subscription	the new subscription
  *
  * @returns a new node intialized with the new subscription
  */
-nodePtr node_source_add_subscription (nodePtr node, nodePtr parent, struct subscription *subscription);
+nodePtr node_source_add_subscription (nodePtr node, struct subscription *subscription);
 
 /**
  * Called when an existing subscription is to be removed from a node source.
@@ -246,12 +245,11 @@ void node_source_remove_node (nodePtr node, nodePtr child);
  * Called when a new folder is to be added to a node source feed list.
  *
  * @param node		the source node
- * @param parent	the parent node
  * @param title		the folder title
  *
  * @returns a new node representing the new folder
  */
-nodePtr node_source_add_folder (nodePtr node, nodePtr parent, const gchar *title);
+nodePtr node_source_add_folder (nodePtr node, const gchar *title);
 
 /**
  * Called when the read state of an item changes.

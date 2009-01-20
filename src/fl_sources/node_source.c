@@ -290,10 +290,10 @@ node_source_auto_update (nodePtr node)
 }
 
 nodePtr
-node_source_add_subscription (nodePtr node, nodePtr parent, subscriptionPtr subscription)
+node_source_add_subscription (nodePtr node, subscriptionPtr subscription)
 {
 	if (NODE_SOURCE_TYPE (node)->add_subscription)
-		return NODE_SOURCE_TYPE (node)->add_subscription (node, parent, subscription);
+		return NODE_SOURCE_TYPE (node)->add_subscription (node, subscription);
 	else
 		g_warning ("node_source_add_subscription(): called on node source type that doesn't implement me!");
 		
@@ -301,10 +301,10 @@ node_source_add_subscription (nodePtr node, nodePtr parent, subscriptionPtr subs
 }
 
 nodePtr
-node_source_add_folder (nodePtr node, nodePtr parent, const gchar *title)
+node_source_add_folder (nodePtr node, const gchar *title)
 {
 	if (NODE_SOURCE_TYPE (node)->add_folder)
-		return NODE_SOURCE_TYPE (node)->add_folder (node, parent, title);
+		return NODE_SOURCE_TYPE (node)->add_folder (node, title);
 	else
 		g_warning ("node_source_add_folder(): called on node source type that doesn't implement me!");
 

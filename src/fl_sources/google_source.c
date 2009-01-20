@@ -229,7 +229,7 @@ google_source_remove (nodePtr node)
 }
 
 static nodePtr
-google_source_add_subscription (nodePtr node, nodePtr parent, subscriptionPtr subscription) 
+google_source_add_subscription (nodePtr node, subscriptionPtr subscription) 
 { 
 	debug_enter ("google_source_add_subscription");
 	nodePtr child = node_new (feed_get_node_type ());
@@ -278,7 +278,7 @@ on_google_source_selected (GtkDialog *dialog,
                            gint response_id,
                            gpointer user_data) 
 {
-	nodePtr		node, parent = (nodePtr) user_data;
+	nodePtr		node;
 	subscriptionPtr	subscription;
 
 	if (response_id == GTK_RESPONSE_OK) {
@@ -289,9 +289,9 @@ on_google_source_selected (GtkDialog *dialog,
 		node = node_new (node_source_get_node_type ());
 		node_set_title (node, "Google Reader");
 		node_source_new (node, google_source_get_type ());
-		google_source_setup (parent, node);
 		node_set_subscription (node, subscription);
 		google_source_update (node);
+		feedlist_node_added (node);
 	}
 
 	gtk_widget_destroy (GTK_WIDGET (dialog));
@@ -305,7 +305,7 @@ on_google_source_dialog_destroy (GtkDialog *dialog,
 }
 
 static void
-ui_google_source_get_account_info (nodePtr parent)
+ui_google_source_get_account_info (void)
 {
 	GtkWidget	*dialog;
 
@@ -314,7 +314,7 @@ ui_google_source_get_account_info (nodePtr parent)
 	
 	g_signal_connect (G_OBJECT (dialog), "response",
 			  G_CALLBACK (on_google_source_selected), 
-			  (gpointer) parent);
+			  NULL);
 }
 
 static void

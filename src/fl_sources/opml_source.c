@@ -224,7 +224,7 @@ static struct subscriptionType opmlSubscriptionType = {
 
 /* OPML source type implementation */
 
-static void ui_opml_source_get_source_url (nodePtr parent);
+static void ui_opml_source_get_source_url (void);
 
 gchar * opml_source_get_feedlist(nodePtr node) {
 
@@ -374,7 +374,7 @@ on_opml_source_dialog_destroy (GtkDialog *dialog,
 }
 
 static void
-ui_opml_source_get_source_url (nodePtr parent) 
+ui_opml_source_get_source_url (void) 
 {
 	GtkWidget	*dialog;
 
@@ -382,7 +382,7 @@ ui_opml_source_get_source_url (nodePtr parent)
 
 	g_signal_connect (G_OBJECT (dialog), "response",
 			  G_CALLBACK (on_opml_source_selected), 
-			  (gpointer)parent);
+			  NULL);
 }
 
 static void
