@@ -46,10 +46,10 @@ Don Malcolm <p1469023@donmalcolm.com>		 	Offline Mozilla rendering
 Ed Catmur <edcatmur@users.sf.net>			RTL item list improvements
 Chris Pirillo <chris@lockergnome.com>			Cool new icon for OPML
 Eric Anderson <ejona86@users.sf.net>			Use icons from gtk theme
+							Main menu improval
 Daniel Gryniewicz <dang@gentoo.org>			Network Manager support
 mooonz <mooonz@users.sf.net>				improved DBUS support
 Ori Avtalion <oavtal@bezeqint.net>			Preference for toolbar style
-Eric Anderson <ejona86@gmail.com>			Main menu improval
 Emilio Pozuelo Monfort <pochu@ubuntu.com>		new DBUS query methods
 							improved tray icon menu
 goyko <kirilov-georgi@users.sf.net>			Support for enclosure URL open
