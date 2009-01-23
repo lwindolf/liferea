@@ -1,7 +1,7 @@
 /**
- * @file net.c  HTTP network access
+ * @file net.c  HTTP network access using glibcurl
  * 
- * Copyright (C) 2007-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2009 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -328,7 +328,7 @@ network_glibcurl_callback (void *data)
 		if (msg == 0)
 			break;
 			
-		curl_easy_getinfo (msg->easy_handle, CURLINFO_PRIVATE, &job);
+		curl_easy_getinfo (msg->easy_handle, CURLINFO_PRIVATE, (char **)&job);
 		
 		if (msg->msg != CURLMSG_DONE) {
 			continue;

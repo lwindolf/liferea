@@ -322,7 +322,6 @@ google_feed_subscription_prepare_update_request (subscriptionPtr subscription,
 
 struct subscriptionType googleSourceFeedSubscriptionType = {
 	google_feed_subscription_prepare_update_request,
-	google_feed_subscription_process_update_result,
-	NULL  /* free */
+	google_feed_subscription_process_update_result
 };
 
