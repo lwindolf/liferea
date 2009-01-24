@@ -260,6 +260,24 @@ xhtml_strip_dhtml (const gchar *html)
 	return tmp;
 }
 
+gchar *
+xhtml_strip_flash (const gchar *html)
+{
+	gchar *tmp;
+	
+	// FIXME: move to XSLT stylesheet that post processes
+	// generated XHTML. The solution below might break harmless
+	// escaped HTML.
+	
+	tmp = g_strdup (html);
+	tmp = common_strreplace (tmp, "<object ", "<no_object ");
+	tmp = common_strreplace (tmp, "/object>", "/no_object>");
+	tmp = common_strreplace (tmp, "<embed ", "<no_embed ");
+	tmp = common_strreplace (tmp, "/embed>", "/no_embed>");
+
+	return tmp;
+}
+
 typedef struct {
 	gchar	*data;
 	gint	length;

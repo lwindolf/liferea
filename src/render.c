@@ -38,6 +38,7 @@
 #include "itemlist.h"
 #include "itemset.h"
 #include "render.h"
+#include "xml.h"
 #include "ui/ui_htmlview.h"
 #include "ui/ui_mainwindow.h"
 
@@ -356,10 +357,19 @@ gchar * render_xml(xmlDocPtr doc, const gchar *xsltName, renderParamPtr paramSet
 	xmlOutputBufferClose(buf);
 	xmlFreeDoc(resDoc);
 	render_parameter_free(paramSet);
+	
+	if (output) {
+		gchar *tmp;
 		
-	/* Return only the body contents */
-	if(output) {
-		gchar *tmp = strstr(output, "<body>");
+		/* Disable Flash tags */
+		if (!conf_get_bool_value (ALLOW_FLASH)) {
+			tmp = output;
+			output = xhtml_strip_flash (output);
+			g_free (tmp);
+		}
+	
+		/* Return only the body contents */
+		tmp = strstr(output, "<body>");
 		if(tmp) {
 			tmp = g_strdup(tmp + 6);
 			xmlFree(output);
