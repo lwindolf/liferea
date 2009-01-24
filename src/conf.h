@@ -1,7 +1,7 @@
 /**
  * @file conf.h  Liferea configuration (gconf access)
  *
- * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2009 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004,2005 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -42,6 +42,7 @@
 #define SOCIAL_BM_HIDE			"/apps/liferea/social-bm-hide"
 #define SOCIAL_LINK_SEARCH_SITE		"/apps/liferea/social-link-search-site"
 #define SOCIAL_LINK_SEARCH_HIDE		"/apps/liferea/social-link-search-hide"
+#define ALLOW_FLASH			"/apps/liferea/allow-flash"
 
 /* enclosure handling */
 #define ENCLOSURE_DOWNLOAD_TOOL		"/apps/liferea/enclosure-download-tool"

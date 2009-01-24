@@ -1,7 +1,7 @@
 /**
  * @file xml.c XML helper methods for Liferea
  * 
- * Copyright (C) 2003-2007  Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2009  Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006  Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -237,10 +237,11 @@ xhtml_is_well_formed (const gchar *data)
 	return result;
 }
 
-static GSList *strippers = NULL;
+static GSList *dhtml_strippers = NULL;
+static GSList *flash_strippers = NULL;
 
 static void
-xhtml_stripper_add (const gchar *pattern)
+xhtml_stripper_add (GSList **strippers, const gchar *pattern)
 {
 	GError *err = NULL;
 	GRegex *expr;
@@ -250,26 +251,15 @@ xhtml_stripper_add (const gchar *pattern)
 		g_warning ("xhtml_strip_setup: %s\n", err->message);
 		g_error_free (err);
 	}
-	strippers = g_slist_append (strippers, expr);
+	*strippers = g_slist_append (*strippers, expr);
 }
 
-gchar *
-xhtml_strip_dhtml (const gchar *html)
+static gchar *
+xhtml_strip (const gchar *html, GSList *strippers)
 {
-	GSList	*iter;
-	gchar	*result;
-
-	if (!strippers) {
-		xhtml_stripper_add ("\\s+onload='[^']+'");
-		xhtml_stripper_add ("\\s+onload=\"[^\"]+\"");
-		xhtml_stripper_add ("<\\s*script\\s*>.*</\\s*script\\s*>");
-		xhtml_stripper_add ("<\\s*meta\\s*>.*</\\s*meta\\s*>");
-		xhtml_stripper_add ("<\\s*iframe[^>]*\\s*>.*</\\s*iframe\\s*>");
-	}
+	gchar *result = g_strdup (html);
+	GSList *iter = dhtml_strippers;
 	
-	/* remove some nasty DHTML stuff from the given HTML content */
-	result = g_strdup (html);
-	iter = strippers;
 	while (iter) {
 		GError *err = NULL;
 		GRegex *expr = (GRegex *)iter->data;
@@ -285,6 +275,31 @@ xhtml_strip_dhtml (const gchar *html)
 	}
 
 	return result;
+}
+
+gchar *
+xhtml_strip_dhtml (const gchar *html)
+{
+	if (!dhtml_strippers) {
+		xhtml_stripper_add (&dhtml_strippers, "\\s+onload='[^']+'");
+		xhtml_stripper_add (&dhtml_strippers, "\\s+onload=\"[^\"]+\"");
+		xhtml_stripper_add (&dhtml_strippers, "<\\s*script\\s*>.*</\\s*script\\s*>");
+		xhtml_stripper_add (&dhtml_strippers, "<\\s*meta\\s*>.*</\\s*meta\\s*>");
+		xhtml_stripper_add (&dhtml_strippers, "<\\s*iframe[^>]*\\s*>.*</\\s*iframe\\s*>");
+	}
+	
+	return xhtml_strip (html, dhtml_strippers);
+}
+
+gchar *
+xhtml_strip_flash (const gchar *html)
+{
+	if (!flash_strippers) {
+		xhtml_stripper_add (&flash_strippers, "<\\s*object[^>]*\\s*>.*</\\s*object\\s*>");
+		xhtml_stripper_add (&flash_strippers, "<\\s*embed[^>]*\\s*>.*</\\s*embed\\s*>");
+	}	
+
+	return xhtml_strip (html, flash_strippers);
 }
 
 typedef struct {
