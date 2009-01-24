@@ -2,6 +2,8 @@
 
 	Version 1.4.24 (Stable)
 
+	* Flash is now stripped from feed content per default.
+	* Added preference option to allow Flash in feed content.
 	* Fixes cross compilation issue with configure.ac using
 	  AC_CANONICAL_TARGET instead of AC_CANONICAL_HOST
 	  (patch by Diego E. Petteno)
