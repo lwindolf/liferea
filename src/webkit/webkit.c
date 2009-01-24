@@ -67,7 +67,7 @@ webkit_write_html (GtkWidget   *scrollpane,
 		g_ascii_strcasecmp (content_type, "application/xhtml+xml") == 0
 		? "application/xhtml"
 		: content_type;
-	webkit_web_view_load_string (WEBKIT_WEB_VIEW (htmlwidget), string, content_type, "UTF-8", base);
+	webkit_web_view_load_string (WEBKIT_WEB_VIEW (htmlwidget), string, content_type, "UTF-8", "file://");
 }
 
 static void

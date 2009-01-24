@@ -5,6 +5,7 @@
 	* Fixes cross compilation issue with configure.ac using
 	  AC_CANONICAL_TARGET instead of AC_CANONICAL_HOST
 	  (patch by Diego E. Petteno)
+	* Fixes local CSS/image loading problems with Webkit.
 	* New Greek translation (Evgenia Petoumenou)
 	* New Albanian translation (Besnik Bleta)
 
