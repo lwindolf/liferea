@@ -246,7 +246,7 @@ xhtml_stripper_add (GSList **strippers, const gchar *pattern)
 	GError *err = NULL;
 	GRegex *expr;
 	
-	expr = g_regex_new (pattern, G_REGEX_CASELESS | G_REGEX_DOTALL | G_REGEX_OPTIMIZE, 0, &err);
+	expr = g_regex_new (pattern, G_REGEX_CASELESS | G_REGEX_UNGREEDY | G_REGEX_DOTALL | G_REGEX_OPTIMIZE, 0, &err);
 	if (err) {
 		g_warning ("xhtml_strip_setup: %s\n", err->message);
 		g_error_free (err);
@@ -258,7 +258,7 @@ static gchar *
 xhtml_strip (const gchar *html, GSList *strippers)
 {
 	gchar *result = g_strdup (html);
-	GSList *iter = dhtml_strippers;
+	GSList *iter = strippers;
 	
 	while (iter) {
 		GError *err = NULL;
@@ -266,7 +266,7 @@ xhtml_strip (const gchar *html, GSList *strippers)
 		gchar *tmp = result;
 		result = g_regex_replace (expr, tmp, -1, 0, "", 0, &err);
 		if (err) {
-			g_warning ("xhtml_strip_dhtml: %s\n", err->message);
+			g_warning ("xhtml_strip: %s\n", err->message);
 			g_error_free (err);
 			err = NULL;
 		}
