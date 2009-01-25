@@ -88,8 +88,8 @@ src/ui/search_engine_dialog.c
 src/ui/search_engine_dialog.h
 src/ui/search_folder_dialog.h
 src/ui/search_folder_dialog.c
-src/ui/ui_attention.c
-src/ui/ui_attention.h
+src/ui/attention_profile_dialog.c
+src/ui/attention_profile_dialog.h
 src/ui/auth_dialog.c
 src/ui/auth_dialog.h
 src/ui/ui_dialog.c
