@@ -2,7 +2,6 @@
 
 # List of source files containing translatable strings.
 
-liferea.glade
 liferea.desktop.in
 xslt/feed.xml.in
 xslt/source.xml.in
@@ -159,20 +158,16 @@ src/parsers/rss_channel.c
 src/parsers/rss_channel.h
 src/parsers/rss_item.c
 src/parsers/rss_item.h
-src/fl_sources/bloglines_source.glade
 src/fl_sources/bloglines_source.c
 src/fl_sources/bloglines_source.h
 src/fl_sources/default_source.c
 src/fl_sources/default_source.h
 src/fl_sources/dummy_source.c
 src/fl_sources/dummy_source.h
-src/fl_sources/google_source.glade
 src/fl_sources/google_source.c
 src/fl_sources/google_source.h
-src/fl_sources/opml_source.glade
 src/fl_sources/opml_source.c
 src/fl_sources/opml_source.h
-src/fl_sources/node_source.glade
 src/fl_sources/node_source.c
 src/fl_sources/node_source.h
 src/mozilla/mozembed.c
@@ -191,3 +186,11 @@ src/sync/avahi_browser.c
 src/sync/avahi_browser.h
 src/sync/avahi_publisher.c
 src/sync/avahi_publisher.h
+glade/auth.glade
+glade/bloglines_source.glade
+glade/google_source.glade
+glade/liferea.glade
+glade/new_subscription.glade
+glade/node_source.glade
+glade/opml_source.glade
+glade/simple_subscription.glade
