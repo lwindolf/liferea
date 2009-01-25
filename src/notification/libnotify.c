@@ -108,7 +108,7 @@ static void notif_libnotify_callback_show_details ( NotifyNotification *n, gchar
 				item_p->popupStatus = FALSE;
 				item_count += 1;
 
-				labelHeadline_p = g_strdup_printf (item_get_title(item_p));
+				labelHeadline_p = g_strdup (item_get_title(item_p));
 				if (labelHeadline_p == NULL ) {
 					labelHeadline_p = g_strdup_printf (_("This news entry has no headline") );
 				}
