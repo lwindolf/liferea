@@ -2,7 +2,7 @@
  * @file ui_prefs.c program preferences
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2004-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2009 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -327,6 +327,12 @@ void
 on_disablejavascript_toggled (GtkToggleButton *togglebutton, gpointer user_data)
 {
 	conf_set_bool_value (DISABLE_JAVASCRIPT, gtk_toggle_button_get_active (togglebutton));
+}
+
+void
+on_allowflash_toggled (GtkToggleButton *togglebutton, gpointer user_data)
+{
+	conf_set_bool_value (ALLOW_FLASH, gtk_toggle_button_get_active (togglebutton));
 }
 
 static void
@@ -744,6 +750,10 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 		/* set the javascript-disabled flag */
 		widget = liferea_dialog_lookup(prefdialog, "disablejavascript");
 		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), conf_get_bool_value(DISABLE_JAVASCRIPT));
+		
+		/* set the allow Flash flag */
+		widget = liferea_dialog_lookup(prefdialog, "allowflash");
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), conf_get_bool_value(ALLOW_FLASH));
 
 		tmp = 0;
 		configuredBrowser = conf_get_str_value(BROWSER_ID);
