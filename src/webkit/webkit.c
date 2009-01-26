@@ -154,7 +154,7 @@ webkit_on_menu (WebKitWebView *view, GtkMenu *menu)
 	htmlview = g_object_get_data (G_OBJECT (view), "htmlview");
 	
 	selected_url = g_object_get_data (G_OBJECT (view), "selected_url");	
-	
+
 	/* don't pass empty URLs */
 	if (selected_url && strlen (selected_url) == 0)
 		selected_url = NULL;
@@ -349,6 +349,7 @@ webkit_scroll_pagedown (GtkWidget *scrollpane)
 static void
 webkit_set_proxy (const gchar *host, guint port, const gchar *user, const gchar *pwd)
 {
+	g_warning ("FIXME: Webkit rendering does not support proxies yet!");
 }
 
 static struct
