@@ -1,3 +1,13 @@
+2009-02-??  ??? <???>
+
+	Version 1.6-RC1 (Unstable)
+
+	* Flash is now stripped from feed content per default.
+	* Added preference option to allow Flash in feed content.
+	* Fixes SF #1212358: Adding feed by drag-and-drop goes
+	  to wrong folder. (patch by Emilio Pozuelo Monfort)
+
+
 2009-01-22  Adrian Bunk  <bunk@users.sourceforge.net>
 
 	Version 1.5.8 (Unstable)

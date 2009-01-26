@@ -742,19 +742,44 @@ static void
 liferea_shell_URL_received (GtkWidget *widget, GdkDragContext *context, gint x, gint y, GtkSelectionData *data, guint info, guint time)
 {
 	gchar		*tmp1, *tmp2, *freeme;
+	GtkWidget	*mainwindow;
+	GtkTreeView	*treeview;
+	GtkTreeModel	*model;
+	GtkTreePath	*path;
+	GtkTreeIter	iter;
+	nodePtr		node;
+	gint		tx, ty;
 	
 	g_return_if_fail (data->data != NULL);
 		
+	mainwindow = GTK_WIDGET (liferea_shell_lookup ("mainwindow"));
+	treeview = GTK_TREE_VIEW (liferea_shell_lookup ("feedlist"));
+	model = gtk_tree_view_get_model (treeview);
+
+	/* x and y are relative to the main window, make them relative to the treeview */
+	g_assert (gtk_widget_translate_coordinates (mainwindow, GTK_WIDGET (treeview), x, y, &tx, &ty));
+
 	if ((data->length >= 0) && (data->format == 8)) {
 		/* extra handling to accept multiple drops */	
 		freeme = tmp1 = g_strdup (data->data);
 		while ((tmp2 = strsep (&tmp1, "\n\r"))) {
-			if (strlen (tmp2))
+			if (strlen (tmp2)) {
+				/* if the drop is over a node, select it so that feedlist_add_subscription()
+				 * adds it in the correct folder */
+				if (gtk_tree_view_get_dest_row_at_pos (treeview, tx, ty, &path, NULL)) {
+					if (gtk_tree_model_get_iter (model, &iter, path)) {
+						gtk_tree_model_get (model, &iter, FS_PTR, &node, -1);
+						/* if node is NULL, ui_feedlist_select() will unselect the tv */
+						ui_feedlist_select (node);
+					}
+					gtk_tree_path_free (path);
+				}
 				feedlist_add_subscription (g_strdup (tmp2), NULL, NULL,
 				                           FEED_REQ_RESET_TITLE |
 				                           FEED_REQ_RESET_UPDATE_INT | 
 				                           FEED_REQ_AUTO_DISCOVER | 
 				                           FEED_REQ_PRIORITY_HIGH);
+			}
 		}
 		g_free (freeme);
 		gtk_drag_finish (context, TRUE, FALSE, time);		
