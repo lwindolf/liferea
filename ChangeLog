@@ -6,7 +6,8 @@
 	* Added preference option to allow Flash in feed content.
 	* Fixes SF #1212358: Adding feed by drag-and-drop goes
 	  to wrong folder. (patch by Emilio Pozuelo Monfort)
-
+	* Fixes SF #1591783: Shouldn't use atom:updated as item date
+	  (patch by Emilio Pozuelo Monfort)
 
 2009-01-22  Adrian Bunk  <bunk@users.sourceforge.net>
 
