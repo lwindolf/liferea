@@ -8,6 +8,10 @@
 	  to wrong folder. (patch by Emilio Pozuelo Monfort)
 	* Fixes SF #1591783: Shouldn't use atom:updated as item date
 	  (patch by Emilio Pozuelo Monfort)
+	* Fixes favicon retrieval for Feedburner feeds (which often
+	  only have the Feedburner default icon) due to much to
+	  strict HTML parsing.
+	  (patch by Emilio Pozuelo Monfort)
 
 2009-01-22  Adrian Bunk  <bunk@users.sourceforge.net>
 

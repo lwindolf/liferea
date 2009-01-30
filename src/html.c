@@ -71,11 +71,17 @@ static gchar *checkLinkRef(const gchar* str, gint linkType) {
 	res = g_strndup(tmp, len);
 
 	if(linkType == LINK_FAVICON) {
-		if(((NULL != common_strcasestr(str, "shortcut icon")) ||
-		    (NULL != common_strcasestr(str, "icon"))) &&
+		/* The type attribute is optional, so don't check for it,
+		 * as according to the W3C, it must be must be png, gif or
+		 * ico anyway: http://www.w3.org/2005/10/howto-favicon
+		 * Instead, do stronger checks for the rel attribute. */
+		if(((NULL != common_strcasestr(str, "rel=\"shortcut icon\"")) ||
+		    (NULL != common_strcasestr(str, "rel=\"icon\"")) ||
+		    (NULL != common_strcasestr(str, "rel=\'shortcut icon\'")) ||
+		    (NULL != common_strcasestr(str, "rel=\'icon\'"))) /*&&
 		   ((NULL != common_strcasestr(str, "image/x-icon")) ||
 		    (NULL != common_strcasestr(str, "image/png")) ||
-		    (NULL != common_strcasestr(str, "image/gif"))))
+		    (NULL != common_strcasestr(str, "image/gif")))*/)
 			return res;
 	} else if(linkType == LINK_RSS_ALTERNATE){
 		if((common_strcasestr(str, "alternate")!=NULL) &&
