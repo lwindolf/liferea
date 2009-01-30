@@ -8,6 +8,8 @@
 	  AC_CANONICAL_TARGET instead of AC_CANONICAL_HOST
 	  (patch by Diego E. Petteno)
 	* Fixes local CSS/image loading problems with Webkit.
+	* Allow compilation against recent Webkit 1.1.0 (r39804) 
+	  which changed the ABI. (patch by Yanko Kaneti)
 	* New Greek translation (Evgenia Petoumenou)
 	* New Albanian translation (Besnik Bleta)
 
