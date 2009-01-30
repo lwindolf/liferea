@@ -64,12 +64,16 @@ webkit_write_html (
 	GtkWidget *htmlwidget;
 	
 	htmlwidget = gtk_bin_get_child (GTK_BIN (scrollpane));
-	
+
 	/* Note: we explicitely ignore the passed base URL
 	   because we don't need it as Webkit supports <div href="">
 	   and throws a security exception when accessing file://
 	   with a non-file:// base URL */
+#if WEBKIT_MINOR_VERSION > 0
+	webkit_web_view_load_html_string (WEBKIT_WEB_VIEW (htmlwidget), string, "file://");
+#else
 	webkit_web_view_load_string (WEBKIT_WEB_VIEW (htmlwidget), string, content_type, "UTF-8", "file://");
+#endif
 }
 
 static void
