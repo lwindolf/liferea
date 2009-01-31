@@ -1,4 +1,4 @@
-2009-??-??  Lars Lindner  <lars.lindner@gmail.com>
+2009-02-01  Adrian Bunk  <bunk@users.sourceforge.net>
 
 	Version 1.4.24 (Stable)
 
@@ -12,6 +12,7 @@
 	  which changed the ABI. (patch by Yanko Kaneti)
 	* New Greek translation (Evgenia Petoumenou)
 	* New Albanian translation (Besnik Bleta)
+	* Update of Russion translation (Sergey Rudchenko)
 
 
 2008-12-11  Lars Lindner  <lars.lindner@gmail.com>
