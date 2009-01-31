@@ -14,6 +14,8 @@
 	  (patch by Emilio Pozuelo Monfort)
 	* Allow compilation against recent Webkit 1.1.0 (r39804) 
 	  which changed the ABI. (patch by Yanko Kaneti)
+	* Fixes GTK warnings about non-zero page size spin buttons.
+	  (patch by Emilio Pozuelo Monfort)
 
 2009-01-22  Adrian Bunk  <bunk@users.sourceforge.net>
 

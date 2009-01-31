@@ -208,7 +208,7 @@
                                       <widget class="GtkSpinButton" id="spinbutton1">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
-                                        <property name="adjustment">1 0 100 1 10 10</property>
+                                        <property name="adjustment">1 0 100 1 0 0</property>
                                         <property name="climb_rate">1</property>
                                       </widget>
                                     </child>
@@ -479,7 +479,7 @@
                                       <widget class="GtkSpinButton" id="refreshIntervalSpinButton">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
-                                        <property name="adjustment">0 0 10000 1 60 60</property>
+                                        <property name="adjustment">0 0 10000 1 0 0</property>
                                         <property name="climb_rate">1</property>
                                       </widget>
                                     </child>
@@ -961,7 +961,7 @@
                       <widget class="GtkSpinButton" id="cacheItemLimit">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="adjustment">0 0 10000 1 10 1</property>
+                        <property name="adjustment">0 0 10000 1 0 0</property>
                         <property name="climb_rate">1</property>
                         <property name="snap_to_ticks">True</property>
                         <property name="numeric">True</property>
@@ -1346,7 +1346,7 @@
                                 <property name="width_request">60</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="adjustment">1 0 1000000 1 10 10</property>
+                                <property name="adjustment">1 0 1000000 1 0 0</property>
                                 <property name="climb_rate">1</property>
                                 <property name="numeric">True</property>
                                 <signal name="value_changed" handler="on_itemCountBtn_value_changed"/>
@@ -1418,7 +1418,7 @@
                                         <property name="width_request">60</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
-                                        <property name="adjustment">1 0 10000 1 60 60</property>
+                                        <property name="adjustment">1 0 10000 1 0 0</property>
                                         <property name="climb_rate">1</property>
                                         <signal name="value_changed" handler="on_default_update_interval_value_changed"/>
                                       </widget>
@@ -4906,7 +4906,7 @@ Martin Picek &lt;picek.martin@gnome-cesko.cz&gt;
                   <widget class="GtkSpinButton" id="resultcount">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="adjustment">15 1 1000 1 10 10</property>
+                    <property name="adjustment">15 1 1000 1 0 0</property>
                     <property name="climb_rate">1</property>
                   </widget>
                   <packing>
