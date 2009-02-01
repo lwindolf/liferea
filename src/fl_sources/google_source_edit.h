@@ -81,6 +81,11 @@ GoogleSourceActionPtr google_source_action_new () ;
  */
 void google_source_action_free (GoogleSourceActionPtr edit); 
 
+void google_source_edit_export (GoogleSourcePtr gsource);
+
+void google_source_edit_import(GoogleSourcePtr gsource);
+
+
 /**
  * Process the waiting edits on the edit queue. Call this if the state of
  * the GoogleSource has changed.
