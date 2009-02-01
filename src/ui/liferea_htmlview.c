@@ -29,6 +29,7 @@
 #include "conf.h"
 #include "debug.h"
 #include "feed.h"
+#include "feedlist.h"
 #include "itemlist.h"
 #include "net.h"
 #include "social.h"
