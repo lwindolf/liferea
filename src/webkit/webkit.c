@@ -128,8 +128,8 @@ webkit_link_clicked (WebKitWebView *view, WebKitWebFrame *frame, WebKitNetworkRe
 {
 	const gchar *uri;
 
-	g_return_if_fail (WEBKIT_IS_WEB_VIEW (view));
-	g_return_if_fail (WEBKIT_IS_NETWORK_REQUEST (request));
+	g_return_if_fail_val (WEBKIT_IS_WEB_VIEW (view), FALSE);
+	g_return_if_fail_val (WEBKIT_IS_NETWORK_REQUEST (request), FALSE);
 
 	if (conf_get_bool_value (BROWSE_INSIDE_APPLICATION)) {
 		return FALSE;
