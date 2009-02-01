@@ -39,6 +39,7 @@
 #include "ui/liferea_shell.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_itemlist.h"
+#include "ui/itemview.h"
 #include "ui/ui_prefs.h"
 #include "fl_sources/node_source.h"
 
