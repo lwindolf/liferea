@@ -314,8 +314,6 @@ vfolder_add (void)
 
 	node = node_new (vfolder_get_node_type ());
 	vfolder_new (node);
-	feedlist_node_added (node);
-
 	vfolder_properties (node);
 	
 	return TRUE;

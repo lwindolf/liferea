@@ -110,8 +110,10 @@ on_propdialog_response (GtkDialog *dialog, gint response_id, gpointer user_data)
 		ui_itemlist_clear ();
 		vfolder_refresh (sfd->priv->vfolder);
 		itemlist_unload (FALSE);
-		itemlist_load (sfd->priv->node);
+		feedlist_node_added (sfd->priv->node);
 		ui_node_update (sfd->priv->node->id);
+	} else if (response_id == GTK_RESPONSE_CANCEL) {
+		node_free(sfd->priv->node);
 	}
 	
 	gtk_widget_destroy (GTK_WIDGET (dialog));
