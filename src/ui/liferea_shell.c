@@ -31,22 +31,30 @@
 #include <glade/glade.h>
 #include <string.h>		/* strcmp() and strsep() */
 
+#include "browser.h"
 #include "common.h"
 #include "conf.h"
 #include "debug.h"
 #include "export.h"
 #include "feedlist.h"
+#include "htmlview.h"
 #include "itemlist.h"
 #include "net.h"
+#include "notification/notification.h"
+#include "ui/attention_profile_dialog.h"
 #include "ui/browser_tabs.h"
 #include "ui/itemview.h"
 #include "ui/liferea_dialog.h"
 #include "ui/ui_common.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_itemlist.h"
+#include "ui/ui_popup.h"
 #include "ui/ui_prefs.h"
 #include "ui/ui_script.h"
 #include "ui/ui_search.h"
+#include "ui/search_dialog.h"
+#include "ui/ui_session.h"
+#include "ui/ui_tray.h"
 #include "ui/ui_update.h"
 
 /* all used icons (FIXME: evil) */
