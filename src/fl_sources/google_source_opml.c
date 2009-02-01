@@ -33,6 +33,7 @@
 #include "feedlist.h"
 #include "opml_source.h"
 #include "metadata.h"
+#include "fl_sources/google_source_opml.h"
 
 /**
  * Find a node by the source id.

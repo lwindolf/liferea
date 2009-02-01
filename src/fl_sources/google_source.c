@@ -40,6 +40,7 @@
 #include "fl_sources/node_source.h"
 #include "fl_sources/opml_source.h"
 #include "fl_sources/google_source_edit.h"
+#include "fl_sources/google_source_opml.h"
 
 /** default Google reader subscription list update interval = once a day */
 #define GOOGLE_SOURCE_UPDATE_INTERVAL 60*60*24
