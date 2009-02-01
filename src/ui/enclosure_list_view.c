@@ -157,6 +157,8 @@ on_enclosure_list_activate (GtkTreeView *treeview, GtkTreePath *path, GtkTreeVie
 	gtk_tree_selection_get_selected (gtk_tree_view_get_selection (treeview), &model, &iter);
 	gtk_tree_model_get (model, &iter, ES_PTR, &enclosure, -1);
 	on_popup_open_enclosure (enclosure, 0, NULL);
+
+	return TRUE;
 }
 
 EnclosureListView *
