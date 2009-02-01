@@ -316,7 +316,7 @@ rules_check_item (GSList *rules, gboolean anyMatch, itemPtr item)
 	queryPtr	query;
 	
 	if (0 == g_slist_length (rules))
-		return;
+		return FALSE;
 	
 	/* first try in memory checks (for "unread" and "important" search folder)... */
 	if (1 == g_slist_length (rules)) {
