@@ -135,7 +135,7 @@ attention_profile_dialog_update (void *data)
 			g_hash_table_insert (apd->priv->categoryToIter, g_strdup (stat->id), treeIter);
 		}
 
-		tmp = g_strdup_printf ("%u", stat->count);
+		tmp = g_strdup_printf ("%lu", stat->count);
 		gtk_tree_store_set (apd->priv->treestore, treeIter,
 		                    APS_NAME_STR, stat->name,
 				    APS_COUNT_STR, tmp,
