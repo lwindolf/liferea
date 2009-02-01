@@ -303,7 +303,7 @@ ui_feedlist_delete_prompt (nodePtr node)
 	                                 GTK_MESSAGE_QUESTION,
 	                                 GTK_BUTTONS_NONE,
 	                                 "%s", text);
-	gtk_dialog_add_buttons (dialog,
+	gtk_dialog_add_buttons (GTK_DIALOG (dialog),
 	                        GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 	                        GTK_STOCK_DELETE, GTK_RESPONSE_ACCEPT,
 	                        NULL);
