@@ -37,6 +37,7 @@
 #include "ui/liferea_shell.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_tray.h"
+#include "ui/ui_common.h"
 
 #include "notification/notification.h"
 
