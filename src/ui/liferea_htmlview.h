@@ -180,6 +180,8 @@ void liferea_htmlview_update_proxy (void);
  */
 void liferea_htmlview_set_online (gboolean online);
 
+void liferea_htmlview_do_zoom (LifereaHtmlView *htmlview, gboolean in);
+
 G_END_DECLS
 
 /** interface for HTML rendering support implementation */

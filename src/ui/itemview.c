@@ -32,6 +32,7 @@
 #include "ui/ui_common.h"
 #include "ui/liferea_shell.h"
 #include "ui/ui_itemlist.h"
+#include "ui/liferea_htmlview.h"
 
 static void itemview_class_init	(ItemViewClass *klass);
 static void itemview_init	(ItemView *fl);
