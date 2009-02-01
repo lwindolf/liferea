@@ -151,11 +151,6 @@ fi
 
 AM_GCONF_SOURCE_2
 
-dnl Notes:
-dnl
-dnl  - libxml2/libxslt versions lower than the given ones are known
-dnl    to crash on certain distributions, lower them on your own risk!
-dnl
 pkg_modules="	gtk+-2.0 >= 2.10.0 
 		glib-2.0 >= 2.16.0
 		pango >= 1.4.0
