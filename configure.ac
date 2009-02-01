@@ -42,24 +42,20 @@ case "$host" in
    *-*-cygwin*)
      platform_win32=yes
      SO_PREFIX=cyg
-     SO_EXT=.dll
      ;;
    *-*-mingw*)
      platform_win32=yes
      SO_PREFIX=lib
-     SO_EXT=.dll
      ;;
    *)
      platform_win32=no
      SO_PREFIX=lib
-     SO_EXT=.so
      ;;
 esac
 
 AC_MSG_RESULT([$platform_win32])
 AM_CONDITIONAL(PLATFORM_WIN32, test "$platform_win32" = "yes")
 AC_SUBST(SO_PREFIX)
-AC_SUBST(SO_EXT)
 AC_DEFINE_UNQUOTED(LIBPREFIX, "$SO_PREFIX", [Platform dependent library prefix])
 
 AC_CHECK_FUNCS([strsep fsync])
