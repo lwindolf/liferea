@@ -49,11 +49,7 @@ plugin_mgmt_load (const gchar * filename)
 
 	path = g_build_filename (PACKAGE_LIB_DIR, filename, NULL);
 
-#if GLIB_CHECK_VERSION(2,3,3)
 	handle = g_module_open (path, G_MODULE_BIND_LOCAL);
-#else
-	handle = g_module_open (path, 0);
-#endif
 
 	g_free (path);
 
