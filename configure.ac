@@ -41,20 +41,28 @@ AC_MSG_CHECKING([for some Win32 platform])
 case "$host" in
    *-*-cygwin*)
      platform_win32=yes
+     os_win32=no
      SO_PREFIX=cyg
      ;;
    *-*-mingw*)
      platform_win32=yes
+     os_win32=yes
      SO_PREFIX=lib
      ;;
    *)
      platform_win32=no
+     os_win32=no
      SO_PREFIX=lib
      ;;
 esac
 
 AC_MSG_RESULT([$platform_win32])
 AM_CONDITIONAL(PLATFORM_WIN32, test "$platform_win32" = "yes")
+
+AC_MSG_CHECKING([for native Win32])
+AC_MSG_RESULT([$os_win32])
+AM_CONDITIONAL(OS_WIN32, test "$os_win32" = "yes")
+
 AC_SUBST(SO_PREFIX)
 AC_DEFINE_UNQUOTED(LIBPREFIX, "$SO_PREFIX", [Platform dependent library prefix])
 
@@ -185,30 +193,6 @@ PKG_CHECK_MODULES(PACKAGE, [$pkg_modules])
 
 AC_SUBST(PACKAGE_CFLAGS)
 AC_SUBST(PACKAGE_LIBS)
-
-AC_MSG_CHECKING([for some Win32 platform])
-case "$host" in
-  *-*-cygwin*|*-*-mingw*)
-    platform_win32=yes
-    ;;
-  *)
-    platform_win32=no
-    ;;
-esac
-AC_MSG_RESULT([$platform_win32])
-AM_CONDITIONAL(PLATFORM_WIN32, test "$platform_win32" = "yes")
-
-AC_MSG_CHECKING([for native Win32])
-case "$host" in
-  *-*-mingw*)
-    os_win32=yes
-    ;;
-  *)
-    os_win32=no
-    ;;
-esac
-AC_MSG_RESULT([$os_win32])
-AM_CONDITIONAL(OS_WIN32, test "$os_win32" = "yes")
 
 uname=`uname`
 AC_DEFINE_UNQUOTED(OS, $uname, [defines a OS version string, used for OS specific code])
