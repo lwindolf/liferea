@@ -479,7 +479,9 @@ itemview_create (GtkWidget *ilc)
 	}
 	
 	/* 3. Prepare HTML rendering */
-	htmlview_init ();	
+	htmlview_init ();
+	
+	return itemview;
 }
 
 GtkStyle *
