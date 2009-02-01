@@ -24,6 +24,7 @@
 
 #include "common.h"
 #include "script.h"
+#include "ui/ui_common.h"
 #include "ui/liferea_dialog.h"
 #include "ui/liferea_shell.h"
 
