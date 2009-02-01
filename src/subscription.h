@@ -150,6 +150,8 @@ void subscription_update (subscriptionPtr subscription, guint flags);
  */
 void subscription_auto_update (subscriptionPtr subscription);
 
+void subscription_cancel_update (subscriptionPtr subscription);
+
 /**
  * Get the update interval setting of a given subscription
  *
