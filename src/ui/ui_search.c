@@ -26,6 +26,7 @@
 #include "node.h"
 #include "vfolder.h"
 #include "ui/liferea_dialog.h"
+#include "ui/search_engine_dialog.h"
 
 static GtkWidget	*searchdialog = NULL;
 static GtkWidget 	*searchEngineDialog = NULL;
