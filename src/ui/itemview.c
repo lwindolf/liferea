@@ -29,6 +29,7 @@
 #include "itemview.h"
 #include "node.h"
 #include "vfolder.h"
+#include "ui/ui_common.h"
 #include "ui/liferea_shell.h"
 #include "ui/ui_itemlist.h"
 
