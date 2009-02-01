@@ -24,10 +24,13 @@
 
 #include "common.h"
 #include "feed.h"
+#include "feedlist.h"
+#include "htmlview.h"
 #include "itemlist.h"
 #include "node.h"
 #include "rule.h"
 #include "vfolder.h"
+#include "ui/itemview.h"
 #include "ui/liferea_dialog.h"
 #include "ui/rule_editor.h"
 #include "ui/ui_feedlist.h"
