@@ -23,6 +23,7 @@
 
 #include <string.h>
 #include <glib.h>
+#include "browser.h"
 #include "comments.h"
 #include "common.h"
 #include "conf.h"
