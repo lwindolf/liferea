@@ -57,7 +57,7 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 		       
 	   (example quoted from specification)
 	*/
-  	if (!xmlStrcmp(cur->name, "content")) {
+  	if (!xmlStrcmp(cur->name, BAD_CAST"content")) {
 		tmp = xml_get_attribute (cur, "url");
 		if (tmp) {
 			/* the following code is duplicated from rss_item.c! */		

@@ -105,13 +105,13 @@ atom10_parse_content_construct (xmlNodePtr cur, feedParserCtxtPtr ctxt)
 	gchar *ret = NULL;
 	
 	if (xmlHasNsProp (cur, BAD_CAST"src", NULL )) {
-		xmlChar *src = xml_get_ns_attribute (cur, "src", NULL);
+		gchar *src = xml_get_ns_attribute (cur, "src", NULL);
 		
 		if (!src) {
 			ret = g_strdup (_("Liferea is unable to display this item's content."));
 		} else {
-			gchar *baseURL = common_utf8_fix (xmlNodeGetBase (cur->doc, cur));
-			gchar *url;
+			gchar *baseURL = common_utf8_fix ((gchar *)xmlNodeGetBase (cur->doc, cur));
+			xmlChar *url;
 			
 			url = common_build_url (src, baseURL);
 			ret = g_strdup_printf (_("<p><a href=\"%s\">View this item's content.</a></p>"), url);
@@ -132,7 +132,7 @@ atom10_parse_content_construct (xmlNodePtr cur, feedParserCtxtPtr ctxt)
 		} else if (!type || !strcmp (type, "text") || !strncasecmp (type, "text/",5)) {
 			gchar *tmp;
 			/* Assume that "text/ *" files can be directly displayed.. kinda stated in the RFC */
-			ret = common_utf8_fix (xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1));
+			ret = common_utf8_fix ((gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1));
 			
 			g_strchug (g_strchomp (ret));
 			
@@ -176,7 +176,7 @@ atom10_parse_text_construct (xmlNodePtr cur, gboolean htmlified)
 	
 	/* This that need to be de-encoded and should not contain sub-tags.*/
 	if (!type || !strcmp(type, "text")) {
-		ret = common_utf8_fix (xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1));
+		ret = common_utf8_fix ((gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1));
 		if (ret) {
 			g_strchug (g_strchomp (ret));
 
@@ -223,14 +223,14 @@ atom10_parse_person_construct (xmlNodePtr cur)
 		if (xmlStrEqual (cur->ns->href, ATOM10_NS)) {
 			if (xmlStrEqual (cur->name, BAD_CAST"name")) {
 				g_free (name);
-				name = common_utf8_fix (xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1));
+				name = common_utf8_fix ((gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1));
 			}
 			
 			if (xmlStrEqual (cur->name, BAD_CAST"email")) {
 				if (email)
 					invalid = TRUE;
 				g_free(email);
-				tmp = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+				tmp = common_utf8_fix((gchar *)xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 				email = g_strdup_printf(" - <a href=\"mailto:%s\">%s</a>", tmp, tmp);
 				g_free(tmp);
 			}
@@ -239,7 +239,7 @@ atom10_parse_person_construct (xmlNodePtr cur)
 				if (!uri)
 					invalid = TRUE;
 				g_free (uri);
-				tmp = common_utf8_fix (xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1));
+				tmp = common_utf8_fix ((gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1));
 				uri = g_strdup_printf (" (<a href=\"%s\">Website</a>)", tmp);
 				g_free (tmp);
 			}
@@ -275,7 +275,7 @@ atom10_parse_link (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10ParserSt
 		    ctxt->feed->htmlUrl[0] != '|' &&
 		    strstr (ctxt->feed->htmlUrl, "://"))
 			baseURL = xmlStrdup (BAD_CAST (ctxt->feed->htmlUrl));
-		url = common_build_url (href, baseURL);
+		url = (gchar *)common_build_url (href, (gchar *)baseURL);
 
 		type = xml_get_ns_attribute (cur, "type", NULL);
 		relation = xml_get_ns_attribute (cur, "rel", NULL);
@@ -287,7 +287,7 @@ atom10_parse_link (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10ParserSt
 			alternate = g_strdup (url);
 		else if (g_str_equal (relation, "replies")) {
 			if (!type || g_str_equal (type, BAD_CAST"application/atom+xml")) {
-				gchar *commentUri = common_build_url (url, subscription_get_homepage (ctxt->subscription));
+				gchar *commentUri = (gchar *)common_build_url ((gchar *)url, subscription_get_homepage (ctxt->subscription));
 				if (ctxt->item)
 					metadata_list_set (&ctxt->item->metadata, "commentFeedUri", commentUri);
 			}
@@ -382,7 +382,7 @@ atom10_parse_entry_id (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10Pars
 {
 	gchar *id;
 	
-	id = common_utf8_fix (xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1));
+	id = common_utf8_fix ((gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1));
 	if (id) {
 		item_set_id (ctxt->item, id);
 		ctxt->item->validGuid = TRUE;
@@ -407,7 +407,7 @@ atom10_parse_entry_published (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct ato
 {
 	gchar *datestr;
 	
-	datestr = common_utf8_fix (xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1));
+	datestr = common_utf8_fix ((gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1));
 	if (datestr) {
 		ctxt->item->time = parseISO8601Date (datestr);
 		ctxt->item->metadata = metadata_list_append (ctxt->item->metadata, "pubDate", datestr);
@@ -459,7 +459,7 @@ atom10_parse_entry_updated (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom1
 {
 	gchar *datestr;
 	
-	datestr = common_utf8_fix (xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1));
+	datestr = common_utf8_fix ((gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1));
 	/* if pubDate is already set, don't overwrite it */
 	if (datestr && !metadata_list_get(ctxt->item->metadata, "pubDate")) {
 		ctxt->item->time = parseISO8601Date (datestr);
@@ -590,7 +590,7 @@ atom10_parse_feed_generator (xmlNodePtr cur, feedParserCtxtPtr ctxt, itemPtr ip,
 {
 	gchar *ret, *version, *tmp = "", *uri;
 
-	ret = unhtmlize (xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1));
+	ret = unhtmlize ((gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1));
 	if (ret && ret[0] != '\0') {
 		version = xml_get_ns_attribute (cur, "version", NULL);
 		if (version) {
@@ -633,7 +633,7 @@ atom10_parse_feed_link (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10Par
 		subscription_set_homepage (ctxt->subscription, href);
 		/* Set the default base to the feed's HTML URL if not set yet */
 		if (xmlNodeGetBase (cur->doc, xmlDocGetRootElement (cur->doc)) == NULL)
-			xmlNodeSetBase (xmlDocGetRootElement (cur->doc), href);
+			xmlNodeSetBase (xmlDocGetRootElement (cur->doc), (xmlChar *)href);
 		g_free (href);
 	}
 }
@@ -692,7 +692,7 @@ atom10_parse_feed_updated (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10
 {
 	gchar *timestamp;
 	
-	timestamp = common_utf8_fix (xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1));
+	timestamp = common_utf8_fix ((gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1));
 	if (timestamp) {
 		ctxt->subscription->metadata = metadata_list_append (ctxt->subscription->metadata, "contentUpdateDate", timestamp);
 		ctxt->feed->time = parseISO8601Date (timestamp);

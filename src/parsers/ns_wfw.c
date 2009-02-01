@@ -39,8 +39,8 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 {
 	gchar	*uri = NULL;
 
- 	if (!xmlStrcmp ("commentRss", cur->name) || !xmlStrcmp ("commentRSS", cur->name))
-		uri = common_utf8_fix (xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1));
+ 	if (!xmlStrcmp (BAD_CAST"commentRss", cur->name) || !xmlStrcmp (BAD_CAST"commentRSS", cur->name))
+		uri = common_utf8_fix ((gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1));
 
 	if (uri) {
 		metadata_list_set (&(ctxt->item->metadata), "commentFeedUri", uri);

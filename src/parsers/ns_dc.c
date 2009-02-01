@@ -147,8 +147,8 @@ parse_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur, gboolean isFeedTag)
 	
 	/* special handling for the ISO 8601 date item tags */
 	if (!isFeedTag) {
-		if (!xmlStrcmp ((const xmlChar *)"date", cur->name)) {
- 			if (date = common_utf8_fix (xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1))) {
+		if (!xmlStrcmp (BAD_CAST "date", cur->name)) {
+ 			if (NULL != (date = common_utf8_fix ((gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1)))) {
 				i = parseISO8601Date (date);
 				ctxt->item->time = i;
 				g_free (date);
@@ -160,7 +160,7 @@ parse_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur, gboolean isFeedTag)
 	/* compare with each possible tag name */
 	for (i = 0; taglist[i] != NULL; i++) {
 		if (!xmlStrcmp ((const xmlChar *)taglist[i], cur->name)) {
- 			value = common_utf8_fix (xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+ 			value = common_utf8_fix ((gchar *)xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 	 		if (value) {
 				/* check if value consist of whitespaces only */				
 				for (j = 0, tmp = value, isNotEmpty = FALSE; j < g_utf8_strlen (value, -1); j++) {
@@ -173,10 +173,10 @@ parse_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur, gboolean isFeedTag)
 
 				if (isNotEmpty) {
 					if (isFeedTag) {
-						if (mapping = mapToFeedMetadata[i])
+						if (NULL != (mapping = mapToFeedMetadata[i]))
 							ctxt->subscription->metadata = metadata_list_append (ctxt->subscription->metadata, mapping, value);
 					} else {
-						if (mapping = mapToItemMetadata[i])
+						if (NULL != (mapping = mapToItemMetadata[i]))
 							ctxt->item->metadata = metadata_list_append (ctxt->item->metadata, mapping, value);
 					}
 				} 

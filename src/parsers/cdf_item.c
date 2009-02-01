@@ -49,8 +49,8 @@ itemPtr parseCDFItem(feedParserCtxtPtr ctxt, xmlNodePtr cur, CDFChannelPtr cp) {
 	ctxt->item = item_new();
 	
 	/* save the item link */
-	if(!(tmp = common_utf8_fix(xmlGetProp(cur, BAD_CAST"href"))))
-		tmp = common_utf8_fix(xmlGetProp(cur, BAD_CAST"HREF"));
+	if(!(tmp = common_utf8_fix((gchar *)xmlGetProp(cur, BAD_CAST"href"))))
+		tmp = common_utf8_fix((gchar *)xmlGetProp(cur, BAD_CAST"HREF"));
 	if(tmp) {
 		item_set_source(ctxt->item, tmp);
 		g_free(tmp);
@@ -65,9 +65,9 @@ itemPtr parseCDFItem(feedParserCtxtPtr ctxt, xmlNodePtr cur, CDFChannelPtr cp) {
 		}
 		
 		/* save first link to a channel image */
-		if(tmp = g_ascii_strdown(cur->name, -1)) {
-			if(tmp2 = g_hash_table_lookup(CDFToMetadataMapping, tmp)) {
-				if(tmp3 = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE))) {
+		if(NULL != (tmp = g_ascii_strdown((gchar *)cur->name, -1))) {
+			if(NULL != (tmp2 = g_hash_table_lookup(CDFToMetadataMapping, tmp))) {
+				if(NULL != (tmp3 = common_utf8_fix((gchar *)xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE)))) {
 					ctxt->item->metadata = metadata_list_append(ctxt->item->metadata, tmp2, tmp3);
 					g_free(tmp3);
 				}
@@ -77,28 +77,28 @@ itemPtr parseCDFItem(feedParserCtxtPtr ctxt, xmlNodePtr cur, CDFChannelPtr cp) {
 		
 		if((!xmlStrcasecmp(cur->name, BAD_CAST"logo"))) {
 			
-			if(!(tmp = common_utf8_fix(xmlGetProp(cur, BAD_CAST"href"))))
-				tmp = common_utf8_fix(xmlGetProp(cur, BAD_CAST"HREF"));
+			if(!(tmp = common_utf8_fix((gchar *)xmlGetProp(cur, BAD_CAST"href"))))
+				tmp = common_utf8_fix((gchar *)xmlGetProp(cur, BAD_CAST"HREF"));
 			if(tmp) {
 				ctxt->item->metadata = metadata_list_append(ctxt->item->metadata, "imageUrl", tmp);
 				g_free(tmp);
 			}
 			
 		} else if((!xmlStrcasecmp(cur->name, BAD_CAST"title"))) {
-			if(tmp = unhtmlize(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))) {
+			if(NULL != (tmp = unhtmlize((gchar *)xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)))) {
 				item_set_title(ctxt->item, tmp);
 				g_free(tmp);
 			}
 			
 		} else if((!xmlStrcasecmp(cur->name, BAD_CAST"abstract"))) {
-			if(tmp = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))) {
+			if(NULL != (tmp = common_utf8_fix((gchar *)xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)))) {
 				item_set_description(ctxt->item, tmp);
 				g_free(tmp);
 			}
 			
 		} else if((!xmlStrcasecmp(cur->name, BAD_CAST"a"))) {
-			if(!(tmp = common_utf8_fix(xmlGetProp(cur, BAD_CAST"href"))))
-				tmp = common_utf8_fix(xmlGetProp(cur, BAD_CAST"HREF"));
+			if(!(tmp = common_utf8_fix((gchar *)xmlGetProp(cur, BAD_CAST"href"))))
+				tmp = common_utf8_fix((gchar *)xmlGetProp(cur, BAD_CAST"HREF"));
 			if(tmp) {
 				item_set_source(ctxt->item, tmp);
 				g_free(tmp);

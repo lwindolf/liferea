@@ -37,7 +37,7 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 	
 	/* We ignore the "ping" tag */
 
-  	if (xmlStrcmp (cur->name, "about"))
+  	if (xmlStrcmp (cur->name, BAD_CAST"about"))
 		return;
 		
 	/* RSS 1.0 */
@@ -45,7 +45,7 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 		
 	/* RSS 2.0 */
 	if (!tmp)
-		tmp = common_utf8_fix (xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1));
+		tmp = common_utf8_fix ((gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1));
 
 	if (tmp) {
 		ctxt->item->metadata = metadata_list_append (ctxt->item->metadata, "related", tmp);

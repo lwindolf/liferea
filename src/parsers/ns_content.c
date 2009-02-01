@@ -40,7 +40,7 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 {
 	gchar *tmp;
 
-  	if (!xmlStrcmp (cur->name, "encoded")) {
+  	if (!xmlStrcmp (cur->name, BAD_CAST "encoded")) {
 		tmp = common_utf8_fix (xhtml_extract (cur, 0, NULL));
 		if (tmp) {
 			item_set_description (ctxt->item, tmp);

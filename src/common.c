@@ -65,8 +65,8 @@ static gchar *lifereaUserPath = NULL;
    mode which can produce invalid UTF-8. 
    
    The valid or a corrected string is returned. The original XML 
-   string is modified (FIXME: not sure if this is good). */
-gchar * common_utf8_fix(xmlChar *string) {
+   string is modified . */
+gchar * common_utf8_fix(gchar *string) {
 	const gchar	*invalid_offset;
 
 	if(NULL == string)

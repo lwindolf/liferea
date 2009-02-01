@@ -46,13 +46,13 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 	gchar		*date, *source, *sourceURL, *tmp;
 	gboolean	sourceTag = FALSE;
 	
-	if (!xmlStrcmp ("source", cur->name)) {
+	if (!xmlStrcmp (BAD_CAST "source", cur->name)) {
 		sourceTag = TRUE;
-		g_hash_table_insert (ctxt->item->tmpdata, g_strdup ("ag:source"), common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
+		g_hash_table_insert (ctxt->item->tmpdata, g_strdup ("ag:source"), common_utf8_fix((gchar *)xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));
 		
-	} else if (!xmlStrcmp ("sourceURL", cur->name)) {  
+	} else if (!xmlStrcmp (BAD_CAST "sourceURL", cur->name)) {  
 		sourceTag = TRUE;
-		g_hash_table_insert (ctxt->item->tmpdata, g_strdup ("ag:sourceURL"), common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));	
+		g_hash_table_insert (ctxt->item->tmpdata, g_strdup ("ag:sourceURL"), common_utf8_fix((gchar *)xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)));	
 	}
 	
 	if (sourceTag) {
@@ -67,8 +67,8 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 			tmp = g_strdup (source);
 	
 		metadata_list_set (&(ctxt->item->metadata), "agSource", tmp);
-	} else if (!xmlStrcmp ("timestamp", cur->name)) {
-		if (tmp = common_utf8_fix (xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1))) {
+	} else if (!xmlStrcmp (BAD_CAST "timestamp", cur->name)) {
+		if (NULL != (tmp = common_utf8_fix ((gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1)))) {
 			date = common_format_date (parseISO8601Date (tmp), _("%b %d %H:%M"));
 			metadata_list_set (&(ctxt->item->metadata), "agTimestamp", date);
 			g_free (date);

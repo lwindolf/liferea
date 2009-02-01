@@ -31,17 +31,17 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 {
 	gchar	*tmp, *thumbnail, *imgsrc;
 	
-	if (!xmlStrcmp ("thumbnail", cur->name) || 
-	    !xmlStrcmp ("thumb", cur->name)) {
- 		tmp = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+	if (!xmlStrcmp (BAD_CAST"thumbnail", cur->name) || 
+	    !xmlStrcmp (BAD_CAST"thumb", cur->name)) {
+ 		tmp = common_utf8_fix((gchar *)xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 		if (tmp) {
 			if (g_utf8_strlen (tmp, -1) > 0)
 	 			g_hash_table_insert (ctxt->item->tmpdata, "photo:thumbnail", tmp);
 			else
 				g_free (tmp);
 		}
-	} else if (!xmlStrcmp ("imgsrc", cur->name)) {
- 		tmp = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+	} else if (!xmlStrcmp (BAD_CAST"imgsrc", cur->name)) {
+ 		tmp = common_utf8_fix((gchar *)xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 		if (tmp) {
 			if (g_utf8_strlen (tmp, -1) > 0)
 	 			g_hash_table_insert (ctxt->item->tmpdata, "photo:imgsrc", tmp);				

@@ -45,7 +45,7 @@ ns_syn_parse_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 	
 	period = subscription_get_default_update_interval (ctxt->subscription);
 	if (!xmlStrcmp (cur->name, BAD_CAST"updatePeriod")) {
-		if (tmp = xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1)) {
+		if (NULL != (tmp = xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1))) {
 
 			if (!xmlStrcmp (tmp, BAD_CAST"hourly"))
 				period = 60;
@@ -64,7 +64,7 @@ ns_syn_parse_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 	} else if (!xmlStrcmp (cur->name, BAD_CAST"updateFrequency")) {
 		tmp = xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
 		if (tmp) {
-			frequency = atoi (tmp);
+			frequency = atoi ((gchar *)tmp);
 			xmlFree (tmp);
 		}
 	}

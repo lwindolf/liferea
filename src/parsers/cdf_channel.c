@@ -49,9 +49,9 @@ static void parseCDFChannel(feedParserCtxtPtr ctxt, xmlNodePtr cur, CDFChannelPt
 		}
 
 		if((!xmlStrcasecmp(cur->name, BAD_CAST"logo"))) {
-			tmp = common_utf8_fix(xmlGetProp(cur, BAD_CAST"HREF"));
+			tmp = common_utf8_fix((gchar *)xmlGetProp(cur, BAD_CAST"HREF"));
 			if(tmp) {
-				tmp = common_utf8_fix(xmlGetProp(cur, BAD_CAST"href"));
+				tmp = common_utf8_fix((gchar *)xmlGetProp(cur, BAD_CAST"href"));
 				metadata_list_set (&ctxt->subscription->metadata, "imageUrl", tmp);
 				g_free(tmp);
 			}
@@ -72,7 +72,7 @@ static void parseCDFChannel(feedParserCtxtPtr ctxt, xmlNodePtr cur, CDFChannelPt
 			}
 
 		} else if(!xmlStrcasecmp(cur->name, BAD_CAST "title")) {
-			tmp = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE));
+			tmp = common_utf8_fix((gchar *)xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE));
 			if(tmp) {
 				tmp = unhtmlize(tmp);
 				
@@ -82,7 +82,7 @@ static void parseCDFChannel(feedParserCtxtPtr ctxt, xmlNodePtr cur, CDFChannelPt
 			}
 			
 		} else if (!xmlStrcasecmp(cur->name, BAD_CAST "abstract")) {
-			tmp = common_utf8_fix (xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, TRUE));
+			tmp = common_utf8_fix ((gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, TRUE));
 			if (tmp) {
 				metadata_list_set (&ctxt->subscription->metadata, "description", tmp);
 				xmlFree (tmp);
@@ -92,7 +92,7 @@ static void parseCDFChannel(feedParserCtxtPtr ctxt, xmlNodePtr cur, CDFChannelPt
 			tmp = g_ascii_strdown((gchar *)cur->name, -1);
 			tmp2 = g_hash_table_lookup(channelHash, tmp);
 			if(tmp2) {
-				tmp3 = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE));
+				tmp3 = common_utf8_fix((gchar *)xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE));
 				if(tmp3) {
 					ctxt->subscription->metadata = metadata_list_append(ctxt->subscription->metadata, tmp2, tmp3);
 					g_free(tmp3);

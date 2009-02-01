@@ -66,7 +66,8 @@ parseRSSItem (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 		if (cur->ns) {
 			if((cur->ns->href && (nsh = (NsHandler *)g_hash_table_lookup(ns_rss_ns_uri_table, (gpointer)cur->ns->href))) ||
 			   (cur->ns->prefix && (nsh = (NsHandler *)g_hash_table_lookup(rss_nstable, (gpointer)cur->ns->prefix)))) {
-				if(pf = nsh->parseItemTag)
+				pf = nsh->parseItemTag;
+				if (pf)
 					(*pf)(ctxt, cur);
 				cur = cur->next;
 				continue;
@@ -76,15 +77,18 @@ parseRSSItem (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 		} /* explicitly no following else!!! */
 		
 		/* check for metadata tags */
-		if(tmp2 = g_hash_table_lookup(RssToMetadataMapping, cur->name)) {
-			if(tmp3 = common_utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE))) {
+		tmp2 = g_hash_table_lookup(RssToMetadataMapping, cur->name);
+		if (tmp2) {
+			tmp3 = common_utf8_fix((gchar *)xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE));
+			if (tmp3) {
 				ctxt->item->metadata = metadata_list_append(ctxt->item->metadata, tmp2, tmp3);
 				g_free(tmp3);
 			}
 		}
 		/* check for specific tags */
 		else if(!xmlStrcmp(cur->name, BAD_CAST"pubDate")) {
- 			if(tmp = common_utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1))) {
+ 			tmp = common_utf8_fix((gchar *)xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1));
+			if (tmp) {
 				ctxt->item->time = parseRFC822Date(tmp);
 				g_free(tmp);
 			}
@@ -118,11 +122,12 @@ parseRSSItem (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 		} 
 		else if(!xmlStrcmp(cur->name, BAD_CAST"guid")) {
 			if(!item_get_id(ctxt->item)) {
-				if(tmp = xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1)) {
+				tmp = (gchar *)xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1);
+				if (tmp) {
 					item_set_id(ctxt->item, tmp);
 					ctxt->item->validGuid = TRUE;
 					tmp2 = xml_get_attribute (cur, "isPermaLink");
-					if(!item_get_source(ctxt->item) && (tmp2 == NULL || !xmlStrcmp(tmp2, BAD_CAST"true")))
+					if(!item_get_source(ctxt->item) && (tmp2 == NULL || g_str_equal (tmp2, "true")))
 						item_set_source(ctxt->item, tmp); /* Per the RSS 2.0 spec. */
 					if(tmp2)
 						xmlFree(tmp2);
@@ -131,19 +136,22 @@ parseRSSItem (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 			}
 		}
 		else if(!xmlStrcmp(cur->name, BAD_CAST"title")) {
- 			if(tmp = unhtmlize(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE))) {
+ 			tmp = unhtmlize((gchar *)xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE));
+			if (tmp) {
 				item_set_title(ctxt->item, tmp);
 				g_free(tmp);
 			}
 		}
 		else if(!xmlStrcmp(cur->name, BAD_CAST"link")) {
- 			if(tmp = unhtmlize(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE))) {
+ 			tmp = unhtmlize((gchar *)xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE));
+			if (tmp) {
 				item_set_source(ctxt->item, tmp);
 				g_free(tmp);
 			}
 		}
 		else if(!xmlStrcmp(cur->name, BAD_CAST"description")) {
- 			if(tmp = common_utf8_fix(xhtml_extract (cur, 0, NULL))) {
+ 			tmp = common_utf8_fix(xhtml_extract (cur, 0, NULL));
+			if (tmp) {
 				/* don't overwrite content:encoded descriptions... */
 				if(!item_get_description(ctxt->item))
 					item_set_description(ctxt->item, tmp);
@@ -156,7 +164,7 @@ parseRSSItem (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 				metadata_list_set (&(ctxt->item->metadata), "realSourceUrl", g_strchomp (tmp));
 				g_free (tmp);
 			}
-			tmp = unhtmlize (xmlNodeListGetString (ctxt->doc, cur->xmlChildrenNode, 1));
+			tmp = unhtmlize ((gchar *)xmlNodeListGetString (ctxt->doc, cur->xmlChildrenNode, 1));
 			if (tmp) {
 				metadata_list_set (&(ctxt->item->metadata), "realSourceTitle", g_strchomp (tmp));
 				g_free(tmp);

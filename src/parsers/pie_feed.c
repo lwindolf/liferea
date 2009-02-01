@@ -55,8 +55,8 @@ gchar* pie_parse_content_construct(xmlNodePtr cur) {
 	ret = NULL;
 	
 	/* determine encoding mode */
-	mode = common_utf8_fix(xmlGetProp(cur, BAD_CAST"mode"));
-	type = common_utf8_fix(xmlGetProp(cur, BAD_CAST"type"));
+	mode = xml_get_attribute (cur, "mode");
+	type = xml_get_attribute (cur, "type");
 
 	/* Modes are used in older versions of ATOM, including 0.3. It
 	   does not exist in the newer IETF drafts.*/
@@ -87,7 +87,7 @@ gchar* pie_parse_content_construct(xmlNodePtr cur) {
 			!g_strcasecmp(type, "TEXT") ||
 			!strcmp(type, "text/plain")) {
 			gchar *tmp;
-			tmp = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+			tmp = common_utf8_fix((gchar *)xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 			ret = g_markup_printf_escaped("<div xmlns=\"http://www.w3.org/1999/xhtml\"><pre>%s</pre></div>", tmp);
 			g_free(tmp);
 			/* Next are things that contain subttags */
@@ -125,10 +125,10 @@ gchar * parseAuthor(xmlNodePtr cur) {
 		}
 		
 		if (!xmlStrcmp(cur->name, BAD_CAST"name"))
-			tmp = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+			tmp = common_utf8_fix((gchar *)xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 
 		if (!xmlStrcmp(cur->name, BAD_CAST"email")) {
-			tmp2 = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+			tmp2 = common_utf8_fix((gchar *)xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 			tmp3 = g_strdup_printf("%s <a href=\"mailto:%s\">%s</a>", tmp, tmp2, tmp2);
 			g_free(tmp);
 			g_free(tmp2);
@@ -136,7 +136,7 @@ gchar * parseAuthor(xmlNodePtr cur) {
 		}
 					
 		if (!xmlStrcmp(cur->name, BAD_CAST"url")) {
-			tmp2 = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+			tmp2 = common_utf8_fix((gchar *)xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
 			tmp3 = g_strdup_printf("%s (<a href=\"%s\">Website</a>)", tmp, tmp2);
 			g_free(tmp);
 			g_free(tmp2);
@@ -191,11 +191,11 @@ static void pie_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 					ctxt->title = tmp;
 				}
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"link")) {
-				tmp = common_utf8_fix(xmlGetProp(cur, BAD_CAST"href"));
+				tmp = xml_get_attribute (cur, "href");
 				if(tmp) {				
 					/* 0.3 link : rel, type and href attribute */
-					tmp2 = common_utf8_fix(xmlGetProp(cur, BAD_CAST"rel"));
-					if(tmp2 && !xmlStrcmp(tmp2, BAD_CAST"alternate"))
+					tmp2 = xml_get_attribute (cur, "rel");
+					if(tmp2 && g_str_equal(tmp2, "alternate"))
 						subscription_set_homepage (ctxt->subscription, tmp);
 					else
 						/* FIXME: Maybe do something with other links? */;
@@ -203,7 +203,7 @@ static void pie_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 					g_free(tmp);
 				} else {
 					/* 0.2 link : element content is the link, or non-alternate link in 0.3 */
-					tmp = common_utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1));
+					tmp = common_utf8_fix((gchar *)xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1));
 					if(tmp) {
 						subscription_set_homepage (ctxt->subscription, tmp);
 						g_free(tmp);
@@ -225,16 +225,16 @@ static void pie_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 					g_free (tmp);				
 				}
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"generator")) {
-				tmp = unhtmlize(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1));
+				tmp = unhtmlize((gchar *)xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1));
 				if(tmp && tmp[0] != '\0') {
-					tmp2 = common_utf8_fix(xmlGetProp(cur, BAD_CAST"version"));
+					tmp2 = xml_get_attribute (cur, "version");
 					if(tmp2) {
 						tmp3 = g_strdup_printf("%s %s", tmp, tmp2);
 						g_free(tmp);
 						g_free(tmp2);
 						tmp = tmp3;
 					}
-					tmp2 = common_utf8_fix(xmlGetProp(cur, BAD_CAST"url"));
+					tmp2 = xml_get_attribute (cur, "url");
 					if(tmp2) {
 						tmp3 = g_strdup_printf("<a href=\"%s\">%s</a>", tmp2, tmp);
 						g_free(tmp2);
@@ -252,7 +252,7 @@ static void pie_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 				}				
 				
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"modified")) { /* Modified was last used in IETF draft 02) */
-				tmp = common_utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1));
+				tmp = common_utf8_fix((gchar *)xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1));
 				if(tmp) {
 					ctxt->subscription->metadata = metadata_list_append(ctxt->subscription->metadata, "pubDate", tmp);
 					ctxt->feed->time = parseISO8601Date(tmp);
@@ -260,7 +260,7 @@ static void pie_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 				}
 
 			} else if(!xmlStrcmp(cur->name, BAD_CAST"updated")) { /* Updated was added in IETF draft 03 */
-				tmp = common_utf8_fix(xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1));
+				tmp = common_utf8_fix((gchar *)xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1));
 				if(tmp) {
 					ctxt->subscription->metadata = metadata_list_append(ctxt->subscription->metadata, "pubDate", tmp);
 					ctxt->feed->time = parseISO8601Date(tmp);
