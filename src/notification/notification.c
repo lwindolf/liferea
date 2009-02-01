@@ -36,7 +36,6 @@ notification_plugin_register (pluginPtr plugin, GModule *handle)
 {
 	notificationPluginPtr	notificationPlugin = NULL;
 	infoFunc		notification_plugin_get_info;
-	GSList 			*iter;
 
 	if (g_module_symbol (handle, "notification_plugin_get_info", (void*)&notification_plugin_get_info)) {
 		/* load notification provider plugin info */
