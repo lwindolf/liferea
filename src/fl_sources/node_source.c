@@ -233,7 +233,7 @@ ui_node_source_type_dialog (void)
 
 	if (!nodeSourceTypes) {
 		ui_show_error_box (_("No feed list source types found!"));
-		return;
+		return FALSE;
 	}		
 
 	/* set up the dialog */
