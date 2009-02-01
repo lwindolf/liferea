@@ -32,6 +32,7 @@
 #include "net.h"
 #include "social.h"
 #include "render.h"
+#include "htmlview.h"
 #include "ui/browser_tabs.h"
 #include "ui/liferea_shell.h"
 #include "ui/ui_itemlist.h"
