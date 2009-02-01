@@ -29,6 +29,7 @@
 #include "debug.h"
 #include "feedlist.h"
 #include "folder.h"
+#include "item_state.h"
 #include "node.h"
 #include "node_type.h"
 #include "ui/liferea_dialog.h"
