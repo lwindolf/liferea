@@ -278,7 +278,7 @@ static void
 ui_feedlist_delete_response_cb (GtkDialog *dialog, gint response_id, gpointer user_data)
 {	
 	switch (response_id) {
-		case GTK_RESPONSE_YES:
+		case GTK_RESPONSE_ACCEPT:
 			feedlist_remove_node ((nodePtr)user_data);
 			break;
 	}
@@ -301,8 +301,12 @@ ui_feedlist_delete_prompt (nodePtr node)
 	dialog = gtk_message_dialog_new (mainwindow,
 	                                 GTK_DIALOG_DESTROY_WITH_PARENT | GTK_DIALOG_MODAL,
 	                                 GTK_MESSAGE_QUESTION,
-	                                 GTK_BUTTONS_YES_NO,
+	                                 GTK_BUTTONS_NONE,
 	                                 "%s", text);
+	gtk_dialog_add_buttons (dialog,
+	                        GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+	                        GTK_STOCK_DELETE, GTK_RESPONSE_ACCEPT,
+	                        NULL);
 	gtk_window_set_title (GTK_WINDOW (dialog), _("Deletion Confirmation"));
 	gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
 	gtk_window_set_transient_for (GTK_WINDOW (dialog), mainwindow);
