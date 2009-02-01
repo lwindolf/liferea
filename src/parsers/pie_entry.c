@@ -30,13 +30,6 @@
 #include "metadata.h"
 #include "xml.h"
 
-/* uses the same namespace handler as PIE_channel */
-extern GHashTable *pie_nstable;
-extern GHashTable *ns_pie_ns_uri_table;
-
-/* we reuse some pie_feed.c function */
-extern gchar * parseAuthor(xmlNodePtr cur);
-
 /* <content> tag support, FIXME: base64 not supported */
 /* method to parse standard tags for each item element */
 itemPtr parseEntry(feedParserCtxtPtr ctxt, xmlNodePtr cur) {

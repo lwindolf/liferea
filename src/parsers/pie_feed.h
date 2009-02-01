@@ -24,6 +24,9 @@
 #include <libxml/tree.h>
 #include "feed.h"
 
+extern GHashTable *pie_nstable;
+extern GHashTable *ns_pie_ns_uri_table;
+
 feedHandlerPtr	pie_init_feed_handler(void);
 
 /**
@@ -33,5 +36,7 @@ feedHandlerPtr	pie_init_feed_handler(void);
  * @returns g_strduped string which must be freed by the caller.
  */
 gchar* pie_parse_content_construct(xmlNodePtr cur);
+
+gchar* parseAuthor(xmlNodePtr cur);
 
 #endif

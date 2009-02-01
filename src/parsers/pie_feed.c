@@ -111,7 +111,6 @@ gchar* pie_parse_content_construct(xmlNodePtr cur) {
 }
 
 
-/* nonstatic because used by pie_entry.c too */
 gchar * parseAuthor(xmlNodePtr cur) {
 	gchar	*tmp = NULL;
 	gchar	*tmp2, *tmp3;
