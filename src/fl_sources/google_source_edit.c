@@ -25,6 +25,7 @@
 #include "update.h"
 #include "subscription.h"
 #include "common.h"
+#include "feedlist.h"
 
 
 #include "google_source.h"
