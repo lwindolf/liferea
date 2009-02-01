@@ -143,7 +143,7 @@ static void cdf_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 	} while (FALSE);
 }
 
-gboolean cdf_format_check(xmlDocPtr doc, xmlNodePtr cur) {
+static gboolean cdf_format_check(xmlDocPtr doc, xmlNodePtr cur) {
 		
 	/* avoid mistaking RSS 1.1 which also uses "Channel" as root tag */
 	if((NULL != cur->ns) &&
