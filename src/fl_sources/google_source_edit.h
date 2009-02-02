@@ -126,6 +126,11 @@ void google_source_edit_mark_read(
 	const gchar* feedUrl, 
 	gboolean newStatus);
 
+void google_source_edit_mark_starred (GoogleSourcePtr gsource, 
+				      const gchar *guid,
+				      const gchar *feedUrl,
+				      gboolean newStatus);
+
 
 /**
  * Add a subscription to the google source.
