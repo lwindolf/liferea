@@ -126,33 +126,34 @@ google_source_merge_feed (xmlNodePtr match, gpointer user_data)
 	nodePtr		node;
 	GSList		*iter;
 	xmlNodePtr	xml;
-	xmlChar		*title, *id ;
-	gchar           *url ;
+	xmlChar		*title = NULL, *id = NULL;
+	gchar           *url = NULL;
 
 	xml = xpath_find (match, "./string[@name='title']");
 	if (xml)
 		title = xmlNodeListGetString (xml->doc, xml->xmlChildrenNode, 1);
 		
 	xml = xpath_find (match, "./string[@name='id']");
-	if (xml)
+	if (xml) {
 		id = xmlNodeListGetString (xml->doc, xml->xmlChildrenNode, 1);
-	url = g_strdup(id+strlen("feed/"));
-
-	/* check if node to be merged already exists */
-	iter = gsource->root->children;
-	while (iter) {
-		node = (nodePtr)iter->data;
-		if (g_str_equal (node->subscription->source, url)) {
-			update_state_set_cookies (node->subscription->updateState, gsource->sid);
-			node->subscription->type = &googleSourceFeedSubscriptionType;
-			goto cleanup ;
-		}
-		iter = g_slist_next (iter);
+		url = g_strdup(id + strlen("feed/"));
 	}
-	
-	/* Note: ids look like "feed/http://rss.slashdot.org" */
-	if (id && title) {
 
+	/* Note: ids look like "feed/http://rss.slashdot.org" */
+	if (id && title) {	
+
+		/* check if node to be merged already exists */
+		iter = gsource->root->children;
+		while (iter) {
+			node = (nodePtr)iter->data;
+			if (g_str_equal (node->subscription->source, url)) {
+				update_state_set_cookies (node->subscription->updateState, gsource->sid);
+				node->subscription->type = &googleSourceFeedSubscriptionType;
+				goto cleanup ;
+			}
+			iter = g_slist_next (iter);
+		}
+	
 		debug2 (DEBUG_UPDATE, "adding %s (%s)", title, url);
 		node = node_new (feed_get_node_type ());
 		node_set_title (node, title);
