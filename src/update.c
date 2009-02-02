@@ -357,7 +357,7 @@ static void
 update_apply_filter (updateJobPtr job)
 {
 	gchar	*filterResult;
-	size_t	len;
+	size_t	len = 0;
 
 	g_assert (NULL == job->result->filterErrors);
 
