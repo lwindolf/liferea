@@ -196,14 +196,14 @@ getOutlineList (feedParserCtxtPtr ctxt, guint tag, char *url)
 static void
 parse_channel_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 {
-	xmlChar			*string;
+	gchar *string;
 	
-	string = xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
+	string = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
 
-	if (!xmlStrcmp ("blogRoll", cur->name)) {	
+	if (!xmlStrcmp (BAD_CAST "blogRoll", cur->name)) {	
 		getOutlineList (ctxt, TAG_BLOGROLL, string);
 		
-	} else if (!xmlStrcmp ("mySubscriptions", cur->name)) {
+	} else if (!xmlStrcmp (BAD_CAST "mySubscriptions", cur->name)) {
 		getOutlineList (ctxt, TAG_MYSUBSCRIPTIONS, string);
 		
 	} 

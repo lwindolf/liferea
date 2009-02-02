@@ -44,9 +44,9 @@ parse_channel_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 	
 	value = xml_get_attribute (cur, "resource");
 	
-	if (!xmlStrcmp ("errorReportsTo", cur->name))
+	if (!xmlStrcmp (BAD_CAST "errorReportsTo", cur->name))
 		metadata_list_set (&(ctxt->subscription->metadata), "errorReportsTo", value);
-	else if (!xmlStrcmp ("generatorAgent", cur->name))
+	else if (!xmlStrcmp (BAD_CAST "generatorAgent", cur->name))
 		metadata_list_set (&(ctxt->subscription->metadata), "feedgeneratorUri", value);
 	
 	g_free (value);
