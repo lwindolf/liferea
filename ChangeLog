@@ -19,6 +19,8 @@
 	* Fixes left-over feed list node after cancelled search
 	  folder creation.
 	  (patch by Emilio Pozuelo Monfort)
+	* Added option to hide all feed list nodes without unread items.
+	  (patch by Mathie Leplatre)
 
 2009-01-22  Adrian Bunk  <bunk@users.sourceforge.net>
 

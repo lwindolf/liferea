@@ -36,6 +36,7 @@ enum {
 };
 
 extern GtkTreeStore	*feedstore;
+extern gboolean		feedlist_reduced_unread;
 
 /**
  * Selects the given node in the feed list.
@@ -88,4 +89,5 @@ void on_menu_folder_new (GtkMenuItem *menuitem, gpointer user_data);
 void on_new_plugin_activate (GtkMenuItem *menuitem, gpointer user_data);
 void on_new_newsbin_activate (GtkMenuItem *menuitem, gpointer user_data);
 
+void on_feedlist_reduced_activate (GtkToggleAction *menuitem, gpointer user_data);
 #endif

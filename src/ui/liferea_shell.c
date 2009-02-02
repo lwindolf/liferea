@@ -871,6 +871,11 @@ static const GtkRadioActionEntry ui_mainwindow_view_radio_entries[] = {
 	 2}
 };
 
+static const GtkToggleActionEntry ui_mainwindow_feedlist_toggle_entries[] = {
+	{"ReducedFeedList", NULL, N_("_Reduced Feed List"), NULL, N_("Hide feeds with no unread items."),
+	G_CALLBACK(on_feedlist_reduced_activate)}
+};
+
 static const GtkActionEntry ui_mainwindow_add_action_entries[] = {
 	{"NewSubscription", "gtk-add", N_("_New Subscription..."), NULL, N_("Adds a subscription to the feed list."),
 	 G_CALLBACK(on_menu_feed_new)},
@@ -953,6 +958,8 @@ static const char *ui_mainwindow_ui_desc =
 "      <menuitem action='NormalView'/>"
 "      <menuitem action='WideView'/>"
 "      <menuitem action='CombinedView'/>"
+"      <separator/>"
+"      <menuitem action='ReducedFeedList'/>"
 "    </menu>"
 "    <menu action='ToolsMenu'>"
 "      <menuitem action='ShowUpdateMonitor'/>"
@@ -1065,6 +1072,7 @@ liferea_shell_create (int initialState)
 	gtk_action_group_add_actions (shell->priv->generalActions, ui_mainwindow_action_entries, G_N_ELEMENTS (ui_mainwindow_action_entries), shell->priv);
 	gtk_action_group_add_toggle_actions (shell->priv->generalActions, ui_mainwindow_action_toggle_entries, G_N_ELEMENTS (ui_mainwindow_action_toggle_entries), shell->priv);
 	gtk_action_group_add_radio_actions (shell->priv->generalActions, ui_mainwindow_view_radio_entries, G_N_ELEMENTS (ui_mainwindow_view_radio_entries), itemlist_get_view_mode (), (GCallback)on_view_activate, (gpointer)TRUE);
+	gtk_action_group_add_toggle_actions (shell->priv->generalActions, ui_mainwindow_feedlist_toggle_entries, G_N_ELEMENTS (ui_mainwindow_feedlist_toggle_entries), shell->priv);
 	gtk_ui_manager_insert_action_group (ui_manager, shell->priv->generalActions, 0);
 
 	shell->priv->addActions = gtk_action_group_new ("AddActions");

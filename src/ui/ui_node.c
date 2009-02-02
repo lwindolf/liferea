@@ -34,7 +34,8 @@
 static GHashTable	*flIterHash = NULL;	/* hash table used for fast node id <-> tree iter lookup */
 static GtkWidget	*nodenamedialog = NULL;
 
-extern GtkTreeStore *feedstore;
+extern GtkTreeStore	*feedstore;
+extern gboolean		feedlist_reduced_unread;
 
 GtkTreeIter *
 ui_node_to_iter (const gchar *nodeId)
@@ -193,7 +194,10 @@ ui_node_add (nodePtr node)
 	/* if parent is NULL we have the root folder and don't create a new row! */
 	iter = (GtkTreeIter *)g_new0 (GtkTreeIter, 1);
 	
-	if (node->parent != feedlist_get_root ())
+	/* if reduced feedlist, show flat treeview */
+	if (feedlist_reduced_unread)
+		parentIter = NULL;
+	else if (node->parent != feedlist_get_root ())
 		parentIter = ui_node_to_iter (node->parent->id);
 
 	position = g_slist_index (node->parent->children, node);
@@ -211,6 +215,37 @@ ui_node_add (nodePtr node)
 
 	if (IS_FOLDER (node))
 		ui_node_check_if_folder_is_empty (node->id);
+}
+
+void
+ui_node_reload_feedlist ()
+{
+	ui_node_clear_feedlist ();
+	ui_node_load_feedlist (feedlist_get_root ());
+}
+
+void
+ui_node_clear_feedlist ()
+{
+	gtk_tree_store_clear (feedstore);
+	g_hash_table_remove_all (flIterHash);
+}
+
+void
+ui_node_load_feedlist (nodePtr node)
+{
+	GSList		*iter;
+	
+	iter = node->children;
+	while (iter) {
+		node = (nodePtr)iter->data;
+		ui_node_add (node);
+		
+		if (IS_FOLDER (node))
+			ui_node_load_feedlist (node);
+
+		iter = g_slist_next(iter);
+	}
 }
 
 void

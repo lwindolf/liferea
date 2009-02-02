@@ -46,6 +46,8 @@ extern GHashTable	*feedHandler;
 GtkTreeModel		*filter;
 GtkTreeStore		*feedstore = NULL;
 
+gboolean			feedlist_reduced_unread = FALSE;
+
 static void
 ui_feedlist_row_changed_cb(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter)
 {
@@ -171,6 +173,38 @@ ui_feedlist_key_press_cb (GtkWidget *widget, GdkEventKey *event, gpointer data)
 	return FALSE;
 }
 
+static gboolean ui_feedlist_filter_visible_function(GtkTreeModel *model, GtkTreeIter *iter, gpointer data) {
+	gint count;
+	nodePtr np;
+
+	if(!feedlist_reduced_unread)
+		return TRUE;
+
+	gtk_tree_model_get(model, iter, FS_PTR, &np, FS_UNREAD, &count, -1);
+
+	if (np && IS_FOLDER (np)) 
+		return FALSE;
+
+	if (0 != count)
+		return TRUE;
+	else
+		return FALSE;
+}
+
+void
+ui_feedlist_reduce_unread (gboolean reduced) {
+	GtkTreeView		*treeview;
+	GtkTreeModel	*model;
+
+	feedlist_reduced_unread = reduced;
+
+	treeview = GTK_TREE_VIEW (liferea_shell_lookup ("feedlist"));
+	model = gtk_tree_view_get_model (treeview);
+	gtk_tree_model_filter_refilter( GTK_TREE_MODEL_FILTER (model));
+
+	ui_node_reload_feedlist ();
+}
+
 /* sets up the entry list store and connects it to the entry list
    view in the main window */
 void
@@ -190,7 +224,13 @@ ui_feedlist_init (GtkTreeView *treeview)
 	                                G_TYPE_POINTER,
 	                                G_TYPE_UINT);
 
-	gtk_tree_view_set_model (treeview, GTK_TREE_MODEL (feedstore));
+	filter = gtk_tree_model_filter_new (GTK_TREE_MODEL(feedstore), NULL);
+	gtk_tree_model_filter_set_visible_func (GTK_TREE_MODEL_FILTER(filter),
+											ui_feedlist_filter_visible_function,
+											NULL,
+											NULL);
+	gtk_tree_view_set_model (GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(filter));
+
 	g_signal_connect (G_OBJECT (feedstore), "row-changed", G_CALLBACK (ui_feedlist_row_changed_cb), NULL);
 
 	/* we only render the state and title */
@@ -223,7 +263,6 @@ ui_feedlist_init (GtkTreeView *treeview)
 	ui_dnd_setup_feedlist (feedstore);
 	liferea_shell_update_feed_menu (FALSE, FALSE);
 	liferea_shell_update_allitems_actions (FALSE, FALSE);
-
 	debug_exit ("ui_feedlist_init");
 }
 
@@ -395,4 +434,10 @@ void
 on_menu_folder_new (GtkMenuItem *menuitem, gpointer user_data)
 {
 	node_type_request_interactive_add (folder_get_node_type ());
+}
+
+void
+on_feedlist_reduced_activate (GtkToggleAction *menuitem, gpointer user_data)
+{
+	ui_feedlist_reduce_unread (gtk_toggle_action_get_active (menuitem));
 }
