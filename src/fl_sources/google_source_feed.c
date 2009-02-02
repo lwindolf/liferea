@@ -21,6 +21,7 @@
 #include <glib.h>
 #include <string.h>
 #include <libxml/xpath.h>
+#include <libxml/xpathInternals.h>
 
 #include "common.h"
 #include "conf.h"
