@@ -194,14 +194,22 @@ static gboolean ui_feedlist_filter_visible_function(GtkTreeModel *model, GtkTree
 void
 ui_feedlist_reduce_unread (gboolean reduced) {
 	GtkTreeView		*treeview;
-	GtkTreeModel	*model;
+
+	treeview = GTK_TREE_VIEW (liferea_shell_lookup ("feedlist"));
 
 	feedlist_reduced_unread = reduced;
 
-	treeview = GTK_TREE_VIEW (liferea_shell_lookup ("feedlist"));
-	model = gtk_tree_view_get_model (treeview);
-	gtk_tree_model_filter_refilter( GTK_TREE_MODEL_FILTER (model));
-
+	if (reduced) {
+		gtk_tree_view_set_reorderable (GTK_TREE_VIEW(treeview), FALSE);
+		gtk_tree_view_set_model (GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(filter));
+		gtk_tree_model_filter_refilter( GTK_TREE_MODEL_FILTER (filter));
+	}
+	else {
+		gtk_tree_view_set_reorderable (GTK_TREE_VIEW(treeview), TRUE);
+		gtk_tree_model_filter_refilter(GTK_TREE_MODEL_FILTER (filter));
+		gtk_tree_view_set_model (GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(feedstore));
+	}
+	
 	ui_node_reload_feedlist ();
 }
 
@@ -224,12 +232,14 @@ ui_feedlist_init (GtkTreeView *treeview)
 	                                G_TYPE_POINTER,
 	                                G_TYPE_UINT);
 
+	gtk_tree_view_set_model (GTK_TREE_VIEW (treeview), GTK_TREE_MODEL (feedstore));
+
+	/* Prepare filter */
 	filter = gtk_tree_model_filter_new (GTK_TREE_MODEL(feedstore), NULL);
 	gtk_tree_model_filter_set_visible_func (GTK_TREE_MODEL_FILTER(filter),
-											ui_feedlist_filter_visible_function,
-											NULL,
-											NULL);
-	gtk_tree_view_set_model (GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(filter));
+	                                        ui_feedlist_filter_visible_function,
+	                                        NULL,
+	                                        NULL);
 
 	g_signal_connect (G_OBJECT (feedstore), "row-changed", G_CALLBACK (ui_feedlist_row_changed_cb), NULL);
 
