@@ -455,29 +455,6 @@ browser_tabs_show_headlines (void)
 	gtk_notebook_set_current_page (tabs->priv->notebook, 0);
 }
 
-/** This method is used to find the tab infos for a given
-    child widget (usually the HTML rendering widget) of 
-    an open tab. */
-static tabInfo *
-ui_tabs_find_notebook_child (GtkWidget *parent)
-{
-	GtkWidget 	*child;
-	tabInfo		*tab = NULL;
-
-	if (parent) {
-		do {
-			child = parent;
-			parent = gtk_widget_get_parent (child);
-			if (!parent)
-				break;
-			if ((tab = g_object_get_data(G_OBJECT(parent), "tabInfo")))
-				break;
-		} while (!GTK_IS_NOTEBOOK (parent));
-	}
-
-	return tab;
-}
-
 LifereaHtmlView *
 browser_tabs_get_active_htmlview (void)
 {
