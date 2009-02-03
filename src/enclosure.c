@@ -334,10 +334,11 @@ enclosure_download (encTypePtr type, const gchar *url, const gchar *filename)
 	g_free (filenameQ);
 	g_free (urlQ);
 	
-	if (type && type->remote)
+	if (type && type->remote) {
 		debug1 (DEBUG_UPDATE, "passing URL %s to command...", url);
-	else
+	} else {
 		debug2 (DEBUG_UPDATE, "downloading %s to %s...", url, filename);
+	}
 
 	/* free now unnecessary stuff */
 	if (type && !type->permanent)
