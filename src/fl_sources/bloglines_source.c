@@ -60,13 +60,6 @@ on_bloglines_source_selected (GtkDialog *dialog,
 }
 
 static void
-on_bloglines_source_dialog_destroy (GtkDialog *dialog,
-                                    gpointer user_data) 
-{
-	g_object_unref (user_data);
-}
-
-static void
 ui_bloglines_source_get_account_info (void)
 {
 	GtkWidget	*dialog;
