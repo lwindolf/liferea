@@ -215,12 +215,6 @@ on_node_source_type_selected (GtkDialog *dialog, gint response_id, gpointer user
 	gtk_widget_destroy (GTK_WIDGET (dialog));
 }
 
-static void
-on_node_source_type_dialog_destroy (GtkDialog *dialog, gpointer user_data) 
-{
-	g_object_unref (user_data);
-}
-
 static gboolean
 ui_node_source_type_dialog (void)
 {
