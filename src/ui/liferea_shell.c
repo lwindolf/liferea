@@ -651,13 +651,6 @@ on_about_activate (GtkMenuItem *menuitem, gpointer user_data)
 }
 
 static void
-on_homepagebtn_clicked (GtkButton *button, gpointer user_data)
-{
-	/* launch the homepage when button in about dialog is pressed */
-	browser_launch_URL_external (_("http://liferea.sf.net"));
-}
-
-static void
 on_topics_activate (GtkMenuItem *menuitem, gpointer user_data)
 {
 	gchar *filename = g_strdup_printf ("file://" PACKAGE_DATA_DIR "/" PACKAGE "/doc/html/%s", _("topics_en.html"));
