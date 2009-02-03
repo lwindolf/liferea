@@ -65,21 +65,28 @@ lua_init (void)
 static void
 lua_run_cmd (const gchar *cmd)
 {
+	int	result;
+
 	lua_getglobal(luaVM, "liferea");
 	lua_pushnil(luaVM);
 	lua_setfield(luaVM, -2, "calling_hook");
 	lua_pop(luaVM, 1);
 
 	#if defined(LUA_VERSION_NUM) && LUA_VERSION_NUM >= 501
-	luaL_dostring (luaVM, cmd);
+	result = luaL_dostring (luaVM, cmd);
 	#else
-	lua_dostring (luaVM, cmd);
+	result = lua_dostring (luaVM, cmd);
 	#endif
+
+	if (0 != result)
+		g_warning ("Error code %d when running LUA command \"%s\"!", result, cmd);
 }
 
 static void
 lua_run_script (const gchar *filename, const gchar *for_hook)
 {
+	int	result;
+
 	lua_getglobal(luaVM, "liferea");
 	if (for_hook != NULL)
 	{
@@ -93,10 +100,13 @@ lua_run_script (const gchar *filename, const gchar *for_hook)
 	lua_pop(luaVM, 1);
 
 	#if defined(LUA_VERSION_NUM) && LUA_VERSION_NUM >=501
-	luaL_dofile (luaVM, filename);
+	result = luaL_dofile (luaVM, filename);
 	#else
-	lua_dofile (luaVM, filename);
+	result = lua_dofile (luaVM, filename);
 	#endif
+
+	if (0 != result)
+		g_warning ("Error code %d when running LUA script \"%s\"!", result, filename);
 }
 
 static void
