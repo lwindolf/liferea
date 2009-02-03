@@ -469,10 +469,11 @@ itemview_create (GtkWidget *ilc)
 		itemview->priv->userDefinedDateFmt = NULL;
 	}
 	
-	if (itemview->priv->userDefinedDateFmt)
+	if (itemview->priv->userDefinedDateFmt) {
 		debug1 (DEBUG_GUI, "user defined date format is: >>>%s<<<", itemview->priv->userDefinedDateFmt);
-	else
+	} else {
 		debug0 (DEBUG_GUI, "using default date format");
+	}
 
 	if (0 == itemview->priv->zoom) {	/* workaround for scheme problem with the last releases */
 		itemview->priv->zoom = 100;
