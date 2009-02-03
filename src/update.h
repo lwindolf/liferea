@@ -131,8 +131,7 @@ typedef struct updateJob {
 	update_result_cb	callback;	/**< result processing callback */
 	gpointer		user_data;	/**< result processing user data */
 	updateFlags		flags;		/**< request and result processing flags */
-	gint			state;		/**< State of the job (enum request_state) */	
-	gushort			retryCount;	/**< Count how many retries have been done */	
+	gint			state;		/**< State of the job (enum request_state) */
 } *updateJobPtr;
 
 /**

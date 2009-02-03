@@ -212,15 +212,11 @@ subscription_update (subscriptionPtr subscription, guint flags)
 	
 	if (!subscription)
 		return;
+		
+	if (subscription->updateJob)
+		return;
 	
 	debug1 (DEBUG_UPDATE, "Scheduling %s to be updated", node_get_title (subscription->node));
-	
-	/* Retries that might have long timeouts must be 
-	   cancelled to immediately execute the user request. */
-	if (subscription->updateJob) {
-		update_job_cancel_retry (subscription->updateJob);
-		subscription->updateJob = NULL;
-	}
 	 
 	if (subscription_can_be_updated (subscription)) {
 		liferea_shell_set_status_bar (_("Updating \"%s\""), node_get_title (subscription->node));

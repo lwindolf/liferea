@@ -535,60 +535,6 @@ update_job_cancel_by_owner (gpointer owner)
 	}
 }
 
-/* Wrapper for reenqueuing requests in case of retries, for convenient call from g_timeout */
-static gboolean
-update_job_retry_cb (gpointer data)
-{
-	updateJobPtr job = (updateJobPtr)data;
-	
-	if (job->callback == NULL) {
-		debug2(DEBUG_UPDATE, "Freeing request of cancelled retry #%d for \"%s\"", job->retryCount, job->request->source);
-		update_job_free (job);
-	} else {
-		// FIXME:
-	}
-	return FALSE;
-}
-
-/* Schedules a retry for the given request */
-static void
-update_job_retry (updateJobPtr job)
-{
-	guint retryDelay;
-	gushort i;	
-
-	if (job->result) {
-		update_result_free (job->result);
-		job->result = NULL;
-	}
-		
-	/* Note: in case of permanent HTTP redirection leading to a network
-	 * error, retries will be done on the redirected request->source. */
-
-	/* Prepare for a retry: increase counter and calculate delay */
-	retryDelay = REQ_MIN_DELAY_FOR_RETRY;
-	for (i = 0; i < job->retryCount; i++)
-		retryDelay *= 3;
-	if (retryDelay > REQ_MAX_DELAY_FOR_RETRY)
-		retryDelay = REQ_MAX_DELAY_FOR_RETRY;
-
-	/* Requeue the request after the waiting delay */
-	job->retryCount++;	
-	g_timeout_add_full (G_PRIORITY_DEFAULT_IDLE, 1000 * retryDelay, update_job_retry_cb, job, NULL);
-	liferea_shell_set_status_bar (_("Could not download \"%s\". Will retry in %d seconds."), job->request->source, retryDelay);
-}
-
-gboolean
-update_job_cancel_retry (updateJobPtr job)
-{
-	if (0 < job->retryCount) {
-		job->callback = NULL;
-		debug2 (DEBUG_UPDATE, "cancelling retry #%d (%s)", job->retryCount, job->request->source);
-		return TRUE;
-	}
-	return FALSE;
-}
-
 static gboolean
 update_process_result_idle_cb (gpointer user_data)
 {
@@ -620,22 +566,6 @@ update_process_finished_job (updateJobPtr job)
 	/* Finally execute the postfilter */
 	if (job->result->data && job->request->filtercmd) 
 		update_apply_filter (job);
-	
-	// FIXME: Retrying in some error cases 
-	/*if ((job->result->returncode == NET_ERR_UNKNOWN) ||
-	    (job->result->returncode == NET_ERR_CONN_FAILED) ||
-	    (job->result->returncode == NET_ERR_SOCK_ERR) ||
-	    (job->result->returncode == NET_ERR_HOST_NOT_FOUND) ||
-	    (job->result->returncode == NET_ERR_TIMEOUT)) {
-
-		if (job->request->allowRetries && (REQ_MAX_NUMBER_OF_RETRIES <= job->retryCount)) {
-			debug1 (DEBUG_UPDATE, "retrying download (%s)", job->request->source);
-			update_job_retry (job);
-			continue;
-		}
-
-		debug1 (DEBUG_UPDATE, "retry count exceeded (%s)", job->request->source);
-	}*/
 		
 	g_idle_add (update_process_result_idle_cb, job);
 }
