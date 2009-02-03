@@ -83,8 +83,6 @@ attention_profile_dialog_get_type (void)
 static void
 attention_profile_dialog_finalize (GObject *object)
 {
-	AttentionProfileDialog *ls = ATTENTION_PROFILE_DIALOG (object);
-
 	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
@@ -155,7 +153,6 @@ attention_profile_dialog_open (AttentionProfile *ap)
 	AttentionProfileDialog	*apd;
 	GtkCellRenderer		*renderer;
 	GtkTreeViewColumn	*column;
-	GtkTreeSelection	*select;
 
 	if (singleton)
 		return singleton;
