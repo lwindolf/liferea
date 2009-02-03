@@ -56,7 +56,7 @@ enum {
 	PROP_0
 };
 
-static guint	     signals [LAST_SIGNAL] = { 0, };
+//static guint	     signals [LAST_SIGNAL] = { 0, };
 static GObjectClass *parent_class = NULL;
 
 static gpointer liferea_avahi_browser = NULL;
@@ -109,7 +109,7 @@ avahi_client_init (LifereaAvahiBrowser *browser)
 						    &error);
 }
 
-static void
+/*static void
 resolve_cb (AvahiServiceResolver  *service_resolver,
 	    AvahiIfIndex           interface,
 	    AvahiProtocol          protocol,
@@ -176,7 +176,7 @@ resolve_cb (AvahiServiceResolver  *service_resolver,
 
 	browser->priv->resolvers = g_slist_remove (browser->priv->resolvers, service_resolver);
 	avahi_service_resolver_free (service_resolver);
-}
+}*/
 
 /*static gboolean
 liferea_avahi_browser_resolve (LifereaAvahiBrowser *browser,
