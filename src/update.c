@@ -551,6 +551,8 @@ update_job_retry_cb (gpointer data)
 }
 
 /* Schedules a retry for the given request */
+/* currently unused, see the FIXME below *?
+/*
 static void
 update_job_retry (updateJobPtr job)
 {
@@ -577,6 +579,7 @@ update_job_retry (updateJobPtr job)
 	g_timeout_add_full (G_PRIORITY_DEFAULT_IDLE, 1000 * retryDelay, update_job_retry_cb, job, NULL);
 	liferea_shell_set_status_bar (_("Could not download \"%s\". Will retry in %d seconds."), job->request->source, retryDelay);
 }
+*/
 
 gboolean
 update_job_cancel_retry (updateJobPtr job)
