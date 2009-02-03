@@ -367,13 +367,6 @@ on_opml_source_selected (GtkDialog *dialog,
 }
 
 static void
-on_opml_source_dialog_destroy (GtkDialog *dialog,
-                               gpointer user_data) 
-{
-	g_object_unref (user_data);
-}
-
-static void
 ui_opml_source_get_source_url (void) 
 {
 	GtkWidget	*dialog;
