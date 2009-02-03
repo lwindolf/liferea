@@ -466,13 +466,6 @@ const gchar * common_http_error_to_str(gint httpstatus) {
 	return tmp;
 }
 
-static gchar * byte_to_hex(unsigned char nr) {
-	gchar *result = NULL;
-
-	result = g_strdup_printf("%%%x%x", nr / 0x10, nr % 0x10);
-	return result;
-}
-
 xmlChar * common_uri_escape(const xmlChar *url) {
 	xmlChar	*result;
 
