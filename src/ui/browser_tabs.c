@@ -470,7 +470,7 @@ ui_tabs_find_notebook_child (GtkWidget *parent)
 			parent = gtk_widget_get_parent (child);
 			if (!parent)
 				break;
-			if (tab = g_object_get_data(G_OBJECT(parent), "tabInfo"))
+			if ((tab = g_object_get_data(G_OBJECT(parent), "tabInfo")))
 				break;
 		} while (!GTK_IS_NOTEBOOK (parent));
 	}
