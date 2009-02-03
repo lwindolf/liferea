@@ -88,12 +88,6 @@ rule_editor_finalize (GObject *object)
 }
 
 static void
-rule_editor_destroy_cb (GtkWidget *widget, RuleEditor *re)
-{
-	g_object_unref (re);
-}
-
-static void
 rule_editor_class_init (RuleEditorClass *klass)
 {
 	GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -312,7 +306,7 @@ rule_editor_new (vfolderPtr vfolder)
 	}
 	
 	gtk_widget_show_all (re->priv->root);
-	
+
 	return re;
 }
 
