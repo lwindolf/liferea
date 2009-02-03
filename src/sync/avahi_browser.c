@@ -178,7 +178,7 @@ resolve_cb (AvahiServiceResolver  *service_resolver,
 	avahi_service_resolver_free (service_resolver);
 }
 
-static gboolean
+/*static gboolean
 liferea_avahi_browser_resolve (LifereaAvahiBrowser *browser,
 			       const char         *name)
 {
@@ -202,7 +202,7 @@ liferea_avahi_browser_resolve (LifereaAvahiBrowser *browser,
 	browser->priv->resolvers = g_slist_prepend (browser->priv->resolvers, service_resolver);
 
 	return TRUE;
-}
+}*/
 
 void
 liferea_avahi_browser_start (LifereaAvahiBrowser *browser)
