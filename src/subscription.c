@@ -30,6 +30,8 @@
 #include "feedlist.h"
 #include "metadata.h"
 #include "net.h"
+#include "ui/auth_dialog.h"
+#include "ui/itemview.h"
 #include "ui/liferea_shell.h"
 #include "ui/ui_node.h"
 
