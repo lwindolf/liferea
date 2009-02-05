@@ -255,14 +255,10 @@ feed_process_update_result (subscriptionPtr subscription, const struct updateRes
 	feedParserCtxtPtr	ctxt;
 	nodePtr			node = subscription->node;
 	feedPtr			feed = (feedPtr)node->data;
-	gchar			*old_source;
 
 	debug_enter ("feed_process_update_result");
 	
 	if (result->data) {
-		/* we save all properties that should not be overwritten in all cases */
-		old_source = g_strdup (subscription_get_source (subscription));	// FIXME: stupid concept?
-
 		/* parse the new downloaded feed into feed and itemSet */
 		ctxt = feed_create_parser_ctxt ();
 		ctxt->feed = feed;
@@ -303,9 +299,6 @@ feed_process_update_result (subscriptionPtr subscription, const struct updateRes
 			/* restore user defined properties if necessary */
 			if (flags & FEED_REQ_RESET_TITLE)
 				node_set_title (node, ctxt->title);
-				
-			if (!(flags & FEED_REQ_AUTO_DISCOVER))
-				subscription_set_source (subscription, old_source);
 
 			if (flags & FEED_REQ_RESET_UPDATE_INT) {
 				/* The following check is to prevent the rare case
@@ -328,7 +321,6 @@ feed_process_update_result (subscriptionPtr subscription, const struct updateRes
 				notification_node_has_new_items (node, feed->enforcePopup);
 		}
 				
-		g_free (old_source);
 		feed_free_parser_ctxt (ctxt);
 	} else {
 		node->available = FALSE;
