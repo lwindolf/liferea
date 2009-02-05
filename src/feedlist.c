@@ -23,11 +23,13 @@
 
 #include "common.h"
 #include "conf.h"
+#include "db.h"
 #include "debug.h"
 #include "feed.h"
 #include "feedlist.h"
 #include "folder.h"
 #include "itemlist.h"
+#include "net.h"
 #include "node.h"
 #include "script.h"
 #include "update.h"
