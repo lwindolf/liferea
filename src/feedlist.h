@@ -61,13 +61,6 @@ GType feedlist_get_type (void);
 FeedList * feedlist_create (void);
 
 /**
- * Get feed list root node.
- *
- * @returns root node
- */
-nodePtr feedlist_get_root (void);
-
-/**
  * Get currently selected feed list node 
  *
  * @returns selected node (or NULL)
