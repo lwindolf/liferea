@@ -29,6 +29,7 @@
 #include "feed.h"
 #include "feedlist.h"
 #include "folder.h"
+#include "item_state.h"
 #include "itemlist.h"
 #include "itemset.h"
 #include "metadata.h"
