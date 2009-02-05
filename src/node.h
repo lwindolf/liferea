@@ -248,13 +248,6 @@ void node_set_id(nodePtr node, const gchar *id);
 void node_free(nodePtr node);
 
 /**
- * Refreshes all counters of the given node.
- *
- * @param node	node to update
- */
-void node_update_counters(nodePtr node);
-
-/**
  * Helper function for generic node rendering. Performs
  * a generic node serialization to XML and passes the
  * generated XML source document to the XSLT stylesheet
@@ -272,14 +265,6 @@ gchar * node_default_render(nodePtr node);
  * @param node	the node
  */
 void node_save(nodePtr node);
-
-/**
- * Resets the update interval for a given node.
- *
- * @param node	the node
- * @param now	current time
- */
-void node_reset_update_counter(nodePtr node, GTimeVal *now);
 
 /**
  * Loads all items of the given node into memory.
