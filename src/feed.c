@@ -267,22 +267,21 @@ feed_process_update_result (subscriptionPtr subscription, const struct updateRes
 		ctxt->subscription = subscription;
 
 		/* try to parse the feed */
-		if (!feed_parse (ctxt)) {
-			/* if it doesn't work and it is a new subscription
-			   start feed auto discovery */
-			if (flags & FEED_REQ_AUTO_DISCOVER)
-				feed_parser_auto_discover (ctxt);
-		}
+		feed_parse (ctxt);
 		
 		if (ctxt->failed) {
+			/* No feed found, display an error */
 			node->available = FALSE;
 
 			g_string_prepend (feed->parseErrors, _("<p>Could not detect the type of this feed! Please check if the source really points to a resource provided in one of the supported syndication formats!</p>"
 			                                       "XML Parser Output:<br /><div class='xmlparseroutput'>"));
 			g_string_append (feed->parseErrors, "</div>");
-		}
-		
-		if (!ctxt->failed && !(flags & FEED_REQ_AUTO_DISCOVER)) {
+		} else if (!ctxt->failed && !ctxt->feed->fhp) {
+			/* There's a feed but no Handler. This means autodiscovery
+			 * found a feed, but we still need to download it.
+			 * An update should be in progress that will process it */
+		} else {
+			/* Feed found, process it */
 			itemSetPtr	itemSet;
 			guint		newCount;
 			

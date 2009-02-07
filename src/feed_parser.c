@@ -119,6 +119,8 @@ feed_parser_auto_discover (feedParserCtxtPtr ctxt)
 		debug1 (DEBUG_UPDATE, "Discovered link: %s", source);
 		ctxt->failed = FALSE;
 		subscription_set_source (ctxt->subscription, source);
+
+		/* The feed that was processed wasn't the correct one, we need to redownload it */
 		subscription_update (ctxt->subscription, FEED_REQ_RESET_TITLE | FEED_REQ_RESET_UPDATE_INT);
 		g_free (source);
 	} else {
@@ -203,9 +205,12 @@ feed_parse (feedParserCtxtPtr ctxt)
 		}
 	} while(0);
 	
-	/* if we don't have a feed type here we don't have a feed source yet or
-	   the feed source is no more valid and we need to start auto discovery */
-	if(!ctxt->feed->fhp) {
+	/* if the given URI isn't valid we need to start auto discovery */
+	if(ctxt->failed)
+		feed_parser_auto_discover (ctxt);
+
+	if(ctxt->failed) {
+		/* Autodiscovery failed */
 		/* test if we have a HTML page */
 		if((strstr(ctxt->data, "<html>") || strstr(ctxt->data, "<HTML>") ||
 		    strstr(ctxt->data, "<html ") || strstr(ctxt->data, "<HTML "))) {

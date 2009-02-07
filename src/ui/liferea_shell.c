@@ -778,7 +778,6 @@ liferea_shell_URL_received (GtkWidget *widget, GdkDragContext *context, gint x, 
 				feedlist_add_subscription (g_strdup (tmp2), NULL, NULL,
 				                           FEED_REQ_RESET_TITLE |
 				                           FEED_REQ_RESET_UPDATE_INT | 
-				                           FEED_REQ_AUTO_DISCOVER | 
 				                           FEED_REQ_PRIORITY_HIGH);
 			}
 		}

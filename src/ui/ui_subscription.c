@@ -673,7 +673,6 @@ on_newdialog_response (GtkDialog *dialog, gint response_id, gpointer user_data)
 		feedlist_add_subscription (source, filter, options,
 					   FEED_REQ_RESET_TITLE | 
 					   FEED_REQ_RESET_UPDATE_INT | 
-					   FEED_REQ_AUTO_DISCOVER | 
 					   FEED_REQ_PRIORITY_HIGH | 
 					   FEED_REQ_DOWNLOAD_FAVICON | 
 					   FEED_REQ_AUTH_DIALOG);
@@ -799,7 +798,6 @@ on_simple_newdialog_response (GtkDialog *dialog, gint response_id, gpointer user
 		feedlist_add_subscription (source, NULL, NULL,
 					   FEED_REQ_RESET_TITLE | 
 					   FEED_REQ_RESET_UPDATE_INT | 
-					   FEED_REQ_AUTO_DISCOVER | 
 					   FEED_REQ_PRIORITY_HIGH | 
 					   FEED_REQ_DOWNLOAD_FAVICON | 
 					   FEED_REQ_AUTH_DIALOG);

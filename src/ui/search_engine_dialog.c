@@ -118,7 +118,6 @@ on_search_engine_dialog_response (GtkDialog *dialog, gint responseId, gpointer u
 		                           /*FEED_REQ_SHOW_PROPDIALOG | <- not needed*/
 		                           FEED_REQ_RESET_TITLE |
 		                           FEED_REQ_RESET_UPDATE_INT | 
-		                           FEED_REQ_AUTO_DISCOVER | 
 					   FEED_REQ_PRIORITY_HIGH |
 					   FEED_REQ_DOWNLOAD_FAVICON |
 					   FEED_REQ_AUTH_DIALOG);
