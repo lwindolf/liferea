@@ -224,9 +224,10 @@ GtkStyle * itemview_get_style (void);
 /**
  * Launch the given URL in the currently active HTML view.
  *
- * @param url	the link to load
+ * @param url		the link to load
+ * @param forceInternal	TRUE if internal browsing is to be enforced
  */
-void itemview_launch_URL (const gchar *url);
+void itemview_launch_URL (const gchar *url, gboolean internal);
 
 /**
  * Requests the item view to change zoom level.

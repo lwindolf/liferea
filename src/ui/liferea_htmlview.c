@@ -313,10 +313,8 @@ liferea_htmlview_launch_URL (LifereaHtmlView *htmlview, const gchar *url, gboole
 {
 	struct internalUriType	*uriType;
 	
+	g_return_if_fail (htmlview);
 	g_return_if_fail (url);
-	
-	if (!htmlview)
-		htmlview = browser_tabs_get_active_htmlview ();
 	
 	debug3 (DEBUG_GUI, "launch URL: %s  %s %s", conf_get_bool_value (BROWSE_INSIDE_APPLICATION)?"true":"false",
 		  (htmlviewImpl->launchInsidePossible) ()?"true":"false",

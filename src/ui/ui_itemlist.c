@@ -34,7 +34,6 @@
 #include "newsbin.h"
 #include "social.h"
 #include "ui/browser_tabs.h"
-#include "ui/liferea_htmlview.h"
 #include "ui/liferea_shell.h"
 #include "ui/ui_common.h"
 #include "ui/ui_popup.h"
@@ -284,7 +283,6 @@ ui_itemlist_update_item_foreach (gpointer key,
 void 
 ui_itemlist_update_all_items (void) 
 {
-
 	g_hash_table_foreach (item_id_to_iter, ui_itemlist_update_item_foreach, NULL);
 }
 
@@ -474,7 +472,7 @@ on_popup_launchitem_selected (void)
 
 	item = itemlist_get_selected ();
 	if (item) {
-		liferea_htmlview_launch_URL (NULL, (gchar *)item_get_source (item), FALSE);
+		itemview_launch_URL (item_get_source (item), FALSE);
 				       
 		item_unload (item);
 	} else {
@@ -732,7 +730,7 @@ void
 ui_itemlist_search_item_link (itemPtr item)
 {
 	gchar *url = social_get_link_search_url (item_get_source (item));
-	liferea_htmlview_launch_URL (NULL, url, FALSE);
+	itemview_launch_URL (url, FALSE);
 	g_free (url);
 }
 

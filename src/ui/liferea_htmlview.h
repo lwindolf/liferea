@@ -116,7 +116,7 @@ void liferea_htmlview_close (LifereaHtmlView *htmlview);
  * in inside the HTML widget according to the launchType
  * parameter.
  *
- * @param htmlview	optional html view (if NULL currently active one is used)
+ * @param htmlview	the HTML view to use
  * @param url		URL to launch
  * @param forceInternal	TRUE if internal launch is to be enforced
  */
