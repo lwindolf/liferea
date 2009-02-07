@@ -136,7 +136,7 @@ on_tab_url_entry_activate (GtkWidget *widget, gpointer user_data)
 	gchar	*url;
 
 	url = (gchar *)gtk_entry_get_text (GTK_ENTRY (widget));
-	liferea_htmlview_launch_URL (tab->htmlview, url, UI_HTMLVIEW_LAUNCH_INTERNAL);
+	liferea_htmlview_launch_URL (tab->htmlview, url, TRUE /* force internal */);
 
 	return TRUE;
 }
@@ -157,7 +157,7 @@ on_tab_history_back (GtkWidget *widget, gpointer user_data)
 	gchar		*url;
 
 	url = browser_tab_history_back (tab),
-	liferea_htmlview_launch_URL (tab->htmlview, url, UI_HTMLVIEW_LAUNCH_INTERNAL);
+	liferea_htmlview_launch_URL (tab->htmlview, url, TRUE /* force internal */);
 	gtk_entry_set_text (GTK_ENTRY (tab->urlentry), url);
 }
 
@@ -168,7 +168,7 @@ on_tab_history_forward (GtkWidget *widget, gpointer user_data)
 	gchar		*url;
 
 	url = browser_tab_history_forward (tab),
-	liferea_htmlview_launch_URL (tab->htmlview, url, UI_HTMLVIEW_LAUNCH_INTERNAL);
+	liferea_htmlview_launch_URL (tab->htmlview, url, TRUE /* force internal */);
 	gtk_entry_set_text (GTK_ENTRY (tab->urlentry), url);
 }
 
@@ -444,7 +444,7 @@ browser_tabs_add_new (const gchar *url, const gchar *title, gboolean activate)
 	 
 	if (url) {
 		browser_tab_history_add_location (tab, (gchar *)url);
-		liferea_htmlview_launch_URL (tab->htmlview, (gchar *)url, UI_HTMLVIEW_LAUNCH_INTERNAL);
+		liferea_htmlview_launch_URL (tab->htmlview, (gchar *)url, TRUE /* force internal */);
 	}
 	return tab->htmlview;
 }

@@ -84,12 +84,6 @@ void	liferea_htmlview_clear (LifereaHtmlView *htmlview);
  */
 void	liferea_htmlview_write (LifereaHtmlView *htmlview, const gchar *string, const gchar *base);
 
-enum {
-	UI_HTMLVIEW_LAUNCH_DEFAULT,
-	UI_HTMLVIEW_LAUNCH_EXTERNAL,
-	UI_HTMLVIEW_LAUNCH_INTERNAL
-};
-
 /**
  * Checks if the passed URL is a special internal Liferea
  * link that should never be handled by the browser. To be
@@ -124,9 +118,9 @@ void liferea_htmlview_close (LifereaHtmlView *htmlview);
  *
  * @param htmlview	optional html view (if NULL currently active one is used)
  * @param url		URL to launch
- * @param launchType    Type of launch request: 0 = default, 1 = external, 2 = internal
+ * @param forceInternal	TRUE if internal launch is to be enforced
  */
-void liferea_htmlview_launch_URL (LifereaHtmlView *htmlview, const gchar *url, gint launchType);
+void liferea_htmlview_launch_URL (LifereaHtmlView *htmlview, const gchar *url, gboolean forceInternal);
 
 /**
  * Function to change the zoom level of the HTML widget.

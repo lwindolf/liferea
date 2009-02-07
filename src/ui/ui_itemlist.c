@@ -474,7 +474,7 @@ on_popup_launchitem_selected (void)
 
 	item = itemlist_get_selected ();
 	if (item) {
-		liferea_htmlview_launch_URL (NULL, (gchar *)item_get_source (item), UI_HTMLVIEW_LAUNCH_DEFAULT);
+		liferea_htmlview_launch_URL (NULL, (gchar *)item_get_source (item), FALSE);
 				       
 		item_unload (item);
 	} else {
@@ -732,7 +732,7 @@ void
 ui_itemlist_search_item_link (itemPtr item)
 {
 	gchar *url = social_get_link_search_url (item_get_source (item));
-	liferea_htmlview_launch_URL (NULL, url, UI_HTMLVIEW_LAUNCH_DEFAULT);
+	liferea_htmlview_launch_URL (NULL, url, FALSE);
 	g_free (url);
 }
 
@@ -740,7 +740,7 @@ void
 ui_itemlist_add_item_bookmark (itemPtr item)
 {
 	gchar *url = social_get_bookmark_url (item_get_source (item), item_get_title (item));
-	liferea_htmlview_launch_URL (NULL, url, UI_HTMLVIEW_LAUNCH_EXTERNAL);
+	(void)browser_launch_URL_external (url);
 	g_free (url);
 }
 

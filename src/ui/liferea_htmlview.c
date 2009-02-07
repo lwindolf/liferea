@@ -309,7 +309,7 @@ liferea_htmlview_close (LifereaHtmlView *htmlview)
 }
 
 void
-liferea_htmlview_launch_URL (LifereaHtmlView *htmlview, const gchar *url, gint launchType)
+liferea_htmlview_launch_URL (LifereaHtmlView *htmlview, const gchar *url, gboolean forceInternal)
 {
 	struct internalUriType	*uriType;
 	
@@ -318,9 +318,9 @@ liferea_htmlview_launch_URL (LifereaHtmlView *htmlview, const gchar *url, gint l
 	if (!htmlview)
 		htmlview = browser_tabs_get_active_htmlview ();
 	
-	debug3 (DEBUG_GUI, "launch URL: %s  %s %d", conf_get_bool_value (BROWSE_INSIDE_APPLICATION)?"true":"false",
+	debug3 (DEBUG_GUI, "launch URL: %s  %s %s", conf_get_bool_value (BROWSE_INSIDE_APPLICATION)?"true":"false",
 		  (htmlviewImpl->launchInsidePossible) ()?"true":"false",
-		  launchType);
+		  forceInternal?"true":"false");
 
 	/* first catch all links with special URLs... */
 	if (liferea_htmlview_is_special_url (url)) {
@@ -364,9 +364,8 @@ liferea_htmlview_launch_URL (LifereaHtmlView *htmlview, const gchar *url, gint l
 		}
 	}
 	
-	if((launchType == UI_HTMLVIEW_LAUNCH_INTERNAL || conf_get_bool_value (BROWSE_INSIDE_APPLICATION)) &&
-	   (htmlviewImpl->launchInsidePossible) () &&
-	   (launchType != UI_HTMLVIEW_LAUNCH_EXTERNAL)) {
+	if((forceInternal || conf_get_bool_value (BROWSE_INSIDE_APPLICATION)) &&
+	   (htmlviewImpl->launchInsidePossible) ()) {
 	   
 	   	/* before loading external content suppress internal link schema again */
 		htmlview->priv->internal = FALSE;
@@ -425,7 +424,7 @@ liferea_htmlview_do_zoom (LifereaHtmlView *htmlview, gboolean in)
 static void
 on_popup_launch_link_activate (GtkWidget *widget, gpointer user_data)
 {
-	liferea_htmlview_launch_URL (NULL, (gchar *)user_data, UI_HTMLVIEW_LAUNCH_EXTERNAL);
+	browser_launch_URL_external ((gchar *)user_data);
 }
 
 static void
@@ -470,7 +469,7 @@ static void
 on_popup_social_bm_link_activate (GtkWidget *widget, gpointer user_data)
 {	
 	gchar *url = social_get_bookmark_url ((gchar *)user_data, "");
-	liferea_htmlview_launch_URL (NULL, url, UI_HTMLVIEW_LAUNCH_EXTERNAL);
+	browser_launch_URL_external (url);
 	g_free (url);
 }
 

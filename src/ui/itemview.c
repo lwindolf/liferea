@@ -495,7 +495,7 @@ itemview_get_style (void)
 void
 itemview_launch_URL (const gchar *url)
 {
-	liferea_htmlview_launch_URL (itemview->priv->htmlview, url, UI_HTMLVIEW_LAUNCH_INTERNAL);
+	liferea_htmlview_launch_URL (itemview->priv->htmlview, url, TRUE /* force internal */);
 }
 
 void
