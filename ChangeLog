@@ -26,6 +26,8 @@
 	  (Lars Lindner)
 	* Fix OPML subscriptions (Emilio Pozuelo Monfort and Lars
 	  Lindner)
+	* Misc small fixes and cleanups. (Lars Lindner and
+	  Emilio Pozuelo Monfort and Adrian Bunk)
 
 2009-01-22  Adrian Bunk  <bunk@users.sourceforge.net>
 
