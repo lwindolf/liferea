@@ -353,7 +353,7 @@ on_opml_source_selected (GtkDialog *dialog,
 {
 	nodePtr node;
 	subscriptionPtr	subscription;
-	gchar		*source;
+	const gchar *source;
 
 	if (response_id == GTK_RESPONSE_OK) {
 		node = node_new (node_source_get_node_type ());
