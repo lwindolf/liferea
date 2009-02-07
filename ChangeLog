@@ -24,6 +24,8 @@
 	  (patch by Mathie Leplatre)
 	* Removed broken download retry mechanism.
 	  (Lars Lindner)
+	* Fix OPML subscriptions (Emilio Pozuelo Monfort and Lars
+	  Lindner)
 
 2009-01-22  Adrian Bunk  <bunk@users.sourceforge.net>
 

@@ -7,7 +7,8 @@ glade_DATA = liferea.glade \
 	simple_subscription.glade \
 	bloglines_source.glade \
 	google_source.glade \
-	node_source.glade
+	node_source.glade \
+	opml_source.glade
 
 EXTRA_DIST = \
 	$(glade_DATA) \

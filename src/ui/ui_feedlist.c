@@ -328,7 +328,7 @@ ui_feedlist_delete_response_cb (GtkDialog *dialog, gint response_id, gpointer us
 {	
 	switch (response_id) {
 		case GTK_RESPONSE_ACCEPT:
-			feedlist_remove_node ((nodePtr)user_data);
+			feedlist_node_removed ((nodePtr)user_data);
 			break;
 	}
 	gtk_widget_destroy (GTK_WIDGET (dialog));
