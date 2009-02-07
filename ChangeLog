@@ -2,6 +2,8 @@
 
 	Version 1.4.25 (Stable)
 
+	* Fixes SF #2570424: Possible recursive C++ build dependency problem.
+	  (patch by Hubert Figuiere)
 	* Update of Japanese translation (Takeshi AIHANA)
 
 

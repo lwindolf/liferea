@@ -44,6 +44,7 @@ AC_DEFUN([GECKO_INIT],
 AC_REQUIRE([AC_PROG_AWK])dnl
 
 AC_PROG_AWK
+AC_PROG_CXX
 
 # ************************
 # Check which gecko to use
