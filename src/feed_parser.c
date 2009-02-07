@@ -120,7 +120,9 @@ feed_parser_auto_discover (feedParserCtxtPtr ctxt)
 		ctxt->failed = FALSE;
 		subscription_set_source (ctxt->subscription, source);
 
-		/* The feed that was processed wasn't the correct one, we need to redownload it */
+		/* The feed that was processed wasn't the correct one, we need to redownload it.
+		 * Cancel the update in case there's one in progress */
+		subscription_cancel_update (ctxt->subscription);
 		subscription_update (ctxt->subscription, FEED_REQ_RESET_TITLE | FEED_REQ_RESET_UPDATE_INT);
 		g_free (source);
 	} else {
