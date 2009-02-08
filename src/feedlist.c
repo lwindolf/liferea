@@ -215,7 +215,7 @@ feedlist_init (FeedList *fl)
 	}
 
 	/* 5. Start automatic updating */
-	feedlist->priv->autoUpdateTimer = g_timeout_add (10000, feedlist_auto_update, NULL);
+	feedlist->priv->autoUpdateTimer = g_timeout_add_seconds (10, feedlist_auto_update, NULL);
 
 	/* 6. Finally save the new feed list state */
 	feedlist->priv->loading = FALSE;
@@ -596,7 +596,7 @@ feedlist_schedule_save (void)
 	/* By waiting here 5s and checking feedlist_save_time
 	   we hope to catch bulks of feed list changes and save 
 	   less often */
-	feedlist->priv->saveTimer = g_timeout_add (5000, feedlist_schedule_save_cb, NULL);
+	feedlist->priv->saveTimer = g_timeout_add_seconds (5, feedlist_schedule_save_cb, NULL);
 }
 
 /* This method is only to be used when exiting the program! */

@@ -179,7 +179,7 @@ void on_menu_show_update_monitor(GtkWidget *widget, gpointer user_data) {
 		/* Fill in data */
 		um1hash = g_hash_table_new(g_str_hash, g_str_equal);
 		um2hash = g_hash_table_new(g_str_hash, g_str_equal);
-	 	(void)g_timeout_add(1000, ui_update_monitor_update, NULL);
+	 	(void)g_timeout_add_seconds(1, ui_update_monitor_update, NULL);
 	}
 	
 	gtk_window_present(GTK_WINDOW(umdialog));
