@@ -123,7 +123,7 @@ feed_parser_auto_discover (feedParserCtxtPtr ctxt)
 		/* The feed that was processed wasn't the correct one, we need to redownload it.
 		 * Cancel the update in case there's one in progress */
 		subscription_cancel_update (ctxt->subscription);
-		subscription_update (ctxt->subscription, FEED_REQ_RESET_TITLE | FEED_REQ_RESET_UPDATE_INT);
+		subscription_update (ctxt->subscription, FEED_REQ_RESET_TITLE);
 		g_free (source);
 	} else {
 		debug0 (DEBUG_UPDATE, "No feed link found!");

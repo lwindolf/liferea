@@ -299,18 +299,18 @@ feed_process_update_result (subscriptionPtr subscription, const struct updateRes
 			if (flags & FEED_REQ_RESET_TITLE)
 				node_set_title (node, ctxt->title);
 
-			if (flags & FEED_REQ_RESET_UPDATE_INT) {
-				/* The following check is to prevent the rare case
-				   that a high-frequency/volume feed provides a feed-
-				   specific update interval that is lower than the
-				   users preferred update interval. This e.g. 1min
-				   updates might be bad for laptop users... */
-				if (subscription_get_default_update_interval (subscription) < conf_get_int_value (DEFAULT_UPDATE_INTERVAL))
-					subscription_set_update_interval (subscription, conf_get_int_value (DEFAULT_UPDATE_INTERVAL));
-				else
-					subscription_set_update_interval (subscription, subscription_get_default_update_interval(subscription));
-			}
-			
+			/* The following check is to prevent the rare case
+			   that a high-frequency/volume feed provides a feed-
+			   specific update interval that is lower than the
+			   users preferred update interval. This e.g. 1min
+			   updates might be bad for laptop users... */
+			guint global_interval = conf_get_int_value (DEFAULT_UPDATE_INTERVAL);
+			guint default_interval = subscription_get_default_update_interval (subscription);
+			guint user_interval = subscription_get_update_interval(subscription);
+			if (user_interval == -1 /* not changed by the user */ &&
+			    default_interval < global_interval)
+				subscription_set_update_interval (subscription, global_interval);
+
 			if (flags > 0)
 				db_subscription_update (subscription);
 

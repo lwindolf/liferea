@@ -36,7 +36,7 @@ enum cache_limit {
 /** Flags used in the request structure */
 enum feed_request_flags {
 	FEED_REQ_RESET_TITLE		= (1<<0),	/**< Feed's title should be reset to default upon update */
-	FEED_REQ_RESET_UPDATE_INT	= (1<<1),	/**< Feed's update interval should be reset to default upon update */
+	/* FEED_REQ_RESET_UPDATE_INT is not used anymore */
 	/* FEED_REQ_AUTO_DISCOVER is not used anymore */
 	FEED_REQ_PRIORITY_HIGH		= (1<<3),	/**< set to signal that this is an important user triggered request */
 	FEED_REQ_DOWNLOAD_FAVICON	= (1<<4),	/**< set to make the favicon be updated after the feed is downloaded */

@@ -441,8 +441,7 @@ static void
 on_popup_subscribe_url_activate (GtkWidget *widget, gpointer user_data)
 {
 	feedlist_add_subscription ((gchar *)user_data, NULL, NULL, 
-	                           FEED_REQ_RESET_TITLE |
-	                           FEED_REQ_RESET_UPDATE_INT);
+	                           FEED_REQ_RESET_TITLE);
 }
 
 static void
