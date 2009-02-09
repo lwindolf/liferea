@@ -155,9 +155,7 @@ gchar * html_auto_discover_feed(const gchar* data, const gchar *baseUri) {
 		debug1(DEBUG_UPDATE, "search result: %s", res? res : "none found");
 	}
 
-	if(res == NULL) {
-		ui_show_error_box(_("Feed link auto discovery failed! No feed links found!"));
-	} else {
+	if(res) {
 		/* turn relative URIs into absolute URIs */
 		tmp = res;
 		res = common_build_url(res, baseUri);
