@@ -287,7 +287,7 @@ on_propdialog_response (GtkDialog *dialog,
 		feedlist_schedule_save ();
 		db_subscription_update (subscription);
 		if (needsUpdate)
-			subscription_update (subscription, FEED_REQ_AUTH_DIALOG | FEED_REQ_PRIORITY_HIGH);
+			subscription_update (subscription, FEED_REQ_PRIORITY_HIGH);
 	}
 
 	g_object_unref(spd);
@@ -673,8 +673,7 @@ on_newdialog_response (GtkDialog *dialog, gint response_id, gpointer user_data)
 		feedlist_add_subscription (source, filter, options,
 					   FEED_REQ_RESET_TITLE | 
 					   FEED_REQ_PRIORITY_HIGH | 
-					   FEED_REQ_DOWNLOAD_FAVICON | 
-					   FEED_REQ_AUTH_DIALOG);
+					   FEED_REQ_DOWNLOAD_FAVICON);
 		g_free (source);
 	}
 
@@ -797,8 +796,7 @@ on_simple_newdialog_response (GtkDialog *dialog, gint response_id, gpointer user
 		feedlist_add_subscription (source, NULL, NULL,
 					   FEED_REQ_RESET_TITLE | 
 					   FEED_REQ_PRIORITY_HIGH | 
-					   FEED_REQ_DOWNLOAD_FAVICON | 
-					   FEED_REQ_AUTH_DIALOG);
+					   FEED_REQ_DOWNLOAD_FAVICON);
 		g_free (source);
 	}
 	

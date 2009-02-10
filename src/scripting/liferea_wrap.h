@@ -9616,7 +9616,6 @@ static swig_lua_const_info swig_constants[] = {
 { SWIG_LUA_INT,     (char *)"FEED_REQ_RESET_TITLE", (long) FEED_REQ_RESET_TITLE, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"FEED_REQ_PRIORITY_HIGH", (long) FEED_REQ_PRIORITY_HIGH, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"FEED_REQ_DOWNLOAD_FAVICON", (long) FEED_REQ_DOWNLOAD_FAVICON, 0, 0, 0},
-{ SWIG_LUA_INT,     (char *)"FEED_REQ_AUTH_DIALOG", (long) FEED_REQ_AUTH_DIALOG, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"FEED_REQ_ALLOW_RETRIES", (long) FEED_REQ_ALLOW_RETRIES, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"FEED_REQ_NO_PROXY", (long) FEED_REQ_NO_PROXY, 0, 0, 0},
 { SWIG_LUA_INT,     (char *)"FS_LABEL", (long) FS_LABEL, 0, 0, 0},
