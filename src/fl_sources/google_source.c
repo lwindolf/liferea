@@ -292,6 +292,7 @@ on_google_source_selected (GtkDialog *dialog,
 		node_set_title (node, "Google Reader");
 		node_source_new (node, google_source_get_type ());
 		node_set_subscription (node, subscription);
+		node->data = google_source_new (node);
 		google_source_update (node);
 		feedlist_node_added (node);
 	}
