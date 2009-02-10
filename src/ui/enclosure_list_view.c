@@ -297,7 +297,7 @@ enclosure_list_view_load (EnclosureListView *elv, itemPtr item)
 			if (size > 0)
 				sizeStr = g_strdup_printf (_("%d%s"), size, unit);
 			else
-				sizeStr = g_strdup_printf ("");
+				sizeStr = g_strdup ("");
 			
 			gtk_tree_store_append (elv->priv->treestore, &iter, NULL);
 			gtk_tree_store_set (elv->priv->treestore, &iter, 
