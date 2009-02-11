@@ -286,7 +286,7 @@ import_parse_outline (xmlNodePtr cur, nodePtr parentNode, gboolean trusted)
 	/* 6. update immediately if necessary */
 	if (needsUpdate && (NODE_TYPE(node))) {
 		debug1 (DEBUG_CACHE, "seems to be an import, setting new id: %s and doing first download...", node_get_id(node));
-		subscription_update (node->subscription, FEED_REQ_DOWNLOAD_FAVICON);
+		subscription_update (node->subscription, 0);
 	}
 	
 	/* 5. save node info to DB */

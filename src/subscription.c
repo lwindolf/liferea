@@ -158,7 +158,8 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	subscriptionPtr subscription = (subscriptionPtr)user_data;
 	nodePtr		node = subscription->node;
 	gboolean	processing = FALSE;
-	
+	GTimeVal	now;
+
 	/* 1. preprocessing */
 
 	/* update the subscription URL on permanent redirects */
@@ -188,7 +189,8 @@ subscription_process_update_result (const struct updateResult * const result, gp
 
 	/* 3. call favicon updating after subscription processing
 	      to ensure we have valid baseUrl for feed nodes... */
-	if (flags & FEED_REQ_DOWNLOAD_FAVICON)
+	g_get_current_time (&now);
+	if (favicon_update_needed (subscription->node->id, subscription->updateState, &now))
 		subscription_update_favicon (subscription);
 	
 	/* 4. generic postprocessing */
@@ -263,9 +265,6 @@ subscription_auto_update (subscriptionPtr subscription)
 
 	g_get_current_time (&now);
 	
-	if (favicon_update_needed (subscription->node->id, subscription->updateState, &now))
-		flags |= FEED_REQ_DOWNLOAD_FAVICON;
-			
 	if (subscription->updateState->lastPoll.tv_sec + interval*60 <= now.tv_sec)
 		subscription_update (subscription, flags);
 }

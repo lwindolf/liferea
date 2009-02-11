@@ -39,7 +39,7 @@ enum feed_request_flags {
 	/* FEED_REQ_RESET_UPDATE_INT is not used anymore */
 	/* FEED_REQ_AUTO_DISCOVER is not used anymore */
 	FEED_REQ_PRIORITY_HIGH		= (1<<3),	/**< set to signal that this is an important user triggered request */
-	FEED_REQ_DOWNLOAD_FAVICON	= (1<<4),	/**< set to make the favicon be updated after the feed is downloaded */
+	/* FEED_REQ_DOWNLOAD_FAVICON is not used anymore */
 	/* FEED_REQ_AUTH_DIALOG is not used anymore */
 	FEED_REQ_ALLOW_RETRIES		= (1<<6),	/**< set to allow fetch retries on network errors */
 	FEED_REQ_NO_PROXY		= (1<<7)	/**< sets no proxy flag */
