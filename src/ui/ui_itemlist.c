@@ -24,6 +24,7 @@
 #include <string.h>
 #include <gdk/gdkkeysyms.h>
 
+#include "browser.h"
 #include "common.h"
 #include "debug.h"
 #include "feed.h"
