@@ -161,17 +161,6 @@ google_source_login (GoogleSourcePtr gsource, guint32 flags)
 	update_execute_request (gsource, request, google_source_login_cb, gsource, flags);
 }
 
-/** 
- * Setting up a google reader source node after import or when subscribing.
- */
-void
-google_source_setup (nodePtr parent, nodePtr node)
-{
-	node->icon = ui_common_create_pixbuf ("fl_google.png");
-	node->data = (gpointer) google_source_new(node);
-	feedlist_node_added (node);
-}
-
 /* node source type implementation */
 
 static void
@@ -293,8 +282,9 @@ on_google_source_selected (GtkDialog *dialog,
 		node_source_new (node, google_source_get_type ());
 		node_set_subscription (node, subscription);
 		node->data = google_source_new (node);
-		google_source_update (node);
+		node->icon = ui_common_create_pixbuf ("fl_google.png");
 		feedlist_node_added (node);
+		google_source_update (node);
 	}
 
 	gtk_widget_destroy (GTK_WIDGET (dialog));
