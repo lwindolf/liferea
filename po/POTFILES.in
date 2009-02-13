@@ -11,6 +11,7 @@ xslt/newsbin.xml.in
 xslt/vfolder.xml.in
 src/bacon-message-connection.c
 src/bacon-message-connection.h
+src/browser.c
 src/comments.c
 src/comments.h
 src/common.c
@@ -47,6 +48,7 @@ src/itemset.h
 src/main.c
 src/metadata.c
 src/metadata.h
+src/migrate.c
 src/net.c
 src/net.h
 src/node.c
@@ -94,6 +96,7 @@ src/ui/auth_dialog.c
 src/ui/auth_dialog.h
 src/ui/liferea_dialog.c
 src/ui/liferea_dialog.h
+src/ui/ui_common.c
 src/ui/ui_dnd.c
 src/ui/ui_dnd.h
 src/ui/ui_feedlist.c

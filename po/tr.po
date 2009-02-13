@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-25 22:50+0100\n"
+"POT-Creation-Date: 2009-02-13 02:33+0200\n"
 "PO-Revision-Date: 2007-01-12 03:00+0100\n"
 "Last-Translator: Mehmet Atif Ergun <mehmetaergun@gmail.com>\n"
 "Language-Team: ubuntu-l10n-tr <ubuntu-tr@lists.ubuntu.com>\n"
@@ -194,6 +194,16 @@ msgstr "Haber Sepeti:"
 msgid "Search Folder:"
 msgstr "Arama Klasörü:"
 
+#: ../src/browser.c:59 ../src/browser.c:79
+#, c-format
+msgid "Browser command failed: %s"
+msgstr "Tarayıcı komutu başarısız oldu: %s"
+
+#: ../src/browser.c:82
+#, c-format
+msgid "Starting: \"%s\""
+msgstr "Başlıyor: \"%s\""
+
 #. unauthorized
 #: ../src/comments.c:119
 #, fuzzy
@@ -302,52 +312,52 @@ msgstr "Ekin indirilmesi bitti: \"%s\""
 msgid "Error renaming %s to %s\n"
 msgstr "İsim değiştirilirken hata"
 
-#: ../src/export.c:342 ../src/export.c:344
+#: ../src/export.c:339 ../src/export.c:341
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
 msgstr "Bellek dosyası okunurken XML hatası! \"%s\" içeri aktarılamadı!"
 
-#: ../src/export.c:350 ../src/export.c:352
+#: ../src/export.c:347 ../src/export.c:349
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr "Boş dosya! \"%s\" isimli OPML dosyası içeri aktarılırken boş olmamalı."
 
-#: ../src/export.c:373 ../src/export.c:375
+#: ../src/export.c:370 ../src/export.c:372
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 "\"%s\" geçerli bir OPML dosyası değil! Liferea bu dosyayı içeri aktaramıyor!"
 
-#: ../src/export.c:394
+#: ../src/export.c:391
 msgid "Imported feed list"
 msgstr ""
 
-#: ../src/export.c:405
+#: ../src/export.c:402
 msgid "Import Feed List"
 msgstr "Haber Kaynak Listesini İçeri Aktar"
 
-#: ../src/export.c:405
+#: ../src/export.c:402
 msgid "Import"
 msgstr "Içeri Aktar"
 
-#: ../src/export.c:413
+#: ../src/export.c:410
 msgid "Error while exporting feed list!"
 msgstr "Haber kaynak listesini "
 
-#: ../src/export.c:415
+#: ../src/export.c:412
 msgid "Feed List exported!"
 msgstr "Haber Kaynak Listesi dışarı aktarıldı!"
 
-#: ../src/export.c:422
+#: ../src/export.c:419
 msgid "Export Feed List"
 msgstr "Haber Kaynak Listesini Dışarı Aktar"
 
-#: ../src/export.c:422
+#: ../src/export.c:419
 msgid "Export"
 msgstr "Dışarı Aktar"
 
-#: ../src/feed.c:284
+#: ../src/feed.c:276
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!</"
@@ -357,17 +367,17 @@ msgstr ""
 "toplama formatlarından birinde sağlandığından emin olun!</p>XML Ayrıştırıcı "
 "Çıktısı: <br /><div class='xmlparseroutput'>"
 
-#: ../src/feed.c:325
+#: ../src/feed.c:317
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" güncellendi..."
 
-#: ../src/feed.c:336
+#: ../src/feed.c:327
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" müsait değil"
 
-#: ../src/feed_parser.c:126
+#: ../src/feed_parser.c:130
 #, fuzzy
 msgid ""
 "The URL you want Liferea to subscribe to points to a webpage and the auto "
@@ -378,37 +388,33 @@ msgstr ""
 "ve otomatik keşif bu sayfada haber kaynağı bulamadı. Belki de bu web sayfası "
 "haber kaynaklarının otomatik keşfini desteklemiyordur.</p>"
 
-#: ../src/feed_parser.c:159
+#: ../src/feed_parser.c:163
 #, fuzzy, c-format
 msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
 msgstr ""
 "<p>Haber kaynağı okunurken XML hatası! Haber kaynağı \"%s\" yüklenemedi!</p>"
 
-#: ../src/feed_parser.c:164
+#: ../src/feed_parser.c:168
 #, fuzzy
 msgid "Empty document!"
 msgstr "<p>Boş dosya!</p>"
 
-#: ../src/feed_parser.c:173
+#: ../src/feed_parser.c:177
 #, fuzzy
 msgid "Invalid XML!"
 msgstr "<p>Geçersiz XML!</p>"
 
-#: ../src/feed_parser.c:213
+#: ../src/feed_parser.c:220
 msgid "Source points to HTML document."
 msgstr ""
 
-#: ../src/feed_parser.c:216
+#: ../src/feed_parser.c:223
 #, fuzzy
 msgid "Could not determine the feed type."
 msgstr "<p>Haber kaynak türünü belirleyemedi.</p>"
 
-#: ../src/html.c:153
-msgid "Feed link auto discovery failed! No feed links found!"
-msgstr "Haber linki otomatik keşfi başarısız! Hiçbir haber kaynağı bulunamadı!"
-
 #. if we don't find a feed with unread items do nothing
-#: ../src/itemlist.c:396
+#: ../src/itemlist.c:397
 msgid "There are no unread items "
 msgstr "Okunmamış öğe yok "
 
@@ -473,6 +479,19 @@ msgstr "Liferea, bilinmeyen bir değişkenle karşılaştı: %s\n"
 msgid "Liferea seems to be running already!"
 msgstr "Liferea zaten açık gözüküyor!"
 
+#: ../src/migrate.c:332
+#, fuzzy
+msgid ""
+"This version of Liferea uses a new cache format and has migrated your feed "
+"cache. The cache content of v1.2 in ~/.liferea_1.2 was not deleted "
+"automatically. Please remove this directory manually once you are sure "
+"migration was successful!"
+msgstr ""
+"Liferea v1.2 yeni bir bellek formatı kullanıyor ve sizin haber belleğinizi "
+"taşıdı. v.1.0'ın bellek içeriği olan ~/.liferea klasörü otomatik olarak "
+"silinmedi. Bellek içeriğinin doğru görüntülendiğinden emin olduktan sonra "
+"lütfen bu klasörü siliniz!"
+
 #. Cast time_t tunix to int.
 #. Print cookie expire warning.
 #: ../src/net.c:198
@@ -480,7 +499,7 @@ msgstr "Liferea zaten açık gözüküyor!"
 msgid "Cookie for %s has expired!"
 msgstr "%s için çerezin (cookie) süresi doldu!"
 
-#: ../src/net.c:487
+#: ../src/net.c:488
 msgid "Network error"
 msgstr ""
 
@@ -558,7 +577,7 @@ msgstr "ekli"
 msgid "not included"
 msgstr "ekli değil"
 
-#: ../src/rule.c:382 ../src/ui/attention_profile_dialog.c:175
+#: ../src/rule.c:382 ../src/ui/attention_profile_dialog.c:172
 msgid "Category"
 msgstr ""
 
@@ -571,44 +590,44 @@ msgstr "okunmuş"
 msgid "is not set"
 msgstr ""
 
-#: ../src/subscription.c:102
+#: ../src/subscription.c:104
 #, fuzzy, c-format
 msgid "Subscription \"%s\" is already being updated!"
 msgstr "Bu haber kaynağı \"%s\" zaten güncellenmekte!"
 
-#: ../src/subscription.c:107
+#: ../src/subscription.c:109
 #, fuzzy, c-format
 msgid ""
 "The subscription \"%s\" was discontinued. Liferea won't update it anymore!"
 msgstr ""
 "Bu haber kaynağı \"%s\"durdurulmuş. Liferea bunu artık güncellemeyecek!"
 
-#: ../src/subscription.c:142
+#: ../src/subscription.c:144
 #, fuzzy, c-format
 msgid "Updating favicon for \"%s\""
 msgstr "\"%s\" için haber kaynak simgesi güncelleniyor"
 
-#: ../src/subscription.c:165
+#: ../src/subscription.c:168
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "\"%s\" için adres süresiz değiştirildi ve güncelleniyor"
 
-#: ../src/subscription.c:174
+#: ../src/subscription.c:176
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr "\"%s\" durdurulmuş. Liferea bunu artık güncellemeyecek"
 
-#: ../src/subscription.c:177
+#: ../src/subscription.c:179
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\" son güncellemeden beri değişmemiş"
 
-#: ../src/subscription.c:226
+#: ../src/subscription.c:225
 #, c-format
 msgid "Updating \"%s\""
 msgstr "\"%s\" güncelleniyor"
 
-#: ../src/subscription.c:449
+#: ../src/subscription.c:445
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
@@ -642,11 +661,6 @@ msgstr "Hata: Dosya \"%s\" açılamadı"
 msgid "Error: There is no file \"%s\""
 msgstr "Hata: \"%s\" Böyle bir dosya yok"
 
-#: ../src/update.c:578
-#, c-format
-msgid "Could not download \"%s\". Will retry in %d seconds."
-msgstr "\"%s\" indirilemedi. %d saniye sonra tekrar denenecek."
-
 #: ../src/vfolder.c:51
 msgid "New Search Folder"
 msgstr "Yeni Arama Klasörü"
@@ -667,13 +681,13 @@ msgstr "Yön"
 msgid "The orientation of the tray."
 msgstr "Çubuğun yönü"
 
-#: ../src/ui/enclosure_list_view.c:172
+#: ../src/ui/enclosure_list_view.c:174
 #, fuzzy
 msgid "Attachments"
 msgstr "yorumlar"
 
 #. update list title
-#: ../src/ui/enclosure_list_view.c:265
+#: ../src/ui/enclosure_list_view.c:267
 #, c-format
 msgid "%d attachment"
 msgid_plural "%d attachments"
@@ -681,167 +695,162 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. The following literals are the enclosure list size units
-#: ../src/ui/enclosure_list_view.c:280
+#: ../src/ui/enclosure_list_view.c:282
 msgid " Bytes"
 msgstr ""
 
-#: ../src/ui/enclosure_list_view.c:283
+#: ../src/ui/enclosure_list_view.c:285
 msgid "kB"
 msgstr ""
 
-#: ../src/ui/enclosure_list_view.c:287
+#: ../src/ui/enclosure_list_view.c:289
 msgid "MB"
 msgstr ""
 
-#: ../src/ui/enclosure_list_view.c:291
+#: ../src/ui/enclosure_list_view.c:293
 msgid "GB"
 msgstr ""
 
-#: ../src/ui/enclosure_list_view.c:296
+#: ../src/ui/enclosure_list_view.c:298
 #, c-format
 msgid "%d%s"
 msgstr ""
 
-#: ../src/ui/enclosure_list_view.c:355 ../src/ui/enclosure_list_view.c:512
+#: ../src/ui/enclosure_list_view.c:357 ../src/ui/enclosure_list_view.c:514
 #: ../src/ui/ui_subscription.c:384
 msgid "Choose File"
 msgstr "Dosya Seç"
 
-#: ../src/ui/enclosure_list_view.c:417
+#: ../src/ui/enclosure_list_view.c:419
 #, c-format
 msgid "<b>File Extension .%s</b>"
 msgstr "<b>Dosya Uzantısı .%s</b>"
 
-#: ../src/ui/enclosure_list_view.c:419
+#: ../src/ui/enclosure_list_view.c:421
 #, c-format
 msgid "<b>%s</b>"
 msgstr "<b>%s</b>"
 
-#: ../src/ui/liferea_shell.c:319
+#: ../src/ui/liferea_shell.c:327
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
 msgstr[0] " (%d yeni)"
 msgstr[1] " (%d yeni)"
 
-#: ../src/ui/liferea_shell.c:324
+#: ../src/ui/liferea_shell.c:332
 #, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
 msgstr[0] "%d okunmamış%s"
 msgstr[1] "%d okunmamış%s"
 
-#. launch the homepage when button in about dialog is pressed
-#: ../src/ui/liferea_shell.c:649
-msgid "http://liferea.sf.net"
-msgstr "http://liferea.sf.net"
-
-#: ../src/ui/liferea_shell.c:655
+#: ../src/ui/liferea_shell.c:656
 msgid "topics_en.html"
 msgstr "topics_en.html"
 
-#: ../src/ui/liferea_shell.c:656
+#: ../src/ui/liferea_shell.c:657
 msgid "Help Topics"
 msgstr "Yardım Konuları"
 
-#: ../src/ui/liferea_shell.c:663
+#: ../src/ui/liferea_shell.c:664
 msgid "reference_en.html"
 msgstr "reference_en.html"
 
-#: ../src/ui/liferea_shell.c:664
+#: ../src/ui/liferea_shell.c:665
 msgid "Quick Reference"
 msgstr "Hızlı Başvuru"
 
-#: ../src/ui/liferea_shell.c:671
+#: ../src/ui/liferea_shell.c:672
 msgid "faq_en.html"
 msgstr "faq_en.html"
 
-#: ../src/ui/liferea_shell.c:672
+#: ../src/ui/liferea_shell.c:673
 msgid "FAQ"
 msgstr "SSS"
 
-#: ../src/ui/liferea_shell.c:724
+#: ../src/ui/liferea_shell.c:725
 msgid "Liferea is now online"
 msgstr "Liferea şimdi çevrimiçi"
 
-#: ../src/ui/liferea_shell.c:726
+#: ../src/ui/liferea_shell.c:727
 msgid "Work Offline"
 msgstr "Çevrimdışı çalış"
 
-#: ../src/ui/liferea_shell.c:728
+#: ../src/ui/liferea_shell.c:729
 msgid "Liferea is now offline"
 msgstr "Liferea şimdi çevrimdışı"
 
-#: ../src/ui/liferea_shell.c:730
+#: ../src/ui/liferea_shell.c:731
 msgid "Work Online"
 msgstr "Çevrimiçi çalış"
 
-#: ../src/ui/liferea_shell.c:787
+#: ../src/ui/liferea_shell.c:811
 #, fuzzy
 msgid "_Subscriptions"
 msgstr "Yeni Abonelik"
 
-#: ../src/ui/liferea_shell.c:788
+#: ../src/ui/liferea_shell.c:812
 msgid "Update _All"
 msgstr "_Hepsini Güncelle"
 
-#: ../src/ui/liferea_shell.c:788
+#: ../src/ui/liferea_shell.c:812
 #, fuzzy
 msgid "Updates all subscriptions."
 msgstr "Yeni Abonelik"
 
-#: ../src/ui/liferea_shell.c:790
+#: ../src/ui/liferea_shell.c:814
 msgid "Mark All As _Read"
 msgstr "Hepsini _Okundu Olarak İşaretle"
 
-#: ../src/ui/liferea_shell.c:790
+#: ../src/ui/liferea_shell.c:814
 msgid "Marks read every item of every subscription."
 msgstr "Her aboneliğin her öğesini okundu olarak işaretler."
 
-#: ../src/ui/liferea_shell.c:792
+#: ../src/ui/liferea_shell.c:816
 msgid "_Import Feed List..."
 msgstr "Haber Kaynak Listesini _İçeri Aktar..."
 
-#: ../src/ui/liferea_shell.c:792
+#: ../src/ui/liferea_shell.c:816
 msgid "Imports an OPML feed list."
 msgstr "OPML haber kaynak listesini içeri aktarır."
 
-#: ../src/ui/liferea_shell.c:793
+#: ../src/ui/liferea_shell.c:817
 msgid "_Export Feed List..."
 msgstr "Haber kaynak listesini _Dışarı Aktar..."
 
-#: ../src/ui/liferea_shell.c:793
+#: ../src/ui/liferea_shell.c:817
 msgid "Exports the feed list as OPML."
 msgstr "Haber kaynak listesini OPML dosyası olarak dışarı aktarır."
 
-#: ../src/ui/liferea_shell.c:794
+#: ../src/ui/liferea_shell.c:818
 msgid "_Quit"
 msgstr "_Çık"
 
-#: ../src/ui/liferea_shell.c:796
+#: ../src/ui/liferea_shell.c:820
 #, fuzzy
 msgid "_Feed"
 msgstr "_Haber Kaynakları"
 
-#: ../src/ui/liferea_shell.c:797
+#: ../src/ui/liferea_shell.c:821
 #, fuzzy
 msgid "Remove _All Items"
 msgstr "_Hepsini Sil"
 
-#: ../src/ui/liferea_shell.c:797
+#: ../src/ui/liferea_shell.c:821
 msgid "Removes all items of the currently selected feed."
 msgstr "Seçili haber kaynağındaki bütün öğeleri siler."
 
-#: ../src/ui/liferea_shell.c:800
+#: ../src/ui/liferea_shell.c:824
 #, fuzzy
 msgid "_Item"
 msgstr "_Maddeler"
 
-#: ../src/ui/liferea_shell.c:801
+#: ../src/ui/liferea_shell.c:825
 msgid "_Next Unread Item"
 msgstr "_Sonraki Okunmamış Madde"
 
-#: ../src/ui/liferea_shell.c:801
+#: ../src/ui/liferea_shell.c:825
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -849,187 +858,196 @@ msgstr ""
 "Bir sonraki okunmamış öğeye atlar. Eğer gerekiyorsa, okunmamış öğeleri olan "
 "bir sonraki haber kaynağını seçer."
 
-#: ../src/ui/liferea_shell.c:804
+#: ../src/ui/liferea_shell.c:828
 msgid "_View"
 msgstr "_Görüntüle"
 
-#: ../src/ui/liferea_shell.c:805 ../src/ui/liferea_htmlview.c:525
+#: ../src/ui/liferea_shell.c:829 ../src/ui/liferea_htmlview.c:524
 msgid "_Increase Text Size"
 msgstr "Metin Boyutunu _Büyüt"
 
-#: ../src/ui/liferea_shell.c:805
+#: ../src/ui/liferea_shell.c:829
 msgid "Increases the text size of the item view."
 msgstr "Madde görünümünün metin boyutunu büyütür."
 
-#: ../src/ui/liferea_shell.c:807 ../src/ui/liferea_htmlview.c:526
+#: ../src/ui/liferea_shell.c:831 ../src/ui/liferea_htmlview.c:525
 msgid "_Decrease Text Size"
 msgstr "Metin Boyutunu _Küçült"
 
-#: ../src/ui/liferea_shell.c:807
+#: ../src/ui/liferea_shell.c:831
 msgid "Decreases the text size of the item view."
 msgstr "Madde görünümünün metin boyutunu küçültür."
 
-#: ../src/ui/liferea_shell.c:810
+#: ../src/ui/liferea_shell.c:834
 msgid "_Tools"
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:811
+#: ../src/ui/liferea_shell.c:835
 #, fuzzy
 msgid "_Update Monitor"
 msgstr "Güncelleme Denetçisi"
 
-#: ../src/ui/liferea_shell.c:811
+#: ../src/ui/liferea_shell.c:835
 msgid "Show a list of all feeds currently in the update queue"
 msgstr "Güncelleme kuyruğundaki bütün haber kaynalarının bir listesini göster"
 
-#: ../src/ui/liferea_shell.c:813
+#: ../src/ui/liferea_shell.c:837
 #, fuzzy
 msgid "_Script Manager"
 msgstr "Senaryo Yöneticisi"
 
-#: ../src/ui/liferea_shell.c:813
+#: ../src/ui/liferea_shell.c:837
 msgid "Allows to configure and edit LUA hook scripts"
 msgstr "LUA kanca senaryolarını düzenlemeyi ve ayarlamayı sağlar"
 
-#: ../src/ui/liferea_shell.c:815 ../glade/liferea.glade.h:37
+#: ../src/ui/liferea_shell.c:839 ../glade/liferea.glade.h:37
 #, fuzzy
 msgid "Attention Profile"
 msgstr "kimlik doğrulaması başarısız"
 
-#: ../src/ui/liferea_shell.c:815
+#: ../src/ui/liferea_shell.c:839
 msgid "Presents statistics on your most read categories"
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:817
+#: ../src/ui/liferea_shell.c:841
 msgid "_Preferences"
 msgstr "_Seçenekler"
 
-#: ../src/ui/liferea_shell.c:817
+#: ../src/ui/liferea_shell.c:841
 msgid "Edit Preferences."
 msgstr "Seçenekleri Düzenle."
 
-#: ../src/ui/liferea_shell.c:820
+#: ../src/ui/liferea_shell.c:844
 msgid "_Search"
 msgstr "_Ara"
 
-#: ../src/ui/liferea_shell.c:821
+#: ../src/ui/liferea_shell.c:845
 msgid "Search All Feeds..."
 msgstr "Bütün Maddeleri Ara..."
 
-#: ../src/ui/liferea_shell.c:821
+#: ../src/ui/liferea_shell.c:845
 msgid "Show the search dialog."
 msgstr "Arama penceresini göster."
 
-#: ../src/ui/liferea_shell.c:822
+#: ../src/ui/liferea_shell.c:846
 msgid "Search With ..."
 msgstr "Kullanarak Ara..."
 
-#: ../src/ui/liferea_shell.c:824
+#: ../src/ui/liferea_shell.c:848
 msgid "_Help"
 msgstr "_Yardım"
 
-#: ../src/ui/liferea_shell.c:825
+#: ../src/ui/liferea_shell.c:849
 msgid "_Contents"
 msgstr "_İçindekiler"
 
-#: ../src/ui/liferea_shell.c:825
+#: ../src/ui/liferea_shell.c:849
 msgid "View help for this application."
 msgstr "Bu uygulamanın yardımını görüntüle."
 
-#: ../src/ui/liferea_shell.c:826
+#: ../src/ui/liferea_shell.c:850
 msgid "_Quick Reference"
 msgstr "_Hızlı Başvuru"
 
-#: ../src/ui/liferea_shell.c:826
+#: ../src/ui/liferea_shell.c:850
 msgid "View a list of all Liferea shortcuts."
 msgstr "Liferea kısaollarının bir listesini göster."
 
-#: ../src/ui/liferea_shell.c:828
+#: ../src/ui/liferea_shell.c:852
 msgid "_FAQ"
 msgstr "_SSS"
 
-#: ../src/ui/liferea_shell.c:828
+#: ../src/ui/liferea_shell.c:852
 msgid "View the FAQ for this application."
 msgstr "Bu uygulamanın sıkça sorulan sorularını göster"
 
-#: ../src/ui/liferea_shell.c:829
+#: ../src/ui/liferea_shell.c:853
 msgid "_About"
 msgstr "_Hakkında"
 
-#: ../src/ui/liferea_shell.c:829
+#: ../src/ui/liferea_shell.c:853
 msgid "Shows an about dialog."
 msgstr "Hakkında penceresini gösterir."
 
-#: ../src/ui/liferea_shell.c:833
+#: ../src/ui/liferea_shell.c:857
 msgid "_Normal View"
 msgstr "_Normal Görünüm"
 
-#: ../src/ui/liferea_shell.c:833
+#: ../src/ui/liferea_shell.c:857
 msgid "Set view mode to mail client mode."
 msgstr "Görünüm modunu, posta istemci moduna ayarla."
 
-#: ../src/ui/liferea_shell.c:835
+#: ../src/ui/liferea_shell.c:859
 msgid "_Wide View"
 msgstr "_Geniş Görünüm"
 
-#: ../src/ui/liferea_shell.c:835
+#: ../src/ui/liferea_shell.c:859
 msgid "Set view mode to use three vertical panes."
 msgstr "Görünüm modunu, üç dikey pano kullanacak şekilde ayarla."
 
-#: ../src/ui/liferea_shell.c:837
+#: ../src/ui/liferea_shell.c:861
 msgid "_Combined View"
 msgstr "_Birleşik Görünüm"
 
-#: ../src/ui/liferea_shell.c:837
+#: ../src/ui/liferea_shell.c:861
 msgid "Set view mode to two pane mode."
 msgstr "Görünüm modunu iki pano moduna ayarla."
 
-#: ../src/ui/liferea_shell.c:842
+#: ../src/ui/liferea_shell.c:866
+msgid "_Reduced Feed List"
+msgstr ""
+
+#: ../src/ui/liferea_shell.c:866
+#, fuzzy
+msgid "Hide feeds with no unread items."
+msgstr "Okunmamış öğe yok "
+
+#: ../src/ui/liferea_shell.c:871
 msgid "_New Subscription..."
 msgstr "_Yeni Abonelik..."
 
-#: ../src/ui/liferea_shell.c:842
+#: ../src/ui/liferea_shell.c:871
 msgid "Adds a subscription to the feed list."
 msgstr "Haber kaynak listesine yeni abonelik ekler."
 
-#: ../src/ui/liferea_shell.c:844
+#: ../src/ui/liferea_shell.c:873
 msgid "New _Folder..."
 msgstr "Yeni _Klasör..."
 
-#: ../src/ui/liferea_shell.c:844
+#: ../src/ui/liferea_shell.c:873
 msgid "Adds a folder to the feed list."
 msgstr "Haber kaynak listesine yeni klasör ekler."
 
-#: ../src/ui/liferea_shell.c:845
+#: ../src/ui/liferea_shell.c:874
 msgid "New S_earch Folder..."
 msgstr "Yeni A_rama Klasörü..."
 
-#: ../src/ui/liferea_shell.c:845
+#: ../src/ui/liferea_shell.c:874
 msgid "Adds a new search folder to the feed list."
 msgstr "Haber kaynak listesine yeni arama klasörü ekler."
 
-#: ../src/ui/liferea_shell.c:846
+#: ../src/ui/liferea_shell.c:875
 msgid "New _Source..."
 msgstr "Yeni _Kaynak..."
 
-#: ../src/ui/liferea_shell.c:846
+#: ../src/ui/liferea_shell.c:875
 msgid "Adds a new feed list source."
 msgstr "Yeni haber kaynağı ekler."
 
-#: ../src/ui/liferea_shell.c:847
+#: ../src/ui/liferea_shell.c:876
 msgid "New _News Bin..."
 msgstr "Yeni _Haber Sepeti..."
 
-#: ../src/ui/liferea_shell.c:847
+#: ../src/ui/liferea_shell.c:876
 msgid "Adds a new news bin."
 msgstr "Yeni haber sepeti ekler."
 
-#: ../src/ui/liferea_shell.c:851
+#: ../src/ui/liferea_shell.c:880
 #, fuzzy
 msgid "_Mark Items Read"
 msgstr "/_Hepsini Okundu Olarak İşaretle"
 
-#: ../src/ui/liferea_shell.c:851
+#: ../src/ui/liferea_shell.c:880
 #, fuzzy
 msgid ""
 "Marks all items of the selected feed list node / in the item list as read."
@@ -1037,80 +1055,80 @@ msgstr ""
 "Seçili abonelikteki bütün öğeleri, ya da seçili klasördeki bütün "
 "abonelikleri okudu olarak işaretler."
 
-#: ../src/ui/liferea_shell.c:853
+#: ../src/ui/liferea_shell.c:882
 #, fuzzy
 msgid "_Update"
 msgstr "/_Güncelle"
 
-#: ../src/ui/liferea_shell.c:853
+#: ../src/ui/liferea_shell.c:882
 msgid ""
 "Updates the selected subscription or all subscriptions of the selected "
 "folder."
 msgstr "Seçili aboneliği ya da seçili klasördeki bütün abonelikleri günceller."
 
-#: ../src/ui/liferea_shell.c:858
+#: ../src/ui/liferea_shell.c:887
 msgid "_Properties"
 msgstr "_Özellikler"
 
-#: ../src/ui/liferea_shell.c:858
+#: ../src/ui/liferea_shell.c:887
 msgid "Opens the property dialog for the selected subscription."
 msgstr "Seçili abonelik için özellikler penceresini açar."
 
-#: ../src/ui/liferea_shell.c:859
+#: ../src/ui/liferea_shell.c:888
 #, fuzzy
 msgid "_Remove"
 msgstr "_Hepsini Sil"
 
-#: ../src/ui/liferea_shell.c:859
+#: ../src/ui/liferea_shell.c:888
 msgid "Removes the selected subscription."
 msgstr "Seçili aboneliği siler."
 
-#: ../src/ui/liferea_shell.c:863
+#: ../src/ui/liferea_shell.c:892
 msgid "Toggle _Read Status"
 msgstr "_Okunma Durumunu Değiştir"
 
-#: ../src/ui/liferea_shell.c:863
+#: ../src/ui/liferea_shell.c:892
 msgid "Toggles the read status of the selected item."
 msgstr "Seçili öğenin okunma durumunu değiştirir."
 
-#: ../src/ui/liferea_shell.c:865
+#: ../src/ui/liferea_shell.c:894
 msgid "Toggle Item _Flag"
 msgstr "Madde _İşaretini Değiştir"
 
-#: ../src/ui/liferea_shell.c:865
+#: ../src/ui/liferea_shell.c:894
 msgid "Toggles the flag status of the selected item."
 msgstr "Seçili öğenin işaretini ekler ya da siler"
 
-#: ../src/ui/liferea_shell.c:867
+#: ../src/ui/liferea_shell.c:896
 #, fuzzy
 msgid "R_emove"
 msgstr "/Maddeyi _Sil"
 
-#: ../src/ui/liferea_shell.c:867
+#: ../src/ui/liferea_shell.c:896
 msgid "Removes the selected item."
 msgstr "Seçili öğeyi siler."
 
-#: ../src/ui/liferea_shell.c:869
+#: ../src/ui/liferea_shell.c:898
 msgid "_Launch In Browser"
 msgstr "Tarayıcıda _Aç"
 
-#: ../src/ui/liferea_shell.c:869
+#: ../src/ui/liferea_shell.c:898
 msgid "Launches the item's link in the configured browser."
 msgstr "Maddenin linkini ayarlı tarayıcıda açar."
 
-#: ../src/ui/liferea_shell.c:874
+#: ../src/ui/liferea_shell.c:903
 msgid "_Work Offline"
 msgstr "_Çevrimdışı Çalış"
 
-#: ../src/ui/liferea_shell.c:874
+#: ../src/ui/liferea_shell.c:903
 msgid "This option allows you to disable subscription updating."
 msgstr "Bu seçenek, abonelik güncellenmesini devreden çıkarmanızı sağlar."
 
-#: ../src/ui/liferea_shell.c:1255
+#: ../src/ui/liferea_shell.c:1287
 msgid "Liferea - Linux Feed Reader"
 msgstr "Liferea - Linux Haber Okuyucusu"
 
-#: ../src/ui/liferea_shell.c:1257
+#: ../src/ui/liferea_shell.c:1289
 msgid ""
 "<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news "
 "feeds.</p><p>The left pane contains the list of your subscriptions. To add a "
@@ -1125,21 +1143,21 @@ msgstr ""
 "geçirmek için haber kaynak listesinde onu seçin. Haber başlıkları sağ panoda "
 "gözükecektir.</p>"
 
-#: ../src/ui/search_dialog.c:64
+#: ../src/ui/search_dialog.c:67
 #, fuzzy, c-format
 msgid "%d Search Result for \"%s\""
 msgid_plural "%d Search Results for \"%s\""
 msgstr[0] "%d arama sonucu. Aranan: \"%s\""
 msgstr[1] "%d arama sonucu. Aranan: \"%s\""
 
-#: ../src/ui/search_dialog.c:69
+#: ../src/ui/search_dialog.c:72
 #, fuzzy, c-format
 msgid "%d Search Result"
 msgid_plural "%d Search Results"
 msgstr[0] "%d arama sonucu. Aranan: \"%s\""
 msgstr[1] "%d arama sonucu. Aranan: \"%s\""
 
-#: ../src/ui/search_dialog.c:75
+#: ../src/ui/search_dialog.c:78
 #, c-format
 msgid ""
 "The item list now contains all items matching the specified search pattern. "
@@ -1152,7 +1170,7 @@ msgstr ""
 "penceresindeki \"Arama Klasörü\" düğmesini tıklayın. Liferea haber kaynak "
 "listenize bir arama klasörü ekleyecek."
 
-#: ../src/ui/attention_profile_dialog.c:185
+#: ../src/ui/attention_profile_dialog.c:182
 #, fuzzy
 msgid "Count"
 msgstr "yorumlar"
@@ -1166,53 +1184,58 @@ msgstr "\"%s\" (%s) için kullanıcı adı ve şifre giriniz:"
 msgid "Unknown source"
 msgstr "Bilinmeyen kaynak"
 
-#: ../src/ui/ui_feedlist.c:295
+#: ../src/ui/ui_common.c:235
+#, c-format
+msgid "Couldn't find pixmap file: %s"
+msgstr "Pixmap dosyasını bulamadı: %s"
+
+#: ../src/ui/ui_feedlist.c:346
 msgid "Deleting entry"
 msgstr "Girişi siliyor"
 
-#: ../src/ui/ui_feedlist.c:296
+#: ../src/ui/ui_feedlist.c:347
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "\"%s\" ve içeriğini silmek istediğinizden emin misiniz?"
 
-#: ../src/ui/ui_feedlist.c:296
+#: ../src/ui/ui_feedlist.c:347
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "\"%s\"yi silmek istediğinizden emin misiniz?"
 
-#: ../src/ui/ui_feedlist.c:304
+#: ../src/ui/ui_feedlist.c:359
 msgid "Deletion Confirmation"
 msgstr "Silme Onayı"
 
-#: ../src/ui/ui_feedlist.c:333
+#: ../src/ui/ui_feedlist.c:388
 msgid "You have to select a feed entry"
 msgstr "Bir haber kaynağı seçmeniz gerekiyor"
 
-#: ../src/ui/ui_feedlist.c:340 ../src/ui/ui_feedlist.c:349
+#: ../src/ui/ui_feedlist.c:395 ../src/ui/ui_feedlist.c:404
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea çevrim dışı. Güncelleme olanaksız."
 
-#: ../src/ui/liferea_htmlview.c:513
+#: ../src/ui/liferea_htmlview.c:512
 #, fuzzy
 msgid "Launch Link In _Tab"
 msgstr "/Linki _Sekmede Aç"
 
-#: ../src/ui/liferea_htmlview.c:514
+#: ../src/ui/liferea_htmlview.c:513
 #, fuzzy
 msgid "_Launch Link In Browser"
 msgstr "/Linki _Tarayıcıda Aç"
 
-#: ../src/ui/liferea_htmlview.c:517
+#: ../src/ui/liferea_htmlview.c:516
 #, fuzzy, c-format
 msgid "_Bookmark Link at %s"
 msgstr "/_Yer İmi Ekle %s"
 
-#: ../src/ui/liferea_htmlview.c:521
+#: ../src/ui/liferea_htmlview.c:520
 #, fuzzy
 msgid "_Copy Link Location"
 msgstr "/Link Adresini _Kopyala"
 
-#: ../src/ui/liferea_htmlview.c:523
+#: ../src/ui/liferea_htmlview.c:522
 #, fuzzy
 msgid "_Subscribe..."
 msgstr "/_Abone Ol..."
@@ -1222,134 +1245,134 @@ msgstr "/_Abone Ol..."
 msgid "*** No title ***"
 msgstr "*** Başlık yok ***"
 
-#: ../src/ui/ui_itemlist.c:337
+#: ../src/ui/ui_itemlist.c:336
 msgid "Date"
 msgstr "Tarih"
 
-#: ../src/ui/ui_itemlist.c:351
+#: ../src/ui/ui_itemlist.c:350
 msgid "Headline"
 msgstr "Haber Başlığı"
 
-#: ../src/ui/ui_itemlist.c:481 ../src/ui/ui_itemlist.c:501
-#: ../src/ui/ui_itemlist.c:580 ../src/ui/ui_itemlist.c:727
-#: ../src/ui/ui_itemlist.c:756
+#: ../src/ui/ui_itemlist.c:480 ../src/ui/ui_itemlist.c:500
+#: ../src/ui/ui_itemlist.c:579 ../src/ui/ui_itemlist.c:726
+#: ../src/ui/ui_itemlist.c:755
 msgid "No item has been selected"
 msgstr "Hiçbir öğe seçilmedi"
 
-#: ../src/ui/ui_itemlist.c:497
+#: ../src/ui/ui_itemlist.c:496
 msgid "This item has no link specified!"
 msgstr "Bu öğe için belirlenmiş link yok!"
 
-#: ../src/ui/ui_itemlist.c:567
+#: ../src/ui/ui_itemlist.c:566
 msgid "You must select a feed to delete its items!"
 msgstr "Bu öğeleri silmek için bir haber kaynağı seçmelisiniz!"
 
-#: ../src/ui/ui_node.c:118
+#: ../src/ui/ui_node.c:119
 msgid "<i>(empty)</i>"
 msgstr "<i>(boş)</i>"
 
-#: ../src/ui/ui_popup.c:128
+#: ../src/ui/ui_popup.c:129
 msgid "/Launch Item In _Tab"
 msgstr "/Maddeyi _Sekmede Aç"
 
-#: ../src/ui/ui_popup.c:129
+#: ../src/ui/ui_popup.c:130
 msgid "/_Launch Item In Browser"
 msgstr "/Maddeyi _Tarayıcıda Aç"
 
-#: ../src/ui/ui_popup.c:136
+#: ../src/ui/ui_popup.c:137
 #, c-format
 msgid "/Copy to News Bin/%s"
 msgstr "/Haber Sepetine Kopyala/%s"
 
 #. menu option for social bookmark creation
-#: ../src/ui/ui_popup.c:144
+#: ../src/ui/ui_popup.c:145
 #, c-format
 msgid "/_Bookmark Link at %s"
 msgstr "/_Yer İmi Ekle %s"
 
-#: ../src/ui/ui_popup.c:146
+#: ../src/ui/ui_popup.c:147
 msgid "/Copy Item _URL to Clipboard"
 msgstr "/_Adresi Geçici Panoya Kopyala"
 
-#: ../src/ui/ui_popup.c:149
+#: ../src/ui/ui_popup.c:150
 #, fuzzy
 msgid "/Toggle _Read Status"
 msgstr "_Okunma Durumunu Değiştir"
 
-#: ../src/ui/ui_popup.c:150
+#: ../src/ui/ui_popup.c:151
 msgid "/Toggle Item _Flag"
 msgstr "/Madde _İşaretini Değiştir"
 
-#: ../src/ui/ui_popup.c:151
+#: ../src/ui/ui_popup.c:152
 msgid "/R_emove Item"
 msgstr "/Maddeyi _Sil"
 
-#: ../src/ui/ui_popup.c:158
+#: ../src/ui/ui_popup.c:159
 msgid "/_Update All"
 msgstr "/_Hepsini Güncelle"
 
-#: ../src/ui/ui_popup.c:159
+#: ../src/ui/ui_popup.c:160
 msgid "/_Preferences"
 msgstr "/_Seçenekler"
 
-#: ../src/ui/ui_popup.c:162
+#: ../src/ui/ui_popup.c:163
 msgid "/_Quit"
 msgstr "/_Çık"
 
-#: ../src/ui/ui_popup.c:168
+#: ../src/ui/ui_popup.c:169
 msgid "/Open Enclosure..."
 msgstr "/Eki Aç..."
 
-#: ../src/ui/ui_popup.c:169
+#: ../src/ui/ui_popup.c:170
 msgid "/Save As..."
 msgstr "/Farklı Kaydet..."
 
-#: ../src/ui/ui_popup.c:170
+#: ../src/ui/ui_popup.c:171
 #, fuzzy
 msgid "/Copy Link Location"
 msgstr "/Link Adresini _Kopyala"
 
-#: ../src/ui/ui_popup.c:304
+#: ../src/ui/ui_popup.c:305
 msgid "/_Update"
 msgstr "/_Güncelle"
 
-#: ../src/ui/ui_popup.c:306
+#: ../src/ui/ui_popup.c:307
 msgid "/_Update Folder"
 msgstr "/Klasörü _Güncelle"
 
-#: ../src/ui/ui_popup.c:308
+#: ../src/ui/ui_popup.c:309
 msgid "/_Mark All As Read"
 msgstr "/_Hepsini Okundu Olarak İşaretle"
 
-#: ../src/ui/ui_popup.c:313
+#: ../src/ui/ui_popup.c:314
 msgid "/_New"
 msgstr "/_Yeni"
 
-#: ../src/ui/ui_popup.c:314
+#: ../src/ui/ui_popup.c:315
 msgid "/_New/New _Subscription..."
 msgstr "/_Yeni/Yeni _Abonelik..."
 
-#: ../src/ui/ui_popup.c:317
+#: ../src/ui/ui_popup.c:318
 msgid "/_New/New _Folder..."
 msgstr "/_Yeni/Yeni _Klasör..."
 
-#: ../src/ui/ui_popup.c:320
+#: ../src/ui/ui_popup.c:321
 msgid "/_New/New S_earch Folder..."
 msgstr "/_Yeni/Yeni A_rama Klasörü..."
 
-#: ../src/ui/ui_popup.c:321
+#: ../src/ui/ui_popup.c:322
 msgid "/_New/New S_ource..."
 msgstr "/_Yeni/Yeni K_aynak..."
 
-#: ../src/ui/ui_popup.c:322
+#: ../src/ui/ui_popup.c:323
 msgid "/_New/New _News Bin..."
 msgstr "/_Yeni/Yeni _Haber Sepeti..."
 
-#: ../src/ui/ui_popup.c:329
+#: ../src/ui/ui_popup.c:330
 msgid "/_Delete"
 msgstr "/_Sil"
 
-#: ../src/ui/ui_popup.c:330
+#: ../src/ui/ui_popup.c:331
 msgid "/_Properties..."
 msgstr "/_Özellikler..."
 
@@ -1453,62 +1476,62 @@ msgstr "Tür"
 msgid "Program"
 msgstr "Program"
 
-#: ../src/ui/ui_script.c:36
+#: ../src/ui/ui_script.c:37
 #, fuzzy
 msgid "startup"
 msgstr "_Açılışta:"
 
 #. update events
-#: ../src/ui/ui_script.c:39
+#: ../src/ui/ui_script.c:40
 #, fuzzy
 msgid "feed updated"
 msgstr "Haber başlığı"
 
 #. feed list editing
-#: ../src/ui/ui_script.c:42
+#: ../src/ui/ui_script.c:43
 #, fuzzy
 msgid "feed added"
 msgstr "Haber Okuyucusu"
 
 #. selection hooks
-#: ../src/ui/ui_script.c:45
+#: ../src/ui/ui_script.c:46
 #, fuzzy
 msgid "item selected"
 msgstr "_Seçiliyi Sil"
 
-#: ../src/ui/ui_script.c:46
+#: ../src/ui/ui_script.c:47
 #, fuzzy
 msgid "feed selected"
 msgstr "_Seçiliyi Sil"
 
-#: ../src/ui/ui_script.c:47
+#: ../src/ui/ui_script.c:48
 #, fuzzy
 msgid "item unselected"
 msgstr "_Seçiliyi Sil"
 
-#: ../src/ui/ui_script.c:48
+#: ../src/ui/ui_script.c:49
 #, fuzzy
 msgid "feed unselected"
 msgstr "_Seçiliyi Sil"
 
-#: ../src/ui/ui_script.c:50
+#: ../src/ui/ui_script.c:51
 msgid "shutdown"
 msgstr ""
 
-#: ../src/ui/ui_script.c:154
+#: ../src/ui/ui_script.c:155
 msgid "Sorry, no scripting support available!"
 msgstr "Özür dilerim, senaryo desteği mevcut değil!"
 
-#: ../src/ui/ui_script.c:180
+#: ../src/ui/ui_script.c:181
 #, fuzzy
 msgid "Script Name"
 msgstr "Senaryo Yöneticisi"
 
-#: ../src/ui/ui_script.c:231
+#: ../src/ui/ui_script.c:232
 msgid "No script selected!"
 msgstr "Hiçbir senaryo seçili değil"
 
-#: ../src/ui/ui_search.c:138
+#: ../src/ui/ui_search.c:139
 msgid "Create a new search feed."
 msgstr "Yeni bir arama klasörü yarat"
 
@@ -1578,11 +1601,11 @@ msgstr "Geçersiz Atom haber kaynağı: bilinmeyen yazar"
 msgid "%b %d %H:%M"
 msgstr "%d %b %H:%M"
 
-#: ../src/fl_sources/bloglines_source.c:86
+#: ../src/fl_sources/bloglines_source.c:79
 msgid "Bloglines"
 msgstr "Bloglines"
 
-#: ../src/fl_sources/bloglines_source.c:87
+#: ../src/fl_sources/bloglines_source.c:80
 msgid ""
 "Integrate the feed list of your Bloglines account. Liferea will present your "
 "Bloglines subscription as a read-only subtree in the feed list."
@@ -1597,22 +1620,22 @@ msgid "feedlist.opml"
 msgstr "feedlist_tr.opml"
 
 #: ../src/fl_sources/default_source.c:174
-#: ../src/fl_sources/google_source.c:243 ../glade/new_subscription.glade.h:6
+#: ../src/fl_sources/google_source.c:234 ../glade/new_subscription.glade.h:6
 #: ../glade/simple_subscription.glade.h:5
 msgid "New Subscription"
 msgstr "Yeni Abonelik"
 
-#: ../src/fl_sources/google_source.c:118
+#: ../src/fl_sources/google_source.c:120
 #, fuzzy
 msgid "Google Reader login failed!"
 msgstr "Haber Okuyucusu"
 
-#: ../src/fl_sources/google_source.c:334
+#: ../src/fl_sources/google_source.c:320
 #, fuzzy
 msgid "Google Reader"
 msgstr "Haber Okuyucusu"
 
-#: ../src/fl_sources/google_source.c:335
+#: ../src/fl_sources/google_source.c:321
 #, fuzzy
 msgid ""
 "Integrate the feed list of your Google Reader account. Liferea will present "
@@ -1636,7 +1659,7 @@ msgstr ""
 "kaynak OPML dosyasındaki değişikliklere göre otomatik olarak haber "
 "kaynaklarını ekleyecek ya da çıkaracak"
 
-#: ../src/fl_sources/opml_source.c:400
+#: ../src/fl_sources/opml_source.c:398
 #, fuzzy
 msgid "Choose OPML File"
 msgstr "Dosya Seç"
@@ -1645,50 +1668,50 @@ msgstr "Dosya Seç"
 msgid "New OPML Subscription"
 msgstr "Yeni OPML Aboneliği"
 
-#: ../src/fl_sources/node_source.c:235
+#: ../src/fl_sources/node_source.c:230
 msgid "No feed list source types found!"
 msgstr "Hiçbir haber kaynak türü bulunamadı!"
 
-#: ../src/fl_sources/node_source.c:266
+#: ../src/fl_sources/node_source.c:261
 msgid "Source Type"
 msgstr "Kaynak Türü"
 
-#: ../src/notification/libnotify.c:52 ../src/notification/libnotify.c:72
-#: ../src/notification/libnotify.c:139
+#: ../src/notification/libnotify.c:54 ../src/notification/libnotify.c:74
+#: ../src/notification/libnotify.c:141
 msgid "This feed does not exist anymore!"
 msgstr "Bu haber kaynağı artık yok!"
 
-#: ../src/notification/libnotify.c:112
+#: ../src/notification/libnotify.c:114
 #, c-format
 msgid "This news entry has no headline"
 msgstr ""
 
-#: ../src/notification/libnotify.c:117
+#: ../src/notification/libnotify.c:119
 msgid "Visit"
 msgstr ""
 
-#: ../src/notification/libnotify.c:156 ../src/notification/libnotify.c:232
+#: ../src/notification/libnotify.c:158 ../src/notification/libnotify.c:234
 msgid "Open feed"
 msgstr ""
 
-#: ../src/notification/libnotify.c:159 ../src/notification/libnotify.c:235
+#: ../src/notification/libnotify.c:161 ../src/notification/libnotify.c:237
 #, fuzzy
 msgid "Mark all as read"
 msgstr "Hepsini _Okundu Olarak İşaretle"
 
-#: ../src/notification/libnotify.c:222
+#: ../src/notification/libnotify.c:224
 #, c-format
 msgid "%s has %d new / updated headline\n"
 msgid_plural "%s has %d new / updated headlines\n"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/notification/libnotify.c:224
+#: ../src/notification/libnotify.c:226
 #, fuzzy
 msgid "Feed Update"
 msgstr "Haber başlığı"
 
-#: ../src/notification/libnotify.c:229
+#: ../src/notification/libnotify.c:231
 #, fuzzy
 msgid "Show details"
 msgstr "Detaylar"
@@ -2482,6 +2505,16 @@ msgstr ""
 "Haber kaynak otomatik keşfini kullanmak istediğiniz, ya da haber kaynağının "
 "tam yerini bildiğiniz web sitesinin adresini belirtiniz. "
 
+#~ msgid "Feed link auto discovery failed! No feed links found!"
+#~ msgstr ""
+#~ "Haber linki otomatik keşfi başarısız! Hiçbir haber kaynağı bulunamadı!"
+
+#~ msgid "Could not download \"%s\". Will retry in %d seconds."
+#~ msgstr "\"%s\" indirilemedi. %d saniye sonra tekrar denenecek."
+
+#~ msgid "http://liferea.sf.net"
+#~ msgstr "http://liferea.sf.net"
+
 #~ msgid "Show Menu _And Toolbar"
 #~ msgstr "Menü _ve Araç Çubuğunu Göster"
 
@@ -2498,21 +2531,6 @@ msgstr ""
 #~ "Karakter sırası beklenmeyen bir şekilde sonlandı ya da UTF-8 kodlaması "
 #~ "bozuk! Bazı karakterler alınmadı!"
 
-#~ msgid "Couldn't find pixmap file: %s"
-#~ msgstr "Pixmap dosyasını bulamadı: %s"
-
-#, fuzzy
-#~ msgid ""
-#~ "This version of Liferea uses a new cache format and has migrated your "
-#~ "feed cache. The cache content of v1.2 in ~/.liferea_1.2 was not deleted "
-#~ "automatically. Please remove this directory manually once you are sure "
-#~ "migration was successful!"
-#~ msgstr ""
-#~ "Liferea v1.2 yeni bir bellek formatı kullanıyor ve sizin haber "
-#~ "belleğinizi taşıdı. v.1.0'ın bellek içeriği olan ~/.liferea klasörü "
-#~ "otomatik olarak silinmedi. Bellek içeriğinin doğru görüntülendiğinden "
-#~ "emin olduktan sonra lütfen bu klasörü siliniz!"
-
 #~ msgid ""
 #~ "Sorry, I was not able to load any installed browser plugin! Try the --"
 #~ "debug-plugins option to get debug information!"
@@ -2522,12 +2540,6 @@ msgstr ""
 
 #~ msgid "This item does not have a link assigned!"
 #~ msgstr "Bu haber için belirlenmiş link yok!"
-
-#~ msgid "Browser command failed: %s"
-#~ msgstr "Tarayıcı komutu başarısız oldu: %s"
-
-#~ msgid "Starting: \"%s\""
-#~ msgstr "Başlıyor: \"%s\""
 
 #~ msgid "No link selected!"
 #~ msgstr "Hiçbir link seçilmedi!"
