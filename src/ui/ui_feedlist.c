@@ -182,7 +182,7 @@ static gboolean ui_feedlist_filter_visible_function(GtkTreeModel *model, GtkTree
 
 	gtk_tree_model_get(model, iter, FS_PTR, &np, FS_UNREAD, &count, -1);
 
-	if (np && IS_FOLDER (np)) 
+	if (np && (IS_FOLDER (np) || IS_NODE_SOURCE (np))) 
 		return FALSE;
 
 	if (0 != count)

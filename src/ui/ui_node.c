@@ -24,6 +24,7 @@
 #include "common.h"
 #include "debug.h"
 #include "feedlist.h"
+#include "fl_sources/node_source.h"
 #include "folder.h"
 #include "ui/liferea_dialog.h"
 #include "ui/liferea_shell.h"
@@ -241,7 +242,7 @@ ui_node_load_feedlist (nodePtr node)
 		node = (nodePtr)iter->data;
 		ui_node_add (node);
 		
-		if (IS_FOLDER (node))
+		if (IS_FOLDER (node) || IS_NODE_SOURCE (node))
 			ui_node_load_feedlist (node);
 
 		iter = g_slist_next(iter);
