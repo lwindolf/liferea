@@ -102,7 +102,7 @@ void ui_itemlist_clear(void);
  * When switching tabs, the horizontal scrolling sometimes gets messed
  * up. This reverses that.
  */
-void ui_itemlist_scroll_left();
+void ui_itemlist_scroll_left (void);
 
 /**
  * @name Callbacks used from interface.c
