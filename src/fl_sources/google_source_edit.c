@@ -512,19 +512,17 @@ void
 google_source_edit_remove_callback (GoogleSourcePtr gsource, GoogleSourceActionPtr action, gboolean success)
 {
 	if (success) {	
-		// FIXME: code duplicated from update_subscription_list_callback ()
-		
-		/*
-		 * It is possible that Google changed the name of the URL that
-		 * was sent to it. In that case, I need to recover the URL 
-		 * from the list. But a node with the old URL has already 
-		 * been created. Allow the subscription update call to fix that.
+		/* 
+		 * The node was removed from the feedlist, but could have
+		 * returned because of an update before this edit request
+		 * completed. No cleaner way to handle this. 
 		 */
 		GSList* cur = gsource->root->children ;
 		for( ; cur ; cur = g_slist_next(cur))  {
 			nodePtr node = (nodePtr) cur->data ; 
 			if ( g_str_equal(node->subscription->source, action->feedUrl) ) {
 				feedlist_node_removed (node);
+				return;
 			}
 		}
 	} else {
@@ -537,7 +535,7 @@ void google_source_edit_remove_subscription(GoogleSourcePtr gsource, const gchar
 	GoogleSourceActionPtr action = google_source_action_new(); 
 	action->actionType = EDIT_ACTION_REMOVE_SUBSCRIPTION ;
 	action->feedUrl = g_strdup(feedUrl) ;
-	action->callback = update_subscription_list_callback;
+	action->callback = google_source_edit_remove_callback;
 	google_source_edit_push(gsource, action, TRUE) ;
 }
 
