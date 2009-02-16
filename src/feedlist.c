@@ -425,7 +425,7 @@ feedlist_remove_node (nodePtr node)
 	if (node->source->root != node)
 		node_source_remove_node (node->source->root, node);
 	else
-		node_remove (node);
+		feedlist_node_removed (node);
 }
 
 void
