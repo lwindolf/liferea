@@ -90,8 +90,6 @@ enclosure_list_view_get_type (void)
 static void
 enclosure_list_view_finalize (GObject *object)
 {
-	EnclosureListView *ls = ENCLOSURE_LIST_VIEW (object);
-
 	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
@@ -167,7 +165,6 @@ enclosure_list_view_new ()
 	EnclosureListView	*elv;
 	GtkCellRenderer		*renderer;
 	GtkTreeViewColumn 	*column;
-	GtkTreeSelection	*select;
 	GtkWidget		*widget;
 		
 	elv = ENCLOSURE_LIST_VIEW (g_object_new (ENCLOSURE_LIST_VIEW_TYPE, NULL));
