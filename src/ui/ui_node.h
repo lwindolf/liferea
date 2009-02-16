@@ -50,12 +50,12 @@ void ui_node_add (nodePtr node);
 /**
  * Reload the UI feedlist by removing and readding each node
  */
-void ui_node_reload_feedlist ();
+void ui_node_reload_feedlist (void);
 
 /**
  * Remove all nodes from UI
  */
-void ui_node_clear_feedlist ();
+void ui_node_clear_feedlist (void);
 
 /**
  * Add node of feedlist to UI (recursively)
