@@ -192,6 +192,8 @@ void feedlist_schedule_save (void);
  */
 void feedlist_reset_update_counters (nodePtr node);
 
+gboolean feedlist_is_writable (void);
+
 /**
  * Triggers a recursive mark-all-read on the given node
  * and updates the feed list afterwards.
