@@ -37,7 +37,7 @@
 #include "ui/liferea_shell.h"
 #include "glibcurl/glibcurl.h"
 
-static CURLSH *share_handle = NULL;
+// static CURLSH *share_handle = NULL;   FIXME: is this required?
 
 static int	NET_TIMEOUT;
 static gchar 	*useragent = NULL;
