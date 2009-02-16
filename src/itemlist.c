@@ -261,7 +261,6 @@ void
 itemlist_load (nodePtr node) 
 {
 	itemSetPtr	itemSet;
-	GSList		*iter;
 
 	debug_enter ("itemlist_load");
 
