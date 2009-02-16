@@ -32,6 +32,7 @@
 #include "common.h"
 #include "conf.h"
 #include "debug.h"
+#include "net.h"
 #include "update.h"
 #include "ui/liferea_shell.h"
 #include "ui/ui_tray.h"
