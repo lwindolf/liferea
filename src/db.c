@@ -1856,7 +1856,6 @@ void
 db_attention_stats_load (GHashTable **statHash, GSList **statList)
 {
 	sqlite3_stmt	*stmt;
-	gint		res;
 	
 	debug_start_measurement (DEBUG_DB);
 
