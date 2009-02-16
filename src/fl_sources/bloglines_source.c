@@ -24,6 +24,7 @@
 #include <unistd.h>
 
 #include "common.h"
+#include "feedlist.h"
 #include "subscription.h"
 #include "ui/liferea_dialog.h"
 #include "fl_sources/opml_source.h"
