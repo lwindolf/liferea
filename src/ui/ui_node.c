@@ -60,7 +60,7 @@ ui_node_update_iter (const gchar *nodeId, GtkTreeIter *iter)
 		*old = *iter;
 }
 
-void
+static void
 ui_node_add_iter (const gchar *nodeId, GtkTreeIter *iter)
 {
 	if (!flIterHash)
