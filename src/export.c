@@ -19,11 +19,14 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include <sys/stat.h>
+
 #include "export.h"
 
 #include <libxml/tree.h>
 
 #include "common.h"
+#include "db.h"
 #include "debug.h"
 #include "feedlist.h"
 #include "folder.h"
