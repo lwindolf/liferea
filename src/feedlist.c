@@ -111,8 +111,6 @@ feedlist_free_node (nodePtr node)
 static void
 feedlist_finalize (GObject *object)
 {
-	FeedList *fl = FEEDLIST (object);
-	
 	/* Stop all timer based activity */
 	if (feedlist->priv->autoUpdateTimer)
 		g_source_remove (feedlist->priv->autoUpdateTimer);
@@ -145,8 +143,6 @@ feedlist_class_init (FeedListClass *klass)
 static gboolean
 feedlist_auto_update (void *data)
 {
-	GTimeVal now;
-	
 	debug_enter ("feedlist_auto_update");
 
 	if (network_is_online ())
@@ -357,7 +353,6 @@ void
 feedlist_add_folder (const gchar *title)
 {
 	nodePtr		parent;
-	gint		pos;
 	
 	g_assert (NULL != title);
 
@@ -373,7 +368,6 @@ void
 feedlist_add_subscription (const gchar *source, const gchar *filter, updateOptionsPtr options, gint flags)
 {
 	nodePtr		parent;
-	gint		pos;
 
 	g_assert (NULL != source);
 
