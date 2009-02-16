@@ -23,6 +23,7 @@
 #include "common.h"
 #include "debug.h"
 #include "html.h"
+#include "metadata.h"
 #include "xml.h"
 #include "parsers/cdf_channel.h"
 #include "parsers/rss_channel.h"
