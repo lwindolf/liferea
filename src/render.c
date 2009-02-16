@@ -48,7 +48,7 @@ static gchar		*defaultParams = NULL;	/* some default parameters (for rendering s
 
 static GHashTable	*stylesheets = NULL;	/* XSLT stylesheet cache */
 
-void render_init(void) {
+static void render_init(void) {
 	gchar   **shortlang = NULL;	/* e.g. "de" */
 	gchar	**lang = NULL;		/* e.g. "de_AT" */
 
@@ -77,7 +77,7 @@ void render_init(void) {
 		stylesheets = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
 }
 
-xsltStylesheetPtr render_load_stylesheet(const gchar *xsltName) {
+static xsltStylesheetPtr render_load_stylesheet(const gchar *xsltName) {
 	xsltStylesheetPtr	i18n_filter;
 	xsltStylesheetPtr	xslt;
 	xmlDocPtr		xsltDoc, resDoc;
