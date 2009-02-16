@@ -136,7 +136,6 @@ search_folder_dialog_new (nodePtr node)
 {
 	GtkWidget		*dialog;
 	SearchFolderDialog	*sfd;
-	RuleEditor		*re;
 	
 	sfd = SEARCH_FOLDER_DIALOG (g_object_new (SEARCH_FOLDER_DIALOG_TYPE, NULL));
 	sfd->priv->re = rule_editor_new ((vfolderPtr)node->data);
