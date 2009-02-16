@@ -594,7 +594,6 @@ ui_itemlist_select (itemPtr item)
 	selection = gtk_tree_view_get_selection (itemlist_treeview);
 	
 	if (item) {
-		GtkTreeSelection	*selection;
 		GtkTreeIter		iter;
 		GtkTreePath		*path;
 		
