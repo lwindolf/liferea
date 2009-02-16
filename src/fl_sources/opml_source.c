@@ -372,19 +372,7 @@ on_opml_source_selected (GtkDialog *dialog,
 }
 
 static void
-ui_opml_source_get_source_url (void) 
-{
-	GtkWidget	*dialog;
-
-	dialog = liferea_dialog_new ("opml_source.glade", "opml_source_dialog");
-
-	g_signal_connect (G_OBJECT (dialog), "response",
-			  G_CALLBACK (on_opml_source_selected), 
-			  NULL);
-}
-
-static void
-on_file_select_clicked (const gchar *filename, gpointer user_data)
+on_opml_file_selected (const gchar *filename, gpointer user_data)
 {
 	GtkWidget	*dialog = GTK_WIDGET (user_data);
 
@@ -392,8 +380,25 @@ on_file_select_clicked (const gchar *filename, gpointer user_data)
 		gtk_entry_set_text (GTK_ENTRY (liferea_dialog_lookup (dialog, "location_entry")), g_strdup(filename));
 }
 
-void
-on_select_button_clicked (GtkButton *button, gpointer user_data)
+static void
+on_opml_file_choose_clicked (GtkButton *button, gpointer user_data)
 {
-	ui_choose_file (_("Choose OPML File"), GTK_STOCK_OPEN, FALSE, on_file_select_clicked, NULL, NULL, user_data);
+	ui_choose_file (_("Choose OPML File"), GTK_STOCK_OPEN, FALSE, on_opml_file_selected, NULL, NULL, user_data);
+}
+
+static void
+ui_opml_source_get_source_url (void) 
+{
+	GtkWidget	*dialog, *button;
+
+	dialog = liferea_dialog_new ("opml_source.glade", "opml_source_dialog");
+	button = liferea_dialog_lookup (dialog, "select_button");
+
+	g_signal_connect (G_OBJECT (dialog), "response",
+			  G_CALLBACK (on_opml_source_selected), 
+			  NULL);
+			  
+	g_signal_connect (G_OBJECT (button), "clicked",
+	                  G_CALLBACK (on_opml_file_choose_clicked),
+			  dialog);
 }
