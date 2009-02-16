@@ -30,6 +30,7 @@
 #include "feedlist.h"
 #include "folder.h"
 #include "itemset.h"
+#include "item_state.h"
 #include "node.h"
 #include "node_view.h"
 #include "render.h"
@@ -37,6 +38,9 @@
 #include "update.h"
 #include "vfolder.h"
 #include "fl_sources/node_source.h"
+#include "ui/liferea_shell.h"
+#include "ui/ui_node.h"
+#include "ui/ui_tray.h"
 
 static GHashTable *nodes = NULL;
 
