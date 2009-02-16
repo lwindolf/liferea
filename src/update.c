@@ -52,8 +52,6 @@
 /** global update job list, used for lookups when cancelling */
 static GSList	*jobs = NULL;
 
-static guint	results_timer = 0;
-
 /* We use a communication queue for limiting the number 
    of concurrent requests to avoid hitting the file descriptor
    limit of the glibcurl code. */
@@ -626,8 +624,6 @@ update_nm_cleanup (void)
 void
 update_init (void)
 {
-	gushort	i, count;
-
 	pendingJobs = g_async_queue_new ();
 	network_init ();
 	
