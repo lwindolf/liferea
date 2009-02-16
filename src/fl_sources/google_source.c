@@ -83,7 +83,6 @@ google_source_login_cb (const struct updateResult * const result, gpointer userd
 {
 	GoogleSourcePtr	gsource = (GoogleSourcePtr) userdata;
 	gchar		*tmp = NULL;
-	GTimeVal	now;
 	subscriptionPtr subscription = gsource->root->subscription;
 		
 	debug0 (DEBUG_UPDATE, "google login processing...");
@@ -132,7 +131,7 @@ google_source_login_cb (const struct updateResult * const result, gpointer userd
 void
 google_source_login (GoogleSourcePtr gsource, guint32 flags) 
 { 
-	gchar			*source, *username, *password;
+	gchar			*username, *password;
 	updateRequestPtr	request;
 	subscriptionPtr		subscription = gsource->root->subscription;
 	
