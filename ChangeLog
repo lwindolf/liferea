@@ -35,6 +35,9 @@
 	  (Adrian Bunk)
 	* Fixes SF #1935354: Improve the "Limit cache to" string.
 	  (Adrian Bunk)
+	* Adding GeoRSS support by presenting the location using
+	  a Google Maps embed. (patch by Mikel Olasagasti)
+
 
 2009-01-22  Adrian Bunk  <bunk@users.sourceforge.net>
 

@@ -21,6 +21,7 @@ libliparsers_a_SOURCES = \
 	ns_cC.c ns_cC.h \
 	ns_content.c ns_content.h \
 	ns_dc.c ns_dc.h \
+	ns_georss.c ns_georss.h \
 	ns_itunes.c ns_itunes.h \
 	ns_media.c ns_media.h \
 	ns_photo.c ns_photo.h \

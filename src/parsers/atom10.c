@@ -32,6 +32,7 @@
 #include "ns_cC.h"
 #include "ns_content.h"
 #include "ns_dc.h"
+#include "ns_georss.h"
 #include "ns_itunes.h"
 #include "ns_photo.h"
 #include "ns_media.h"
@@ -835,6 +836,7 @@ atom10_init_feed_handler (void)
 		atom10_add_ns_handler (ns_wfw_get_handler ());
 		atom10_add_ns_handler (ns_media_get_handler ());
 		atom10_add_ns_handler (ns_trackback_get_handler ());
+		atom10_add_ns_handler (ns_georss_get_handler ());
 	}	
 	/* prepare feed handler structure */
 	fhp->typeStr = "pie";

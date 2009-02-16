@@ -34,6 +34,7 @@
 #include "ns_cC.h"
 #include "ns_content.h"
 #include "ns_dc.h"
+#include "ns_georss.h"
 #include "ns_itunes.h"
 #include "ns_media.h"
 #include "ns_photo.h"
@@ -369,7 +370,8 @@ rss_init_feed_handler (void)
 		rss_add_ns_handler (ns_wfw_get_handler ());
 		rss_add_ns_handler (ns_media_get_handler ());
 		rss_add_ns_handler (ns_itunes_get_handler ());
-		rss_add_ns_handler (ns_trackback_get_handler ());	
+		rss_add_ns_handler (ns_trackback_get_handler ());
+		rss_add_ns_handler (ns_georss_get_handler ());
 	}
 							
 	/* prepare feed handler structure */

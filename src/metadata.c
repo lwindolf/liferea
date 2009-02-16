@@ -120,6 +120,9 @@ metadata_init (void)
 	/* for trackback URL */
 	metadata_type_register ("related",		METADATA_TYPE_URL);
 
+	/* for georss:point */
+	metadata_type_register ("point", 		METADATA_TYPE_ASCII);
+
 	return;
 }
 
