@@ -242,7 +242,7 @@ GSList *script_hook_get_list(hookType type) {
 	return g_hash_table_lookup(scripts, GINT_TO_POINTER(type));
 }
 
-void
+static void
 script_hook_free (gpointer key, gpointer value, gpointer user_data)
 {
 	GSList	*iter, *list;
