@@ -63,7 +63,6 @@ static struct enclosureDownloadTool enclosure_download_commands[] = {
 	{ "curl -s -o %s %s", TRUE },
 	{ "dbus-send --session --dest=org.gnome.gwget.ApplicationService /org/gnome/gwget/Gwget org.gnome.gwget.Application.OpenURI string:%s uint32:0", FALSE },
 	{ "kget %s", FALSE },
-	NULL
 };
 
 /** order must match enclosure_download_commands[] */
