@@ -28,10 +28,6 @@
 #include "ui/liferea_dialog.h"
 #include "ui/search_engine_dialog.h"
 
-static GtkWidget	*searchdialog = NULL;
-static GtkWidget 	*searchEngineDialog = NULL;
-static nodePtr		searchResult = NULL;
-
 typedef struct searchEngine {
 	const gchar	*name;		/**< descriptive name for menu options */
 	GCallback	func;		/**< search URI generation function */
