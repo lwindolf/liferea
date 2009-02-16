@@ -21,67 +21,6 @@
 #include "google_source.h"
 #include <glib.h>
 
-/**
- * A structure to indicate an edit to the Google Reader "database".
- * These edits are put in a queue and processed in sequential order
- * so that google does not end up processing the requests in an 
- * unintended order.
- */
-typedef struct GoogleSourceAction {
-	/**
-	 * The guid of the item to edit. This will be ignored if the 
-	 * edit is acting on an subscription rather than an item.
-	 */
-	gchar* guid;
-
-	/**
-	 * A MANDATORY feed url to containing the item, or the url of the 
-	 * subscription to edit. 
-	 */
-	gchar* feedUrl;
-
-	/**
-	 * The source type. Currently known types are "feed" and "user".
-	 * "user" sources are used, for example, for items that are links (as
-	 * opposed to posts) in broadcast-friends. The unique id of the source
-	 * is of the form <feedUrlType>/<feedUrl>.
-	 */
-	gchar* feedUrlType; 
-
-	/**
-	 * A callback function on completion of the edit.
-	 */
-	void (*callback) (GoogleSourcePtr gsource, struct GoogleSourceAction* edit, gboolean success);
-
-	/**
-	 * The type of this GoogleSourceAction.
-	 */
-	int actionType ; 
-} *GoogleSourceActionPtr ; 
-
-enum { 
-	EDIT_ACTION_MARK_READ,
-	EDIT_ACTION_MARK_UNREAD,
-	EDIT_ACTION_TRACKING_MARK_UNREAD, /**< every UNREAD request, should be followed by tracking-kept-unread */
-	EDIT_ACTION_MARK_STARRED,
-	EDIT_ACTION_MARK_UNSTARRED,
-	EDIT_ACTION_ADD_SUBSCRIPTION,
-	EDIT_ACTION_REMOVE_SUBSCRIPTION
-} ;
-		
-
-typedef struct GoogleSourceAction* editPtr ;
-/**
- * Create a new instance of edit.
- */
-GoogleSourceActionPtr google_source_action_new () ; 
-
-/**
- * Free an allocated edit structure
- * @param edit the a pointer to the edit structure to delete.
- */
-void google_source_action_free (GoogleSourceActionPtr edit); 
-
 void google_source_edit_export (GoogleSourcePtr gsource);
 
 void google_source_edit_import (GoogleSourcePtr gsource);
@@ -94,20 +33,6 @@ void google_source_edit_import (GoogleSourcePtr gsource);
  * @param gsource The GoogleSource whose editQueue should be processed.
  */
 void google_source_edit_process (GoogleSourcePtr gsource);
-
-
-/**
- * Push an edit action onto the processing queue. This is
- * a helper function, use google_source_edit_push_safe instead,
- * as this may not work if the GoogleSource is not yet connected.
- * 
- * @param gsource The GoogleSource structure whose queue you want to push
- *               onto.
- * @param edit   The edit to push.
- * @param head   Whether to push the edit to the head.
- */
-void
-google_source_edit_push (GoogleSourcePtr gsource, GoogleSourceActionPtr edit, gboolean head) ;
 
 
 /** Edit wrappers */

@@ -36,19 +36,74 @@
 #include <glib/gstdio.h>
 #include "xml.h"
 
+/**
+ * A structure to indicate an edit to the Google Reader "database".
+ * These edits are put in a queue and processed in sequential order
+ * so that google does not end up processing the requests in an 
+ * unintended order.
+ */
+typedef struct GoogleSourceAction {
+	/**
+	 * The guid of the item to edit. This will be ignored if the 
+	 * edit is acting on an subscription rather than an item.
+	 */
+	gchar* guid;
+
+	/**
+	 * A MANDATORY feed url to containing the item, or the url of the 
+	 * subscription to edit. 
+	 */
+	gchar* feedUrl;
+
+	/**
+	 * The source type. Currently known types are "feed" and "user".
+	 * "user" sources are used, for example, for items that are links (as
+	 * opposed to posts) in broadcast-friends. The unique id of the source
+	 * is of the form <feedUrlType>/<feedUrl>.
+	 */
+	gchar* feedUrlType; 
+
+	/**
+	 * A callback function on completion of the edit.
+	 */
+	void (*callback) (GoogleSourcePtr gsource, struct GoogleSourceAction* edit, gboolean success);
+
+	/**
+	 * The type of this GoogleSourceAction.
+	 */
+	int actionType ; 
+} *GoogleSourceActionPtr ; 
+
+enum { 
+	EDIT_ACTION_MARK_READ,
+	EDIT_ACTION_MARK_UNREAD,
+	EDIT_ACTION_TRACKING_MARK_UNREAD, /**< every UNREAD request, should be followed by tracking-kept-unread */
+	EDIT_ACTION_MARK_STARRED,
+	EDIT_ACTION_MARK_UNSTARRED,
+	EDIT_ACTION_ADD_SUBSCRIPTION,
+	EDIT_ACTION_REMOVE_SUBSCRIPTION
+} ;
+		
+
+typedef struct GoogleSourceAction* editPtr ;
+
 typedef struct GoogleSourceActionCtxt { 
 	gchar   *nodeId ;
 	GoogleSourceActionPtr action; 
 } *GoogleSourceActionCtxtPtr; 
 
-GoogleSourceActionPtr 
+
+static void google_source_edit_push (GoogleSourcePtr gsource, GoogleSourceActionPtr action, gboolean head);
+
+
+static GoogleSourceActionPtr 
 google_source_action_new (void)
 {
 	GoogleSourceActionPtr action = g_slice_new0 (struct GoogleSourceAction);
 	return action;
 }
 
-void 
+static void 
 google_source_action_free (GoogleSourceActionPtr action)
 { 
 	g_free (action->guid);
@@ -56,7 +111,7 @@ google_source_action_free (GoogleSourceActionPtr action)
 	g_slice_free (struct GoogleSourceAction, action);
 }
 
-GoogleSourceActionCtxtPtr
+static GoogleSourceActionCtxtPtr
 google_source_action_context_new(GoogleSourcePtr gsource, GoogleSourceActionPtr action)
 {
 	GoogleSourceActionCtxtPtr ctxt = g_slice_new0(struct GoogleSourceActionCtxt);
@@ -65,14 +120,14 @@ google_source_action_context_new(GoogleSourcePtr gsource, GoogleSourceActionPtr 
 	return ctxt;
 }
 
-void
+static void
 google_source_action_context_free(GoogleSourceActionCtxtPtr ctxt)
 {
 	g_free(ctxt->nodeId);
 	g_slice_free(struct GoogleSourceActionCtxt, ctxt);
 }
 
-gchar* google_source_edit_get_cachefile (GoogleSourcePtr gsource) 
+static gchar* google_source_edit_get_cachefile (GoogleSourcePtr gsource) 
 {
 	return common_create_cache_filename ("cache" G_DIR_SEPARATOR_S "plugins", gsource->root->id, "savedactions.xml");
 }
@@ -120,7 +175,7 @@ google_source_edit_export (GoogleSourcePtr gsource)
 	xmlFreeTextWriter (writer);
 }
 
-void
+static void
 google_source_edit_import_helper (xmlNodePtr match, gpointer userdata) 
 {
 	GoogleSourcePtr gsource = (GoogleSourcePtr) userdata ;
@@ -373,7 +428,7 @@ google_source_edit_process (GoogleSourcePtr gsource)
 	                        g_strdup(gsource->root->id), 0);
 }
 
-void
+static void
 google_source_edit_push_ (GoogleSourcePtr gsource, GoogleSourceActionPtr action, gboolean head)
 { 
 	g_assert (gsource->actionQueue);
@@ -381,7 +436,7 @@ google_source_edit_push_ (GoogleSourcePtr gsource, GoogleSourceActionPtr action,
 	else      g_queue_push_tail (gsource->actionQueue, action);
 }
 
-void 
+static void 
 google_source_edit_push (GoogleSourcePtr gsource, GoogleSourceActionPtr action, gboolean head)
 {
 	g_assert (gsource);
@@ -455,7 +510,7 @@ google_source_edit_mark_starred (GoogleSourcePtr gsource, const gchar *guid, con
 	google_source_edit_push (gsource, action, FALSE);
 }
 
-void 
+static void 
 update_subscription_list_callback(GoogleSourcePtr gsource, GoogleSourceActionPtr action, gboolean success) 
 {
 	if (success) { 
@@ -490,7 +545,7 @@ google_source_edit_add_subscription (GoogleSourcePtr gsource, const gchar* feedU
 	google_source_edit_push (gsource, action, TRUE);
 }
 
-void
+static void
 google_source_edit_remove_callback (GoogleSourcePtr gsource, GoogleSourceActionPtr action, gboolean success)
 {
 	if (success) {	
