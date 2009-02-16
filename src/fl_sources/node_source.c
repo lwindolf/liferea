@@ -309,6 +309,9 @@ node_source_add_folder (nodePtr node, const gchar *title)
 void
 node_source_remove_node (nodePtr node, nodePtr child)
 {
+	g_assert (child != node);
+	g_assert (child != child->source->root);
+	
 	if (NODE_SOURCE_TYPE (node)->remove_node)
 		NODE_SOURCE_TYPE (node)->remove_node (node, child);
 	else
@@ -348,6 +351,8 @@ node_source_item_set_flag (nodePtr node, itemPtr item, gboolean newState)
 static void
 node_source_remove (nodePtr node)
 {
+	g_assert (node == node->source->root);
+	
 	if (NULL != NODE_SOURCE_TYPE (node)->source_delete)
 		NODE_SOURCE_TYPE (node)->source_delete (node);
 		
