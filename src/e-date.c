@@ -77,7 +77,7 @@ static size_t e_strftime(char *s, size_t max, const char *fmt, const struct tm *
  * there isn't a stray space.
  **/
 
-size_t e_strftime_fix_am_pm(char *s, size_t max, const char *fmt, const struct tm *tm)
+static size_t e_strftime_fix_am_pm(char *s, size_t max, const char *fmt, const struct tm *tm)
 {
 	char buf[10];
 	char *sp;
