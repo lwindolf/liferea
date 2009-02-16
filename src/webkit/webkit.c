@@ -22,6 +22,7 @@
 #include <webkit/webkit.h>
 #include <string.h>
 
+#include "browser.h"
 #include "conf.h"
 #include "common.h"
 #include "ui/liferea_htmlview.h"
