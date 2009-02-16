@@ -498,7 +498,7 @@ void session_init(gchar *argv0, gchar *previous_id) {
 #endif /* USE_SM */
 }
 
-void session_end() {
+void session_end(void) {
 #ifdef USE_SM
 	if (session == NULL) /* no session to close */
 		return;
