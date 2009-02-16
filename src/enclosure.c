@@ -294,7 +294,7 @@ enclosure_exec (gpointer data)
 }
 
 /* etp is optional, if it is missing we are in save mode */
-void
+static void
 enclosure_download (encTypePtr type, const gchar *url, const gchar *filename)
 {
 	enclosureDownloadToolPtr 	tool;
