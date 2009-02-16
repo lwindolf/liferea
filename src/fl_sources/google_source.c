@@ -46,7 +46,7 @@
 #define GOOGLE_SOURCE_UPDATE_INTERVAL 60*60*24
 
 /** create a google source with given node as root */ 
-GoogleSourcePtr
+static GoogleSourcePtr
 google_source_new (nodePtr node) 
 {
 	GoogleSourcePtr source = g_new0 (struct GoogleSource, 1) ;
@@ -58,7 +58,7 @@ google_source_new (nodePtr node)
 	return source;
 }
 
-void
+static void
 google_source_free (GoogleSourcePtr gsource) 
 {
 	if (!gsource)
@@ -185,7 +185,7 @@ static void google_source_init (void) { }
 
 static void google_source_deinit (void) { }
 
-void
+static void
 google_source_import (nodePtr node)
 {
 	GSList *iter; 
@@ -201,19 +201,19 @@ google_source_import (nodePtr node)
 	google_source_edit_import (node->data) ;
 }
 
-void
+static void
 google_source_export (nodePtr node)
 {
 	opml_source_export (node);
 }
 
-gchar *
+static gchar *
 google_source_get_feedlist (nodePtr node)
 {
 	return opml_source_get_feedlist (node);
 }
 
-void 
+static void 
 google_source_remove (nodePtr node)
 { 
 	opml_source_remove (node);
