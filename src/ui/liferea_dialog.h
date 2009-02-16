@@ -66,7 +66,7 @@ GtkWidget * liferea_dialog_new (const gchar *filename, const gchar *name);
 /**
  * Helper function to look up child widgets of a dialog window.
  *
- * @param ld		the dialog widget
+ * @param widget	the dialog widget
  * @param name		widget name
  *
  * @returns found widget (or NULL)
