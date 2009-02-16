@@ -263,4 +263,6 @@ google_source_quick_update_timeout (gpointer gsource) ;
 void
 google_source_migrate_node(nodePtr node);
 
+void google_source_login (GoogleSourcePtr gsource, guint32 flags);
+
 #endif
