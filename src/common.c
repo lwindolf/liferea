@@ -530,6 +530,7 @@ const gchar * common_get_direction_mark(gchar *text) {
 	}
 }
 
+#ifndef HAVE_STRSEP
 /* code taken from glibc-2.2.1/sysdeps/generic/strsep.c */
 char * common_strsep (char **stringp, const char *delim) {
 	char *begin, *end;
@@ -572,6 +573,7 @@ char * common_strsep (char **stringp, const char *delim) {
 		*stringp = NULL;
 	return begin;
 }
+#endif  /*  HAVE_STRSEP  */
 
 /* Taken from gaim 24 June 2004, copyrighted by the gaim developers
    under the GPL, etc.... It was slightly modified to free the passed string */
