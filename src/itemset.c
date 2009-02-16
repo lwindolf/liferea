@@ -76,7 +76,6 @@ itemset_generic_merge_check (GList *items, itemPtr newItem, gint maxChecks, gboo
 	GList		*oldItemIdIter = items;
 	itemPtr		oldItem = NULL;
 	gboolean	found, equal = FALSE;
-	gint		i = 0;
 
 	/* determine if we should add it... */
 	debug1 (DEBUG_CACHE, "check new item for merging: \"%s\"", item_get_title (newItem));
