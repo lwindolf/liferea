@@ -597,13 +597,12 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 	GtkTreeStore		*treestore;
 	GtkTreeViewColumn 	*column;
 	GSList			*list;
-	gchar			*widgetname, *proxyport;
+	gchar			*proxyport;
 	gchar			*configuredBrowser, *name;
-	gboolean		enabled, enabled2;
+	gboolean		enabled;
 	int			tmp, i;
 	static int		manual;
 	struct browser			*iter;
-	struct enclosure_download_tool	*edtool;
 	
 	if (!prefdialog) {
 		prefdialog = liferea_dialog_new (NULL, "prefdialog");
