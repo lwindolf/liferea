@@ -315,7 +315,7 @@ network_process_request (const updateJobPtr const job)
 	glibcurl_add (curl_handle);
 }
 
-void
+static void
 network_glibcurl_callback (void *data)
 {
 	CURLMsg*		msg;
