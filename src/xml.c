@@ -428,7 +428,7 @@ xml_buffer_parse_error (void *ctxt, const gchar * msg, ...)
 
 static xmlDocPtr entities = NULL;
 
-xmlEntityPtr
+static xmlEntityPtr
 xml_process_entities (void *ctxt, const xmlChar *name)
 {
 	xmlEntityPtr	entity, found;
