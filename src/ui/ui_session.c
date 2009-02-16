@@ -51,8 +51,8 @@
 #define GAIM_DEBUG_MISC 3
 #define GAIM_DEBUG_ERROR 4
 
-void gaim_debug_vargs(int level, const char *category,
-			  const char *format, va_list args)
+static void gaim_debug_vargs(int level, const char *category,
+				  const char *format, va_list args)
 {
 	gchar *str;
 	g_return_if_fail(format != NULL);
@@ -275,7 +275,7 @@ static gchar **session_make_command(gchar *client_id, gchar *config_dir, gint ma
 
 /* SM callback handlers */
 
-void session_save_yourself(SmcConn conn, SmPointer data, int save_type,
+static void session_save_yourself(SmcConn conn, SmPointer data, int save_type,
        Bool shutdown, int interact_style, Bool fast) {
 	if (had_first_save == FALSE && save_type == SmSaveLocal &&
 	      interact_style == SmInteractStyleNone && !shutdown &&
@@ -302,18 +302,18 @@ void session_save_yourself(SmcConn conn, SmPointer data, int save_type,
 	SmcSaveYourselfDone(conn, True);
 }
 
-void session_die(SmcConn conn, SmPointer data) {
+static void session_die(SmcConn conn, SmPointer data) {
 	gaim_debug(GAIM_DEBUG_INFO, "Session Management",
 			   "Received die");
 	liferea_shutdown ();
 }
 
-void session_save_complete(SmcConn conn, SmPointer data) {
+static void session_save_complete(SmcConn conn, SmPointer data) {
 	gaim_debug(GAIM_DEBUG_INFO, "Session Management",
 			   "Received save_complete");
 }
 
-void session_shutdown_cancelled(SmcConn conn, SmPointer data) {
+static void session_shutdown_cancelled(SmcConn conn, SmPointer data) {
 	gaim_debug(GAIM_DEBUG_INFO, "Session Management",
 			   "Received shutdown_cancelled");
 }
