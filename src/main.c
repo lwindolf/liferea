@@ -41,6 +41,7 @@
 #include "db.h"
 #include "dbus.h"
 #include "debug.h"
+#include "plugin.h"
 #include "script.h"
 #include "social.h"
 #include "update.h"
