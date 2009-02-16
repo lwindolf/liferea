@@ -4454,6 +4454,7 @@ Nathan J. Conrad &lt;t98502@users.sourceforge.net&gt;
     <property name="comments" translatable="yes">Liferea is a news aggregator for GTK+</property>
     <property name="website">http://liferea.sf.net</property>
     <property name="website_label" translatable="yes">Liferea Homepage</property>
+    <property name="logo_icon_name">liferea</property>
     <property name="license" translatable="yes">This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as
 published by the Free Software Foundation; either version 2 of the
