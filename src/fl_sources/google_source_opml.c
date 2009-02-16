@@ -36,6 +36,7 @@
 
 #include "fl_sources/opml_source.h"
 #include "fl_sources/google_source.h"
+#include "fl_sources/google_source_edit.h"
 
 /**
  * Find a node by the source id.
