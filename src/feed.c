@@ -61,8 +61,8 @@ feed_new (void)
 static void
 feed_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trusted)
 {
-	gchar		*cacheLimitStr, *filter, *intervalStr, *title; 
-	gchar		*htmlUrlStr, *source, *tmp; 
+	gchar		*cacheLimitStr, *title; 
+	gchar		*tmp; 
 	feedPtr		feed = NULL;
 		
 	xmlChar	*typeStr = xmlGetProp (xml, BAD_CAST"type");
