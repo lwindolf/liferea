@@ -192,6 +192,8 @@ void subscription_set_default_update_interval(subscriptionPtr subscription, guin
  */
 void subscription_reset_update_counter (subscriptionPtr subscription, GTimeVal *now);
 
+void subscription_update_favicon (subscriptionPtr subscription);
+
 /**
  * Get the source URL of a given subscription
  *
