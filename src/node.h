@@ -289,9 +289,8 @@ gchar * node_render(nodePtr node);
  * Called when updating favicons is requested.
  *
  * @param node		the node
- * @param now		current time
  */
-void node_update_favicon (nodePtr node, GTimeVal *now);
+void node_update_favicon (nodePtr node);
 
 /**
  * Change/Set the sort column of a given node.

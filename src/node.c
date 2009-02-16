@@ -247,16 +247,16 @@ void node_update_counters(nodePtr node) {
 
 // FIXME: bad interface, do not imply node icons are favicons
 void
-node_update_favicon (nodePtr node, GTimeVal *now)
+node_update_favicon (nodePtr node)
 {
 	if (IS_FEED (node)) {
 		debug1 (DEBUG_UPDATE, "favicon of node %s needs to be updated...", node->title);
-		subscription_update_favicon (node->subscription, now);
+		subscription_update_favicon (node->subscription);
 	}
 	
 	/* Recursion */
 	if (node->children)
-		node_foreach_child_data (node, node_update_favicon, now);
+		node_foreach_child (node, node_update_favicon);
 }
 
 itemSetPtr

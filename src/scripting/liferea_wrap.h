@@ -3374,22 +3374,15 @@ fail:
 static int _wrap_node_update_favicon(lua_State* L) {
   int SWIG_arg = 0;
   nodePtr arg1 = (nodePtr) 0 ;
-  GTimeVal *arg2 = (GTimeVal *) 0 ;
   
-  SWIG_check_num_args("node_update_favicon",2,2)
+  SWIG_check_num_args("node_update_favicon",1,1)
   if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("node_update_favicon",1,"nodePtr");
-  if(!SWIG_isptrtype(L,2)) SWIG_fail_arg("node_update_favicon",2,"GTimeVal *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_node,0))){
     SWIG_fail_ptr("node_update_favicon",1,SWIGTYPE_p_node);
   }
   
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&arg2,SWIGTYPE_p_GTimeVal,0))){
-    SWIG_fail_ptr("node_update_favicon",2,SWIGTYPE_p_GTimeVal);
-  }
-  
-  node_update_favicon(arg1,arg2);
+  node_update_favicon(arg1);
   
   return SWIG_arg;
   
@@ -7398,6 +7391,29 @@ fail:
 }
 
 
+static int _wrap_subscription_update_favicon(lua_State* L) {
+  int SWIG_arg = 0;
+  subscriptionPtr arg1 = (subscriptionPtr) 0 ;
+  
+  SWIG_check_num_args("subscription_update_favicon",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("subscription_update_favicon",1,"subscriptionPtr");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_subscription,0))){
+    SWIG_fail_ptr("subscription_update_favicon",1,SWIGTYPE_p_subscription);
+  }
+  
+  subscription_update_favicon(arg1);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_subscription_get_source(lua_State* L) {
   int SWIG_arg = 0;
   subscriptionPtr arg1 = (subscriptionPtr) 0 ;
@@ -9524,6 +9540,7 @@ static const struct luaL_reg swig_commands[] = {
     { "subscription_get_default_update_interval", _wrap_subscription_get_default_update_interval},
     { "subscription_set_default_update_interval", _wrap_subscription_set_default_update_interval},
     { "subscription_reset_update_counter", _wrap_subscription_reset_update_counter},
+    { "subscription_update_favicon", _wrap_subscription_update_favicon},
     { "subscription_get_source", _wrap_subscription_get_source},
     { "subscription_set_source", _wrap_subscription_set_source},
     { "subscription_get_orig_source", _wrap_subscription_get_orig_source},

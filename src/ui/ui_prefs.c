@@ -423,10 +423,7 @@ on_menuselection_clicked (GtkButton *button, gpointer user_data)
 static void
 on_updateallfavicons_clicked (GtkButton *button, gpointer user_data)
 {
-	GTimeVal now;
-	
-	g_get_current_time (&now);
-	feedlist_foreach_data (node_update_favicon, &now);
+	feedlist_foreach (node_update_favicon);
 }
 
 static void
