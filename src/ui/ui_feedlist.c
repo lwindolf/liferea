@@ -191,7 +191,7 @@ static gboolean ui_feedlist_filter_visible_function(GtkTreeModel *model, GtkTree
 		return FALSE;
 }
 
-void
+static void
 ui_feedlist_reduce_unread (gboolean reduced) {
 	GtkTreeView		*treeview;
 
