@@ -33,6 +33,8 @@
 	  (Emilio Pozuelo Monfort)
 	* Prompt the user on file overwrite.
 	  (Adrian Bunk)
+	* Fixes SF #1935354: Improve the "Limit cache to" string.
+	  (Adrian Bunk)
 
 2009-01-22  Adrian Bunk  <bunk@users.sourceforge.net>
 
