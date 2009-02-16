@@ -151,6 +151,8 @@ ui_choose_file_or_dir(gchar *title, gchar *buttonName, gboolean saving, gboolean
 					       (saving ? GTK_FILE_CHOOSER_ACTION_SAVE : GTK_FILE_CHOOSER_ACTION_OPEN)),
 	                                      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 	                                      NULL);
+	if (saving)
+		gtk_file_chooser_set_do_overwrite_confirmation (GTK_FILE_CHOOSER (dialog), TRUE);
 	gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
 	
 	tuple = g_new0 (struct file_chooser_tuple, 1);
