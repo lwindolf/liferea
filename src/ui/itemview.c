@@ -95,7 +95,7 @@ itemview_get_type (void)
 static void
 itemview_finalize (GObject *object)
 {
-	ItemView *iv = ITEMVIEW (object);
+	// ItemView *iv = ITEMVIEW (object);
 
 	/* save preferences */
 	conf_set_int_value (LAST_ZOOMLEVEL, (gint)(100.* liferea_htmlview_get_zoom (itemview->priv->htmlview)));
@@ -371,7 +371,7 @@ itemview_set_layout (nodeViewType newMode)
 {
 	ItemViewPrivate *ivp = itemview->priv;
 	gchar		*htmlWidgetName, *ilWidgetName, *encViewVBoxName;
-	GtkRadioAction	*action;
+	// GtkRadioAction	*action;
 	
 	if (newMode == ivp->currentLayoutMode)
 		return;
