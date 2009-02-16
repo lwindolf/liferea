@@ -422,7 +422,10 @@ feedlist_node_added (nodePtr node)
 void
 feedlist_remove_node (nodePtr node)
 {
-	node_source_remove_node (node->source->root, node);
+	if (node->source->root != node)
+		node_source_remove_node (node->source->root, node);
+	else
+		node_remove (node);
 }
 
 void
