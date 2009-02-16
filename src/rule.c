@@ -225,7 +225,6 @@ static queryPtr
 query_create (GSList *rules, gboolean anyMatch)
 {
 	queryPtr	query;
-	conditionPtr	condition;
 	GSList		*iter;
 	GSList		*additive = NULL;
 	GSList		*negative = NULL;
