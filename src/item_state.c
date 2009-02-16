@@ -20,6 +20,7 @@
  
 #include "db.h"
 #include "debug.h"
+#include "feedlist.h"
 #include "item.h"
 #include "item_state.h"
 #include "itemset.h"
