@@ -39,6 +39,8 @@
 	  a Google Maps embed. (patch by Mikel Olasagasti)
 	* Show the Liferea logo in the About dialog.
 	  (Adrian Bunk)
+	* configure.ac: Require Gtk+ >= 2.12 (we already use features
+	  not present in previous versions). (Adrian Bunk)
 
 
 2009-01-22  Adrian Bunk  <bunk@users.sourceforge.net>
