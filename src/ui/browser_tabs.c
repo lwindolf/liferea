@@ -233,7 +233,7 @@ browser_tabs_get_type (void)
 static void
 browser_tabs_finalize (GObject *object)
 {
-	BrowserTabs *ls = BROWSER_TABS (object);
+	// BrowserTabs *ls = BROWSER_TABS (object);
 	
 	// FIXME: free tabInfo structures!
 	gtk_widget_destroy (GTK_WIDGET (tabs->priv->notebook));
