@@ -41,7 +41,7 @@
  * as parameter.
  */
 static void
-google_source_xpath_foreach_match(gchar* expr, xmlXPathContextPtr xpathCtxt, xpathMatchFunc func, gpointer user_data) 
+google_source_xpath_foreach_match (gchar* expr, xmlXPathContextPtr xpathCtxt, xpathMatchFunc func, gpointer user_data) 
 {
 	xmlXPathObjectPtr xpathObj = NULL;
 	xpathObj = xmlXPathEval ((xmlChar*)expr, xpathCtxt);
@@ -62,9 +62,9 @@ void
 google_source_migrate_node(nodePtr node) 
 {
 	/* scan the node for bad ID's, if so, brutally remove the node */
-	itemSetPtr itemset = node_get_itemset(node);
+	itemSetPtr itemset = node_get_itemset (node);
 	GList *iter = itemset->ids;
-	for (; iter; iter = g_list_next(iter)) {
+	for (; iter; iter = g_list_next (iter)) {
 		itemPtr item = item_load (GPOINTER_TO_UINT (iter->data));
 		if (item && item->sourceId) {
 			if (!g_str_has_prefix(item->sourceId, "tag:google.com")) {
@@ -72,30 +72,27 @@ google_source_migrate_node(nodePtr node)
 				db_item_remove(GPOINTER_TO_UINT(iter->data));
 			} 
 		}
-		if (item) item_unload (item) ;
+		if (item) item_unload (item);
 	}
 
 	/* cleanup */
-	itemset_free(itemset);
+	itemset_free (itemset);
 }
 
 static void
-google_source_xml_unlink_node(xmlNodePtr node, gpointer data) 
+google_source_xml_unlink_node (xmlNodePtr node, gpointer data) 
 {
-	xmlUnlinkNode(node) ;
-	xmlFreeNode(node) ;
+	xmlUnlinkNode (node);
+	xmlFreeNode (node);
 }
 
 void 
-google_source_item_set_flag(nodePtr node, itemPtr item, gboolean newStatus)
+google_source_item_set_flag (nodePtr node, itemPtr item, gboolean newStatus)
 {
-	const gchar* sourceUrl = metadata_list_get(item->metadata, "GoogleBroadcastOrigFeed");
+	const gchar* sourceUrl = metadata_list_get (item->metadata, "GoogleBroadcastOrigFeed");
 	if (!sourceUrl) sourceUrl = node->subscription->source;
-	nodePtr root = google_source_get_root_from_node(node);
-	google_source_edit_mark_starred((GoogleSourcePtr)root->data, 
-				     item->sourceId, 
-				     sourceUrl,
-				     newStatus);
+	nodePtr root = google_source_get_root_from_node (node);
+	google_source_edit_mark_starred ((GoogleSourcePtr)root->data, item->sourceId, sourceUrl, newStatus);
 	item_flag_state_changed(item, newStatus);
 }
 void
@@ -104,11 +101,8 @@ google_source_item_mark_read (nodePtr node, itemPtr item,
 {
 	const gchar* sourceUrl = metadata_list_get(item->metadata, "GoogleBroadcastOrigFeed");
 	if (!sourceUrl) sourceUrl = node->subscription->source;
-	nodePtr root = google_source_get_root_from_node(node);
-	google_source_edit_mark_read((GoogleSourcePtr)root->data, 
-				     item->sourceId, 
-				     sourceUrl,
-				     newStatus);
+	nodePtr root = google_source_get_root_from_node (node);
+	google_source_edit_mark_read ((GoogleSourcePtr)root->data, item->sourceId, sourceUrl, newStatus);
 	item_read_state_changed(item, newStatus);
 }
 
@@ -116,68 +110,72 @@ static void
 google_source_set_orig_source(const xmlNodePtr node, gpointer userdata)
 {
 	itemPtr item = (itemPtr) userdata ;
-	xmlChar*   value = xmlNodeGetContent(node);
-	
-	debug1(DEBUG_UPDATE, "GoogleSource: Got %s as id while updating", value);
+	xmlChar*   value = xmlNodeGetContent (node);
 	const gchar*     prefix1 = "tag:google.com,2005:reader/feed/";
 	const gchar*     prefix2 = "tag:google.com,2005:reader/user/";
-	if (g_str_has_prefix(value, prefix1) || g_str_has_prefix(value, prefix2)) {
-		metadata_list_set(&item->metadata, "GoogleBroadcastOrigFeed", value + strlen(prefix1));
-		db_item_update(item);
+
+	debug1(DEBUG_UPDATE, "GoogleSource: Got %s as id while updating", value);
+
+	if (g_str_has_prefix (value, prefix1) || g_str_has_prefix (value, prefix2)) {
+		metadata_list_set (&item->metadata, "GoogleBroadcastOrigFeed", value + strlen (prefix1));
+		db_item_update (item);
 	}
-	xmlFree(value);
+	xmlFree (value);
 }
 
 static void
-google_source_set_shared_by(xmlNodePtr node, gpointer userdata) 
+google_source_set_shared_by (xmlNodePtr node, gpointer userdata) 
 {
 	itemPtr     item    = (itemPtr) userdata;
-	xmlChar     *value  = xmlNodeGetContent(node);
-	xmlChar     *apos   = strrchr(value, '\'');
-	if (!apos) return;
+	xmlChar     *value  = xmlNodeGetContent (node);
+	xmlChar     *apos   = strrchr (value, '\'');
+	gchar       *name;
 
-	gchar* name = g_strndup(value, apos-value);
-	metadata_list_set(&item->metadata, "sharedby", name);
-	db_item_update(item);
+	if (!apos) return;
+	name = g_strndup (value, apos-value);
+
+	metadata_list_set (&item->metadata, "sharedby", name);
+	db_item_update (item);
 	
-	g_free(name);
-	xmlFree(value);
+	g_free (name);
+	xmlFree (value);
 }
+
 static void
 google_source_fix_broadcast_item (xmlNodePtr entry, itemPtr item) 
 {
 	xmlXPathContextPtr xpathCtxt = xmlXPathNewContext (entry->doc) ;
-	xmlXPathRegisterNs(xpathCtxt, "atom", "http://www.w3.org/2005/Atom");
+	xmlXPathRegisterNs (xpathCtxt, "atom", "http://www.w3.org/2005/Atom");
 	xpathCtxt->node = entry;
 	
-	google_source_xpath_foreach_match("./atom:source/atom:id", xpathCtxt, google_source_set_orig_source, item);
+	google_source_xpath_foreach_match ("./atom:source/atom:id", xpathCtxt, google_source_set_orig_source, item);
 	
 	/* who is sharing this? */
-	google_source_xpath_foreach_match("./atom:link[@rel='via']/@title", xpathCtxt, google_source_set_shared_by, item);
+	google_source_xpath_foreach_match ("./atom:link[@rel='via']/@title", xpathCtxt, google_source_set_shared_by, item);
 
 	/* free up xpath related data */
-	if (xpathCtxt) xmlXPathFreeContext(xpathCtxt);
+	if (xpathCtxt) xmlXPathFreeContext (xpathCtxt);
 }
 static void
 google_source_item_retrieve_status (const xmlNodePtr entry, gpointer userdata)
 {
 	subscriptionPtr subscription = (subscriptionPtr) userdata;
-	GoogleSourcePtr gsource = (GoogleSourcePtr) google_source_get_root_from_node(subscription->node)->data ;
+	GoogleSourcePtr gsource = (GoogleSourcePtr) google_source_get_root_from_node (subscription->node)->data ;
 	xmlNodePtr xml;
 	nodePtr node = subscription->node;
-
 	xmlChar* id;
-	
+	gboolean read = FALSE;
+	gboolean starred = FALSE;
+	itemSetPtr itemset = NULL;
+	GList *iter;
+
 	xml = entry->children;
 	g_assert (xml);
 	g_assert (g_str_equal (xml->name, "id"));
 
 	id = xmlNodeGetContent (xml);
 
-	gboolean read = FALSE;
-	gboolean starred = FALSE;
-
-	for (xml = entry->children; xml; xml = xml->next ) {
+	for (xml = entry->children; xml; xml = xml->next) {
 		if (g_str_equal (xml->name, "category")) {
 			xmlChar* label = xmlGetProp (xml, "label");
 			if (!label)
@@ -192,9 +190,9 @@ google_source_item_retrieve_status (const xmlNodePtr entry, gpointer userdata)
 		}
 	}
 
-	itemSetPtr itemset = node_get_itemset(node);
-	GList *iter = itemset->ids;
-	for (; iter; iter = g_list_next(iter)) {
+	itemset = node_get_itemset(node);
+
+	for (iter = itemset->ids; iter; iter = g_list_next(iter)) {
 		/* this is extremely inefficient, multiple times loading */
 		itemPtr item = item_load (GPOINTER_TO_UINT (iter->data));
 		if (item && item->sourceId) {
@@ -203,9 +201,8 @@ google_source_item_retrieve_status (const xmlNodePtr entry, gpointer userdata)
 				item_read_state_changed (item, read);
 				item_flag_state_changed (item, starred);
 
-				if (g_str_equal(subscription->source, 
-						GOOGLE_READER_BROADCAST_FRIENDS_URL)) 
-					google_source_fix_broadcast_item(entry, item);
+				if (g_str_equal (subscription->source, GOOGLE_READER_BROADCAST_FRIENDS_URL)) 
+					google_source_fix_broadcast_item (entry, item);
 				
 				item_unload (item);
 				goto cleanup;
@@ -220,56 +217,54 @@ cleanup:
 }
 
 static void
-google_feed_subscription_process_update_result (subscriptionPtr subscription,
-                                                const struct updateResult* const result, 
-                                                updateFlags flags)
+google_feed_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult* const result, updateFlags flags)
 {
 
-	if ( result->data ) { 
-		updateResultPtr resultCopy ;
+	if (result->data) { 
+		updateResultPtr resultCopy;
 		
-		resultCopy = update_result_new() ;
-		resultCopy->source = g_strdup(result->source); 
+		resultCopy = update_result_new () ;
+		resultCopy->source = g_strdup (result->source); 
 		resultCopy->returncode = result->returncode;
 		resultCopy->httpstatus = result->httpstatus;
-		resultCopy->contentType = g_strdup(result->contentType);
+		resultCopy->contentType = g_strdup (result->contentType);
 		resultCopy->retriesCount = result->retriesCount ;
-		resultCopy->updateState = update_state_copy(result->updateState);
+		resultCopy->updateState = update_state_copy (result->updateState);
 		
 		/* update the XML by removing 'read', 'reading-list' etc. as labels. */
 		xmlDocPtr doc = xml_parse (result->data, result->size, FALSE, NULL);
 		xmlXPathContextPtr xpathCtxt = xmlXPathNewContext (doc) ;
-		xmlXPathRegisterNs(xpathCtxt, "atom", "http://www.w3.org/2005/Atom");
-		google_source_xpath_foreach_match("/atom:feed/atom:entry/atom:category[@scheme='http://www.google.com/reader/']", xpathCtxt, google_source_xml_unlink_node, NULL);
+		xmlXPathRegisterNs (xpathCtxt, "atom", "http://www.w3.org/2005/Atom");
+		google_source_xpath_foreach_match ("/atom:feed/atom:entry/atom:category[@scheme='http://www.google.com/reader/']", xpathCtxt, google_source_xml_unlink_node, NULL);
 
 
 		/* delete the via link for broadcast subscription */
-		if (g_str_equal(subscription->source, GOOGLE_READER_BROADCAST_FRIENDS_URL)) 
-			google_source_xpath_foreach_match("/atom:feed/atom:entry/atom:link[@rel='via']/@href", xpathCtxt, google_source_xml_unlink_node, NULL);
+		if (g_str_equal (subscription->source, GOOGLE_READER_BROADCAST_FRIENDS_URL)) 
+			google_source_xpath_foreach_match ("/atom:feed/atom:entry/atom:link[@rel='via']/@href", xpathCtxt, google_source_xml_unlink_node, NULL);
 		
-		xmlXPathFreeContext(xpathCtxt);
+		xmlXPathFreeContext (xpathCtxt);
 		
 		/* good now we have removed the read and unread labels. */
 		
 		xmlChar    *newXml; 
 		int        newXmlSize ;
 		
-		xmlDocDumpMemory(doc, &newXml, &newXmlSize) ;
+		xmlDocDumpMemory (doc, &newXml, &newXmlSize);
 		
-		resultCopy->data = g_strndup((gchar*)newXml, newXmlSize);
-		resultCopy->size = newXmlSize ;
+		resultCopy->data = g_strndup ((gchar*) newXml, newXmlSize);
+		resultCopy->size = newXmlSize;
 		
-		xmlFree(newXml) ;
-		xmlFreeDoc(doc) ;
+		xmlFree (newXml);
+		xmlFreeDoc (doc);
 		
 		feed_get_subscription_type ()->process_update_result (subscription, resultCopy, flags);
-		update_result_free(resultCopy);
+		update_result_free (resultCopy);
 	} else { 
-		feed_get_subscription_type()->process_update_result(subscription, result, flags);
+		feed_get_subscription_type ()->process_update_result (subscription, result, flags);
 		return ; 
 	}
 	
-	debug_start_measurement(DEBUG_UPDATE);
+	debug_start_measurement (DEBUG_UPDATE);
 	xmlDocPtr doc = xml_parse (result->data, result->size, FALSE, NULL);
 	if (doc) {		
 		xmlNodePtr root = xmlDocGetRootElement (doc);
@@ -290,7 +285,7 @@ google_feed_subscription_process_update_result (subscriptionPtr subscription,
 		debug0 (DEBUG_UPDATE, "google_feed_subscription_process_update_result(): Couldn't parse XML!");
 		g_warning ("google_feed_subscription_process_update_result(): Couldn't parse XML!");
 	}
-	debug_end_measurement(DEBUG_UPDATE, "time taken to update statuses");
+	debug_end_measurement (DEBUG_UPDATE, "time taken to update statuses");
 }
 
 
@@ -304,18 +299,17 @@ google_feed_subscription_prepare_update_request (subscriptionPtr subscription,
 	
 	g_assert(gsource); 
 	if (gsource->loginState == GOOGLE_SOURCE_STATE_NONE) { 
-		subscription_update(google_source_get_root_from_node (subscription->node)->subscription, 0) ;
+		subscription_update (google_source_get_root_from_node (subscription->node)->subscription, 0) ;
 		return FALSE;
 	}
 	debug0 (DEBUG_UPDATE, "Setting cookies for a Google Reader subscription");
 
-	if ( !g_str_equal(request->source, GOOGLE_READER_BROADCAST_FRIENDS_URL) ) { 
-		gchar* source_escaped = g_uri_escape_string(request->source,
-							    NULL, TRUE);
-		gchar* newUrl = g_strdup_printf("http://www.google.com/reader/atom/feed/%s", source_escaped) ;
-		update_request_set_source(request, newUrl) ;
+	if (!g_str_equal (request->source, GOOGLE_READER_BROADCAST_FRIENDS_URL)) { 
+		gchar* source_escaped = g_uri_escape_string(request->source, NULL, TRUE);
+		gchar* newUrl = g_strdup_printf ("http://www.google.com/reader/atom/feed/%s", source_escaped);
+		update_request_set_source (request, newUrl);
 		g_free (newUrl);
-		g_free(source_escaped);
+		g_free (source_escaped);
 	}
 	update_state_set_cookies (request->updateState, gsource->sid);
 	return TRUE;

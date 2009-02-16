@@ -53,7 +53,7 @@ enum {
 	GOOGLE_SOURCE_STATE_NONE = 0,
 	GOOGLE_SOURCE_STATE_IN_PROGRESS,
 	GOOGLE_SOURCE_STATE_ACTIVE
-} ;
+};
 
 enum  { 
 	/**
@@ -198,7 +198,7 @@ enum  {
 /**
  * Returns Google Reader source type implementation info.
  */
-nodeSourceTypePtr google_source_get_type(void);
+nodeSourceTypePtr google_source_get_type (void);
 
 extern struct subscriptionType googleSourceFeedSubscriptionType;
 extern struct subscriptionType googleSourceOpmlSubscriptionType;
@@ -211,7 +211,7 @@ extern struct subscriptionType googleSourceOpmlSubscriptionType;
  * @param newStatus TRUE to mark the item as read, FALSE to mark as unread
  */
 void 
-google_source_item_set_flag(nodePtr node, itemPtr item, gboolean newStatus);
+google_source_item_set_flag (nodePtr node, itemPtr item, gboolean newStatus);
 
 /**
  * Mark an item as read.
@@ -221,7 +221,7 @@ google_source_item_set_flag(nodePtr node, itemPtr item, gboolean newStatus);
  * @param newStatus TRUE to mark the item as read, FALSE to mark as unread
  */
 void 
-google_source_item_mark_read(nodePtr node, itemPtr item, gboolean newStatus);
+google_source_item_mark_read (nodePtr node, itemPtr item, gboolean newStatus);
 
 /**
  * Get the root node (the nodeSource) from any given subnode. A convenience
@@ -231,7 +231,7 @@ google_source_item_mark_read(nodePtr node, itemPtr item, gboolean newStatus);
  * @return The nodeSource
  */
 nodePtr
-google_source_get_root_from_node(nodePtr node);
+google_source_get_root_from_node (nodePtr node);
 
 /**
  * Find a child node with the given source URL.
@@ -240,7 +240,8 @@ google_source_get_root_from_node(nodePtr node);
  * @param source  the source URL to search
  */
 nodePtr
-google_source_get_node_from_source(GoogleSourcePtr gsource, const gchar* source);
+google_source_get_node_from_source (GoogleSourcePtr gsource, const gchar* source);
+
 /**
  * Tries to update the entire source quickly, by updating only those feeds
  * which are known to be updated. Suitable for g_timeout_add. This is an 
@@ -251,7 +252,7 @@ google_source_get_node_from_source(GoogleSourcePtr gsource, const gchar* source)
  *             FALSE.  
  */
 gboolean
-google_source_quick_update_timeout(gpointer gsource) ;
+google_source_quick_update_timeout (gpointer gsource) ;
 
 /**
  * Migrate a google source child-node from a Liferea 1.4 style read-only
@@ -261,4 +262,5 @@ google_source_quick_update_timeout(gpointer gsource) ;
  */
 void
 google_source_migrate_node(nodePtr node);
+
 #endif

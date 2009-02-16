@@ -20,6 +20,7 @@
 
 #include "google_source.h"
 #include <glib.h>
+
 /**
  * A structure to indicate an edit to the Google Reader "database".
  * These edits are put in a queue and processed in sequential order
@@ -83,7 +84,7 @@ void google_source_action_free (GoogleSourceActionPtr edit);
 
 void google_source_edit_export (GoogleSourcePtr gsource);
 
-void google_source_edit_import(GoogleSourcePtr gsource);
+void google_source_edit_import (GoogleSourcePtr gsource);
 
 
 /**
@@ -120,7 +121,7 @@ google_source_edit_push (GoogleSourcePtr gsource, GoogleSourceActionPtr edit, gb
  * @param feedUrl  The feedUrl of the feed containing the item.
  * @param newStatus The new read status of the item (TRUE for read)
  */
-void google_source_edit_mark_read(
+void google_source_edit_mark_read (
 	GoogleSourcePtr gsource, 
 	const gchar* guid, 
 	const gchar* feedUrl, 
@@ -138,7 +139,7 @@ void google_source_edit_mark_starred (GoogleSourcePtr gsource,
  * @param gsource The GoogleSource structure
  * @param feedUrl the feed to add
  */
-void google_source_edit_add_subscription(GoogleSourcePtr gsource, const gchar* feedUrl);
+void google_source_edit_add_subscription (GoogleSourcePtr gsource, const gchar* feedUrl);
 
 
 /**
@@ -147,7 +148,7 @@ void google_source_edit_add_subscription(GoogleSourcePtr gsource, const gchar* f
  * @param gsource The GoogleSource structure
  * @param feedUrl the feed to remove
  */
-void google_source_edit_remove_subscription(GoogleSourcePtr gsource, const gchar* feedUrl) ;
+void google_source_edit_remove_subscription (GoogleSourcePtr gsource, const gchar* feedUrl);
 
 /**
  * See if an item with give guid is being modified 
@@ -156,4 +157,4 @@ void google_source_edit_remove_subscription(GoogleSourcePtr gsource, const gchar
  * @param GoogleSource the GoogleSource structure
  * @param guid the guid of the item
  */
-gboolean google_source_edit_is_in_queue(GoogleSourcePtr gsource, const gchar* guid) ;
+gboolean google_source_edit_is_in_queue (GoogleSourcePtr gsource, const gchar* guid);

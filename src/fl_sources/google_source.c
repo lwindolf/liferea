@@ -241,7 +241,7 @@ google_source_add_subscription (nodePtr node, subscriptionPtr subscription)
 }
 
 static void
-google_source_remove_node(nodePtr node, nodePtr child) 
+google_source_remove_node (nodePtr node, nodePtr child) 
 { 
 	gchar           *source; 
 	GoogleSourcePtr gsource = node->data; 

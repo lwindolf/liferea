@@ -18,35 +18,36 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+
+#include "google_source_opml.h"
+
 #include <glib.h>
-#include <string.h>
 #include <libxml/xpath.h>
+#include <string.h>
 
 #include "common.h"
 #include "conf.h"
 #include "debug.h"
+#include "feedlist.h"
+#include "metadata.h"
+#include "node.h"
+#include "subscription.h"
 #include "xml.h"
 
-#include "google_source.h"
-#include "subscription.h"
-#include "node.h"
-#include "feedlist.h"
-#include "opml_source.h"
-#include "metadata.h"
-#include "fl_sources/google_source_opml.h"
+#include "fl_sources/opml_source.h"
+#include "fl_sources/google_source.h"
 
 /**
  * Find a node by the source id.
  */
-
 nodePtr
-google_source_get_node_by_source(GoogleSourcePtr gsource, const gchar *source) 
+google_source_get_node_by_source (GoogleSourcePtr gsource, const gchar *source) 
 {
 	nodePtr node;
 	GSList  *iter = gsource->root->children;
-	for ( ; iter; iter = g_slist_next(iter)) {
+	for (; iter; iter = g_slist_next (iter)) {
 		node = (nodePtr)iter->data;
-		if (g_str_equal(node->subscription->source, source))
+		if (g_str_equal (node->subscription->source, source))
 			return node;
 	}
 	return NULL;
@@ -59,17 +60,16 @@ static void
 google_source_add_broadcast_subscription (GoogleSourcePtr gsource)
 {
 	gchar* title = "Friend's Shared Items"; 
-	GSList * iter = NULL ; 
-	nodePtr node ; 
+	GSList * iter = NULL; 
+	nodePtr node; 
 
 	iter = gsource->root->children; 
 	while (iter) { 
-		node = (nodePtr)iter->data ; 
+		node = (nodePtr) iter->data ; 
 		if (!node->subscription || !node->subscription->source) 
 			continue;
 		if (g_str_equal (node->subscription->source, GOOGLE_READER_BROADCAST_FRIENDS_URL)) {
-			update_state_set_cookies (node->subscription->updateState, 
-			                          gsource->sid);
+			update_state_set_cookies (node->subscription->updateState, gsource->sid);
 			return;
 		}
 		iter = g_slist_next (iter);
@@ -92,7 +92,6 @@ google_source_add_broadcast_subscription (GoogleSourcePtr gsource)
 }
 
 
-
 /* subscription list merging functions */
 
 static void
@@ -100,12 +99,13 @@ google_source_check_for_removal (nodePtr node, gpointer user_data)
 {
 	gchar		*expr = NULL;
 
-	if ( g_str_equal(node->subscription->source, GOOGLE_READER_BROADCAST_FRIENDS_URL) ) 
+	if (g_str_equal (node->subscription->source, GOOGLE_READER_BROADCAST_FRIENDS_URL)) 
 		return ; 
+
 	if (IS_FEED (node)) {
 		expr = g_strdup_printf ("/object/list[@name='subscriptions']/object/string[@name='id'][. = 'feed/%s']", node->subscription->source);
 	} else {
-		g_warning("opml_source_check_for_removal(): This should never happen...");
+		g_warning ("opml_source_check_for_removal(): This should never happen...");
 		return;
 	}
 	
@@ -136,7 +136,7 @@ google_source_merge_feed (xmlNodePtr match, gpointer user_data)
 	xml = xpath_find (match, "./string[@name='id']");
 	if (xml) {
 		id = xmlNodeListGetString (xml->doc, xml->xmlChildrenNode, 1);
-		url = g_strdup(id + strlen("feed/"));
+		url = g_strdup(id + strlen ("feed/"));
 	}
 
 	/* Note: ids look like "feed/http://rss.slashdot.org" */
@@ -189,7 +189,7 @@ cleanup:
 static void
 google_subscription_opml_cb (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
 {
-	GoogleSourcePtr	gsource = (GoogleSourcePtr)subscription->node->data;
+	GoogleSourcePtr	gsource = (GoogleSourcePtr) subscription->node->data;
 	
 	if (result->data) {
 		xmlDocPtr doc = xml_parse (result->data, result->size, FALSE, NULL);
@@ -217,7 +217,7 @@ google_subscription_opml_cb (subscriptionPtr subscription, const struct updateRe
 			xmlFreeDoc (doc);
 		} else { 
 			/** @todo The session seems to have expired */
-			g_warning("Unable to parse OPML list from google, the session might have expired.\n");
+			g_warning ("Unable to parse OPML list from google, the session might have expired.\n");
 		}
 	} else {
 		subscription->node->available = FALSE;
@@ -231,9 +231,8 @@ google_subscription_opml_cb (subscriptionPtr subscription, const struct updateRe
 
 /** functions for an efficient updating mechanism */
 
-
 static void
-google_source_quick_update_helper(xmlNodePtr match, gpointer userdata) 
+google_source_quick_update_helper (xmlNodePtr match, gpointer userdata) 
 {
 	GoogleSourcePtr gsource = (GoogleSourcePtr) userdata;
 	xmlNodePtr      xmlNode;
@@ -241,39 +240,37 @@ google_source_quick_update_helper(xmlNodePtr match, gpointer userdata)
 	nodePtr         node = NULL; 
 	const gchar     *oldNewestItemTimestamp;
 
-	xmlNode = xpath_find(match, "./string[@name='id']");
-	id = xmlNodeGetContent(xmlNode); 
+	xmlNode = xpath_find (match, "./string[@name='id']");
+	id = xmlNodeGetContent (xmlNode); 
 
-	if (g_str_has_prefix(id, "feed/") )
-		node = google_source_get_node_by_source(gsource, 
-						    id+strlen("feed/"));
-	else if (g_str_has_suffix(id, "broadcast-friends")) 
-		node = google_source_get_node_by_source(gsource, id);
+	if (g_str_has_prefix (id, "feed/"))
+		node = google_source_get_node_by_source (gsource, id + strlen ("feed/"));
+	else if (g_str_has_suffix (id, "broadcast-friends")) 
+		node = google_source_get_node_by_source (gsource, id);
 	else {
-		xmlFree(id);
+		xmlFree (id);
 		return;
 	}
 
 	if (node == NULL) {
-		xmlFree(id);
+		xmlFree (id);
 		return;
 	}
 
-	xmlNode = xpath_find(match,"./number[@name='newestItemTimestampUsec']");
-	newestItemTimestamp = xmlNodeGetContent(xmlNode);
+	xmlNode = xpath_find (match, "./number[@name='newestItemTimestampUsec']");
+	newestItemTimestamp = xmlNodeGetContent (xmlNode);
 
-	oldNewestItemTimestamp = g_hash_table_lookup(
-		gsource->lastTimestampMap, node->subscription->source);
+	oldNewestItemTimestamp = g_hash_table_lookup (gsource->lastTimestampMap, node->subscription->source);
 
 	if (!oldNewestItemTimestamp ||
 	    (newestItemTimestamp && 
-	     !g_str_equal(newestItemTimestamp, oldNewestItemTimestamp))) { 
+	     !g_str_equal (newestItemTimestamp, oldNewestItemTimestamp))) { 
 		debug3(DEBUG_UPDATE, "GoogleSource: autoupdating %s "
 		       "[oldtimestamp%s, timestamp %s]", 
 		       id, oldNewestItemTimestamp, newestItemTimestamp);
-		g_hash_table_insert(gsource->lastTimestampMap,
-				    g_strdup(node->subscription->source), 
-				    g_strdup(newestItemTimestamp));
+		g_hash_table_insert (gsource->lastTimestampMap,
+				    g_strdup (node->subscription->source), 
+				    g_strdup (newestItemTimestamp));
 				    
 		subscription_update (node->subscription, 0);
 	}
@@ -283,23 +280,23 @@ google_source_quick_update_helper(xmlNodePtr match, gpointer userdata)
 }
 
 static void
-google_source_quick_update_cb(const struct updateResult* const result, gpointer userdata, updateFlags flasg) 
+google_source_quick_update_cb (const struct updateResult* const result, gpointer userdata, updateFlags flasg) 
 {
 	GoogleSourcePtr gsource = (GoogleSourcePtr) userdata;
 	xmlDocPtr       doc;
 
 	if (!result->data) { 
 		/* what do I do? */
-		debug0(DEBUG_UPDATE, "GoogleSource: Unable to get unread counts, this update is aborted.");
+		debug0 (DEBUG_UPDATE, "GoogleSource: Unable to get unread counts, this update is aborted.");
 		return;
 	}
-	doc = xml_parse(result->data, result->size, FALSE, NULL);
+	doc = xml_parse (result->data, result->size, FALSE, NULL);
 	if (!doc) {
-		debug0(DEBUG_UPDATE, "GoogleSource: The XML failed to parse, maybe the session has expired. (FIXME)");
+		debug0 (DEBUG_UPDATE, "GoogleSource: The XML failed to parse, maybe the session has expired. (FIXME)");
 		return;
 	}
 
-	xpath_foreach_match(xmlDocGetRootElement(doc),
+	xpath_foreach_match (xmlDocGetRootElement (doc),
 			    "/object/list[@name='unreadcounts']/object", 
 			    google_source_quick_update_helper, gsource);
 }
@@ -307,11 +304,11 @@ google_source_quick_update_cb(const struct updateResult* const result, gpointer 
 static gboolean
 google_source_quick_update(GoogleSourcePtr gsource) 
 {
-	updateRequestPtr request = update_request_new();
-	request->updateState = update_state_copy(gsource->root->subscription->updateState);
-	request->options = update_options_copy(gsource->root->subscription->updateOptions);
-	update_state_set_cookies(request->updateState, gsource->sid);
-	update_request_set_source(request, GOOGLE_READER_UNREAD_COUNTS_URL);
+	updateRequestPtr request = update_request_new ();
+	request->updateState = update_state_copy (gsource->root->subscription->updateState);
+	request->options = update_options_copy (gsource->root->subscription->updateOptions);
+	update_state_set_cookies (request->updateState, gsource->sid);
+	update_request_set_source (request, GOOGLE_READER_UNREAD_COUNTS_URL);
 	
 	update_execute_request (gsource, request, google_source_quick_update_cb,
 				gsource, 0);
@@ -322,17 +319,17 @@ google_source_quick_update(GoogleSourcePtr gsource)
 gboolean
 google_source_quick_update_timeout (gpointer nodeId) 
 {
-	nodePtr node = node_from_id((gchar*) nodeId) ;
+	nodePtr node = node_from_id ((gchar*) nodeId) ;
 	if (!node) { 
-		g_free(nodeId);
-		return FALSE ;
+		g_free (nodeId);
+		return FALSE;
 	}
 
 	/* also use this timeout to start/continue the GoogleSourceAction 
 	 * queue which could have got stalled due to an error */
-	google_source_edit_process(node->data) ;
+	google_source_edit_process (node->data) ;
 
-	return google_source_quick_update(node->data);
+	return google_source_quick_update (node->data);
 }
 
 
@@ -350,12 +347,12 @@ google_opml_subscription_prepare_update_request (subscriptionPtr subscription, s
 	g_assert(gsource);
 	if (gsource->loginState == GOOGLE_SOURCE_STATE_NONE) {
 		debug0(DEBUG_UPDATE, "GoogleSource: login");
-		google_source_login((GoogleSourcePtr)subscription->node->data, 0) ;
+		google_source_login ((GoogleSourcePtr) subscription->node->data, 0) ;
 		return FALSE;
 	}
 	debug1 (DEBUG_UPDATE, "updating Google Reader subscription (node id %s)", subscription->node->id);
 	
-	update_request_set_source(request, GOOGLE_READER_SUBSCRIPTION_LIST_URL);
+	update_request_set_source (request, GOOGLE_READER_SUBSCRIPTION_LIST_URL);
 	
 	update_state_set_cookies (request->updateState, gsource->sid);
 	
