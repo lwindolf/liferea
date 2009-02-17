@@ -560,10 +560,8 @@ on_key_press_event (GtkWidget *widget, GdkEventKey *event, gpointer data)
 
 		/* prevent usage of navigation keys in HTML view */
 		type = g_type_name (GTK_WIDGET_TYPE (focusw));
-		if (type && (!strcmp (type, "MozContainer")))
+		if (type && (!strcmp (type, "WebKitWebView")))
 			return FALSE;
-
-		/* somehow we don't need to check for GtkHTML2... */
 
 		/* check for treeview navigation */
 		if (0 == (event->state & default_modifiers)) {
