@@ -103,12 +103,12 @@ typedef void (*fileChoosenCallback) (const gchar *title, gpointer user_data);
  * @param filename	When saving, this is the suggested filename
  * @param user_data	user data passed to the callback
  */
-void ui_choose_file (gchar *title, gchar *buttonName, gboolean saving, fileChoosenCallback callback, const gchar *currentPath, const gchar *defaultFilename, gpointer user_data);
+void ui_choose_file (gchar *title, const gchar *buttonName, gboolean saving, fileChoosenCallback callback, const gchar *currentPath, const gchar *defaultFilename, gpointer user_data);
 
 /** 
  * Like ui_choose_file but allows to select a directory 
  */
-void ui_choose_directory (gchar *title, gchar *buttonName, fileChoosenCallback callback, const gchar *currentPath, gpointer user_data);
+void ui_choose_directory (gchar *title, const gchar *buttonName, fileChoosenCallback callback, const gchar *currentPath, gpointer user_data);
 
 /**
  * Adds a directory to the list of pixmap directories

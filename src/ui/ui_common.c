@@ -137,7 +137,7 @@ ui_choose_file_save_cb (GtkDialog *dialog, gint response_id, gpointer user_data)
 }
 
 static void
-ui_choose_file_or_dir(gchar *title, gchar *buttonName, gboolean saving, gboolean directory, fileChoosenCallback callback, const gchar *currentPath, const gchar *defaultFilename, gpointer user_data)
+ui_choose_file_or_dir(gchar *title, const gchar *buttonName, gboolean saving, gboolean directory, fileChoosenCallback callback, const gchar *currentPath, const gchar *defaultFilename, gpointer user_data)
 {
 	GtkWidget			*dialog;
 	struct file_chooser_tuple	*tuple;
@@ -179,13 +179,13 @@ ui_choose_file_or_dir(gchar *title, gchar *buttonName, gboolean saving, gboolean
 }
 
 void
-ui_choose_file (gchar *title, gchar *buttonName, gboolean saving, fileChoosenCallback callback, const gchar *currentPath, const gchar *defaultFilename, gpointer user_data)
+ui_choose_file (gchar *title, const gchar *buttonName, gboolean saving, fileChoosenCallback callback, const gchar *currentPath, const gchar *defaultFilename, gpointer user_data)
 {
 	ui_choose_file_or_dir (title, buttonName, saving, FALSE, callback, currentPath, defaultFilename, user_data);
 }
 
 void
-ui_choose_directory (gchar *title, gchar *buttonName, fileChoosenCallback callback, const gchar *currentPath, gpointer user_data)
+ui_choose_directory (gchar *title, const gchar *buttonName, fileChoosenCallback callback, const gchar *currentPath, gpointer user_data)
 {
 	ui_choose_file_or_dir (title, buttonName, FALSE, TRUE, callback, currentPath, NULL, user_data);
 }
