@@ -463,7 +463,7 @@ xml_process_entities (void *ctxt, const xmlChar *name)
 }
 
 xmlNodePtr 
-xpath_find (xmlNodePtr node, gchar *expr)
+xpath_find (xmlNodePtr node, const gchar *expr)
 {
 	xmlNodePtr	result = NULL;
 	
