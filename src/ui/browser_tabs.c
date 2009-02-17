@@ -221,7 +221,8 @@ browser_tabs_get_type (void)
 			NULL, /* class_data */
 			sizeof (BrowserTabs),
 			0, /* n_preallocs */
-			(GInstanceInitFunc) browser_tabs_init
+			(GInstanceInitFunc) browser_tabs_init,
+			NULL /* value_table */
 		};
 
 		type = g_type_register_static (G_TYPE_OBJECT,

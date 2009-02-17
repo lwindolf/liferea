@@ -62,7 +62,8 @@ auth_dialog_get_type (void)
 			NULL, /* class_data */
 			sizeof (AuthDialog),
 			0, /* n_preallocs */
-			(GInstanceInitFunc) auth_dialog_init
+			(GInstanceInitFunc) auth_dialog_init,
+			NULL /* value_table */
 		};
 
 		type = g_type_register_static (G_TYPE_OBJECT,
