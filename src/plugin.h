@@ -44,7 +44,7 @@ enum {
 
 typedef struct plugin {
 	guint		api_version;
-	gchar 		*name;
+	const gchar 	*name;
 	guint		type;			/* plugin type (e.g. renderer, parser or feed list provider) */
 	//gchar		*description;		/* for plugin managment */
 	void		*symbols;		/* plugin type specific symbol table */
