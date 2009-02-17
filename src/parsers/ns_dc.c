@@ -82,59 +82,59 @@ or item view inside the header or footer of display.
 
 */
 
-static gchar * taglist[] = {	"title",
-				"creator",
-				"subject",
-				"description",
-				"publisher",
-				"contributor",				
-				"date",
-				"type",
-				"format",
-				"identifier",
-				"source",
-				"language",
-				"coverage",
-				"rights", 
-				NULL
-			   };
+static const gchar * taglist[] = {	"title",
+					"creator",
+					"subject",
+					"description",
+					"publisher",
+					"contributor",				
+					"date",
+					"type",
+					"format",
+					"identifier",
+					"source",
+					"language",
+					"coverage",
+					"rights", 
+					NULL
+				   };
 
 /* mapping of the tags specified by taglist to the backends channel
    structure taglist, NULL means no mapping but extra type that must
    be registered explicitly! */
-static gchar * mapToFeedMetadata[] = {
-			 	"feedTitle",		/* title */ 
-				"creator",		/* creator */
-				"category",		/* subject */
-				"description",		/* description */
-				"publisher",		/* publisher */
-				"contributor",		/* contributor */
-				NULL,			/* date (seldom used, e.g. slashdot) */
-				NULL,			/* type */
-				NULL,			/* format */
-				NULL,			/* identifier */
-				NULL,			/* source */
-				"language",		/* language */
-				NULL,			/* coverage */
-				"copyright"		/* rights */
-			  };
+static const gchar * mapToFeedMetadata[] = {
+				 	"feedTitle",		/* title */ 
+					"creator",		/* creator */
+					"category",		/* subject */
+					"description",		/* description */
+					"publisher",		/* publisher */
+					"contributor",		/* contributor */
+					NULL,			/* date (seldom used, e.g. slashdot) */
+					NULL,			/* type */
+					NULL,			/* format */
+					NULL,			/* identifier */
+					NULL,			/* source */
+					"language",		/* language */
+					NULL,			/* coverage */
+					"copyright"		/* rights */
+				  };
 
-static gchar * mapToItemMetadata[] = {
-			 	"itemTitle",		/* title */ 
-				"creator",		/* creator */
-				"category",		/* subject */
-				"description",		/* description */
-				"publisher",		/* publisher */
-				"contributor",		/* contributor */				
-				NULL,			/* date (won't be processed...) */
-				NULL,			/* type */
-				NULL,			/* format */
-				NULL,			/* identifier */
-				NULL,			/* source */
-				"language",		/* language */
-				NULL,			/* coverage */				
-				"copyright"		/* rights */
-			  };
+static const gchar * mapToItemMetadata[] = {
+				 	"itemTitle",		/* title */ 
+					"creator",		/* creator */
+					"category",		/* subject */
+					"description",		/* description */
+					"publisher",		/* publisher */
+					"contributor",		/* contributor */				
+					NULL,			/* date (won't be processed...) */
+					NULL,			/* type */
+					NULL,			/* format */
+					NULL,			/* identifier */
+					NULL,			/* source */
+					"language",		/* language */
+					NULL,			/* coverage */				
+					"copyright"		/* rights */
+				  };
 			  
 
 /* generic tag parsing (used for RSS and Atom) */
@@ -142,7 +142,8 @@ static void
 parse_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur, gboolean isFeedTag)
 {
 	int 		i, j;
-	gchar		*date, *mapping, *value, *tmp;
+	gchar		*date, *value, *tmp;
+	const gchar	*mapping;
 	gboolean	isNotEmpty;
 	
 	/* special handling for the ISO 8601 date item tags */
