@@ -551,8 +551,8 @@ update_process_finished_job (updateJobPtr job)
 {
 	job->state = REQUEST_STATE_DEQUEUE;
 	
+	g_assert(numberOfActiveJobs > 0);
 	numberOfActiveJobs--;
-	g_assert(numberOfActiveJobs >= 0);
 
 	/* Handling abandoned requests (e.g. after feed deletion) */
 	if (job->callback == NULL) {	
