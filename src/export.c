@@ -28,6 +28,7 @@
 #include "common.h"
 #include "db.h"
 #include "debug.h"
+#include "favicon.h"
 #include "feedlist.h"
 #include "folder.h"
 #include "vfolder.h"
