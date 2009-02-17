@@ -69,7 +69,8 @@ attention_profile_dialog_get_type (void)
 			NULL, /* class_data */
 			sizeof (AttentionProfileDialog),
 			0, /* n_preallocs */
-			(GInstanceInitFunc) attention_profile_dialog_init
+			(GInstanceInitFunc) attention_profile_dialog_init,
+			NULL /* value_table */
 		};
 
 		type = g_type_register_static (G_TYPE_OBJECT,
