@@ -269,8 +269,8 @@ time_t parseISO8601Date(gchar *date) {
 	return 0;
 }
 
-gchar *dayofweek[] = { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
-gchar *months[] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+static const gchar *dayofweek[] = { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+static const gchar *months[] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 
 gchar *createRFC822Date(const time_t *time) {
 	struct tm *tm;
@@ -282,7 +282,7 @@ gchar *createRFC822Date(const time_t *time) {
 
 /* this table of RFC822 timezones is from gmime-utils.c of the gmime API */
 static struct {
-	char *name;
+	const char *name;
 	int offset;
 } tz_offsets [] = {
 	{ "UT", 0 },
