@@ -64,7 +64,7 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 			gchar *type = xml_get_attribute (cur, "type");
 			gchar *lengthStr = xml_get_attribute (cur, "length");
 			gchar *medium = xml_get_attribute (cur, "medium");
-			gsize length = 0;
+			gssize length = 0;
 			if (lengthStr)
 				length = atol (lengthStr);
 					

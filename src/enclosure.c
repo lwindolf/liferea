@@ -105,7 +105,7 @@ enclosure_from_string (const gchar *str)
 }
 
 gchar *
-enclosure_values_to_string (const gchar *url, const gchar *mime, gsize size, gboolean downloaded)
+enclosure_values_to_string (const gchar *url, const gchar *mime, gssize size, gboolean downloaded)
 {
 	gchar *result, *safeUrl;
 	
@@ -114,7 +114,7 @@ enclosure_values_to_string (const gchar *url, const gchar *mime, gsize size, gbo
 		size = 0;
 		
 	safeUrl = common_uri_escape (url);
-	result = g_strdup_printf ("enc:%s:%s:%" G_GSIZE_FORMAT ":%s", downloaded?"1":"0", mime, size, safeUrl);
+	result = g_strdup_printf ("enc:%s:%s:%" G_GSSIZE_FORMAT ":%s", downloaded?"1":"0", mime, size, safeUrl);
 	g_free (safeUrl);
 	
 	return result;

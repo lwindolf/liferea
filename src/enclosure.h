@@ -41,7 +41,7 @@ typedef struct encType {
 typedef struct enclosure {
 	gchar		*url;		/**< enclosure download URI (absolute path) */
 	gchar		*mime;		/**< enclosure MIME type (optional, can be NULL) */
-	gsize		size;		/**< enclosure size (optional, can be 0) */
+	gssize		size;		/**< enclosure size (optional, can be 0, but also -1) */
 	gboolean	downloaded;	/**< flag indicating we have downloaded the enclosure */
 } *enclosurePtr;
 
@@ -59,15 +59,15 @@ enclosurePtr enclosure_from_string (const gchar *str);
  *
  * @param url		the enclosure URL
  * @param mime		the MIME type (optional, can be NULL)
- * @param size  	the enclosure size (optional, can be 0)
+ * @param size  	the enclosure size (optional, can be 0, and also -1)
  * @param downloaded	downloading state (TRUE=downloaded)
  *
  * @returns new string (to be free'd using g_free)
  */
-gchar * enclosure_values_to_string (const gchar *url, const gchar *mime, gsize size, gboolean downloaded);
+gchar * enclosure_values_to_string (const gchar *url, const gchar *mime, gssize size, gboolean downloaded);
 
 /**
- * Serialize enclosre to string.
+ * Serialize enclosure to string.
  *
  * @param encloszre	the enclosure
  *
