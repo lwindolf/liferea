@@ -76,7 +76,8 @@ enclosure_list_view_get_type (void)
 			NULL, /* class_data */
 			sizeof (EnclosureListView),
 			0, /* n_preallocs */
-			(GInstanceInitFunc) enclosure_list_view_init
+			(GInstanceInitFunc) enclosure_list_view_init,
+			NULL /* value_table */
 		};
 
 		type = g_type_register_static (G_TYPE_OBJECT,
