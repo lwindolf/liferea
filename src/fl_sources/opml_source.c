@@ -42,9 +42,9 @@
 /* OPML subscription list helper functions */
 
 typedef struct mergeCtxt {
-	nodePtr		rootNode;	/* root node of the OPML feed list source */
-	nodePtr		parent;		/* currently processed feed list node */
-	xmlNodePtr	xmlNode;	/* currently processed XML node of old OPML doc */
+	nodePtr		rootNode;	/**< root node of the OPML feed list source */
+	nodePtr		parent;		/**< currently processed feed list node */
+	xmlNodePtr	xmlNode;	/**< currently processed XML node of old OPML doc */
 } *mergeCtxtPtr;
 
 static void
