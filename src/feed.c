@@ -131,8 +131,6 @@ feed_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trusted)
 	node_set_title (node, title);
 	xmlFree (title);
 	
-	node_set_icon (node, favicon_load_from_cache (node->id));
-	
 	if (node->subscription)
 		debug4 (DEBUG_CACHE, "import feed: title=%s source=%s typeStr=%s interval=%d", 
 		        node_get_title (node), 

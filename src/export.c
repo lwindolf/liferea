@@ -276,23 +276,26 @@ import_parse_outline (xmlNodePtr cur, nodePtr parentNode, gboolean trusted)
 		node->expanded = FALSE;
 	else 
 		node->expanded = TRUE;
-		
-	/* 3. add to GUI parent */
+	
+	/* 3. Try to load the favicon (needs to be done before adding to the feed list) */
+	node_set_icon (node, favicon_load_from_cache (node->id));
+			
+	/* 4. add to GUI parent */
 	feedlist_node_imported (node);
 
-	/* 4. import child nodes */
+	/* 5. import child nodes */
 	// FIXME: move code from folder.c here
 	
-	/* 5. do node type specific parsing */
+	/* 6. do node type specific parsing */
 	NODE_TYPE (node)->import (node, parentNode, cur, trusted);
 	
-	/* 6. update immediately if necessary */
+	/* 7. update immediately if necessary */
 	if (needsUpdate && (NODE_TYPE(node))) {
 		debug1 (DEBUG_CACHE, "seems to be an import, setting new id: %s and doing first download...", node_get_id(node));
 		subscription_update (node->subscription, 0);
 	}
 	
-	/* 5. save node info to DB */
+	/* 8. save node info to DB */
 	db_node_update (node);
 
 	debug_exit ("import_parse_outline");
