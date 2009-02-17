@@ -24,7 +24,7 @@
 
 #include <glib.h>
 
-void session_init(gchar *argv0, gchar *previous_id);
+void session_init(const gchar *argv0, gchar *previous_id);
 void session_set_cmd(gchar *config_dir, gint mainwindowState);
 void session_end(void);
 

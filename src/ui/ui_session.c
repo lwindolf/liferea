@@ -403,7 +403,7 @@ void session_set_cmd(gchar *config_dir, gint mainwindowState) {
 #endif
 }
 
-void session_init(gchar *argv0, gchar *previous_id) {
+void session_init(const gchar *argv0, gchar *previous_id) {
 #ifdef USE_SM
 	SmcCallbacks callbacks;
 	gchar error[ERROR_LENGTH] = "";
