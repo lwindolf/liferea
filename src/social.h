@@ -53,7 +53,7 @@ void social_register_site (gchar *name, gchar *url, gboolean title, gboolean tit
  * @param title		TRUE if site accepts titles (URL must have two %s format codes!)
  * @param titleFirst	TRUE if title is first format code (title must be TRUE)
  */
-void social_register_bookmark_site (gchar *name, gchar *url, gboolean title, gboolean titleFirst);
+void social_register_bookmark_site (const gchar *name, const gchar *url, gboolean title, gboolean titleFirst);
 
 /**
  * Returns a social bookmarking link for the configured site
@@ -76,7 +76,7 @@ const gchar * social_get_bookmark_site (void);
  * @param name		descriptive name
  * @param url		valid HTTP GET URL with one %s format code
  */
-void social_register_link_search_site (gchar *name, gchar *url);
+void social_register_link_search_site (const gchar *name, const gchar *url);
 
 /**
  * Returns a link for the configured link cosmos search engine

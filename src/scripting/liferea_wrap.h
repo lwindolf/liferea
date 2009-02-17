@@ -5965,15 +5965,15 @@ static int _wrap_social_register_bookmark_site(lua_State* L) {
   int arg4 ;
   
   SWIG_check_num_args("social_register_bookmark_site",4,4)
-  if(!lua_isstring(L,1)) SWIG_fail_arg("social_register_bookmark_site",1,"char *");
-  if(!lua_isstring(L,2)) SWIG_fail_arg("social_register_bookmark_site",2,"char *");
+  if(!lua_isstring(L,1)) SWIG_fail_arg("social_register_bookmark_site",1,"char const *");
+  if(!lua_isstring(L,2)) SWIG_fail_arg("social_register_bookmark_site",2,"char const *");
   if(!lua_isnumber(L,3)) SWIG_fail_arg("social_register_bookmark_site",3,"int");
   if(!lua_isnumber(L,4)) SWIG_fail_arg("social_register_bookmark_site",4,"int");
   arg1 = (char *)lua_tostring(L, 1);
   arg2 = (char *)lua_tostring(L, 2);
   arg3 = (int)lua_tonumber(L, 3);
   arg4 = (int)lua_tonumber(L, 4);
-  social_register_bookmark_site(arg1,arg2,arg3,arg4);
+  social_register_bookmark_site((char const *)arg1,(char const *)arg2,arg3,arg4);
   
   return SWIG_arg;
   
@@ -6031,11 +6031,11 @@ static int _wrap_social_register_link_search_site(lua_State* L) {
   char *arg2 = (char *) 0 ;
   
   SWIG_check_num_args("social_register_link_search_site",2,2)
-  if(!lua_isstring(L,1)) SWIG_fail_arg("social_register_link_search_site",1,"char *");
-  if(!lua_isstring(L,2)) SWIG_fail_arg("social_register_link_search_site",2,"char *");
+  if(!lua_isstring(L,1)) SWIG_fail_arg("social_register_link_search_site",1,"char const *");
+  if(!lua_isstring(L,2)) SWIG_fail_arg("social_register_link_search_site",2,"char const *");
   arg1 = (char *)lua_tostring(L, 1);
   arg2 = (char *)lua_tostring(L, 2);
-  social_register_link_search_site(arg1,arg2);
+  social_register_link_search_site((char const *)arg1,(char const *)arg2);
   
   return SWIG_arg;
   

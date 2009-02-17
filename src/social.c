@@ -35,7 +35,7 @@ static socialSitePtr bookmarkSite = NULL;
 static socialSitePtr linkSearchSite = NULL;
 
 void
-social_register_bookmark_site (gchar *name, gchar *url, gboolean title, gboolean titleFirst)
+social_register_bookmark_site (const gchar *name, const gchar *url, gboolean title, gboolean titleFirst)
 {
 	socialSitePtr newSite;
 
@@ -100,7 +100,7 @@ social_get_bookmark_url (const gchar *link, const gchar *title)
 /* link cosmos search engine handling */
 
 void
-social_register_link_search_site (gchar *name, gchar *url)
+social_register_link_search_site (const gchar *name, const gchar *url)
 {
 	socialSitePtr newSite;
 
