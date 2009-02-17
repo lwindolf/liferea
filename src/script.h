@@ -27,7 +27,7 @@
 /** scripting support plugin interface */
 typedef struct scriptSupportImpl {
 	guint		api_version;				/**< API version of scripting support plugin */
-	gchar		*name;					/**< descriptive name of the plugin */
+	const gchar	*name;					/**< descriptive name of the plugin */
 	void		(*init)		(void);			/**< called on startup */
 	void		(*deinit)	(void);			/**< called on shutdown */
 	void		(*run_cmd)	(const gchar *cmd);	/**< runs the given command */
