@@ -461,35 +461,13 @@ network_set_proxy_auth (gchar *newProxyUsername, gchar *newProxyPassword)
 	liferea_htmlview_update_proxy ();
 }
 
-const gchar * network_strerror(gint netstatus) {
-	gchar	*tmp = NULL;
-	
-	switch(netstatus) {
-/*		case NET_ERR_URL_INVALID:    tmp = _("URL is invalid"); break;
-		case NET_ERR_PROTO_INVALID:  tmp = _("Unsupported network protocol"); break;
-		case NET_ERR_UNKNOWN:
-		case NET_ERR_CONN_FAILED:
-		case NET_ERR_SOCK_ERR:       tmp = _("Error connecting to remote host"); break;
-		case NET_ERR_HOST_NOT_FOUND: tmp = _("Hostname could not be found"); break;
-		case NET_ERR_CONN_REFUSED:   tmp = _("Network connection was refused by the remote host"); break;
-		case NET_ERR_TIMEOUT:        tmp = _("Remote host did not finish sending data"); break;
-
-		case NET_ERR_REDIRECT_COUNT_ERR: tmp = _("Too many HTTP redirects were encountered"); break;
-		case NET_ERR_REDIRECT_ERR:
-		case NET_ERR_HTTP_PROTO_ERR: 
-		case NET_ERR_GZIP_ERR:           tmp = _("Remote host sent an invalid response"); break;
-
-		case NET_ERR_AUTH_FAILED:
-		case NET_ERR_AUTH_NO_AUTHINFO: tmp = _("Authentication failed"); break;
-		case NET_ERR_AUTH_GEN_AUTH_ERR:
-		case NET_ERR_AUTH_UNSUPPORTED: tmp = _("Webserver's authentication method incompatible with Liferea"); break;
-	*/
-		default:
-			tmp = _("Network error");
-			break;
-	}
-	
-	return tmp;
+const char *
+network_strerror (gint netstatus)
+{
+	if (CURLE_OK == netstatus)
+		return NULL;
+		
+	return curl_easy_strerror (netstatus);
 }
 
 void

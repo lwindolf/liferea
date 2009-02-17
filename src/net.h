@@ -1,7 +1,7 @@
 /**
- * @file net.h HTTP network access interface
+ * @file net.h  HTTP network access interface
  * 
- * Copyright (C) 2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2009 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -113,9 +113,9 @@ gchar * cookies_find_matching (const gchar *url);
  *
  * @param netstatus	network error status
  *
- * @returns explanation string
+ * @returns explanation string (or NULL)
  */
-const gchar * network_strerror(gint netstatus);
+const char * network_strerror (gint netstatus);
 
 /**
  * Sets the online status according to mode.
