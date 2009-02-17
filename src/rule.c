@@ -341,7 +341,7 @@ rules_check_item (GSList *rules, gboolean anyMatch, itemPtr item)
 static void
 rule_add (ruleConditionFunc queryFunc,
           ruleCheckFunc checkFunc,
-          gchar *ruleId, 
+          const gchar *ruleId, 
           gchar *title,
           gchar *positive,
           gchar *negative,

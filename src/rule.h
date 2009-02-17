@@ -26,7 +26,7 @@
 
 /** rule info structure */
 typedef struct ruleInfo {
-	gchar		*ruleId;	/**< rule id for cache file storage */
+	const gchar	*ruleId;	/**< rule id for cache file storage */
 	gchar		*title;		/**< rule type title for dialogs */
 	gchar		*positive;	/**< text for positive logic selection */
 	gchar		*negative;	/**< text for negative logic selection */
