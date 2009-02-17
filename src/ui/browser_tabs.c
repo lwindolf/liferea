@@ -1,7 +1,7 @@
 /**
  * @file browser_tabs.c  internal browsing using multiple tabs
  *
- * Copyright (C) 2004-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2009 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2006 Nathan Conrad <conrad@bungled.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -197,6 +197,8 @@ static void browser_tabs_init		(BrowserTabs *ls);
 
 struct BrowserTabsPrivate {
 	GtkNotebook	*notebook;
+	
+	GSList		*list;		/**< tabInfo structures for all tabs */
 };
 
 static GObjectClass *parent_class = NULL;
@@ -230,13 +232,27 @@ browser_tabs_get_type (void)
 	return type;
 }
 
+/** Removes tab info structure */
+static void
+browser_tabs_remove_tab (tabInfo *tab)
+{
+	tabs->priv->list = g_slist_remove (tabs->priv->list, tab);
+	browser_tab_history_free (tab->history);
+	g_free (tab);	
+}
+
 static void
 browser_tabs_finalize (GObject *object)
 {
-	// BrowserTabs *ls = BROWSER_TABS (object);
+	BrowserTabs	*bt = BROWSER_TABS (object);
+	GSList		*iter = bt->priv->list;
 	
-	// FIXME: free tabInfo structures!
-	gtk_widget_destroy (GTK_WIDGET (tabs->priv->notebook));
+	while (iter) {
+		browser_tabs_remove_tab (iter->data);
+		iter = g_slist_next (iter);
+	}
+	
+	gtk_widget_destroy (GTK_WIDGET (bt->priv->notebook));
 	
 	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -343,6 +359,7 @@ on_htmlview_close_tab (gpointer object, gpointer user_data)
 	browser_tabs_close_tab((tabInfo *)user_data);
 }
 
+/** Close tab and removes tab info structure */
 static void
 browser_tabs_close_tab (tabInfo *tab)
 {	
@@ -351,9 +368,8 @@ browser_tabs_close_tab (tabInfo *tab)
 	n = gtk_notebook_get_current_page (tabs->priv->notebook);
 	gtk_notebook_remove_page (tabs->priv->notebook, n);
 
-	browser_tab_history_free (tab->history);
-	g_free (tab);	
-	
+	browser_tabs_remove_tab (tab);
+		
 	/* check if all tabs are closed */
 	if (1 == gtk_notebook_get_n_pages (tabs->priv->notebook))
 		gtk_notebook_set_show_tabs (tabs->priv->notebook, FALSE);
@@ -373,6 +389,7 @@ browser_tabs_add_new (const gchar *url, const gchar *title, gboolean activate)
 	tab->widget = gtk_vbox_new (FALSE, 0);
 	tab->htmlview = liferea_htmlview_new (TRUE);
 	tab->history = browser_tab_history_new ();
+	tabs->priv->list = g_slist_append (tabs->priv->list, tab);
 
 	g_object_set_data (G_OBJECT (tab->widget), "tabInfo", tab);	
 
