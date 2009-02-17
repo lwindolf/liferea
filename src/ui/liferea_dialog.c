@@ -58,7 +58,8 @@ liferea_dialog_get_type (void)
 			NULL, /* class_data */
 			sizeof (LifereaDialog),
 			0, /* n_preallocs */
-			(GInstanceInitFunc) liferea_dialog_init
+			(GInstanceInitFunc) liferea_dialog_init,
+			NULL /* value_table */
 		};
 
 		type = g_type_register_static (G_TYPE_OBJECT,
