@@ -48,7 +48,7 @@ enum {
 /** node type interface */
 typedef struct nodeType {
 	gulong		capabilities;	/**< bitmask of node type capabilities */
-	gchar		*id;		/**< type id (used for type attribute in OPML export) */
+	const gchar	*id;		/**< type id (used for type attribute in OPML export) */
 	gpointer	icon;		/**< default icon */
 	
 	/* For method documentation see the wrappers defined below! 
