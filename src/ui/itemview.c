@@ -230,6 +230,8 @@ itemview_select_item (itemPtr item)
 void
 itemview_update_item (itemPtr item)
 {
+	itemPtr	selected;
+	
 	if (!itemview->priv->node)
 		return;
 		
@@ -246,8 +248,8 @@ itemview_update_item (itemPtr item)
 			break;
 		case ITEMVIEW_SINGLE_ITEM:		
 			/* No HTML update needed if 3 pane mode and item not displayed */
-			if ((item->id != itemlist_get_selected ()->id) && 
-			    !ui_itemlist_contains_item (item->id))
+			selected = itemlist_get_selected ();
+			if (selected && (item->id != itemlist_get_selected ()->id))
 				return;
 			break;
 		default:
