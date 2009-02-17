@@ -128,7 +128,7 @@ atom10_parse_content_construct (xmlNodePtr cur, feedParserCtxtPtr ctxt)
 		type = xml_get_ns_attribute (cur, "type", NULL);
 		
 		/* Contents need to be de-encoded and should not contain sub-tags.*/
-		if (type && (g_str_equal (type,"html") || !g_strcasecmp (type, "text/html"))) {
+		if (type && (g_str_equal (type,"html") || !g_ascii_strcasecmp (type, "text/html"))) {
 			ret = common_utf8_fix (xhtml_extract (cur, 0, NULL));
 		} else if (!type || !strcmp (type, "text") || !strncasecmp (type, "text/",5)) {
 			gchar *tmp;
@@ -143,7 +143,7 @@ atom10_parse_content_construct (xmlNodePtr cur, feedParserCtxtPtr ctxt)
 				tmp = g_markup_printf_escaped ("<pre>%s</pre>", ret);
 			g_free (ret);
 			ret = tmp;
-		} else if (!strcmp(type,"xhtml") || !g_strcasecmp (type, "application/xhtml+xml")) {
+		} else if (!strcmp(type,"xhtml") || !g_ascii_strcasecmp (type, "application/xhtml+xml")) {
 			/* The spec says to only show the contents of the div tag that MUST be present */
 			ret = common_utf8_fix(xhtml_extract (cur, 2, NULL));
 		} else {
