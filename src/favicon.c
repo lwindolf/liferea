@@ -96,7 +96,7 @@ void favicon_remove_from_cache(const gchar *id) {
 	filename = common_create_cache_filename( "cache" G_DIR_SEPARATOR_S "favicons", id, "png");
 	if(g_file_test(filename, G_FILE_TEST_EXISTS)) {
 		if(0 != unlink(filename))
-			/* What can we do? The file probably doesn't exist. Or permissions are wrong. Oh well.... */;
+			g_warning ("Removal of %s failed", filename);
 	}
 	g_free(filename);
 
