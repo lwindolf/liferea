@@ -51,17 +51,6 @@ void ui_feedlist_select(nodePtr node);
  */
 void ui_feedlist_init (GtkTreeView *treeview);
 
-/* Selects the proper destination for a new subscription based on 
- * which feed list node is currently selected.
- *
- * @param nodeId	the id of the currently selected node
- * @param pos		a pointer to an integer that will be set 
- *			to where the item should be created. If it 
- *			is set to -1, then it should be appended. 
- *			0 means prepend.
- */
-void ui_feedlist_get_target_folder (const gchar *nodeId, int *pos);
-
 /**
  * Prompt the user for confirmation of a folder or feed, and
  * recursively remove the feed or folder if the user accepts. This

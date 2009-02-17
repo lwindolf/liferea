@@ -395,9 +395,12 @@ feedlist_node_added (nodePtr node)
 	
 	g_assert (NULL == node->parent);
 	
-	if (SELECTED)
-		ui_feedlist_get_target_folder ((SELECTED)->id, &position);
-		
+	if (SELECTED && !IS_FOLDER(SELECTED)) {
+		position = g_slist_index (SELECTED->parent->children, SELECTED);
+		if (position > -1)
+			position++;	/* insert after selected child index */
+	}
+
 	node_set_parent (node, feedlist_get_parent_node (), position);
 	
 	if (node->subscription)

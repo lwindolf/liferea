@@ -58,26 +58,6 @@ ui_feedlist_row_changed_cb(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *
 		ui_node_update_iter(node->id, iter);
 }
 
-void
-ui_feedlist_get_target_folder (const gchar *nodeId, int *pos)
-{
-	GtkTreeIter	*iter = NULL;
-	GtkTreePath 	*path;
-	gint		*indices;
-
-	g_assert (NULL != nodeId);
-	g_assert (NULL != pos);
-	
-	*pos = -1;
-
-	iter = ui_node_to_iter (nodeId);
-	path = gtk_tree_model_get_path (gtk_tree_view_get_model (GTK_TREE_VIEW (liferea_shell_lookup ("feedlist"))), iter);
-	indices = gtk_tree_path_get_indices (path);
-	if (pos)
-		*pos = indices[gtk_tree_path_get_depth (path)-1] + 1;
-	gtk_tree_path_free (path);
-}
-
 static void
 ui_feedlist_selection_changed_cb (GtkTreeSelection *selection, gpointer data)
 {
