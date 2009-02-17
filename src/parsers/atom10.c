@@ -589,7 +589,7 @@ atom10_parse_feed_contributor (xmlNodePtr cur, feedParserCtxtPtr ctxt, itemPtr i
 static void
 atom10_parse_feed_generator (xmlNodePtr cur, feedParserCtxtPtr ctxt, itemPtr ip, struct atom10ParserState *state)
 {
-	gchar *ret, *version, *tmp = "", *uri;
+	gchar *ret, *version, *tmp = NULL, *uri;
 
 	ret = unhtmlize ((gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1));
 	if (ret && ret[0] != '\0') {
