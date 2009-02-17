@@ -371,7 +371,7 @@ void
 itemview_set_layout (nodeViewType newMode)
 {
 	ItemViewPrivate *ivp = itemview->priv;
-	gchar		*htmlWidgetName, *ilWidgetName, *encViewVBoxName;
+	const gchar	*htmlWidgetName, *ilWidgetName, *encViewVBoxName;
 	// GtkRadioAction	*action;
 	
 	if (newMode == ivp->currentLayoutMode)
