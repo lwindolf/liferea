@@ -66,13 +66,6 @@ void social_register_bookmark_site (gchar *name, gchar *url, gboolean title, gbo
 gchar * social_get_bookmark_url (const gchar *link, const gchar *title);
 
 /**
- * Changes the current social bookmarking configuration to the given site.
- *
- * @param name		name (id) of the link search site
- */
-void social_set_link_search_site (const gchar *name);
-
-/**
  * Returns the name of the currently configured social bookmarking site.
  */
 const gchar * social_get_bookmark_site (void);
