@@ -1,7 +1,7 @@
 /**
- * @file webkit.c WebKit browser module for Liferea
+ * @file webkit.c  WebKit browser module for Liferea
  *
- * Copyright (C) 2007-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2009 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2008 Lars Strojny <lars@strojny.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -33,9 +33,7 @@
 static void
 liferea_webkit_init (void)
 {
-	g_print ("NOTE: WebKit HTML rendering support is under development\n");
-	g_print ("The following functionality is currently missing or not working:\n");
-	g_print ("  - Context menus are not customized\n");
+	/* nothing to do here */
 }
 
 /**
@@ -44,14 +42,14 @@ liferea_webkit_init (void)
 static void
 liferea_webkit_shutdown (void)
 {
-	g_print ("Shutting down WebKit rendering engine\n");
+	/* nothing to do here */
 }
 
 /**
  * Load HTML string into the rendering scrollpane
  *
- * Load an HTML string into the view frame. This is used to render newsfeed
- * entries
+ * Load an HTML string into the web view. This is used to render
+ * HTML documents created internally.
  */
 static void
 webkit_write_html (
