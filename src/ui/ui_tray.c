@@ -45,8 +45,6 @@
 #define TRAY_ICON_WIDTH	16
 #define TRAY_ICON_HEIGHT 16
 
-extern GdkPixbuf	*icons[];
-
 static struct trayIcon_priv {
 	int		trayCount;		/**< reference counter */
 	GdkPixbuf	*currentIcon;		/**< currently displayed icon */
