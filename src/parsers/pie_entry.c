@@ -76,8 +76,8 @@ itemPtr parseEntry(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 				xtmp = xmlGetProp(cur, BAD_CAST"rel");
 				if(xtmp != NULL && !xmlStrcmp(xtmp, BAD_CAST"alternate"))
 					item_set_source(ctxt->item, tmp2);
-				else
-					/* FIXME: Maybe do something with other links? */;
+				/* else
+					FIXME: Maybe do something with other links? */
 				xmlFree(xtmp);
 				g_free(tmp2);
 			} else {
