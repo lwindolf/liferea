@@ -362,12 +362,12 @@ subscription_set_source (subscriptionPtr subscription, const gchar *source)
 void
 subscription_set_homepage (subscriptionPtr subscription, const gchar *newHtmlUrl)
 {
-	gchar 	*htmlUrl = (gchar *)newHtmlUrl;
+	gchar 	*htmlUrl = NULL;
 	
-	if (htmlUrl) {
-		if (strstr (htmlUrl, "://")) {
+	if (newHtmlUrl) {
+		if (strstr (newHtmlUrl, "://")) {
 			/* absolute URI can be used directly */
-			htmlUrl = g_strchomp (g_strdup (htmlUrl));
+			htmlUrl = g_strchomp (g_strdup (newHtmlUrl));
 		} else {
 			/* relative URI part needs to be expanded */
 			gchar *tmp, *source;
@@ -377,11 +377,12 @@ subscription_set_homepage (subscriptionPtr subscription, const gchar *newHtmlUrl
 			if (tmp)
 				*(tmp+1) = '\0';
 
-			htmlUrl = common_build_url (htmlUrl, source);
+			htmlUrl = common_build_url (newHtmlUrl, source);
 			g_free (source);
 		}
 		
 		metadata_list_set (&subscription->metadata, "homepage", htmlUrl);
+		g_free (htmlUrl);
 	}
 }
 
