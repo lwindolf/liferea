@@ -35,9 +35,6 @@
 static GHashTable	*flIterHash = NULL;	/* hash table used for fast node id <-> tree iter lookup */
 static GtkWidget	*nodenamedialog = NULL;
 
-extern GtkTreeStore	*feedstore;
-extern gboolean		feedlist_reduced_unread;
-
 GtkTreeIter *
 ui_node_to_iter (const gchar *nodeId)
 {
