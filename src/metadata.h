@@ -39,7 +39,7 @@ typedef void	(*parseItemTagFunc)	(feedParserCtxtPtr ctxt, xmlNodePtr cur);
 
 /** struct used to register namespace handler */
 typedef struct NsHandler {
-	gchar			*prefix;		/**< namespace prefix */
+	const gchar		*prefix;		/**< namespace prefix */
 	registerNsFunc		registerNs;
 	
 	parseItemTagFunc	parseItemTag;		/**< item tag parsing method */
