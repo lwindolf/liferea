@@ -49,7 +49,7 @@ GHashTable	*ns_pie_ns_uri_table = NULL;
 	"created",  <---- Not in the specs for feeds
 */
 gchar* pie_parse_content_construct(xmlNodePtr cur) {
-	gchar	*mode, *type, *tmp, *ret;
+	gchar	*mode, *type, *ret;
 
 	g_assert(NULL != cur);
 	ret = NULL;
@@ -62,6 +62,8 @@ gchar* pie_parse_content_construct(xmlNodePtr cur) {
 	   does not exist in the newer IETF drafts.*/
 	if(NULL != mode) {
 		if(!strcmp(mode, "escaped")) {
+			gchar	*tmp;
+
 			tmp = common_utf8_fix(xhtml_extract (cur, 0, NULL));
 			if(NULL != tmp)
 				ret = tmp;
