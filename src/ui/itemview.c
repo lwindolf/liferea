@@ -230,8 +230,6 @@ itemview_select_item (itemPtr item)
 void
 itemview_update_item (itemPtr item)
 {
-	itemPtr	selected;
-	
 	if (!itemview->priv->node)
 		return;
 		
