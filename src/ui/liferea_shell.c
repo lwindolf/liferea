@@ -568,6 +568,9 @@ on_key_press_event (GtkWidget *widget, GdkEventKey *event, gpointer data)
 			switch (event->keyval) {
 				case GDK_KP_Delete:
 				case GDK_Delete:
+					if (focusw == GTK_WIDGET (shell->priv->feedlistView))
+						return FALSE;	/* to be handled in ui_feedlist_key_press_cb() */
+						
 					on_remove_item_activate (NULL, NULL);
 					return TRUE;
 					break;
