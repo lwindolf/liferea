@@ -54,7 +54,7 @@ typedef struct notificationPlugin {
 	/**
 	 * Notification plugin name
 	 */
-	gchar		*name;
+	const gchar		*name;
 	
 	/**
 	 * Called once during plugin initialization.
