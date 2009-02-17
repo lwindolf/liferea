@@ -199,8 +199,8 @@ static void pie_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 					tmp2 = xml_get_attribute (cur, "rel");
 					if(tmp2 && g_str_equal(tmp2, "alternate"))
 						subscription_set_homepage (ctxt->subscription, tmp);
-					else
-						/* FIXME: Maybe do something with other links? */;
+					/* else
+						FIXME: Maybe do something with other links? */
 					g_free(tmp2);
 					g_free(tmp);
 				} else {
