@@ -237,7 +237,7 @@ void node_update_counters(nodePtr node) {
 	/* Update the node itself and its children */
 	node_calc_counters(node);
 	
-	if (old != node->unreadCount);
+	if (old != node->unreadCount)
 		ui_node_update (node->id);
 		
 	/* Update the unread count of the parent nodes,
