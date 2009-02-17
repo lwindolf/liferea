@@ -29,7 +29,7 @@
 #include "ui/liferea_shell.h"
 
 typedef struct hookInfo {
-	gchar		*name;
+	const gchar	*name;
 	gint		type;
 } *hookInfoPtr;
 
