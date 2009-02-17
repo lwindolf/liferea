@@ -246,7 +246,7 @@ itemview_update_item (itemPtr item)
 			break;
 		case ITEMVIEW_SINGLE_ITEM:		
 			/* No HTML update needed if 3 pane mode and item not displayed */
-			if ((item != itemlist_get_selected ()) && 
+			if ((item->id != itemlist_get_selected ()->id) && 
 			    !ui_itemlist_contains_item (item->id))
 				return;
 			break;
