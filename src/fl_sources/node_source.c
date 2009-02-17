@@ -45,7 +45,7 @@
 static GSList	*nodeSourceTypes = NULL;
 
 static nodeSourceTypePtr
-node_source_type_find (gchar *typeStr, guint capabilities)
+node_source_type_find (const gchar *typeStr, guint capabilities)
 {
 	GSList *iter = nodeSourceTypes;
 	
