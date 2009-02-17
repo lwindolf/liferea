@@ -1,7 +1,7 @@
 /**
- * @file itemlist.h itemlist handling
+ * @file itemlist.h  itemlist handling
  *
- * Copyright (C) 2004-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2009 Lars Lindner <lars.lindner@gmail.com>
  *	      
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,12 +38,19 @@ void itemlist_free (void);
 struct node * itemlist_get_displayed_node(void);
 
 /**
- * Returns the currently selected item.
+ * Returns a copy of the currently selected item.
  * Note: selected = displayed item
  *
- * @returns displayed item (or NULL)
+ * @returns displayed item (or NULL) to be free'd using item_unload()
  */
-itemPtr itemlist_get_selected(void);
+itemPtr itemlist_get_selected (void);
+
+/**
+ * Returns the id of the currently selected item.
+ *
+ * @returns displayed item id (or 0)
+ */
+gulong itemlist_get_selected_id (void);
 
 /**
  * To be called whenever a feed was updated. If it is a somehow

@@ -133,6 +133,12 @@ itemlist_get_selected (void)
 	return item_load(itemlist_priv.selectedId);
 }
 
+gulong
+itemlist_get_selected_id (void)
+{
+	return itemlist_priv.selectedId;
+}
+
 static void
 itemlist_set_selected (itemPtr item)
 {

@@ -248,8 +248,7 @@ itemview_update_item (itemPtr item)
 			break;
 		case ITEMVIEW_SINGLE_ITEM:		
 			/* No HTML update needed if 3 pane mode and item not displayed */
-			selected = itemlist_get_selected ();
-			if (selected && (item->id != itemlist_get_selected ()->id))
+			if (item->id != itemlist_get_selected_id ())
 				return;
 			break;
 		default:
