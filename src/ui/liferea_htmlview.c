@@ -265,8 +265,8 @@ liferea_htmlview_is_special_url (const gchar *url)
 }
 
 struct internalUriType {
-	gchar	*suffix;
-	void	(*func)(itemPtr item);
+	const gchar	*suffix;
+	void		(*func)(itemPtr item);
 };
 
 static struct internalUriType internalUriTypes[] = {
