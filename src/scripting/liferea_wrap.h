@@ -5276,6 +5276,28 @@ fail:
 }
 
 
+static int _wrap_itemlist_get_selected_id(lua_State* L) {
+  int SWIG_arg = 0;
+  gulong result;
+  
+  SWIG_check_num_args("itemlist_get_selected_id",0,0)
+  result = itemlist_get_selected_id();
+  {
+    gulong * resultptr;
+    resultptr = (gulong *) malloc(sizeof(gulong));
+    memmove(resultptr, &result, sizeof(gulong));
+    SWIG_NewPointerObj(L,(void *) resultptr,SWIGTYPE_p_gulong,1); SWIG_arg++;
+  }
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_itemlist_merge_itemset(lua_State* L) {
   int SWIG_arg = 0;
   itemSetPtr arg1 ;
@@ -9079,41 +9101,6 @@ fail:
 }
 
 
-static int _wrap_on_popup_social_bm_link_selected(lua_State* L) {
-  int SWIG_arg = 0;
-  gpointer arg1 ;
-  unsigned int arg2 ;
-  GtkWidget *arg3 = (GtkWidget *) 0 ;
-  gpointer *argp1 ;
-  
-  SWIG_check_num_args("on_popup_social_bm_link_selected",3,3)
-  if(!lua_isuserdata(L,1)) SWIG_fail_arg("on_popup_social_bm_link_selected",1,"gpointer");
-  if(!lua_isnumber(L,2)) SWIG_fail_arg("on_popup_social_bm_link_selected",2,"unsigned int");
-  if(!SWIG_isptrtype(L,3)) SWIG_fail_arg("on_popup_social_bm_link_selected",3,"GtkWidget *");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_gpointer,0))){
-    SWIG_fail_ptr("on_popup_social_bm_link_selected",1,SWIGTYPE_p_gpointer);
-  }
-  arg1 = *argp1;
-  
-  arg2 = (unsigned int)lua_tonumber(L, 2);
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,3,(void**)&arg3,SWIGTYPE_p_GtkWidget,0))){
-    SWIG_fail_ptr("on_popup_social_bm_link_selected",3,SWIGTYPE_p_GtkWidget);
-  }
-  
-  on_popup_social_bm_link_selected(arg1,arg2,arg3);
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
 static int _wrap_ui_node_to_iter(lua_State* L) {
   int SWIG_arg = 0;
   char *arg1 = (char *) 0 ;
@@ -9474,6 +9461,7 @@ static const struct luaL_reg swig_commands[] = {
     { "itemlist_free", _wrap_itemlist_free},
     { "itemlist_get_displayed_node", _wrap_itemlist_get_displayed_node},
     { "itemlist_get_selected", _wrap_itemlist_get_selected},
+    { "itemlist_get_selected_id", _wrap_itemlist_get_selected_id},
     { "itemlist_merge_itemset", _wrap_itemlist_merge_itemset},
     { "itemlist_load", _wrap_itemlist_load},
     { "itemlist_unload", _wrap_itemlist_unload},
@@ -9574,7 +9562,6 @@ static const struct luaL_reg swig_commands[] = {
     { "ui_itemlist_add_item_bookmark", _wrap_ui_itemlist_add_item_bookmark},
     { "on_popup_copy_URL_clipboard", _wrap_on_popup_copy_URL_clipboard},
     { "on_popup_social_bm_item_selected", _wrap_on_popup_social_bm_item_selected},
-    { "on_popup_social_bm_link_selected", _wrap_on_popup_social_bm_link_selected},
     { "ui_node_to_iter", _wrap_ui_node_to_iter},
     { "ui_node_update_iter", _wrap_ui_node_update_iter},
     { "ui_node_add", _wrap_ui_node_add},
