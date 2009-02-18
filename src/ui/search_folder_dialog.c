@@ -114,7 +114,11 @@ on_propdialog_response (GtkDialog *dialog, gint response_id, gpointer user_data)
 		ui_itemlist_clear ();
 		vfolder_refresh (sfd->priv->vfolder);
 		itemlist_unload (FALSE);
-		feedlist_node_added (sfd->priv->node);
+		
+		/* If we are finished editing a new search folder add it to the feed list */
+		if (!sfd->priv->node->parent)
+			feedlist_node_added (sfd->priv->node);
+			
 		ui_node_update (sfd->priv->node->id);
 	} else if (response_id == GTK_RESPONSE_CANCEL) {
 		node_free(sfd->priv->node);
@@ -131,6 +135,7 @@ on_addrulebtn_clicked (GtkButton *button, gpointer user_data)
 	rule_editor_add_rule (sfd->priv->re, NULL);
 }
 
+/** Use to create new search folders and to edit existing ones */
 SearchFolderDialog *
 search_folder_dialog_new (nodePtr node) 
 {
