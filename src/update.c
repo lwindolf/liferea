@@ -37,6 +37,7 @@
 #include <string.h>
 
 #ifdef USE_NM
+#include <dbus/dbus.h>
 #include <libnm_glib.h>
 #endif
 
@@ -629,13 +630,29 @@ update_init (void)
 	
 	g_timeout_add (500, update_dequeue_job, NULL);
 	
-#ifdef USE_NM	
-	update_nm_initialize ();
-	
-	/* network manager will set online state right after initialization... */
-#else
-	network_set_online (TRUE);
+#ifdef USE_NM
+	{
+		DBusConnection *connection;
+
+		connection = dbus_bus_get (DBUS_BUS_SYSTEM, NULL);
+
+		if (connection) {
+			dbus_connection_set_exit_on_disconnect (connection, FALSE);
+
+			if (dbus_bus_name_has_owner (connection, "org.freedesktop.NetworkManager", NULL)) {
+				update_nm_initialize ();
+				/* network manager will set online state right after initialization... */
+			} else {
+				network_set_online (TRUE);
+			}
+
+			dbus_connection_unref(connection);
+
+			return;
+		}
+	}
 #endif
+	network_set_online (TRUE);
 }
 
 void
