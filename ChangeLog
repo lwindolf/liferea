@@ -4,6 +4,12 @@
 
 	* when compiled with NM support, network_set_online(TRUE)
 	  if NetworkManager is not available (Adrian Bunk)
+	* Fixes missing unread count for nodes in the feed list.
+	  (Lars Lindner)
+	* Fixes not working <Del> key in the feed list. 
+	  (Lars Lindner)
+	* Fixes assertion when editing rules of existing search
+	  folders. (Lars Lindner)
 
 
 2009-02-18  Adrian Bunk  <bunk@users.sourceforge.net>
