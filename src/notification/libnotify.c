@@ -42,6 +42,8 @@
 
 #include "notification/notification.h"
 
+static gboolean supports_actions = FALSE;
+
 static void notif_libnotify_callback_open ( NotifyNotification *n, gchar *action, gpointer user_data ) {
 	g_assert(action != NULL);
 	g_assert(strcmp(action, "open") == 0);
@@ -155,12 +157,14 @@ static void notif_libnotify_callback_show_details ( NotifyNotification *n, gchar
 
 		notify_notification_set_timeout (n, NOTIFY_EXPIRES_NEVER );
 
-		notify_notification_add_action(n, "open", _("Open feed"),
-										(NotifyActionCallback)notif_libnotify_callback_open,
-										node_p->id, NULL);
-		notify_notification_add_action(n, "mark_read", _("Mark all as read"),
-										(NotifyActionCallback)notif_libnotify_callback_mark_read,
-										node_p->id, NULL);
+		if (supports_actions) {
+			notify_notification_add_action(n, "open", _("Open feed"),
+							(NotifyActionCallback)notif_libnotify_callback_open,
+							node_p->id, NULL);
+			notify_notification_add_action(n, "mark_read", _("Mark all as read"),
+							(NotifyActionCallback)notif_libnotify_callback_mark_read,
+							node_p->id, NULL);
+		}
 
 		conf_get_bool_value(SHOW_TRAY_ICON);
 		if (!notify_notification_show (n, NULL)) {
@@ -172,7 +176,24 @@ static void notif_libnotify_callback_show_details ( NotifyNotification *n, gchar
 }
 
 static gboolean notif_libnotify_init(void) {
+
+	GList *caps, *c;
+
+	/* Check whether the notification daemon supports actions, per Actions
+	   in http://www.galago-project.org/specs/notification/0.9/x81.html */
 	if (notify_init ("liferea")) {
+		caps = notify_get_server_caps ();
+		if (caps != NULL) {
+			for (c = caps; c != NULL; c = c->next) {
+				if (strcmp ((char*)c->data, "actions")) {
+					supports_actions = TRUE;
+					break;
+				}
+			}
+			g_list_foreach (caps, (GFunc)g_free, NULL);
+			g_list_free (caps);
+		}
+
 		return TRUE;
 	}
 	else {
@@ -228,15 +249,17 @@ notif_libnotify_node_has_new_items (nodePtr node, gboolean enforced)
 
 	notify_notification_set_icon_from_pixbuf (n, node_get_icon (node));
 	notify_notification_set_timeout (n, NOTIFY_EXPIRES_DEFAULT);
-	notify_notification_add_action (n, "show_details", _("Show details"),
+	if (supports_actions) {
+		notify_notification_add_action (n, "show_details", _("Show details"),
 	                                (NotifyActionCallback)notif_libnotify_callback_show_details,
 	                                node->id, NULL);
-	notify_notification_add_action (n, "open", _("Open feed"),
+		notify_notification_add_action (n, "open", _("Open feed"),
 	                                (NotifyActionCallback)notif_libnotify_callback_open,
 	                                node->id, NULL);
-	notify_notification_add_action (n, "mark_read", _("Mark all as read"),
+		notify_notification_add_action (n, "mark_read", _("Mark all as read"),
 	                                (NotifyActionCallback)notif_libnotify_callback_mark_read,
 	                                node->id, NULL);
+	}
 	notify_notification_set_category (n, "feed");
 
 	if (ui_tray_get_origin (&x, &y) == TRUE) {
