@@ -1,6 +1,6 @@
-2009-02-??  ??? <???>
+2009-02-18  Adrian Bunk  <bunk@users.sourceforge.net>
 
-	Version 1.6-RC1 (Unstable)
+	Version 1.5.9 (Unstable)
 
 	* Flash is now stripped from feed content per default.
 	  (Lars Lindner)
