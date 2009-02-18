@@ -166,7 +166,8 @@ feedlist_init_node (nodePtr node)
 		db_subscription_load (node->subscription);
 		
 	node_update_counters (node);
-		
+	ui_node_update (node->id);	/* Necessary to initially set folder unread counters */
+	
 	node_foreach_child (node, feedlist_init_node);
 }
 
