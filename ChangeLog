@@ -2,7 +2,8 @@
 
 	Version 1.5.10 (Unstable)
 
-	*
+	* when compiled with NM support, network_set_online(TRUE)
+	  if NetworkManager is not available (Adrian Bunk)
 
 
 2009-02-18  Adrian Bunk  <bunk@users.sourceforge.net>
