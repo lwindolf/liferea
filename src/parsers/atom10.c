@@ -465,8 +465,9 @@ atom10_parse_entry_updated (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom1
 	if (datestr && !metadata_list_get(ctxt->item->metadata, "pubDate")) {
 		ctxt->item->time = parseISO8601Date (datestr);
 		ctxt->item->metadata = metadata_list_append (ctxt->item->metadata, "contentUpdateDate", datestr);
-		g_free (datestr);
 	}
+
+	g_free (datestr);
 }
 
 /* <content> tag support, FIXME: base64 not supported */
