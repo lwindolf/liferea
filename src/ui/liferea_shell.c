@@ -1307,6 +1307,7 @@ liferea_shell_create (int initialState)
 void
 liferea_shell_destroy (void)
 {
+	ui_feedlist_select (NULL);
 	liferea_shell_save_position ();
 	ui_tray_enable (FALSE);
 	notification_enable (FALSE);

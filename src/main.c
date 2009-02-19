@@ -339,9 +339,6 @@ on_shutdown (gpointer user_data)
 		
 	script_run_for_hook (SCRIPT_HOOK_SHUTDOWN);
 	
-	// FIXME: move the following to the liferea shell destroy callback
-	ui_feedlist_select (NULL);
-	
 	itemlist_free ();
 	update_deinit ();
 	db_deinit ();
