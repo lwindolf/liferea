@@ -19,10 +19,10 @@ AM_CPPFLAGS = \
 	$(NM_CFLAGS) \
 	$(GNUTLS_CFLAGS) 
 
-bin_PROGRAMS = liferea-bin 
-bin_SCRIPTS = liferea liferea-add-feed
+bin_PROGRAMS = liferea
+bin_SCRIPTS = liferea-add-feed
 
-liferea_bin_SOURCES = \
+liferea_SOURCES = \
 	attention.c attention.h \
 	bacon-message-connection.c \
 	bacon-message-connection.h \
@@ -66,16 +66,16 @@ liferea_bin_SOURCES = \
 	vfolder.c vfolder.h \
 	xml.c xml.h
 
-liferea_bin_LDADD =	parsers/libliparsers.a \
-			fl_sources/libliflsources.a \
-			notification/libnotification.a \
-			ui/libliui.a \
-			glibcurl/libglibcurl.a \
-			webkit/libwebkit.a \
-			$(SYNC_LIB) \
-			$(PACKAGE_LIBS) $(X_LIBS) $(X_PRE_LIBS) -lX11 $(X_EXTRA_LIBS) \
-			$(DBUS_LIBS) $(NM_LIBS) $(INTLLIBS) $(GNUTLS_LIBS) $(AVAHI_LIBS) \
-			$(WEBKIT_LIBS) $(LIBNOTIFY_LIBS)
+liferea_LDADD =	parsers/libliparsers.a \
+		fl_sources/libliflsources.a \
+		notification/libnotification.a \
+		ui/libliui.a \
+		glibcurl/libglibcurl.a \
+		webkit/libwebkit.a \
+		$(SYNC_LIB) \
+		$(PACKAGE_LIBS) $(X_LIBS) $(X_PRE_LIBS) -lX11 $(X_EXTRA_LIBS) \
+		$(DBUS_LIBS) $(NM_LIBS) $(INTLLIBS) $(GNUTLS_LIBS) $(AVAHI_LIBS) \
+		$(WEBKIT_LIBS) $(LIBNOTIFY_LIBS)
 
 if WITH_DBUS
 
@@ -90,6 +90,6 @@ endif
 
 if PLATFORM_WIN32
 
-liferea_bin_LDFLAGS = -Wl,--export-all-symbols,--out-implib,liferea-bin.a
+liferea_LDFLAGS = -Wl,--export-all-symbols,--out-implib,liferea.a
 
 endif

@@ -19,8 +19,8 @@ libliscrlua_la_CFLAGS = $(PACKAGE_CFLAGS) $(LUA_CFLAGS)
 
 if PLATFORM_WIN32
 
-libliscrlua_la_LDFLAGS = -avoid-version -module -no-undefined -Wl,$(top_builddir)/src/liferea-bin.a
-libliscrlua_la_DEPENDENCIES = liferea.i $(top_builddir)/src/liferea-bin$(EXEEXT)
+libliscrlua_la_LDFLAGS = -avoid-version -module -no-undefined -Wl,$(top_builddir)/src/liferea.a
+libliscrlua_la_DEPENDENCIES = liferea.i $(top_builddir)/src/liferea$(EXEEXT)
 
 else
 

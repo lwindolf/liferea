@@ -227,7 +227,6 @@ src/notification/Makefile
 src/scripting/Makefile
 src/sync/Makefile
 src/ui/Makefile
-src/liferea
 doc/Makefile
 doc/html/Makefile
 xslt/Makefile

@@ -136,7 +136,7 @@ Hinweis: Dieses Problem haben viele Planet Feeds, die einfach nur die gesammelte
 
 <dd>A: Das hören wir oft. Um wirklich helfen zu können benötigen wir aber detaillierte Beschreibungen über die Absturzursache. Stürzt Liferea reproduzierbar ab wollen wir das natürlich unbedingt wissen. Zum Debugging brauchen wir die Ausgaben eines Aufrufes mit dem Schalter "--debug-all" und wenn möglich einem Backtrace. Um einen Backtrace zu erzeugen einfach ein Terminal öffnen und die folgenden zwei Kommandos absetzen: <span
 class="code">ulimit -c unlimited</span> und dann <span
-class="code">liferea</span>. So aufgerufen wird Liferea beim Absturz eine core-Datei erzeugen. Diese kann dann mit <span class="code">gdb liferea-bin core</span> geöffnet werden. Gibt man in der gdb Eingabeaufforderung dann <span class="code">bt</span> ein wird der Backtrace des Absturzes ausgegeben.</dd>
+class="code">liferea</span>. So aufgerufen wird Liferea beim Absturz eine core-Datei erzeugen. Diese kann dann mit <span class="code">gdb liferea core</span> geöffnet werden. Gibt man in der gdb Eingabeaufforderung dann <span class="code">bt</span> ein wird der Backtrace des Absturzes ausgegeben.</dd>
 
 <dt>Q: Warum fehlt Liferea das Feature X?</dt>
 <dd>A: Feature Requests bitte im <a href="http://sourceforge.net/tracker/?group_id=87005&atid=581687">RFE Tracker</a> der SourceForge Projektseite in Englisch eintragen!</dd>
