@@ -6,8 +6,6 @@
 	  if NetworkManager is not available (Adrian Bunk)
 	* Fixes missing unread count for nodes in the feed list.
 	  (Lars Lindner)
-	* Fixes not working <Del> key in the feed list. 
-	  (Lars Lindner)
 	* Fixes assertion when editing rules of existing search
 	  folders. (Lars Lindner)
 	* Don't add actions to notifications popups if the
@@ -58,6 +56,8 @@
 	  (Adrian Bunk)
 	* configure.ac: Require Gtk+ >= 2.12 (we already use features
 	  not present in previous versions). (Adrian Bunk)
+	* Fixes not working <Del> key in the feed list. 
+	  (Lars Lindner)
 
 
 2009-01-22  Adrian Bunk  <bunk@users.sourceforge.net>
