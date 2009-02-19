@@ -18,7 +18,7 @@ css_DATA = \
 dtddir = $(pkgdatadir)/dtd
 dtd_DATA = dtd/html.ent
 
-EXTRA_DIST = \
+EXTRA_DIST = autogen.sh \
 	liferea.spec \
 	src/liferea \
 	src/liferea-add-feed \

@@ -11,6 +11,8 @@
 	* Disabled unfinished AVAHI sync code. (Lars Lindner)
 	* Fixes missing folder expansion when switching reduced 
 	  feed list mode off. (Lars Lindner)
+	* Added an autogen.sh for building from SVN.
+	  (Adrian Bunk)
 
 
 2009-02-19 Adrian Bunk  <bunk@users.sourceforge.net>

@@ -138,14 +138,11 @@ To anonymously check out a source copy execute this:
 More information about using SVN with Liferea can be found at 
 http://sourceforge.net/svn/?group_id=87005
 
-After checking out a source copy you need to prepare the compile environment. 
-Executing the following commands should do the trick:
+Then build it with:
 
-   autoreconf -i
-   intltoolize
-
-If everything went well you can continue with "configure" as described in 
-the previous section.
+   ./autogen.sh
+   make
+   make install
 
 
 4. Contributing
