@@ -1,8 +1,9 @@
-2009-02-?? ???
+2009-02-19 Adrian Bunk  <bunk@users.sourceforge.net>
 
 	Version 1.5.11 (Unstable)
 
-	*
+	* Fixes SF #2537642: Don't run dbus-launch manually.
+	  (Adrian Bunk)
 
 
 2009-02-19 Adrian Bunk  <bunk@users.sourceforge.net>
