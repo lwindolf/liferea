@@ -10,6 +10,9 @@
 	  (Lars Lindner)
 	* Fixes assertion when editing rules of existing search
 	  folders. (Lars Lindner)
+	* Don't add actions to notifications popups if the
+	  notification daemon doesn't implement them. Launchpad #328606
+	  (Emilio Pozuelo Monfort)
 
 
 2009-02-18  Adrian Bunk  <bunk@users.sourceforge.net>
