@@ -45,6 +45,7 @@
 
 static void feedlist_class_init	(FeedListClass *klass);
 static void feedlist_init	(FeedList *fl);
+static void feedlist_save	(void);
 
 #define FEEDLIST_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object), FEEDLIST_TYPE, FeedListPrivate))
 
@@ -601,7 +602,7 @@ feedlist_schedule_save (void)
 }
 
 /* This method is only to be used when exiting the program! */
-void
+static void
 feedlist_save (void)
 {
 	feedlist_schedule_save_cb (NULL);

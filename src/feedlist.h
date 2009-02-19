@@ -175,11 +175,6 @@ void feedlist_remove_node (nodePtr node);
 void feedlist_node_removed (nodePtr node);
 
 /**
- * Synchronously saves the feed list. Only to be used upon exit!
- */
-void feedlist_save (void);
-
-/**
  * Schedules a save requests for the feed list within the next 5s.
  * Triggers state saving for all feed list sources.
  */
