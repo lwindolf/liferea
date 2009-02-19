@@ -806,7 +806,7 @@ static void
 atom10_add_ns_handler (NsHandler *handler)
 {
 	g_assert (NULL != atom10_nstable);
-	g_hash_table_insert (atom10_nstable, handler->prefix, handler);
+	g_hash_table_insert (atom10_nstable, (gpointer)handler->prefix, handler);
 	g_assert (handler->registerNs != NULL);
 	handler->registerNs (handler, atom10_nstable, ns_atom10_ns_uri_table);
 }

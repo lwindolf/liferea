@@ -323,7 +323,7 @@ static void
 rss_add_ns_handler (NsHandler *handler)
 {
 	g_assert (NULL != rss_nstable);
-	g_hash_table_insert (rss_nstable, handler->prefix, handler);
+	g_hash_table_insert (rss_nstable, (gpointer)handler->prefix, handler);
 	g_assert (handler->registerNs != NULL);
 	handler->registerNs (handler, rss_nstable, ns_rss_ns_uri_table);
 }

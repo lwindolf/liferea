@@ -304,7 +304,7 @@ static void
 pie_add_ns_handler (NsHandler *handler)
 {
 	g_assert (NULL != pie_nstable);
-	g_hash_table_insert (pie_nstable, handler->prefix, handler);
+	g_hash_table_insert (pie_nstable, (gpointer)handler->prefix, handler);
 	g_assert (handler->registerNs != NULL);
 	handler->registerNs (handler, pie_nstable, ns_pie_ns_uri_table);
 }
