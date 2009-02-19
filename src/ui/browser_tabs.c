@@ -247,13 +247,11 @@ browser_tabs_finalize (GObject *object)
 {
 	BrowserTabs	*bt = BROWSER_TABS (object);
 	GSList		*iter = bt->priv->list;
-	
+
 	while (iter) {
 		browser_tabs_remove_tab (iter->data);
 		iter = g_slist_next (iter);
 	}
-	
-	gtk_widget_destroy (GTK_WIDGET (bt->priv->notebook));
 	
 	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
