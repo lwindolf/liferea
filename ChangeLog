@@ -6,6 +6,7 @@
 	  (Adrian Bunk)
 	* Remove the obsolete liferea -> liferea-bin indirection.
 	  (Adrian Bunk)
+	* Fixes several memory leaks. (Arnold Noronha)
 
 
 2009-02-19 Adrian Bunk  <bunk@users.sourceforge.net>
