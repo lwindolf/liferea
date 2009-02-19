@@ -121,8 +121,8 @@ item_read_state_changed (itemPtr item, gboolean newState)
 			   we can clean up correctly after crashes. */
 			if (duplicate && duplicate->id != item->id && node_from_id (duplicate->nodeId)) {
 				item_set_read_state (duplicate, newState);
-				item_unload (duplicate);
 			}
+			if (duplicate) item_unload (duplicate);
 			iter = g_slist_next (iter);
 		}
 		g_slist_free (duplicates);
