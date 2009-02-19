@@ -5,6 +5,7 @@
 	* Fixes SF #2570424: Possible recursive C++ build dependency problem.
 	  (patch by Hubert Figuiere)
 	* Update of Japanese translation (Takeshi AIHANA)
+	* Update of Arabic translation. (Khaled Hosny)
 
 
 2009-02-01  Adrian Bunk  <bunk@users.sourceforge.net>
