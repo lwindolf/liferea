@@ -131,7 +131,6 @@ main (int argc, char *argv[])
 	const char 		*arg;
 	gint			i;
 	LifereaDBus		*dbus = NULL;
-	LifereaAvahiPublisher	*avahiPublisher = NULL;
 	int			initialState = MAINWINDOW_SHOWN;
 	
 #ifdef USE_SM
@@ -272,6 +271,8 @@ main (int argc, char *argv[])
 
 #ifdef USE_AVAHI
 	if (conf_get_bool_value (SYNC_AVAHI_ENABLED)) {
+		LifereaAvahiPublisher	*avahiPublisher = NULL;
+
 		debug0 (DEBUG_CACHE, "Registering with AVAHI");
 		avahiPublisher = liferea_avahi_publisher_new ();
 		liferea_avahi_publisher_publish (avahiPublisher, conf_get_str_value (SYNC_AVAHI_SERVICE_NAME), 23632);
