@@ -222,13 +222,16 @@ google_feed_subscription_process_update_result (subscriptionPtr subscription, co
 
 	if (result->data) { 
 		updateResultPtr resultCopy;
-		
+
+		/* FIXME: The following is a very dirty hack to edit the feed's
+		   XML before processing it */
 		resultCopy = update_result_new () ;
 		resultCopy->source = g_strdup (result->source); 
 		resultCopy->returncode = result->returncode;
 		resultCopy->httpstatus = result->httpstatus;
 		resultCopy->contentType = g_strdup (result->contentType);
 		resultCopy->retriesCount = result->retriesCount ;
+		g_free (resultCopy->updateState);
 		resultCopy->updateState = update_state_copy (result->updateState);
 		
 		/* update the XML by removing 'read', 'reading-list' etc. as labels. */
