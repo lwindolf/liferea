@@ -85,7 +85,10 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 			} else {
 				/* Never add enclosures for images already contained in the description */
 				if (!(ctxt->item->description && strstr (ctxt->item->description, tmp))) {
-					ctxt->item->metadata = metadata_list_append (ctxt->item->metadata, "enclosure", enclosure_values_to_string (tmp, type, length, FALSE /* not yet downloaded */));
+					gchar *encl_string = enclosure_values_to_string (tmp, type, length, FALSE /* not yet downloaded */);
+					ctxt->item->metadata = metadata_list_append (ctxt->item->metadata, "enclosure", encl_string);
+					g_free (encl_string);
+
 					ctxt->item->hasEnclosure = TRUE;
 				}
 			}
