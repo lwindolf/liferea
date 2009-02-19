@@ -1296,20 +1296,6 @@ liferea_shell_create (int initialState)
 	g_string_append (buffer,   "</td></tr></table>");
 
 	g_string_append (buffer,   "</div>");
-	g_string_append (buffer,   "<div style=\"background:#ffc;border:1px solid black;margin:8px;padding:8px\">");
-	g_string_append (buffer,   "<p><b>Important:</b> This is an <b>UNSTABLE</b> test release. Use it only "
-	                           "if you want to help with the development of Liferea and if you are willing "
-				   "to do some debugging if it crashes. And it will crash, and hang, and eat memory and "
-				   "it might even kill your cat!</p>"
-				   "<p>New/Improved Functionality:"
-				   "<ul>"
-				   "   <li>Fixed several runtime assertions.</li>"
-				   "   <li>Fixed window state saving.</li>"
-				   "   <li>Fixed resizing of enclosure list.</li>"
-				   "   <li>Improved Webkit support.</li>"
-				   "</ul>"
-				   "</p>");
-	g_string_append (buffer,   "</div>");
 
 	htmlview_finish_output (buffer);
 	itemview_display_info (buffer->str);
