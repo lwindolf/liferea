@@ -575,7 +575,6 @@ on_remove_item_activate (GtkMenuItem *menuitem, gpointer user_data)
 	if (item) {
 		ui_common_treeview_move_cursor (itemlist_treeview, 1);
 		itemlist_remove_item (item);
-		item_unload (item);
 	} else {
 		liferea_shell_set_important_status_bar (_("No item has been selected"));
 	}
