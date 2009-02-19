@@ -575,6 +575,7 @@ on_remove_item_activate (GtkMenuItem *menuitem, gpointer user_data)
 	if (item) {
 		ui_common_treeview_move_cursor (itemlist_treeview, 1);
 		itemlist_remove_item (item);
+		item_unload (item);
 	} else {
 		liferea_shell_set_important_status_bar (_("No item has been selected"));
 	}
@@ -721,6 +722,7 @@ on_popup_copy_URL_clipboard (void)
 	if (item) {
 		gtk_clipboard_set_text (gtk_clipboard_get (GDK_SELECTION_PRIMARY), item_get_source (item), -1);
 		gtk_clipboard_set_text (gtk_clipboard_get (GDK_SELECTION_CLIPBOARD), item_get_source (item), -1);
+		item_unload (item);
 	} else {
 		liferea_shell_set_important_status_bar (_("No item has been selected"));
 	}
@@ -748,8 +750,10 @@ on_popup_social_bm_item_selected (void)
 	itemPtr	item;
 	
 	item = itemlist_get_selected ();
-	if (item)
+	if (item) {
 		ui_itemlist_add_item_bookmark (item);
+		item_unload (item);
+	}
 	else
 		liferea_shell_set_important_status_bar (_("No item has been selected"));
 }

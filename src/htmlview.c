@@ -336,8 +336,10 @@ htmlview_update (LifereaHtmlView *htmlview, guint mode)
 	switch (mode) {
 		case ITEMVIEW_SINGLE_ITEM:
 			item = itemlist_get_selected ();
-			if(item)
+			if(item) {
 				baseURL = (gchar *)node_get_base_url (node_from_id(item->nodeId));
+				item_unload (item);
+			}
 			break;
 		default:
 			baseURL = (gchar *) node_get_base_url (htmlView_priv.node);
@@ -362,6 +364,8 @@ htmlview_update (LifereaHtmlView *htmlview, guint mode)
 					g_string_append (output, html);
 					g_free (html);
 				}
+				
+				item_unload (item);
 			}
 			break;
 		case ITEMVIEW_ALL_ITEMS:

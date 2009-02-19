@@ -551,6 +551,8 @@ itemlist_update_item (itemPtr item)
 void 
 itemlist_selection_changed (itemPtr item)
 {
+	itemPtr tmpItem;
+
 	debug_enter ("itemlist_selection_changed");
 	debug_start_measurement (DEBUG_GUI);
 
@@ -570,7 +572,9 @@ itemlist_selection_changed (itemPtr item)
 			item_set_read_state (item, TRUE);
 
 			if (node_load_link_preferred (node_from_id (item->nodeId))) {
-				itemview_launch_URL (item_get_source (itemlist_get_selected ()), TRUE /* force internal */);
+				tmpItem = itemlist_get_selected ();
+				itemview_launch_URL (item_get_source (tmpItem), TRUE /* force internal */);
+				item_unload (tmpItem);
 			} else {
 				itemview_set_mode (ITEMVIEW_SINGLE_ITEM);
 				itemview_select_item (item);
