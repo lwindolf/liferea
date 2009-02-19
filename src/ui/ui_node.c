@@ -241,6 +241,9 @@ ui_node_load_feedlist (nodePtr node)
 		
 		if (IS_FOLDER (node) || IS_NODE_SOURCE (node))
 			ui_node_load_feedlist (node);
+			
+		if (node->expanded)
+			ui_node_set_expansion (node, TRUE);
 
 		iter = g_slist_next(iter);
 	}
