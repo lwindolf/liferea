@@ -1,21 +1,52 @@
-Liferea is an abbreviation for Linux Feed Reader. It is a news
-aggregator for online news feeds. It supports a number of different
-feed formats including RSS/RDF, CDF and Atom. There are many other
-news readers available, but these others are not available for
-Linux or require many extra libraries to be installed. Liferea
-tries to fill this gap by creating a fast, easy to use, easy to
-install news aggregator for GTK/GNOME.
+This documentation was last updated for Liferea version 1.6 (19.02.2009).
 
-This documentation was last updated for Liferea version 1.2.
+Contents
+========
 
-Installation
-============
+   1. ............. Introduction
 
-To install Liferea you can either get a package for your 
-Linux distribution or try to compile and install Liferea
-from the Source Tarball. In the following you will find
-short hints for several platforms. See below to find
-how to compile the tarball.
+   2. ............. Installing from Package
+
+   3. ............. Compiling Liferea Yourself
+   3.1. ............. Dependencies
+   3.2. ............. Compiling From Tarball
+   3.3. ............. Compiling From SVN
+
+   4. ............. Contributing
+   4.1. ............. No Feature Requests!
+   4.2. ............. How to Provide Patches
+   4.3. ............. How to Translate Liferea
+   4.3.1 .............. Create a New Translation
+   4.3.2 .............. Update an Existing Translation
+   4.3.3 .............. Provide a Localized Feed List
+   4.4. ............. How to Help With Testing
+   4.4.1. ............. Bug Reports
+   4.4.2. ............. Debugging Crashes
+   4.4.3. ............. Debugging Memory Leaks
+   
+   5. ............. Browser Integration
+
+   6. ............. How to Get Support
+
+
+1. Introduction
+===============
+
+Liferea is an abbreviation for Linux Feed Reader. It is a news aggregator for 
+online news feeds. It supports a number of different feed formats including 
+RSS/RDF, CDF and Atom. There are many other news readers available, but these 
+others are not available for Linux or require many extra libraries to be 
+installed. Liferea tries to fill this gap by creating a fast, easy to use, 
+easy to install news aggregator for GTK/GNOME.
+
+
+
+2. Installation from Package
+============================
+
+To install Liferea you can either get a package for your Linux distribution 
+or try to compile and install Liferea from the Source Tarball. The section
+tries to give a list of known packages and short hints on how to install those.
 
 Ubuntu/		There are official packages in both Debian and Ubuntu
 Debian:		
@@ -53,90 +84,239 @@ Solaris		Since 0.9.2 there are Solaris packages built
                 with the Solaris gtk2,libxml2,gconf2 and 
                 libgtkhtml packages from blastwave.org.
 
-Browser Integration
-===================
 
-Liferea allows direct subscriptions from Firefox 1.5+
-and Epiphany. Epiphany provides a standard plugin that
-allows adding subscription directly to Liferea.
 
-If you want to subscribe from within Firefox 1.5 you need
-to install an extension manually. Although there are
-several extensions that might do the task one called
-"FeedBag" is supplied with the source tarball. To
-install it open feedbag.xpi from the source root
-directory with Firefox. This should start the 
-installation procedure. Once installed clicking the
-live bookmark icon should add subscriptions to Liferea.
+3. Building Liferea Yourself
+============================
 
-If you want to subscribe from within Firefox 2.0 you don't
-need to install the "FeedBag" extension. Instead you can
-configure Firefox 2.0 to add subscriptions to Liferea
-directly. To do so click the feed icon in the location 
-entry. Firefox will then present a menu where you can 
-configure a manual command instead of the Live Bookmarks
-to add subscriptions. Liferea supplies a script named
-"liferea-add-feed" that you can tell Firefox to use.
-	
+This section describes how to compile Liferea yourself. If you have
+any problems compiling the packages or from SVN don't hesitate to
+contact us in IRC (see Support section) to help you with it!
 
-Compiling from Source
-=====================
+3.1 Dependencies
+----------------
+
+The library dependencies for Liferea are: 
+
+
+   gtk2, gconf2, libxml2, libxslt, sqlite3 and libwebkit
+   
+   
+Ensure that you have installed the libraries and there headers.
+If you use distribution packages then you usually need to install
+a package named like the library and one with a suffix "-dev" or
+"-devel". You need both to compile Liferea.
+
+
+3.2 Compiling from Tarball
+--------------------------
 		
-If you want you can compile Liferea. Download the tarball from 
-the SourcForge project page and extract with: 
+If you do not like version control systems you might want to compile
+Liferea from a release tarball. Those are supplied at our SourceForge
+project homepage (http://liferea.sf.net). After you downloaded it extract
+it like this:
 
-   tar zxvf liferea-1.2.0.tar.gz 
+   tar zxvf liferea-1.6.0.tar.gz 
 
-Of course you should adjust the filename. After unpacking 
-run the standard autotools commands: 
+After unpacking run the standard autotools commands:
 
    ./configure
    make
-   make install		
+   make install
+   
+After this Liferea will be installed in /usr/local and you should be
+able to start it by calling "/usr/local/bin/liferea".
 
 
-Compiling from SVN
-==================
+3.3 Compiling from SVN
+----------------------
 
 To anonymously check out a source copy execute this:
 
    svn co https://svn.sourceforge.net/svnroot/liferea/trunk .
 
-More information about using SVN with Liferea can be
-found at http://sourceforge.net/svn/?group_id=87005
+More information about using SVN with Liferea can be found at 
+http://sourceforge.net/svn/?group_id=87005
 
-After checking out a source copy you need to prepare the
-compile environment. Executing the following commands should
-do the trick:
+After checking out a source copy you need to prepare the compile environment. 
+Executing the following commands should do the trick:
 
    autoreconf -i
    intltoolize
 
-If everything went well you can continue with "configure"
-as described in the previous section.
+If everything went well you can continue with "configure" as described in 
+the previous section.
 
 
-Dependencies
-============
+4. Contributing
+===============
 
-The library dependencies for Liferea are: gtk2, gconf2, libxml2,
-libxslt, sqlite3 and Webkit.
+This section describes how you can contribute to Liferea.
 
-Help Wanted
-===========
+4.1. No Feature Requests!
+-------------------------
 
-If you want to help please subscribe to the liferea-devel mailing 
-list available on the SourceForge project page. After each release
-we discuss new tasks to be done. Just join the discussion!
+First: *Feature requests are no contributions*. A lot of users think so and
+don't see at all why this should not be the case. While there might be a
+bit of interest on what new features the users would like to have, feature
+requests tend to take up *a lot* of the time spent on support. Short of 
+ignoring feature requests the only polite way to answer them is an elaborate
+explanation of the reason why the developers have decided not to implement
+this feature requests and that they already have thought about it. So feature
+requests are a constant justification exercise invented to punish developers.
+Please be kind and do not participate in this.
 
-If you want to do a translation write a mail to the mailing list
-or just upload the translation as a patch to SourceForge.
+4.2. How to Provide Patches
+---------------------------
+
+Here are some rules to supply patches:
+
+1.) Before spending time on your topic announce it first on the mailing
+    list or the IRC channel. This avoids duplicate work and ensures your
+    patch will be accepted.
+    
+2.) Try to be close to our coding style.
+
+3.) Please include a ChangeLog entry in your patch.
+
+4.) Post the patch on the SourceForge patch tracker or the mailing list.
+    Please always specify with release or SVN version do you made the
+    patch for.
+
+If you are working on some topic feel free to contact us with any question
+on the mailing list on the IRC channel (see Support section).
+
+4.3. How to Translate Liferea
+-----------------------------
+
+Before starting to translate you need an translation editor. We suggest
+to use poedit or gtranslator. Please edit the translation using such a 
+translation editor and send us the resulting file. Once you have finished
+your work please send us the resulting file.
+
+Please do not send translation patches. Those are a lot of work to merge
+and the bandwidth saving is not that huge!
+
+4.3.1. Create a New Translation
+
+To create a new translation you must load the translation template, which you
+can find in the release tarball as "po/liferea.pot", into the translation 
+editor. After editing it save it under a new name (usually your locales name
+with the extension ".po").
 
 
-Known Problems
-==============
+4.3.2. Update an Existing Translation
 
-Please check the bug tracker on SourceForge for known problems! If you 
-don't find your problem please make a report (forum, bugs...) on 
-the SourceForge project page (http://liferea.sf.net) or send a email
-to the project mailing list (liferea-devel@lists.sourceforge.net).
+When updating an existing translation please ensure to respect earlier 
+translators work. If the latest translation is only a few months old please
+contact the latest translator first asking him to review your changes especially
+if you change already translated literals.
+
+4.3.3. Providing a Localized Feed List
+
+When Liferea starts for the first time it installs a localized feed list
+if available. If this is not the case for your locale you might want to provide
+one. To check if there is one for your country have a look into the "opml"
+subdirectory in the latest release tarball or SVN.
+
+If you want to provide/update a localized feed list please follow these rules:
+
+1.) Keep the English part of the default feed list
+
+2.) Only add neutral content feeds (no sex, no ideologic politics, no illegal stuff)
+
+3.) Provide good and short feed titles
+
+4.) Provide HTML URLs for each feed.
+
+Once finished post the result OPML file in the mailing list or the SF patch
+tracker.
+
+4.4 How to Help With Testing
+----------------------------
+
+4.4.1. Bug Reports
+------------------
+
+If you want to help with testing grab the latest tarball or follow SVN trunk
+and write bug reports for any functional problem you experience. If you have
+time help with bug triaging the SF tracker. Check if you see any of the open
+bugs on your setup.
+
+4.4.2. Debugging Crashes
+------------------------
+
+In case of crashes create gdb backtraces and post them in the bug tracker. To
+create a backtrace start Liferea using "gdb liferea". At the gdb prompt type
+"run" to start the execution and "bt" after the crash. Send us the "bt" output!
+
+Note: Often people confuses assertions with crashes. Assertions do halt the
+program because of a totally unexpected situation. Creating a backtrace in this
+situation will only point to the assertion line, which doesn't help much. In case
+of an assertion simply post a bug report with the assertion message.
+
+
+4.4.3. Debugging Memory Leakage
+-------------------------------
+
+If you see memory leakage please take the time to do a run 
+
+   "valgrind --leak-check=full liferea"
+
+to identify leaks and send in the output.
+
+
+5. Browser Integration
+======================
+
+Liferea allows subscribing directly from Firefox 2.0+ and Epiphany. 
+
+5.1. Ephiphany
+--------------
+
+Epiphany provides a standard plugin that allows adding subscription directly 
+to Liferea. Ensure you have installed the Epiphany plugins (often a separate
+package in the distribution) and enabled the plugin in the Epiphany settings.
+
+5.2. Firefox 2.0+
+-----------------
+
+If you want to subscribe from within Firefox 2.0 you can configure Firefox 2.0 
+to add subscriptions to Liferea directly. To do so click the feed icon in the 
+location  entry. Firefox will then present a menu where you can configure a 
+manual command instead of the Live Bookmarks to add subscriptions. Liferea 
+supplies a script named "liferea-add-feed" that you can tell Firefox to use.
+
+If this doesn't work for you please try to run "liferea-add-feed" from the
+command line and look for error messages. Often DBUS problems cause the script
+to fail.
+
+
+6. How to Get Support
+=====================
+
+When using distribution packages:
+
+   Do not post bug reports in the Liferea bug tracker, use the bug reporting
+   system of your distribution instead. We (upstream) cannot fix distribution
+   packages!
+
+Before getting support for stable releases: 
+
+   Install the latest stable release and check if the problem is solved already. 
+   Please do not ask for help for older releases!
+
+Now there are three major support channels:
+
+1.) The IRC channel "#liferea" on freenode.org. If you have easy to solve 
+    problems and simple questions feel free to ask the people hanging 
+    around there.
+    
+2.) The mailing list. Good for posting compilation problems and starting
+    longer discussions.
+    
+3.) The SourceForge bug tracker (http://sf.net/projects/liferea) where you
+    can post bug reports for all problems you find. Ensure to look for any
+    existing reports on your problem!
+
+Hopefully we can help with your problem.
