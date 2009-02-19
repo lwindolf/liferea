@@ -29,7 +29,7 @@ AC_ARG_ENABLE(dbus,      AS_HELP_STRING([--disable-dbus],[compile without DBUS s
 AC_ARG_ENABLE(nm,        AS_HELP_STRING([--disable-nm],[compile without NetworkManager support]),,enable_nm=yes)
 AC_ARG_ENABLE(libnotify, AS_HELP_STRING([--disable-libnotify],[don't compile the libnotify plugin]),,enable_libnotify=yes)
 AC_ARG_ENABLE(lua,       AS_HELP_STRING([--disable-lua],[don't compile with LUA scripting support]),,enable_lua=yes)
-AC_ARG_ENABLE(avahi,     AS_HELP_STRING([--disable-avahi],[don't compile with AVAHI support]),,enable_avahi=yes)
+dnl AC_ARG_ENABLE(avahi,     AS_HELP_STRING([--disable-avahi],[don't compile with AVAHI support]),,enable_avahi=yes)
 
 AC_MSG_CHECKING([for some Win32 platform])
 case "$host" in
@@ -123,23 +123,23 @@ dnl *****
 dnl AVAHI
 dnl *****
 
-if test "x$enable_avahi" = "xyes"; then
-   PKG_CHECK_MODULES(AVAHI,
-      avahi-client >= 0.6
-      avahi-glib >= 0.6,
-      enable_avahi=yes,
-      enable_avahi=no)
-
-   if test "x$enable_avahi" = "xyes"; then
-      AC_DEFINE(USE_AVAHI, 1, [Define if we're using AVAHI.])
-   fi      
-   
-   AC_SUBST(AVAHI_CFLAGS)
-   AC_SUBST(AVAHI_LIBS)
-else
-   enable_avahi=no
-fi
-
+dnl if test "x$enable_avahi" = "xyes"; then
+dnl    PKG_CHECK_MODULES(AVAHI,
+dnl       avahi-client >= 0.6
+dnl       avahi-glib >= 0.6,
+dnl       enable_avahi=yes,
+dnl       enable_avahi=no)
+dnl 
+dnl    if test "x$enable_avahi" = "xyes"; then
+dnl       AC_DEFINE(USE_AVAHI, 1, [Define if we're using AVAHI.])
+dnl    fi      
+dnl    
+dnl    AC_SUBST(AVAHI_CFLAGS)
+dnl    AC_SUBST(AVAHI_LIBS)
+dnl else
+dnl    enable_avahi=no
+dnl fi
+ 
 AM_CONDITIONAL(WITH_AVAHI, test "x$enable_avahi" = "xyes")
 
 dnl Checking for gconftool-2
@@ -255,7 +255,7 @@ echo
 echo "Use X Session Management........ : $enable_sm"
 echo "Use DBUS........................ : $enable_dbus"
 echo "Use NetworkManager.............. : $enable_nm"
-echo "AVAHI Support................... : $enable_avahi"
+dnl echo "AVAHI Support................... : $enable_avahi"
 echo
 eval eval echo Liferea will be installed in $bindir.
 echo

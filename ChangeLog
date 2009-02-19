@@ -8,6 +8,7 @@
 	  (Adrian Bunk)
 	* Fixes several memory leaks. (Arnold Noronha)
 	* Rewritting README document. (Lars Lindner)
+	* Disabled unfinished AVAHI sync code. (Lars Lindner)
 
 
 2009-02-19 Adrian Bunk  <bunk@users.sourceforge.net>
