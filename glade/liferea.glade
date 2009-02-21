@@ -4447,7 +4447,7 @@
     <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
     <property name="has_separator">False</property>
     <property name="program_name">Liferea</property>
-    <property name="copyright" translatable="yes">Copyright (c) 2003-2007
+    <property name="copyright" translatable="yes">Copyright (c) 2003-2009
 Lars Lindner &lt;lars.lindner@gmail.com&gt; and 
 Nathan J. Conrad &lt;t98502@users.sourceforge.net&gt;
 </property>
