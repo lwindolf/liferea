@@ -28,24 +28,6 @@
 #include "ui/liferea_htmlview.h"
 
 /**
- * HTML plugin init callback
- */
-static void
-liferea_webkit_init (void)
-{
-	/* nothing to do here */
-}
-
-/**
- * HTML plugin shutdown callback
- */
-static void
-liferea_webkit_shutdown (void)
-{
-	/* nothing to do here */
-}
-
-/**
  * Load HTML string into the rendering scrollpane
  *
  * Load an HTML string into the web view. This is used to render
@@ -125,18 +107,13 @@ webkit_on_url (WebKitWebView *view, const gchar *title, const gchar *url, gpoint
 static gboolean
 webkit_link_clicked (WebKitWebView *view, WebKitWebFrame *frame, WebKitNetworkRequest *request)
 {
-	const gchar *uri;
+	const gchar	*uri;
 
 	g_return_val_if_fail (WEBKIT_IS_WEB_VIEW (view), FALSE);
 	g_return_val_if_fail (WEBKIT_IS_NETWORK_REQUEST (request), FALSE);
 
-	if (conf_get_bool_value (BROWSE_INSIDE_APPLICATION)) {
-		return FALSE;
-	}
-
 	uri = webkit_network_request_get_uri (WEBKIT_NETWORK_REQUEST (request));
-	browser_launch_URL_external (uri);
-	return TRUE;
+	return liferea_htmlview_handle_URL (g_object_get_data (G_OBJECT (view), "htmlview"), uri);
 }
 
 /**
@@ -174,7 +151,7 @@ webkit_on_menu (WebKitWebView *view, GtkMenu *menu)
  * and embeds WebKitWebView into it.
  */
 static GtkWidget *
-webkit_new (LifereaHtmlView *htmlview, gboolean force_internal_browsing)
+webkit_new (LifereaHtmlView *htmlview)
 {
 	WebKitWebView *view;
 	GtkWidget *scrollpane;
@@ -232,12 +209,6 @@ webkit_new (LifereaHtmlView *htmlview, gboolean force_internal_browsing)
 		"htmlview",
 		htmlview
 	);
-	/** Pass internal browsing param */
-	g_object_set_data (
-		G_OBJECT (view),
-		"internal_browsing",
-		GINT_TO_POINTER (force_internal_browsing)
-	);
 
 	/** Connect signal callbacks */
 	g_signal_connect (
@@ -285,15 +256,6 @@ webkit_launch_url (GtkWidget *scrollpane, const gchar *url)
 		WEBKIT_WEB_VIEW (gtk_bin_get_child (GTK_BIN (scrollpane))),
 		url
 	);
-}
-
-/**
- * Return TRUE to indicate to allow internals browsing
- */
-static gboolean
-webkit_launch_inside_possible (void)
-{
-	return TRUE;
 }
 
 /**
@@ -357,13 +319,9 @@ webkit_set_proxy (const gchar *host, guint port, const gchar *user, const gchar 
 
 static struct
 htmlviewImpl webkitImpl = {
-	.externalCss	= TRUE,
-	.init		= liferea_webkit_init,
-	.deinit		= liferea_webkit_shutdown,
 	.create		= webkit_new,
 	.write		= webkit_write_html,
 	.launch		= webkit_launch_url,
-	.launchInsidePossible = webkit_launch_inside_possible,
 	.zoomLevelGet	= webkit_get_zoom_level,
 	.zoomLevelSet	= webkit_change_zoom_level,
 	.scrollPagedown	= webkit_scroll_pagedown,

@@ -16,6 +16,9 @@
 	* Disables comment feed display in 2 pane mode to prevent
 	  problems with handling multiple comment feeds.
 	  (reported by Ariel Pablo Topasso)
+	* Fixes "Open in New Tab" link launching issues when 
+	  internal browsing is enabled.
+	  (Lars Lindner)
 
 
 2009-02-19 Adrian Bunk  <bunk@users.sourceforge.net>

@@ -51,7 +51,8 @@ static void liferea_htmlview_init	(LifereaHtmlView *htmlview);
 
 struct LifereaHtmlViewPrivate {
 	GtkWidget	*renderWidget;
-	gboolean	internal;	/**< TRUE if internal view presenting generated HTML with special links */
+	gboolean	internal;		/**< TRUE if internal view presenting generated HTML with special links */
+	gboolean	forceInternalBrowsing;	/**< TRUE if clicked links should be force loaded within this view (regardless of global preference) */
 };
 
 enum {
@@ -197,7 +198,8 @@ liferea_htmlview_new (gboolean forceInternalBrowsing)
 	LifereaHtmlView *htmlview;
 		
 	htmlview = LIFEREA_HTMLVIEW (g_object_new (LIFEREA_HTMLVIEW_TYPE, NULL));
-	htmlview->priv->renderWidget = htmlviewImpl->create (htmlview, forceInternalBrowsing);
+	htmlview->priv->forceInternalBrowsing = forceInternalBrowsing;
+	htmlview->priv->renderWidget = htmlviewImpl->create (htmlview);
 	liferea_htmlview_clear (htmlview);
 	
 	return htmlview;
@@ -309,17 +311,18 @@ liferea_htmlview_close (LifereaHtmlView *htmlview)
 	g_signal_emit_by_name (htmlview, "close-tab");
 }
 
-void
-liferea_htmlview_launch_URL (LifereaHtmlView *htmlview, const gchar *url, gboolean forceInternal)
+gboolean
+liferea_htmlview_handle_URL (LifereaHtmlView *htmlview, const gchar *url)
 {
 	struct internalUriType	*uriType;
 	
-	g_return_if_fail (htmlview);
-	g_return_if_fail (url);
+	g_return_val_if_fail (htmlview, TRUE);
+	g_return_val_if_fail (url, TRUE);
 	
-	debug3 (DEBUG_GUI, "launch URL: %s  %s %s", conf_get_bool_value (BROWSE_INSIDE_APPLICATION)?"true":"false",
-		  (htmlviewImpl->launchInsidePossible) ()?"true":"false",
-		  forceInternal?"true":"false");
+	debug3 (DEBUG_GUI, "handle URL: %s %s %s",
+	        conf_get_bool_value (BROWSE_INSIDE_APPLICATION)?"true":"false",
+	        htmlview->priv->forceInternalBrowsing?"true":"false",
+		htmlview->priv->internal);
 
 	/* first catch all links with special URLs... */
 	if (liferea_htmlview_is_special_url (url)) {
@@ -349,30 +352,38 @@ liferea_htmlview_launch_URL (LifereaHtmlView *htmlview, const gchar *url, gboole
 								g_warning ("Fatal: no item with id (node=%s, item=%s) found!!!", nodeid, itemnr);
 							}
 
-							return;
+							return TRUE;
 						}
 					}
 				}
 				uriType++;
 			}
 			g_warning ("Internal error: unhandled protocol in URL \"%s\"!", url);
-			return;
 		} else {
 			g_warning ("Security: Prevented external HTML document to use internal link scheme (%s)!", url);
-			return;
 		}
+		return TRUE;
 	}
 	
-	if((forceInternal || conf_get_bool_value (BROWSE_INSIDE_APPLICATION)) &&
-	   (htmlviewImpl->launchInsidePossible) ()) {
-	   
+	if(htmlview->priv->forceInternalBrowsing || conf_get_bool_value (BROWSE_INSIDE_APPLICATION)) {	   
 	   	/* before loading external content suppress internal link schema again */
 		htmlview->priv->internal = FALSE;
 		
-		(htmlviewImpl->launch) (htmlview->priv->renderWidget, url);
+		return FALSE;
 	} else {
 		(void)browser_launch_URL_external (url);
 	}
+	
+	return TRUE;
+}
+
+void
+liferea_htmlview_launch_URL_internal (LifereaHtmlView *htmlview, const gchar *url)
+{
+	/* before loading untrusted URLs suppress internal link schema */
+	htmlview->priv->internal = FALSE;
+	
+	(htmlviewImpl->launch) (htmlview->priv->renderWidget, url);
 }
 
 void

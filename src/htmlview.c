@@ -266,7 +266,7 @@ htmlview_start_output (GString *buffer,
 	}
 
 	if (css)
-		g_string_append (buffer, render_get_css (htmlview_get_impl()->externalCss));
+		g_string_append (buffer, render_get_css (TRUE /* external CSS supported */));
 	
 	/* add predefined scripts to be used for item menu */
 	if (script) 

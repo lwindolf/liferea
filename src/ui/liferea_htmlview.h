@@ -112,15 +112,34 @@ void liferea_htmlview_open (LifereaHtmlView *htmlview, const gchar *url);
 void liferea_htmlview_close (LifereaHtmlView *htmlview);
 
 /**
- * Launches the specified URL in the configured browser or
- * in inside the HTML widget according to the launchType
- * parameter.
+ * Launches the specified URL in the external browser or handles
+ * a special URL by triggering HTML generation. Otherwise returns
+ * TRUE to indicate the HTML widget should launch the link.
+ *
+ * To enforce a launching behaviour do use
+ *
+ *    liferea_htmlview_launch_URL_internal(htmlview, url)
+ *
+ * or 
+ *
+ *    browser_launch_URL_external(url)
+ *
+ * instead of this method.
  *
  * @param htmlview	the HTML view to use
  * @param url		URL to launch
- * @param forceInternal	TRUE if internal launch is to be enforced
+ *
+ * @returns TRUE if link is to be launched by browser widget
  */
-void liferea_htmlview_launch_URL (LifereaHtmlView *htmlview, const gchar *url, gboolean forceInternal);
+gboolean liferea_htmlview_handle_URL (LifereaHtmlView *htmlview, const gchar *url);
+
+/**
+ * Enforces loading of the given URL in the given browser widget.
+ *
+ * @param htmlview	the HTML view to use
+ * @param url		the URL to load
+ */
+void liferea_htmlview_launch_URL_internal (LifereaHtmlView *htmlview, const gchar *url);
 
 /**
  * Function to change the zoom level of the HTML widget.
@@ -180,16 +199,9 @@ G_END_DECLS
 
 /** interface for HTML rendering support implementation */
 typedef struct htmlviewImpl {
-	gboolean	externalCss;		/**< TRUE if browser plugin support loading CSS from file */
-	
-	/* loading and unloading methods */
-	void 		(*init)		(void);
-	void 		(*deinit) 	(void);
-	
-	GtkWidget*	(*create)		(LifereaHtmlView *htmlview, gboolean forceInternalBrowsing);
+	GtkWidget*	(*create)		(LifereaHtmlView *htmlview);
 	void		(*write)		(GtkWidget *widget, const gchar *string, guint length, const gchar *base, const gchar *contentType);
 	void		(*launch)		(GtkWidget *widget, const gchar *url);
-	gboolean	(*launchInsidePossible)	(void);
 	gfloat		(*zoomLevelGet)		(GtkWidget *widget);
 	void		(*zoomLevelSet)		(GtkWidget *widget, gfloat zoom);
 	gboolean	(*scrollPagedown)	(GtkWidget *widget);
