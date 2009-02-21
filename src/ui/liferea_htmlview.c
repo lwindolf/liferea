@@ -322,7 +322,7 @@ liferea_htmlview_handle_URL (LifereaHtmlView *htmlview, const gchar *url)
 	debug3 (DEBUG_GUI, "handle URL: %s %s %s",
 	        conf_get_bool_value (BROWSE_INSIDE_APPLICATION)?"true":"false",
 	        htmlview->priv->forceInternalBrowsing?"true":"false",
-		htmlview->priv->internal);
+		htmlview->priv->internal?"true":"false");
 
 	/* first catch all links with special URLs... */
 	if (liferea_htmlview_is_special_url (url)) {
