@@ -505,7 +505,7 @@ itemview_launch_URL (const gchar *url, gboolean forceInternal)
 	/* Otherwise let the HTML view figure out if we want to browse internally. */
 	internal = liferea_htmlview_handle_URL (itemview->priv->htmlview, url);
 	
-	if (internal)
+	if (!internal)
 		liferea_htmlview_launch_URL_internal (itemview->priv->htmlview, url);
 }
 
