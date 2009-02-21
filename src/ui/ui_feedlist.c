@@ -79,21 +79,6 @@ ui_feedlist_selection_changed_cb (GtkTreeSelection *selection, gpointer data)
 				     IS_VFOLDER (node) || 
 				     IS_NODE_SOURCE (node)));
 		if (realNode) {
-			GtkWidget *mainwindow = liferea_shell_get_window ();
-			
-			/* FIXME: another workaround to prevent strange window
-			   size increasings after feed selection changing 
-			   
-			   Why is this workaround necessary? Missing documentation!!!
-			   
-			   Starting with 1.4.4 changing the minimum size from
-			   640x480 to 50x50. If anyone experiences it there will
-			   be bug reports soon. If there are none over about a month
-			   this should be removed! */
-			geometry.min_height = 50;
-			geometry.min_width = 50;			
-			gtk_window_set_geometry_hints (GTK_WINDOW (mainwindow), mainwindow, &geometry, GDK_HINT_MIN_SIZE);
-		
 			browser_tabs_show_headlines ();
 			
 			/* workaround to ensure the feedlist is focussed when we click it
