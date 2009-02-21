@@ -64,7 +64,6 @@ ui_feedlist_selection_changed_cb (GtkTreeSelection *selection, gpointer data)
 	GtkTreeIter		iter;
 	GtkTreeModel		*model;
 	nodePtr			node;
-	GdkGeometry		geometry;
 	gboolean		realNode = TRUE;
 
 	if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
