@@ -149,6 +149,13 @@ void subscription_update (subscriptionPtr subscription, guint flags);
  */
 void subscription_auto_update (subscriptionPtr subscription);
 
+/**
+ * Cancels a currently running subscription update. This is to
+ * be called when removing subscriptions or retriggering the update
+ * upon user request.
+ *
+ * @param subscription	the subscription
+ */
 void subscription_cancel_update (subscriptionPtr subscription);
 
 /**
