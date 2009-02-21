@@ -115,6 +115,8 @@ static gchar *search_links(const gchar* data, gint linkType) {
 			break;
 		
 		endptr = strchr(ptr, '>');
+		if (!endptr)
+			break;
 		*endptr = '\0';
 		tstr = g_strdup(ptr);
 		*endptr = '>';
