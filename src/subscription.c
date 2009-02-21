@@ -272,7 +272,9 @@ subscription_auto_update (subscriptionPtr subscription)
 void
 subscription_cancel_update (subscriptionPtr subscription)
 {
-	g_assert (subscription->updateJob);
+	if (!subscription->updateJob)
+		return;
+
 	update_job_cancel_by_owner (subscription);
 	subscription->updateJob = NULL;
 }

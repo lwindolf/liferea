@@ -110,9 +110,6 @@ ui_update_cancel (nodePtr node)
 	if (!node->subscription)
 		return;
 		
-	if (!node->subscription->updateJob)
-		return;
-		
 	subscription_cancel_update (node->subscription);
 }
 

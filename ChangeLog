@@ -21,6 +21,8 @@
 	  (Lars Lindner)
 	* Fixes crash when clicking "Cancel" in properties dialog
 	  of an already existing search folder. (Lars Lindner)
+	* Fixes SF #2617480: assertion on subscription_cancel_update()
+	  (Lars Lindner)
 
 
 2009-02-19 Adrian Bunk  <bunk@users.sourceforge.net>
