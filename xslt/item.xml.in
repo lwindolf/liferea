@@ -4,7 +4,7 @@
 /**
  * Rendering stylesheet for Liferea (item view: item rendering)
  *
- * Copyright (C) 2006-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2009 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -251,7 +251,7 @@
 
 <!-- construct unique id to allow Javascript showing/hiding of itemmenu -->
 <xsl:variable name="hiddenMenu">
-   <xsl:if test="$single = 1">hidden</xsl:if>
+   <xsl:if test="$single = 0">hidden</xsl:if>
 </xsl:variable>
 
 <table id="{sourceId}-{nr}" class="headmeta {$hiddenMenu}"
@@ -309,7 +309,7 @@
 
 <div class="{$shading}">
 <div class='content'>
-  <!-- the items content -->
+  <!-- the item's content -->
   <p>
     <!-- optional gravatar -->
     <xsl:if test="attributes/attribute[ @name = 'gravatar' ]">
@@ -333,7 +333,7 @@
   </xsl:if>
   
   <!-- comment handling -->
-  <xsl:if test="attributes/attribute[ @name = 'commentFeedUri' ] and not(./commentsSuppressed)"> 
+  <xsl:if test="attributes/attribute[ @name = 'commentFeedUri' ] and not(./commentsSuppressed) and $single = 1"> 
      <p>     
      <xsl:choose>
         <xsl:when test="count(comments/item) = 0">

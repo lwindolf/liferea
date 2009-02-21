@@ -1,5 +1,5 @@
 /**
- * @file htmlview.h implementation of the item view interface for HTML rendering
+ * @file htmlview.h  item view interface for HTML rendering
  * 
  * Copyright (C) 2006-2007 Lars Lindner <lars.lindner@gmail.com>
  *

@@ -1,7 +1,7 @@
 /**
- * @file htmlview.c implementation of the item view interface for HTML rendering
+ * @file htmlview.c  item view interface for HTML rendering
  * 
- * Copyright (C) 2006-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2009 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -230,7 +230,7 @@ htmlview_render_item (itemPtr item,
 	render_parameter_add (params, "pixmapsDir='file://" PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "'");
 	render_parameter_add (params, "baseUrl='%s'", baseUrl);
 	render_parameter_add (params, "summary='%d'", summaryMode?1:0);
-	render_parameter_add (params, "single='%d'", (viewMode == ITEMVIEW_SINGLE_ITEM)?0:1);
+	render_parameter_add (params, "single='%d'", (viewMode == ITEMVIEW_SINGLE_ITEM)?1:0);
 	output = render_xml (doc, "item", params);
 	
 	/* For debugging use: xmlSaveFormatFile("/tmp/test.xml", doc, 1); */

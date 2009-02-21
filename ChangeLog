@@ -13,6 +13,9 @@
 	  feed list mode off. (Lars Lindner)
 	* Added an autogen.sh for building from SVN.
 	  (Adrian Bunk)
+	* Disables comment feed display in 2 pane mode to prevent
+	  problems with handling multiple comment feeds.
+	  (reported by Ariel Pablo Topasso)
 
 
 2009-02-19 Adrian Bunk  <bunk@users.sourceforge.net>
