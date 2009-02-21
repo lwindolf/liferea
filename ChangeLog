@@ -2,7 +2,7 @@
 
 	Version 1.4.26 (Stable)
 
-	*
+	* Fixes SF #2570424: Fix build with --disable-gecko.
 
 
 2009-02-20  Adrian Bunk  <bunk@users.sourceforge.net>
