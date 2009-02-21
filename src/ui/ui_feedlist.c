@@ -78,13 +78,8 @@ ui_feedlist_selection_changed_cb (GtkTreeSelection *selection, gpointer data)
 		                     IS_NEWSBIN (node) || 
 				     IS_VFOLDER (node) || 
 				     IS_NODE_SOURCE (node)));
-		if (realNode) {
+		if (realNode)
 			browser_tabs_show_headlines ();
-			
-			/* workaround to ensure the feedlist is focussed when we click it
-			   (Mozilla might prevent this, ui_itemlist_display() depends on this */
-			gtk_widget_grab_focus (liferea_shell_lookup ("feedlist"));
-		}
 		
 		/* update feed list and item list states */
 		feedlist_selection_changed (node);
