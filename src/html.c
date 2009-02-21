@@ -111,11 +111,11 @@ search_links (const gchar* data, gint linkType)
 	while (1) {
 		ptr = common_strcasestr (tmp, ((linkType != LINK_NORMAL_ANCHOR)? "<link " : "<a "));
 		if (!ptr)
-			break;
+			return NULL;
 		
 		endptr = strchr (ptr, '>');
 		if (!endptr)
-			break;
+			return NULL;
 		*endptr = '\0';
 		tstr = g_strdup (ptr);
 		*endptr = '>';
@@ -140,6 +140,7 @@ search_links (const gchar* data, gint linkType)
 		}
 		tmp = endptr;
 	}
+	
 	result = unhtmlize (result); /* URIs can contain escaped things.... All ampersands must be escaped, for example */
 	return result;
 }
