@@ -23,6 +23,8 @@
 	  of an already existing search folder. (Lars Lindner)
 	* Fixes SF #2617480: assertion on subscription_cancel_update()
 	  (Lars Lindner)
+	* Fixes Debian #511869: Include space before "FeedValidator"
+	  link (Lars Lindner)
 
 
 2009-02-19 Adrian Bunk  <bunk@users.sourceforge.net>

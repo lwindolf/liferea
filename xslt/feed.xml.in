@@ -75,9 +75,8 @@
       <script language="javascript" type="text/javascript">document.getElementById('pdl').style.visibility='visible';document.getElementById('pdl').style.display='inline';</script>
 
        <br /><_span>You may want to validate the feed using</_span>
-       <a href="http://feedvalidator.org/check.cgi?url={feedSource}">
-       	  FeedValidator
-       </a>
+       <xsl:text> </xsl:text>
+       <a href="http://feedvalidator.org/check.cgi?url={feedSource}">FeedValidator</a>
     </span>
   </div>
 </xsl:if>
