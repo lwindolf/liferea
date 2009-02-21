@@ -3,7 +3,7 @@
  * 
  * Copyright (C) 2004-2009 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2005 Raphaël Slinckx <raphael@slinckx.net>
+ * Copyright (C) 2005 Raphael Slinckx <raphael@slinckx.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
