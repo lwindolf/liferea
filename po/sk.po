@@ -1,7 +1,7 @@
 # translation of liferea.
-# Copyright (C) 2008 Free Software Foundation, Inc
+# Copyright (C) 2008-2009 Free Software Foundation, Inc
 # This file is distributed under the same license as the liferea package.
-# Pavol Klačanský <pavolzetor@gmail.com>, 2008.
+# Pavol Klačanský <pavol@klacansky.com>, 2008, 2009.
 #
 #
 msgid ""
@@ -9,13 +9,13 @@ msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-08-08 23:59+0200\n"
-"PO-Revision-Date: 2008-09-08 17:06+0200\n"
-"Last-Translator: Pavol Klačanský <pavolzetor@gmail.com>\n"
+"PO-Revision-Date: 2009-02-22 12:16+0100\n"
+"Last-Translator: Pavol Klačanský <pavol@klacansky.com>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural= (n==1) ? 1 : (n>=2 && n<=4) ? 2 : 0;"
+"Plural-Forms: nplurals=3; plural= (n==1) ? 1 : (n>=2 && n<=4) ? 2 : 0;\n"
 
 #: ../liferea.glade.h:1
 msgid " "
@@ -47,7 +47,7 @@ msgstr "<b>Zdroj kanálu</b>"
 
 #: ../liferea.glade.h:8
 msgid "<b>Hook</b>"
-msgstr ""
+msgstr "<b>Prichytenie</b>"
 
 #: ../liferea.glade.h:9
 msgid "<b>Pending Requests</b>"
@@ -67,17 +67,20 @@ msgstr "<b>Kód skriptu</b>"
 
 #: ../liferea.glade.h:13
 msgid "<b>text/plain</b>"
-msgstr ""
+msgstr "<b>text/plain</b>"
 
 #: ../liferea.glade.h:14
 msgid ""
 "<i>This option can cause significant delays when loading folders containing "
 "many feeds.</i>"
 msgstr ""
+"<i>Táto voľba môže spôsobiť podstatné oneskorenie, keď sa bude načítavať "
+"priečinok s veľkým obsahom kanálov.</i>"
 
 #: ../liferea.glade.h:15
 msgid "<span color=\"blue\" underline=\"single\">Liferea Homepage</span>"
-msgstr "<span color=\"blue\" underline=\"single\">Domovská stránka Liferea</span>"
+msgstr ""
+"<span color=\"blue\" underline=\"single\">Domovská stránka Liferea</span>"
 
 #: ../liferea.glade.h:16
 msgid "<span weight=\"bold\">Downloading Enclosures</span>"
@@ -169,7 +172,9 @@ msgstr "Overenie"
 
 #: ../liferea.glade.h:38
 msgid "Auto-_load item link in configured browser when selecting articles."
-msgstr "Pri vybratí článku automaticky otvoriť odkaz na č_lánok v nastavenom prehliadači."
+msgstr ""
+"Pri vybratí článku automaticky otvoriť odkaz na č_lánok v nastavenom "
+"prehliadači."
 
 #: ../liferea.glade.h:39
 msgid "Browser"
@@ -359,7 +364,7 @@ msgstr "Zadajte používateľské meno a heslo pre \"%s\" (%s):"
 
 #: ../liferea.glade.h:109
 msgid "Exec Command"
-msgstr ""
+msgstr "Vykoná príkaz"
 
 #: ../liferea.glade.h:110
 msgid "Feed _Name:"
@@ -429,8 +434,8 @@ msgid ""
 "Note: <i>The username and password will be saved to your Liferea feedlist "
 "file without using encryption.</i>"
 msgstr ""
-"Poznámka: <i>Používateľské meno a heslo bude uložené vo vašom Liferea "
-"súbore so zoznamom kanálov bez použitia šifrovania.</i>"
+"Poznámka: <i>Používateľské meno a heslo bude uložené vo vašom Liferea súbore "
+"so zoznamom kanálov bez použitia šifrovania.</i>"
 
 #: ../liferea.glade.h:126
 msgid ""
@@ -507,7 +512,7 @@ msgstr "Vlastnosti priečinku hľadania"
 
 #: ../liferea.glade.h:143
 msgid "Search _Link for"
-msgstr ""
+msgstr "Vyhľadať _odkaz"
 
 #: ../liferea.glade.h:144
 msgid "Select File..."
@@ -550,6 +555,8 @@ msgid ""
 "Starts searching for the specified text in all feeds. The search result will "
 "appear in the item list."
 msgstr ""
+"Začne vyhľadávanie zadaného textu vo všetkých kanáloch. Výsledok hľadania sa "
+"zobrazí v zozname článkov."
 
 #: ../liferea.glade.h:154
 msgid "Subscription Properties"
@@ -563,12 +570,13 @@ msgstr ""
 msgid ""
 "The cache setting controls if the contents of feeds are saved when Liferea "
 "exits. Marked items are always saved to the cache."
-msgstr ""
+msgstr "Nastavenia cache"
 
 #: ../liferea.glade.h:158
 #, no-c-format
 msgid "This feed provider suggests an update interval of %d minutes."
 msgstr ""
+"Poskytovateľ tohto kanálu odporúča interval aktualizácie každých %d minút."
 
 #: ../liferea.glade.h:159
 msgid "Toolbar _button labels:"
@@ -655,7 +663,7 @@ msgstr "_Stiahnuť použitím"
 
 #: ../liferea.glade.h:179
 msgid "_Feed specific update interval of"
-msgstr ""
+msgstr "Š_pecifický interval aktualizácie kanálu"
 
 #: ../liferea.glade.h:180
 msgid "_Folder name:"
@@ -724,7 +732,7 @@ msgstr "Vy_hľadávanie:"
 
 #: ../liferea.glade.h:197
 msgid "_Show the items of all child feeds when a folder is selected."
-msgstr ""
+msgstr "_Zobraziť články všetkých vnorených kanálov, keď je vybraný priečinok."
 
 #: ../liferea.glade.h:198
 msgid "_Skim through articles with:"
@@ -806,15 +814,15 @@ msgstr "Kanál:"
 
 #: ../xslt/feed.xml.in.h:4
 msgid "Filter Error Details"
-msgstr ""
+msgstr "Podrobnosti chyby filtru"
 
 #: ../xslt/feed.xml.in.h:5
 msgid "Parser Error Details"
-msgstr ""
+msgstr "Podrobnosti chyby parsera"
 
 #: ../xslt/feed.xml.in.h:6
 msgid "Publisher"
-msgstr ""
+msgstr "Vydavateľ"
 
 #: ../xslt/feed.xml.in.h:7 ../xslt/source.xml.in.h:1
 msgid "Source:"
@@ -830,11 +838,11 @@ msgstr ""
 
 #: ../xslt/feed.xml.in.h:9
 msgid "There were errors while filtering this feed!"
-msgstr ""
+msgstr "Počas filtrovania tohto kanálu tu boli chyby!"
 
 #: ../xslt/feed.xml.in.h:10
 msgid "There were errors while parsing this feed!"
-msgstr ""
+msgstr "Počas parsovania tohto kanálu tu boli chyby!"
 
 #: ../xslt/feed.xml.in.h:11
 msgid ""
@@ -869,7 +877,7 @@ msgstr "Autor"
 
 #: ../xslt/item.xml.in.h:3
 msgid "Comments"
-msgstr ""
+msgstr "Komentáre"
 
 #: ../xslt/item.xml.in.h:4
 msgid "Creator"
@@ -897,7 +905,7 @@ msgstr "Obnoviť"
 
 #: ../xslt/item.xml.in.h:10
 msgid "Section"
-msgstr ""
+msgstr "Sekcia"
 
 #: ../xslt/item.xml.in.h:12
 msgid "Updating..."
@@ -909,7 +917,7 @@ msgstr "záložka"
 
 #: ../xslt/item.xml.in.h:14
 msgid "comments"
-msgstr ""
+msgstr "komentáre"
 
 #: ../xslt/item.xml.in.h:15
 msgid "flag"
@@ -924,8 +932,8 @@ msgid ""
 "Add items to this news bin by selecting \"Copy to News Bin\" from the item "
 "list context menu."
 msgstr ""
-"Pridať články do tohto archívu vybraním položky \"Kopírovať do archívu\" "
-"so zoznamu kontextovej ponuky."
+"Pridať články do tohto archívu vybraním položky \"Kopírovať do archívu\" so "
+"zoznamu kontextovej ponuky."
 
 #: ../xslt/newsbin.xml.in.h:2
 msgid "News Bin:"
@@ -978,7 +986,7 @@ msgstr ""
 
 #: ../src/common.c:433
 msgid "Payment Required"
-msgstr ""
+msgstr "Požadovaná platba"
 
 #: ../src/common.c:434
 msgid "Access Forbidden"
@@ -986,15 +994,15 @@ msgstr "Prístup zakázaný."
 
 #: ../src/common.c:435
 msgid "Resource Not Found"
-msgstr ""
+msgstr "Zdroj nebol nádjený"
 
 #: ../src/common.c:436
 msgid "Method Not Allowed"
-msgstr ""
+msgstr "Metóda nie je povolená"
 
 #: ../src/common.c:437
 msgid "Not Acceptable"
-msgstr ""
+msgstr "Neprijateľný"
 
 #: ../src/common.c:438
 msgid "Proxy Authentication Required"
@@ -1022,7 +1030,7 @@ msgstr "Chyba serveru"
 
 #: ../src/common.c:448
 msgid "(unknown networking error happened)"
-msgstr ""
+msgstr "(nastala neznáma chyba siete)"
 
 #: ../src/common.c:459
 msgid "URL is invalid"
@@ -1079,7 +1087,7 @@ msgstr "Nemohol byť nájdený súbor pixmap: %s"
 #: ../src/export.c:152
 #, c-format
 msgid "Error renaming %s to %s\n"
-msgstr ""
+msgstr "Chyba premenovania %s na %s\n"
 
 #: ../src/export.c:322 ../src/export.c:324
 #, c-format
@@ -1098,6 +1106,7 @@ msgstr ""
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
+"\"%s\" nie je platný OPML dokument! Liferea nemôže importovať tento súbor!"
 
 #: ../src/export.c:373
 msgid "Imported feed list"
@@ -1113,7 +1122,7 @@ msgstr "Importovať"
 
 #: ../src/export.c:392
 msgid "Error while exporting feed list!"
-msgstr ""
+msgstr "Chyba počas exportovania zoznamu kanálov!"
 
 #: ../src/export.c:394
 msgid "Feed List exported!"
@@ -1187,10 +1196,10 @@ msgid ""
 "automatically. Please remove this directory manually once you are sure "
 "migration was successful!"
 msgstr ""
-"Táto verzia programu Liferea používa nový formát cache a musí premiestniť"
-"vašu cache kanálov. Obsah cache vo v1.2 v priečinku ~/.liferea_1.2 nebude "
-"automaticky odstránený. Odstránte, prosím, tento priečinok ručne akonáhle "
-"si budete istý že premiestnenie bolo úspešné!"
+"Táto verzia programu Liferea používa nový formát cache a musí "
+"premiestniťvašu cache kanálov. Obsah cache vo v1.2 v priečinku ~/."
+"liferea_1.2 nebude automaticky odstránený. Odstránte, prosím, tento "
+"priečinok ručne akonáhle si budete istý že premiestnenie bolo úspešné!"
 
 #: ../src/html.c:154
 msgid "Feed link auto discovery failed! No feed links found!"
@@ -1215,15 +1224,15 @@ msgstr "  --mainwindow-state=STAV"
 
 #: ../src/main.c:72
 msgid "                   Start Liferea with its main window in STATE."
-msgstr "                   Spustiť Liferea s hlavným oknom v STAVE."
+msgstr "                   Spustí program Liferea s hlavným oknom v STAVE."
 
 #: ../src/main.c:73
 msgid "                   STATE may be `shown', `iconified', or `hidden'"
-msgstr "                   STAV môže byť `shown', `iconified', or `hidden'"
+msgstr "                   STAV môže byť `shown', `iconified', alebo `hidden'"
 
 #: ../src/main.c:75
 msgid "  --debug-<topic>  Print debugging messages for the given topic"
-msgstr "  --debug-<topic>  Vypíše správy ladenia pre zadaný tému"
+msgstr "  --debug-<téma>  Vypíše správy ladenia pre zadanú tému"
 
 #: ../src/main.c:76
 msgid "                   Possible topics are: all,cache,conf,db,gui,html"
@@ -1235,17 +1244,17 @@ msgstr "                   net,parsing,plugins,trace,update,verbose"
 
 #: ../src/main.c:157
 msgid "Liferea seems to be running already!"
-msgstr ""
+msgstr "Zdá sa, že Liferea je už spustená!"
 
 #: ../src/main.c:227
 #, c-format
 msgid "The --mainwindow-state argument must be given a parameter.\n"
-msgstr ""
+msgstr "Argumentu --mainwindow-state musí byť predaný parameter.\n"
 
 #: ../src/main.c:235
 #, c-format
 msgid "The --session argument must be given a parameter.\n"
-msgstr ""
+msgstr "Argumentu --session musí byť predaný parameter.\n"
 
 #: ../src/main.c:238
 #, c-format
@@ -1415,7 +1424,7 @@ msgstr ""
 
 #: ../src/xml.c:499
 msgid "XML Parser: Could not parse document:\n"
-msgstr ""
+msgstr "XML parser: Nemohol byť parsovaný dokument:\n"
 
 #: ../src/ui/eggtrayicon.c:133
 msgid "Orientation"
@@ -1432,7 +1441,7 @@ msgstr "Neznámy zdroj"
 #: ../src/ui/ui_enclosure.c:74
 #, c-format
 msgid "\"%s\" is not a valid enclosure type config file!"
-msgstr ""
+msgstr "\"%s\" nie je platný typ prílohy konfiguračného súboru!"
 
 #. just saving
 #: ../src/ui/ui_enclosure.c:165
@@ -1482,7 +1491,7 @@ msgstr ""
 #. FIXME: bad because this is not only used for item links!
 #: ../src/ui/ui_htmlview.c:202
 msgid "This item does not have a link assigned!"
-msgstr ""
+msgstr "Tento článok nemá priradený odkaz!"
 
 #: ../src/ui/ui_htmlview.c:297 ../src/ui/ui_htmlview.c:317
 #, c-format
@@ -1492,7 +1501,7 @@ msgstr "Zlyhal príkaz prehliadača: %s"
 #: ../src/ui/ui_htmlview.c:320
 #, c-format
 msgid "Starting: \"%s\""
-msgstr ""
+msgstr "Spúšťa sa: \"%s"
 
 #: ../src/ui/ui_itemlist.c:211
 msgid "<i>*** No title ***</i>"
@@ -1510,11 +1519,11 @@ msgstr "Článok"
 #: ../src/ui/ui_itemlist.c:581 ../src/ui/ui_itemlist.c:729
 #: ../src/ui/ui_itemlist.c:747
 msgid "No item has been selected"
-msgstr ""
+msgstr "Neboli vybrané články"
 
 #: ../src/ui/ui_itemlist.c:504
 msgid "This item has no link specified!"
-msgstr ""
+msgstr "Tento článok nemá špecifikovaný odkaz!"
 
 #: ../src/ui/ui_itemlist.c:571
 msgid "You must select a feed to delete its items!"
@@ -1522,7 +1531,7 @@ msgstr "Musíte vybrať kanál ak chcete odstrániť jeho články!"
 
 #: ../src/ui/ui_itemlist.c:757
 msgid "No link selected!"
-msgstr ""
+msgstr "Žiadny vybraný odkaz!"
 
 #. launch the homepage when button in about dialog is pressed
 #: ../src/ui/ui_mainwindow.c:206
@@ -1531,7 +1540,7 @@ msgstr "http://liferea.sf.net"
 
 #: ../src/ui/ui_mainwindow.c:210
 msgid "topics_en.html"
-msgstr ""
+msgstr "topics_en.html"
 
 #: ../src/ui/ui_mainwindow.c:211
 msgid "Help Topics"
@@ -1539,7 +1548,7 @@ msgstr "Témy pomocníka"
 
 #: ../src/ui/ui_mainwindow.c:217
 msgid "reference_en.html"
-msgstr ""
+msgstr "reference_en.html"
 
 #: ../src/ui/ui_mainwindow.c:218
 msgid "Quick Reference"
@@ -1547,7 +1556,7 @@ msgstr "Rýchla príručka"
 
 #: ../src/ui/ui_mainwindow.c:223
 msgid "faq_en.html"
-msgstr ""
+msgstr "faq_en.html"
 
 #: ../src/ui/ui_mainwindow.c:224
 msgid "FAQ"
@@ -1564,11 +1573,12 @@ msgid ""
 "subscription select Feeds -&gt; New Subscription. To browse the headlines of "
 "a feed select it in the feed list and the headlines will be loaded into the "
 "right pane.</p>"
-msgstr "<p>Vitajte v programe <b>Liferea</b>, agregátor správ pre internetové "
-"kanály so správami.</p><p>Lavá časť obsahuje zoznam prihlásení. Pre "
-"pridanie prihlásenia vyberte Prihlásenia -&gt; Nové prihlásenie. Pre "
-"prehliadanie článkov kanálu ho vyberte v zozname a článok bude načítaný "
-"v pravej časti.</p>"
+msgstr ""
+"<p>Vitajte v programe <b>Liferea</b>, agregátor správ pre internetové kanály "
+"so správami.</p><p>Lavá časť obsahuje zoznam prihlásení. Pre pridanie "
+"prihlásenia vyberte Prihlásenia -&gt; Nové prihlásenie. Pre prehliadanie "
+"článkov kanálu ho vyberte v zozname a článok bude načítaný v pravej časti.</"
+"p>"
 
 #: ../src/ui/ui_mainwindow.c:745
 msgid "Liferea is now online"
@@ -1660,7 +1670,7 @@ msgstr "Prepnúť stav p_rečítaný"
 
 #: ../src/ui/ui_mainwindow.c:1028
 msgid "Toggles the read status of the selected item."
-msgstr ""
+msgstr "Prepne stav prečítaný vybraného článku."
 
 #: ../src/ui/ui_mainwindow.c:1030
 msgid "Toggle Item _Flag"
@@ -1668,7 +1678,7 @@ msgstr "Prepnúť _emblém článku"
 
 #: ../src/ui/ui_mainwindow.c:1030
 msgid "Toggles the flag status of the selected item."
-msgstr ""
+msgstr "Prepne stav emblému vybraného článku."
 
 #: ../src/ui/ui_mainwindow.c:1032
 msgid "R_emove"
@@ -1676,7 +1686,7 @@ msgstr "O_dstrániť"
 
 #: ../src/ui/ui_mainwindow.c:1032
 msgid "Removes the selected item."
-msgstr ""
+msgstr "Odstráni vybraný článok."
 
 #: ../src/ui/ui_mainwindow.c:1034
 msgid "_Launch In Browser"
@@ -1792,7 +1802,7 @@ msgstr "_Normálny pohľad"
 
 #: ../src/ui/ui_mainwindow.c:1064
 msgid "Set view mode to mail client mode."
-msgstr ""
+msgstr "Nastaví režim zobrazenia na režim poštového klienta."
 
 #: ../src/ui/ui_mainwindow.c:1066
 msgid "_Wide View"
@@ -1800,7 +1810,7 @@ msgstr "P_ohľad na šírku"
 
 #: ../src/ui/ui_mainwindow.c:1066
 msgid "Set view mode to use three vertical panes."
-msgstr ""
+msgstr "Nastaví režim zobrazenia s použitím troch zvislých častí."
 
 #: ../src/ui/ui_mainwindow.c:1068
 msgid "_Combined View"
@@ -1808,7 +1818,7 @@ msgstr "_Kombinovaný pohľad"
 
 #: ../src/ui/ui_mainwindow.c:1068
 msgid "Set view mode to two pane mode."
-msgstr ""
+msgstr "Nastaví režim zobrazenia na režim s dvomi časťami."
 
 #: ../src/ui/ui_mainwindow.c:1073
 msgid "_New Subscription..."
@@ -1840,7 +1850,7 @@ msgstr "Nový _zdroj..."
 
 #: ../src/ui/ui_mainwindow.c:1077
 msgid "Adds a new feed list source."
-msgstr ""
+msgstr "Pridá nový zdroj zoznamu kanálov."
 
 #: ../src/ui/ui_mainwindow.c:1078
 msgid "New _News Bin..."
@@ -1859,8 +1869,8 @@ msgid ""
 "Marks all items of the selected subscription or of all subscriptions of the "
 "selected folder as read."
 msgstr ""
-"Označí všetky články vybratého prihlásenia alebo všetkých prihlásení "
-"vo vybratom priečinku ako prečítané."
+"Označí všetky články vybratého prihlásenia alebo všetkých prihlásení vo "
+"vybratom priečinku ako prečítané."
 
 #: ../src/ui/ui_mainwindow.c:1084
 msgid "_Update"
@@ -1899,12 +1909,18 @@ msgstr ""
 #: ../src/ui/ui_mainwindow.c:1228
 #, c-format
 msgid " (%d new)"
-msgstr " (%d nových)"
+msgid_plural " (%d new)"
+msgstr[0] " (%d nových)"
+msgstr[1] " (%d nový)"
+msgstr[2] " (%d nové)"
 
 #: ../src/ui/ui_mainwindow.c:1234
 #, c-format
 msgid "%d unread%s"
-msgstr "%d neprečítaných%s"
+msgid_plural "%d unread%s"
+msgstr[0] "%d neprečítaných%s"
+msgstr[1] "%d neprečítaný%s"
+msgstr[2] "%d neprečítané%s"
 
 #: ../src/ui/ui_node.c:110
 msgid "<i>(empty)</i>"
@@ -2071,11 +2087,11 @@ msgstr "Aktualizovať zastaralé kanály"
 
 #: ../src/ui/ui_prefs.c:137
 msgid "Force update of all feeds"
-msgstr ""
+msgstr "Vnútiť aktualizáciu všetkých kanálov"
 
 #: ../src/ui/ui_prefs.c:138
 msgid "No feed update at all"
-msgstr ""
+msgstr "Vôbec neaktualizovať kanály"
 
 #: ../src/ui/ui_prefs.c:143
 msgid "minutes"
@@ -2137,12 +2153,12 @@ msgstr "Program"
 
 #: ../src/ui/ui_script.c:35
 msgid "startup"
-msgstr ""
+msgstr "pri spustení"
 
 #. update events
 #: ../src/ui/ui_script.c:38
 msgid "feed updated"
-msgstr ""
+msgstr "pri aktualizovaní kanálu"
 
 #. feed list editing
 #: ../src/ui/ui_script.c:41
@@ -2152,27 +2168,27 @@ msgstr "kanál pridaný"
 #. selection hooks
 #: ../src/ui/ui_script.c:44
 msgid "item selected"
-msgstr ""
+msgstr "pri vybraní článku"
 
 #: ../src/ui/ui_script.c:45
 msgid "feed selected"
-msgstr ""
+msgstr "pri vybraní kanálu"
 
 #: ../src/ui/ui_script.c:46
 msgid "item unselected"
-msgstr ""
+msgstr "pri zrušení vybrania článku"
 
 #: ../src/ui/ui_script.c:47
 msgid "feed unselected"
-msgstr ""
+msgstr "pri zrušení vybrania kanálu"
 
 #: ../src/ui/ui_script.c:49
 msgid "shutdown"
-msgstr "vypnúť"
+msgstr "pri vypnutí"
 
 #: ../src/ui/ui_script.c:153
 msgid "Sorry, no scripting support available!"
-msgstr ""
+msgstr "Prepáčte, podpora skriptovania nie je dostupná!"
 
 #: ../src/ui/ui_script.c:179
 msgid "Script Name"
@@ -2180,12 +2196,15 @@ msgstr "Názov skriptu"
 
 #: ../src/ui/ui_script.c:230
 msgid "No script selected!"
-msgstr ""
+msgstr "Nevybraný skript!"
 
 #: ../src/ui/ui_search.c:118
 #, c-format
 msgid "%d Search Result for \"%s\""
-msgstr "%d Výsledky hľadania pre \"%s\""
+msgid_plural "%d Search Results for \"%s\""
+msgstr[0] "%d výsledkov hľadania pre \"%s\""
+msgstr[1] "%d výsledok hľadania pre \"%s\""
+msgstr[2] "%d výsledky hľadania pre \"%s\""
 
 #: ../src/ui/ui_search.c:123
 msgid ""
@@ -2202,8 +2221,14 @@ msgstr ""
 #: ../src/ui/ui_subscription.c:441
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minute."
+msgid_plural ""
 "The provider of this feed suggests an update interval of %d minutes."
-msgstr ""
+msgstr[0] ""
+"Poskytovateľ tohto kanálu odporúča interval aktualizácie každých %d minút."
+msgstr[1] ""
+"Poskytovateľ tohto kanálu odporúča interval aktualizácie každú minútu."
+msgstr[2] ""
+"Poskytovateľ tohto kanálu odporúča interval aktualizácie každé %d minúty."
 
 #: ../src/ui/ui_subscription.c:445
 msgid "This feed specifies no default update interval."
@@ -2212,7 +2237,10 @@ msgstr ""
 #: ../src/ui/ui_tray.c:205
 #, c-format
 msgid "%d new item"
-msgstr "%d nový článok"
+msgid_plural "%d new items"
+msgstr[0] "%d nových článkov"
+msgstr[1] "%d nový článok"
+msgstr[2] "%d nové články"
 
 #: ../src/ui/ui_tray.c:212
 msgid "No new items"
@@ -2223,13 +2251,18 @@ msgstr "Žiadne nové články"
 msgid ""
 "%s\n"
 "%d unread item"
+msgid_plural ""
 "%s\n"
 "%d unread items"
-msgstr ""
-"%s\n"
-"%d neprečítaný článok"
+msgstr[0] ""
 "%s\n"
 "%d neprečítaných článkov"
+msgstr[1] ""
+"%s\n"
+"%d neprečítaný článok"
+msgstr[2] ""
+"%s\n"
+"%d neprečítané články"
 
 #: ../src/ui/ui_tray.c:218
 #, c-format
@@ -2242,7 +2275,7 @@ msgstr ""
 
 #: ../src/parsers/atom10.c:111
 msgid "Liferea is unable to display this item's content."
-msgstr ""
+msgstr "Programu Liferea sa nepodarilo zobraziť obsah tohto článku."
 
 #: ../src/parsers/atom10.c:117
 #, c-format
@@ -2251,7 +2284,7 @@ msgstr "<p><a href=\"%s\">Zobraziť obsah tohto článku.</a></p>"
 
 #: ../src/parsers/atom10.c:249
 msgid "Invalid Atom feed: unknown author"
-msgstr ""
+msgstr "Neplatný Atom kanál: neznámy autor"
 
 #: ../src/parsers/ns_ag.c:70
 msgid "%b %d %H:%M"
@@ -2276,7 +2309,7 @@ msgstr "Po_užívateľské meno"
 
 #: ../src/fl_sources/bloglines_source.c:86
 msgid "Bloglines"
-msgstr ""
+msgstr "Bloglines"
 
 #: ../src/fl_sources/bloglines_source.c:87
 msgid ""
@@ -2385,7 +2418,7 @@ msgstr ""
 
 #: ../src/notification/notif_libnotify.c:116
 msgid "Visit"
-msgstr ""
+msgstr "Navštíviť"
 
 #: ../src/notification/notif_libnotify.c:155
 #: ../src/notification/notif_libnotify.c:239
@@ -2400,13 +2433,31 @@ msgstr "Označiť všetko ako prečítané"
 #: ../src/notification/notif_libnotify.c:226
 #, c-format
 msgid "%s has %d new / updated headline\n"
-msgstr "%s obsahuje %d nové / aktualizované články\n"
+msgid_plural "%s has %d new / updated headlines\n"
+msgstr[0] "%s obsahuje %d nových / aktualizovaných článkov\n"
+msgstr[1] "%s obsahuje %d nový / aktualizovaný článok\n"
+msgstr[2] "%s obsahuje %d nové / aktualizované články\n"
 
 #: ../src/notification/notif_libnotify.c:228
 msgid "Feed Update"
-msgstr ""
+msgstr "Aktualizovať kanály"
 
 #: ../src/notification/notif_libnotify.c:236
 msgid "Show details"
 msgstr "Zobraziť podrobnosti"
 
+#~ msgid ""
+#~ "The provider of this feed suggests an update interval of %d minute.The "
+#~ "provider of this feed suggests an update interval of %d minutes."
+#~ msgstr ""
+#~ "Poskytovateľ tohto kanálu odporúča interval aktualizácie každú minútu."
+#~ "Poskytovateľ tohto kanálu odporúča interval aktualizácie každých %d minút."
+
+#~ msgid ""
+#~ "%s\n"
+#~ "%d unread item%s\n"
+#~ "%d unread items"
+#~ msgstr ""
+#~ "%s\n"
+#~ "%d neprečítaný článok%s\n"
+#~ "%d neprečítaných článkov"
