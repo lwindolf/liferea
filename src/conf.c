@@ -323,7 +323,7 @@ conf_get_int_value (const gchar *valuename)
 	g_assert (valuename != NULL);
 		
 	value = gconf_client_get (client, valuename, NULL);
-	if (!value) {
+	if (value) {
 		result = gconf_value_get_int (value);
 		gconf_value_free (value);
 	}
