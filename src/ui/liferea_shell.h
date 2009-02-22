@@ -201,6 +201,13 @@ void on_onlinebtn_clicked (GtkButton *button, gpointer user_data);
  */
 void liferea_shell_setup_URL_receiver (GtkWidget *widget);
 
+/**
+ * Update the mode selection in the menu
+ *
+ * @param newMode	the new mode
+ */
+void liferea_shell_set_view_mode (nodeViewType newMode);
+
 void liferea_shutdown (void);
 
 G_END_DECLS

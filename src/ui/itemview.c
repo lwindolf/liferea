@@ -371,14 +371,12 @@ itemview_set_layout (nodeViewType newMode)
 {
 	ItemViewPrivate *ivp = itemview->priv;
 	const gchar	*htmlWidgetName, *ilWidgetName, *encViewVBoxName;
-	// GtkRadioAction	*action;
 	
 	if (newMode == ivp->currentLayoutMode)
 		return;
 	ivp->currentLayoutMode = newMode;
 
-// FIXME:	action = GTK_RADIO_ACTION (gtk_action_group_get_action (ivp->generalActions, "NormalView"));
-//		gtk_radio_action_set_current_value (action, newMode);
+	liferea_shell_set_view_mode (newMode);
 	
 	if (!ivp->htmlview) {
 		GtkWidget *renderWidget;

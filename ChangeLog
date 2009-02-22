@@ -25,6 +25,8 @@
 	  (Lars Lindner)
 	* Fixes Debian #511869: Include space before "FeedValidator"
 	  link (Lars Lindner)
+	* Update the view mode in the menu when switching between feeds.
+	  (Adrian Bunk)
 
 
 2009-02-19 Adrian Bunk  <bunk@users.sourceforge.net>

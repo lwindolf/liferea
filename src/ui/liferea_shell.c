@@ -1347,3 +1347,11 @@ liferea_shell_get_window (void)
 {
 	return GTK_WIDGET (shell->priv->window);
 }
+
+void liferea_shell_set_view_mode (nodeViewType newMode)
+{
+	GtkRadioAction       *action;
+
+	action = GTK_RADIO_ACTION (gtk_action_group_get_action (shell->priv->generalActions, "NormalView"));
+	gtk_radio_action_set_current_value (action, newMode);
+}
