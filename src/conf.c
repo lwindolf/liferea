@@ -19,10 +19,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
-
 #include <gconf/gconf.h>
 #include <gconf/gconf-client.h>
 #include <libxml/uri.h>
@@ -48,11 +44,12 @@ static void conf_proxy_reset_settings_cb(GConfClient *client, guint cnxn_id, GCo
 static void conf_tray_settings_cb(GConfClient *client, guint cnxn_id, GConfEntry *entry, gpointer user_data);
 static void conf_toolbar_style_settings_cb(GConfClient *client, guint cnxn_id, GConfEntry *entry, gpointer user_data);
 
-static gboolean is_gconf_error(GError **err) {
-
-	if(*err != NULL) {
-		g_warning("%s\n", (*err)->message);
-		g_error_free(*err);
+static gboolean
+is_gconf_error (GError **err)
+{
+	if (*err) {
+		g_warning ("%s\n", (*err)->message);
+		g_error_free (*err);
 		*err = NULL;
 		return TRUE;
 	}
@@ -91,27 +88,31 @@ conf_deinit (void)
 }
 
 /* maybe called several times to reload configuration */
-void conf_load(void)
+void
+conf_load (void)
 {
 	gint	maxitemcount;
 	gchar *downloadPath;
 	
 	/* check if important preferences exist... */
-	if(0 == (maxitemcount = conf_get_int_value(DEFAULT_MAX_ITEMS)))
-		conf_set_int_value(DEFAULT_MAX_ITEMS, 100);
+	if (0 == (maxitemcount = conf_get_int_value (DEFAULT_MAX_ITEMS)))
+		conf_set_int_value (DEFAULT_MAX_ITEMS, 100);
 	
-	downloadPath = conf_get_str_value(ENCLOSURE_DOWNLOAD_PATH);
-	if(0 == strcmp("", downloadPath))
-		conf_set_str_value(ENCLOSURE_DOWNLOAD_PATH, g_getenv("HOME"));
-	g_free(downloadPath);
+	downloadPath = conf_get_str_value (ENCLOSURE_DOWNLOAD_PATH);
+	if (!strcmp ("", downloadPath))
+		conf_set_str_value (ENCLOSURE_DOWNLOAD_PATH, g_getenv ("HOME"));
+	g_free (downloadPath);
 }
 
-static void conf_tray_settings_cb(GConfClient *client, guint cnxn_id, GConfEntry *entry, gpointer user_data) {
+static void
+conf_tray_settings_cb (GConfClient *client, guint cnxn_id, GConfEntry *entry, gpointer user_data)
+{
 	GConfValue *value;
-	if (entry != NULL) {
-		value = gconf_entry_get_value(entry);
-		if (value != NULL && value->type == GCONF_VALUE_BOOL)
-			ui_tray_enable(gconf_value_get_bool(value));
+	
+	if (entry) {
+		value = gconf_entry_get_value (entry);
+		if (value && value->type == GCONF_VALUE_BOOL)
+			ui_tray_enable (gconf_value_get_bool (value));
 	}
 }
 
@@ -229,90 +230,102 @@ conf_proxy_reset_settings_cb (GConfClient *client,
 /* generic configuration access methods					*/
 /*----------------------------------------------------------------------*/
 
-void conf_set_bool_value(const gchar *valuename, gboolean value) {
+void
+conf_set_bool_value (const gchar *valuename, gboolean value)
+{
 	GError		*err = NULL;
 	GConfValue	*gcv;
 	
-	g_assert(valuename != NULL);
+	g_assert (valuename != NULL);
 	
-	gcv = gconf_value_new(GCONF_VALUE_BOOL);
-	gconf_value_set_bool(gcv, value);
-	gconf_client_set(client, valuename, gcv, &err);
-	gconf_value_free(gcv);
-	is_gconf_error(&err);
+	gcv = gconf_value_new (GCONF_VALUE_BOOL);
+	gconf_value_set_bool (gcv, value);
+	gconf_client_set (client, valuename, gcv, &err);
+	gconf_value_free (gcv);
+	is_gconf_error (&err);
 }
 
-gboolean conf_get_bool_value(const gchar *valuename) {
+gboolean
+conf_get_bool_value (const gchar *valuename)
+{
 	GConfValue	*value = NULL;
 	gboolean	result;
 
-	g_assert(valuename != NULL);
+	g_assert (valuename != NULL);
 
-	value = gconf_client_get(client, valuename, NULL);
-	if(NULL == value) {
-		conf_set_bool_value(valuename, FALSE);
+	value = gconf_client_get (client, valuename, NULL);
+	if (!value) {
+		conf_set_bool_value (valuename, FALSE);
 		result = FALSE;
 	} else {
-		result = gconf_value_get_bool(value);
-		gconf_value_free(value);
+		result = gconf_value_get_bool (value);
+		gconf_value_free (value);
 	}
 		
 	return result;
 }
 
-void conf_set_str_value(const gchar *valuename, const gchar *value) {
+void
+conf_set_str_value (const gchar *valuename, const gchar *value)
+{
 	GError		*err = NULL;
 	GConfValue	*gcv;
 	
-	g_assert(valuename != NULL);
+	g_assert (valuename != NULL);
 	
-	gcv = gconf_value_new(GCONF_VALUE_STRING);
-	gconf_value_set_string(gcv, value);
-	gconf_client_set(client, valuename, gcv, &err);
-	gconf_value_free(gcv);
-	is_gconf_error(&err);
+	gcv = gconf_value_new (GCONF_VALUE_STRING);
+	gconf_value_set_string (gcv, value);
+	gconf_client_set (client, valuename, gcv, &err);
+	gconf_value_free (gcv);
+	is_gconf_error (&err);
 }
 
-gchar * conf_get_str_value(const gchar *valuename) {
+gchar *
+conf_get_str_value (const gchar *valuename)
+{
 	GConfValue	*value = NULL;
 	gchar		*result;
 
-	g_assert(valuename != NULL);
+	g_assert (valuename != NULL);
 		
-	value = gconf_client_get(client, valuename, NULL);
-	if(NULL == value) {
-		result = g_strdup("");
+	value = gconf_client_get (client, valuename, NULL);
+	if (!value) {
+		result = g_strdup ("");
 	} else {
-		result = (gchar *)g_strdup(gconf_value_get_string(value));
-		gconf_value_free(value);
+		result = (gchar *)g_strdup (gconf_value_get_string (value));
+		gconf_value_free (value);
 	}
 		
 	return result;
 }
 
-void conf_set_int_value(const gchar *valuename, gint value) {
+void
+conf_set_int_value (const gchar *valuename, gint value)
+{
 	GError		*err = NULL;
 	GConfValue	*gcv;
 	
-	g_assert(valuename != NULL);
-	debug2(DEBUG_CONF, "Setting %s to %d", valuename, value);
-	gcv = gconf_value_new(GCONF_VALUE_INT);
-	gconf_value_set_int(gcv, value);
-	gconf_client_set(client, valuename, gcv, &err);
-	is_gconf_error(&err);
-	gconf_value_free(gcv);
+	g_assert (valuename != NULL);
+	debug2 (DEBUG_CONF, "Setting %s to %d", valuename, value);
+	gcv = gconf_value_new (GCONF_VALUE_INT);
+	gconf_value_set_int (gcv, value);
+	gconf_client_set (client, valuename, gcv, &err);
+	is_gconf_error (&err);
+	gconf_value_free (gcv);
 }
 
-gint conf_get_int_value(const gchar *valuename) {
+gint
+conf_get_int_value (const gchar *valuename)
+{
 	GConfValue	*value;
 	gint		result = 0;
 
-	g_assert(valuename != NULL);
+	g_assert (valuename != NULL);
 		
-	value = gconf_client_get(client, valuename, NULL);
-	if(NULL != value) {
-		result = gconf_value_get_int(value);
-		gconf_value_free(value);
+	value = gconf_client_get (client, valuename, NULL);
+	if (!value) {
+		result = gconf_value_get_int (value);
+		gconf_value_free (value);
 	}
 			
 	return result;
