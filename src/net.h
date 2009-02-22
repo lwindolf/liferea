@@ -37,13 +37,6 @@ void network_init (void);
 void network_deinit (void);
 
 /**
- * Configure the user agent string to use for HTTP requests.
- * 
- * @param useragent	the user agent string
- */
-void network_set_user_agent (gchar *useragent);
-
-/**
  * Configures the network client to use the given proxy
  * host and port setting. If the host name is NULL then
  * no proxy will be used.

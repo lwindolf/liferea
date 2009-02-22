@@ -1,7 +1,7 @@
 /**
  * @file conf.c Liferea configuration (gconf access)
  *
- * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2009 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004,2005 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -41,8 +41,6 @@
 
 #define PATH		"/apps/liferea"
 
-#define HOMEPAGE	"http://liferea.sf.net/"
-
 static GConfClient	*client;
 
 /* Function prototypes */
@@ -66,17 +64,6 @@ static gboolean is_gconf_error(GError **err) {
 void
 conf_init (void)
 {	
-	/* Construct the User-Agent string of Liferea. This is done here in program init,
-	   because we need to do it exactly once and it will never change while the program
-	   is running. */
-	if (g_getenv("LANG")) {
-		/* e.g. Liferea/0.3.8 (Linux; de_DE; (http://liferea.sf.net/) */
-		network_set_user_agent (g_strdup_printf ("Liferea/%s (%s; %s; %s)", VERSION, OSNAME, g_getenv("LANG"), HOMEPAGE));
-	} else {
-		/* "Liferea/" + VERSION + "(" OS + "; " + HOMEPAGE + ")" */
-		network_set_user_agent (g_strdup_printf ("Liferea/%s (%s; %s)", VERSION, OSNAME, HOMEPAGE));
-	}
-
 	/* call g_type_init(), GConf for some reason refuses to do so itself 
 	   and we use GConf before initializing GTK which would call g_type_init() itself */
 	g_type_init ();

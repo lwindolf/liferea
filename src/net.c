@@ -385,6 +385,8 @@ network_glibcurl_callback (void *data)
 	}
 }
 
+#define HOMEPAGE	"http://liferea.sf.net/"
+
 void
 network_init (void)
 {
@@ -396,6 +398,16 @@ network_init (void)
 	
 	glibcurl_init ();
 	glibcurl_set_callback (network_glibcurl_callback, 0);
+
+	/* Set an appropriate user agent */
+	if (g_getenv ("LANG")) {
+		/* e.g. "Liferea/1.6.0 (Linux; de_DE; http://liferea.sf.net/)" */
+		useragent = g_strdup_printf ("Liferea/%s (%s; %s; %s)", VERSION, OSNAME, g_getenv ("LANG"), HOMEPAGE);
+	} else {
+		/* e.g. "Liferea/1.6.0 (Linux; http://liferea.sf.net/)" */
+		useragent = g_strdup_printf ("Liferea/%s (%s; %s)", VERSION, OSNAME, HOMEPAGE);
+	}
+
 }
 
 void 
@@ -407,13 +419,6 @@ network_deinit (void)
 	g_free (proxyname);
 	g_free (proxyusername);
 	g_free (proxypassword);
-}
-
-void
-network_set_user_agent (gchar *newUserAgent)
-{
-	g_free (useragent);
-	useragent = newUserAgent;
 }
 
 const gchar *
