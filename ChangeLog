@@ -27,6 +27,10 @@
 	  link (Lars Lindner)
 	* Update the view mode in the menu when switching between feeds.
 	  (Adrian Bunk)
+	* Fixes a crash in key handler when no widget focussed.
+	  (reported by Adrian Bunk)
+	* Fixes a crash when marking a search folder with lost items
+	  as read. (Lars Lindner)
 
 
 2009-02-19 Adrian Bunk  <bunk@users.sourceforge.net>

@@ -156,9 +156,13 @@ itemset_mark_read (nodePtr node)
 			if (!item->readStatus) {
 				nodePtr node;
 				
-				node = node_from_id(item->nodeId);				
-				item_state_set_recount_flag (node);
-				node_source_item_mark_read (node, item, TRUE);
+				node = node_from_id (item->nodeId);
+				if (node) {
+					item_state_set_recount_flag (node);
+					node_source_item_mark_read (node, item, TRUE);
+				} else {
+					g_warning ("itemset_mark_read() on lost item (id=%lu, node id=%s)!", item->id, item->nodeId);
+				}
 
 				debug_start_measurement (DEBUG_GUI);
 
