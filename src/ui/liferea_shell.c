@@ -555,7 +555,7 @@ on_key_press_event (GtkWidget *widget, GdkEventKey *event, gpointer data)
 
 		/* prevent usage of navigation keys in entries */
 		focusw = gtk_window_get_focus (GTK_WINDOW (widget));
-		if (GTK_IS_ENTRY (focusw))
+		if (!focusw || GTK_IS_ENTRY (focusw))
 			return FALSE;
 
 		/* prevent usage of navigation keys in HTML view */
