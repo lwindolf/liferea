@@ -33,6 +33,9 @@
 	  as read. (Lars Lindner)
 	* Adds GeoRSS rendering to item view using a OpenStreeMap
 	  javascript embed. (patch by Mikel Olasagasti)
+	* URLs without protocol (like "gnome.org") load again in the
+	  internal browser (webkit backend) (Emilio Pozuelo Monfort)
+
 
 
 2009-02-19 Adrian Bunk  <bunk@users.sourceforge.net>

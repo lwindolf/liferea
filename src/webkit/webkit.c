@@ -252,10 +252,21 @@ webkit_new (LifereaHtmlView *htmlview)
 static void
 webkit_launch_url (GtkWidget *scrollpane, const gchar *url)
 {
+	// FIXME: hack to make URIs like "gnome.org" work
+	// https://bugs.webkit.org/show_bug.cgi?id=24195
+	gchar *http_url;
+	if (!strstr (url, "://")) {
+		http_url = g_strdup_printf ("http://%s", url);
+	} else {
+		http_url = g_strdup (url);
+	}
+
 	webkit_web_view_open (
 		WEBKIT_WEB_VIEW (gtk_bin_get_child (GTK_BIN (scrollpane))),
-		url
+		http_url
 	);
+
+	g_free (http_url);
 }
 
 /**
