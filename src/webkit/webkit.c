@@ -76,6 +76,15 @@ webkit_progress_changed (WebKitWebView *view, gint progress, gpointer user_data)
 {
 }
 
+static void
+webkit_location_changed (WebKitWebView *view, const gchar *location)
+{
+	LifereaHtmlView	*htmlview;
+
+	htmlview = g_object_get_data (G_OBJECT (view), "htmlview");
+	liferea_htmlview_location_changed (htmlview, location);
+}
+
 /**
  * Action executed when user hovers over a link
  */
@@ -260,6 +269,12 @@ webkit_launch_url (GtkWidget *scrollpane, const gchar *url)
 	} else {
 		http_url = g_strdup (url);
 	}
+
+	// Register the new url for the history
+	webkit_location_changed (
+		WEBKIT_WEB_VIEW (gtk_bin_get_child (GTK_BIN (scrollpane))),
+		http_url
+	);
 
 	webkit_web_view_open (
 		WEBKIT_WEB_VIEW (gtk_bin_get_child (GTK_BIN (scrollpane))),

@@ -35,7 +35,8 @@
 	  javascript embed. (patch by Mikel Olasagasti)
 	* URLs without protocol (like "gnome.org") load again in the
 	  internal browser (webkit backend) (Emilio Pozuelo Monfort)
-
+	* Fixes browser history in the webkit backend (Emilio Pozuelo
+	  Monfort)
 
 
 2009-02-19 Adrian Bunk  <bunk@users.sourceforge.net>
