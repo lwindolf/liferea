@@ -31,6 +31,8 @@
 	  (reported by Adrian Bunk)
 	* Fixes a crash when marking a search folder with lost items
 	  as read. (Lars Lindner)
+	* Adds GeoRSS rendering to item view using a OpenStreeMap
+	  javascript embed. (patch by Mikel Olasagasti)
 
 
 2009-02-19 Adrian Bunk  <bunk@users.sourceforge.net>
