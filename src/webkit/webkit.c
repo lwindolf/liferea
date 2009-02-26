@@ -116,13 +116,21 @@ webkit_on_url (WebKitWebView *view, const gchar *title, const gchar *url, gpoint
 static gboolean
 webkit_link_clicked (WebKitWebView *view, WebKitWebFrame *frame, WebKitNetworkRequest *request)
 {
+	gboolean	handle_url;
 	const gchar	*uri;
 
 	g_return_val_if_fail (WEBKIT_IS_WEB_VIEW (view), FALSE);
 	g_return_val_if_fail (WEBKIT_IS_NETWORK_REQUEST (request), FALSE);
 
 	uri = webkit_network_request_get_uri (WEBKIT_NETWORK_REQUEST (request));
-	return liferea_htmlview_handle_URL (g_object_get_data (G_OBJECT (view), "htmlview"), uri);
+	handle_url = liferea_htmlview_handle_URL (g_object_get_data (G_OBJECT (view), "htmlview"), uri);
+
+	if (!handle_url) {
+		// Register the new url for the history
+		webkit_location_changed (view, uri);
+	}
+
+	return handle_url;
 }
 
 /**
