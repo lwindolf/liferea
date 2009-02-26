@@ -406,14 +406,16 @@ render_xml (xmlDocPtr doc, const gchar *xsltName, renderParamPtr paramSet)
 		}
 	
 		/* Return only the body contents */
-		tmp = strstr (output, "<body>");
+		tmp = strstr (output, "<body");
 		if (tmp) {
-			tmp = g_strdup (tmp + 6);
+			tmp = g_strdup (tmp);
 			xmlFree (output);
 			output = tmp;
 			tmp = strstr (output, "</body>");
-			if (tmp)
+			if (tmp) {
+				tmp += 7;
 				*tmp = 0;
+			}
 		}
 	}
 

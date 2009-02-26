@@ -303,17 +303,16 @@ htmlview_start_output (GString *buffer,
 		""
 		"	window.clearTimeout(popupTimeout);"
 		"}"
-		""
 		"</script>");
 	}
 	
-	g_string_append (buffer, "</head>\n<body>");
+	g_string_append (buffer, "</head>");
 }
 
 void
 htmlview_finish_output (GString *buffer) 
 {
-	g_string_append (buffer, "</body></html>"); 
+	g_string_append (buffer, "</html>"); 
 }
 
 void
