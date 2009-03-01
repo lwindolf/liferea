@@ -250,17 +250,10 @@ ui_feedlist_select (nodePtr node)
 	GtkTreeView		*treeview;
 	GtkTreeModel		*model;
 	GtkWindow		*mainwindow;
-	GtkWidget		*focused;
 	
 	mainwindow = GTK_WINDOW (liferea_shell_get_window ());
 	treeview = GTK_TREE_VIEW (liferea_shell_lookup ("feedlist"));
 	model = gtk_tree_view_get_model (treeview);
-	
-	/* To work around a GTK+ bug. If the treeview is not
-	   focused, setting the selected item will always select the
-	   first item! */
-	focused = gtk_window_get_focus (mainwindow);
-	gtk_window_set_focus (mainwindow, GTK_WIDGET (treeview));
 	
 	if (node && node != feedlist_get_root ()) {
 		GtkTreePath *path = gtk_tree_model_get_path (model, ui_node_to_iter(node->id));
@@ -276,8 +269,6 @@ ui_feedlist_select (nodePtr node)
 		GtkTreeSelection *selection = gtk_tree_view_get_selection (treeview);
 		gtk_tree_selection_unselect_all (selection);
 	}
-	
-	gtk_window_set_focus (mainwindow, focused);
 }
 
 /* delete feed callbacks */
