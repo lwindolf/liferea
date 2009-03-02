@@ -58,6 +58,7 @@ Lars Strojny <lars@strojny.net>			Statusbar improvements
 Jon Forsberg <zzed2004@users.sf.net>			Enclosure context menu patch
 Mathie Leplatre						Option to filter feed list
 Mikel Olasagasti <mikel@olasagasti.info>		GeoRSS support
+Adrian Bunk <bunk@stusta.de>				Release management and code quality
 
 Maintainer Credits
 ==================
