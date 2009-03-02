@@ -15,7 +15,6 @@
 			<outline text="Podcasts">
 				<outline text="Chaos Radio" htmlUrl="http://blog.chaosradio.ccc.de/" xmlUrl="http://chaosradio.ccc.de/chaosradio-complete.rss" />
 				<outline text="Stiftung Warentest" htmlUrl="http://www.test.de" xmlUrl="http://www.test.de/rss/presse/audio-podcast/" />
-				<outline text="BoDCast" htmlUrl="http://www.bod.de" xmlUrl="http://www.bod.de/bodcast/feed.xml"/>
 				<outline text="SWR2 Campus" htmlUrl="http://www.swr2.de/campus" xmlUrl="http://podcast24.de/xmlausgabe.php?id=1128"/>
 				<outline text="Sportal" htmlUrl="http://www.earpaper.de/loudblog/?cat=3" xmlUrl="http://www.earpaper.de/loudblog/podcast.php?cat=sportalradioshow"/>
 			</outline>
@@ -24,7 +23,6 @@
  		<!-- lets keep this default English block in sync over all feed lists! -->
 		<outline text="International">		<!-- translate this for localized feed list -->
 			<outline text="Open Source">		<!-- translate this for localized feed list -->
-				<outline text="art.gnome.org" htmlUrl="http://art.gnome.org/" xmlUrl="http://art.gnome.org/backend.php" />
 				<outline text="Gnomefiles" htmlUrl="http://www.gnomefiles.org/" xmlUrl="http://www.gnomefiles.org/files/gnomefiles.rdf" />
 				<outline text="GNOME Footnotes" htmlUrl="http://www.gnomedesktop.org/" xmlUrl="http://www.gnomedesktop.org/backend.php" />
 				<outline text="GrokLaw" htmlUrl="http://www.groklaw.net/" xmlUrl="http://www.groklaw.net/backend/GrokLaw.rdf" />

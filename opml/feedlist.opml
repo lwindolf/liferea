@@ -7,7 +7,6 @@
 	<!-- lets keep this default English block in sync over all feed lists! -->
 	<outline text="Example Feeds">		<!-- translate this for localized feed list -->
 		<outline text="Open Source">		<!-- translate this for localized feed list -->
-			<outline text="art.gnome.org" htmlUrl="http://art.gnome.org/" xmlUrl="http://art.gnome.org/backend.php" />
 			<outline text="Gnomefiles" htmlUrl="http://www.gnomefiles.org/" xmlUrl="http://www.gnomefiles.org/files/gnomefiles.rdf" />
 			<outline text="GNOME Footnotes" htmlUrl="http://www.gnomedesktop.org/" xmlUrl="http://www.gnomedesktop.org/backend.php" />
 			<outline text="GrokLaw" htmlUrl="http://www.groklaw.net/" xmlUrl="http://www.groklaw.net/backend/GrokLaw.rdf" />

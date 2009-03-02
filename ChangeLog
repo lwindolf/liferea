@@ -6,6 +6,8 @@
 	  for a bug in old Gtk+ versions we anyway no longer support.
 	  This fixes a segfault at startup some people observed.
 	  (Adrian Bunk)
+	* Removed dead feeds from the example feeds.
+	  (Adrian Bunk)
 
 
 2009-02-27  Adrian Bunk  <bunk@users.sourceforge.net>

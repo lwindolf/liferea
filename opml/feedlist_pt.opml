@@ -13,7 +13,6 @@
         <!-- lets keep this English block in sync over all feed lists! -->
         <outline text="internacional">
             <outline text="Open Source">
-			<outline text="art.gnome.org" htmlUrl="http://art.gnome.org/" xmlUrl="http://art.gnome.org/backend.php" />
 			<outline text="Debian Package a Day" htmlUrl="http://debaday.debian.net/" xmlUrl="http://debaday.debian.net/feed/atom/" />
 			<outline text="Gnomefiles" htmlUrl="http://www.gnomefiles.org/" xmlUrl="http://www.gnomefiles.org/files/gnomefiles.rdf" />
 			<outline text="GNOME Footnotes" htmlUrl="http://www.gnomedesktop.org/" xmlUrl="http://www.gnomedesktop.org/backend.php" />
