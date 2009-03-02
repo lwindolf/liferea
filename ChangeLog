@@ -8,6 +8,10 @@
 	  (Adrian Bunk)
 	* Removed dead feeds from the example feeds.
 	  (Adrian Bunk)
+	* Removes a propably unneeded workaround for prevention of
+	  item/feed state loss on shutdown. This avoids a crash caused
+	  by a race in the DB connection refresh handling.
+	  (found by Adrian Bunk)
 
 
 2009-02-27  Adrian Bunk  <bunk@users.sourceforge.net>
