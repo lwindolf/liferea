@@ -33,11 +33,12 @@ static sqlite3	*db = NULL;
 static guint	stmtCounter = 0;
 static gboolean	transaction = FALSE;	/**< single transaction lock, prevents DB re-opening during transaction */
 
+// FIXME: Remove this if testing shows it is unnecessary
 /** 
  * To avoid loosing statements on crashes, close+reopen the DB from time to time,
  * THIS IS A WORKAROUND TO AVOID A STRANGE EFFECT OF LOOSING ALL TRANSACTIONS ON EXIT. 
  */
-#define MAX_STATEMENTS_BEFORE_RECONNECT	500
+//#define MAX_STATEMENTS_BEFORE_RECONNECT	500
 
 /** value structure of statements hash */ 
 typedef struct statement {
@@ -85,7 +86,7 @@ db_get_statement (const gchar *name)
 {
 	struct statement *statement;
 
-redo:
+//redo:
 	statement = (struct statement *) g_hash_table_lookup (statements, name);
 	if (!statement)
 		g_error ("Fatal: unknown prepared statement \"%s\" requested!", name);	
@@ -93,13 +94,13 @@ redo:
 	if (statement->write)
 		stmtCounter++;
 		
-	if (!transaction && (stmtCounter > MAX_STATEMENTS_BEFORE_RECONNECT)) {
+/*	if (!transaction && (stmtCounter > MAX_STATEMENTS_BEFORE_RECONNECT)) {
 		stmtCounter = 0;
 		debug1 (DEBUG_DB, "DB reconnect after %d DB write actions...\n", MAX_STATEMENTS_BEFORE_RECONNECT); 
 		db_deinit ();
 		db_init (FALSE);
 		goto redo;
-	}
+	}*/
 
 	sqlite3_reset (statement->stmt);
 	return statement->stmt;
