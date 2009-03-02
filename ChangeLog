@@ -2,7 +2,10 @@
 
 	Version 1.5.12 (Unstable)
 
-	*
+	* Fixes SF #2634686: ui_feedlist_select(): remove a workaround
+	  for a bug in old Gtk+ versions we anyway no longer support.
+	  This fixes a segfault at startup some people observed.
+	  (Adrian Bunk)
 
 
 2009-02-27  Adrian Bunk  <bunk@users.sourceforge.net>
