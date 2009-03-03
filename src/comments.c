@@ -1,7 +1,7 @@
 /**
  * @file comments.c comment feed handling
  * 
- * Copyright (C) 2007-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2009 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -174,7 +174,7 @@ comments_process_update_result (const struct updateResult * const result, gpoint
 		/* first specific codes (guarantees tmp to be set) */
 		tmp = common_http_error_to_str (result->httpstatus);
 
-		/* second netio errors */
+		/* second network library errors */
 		if (network_strerror (result->returncode))
 			tmp = network_strerror (result->returncode);
 			
