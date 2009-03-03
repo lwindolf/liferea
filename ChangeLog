@@ -14,6 +14,8 @@
 	  (found by Adrian Bunk)
 	* Fixes a memory leak in itemlist_selection_changed()
 	  (found by Arnold Noronha)
+	* Defer OpenStreeMap embed loading in GeoRSS rendering.
+	  (patch by Mikel Olasagasti)
 
 
 2009-02-27  Adrian Bunk  <bunk@users.sourceforge.net>
