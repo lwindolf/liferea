@@ -435,7 +435,7 @@ subscription_update_error_status (subscriptionPtr subscription,
 		/* first specific codes (guarantees tmp to be set) */
 		errmsg = common_http_error_to_str (httpstatus);
 
-		/* second netio errors */
+		/* second network library errors */
 		if (network_strerror (resultcode))
 			errmsg = network_strerror (resultcode);
 
