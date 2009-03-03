@@ -361,8 +361,8 @@ google_source_edit_token_cb (const struct updateResult * const result, gpointer 
 	GoogleSourceActionPtr          action;
 	updateRequestPtr request; 
 
-	if (result->returncode != 0 || result->data == NULL) { 
-		/* What is the behaviour that should go here? */
+	if (result->httpstatus != 200 || result->data == NULL) { 
+		/* FIXME: What is the behaviour that should go here? */
 		return;
 	}
 

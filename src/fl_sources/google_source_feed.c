@@ -227,7 +227,6 @@ google_feed_subscription_process_update_result (subscriptionPtr subscription, co
 		   XML before processing it */
 		resultCopy = update_result_new () ;
 		resultCopy->source = g_strdup (result->source); 
-		resultCopy->returncode = result->returncode;
 		resultCopy->httpstatus = result->httpstatus;
 		resultCopy->contentType = g_strdup (result->contentType);
 		resultCopy->retriesCount = result->retriesCount ;

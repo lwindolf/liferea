@@ -89,7 +89,7 @@ google_source_login_cb (const struct updateResult * const result, gpointer userd
 	
 	g_assert (!gsource->sid);
 	
-	if (result->data && result->returncode == 0)
+	if (result->data && result->httpstatus == 200)
 		tmp = strstr (result->data, "SID=");
 		
 	if (tmp) {
