@@ -1,7 +1,7 @@
 /**
  * @file itemview.c  viewing feed content in different presentation modes
  * 
- * Copyright (C) 2006-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2009 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,8 +50,6 @@ struct ItemViewPrivate {
 	nodeViewType	viewMode;		/**< current viewing mode */
 	guint		currentLayoutMode;	/**< layout mode (3 pane, 2 pane, wide view) */
 								     
-	itemPtr		resetSelection;		/**< if set indicates an incorrect item selection */
-
 	GtkWidget	*itemlistContainer;	/**< scrolled window holding item list tree view */
 	GtkTreeView	*itemlist;		
 
@@ -196,13 +194,6 @@ itemview_remove_item (itemPtr item)
 }
 
 void
-itemview_set_invalid_selection (itemPtr item)
-{
-	debug0 (DEBUG_GUI, "Setting marker for unwanted selection!");
-	itemview->priv->resetSelection = item;
-}
-
-void
 itemview_select_item (itemPtr item)
 {
 	ItemViewPrivate *ivp = itemview->priv;
@@ -212,12 +203,6 @@ itemview_select_item (itemPtr item)
 		
 	ivp->needsHTMLViewUpdate = TRUE;
 	
-	if (ivp->resetSelection == item) {
-		debug0 (DEBUG_GUI, "Fixing unwanted selection!");
-		ui_itemlist_select (NULL);
-		ivp->resetSelection = NULL;
-	}
-		
 	ui_itemlist_select (item);
 	htmlview_select_item (item);
 

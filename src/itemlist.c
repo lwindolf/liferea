@@ -590,14 +590,11 @@ itemlist_selection_changed (itemPtr item)
 		}
 
 		feedlist_reset_new_item_count ();
-	} else {
-		/* If this happens we got an unwanted item selection
-		   caused by some automatic feed selection. We need
-		   to unselect before making the next selection, 
-		   otherwise it could fail */
-		itemview_set_invalid_selection (item);
 	}
 
+	if (item)
+		item_unload (item);
+	
 	debug_end_measurement (DEBUG_GUI, "itemlist selection");
 	debug_exit ("itemlist_selection_changed");
 }

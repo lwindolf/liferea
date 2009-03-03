@@ -1,7 +1,7 @@
 /**
  * @file itemview.h  viewing feed content in different presentation modes
  * 
- * Copyright (C) 2006-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2009 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -112,17 +112,6 @@ void itemview_add_item (itemPtr item);
  * @todo: use item merger signal instead
  */
 void itemview_remove_item (itemPtr item);
-
-/**
- * Notifies item view set currently an invalid (unwanted) selection
- * is active which might need to be reset when selected the same
- * item again.
- *
- * FIXME: This is a workaround for the problematic item selection solution.
- *
- * @param item		the incorrectly selected item
- */
-void itemview_set_invalid_selection (itemPtr item);
 
 /**
  * Selects a given item in the view. The item must be

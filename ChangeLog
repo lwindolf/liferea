@@ -12,6 +12,8 @@
 	  item/feed state loss on shutdown. This avoids a crash caused
 	  by a race in the DB connection refresh handling.
 	  (found by Adrian Bunk)
+	* Fixes a memory leak in itemlist_selection_changed()
+	  (found by Arnold Noronha)
 
 
 2009-02-27  Adrian Bunk  <bunk@users.sourceforge.net>
