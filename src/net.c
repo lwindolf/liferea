@@ -334,9 +334,11 @@ network_glibcurl_callback (void *data)
 			continue;
 		} else {
 			if (msg->data.result == CURLE_OK) {
+				job->result->returncode = 0;
 				debug0 (DEBUG_UPDATE, "curl download done!");
 			} else {
-				debug1 (DEBUG_UPDATE, "curl download failed: status code %d", msg->data.result);
+				job->result->returncode = msg->data.result;
+				debug1 (DEBUG_UPDATE, "curl download failed: status code %d", job->result->returncode);
 			}
 
 			long		tmp;
