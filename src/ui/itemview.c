@@ -94,12 +94,19 @@ itemview_get_type (void)
 static void
 itemview_finalize (GObject *object)
 {
-	// ItemView *iv = ITEMVIEW (object);
+	ItemViewPrivate *priv = ITEMVIEW_GET_PRIVATE (object);
 
-	/* save preferences */
-	conf_set_int_value (LAST_ZOOMLEVEL, (gint)(100.* liferea_htmlview_get_zoom (itemview->priv->htmlview)));
+	if (priv->htmlview) {
+		/* save zoom preferences */
+		conf_set_int_value (LAST_ZOOMLEVEL, (gint)(100.* liferea_htmlview_get_zoom (priv->htmlview)));
 
-	// FIXME: free everything	
+		g_object_unref (priv->htmlview);
+	}
+	
+	if (priv->enclosureView)
+		g_object_unref (priv->enclosureView);
+		
+	g_free (priv->userDefinedDateFmt);
 
 	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
