@@ -16,6 +16,8 @@
 	  (found by Arnold Noronha)
 	* Defer OpenStreeMap embed loading in GeoRSS rendering.
 	  (patch by Mikel Olasagasti)
+	* Fixes OpenStreetMap map tile margins.
+	  (Lars Lindner)
 
 
 2009-02-27  Adrian Bunk  <bunk@users.sourceforge.net>

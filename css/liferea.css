@@ -86,6 +86,12 @@ img.gravatar {
 	margin-right:12px;
 }
 
+#map img {
+	/* OpenStreeMap map tiles must have no border */
+	border:0px;
+	margin:0px;
+}
+
 /* styles for the item description (currently also used for
    the feed description) */
 table.itemhead, table.feedhead {
