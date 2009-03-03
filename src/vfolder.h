@@ -1,7 +1,7 @@
 /**
  * @file vfolder.h  search folder node type
  *
- * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2009 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,10 +31,8 @@
    Each search folder instance is a set of rules applied to all items
    of all other feeds (excluding other search folders). Each search
    folder instance can be represented by a single node in the feed list. 
-   
-   The search folder concept also constitutes an own itemset type
-   with special update propagation and removal handling. 
-   (FIXME: above still true?) */
+   The search feature is realized using a temporary search folder.
+*/
 
 /** search vfolder data structure */
 typedef struct vfolder {
