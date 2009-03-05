@@ -5,15 +5,15 @@
 	* Fixes SF #2634686: ui_feedlist_select(): remove a workaround
 	  for a bug in old Gtk+ versions we anyway no longer support.
 	  This fixes a segfault at startup some people observed.
-	  (Adrian Bunk)
+	  (Adrian Bunk, reported by Marvin Schmidt)
 	* Removed dead feeds from the example feeds.
 	  (Adrian Bunk)
 	* Removes a propably unneeded workaround for prevention of
 	  item/feed state loss on shutdown. This avoids a crash caused
 	  by a race in the DB connection refresh handling.
-	  (found by Adrian Bunk)
+	  (Lars Lindner, found by Adrian Bunk)
 	* Fixes a memory leak in itemlist_selection_changed()
-	  (found by Arnold Noronha)
+	  (Lars Lindner, found by Arnold Noronha)
 	* Defer OpenStreeMap embed loading in GeoRSS rendering.
 	  (patch by Mikel Olasagasti)
 	* Fixes OpenStreetMap map tile margins.
