@@ -2,7 +2,8 @@
 
         Version 1.5.13 (Unstable)
 
-        *
+        * Don't ship a liferea binary in the tarballs.
+	  (Adrian Bunk, reported by Rodrigo Gallardo)
 
 
 2009-03-06  Adrian Bunk  <bunk@users.sourceforge.net>
