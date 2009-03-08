@@ -781,6 +781,7 @@ itemlist_sort_column_changed_cb (GtkTreeSortable *treesortable, gpointer user_da
 		
 	switch (sortColumn) {
 		case IS_TIME:
+		default:
 			nodeSort = NODE_VIEW_SORT_BY_TIME;
 			break;
 		case IS_LABEL:
