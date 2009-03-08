@@ -132,7 +132,7 @@ typedef struct nodeSourceType {
 	 * Changes the flag state of an item.  This is to allow node source type 
 	 * implementations to synchronize remote item states.
 	 *
-	 * This is an MANDATORY method.
+	 * This is an OPTIONAL method.
 	 */
 	void		(*item_set_flag) (nodePtr node, itemPtr item, gboolean newState);
 
@@ -140,7 +140,7 @@ typedef struct nodeSourceType {
 	 * Mark an item as read. This is to allow node source type 
 	 * implementations to synchronize remote item states.
 	 *
-	 * This is an MANDATORY method.
+	 * This is an OPTIONAL method.
 	 */
 	void            (*item_mark_read) (nodePtr node, itemPtr item, gboolean newState);
 	
