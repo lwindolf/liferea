@@ -64,24 +64,6 @@ static enum {
 
 gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data);
 
-static void show_help(void) {
-	GString	*str = g_string_new(NULL);
-	
-	g_string_append_c(str, '\n');
-	g_string_append_printf(str, "Liferea %s\n\n", VERSION);
-	g_string_append_printf(str, "%s\n", _("  --version        Print version information and exit"));
-	g_string_append_printf(str, "%s\n", _("  --help           Print this help and exit"));
-	g_string_append_printf(str, "%s\n", _("  --mainwindow-state=STATE"));
-	g_string_append_printf(str, "%s\n", _("                   Start Liferea with its main window in STATE."));
-	g_string_append_printf(str, "%s\n", _("                   STATE may be `shown', `iconified', or `hidden'"));
-	g_string_append_c(str, '\n');
-	g_string_append_printf(str, "%s\n", _("  --debug-<topic>  Print debugging messages for the given topic"));
-	g_string_append_printf(str, "%s\n", _("                   Possible topics are: all,cache,conf,db,gui,html"));
-	g_string_append_printf(str, "%s\n", _("                   net,parsing,plugins,trace,update,verbose"));
-	g_string_append_c(str, '\n');
-	g_print("%s", str->str);
-	g_string_free(str, TRUE);
-}
 
 /** bacon message callback */
 static void
@@ -124,102 +106,125 @@ signal_handler (int sig)
 	liferea_shutdown ();
 }
 
+static gboolean
+debug_entries_parse_callback (const gchar *option_name,
+			      const gchar *value,
+			      gpointer data,
+			      GError **error)
+{
+	gulong *debug_flags = data;
+
+	if (g_str_equal (option_name, "--debug-all")) {
+		*debug_flags = 0xffff;
+	} else if (g_str_equal (option_name, "--debug-cache")) {
+		*debug_flags |= DEBUG_CACHE;
+	} else if (g_str_equal (option_name, "--debug-conf")) {
+		*debug_flags |= DEBUG_CONF;
+	} else if (g_str_equal (option_name, "--debug-db")) {
+		*debug_flags |= DEBUG_DB;
+	} else if (g_str_equal (option_name, "--debug-gui")) {
+		*debug_flags |= DEBUG_GUI;
+	} else if (g_str_equal (option_name, "--debug-html")) {
+		*debug_flags |= DEBUG_HTML;
+	} else if (g_str_equal (option_name, "--debug-net")) {
+		*debug_flags |= DEBUG_NET;
+	} else if (g_str_equal (option_name, "--debug-parsing")) {
+		*debug_flags |= DEBUG_PARSING;
+	} else if (g_str_equal (option_name, "--debug-performance")) {
+		*debug_flags |= DEBUG_PERF;
+	} else if (g_str_equal (option_name, "--debug-plugins")) {
+		*debug_flags |= DEBUG_PLUGINS;
+	} else if (g_str_equal (option_name, "--debug-trace")) {
+		*debug_flags |= DEBUG_TRACE;
+	} else if (g_str_equal (option_name, "--debug-update")) {
+		*debug_flags |= DEBUG_UPDATE;
+	} else if (g_str_equal (option_name, "--debug-verbose")) {
+		*debug_flags |= DEBUG_VERBOSE;
+	} else {
+		return FALSE;
+	}
+
+	return TRUE;
+}
+
 int
 main (int argc, char *argv[])
 {
-	gulong			debug_flags = 0;
-	const char 		*arg;
-	gint			i;
-	LifereaDBus		*dbus = NULL;
-	int			initialState = MAINWINDOW_SHOWN;
-	
+	GError		*error = NULL;
+	GOptionContext	*context;
+	GOptionGroup	*debug;
+	gulong		debug_flags = 0;
+	LifereaDBus	*dbus = NULL;
+	gchar		*initial_state;
+	int		initialState;
+
 #ifdef USE_SM
 	gchar *opt_session_arg = NULL;
 #endif
+
+	GOptionEntry entries[] = {
+		{ "mainwindow-state", 'w', 0, G_OPTION_ARG_STRING, &initial_state, N_("Start Liferea with its main window in STATE. STATE may be `shown', `iconified', or `hidden'"), N_("STATE") },
+#ifdef USE_SM
+		{ "session", 0, G_OPTION_FLAG_HIDDEN, G_OPTION_ARG_STRING, &opt_session_arg, NULL, NULL },
+#endif
+		{ NULL }
+	};
+
+	GOptionEntry debug_entries[] = {
+		{ "debug-all", 0, G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, debug_entries_parse_callback, N_("Print debugging messages of all types"), NULL },
+		{ "debug-cache", 0, G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, debug_entries_parse_callback, N_("Print debugging messages for the cache handling"), NULL },
+		{ "debug-conf", 0, G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, debug_entries_parse_callback, N_("Print debugging messages of the configuration handling"), NULL },
+		{ "debug-db", 0, G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, debug_entries_parse_callback, N_("Print debugging messages of the database handling"), NULL },
+		{ "debug-gui", 0, G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, debug_entries_parse_callback, N_("Print debugging messages of all GUI functions"), NULL },
+		{ "debug-html", 0, G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, debug_entries_parse_callback, N_("Enables HTML rendering debugging. Each time Liferea renders HTML output it will also dump the generated HTML into ~/.liferea_1.1/output.xhtml"), NULL },
+		{ "debug-net", 0, G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, debug_entries_parse_callback, N_("Print debugging messages of all network activity"), NULL },
+		{ "debug-parsing", 0, G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, debug_entries_parse_callback, N_("Print debugging messages of all parsing functions"), NULL },
+		{ "debug-performance", 0, G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, debug_entries_parse_callback, N_("Print debugging messages when a function takes too long to process"), NULL },
+		{ "debug-plugins", 0, G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, debug_entries_parse_callback, N_("Print debugging messages for the plugin loading"), NULL },
+		{ "debug-trace", 0, G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, debug_entries_parse_callback, N_("Print debugging messages when entering/leaving functions"), NULL },
+		{ "debug-update", 0, G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, debug_entries_parse_callback, N_("Print debugging messages of the feed update processing"), NULL },
+		{ "debug-verbose", 0, G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, debug_entries_parse_callback, N_("Print verbose debugging messages"), NULL },
+		{ NULL }
+	};
+
+	if (!g_thread_supported ()) g_thread_init (NULL);
 
 #ifdef ENABLE_NLS
 	bindtextdomain (GETTEXT_PACKAGE, PACKAGE_LOCALE_DIR);
 	bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
 	textdomain (GETTEXT_PACKAGE);
-	setlocale (LC_ALL, "");
 #endif
 
-	gtk_set_locale ();
-	g_thread_init (NULL);
-#ifdef USE_DBUS
-	dbus_g_thread_init ();
-#endif
+	debug = g_option_group_new ("debug",
+				    N_("Print debugging messages for the given topic"),
+				    N_("Print debugging messages for the given topic"),
+				    &debug_flags,
+				    NULL);
+	g_option_group_add_entries (debug, debug_entries);
 
-	/* parse arguments  */
-	debug_flags = 0;
-	for (i = 1; i < argc; ++i) {
-		arg = argv[i];
-		
-		if (!strcmp (arg, "--debug-cache"))
-			debug_flags |= DEBUG_CACHE;
-		else if (!strcmp (arg, "--debug-conf"))
-			debug_flags |= DEBUG_CONF;
-		else if (!strcmp (arg, "--debug-update"))
-			debug_flags |= DEBUG_UPDATE;
-		else if (!strcmp (arg, "--debug-parsing"))
-			debug_flags |= DEBUG_PARSING;
-		else if (!strcmp (arg, "--debug-gui"))
-			debug_flags |= DEBUG_GUI;
-		else if (!strcmp (arg, "--debug-html"))
-			debug_flags |= DEBUG_HTML;
-		else if (!strcmp (arg, "--debug-plugins"))
-			debug_flags |= DEBUG_PLUGINS;
-		else if (!strcmp (arg, "--debug-net"))
-			debug_flags |= DEBUG_NET;
-		else if (!strcmp (arg, "--debug-db"))
-			debug_flags |= DEBUG_DB;
-		else if (!strcmp (arg, "--debug-perf"))
-			debug_flags |= DEBUG_PERF;
-		else if (!strcmp (arg, "--debug-trace"))
-			debug_flags |= DEBUG_TRACE;
-		else if (!strcmp (arg, "--debug-all"))
-			debug_flags |= DEBUG_TRACE|DEBUG_CACHE|DEBUG_CONF|DEBUG_UPDATE|DEBUG_PARSING|DEBUG_GUI|DEBUG_PLUGINS|DEBUG_NET|DEBUG_DB;
-		else if (!strcmp (arg, "--debug-verbose"))
-			debug_flags |= DEBUG_VERBOSE;
-		else if (!strcmp (arg, "--version") || !strcmp (arg, "-v")) {
-			g_print ("liferea %s\n", VERSION);
-			return 0;
-		}
-		else if(!strcmp(arg, "--help") || !strcmp(arg, "-h")) {
-			show_help();
-			return 0;
-		}
-		else if(!strcmp(arg, "--iconify")) {
-			initialState = MAINWINDOW_ICONIFIED;
-		} else if(!strncmp(arg, "--mainwindow-state=",19)) {
-			const gchar *param = arg + 19;
-			if (g_str_equal(param, "iconified"))
-				initialState = MAINWINDOW_ICONIFIED;
-			else if (g_str_equal(param, "hidden"))
-				initialState = MAINWINDOW_HIDDEN;
-			else if (g_str_equal(param, "shown"))
-				initialState = MAINWINDOW_SHOWN;
-			else
-				fprintf(stderr, _("The --mainwindow-state argument must be given a parameter.\n"));
-#ifdef USE_SM
-		}
-		else if (!strcmp(arg, "--session")) {
-			i++;
-			if (i < argc) {
-				opt_session_arg = g_strdup(argv[i]);
-			} else
-				fprintf(stderr, _("The --session argument must be given a parameter.\n"));
-#endif
-		} else {
-			fprintf(stderr, _("Liferea encountered an unknown argument: %s\n"), arg);
-		}
+	context = g_option_context_new (NULL);
+	g_option_context_set_summary (context, N_("Liferea, the Linux Feed Reader"));
+	g_option_context_set_description (context, N_("For more information, please visit http://liferea.sourceforge.net/"));
+	g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
+	g_option_context_set_translation_domain(context, GETTEXT_PACKAGE);
+	g_option_context_add_group (context, debug);
+	g_option_context_add_group (context, gtk_get_option_group (FALSE));
+
+	g_option_context_parse (context, &argc, &argv, &error);
+	g_option_context_free (context);
+	if (error) {
+		g_print ("Error parsing options: %s\n", error->message);
 	}
-	set_debug_level (debug_flags);
 
+	set_debug_level (debug_flags);
 
 	/* Configuration necessary for network options, so it
 	   has to be initialized before update_init() */
 	conf_init ();
+
+#ifdef USE_DBUS
+	dbus_g_thread_init ();
+#endif
 
 	/* We need to do the network initialization here to allow
 	   network-manager to be setup before gtk_init() */
@@ -284,9 +289,16 @@ main (int argc, char *argv[])
 	debug0 (DEBUG_CACHE, "Compiled without AVAHI support");
 #endif
 
-	if (conf_get_bool_value (SHOW_TRAY_ICON) &&
-	    conf_get_bool_value (START_IN_TRAY))
+	/* how to start liferea, command line takes precedence over preferences */
+	if (g_str_equal(initial_state, "iconified")) {
+		initialState = MAINWINDOW_ICONIFIED;
+	} else if (g_str_equal(initial_state, "hidden") ||
+	    (conf_get_bool_value (SHOW_TRAY_ICON) &&
+	     conf_get_bool_value (START_IN_TRAY))) {
 		initialState = MAINWINDOW_HIDDEN;
+	} else {
+		initialState = MAINWINDOW_SHOWN;
+	}
 
 	liferea_shell_create (initialState);
 	g_set_prgname ("liferea");

@@ -13,6 +13,8 @@
 	  (Lars Lindner)
 	* Fixes missing feed list saving on shutdown.
 	  (Lars Lindner)
+	* Switch option parsing to GOptionContext.
+	  (Emilio Pozuelo Monfort)
 
 
 2009-03-06  Adrian Bunk  <bunk@users.sourceforge.net>
