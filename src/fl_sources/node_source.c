@@ -175,11 +175,6 @@ node_source_export (nodePtr node, xmlNodePtr xml, gboolean trusted)
 	else
 		xmlNewProp (xml, BAD_CAST"sourceType", BAD_CAST (NODE_SOURCE_TYPE(node)->id));
 		
-	if (ui_node_is_expanded (node->id))
-		xmlNewProp (xml, BAD_CAST"expanded", BAD_CAST"true");
-	else
-		xmlNewProp (xml, BAD_CAST"collapsed", BAD_CAST"true");
-		
 	subscription_export (node->subscription, xml, trusted);
 
 	debug_exit("node_source_export");
