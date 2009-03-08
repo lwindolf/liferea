@@ -117,7 +117,7 @@ feedlist_finalize (GObject *object)
 		g_source_remove (feedlist->priv->autoUpdateTimer);
 	if (feedlist->priv->saveTimer)
 		g_source_remove (feedlist->priv->saveTimer);
-		
+
 	/* Enforce synchronous save upon exit */
 	feedlist_save ();		
 	
@@ -608,6 +608,7 @@ feedlist_schedule_save (void)
 static void
 feedlist_save (void)
 {
+	debug0 (DEBUG_CONF, "Forced feed list save");
 	feedlist_schedule_save_cb (NULL);
 }
 
