@@ -143,27 +143,13 @@ main (int argc, char *argv[])
 	textdomain (GETTEXT_PACKAGE);
 	setlocale (LC_ALL, "");
 #endif
-	/* Do not set program name here as it would be overwritten by Gecko! */
-	
+
 	gtk_set_locale ();
 	g_thread_init (NULL);
 #ifdef USE_DBUS
 	dbus_g_thread_init ();
 #endif
-	/* Configuration necessary for network options, so it
-	   has to be initialized before update_init() */
-	conf_init ();
-	
-	/* We need to do the network initialization here to allow
-	   network-manager to be setup before gtk_init() */	   
-	update_init ();
 
-	gtk_init (&argc, &argv);
-	
-	/* GTK theme support */
-	g_set_application_name (_("Liferea"));
-	gtk_window_set_default_icon_name ("liferea");
-	
 	/* parse arguments  */
 	debug_flags = 0;
 	for (i = 1; i < argc; ++i) {
@@ -229,7 +215,22 @@ main (int argc, char *argv[])
 		}
 	}
 	set_debug_level (debug_flags);
-	
+
+
+	/* Configuration necessary for network options, so it
+	   has to be initialized before update_init() */
+	conf_init ();
+
+	/* We need to do the network initialization here to allow
+	   network-manager to be setup before gtk_init() */
+	update_init ();
+
+	gtk_init (&argc, &argv);
+
+	/* GTK theme support */
+	g_set_application_name (_("Liferea"));
+	gtk_window_set_default_icon_name ("liferea");
+
 	/* Note: bacon connection check needs to be done after the
 	   command line parameter checking to allow help and version
 	   switches to be used when we are already running */
