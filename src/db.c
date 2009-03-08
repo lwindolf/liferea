@@ -714,6 +714,8 @@ db_item_metadata_update(itemPtr item)
 static itemPtr
 db_load_item_from_columns (sqlite3_stmt *stmt) 
 {
+	gchar	*tmp;
+
 	itemPtr item = item_new ();
 	
 	item->readStatus	= sqlite3_column_int (stmt, 1)?TRUE:FALSE;
@@ -730,10 +732,16 @@ db_load_item_from_columns (sqlite3_stmt *stmt)
 	item->nodeId		= g_strdup (sqlite3_column_text (stmt, 15));
 	item->parentNodeId	= g_strdup (sqlite3_column_text (stmt, 16));
 
-	item_set_title			(item, sqlite3_column_text(stmt, 0));
-	item_set_source			(item, sqlite3_column_text(stmt, 6));
-	item_set_id			(item, sqlite3_column_text(stmt, 7));	
-	item_set_description		(item, sqlite3_column_text(stmt, 9));
+	item->title		= g_strdup (sqlite3_column_text(stmt, 0));
+	item->sourceId		= g_strdup (sqlite3_column_text(stmt, 7));
+	
+	tmp = sqlite3_column_text(stmt, 6);
+	if (tmp)
+		item->source = g_strdup (tmp);
+		
+	tmp = sqlite3_column_text(stmt, 9);
+	if (tmp)
+		item->description = g_strdup (tmp);
 
 	item->metadata = db_item_metadata_load (item);
 
