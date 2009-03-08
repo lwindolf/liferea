@@ -28,6 +28,7 @@
 #include "debug.h"
 #include "xml.h"
 
+#include "feedlist.h"
 #include "google_source.h"
 #include "subscription.h"
 #include "node.h"
