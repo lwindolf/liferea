@@ -34,6 +34,7 @@
 #include "vfolder.h"
 #include "xml.h"
 #include "fl_sources/node_source.h"
+#include "ui/ui_node.h"
 
 struct exportData {
 	gboolean	trusted; /**< Include all the extra Liferea-specific tags */
