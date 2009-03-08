@@ -94,13 +94,13 @@ export_append_node_tag (nodePtr node, gpointer userdata)
 	/* 3. add children */
 	if (internal) {
 		if (ui_node_is_expanded (node->id))
-			xmlNewProp (cur, BAD_CAST"expanded", BAD_CAST"true");
+			xmlNewProp (childNode, BAD_CAST"expanded", BAD_CAST"true");
 		else
-			xmlNewProp (cur, BAD_CAST"collapsed", BAD_CAST"true");
+			xmlNewProp (childNode, BAD_CAST"collapsed", BAD_CAST"true");
 	}
 	
 	if (IS_FOLDER (node))
-		export_node_children (node, cur, internal);
+		export_node_children (node, childNode, internal);
 }
 
 void
