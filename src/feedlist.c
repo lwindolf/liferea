@@ -432,6 +432,9 @@ feedlist_node_removed (nodePtr node)
 {
 	if (IS_SELECTED (node))
 		feedlist_unselect ();
+		
+	/* First remove all children */
+	node_foreach_child (node, feedlist_node_removed);
 
 	node_remove (node);
 

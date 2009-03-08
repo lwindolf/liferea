@@ -30,6 +30,13 @@
 #include "ui/ui_folder.h"
 #include "ui/ui_node.h"
 
+/* Note: The folder node type implements the behaviour of a folder like
+   node in the feed list. The two most important features are viewing the
+   unread items of all child feeds and displaying the aggregated unread count 
+   of all child feeds.
+   
+   The folder node type does not implement the hierarchy of the feed list! */
+
 static void
 folder_merge_child_items (nodePtr node, gpointer user_data)
 {
@@ -111,8 +118,7 @@ folder_update_unread_count(nodePtr node)
 static void
 folder_remove (nodePtr node)
 {
-	/* Just remove all children */
-	node_foreach_child (node, feedlist_remove_node);
+	/* Ensure that there are no children anymore */
 	g_assert (!node->children);
 }
 
