@@ -86,9 +86,20 @@ export_append_node_tag (nodePtr node, gpointer userdata)
 		xmlNewProp (childNode, BAD_CAST"viewMode", BAD_CAST tmp);
 		g_free (tmp);
 	}
-
+	
 	/* 2. add node type specific stuff */
 	NODE_TYPE (node)->export (node, childNode, internal);
+	
+	/* 3. add children */
+	if (internal) {
+		if (ui_node_is_expanded (node->id))
+			xmlNewProp (cur, BAD_CAST"expanded", BAD_CAST"true");
+		else
+			xmlNewProp (cur, BAD_CAST"collapsed", BAD_CAST"true");
+	}
+	
+	if (IS_FOLDER (node))
+		export_node_children (node, cur, internal);
 }
 
 void
@@ -170,6 +181,7 @@ void
 import_parse_outline (xmlNodePtr cur, nodePtr parentNode, gboolean trusted)
 {
 	gchar		*title, *typeStr, *tmp, *sortStr;
+	xmlNodePtr	child;
 	nodePtr		node;
 	nodeTypePtr	type = NULL;
 	gboolean	needsUpdate = FALSE;
@@ -285,7 +297,12 @@ import_parse_outline (xmlNodePtr cur, nodePtr parentNode, gboolean trusted)
 	feedlist_node_imported (node);
 
 	/* 5. import child nodes */
-	// FIXME: move code from folder.c here
+	child = cur->xmlChildrenNode;
+	while (child) {
+		if (!xmlStrcmp (child->name, BAD_CAST"outline"))
+			import_parse_outline (child, node, trusted);
+		child = child->next;				
+	}
 	
 	/* 6. do node type specific parsing */
 	NODE_TYPE (node)->import (node, parentNode, cur, trusted);

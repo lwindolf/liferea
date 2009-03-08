@@ -64,32 +64,13 @@ folder_load (nodePtr node)
 static void
 folder_import (nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean trusted)
 {	
-	/* Nothing to do for folders. */	
-	
-	// FIXME: the following is not folder stuff!
-	cur = cur->xmlChildrenNode;
-	while (cur) {
-		if (!xmlStrcmp (cur->name, BAD_CAST"outline"))
-			import_parse_outline (cur, node, trusted);
-		cur = cur->next;				
-	}
+	/* Folders have no special properties to be imported. */	
 }
 
 static void
 folder_export (nodePtr node, xmlNodePtr cur, gboolean trusted)
 {	
-	/* Nothing to do for folders */
-	
-	// FIXME: The following is not folder stuff!
-	if (trusted) {
-		if (ui_node_is_expanded (node->id))
-			xmlNewProp (cur, BAD_CAST"expanded", BAD_CAST"true");
-		else
-			xmlNewProp (cur, BAD_CAST"collapsed", BAD_CAST"true");
-	}
-
-	debug1 (DEBUG_CACHE, "adding folder: title=%s", node_get_title(node));
-	export_node_children (node, cur, trusted);	
+	/* Folders have no special properties to be exported. */
 }
 
 static void
