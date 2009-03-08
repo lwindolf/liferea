@@ -714,7 +714,7 @@ db_item_metadata_update(itemPtr item)
 static itemPtr
 db_load_item_from_columns (sqlite3_stmt *stmt) 
 {
-	gchar	*tmp;
+	const gchar	*tmp;
 
 	itemPtr item = item_new ();
 	
