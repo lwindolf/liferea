@@ -189,7 +189,7 @@ google_source_item_retrieve_status (const xmlNodePtr entry, gpointer userdata)
 			xmlFree (label);
 		}
 	}
-
+	
 	itemset = node_get_itemset(node);
 
 	for (iter = itemset->ids; iter; iter = g_list_next(iter)) {
@@ -266,6 +266,12 @@ google_feed_subscription_process_update_result (subscriptionPtr subscription, co
 		return ; 
 	}
 	
+	/* FIXME: The following workaround ensure that the code below,
+	   that uses UI callbacks item_*_state_changed(), does not 
+	   reset the newCount of the feed list (see SF #2666478)
+	   by getting the newCount first and setting it again later. */
+	guint newCount = feedlist_get_new_item_count ();
+
 	debug_start_measurement (DEBUG_UPDATE);
 	xmlDocPtr doc = xml_parse (result->data, result->size, FALSE, NULL);
 	if (doc) {		
@@ -287,6 +293,10 @@ google_feed_subscription_process_update_result (subscriptionPtr subscription, co
 		debug0 (DEBUG_UPDATE, "google_feed_subscription_process_update_result(): Couldn't parse XML!");
 		g_warning ("google_feed_subscription_process_update_result(): Couldn't parse XML!");
 	}
+
+	// FIXME: part 2 of the newCount workaround
+	feedlist_update_new_item_count (newCount);
+	
 	debug_end_measurement (DEBUG_UPDATE, "time taken to update statuses");
 }
 

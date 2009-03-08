@@ -4,6 +4,9 @@
 
         * Don't ship a liferea binary in the tarballs.
 	  (Adrian Bunk, reported by Rodrigo Gallardo)
+	* Fixes SF #2666478: New items not reported in the
+	  trayicon for Google Reader subscriptions.
+	  (Lars Lindner)
 
 
 2009-03-06  Adrian Bunk  <bunk@users.sourceforge.net>

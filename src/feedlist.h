@@ -85,6 +85,14 @@ guint feedlist_get_unread_item_count (void);
 guint feedlist_get_new_item_count (void);
 
 /**
+ * Changes the overall number of new items.
+ *
+ * Note: Do not use this method directly, use 
+ * feedlist_node_was_updated() instead.
+ */
+void feedlist_update_new_item_count (guint addValue);
+
+/**
  * Reset the global feed list new item counter.
  *
  * @todo: use signal instead
