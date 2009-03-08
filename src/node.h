@@ -298,8 +298,10 @@ void node_update_favicon (nodePtr node);
  * @param node		the node
  * @param sortColumn	sort column id
  * @param reversed	TRUE if order should be reversed
+ *
+ * @returns TRUE if the passed settings were different from the previous ones
  */
-void node_set_sort_column(nodePtr node, gint sortColumn, gboolean reversed);
+gboolean node_set_sort_column (nodePtr node, gint sortColumn, gboolean reversed);
 
 /**
  * Change/Set the viewing mode of a given node.

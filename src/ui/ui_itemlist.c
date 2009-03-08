@@ -60,8 +60,6 @@ static GHashTable 	*item_id_to_iter = NULL;	/** hash table used for fast item id
 
 static GtkTreeView 	*itemlist_treeview = NULL;
 
-static gint disableSortingSaving;	/**< flag to disable sort-changed callback */
-
 /* helper functions for item <-> iter conversion */
 
 gboolean
@@ -142,14 +140,9 @@ ui_itemlist_set_sort_column (nodeViewSortType sortType, gboolean sortReversed)
 			break;
 	}
 	
-	/* Disable sort order save callback because this
-	   is not a user triggered save and doesn't need
-	   to be written to disk (FIXME: improve me) */
-	disableSortingSaving++;
 	gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (gtk_tree_view_get_model (itemlist_treeview)),
 	                                      sortColumn, 
 	                                      sortReversed?GTK_SORT_DESCENDING:GTK_SORT_ASCENDING);
-	disableSortingSaving--;
 }
 
 void
@@ -775,30 +768,33 @@ on_itemlist_selection_changed (GtkTreeSelection *selection, gpointer data)
 void
 itemlist_sort_column_changed_cb (GtkTreeSortable *treesortable, gpointer user_data)
 {
-	gint		sortColumn;
+	gint		sortColumn, nodeSort;
 	GtkSortType	sortType;
-	gboolean	sorted;
+	gboolean	sorted, changed;
 	
-	if (feedlist_get_selected () == NULL || disableSortingSaving != 0)
+	if (feedlist_get_selected () == NULL)
 		return;
 	
 	sorted = gtk_tree_sortable_get_sort_column_id (treesortable, &sortColumn, &sortType);
+	if (!sorted)
+		return;
+		
 	switch (sortColumn) {
 		case IS_TIME:
-			node_set_sort_column (feedlist_get_selected (), NODE_VIEW_SORT_BY_TIME, sortType == GTK_SORT_DESCENDING);
+			nodeSort = NODE_VIEW_SORT_BY_TIME;
 			break;
 		case IS_LABEL:
-			node_set_sort_column (feedlist_get_selected (), NODE_VIEW_SORT_BY_TITLE, sortType == GTK_SORT_DESCENDING);
+			nodeSort = NODE_VIEW_SORT_BY_TITLE;
 			break;
 		case IS_PARENT:
 		case IS_SOURCE:
-			node_set_sort_column (feedlist_get_selected (), NODE_VIEW_SORT_BY_PARENT, sortType == GTK_SORT_DESCENDING);
+			nodeSort = NODE_VIEW_SORT_BY_PARENT;
 			break;
 	}
 
-	/* FIXME: improve me save only when necessary to get
-	   rid of disabelSortingSaving global */
-	feedlist_schedule_save ();
+	changed = node_set_sort_column (feedlist_get_selected (), nodeSort, sortType == GTK_SORT_DESCENDING);
+	if (changed)
+		feedlist_schedule_save ();
 }
 
 /* needed because switching does sometimes returns to the tree 
