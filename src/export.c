@@ -298,11 +298,13 @@ import_parse_outline (xmlNodePtr cur, nodePtr parentNode, gboolean trusted)
 	feedlist_node_imported (node);
 
 	/* 5. import child nodes */
-	child = cur->xmlChildrenNode;
-	while (child) {
-		if (!xmlStrcmp (child->name, BAD_CAST"outline"))
-			import_parse_outline (child, node, trusted);
-		child = child->next;				
+	if (IS_FOLDER (node)) {
+		child = cur->xmlChildrenNode;
+		while (child) {
+			if (!xmlStrcmp (child->name, BAD_CAST"outline"))
+				import_parse_outline (child, node, trusted);
+			child = child->next;				
+		}
 	}
 	
 	/* 6. do node type specific parsing */
