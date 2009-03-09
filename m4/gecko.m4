@@ -62,7 +62,7 @@ AC_ARG_WITH([mozilla],[],[with_gecko=$withval],[])
 gecko_cv_gecko=$with_gecko
 
 # Autodetect gecko
-_geckos="xulrunner firefox mozilla-firefox seamonkey mozilla libxul-embedding libxul"
+_geckos="libxul-embedding xulrunner firefox mozilla-firefox seamonkey mozilla libxul"
 if test -z "$gecko_cv_gecko"; then
 	for lizard in $_geckos; do
 		if $PKG_CONFIG --exists $lizard-xpcom; then

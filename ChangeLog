@@ -3,6 +3,8 @@
         Version 1.4.27 (Stable)
 
         * Update of Slovak translation (Pavol Klacanski)
+	* Changes XulRunner detection to work on some
+	  odd Debian setups (suggested by Vincent Lefevre)
 
 
 2009-02-21  Adrian Bunk  <bunk@users.sourceforge.net>
