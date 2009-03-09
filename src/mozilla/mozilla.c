@@ -38,7 +38,7 @@ static void mozilla_init(void) {
 	/* Avoid influencing the component loading by $MOZILLA_FIVE_HOME */
 	g_unsetenv("MOZILLA_FIVE_HOME");
 
-	gtk_moz_embed_set_comp_path(MOZILLA_LIB_ROOT);
+	/* gtk_moz_embed_set_comp_path(MOZILLA_LIB_ROOT); */
 #endif
 	mozembed_init();	
 }

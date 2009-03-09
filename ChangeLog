@@ -3,8 +3,11 @@
         Version 1.4.27 (Stable)
 
         * Update of Slovak translation (Pavol Klacanski)
-	* Changes XulRunner detection to work on some
-	  odd Debian setups (suggested by Vincent Lefevre)
+	* Fixes SF #2537587: Changes XulRunner detection to work 
+	  on some odd Debian setups (suggested by Vincent Lefevre)
+	* Fixes SF #2579914: Mozilla plugin doesn't compile,
+	  by not calling gtk_moz_embed_set_comp_path() anymore.
+	  (Lars Lindner)
 
 
 2009-02-21  Adrian Bunk  <bunk@users.sourceforge.net>
