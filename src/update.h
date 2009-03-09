@@ -80,8 +80,8 @@ typedef void (*update_result_cb) (const struct updateResult * const result, gpoi
 
 /** defines update options to be passed to an update request */
 typedef struct updateOptions {
-	gchar		*username;	/**< username for HTTP auth (FIXME: not yet used) */
-	gchar		*password;	/**< password for HTTP auth (FIXME: not yet used) */
+	gchar		*username;	/**< username for HTTP auth */
+	gchar		*password;	/**< password for HTTP auth */
 	gboolean	dontUseProxy;	/**< no proxy flag */
 } *updateOptionsPtr;
 
