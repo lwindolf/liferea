@@ -272,16 +272,6 @@ const gchar * subscription_get_filter(subscriptionPtr subscription);
 void subscription_set_filter(subscriptionPtr subscription, const gchar * filter);
 
 /**
- * Updates the error status of the given subscription
- *
- * @param subscription	the subscription
- * @param httpstatus	the new HTTP status code
- * @param resultcode	the update result code
- * @param filterError	filter error string (or NULL)
- */
-void subscription_update_error_status(subscriptionPtr subscription, gint httpstatus, gint resultcode, gchar *filterError);
-
-/**
  * Frees the given subscription structure.
  *
  * @param subscription	the subscription

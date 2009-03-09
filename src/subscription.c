@@ -397,16 +397,14 @@ subscription_set_filter (subscriptionPtr subscription, const gchar *filter)
 }
 
 /**
- * Creates a new error description according to the passed
- * HTTP status and the feeds parser errors. If the HTTP
- * status is a success status and no parser errors occurred
- * no error messages is created.
+ * Updates the error status of the given subscription
  *
- * @param feed		feed
- * @param httpstatus	HTTP status
- * @param resultcode	the update code's return code (see update.h)
+ * @param subscription	the subscription
+ * @param httpstatus	the new HTTP status code
+ * @param resultcode	the update result code
+ * @param filterError	filter error string (or NULL)
  */
-void
+static void
 subscription_update_error_status (subscriptionPtr subscription,
                                   gint httpstatus,
                                   gint resultcode,
