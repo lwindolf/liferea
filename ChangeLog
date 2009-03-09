@@ -15,6 +15,8 @@
 	  (Lars Lindner)
 	* Switch option parsing to GOptionContext.
 	  (Emilio Pozuelo Monfort)
+	* Document --debug-performance in the manpage.
+	  (Emilio Pozuelo Monfort)
 
 
 2009-03-06  Adrian Bunk  <bunk@users.sourceforge.net>
