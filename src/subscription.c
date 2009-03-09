@@ -152,6 +152,56 @@ subscription_update_favicon (subscriptionPtr subscription)
 			  (gpointer)subscription->node);
 }
 
+/**
+ * Updates the error status of the given subscription
+ *
+ * @param subscription	the subscription
+ * @param httpstatus	the new HTTP status code
+ * @param resultcode	the update result code
+ * @param filterError	filter error string (or NULL)
+ */
+static void
+subscription_update_error_status (subscriptionPtr subscription,
+                                  gint httpstatus,
+                                  gint resultcode,
+                                  gchar *filterError)
+{
+	const gchar	*errmsg = NULL;
+	gboolean	errorFound = FALSE;
+
+	if (subscription->filterError)
+		g_free (subscription->filterError);
+	if (subscription->httpError)
+		g_free (subscription->httpError);
+	if (subscription->updateError)
+		g_free (subscription->updateError);
+
+	subscription->filterError = g_strdup (filterError);
+	subscription->updateError = NULL;
+	subscription->httpError = NULL;
+	subscription->httpErrorCode = httpstatus;
+
+	if (((httpstatus >= 200) && (httpstatus < 400)) && /* HTTP codes starting with 2 and 3 mean no error */
+	    (NULL == subscription->filterError))
+		return;
+
+	if ((200 != httpstatus) || (resultcode != 0)) {
+		/* first specific codes (guarantees tmp to be set) */
+		errmsg = common_http_error_to_str (httpstatus);
+
+		/* second network library errors */
+		if (network_strerror (resultcode))
+			errmsg = network_strerror (resultcode);
+
+		errorFound = TRUE;
+		subscription->httpError = g_strdup (errmsg);
+	}
+
+	/* if none of the above error descriptions matched... */
+	if (!errorFound)
+		subscription->updateError = g_strdup (_("There was a problem while reading this subscription. Please check the URL and console output."));
+}
+
 static void
 subscription_process_update_result (const struct updateResult * const result, gpointer user_data, guint32 flags)
 {
@@ -394,56 +444,6 @@ subscription_set_filter (subscriptionPtr subscription, const gchar *filter)
 	g_free (subscription->filtercmd);
 	subscription->filtercmd = g_strdup (filter);
 	feedlist_schedule_save ();
-}
-
-/**
- * Updates the error status of the given subscription
- *
- * @param subscription	the subscription
- * @param httpstatus	the new HTTP status code
- * @param resultcode	the update result code
- * @param filterError	filter error string (or NULL)
- */
-static void
-subscription_update_error_status (subscriptionPtr subscription,
-                                  gint httpstatus,
-                                  gint resultcode,
-                                  gchar *filterError)
-{
-	const gchar	*errmsg = NULL;
-	gboolean	errorFound = FALSE;
-
-	if (subscription->filterError)
-		g_free (subscription->filterError);
-	if (subscription->httpError)
-		g_free (subscription->httpError);
-	if (subscription->updateError)
-		g_free (subscription->updateError);
-		
-	subscription->filterError = g_strdup (filterError);
-	subscription->updateError = NULL;
-	subscription->httpError = NULL;
-	subscription->httpErrorCode = httpstatus;
-	
-	if (((httpstatus >= 200) && (httpstatus < 400)) && /* HTTP codes starting with 2 and 3 mean no error */
-	    (NULL == subscription->filterError))
-		return;
-	
-	if ((200 != httpstatus) || (resultcode != 0)) {
-		/* first specific codes (guarantees tmp to be set) */
-		errmsg = common_http_error_to_str (httpstatus);
-
-		/* second network library errors */
-		if (network_strerror (resultcode))
-			errmsg = network_strerror (resultcode);
-
-		errorFound = TRUE;
-		subscription->httpError = g_strdup (errmsg);
-	}
-	
-	/* if none of the above error descriptions matched... */
-	if (!errorFound)
-		subscription->updateError = g_strdup (_("There was a problem while reading this subscription. Please check the URL and console output."));
 }
 
 subscriptionPtr
