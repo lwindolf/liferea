@@ -17,6 +17,8 @@
 	  (Emilio Pozuelo Monfort)
 	* Document --debug-performance in the manpage.
 	  (Emilio Pozuelo Monfort)
+	* Show the vertical scrollbar in the htmlview only
+	  when required. (Adrian Bunk)
 
 
 2009-03-06  Adrian Bunk  <bunk@users.sourceforge.net>
