@@ -7,8 +7,6 @@
      <outline text="Fuentes de ejemplo (castellano)">
       <outline text="OSS">
         <outline text="Hispalinux" htmlUrl="http://www.hispalinux.es/" xmlUrl="http://www.hispalinux.es/node/feed" />
-	<outline text="Libertonia" htmlUrl="http://libertonia.escomposlinux.org/" xmlUrl="http://libertonia.escomposlinux.org/backend.rdf" />
-	<outline text="Diarios de Libertonia" htmlUrl="http://libertonia.escomposlinux.org//section/Diary" xmlUrl="http://libertonia.escomposlinux.org/diary.rdf" />
 	<outline text="Barrapunto" htmlUrl="http://barrapunto.com/" xmlUrl="http://backends.barrapunto.com/barrapunto.rss" />
 	<outline text="BulmaLUG" htmlUrl="http://bulma.net/" xmlUrl="http://bulma.net/xml.php" />
       </outline>	
@@ -22,7 +20,6 @@
 			<outline text="GrokLaw" htmlUrl="http://www.groklaw.net/" xmlUrl="http://www.groklaw.net/backend/GrokLaw.rdf" />
 			<outline text="Linux.com" htmlUrl="http://www.linux.com/" xmlUrl="http://www.linux.com/index.rss" />
 			<outline text="mozillaZine" htmlUrl="http://www.mozillazine.org/" xmlUrl="http://www.mozillazine.org/contents.rdf" />
-			<outline text="Newsforge" htmlUrl="http://www.newsforge.com" xmlUrl="http://www.newsforge.com/newsforge.rss" />
 			<outline text="Planet GNOME" htmlUrl="http://planet.gnome.org/" xmlUrl="http://planet.gnome.org/atom.xml" />	
 			<outline text="Slashdot" htmlUrl="http://slashdot.org"  xmlUrl="http://slashdot.org/slashdot.rss" />
 			<outline text="TuxMobil" htmlUrl="http://tuxmobil.org" xmlUrl="http://tuxmobil.org/tuxmobil_rss.rdf" />      
