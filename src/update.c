@@ -172,7 +172,6 @@ update_result_free (updateResultPtr result)
 	update_state_free (result->updateState);
 
 	g_free (result->source);
-	g_free (result->data);
 	g_free (result->contentType);
 	g_free (result->filterErrors);
 	g_free (result);
