@@ -93,6 +93,7 @@ feed_free_parser_ctxt (feedParserCtxtPtr ctxt)
 	if (ctxt) {
 		/* Don't free the itemset! */
 		g_hash_table_destroy (ctxt->tmpdata);
+		g_free (ctxt->title);
 		g_free (ctxt);
 	}
 }
