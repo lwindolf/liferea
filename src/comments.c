@@ -168,18 +168,9 @@ comments_process_update_result (const struct updateResult * const result, gpoint
 	g_free (commentFeed->error);
 	commentFeed->error = NULL;
 	
-	if (!(result->httpstatus >= 200) && (result->httpstatus < 400)) {
-		const gchar * tmp;
-		
-		/* first specific codes (guarantees tmp to be set) */
-		tmp = common_http_error_to_str (result->httpstatus);
-
-		/* second network library errors */
-		if (network_strerror (result->returncode))
-			tmp = network_strerror (result->returncode);
-			
-		commentFeed->error = g_strdup (tmp);
-	}	
+	if ((result->httpstatus < 200) || (result->httpstatus >= 400)) {
+		commentFeed->error = g_strdup (network_strerror (result->returncode, result->httpstatus));
+	}
 
 	/* clean up... */
 	commentFeed->updateJob = NULL;

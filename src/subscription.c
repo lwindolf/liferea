@@ -166,7 +166,6 @@ subscription_update_error_status (subscriptionPtr subscription,
                                   gint resultcode,
                                   gchar *filterError)
 {
-	const gchar	*errmsg = NULL;
 	gboolean	errorFound = FALSE;
 
 	if (subscription->filterError)
@@ -186,15 +185,8 @@ subscription_update_error_status (subscriptionPtr subscription,
 		return;
 
 	if ((200 != httpstatus) || (resultcode != 0)) {
-		/* first specific codes (guarantees tmp to be set) */
-		errmsg = common_http_error_to_str (httpstatus);
-
-		/* second network library errors */
-		if (network_strerror (resultcode))
-			errmsg = network_strerror (resultcode);
-
+		subscription->httpError = g_strdup (network_strerror (resultcode, httpstatus));
 		errorFound = TRUE;
-		subscription->httpError = g_strdup (errmsg);
 	}
 
 	/* if none of the above error descriptions matched... */
@@ -400,13 +392,9 @@ subscription_set_source (subscriptionPtr subscription, const gchar *source)
 	g_free (subscription->source);
 	subscription->source = g_strchomp (g_strdup (source));
 	feedlist_schedule_save ();
-	
-	if ('|' != source[0])
-		/* check if we've got matching cookies ... */
-		update_state_set_cookies (subscription->updateState, cookies_find_matching (source));
-	else 
-		update_state_set_cookies (subscription->updateState, NULL);
-	
+
+	update_state_set_cookies (subscription->updateState, NULL);
+
 	if (NULL == subscription_get_orig_source (subscription))
 		subscription_set_orig_source (subscription, source);
 }

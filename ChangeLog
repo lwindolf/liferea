@@ -1,6 +1,10 @@
 2009-03-??  ???
 
-	*
+        Version 1.5.14 (Unstable)
+
+	* Migrate networking code from libcurl to libsoup.
+	  Fixes UI unresponsiveness while there is network
+	  IO. (Emilio Pozuelo Monfort)
 
 
 2009-03-12  Adrian Bunk  <bunk@users.sourceforge.net>

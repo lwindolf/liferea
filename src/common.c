@@ -438,34 +438,6 @@ gchar * common_create_cache_filename(const gchar *folder, const gchar *filename,
 	return result;
 }
 
-const gchar * common_http_error_to_str(gint httpstatus) {
-	gchar	*tmp = NULL;
-	
-	switch(httpstatus) {
-		case 401:tmp = _("You are unauthorized to download this feed. Please update your username and "
-		                 "password in the feed properties dialog box.");break;
-		case 402:tmp = _("Payment Required");break;
-		case 403:tmp = _("Access Forbidden");break;
-		case 404:tmp = _("Resource Not Found");break;
-		case 405:tmp = _("Method Not Allowed");break;
-		case 406:tmp = _("Not Acceptable");break;
-		case 407:tmp = _("Proxy Authentication Required");break;
-		case 408:tmp = _("Request Time-Out");break;
-		case 410:tmp = _("Gone. Resource doesn't exist. Please unsubscribe!");break;
-	}
-	
-	if(!tmp) {
-		switch(httpstatus / 100) {
-			case 3:tmp = _("Feed not available: Server requested unsupported redirection!");break;
-			case 4:tmp = _("Client Error");break;
-			case 5:tmp = _("Server Error");break;
-			default:tmp = _("(unknown networking error happened)");break;
-		}
-	}
-	
-	return tmp;
-}
-
 xmlChar * common_uri_escape(const xmlChar *url) {
 	xmlChar	*result;
 

@@ -160,7 +160,7 @@ pkg_modules="	gtk+-2.0 >= 2.12.0
 		sqlite3 >= 3.4
 		gmodule-2.0 >= 2.0.0
 		libglade-2.0 >= 2.0.0
-		libcurl >= 7.15.0
+		libsoup-2.4 >= 2.25.1
 		webkit-1.0"
 
 PKG_CHECK_MODULES(PACKAGE, [$pkg_modules])
@@ -219,7 +219,6 @@ AC_SUBST(NM_LIBS)
 AC_CONFIG_FILES([
 Makefile
 src/Makefile
-src/glibcurl/Makefile
 src/webkit/Makefile
 src/parsers/Makefile
 src/fl_sources/Makefile

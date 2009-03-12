@@ -147,15 +147,6 @@ const gchar *	common_get_cache_path(void);
 gchar * common_create_cache_filename(const gchar *folder, const gchar *filename, const gchar *extension);
 
 /**
- * Returns explanation string for the given HTTP 4xx error code.
- *
- * @param httpstatus	HTTP error code between 401 and 410
- *
- * @returns explanation string
- */
-const gchar * common_http_error_to_str(gint httpstatus);
-
-/**
  * Takes an URL and returns a new string containing the escaped URL.
  *
  * @param url		the URL to escape

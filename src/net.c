@@ -1,7 +1,8 @@
 /**
  * @file net.c  HTTP network access using glibcurl
- * 
+ *
  * Copyright (C) 2007-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2009 Emilio Pozuelo Monfort <pochu27@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,26 +22,25 @@
 #include "net.h"
 
 #include <glib.h>
+#include <libsoup/soup.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-
-#include <curl/curl.h>
-#include <curl/types.h>
-#include <curl/easy.h>
 
 #include "common.h"
 #include "conf.h"
 #include "debug.h"
 #include "ui/liferea_htmlview.h"
 #include "ui/liferea_shell.h"
-#include "glibcurl/glibcurl.h"
 
-// static CURLSH *share_handle = NULL;   FIXME: is this required?
+#define HOMEPAGE	"http://liferea.sf.net/"
 
-static int	NET_TIMEOUT;
-static gchar 	*useragent = NULL;
+static SoupSession *session;
+static SoupSession *session_no_proxy;
+static SoupSession *session_no_cookies;
+static SoupSession *session_no_cookies_no_proxy;
+
 static gchar	*proxyname = NULL;
 static gchar	*proxyusername = NULL;
 static gchar	*proxypassword = NULL;
@@ -48,220 +48,40 @@ static int	proxyport = 0;
 
 static gboolean	online = FALSE;
 
-static char *
-CookieCutter (const char *feedurl, FILE * cookies)
+static void
+network_process_callback (SoupSession *session, SoupMessage *msg, gpointer user_data)
 {
-	char buf[4096];					/* File read buffer. */
-	char tmp[512];
-	char *result = NULL;
-	char *host;						/* Current feed hostname. */
-	char *path;						/* Current feed path. */
-	char *url;
-	char *freeme, *tmpstr;
-	char *tmphost;
-	char *cookie;
-	char *cookiehost = NULL;
-	char *cookiepath = NULL;
-	char *cookiename = NULL;
-	char *cookievalue = NULL;
-	int cookieexpire = 0;
-	int cookiesecure = 0;
-	int i;
-	int len = 0;
-	int cookienr = 0;
-	time_t tunix;
-	
-	/* Get current time. */
-	tunix = time(0);
-	
-	url = g_strdup (feedurl);
-	freeme = url;
-	
-	strsep (&url, "/");
-	strsep (&url, "/");
-	tmphost = url;
-	strsep (&url, "/");
-	if (url == NULL) {
-		g_free (freeme);
-		return NULL;
-	}
-	
-	/* If tmphost contains an '@' strip authinfo off url. */
-	if (strchr (tmphost, '@') != NULL) {
-		strsep (&tmphost, "@");
-	}
-	
-	host = g_strdup (tmphost);
-	url--;
-	url[0] = '/';
-	if (url[strlen(url)-1] == '\n') {
-		url[strlen(url)-1] = '\0';
-	}
-	
-	path = g_strdup (url);
-	g_free (freeme);
-	freeme = NULL;
-	
-	while (!feof(cookies)) {
-		if ((fgets (buf, sizeof(buf), cookies)) == NULL)
-			break;
-		
-		/* Filter \n lines. But ignore them so we can read a NS cookie file. */
-		if (buf[0] == '\n')
-			continue;
-		
-		/* Allow adding of comments that start with '#'.
-		   Makes it possible to symlink Mozilla's cookies.txt. */
-		if (buf[0] == '#')
-			continue;
-				
-		cookie = g_strdup (buf);
-		freeme = cookie;
-		
-		/* Munch trailing newline. */
-		if (cookie[strlen(cookie)-1] == '\n')
-			cookie[strlen(cookie)-1] = '\0';
-		
-		/* Decode the cookie string. */
-		for (i = 0; i <= 6; i++) {
-			tmpstr = strsep (&cookie, "\t");
-			
-			if (tmpstr == NULL)
-				break;
-			
-			switch (i) {
-				case 0:
-					/* Cookie hostname. */
-					cookiehost = g_strdup (tmpstr);
-					break;
-				case 1:
-					/* Discard host match value. */
-					break;
-				case 2:
-					/* Cookie path. */
-					cookiepath = g_strdup (tmpstr);
-					break;
-				case 3:
-					/* Secure cookie? */
-					if (strcasecmp (tmpstr, "TRUE") == 0)
-						cookiesecure = 1;
-					break;
-				case 4:
-					/* Cookie expiration date. */
-					cookieexpire = atoi (tmpstr);
-					break;
-				case 5:
-					/* NAME */
-					cookiename = g_strdup (tmpstr);
-					break;
-				case 6:
-					/* VALUE */
-					cookievalue = g_strdup (tmpstr);
-					break;
-				default:
-					break;
-			}
-		}
-		
-		/* See if current cookie matches cur_ptr.
-		   Hostname and path must match.
-		   Ignore secure cookies.
-		   Discard cookie if it has expired. */
-		if ((strstr (host, cookiehost) != NULL) &&
-			(strstr (path, cookiepath) != NULL) &&
-			(!cookiesecure) &&
-			(cookieexpire > (int) tunix)) {					/* Cast time_t tunix to int. */
-			cookienr++;
-			
-			/* Construct and append cookiestring.
-			
-			   Cookie: NAME=VALUE; NAME=VALUE */
-			if (cookienr == 1) {
-				len = 8 + strlen(cookiename) + 1 + strlen(cookievalue) + 1;
-				result = g_malloc (len);
-				strcpy (result, "Cookie: ");
-				strcat (result, cookiename);
-				strcat (result, "=");
-				strcat (result, cookievalue);
-			} else {
-				len += strlen(cookiename) + 1 + strlen(cookievalue) + 3;
-				result = g_realloc (result, len);
-				strcat (result, "; ");
-				strcat (result, cookiename);
-				strcat (result, "=");
-				strcat (result, cookievalue);
-			}
-		} else if ((strstr (host, cookiehost) != NULL) &&
-					(strstr (path, cookiepath) != NULL) &&
-					(cookieexpire < (int) tunix)) {			/* Cast time_t tunix to int. */
-			/* Print cookie expire warning. */
-			snprintf (tmp, sizeof(tmp), _("Cookie for %s has expired!"), cookiehost);
-		}
+	updateJobPtr	job = (updateJobPtr)user_data;
+	SoupDate	*last_modified;
+	const gchar	*tmp = NULL;
 
-		g_free (freeme);
-		freeme = NULL;
-		g_free (cookiehost);
-		g_free (cookiepath);
-		g_free (cookiename);
-		g_free (cookievalue);
-	}
-	
-	g_free (host);
-	g_free (path);
-	g_free (freeme);
-	
-	/* Append \r\n to result */
-	if (result != NULL) {
-		result = g_realloc (result, len+2);
-		strcat (result, "\r\n");
-	}
-	
-	return result;
-}
-
-
-gchar *
-cookies_find_matching (const gchar *url)
-{
-	gchar	*filename;
-	gchar	*result;
-	FILE	*cookies;
-
-	filename = common_create_cache_filename("", "cookies", "txt");
-	cookies = fopen (filename, "r");
-	g_free(filename);
-	
-	if (cookies == NULL) {
-		/* No cookies to load. */
-		return NULL;
+	job->result->source = soup_uri_to_string (soup_message_get_uri(msg), FALSE);
+	if (SOUP_STATUS_IS_TRANSPORT_ERROR (msg->status_code)) {
+		job->result->returncode = msg->status_code;
+		job->result->httpstatus = 0;
 	} else {
-		result = CookieCutter (url, cookies);
+		job->result->httpstatus = msg->status_code;
+		job->result->returncode = 0;
 	}
-	fclose (cookies);
 
-	return result;
-}
+	debug1 (DEBUG_NET, "download status code: %d", job->result->httpstatus);
+	debug1 (DEBUG_NET, "source after download: >>>%s<<<\n", job->result->source);
 
-static size_t
-network_write_callback (void *ptr, size_t size, size_t nmemb, void *data)
-{
-	int realsize = size * nmemb;
-	updateResultPtr result = (updateResultPtr)data;
+	job->result->data = g_strndup (msg->response_body->data, msg->response_body->length);
+	job->result->size = (size_t)msg->response_body->length;
+	debug1 (DEBUG_NET, "%d bytes downloaded", job->result->size);
 
-	if (result->data == NULL)
-		result->data = g_malloc0 (realsize+2);
-	else
-		result->data = g_realloc (result->data, result->size + realsize + 2);
+	job->result->contentType = g_strdup (soup_message_headers_get_content_type (msg->response_headers, NULL));
 
-	if (result->data) {
-		memcpy (&(result->data[result->size]), ptr, realsize);
-		result->size += realsize;
-		result->data[result->size] = 0;
-	} else {
-		realsize = 0;
+	/* Update last-modified date */
+	tmp = soup_message_headers_get (msg->response_headers, "Last-Modified");
+	if (tmp) {
+		last_modified = soup_date_new_from_string (tmp);
+		job->result->updateState->lastModified = soup_date_to_time_t (last_modified);
+		soup_date_free (last_modified);
 	}
-	
-	return realsize;
+
+	update_process_finished_job (job);
 }
 
 /* Downloads a feed specified in the request structure, returns 
@@ -274,132 +94,87 @@ network_write_callback (void *ptr, size_t size, size_t nmemb, void *data)
 void
 network_process_request (const updateJobPtr const job)
 {
-	CURL		*curl_handle;
-		
-	debug1(DEBUG_UPDATE, "downloading %s", job->request->source);
 	g_assert(NULL != job->request);
+	debug1(DEBUG_NET, "downloading %s", job->request->source);
 
-	curl_handle = curl_easy_init ();
-	curl_easy_setopt (curl_handle, CURLOPT_URL, job->request->source);
-	curl_easy_setopt (curl_handle, CURLOPT_WRITEFUNCTION, network_write_callback);
-	curl_easy_setopt (curl_handle, CURLOPT_WRITEDATA, job->result);
-	curl_easy_setopt (curl_handle, CURLOPT_PRIVATE, job);
-	curl_easy_setopt (curl_handle, CURLOPT_AUTOREFERER, 1);
-	curl_easy_setopt (curl_handle, CURLOPT_USERAGENT, useragent);
-	curl_easy_setopt (curl_handle, CURLOPT_FOLLOWLOCATION,  TRUE);
-	curl_easy_setopt (curl_handle, CURLOPT_TIMECONDITION, CURL_TIMECOND_IFMODSINCE);
-	if (job->request->postdata)
-		curl_easy_setopt (curl_handle, CURLOPT_POSTFIELDS, job->request->postdata);	
+	SoupMessage	*msg;
+	SoupDate	*date;
+	gboolean	no_proxy = FALSE;
+	gboolean	no_cookies = FALSE;
 
+	/* Prepare the SoupMessage */
+	if (job->request->postdata) {
+		msg = soup_message_new (SOUP_METHOD_POST, job->request->source);
+		// set the postdata for the request
+
+		soup_message_set_request (msg,
+					  "application/x-www-form-urlencoded",
+					  SOUP_MEMORY_STATIC, /* libsoup won't free the postdata */
+					  job->request->postdata,
+					  strlen (job->request->postdata));
+	} else {
+		msg = soup_message_new (SOUP_METHOD_GET, job->request->source);
+	}
+
+	/* Set the If-Modified-Since: header */
+	if (job->request->updateState && job->request->updateState->lastModified) {
+		date = soup_date_new_from_time_t (job->request->updateState->lastModified);
+		soup_message_headers_append (msg->request_headers,
+					     "If-Modified-Since",
+					     soup_date_to_string (date, SOUP_DATE_HTTP));
+		soup_date_free (date);
+	}
+
+	/* Set the authentication */
 	if (job->request->options &&
 	    job->request->options->username &&
 	    job->request->options->password) {
-	    	gchar *authstr;
-		
-		authstr = g_strdup_printf ("%s:%s", job->request->options->username, job->request->options->password);
-	    	curl_easy_setopt (curl_handle, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
-		curl_easy_setopt (curl_handle, CURLOPT_USERPWD, authstr);
-		g_free (authstr);
+		SoupURI *uri = soup_message_get_uri (msg);
+
+		soup_uri_set_user (uri, job->request->options->username);
+		soup_uri_set_password (uri, job->request->options->password);
 	}
 
-	if (job->request->updateState) {
-		curl_easy_setopt (curl_handle, CURLOPT_COOKIE, update_state_get_cookies (job->request->updateState));
-		curl_easy_setopt (curl_handle, CURLOPT_TIMEVALUE, job->request->updateState->lastModified);
+	/* Add requested cookies */
+	if (job->request->updateState && job->request->updateState->cookies) {
+		soup_message_headers_append (msg->request_headers, "Cookie",
+						job->request->updateState->cookies);
+		no_cookies = TRUE;
 	}
-	curl_easy_setopt (curl_handle, CURLOPT_FILETIME, 1L);
-	if (proxyname) {
-		curl_easy_setopt(curl_handle, CURLOPT_PROXY, proxyname);
-		if (proxyport > 0)
-			curl_easy_setopt(curl_handle, CURLOPT_PROXYPORT, proxyport);
+
+	/* TODO: Right now we send the msg, and if it requires authentication and
+	 * we didn't provide one, the petition fails and when the job is processed
+	 * it sees it needs authentication and displays a dialog, and if credentials
+	 * are entered, it queues a new job with auth credentials. Instead of that,
+	 * we should probably handle authentication directly here, connecting the
+	 * msg to a callback in case of 401 (see soup_message_add_status_code_handler())
+	 * displaying the dialog ourselves, and requeing the msg if we get credentials */
+
+	/* We queue the message in one session or the other depending on whether the
+	 * feed properties has the "dont use a proxy" checkbox enabled */
+	if (job->request->options && job->request->options->dontUseProxy) {
+		no_proxy = TRUE;
 	}
-	glibcurl_add (curl_handle);
-}
 
-static void
-network_glibcurl_callback (void *data)
-{
-	CURLMsg*		msg;
-	struct curl_slist	*cookies;
- 	gint			inQueue;
-	updateJobPtr		job;
-
-	while (1) {
-		msg = curl_multi_info_read (glibcurl_handle (), &inQueue);
-		if (msg == 0)
-			break;
-			
-		curl_easy_getinfo (msg->easy_handle, CURLINFO_PRIVATE, (char **)&job);
-		
-		if (msg->msg != CURLMSG_DONE) {
-			continue;
-		} else {
-			if (msg->data.result == CURLE_OK) {
-				job->result->returncode = 0;
-				debug0 (DEBUG_UPDATE, "curl download done!");
-			} else {
-				job->result->returncode = msg->data.result;
-				debug1 (DEBUG_UPDATE, "curl download failed: status code %d", job->result->returncode);
-			}
-
-			long		tmp;
-			gchar		*contentType, *effectiveSource;
-
-			if (CURLE_OK == curl_easy_getinfo (msg->easy_handle, CURLINFO_CONTENT_TYPE, &contentType))
-				job->result->contentType = g_strdup (contentType);
-			if (CURLE_OK == curl_easy_getinfo (msg->easy_handle, CURLINFO_EFFECTIVE_URL, &effectiveSource))
-				job->result->source = g_strdup (effectiveSource);
-			if (CURLE_OK == curl_easy_getinfo (msg->easy_handle, CURLINFO_RESPONSE_CODE, &tmp))
-				job->result->httpstatus = (guint)tmp;
-			if (CURLE_OK == curl_easy_getinfo (msg->easy_handle, CURLINFO_FILETIME, &tmp)) {
-				if (tmp == -1)
-					tmp = 0;
-				update_state_set_lastmodified (job->result->updateState, tmp);
-			}
-
-			/* extract cookies */
-			if (CURLE_OK == curl_easy_getinfo (msg->easy_handle, CURLINFO_COOKIELIST, &cookies)) {
-				gchar *cookieStr = NULL;
-				struct curl_slist *cookie = cookies;
-				while (cookie) {
-					gchar *tmp = cookieStr;
-					cookieStr = g_strdup_printf ("%s%s%s", tmp?tmp:"", tmp?";":"", cookieStr);
-					g_free (tmp);
-					cookie++;
-				}
-				if (cookieStr)
-					update_state_set_cookies (job->result->updateState, cookieStr);
-				curl_slist_free_all (cookies);
-			}
-			
-			debug1 (DEBUG_UPDATE, "source after download: >>>%s<<<\n", job->result->source);
-			debug1 (DEBUG_UPDATE, "%d bytes downloaded", job->result->size);
-			curl_easy_cleanup (msg->easy_handle);
-			
-			/* Throw away all received data in case of HTTP errors */
-			if (job->result->httpstatus >= 400) {
-				g_free (job->result->data);
-				job->result->data = NULL;
-				job->result->size = 0;
-			}
-				
-			update_process_finished_job (job);
-		}
+	if (no_proxy && no_cookies) {
+		soup_session_queue_message (session_no_cookies_no_proxy, msg, network_process_callback, job);
+	} else if (no_proxy) {
+		soup_session_queue_message (session_no_proxy, msg, network_process_callback, job);
+	} else if (no_cookies) {
+		soup_session_queue_message (session_no_cookies, msg, network_process_callback, job);
+	} else {
+		soup_session_queue_message (session, msg, network_process_callback, job);
 	}
 }
-
-#define HOMEPAGE	"http://liferea.sf.net/"
 
 void
 network_init (void)
 {
-	if (0 == (NET_TIMEOUT = conf_get_int_value (NETWORK_TIMEOUT)))
-		NET_TIMEOUT = 30;	/* default network timeout 30s */
-
-/*	g_assert(curl_global_init(CURL_GLOBAL_ALL) == 0);
-	share_handle = curl_share_init();*/
-	
-	glibcurl_init ();
-	glibcurl_set_callback (network_glibcurl_callback, 0);
+	gchar		*useragent;
+	SoupURI		*proxy;
+	SoupCookieJar	*cookies;
+	gchar		*filename;
+	SoupLogger	*logger;
 
 	/* Set an appropriate user agent */
 	if (g_getenv ("LANG")) {
@@ -410,14 +185,63 @@ network_init (void)
 		useragent = g_strdup_printf ("Liferea/%s (%s; %s)", VERSION, OSNAME, HOMEPAGE);
 	}
 
+	/* Cookies */
+	filename = common_create_cache_filename ("", "cookies", "txt");
+	cookies = soup_cookie_jar_text_new (filename, FALSE);
+	g_free (filename);
+
+	/* Initialize libsoup */
+	session = soup_session_async_new_with_options (SOUP_SESSION_USER_AGENT, useragent,
+						       SOUP_SESSION_IDLE_TIMEOUT, 30,
+						       SOUP_SESSION_ADD_FEATURE, cookies,
+						       NULL);
+
+	/* This session is for those cases where we are told not to use the proxy */
+	session_no_proxy = soup_session_async_new_with_options (SOUP_SESSION_USER_AGENT, useragent,
+								SOUP_SESSION_IDLE_TIMEOUT, 30,
+								SOUP_SESSION_ADD_FEATURE, cookies,
+								NULL);
+
+	/* This session is for those cases where we need to add specific cookies, e.g. Google Reader.
+	 * Once GNOME #574571 is fixed, we will be able to use the normal session */
+	session_no_cookies = soup_session_async_new_with_options (SOUP_SESSION_USER_AGENT, useragent,
+								  SOUP_SESSION_IDLE_TIMEOUT, 30,
+								  NULL);
+
+	/* And this one is for cases where we need to use our own cookies, and bypass the proxy, e.g.
+	 * Google Reader subscription where the "ignore proxy" preference is set */
+	session_no_cookies_no_proxy = soup_session_async_new_with_options (SOUP_SESSION_USER_AGENT, useragent,
+									   SOUP_SESSION_IDLE_TIMEOUT, 30,
+									   NULL);
+
+	/* Soup debugging */
+	if (debug_level & DEBUG_NET) {
+		logger = soup_logger_new (SOUP_LOGGER_LOG_HEADERS, -1);
+		soup_session_add_feature (session, SOUP_SESSION_FEATURE (logger));
+	}
+
+	/* Set the initial proxy */
+	if (proxyname) {
+		proxy = soup_uri_new (proxyname);
+		if (proxy) {
+			soup_uri_set_port (proxy, proxyport);
+			soup_uri_set_user (proxy, proxyusername);
+			soup_uri_set_password (proxy, proxypassword);
+
+			g_object_set (session,
+				      SOUP_SESSION_PROXY_URI, proxy,
+				      NULL);
+
+			g_object_set (session_no_cookies,
+				      SOUP_SESSION_PROXY_URI, proxy,
+				      NULL);
+		}
+	}
 }
 
 void 
 network_deinit (void)
 {
-	glibcurl_cleanup ();
-	
-	g_free (useragent);
 	g_free (proxyname);
 	g_free (proxyusername);
 	g_free (proxypassword);
@@ -453,7 +277,34 @@ network_set_proxy (gchar *newProxyName, guint newProxyPort)
 	g_free (proxyname);
 	proxyname = newProxyName;
 	proxyport = newProxyPort;
-	
+
+	/* If session is NULL, network_init() hasn't been called yet
+	 * and when it's called it will set the proxy */
+	if (session) {
+		SoupURI *proxy;
+		g_object_get (G_OBJECT (session),
+			      SOUP_SESSION_PROXY_URI, &proxy,
+			      NULL);
+
+		if (!proxy) {
+			proxy = soup_uri_new (proxyname);
+		}
+
+		/* If newProxyName was "", soup_uri_new will return NULL */
+		if (proxy) {
+			soup_uri_set_host (proxy, proxyname);
+			soup_uri_set_port (proxy, proxyport);
+		}
+
+		g_object_set (session,
+			      SOUP_SESSION_PROXY_URI, proxy,
+			      NULL);
+
+		g_object_set (session_no_cookies,
+			      SOUP_SESSION_PROXY_URI, proxy,
+			      NULL);
+	}
+
 	liferea_htmlview_update_proxy ();
 }
 
@@ -464,17 +315,81 @@ network_set_proxy_auth (gchar *newProxyUsername, gchar *newProxyPassword)
 	g_free (proxypassword);
 	proxyusername = newProxyUsername;
 	proxypassword = newProxyPassword;
-	
+
+	/* If session is NULL, network_init() hasn't been called yet
+	 * and when it's called it will set the proxy */
+	if (session) {
+		SoupURI *proxy;
+		g_object_get (session,
+			      SOUP_SESSION_PROXY_URI, &proxy,
+			      NULL);
+
+		/* There may be no proxy if there was no proxy before we went
+		 * to the proxy tab and clicked on "proxy auth" */
+		if (proxy) {
+			soup_uri_set_user (proxy, proxyusername);
+			soup_uri_set_password (proxy, proxypassword);
+
+			g_object_set (session,
+				      SOUP_SESSION_PROXY_URI, proxy,
+				      NULL);
+			g_object_set (session_no_cookies,
+				      SOUP_SESSION_PROXY_URI, proxy,
+				      NULL);
+		}
+	}
+
 	liferea_htmlview_update_proxy ();
 }
 
 const char *
-network_strerror (gint netstatus)
+network_strerror (gint netstatus, gint httpstatus)
 {
-	if (CURLE_OK == netstatus)
-		return NULL;
-		
-	return curl_easy_strerror (netstatus);
+	const gchar *tmp = NULL;
+	int status = netstatus?netstatus:httpstatus;
+
+	switch (status) {
+		/* Some libsoup transport errors */
+		case SOUP_STATUS_NONE:			tmp = _("The update request was cancelled"); break;
+		case SOUP_STATUS_CANT_RESOLVE:		tmp = _("Unable to resolve destination host name"); break;
+		case SOUP_STATUS_CANT_RESOLVE_PROXY:	tmp = _("Unable to resolve proxy host name"); break;
+		case SOUP_STATUS_CANT_CONNECT:		tmp = _("Unable to connect to remote host"); break;
+		case SOUP_STATUS_CANT_CONNECT_PROXY:	tmp = _("Unable to connect to proxy"); break;
+		case SOUP_STATUS_SSL_FAILED:		tmp = _("A network error occurred, or the other end closed the connection unexpectedly"); break;
+
+		/* http 3xx redirection */
+		case SOUP_STATUS_MOVED_PERMANENTLY:	tmp = _("The resource moved permanently to a new location"); break;
+
+		/* http 4xx client error */
+		case SOUP_STATUS_UNAUTHORIZED:		tmp = _("You are unauthorized to download this feed. Please update your username and "
+								"password in the feed properties dialog box"); break;
+		case SOUP_STATUS_PAYMENT_REQUIRED:	tmp = _("Payment required"); break;
+		case SOUP_STATUS_FORBIDDEN:		tmp = _("You're not allowed to access this resource"); break;
+		case SOUP_STATUS_NOT_FOUND:		tmp = _("Resource Not Found"); break;
+		case SOUP_STATUS_METHOD_NOT_ALLOWED:	tmp = _("Method Not Allowed"); break;
+		case SOUP_STATUS_NOT_ACCEPTABLE:	tmp = _("Not Acceptable"); break;
+		case SOUP_STATUS_PROXY_UNAUTHORIZED:	tmp = _("Proxy authentication required"); break;
+		case SOUP_STATUS_REQUEST_TIMEOUT:	tmp = _("Request timed out"); break;
+		case SOUP_STATUS_GONE:			tmp = _("Gone. Resource doesn't exist. Please unsubscribe!"); break;
+	}
+
+	if (!tmp) {
+		if (SOUP_STATUS_IS_TRANSPORT_ERROR (status)) {
+			tmp = _("There was an internal error in the update process");
+		} else if (SOUP_STATUS_IS_REDIRECTION (status)) {
+			tmp = _("Feed not available: Server requested unsupported redirection!");
+		} else if (SOUP_STATUS_IS_CLIENT_ERROR (status)) {
+			tmp = _("Client Error");
+		} else if (SOUP_STATUS_IS_SERVER_ERROR (status)) {
+			tmp = _("Server Error");
+		} else {
+			tmp = _("An unknown networking error happened!");
+		}
+	}
+
+	g_assert (tmp);
+
+	return tmp;
 }
 
 void
@@ -482,7 +397,7 @@ network_set_online (gboolean mode)
 {
 	if (online != mode) {
 		online = mode;
-		debug1 (DEBUG_UPDATE, "Changing online mode to %s", mode?"online":"offline");
+		debug1 (DEBUG_NET, "Changing online mode to %s", mode?"online":"offline");
 		liferea_shell_online_status_changed (mode);
 	}
 }

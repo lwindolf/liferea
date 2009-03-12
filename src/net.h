@@ -2,6 +2,7 @@
  * @file net.h  HTTP network access interface
  * 
  * Copyright (C) 2007-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2009 Emilio Pozuelo Monfort <pochu27@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -92,23 +93,14 @@ const gchar * network_get_proxy_password (void);
 void network_process_request (const updateJobPtr const job);
 
 /**
- * Returns existing cookies for the given URL or
- * NULL if no cookies are found.
- *
- * @param url		the URL
- *
- * @returns cookies (to be free'd using g_free)
- */
-gchar * cookies_find_matching (const gchar *url);
-
-/**
  * Returns explanation string for the given network error code.
  *
  * @param netstatus	network error status
+ * @param httpstatus	HTTP status code
  *
- * @returns explanation string (or NULL)
+ * @returns explanation string
  */
-const char * network_strerror (gint netstatus);
+const char * network_strerror (gint netstatus, gint httpstatus);
 
 /**
  * Sets the online status according to mode.
