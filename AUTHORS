@@ -59,6 +59,7 @@ Jon Forsberg <zzed2004@users.sf.net>			Enclosure context menu patch
 Mathie Leplatre						Option to filter feed list
 Mikel Olasagasti <mikel@olasagasti.info>		GeoRSS support
 Adrian Bunk <bunk@stusta.de>				Release management and code quality
+Arnold Noronha <arnstein87@users.sf.net>                Google Reader support
 
 Maintainer Credits
 ==================
