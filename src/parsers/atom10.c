@@ -291,6 +291,7 @@ atom10_parse_link (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10ParserSt
 				gchar *commentUri = (gchar *)common_build_url ((gchar *)url, subscription_get_homepage (ctxt->subscription));
 				if (ctxt->item)
 					metadata_list_set (&ctxt->item->metadata, "commentFeedUri", commentUri);
+				g_free (commentUri);
 			}
 		} else if (g_str_equal (relation, "enclosure")) {
 			if (ctxt->item) {
