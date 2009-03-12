@@ -157,18 +157,49 @@ google_source_fix_broadcast_item (xmlNodePtr entry, itemPtr item)
 	/* free up xpath related data */
 	if (xpathCtxt) xmlXPathFreeContext (xpathCtxt);
 }
-static void
-google_source_item_retrieve_status (const xmlNodePtr entry, gpointer userdata)
+
+static itemPtr
+google_source_load_item_from_sourceid (nodePtr node, gchar *sourceId, GHashTable *cache) 
 {
-	subscriptionPtr subscription = (subscriptionPtr) userdata;
+	gpointer    ret = g_hash_table_lookup (cache, sourceId);
+	itemSetPtr  itemset;
+	int         num = g_hash_table_size (cache);
+	GList       *iter; 
+	itemPtr     item = NULL;
+
+	if (ret) return item_load (GPOINTER_TO_UINT (ret));
+
+	/* skip the top 'num' entries */
+	itemset = node_get_itemset (node);
+	iter = itemset->ids;
+	while (num--) iter = g_list_next (iter);
+
+	for (; iter; iter = g_list_next (iter)) {
+		item = item_load (GPOINTER_TO_UINT (iter->data));
+		if (item && item->sourceId) {
+			/* save to cache */
+			g_hash_table_insert (cache, g_strdup(item->sourceId), (gpointer) item->id);
+			if (g_str_equal (item->sourceId, sourceId)) {
+				itemset_free (itemset);
+				return item;
+			}
+		}
+		item_unload (item);
+	}
+
+	g_warning ("Could not find item for %s!", sourceId);
+	itemset_free (itemset);
+	return NULL;
+}
+static void
+google_source_item_retrieve_status (const xmlNodePtr entry, subscriptionPtr subscription, GHashTable *cache)
+{
 	GoogleSourcePtr gsource = (GoogleSourcePtr) google_source_get_root_from_node (subscription->node)->data ;
-	xmlNodePtr xml;
-	nodePtr node = subscription->node;
-	xmlChar* id;
-	gboolean read = FALSE;
-	gboolean starred = FALSE;
-	itemSetPtr itemset = NULL;
-	GList *iter;
+	xmlNodePtr      xml;
+	nodePtr         node = subscription->node;
+	xmlChar         *id;
+	gboolean        read = FALSE;
+	gboolean        starred = FALSE;
 
 	xml = entry->children;
 	g_assert (xml);
@@ -191,35 +222,28 @@ google_source_item_retrieve_status (const xmlNodePtr entry, gpointer userdata)
 		}
 	}
 	
-	itemset = node_get_itemset(node);
-
-	for (iter = itemset->ids; iter; iter = g_list_next(iter)) {
-		/* this is extremely inefficient, multiple times loading */
-		itemPtr item = item_load (GPOINTER_TO_UINT (iter->data));
-		if (item && item->sourceId) {
-			if (g_str_equal (item->sourceId, id) && !google_source_edit_is_in_queue(gsource, id)) {
-				
+	itemPtr item = google_source_load_item_from_sourceid (node, id, cache);
+	if (item && item->sourceId) {
+		if (g_str_equal (item->sourceId, id) && !google_source_edit_is_in_queue(gsource, id)) {
+			
+			if (item->readStatus != read)
 				item_read_state_changed (item, read);
+			if (item->flagStatus != starred) 
 				item_flag_state_changed (item, starred);
-
-				if (g_str_equal (subscription->source, GOOGLE_READER_BROADCAST_FRIENDS_URL)) 
-					google_source_fix_broadcast_item (entry, item);
-				
-				item_unload (item);
-				goto cleanup;
-			}
+			
+			if (g_str_equal (subscription->source, GOOGLE_READER_BROADCAST_FRIENDS_URL)) 
+				google_source_fix_broadcast_item (entry, item);
 		}
-		if (item) item_unload (item) ;
 	}
-
-cleanup:
-	itemset_free (itemset);
+	if (item) item_unload (item) ;
 	xmlFree (id);
 }
 
 static void
 google_feed_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult* const result, updateFlags flags)
 {
+	
+	debug_start_measurement (DEBUG_UPDATE);
 
 	if (result->data) { 
 		updateResultPtr resultCopy;
@@ -273,22 +297,23 @@ google_feed_subscription_process_update_result (subscriptionPtr subscription, co
 	   by getting the newCount first and setting it again later. */
 	guint newCount = feedlist_get_new_item_count ();
 
-	debug_start_measurement (DEBUG_UPDATE);
 	xmlDocPtr doc = xml_parse (result->data, result->size, FALSE, NULL);
 	if (doc) {		
 		xmlNodePtr root = xmlDocGetRootElement (doc);
 		xmlNodePtr entry = root->children ; 
-		
+		GHashTable *cache = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
+
 		while (entry) { 
 			if (!g_str_equal (entry->name, "entry")) {
 				entry = entry->next;
 				continue; /* not an entry */
 			}
 			
-			google_source_item_retrieve_status (entry, subscription);
+			google_source_item_retrieve_status (entry, subscription, cache);
 			entry = entry->next;
 		}
 		
+		g_hash_table_unref (cache);
 		xmlFreeDoc (doc);
 	} else { 
 		debug0 (DEBUG_UPDATE, "google_feed_subscription_process_update_result(): Couldn't parse XML!");
