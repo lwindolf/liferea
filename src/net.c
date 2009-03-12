@@ -1,5 +1,5 @@
 /**
- * @file net.c  HTTP network access using glibcurl
+ * @file net.c  HTTP network access using libsoup
  *
  * Copyright (C) 2007-2009 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2009 Emilio Pozuelo Monfort <pochu27@gmail.com>
