@@ -30,20 +30,10 @@
 #include "metadata.h"
 
 static sqlite3	*db = NULL;
-static guint	stmtCounter = 0;
-static gboolean	transaction = FALSE;	/**< single transaction lock, prevents DB re-opening during transaction */
-
-// FIXME: Remove this if testing shows it is unnecessary
-/** 
- * To avoid loosing statements on crashes, close+reopen the DB from time to time,
- * THIS IS A WORKAROUND TO AVOID A STRANGE EFFECT OF LOOSING ALL TRANSACTIONS ON EXIT. 
- */
-//#define MAX_STATEMENTS_BEFORE_RECONNECT	500
 
 /** value structure of statements hash */ 
 typedef struct statement {
 	sqlite3_stmt	*stmt;	/** the prepared statement */
-	gboolean	write;	/** TRUE if statement modifies DB and should be counted to stmtCounter */
 } statement;
 
 /** hash of all prepared statements */
@@ -71,8 +61,6 @@ db_new_statement (const gchar *name, const gchar *sql)
 	struct statement *statement;
 	
 	statement = g_new0 (struct statement, 1);
-	if (strstr (sql, "INSERT") || strstr (sql, "REPLACE"))
-		statement->write = TRUE;
 	db_prepare_stmt (&statement->stmt, sql);
 	
 	if (!statements)
@@ -86,21 +74,9 @@ db_get_statement (const gchar *name)
 {
 	struct statement *statement;
 
-//redo:
 	statement = (struct statement *) g_hash_table_lookup (statements, name);
 	if (!statement)
 		g_error ("Fatal: unknown prepared statement \"%s\" requested!", name);	
-
-	if (statement->write)
-		stmtCounter++;
-		
-/*	if (!transaction && (stmtCounter > MAX_STATEMENTS_BEFORE_RECONNECT)) {
-		stmtCounter = 0;
-		debug1 (DEBUG_DB, "DB reconnect after %d DB write actions...\n", MAX_STATEMENTS_BEFORE_RECONNECT); 
-		db_deinit ();
-		db_init (FALSE);
-		goto redo;
-	}*/
 
 	sqlite3_reset (statement->stmt);
 	return statement->stmt;
@@ -178,7 +154,7 @@ db_get_schema_version (void)
 	
 /* opening or creation of database */
 void
-db_init (gboolean initial) 	// FIXME: argh... why does the init function need an initial flag?
+db_init (void)
 {
 	gchar		*filename;
 	gint		schemaVersion;
@@ -186,8 +162,6 @@ db_init (gboolean initial) 	// FIXME: argh... why does the init function need an
 		
 	debug_enter ("db_init");
 	
-	stmtCounter = 0;
-
 open:
 	filename = common_create_cache_filename (NULL, "liferea", "db");
 	debug1 (DEBUG_DB, "Opening DB file %s...", filename);
@@ -198,87 +172,85 @@ open:
 	
 	sqlite3_extended_result_codes (db, TRUE);
 	
-	if (initial) {
-		/* create info table/check versioning info */				   
-		schemaVersion = db_get_schema_version ();
-		debug1 (DEBUG_DB, "current DB schema version: %d", schemaVersion);
+	/* create info table/check versioning info */				   
+	schemaVersion = db_get_schema_version ();
+	debug1 (DEBUG_DB, "current DB schema version: %d", schemaVersion);
 
-		if (-1 == schemaVersion) {
-			/* no schema version available -> first installation without tables... */
-			db_set_schema_version (SCHEMA_TARGET_VERSION);
-			schemaVersion = SCHEMA_TARGET_VERSION;	/* nothing exists yet, tables will be created below */
+	if (-1 == schemaVersion) {
+		/* no schema version available -> first installation without tables... */
+		db_set_schema_version (SCHEMA_TARGET_VERSION);
+		schemaVersion = SCHEMA_TARGET_VERSION;	/* nothing exists yet, tables will be created below */
+	}
+
+	if (SCHEMA_TARGET_VERSION < schemaVersion)
+		g_error ("Fatal: The cache database was created by a newer version of Liferea than this one!");
+
+	if (SCHEMA_TARGET_VERSION > schemaVersion) {		
+		/* do table migration */
+		if (db_get_schema_version () < 5)
+			g_error ("This version of Liferea doesn't support migrating from such an old DB file!");
+
+		if (db_get_schema_version () == 5 || db_get_schema_version () == 6) {
+			debug0 (DEBUG_DB, "dropping triggers in preparation of database migration");
+			db_exec ("BEGIN; "
+			         "DROP TRIGGER item_removal; "
+				 "DROP TRIGGER item_insert; "
+				 "END;");
 		}
 
-		if (SCHEMA_TARGET_VERSION < schemaVersion)
-			g_error ("Fatal: The cache database was created by a newer version of Liferea than this one!");
-
-		if (SCHEMA_TARGET_VERSION > schemaVersion) {		
-			/* do table migration */
-			if (db_get_schema_version () < 5)
-				g_error ("This version of Liferea doesn't support migrating from such an old DB file!");
-			
-			if (db_get_schema_version () == 5 || db_get_schema_version () == 6) {
-				debug0 (DEBUG_DB, "dropping triggers in preparation of database migration");
-				db_exec ("BEGIN; "
-				         "DROP TRIGGER item_removal; "
-					 "DROP TRIGGER item_insert; "
-					 "END;");
-			}
-
-			if (db_get_schema_version () == 5) {
+		if (db_get_schema_version () == 5) {
 				/* 1.4.9 -> 1.4.10 adding parent_item_id to itemset relation */
-				debug0 (DEBUG_DB, "migrating from schema version 5 to 6 (this drops all comments)");
-				db_exec ("BEGIN; "
-				         "DELETE FROM itemsets WHERE comment = 1; "
-					 "DELETE FROM items WHERE comment = 1; "
-				         "CREATE TEMPORARY TABLE itemsets_backup(item_id,node_id,read,comment); "
-					 "INSERT INTO itemsets_backup SELECT item_id,node_id,read,comment FROM itemsets; "
-					 "DROP TABLE itemsets; "
-					 "CREATE TABLE itemsets ("
-			        	 "   item_id		INTEGER,"
-					 "   parent_item_id     INTEGER,"
-			        	 "   node_id		TEXT,"
-			        	 "   read		INTEGER,"
-					 "   comment            INTEGER,"
-			        	 "   PRIMARY KEY (item_id, node_id)"
-			        	 "); "
-					 "INSERT INTO itemsets SELECT item_id,0,node_id,read,comment FROM itemsets_backup; "
-					 "DROP TABLE itemsets_backup; "
-					 "REPLACE INTO info (name, value) VALUES ('schemaVersion',6); "
-					 "END;");
-			}
-			
-			if (db_get_schema_version () == 6) {
-				/* 1.4.15 -> 1.4.16 adding parent_node_id to itemset relation */
-				debug0 (DEBUG_DB, "migrating from schema version 6 to 7 (this drops all comments)");
-				db_exec ("BEGIN; "
-				         "DELETE FROM itemsets WHERE comment = 1; "
-					 "DELETE FROM items WHERE comment = 1; "
-				         "CREATE TEMPORARY TABLE itemsets_backup(item_id,node_id,read,comment); "
-					 "INSERT INTO itemsets_backup SELECT item_id,node_id,read,comment FROM itemsets; "
-					 "DROP TABLE itemsets; "
-					 "CREATE TABLE itemsets ("
-			        	 "   item_id		INTEGER,"
-					 "   parent_item_id     INTEGER,"
-			        	 "   node_id		TEXT,"
-					 "   parent_node_id     TEXT,"
-			        	 "   read		INTEGER,"
-					 "   comment            INTEGER,"
-			        	 "   PRIMARY KEY (item_id, node_id)"
-			        	 "); "
-					 "INSERT INTO itemsets SELECT item_id,0,node_id,node_id,read,comment FROM itemsets_backup; "
-					 "DROP TABLE itemsets_backup; "
-					 "REPLACE INTO info (name, value) VALUES ('schemaVersion',7); "
-					 "END;");
-			}
-
-			if (SCHEMA_TARGET_VERSION != db_get_schema_version ())
-				g_error ("Fatal: DB schema migration failed! Running with --debug-db could give some hints!");
-
-			db_deinit ();			
-			debug0 (DEBUG_DB, "Reopening DB after migration...");
-			goto open;
+			debug0 (DEBUG_DB, "migrating from schema version 5 to 6 (this drops all comments)");
+			db_exec ("BEGIN; "
+			         "DELETE FROM itemsets WHERE comment = 1; "
+				 "DELETE FROM items WHERE comment = 1; "
+			         "CREATE TEMPORARY TABLE itemsets_backup(item_id,node_id,read,comment); "
+				 "INSERT INTO itemsets_backup SELECT item_id,node_id,read,comment FROM itemsets; "
+				 "DROP TABLE itemsets; "
+				 "CREATE TABLE itemsets ("
+		        	 "   item_id		INTEGER,"
+				 "   parent_item_id     INTEGER,"
+		        	 "   node_id		TEXT,"
+		        	 "   read		INTEGER,"
+				 "   comment            INTEGER,"
+		        	 "   PRIMARY KEY (item_id, node_id)"
+		        	 "); "
+				 "INSERT INTO itemsets SELECT item_id,0,node_id,read,comment FROM itemsets_backup; "
+				 "DROP TABLE itemsets_backup; "
+				 "REPLACE INTO info (name, value) VALUES ('schemaVersion',6); "
+				 "END;");
 		}
+
+		if (db_get_schema_version () == 6) {
+			/* 1.4.15 -> 1.4.16 adding parent_node_id to itemset relation */
+			debug0 (DEBUG_DB, "migrating from schema version 6 to 7 (this drops all comments)");
+			db_exec ("BEGIN; "
+			         "DELETE FROM itemsets WHERE comment = 1; "
+				 "DELETE FROM items WHERE comment = 1; "
+			         "CREATE TEMPORARY TABLE itemsets_backup(item_id,node_id,read,comment); "
+				 "INSERT INTO itemsets_backup SELECT item_id,node_id,read,comment FROM itemsets; "
+				 "DROP TABLE itemsets; "
+				 "CREATE TABLE itemsets ("
+		        	 "   item_id		INTEGER,"
+				 "   parent_item_id     INTEGER,"
+		        	 "   node_id		TEXT,"
+				 "   parent_node_id     TEXT,"
+		        	 "   read		INTEGER,"
+				 "   comment            INTEGER,"
+		        	 "   PRIMARY KEY (item_id, node_id)"
+		        	 "); "
+				 "INSERT INTO itemsets SELECT item_id,0,node_id,node_id,read,comment FROM itemsets_backup; "
+				 "DROP TABLE itemsets_backup; "
+				 "REPLACE INTO info (name, value) VALUES ('schemaVersion',7); "
+				 "END;");
+		}
+
+		if (SCHEMA_TARGET_VERSION != db_get_schema_version ())
+			g_error ("Fatal: DB schema migration failed! Running with --debug-db could give some hints!");
+
+		db_deinit ();			
+		debug0 (DEBUG_DB, "Reopening DB after migration...");
+		goto open;
 
 		/* Schema creation */
 		
@@ -398,7 +370,7 @@ open:
 		
 		/* 3. Cleanup of DB */
 
-		if (initial) {
+		{
 			gchar *sql;
 			sqlite3_stmt *stmt;
 			
@@ -1088,8 +1060,6 @@ db_begin_transaction (void)
 	res = sqlite3_exec (db, sql, NULL, NULL, &err);
 	if (SQLITE_OK != res) 
 		g_warning ("Transaction begin failed (%s) SQL: %s", err, sql);
-	else
-		transaction = TRUE;
 	sqlite3_free (sql);
 	sqlite3_free (err);
 }
@@ -1104,8 +1074,6 @@ db_end_transaction (void)
 	res = sqlite3_exec (db, sql, NULL, NULL, &err);
 	if (SQLITE_OK != res) 
 		g_warning ("Transaction end failed (%s) SQL: %s", err, sql);
-	else
-		transaction = FALSE;
 	sqlite3_free (sql);
 	sqlite3_free (err);
 }

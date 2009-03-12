@@ -307,7 +307,7 @@ migrate_13_to_14 (void)
 	migrate_copy_dir (".liferea_1.3", ".liferea_1.4", "cache" G_DIR_SEPARATOR_S "plugins");	
 	
 	/* and reopen the copied one */
-	db_init (TRUE);
+	db_init ();
 }
 
 void
