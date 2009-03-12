@@ -185,7 +185,7 @@ static gboolean notif_libnotify_init(void) {
 		caps = notify_get_server_caps ();
 		if (caps != NULL) {
 			for (c = caps; c != NULL; c = c->next) {
-				if (strcmp ((char*)c->data, "actions")) {
+				if (g_str_equal ((char*)c->data, "actions")) {
 					supports_actions = TRUE;
 					break;
 				}

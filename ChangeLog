@@ -21,6 +21,9 @@
 	  when required. (Adrian Bunk)
 	* Fixed UI blocking when large GoogleSource feeds updated.
 	  (Arnold Noronha)
+	* Fix check for notifications action support so that it
+	  actually doesn't add them when unsupported.
+	  (Emilio Pozuelo Monfort)
 
 
 2009-03-06  Adrian Bunk  <bunk@users.sourceforge.net>
