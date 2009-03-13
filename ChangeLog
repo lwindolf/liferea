@@ -7,6 +7,7 @@
 	  IO. (Emilio Pozuelo Monfort)
 	* Removed dead feeds from the example feeds.
 	  (Adrian Bunk)
+	* Fixed several memory leaks. (Arnold Noronha)
 
 
 2009-03-12  Adrian Bunk  <bunk@users.sourceforge.net>
