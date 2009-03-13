@@ -284,25 +284,25 @@ void
 liferea_htmlview_on_url (LifereaHtmlView *htmlview, const gchar *url)
 {
 	if (!liferea_htmlview_is_special_url (url))
-		g_signal_emit_by_name (htmlview, "statusbar-changed", g_strdup (url));
+		g_signal_emit_by_name (htmlview, "statusbar-changed", url);
 }
 
 void
 liferea_htmlview_title_changed (LifereaHtmlView *htmlview, const gchar *title)
 {
-	g_signal_emit_by_name (htmlview, "title-changed", g_strdup (title));
+	g_signal_emit_by_name (htmlview, "title-changed", title);
 }
 
 void
 liferea_htmlview_location_changed (LifereaHtmlView *htmlview, const gchar *location)
 {
-	g_signal_emit_by_name (htmlview, "location-changed", g_strdup (location));
+	g_signal_emit_by_name (htmlview, "location-changed", location);
 }
 
 void
 liferea_htmlview_open (LifereaHtmlView *htmlview, const gchar *url)
 {
-	g_signal_emit_by_name (htmlview, "open-tab", g_strdup (url));
+	g_signal_emit_by_name (htmlview, "open-tab", url);
 }
 
 void
