@@ -633,10 +633,13 @@ atom10_parse_feed_link (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10Par
 	
 	href = atom10_parse_link (cur, ctxt, state);
 	if (href) {
+		xmlChar *baseURL = xmlNodeGetBase (cur->doc, xmlDocGetRootElement (cur->doc));
+
 		subscription_set_homepage (ctxt->subscription, href);
 		/* Set the default base to the feed's HTML URL if not set yet */
-		if (xmlNodeGetBase (cur->doc, xmlDocGetRootElement (cur->doc)) == NULL)
+		if (baseURL == NULL)
 			xmlNodeSetBase (xmlDocGetRootElement (cur->doc), (xmlChar *)href);
+		else xmlFree (baseURL);
 		g_free (href);
 	}
 }
