@@ -99,6 +99,7 @@ parseRSSItem (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 			if (tmp) {
 				gchar *type = xml_get_attribute (cur, "type");
 				gchar *lengthStr = xml_get_attribute (cur, "length");
+				gchar *enclStr = NULL;
 				gssize length = 0;
 				if (lengthStr)
 					length = atol (lengthStr);
@@ -113,8 +114,11 @@ parseRSSItem (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 					 tmp = tmp2;
 				}
 		
-				ctxt->item->metadata = metadata_list_append(ctxt->item->metadata, "enclosure", enclosure_values_to_string (tmp, type, length, FALSE));
+				enclStr = enclosure_values_to_string (tmp, type, length, FALSE);
+				ctxt->item->metadata = metadata_list_append(ctxt->item->metadata, "enclosure", enclStr);
 				ctxt->item->hasEnclosure = TRUE;
+
+				g_free (enclStr);
 				g_free (tmp);
 				g_free (type);
 				g_free (lengthStr);
