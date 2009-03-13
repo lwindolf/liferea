@@ -14,24 +14,20 @@
        <outline text="Geckozone - Articles" htmlUrl="http://www.geckozone.org/" xmlUrl="http://www.geckozone.org/articles/xml/" />
        <outline text="MozillaZine-Fr" htmlUrl="http://www.mozillazine-fr.org/" xmlUrl="http://mozillazine-fr.org/contenu.xml" />
        <outline text="LinuxFR" htmlUrl="http://linuxfr.org/" xmlUrl="http://linuxfr.org/backend/news/rss20.rss" />
-       <outline text="LinuxFrench.Net" htmlUrl="http://www.linuxfrench.net/" xmlUrl="http://www.linuxfrench.net/backend.php" />
        <outline text="Le Monde.fr" htmlUrl="http://www.lemonde.fr/" xmlUrl="http://www.lemonde.fr/rss/sequence/0,2-3208,1-0,0.xml" />
        <outline text="Le Nouvel Observateur" htmlUrl="http://permanent.nouvelobs.com/" xmlUrl="http://permanent.nouvelobs.com/rss_permanent.xml" />
        <outline text="EuroNews" htmlUrl="http://www.euronews.net/create_html.php?page=accueil_info&amp;langue=fr" xmlUrl="http://www.euronews.net/rss/euronews_en.xml" />
        <outline text="AlloCiné" htmlUrl="http://www.allocine.fr/film/cettesemaine.html" xmlUrl="http://www.lamoooche.com/getRSS.php?idnews=56" />
        <outline text="LaMoooche.com" htmlUrl="http://www.lamoooche.com/" xmlUrl="http://www.lamoooche.com/getRSS.php?idnews=758" />
-		<outline text="Agence Modiale d'information" htmlUrl="http://www.afp.com/francais/home/" xmlUrl="http://www.afp.com/francais/rss/stories.xml" />
      </outline>
 	<!-- lets keep this default English block in sync over all feed lists! -->
 	<outline text="International">		<!-- translate this for localized feed list -->
 		<outline text="Open Source">		<!-- translate this for localized feed list -->
-			<outline text="art.gnome.org" htmlUrl="http://art.gnome.org/" xmlUrl="http://art.gnome.org/backend.php" />
 			<outline text="Gnomefiles" htmlUrl="http://www.gnomefiles.org/" xmlUrl="http://www.gnomefiles.org/files/gnomefiles.rdf" />
 			<outline text="GNOME Footnotes" htmlUrl="http://www.gnomedesktop.org/" xmlUrl="http://www.gnomedesktop.org/backend.php" />
 			<outline text="GrokLaw" htmlUrl="http://www.groklaw.net/" xmlUrl="http://www.groklaw.net/backend/GrokLaw.rdf" />
 			<outline text="Linux.com" htmlUrl="http://www.linux.com/" xmlUrl="http://www.linux.com/index.rss" />
 			<outline text="mozillaZine" htmlUrl="http://www.mozillazine.org/" xmlUrl="http://www.mozillazine.org/contents.rdf" />
-			<outline text="Newsforge" htmlUrl="http://www.newsforge.com" xmlUrl="http://www.newsforge.com/newsforge.rss" />
 			<outline text="Planet GNOME" htmlUrl="http://planet.gnome.org/" xmlUrl="http://planet.gnome.org/atom.xml" />	
 			<outline text="Slashdot" htmlUrl="http://slashdot.org"  xmlUrl="http://slashdot.org/slashdot.rss" />
 			<outline text="TuxMobil" htmlUrl="http://tuxmobil.org" xmlUrl="http://tuxmobil.org/tuxmobil_rss.rdf" />      

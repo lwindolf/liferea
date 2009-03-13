@@ -8,6 +8,8 @@
 	* Fixes SF #2579914: Mozilla plugin doesn't compile,
 	  by not calling gtk_moz_embed_set_comp_path() anymore.
 	  (Lars Lindner)
+	* Fixes SF #2685494: Merge example feeds from trunk.
+	  (Adrian Bunk)
 
 
 2009-02-21  Adrian Bunk  <bunk@users.sourceforge.net>
