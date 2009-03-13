@@ -237,6 +237,8 @@ network_init (void)
 				      NULL);
 		}
 	}
+
+	g_free (useragent);
 }
 
 void 
