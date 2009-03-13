@@ -138,7 +138,8 @@ update_request_free (updateRequestPtr request)
 		return;
 	
 	update_state_free (request->updateState);
-	
+	update_options_free (request->options);
+
 	g_free (request->postdata);
 	g_free (request->source);
 	g_free (request->filtercmd);
