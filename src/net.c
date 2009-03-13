@@ -67,7 +67,7 @@ network_process_callback (SoupSession *session, SoupMessage *msg, gpointer user_
 	debug1 (DEBUG_NET, "download status code: %d", job->result->httpstatus);
 	debug1 (DEBUG_NET, "source after download: >>>%s<<<\n", job->result->source);
 
-	job->result->data = g_memdup (msg->response_body->data, msg->response_body->length);
+	job->result->data = g_memdup (msg->response_body->data, msg->response_body->length+1);
 	job->result->size = (size_t)msg->response_body->length;
 	debug1 (DEBUG_NET, "%d bytes downloaded", job->result->size);
 
@@ -105,8 +105,8 @@ network_process_request (const updateJobPtr const job)
 	/* Prepare the SoupMessage */
 	if (job->request->postdata) {
 		msg = soup_message_new (SOUP_METHOD_POST, job->request->source);
-		// set the postdata for the request
 
+		/* set the postdata for the request */
 		soup_message_set_request (msg,
 					  "application/x-www-form-urlencoded",
 					  SOUP_MEMORY_STATIC, /* libsoup won't free the postdata */
