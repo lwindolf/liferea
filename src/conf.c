@@ -222,8 +222,7 @@ conf_proxy_reset_settings_cb (GConfClient *client,
 		  proxyusername != NULL ? proxyusername : "NULL",
 		  proxypassword != NULL ? proxypassword : "NULL");
 		  
-	network_set_proxy (proxyname, proxyport);
-	network_set_proxy_auth (proxyusername, proxypassword);
+	network_set_proxy (proxyname, proxyport, proxyusername, proxypassword);
 }
 
 /*----------------------------------------------------------------------*/

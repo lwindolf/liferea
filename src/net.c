@@ -40,6 +40,7 @@ static SoupSession *session;
 static SoupSession *session_no_proxy;
 static SoupSession *session_no_cookies;
 static SoupSession *session_no_cookies_no_proxy;
+static SoupURI *proxy;
 
 static gchar	*proxyname = NULL;
 static gchar	*proxyusername = NULL;
@@ -171,7 +172,6 @@ void
 network_init (void)
 {
 	gchar		*useragent;
-	SoupURI		*proxy;
 	SoupCookieJar	*cookies;
 	gchar		*filename;
 	SoupLogger	*logger;
@@ -193,6 +193,7 @@ network_init (void)
 	/* Initialize libsoup */
 	session = soup_session_async_new_with_options (SOUP_SESSION_USER_AGENT, useragent,
 						       SOUP_SESSION_IDLE_TIMEOUT, 30,
+						       SOUP_SESSION_PROXY_URI, proxy,
 						       SOUP_SESSION_ADD_FEATURE, cookies,
 						       NULL);
 
@@ -206,6 +207,7 @@ network_init (void)
 	 * Once GNOME #574571 is fixed, we will be able to use the normal session */
 	session_no_cookies = soup_session_async_new_with_options (SOUP_SESSION_USER_AGENT, useragent,
 								  SOUP_SESSION_IDLE_TIMEOUT, 30,
+								  SOUP_SESSION_PROXY_URI, proxy,
 								  NULL);
 
 	/* And this one is for cases where we need to use our own cookies, and bypass the proxy, e.g.
@@ -218,24 +220,6 @@ network_init (void)
 	if (debug_level & DEBUG_NET) {
 		logger = soup_logger_new (SOUP_LOGGER_LOG_HEADERS, -1);
 		soup_session_add_feature (session, SOUP_SESSION_FEATURE (logger));
-	}
-
-	/* Set the initial proxy */
-	if (proxyname) {
-		proxy = soup_uri_new (proxyname);
-		if (proxy) {
-			soup_uri_set_port (proxy, proxyport);
-			soup_uri_set_user (proxy, proxyusername);
-			soup_uri_set_password (proxy, proxypassword);
-
-			g_object_set (session,
-				      SOUP_SESSION_PROXY_URI, proxy,
-				      NULL);
-
-			g_object_set (session_no_cookies,
-				      SOUP_SESSION_PROXY_URI, proxy,
-				      NULL);
-		}
 	}
 
 	g_free (useragent);
@@ -274,71 +258,49 @@ network_get_proxy_password (void)
 }
 
 void
-network_set_proxy (gchar *newProxyName, guint newProxyPort)
+network_set_proxy (gchar *host, guint port, gchar *user, gchar *password)
 {
+	SoupURI *newproxy = NULL;
+
+	/* FIXME: make arguments const and use the SoupURI in network_get_proxy_* ? */
 	g_free (proxyname);
-	proxyname = newProxyName;
-	proxyport = newProxyPort;
+	g_free (proxyusername);
+	g_free (proxypassword);
+	proxyname = host;
+	proxyport = port;
+	proxyusername = user;
+	proxypassword = password;
 
-	/* If session is NULL, network_init() hasn't been called yet
-	 * and when it's called it will set the proxy */
+	if (host) {
+		newproxy = soup_uri_new (host);
+
+		if (newproxy) {
+			soup_uri_set_port (newproxy, port);
+			soup_uri_set_user (newproxy, user);
+			soup_uri_set_password (newproxy, password);
+		}
+	}
+
+	/* The sessions will be NULL if we were called from conf_init() as that's called
+	 * before net_init() */
 	if (session) {
-		SoupURI *proxy;
-		g_object_get (G_OBJECT (session),
-			      SOUP_SESSION_PROXY_URI, &proxy,
-			      NULL);
-
-		if (!proxy) {
-			proxy = soup_uri_new (proxyname);
-		}
-
-		/* If newProxyName was "", soup_uri_new will return NULL */
-		if (proxy) {
-			soup_uri_set_host (proxy, proxyname);
-			soup_uri_set_port (proxy, proxyport);
-		}
-
 		g_object_set (session,
-			      SOUP_SESSION_PROXY_URI, proxy,
+			      SOUP_SESSION_PROXY_URI, newproxy,
 			      NULL);
-
 		g_object_set (session_no_cookies,
-			      SOUP_SESSION_PROXY_URI, proxy,
+			      SOUP_SESSION_PROXY_URI, newproxy,
 			      NULL);
 	}
 
-	liferea_htmlview_update_proxy ();
-}
+	if (proxy) {
+		soup_uri_free (proxy);
+	}
+	proxy = newproxy;
 
-void
-network_set_proxy_auth (gchar *newProxyUsername, gchar *newProxyPassword)
-{
-	g_free (proxyusername);
-	g_free (proxypassword);
-	proxyusername = newProxyUsername;
-	proxypassword = newProxyPassword;
-
-	/* If session is NULL, network_init() hasn't been called yet
-	 * and when it's called it will set the proxy */
-	if (session) {
-		SoupURI *proxy;
-		g_object_get (session,
-			      SOUP_SESSION_PROXY_URI, &proxy,
-			      NULL);
-
-		/* There may be no proxy if there was no proxy before we went
-		 * to the proxy tab and clicked on "proxy auth" */
-		if (proxy) {
-			soup_uri_set_user (proxy, proxyusername);
-			soup_uri_set_password (proxy, proxypassword);
-
-			g_object_set (session,
-				      SOUP_SESSION_PROXY_URI, proxy,
-				      NULL);
-			g_object_set (session_no_cookies,
-				      SOUP_SESSION_PROXY_URI, proxy,
-				      NULL);
-		}
+	if (proxy) {
+		debug1 (DEBUG_NET, "proxy set to %s", soup_uri_to_string (proxy, FALSE));
+	} else {
+		debug0 (DEBUG_NET, "proxy unset!");
 	}
 
 	liferea_htmlview_update_proxy ();

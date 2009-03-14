@@ -39,23 +39,15 @@ void network_deinit (void);
 
 /**
  * Configures the network client to use the given proxy
- * host and port setting. If the host name is NULL then
- * no proxy will be used.
+ * settings. If the host name is NULL then no proxy will
+ * be used.
  *
  * @param host		the new proxy host
  * @param port		the new proxy port
+ * @param user		the new proxy username or NULL
+ * @param password	the new proxy password or NULL
  */
-void network_set_proxy (gchar *host, guint port);
-
-/**
- * Configures the network client to use the given proxy
- * authentification values. If both parameters are NULL 
- * then no authentification will be used.
- *
- * @param username	the username
- * @param password	the password
- */
-void network_set_proxy_auth (gchar *username, gchar *password);
+void network_set_proxy (gchar *host, guint port, gchar *user, gchar *password);
 
 /**
  * Returns the currently configured proxy host.
