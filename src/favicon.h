@@ -70,6 +70,6 @@ typedef void (*faviconUpdatedCb)(gpointer user_data);
  * @param callback	callback to triggered on success
  * @param user_data	user data to be passed to callback
  */
-void favicon_download(const gchar *id, const gchar *html_url, const gchar *source_url, updateOptionsPtr options, faviconUpdatedCb callback, gpointer user_data);
+void favicon_download(const gchar *id, const gchar *html_url, const gchar *source_url, const updateOptionsPtr options, faviconUpdatedCb callback, gpointer user_data);
 
 #endif

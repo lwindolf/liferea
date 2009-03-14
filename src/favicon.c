@@ -37,12 +37,33 @@
 #include "html.h"
 
 typedef struct faviconDownloadCtxt {
-	const gchar		*id;		/**< favicon cache id */
+	gchar		        *id;		/**< favicon cache id */
 	GSList			*urls;		/**< ordered list of URLs to try */
 	updateOptionsPtr	options;	/**< download options */
 	faviconUpdatedCb	callback;	/**< usually feed_favicon_updated() */
 	gpointer		user_data;	/**< usually the node pointer */
 } *faviconDownloadCtxtPtr;
+
+static faviconDownloadCtxtPtr
+favicon_download_ctxt_new () 
+{
+	return g_new0 (struct faviconDownloadCtxt, 1);
+}
+
+static void
+favicon_download_ctxt_free (faviconDownloadCtxtPtr ctxt)
+{
+	GSList  *iter; 
+
+	if (!ctxt) return;
+	g_free (ctxt->id);
+	
+	for (iter = ctxt->urls; iter; iter = g_slist_next (iter))
+		g_free (iter->data);
+
+	g_slist_free (ctxt->urls);
+	update_options_free (ctxt->options);
+}
 
 static void favicon_download_run(faviconDownloadCtxtPtr ctxt);
 
@@ -159,8 +180,7 @@ favicon_download_icon_cb (const struct updateResult * const result, gpointer use
 	if (!success) {
 		favicon_download_run (ctxt);	/* try next... */
 	} else {
-		g_slist_free (ctxt->urls);
-		g_free (ctxt);
+		favicon_download_ctxt_free (ctxt);
 	}
 }
 
@@ -216,7 +236,7 @@ favicon_download_run (faviconDownloadCtxtPtr ctxt)
 		/* Run favicon-updated callback */
 		if (ctxt->callback)
 			(ctxt->callback) (ctxt->user_data);
-		g_free (ctxt);
+		favicon_download_ctxt_free (ctxt);
 	}
 	
 	debug_exit ("favicon_download_run");
@@ -232,15 +252,15 @@ static gint count_slashes(const gchar *str) {
 	return slashes;
 }
 
-void favicon_download(const gchar *id, const gchar *html_url, const gchar *source_url, updateOptionsPtr options, faviconUpdatedCb callback, gpointer user_data) {
+void favicon_download(const gchar *id, const gchar *html_url, const gchar *source_url, const updateOptionsPtr options, faviconUpdatedCb callback, gpointer user_data) {
 	faviconDownloadCtxtPtr	ctxt;
 	gchar			*tmp, *tmp2;
 	
 	debug_enter("favicon_download");
 	
-	ctxt = g_new0(struct faviconDownloadCtxt, 1);
-	ctxt->id = id;
-	ctxt->options = options;
+	ctxt = favicon_download_ctxt_new ();
+	ctxt->id = g_strdup (id);
+	ctxt->options = update_options_copy (options);
 	ctxt->callback = callback;
 	ctxt->user_data = user_data;
 	
