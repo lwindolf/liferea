@@ -251,202 +251,201 @@ open:
 		db_deinit ();			
 		debug0 (DEBUG_DB, "Reopening DB after migration...");
 		goto open;
+	}
 
-		/* Schema creation */
+	/* Schema creation */
 		
-		debug_start_measurement (DEBUG_DB);
-		db_begin_transaction ();
+	debug_start_measurement (DEBUG_DB);
+	db_begin_transaction ();
 
-		/* 1. Create tables if they do not exist yet */
-		db_exec ("CREATE TABLE items ("
-	        	 "   title		TEXT,"
-	        	 "   read		INTEGER,"
-	        	 "   new		INTEGER,"	/* FIXME: drop this deprecated column on next DB migration! */
-	        	 "   updated		INTEGER,"
-	        	 "   popup		INTEGER,"
-	        	 "   marked		INTEGER,"
-	        	 "   source		TEXT,"
-	        	 "   source_id		TEXT,"
-	        	 "   valid_guid		INTEGER,"
-	        	 "   real_source_url	TEXT,"		/* FIXME: drop this deprecated column on next DB migration! */
-	        	 "   real_source_title	TEXT,"		/* FIXME: drop this deprecated column on next DB migration! */
-	        	 "   description	TEXT,"
-	        	 "   date		INTEGER,"
-	        	 "   comment_feed_id	TEXT,"
-			 "   comment            INTEGER"
-	        	 ");");
+	/* 1. Create tables if they do not exist yet */
+	db_exec ("CREATE TABLE items ("
+        	 "   title		TEXT,"
+        	 "   read		INTEGER,"
+        	 "   new		INTEGER,"	/* FIXME: drop this deprecated column on next DB migration! */
+        	 "   updated		INTEGER,"
+        	 "   popup		INTEGER,"
+        	 "   marked		INTEGER,"
+        	 "   source		TEXT,"
+        	 "   source_id		TEXT,"
+        	 "   valid_guid		INTEGER,"
+        	 "   real_source_url	TEXT,"		/* FIXME: drop this deprecated column on next DB migration! */
+        	 "   real_source_title	TEXT,"		/* FIXME: drop this deprecated column on next DB migration! */
+        	 "   description	TEXT,"
+        	 "   date		INTEGER,"
+        	 "   comment_feed_id	TEXT,"
+		 "   comment            INTEGER"
+        	 ");");
 
-		db_exec ("CREATE INDEX items_idx ON items (source_id);");
-		db_exec ("CREATE INDEX items_idx2 ON items (comment_feed_id);");
+	db_exec ("CREATE INDEX items_idx ON items (source_id);");
+	db_exec ("CREATE INDEX items_idx2 ON items (comment_feed_id);");
 
-		db_exec ("CREATE TABLE itemsets ("
-	        	 "   item_id		INTEGER,"
-			 "   parent_item_id     INTEGER,"
-	        	 "   node_id		TEXT,"
-			 "   parent_node_id     TEXT,"
-	        	 "   read		INTEGER,"
-			 "   comment            INTEGER,"
-	        	 "   PRIMARY KEY (item_id, node_id)"
-	        	 ");");
+	db_exec ("CREATE TABLE itemsets ("
+        	 "   item_id		INTEGER,"
+		 "   parent_item_id     INTEGER,"
+        	 "   node_id		TEXT,"
+		 "   parent_node_id     TEXT,"
+        	 "   read		INTEGER,"
+		 "   comment            INTEGER,"
+        	 "   PRIMARY KEY (item_id, node_id)"
+        	 ");");
 
-		db_exec ("CREATE INDEX itemset_idx  ON itemsets (node_id);");
-		db_exec ("CREATE INDEX itemset_idx2 ON itemsets (item_id);");
+	db_exec ("CREATE INDEX itemset_idx  ON itemsets (node_id);");
+	db_exec ("CREATE INDEX itemset_idx2 ON itemsets (item_id);");
 		
-		db_exec ("CREATE TABLE metadata ("
-	        	 "   item_id		INTEGER,"
-	        	 "   nr              	INTEGER,"
-	        	 "   key             	TEXT,"
-	        	 "   value           	TEXT,"
-	        	 "   PRIMARY KEY (item_id, nr)"
-	        	 ");");
+	db_exec ("CREATE TABLE metadata ("
+        	 "   item_id		INTEGER,"
+        	 "   nr              	INTEGER,"
+        	 "   key             	TEXT,"
+        	 "   value           	TEXT,"
+        	 "   PRIMARY KEY (item_id, nr)"
+        	 ");");
 
-		db_exec ("CREATE INDEX metadata_idx ON metadata (item_id);");
+	db_exec ("CREATE INDEX metadata_idx ON metadata (item_id);");
 		
-		db_exec ("CREATE TABLE attention_stats ("
-		         "   category_id	TEXT,"
-		         "   category_name	TEXT,"
-			 "   count              INTEGER,"
-			 "   PRIMARY KEY (category_id)"
-			 ");");
+	db_exec ("CREATE TABLE attention_stats ("
+	         "   category_id	TEXT,"
+	         "   category_name	TEXT,"
+		 "   count              INTEGER,"
+		 "   PRIMARY KEY (category_id)"
+		 ");");
 
-		db_exec ("CREATE TABLE subscription ("
-	        	 "   node_id            STRING,"
-			 "   source             STRING,"
-			 "   orig_source        STRING,"
-			 "   filter_cmd         STRING,"
-			 "   update_interval	INTEGER,"
-			 "   default_interval   INTEGER,"
-			 "   discontinued       INTEGER,"
-			 "   available          INTEGER,"
-	        	 "   PRIMARY KEY (node_id)"
-			 ");");
+	db_exec ("CREATE TABLE subscription ("
+        	 "   node_id            STRING,"
+		 "   source             STRING,"
+		 "   orig_source        STRING,"
+		 "   filter_cmd         STRING,"
+		 "   update_interval	INTEGER,"
+		 "   default_interval   INTEGER,"
+		 "   discontinued       INTEGER,"
+		 "   available          INTEGER,"
+        	 "   PRIMARY KEY (node_id)"
+		 ");");
 
-		db_exec ("CREATE TABLE update_state ("
-	        	 "   node_id            STRING,"
-			 "   last_modified      STRING,"
-			 "   etag               STRING,"
-			 "   last_update        INTEGER,"
-			 "   last_favicon_update INTEGER,"
-	        	 "   PRIMARY KEY (node_id)"
-			 ");");
+	db_exec ("CREATE TABLE update_state ("
+        	 "   node_id            STRING,"
+		 "   last_modified      STRING,"
+		 "   etag               STRING,"
+		 "   last_update        INTEGER,"
+		 "   last_favicon_update INTEGER,"
+        	 "   PRIMARY KEY (node_id)"
+		 ");");
 
-		db_exec ("CREATE TABLE subscription_metadata ("
-	        	 "   node_id            STRING,"
-			 "   nr                 INTEGER,"
-			 "   key                TEXT,"
-			 "   value              TEXT,"
-			 "   PRIMARY KEY (node_id, nr)"
-			 ");");
+	db_exec ("CREATE TABLE subscription_metadata ("
+        	 "   node_id            STRING,"
+		 "   nr                 INTEGER,"
+		 "   key                TEXT,"
+		 "   value              TEXT,"
+		 "   PRIMARY KEY (node_id, nr)"
+		 ");");
 
-		db_exec ("CREATE INDEX subscription_metadata_idx ON subscription_metadata (node_id);");
+	db_exec ("CREATE INDEX subscription_metadata_idx ON subscription_metadata (node_id);");
 
-		db_exec ("CREATE TABLE node ("
-	        	 "   node_id		STRING,"
-	        	 "   parent_id		STRING,"
-	        	 "   title		STRING,"
-			 "   type		INTEGER,"
-			 "   expanded           INTEGER,"
-			 "   view_mode		INTEGER,"
-			 "   sort_column	INTEGER,"
-			 "   sort_reversed	INTEGER,"
-			 "   PRIMARY KEY (node_id)"
-	        	 ");");
+	db_exec ("CREATE TABLE node ("
+        	 "   node_id		STRING,"
+        	 "   parent_id		STRING,"
+        	 "   title		STRING,"
+		 "   type		INTEGER,"
+		 "   expanded           INTEGER,"
+		 "   view_mode		INTEGER,"
+		 "   sort_column	INTEGER,"
+		 "   sort_reversed	INTEGER,"
+		 "   PRIMARY KEY (node_id)"
+        	 ");");
 
-		db_exec ("CREATE TABLE view_state ("
-		         "   node_id            STRING,"
-			 "   unread             INTEGER,"
-			 "   count              INTEGER,"
-			 "   PRIMARY KEY (node_id)"
-			 ");");
+	db_exec ("CREATE TABLE view_state ("
+	         "   node_id            STRING,"
+		 "   unread             INTEGER,"
+		 "   count              INTEGER,"
+		 "   PRIMARY KEY (node_id)"
+		 ");");
+
+	db_end_transaction ();
+	debug_end_measurement (DEBUG_DB, "table setup");
+		
+	/* 2. Removing old triggers */
+	db_exec ("DROP TRIGGER item_insert;");
+	db_exec ("DROP TRIGGER item_update;");
+	db_exec ("DROP TRIGGER item_removal;");
+	db_exec ("DROP TRIGGER subscription_removal;");
+		
+	/* 3. Cleanup of DB */
+
+	{
+		gchar *sql;
+		sqlite3_stmt *stmt;
+		
+		debug0 (DEBUG_DB, "Checking for items not referenced in table 'itemsets'...");
+		db_exec ("BEGIN; "
+		         "   CREATE TEMP TABLE tmp_id ( id );"
+			 "   INSERT INTO tmp_id SELECT ROWID FROM items WHERE ROWID NOT IN (SELECT item_id FROM itemsets);"
+			 "   DELETE FROM items WHERE ROWID IN (SELECT id FROM tmp_id LIMIT 1000);"
+			 "   DROP TABLE tmp_id;"
+			 "END;");
 			 
-		db_end_transaction ();
-		debug_end_measurement (DEBUG_DB, "table setup");
-		
-		/* 2. Removing old triggers */
-		db_exec ("DROP TRIGGER item_insert;");
-		db_exec ("DROP TRIGGER item_update;");
-		db_exec ("DROP TRIGGER item_removal;");
-		db_exec ("DROP TRIGGER subscription_removal;");
-		
-		/* 3. Cleanup of DB */
+		debug0 (DEBUG_DB, "Checking for invalid item ids in table 'itemsets'...");
+		db_exec ("BEGIN; "
+		         "   CREATE TEMP TABLE tmp_id ( id );"
+		         "   INSERT INTO tmp_id SELECT item_id FROM itemsets WHERE item_id NOT IN (SELECT ROWID FROM items);"
+		         /* limit to 1000 items as it is very slow */
+		         "   DELETE FROM itemsets WHERE item_id IN (SELECT id FROM tmp_id LIMIT 1000);"
+		         "   DROP TABLE tmp_id;"
+			 "END;");
 
-		{
-			gchar *sql;
-			sqlite3_stmt *stmt;
-			
-			debug0 (DEBUG_DB, "Checking for items not referenced in table 'itemsets'...");
-			db_exec ("BEGIN; "
-			         "   CREATE TEMP TABLE tmp_id ( id );"
-				 "   INSERT INTO tmp_id SELECT ROWID FROM items WHERE ROWID NOT IN (SELECT item_id FROM itemsets);"
-				 "   DELETE FROM items WHERE ROWID IN (SELECT id FROM tmp_id LIMIT 1000);"
-				 "   DROP TABLE tmp_id;"
-				 "END;");
+		/* Note: do not check on subscriptions here, as non-subscription node
+		   types (e.g. news bin) do contain items too. */
+		debug0 (DEBUG_DB, "Checking for items without a feed list node...\n");
+		db_exec ("DELETE FROM itemsets WHERE comment = 0 AND node_id NOT IN "
+	        	 "(SELECT node_id FROM node);");
 				 
-			debug0 (DEBUG_DB, "Checking for invalid item ids in table 'itemsets'...");
-			db_exec ("BEGIN; "
-			         "   CREATE TEMP TABLE tmp_id ( id );"
-			         "   INSERT INTO tmp_id SELECT item_id FROM itemsets WHERE item_id NOT IN (SELECT ROWID FROM items);"
-			         /* limit to 1000 items as it is very slow */
-			         "   DELETE FROM itemsets WHERE item_id IN (SELECT id FROM tmp_id LIMIT 1000);"
-			         "   DROP TABLE tmp_id;"
-				 "END;");
-
-			/* Note: do not check on subscriptions here, as non-subscription node
-			   types (e.g. news bin) do contain items too. */
-			debug0 (DEBUG_DB, "Checking for items without a feed list node...\n");
-			db_exec ("DELETE FROM itemsets WHERE comment = 0 AND node_id NOT IN "
-		        	 "(SELECT node_id FROM node);");
-				 
-			debug0 (DEBUG_DB, "Checking for stale views not listed in feed list.");
-			sql = sqlite3_mprintf("SELECT name FROM sqlite_master WHERE type='view' AND name not in ("
+		debug0 (DEBUG_DB, "Checking for stale views not listed in feed list.");
+		sql = sqlite3_mprintf("SELECT name FROM sqlite_master WHERE type='view' AND name not in ("
 			                      "SELECT \"view_\"||node_id FROM node WHERE type='vfolder');");
-			res = sqlite3_prepare_v2 (db, sql, -1, &stmt, NULL);
-			sqlite3_free (sql);
-			if (SQLITE_OK != res) {
-				debug1 (DEBUG_DB, "Could not check for stale views (error=%d)", res);
-			} else {
-				sqlite3_reset (stmt);
+		res = sqlite3_prepare_v2 (db, sql, -1, &stmt, NULL);
+		sqlite3_free (sql);
+		if (SQLITE_OK != res) {
+			debug1 (DEBUG_DB, "Could not check for stale views (error=%d)", res);
+		} else {
+			sqlite3_reset (stmt);
 
 				while (sqlite3_step (stmt) == SQLITE_ROW)
-					db_view_remove (sqlite3_column_text (stmt, 0) + strlen("view_"));
+				db_view_remove (sqlite3_column_text (stmt, 0) + strlen("view_"));
 				
-				sqlite3_finalize (stmt);
-			}
-	 
-			debug0 (DEBUG_DB, "DB cleanup finished. Continuing startup.");
+			sqlite3_finalize (stmt);
 		}
-		
-		/* 4. Creating triggers (after cleanup so it is not slowed down by triggers) */
-
-		db_exec ("CREATE TRIGGER item_insert INSERT ON items "
-	        	 "BEGIN "
-	        	 "   UPDATE itemsets SET read = new.read "
-	        	 "   WHERE item_id = new.ROWID; "
-	        	 "END;");
-
-		db_exec ("CREATE TRIGGER item_update UPDATE ON items "
-	        	 "BEGIN "
-	        	 "   UPDATE itemsets SET read = new.read "
-	        	 "   WHERE item_id = new.ROWID; "
-	        	 "END;");
-
-		/* This trigger does explicitely not remove comments! */
-		db_exec ("CREATE TRIGGER item_removal DELETE ON itemsets "
-	        	 "BEGIN "
-	        	 "   DELETE FROM items WHERE ROWID = old.item_id; "
-			 "   DELETE FROM metadata WHERE item_id = old.item_id; "
-	        	 "END;");
-		
-		db_exec ("CREATE TRIGGER subscription_removal DELETE ON subscription "
-	        	 "BEGIN "
-			 "   DELETE FROM node WHERE node_id = old.node_id; "
-	        	 "   DELETE FROM update_state WHERE node_id = old.node_id; "
-			 "   DELETE FROM subscription_metadata WHERE node_id = old.node_id; "
-	        	 "END;");
-
-		/* Note: view counting triggers are set up in the view preparation code (see db_view_create()) */		
+	 
+		debug0 (DEBUG_DB, "DB cleanup finished. Continuing startup.");
 	}
-	
+		
+	/* 4. Creating triggers (after cleanup so it is not slowed down by triggers) */
+
+	db_exec ("CREATE TRIGGER item_insert INSERT ON items "
+        	 "BEGIN "
+        	 "   UPDATE itemsets SET read = new.read "
+        	 "   WHERE item_id = new.ROWID; "
+        	 "END;");
+
+	db_exec ("CREATE TRIGGER item_update UPDATE ON items "
+        	 "BEGIN "
+        	 "   UPDATE itemsets SET read = new.read "
+        	 "   WHERE item_id = new.ROWID; "
+        	 "END;");
+
+	/* This trigger does explicitely not remove comments! */
+	db_exec ("CREATE TRIGGER item_removal DELETE ON itemsets "
+        	 "BEGIN "
+        	 "   DELETE FROM items WHERE ROWID = old.item_id; "
+		 "   DELETE FROM metadata WHERE item_id = old.item_id; "
+        	 "END;");
+		
+	db_exec ("CREATE TRIGGER subscription_removal DELETE ON subscription "
+        	 "BEGIN "
+		 "   DELETE FROM node WHERE node_id = old.node_id; "
+        	 "   DELETE FROM update_state WHERE node_id = old.node_id; "
+		 "   DELETE FROM subscription_metadata WHERE node_id = old.node_id; "
+        	 "END;");
+
+	/* Note: view counting triggers are set up in the view preparation code (see db_view_create()) */		
 	/* prepare statements */
 	
 	db_new_statement ("itemsetLoadStmt",
