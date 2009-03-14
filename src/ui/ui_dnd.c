@@ -123,6 +123,7 @@ ui_dnd_feed_drag_data_received (GtkTreeDragDest *drag_dest, GtkTreePath *dest, G
 			g_assert (oldParent);
 			oldPos = g_slist_index (oldParent->children, node);
 			oldParent->children = g_slist_remove (oldParent->children, node);
+			node_update_counters (oldParent);
 			
 			if (0 == g_slist_length (oldParent->children))
 				ui_node_add_empty_node (ui_node_to_iter (oldParent->id));
@@ -189,7 +190,6 @@ ui_dnd_feed_drag_data_received (GtkTreeDragDest *drag_dest, GtkTreePath *dest, G
 			}
 			
 			node_update_counters (newParent);
-			node_update_counters (oldParent);
 			
 			feedlist_schedule_save ();
 			ui_itemlist_prefocus ();
