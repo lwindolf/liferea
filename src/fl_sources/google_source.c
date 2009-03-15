@@ -64,6 +64,7 @@ google_source_free (GoogleSourcePtr gsource)
 	if (!gsource)
 		return;
 
+	g_free (gsource->sid);
 	g_queue_free (gsource->actionQueue) ;
 	g_hash_table_unref (gsource->lastTimestampMap);
 	g_free (gsource);
