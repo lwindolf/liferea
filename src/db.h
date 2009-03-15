@@ -120,12 +120,11 @@ void	db_item_update(itemPtr item);
 void	db_item_remove(gulong id);
 
 /**
- * Marks a single item as read. If the item has a valid GUID
- * it will mark all duplicates read.
+ * Update the attributes related to item state only.
  *
- * @param item		the item
+ * @param item          the item
  */
-void	db_item_mark_read (itemPtr item);
+void    db_item_state_update (itemPtr item);
 
 /**
  * Returns a list of item ids with the given GUID. 

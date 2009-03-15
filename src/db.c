@@ -520,9 +520,10 @@ open:
 	                  "ROWID"
 	                  ") values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			
-	db_new_statement ("itemMarkReadStmt",
-	                  "UPDATE items SET read = 1, updated = 0 WHERE ROWID = ?");
-					
+	db_new_statement ("itemStateUpdateStmt",
+			  "UPDATE items SET read=?, marked=?, updated=? "
+			  "WHERE ROWID=?");
+
 	db_new_statement ("duplicatesFindStmt",
 	                  "SELECT ROWID FROM items WHERE source_id = ?");
 			 
@@ -871,6 +872,30 @@ db_item_update (itemPtr item)
 }
 
 void
+db_item_state_update (itemPtr item)
+{
+	sqlite3_stmt	*stmt;
+	
+	if (!item->id) {
+		db_item_update (item);
+		return;
+	}
+
+	debug_start_measurement (DEBUG_DB);
+	
+	stmt = db_get_statement ("itemStateUpdateStmt");
+	sqlite3_bind_int (stmt, 1, item->readStatus?1:0);
+	sqlite3_bind_int (stmt, 2, item->flagStatus?1:0);
+	sqlite3_bind_int (stmt, 3, item->updateStatus?1:0);
+	sqlite3_bind_int (stmt, 4, item->id);
+
+	if (sqlite3_step (stmt) != SQLITE_DONE) 
+		g_warning ("item state update failed (%s)", sqlite3_errmsg (db));
+	debug_end_measurement (DEBUG_DB, "item state update");
+	
+}
+
+void
 db_item_remove (gulong id) 
 {
 	sqlite3_stmt	*stmt;
@@ -950,39 +975,6 @@ db_itemset_remove_all (const gchar *id)
 
 	if (SQLITE_DONE != res)
 		g_warning ("removing all items failed (error code=%d, %s)", res, sqlite3_errmsg (db));
-}
-
-void
-db_item_mark_read (itemPtr item) 
-{
-	sqlite3_stmt	*stmt;
-	gint		res;
-	
-	item->readStatus = TRUE;
-	item->updateStatus = FALSE;
-	
-	if (!item->validGuid)
-	{
-		debug1 (DEBUG_DB, "marking item with id=%lu read", item->id);
-			
-		stmt = db_get_statement ("itemMarkReadStmt");
-		sqlite3_bind_int (stmt, 1, item->id);
-		res = sqlite3_step (stmt);
-
-		if (SQLITE_DONE != res)
-			g_warning ("marking item read failed (error code=%d, %s)", res, sqlite3_errmsg (db));
-	}
-	else
-	{
-		debug1 (DEBUG_DB, "marking all duplicates with source id=%s read", item->sourceId);
-		
-		stmt = db_get_statement ("duplicatesMarkReadStmt");
-		sqlite3_bind_text (stmt, 1, item->sourceId, -1, SQLITE_TRANSIENT);
-		res = sqlite3_step (stmt);
-
-		if (SQLITE_DONE != res)
-			g_warning ("marking duplicates read failed (error code=%d, %s)", res, sqlite3_errmsg (db));
-	}
 }
 
 void 

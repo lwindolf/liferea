@@ -4,7 +4,8 @@
 
 	* Fix folders unread count not updated when dragging
 	  feeds away from them. (Emilio Pozuelo Monfort)
-
+	* Marking item state read now calls a lighter SQL UPDATE
+	  statement. (Arnold Noronha)
 
 2009-03-14  Adrian Bunk  <bunk@users.sourceforge.net>
 

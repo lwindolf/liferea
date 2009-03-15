@@ -52,7 +52,7 @@ item_flag_state_changed (itemPtr item, gboolean newState)
 
 	/* 2. save state to DB */
 	item->flagStatus = newState;
-	db_item_update (item);
+	db_item_state_update (item);
 
 	/* 3. update item list GUI state */
 	itemlist_update_item (item);
@@ -91,7 +91,7 @@ item_read_state_changed (itemPtr item, gboolean newState)
 	/* 1. apply to DB */
 	item->readStatus = newState;
 	item->updateStatus = FALSE;
-	db_item_update (item);
+	db_item_state_update (item);
 
 	/* 2. add propagate to vfolders (must happen after changing the item state) */
 	vfolder_foreach (vfolder_update_counters);
