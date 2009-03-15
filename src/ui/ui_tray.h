@@ -29,13 +29,6 @@
 void ui_tray_update (void);
 
 /**
- * Set the tooltip message in the systray
- *
- * @param message	new message
- */
-void ui_tray_tooltip_set (const gchar *message);
-
-/**
  * Enable or disable the systray icon
  *
  * @param enabled	TRUE to show icon, or FALSE to hide it

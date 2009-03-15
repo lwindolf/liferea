@@ -57,7 +57,7 @@ static struct trayIcon_priv {
 
 static void ui_tray_install(void);
 
-void
+static void
 ui_tray_tooltip_set (const gchar *message)
 {
 	gtk_widget_set_tooltip_text(GTK_WIDGET(trayIcon_priv->eventBox), message);
