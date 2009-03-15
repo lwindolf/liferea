@@ -157,7 +157,7 @@ pkg_modules="	gtk+-2.0 >= 2.12.0
 		gconf-2.0 >= 1.1.9 
 		libxml-2.0 >= 2.6.27
 		libxslt >= 1.1.19
-		sqlite3 >= 3.4
+		sqlite3 >= 3.6.10
 		gmodule-2.0 >= 2.0.0
 		libglade-2.0 >= 2.0.0
 		libsoup-2.4 >= 2.25.1
