@@ -119,10 +119,14 @@ network_process_request (const updateJobPtr const job)
 
 	/* Set the If-Modified-Since: header */
 	if (job->request->updateState && job->request->updateState->lastModified) {
+		gchar *datestr;
+
 		date = soup_date_new_from_time_t (job->request->updateState->lastModified);
+		datestr = soup_date_to_string (date, SOUP_DATE_HTTP);
 		soup_message_headers_append (msg->request_headers,
 					     "If-Modified-Since",
-					     soup_date_to_string (date, SOUP_DATE_HTTP));
+					     datestr);
+		g_free (datestr);
 		soup_date_free (date);
 	}
 
