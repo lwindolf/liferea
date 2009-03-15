@@ -61,7 +61,7 @@ static void
 ui_node_add_iter (const gchar *nodeId, GtkTreeIter *iter)
 {
 	if (!flIterHash)
-		flIterHash = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, NULL);
+		flIterHash = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, g_free);
 
 	g_hash_table_insert (flIterHash, (gpointer)nodeId, (gpointer)iter);
 }
@@ -264,7 +264,6 @@ ui_node_remove_node (nodePtr node)
 	
 	gtk_tree_store_remove (feedstore, iter);
 	g_hash_table_remove (flIterHash, node->id);
-	g_free (iter);
 	
 	if (node->parent) {
 		ui_node_check_if_folder_is_empty (node->parent->id);
