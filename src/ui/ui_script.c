@@ -167,7 +167,7 @@ on_menu_show_script_manager (GtkWidget *widget, gpointer user_data)
 			entry = gtk_menu_item_new_with_label (hook->name);
 			gtk_widget_show (entry);
 			gtk_container_add (GTK_CONTAINER (menu), entry);
-			gtk_signal_connect (GTK_OBJECT (entry), "activate", GTK_SIGNAL_FUNC (on_hook_selection_changed), GINT_TO_POINTER (hook->type));
+			g_signal_connect (G_OBJECT (entry), "activate", G_CALLBACK (on_hook_selection_changed), GINT_TO_POINTER (hook->type));
 			hook++;
 		}
 		gtk_option_menu_set_menu (GTK_OPTION_MENU (liferea_dialog_lookup (scriptdialog, "scripthooksmenu")), menu);

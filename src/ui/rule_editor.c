@@ -157,11 +157,11 @@ rule_editor_setup_widgets (struct changeRequest *changeRequest, rulePtr rule)
 	
 	widget = gtk_menu_item_new_with_label (ruleInfo->positive);
 	gtk_container_add (GTK_CONTAINER (menu), widget);
-	gtk_signal_connect (GTK_OBJECT (widget), "activate", GTK_SIGNAL_FUNC (on_rule_set_additive), rule);
+	g_signal_connect (G_OBJECT (widget), "activate", G_CALLBACK (on_rule_set_additive), rule);
 	
 	widget = gtk_menu_item_new_with_label (ruleInfo->negative);
 	gtk_container_add (GTK_CONTAINER (menu), widget);
-	gtk_signal_connect (GTK_OBJECT (widget), "activate", GTK_SIGNAL_FUNC (on_rule_unset_additive), rule);
+	g_signal_connect (G_OBJECT (widget), "activate", G_CALLBACK (on_rule_unset_additive), rule);
 	
 	gtk_menu_set_active (GTK_MENU (menu), (rule->additive)?0:1);
 	
@@ -175,7 +175,7 @@ rule_editor_setup_widgets (struct changeRequest *changeRequest, rulePtr rule)
 		widget = gtk_entry_new ();
 		gtk_entry_set_text (GTK_ENTRY (widget), rule->value);
 		gtk_widget_show (widget);
-		gtk_signal_connect (GTK_OBJECT (widget), "changed", GTK_SIGNAL_FUNC(on_rulevalue_changed), rule);
+		g_signal_connect (G_OBJECT (widget), "changed", G_CALLBACK(on_rulevalue_changed), rule);
 		gtk_box_pack_start (GTK_BOX (changeRequest->paramHBox), widget, FALSE, FALSE, 0);
 	} else {
 		/* nothing needs to be added */
@@ -245,7 +245,7 @@ rule_editor_add_rule (RuleEditor *re, rulePtr rule)
 		/* build the menu option */
 		widget = gtk_menu_item_new_with_label (ruleInfo->title);
 		gtk_container_add (GTK_CONTAINER (menu), widget);
-		gtk_signal_connect (GTK_OBJECT (widget), "activate", GTK_SIGNAL_FUNC (on_ruletype_changed), changeRequest);
+		g_signal_connect (G_OBJECT (widget), "activate", G_CALLBACK (on_ruletype_changed), changeRequest);
 
 		if (rule) {
 			if (ruleInfo == rule->ruleInfo) {
@@ -279,7 +279,7 @@ rule_editor_add_rule (RuleEditor *re, rulePtr rule)
 	changeRequest->editor = re;
 	widget = gtk_button_new_from_stock ("gtk-remove");
 	gtk_box_pack_end (GTK_BOX (hbox), widget, FALSE, FALSE, 0);
-	gtk_signal_connect (GTK_OBJECT (widget), "clicked", GTK_SIGNAL_FUNC (on_ruleremove_clicked), changeRequest);
+	g_signal_connect (G_OBJECT (widget), "clicked", G_CALLBACK (on_ruleremove_clicked), changeRequest);
 
 	/* and insert everything in the dialog */
 	gtk_widget_show_all (hbox);

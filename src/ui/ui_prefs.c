@@ -614,14 +614,14 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 			entry = gtk_menu_item_new_with_label(_(iter->display));
 			gtk_widget_show(entry);
 			gtk_container_add(GTK_CONTAINER(menu), entry);
-			gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_browser_changed), GINT_TO_POINTER(i));
+			g_signal_connect(G_OBJECT(entry), "activate", G_CALLBACK(on_browser_changed), GINT_TO_POINTER(i));
 		}
 		manual = i;
 		/* This allows the user to choose their own browser by typing in the command. */
 		entry = gtk_menu_item_new_with_label(_("Manual"));
 		gtk_widget_show(entry);
 		gtk_container_add(GTK_CONTAINER(menu), entry);
-		gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_browser_changed), GINT_TO_POINTER(i));
+		g_signal_connect(G_OBJECT(entry), "activate", G_CALLBACK(on_browser_changed), GINT_TO_POINTER(i));
 
 		gtk_option_menu_set_menu(GTK_OPTION_MENU(liferea_dialog_lookup(prefdialog, "browserpopup")), menu);
 
@@ -631,22 +631,22 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 		entry = gtk_menu_item_new_with_label(_("Browser default"));
 		gtk_widget_show(entry);
 		gtk_container_add(GTK_CONTAINER(menu), entry);
-		gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_browser_place_changed), GINT_TO_POINTER(0));
+		g_signal_connect(G_OBJECT(entry), "activate", G_CALLBACK(on_browser_place_changed), GINT_TO_POINTER(0));
 
 		entry = gtk_menu_item_new_with_label(_("Existing window"));
 		gtk_widget_show(entry);
 		gtk_container_add(GTK_CONTAINER(menu), entry);
-		gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_browser_place_changed), GINT_TO_POINTER(1));
+		g_signal_connect(G_OBJECT(entry), "activate", G_CALLBACK(on_browser_place_changed), GINT_TO_POINTER(1));
 
 		entry = gtk_menu_item_new_with_label(_("New window"));
 		gtk_widget_show(entry);
 		gtk_container_add(GTK_CONTAINER(menu), entry);
-		gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_browser_place_changed), GINT_TO_POINTER(2));
+		g_signal_connect(G_OBJECT(entry), "activate", G_CALLBACK(on_browser_place_changed), GINT_TO_POINTER(2));
 
 		entry = gtk_menu_item_new_with_label(_("New tab"));
 		gtk_widget_show(entry);
 		gtk_container_add(GTK_CONTAINER(menu), entry);
-		gtk_signal_connect(GTK_OBJECT(entry), "activate", GTK_SIGNAL_FUNC(on_browser_place_changed), GINT_TO_POINTER(3));
+		g_signal_connect(G_OBJECT(entry), "activate", G_CALLBACK(on_browser_place_changed), GINT_TO_POINTER(3));
 
 		gtk_option_menu_set_menu(GTK_OPTION_MENU(liferea_dialog_lookup(prefdialog, "browserlocpopup")), menu);
 
@@ -709,7 +709,7 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 			entry = gtk_menu_item_new_with_label (siter->name);
 			gtk_widget_show (entry);
 			gtk_container_add (GTK_CONTAINER (menu), entry);
-			gtk_signal_connect (GTK_OBJECT (entry), "activate", GTK_SIGNAL_FUNC (on_socialsite_changed), (gpointer)siter->name);
+			g_signal_connect (G_OBJECT (entry), "activate", G_CALLBACK (on_socialsite_changed), (gpointer)siter->name);
 			list = g_slist_next (list);
 			i++;
 		}
@@ -728,7 +728,7 @@ void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
 			entry = gtk_menu_item_new_with_label (siter->name);
 			gtk_widget_show (entry);
 			gtk_container_add (GTK_CONTAINER (menu), entry);
-			gtk_signal_connect (GTK_OBJECT (entry), "activate", GTK_SIGNAL_FUNC (on_linksearchsite_changed), (gpointer)siter->name);
+			g_signal_connect (G_OBJECT (entry), "activate", G_CALLBACK (on_linksearchsite_changed), (gpointer)siter->name);
 			list = g_slist_next (list);
 			i++;
 		}

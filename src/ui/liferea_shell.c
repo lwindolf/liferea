@@ -804,8 +804,8 @@ liferea_shell_setup_URL_receiver (GtkWidget *widget)
 	                   target_table, sizeof (target_table)/sizeof (target_table[0]),
 	                   GDK_ACTION_COPY | GDK_ACTION_MOVE | GDK_ACTION_LINK);
 		       
-	gtk_signal_connect (GTK_OBJECT (widget), "drag_data_received",
-	                    G_CALLBACK (liferea_shell_URL_received), NULL);
+	g_signal_connect (G_OBJECT (widget), "drag_data_received",
+	                  G_CALLBACK (liferea_shell_URL_received), NULL);
 }
 
 static const GtkActionEntry ui_mainwindow_action_entries[] = {
