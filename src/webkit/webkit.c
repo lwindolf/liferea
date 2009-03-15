@@ -19,6 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include <libsoup/soup.h>
 #include <webkit/webkit.h>
 #include <string.h>
 
@@ -123,7 +124,7 @@ webkit_link_clicked (WebKitWebView *view,
 	g_return_val_if_fail (WEBKIT_IS_WEB_VIEW (view), FALSE);
 	g_return_val_if_fail (WEBKIT_IS_NETWORK_REQUEST (request), FALSE);
 
-	uri = webkit_network_request_get_uri (WEBKIT_NETWORK_REQUEST (request));
+	uri = webkit_network_request_get_uri (request);
 	handle_url = liferea_htmlview_handle_URL (g_object_get_data (G_OBJECT (view), "htmlview"), uri);
 
 	if (!handle_url) {
@@ -349,7 +350,21 @@ webkit_scroll_pagedown (GtkWidget *scrollpane)
 static void
 webkit_set_proxy (const gchar *host, guint port, const gchar *user, const gchar *pwd)
 {
-	g_warning ("FIXME: Webkit rendering does not support proxies yet!");
+	SoupURI *proxy = NULL;
+
+	if (host) {
+		proxy = soup_uri_new (host);
+
+		if (proxy) {
+			soup_uri_set_port (proxy, port);
+			soup_uri_set_user (proxy, user);
+			soup_uri_set_password (proxy, pwd);
+		}
+	}
+
+	g_object_set (webkit_get_default_session (),
+		      SOUP_SESSION_PROXY_URI, proxy,
+		      NULL);
 }
 
 static struct
