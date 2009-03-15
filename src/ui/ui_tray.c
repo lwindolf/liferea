@@ -53,7 +53,6 @@ static struct trayIcon_priv {
 	GtkWidget	*image;			/**< render widget in the notification area */
 	GtkWidget	*alignment;
 	GtkWidget	*eventBox;
-	GtkTooltips	*toolTips;
 } *trayIcon_priv = NULL;
 
 static void ui_tray_install(void);
@@ -61,24 +60,7 @@ static void ui_tray_install(void);
 void
 ui_tray_tooltip_set (const gchar *message)
 {
-	GtkTooltipsData	*data = NULL;
-	
-	g_assert(trayIcon_priv->toolTips);
-
-	data = gtk_tooltips_data_get(GTK_WIDGET(trayIcon_priv->widget));
-
-	if(NULL != data) {
-		/* FIXME: Is this necessary? Gtk 2.2.4 frees these strings
-		   inside of set_tip, if needed. */
-		g_free(data->tip_text);
-		g_free(data->tip_private);
-		data->tip_text = NULL;
-		data->tip_private = NULL;
-	}
-	
-	gtk_tooltips_set_tip(GTK_TOOLTIPS(trayIcon_priv->toolTips), 
-	                     GTK_WIDGET(trayIcon_priv->eventBox),
-			     message, message);
+	gtk_widget_set_tooltip_text(GTK_WIDGET(trayIcon_priv->eventBox), message);
 }
 
 static void ui_tray_expose_cb() {
@@ -288,7 +270,6 @@ static void ui_tray_install(void) {
 	gtk_container_add(GTK_CONTAINER(trayIcon_priv->widget), trayIcon_priv->eventBox);
 	g_object_ref(G_OBJECT(trayIcon_priv->widget));
 	
-	trayIcon_priv->toolTips = gtk_tooltips_new();
 	ui_tray_update();
 	trayIcon_priv->trayCount++;
 }
