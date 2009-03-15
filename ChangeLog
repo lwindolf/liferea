@@ -6,6 +6,9 @@
 	  feeds away from them. (Emilio Pozuelo Monfort)
 	* Significant improvements in performance while updating an
 	  item in the DB. (Arnold Noronha)
+	* Fixed a seemingly "random" ordering of feeds in the 
+	  Reduced Feed List mode. (Arnold Noronha)
+
 
 2009-03-14  Adrian Bunk  <bunk@users.sourceforge.net>
 
