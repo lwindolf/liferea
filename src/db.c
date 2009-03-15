@@ -1438,11 +1438,12 @@ db_view_create (const gchar *id, queryPtr query)
 		res = sqlite3_exec (db, sql, NULL, NULL, &err);
 		if (SQLITE_OK != res) 
 			debug2 (DEBUG_DB, "Create view failed (%s) SQL: %s", err, sql);
-		sqlite3_free (sql);
 		sqlite3_free (err);
 	} else {
 		debug1 (DEBUG_DB, "No need to create view %s as it already exists.", id);
 	}
+
+	sqlite3_free (sql);
 	
 	/* Unconditionally recreate the view specific triggers */
 	db_view_remove_triggers (id);
