@@ -199,7 +199,8 @@ ui_node_add (nodePtr node)
 		parentIter = ui_node_to_iter (node->parent->id);
 
 	position = g_slist_index (node->parent->children, node);
-	if (position < 0)
+
+	if (feedlist_reduced_unread || position < 0)
 		gtk_tree_store_append (feedstore, iter, parentIter);
 	else
 		gtk_tree_store_insert (feedstore, iter, parentIter, position);
