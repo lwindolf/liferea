@@ -826,6 +826,8 @@ db_item_update (itemPtr item)
 	debug3 (DEBUG_DB, "update of item \"%s\" (id=%lu, thread=%p)", item->title, item->id, g_thread_self());
 	debug_start_measurement (DEBUG_DB);
 	
+	db_begin_transaction ();
+
 	if (!item->id) {
 		db_item_set_id (item);
 
@@ -868,6 +870,8 @@ db_item_update (itemPtr item)
 	
 	db_item_metadata_update (item);
 	
+	db_end_transaction ();
+
 	debug_end_measurement (DEBUG_DB, "item update");
 }
 
