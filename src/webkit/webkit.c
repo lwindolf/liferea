@@ -50,11 +50,8 @@ webkit_write_html (
 	   because we don't need it as Webkit supports <div href="">
 	   and throws a security exception when accessing file://
 	   with a non-file:// base URL */
-#if WEBKIT_MINOR_VERSION > 0
-	webkit_web_view_load_html_string (WEBKIT_WEB_VIEW (htmlwidget), string, "file://");
-#else
-	webkit_web_view_load_string (WEBKIT_WEB_VIEW (htmlwidget), string, content_type, "UTF-8", "file://");
-#endif
+	webkit_web_view_load_string (WEBKIT_WEB_VIEW (htmlwidget), string,
+				     content_type, "UTF-8", "file://");
 }
 
 static void
@@ -114,7 +111,11 @@ webkit_on_url (WebKitWebView *view, const gchar *title, const gchar *url, gpoint
  * order to manage the different filetypes, remote URLs.
  */
 static gboolean
-webkit_link_clicked (WebKitWebView *view, WebKitWebFrame *frame, WebKitNetworkRequest *request)
+webkit_link_clicked (WebKitWebView *view,
+		     WebKitWebFrame *frame,
+		     WebKitNetworkRequest *request,
+		     WebKitWebNavigationAction *navigation_action,
+		     WebKitWebPolicyDecision *policy_decision)
 {
 	gboolean	handle_url;
 	const gchar	*uri;
@@ -248,7 +249,7 @@ webkit_new (LifereaHtmlView *htmlview)
 	);
 	g_signal_connect (
 		view,
-		"navigation-requested",
+		"navigation-policy-decision-requested",
 		G_CALLBACK (webkit_link_clicked),
 		view
 	);
@@ -284,7 +285,7 @@ webkit_launch_url (GtkWidget *scrollpane, const gchar *url)
 		http_url
 	);
 
-	webkit_web_view_open (
+	webkit_web_view_load_uri (
 		WEBKIT_WEB_VIEW (gtk_bin_get_child (GTK_BIN (scrollpane))),
 		http_url
 	);

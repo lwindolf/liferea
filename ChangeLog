@@ -8,6 +8,7 @@
 	  item in the DB. (Arnold Noronha)
 	* Fixed a seemingly "random" ordering of feeds in the 
 	  Reduced Feed List mode. (Arnold Noronha)
+	* Require WebKit 1.1.1.
 
 
 2009-03-14  Adrian Bunk  <bunk@users.sourceforge.net>
