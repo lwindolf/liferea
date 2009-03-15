@@ -118,21 +118,24 @@ webkit_link_clicked (WebKitWebView *view,
 		     WebKitWebNavigationAction *navigation_action,
 		     WebKitWebPolicyDecision *policy_decision)
 {
-	gboolean	handle_url;
 	const gchar	*uri;
 
 	g_return_val_if_fail (WEBKIT_IS_WEB_VIEW (view), FALSE);
 	g_return_val_if_fail (WEBKIT_IS_NETWORK_REQUEST (request), FALSE);
 
 	uri = webkit_network_request_get_uri (request);
-	handle_url = liferea_htmlview_handle_URL (g_object_get_data (G_OBJECT (view), "htmlview"), uri);
+	return liferea_htmlview_handle_URL (g_object_get_data (G_OBJECT (view), "htmlview"), uri);
+}
 
-	if (!handle_url) {
-		// Register the new url for the history
-		webkit_location_changed (view, uri);
-	}
 
-	return handle_url;
+/**
+ * FIXME: when https://bugs.webkit.org/show_bug.cgi?id=14807 is fixed,
+ * do this properly.
+ */
+static void
+webkit_load_committed (WebKitWebView *view, WebKitWebFrame *frame)
+{
+	webkit_location_changed (view, webkit_web_frame_get_uri (frame));
 }
 
 /**
@@ -258,6 +261,12 @@ webkit_new (LifereaHtmlView *htmlview)
 		view,
 		"populate-popup",
 		G_CALLBACK (webkit_on_menu),
+		view
+	);
+	g_signal_connect (
+		view,
+		"load-committed",
+		G_CALLBACK (webkit_load_committed),
 		view
 	);
 
