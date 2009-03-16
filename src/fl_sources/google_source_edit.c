@@ -354,7 +354,6 @@ google_source_api_edit_tag (GoogleSourceActionPtr action, updateRequestPtr reque
 static void
 google_source_edit_token_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
 { 
-	gchar            *nodeId; 
 	nodePtr          node;
 	GoogleSourcePtr  gsource;
 	const gchar*     token;
@@ -366,10 +365,10 @@ google_source_edit_token_cb (const struct updateResult * const result, gpointer 
 		return;
 	}
 
-	nodeId = (gchar*) userdata ; 
-	node = node_from_id (nodeId);
+	node = node_from_id ((gchar*) userdata);
+	g_free (userdata);
+	
 	if (!node) {
-		g_free (userdata);
 		return;
 	}
 	gsource = (GoogleSourcePtr) node->data;
