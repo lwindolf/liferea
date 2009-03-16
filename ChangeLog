@@ -6,6 +6,7 @@
 	  feeds away from them. (Emilio Pozuelo Monfort)
 	* Significant improvements in performance while updating an
 	  item in the DB. (Arnold Noronha)
+	* Require sqlite 3.6.10 for the above change.
 	* Fixed a seemingly "random" ordering of feeds in the 
 	  Reduced Feed List mode. (Arnold Noronha)
 	* Add proxy support to the htmlview. Require WebKit 1.1.1.
