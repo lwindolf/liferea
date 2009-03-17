@@ -173,8 +173,18 @@ static void
 google_source_auto_update (nodePtr node)
 {
 	GTimeVal	now;
-	
+	GoogleSourcePtr gsource = (GoogleSourcePtr) node->data;
+
+	if (gsource->loginState == GOOGLE_SOURCE_STATE_NONE) {
+		google_source_update (node);
+		return;
+	}
+
+	if (gsource->loginState == GOOGLE_SOURCE_STATE_IN_PROGRESS) 
+		return; /* the update will start automatically anyway */
+
 	g_get_current_time (&now);
+	
 	
 	/* do daily updates for the feed list and feed updates according to the default interval */
 	if (node->subscription->updateState->lastPoll.tv_sec + GOOGLE_SOURCE_UPDATE_INTERVAL <= now.tv_sec)
