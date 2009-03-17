@@ -695,7 +695,7 @@ on_itemlist_button_press_event (GtkWidget *treeview, GdkEventButton *event, gpoi
 				break;
 			case 3:
 				ui_itemlist_select (item);
-				gtk_menu_popup (ui_popup_make_item_menu (item), NULL, NULL, NULL, NULL, eb->button, eb->time);
+				ui_popup_item_menu (item, eb->button, eb->time);
 				result = TRUE;
 				break;
 		}

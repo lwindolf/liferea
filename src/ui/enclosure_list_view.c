@@ -140,7 +140,7 @@ on_enclosure_list_button_press (GtkWidget *treeview, GdkEventButton *event, gpoi
 		enclosurePtr enclosure;
 		
 		gtk_tree_model_get (GTK_TREE_MODEL (elv->priv->treestore), &iter, ES_PTR, &enclosure, -1);
-		gtk_menu_popup (ui_popup_make_enclosure_menu (enclosure), NULL, NULL, NULL, NULL, eb->button, eb->time);
+		ui_popup_enclosure_menu (enclosure, eb->button, eb->time);
 	}
 	
 	return TRUE;

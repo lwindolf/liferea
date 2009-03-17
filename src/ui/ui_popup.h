@@ -34,33 +34,35 @@
 void ui_popup_update_menues (void);
 
 /**
- * Creates a popup menu with options for the item list and the
+ * Shows a popup menu with options for the item list and the
  * given selected item.
  * (Open Link, Copy Item, Copy Link...)
  *
  * @param item	the selected item
- *
- * @returns a new popup menu
+ * @param button	the mouse button which was pressed to initiate the event
+ * @param activate_time	the time at which the activation event occurred
  */
-GtkMenu * ui_popup_make_item_menu (itemPtr item);
+void ui_popup_item_menu (itemPtr item, guint button, guint32 activate_time);
 
 /**
- * Creates a popup menu for the systray icon.
+ * Shows a popup menu for the systray icon.
  * (Offline mode, Close, Minimize...)
  *
- * @returns a new popup menu
+ * @param button	the mouse button which was pressed to initiate the event
+ * @param activate_time	the time at which the activation event occurred
  */
-GtkMenu * ui_popup_make_systray_menu (void);
+void ui_popup_systray_menu (guint button, guint32 activate_time);
 
 /**
- * Creates a popup menu for the enclosure list view.
+ * Shows a popup menu for the enclosure list view.
  * (Save As, Open With...)
  *
  * @param enclosure	the enclosure
- *
- * @returns a new popup menu
+ * @param button	the mouse button which was pressed to initiate the event
+ * @param activate_time	the time at which the activation event occurred
  */
-GtkMenu * ui_popup_make_enclosure_menu (enclosurePtr enclosure);
+void ui_popup_enclosure_menu (enclosurePtr enclosure, guint button,
+			      guint32 activate_time);
 
 /* GUI callbacks */
 

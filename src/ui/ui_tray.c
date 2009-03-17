@@ -216,7 +216,7 @@ tray_icon_pressed (GtkWidget *button, GdkEventButton *event, EggTrayIcon *icon)
 			liferea_shell_toggle_visibility ();
 			break;
 		case 3:
-			gtk_menu_popup (ui_popup_make_systray_menu (), NULL, NULL, NULL, NULL, event->button, event->time);
+			ui_popup_systray_menu (event->button, event->time);
 			break;
 	}
 }

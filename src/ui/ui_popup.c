@@ -3,6 +3,7 @@
  *
  * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2009 Adrian Bunk <bunk@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -171,9 +172,9 @@ ui_popup_update_menues (void)
 	addPopupOption (&enclosure_menu_items, &enclosure_menu_len, _("/Copy Link Location"),	NULL, on_popup_copy_enclosure,          0, NULL, 0);
 }
 
-/* function to generate a generic menu specified by its number */
-static GtkMenu *
-ui_popup_make_menu (GtkItemFactoryEntry *menu_items, gint nmenu_items, gpointer cb_data)
+/* function to generate and popup a generic menu specified by its number */
+static void
+ui_popup_menu (GtkItemFactoryEntry *menu_items, gint nmenu_items, gpointer cb_data, guint button, guint32 activate_time)
 {
 	GtkWidget 		*mainwindow, *menu, *toggle;
 	GtkItemFactory 		*item_factory;
@@ -192,31 +193,26 @@ ui_popup_make_menu (GtkItemFactoryEntry *menu_items, gint nmenu_items, gpointer 
 	if (toggle)
 		GTK_CHECK_MENU_ITEM (toggle)->active = !(gdk_window_get_state (mainwindow->window) & GDK_WINDOW_STATE_ICONIFIED) && GTK_WIDGET_VISIBLE (mainwindow);
 		
-	return GTK_MENU (menu);
+	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL, button, activate_time);
 }
 
-GtkMenu *
-ui_popup_make_item_menu (itemPtr item)
+void
+ui_popup_item_menu (itemPtr item, guint button, guint32 activate_time)
 {
-	GtkMenu 	*menu;
-
-	menu = ui_popup_make_menu (item_menu_items, item_menu_len, item);
-
-	return menu;
+	ui_popup_menu (item_menu_items, item_menu_len, item, button, activate_time);
 }
 
-GtkMenu *
-ui_popup_make_enclosure_menu (enclosurePtr enclosure)
+void
+ui_popup_enclosure_menu (enclosurePtr enclosure, guint button,
+			 guint32 activate_time)
 {
-	return ui_popup_make_menu (enclosure_menu_items, enclosure_menu_len, enclosure);
+	ui_popup_menu (enclosure_menu_items, enclosure_menu_len, enclosure, button, activate_time);
 }
 
-/* popup menu generation for the tray icon */
-
-GtkMenu *
-ui_popup_make_systray_menu (void)
+void
+ui_popup_systray_menu (guint button, guint32 activate_time)
 {
-	return ui_popup_make_menu (tray_menu_items, tray_menu_len, NULL);
+	ui_popup_menu (tray_menu_items, tray_menu_len, NULL, button, activate_time);
 }
 
 /* popup callback wrappers */
@@ -278,13 +274,12 @@ ui_popup_delete (gpointer callback_data, guint callback_action, GtkWidget *widge
 }
 
 /** 
- * Generates popup menus for the feed list depending on the
+ * Shows popup menus for the feed list depending on the
  * node type. The node will be passed as a callback_data.
  */
-static GtkMenu *
-ui_popup_node_menu (nodePtr node, gboolean validSelection)
+void
+ui_popup_node_menu (nodePtr node, gboolean validSelection, guint button, guint32 activate_time)
 {
-	GtkMenu			*menu;
 	GtkItemFactoryEntry	*menu_items = NULL;
 	gboolean		writeableFeedlist, isRoot, isHierarchic;
 	gint 			menu_len = 0;
@@ -332,9 +327,8 @@ ui_popup_node_menu (nodePtr node, gboolean validSelection)
 		}
 	}
 
-	menu = ui_popup_make_menu (menu_items, menu_len, node);
+	ui_popup_menu (menu_items, menu_len, node, button, activate_time);
 	g_free (menu_items);
-	return menu;
 }
 
 /*------------------------------------------------------------------------------*/
@@ -395,7 +389,7 @@ on_mainfeedlist_button_press_event (GtkWidget *widget,
 				node = feedlist_get_root ();
 			}
 
-			gtk_menu_popup (ui_popup_node_menu (node, selected), NULL, NULL, NULL, NULL, eb->button, eb->time);
+			ui_popup_node_menu (node, selected, eb->button, eb->time);
 			break;
 	}
 			
