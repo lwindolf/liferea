@@ -300,6 +300,8 @@ google_source_quick_update_cb (const struct updateResult* const result, gpointer
 	xpath_foreach_match (xmlDocGetRootElement (doc),
 			    "/object/list[@name='unreadcounts']/object", 
 			    google_source_quick_update_helper, gsource);
+	
+	xmlFreeDoc (doc);
 }
 
 static gboolean
@@ -322,7 +324,7 @@ google_source_quick_update_timeout (gpointer nodeId)
 {
 	nodePtr node = node_from_id ((gchar*) nodeId) ;
 	if (!node) { 
-		g_free (nodeId);
+		g_free (nodeId); /* do not free this string otherwise! */
 		return FALSE;
 	}
 
