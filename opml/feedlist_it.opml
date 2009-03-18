@@ -9,7 +9,7 @@
                         <outline text="afNews" htmlUrl="http://www.afnews.info/" xmlUrl="http://www.afnews.info/public/afnews/rss.xml" />
                         <outline text="Badzu" htmlUrl="http://www.badzu.net/" xmlUrl="http://www.badzu.net/rss2.xml" />
                         <outline text="GNUvox" htmlUrl="http://www.gnuvox.info/" xmlUrl="http://www.gnuvox.info/feed/" />
-                        <outline text="Google News Italia" htmlUrl="http://news.google.it/nwshp?hl=it&tab=wn" xmlUrl="http://news.google.it/nwshp?ie=UTF-8&oe=UTF-8&hl=it&tab=wn&q=&output=rss" />
+                        <outline text="Google News Italia" htmlUrl="http://news.google.it/nwshp?hl=it&amp;tab=wn" xmlUrl="http://news.google.it/nwshp?ie=UTF-8&amp;oe=UTF-8&amp;hl=it&amp;tab=wn&amp;q=&amp;output=rss" />
                         <outline text="Linux Feed" htmlUrl="http://www.linuxfeed.org/" xmlUrl="http://feedproxy.google.com/linuxfeed" />
                         <outline text="OndaCinema" htmlUrl="http://www.ondacinema.it/" xmlUrl="http://www.ondacinema.it/feed" />
                         <outline text="OndaRock" htmlUrl="http://www.ondarock.it/" xmlUrl="http://www.ondarock.it/feed.php" />
