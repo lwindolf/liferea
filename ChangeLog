@@ -12,6 +12,8 @@
 	* Add proxy support to the htmlview. Require WebKit 1.1.1.
 	* Fix location bar in tabs changing incorrectly with things
 	  like adds or forms. (Emilio Pozuelo Monfort)
+	* New Italian translation. (Gianvito Cavasoli)
+	* Added Italian default feed list. (Gianvito Cavasoli)
 
 
 2009-03-14  Adrian Bunk  <bunk@users.sourceforge.net>

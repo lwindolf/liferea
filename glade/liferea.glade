@@ -4529,6 +4529,7 @@ Vincent Lefèvre &lt;vincent@vinc17.org&gt;
 Oleg Maloglovets &lt;oleg@koleso-auto.ru&gt;
 Og Maciel &lt;ogmaciel@ubuntu.com&gt;
 Martin Picek &lt;picek.martin@gnome-cesko.cz&gt;
+Gianvito Cavasoli &lt;janvitus@ubuntu-it.org&gt;
 </property>
     <child internal-child="vbox">
       <widget class="GtkVBox" id="dialog-vbox23">
