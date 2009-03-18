@@ -874,7 +874,7 @@ msgstr "_Update Monitor"
 
 #: ../src/ui/liferea_shell.c:836
 msgid "Show a list of all feeds currently in the update queue"
-msgstr "Eine Liste aller zur Zeit laufenden Feed-Updates anzeigen."
+msgstr "Eine Liste aller zur Zeit laufenden Feed-Aktualisierungen anzeigen."
 
 #: ../src/ui/liferea_shell.c:838
 msgid "_Script Manager"
@@ -1080,7 +1080,7 @@ msgstr "_Flagge setzen"
 
 #: ../src/ui/liferea_shell.c:895
 msgid "Toggles the flag status of the selected item."
-msgstr "Ändert den Flaggenstatus der gewählten Schlagzeile."
+msgstr "Ändert den Markierungsstatus der gewählten Schlagzeile."
 
 #: ../src/ui/liferea_shell.c:897
 msgid "R_emove"
@@ -1195,7 +1195,7 @@ msgstr "Es muß ein Abonnement ausgewählt werden."
 
 #: ../src/ui/ui_feedlist.c:354 ../src/ui/ui_feedlist.c:363
 msgid "Liferea is in offline mode. No update possible."
-msgstr "Liferea ist offline. Keine Updates möglich."
+msgstr "Liferea ist offline. Keine Aktualisierungen möglich."
 
 #: ../src/ui/liferea_htmlview.c:524
 #, fuzzy
@@ -1357,11 +1357,11 @@ msgstr "/_Eigenschaften..."
 
 #: ../src/ui/ui_prefs.c:73
 msgid "GNOME Default Browser"
-msgstr "GNOME Default Browser"
+msgstr "GNOME Standard Browser"
 
 #: ../src/ui/ui_prefs.c:131
 msgid "GNOME default"
-msgstr "GNOME Default"
+msgstr "GNOME Standard"
 
 #: ../src/ui/ui_prefs.c:132
 msgid "Text below icons"
@@ -1389,7 +1389,7 @@ msgstr "Alle Feeds aktualisieren"
 
 #: ../src/ui/ui_prefs.c:142
 msgid "No feed update at all"
-msgstr "Keine Updates"
+msgstr "Keine Aktualisierung"
 
 #: ../src/ui/ui_prefs.c:150 ../src/ui/ui_subscription.c:43
 msgid "minutes"
@@ -1426,7 +1426,7 @@ msgstr "Manuell"
 
 #: ../src/ui/ui_prefs.c:631
 msgid "Browser default"
-msgstr "Browser-Default"
+msgstr "Browser-Vorgabe"
 
 #: ../src/ui/ui_prefs.c:636
 msgid "Existing window"
@@ -1516,7 +1516,7 @@ msgstr[1] ""
 
 #: ../src/ui/ui_subscription.c:460
 msgid "This feed specifies no default update interval."
-msgstr "Dieses Abonnement definiert kein Default-Aktualisierungsintervall."
+msgstr "Dieses Abonnement gibt kein Aktualisierungsintervall vor."
 
 #: ../src/ui/ui_tray.c:207
 #, c-format
@@ -1786,7 +1786,7 @@ msgid ""
 "<i>This option can cause significant delays when loading folders containing "
 "many feeds.</i>"
 msgstr ""
-"<i>Dies kann zu langen Verzögerungen führen,  wenn ein Ordner mit vielen "
+"<i>Dies kann zu langen Verzögerungen führen, wenn ein Ordner mit vielen "
 "Abonnements ausgewählt wird.</i>"
 
 #: ../glade/liferea.glade.h:14
@@ -1803,11 +1803,11 @@ msgstr "<span weight=\"bold\">Caching von Abonnements</span>"
 
 #: ../glade/liferea.glade.h:17
 msgid "<span weight=\"bold\">Feed Icons (Favicons)</span>"
-msgstr "<span weight=\"bold\">Abonnement Icons (Favicons)</span>"
+msgstr "<span weight=\"bold\">Abonnementsymbole (Favicons)</span>"
 
 #: ../glade/liferea.glade.h:18
 msgid "<span weight=\"bold\">Feed Name</span>"
-msgstr "<span weight=\"bold\">Name des Feeds</span>"
+msgstr "<span weight=\"bold\">Name des Abonnements</span>"
 
 #: ../glade/liferea.glade.h:19
 msgid "<span weight=\"bold\">Feed Update Settings</span>"
@@ -1852,7 +1852,7 @@ msgstr "<span weight=\"bold\">Aktualisierungsintervall</span>"
 
 #: ../glade/liferea.glade.h:29
 msgid "<span weight=\"bold\">Web Integration</span>"
-msgstr "<span weight=\"bold\">Web Integration</span>"
+msgstr "<span weight=\"bold\">Web-Integration</span>"
 
 #: ../glade/liferea.glade.h:30
 msgid "A_ny Rule Matches"
@@ -1868,7 +1868,7 @@ msgstr "Neues Skript"
 
 #: ../glade/liferea.glade.h:33
 msgid "Advanced"
-msgstr "Advanced"
+msgstr "Erweitert"
 
 #: ../glade/liferea.glade.h:34
 msgid "Advanced Search"
@@ -1905,7 +1905,7 @@ msgid ""
 "Lars Lindner <lars.lindner@gmail.com> and \n"
 "Nathan J. Conrad <t98502@users.sourceforge.net>\n"
 msgstr ""
-"Copyright (c) 2003-2007\n"
+"Copyright (c) 2003-2009\n"
 "Lars Lindner <lars.lindner@gmail.com> und \n"
 "Nathan J. Conrad <t98502@users.sourceforge.net>\n"
 
@@ -1915,7 +1915,7 @@ msgstr "Neuer News Bin"
 
 #: ../glade/liferea.glade.h:47
 msgid "Create Search Engine Feed"
-msgstr "Suchmaschinen-Feed erzeugen..."
+msgstr "Suchmaschinen-Abonnement..."
 
 #: ../glade/liferea.glade.h:48
 msgid "Create new script"
@@ -1923,15 +1923,15 @@ msgstr "Neues Skript"
 
 #: ../glade/liferea.glade.h:49
 msgid "Default Feed Refresh _Interval:"
-msgstr "Default-Aktualisierungsintervall:"
+msgstr "Vorgebenes Aktualisierungsintervall:"
 
 #: ../glade/liferea.glade.h:50
 msgid "Default _number of items per feed to save:"
-msgstr "Default-_Anzahl zu sichernder Schlagzeilen:"
+msgstr "Vorgegeben _Anzahl zu sichernder Schlagzeilen:"
 
 #: ../glade/liferea.glade.h:51
 msgid "Di_sable cache"
-msgstr "Cache D_eaktivieren"
+msgstr "Cache d_eaktivieren"
 
 #: ../glade/liferea.glade.h:52
 msgid "Download"
@@ -1988,7 +1988,7 @@ msgstr "Schlagzeilen"
 #: ../glade/liferea.glade.h:64
 #, fuzzy
 msgid "Ignore _comment feeds for this subscription."
-msgstr "_Erzwinge Popups für dieses Abonnement."
+msgstr "_Erzwinge Benachrichtigungen für dieses Abonnement."
 
 #: ../glade/liferea.glade.h:66
 msgid "Liferea Homepage"
@@ -2078,7 +2078,7 @@ msgstr "Bestehendes Skript nutzen"
 
 #: ../glade/liferea.glade.h:84
 msgid "Script Manager"
-msgstr "Script Manager"
+msgstr "Skripte verwalten"
 
 #: ../glade/liferea.glade.h:85
 msgid "Search All Feeds"
@@ -2142,7 +2142,7 @@ msgid ""
 "exits. Marked items are always saved to the cache."
 msgstr ""
 "Diese Einstellung kontrolliert, ob und wieviele Schlagzeilen dieses "
-"Abonnements dauerhaft  gespeichert werden."
+"Abonnements dauerhaft gespeichert werden."
 
 #: ../glade/liferea.glade.h:101
 #, no-c-format
@@ -2185,11 +2185,11 @@ msgstr ""
 
 #: ../glade/liferea.glade.h:115
 msgid "Toolbar _button labels:"
-msgstr "Tool_bar Stil:"
+msgstr "Werkzeug_leistenstil:"
 
 #: ../glade/liferea.glade.h:116
 msgid "Update Monitor"
-msgstr "Update Monitor"
+msgstr "Aktualisierungsmonitor"
 
 #: ../glade/liferea.glade.h:117
 msgid "Use HTTP _authentication"
@@ -2227,15 +2227,15 @@ msgstr "_Alle Regeln treffen zu"
 
 #: ../glade/liferea.glade.h:125
 msgid "_Allow Flash in Feeds."
-msgstr ""
+msgstr "Flash in Feeds _erlauben"
 
 #: ../glade/liferea.glade.h:126
 msgid "_Auto Detect (GNOME or environment)"
-msgstr "_Auto Detect (GNOME oder Environment)"
+msgstr "_Automatisch (GNOME oder Umgebung)"
 
 #: ../glade/liferea.glade.h:127
 msgid "_Automatically download all enclosures of this feed."
-msgstr "_Automatisches Downloaden aller Anhänge dieses Abonnements."
+msgstr "_Automatisches Herunterladen aller Anhänge dieses Abonnements."
 
 #: ../glade/liferea.glade.h:128
 msgid "_Browse"
@@ -2251,7 +2251,7 @@ msgstr "_Kommando"
 
 #: ../glade/liferea.glade.h:131
 msgid "_Default cache settings"
-msgstr "_Default-Cache-Einstellungen"
+msgstr "_Standard-Cache-Einstellungen"
 
 #: ../glade/liferea.glade.h:132
 msgid "_Disable Javascript."
@@ -2263,11 +2263,11 @@ msgstr "_Tue dies von nun an automatisch für Dateien dieses Types."
 
 #: ../glade/liferea.glade.h:134
 msgid "_Don't update this feed automatically."
-msgstr "Feed _nicht automatisch aktualisieren."
+msgstr "Diese Abonnement _nicht automatisch aktualisieren."
 
 #: ../glade/liferea.glade.h:135 ../glade/new_subscription.glade.h:11
 msgid "_Don't use proxy for download"
-msgstr "_Proxy beim Download nicht nutzen"
+msgstr "_Proxy beim Herunterladen nicht nutzen"
 
 #: ../glade/liferea.glade.h:136
 msgid "_Download using"
@@ -2295,7 +2295,7 @@ msgstr "_Ungelesene Schlagzeilen verstecken"
 
 #: ../glade/liferea.glade.h:142
 msgid "_Hide toolbar."
-msgstr ""
+msgstr "_Werkzeugleiste verstecken."
 
 #: ../glade/liferea.glade.h:143 ../glade/new_subscription.glade.h:12
 msgid "_Local File"
@@ -2349,11 +2349,11 @@ msgstr "_URL übergeben anstatt Anhang herunterzuladen"
 
 #: ../glade/liferea.glade.h:158
 msgid "_Post Bookmarks to"
-msgstr "_Bookmarks mit"
+msgstr "_Lesezeichen mit"
 
 #: ../glade/liferea.glade.h:159
 msgid "_Save downloads in"
-msgstr "_Sichere Downloads in:"
+msgstr "_Sichere Dateien in:"
 
 #: ../glade/liferea.glade.h:160
 msgid "_Search Folder..."
@@ -2394,7 +2394,7 @@ msgstr "_Unbeschränkter Cache"
 
 #: ../glade/liferea.glade.h:169
 msgid "_Update all favicons now"
-msgstr "Alle Icons _aktualisieren"
+msgstr "Alle Symbole _aktualisieren"
 
 #: ../glade/liferea.glade.h:170
 msgid "_Use global default update interval."
@@ -2406,7 +2406,7 @@ msgstr "Kombinierte Ansicht"
 
 #: ../glade/liferea.glade.h:172
 msgid "enter any search string you want"
-msgstr "beliebigen Suchstring eingeben"
+msgstr "beliebigen Suchbegriff eingeben"
 
 #: ../glade/liferea.glade.h:173
 msgid "normal view"
@@ -2430,7 +2430,7 @@ msgstr "Auswahl der Quelle"
 
 #: ../glade/opml_source.glade.h:1
 msgid "Add OPML/Planet"
-msgstr "Neue OPML/Planet Quelle"
+msgstr "Neue OPML/Planet-Quelle"
 
 #: ../glade/opml_source.glade.h:2
 msgid ""

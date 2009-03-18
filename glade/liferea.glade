@@ -4530,6 +4530,7 @@ Oleg Maloglovets &lt;oleg@koleso-auto.ru&gt;
 Og Maciel &lt;ogmaciel@ubuntu.com&gt;
 Martin Picek &lt;picek.martin@gnome-cesko.cz&gt;
 Gianvito Cavasoli &lt;janvitus@ubuntu-it.org&gt;
+Christian Dywan &lt;christian@twotoasts.de&gt;
 </property>
     <child internal-child="vbox">
       <widget class="GtkVBox" id="dialog-vbox23">
