@@ -2276,7 +2276,7 @@ msgstr "Интегрировать список лент из Bloglines. Liferea
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
 #: ../src/fl_sources/default_source.c:106
 msgid "feedlist.opml"
-msgstr ""
+msgstr "feedlist_ru.opml"
 
 #: ../src/fl_sources/google_source.glade.h:1
 msgid "Add Google Reader Account"
