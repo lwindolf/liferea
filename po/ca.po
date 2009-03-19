@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-22 20:36+0200\n"
+"POT-Creation-Date: 2009-03-19 23:29+0200\n"
 "PO-Revision-Date: 2007-04-19 21:41+0200\n"
 "Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
@@ -247,64 +247,6 @@ msgstr "%b %d %Y"
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "No s'ha pogut crear el directori de memòria cau «%s»"
 
-#: ../src/common.c:445
-msgid ""
-"You are unauthorized to download this feed. Please update your username and "
-"password in the feed properties dialog box."
-msgstr ""
-"No esteu autoritzat a descarregar aquest canal. Actualitzeu el vostre nom "
-"d'usuari i la contrasenya en el quadre de diàleg de les propietats del canal."
-
-#: ../src/common.c:447
-msgid "Payment Required"
-msgstr "Es requereix pagament"
-
-#: ../src/common.c:448
-msgid "Access Forbidden"
-msgstr "Accés prohibit"
-
-#: ../src/common.c:449
-msgid "Resource Not Found"
-msgstr "No s'ha trobat el recurs"
-
-#: ../src/common.c:450
-msgid "Method Not Allowed"
-msgstr "No es permet utilitzar aquest mètode"
-
-#: ../src/common.c:451
-msgid "Not Acceptable"
-msgstr "No acceptable"
-
-#: ../src/common.c:452
-msgid "Proxy Authentication Required"
-msgstr "Es requereix autenticació a través de servidor intermediari"
-
-#: ../src/common.c:453
-msgid "Request Time-Out"
-msgstr "S'ha esgotat el temps de la sol·licitud"
-
-#: ../src/common.c:454
-msgid "Gone. Resource doesn't exist. Please unsubscribe!"
-msgstr "Se n'ha anat. El recurs ja no existeix. Cancel·leu la subscripció."
-
-#: ../src/common.c:459
-msgid "Feed not available: Server requested unsupported redirection!"
-msgstr ""
-"El canal no està disponible: el servidor ha sol·licitat una redirecció no "
-"implementada"
-
-#: ../src/common.c:460
-msgid "Client Error"
-msgstr "Error del client"
-
-#: ../src/common.c:461
-msgid "Server Error"
-msgstr "Error del servidor"
-
-#: ../src/common.c:462
-msgid "(unknown networking error happened)"
-msgstr "(s'ha produït un error de xarxa desconegut)"
-
 #: ../src/enclosure.c:178
 #, c-format
 msgid "\"%s\" is not a valid enclosure type config file!"
@@ -316,19 +258,19 @@ msgstr "«%s» no és un un fitxer de configuració de tipus d'adjunció vàlid"
 msgid "Enclosure download finished: \"%s\""
 msgstr "S'ha acabat la baixada de l'adjunt: «%s»"
 
-#: ../src/export.c:154
+#: ../src/export.c:166
 #, c-format
 msgid "Error renaming %s to %s\n"
 msgstr "S'ha produït un error en canviar el nom de %s a %s\n"
 
-#: ../src/export.c:346 ../src/export.c:348
+#: ../src/export.c:366 ../src/export.c:368
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
 msgstr ""
 "S'ha produït un error XML en llegir el fitxer de memòria cau. No s'ha pogut "
 "importar «%s»"
 
-#: ../src/export.c:354 ../src/export.c:356
+#: ../src/export.c:374 ../src/export.c:376
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
@@ -336,36 +278,36 @@ msgstr ""
 "El document és buit. El document OPML «%s» no hauria d'ésser buit en importar-"
 "lo."
 
-#: ../src/export.c:377 ../src/export.c:379
+#: ../src/export.c:397 ../src/export.c:399
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr "«%s» és un document OPML invàlid. El Liferea no el pot importar."
 
-#: ../src/export.c:398
+#: ../src/export.c:418
 msgid "Imported feed list"
 msgstr "Llista de canals importats"
 
-#: ../src/export.c:409
+#: ../src/export.c:429
 msgid "Import Feed List"
 msgstr "Importa la llista de canals"
 
-#: ../src/export.c:409
+#: ../src/export.c:429
 msgid "Import"
 msgstr "Importa"
 
-#: ../src/export.c:417
+#: ../src/export.c:437
 msgid "Error while exporting feed list!"
 msgstr "S'ha produït un error en exportar la llista de canals"
 
-#: ../src/export.c:419
+#: ../src/export.c:439
 msgid "Feed List exported!"
 msgstr "S'ha exportat la llista de canals"
 
-#: ../src/export.c:426
+#: ../src/export.c:446
 msgid "Export Feed List"
 msgstr "Exporta la llista de canals"
 
-#: ../src/export.c:426
+#: ../src/export.c:446
 msgid "Export"
 msgstr "Exporta"
 
@@ -389,7 +331,7 @@ msgstr "s'ha actualitzat «%s»..."
 msgid "\"%s\" is not available"
 msgstr "no està disponible «%s»"
 
-#: ../src/feed_parser.c:131
+#: ../src/feed_parser.c:132
 #, fuzzy
 msgid ""
 "The URL you want Liferea to subscribe to points to a webpage and the auto "
@@ -400,28 +342,28 @@ msgstr ""
 "web i el descobridor automàtic no hi ha trobat cap canal. Potser aquesta "
 "pàgina web no permet el descobriment automàtic del canal.</p>"
 
-#: ../src/feed_parser.c:164
+#: ../src/feed_parser.c:165
 #, fuzzy, c-format
 msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
 msgstr ""
 "<p>S'ha produït un error XML en llegir el canal. No s'ha pogut carregar «%s»</"
 "p>"
 
-#: ../src/feed_parser.c:169
+#: ../src/feed_parser.c:170
 #, fuzzy
 msgid "Empty document!"
 msgstr "<p>El document és buit</b>"
 
-#: ../src/feed_parser.c:178
+#: ../src/feed_parser.c:179
 #, fuzzy
 msgid "Invalid XML!"
 msgstr "<p>XML no vàlid</p>"
 
-#: ../src/feed_parser.c:221
+#: ../src/feed_parser.c:222
 msgid "Source points to HTML document."
 msgstr ""
 
-#: ../src/feed_parser.c:224
+#: ../src/feed_parser.c:225
 #, fuzzy
 msgid "Could not determine the feed type."
 msgstr "<p>No s'ha pogut determinar el tipus de canal.</p>"
@@ -431,66 +373,122 @@ msgstr "<p>No s'ha pogut determinar el tipus de canal.</p>"
 msgid "There are no unread items "
 msgstr "No hi ha elements sense llegir "
 
-#: ../src/main.c:72
-msgid "  --version        Print version information and exit"
-msgstr "  --version        Mostra informació sobre la versió i surt"
-
-#: ../src/main.c:73
-msgid "  --help           Print this help and exit"
-msgstr "  --help           Mostra aquesta ajuda i surt"
-
-#: ../src/main.c:74
-msgid "  --mainwindow-state=STATE"
-msgstr "  --mainwindow-state=ESTAT"
-
-#: ../src/main.c:75
-msgid "                   Start Liferea with its main window in STATE."
-msgstr ""
-"                   Inicia el Liferea amb la seva finestra principal en "
-"l'ESTAT."
-
-#: ../src/main.c:76
-msgid "                   STATE may be `shown', `iconified', or `hidden'"
+#: ../src/main.c:166
+#, fuzzy
+msgid ""
+"Start Liferea with its main window in STATE. STATE may be `shown', "
+"`iconified', or `hidden'"
 msgstr ""
 "                   ESTAT pot ser «shown» (visible), «iconified» (iconificada), "
 "o «hidden» (amagada)"
 
-#: ../src/main.c:78
+#: ../src/main.c:166
+msgid "STATE"
+msgstr ""
+
+#: ../src/main.c:174
 #, fuzzy
-msgid "  --debug-<topic>  Print debugging messages for the given topic"
+msgid "Print debugging messages of all types"
+msgstr "  --debug-all      Mostra tot tipus de missatges de depuració"
+
+#: ../src/main.c:175
+#, fuzzy
+msgid "Print debugging messages for the cache handling"
+msgstr ""
+"  --debug-conf     Mostra missatges de depuració de la gestió de la "
+"configuració"
+
+#: ../src/main.c:176
+#, fuzzy
+msgid "Print debugging messages of the configuration handling"
+msgstr ""
+"  --debug-conf     Mostra missatges de depuració de la gestió de la "
+"configuració"
+
+#: ../src/main.c:177
+#, fuzzy
+msgid "Print debugging messages of the database handling"
+msgstr ""
+"  --debug-conf     Mostra missatges de depuració de la gestió de la "
+"configuració"
+
+#: ../src/main.c:178
+#, fuzzy
+msgid "Print debugging messages of all GUI functions"
+msgstr ""
+"  --debug-gui      Mostra missatges de depuració de totes les funcions de "
+"l'interfície gràfica"
+
+#: ../src/main.c:179
+msgid ""
+"Enables HTML rendering debugging. Each time Liferea renders HTML output it "
+"will also dump the generated HTML into ~/.liferea_1.1/output.xhtml"
+msgstr ""
+
+#: ../src/main.c:180
+#, fuzzy
+msgid "Print debugging messages of all network activity"
+msgstr "  --debug-all      Mostra tot tipus de missatges de depuració"
+
+#: ../src/main.c:181
+#, fuzzy
+msgid "Print debugging messages of all parsing functions"
+msgstr ""
+"  --debug-parsing  Mostra missatges de depuració de totes les funcions "
+"d'anàlisi"
+
+#: ../src/main.c:182
+msgid "Print debugging messages when a function takes too long to process"
+msgstr ""
+
+#: ../src/main.c:183
+#, fuzzy
+msgid "Print debugging messages for the plugin loading"
 msgstr ""
 "  --debug-cache    Mostra missatges de depuració de la gestió de la memòria "
 "cau"
 
-#: ../src/main.c:79
-msgid "                   Possible topics are: all,cache,conf,db,gui,html"
+#: ../src/main.c:184
+#, fuzzy
+msgid "Print debugging messages when entering/leaving functions"
 msgstr ""
+"  --debug-trace    Mostra missatges de depuració en entrar/sortir de les "
+"funcions"
 
-#: ../src/main.c:80
-msgid "                   net,parsing,plugins,trace,update,verbose"
+#: ../src/main.c:185
+#, fuzzy
+msgid "Print debugging messages of the feed update processing"
+msgstr ""
+"  --debug-update   Mostra missatges de depuració del procés d'actualització "
+"de canals"
+
+#: ../src/main.c:186
+#, fuzzy
+msgid "Print verbose debugging messages"
+msgstr "  --debug-verbose  Mostra missatges de depuració detallats"
+
+#: ../src/main.c:199 ../src/main.c:200
+#, fuzzy
+msgid "Print debugging messages for the given topic"
+msgstr ""
+"  --debug-cache    Mostra missatges de depuració de la gestió de la memòria "
+"cau"
+
+#: ../src/main.c:206
+#, fuzzy
+msgid "Liferea, the Linux Feed Reader"
+msgstr "Liferea - Lector de canals per a Linux"
+
+#: ../src/main.c:207
+msgid "For more information, please visit http://liferea.sourceforge.net/"
 msgstr ""
 
 #. GTK theme support
-#: ../src/main.c:164 ../glade/liferea.glade.h:65
+#: ../src/main.c:236 ../glade/liferea.glade.h:65
 msgid "Liferea"
 msgstr "Liferea"
 
-#: ../src/main.c:217
-#, c-format
-msgid "The --mainwindow-state argument must be given a parameter.\n"
-msgstr "L'argument de --mainwindow-state necessita un paràmetre.\n"
-
-#: ../src/main.c:225
-#, c-format
-msgid "The --session argument must be given a parameter.\n"
-msgstr "L'argument de --session necessita un paràmetre.\n"
-
-#: ../src/main.c:228
-#, c-format
-msgid "Liferea encountered an unknown argument: %s\n"
-msgstr "El Liferea ha trobat un argument desconegut: %s\n"
-
-#: ../src/main.c:239
+#: ../src/main.c:245
 msgid "Liferea seems to be running already!"
 msgstr "Sembla que el Liferea ja està funcionant"
 
@@ -508,12 +506,105 @@ msgstr ""
 "cop estigueu segur que la migració ha estat satisfactòria podeu suprimir "
 "aquest directori manualment."
 
-#. Cast time_t tunix to int.
-#. Print cookie expire warning.
-#: ../src/net.c:198
-#, c-format
-msgid "Cookie for %s has expired!"
-msgstr "La galeta per a %s ha vençut"
+#. Some libsoup transport errors
+#: ../src/net.c:321
+msgid "The update request was cancelled"
+msgstr ""
+
+#: ../src/net.c:322
+msgid "Unable to resolve destination host name"
+msgstr ""
+
+#: ../src/net.c:323
+msgid "Unable to resolve proxy host name"
+msgstr ""
+
+#: ../src/net.c:324
+#, fuzzy
+msgid "Unable to connect to remote host"
+msgstr "S'ha produït un error en connectar-se a l'ordinador remot"
+
+#: ../src/net.c:325
+msgid "Unable to connect to proxy"
+msgstr ""
+
+#: ../src/net.c:326
+msgid ""
+"A network error occurred, or the other end closed the connection unexpectedly"
+msgstr ""
+
+#. http 3xx redirection
+#: ../src/net.c:329
+msgid "The resource moved permanently to a new location"
+msgstr ""
+
+#. http 4xx client error
+#: ../src/net.c:332
+#, fuzzy
+msgid ""
+"You are unauthorized to download this feed. Please update your username and "
+"password in the feed properties dialog box"
+msgstr ""
+"No esteu autoritzat a descarregar aquest canal. Actualitzeu el vostre nom "
+"d'usuari i la contrasenya en el quadre de diàleg de les propietats del canal."
+
+#: ../src/net.c:334
+#, fuzzy
+msgid "Payment required"
+msgstr "Es requereix pagament"
+
+#: ../src/net.c:335
+msgid "You're not allowed to access this resource"
+msgstr ""
+
+#: ../src/net.c:336
+msgid "Resource Not Found"
+msgstr "No s'ha trobat el recurs"
+
+#: ../src/net.c:337
+msgid "Method Not Allowed"
+msgstr "No es permet utilitzar aquest mètode"
+
+#: ../src/net.c:338
+msgid "Not Acceptable"
+msgstr "No acceptable"
+
+#: ../src/net.c:339
+#, fuzzy
+msgid "Proxy authentication required"
+msgstr "Es requereix autenticació a través de servidor intermediari"
+
+#: ../src/net.c:340
+#, fuzzy
+msgid "Request timed out"
+msgstr "S'ha esgotat el temps de la sol·licitud"
+
+#: ../src/net.c:341
+msgid "Gone. Resource doesn't exist. Please unsubscribe!"
+msgstr "Se n'ha anat. El recurs ja no existeix. Cancel·leu la subscripció."
+
+#: ../src/net.c:346
+msgid "There was an internal error in the update process"
+msgstr ""
+
+#: ../src/net.c:348
+msgid "Feed not available: Server requested unsupported redirection!"
+msgstr ""
+"El canal no està disponible: el servidor ha sol·licitat una redirecció no "
+"implementada"
+
+#: ../src/net.c:350
+msgid "Client Error"
+msgstr "Error del client"
+
+#: ../src/net.c:352
+msgid "Server Error"
+msgstr "Error del servidor"
+
+#: ../src/net.c:354
+#, fuzzy
+msgid "An unknown networking error happened!"
+msgstr "(s'ha produït un error de xarxa desconegut)"
 
 #. SQL condition builder function	in-memory check function	feedlist.opml rule id           rule menu label         positive menu option    negative menu option    has param
 #. ========================================================================================================================================================================================
@@ -618,27 +709,7 @@ msgstr "El canal «%s» ja no es manté. El Liferea no l'actualitzarà més."
 msgid "Updating favicon for \"%s\""
 msgstr "S'està actualitzant la icona del canal «%s»"
 
-#: ../src/subscription.c:168
-#, c-format
-msgid "The URL of \"%s\" has changed permanently and was updated"
-msgstr "L'URL de «%s» ha canviat permanentment i s'ha actualitzat"
-
-#: ../src/subscription.c:176
-#, c-format
-msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
-msgstr "«%s» ja no es manté. El Liferea no l'actualitzarà més"
-
-#: ../src/subscription.c:179
-#, c-format
-msgid "\"%s\" has not changed since last update"
-msgstr "«%s» no ha canviat des de l'última actualització"
-
-#: ../src/subscription.c:225
-#, c-format
-msgid "Updating \"%s\""
-msgstr "S'està actualitzant «%s»"
-
-#: ../src/subscription.c:448
+#: ../src/subscription.c:194
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
@@ -646,29 +717,49 @@ msgstr ""
 "S'ha produït un problema en llegir aquesta subscripció. Verifiqueu l'URL i "
 "la sortida del terminal."
 
-#: ../src/update.c:265
+#: ../src/subscription.c:210
+#, c-format
+msgid "The URL of \"%s\" has changed permanently and was updated"
+msgstr "L'URL de «%s» ha canviat permanentment i s'ha actualitzat"
+
+#: ../src/subscription.c:218
+#, c-format
+msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
+msgstr "«%s» ja no es manté. El Liferea no l'actualitzarà més"
+
+#: ../src/subscription.c:221
+#, c-format
+msgid "\"%s\" has not changed since last update"
+msgstr "«%s» no ha canviat des de l'última actualització"
+
+#: ../src/subscription.c:267
+#, c-format
+msgid "Updating \"%s\""
+msgstr "S'està actualitzant «%s»"
+
+#: ../src/update.c:266
 #, c-format
 msgid "Error opening temp file %s to use for filtering!"
 msgstr ""
 "S'ha produït un error en obrir el fitxer %s a utilitzar per al filtratge"
 
-#: ../src/update.c:288
+#: ../src/update.c:289
 #, c-format
 msgid "%s exited with status %d"
 msgstr "%s ha sortit amb l'estat %d"
 
-#: ../src/update.c:294 ../src/update.c:295 ../src/update.c:407
+#: ../src/update.c:295 ../src/update.c:296 ../src/update.c:408
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "Error: no s'ha pogut obrir el conducte «%s»"
 
 #. FIXME: maybe setting request->returncode would be better
-#: ../src/update.c:433
+#: ../src/update.c:434
 #, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr "Error: no s'ha pogut obrir el fitxer «%s»"
 
-#: ../src/update.c:439
+#: ../src/update.c:440
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "Error: no hi ha cap fitxer «%s»"
@@ -1206,29 +1297,29 @@ msgstr "Font desconeguda"
 msgid "Couldn't find pixmap file: %s"
 msgstr "No s'ha pogut trobar el fitxer de mapa de píxels: %s"
 
-#: ../src/ui/ui_feedlist.c:305
+#: ../src/ui/ui_feedlist.c:296
 msgid "Deleting entry"
 msgstr "Supressió de l'entrada"
 
-#: ../src/ui/ui_feedlist.c:306
+#: ../src/ui/ui_feedlist.c:297
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "Esteu segur que voleu suprimir «%s» i el seu contingut?"
 
-#: ../src/ui/ui_feedlist.c:306
+#: ../src/ui/ui_feedlist.c:297
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Esteu segur que voleu suprimir «%s»?"
 
-#: ../src/ui/ui_feedlist.c:318
+#: ../src/ui/ui_feedlist.c:309
 msgid "Deletion Confirmation"
 msgstr "Confirmació de la supressió"
 
-#: ../src/ui/ui_feedlist.c:347
+#: ../src/ui/ui_feedlist.c:338
 msgid "You have to select a feed entry"
 msgstr "Heu de seleccionar una entrada del canal"
 
-#: ../src/ui/ui_feedlist.c:354 ../src/ui/ui_feedlist.c:363
+#: ../src/ui/ui_feedlist.c:345 ../src/ui/ui_feedlist.c:354
 msgid "Liferea is in offline mode. No update possible."
 msgstr ""
 "El Liferea està en mode de fora de línia. No és possible fer actualitzacions."
@@ -1258,30 +1349,30 @@ msgstr "/_Copia la ubicació de l'enllaç"
 msgid "_Subscribe..."
 msgstr "/_Subscriu..."
 
-#: ../src/ui/ui_itemlist.c:249
+#: ../src/ui/ui_itemlist.c:242
 #, fuzzy
 msgid "*** No title ***"
 msgstr "*** Sense títol ***"
 
-#: ../src/ui/ui_itemlist.c:336
+#: ../src/ui/ui_itemlist.c:329
 msgid "Date"
 msgstr "Data"
 
-#: ../src/ui/ui_itemlist.c:350
+#: ../src/ui/ui_itemlist.c:343
 msgid "Headline"
 msgstr "Titular"
 
-#: ../src/ui/ui_itemlist.c:480 ../src/ui/ui_itemlist.c:500
-#: ../src/ui/ui_itemlist.c:579 ../src/ui/ui_itemlist.c:726
-#: ../src/ui/ui_itemlist.c:757
+#: ../src/ui/ui_itemlist.c:473 ../src/ui/ui_itemlist.c:493
+#: ../src/ui/ui_itemlist.c:572 ../src/ui/ui_itemlist.c:719
+#: ../src/ui/ui_itemlist.c:750
 msgid "No item has been selected"
 msgstr "No s'ha seleccionat cap element"
 
-#: ../src/ui/ui_itemlist.c:496
+#: ../src/ui/ui_itemlist.c:489
 msgid "This item has no link specified!"
 msgstr "Aquest enllaç no te cap enllaç especificat"
 
-#: ../src/ui/ui_itemlist.c:566
+#: ../src/ui/ui_itemlist.c:559
 msgid "You must select a feed to delete its items!"
 msgstr "Heu de seleccionar un canal per a poder suprimir els seus elements"
 
@@ -1289,108 +1380,108 @@ msgstr "Heu de seleccionar un canal per a poder suprimir els seus elements"
 msgid "<i>(empty)</i>"
 msgstr "<i>(buit)</i>"
 
-#: ../src/ui/ui_popup.c:129
+#: ../src/ui/ui_popup.c:130
 msgid "/Launch Item In _Tab"
 msgstr "/Obre l'element en una _pestanya"
 
-#: ../src/ui/ui_popup.c:130
+#: ../src/ui/ui_popup.c:131
 msgid "/_Launch Item In Browser"
 msgstr "/_Obre l'element en el navegador"
 
-#: ../src/ui/ui_popup.c:137
+#: ../src/ui/ui_popup.c:138
 #, c-format
 msgid "/Copy to News Bin/%s"
 msgstr "/Copia'l al contenidor de notícies/%s"
 
 #. menu option for social bookmark creation
-#: ../src/ui/ui_popup.c:145
+#: ../src/ui/ui_popup.c:146
 #, c-format
 msgid "/_Bookmark Link at %s"
 msgstr "/_Publica l'enllaç a %s"
 
-#: ../src/ui/ui_popup.c:147
+#: ../src/ui/ui_popup.c:148
 msgid "/Copy Item _URL to Clipboard"
 msgstr "/Copia l'URL de l'element al porta-retalls"
 
-#: ../src/ui/ui_popup.c:150
+#: ../src/ui/ui_popup.c:151
 #, fuzzy
 msgid "/Toggle _Read Status"
 msgstr "Commuta l'estat de _lectura"
 
-#: ../src/ui/ui_popup.c:151
+#: ../src/ui/ui_popup.c:152
 msgid "/Toggle Item _Flag"
 msgstr "/Commuta el _senyalador de l'element"
 
-#: ../src/ui/ui_popup.c:152
+#: ../src/ui/ui_popup.c:153
 msgid "/R_emove Item"
 msgstr "/_Suprimeix l'element"
 
-#: ../src/ui/ui_popup.c:159
+#: ../src/ui/ui_popup.c:160
 msgid "/_Update All"
 msgstr "/_Actualitza-ho tot"
 
-#: ../src/ui/ui_popup.c:160
+#: ../src/ui/ui_popup.c:161
 msgid "/_Preferences"
 msgstr "/_Preferències"
 
-#: ../src/ui/ui_popup.c:163
+#: ../src/ui/ui_popup.c:164
 msgid "/_Quit"
 msgstr "/_Surt"
 
-#: ../src/ui/ui_popup.c:169
+#: ../src/ui/ui_popup.c:170
 msgid "/Open Enclosure..."
 msgstr "/Obre l'adjunció..."
 
-#: ../src/ui/ui_popup.c:170
+#: ../src/ui/ui_popup.c:171
 msgid "/Save As..."
 msgstr "/Anomena i desa..."
 
-#: ../src/ui/ui_popup.c:171
+#: ../src/ui/ui_popup.c:172
 #, fuzzy
 msgid "/Copy Link Location"
 msgstr "/_Copia la ubicació de l'enllaç"
 
-#: ../src/ui/ui_popup.c:305
+#: ../src/ui/ui_popup.c:300
 msgid "/_Update"
 msgstr "/_Actualitza"
 
-#: ../src/ui/ui_popup.c:307
+#: ../src/ui/ui_popup.c:302
 msgid "/_Update Folder"
 msgstr "/_Actualitza la carpeta"
 
-#: ../src/ui/ui_popup.c:309
+#: ../src/ui/ui_popup.c:304
 msgid "/_Mark All As Read"
 msgstr "/_Marca'ls tots com a llegits"
 
-#: ../src/ui/ui_popup.c:314
+#: ../src/ui/ui_popup.c:309
 msgid "/_New"
 msgstr "/_Nou"
 
-#: ../src/ui/ui_popup.c:315
+#: ../src/ui/ui_popup.c:310
 msgid "/_New/New _Subscription..."
 msgstr "/_Nou/_Subscripció nova..."
 
-#: ../src/ui/ui_popup.c:318
+#: ../src/ui/ui_popup.c:313
 msgid "/_New/New _Folder..."
 msgstr "/_Nou/_Carpeta nova..."
 
-#: ../src/ui/ui_popup.c:321
+#: ../src/ui/ui_popup.c:316
 msgid "/_New/New S_earch Folder..."
 msgstr "/_Nou/Carpeta de c_erca nova..."
 
-#: ../src/ui/ui_popup.c:322
+#: ../src/ui/ui_popup.c:317
 msgid "/_New/New S_ource..."
 msgstr "/_Nou/_Font nova..."
 
-#: ../src/ui/ui_popup.c:323
+#: ../src/ui/ui_popup.c:318
 msgid "/_New/New _News Bin..."
 msgstr "/_Nou/C_ontenidor de notícies nou..."
 
-#: ../src/ui/ui_popup.c:330
+#: ../src/ui/ui_popup.c:325
 msgid "/_Delete"
 msgstr "/_Suprimeix"
 
-#: ../src/ui/ui_popup.c:331
+#: ../src/ui/ui_popup.c:326
 msgid "/_Properties..."
 msgstr "/_Propietats..."
 
@@ -1569,18 +1660,18 @@ msgstr[1] ""
 msgid "This feed specifies no default update interval."
 msgstr "Aquest canal no especifica cap interval d'actualització per defecte."
 
-#: ../src/ui/ui_tray.c:207
+#: ../src/ui/ui_tray.c:189
 #, c-format
 msgid "%d new item"
 msgid_plural "%d new items"
 msgstr[0] "%d element nou"
 msgstr[1] "%d elements nous"
 
-#: ../src/ui/ui_tray.c:214
+#: ../src/ui/ui_tray.c:196
 msgid "No new items"
 msgstr "No hi ha elements nous"
 
-#: ../src/ui/ui_tray.c:218
+#: ../src/ui/ui_tray.c:200
 #, c-format
 msgid ""
 "%s\n"
@@ -1595,7 +1686,7 @@ msgstr[1] ""
 "%s\n"
 "%d elements no llegits"
 
-#: ../src/ui/ui_tray.c:220
+#: ../src/ui/ui_tray.c:202
 #, c-format
 msgid ""
 "%s\n"
@@ -1640,22 +1731,22 @@ msgid "feedlist.opml"
 msgstr "feedlist_ca.opml"
 
 #: ../src/fl_sources/default_source.c:174
-#: ../src/fl_sources/google_source.c:233 ../glade/new_subscription.glade.h:6
+#: ../src/fl_sources/google_source.c:244 ../glade/new_subscription.glade.h:6
 #: ../glade/simple_subscription.glade.h:5
 msgid "New Subscription"
 msgstr "Subscripció nova"
 
-#: ../src/fl_sources/google_source.c:119
+#: ../src/fl_sources/google_source.c:120
 #, fuzzy
 msgid "Google Reader login failed!"
 msgstr "Lector de canals"
 
-#: ../src/fl_sources/google_source.c:319
+#: ../src/fl_sources/google_source.c:330
 #, fuzzy
 msgid "Google Reader"
 msgstr "Lector de canals"
 
-#: ../src/fl_sources/google_source.c:320
+#: ../src/fl_sources/google_source.c:331
 #, fuzzy
 msgid ""
 "Integrate the feed list of your Google Reader account. Liferea will present "
@@ -1688,11 +1779,11 @@ msgstr "Escolliu un fitxer"
 msgid "New OPML Subscription"
 msgstr "Subscripció a un OPML nova"
 
-#: ../src/fl_sources/node_source.c:230
+#: ../src/fl_sources/node_source.c:225
 msgid "No feed list source types found!"
 msgstr "No s'ha trobat cap tipus de font de llista de canals"
 
-#: ../src/fl_sources/node_source.c:261
+#: ../src/fl_sources/node_source.c:256
 msgid "Source Type"
 msgstr "Tipus de font"
 
@@ -2533,6 +2624,35 @@ msgstr ""
 "Escriviu la ubicació d'un lloc web per a utilitzar la descoberta automàtica "
 "del canal, o en cas que la conegueu, la ubicació exacta del canal."
 
+#~ msgid "Access Forbidden"
+#~ msgstr "Accés prohibit"
+
+#~ msgid "  --version        Print version information and exit"
+#~ msgstr "  --version        Mostra informació sobre la versió i surt"
+
+#~ msgid "  --help           Print this help and exit"
+#~ msgstr "  --help           Mostra aquesta ajuda i surt"
+
+#~ msgid "  --mainwindow-state=STATE"
+#~ msgstr "  --mainwindow-state=ESTAT"
+
+#~ msgid "                   Start Liferea with its main window in STATE."
+#~ msgstr ""
+#~ "                   Inicia el Liferea amb la seva finestra principal en "
+#~ "l'ESTAT."
+
+#~ msgid "The --mainwindow-state argument must be given a parameter.\n"
+#~ msgstr "L'argument de --mainwindow-state necessita un paràmetre.\n"
+
+#~ msgid "The --session argument must be given a parameter.\n"
+#~ msgstr "L'argument de --session necessita un paràmetre.\n"
+
+#~ msgid "Liferea encountered an unknown argument: %s\n"
+#~ msgstr "El Liferea ha trobat un argument desconegut: %s\n"
+
+#~ msgid "Cookie for %s has expired!"
+#~ msgstr "La galeta per a %s ha vençut"
+
 #~ msgid "_Limit cache to"
 #~ msgstr "_Limita la memòria cau a"
 
@@ -2740,9 +2860,6 @@ msgstr ""
 #~ msgid "Unsupported network protocol"
 #~ msgstr "Protocol de xarxa no implementat"
 
-#~ msgid "Error connecting to remote host"
-#~ msgstr "S'ha produït un error en connectar-se a l'ordinador remot"
-
 #~ msgid "Hostname could not be found"
 #~ msgstr "No s'ha pogut trobar el nom de l'ordinador"
 
@@ -2867,20 +2984,6 @@ msgstr ""
 #~ msgid "<b>Popup Placement</b>"
 #~ msgstr "<b>Ubicació de la finestra emergent</b>"
 
-#~ msgid "  --debug-all      Print debugging messages of all types"
-#~ msgstr "  --debug-all      Mostra tot tipus de missatges de depuració"
-
-#~ msgid ""
-#~ "  --debug-conf     Print debugging messages of the configuration handling"
-#~ msgstr ""
-#~ "  --debug-conf     Mostra missatges de depuració de la gestió de la "
-#~ "configuració"
-
-#~ msgid "  --debug-gui      Print debugging messages of all GUI functions"
-#~ msgstr ""
-#~ "  --debug-gui      Mostra missatges de depuració de totes les funcions de "
-#~ "l'interfície gràfica"
-
 #~ msgid ""
 #~ "  --debug-html     Enable HTML debugging (saving to ~/.liferea_1.2/output."
 #~ "xhtml)"
@@ -2888,27 +2991,6 @@ msgstr ""
 #~ "  --debug-html     Habilita la depuració de l'HTML (es desa a ~/."
 #~ "liferea_1.2/output.xhtml)"
 
-#~ msgid "  --debug-parsing  Print debugging messages of all parsing functions"
-#~ msgstr ""
-#~ "  --debug-parsing  Mostra missatges de depuració de totes les funcions "
-#~ "d'anàlisi"
-
 #~ msgid "  --debug-plugins  Print debugging messages when loading plugins"
 #~ msgstr ""
 #~ "  --debug-plugins  Mostra missatges de depuració en carregar connectors"
-
-#~ msgid ""
-#~ "  --debug-trace    Print debugging messages when entering/leaving "
-#~ "functions"
-#~ msgstr ""
-#~ "  --debug-trace    Mostra missatges de depuració en entrar/sortir de les "
-#~ "funcions"
-
-#~ msgid ""
-#~ "  --debug-update   Print debugging messages of the feed update processing"
-#~ msgstr ""
-#~ "  --debug-update   Mostra missatges de depuració del procés "
-#~ "d'actualització de canals"
-
-#~ msgid "  --debug-verbose  Print verbose debugging messages"
-#~ msgstr "  --debug-verbose  Mostra missatges de depuració detallats"

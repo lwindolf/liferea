@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-22 20:36+0200\n"
+"POT-Creation-Date: 2009-03-19 23:29+0200\n"
 "PO-Revision-Date: 2007-07-18 10:23+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -238,63 +238,6 @@ msgstr "%e %B %Y"
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "Kan inte skapa cachekatalogen \"%s\"!"
 
-#: ../src/common.c:445
-msgid ""
-"You are unauthorized to download this feed. Please update your username and "
-"password in the feed properties dialog box."
-msgstr ""
-"Du är inte behörig att hämta denna kanal. Uppdatera ditt användarnamn och "
-"lösenord i kanalens egenskapsruta."
-
-#: ../src/common.c:447
-msgid "Payment Required"
-msgstr "Betalning krävs"
-
-#: ../src/common.c:448
-msgid "Access Forbidden"
-msgstr "Åtkomst förbjuden"
-
-#: ../src/common.c:449
-msgid "Resource Not Found"
-msgstr "Resursen kunde inte hittas"
-
-#: ../src/common.c:450
-msgid "Method Not Allowed"
-msgstr "Metoden inte tillåten"
-
-#: ../src/common.c:451
-msgid "Not Acceptable"
-msgstr "Inte acceptabelt"
-
-#: ../src/common.c:452
-msgid "Proxy Authentication Required"
-msgstr "Proxyautentisering krävs"
-
-#: ../src/common.c:453
-msgid "Request Time-Out"
-msgstr "Begäran översteg tidsgränsen"
-
-#: ../src/common.c:454
-msgid "Gone. Resource doesn't exist. Please unsubscribe!"
-msgstr "Borta. Resursen finns inte. Var god och avprenumerera!"
-
-#: ../src/common.c:459
-msgid "Feed not available: Server requested unsupported redirection!"
-msgstr ""
-"Kanalen är inte tillgänglig: Servern begärde en omdirigering som inte stöds!"
-
-#: ../src/common.c:460
-msgid "Client Error"
-msgstr "Klientfel"
-
-#: ../src/common.c:461
-msgid "Server Error"
-msgstr "Serverfel"
-
-#: ../src/common.c:462
-msgid "(unknown networking error happened)"
-msgstr "(okänt nätverksfel inträffade)"
-
 #: ../src/enclosure.c:178
 #, c-format
 msgid "\"%s\" is not a valid enclosure type config file!"
@@ -306,54 +249,54 @@ msgstr "\"%s\" är inte en giltig konfigurationsfil för bilagetyper!"
 msgid "Enclosure download finished: \"%s\""
 msgstr "Hämtning av bilaga är färdig: \"%s\""
 
-#: ../src/export.c:154
+#: ../src/export.c:166
 #, c-format
 msgid "Error renaming %s to %s\n"
 msgstr "Fel vid namnbyte från %s till %s\n"
 
-#: ../src/export.c:346 ../src/export.c:348
+#: ../src/export.c:366 ../src/export.c:368
 #, c-format
 msgid "XML error while reading cache file! Could not import \"%s\"!"
 msgstr "XML-fel under läsning av cachefil! Kunde inte importera \"%s\"!"
 
-#: ../src/export.c:354 ../src/export.c:356
+#: ../src/export.c:374 ../src/export.c:376
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr "Tomt dokument! OPML-dokumentet \"%s\" får inte vara tomma vid import."
 
-#: ../src/export.c:377 ../src/export.c:379
+#: ../src/export.c:397 ../src/export.c:399
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 "\"%s\" är inte ett giltigt OPML-dokument! Liferea kan inte importera denna "
 "fil!"
 
-#: ../src/export.c:398
+#: ../src/export.c:418
 msgid "Imported feed list"
 msgstr "Importerad kanallista"
 
-#: ../src/export.c:409
+#: ../src/export.c:429
 msgid "Import Feed List"
 msgstr "Importera kanallista"
 
-#: ../src/export.c:409
+#: ../src/export.c:429
 msgid "Import"
 msgstr "Importera"
 
-#: ../src/export.c:417
+#: ../src/export.c:437
 msgid "Error while exporting feed list!"
 msgstr "Fel under export av kanallista!"
 
-#: ../src/export.c:419
+#: ../src/export.c:439
 msgid "Feed List exported!"
 msgstr "Kanallistan exporterad!"
 
-#: ../src/export.c:426
+#: ../src/export.c:446
 msgid "Export Feed List"
 msgstr "Exportera kanallista"
 
-#: ../src/export.c:426
+#: ../src/export.c:446
 msgid "Export"
 msgstr "Exportera"
 
@@ -377,7 +320,7 @@ msgstr "\"%s\" har uppdaterats..."
 msgid "\"%s\" is not available"
 msgstr "\"%s\" är inte tillgänglig"
 
-#: ../src/feed_parser.c:131
+#: ../src/feed_parser.c:132
 msgid ""
 "The URL you want Liferea to subscribe to points to a webpage and the auto "
 "discovery found no feeds on this page. Maybe this webpage just does not "
@@ -387,24 +330,24 @@ msgstr ""
 "automatiska igenkänningen hittade inga kanaler på denna sida. Webbsidan "
 "kanske inte har stöd för automatisk igenkänning av kanaler."
 
-#: ../src/feed_parser.c:164
+#: ../src/feed_parser.c:165
 #, c-format
 msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
 msgstr "XML-fel vid läsning av kanal! Kanalen \"%s\" kunde inte läsas in!"
 
-#: ../src/feed_parser.c:169
+#: ../src/feed_parser.c:170
 msgid "Empty document!"
 msgstr "Tomt dokument!"
 
-#: ../src/feed_parser.c:178
+#: ../src/feed_parser.c:179
 msgid "Invalid XML!"
 msgstr "Ogiltig XML!"
 
-#: ../src/feed_parser.c:221
+#: ../src/feed_parser.c:222
 msgid "Source points to HTML document."
 msgstr "Källa pekar till HTML-dokument."
 
-#: ../src/feed_parser.c:224
+#: ../src/feed_parser.c:225
 msgid "Could not determine the feed type."
 msgstr "Kunde inte fastställa kanaltypen."
 
@@ -413,61 +356,117 @@ msgstr "Kunde inte fastställa kanaltypen."
 msgid "There are no unread items "
 msgstr "Det finns inga olästa artiklar "
 
-#: ../src/main.c:72
-msgid "  --version        Print version information and exit"
-msgstr "  --version         Skriv ut versionsinformation och avsluta"
-
-#: ../src/main.c:73
-msgid "  --help           Print this help and exit"
-msgstr "  --help           Skriv ut detta meddelande och avsluta"
-
-#: ../src/main.c:74
-msgid "  --mainwindow-state=STATE"
-msgstr "  --mainwindow-state=TILLSTÅND"
-
-#: ../src/main.c:75
-msgid "                   Start Liferea with its main window in STATE."
-msgstr "                   Starta Liferea med dess huvudfönster i TILLSTÅND."
-
-#: ../src/main.c:76
-msgid "                   STATE may be `shown', `iconified', or `hidden'"
+#: ../src/main.c:166
+#, fuzzy
+msgid ""
+"Start Liferea with its main window in STATE. STATE may be `shown', "
+"`iconified', or `hidden'"
 msgstr ""
 "                   TILLSTÅND kan vara \"shown\", \"iconified\" eller \"hidden"
 "\""
 
-#: ../src/main.c:78
-msgid "  --debug-<topic>  Print debugging messages for the given topic"
+#: ../src/main.c:166
+msgid "STATE"
+msgstr ""
+
+#: ../src/main.c:174
+#, fuzzy
+msgid "Print debugging messages of all types"
+msgstr "  --debug-all      Skriv ut felsökningsmeddelanden av alla typer"
+
+#: ../src/main.c:175
+#, fuzzy
+msgid "Print debugging messages for the cache handling"
+msgstr ""
+"  --debug-conf     Skriv ut felsökningsmeddelanden för "
+"konfigurationshantering"
+
+#: ../src/main.c:176
+#, fuzzy
+msgid "Print debugging messages of the configuration handling"
+msgstr ""
+"  --debug-conf     Skriv ut felsökningsmeddelanden för "
+"konfigurationshantering"
+
+#: ../src/main.c:177
+#, fuzzy
+msgid "Print debugging messages of the database handling"
+msgstr ""
+"  --debug-conf     Skriv ut felsökningsmeddelanden för "
+"konfigurationshantering"
+
+#: ../src/main.c:178
+#, fuzzy
+msgid "Print debugging messages of all GUI functions"
+msgstr ""
+"  --debug-gui      Skriv ut felsökningsmeddelanden för alla "
+"gränssnittsfunktioner"
+
+#: ../src/main.c:179
+msgid ""
+"Enables HTML rendering debugging. Each time Liferea renders HTML output it "
+"will also dump the generated HTML into ~/.liferea_1.1/output.xhtml"
+msgstr ""
+
+#: ../src/main.c:180
+#, fuzzy
+msgid "Print debugging messages of all network activity"
+msgstr ""
+"  --debug-net      Skriv ut felsökningsmeddelanden för all nätverksåtkomst"
+
+#: ../src/main.c:181
+#, fuzzy
+msgid "Print debugging messages of all parsing functions"
+msgstr ""
+"  --debug-parsing  Skriv ut felsökningsmeddelanden för alla "
+"tolkningsfunktioner"
+
+#: ../src/main.c:182
+msgid "Print debugging messages when a function takes too long to process"
+msgstr ""
+
+#: ../src/main.c:183
+#, fuzzy
+msgid "Print debugging messages for the plugin loading"
 msgstr "  --debug-<ämne>   Skriv ut felsökningsmeddelanden för angivet ämne"
 
-#: ../src/main.c:79
-msgid "                   Possible topics are: all,cache,conf,db,gui,html"
-msgstr "                   Möjliga ämnen är: all,cache,conf,db,gui,html"
+#: ../src/main.c:184
+#, fuzzy
+msgid "Print debugging messages when entering/leaving functions"
+msgstr ""
+"  --debug-trace    Skriv ut felsökningsmeddelanden när funktioner används"
 
-#: ../src/main.c:80
-msgid "                   net,parsing,plugins,trace,update,verbose"
-msgstr "                   net,parsing,plugins,trace,update,verbose"
+#: ../src/main.c:185
+#, fuzzy
+msgid "Print debugging messages of the feed update processing"
+msgstr ""
+"  --debug-update   Skriv ut felsökningsmeddelanden för uppdateringsprocessen"
+
+#: ../src/main.c:186
+#, fuzzy
+msgid "Print verbose debugging messages"
+msgstr "  --debug-verbose  Skriv ut informativa felsökningsmeddelanden"
+
+#: ../src/main.c:199 ../src/main.c:200
+#, fuzzy
+msgid "Print debugging messages for the given topic"
+msgstr "  --debug-<ämne>   Skriv ut felsökningsmeddelanden för angivet ämne"
+
+#: ../src/main.c:206
+#, fuzzy
+msgid "Liferea, the Linux Feed Reader"
+msgstr "Liferea - Nyhetsläsare för Linux"
+
+#: ../src/main.c:207
+msgid "For more information, please visit http://liferea.sourceforge.net/"
+msgstr ""
 
 #. GTK theme support
-#: ../src/main.c:164 ../glade/liferea.glade.h:65
+#: ../src/main.c:236 ../glade/liferea.glade.h:65
 msgid "Liferea"
 msgstr "Liferea"
 
-#: ../src/main.c:217
-#, c-format
-msgid "The --mainwindow-state argument must be given a parameter.\n"
-msgstr "Argumentet --mainwindow-state måste anges med en parameter.\n"
-
-#: ../src/main.c:225
-#, c-format
-msgid "The --session argument must be given a parameter.\n"
-msgstr "--session argument måste anges med en parameter.\n"
-
-#: ../src/main.c:228
-#, c-format
-msgid "Liferea encountered an unknown argument: %s\n"
-msgstr "Liferea påträffade på ett okänt argument: %s\n"
-
-#: ../src/main.c:239
+#: ../src/main.c:245
 msgid "Liferea seems to be running already!"
 msgstr "Liferea verkar redan köra!"
 
@@ -483,12 +482,104 @@ msgstr ""
 "automatiskt borttaget. Ta bort den här katalogen manuellt när du är säker på "
 "att migreringen lyckades!"
 
-#. Cast time_t tunix to int.
-#. Print cookie expire warning.
-#: ../src/net.c:198
-#, c-format
-msgid "Cookie for %s has expired!"
-msgstr "Kakan för %s har gått ut!"
+#. Some libsoup transport errors
+#: ../src/net.c:321
+msgid "The update request was cancelled"
+msgstr ""
+
+#: ../src/net.c:322
+msgid "Unable to resolve destination host name"
+msgstr ""
+
+#: ../src/net.c:323
+msgid "Unable to resolve proxy host name"
+msgstr ""
+
+#: ../src/net.c:324
+#, fuzzy
+msgid "Unable to connect to remote host"
+msgstr "Fel vid anslutning till fjärrvärd"
+
+#: ../src/net.c:325
+msgid "Unable to connect to proxy"
+msgstr ""
+
+#: ../src/net.c:326
+msgid ""
+"A network error occurred, or the other end closed the connection unexpectedly"
+msgstr ""
+
+#. http 3xx redirection
+#: ../src/net.c:329
+msgid "The resource moved permanently to a new location"
+msgstr ""
+
+#. http 4xx client error
+#: ../src/net.c:332
+#, fuzzy
+msgid ""
+"You are unauthorized to download this feed. Please update your username and "
+"password in the feed properties dialog box"
+msgstr ""
+"Du är inte behörig att hämta denna kanal. Uppdatera ditt användarnamn och "
+"lösenord i kanalens egenskapsruta."
+
+#: ../src/net.c:334
+#, fuzzy
+msgid "Payment required"
+msgstr "Betalning krävs"
+
+#: ../src/net.c:335
+msgid "You're not allowed to access this resource"
+msgstr ""
+
+#: ../src/net.c:336
+msgid "Resource Not Found"
+msgstr "Resursen kunde inte hittas"
+
+#: ../src/net.c:337
+msgid "Method Not Allowed"
+msgstr "Metoden inte tillåten"
+
+#: ../src/net.c:338
+msgid "Not Acceptable"
+msgstr "Inte acceptabelt"
+
+#: ../src/net.c:339
+#, fuzzy
+msgid "Proxy authentication required"
+msgstr "Proxyautentisering krävs"
+
+#: ../src/net.c:340
+#, fuzzy
+msgid "Request timed out"
+msgstr "Begäran översteg tidsgränsen"
+
+#: ../src/net.c:341
+msgid "Gone. Resource doesn't exist. Please unsubscribe!"
+msgstr "Borta. Resursen finns inte. Var god och avprenumerera!"
+
+#: ../src/net.c:346
+msgid "There was an internal error in the update process"
+msgstr ""
+
+#: ../src/net.c:348
+msgid "Feed not available: Server requested unsupported redirection!"
+msgstr ""
+"Kanalen är inte tillgänglig: Servern begärde en omdirigering som inte stöds!"
+
+#: ../src/net.c:350
+msgid "Client Error"
+msgstr "Klientfel"
+
+#: ../src/net.c:352
+msgid "Server Error"
+msgstr "Serverfel"
+
+#: ../src/net.c:354
+#, fuzzy
+msgid "An unknown networking error happened!"
+msgstr "(okänt nätverksfel inträffade)"
 
 #. SQL condition builder function	in-memory check function	feedlist.opml rule id           rule menu label         positive menu option    negative menu option    has param
 #. ========================================================================================================================================================================================
@@ -596,27 +687,7 @@ msgstr ""
 msgid "Updating favicon for \"%s\""
 msgstr "Uppdaterar kanalikonen för \"%s\""
 
-#: ../src/subscription.c:168
-#, c-format
-msgid "The URL of \"%s\" has changed permanently and was updated"
-msgstr "URL:en för \"%s\" har ändrats permanent och blev uppdaterad"
-
-#: ../src/subscription.c:176
-#, c-format
-msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
-msgstr "\"%s\" är stängd. Liferea kommer inte att uppdatera den mer!"
-
-#: ../src/subscription.c:179
-#, c-format
-msgid "\"%s\" has not changed since last update"
-msgstr "\"%s\" har inte ändrats sedan senaste uppdateringen"
-
-#: ../src/subscription.c:225
-#, c-format
-msgid "Updating \"%s\""
-msgstr "Uppdaterar \"%s\""
-
-#: ../src/subscription.c:448
+#: ../src/subscription.c:194
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
@@ -624,28 +695,48 @@ msgstr ""
 "Ett problem inträffade under läsning av prenumerationen. Kontrollera URL:en "
 "och utmatningen i konsollen."
 
-#: ../src/update.c:265
+#: ../src/subscription.c:210
+#, c-format
+msgid "The URL of \"%s\" has changed permanently and was updated"
+msgstr "URL:en för \"%s\" har ändrats permanent och blev uppdaterad"
+
+#: ../src/subscription.c:218
+#, c-format
+msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
+msgstr "\"%s\" är stängd. Liferea kommer inte att uppdatera den mer!"
+
+#: ../src/subscription.c:221
+#, c-format
+msgid "\"%s\" has not changed since last update"
+msgstr "\"%s\" har inte ändrats sedan senaste uppdateringen"
+
+#: ../src/subscription.c:267
+#, c-format
+msgid "Updating \"%s\""
+msgstr "Uppdaterar \"%s\""
+
+#: ../src/update.c:266
 #, c-format
 msgid "Error opening temp file %s to use for filtering!"
 msgstr "Fel vid öppning av temporärfilen %s för filtrering!"
 
-#: ../src/update.c:288
+#: ../src/update.c:289
 #, c-format
 msgid "%s exited with status %d"
 msgstr "%s avslutades med status %d"
 
-#: ../src/update.c:294 ../src/update.c:295 ../src/update.c:407
+#: ../src/update.c:295 ../src/update.c:296 ../src/update.c:408
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "Fel: Kunde inte öppna röret \"%s\""
 
 #. FIXME: maybe setting request->returncode would be better
-#: ../src/update.c:433
+#: ../src/update.c:434
 #, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr "Fel: Kunde inte öppna filen \"%s\""
 
-#: ../src/update.c:439
+#: ../src/update.c:440
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "Fel: Filen \"%s\" finns inte"
@@ -1172,29 +1263,29 @@ msgstr "Okänd källa"
 msgid "Couldn't find pixmap file: %s"
 msgstr "Kunde inte hitta bildfilen: %s"
 
-#: ../src/ui/ui_feedlist.c:305
+#: ../src/ui/ui_feedlist.c:296
 msgid "Deleting entry"
 msgstr "Tar bort post"
 
-#: ../src/ui/ui_feedlist.c:306
+#: ../src/ui/ui_feedlist.c:297
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "Är du säker på att du vill ta bort \"%s\" och dess innehåll?"
 
-#: ../src/ui/ui_feedlist.c:306
+#: ../src/ui/ui_feedlist.c:297
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Är du säker på att du vill ta bort \"%s\"?"
 
-#: ../src/ui/ui_feedlist.c:318
+#: ../src/ui/ui_feedlist.c:309
 msgid "Deletion Confirmation"
 msgstr "Bekräftelse för borttagning"
 
-#: ../src/ui/ui_feedlist.c:347
+#: ../src/ui/ui_feedlist.c:338
 msgid "You have to select a feed entry"
 msgstr "Du måste markera en kanal"
 
-#: ../src/ui/ui_feedlist.c:354 ../src/ui/ui_feedlist.c:363
+#: ../src/ui/ui_feedlist.c:345 ../src/ui/ui_feedlist.c:354
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea är i frånkopplat läge. Inga uppdateringar är möjliga."
 
@@ -1223,30 +1314,30 @@ msgstr "/_Kopiera länkadress"
 msgid "_Subscribe..."
 msgstr "/_Prenumerera..."
 
-#: ../src/ui/ui_itemlist.c:249
+#: ../src/ui/ui_itemlist.c:242
 #, fuzzy
 msgid "*** No title ***"
 msgstr "*** Ingen titel ***"
 
-#: ../src/ui/ui_itemlist.c:336
+#: ../src/ui/ui_itemlist.c:329
 msgid "Date"
 msgstr "Datum"
 
-#: ../src/ui/ui_itemlist.c:350
+#: ../src/ui/ui_itemlist.c:343
 msgid "Headline"
 msgstr "Rubrik"
 
-#: ../src/ui/ui_itemlist.c:480 ../src/ui/ui_itemlist.c:500
-#: ../src/ui/ui_itemlist.c:579 ../src/ui/ui_itemlist.c:726
-#: ../src/ui/ui_itemlist.c:757
+#: ../src/ui/ui_itemlist.c:473 ../src/ui/ui_itemlist.c:493
+#: ../src/ui/ui_itemlist.c:572 ../src/ui/ui_itemlist.c:719
+#: ../src/ui/ui_itemlist.c:750
 msgid "No item has been selected"
 msgstr "Ingen artikel har markerats"
 
-#: ../src/ui/ui_itemlist.c:496
+#: ../src/ui/ui_itemlist.c:489
 msgid "This item has no link specified!"
 msgstr "Artikeln har ingen angiven länk!"
 
-#: ../src/ui/ui_itemlist.c:566
+#: ../src/ui/ui_itemlist.c:559
 msgid "You must select a feed to delete its items!"
 msgstr "Du måste markera en kanal för att ta bort dess artiklar!"
 
@@ -1254,107 +1345,107 @@ msgstr "Du måste markera en kanal för att ta bort dess artiklar!"
 msgid "<i>(empty)</i>"
 msgstr "<i>(tom)</i>"
 
-#: ../src/ui/ui_popup.c:129
+#: ../src/ui/ui_popup.c:130
 msgid "/Launch Item In _Tab"
 msgstr "/Öppna artikel i _flik"
 
-#: ../src/ui/ui_popup.c:130
+#: ../src/ui/ui_popup.c:131
 msgid "/_Launch Item In Browser"
 msgstr "/Öppna artikel i _webbläsare"
 
-#: ../src/ui/ui_popup.c:137
+#: ../src/ui/ui_popup.c:138
 #, c-format
 msgid "/Copy to News Bin/%s"
 msgstr "/Kopiera till nyhetskorg/%s"
 
 #. menu option for social bookmark creation
-#: ../src/ui/ui_popup.c:145
+#: ../src/ui/ui_popup.c:146
 #, c-format
 msgid "/_Bookmark Link at %s"
 msgstr "/_Bokmärk länk på %s"
 
-#: ../src/ui/ui_popup.c:147
+#: ../src/ui/ui_popup.c:148
 msgid "/Copy Item _URL to Clipboard"
 msgstr "/Kopiera artikelns url till urklipp"
 
-#: ../src/ui/ui_popup.c:150
+#: ../src/ui/ui_popup.c:151
 msgid "/Toggle _Read Status"
 msgstr "/Växla _läst\\/oläst"
 
-#: ../src/ui/ui_popup.c:151
+#: ../src/ui/ui_popup.c:152
 msgid "/Toggle Item _Flag"
 msgstr "/Växla artikel_flagga"
 
-#: ../src/ui/ui_popup.c:152
+#: ../src/ui/ui_popup.c:153
 msgid "/R_emove Item"
 msgstr "/_Ta bort artikel"
 
-#: ../src/ui/ui_popup.c:159
+#: ../src/ui/ui_popup.c:160
 msgid "/_Update All"
 msgstr "/_Uppdatera alla"
 
-#: ../src/ui/ui_popup.c:160
+#: ../src/ui/ui_popup.c:161
 msgid "/_Preferences"
 msgstr "/_Inställningar"
 
-#: ../src/ui/ui_popup.c:163
+#: ../src/ui/ui_popup.c:164
 msgid "/_Quit"
 msgstr "/_Avsluta"
 
-#: ../src/ui/ui_popup.c:169
+#: ../src/ui/ui_popup.c:170
 msgid "/Open Enclosure..."
 msgstr "/Öppna bilaga"
 
-#: ../src/ui/ui_popup.c:170
+#: ../src/ui/ui_popup.c:171
 msgid "/Save As..."
 msgstr "/Spara som..."
 
-#: ../src/ui/ui_popup.c:171
+#: ../src/ui/ui_popup.c:172
 #, fuzzy
 msgid "/Copy Link Location"
 msgstr "/_Kopiera länkadress"
 
-#: ../src/ui/ui_popup.c:305
+#: ../src/ui/ui_popup.c:300
 msgid "/_Update"
 msgstr "/_Uppdatera"
 
-#: ../src/ui/ui_popup.c:307
+#: ../src/ui/ui_popup.c:302
 msgid "/_Update Folder"
 msgstr "/_Uppdatera mapp"
 
-#: ../src/ui/ui_popup.c:309
+#: ../src/ui/ui_popup.c:304
 msgid "/_Mark All As Read"
 msgstr "/_Markera alla som lästa"
 
-#: ../src/ui/ui_popup.c:314
+#: ../src/ui/ui_popup.c:309
 msgid "/_New"
 msgstr "/_Ny"
 
-#: ../src/ui/ui_popup.c:315
+#: ../src/ui/ui_popup.c:310
 msgid "/_New/New _Subscription..."
 msgstr "/_Ny/Ny _prenumeration..."
 
-#: ../src/ui/ui_popup.c:318
+#: ../src/ui/ui_popup.c:313
 msgid "/_New/New _Folder..."
 msgstr "/_Ny/Ny _mapp..."
 
-#: ../src/ui/ui_popup.c:321
+#: ../src/ui/ui_popup.c:316
 msgid "/_New/New S_earch Folder..."
 msgstr "/_Ny/Ny _sökmapp..."
 
-#: ../src/ui/ui_popup.c:322
+#: ../src/ui/ui_popup.c:317
 msgid "/_New/New S_ource..."
 msgstr "/_Ny/Ny _källa..."
 
-#: ../src/ui/ui_popup.c:323
+#: ../src/ui/ui_popup.c:318
 msgid "/_New/New _News Bin..."
 msgstr "/_Ny/Ny _nyhetskorg..."
 
-#: ../src/ui/ui_popup.c:330
+#: ../src/ui/ui_popup.c:325
 msgid "/_Delete"
 msgstr "/_Ta bort"
 
-#: ../src/ui/ui_popup.c:331
+#: ../src/ui/ui_popup.c:326
 #, fuzzy
 msgid "/_Properties..."
 msgstr "_Egenskaper..."
@@ -1524,18 +1615,18 @@ msgstr[1] ""
 msgid "This feed specifies no default update interval."
 msgstr "Denna kanal anger inget standardintervall för uppdatering."
 
-#: ../src/ui/ui_tray.c:207
+#: ../src/ui/ui_tray.c:189
 #, c-format
 msgid "%d new item"
 msgid_plural "%d new items"
 msgstr[0] "%d ny artikel"
 msgstr[1] "%d nya artiklar"
 
-#: ../src/ui/ui_tray.c:214
+#: ../src/ui/ui_tray.c:196
 msgid "No new items"
 msgstr "Inga nya artiklar"
 
-#: ../src/ui/ui_tray.c:218
+#: ../src/ui/ui_tray.c:200
 #, c-format
 msgid ""
 "%s\n"
@@ -1550,7 +1641,7 @@ msgstr[1] ""
 "%s\n"
 "%d olästa artiklar"
 
-#: ../src/ui/ui_tray.c:220
+#: ../src/ui/ui_tray.c:202
 #, c-format
 msgid ""
 "%s\n"
@@ -1595,20 +1686,20 @@ msgid "feedlist.opml"
 msgstr "feedlist_sv.opml"
 
 #: ../src/fl_sources/default_source.c:174
-#: ../src/fl_sources/google_source.c:233 ../glade/new_subscription.glade.h:6
+#: ../src/fl_sources/google_source.c:244 ../glade/new_subscription.glade.h:6
 #: ../glade/simple_subscription.glade.h:5
 msgid "New Subscription"
 msgstr "Ny prenumeration"
 
-#: ../src/fl_sources/google_source.c:119
+#: ../src/fl_sources/google_source.c:120
 msgid "Google Reader login failed!"
 msgstr "Inloggning mot Google Reader misslyckades!"
 
-#: ../src/fl_sources/google_source.c:319
+#: ../src/fl_sources/google_source.c:330
 msgid "Google Reader"
 msgstr "Google Reader"
 
-#: ../src/fl_sources/google_source.c:320
+#: ../src/fl_sources/google_source.c:331
 #, fuzzy
 msgid ""
 "Integrate the feed list of your Google Reader account. Liferea will present "
@@ -1640,11 +1731,11 @@ msgstr "Välj OPML-fil"
 msgid "New OPML Subscription"
 msgstr "Ny OPML-prenumeration"
 
-#: ../src/fl_sources/node_source.c:230
+#: ../src/fl_sources/node_source.c:225
 msgid "No feed list source types found!"
 msgstr "Inga källtyper för kanallista hittades!"
 
-#: ../src/fl_sources/node_source.c:261
+#: ../src/fl_sources/node_source.c:256
 msgid "Source Type"
 msgstr "Källtyp"
 
@@ -2462,6 +2553,40 @@ msgstr ""
 "Ange en webbadress att använda automatisk kanalidentifiering för eller om du "
 "vet den exakta kanaladressen."
 
+#~ msgid "Access Forbidden"
+#~ msgstr "Åtkomst förbjuden"
+
+#~ msgid "  --version        Print version information and exit"
+#~ msgstr "  --version         Skriv ut versionsinformation och avsluta"
+
+#~ msgid "  --help           Print this help and exit"
+#~ msgstr "  --help           Skriv ut detta meddelande och avsluta"
+
+#~ msgid "  --mainwindow-state=STATE"
+#~ msgstr "  --mainwindow-state=TILLSTÅND"
+
+#~ msgid "                   Start Liferea with its main window in STATE."
+#~ msgstr ""
+#~ "                   Starta Liferea med dess huvudfönster i TILLSTÅND."
+
+#~ msgid "                   Possible topics are: all,cache,conf,db,gui,html"
+#~ msgstr "                   Möjliga ämnen är: all,cache,conf,db,gui,html"
+
+#~ msgid "                   net,parsing,plugins,trace,update,verbose"
+#~ msgstr "                   net,parsing,plugins,trace,update,verbose"
+
+#~ msgid "The --mainwindow-state argument must be given a parameter.\n"
+#~ msgstr "Argumentet --mainwindow-state måste anges med en parameter.\n"
+
+#~ msgid "The --session argument must be given a parameter.\n"
+#~ msgstr "--session argument måste anges med en parameter.\n"
+
+#~ msgid "Liferea encountered an unknown argument: %s\n"
+#~ msgstr "Liferea påträffade på ett okänt argument: %s\n"
+
+#~ msgid "Cookie for %s has expired!"
+#~ msgstr "Kakan för %s har gått ut!"
+
 #, fuzzy
 #~ msgid "Network error"
 #~ msgstr "anmäl fel till"
@@ -2708,9 +2833,6 @@ msgstr ""
 #~ msgid "Unsupported network protocol"
 #~ msgstr "Nätverksprotokollet stöds inte"
 
-#~ msgid "Error connecting to remote host"
-#~ msgstr "Fel vid anslutning till fjärrvärd"
-
 #~ msgid "Hostname could not be found"
 #~ msgstr "Värdnamnet kunde inte hittas"
 
@@ -2807,20 +2929,6 @@ msgstr ""
 #~ msgstr ""
 #~ "<i>Liferea måste startas om för att förändringarna ska få effekt.</i>"
 
-#~ msgid "  --debug-all      Print debugging messages of all types"
-#~ msgstr "  --debug-all      Skriv ut felsökningsmeddelanden av alla typer"
-
-#~ msgid ""
-#~ "  --debug-conf     Print debugging messages of the configuration handling"
-#~ msgstr ""
-#~ "  --debug-conf     Skriv ut felsökningsmeddelanden för "
-#~ "konfigurationshantering"
-
-#~ msgid "  --debug-gui      Print debugging messages of all GUI functions"
-#~ msgstr ""
-#~ "  --debug-gui      Skriv ut felsökningsmeddelanden för alla "
-#~ "gränssnittsfunktioner"
-
 #~ msgid ""
 #~ "  --debug-html     Enable HTML debugging (saving to ~/.liferea_1.2/output."
 #~ "xhtml)"
@@ -2828,33 +2936,9 @@ msgstr ""
 #~ "  --debug-html     Aktivera HTML-felsökning (sparar till ~/.liferea_1.2/"
 #~ "output.xhtml)"
 
-#~ msgid "  --debug-net      Print debugging messages for all network access"
-#~ msgstr ""
-#~ "  --debug-net      Skriv ut felsökningsmeddelanden för all nätverksåtkomst"
-
-#~ msgid "  --debug-parsing  Print debugging messages of all parsing functions"
-#~ msgstr ""
-#~ "  --debug-parsing  Skriv ut felsökningsmeddelanden för alla "
-#~ "tolkningsfunktioner"
-
 #~ msgid "  --debug-plugins  Print debugging messages when loading plugins"
 #~ msgstr ""
 #~ "  --debug-plugins  Skriv ut felsökningsmeddelanden när instick läses in"
-
-#~ msgid ""
-#~ "  --debug-trace    Print debugging messages when entering/leaving "
-#~ "functions"
-#~ msgstr ""
-#~ "  --debug-trace    Skriv ut felsökningsmeddelanden när funktioner används"
-
-#~ msgid ""
-#~ "  --debug-update   Print debugging messages of the feed update processing"
-#~ msgstr ""
-#~ "  --debug-update   Skriv ut felsökningsmeddelanden för "
-#~ "uppdateringsprocessen"
-
-#~ msgid "  --debug-verbose  Print verbose debugging messages"
-#~ msgstr "  --debug-verbose  Skriv ut informativa felsökningsmeddelanden"
 
 #, fuzzy
 #~ msgid "window1"
