@@ -62,6 +62,8 @@ AC_DEFINE_UNQUOTED(LIBPREFIX, "$SO_PREFIX", [Platform dependent library prefix])
 
 AC_CHECK_FUNCS([strsep fsync])
 
+PKG_PROG_PKG_CONFIG()
+
 dnl #######################################################################
 dnl # Check for X session management libs
 dnl #######################################################################
@@ -69,8 +71,6 @@ dnl #######################################################################
 if test "x$enable_sm" = "xyes"; then
   PKG_CHECK_MODULES([SM], [sm], [AC_DEFINE(USE_SM, 1, [Define if we're using X Session Management.])],[enable_sm=no])
 fi
-
-PKG_PROG_PKG_CONFIG()
 
 dnl *********
 dnl libnotify
