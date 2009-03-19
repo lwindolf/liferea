@@ -14,7 +14,7 @@ AM_CPPFLAGS = \
 	-DBIN_DIR=\""$(bindir)"\" \
 	-I$(top_srcdir)/src \
 	$(PACKAGE_CFLAGS) \
-	$(X_CFLAGS) \
+	$(SM_CFLAGS) \
 	$(DBUS_CFLAGS) \
 	$(NM_CFLAGS) \
 	$(GNUTLS_CFLAGS) 
@@ -72,7 +72,7 @@ liferea_LDADD =	parsers/libliparsers.a \
 		ui/libliui.a \
 		webkit/libwebkit.a \
 		$(SYNC_LIB) \
-		$(PACKAGE_LIBS) $(X_LIBS) $(X_PRE_LIBS) -lX11 $(X_EXTRA_LIBS) \
+		$(PACKAGE_LIBS) $(SM_LIBS) \
 		$(DBUS_LIBS) $(NM_LIBS) $(INTLLIBS) $(GNUTLS_LIBS) $(AVAHI_LIBS) \
 		$(WEBKIT_LIBS) $(LIBNOTIFY_LIBS)
 

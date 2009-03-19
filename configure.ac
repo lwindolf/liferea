@@ -62,30 +62,12 @@ AC_DEFINE_UNQUOTED(LIBPREFIX, "$SO_PREFIX", [Platform dependent library prefix])
 
 AC_CHECK_FUNCS([strsep fsync])
 
-dnl Search for X libraries
-AC_PATH_XTRA
-
 dnl #######################################################################
 dnl # Check for X session management libs
 dnl #######################################################################
 
-AC_MSG_CHECKING([for X11 session management library])
-
 if test "x$enable_sm" = "xyes"; then
-   enable_sm=no
-   tmp=`echo "$X_PRE_LIBS" | grep -e "-lSM"`
-   if test "x$tmp" != "x" ; then
-		 enable_sm=yes
-   fi 
-else
-     enable_sm=no
-fi
-
-if test "x$enable_sm" = "xyes"; then
-   AC_DEFINE(USE_SM, 1, [Define if we're using X Session Management.])
-   AC_MSG_RESULT(yes)
-else
-   AC_MSG_RESULT(no)
+  PKG_CHECK_MODULES([SM], [sm], [AC_DEFINE(USE_SM, 1, [Define if we're using X Session Management.])],[enable_sm=no])
 fi
 
 PKG_PROG_PKG_CONFIG()
