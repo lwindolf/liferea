@@ -277,7 +277,7 @@ ui_popup_delete (gpointer callback_data, guint callback_action, GtkWidget *widge
  * Shows popup menus for the feed list depending on the
  * node type. The node will be passed as a callback_data.
  */
-void
+static void
 ui_popup_node_menu (nodePtr node, gboolean validSelection, guint button, guint32 activate_time)
 {
 	GtkItemFactoryEntry	*menu_items = NULL;
