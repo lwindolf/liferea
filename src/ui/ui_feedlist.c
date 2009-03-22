@@ -132,14 +132,16 @@ ui_feedlist_key_press_cb (GtkWidget *widget, GdkEventKey *event, gpointer data)
 	return FALSE;
 }
 
-static gboolean ui_feedlist_filter_visible_function(GtkTreeModel *model, GtkTreeIter *iter, gpointer data) {
+static gboolean
+ui_feedlist_filter_visible_function (GtkTreeModel *model, GtkTreeIter *iter, gpointer data)
+{
 	gint count;
 	nodePtr np;
 
-	if(!feedlist_reduced_unread)
+	if (!feedlist_reduced_unread)
 		return TRUE;
 
-	gtk_tree_model_get(model, iter, FS_PTR, &np, FS_UNREAD, &count, -1);
+	gtk_tree_model_get (model, iter, FS_PTR, &np, FS_UNREAD, &count, -1);
 
 	if (np && (IS_FOLDER (np) || IS_NODE_SOURCE (np))) 
 		return FALSE;
