@@ -139,6 +139,30 @@ webkit_load_committed (WebKitWebView *view, WebKitWebFrame *frame)
 }
 
 /**
+ * If a link with target="_blank" is clicked, this signal is emitted
+ * (and not navigation-policy-decision-requested). It may be a bit
+ * more consistent once https://bugs.webkit.org/show_bug.cgi?id=23932
+ * is fixed, but for now we use this.
+ */
+static WebKitWebView*
+webkit_new_view (WebKitWebView *view, WebKitWebFrame *frame)
+{
+	LifereaHtmlView *htmlview;
+	const gchar *uri;
+
+	htmlview = g_object_get_data (G_OBJECT (view), "htmlview");
+	uri = webkit_web_frame_get_uri (frame);
+
+g_print ("webkit_new_view: url is %s\n", uri);
+
+	if (liferea_htmlview_handle_URL (htmlview, uri)) {
+		webkit_web_view_load_uri (view, uri);
+	}
+
+	return NULL;
+}
+
+/**
  * WebKitWebView::populate-popup:
  * @web_view: the object on which the signal is emitted
  * @menu: the context menu
@@ -267,6 +291,12 @@ webkit_new (LifereaHtmlView *htmlview)
 		view,
 		"load-committed",
 		G_CALLBACK (webkit_load_committed),
+		view
+	);
+	g_signal_connect (
+		view,
+		"create-web-view",
+		G_CALLBACK (webkit_new_view),
 		view
 	);
 

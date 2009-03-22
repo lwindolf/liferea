@@ -77,9 +77,13 @@ network_process_callback (SoupSession *session, SoupMessage *msg, gpointer user_
 	/* Update last-modified date */
 	tmp = soup_message_headers_get (msg->response_headers, "Last-Modified");
 	if (tmp) {
+		/* The string may be badly formatted, which will make
+		 * soup_date_new_from_string() return NULL */
 		last_modified = soup_date_new_from_string (tmp);
-		job->result->updateState->lastModified = soup_date_to_time_t (last_modified);
-		soup_date_free (last_modified);
+		if (last_modified) {
+			job->result->updateState->lastModified = soup_date_to_time_t (last_modified);
+			soup_date_free (last_modified);
+		}
 	}
 
 	update_process_finished_job (job);

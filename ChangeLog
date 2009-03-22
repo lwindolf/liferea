@@ -20,6 +20,8 @@
 	* Update of German translation. (Robin Stocker)
 	* Fixes SF #2593803: Update of Arabic translation.
 	  (Khaled Hosny)
+	* Check if parsing the Last-Modified header worked before
+	  using it. (Gustavo Noronha Silva)
 
 
 2009-03-14  Adrian Bunk  <bunk@users.sourceforge.net>
