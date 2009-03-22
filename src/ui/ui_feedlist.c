@@ -41,15 +41,13 @@
 #include "ui/ui_subscription.h"
 #include "fl_sources/node_source.h"
 
-extern GHashTable	*feedHandler;
-
 GtkTreeModel		*filter;
 GtkTreeStore		*feedstore = NULL;
 
 gboolean		feedlist_reduced_unread = FALSE;
 
 static void
-ui_feedlist_row_changed_cb(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter)
+ui_feedlist_row_changed_cb (GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter)
 {
 	nodePtr node;
 	
