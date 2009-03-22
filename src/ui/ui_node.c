@@ -73,6 +73,9 @@ ui_node_is_expanded (const gchar *nodeId)
 {
 	GtkTreeIter	*iter;
 	gboolean 	expanded = FALSE;
+	
+	if (feedlist_reduced_unread)
+		return FALSE;
 
 	iter = ui_node_to_iter (nodeId);
 	if (iter) {
@@ -90,7 +93,10 @@ ui_node_set_expansion (nodePtr folder, gboolean expanded)
 {
 	GtkTreeIter		*iter;
 	GtkTreePath		*path;
-	GtkTreeView		*treeview;	
+	GtkTreeView		*treeview;
+	
+	if (feedlist_reduced_unread)
+		return;
 
 	iter = ui_node_to_iter (folder->id);
 	if (!iter)
@@ -243,7 +249,7 @@ ui_node_load_feedlist (nodePtr node)
 		if (IS_FOLDER (node) || IS_NODE_SOURCE (node))
 			ui_node_load_feedlist (node);
 			
-		if (node->expanded && !feedlist_reduced_unread)
+		if (node->expanded)
 			ui_node_set_expansion (node, TRUE);
 
 		iter = g_slist_next(iter);
