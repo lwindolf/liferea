@@ -115,7 +115,7 @@ debug_entries_parse_callback (const gchar *option_name,
 	gulong *debug_flags = data;
 
 	if (g_str_equal (option_name, "--debug-all")) {
-		*debug_flags = 0xffff;
+		*debug_flags = 0xffff - DEBUG_VERBOSE - DEBUG_TRACE;
 	} else if (g_str_equal (option_name, "--debug-cache")) {
 		*debug_flags |= DEBUG_CACHE;
 	} else if (g_str_equal (option_name, "--debug-conf")) {
