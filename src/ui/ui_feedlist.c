@@ -46,7 +46,7 @@ extern GHashTable	*feedHandler;
 GtkTreeModel		*filter;
 GtkTreeStore		*feedstore = NULL;
 
-gboolean			feedlist_reduced_unread = FALSE;
+gboolean		feedlist_reduced_unread = FALSE;
 
 static void
 ui_feedlist_row_changed_cb(GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter)
@@ -238,6 +238,9 @@ ui_feedlist_init (GtkTreeView *treeview)
 static void
 ui_feedlist_expand_parents (nodePtr parentNode)
 {
+	if (feedlist_reduced_unread)
+		return;
+
 	if (parentNode->parent)
 		ui_feedlist_expand_parents (parentNode->parent);
 		
