@@ -363,9 +363,9 @@ import_OPML_feedlist (const gchar *filename, nodePtr parentNode, gboolean showEr
 	doc = xmlParseFile (filename);
 	if (!doc) {
 		if (showErrors)
-			ui_show_error_box (_("XML error while reading cache file! Could not import \"%s\"!"), filename);
+			ui_show_error_box (_("XML error while reading OPML file! Could not import \"%s\"!"), filename);
 		else
-			g_warning (_("XML error while reading cache file! Could not import \"%s\"!"), filename);
+			g_warning (_("XML error while reading OPML file! Could not import \"%s\"!"), filename);
 		error = TRUE;
 	} else {
 		cur = xmlDocGetRootElement (doc);
