@@ -256,7 +256,16 @@ ui_feedlist_select (nodePtr node)
 	model = gtk_tree_view_get_model (treeview);
 	
 	if (node && node != feedlist_get_root ()) {
-		GtkTreePath *path = gtk_tree_model_get_path (model, ui_node_to_iter(node->id));
+		GtkTreePath *path;
+
+		/* in filtered mode we need to convert the iterator */
+		if (feedlist_reduced_unread) {
+			GtkTreeIter iter;
+			gtk_tree_model_filter_convert_child_iter_to_iter (GTK_TREE_MODEL_FILTER (filter), &iter, ui_node_to_iter (node->id));
+			path = gtk_tree_model_get_path (model, &iter);
+		} else {
+			path = gtk_tree_model_get_path (model, ui_node_to_iter (node->id));
+		}
 		
 		if (node->parent)
 			ui_feedlist_expand_parents (node->parent);
