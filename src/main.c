@@ -155,7 +155,7 @@ main (int argc, char *argv[])
 	GOptionGroup	*debug;
 	gulong		debug_flags = 0;
 	LifereaDBus	*dbus = NULL;
-	gchar		*initial_state;
+	gchar		*initial_state = "shown";
 	int		initialState;
 
 #ifdef USE_SM
