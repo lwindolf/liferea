@@ -297,7 +297,9 @@ ui_popup_node_menu (nodePtr node, gboolean validSelection, guint button, guint32
 	if (validSelection) {
 		if (writeableFeedlist) {
 			ui_popup_add_menuitem (menu, _("_Delete"), ui_popup_delete, node, GTK_STOCK_DELETE, 0);
-			ui_popup_add_menuitem (menu, _("_Properties..."), ui_popup_properties, node, GTK_STOCK_PROPERTIES, 0);
+			/* FIXME: "Rename" matches the current ->request_properties() implementations, but
+			   that's not guaranteed to stay this way */
+			ui_popup_add_menuitem (menu, _("_Rename"), ui_popup_properties, node, GTK_STOCK_PROPERTIES, 0);
 		}
 	}
 
