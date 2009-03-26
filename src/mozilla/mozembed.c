@@ -371,6 +371,9 @@ mozembed_init (void)
 	mozsupport_preference_set_boolean ("accessibility.typeaheadfind", FALSE);
 	mozsupport_preference_set_boolean ("accessibility.typeaheadfind.autostart", FALSE);
 	
+	/* avoid CPU usage due to unconfigured XulRunner Places */
+	mozsupport_preference_set_int ("places.frecency.updateIdleTime", 0);
+	
 	mozsupport_save_prefs ();
 	
 	debug_exit ("mozembed_init");

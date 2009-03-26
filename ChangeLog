@@ -2,7 +2,9 @@
 
 	Version 1.4.28 (Stable)
 
-	*
+	* Adds a possible fix for the 100% CPU issues by settings
+	  places.frecency.updateIdleTime to 0.
+	  (suggested by Axel Beckert)
 
 
 2009-03-13  Adrian Bunk  <bunk@users.sourceforge.net>
