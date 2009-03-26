@@ -536,7 +536,7 @@ feedlist_unselect (void)
 		
 	itemlist_unload (FALSE /* mark all read */);
 	ui_feedlist_select (NULL);
-	liferea_shell_update_feed_menu (FALSE, FALSE);
+	liferea_shell_update_feed_menu (TRUE, FALSE, FALSE);
 	liferea_shell_update_allitems_actions (FALSE, FALSE);
 }
 

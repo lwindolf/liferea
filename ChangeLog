@@ -24,6 +24,10 @@
 	  using it. (Gustavo Noronha Silva)
 	* Fix links with target="_blank" not being opened.
 	  (Emilio Pozuelo Monfort)
+	* Fixes warnings in reduced feed list. Fixes right click
+	  changing the selection in reduced feed list. (Lars Lindner)
+	* Fixes Debian #471011: "New Subscription..." button in
+	  toolbar disabled on startup. (Lars Lindner)
 
 
 2009-03-14  Adrian Bunk  <bunk@users.sourceforge.net>

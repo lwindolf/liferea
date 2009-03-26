@@ -121,12 +121,13 @@ void liferea_shell_update_toolbar (void);
 /** 
  * Update the sensitivity of options affecting single feeds.
  *
+ * @param add           TRUE if subscribing is to be enabled
  * @param enabled	TRUE if feed actions are to be enabled
  * @param readWrite	TRUE if feed list modifying actions are enabled
  *
  * @todo: use signal instead
  */
-void liferea_shell_update_feed_menu (gboolean enabled, gboolean readWrite);
+void liferea_shell_update_feed_menu (gboolean add, gboolean enabled, gboolean readWrite);
 
 /** 
  * Update the sensitivity of options affecting single items.

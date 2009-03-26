@@ -291,9 +291,9 @@ liferea_shell_update_update_menu (gboolean enabled)
 }
 
 void
-liferea_shell_update_feed_menu (gboolean enabled, gboolean readWrite)
+liferea_shell_update_feed_menu (gboolean add, gboolean enabled, gboolean readWrite)
 {
-	gtk_action_group_set_sensitive (shell->priv->addActions, readWrite);
+	gtk_action_group_set_sensitive (shell->priv->addActions, add);
 	gtk_action_group_set_sensitive (shell->priv->feedActions, enabled);
 	gtk_action_group_set_sensitive (shell->priv->readWriteActions, readWrite);
 }

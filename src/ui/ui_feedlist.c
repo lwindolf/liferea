@@ -82,11 +82,12 @@ ui_feedlist_selection_changed_cb (GtkTreeSelection *selection, gpointer data)
 		feedlist_selection_changed (node);
 		
 		if (node) {
+			gboolean allowModify = (NODE_SOURCE_TYPE (node->source->root)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST);
 			liferea_shell_update_update_menu ((NODE_TYPE (node)->capabilities & NODE_CAPABILITY_UPDATE) ||
 			                                  (NODE_TYPE (node)->capabilities & NODE_CAPABILITY_UPDATE_CHILDS));
-			liferea_shell_update_feed_menu (TRUE, (NODE_SOURCE_TYPE (node->source->root)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST));
+			liferea_shell_update_feed_menu (allowModify, TRUE, allowModify);
 		} else {
-			liferea_shell_update_feed_menu (FALSE, FALSE);
+			liferea_shell_update_feed_menu (TRUE, FALSE, FALSE);
 		}
 	} else {
 		/* If we cannot get the new selection we keep the old one
@@ -230,8 +231,9 @@ ui_feedlist_init (GtkTreeView *treeview)
                 	  liferea_shell_lookup ("feedlist"));
 	
 	ui_dnd_setup_feedlist (feedstore);
-	liferea_shell_update_feed_menu (FALSE, FALSE);
+	liferea_shell_update_feed_menu (TRUE, FALSE, FALSE);
 	liferea_shell_update_allitems_actions (FALSE, FALSE);
+	
 	debug_exit ("ui_feedlist_init");
 }
 
