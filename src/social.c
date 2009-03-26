@@ -21,7 +21,6 @@
 #include "conf.h"
 #include "debug.h"
 #include "social.h"
-#include "ui/ui_popup.h"
 
 /** list of registered bookmarking sites */
 GSList *bookmarkSites = NULL;
@@ -67,7 +66,6 @@ social_set_bookmark_site (const gchar *name)
 		bookmarkSite = iter->data;
 		if (g_str_equal (bookmarkSite->name, name)) {
 			conf_set_str_value (SOCIAL_BM_SITE, name);
-			ui_popup_update_menues ();
 			return;
 		}
 		iter = g_slist_next (iter);

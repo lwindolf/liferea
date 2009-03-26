@@ -35,7 +35,7 @@ void on_newnewsbinbtn_clicked(GtkButton *button, gpointer user_data);
 
 void on_newsbinnamechange_clicked(GtkButton *button, gpointer user_data);
 
-void on_popup_copy_to_newsbin(gpointer user_data, guint callback_action, GtkWidget *widget);
+void on_popup_copy_to_newsbin(gpointer data);
 
 /* implementation of the node type interface */
 

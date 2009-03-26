@@ -28,6 +28,8 @@
 	  changing the selection in reduced feed list. (Lars Lindner)
 	* Fixes Debian #471011: "New Subscription..." button in
 	  toolbar disabled on startup. (Lars Lindner)
+	* Reduce the usage of deprecated Gtk+ APIs; we now require
+	  Gtk+ >= 2.16. (Adrian Bunk)
 
 
 2009-03-14  Adrian Bunk  <bunk@users.sourceforge.net>

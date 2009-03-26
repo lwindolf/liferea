@@ -3,6 +3,7 @@
  *
  * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2009 Adrian Bunk <bunk@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,12 +27,6 @@
 
 #include "item.h"
 #include "enclosure.h"
-
-/**
- * Updates dynamic popup menues. Needs to be called at least
- * once before using the popup creation methods below.
- */
-void ui_popup_update_menues (void);
 
 /**
  * Shows a popup menu with options for the item list and the

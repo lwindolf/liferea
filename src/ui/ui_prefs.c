@@ -591,7 +591,7 @@ static void ui_pref_destroyed_cb(GtkWidget *widget, void *data) {
 	prefdialog = NULL;
 }
 
-void on_prefbtn_clicked(GtkButton *button, gpointer user_data) {
+void on_prefbtn_clicked(void) {
 	GtkWidget		*widget, *entry, *menu;
 	GtkAdjustment		*itemCount;
 	GtkTreeStore		*treestore;

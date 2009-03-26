@@ -72,6 +72,6 @@ struct enclosureDownloadTool * prefs_get_download_tool (void);
 
 /* GUI callbacks */
 
-void on_prefbtn_clicked (GtkButton *button, gpointer user_data);
+void on_prefbtn_clicked (void);
 
 #endif

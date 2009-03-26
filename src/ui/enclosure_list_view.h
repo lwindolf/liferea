@@ -88,9 +88,9 @@ void enclosure_list_view_hide (EnclosureListView *elv);
 
 /* related menu creation and callbacks */
 
-void on_popup_open_enclosure(gpointer callback_data, guint callback_action, GtkWidget *widget);
-void on_popup_save_enclosure(gpointer callback_data, guint callback_action, GtkWidget *widget);
-void on_popup_copy_enclosure(gpointer callback_data, guint callback_action, GtkWidget *widget);
+void on_popup_open_enclosure(gpointer callback_data);
+void on_popup_save_enclosure(gpointer callback_data);
+void on_popup_copy_enclosure(gpointer callback_data);
 
 // FIXME: these do not belong here!
 void ui_enclosure_change_type (encTypePtr type);

@@ -155,24 +155,13 @@ void on_popup_launchitem_in_tab_selected(void);
 
 /**
  * Toggles the read status of right-clicked item.
- *
- * @param callback_data An itemPtr that points to the clicked item.
- * @param callback_action Unused.
- * @param widget The GtkTreeView that contains the clicked item.
  */
-void on_popup_toggle_read(gpointer callback_data,
-					 guint callback_action,
-					 GtkWidget *widget);
+void on_popup_toggle_read(void);
+
 /**
  * Toggles the flag of right-clicked item.
- *
- * @param callback_data An itemPtr that points to the clicked item.
- * @param callback_action Unused.
- * @param widget The GtkTreeView that contains the clicked item.
  */
-void on_popup_toggle_flag(gpointer callback_data,
-					 guint callback_action,
-					 GtkWidget *widget);
+void on_popup_toggle_flag(void);
 
 /**
  * Removes all items from the selected feed.
@@ -190,7 +179,7 @@ void on_remove_items_activate(GtkMenuItem *menuitem, gpointer user_data);
  */  
 void on_remove_item_activate(GtkMenuItem *menuitem, gpointer user_data);
 
-void on_popup_remove_selected(gpointer callback_data, guint callback_action, GtkWidget *widget);
+void on_popup_remove_selected(void);
 
 /**
  * Finds and selects the next unread item starting at the given

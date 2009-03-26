@@ -155,7 +155,7 @@ on_enclosure_list_activate (GtkTreeView *treeview, GtkTreePath *path, GtkTreeVie
 		
 	gtk_tree_selection_get_selected (gtk_tree_view_get_selection (treeview), &model, &iter);
 	gtk_tree_model_get (model, &iter, ES_PTR, &enclosure, -1);
-	on_popup_open_enclosure (enclosure, 0, NULL);
+	on_popup_open_enclosure (enclosure);
 
 	return TRUE;
 }
@@ -390,7 +390,7 @@ on_adddialog_response (GtkDialog *dialog, gint response_id, gpointer user_data)
 		/* now we have ensured an existing type configuration and
 		   can launch the URL for which we configured the type */
 		if (enclosure)
-			on_popup_open_enclosure (enclosure, 0, NULL);
+			on_popup_open_enclosure (enclosure);
 			
 		g_free (typestr);
 	}
@@ -430,7 +430,7 @@ ui_enclosure_type_setup (encTypePtr type, enclosurePtr enclosure, gchar *typestr
 }
 
 void
-on_popup_open_enclosure (gpointer callback_data, guint callback_action, GtkWidget *widget)
+on_popup_open_enclosure (gpointer callback_data)
 {
 	gchar		*typestr;
 	enclosurePtr	enclosure = (enclosurePtr)callback_data;
@@ -498,7 +498,7 @@ on_encsave_clicked (const gchar *filename, gpointer user_data)
 }
 
 void
-on_popup_save_enclosure (gpointer callback_data, guint callback_action, GtkWidget *widget)
+on_popup_save_enclosure (gpointer callback_data)
 {
 	enclosurePtr	enclosure = (enclosurePtr)callback_data;
 	gchar		*filename;
@@ -519,7 +519,7 @@ ui_enclosure_change_type (encTypePtr type)
 }
 
 void
-on_popup_copy_enclosure (gpointer callback_data, guint callback_action, GtkWidget *widget)
+on_popup_copy_enclosure (gpointer callback_data)
 {
 	enclosurePtr enclosure = (enclosurePtr)callback_data;
 	

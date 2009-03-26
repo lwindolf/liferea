@@ -48,7 +48,6 @@
 #include "ui/ui_common.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_itemlist.h"
-#include "ui/ui_popup.h"
 #include "ui/ui_prefs.h"
 #include "ui/ui_script.h"
 #include "ui/ui_search.h"
@@ -1243,8 +1242,6 @@ liferea_shell_create (int initialState)
 
 	shell->priv->feedlist = feedlist_create ();
 	
-	ui_popup_update_menues ();		/* create popup menues */
-			
 	liferea_shell_restore_state ();
 	
 	if (initialState == MAINWINDOW_ICONIFIED || 

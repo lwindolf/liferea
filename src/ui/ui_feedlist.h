@@ -66,7 +66,7 @@ void on_newbtn_clicked (GtkButton *button, gpointer user_data);
 void on_menu_delete (GtkWidget *widget, gpointer user_data);
 
 void on_menu_update (GtkWidget *widget, gpointer user_data);
-void on_menu_update_all (GtkWidget *widget, gpointer user_data);
+void on_menu_update_all (void);
 
 void on_menu_allread (GtkWidget *widget, gpointer user_data);
 void on_menu_allfeedsread (GtkWidget *widget, gpointer user_data);

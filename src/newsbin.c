@@ -33,7 +33,6 @@
 #include "ui/liferea_dialog.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_node.h"
-#include "ui/ui_popup.h"
 
 static GtkWidget *newnewsbindialog = NULL;
 static GSList * newsbin_list = NULL;
@@ -63,7 +62,6 @@ newsbin_remove (nodePtr node)
 {
 	newsbin_list = g_slist_remove(newsbin_list, node);
 	feed_get_node_type()->remove(node);
-	ui_popup_update_menues();
 }
 
 static gchar *
@@ -110,17 +108,15 @@ on_newnewsbinbtn_clicked (GtkButton *button, gpointer user_data)
 	newsbin_list = g_slist_append(newsbin_list, newsbin);
 	
 	feedlist_node_added (newsbin);
-	
-	ui_popup_update_menues();	// FIXME: emit signal in FeedList controller
 }
 
 void 
-on_popup_copy_to_newsbin (gpointer user_data, guint callback_action, GtkWidget *widget)
+on_popup_copy_to_newsbin (gpointer data)
 {
 	nodePtr		newsbin;
 	itemPtr		item, copy;
 
-	newsbin = g_slist_nth_data(newsbin_list, callback_action);
+	newsbin = g_slist_nth_data(newsbin_list, GPOINTER_TO_INT(data));
 	item = itemlist_get_selected();
 	if(item) {
 		copy = item_copy(item);

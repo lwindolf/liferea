@@ -357,7 +357,7 @@ on_menu_update (GtkWidget *widget, gpointer user_data)
 }
 
 void
-on_menu_update_all(GtkWidget *widget, gpointer user_data)
+on_menu_update_all(void)
 { 
 	if (network_is_online ()) 
 		node_update_subscription (feedlist_get_root(), GUINT_TO_POINTER (FEED_REQ_PRIORITY_HIGH));

@@ -520,9 +520,7 @@ on_toggle_item_flag (GtkMenuItem *menuitem,
 }
 
 void 
-on_popup_toggle_flag (gpointer callback_data,
-                      guint callback_action,
-		      GtkWidget *widget) 
+on_popup_toggle_flag (void) 
 {
 	on_toggle_item_flag (NULL, NULL);
 }
@@ -541,7 +539,7 @@ on_toggle_unread_status (GtkMenuItem *menuitem,
 }
 
 void
-on_popup_toggle_read (gpointer callback_data, guint callback_action, GtkWidget *widget)
+on_popup_toggle_read (void)
 {
 	on_toggle_unread_status (NULL, NULL);
 }
@@ -574,7 +572,7 @@ on_remove_item_activate (GtkMenuItem *menuitem, gpointer user_data)
 }
 
 void
-on_popup_remove_selected (gpointer callback_data, guint callback_action, GtkWidget *widget)
+on_popup_remove_selected (void)
 {
 	on_remove_item_activate(NULL, NULL);
 }
@@ -739,8 +737,8 @@ ui_itemlist_add_item_bookmark (itemPtr item)
 void
 on_popup_social_bm_item_selected (void)
 {
-	itemPtr	item;
-	
+	itemPtr item;
+
 	item = itemlist_get_selected ();
 	if (item) {
 		ui_itemlist_add_item_bookmark (item);

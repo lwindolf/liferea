@@ -30,7 +30,6 @@
 #include "ui/liferea_shell.h"
 #include "ui/ui_common.h"
 #include "ui/ui_feedlist.h"
-#include "ui/ui_popup.h"
 
 static GHashTable	*flIterHash = NULL;	/* hash table used for fast node id <-> tree iter lookup */
 static GtkWidget	*nodenamedialog = NULL;
@@ -339,7 +338,6 @@ on_nodenamedialog_response (GtkDialog *dialog, gint response_id, gpointer user_d
 
 		ui_node_update (node->id);
 		feedlist_schedule_save ();
-		ui_popup_update_menues ();
 	}
 	
 	gtk_widget_destroy (GTK_WIDGET (dialog));

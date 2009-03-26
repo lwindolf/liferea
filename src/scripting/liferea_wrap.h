@@ -7926,25 +7926,9 @@ fail:
 
 static int _wrap_on_menu_update_all(lua_State* L) {
   int SWIG_arg = 0;
-  GtkWidget *arg1 = (GtkWidget *) 0 ;
-  gpointer arg2 ;
-  gpointer *argp2 ;
   
-  SWIG_check_num_args("on_menu_update_all",2,2)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("on_menu_update_all",1,"GtkWidget *");
-  if(!lua_isuserdata(L,2)) SWIG_fail_arg("on_menu_update_all",2,"gpointer");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_GtkWidget,0))){
-    SWIG_fail_ptr("on_menu_update_all",1,SWIGTYPE_p_GtkWidget);
-  }
-  
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&argp2,SWIGTYPE_p_gpointer,0))){
-    SWIG_fail_ptr("on_menu_update_all",2,SWIGTYPE_p_gpointer);
-  }
-  arg2 = *argp2;
-  
-  on_menu_update_all(arg1,arg2);
+  SWIG_check_num_args("on_menu_update_all",0,0)
+  on_menu_update_all();
   
   return SWIG_arg;
   
@@ -8685,29 +8669,9 @@ fail:
 
 static int _wrap_on_popup_toggle_read(lua_State* L) {
   int SWIG_arg = 0;
-  gpointer arg1 ;
-  unsigned int arg2 ;
-  GtkWidget *arg3 = (GtkWidget *) 0 ;
-  gpointer *argp1 ;
   
-  SWIG_check_num_args("on_popup_toggle_read",3,3)
-  if(!lua_isuserdata(L,1)) SWIG_fail_arg("on_popup_toggle_read",1,"gpointer");
-  if(!lua_isnumber(L,2)) SWIG_fail_arg("on_popup_toggle_read",2,"unsigned int");
-  if(!SWIG_isptrtype(L,3)) SWIG_fail_arg("on_popup_toggle_read",3,"GtkWidget *");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_gpointer,0))){
-    SWIG_fail_ptr("on_popup_toggle_read",1,SWIGTYPE_p_gpointer);
-  }
-  arg1 = *argp1;
-  
-  SWIG_contract_assert((lua_tonumber(L,2)>=0),"number must not be negative")
-  arg2 = (unsigned int)lua_tonumber(L, 2);
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,3,(void**)&arg3,SWIGTYPE_p_GtkWidget,0))){
-    SWIG_fail_ptr("on_popup_toggle_read",3,SWIGTYPE_p_GtkWidget);
-  }
-  
-  on_popup_toggle_read(arg1,arg2,arg3);
+  SWIG_check_num_args("on_popup_toggle_read",0,0)
+  on_popup_toggle_read();
   
   return SWIG_arg;
   
@@ -8721,29 +8685,9 @@ fail:
 
 static int _wrap_on_popup_toggle_flag(lua_State* L) {
   int SWIG_arg = 0;
-  gpointer arg1 ;
-  unsigned int arg2 ;
-  GtkWidget *arg3 = (GtkWidget *) 0 ;
-  gpointer *argp1 ;
   
-  SWIG_check_num_args("on_popup_toggle_flag",3,3)
-  if(!lua_isuserdata(L,1)) SWIG_fail_arg("on_popup_toggle_flag",1,"gpointer");
-  if(!lua_isnumber(L,2)) SWIG_fail_arg("on_popup_toggle_flag",2,"unsigned int");
-  if(!SWIG_isptrtype(L,3)) SWIG_fail_arg("on_popup_toggle_flag",3,"GtkWidget *");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_gpointer,0))){
-    SWIG_fail_ptr("on_popup_toggle_flag",1,SWIGTYPE_p_gpointer);
-  }
-  arg1 = *argp1;
-  
-  SWIG_contract_assert((lua_tonumber(L,2)>=0),"number must not be negative")
-  arg2 = (unsigned int)lua_tonumber(L, 2);
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,3,(void**)&arg3,SWIGTYPE_p_GtkWidget,0))){
-    SWIG_fail_ptr("on_popup_toggle_flag",3,SWIGTYPE_p_GtkWidget);
-  }
-  
-  on_popup_toggle_flag(arg1,arg2,arg3);
+  SWIG_check_num_args("on_popup_toggle_flag",0,0)
+  on_popup_toggle_flag();
   
   return SWIG_arg;
   
@@ -8821,29 +8765,9 @@ fail:
 
 static int _wrap_on_popup_remove_selected(lua_State* L) {
   int SWIG_arg = 0;
-  gpointer arg1 ;
-  unsigned int arg2 ;
-  GtkWidget *arg3 = (GtkWidget *) 0 ;
-  gpointer *argp1 ;
   
-  SWIG_check_num_args("on_popup_remove_selected",3,3)
-  if(!lua_isuserdata(L,1)) SWIG_fail_arg("on_popup_remove_selected",1,"gpointer");
-  if(!lua_isnumber(L,2)) SWIG_fail_arg("on_popup_remove_selected",2,"unsigned int");
-  if(!SWIG_isptrtype(L,3)) SWIG_fail_arg("on_popup_remove_selected",3,"GtkWidget *");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_gpointer,0))){
-    SWIG_fail_ptr("on_popup_remove_selected",1,SWIGTYPE_p_gpointer);
-  }
-  arg1 = *argp1;
-  
-  SWIG_contract_assert((lua_tonumber(L,2)>=0),"number must not be negative")
-  arg2 = (unsigned int)lua_tonumber(L, 2);
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,3,(void**)&arg3,SWIGTYPE_p_GtkWidget,0))){
-    SWIG_fail_ptr("on_popup_remove_selected",3,SWIGTYPE_p_GtkWidget);
-  }
-  
-  on_popup_remove_selected(arg1,arg2,arg3);
+  SWIG_check_num_args("on_popup_remove_selected",0,0)
+  on_popup_remove_selected();
   
   return SWIG_arg;
   
