@@ -28,7 +28,7 @@
 #include "ui/ui_prefs.h"
 
 static gboolean
-browser_execute (const gchar *cmd, const gchar *uri, gboolean remoteEscape, gboolean sync)
+browser_execute (const gchar *cmd, const gchar *uri, gboolean sync)
 {
 	GError		*error = NULL;
 	gchar 		*tmpUri, *tmp, **argv, **iter;
@@ -39,12 +39,8 @@ browser_execute (const gchar *cmd, const gchar *uri, gboolean remoteEscape, gboo
 	g_assert (cmd != NULL);
 	g_assert (uri != NULL);
 
-	/* If the command is using the X remote API we must
-	   escaped all ',' in the URL */
-	if (remoteEscape)
-		tmpUri = common_strreplace (g_strdup (uri), ",", "%2C");
-	else
-		tmpUri = g_strdup (uri);
+	/* We must escape all ',' in the URL */
+	tmpUri = common_strreplace (g_strdup (uri), ",", "%2C");
 
 	/* If there is no %s in the command, then just append %s */
 	if (strstr (cmd, "%s"))
@@ -104,7 +100,7 @@ browser_launch_URL_external (const gchar *uri)
 		/* try to execute synchronously... */
 		cmd = prefs_get_browser_command (browser, TRUE /* remote */, FALSE /* fallback */);
 		if (cmd) {
-			done = browser_execute (cmd, uri, browser->escapeRemote, TRUE);
+			done = browser_execute (cmd, uri, TRUE);
 			g_free (cmd);
 		}
 	}
@@ -119,7 +115,7 @@ browser_launch_URL_external (const gchar *uri)
 		g_warning ("Fatal: cannot retrieve browser command!");
 		return FALSE;
 	}
-	done = browser_execute (cmd, uri, browser?browser->escapeRemote:FALSE, FALSE);
+	done = browser_execute (cmd, uri, FALSE);
 	g_free (cmd);
 	return done;
 }

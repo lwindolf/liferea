@@ -35,7 +35,6 @@ struct browser {
 	gchar *newwinremote;		/**< Optional command variant for opening in new window with remote protocol */
 	gchar *newtab;			/**< Optional command variant for opening in new tab */
 	gchar *newtabremote;		/**< Optional command variant for opening in new tab with remote protocol */
-	gboolean escapeRemote;		/**< Flag to indicate wether "," escaping for remote commands is necessary */
 };
 
 /** 

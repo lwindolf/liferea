@@ -30,6 +30,8 @@
 	  toolbar disabled on startup. (Lars Lindner)
 	* Reduce the usage of deprecated Gtk+ APIs; we now require
 	  Gtk+ >= 2.16. (Adrian Bunk)
+	* Always escape the , character for external browsers.
+	  (Adrian Bunk)
 
 
 2009-03-14  Adrian Bunk  <bunk@users.sourceforge.net>
