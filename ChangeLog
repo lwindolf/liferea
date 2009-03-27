@@ -32,6 +32,8 @@
 	  Gtk+ >= 2.16. (Adrian Bunk)
 	* Always escape the , character for external browsers.
 	  (Adrian Bunk)
+	* Remove the support for the long-dead Netscape browser
+	  as external browser. (Adrian Bunk)
 
 
 2009-03-14  Adrian Bunk  <bunk@users.sourceforge.net>

@@ -90,13 +90,6 @@ static struct browser browsers[] = {
 		NULL, "firefox -a firefox -remote 'openURL(%s,new-tab)'"
 	},
 	{
-		/* tested with Netscape 4.76 */
-		"netscape", "Netscape", "netscape \"%s\"",
-		NULL, "netscape -remote \"openURL(%s)\"",
-		NULL, "netscape -remote \"openURL(%s,new-window)\"",
-		NULL, NULL
-	},
-	{
 		"opera", "Opera","opera \"%s\"",
 		"opera \"%s\"", "opera -remote \"openURL(%s)\"",
 		"opera -newwindow \"%s\"", NULL,
