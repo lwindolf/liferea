@@ -417,7 +417,7 @@ liferea_htmlview_update_proxy (void)
 void
 liferea_htmlview_set_online (gboolean online)
 {
-	if (htmlviewImpl)
+	if (htmlviewImpl && htmlviewImpl->setOffLine)
 		(htmlviewImpl->setOffLine) (!online);
 }
 

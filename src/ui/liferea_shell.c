@@ -733,8 +733,8 @@ liferea_shell_online_status_changed (int online)
 	gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (gtk_action_group_get_action (shell->priv->generalActions, "ToggleOfflineMode")), !online);
 
 	/* Propagate new online status to other interested widgets */
-// FIXME: bad design, HTML view implementation needs to register for network events itself
-//	liferea_htmlview_set_online (online);
+	// FIXME: bad design, HTML view implementation needs to register for network events itself
+	liferea_htmlview_set_online (online);
 	ui_tray_update ();
 }
 

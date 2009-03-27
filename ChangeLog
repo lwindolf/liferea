@@ -34,6 +34,8 @@
 	  (Adrian Bunk)
 	* Remove the support for the long-dead Netscape browser
 	  as external browser. (Adrian Bunk)
+	* Passing online state change to HTML rendering widget.
+	  (Lars Lindner)
 
 
 2009-03-14  Adrian Bunk  <bunk@users.sourceforge.net>
