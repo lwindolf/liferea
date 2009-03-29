@@ -12,14 +12,6 @@
 	* Add proxy support to the htmlview. Require WebKit 1.1.1.
 	* Fix location bar in tabs changing incorrectly with things
 	  like adds or forms. (Emilio Pozuelo Monfort)
-	* Update translations from the 1.4 branch.
-	  (Adrian Bunk)
-	* New Italian translation. (Gianvito Cavasoli)
-	* Added Italian default feed list. (Gianvito Cavasoli)
-	* Update of German translation. (Christian Dywan)
-	* Update of German translation. (Robin Stocker)
-	* Fixes SF #2593803: Update of Arabic translation.
-	  (Khaled Hosny)
 	* Check if parsing the Last-Modified header worked before
 	  using it. (Gustavo Noronha Silva)
 	* Fix links with target="_blank" not being opened.
@@ -38,6 +30,15 @@
 	  (Lars Lindner)
 	* Require libsoup >= 2.26 since ths version fixes a bug
 	  affecting Liferea. (Adrian Bunk)
+
+	* Update translations from the 1.4 branch.
+	  (Adrian Bunk)
+	* New Italian translation. (Gianvito Cavasoli)
+	* Added Italian default feed list. (Gianvito Cavasoli)
+	* Update of German translation. (Christian Dywan)
+	* Update of German translation. (Robin Stocker)
+	* Fixes SF #2593803: Update of Arabic translation.
+	  (Khaled Hosny)
 
 
 2009-03-14  Adrian Bunk  <bunk@users.sourceforge.net>
