@@ -36,6 +36,8 @@
 	  as external browser. (Adrian Bunk)
 	* Passing online state change to HTML rendering widget.
 	  (Lars Lindner)
+	* Require libsoup >= 2.26 since ths version fixes a bug
+	  affecting Liferea. (Adrian Bunk)
 
 
 2009-03-14  Adrian Bunk  <bunk@users.sourceforge.net>
