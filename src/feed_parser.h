@@ -118,14 +118,4 @@ const gchar *feed_type_fhp_to_str (feedHandlerPtr fhp);
  */
 gboolean feed_parse (feedParserCtxtPtr ctxt);
 
-/**
- * Perform feed auto discovery for the given parser context.
- * Usually called when the data during parsing indicates HTML.
- * This method will try to determine an alternative feed
- * location and will trigger another asynchronous update request.
- *
- * @param ctxt		feed parsing context
- */
-void feed_parser_auto_discover (feedParserCtxtPtr ctxt);
-
 #endif

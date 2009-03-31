@@ -104,7 +104,7 @@ feed_free_parser_ctxt (feedParserCtxtPtr ctxt)
  * this source instead into the given feed parsing context. It also
  * replaces the HTTP URI with the found feed source.
  */
-void
+static void
 feed_parser_auto_discover (feedParserCtxtPtr ctxt)
 {
 	gchar	*source;
