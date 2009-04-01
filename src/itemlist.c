@@ -65,6 +65,8 @@ static struct itemlist_priv
 	gboolean 	deferredRemove;		/**< TRUE if selected item needs to be removed from cache on unselecting */
 	gboolean 	deferredFilter;		/**< TRUE if selected item needs to be filtered on unselecting */
 	
+	gboolean	searchResult;		/**< TRUE if a search result is displayed */
+	
 	AttentionProfile *ap;			/**< category statistics handling object */
 } itemlist_priv;
 
@@ -224,27 +226,28 @@ itemlist_merge_item (itemPtr item)
 void
 itemlist_merge_itemset (itemSetPtr itemSet) 
 {
-	nodePtr		node;
-
 	debug_enter ("itemlist_merge_itemset");
 	
 	debug_start_measurement (DEBUG_GUI);
 	
-	node = node_from_id(itemSet->nodeId);
+	/* No node check when loading search results directly */
+	if (!itemlist_priv.searchResult) {
+		nodePtr node = node_from_id (itemSet->nodeId);
 
-	if(!itemlist_priv.currentNode)
-		return; /* Nothing to do if nothing is displayed */
-	
-	if(!IS_VFOLDER (itemlist_priv.currentNode) &&
-	   (itemlist_priv.currentNode != node) && 
-	   !node_is_ancestor (itemlist_priv.currentNode, node))
-		return; /* Nothing to do if the item set does not belong to this node, or this is a search folder */
-
-	if(IS_FOLDER (itemlist_priv.currentNode) && 
-	   (0 == conf_get_int_value (FOLDER_DISPLAY_MODE)))
-		return; /* Bail out if it is a folder without the recursive display preference set */
+		if (!itemlist_priv.currentNode)
+			return; /* Nothing to do if nothing is displayed */
 		
-	debug1 (DEBUG_GUI, "reloading item list with node \"%s\"", node_get_title (node));
+		if (!IS_VFOLDER (itemlist_priv.currentNode) &&
+		    (itemlist_priv.currentNode != node) && 
+		    !node_is_ancestor (itemlist_priv.currentNode, node))
+			return; /* Nothing to do if the item set does not belong to this node, or this is a search folder */
+
+		if (IS_FOLDER (itemlist_priv.currentNode) && 
+		    (0 == conf_get_int_value (FOLDER_DISPLAY_MODE)))
+			return; /* Bail out if it is a folder without the recursive display preference set */
+			
+		debug1 (DEBUG_GUI, "reloading item list with node \"%s\"", node_get_title (node));
+	}
 
 	/* merge items into item view */
 	itemset_foreach (itemSet, itemlist_merge_item);
@@ -259,8 +262,17 @@ itemlist_merge_itemset (itemSetPtr itemSet)
 	debug_exit ("itemlist_merge_itemset");
 }
 
+void
+itemlist_load_search_result (itemSetPtr itemSet)
+{
+	itemview_set_mode (ITEMVIEW_SINGLE_ITEM);
+	
+	itemlist_priv.searchResult = TRUE;
+	itemlist_merge_itemset (itemSet);
+}
+
 /** 
- * To be called whenever a feed was selected and should
+ * To be called whenever a node was selected and should
  * replace the current itemlist.
  */
 void
@@ -277,6 +289,7 @@ itemlist_load (nodePtr node)
 	g_assert (!itemlist_priv.guids);
 	g_assert (!itemlist_priv.filter);
 	itemlist_priv.hasEnclosures = FALSE;
+	itemlist_priv.searchResult = FALSE;
 
 	/* 1. Filter check. Don't continue if folder is selected and 
 	   no folder viewing is configured. If folder viewing is enabled
@@ -303,14 +316,14 @@ itemlist_load (nodePtr node)
 	itemlist_priv.currentNode = node;
 	itemview_set_displayed_node (itemlist_priv.currentNode);
 
-	if(NODE_VIEW_MODE_COMBINED != node_get_view_mode (node))
+	if (NODE_VIEW_MODE_COMBINED != node_get_view_mode (node))
 		itemview_set_mode (ITEMVIEW_NODE_INFO);
 	else
 		itemview_set_mode (ITEMVIEW_ALL_ITEMS);
 	
-	itemSet = node_get_itemset(itemlist_priv.currentNode);
-	itemlist_merge_itemset(itemSet);
-	itemset_free(itemSet);
+	itemSet = node_get_itemset (itemlist_priv.currentNode);
+	itemlist_merge_itemset (itemSet);
+	itemset_free (itemSet);
 
 	itemlist_priv.loading--;
 

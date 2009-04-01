@@ -48,11 +48,14 @@ static void
 search_load_results (nodePtr searchResult, const gchar *searchString)
 {
 	GString	*buffer;
+	itemSetPtr itemSet;
 	
 	/* clear feed and item display and load search results */
 	ui_feedlist_select (NULL);
 	itemlist_unload (FALSE);
-	itemlist_load (searchResult);
+	itemSet = node_get_itemset (searchResult);
+	itemlist_load_search_result (itemSet);
+	itemset_free (itemSet);
 
 	buffer = g_string_new (NULL);
 	htmlview_start_output (buffer, NULL, TRUE, FALSE);

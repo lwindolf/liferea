@@ -204,9 +204,6 @@ void
 itemview_select_item (itemPtr item)
 {
 	ItemViewPrivate *ivp = itemview->priv;
-	
-	if (!ivp->node)
-		return;
 		
 	ivp->needsHTMLViewUpdate = TRUE;
 	
@@ -222,9 +219,6 @@ itemview_select_item (itemPtr item)
 void
 itemview_update_item (itemPtr item)
 {
-	if (!itemview->priv->node)
-		return;
-		
 	/* Always update the GtkTreeView (bail-out done in ui_itemlist_update_item() */
 	if (ITEMVIEW_ALL_ITEMS != itemview->priv->mode)
 		ui_itemlist_update_item (item);
@@ -254,9 +248,6 @@ itemview_update_item (itemPtr item)
 void
 itemview_update_all_items (void)
 {
-	if (!itemview->priv->node)
-		return;
-		
 	/* Always update the GtkTreeView (bail-out done in ui_itemlist_update_item() */
 	if (ITEMVIEW_ALL_ITEMS != itemview->priv->mode)
 		ui_itemlist_update_all_items ();

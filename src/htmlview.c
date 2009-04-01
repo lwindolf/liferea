@@ -324,24 +324,20 @@ htmlview_update (LifereaHtmlView *htmlview, guint mode)
 	gchar		*baseURL = NULL;
 	gboolean	summaryMode;
 		
-	if (!htmlView_priv.node)
-	{
-		debug0 (DEBUG_HTML, "clearing HTML view as nothing is selected");
-		liferea_htmlview_clear (htmlview);
-		return;
-	}
-	
 	/* determine base URL */
 	switch (mode) {
 		case ITEMVIEW_SINGLE_ITEM:
 			item = itemlist_get_selected ();
 			if(item) {
-				baseURL = (gchar *)node_get_base_url (node_from_id(item->nodeId));
+				baseURL = (gchar *)node_get_base_url (node_from_id (item->nodeId));
 				item_unload (item);
 			}
 			break;
 		default:
-			baseURL = (gchar *) node_get_base_url (htmlView_priv.node);
+			if (htmlView_priv.node)
+				baseURL = (gchar *) node_get_base_url (htmlView_priv.node);
+			else
+				g_warning("htmlview_update: this should never happen!");
 			break;
 	}
 
@@ -374,7 +370,8 @@ htmlview_update (LifereaHtmlView *htmlview, guint mode)
 			   sets displaying everything in summary because of only a
 			   single feed without item descriptions would make no sense. */
 
-			summaryMode = !IS_FOLDER (htmlView_priv.node) && 
+			summaryMode = (NULL != htmlView_priv.node) &&
+			              !IS_FOLDER (htmlView_priv.node) && 
 	        		      !IS_VFOLDER (htmlView_priv.node) && 
 	        		      (htmlView_priv.missingContent > 3);
 
