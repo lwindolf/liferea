@@ -65,7 +65,8 @@ static struct itemlist_priv
 	gboolean 	deferredRemove;		/**< TRUE if selected item needs to be removed from cache on unselecting */
 	gboolean 	deferredFilter;		/**< TRUE if selected item needs to be filtered on unselecting */
 	
-	gboolean	searchResult;		/**< TRUE if a search result is displayed */
+	gboolean	isSearchResult;		/**< TRUE if a search result is displayed */
+	gboolean	searchResultComplete;	/**< TRUE if search result merging is complete */
 	
 	AttentionProfile *ap;			/**< category statistics handling object */
 } itemlist_priv;
@@ -231,7 +232,7 @@ itemlist_merge_itemset (itemSetPtr itemSet)
 	debug_start_measurement (DEBUG_GUI);
 	
 	/* No node check when loading search results directly */
-	if (!itemlist_priv.searchResult) {
+	if (!itemlist_priv.isSearchResult) {
 		nodePtr node = node_from_id (itemSet->nodeId);
 
 		if (!itemlist_priv.currentNode)
@@ -247,6 +248,14 @@ itemlist_merge_itemset (itemSetPtr itemSet)
 			return; /* Bail out if it is a folder without the recursive display preference set */
 			
 		debug1 (DEBUG_GUI, "reloading item list with node \"%s\"", node_get_title (node));
+	} else {
+		/* If we are loading a search result we must never merge 
+		   anything besides the search items. In fact if we already
+		   have items we just return. */
+		if (itemlist_priv.searchResultComplete)
+			return;
+			
+		itemlist_priv.searchResultComplete = TRUE;
 	}
 
 	/* merge items into item view */
@@ -267,8 +276,10 @@ itemlist_load_search_result (itemSetPtr itemSet)
 {
 	itemview_set_mode (ITEMVIEW_SINGLE_ITEM);
 	
-	itemlist_priv.searchResult = TRUE;
-	itemlist_merge_itemset (itemSet);
+	itemlist_priv.isSearchResult = TRUE;
+	itemlist_priv.searchResultComplete = FALSE;	/* enable result merging */
+	itemlist_merge_itemset (itemSet);	
+	itemlist_priv.searchResultComplete = TRUE;	/* disable result merging */
 }
 
 /** 
@@ -289,7 +300,7 @@ itemlist_load (nodePtr node)
 	g_assert (!itemlist_priv.guids);
 	g_assert (!itemlist_priv.filter);
 	itemlist_priv.hasEnclosures = FALSE;
-	itemlist_priv.searchResult = FALSE;
+	itemlist_priv.isSearchResult = FALSE;
 
 	/* 1. Filter check. Don't continue if folder is selected and 
 	   no folder viewing is configured. If folder viewing is enabled
