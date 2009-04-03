@@ -79,7 +79,7 @@ static struct browser browsers[] = {
 		/* tested with SeaMonkey 1.0.6 */
 		"mozilla", "Mozilla", "mozilla %s",
 		NULL, "mozilla -remote openURL(%s)",
-		NULL, "mozillax -remote 'openURL(%s,new-window)'",
+		NULL, "mozilla -remote 'openURL(%s,new-window)'",
 		NULL, "mozilla -remote 'openURL(%s,new-tab)'"
 	},
 	{

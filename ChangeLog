@@ -2,7 +2,8 @@
 
 	Version 1.5.16 (Unstable)
 
-	*
+	* Fixes the opening in a new Mozilla window.
+	  (Adrian Bunk)
 
 
 2009-03-29  Adrian Bunk <bunk@users.sourceforge.net>
