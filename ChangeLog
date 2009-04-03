@@ -2,6 +2,8 @@
 
 	Version 1.5.16 (Unstable)
 
+	* Fixes crash when switching view mode when search result
+	  is visible. (Lars Lindner)
 	* Fixes the opening in a new Mozilla window.
 	  (Adrian Bunk)
 
