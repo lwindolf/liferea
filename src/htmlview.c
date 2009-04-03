@@ -336,8 +336,6 @@ htmlview_update (LifereaHtmlView *htmlview, guint mode)
 		default:
 			if (htmlView_priv.node)
 				baseURL = (gchar *) node_get_base_url (htmlView_priv.node);
-			else
-				g_warning("htmlview_update: this should never happen!");
 			break;
 	}
 
@@ -399,10 +397,14 @@ htmlview_update (LifereaHtmlView *htmlview, guint mode)
 			break;
 		case ITEMVIEW_NODE_INFO:
 			{
-				gchar *html = node_render (htmlView_priv.node);
-				if (html) {
-					g_string_append (output, html);
-					g_free (html);
+				gchar *html;
+				
+				if (htmlView_priv.node) {
+					html = node_render (htmlView_priv.node);	
+					if (html) {
+						g_string_append (output, html);
+						g_free (html);
+					}
 				}
 			}
 			break;
