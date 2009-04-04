@@ -79,7 +79,8 @@ opml_source_merge_feed (xmlNodePtr match, gpointer user_data)
 			node = node_new (folder_get_node_type ());
 		}
 		node_set_title (node, title);
-		feedlist_node_added (node);
+		node_set_parent (node, mergeCtxt->rootNode, -1);
+		feedlist_node_imported (node);
 		
 		subscription_update (node->subscription, FEED_REQ_RESET_TITLE);
 	}		
