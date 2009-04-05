@@ -56,7 +56,7 @@ typedef struct subscription {
 	struct updateJob *updateJob;		/**< update request structure used when downloading the subscribed source */
 	
 	gint		updateInterval;		/**< user defined update interval in minutes */	
-	guint		defaultInterval;	/**< optional update interval as specified by the feed */
+	guint		defaultInterval;	/**< optional update interval as specified by the feed in minutes */
 	
 	GSList		*metadata;		/**< metadata list assigned to this subscription */
 	
