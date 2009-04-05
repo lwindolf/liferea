@@ -163,7 +163,7 @@ void subscription_cancel_update (subscriptionPtr subscription);
  *
  * @param subscription	the subscription
  *
- * @returns the currently configured update interval (in seconds)
+ * @returns the currently configured update interval (in minutes)
  */
 gint subscription_get_update_interval(subscriptionPtr subscription);
 
@@ -171,7 +171,7 @@ gint subscription_get_update_interval(subscriptionPtr subscription);
  * Set the update interval setting for the given subscription
  *
  * @param subscription	the subscription
- * @param interval	the new update interval (in seconds)
+ * @param interval	the new update interval (in minutes)
  */
 void subscription_set_update_interval(subscriptionPtr subscription, gint interval);
 
@@ -180,7 +180,7 @@ void subscription_set_update_interval(subscriptionPtr subscription, gint interva
  *
  * @param subscription	the subscription
  *
- * @returns the default update interval (in seconds) or 0
+ * @returns the default update interval (in minutes) or 0
  */
 guint subscription_get_default_update_interval(subscriptionPtr subscription);
 
@@ -188,7 +188,7 @@ guint subscription_get_default_update_interval(subscriptionPtr subscription);
  * Set the default update interval setting for the given subscription
  *
  * @param subscription	the subscription
- * @param interval	the default update interval (in seconds)
+ * @param interval	the default update interval (in minutes)
  */
 void subscription_set_default_update_interval(subscriptionPtr subscription, guint interval);
 
