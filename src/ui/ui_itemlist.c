@@ -93,7 +93,7 @@ ui_item_id_to_iter (gulong id, GtkTreeIter *iter)
 static gint
 ui_itemlist_date_sort_func (GtkTreeModel *model, GtkTreeIter *a, GtkTreeIter *b, gpointer user_data)
 {
-	gulong	timea, timeb;
+	guint64	timea, timeb;
 	double	diff;
 
 	gtk_tree_model_get (model, a, IS_TIME, &timea, -1);
@@ -162,7 +162,7 @@ ui_itemlist_reset_tree_store (void)
 	
 	/* create and assign new one */
 	itemstore = gtk_tree_store_new (ITEMSTORE_LEN,
-	                                G_TYPE_ULONG,	/* IS_TIME */
+	                                G_TYPE_UINT64,	/* IS_TIME */
 	                                G_TYPE_STRING, 	/* IS_TIME_STR */
 	                                G_TYPE_STRING,	/* IS_LABEL */
 	                                GDK_TYPE_PIXBUF,	/* IS_STATEICON */
@@ -431,7 +431,7 @@ ui_itemlist_add_item (itemPtr item)
 		state += 1;
 
 	gtk_tree_store_set (itemstore, iter,
-		                       IS_TIME, item->time,
+		                       IS_TIME, (guint64)item->time,
 		                       IS_NR, item->id,
 				       IS_PARENT, node,
 		                       IS_FAVICON, node->icon,

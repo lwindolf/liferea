@@ -13,6 +13,9 @@
 	  (Lars Lindner, reported by Leon Nardella)
 	* Fixes the handling of feeds which provide empty GUIDs.
 	  (patch from andoo)
+	* Improves timestamp handling in GtkTreeView sorting
+	  by using 64bit to cover 64bit time_t platforms. 
+	  (patch by Matthias Drochner)
 
 
 2009-03-29  Adrian Bunk <bunk@users.sourceforge.net>
