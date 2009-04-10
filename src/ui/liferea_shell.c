@@ -448,6 +448,18 @@ liferea_shell_set_important_status_bar (const char *format, ...)
 	g_idle_add ((GSourceFunc)liferea_shell_set_status_bar_important_cb, (gpointer)text);
 }
 
+static void
+liferea_shell_do_zoom (gboolean in)
+{
+	/* We must apply the zoom either to the item view
+	   or to an open tab, depending on the browser tabs
+	   GtkNotebook page that is active... */
+	if (!browser_tabs_get_active_htmlview ())
+		itemview_do_zoom (in);
+	else
+		browser_tabs_do_zoom (in);
+}
+
 static gboolean
 on_key_press_event_null_cb (GtkWidget *widget, GdkEventKey *event, gpointer data)
 {
@@ -522,7 +534,7 @@ on_key_press_event (GtkWidget *widget, GdkEventKey *event, gpointer data)
 	if (event->type == GDK_KEY_PRESS) {
 		default_modifiers = gtk_accelerator_get_default_mod_mask ();
 
-		/* handle headline skimming hotkey */
+		/* handle [<modifier>+]<Space> headline skimming hotkey */
 		switch (event->keyval) {
 			case GDK_space:
 				switch (conf_get_int_value (BROWSE_KEY_SETTING)) {
@@ -551,6 +563,20 @@ on_key_press_event (GtkWidget *widget, GdkEventKey *event, gpointer data)
 				}
 				break;
 		}
+		
+		/* some <Ctrl> hotkeys that overrule the HTML view */
+		if ((event->state & GDK_CONTROL_MASK) == GDK_CONTROL_MASK) {
+			switch (event->keyval) {
+				case GDK_plus:
+					liferea_shell_do_zoom (TRUE);
+					return TRUE;
+					break;
+				case GDK_minus:
+					liferea_shell_do_zoom (FALSE);
+					return TRUE;
+					break;
+			}
+		}
 
 		/* prevent usage of navigation keys in entries */
 		focusw = gtk_window_get_focus (GTK_WINDOW (widget));
@@ -561,7 +587,7 @@ on_key_press_event (GtkWidget *widget, GdkEventKey *event, gpointer data)
 		type = g_type_name (GTK_WIDGET_TYPE (focusw));
 		if (type && (!strcmp (type, "WebKitWebView")))
 			return FALSE;
-
+		
 		/* check for treeview navigation */
 		if (0 == (event->state & default_modifiers)) {
 			switch (event->keyval) {
@@ -689,19 +715,13 @@ on_menu_quit (GtkMenuItem *menuitem, gpointer user_data)
 static void
 on_menu_zoomin_selected (gpointer callback_data, guint callback_action, GtkWidget *widget)
 {
-	if (!browser_tabs_get_active_htmlview ())
-		itemview_do_zoom (TRUE);
-	else
-		browser_tabs_do_zoom (TRUE);
+	liferea_shell_do_zoom (TRUE);
 }
 
 static void
 on_menu_zoomout_selected (gpointer callback_data, guint callback_action, GtkWidget *widget)
 {
-	if (!browser_tabs_get_active_htmlview ())
-		itemview_do_zoom (FALSE);
-	else
-		browser_tabs_do_zoom (FALSE);
+	liferea_shell_do_zoom (FALSE);
 }
 
 static void
