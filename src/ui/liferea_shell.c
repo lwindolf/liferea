@@ -689,13 +689,19 @@ on_menu_quit (GtkMenuItem *menuitem, gpointer user_data)
 static void
 on_menu_zoomin_selected (gpointer callback_data, guint callback_action, GtkWidget *widget)
 {
-	itemview_do_zoom (TRUE);
+	if (!browser_tabs_get_active_htmlview ())
+		itemview_do_zoom (TRUE);
+	else
+		browser_tabs_do_zoom (TRUE);
 }
 
 static void
 on_menu_zoomout_selected (gpointer callback_data, guint callback_action, GtkWidget *widget)
 {
-	itemview_do_zoom (FALSE);
+	if (!browser_tabs_get_active_htmlview ())
+		itemview_do_zoom (FALSE);
+	else
+		browser_tabs_do_zoom (FALSE);
 }
 
 static void

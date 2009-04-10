@@ -484,3 +484,9 @@ browser_tabs_get_active_htmlview (void)
 	tab = g_object_get_data (G_OBJECT (gtk_notebook_get_nth_page (tabs->priv->notebook, current)), "tabInfo");
 	return tab->htmlview;
 }
+
+void
+browser_tabs_do_zoom (gboolean in)
+{
+	liferea_htmlview_do_zoom (browser_tabs_get_active_htmlview (), in);
+}

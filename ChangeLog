@@ -9,6 +9,8 @@
 	* Fixes OPML source import problem. Feeds were not
 	  added below the OPML source root node, but below it.
 	  (Lars Lindner)
+	* Fixes tab zooming which didn't work from the main menu.
+	  (Lars Lindner, reported by Leon Nardella)
 
 
 2009-03-29  Adrian Bunk <bunk@users.sourceforge.net>
