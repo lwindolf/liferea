@@ -567,10 +567,12 @@ on_key_press_event (GtkWidget *widget, GdkEventKey *event, gpointer data)
 		/* some <Ctrl> hotkeys that overrule the HTML view */
 		if ((event->state & GDK_CONTROL_MASK) == GDK_CONTROL_MASK) {
 			switch (event->keyval) {
+				case GDK_KP_Add:
 				case GDK_plus:
 					liferea_shell_do_zoom (TRUE);
 					return TRUE;
 					break;
+				case GDK_KP_Subtract:
 				case GDK_minus:
 					liferea_shell_do_zoom (FALSE);
 					return TRUE;
