@@ -386,8 +386,10 @@ atom10_parse_entry_id (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10Pars
 	
 	id = common_utf8_fix ((gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1));
 	if (id) {
-		item_set_id (ctxt->item, id);
-		ctxt->item->validGuid = TRUE;
+		if (strlen (id) > 0) {
+			item_set_id (ctxt->item, id);
+			ctxt->item->validGuid = TRUE;
+		}
 		g_free (id);
 	}
 }

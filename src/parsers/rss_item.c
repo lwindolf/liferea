@@ -128,13 +128,15 @@ parseRSSItem (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 			if(!item_get_id(ctxt->item)) {
 				tmp = (gchar *)xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1);
 				if (tmp) {
-					item_set_id(ctxt->item, tmp);
-					ctxt->item->validGuid = TRUE;
-					tmp2 = xml_get_attribute (cur, "isPermaLink");
-					if(!item_get_source(ctxt->item) && (tmp2 == NULL || g_str_equal (tmp2, "true")))
-						item_set_source(ctxt->item, tmp); /* Per the RSS 2.0 spec. */
-					if(tmp2)
-						xmlFree(tmp2);
+					if (strlen (tmp) > 0) {
+						item_set_id(ctxt->item, tmp);
+						ctxt->item->validGuid = TRUE;
+						tmp2 = xml_get_attribute (cur, "isPermaLink");
+						if(!item_get_source(ctxt->item) && (tmp2 == NULL || g_str_equal (tmp2, "true")))
+							item_set_source(ctxt->item, tmp); /* Per the RSS 2.0 spec. */
+						if(tmp2)
+							xmlFree(tmp2);
+					}
 					xmlFree(tmp);
 				}
 			}
