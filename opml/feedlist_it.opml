@@ -4,10 +4,11 @@
 	<title>Elenco notiziari predefiniti</title>
 </head>
 <body>
-        <outline text="Notiziari d'esempio (localizzati)">
+        <outline text="Notiziari d'esempio">
                 <outline text="Notizie dall'Italia">
                         <outline text="afNews" htmlUrl="http://www.afnews.info/" xmlUrl="http://www.afnews.info/public/afnews/rss.xml" />
                         <outline text="Badzu" htmlUrl="http://www.badzu.net/" xmlUrl="http://www.badzu.net/rss2.xml" />
+                        <outline text="Gizmodo" htmlUrl="http://www.gizmodo.it/" xmlUrl="http://feeds2.feedburner.com/vnunet/it/GizmodoIT" />
                         <outline text="GNUvox" htmlUrl="http://www.gnuvox.info/" xmlUrl="http://www.gnuvox.info/feed/" />
                         <outline text="Google News Italia" htmlUrl="http://news.google.it/nwshp?hl=it&amp;tab=wn" xmlUrl="http://news.google.it/nwshp?ie=UTF-8&amp;oe=UTF-8&amp;hl=it&amp;tab=wn&amp;q=&amp;output=rss" />
                         <outline text="Linux Feed" htmlUrl="http://www.linuxfeed.org/" xmlUrl="http://feedproxy.google.com/linuxfeed" />
@@ -18,10 +19,9 @@
                         <outline text="Punto Informatico" htmlUrl="http://punto-informatico.it/" xmlUrl="http://punto-informatico.it/fader/pixml.xml" />
                         <outline text="Tecnocino" htmlUrl="http://www.tecnocino.it/" xmlUrl="http://www.tecnocino.it/feed/" />
                         <outline text="Yahoo! Eurosport" htmlUrl="http://it.eurosport.yahoo.com/" xmlUrl="http://it.eurosport.yahoo.com/eurosport/tickerdb/sport/0.xml" />
-		</outline>
-	</outline>
+	        </outline>
 	<!-- lets keep this default English block in sync over all feed lists! -->
-	<outline text="Notiziari d'esempio (internazionali)">
+	<outline text="Notizie internazionali">
 		<outline text="Open Source">
 			<outline text="Gnomefiles" htmlUrl="http://www.gnomefiles.org/" xmlUrl="http://www.gnomefiles.org/files/gnomefiles.rdf" />
 			<outline text="GNOME Footnotes" htmlUrl="http://www.gnomedesktop.org/" xmlUrl="http://www.gnomedesktop.org/backend.php" />
@@ -35,6 +35,7 @@
 		<outline text="Podcast">
 			<outline text="EscapePod" htmlUrl="http://escapepod.org" xmlUrl="http://escapepod.org/podcast.xml"/>
 		</outline>
+	    </outline>
 	</outline>
 	<!-- end of default block -->
 
@@ -43,9 +44,10 @@
 	<outline text="Da leggere" title="Da leggere" description="Da leggere" type="vfolder" htmlUrl="" xmlUrl="vfolder">
 		<outline type="rule" text="Read status" rule="unread" value="" additive="true"/>
 	</outline>
-	<outline text="Importante" title="Importante" description="Importante" type="vfolder" htmlUrl="" xmlUrl="vfolder">
+	<outline text="Importanti" title="Importanti" description="Importanti" type="vfolder" htmlUrl="" xmlUrl="vfolder">
 		<outline type="rule" text="Flag status" rule="flagged" value="" additive="true"/>
 	</outline>
 	<!-- end of search folder block -->
 </body>
 </opml>
+
