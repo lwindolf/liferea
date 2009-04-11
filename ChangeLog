@@ -16,6 +16,8 @@
 	* Improves timestamp handling in GtkTreeView sorting
 	  by using 64bit to cover 64bit time_t platforms. 
 	  (patch by Matthias Drochner)
+	* Fixes link display in status bar for browser tabs.
+	  (Lars Lindner, reported by Leon Nardella)
 	* Update of Italian translation. (Gianvito Cavasoli)
 
 

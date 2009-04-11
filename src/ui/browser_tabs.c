@@ -374,6 +374,12 @@ browser_tabs_close_tab (tabInfo *tab)
 		gtk_notebook_set_show_tabs (tabs->priv->notebook, FALSE);
 }
 
+static void
+on_htmlview_status_message (gpointer obj, gchar *url)
+{
+	liferea_shell_set_important_status_bar ("%s", url);
+}
+
 /* single tab creation */
 
 LifereaHtmlView *
@@ -396,6 +402,7 @@ browser_tabs_add_new (const gchar *url, const gchar *title, gboolean activate)
 	g_signal_connect (tab->htmlview, "location-changed", G_CALLBACK (on_htmlview_location_changed), tab);
 	g_signal_connect (tab->htmlview, "open-tab", G_CALLBACK (on_htmlview_open_tab), tab);
 	g_signal_connect (tab->htmlview, "close-tab", G_CALLBACK (on_htmlview_close_tab), tab);
+	g_signal_connect (tab->htmlview, "statusbar-changed", G_CALLBACK (on_htmlview_status_message), NULL);
 	
 	/* create tab widgets */
 
