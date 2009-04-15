@@ -26,4 +26,4 @@ if ! pgrep -x liferea >/dev/null 2>&1; then
 	exit 1
 fi
 
-dbus-send --session --dest=org.gnome.feed.Reader /org/gnome/feed/Reader org.gnome.feed.Reader.Subscribe string:$URL
+dbus-send --session --dest=org.gnome.feed.Reader /org/gnome/feed/Reader org.gnome.feed.Reader.Subscribe "string:$URL"

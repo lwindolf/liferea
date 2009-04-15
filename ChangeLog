@@ -20,6 +20,8 @@
 	  (Lars Lindner, reported by Leon Nardella)
 	* Fixes Ctrl++ zooming hotkey for keyboard layouts where
 	  + and = sign are on the same key. (patch by Leon Nardella)
+	* Correctly quoting the URL in liferea-add-feed to avoid
+	  problems with spaces in URLs. (suggested by kalikiana)
 	* Update of Italian translation. (Gianvito Cavasoli)
 
 
