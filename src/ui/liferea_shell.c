@@ -568,6 +568,7 @@ on_key_press_event (GtkWidget *widget, GdkEventKey *event, gpointer data)
 		if ((event->state & GDK_CONTROL_MASK) == GDK_CONTROL_MASK) {
 			switch (event->keyval) {
 				case GDK_KP_Add:
+				case GDK_equal:
 				case GDK_plus:
 					liferea_shell_do_zoom (TRUE);
 					return TRUE;

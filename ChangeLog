@@ -18,6 +18,8 @@
 	  (patch by Matthias Drochner)
 	* Fixes link display in status bar for browser tabs.
 	  (Lars Lindner, reported by Leon Nardella)
+	* Fixes Ctrl++ zooming hotkey for keyboard layouts where
+	  + and = sign are on the same key. (patch by Leon Nardella)
 	* Update of Italian translation. (Gianvito Cavasoli)
 
 
