@@ -4448,8 +4448,7 @@
     <property name="has_separator">False</property>
     <property name="program_name">Liferea</property>
     <property name="copyright" translatable="yes">Copyright (c) 2003-2009
-Lars Lindner &lt;lars.lindner@gmail.com&gt; and 
-Nathan J. Conrad &lt;t98502@users.sourceforge.net&gt;
+The Liferea Team
 </property>
     <property name="comments" translatable="yes">Liferea is a news aggregator for GTK+</property>
     <property name="website">http://liferea.sf.net</property>
@@ -4807,6 +4806,9 @@ Developers:
 
 Lars Lindner
 Nathan Conrad
+Arnold Noronha
+Adrian Bunk
+Emilio Pozuelo Monfort
 
 Contributers: Code, Patches, Debugging
 
@@ -4841,11 +4843,9 @@ Ed Catmur
 Chris Pirillo
 Eric Anderson
 Ori Avtalion
-Emilio Pozuelo Monfort
 Gustavo Chain
 Lars Strojny
 Jon Forsberg
-Adrian Bunk
 and many more...
 
 Code from other projects

@@ -3,8 +3,13 @@ The following sections list people who have contributed to Liferea.
 Coding
 ======
 
+People that spent a lot of time on the Liferea code base:
+
 Lars Lindner <lars.lindner@gmail.com>
 Nathan J. Conrad <t98502@users.sourceforge.net>
+Arnold Noronha <arnstein87@users.sf.net> 
+Emilio Pozuelo Monfort <pochu@ubuntu.com>
+Adrian Bunk <bunk@stusta.de>
 
 
 Code Contributors
@@ -50,7 +55,6 @@ Eric Anderson <ejona86@users.sf.net>			Use icons from gtk theme
 Daniel Gryniewicz <dang@gentoo.org>			Network Manager support
 mooonz <mooonz@users.sf.net>				improved DBUS support
 Ori Avtalion <oavtal@bezeqint.net>			Preference for toolbar style
-Emilio Pozuelo Monfort <pochu@ubuntu.com>		new DBUS query methods
 							improved tray icon menu
 goyko <kirilov-georgi@users.sf.net>			Support for enclosure URL open
 Gustavo Chain <g@0xff.cl>				Starting minimized to tray
@@ -58,8 +62,6 @@ Lars Strojny <lars@strojny.net>			Statusbar improvements
 Jon Forsberg <zzed2004@users.sf.net>			Enclosure context menu patch
 Mathie Leplatre						Option to filter feed list
 Mikel Olasagasti <mikel@olasagasti.info>		GeoRSS support
-Adrian Bunk <bunk@stusta.de>				Release management and code quality
-Arnold Noronha <arnstein87@users.sf.net>                Google Reader support
 
 Maintainer Credits
 ==================
