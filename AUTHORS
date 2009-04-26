@@ -37,7 +37,7 @@ Marc Deslauriers					patch for window state saving
 Amit D. Chaudhary <amitc@users.sf.net>			patch to update all favicons
 Christoph Hohmann <reboot@users.sf.net>			patch for IPv6
 Raphael Slinckx <raphael@slinckx.net>			New subscriptions over DBUS
-Bjorn Mommens <newsletters@pczone.be>			Hiding read items from folders
+Bjorn Monnens <newsletters@pczone.be>			Hiding read items from folders
 <P@draigBrady.com>					Patch for itemlist updating
 Thomas de Grenier de Latour <thomas_gl@users.sf.net>	Online state in tray icon
 Aristotle Pagaltzis <pagaltzis@gmx.de>			Atom 1.0 support, XSLT rendering
@@ -56,9 +56,13 @@ Daniel Gryniewicz <dang@gentoo.org>			Network Manager support
 mooonz <mooonz@users.sf.net>				improved DBUS support
 Ori Avtalion <oavtal@bezeqint.net>			Preference for toolbar style
 							improved tray icon menu
-goyko <kirilov-georgi@users.sf.net>			Support for enclosure URL open
+Stephan Maka <stephan@spaceboyz.net>			gwget download support
+goyko <kirilov-georgi@users.sf.net>			Menu enabling/disabling
+							Support for enclosure URL open
+Alexander Sack						XulRunner 1.9 build support
 Gustavo Chain <g@0xff.cl>				Starting minimized to tray
-Lars Strojny <lars@strojny.net>			Statusbar improvements
+Lars Strojny <lars@strojny.net>				Statusbar improvements
+							WebKit Rendering Support
 Jon Forsberg <zzed2004@users.sf.net>			Enclosure context menu patch
 Mathie Leplatre						Option to filter feed list
 Mikel Olasagasti <mikel@olasagasti.info>		GeoRSS support
@@ -77,12 +81,25 @@ Documentation and Translations
 
 Polish			Bart Kreska <wytnijto@smlw.pl>
 Italian			Dario Conigliaro <djdas@djdas.net>
+Italian			Emanuele Grande <caccolangrifata@gmail.com>
 Italian			Gianvito Cavasoli <janvitus@ubuntu-it.org>
 Brazilian Portugese	Fernando Ike de Oliveira <fike@midstorm.org>
 Arabic			Khaled Hosny <khaledhosny@eglug.org>
 Spanish			Sargate Kanogan <sargate@gmail.com>
 Japanese		Takeshi AIHANA <takeshi.aihana@gmail.com>
+French			Vincent Lefevre <vincent@vinc17.org>
+Swedish			Daniel Nylander <po@danielnylander.se>
+Turkish			Mehmet Atif Ergun <mehmetaergun@gmail.com>
+Belorusian Latin	Ihar Hrachyshka <booxter@users.sf.net>
+European Portugese	Antonio Lima <amrlima@gmail.com>
+European Portugese	Bruno Miguel <brunoalexandremiguel@gmail.com>
 Czech			Martin Picek <picek.martin@gnome-cesko.cz>
+Russian			Justin Forest <vhex@users.sf.net>
+Hungarian		Mate Ory <orymate@gmail.com>
+Slovakian		Pavol Klacansky <pavolzetor@gmail.com>
+Greek			Evgenia Petoumenou <epetoumenou@gmail.com>
+Albanian		Besnik Bleta <besnik@programeshqip.org>
+Russian                 Sergey Rudchenko <sergey.rudchenko@gmail.com>
 German			Christian Dywan <christian@twotoasts.de>
 German			Robin Stocker <robin@nibor.org>
 
