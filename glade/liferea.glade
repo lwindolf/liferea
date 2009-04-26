@@ -3255,8 +3255,8 @@
     <property name="visible">True</property>
     <property name="border_width">5</property>
     <property name="title" translatable="yes">Search Folder Properties</property>
-    <property name="default_width">500</property>
-    <property name="default_height">250</property>
+    <property name="default_width">550</property>
+    <property name="default_height">320</property>
     <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
     <property name="has_separator">False</property>
     <child internal-child="vbox">
