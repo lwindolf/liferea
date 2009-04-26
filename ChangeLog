@@ -23,7 +23,7 @@
 	* Correctly quoting the URL in liferea-add-feed to avoid
 	  problems with spaces in URLs. (suggested by kalikiana)
 	* Fixes broken enclosure auto-download. (Lars Lindner)
-	* Fixed cache path in manpage. (Lars Lindner)
+	* Fixes LP #312128: Cache path in manpage. (Lars Lindner)
 	* Switch to ~/.liferea_1.6 (Adrian Bunk)
 
 	* Update of Italian translation. (Gianvito Cavasoli)
