@@ -5344,6 +5344,31 @@ fail:
 }
 
 
+static int _wrap_itemlist_load_search_result(lua_State* L) {
+  int SWIG_arg = 0;
+  itemSetPtr arg1 ;
+  itemSetPtr *argp1 ;
+  
+  SWIG_check_num_args("itemlist_load_search_result",1,1)
+  if(!lua_isuserdata(L,1)) SWIG_fail_arg("itemlist_load_search_result",1,"itemSetPtr");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&argp1,SWIGTYPE_p_itemSetPtr,0))){
+    SWIG_fail_ptr("itemlist_load_search_result",1,SWIGTYPE_p_itemSetPtr);
+  }
+  arg1 = *argp1;
+  
+  itemlist_load_search_result(arg1);
+  
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_itemlist_load(lua_State* L) {
   int SWIG_arg = 0;
   struct node *arg1 = (struct node *) 0 ;
@@ -9384,6 +9409,7 @@ static const struct luaL_reg swig_commands[] = {
     { "itemlist_get_selected", _wrap_itemlist_get_selected},
     { "itemlist_get_selected_id", _wrap_itemlist_get_selected_id},
     { "itemlist_merge_itemset", _wrap_itemlist_merge_itemset},
+    { "itemlist_load_search_result", _wrap_itemlist_load_search_result},
     { "itemlist_load", _wrap_itemlist_load},
     { "itemlist_unload", _wrap_itemlist_unload},
     { "itemlist_set_view_mode", _wrap_itemlist_set_view_mode},
