@@ -35,6 +35,8 @@
 #include "xml.h"
 #include "ui/ui_common.h"
 
+#define LIFEREA_CURRENT_DIR ".liferea_1.6"
+
 static void 
 migrate_copy_dir (const gchar *from,
                   const gchar *to,
@@ -260,13 +262,13 @@ migrate_items (const gchar *sourceDir)
 }
 
 static void 
-migrate_10_to_14 (void)
+migrate_from_10 (void)
 {
 	gchar *sourceDir;
 	
-	g_print ("Performing 1.0 -> 1.4 cache migration...\n");
-	migrate_copy_dir (".liferea", ".liferea_1.4", "");
-	migrate_copy_dir (".liferea", ".liferea_1.4", "cache" G_DIR_SEPARATOR_S "favicons");
+	g_print ("Performing 1.0 -> %s cache migration...\n", LIFEREA_CURRENT_DIR);
+	migrate_copy_dir (".liferea", LIFEREA_CURRENT_DIR, "");
+	migrate_copy_dir (".liferea", LIFEREA_CURRENT_DIR, "cache" G_DIR_SEPARATOR_S "favicons");
 
 	sourceDir = g_build_filename (g_get_home_dir(), ".liferea", "cache", "feeds", NULL);
 	migrate_items (sourceDir);
@@ -274,17 +276,17 @@ migrate_10_to_14 (void)
 }
 
 static void
-migrate_12_to_14 (void)
+migrate_from_12 (void)
 {
 	gchar *sourceDir;
 	
-	g_print("Performing 1.2 -> 1.4 cache migration...\n");
+	g_print("Performing .liferea_1.2 -> %s cache migration...\n", LIFEREA_CURRENT_DIR);
 	
 	/* copy everything besides the feed cache */
-	migrate_copy_dir (".liferea_1.2", ".liferea_1.4", "");
-	migrate_copy_dir (".liferea_1.2", ".liferea_1.4", "cache" G_DIR_SEPARATOR_S "favicons");
-	migrate_copy_dir (".liferea_1.2", ".liferea_1.4", "cache" G_DIR_SEPARATOR_S "scripts");
-	migrate_copy_dir (".liferea_1.2", ".liferea_1.4", "cache" G_DIR_SEPARATOR_S "plugins");
+	migrate_copy_dir (".liferea_1.2", LIFEREA_CURRENT_DIR, "");
+	migrate_copy_dir (".liferea_1.2", LIFEREA_CURRENT_DIR, "cache" G_DIR_SEPARATOR_S "favicons");
+	migrate_copy_dir (".liferea_1.2", LIFEREA_CURRENT_DIR, "cache" G_DIR_SEPARATOR_S "scripts");
+	migrate_copy_dir (".liferea_1.2", LIFEREA_CURRENT_DIR, "cache" G_DIR_SEPARATOR_S "plugins");
 	
 	/* migrate feed cache to new DB format */
 	sourceDir = g_build_filename (g_get_home_dir(), ".liferea_1.2", "cache", "feeds", NULL);
@@ -293,18 +295,18 @@ migrate_12_to_14 (void)
 }
 
 static void
-migrate_13_to_14 (void)
+migrate_from_13_14 (const gchar *olddir)
 {
-	g_print("Performing 1.3 -> 1.4 cache migration...\n");	
+	g_print("Performing %s -> %s cache migration...\n", olddir, LIFEREA_CURRENT_DIR);	
 	
 	/* close already loaded DB */
 	db_deinit ();
 
 	/* just copying all files */
-	migrate_copy_dir (".liferea_1.3", ".liferea_1.4", "");
-	migrate_copy_dir (".liferea_1.3", ".liferea_1.4", "cache" G_DIR_SEPARATOR_S "favicons");
-	migrate_copy_dir (".liferea_1.3", ".liferea_1.4", "cache" G_DIR_SEPARATOR_S "scripts");
-	migrate_copy_dir (".liferea_1.3", ".liferea_1.4", "cache" G_DIR_SEPARATOR_S "plugins");	
+	migrate_copy_dir (olddir, LIFEREA_CURRENT_DIR, "");
+	migrate_copy_dir (olddir, LIFEREA_CURRENT_DIR, "cache" G_DIR_SEPARATOR_S "favicons");
+	migrate_copy_dir (olddir, LIFEREA_CURRENT_DIR, "cache" G_DIR_SEPARATOR_S "scripts");
+	migrate_copy_dir (olddir, LIFEREA_CURRENT_DIR, "cache" G_DIR_SEPARATOR_S "plugins");	
 	
 	/* and reopen the copied one */
 	db_init ();
@@ -313,15 +315,24 @@ migrate_13_to_14 (void)
 void
 migration_execute (migrationMode mode)
 {
+	const gchar *olddir;
+
 	switch (mode) {
-		case MIGRATION_MODE_10_TO_14:
-			migrate_10_to_14 ();
+		case MIGRATION_FROM_10:
+			olddir = ".liferea";
+			migrate_from_10 ();
 			break;
-		case MIGRATION_MODE_12_TO_14:
-			migrate_12_to_14 ();
+		case MIGRATION_FROM_12:
+			olddir = ".liferea_1.2";
+			migrate_from_12 ();
 			break;
-		case MIGRATION_MODE_13_TO_14:
-			migrate_13_to_14 ();
+		case MIGRATION_FROM_13:
+			olddir = ".liferea_1.3";
+			migrate_from_13_14 (olddir);
+			break;
+		case MIGRATION_FROM_14:
+			olddir = ".liferea_1.4";
+			migrate_from_13_14 (olddir);
 			break;
 		default:
 			g_error ("Invalid migration mode!");
@@ -330,7 +341,6 @@ migration_execute (migrationMode mode)
 	}
 	
 	ui_show_info_box (_("This version of Liferea uses a new cache format and has migrated your "
-	                    "feed cache. The cache content of v1.2 in ~/.liferea_1.2 was "
-	                    "not deleted automatically. Please remove this directory "
-	                    "manually once you are sure migration was successful!"));
+	                    "feed cache. The cache content in %s was not deleted automatically. "
+			    "Please remove this directory manually once you are sure migration was successful!"), olddir);
 }

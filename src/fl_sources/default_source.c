@@ -54,6 +54,7 @@ default_source_import (nodePtr node)
 	gchar		*filename10;
 	gchar		*filename12;
 	gchar		*filename13;
+	gchar		*filename14;
 	gchar		*filename, *backupFilename;
 	gchar		*content;
 	gssize		length;
@@ -68,6 +69,7 @@ default_source_import (nodePtr node)
 	filename10 = g_strdup_printf ("%s/.liferea/feedlist.opml", g_get_home_dir ());
 	filename12 = g_strdup_printf ("%s/.liferea_1.2/feedlist.opml", g_get_home_dir ());
 	filename13 = g_strdup_printf ("%s/.liferea_1.3/feedlist.opml", g_get_home_dir ());
+	filename14 = g_strdup_printf ("%s/.liferea_1.4/feedlist.opml", g_get_home_dir ());
 	filename = default_source_source_get_feedlist (node);
 	backupFilename = g_strdup_printf("%s.backup", filename);
 	
@@ -76,22 +78,26 @@ default_source_import (nodePtr node)
 		
 		if (g_file_test (filename13, G_FILE_TEST_EXISTS)) {
 			/* migration needs to be done before feed list import... */
-			migration_execute (MIGRATION_MODE_13_TO_14);
+			migration_execute (MIGRATION_FROM_13);
+		} else if (g_file_test (filename14, G_FILE_TEST_EXISTS)) {
+			/* migration needs to be done before feed list import... */
+			migration_execute (MIGRATION_FROM_14);
 		} else if (g_file_test (filename12, G_FILE_TEST_EXISTS)) {
 			/* migration needs to be done after feed list import
 			   so we redirect the feed list OPML file name and
 			   import later */
 			g_free (filename);
 		     	filename = g_strdup (filename12);
-			migration = MIGRATION_MODE_12_TO_14;
+			migration = MIGRATION_FROM_12;
 		} else if (g_file_test (filename10, G_FILE_TEST_EXISTS)) {
 			/* same as 1.2->1.4: delayed migration... */
 			g_free (filename);
 			filename = g_strdup (filename10);
-			migration = MIGRATION_MODE_10_TO_14;
+			migration = MIGRATION_FROM_10;
 		}
 	}
 
+	g_free (filename14);
 	g_free (filename13);
 	g_free (filename12);
 	g_free (filename10);
