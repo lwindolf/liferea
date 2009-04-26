@@ -25,6 +25,8 @@
 	* Fixes broken enclosure auto-download. (Lars Lindner)
 	* Fixes LP #312128: Cache path in manpage. (Lars Lindner)
 	* Switch to ~/.liferea_1.6 (Adrian Bunk)
+	* Fixes Debian #471346: Don't refer to the wrong dir after
+	  migration. (Adrian Bunk)
 
 	* Update of Italian translation. (Gianvito Cavasoli)
 
