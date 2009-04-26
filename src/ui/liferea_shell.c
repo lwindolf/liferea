@@ -1266,11 +1266,12 @@ liferea_shell_create (int initialState)
 	liferea_shell_update_toolbar ();
 	liferea_shell_online_status_changed (network_is_online ());
 	
-	ui_tray_enable (conf_get_bool_value (SHOW_TRAY_ICON));		/* init tray icon */
 	liferea_shell_setup_URL_receiver (GTK_WIDGET (shell->priv->window));	/* setup URL dropping support */
 
 	shell->priv->feedlist = feedlist_create ();
 	
+	ui_tray_enable (conf_get_bool_value (SHOW_TRAY_ICON));		/* init tray icon */
+
 	liferea_shell_restore_state ();
 	
 	if (initialState == MAINWINDOW_ICONIFIED || 
