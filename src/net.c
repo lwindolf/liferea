@@ -99,13 +99,13 @@ network_process_callback (SoupSession *session, SoupMessage *msg, gpointer user_
 void
 network_process_request (const updateJobPtr const job)
 {
-	g_assert(NULL != job->request);
-	debug1(DEBUG_NET, "downloading %s", job->request->source);
-
 	SoupMessage	*msg;
 	SoupDate	*date;
 	gboolean	no_proxy = FALSE;
 	gboolean	no_cookies = FALSE;
+	
+	g_assert (NULL != job->request);
+	debug1 (DEBUG_NET, "downloading %s", job->request->source);
 
 	/* Prepare the SoupMessage */
 	if (job->request->postdata) {
@@ -147,7 +147,11 @@ network_process_request (const updateJobPtr const job)
 	/* Add requested cookies */
 	if (job->request->updateState && job->request->updateState->cookies) {
 		soup_message_headers_append (msg->request_headers, "Cookie",
-						job->request->updateState->cookies);
+		                             job->request->updateState->cookies);
+						
+		/* This might be confusing: But what we mean by setting this flag
+		   is that we do want to ignore the cookie file in ~/.liferea_1.x
+		   and pass a single cookie in the headers instead. */			
 		no_cookies = TRUE;
 	}
 
