@@ -27,6 +27,8 @@
 	* Switch to ~/.liferea_1.6 (Adrian Bunk)
 	* Fixes Debian #471346: Don't refer to the wrong dir after
 	  migration. (Adrian Bunk)
+	* Remove the node when the import of an OPML feedlist
+	  failed. (Adrian Bunk)
 
 	* Update of Italian translation. (Gianvito Cavasoli)
 

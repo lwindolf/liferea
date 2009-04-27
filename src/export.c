@@ -418,7 +418,9 @@ on_import_activate_cb (const gchar *filename, gpointer user_data)
 		node_set_title (node, _("Imported feed list"));
 		feedlist_node_added (node);
 		
-		import_OPML_feedlist (filename, node, TRUE /* show errors */, FALSE /* not trusted */);
+		if (!import_OPML_feedlist (filename, node, TRUE /* show errors */, FALSE /* not trusted */)) {
+			feedlist_remove_node (node);
+		}
 	}
 }
 
