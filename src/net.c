@@ -285,13 +285,12 @@ network_set_proxy (gchar *host, guint port, gchar *user, gchar *password)
 	proxypassword = password;
 
 	if (host) {
-		newproxy = soup_uri_new (host);
-
-		if (newproxy) {
-			soup_uri_set_port (newproxy, port);
-			soup_uri_set_user (newproxy, user);
-			soup_uri_set_password (newproxy, password);
-		}
+		newproxy = soup_uri_new (NULL);
+		soup_uri_set_scheme (newproxy, SOUP_URI_SCHEME_HTTP);
+		soup_uri_set_host (newproxy, host);
+		soup_uri_set_port (newproxy, port);
+		soup_uri_set_user (newproxy, user);
+		soup_uri_set_password (newproxy, password);
 	}
 
 	/* The sessions will be NULL if we were called from conf_init() as that's called
@@ -305,9 +304,8 @@ network_set_proxy (gchar *host, guint port, gchar *user, gchar *password)
 			      NULL);
 	}
 
-	if (proxy) {
+	if (proxy)
 		soup_uri_free (proxy);
-	}
 	proxy = newproxy;
 
 	if (proxy) {
