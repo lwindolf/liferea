@@ -29,6 +29,8 @@
 	  migration. (Adrian Bunk)
 	* Remove the node when the import of an OPML feedlist
 	  failed. (Adrian Bunk)
+	* Fixes SF #2781799: Configured proxy was not used.
+	  (Lars Lindner and Adrian Bunk)
 
 	* Update of Italian translation. (Gianvito Cavasoli)
 
