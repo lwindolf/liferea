@@ -40,7 +40,7 @@ static SoupSession *session;
 static SoupSession *session_no_proxy;
 static SoupSession *session_no_cookies;
 static SoupSession *session_no_cookies_no_proxy;
-static SoupURI *proxy;
+static SoupURI *proxy = NULL;
 
 static gchar	*proxyname = NULL;
 static gchar	*proxyusername = NULL;
