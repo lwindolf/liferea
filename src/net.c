@@ -159,11 +159,12 @@ network_process_request (const updateJobPtr const job)
 	 * msg to a callback in case of 401 (see soup_message_add_status_code_handler())
 	 * displaying the dialog ourselves, and requeing the msg if we get credentials */
 
-	/* We queue the message in one session or the other depending on whether the
-	 * feed properties has the "dont use a proxy" checkbox enabled */
-	if (job->request->options && job->request->options->dontUseProxy) {
+	/* We queue the message in one session or the other depending on the global
+	 * proxy settings and whether the feed properties has the "dont use a proxy" 
+	 * checkbox enabled */
+	if ((job->request->options && job->request->options->dontUseProxy) ||
+	    (NULL == network_get_proxy_host ()))
 		no_proxy = TRUE;
-	}
 
 	if (no_proxy && no_cookies) {
 		soup_session_queue_message (session_no_cookies_no_proxy, msg, network_process_callback, job);
