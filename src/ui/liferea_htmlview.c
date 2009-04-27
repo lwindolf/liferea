@@ -190,6 +190,8 @@ liferea_htmlview_init (LifereaHtmlView *htmlview)
 	
 	if (!htmlviewImpl)
 		htmlviewImpl = htmlview_get_impl ();
+
+	liferea_htmlview_update_proxy ();
 }
 
 LifereaHtmlView *
