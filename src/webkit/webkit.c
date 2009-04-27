@@ -380,13 +380,12 @@ webkit_set_proxy (const gchar *host, guint port, const gchar *user, const gchar 
 	SoupURI *proxy = NULL;
 
 	if (host) {
-		proxy = soup_uri_new (host);
-
-		if (proxy) {
-			soup_uri_set_port (proxy, port);
-			soup_uri_set_user (proxy, user);
-			soup_uri_set_password (proxy, pwd);
-		}
+		proxy = soup_uri_new (NULL);
+		soup_uri_set_scheme (proxy, SOUP_URI_SCHEME_HTTP);
+		soup_uri_set_host (proxy, host);
+		soup_uri_set_port (proxy, port);
+		soup_uri_set_user (proxy, user);
+		soup_uri_set_password (proxy, pwd);
 	}
 
 	g_object_set (webkit_get_default_session (),
