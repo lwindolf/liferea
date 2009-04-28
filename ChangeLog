@@ -31,6 +31,7 @@
 	  failed. (Adrian Bunk)
 	* Fixes SF #2781799: Configured proxy was not used.
 	  (Lars Lindner and Adrian Bunk)
+	* Add --version command line option (Emilio Pozuelo Monfort)
 
 	* Update of Italian translation. (Gianvito Cavasoli)
 

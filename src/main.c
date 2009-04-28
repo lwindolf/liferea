@@ -147,6 +147,16 @@ debug_entries_parse_callback (const gchar *option_name,
 	return TRUE;
 }
 
+static gboolean
+show_version (const gchar *option_name,
+	      const gchar *value,
+	      gpointer data,
+	      GError **error)
+{
+	printf ("Liferea %s\n", VERSION);
+	exit (0);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -167,6 +177,7 @@ main (int argc, char *argv[])
 #ifdef USE_SM
 		{ "session", 0, G_OPTION_FLAG_HIDDEN, G_OPTION_ARG_STRING, &opt_session_arg, NULL, NULL },
 #endif
+		{ "version", 'v', G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, show_version, N_("Show version information and exit"), NULL },
 		{ NULL }
 	};
 
