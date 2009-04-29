@@ -32,6 +32,8 @@
 	* Fixes SF #2781799: Configured proxy was not used.
 	  (Lars Lindner and Adrian Bunk)
 	* Add --version command line option (Emilio Pozuelo Monfort)
+	* Don't show javascript warnings in the console (Emilio
+	  Pozuelo Monfort)
 
 	* Update of Italian translation. (Gianvito Cavasoli)
 

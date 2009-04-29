@@ -179,6 +179,22 @@ webkit_on_menu (WebKitWebView *view, GtkMenu *menu)
 }
 
 /**
+ * WebKitWebView::console-message:
+ * A JavaScript console message was created.
+ *
+ * And we ignore them.
+ */
+static gboolean
+webkit_javascript_message  (WebKitWebView *view,
+			    const char *message,
+			    int line,
+			    const char *source_id
+			    )
+{
+	return TRUE;
+}
+
+/**
  * Initializes WebKit
  *
  * Initializes the WebKit HTML rendering engine. Creates a GTK scrollpane widget
@@ -285,6 +301,12 @@ webkit_new (LifereaHtmlView *htmlview)
 		view,
 		"create-web-view",
 		G_CALLBACK (webkit_create_web_view),
+		view
+	);
+	g_signal_connect (
+		view,
+		"console-message",
+		G_CALLBACK (webkit_javascript_message),
 		view
 	);
 
