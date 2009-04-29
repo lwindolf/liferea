@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.5.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-26 20:42+0300\n"
+"POT-Creation-Date: 2009-04-29 21:52+0300\n"
 "PO-Revision-Date: 2009-03-24 11:55+0100\n"
 "Last-Translator: Gianvito Cavasoli <janvitus@ubuntu-it.org>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -276,27 +276,27 @@ msgstr "Il documento OPML «%s» non è valido. Impossibile importare questo fil
 msgid "Imported feed list"
 msgstr "Elenco notiziari importati"
 
-#: ../src/export.c:429
+#: ../src/export.c:431
 msgid "Import Feed List"
 msgstr "Importa elenco notiziari"
 
-#: ../src/export.c:429
+#: ../src/export.c:431
 msgid "Import"
 msgstr "Importa"
 
-#: ../src/export.c:437
+#: ../src/export.c:439
 msgid "Error while exporting feed list!"
 msgstr "Errore durante l'esportazione dell'elenco notiziari."
 
-#: ../src/export.c:439
+#: ../src/export.c:441
 msgid "Feed List exported!"
 msgstr "Elenco notiziari esportato."
 
-#: ../src/export.c:446
+#: ../src/export.c:448
 msgid "Export Feed List"
 msgstr "Esporta elenco notiziari"
 
-#: ../src/export.c:446
+#: ../src/export.c:448
 msgid "Export"
 msgstr "Esporta"
 
@@ -358,7 +358,7 @@ msgstr "Impossibile determinare il tipo di notiziario."
 msgid "There are no unread items "
 msgstr "Non ci sono articoli non letti."
 
-#: ../src/main.c:166
+#: ../src/main.c:176
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown', "
 "`iconified', or `hidden'"
@@ -366,88 +366,93 @@ msgstr ""
 "Avvia la finestra principale di Liferea con lo STATO. STATO può essere "
 "«shown»(mostra), «iconified»(ridotta a icona) o «hidden»(nascosta)"
 
-#: ../src/main.c:166
+#: ../src/main.c:176
 msgid "STATE"
 msgstr "STATO"
 
-#: ../src/main.c:174
+#: ../src/main.c:180
+msgid "Show version information and exit"
+msgstr ""
+
+#: ../src/main.c:185
 msgid "Print debugging messages of all types"
 msgstr "Stampa messaggi di debug di tutti i tipi"
 
-#: ../src/main.c:175
+#: ../src/main.c:186
 msgid "Print debugging messages for the cache handling"
 msgstr "Stampa messaggi di debug del gestore di cache"
 
-#: ../src/main.c:176
+#: ../src/main.c:187
 msgid "Print debugging messages of the configuration handling"
 msgstr "Stampa messaggi di debug del gestore di configurazione"
 
-#: ../src/main.c:177
+#: ../src/main.c:188
 msgid "Print debugging messages of the database handling"
 msgstr "Stampa messaggi di debug del gestore del database"
 
-#: ../src/main.c:178
+#: ../src/main.c:189
 msgid "Print debugging messages of all GUI functions"
 msgstr "Stampa messaggi di debug di tutte le funzioni dell'interfaccia grafica"
 
-#: ../src/main.c:179
+#: ../src/main.c:190
+#, fuzzy
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
-"will also dump the generated HTML into ~/.liferea_1.1/output.xhtml"
+"will also dump the generated HTML into ~/.liferea_1.6/output.xhtml"
 msgstr ""
 "Abilita il debug del rendering HTML. Ogni volta che ci sarà il render di "
 "output HTML sarà riversato l'HTML generato anche in «~/.liferea_1.1/output."
 "xhtml»"
 
-#: ../src/main.c:180
+#: ../src/main.c:191
 msgid "Print debugging messages of all network activity"
 msgstr "Stampa messaggi di debug di tutte le attività di rete"
 
-#: ../src/main.c:181
+#: ../src/main.c:192
 msgid "Print debugging messages of all parsing functions"
 msgstr "Stampa messaggi di debug di tutte le funzioni di analisi"
 
-#: ../src/main.c:182
+#: ../src/main.c:193
 msgid "Print debugging messages when a function takes too long to process"
 msgstr ""
 "Stampa messaggi di debug quando una funzione richiede troppo tempo per "
 "elaborare"
 
-#: ../src/main.c:183
+#: ../src/main.c:194
 msgid "Print debugging messages for the plugin loading"
 msgstr "Stampa messaggi di debug del caricamento del plugin"
 
-#: ../src/main.c:184
+#: ../src/main.c:195
 msgid "Print debugging messages when entering/leaving functions"
 msgstr "Stampa messaggi di debug quando entra/lascia le funzioni"
 
-#: ../src/main.c:185
+#: ../src/main.c:196
 msgid "Print debugging messages of the feed update processing"
 msgstr ""
 "Stampa messaggi di debug dell'elaborazione di aggiornamento del notiziario"
 
-#: ../src/main.c:186
+#: ../src/main.c:197
 msgid "Print verbose debugging messages"
 msgstr "Stampa messaggi di debug dettagliati"
 
-#: ../src/main.c:199 ../src/main.c:200
+#: ../src/main.c:210 ../src/main.c:211
 msgid "Print debugging messages for the given topic"
 msgstr "Stampa messaggi di debug dell'argomento scelto"
 
-#: ../src/main.c:206
+#: ../src/main.c:217
 msgid "Liferea, the Linux Feed Reader"
 msgstr "Liferea, il lettore notiziari in Linux"
 
-#: ../src/main.c:207
+#: ../src/main.c:218
 msgid "For more information, please visit http://liferea.sourceforge.net/"
 msgstr "Per maggiori informazioni, visitare http://liferea.sourceforge.net/"
 
 #. GTK theme support
-#: ../src/main.c:236 ../glade/liferea.glade.h:64
+#: ../src/main.c:247 ../glade/liferea.glade.h:64
 msgid "Liferea"
 msgstr "Liferea"
 
-#: ../src/main.c:245
+#: ../src/main.c:256
 msgid "Liferea seems to be running already!"
 msgstr "L'applicazione sembra già in esecuzione."
 
@@ -464,27 +469,27 @@ msgstr ""
 "è certi che la conversione è stata effettuata con successo."
 
 #. Some libsoup transport errors
-#: ../src/net.c:325
+#: ../src/net.c:328
 msgid "The update request was cancelled"
 msgstr "La richiesta di aggiornamento è stata annullata"
 
-#: ../src/net.c:326
+#: ../src/net.c:329
 msgid "Unable to resolve destination host name"
 msgstr "Impossibile risolvere il nome host di destinazione"
 
-#: ../src/net.c:327
+#: ../src/net.c:330
 msgid "Unable to resolve proxy host name"
 msgstr "Impossibile risolvere il nome host del proxy"
 
-#: ../src/net.c:328
+#: ../src/net.c:331
 msgid "Unable to connect to remote host"
 msgstr "Impossibile connettersi all'host remoto"
 
-#: ../src/net.c:329
+#: ../src/net.c:332
 msgid "Unable to connect to proxy"
 msgstr "Impossibile connettersi al proxy"
 
-#: ../src/net.c:330
+#: ../src/net.c:333
 msgid ""
 "A network error occurred, or the other end closed the connection unexpectedly"
 msgstr ""
@@ -492,12 +497,12 @@ msgstr ""
 "connessione in modo inatteso"
 
 #. http 3xx redirection
-#: ../src/net.c:333
+#: ../src/net.c:336
 msgid "The resource moved permanently to a new location"
 msgstr "La risorsa è spostata permanentemente a un'altra posizione"
 
 #. http 4xx client error
-#: ../src/net.c:336
+#: ../src/net.c:339
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box"
@@ -505,57 +510,57 @@ msgstr ""
 "Non si è autorizzati a scaricare questo notiziario. Aggiornare il nome "
 "utente e la password nella finestra di dialogo delle proprietà del notiziario"
 
-#: ../src/net.c:338
+#: ../src/net.c:341
 msgid "Payment required"
 msgstr "Pagamento richiesto"
 
-#: ../src/net.c:339
+#: ../src/net.c:342
 msgid "You're not allowed to access this resource"
 msgstr "Non è consentito accedere a questa risorsa"
 
-#: ../src/net.c:340
+#: ../src/net.c:343
 msgid "Resource Not Found"
 msgstr "Risorsa non trovata"
 
-#: ../src/net.c:341
+#: ../src/net.c:344
 msgid "Method Not Allowed"
 msgstr "Metodo non consentito"
 
-#: ../src/net.c:342
+#: ../src/net.c:345
 msgid "Not Acceptable"
 msgstr "Non accettabile"
 
-#: ../src/net.c:343
+#: ../src/net.c:346
 msgid "Proxy authentication required"
 msgstr "Autenticazione del proxy richiesta"
 
-#: ../src/net.c:344
+#: ../src/net.c:347
 msgid "Request timed out"
 msgstr "Richiesta scaduta"
 
-#: ../src/net.c:345
+#: ../src/net.c:348
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "Risorsa non esistente. Rimuovere la sottoscrizione."
 
-#: ../src/net.c:350
+#: ../src/net.c:353
 msgid "There was an internal error in the update process"
 msgstr "Si è verificato un errore interno nel processo di aggiornamento"
 
-#: ../src/net.c:352
+#: ../src/net.c:355
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "Notiziario non disponibile: il server ha richiesto una ridirezione non "
 "supportata."
 
-#: ../src/net.c:354
+#: ../src/net.c:357
 msgid "Client Error"
 msgstr "Errore del client"
 
-#: ../src/net.c:356
+#: ../src/net.c:359
 msgid "Server Error"
 msgstr "Errore del server"
 
-#: ../src/net.c:358
+#: ../src/net.c:361
 msgid "An unknown networking error happened!"
 msgstr "Si è verificato un errore di rete sconosciuto."
 
@@ -912,7 +917,7 @@ msgstr ""
 msgid "_View"
 msgstr "_Visualizza"
 
-#: ../src/ui/liferea_shell.c:858 ../src/ui/liferea_htmlview.c:536
+#: ../src/ui/liferea_shell.c:858 ../src/ui/liferea_htmlview.c:538
 msgid "_Increase Text Size"
 msgstr "Au_menta dimensione testo"
 
@@ -920,7 +925,7 @@ msgstr "Au_menta dimensione testo"
 msgid "Increases the text size of the item view."
 msgstr "Aumenta la dimensione del testo nella visualizzazione dell'articolo"
 
-#: ../src/ui/liferea_shell.c:860 ../src/ui/liferea_htmlview.c:537
+#: ../src/ui/liferea_shell.c:860 ../src/ui/liferea_htmlview.c:539
 msgid "_Decrease Text Size"
 msgstr "_Diminuisci dimensione testo"
 
@@ -1171,11 +1176,11 @@ msgid "This option allows you to disable subscription updating."
 msgstr ""
 "Questa opzione consente di disabilitare l'aggiornamento delle sottoscrizioni."
 
-#: ../src/ui/liferea_shell.c:1314
+#: ../src/ui/liferea_shell.c:1315
 msgid "Liferea - Linux Feed Reader"
 msgstr "Liferea - Linux Feed Reader"
 
-#: ../src/ui/liferea_shell.c:1316
+#: ../src/ui/liferea_shell.c:1317
 msgid ""
 "<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news "
 "feeds.</p><p>The left pane contains the list of your subscriptions. To add a "
@@ -1262,24 +1267,24 @@ msgstr "Selezionare una voce di notiziario"
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Modalità non in rete. Nessun aggiornamento è possibile."
 
-#: ../src/ui/liferea_htmlview.c:524
+#: ../src/ui/liferea_htmlview.c:526
 msgid "Launch Link In _Tab"
 msgstr "Lancia collegamento nella sc_heda"
 
-#: ../src/ui/liferea_htmlview.c:525
+#: ../src/ui/liferea_htmlview.c:527
 msgid "_Launch Link In Browser"
 msgstr "_Lancia collegamento nel browser"
 
-#: ../src/ui/liferea_htmlview.c:528 ../src/ui/ui_popup.c:133
+#: ../src/ui/liferea_htmlview.c:530 ../src/ui/ui_popup.c:133
 #, c-format
 msgid "_Bookmark Link at %s"
 msgstr "Collegamento come _segnalibro in %s"
 
-#: ../src/ui/liferea_htmlview.c:532
+#: ../src/ui/liferea_htmlview.c:534
 msgid "_Copy Link Location"
 msgstr "_Copia posizione collegamento"
 
-#: ../src/ui/liferea_htmlview.c:534
+#: ../src/ui/liferea_htmlview.c:536
 msgid "_Subscribe..."
 msgstr "Sott_oscrivi..."
 

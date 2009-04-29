@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-26 20:42+0300\n"
+"POT-Creation-Date: 2009-04-29 21:52+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -265,27 +265,27 @@ msgstr ""
 msgid "Imported feed list"
 msgstr ""
 
-#: ../src/export.c:429
+#: ../src/export.c:431
 msgid "Import Feed List"
 msgstr ""
 
-#: ../src/export.c:429
+#: ../src/export.c:431
 msgid "Import"
 msgstr ""
 
-#: ../src/export.c:437
+#: ../src/export.c:439
 msgid "Error while exporting feed list!"
 msgstr ""
 
-#: ../src/export.c:439
+#: ../src/export.c:441
 msgid "Feed List exported!"
 msgstr ""
 
-#: ../src/export.c:446
+#: ../src/export.c:448
 msgid "Export Feed List"
 msgstr ""
 
-#: ../src/export.c:446
+#: ../src/export.c:448
 msgid "Export"
 msgstr ""
 
@@ -339,88 +339,92 @@ msgstr ""
 msgid "There are no unread items "
 msgstr ""
 
-#: ../src/main.c:166
+#: ../src/main.c:176
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown', "
 "`iconified', or `hidden'"
 msgstr ""
 
-#: ../src/main.c:166
+#: ../src/main.c:176
 msgid "STATE"
 msgstr ""
 
-#: ../src/main.c:174
-msgid "Print debugging messages of all types"
-msgstr ""
-
-#: ../src/main.c:175
-msgid "Print debugging messages for the cache handling"
-msgstr ""
-
-#: ../src/main.c:176
-msgid "Print debugging messages of the configuration handling"
-msgstr ""
-
-#: ../src/main.c:177
-msgid "Print debugging messages of the database handling"
-msgstr ""
-
-#: ../src/main.c:178
-msgid "Print debugging messages of all GUI functions"
-msgstr ""
-
-#: ../src/main.c:179
-msgid ""
-"Enables HTML rendering debugging. Each time Liferea renders HTML output it "
-"will also dump the generated HTML into ~/.liferea_1.1/output.xhtml"
-msgstr ""
-
 #: ../src/main.c:180
-msgid "Print debugging messages of all network activity"
-msgstr ""
-
-#: ../src/main.c:181
-msgid "Print debugging messages of all parsing functions"
-msgstr ""
-
-#: ../src/main.c:182
-msgid "Print debugging messages when a function takes too long to process"
-msgstr ""
-
-#: ../src/main.c:183
-msgid "Print debugging messages for the plugin loading"
-msgstr ""
-
-#: ../src/main.c:184
-msgid "Print debugging messages when entering/leaving functions"
+msgid "Show version information and exit"
 msgstr ""
 
 #: ../src/main.c:185
-msgid "Print debugging messages of the feed update processing"
+msgid "Print debugging messages of all types"
 msgstr ""
 
 #: ../src/main.c:186
+msgid "Print debugging messages for the cache handling"
+msgstr ""
+
+#: ../src/main.c:187
+msgid "Print debugging messages of the configuration handling"
+msgstr ""
+
+#: ../src/main.c:188
+msgid "Print debugging messages of the database handling"
+msgstr ""
+
+#: ../src/main.c:189
+msgid "Print debugging messages of all GUI functions"
+msgstr ""
+
+#: ../src/main.c:190
+msgid ""
+"Enables HTML rendering debugging. Each time Liferea renders HTML output it "
+"will also dump the generated HTML into ~/.liferea_1.6/output.xhtml"
+msgstr ""
+
+#: ../src/main.c:191
+msgid "Print debugging messages of all network activity"
+msgstr ""
+
+#: ../src/main.c:192
+msgid "Print debugging messages of all parsing functions"
+msgstr ""
+
+#: ../src/main.c:193
+msgid "Print debugging messages when a function takes too long to process"
+msgstr ""
+
+#: ../src/main.c:194
+msgid "Print debugging messages for the plugin loading"
+msgstr ""
+
+#: ../src/main.c:195
+msgid "Print debugging messages when entering/leaving functions"
+msgstr ""
+
+#: ../src/main.c:196
+msgid "Print debugging messages of the feed update processing"
+msgstr ""
+
+#: ../src/main.c:197
 msgid "Print verbose debugging messages"
 msgstr ""
 
-#: ../src/main.c:199 ../src/main.c:200
+#: ../src/main.c:210 ../src/main.c:211
 msgid "Print debugging messages for the given topic"
 msgstr ""
 
-#: ../src/main.c:206
+#: ../src/main.c:217
 msgid "Liferea, the Linux Feed Reader"
 msgstr ""
 
-#: ../src/main.c:207
+#: ../src/main.c:218
 msgid "For more information, please visit http://liferea.sourceforge.net/"
 msgstr ""
 
 #. GTK theme support
-#: ../src/main.c:236 ../glade/liferea.glade.h:64
+#: ../src/main.c:247 ../glade/liferea.glade.h:64
 msgid "Liferea"
 msgstr ""
 
-#: ../src/main.c:245
+#: ../src/main.c:256
 msgid "Liferea seems to be running already!"
 msgstr ""
 
@@ -433,92 +437,92 @@ msgid ""
 msgstr ""
 
 #. Some libsoup transport errors
-#: ../src/net.c:325
+#: ../src/net.c:328
 msgid "The update request was cancelled"
 msgstr ""
 
-#: ../src/net.c:326
+#: ../src/net.c:329
 msgid "Unable to resolve destination host name"
 msgstr ""
 
-#: ../src/net.c:327
+#: ../src/net.c:330
 msgid "Unable to resolve proxy host name"
 msgstr ""
 
-#: ../src/net.c:328
+#: ../src/net.c:331
 msgid "Unable to connect to remote host"
 msgstr ""
 
-#: ../src/net.c:329
+#: ../src/net.c:332
 msgid "Unable to connect to proxy"
 msgstr ""
 
-#: ../src/net.c:330
+#: ../src/net.c:333
 msgid ""
 "A network error occurred, or the other end closed the connection unexpectedly"
 msgstr ""
 
 #. http 3xx redirection
-#: ../src/net.c:333
+#: ../src/net.c:336
 msgid "The resource moved permanently to a new location"
 msgstr ""
 
 #. http 4xx client error
-#: ../src/net.c:336
+#: ../src/net.c:339
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box"
 msgstr ""
 
-#: ../src/net.c:338
+#: ../src/net.c:341
 msgid "Payment required"
 msgstr ""
 
-#: ../src/net.c:339
+#: ../src/net.c:342
 msgid "You're not allowed to access this resource"
 msgstr ""
 
-#: ../src/net.c:340
+#: ../src/net.c:343
 msgid "Resource Not Found"
 msgstr ""
 
-#: ../src/net.c:341
+#: ../src/net.c:344
 msgid "Method Not Allowed"
 msgstr ""
 
-#: ../src/net.c:342
+#: ../src/net.c:345
 msgid "Not Acceptable"
 msgstr ""
 
-#: ../src/net.c:343
+#: ../src/net.c:346
 msgid "Proxy authentication required"
 msgstr ""
 
-#: ../src/net.c:344
+#: ../src/net.c:347
 msgid "Request timed out"
 msgstr ""
 
-#: ../src/net.c:345
+#: ../src/net.c:348
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr ""
 
-#: ../src/net.c:350
+#: ../src/net.c:353
 msgid "There was an internal error in the update process"
 msgstr ""
 
-#: ../src/net.c:352
+#: ../src/net.c:355
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 
-#: ../src/net.c:354
+#: ../src/net.c:357
 msgid "Client Error"
 msgstr ""
 
-#: ../src/net.c:356
+#: ../src/net.c:359
 msgid "Server Error"
 msgstr ""
 
-#: ../src/net.c:358
+#: ../src/net.c:361
 msgid "An unknown networking error happened!"
 msgstr ""
 
@@ -869,7 +873,7 @@ msgstr ""
 msgid "_View"
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:858 ../src/ui/liferea_htmlview.c:536
+#: ../src/ui/liferea_shell.c:858 ../src/ui/liferea_htmlview.c:538
 msgid "_Increase Text Size"
 msgstr ""
 
@@ -877,7 +881,7 @@ msgstr ""
 msgid "Increases the text size of the item view."
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:860 ../src/ui/liferea_htmlview.c:537
+#: ../src/ui/liferea_shell.c:860 ../src/ui/liferea_htmlview.c:539
 msgid "_Decrease Text Size"
 msgstr ""
 
@@ -1120,11 +1124,11 @@ msgstr ""
 msgid "This option allows you to disable subscription updating."
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:1314
+#: ../src/ui/liferea_shell.c:1315
 msgid "Liferea - Linux Feed Reader"
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:1316
+#: ../src/ui/liferea_shell.c:1317
 msgid ""
 "<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news "
 "feeds.</p><p>The left pane contains the list of your subscriptions. To add a "
@@ -1200,24 +1204,24 @@ msgstr ""
 msgid "Liferea is in offline mode. No update possible."
 msgstr ""
 
-#: ../src/ui/liferea_htmlview.c:524
+#: ../src/ui/liferea_htmlview.c:526
 msgid "Launch Link In _Tab"
 msgstr ""
 
-#: ../src/ui/liferea_htmlview.c:525
+#: ../src/ui/liferea_htmlview.c:527
 msgid "_Launch Link In Browser"
 msgstr ""
 
-#: ../src/ui/liferea_htmlview.c:528 ../src/ui/ui_popup.c:133
+#: ../src/ui/liferea_htmlview.c:530 ../src/ui/ui_popup.c:133
 #, c-format
 msgid "_Bookmark Link at %s"
 msgstr ""
 
-#: ../src/ui/liferea_htmlview.c:532
+#: ../src/ui/liferea_htmlview.c:534
 msgid "_Copy Link Location"
 msgstr ""
 
-#: ../src/ui/liferea_htmlview.c:534
+#: ../src/ui/liferea_htmlview.c:536
 msgid "_Subscribe..."
 msgstr ""
 

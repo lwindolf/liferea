@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-26 20:42+0300\n"
+"POT-Creation-Date: 2009-04-29 21:52+0300\n"
 "PO-Revision-Date: 2007-10-20 21:26+0100\n"
 "Last-Translator: Bart Kreska <bartkreska@users.sourceforge.net>\n"
 "Language-Team: Polish\n"
@@ -290,27 +290,27 @@ msgstr ""
 msgid "Imported feed list"
 msgstr "Lista zaimportowanych subskrypcji"
 
-#: ../src/export.c:429
+#: ../src/export.c:431
 msgid "Import Feed List"
 msgstr "Importuj listę subskrypcji"
 
-#: ../src/export.c:429
+#: ../src/export.c:431
 msgid "Import"
 msgstr "Importuj"
 
-#: ../src/export.c:437
+#: ../src/export.c:439
 msgid "Error while exporting feed list!"
 msgstr "Błąd eksportowania listy subskrypcji!"
 
-#: ../src/export.c:439
+#: ../src/export.c:441
 msgid "Feed List exported!"
 msgstr "Lista subskrypcji została wyeksportowana!"
 
-#: ../src/export.c:446
+#: ../src/export.c:448
 msgid "Export Feed List"
 msgstr "Eksportuj listę subskrypcji"
 
-#: ../src/export.c:446
+#: ../src/export.c:448
 msgid "Export"
 msgstr "Eksportuj"
 
@@ -372,97 +372,102 @@ msgstr "Nie można określić typu subskrypcji."
 msgid "There are no unread items "
 msgstr "Nie ma nieprzeczytanych nagłówków "
 
-#: ../src/main.c:166
+#: ../src/main.c:176
 #, fuzzy
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown', "
 "`iconified', or `hidden'"
 msgstr "                   STAN może być: shown, iconified, lub hidden"
 
-#: ../src/main.c:166
+#: ../src/main.c:176
 msgid "STATE"
 msgstr ""
 
-#: ../src/main.c:174
+#: ../src/main.c:180
+#, fuzzy
+msgid "Show version information and exit"
+msgstr "  --version        Wyświetla numer wersji Liferea i kończy"
+
+#: ../src/main.c:185
 #, fuzzy
 msgid "Print debugging messages of all types"
 msgstr "  --debug-<TEMAT>  Wyświetla informacje debugowe na TEMAT"
 
-#: ../src/main.c:175
+#: ../src/main.c:186
 #, fuzzy
 msgid "Print debugging messages for the cache handling"
 msgstr "  --debug-<TEMAT>  Wyświetla informacje debugowe na TEMAT"
 
-#: ../src/main.c:176
+#: ../src/main.c:187
 #, fuzzy
 msgid "Print debugging messages of the configuration handling"
 msgstr "  --debug-<TEMAT>  Wyświetla informacje debugowe na TEMAT"
 
-#: ../src/main.c:177
+#: ../src/main.c:188
 #, fuzzy
 msgid "Print debugging messages of the database handling"
 msgstr "  --debug-<TEMAT>  Wyświetla informacje debugowe na TEMAT"
 
-#: ../src/main.c:178
+#: ../src/main.c:189
 msgid "Print debugging messages of all GUI functions"
 msgstr ""
 
-#: ../src/main.c:179
+#: ../src/main.c:190
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
-"will also dump the generated HTML into ~/.liferea_1.1/output.xhtml"
+"will also dump the generated HTML into ~/.liferea_1.6/output.xhtml"
 msgstr ""
 
-#: ../src/main.c:180
+#: ../src/main.c:191
 msgid "Print debugging messages of all network activity"
 msgstr ""
 
-#: ../src/main.c:181
+#: ../src/main.c:192
 msgid "Print debugging messages of all parsing functions"
 msgstr ""
 
-#: ../src/main.c:182
+#: ../src/main.c:193
 msgid "Print debugging messages when a function takes too long to process"
 msgstr ""
 
-#: ../src/main.c:183
+#: ../src/main.c:194
 #, fuzzy
 msgid "Print debugging messages for the plugin loading"
 msgstr "  --debug-<TEMAT>  Wyświetla informacje debugowe na TEMAT"
 
-#: ../src/main.c:184
+#: ../src/main.c:195
 msgid "Print debugging messages when entering/leaving functions"
 msgstr ""
 
-#: ../src/main.c:185
+#: ../src/main.c:196
 #, fuzzy
 msgid "Print debugging messages of the feed update processing"
 msgstr "  --debug-<TEMAT>  Wyświetla informacje debugowe na TEMAT"
 
-#: ../src/main.c:186
+#: ../src/main.c:197
 msgid "Print verbose debugging messages"
 msgstr ""
 
-#: ../src/main.c:199 ../src/main.c:200
+#: ../src/main.c:210 ../src/main.c:211
 #, fuzzy
 msgid "Print debugging messages for the given topic"
 msgstr "  --debug-<TEMAT>  Wyświetla informacje debugowe na TEMAT"
 
-#: ../src/main.c:206
+#: ../src/main.c:217
 #, fuzzy
 msgid "Liferea, the Linux Feed Reader"
 msgstr "Liferea - Linux Feed Reader"
 
-#: ../src/main.c:207
+#: ../src/main.c:218
 msgid "For more information, please visit http://liferea.sourceforge.net/"
 msgstr ""
 
 #. GTK theme support
-#: ../src/main.c:236 ../glade/liferea.glade.h:64
+#: ../src/main.c:247 ../glade/liferea.glade.h:64
 msgid "Liferea"
 msgstr "Liferea"
 
-#: ../src/main.c:245
+#: ../src/main.c:256
 msgid "Liferea seems to be running already!"
 msgstr "Wygląda na to, że Liferea już jest uruchomiona!"
 
@@ -478,39 +483,39 @@ msgstr ""
 "usunięte. Usuń ten katalog ręcznie jeśli migracja się powiodła!"
 
 #. Some libsoup transport errors
-#: ../src/net.c:325
+#: ../src/net.c:328
 msgid "The update request was cancelled"
 msgstr ""
 
-#: ../src/net.c:326
+#: ../src/net.c:329
 msgid "Unable to resolve destination host name"
 msgstr ""
 
-#: ../src/net.c:327
+#: ../src/net.c:330
 msgid "Unable to resolve proxy host name"
 msgstr ""
 
-#: ../src/net.c:328
+#: ../src/net.c:331
 #, fuzzy
 msgid "Unable to connect to remote host"
 msgstr "Błąd podczas łączenia ze zdalnym hostem"
 
-#: ../src/net.c:329
+#: ../src/net.c:332
 msgid "Unable to connect to proxy"
 msgstr ""
 
-#: ../src/net.c:330
+#: ../src/net.c:333
 msgid ""
 "A network error occurred, or the other end closed the connection unexpectedly"
 msgstr ""
 
 #. http 3xx redirection
-#: ../src/net.c:333
+#: ../src/net.c:336
 msgid "The resource moved permanently to a new location"
 msgstr ""
 
 #. http 4xx client error
-#: ../src/net.c:336
+#: ../src/net.c:339
 #, fuzzy
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
@@ -519,59 +524,59 @@ msgstr ""
 "Nie masz dostępu do tej subskrypcji. Uaktualnij nazwę użytkownika i hasło w "
 "oknie ustawień subskrypcji."
 
-#: ../src/net.c:338
+#: ../src/net.c:341
 #, fuzzy
 msgid "Payment required"
 msgstr "Wymagane uiszczenie opłaty"
 
-#: ../src/net.c:339
+#: ../src/net.c:342
 msgid "You're not allowed to access this resource"
 msgstr ""
 
-#: ../src/net.c:340
+#: ../src/net.c:343
 msgid "Resource Not Found"
 msgstr "Zasób nie odnaleziony"
 
-#: ../src/net.c:341
+#: ../src/net.c:344
 msgid "Method Not Allowed"
 msgstr "Niedozwolona metoda"
 
-#: ../src/net.c:342
+#: ../src/net.c:345
 msgid "Not Acceptable"
 msgstr "Nieakceptowalne"
 
-#: ../src/net.c:343
+#: ../src/net.c:346
 #, fuzzy
 msgid "Proxy authentication required"
 msgstr "Wymagana autoryzacja pośrednika sieciowego (proxy)"
 
-#: ../src/net.c:344
+#: ../src/net.c:347
 #, fuzzy
 msgid "Request timed out"
 msgstr "Upłynął limit czasu żądania"
 
-#: ../src/net.c:345
+#: ../src/net.c:348
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "Zasób nie istnieje. Proszę usunąć subskrypcję!"
 
-#: ../src/net.c:350
+#: ../src/net.c:353
 msgid "There was an internal error in the update process"
 msgstr ""
 
-#: ../src/net.c:352
+#: ../src/net.c:355
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "Subskrypcja niedostępna: Serwer zażądał nieobsługiwanego przekierowania!"
 
-#: ../src/net.c:354
+#: ../src/net.c:357
 msgid "Client Error"
 msgstr "Błąd klienta"
 
-#: ../src/net.c:356
+#: ../src/net.c:359
 msgid "Server Error"
 msgstr "Błąd serwera"
 
-#: ../src/net.c:358
+#: ../src/net.c:361
 #, fuzzy
 msgid "An unknown networking error happened!"
 msgstr "(wystąpił nieznany błąd sieciowy)"
@@ -939,7 +944,7 @@ msgstr ""
 msgid "_View"
 msgstr "Wi_dok"
 
-#: ../src/ui/liferea_shell.c:858 ../src/ui/liferea_htmlview.c:536
+#: ../src/ui/liferea_shell.c:858 ../src/ui/liferea_htmlview.c:538
 msgid "_Increase Text Size"
 msgstr "Z_większ rozmiar czcionki"
 
@@ -947,7 +952,7 @@ msgstr "Z_większ rozmiar czcionki"
 msgid "Increases the text size of the item view."
 msgstr "Zwiększa rozmiar tekstu oglądanego nagłówka."
 
-#: ../src/ui/liferea_shell.c:860 ../src/ui/liferea_htmlview.c:537
+#: ../src/ui/liferea_shell.c:860 ../src/ui/liferea_htmlview.c:539
 msgid "_Decrease Text Size"
 msgstr "Z_mniejsz rozmiar czcionki"
 
@@ -1201,11 +1206,11 @@ msgstr "Pracuj _Offline"
 msgid "This option allows you to disable subscription updating."
 msgstr "Blokuje uaktualnianie subskrypcji."
 
-#: ../src/ui/liferea_shell.c:1314
+#: ../src/ui/liferea_shell.c:1315
 msgid "Liferea - Linux Feed Reader"
 msgstr "Liferea - Linux Feed Reader"
 
-#: ../src/ui/liferea_shell.c:1316
+#: ../src/ui/liferea_shell.c:1317
 msgid ""
 "<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news "
 "feeds.</p><p>The left pane contains the list of your subscriptions. To add a "
@@ -1293,27 +1298,27 @@ msgstr "Musisz zaznaczyć subskrypcję"
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea działa w trybie offline. Uaktualnienia nie są możliwe."
 
-#: ../src/ui/liferea_htmlview.c:524
+#: ../src/ui/liferea_htmlview.c:526
 #, fuzzy
 msgid "Launch Link In _Tab"
 msgstr "/Pok_aż odnośnik w zakładce"
 
-#: ../src/ui/liferea_htmlview.c:525
+#: ../src/ui/liferea_htmlview.c:527
 #, fuzzy
 msgid "_Launch Link In Browser"
 msgstr "/Pokaż odnośnik w prze_glądarce"
 
-#: ../src/ui/liferea_htmlview.c:528 ../src/ui/ui_popup.c:133
+#: ../src/ui/liferea_htmlview.c:530 ../src/ui/ui_popup.c:133
 #, fuzzy, c-format
 msgid "_Bookmark Link at %s"
 msgstr "/_Dodaj do zakładek na %s"
 
-#: ../src/ui/liferea_htmlview.c:532
+#: ../src/ui/liferea_htmlview.c:534
 #, fuzzy
 msgid "_Copy Link Location"
 msgstr "/_Kopiuj adres odnośnika"
 
-#: ../src/ui/liferea_htmlview.c:534
+#: ../src/ui/liferea_htmlview.c:536
 #, fuzzy
 msgid "_Subscribe..."
 msgstr "/_Subskrybuj..."
@@ -2751,9 +2756,6 @@ msgstr ""
 #~ msgstr ""
 #~ "Automatyczne wyszukiwanie subskrypcji nie powiodło się! Nie znaleziono "
 #~ "żadnych odnośników!"
-
-#~ msgid "  --version        Print version information and exit"
-#~ msgstr "  --version        Wyświetla numer wersji Liferea i kończy"
 
 #~ msgid "  --help           Print this help and exit"
 #~ msgstr "  --help           Wyświetla ten komunikat i kończy"

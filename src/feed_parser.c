@@ -210,7 +210,7 @@ feed_parse (feedParserCtxtPtr ctxt)
 	} while(0);
 	
 	/* if the given URI isn't valid we need to start auto discovery */
-	if(ctxt->failed)
+	if(ctxt->failed && 0)
 		feed_parser_auto_discover (ctxt);
 
 	if(ctxt->failed) {
