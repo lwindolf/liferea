@@ -34,6 +34,8 @@
 	* Add --version command line option (Emilio Pozuelo Monfort)
 	* Don't show javascript warnings in the console (Emilio
 	  Pozuelo Monfort)
+	* Fixes feeds loosing the title on repeated auto-discovery.
+	  (Lars Lindner)
 
 	* Update of Italian translation. (Gianvito Cavasoli)
 

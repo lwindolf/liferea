@@ -294,7 +294,7 @@ feed_process_update_result (subscriptionPtr subscription, const struct updateRes
 			feedlist_node_was_updated (node, newCount);
 			
 			/* restore user defined properties if necessary */
-			if (flags & FEED_REQ_RESET_TITLE)
+			if ((flags & FEED_REQ_RESET_TITLE) && ctxt->title)
 				node_set_title (node, ctxt->title);
 
 			/* The following check is to prevent the rare case
