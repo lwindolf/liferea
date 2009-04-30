@@ -30,7 +30,6 @@
 typedef struct GoogleSource {
 	nodePtr	        root;	/**< the root node in the feed list */
 	gchar		*sid;	/**< session id */
-	GTimeVal	*lastSubscriptionListUpdate;
 	GQueue          *actionQueue;
 	int             loginState; /**< The current login state */
 
