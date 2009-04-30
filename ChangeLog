@@ -41,6 +41,8 @@
 	  suspend-resume to see updates. (Arnold Noronha)
 	* Check if an update request has been successfully created
 	  before queuing it (Emilio Pozuelo Monfort)
+	* Fixes a broken feed update interval setting.
+	  (Adrian Bunk)
 
 	* Update of Italian translation. (Gianvito Cavasoli)
 
