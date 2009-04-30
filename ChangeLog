@@ -36,6 +36,9 @@
 	  Pozuelo Monfort)
 	* Fixes feeds loosing the title on repeated auto-discovery.
 	  (Lars Lindner)
+	* Remove unnecessary timeout for GoogleSource quick updates.
+	  Also ensures you don't have to wait for long after a 
+	  suspend-resume to see updates.
 
 	* Update of Italian translation. (Gianvito Cavasoli)
 

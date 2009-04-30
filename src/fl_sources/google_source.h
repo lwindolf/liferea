@@ -34,17 +34,15 @@ typedef struct GoogleSource {
 	int             loginState; /**< The current login state */
 
 	/**
-	 * While doing any kind of updating on the the OPML, what was the last
-	 * timestamp that was encountered. The idea is to have a fast and clean
-	 * way to decide what feeds are outdated.
-	 */ 
-	GTimeVal        *opmlLastTimestampEncountered;
-
-	/**
 	 * A map from a subscription source to a timestamp when it was last 
 	 * updated (provided by Google).
 	 */
 	GHashTable      *lastTimestampMap; 
+
+	/**
+	 * A timestamp when the last Quick update took place.
+	 */
+	GTimeVal        lastQuickUpdate;
 } *GoogleSourcePtr;
 
  

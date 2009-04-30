@@ -304,7 +304,7 @@ google_source_quick_update_cb (const struct updateResult* const result, gpointer
 	xmlFreeDoc (doc);
 }
 
-static gboolean
+gboolean
 google_source_quick_update(GoogleSourcePtr gsource) 
 {
 	updateRequestPtr request = update_request_new ();
@@ -317,22 +317,6 @@ google_source_quick_update(GoogleSourcePtr gsource)
 				gsource, 0);
 
 	return TRUE;
-}
-
-gboolean
-google_source_quick_update_timeout (gpointer nodeId) 
-{
-	nodePtr node = node_from_id ((gchar*) nodeId) ;
-	if (!node) { 
-		g_free (nodeId); /* do not free this string otherwise! */
-		return FALSE;
-	}
-
-	/* also use this timeout to start/continue the GoogleSourceAction 
-	 * queue which could have got stalled due to an error */
-	google_source_edit_process (node->data) ;
-
-	return google_source_quick_update (node->data);
 }
 
 
