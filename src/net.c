@@ -108,17 +108,21 @@ network_process_request (const updateJobPtr const job)
 	debug1 (DEBUG_NET, "downloading %s", job->request->source);
 
 	/* Prepare the SoupMessage */
-	if (job->request->postdata) {
-		msg = soup_message_new (SOUP_METHOD_POST, job->request->source);
+	msg = soup_message_new (job->request->postdata ? SOUP_METHOD_POST : SOUP_METHOD_GET,
+				job->request->source);
 
-		/* set the postdata for the request */
+	if (!msg) {
+		g_warning ("The request for %s could not be parsed!", job->request->source);
+		return;
+	}
+
+	/* Set the postdata for the request */
+	if (job->request->postdata) {
 		soup_message_set_request (msg,
 					  "application/x-www-form-urlencoded",
 					  SOUP_MEMORY_STATIC, /* libsoup won't free the postdata */
 					  job->request->postdata,
 					  strlen (job->request->postdata));
-	} else {
-		msg = soup_message_new (SOUP_METHOD_GET, job->request->source);
 	}
 
 	/* Set the If-Modified-Since: header */

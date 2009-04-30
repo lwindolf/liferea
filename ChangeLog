@@ -5,7 +5,7 @@
 	* Fixes crash when switching view mode when search result
 	  is visible. (Lars Lindner)
 	* Fixes the opening in a new Mozilla window.
-          (Adrian Bunk)
+	  (Adrian Bunk)
 	* Fixes OPML source import problem. Feeds were not
 	  added below the OPML source root node, but below it.
 	  (Lars Lindner)
@@ -39,6 +39,8 @@
 	* Remove unnecessary timeout for GoogleSource quick updates.
 	  Also ensures you don't have to wait for long after a 
 	  suspend-resume to see updates. (Arnold Noronha)
+	* Check if an update request has been successfully created
+	  before queuing it (Emilio Pozuelo Monfort)
 
 	* Update of Italian translation. (Gianvito Cavasoli)
 
