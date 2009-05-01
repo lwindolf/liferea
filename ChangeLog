@@ -4,7 +4,7 @@
 
 	* Splitting of NetworkManager access into separate GObject
 	  using signals to put HTML views, tray icon and other
-	  observers offline.
+	  observers offline. (Lars Lindner)
 
 
 2009-05-01  Adrian Bunk <bunk@users.sourceforge.net>
