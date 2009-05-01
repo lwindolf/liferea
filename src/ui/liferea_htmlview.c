@@ -207,7 +207,8 @@ liferea_htmlview_online_status_changed (NetworkMonitor *nm, gboolean online, gpo
 	
 	liferea_htmlview_set_online (htmlview, online);
 
-	liferea_htmlview_update_proxy ();
+	// FIXME: do this differently using signals!
+	// liferea_htmlview_update_proxy ();
 }
 
 LifereaHtmlView *
