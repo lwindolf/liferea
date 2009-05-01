@@ -32,7 +32,7 @@
 #include "conf.h"
 #include "eggtrayicon.h"
 #include "feedlist.h"
-#include "net.h"
+#include "net_monitor.h"
 #include "ui/liferea_shell.h"
 #include "ui/ui_common.h"
 #include "ui/ui_popup.h"
@@ -181,14 +181,14 @@ ui_tray_update (void)
 	unreadItems = feedlist_get_unread_item_count ();
 		
 	if (newItems != 0) {
-		if (network_is_online ())
+		if (network_monitor_is_online ())
 			ui_tray_icon_set (newItems, icons[ICON_AVAILABLE]);
 		else
 			ui_tray_icon_set (newItems, icons[ICON_AVAILABLE_OFFLINE]);
 			
 		msg = g_strdup_printf (ngettext ("%d new item", "%d new items", newItems), newItems);
 	} else {
-		if (network_is_online ())
+		if (network_monitor_is_online ())
 			ui_tray_icon_set (newItems, icons[ICON_EMPTY]);
 		else
 			ui_tray_icon_set (newItems, icons[ICON_EMPTY_OFFLINE]);

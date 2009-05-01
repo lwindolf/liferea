@@ -32,6 +32,7 @@
 #include "feedlist.h"
 #include "itemlist.h"
 #include "net.h"
+#include "net_monitor.h"
 #include "social.h"
 #include "render.h"
 #include "htmlview.h"
@@ -40,9 +41,8 @@
 #include "ui/ui_itemlist.h"
 #include "ui/ui_prefs.h"
 
-static htmlviewImplPtr htmlviewImpl = NULL;
-
 extern htmlviewImplPtr htmlview_get_impl();
+#define RENDERER(htmlview)	(htmlview->priv->impl)
 
 static void liferea_htmlview_class_init	(LifereaHtmlViewClass *klass);
 static void liferea_htmlview_init	(LifereaHtmlView *htmlview);
@@ -53,6 +53,8 @@ struct LifereaHtmlViewPrivate {
 	GtkWidget	*renderWidget;
 	gboolean	internal;		/**< TRUE if internal view presenting generated HTML with special links */
 	gboolean	forceInternalBrowsing;	/**< TRUE if clicked links should be force loaded within this view (regardless of global preference) */
+	
+	htmlviewImplPtr impl;			/**< browser widget support implementation */
 };
 
 enum {
@@ -187,9 +189,23 @@ liferea_htmlview_init (LifereaHtmlView *htmlview)
 {
 	htmlview->priv = LIFEREA_HTMLVIEW_GET_PRIVATE (htmlview);
 	htmlview->priv->internal = FALSE;
+	htmlview->priv->impl = htmlview_get_impl ();
+	htmlview->priv->renderWidget = RENDERER (htmlview)->create (htmlview);
+}
+
+static void
+liferea_htmlview_set_online (LifereaHtmlView *htmlview, gboolean online)
+{
+	if (RENDERER (htmlview)->setOffLine)
+		(RENDERER (htmlview)->setOffLine) (!online);
+}
+
+static void
+liferea_htmlview_online_status_changed (NetworkMonitor *nm, gboolean online, gpointer userdata)
+{
+	LifereaHtmlView *htmlview = LIFEREA_HTMLVIEW (userdata);
 	
-	if (!htmlviewImpl)
-		htmlviewImpl = htmlview_get_impl ();
+	liferea_htmlview_set_online (htmlview, online);
 
 	liferea_htmlview_update_proxy ();
 }
@@ -201,13 +217,17 @@ liferea_htmlview_new (gboolean forceInternalBrowsing)
 		
 	htmlview = LIFEREA_HTMLVIEW (g_object_new (LIFEREA_HTMLVIEW_TYPE, NULL));
 	htmlview->priv->forceInternalBrowsing = forceInternalBrowsing;
-	htmlview->priv->renderWidget = htmlviewImpl->create (htmlview);
+
 	liferea_htmlview_clear (htmlview);
+	
+	g_signal_connect (network_monitor_get (), "online-status-changed",
+	                  G_CALLBACK (liferea_htmlview_online_status_changed),
+	                  htmlview);
 	
 	return htmlview;
 }
 
-// FIXME: evil method!
+/* Needed when adding widget to a parent and querying GTK theme */
 GtkWidget *
 liferea_htmlview_get_widget (LifereaHtmlView *htmlview)
 {
@@ -238,10 +258,10 @@ liferea_htmlview_write (LifereaHtmlView *htmlview, const gchar *string, const gc
 		
 		/* to prevent crashes inside the browser */
 		buffer = common_utf8_fix (buffer);
-		(htmlviewImpl->write) (htmlview->priv->renderWidget, buffer, strlen (buffer), baseURL, "application/xhtml+xml");
+		(RENDERER (htmlview)->write) (htmlview->priv->renderWidget, buffer, strlen (buffer), baseURL, "application/xhtml+xml");
 		g_free (buffer);
 	} else {
-		(htmlviewImpl->write) (htmlview->priv->renderWidget, string, strlen (string), baseURL, "application/xhtml+xml");
+		(RENDERER (htmlview)->write) (htmlview->priv->renderWidget, string, strlen (string), baseURL, "application/xhtml+xml");
 	}
 }
 
@@ -385,42 +405,34 @@ liferea_htmlview_launch_URL_internal (LifereaHtmlView *htmlview, const gchar *ur
 	/* before loading untrusted URLs suppress internal link schema */
 	htmlview->priv->internal = FALSE;
 	
-	(htmlviewImpl->launch) (htmlview->priv->renderWidget, url);
+	(RENDERER (htmlview)->launch) (htmlview->priv->renderWidget, url);
 }
 
 void
 liferea_htmlview_set_zoom (LifereaHtmlView *htmlview, gfloat diff)
 {
-	(htmlviewImpl->zoomLevelSet) (htmlview->priv->renderWidget, diff); 
+	(RENDERER (htmlview)->zoomLevelSet) (htmlview->priv->renderWidget, diff); 
 }
 
 gfloat
 liferea_htmlview_get_zoom (LifereaHtmlView *htmlview)
 {
-	return (htmlviewImpl->zoomLevelGet) (htmlview->priv->renderWidget);
+	return (RENDERER (htmlview)->zoomLevelGet) (htmlview->priv->renderWidget);
 }
 
 gboolean
 liferea_htmlview_scroll (LifereaHtmlView *htmlview)
 {
-	return (htmlviewImpl->scrollPagedown) (htmlview->priv->renderWidget);
+	return (RENDERER (htmlview)->scrollPagedown) (htmlview->priv->renderWidget);
 }
 
 void
-liferea_htmlview_update_proxy (void)
+liferea_htmlview_update_proxy (LifereaHtmlView *htmlview)
 {
-	if (htmlviewImpl)
-		(htmlviewImpl->setProxy) (network_get_proxy_host (),
-		                          network_get_proxy_port (),
-					  network_get_proxy_username (),
-					  network_get_proxy_password ());
-}
-
-void
-liferea_htmlview_set_online (gboolean online)
-{
-	if (htmlviewImpl && htmlviewImpl->setOffLine)
-		(htmlviewImpl->setOffLine) (!online);
+	(RENDERER (htmlview)->setProxy) (network_get_proxy_host (),
+	                                 network_get_proxy_port (),
+	                                 network_get_proxy_username (),
+	                                 network_get_proxy_password ());
 }
 
 void

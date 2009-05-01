@@ -30,7 +30,7 @@
 #include "feed.h"
 #include "feedlist.h"
 #include "folder.h"
-#include "net.h"
+#include "net_monitor.h"
 #include "newsbin.h"
 #include "vfolder.h"
 #include "ui/browser_tabs.h"
@@ -350,7 +350,7 @@ on_menu_update (GtkWidget *widget, gpointer user_data)
 		return;
 	}
 
-	if (network_is_online ()) 
+	if (network_monitor_is_online ()) 
 		node_update_subscription (feedlist_get_selected (), GUINT_TO_POINTER (FEED_REQ_PRIORITY_HIGH));
 	else
 		liferea_shell_set_status_bar (_("Liferea is in offline mode. No update possible."));
@@ -359,7 +359,7 @@ on_menu_update (GtkWidget *widget, gpointer user_data)
 void
 on_menu_update_all(void)
 { 
-	if (network_is_online ()) 
+	if (network_monitor_is_online ()) 
 		node_update_subscription (feedlist_get_root(), GUINT_TO_POINTER (FEED_REQ_PRIORITY_HIGH));
 	else
 		liferea_shell_set_status_bar (_("Liferea is in offline mode. No update possible."));

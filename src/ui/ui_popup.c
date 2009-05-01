@@ -1,7 +1,7 @@
 /**
  * @file ui_popup.c popup menus
  *
- * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2009 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2009 Adrian Bunk <bunk@users.sourceforge.net>
  *
@@ -29,7 +29,7 @@
 #include "feedlist.h"
 #include "folder.h"
 #include "itemlist.h"
-#include "net.h"
+#include "net_monitor.h"
 #include "newsbin.h"
 #include "node.h"
 #include "social.h"
@@ -168,7 +168,7 @@ ui_popup_systray_menu (guint button, guint32 activate_time)
 
 	menu = gtk_menu_new ();
 
-	ui_popup_add_menuitem (menu, _("_Work Offline"), on_onlinebtn_clicked, NULL, NULL, (!network_is_online ()) + UI_POPUP_ITEM_IS_TOGGLE);
+	ui_popup_add_menuitem (menu, _("_Work Offline"), on_onlinebtn_clicked, NULL, NULL, (!network_monitor_is_online ()) + UI_POPUP_ITEM_IS_TOGGLE);
 	ui_popup_add_menuitem (menu, _("_Update All"), on_menu_update_all, NULL, GTK_STOCK_REFRESH, 0);
 	ui_popup_add_menuitem (menu, _("_Preferences"), on_prefbtn_clicked, NULL, GTK_STOCK_PREFERENCES, 0);
 

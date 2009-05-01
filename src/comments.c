@@ -27,6 +27,7 @@
 #include "feed.h"
 #include "metadata.h"
 #include "net.h"
+#include "net_monitor.h"
 #include "update.h"
 #include "ui/itemview.h"
 
@@ -191,7 +192,7 @@ comments_refresh (itemPtr item)
 	updateRequestPtr	request;
 	const gchar		*url;
 	
-	if (!network_is_online ())
+	if (!network_monitor_is_online ())
 		return;
 	
 	url = metadata_list_get (item->metadata, "commentFeedUri");

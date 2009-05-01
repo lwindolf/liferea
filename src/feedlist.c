@@ -29,7 +29,7 @@
 #include "feedlist.h"
 #include "folder.h"
 #include "itemlist.h"
-#include "net.h"
+#include "net_monitor.h"
 #include "node.h"
 #include "script.h"
 #include "update.h"
@@ -146,7 +146,7 @@ feedlist_auto_update (void *data)
 {
 	debug_enter ("feedlist_auto_update");
 
-	if (network_is_online ())
+	if (network_monitor_is_online ())
 		node_auto_update_subscription (ROOTNODE);
 	else
 		debug0 (DEBUG_UPDATE, "no update processing because we are offline!");

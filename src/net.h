@@ -94,18 +94,4 @@ void network_process_request (const updateJobPtr const job);
  */
 const char * network_strerror (gint netstatus, gint httpstatus);
 
-/**
- * Sets the online status according to mode.
- *
- * @param mode	TRUE for online, FALSE for offline
- */ 
-void network_set_online (gboolean mode);
-
-/**
- * Queries the online status.
- *
- * @return TRUE if online
- */
-gboolean network_is_online (void);
-
 #endif

@@ -177,15 +177,6 @@ void liferea_shell_set_status_bar (const char *format, ...);
 void liferea_shell_set_important_status_bar (const char *format, ...);
 
 /**
- * Changes the online state UI representation.
- *
- * @param online	1 = online, 0 = offline
- *
- * @todo: use signal instead
- */
-void liferea_shell_online_status_changed(int online);
-
-/**
  * Returns the Liferea main window.
  *
  * @returns main window widget

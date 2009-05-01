@@ -27,7 +27,7 @@
 #include <dbus/dbus-glib.h>
 #include "dbus.h"
 #include "feedlist.h"
-#include "net.h"
+#include "net_monitor.h"
 #include "subscription.h"
 #include "ui/liferea_shell.h"
 
@@ -43,7 +43,7 @@ liferea_dbus_ping (LifereaDBus *self, gboolean *ret, GError **err)
 gboolean
 liferea_dbus_set_online (LifereaDBus *self, gboolean online, gboolean *ret, GError **err)
 {
-	network_set_online (online);
+	network_monitor_set_online (online);
 	*ret = TRUE;
 	return TRUE;
 }

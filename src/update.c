@@ -21,10 +21,6 @@
 
 #include "update.h"
 
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
-
 #include <libxml/parser.h>
 #include <libxslt/xslt.h>
 #include <libxslt/xsltInternals.h>
@@ -35,11 +31,6 @@
 #include <stdio.h>
 #include <sys/wait.h>
 #include <string.h>
-
-#ifdef USE_NM
-#include <dbus/dbus.h>
-#include <libnm_glib.h>
-#endif
 
 #include "common.h"
 #include "conf.h"
@@ -59,12 +50,6 @@ static GSList	*jobs = NULL;
 static GAsyncQueue *pendingJobs = NULL;
 static guint numberOfActiveJobs = 0;
 #define MAX_ACTIVE_JOBS	5
-
-#ifdef USE_NM
-/* State for NM support */
-static libnm_glib_ctx *nm_ctx = NULL;
-static guint nm_id = 0;
-#endif
 
 /* update state interface */
 
@@ -570,108 +555,21 @@ update_process_finished_job (updateJobPtr job)
 	g_idle_add (update_process_result_idle_cb, job);
 }
 
-#ifdef USE_NM
-static void
-update_network_monitor (libnm_glib_ctx *ctx, gpointer user_data)
-{
-	libnm_glib_state	state;
-	gboolean online;
-
-	g_return_if_fail (ctx != NULL);
-
-	state = libnm_glib_get_network_state (ctx);
-	online = network_is_online ();
-
-	if (online && state == LIBNM_NO_NETWORK_CONNECTION) {
-		debug0 (DEBUG_UPDATE, "network manager: no network connection -> going offline");
-		network_set_online (FALSE);
-	} else if (!online && state == LIBNM_ACTIVE_NETWORK_CONNECTION) {
-		debug0 (DEBUG_UPDATE, "network manager: active connection -> going online");
-		network_set_online (TRUE);
-	}
-}
-
-static gboolean
-update_nm_initialize (void)
-{
-	debug0 (DEBUG_UPDATE, "network manager: registering network state change callback");
-	
-	if (!nm_ctx) {
-		nm_ctx = libnm_glib_init ();
-		if (!nm_ctx) {
-			fprintf (stderr, "Could not initialize libnm.\n");
-			return FALSE;
-		}	
-	}
-
-	nm_id = libnm_glib_register_callback (nm_ctx, update_network_monitor, NULL, NULL);
-	
-	return TRUE;
-}
-
-static void
-update_nm_cleanup (void)
-{
-	debug0 (DEBUG_UPDATE, "network manager: unregistering network state change callback");
-	
-	if (nm_id != 0 && nm_ctx != NULL) {
-		libnm_glib_unregister_callback (nm_ctx, nm_id);
-		libnm_glib_shutdown (nm_ctx);
-		nm_ctx = NULL;
-		nm_id = 0;
-	}
-}
-#endif
 
 void
 update_init (void)
 {
 	pendingJobs = g_async_queue_new ();
-	network_init ();
-	
-	g_timeout_add (500, update_dequeue_job, NULL);
-	
-#ifdef USE_NM
-	{
-		DBusConnection *connection;
-
-		connection = dbus_bus_get (DBUS_BUS_SYSTEM, NULL);
-
-		if (connection) {
-			dbus_connection_set_exit_on_disconnect (connection, FALSE);
-
-			if (dbus_bus_name_has_owner (connection, "org.freedesktop.NetworkManager", NULL)) {
-				update_nm_initialize ();
-				/* network manager will set online state right after initialization... */
-			} else {
-				network_set_online (TRUE);
-			}
-
-			dbus_connection_unref(connection);
-
-			return;
-		}
-	}
-#endif
-	network_set_online (TRUE);
+	g_timeout_add (500, update_dequeue_job, NULL);	
 }
 
 void
 update_deinit (void)
 {
-	debug_enter ("update_deinit");
-
-#ifdef USE_NM	
-	update_nm_cleanup ();
-#endif	
-	network_deinit ();
-	
 	// FIXME: cancel all jobs
-	
+
 	g_async_queue_unref (pendingJobs);
 	
 	g_slist_free (jobs);
 	jobs = NULL;
-	
-	debug_exit ("update_deinit");
 }

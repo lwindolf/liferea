@@ -50,6 +50,7 @@ liferea_SOURCES = \
 	metadata.c metadata.h \
 	migrate.c migrate.h \
 	net.c net.h \
+	net_monitor.c net_monitor.h \
 	newsbin.c newsbin.h \
 	node.c node.h \
 	node_type.c node_type.h \

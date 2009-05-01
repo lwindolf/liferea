@@ -182,17 +182,18 @@ void liferea_htmlview_prepare_context_menu (LifereaHtmlView *htmlview, GtkMenu *
 /**
  * To be called when HTML view needs to update the proxy settings
  * of the rendering widget implementation.
+ *
+ * @param htmlview	the html view
  */
-void liferea_htmlview_update_proxy (void);
+void liferea_htmlview_update_proxy (LifereaHtmlView *htmlview);
 
 /**
- * To be called when HTML view needs to update the online state
+ * To be called when HTML view needs to change the text size
  * of the rendering widget implementation.
  *
- * @param online	the new online state
+ * @param htmlview	the html view
+ * @param in		TRUE if zoom is to be increased
  */
-void liferea_htmlview_set_online (gboolean online);
-
 void liferea_htmlview_do_zoom (LifereaHtmlView *htmlview, gboolean in);
 
 G_END_DECLS

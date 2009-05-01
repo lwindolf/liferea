@@ -39,7 +39,7 @@
 #include "feedlist.h"
 #include "htmlview.h"
 #include "itemlist.h"
-#include "net.h"
+#include "net_monitor.h"
 #include "notification/notification.h"
 #include "ui/attention_profile_dialog.h"
 #include "ui/browser_tabs.h"
@@ -659,13 +659,13 @@ on_searchbtn_clicked (GtkButton *button, gpointer user_data)
 void
 on_onlinebtn_clicked (GtkButton *button, gpointer user_data)
 {
-	network_set_online (!network_is_online ());
+	network_monitor_set_online (!network_monitor_is_online ());
 }
 
 static void
 on_work_offline_activate (GtkToggleAction *menuitem, gpointer user_data)
 {
-	network_set_online (!gtk_toggle_action_get_active (menuitem));
+	network_monitor_set_online (!gtk_toggle_action_get_active (menuitem));
 }
 
 static void
@@ -739,14 +739,10 @@ on_menu_export (gpointer callback_data, guint callback_action, GtkWidget *widget
 	export_OPML_file ();
 }
 
-// FIXME: change to signal callback
-void
-liferea_shell_online_status_changed (int online)
+static void
+liferea_shell_set_online_icon (gboolean online)
 {
 	GtkWidget	*widget;
-
-	if (!shell)
-		return;	// FIXME: this check shouldn't be necessary
 
 	widget = liferea_shell_lookup ("onlineimage");
 
@@ -760,10 +756,12 @@ liferea_shell_online_status_changed (int online)
 		atk_object_set_name (gtk_widget_get_accessible (widget), _("Work Online"));	
 	}
 	gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (gtk_action_group_get_action (shell->priv->generalActions, "ToggleOfflineMode")), !online);
+}
 
-	/* Propagate new online status to other interested widgets */
-	// FIXME: bad design, HTML view implementation needs to register for network events itself
-	liferea_htmlview_set_online (online);
+static void
+liferea_shell_online_status_changed (NetworkMonitor *nm, gboolean online, gpointer userdata)
+{
+	liferea_shell_set_online_icon (online);
 	ui_tray_update ();
 }
 
@@ -1264,7 +1262,6 @@ liferea_shell_create (int initialState)
 	gtk_widget_destroy (widget);
 	
 	liferea_shell_update_toolbar ();
-	liferea_shell_online_status_changed (network_is_online ());
 	
 	liferea_shell_setup_URL_receiver (GTK_WIDGET (shell->priv->window));	/* setup URL dropping support */
 
@@ -1327,6 +1324,13 @@ liferea_shell_create (int initialState)
 	htmlview_finish_output (buffer);
 	itemview_display_info (buffer->str);
 	g_string_free (buffer, TRUE);
+	
+	/* 10. Connect network monitoring and set icon*/
+	
+	g_signal_connect (network_monitor_get (), "online-status-changed",
+	                  G_CALLBACK (liferea_shell_online_status_changed), shell);
+	                  
+	liferea_shell_set_online_icon (network_monitor_is_online ());
 	
 	debug_exit ("liferea_shell_create");
 }

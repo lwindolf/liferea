@@ -31,8 +31,6 @@
 #include "common.h"
 #include "conf.h"
 #include "debug.h"
-#include "ui/liferea_htmlview.h"
-#include "ui/liferea_shell.h"
 
 #define HOMEPAGE	"http://liferea.sf.net/"
 
@@ -46,8 +44,6 @@ static gchar	*proxyname = NULL;
 static gchar	*proxyusername = NULL;
 static gchar	*proxypassword = NULL;
 static int	proxyport = 0;
-
-static gboolean	online = FALSE;
 
 static void
 network_process_callback (SoupSession *session, SoupMessage *msg, gpointer user_data)
@@ -318,7 +314,8 @@ network_set_proxy (gchar *host, guint port, gchar *user, gchar *password)
 		debug0 (DEBUG_NET, "proxy unset!");
 	}
 
-	liferea_htmlview_update_proxy ();
+	// FIXME: do this differently using signals!
+	// liferea_htmlview_update_proxy ();
 }
 
 const char *
@@ -371,18 +368,3 @@ network_strerror (gint netstatus, gint httpstatus)
 	return tmp;
 }
 
-void
-network_set_online (gboolean mode)
-{
-	if (online != mode) {
-		online = mode;
-		debug1 (DEBUG_NET, "Changing online mode to %s", mode?"online":"offline");
-		liferea_shell_online_status_changed (mode);
-	}
-}
-
-gboolean
-network_is_online (void)
-{
-	return online;
-}
