@@ -25,7 +25,6 @@
 #include <glib.h>
 #include "common.h"
 #include "debug.h"
-#include "plugin.h"
 #include "script.h"
 #include "xml.h"
 
@@ -171,24 +170,14 @@ static void script_config_save(void) {
 }
 
 void script_init(void) {
-	GSList	*iter;
-
 	scripts = g_hash_table_new(g_direct_hash, g_direct_equal);
 	script_config_load();
+}
 
-	iter = plugin_mgmt_get_list();
-	while(iter) {
-		pluginPtr plugin = (pluginPtr)(iter->data);
-		if(PLUGIN_TYPE_SCRIPT_SUPPORT == plugin->type) {
-			debug1(DEBUG_PLUGINS, "using \"%s\" for scripting...", plugin->name);
-			scriptImpl = plugin->symbols;
-			break;
-		}			
-		iter = g_slist_next(iter);
-	}
+void script_add_impl(struct scriptSupportImpl *impl) {
 
-	if(scriptImpl)
-		scriptImpl->init();
+	scriptImpl = impl;
+	scriptImpl->init();
 }
 
 void script_run_cmd(const gchar *cmd) {

@@ -99,6 +99,10 @@ if test "x$enable_lua" = "xyes"; then
    AC_SUBST(LUA_LIBS)
 fi
 
+if test "x$enable_lua" = "xyes"; then
+  AC_DEFINE(HAVE_LUA, 1, [Define if LUA support is enabled])
+fi
+
 AM_CONDITIONAL(WITH_LUA, test "x$enable_lua" = "xyes")
 
 dnl *****

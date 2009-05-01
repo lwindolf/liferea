@@ -1,5 +1,5 @@
 /**
- * @file script.c LUA scripting plugin implementation
+ * @file script.c LUA scripting implementation
  *
  * Copyright (C) 2006-2008 Lars Lindner <lars.lindner@gmail.com>
  *
@@ -22,7 +22,6 @@
 #include <lauxlib.h>
 #include <lualib.h>
 #include "liferea_wrap.h"
-#include "plugin.h"
 #include "script.h"
 
 static lua_State *luaVM = NULL;
@@ -115,21 +114,10 @@ lua_deinit (void)
 	lua_close (luaVM);
 }
 
-static struct scriptSupportImpl ssi = {
-	SCRIPT_SUPPORT_API_VERSION,
+struct scriptSupportImpl lua_script_impl = {
 	"LUA",
 	lua_init,
 	lua_deinit,
 	lua_run_cmd,
 	lua_run_script,
 };
-
-static struct plugin pi = {
-	PLUGIN_API_VERSION,
-	"LUA Scripting Support Plugin",
-	PLUGIN_TYPE_SCRIPT_SUPPORT,
-	&ssi
-};
-
-DECLARE_PLUGIN(pi);
-DECLARE_SCRIPT_SUPPORT_IMPL(ssi);

@@ -88,6 +88,12 @@ dbus_wrap.c: $(srcdir)/liferea_dbus.xml
 
 endif
 
+if WITH_LUA
+
+liferea_LDADD += scripting/liblua.a $(LUA_LIBS)
+
+endif
+
 if PLATFORM_WIN32
 
 liferea_LDFLAGS = -Wl,--export-all-symbols,--out-implib,liferea.a

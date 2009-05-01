@@ -12,22 +12,9 @@ INCLUDES = \
 if WITH_LUA
 
 BUILT_SOURCES = liferea_wrap.h
-pkglib_LTLIBRARIES = libliscrlua.la
-libliscrlua_la_SOURCES = liferea_wrap.h lua.c ../script.h 
-libliscrlua_la_LIBADD = $(PACKAGE_LIBS) $(LUA_LIBS) $(INTLLIBS)
-libliscrlua_la_CFLAGS = $(PACKAGE_CFLAGS) $(LUA_CFLAGS)
-
-if PLATFORM_WIN32
-
-libliscrlua_la_LDFLAGS = -avoid-version -module -no-undefined -Wl,$(top_builddir)/src/liferea.a
-libliscrlua_la_DEPENDENCIES = liferea.i $(top_builddir)/src/liferea$(EXEEXT)
-
-else
-
-libliscrlua_la_LDFLAGS = -avoid-version -module
-libliscrlua_la_DEPENDENCIES = liferea.i
-
-endif
+noinst_LIBRARIES = liblua.a
+liblua_a_SOURCES = liferea_wrap.h lua.c ../script.h 
+liblua_a_CFLAGS = $(PACKAGE_CFLAGS) $(LUA_CFLAGS)
 
 # Swig doesn't support -pthread...
 LIFEREA_WRAP_CFLAGS=$(PACKAGE_CFLAGS:-pthread=)

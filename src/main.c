@@ -279,6 +279,9 @@ main (int argc, char *argv[])
 	plugin_mgmt_init ();		/* get list of plugins and initialize them */
 	conf_load ();			/* load global feed settings */
 	script_init ();			/* setup scripting if supported */
+#ifdef HAVE_LUA
+	script_add_impl(&lua_script_impl);
+#endif
 	social_init ();			/* initialized social bookmarking */
 #ifdef USE_DBUS	
 	dbus = liferea_dbus_new ();	

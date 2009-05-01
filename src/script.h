@@ -26,7 +26,6 @@
 
 /** scripting support plugin interface */
 typedef struct scriptSupportImpl {
-	guint		api_version;				/**< API version of scripting support plugin */
 	const gchar	*name;					/**< descriptive name of the plugin */
 	void		(*init)		(void);			/**< called on startup */
 	void		(*deinit)	(void);			/**< called on shutdown */
@@ -34,13 +33,6 @@ typedef struct scriptSupportImpl {
 	void		(*run_script)	(const gchar *file, const gchar *for_hook);	/**< runs the given script */
 } *scriptSupportImplPtr;
 
-#define SCRIPT_SUPPORT_API_VERSION 1
-
-#define DECLARE_SCRIPT_SUPPORT_IMPL(impl) \
-	G_MODULE_EXPORT scriptSupportImplPtr script_support_impl_get_info() { \
-		return &impl; \
-	}
-	
 /* script support interface */
 	
 typedef enum hooks {
@@ -60,6 +52,9 @@ typedef enum hooks {
 	
 	SCRIPT_HOOK_NEW_SUBSCRIPTION
 } hookType;
+
+/* LUA implementation */
+extern struct scriptSupportImpl lua_script_impl;
 
 /**
  * Checks wether scripting support is available and enabled or not.
@@ -123,5 +118,12 @@ GSList *script_hook_get_list(hookType type);
  * Close down scripting.
  */
 void script_deinit(void);
+
+/**
+ * Add a script implementation
+ *
+ * @param impl the script implementation
+ */
+void script_add_impl(struct scriptSupportImpl *impl);
 
 #endif
