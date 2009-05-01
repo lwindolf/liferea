@@ -1,6 +1,6 @@
-2009-0?-??  ???
+2009-05-01  Adrian Bunk <bunk@users.sourceforge.net>
 
-	Version 1.5.16 (Unstable)
+	Version 1.6.0-rc1 (Unstable)
 
 	* Fixes crash when switching view mode when search result
 	  is visible. (Lars Lindner)
