@@ -26,11 +26,13 @@
 #include "node.h"
 #include "notification/notification.h"
 
-notificationPluginPtr notificationPlugin;
+notificationPluginPtr notificationPlugin = NULL;
 
 void notification_plugin_register (notificationPluginPtr plugin)
 {
-	/* add plugin to notification plugin instance list */
+	g_return_if_fail (!notificationPlugin);
+
+	/* add plugin to notification plugin */
 	notificationPlugin = plugin;
 }
 
