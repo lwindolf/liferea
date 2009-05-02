@@ -75,7 +75,6 @@ ui_bloglines_source_get_account_info (void)
 /* node source type definition */
 
 static struct nodeSourceType nst = {
-	NODE_SOURCE_TYPE_API_VERSION,
 	"fl_bloglines",
 	N_("Bloglines"),
 	N_("Integrate the feed list of your Bloglines account. Liferea will "

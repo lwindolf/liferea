@@ -64,19 +64,6 @@ node_source_type_find (const gchar *typeStr, guint capabilities)
 static gboolean
 node_source_type_register (nodeSourceTypePtr type)
 {
-	/* check feed list provider plugin version */
-	if (NODE_SOURCE_TYPE_API_VERSION != type->api_version) {
-		debug3 (DEBUG_PLUGINS, "feed list source API version mismatch: \"%s\" has version %d should be %d", type->name, type->api_version, NODE_SOURCE_TYPE_API_VERSION);
-		return FALSE;
-	} 
-
-	/* check if all mandatory functions are provided */
-	if (!(type->source_type_init &&
-	      type->source_type_deinit)) {
-		debug1 (DEBUG_PLUGINS, "mandatory functions missing: \"%s\"", type->name);
-		return FALSE;
-	}
-
 	/* allow the plugin to initialize */
 	type->source_type_init ();
 

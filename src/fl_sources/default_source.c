@@ -211,7 +211,6 @@ static void default_source_deinit (void) { }
 /* node source type definition */
 
 static struct nodeSourceType nst = {
-	.api_version		= NODE_SOURCE_TYPE_API_VERSION,
 	.id			= "fl_default",
 	.name			= "Static Feed List",
 	.description		= "The default feed list source. Should never be added manually. If you see this then something went wrong!",

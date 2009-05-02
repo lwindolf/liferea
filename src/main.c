@@ -41,7 +41,6 @@
 #include "db.h"
 #include "dbus.h"
 #include "debug.h"
-#include "plugin.h"
 #include "script.h"
 #include "social.h"
 #include "update.h"
@@ -133,8 +132,6 @@ debug_entries_parse_callback (const gchar *option_name,
 		*debug_flags |= DEBUG_PARSING;
 	} else if (g_str_equal (option_name, "--debug-performance")) {
 		*debug_flags |= DEBUG_PERF;
-	} else if (g_str_equal (option_name, "--debug-plugins")) {
-		*debug_flags |= DEBUG_PLUGINS;
 	} else if (g_str_equal (option_name, "--debug-trace")) {
 		*debug_flags |= DEBUG_TRACE;
 	} else if (g_str_equal (option_name, "--debug-update")) {
@@ -192,7 +189,6 @@ main (int argc, char *argv[])
 		{ "debug-net", 0, G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, debug_entries_parse_callback, N_("Print debugging messages of all network activity"), NULL },
 		{ "debug-parsing", 0, G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, debug_entries_parse_callback, N_("Print debugging messages of all parsing functions"), NULL },
 		{ "debug-performance", 0, G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, debug_entries_parse_callback, N_("Print debugging messages when a function takes too long to process"), NULL },
-		{ "debug-plugins", 0, G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, debug_entries_parse_callback, N_("Print debugging messages for the plugin loading"), NULL },
 		{ "debug-trace", 0, G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, debug_entries_parse_callback, N_("Print debugging messages when entering/leaving functions"), NULL },
 		{ "debug-update", 0, G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, debug_entries_parse_callback, N_("Print debugging messages of the feed update processing"), NULL },
 		{ "debug-verbose", 0, G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, debug_entries_parse_callback, N_("Print verbose debugging messages"), NULL },
@@ -277,7 +273,6 @@ main (int argc, char *argv[])
 	/* order is important! */
 	db_init ();			/* initialize sqlite */
 	xml_init ();			/* initialize libxml2 */
-	plugin_mgmt_init ();		/* get list of plugins and initialize them */
 	conf_load ();			/* load global feed settings */
 	script_init ();			/* setup scripting if supported */
 #ifdef HAVE_LUA

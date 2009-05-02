@@ -329,7 +329,6 @@ google_source_cleanup (nodePtr node)
 /* node source type definition */
 
 static struct nodeSourceType nst = {
-	.api_version         = NODE_SOURCE_TYPE_API_VERSION,
 	.id                  = "fl_google",
 	.name                = N_("Google Reader"),
 	.description         = N_("Integrate the feed list of your Google Reader account. Liferea will "

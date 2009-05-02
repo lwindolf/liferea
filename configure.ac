@@ -31,35 +31,6 @@ AC_ARG_ENABLE(libnotify, AS_HELP_STRING([--disable-libnotify],[don't compile the
 AC_ARG_ENABLE(lua,       AS_HELP_STRING([--disable-lua],[don't compile with LUA scripting support]),,enable_lua=yes)
 dnl AC_ARG_ENABLE(avahi,     AS_HELP_STRING([--disable-avahi],[don't compile with AVAHI support]),,enable_avahi=yes)
 
-AC_MSG_CHECKING([for some Win32 platform])
-case "$host" in
-   *-*-cygwin*)
-     platform_win32=yes
-     os_win32=no
-     SO_PREFIX=cyg
-     ;;
-   *-*-mingw*)
-     platform_win32=yes
-     os_win32=yes
-     SO_PREFIX=lib
-     ;;
-   *)
-     platform_win32=no
-     os_win32=no
-     SO_PREFIX=lib
-     ;;
-esac
-
-AC_MSG_RESULT([$platform_win32])
-AM_CONDITIONAL(PLATFORM_WIN32, test "$platform_win32" = "yes")
-
-AC_MSG_CHECKING([for native Win32])
-AC_MSG_RESULT([$os_win32])
-AM_CONDITIONAL(OS_WIN32, test "$os_win32" = "yes")
-
-AC_SUBST(SO_PREFIX)
-AC_DEFINE_UNQUOTED(LIBPREFIX, "$SO_PREFIX", [Platform dependent library prefix])
-
 AC_CHECK_FUNCS([strsep fsync])
 
 PKG_PROG_PKG_CONFIG()

@@ -167,7 +167,7 @@ static void notif_libnotify_callback_show_details ( NotifyNotification *n, gchar
 
 		conf_get_bool_value(SHOW_TRAY_ICON);
 		if (!notify_notification_show (n, NULL)) {
-			fprintf(stderr, "PLUGIN:notif_libnotify.c - failed to update notification via libnotify\n");
+			fprintf(stderr, "notif_libnotify.c - failed to update notification via libnotify\n");
 		}
 
 		g_free(labelText_now_p);
@@ -196,7 +196,7 @@ static gboolean notif_libnotify_init(void) {
 		return TRUE;
 	}
 	else {
-		fprintf(stderr, "PLUGIN:notif_libnotify.c : notify_init failed" );
+		fprintf(stderr, "notif_libnotify.c : notify_init failed" );
 		return FALSE;
 	}
 }
@@ -268,7 +268,7 @@ notif_libnotify_node_has_new_items (nodePtr node, gboolean enforced)
 	}
 
 	if (!notify_notification_show (n, NULL))
-		g_warning ("PLUGIN:notif_libnotify.c - failed to send notification via libnotify");
+		g_warning ("notif_libnotify.c - failed to send notification via libnotify");
 }
 	
 struct notificationPlugin libnotify_plugin = {

@@ -55,7 +55,6 @@ liferea_SOURCES = \
 	node.c node.h \
 	node_type.c node_type.h \
 	node_view.h \
-	plugin.c plugin.h \
 	render.c render.h \
 	rule.c rule.h \
 	script.c script.h \
@@ -96,11 +95,5 @@ endif
 if WITH_LIBNOTIFY
 
 liferea_LDADD += notification/libnotify.a $(LIBNOTIFY_LIBS)
-
-endif
-
-if PLATFORM_WIN32
-
-liferea_LDFLAGS = -Wl,--export-all-symbols,--out-implib,liferea.a
 
 endif

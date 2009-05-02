@@ -48,8 +48,6 @@
    A source type implementation can omit all callbacks marked as 
    optional. */
 
-#define NODE_SOURCE_TYPE_API_VERSION 6
-
 enum {
 	NODE_SOURCE_CAPABILITY_IS_ROOT			= (1<<0),	/**< flag only for default feed list source */
 	NODE_SOURCE_CAPABILITY_MULTI_INSTANCES		= (1<<1),	/**< allows multiple source instances */
@@ -60,8 +58,6 @@ enum {
 
 /** feed list node source type */
 typedef struct nodeSourceType {
-	unsigned int	api_version;
-	
 	const gchar	*id;		/**< a unique feed list source type identifier */
 	const gchar	*name;		/**< a descriptive source name (for preferences and menus) */
 	const gchar	*description;	/**< more detailed source type description (up to some sentences) */

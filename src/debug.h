@@ -32,12 +32,11 @@ typedef enum
 	DEBUG_PARSING		= (1<<3),
 	DEBUG_GUI		= (1<<4),
 	DEBUG_TRACE		= (1<<5),
-	DEBUG_PLUGINS		= (1<<6),
-	DEBUG_HTML		= (1<<7),
-	DEBUG_NET		= (1<<8),
-	DEBUG_DB		= (1<<9),
-	DEBUG_PERF		= (1<<10),
-	DEBUG_VERBOSE		= (1<<11)
+	DEBUG_HTML		= (1<<6),
+	DEBUG_NET		= (1<<7),
+	DEBUG_DB		= (1<<8),
+	DEBUG_PERF		= (1<<9),
+	DEBUG_VERBOSE		= (1<<10)
 }
 DebugFlags;
 

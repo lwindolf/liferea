@@ -323,7 +323,6 @@ static void opml_source_deinit(void) { }
 /* node source type definition */
 
 static struct nodeSourceType nst = {
-	NODE_SOURCE_TYPE_API_VERSION,
 	"fl_opml",
 	N_("Planet, BlogRoll, OPML"),
 	N_("Integrate blogrolls or Planets in your feed list. Liferea will "

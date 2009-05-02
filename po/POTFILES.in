@@ -55,8 +55,6 @@ src/node.c
 src/node.h
 src/node_type.c
 src/node_type.h
-src/plugin.c
-src/plugin.h
 src/render.c
 src/render.h
 src/rule.c
