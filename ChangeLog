@@ -5,6 +5,7 @@
 	* Splitting of NetworkManager access into separate GObject
 	  using signals to put HTML views, tray icon and other
 	  observers offline. (Lars Lindner)
+	* Removed the plugin support. (Adrian Bunk)
 
 
 2009-05-01  Adrian Bunk <bunk@users.sourceforge.net>
