@@ -31,33 +31,6 @@
 
 #include "e-date.h"
 
-static size_t e_strftime(char *s, size_t max, const char *fmt, const struct tm *tm)
-{
-#ifdef HAVE_LKSTRFTIME
-	return strftime(s, max, fmt, tm);
-#else
-	char *c, *ffmt, *ff;
-	size_t ret;
-
-	ffmt = g_strdup(fmt);
-	ff = ffmt;
-	while ((c = strstr(ff, "%l")) != NULL) {
-		c[1] = 'I';
-		ff = c;
-	}
-
-	ff = ffmt;
-	while ((c = strstr(ff, "%k")) != NULL) {
-		c[1] = 'H';
-		ff = c;
-	}
-
-	ret = strftime(s, max, ffmt, tm);
-	g_free(ffmt);
-	return ret;
-#endif
-}
-
 
 /**
  * Function to do a last minute fixup of the AM/PM stuff if the locale
@@ -86,17 +59,17 @@ static size_t e_strftime_fix_am_pm(char *s, size_t max, const char *fmt, const s
 
 	if (strstr(fmt, "%p")==NULL && strstr(fmt, "%P")==NULL) {
 		/* No AM/PM involved - can use the fmt string directly */
-		ret=e_strftime(s, max, fmt, tm);
+		ret=strftime(s, max, fmt, tm);
 	} else {
 		/* Get the AM/PM symbol from the locale */
-		e_strftime (buf, 10, "%p", tm);
+		strftime (buf, 10, "%p", tm);
 
 		if (buf[0]) {
 			/**
 			 * AM/PM have been defined in the locale
 			 * so we can use the fmt string directly
 			 **/
-			ret=e_strftime(s, max, fmt, tm);
+			ret=strftime(s, max, fmt, tm);
 		} else {
 			/**
 			 * No AM/PM defined by locale
@@ -113,7 +86,7 @@ static size_t e_strftime_fix_am_pm(char *s, size_t max, const char *fmt, const s
 			for (sp=ffmt; (sp=strstr(sp, "%I")); sp++) {
 				sp[1]='H';
 			}
-			ret=e_strftime(s, max, ffmt, tm);
+			ret=strftime(s, max, ffmt, tm);
 			g_free(ffmt);
 		}
 	}
