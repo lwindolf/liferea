@@ -69,7 +69,6 @@ liferea_SOURCES = \
 
 liferea_LDADD =	parsers/libliparsers.a \
 		fl_sources/libliflsources.a \
-		notification/libnotification.a \
 		ui/libliui.a \
 		webkit/libwebkit.a \
 		$(SYNC_LIB) \
@@ -91,6 +90,12 @@ endif
 if WITH_LUA
 
 liferea_LDADD += scripting/liblua.a $(LUA_LIBS)
+
+endif
+
+if WITH_LIBNOTIFY
+
+liferea_LDADD += notification/libnotify.a $(LIBNOTIFY_LIBS)
 
 endif
 

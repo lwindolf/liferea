@@ -84,6 +84,10 @@ else
    enable_libnotify=no
 fi
 
+if test "x$enable_libnotify" = "xyes"; then
+  AC_DEFINE(HAVE_LIBNOTIFY, 1, [Define if libnotify support is enabled])
+fi
+
 AM_CONDITIONAL(WITH_LIBNOTIFY, test "x$enable_libnotify" = "xyes")
 
 dnl ***

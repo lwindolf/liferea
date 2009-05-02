@@ -33,7 +33,6 @@
 #include "node.h"
 #include "item.h"
 #include "item_state.h"
-#include "plugin.h"
 #include "feedlist.h"
 #include "ui/liferea_shell.h"
 #include "ui/ui_feedlist.h"
@@ -206,10 +205,6 @@ static void notif_libnotify_deinit(void) {
 	notify_uninit();
 }
 
-static void notif_libnotify_enable(void) { }
-
-static void notif_libnotify_disable(void) { }
-
 static void
 notif_libnotify_node_has_new_items (nodePtr node, gboolean enforced)
 {	
@@ -276,30 +271,10 @@ notif_libnotify_node_has_new_items (nodePtr node, gboolean enforced)
 		g_warning ("PLUGIN:notif_libnotify.c - failed to send notification via libnotify");
 }
 	
-static void notif_libnotify_node_removed(nodePtr node) { }
-
-/* notification plugin definition */
-
-static struct notificationPlugin npi = {
-	NOTIFICATION_PLUGIN_API_VERSION,
-	NOTIFICATION_TYPE_POPUP,
-	10,
+struct notificationPlugin libnotify_plugin = {
 	"libnotify",
 	notif_libnotify_init,
 	notif_libnotify_deinit,
-	notif_libnotify_enable,
-	notif_libnotify_disable,
 	notif_libnotify_node_has_new_items,
-	notif_libnotify_node_removed
 };
 
-static struct plugin pi = {
-	PLUGIN_API_VERSION,
-	"libnotify notification",
-	PLUGIN_TYPE_NOTIFICATION,
-	//"Implementation of a notification using libnotify.",
-	&npi
-};
-
-DECLARE_PLUGIN(pi);
-DECLARE_NOTIFICATION_PLUGIN(npi);

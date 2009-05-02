@@ -51,6 +51,7 @@
 #include "ui/ui_session.h"
 #include "ui/liferea_shell.h"
 #include "sync/avahi_publisher.h"
+#include "notification/notification.h"
 
 #include "bacon-message-connection.h"
 
@@ -281,6 +282,9 @@ main (int argc, char *argv[])
 	script_init ();			/* setup scripting if supported */
 #ifdef HAVE_LUA
 	script_add_impl(&lua_script_impl);
+#endif
+#ifdef HAVE_LIBNOTIFY
+	notification_plugin_register (&libnotify_plugin);
 #endif
 	social_init ();			/* initialized social bookmarking */
 #ifdef USE_DBUS	

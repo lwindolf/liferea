@@ -1341,7 +1341,6 @@ liferea_shell_destroy (void)
 	ui_feedlist_select (NULL);
 	liferea_shell_save_position ();
 	ui_tray_enable (FALSE);
-	notification_enable (FALSE);
 	g_object_unref (shell->priv->tabs);
 	g_object_unref (shell->priv->feedlist);
 

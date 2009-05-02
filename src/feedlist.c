@@ -192,8 +192,6 @@ feedlist_init (FeedList *fl)
 	debug0 (DEBUG_CACHE, "Initializing node state");
 	feedlist_foreach (feedlist_init_node);
 
-	debug0 (DEBUG_GUI, "Notification setup");	
-	notification_enable (conf_get_bool_value (SHOW_POPUP_WINDOWS));
 	ui_tray_update ();
 
 	/* 4. Check if feeds do need updating. */

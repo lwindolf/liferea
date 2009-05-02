@@ -350,7 +350,6 @@ feed_update_unread_count (nodePtr node)
 static void
 feed_remove (nodePtr node)
 {
-	notification_node_removed (node);
 	ui_node_remove_node (node);
 	
 	favicon_remove_from_cache (node->id);

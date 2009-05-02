@@ -31,7 +31,6 @@
 #include "debug.h"
 #include "node.h"
 #include "plugin.h"
-#include "notification/notification.h"
 
 /** list of all loaded plugins */
 static GSList *plugins = NULL;
@@ -68,7 +67,7 @@ plugin_mgmt_load (const gchar * filename)
 			/* try to load specific plugin type symbols */
 			switch(plugin->type) {
 				case PLUGIN_TYPE_NOTIFICATION:
-					success = notification_plugin_register (plugin, handle);
+					//success = notification_plugin_register (plugin, handle);
 					break;
 				default:
 					if(plugin->type >= PLUGIN_TYPE_MAX) {
@@ -152,7 +151,7 @@ void plugin_mgmt_init(void) {
 	}
 
 	/* do plugin type specific startup init */
-	notification_plugin_init ();
+	//notification_plugin_init ();
 
 	debug_exit("plugin_mgmt_init");
 }

@@ -265,7 +265,6 @@ on_popupwindowsoptionbtn_clicked (GtkButton *button, gpointer user_data)
 {
 	gboolean enabled = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (button));
 	conf_set_bool_value (SHOW_POPUP_WINDOWS, enabled);
-	notification_enable (conf_get_bool_value (SHOW_POPUP_WINDOWS));
 }
 
 static void

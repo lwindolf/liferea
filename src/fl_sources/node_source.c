@@ -351,7 +351,6 @@ node_source_remove (nodePtr node)
 	if (NULL != NODE_SOURCE_TYPE (node)->source_delete)
 		NODE_SOURCE_TYPE (node)->source_delete (node);
 		
-	notification_node_removed (node);
 	ui_node_remove_node (node);
 }
 
