@@ -34,6 +34,8 @@ void notification_plugin_register (notificationPluginPtr plugin)
 
 	/* add plugin to notification plugin */
 	notificationPlugin = plugin;
+
+	g_return_if_fail ((notificationPlugin->plugin_init)());
 }
 
 void notification_node_has_new_items(nodePtr node, gboolean enforced) { 
