@@ -28,8 +28,6 @@
 #include <libxml/parser.h>
 #include <glib.h>
 
-extern gboolean lifereaStarted;
-
 /*
  * Standard gettext macros (as provided by glade-2).
  */
