@@ -110,22 +110,6 @@ time_t	parseISO8601Date(gchar *date);
 time_t	parseRFC822Date(gchar *date);
 
 /**
- * Creates a date string from the given timestamp.
- *
- * @param time	pointer to timestamp
- *
- * @returns time as string
- */
-gchar *createRFC822Date(const time_t *time);
-
-/**
- * FIXME: formatDate used by several functions not only
- * to format date column, don't use always date column format!!!
- * maybe gchar * formatDate(time_t, gchar *format) 
- */
-gchar * formatDate(time_t t);
-
-/**
  * Returns the cache file storage path.
  * Usually: ~/.liferea/
  *
@@ -152,15 +136,6 @@ gchar * common_create_cache_filename(const gchar *folder, const gchar *filename,
  * @returns new escaped URL string
  */
 xmlChar * common_uri_escape(const xmlChar *url);
-
-/**
- * Takes an URL and returns a new string containing the unescaped URL.
- *
- * @param url		the URL to unescape
- *
- * @returns new unescaped URL string
- */
-xmlChar * common_uri_unescape(const xmlChar *url);
 
 /** 
  * To correctly escape and expand URLs, does not touch the

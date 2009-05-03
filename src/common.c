@@ -269,17 +269,6 @@ time_t parseISO8601Date(gchar *date) {
 	return 0;
 }
 
-static const gchar *dayofweek[] = { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
-static const gchar *months[] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-
-gchar *createRFC822Date(const time_t *time) {
-	struct tm *tm;
-
-	tm = gmtime(time); /* No need to free because it is statically allocated */
-	return g_strdup_printf("%s, %2d %s %4d %02d:%02d:%02d GMT", dayofweek[tm->tm_wday], tm->tm_mday,
-					   months[tm->tm_mon], 1900 + tm->tm_year, tm->tm_hour, tm->tm_min, tm->tm_sec);
-}
-
 /* this table of RFC822 timezones is from gmime-utils.c of the gmime API */
 static struct {
 	const char *name;
@@ -448,11 +437,6 @@ xmlChar * common_uri_escape(const xmlChar *url) {
 		result = g_strdup(url);
 
 	return result;	
-}
-
-xmlChar * common_uri_unescape(const xmlChar *url) {
-
-	return xmlURIUnescapeString(url, -1, NULL);
 }
 
 /* to correctly escape and expand URLs */
