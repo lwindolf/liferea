@@ -671,7 +671,6 @@ on_newdialog_response (GtkDialog *dialog, gint response_id, gpointer user_data)
 		options->dontUseProxy = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup(GTK_WIDGET (dialog), "dontUseProxyCheck")));
 		
 		feedlist_add_subscription (source, filter, options,
-					   FEED_REQ_RESET_TITLE | 
 					   FEED_REQ_PRIORITY_HIGH);
 		g_free (source);
 	}
@@ -793,7 +792,6 @@ on_simple_newdialog_response (GtkDialog *dialog, gint response_id, gpointer user
 		                                      FALSE /* auth */, NULL /* user */, NULL /* passwd */);
 
 		feedlist_add_subscription (source, NULL, NULL,
-					   FEED_REQ_RESET_TITLE | 
 					   FEED_REQ_PRIORITY_HIGH);
 		g_free (source);
 	}
