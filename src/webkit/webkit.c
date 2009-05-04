@@ -26,6 +26,7 @@
 #include "browser.h"
 #include "conf.h"
 #include "common.h"
+#include "ui/browser_tabs.h"
 #include "ui/liferea_htmlview.h"
 
 /**
@@ -108,8 +109,8 @@ webkit_on_url (WebKitWebView *view, const gchar *title, const gchar *url, gpoint
 /**
  * A link has been clicked
  *
- * When a link has been clicked the the link management is dispatched to Liferea core in
- * order to manage the different filetypes, remote URLs.
+ * When a link has been clicked the link management is dispatched to Liferea
+ * core in order to manage the different filetypes, remote URLs.
  */
 static gboolean
 webkit_link_clicked (WebKitWebView *view,
@@ -124,6 +125,12 @@ webkit_link_clicked (WebKitWebView *view,
 	g_return_val_if_fail (WEBKIT_IS_NETWORK_REQUEST (request), FALSE);
 
 	uri = webkit_network_request_get_uri (request);
+
+	if (webkit_web_navigation_action_get_button (navigation_action) == 2) { /* middle click */
+		browser_tabs_add_new (uri, uri, FALSE);
+		return TRUE;
+	}
+
 	return liferea_htmlview_handle_URL (g_object_get_data (G_OBJECT (view), "htmlview"), uri);
 }
 
@@ -188,8 +195,7 @@ static gboolean
 webkit_javascript_message  (WebKitWebView *view,
 			    const char *message,
 			    int line,
-			    const char *source_id
-			    )
+			    const char *source_id)
 {
 	return TRUE;
 }
