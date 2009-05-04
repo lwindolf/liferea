@@ -63,8 +63,7 @@ GType browser_tabs_get_type (void);
 BrowserTabs * browser_tabs_create (GtkNotebook *notebook);
 
 /**
- * Adds a new tab with the specified URL and title. This is to
- * be used for displaying help pages only.
+ * Adds a new tab with the specified URL and title.
  *
  * @param url	URL to be loaded in new tab (can be NULL to do nothing)
  * @param title	title of the tab to be created
