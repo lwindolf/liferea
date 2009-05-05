@@ -76,11 +76,16 @@ webkit_progress_changed (WebKitWebView *view, gint progress, gpointer user_data)
 }
 
 static void
-webkit_location_changed (WebKitWebView *view, const gchar *location)
+webkit_location_changed (WebKitWebView *view, GParamSpec *pspec, gpointer user_data)
 {
 	LifereaHtmlView	*htmlview;
+	gchar *location;
 
 	htmlview = g_object_get_data (G_OBJECT (view), "htmlview");
+	g_object_get (view, "uri", &location, NULL);
+
+g_print("location_changed! %s\n", location);
+
 	liferea_htmlview_location_changed (htmlview, location);
 }
 
@@ -132,17 +137,6 @@ webkit_link_clicked (WebKitWebView *view,
 	}
 
 	return liferea_htmlview_handle_URL (g_object_get_data (G_OBJECT (view), "htmlview"), uri);
-}
-
-
-/**
- * FIXME: when https://bugs.webkit.org/show_bug.cgi?id=14807 is fixed,
- * do this properly.
- */
-static void
-webkit_load_committed (WebKitWebView *view, WebKitWebFrame *frame)
-{
-	webkit_location_changed (view, webkit_web_frame_get_uri (frame));
 }
 
 /**
@@ -299,8 +293,8 @@ webkit_new (LifereaHtmlView *htmlview)
 	);
 	g_signal_connect (
 		view,
-		"load-committed",
-		G_CALLBACK (webkit_load_committed),
+		"notify::uri",
+		G_CALLBACK (webkit_location_changed),
 		view
 	);
 	g_signal_connect (
@@ -334,12 +328,6 @@ webkit_launch_url (GtkWidget *scrollpane, const gchar *url)
 	} else {
 		http_url = g_strdup (url);
 	}
-
-	// Register the new url for the history
-	webkit_location_changed (
-		WEBKIT_WEB_VIEW (gtk_bin_get_child (GTK_BIN (scrollpane))),
-		http_url
-	);
 
 	webkit_web_view_load_uri (
 		WEBKIT_WEB_VIEW (gtk_bin_get_child (GTK_BIN (scrollpane))),

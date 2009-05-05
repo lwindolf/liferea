@@ -119,7 +119,7 @@ pkg_modules="	gtk+-2.0 >= 2.16.0
 		libglade-2.0 >= 2.0.0
 		libsoup-2.4 >= 2.26
 		unique-1.0
-		webkit-1.0 >= 1.1.1"
+		webkit-1.0 >= 1.1.4"
 
 PKG_CHECK_MODULES(PACKAGE, [$pkg_modules])
 
