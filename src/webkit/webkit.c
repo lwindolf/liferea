@@ -138,10 +138,11 @@ webkit_link_clicked (WebKitWebView *view,
 }
 
 /**
- * If a link with target="_blank" is clicked, this signal is emitted
- * (and not navigation-policy-decision-requested). It may be a bit
- * more consistent once https://bugs.webkit.org/show_bug.cgi?id=23932
- * is fixed, but for now we use this.
+ * If a link with target="_blank" is clicked, this signal is emitted.
+ * We don't want new windows, so we tell it to use the current view
+ * ignoring _blank targets.
+ *
+ * See https://bugs.webkit.org/show_bug.cgi?id=23932
  */
 static WebKitWebView*
 webkit_create_web_view (WebKitWebView *view, WebKitWebFrame *frame)
