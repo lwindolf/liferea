@@ -84,23 +84,8 @@ modify some or all style definitions. To learn about the styles have a
 look at the default stylesheets in &lt;install root&gt;/share/liferea/css.
 </dd>
 
-<dt>Q: The Mozilla browser module doesn't work for me!</dt>
-<dd>A: Please check:
-<ul>
-<li>You need the full Mozilla suite to run the Mozilla module. Firefox doesn't work for that purpose. Note that you can have both installed, browse the web with Firefox and use Mozilla just as Liferea's module</li>
-
-<li>If you have any Mozilla installation containing <tt>libgtkembedmoz.so</tt>. It won't work without this library.</li>
-
-<li>The debug output of Liferea (try running with --debug-all) for Mozilla related errors. If you get <tt>libgtkembedmoz.so: cannot open shared object file</tt> the library simply cannot be found. So you need to set <tt>MOZILLA_FIVE_HOME</tt> to the installation path of Liferea. If for example Mozilla was installed in <tt>/usr/local/mozilla-1.7</tt> and you use bash you should add <tt>export MOZILLA_FIVE_HOME=/usr/local/mozilla-1.7</tt> to your <tt>.profile</tt>.</li>
-
-<li>If your Liferea installation was compiled with Mozilla support. In case you did compile yourself you can check this in the summary output of <tt>configure</tt>. Note that some distributions like Debian split the Liferea package into several parts. To use Liferea with Mozilla on a Debian installation you need the packages <tt>liferea</tt> and <tt>liferea-mozilla</tt></li>
-</ul>
-If none of the above could solve your problems. Please try to use Liferea with another Mozilla installation. Between some Mozilla versions there are symbol incompatibilities. As a last resort you can fallback to GtkHTML2. If you have crashes or other problems please contacts us at the <a href="mailto:liferea-devel@lists.sourceforge.net">mailing list</a>.
-</dd>
-
 <dt>Q: How do I see my LiveJournal friend's friends-only entries?</dt>
 <dd>A: Use the authenticated LiveJournal RSS feed. For example use
-
 
 <a href="http://www.livejournal.com/users/pigrew/data/rss?auth=digest">
 http://www.livejournal.com/users/pigrew/data/rss?auth=digest</a>. You
