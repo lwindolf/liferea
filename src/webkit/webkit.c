@@ -85,6 +85,7 @@ webkit_location_changed (WebKitWebView *view, GParamSpec *pspec, gpointer user_d
 	g_object_get (view, "uri", &location, NULL);
 
 	liferea_htmlview_location_changed (htmlview, location);
+	g_free (location);
 }
 
 /**
