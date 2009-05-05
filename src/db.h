@@ -85,14 +85,6 @@ guint		db_itemset_get_unread_count(const gchar *id);
  */
 guint		db_itemset_get_item_count(const gchar *id);
 
-/**
- * Calls the given callback for each item of the given node id.
- *
- * @param id		the node id
- * @param callback	the callback
- */
-void		db_itemset_foreach (const gchar *id, itemActionFunc callback);
-
 /* item access (note: items are identified by the numeric item id) */
 
 /**
