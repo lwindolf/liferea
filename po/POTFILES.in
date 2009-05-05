@@ -9,8 +9,6 @@ xslt/folder.xml.in
 xslt/item.xml.in
 xslt/newsbin.xml.in
 xslt/vfolder.xml.in
-src/bacon-message-connection.c
-src/bacon-message-connection.h
 src/browser.c
 src/comments.c
 src/comments.h
