@@ -4,6 +4,8 @@
 
 	* When following links with middle-click, open them in new
 	  tabs as we used to do with Gecko (Emilio Pozuelo Monfort)
+	* Fixes 1.0/1.2 migration warning about nested transactions.
+	  (Lars Lindner)
 
 
 2009-05-01  Adrian Bunk <bunk@users.sourceforge.net>
