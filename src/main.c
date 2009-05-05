@@ -59,8 +59,6 @@ static enum {
 	STATE_SHUTDOWN
 } runState = STATE_STARTING;
 
-gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data);
-
 static UniqueResponse
 message_received_cb (UniqueApp         *app,
 		     UniqueCommand      command,
