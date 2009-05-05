@@ -99,7 +99,7 @@ contact us in IRC (see Support section) to help you with it!
 The library dependencies for Liferea are: 
 
 
-   gtk2, gconf2, libxml2, libxslt, sqlite3 and libwebkit
+   gtk2, gconf2, libunique, libxml2, libxslt, sqlite3 and libwebkit
    
    
 Ensure that you have installed the libraries and there headers.
