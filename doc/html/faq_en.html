@@ -34,8 +34,8 @@ online</a>.
 
 <dt>Q: Where can I get it?</dt>
 <dd>
-A: The easiest way is to download the source package or one of the
-available binary packages from the <a href="http://sourceforge.net/project/showfiles.php?group_id=87005">SourceForge project homepage</a>.
+A: The easiest way is to download the source package from
+the <a href="http://sourceforge.net/project/showfiles.php?group_id=87005">SourceForge project page</a>.
 But you should also consider checking if your Linux distribution
 provides an own package for Liferea. A list of all known prebuilt
 packages is provided in the <a href="http://liferea.sf.net/install.htm">installation section</a>.
@@ -54,17 +54,7 @@ File Permissions: 0600.</li>
 <li>The ~/.liferea directory depending on the users umask
 can be readable for everyone. This is useful to allow other 
 programs access to the new_subscription pipe.</li>
-<li>The cache directory with the feed contents is user
-readable only. Contents are stored as plain text in XML.</li>
-<li>The Mozilla profile used by Liferea is created once
-according to the users umask setting. This is true for
-other temporary files too.</li>
-<li><b>The Mozilla profile is created on first startup and
-is a practically unconfigured Mozilla profile! This can be
-a significant security problem (Javascript, Software Installation,
-Plugins...). A workaround for this is to replace it with a profile 
-from a securily configured Mozilla installation.</b></li>
-
+<li>The feed cache is saved in a binary database file.</li>
 <li>This list may not be complete!</li>
 </ul>
 </dd>
