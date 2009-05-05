@@ -8,6 +8,8 @@
 	* Removed the plugin support. (Adrian Bunk)
 	* When following links with middle-click, open them in new
 	  tabs as we used to do with Gecko (Emilio Pozuelo Monfort)
+	* Switch to libunique for single instance management
+	  (Emilio Pozuelo Monfort)
 
 
 2009-05-01  Adrian Bunk <bunk@users.sourceforge.net>

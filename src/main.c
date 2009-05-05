@@ -30,6 +30,7 @@
 
 #include <gtk/gtk.h>
 #include <locale.h> /* For setlocale */
+#include <unique/unique.h>
 
 #include <string.h>
 #include <stdlib.h>
@@ -52,10 +53,6 @@
 #include "sync/avahi_publisher.h"
 #include "notification/notification.h"
 
-#include "bacon-message-connection.h"
-
-static BaconMessageConnection *bacon_connection = NULL;
-
 static enum {
 	STATE_STARTING,
 	STATE_STARTED,
@@ -64,23 +61,31 @@ static enum {
 
 gboolean on_quit(GtkWidget *widget, GdkEvent *event, gpointer user_data);
 
-
-/** bacon message callback */
-static void
-on_bacon_message_received (const char *message, gpointer data)
+static UniqueResponse
+message_received_cb (UniqueApp         *app,
+		     UniqueCommand      command,
+		     UniqueMessageData *message,
+		     guint              time_,
+		     gpointer           user_data)
 {
-	debug1(DEBUG_GUI, "bacon message received >>>%s<<<", message);
-	
-	/* Currently we only know a single simple command "raise"
-	   which tells the program to raise the window because
-	   another instance was requested which is not supported */
-	   
-	if (g_str_equal (message, "raise")) {
-		debug0 (DEBUG_GUI, "-> raise window requested");
-		liferea_shell_present ();
-	} else {
-		g_warning ("Received unknown bacon command: >>>%s<<<", message);
+	UniqueResponse res;
+
+	debug1(DEBUG_GUI, "libunique command received >>>%d<<<", command);
+
+	switch (command)
+	{
+		case UNIQUE_ACTIVATE:
+			/* Raise the liferea window */
+			debug0 (DEBUG_GUI, "-> raise window requested");
+			liferea_shell_present ();
+			res = UNIQUE_RESPONSE_OK;
+			break;
+		default:
+			g_warning ("Received unknown libunique command: >>>%d<<<", command);
+			res = UNIQUE_RESPONSE_OK;
+			break;
 	}
+	return res;
 }
 
 static void fatal_signal_handler(int sig) {
@@ -158,6 +163,7 @@ show_version (const gchar *option_name,
 int
 main (int argc, char *argv[])
 {
+	UniqueApp	*app;
 	GError		*error = NULL;
 	GOptionContext	*context;
 	GOptionGroup	*debug;
@@ -240,34 +246,20 @@ main (int argc, char *argv[])
 
 	gtk_init (&argc, &argv);
 
+	/* Single instance checks */
+	app = unique_app_new ("net.sourceforge.liferea", NULL);
+	if (unique_app_is_running (app)) {
+		g_print ("Liferea is already running\n");
+		unique_app_send_message (app, UNIQUE_ACTIVATE, NULL);
+		return 1;
+	} else {
+		g_signal_connect (app, "message-received", G_CALLBACK (message_received_cb), NULL);
+	}
+
 	/* GTK theme support */
 	g_set_application_name (_("Liferea"));
 	gtk_window_set_default_icon_name ("liferea");
 
-	/* Note: bacon connection check needs to be done after the
-	   command line parameter checking to allow help and version
-	   switches to be used when we are already running */
-	bacon_connection = bacon_message_connection_new ("liferea");
-	if (bacon_connection)	{
-		if (!bacon_message_connection_get_is_server (bacon_connection)) {
-			g_warning(_("Liferea seems to be running already!"));
-			
-		  	debug0(DEBUG_VERBOSE, "Startup as bacon client...");
-			bacon_message_connection_send (bacon_connection, "raise");
-			bacon_message_connection_free (bacon_connection);
-			
-			gdk_notify_startup_complete ();
-			exit (0);
-		} else {
-		  	debug0 (DEBUG_VERBOSE, "Startup as bacon server...");
-			bacon_message_connection_set_callback (bacon_connection,
-							       on_bacon_message_received,
-							       NULL);
-		}
-	} else {
-		g_warning ("Cannot create IPC connection for Liferea!");
-	}
-	
 	debug_start_measurement (DEBUG_DB);
 
 	/* order is important! */
@@ -346,7 +338,6 @@ main (int argc, char *argv[])
 	gtk_main ();
 	
 	g_object_unref (G_OBJECT (dbus));
-	bacon_message_connection_free (bacon_connection);
 	return 0;
 }
 

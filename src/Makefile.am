@@ -24,8 +24,6 @@ bin_SCRIPTS = liferea-add-feed
 
 liferea_SOURCES = \
 	attention.c attention.h \
-	bacon-message-connection.c \
-	bacon-message-connection.h \
 	browser.c browser.h \
 	comments.c comments.h \
 	common.c common.h \
