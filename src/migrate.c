@@ -247,8 +247,6 @@ migrate_items (const gchar *sourceDir)
    	GDir 	*dir;
 	gchar	*id;
 
-	db_begin_transaction ();
-		
 	dir = g_dir_open (sourceDir, 0, NULL);
 	while (NULL != (id = (gchar *)g_dir_read_name (dir))) 
 	{
@@ -257,8 +255,6 @@ migrate_items (const gchar *sourceDir)
 		debug_end_measurement (DEBUG_CACHE, "parse feed");
 	}
 	g_dir_close (dir);
-	
-	db_commit_transaction ();
 }
 
 static void 

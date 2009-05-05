@@ -12,6 +12,8 @@
 	  (Emilio Pozuelo Monfort)
 	* Simplify location and title awareness logic for the location
 	  bar, require WebKit >= 1.1.4 for it (Emilio Pozuelo Monfort)
+	* Fixes 1.0/1.2 migration warning about nested transaction.
+	  (Lars Lindner)
 
 
 2009-05-01  Adrian Bunk <bunk@users.sourceforge.net>
