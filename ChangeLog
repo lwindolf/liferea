@@ -10,8 +10,8 @@
 	  tabs as we used to do with Gecko (Emilio Pozuelo Monfort)
 	* Switch to libunique for single instance management
 	  (Emilio Pozuelo Monfort)
-	* Simplify location awareness logic for the location bar,
-	  require WebKit >= 1.1.4 for it (Emilio Pozuelo Monfort)
+	* Simplify location and title awareness logic for the location
+	  bar, require WebKit >= 1.1.4 for it (Emilio Pozuelo Monfort)
 
 
 2009-05-01  Adrian Bunk <bunk@users.sourceforge.net>

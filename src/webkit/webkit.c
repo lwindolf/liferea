@@ -57,17 +57,16 @@ webkit_write_html (
 }
 
 static void
-webkit_title_changed (
-	WebKitWebView *view,
-	WebKitWebFrame *frame,
-	const gchar *title,
-	gpointer user_data
-)
+webkit_title_changed (WebKitWebView *view, GParamSpec *pspec, gpointer user_data)
 {
 	LifereaHtmlView	*htmlview;
+	gchar *title;
 
 	htmlview = g_object_get_data (G_OBJECT (view), "htmlview");
+	g_object_get (view, "title", &title, NULL);
+
 	liferea_htmlview_title_changed (htmlview, title);
+	g_free (title);
 }
 
 static void
@@ -262,7 +261,7 @@ webkit_new (LifereaHtmlView *htmlview)
 	/** Connect signal callbacks */
 	g_signal_connect (
 		view,
-		"title-changed",
+		"notify::title",
 		G_CALLBACK (webkit_title_changed),
 		view
 	);
