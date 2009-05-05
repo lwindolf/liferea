@@ -135,26 +135,6 @@ GSList * db_item_get_duplicates(const gchar *guid);
  */
 GSList * db_item_get_duplicate_nodes(const gchar *guid);
 
-/**
- * Explicitely start a transaction.
- */
-void	db_begin_transaction (void);
-
-/**
- * End previously started transaction.
- */
-void	db_end_transaction (void);
-
-/**
- * Commit current transaction.
- */
-void	db_commit_transaction (void);
-
-/**
- * Rollback current transaction.
- */
-void	db_rollback_transaction (void);
-
 /** Query table flags (to construct join expression for a query) */
 typedef enum {
 	QUERY_TABLE_ITEMS	= (1 << 0),

@@ -150,6 +150,34 @@ db_get_schema_version (void)
 	return schemaVersion;
 }
 
+static void
+db_begin_transaction (void)
+{
+	gchar	*sql, *err;
+	gint	res;
+	
+	sql = sqlite3_mprintf ("BEGIN");
+	res = sqlite3_exec (db, sql, NULL, NULL, &err);
+	if (SQLITE_OK != res) 
+		g_warning ("Transaction begin failed (%s) SQL: %s", err, sql);
+	sqlite3_free (sql);
+	sqlite3_free (err);
+}
+
+static void
+db_end_transaction (void) 
+{
+	gchar	*sql, *err;
+	gint	res;
+	
+	sql = sqlite3_mprintf ("END");
+	res = sqlite3_exec (db, sql, NULL, NULL, &err);
+	if (SQLITE_OK != res) 
+		g_warning ("Transaction end failed (%s) SQL: %s", err, sql);
+	sqlite3_free (sql);
+	sqlite3_free (err);
+}
+
 #define SCHEMA_TARGET_VERSION 7
 	
 /* opening or creation of database */
@@ -1043,62 +1071,6 @@ db_itemset_get_item_count (const gchar *id)
 	debug_end_measurement (DEBUG_DB, "counting items");
 		
 	return count;
-}
-
-void
-db_begin_transaction (void)
-{
-	gchar	*sql, *err;
-	gint	res;
-	
-	sql = sqlite3_mprintf ("BEGIN");
-	res = sqlite3_exec (db, sql, NULL, NULL, &err);
-	if (SQLITE_OK != res) 
-		g_warning ("Transaction begin failed (%s) SQL: %s", err, sql);
-	sqlite3_free (sql);
-	sqlite3_free (err);
-}
-
-void
-db_end_transaction (void) 
-{
-	gchar	*sql, *err;
-	gint	res;
-	
-	sql = sqlite3_mprintf ("END");
-	res = sqlite3_exec (db, sql, NULL, NULL, &err);
-	if (SQLITE_OK != res) 
-		g_warning ("Transaction end failed (%s) SQL: %s", err, sql);
-	sqlite3_free (sql);
-	sqlite3_free (err);
-}
-
-void
-db_commit_transaction (void)
-{
-	gchar	*sql, *err;
-	gint	res;
-	
-	sql = sqlite3_mprintf ("COMMIT");
-	res = sqlite3_exec (db, sql, NULL, NULL, &err);
-	if (SQLITE_OK != res) 
-		g_warning ("Transaction commit failed (%s) SQL: %s", err, sql);
-	sqlite3_free (sql);
-	sqlite3_free (err);	
-}
-
-void
-db_rollback_transaction (void) 
-{
-	gchar	*sql, *err;
-	gint	res;
-	
-	sql = sqlite3_mprintf ("ROLLBACK");
-	res = sqlite3_exec (db, sql, NULL, NULL, &err);
-	if (SQLITE_OK != res) 
-		g_warning ("Transaction begin failed (%s) SQL: %s", err, sql);
-	sqlite3_free (sql);
-	sqlite3_free (err);
 }
 
 static gchar *
