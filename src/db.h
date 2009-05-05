@@ -65,7 +65,6 @@ void		db_itemset_remove_all(const gchar *id);
  *
  * @param id	the node id
  */
-void		db_itemset_mark_all_old(const gchar *id);
 void		db_itemset_mark_all_popup(const gchar *id);
 
 /**
