@@ -23,8 +23,6 @@
 
 #include <gtk/gtk.h>
 
-#include "item.h"
-
 /** render parameter type */
 typedef struct renderParam {
 	gchar	**params;
