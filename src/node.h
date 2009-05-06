@@ -24,7 +24,6 @@
 
 #include "itemset.h"
 #include "node_view.h"
-#include "update.h"
 
 /* Liferea's GUI consists of three parts. Feed list, item list
    and HTML view. The feed list is a view of all available

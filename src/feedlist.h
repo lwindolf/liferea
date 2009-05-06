@@ -25,6 +25,7 @@
 #include <glib.h>
 
 #include "node.h"
+#include "update.h"
 
 G_BEGIN_DECLS
 
