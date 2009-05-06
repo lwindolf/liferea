@@ -25,7 +25,6 @@
 #include <glib.h>
 #include <gmodule.h>
 #include "node.h"
-#include "item.h"
 
 typedef enum {
 	NOTIFICATION_TYPE_POPUP,
