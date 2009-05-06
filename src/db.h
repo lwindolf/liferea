@@ -25,7 +25,6 @@
 
 #include "attention.h"
 #include "item.h"
-#include "itemlist.h"
 #include "itemset.h"
 #include "subscription.h"
 #include "update.h"

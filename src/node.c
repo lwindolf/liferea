@@ -29,6 +29,7 @@
 #include "feed.h"	// FIXME
 #include "feedlist.h"
 #include "folder.h"
+#include "itemlist.h"
 #include "itemset.h"
 #include "item_state.h"
 #include "node.h"
