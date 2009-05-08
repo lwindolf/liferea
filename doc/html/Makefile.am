@@ -30,23 +30,23 @@ html_doc_pictures_en =	help_feed_default.png \
 			help_feed_error.png \
 			help_folder.png \
 			help_opml.png \
-			help_feed_prop_downl_1.4.0.png \
-			help_feed_prop_cache_1.4.0.png \
-			help_feed_prop_adv_1.4.0.png \
-			help_feed_prop_general_1.4.0.png \
-			help_feed_prop_source_1.4.0.png \
+			help_feed_prop_downl_1.6.0.png \
+			help_feed_prop_cache_1.6.0.png \
+			help_feed_prop_adv_1.6.0.png \
+			help_feed_prop_general_1.6.0.png \
+			help_feed_prop_source_1.6.0.png \
 			help_item_flag.png \
 			help_item_unread.png \
-			help_prefs_browser_1.4.0.png \
-			help_prefs_enclosures_1.4.0.png \
-			help_prefs_feeds_1.4.0.png \
-			help_prefs_folders_1.4.0.png \
-			help_prefs_gui_1.4.0.png \
-			help_prefs_headlines_1.4.0.png \
-			help_prefs_proxy_1.4.0.png \
-			help_search_1.4.0.png \
-			help_subscribe_1.4.0.png \
-			help_vfolder_1.4.0.png
+			help_prefs_browser_1.6.0.png \
+			help_prefs_enclosures_1.6.0.png \
+			help_prefs_feeds_1.6.0.png \
+			help_prefs_folders_1.6.0.png \
+			help_prefs_gui_1.6.0.png \
+			help_prefs_headlines_1.6.0.png \
+			help_prefs_proxy_1.6.0.png \
+			help_search_1.6.0.png \
+			help_subscribe_1.6.0.png \
+			help_vfolder_1.6.0.png
 
 EXTRA_DIST =	$(html_doc_en) \
 		$(html_doc_de) \
