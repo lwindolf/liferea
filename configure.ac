@@ -61,9 +61,8 @@ dnl LUA
 dnl ***
 
 if test "x$enable_lua" = "xyes"; then
-   PKG_CHECK_MODULES([LUA], [lua],, [AC_MSG_NOTICE([No lua.pc present, is there a lua5.1.pc?])
-     PKG_CHECK_MODULES([LUA], [lua5.1],, [AC_MSG_NOTICE([Are there lua50.pc and lualib50.pc?])
-       PKG_CHECK_MODULES([LUA], [lua50 lualib50],,[enable_lua=no])])])
+   PKG_CHECK_MODULES([LUA], [lua >= 5.1],, [AC_MSG_NOTICE([No lua.pc >= 5.1 present, is there a lua5.1.pc?])
+     PKG_CHECK_MODULES([LUA], [lua5.1],,[enable_lua=no])])
    
    AC_SUBST(LUA_CFLAGS)
    AC_SUBST(LUA_LIBS)

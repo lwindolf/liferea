@@ -14,6 +14,8 @@
 	  bar, require WebKit >= 1.1.4 for it (Emilio Pozuelo Monfort)
 	* Fixes 1.0/1.2 migration warning about nested transaction.
 	  (Lars Lindner)
+	* Remove the broken LUA 5.0 support.
+	  (Adrian Bunk, reported by Leon Nardella)
 
 
 2009-05-01  Adrian Bunk <bunk@users.sourceforge.net>
