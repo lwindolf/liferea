@@ -154,7 +154,7 @@ export_OPML_feedlist (const gchar *filename, nodePtr node, gboolean trusted)
 		xmlSetDocCompressMode (doc, 0);
 
 		if (-1 == xmlSaveFile (backupFilename, doc)) {
-			g_warning ("Could not export to OPML file! Feed list changes will be lost!");
+			g_warning ("Could not export to OPML file!");
 			error = TRUE;
 		}
 		
