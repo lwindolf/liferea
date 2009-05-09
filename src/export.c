@@ -150,8 +150,10 @@ export_OPML_feedlist (const gchar *filename, nodePtr node, gboolean trusted)
 		
 		if (!trusted)
 			old_umask = umask (022);	/* give read permissions for other, per-default we wouldn't give it... */
-			
-		if (-1 == xml_save_to_file (doc, backupFilename)) {
+
+		xmlSetDocCompressMode (doc, 0);
+
+		if (-1 == xmlSaveFile (backupFilename, doc)) {
 			g_warning ("Could not export to OPML file! Feed list changes will be lost!");
 			error = TRUE;
 		}

@@ -26,7 +26,7 @@ AC_ARG_ENABLE(libnotify, AS_HELP_STRING([--disable-libnotify],[don't compile the
 AC_ARG_ENABLE(lua,       AS_HELP_STRING([--disable-lua],[don't compile with LUA scripting support]),,enable_lua=yes)
 dnl AC_ARG_ENABLE(avahi,     AS_HELP_STRING([--disable-avahi],[don't compile with AVAHI support]),,enable_avahi=yes)
 
-AC_CHECK_FUNCS([strsep fsync])
+AC_CHECK_FUNCS([strsep])
 
 PKG_PROG_PKG_CONFIG()
 

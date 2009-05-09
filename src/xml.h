@@ -186,16 +186,4 @@ xmlDocPtr xml_parse (gchar *data, size_t length, gboolean revocery, errorCtxtPtr
  */
 xmlDocPtr xml_parse_feed (feedParserCtxtPtr fpc);
 
-/**
- * Common function for reliable writing of XML documents
- * to disk. In difference to xmlSaveFile*() this function
- * syncs the file and gives better error handling.
- *
- * @param doc		the XML document to save
- * @param filename	the filename to write to
- *
- * @returns 0 on success
- */
-gint xml_save_to_file (xmlDocPtr doc, gchar *filename);
-
 #endif

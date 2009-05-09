@@ -17,6 +17,8 @@
 	  (Lars Lindner)
 	* Remove the broken LUA 5.0 support.
 	  (Adrian Bunk, reported by Leon Nardella)
+	* Replace xml_save_to_file() with a call to xmlSaveFile().
+	  (Adrian Bunk)
 
 
 2009-05-01  Adrian Bunk <bunk@users.sourceforge.net>
