@@ -3,7 +3,8 @@
 	Version 1.6.0-rc2 (Unstable)
 
 	* When following links with middle-click, open them in new
-	  tabs as we used to do with Gecko (Emilio Pozuelo Monfort)
+	  tabs as we used to do with Gecko.
+	  (Emilio Pozuelo Monfort, reported by Sven Hartge)
 	* Fixes 1.0/1.2 migration warning about nested transactions.
 	  (Lars Lindner)
 	* Remove the broken LUA 5.0 support.
