@@ -7,7 +7,8 @@
 	  observers offline. (Lars Lindner)
 	* Removed the plugin support. (Adrian Bunk)
 	* When following links with middle-click, open them in new
-	  tabs as we used to do with Gecko (Emilio Pozuelo Monfort)
+	  tabs as we used to do with Gecko.
+	  (Emilio Pozuelo Monfort, reported by Sven Hartge)
 	* Switch to libunique for single instance management
 	  (Emilio Pozuelo Monfort)
 	* Simplify location and title awareness logic for the location
