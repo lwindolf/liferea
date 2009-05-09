@@ -34,22 +34,9 @@ lua_init (void)
 
 	luaVM = lua_open ();
 	
-	#if defined(LUA_VERSION_NUM) && LUA_VERSION_NUM >= 501
-	luaL_openlibs (luaVM);	/* LUA 5.1 allows loading all default modules... */
-	#endif
+	luaL_openlibs (luaVM);	/* LUA 5.1 allows loading all default modules */
 	
 	luaL_reg lualibs[] = {
-		#if defined(LUA_VERSION_NUM) && LUA_VERSION_NUM >= 501
-		#else
-		/* LUA 5.0 forces us to load all modules ourselves... */
-		{"base",	luaopen_base},
-		{"table",	luaopen_table},
-		{"io",		luaopen_io}, 
-		{"string",	luaopen_string},
-		{"math",	luaopen_math},
-		{"debug",	luaopen_debug},
-		{"package",	luaopen_loadlib},
-		#endif
 		/* This loads swig generated Liferea module... */
 		{SWIG_name,	SWIG_init},
 		{NULL,		NULL}
@@ -72,11 +59,7 @@ lua_run_cmd (const gchar *cmd)
 	lua_setfield(luaVM, -2, "calling_hook");
 	lua_pop(luaVM, 1);
 
-	#if defined(LUA_VERSION_NUM) && LUA_VERSION_NUM >= 501
 	result = luaL_dostring (luaVM, cmd);
-	#else
-	result = lua_dostring (luaVM, cmd);
-	#endif
 
 	if (0 != result)
 		g_warning ("Error code %d when running LUA command \"%s\"!", result, cmd);
@@ -99,11 +82,7 @@ lua_run_script (const gchar *filename, const gchar *for_hook)
 	lua_setfield(luaVM, -2, "calling_hook");
 	lua_pop(luaVM, 1);
 
-	#if defined(LUA_VERSION_NUM) && LUA_VERSION_NUM >=501
 	result = luaL_dofile (luaVM, filename);
-	#else
-	result = lua_dofile (luaVM, filename);
-	#endif
 
 	if (0 != result)
 		g_warning ("Error code %d when running LUA script \"%s\"!", result, filename);

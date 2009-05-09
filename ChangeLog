@@ -6,6 +6,8 @@
 	  tabs as we used to do with Gecko (Emilio Pozuelo Monfort)
 	* Fixes 1.0/1.2 migration warning about nested transactions.
 	  (Lars Lindner)
+	* Remove the broken LUA 5.0 support.
+	  (Adrian Bunk, reported by Leon Nardella)
 
 
 2009-05-01  Adrian Bunk <bunk@users.sourceforge.net>
