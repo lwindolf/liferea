@@ -19,6 +19,8 @@
 	  (Adrian Bunk, reported by Leon Nardella)
 	* Replace xml_save_to_file() with a call to xmlSaveFile().
 	  (Adrian Bunk)
+	* Require libsoup-2.4 >= 2.26.1 for avoiding GNOME #578809.
+	  (Adrian Bunk)
 
 
 2009-05-01  Adrian Bunk <bunk@users.sourceforge.net>
