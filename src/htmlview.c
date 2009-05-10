@@ -242,8 +242,6 @@ htmlview_render_item (itemPtr item,
 	return output;
 }
 
-extern htmlviewImplPtr htmlview_get_impl();
-
 void 
 htmlview_start_output (GString *buffer,
                        const gchar *base,
