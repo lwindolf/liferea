@@ -29,7 +29,6 @@
 #include <time.h>
 
 #include "common.h"
-#include "conf.h"
 #include "debug.h"
 
 #define HOMEPAGE	"http://liferea.sf.net/"

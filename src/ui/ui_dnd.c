@@ -23,7 +23,6 @@
 #include "feed.h"
 #include "feedlist.h"
 #include "debug.h"
-#include "conf.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_itemlist.h"
 #include "ui/ui_node.h"

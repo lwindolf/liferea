@@ -22,7 +22,6 @@
 #include <string.h>
 
 #include "common.h"
-#include "conf.h"
 #include "db.h"
 #include "debug.h"
 #include "favicon.h"

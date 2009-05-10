@@ -26,7 +26,6 @@
 #include <string.h>
 
 #include "common.h"
-#include "conf.h"
 #include "debug.h"
 #include "feedlist.h"
 #include "metadata.h"

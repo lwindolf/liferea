@@ -22,7 +22,6 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "conf.h"
 #include "common.h"
 #include "rss_channel.h"
 #include "feed_parser.h"

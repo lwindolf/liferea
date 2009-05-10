@@ -33,7 +33,6 @@
 #include <string.h>
 
 #include "common.h"
-#include "conf.h"
 #include "debug.h"
 #include "net.h"
 #include "xml.h"

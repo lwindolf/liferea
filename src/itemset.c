@@ -21,7 +21,6 @@
 
 #include <string.h>
 
-#include "conf.h"
 #include "common.h"
 #include "db.h"
 #include "debug.h"

@@ -53,7 +53,6 @@
 #include <ctype.h>
 
 #include "common.h"
-#include "conf.h"
 #include "e-date.h"
 #include "feed.h"
 #include "debug.h"

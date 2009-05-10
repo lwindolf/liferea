@@ -24,7 +24,6 @@
 #include <string.h>
 
 #include "common.h"
-#include "conf.h"
 #include "debug.h"
 #include "export.h"
 #include "feed.h"

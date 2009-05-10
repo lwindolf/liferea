@@ -24,7 +24,6 @@
 #include <libxml/xpathInternals.h>
 
 #include "common.h"
-#include "conf.h"
 #include "debug.h"
 #include "xml.h"
 
