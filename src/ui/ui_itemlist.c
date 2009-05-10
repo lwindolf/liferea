@@ -135,6 +135,7 @@ ui_itemlist_set_sort_column (nodeViewSortType sortType, gboolean sortReversed)
 		case NODE_VIEW_SORT_BY_PARENT:
 			sortColumn = IS_PARENT;
 			break;
+		case NODE_VIEW_SORT_BY_TIME:
 		default:
 			sortColumn = IS_TIME;
 			break;
