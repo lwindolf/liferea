@@ -165,7 +165,7 @@ static void notif_libnotify_callback_show_details ( NotifyNotification *n, gchar
 							node_p->id, NULL);
 		}
 
-		conf_get_bool_value(SHOW_TRAY_ICON);
+		/* FIXME: conf_get_bool_value(SHOW_TRAY_ICON); */
 		if (!notify_notification_show (n, NULL)) {
 			fprintf(stderr, "notif_libnotify.c - failed to update notification via libnotify\n");
 		}
