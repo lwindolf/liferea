@@ -456,11 +456,6 @@ itemview_create (GtkWidget *ilc)
 		debug0 (DEBUG_GUI, "using default date format");
 	}
 
-	if (0 == itemview->priv->zoom) {	/* workaround for scheme problem with the last releases */
-		itemview->priv->zoom = 100;
-		conf_set_int_value (LAST_ZOOMLEVEL, 100);
-	}
-	
 	/* 3. Prepare HTML rendering */
 	htmlview_init ();
 	
