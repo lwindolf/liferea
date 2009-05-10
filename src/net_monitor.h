@@ -41,7 +41,7 @@ struct NetworkMonitorClass {
 	GObjectClass parent;
 };
 
-GType network_monitor_get_type();
+GType network_monitor_get_type (void);
 
 #define NETWORK_MONITOR_TYPE              (network_monitor_get_type ())
 #define NETWORK_MONITOR(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), NETWORK_MONITOR_TYPE, NetworkMonitor))
