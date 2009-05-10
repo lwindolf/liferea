@@ -132,7 +132,7 @@ update_request_free (updateRequestPtr request)
 }
 
 void
-update_request_set_source(updateRequestPtr request, gchar* source) 
+update_request_set_source(updateRequestPtr request, const gchar* source) 
 {
 	g_free (request->source);
 	request->source = g_strdup(source) ;

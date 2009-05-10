@@ -208,7 +208,7 @@ void update_request_free (updateRequestPtr request);
  * @param request       the update request
  * @param source        the new source
  */
-void update_request_set_source(updateRequestPtr request, gchar* source);
+void update_request_set_source(updateRequestPtr request, const gchar* source);
 
 /**
  * Creates a new update result for the given update request.
