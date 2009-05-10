@@ -767,7 +767,7 @@ liferea_shell_online_status_changed (NetworkMonitor *nm, gboolean online, gpoint
 
 /* methods to receive URLs which were dropped anywhere in the main window */
 static void
-liferea_shell_URL_received (GtkWidget *widget, GdkDragContext *context, gint x, gint y, GtkSelectionData *data, guint info, guint time)
+liferea_shell_URL_received (GtkWidget *widget, GdkDragContext *context, gint x, gint y, GtkSelectionData *data, guint info, guint time_received)
 {
 	gchar		*tmp1, *tmp2, *freeme;
 	GtkWidget	*mainwindow;
@@ -807,9 +807,9 @@ liferea_shell_URL_received (GtkWidget *widget, GdkDragContext *context, gint x, 
 			}
 		}
 		g_free (freeme);
-		gtk_drag_finish (context, TRUE, FALSE, time);		
+		gtk_drag_finish (context, TRUE, FALSE, time_received);
 	} else {
-		gtk_drag_finish (context, FALSE, FALSE, time);
+		gtk_drag_finish (context, FALSE, FALSE, time_received);
 	}
 }
 
