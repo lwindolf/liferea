@@ -32,12 +32,14 @@
 #define BLINK_START		"<p><div class=\"blogchanneltitle\"><b>Promoted Weblog</b></div></p>"
 #define BLINK_END		""
 
-#define TAG_BLOGROLL		1
-#define TAG_MYSUBSCRIPTIONS	2
+typedef enum {
+	TAG_BLOGROLL,
+	TAG_MYSUBSCRIPTIONS,
+} requestDataTagType;
 
 struct requestData {
 	feedParserCtxtPtr	ctxt;	/**< feed parsing context */
-	gint			tag;	/**< metadata id we're downloading (see TAG_*) */
+	requestDataTagType	tag;	/**< metadata id we're downloading (see TAG_*) */
 };
 
 /* the spec at Userland http://backend.userland.com/blogChannelModule
@@ -145,22 +147,19 @@ ns_blogChannel_download_request_cb (const struct updateResult * const result, gp
 		switch (requestData->tag) {
 			case TAG_BLOGROLL:
 				g_string_prepend (buffer, BLOGROLL_START);
-				break;
-			case TAG_MYSUBSCRIPTIONS:
-				g_string_prepend (buffer, MYSUBSCR_START);
-				break;
-		}
-
-		switch (requestData->tag) {
-			case TAG_BLOGROLL:
 				g_string_append (buffer, BLOGROLL_END);
 				g_hash_table_insert (requestData->ctxt->tmpdata, g_strdup ("bC:blogRoll"), buffer->str);
 				break;
 			case TAG_MYSUBSCRIPTIONS:
+				g_string_prepend (buffer, MYSUBSCR_START);
 				g_string_append (buffer, MYSUBSCR_END);
 				g_hash_table_insert (requestData->ctxt->tmpdata, g_strdup ("bC:mySubscriptions"), buffer->str);
 				break;
+			default:
+				g_error ("wrong requestData->tag value");
+				break;
 		}
+
 		g_string_free (buffer, FALSE);
 
 		buffer = g_string_new (NULL);
@@ -176,7 +175,7 @@ ns_blogChannel_download_request_cb (const struct updateResult * const result, gp
 }
 
 static void
-getOutlineList (feedParserCtxtPtr ctxt, guint tag, char *url)
+getOutlineList (feedParserCtxtPtr ctxt, requestDataTagType tag, char *url)
 {
 	struct requestData 	*requestData;
 	updateRequestPtr	request;
