@@ -330,6 +330,7 @@ migration_execute (migrationMode mode)
 			olddir = ".liferea_1.4";
 			migrate_from_13_14 (olddir);
 			break;
+		case MIGRATION_MODE_INVALID:
 		default:
 			g_error ("Invalid migration mode!");
 			return;
