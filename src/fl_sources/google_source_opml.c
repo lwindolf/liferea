@@ -60,7 +60,7 @@ google_source_get_node_by_source (GoogleSourcePtr gsource, const gchar *source)
 static void
 google_source_add_broadcast_subscription (GoogleSourcePtr gsource)
 {
-	gchar* title = "Friend's Shared Items"; 
+	const gchar* title = "Friend's Shared Items"; 
 	GSList * iter = NULL; 
 	nodePtr node; 
 
