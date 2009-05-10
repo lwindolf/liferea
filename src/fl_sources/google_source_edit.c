@@ -291,7 +291,7 @@ google_source_api_edit_tag (GoogleSourceActionPtr action, updateRequestPtr reque
 {
 	update_request_set_source (request, GOOGLE_READER_EDIT_TAG_URL); 
 
-	gchar* prefix = "feed" ; 
+	const gchar* prefix = "feed" ; 
 	gchar* s_escaped = g_uri_escape_string (action->feedUrl, NULL, TRUE);
 	gchar* a_escaped = NULL ;
 	gchar* i_escaped = g_uri_escape_string (action->guid, NULL, TRUE);
