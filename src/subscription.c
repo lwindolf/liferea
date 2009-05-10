@@ -290,6 +290,7 @@ subscription_auto_update (subscriptionPtr subscription)
 {
 	gint		interval;
 	guint		flags = 0;
+	gboolean	enable_fetch_retries;
 	GTimeVal	now;
 	
 	if (!subscription)
@@ -297,12 +298,13 @@ subscription_auto_update (subscriptionPtr subscription)
 
 	interval = subscription_get_update_interval (subscription);
 	if (-1 == interval)
-		interval = conf_get_int_value (DEFAULT_UPDATE_INTERVAL);
+		conf_get_int_value (DEFAULT_UPDATE_INTERVAL, &interval);
 			
 	if (-2 >= interval || 0 == interval)
 		return;		/* don't update this subscription */
 		
-	if (conf_get_bool_value (ENABLE_FETCH_RETRIES))
+	conf_get_bool_value (ENABLE_FETCH_RETRIES, &enable_fetch_retries);
+	if (enable_fetch_retries)
 		flags |= FEED_REQ_ALLOW_RETRIES;
 
 	g_get_current_time (&now);

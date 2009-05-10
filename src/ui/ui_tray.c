@@ -67,6 +67,7 @@ static void ui_tray_expose_cb() {
 	cairo_t		*c;
 	gchar		*str;
 	guint		newItems;
+	gboolean	show_new_count_in_tray;
 	GtkRequisition	requisition;
 	
 	gtk_widget_size_request(GTK_WIDGET(trayIcon_priv->widget), &requisition);
@@ -83,7 +84,8 @@ static void ui_tray_expose_cb() {
 			gdk_pixbuf_get_width(trayIcon_priv->currentIcon), 
 			GDK_RGB_DITHER_NONE, 0, 0);
 	
-	if(!conf_get_bool_value(SHOW_NEW_COUNT_IN_TRAY))
+	conf_get_bool_value (SHOW_NEW_COUNT_IN_TRAY, &show_new_count_in_tray);
+	if(!show_new_count_in_tray)
 		return;
 	
 	newItems = feedlist_get_new_item_count();
@@ -116,13 +118,15 @@ static void ui_tray_expose_cb() {
 static void
 ui_tray_icon_set (gint newItems, GdkPixbuf *icon)
 {
-	guint 	width;
+	guint 		width;
+	gboolean	show_new_count_in_tray;
 
 	g_assert (trayIcon_priv->widget);
 
 	/* Having two code branches here to have real transparency
 	   at least with new count disabled... */
-	if (conf_get_bool_value (SHOW_NEW_COUNT_IN_TRAY)) {	
+	conf_get_bool_value (SHOW_NEW_COUNT_IN_TRAY, &show_new_count_in_tray);
+	if (show_new_count_in_tray) {	
 		width = ((guint) log10 (newItems) + 1) * FONT_CHAR_WIDTH;
 		width += 2; /* number color border */
 		width += 2; /* tray icon padding */;

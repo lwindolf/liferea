@@ -219,7 +219,11 @@ notif_libnotify_node_has_new_items (nodePtr node, gboolean enforced)
 	gchar		*labelSummary_p;
 	gint		item_count = 0;
 
-	if (!conf_get_bool_value(SHOW_POPUP_WINDOWS) && !enforced)
+	gboolean	show_popup_windows;
+
+	conf_get_bool_value(SHOW_POPUP_WINDOWS, &show_popup_windows);
+
+	if (!show_popup_windows && !enforced)
 		return;
 
 	/* Count updated feed */

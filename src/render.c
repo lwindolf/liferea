@@ -65,8 +65,9 @@ static GHashTable	*stylesheets = NULL;	/* XSLT stylesheet cache */
 static void
 render_init (void)
 {
-	gchar   **shortlang = NULL;	/* e.g. "de" */
-	gchar	**lang = NULL;		/* e.g. "de_AT" */
+	gchar   	**shortlang = NULL;	/* e.g. "de" */
+	gchar		**lang = NULL;		/* e.g. "de_AT" */
+	gboolean	social_link_search_hide;
 
 	if (langParams)
 		render_parameter_free (langParams);
@@ -87,7 +88,8 @@ render_init (void)
 	g_strfreev (lang);
 
 	/* prepare rendering default parameters */
-	defaultParams = g_strdup_printf("search_link_enable='%s'", conf_get_bool_value (SOCIAL_LINK_SEARCH_HIDE)?"false":"true");
+	conf_get_bool_value (SOCIAL_LINK_SEARCH_HIDE, &social_link_search_hide);
+	defaultParams = g_strdup_printf("search_link_enable='%s'", social_link_search_hide?"false":"true");
 
 	if (!stylesheets)
 		stylesheets = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
@@ -279,10 +281,10 @@ render_get_css (gboolean externalCss)
 		css = g_string_new(NULL);
 
 		/* font configuration support */
-		font = conf_get_str_value (USER_FONT);
+		conf_get_str_value (USER_FONT, &font);
 		if(0 == strlen(font)) {
 			g_free(font);
-			font = conf_get_str_value (DEFAULT_FONT);
+			conf_get_str_value (DEFAULT_FONT, &font);
 		}
 
 		if(font) {
@@ -363,6 +365,7 @@ gchar *
 render_xml (xmlDocPtr doc, const gchar *xsltName, renderParamPtr paramSet)
 {
 	gchar			*output = NULL;
+	gboolean		allow_flash;
 	xmlDocPtr		resDoc;
 	xsltStylesheetPtr	xslt;
 	xmlOutputBufferPtr	buf;
@@ -399,7 +402,8 @@ render_xml (xmlDocPtr doc, const gchar *xsltName, renderParamPtr paramSet)
 		gchar *tmp;
 		
 		/* Disable Flash tags */
-		if (!conf_get_bool_value (ALLOW_FLASH)) {
+		conf_get_bool_value (ALLOW_FLASH, &allow_flash);
+		if (!allow_flash) {
 			tmp = output;
 			output = xhtml_strip_flash (output);
 			g_free (tmp);

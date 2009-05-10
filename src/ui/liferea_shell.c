@@ -171,12 +171,13 @@ liferea_shell_restore_position (void)
 {
 	/* load window position */
 	int x, y, w, h;
+	gboolean last_window_maximized;
 
-	x = conf_get_int_value (LAST_WINDOW_X);
-	y = conf_get_int_value (LAST_WINDOW_Y);
+	conf_get_int_value (LAST_WINDOW_X, &x);
+	conf_get_int_value (LAST_WINDOW_Y, &y);
 
-	w = conf_get_int_value (LAST_WINDOW_WIDTH);
-	h = conf_get_int_value (LAST_WINDOW_HEIGHT);
+	conf_get_int_value (LAST_WINDOW_WIDTH, &w);
+	conf_get_int_value (LAST_WINDOW_HEIGHT, &h);
 	
 	debug4 (DEBUG_GUI, "Retrieved saved setting: size %dx%d position %d:%d", w, h, x, y);
 	
@@ -201,7 +202,9 @@ liferea_shell_restore_position (void)
 		gtk_window_resize (GTK_WINDOW (shell->priv->window), w, h);
 	}
 
-	if (conf_get_bool_value (LAST_WINDOW_MAXIMIZED))
+	conf_get_bool_value (LAST_WINDOW_MAXIMIZED, &last_window_maximized);
+
+	if (last_window_maximized)
 		gtk_window_maximize (GTK_WINDOW (shell->priv->window));
 	else
 		gtk_window_unmaximize (GTK_WINDOW (shell->priv->window));
@@ -213,6 +216,7 @@ liferea_shell_save_position (void)
 {
 	GtkWidget	*pane;
 	gint		x, y, w, h;
+	gboolean	last_window_maximized;
 
 	/* save pane proportions */
 	pane = liferea_shell_lookup ("leftpane");
@@ -237,7 +241,9 @@ liferea_shell_save_position (void)
 	if (!GTK_WIDGET_VISIBLE (shell->priv->window))
 		return;
 
-	if (conf_get_bool_value (LAST_WINDOW_MAXIMIZED))
+	conf_get_bool_value (LAST_WINDOW_MAXIMIZED, &last_window_maximized);
+
+	if (last_window_maximized)
 		return;
 
 	gtk_window_get_position (shell->priv->window, &x, &y);
@@ -277,7 +283,11 @@ liferea_shell_set_toolbar_style (const gchar *toolbar_style)
 void
 liferea_shell_update_toolbar (void)
 {
-	if (conf_get_bool_value (DISABLE_TOOLBAR))
+	gboolean disable_toolbar;
+
+	conf_get_bool_value (DISABLE_TOOLBAR, &disable_toolbar);
+
+	if (disable_toolbar)
 		gtk_widget_hide (shell->priv->toolbar);
 	else
 		gtk_widget_show (shell->priv->toolbar);
@@ -490,7 +500,11 @@ on_notebook_scroll_event_null_cb (GtkWidget *widget, GdkEventScroll *event)
 static gboolean
 on_close (GtkWidget *widget, GdkEvent *event, gpointer user_data)
 {
-	if ((ui_tray_get_count() == 0) || (conf_get_bool_value (DONT_MINIMIZE_TO_TRAY))) {
+	gboolean dont_maximize_to_tray;
+
+	conf_get_bool_value (DONT_MINIMIZE_TO_TRAY, &dont_maximize_to_tray);
+
+	if ((ui_tray_get_count() == 0) || dont_maximize_to_tray) {
 		liferea_shutdown ();
 		return TRUE;
 	}
@@ -530,6 +544,7 @@ on_key_press_event (GtkWidget *widget, GdkEventKey *event, gpointer data)
 	guint		default_modifiers;
 	const gchar	*type;
 	GtkWidget	*focusw;
+	gint		browse_key_setting;
 
 	if (event->type == GDK_KEY_PRESS) {
 		default_modifiers = gtk_accelerator_get_default_mod_mask ();
@@ -537,7 +552,8 @@ on_key_press_event (GtkWidget *widget, GdkEventKey *event, gpointer data)
 		/* handle [<modifier>+]<Space> headline skimming hotkey */
 		switch (event->keyval) {
 			case GDK_space:
-				switch (conf_get_int_value (BROWSE_KEY_SETTING)) {
+				conf_get_int_value (BROWSE_KEY_SETTING, &browse_key_setting);
+				switch (browse_key_setting) {
 					default:
 					case 0:
 						modifier_matches = ((event->state & default_modifiers) == 0);
@@ -1029,6 +1045,7 @@ static void
 liferea_shell_restore_state (void)
 {
 	gchar *toolbar_style, *accels_file;
+	gint last_vpane_pos, last_hpane_pos, last_wpane_pos;
 	
 	debug0 (DEBUG_GUI, "Setting toolbar style");
 	
@@ -1048,12 +1065,15 @@ liferea_shell_restore_state (void)
 
 	debug0 (DEBUG_GUI, "Loading pane proportions");
 		
-	if (0 != conf_get_int_value (LAST_VPANE_POS))
-		gtk_paned_set_position (GTK_PANED (liferea_shell_lookup ("leftpane")), conf_get_int_value (LAST_VPANE_POS));
-	if (0 != conf_get_int_value (LAST_HPANE_POS))
-		gtk_paned_set_position (GTK_PANED (liferea_shell_lookup ("normalViewPane")), conf_get_int_value (LAST_HPANE_POS));
-	if (0 != conf_get_int_value (LAST_WPANE_POS))
-		gtk_paned_set_position (GTK_PANED (liferea_shell_lookup ("wideViewPane")), conf_get_int_value (LAST_WPANE_POS));
+	conf_get_int_value (LAST_VPANE_POS, &last_vpane_pos);
+	if (last_vpane_pos)
+		gtk_paned_set_position (GTK_PANED (liferea_shell_lookup ("leftpane")), last_vpane_pos);
+	conf_get_int_value (LAST_HPANE_POS, &last_hpane_pos);
+	if (last_hpane_pos)
+		gtk_paned_set_position (GTK_PANED (liferea_shell_lookup ("normalViewPane")), last_hpane_pos);
+	conf_get_int_value (LAST_WPANE_POS, &last_wpane_pos);
+	if (last_wpane_pos)
+		gtk_paned_set_position (GTK_PANED (liferea_shell_lookup ("wideViewPane")), last_wpane_pos);
 }
 
 void
@@ -1066,6 +1086,7 @@ liferea_shell_create (int initialState)
 	int		i;
 	GString		*buffer;
 	GtkIconTheme	*icon_theme;
+	gboolean	show_tray_icon;
 	
 	debug_enter ("liferea_shell_create");
 
@@ -1265,8 +1286,10 @@ liferea_shell_create (int initialState)
 	liferea_shell_setup_URL_receiver (GTK_WIDGET (shell->priv->window));	/* setup URL dropping support */
 
 	shell->priv->feedlist = feedlist_create ();
-	
-	ui_tray_enable (conf_get_bool_value (SHOW_TRAY_ICON));		/* init tray icon */
+
+	conf_get_bool_value (SHOW_TRAY_ICON, &show_tray_icon);
+
+	ui_tray_enable (show_tray_icon);		/* init tray icon */
 
 	liferea_shell_restore_state ();
 	

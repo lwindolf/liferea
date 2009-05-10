@@ -411,6 +411,7 @@ ui_subscription_prop_dialog_load (SubscriptionPropDialog *spd,
                                   subscriptionPtr subscription) 
 {
 	gint 		interval;
+	gint		default_update_interval;
 	gint		defaultInterval, spinSetInterval;
 	gchar 		*defaultIntervalStr;
 	nodePtr		node = subscription->node;
@@ -425,7 +426,8 @@ ui_subscription_prop_dialog_load (SubscriptionPropDialog *spd,
 	
 	interval = subscription_get_update_interval(subscription);
 	defaultInterval = subscription_get_default_update_interval(subscription);
-	spinSetInterval = defaultInterval > 0 ? defaultInterval : conf_get_int_value (DEFAULT_UPDATE_INTERVAL);
+	conf_get_int_value (DEFAULT_UPDATE_INTERVAL, &default_update_interval);
+	spinSetInterval = defaultInterval > 0 ? defaultInterval : default_update_interval;
 	
 	if (-2 >= interval) {
 		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup(spd->priv->dialog, "updateIntervalNever")), TRUE);

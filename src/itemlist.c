@@ -227,6 +227,8 @@ itemlist_merge_item (itemPtr item)
 void
 itemlist_merge_itemset (itemSetPtr itemSet) 
 {
+	gint	folder_display_mode;
+
 	debug_enter ("itemlist_merge_itemset");
 	
 	debug_start_measurement (DEBUG_GUI);
@@ -243,8 +245,8 @@ itemlist_merge_itemset (itemSetPtr itemSet)
 		    !node_is_ancestor (itemlist_priv.currentNode, node))
 			return; /* Nothing to do if the item set does not belong to this node, or this is a search folder */
 
-		if (IS_FOLDER (itemlist_priv.currentNode) && 
-		    (0 == conf_get_int_value (FOLDER_DISPLAY_MODE)))
+		conf_get_int_value (FOLDER_DISPLAY_MODE, &folder_display_mode);
+		if (IS_FOLDER (itemlist_priv.currentNode) && !folder_display_mode)
 			return; /* Bail out if it is a folder without the recursive display preference set */
 			
 		debug1 (DEBUG_GUI, "reloading item list with node \"%s\"", node_get_title (node));
@@ -290,6 +292,8 @@ void
 itemlist_load (nodePtr node) 
 {
 	itemSetPtr	itemSet;
+	gint		folder_display_mode;
+	gboolean	folder_display_hide_read;
 
 	debug_enter ("itemlist_load");
 
@@ -309,11 +313,13 @@ itemlist_load (nodePtr node)
 	/* for folders and other heirarchic nodes do filtering */
 	if (IS_FOLDER (node) || node->children) {
 		liferea_shell_update_allitems_actions (FALSE, 0 != node->unreadCount);
-		
-		if (0 == conf_get_int_value (FOLDER_DISPLAY_MODE))
+
+		conf_get_int_value (FOLDER_DISPLAY_MODE, &folder_display_mode);
+		if (!folder_display_mode)
 			return;
 	
-		if (conf_get_bool_value (FOLDER_DISPLAY_HIDE_READ))
+		conf_get_bool_value (FOLDER_DISPLAY_HIDE_READ, &folder_display_hide_read);
+		if (folder_display_hide_read)
 			itemlist_priv.filter = g_slist_append (NULL, rule_new (NULL, "unread", "", TRUE));
 	} else {
 		liferea_shell_update_allitems_actions (0 != node->itemCount, 0 != node->unreadCount);

@@ -229,11 +229,13 @@ feed_to_xml (nodePtr node, xmlNodePtr feedNode)
 guint
 feed_get_max_item_count (nodePtr node)
 {
+	gint	default_max_items;
 	feedPtr	feed = (feedPtr)node->data;
 	
 	switch (feed->cacheLimit) {
 		case CACHE_DEFAULT:
-			return conf_get_int_value (DEFAULT_MAX_ITEMS);
+			conf_get_int_value (DEFAULT_MAX_ITEMS, &default_max_items);
+			return default_max_items;
 			break;
 		case CACHE_DISABLE:
 		case CACHE_UNLIMITED:

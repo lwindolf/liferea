@@ -205,6 +205,7 @@ webkit_new (LifereaHtmlView *htmlview)
 	WebKitWebView *view;
 	GtkWidget *scrollpane;
 	WebKitWebSettings *settings;
+	gboolean disable_javascript;
 
 	scrollpane = gtk_scrolled_window_new (NULL, NULL);
 
@@ -234,10 +235,11 @@ webkit_new (LifereaHtmlView *htmlview)
 		7,
 		NULL
 	);
+	conf_get_bool_value (DISABLE_JAVASCRIPT, &disable_javascript);
 	g_object_set (
 		settings,
 		"enable-scripts",
-		!conf_get_bool_value (DISABLE_JAVASCRIPT),
+		!disable_javascript,
 		NULL
 	);
 	g_object_set (

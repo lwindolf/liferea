@@ -113,28 +113,32 @@ void	conf_load (void);
  * Retrieves the value of the given boolean configuration key.
  *
  * @param key	the configuration key
+ * @param value the value, if the function returned FALSE it's always FALSE
  *
- * @returns boolean value (FALSE on failure)
+ * @returns TRUE if the configuration key was found
  */
-gboolean conf_get_bool_value (const gchar *key);
+gboolean conf_get_bool_value (const gchar *key, gboolean *value);
 
 /**
  * Retrieves the value of the given string configuration key.
+ * The string has to be freed by the caller.
  *
  * @param key	the configuration key
+ * @param value the value, if the function returned FALSE an empty string
  *
- * @returns string value (NULL on failure, to be free'd using g_free)
+ * @returns TRUE if the configuration key was found
  */
-gchar *	conf_get_str_value (const gchar *key);
+gboolean conf_get_str_value (const gchar *key, gchar **value);
 
 /**
  * Retrieves the value of the given integer configuration key.
  *
  * @param key	the configuration key
+ * @param value the value, if the function returned FALSE it's always 0
  *
- * @returns integer value (0 on failure)
+ * @returns TRUE if the configuration key was found
  */
-gint conf_get_int_value (const gchar *key);
+gboolean conf_get_int_value (const gchar *key, gint *value);
 
 /**
  * Sets the value of the given boolean configuration key.

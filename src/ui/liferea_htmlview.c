@@ -337,12 +337,15 @@ gboolean
 liferea_htmlview_handle_URL (LifereaHtmlView *htmlview, const gchar *url)
 {
 	struct internalUriType	*uriType;
+	gboolean browse_inside_application;
 	
 	g_return_val_if_fail (htmlview, TRUE);
 	g_return_val_if_fail (url, TRUE);
-	
+
+	conf_get_bool_value (BROWSE_INSIDE_APPLICATION, &browse_inside_application);
+
 	debug3 (DEBUG_GUI, "handle URL: %s %s %s",
-	        conf_get_bool_value (BROWSE_INSIDE_APPLICATION)?"true":"false",
+	        browse_inside_application?"true":"false",
 	        htmlview->priv->forceInternalBrowsing?"true":"false",
 		htmlview->priv->internal?"true":"false");
 
@@ -387,7 +390,7 @@ liferea_htmlview_handle_URL (LifereaHtmlView *htmlview, const gchar *url)
 		return TRUE;
 	}
 	
-	if(htmlview->priv->forceInternalBrowsing || conf_get_bool_value (BROWSE_INSIDE_APPLICATION)) {	   
+	if(htmlview->priv->forceInternalBrowsing || browse_inside_application) {	   
 	   	/* before loading external content suppress internal link schema again */
 		htmlview->priv->internal = FALSE;
 		

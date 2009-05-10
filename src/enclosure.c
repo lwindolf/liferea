@@ -354,7 +354,9 @@ enclosure_download (encTypePtr type, const gchar *url, const gchar *filename)
  */
 void
 enclosure_save_as_file (encTypePtr type, const gchar *url, const gchar *filename)
-{	
+{
+	gchar	*enclusure_download_path;
+
 	g_assert (url != NULL);
 	
 	if (!filename) {
@@ -365,7 +367,9 @@ enclosure_save_as_file (encTypePtr type, const gchar *url, const gchar *filename
 			filename = url;
 		else
 			filename++;
-		filename = g_build_filename (conf_get_str_value (ENCLOSURE_DOWNLOAD_PATH), filename, NULL);
+		conf_get_str_value (ENCLOSURE_DOWNLOAD_PATH, &enclusure_download_path);
+		filename = g_build_filename (enclusure_download_path, filename, NULL);
+		g_free (enclusure_download_path);
 	}
 	enclosure_download (type, url, filename);
 }

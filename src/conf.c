@@ -95,11 +95,11 @@ conf_load (void)
 	gchar *downloadPath;
 	
 	/* check if important preferences exist... */
-	if (0 == (maxitemcount = conf_get_int_value (DEFAULT_MAX_ITEMS)))
+	
+	if (!conf_get_int_value (DEFAULT_MAX_ITEMS, &maxitemcount))
 		conf_set_int_value (DEFAULT_MAX_ITEMS, 100);
 	
-	downloadPath = conf_get_str_value (ENCLOSURE_DOWNLOAD_PATH);
-	if (!strcmp ("", downloadPath))
+	if (!conf_get_str_value (ENCLOSURE_DOWNLOAD_PATH, &downloadPath))
 		conf_set_str_value (ENCLOSURE_DOWNLOAD_PATH, g_getenv ("HOME"));
 	g_free (downloadPath);
 }
@@ -139,14 +139,17 @@ conf_proxy_reset_settings_cb (GConfClient *client,
 	gchar		*proxyname, *proxyusername, *proxypassword, *tmp;
 	gboolean	gnomeUseProxy;
 	guint		proxyport;
+	gint		proxydetectmode;
+	gboolean	proxyuseauth;
 	xmlURIPtr 	uri;
 	
 	proxyname = NULL;
 	proxyport = 0;
 	proxyusername = NULL;
 	proxypassword = NULL;
-	
-	switch (conf_get_int_value (PROXY_DETECT_MODE)) {
+
+	conf_get_int_value (PROXY_DETECT_MODE, &proxydetectmode);
+	switch (proxydetectmode) {
 		default:
 		case 0:
 			debug0 (DEBUG_CONF, "proxy auto detect is configured");
@@ -154,18 +157,20 @@ conf_proxy_reset_settings_cb (GConfClient *client,
 			/* first check for a configured GNOME proxy, note: older
 			   GNOME versions do use the boolean flag GNOME_USE_PROXY
 			   while newer ones use the string key GNOME_PROXY_MODE */
-			tmp = conf_get_str_value (GNOME_PROXY_MODE);
-			gnomeUseProxy = conf_get_bool_value (GNOME_USE_PROXY) || g_str_equal (tmp, "manual");
+			conf_get_str_value (GNOME_PROXY_MODE, &tmp);
+			conf_get_bool_value (GNOME_USE_PROXY, &gnomeUseProxy);
+			gnomeUseProxy = gnomeUseProxy || g_str_equal (tmp, "manual");
 			g_free (tmp);				
 			
 			/* first check for a configured GNOME proxy */
 			if (gnomeUseProxy) {
-				proxyname = conf_get_str_value (GNOME_PROXY_HOST);
-				proxyport = conf_get_int_value (GNOME_PROXY_PORT);
+				conf_get_str_value (GNOME_PROXY_HOST, &proxyname);
+				conf_get_int_value (GNOME_PROXY_PORT, &proxyport);
 				debug2 (DEBUG_CONF, "using GNOME configured proxy: \"%s\" port \"%d\"", proxyname, proxyport);
-				if (conf_get_bool_value (GNOME_PROXY_USEAUTH)) {
-					proxyusername = conf_get_str_value (GNOME_PROXY_USER);
-					proxypassword = conf_get_str_value (GNOME_PROXY_PASSWD);
+				conf_get_bool_value (GNOME_PROXY_USEAUTH, &proxyuseauth);
+				if (proxyuseauth) {
+					conf_get_str_value (GNOME_PROXY_USER, &proxyusername);
+					conf_get_str_value (GNOME_PROXY_PASSWD, &proxypassword);
 				}
 			} else {
 				/* otherwise there could be a proxy specified in the environment 
@@ -209,11 +214,12 @@ conf_proxy_reset_settings_cb (GConfClient *client,
 		case 2:
 			debug0 (DEBUG_CONF, "manual proxy is configured");
 
-			proxyname = conf_get_str_value (PROXY_HOST);
-			proxyport = conf_get_int_value (PROXY_PORT);
-			if (conf_get_bool_value (PROXY_USEAUTH)) {
-				proxyusername = conf_get_str_value (PROXY_USER);
-				proxypassword = conf_get_str_value (PROXY_PASSWD);
+			conf_get_str_value (PROXY_HOST, &proxyname);
+			conf_get_int_value (PROXY_PORT, &proxyport);
+			conf_get_bool_value (PROXY_USEAUTH, &proxyuseauth);
+			if (proxyuseauth) {
+				conf_get_str_value (PROXY_USER, &proxyusername);
+				conf_get_str_value (PROXY_PASSWD, &proxypassword);
 			}
 			break;
 	}
@@ -245,23 +251,21 @@ conf_set_bool_value (const gchar *valuename, gboolean value)
 }
 
 gboolean
-conf_get_bool_value (const gchar *valuename)
+conf_get_bool_value (const gchar *valuename, gboolean *value)
 {
-	GConfValue	*value = NULL;
-	gboolean	result;
+	GConfValue	*gcv;
 
 	g_assert (valuename != NULL);
 
-	value = gconf_client_get (client, valuename, NULL);
-	if (!value) {
-		conf_set_bool_value (valuename, FALSE);
-		result = FALSE;
+	gcv = gconf_client_get (client, valuename, NULL);
+	if (gcv) {
+		*value = gconf_value_get_bool (gcv);
+		gconf_value_free (gcv);
+		return TRUE;
 	} else {
-		result = gconf_value_get_bool (value);
-		gconf_value_free (value);
+		*value = FALSE;
+		return FALSE;
 	}
-		
-	return result;
 }
 
 void
@@ -279,23 +283,22 @@ conf_set_str_value (const gchar *valuename, const gchar *value)
 	is_gconf_error (&err);
 }
 
-gchar *
-conf_get_str_value (const gchar *valuename)
+gboolean
+conf_get_str_value (const gchar *valuename, gchar **value)
 {
-	GConfValue	*value = NULL;
-	gchar		*result;
+	GConfValue	*gcv;
 
 	g_assert (valuename != NULL);
 		
-	value = gconf_client_get (client, valuename, NULL);
-	if (!value) {
-		result = g_strdup ("");
+	gcv = gconf_client_get (client, valuename, NULL);
+	if (gcv) {
+		*value = g_strdup (gconf_value_get_string (gcv));
+		gconf_value_free (gcv);
+		return TRUE;
 	} else {
-		result = (gchar *)g_strdup (gconf_value_get_string (value));
-		gconf_value_free (value);
+		*value = g_strdup ("");
+		return FALSE;
 	}
-		
-	return result;
 }
 
 void
@@ -313,21 +316,22 @@ conf_set_int_value (const gchar *valuename, gint value)
 	gconf_value_free (gcv);
 }
 
-gint
-conf_get_int_value (const gchar *valuename)
+gboolean
+conf_get_int_value (const gchar *valuename, gint *value)
 {
-	GConfValue	*value;
-	gint		result = 0;
+	GConfValue	*gcv;
 
 	g_assert (valuename != NULL);
 		
-	value = gconf_client_get (client, valuename, NULL);
-	if (value) {
-		result = gconf_value_get_int (value);
-		gconf_value_free (value);
+	gcv = gconf_client_get (client, valuename, NULL);
+	if (gcv) {
+		*value = gconf_value_get_int (gcv);
+		gconf_value_free (gcv);
+		return TRUE;
+	} else {
+		*value = 0;
+		return FALSE;	
 	}
-			
-	return result;
 }
 
 gchar *
@@ -335,12 +339,12 @@ conf_get_toolbar_style(void)
 {
 	gchar *style;
 
-	style = conf_get_str_value (TOOLBAR_STYLE);
+	conf_get_str_value (TOOLBAR_STYLE, &style);
 
 	/* check if we don't override the toolbar style */
 	if (strcmp(style, "") == 0) {
 		g_free (style);
-		style = conf_get_str_value ("/desktop/gnome/interface/toolbar_style");
+		conf_get_str_value ("/desktop/gnome/interface/toolbar_style", &style);
 	}
 	return style;
 }

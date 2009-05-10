@@ -194,7 +194,7 @@ social_init (void)
 	social_register_bookmark_site ("Yahoo My Web",	"http://myweb2.search.yahoo.com/myresults/bookmarklet?u=%s&t=%s", TRUE, FALSE);
 	social_register_bookmark_site ("zurpy",		"http://tag.zurpy.com/?box=1&url=%s&title=%s", TRUE, FALSE);
 
-	tmp = conf_get_str_value (SOCIAL_BM_SITE);
+	conf_get_str_value (SOCIAL_BM_SITE, &tmp);
 	social_set_bookmark_site (tmp);
 	g_free (tmp);
 	
@@ -206,7 +206,7 @@ social_init (void)
 	social_register_link_search_site ("IceRocket",	"http://www.icerocket.com/search?tab=blog&q=%s");
 	social_register_link_search_site ("Technorati",	"http://www.technorati.com/cosmos/search.html?url=%s");
 	
-	tmp = conf_get_str_value (SOCIAL_LINK_SEARCH_SITE);
+	conf_get_str_value (SOCIAL_LINK_SEARCH_SITE, &tmp);
 	social_set_link_search_site (tmp);
 	g_free (tmp);
 	

@@ -175,6 +175,8 @@ feedlist_init_node (nodePtr node)
 static void
 feedlist_init (FeedList *fl)
 {
+	gint	startup_feed_action;
+
 	debug_enter ("feedlist_init");
 	
 	/* 1. Prepare globally accessible singleton */
@@ -196,7 +198,8 @@ feedlist_init (FeedList *fl)
 
 	/* 4. Check if feeds do need updating. */
 	debug0 (DEBUG_UPDATE, "Performing initial feed update");
-	switch (conf_get_int_value (STARTUP_FEED_ACTION)) {
+	conf_get_int_value (STARTUP_FEED_ACTION, &startup_feed_action);
+	switch (startup_feed_action) {
 		case 1: /* Update all feeds */
 			debug0 (DEBUG_UPDATE, "initial update: updating all feeds");
 			node_update_subscription (feedlist_get_root (), GUINT_TO_POINTER (0));

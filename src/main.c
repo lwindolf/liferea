@@ -170,6 +170,7 @@ main (int argc, char *argv[])
 	LifereaDBus	*dbus = NULL;
 	const gchar	*initial_state = "shown";
 	int		initialState;
+	gboolean	show_tray_icon, start_in_tray;
 
 #ifdef USE_SM
 	gchar *opt_session_arg = NULL;
@@ -294,11 +295,12 @@ main (int argc, char *argv[])
 #endif
 
 	/* how to start liferea, command line takes precedence over preferences */
+	conf_get_bool_value (SHOW_TRAY_ICON, &show_tray_icon);
+	conf_get_bool_value (START_IN_TRAY, &start_in_tray);
 	if (g_str_equal(initial_state, "iconified")) {
 		initialState = MAINWINDOW_ICONIFIED;
 	} else if (g_str_equal(initial_state, "hidden") ||
-	    (conf_get_bool_value (SHOW_TRAY_ICON) &&
-	     conf_get_bool_value (START_IN_TRAY))) {
+	    (show_tray_icon && start_in_tray)) {
 		initialState = MAINWINDOW_HIDDEN;
 	} else {
 		initialState = MAINWINDOW_SHOWN;
