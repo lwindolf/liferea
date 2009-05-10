@@ -210,9 +210,11 @@ typedef struct htmlviewImpl {
 	void		(*setOffLine)		(gboolean offline);
 } *htmlviewImplPtr;
 
+extern htmlviewImplPtr htmlview_get_impl(void);
+
 /* Use this macro to declare a html rendering support implementation. */
 #define DECLARE_HTMLVIEW_IMPL(impl) \
-        htmlviewImplPtr htmlview_get_impl() { \
+        htmlviewImplPtr htmlview_get_impl(void) { \
                 return &impl; \
         }
 

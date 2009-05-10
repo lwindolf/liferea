@@ -41,7 +41,6 @@
 #include "ui/ui_itemlist.h"
 #include "ui/ui_prefs.h"
 
-extern htmlviewImplPtr htmlview_get_impl();
 #define RENDERER(htmlview)	(htmlview->priv->impl)
 
 static void liferea_htmlview_class_init	(LifereaHtmlViewClass *klass);
