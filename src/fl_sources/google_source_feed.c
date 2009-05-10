@@ -42,7 +42,7 @@
  * as parameter.
  */
 static void
-google_source_xpath_foreach_match (gchar* expr, xmlXPathContextPtr xpathCtxt, xpathMatchFunc func, gpointer user_data) 
+google_source_xpath_foreach_match (const gchar* expr, xmlXPathContextPtr xpathCtxt, xpathMatchFunc func, gpointer user_data) 
 {
 	xmlXPathObjectPtr xpathObj = NULL;
 	xpathObj = xmlXPathEval ((xmlChar*)expr, xpathCtxt);
