@@ -101,14 +101,12 @@ static void
 on_search_engine_dialog_response (GtkDialog *dialog, gint responseId, gpointer user_data)
 {
 	SearchEngineDialog	*sed = (SearchEngineDialog *)user_data;
-	GtkAdjustment		*resultCountAdjust;
 	gchar			*searchtext, *searchUri;
 	
 	if (GTK_RESPONSE_OK == responseId) {
-		resultCountAdjust = gtk_spin_button_get_adjustment (GTK_SPIN_BUTTON (sed->priv->resultCount));
 		searchtext = g_uri_escape_string (gtk_entry_get_text (GTK_ENTRY (sed->priv->query)), NULL, TRUE);
 		if (sed->priv->limitSupported)
-			searchUri = g_strdup_printf (sed->priv->uriFmt, searchtext, (int)gtk_adjustment_get_value (resultCountAdjust));
+			searchUri = g_strdup_printf (sed->priv->uriFmt, searchtext, gtk_spin_button_get_value_as_int (GTK_SPIN_BUTTON (sed->priv->resultCount)));
 		else
 			searchUri = g_strdup_printf (sed->priv->uriFmt, searchtext);
 
