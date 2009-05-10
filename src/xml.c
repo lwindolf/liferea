@@ -487,7 +487,7 @@ xpath_find (xmlNodePtr node, const gchar *expr)
 }
 
 gboolean
-xpath_foreach_match (xmlNodePtr node, gchar *expr, xpathMatchFunc func, gpointer user_data)
+xpath_foreach_match (xmlNodePtr node, const gchar *expr, xpathMatchFunc func, gpointer user_data)
 {
 	
 	if (node && node->doc) {

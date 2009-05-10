@@ -125,7 +125,7 @@ typedef void (*xpathMatchFunc)(xmlNodePtr match, gpointer user_data);
  *
  * @return TRUE if result set was not empty
  */
-gboolean xpath_foreach_match (xmlNodePtr node, gchar *expr, xpathMatchFunc func, gpointer user_data);
+gboolean xpath_foreach_match (xmlNodePtr node, const gchar *expr, xpathMatchFunc func, gpointer user_data);
 
 /**
  * Return the value of a attribute.
