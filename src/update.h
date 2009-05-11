@@ -43,17 +43,6 @@
    requests are still processed. Currently running downloads are 
    not terminated. */
 
-/* Maximum number of retries that can be done */
-#define REQ_MAX_NUMBER_OF_RETRIES 3
-
-/* Delay (in seconds) to wait before the first retry.
- * It will then increase for the later ones. */
-#define REQ_MIN_DELAY_FOR_RETRY 30
-
-/* Maximum delay (in seconds) beetween two retries. Useful to avoid 
- * stupidly long waits if REQ_MAX_NUMBER_OF_RETRIES is high. */
-#define REQ_MAX_DELAY_FOR_RETRY 500
-
 typedef enum {
 	REQUEST_STATE_INITIALIZED = 0,	/**< request struct newly created */
 	REQUEST_STATE_PENDING,		/**< request added to download queue */
@@ -103,7 +92,6 @@ typedef struct updateRequest {
 	gchar           *postdata;      /**< HTTP POST request data (NULL for non-POST requests) */
 	updateOptionsPtr options;	/**< Update options for the request */
 	gchar		*filtercmd;	/**< Command will filter output of URL */
-	gboolean	allowRetries;	/**< Allow download retries on network errors */
 	updateStatePtr	updateState;	/**< Update state of the requested object (etags, last modified...) */
 } *updateRequestPtr;
 
@@ -117,7 +105,6 @@ typedef struct updateResult {
 	gchar		*data;		/**< Downloaded data */
 	size_t		size;		/**< Size of downloaded data */
 	gchar		*contentType;	/**< Content type of received data */
-	gushort		retriesCount;	/**< Count how many retries have been done */	 
 	gchar		*filterErrors;	/**< Error messages from filter execution */
 	
 	updateStatePtr	updateState;	/**< New update state of the requested object (etags, last modified...) */

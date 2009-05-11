@@ -273,8 +273,6 @@ subscription_update (subscriptionPtr subscription, guint flags)
 		request->updateState = update_state_copy (subscription->updateState);
 		request->options = update_options_copy (subscription->updateOptions);
 		request->source = g_strdup (subscription_get_source (subscription));
-		request->allowRetries = (flags & FEED_REQ_ALLOW_RETRIES)? 1 : 0;
-
 		if (subscription_get_filter (subscription))
 			request->filtercmd = g_strdup (subscription_get_filter (subscription));
 
@@ -290,7 +288,6 @@ subscription_auto_update (subscriptionPtr subscription)
 {
 	gint		interval;
 	guint		flags = 0;
-	gboolean	enable_fetch_retries;
 	GTimeVal	now;
 	
 	if (!subscription)
@@ -303,10 +300,6 @@ subscription_auto_update (subscriptionPtr subscription)
 	if (-2 >= interval || 0 == interval)
 		return;		/* don't update this subscription */
 		
-	conf_get_bool_value (ENABLE_FETCH_RETRIES, &enable_fetch_retries);
-	if (enable_fetch_retries)
-		flags |= FEED_REQ_ALLOW_RETRIES;
-
 	g_get_current_time (&now);
 	
 	if (subscription->updateState->lastPoll.tv_sec + interval*60 <= now.tv_sec)

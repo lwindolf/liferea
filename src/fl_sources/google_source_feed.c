@@ -252,7 +252,6 @@ google_feed_subscription_process_update_result (subscriptionPtr subscription, co
 		resultCopy->source = g_strdup (result->source); 
 		resultCopy->httpstatus = result->httpstatus;
 		resultCopy->contentType = g_strdup (result->contentType);
-		resultCopy->retriesCount = result->retriesCount ;
 		g_free (resultCopy->updateState);
 		resultCopy->updateState = update_state_copy (result->updateState);
 		
