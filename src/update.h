@@ -26,10 +26,9 @@
 #include <glib.h>
 
 /* Update requests do represent feed updates, favicon and enclosure 
-   downloads and (if GtkHTML2 is used) HTML browser traffic. A request can 
-   be started synchronously or asynchronously. In the latter case it
-   can be cancelled at any time. If the processing of a update request is
-   done the request callback will be triggered. 
+   downloads. A request can be started synchronously or asynchronously.
+   In the latter case it can be cancelled at any time. If the processing
+   of a update request is done the request callback will be triggered. 
    
    A request can have an update state assigned. This is to support
    the different bandwidth saving methods. For caching along feeds
