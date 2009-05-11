@@ -188,6 +188,7 @@ db_init (void)
 	gchar		*filename;
 	gint		schemaVersion;
 	gint		res;
+	gboolean	force_async = FALSE;
 		
 	debug_enter ("db_init");
 	
@@ -199,7 +200,8 @@ open:
 		debug3 (DEBUG_CACHE, "Data base file %s could not be opened (error code %d: %s)...", filename, res, sqlite3_errmsg (db));
 	
 	/* FIXME: Async sqlite access for testing purpose */
-	if (conf_get_bool_value (FORCE_ASYNC_SQLITE)) {
+	conf_get_bool_value (FORCE_ASYNC_SQLITE, &force_async);
+	if (force_async) {
 		GFile *src, *dst;
 		gchar *backupFilename;
 		
