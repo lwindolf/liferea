@@ -36,10 +36,8 @@
 
 #define DEFAULT_FONT			"/desktop/gnome/interface/document_font_name"
 #define USER_FONT			"/apps/liferea/browser-font"
-#define REFOCUS_TIMEOUT			"/apps/liferea/refocus-timeout"
 #define DISABLE_JAVASCRIPT		"/apps/liferea/disable-javascript"
 #define SOCIAL_BM_SITE			"/apps/liferea/social-bm-site"
-#define SOCIAL_BM_HIDE			"/apps/liferea/social-bm-hide"
 #define SOCIAL_LINK_SEARCH_SITE		"/apps/liferea/social-link-search-site"
 #define SOCIAL_LINK_SEARCH_HIDE		"/apps/liferea/social-link-search-hide"
 #define ALLOW_FLASH			"/apps/liferea/allow-flash"
@@ -66,7 +64,6 @@
 #define DONT_MINIMIZE_TO_TRAY		"/apps/liferea/dont-minimize-to-tray"
 #define START_IN_TRAY			"/apps/liferea/start-in-tray"
 #define SHOW_POPUP_WINDOWS		"/apps/liferea/show-popup-windows"
-#define POPUP_PLACEMENT			"/apps/liferea/popup-placement"
 #define DISABLE_TOOLBAR			"/apps/liferea/disable-toolbar"
 #define TOOLBAR_STYLE			"/apps/liferea/toolbar-style"
 #define LAST_WINDOW_X			"/apps/liferea/last-window-x"
@@ -80,7 +77,6 @@
 #define LAST_ZOOMLEVEL			"/apps/liferea/last-zoomlevel"
 
 /* networking settings */
-#define NETWORK_TIMEOUT			"/apps/liferea/network-timeout"
 #define PROXY_DETECT_MODE		"/apps/liferea/proxy/detect-mode"
 #define PROXY_HOST			"/apps/liferea/proxy/host"
 #define PROXY_PORT			"/apps/liferea/proxy/port"
@@ -96,7 +92,6 @@
 #define GNOME_PROXY_PASSWD		"/system/http_proxy/authentication_password"
 
 /* other settings */
-#define DISABLE_DBUS			"/apps/liferea/disable-dbus"
 #define SYNC_AVAHI_ENABLED		"/apps/liferea/sync/use_avahi"
 #define SYNC_AVAHI_SERVICE_NAME		"/apps/liferea/sync/avahi_service_name"
 #define SYNC_AVAHI_PASSWORD		"/apps/liferea/sync/avahi_password"
