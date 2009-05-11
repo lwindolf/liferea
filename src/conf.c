@@ -57,6 +57,22 @@ is_gconf_error (GError **err)
 	return FALSE;
 }
 
+static void
+conf_load (void)
+{
+	gint	maxitemcount;
+	gchar *downloadPath;
+	
+	/* check if important preferences exist... */
+	
+	if (!conf_get_int_value (DEFAULT_MAX_ITEMS, &maxitemcount))
+		conf_set_int_value (DEFAULT_MAX_ITEMS, 100);
+	
+	if (!conf_get_str_value (ENCLOSURE_DOWNLOAD_PATH, &downloadPath))
+		conf_set_str_value (ENCLOSURE_DOWNLOAD_PATH, g_getenv ("HOME"));
+	g_free (downloadPath);
+}
+
 /* called once on startup */
 void
 conf_init (void)
@@ -79,29 +95,14 @@ conf_init (void)
 	
 	/* Load settings into static buffers */
 	conf_proxy_reset_settings_cb (NULL, 0, NULL, NULL);
+
+	conf_load ();
 }
 
 void
 conf_deinit (void)
 {
 	g_object_unref (client);
-}
-
-/* maybe called several times to reload configuration */
-void
-conf_load (void)
-{
-	gint	maxitemcount;
-	gchar *downloadPath;
-	
-	/* check if important preferences exist... */
-	
-	if (!conf_get_int_value (DEFAULT_MAX_ITEMS, &maxitemcount))
-		conf_set_int_value (DEFAULT_MAX_ITEMS, 100);
-	
-	if (!conf_get_str_value (ENCLOSURE_DOWNLOAD_PATH, &downloadPath))
-		conf_set_str_value (ENCLOSURE_DOWNLOAD_PATH, g_getenv ("HOME"));
-	g_free (downloadPath);
 }
 
 static void

@@ -105,7 +105,6 @@
 /* initializing methods */
 void	conf_init (void);
 void	conf_deinit (void);
-void	conf_load (void);
 
 /* preferences access methods */
 

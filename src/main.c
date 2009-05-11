@@ -265,7 +265,6 @@ main (int argc, char *argv[])
 	/* order is important! */
 	db_init ();			/* initialize sqlite */
 	xml_init ();			/* initialize libxml2 */
-	conf_load ();			/* load global feed settings */
 	script_init ();			/* setup scripting if supported */
 #ifdef HAVE_LUA
 	script_add_impl(&lua_script_impl);
