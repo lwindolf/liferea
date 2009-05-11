@@ -95,6 +95,7 @@
 #define SYNC_AVAHI_ENABLED		"/apps/liferea/sync/use_avahi"
 #define SYNC_AVAHI_SERVICE_NAME		"/apps/liferea/sync/avahi_service_name"
 #define SYNC_AVAHI_PASSWORD		"/apps/liferea/sync/avahi_password"
+#define FORCE_ASYNC_SQLITE		"/apps/liferea/force_async_sqlite"
 
 /* initializing methods */
 void	conf_init (void);

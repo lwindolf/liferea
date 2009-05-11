@@ -1,7 +1,7 @@
 /**
  * @file db.c sqlite backend
  * 
- * Copyright (C) 2007-2008  Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2009  Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@
 #include <string.h>
 
 #include "common.h"
+#include "conf.h"
 #include "db.h"
 #include "debug.h"
 #include "item.h"
@@ -196,6 +197,23 @@ open:
 	res = sqlite3_open (filename, &db);
 	if (SQLITE_OK != res)
 		debug3 (DEBUG_CACHE, "Data base file %s could not be opened (error code %d: %s)...", filename, res, sqlite3_errmsg (db));
+	
+	/* FIXME: Async sqlite access for testing purpose */
+	if (conf_get_bool_value (FORCE_ASYNC_SQLITE)) {
+		GFile *src, *dst;
+		gchar *backupFilename;
+		
+		/* DB file backup */
+		backupFilename = common_create_cache_filename (NULL, "liferea", "db.backup");
+		src = g_file_new_for_path (filename);
+		dst = g_file_new_for_path (backupFilename);
+		g_file_copy (src, dst, G_FILE_COPY_OVERWRITE, NULL, NULL, NULL, NULL);
+		g_free (backupFilename);
+		
+		/* http://sqlite.org/pragma.html */
+		db_exec ("PRAGMA synchronous=0;");
+	}
+
 	g_free (filename);
 	
 	sqlite3_extended_result_codes (db, TRUE);
@@ -280,7 +298,7 @@ open:
 		debug0 (DEBUG_DB, "Reopening DB after migration...");
 		goto open;
 	}
-
+	
 	/* Schema creation */
 		
 	debug_start_measurement (DEBUG_DB);
