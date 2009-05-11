@@ -117,11 +117,9 @@ To change the gconftool target use the - -config-source=blah option to gconftool
       <type>bool</type>
       <default>false</default>
       <locale name="C">
-        <short>Allows to disable Javascript when using Mozilla for rendering.</short>
+        <short>Allows to disable Javascript.</short>
         <long>
-	   Allows to disable Javascript when using Mozilla for rendering.
-	   Should not be necessary when using GtkHTML2 which does not
-	   support Javascript.
+	   Allows to disable Javascript.
         </long>
       </locale>
     </schema>
