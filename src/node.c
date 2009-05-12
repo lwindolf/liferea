@@ -413,7 +413,7 @@ void node_set_id(nodePtr node, const gchar *id) {
 const gchar *node_get_id(nodePtr node) { return node->id; }
 
 gboolean
-node_set_sort_column (nodePtr node, gint sortColumn, gboolean reversed)
+node_set_sort_column (nodePtr node, nodeViewSortType sortColumn, gboolean reversed)
 {
 	if (node->sortColumn == sortColumn &&
 	    node->sortReversed == reversed)

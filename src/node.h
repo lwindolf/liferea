@@ -300,7 +300,7 @@ void node_update_favicon (nodePtr node);
  *
  * @returns TRUE if the passed settings were different from the previous ones
  */
-gboolean node_set_sort_column (nodePtr node, gint sortColumn, gboolean reversed);
+gboolean node_set_sort_column (nodePtr node, nodeViewSortType sortColumn, gboolean reversed);
 
 /**
  * Change/Set the viewing mode of a given node.
