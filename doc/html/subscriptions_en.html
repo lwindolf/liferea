@@ -32,6 +32,7 @@
 	a collection of feeds. So you can subscribe to:
 	
 	<ul>
+		<li>a single feed</li>
 		<li>any OPML source (a planet feed list, a blog roll...)</li>
 		<li>a <a href="http://www.bloglines.com">Bloglines</a> subscription list</li>
 		<li>a <a href="http://google.com/reader">Google Reader</a> subscription list</li>
@@ -183,8 +184,8 @@
 	  <dt>Default Cache Settings</dt><dd>Makes the feed use the default cache settings, which are stored in the main Liferea
 		preferences.</dd>
 	  <dt>Disable Cache</dt> <dd> Disable the feed's items from ever being saved.</dd>
-	  <dt>Unlimited cache</dt> <dd> Save all items. </dd>
-	  <dt>Limit cache to # items</dt> <dd>Limits the cache size to #.</dd>
+	  <dt>Unlimited cache</dt> <dd> Save all items ever downloaded. </dd>
+	  <dt>Number of items to save</dt> <dd>Limits the cache size to a fixed number.</dd>
 	</dl>
 
 	<p>
@@ -215,16 +216,42 @@
 	</p>
 
 	<p>
-	In this pane you can enable <a href="enclosures_en.html">enclosure auto-downloading</a> 
-	by enabling the check button in this pane.
+	This panel provides different special options to control how Liferea
+	handles the subscription. These options are:
 	</p>
 	
-	<p>
-	The second check button allows you to change the item selection behaviour.
-	Per-default Liferea shows the item description in the HTML view pane.
-	When this check box is enabled it will automatically load the item link
-	when the item selection changes.
-	</p>	
+	<dl>
+		<dt>Automatically download all enclosures of this feed.</dt>
+		<dd>This might be useful for podcasts or torrent feeds. If
+		you enable the option Liferea downloads attached <a href="enclosures_en.html">enclosures</a>.
+		</dd>
+	
+		<dt>Auto-load item link in configured browser when selecting articles.</dt>
+		<dd>Per-default Liferea shows the item description in the HTML view pane.
+		When this check box is enabled it will automatically load the item link
+		when the item selection changes.
+		</dd>
+		
+		<dt>Ignore comment feeds for this subscription.</dt>
+		<dd>Sometimes there are feeds with broken or useless
+		comment feeds. This option allows to ignore those.</dd>
+		
+		<dt>Enforce popup notification for this subscription.</dt>
+		<dd>If the global notification preference is disabled you
+		can enabled this option to generate notifications for only
+		this feed.</dd>
+		
+		<dt>Never do popup notification for this subscription.</dt>
+		<dd>If the global notification preference is enabled you
+		can use this option to prevent notifications for this feed.
+		This might be useful for high-traffic feeds.</dd>
+		
+		<dt>Mark downloaded items as read.</dt>
+		<dd>Normally new items have the status "unread". Sometimes
+		you might want to use this option for new items of a special
+		feed not to show up as "unread" so you don't have to mark
+		them "read" manually.</dd>
+	</dl>
 	
 	<h3>Subscribing to OPML Sources, Bloglines and Google Reader Accounts</h3>
 	<p>
@@ -262,8 +289,9 @@
 	retrieve the Google Reader subscription list and will automatically add all
 	Google Reader subscriptions.
 	<br /><br />
-	<b>Note: Liferea only retrieves the subscription list of your Google Reader account.
-	It does not synchronize item read states with Google Reader!</b>	
+	<b>Note: If you delete feeds or items in the "Google Reader" subscription
+	from within Liferea they will <b>also</b> be deleted in you Google Reader
+	account!</b>	
 	</p>
 	
 	<!-- navigation footer start -->
