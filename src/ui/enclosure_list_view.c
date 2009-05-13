@@ -248,8 +248,6 @@ enclosure_list_view_load (EnclosureListView *elv, itemPtr item)
 	}
 	g_slist_free (elv->priv->enclosures);
 	elv->priv->enclosures = NULL;	
-
-	list = metadata_list_get_values (item->metadata, "enclosure");
 	
 	/* decide visibility of the list */
 	list = metadata_list_get_values (item->metadata, "enclosure");
