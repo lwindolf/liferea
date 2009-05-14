@@ -118,15 +118,6 @@ const gchar *	common_get_cache_path(void);
  */
 gchar * common_create_cache_filename(const gchar *folder, const gchar *filename, const gchar *extension);
 
-/**
- * Takes an URL and returns a new string containing the escaped URL.
- *
- * @param url		the URL to escape
- *
- * @returns new escaped URL string
- */
-xmlChar * common_uri_escape(const xmlChar *url);
-
 /** 
  * To correctly escape and expand URLs, does not touch the
  * passed strings.

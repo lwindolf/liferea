@@ -395,26 +395,14 @@ gchar * common_create_cache_filename(const gchar *folder, const gchar *filename,
 	return result;
 }
 
-xmlChar * common_uri_escape(const xmlChar *url) {
-	xmlChar	*result;
-
-	result = xmlURIEscape(url);
-	
-	/* workaround for libxml2 problem... */
-	if(NULL == result)
-		result = g_strdup(url);
-
-	return result;	
-}
-
 /* to correctly escape and expand URLs */
 xmlChar * common_build_url(const gchar *url, const gchar *baseURL) {
 	xmlChar	*escapedURL, *absURL, *escapedBaseURL;
 
-	escapedURL = common_uri_escape(url);
+	escapedURL = xmlURIEscape(url);
 
 	if(NULL != baseURL) {
-		escapedBaseURL = common_uri_escape(baseURL);	
+		escapedBaseURL = xmlURIEscape(baseURL);	
 		absURL = xmlBuildURI(escapedURL, escapedBaseURL);
 		xmlFree(escapedURL);
 		xmlFree(escapedBaseURL);

@@ -23,6 +23,7 @@
 #endif
 
 #include <string.h>
+#include <libxml/uri.h>
 
 #include "common.h"
 #include "conf.h"
@@ -113,7 +114,7 @@ enclosure_values_to_string (const gchar *url, const gchar *mime, gssize size, gb
 	if (size < 0)
 		size = 0;
 		
-	safeUrl = common_uri_escape (url);
+	safeUrl = xmlURIEscape (url);
 	result = g_strdup_printf ("enc:%s:%s:%" G_GSSIZE_FORMAT ":%s", downloaded?"1":"0", mime, size, safeUrl);
 	g_free (safeUrl);
 	

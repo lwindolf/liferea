@@ -25,6 +25,7 @@
 
 #include <glib.h>
 #include <string.h>
+#include <libxml/uri.h>
 
 #include "common.h"
 #include "debug.h"
@@ -161,7 +162,7 @@ GSList * metadata_list_append(GSList *metadata, const gchar *strid, const gchar 
 			if(!strchr(data, '<') && !(strchr(data, '>')) && !(strchr(data, '&'))) {
 				checked_data = g_strdup(data);
 			} else {
-				checked_data = common_uri_escape(data);
+				checked_data = xmlURIEscape(data);
 			}
 			
 			/* finally strip whitespace */

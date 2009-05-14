@@ -23,6 +23,7 @@
 #endif
 
 #include <string.h>
+#include <libxml/uri.h>
 
 #include "common.h"
 #include "debug.h"
@@ -212,7 +213,7 @@ htmlview_render_item (itemPtr item,
 	/* don't use node from htmlView_priv as this would be
 	   wrong for folders and other merged item sets */
 	node = node_from_id (item->nodeId);
-	baseUrl = common_uri_escape (node_get_base_url (node));
+	baseUrl = xmlURIEscape (node_get_base_url (node));
 
 	/* do the XML serialization */
 	doc = itemset_to_xml (node);
