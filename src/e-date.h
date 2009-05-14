@@ -30,9 +30,4 @@ size_t   e_utf8_strftime_fix_am_pm  (char             *s,
 				     const char       *fmt,
 				     const struct tm  *tm);
 
-size_t   e_utf8_strftime	(char              *s,
-				 size_t             max,
-				 const char        *fmt,
-				 const struct tm   *tm);
-
 #endif
