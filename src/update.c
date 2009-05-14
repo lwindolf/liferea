@@ -296,7 +296,7 @@ update_apply_xslt (updateJobPtr job)
 	g_assert (NULL != job->result);
 	
 	do {
-		srcDoc = xml_parse (job->result->data, job->result->size, FALSE, NULL);
+		srcDoc = xml_parse (job->result->data, job->result->size, NULL);
 		if (!srcDoc) {
 			g_warning("fatal: parsing request result XML source failed (%s)!", job->request->filtercmd);
 			break;

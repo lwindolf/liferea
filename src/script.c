@@ -115,7 +115,7 @@ script_config_load (void)
 	
 	filename = common_create_cache_filename (NULL, "scripts", "xml");	
 	if (g_file_get_contents (filename, &data, &len, NULL)) {
-		doc = xml_parse (data, len, FALSE, NULL);
+		doc = xml_parse (data, len, NULL);
 		if (doc) {
 			xpath_foreach_match (xmlDocGetRootElement (doc),
 			                     "/scripts/hook",

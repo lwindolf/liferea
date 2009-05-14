@@ -32,7 +32,6 @@ typedef struct feedParserCtxt {
 	feedPtr		feed;		/**< the feed structure to fill */
 	GList		*items;		/**< the list of new items */
 	struct item	*item;		/**< the item currently parsed (or NULL) */
-	gboolean	recovery;	/**< TRUE if tolerant parsing needed (use only for RSS 0.9x!) */
 
 	GHashTable	*tmpdata;	/**< tmp data hash used during stateful parsing */
 

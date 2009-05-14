@@ -162,7 +162,7 @@ opml_subscription_process_update_result (subscriptionPtr subscription, const str
 	node->available = FALSE;
 
 	if (result->data) {
-		doc = xml_parse (result->data, result->size, FALSE, NULL);
+		doc = xml_parse (result->data, result->size, NULL);
 		if (doc) {
 			gchar *filename;
 			

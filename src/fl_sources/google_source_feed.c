@@ -256,7 +256,7 @@ google_feed_subscription_process_update_result (subscriptionPtr subscription, co
 		resultCopy->updateState = update_state_copy (result->updateState);
 		
 		/* update the XML by removing 'read', 'reading-list' etc. as labels. */
-		xmlDocPtr doc = xml_parse (result->data, result->size, FALSE, NULL);
+		xmlDocPtr doc = xml_parse (result->data, result->size, NULL);
 		xmlXPathContextPtr xpathCtxt = xmlXPathNewContext (doc) ;
 		xmlXPathRegisterNs (xpathCtxt, "atom", "http://www.w3.org/2005/Atom");
 		google_source_xpath_foreach_match ("/atom:feed/atom:entry/atom:category[@scheme='http://www.google.com/reader/']", xpathCtxt, google_source_xml_unlink_node, NULL);
@@ -294,7 +294,7 @@ google_feed_subscription_process_update_result (subscriptionPtr subscription, co
 	   by getting the newCount first and setting it again later. */
 	guint newCount = feedlist_get_new_item_count ();
 
-	xmlDocPtr doc = xml_parse (result->data, result->size, FALSE, NULL);
+	xmlDocPtr doc = xml_parse (result->data, result->size, NULL);
 	if (doc) {		
 		xmlNodePtr root = xmlDocGetRootElement (doc);
 		xmlNodePtr entry = root->children ; 

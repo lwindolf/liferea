@@ -224,7 +224,7 @@ xhtml_is_well_formed (const gchar *data)
 
 	xml = g_strdup_printf ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n<test>%s</test>", data);
 	
-	doc = xml_parse (xml, strlen (xml), FALSE, errors);
+	doc = xml_parse (xml, strlen (xml), errors);
 	if (doc)
 		xmlFreeDoc (doc);
 		
@@ -535,7 +535,7 @@ xml_get_ns_attribute (xmlNodePtr node, const gchar *name, const gchar *namespace
 }
 
 xmlDocPtr
-xml_parse (gchar *data, size_t length, gboolean recovery, errorCtxtPtr errCtx)
+xml_parse (gchar *data, size_t length, errorCtxtPtr errCtx)
 {
 	xmlParserCtxtPtr	ctxt;
 	xmlDocPtr		doc;
@@ -548,7 +548,7 @@ xml_parse (gchar *data, size_t length, gboolean recovery, errorCtxtPtr errCtx)
 	if (errCtx)
 		xmlSetGenericErrorFunc (errCtx, (xmlGenericErrorFunc)xml_buffer_parse_error);
 	
-	doc = xmlSAXParseMemory (ctxt->sax, data, length, /* recovery = */ recovery);
+	doc = xmlSAXParseMemory (ctxt->sax, data, length, 0);
 	
 	/* This seems to reset the errorfunc to its default, so that the
 	   GtkHTML2 module is not unhappy because it also tries to call the
@@ -580,7 +580,7 @@ xml_parse_feed (feedParserCtxtPtr fpc)
 	errors = g_new0 (struct errorCtxt, 1);
 	errors->msg = fpc->feed->parseErrors;
 	
-	fpc->doc = xml_parse (fpc->data, (size_t)fpc->dataLength, fpc->recovery, errors);
+	fpc->doc = xml_parse (fpc->data, (size_t)fpc->dataLength, errors);
 	if (!fpc->doc) {
 		debug1 (DEBUG_PARSING, "xml_parse_feed(): could not parse feed \"%s\"!", fpc->subscription->node->title);
 		g_string_prepend (fpc->feed->parseErrors, _("XML Parser: Could not parse document:\n"));

@@ -163,12 +163,11 @@ typedef struct errorCtxt {
  *
  * @param data		XML document buffer
  * @param length	length of buffer
- * @param recovery	enable tolerant XML parsing (use only for RSS 0.9x!)
  * @param errors	parser error context (can be NULL)
  *
  * @return XML document
  */
-xmlDocPtr xml_parse (gchar *data, size_t length, gboolean revocery, errorCtxtPtr errors);
+xmlDocPtr xml_parse (gchar *data, size_t length, errorCtxtPtr errors);
 
 /**
  * Common function to create a XML DOM object from a given

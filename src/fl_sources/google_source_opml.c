@@ -192,7 +192,7 @@ google_subscription_opml_cb (subscriptionPtr subscription, const struct updateRe
 	GoogleSourcePtr	gsource = (GoogleSourcePtr) subscription->node->data;
 	
 	if (result->data) {
-		xmlDocPtr doc = xml_parse (result->data, result->size, FALSE, NULL);
+		xmlDocPtr doc = xml_parse (result->data, result->size, NULL);
 		if(doc) {		
 			xmlNodePtr root = xmlDocGetRootElement (doc);
 			
@@ -290,7 +290,7 @@ google_source_quick_update_cb (const struct updateResult* const result, gpointer
 		debug0 (DEBUG_UPDATE, "GoogleSource: Unable to get unread counts, this update is aborted.");
 		return;
 	}
-	doc = xml_parse (result->data, result->size, FALSE, NULL);
+	doc = xml_parse (result->data, result->size, NULL);
 	if (!doc) {
 		debug0 (DEBUG_UPDATE, "GoogleSource: The XML failed to parse, maybe the session has expired. (FIXME)");
 		return;
