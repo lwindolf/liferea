@@ -56,7 +56,7 @@ typedef struct feed {
 	
 	/* feed parsing state */
 
-	gboolean	valid;			/**< FALSE if libxml2 recovery mode was used on last feed parsing */
+	gboolean	valid;			/**< FALSE if there was an error in xml_parse_feed() */
 	GString		*parseErrors;		/**< textual description of parsing errors */
 	time_t		time;			/**< Feeds modified date */
 
