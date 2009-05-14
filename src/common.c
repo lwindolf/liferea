@@ -57,6 +57,8 @@
 #include "feed.h"
 #include "debug.h"
 
+static gchar *lifereaUserPath = NULL;
+
 long common_parse_long(gchar *str, long def) {
 	long num;
 
@@ -353,7 +355,7 @@ common_check_dir (gchar *path)
 static void
 common_init_cache_path (void)
 {
-	gchar *cachePath, *lifereaUserPath;
+	gchar *cachePath;
 
 	lifereaUserPath = g_build_filename (g_get_home_dir(), ".liferea_1.6", NULL);
 	cachePath = g_build_filename (lifereaUserPath, "cache", NULL);
