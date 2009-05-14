@@ -45,7 +45,7 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 		
 	/* RSS 2.0 */
 	if (!tmp)
-		tmp = common_utf8_fix ((gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1));
+		tmp = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
 
 	if (tmp) {
 		ctxt->item->metadata = metadata_list_append (ctxt->item->metadata, "related", tmp);

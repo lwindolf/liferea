@@ -382,7 +382,7 @@ import_OPML_feedlist (const gchar *filename, nodePtr parentNode, gboolean showEr
 				/* set title only when importing as folder and not as OPML source */
 				xmlNodePtr title = xpath_find (cur, "/opml/head/title"); 
 				if (title) {
-					xmlChar *titleStr = common_utf8_fix (xmlNodeListGetString (title->doc, title->xmlChildrenNode, 1));
+					xmlChar *titleStr = xmlNodeListGetString (title->doc, title->xmlChildrenNode, 1);
 					if (titleStr) {
 						node_set_title (parentNode, titleStr);
 						xmlFree (titleStr);

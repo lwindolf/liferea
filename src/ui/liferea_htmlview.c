@@ -251,15 +251,8 @@ liferea_htmlview_write (LifereaHtmlView *htmlview, const gchar *string, const gc
 	}
 	
 	if (!g_utf8_validate (string, -1, NULL)) {
-		gchar *buffer = g_strdup (string);
-		
 		/* Its really a bug if we get invalid encoded UTF-8 here!!! */
-		g_warning ("Invalid encoded UTF8 buffer passed to HTML widget!");
-		
-		/* to prevent crashes inside the browser */
-		buffer = common_utf8_fix (buffer);
-		(RENDERER (htmlview)->write) (htmlview->priv->renderWidget, buffer, strlen (buffer), baseURL, "application/xhtml+xml");
-		g_free (buffer);
+		g_error ("Invalid encoded UTF8 buffer passed to HTML widget!");
 	} else {
 		(RENDERER (htmlview)->write) (htmlview->priv->renderWidget, string, strlen (string), baseURL, "application/xhtml+xml");
 	}

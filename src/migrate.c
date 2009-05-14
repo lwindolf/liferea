@@ -87,7 +87,7 @@ migrate_item_parse_cache (xmlNodePtr cur,
 	cur = cur->xmlChildrenNode;
 	while(cur) {
 		if(cur->type != XML_ELEMENT_NODE ||
-		   !(tmp = common_utf8_fix(xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1)))) {
+		   !(tmp = xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))) {
 			cur = cur->next;
 			continue;
 		}

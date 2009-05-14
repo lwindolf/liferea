@@ -60,7 +60,7 @@ parse_tag (xmlNodePtr cur)
 	gchar	*buffer = NULL, *tmp;
 	
  	if (!xmlStrcmp (BAD_CAST "license", cur->name)) {
- 		tmp = common_utf8_fix ((gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1));
+ 		tmp = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
 		if (tmp) {
 			/* RSS 2.0 module handling */
 			buffer = g_strdup_printf ("<a href=\"%s\">%s</a>", tmp, tmp);

@@ -111,7 +111,7 @@ atom10_parse_content_construct (xmlNodePtr cur, feedParserCtxtPtr ctxt)
 		if (!src) {
 			ret = g_strdup (_("Liferea is unable to display this item's content."));
 		} else {
-			gchar *baseURL = common_utf8_fix ((gchar *)xmlNodeGetBase (cur->doc, cur));
+			gchar *baseURL = (gchar *)xmlNodeGetBase (cur->doc, cur);
 			xmlChar *url;
 			
 			url = common_build_url (src, baseURL);
@@ -129,11 +129,11 @@ atom10_parse_content_construct (xmlNodePtr cur, feedParserCtxtPtr ctxt)
 		
 		/* Contents need to be de-encoded and should not contain sub-tags.*/
 		if (type && (g_str_equal (type,"html") || !g_ascii_strcasecmp (type, "text/html"))) {
-			ret = common_utf8_fix (xhtml_extract (cur, 0, NULL));
+			ret = xhtml_extract (cur, 0, NULL);
 		} else if (!type || !strcmp (type, "text") || !strncasecmp (type, "text/",5)) {
 			gchar *tmp;
 			/* Assume that "text/ *" files can be directly displayed.. kinda stated in the RFC */
-			ret = common_utf8_fix ((gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1));
+			ret = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
 			
 			g_strchug (g_strchomp (ret));
 			
@@ -145,7 +145,7 @@ atom10_parse_content_construct (xmlNodePtr cur, feedParserCtxtPtr ctxt)
 			ret = tmp;
 		} else if (!strcmp(type,"xhtml") || !g_ascii_strcasecmp (type, "application/xhtml+xml")) {
 			/* The spec says to only show the contents of the div tag that MUST be present */
-			ret = common_utf8_fix(xhtml_extract (cur, 2, NULL));
+			ret = xhtml_extract (cur, 2, NULL);
 		} else {
 			/* Do nothing on unsupported content types. This allows summaries to be used. */
 			ret = NULL;
@@ -177,7 +177,7 @@ atom10_parse_text_construct (xmlNodePtr cur, gboolean htmlified)
 	
 	/* This that need to be de-encoded and should not contain sub-tags.*/
 	if (!type || !strcmp(type, "text")) {
-		ret = common_utf8_fix ((gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1));
+		ret = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
 		if (ret) {
 			g_strchug (g_strchomp (ret));
 
@@ -188,12 +188,12 @@ atom10_parse_text_construct (xmlNodePtr cur, gboolean htmlified)
 			}
 		}
 	} else if (!strcmp(type, "html")) {
-		ret = common_utf8_fix (xhtml_extract (cur, 0, NULL));
+		ret = xhtml_extract (cur, 0, NULL);
 		if (!htmlified)
 			ret = unhtmlize (unxmlize (ret));
 	} else if (!strcmp (type, "xhtml")) {
 		/* The spec says to show the contents of the div tag that MUST be present */
-		ret = common_utf8_fix (xhtml_extract (cur, 2, NULL));
+		ret = xhtml_extract (cur, 2, NULL);
 		
 		if (!htmlified)
 			ret = unhtmlize (ret);
@@ -224,14 +224,14 @@ atom10_parse_person_construct (xmlNodePtr cur)
 		if (xmlStrEqual (cur->ns->href, ATOM10_NS)) {
 			if (xmlStrEqual (cur->name, BAD_CAST"name")) {
 				g_free (name);
-				name = common_utf8_fix ((gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1));
+				name = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
 			}
 			
 			if (xmlStrEqual (cur->name, BAD_CAST"email")) {
 				if (email)
 					invalid = TRUE;
 				g_free(email);
-				tmp = common_utf8_fix((gchar *)xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+				tmp = (gchar *)xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
 				email = g_strdup_printf(" - <a href=\"mailto:%s\">%s</a>", tmp, tmp);
 				g_free(tmp);
 			}
@@ -240,7 +240,7 @@ atom10_parse_person_construct (xmlNodePtr cur)
 				if (!uri)
 					invalid = TRUE;
 				g_free (uri);
-				tmp = common_utf8_fix ((gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1));
+				tmp = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
 				uri = g_strdup_printf (" (<a href=\"%s\">Website</a>)", tmp);
 				g_free (tmp);
 			}
@@ -384,7 +384,7 @@ atom10_parse_entry_id (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10Pars
 {
 	gchar *id;
 	
-	id = common_utf8_fix ((gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1));
+	id = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
 	if (id) {
 		if (strlen (id) > 0) {
 			item_set_id (ctxt->item, id);
@@ -411,7 +411,7 @@ atom10_parse_entry_published (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct ato
 {
 	gchar *datestr;
 	
-	datestr = common_utf8_fix ((gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1));
+	datestr = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
 	if (datestr) {
 		ctxt->item->time = parseISO8601Date (datestr);
 		ctxt->item->metadata = metadata_list_append (ctxt->item->metadata, "pubDate", datestr);
@@ -451,7 +451,7 @@ atom10_parse_entry_title (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10P
 {
 	gchar *title;
 	
-	title = common_utf8_fix (atom10_parse_text_construct(cur, FALSE));
+	title = atom10_parse_text_construct(cur, FALSE);
 	if (title) {
 		item_set_title (ctxt->item, title);
 		g_free (title);
@@ -463,7 +463,7 @@ atom10_parse_entry_updated (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom1
 {
 	gchar *datestr;
 	
-	datestr = common_utf8_fix ((gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1));
+	datestr = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
 	/* if pubDate is already set, don't overwrite it */
 	if (datestr && !metadata_list_get(ctxt->item->metadata, "pubDate")) {
 		ctxt->item->time = parseISO8601Date (datestr);
@@ -700,7 +700,7 @@ atom10_parse_feed_updated (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10
 {
 	gchar *timestamp;
 	
-	timestamp = common_utf8_fix ((gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1));
+	timestamp = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
 	if (timestamp) {
 		ctxt->subscription->metadata = metadata_list_append (ctxt->subscription->metadata, "contentUpdateDate", timestamp);
 		ctxt->feed->time = parseISO8601Date (timestamp);

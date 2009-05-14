@@ -36,7 +36,7 @@ ns_georss_parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 	gchar	*point = NULL;
 
  	if (!xmlStrcmp (BAD_CAST"point", cur->name))
-		point = common_utf8_fix ((gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1));
+		point = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
 
 	if (point) {
 		metadata_list_set (&(ctxt->item->metadata), "point", point);

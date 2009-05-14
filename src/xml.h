@@ -171,8 +171,8 @@ xmlDocPtr xml_parse (gchar *data, size_t length, errorCtxtPtr errors);
 
 /**
  * Common function to create a XML DOM object from a given
- * XML buffer. This function sets up a parser context,
- * enables recovery mode and sets up the error handler.
+ * XML buffer. This function sets up a parser context
+ * and sets up the error handler.
  * 
  * The function returns a XML document pointer or NULL
  * if the document could not be read. It also sets 

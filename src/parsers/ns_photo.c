@@ -33,7 +33,7 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 	
 	if (!xmlStrcmp (BAD_CAST"thumbnail", cur->name) || 
 	    !xmlStrcmp (BAD_CAST"thumb", cur->name)) {
- 		tmp = common_utf8_fix((gchar *)xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+ 		tmp = (gchar *)xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
 		if (tmp) {
 			if (g_utf8_strlen (tmp, -1) > 0)
 	 			g_hash_table_insert (ctxt->item->tmpdata, "photo:thumbnail", tmp);
@@ -41,7 +41,7 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 				g_free (tmp);
 		}
 	} else if (!xmlStrcmp (BAD_CAST"imgsrc", cur->name)) {
- 		tmp = common_utf8_fix((gchar *)xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
+ 		tmp = (gchar *)xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
 		if (tmp) {
 			if (g_utf8_strlen (tmp, -1) > 0)
 	 			g_hash_table_insert (ctxt->item->tmpdata, "photo:imgsrc", tmp);				

@@ -40,7 +40,7 @@ ns_itunes_parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 	gchar *tmp;
 	
 	if (!xmlStrcmp(cur->name, BAD_CAST"author")) {
-		tmp = common_utf8_fix ((gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1));
+		tmp = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
 		if (tmp) {
 			ctxt->item->metadata = metadata_list_append (ctxt->item->metadata, "author", tmp);
 			g_free (tmp);
@@ -48,13 +48,13 @@ ns_itunes_parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 	}
 	
 	if (!xmlStrcmp (cur->name, BAD_CAST"summary")) {
-		tmp = common_utf8_fix (xhtml_extract (cur, 0, NULL));
+		tmp = xhtml_extract (cur, 0, NULL);
 		item_set_description (ctxt->item, tmp);
 		g_free (tmp);
 	}
 	
 	if (!xmlStrcmp(cur->name, BAD_CAST"keywords")) {
-		gchar *keyword = tmp = common_utf8_fix ((gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1));
+		gchar *keyword = tmp = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
 		/* parse comma separated list and strip leading spaces... */
 		while (tmp) {
 			tmp = strchr (tmp, ',');
@@ -79,7 +79,7 @@ ns_itunes_parse_channel_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 	const gchar *old;
 
 	if (!xmlStrcmp (cur->name, BAD_CAST"summary") || !xmlStrcmp (cur->name, BAD_CAST"subtitle")) {
-		tmp = common_utf8_fix (xhtml_extract (cur, 0, NULL));
+		tmp = xhtml_extract (cur, 0, NULL);
 		old = metadata_list_get (ctxt->subscription->metadata, "description");
 		if (!old || strlen (old) < strlen (tmp))
 			metadata_list_set (&ctxt->subscription->metadata, "description", tmp);

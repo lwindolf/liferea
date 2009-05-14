@@ -52,16 +52,6 @@
 #  define N_(String) (String)
 #endif
 
-/** 
- * Conversion function which should be applied to all read XML strings, 
- * to ensure proper UTF8. doc points to the xml document and its encoding and
- * string is a xmlChar pointer to the read string. The result gchar
- * string is returned, the original XML string is freed. 
- *
- * @param string	possibly invalid UTF-8 string
- */
-gchar * common_utf8_fix(gchar * string);
-
 /**
  * Parses the given string as a number.
  *

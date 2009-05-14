@@ -82,7 +82,7 @@ itemPtr parseEntry(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 				g_free(tmp2);
 			} else {
 				/* 0.2 link : element content is the link, or non-alternate link in 0.3 */
-				if(NULL != (tmp = common_utf8_fix((gchar *)xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1)))) {
+				if(NULL != (tmp = (gchar *)xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1))) {
 					item_set_source(ctxt->item, tmp);
 					g_free(tmp);
 				}
@@ -98,19 +98,19 @@ itemPtr parseEntry(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 			ctxt->item->metadata = metadata_list_append(ctxt->item->metadata, "contributor", tmp);
 			g_free(tmp);
 		} else if(!xmlStrcmp(cur->name, BAD_CAST"id")) {
-			if(NULL != (tmp = common_utf8_fix((gchar *)xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1)))) {
+			if(NULL != (tmp = (gchar *)xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1))) {
 				item_set_id(ctxt->item, tmp);
 				g_free(tmp);
 			}
 		} else if(!xmlStrcmp(cur->name, BAD_CAST"issued")) {
 			/* FIXME: is <modified> or <issued> or <created> the time tag we want to display? */
- 			if(NULL != (tmp = common_utf8_fix((gchar *)xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1)))) {
+ 			if(NULL != (tmp = (gchar *)xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1))) {
 				ctxt->item->time = parseISO8601Date(tmp);
 				g_free(tmp);
 			}
 		} else if(!xmlStrcmp(cur->name, BAD_CAST"content")) {
 			/* <content> support */
-			if(NULL != (tmp = common_utf8_fix(pie_parse_content_construct(cur)))) {
+			if(NULL != (tmp = pie_parse_content_construct(cur))) {
 				item_set_description(ctxt->item, tmp);
 				g_free(tmp);
 			}
@@ -118,13 +118,13 @@ itemPtr parseEntry(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 			/* <summary> can be used for short text descriptions, if there is no
 			   <content> description we show the <summary> content */
 			if(!item_get_description(ctxt->item)) {
-				if(NULL != (tmp = common_utf8_fix(pie_parse_content_construct(cur)))) {
+				if(NULL != (tmp = pie_parse_content_construct(cur))) {
 					item_set_description(ctxt->item, tmp);
 					g_free(tmp);
 				}
 			}
 		} else if(!xmlStrcmp(cur->name, BAD_CAST"copyright")) {
- 			if(NULL != (tmp = common_utf8_fix((gchar *)xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1)))) {
+ 			if(NULL != (tmp = (gchar *)xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1))) {
 				ctxt->item->metadata = metadata_list_append(ctxt->item->metadata, "copyright", tmp);
 				g_free(tmp);
 			}

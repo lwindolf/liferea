@@ -79,7 +79,7 @@ parseRSSItem (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 		/* check for metadata tags */
 		tmp2 = g_hash_table_lookup(RssToMetadataMapping, cur->name);
 		if (tmp2) {
-			tmp3 = common_utf8_fix((gchar *)xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE));
+			tmp3 = (gchar *)xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE);
 			if (tmp3) {
 				ctxt->item->metadata = metadata_list_append(ctxt->item->metadata, tmp2, tmp3);
 				g_free(tmp3);
@@ -87,7 +87,7 @@ parseRSSItem (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 		}
 		/* check for specific tags */
 		else if(!xmlStrcmp(cur->name, BAD_CAST"pubDate")) {
- 			tmp = common_utf8_fix((gchar *)xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1));
+ 			tmp = (gchar *)xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1);
 			if (tmp) {
 				ctxt->item->time = parseRFC822Date(tmp);
 				g_free(tmp);
@@ -156,7 +156,7 @@ parseRSSItem (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 			}
 		}
 		else if(!xmlStrcmp(cur->name, BAD_CAST"description")) {
- 			tmp = common_utf8_fix(xhtml_extract (cur, 0, NULL));
+ 			tmp = xhtml_extract (cur, 0, NULL);
 			if (tmp) {
 				/* don't overwrite content:encoded descriptions... */
 				if(!item_get_description(ctxt->item))

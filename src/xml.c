@@ -361,8 +361,6 @@ unmarkupize (gchar *string, void(*parse)(gchar *string, result_buffer *buffer))
 	if (!string)
 		return NULL;
 		
-	string = common_utf8_fix (string);
-
 	/* only do something if there are any entities or tags */
 	if(NULL == (strpbrk (string, "&<>")))
 		return string;
@@ -517,21 +515,13 @@ xpath_foreach_match (xmlNodePtr node, const gchar *expr, xpathMatchFunc func, gp
 gchar *
 xml_get_attribute (xmlNodePtr node, const gchar *name)
 {
-	/* For RSS we use libxml2 in recovery mode and we need to
-	   ensure to never get invalid characters, which is why we
-	   use common_utf8_fix() on each result here... */
-	   
-	return common_utf8_fix (xmlGetProp (node, BAD_CAST name));
+	return xmlGetProp (node, BAD_CAST name);
 }
 
 gchar *
 xml_get_ns_attribute (xmlNodePtr node, const gchar *name, const gchar *namespace)
 {
-	/* For RSS we use libxml2 in recovery mode and we need to
-	   ensure to never get invalid characters, which is why we
-	   use common_utf8_fix() on each result here... */
-	   
-	return common_utf8_fix (xmlGetNsProp (node, BAD_CAST name, BAD_CAST namespace));
+	return xmlGetNsProp (node, BAD_CAST name, BAD_CAST namespace);
 }
 
 xmlDocPtr

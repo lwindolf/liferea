@@ -50,12 +50,12 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 	gchar	*tmp = NULL, *section, *department;
 	
 	if (!xmlStrcmp (BAD_CAST"section", cur->name)) {
-		tmp = common_utf8_fix ((gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1));
+		tmp = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
 		if (tmp)
  			g_hash_table_insert (ctxt->item->tmpdata, "slash:section", tmp);
 			
 	} else if (!xmlStrcmp (BAD_CAST"department", cur->name)) {
-		tmp = common_utf8_fix ((gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1));
+		tmp = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
 		if (tmp)
  			g_hash_table_insert(ctxt->item->tmpdata, "slash:department", tmp);
 	}

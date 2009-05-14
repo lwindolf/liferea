@@ -57,39 +57,6 @@
 #include "feed.h"
 #include "debug.h"
 
-static gchar *lifereaUserPath = NULL;
-
-/* Conversion function which should be applied to all read XML strings, 
-   to ensure proper UTF8. This is because we use libxml2 in recovery
-   mode which can produce invalid UTF-8. 
-   
-   The valid or a corrected string is returned. The original XML 
-   string is modified . */
-gchar * common_utf8_fix(gchar *string) {
-	const gchar	*invalid_offset;
-
-	if(NULL == string)
-		return NULL;
-		
-	if(!g_utf8_validate(string, -1, &invalid_offset)) {
-		/* if we have an invalid string we try to shorten
-		   it until it is valid UTF-8 */
-		debug0(DEBUG_PARSING, "parser delivered invalid UTF-8!");
-		debug1(DEBUG_PARSING, "	>>>%s<<<", string);
-		debug1(DEBUG_PARSING, "first invalid char is: >>>%s<<<" , invalid_offset);
-		debug0(DEBUG_PARSING, "removing invalid bytes");
-		
-		do {
-			memmove((void *)invalid_offset, invalid_offset + 1, strlen(invalid_offset + 1) + 1);			
-		} while(!g_utf8_validate(string, -1, &invalid_offset));
-		
-		debug0(DEBUG_PARSING, "result is:");
-		debug1(DEBUG_PARSING, "	>>>%s<<<", string);
-	}
-	
-	return string;
-}
-
 long common_parse_long(gchar *str, long def) {
 	long num;
 
@@ -386,7 +353,7 @@ common_check_dir (gchar *path)
 static void
 common_init_cache_path (void)
 {
-	gchar *cachePath;
+	gchar *cachePath, *lifereaUserPath;
 
 	lifereaUserPath = g_build_filename (g_get_home_dir(), ".liferea_1.6", NULL);
 	cachePath = g_build_filename (lifereaUserPath, "cache", NULL);
