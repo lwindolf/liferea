@@ -19,6 +19,9 @@
 	  (Adrian Bunk, reported by Leon Nardella)
 	* Require libsoup-2.4 >= 2.26.1 for avoiding GNOME #578809.
 	  (Adrian Bunk)
+	* Fixes SF #2787611: During Feed updates wrong items were added
+	  to Search Folders with more than one rule.
+	  (Adrian Bunk, reported by Nathan Rogers)
 
 
 2009-05-01  Adrian Bunk <bunk@users.sourceforge.net>
