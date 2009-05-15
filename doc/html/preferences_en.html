@@ -38,26 +38,19 @@
 	</li>
 	
 	<li>
-	<b>Feed Update Settings:</b> Here you can set the default update
-	interval for all subscriptions. If it is set to 0 auto-updating
-	is disabled. Note that this setting can be overwritten for each 
-	subscription by setting the update interval in the subscriptions 
-	properties.<br>
-	The option button allows you to control the update behaviour 
+	<b>Feed Update Settings:</b> Here you can set the default refresh
+	interval for all subscriptions. Note that this setting can be 
+	overwritten for each subscription by setting the refresh interval 
+	in the subscriptions properties.<br>
+	The "At startup" option button allows you to control the update behaviour 
 	after startup. You have three possibilities:
 	<ul>
-	<li>Update all out-dated subscriptions.</li>
-	<li>Update all subscriptions.</li>
-	<li>Don't update subscriptions and reset their update intervals.</li>
+	<li>Update out-dated feeds.</li>
+	<li>Force update all feeds.</li>
+	<li>No feed update at all.</li>
 	</ul>
 	</li>
 	
-	<li>
-	<b>Feed Loading Settings:</b> With this option you can influence
-	the memory usage of Liferea. You can select wether to keep all
-	subscription contents in memory or to load the contents from
-	disk when needed.
-	</li>
 	</ul>
 	
 	<h4>Folder Preferences</h4>
@@ -68,11 +61,16 @@
 		
 	<ul>
 	<li>
-	<b>Folder Display Settings:</b> With this checkbox you can control
+	<b>Folder Display Settings:</b> With these checkbox you can control
 	what Liferea loads into the item list when you click a folder.
-	The default behaviour is not to change the item list contents. If
-	you enable this option all items of all child subscriptions of the
-	selected folder are loaded into the item list.
+	The default behaviour is not to load any items at all. If
+	you enable the first option all items of all child subscriptions of the
+	selected folder are loaded into the item list. When you enable "Hide read
+	items" then only unread items will be loaded.
+	<br/><br/>
+	Usually you will want to
+	enable both options as this allows to quickly read through all unread
+	items of a set of feeds.
 	</li>
 	
 	<li>
@@ -109,11 +107,10 @@
 	
 	<ul>
 	<li>
-	<b>Internal Browser Settings:</b> Here you can configure three
-	things. First you can select the browser module to be used to
-	render the HTML of the item view. Then you can specify wether
+	<b>Internal Browser Settings:</b> Here you can configure two
+	things. First you can specify wether
 	or not Liferea should open clicked links in the configured 
-	external browser or in the item HTML view. The third option
+	external browser or in the internal browser. The second option
 	allows you to switch off Javascript.
 	</li>
 
@@ -142,22 +139,28 @@
 
 	<ul>
 	<li>
-	<b>Notification Settings:</b> Enable the first checkbox if you 
+	<b>Notification Settings:</b> 
+	The first option allows you to enable a notification popup
+	window which present a list of the titles of new headlines
+	of updated subscriptions.	
+	<br/><br/>
+	Enable the second checkbox if you 
 	want to use the notification area feature. This feature is also 
 	known as system tray icon. The program will add a icon to the active 
 	notification area application (as provided for GNOME and KDE) which 
 	will change when new items arrive and 'll be reset as soon the program 
 	is used again. The icon can be used to show the program window if 
-	currently hidden or hide the program window if it is visible.<br>
-	<br>
-	The second option allows you to enable a notification popup
-	window which present a list of the titles of new headlines
-	of updated subscriptions.	
+	currently hidden or hide the program window if it is visible.
+	<br/><br/>
+	There are two additional option which can be used to modify the
+	tray icon behaviour as there is no common default behaviour among
+	applications using tray icons.
 	</li>
 	
 	<li>
 	<b>Menu Settings:</b> Here you can select wether you want to
-	display both menu bar and tool bar or only one of them.
+	display both menu bar and tool bar or only one of them. Additionally
+	can influence the toolbar button detail.
 	</li>	
 	</ul>
 	
@@ -204,6 +207,10 @@
 	<b>Downloading Enclosures:</b> Here you specify which download
 	tool Liferea should use to download enclosures and in which path
 	the downloaded files should be saved in.
+	<br/><br/>
+	When you have problems downloading enclosures please ensure
+	you have installed the configured download tool and that it is
+	working correctly when you run it on the command line.
 	</li>
 	<li>
 	<b>Opening Enclosures:</b> Using the "Properties" and "Delete" button
