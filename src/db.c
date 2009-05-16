@@ -1203,7 +1203,7 @@ db_query_to_sql (guint id, const queryPtr query)
 	}
 			
 	if (itemMatch)
-		sql = sqlite3_mprintf ("SELECT %s %s %s WHERE (%s AND %s)",
+		sql = sqlite3_mprintf ("SELECT %s %s %s WHERE ((%s) AND (%s))",
 		                       columns, from, join, itemMatch, query->conditions);
 	else
 		sql = sqlite3_mprintf ("SELECT %s %s %s WHERE (%s)",
