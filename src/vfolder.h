@@ -22,7 +22,6 @@
 #define _VFOLDER_H
 
 #include <glib.h>
-#include "rule.h"
 #include "node_type.h"
 
 /* The search folder implementation of Liferea is similar to the
@@ -51,15 +50,6 @@ typedef struct vfolder {
 vfolderPtr vfolder_new (struct node *node);
 
 /**
- * Method that adds an existing rule to a search folder.
- * To be used when editing search folders.
- *
- * @param vfdoler	search folder
- * @param rule		rule to add
- */
-void vfolder_add_existing_rule (vfolderPtr vfolder, rulePtr rule);
-
-/**
  * Method that creates and adds a rule to a search folder. To be used
  * on loading time, when creating searches or when editing
  * search folder properties.
@@ -72,18 +62,6 @@ void vfolder_add_existing_rule (vfolderPtr vfolder, rulePtr rule);
  * @param additive	indicates positive or negative logic
  */
 void vfolder_add_rule (vfolderPtr vfolder, const gchar *ruleId, const gchar *value, gboolean additive);
-
-/** 
- * Method that removes a rule from the rule list of a given
- * search folder. To be used when deleting search folders 
- * or editing its rules.
- *
- * vfolder_refresh() needs to called to update the item matches
- *
- * @param vfolder	search folder
- * @param rule		rule to remove
- */
-void vfolder_remove_rule (vfolderPtr vfolder, rulePtr rule);
 
 /**
  * Method to unconditionally invoke a callback for all search folders.

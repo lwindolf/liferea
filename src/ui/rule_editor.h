@@ -26,6 +26,7 @@
 #include <glib-object.h>
 #include <glib.h>
 
+#include "rule.h"
 #include "vfolder.h"
 
 G_BEGIN_DECLS

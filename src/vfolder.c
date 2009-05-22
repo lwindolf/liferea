@@ -25,6 +25,7 @@
 #include "itemset.h"
 #include "itemlist.h"
 #include "node.h"
+#include "rule.h"
 #include "vfolder.h"
 #include "ui/ui_common.h"
 #include "ui/ui_feedlist.h"
@@ -235,7 +236,7 @@ vfolder_export (nodePtr node,
 	debug_exit ("vfolder_export");
 }
 
-void
+static void
 vfolder_add_existing_rule (vfolderPtr vfolder, rulePtr rule)
 {
 	vfolder->rules = g_slist_append (vfolder->rules, rule);
@@ -254,12 +255,6 @@ vfolder_add_rule (vfolderPtr vfolder,
 		vfolder_add_existing_rule (vfolder, rule);
 	else
 		g_warning ("unknown search folder rule id: \"%s\"", ruleId);
-}
-
-void
-vfolder_remove_rule (vfolderPtr vfolder, rulePtr rule) 
-{
-	vfolder->rules = g_slist_remove (vfolder->rules, rule);
 }
 
 static void
