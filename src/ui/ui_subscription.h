@@ -88,14 +88,6 @@ struct NewSubscriptionDialogClass
 
 GType new_subscription_dialog_get_type	(void);
 
-/**
- * Create a new complex subscription dialog. Used only
- * when requested by user from simple subscription dialog.
- *
- * @returns dialog instance
- */
-NewSubscriptionDialog *ui_complex_subscription_dialog_new (void);
-
 
 #define SIMPLE_SUBSCRIPTION_DIALOG_TYPE			(simple_subscription_dialog_get_type ())
 #define SIMPLE_SUBSCRIPTION_DIALOG(obj)			(G_TYPE_CHECK_INSTANCE_CAST ((obj), SIMPLE_SUBSCRIPTION_DIALOG_TYPE, SimpleSubscriptionDialog))

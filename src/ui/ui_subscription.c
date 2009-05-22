@@ -717,7 +717,7 @@ new_subscription_dialog_init (NewSubscriptionDialog *nsd)
 	gtk_widget_show_all (newdialog);
 }
 
-NewSubscriptionDialog *
+static NewSubscriptionDialog *
 ui_complex_subscription_dialog_new (void) 
 {
 	NewSubscriptionDialog *nsd;
