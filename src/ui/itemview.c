@@ -289,21 +289,6 @@ itemview_display_info (const gchar *html)
 	liferea_htmlview_write (itemview->priv->htmlview, html, NULL);
 }
 
-/* date format handling (not sure if this is the right place) */
-
-gchar *
-itemview_format_date (time_t date)
-{
-	gchar		*timestr;
-
-	if (itemview->priv->userDefinedDateFmt)
-		timestr = common_format_date (date, itemview->priv->userDefinedDateFmt);
-	else
-		timestr = common_format_nice_date (date);
-	
-	return timestr;
-}
-
 void
 itemview_scroll (void)
 {

@@ -236,7 +236,7 @@ ui_itemlist_update_item (itemPtr item)
 	if (!ui_item_id_to_iter (item->id, &iter))
 		return;
 	
-	time_str = (0 != item->time) ? itemview_format_date((time_t)item->time) : g_strdup ("");
+	time_str = (0 != item->time) ? common_format_date((time_t)item->time, NULL) : g_strdup ("");
 
 	direction_marker = common_get_direction_mark (node_from_id (item->nodeId)->title);	
 

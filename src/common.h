@@ -63,25 +63,17 @@
 long common_parse_long(gchar *str, long def);
 
 /**
- * Returns a formatted date string for the given timestamp.
+ * Generic date formatting function. Uses either the 
+ * user defined format string, or (if date_format is NULL)
+ * a formatted date string whose format string depends
+ * on the time difference to today.
  *
  * @param t		the timestamp
- * @param date_format	a strptime format string (encoded in UTF-8)
+ * @param date_format	NULL or a strptime format string (encoded in UTF-8)
  *
- * @returns a new formatted date string (encoded in UTF-8)
+ * @returns a newly allocated formatted date string (encoded in UTF-8)
  */
 gchar * common_format_date(time_t date, const gchar *date_format);
-
-/**
- * Returns a formatted date string for the given timestamp.
- * In difference to common_format_date() it uses different
- * format string according to the time difference to today.
- *
- * @param t		the timestamp
- *
- * @returns a new formatted date string (encoded in UTF-8)
- */
-gchar * common_format_nice_date(time_t date);
 
 /**
  * Parses a ISO8601 date.

@@ -72,23 +72,8 @@ long common_parse_long(gchar *str, long def) {
 
 #define	TIMESTRLEN	256
 
-gchar * common_format_date(time_t date, const gchar *date_format) {
-	gchar		*result;
-	struct tm	date_tm;
-	
-	if (date == 0) {
-		return g_strdup ("");
-	}
-	
-	localtime_r (&date, &date_tm);
-	
-	result = g_new0(gchar, TIMESTRLEN);
-	e_utf8_strftime_fix_am_pm(result, TIMESTRLEN, date_format, &date_tm);
-	return result;
-}
-
 /* This function is originally from the Evolution 2.6.2 code (e-cell-date.c) */
-gchar * common_format_nice_date(time_t date) {
+static gchar * common_format_nice_date(time_t date) {
 	time_t nowdate = time(NULL);
 	time_t yesdate;
 	struct tm then, now, yesterday;
@@ -160,6 +145,26 @@ gchar * common_format_nice_date(time_t date) {
 	}
 	temp = g_strstrip (buf);
 	return temp;
+}
+
+gchar * common_format_date(time_t date, const gchar *date_format) {
+	gchar		*result;
+	struct tm	date_tm;
+	
+	if (date == 0) {
+		return g_strdup ("");
+	}
+
+	if (date_format) {
+		localtime_r (&date, &date_tm);
+	
+		result = g_new0(gchar, TIMESTRLEN);
+		e_utf8_strftime_fix_am_pm(result, TIMESTRLEN, date_format, &date_tm);
+	} else {
+		result = common_format_nice_date (date);
+	}
+
+	return result;
 }
 
 /* converts a ISO 8601 time string to a time_t value */
