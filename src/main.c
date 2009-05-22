@@ -46,9 +46,7 @@
 #include "script.h"
 #include "social.h"
 #include "update.h"
-#include "vfolder.h"		// FIXME: should not be necessary
 #include "xml.h"
-#include "ui/ui_feedlist.h"	// FIXME: should not be necessary
 #include "ui/ui_session.h"
 #include "ui/liferea_shell.h"
 #include "sync/avahi_publisher.h"
