@@ -31,6 +31,7 @@
 #include "db.h"
 #include "metadata.h"
 #include "xml.h"
+#include "ui/itemview.h"	// FIXME: evil
 
 itemPtr
 item_new (void)
@@ -226,7 +227,7 @@ item_to_xml (itemPtr item, xmlNodePtr parentNode)
 	xmlNewTextChild (itemNode, NULL, "time", tmp);
 	g_free (tmp);
 
-	tmp = common_format_date (item->time, NULL);
+	tmp = itemview_format_date (item->time);
 	xmlNewTextChild (itemNode, NULL, "timestr", tmp);
 	g_free (tmp);
 
