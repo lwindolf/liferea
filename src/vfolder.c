@@ -171,19 +171,6 @@ vfolder_foreach_with_rule (const gchar *ruleName, nodeActionFunc func)
 	}
 }
 
-void
-vfolder_foreach_with_item (gulong itemId, nodeActionFunc func)
-{
-	GSList	*iter = vfolders;
-	
-	while (iter) {
-		vfolderPtr vfolder = (vfolderPtr)iter->data;
-		if (db_view_contains_item (vfolder->node->id, itemId))
-			(*func) (vfolder->node);	
-		iter = g_slist_next (iter);
-	}
-}
-
 static void
 vfolder_import (nodePtr node,
                 nodePtr parent,

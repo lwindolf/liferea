@@ -80,17 +80,6 @@ void vfolder_foreach (nodeActionFunc func);
 void vfolder_foreach_with_rule (const gchar *ruleName, nodeActionFunc func);
 
 /**
- * Method to invoke callbacks for all search folders that are
- * affected by a modification of the given item. For each
- * search folder it is checked if the item matches the search folder 
- * rules. If yes then the given callback is invoked.
- *
- * @param itemId	the item id
- * @param func		function to call if the search folder contains the item
- */
-void vfolder_foreach_with_item (gulong itemId, nodeActionFunc func);
-
-/**
  * Method that updates the unread and item count for the given
  * search folder node.
  *

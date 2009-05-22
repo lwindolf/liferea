@@ -190,17 +190,6 @@ void db_view_remove (const gchar *id);
  */
 itemSetPtr db_view_load (const gchar *id);
 
-/**
- * Checks wether the given item id belongs to the item list
- * of the given view id.
- *
- * @param id		the view id
- * @param itemId	the item id
- *
- * @returns TRUE if the item belongs to the view
- */
-gboolean db_view_contains_item (const gchar *id, gulong itemId);
-
 /** 
  * Returns the item count for the given view id.
  *

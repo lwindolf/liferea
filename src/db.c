@@ -1511,39 +1511,6 @@ db_view_load (const gchar *id)
 	return itemSet;
 }
 
-gboolean
-db_view_contains_item (const gchar *id, gulong itemId)
-{
-	gchar		*sql;
-	sqlite3_stmt	*viewCountStmt;	
-	gint		res;
-	guint		count = 0;
-
-	debug_start_measurement (DEBUG_DB);
-
-	sql = sqlite3_mprintf ("SELECT COUNT(*) FROM view_%s WHERE item_id = %lu;", id, itemId);
-	res = sqlite3_prepare_v2 (db, sql, -1, &viewCountStmt, NULL);
-	sqlite3_free (sql);
-	if (SQLITE_OK != res) {
-		debug2 (DEBUG_DB, "couldn't determine view %s item count (error=%d)", id, res);
-		return FALSE;
-	}
-	
-	sqlite3_reset (viewCountStmt);
-	res = sqlite3_step (viewCountStmt);
-	
-	if (SQLITE_ROW == res)
-		count = sqlite3_column_int (viewCountStmt, 0);
-	else
-		g_warning ("view item counting failed (error code=%d, %s)", res, sqlite3_errmsg (db));
-
-	sqlite3_finalize (viewCountStmt);
-	
-	debug_end_measurement (DEBUG_DB, "view item counting");
-	
-	return (count > 0);
-}
-
 guint
 db_view_get_item_count (const gchar *id)
 {
