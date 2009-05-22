@@ -446,25 +446,25 @@ on_useProxyAuth_toggled (GtkToggleButton *button, gpointer user_data)
 	conf_set_bool_value (PROXY_USEAUTH, enabled);
 }
 
-void
+static void
 on_proxyhostentry_changed (GtkEditable *editable, gpointer user_data)
 {
 	conf_set_str_value (PROXY_HOST, gtk_editable_get_chars (editable,0,-1));
 }
 
-void
+static void
 on_proxyportentry_changed (GtkEditable *editable, gpointer user_data)
 {
 	conf_set_int_value (PROXY_PORT, atoi (gtk_editable_get_chars (editable,0,-1)));
 }
 
-void
+static void
 on_proxyusernameentry_changed (GtkEditable *editable, gpointer user_data)
 {
 	conf_set_str_value (PROXY_USER, gtk_editable_get_chars (editable,0,-1));
 }
 
-void
+static void
 on_proxypasswordentry_changed (GtkEditable *editable, gpointer user_data)
 {
 	conf_set_str_value (PROXY_PASSWD, gtk_editable_get_chars (editable,0,-1));
