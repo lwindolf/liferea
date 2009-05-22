@@ -71,15 +71,6 @@ void vfolder_add_rule (vfolderPtr vfolder, const gchar *ruleId, const gchar *val
 void vfolder_foreach (nodeActionFunc func);
 
 /**
- * Method to invoke a callback for all search folders that do use
- * the given rule.
- *
- * @param ruleName	the rule type
- * @param func		callback
- */
-void vfolder_foreach_with_rule (const gchar *ruleName, nodeActionFunc func);
-
-/**
  * Method that updates the unread and item count for the given
  * search folder node.
  *

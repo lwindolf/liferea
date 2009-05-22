@@ -138,35 +138,15 @@ vfolder_refresh (vfolderPtr vfolder)
 	vfolder_update_counters (vfolder->node);
 }
 
-static gboolean
-vfolder_is_affected (vfolderPtr vfolder, const gchar *ruleName)
-{
-	GSList *iter = vfolder->rules;
-	while (iter) {
-		rulePtr rule = (rulePtr)iter->data;
-		if (g_str_equal (rule->ruleInfo->ruleId, ruleName))
-			return TRUE;
-		iter = g_slist_next(iter);
-	}
-	return FALSE;
-}
-
 void
 vfolder_foreach (nodeActionFunc func)
-{
-	vfolder_foreach_with_rule (NULL, func);
-}
-
-void
-vfolder_foreach_with_rule (const gchar *ruleName, nodeActionFunc func) 
 {
 	GSList	*iter = vfolders;
 	
 	g_assert (NULL != func);
 	while (iter) {
 		vfolderPtr vfolder = (vfolderPtr)iter->data;
-		if (!ruleName || vfolder_is_affected (vfolder, ruleName))
-			(*func) (vfolder->node);
+		(*func) (vfolder->node);
 		iter = g_slist_next (iter);
 	}
 }
