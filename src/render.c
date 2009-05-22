@@ -394,24 +394,6 @@ render_xml (xmlDocPtr doc, const gchar *xsltName, renderParamPtr paramSet)
 	return output;
 }
 
-gchar *
-render_file (const gchar *filename, const gchar *xsltName, renderParamPtr paramSet)
-{
-	xmlDocPtr	srcDoc;
-	gchar		*output;
-
-	srcDoc = xmlParseFile(filename);
-	if (!srcDoc) {
-		g_warning ("fatal: loading source XML (%s) failed", filename);
-		return NULL;
-	}
-
-	output = render_xml (srcDoc, xsltName, paramSet);
-	xmlFreeDoc (srcDoc);
-
-	return output;
-}
-
 /* parameter handling */
 
 renderParamPtr

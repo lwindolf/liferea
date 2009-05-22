@@ -35,17 +35,6 @@ typedef struct renderParam {
 void render_update_params(void);
 
 /**
- * Applies the stylesheet xslt to the given file with the given parameters.
- *
- * @param filename	valid absolut source filename
- * @param xsltName	name of a stylesheet
- * @param params	parameter/value string array (will be free'd)
- *
- * @returns rendered XHTML
- */
-gchar * render_file(const gchar *filename, const gchar *xsltName, renderParamPtr paramSet);
-
-/**
  * Applies the stylesheet xslt to the given XML document with the given parameters.
  *
  * @param doc		XML source document
