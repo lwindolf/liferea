@@ -24,6 +24,8 @@
 	  (Adrian Bunk, reported by Nathan Rogers)
 	* Filter for .opml files in OPML import/export dialogs.
 	  (Adrian Bunk)
+	* Require WebKitGtk+ >= 1.1.7 to avoid problems with older
+	  versions. (Adrian Bunk)
 
 
 2009-05-01  Adrian Bunk <bunk@users.sourceforge.net>
