@@ -63,6 +63,7 @@
 	  (Adrian Bunk)
 	* Require WebKitGtk+ >= 1.1.7 to avoid problems with older
 	  versions. (Adrian Bunk)
+	* Fixes a memory leak in the WebKit code. (Gustavo Noronha)
 
 	* Update of Italian translation. (Gianvito Cavasoli)
 
