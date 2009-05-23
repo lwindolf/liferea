@@ -250,6 +250,8 @@ webkit_new (LifereaHtmlView *htmlview)
 	);
 	
 	webkit_web_view_set_settings (view, WEBKIT_WEB_SETTINGS (settings));
+	g_object_unref (settings);
+
 	webkit_web_view_set_full_content_zoom (WEBKIT_WEB_VIEW (view), TRUE);
 
 	gtk_container_add (GTK_CONTAINER (scrollpane), GTK_WIDGET (view));
