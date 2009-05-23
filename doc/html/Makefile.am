@@ -10,6 +10,7 @@ html_doc_en =	about_en.html \
 		updating_en.html \
 		enclosures_en.html \
 		newsbin_en.html \
+		greader_en.html \
 		faq_en.html
 
 html_doc_de =	about_de.html \
