@@ -141,7 +141,7 @@ htmlview_remove_item (itemPtr item)
 void
 htmlview_select_item (itemPtr item) 
 {
-	debug1(DEBUG_HTML, "HTML view: selecting \"%s\"", item_get_title(item));	
+	debug1(DEBUG_HTML, "HTML view: selecting \"%s\"", item?item_get_title(item):"none");
 	/* nothing to do... */
 }
 
