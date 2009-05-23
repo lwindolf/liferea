@@ -386,7 +386,7 @@ on_opml_file_selected (const gchar *filename, gpointer user_data)
 static void
 on_opml_file_choose_clicked (GtkButton *button, gpointer user_data)
 {
-	ui_choose_file (_("Choose OPML File"), GTK_STOCK_OPEN, FALSE, on_opml_file_selected, NULL, NULL, user_data);
+	ui_choose_file (_("Choose OPML File"), GTK_STOCK_OPEN, FALSE, on_opml_file_selected, NULL, NULL, "*.opml", _("OPML Files"), user_data);
 }
 
 static void

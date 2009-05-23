@@ -22,6 +22,8 @@
 	* Fixes SF #2787611: During Feed updates wrong items were added
 	  to Search Folders with more than one rule.
 	  (Adrian Bunk, reported by Nathan Rogers)
+	* Filter for .opml files in OPML import/export dialogs.
+	  (Adrian Bunk)
 
 
 2009-05-01  Adrian Bunk <bunk@users.sourceforge.net>

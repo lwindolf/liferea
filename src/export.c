@@ -429,8 +429,7 @@ on_import_activate_cb (const gchar *filename, gpointer user_data)
 void
 import_OPML_file (void)
 {
-
-	ui_choose_file(_("Import Feed List"), _("Import"), FALSE, on_import_activate_cb, NULL, NULL, NULL);
+	ui_choose_file(_("Import Feed List"), _("Import"), FALSE, on_import_activate_cb, NULL, NULL, "*.opml", _("OPML Files"), NULL);
 }
 
 static void
@@ -447,5 +446,5 @@ on_export_activate_cb (const gchar *filename, gpointer user_data)
 void
 export_OPML_file (void)
 {
-	ui_choose_file (_("Export Feed List"), _("Export"), TRUE, on_export_activate_cb,  NULL, "feedlist.opml", NULL);
+	ui_choose_file (_("Export Feed List"), _("Export"), TRUE, on_export_activate_cb,  NULL, "feedlist.opml", "*.opml", _("OPML Files"), NULL);
 }

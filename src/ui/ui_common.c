@@ -137,7 +137,7 @@ ui_choose_file_save_cb (GtkDialog *dialog, gint response_id, gpointer user_data)
 }
 
 static void
-ui_choose_file_or_dir(gchar *title, const gchar *buttonName, gboolean saving, gboolean directory, fileChoosenCallback callback, const gchar *currentPath, const gchar *defaultFilename, gpointer user_data)
+ui_choose_file_or_dir(gchar *title, const gchar *buttonName, gboolean saving, gboolean directory, fileChoosenCallback callback, const gchar *currentPath, const gchar *defaultFilename, const char *filterstring, const char *filtername, gpointer user_data)
 {
 	GtkWidget			*dialog;
 	struct file_chooser_tuple	*tuple;
@@ -175,19 +175,33 @@ ui_choose_file_or_dir(gchar *title, const gchar *buttonName, gboolean saving, gb
 	if (defaultFilename)
 		gtk_file_chooser_set_current_name (GTK_FILE_CHOOSER (dialog), defaultFilename);
 
+	if (filterstring && filtername) {
+		GtkFileFilter *filter, *allfiles;
+
+		filter = gtk_file_filter_new ();
+		gtk_file_filter_add_pattern (filter, filterstring);
+		gtk_file_filter_set_name (filter, filtername);
+		gtk_file_chooser_add_filter (GTK_FILE_CHOOSER (dialog), filter);
+
+		allfiles = gtk_file_filter_new ();
+		gtk_file_filter_add_pattern (allfiles, "*");
+		gtk_file_filter_set_name (allfiles, _("All Files"));
+		gtk_file_chooser_add_filter (GTK_FILE_CHOOSER (dialog), allfiles);
+	}
+
 	gtk_widget_show_all (dialog);
 }
 
 void
-ui_choose_file (gchar *title, const gchar *buttonName, gboolean saving, fileChoosenCallback callback, const gchar *currentPath, const gchar *defaultFilename, gpointer user_data)
+ui_choose_file (gchar *title, const gchar *buttonName, gboolean saving, fileChoosenCallback callback, const gchar *currentPath, const gchar *defaultFilename, const char *filterstring, const char *filtername, gpointer user_data)
 {
-	ui_choose_file_or_dir (title, buttonName, saving, FALSE, callback, currentPath, defaultFilename, user_data);
+	ui_choose_file_or_dir (title, buttonName, saving, FALSE, callback, currentPath, defaultFilename, filterstring, filtername, user_data);
 }
 
 void
 ui_choose_directory (gchar *title, const gchar *buttonName, fileChoosenCallback callback, const gchar *currentPath, gpointer user_data)
 {
-	ui_choose_file_or_dir (title, buttonName, FALSE, TRUE, callback, currentPath, NULL, user_data);
+	ui_choose_file_or_dir (title, buttonName, FALSE, TRUE, callback, currentPath, NULL, NULL, NULL, user_data);
 }
 
 /* The following three functions are to be used for

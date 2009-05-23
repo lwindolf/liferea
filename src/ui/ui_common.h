@@ -101,9 +101,11 @@ typedef void (*fileChoosenCallback) (const gchar *title, gpointer user_data);
  * @param callback	that will be passed the filename (in the system's locale (NOT UTF-8), and some user data
  * @param currentPath	This file or directory will be selected in the chooser
  * @param filename	When saving, this is the suggested filename
+ * @param filterstring 	a pattern for a GtkFileFilter or NULL
+ * @param filtername	a human readable name for the pattern or NULL (if pattern is NULL)
  * @param user_data	user data passed to the callback
  */
-void ui_choose_file (gchar *title, const gchar *buttonName, gboolean saving, fileChoosenCallback callback, const gchar *currentPath, const gchar *defaultFilename, gpointer user_data);
+void ui_choose_file (gchar *title, const gchar *buttonName, gboolean saving, fileChoosenCallback callback, const gchar *currentPath, const gchar *defaultFilename, const char *filterstring, const char *filtername, gpointer user_data);
 
 /** 
  * Like ui_choose_file but allows to select a directory 

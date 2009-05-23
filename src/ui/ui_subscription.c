@@ -381,7 +381,7 @@ on_selectfile_pressed (GtkButton *button,
 	}
 	
 	name = g_filename_from_utf8 (utfname, -1, NULL, NULL, NULL);
-	ui_choose_file (_("Choose File"), GTK_STOCK_OPEN, FALSE, on_selectfileok_clicked, name, NULL, ui_data);
+	ui_choose_file (_("Choose File"), GTK_STOCK_OPEN, FALSE, on_selectfileok_clicked, name, NULL, NULL, NULL, ui_data);
 	g_free (name);
 }
  
