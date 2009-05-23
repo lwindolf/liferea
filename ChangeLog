@@ -61,6 +61,8 @@
 	  before queuing it (Emilio Pozuelo Monfort)
 	* Fixes a broken feed update interval setting.
 	  (Adrian Bunk)
+	* Require WebKitGtk+ >= 1.1.7 to avoid problems with older
+	  versions. (Adrian Bunk)
 
 	* Update of Italian translation. (Gianvito Cavasoli)
 
