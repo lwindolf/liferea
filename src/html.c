@@ -33,7 +33,6 @@
 enum {
 	LINK_FAVICON,
 	LINK_RSS_ALTERNATE,
-	LINK_NORMAL_ANCHOR
 };
 
 static gchar *
@@ -87,12 +86,6 @@ checkLinkRef (const gchar* str, gint linkType)
 		     (common_strcasestr (str, "rdf+xml") != NULL) ||
 		     (common_strcasestr (str, "atom+xml") != NULL)))
 			return res;
-	} else if (linkType == LINK_NORMAL_ANCHOR) {
-		if ((strstr (res, "rdf")) || 
-		    (strstr (res, "xml")) ||
-		    (strstr (res, "rss")) ||
-		    (strstr (res, "atom")))
-			return res;
 	}
 	g_free (res);
 	return NULL;
@@ -109,7 +102,7 @@ search_links (const gchar* data, gint linkType)
 	gchar	*endptr;
 	
 	while (1) {
-		ptr = common_strcasestr (tmp, ((linkType != LINK_NORMAL_ANCHOR)? "<link " : "<a "));
+		ptr = common_strcasestr (tmp, "<link ");
 		if (!ptr)
 			return NULL;
 		
@@ -153,11 +146,6 @@ html_auto_discover_feed (const gchar* data, const gchar *baseUri)
 	debug0 (DEBUG_UPDATE, "searching through link tags");
 	res = search_links (data, LINK_RSS_ALTERNATE);
 	debug1 (DEBUG_UPDATE, "search result: %s", res?res:"none found");
-	if (!res) {
-		debug0 (DEBUG_UPDATE, "searching through href tags");
-		res = search_links (data, LINK_NORMAL_ANCHOR);
-		debug1 (DEBUG_UPDATE, "search result: %s", res?res:"none found");
-	}
 
 	if (res) {
 		/* turn relative URIs into absolute URIs */

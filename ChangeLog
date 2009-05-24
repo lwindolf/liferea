@@ -27,6 +27,8 @@
 	* Require WebKitGtk+ >= 1.1.7 to avoid problems with older
 	  versions. (Adrian Bunk)
 	* Fixes a memory leak in the WebKit code. (Gustavo Noronha)
+	* Fixes SF #2785753: Don't search all links during
+	  auto discovery. (Adrian Bunk, reported by Vadim Peretokin)
 
 
 2009-05-01  Adrian Bunk <bunk@users.sourceforge.net>
