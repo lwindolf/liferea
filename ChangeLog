@@ -29,6 +29,8 @@
 	* Fixes a memory leak in the WebKit code. (Gustavo Noronha)
 	* Fixes SF #2785753: Don't search all links during feed
 	  auto discovery. (Adrian Bunk, reported by Vadim Peretokin)
+	* Fixes a bug that prevented updating of feeds after other
+	  feeds had been removed. (Adrian Bunk)
 
 
 2009-05-01  Adrian Bunk <bunk@users.sourceforge.net>

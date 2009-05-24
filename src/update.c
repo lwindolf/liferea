@@ -478,8 +478,7 @@ update_dequeue_job (gpointer user_data)
 
 	debug1 (DEBUG_UPDATE, "processing request (%s)", job->request->source);
 	if (job->callback == NULL) {
-		debug1 (DEBUG_UPDATE, "freeing cancelled request (%s)", job->request->source);
-		update_job_free (job);
+		update_process_finished_job (job);
 	} else {
 		update_job_run (job);
 	}
