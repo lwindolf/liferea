@@ -2,7 +2,7 @@
 
 	Version 1.6.0-rc3 (Unstable)
 
-	* Fixes SF #2785753: Don't search all links during
+	* Fixes SF #2785753: Don't search all links during feed
 	  auto discovery. (Adrian Bunk, reported by Vadim Peretokin)
 
 
