@@ -347,12 +347,6 @@ on_htmlview_title_changed (gpointer object, gchar *title, gpointer user_data)
 }
 
 static void
-on_htmlview_open_tab (gpointer object, gchar *url, gpointer user_data)
-{
-	browser_tabs_add_new (url, url, FALSE);
-}
-
-static void
 on_htmlview_close_tab (gpointer object, gpointer user_data)
 {
 	browser_tabs_close_tab((tabInfo *)user_data);
@@ -400,8 +394,6 @@ browser_tabs_add_new (const gchar *url, const gchar *title, gboolean activate)
 
 	g_signal_connect (tab->htmlview, "title-changed", G_CALLBACK (on_htmlview_title_changed), tab);
 	g_signal_connect (tab->htmlview, "location-changed", G_CALLBACK (on_htmlview_location_changed), tab);
-	g_signal_connect (tab->htmlview, "open-tab", G_CALLBACK (on_htmlview_open_tab), tab);
-	g_signal_connect (tab->htmlview, "close-tab", G_CALLBACK (on_htmlview_close_tab), tab);
 	g_signal_connect (tab->htmlview, "statusbar-changed", G_CALLBACK (on_htmlview_status_message), NULL);
 	
 	/* create tab widgets */

@@ -60,8 +60,6 @@ enum {
 	STATUSBAR_CHANGED,
 	TITLE_CHANGED,
 	LOCATION_CHANGED,
-	OPEN_TAB,
-	CLOSE_TAB,
 	LAST_SIGNAL
 };
 
@@ -157,29 +155,6 @@ liferea_htmlview_class_init (LifereaHtmlViewClass *klass)
 		1,
 		G_TYPE_STRING);
 
-	liferea_htmlview_signals[OPEN_TAB] = 
-		g_signal_new ("open-tab", 
-		G_OBJECT_CLASS_TYPE (object_class),
-		(GSignalFlags)(G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION),
-		0, 
-		NULL,
-		NULL,
-		g_cclosure_marshal_VOID__STRING,
-		G_TYPE_NONE,
-		1,
-		G_TYPE_STRING);
-
-	liferea_htmlview_signals[CLOSE_TAB] = 
-		g_signal_new ("close-tab", 
-		G_OBJECT_CLASS_TYPE (object_class),
-		(GSignalFlags)(G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION),
-		0, 
-		NULL,
-		NULL,
-		g_cclosure_marshal_VOID__VOID,
-		G_TYPE_NONE,
-		0);
-		
 	g_type_class_add_private (object_class, sizeof (LifereaHtmlViewPrivate));
 }
 
@@ -312,18 +287,6 @@ void
 liferea_htmlview_location_changed (LifereaHtmlView *htmlview, const gchar *location)
 {
 	g_signal_emit_by_name (htmlview, "location-changed", location);
-}
-
-void
-liferea_htmlview_open (LifereaHtmlView *htmlview, const gchar *url)
-{
-	g_signal_emit_by_name (htmlview, "open-tab", url);
-}
-
-void
-liferea_htmlview_close (LifereaHtmlView *htmlview)
-{
-	g_signal_emit_by_name (htmlview, "close-tab");
 }
 
 gboolean

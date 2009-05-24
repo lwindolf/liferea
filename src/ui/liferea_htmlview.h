@@ -107,10 +107,6 @@ void liferea_htmlview_title_changed (LifereaHtmlView *htmlview, const gchar *tit
 
 void liferea_htmlview_location_changed (LifereaHtmlView *htmlview, const gchar *location);
 
-void liferea_htmlview_open (LifereaHtmlView *htmlview, const gchar *url);
-
-void liferea_htmlview_close (LifereaHtmlView *htmlview);
-
 /**
  * Launches the specified URL in the external browser or handles
  * a special URL by triggering HTML generation. Otherwise returns
