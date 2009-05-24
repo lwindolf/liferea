@@ -2,7 +2,8 @@
 
 	Version 1.6.0-rc3 (Unstable)
 
-	*
+	* Fixes SF #2785753: Don't search all links during
+	  auto discovery. (Adrian Bunk, reported by Vadim Peretokin)
 
 
 2009-05-23  Adrian Bunk <bunk@users.sourceforge.net>
