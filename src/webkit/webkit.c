@@ -122,10 +122,21 @@ webkit_link_clicked (WebKitWebView *view,
 		     WebKitWebNavigationAction *navigation_action,
 		     WebKitWebPolicyDecision *policy_decision)
 {
-	const gchar	*uri;
+	const gchar			*uri;
+	WebKitWebNavigationReason	reason;
 
 	g_return_val_if_fail (WEBKIT_IS_WEB_VIEW (view), FALSE);
 	g_return_val_if_fail (WEBKIT_IS_NETWORK_REQUEST (request), FALSE);
+
+	reason = webkit_web_navigation_action_get_reason (navigation_action);
+
+	/* iframes in items return WEBKIT_WEB_NAVIGATION_REASON_OTHER
+	   and shouldn't be handled as clicks                          */
+
+	if (reason != WEBKIT_WEB_NAVIGATION_REASON_LINK_CLICKED) {
+		webkit_web_policy_decision_use (policy_decision);
+		return TRUE;
+	}
 
 	uri = webkit_network_request_get_uri (request);
 
