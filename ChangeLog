@@ -6,6 +6,8 @@
 	  auto discovery. (Adrian Bunk, reported by Vadim Peretokin)
 	* Fixes a bug that prevented updating of feeds after other
 	  feeds had been removed. (Adrian Bunk)
+	* Don't open iframes in an external browser.
+	  (Gustavo Noronha and Adrian Bunk, reported by Vadim Peretokin)
 
 
 2009-05-23  Adrian Bunk <bunk@users.sourceforge.net>
