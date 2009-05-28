@@ -124,6 +124,7 @@ webkit_link_clicked (WebKitWebView *view,
 {
 	const gchar			*uri;
 	WebKitWebNavigationReason	reason;
+	gboolean			url_handled;
 
 	g_return_val_if_fail (WEBKIT_IS_WEB_VIEW (view), FALSE);
 	g_return_val_if_fail (WEBKIT_IS_NETWORK_REQUEST (request), FALSE);
@@ -140,10 +141,16 @@ webkit_link_clicked (WebKitWebView *view,
 
 	if (webkit_web_navigation_action_get_button (navigation_action) == 2) { /* middle click */
 		browser_tabs_add_new (uri, uri, FALSE);
+		webkit_web_policy_decision_ignore (policy_decision);
 		return TRUE;
 	}
 
-	return liferea_htmlview_handle_URL (g_object_get_data (G_OBJECT (view), "htmlview"), uri);
+	url_handled = liferea_htmlview_handle_URL (g_object_get_data (G_OBJECT (view), "htmlview"), uri);
+
+	if (url_handled)
+		webkit_web_policy_decision_ignore (policy_decision);
+
+	return url_handled;
 }
 
 /**
