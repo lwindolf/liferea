@@ -133,10 +133,8 @@ webkit_link_clicked (WebKitWebView *view,
 	/* iframes in items return WEBKIT_WEB_NAVIGATION_REASON_OTHER
 	   and shouldn't be handled as clicks                          */
 
-	if (reason != WEBKIT_WEB_NAVIGATION_REASON_LINK_CLICKED) {
-		webkit_web_policy_decision_use (policy_decision);
-		return TRUE;
-	}
+	if (reason != WEBKIT_WEB_NAVIGATION_REASON_LINK_CLICKED)
+		return FALSE;
 
 	uri = webkit_network_request_get_uri (request);
 
