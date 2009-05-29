@@ -34,6 +34,7 @@
 	* Don't open iframes in an external browser.
 	  (Gustavo Noronha and Adrian Bunk, reported by Vadim Peretokin)
 
+	* Updated French translation. (Vincent Lefevre)
 
 2009-05-01  Adrian Bunk <bunk@users.sourceforge.net>
 
