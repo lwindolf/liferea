@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr_new\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-29 21:52+0300\n"
+"POT-Creation-Date: 2009-05-29 22:43+0300\n"
 "PO-Revision-Date: 2007-09-01 08:19+0300\n"
 "Last-Translator: Eren Türkay <turkay.eren@gmail.com>\n"
 "Language-Team:  <turkce@pardus.org.tr>\n"
@@ -310,12 +310,12 @@ msgstr ""
 "toplama formatlarından birinde sağlandığından emin olun!</p>XML Ayrıştırıcı "
 "Çıktısı: <br /><div class='xmlparseroutput'>"
 
-#: ../src/feed.c:315
+#: ../src/feed.c:303
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" güncellendi..."
 
-#: ../src/feed.c:325
+#: ../src/feed.c:313
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" müsait değil"
@@ -475,7 +475,7 @@ msgstr "Liferea"
 msgid "Liferea seems to be running already!"
 msgstr "Liferea zaten açık gözüküyor!"
 
-#: ../src/migrate.c:343
+#: ../src/migrate.c:339
 #, fuzzy, c-format
 msgid ""
 "This version of Liferea uses a new cache format and has migrated your feed "
@@ -488,39 +488,39 @@ msgstr ""
 "işlemi başarıyla bittikten sonra el ile silin."
 
 #. Some libsoup transport errors
-#: ../src/net.c:328
+#: ../src/net.c:332
 msgid "The update request was cancelled"
 msgstr ""
 
-#: ../src/net.c:329
+#: ../src/net.c:333
 msgid "Unable to resolve destination host name"
 msgstr ""
 
-#: ../src/net.c:330
+#: ../src/net.c:334
 msgid "Unable to resolve proxy host name"
 msgstr ""
 
-#: ../src/net.c:331
+#: ../src/net.c:335
 #, fuzzy
 msgid "Unable to connect to remote host"
 msgstr "Uzak bilgisayara bağlanırken hata"
 
-#: ../src/net.c:332
+#: ../src/net.c:336
 msgid "Unable to connect to proxy"
 msgstr ""
 
-#: ../src/net.c:333
+#: ../src/net.c:337
 msgid ""
 "A network error occurred, or the other end closed the connection unexpectedly"
 msgstr ""
 
 #. http 3xx redirection
-#: ../src/net.c:336
+#: ../src/net.c:340
 msgid "The resource moved permanently to a new location"
 msgstr ""
 
 #. http 4xx client error
-#: ../src/net.c:339
+#: ../src/net.c:343
 #, fuzzy
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
@@ -529,58 +529,58 @@ msgstr ""
 "Bu haber kaynağını yükleme izniniz yok. Lütfen kullanıcı adınızı ve "
 "şifrenizi haber kaynak özellikleri diyalog kutusunu kullanarak güncelleyiniz."
 
-#: ../src/net.c:341
+#: ../src/net.c:345
 #, fuzzy
 msgid "Payment required"
 msgstr "Ödeme Gerekli"
 
-#: ../src/net.c:342
+#: ../src/net.c:346
 msgid "You're not allowed to access this resource"
 msgstr ""
 
-#: ../src/net.c:343
+#: ../src/net.c:347
 msgid "Resource Not Found"
 msgstr "Kaynak Bulunamadı"
 
-#: ../src/net.c:344
+#: ../src/net.c:348
 msgid "Method Not Allowed"
 msgstr "Yönteme İzin Verilmiyor"
 
-#: ../src/net.c:345
+#: ../src/net.c:349
 msgid "Not Acceptable"
 msgstr "Kabul Edilemez"
 
-#: ../src/net.c:346
+#: ../src/net.c:350
 #, fuzzy
 msgid "Proxy authentication required"
 msgstr "Vekil Sunucu Kimlik Doğrulaması Gerekli"
 
-#: ../src/net.c:347
+#: ../src/net.c:351
 #, fuzzy
 msgid "Request timed out"
 msgstr "İstek Zaman Aşımına Uğradı"
 
-#: ../src/net.c:348
+#: ../src/net.c:352
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "Yokoldu. Kaynak mevcut değil. Lütfen aboneliğinizi iptal edin!"
 
-#: ../src/net.c:353
+#: ../src/net.c:357
 msgid "There was an internal error in the update process"
 msgstr ""
 
-#: ../src/net.c:355
+#: ../src/net.c:359
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr "Haber kaynağı müsait değil: Sunucu, desteklenmeyen yönlendirme istedi!"
 
-#: ../src/net.c:357
+#: ../src/net.c:361
 msgid "Client Error"
 msgstr "Alıcı Hatası"
 
-#: ../src/net.c:359
+#: ../src/net.c:363
 msgid "Server Error"
 msgstr "Sunucu Hatası"
 
-#: ../src/net.c:361
+#: ../src/net.c:365
 #, fuzzy
 msgid "An unknown networking error happened!"
 msgstr "(bilinmeyen ağ hatasıyla karşılaşıldı)"
@@ -770,7 +770,7 @@ msgid "Attachments"
 msgstr "yorumlar"
 
 #. update list title
-#: ../src/ui/enclosure_list_view.c:265
+#: ../src/ui/enclosure_list_view.c:263
 #, c-format
 msgid "%d attachment"
 msgid_plural "%d attachments"
@@ -778,38 +778,38 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. The following literals are the enclosure list size units
-#: ../src/ui/enclosure_list_view.c:280
+#: ../src/ui/enclosure_list_view.c:278
 msgid " Bytes"
 msgstr ""
 
-#: ../src/ui/enclosure_list_view.c:283
+#: ../src/ui/enclosure_list_view.c:281
 msgid "kB"
 msgstr ""
 
-#: ../src/ui/enclosure_list_view.c:287
+#: ../src/ui/enclosure_list_view.c:285
 msgid "MB"
 msgstr ""
 
-#: ../src/ui/enclosure_list_view.c:291
+#: ../src/ui/enclosure_list_view.c:289
 msgid "GB"
 msgstr ""
 
-#: ../src/ui/enclosure_list_view.c:296
+#: ../src/ui/enclosure_list_view.c:294
 #, c-format
 msgid "%d%s"
 msgstr ""
 
-#: ../src/ui/enclosure_list_view.c:355 ../src/ui/enclosure_list_view.c:512
+#: ../src/ui/enclosure_list_view.c:353 ../src/ui/enclosure_list_view.c:510
 #: ../src/ui/ui_subscription.c:384
 msgid "Choose File"
 msgstr "Dosya Seç"
 
-#: ../src/ui/enclosure_list_view.c:417
+#: ../src/ui/enclosure_list_view.c:415
 #, c-format
 msgid "<b>File Extension .%s</b>"
 msgstr "<b>Dosya Uzantısı .%s</b>"
 
-#: ../src/ui/enclosure_list_view.c:419
+#: ../src/ui/enclosure_list_view.c:417
 #, c-format
 msgid "<b>%s</b>"
 msgstr "<b>%s</b>"
@@ -1663,20 +1663,20 @@ msgid "feedlist.opml"
 msgstr "feedlist_tr.opml"
 
 #: ../src/fl_sources/default_source.c:180
-#: ../src/fl_sources/google_source.c:244 ../glade/new_subscription.glade.h:6
+#: ../src/fl_sources/google_source.c:248 ../glade/new_subscription.glade.h:6
 #: ../glade/simple_subscription.glade.h:5
 msgid "New Subscription"
 msgstr "Yeni Abonelik"
 
-#: ../src/fl_sources/google_source.c:120
+#: ../src/fl_sources/google_source.c:117
 msgid "Google Reader login failed!"
 msgstr "Google Okuyucu girişi başarısız!"
 
-#: ../src/fl_sources/google_source.c:330
+#: ../src/fl_sources/google_source.c:334
 msgid "Google Reader"
 msgstr "Google Okuyucu"
 
-#: ../src/fl_sources/google_source.c:331
+#: ../src/fl_sources/google_source.c:335
 #, fuzzy
 msgid ""
 "Integrate the feed list of your Google Reader account. Liferea will present "

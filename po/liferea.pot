@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-29 21:52+0300\n"
+"POT-Creation-Date: 2009-05-29 22:43+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -296,12 +296,12 @@ msgid ""
 "p>XML Parser Output:<br /><div class='xmlparseroutput'>"
 msgstr ""
 
-#: ../src/feed.c:315
+#: ../src/feed.c:303
 #, c-format
 msgid "\"%s\" updated..."
 msgstr ""
 
-#: ../src/feed.c:325
+#: ../src/feed.c:313
 #, c-format
 msgid "\"%s\" is not available"
 msgstr ""
@@ -428,7 +428,7 @@ msgstr ""
 msgid "Liferea seems to be running already!"
 msgstr ""
 
-#: ../src/migrate.c:343
+#: ../src/migrate.c:339
 #, c-format
 msgid ""
 "This version of Liferea uses a new cache format and has migrated your feed "
@@ -437,92 +437,92 @@ msgid ""
 msgstr ""
 
 #. Some libsoup transport errors
-#: ../src/net.c:328
+#: ../src/net.c:332
 msgid "The update request was cancelled"
 msgstr ""
 
-#: ../src/net.c:329
+#: ../src/net.c:333
 msgid "Unable to resolve destination host name"
 msgstr ""
 
-#: ../src/net.c:330
+#: ../src/net.c:334
 msgid "Unable to resolve proxy host name"
 msgstr ""
 
-#: ../src/net.c:331
+#: ../src/net.c:335
 msgid "Unable to connect to remote host"
 msgstr ""
 
-#: ../src/net.c:332
+#: ../src/net.c:336
 msgid "Unable to connect to proxy"
 msgstr ""
 
-#: ../src/net.c:333
+#: ../src/net.c:337
 msgid ""
 "A network error occurred, or the other end closed the connection unexpectedly"
 msgstr ""
 
 #. http 3xx redirection
-#: ../src/net.c:336
+#: ../src/net.c:340
 msgid "The resource moved permanently to a new location"
 msgstr ""
 
 #. http 4xx client error
-#: ../src/net.c:339
+#: ../src/net.c:343
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box"
 msgstr ""
 
-#: ../src/net.c:341
+#: ../src/net.c:345
 msgid "Payment required"
 msgstr ""
 
-#: ../src/net.c:342
+#: ../src/net.c:346
 msgid "You're not allowed to access this resource"
 msgstr ""
 
-#: ../src/net.c:343
+#: ../src/net.c:347
 msgid "Resource Not Found"
 msgstr ""
 
-#: ../src/net.c:344
+#: ../src/net.c:348
 msgid "Method Not Allowed"
 msgstr ""
 
-#: ../src/net.c:345
+#: ../src/net.c:349
 msgid "Not Acceptable"
 msgstr ""
 
-#: ../src/net.c:346
+#: ../src/net.c:350
 msgid "Proxy authentication required"
 msgstr ""
 
-#: ../src/net.c:347
+#: ../src/net.c:351
 msgid "Request timed out"
 msgstr ""
 
-#: ../src/net.c:348
+#: ../src/net.c:352
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr ""
 
-#: ../src/net.c:353
+#: ../src/net.c:357
 msgid "There was an internal error in the update process"
 msgstr ""
 
-#: ../src/net.c:355
+#: ../src/net.c:359
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 
-#: ../src/net.c:357
+#: ../src/net.c:361
 msgid "Client Error"
 msgstr ""
 
-#: ../src/net.c:359
+#: ../src/net.c:363
 msgid "Server Error"
 msgstr ""
 
-#: ../src/net.c:361
+#: ../src/net.c:365
 msgid "An unknown networking error happened!"
 msgstr ""
 
@@ -705,7 +705,7 @@ msgid "Attachments"
 msgstr ""
 
 #. update list title
-#: ../src/ui/enclosure_list_view.c:265
+#: ../src/ui/enclosure_list_view.c:263
 #, c-format
 msgid "%d attachment"
 msgid_plural "%d attachments"
@@ -713,38 +713,38 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. The following literals are the enclosure list size units
-#: ../src/ui/enclosure_list_view.c:280
+#: ../src/ui/enclosure_list_view.c:278
 msgid " Bytes"
 msgstr ""
 
-#: ../src/ui/enclosure_list_view.c:283
+#: ../src/ui/enclosure_list_view.c:281
 msgid "kB"
 msgstr ""
 
-#: ../src/ui/enclosure_list_view.c:287
+#: ../src/ui/enclosure_list_view.c:285
 msgid "MB"
 msgstr ""
 
-#: ../src/ui/enclosure_list_view.c:291
+#: ../src/ui/enclosure_list_view.c:289
 msgid "GB"
 msgstr ""
 
-#: ../src/ui/enclosure_list_view.c:296
+#: ../src/ui/enclosure_list_view.c:294
 #, c-format
 msgid "%d%s"
 msgstr ""
 
-#: ../src/ui/enclosure_list_view.c:355 ../src/ui/enclosure_list_view.c:512
+#: ../src/ui/enclosure_list_view.c:353 ../src/ui/enclosure_list_view.c:510
 #: ../src/ui/ui_subscription.c:384
 msgid "Choose File"
 msgstr ""
 
-#: ../src/ui/enclosure_list_view.c:417
+#: ../src/ui/enclosure_list_view.c:415
 #, c-format
 msgid "<b>File Extension .%s</b>"
 msgstr ""
 
-#: ../src/ui/enclosure_list_view.c:419
+#: ../src/ui/enclosure_list_view.c:417
 #, c-format
 msgid "<b>%s</b>"
 msgstr ""
@@ -1544,20 +1544,20 @@ msgid "feedlist.opml"
 msgstr ""
 
 #: ../src/fl_sources/default_source.c:180
-#: ../src/fl_sources/google_source.c:244 ../glade/new_subscription.glade.h:6
+#: ../src/fl_sources/google_source.c:248 ../glade/new_subscription.glade.h:6
 #: ../glade/simple_subscription.glade.h:5
 msgid "New Subscription"
 msgstr ""
 
-#: ../src/fl_sources/google_source.c:120
+#: ../src/fl_sources/google_source.c:117
 msgid "Google Reader login failed!"
 msgstr ""
 
-#: ../src/fl_sources/google_source.c:330
+#: ../src/fl_sources/google_source.c:334
 msgid "Google Reader"
 msgstr ""
 
-#: ../src/fl_sources/google_source.c:331
+#: ../src/fl_sources/google_source.c:335
 msgid ""
 "Integrate the feed list of your Google Reader account. Liferea will present "
 "your Google Reader subscriptions, and will synchronize your feed list and "

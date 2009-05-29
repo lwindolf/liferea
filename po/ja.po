@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea liferea-1_4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-29 21:52+0300\n"
+"POT-Creation-Date: 2009-05-29 22:43+0300\n"
 "PO-Revision-Date: 2009-02-01 08:43+0900\n"
 "Last-Translator: Takeshi AIHANA <takeshi.aihana@gmail.com>\n"
 "Language-Team: Japanese <takeshi.aihana@gmail.com>\n"
@@ -315,12 +315,12 @@ msgstr ""
 "syndication 形式の一つとして提供されているものであるか確認して下さい！</"
 "p>XML パーサの出力:<br /><div class='xmlparseroutput'>"
 
-#: ../src/feed.c:315
+#: ../src/feed.c:303
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" を更新しました..."
 
-#: ../src/feed.c:325
+#: ../src/feed.c:313
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" は利用できません"
@@ -470,7 +470,7 @@ msgstr "Liferea"
 msgid "Liferea seems to be running already!"
 msgstr "既に Liferea が起動中のようです！"
 
-#: ../src/migrate.c:343
+#: ../src/migrate.c:339
 #, fuzzy, c-format
 msgid ""
 "This version of Liferea uses a new cache format and has migrated your feed "
@@ -483,39 +483,39 @@ msgstr ""
 "とを確認したら、手動で削除しておいて下さい！"
 
 #. Some libsoup transport errors
-#: ../src/net.c:328
+#: ../src/net.c:332
 msgid "The update request was cancelled"
 msgstr ""
 
-#: ../src/net.c:329
+#: ../src/net.c:333
 msgid "Unable to resolve destination host name"
 msgstr ""
 
-#: ../src/net.c:330
+#: ../src/net.c:334
 msgid "Unable to resolve proxy host name"
 msgstr ""
 
-#: ../src/net.c:331
+#: ../src/net.c:335
 #, fuzzy
 msgid "Unable to connect to remote host"
 msgstr "リモート・ホストへ接続する際にエラー"
 
-#: ../src/net.c:332
+#: ../src/net.c:336
 msgid "Unable to connect to proxy"
 msgstr ""
 
-#: ../src/net.c:333
+#: ../src/net.c:337
 msgid ""
 "A network error occurred, or the other end closed the connection unexpectedly"
 msgstr ""
 
 #. http 3xx redirection
-#: ../src/net.c:336
+#: ../src/net.c:340
 msgid "The resource moved permanently to a new location"
 msgstr ""
 
 #. http 4xx client error
-#: ../src/net.c:339
+#: ../src/net.c:343
 #, fuzzy
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
@@ -524,59 +524,59 @@ msgstr ""
 "この配信元をダウンロードするために必要な認証を実施していません。配信元のプロ"
 "パティ・ダイアログでユーザ名とパスワードを更新して下さい。"
 
-#: ../src/net.c:341
+#: ../src/net.c:345
 #, fuzzy
 msgid "Payment required"
 msgstr "課金請求がありました"
 
-#: ../src/net.c:342
+#: ../src/net.c:346
 msgid "You're not allowed to access this resource"
 msgstr ""
 
-#: ../src/net.c:343
+#: ../src/net.c:347
 msgid "Resource Not Found"
 msgstr "リソースが見つかりませんでした"
 
-#: ../src/net.c:344
+#: ../src/net.c:348
 msgid "Method Not Allowed"
 msgstr "メソッドを実行できません"
 
-#: ../src/net.c:345
+#: ../src/net.c:349
 msgid "Not Acceptable"
 msgstr "アクセスできません"
 
-#: ../src/net.c:346
+#: ../src/net.c:350
 #, fuzzy
 msgid "Proxy authentication required"
 msgstr "プロキシによる認証が必要です"
 
-#: ../src/net.c:347
+#: ../src/net.c:351
 #, fuzzy
 msgid "Request timed out"
 msgstr "タイムアウトの要求"
 
-#: ../src/net.c:348
+#: ../src/net.c:352
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "完了しました。リソースが存在しません。購読を解約して下さい！"
 
-#: ../src/net.c:353
+#: ../src/net.c:357
 msgid "There was an internal error in the update process"
 msgstr ""
 
-#: ../src/net.c:355
+#: ../src/net.c:359
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "配信元を利用できません: サーバがサポートしないリダイレクションを要求しました"
 
-#: ../src/net.c:357
+#: ../src/net.c:361
 msgid "Client Error"
 msgstr "クライアントのエラー"
 
-#: ../src/net.c:359
+#: ../src/net.c:363
 msgid "Server Error"
 msgstr "サーバのエラー"
 
-#: ../src/net.c:361
+#: ../src/net.c:365
 #, fuzzy
 msgid "An unknown networking error happened!"
 msgstr "(原因不明のネットワーク接続エラーが発生しました)"
@@ -768,7 +768,7 @@ msgid "Attachments"
 msgstr "コメント"
 
 #. update list title
-#: ../src/ui/enclosure_list_view.c:265
+#: ../src/ui/enclosure_list_view.c:263
 #, c-format
 msgid "%d attachment"
 msgid_plural "%d attachments"
@@ -776,38 +776,38 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. The following literals are the enclosure list size units
-#: ../src/ui/enclosure_list_view.c:280
+#: ../src/ui/enclosure_list_view.c:278
 msgid " Bytes"
 msgstr ""
 
-#: ../src/ui/enclosure_list_view.c:283
+#: ../src/ui/enclosure_list_view.c:281
 msgid "kB"
 msgstr ""
 
-#: ../src/ui/enclosure_list_view.c:287
+#: ../src/ui/enclosure_list_view.c:285
 msgid "MB"
 msgstr ""
 
-#: ../src/ui/enclosure_list_view.c:291
+#: ../src/ui/enclosure_list_view.c:289
 msgid "GB"
 msgstr ""
 
-#: ../src/ui/enclosure_list_view.c:296
+#: ../src/ui/enclosure_list_view.c:294
 #, c-format
 msgid "%d%s"
 msgstr ""
 
-#: ../src/ui/enclosure_list_view.c:355 ../src/ui/enclosure_list_view.c:512
+#: ../src/ui/enclosure_list_view.c:353 ../src/ui/enclosure_list_view.c:510
 #: ../src/ui/ui_subscription.c:384
 msgid "Choose File"
 msgstr "ファイルの選択"
 
-#: ../src/ui/enclosure_list_view.c:417
+#: ../src/ui/enclosure_list_view.c:415
 #, c-format
 msgid "<b>File Extension .%s</b>"
 msgstr "<b>拡張子 .%s</b>"
 
-#: ../src/ui/enclosure_list_view.c:419
+#: ../src/ui/enclosure_list_view.c:417
 #, c-format
 msgid "<b>%s</b>"
 msgstr "<b>%s</b>"
@@ -1656,20 +1656,20 @@ msgid "feedlist.opml"
 msgstr "feedlist.opml"
 
 #: ../src/fl_sources/default_source.c:180
-#: ../src/fl_sources/google_source.c:244 ../glade/new_subscription.glade.h:6
+#: ../src/fl_sources/google_source.c:248 ../glade/new_subscription.glade.h:6
 #: ../glade/simple_subscription.glade.h:5
 msgid "New Subscription"
 msgstr "新しい購読"
 
-#: ../src/fl_sources/google_source.c:120
+#: ../src/fl_sources/google_source.c:117
 msgid "Google Reader login failed!"
 msgstr "Google リーダへのログインに失敗しました！"
 
-#: ../src/fl_sources/google_source.c:330
+#: ../src/fl_sources/google_source.c:334
 msgid "Google Reader"
 msgstr "Google リーダ"
 
-#: ../src/fl_sources/google_source.c:331
+#: ../src/fl_sources/google_source.c:335
 #, fuzzy
 msgid ""
 "Integrate the feed list of your Google Reader account. Liferea will present "
