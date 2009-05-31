@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: liferea 1.5.x\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-04-29 21:52+0300\n"
-"PO-Revision-Date: 2009-03-24 11:55+0100\n"
+"PO-Revision-Date: 2009-05-30 16:46+0200\n"
 "Last-Translator: Gianvito Cavasoli <janvitus@ubuntu-it.org>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -254,10 +254,10 @@ msgid "Error renaming %s to %s\n"
 msgstr "Errore nel rinominare %s in %s\n"
 
 #: ../src/export.c:366 ../src/export.c:368
-#, fuzzy, c-format
+#, c-format
 msgid "XML error while reading OPML file! Could not import \"%s\"!"
 msgstr ""
-"Errore XML durante la lettura del file di cache. Impossibile importare «%s»."
+"Errore XML durante la lettura del file OPML. Impossibile importare «%s»."
 
 #: ../src/export.c:374 ../src/export.c:376
 #, c-format
@@ -372,7 +372,7 @@ msgstr "STATO"
 
 #: ../src/main.c:180
 msgid "Show version information and exit"
-msgstr ""
+msgstr "Mostra informazioni di versione ed esce"
 
 #: ../src/main.c:185
 msgid "Print debugging messages of all types"
@@ -395,13 +395,12 @@ msgid "Print debugging messages of all GUI functions"
 msgstr "Stampa messaggi di debug di tutte le funzioni dell'interfaccia grafica"
 
 #: ../src/main.c:190
-#, fuzzy
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
 "will also dump the generated HTML into ~/.liferea_1.6/output.xhtml"
 msgstr ""
 "Abilita il debug del rendering HTML. Ogni volta che ci sarà il render di "
-"output HTML sarà riversato l'HTML generato anche in «~/.liferea_1.1/output."
+"output HTML sarà riversato l'HTML generato anche in «~/.liferea_1.6/output."
 "xhtml»"
 
 #: ../src/main.c:191
@@ -457,16 +456,16 @@ msgid "Liferea seems to be running already!"
 msgstr "L'applicazione sembra già in esecuzione."
 
 #: ../src/migrate.c:343
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "This version of Liferea uses a new cache format and has migrated your feed "
 "cache. The cache content in %s was not deleted automatically. Please remove "
 "this directory manually once you are sure migration was successful!"
 msgstr ""
-"Questa versione usa un nuovo formato di cache e ha sostituito quello "
-"precedente. Il contenuto della versione 1.2 in «~/.liferea_1.2» non è stato "
-"eliminato automaticamente. Rimuovere manualmente questa directory quando si "
-"è certi che la conversione è stata effettuata con successo."
+"Questa versione dell'applicazione usa un nuovo formato di cache e ha "
+"convertito la cache dei notiziari. Il contenuto della cache in «%s» non è "
+"stato eliminato automaticamente. Rimuovere manualmente questa directory "
+"quando si è certi che la conversione è stata effettuata con successo."
 
 #. Some libsoup transport errors
 #: ../src/net.c:328
@@ -1319,89 +1318,72 @@ msgid "<i>(empty)</i>"
 msgstr "<i>(vuoto)</i>"
 
 #: ../src/ui/ui_popup.c:106
-#, fuzzy
 msgid "Launch Item In _Tab"
-msgstr "/Lancia collegamento nella sc_heda"
+msgstr "Lancia collegamento nella sc_heda"
 
 #: ../src/ui/ui_popup.c:107
-#, fuzzy
 msgid "_Launch Item In Browser"
-msgstr "/_Lancia articolo nel browser"
+msgstr "_Lancia articolo nel browser"
 
 #: ../src/ui/ui_popup.c:119
-#, fuzzy
 msgid "Copy to News Bin"
-msgstr "/Copia in archivio notizie/%s"
+msgstr "Copia in archivio notizie"
 
 #: ../src/ui/ui_popup.c:137
-#, fuzzy
 msgid "Copy Item _URL to Clipboard"
-msgstr "/Copia _URL dell'articolo negli appunti"
+msgstr "Copia _URL dell'articolo negli appunti"
 
 #: ../src/ui/ui_popup.c:143
-#, fuzzy
 msgid "R_emove Item"
-msgstr "/Rimuo_vi articolo"
+msgstr "Rimuo_vi articolo"
 
 #: ../src/ui/ui_popup.c:156
-#, fuzzy
 msgid "Open Enclosure..."
-msgstr "/Apri allegato..."
+msgstr "Apri allegato..."
 
 #: ../src/ui/ui_popup.c:157
-#, fuzzy
 msgid "Save As..."
-msgstr "/Salva come..."
+msgstr "Salva come..."
 
 #: ../src/ui/ui_popup.c:158
-#, fuzzy
 msgid "Copy Link Location"
-msgstr "_Copia posizione collegamento"
+msgstr "Copia posizione collegamento"
 
 #: ../src/ui/ui_popup.c:172
-#, fuzzy
 msgid "_Update All"
-msgstr "/Ag_giorna tutto"
+msgstr "Ag_giorna tutto"
 
 #: ../src/ui/ui_popup.c:177
-#, fuzzy
 msgid "_Show Liferea"
-msgstr "Liferea"
+msgstr "Mo_stra finestra"
 
 #: ../src/ui/ui_popup.c:268
-#, fuzzy
 msgid "_Update Folder"
-msgstr "/A_ggiorna cartella"
+msgstr "A_ggiorna cartella"
 
 #: ../src/ui/ui_popup.c:270
-#, fuzzy
 msgid "_Mark All As Read"
-msgstr "/Se_gna tutto come letto"
+msgstr "Se_gna tutto come letto"
 
 #: ../src/ui/ui_popup.c:280
-#, fuzzy
 msgid "_New"
-msgstr "/_Nuovo"
+msgstr "_Nuovo"
 
 #: ../src/ui/ui_popup.c:282
-#, fuzzy
 msgid "New _Subscription..."
-msgstr "Nu_ova sottoscrizione..."
+msgstr "Nuova sott_oscrizione..."
 
 #: ../src/ui/ui_popup.c:289
-#, fuzzy
 msgid "New S_ource..."
 msgstr "Nuova fo_nte..."
 
 #: ../src/ui/ui_popup.c:299
-#, fuzzy
 msgid "_Delete"
-msgstr "/Eli_mina"
+msgstr "Eli_mina"
 
 #: ../src/ui/ui_popup.c:300
-#, fuzzy
 msgid "_Properties..."
-msgstr "/Pr_oprietà..."
+msgstr "Pr_oprietà..."
 
 #: ../src/ui/ui_prefs.c:73
 msgid "GNOME Default Browser"
@@ -1955,6 +1937,8 @@ msgid ""
 "Copyright (c) 2003-2009\n"
 "The Liferea Team\n"
 msgstr ""
+"Copyright (c) 2003-2009\n"
+"Sviluppatori di Liferea\n"
 
 #: ../glade/liferea.glade.h:45
 msgid "Create News Bin"
@@ -2474,80 +2458,3 @@ msgid ""
 msgstr ""
 "Inserire l'indirizzo di un sito web per usare il rilevamento automatico del "
 "notiziario, oppure, se si è a conoscenza, l'indirizzo esatto del notiziario."
-
-#~ msgid "/_Bookmark Link at %s"
-#~ msgstr "/Collegamento come _segnalibro in %s"
-
-#~ msgid "/Toggle _Read Status"
-#~ msgstr "/Commuta stato lett_o"
-
-#~ msgid "/Toggle Item _Flag"
-#~ msgstr "/Commuta _contrassegno articolo"
-
-#~ msgid "/_Preferences"
-#~ msgstr "/Preferen_ze"
-
-#~ msgid "/_Quit"
-#~ msgstr "/_Esci"
-
-#~ msgid "/Copy Link Location"
-#~ msgstr "/Copia posizione collegamento"
-
-#~ msgid "/_Update"
-#~ msgstr "/_Aggiorna"
-
-#~ msgid "/_New/New _Subscription..."
-#~ msgstr "/_Nuovo/Nuova _sottoscrizione..."
-
-#~ msgid "/_New/New _Folder..."
-#~ msgstr "/_Nuovo/Nuova _cartella..."
-
-#~ msgid "/_New/New S_earch Folder..."
-#~ msgstr "/_Nuovo/Nuova cartella _ricerca..."
-
-#~ msgid "/_New/New S_ource..."
-#~ msgstr "/_Nuovo/Nuova _fonte..."
-
-#~ msgid "/_New/New _News Bin..."
-#~ msgstr "/_Nuovo/Nuovo archivio no_tizie..."
-
-#~ msgid ""
-#~ "Copyright (c) 2003-2009\n"
-#~ "Lars Lindner <lars.lindner@gmail.com> and \n"
-#~ "Nathan J. Conrad <t98502@users.sourceforge.net>\n"
-#~ msgstr ""
-#~ "Copyright (c) 2003-2009\n"
-#~ "Lars Lindner <lars.lindner@gmail.com> e \n"
-#~ "Nathan J. Conrad <t98502@users.sourceforge.net>\n"
-
-#~ msgid ""
-#~ "This program is free software; you can redistribute it and/or modify\n"
-#~ "it under the terms of the GNU General Public License as\n"
-#~ "published by the Free Software Foundation; either version 2 of the\n"
-#~ "License, or (at your option) any later version.\n"
-#~ "\n"
-#~ "This program is distributed in the hope that it will be useful,\n"
-#~ "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-#~ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-#~ "GNU General Public License for more details.\n"
-#~ "\n"
-#~ "You should have received a copy of the GNU General Public License\n"
-#~ "along with this program; if not, write to the Free Software\n"
-#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, "
-#~ "USA."
-#~ msgstr ""
-#~ "Questo programma è software libero; è possibile ridistribuirlo o "
-#~ "modificarlo\n"
-#~ "secondo i termini della licenza GNU General Public License,\n"
-#~ "come pubblicata dalla Free Software Foundation; versione 2 della\n"
-#~ "licenza, o (a scelta) una versione più recente.\n"
-#~ "\n"
-#~ "Questo programma è distribuito nella speranza che possa risultare utile,\n"
-#~ "ma SENZA ALCUNA GARANZIA, nemmeno la garanzia implicita di\n"
-#~ "COMMERCIABILITÀ o APPLICABILITÀ PER UNO SCOPO PARTICOLARE. Per \n"
-#~ "maggiori dettagli consultare la GNU General Public License.\n"
-#~ "\n"
-#~ "Una copia della GNU General Public License dovrebbe essere stata fornita\n"
-#~ "con questo programma. In caso contrario scrivere a:\n"
-#~ "Free Software Foundation, Inc. 51 Franklin Street, Fifth Floor, Boston, "
-#~ "MA 02111-1301, USA."
