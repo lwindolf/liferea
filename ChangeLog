@@ -33,6 +33,8 @@
 	  feeds had been removed. (Adrian Bunk)
 	* Don't open iframes in an external browser.
 	  (Gustavo Noronha and Adrian Bunk, reported by Vadim Peretokin)
+	* Fixes SF #1927662, SF #2789469: Replace deprecated
+	  GtkOptionMenu widgets. (Hubert Figuiere)
 
 	* Updated French translation. (Vincent Lefevre)
 	* Updated Italian translation. (Gianvito Cavasoli)

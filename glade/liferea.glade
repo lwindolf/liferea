@@ -1751,10 +1751,9 @@
                             <property name="column_spacing">6</property>
                             <property name="row_spacing">6</property>
                             <child>
-                              <widget class="GtkOptionMenu" id="socialpopup">
+                              <widget class="GtkComboBox" id="socialpopup">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="response_id">0</property>
                               </widget>
                               <packing>
                                 <property name="left_attach">1</property>
@@ -1764,10 +1763,9 @@
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkOptionMenu" id="searchpopup">
+                              <widget class="GtkComboBox" id="searchpopup">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="response_id">0</property>
                               </widget>
                               <packing>
                                 <property name="left_attach">1</property>
@@ -1963,10 +1961,9 @@
                             <property name="column_spacing">12</property>
                             <property name="row_spacing">6</property>
                             <child>
-                              <widget class="GtkOptionMenu" id="browserpopup">
+                              <widget class="GtkComboBox" id="browserpopup">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="response_id">0</property>
                               </widget>
                               <packing>
                                 <property name="left_attach">1</property>
@@ -1976,10 +1973,9 @@
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkOptionMenu" id="browserlocpopup">
+                              <widget class="GtkComboBox" id="browserlocpopup">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="response_id">0</property>
                               </widget>
                               <packing>
                                 <property name="left_attach">1</property>
@@ -3923,10 +3919,9 @@
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkOptionMenu" id="scripthooksmenu">
+                  <widget class="GtkComboBox" id="scripthooksmenu">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="response_id">0</property>
                   </widget>
                   <packing>
                     <property name="expand">False</property>
@@ -4300,10 +4295,9 @@
               </packing>
             </child>
             <child>
-              <widget class="GtkOptionMenu" id="scriptAddMenu">
+              <widget class="GtkComboBox" id="scriptAddMenu">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="response_id">0</property>
               </widget>
               <packing>
                 <property name="left_attach">1</property>

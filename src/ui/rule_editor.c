@@ -2,6 +2,7 @@
  * @file rule_editor.c  rule editing dialog functionality
  *
  * Copyright (C) 2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2009 Hubert Figuiere <hub@figuiere.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +20,7 @@
  */
  
 #include "ui/rule_editor.h"
+#include "ui/ui_common.h"
 
 #include "rule.h"
 
@@ -122,28 +124,22 @@ on_rulevalue_changed (GtkEditable *editable, gpointer user_data)
 }
 
 /* callback for rule additive option menu */
+
 static void
-on_rule_set_additive (GtkOptionMenu *optionmenu, gpointer user_data)
+on_rule_changed_additive (GtkComboBox *optionmenu, gpointer user_data)
 {
 	rulePtr rule = (rulePtr)user_data;
-	
-	rule->additive = TRUE;
+	gint active = gtk_combo_box_get_active (optionmenu);
+
+	rule->additive = ((active==0) ? TRUE : FALSE);
 }
 
-/* callback for rule additive option menu */
-static void
-on_rule_unset_additive (GtkOptionMenu *optionmenu, gpointer user_data)
-{
-	rulePtr rule = (rulePtr)user_data;
-	
-	rule->additive = FALSE;
-}
 
 /* sets up the widgets for a single rule */
 static void
 rule_editor_setup_widgets (struct changeRequest *changeRequest, rulePtr rule)
 {
-	GtkWidget	*widget, *menu;
+	GtkWidget	*widget;
 	ruleInfoPtr	ruleInfo;
 
 	ruleInfo = ruleFunctions + changeRequest->rule;
@@ -153,20 +149,12 @@ rule_editor_setup_widgets (struct changeRequest *changeRequest, rulePtr rule)
 	gtk_container_foreach (GTK_CONTAINER (changeRequest->paramHBox), rule_editor_destroy_param_widget, NULL);
 
 	/* add popup menu for selection of positive or negative logic */
-	menu = gtk_menu_new ();
-	
-	widget = gtk_menu_item_new_with_label (ruleInfo->positive);
-	gtk_container_add (GTK_CONTAINER (menu), widget);
-	g_signal_connect (G_OBJECT (widget), "activate", G_CALLBACK (on_rule_set_additive), rule);
-	
-	widget = gtk_menu_item_new_with_label (ruleInfo->negative);
-	gtk_container_add (GTK_CONTAINER (menu), widget);
-	g_signal_connect (G_OBJECT (widget), "activate", G_CALLBACK (on_rule_unset_additive), rule);
-	
-	gtk_menu_set_active (GTK_MENU (menu), (rule->additive)?0:1);
-	
-	widget = gtk_option_menu_new ();
-	gtk_option_menu_set_menu (GTK_OPTION_MENU (widget), menu);	
+
+	widget = gtk_combo_box_new_text ();
+	gtk_combo_box_append_text ((GtkComboBox*)widget, ruleInfo->positive);
+	gtk_combo_box_append_text ((GtkComboBox*)widget, ruleInfo->negative);
+	gtk_combo_box_set_active ((GtkComboBox*)widget, (rule->additive)?0:1);
+	g_signal_connect (G_OBJECT (widget), "changed", G_CALLBACK (on_rule_changed_additive), rule);
 	gtk_widget_show_all (widget);
 	gtk_box_pack_start (GTK_BOX (changeRequest->paramHBox), widget, FALSE, FALSE, 0);
 		
@@ -182,14 +170,13 @@ rule_editor_setup_widgets (struct changeRequest *changeRequest, rulePtr rule)
 	}
 }
 
-/* callback for rule type option menu */
+
 static void
-on_ruletype_changed (GtkOptionMenu *optionmenu, gpointer user_data)
+do_ruletype_changed (struct changeRequest	*changeRequest)
 {
-	struct changeRequest	*changeRequest = (struct changeRequest *)user_data;
 	ruleInfoPtr		ruleInfo;
 	rulePtr			rule;
-	
+
 	rule = g_object_get_data (G_OBJECT (changeRequest->paramHBox), "rule");
 	if (rule) {
 		changeRequest->editor->priv->newRules = g_slist_remove (changeRequest->editor->priv->newRules, rule);
@@ -200,6 +187,19 @@ on_ruletype_changed (GtkOptionMenu *optionmenu, gpointer user_data)
 	changeRequest->editor->priv->newRules = g_slist_append (changeRequest->editor->priv->newRules, rule);
 	
 	rule_editor_setup_widgets (changeRequest, rule);
+}
+
+/* callback for rule type option menu */
+static void
+on_ruletype_changed (GtkComboBox *optionmenu, gpointer user_data)
+{
+	struct changeRequest	*changeRequest = NULL;
+	GtkTreeIter iter;
+	
+	if (gtk_combo_box_get_active_iter (optionmenu, &iter)) {
+		gtk_tree_model_get (gtk_combo_box_get_model (optionmenu), &iter, 1, &changeRequest, -1);
+		do_ruletype_changed (changeRequest);
+	}
 }
 
 /* callback for each rules remove button */
@@ -221,18 +221,20 @@ on_ruleremove_clicked (GtkButton *button, gpointer user_data)
 void
 rule_editor_add_rule (RuleEditor *re, rulePtr rule)
 {
-	GtkWidget		*hbox, *hbox2, *menu, *widget;
+	GtkWidget		*hbox, *hbox2, *widget;
+	GtkListStore		*store;
 	struct changeRequest	*changeRequest, *selected = NULL;
 	ruleInfoPtr		ruleInfo;
-	gint			i;
+	gint			i, active = 0;
 
 	hbox = gtk_hbox_new (FALSE, 2);	/* hbox to contain all rule widgets */
 	hbox2 = gtk_hbox_new (FALSE, 2);	/* another hbox where the rule specific widgets are added */
 		
 	/* set up the rule type selection popup */
-	menu = gtk_menu_new ();
+	store = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_POINTER);
 	for (i = 0, ruleInfo = ruleFunctions; i < nrOfRuleFunctions; i++, ruleInfo++) {
-	
+		GtkTreeIter iter;
+
 		/* we add a change request to each popup option */
 		changeRequest = g_new0 (struct changeRequest, 1);
 		changeRequest->paramHBox = hbox2;
@@ -243,25 +245,30 @@ rule_editor_add_rule (RuleEditor *re, rulePtr rule)
 			selected = changeRequest;
 		
 		/* build the menu option */
-		widget = gtk_menu_item_new_with_label (ruleInfo->title);
-		gtk_container_add (GTK_CONTAINER (menu), widget);
-		g_signal_connect (G_OBJECT (widget), "activate", G_CALLBACK (on_ruletype_changed), changeRequest);
+		gtk_list_store_append (store, &iter);
+		gtk_list_store_set (store, &iter, 0, ruleInfo->title, 1, changeRequest, -1);
 
 		if (rule) {
 			if (ruleInfo == rule->ruleInfo) {
 				selected = changeRequest;
-				gtk_menu_set_active (GTK_MENU (menu), i);
+				active = i;
 			}
 		}
 	}
-	widget = gtk_option_menu_new ();
-	gtk_option_menu_set_menu (GTK_OPTION_MENU (widget), menu);
+	widget = gtk_combo_box_new ();
+	ui_common_setup_combo_text (GTK_COMBO_BOX (widget), 0);
+
+	gtk_combo_box_set_model (GTK_COMBO_BOX (widget), GTK_TREE_MODEL (store));
+	gtk_combo_box_set_active (GTK_COMBO_BOX (widget), active);
+	g_signal_connect (G_OBJECT (widget), "changed", G_CALLBACK (on_ruletype_changed), NULL);
+
+
 	gtk_box_pack_start (GTK_BOX (hbox), widget, FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (hbox), hbox2, FALSE, FALSE, 0);
 	
 	if (!rule) {
 		/* fake a rule type change to initialize parameter widgets */
-		on_ruletype_changed (GTK_OPTION_MENU (widget), selected);
+		do_ruletype_changed (selected);
 	} else {
 		rulePtr newRule = rule_new (rule->vp, rule->ruleInfo->ruleId, rule->value, rule->additive);
 

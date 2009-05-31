@@ -2,6 +2,7 @@
  * @file ui_common.c  UI helper functions
  *
  * Copyright (C) 2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2009 Hubert Figuiere <hub@figuiere.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,6 +46,14 @@ ui_common_setup_combo_menu (GtkWidget *widget,
 	
 	if (callback)	
 		g_signal_connect (G_OBJECT (widget), "changed", callback, widget);
+}
+
+void 
+ui_common_setup_combo_text (GtkComboBox *combo, gint col)
+{
+	GtkCellRenderer *rend = gtk_cell_renderer_text_new ();
+	gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (combo), rend, TRUE);
+	gtk_cell_layout_add_attribute (GTK_CELL_LAYOUT (combo), rend, "text", col);
 }
 
 void

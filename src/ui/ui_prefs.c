@@ -3,6 +3,7 @@
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2004-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2009 Hubert Figuiere <hub@figuiere.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -286,23 +287,27 @@ on_browsercmd_changed (GtkEditable *editable, gpointer user_data)
 }
 
 static void
-on_browser_changed (GtkOptionMenu *optionmenu, gpointer user_data)
+on_browser_changed (GtkComboBox *optionmenu, gpointer user_data)
 {
-	gint num = GPOINTER_TO_INT (user_data);
+	GtkTreeIter iter;
+	gint num = -1;
+	if (gtk_combo_box_get_active_iter (optionmenu, &iter)) {
+		gtk_tree_model_get (gtk_combo_box_get_model (optionmenu), &iter, 1, &num, -1);
 
-	gtk_widget_set_sensitive (liferea_dialog_lookup (prefdialog, "browsercmd"), browsers[num].id == NULL);	
-	gtk_widget_set_sensitive (liferea_dialog_lookup (prefdialog, "manuallabel"), browsers[num].id == NULL);	
+		gtk_widget_set_sensitive (liferea_dialog_lookup (prefdialog, "browsercmd"), browsers[num].id == NULL);	
+		gtk_widget_set_sensitive (liferea_dialog_lookup (prefdialog, "manuallabel"), browsers[num].id == NULL);	
 
-	if (browsers[num].id == NULL)
-		conf_set_str_value (BROWSER_ID, "manual");
-	else
-		conf_set_str_value (BROWSER_ID, browsers[num].id);
+		if (browsers[num].id == NULL)
+			conf_set_str_value (BROWSER_ID, "manual");
+		else
+			conf_set_str_value (BROWSER_ID, browsers[num].id);
+	}
 }
 
 static void
-on_browser_place_changed (GtkOptionMenu *optionmenu, gpointer user_data)
+on_browser_place_changed (GtkComboBox *optionmenu, gpointer user_data)
 {
-	int num = GPOINTER_TO_INT (user_data);
+	int num = gtk_combo_box_get_active (optionmenu);
 	
 	conf_set_int_value (BROWSER_PLACE, num);
 }
@@ -326,15 +331,25 @@ on_allowflash_toggled (GtkToggleButton *togglebutton, gpointer user_data)
 }
 
 static void
-on_socialsite_changed (GtkOptionMenu *optionmenu, gpointer user_data)
+on_socialsite_changed (GtkComboBox *optionmenu, gpointer user_data)
 {
-	social_set_bookmark_site ((gchar *)user_data);
+	GtkTreeIter iter;
+	if (gtk_combo_box_get_active_iter (optionmenu, &iter)) {
+		gchar * site;
+		gtk_tree_model_get (gtk_combo_box_get_model (optionmenu), &iter, 0, &site, -1);
+		social_set_bookmark_site (site);
+	}
 }
 
 static void
-on_linksearchsite_changed (GtkOptionMenu *optionmenu, gpointer user_data)
+on_linksearchsite_changed (GtkComboBox *optionmenu, gpointer user_data)
 {
-	social_set_link_search_site ((gchar *)user_data);
+	GtkTreeIter iter;
+	if (gtk_combo_box_get_active_iter (optionmenu, &iter)) {
+		gchar * site;
+		gtk_tree_model_get (gtk_combo_box_get_model (optionmenu), &iter, 0, &site, -1);
+		social_set_link_search_site (site);
+	}
 }
 
 static void
@@ -583,7 +598,10 @@ static void ui_pref_destroyed_cb(GtkWidget *widget, void *data) {
 }
 
 void on_prefbtn_clicked(void) {
-	GtkWidget		*widget, *entry, *menu;
+	GtkWidget		*widget, *entry;
+	GtkComboBox		*combo;
+	GtkListStore		*store;
+	GtkTreeIter		treeiter;
 	GtkAdjustment		*itemCount;
 	GtkTreeStore		*treestore;
 	GtkTreeViewColumn 	*column;
@@ -611,46 +629,40 @@ void on_prefbtn_clicked(void) {
 		g_signal_connect (G_OBJECT (prefdialog), "destroy", G_CALLBACK (ui_pref_destroyed_cb), NULL);
 
 		/* Set up browser selection popup */
-		menu = gtk_menu_new();
+		store = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_INT);
 		for(i=0, iter = browsers; iter->id != NULL; iter++, i++) {
-			entry = gtk_menu_item_new_with_label(_(iter->display));
-			gtk_widget_show(entry);
-			gtk_container_add(GTK_CONTAINER(menu), entry);
-			g_signal_connect(G_OBJECT(entry), "activate", G_CALLBACK(on_browser_changed), GINT_TO_POINTER(i));
+			gtk_list_store_append (store, &treeiter);
+			gtk_list_store_set (store, &treeiter, 0, _(iter->display), 1, i, -1);
 		}
 		manual = i;
 		/* This allows the user to choose their own browser by typing in the command. */
-		entry = gtk_menu_item_new_with_label(_("Manual"));
-		gtk_widget_show(entry);
-		gtk_container_add(GTK_CONTAINER(menu), entry);
-		g_signal_connect(G_OBJECT(entry), "activate", G_CALLBACK(on_browser_changed), GINT_TO_POINTER(i));
+		gtk_list_store_append (store, &treeiter);
+		gtk_list_store_set (store, &treeiter, 0, _("Manual"), 1, i, -1);
+		combo = GTK_COMBO_BOX(liferea_dialog_lookup(prefdialog, "browserpopup"));
+		gtk_combo_box_set_model (combo, GTK_TREE_MODEL (store));
+		ui_common_setup_combo_text (combo, 0);
+		g_signal_connect(G_OBJECT(combo), "changed", G_CALLBACK(on_browser_changed), NULL);
+ 
+ 		/* Create location menu */
+		store = gtk_list_store_new (1, G_TYPE_STRING);
 
-		gtk_option_menu_set_menu(GTK_OPTION_MENU(liferea_dialog_lookup(prefdialog, "browserpopup")), menu);
-
-		/* Create location menu */
-		menu = gtk_menu_new();
-
-		entry = gtk_menu_item_new_with_label(_("Browser default"));
-		gtk_widget_show(entry);
-		gtk_container_add(GTK_CONTAINER(menu), entry);
-		g_signal_connect(G_OBJECT(entry), "activate", G_CALLBACK(on_browser_place_changed), GINT_TO_POINTER(0));
-
-		entry = gtk_menu_item_new_with_label(_("Existing window"));
-		gtk_widget_show(entry);
-		gtk_container_add(GTK_CONTAINER(menu), entry);
-		g_signal_connect(G_OBJECT(entry), "activate", G_CALLBACK(on_browser_place_changed), GINT_TO_POINTER(1));
-
-		entry = gtk_menu_item_new_with_label(_("New window"));
-		gtk_widget_show(entry);
-		gtk_container_add(GTK_CONTAINER(menu), entry);
-		g_signal_connect(G_OBJECT(entry), "activate", G_CALLBACK(on_browser_place_changed), GINT_TO_POINTER(2));
-
-		entry = gtk_menu_item_new_with_label(_("New tab"));
-		gtk_widget_show(entry);
-		gtk_container_add(GTK_CONTAINER(menu), entry);
-		g_signal_connect(G_OBJECT(entry), "activate", G_CALLBACK(on_browser_place_changed), GINT_TO_POINTER(3));
-
-		gtk_option_menu_set_menu(GTK_OPTION_MENU(liferea_dialog_lookup(prefdialog, "browserlocpopup")), menu);
+		combo = GTK_COMBO_BOX(liferea_dialog_lookup(prefdialog, "browserlocpopup"));
+		gtk_combo_box_set_model (combo, GTK_TREE_MODEL (store));
+		ui_common_setup_combo_text (combo, 0);
+		g_signal_connect(G_OBJECT(combo), "changed", G_CALLBACK(on_browser_place_changed), NULL);
+ 
+		gtk_list_store_append (store, &treeiter);
+		gtk_list_store_set (store, &treeiter, 0, _("Browser default"), -1);
+ 
+		gtk_list_store_append (store, &treeiter);
+		gtk_list_store_set (store, &treeiter, 0, _("Existing window"), -1);
+ 
+		gtk_list_store_append (store, &treeiter);
+		gtk_list_store_set (store, &treeiter, 0, _("New window"), -1);
+ 
+		gtk_list_store_append (store, &treeiter);
+		gtk_list_store_set (store, &treeiter, 0, _("New tab"), -1);
+ 
 
 		/* ================== panel 1 "feeds" ==================== */
 
@@ -708,40 +720,44 @@ void on_prefbtn_clicked(void) {
 		/* Setup social bookmarking list */
 		i = 0;
 		conf_get_str_value (SOCIAL_BM_SITE, &name);
-		menu = gtk_menu_new ();
+		store = gtk_list_store_new (1, G_TYPE_STRING);
 		list = bookmarkSites;
 		while (list) {
 			socialSitePtr siter = list->data;
 			if (name && !strcmp (siter->name, name))
 				tmp = i;
-			entry = gtk_menu_item_new_with_label (siter->name);
-			gtk_widget_show (entry);
-			gtk_container_add (GTK_CONTAINER (menu), entry);
-			g_signal_connect (G_OBJECT (entry), "activate", G_CALLBACK (on_socialsite_changed), (gpointer)siter->name);
+			gtk_list_store_append (store, &treeiter);
+			gtk_list_store_set (store, &treeiter, 0, siter->name, -1);
 			list = g_slist_next (list);
 			i++;
 		}
-		gtk_option_menu_set_menu (GTK_OPTION_MENU (liferea_dialog_lookup (prefdialog, "socialpopup")), menu);
-		gtk_option_menu_set_history (GTK_OPTION_MENU (liferea_dialog_lookup (prefdialog, "socialpopup")), tmp);
+
+		combo = GTK_COMBO_BOX (liferea_dialog_lookup (prefdialog, "socialpopup"));
+		g_signal_connect (G_OBJECT (combo), "changed", G_CALLBACK (on_socialsite_changed), NULL);
+		gtk_combo_box_set_model (combo, GTK_TREE_MODEL (store));
+		ui_common_setup_combo_text (combo, 0);
+		gtk_combo_box_set_active (combo, tmp);
 		
 		/* Setup link cosmos search engine list */
 		i = 0;
 		conf_get_str_value (SOCIAL_LINK_SEARCH_SITE, &name);
-		menu = gtk_menu_new ();
+		store = gtk_list_store_new (1, G_TYPE_STRING);
 		list = linkSearchSites;
 		while (list) {
 			socialSitePtr siter = list->data;
 			if (name && !strcmp (siter->name, name))
 				tmp = i;
-			entry = gtk_menu_item_new_with_label (siter->name);
-			gtk_widget_show (entry);
-			gtk_container_add (GTK_CONTAINER (menu), entry);
-			g_signal_connect (G_OBJECT (entry), "activate", G_CALLBACK (on_linksearchsite_changed), (gpointer)siter->name);
+			gtk_list_store_append (store, &treeiter);
+			gtk_list_store_set (store, &treeiter, 0, siter->name, -1);
 			list = g_slist_next (list);
 			i++;
 		}
-		gtk_option_menu_set_menu (GTK_OPTION_MENU (liferea_dialog_lookup (prefdialog, "searchpopup")), menu);
-		gtk_option_menu_set_history (GTK_OPTION_MENU (liferea_dialog_lookup (prefdialog, "searchpopup")), tmp);
+
+		combo = GTK_COMBO_BOX (liferea_dialog_lookup (prefdialog, "searchpopup"));
+		g_signal_connect (G_OBJECT (combo), "changed", G_CALLBACK (on_linksearchsite_changed), NULL);
+		gtk_combo_box_set_model (combo, GTK_TREE_MODEL (store));
+		ui_common_setup_combo_text (combo, 0);
+		gtk_combo_box_set_active (combo, tmp);
 		
 
 		/* ================== panel 4 "browser" ==================== */
@@ -771,11 +787,11 @@ void on_prefbtn_clicked(void) {
 				if(!strcmp(configuredBrowser, iter->id))
 					tmp = i;
 
-		gtk_option_menu_set_history(GTK_OPTION_MENU(liferea_dialog_lookup(prefdialog, "browserpopup")), tmp);
+		gtk_combo_box_set_active(GTK_COMBO_BOX(liferea_dialog_lookup(prefdialog, "browserpopup")), tmp);
 		g_free(configuredBrowser);
 
 		conf_get_int_value (BROWSER_PLACE, &browser_place);
-		gtk_option_menu_set_history(GTK_OPTION_MENU(liferea_dialog_lookup(prefdialog, "browserlocpopup")), browser_place);
+		gtk_combo_box_set_active(GTK_COMBO_BOX(liferea_dialog_lookup(prefdialog, "browserlocpopup")), browser_place);
 
 		conf_get_str_value (BROWSER_COMMAND, &browser_command);
 		entry = liferea_dialog_lookup(prefdialog, "browsercmd");

@@ -2,6 +2,7 @@
  * @file ui_script.c UI dialogs concerning script configuration
  *
  * Copyright (C) 2006-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2009 Hubert Figuiere <hub@figuiere.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -127,9 +128,13 @@ ui_script_script_selection_changed (GtkTreeSelection *selection, gpointer data)
 }
 
 static void
-on_hook_selection_changed (GtkOptionMenu *optionmenu, gpointer user_data)
+on_hook_selection_changed (GtkComboBox *optionmenu, gpointer user_data)
 {
-	selectedHookType = GPOINTER_TO_INT (user_data);
+	GtkTreeIter iter;
+	GtkTreeModel * tree_model;
+	tree_model = gtk_combo_box_get_model (optionmenu);
+	gtk_combo_box_get_active_iter (optionmenu, &iter);
+	gtk_tree_model_get (tree_model, &iter, 1, &selectedHookType, -1);
 	ui_script_reload_script_list ();
 	ui_script_load_code ();
 }
@@ -144,7 +149,6 @@ on_script_dialog_response (GtkDialog *dialog, gint response_id, gpointer user_da
 void
 on_menu_show_script_manager (GtkWidget *widget, gpointer user_data)
 {
-	GtkWidget		*menu, *entry;
 	GtkTreeStore		*treestore;
 	GtkTreeView		*treeview;
 	GtkTreeViewColumn	*column;
@@ -161,16 +165,18 @@ on_menu_show_script_manager (GtkWidget *widget, gpointer user_data)
 		gtk_widget_show (scriptdialog);
 		
 		/* Set up hook selection popup */
-		menu = gtk_menu_new ();
+		GtkListStore * store = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_INT);
 		hook = availableHooks;
 		while (hook->name) {
-			entry = gtk_menu_item_new_with_label (hook->name);
-			gtk_widget_show (entry);
-			gtk_container_add (GTK_CONTAINER (menu), entry);
-			g_signal_connect (G_OBJECT (entry), "activate", G_CALLBACK (on_hook_selection_changed), GINT_TO_POINTER (hook->type));
+			GtkTreeIter iter;
+			gtk_list_store_append (store, &iter);
+			gtk_list_store_set (store, &iter, 0, hook->name, 1, hook->type, -1);
 			hook++;
 		}
-		gtk_option_menu_set_menu (GTK_OPTION_MENU (liferea_dialog_lookup (scriptdialog, "scripthooksmenu")), menu);
+		GtkComboBox * combobox = GTK_COMBO_BOX (liferea_dialog_lookup (scriptdialog, "scripthooksmenu"));
+		g_signal_connect (G_OBJECT (combobox), "changed", G_CALLBACK (on_hook_selection_changed), NULL);
+    
+		gtk_combo_box_set_model (combobox, GTK_TREE_MODEL(store));
 		
 		/* Set up script list tree store */
 		treestore = gtk_tree_store_new (2, G_TYPE_STRING, G_TYPE_POINTER);
@@ -221,13 +227,20 @@ on_script_add_dialog_response (GtkDialog *dialog, gint response_id, gpointer use
 			ui_script_add (g_strdup (gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET (dialog), "scriptAddEntry")))));
 		} else {
 			/* reuse existing */
-			GtkOptionMenu	*optionmenu;
-			GtkWidget	*selected;
+			GtkComboBox	*optionmenu;
+			GtkTreeIter	selected;
+			gboolean	has_selection;
 			
-			optionmenu = GTK_OPTION_MENU (liferea_dialog_lookup (GTK_WIDGET (dialog), "scriptAddMenu"));
-			selected = gtk_menu_get_active (GTK_MENU (gtk_option_menu_get_menu (optionmenu)));
-			if (selected)
-				ui_script_add (g_strdup ((gchar *) g_object_get_data (G_OBJECT (selected), "name")));
+			optionmenu = GTK_COMBO_BOX (liferea_dialog_lookup (GTK_WIDGET (dialog), "scriptAddMenu"));
+			has_selection = gtk_combo_box_get_active_iter (optionmenu, &selected);
+      
+			if (has_selection) {
+				gchar *name;
+				GtkTreeModel *model;
+				model = gtk_combo_box_get_model (optionmenu);
+				gtk_tree_model_get (model, &selected, 0, &name);
+				ui_script_add (g_strdup (name));
+			}
 			else
 				ui_show_error_box (_("No script selected!"));
 		}
@@ -246,7 +259,7 @@ void
 on_scriptAddBtn_clicked (GtkButton *button, gpointer user_data)
 {
 	GtkWidget	*dialog;
-	GtkWidget	*menu, *entry;
+	GtkListStore	*store;
 	GDir		*dir;
 	GSList		*filenames = NULL;
 	gchar		*dirname, *file, *tmp;
@@ -255,7 +268,7 @@ on_scriptAddBtn_clicked (GtkButton *button, gpointer user_data)
 	dialog = liferea_dialog_new (NULL, "scriptadddialog");
 	
 	/* add existing script files to reuse popup */
-	menu = gtk_menu_new ();
+	store = gtk_list_store_new (1, G_TYPE_STRING);
 	
 	dirname = g_build_filename (common_get_cache_path (), "cache", "scripts", NULL);
 	dir = g_dir_open (dirname, 0, NULL);
@@ -263,18 +276,17 @@ on_scriptAddBtn_clicked (GtkButton *button, gpointer user_data)
 		file = g_strdup (file);
 		tmp = strstr (file, ".lua");
 		if (tmp) {
+			GtkTreeIter iter;
 			*tmp = 0;
-			entry = gtk_menu_item_new_with_label (file);
-			gtk_widget_show (entry);
-			gtk_container_add (GTK_CONTAINER (menu), entry);
-			g_object_set_data (G_OBJECT (entry), "name", file);
+			gtk_list_store_append (store, &iter);
+			gtk_list_store_set (store, &iter, 0, file, -1);
 			filenames = g_slist_append (filenames, file);
 		}
 	}
 	g_dir_close (dir);
 	g_free (dirname);
 	
-	gtk_option_menu_set_menu (GTK_OPTION_MENU (liferea_dialog_lookup (dialog, "scriptAddMenu")), menu);
+	gtk_combo_box_set_model (GTK_COMBO_BOX (liferea_dialog_lookup (dialog, "scriptAddMenu")), GTK_TREE_MODEL(store));
 	
 	g_signal_connect (G_OBJECT (dialog), "response", G_CALLBACK (on_script_add_dialog_response), filenames);
 	gtk_widget_show (dialog);
