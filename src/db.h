@@ -247,25 +247,11 @@ void db_subscription_update (subscriptionPtr subscription);
 void db_subscription_remove (const gchar *id);
 
 /**
- * Loads the node with the given node id from the DB.
- *
- * @param id		the node id
- */
-void db_node_load (const gchar *id);
-
-/**
  * Updates the given nodes properties in the DB.
  *
  * @param node		the node
  */
 void db_node_update (nodePtr node);
-
-/**
- * Remove the given node.
- *
- * @param id		the node id
- */
-void db_node_remove (nodePtr node);
 
 /**
  * Saves the attention statistics of a given category.
