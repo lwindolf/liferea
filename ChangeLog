@@ -5,6 +5,9 @@
 	* Fixes unnecessary comment feed updates when comment
 	  feeds are disabled for a subscription.
 	  (Lars Lindner)
+	* Disable the Attention Profile due to performance
+	  problems. (Adrian Bunk)
+
 	* Updated Italian translation. (Gianvito Cavasoli)
 
 

@@ -20,7 +20,6 @@
 
 #include <string.h>
 
-#include "attention.h"
 #include "comments.h"
 #include "common.h"
 #include "conf.h"
@@ -68,7 +67,6 @@ static struct itemlist_priv
 	gboolean	isSearchResult;		/**< TRUE if a search result is displayed */
 	gboolean	searchResultComplete;	/**< TRUE if search result merging is complete */
 	
-	AttentionProfile *ap;			/**< category statistics handling object */
 } itemlist_priv;
 
 static void
@@ -605,11 +603,6 @@ itemlist_selection_changed (itemPtr item)
 			}
 			ui_node_update (item->nodeId);
 			
-			// FIXME: move this to some serious object initialisation
-			if (!itemlist_priv.ap)
-				itemlist_priv.ap = attention_profile_get ();
-			
-			attention_profile_add_read (itemlist_priv.ap, metadata_list_get_values (item->metadata, "category"));
 		}
 
 		feedlist_reset_new_item_count ();
