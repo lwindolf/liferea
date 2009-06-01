@@ -38,6 +38,7 @@
 	* Fixes unnecessary comment feed updates when comment
 	  feeds are disabled for a subscription.
 	  (Lars Lindner)
+	* Fixes comment feeds. (Adrian Bunk)
 
 	* Updated French translation. (Vincent Lefevre)
 	* Updated Italian translation. (Gianvito Cavasoli)
