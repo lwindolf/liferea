@@ -7,6 +7,9 @@
 	  (Lars Lindner)
 	* Disable the Attention Profile due to performance
 	  problems. (Adrian Bunk)
+	* Fixes invisible search result list when searching items
+	  right after startup without any feed list selection.
+	  (Lars Lindner)
 
 	* Updated Italian translation. (Gianvito Cavasoli)
 
