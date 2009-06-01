@@ -200,11 +200,13 @@ comments_refresh (itemPtr item)
 
 		// FIXME: restore update state from DB?		
 		
-		if (item->commentFeedId)
+		if (item->commentFeedId) {
 			commentFeed = comment_feed_from_id (item->commentFeedId);
-		else
+		} else {
 			item->commentFeedId = node_new_id ();		
-			
+			db_item_update (item);
+		}
+
 		if (!commentFeed) {			
 			commentFeed = g_new0 (struct commentFeed, 1);
 			commentFeed->id = g_strdup (item->commentFeedId);
