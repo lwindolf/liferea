@@ -2,6 +2,9 @@
 
 	Version 1.6.0-rc4 (Unstable)
 
+	* Fixes unnecessary comment feed updates when comment
+	  feeds are disabled for a subscription.
+	  (Lars Lindner)
 	* Updated Italian translation. (Gianvito Cavasoli)
 
 

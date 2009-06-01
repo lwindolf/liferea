@@ -589,11 +589,14 @@ itemlist_selection_changed (itemPtr item)
 	
 		/* set read and unset update status when selecting */
 		if (item) {
-			comments_refresh (item);
+			nodePtr node = node_from_id (item->nodeId);
+			
+			if (IS_FEED(node) && !((feedPtr)node->data)->ignoreComments)
+				comments_refresh (item);
 
 			item_set_read_state (item, TRUE);
 
-			if (node_load_link_preferred (node_from_id (item->nodeId))) {
+			if (node_load_link_preferred (node)) {
 				itemview_launch_URL (item_get_source (item), TRUE /* force internal */);
 			} else {
 				itemview_set_mode (ITEMVIEW_SINGLE_ITEM);
