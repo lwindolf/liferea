@@ -28,6 +28,7 @@
 #include "htmlview.h"
 #include "itemlist.h"
 #include "node.h"
+#include "node_view.h"
 #include "rule.h"
 #include "vfolder.h"
 #include "ui/itemview.h"
@@ -49,10 +50,18 @@ search_load_results (nodePtr searchResult, const gchar *searchString)
 {
 	GString	*buffer;
 	itemSetPtr itemSet;
+	nodeViewType viewMode;
 	
-	/* clear feed and item display and load search results */
+	/* Clear feed and item display and load search results */
 	ui_feedlist_select (NULL);
 	itemlist_unload (FALSE);
+	
+	/* Ensure that we are in a useful viewing mode (3 paned) */
+	viewMode = itemlist_get_view_mode ();
+	if ((NODE_VIEW_MODE_NORMAL != viewMode) &&
+	    (NODE_VIEW_MODE_WIDE != viewMode))
+		itemview_set_layout (NODE_VIEW_MODE_NORMAL);
+		
 	itemSet = node_get_itemset (searchResult);
 	itemlist_load_search_result (itemSet);
 	itemset_free (itemSet);

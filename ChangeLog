@@ -38,6 +38,9 @@
 	* Fixes unnecessary comment feed updates when comment
 	  feeds are disabled for a subscription.
 	  (Lars Lindner)
+	* Fixes invisible search result list when searching items
+	  right after startup without any feed list selection.
+	  (Lars Lindner)
 	* Fixes comment feeds. (Adrian Bunk)
 
 	* Updated French translation. (Vincent Lefevre)
