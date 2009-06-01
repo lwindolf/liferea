@@ -35,6 +35,9 @@
 	  (Gustavo Noronha and Adrian Bunk, reported by Vadim Peretokin)
 	* Fixes SF #1927662, SF #2789469: Replace deprecated
 	  GtkOptionMenu widgets. (Hubert Figuiere)
+	* Fixes unnecessary comment feed updates when comment
+	  feeds are disabled for a subscription.
+	  (Lars Lindner)
 
 	* Updated French translation. (Vincent Lefevre)
 	* Updated Italian translation. (Gianvito Cavasoli)
