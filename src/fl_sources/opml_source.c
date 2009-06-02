@@ -82,7 +82,7 @@ opml_source_merge_feed (xmlNodePtr match, gpointer user_data)
 		node_set_parent (node, mergeCtxt->rootNode, -1);
 		feedlist_node_imported (node);
 		
-		subscription_update (node->subscription, FEED_REQ_RESET_TITLE);
+		subscription_update (node->subscription, FEED_REQ_RESET_TITLE | FEED_REQ_PRIORITY_HIGH);
 	}		
 	
 	/* Recursion if this is a folder */
