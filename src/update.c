@@ -3,6 +3,7 @@
  *
  * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2009 Adrian Bunk <bunk@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -56,6 +57,7 @@ static GSList	*jobs = NULL;
 /* We use a communication queue for limiting the number 
    of concurrent requests to avoid hitting the file descriptor
    limit of the glibcurl code. */
+static GAsyncQueue *pendingHighPrioJobs = NULL;
 static GAsyncQueue *pendingJobs = NULL;
 static guint numberOfActiveJobs = 0;
 #define MAX_ACTIVE_JOBS	5
@@ -483,8 +485,12 @@ update_dequeue_job (gpointer user_data)
 		
 	if (numberOfActiveJobs >= MAX_ACTIVE_JOBS)
 		return TRUE;	/* let's continue later */
-		
-	job = (updateJobPtr)g_async_queue_try_pop(pendingJobs);
+
+	job = (updateJobPtr)g_async_queue_try_pop(pendingHighPrioJobs);
+
+	if (!job)
+		job = (updateJobPtr)g_async_queue_try_pop(pendingJobs);
+
 	if(!job)
 		return TRUE;	/* no request at the moment */
 
@@ -516,8 +522,14 @@ update_execute_request (gpointer owner,
 	job = update_job_new (owner, request, callback, user_data, flags);
 	job->state = REQUEST_STATE_PENDING;	
 	jobs = g_slist_append (jobs, job);
-	g_async_queue_push (pendingJobs, (gpointer)job);
-		
+
+	if (flags & FEED_REQ_PRIORITY_HIGH) {
+		g_async_queue_push (pendingHighPrioJobs, (gpointer)job);
+		update_dequeue_job (NULL);
+	} else {
+		g_async_queue_push (pendingJobs, (gpointer)job);
+	}
+
 	return job;
 }
 
@@ -626,6 +638,7 @@ void
 update_init (void)
 {
 	pendingJobs = g_async_queue_new ();
+	pendingHighPrioJobs = g_async_queue_new ();
 	network_init ();
 	
 	g_timeout_add (500, update_dequeue_job, NULL);
@@ -668,6 +681,7 @@ update_deinit (void)
 	// FIXME: cancel all jobs
 	
 	g_async_queue_unref (pendingJobs);
+	g_async_queue_unref (pendingHighPrioJobs);
 	
 	g_slist_free (jobs);
 	jobs = NULL;
