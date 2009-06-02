@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.5.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-02 13:21+0300\n"
+"POT-Creation-Date: 2009-06-02 21:47+0300\n"
 "PO-Revision-Date: 2009-05-30 16:46+0200\n"
 "Last-Translator: Gianvito Cavasoli <janvitus@ubuntu-it.org>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -237,13 +237,18 @@ msgstr "%b %d %Y"
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "Impossibile creare la directory di cache «%s»."
 
-#: ../src/enclosure.c:178
+#: ../src/enclosure.c:179
 #, c-format
 msgid "\"%s\" is not a valid enclosure type config file!"
 msgstr "Il file «%s» non è una configurazione di tipo allegato valida."
 
+#: ../src/enclosure.c:278
+#, fuzzy, c-format
+msgid "Enclosure download FAILED: \"%s\""
+msgstr "Terminato scaricamento dell'allegato: «%s»"
+
 #. just saving
-#: ../src/enclosure.c:285
+#: ../src/enclosure.c:288
 #, c-format
 msgid "Enclosure download finished: \"%s\""
 msgstr "Terminato scaricamento dell'allegato: «%s»"
@@ -2454,6 +2459,10 @@ msgid ""
 msgstr ""
 "Inserire l'indirizzo di un sito web per usare il rilevamento automatico del "
 "notiziario, oppure, se si è a conoscenza, l'indirizzo esatto del notiziario."
+
+#, fuzzy
+#~ msgid "FAILED to download enclosure: \"%s\""
+#~ msgstr "Terminato scaricamento dell'allegato: «%s»"
 
 #~ msgid "Presents statistics on your most read categories"
 #~ msgstr "Presenta delle statistiche sulle categorie più lette"

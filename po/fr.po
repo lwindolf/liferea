@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 1.6.0-rc2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-02 13:21+0300\n"
+"POT-Creation-Date: 2009-06-02 21:47+0300\n"
 "PO-Revision-Date: 2009-05-28 01:31+0200\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.org>\n"
 "Language-Team: French\n"
@@ -247,13 +247,18 @@ msgstr "%d %b %Y"
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "Impossible de créer le répertoire cache \"%s\" !"
 
-#: ../src/enclosure.c:178
+#: ../src/enclosure.c:179
 #, c-format
 msgid "\"%s\" is not a valid enclosure type config file!"
 msgstr "\"%s\" n'est pas un fichier de config de types d'annexes valide !"
 
+#: ../src/enclosure.c:278
+#, fuzzy, c-format
+msgid "Enclosure download FAILED: \"%s\""
+msgstr "Le téléchargement de l'annexe s'est terminé : \"%s\""
+
 #. just saving
-#: ../src/enclosure.c:285
+#: ../src/enclosure.c:288
 #, c-format
 msgid "Enclosure download finished: \"%s\""
 msgstr "Le téléchargement de l'annexe s'est terminé : \"%s\""
@@ -2466,6 +2471,10 @@ msgid ""
 msgstr ""
 "Entrez une adresse de site web à utiliser pour la découverte automatique ou, "
 "si vous la connaissez, l'adresse exacte du flux."
+
+#, fuzzy
+#~ msgid "FAILED to download enclosure: \"%s\""
+#~ msgstr "Le téléchargement de l'annexe s'est terminé : \"%s\""
 
 #~ msgid "Presents statistics on your most read categories"
 #~ msgstr "Présente des statistiques de vos catégories les plus lues"

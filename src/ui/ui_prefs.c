@@ -61,7 +61,7 @@ static GtkWidget *prefdialog = NULL;
 static struct enclosureDownloadTool enclosure_download_commands[] = {
 	{ "wget -q -O %s %s", TRUE },
 	{ "curl -s -o %s %s", TRUE },
-	{ "dbus-send --session --dest=org.gnome.gwget.ApplicationService /org/gnome/gwget/Gwget org.gnome.gwget.Application.OpenURI string:%s uint32:0", FALSE },
+	{ "dbus-send --session --print-reply --dest=org.gnome.gwget.ApplicationService /org/gnome/gwget/Gwget org.gnome.gwget.Application.OpenURI string:%s uint32:0", FALSE },
 	{ "kget %s", FALSE },
 };
 
