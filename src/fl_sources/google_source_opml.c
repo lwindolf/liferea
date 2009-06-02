@@ -88,7 +88,7 @@ google_source_add_broadcast_subscription (GoogleSourcePtr gsource)
 	feedlist_node_imported (node);
 	
 	update_state_set_cookies (node->subscription->updateState, gsource->sid);
-	subscription_update (node->subscription, FEED_REQ_RESET_TITLE);
+	subscription_update (node->subscription, FEED_REQ_RESET_TITLE | FEED_REQ_PRIORITY_HIGH);
 	subscription_update_favicon (node->subscription);
 }
 
@@ -171,7 +171,7 @@ google_source_merge_feed (xmlNodePtr match, gpointer user_data)
 		 * the feed as retrieved by this has the read and unread
 		 * status inherently.
 		 */
-		subscription_update (node->subscription,  FEED_REQ_RESET_TITLE);
+		subscription_update (node->subscription, FEED_REQ_RESET_TITLE | FEED_REQ_PRIORITY_HIGH);
 		subscription_update_favicon (node->subscription);
 	} else 
 		g_warning("Unable to parse subscription information from Google");

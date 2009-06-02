@@ -12,6 +12,7 @@
 	  (Lars Lindner)
 	* Fixes comment feeds. (Adrian Bunk)
 	* Fixes the handling of high priority updates. (Adrian Bunk)
+	* Download new subscriptions with high priority. (Adrian Bunk)
 
 	* Updated Italian translation. (Gianvito Cavasoli)
 
