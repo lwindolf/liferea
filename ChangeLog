@@ -42,6 +42,7 @@
 	  right after startup without any feed list selection.
 	  (Lars Lindner)
 	* Fixes comment feeds. (Adrian Bunk)
+	* Fixes the handling of high priority updates. (Adrian Bunk)
 
 	* Updated French translation. (Vincent Lefevre)
 	* Updated Italian translation. (Gianvito Cavasoli)
