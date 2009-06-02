@@ -44,9 +44,6 @@
 /** global update job list, used for lookups when cancelling */
 static GSList	*jobs = NULL;
 
-/* We use a communication queue for limiting the number 
-   of concurrent requests to avoid hitting the file descriptor
-   limit of the glibcurl code. */
 static GAsyncQueue *pendingHighPrioJobs = NULL;
 static GAsyncQueue *pendingJobs = NULL;
 static guint numberOfActiveJobs = 0;
