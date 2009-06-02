@@ -14,6 +14,8 @@
 	* Fixes the handling of high priority updates. (Adrian Bunk)
 	* Download new subscriptions with high priority. (Adrian Bunk)
 	* Download favicons with high priority. (Adrian Bunk)
+	* Fixes SF #2798467, LP #381406: Toplevel menus with same
+	  accelerator key. (Adrian Bunk)
 
 	* Updated Italian translation. (Gianvito Cavasoli)
 

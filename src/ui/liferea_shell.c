@@ -861,7 +861,7 @@ static const GtkActionEntry ui_mainwindow_action_entries[] = {
 	{"ShowPreferences", GTK_STOCK_PREFERENCES, N_("_Preferences"), NULL, N_("Edit Preferences."),
 	 G_CALLBACK(on_prefbtn_clicked)},
 
-	{"SearchMenu", NULL, N_("_Search")},
+	{"SearchMenu", NULL, N_("S_earch")},
 	{"SearchFeeds", "gtk-find", N_("Search All Feeds..."), "<control>F", N_("Show the search dialog."), G_CALLBACK(on_searchbtn_clicked)},
 	{"CreateEngineSearch", NULL, N_("Search With ...")},
 
