@@ -23,6 +23,7 @@
 #endif
 
 #include <string.h>
+#include <sys/wait.h>
 #include <libxml/uri.h>
 
 #include "common.h"
@@ -265,15 +266,17 @@ enclosure_exec (gpointer data)
 	encJobPtr	ejp = (encJobPtr)data;
 	GError		*error = NULL;
 	gint		status;
+	gchar		*stdout = NULL, *stderr = NULL;
 	
 	/* Download is optional when just passing URLs */
 	if (ejp->download) {
 		debug1 (DEBUG_UPDATE, "running download command \"%s\"", ejp->download);
-		g_spawn_command_line_sync (ejp->download, NULL, NULL, &status, &error);
+		g_spawn_command_line_sync (ejp->download, &stdout, &stderr, &status, &error);
 	}
 	
-	if (error && (0 != error->code)) {
-		g_warning ("Download command \"%s\" failed with exitcode %d!", ejp->download, status);
+	if ((error && (0 != error->code)) || !WIFEXITED(status) || WEXITSTATUS(status)) {
+		g_warning ("Failed to execute command \"%s\", exited: %i, status: %i, stderr: %s, stdout: %s", ejp->download, WIFEXITED(status), WEXITSTATUS(status), stderr?:"", stdout?:"");
+		liferea_shell_set_status_bar (_("Enclosure download FAILED: \"%s\""), ejp->filename);
 	} else {
 		if (ejp->run) {
 			/* execute */
@@ -286,6 +289,10 @@ enclosure_exec (gpointer data)
 			liferea_shell_set_status_bar (_("Enclosure download finished: \"%s\""), ejp->filename);
 		}
 	}
+	if (error)
+		g_error_free (error);
+	g_free (stdout);
+	g_free (stderr);
 	g_free (ejp->download);
 	g_free (ejp->run);
 	g_free (ejp->filename);

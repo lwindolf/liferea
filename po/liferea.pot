@@ -229,13 +229,18 @@ msgstr ""
 msgid "Cannot create cache directory \"%s\"!"
 msgstr ""
 
-#: ../src/enclosure.c:178
+#: ../src/enclosure.c:179
 #, c-format
 msgid "\"%s\" is not a valid enclosure type config file!"
 msgstr ""
 
+#: ../src/enclosure.c:278
+#, c-format
+msgid "Enclosure download FAILED: \"%s\""
+msgstr ""
+
 #. just saving
-#: ../src/enclosure.c:285
+#: ../src/enclosure.c:288
 #, c-format
 msgid "Enclosure download finished: \"%s\""
 msgstr ""

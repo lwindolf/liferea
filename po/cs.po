@@ -234,13 +234,18 @@ msgstr "%d. %b %Y, %l.%M"
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "Nepodařilo se vytvořit adresář „%s“ pro vyrovnávací paměť!"
 
-#: ../src/enclosure.c:178
+#: ../src/enclosure.c:179
 #, c-format
 msgid "\"%s\" is not a valid enclosure type config file!"
 msgstr ""
 
+#: ../src/enclosure.c:278
+#, fuzzy, c-format
+msgid "Enclosure download FAILED: \"%s\""
+msgstr "Stahování přílohy dokončeno: „%s“"
+
 #. just saving
-#: ../src/enclosure.c:285
+#: ../src/enclosure.c:288
 #, c-format
 msgid "Enclosure download finished: \"%s\""
 msgstr "Stahování přílohy dokončeno: „%s“"
@@ -350,7 +355,7 @@ msgid "Could not determine the feed type."
 msgstr "Nepodařilo se určit typ kanálu."
 
 #. if we don't find a feed with unread items do nothing
-#: ../src/itemlist.c:426
+#: ../src/itemlist.c:424
 msgid "There are no unread items "
 msgstr "Nejsou zde žádné nepřečtené články"
 
@@ -692,28 +697,28 @@ msgstr "Kanál „%s“ se od poslední aktualizace nezměnil"
 msgid "Updating \"%s\""
 msgstr "Aktualizuje se kanál „%s“"
 
-#: ../src/update.c:266
+#: ../src/update.c:268
 #, c-format
 msgid "Error opening temp file %s to use for filtering!"
 msgstr "Chyba při otevírání dočasného souboru %s k užití při filtrování!"
 
-#: ../src/update.c:289
+#: ../src/update.c:291
 #, c-format
 msgid "%s exited with status %d"
 msgstr "%s zavřeno se stavem %d"
 
-#: ../src/update.c:295 ../src/update.c:296 ../src/update.c:408
+#: ../src/update.c:297 ../src/update.c:298 ../src/update.c:410
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "Chyba: nepodařilo se otevřít rouru „%s“"
 
 #. FIXME: maybe setting request->returncode would be better
-#: ../src/update.c:434
+#: ../src/update.c:436
 #, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr "Chyba: nepodařilo se otevřít soubor „%s“"
 
-#: ../src/update.c:440
+#: ../src/update.c:442
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "Chyba: Soubor „%s“ neexistuje"
@@ -789,7 +794,7 @@ msgstr "<b>Přípona souboru: .%s</b>"
 msgid "<b>%s</b>"
 msgstr "<b>%s</b>"
 
-#: ../src/ui/liferea_shell.c:326
+#: ../src/ui/liferea_shell.c:325
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
@@ -797,7 +802,7 @@ msgstr[0] " %d nový"
 msgstr[1] " %d nové"
 msgstr[2] " %d nových"
 
-#: ../src/ui/liferea_shell.c:331
+#: ../src/ui/liferea_shell.c:330
 #, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
@@ -805,108 +810,108 @@ msgstr[0] "%d nepřečtený%s"
 msgstr[1] "%d nepřečtené%s"
 msgstr[2] "%d nepřečtených%s"
 
-#: ../src/ui/liferea_shell.c:685
+#: ../src/ui/liferea_shell.c:684
 msgid "topics_en.html"
 msgstr "topics_en.html"
 
-#: ../src/ui/liferea_shell.c:686
+#: ../src/ui/liferea_shell.c:685
 msgid "Help Topics"
 msgstr "Témata nápovědy"
 
-#: ../src/ui/liferea_shell.c:693
+#: ../src/ui/liferea_shell.c:692
 msgid "reference_en.html"
 msgstr "reference_en.html"
 
-#: ../src/ui/liferea_shell.c:694
+#: ../src/ui/liferea_shell.c:693
 msgid "Quick Reference"
 msgstr "Klávesové zkratky"
 
-#: ../src/ui/liferea_shell.c:701
+#: ../src/ui/liferea_shell.c:700
 msgid "faq_en.html"
 msgstr "faq_en.html"
 
-#: ../src/ui/liferea_shell.c:702
+#: ../src/ui/liferea_shell.c:701
 msgid "FAQ"
 msgstr "Časté otázky"
 
-#: ../src/ui/liferea_shell.c:754
+#: ../src/ui/liferea_shell.c:747
 msgid "Liferea is now online"
 msgstr "Liferea je nyní připojena k síti"
 
-#: ../src/ui/liferea_shell.c:756
+#: ../src/ui/liferea_shell.c:749
 msgid "Work Offline"
 msgstr "Odpojit od sítě"
 
-#: ../src/ui/liferea_shell.c:758
+#: ../src/ui/liferea_shell.c:751
 msgid "Liferea is now offline"
 msgstr "Liferea je nyní odpojena od sítě"
 
-#: ../src/ui/liferea_shell.c:760
+#: ../src/ui/liferea_shell.c:753
 msgid "Work Online"
 msgstr "Připojit k síti"
 
-#: ../src/ui/liferea_shell.c:840
+#: ../src/ui/liferea_shell.c:833
 msgid "_Subscriptions"
 msgstr "_Odběry"
 
-#: ../src/ui/liferea_shell.c:841
+#: ../src/ui/liferea_shell.c:834
 msgid "Update _All"
 msgstr "_Aktualizovat vše"
 
-#: ../src/ui/liferea_shell.c:841
+#: ../src/ui/liferea_shell.c:834
 #, fuzzy
 msgid "Updates all subscriptions."
 msgstr "Nový odběr"
 
-#: ../src/ui/liferea_shell.c:843
+#: ../src/ui/liferea_shell.c:836
 msgid "Mark All As _Read"
 msgstr "Označit vše jako _přečtené"
 
-#: ../src/ui/liferea_shell.c:843
+#: ../src/ui/liferea_shell.c:836
 msgid "Marks read every item of every subscription."
 msgstr "Označit všechny články všech kanálů jako přečtené."
 
-#: ../src/ui/liferea_shell.c:845
+#: ../src/ui/liferea_shell.c:838
 msgid "_Import Feed List..."
 msgstr "_Importovat seznam kanálů…"
 
-#: ../src/ui/liferea_shell.c:845
+#: ../src/ui/liferea_shell.c:838
 msgid "Imports an OPML feed list."
 msgstr "Importovat seznam kanálů OPML."
 
-#: ../src/ui/liferea_shell.c:846
+#: ../src/ui/liferea_shell.c:839
 msgid "_Export Feed List..."
 msgstr "_Exportovat seznam kanálů…"
 
-#: ../src/ui/liferea_shell.c:846
+#: ../src/ui/liferea_shell.c:839
 msgid "Exports the feed list as OPML."
 msgstr "Exportovat seznam kanálů jako OPML."
 
-#: ../src/ui/liferea_shell.c:847 ../src/ui/ui_popup.c:178
+#: ../src/ui/liferea_shell.c:840 ../src/ui/ui_popup.c:178
 msgid "_Quit"
 msgstr "_Ukončit"
 
-#: ../src/ui/liferea_shell.c:849
+#: ../src/ui/liferea_shell.c:842
 msgid "_Feed"
 msgstr "_Kanál"
 
-#: ../src/ui/liferea_shell.c:850
+#: ../src/ui/liferea_shell.c:843
 msgid "Remove _All Items"
 msgstr "Odstranit _všechny články"
 
-#: ../src/ui/liferea_shell.c:850
+#: ../src/ui/liferea_shell.c:843
 msgid "Removes all items of the currently selected feed."
 msgstr "Odstranit všechny články právě vybraného kanálu."
 
-#: ../src/ui/liferea_shell.c:853
+#: ../src/ui/liferea_shell.c:846
 msgid "_Item"
 msgstr "Č_lánek"
 
-#: ../src/ui/liferea_shell.c:854
+#: ../src/ui/liferea_shell.c:847
 msgid "_Next Unread Item"
 msgstr "_Další nepřečtený článek"
 
-#: ../src/ui/liferea_shell.c:854
+#: ../src/ui/liferea_shell.c:847
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -914,193 +919,186 @@ msgstr ""
 "Skočit na další nepřečtený článek. Je-li to nezbytné, vybrat další kanál s "
 "nepřečtenými články."
 
-#: ../src/ui/liferea_shell.c:857
+#: ../src/ui/liferea_shell.c:850
 msgid "_View"
 msgstr "_Zobrazit"
 
-#: ../src/ui/liferea_shell.c:858 ../src/ui/liferea_htmlview.c:538
+#: ../src/ui/liferea_shell.c:851 ../src/ui/liferea_htmlview.c:538
 msgid "_Increase Text Size"
 msgstr "Z_většit text"
 
-#: ../src/ui/liferea_shell.c:858
+#: ../src/ui/liferea_shell.c:851
 msgid "Increases the text size of the item view."
 msgstr "Zvětšit velikost textu článku."
 
-#: ../src/ui/liferea_shell.c:860 ../src/ui/liferea_htmlview.c:539
+#: ../src/ui/liferea_shell.c:853 ../src/ui/liferea_htmlview.c:539
 msgid "_Decrease Text Size"
 msgstr "Z_menšit text"
 
-#: ../src/ui/liferea_shell.c:860
+#: ../src/ui/liferea_shell.c:853
 msgid "Decreases the text size of the item view."
 msgstr "Změnšit velikost textu článku."
 
-#: ../src/ui/liferea_shell.c:863
+#: ../src/ui/liferea_shell.c:856
 msgid "_Tools"
 msgstr "_Nástroje"
 
-#: ../src/ui/liferea_shell.c:864
+#: ../src/ui/liferea_shell.c:857
 msgid "_Update Monitor"
 msgstr "Sledování _aktualizací"
 
-#: ../src/ui/liferea_shell.c:864
+#: ../src/ui/liferea_shell.c:857
 msgid "Show a list of all feeds currently in the update queue"
 msgstr "Zobrazit seznam všech kanálů ve frontě na aktualizaci"
 
-#: ../src/ui/liferea_shell.c:866
+#: ../src/ui/liferea_shell.c:859
 msgid "_Script Manager"
 msgstr "Správa _skriptů"
 
-#: ../src/ui/liferea_shell.c:866
+#: ../src/ui/liferea_shell.c:859
 msgid "Allows to configure and edit LUA hook scripts"
 msgstr "Povolit konfigurovat a upravovat skripty LUA"
 
-#: ../src/ui/liferea_shell.c:868 ../glade/liferea.glade.h:37
-msgid "Attention Profile"
-msgstr ""
-
-#: ../src/ui/liferea_shell.c:868
-msgid "Presents statistics on your most read categories"
-msgstr "Zobrazit statistiky vašich nejčtenějších kategorií"
-
-#: ../src/ui/liferea_shell.c:870 ../src/ui/ui_popup.c:173
+#: ../src/ui/liferea_shell.c:861 ../src/ui/ui_popup.c:173
 msgid "_Preferences"
 msgstr "_Nastavení"
 
-#: ../src/ui/liferea_shell.c:870
+#: ../src/ui/liferea_shell.c:861
 msgid "Edit Preferences."
 msgstr "Měnit nastavení."
 
-#: ../src/ui/liferea_shell.c:873
-msgid "_Search"
+#: ../src/ui/liferea_shell.c:864
+#, fuzzy
+msgid "S_earch"
 msgstr "_Hledání"
 
-#: ../src/ui/liferea_shell.c:874
+#: ../src/ui/liferea_shell.c:865
 msgid "Search All Feeds..."
 msgstr "Prohledat všechny kanály…"
 
-#: ../src/ui/liferea_shell.c:874
+#: ../src/ui/liferea_shell.c:865
 msgid "Show the search dialog."
 msgstr "Zobrazit dialog hledání."
 
-#: ../src/ui/liferea_shell.c:875
+#: ../src/ui/liferea_shell.c:866
 msgid "Search With ..."
 msgstr "Hledat pomocí…"
 
-#: ../src/ui/liferea_shell.c:877
+#: ../src/ui/liferea_shell.c:868
 msgid "_Help"
 msgstr "Nápo_věda"
 
-#: ../src/ui/liferea_shell.c:878
+#: ../src/ui/liferea_shell.c:869
 msgid "_Contents"
 msgstr "_Témata nápovědy"
 
-#: ../src/ui/liferea_shell.c:878
+#: ../src/ui/liferea_shell.c:869
 msgid "View help for this application."
 msgstr "Zobrazit nápovědu této aplikace."
 
-#: ../src/ui/liferea_shell.c:879
+#: ../src/ui/liferea_shell.c:870
 msgid "_Quick Reference"
 msgstr "_Klávesové zkratky"
 
-#: ../src/ui/liferea_shell.c:879
+#: ../src/ui/liferea_shell.c:870
 msgid "View a list of all Liferea shortcuts."
 msgstr "Zobrazit seznam klávesových zkratek Liferea."
 
-#: ../src/ui/liferea_shell.c:881
+#: ../src/ui/liferea_shell.c:872
 msgid "_FAQ"
 msgstr "Časté _otázky"
 
-#: ../src/ui/liferea_shell.c:881
+#: ../src/ui/liferea_shell.c:872
 msgid "View the FAQ for this application."
 msgstr "Zobrazit časté otázky ohledně této aplikace."
 
-#: ../src/ui/liferea_shell.c:882
+#: ../src/ui/liferea_shell.c:873
 msgid "_About"
 msgstr "O _aplikaci"
 
-#: ../src/ui/liferea_shell.c:882
+#: ../src/ui/liferea_shell.c:873
 msgid "Shows an about dialog."
 msgstr "Zobrazit dialog s informacemi o aplikaci."
 
-#: ../src/ui/liferea_shell.c:886
+#: ../src/ui/liferea_shell.c:877
 msgid "_Normal View"
 msgstr "_Normální zobrazení"
 
-#: ../src/ui/liferea_shell.c:886
+#: ../src/ui/liferea_shell.c:877
 msgid "Set view mode to mail client mode."
 msgstr "Nastavit zobrazení na mód poštovního klienta."
 
-#: ../src/ui/liferea_shell.c:888
+#: ../src/ui/liferea_shell.c:879
 msgid "_Wide View"
 msgstr "Ši_roké zobrazení"
 
-#: ../src/ui/liferea_shell.c:888
+#: ../src/ui/liferea_shell.c:879
 msgid "Set view mode to use three vertical panes."
 msgstr "Nastavit zobrazení na tři vertikální oblasti."
 
-#: ../src/ui/liferea_shell.c:890
+#: ../src/ui/liferea_shell.c:881
 msgid "_Combined View"
 msgstr "_Kombinované zobrazení"
 
-#: ../src/ui/liferea_shell.c:890
+#: ../src/ui/liferea_shell.c:881
 msgid "Set view mode to two pane mode."
 msgstr "Nastavit zobrazení na mód dvou oblastí."
 
-#: ../src/ui/liferea_shell.c:895
+#: ../src/ui/liferea_shell.c:886
 msgid "_Reduced Feed List"
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:895
+#: ../src/ui/liferea_shell.c:886
 #, fuzzy
 msgid "Hide feeds with no unread items."
 msgstr "Nejsou zde žádné nepřečtené články"
 
-#: ../src/ui/liferea_shell.c:900
+#: ../src/ui/liferea_shell.c:891
 msgid "_New Subscription..."
 msgstr "Nový _odběr…"
 
-#: ../src/ui/liferea_shell.c:900
+#: ../src/ui/liferea_shell.c:891
 msgid "Adds a subscription to the feed list."
 msgstr "Přidat odběr do seznamu kanálů."
 
-#: ../src/ui/liferea_shell.c:902 ../src/ui/ui_popup.c:285
+#: ../src/ui/liferea_shell.c:893 ../src/ui/ui_popup.c:285
 msgid "New _Folder..."
 msgstr "Nová _složka…"
 
-#: ../src/ui/liferea_shell.c:902
+#: ../src/ui/liferea_shell.c:893
 msgid "Adds a folder to the feed list."
 msgstr "Přidat novou složku do seznamu kanálů."
 
-#: ../src/ui/liferea_shell.c:903 ../src/ui/ui_popup.c:288
+#: ../src/ui/liferea_shell.c:894 ../src/ui/ui_popup.c:288
 msgid "New S_earch Folder..."
 msgstr "Nová složka _hledání…"
 
-#: ../src/ui/liferea_shell.c:903
+#: ../src/ui/liferea_shell.c:894
 msgid "Adds a new search folder to the feed list."
 msgstr "Přidat novou složku hledání do seznamu kanálů."
 
-#: ../src/ui/liferea_shell.c:904
+#: ../src/ui/liferea_shell.c:895
 msgid "New _Source..."
 msgstr "Nový _zdroj…"
 
-#: ../src/ui/liferea_shell.c:904
+#: ../src/ui/liferea_shell.c:895
 msgid "Adds a new feed list source."
 msgstr "Přidat nový zdroj seznamu kanálů."
 
-#: ../src/ui/liferea_shell.c:905 ../src/ui/ui_popup.c:290
+#: ../src/ui/liferea_shell.c:896 ../src/ui/ui_popup.c:290
 msgid "New _News Bin..."
 msgstr "Nová _rubrika…"
 
-#: ../src/ui/liferea_shell.c:905
+#: ../src/ui/liferea_shell.c:896
 msgid "Adds a new news bin."
 msgstr "Přidat novou rubriku."
 
-#: ../src/ui/liferea_shell.c:909
+#: ../src/ui/liferea_shell.c:900
 #, fuzzy
 msgid "_Mark Items Read"
 msgstr "Označit jako _přečtené"
 
-#: ../src/ui/liferea_shell.c:909
+#: ../src/ui/liferea_shell.c:900
 #, fuzzy
 msgid ""
 "Marks all items of the selected feed list node / in the item list as read."
@@ -1108,77 +1106,77 @@ msgstr ""
 "Označit všechny články vybraného odběru nebo všech odběrů vybrané složky "
 "jako přečtené."
 
-#: ../src/ui/liferea_shell.c:911 ../src/ui/ui_popup.c:266
+#: ../src/ui/liferea_shell.c:902 ../src/ui/ui_popup.c:266
 msgid "_Update"
 msgstr "_Aktualizovat"
 
-#: ../src/ui/liferea_shell.c:911
+#: ../src/ui/liferea_shell.c:902
 msgid ""
 "Updates the selected subscription or all subscriptions of the selected "
 "folder."
 msgstr "Aktualizovat vybraný odběr nebo všechny odběry vybrané složky."
 
-#: ../src/ui/liferea_shell.c:916
+#: ../src/ui/liferea_shell.c:907
 msgid "_Properties"
 msgstr "Vlastnos_ti"
 
-#: ../src/ui/liferea_shell.c:916
+#: ../src/ui/liferea_shell.c:907
 msgid "Opens the property dialog for the selected subscription."
 msgstr "Otevřít dialog s vlastnostmi vybraného odběru."
 
-#: ../src/ui/liferea_shell.c:917
+#: ../src/ui/liferea_shell.c:908
 msgid "_Remove"
 msgstr "_Odstranit"
 
-#: ../src/ui/liferea_shell.c:917
+#: ../src/ui/liferea_shell.c:908
 msgid "Removes the selected subscription."
 msgstr "Odstranit vybraný odběr."
 
-#: ../src/ui/liferea_shell.c:921 ../src/ui/ui_popup.c:141
+#: ../src/ui/liferea_shell.c:912 ../src/ui/ui_popup.c:141
 msgid "Toggle _Read Status"
 msgstr "Přepnout stav _přečtení"
 
-#: ../src/ui/liferea_shell.c:921
+#: ../src/ui/liferea_shell.c:912
 msgid "Toggles the read status of the selected item."
 msgstr "Přepnout stav přečtení vybraného článku."
 
-#: ../src/ui/liferea_shell.c:923 ../src/ui/ui_popup.c:142
+#: ../src/ui/liferea_shell.c:914 ../src/ui/ui_popup.c:142
 msgid "Toggle Item _Flag"
 msgstr "Přepnout stav _označení"
 
-#: ../src/ui/liferea_shell.c:923
+#: ../src/ui/liferea_shell.c:914
 msgid "Toggles the flag status of the selected item."
 msgstr "Přepnout stav označení vybraného článku."
 
-#: ../src/ui/liferea_shell.c:925
+#: ../src/ui/liferea_shell.c:916
 msgid "R_emove"
 msgstr "Odst_ranit"
 
-#: ../src/ui/liferea_shell.c:925
+#: ../src/ui/liferea_shell.c:916
 msgid "Removes the selected item."
 msgstr "Odstranit vybraný článek."
 
-#: ../src/ui/liferea_shell.c:927
+#: ../src/ui/liferea_shell.c:918
 msgid "_Launch In Browser"
 msgstr "Otevřít v pro_hlížeči"
 
-#: ../src/ui/liferea_shell.c:927
+#: ../src/ui/liferea_shell.c:918
 msgid "Launches the item's link in the configured browser."
 msgstr "Otevřít odkaz článku v nastaveném prohlížeči."
 
-#: ../src/ui/liferea_shell.c:932 ../src/ui/ui_popup.c:171
+#: ../src/ui/liferea_shell.c:923 ../src/ui/ui_popup.c:171
 msgid "_Work Offline"
 msgstr "O_dpojit od sítě"
 
-#: ../src/ui/liferea_shell.c:932
+#: ../src/ui/liferea_shell.c:923
 msgid "This option allows you to disable subscription updating."
 msgstr "Zakázat aktualizaci odběrů."
 
-#: ../src/ui/liferea_shell.c:1315
+#: ../src/ui/liferea_shell.c:1305
 msgid "Liferea - Linux Feed Reader"
 msgstr "Liferea – Linux Feed Reader"
 
-#: ../src/ui/liferea_shell.c:1317
+#: ../src/ui/liferea_shell.c:1307
 msgid ""
 "<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news "
 "feeds.</p><p>The left pane contains the list of your subscriptions. To add a "
@@ -1191,7 +1189,7 @@ msgstr ""
 "položky Nový odběr v nabídce Kanály. Články lze prohlížet vybráním kanálu z "
 "jejich seznamu, načtou se do pravé oblasti okna.</p>"
 
-#: ../src/ui/search_dialog.c:65
+#: ../src/ui/search_dialog.c:74
 #, c-format
 msgid "%d Search Result for \"%s\""
 msgid_plural "%d Search Results for \"%s\""
@@ -1199,7 +1197,7 @@ msgstr[0] "%d výsledek hledání výrazu „%s“"
 msgstr[1] "%d výsledky hledání výrazu „%s“"
 msgstr[2] "%d výsledků hledání výrazu „%s“"
 
-#: ../src/ui/search_dialog.c:70
+#: ../src/ui/search_dialog.c:79
 #, fuzzy, c-format
 msgid "%d Search Result"
 msgid_plural "%d Search Results"
@@ -1207,7 +1205,7 @@ msgstr[0] "%d výsledek hledání výrazu „%s“"
 msgstr[1] "%d výsledky hledání výrazu „%s“"
 msgstr[2] "%d výsledků hledání výrazu „%s“"
 
-#: ../src/ui/search_dialog.c:76
+#: ../src/ui/search_dialog.c:85
 #, c-format
 msgid ""
 "The item list now contains all items matching the specified search pattern. "
@@ -1936,6 +1934,10 @@ msgstr "Archiv"
 msgid "At _startup:"
 msgstr "Při _spuštění:"
 
+#: ../glade/liferea.glade.h:37
+msgid "Attention Profile"
+msgstr ""
+
 #: ../glade/liferea.glade.h:38
 msgid "Auto-_load item link in configured browser when selecting articles."
 msgstr "Automaticky načíst č_lánek v nastaveném prohlížeči při jeho _označení."
@@ -2470,6 +2472,13 @@ msgid ""
 msgstr ""
 "Vložte umístění webové stránky, kde se má automaticky najít kanál, nebo "
 "přesnou adresu kanálu."
+
+#, fuzzy
+#~ msgid "FAILED to download enclosure: \"%s\""
+#~ msgstr "Stahování přílohy dokončeno: „%s“"
+
+#~ msgid "Presents statistics on your most read categories"
+#~ msgstr "Zobrazit statistiky vašich nejčtenějších kategorií"
 
 #, fuzzy
 #~ msgid ""

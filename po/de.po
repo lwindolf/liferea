@@ -238,13 +238,18 @@ msgstr "%d %b %Y"
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "Kann Cache-Verzeichnis \"%s\" nicht anlegen!"
 
-#: ../src/enclosure.c:178
+#: ../src/enclosure.c:179
 #, c-format
 msgid "\"%s\" is not a valid enclosure type config file!"
 msgstr "\"%s\" ist keine gültige Enclosure-Typen-Datei!"
 
+#: ../src/enclosure.c:278
+#, fuzzy, c-format
+msgid "Enclosure download FAILED: \"%s\""
+msgstr "Anhang fertig heruntergeladen: \"%s\""
+
 #. just saving
-#: ../src/enclosure.c:285
+#: ../src/enclosure.c:288
 #, c-format
 msgid "Enclosure download finished: \"%s\""
 msgstr "Anhang fertig heruntergeladen: \"%s\""
@@ -2444,6 +2449,10 @@ msgid ""
 msgstr ""
 "Bitte die Adresse einer Webseite oder wenn bekannt die exakte Adresse eines "
 "Feeds angeben."
+
+#, fuzzy
+#~ msgid "FAILED to download enclosure: \"%s\""
+#~ msgstr "Anhang fertig heruntergeladen: \"%s\""
 
 #~ msgid "Presents statistics on your most read categories"
 #~ msgstr "Präsentiert Statistiken zu den am meisten gelesenen Kategorien"
