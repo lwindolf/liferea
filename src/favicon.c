@@ -230,7 +230,9 @@ favicon_download_run (faviconDownloadCtxtPtr ctxt)
 		else
 			callback = favicon_download_html_cb;
 
-		update_execute_request (ctxt->user_data, request, callback, ctxt, 0);
+		/* FEED_REQ_PRIORITY_HIGH since favicon downloads are
+		   always user triggered */
+		update_execute_request (ctxt->user_data, request, callback, ctxt, FEED_REQ_PRIORITY_HIGH);
 	} else {
 		debug1 (DEBUG_UPDATE, "favicon %s could not be downloaded!", ctxt->id);
 		/* Run favicon-updated callback */
