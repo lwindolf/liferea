@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.5.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-29 21:52+0300\n"
+"POT-Creation-Date: 2009-06-02 13:21+0300\n"
 "PO-Revision-Date: 2009-05-30 16:46+0200\n"
 "Last-Translator: Gianvito Cavasoli <janvitus@ubuntu-it.org>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -310,12 +310,12 @@ msgstr ""
 "fonte punti davvero ad una risorsa fornita in uno dei formati supportati.</"
 "p>Analizzatore output XML:<br /><div class='xmlparseroutput'>"
 
-#: ../src/feed.c:315
+#: ../src/feed.c:303
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "«%s» aggiornato..."
 
-#: ../src/feed.c:325
+#: ../src/feed.c:313
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "«%s» non è disponibile"
@@ -354,7 +354,7 @@ msgid "Could not determine the feed type."
 msgstr "Impossibile determinare il tipo di notiziario."
 
 #. if we don't find a feed with unread items do nothing
-#: ../src/itemlist.c:426
+#: ../src/itemlist.c:424
 msgid "There are no unread items "
 msgstr "Non ci sono articoli non letti."
 
@@ -455,7 +455,7 @@ msgstr "Liferea"
 msgid "Liferea seems to be running already!"
 msgstr "L'applicazione sembra già in esecuzione."
 
-#: ../src/migrate.c:343
+#: ../src/migrate.c:339
 #, c-format
 msgid ""
 "This version of Liferea uses a new cache format and has migrated your feed "
@@ -468,27 +468,27 @@ msgstr ""
 "quando si è certi che la conversione è stata effettuata con successo."
 
 #. Some libsoup transport errors
-#: ../src/net.c:328
+#: ../src/net.c:332
 msgid "The update request was cancelled"
 msgstr "La richiesta di aggiornamento è stata annullata"
 
-#: ../src/net.c:329
+#: ../src/net.c:333
 msgid "Unable to resolve destination host name"
 msgstr "Impossibile risolvere il nome host di destinazione"
 
-#: ../src/net.c:330
+#: ../src/net.c:334
 msgid "Unable to resolve proxy host name"
 msgstr "Impossibile risolvere il nome host del proxy"
 
-#: ../src/net.c:331
+#: ../src/net.c:335
 msgid "Unable to connect to remote host"
 msgstr "Impossibile connettersi all'host remoto"
 
-#: ../src/net.c:332
+#: ../src/net.c:336
 msgid "Unable to connect to proxy"
 msgstr "Impossibile connettersi al proxy"
 
-#: ../src/net.c:333
+#: ../src/net.c:337
 msgid ""
 "A network error occurred, or the other end closed the connection unexpectedly"
 msgstr ""
@@ -496,12 +496,12 @@ msgstr ""
 "connessione in modo inatteso"
 
 #. http 3xx redirection
-#: ../src/net.c:336
+#: ../src/net.c:340
 msgid "The resource moved permanently to a new location"
 msgstr "La risorsa è spostata permanentemente a un'altra posizione"
 
 #. http 4xx client error
-#: ../src/net.c:339
+#: ../src/net.c:343
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box"
@@ -509,57 +509,57 @@ msgstr ""
 "Non si è autorizzati a scaricare questo notiziario. Aggiornare il nome "
 "utente e la password nella finestra di dialogo delle proprietà del notiziario"
 
-#: ../src/net.c:341
+#: ../src/net.c:345
 msgid "Payment required"
 msgstr "Pagamento richiesto"
 
-#: ../src/net.c:342
+#: ../src/net.c:346
 msgid "You're not allowed to access this resource"
 msgstr "Non è consentito accedere a questa risorsa"
 
-#: ../src/net.c:343
+#: ../src/net.c:347
 msgid "Resource Not Found"
 msgstr "Risorsa non trovata"
 
-#: ../src/net.c:344
+#: ../src/net.c:348
 msgid "Method Not Allowed"
 msgstr "Metodo non consentito"
 
-#: ../src/net.c:345
+#: ../src/net.c:349
 msgid "Not Acceptable"
 msgstr "Non accettabile"
 
-#: ../src/net.c:346
+#: ../src/net.c:350
 msgid "Proxy authentication required"
 msgstr "Autenticazione del proxy richiesta"
 
-#: ../src/net.c:347
+#: ../src/net.c:351
 msgid "Request timed out"
 msgstr "Richiesta scaduta"
 
-#: ../src/net.c:348
+#: ../src/net.c:352
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "Risorsa non esistente. Rimuovere la sottoscrizione."
 
-#: ../src/net.c:353
+#: ../src/net.c:357
 msgid "There was an internal error in the update process"
 msgstr "Si è verificato un errore interno nel processo di aggiornamento"
 
-#: ../src/net.c:355
+#: ../src/net.c:359
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "Notiziario non disponibile: il server ha richiesto una ridirezione non "
 "supportata."
 
-#: ../src/net.c:357
+#: ../src/net.c:361
 msgid "Client Error"
 msgstr "Errore del client"
 
-#: ../src/net.c:359
+#: ../src/net.c:363
 msgid "Server Error"
 msgstr "Errore del server"
 
-#: ../src/net.c:361
+#: ../src/net.c:365
 msgid "An unknown networking error happened!"
 msgstr "Si è verificato un errore di rete sconosciuto."
 
@@ -694,29 +694,29 @@ msgstr "«%s» non è cambiato dall'ultimo aggiornamento"
 msgid "Updating \"%s\""
 msgstr "Aggiornamento di «%s»"
 
-#: ../src/update.c:266
+#: ../src/update.c:268
 #, c-format
 msgid "Error opening temp file %s to use for filtering!"
 msgstr ""
 "Errore durante l'apertura del file temporaneo %s da usare per il filtraggio."
 
-#: ../src/update.c:289
+#: ../src/update.c:291
 #, c-format
 msgid "%s exited with status %d"
 msgstr "%s è uscito con lo stato %d"
 
-#: ../src/update.c:295 ../src/update.c:296 ../src/update.c:408
+#: ../src/update.c:297 ../src/update.c:298 ../src/update.c:410
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "Errore: impossibile aprire la pipe «%s»"
 
 #. FIXME: maybe setting request->returncode would be better
-#: ../src/update.c:434
+#: ../src/update.c:436
 #, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr "Errore: impossibile aprire il file «%s»"
 
-#: ../src/update.c:440
+#: ../src/update.c:442
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "Errore: non c'è il file «%s»"
@@ -746,7 +746,7 @@ msgid "Attachments"
 msgstr "Allegati"
 
 #. update list title
-#: ../src/ui/enclosure_list_view.c:265
+#: ../src/ui/enclosure_list_view.c:263
 #, c-format
 msgid "%d attachment"
 msgid_plural "%d attachments"
@@ -754,157 +754,157 @@ msgstr[0] "%d allegato"
 msgstr[1] "%d allegati"
 
 #. The following literals are the enclosure list size units
-#: ../src/ui/enclosure_list_view.c:280
+#: ../src/ui/enclosure_list_view.c:278
 msgid " Bytes"
 msgstr " byte"
 
-#: ../src/ui/enclosure_list_view.c:283
+#: ../src/ui/enclosure_list_view.c:281
 msgid "kB"
 msgstr "kB"
 
-#: ../src/ui/enclosure_list_view.c:287
+#: ../src/ui/enclosure_list_view.c:285
 msgid "MB"
 msgstr "MiB"
 
-#: ../src/ui/enclosure_list_view.c:291
+#: ../src/ui/enclosure_list_view.c:289
 msgid "GB"
 msgstr "GiB"
 
-#: ../src/ui/enclosure_list_view.c:296
+#: ../src/ui/enclosure_list_view.c:294
 #, c-format
 msgid "%d%s"
 msgstr "%d%s"
 
-#: ../src/ui/enclosure_list_view.c:355 ../src/ui/enclosure_list_view.c:512
+#: ../src/ui/enclosure_list_view.c:353 ../src/ui/enclosure_list_view.c:510
 #: ../src/ui/ui_subscription.c:384
 msgid "Choose File"
 msgstr "Scegliere file"
 
-#: ../src/ui/enclosure_list_view.c:417
+#: ../src/ui/enclosure_list_view.c:415
 #, c-format
 msgid "<b>File Extension .%s</b>"
 msgstr "<b>Estensione file .%s</b>"
 
-#: ../src/ui/enclosure_list_view.c:419
+#: ../src/ui/enclosure_list_view.c:417
 #, c-format
 msgid "<b>%s</b>"
 msgstr "<b>%s</b>"
 
-#: ../src/ui/liferea_shell.c:326
+#: ../src/ui/liferea_shell.c:325
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
 msgstr[0] " (%d nuovo)"
 msgstr[1] " (%d nuovi)"
 
-#: ../src/ui/liferea_shell.c:331
+#: ../src/ui/liferea_shell.c:330
 #, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
 msgstr[0] "%d non letto%s"
 msgstr[1] "%d non letti%s"
 
-#: ../src/ui/liferea_shell.c:685
+#: ../src/ui/liferea_shell.c:684
 msgid "topics_en.html"
 msgstr "topics_en.html"
 
-#: ../src/ui/liferea_shell.c:686
+#: ../src/ui/liferea_shell.c:685
 msgid "Help Topics"
 msgstr "Guida argomenti"
 
-#: ../src/ui/liferea_shell.c:693
+#: ../src/ui/liferea_shell.c:692
 msgid "reference_en.html"
 msgstr "reference_en.html"
 
-#: ../src/ui/liferea_shell.c:694
+#: ../src/ui/liferea_shell.c:693
 msgid "Quick Reference"
 msgstr "Riferimenti veloci"
 
-#: ../src/ui/liferea_shell.c:701
+#: ../src/ui/liferea_shell.c:700
 msgid "faq_en.html"
 msgstr "faq_en.html"
 
-#: ../src/ui/liferea_shell.c:702
+#: ../src/ui/liferea_shell.c:701
 msgid "FAQ"
 msgstr "Domande frequenti"
 
-#: ../src/ui/liferea_shell.c:754
+#: ../src/ui/liferea_shell.c:747
 msgid "Liferea is now online"
 msgstr "In rete"
 
-#: ../src/ui/liferea_shell.c:756
+#: ../src/ui/liferea_shell.c:749
 msgid "Work Offline"
 msgstr "Lavora fuori rete"
 
-#: ../src/ui/liferea_shell.c:758
+#: ../src/ui/liferea_shell.c:751
 msgid "Liferea is now offline"
 msgstr "Fuori rete"
 
-#: ../src/ui/liferea_shell.c:760
+#: ../src/ui/liferea_shell.c:753
 msgid "Work Online"
 msgstr "Lavora in rete"
 
-#: ../src/ui/liferea_shell.c:840
+#: ../src/ui/liferea_shell.c:833
 msgid "_Subscriptions"
 msgstr "Sot_toscrizioni"
 
-#: ../src/ui/liferea_shell.c:841
+#: ../src/ui/liferea_shell.c:834
 msgid "Update _All"
 msgstr "Aggiorna _tutti"
 
-#: ../src/ui/liferea_shell.c:841
+#: ../src/ui/liferea_shell.c:834
 msgid "Updates all subscriptions."
 msgstr "Aggiorna tutte le sottoscrizioni."
 
-#: ../src/ui/liferea_shell.c:843
+#: ../src/ui/liferea_shell.c:836
 msgid "Mark All As _Read"
 msgstr "Segna tutto come _letto"
 
-#: ../src/ui/liferea_shell.c:843
+#: ../src/ui/liferea_shell.c:836
 msgid "Marks read every item of every subscription."
 msgstr "Segna come letto tutti gli articoli e tutte le sottoscrizioni."
 
-#: ../src/ui/liferea_shell.c:845
+#: ../src/ui/liferea_shell.c:838
 msgid "_Import Feed List..."
 msgstr "Im_porta elenco notiziari..."
 
-#: ../src/ui/liferea_shell.c:845
+#: ../src/ui/liferea_shell.c:838
 msgid "Imports an OPML feed list."
 msgstr "Importa un elenco notiziari OPML."
 
-#: ../src/ui/liferea_shell.c:846
+#: ../src/ui/liferea_shell.c:839
 msgid "_Export Feed List..."
 msgstr "Espo_rta elenco notiziari..."
 
-#: ../src/ui/liferea_shell.c:846
+#: ../src/ui/liferea_shell.c:839
 msgid "Exports the feed list as OPML."
 msgstr "Esporta l'elenco notiziari come OPML."
 
-#: ../src/ui/liferea_shell.c:847 ../src/ui/ui_popup.c:178
+#: ../src/ui/liferea_shell.c:840 ../src/ui/ui_popup.c:178
 msgid "_Quit"
 msgstr "_Esci"
 
-#: ../src/ui/liferea_shell.c:849
+#: ../src/ui/liferea_shell.c:842
 msgid "_Feed"
 msgstr "_Notiziario"
 
-#: ../src/ui/liferea_shell.c:850
+#: ../src/ui/liferea_shell.c:843
 msgid "Remove _All Items"
 msgstr "Rimuovi _tutti gli articoli"
 
-#: ../src/ui/liferea_shell.c:850
+#: ../src/ui/liferea_shell.c:843
 msgid "Removes all items of the currently selected feed."
 msgstr "Rimuove tutti gli articoli del notiziario attualmente selezionato."
 
-#: ../src/ui/liferea_shell.c:853
+#: ../src/ui/liferea_shell.c:846
 msgid "_Item"
 msgstr "Arti_colo"
 
-#: ../src/ui/liferea_shell.c:854
+#: ../src/ui/liferea_shell.c:847
 msgid "_Next Unread Item"
 msgstr "Articolo s_uccessivo non letto"
 
-#: ../src/ui/liferea_shell.c:854
+#: ../src/ui/liferea_shell.c:847
 msgid ""
 "Jumps to the next unread item. If necessary selects the next feed with "
 "unread items."
@@ -912,205 +912,197 @@ msgstr ""
 "Passa all'articolo successivo non letto. Se necessario seleziona il "
 "successivo notiziario con articoli non letti."
 
-#: ../src/ui/liferea_shell.c:857
+#: ../src/ui/liferea_shell.c:850
 msgid "_View"
 msgstr "_Visualizza"
 
-#: ../src/ui/liferea_shell.c:858 ../src/ui/liferea_htmlview.c:538
+#: ../src/ui/liferea_shell.c:851 ../src/ui/liferea_htmlview.c:538
 msgid "_Increase Text Size"
 msgstr "Au_menta dimensione testo"
 
-#: ../src/ui/liferea_shell.c:858
+#: ../src/ui/liferea_shell.c:851
 msgid "Increases the text size of the item view."
 msgstr "Aumenta la dimensione del testo nella visualizzazione dell'articolo"
 
-#: ../src/ui/liferea_shell.c:860 ../src/ui/liferea_htmlview.c:539
+#: ../src/ui/liferea_shell.c:853 ../src/ui/liferea_htmlview.c:539
 msgid "_Decrease Text Size"
 msgstr "_Diminuisci dimensione testo"
 
-#: ../src/ui/liferea_shell.c:860
+#: ../src/ui/liferea_shell.c:853
 msgid "Decreases the text size of the item view."
 msgstr ""
 "Diminuisce la dimensione del testo nella visualizzazione dell'articolo."
 
-#: ../src/ui/liferea_shell.c:863
+#: ../src/ui/liferea_shell.c:856
 msgid "_Tools"
 msgstr "_Strumenti"
 
-#: ../src/ui/liferea_shell.c:864
+#: ../src/ui/liferea_shell.c:857
 msgid "_Update Monitor"
 msgstr "Controllo _aggiornamenti"
 
-#: ../src/ui/liferea_shell.c:864
+#: ../src/ui/liferea_shell.c:857
 msgid "Show a list of all feeds currently in the update queue"
 msgstr ""
 "Mostra un elenco di tutti gli attuali notiziari nella coda d'aggiornamento"
 
-#: ../src/ui/liferea_shell.c:866
+#: ../src/ui/liferea_shell.c:859
 msgid "_Script Manager"
 msgstr "Gestore scri_pt"
 
-#: ../src/ui/liferea_shell.c:866
+#: ../src/ui/liferea_shell.c:859
 msgid "Allows to configure and edit LUA hook scripts"
 msgstr "Consente di configurare e modificare script di aggancio di LUA"
 
-#: ../src/ui/liferea_shell.c:868 ../glade/liferea.glade.h:37
-msgid "Attention Profile"
-msgstr "Profilo attenzione"
-
-#: ../src/ui/liferea_shell.c:868
-msgid "Presents statistics on your most read categories"
-msgstr "Presenta delle statistiche sulle categorie più lette"
-
-#: ../src/ui/liferea_shell.c:870 ../src/ui/ui_popup.c:173
+#: ../src/ui/liferea_shell.c:861 ../src/ui/ui_popup.c:173
 msgid "_Preferences"
 msgstr "Preferen_ze"
 
-#: ../src/ui/liferea_shell.c:870
+#: ../src/ui/liferea_shell.c:861
 msgid "Edit Preferences."
 msgstr "Modifica le preferenze."
 
-#: ../src/ui/liferea_shell.c:873
-msgid "_Search"
+#: ../src/ui/liferea_shell.c:864
+msgid "S_earch"
 msgstr "_Cerca"
 
-#: ../src/ui/liferea_shell.c:874
+#: ../src/ui/liferea_shell.c:865
 msgid "Search All Feeds..."
 msgstr "Cerca in tutti i notiziari..."
 
-#: ../src/ui/liferea_shell.c:874
+#: ../src/ui/liferea_shell.c:865
 msgid "Show the search dialog."
 msgstr "Mostra il dialogo di ricerca."
 
-#: ../src/ui/liferea_shell.c:875
+#: ../src/ui/liferea_shell.c:866
 msgid "Search With ..."
 msgstr "Cerca con..."
 
-#: ../src/ui/liferea_shell.c:877
+#: ../src/ui/liferea_shell.c:868
 msgid "_Help"
 msgstr "A_iuto"
 
-#: ../src/ui/liferea_shell.c:878
+#: ../src/ui/liferea_shell.c:869
 msgid "_Contents"
 msgstr "Som_mario"
 
-#: ../src/ui/liferea_shell.c:878
+#: ../src/ui/liferea_shell.c:869
 msgid "View help for this application."
 msgstr "Visualizza la guida per questa applicazione."
 
-#: ../src/ui/liferea_shell.c:879
+#: ../src/ui/liferea_shell.c:870
 msgid "_Quick Reference"
 msgstr "Riferimenti velo_ci"
 
-#: ../src/ui/liferea_shell.c:879
+#: ../src/ui/liferea_shell.c:870
 msgid "View a list of all Liferea shortcuts."
 msgstr "Visualizza un elenco di tutte le scorciatoie da tastiera."
 
-#: ../src/ui/liferea_shell.c:881
+#: ../src/ui/liferea_shell.c:872
 msgid "_FAQ"
 msgstr "Domande _frequenti"
 
-#: ../src/ui/liferea_shell.c:881
+#: ../src/ui/liferea_shell.c:872
 msgid "View the FAQ for this application."
 msgstr "Visualizza le domande frequenti per questa applicazione."
 
-#: ../src/ui/liferea_shell.c:882
+#: ../src/ui/liferea_shell.c:873
 msgid "_About"
 msgstr "I_nformazioni"
 
-#: ../src/ui/liferea_shell.c:882
+#: ../src/ui/liferea_shell.c:873
 msgid "Shows an about dialog."
 msgstr "Mostra un dialogo di informazioni."
 
-#: ../src/ui/liferea_shell.c:886
+#: ../src/ui/liferea_shell.c:877
 msgid "_Normal View"
 msgstr "Visualizzazione norma_le"
 
-#: ../src/ui/liferea_shell.c:886
+#: ../src/ui/liferea_shell.c:877
 msgid "Set view mode to mail client mode."
 msgstr "Imposta la modalità di visualizzazione come un client di posta."
 
-#: ../src/ui/liferea_shell.c:888
+#: ../src/ui/liferea_shell.c:879
 msgid "_Wide View"
 msgstr "Visualizzazione ampi_a"
 
-#: ../src/ui/liferea_shell.c:888
+#: ../src/ui/liferea_shell.c:879
 msgid "Set view mode to use three vertical panes."
 msgstr ""
 "Imposta la modalità di visualizzazione per usare tre pannelli verticali."
 
-#: ../src/ui/liferea_shell.c:890
+#: ../src/ui/liferea_shell.c:881
 msgid "_Combined View"
 msgstr "Visualizzazione com_binata"
 
-#: ../src/ui/liferea_shell.c:890
+#: ../src/ui/liferea_shell.c:881
 msgid "Set view mode to two pane mode."
 msgstr "Imposta la modalità di visualizzazione in due pannelli."
 
-#: ../src/ui/liferea_shell.c:895
+#: ../src/ui/liferea_shell.c:886
 msgid "_Reduced Feed List"
 msgstr "Elenco notiziari ri_dotto"
 
-#: ../src/ui/liferea_shell.c:895
+#: ../src/ui/liferea_shell.c:886
 msgid "Hide feeds with no unread items."
 msgstr "Nasconde i notiziari con nessun articolo non letto."
 
-#: ../src/ui/liferea_shell.c:900
+#: ../src/ui/liferea_shell.c:891
 msgid "_New Subscription..."
 msgstr "Nu_ova sottoscrizione..."
 
-#: ../src/ui/liferea_shell.c:900
+#: ../src/ui/liferea_shell.c:891
 msgid "Adds a subscription to the feed list."
 msgstr "Aggiunge una sottoscrizione all'elenco dei notiziari."
 
-#: ../src/ui/liferea_shell.c:902 ../src/ui/ui_popup.c:285
+#: ../src/ui/liferea_shell.c:893 ../src/ui/ui_popup.c:285
 msgid "New _Folder..."
 msgstr "Nuova _cartella..."
 
-#: ../src/ui/liferea_shell.c:902
+#: ../src/ui/liferea_shell.c:893
 msgid "Adds a folder to the feed list."
 msgstr "Aggiunge una cartella all'elenco dei notiziari."
 
-#: ../src/ui/liferea_shell.c:903 ../src/ui/ui_popup.c:288
+#: ../src/ui/liferea_shell.c:894 ../src/ui/ui_popup.c:288
 msgid "New S_earch Folder..."
 msgstr "Nuova cartella ric_erca..."
 
-#: ../src/ui/liferea_shell.c:903
+#: ../src/ui/liferea_shell.c:894
 msgid "Adds a new search folder to the feed list."
 msgstr "Aggiunge una nuova cartella di ricerca all'elenco dei notiziari."
 
-#: ../src/ui/liferea_shell.c:904
+#: ../src/ui/liferea_shell.c:895
 msgid "New _Source..."
 msgstr "Nuova fo_nte..."
 
-#: ../src/ui/liferea_shell.c:904
+#: ../src/ui/liferea_shell.c:895
 msgid "Adds a new feed list source."
 msgstr "Aggiunge una nuova fonte dell'elenco dei notiziari."
 
-#: ../src/ui/liferea_shell.c:905 ../src/ui/ui_popup.c:290
+#: ../src/ui/liferea_shell.c:896 ../src/ui/ui_popup.c:290
 msgid "New _News Bin..."
 msgstr "Nuovo archivio no_tizie..."
 
-#: ../src/ui/liferea_shell.c:905
+#: ../src/ui/liferea_shell.c:896
 msgid "Adds a new news bin."
 msgstr "Aggiunge un nuovo archivio delle notizie."
 
-#: ../src/ui/liferea_shell.c:909
+#: ../src/ui/liferea_shell.c:900
 msgid "_Mark Items Read"
 msgstr "Se_gna articoli come letti"
 
-#: ../src/ui/liferea_shell.c:909
+#: ../src/ui/liferea_shell.c:900
 msgid ""
 "Marks all items of the selected feed list node / in the item list as read."
 msgstr ""
 "Segna tutti gli articoli selezionati nell'elenco dei notiziari alla voce «/» "
 "come letti."
 
-#: ../src/ui/liferea_shell.c:911 ../src/ui/ui_popup.c:266
+#: ../src/ui/liferea_shell.c:902 ../src/ui/ui_popup.c:266
 msgid "_Update"
 msgstr "_Aggiorna"
 
-#: ../src/ui/liferea_shell.c:911
+#: ../src/ui/liferea_shell.c:902
 msgid ""
 "Updates the selected subscription or all subscriptions of the selected "
 "folder."
@@ -1118,68 +1110,68 @@ msgstr ""
 "Aggiorna le sottoscrizioni selezionate o tutte le sottoscrizioni di una "
 "cartella selezionata."
 
-#: ../src/ui/liferea_shell.c:916
+#: ../src/ui/liferea_shell.c:907
 msgid "_Properties"
 msgstr "Pr_oprietà"
 
-#: ../src/ui/liferea_shell.c:916
+#: ../src/ui/liferea_shell.c:907
 msgid "Opens the property dialog for the selected subscription."
 msgstr "Apre il dialogo della proprietà della sottoscrizione selezionata."
 
-#: ../src/ui/liferea_shell.c:917
+#: ../src/ui/liferea_shell.c:908
 msgid "_Remove"
 msgstr "Rimuo_vi"
 
-#: ../src/ui/liferea_shell.c:917
+#: ../src/ui/liferea_shell.c:908
 msgid "Removes the selected subscription."
 msgstr "Rimuove la sottoscrizione selezionata."
 
-#: ../src/ui/liferea_shell.c:921 ../src/ui/ui_popup.c:141
+#: ../src/ui/liferea_shell.c:912 ../src/ui/ui_popup.c:141
 msgid "Toggle _Read Status"
 msgstr "Commuta stato l_etto"
 
-#: ../src/ui/liferea_shell.c:921
+#: ../src/ui/liferea_shell.c:912
 msgid "Toggles the read status of the selected item."
 msgstr "Commuta lo stato di letto dell'articolo selezionato."
 
-#: ../src/ui/liferea_shell.c:923 ../src/ui/ui_popup.c:142
+#: ../src/ui/liferea_shell.c:914 ../src/ui/ui_popup.c:142
 msgid "Toggle Item _Flag"
 msgstr "Commuta contrass_egno articolo"
 
-#: ../src/ui/liferea_shell.c:923
+#: ../src/ui/liferea_shell.c:914
 msgid "Toggles the flag status of the selected item."
 msgstr "Commuta lo stato del contrassegno dell'articolo selezionato."
 
-#: ../src/ui/liferea_shell.c:925
+#: ../src/ui/liferea_shell.c:916
 msgid "R_emove"
 msgstr "Rimuov_i"
 
-#: ../src/ui/liferea_shell.c:925
+#: ../src/ui/liferea_shell.c:916
 msgid "Removes the selected item."
 msgstr "Rimuove l'articolo selezionato."
 
-#: ../src/ui/liferea_shell.c:927
+#: ../src/ui/liferea_shell.c:918
 msgid "_Launch In Browser"
 msgstr "La_ncia nel browser"
 
-#: ../src/ui/liferea_shell.c:927
+#: ../src/ui/liferea_shell.c:918
 msgid "Launches the item's link in the configured browser."
 msgstr "Lancia il collegamento dell'articolo nel browser configurato."
 
-#: ../src/ui/liferea_shell.c:932 ../src/ui/ui_popup.c:171
+#: ../src/ui/liferea_shell.c:923 ../src/ui/ui_popup.c:171
 msgid "_Work Offline"
 msgstr "_Lavora fuori rete"
 
-#: ../src/ui/liferea_shell.c:932
+#: ../src/ui/liferea_shell.c:923
 msgid "This option allows you to disable subscription updating."
 msgstr ""
 "Questa opzione consente di disabilitare l'aggiornamento delle sottoscrizioni."
 
-#: ../src/ui/liferea_shell.c:1315
+#: ../src/ui/liferea_shell.c:1305
 msgid "Liferea - Linux Feed Reader"
 msgstr "Liferea - Linux Feed Reader"
 
-#: ../src/ui/liferea_shell.c:1317
+#: ../src/ui/liferea_shell.c:1307
 msgid ""
 "<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news "
 "feeds.</p><p>The left pane contains the list of your subscriptions. To add a "
@@ -1194,21 +1186,21 @@ msgstr ""
 "notiziario selezionarlo nell'elenco dei notiziari e le testate verranno "
 "caricate nel pannello di destra.</p>"
 
-#: ../src/ui/search_dialog.c:65
+#: ../src/ui/search_dialog.c:74
 #, c-format
 msgid "%d Search Result for \"%s\""
 msgid_plural "%d Search Results for \"%s\""
 msgstr[0] "%d risultato di ricerca per «%s»"
 msgstr[1] "%d risultati di ricerca per «%s»"
 
-#: ../src/ui/search_dialog.c:70
+#: ../src/ui/search_dialog.c:79
 #, c-format
 msgid "%d Search Result"
 msgid_plural "%d Search Results"
 msgstr[0] "%d risultato di ricerca"
 msgstr[1] "%d risultati di ricerca"
 
-#: ../src/ui/search_dialog.c:76
+#: ../src/ui/search_dialog.c:85
 #, c-format
 msgid ""
 "The item list now contains all items matching the specified search pattern. "
@@ -1620,20 +1612,20 @@ msgid "feedlist.opml"
 msgstr "feedlist_it.opml"
 
 #: ../src/fl_sources/default_source.c:180
-#: ../src/fl_sources/google_source.c:244 ../glade/new_subscription.glade.h:6
+#: ../src/fl_sources/google_source.c:248 ../glade/new_subscription.glade.h:6
 #: ../glade/simple_subscription.glade.h:5
 msgid "New Subscription"
 msgstr "Nuova sottoscrizione"
 
-#: ../src/fl_sources/google_source.c:120
+#: ../src/fl_sources/google_source.c:117
 msgid "Google Reader login failed!"
 msgstr "Accesso a Google Reader non riuscito."
 
-#: ../src/fl_sources/google_source.c:330
+#: ../src/fl_sources/google_source.c:334
 msgid "Google Reader"
 msgstr "Google Reader"
 
-#: ../src/fl_sources/google_source.c:331
+#: ../src/fl_sources/google_source.c:335
 msgid ""
 "Integrate the feed list of your Google Reader account. Liferea will present "
 "your Google Reader subscriptions, and will synchronize your feed list and "
@@ -1913,6 +1905,10 @@ msgstr "Archivio"
 #: ../glade/liferea.glade.h:36
 msgid "At _startup:"
 msgstr "All'av_vio:"
+
+#: ../glade/liferea.glade.h:37
+msgid "Attention Profile"
+msgstr "Profilo attenzione"
 
 #: ../glade/liferea.glade.h:38
 msgid "Auto-_load item link in configured browser when selecting articles."
@@ -2458,3 +2454,6 @@ msgid ""
 msgstr ""
 "Inserire l'indirizzo di un sito web per usare il rilevamento automatico del "
 "notiziario, oppure, se si è a conoscenza, l'indirizzo esatto del notiziario."
+
+#~ msgid "Presents statistics on your most read categories"
+#~ msgstr "Presenta delle statistiche sulle categorie più lette"
