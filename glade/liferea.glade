@@ -4853,17 +4853,34 @@ Philippe Martin, Brion Vibber (favicon support)</property>
     <property name="documenters">Lars Lindner</property>
     <property name="translator_credits">Bart Kreska
 Dario Conigliaro
+Emanuele Grande
+Gianvito Cavasoli
 Fernando Ike de Oliveira
+Og Maciel
+Leon Nardella
 Khaled Hosny
 Sargate Kanogan
+Rodrigo Gallardo
 Takeshi AIHANA
 Vincent Lefèvre
-Oleg Maloglovets
-Og Maciel
+Daniel Nylander
+Mehmet Atif Ergun
+Eren Türkay
+Ihar Hrachyshka
+António Lima
+Bruno Miguel
 Martin Picek
-Gianvito Cavasoli
+Justin Forest
+Oleg Maloglovets
+Sergey Rudchenko
+Máté Őry
+Pavol Klačanský
+Evgenia Petoumenou
+Besnik Bleta
 Christian Dywan
 Robin Stocker
+Gil Forcada
+Iñaki Larrañaga Murgoitio
 </property>
     <child internal-child="vbox">
       <widget class="GtkVBox" id="dialog-vbox23">
