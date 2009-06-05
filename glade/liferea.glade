@@ -4851,19 +4851,19 @@ Code from other projects
 Anders Carlsson (tray icon support)
 Philippe Martin, Brion Vibber (favicon support)</property>
     <property name="documenters">Lars Lindner</property>
-    <property name="translator_credits">Bart Kreska &lt;bartkreska@users.sourceforge.net&gt;
-Dario Conigliaro &lt;djdas@djdas.net&gt;
-Fernando Ike de Oliveira &lt;fike@midstorm.org&gt;
-Khaled Hosny &lt;khaledhosny@eglug.org&gt;
-Sargate Kanogan &lt;sargate@gmail.com&gt;
-Takeshi AIHANA &lt;takeshi.aihana@gmail.com&gt;
-Vincent Lefèvre &lt;vincent@vinc17.org&gt;
-Oleg Maloglovets &lt;oleg@koleso-auto.ru&gt;
-Og Maciel &lt;ogmaciel@ubuntu.com&gt;
-Martin Picek &lt;picek.martin@gnome-cesko.cz&gt;
-Gianvito Cavasoli &lt;janvitus@ubuntu-it.org&gt;
-Christian Dywan &lt;christian@twotoasts.de&gt;
-Robin Stocker &lt;robin@nibor.org&gt;
+    <property name="translator_credits">Bart Kreska
+Dario Conigliaro
+Fernando Ike de Oliveira
+Khaled Hosny
+Sargate Kanogan
+Takeshi AIHANA
+Vincent Lefèvre
+Oleg Maloglovets
+Og Maciel
+Martin Picek
+Gianvito Cavasoli
+Christian Dywan
+Robin Stocker
 </property>
     <child internal-child="vbox">
       <widget class="GtkVBox" id="dialog-vbox23">
