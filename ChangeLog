@@ -17,6 +17,8 @@
 	* Fixes SF #2798467, LP #381406: Toplevel menus with same
 	  accelerator key. (Adrian Bunk)
 	* Fixes enclosure download error handling. (Adrian Bunk)
+	* Remove dead Feedster from link cosmos search options.
+	  (Adrian Bunk)
 
 	* Updated Italian translation. (Gianvito Cavasoli)
 
