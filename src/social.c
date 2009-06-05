@@ -201,7 +201,6 @@ social_init (void)
 	if (!bookmarkSite)
 		social_set_bookmark_site ("del.icio.us");		/* set default if necessary */
 
-	social_register_link_search_site ("Feedster",	"http://www.feedster.com/search.php?q=%s&sort=date&ie=UTF-8&limit=%d");
 	social_register_link_search_site ("Google Blog Search", "http://blogsearch.google.com/blogsearch?q=%s");
 	social_register_link_search_site ("IceRocket",	"http://www.icerocket.com/search?tab=blog&q=%s");
 	social_register_link_search_site ("Technorati",	"http://www.technorati.com/cosmos/search.html?url=%s");
