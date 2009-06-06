@@ -52,12 +52,6 @@ create_delicious_search_url (void)
 }
 
 static void
-create_feedster_search_url (void)
-{
-	search_engine_dialog_new ("http://www.feedster.com/search.php?q=%s&sort=date&type=rss&ie=UTF-8&limit=%d", TRUE);
-}
-
-static void
 create_google_blog_search_url (void)
 {
 	search_engine_dialog_new ("http://blogsearch.google.com/blogsearch_feeds?hl=en&q=%s&ie=utf-8&num=%d&output=atom", TRUE);
@@ -102,7 +96,6 @@ static void
 search_engines_init (void)
 {
 	search_engine_register ("Del.icio.us",	create_delicious_search_url);
-	search_engine_register ("Feedster",	create_feedster_search_url);
 	search_engine_register ("Google Blog",	create_google_blog_search_url);
 	search_engine_register ("Ice Rocket",	create_icerocket_search_url);
 	search_engine_register ("Reddit.com",	create_reddit_search_url);
