@@ -50,6 +50,8 @@
 	* Fixes enclosure download error handling. (Adrian Bunk)
 	* Remove dead Feedster from link cosmos search options.
 	  (Adrian Bunk)
+	* Fixes special link opening when activated by context menu.
+	  (Lars Lindner)
 
 	* Updated Brazilian Portuguese translation. (Leon Nardella)
 	* Updated French translation. (Vincent Lefevre)

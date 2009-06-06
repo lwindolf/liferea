@@ -289,10 +289,53 @@ liferea_htmlview_location_changed (LifereaHtmlView *htmlview, const gchar *locat
 	g_signal_emit_by_name (htmlview, "location-changed", location);
 }
 
+static gboolean
+liferea_htmlview_handle_special_URL (LifereaHtmlView *htmlview, const gchar *url)
+{
+	struct internalUriType	*uriType;
+	
+	if (htmlview->priv->internal) {
+
+		/* it is a generic item list URI type */		
+		uriType = internalUriTypes;
+		while (uriType->suffix) {
+			if (!strncmp(url + strlen("liferea-"), uriType->suffix, strlen(uriType->suffix))) {
+				gchar *nodeid, *itemnr;
+				nodeid = strstr (url, "://");
+				if (nodeid) {
+					nodeid += 3;
+					itemnr = nodeid;
+					itemnr = strchr (nodeid, '-');
+					if (itemnr) {
+						itemPtr item;
+
+						*itemnr = 0;
+						itemnr++;
+
+						item = item_load (atol (itemnr));
+						if (item) {
+							(*uriType->func) (item);
+							item_unload (item);
+						} else {
+							g_warning ("Fatal: no item with id (node=%s, item=%s) found!!!", nodeid, itemnr);
+						}
+
+						return TRUE;
+					}
+				}
+			}
+			uriType++;
+		}
+		g_warning ("Internal error: unhandled protocol in URL \"%s\"!", url);
+	} else {
+		g_warning ("Security: Prevented external HTML document to use internal link scheme (%s)!", url);
+	}
+	return TRUE;
+}
+
 gboolean
 liferea_htmlview_handle_URL (LifereaHtmlView *htmlview, const gchar *url)
 {
-	struct internalUriType	*uriType;
 	gboolean browse_inside_application;
 	
 	g_return_val_if_fail (htmlview, TRUE);
@@ -307,42 +350,7 @@ liferea_htmlview_handle_URL (LifereaHtmlView *htmlview, const gchar *url)
 
 	/* first catch all links with special URLs... */
 	if (liferea_htmlview_is_special_url (url)) {
-		if (htmlview->priv->internal) {
-	
-			/* it is a generic item list URI type */		
-			uriType = internalUriTypes;
-			while (uriType->suffix) {
-				if (!strncmp(url + strlen("liferea-"), uriType->suffix, strlen(uriType->suffix))) {
-					gchar *nodeid, *itemnr;
-					nodeid = strstr (url, "://");
-					if (nodeid) {
-						nodeid += 3;
-						itemnr = nodeid;
-						itemnr = strchr (nodeid, '-');
-						if (itemnr) {
-							itemPtr item;
-
-							*itemnr = 0;
-							itemnr++;
-
-							item = item_load (atol (itemnr));
-							if (item) {
-								(*uriType->func) (item);
-								item_unload (item);
-							} else {
-								g_warning ("Fatal: no item with id (node=%s, item=%s) found!!!", nodeid, itemnr);
-							}
-
-							return TRUE;
-						}
-					}
-				}
-				uriType++;
-			}
-			g_warning ("Internal error: unhandled protocol in URL \"%s\"!", url);
-		} else {
-			g_warning ("Security: Prevented external HTML document to use internal link scheme (%s)!", url);
-		}
+		liferea_htmlview_handle_special_URL (htmlview, url);
 		return TRUE;
 	}
 	
@@ -361,6 +369,12 @@ liferea_htmlview_handle_URL (LifereaHtmlView *htmlview, const gchar *url)
 void
 liferea_htmlview_launch_URL_internal (LifereaHtmlView *htmlview, const gchar *url)
 {
+	/* first catch all links with special URLs... */
+	if (liferea_htmlview_is_special_url (url)) {
+		liferea_htmlview_handle_special_URL (htmlview, url);
+		return;
+	}
+	
 	/* before loading untrusted URLs suppress internal link schema */
 	htmlview->priv->internal = FALSE;
 	
