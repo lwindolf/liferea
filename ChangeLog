@@ -4,6 +4,8 @@
 
 	* Fixes special link opening when activated by context menu.
 	  (Lars Lindner)
+	
+	* Update German documentation translation. (Lars Lindner)
 
 
 2009-06-05  Adrian Bunk <bunk@users.sourceforge.net>
