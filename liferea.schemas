@@ -454,6 +454,20 @@ To change the gconftool target use the - -config-source=blah option to gconftool
       </locale>
     </schema>
     <schema>
+      <key>/schemas/apps/liferea/reduced-feedlist</key>
+      <applyto>/apps/liferea/reduced-feedlist</applyto>
+      <owner>liferea</owner>
+      <type>bool</type>
+      <default>false</default>
+      <locale name="C">
+        <short>Filter feeds without unread items from feed list.</short>
+        <long>
+	   If this option is enabled the feed list will contain
+	   only feeds that have unread items.
+	</long>
+      </locale>
+    </schema>
+    <schema>
       <key>/schemas/apps/liferea/enclosure-download-tool</key>
       <applyto>/apps/liferea/enclosure-download-tool</applyto>
       <owner>liferea</owner>
