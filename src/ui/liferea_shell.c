@@ -882,7 +882,7 @@ static const GtkRadioActionEntry ui_mainwindow_view_radio_entries[] = {
 	 2}
 };
 
-static const GtkToggleActionEntry ui_mainwindow_feedlist_toggle_entries[] = {
+static GtkToggleActionEntry ui_mainwindow_feedlist_toggle_entries[] = {
 	{"ReducedFeedList", NULL, N_("_Reduced Feed List"), NULL, N_("Hide feeds with no unread items."),
 	G_CALLBACK(on_feedlist_reduced_activate)}
 };
@@ -1074,6 +1074,9 @@ liferea_shell_create (int initialState)
 	/* 2.) menu creation */
 	
 	debug0 (DEBUG_GUI, "Setting up menues");
+
+	/* Prepare some toggle button states */	
+	ui_mainwindow_feedlist_toggle_entries[0].is_active = conf_get_bool_value (REDUCED_FEEDLIST);
 
 	ui_manager = gtk_ui_manager_new ();
 

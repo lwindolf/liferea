@@ -4,6 +4,8 @@
 
 	* Fixes special link opening when activated by context menu.
 	  (Lars Lindner)
+	* Avoid "forgetting" the reduced feed list setting on shutdown.
+	  (suggested by Mathie Leplatre, Lars Lindner)
 	
 	* Update German documentation translation. (Lars Lindner)
 

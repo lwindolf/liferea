@@ -26,6 +26,7 @@
 #include <gdk/gdkkeysyms.h>
 
 #include "common.h"
+#include "conf.h"
 #include "debug.h"
 #include "feed.h"
 #include "feedlist.h"
@@ -158,6 +159,7 @@ ui_feedlist_reduce_unread (gboolean reduced) {
 	treeview = GTK_TREE_VIEW (liferea_shell_lookup ("feedlist"));
 
 	feedlist_reduced_unread = reduced;
+	conf_set_bool_value (REDUCED_FEEDLIST, reduced);
 
 	if (reduced) {
 		gtk_tree_view_set_reorderable (GTK_TREE_VIEW(treeview), FALSE);
@@ -169,8 +171,6 @@ ui_feedlist_reduce_unread (gboolean reduced) {
 		gtk_tree_model_filter_refilter(GTK_TREE_MODEL_FILTER (filter));
 		gtk_tree_view_set_model (GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(feedstore));
 	}
-	
-	ui_node_reload_feedlist ();
 }
 
 /* sets up the entry list store and connects it to the entry list
@@ -229,6 +229,8 @@ ui_feedlist_init (GtkTreeView *treeview)
 	g_signal_connect (G_OBJECT (select), "changed",
 	                  G_CALLBACK (ui_feedlist_selection_changed_cb),
                 	  liferea_shell_lookup ("feedlist"));
+                	  
+	ui_feedlist_reduce_unread (conf_get_bool_value (REDUCED_FEEDLIST));	/* before menu setup for reduced mode check box to be correct */
 	
 	ui_dnd_setup_feedlist (feedstore);
 	liferea_shell_update_feed_menu (TRUE, FALSE, FALSE);
@@ -411,4 +413,5 @@ void
 on_feedlist_reduced_activate (GtkToggleAction *menuitem, gpointer user_data)
 {
 	ui_feedlist_reduce_unread (gtk_toggle_action_get_active (menuitem));
+	ui_node_reload_feedlist ();
 }
