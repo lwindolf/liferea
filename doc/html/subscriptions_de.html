@@ -20,7 +20,25 @@
 	<hr />
 	<!-- navigation header end -->
 
-	<!-- content start --> 
+	<!-- content start --> 	
+	<p>
+	Diese Sektion beschreibt die Möglichkeiten die Liferea bietet
+	um verschiedene Typen von Online-Abonnements anzulegen.
+	</p>
+	
+	<h3>Was kann abonniert werden?</h3>
+	<p>
+	Als News-Aggregator kann Liferea verschiedenste Quellen von 
+	New, Blogs oder anderen Inhalten abonnieren. Liferea unterstützt
+	folgende Abonnementtypen:
+	<ul>
+		<li>einzelne Feeds</li>
+		<li>OPML-Quellen (z.B. eine Planet-Feedliste, ein Blogroll...)</li>
+		<li>ein <a href="http://www.bloglines.com/">Bloglines</a>-Konto</li>
+		<li>ein <a href="http://google.com/reader">Google Reader</a>-Konto</li>
+	</ul>
+	</p>
+
 	<h3>Abonnements anlegen</h3>
 	<p>
 	Mit dem Menüpunkt "Neues Abonnement" aus dem Hauptmenü oder
@@ -29,7 +47,7 @@
 	</p>	
 
 	<p align="center">
-	<img src="help_subscribe_1.0.0.png">
+	<img src="help_subscribe_1.6.0.png">
 	</p>
 
 	<p>
@@ -83,7 +101,7 @@
 	<h4>Allgemeine Eigenschaften</h4>
 
 	<p align="center">
-	<img src="help_feed_prop_general_1.0.0.png"/>
+	<img src="help_feed_prop_general_1.6.0.png"/>
 	</p>
 	
 	<p>Die Registerkarte "Allgemein" erlaubt das Ändern des 
@@ -136,7 +154,7 @@
 	<h4>Quelle des Abonnements</h4>
 
 	<p align="center">
-	<img src="help_feed_prop_source_1.0.0.png"/>
+	<img src="help_feed_prop_source_1.6.0.png"/>
 	</p>
 	
 	<p>Die Registerkarte "Quelle" enthält dieselben Dialogelemente
@@ -147,7 +165,7 @@
 	<h2>Cache-Eigenschaften</h2>
 
 	<p align="center">
-	<img src="help_feed_prop_cache_1.0.0.png"/>
+	<img src="help_feed_prop_cache_1.6.0.png"/>
 	</p>
 	
 	<p>Die dritte Registerkarte, "Cache", erlaubt es die
@@ -180,7 +198,7 @@
 	<h4>Authentifizierung</h4>
 	
 	<p align="center">
-	<img src="help_feed_prop_auth_1.0.0.png"/>
+	<img src="help_feed_prop_auth_1.6.0.png"/>
 	</p>
 	
 	<p>
@@ -192,17 +210,89 @@
 	nachfragt sobald eine Abonnement-Quelle Authentifikation erfordert.
 	</p>
 	
-	<h4>Anhänge</h4>
+	<h4>Erweitert</h4>
 	
 	<p align="center">
-	<img src="help_feed_prop_enclosures_1.0.0.png"/>
+	<img src="help_feed_prop_enclosures_1.6.0.png"/>
 	</p>
 
 	<p>
-	In dieser Registerkarte kann der <a href="enclosures_de.html">automatische Download für Anhänge</a> 
+	In dieser Registerkarte können verschiedene Spezialeinstellungen
 	für dieses Abonnement aktiviert werden.
 	</p>
 	
+	<dl>
+		<dt>Alle Anänge dieses Abonnements automatisch herunterladen.</dt>
+		<dd>Diese Option ist nützlich fpr Podcasts oder Torrent-Feeds. Wenn
+		diese Option aktiviert ist lädt Liferea alle <a href="enclosures_en.html">Anhänge</a>
+		automatisch herunter.
+		</dd>
+	
+		<dt>Link beim Auswählen der Schlagzeile automatisch öffnen.</dt>
+		<dd>Per-default zeigt Liferea den Inhalt einer Schlagzeile. Ist diese
+		Option aktiv wird stattdessen die Schlagzeilen-URL geladen.
+		</dd>
+		
+		<dt>Ignoriere Kommentarfeeds dieses Abonnements.</dt>
+		<dd>Manchmal sind Kommentarfeeds fehlerhaft oder schlicht nutzlos.
+		Mit dieser Option können sie ausgeblendet werden.</dd>
+		
+		<dt>Erzwinge Popups für dieses Abonnement.</dt>
+		<dd>Wenn die globale Einstellung für Popups deaktiviert ist
+		können diese trotzdem für dieses Abonnement erzwungen werden.</dd>
+		
+		<dt>Keine Popups für dieses Abonnement.</dt>
+		<dd>Wenn die globale Einstellung für Popups aktiviert ist
+		können diese trotzdem für dieses Abonnement unterdrückt werden.</dd>
+		
+		<dt>Markiere heruntergeladene Schlagzeilen als gelesen.</dt>
+		<dd>Neue Schlagzeilen haben immer den Status "ungelesen". Diese
+		Option kann nützlich sein um für uninteressante Abonnements
+		die Schlagzeilen automatisch auf "gelesen" zu stellen.</dd>
+	</dl>
+
+	<h3>Abonnieren von OPML-Quellen, Bloglines und Google Reader-Konten</h3>
+	<p>
+	Um eine OPML-Quelle, ein Bloglines oder ein Google Reader-Konto zu
+	abonnieren muß "Neue Quelle" vom Kontextmenü in der Feedliste oder aus
+	dem "Abonnements"-Menü ausgewählt werden. Im dann geöffneten Dialog
+	kann die gewünschte Quelle ausgewählt werden.
+	</p>
+	
+	<h4>OPML-Quelle</h3>
+	<p>
+	Wurde "Planet/BlogRoll/OPML" als Quelle ausgewählt muß die
+	URL einer OPML-Quelle angegeben werden. Wenn nötig auch noch 
+	zusätzlich Authentifikation für den Zugriff. Geht alles gut wird
+	ein neuer Eintrag in der Feedliste angelegt und nach dem initialen
+	Download der OPML-Quelle werden die enthaltenen Abonnements 
+	hierarchisch hinzugefüht. Ändert sich die OPML-Quelle werden
+	mit der Zeit alte Feeds automatisch entfernt und neue
+	hinzugefügt.
+	</p>
+	
+	<h4>Bloglines</h4>
+	<p>
+	Wurde "Bloglines" als Quelle ausgewählt müssen Benutzername
+	und Paßwort des Bloglines-Konto angegeben werden. Wie bei OPML-Quellen
+	lädt Liferea automatisch die Liste der Abonnements des Bloglines-Kontos
+	und blendet sie in der Feedliste ein.
+	<br /><br />
+	<b>Hinweis: Liferea lädt nur die Liste der Abonnements des Bloglines-Kontos.
+	Der Status von Schlagzeilen wird nicht mit Bloglines abgeglichen!</b>
+	</p>
+	
+	<h4>Google Reader</h4>
+	<p>
+	Wurde "Google Reader" als Quelle ausgewählt müssen Benutzername
+	und Paßwort des Google-Kontos angegeben werden. Wie bei OPML-Quellen
+	lädt Liferea automatisch die Liste der Abonnements des Google-Kontos
+	und blendet sie in der Feedliste ein.
+	<br /><br />
+	<b>Hinweis: Werden Abonnements oder Schlagzeilen eines Google-Kontos
+	in Liferea gelöscht, so werden sie <b>auch</b> im Google-Konto
+	entfernt!</b>	
+	</p>
 
 	<!-- navigation footer start -->
 	<hr />

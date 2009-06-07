@@ -27,7 +27,7 @@
 	<h4>Abonnement Einstellungen</h4>
 
 	<p align="center">
-	<img src="help_prefs_feeds_1.0.0.png">
+	<img src="help_prefs_feeds_1.6.0.png">
 	</p>
 	<ul>
 	
@@ -41,7 +41,6 @@
 	<li>
 	<b>Aktualisierung von Abonnements:</b> Hier kann das 
 	Default-Aktualisierungsintervall konfiguriert werden.
-	Der Wert 0 deaktiviert die automatische Aktualisierung.
 	Diese Einstellung kann jedoch für jedes Abonnement einzeln in den
 	Eigenschaften des Abonnements überschrieben werden.
 	<br>
@@ -54,39 +53,33 @@
 	</ul>
 	</li>
 	
-	<li>
-	<b>Laden von Abonnments:</b> Mit dieser Option kann die
-	Speichernutzung von Liferea gesteuert werden. Der Nutzer kann
-	entscheiden ob alle Abonnements im Speicher (für 
-	Geschwindigkeit optimieren) oder auf der Festplatte 
-	gehalten werden sollen (für Geschwindigkeit optimieren).
-	</li>
 	</ul>
 	
 	<h4>Ordner Einstellungen</h4>
 
 	<p align="center">
-	<img src="help_prefs_folders_1.0.0.png">
+	<img src="help_prefs_folders_1.6.0.png">
 	</p>
 		
 	<ul>
 	<li>
-	<b>Anzeigen von Ordnern:</b> Ist diese Option aktiviert wird
+	<b>Anzeigen von Ordnern:</b> Ist die erste Option aktiviert wird
 	Liferea beim Anklicken eines Ordern die Schlagzeilen aller in
-	diesem enthaltenen Abonnements anzeigen.
+	diesem enthaltenen Abonnements anzeigen. Ist die zweite Option
+	aktiviert werden gelesene Schlagzeilen zusätzlich ausgeblendet.
 	Das Standardverhalten ist es keine Schlagzeilen anzuzeigen.
 	</li>
 	
 	<li>
 	<b>Abonnement Icons (Favicons):</b> Dieser Button erlaubt
-	die Aktualisierung aller Favions.
+	die Aktualisierung aller Favicons.
 	</li>	
 	</ul>
 	
 	<h4>Schlagzeilen Einstellungen</h4>
 
 	<p align="center">
-	<img src="help_prefs_headlines_1.0.0.png">
+	<img src="help_prefs_headlines_1.6.0.png">
 	</p>
 	
 	<ul>
@@ -97,11 +90,10 @@
 	</li>
 	
 	<li>
-	<b>Datumsanzeige:</b> Hier kann das Format der Datumsspalte
-	der Schlagzeilenliste verändert werden. Für die Benutzung
-	eines benutzerdefinierten Formates muß man die entsprechenden
-	Formatcodes kennen (nur für fortgeschrittene Benutzer: die
-	Formatcodes findet man in der strftime() Manpage).
+	<b>Web-Integration:</b> Hier kann konfiguriert werden 
+	welchen Lesezeichen-Dienst Liferea verwenden soll und
+	welcher Blogsuch-Dienst in der Schlagzeilenansicht 
+	verlinkt werden soll.
 	</li>
 	</ul>
 	
@@ -109,17 +101,17 @@
 	<h4>Browser Einstellungen</h4>
 
 	<p align="center">
-	<img src="help_prefs_browser_1.0.0.png">
+	<img src="help_prefs_browser_1.6.0.png">
 	</p>
 	
 	<ul>
 	<li>
 	<b>Einstellungen für internen Browser:</b> Hier können drei
-	verschiedene Dinge konfiguriert werden. Erstens das Browsermodul,
-	daß Liferea verwenden soll. Zweitens kann eingestellt werden
+	verschiedene Dinge konfiguriert werden. Erstens kann eingestellt werden
 	ob Liferea angeforderte Links im internen oder externen Browser
-	laden soll. Und drittens ob für den internen Browser und die
-	Schlagzeilenanzeige Javascript aktiviert sein soll.
+	laden soll. Zweitens ob für den internen Browser und die
+	Schlagzeilenanzeige Javascript aktiviert sein soll und ob
+	Flash-Inhalte in Schlagzeilen angezeigt werden sollen.
 	</li>
 
 	<li>
@@ -143,12 +135,17 @@
 	<h4>GUI Einstellungen</h4>
 
 	<p align="center">
-	<img src="help_prefs_gui_1.0.0.png">
+	<img src="help_prefs_gui_1.6.0.png">
 	</p>
 
 	<ul>
 	<li>
-	<b>Benachrichtigung:</b> Aktiviert man die erste Option 
+	<b>Benachrichtigung:</b> 
+	Mit der ersten Option können Popups aktiviert werden die
+	über neu heruntergeladene Schlagzeilen informieren.
+	<br/>
+	<br/>
+	Aktiviert man die zweite Option 
 	zeigt Liferea ein sogenanntes Tray Icon im Benachrichtungsfeld
 	(verfügbar z.B. in GNOME und KDE). Das Icon ändert sich sobald
 	neue Schlagzeilen heruntergeladen wurden und wird wieder
@@ -163,15 +160,15 @@
 	
 	<li>
 	<b>Menü-Einstellungen:</b> Hier kann eingestellt werden, ob
-	Liferea nur das Hauptmenü oder nur die Werkzeugleiste oder
-	aber beide anzeigt.
+	Liferea die Werkzeugleiste verbergen soll und wie die 
+	Werkzeugleiste aussieht.
 	</li>	
 	</ul>
 	
 	<h4>Proxy Einstellungen</h4>
 
 	<p align="center">
-	<img src="help_prefs_proxy_1.0.0.png">
+	<img src="help_prefs_proxy_1.6.0.png">
 	</p>
 	
 	<ul>
@@ -183,7 +180,7 @@
 	(sofern das nicht bereits geschehen). Liferea wird dann die
 	GNOME-Proxy-Einstellungen automatisch übernehmen.<br>
 	<br>
- 	Zur Zeit erlaubt Liferea keine Angabe von Rechnern für
+ 	Zur Zeit erlaubt Liferea keine Angabe von Rechnern, für
 	die die Proxy-Einstellungen ignoriert werden soll.
 	</li>
 	</ul>
@@ -191,12 +188,12 @@
 	<h4>Anhänge Einstellungen</h4>
 
 	<p align="center">
-	<img src="help_prefs_enclosures_1.0.0.png">
+	<img src="help_prefs_enclosures_1.6.0.png">
 	</p>
 
 	<p>
 	Diese Registerkarte erlaubt die Konfiguration des
-	Enclosure-Handlings von Liferea. Mehr über Enclosures im
+	Handhabens von Anhängen durch Liferea. Mehr über Anhänge im
 	Abschnitt <a href="enclosures_de.html">Enclosures/Podcasting</a>.
 	</p>
 

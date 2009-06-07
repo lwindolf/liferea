@@ -34,8 +34,8 @@ online</a>.
 
 <dt>Q: Where can I get it?</dt>
 <dd>
-A: The easiest way is to download the source package or one of the
-available binary packages from the <a href="http://sourceforge.net/project/showfiles.php?group_id=87005">SourceForge project homepage</a>.
+A: The easiest way is to download the source package from
+the <a href="http://sourceforge.net/project/showfiles.php?group_id=87005">SourceForge project page</a>.
 But you should also consider checking if your Linux distribution
 provides an own package for Liferea. A list of all known prebuilt
 packages is provided in the <a href="http://liferea.sf.net/install.htm">installation section</a>.
@@ -54,41 +54,33 @@ File Permissions: 0600.</li>
 <li>The ~/.liferea directory depending on the users umask
 can be readable for everyone. This is useful to allow other 
 programs access to the new_subscription pipe.</li>
-<li>The cache directory with the feed contents is user
-readable only. Contents are stored as plain text in XML.</li>
-<li>The Mozilla profile used by Liferea is created once
-according to the users umask setting. This is true for
-other temporary files too.</li>
-<li><b>The Mozilla profile is created on first startup and
-is a practically unconfigured Mozilla profile! This can be
-a significant security problem (Javascript, Software Installation,
-Plugins...). A workaround for this is to replace it with a profile 
-from a securily configured Mozilla installation.</b></li>
-
+<li>The feed cache is saved in a binary database file.</li>
 <li>This list may not be complete!</li>
 </ul>
+</dd>
+
+<dt>Q: Enclosures download with Gwget doesn't work</dt>
+<dd>A: Most likely you have Gwget 1.0.0 or 1.0.1 installed, and
+due to a temporary breakage in the dbus API of Gwget these versions
+don't work with Liferea. Both older and more recent versions of Gwget
+do work.</dd>
+
+<dt>Q: I'm using Firefox/Seamonkey, and when opening items in the browser the focus goes to the browser.</dt>
+<dd>A: That's done by your browser. For changing it, open <tt>about:config</tt> in your browser and set <tt>browser.tabs.loadDivertedInBackground</tt> to true.
 </dd>
 
 <dt>Q: Liferea is buggy! It does not close when I click on the window
 managers close button and the tray icon is activated.</dt>
 <dd>A: 
-We see this as a useful feature and not as a bug. The idea is that
-the GUI consists of two interfaces both serving different usage
-modes of the program. Requesting a close for one these interfaces
-does not mean the whole thing - the program - is terminated. Closing
-the window means "closing the window" for Liferea. It does not mean
-"ending the application".
-<br><br>
-There are several other applications following the same approach:
-MS Outlook, licq, akregator, gaim, mail notification...
-<br><br>
-If you really don't like this behaviour please disable the 
-tray icon.
+This is a pretty disputed topic. We see this as a useful feature, other
+people don't. If you don't like the behaviour you can change it in the
+preferences under "GUI". There you can enable the check box "Terminate
+instead of minimizing to tray icon".
 </dd>
 
 <dt>Q: I want cookies!</dt>
 <dd>A: 
-Liferea supports cookies provided by a text file ~/.liferea_1.2/cookies.txt
+Liferea supports cookies provided by a text file ~/.liferea_1.6/cookies.txt
 which contains cookies in Netscape format. The easiest way is to copy
 the file from your Mozilla profile after you created the cookies
 with the browser.
@@ -96,29 +88,14 @@ with the browser.
 
 <dt>Q: I don't like the HTML styles Liferea uses!
 </dt>
-<dd>A: You can have your own stylesheet. Just place a liferea.css into ~/.liferea_1.2/.
+<dd>A: You can have your own stylesheet. Just place a liferea.css into ~/.liferea_1.6/.
 During startup it will be loaded additionally to the default stylesheets so you can
 modify some or all style definitions. To learn about the styles have a 
 look at the default stylesheets in &lt;install root&gt;/share/liferea/css.
 </dd>
 
-<dt>Q: The Mozilla browser module doesn't work for me!</dt>
-<dd>A: Please check:
-<ul>
-<li>You need the full Mozilla suite to run the Mozilla module. Firefox doesn't work for that purpose. Note that you can have both installed, browse the web with Firefox and use Mozilla just as Liferea's module</li>
-
-<li>If you have any Mozilla installation containing <tt>libgtkembedmoz.so</tt>. It won't work without this library.</li>
-
-<li>The debug output of Liferea (try running with --debug-all) for Mozilla related errors. If you get <tt>libgtkembedmoz.so: cannot open shared object file</tt> the library simply cannot be found. So you need to set <tt>MOZILLA_FIVE_HOME</tt> to the installation path of Liferea. If for example Mozilla was installed in <tt>/usr/local/mozilla-1.7</tt> and you use bash you should add <tt>export MOZILLA_FIVE_HOME=/usr/local/mozilla-1.7</tt> to your <tt>.profile</tt>.</li>
-
-<li>If your Liferea installation was compiled with Mozilla support. In case you did compile yourself you can check this in the summary output of <tt>configure</tt>. Note that some distributions like Debian split the Liferea package into several parts. To use Liferea with Mozilla on a Debian installation you need the packages <tt>liferea</tt> and <tt>liferea-mozilla</tt></li>
-</ul>
-If none of the above could solve your problems. Please try to use Liferea with another Mozilla installation. Between some Mozilla versions there are symbol incompatibilities. As a last resort you can fallback to GtkHTML2. If you have crashes or other problems please contacts us at the <a href="mailto:liferea-devel@lists.sourceforge.net">mailing list</a>.
-</dd>
-
 <dt>Q: How do I see my LiveJournal friend's friends-only entries?</dt>
 <dd>A: Use the authenticated LiveJournal RSS feed. For example use
-
 
 <a href="http://www.livejournal.com/users/pigrew/data/rss?auth=digest">
 http://www.livejournal.com/users/pigrew/data/rss?auth=digest</a>. You
@@ -156,8 +133,10 @@ prompt. This will display the backtrace of the crash, which should be
 sent along with the bug report.</dd>
 
 <dt>Q: Why doesn't Liferea have feature X?</dt>
-<dd>A: Please submit a feature request to our
-<a href="http://sourceforge.net/tracker/?group_id=87005&atid=581687">RFE tracker!</a></dd>
+<dd>A: If you miss a feature in Liferea please consider contributing
+code to implement the feature! Please also consider that the Liferea 
+project aims to provide a simple feed reader that might lack more
+complex functionality.</dd>
 
 </dl>
 
