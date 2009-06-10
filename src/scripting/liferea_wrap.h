@@ -7919,25 +7919,9 @@ fail:
 
 static int _wrap_on_menu_update(lua_State* L) {
   int SWIG_arg = 0;
-  GtkWidget *arg1 = (GtkWidget *) 0 ;
-  gpointer arg2 ;
-  gpointer *argp2 ;
   
-  SWIG_check_num_args("on_menu_update",2,2)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("on_menu_update",1,"GtkWidget *");
-  if(!lua_isuserdata(L,2)) SWIG_fail_arg("on_menu_update",2,"gpointer");
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_GtkWidget,0))){
-    SWIG_fail_ptr("on_menu_update",1,SWIGTYPE_p_GtkWidget);
-  }
-  
-  
-  if (!SWIG_IsOK(SWIG_ConvertPtr(L,2,(void**)&argp2,SWIGTYPE_p_gpointer,0))){
-    SWIG_fail_ptr("on_menu_update",2,SWIGTYPE_p_gpointer);
-  }
-  arg2 = *argp2;
-  
-  on_menu_update(arg1,arg2);
+  SWIG_check_num_args("on_menu_update",0,0)
+  on_menu_update();
   
   return SWIG_arg;
   

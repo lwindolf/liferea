@@ -345,7 +345,7 @@ void on_menu_delete(GtkWidget *widget, gpointer user_data)
 }
 
 void
-on_menu_update (GtkWidget *widget, gpointer user_data)
+on_menu_update (void)
 {
 	if (!feedlist_get_selected ()) {
 		ui_show_error_box (_("You have to select a feed entry"));
