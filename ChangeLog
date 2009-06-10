@@ -52,6 +52,8 @@
 	  (Adrian Bunk)
 	* Avoid "forgetting" the reduced feed list setting on shutdown.
 	  (suggested by Mathie Leplatre, Lars Lindner)
+	* Open the "Decrease/Increase Text Size" menu instead of the
+	  normal link menu on special links. (Adrian Bunk)
 
 	* Updated Brazilian Portuguese translation. (Leon Nardella)
 	* Updated French translation. (Vincent Lefevre)
