@@ -398,34 +398,6 @@ on_default_update_interval_unit_changed (gpointer user_data)
 	on_default_update_interval_value_changed (NULL, NULL);
 }
 
-/*
-void
-on_menuselection_clicked (GtkButton *button, gpointer user_data)
-{
-	gint active_button;
-	
-	active_button = GPOINTER_TO_INT (gtk_object_get_data (GTK_OBJECT(button), "option_number"));
-	switch (active_button) {
-		case 1:
-			conf_set_bool_value (DISABLE_MENUBAR, FALSE);
-			conf_set_bool_value (DISABLE_TOOLBAR, FALSE);
-			break;
-		case 2:
-			conf_set_bool_value (DISABLE_MENUBAR, FALSE);
-			conf_set_bool_value (DISABLE_TOOLBAR, TRUE);
-			break;
-		case 3:
-			conf_set_bool_value (DISABLE_MENUBAR, TRUE);
-			conf_set_bool_value (DISABLE_TOOLBAR, FALSE);
-			break;
-		default:
-			break;
-	}
-	
-	liferea_shell_update_menubar ();
-	liferea_shell_update_toolbar ();
-}*/
-
 static void
 on_updateallfavicons_clicked (GtkButton *button, gpointer user_data)
 {
