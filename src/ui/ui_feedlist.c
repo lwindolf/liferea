@@ -363,7 +363,7 @@ on_menu_update (void)
 	if (node)
 		do_menu_update (node);
 	else
-		ui_show_error_box (_("You have to select a feed entry"));
+		g_warning ("on_menu_update: no feedlist selected");
 }
 
 void
