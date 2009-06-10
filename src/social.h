@@ -42,9 +42,6 @@ void social_free (void);
 
 void social_set_bookmark_site (const gchar *name);
 
-/** For compatibility with 1.4 scripts (calls social_register_bookmark_site()) */
-void social_register_site (gchar *name, gchar *url, gboolean title, gboolean titleFirst);
-
 /**
  * Add a new site to the social bookmarking site list.
  *

@@ -50,13 +50,6 @@ social_register_bookmark_site (const gchar *name, const gchar *url, gboolean tit
 	bookmarkSites = g_slist_append (bookmarkSites, newSite);
 }
 
-/** For compatibility with 1.4 scripts */
-void
-social_register_site (gchar *name, gchar *url, gboolean title, gboolean titleFirst)
-{
-	social_register_bookmark_site (name, url, title, titleFirst);
-}
-
 void
 social_set_bookmark_site (const gchar *name)
 {
