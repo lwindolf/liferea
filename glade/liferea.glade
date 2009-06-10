@@ -1904,7 +1904,7 @@
                                   <widget class="GtkCheckButton" id="enableplugins">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
-                                    <property name="label" translatable="yes">_Enable WebKit plugins.</property>
+                                    <property name="label" translatable="yes">_Enable browser plugins.</property>
                                     <property name="use_underline">True</property>
                                     <property name="response_id">0</property>
                                     <property name="draw_indicator">True</property>
