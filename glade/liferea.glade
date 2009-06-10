@@ -1901,14 +1901,14 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <widget class="GtkCheckButton" id="allowflash">
+                                  <widget class="GtkCheckButton" id="enableplugins">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
-                                    <property name="label" translatable="yes">_Allow Flash in Feeds.</property>
+                                    <property name="label" translatable="yes">_Enable WebKit plugins.</property>
                                     <property name="use_underline">True</property>
                                     <property name="response_id">0</property>
                                     <property name="draw_indicator">True</property>
-                                    <signal name="toggled" handler="on_allowflash_toggled"/>
+                                    <signal name="toggled" handler="on_enableplugins_toggled"/>
                                   </widget>
                                   <packing>
                                     <property name="expand">False</property>

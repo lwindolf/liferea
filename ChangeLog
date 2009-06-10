@@ -8,6 +8,7 @@
 	  normal link menu on special links. (Adrian Bunk)
 	* Fixes SF #2801691: Strip whitespace before URLs.
 	  (Adrian Bunk)
+	* Allow the enabling of WebKit plugins. (Adrian Bunk)
 	
 	* Update German documentation translation. (Lars Lindner)
 

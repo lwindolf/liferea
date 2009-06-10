@@ -398,13 +398,6 @@ render_xml (xmlDocPtr doc, const gchar *xsltName, renderParamPtr paramSet)
 	if (output) {
 		gchar *tmp;
 		
-		/* Disable Flash tags */
-		if (!conf_get_bool_value (ALLOW_FLASH)) {
-			tmp = output;
-			output = xhtml_strip_flash (output);
-			g_free (tmp);
-		}
-	
 		/* Return only the body contents */
 		tmp = strstr (output, "<body");
 		if (tmp) {

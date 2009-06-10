@@ -267,7 +267,7 @@ webkit_new (LifereaHtmlView *htmlview)
 	g_object_set (
 		settings,
 		"enable-plugins",
-		FALSE,
+		conf_get_bool_value (ENABLE_PLUGINS),
 		NULL
 	);
 	

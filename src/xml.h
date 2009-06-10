@@ -77,15 +77,6 @@ gchar * xhtml_extract (xmlNodePtr cur, gint xhtmlMode, const gchar *defaultBase)
 gchar * xhtml_strip_dhtml (const gchar *html);
 
 /**
- * Strips Flash embedding tags from the given HTML string.
- *
- * @param html	some HTML content
- *
- * @return newly allocated stripped HTML string
- */
-gchar * xhtml_strip_flash (const gchar *html);
-
-/**
  * Convert the given string to proper XHTML content.
  * Note: this function does not respect relative URLs
  * and is to be used for cache migration 1.0 -> 1.1 only!

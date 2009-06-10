@@ -238,7 +238,6 @@ xhtml_is_well_formed (const gchar *data)
 }
 
 static GSList *dhtml_strippers = NULL;
-static GSList *flash_strippers = NULL;
 
 static void
 xhtml_stripper_add (GSList **strippers, const gchar *pattern)
@@ -289,17 +288,6 @@ xhtml_strip_dhtml (const gchar *html)
 	}
 	
 	return xhtml_strip (html, dhtml_strippers);
-}
-
-gchar *
-xhtml_strip_flash (const gchar *html)
-{
-	if (!flash_strippers) {
-		xhtml_stripper_add (&flash_strippers, "<\\s*object[^>]*\\s*>.*</\\s*object\\s*>");
-		xhtml_stripper_add (&flash_strippers, "<\\s*embed[^>]*\\s*>.*</\\s*embed\\s*>");
-	}	
-
-	return xhtml_strip (html, flash_strippers);
 }
 
 typedef struct {
