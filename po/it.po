@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.5.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-02 21:47+0300\n"
+"POT-Creation-Date: 2009-06-11 01:16+0300\n"
 "PO-Revision-Date: 2009-05-30 16:46+0200\n"
 "Last-Translator: Gianvito Cavasoli <janvitus@ubuntu-it.org>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -730,11 +730,11 @@ msgstr "Errore: non c'è il file «%s»"
 msgid "New Search Folder"
 msgstr "Nuova cartella di ricerca"
 
-#: ../src/xml.c:426
+#: ../src/xml.c:414
 msgid "[There were more errors. Output was truncated!]"
 msgstr "[Non si sono verificati più errori. L'output è stato troncato.]"
 
-#: ../src/xml.c:587
+#: ../src/xml.c:575
 msgid "XML Parser: Could not parse document:\n"
 msgstr "Analizzatore XML: impossibile analizzare il documento:\n"
 
@@ -1060,7 +1060,7 @@ msgstr "Nu_ova sottoscrizione..."
 msgid "Adds a subscription to the feed list."
 msgstr "Aggiunge una sottoscrizione all'elenco dei notiziari."
 
-#: ../src/ui/liferea_shell.c:893 ../src/ui/ui_popup.c:285
+#: ../src/ui/liferea_shell.c:893 ../src/ui/ui_popup.c:279
 msgid "New _Folder..."
 msgstr "Nuova _cartella..."
 
@@ -1068,7 +1068,7 @@ msgstr "Nuova _cartella..."
 msgid "Adds a folder to the feed list."
 msgstr "Aggiunge una cartella all'elenco dei notiziari."
 
-#: ../src/ui/liferea_shell.c:894 ../src/ui/ui_popup.c:288
+#: ../src/ui/liferea_shell.c:894 ../src/ui/ui_popup.c:282
 msgid "New S_earch Folder..."
 msgstr "Nuova cartella ric_erca..."
 
@@ -1084,7 +1084,7 @@ msgstr "Nuova fo_nte..."
 msgid "Adds a new feed list source."
 msgstr "Aggiunge una nuova fonte dell'elenco dei notiziari."
 
-#: ../src/ui/liferea_shell.c:896 ../src/ui/ui_popup.c:290
+#: ../src/ui/liferea_shell.c:896 ../src/ui/ui_popup.c:284
 msgid "New _News Bin..."
 msgstr "Nuovo archivio no_tizie..."
 
@@ -1103,7 +1103,7 @@ msgstr ""
 "Segna tutti gli articoli selezionati nell'elenco dei notiziari alla voce «/» "
 "come letti."
 
-#: ../src/ui/liferea_shell.c:902 ../src/ui/ui_popup.c:266
+#: ../src/ui/liferea_shell.c:902 ../src/ui/ui_popup.c:260
 msgid "_Update"
 msgstr "_Aggiorna"
 
@@ -1172,11 +1172,11 @@ msgid "This option allows you to disable subscription updating."
 msgstr ""
 "Questa opzione consente di disabilitare l'aggiornamento delle sottoscrizioni."
 
-#: ../src/ui/liferea_shell.c:1305
+#: ../src/ui/liferea_shell.c:1308
 msgid "Liferea - Linux Feed Reader"
 msgstr "Liferea - Linux Feed Reader"
 
-#: ../src/ui/liferea_shell.c:1307
+#: ../src/ui/liferea_shell.c:1310
 msgid ""
 "<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news "
 "feeds.</p><p>The left pane contains the list of your subscriptions. To add a "
@@ -1237,29 +1237,29 @@ msgstr "Fonte sconosciuta"
 msgid "Couldn't find pixmap file: %s"
 msgstr "Impossibile trovare il file pixmap: %s"
 
-#: ../src/ui/ui_feedlist.c:307
+#: ../src/ui/ui_feedlist.c:309
 msgid "Deleting entry"
 msgstr "Eliminazione voce"
 
-#: ../src/ui/ui_feedlist.c:308
+#: ../src/ui/ui_feedlist.c:310
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "Eliminare veramente «%s» e i suoi contenuti?"
 
-#: ../src/ui/ui_feedlist.c:308
+#: ../src/ui/ui_feedlist.c:310
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Eliminare veramente «%s»?"
 
-#: ../src/ui/ui_feedlist.c:320
+#: ../src/ui/ui_feedlist.c:322
 msgid "Deletion Confirmation"
 msgstr "Conferma di eliminazione"
 
-#: ../src/ui/ui_feedlist.c:349
+#: ../src/ui/ui_feedlist.c:351
 msgid "You have to select a feed entry"
 msgstr "Selezionare una voce di notiziario"
 
-#: ../src/ui/ui_feedlist.c:356 ../src/ui/ui_feedlist.c:365
+#: ../src/ui/ui_feedlist.c:358 ../src/ui/ui_feedlist.c:367
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Modalità non in rete. Nessun aggiornamento è possibile."
 
@@ -1354,31 +1354,31 @@ msgstr "Ag_giorna tutto"
 msgid "_Show Liferea"
 msgstr "Mo_stra finestra"
 
-#: ../src/ui/ui_popup.c:268
+#: ../src/ui/ui_popup.c:262
 msgid "_Update Folder"
 msgstr "A_ggiorna cartella"
 
-#: ../src/ui/ui_popup.c:270
+#: ../src/ui/ui_popup.c:264
 msgid "_Mark All As Read"
 msgstr "Se_gna tutto come letto"
 
-#: ../src/ui/ui_popup.c:280
+#: ../src/ui/ui_popup.c:274
 msgid "_New"
 msgstr "_Nuovo"
 
-#: ../src/ui/ui_popup.c:282
+#: ../src/ui/ui_popup.c:276
 msgid "New _Subscription..."
 msgstr "Nuova sott_oscrizione..."
 
-#: ../src/ui/ui_popup.c:289
+#: ../src/ui/ui_popup.c:283
 msgid "New S_ource..."
 msgstr "Nuova fo_nte..."
 
-#: ../src/ui/ui_popup.c:299
+#: ../src/ui/ui_popup.c:293
 msgid "_Delete"
 msgstr "Eli_mina"
 
-#: ../src/ui/ui_popup.c:300
+#: ../src/ui/ui_popup.c:294
 msgid "_Properties..."
 msgstr "Pr_oprietà..."
 
@@ -1525,7 +1525,7 @@ msgstr "Nome script"
 msgid "No script selected!"
 msgstr "Nessuno script selezionato."
 
-#: ../src/ui/ui_search.c:135
+#: ../src/ui/ui_search.c:128
 msgid "Create a new search feed."
 msgstr "Crea un nuovo notiziario di ricerca."
 
@@ -2226,58 +2226,58 @@ msgid "_All Rules Must Match"
 msgstr "_Tutte le regole devono corrispondere"
 
 #: ../glade/liferea.glade.h:111
-msgid "_Allow Flash in Feeds."
-msgstr "Con_sentire il Flash nei notiziari."
-
-#: ../glade/liferea.glade.h:112
 msgid "_Auto Detect (GNOME or environment)"
 msgstr "Rile_vare automaticamente (GNOME o ambiente)"
 
-#: ../glade/liferea.glade.h:113
+#: ../glade/liferea.glade.h:112
 msgid "_Automatically download all enclosures of this feed."
 msgstr "Scaricare automaticamen_te tutti gli allegati di questo notiziario."
 
-#: ../glade/liferea.glade.h:114
+#: ../glade/liferea.glade.h:113
 msgid "_Browse"
 msgstr "Sce_gli"
 
-#: ../glade/liferea.glade.h:115
+#: ../glade/liferea.glade.h:114
 msgid "_Browser:"
 msgstr "_Browser web:"
 
-#: ../glade/liferea.glade.h:116 ../glade/new_subscription.glade.h:10
+#: ../glade/liferea.glade.h:115 ../glade/new_subscription.glade.h:10
 msgid "_Command"
 msgstr "Coman_do"
 
-#: ../glade/liferea.glade.h:117
+#: ../glade/liferea.glade.h:116
 msgid "_Default cache settings"
 msgstr "Impostazioni di cache prede_finite"
 
-#: ../glade/liferea.glade.h:118
+#: ../glade/liferea.glade.h:117
 msgid "_Disable Javascript."
 msgstr "Disa_bilitare Javascript."
 
-#: ../glade/liferea.glade.h:119
+#: ../glade/liferea.glade.h:118
 msgid "_Do this automatically for enclosures like this from now on."
 msgstr ""
 "Automaticamente app_licare questa scelta per gli allegati come questo d'ora "
 "in poi."
 
-#: ../glade/liferea.glade.h:120
+#: ../glade/liferea.glade.h:119
 msgid "_Don't update this feed automatically."
 msgstr "N_on aggiornare automaticamente questo notiziario."
 
-#: ../glade/liferea.glade.h:121 ../glade/new_subscription.glade.h:11
+#: ../glade/liferea.glade.h:120 ../glade/new_subscription.glade.h:11
 msgid "_Don't use proxy for download"
 msgstr "No_n usare il proxy per scaricare"
 
-#: ../glade/liferea.glade.h:122
+#: ../glade/liferea.glade.h:121
 msgid "_Download using"
 msgstr "Scari_care usando"
 
-#: ../glade/liferea.glade.h:123
+#: ../glade/liferea.glade.h:122
 msgid "_Enable Local LAN Synchronization"
 msgstr "A_bilitare sincronizzazione della LAN locale"
+
+#: ../glade/liferea.glade.h:123
+msgid "_Enable browser plugins."
+msgstr ""
 
 #: ../glade/liferea.glade.h:124
 msgid "_Enforce popup notification for this subscription."
@@ -2459,6 +2459,9 @@ msgid ""
 msgstr ""
 "Inserire l'indirizzo di un sito web per usare il rilevamento automatico del "
 "notiziario, oppure, se si è a conoscenza, l'indirizzo esatto del notiziario."
+
+#~ msgid "_Allow Flash in Feeds."
+#~ msgstr "Con_sentire il Flash nei notiziari."
 
 #, fuzzy
 #~ msgid "FAILED to download enclosure: \"%s\""

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-02 21:47+0300\n"
+"POT-Creation-Date: 2009-06-11 01:16+0300\n"
 "PO-Revision-Date: 2007-07-18 10:23+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -755,11 +755,11 @@ msgstr "Fel: Filen \"%s\" finns inte"
 msgid "New Search Folder"
 msgstr "Ny sökmapp"
 
-#: ../src/xml.c:426
+#: ../src/xml.c:414
 msgid "[There were more errors. Output was truncated!]"
 msgstr "[Det fanns ytterligare fel. Utmatningen har kortats ned!]"
 
-#: ../src/xml.c:587
+#: ../src/xml.c:575
 msgid "XML Parser: Could not parse document:\n"
 msgstr "XML-tolkare: Kunde inte tolka dokumentet:\n"
 
@@ -1087,7 +1087,7 @@ msgstr "_Ny prenumeration..."
 msgid "Adds a subscription to the feed list."
 msgstr "Lägger till en prenumeration till kanallistan."
 
-#: ../src/ui/liferea_shell.c:893 ../src/ui/ui_popup.c:285
+#: ../src/ui/liferea_shell.c:893 ../src/ui/ui_popup.c:279
 msgid "New _Folder..."
 msgstr "Ny _mapp..."
 
@@ -1095,7 +1095,7 @@ msgstr "Ny _mapp..."
 msgid "Adds a folder to the feed list."
 msgstr "Lägger till en mapp till kanallistan."
 
-#: ../src/ui/liferea_shell.c:894 ../src/ui/ui_popup.c:288
+#: ../src/ui/liferea_shell.c:894 ../src/ui/ui_popup.c:282
 msgid "New S_earch Folder..."
 msgstr "Ny sö_kmapp..."
 
@@ -1111,7 +1111,7 @@ msgstr "Ny _källa..."
 msgid "Adds a new feed list source."
 msgstr "Lägger till en ny kanallistkälla."
 
-#: ../src/ui/liferea_shell.c:896 ../src/ui/ui_popup.c:290
+#: ../src/ui/liferea_shell.c:896 ../src/ui/ui_popup.c:284
 msgid "New _News Bin..."
 msgstr "Ny _nyhetskorg..."
 
@@ -1132,7 +1132,7 @@ msgstr ""
 "Markera alla artiklar i den valda prenumerationen eller alla prenumerationer "
 "i den valda mappen som lästa."
 
-#: ../src/ui/liferea_shell.c:902 ../src/ui/ui_popup.c:266
+#: ../src/ui/liferea_shell.c:902 ../src/ui/ui_popup.c:260
 msgid "_Update"
 msgstr "_Uppdatera"
 
@@ -1201,11 +1201,11 @@ msgstr "_Arbeta frånkopplat"
 msgid "This option allows you to disable subscription updating."
 msgstr "Detta alternativ låter dig inaktivera prenumerationsuppdatering."
 
-#: ../src/ui/liferea_shell.c:1305
+#: ../src/ui/liferea_shell.c:1308
 msgid "Liferea - Linux Feed Reader"
 msgstr "Liferea - Nyhetsläsare för Linux"
 
-#: ../src/ui/liferea_shell.c:1307
+#: ../src/ui/liferea_shell.c:1310
 msgid ""
 "<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news "
 "feeds.</p><p>The left pane contains the list of your subscriptions. To add a "
@@ -1265,29 +1265,29 @@ msgstr "Okänd källa"
 msgid "Couldn't find pixmap file: %s"
 msgstr "Kunde inte hitta bildfilen: %s"
 
-#: ../src/ui/ui_feedlist.c:307
+#: ../src/ui/ui_feedlist.c:309
 msgid "Deleting entry"
 msgstr "Tar bort post"
 
-#: ../src/ui/ui_feedlist.c:308
+#: ../src/ui/ui_feedlist.c:310
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "Är du säker på att du vill ta bort \"%s\" och dess innehåll?"
 
-#: ../src/ui/ui_feedlist.c:308
+#: ../src/ui/ui_feedlist.c:310
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Är du säker på att du vill ta bort \"%s\"?"
 
-#: ../src/ui/ui_feedlist.c:320
+#: ../src/ui/ui_feedlist.c:322
 msgid "Deletion Confirmation"
 msgstr "Bekräftelse för borttagning"
 
-#: ../src/ui/ui_feedlist.c:349
+#: ../src/ui/ui_feedlist.c:351
 msgid "You have to select a feed entry"
 msgstr "Du måste markera en kanal"
 
-#: ../src/ui/ui_feedlist.c:356 ../src/ui/ui_feedlist.c:365
+#: ../src/ui/ui_feedlist.c:358 ../src/ui/ui_feedlist.c:367
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea är i frånkopplat läge. Inga uppdateringar är möjliga."
 
@@ -1397,37 +1397,37 @@ msgstr "/_Uppdatera alla"
 msgid "_Show Liferea"
 msgstr "Liferea"
 
-#: ../src/ui/ui_popup.c:268
+#: ../src/ui/ui_popup.c:262
 #, fuzzy
 msgid "_Update Folder"
 msgstr "/_Uppdatera mapp"
 
-#: ../src/ui/ui_popup.c:270
+#: ../src/ui/ui_popup.c:264
 #, fuzzy
 msgid "_Mark All As Read"
 msgstr "/_Markera alla som lästa"
 
-#: ../src/ui/ui_popup.c:280
+#: ../src/ui/ui_popup.c:274
 #, fuzzy
 msgid "_New"
 msgstr "/_Ny"
 
-#: ../src/ui/ui_popup.c:282
+#: ../src/ui/ui_popup.c:276
 #, fuzzy
 msgid "New _Subscription..."
 msgstr "_Ny prenumeration..."
 
-#: ../src/ui/ui_popup.c:289
+#: ../src/ui/ui_popup.c:283
 #, fuzzy
 msgid "New S_ource..."
 msgstr "Ny _källa..."
 
-#: ../src/ui/ui_popup.c:299
+#: ../src/ui/ui_popup.c:293
 #, fuzzy
 msgid "_Delete"
 msgstr "/_Ta bort"
 
-#: ../src/ui/ui_popup.c:300
+#: ../src/ui/ui_popup.c:294
 #, fuzzy
 msgid "_Properties..."
 msgstr "_Egenskaper..."
@@ -1580,7 +1580,7 @@ msgstr "Skriptnamn"
 msgid "No script selected!"
 msgstr "Inget skript har markerats!"
 
-#: ../src/ui/ui_search.c:135
+#: ../src/ui/ui_search.c:128
 msgid "Create a new search feed."
 msgstr "Skapa en ny sökkanal."
 
@@ -2282,56 +2282,56 @@ msgid "_All Rules Must Match"
 msgstr ""
 
 #: ../glade/liferea.glade.h:111
-msgid "_Allow Flash in Feeds."
-msgstr ""
-
-#: ../glade/liferea.glade.h:112
 msgid "_Auto Detect (GNOME or environment)"
 msgstr "_Identifiera automatiskt (GNOME eller miljö)"
 
-#: ../glade/liferea.glade.h:113
+#: ../glade/liferea.glade.h:112
 msgid "_Automatically download all enclosures of this feed."
 msgstr "Hämta _automatiskt alla kanalens bilagor."
 
-#: ../glade/liferea.glade.h:114
+#: ../glade/liferea.glade.h:113
 msgid "_Browse"
 msgstr "_Bläddra"
 
-#: ../glade/liferea.glade.h:115
+#: ../glade/liferea.glade.h:114
 msgid "_Browser:"
 msgstr "_Webbläsare:"
 
-#: ../glade/liferea.glade.h:116 ../glade/new_subscription.glade.h:10
+#: ../glade/liferea.glade.h:115 ../glade/new_subscription.glade.h:10
 msgid "_Command"
 msgstr "_Kommando"
 
-#: ../glade/liferea.glade.h:117
+#: ../glade/liferea.glade.h:116
 msgid "_Default cache settings"
 msgstr "_Standardinställningar för cache"
 
-#: ../glade/liferea.glade.h:118
+#: ../glade/liferea.glade.h:117
 msgid "_Disable Javascript."
 msgstr "_Inaktivera Javascript."
 
-#: ../glade/liferea.glade.h:119
+#: ../glade/liferea.glade.h:118
 #, fuzzy
 msgid "_Do this automatically for enclosures like this from now on."
 msgstr "_Gör detta automatiskt för denna typ av filer från och med nu."
 
-#: ../glade/liferea.glade.h:120
+#: ../glade/liferea.glade.h:119
 msgid "_Don't update this feed automatically."
 msgstr "Uppdatera _inte denna kanal automatiskt."
 
-#: ../glade/liferea.glade.h:121 ../glade/new_subscription.glade.h:11
+#: ../glade/liferea.glade.h:120 ../glade/new_subscription.glade.h:11
 msgid "_Don't use proxy for download"
 msgstr "Anvä_nd inte proxy för hämtning"
 
-#: ../glade/liferea.glade.h:122
+#: ../glade/liferea.glade.h:121
 msgid "_Download using"
 msgstr "_Hämta med"
 
-#: ../glade/liferea.glade.h:123
+#: ../glade/liferea.glade.h:122
 msgid "_Enable Local LAN Synchronization"
+msgstr ""
+
+#: ../glade/liferea.glade.h:123
+msgid "_Enable browser plugins."
 msgstr ""
 
 #: ../glade/liferea.glade.h:124

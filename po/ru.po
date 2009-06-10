@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 1.4.24\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-02 21:47+0300\n"
+"POT-Creation-Date: 2009-06-11 01:16+0300\n"
 "PO-Revision-Date: 2009-01-31 22:14+0200\n"
 "Last-Translator: Sergey Rudchenko <sergey.rudchenko@gmail.com>\n"
 "Language-Team: Russian\n"
@@ -729,11 +729,11 @@ msgstr "Ошибка: файл \"%s\" не существует"
 msgid "New Search Folder"
 msgstr "Добавить поисковую папку"
 
-#: ../src/xml.c:426
+#: ../src/xml.c:414
 msgid "[There were more errors. Output was truncated!]"
 msgstr "[Слишком много ошибок. Вывод урезан!]"
 
-#: ../src/xml.c:587
+#: ../src/xml.c:575
 msgid "XML Parser: Could not parse document:\n"
 msgstr "XML Parser: Не могу распарсить документ:\n"
 
@@ -1060,7 +1060,7 @@ msgstr "Добавить ленту"
 msgid "Adds a subscription to the feed list."
 msgstr "Добавить подписку в список лент."
 
-#: ../src/ui/liferea_shell.c:893 ../src/ui/ui_popup.c:285
+#: ../src/ui/liferea_shell.c:893 ../src/ui/ui_popup.c:279
 msgid "New _Folder..."
 msgstr "Добавить папку"
 
@@ -1068,7 +1068,7 @@ msgstr "Добавить папку"
 msgid "Adds a folder to the feed list."
 msgstr "Добавить папку в список лент."
 
-#: ../src/ui/liferea_shell.c:894 ../src/ui/ui_popup.c:288
+#: ../src/ui/liferea_shell.c:894 ../src/ui/ui_popup.c:282
 msgid "New S_earch Folder..."
 msgstr "Добавить папку поиска"
 
@@ -1084,7 +1084,7 @@ msgstr "Добавить источник лент"
 msgid "Adds a new feed list source."
 msgstr "Добавить внешний источник новостных лент."
 
-#: ../src/ui/liferea_shell.c:896 ../src/ui/ui_popup.c:290
+#: ../src/ui/liferea_shell.c:896 ../src/ui/ui_popup.c:284
 msgid "New _News Bin..."
 msgstr "Добавить ящик"
 
@@ -1104,7 +1104,7 @@ msgid ""
 msgstr ""
 "Отметить как прочитанное выбранную ленту или все ленты в выбранной папке."
 
-#: ../src/ui/liferea_shell.c:902 ../src/ui/ui_popup.c:266
+#: ../src/ui/liferea_shell.c:902 ../src/ui/ui_popup.c:260
 msgid "_Update"
 msgstr "Обновить"
 
@@ -1171,11 +1171,11 @@ msgstr "Работать автономно"
 msgid "This option allows you to disable subscription updating."
 msgstr "Позволяет запретить обновление ленты."
 
-#: ../src/ui/liferea_shell.c:1305
+#: ../src/ui/liferea_shell.c:1308
 msgid "Liferea - Linux Feed Reader"
 msgstr "Liferea — читалка новостей для Linux"
 
-#: ../src/ui/liferea_shell.c:1307
+#: ../src/ui/liferea_shell.c:1310
 msgid ""
 "<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news "
 "feeds.</p><p>The left pane contains the list of your subscriptions. To add a "
@@ -1233,29 +1233,29 @@ msgstr "Неизвестный источник"
 msgid "Couldn't find pixmap file: %s"
 msgstr "Не найден файл с изображением: %s"
 
-#: ../src/ui/ui_feedlist.c:307
+#: ../src/ui/ui_feedlist.c:309
 msgid "Deleting entry"
 msgstr "Удалить"
 
-#: ../src/ui/ui_feedlist.c:308
+#: ../src/ui/ui_feedlist.c:310
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "Вы уверены, что хотите удалить \"%s\" и ее содержимое?"
 
-#: ../src/ui/ui_feedlist.c:308
+#: ../src/ui/ui_feedlist.c:310
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Вы уверены, что хотите удалить \"%s\"?"
 
-#: ../src/ui/ui_feedlist.c:320
+#: ../src/ui/ui_feedlist.c:322
 msgid "Deletion Confirmation"
 msgstr "Подверждение удаления"
 
-#: ../src/ui/ui_feedlist.c:349
+#: ../src/ui/ui_feedlist.c:351
 msgid "You have to select a feed entry"
 msgstr "Вы выбрали запись"
 
-#: ../src/ui/ui_feedlist.c:356 ../src/ui/ui_feedlist.c:365
+#: ../src/ui/ui_feedlist.c:358 ../src/ui/ui_feedlist.c:367
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea в автономном режиме. Обновление невозможно."
 
@@ -1364,37 +1364,37 @@ msgstr "/Обновить все"
 msgid "_Show Liferea"
 msgstr ""
 
-#: ../src/ui/ui_popup.c:268
+#: ../src/ui/ui_popup.c:262
 #, fuzzy
 msgid "_Update Folder"
 msgstr "/Обновить папку"
 
-#: ../src/ui/ui_popup.c:270
+#: ../src/ui/ui_popup.c:264
 #, fuzzy
 msgid "_Mark All As Read"
 msgstr "/Отметить все как прочтенные"
 
-#: ../src/ui/ui_popup.c:280
+#: ../src/ui/ui_popup.c:274
 #, fuzzy
 msgid "_New"
 msgstr "/Добавить"
 
-#: ../src/ui/ui_popup.c:282
+#: ../src/ui/ui_popup.c:276
 #, fuzzy
 msgid "New _Subscription..."
 msgstr "Добавить ленту"
 
-#: ../src/ui/ui_popup.c:289
+#: ../src/ui/ui_popup.c:283
 #, fuzzy
 msgid "New S_ource..."
 msgstr "Добавить источник лент"
 
-#: ../src/ui/ui_popup.c:299
+#: ../src/ui/ui_popup.c:293
 #, fuzzy
 msgid "_Delete"
 msgstr "/Удалить"
 
-#: ../src/ui/ui_popup.c:300
+#: ../src/ui/ui_popup.c:294
 #, fuzzy
 msgid "_Properties..."
 msgstr "/Свойства ..."
@@ -1542,7 +1542,7 @@ msgstr "Название скрипта"
 msgid "No script selected!"
 msgstr "Скрипт не выбран!"
 
-#: ../src/ui/ui_search.c:135
+#: ../src/ui/ui_search.c:128
 msgid "Create a new search feed."
 msgstr "Добавить поисковую ленту."
 
@@ -2237,56 +2237,56 @@ msgid "_All Rules Must Match"
 msgstr ""
 
 #: ../glade/liferea.glade.h:111
-msgid "_Allow Flash in Feeds."
-msgstr ""
-
-#: ../glade/liferea.glade.h:112
 msgid "_Auto Detect (GNOME or environment)"
 msgstr "Определять автоматически"
 
-#: ../glade/liferea.glade.h:113
+#: ../glade/liferea.glade.h:112
 msgid "_Automatically download all enclosures of this feed."
 msgstr "Автоматически получать все вложения для этой ленты"
 
-#: ../glade/liferea.glade.h:114
+#: ../glade/liferea.glade.h:113
 msgid "_Browse"
 msgstr "Просмотр"
 
-#: ../glade/liferea.glade.h:115
+#: ../glade/liferea.glade.h:114
 msgid "_Browser:"
 msgstr "Браузер"
 
-#: ../glade/liferea.glade.h:116 ../glade/new_subscription.glade.h:10
+#: ../glade/liferea.glade.h:115 ../glade/new_subscription.glade.h:10
 msgid "_Command"
 msgstr "Команда"
 
-#: ../glade/liferea.glade.h:117
+#: ../glade/liferea.glade.h:116
 msgid "_Default cache settings"
 msgstr "Использовать общие настройки"
 
-#: ../glade/liferea.glade.h:118
+#: ../glade/liferea.glade.h:117
 msgid "_Disable Javascript."
 msgstr "Разрешить Javascript"
 
-#: ../glade/liferea.glade.h:119
+#: ../glade/liferea.glade.h:118
 #, fuzzy
 msgid "_Do this automatically for enclosures like this from now on."
 msgstr "Делать это автоматически для всех таких файлов"
 
-#: ../glade/liferea.glade.h:120
+#: ../glade/liferea.glade.h:119
 msgid "_Don't update this feed automatically."
 msgstr "Не обновлять эту ленту автоматически"
 
-#: ../glade/liferea.glade.h:121 ../glade/new_subscription.glade.h:11
+#: ../glade/liferea.glade.h:120 ../glade/new_subscription.glade.h:11
 msgid "_Don't use proxy for download"
 msgstr "Не использовать прокси"
 
-#: ../glade/liferea.glade.h:122
+#: ../glade/liferea.glade.h:121
 msgid "_Download using"
 msgstr "Получить при помощи"
 
-#: ../glade/liferea.glade.h:123
+#: ../glade/liferea.glade.h:122
 msgid "_Enable Local LAN Synchronization"
+msgstr ""
+
+#: ../glade/liferea.glade.h:123
+msgid "_Enable browser plugins."
 msgstr ""
 
 #: ../glade/liferea.glade.h:124

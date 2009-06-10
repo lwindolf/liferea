@@ -27,7 +27,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-02 21:47+0300\n"
+"POT-Creation-Date: 2009-06-11 01:16+0300\n"
 "PO-Revision-Date: 2007-07-06 14:09-0500\n"
 "Last-Translator: Rodrigo Gallardo <rodrigo@nul-unu.com>\n"
 "Language-Team: Spanish <en@li.org>\n"
@@ -777,11 +777,11 @@ msgstr "Error: No existe el archivo «%s»"
 msgid "New Search Folder"
 msgstr "Nueva carpeta virtual"
 
-#: ../src/xml.c:426
+#: ../src/xml.c:414
 msgid "[There were more errors. Output was truncated!]"
 msgstr "[Hay más errores. La salida se ha truncado]"
 
-#: ../src/xml.c:587
+#: ../src/xml.c:575
 msgid "XML Parser: Could not parse document:\n"
 msgstr "XML Parser: No se pudo procesar el documento:\n"
 
@@ -1109,7 +1109,7 @@ msgstr "_Nueva suscripción..."
 msgid "Adds a subscription to the feed list."
 msgstr "Añade una suscripción a la lista de canales."
 
-#: ../src/ui/liferea_shell.c:893 ../src/ui/ui_popup.c:285
+#: ../src/ui/liferea_shell.c:893 ../src/ui/ui_popup.c:279
 msgid "New _Folder..."
 msgstr "Nueva _carpeta..."
 
@@ -1117,7 +1117,7 @@ msgstr "Nueva _carpeta..."
 msgid "Adds a folder to the feed list."
 msgstr "Añade una carpeta a la lista de canales."
 
-#: ../src/ui/liferea_shell.c:894 ../src/ui/ui_popup.c:288
+#: ../src/ui/liferea_shell.c:894 ../src/ui/ui_popup.c:282
 msgid "New S_earch Folder..."
 msgstr "Nueva carpeta de _búsqueda..."
 
@@ -1133,7 +1133,7 @@ msgstr "Nueva _fuente..."
 msgid "Adds a new feed list source."
 msgstr "Agrega una nueva fuente de listas de canales."
 
-#: ../src/ui/liferea_shell.c:896 ../src/ui/ui_popup.c:290
+#: ../src/ui/liferea_shell.c:896 ../src/ui/ui_popup.c:284
 msgid "New _News Bin..."
 msgstr "Nueva ban_deja..."
 
@@ -1154,7 +1154,7 @@ msgstr ""
 "Marca como leídos todos los artículos del canal seleccionado o, en el caso "
 "de una carpeta, de todos sus canales."
 
-#: ../src/ui/liferea_shell.c:902 ../src/ui/ui_popup.c:266
+#: ../src/ui/liferea_shell.c:902 ../src/ui/ui_popup.c:260
 msgid "_Update"
 msgstr "_Actualizar"
 
@@ -1222,11 +1222,11 @@ msgstr "Trabajar sin conexión"
 msgid "This option allows you to disable subscription updating."
 msgstr "Esta opción permite deshabilitar la actualización de suscripciones."
 
-#: ../src/ui/liferea_shell.c:1305
+#: ../src/ui/liferea_shell.c:1308
 msgid "Liferea - Linux Feed Reader"
 msgstr "Liferea, lector de noticias"
 
-#: ../src/ui/liferea_shell.c:1307
+#: ../src/ui/liferea_shell.c:1310
 msgid ""
 "<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news "
 "feeds.</p><p>The left pane contains the list of your subscriptions. To add a "
@@ -1286,29 +1286,29 @@ msgstr "Fuente desconocida"
 msgid "Couldn't find pixmap file: %s"
 msgstr "No se pudo encontrar la imagen: %s"
 
-#: ../src/ui/ui_feedlist.c:307
+#: ../src/ui/ui_feedlist.c:309
 msgid "Deleting entry"
 msgstr "Borrando entrada"
 
-#: ../src/ui/ui_feedlist.c:308
+#: ../src/ui/ui_feedlist.c:310
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "¿Realmente desea eliminar «%s» y todos sus contenidos?"
 
-#: ../src/ui/ui_feedlist.c:308
+#: ../src/ui/ui_feedlist.c:310
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "¿Realmente desea eliminar «%s»?"
 
-#: ../src/ui/ui_feedlist.c:320
+#: ../src/ui/ui_feedlist.c:322
 msgid "Deletion Confirmation"
 msgstr "Confirmar eliminación"
 
-#: ../src/ui/ui_feedlist.c:349
+#: ../src/ui/ui_feedlist.c:351
 msgid "You have to select a feed entry"
 msgstr "Debe elegir un canal"
 
-#: ../src/ui/ui_feedlist.c:356 ../src/ui/ui_feedlist.c:365
+#: ../src/ui/ui_feedlist.c:358 ../src/ui/ui_feedlist.c:367
 msgid "Liferea is in offline mode. No update possible."
 msgstr ""
 "Liferea está trabajando sin conexión. No se pueden actualizar las fuentes"
@@ -1419,37 +1419,37 @@ msgstr "/_Actualizar todo"
 msgid "_Show Liferea"
 msgstr "Liferea"
 
-#: ../src/ui/ui_popup.c:268
+#: ../src/ui/ui_popup.c:262
 #, fuzzy
 msgid "_Update Folder"
 msgstr "/_Actualizar carpeta"
 
-#: ../src/ui/ui_popup.c:270
+#: ../src/ui/ui_popup.c:264
 #, fuzzy
 msgid "_Mark All As Read"
 msgstr "/_Marcar todos como leídos"
 
-#: ../src/ui/ui_popup.c:280
+#: ../src/ui/ui_popup.c:274
 #, fuzzy
 msgid "_New"
 msgstr "/_Nueva"
 
-#: ../src/ui/ui_popup.c:282
+#: ../src/ui/ui_popup.c:276
 #, fuzzy
 msgid "New _Subscription..."
 msgstr "_Nueva suscripción..."
 
-#: ../src/ui/ui_popup.c:289
+#: ../src/ui/ui_popup.c:283
 #, fuzzy
 msgid "New S_ource..."
 msgstr "Nueva _fuente..."
 
-#: ../src/ui/ui_popup.c:299
+#: ../src/ui/ui_popup.c:293
 #, fuzzy
 msgid "_Delete"
 msgstr "/_Eliminar"
 
-#: ../src/ui/ui_popup.c:300
+#: ../src/ui/ui_popup.c:294
 #, fuzzy
 msgid "_Properties..."
 msgstr "/_Propiedades..."
@@ -1602,7 +1602,7 @@ msgstr "Nombre del «script»"
 msgid "No script selected!"
 msgstr "No hay un «script» seleccionado."
 
-#: ../src/ui/ui_search.c:135
+#: ../src/ui/ui_search.c:128
 msgid "Create a new search feed."
 msgstr "Crear un nuevo canal de búsqueda."
 
@@ -2306,56 +2306,56 @@ msgid "_All Rules Must Match"
 msgstr ""
 
 #: ../glade/liferea.glade.h:111
-msgid "_Allow Flash in Feeds."
-msgstr ""
-
-#: ../glade/liferea.glade.h:112
 msgid "_Auto Detect (GNOME or environment)"
 msgstr "Detectar automáticamente (de GNOME o las variables de entorno)"
 
-#: ../glade/liferea.glade.h:113
+#: ../glade/liferea.glade.h:112
 msgid "_Automatically download all enclosures of this feed."
 msgstr "Descargar _automáticamente todos los adjuntos de este canal."
 
-#: ../glade/liferea.glade.h:114
+#: ../glade/liferea.glade.h:113
 msgid "_Browse"
 msgstr "Navegar"
 
-#: ../glade/liferea.glade.h:115
+#: ../glade/liferea.glade.h:114
 msgid "_Browser:"
 msgstr "Navegador:"
 
-#: ../glade/liferea.glade.h:116 ../glade/new_subscription.glade.h:10
+#: ../glade/liferea.glade.h:115 ../glade/new_subscription.glade.h:10
 msgid "_Command"
 msgstr "_Programa"
 
-#: ../glade/liferea.glade.h:117
+#: ../glade/liferea.glade.h:116
 msgid "_Default cache settings"
 msgstr "Usar la configuración _general"
 
-#: ../glade/liferea.glade.h:118
+#: ../glade/liferea.glade.h:117
 msgid "_Disable Javascript."
 msgstr "_Desactivar JavaScript."
 
-#: ../glade/liferea.glade.h:119
+#: ../glade/liferea.glade.h:118
 #, fuzzy
 msgid "_Do this automatically for enclosures like this from now on."
 msgstr "Hacer lo mismo _de forma automática para este tipo de archivos."
 
-#: ../glade/liferea.glade.h:120
+#: ../glade/liferea.glade.h:119
 msgid "_Don't update this feed automatically."
 msgstr "No se ha _de actualizar automáticamente este canal"
 
-#: ../glade/liferea.glade.h:121 ../glade/new_subscription.glade.h:11
+#: ../glade/liferea.glade.h:120 ../glade/new_subscription.glade.h:11
 msgid "_Don't use proxy for download"
 msgstr "No usar «proxy» para _descargas"
 
-#: ../glade/liferea.glade.h:122
+#: ../glade/liferea.glade.h:121
 msgid "_Download using"
 msgstr "_Descargar mediante"
 
-#: ../glade/liferea.glade.h:123
+#: ../glade/liferea.glade.h:122
 msgid "_Enable Local LAN Synchronization"
+msgstr ""
+
+#: ../glade/liferea.glade.h:123
+msgid "_Enable browser plugins."
 msgstr ""
 
 #: ../glade/liferea.glade.h:124

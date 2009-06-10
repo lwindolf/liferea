@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea_trunk_ar\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-02 21:47+0300\n"
+"POT-Creation-Date: 2009-06-11 01:16+0300\n"
 "PO-Revision-Date: 2009-02-12 21:40+0200\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
@@ -725,11 +725,11 @@ msgstr "خطأ: ليس ثمّة ملف \"%s\""
 msgid "New Search Folder"
 msgstr "مجلّد بحث جديد"
 
-#: ../src/xml.c:426
+#: ../src/xml.c:414
 msgid "[There were more errors. Output was truncated!]"
 msgstr "[كان هناك المزيد من الأخطاء. بُتِر الخرْج]"
 
-#: ../src/xml.c:587
+#: ../src/xml.c:575
 msgid "XML Parser: Could not parse document:\n"
 msgstr "محلّل XML: لا يمكن تحليل المستند:\n"
 
@@ -1066,7 +1066,7 @@ msgstr "اشتراك _جديد..."
 msgid "Adds a subscription to the feed list."
 msgstr "أضِف اشتراك إلى قائمة التلقيمات."
 
-#: ../src/ui/liferea_shell.c:893 ../src/ui/ui_popup.c:285
+#: ../src/ui/liferea_shell.c:893 ../src/ui/ui_popup.c:279
 msgid "New _Folder..."
 msgstr "_مجلّد جديد..."
 
@@ -1074,7 +1074,7 @@ msgstr "_مجلّد جديد..."
 msgid "Adds a folder to the feed list."
 msgstr "أضِف مجلّد إلى قائمة التلقيمات."
 
-#: ../src/ui/liferea_shell.c:894 ../src/ui/ui_popup.c:288
+#: ../src/ui/liferea_shell.c:894 ../src/ui/ui_popup.c:282
 msgid "New S_earch Folder..."
 msgstr "مجلّد _بحث جديد..."
 
@@ -1090,7 +1090,7 @@ msgstr "م_صدر جديد..."
 msgid "Adds a new feed list source."
 msgstr "أضِف مصدر قائمة تلقيمات جديد."
 
-#: ../src/ui/liferea_shell.c:896 ../src/ui/ui_popup.c:290
+#: ../src/ui/liferea_shell.c:896 ../src/ui/ui_popup.c:284
 msgid "New _News Bin..."
 msgstr "_سلّة أخبار جديدة..."
 
@@ -1107,7 +1107,7 @@ msgid ""
 "Marks all items of the selected feed list node / in the item list as read."
 msgstr "علّم كل عناصر الاشتراك المحدد كمقروءة."
 
-#: ../src/ui/liferea_shell.c:902 ../src/ui/ui_popup.c:266
+#: ../src/ui/liferea_shell.c:902 ../src/ui/ui_popup.c:260
 msgid "_Update"
 msgstr "_حدّث"
 
@@ -1175,11 +1175,11 @@ msgstr "يسمح لك هذا الخيار بتعطيل تحديث الاشترا
 
 # ARABEYES: keep the html code, this is
 # intentional
-#: ../src/ui/liferea_shell.c:1305
+#: ../src/ui/liferea_shell.c:1308
 msgid "Liferea - Linux Feed Reader"
 msgstr "<p dir=\"rtl\">لايفريا - قارئ تلقيمات لينكس</p>"
 
-#: ../src/ui/liferea_shell.c:1307
+#: ../src/ui/liferea_shell.c:1310
 msgid ""
 "<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news "
 "feeds.</p><p>The left pane contains the list of your subscriptions. To add a "
@@ -1244,29 +1244,29 @@ msgstr "مصدر مجهول"
 msgid "Couldn't find pixmap file: %s"
 msgstr ""
 
-#: ../src/ui/ui_feedlist.c:307
+#: ../src/ui/ui_feedlist.c:309
 msgid "Deleting entry"
 msgstr "يجريِ حذف الخانة"
 
-#: ../src/ui/ui_feedlist.c:308
+#: ../src/ui/ui_feedlist.c:310
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "أواثق من رغبتك في حذف \"%s\" ومحتوياته؟"
 
-#: ../src/ui/ui_feedlist.c:308
+#: ../src/ui/ui_feedlist.c:310
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "أواثق من رغبتك في حذف \"%s\"؟"
 
-#: ../src/ui/ui_feedlist.c:320
+#: ../src/ui/ui_feedlist.c:322
 msgid "Deletion Confirmation"
 msgstr "تأكيد الحذف"
 
-#: ../src/ui/ui_feedlist.c:349
+#: ../src/ui/ui_feedlist.c:351
 msgid "You have to select a feed entry"
 msgstr "عليك اختيار عنصر تلقيمة"
 
-#: ../src/ui/ui_feedlist.c:356 ../src/ui/ui_feedlist.c:365
+#: ../src/ui/ui_feedlist.c:358 ../src/ui/ui_feedlist.c:367
 msgid "Liferea is in offline mode. No update possible."
 msgstr "لايفريا في وضع دون اتصال. لا يمكن التحديث."
 
@@ -1371,37 +1371,37 @@ msgstr "/_حدّث الكل"
 msgid "_Show Liferea"
 msgstr "لايفريا"
 
-#: ../src/ui/ui_popup.c:268
+#: ../src/ui/ui_popup.c:262
 #, fuzzy
 msgid "_Update Folder"
 msgstr "/_حدّث المجلّد"
 
-#: ../src/ui/ui_popup.c:270
+#: ../src/ui/ui_popup.c:264
 #, fuzzy
 msgid "_Mark All As Read"
 msgstr "/_علّم الكل كمقروء"
 
-#: ../src/ui/ui_popup.c:280
+#: ../src/ui/ui_popup.c:274
 #, fuzzy
 msgid "_New"
 msgstr "/_جديد"
 
-#: ../src/ui/ui_popup.c:282
+#: ../src/ui/ui_popup.c:276
 #, fuzzy
 msgid "New _Subscription..."
 msgstr "اشتراك _جديد..."
 
-#: ../src/ui/ui_popup.c:289
+#: ../src/ui/ui_popup.c:283
 #, fuzzy
 msgid "New S_ource..."
 msgstr "م_صدر جديد..."
 
-#: ../src/ui/ui_popup.c:299
+#: ../src/ui/ui_popup.c:293
 #, fuzzy
 msgid "_Delete"
 msgstr "/ا_حذف"
 
-#: ../src/ui/ui_popup.c:300
+#: ../src/ui/ui_popup.c:294
 #, fuzzy
 msgid "_Properties..."
 msgstr "/_خصائص..."
@@ -1549,7 +1549,7 @@ msgstr "اسم السكريبت"
 msgid "No script selected!"
 msgstr "لم يُنحدد أية سكريبت!"
 
-#: ../src/ui/ui_search.c:135
+#: ../src/ui/ui_search.c:128
 msgid "Create a new search feed."
 msgstr "أنشيء تلقيمة بحث جديدة."
 
@@ -2254,56 +2254,56 @@ msgid "_All Rules Must Match"
 msgstr "_كل القواعد يجب أن تطابق"
 
 #: ../glade/liferea.glade.h:111
-msgid "_Allow Flash in Feeds."
-msgstr "ا_سمح بالفلاش في التلقيمات"
-
-#: ../glade/liferea.glade.h:112
 msgid "_Auto Detect (GNOME or environment)"
 msgstr "_تعرف آلي (جنوم أو البيئة)"
 
-#: ../glade/liferea.glade.h:113
+#: ../glade/liferea.glade.h:112
 msgid "_Automatically download all enclosures of this feed."
 msgstr "نزّل كل مغلّفات هذه التلقيمة آ_ليّاً."
 
-#: ../glade/liferea.glade.h:114
+#: ../glade/liferea.glade.h:113
 msgid "_Browse"
 msgstr "_تصفّح"
 
-#: ../glade/liferea.glade.h:115
+#: ../glade/liferea.glade.h:114
 msgid "_Browser:"
 msgstr "ال_متصفح:"
 
-#: ../glade/liferea.glade.h:116 ../glade/new_subscription.glade.h:10
+#: ../glade/liferea.glade.h:115 ../glade/new_subscription.glade.h:10
 msgid "_Command"
 msgstr "أ_مر"
 
-#: ../glade/liferea.glade.h:117
+#: ../glade/liferea.glade.h:116
 msgid "_Default cache settings"
 msgstr "إعدادات الذاكرة المخبأة الا_فتراضيّة"
 
-#: ../glade/liferea.glade.h:118
+#: ../glade/liferea.glade.h:117
 msgid "_Disable Javascript."
 msgstr "_عطّل جافاسكريبت."
 
-#: ../glade/liferea.glade.h:119
+#: ../glade/liferea.glade.h:118
 msgid "_Do this automatically for enclosures like this from now on."
 msgstr "ا_فعل هذا تلقائيا مع المغلّفات مثل هذا من الآن فصاعداَ."
 
-#: ../glade/liferea.glade.h:120
+#: ../glade/liferea.glade.h:119
 msgid "_Don't update this feed automatically."
 msgstr "_لا تحدّث هذه التلقيمة آلياً."
 
-#: ../glade/liferea.glade.h:121 ../glade/new_subscription.glade.h:11
+#: ../glade/liferea.glade.h:120 ../glade/new_subscription.glade.h:11
 msgid "_Don't use proxy for download"
 msgstr "_لا تستخدم وسيط للتنزيل"
 
-#: ../glade/liferea.glade.h:122
+#: ../glade/liferea.glade.h:121
 msgid "_Download using"
 msgstr "_نزّل باستخدام"
 
-#: ../glade/liferea.glade.h:123
+#: ../glade/liferea.glade.h:122
 msgid "_Enable Local LAN Synchronization"
 msgstr "_فعّل كل مزامنة الشبكة المحلية"
+
+#: ../glade/liferea.glade.h:123
+msgid "_Enable browser plugins."
+msgstr ""
 
 #: ../glade/liferea.glade.h:124
 msgid "_Enforce popup notification for this subscription."
@@ -2483,6 +2483,9 @@ msgid ""
 msgstr ""
 "أدخِل موقع وب لتستخدم الاكتشاف التلقائي أو -في حال إذا كنت تعرفه- موقع "
 "التلقيمة بالتحديد."
+
+#~ msgid "_Allow Flash in Feeds."
+#~ msgstr "ا_سمح بالفلاش في التلقيمات"
 
 #, fuzzy
 #~ msgid "FAILED to download enclosure: \"%s\""

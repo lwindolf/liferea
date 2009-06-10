@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr_new\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-02 21:47+0300\n"
+"POT-Creation-Date: 2009-06-11 01:16+0300\n"
 "PO-Revision-Date: 2007-09-01 08:19+0300\n"
 "Last-Translator: Eren Türkay <turkay.eren@gmail.com>\n"
 "Language-Team:  <turkce@pardus.org.tr>\n"
@@ -753,11 +753,11 @@ msgstr "Hata: \"%s\" Böyle bir dosya yok"
 msgid "New Search Folder"
 msgstr "Yeni Arama Klasörü"
 
-#: ../src/xml.c:426
+#: ../src/xml.c:414
 msgid "[There were more errors. Output was truncated!]"
 msgstr "[Daha fazla hata vardı. Çıktı kısaltılmıştı!]"
 
-#: ../src/xml.c:587
+#: ../src/xml.c:575
 msgid "XML Parser: Could not parse document:\n"
 msgstr "XML Ayrıştırıcısı: Dosya ayrıştırılamadı:\n"
 
@@ -1084,7 +1084,7 @@ msgstr "_Yeni Abonelik..."
 msgid "Adds a subscription to the feed list."
 msgstr "Haber kaynak listesine yeni abonelik ekler."
 
-#: ../src/ui/liferea_shell.c:893 ../src/ui/ui_popup.c:285
+#: ../src/ui/liferea_shell.c:893 ../src/ui/ui_popup.c:279
 msgid "New _Folder..."
 msgstr "Yeni _Klasör..."
 
@@ -1092,7 +1092,7 @@ msgstr "Yeni _Klasör..."
 msgid "Adds a folder to the feed list."
 msgstr "Haber kaynak listesine yeni klasör ekler."
 
-#: ../src/ui/liferea_shell.c:894 ../src/ui/ui_popup.c:288
+#: ../src/ui/liferea_shell.c:894 ../src/ui/ui_popup.c:282
 msgid "New S_earch Folder..."
 msgstr "Yeni A_rama Klasörü..."
 
@@ -1108,7 +1108,7 @@ msgstr "Yeni _Kaynak..."
 msgid "Adds a new feed list source."
 msgstr "Yeni haber kaynağı ekler."
 
-#: ../src/ui/liferea_shell.c:896 ../src/ui/ui_popup.c:290
+#: ../src/ui/liferea_shell.c:896 ../src/ui/ui_popup.c:284
 msgid "New _News Bin..."
 msgstr "Yeni _Haber Sepeti..."
 
@@ -1129,7 +1129,7 @@ msgstr ""
 "Seçili abonelikteki bütün öğeleri, ya da seçili klasördeki bütün "
 "abonelikleri okudu olarak işaretler."
 
-#: ../src/ui/liferea_shell.c:902 ../src/ui/ui_popup.c:266
+#: ../src/ui/liferea_shell.c:902 ../src/ui/ui_popup.c:260
 msgid "_Update"
 msgstr "_Güncelle"
 
@@ -1196,11 +1196,11 @@ msgstr "_Çevrimdışı Çalış"
 msgid "This option allows you to disable subscription updating."
 msgstr "Bu seçenek, abonelik güncellenmesini devreden çıkarmanızı sağlar."
 
-#: ../src/ui/liferea_shell.c:1305
+#: ../src/ui/liferea_shell.c:1308
 msgid "Liferea - Linux Feed Reader"
 msgstr "Liferea - Linux Haber Okuyucusu"
 
-#: ../src/ui/liferea_shell.c:1307
+#: ../src/ui/liferea_shell.c:1310
 msgid ""
 "<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news "
 "feeds.</p><p>The left pane contains the list of your subscriptions. To add a "
@@ -1261,29 +1261,29 @@ msgstr "Bilinmeyen kaynak"
 msgid "Couldn't find pixmap file: %s"
 msgstr "Pixmap dosyasını bulamadı: %s"
 
-#: ../src/ui/ui_feedlist.c:307
+#: ../src/ui/ui_feedlist.c:309
 msgid "Deleting entry"
 msgstr "Girişi siliyor"
 
-#: ../src/ui/ui_feedlist.c:308
+#: ../src/ui/ui_feedlist.c:310
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "\"%s\" ve içeriğini silmek istediğinizden emin misiniz?"
 
-#: ../src/ui/ui_feedlist.c:308
+#: ../src/ui/ui_feedlist.c:310
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "\"%s\"yi silmek istediğinizden emin misiniz?"
 
-#: ../src/ui/ui_feedlist.c:320
+#: ../src/ui/ui_feedlist.c:322
 msgid "Deletion Confirmation"
 msgstr "Silme Onayı"
 
-#: ../src/ui/ui_feedlist.c:349
+#: ../src/ui/ui_feedlist.c:351
 msgid "You have to select a feed entry"
 msgstr "Bir haber kaynağı seçmeniz gerekiyor"
 
-#: ../src/ui/ui_feedlist.c:356 ../src/ui/ui_feedlist.c:365
+#: ../src/ui/ui_feedlist.c:358 ../src/ui/ui_feedlist.c:367
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea çevrim dışı. Güncelleme olanaksız."
 
@@ -1393,37 +1393,37 @@ msgstr "/_Hepsini Güncelle"
 msgid "_Show Liferea"
 msgstr "Liferea"
 
-#: ../src/ui/ui_popup.c:268
+#: ../src/ui/ui_popup.c:262
 #, fuzzy
 msgid "_Update Folder"
 msgstr "/Klasörü _Güncelle"
 
-#: ../src/ui/ui_popup.c:270
+#: ../src/ui/ui_popup.c:264
 #, fuzzy
 msgid "_Mark All As Read"
 msgstr "/_Hepsini Okundu Olarak İşaretle"
 
-#: ../src/ui/ui_popup.c:280
+#: ../src/ui/ui_popup.c:274
 #, fuzzy
 msgid "_New"
 msgstr "/_Yeni"
 
-#: ../src/ui/ui_popup.c:282
+#: ../src/ui/ui_popup.c:276
 #, fuzzy
 msgid "New _Subscription..."
 msgstr "_Yeni Abonelik..."
 
-#: ../src/ui/ui_popup.c:289
+#: ../src/ui/ui_popup.c:283
 #, fuzzy
 msgid "New S_ource..."
 msgstr "Yeni _Kaynak..."
 
-#: ../src/ui/ui_popup.c:299
+#: ../src/ui/ui_popup.c:293
 #, fuzzy
 msgid "_Delete"
 msgstr "/_Sil"
 
-#: ../src/ui/ui_popup.c:300
+#: ../src/ui/ui_popup.c:294
 #, fuzzy
 msgid "_Properties..."
 msgstr "/_Özellikler..."
@@ -1571,7 +1571,7 @@ msgstr "Senaryo Adı"
 msgid "No script selected!"
 msgstr "Hiçbir senaryo seçili değil"
 
-#: ../src/ui/ui_search.c:135
+#: ../src/ui/ui_search.c:128
 msgid "Create a new search feed."
 msgstr "Yeni bir arama klasörü yarat"
 
@@ -2273,56 +2273,56 @@ msgid "_All Rules Must Match"
 msgstr ""
 
 #: ../glade/liferea.glade.h:111
-msgid "_Allow Flash in Feeds."
-msgstr ""
-
-#: ../glade/liferea.glade.h:112
 msgid "_Auto Detect (GNOME or environment)"
 msgstr "O_tomatik Tanı (GNOME veya masaüstü ortamı)"
 
-#: ../glade/liferea.glade.h:113
+#: ../glade/liferea.glade.h:112
 msgid "_Automatically download all enclosures of this feed."
 msgstr "_Bu Haber kaynağı için bütün ekleri otomatik olarak indir."
 
-#: ../glade/liferea.glade.h:114
+#: ../glade/liferea.glade.h:113
 msgid "_Browse"
 msgstr "_Seç"
 
-#: ../glade/liferea.glade.h:115
+#: ../glade/liferea.glade.h:114
 msgid "_Browser:"
 msgstr "_Tarayıcı:"
 
-#: ../glade/liferea.glade.h:116 ../glade/new_subscription.glade.h:10
+#: ../glade/liferea.glade.h:115 ../glade/new_subscription.glade.h:10
 msgid "_Command"
 msgstr "_Komut"
 
-#: ../glade/liferea.glade.h:117
+#: ../glade/liferea.glade.h:116
 msgid "_Default cache settings"
 msgstr "_Öntanımlı bellek ayarları"
 
-#: ../glade/liferea.glade.h:118
+#: ../glade/liferea.glade.h:117
 msgid "_Disable Javascript."
 msgstr "_Javascripti devreden çıkar."
 
-#: ../glade/liferea.glade.h:119
+#: ../glade/liferea.glade.h:118
 #, fuzzy
 msgid "_Do this automatically for enclosures like this from now on."
 msgstr "_Bu tür dosyalar için artık otomatik olarak bunu yap."
 
-#: ../glade/liferea.glade.h:120
+#: ../glade/liferea.glade.h:119
 msgid "_Don't update this feed automatically."
 msgstr "_Bu haber kaynağını otomatik olarak güncelleme."
 
-#: ../glade/liferea.glade.h:121 ../glade/new_subscription.glade.h:11
+#: ../glade/liferea.glade.h:120 ../glade/new_subscription.glade.h:11
 msgid "_Don't use proxy for download"
 msgstr "_Indirme için vekil sunucu kullanma"
 
-#: ../glade/liferea.glade.h:122
+#: ../glade/liferea.glade.h:121
 msgid "_Download using"
 msgstr "_Kullanarak indir"
 
-#: ../glade/liferea.glade.h:123
+#: ../glade/liferea.glade.h:122
 msgid "_Enable Local LAN Synchronization"
+msgstr ""
+
+#: ../glade/liferea.glade.h:123
+msgid "_Enable browser plugins."
 msgstr ""
 
 #: ../glade/liferea.glade.h:124
