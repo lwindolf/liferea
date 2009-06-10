@@ -31,9 +31,6 @@
 #define BROWSER_PLACE			"/apps/liferea/browser_place"
 #define BROWSER_COMMAND			"/apps/liferea/browser"
 
-#define GNOME_DEFAULT_BROWSER_COMMAND	"gnome-open '%s'"
-#define DEFAULT_BROWSER_COMMAND		"mozilla '%s'"
-
 #define DEFAULT_FONT			"/desktop/gnome/interface/document_font_name"
 #define USER_FONT			"/apps/liferea/browser-font"
 #define DISABLE_JAVASCRIPT		"/apps/liferea/disable-javascript"
