@@ -183,12 +183,6 @@ ui_popup_systray_menu (guint button, guint32 activate_time)
 /* popup callback wrappers */
 
 static void
-ui_popup_update (gpointer callback_data)
-{
-	node_update_subscription ((nodePtr)callback_data, GUINT_TO_POINTER (FEED_REQ_PRIORITY_HIGH));
-}
-
-static void
 ui_popup_mark_as_read (gpointer callback_data) 
 {
 	feedlist_mark_all_read ((nodePtr)callback_data);
@@ -263,9 +257,9 @@ ui_popup_node_menu (nodePtr node, gboolean validSelection, guint button, guint32
 
 	if (validSelection) {
 		if (NODE_TYPE (node)->capabilities & NODE_CAPABILITY_UPDATE)
-			ui_popup_add_menuitem (menu, _("_Update"), ui_popup_update, node, GTK_STOCK_REFRESH, 0);
+			ui_popup_add_menuitem (menu, _("_Update"), on_menu_update, node, GTK_STOCK_REFRESH, 0);
 		else if (NODE_TYPE (node)->capabilities & NODE_CAPABILITY_UPDATE_CHILDS)
-			ui_popup_add_menuitem (menu, _("_Update Folder"), ui_popup_update, node, GTK_STOCK_REFRESH, 0);
+			ui_popup_add_menuitem (menu, _("_Update Folder"), on_menu_update, node, GTK_STOCK_REFRESH, 0);
 
 		ui_popup_add_menuitem (menu, _("_Mark All As Read"), ui_popup_mark_as_read, node, GTK_STOCK_APPLY, 0);
 	}
