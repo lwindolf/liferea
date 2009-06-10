@@ -143,7 +143,7 @@ item_set_source (itemPtr item, const gchar * source)
 {
 	g_free (item->source);
 	if (source) 
-		item->source = g_strchomp (g_strdup (source));
+		item->source = g_strstrip (g_strdup (source));
 	else
 		item->source = NULL;
 }
