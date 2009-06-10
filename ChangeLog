@@ -50,8 +50,6 @@
 	* Fixes enclosure download error handling. (Adrian Bunk)
 	* Remove dead Feedster from link cosmos search options.
 	  (Adrian Bunk)
-	* Fixes special link opening when activated by context menu.
-	  (Lars Lindner)
 	* Avoid "forgetting" the reduced feed list setting on shutdown.
 	  (suggested by Mathie Leplatre, Lars Lindner)
 
