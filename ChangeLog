@@ -2,8 +2,6 @@
 
 	Version 1.6.0-rc5 (Unstable)
 
-	* Fixes special link opening when activated by context menu.
-	  (Lars Lindner)
 	* Avoid "forgetting" the reduced feed list setting on shutdown.
 	  (suggested by Mathie Leplatre, Lars Lindner)
 	
