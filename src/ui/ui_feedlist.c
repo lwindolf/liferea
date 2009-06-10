@@ -345,27 +345,31 @@ void on_menu_delete(GtkWidget *widget, gpointer user_data)
 	ui_feedlist_delete_prompt (feedlist_get_selected());
 }
 
+static void
+do_menu_update (nodePtr node)
+{
+	if (network_monitor_is_online ()) 
+		node_update_subscription (node, GUINT_TO_POINTER (FEED_REQ_PRIORITY_HIGH));
+	else
+		liferea_shell_set_status_bar (_("Liferea is in offline mode. No update possible."));
+
+}
+
 void
 on_menu_update (void)
 {
-	if (!feedlist_get_selected ()) {
-		ui_show_error_box (_("You have to select a feed entry"));
-		return;
-	}
+	nodePtr node = feedlist_get_selected ();
 
-	if (network_monitor_is_online ()) 
-		node_update_subscription (feedlist_get_selected (), GUINT_TO_POINTER (FEED_REQ_PRIORITY_HIGH));
+	if (node)
+		do_menu_update (node);
 	else
-		liferea_shell_set_status_bar (_("Liferea is in offline mode. No update possible."));
+		ui_show_error_box (_("You have to select a feed entry"));
 }
 
 void
 on_menu_update_all(void)
-{ 
-	if (network_monitor_is_online ()) 
-		node_update_subscription (feedlist_get_root(), GUINT_TO_POINTER (FEED_REQ_PRIORITY_HIGH));
-	else
-		liferea_shell_set_status_bar (_("Liferea is in offline mode. No update possible."));
+{
+	do_menu_update (feedlist_get_root ());
 }
 
 void
