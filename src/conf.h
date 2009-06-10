@@ -37,7 +37,7 @@
 #define SOCIAL_BM_SITE			"/apps/liferea/social-bm-site"
 #define SOCIAL_LINK_SEARCH_SITE		"/apps/liferea/social-link-search-site"
 #define SOCIAL_LINK_SEARCH_HIDE		"/apps/liferea/social-link-search-hide"
-#define ALLOW_FLASH			"/apps/liferea/allow-flash"
+#define ENABLE_PLUGINS			"/apps/liferea/enable-plugins"
 
 /* enclosure handling */
 #define ENCLOSURE_DOWNLOAD_TOOL		"/apps/liferea/enclosure-download-tool"

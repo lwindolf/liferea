@@ -333,7 +333,6 @@ gchar *
 render_xml (xmlDocPtr doc, const gchar *xsltName, renderParamPtr paramSet)
 {
 	gchar			*output = NULL;
-	gboolean		allow_flash;
 	xmlDocPtr		resDoc;
 	xsltStylesheetPtr	xslt;
 	xmlOutputBufferPtr	buf;
@@ -369,14 +368,6 @@ render_xml (xmlDocPtr doc, const gchar *xsltName, renderParamPtr paramSet)
 	if (output) {
 		gchar *tmp;
 		
-		/* Disable Flash tags */
-		conf_get_bool_value (ALLOW_FLASH, &allow_flash);
-		if (!allow_flash) {
-			tmp = output;
-			output = xhtml_strip_flash (output);
-			g_free (tmp);
-		}
-	
 		/* Return only the body contents */
 		tmp = strstr (output, "<body");
 		if (tmp) {

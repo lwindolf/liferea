@@ -325,9 +325,9 @@ on_disablejavascript_toggled (GtkToggleButton *togglebutton, gpointer user_data)
 }
 
 void
-on_allowflash_toggled (GtkToggleButton *togglebutton, gpointer user_data)
+on_enableplugins_toggled (GtkToggleButton *togglebutton, gpointer user_data)
 {
-	conf_set_bool_value (ALLOW_FLASH, gtk_toggle_button_get_active (togglebutton));
+	conf_set_bool_value (ENABLE_PLUGINS, gtk_toggle_button_get_active (togglebutton));
 }
 
 static void
@@ -589,7 +589,7 @@ void on_prefbtn_clicked(void) {
 	gint			proxy_port, browser_place;
 	gint			enclosure_download_tool;
 	gboolean		folder_display_hide_read, disable_javascript;
-	gboolean		browse_inside_application, allow_flash;
+	gboolean		browse_inside_application, enable_plugins;
 	gboolean		show_tray_icon, show_popup_windows;
 	gboolean		show_new_count_in_tray, dont_minimize_to_tray;
 	gboolean		start_in_tray, disable_toolbar;
@@ -744,10 +744,10 @@ void on_prefbtn_clicked(void) {
 		conf_get_bool_value(DISABLE_JAVASCRIPT, &disable_javascript);
 		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), disable_javascript);
 		
-		/* set the allow Flash flag */
-		widget = liferea_dialog_lookup(prefdialog, "allowflash");
-		conf_get_bool_value(ALLOW_FLASH, &allow_flash);
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), allow_flash);
+		/* set the enable Plugins flag */
+		widget = liferea_dialog_lookup(prefdialog, "enableplugins");
+		conf_get_bool_value(ENABLE_PLUGINS, &enable_plugins);
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), enable_plugins);
 
 		tmp = 0;
 		conf_get_str_value(BROWSER_ID, &configuredBrowser);
