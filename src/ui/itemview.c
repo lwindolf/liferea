@@ -135,7 +135,7 @@ itemview_clear (void)
 }
 
 void
-itemview_set_mode (guint mode)
+itemview_set_mode (itemViewMode mode)
 {
 	if (itemview->priv->mode != mode) {
 		itemview->priv->mode = mode;
