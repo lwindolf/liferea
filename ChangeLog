@@ -58,6 +58,8 @@
 	  (Adrian Bunk)
 	* Allow the enabling of WebKit plugins. (Adrian Bunk)
 	* Don't allow updating a feed when offline. (Adrian Bunk)
+	* Don't use the deprecated soup_message_headers_get() function.
+	  (Emilio Pozuelo Monfort)
 
 	* Updated Brazilian Portuguese translation. (Leon Nardella)
 	* Updated French translation. (Vincent Lefevre)
