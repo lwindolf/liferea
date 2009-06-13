@@ -315,7 +315,7 @@ htmlview_finish_output (GString *buffer)
 }
 
 void
-htmlview_update (LifereaHtmlView *htmlview, guint mode) 
+htmlview_update (LifereaHtmlView *htmlview, itemViewMode mode) 
 {
 	GSList		*iter;
 	GString		*output;
