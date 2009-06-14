@@ -9,8 +9,8 @@
 			<outline text="News">
 				<outline text="Tagesschau" htmlUrl="http://www.tagesschau.de/" xmlUrl="http://www.tagesschau.de/newsticker.rdf" />
 				<outline text="Netzeitung" htmlUrl="http://www.netzzeitung.de" xmlUrl="http://www.netzeitung.de/export/news/rss/titelseite.xml" />
-				<outline text="Heise Online" htmlUrl="http://www.heise.de" xmlUrl="http://www.heise.de/newsticker/heise.rdf" />
-				<outline text="golem.de" htmlUrl="http://golem.de" xmlUrl="http://www.golem.de/rss.php?feed=RSS1.0" />
+				<outline text="Heise Online" htmlUrl="http://www.heise.de" xmlUrl="http://www.heise.de/newsticker/heise-atom.xml" />
+				<outline text="golem.de" htmlUrl="http://golem.de" xmlUrl="http://www.golem.de/rss.php?feed=ATOM1.0" />
 			</outline>
 			<outline text="Podcasts">
 				<outline text="Chaos Radio" htmlUrl="http://blog.chaosradio.ccc.de/" xmlUrl="http://chaosradio.ccc.de/chaosradio-complete.rss" />
@@ -26,8 +26,8 @@
 				<outline text="Gnomefiles" htmlUrl="http://www.gnomefiles.org/" xmlUrl="http://www.gnomefiles.org/files/gnomefiles.rdf" />
 				<outline text="GNOME Footnotes" htmlUrl="http://www.gnomedesktop.org/" xmlUrl="http://www.gnomedesktop.org/backend.php" />
 				<outline text="GrokLaw" htmlUrl="http://www.groklaw.net/" xmlUrl="http://www.groklaw.net/backend/GrokLaw.rdf" />
-				<outline text="Linux.com" htmlUrl="http://www.linux.com/" xmlUrl="http://www.linux.com/index.rss" />
-				<outline text="mozillaZine" htmlUrl="http://www.mozillazine.org/" xmlUrl="http://www.mozillazine.org/contents.rdf" />
+			<outline text="Liferea Blog" htmlUrl="http://liferea.blogspot.com/" xmlUrl="http://liferea.blogspot.com/feeds/posts/default" />
+			<outline text="mozillaZine" htmlUrl="http://www.mozillazine.org/" xmlUrl="http://www.mozillazine.org/atom.xml" />
 				<outline text="Planet GNOME" htmlUrl="http://planet.gnome.org/" xmlUrl="http://planet.gnome.org/atom.xml" />	
 				<outline text="Slashdot" htmlUrl="http://slashdot.org"  xmlUrl="http://slashdot.org/slashdot.rss" />
 				<outline text="TuxMobil" htmlUrl="http://tuxmobil.org" xmlUrl="http://tuxmobil.org/tuxmobil_rss.rdf" />      

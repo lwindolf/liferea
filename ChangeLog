@@ -60,6 +60,7 @@
 	* Don't allow updating a feed when offline. (Adrian Bunk)
 	* Don't use the deprecated soup_message_headers_get() function.
 	  (Emilio Pozuelo Monfort)
+	* Updated the example feeds. (Adrian Bunk)
 
 	* Updated Brazilian Portuguese translation. (Leon Nardella)
 	* Updated French translation. (Vincent Lefevre)

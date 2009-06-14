@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"?>
 <opml version="1.0">
   <head>
     <title>Przykładowa lista subskrypcji Liferea</title>
@@ -8,7 +8,6 @@
       <outline text="polskie">
         <outline text="7thGuard.net" htmlUrl="http://www.7thguard.net/" xmlUrl="http://rss.7thguard.net/7thguard.xml" />
         <outline text="Linux.pl" htmlUrl="http://linux.pl/" xmlUrl="http://www.linux.pl/rss.php" />
-        <outline text="e-Linux.pl" htmlUrl="http://www.e-linux.pl/" xmlUrl="http://www.e-linux.pl/modules/rss/rss.php" />
       <outline text="Hacking.pl" htmlUrl="http://hacking.pl/" xmlUrl="http://rss.hacking.pl/" />
       </outline>
       <!-- lets keep this English block in sync over all feed lists! -->
@@ -17,8 +16,8 @@
 			<outline text="Gnomefiles" htmlUrl="http://www.gnomefiles.org/" xmlUrl="http://www.gnomefiles.org/files/gnomefiles.rdf" />
 			<outline text="GNOME Footnotes" htmlUrl="http://www.gnomedesktop.org/" xmlUrl="http://www.gnomedesktop.org/backend.php" />
 			<outline text="GrokLaw" htmlUrl="http://www.groklaw.net/" xmlUrl="http://www.groklaw.net/backend/GrokLaw.rdf" />
-			<outline text="Linux.com" htmlUrl="http://www.linux.com/" xmlUrl="http://www.linux.com/index.rss" />
-			<outline text="mozillaZine" htmlUrl="http://www.mozillazine.org/" xmlUrl="http://www.mozillazine.org/contents.rdf" />
+			<outline text="Liferea Blog" htmlUrl="http://liferea.blogspot.com/" xmlUrl="http://liferea.blogspot.com/feeds/posts/default" />
+			<outline text="mozillaZine" htmlUrl="http://www.mozillazine.org/" xmlUrl="http://www.mozillazine.org/atom.xml" />
 			<outline text="Planet GNOME" htmlUrl="http://planet.gnome.org/" xmlUrl="http://planet.gnome.org/atom.xml" />	
 			<outline text="Slashdot" htmlUrl="http://slashdot.org"  xmlUrl="http://slashdot.org/slashdot.rss" />
 			<outline text="TuxMobil" htmlUrl="http://tuxmobil.org" xmlUrl="http://tuxmobil.org/tuxmobil_rss.rdf" />      

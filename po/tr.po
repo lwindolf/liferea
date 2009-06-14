@@ -1657,7 +1657,7 @@ msgstr ""
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
 #: ../src/fl_sources/default_source.c:111
 msgid "feedlist.opml"
-msgstr "feedlist_tr.opml"
+msgstr "feedlist.opml"
 
 #: ../src/fl_sources/default_source.c:180
 #: ../src/fl_sources/google_source.c:244 ../glade/new_subscription.glade.h:6
