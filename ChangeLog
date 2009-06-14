@@ -61,7 +61,7 @@
 	* Don't use the deprecated soup_message_headers_get() function.
 	  (Emilio Pozuelo Monfort)
 	* Updated the example feeds. (Adrian Bunk)
-	* Remove some dead social ookmarking sites. (Adrian Bunk)
+	* Remove some dead social bookmarking sites. (Adrian Bunk)
 
 	* Resurrected the Albanian, Bulgarian, Chinese/Simplified,
 	  Chinese/Traditional, Dutch, Finnish, Korean, Macedonian
