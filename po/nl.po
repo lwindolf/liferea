@@ -13,7 +13,7 @@ msgstr ""
 "Last-Translator: Patrick Bos <kikkum@hotmail.com>\n"
 "Language-Team: Dutch <nl@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-15\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
@@ -275,7 +275,7 @@ msgstr "Fout bij het hernoemen van %s naar %s\n"
 msgid "XML error while reading OPML file! Could not import \"%s\"!"
 msgstr ""
 "XML fout bij het lezen van cache bestand! \"%s\" kon niet worden "
-"geïmporteerd!"
+"geÃ¯mporteerd!"
 
 #: ../src/export.c:374 ../src/export.c:376
 #, c-format
@@ -293,7 +293,7 @@ msgstr ""
 
 #: ../src/export.c:418
 msgid "Imported feed list"
-msgstr "Lijst van geïmporteerde feeds"
+msgstr "Lijst van geÃ¯mporteerde feeds"
 
 #: ../src/export.c:431
 msgid "Import Feed List"
@@ -309,7 +309,7 @@ msgstr "Fout bij het exporteren van feedlijst!"
 
 #: ../src/export.c:441
 msgid "Feed List exported!"
-msgstr "Feedlijst geëxporteerd!"
+msgstr "Feedlijst geÃ«xporteerd!"
 
 #: ../src/export.c:448
 msgid "Export Feed List"
@@ -332,7 +332,7 @@ msgstr ""
 #: ../src/feed.c:303
 #, c-format
 msgid "\"%s\" updated..."
-msgstr "\"%s\" is geüpdate..."
+msgstr "\"%s\" is geÃ¼pdate..."
 
 #: ../src/feed.c:313
 #, c-format
@@ -583,7 +583,7 @@ msgstr ""
 
 #: ../src/net.c:361
 msgid "Client Error"
-msgstr "Cliënt fout"
+msgstr "CliÃ«nt fout"
 
 #: ../src/net.c:363
 msgid "Server Error"
@@ -652,12 +652,12 @@ msgstr "Gelezen?"
 #: ../src/rule.c:379
 #, fuzzy
 msgid "was updated"
-msgstr "\"%s\" is geüpdate..."
+msgstr "\"%s\" is geÃ¼pdate..."
 
 #: ../src/rule.c:379
 #, fuzzy
 msgid "was not updated"
-msgstr "inhoud voor het laatst geüpdate"
+msgstr "inhoud voor het laatst geÃ¼pdate"
 
 #: ../src/rule.c:380
 msgid "Podcast"
@@ -690,7 +690,7 @@ msgstr ""
 #: ../src/subscription.c:104
 #, fuzzy, c-format
 msgid "Subscription \"%s\" is already being updated!"
-msgstr "De feed \"%s\" wordt al geüpdate!"
+msgstr "De feed \"%s\" wordt al geÃ¼pdate!"
 
 #: ../src/subscription.c:109
 #, fuzzy, c-format
@@ -714,7 +714,7 @@ msgstr ""
 #: ../src/subscription.c:210
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
-msgstr "De URL van \"%s\" is permanent veranderd en is geüpdate"
+msgstr "De URL van \"%s\" is permanent veranderd en is geÃ¼pdate"
 
 #: ../src/subscription.c:218
 #, c-format
@@ -778,11 +778,11 @@ msgstr ""
 
 #: ../src/ui/eggtrayicon.c:134
 msgid "Orientation"
-msgstr "Oriëntatie"
+msgstr "OriÃ«ntatie"
 
 #: ../src/ui/eggtrayicon.c:135
 msgid "The orientation of the tray."
-msgstr "De oriëntatie van de tray"
+msgstr "De oriÃ«ntatie van de tray"
 
 #: ../src/ui/enclosure_list_view.c:172
 #, fuzzy
@@ -1351,7 +1351,7 @@ msgstr ""
 #: ../src/ui/liferea_htmlview.c:534
 #, fuzzy
 msgid "_Copy Link Location"
-msgstr "/URL _kopiëren"
+msgstr "/URL _kopiÃ«ren"
 
 #: ../src/ui/liferea_htmlview.c:536
 #, fuzzy
@@ -1406,7 +1406,7 @@ msgstr ""
 #: ../src/ui/ui_popup.c:137
 #, fuzzy
 msgid "Copy Item _URL to Clipboard"
-msgstr "/Item _URL naar plakbord kopiëren"
+msgstr "/Item _URL naar plakbord kopiÃ«ren"
 
 #: ../src/ui/ui_popup.c:143
 #, fuzzy
@@ -1426,7 +1426,7 @@ msgstr "/Opslaan als..."
 #: ../src/ui/ui_popup.c:158
 #, fuzzy
 msgid "Copy Link Location"
-msgstr "/URL _kopiëren"
+msgstr "/URL _kopiÃ«ren"
 
 #: ../src/ui/ui_popup.c:172
 #, fuzzy
@@ -2169,7 +2169,7 @@ msgid ""
 "waste of bandwidth to poll feeds more often than each hour.</i>"
 msgstr ""
 "N.B.: <i>Stel de vernieuwingstijd op een redelijke waarde in. Het is niet "
-"bepaald nuttig om feeds die dagelijks worden geüpdate elk kwartier te "
+"bepaald nuttig om feeds die dagelijks worden geÃ¼pdate elk kwartier te "
 "vernieuwen. Om auto-updaten uit te schakelen kun je het interval op 0 "
 "minuten instellen.</i>"
 
@@ -2565,7 +2565,7 @@ msgstr ""
 #: ../glade/opml_source.glade.h:3
 #, fuzzy
 msgid "_Location"
-msgstr "/URL _kopiëren"
+msgstr "/URL _kopiÃ«ren"
 
 #: ../glade/opml_source.glade.h:4
 #, fuzzy
@@ -2683,7 +2683,7 @@ msgstr ""
 #~ msgstr "_Programma"
 
 #~ msgid "Updates all subscriptions. This does not update OCS directories."
-#~ msgstr "Alle feeds updaten. Hiermee worden OCS directories niet geüpdate."
+#~ msgstr "Alle feeds updaten. Hiermee worden OCS directories niet geÃ¼pdate."
 
 #~ msgid "New _VFolder..."
 #~ msgstr "Nieuwe _VFolder..."
@@ -2866,8 +2866,8 @@ msgstr ""
 #~ "Note: Items are added to the VFolder if at least one additive rule\n"
 #~ "matches. They are removed if at least one removing rule matches."
 #~ msgstr ""
-#~ "N.B.: Items worden toegevoegd aan de VFolder als ze aan tenminste één\n"
-#~ "\"bevat\" regel voldoen. Ze worden verwijderd als ze aan tenminste één\n"
+#~ "N.B.: Items worden toegevoegd aan de VFolder als ze aan tenminste Ã©Ã©n\n"
+#~ "\"bevat\" regel voldoen. Ze worden verwijderd als ze aan tenminste Ã©Ã©n\n"
 #~ "\"bevat niet\" regel voldoen."
 
 #~ msgid "Saves this search as a VFolder, which will appear in the feed list."
@@ -3051,7 +3051,7 @@ msgstr ""
 #~ "Sorry, I was not able to load any installed browser modules! Try the --"
 #~ "debug-all option to get debug information!"
 #~ msgstr ""
-#~ "Sorry, het is me niet gelukt een geïnstalleerde browsermodule te laden! "
+#~ "Sorry, het is me niet gelukt een geÃ¯nstalleerde browsermodule te laden! "
 #~ "Probeer de --debug-all optie uit om debuginformatie te krijgen!"
 
 #~ msgid "New Feed"
