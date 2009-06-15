@@ -280,14 +280,36 @@ gchar *createRFC822Date(const time_t *time) {
 					   months[tm->tm_mon], 1900 + tm->tm_year, tm->tm_hour, tm->tm_min, tm->tm_sec);
 }
 
-/* this table of RFC822 timezones is from gmime-utils.c of the gmime API */
+/* in theory, we'd need only the RFC822 timezones here
+   in practice, feeds also use other timezones...        */
 static struct {
 	const char *name;
 	int offset;
 } tz_offsets [] = {
-	{ "UT", 0 },
+	{ "IDLW", -1200 },
+	{ "HAST", -1000 },
+	{ "AKST", -900 },
+	{ "AKDT", -800 },
+	{ "WESZ", 100 },
+	{ "WEST", 100 },
+	{ "WEDT", 100 },
+	{ "MEST", 200 },
+	{ "MESZ", 200 },
+	{ "CEST", 200 },
+	{ "CEDT", 200 },
+	{ "EEST", 300 },
+	{ "EEDT", 300 },
+	{ "IRST", 430 },
+	{ "CNST", 800 },
+	{ "ACST", 930 },
+	{ "ACDT", 1030 },
+	{ "AEST", 1000 },
+	{ "AEDT", 1100 },
+	{ "IDLE", 1200 },
+	{ "NZST", 1200 },
+	{ "NZDT", 1300 },
 	{ "GMT", 0 },
-	{ "EST", -500 },        /* these are all US timezones.  bloody yanks */
+	{ "EST", -500 },
 	{ "EDT", -400 },
 	{ "CST", -600 },
 	{ "CDT", -500 },
@@ -295,6 +317,30 @@ static struct {
 	{ "MDT", -600 },
 	{ "PST", -800 },
 	{ "PDT", -700 },
+	{ "HDT", -900 },
+	{ "YST", -900 },
+	{ "YDT", -800 },
+	{ "AST", -400 },
+	{ "ADT", -300 },
+	{ "VST", -430 },
+	{ "NST", -330 },
+	{ "NDT", -230 },
+	{ "WET", 0 },
+	{ "WEZ", 0 },
+	{ "IST", 100 },
+	{ "CET", 100 },
+	{ "MEZ", 100 },
+	{ "EET", 200 },
+	{ "MSK", 300 },
+	{ "MSD", 400 },
+	{ "IRT", 330 },
+	{ "IST", 530 },
+	{ "ICT", 700 },
+	{ "JST", 900 },
+	{ "NFT", 1130 },
+	{ "UT", 0 },
+	{ "PT", -800 },
+	{ "BT", 300 },
 	{ "Z", 0 },
 	{ "A", -100 },
 	{ "M", -1200 },
@@ -305,7 +351,8 @@ static struct {
 static time_t common_parse_rfc822_tz(char *token) {
 	int offset = 0;
 	const char *inptr = token;
-	
+	int num_timezones = sizeof(tz_offsets) / sizeof((tz_offsets)[0]);
+
 	if (*inptr == '+' || *inptr == '-') {
 		offset = atoi (inptr);
 	} else {
@@ -314,9 +361,11 @@ static time_t common_parse_rfc822_tz(char *token) {
 		if (*inptr == '(')
 			inptr++;
 
-		for (t = 0; t < 15; t++)
-			if (!strncmp (inptr, tz_offsets[t].name, strlen (tz_offsets[t].name)))
+		for (t = 0; t < num_timezones; t++)
+			if (!strncmp (inptr, tz_offsets[t].name, strlen (tz_offsets[t].name))) {
 				offset = tz_offsets[t].offset;
+				break;
+			}
 	}
 	
 	return 60 * ((offset / 100) * 60 + (offset % 100));
