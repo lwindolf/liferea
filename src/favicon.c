@@ -322,7 +322,7 @@ void favicon_download(const gchar *id, const gchar *html_url, const gchar *sourc
 	
 	if(*source_url != '|' && 2 < count_slashes(source_url)) {
 		/* case 4 */
-		tmp = tmp2 = g_strdup(source_url);
+		tmp = tmp2 = g_strstrip (g_strdup (source_url));
 		tmp = strrchr(tmp, '/');
 		if(tmp) {
 			*tmp = 0;
@@ -334,7 +334,7 @@ void favicon_download(const gchar *id, const gchar *html_url, const gchar *sourc
 		g_free(tmp);
 	
 		/* case 5 */
-		tmp = tmp2 = g_strdup(source_url);
+		tmp = tmp2 = g_strstrip (g_strdup (source_url));
 		tmp = strstr(tmp, "://");
 		if(tmp) {
 			tmp = strchr(tmp + 3, '/');	/* to skip to first subpath */
