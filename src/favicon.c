@@ -284,15 +284,15 @@ void favicon_download(const gchar *id, const gchar *html_url, const gchar *sourc
 	
 	/* case 1. */
 	if(html_url) {
-		tmp = g_strdup(html_url);	
+		tmp = g_strstrip (g_strdup (html_url));
 		ctxt->urls = g_slist_append(ctxt->urls, tmp);
 		debug1(DEBUG_UPDATE, "(1) adding favicon search URL: %s", tmp);
 	}
 
 	/* case 2. */
-	g_assert(source_url);	
+	g_assert(source_url);
 	if(*source_url != '|') {
-		tmp = tmp2 = g_strdup(source_url);
+		tmp = tmp2 = g_strstrip (g_strdup (source_url));
 		tmp = strrchr(tmp, '/');
 		if(tmp) {
 			*tmp = 0;
@@ -304,7 +304,7 @@ void favicon_download(const gchar *id, const gchar *html_url, const gchar *sourc
 	/* case 3. */
 	if(html_url) {
 		if(2 < count_slashes(html_url)) {
-			tmp = tmp2 = g_strdup(html_url);
+			tmp = tmp2 = g_strstrip (g_strdup (html_url));
 			tmp = strstr(tmp, "://");
 			if(tmp) {
 				tmp = strchr(tmp + 3, '/');
