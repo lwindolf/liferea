@@ -64,6 +64,7 @@
 	* Remove some dead social bookmarking sites. (Adrian Bunk)
 	* Added Twitter Search support. (Adrian Bunk)
 	* Added Identi.ca Search support. (Adrian Bunk)
+	* Support non-RFC822 alphabetic timezones. (Adrian Bunk)
 
 	* Resurrected the Albanian, Bulgarian, Chinese/Simplified,
 	  Chinese/Traditional, Dutch, Finnish, Korean, Macedonian
