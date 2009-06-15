@@ -64,6 +64,12 @@ create_icerocket_search_url (void)
 } 
 
 static void
+create_identi_ca_search_url (void)
+{
+        search_engine_dialog_new ("http://identi.ca/api/search.atom?q=%s&rpp=%i", TRUE);
+}
+
+static void
 create_reddit_search_url (void)
 {
 	search_engine_dialog_new ("http://reddit.com/search.rss?q=%s", FALSE);
@@ -104,6 +110,7 @@ search_engines_init (void)
 	search_engine_register ("Del.icio.us",	create_delicious_search_url);
 	search_engine_register ("Google Blog",	create_google_blog_search_url);
 	search_engine_register ("Ice Rocket",	create_icerocket_search_url);
+	search_engine_register ("Identi.ca",    create_identi_ca_search_url);
 	search_engine_register ("Reddit.com",	create_reddit_search_url);
 	search_engine_register ("Technorati",	create_technorati_search_url);
 	search_engine_register ("Twitter",	create_twitter_search_url);
