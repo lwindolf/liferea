@@ -7,6 +7,9 @@
 	* Added Twitter Search support. (Adrian Bunk)
 	* Added Identi.ca Search support. (Adrian Bunk)
 	* Support non-RFC822 alphabetic timezones. (Adrian Bunk)
+	* Fix favicon downloads when the feed contains a link with
+	  leading or trailing whitespaces. (Adrian bunk and
+	  Emilio Pozuelo Monfort)
 
 	* Resurrected the Albanian, Bulgarian, Chinese/Simplified,
 	  Chinese/Traditional, Dutch, Finnish, Korean, Macedonian
