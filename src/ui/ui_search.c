@@ -76,6 +76,12 @@ create_technorati_search_url (void)
 }
 
 static void
+create_twitter_search_url (void)
+{
+        search_engine_dialog_new ("http://search.twitter.com/search.atom?q=%s&rpp=%i", TRUE);
+}
+
+static void
 create_yahoo_search_url (void)
 {
 	search_engine_dialog_new ("http://api.search.yahoo.com/WebSearchService/rss/webSearch.xml?appid=yahoosearchwebrss&query=%s&adult_ok=1", FALSE);
@@ -100,6 +106,7 @@ search_engines_init (void)
 	search_engine_register ("Ice Rocket",	create_icerocket_search_url);
 	search_engine_register ("Reddit.com",	create_reddit_search_url);
 	search_engine_register ("Technorati",	create_technorati_search_url);
+	search_engine_register ("Twitter",	create_twitter_search_url);
 	search_engine_register ("Yahoo",	create_yahoo_search_url);
 }
 
