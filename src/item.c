@@ -258,16 +258,15 @@ item_to_xml (itemPtr item, xmlNodePtr parentNode)
 	g_free (tmp);
 
 	metadata_add_xml_nodes (item->metadata, itemNode);
-	
-	if (item->commentFeedId) {
-		nodePtr feedNode = node_from_id (item->parentNodeId);
-		feedPtr feed = (feedPtr)feedNode->data;
-		if (feed) {
-			if (!feed->ignoreComments) {
+
+	nodePtr feedNode = node_from_id (item->parentNodeId);
+	feedPtr feed = (feedPtr)feedNode->data;
+	if (feed) {
+		if (!feed->ignoreComments) {
+			if (item->commentFeedId)
 				comments_to_xml (itemNode, item->commentFeedId);
-			} else {
-				xmlNewTextChild (itemNode, NULL, "commentsSuppressed", "true");
-			}
+		} else {
+			xmlNewTextChild (itemNode, NULL, "commentsSuppressed", "true");
 		}
 	}
 }

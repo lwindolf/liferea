@@ -10,6 +10,8 @@
 	* Fix favicon downloads when the feed contains a link with
 	  leading or trailing whitespaces. (Adrian bunk and
 	  Emilio Pozuelo Monfort)
+	* Fixes comment feed hiding when comment feed is disabled.
+	  (Lars Lindner)
 
 	* Resurrected the Albanian, Bulgarian, Chinese/Simplified,
 	  Chinese/Traditional, Dutch, Finnish, Korean, Macedonian
