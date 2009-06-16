@@ -16,10 +16,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Liferea 1.6.0-rc2\n"
+"Project-Id-Version: Liferea 1.6.0-rc5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-06-11 01:16+0300\n"
-"PO-Revision-Date: 2009-05-28 01:31+0200\n"
+"PO-Revision-Date: 2009-06-16 02:48+0200\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.org>\n"
 "Language-Team: French\n"
 "MIME-Version: 1.0\n"
@@ -253,9 +253,9 @@ msgid "\"%s\" is not a valid enclosure type config file!"
 msgstr "\"%s\" n'est pas un fichier de config de types d'annexes valide !"
 
 #: ../src/enclosure.c:278
-#, fuzzy, c-format
+#, c-format
 msgid "Enclosure download FAILED: \"%s\""
-msgstr "Le téléchargement de l'annexe s'est terminé : \"%s\""
+msgstr "Le téléchargement de l'annexe a ÉCHOUÉ : \"%s\""
 
 #. just saving
 #: ../src/enclosure.c:288
@@ -2287,7 +2287,7 @@ msgstr "_Activer la synchronisation avec le réseau local"
 
 #: ../glade/liferea.glade.h:123
 msgid "_Enable browser plugins."
-msgstr ""
+msgstr "Activer les _greffons (plugins) du navigateur."
 
 #: ../glade/liferea.glade.h:124
 msgid "_Enforce popup notification for this subscription."
@@ -2471,13 +2471,3 @@ msgid ""
 msgstr ""
 "Entrez une adresse de site web à utiliser pour la découverte automatique ou, "
 "si vous la connaissez, l'adresse exacte du flux."
-
-#~ msgid "_Allow Flash in Feeds."
-#~ msgstr "_Autoriser Flash dans les flux."
-
-#, fuzzy
-#~ msgid "FAILED to download enclosure: \"%s\""
-#~ msgstr "Le téléchargement de l'annexe s'est terminé : \"%s\""
-
-#~ msgid "Presents statistics on your most read categories"
-#~ msgstr "Présente des statistiques de vos catégories les plus lues"
