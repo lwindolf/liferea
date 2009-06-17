@@ -75,7 +75,7 @@ network_process_callback (SoupSession *session, SoupMessage *msg, gpointer user_
 	job->result->contentType = g_strdup (soup_message_headers_get_content_type (msg->response_headers, NULL));
 
 	/* Update last-modified date */
-	tmp = soup_message_headers_get (msg->response_headers, "Last-Modified");
+	tmp = soup_message_headers_get_one (msg->response_headers, "Last-Modified");
 	if (tmp) {
 		/* The string may be badly formatted, which will make
 		 * soup_date_new_from_string() return NULL */
