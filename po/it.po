@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.5.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-11 01:16+0300\n"
+"POT-Creation-Date: 2009-06-19 19:14+0300\n"
 "PO-Revision-Date: 2009-05-30 16:46+0200\n"
 "Last-Translator: Gianvito Cavasoli <janvitus@ubuntu-it.org>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -232,7 +232,7 @@ msgstr "%b %d %l.%M %p"
 msgid "%b %d %Y"
 msgstr "%b %d %Y"
 
-#: ../src/common.c:392
+#: ../src/common.c:441
 #, c-format
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "Impossibile creare la directory di cache «%s»."
@@ -789,11 +789,6 @@ msgstr "Scegliere file"
 #, c-format
 msgid "<b>File Extension .%s</b>"
 msgstr "<b>Estensione file .%s</b>"
-
-#: ../src/ui/enclosure_list_view.c:417
-#, c-format
-msgid "<b>%s</b>"
-msgstr "<b>%s</b>"
 
 #: ../src/ui/liferea_shell.c:325
 #, c-format
@@ -1525,7 +1520,7 @@ msgstr "Nome script"
 msgid "No script selected!"
 msgstr "Nessuno script selezionato."
 
-#: ../src/ui/ui_search.c:128
+#: ../src/ui/ui_search.c:142
 msgid "Create a new search feed."
 msgstr "Crea un nuovo notiziario di ricerca."
 
@@ -2459,6 +2454,9 @@ msgid ""
 msgstr ""
 "Inserire l'indirizzo di un sito web per usare il rilevamento automatico del "
 "notiziario, oppure, se si è a conoscenza, l'indirizzo esatto del notiziario."
+
+#~ msgid "<b>%s</b>"
+#~ msgstr "<b>%s</b>"
 
 #~ msgid "_Allow Flash in Feeds."
 #~ msgstr "Con_sentire il Flash nei notiziari."

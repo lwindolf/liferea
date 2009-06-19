@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 0.9.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-11 01:16+0300\n"
+"POT-Creation-Date: 2009-06-19 19:14+0300\n"
 "PO-Revision-Date: 2005-07-19 14:14+0300\n"
 "Last-Translator: Spoială Cristian <scristian@gmail.com>\n"
 "Language-Team: Romanian\n"
@@ -237,7 +237,7 @@ msgstr ""
 msgid "%b %d %Y"
 msgstr ""
 
-#: ../src/common.c:392
+#: ../src/common.c:441
 #, fuzzy, c-format
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "Nu s-a putut crea directorul cache %s!"
@@ -819,11 +819,6 @@ msgstr "Selectează fişier"
 #, c-format
 msgid "<b>File Extension .%s</b>"
 msgstr "<b>Extensia fişierului .%s</b>"
-
-#: ../src/ui/enclosure_list_view.c:417
-#, c-format
-msgid "<b>%s</b>"
-msgstr "<b>%s</b>"
 
 #: ../src/ui/liferea_shell.c:325
 #, fuzzy, c-format
@@ -1608,7 +1603,7 @@ msgstr ""
 msgid "No script selected!"
 msgstr "Nu a fost selectat nici un articol"
 
-#: ../src/ui/ui_search.c:128
+#: ../src/ui/ui_search.c:142
 #, fuzzy
 msgid "Create a new search feed."
 msgstr "Crează un feed de căutare Feedster."
@@ -2565,6 +2560,9 @@ msgid ""
 "Enter a website location to use feed autodiscovery or in case you know it "
 "the exact feed location."
 msgstr ""
+
+#~ msgid "<b>%s</b>"
+#~ msgstr "<b>%s</b>"
 
 #~ msgid "http://liferea.sf.net"
 #~ msgstr "http://liferea.sf.net"

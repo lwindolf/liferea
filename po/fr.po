@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 1.6.0-rc5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-11 01:16+0300\n"
+"POT-Creation-Date: 2009-06-19 19:14+0300\n"
 "PO-Revision-Date: 2009-06-16 02:48+0200\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.org>\n"
 "Language-Team: French\n"
@@ -242,7 +242,7 @@ msgstr "%d %b %H:%M"
 msgid "%b %d %Y"
 msgstr "%d %b %Y"
 
-#: ../src/common.c:392
+#: ../src/common.c:441
 #, c-format
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "Impossible de créer le répertoire cache \"%s\" !"
@@ -802,11 +802,6 @@ msgstr "Choisir un fichier"
 #, c-format
 msgid "<b>File Extension .%s</b>"
 msgstr "<b>Extension de fichier .%s</b>"
-
-#: ../src/ui/enclosure_list_view.c:417
-#, c-format
-msgid "<b>%s</b>"
-msgstr "<b>%s</b>"
 
 #: ../src/ui/liferea_shell.c:325
 #, c-format
@@ -1536,7 +1531,7 @@ msgstr "Nom de script"
 msgid "No script selected!"
 msgstr "Pas de script sélectionné !"
 
-#: ../src/ui/ui_search.c:128
+#: ../src/ui/ui_search.c:142
 msgid "Create a new search feed."
 msgstr "Créer un nouveau flux de recherche."
 
@@ -2471,3 +2466,6 @@ msgid ""
 msgstr ""
 "Entrez une adresse de site web à utiliser pour la découverte automatique ou, "
 "si vous la connaissez, l'adresse exacte du flux."
+
+#~ msgid "<b>%s</b>"
+#~ msgstr "<b>%s</b>"

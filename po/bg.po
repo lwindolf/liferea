@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea Bulgarian translation\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-11 01:16+0300\n"
+"POT-Creation-Date: 2009-06-19 19:14+0300\n"
 "PO-Revision-Date: 2006-03-17 12:10+0200\n"
 "Last-Translator: Vladimir Petkov <vpetkov@i-space.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
@@ -248,7 +248,7 @@ msgstr ""
 msgid "%b %d %Y"
 msgstr ""
 
-#: ../src/common.c:392
+#: ../src/common.c:441
 #, c-format
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "Не може да създаде директорията за временните файлове „%s“!"
@@ -846,11 +846,6 @@ msgstr "Избор на файл"
 #, c-format
 msgid "<b>File Extension .%s</b>"
 msgstr "<b>Файлово разширение .%s</b>"
-
-#: ../src/ui/enclosure_list_view.c:417
-#, c-format
-msgid "<b>%s</b>"
-msgstr "<b>%s</b>"
 
 #: ../src/ui/liferea_shell.c:325
 #, fuzzy, c-format
@@ -1639,7 +1634,7 @@ msgstr ""
 msgid "No script selected!"
 msgstr "Няма избран запис"
 
-#: ../src/ui/ui_search.c:128
+#: ../src/ui/ui_search.c:142
 #, fuzzy
 msgid "Create a new search feed."
 msgstr "Създаване на поле за търсене от типа Feedster."
@@ -2598,6 +2593,9 @@ msgid ""
 "Enter a website location to use feed autodiscovery or in case you know it "
 "the exact feed location."
 msgstr ""
+
+#~ msgid "<b>%s</b>"
+#~ msgstr "<b>%s</b>"
 
 #~ msgid "http://liferea.sf.net"
 #~ msgstr "http://liferea.sf.net"

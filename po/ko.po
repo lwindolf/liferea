@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-11 01:16+0300\n"
+"POT-Creation-Date: 2009-06-19 19:14+0300\n"
 "PO-Revision-Date: 2005-12-11 13:52+0900\n"
 "Last-Translator: Park Ji-In <mithrandir at tisphie.net>\n"
 "Language-Team: GNOME Korea <gnome-kr-hackers@lists.kldp.net>\n"
@@ -247,7 +247,7 @@ msgstr ""
 msgid "%b %d %Y"
 msgstr ""
 
-#: ../src/common.c:392
+#: ../src/common.c:441
 #, fuzzy, c-format
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "캐시 디렉토리 %s을(를) 생설할 수 없습니다!"
@@ -832,11 +832,6 @@ msgstr "파일 고르기"
 #, c-format
 msgid "<b>File Extension .%s</b>"
 msgstr "<b>파일 확장자 .%s</b>"
-
-#: ../src/ui/enclosure_list_view.c:417
-#, c-format
-msgid "<b>%s</b>"
-msgstr ""
 
 #: ../src/ui/liferea_shell.c:325
 #, fuzzy, c-format
@@ -1626,7 +1621,7 @@ msgstr ""
 msgid "No script selected!"
 msgstr "아이템이 선택되지 않았습니다"
 
-#: ../src/ui/ui_search.c:128
+#: ../src/ui/ui_search.c:142
 #, fuzzy
 msgid "Create a new search feed."
 msgstr "피드스터 찾기 피드를 만듭니다."

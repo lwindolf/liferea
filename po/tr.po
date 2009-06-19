@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr_new\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-11 01:16+0300\n"
+"POT-Creation-Date: 2009-06-19 19:14+0300\n"
 "PO-Revision-Date: 2007-09-01 08:19+0300\n"
 "Last-Translator: Eren Türkay <turkay.eren@gmail.com>\n"
 "Language-Team:  <turkce@pardus.org.tr>\n"
@@ -234,7 +234,7 @@ msgstr "%d %b %H:%M"
 msgid "%b %d %Y"
 msgstr "%d %b %Y"
 
-#: ../src/common.c:392
+#: ../src/common.c:441
 #, c-format
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "Bellek klasörü \"%s\" yaratılamadı!"
@@ -813,11 +813,6 @@ msgstr "Dosya Seç"
 #, c-format
 msgid "<b>File Extension .%s</b>"
 msgstr "<b>Dosya Uzantısı .%s</b>"
-
-#: ../src/ui/enclosure_list_view.c:417
-#, c-format
-msgid "<b>%s</b>"
-msgstr "<b>%s</b>"
 
 #: ../src/ui/liferea_shell.c:325
 #, c-format
@@ -1571,7 +1566,7 @@ msgstr "Senaryo Adı"
 msgid "No script selected!"
 msgstr "Hiçbir senaryo seçili değil"
 
-#: ../src/ui/ui_search.c:128
+#: ../src/ui/ui_search.c:142
 msgid "Create a new search feed."
 msgstr "Yeni bir arama klasörü yarat"
 
@@ -2509,6 +2504,9 @@ msgid ""
 msgstr ""
 "Haber kaynak otomatik keşfini kullanmak istediğiniz, ya da haber kaynağının "
 "tam yerini bildiğiniz web sitesinin adresini belirtiniz. "
+
+#~ msgid "<b>%s</b>"
+#~ msgstr "<b>%s</b>"
 
 #, fuzzy
 #~ msgid "FAILED to download enclosure: \"%s\""

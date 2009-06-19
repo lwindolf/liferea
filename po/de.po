@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 1.5.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-11 01:16+0300\n"
+"POT-Creation-Date: 2009-06-19 19:14+0300\n"
 "PO-Revision-Date: 2009-04-24 23:59+0100\n"
 "Last-Translator: Lars Lindner <lars.lindner@gmail.com>\n"
 "Language-Team: German\n"
@@ -233,7 +233,7 @@ msgstr "%b %d %H:%M"
 msgid "%b %d %Y"
 msgstr "%d %b %Y"
 
-#: ../src/common.c:392
+#: ../src/common.c:441
 #, c-format
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "Kann Cache-Verzeichnis \"%s\" nicht anlegen!"
@@ -790,11 +790,6 @@ msgstr "Datei wählen"
 #, c-format
 msgid "<b>File Extension .%s</b>"
 msgstr "<b>Dateiendung .%s</b>"
-
-#: ../src/ui/enclosure_list_view.c:417
-#, c-format
-msgid "<b>%s</b>"
-msgstr "<b>%s</b>"
 
 #: ../src/ui/liferea_shell.c:325
 #, c-format
@@ -1523,7 +1518,7 @@ msgstr "Skriptname"
 msgid "No script selected!"
 msgstr "Es wurde kein Skript ausgewählt!"
 
-#: ../src/ui/ui_search.c:128
+#: ../src/ui/ui_search.c:142
 msgid "Create a new search feed."
 msgstr "Neues Such-Abonnement anlegen."
 
@@ -2449,6 +2444,9 @@ msgid ""
 msgstr ""
 "Bitte die Adresse einer Webseite oder wenn bekannt die exakte Adresse eines "
 "Feeds angeben."
+
+#~ msgid "<b>%s</b>"
+#~ msgstr "<b>%s</b>"
 
 #~ msgid "_Allow Flash in Feeds."
 #~ msgstr "Flash in Feeds _erlauben"

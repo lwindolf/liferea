@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-11 01:16+0300\n"
+"POT-Creation-Date: 2009-06-19 19:14+0300\n"
 "PO-Revision-Date: 2005-12-11 13:22+0800\n"
 "Last-Translator: Jim Huang <jserv@kaffe.org>\n"
 "Language-Team: Chinese/Traditional <zh-l10n@linux.org.tw>\n"
@@ -244,7 +244,7 @@ msgstr ""
 msgid "%b %d %Y"
 msgstr ""
 
-#: ../src/common.c:392
+#: ../src/common.c:441
 #, fuzzy, c-format
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "無法建立快取目錄 %s !"
@@ -804,11 +804,6 @@ msgstr "選擇檔案"
 #: ../src/ui/enclosure_list_view.c:415
 #, c-format
 msgid "<b>File Extension .%s</b>"
-msgstr ""
-
-#: ../src/ui/enclosure_list_view.c:417
-#, c-format
-msgid "<b>%s</b>"
 msgstr ""
 
 # what's this ?
@@ -1606,7 +1601,7 @@ msgstr ""
 msgid "No script selected!"
 msgstr "未選擇項目!"
 
-#: ../src/ui/ui_search.c:128
+#: ../src/ui/ui_search.c:142
 #, fuzzy
 msgid "Create a new search feed."
 msgstr "創造一個 Feedster 搜尋饋流"

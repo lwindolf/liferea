@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-11 01:16+0300\n"
+"POT-Creation-Date: 2009-06-19 19:14+0300\n"
 "PO-Revision-Date: 2008-12-30 22:50+0200\n"
 "Last-Translator: Jennie Petoumenou <epetoumenou@gmail.com>\n"
 "Language-Team:  <team@gnome.gr>\n"
@@ -234,7 +234,7 @@ msgstr "%d %b %l:%M %p"
 msgid "%b %d %Y"
 msgstr "%d %b %Y"
 
-#: ../src/common.c:392
+#: ../src/common.c:441
 #, c-format
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "Αδύνατη η δημιουργία του καταλόγου μνήμης \"%s\"!"
@@ -823,11 +823,6 @@ msgstr "Επιλογή αρχείου"
 #, c-format
 msgid "<b>File Extension .%s</b>"
 msgstr "<b>Επέκταση αρχείου .%s</b>"
-
-#: ../src/ui/enclosure_list_view.c:417
-#, c-format
-msgid "<b>%s</b>"
-msgstr "<b>%s</b>"
 
 #: ../src/ui/liferea_shell.c:325
 #, c-format
@@ -1584,7 +1579,7 @@ msgstr "Όνομα σεναρίου"
 msgid "No script selected!"
 msgstr "Δεν επελέγη κανένα σενάριο!"
 
-#: ../src/ui/ui_search.c:128
+#: ../src/ui/ui_search.c:142
 msgid "Create a new search feed."
 msgstr "Δημιουργία νέας ροής αναζήτησης."
 
@@ -2526,6 +2521,9 @@ msgid ""
 msgstr ""
 "Εισάγετε τοποθεσία στο διαδίκτυο αν γνωρίζετε την ακριβή τοποθεσία της ροής, "
 "ή αν επιθυμείτε να εντοπιστεί αυτόματα η ροή."
+
+#~ msgid "<b>%s</b>"
+#~ msgstr "<b>%s</b>"
 
 #, fuzzy
 #~ msgid "FAILED to download enclosure: \"%s\""

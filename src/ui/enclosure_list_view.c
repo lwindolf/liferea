@@ -414,7 +414,7 @@ ui_enclosure_type_setup (encTypePtr type, enclosurePtr enclosure, gchar *typestr
 	if (!strchr(typestr, '/')) 
 		tmp = g_strdup_printf (_("<b>File Extension .%s</b>"), typestr);
 	else
-		tmp = g_strdup_printf (_("<b>%s</b>"), typestr);
+		tmp = g_strdup_printf ("<b>%s</b>", typestr);
 	gtk_label_set_markup_with_mnemonic (GTK_LABEL (liferea_dialog_lookup (dialog, "enc_type_label")), tmp);
 	g_free (tmp);
 

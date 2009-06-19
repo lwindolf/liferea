@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 1.4.24\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-11 01:16+0300\n"
+"POT-Creation-Date: 2009-06-19 19:14+0300\n"
 "PO-Revision-Date: 2009-01-31 22:14+0200\n"
 "Last-Translator: Sergey Rudchenko <sergey.rudchenko@gmail.com>\n"
 "Language-Team: Russian\n"
@@ -231,7 +231,7 @@ msgstr ""
 msgid "%b %d %Y"
 msgstr ""
 
-#: ../src/common.c:392
+#: ../src/common.c:441
 #, c-format
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "Невозможно создать папку кеша \"%s\"!"
@@ -789,11 +789,6 @@ msgstr "Выберите файл"
 #, c-format
 msgid "<b>File Extension .%s</b>"
 msgstr "<b>Расширение имени файла .%s</b>"
-
-#: ../src/ui/enclosure_list_view.c:417
-#, c-format
-msgid "<b>%s</b>"
-msgstr ""
 
 #: ../src/ui/liferea_shell.c:325
 #, c-format
@@ -1542,7 +1537,7 @@ msgstr "Название скрипта"
 msgid "No script selected!"
 msgstr "Скрипт не выбран!"
 
-#: ../src/ui/ui_search.c:128
+#: ../src/ui/ui_search.c:142
 msgid "Create a new search feed."
 msgstr "Добавить поисковую ленту."
 

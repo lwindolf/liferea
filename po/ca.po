@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-11 01:16+0300\n"
+"POT-Creation-Date: 2009-06-19 19:14+0300\n"
 "PO-Revision-Date: 2007-04-19 21:41+0200\n"
 "Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
@@ -242,7 +242,7 @@ msgstr "%b %d %H:%M"
 msgid "%b %d %Y"
 msgstr "%b %d %Y"
 
-#: ../src/common.c:392
+#: ../src/common.c:441
 #, c-format
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "No s'ha pogut crear el directori de memòria cau «%s»"
@@ -837,11 +837,6 @@ msgstr "Escolliu un fitxer"
 #, c-format
 msgid "<b>File Extension .%s</b>"
 msgstr "<b>Extensió de fitxer .%s</b>"
-
-#: ../src/ui/enclosure_list_view.c:417
-#, c-format
-msgid "<b>%s</b>"
-msgstr "<b>%s</b>"
 
 #: ../src/ui/liferea_shell.c:325
 #, c-format
@@ -1621,7 +1616,7 @@ msgstr "Gestor d'scripts"
 msgid "No script selected!"
 msgstr "No heu seleccionat cap script"
 
-#: ../src/ui/ui_search.c:128
+#: ../src/ui/ui_search.c:142
 msgid "Create a new search feed."
 msgstr "Crea un canal de cerca nou."
 
@@ -2586,6 +2581,9 @@ msgid ""
 msgstr ""
 "Escriviu la ubicació d'un lloc web per a utilitzar la descoberta automàtica "
 "del canal, o en cas que la conegueu, la ubicació exacta del canal."
+
+#~ msgid "<b>%s</b>"
+#~ msgstr "<b>%s</b>"
 
 #, fuzzy
 #~ msgid "FAILED to download enclosure: \"%s\""

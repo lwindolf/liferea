@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: new\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-11 01:16+0300\n"
+"POT-Creation-Date: 2009-06-19 19:14+0300\n"
 "PO-Revision-Date: 2004-10-24 02:34+0200\n"
 "Last-Translator: Tomislav Markovski <herrera@users.sourceforge.net>\n"
 "Language-Team: Macedonian <ossm-members@hedona.on.net.mk>\n"
@@ -246,7 +246,7 @@ msgstr ""
 msgid "%b %d %Y"
 msgstr ""
 
-#: ../src/common.c:392
+#: ../src/common.c:441
 #, fuzzy, c-format
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "Не може да се креира папката за кеш %s!"
@@ -823,11 +823,6 @@ msgstr "Одберете датотека"
 #: ../src/ui/enclosure_list_view.c:415
 #, c-format
 msgid "<b>File Extension .%s</b>"
-msgstr ""
-
-#: ../src/ui/enclosure_list_view.c:417
-#, c-format
-msgid "<b>%s</b>"
 msgstr ""
 
 #: ../src/ui/liferea_shell.c:325
@@ -1618,7 +1613,7 @@ msgstr ""
 msgid "No script selected!"
 msgstr "Нема означени ставки!"
 
-#: ../src/ui/ui_search.c:128
+#: ../src/ui/ui_search.c:142
 #, fuzzy
 msgid "Create a new search feed."
 msgstr "Креира вест за пребарување со Feedster."

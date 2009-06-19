@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-11 01:16+0300\n"
+"POT-Creation-Date: 2009-06-19 19:14+0300\n"
 "PO-Revision-Date: 2007-07-18 10:23+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -233,7 +233,7 @@ msgstr "%e %B %H.%M"
 msgid "%b %d %Y"
 msgstr "%e %B %Y"
 
-#: ../src/common.c:392
+#: ../src/common.c:441
 #, c-format
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "Kan inte skapa cachekatalogen \"%s\"!"
@@ -815,11 +815,6 @@ msgstr "Välj fil"
 #, c-format
 msgid "<b>File Extension .%s</b>"
 msgstr "<b>Filändelse .%s</b>"
-
-#: ../src/ui/enclosure_list_view.c:417
-#, c-format
-msgid "<b>%s</b>"
-msgstr "<b>%s</b>"
 
 #: ../src/ui/liferea_shell.c:325
 #, c-format
@@ -1580,7 +1575,7 @@ msgstr "Skriptnamn"
 msgid "No script selected!"
 msgstr "Inget skript har markerats!"
 
-#: ../src/ui/ui_search.c:128
+#: ../src/ui/ui_search.c:142
 msgid "Create a new search feed."
 msgstr "Skapa en ny sökkanal."
 
@@ -2516,6 +2511,9 @@ msgid ""
 msgstr ""
 "Ange en webbadress att använda automatisk kanalidentifiering för eller om du "
 "vet den exakta kanaladressen."
+
+#~ msgid "<b>%s</b>"
+#~ msgstr "<b>%s</b>"
 
 #, fuzzy
 #~ msgid "FAILED to download enclosure: \"%s\""

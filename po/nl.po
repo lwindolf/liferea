@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 1.0.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-11 01:16+0300\n"
+"POT-Creation-Date: 2009-06-19 19:14+0300\n"
 "PO-Revision-Date: 2006-02-21 21:39+0100\n"
 "Last-Translator: Patrick Bos <kikkum@hotmail.com>\n"
 "Language-Team: Dutch <nl@li.org>\n"
@@ -244,7 +244,7 @@ msgstr ""
 msgid "%b %d %Y"
 msgstr ""
 
-#: ../src/common.c:392
+#: ../src/common.c:441
 #, fuzzy, c-format
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "Cache directory %s kan niet worden aangemaakt!"
@@ -828,11 +828,6 @@ msgstr "Bladeren"
 #, c-format
 msgid "<b>File Extension .%s</b>"
 msgstr "<b>Bestandsextensie .%s</b>"
-
-#: ../src/ui/enclosure_list_view.c:417
-#, c-format
-msgid "<b>%s</b>"
-msgstr "<b>%s</b>"
 
 #: ../src/ui/liferea_shell.c:325
 #, fuzzy, c-format
@@ -1625,7 +1620,7 @@ msgstr ""
 msgid "No script selected!"
 msgstr "Er is geen item geselecteerd"
 
-#: ../src/ui/ui_search.c:128
+#: ../src/ui/ui_search.c:142
 #, fuzzy
 msgid "Create a new search feed."
 msgstr "Een \"Feedster search feed\" aanmaken."
@@ -2581,6 +2576,9 @@ msgid ""
 "Enter a website location to use feed autodiscovery or in case you know it "
 "the exact feed location."
 msgstr ""
+
+#~ msgid "<b>%s</b>"
+#~ msgstr "<b>%s</b>"
 
 #~ msgid "This item's contents is invalid."
 #~ msgstr "De inhoud van dit item is ongeldig."

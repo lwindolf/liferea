@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.2.20\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-11 01:16+0300\n"
+"POT-Creation-Date: 2009-06-19 19:14+0300\n"
 "PO-Revision-Date: 2007-08-19 13:26+0300\n"
 "Last-Translator:  <ihar.hrachyshka@gmail.com>\n"
 "Language-Team: Belarusian Latin\n"
@@ -231,7 +231,7 @@ msgstr "%b %d %l:%M %p"
 msgid "%b %d %Y"
 msgstr "%b %d %Y"
 
-#: ../src/common.c:392
+#: ../src/common.c:441
 #, c-format
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "Niemahčyma stvaryć kataloh padručnaj pamiaci \"%s\"!"
@@ -814,11 +814,6 @@ msgstr "Abiary fajł"
 #, c-format
 msgid "<b>File Extension .%s</b>"
 msgstr "<b>Pašyreńnie fajłu .%s</b>"
-
-#: ../src/ui/enclosure_list_view.c:417
-#, c-format
-msgid "<b>%s</b>"
-msgstr "<b>%s</b>"
 
 #: ../src/ui/liferea_shell.c:325
 #, c-format
@@ -1574,7 +1569,7 @@ msgstr "Nazva skryptu"
 msgid "No script selected!"
 msgstr "Skrypt nie abrany!"
 
-#: ../src/ui/ui_search.c:128
+#: ../src/ui/ui_search.c:142
 msgid "Create a new search feed."
 msgstr "Stvary novy kanał pošuku."
 
@@ -2515,6 +2510,9 @@ msgid ""
 msgstr ""
 "Uviadzi adras web-placoŭki, kab užyć aŭtamatyčny pošuk kanałaŭ, albo, kali "
 "ty viedaješ, dakładny adras kanału."
+
+#~ msgid "<b>%s</b>"
+#~ msgstr "<b>%s</b>"
 
 #, fuzzy
 #~ msgid "FAILED to download enclosure: \"%s\""

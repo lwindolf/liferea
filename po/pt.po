@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-11 01:16+0300\n"
+"POT-Creation-Date: 2009-06-19 19:14+0300\n"
 "PO-Revision-Date: 2009-06-04 01:08+0000\n"
 "Last-Translator: António Lima <amrlima@gmail.com>\n"
 "Language-Team: Portuguese <liferea-devel@lists.sourceforge.net>\n"
@@ -231,7 +231,7 @@ msgstr "%d de %b %l:%M %p"
 msgid "%b %d %Y"
 msgstr "%d de %b %Y"
 
-#: ../src/common.c:392
+#: ../src/common.c:441
 #, c-format
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "Não foi possível criar o directório de cache \"%s\"!"
@@ -786,11 +786,6 @@ msgstr "Escolher Ficheiro"
 #, c-format
 msgid "<b>File Extension .%s</b>"
 msgstr "<b>Extensão de Ficheiro .%s</b>"
-
-#: ../src/ui/enclosure_list_view.c:417
-#, c-format
-msgid "<b>%s</b>"
-msgstr "<b>%s</b>"
 
 #: ../src/ui/liferea_shell.c:325
 #, c-format
@@ -1516,7 +1511,7 @@ msgstr "Nome do Script"
 msgid "No script selected!"
 msgstr "Nenhum script seleccionado!"
 
-#: ../src/ui/ui_search.c:128
+#: ../src/ui/ui_search.c:142
 msgid "Create a new search feed."
 msgstr "Criar uma nova de fonte de procura."
 
@@ -2441,6 +2436,9 @@ msgid ""
 msgstr ""
 "Digite o endereço de website a usar na pesquisa automática ou, caso conheça, "
 "o endereço exacto da fonte."
+
+#~ msgid "<b>%s</b>"
+#~ msgstr "<b>%s</b>"
 
 #~ msgid "_Allow Flash in Feeds."
 #~ msgstr "_Permitir Flash nas Fontes."

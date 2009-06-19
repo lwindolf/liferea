@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-11 01:16+0300\n"
+"POT-Creation-Date: 2009-06-19 19:14+0300\n"
 "PO-Revision-Date: 2007-10-20 21:26+0100\n"
 "Last-Translator: Bart Kreska <bartkreska@users.sourceforge.net>\n"
 "Language-Team: Polish\n"
@@ -243,7 +243,7 @@ msgstr "%d %B %k:%M"
 msgid "%b %d %Y"
 msgstr "%d %B %Y"
 
-#: ../src/common.c:392
+#: ../src/common.c:441
 #, c-format
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "Nie można utworzyć katalogu pamięci podręcznej \"%s\"!"
@@ -811,11 +811,6 @@ msgstr "Wybierz plik"
 #, c-format
 msgid "<b>File Extension .%s</b>"
 msgstr "<b>Rozszerzenie pliku .%s</b>"
-
-#: ../src/ui/enclosure_list_view.c:417
-#, c-format
-msgid "<b>%s</b>"
-msgstr "<b>%s</b>"
 
 #: ../src/ui/liferea_shell.c:325
 #, c-format
@@ -1581,7 +1576,7 @@ msgstr "Nazwa skryptu"
 msgid "No script selected!"
 msgstr "Nie wybrano skryptu!"
 
-#: ../src/ui/ui_search.c:128
+#: ../src/ui/ui_search.c:142
 msgid "Create a new search feed."
 msgstr "Tworzy subskrypcję wyszukiwania."
 
@@ -2517,6 +2512,9 @@ msgid ""
 msgstr ""
 "Wprowadź URL strony aby automatycznie wykryć dostępne subskrypcje lub "
 "bezpośredni adres subskrypcji jeśli go znasz"
+
+#~ msgid "<b>%s</b>"
+#~ msgstr "<b>%s</b>"
 
 #, fuzzy
 #~ msgid "FAILED to download enclosure: \"%s\""

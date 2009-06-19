@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: trunk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-11 01:16+0300\n"
+"POT-Creation-Date: 2009-06-19 19:14+0300\n"
 "PO-Revision-Date: 2009-01-13 12:55+0200\n"
 "Last-Translator: Besnik Bleta <besnik@programeshqip.org>\n"
 "Language-Team: Albanian <besnik@programeshqip.org>\n"
@@ -230,7 +230,7 @@ msgstr ""
 msgid "%b %d %Y"
 msgstr ""
 
-#: ../src/common.c:392
+#: ../src/common.c:441
 #, c-format
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "Nuk krijohet dot drejtoria fshehtinë \"%s\"!"
@@ -794,11 +794,6 @@ msgstr "Zgjidhni Kartelë"
 #, c-format
 msgid "<b>File Extension .%s</b>"
 msgstr "<b>Zgjatim Kartele .%s</b>"
-
-#: ../src/ui/enclosure_list_view.c:417
-#, c-format
-msgid "<b>%s</b>"
-msgstr "<b>%s</b>"
 
 #: ../src/ui/liferea_shell.c:325
 #, c-format
@@ -1552,7 +1547,7 @@ msgstr "Emër Programthi"
 msgid "No script selected!"
 msgstr "Pa programth të përzgjedhur!"
 
-#: ../src/ui/ui_search.c:128
+#: ../src/ui/ui_search.c:142
 msgid "Create a new search feed."
 msgstr "Krijoni prurje kërkimi të ri."
 
@@ -2495,6 +2490,9 @@ msgid ""
 msgstr ""
 "Jepni vendin e \"site\"-it web, për të përdorur vetëzbulimin ose, në rast se "
 "e dini, vendin e saktë të prurjes."
+
+#~ msgid "<b>%s</b>"
+#~ msgstr "<b>%s</b>"
 
 #~ msgid "<b>Rule</b>"
 #~ msgstr "<b>Rregull</b>"

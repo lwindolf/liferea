@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-11 01:16+0300\n"
+"POT-Creation-Date: 2009-06-19 19:14+0300\n"
 "PO-Revision-Date: 2007-05-28 17:24+0200\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
@@ -236,7 +236,7 @@ msgstr "%b %d %l:%M %p"
 msgid "%b %d %Y"
 msgstr "%Y %b %d"
 
-#: ../src/common.c:392
+#: ../src/common.c:441
 #, c-format
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "Ezin izan da \"%s\" cache direktorioa sortu."
@@ -815,11 +815,6 @@ msgstr "Aukeratu fitxategia"
 #, c-format
 msgid "<b>File Extension .%s</b>"
 msgstr "<b>Fitxategiaren luzapena. %s</b>"
-
-#: ../src/ui/enclosure_list_view.c:417
-#, c-format
-msgid "<b>%s</b>"
-msgstr "<b>%s</b>"
 
 #: ../src/ui/liferea_shell.c:325
 #, c-format
@@ -1595,7 +1590,7 @@ msgstr "Script-kudeatzailea"
 msgid "No script selected!"
 msgstr "Ez da script-ik hautatu."
 
-#: ../src/ui/ui_search.c:128
+#: ../src/ui/ui_search.c:142
 msgid "Create a new search feed."
 msgstr "Sortu bilaketaren iturri berria."
 
@@ -2544,6 +2539,9 @@ msgid ""
 msgstr ""
 "Sartu web gunearen helbidea iturrien aurkikuntza automatikoa erabiltzeko, "
 "edo jakinez gero iturriaren helbide zuzena erabiltzeko."
+
+#~ msgid "<b>%s</b>"
+#~ msgstr "<b>%s</b>"
 
 #, fuzzy
 #~ msgid "FAILED to download enclosure: \"%s\""
