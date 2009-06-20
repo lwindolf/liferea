@@ -30,6 +30,7 @@
 
 #include "common.h"
 #include "conf.h"
+#include "debug.h"
 #include "node.h"
 #include "item.h"
 #include "item_state.h"
@@ -194,9 +195,8 @@ static gboolean notif_libnotify_init(void) {
 		}
 
 		return TRUE;
-	}
-	else {
-		fprintf(stderr, "notif_libnotify.c : notify_init failed" );
+	} else {
+		debug0 (DEBUG_GUI, "libnotify.c: notify_init returned FALSE");
 		return FALSE;
 	}
 }
