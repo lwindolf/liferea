@@ -8277,22 +8277,6 @@ fail:
 }
 
 
-static int _wrap_ui_itemlist_reset_tree_store(lua_State* L) {
-  int SWIG_arg = 0;
-  
-  SWIG_check_num_args("ui_itemlist_reset_tree_store",0,0)
-  ui_itemlist_reset_tree_store();
-  
-  return SWIG_arg;
-  
-  if(0) SWIG_fail;
-  
-fail:
-  lua_error(L);
-  return SWIG_arg;
-}
-
-
 static int _wrap_ui_itemlist_prefocus(lua_State* L) {
   int SWIG_arg = 0;
   
@@ -9438,7 +9422,6 @@ static const struct luaL_reg swig_commands[] = {
     { "ui_itemlist_destroy", _wrap_ui_itemlist_destroy},
     { "ui_itemlist_contains_item", _wrap_ui_itemlist_contains_item},
     { "ui_itemlist_set_sort_column", _wrap_ui_itemlist_set_sort_column},
-    { "ui_itemlist_reset_tree_store", _wrap_ui_itemlist_reset_tree_store},
     { "ui_itemlist_prefocus", _wrap_ui_itemlist_prefocus},
     { "ui_itemlist_select", _wrap_ui_itemlist_select},
     { "ui_itemlist_add_item", _wrap_ui_itemlist_add_item},
