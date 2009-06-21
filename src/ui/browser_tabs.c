@@ -303,14 +303,27 @@ on_htmlview_location_changed (gpointer object, gchar *uri, gpointer user_data)
 }
 
 static const gchar *
+remove_string_prefix (const gchar *string, const gchar *prefix)
+{
+	int	len;
+
+	len = strlen (prefix);
+
+	if (!strncmp (string, prefix, len))
+		string += len;
+
+	return string;
+}
+
+static const gchar *
 create_label_text (const gchar *title)
 {
 	const gchar 	*tmp;
 
 	tmp = (title && *title) ? title : _("New tab");
 
-	if (!strncmp (tmp, "http://", 7))
-		tmp += strlen ("http://");
+	tmp = remove_string_prefix (tmp, "http://");
+	tmp = remove_string_prefix (tmp, "https://");
 
 	return tmp;
 }
