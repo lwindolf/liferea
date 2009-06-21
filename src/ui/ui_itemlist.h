@@ -45,7 +45,7 @@ void ui_itemlist_destroy (void);
  *
  * @returns TRUE if the item is in the tree view 
  */
-gboolean ui_itemlist_contains_item(gulong id);
+gboolean ui_itemlist_contains_item (gulong id);
 
 /**
  * Changes the sorting type (and direction).
@@ -55,48 +55,57 @@ gboolean ui_itemlist_contains_item(gulong id);
  */
 void ui_itemlist_set_sort_column (nodeViewSortType sortType, gboolean sortReversed);
 
-void ui_itemlist_reset_tree_store(void);
+void ui_itemlist_reset_tree_store (void);
 
 /**
  * Unselect all items in the list and scroll to top. This is typically
  * called when changing feed.
  */
-void ui_itemlist_prefocus(void);
+void ui_itemlist_prefocus (void);
 
 /**
  * Selects the given item (if it is in the current item list).
  *
- * @param ip	the item to select
+ * @param item	the item to select
  */
-void ui_itemlist_select(itemPtr ip);
+void ui_itemlist_select (itemPtr item);
 
 /**
- * Add an item to the itemlist
+ * Add an item to the itemlist. This method is expensive and
+ * is to be used only for new items that need to be inserted
+ * by background updates.
  *
- * @param ip	the item to add
+ * @param item	the item to add
  */
-void ui_itemlist_add_item(itemPtr item);
+void ui_itemlist_add_item (itemPtr item);
 
 /**
- * Remove an item from the itemlist
+ * Remove an item from the itemlist. This method is expensive
+ * and is to be used only for items removed by background updates
+ * (usually cache drops).
+ *
+ * @param item	the item to remove
  */
-void ui_itemlist_remove_item(itemPtr ip);
+void ui_itemlist_remove_item (itemPtr item);
 
 /**
- * Enable the favicon column of the currently displayed itemlist
+ * Enable the favicon column of the currently displayed itemlist.
+ *
+ * @param enabled	TRUE if column is to be visible
  */
-void ui_itemlist_enable_favicon_column(gboolean enabled);
+void ui_itemlist_enable_favicon_column (gboolean enabled);
 
 /**
  * Enable the enclosure column of the currently displayed itemlist
+ *
+ * @param enabled	TRUE if column is to be visible
  */
-void ui_itemlist_enable_encicon_column(gboolean enabled);
+void ui_itemlist_enable_encicon_column (gboolean enabled);
 
 /**
  * Remove the items from the itemlist.
  */
-void ui_itemlist_clear(void);
-
+void ui_itemlist_clear (void);
 
 /**
  * When switching tabs, the horizontal scrolling sometimes gets messed
@@ -104,31 +113,26 @@ void ui_itemlist_clear(void);
  */
 void ui_itemlist_scroll_left (void);
 
-/**
- * @name Callbacks used from interface.c
- * @{
- */
+/* item list callbacks */
 
 /**
  * Callback activated when an item is double-clicked. It opens the URL
  * of the item in a web browser.
  */
-
-void
-on_Itemlist_row_activated              (GtkTreeView     *treeview,
-                                        GtkTreePath     *path,
-                                        GtkTreeViewColumn *column,
-                                        gpointer         user_data);
+void on_Itemlist_row_activated (GtkTreeView     *treeview,
+                                GtkTreePath     *path,
+                                GtkTreeViewColumn *column,
+                                gpointer         user_data);
 
 /**
  * Callback for column selection change.
  */
-void itemlist_sort_column_changed_cb(GtkTreeSortable *treesortable, gpointer user_data);
+void itemlist_sort_column_changed_cb (GtkTreeSortable *treesortable, gpointer user_data);
 
 /**
  * Callback for item list selection change.
  */
-void on_itemlist_selection_changed(GtkTreeSelection *selection, gpointer data);
+void on_itemlist_selection_changed (GtkTreeSelection *selection, gpointer data);
 
 /* menu callbacks */
 
@@ -136,32 +140,32 @@ void on_itemlist_selection_changed(GtkTreeSelection *selection, gpointer data);
  * Toggles the unread status of the selected item. This is called from
  * a menu.
  */
-void on_toggle_unread_status(GtkMenuItem *menuitem, gpointer user_data);
+void on_toggle_unread_status (GtkMenuItem *menuitem, gpointer user_data);
 
 /**
  * Toggles the flag of the selected item. This is called from a menu.
  */
-void on_toggle_item_flag(GtkMenuItem *menuitem, gpointer user_data);
+void on_toggle_item_flag (GtkMenuItem *menuitem, gpointer user_data);
 
 /**
  * Opens the selected item in a browser.
  */
-void on_popup_launchitem_selected(void);
+void on_popup_launchitem_selected (void);
 
 /**
  * Opens the selected item in a browser.
  */
-void on_popup_launchitem_in_tab_selected(void);
+void on_popup_launchitem_in_tab_selected (void);
 
 /**
  * Toggles the read status of right-clicked item.
  */
-void on_popup_toggle_read(void);
+void on_popup_toggle_read (void);
 
 /**
  * Toggles the flag of right-clicked item.
  */
-void on_popup_toggle_flag(void);
+void on_popup_toggle_flag (void);
 
 /**
  * Removes all items from the selected feed.
@@ -169,7 +173,7 @@ void on_popup_toggle_flag(void);
  * @param menuitem The menuitem that was selected.
  * @param user_data Unused.
  */
-void on_remove_items_activate(GtkMenuItem *menuitem, gpointer user_data);
+void on_remove_items_activate (GtkMenuItem *menuitem, gpointer user_data);
 
 /**
  * Removes the selected item from the selected feed.
@@ -177,9 +181,9 @@ void on_remove_items_activate(GtkMenuItem *menuitem, gpointer user_data);
  * @param menuitem The menuitem that was selected.
  * @param user_data Unused.
  */  
-void on_remove_item_activate(GtkMenuItem *menuitem, gpointer user_data);
+void on_remove_item_activate (GtkMenuItem *menuitem, gpointer user_data);
 
-void on_popup_remove_selected(void);
+void on_popup_remove_selected (void);
 
 /**
  * Finds and selects the next unread item starting at the given
@@ -190,7 +194,7 @@ void on_popup_remove_selected(void);
  *
  * @returns item if an unread item was found
  */
-itemPtr ui_itemlist_find_unread_item(gulong startId);
+itemPtr ui_itemlist_find_unread_item (gulong startId);
 
 /**
  * Searches the displayed feed and then all feeds for an unread
@@ -199,7 +203,7 @@ itemPtr ui_itemlist_find_unread_item(gulong startId);
  * @param menuitem The menuitem that was selected.
  * @param user_data Unused.
  */
-void on_next_unread_item_activate(GtkMenuItem *menuitem, gpointer user_data);
+void on_next_unread_item_activate (GtkMenuItem *menuitem, gpointer user_data);
 
 void on_popup_next_unread_item_selected(gpointer callback_data, guint callback_action, GtkWidget *widget);
 
@@ -236,10 +240,8 @@ void ui_itemlist_add_item_bookmark (itemPtr item);
 /**
  * Copies the selected items URL to the clipboard.
  */
-void on_popup_copy_URL_clipboard(void);
+void on_popup_copy_URL_clipboard (void);
 
-void on_popup_social_bm_item_selected(void);
-
-/*@}*/
+void on_popup_social_bm_item_selected (void);
 
 #endif
