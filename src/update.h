@@ -248,17 +248,6 @@ void update_process_finished_job (updateJobPtr job);
 void update_job_cancel_by_owner (gpointer owner);
 
 /**
- * Cancel a request if it is waiting to be retried.
- * In case of success, the job is free'd when its retry timeout expires,
- * so it is safe to just forget about it.
- * 
- * @param job		the update job
- *
- * @return TRUE if successfully cancelled the job
- */
-gboolean update_job_cancel_retry (updateJobPtr job);
-
-/**
  * Method to query the update state of currently processed jobs.
  *
  * @returns update job state (see enum request_state)
