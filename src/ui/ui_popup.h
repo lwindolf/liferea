@@ -43,10 +43,12 @@ void ui_popup_item_menu (itemPtr item, guint button, guint32 activate_time);
  * Shows a popup menu for the systray icon.
  * (Offline mode, Close, Minimize...)
  *
+ * @param func  the function to calculate the position to popup
  * @param button	the mouse button which was pressed to initiate the event
  * @param activate_time	the time at which the activation event occurred
+ * @param user_data  the user data to pass to func.
  */
-void ui_popup_systray_menu (guint button, guint32 activate_time);
+void ui_popup_systray_menu (GtkMenuPositionFunc func, guint button, guint32 activate_time, gpointer user_data);
 
 /**
  * Shows a popup menu for the enclosure list view.

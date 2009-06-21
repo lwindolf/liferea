@@ -14,7 +14,6 @@ libliui_a_SOURCES = \
 	attention_profile_dialog.h \
 	auth_dialog.c auth_dialog.h \
 	browser_tabs.c browser_tabs.h \
-	eggtrayicon.c eggtrayicon.h \
 	enclosure_list_view.c enclosure_list_view.h \
 	itemview.c itemview.h \
 	liferea_dialog.c liferea_dialog.h \

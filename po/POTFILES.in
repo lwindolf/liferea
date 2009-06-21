@@ -70,8 +70,6 @@ src/vfolder.c
 src/vfolder.h
 src/xml.c
 src/xml.h
-src/ui/eggtrayicon.c
-src/ui/eggtrayicon.h
 src/ui/enclosure_list_view.c
 src/ui/enclosure_list_view.h
 src/ui/itemview.c

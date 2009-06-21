@@ -75,6 +75,8 @@
 	* Don't unselect the current item when opening the preferences
 	  for the first time or when (un)hiding read items from
 	  folders. (Emilio Pozuelo Monfort)
+	* Merges patch #2788746: Use GtkStatusIcon for tray notification.
+	  (Hubert Figuiere and Emilio Pozuelo Monfort)
 
 	* Resurrected the Albanian, Bulgarian, Chinese/Simplified,
 	  Chinese/Traditional, Dutch, Finnish, Korean, Macedonian

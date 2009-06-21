@@ -57,13 +57,19 @@ on_toggle_visibility (void)
 }
 
 static void
-ui_popup_menu (GtkWidget *menu, guint button, guint32 activate_time)
+ui_popup_menu_at_pos (GtkWidget *menu, GtkMenuPositionFunc func, guint button, guint32 activate_time, gpointer user_data)
 {
 	g_signal_connect_after (G_OBJECT(menu), "unmap-event", G_CALLBACK(gtk_widget_destroy), NULL);
 
 	gtk_widget_show_all (menu);
 
-	gtk_menu_popup (GTK_MENU(menu), NULL, NULL, NULL, NULL, button, activate_time);
+	gtk_menu_popup (GTK_MENU(menu), NULL, NULL, func, user_data, button, activate_time);
+}
+
+static void
+ui_popup_menu (GtkWidget *menu, guint button, guint32 activate_time)
+{
+	ui_popup_menu_at_pos(menu, NULL, button, activate_time, NULL);
 }
 
 static GtkWidget*
@@ -161,7 +167,7 @@ ui_popup_enclosure_menu (enclosurePtr enclosure, guint button,
 }
 
 void
-ui_popup_systray_menu (guint button, guint32 activate_time)
+ui_popup_systray_menu (GtkMenuPositionFunc func, guint button, guint32 activate_time, gpointer user_data)
 {
 	GtkWidget	*menu;
 	GtkWidget 	*mainwindow = liferea_shell_get_window ();
@@ -177,7 +183,7 @@ ui_popup_systray_menu (guint button, guint32 activate_time)
 	ui_popup_add_menuitem (menu, _("_Show Liferea"), on_toggle_visibility, NULL, NULL, (!(gdk_window_get_state (mainwindow->window) & GDK_WINDOW_STATE_ICONIFIED) && GTK_WIDGET_VISIBLE (mainwindow)) + UI_POPUP_ITEM_IS_TOGGLE);
 	ui_popup_add_menuitem (menu, _("_Quit"), on_popup_quit, NULL, GTK_STOCK_QUIT, 0);
 
-	ui_popup_menu (menu, button, activate_time);
+	ui_popup_menu_at_pos (menu, func, button, activate_time, user_data);
 }
 
 /* popup callback wrappers */
