@@ -149,6 +149,7 @@ social_init (void)
 	social_register_bookmark_site ("del.icio.us",	"http://del.icio.us/post?url=%s&title=%s", TRUE, FALSE);
 	social_register_bookmark_site ("digg",		"http://digg.com/submit?phase=2&url=%s", FALSE, FALSE);
 	social_register_bookmark_site ("ekstreme",	"http://ekstreme.com/socializer/?url=%s&title=%s", TRUE, FALSE);
+	social_register_bookmark_site ("Facebook",	"http://www.facebook.com/share.php?u=%s", FALSE, FALSE);
 	social_register_bookmark_site ("FeedMarker",	"http://www.feedmarker.com/admin.php?do=bookmarklet_mark&url=%s&title=%s", TRUE, FALSE);
 	social_register_bookmark_site ("Feed Me Links!",	"http://feedmelinks.com/categorize?from=toolbar&op=submit&name=%s&url=%s&version=0.7", TRUE, TRUE);
 	social_register_bookmark_site ("Give a Link",	"http://www.givealink.org/cgi-pub/bookmarklet/bookmarkletLogin.cgi?&uri=%s&title=%s", TRUE, FALSE);
@@ -164,10 +165,13 @@ social_init (void)
 	social_register_bookmark_site ("reddit",	"http://reddit.com/submit?url=%s&title=%s", TRUE, FALSE);
 	social_register_bookmark_site ("Segnalo",	"http://segnalo.com/post.html.php?url=%s&title=%s", TRUE, FALSE);
 	social_register_bookmark_site ("Simpy",		"http://simpy.com/simpy/LinkAdd.do?title=%s&href=%s&v=6&src=bookmarklet", TRUE, TRUE);
+	social_register_bookmark_site ("Slashdot",	"http://slashdot.org/slashdot-it.pl?op=basic&amp;url=%s&title=%s", TRUE, FALSE);
 	social_register_bookmark_site ("Spurl",		"http://www.spurl.net/spurl.php?v=3&title=%s&url=%s", TRUE, TRUE);
 	social_register_bookmark_site ("Squidoo",	"http://www.squidoo.com/lensmaster/bookmark?%s", FALSE, FALSE);
+	social_register_bookmark_site ("StumbleUpon",	"http://www.stumbleupon.com/submit/?url=%s&title=%s", TRUE, FALSE);
 	social_register_bookmark_site ("tagtooga",	"http://www.tagtooga.com/tapp/db.exe?c=jsEntryForm&b=fx&title=%s&url=%s", TRUE, TRUE);
 	social_register_bookmark_site ("Technorati",	"http://technorati.com/faves/?add=%s", FALSE, FALSE);
+	social_register_bookmark_site ("Twitter",	"http://twitter.com/home?status=%s", FALSE, FALSE);
 	social_register_bookmark_site ("wists",		"http://www.wists.com/r.php?r=%s&title=%s", TRUE, FALSE);
 	social_register_bookmark_site ("Yahoo My Web",	"http://myweb2.search.yahoo.com/myresults/bookmarklet?u=%s&t=%s", TRUE, FALSE);
 	social_register_bookmark_site ("zurpy",		"http://tag.zurpy.com/?box=1&url=%s&title=%s", TRUE, FALSE);
