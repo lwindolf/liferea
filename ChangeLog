@@ -72,6 +72,9 @@
 	  (Lars Lindner)
 	* More consistent tab label widths.
 	  (Adrian Bunk and Emilio Pozuelo Monfort)
+	* Don't unselect the current item when opening the preferences
+	  for the first time or when (un)hiding read items from
+	  folders. (Emilio Pozuelo Monfort)
 
 	* Resurrected the Albanian, Bulgarian, Chinese/Simplified,
 	  Chinese/Traditional, Dutch, Finnish, Korean, Macedonian

@@ -34,6 +34,7 @@
 #include "enclosure.h"
 #include "favicon.h"
 #include "feedlist.h"
+#include "folder.h"
 #include "itemlist.h"
 #include "social.h"
 #include "ui/enclosure_list_view.h"
@@ -243,18 +244,38 @@ on_folderdisplaybtn_toggled (GtkToggleButton *togglebutton, gpointer user_data)
 	conf_set_int_value(FOLDER_DISPLAY_MODE, (TRUE == enabled)?1:0);
 }
 
+/**
+ * The "Hide read items" button has been clicked. Here we change the
+ * preference and, if the selected node is a folder, we reload the
+ * itemlist. Also, if there was an item selected, we add it to the
+ * itemlist and select it, since when the itemlist is unloaded and loaded,
+ * no item will be selected at all.
+ */
 void
 on_folderhidereadbtn_toggled (GtkToggleButton *togglebutton, gpointer user_data)
 {
-	nodePtr	displayedNode;
+	nodePtr		displayedNode;
+	itemPtr		displayedItem;
+	gboolean	enabled;
 
-	gboolean enabled = gtk_toggle_button_get_active (togglebutton);
-	conf_set_bool_value (FOLDER_DISPLAY_HIDE_READ, enabled);
 	displayedNode = itemlist_get_displayed_node ();
-	if (displayedNode) {
+	displayedItem = itemlist_get_selected ();
+
+	enabled = gtk_toggle_button_get_active (togglebutton);
+	conf_set_bool_value (FOLDER_DISPLAY_HIDE_READ, enabled);
+
+	if (displayedNode && IS_FOLDER (displayedNode)) {
 		itemlist_unload (FALSE);
 		itemlist_load (displayedNode);
+
+		/* After the itemlist is reloaded, no item is selected,
+		 * so we manually select the old one.
+		 */
+		ui_itemlist_add_item (displayedItem);
+		ui_itemlist_select (displayedItem);
 	}
+
+	item_unload (displayedItem);
 }
 
 void
