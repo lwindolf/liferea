@@ -291,36 +291,6 @@ browser_tabs_create (GtkNotebook *notebook)
 	return tabs;
 }
 
-static gchar *
-browser_tabs_condense_text (const gchar* title)
-{
-	int i;
-	gchar *tmp, *tmp2;
-
-	/* make nice short title */
-	if (title) {
-		if (!strncmp (title, "http://",7))
-			title += strlen ("http://");
-		tmp2 = tmp = g_strstrip (g_strdup (title));
-		if (*tmp == '\0') {
-			g_free (tmp);
-			tmp = tmp2 = g_strdup (_("New tab"));
-		}
-	} else {
-		tmp2 = tmp = g_strdup (_("New tab"));
-	}
-	
-	if (g_utf8_strlen (tmp, -1) > 20) {
-		for (i = 0; i < 20; i++)
-			tmp2 = g_utf8_find_next_char (tmp2, NULL);
-		*tmp2 = 0;
-		tmp2 = g_strdup_printf ("%s...", tmp);
-		g_free (tmp);
-		tmp = tmp2;
-	}
-	return tmp;
-}
-
 /* HTML view signal handlers */
 
 static void
@@ -332,18 +302,27 @@ on_htmlview_location_changed (gpointer object, gchar *uri, gpointer user_data)
 	gtk_entry_set_text (GTK_ENTRY (tab->urlentry), uri);
 }
 
+static const gchar *
+create_label_text (const gchar *title)
+{
+	const gchar 	*tmp;
+
+	tmp = (title && *title) ? title : _("New tab");
+
+	if (!strncmp (tmp, "http://", 7))
+		tmp += strlen ("http://");
+
+	return tmp;
+}
+
 static void
 on_htmlview_title_changed (gpointer object, gchar *title, gpointer user_data)
 {
 	tabInfo		*tab = (tabInfo *)user_data;
-	gchar		*text;
 	GtkWidget	*label;
-	
-	text = browser_tabs_condense_text (title?title:_("New tab"));
-	label = gtk_label_new (text);
-	gtk_widget_show (label);
-	gtk_notebook_set_tab_label (tabs->priv->notebook, tab->widget, label);
-	g_free (text);
+
+	label = gtk_notebook_get_tab_label (tabs->priv->notebook, tab->widget);
+	gtk_label_set_text (GTK_LABEL(label), create_label_text (title));
 }
 
 static void
@@ -381,7 +360,6 @@ browser_tabs_add_new (const gchar *url, const gchar *title, gboolean activate)
 {
 	GtkWidget 	*widget, *label, *toolbar, *htmlframe, *image;
 	tabInfo		*tab;
-	gchar		*tmp;
 	int		i;
 
 	tab = g_new0 (tabInfo, 1);
@@ -398,10 +376,10 @@ browser_tabs_add_new (const gchar *url, const gchar *title, gboolean activate)
 	
 	/* create tab widgets */
 
-	tmp = browser_tabs_condense_text (title?title:_("New tab"));
-	label = gtk_label_new (tmp);
+	label = gtk_label_new (create_label_text (title));
+	gtk_label_set_ellipsize (GTK_LABEL(label), PANGO_ELLIPSIZE_END);
+	gtk_label_set_max_width_chars (GTK_LABEL(label), 17);
 	gtk_widget_show (label);
-	g_free (tmp);
 	
 	toolbar = gtk_hbox_new (FALSE, 6);
 	
