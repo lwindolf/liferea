@@ -153,9 +153,6 @@ itemview_set_displayed_node (nodePtr node)
 
 	/* 1. Perform UI item list preparations ... */
 
-	/* Free the old itemstore and create a new one; this is the only way to disable sorting */
-	ui_itemlist_reset_tree_store ();	 /* this also clears the itemlist. */
-
 	/* Disable attachment icon column (will be enabled when loading first item with an enclosure) */
 	ui_itemlist_enable_encicon_column (FALSE);
 

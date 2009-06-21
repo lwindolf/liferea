@@ -146,11 +146,36 @@ ui_itemlist_set_sort_column (nodeViewSortType sortType, gboolean sortReversed)
 	                                      sortReversed?GTK_SORT_DESCENDING:GTK_SORT_ASCENDING);
 }
 
-void
-ui_itemlist_reset_tree_store (void)
+/**
+ * Creates a GtkTreeStore to be filled with ui_itemlist_set_items
+ * and to be set with ui_itemlist_set_tree_store().
+ */
+static GtkTreeStore *
+ui_itemlist_create_tree_store (void)
+{
+	return gtk_tree_store_new (ITEMSTORE_LEN,
+	                    G_TYPE_UINT64,	/* IS_TIME */
+	                    G_TYPE_STRING, 	/* IS_TIME_STR */
+	                    G_TYPE_STRING,	/* IS_LABEL */
+	                    GDK_TYPE_PIXBUF,	/* IS_STATEICON */
+	                    G_TYPE_ULONG,	/* IS_NR */
+	                    G_TYPE_POINTER,	/* IS_PARENT */
+	                    GDK_TYPE_PIXBUF,	/* IS_FAVICON */
+	                    GDK_TYPE_PIXBUF,	/* IS_ENCICON */
+	                    G_TYPE_BOOLEAN,	/* IS_ENCLOSURE */
+	                    G_TYPE_POINTER,	/* IS_SOURCE */
+	                    G_TYPE_UINT,	/* IS_STATE */
+	                    G_TYPE_INT		/* ITEMSTORE_UNREAD */
+	);
+}
+
+/**
+ * Sets a GtkTreeView to the active GtkTreeView.
+ */
+static void
+ui_itemlist_set_tree_store (GtkTreeStore *itemstore)
 {
 	GtkTreeModel    *model;
-	GtkTreeStore	*itemstore;
 
 	/* clear items */
 	ui_itemlist_clear ();
@@ -161,21 +186,6 @@ ui_itemlist_reset_tree_store (void)
 	if (model)
 		g_object_unref (model);
 	
-	/* create and assign new one */
-	itemstore = gtk_tree_store_new (ITEMSTORE_LEN,
-	                                G_TYPE_UINT64,	/* IS_TIME */
-	                                G_TYPE_STRING, 	/* IS_TIME_STR */
-	                                G_TYPE_STRING,	/* IS_LABEL */
-	                                GDK_TYPE_PIXBUF,	/* IS_STATEICON */
-	                                G_TYPE_ULONG,	/* IS_NR */
-				        G_TYPE_POINTER,	/* IS_PARENT */
-	                                GDK_TYPE_PIXBUF,	/* IS_FAVICON */
-	                                GDK_TYPE_PIXBUF,	/* IS_ENCICON */
-				        G_TYPE_BOOLEAN,	/* IS_ENCLOSURE */
-				        G_TYPE_POINTER,	/* IS_SOURCE */
-				        G_TYPE_UINT,	/* IS_STATE */
-				        G_TYPE_INT	/* ITEMSTORE_UNREAD */
-				        );
 	gtk_tree_sortable_set_sort_func (GTK_TREE_SORTABLE (itemstore), IS_TIME, ui_itemlist_date_sort_func, NULL, NULL);
 	gtk_tree_sortable_set_sort_func (GTK_TREE_SORTABLE (itemstore), IS_SOURCE, ui_itemlist_favicon_sort_func, NULL, NULL);
 	g_signal_connect (G_OBJECT(itemstore), "sort-column-changed", G_CALLBACK (itemlist_sort_column_changed_cb), NULL);
@@ -315,7 +325,7 @@ ui_itemlist_new (GtkWidget *mainwindow)
 
 	item_id_to_iter = g_hash_table_new_full (g_direct_hash, g_direct_equal, NULL, g_free);
 
-	ui_itemlist_reset_tree_store ();
+	ui_itemlist_set_tree_store (ui_itemlist_create_tree_store ());
 
 	renderer = gtk_cell_renderer_pixbuf_new ();
 	column = gtk_tree_view_column_new_with_attributes ("", renderer, "pixbuf", IS_STATEICON, NULL);
@@ -400,36 +410,33 @@ ui_itemlist_prefocus (void)
 		gtk_widget_grab_focus (focus_widget);
 }
 
-void 
-ui_itemlist_add_item (itemPtr item) 
+static void
+ui_itemlist_add_item_to_tree_store (GtkTreeStore *itemstore, itemPtr item)
 {
-	GtkTreeStore	*itemstore;
+	gint		state = 0;
+	nodePtr		node;
 	GtkTreeIter	*iter;
 	GtkTreeIter	old_iter;
 	gboolean	exists;
-	nodePtr		node;
-	gint		state = 0;
-	
-	exists = ui_item_id_to_iter (item->id, &old_iter);
-	iter = &old_iter;
-	
-	itemstore = GTK_TREE_STORE (gtk_tree_view_get_model (itemlist_treeview));
-
+		
+	if (item->flagStatus)
+		state += 2;
+	if (!item->readStatus)
+		state += 1;
+		
 	node = node_from_id (item->nodeId);
 	if(!node)
 		return;	/* comment items do cause this... maybe filtering them earlier would be a good idea... */
-
+		
+	exists = ui_item_id_to_iter (item->id, &old_iter);
+	iter = &old_iter;
+	
 	if (!exists) 
 	{
 		iter = g_new0 (GtkTreeIter, 1);
 		gtk_tree_store_prepend (itemstore, iter, NULL);
 		g_hash_table_insert (item_id_to_iter, GUINT_TO_POINTER (item->id), (gpointer)iter);
 	}
-
-	if (item->flagStatus)
-		state += 2;
-	if (!item->readStatus)
-		state += 1;
 
 	gtk_tree_store_set (itemstore, iter,
 		                       IS_TIME, (guint64)item->time,
@@ -440,8 +447,33 @@ ui_itemlist_add_item (itemPtr item)
 				       IS_ENCLOSURE, item->hasEnclosure,
 				       IS_SOURCE, node,
 				       IS_STATE, state,
-		                       -1);
+		                       -1);		                       
+}
+
+void 
+ui_itemlist_add_item (itemPtr item) 
+{
+	GtkTreeStore	*itemstore;
+	
+	itemstore = GTK_TREE_STORE (gtk_tree_view_get_model (itemlist_treeview));
+	ui_itemlist_add_item_to_tree_store (itemstore, item);
 	ui_itemlist_update_item (item);
+}
+
+void
+ui_itemlist_set_items (GSList *items)
+{
+	GtkTreeStore	*new_itemstore;
+	GSList		*iter = items;
+	
+	new_itemstore = ui_itemlist_create_tree_store ();
+	
+	while (iter) {
+		ui_itemlist_add_item_to_tree_store (new_itemstore, iter->data);
+		iter = g_slist_next (iter);
+	}
+	
+	ui_itemlist_set_tree_store (new_itemstore);
 }
 
 void

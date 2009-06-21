@@ -55,8 +55,6 @@ gboolean ui_itemlist_contains_item (gulong id);
  */
 void ui_itemlist_set_sort_column (nodeViewSortType sortType, gboolean sortReversed);
 
-void ui_itemlist_reset_tree_store (void);
-
 /**
  * Unselect all items in the list and scroll to top. This is typically
  * called when changing feed.
