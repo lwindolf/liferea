@@ -16,6 +16,8 @@
 	  (Emilio Pozuelo Monfort)
 	* More consistent tab label widths.
 	  (Adrian Bunk and Emilio Pozuelo Monfort)
+	* Avoid having loading of other tabs cancelled when opening
+	  a new tab. (Adrian Bunk)
 
 	* Resurrected the Albanian, Bulgarian, Chinese/Simplified,
 	  Chinese/Traditional, Dutch, Finnish, Korean, Macedonian

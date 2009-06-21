@@ -188,10 +188,10 @@ liferea_htmlview_init (LifereaHtmlView *htmlview)
 	htmlview->priv = LIFEREA_HTMLVIEW_GET_PRIVATE (htmlview);
 	htmlview->priv->internal = FALSE;
 	
-	if (!htmlviewImpl)
+	if (!htmlviewImpl) {
 		htmlviewImpl = htmlview_get_impl ();
-
-	liferea_htmlview_update_proxy ();
+		liferea_htmlview_update_proxy ();
+	}
 }
 
 LifereaHtmlView *
