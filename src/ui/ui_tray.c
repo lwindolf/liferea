@@ -103,7 +103,7 @@ ui_tray_make_icon (void)
 	cairo_paint (c);
 
 	if(newItems > 0) {
-		guint textWidth, textStart;
+		gint textWidth, textStart;
 		/* GtkStatusIcon doesn't allow non-square icons yet, so the
 		 * part that doesn't fit is just cropped. Don't put a large
 		 * text there then, otherwise it won't appear entirely.
