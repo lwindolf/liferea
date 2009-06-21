@@ -1,7 +1,7 @@
 /**
  * @file search-folder-dialog.c  Search folder properties dialog
  *
- * Copyright (C) 2007-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2009 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,10 +23,10 @@
 #include "feedlist.h"
 #include "itemlist.h"
 #include "vfolder.h"
+#include "ui/itemview.h"
 #include "ui/liferea_dialog.h"
 #include "ui/liferea_shell.h"
 #include "ui/rule_editor.h"
-#include "ui/ui_itemlist.h"
 #include "ui/ui_node.h"
 
 static void search_folder_dialog_class_init	(SearchFolderDialogClass *klass);
@@ -111,7 +111,7 @@ on_propdialog_response (GtkDialog *dialog, gint response_id, gpointer user_data)
 		sfd->priv->vfolder->anyMatch = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "anyRuleRadioBtn")));
 
 		/* update search folder */
-		ui_itemlist_clear ();
+		itemview_clear ();
 		vfolder_refresh (sfd->priv->vfolder);
 		itemlist_unload (FALSE);
 		
