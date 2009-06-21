@@ -3,7 +3,7 @@
 	Version 1.6.0-rc6 (Unstable)
 
 	* Updated the example feeds. (Adrian Bunk)
-	* Remove some dead social bookmarking sites. (Adrian Bunk)
+	* Updated the social bookmarking sites. (Adrian Bunk)
 	* Added Twitter Search support. (Adrian Bunk)
 	* Added Identi.ca Search support. (Adrian Bunk)
 	* Support non-RFC822 alphabetic timezones. (Adrian Bunk)
