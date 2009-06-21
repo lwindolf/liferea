@@ -389,6 +389,7 @@ itemview_set_layout (nodeViewType newMode)
 			ilWidgetName = NULL;
 			encViewVBoxName = NULL;
 			break;
+		case NODE_VIEW_MODE_INVALID:
 		default:
 			g_warning("fatal: illegal viewing mode!");
 			return;
