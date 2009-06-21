@@ -14,6 +14,8 @@
 	  (Lars Lindner)
 	* Don't use the deprecated soup_message_headers_get() function.
 	  (Emilio Pozuelo Monfort)
+	* More consistent tab label widths.
+	  (Adrian Bunk and Emilio Pozuelo Monfort)
 
 	* Resurrected the Albanian, Bulgarian, Chinese/Simplified,
 	  Chinese/Traditional, Dutch, Finnish, Korean, Macedonian
