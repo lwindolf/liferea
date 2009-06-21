@@ -85,7 +85,7 @@ message_received_cb (UniqueApp         *app,
 	return res;
 }
 
-static void fatal_signal_handler(int sig) {
+static void G_GNUC_NORETURN fatal_signal_handler(int sig) {
 	sigset_t sigset;
 
 	sigemptyset(&sigset);
@@ -147,7 +147,7 @@ debug_entries_parse_callback (const gchar *option_name,
 	return TRUE;
 }
 
-static gboolean
+static gboolean G_GNUC_NORETURN
 show_version (const gchar *option_name,
 	      const gchar *value,
 	      gpointer data,
