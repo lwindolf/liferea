@@ -39,6 +39,18 @@
 #include "ui/ui_common.h"
 #include "ui/ui_popup.h"
 
+/**
+ * Important performance considerations: Early versions had performance problems
+ * with the item list loading because of the following two problems:
+ *
+ * 1.) Mass-adding items to a sorting enabled tree store.
+ * 2.) Mass-loading items to an attached tree store.
+ *
+ * To avoid both problems we merge against a visible tree store only for single
+ * items that are added/removed by background updates and load complete feeds or
+ * collections of feeds only by adding items to a new unattached tree store.
+ */
+
 /** Enumeration of the columns in the itemstore. */
 enum is_columns {
 	IS_TIME,		/**< Time of item creation */
