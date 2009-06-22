@@ -1,5 +1,5 @@
 /**
- * @file ui_itemlist.c item list GUI handling
+ * @file ui_itemlist.c presenting items in a GtkTreeView
  *  
  * Copyright (C) 2004-2009 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
@@ -71,6 +71,9 @@ enum is_columns {
 static GHashTable 	*item_id_to_iter = NULL;	/** hash table used for fast item id->tree iter lookup */
 
 static GtkTreeView 	*itemlist_treeview = NULL;
+
+static gboolean		batch_mode = FALSE;		/* TRUE if we are in batch adding mode */
+static GtkTreeStore	*batch_itemstore = NULL;	/* GtkTreeStore prepared unattached and to be set on update() */
 
 /* helper functions for item <-> iter conversion */
 
@@ -189,9 +192,6 @@ ui_itemlist_set_tree_store (GtkTreeStore *itemstore)
 {
 	GtkTreeModel    *model;
 
-	/* clear items */
-	ui_itemlist_clear ();
-
 	/* drop old tree store */
 	model = gtk_tree_view_get_model (itemlist_treeview);
 	gtk_tree_view_set_model (itemlist_treeview, NULL);
@@ -245,11 +245,16 @@ ui_itemlist_clear (void)
 		g_hash_table_destroy (item_id_to_iter);
 	
 	item_id_to_iter = g_hash_table_new_full (g_direct_hash, g_direct_equal, NULL, g_free);
+	
+	/* enable batch mode for following item adds */
+	batch_mode = TRUE;
+	batch_itemstore = ui_itemlist_create_tree_store ();
 }
 
 void
 ui_itemlist_update_item (itemPtr item)
 {
+	GtkTreeStore	*itemstore;
 	GtkTreeIter	iter;
 	gchar		*title, *time_str;
 	const gchar 	*direction_marker;
@@ -269,7 +274,12 @@ ui_itemlist_update_item (itemPtr item)
 	             !item->readStatus ? ICON_UNREAD :
 		     ICON_READ;
 
-	gtk_tree_store_set (GTK_TREE_STORE (gtk_tree_view_get_model (itemlist_treeview)),
+	if (batch_mode)
+		itemstore = batch_itemstore;
+	else
+		itemstore = GTK_TREE_STORE (gtk_tree_view_get_model (itemlist_treeview));
+		
+	gtk_tree_store_set (itemstore,
 	                    &iter,
 		            IS_LABEL, title,
 			    IS_TIME_STR, time_str,
@@ -301,6 +311,18 @@ void
 ui_itemlist_update_all_items (void) 
 {
 	g_hash_table_foreach (item_id_to_iter, ui_itemlist_update_item_foreach, NULL);
+}
+
+void
+ui_itemlist_update (void)
+{
+	if (batch_mode) {
+		ui_itemlist_set_tree_store (batch_itemstore);
+		batch_mode = FALSE;
+	} else {
+		/* Nothing to do in non-batch mode as items were added
+		   and updated one-by-one in ui_itemlist_add_item() */
+	}
 }
 
 static gboolean
@@ -467,25 +489,16 @@ ui_itemlist_add_item (itemPtr item)
 {
 	GtkTreeStore	*itemstore;
 	
-	itemstore = GTK_TREE_STORE (gtk_tree_view_get_model (itemlist_treeview));
-	ui_itemlist_add_item_to_tree_store (itemstore, item);
-	ui_itemlist_update_item (item);
-}
-
-void
-ui_itemlist_set_items (GSList *items)
-{
-	GtkTreeStore	*new_itemstore;
-	GSList		*iter = items;
-	
-	new_itemstore = ui_itemlist_create_tree_store ();
-	
-	while (iter) {
-		ui_itemlist_add_item_to_tree_store (new_itemstore, iter->data);
-		iter = g_slist_next (iter);
+	if (batch_mode) {
+		/* either merge to new unattached GtkTreeStore */
+		ui_itemlist_add_item_to_tree_store (batch_itemstore, item);
+	} else {
+		/* or merge to visible item store */	
+		itemstore = GTK_TREE_STORE (gtk_tree_view_get_model (itemlist_treeview));
+		ui_itemlist_add_item_to_tree_store (itemstore, item);
 	}
 	
-	ui_itemlist_set_tree_store (new_itemstore);
+	ui_itemlist_update_item (item);
 }
 
 void

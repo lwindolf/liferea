@@ -1,5 +1,5 @@
 /**
- * @file ui_itemlist.h  item list GUI handling
+ * @file ui_itemlist.h  presenting items in a GtkTreeView
  *
  * Copyright (C) 2004-2009 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
@@ -104,6 +104,11 @@ void ui_itemlist_enable_encicon_column (gboolean enabled);
  * Remove the items from the itemlist.
  */
 void ui_itemlist_clear (void);
+
+/**
+ * Update the item list GtkTreeView with the newly added items.
+ */
+void ui_itemlist_update (void);
 
 /**
  * When switching tabs, the horizontal scrolling sometimes gets messed

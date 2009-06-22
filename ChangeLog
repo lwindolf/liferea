@@ -81,6 +81,9 @@
 	  except for Combined view. (Emilio Pozuelo Monfort)
 	* Reduce memory usage by only using a WebKitWebSettings for all
 	  the htmlviews. (Emilio Pozuelo Monfort)
+	* Implemented batch item loading into GtkTreeStore to gain
+	  performance for loading large item sets.
+	  (Lars Lindner, suggested by Marc Brinkmann)
 
 	* Resurrected the Albanian, Bulgarian, Chinese/Simplified,
 	  Chinese/Traditional, Dutch, Finnish, Korean, Macedonian

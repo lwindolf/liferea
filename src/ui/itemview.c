@@ -34,6 +34,10 @@
 #include "ui/ui_itemlist.h"
 #include "ui/liferea_htmlview.h"
 
+/* The item view is the layer that switches item list presentations:
+   a HTML single item or list and GtkTreeView list presentation. 
+   It hides the item loading behaviour of GtkTreeView and HTML view. */   
+
 static void itemview_class_init	(ItemViewClass *klass);
 static void itemview_init	(ItemView *fl);
 
@@ -126,7 +130,6 @@ itemview_class_init (ItemViewClass *klass)
 void
 itemview_clear (void) 
 {
-
 	ui_itemlist_clear ();
 	htmlview_clear ();
 	enclosure_list_view_hide (itemview->priv->enclosureView);
@@ -272,6 +275,8 @@ itemview_update_node_info (nodePtr node)
 void
 itemview_update (void)
 {
+	ui_itemlist_update ();
+	
 	if (itemview->priv->needsHTMLViewUpdate) {
 		itemview->priv->needsHTMLViewUpdate = FALSE;
 		htmlview_update (itemview->priv->htmlview, itemview->priv->mode);
