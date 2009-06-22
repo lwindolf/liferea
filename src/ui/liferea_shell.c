@@ -1369,6 +1369,7 @@ liferea_shell_destroy (void)
 	ui_tray_enable (FALSE);
 	g_object_unref (shell->priv->tabs);
 	g_object_unref (shell->priv->feedlist);
+	g_object_unref (shell->priv->itemview);
 
 	gtk_widget_destroy (GTK_WIDGET (shell->priv->window));
 }
