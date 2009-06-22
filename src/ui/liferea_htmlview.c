@@ -151,6 +151,8 @@ liferea_htmlview_class_init (LifereaHtmlViewClass *klass)
 		1,
 		G_TYPE_STRING);
 
+	htmlview_get_impl ()->init ();
+
 	g_type_class_add_private (object_class, sizeof (LifereaHtmlViewPrivate));
 }
 

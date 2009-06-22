@@ -196,6 +196,10 @@ G_END_DECLS
 
 /** interface for HTML rendering support implementation */
 typedef struct htmlviewImpl {
+	void 		(*init)			(void);
+/* FIXME: deinit() not implemented as LifereaHtmlView is a static GType,
+ * and thus we can't have a GClassFinalizeFunc where we would call it. */
+/*	void 		(*deinit) 		(void); */
 	GtkWidget*	(*create)		(LifereaHtmlView *htmlview);
 	void		(*write)		(GtkWidget *widget, const gchar *string, guint length, const gchar *base, const gchar *contentType);
 	void		(*launch)		(GtkWidget *widget, const gchar *url);
