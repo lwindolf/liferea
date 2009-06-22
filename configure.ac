@@ -22,10 +22,9 @@ AC_PROG_RANLIB
 AC_ARG_ENABLE(sm,        AS_HELP_STRING([--disable-sm],[compile without X session management support]),,enable_sm=yes)
 AC_ARG_ENABLE(dbus,      AS_HELP_STRING([--disable-dbus],[compile without DBUS support]),,enable_dbus=yes)
 AC_ARG_ENABLE(nm,        AS_HELP_STRING([--disable-nm],[compile without NetworkManager support]),,enable_nm=yes)
-AC_ARG_ENABLE(libnotify, AS_HELP_STRING([--disable-libnotify],[compile without libnotify support]),,enable_libnotify=yes)
-AC_ARG_ENABLE(lua,       AS_HELP_STRING([--disable-lua],[compile without LUA scripting support]),,enable_lua=yes)
+AC_ARG_ENABLE(libnotify, AS_HELP_STRING([--disable-libnotify],[don't compile the libnotify plugin]),,enable_libnotify=yes)
+AC_ARG_ENABLE(lua,       AS_HELP_STRING([--disable-lua],[don't compile with LUA scripting support]),,enable_lua=yes)
 dnl AC_ARG_ENABLE(avahi,     AS_HELP_STRING([--disable-avahi],[don't compile with AVAHI support]),,enable_avahi=yes)
-AC_ARG_ENABLE(strict-build, AS_HELP_STRING([--enable-strict-build],[build with strict flags and disable deprecations]),,enable_strict_build=no)
 
 AC_CHECK_FUNCS([strsep])
 
@@ -97,25 +96,6 @@ dnl    enable_avahi=no
 dnl fi
  
 AM_CONDITIONAL(WITH_AVAHI, test "x$enable_avahi" = "xyes")
-
-if test "x$enable_strict_build" = "xyes"; then
-   CPPFLAGS+=" \
--DG_DISABLE_DEPRECATED \
--DGTK_DISABLE_DEPRECATED \
--DGDK_DISABLE_DEPRECATED \
--DGDK_PIXBUF_DISABLE_DEPRECATED \
--DGDK_PIXBUF_DISABLE_SINGLE_INCLUDES \
--DLIBSOUP_DISABLE_DEPRECATED"
-
-   CFLAGS+=" \
--Wall -Werror -Wextra -Winit-self -Wsign-compare -Wmissing-include-dirs \
--Wcast-align -Wlogical-op -Wmissing-format-attribute -Wpacked \
--Wredundant-decls -Wnested-externs -Winline -Winvalid-pch \
--Wvolatile-register-var -Wstack-protector \
--Wno-unused-parameter -Wno-pointer-sign -Wno-missing-field-initializers \
--Wno-conversion"
-
-fi
 
 dnl Checking for gconftool-2
 AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
@@ -231,8 +211,6 @@ echo "Use X Session Management........ : $enable_sm"
 echo "Use DBUS........................ : $enable_dbus"
 echo "Use NetworkManager.............. : $enable_nm"
 dnl echo "AVAHI Support................... : $enable_avahi"
-echo
-echo "Strict compilation.............. : $enable_strict_build"
 echo
 eval eval echo Liferea will be installed in $bindir.
 echo
