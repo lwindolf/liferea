@@ -637,20 +637,34 @@ itemlist_get_view_mode (void)
 }
 
 void
-itemlist_set_view_mode (guint newMode) 
-{ 
+itemlist_set_view_mode (guint newMode)
+{
 	nodePtr		node;
+	itemPtr		item;
 
 	itemlist_priv.viewMode = newMode;
-	
+
 	node = itemlist_get_displayed_node ();
+	item = itemlist_get_selected ();
+
 	if (node) {
 		itemlist_unload (FALSE);
-		
+
 		node_set_view_mode (node, itemlist_priv.viewMode);
 		itemview_set_layout (itemlist_priv.viewMode);
 		itemlist_load (node);
+
+		/* If there was an item selected, select it again since
+		 * itemlist_unload() unselects it.
+		 */
+		if (item && itemlist_priv.viewMode != NODE_VIEW_MODE_COMBINED) {
+			ui_itemlist_add_item (item);
+			ui_itemlist_select (item);
+		}
 	}
+
+	if (item)
+		item_unload (item);
 }
 
 void

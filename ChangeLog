@@ -77,6 +77,8 @@
 	  folders. (Emilio Pozuelo Monfort)
 	* Merges patch #2788746: Use GtkStatusIcon for tray notification.
 	  (Hubert Figuiere and Emilio Pozuelo Monfort)
+	* Don't unselect the current item when changing view mode,
+	  except for Combined view. (Emilio Pozuelo Monfort)
 
 	* Resurrected the Albanian, Bulgarian, Chinese/Simplified,
 	  Chinese/Traditional, Dutch, Finnish, Korean, Macedonian
