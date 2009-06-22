@@ -1355,9 +1355,9 @@ liferea_shell_create (int initialState)
 	
 	g_signal_connect (network_monitor_get (), "online-status-changed",
 	                  G_CALLBACK (liferea_shell_online_status_changed), shell);
-	                  
+
 	liferea_shell_set_online_icon (network_monitor_is_online ());
-	
+
 	debug_exit ("liferea_shell_create");
 }
 
@@ -1372,6 +1372,8 @@ liferea_shell_destroy (void)
 	g_object_unref (shell->priv->itemview);
 
 	gtk_widget_destroy (GTK_WIDGET (shell->priv->window));
+
+	g_object_unref (shell);
 }
 
 void
