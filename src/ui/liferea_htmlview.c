@@ -103,10 +103,6 @@ liferea_htmlview_get_type (void)
 static void
 liferea_htmlview_finalize (GObject *object)
 {
-	LifereaHtmlView *ls = LIFEREA_HTMLVIEW (object);
-	
-	g_object_unref (ls->priv->renderWidget);
-
 	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 

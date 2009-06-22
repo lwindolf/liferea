@@ -239,7 +239,8 @@ browser_tabs_remove_tab (tabInfo *tab)
 {
 	tabs->priv->list = g_slist_remove (tabs->priv->list, tab);
 	browser_tab_history_free (tab->history);
-	g_free (tab);	
+	g_object_unref (tab->htmlview);
+	g_free (tab);
 }
 
 static void
