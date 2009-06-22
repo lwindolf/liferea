@@ -78,7 +78,7 @@ liferea_webkit_init (void)
  * HTML documents created internally.
  */
 static void
-webkit_write_html (
+liferea_webkit_write_html (
 	GtkWidget *scrollpane,
 	const gchar *string,
 	const guint length,
@@ -99,7 +99,7 @@ webkit_write_html (
 }
 
 static void
-webkit_title_changed (WebKitWebView *view, GParamSpec *pspec, gpointer user_data)
+liferea_webkit_title_changed (WebKitWebView *view, GParamSpec *pspec, gpointer user_data)
 {
 	LifereaHtmlView	*htmlview;
 	gchar *title;
@@ -112,12 +112,12 @@ webkit_title_changed (WebKitWebView *view, GParamSpec *pspec, gpointer user_data
 }
 
 static void
-webkit_progress_changed (WebKitWebView *view, gint progress, gpointer user_data)
+liferea_webkit_progress_changed (WebKitWebView *view, gint progress, gpointer user_data)
 {
 }
 
 static void
-webkit_location_changed (WebKitWebView *view, GParamSpec *pspec, gpointer user_data)
+liferea_webkit_location_changed (WebKitWebView *view, GParamSpec *pspec, gpointer user_data)
 {
 	LifereaHtmlView	*htmlview;
 	gchar *location;
@@ -133,12 +133,12 @@ webkit_location_changed (WebKitWebView *view, GParamSpec *pspec, gpointer user_d
  * Action executed when user hovers over a link
  */
 static void
-webkit_on_url (WebKitWebView *view, const gchar *title, const gchar *url, gpointer user_data)
+liferea_webkit_on_url (WebKitWebView *view, const gchar *title, const gchar *url, gpointer user_data)
 {
 	LifereaHtmlView	*htmlview;
 	gchar *selected_url;
 
-	htmlview    = g_object_get_data (G_OBJECT (view), "htmlview");
+	htmlview = g_object_get_data (G_OBJECT (view), "htmlview");
 	selected_url = g_object_get_data (G_OBJECT (view), "selected_url");
 	if (selected_url)
 		g_free (selected_url);
@@ -158,11 +158,11 @@ webkit_on_url (WebKitWebView *view, const gchar *title, const gchar *url, gpoint
  * core in order to manage the different filetypes, remote URLs.
  */
 static gboolean
-webkit_link_clicked (WebKitWebView *view,
-		     WebKitWebFrame *frame,
-		     WebKitNetworkRequest *request,
-		     WebKitWebNavigationAction *navigation_action,
-		     WebKitWebPolicyDecision *policy_decision)
+liferea_webkit_link_clicked (WebKitWebView *view,
+			     WebKitWebFrame *frame,
+			     WebKitNetworkRequest *request,
+			     WebKitWebNavigationAction *navigation_action,
+			     WebKitWebPolicyDecision *policy_decision)
 {
 	const gchar			*uri;
 	WebKitWebNavigationReason	reason;
@@ -202,7 +202,7 @@ webkit_link_clicked (WebKitWebView *view,
  * See https://bugs.webkit.org/show_bug.cgi?id=23932
  */
 static WebKitWebView*
-webkit_create_web_view (WebKitWebView *view, WebKitWebFrame *frame)
+liferea_webkit_create_web_view (WebKitWebView *view, WebKitWebFrame *frame)
 {
 	return view;
 }
@@ -217,7 +217,7 @@ webkit_create_web_view (WebKitWebView *view, WebKitWebFrame *frame)
  * Add menu items to #menu to extend the context menu.
  */
 static void
-webkit_on_menu (WebKitWebView *view, GtkMenu *menu)
+liferea_webkit_on_menu (WebKitWebView *view, GtkMenu *menu)
 {
 	LifereaHtmlView	*htmlview;
 	gchar		*selected_url;
@@ -242,10 +242,10 @@ webkit_on_menu (WebKitWebView *view, GtkMenu *menu)
  * And we ignore them.
  */
 static gboolean
-webkit_javascript_message  (WebKitWebView *view,
-			    const char *message,
-			    int line,
-			    const char *source_id)
+liferea_webkit_javascript_message  (WebKitWebView *view,
+				    const char *message,
+				    int line,
+				    const char *source_id)
 {
 	return TRUE;
 }
@@ -257,7 +257,7 @@ webkit_javascript_message  (WebKitWebView *view,
  * and embeds WebKitWebView into it.
  */
 static GtkWidget *
-webkit_new (LifereaHtmlView *htmlview)
+liferea_webkit_new (LifereaHtmlView *htmlview)
 {
 	WebKitWebView *view;
 	GtkWidget *scrollpane;
@@ -294,49 +294,49 @@ webkit_new (LifereaHtmlView *htmlview)
 	g_signal_connect (
 		view,
 		"notify::title",
-		G_CALLBACK (webkit_title_changed),
+		G_CALLBACK (liferea_webkit_title_changed),
 		view
 	);
 	g_signal_connect (
 		view,
 		"load-progress-changed",
-		G_CALLBACK (webkit_progress_changed),
+		G_CALLBACK (liferea_webkit_progress_changed),
 		view
 	);
 	g_signal_connect (
 		view,
 		"hovering-over-link",
-		G_CALLBACK (webkit_on_url),
+		G_CALLBACK (liferea_webkit_on_url),
 		view
 	);
 	g_signal_connect (
 		view,
 		"navigation-policy-decision-requested",
-		G_CALLBACK (webkit_link_clicked),
+		G_CALLBACK (liferea_webkit_link_clicked),
 		view
 	);
 	g_signal_connect (
 		view,
 		"populate-popup",
-		G_CALLBACK (webkit_on_menu),
+		G_CALLBACK (liferea_webkit_on_menu),
 		view
 	);
 	g_signal_connect (
 		view,
 		"notify::uri",
-		G_CALLBACK (webkit_location_changed),
+		G_CALLBACK (liferea_webkit_location_changed),
 		view
 	);
 	g_signal_connect (
 		view,
 		"create-web-view",
-		G_CALLBACK (webkit_create_web_view),
+		G_CALLBACK (liferea_webkit_create_web_view),
 		view
 	);
 	g_signal_connect (
 		view,
 		"console-message",
-		G_CALLBACK (webkit_javascript_message),
+		G_CALLBACK (liferea_webkit_javascript_message),
 		view
 	);
 
@@ -348,7 +348,7 @@ webkit_new (LifereaHtmlView *htmlview)
  * Launch URL
  */
 static void
-webkit_launch_url (GtkWidget *scrollpane, const gchar *url)
+liferea_webkit_launch_url (GtkWidget *scrollpane, const gchar *url)
 {
 	// FIXME: hack to make URIs like "gnome.org" work
 	// https://bugs.webkit.org/show_bug.cgi?id=24195
@@ -371,7 +371,7 @@ webkit_launch_url (GtkWidget *scrollpane, const gchar *url)
  * Change zoom level of the HTML scrollpane
  */
 static void
-webkit_change_zoom_level (GtkWidget *scrollpane, gfloat zoom_level)
+liferea_webkit_change_zoom_level (GtkWidget *scrollpane, gfloat zoom_level)
 {
 	WebKitWebView *view;
 	view = WEBKIT_WEB_VIEW (gtk_bin_get_child (GTK_BIN (scrollpane)));
@@ -382,7 +382,7 @@ webkit_change_zoom_level (GtkWidget *scrollpane, gfloat zoom_level)
  * Return current zoom level as a float
  */
 static gfloat
-webkit_get_zoom_level (GtkWidget *scrollpane)
+liferea_webkit_get_zoom_level (GtkWidget *scrollpane)
 {
 	WebKitWebView *view;
 	view = WEBKIT_WEB_VIEW (gtk_bin_get_child (GTK_BIN (scrollpane)));
@@ -395,7 +395,7 @@ webkit_get_zoom_level (GtkWidget *scrollpane)
  * Copied from gtkhtml/gtkhtml.c
  */
 static gboolean
-webkit_scroll_pagedown (GtkWidget *scrollpane)
+liferea_webkit_scroll_pagedown (GtkWidget *scrollpane)
 {
 	GtkScrolledWindow *itemview;
 	GtkAdjustment *vertical_adjustment;
@@ -421,7 +421,7 @@ webkit_scroll_pagedown (GtkWidget *scrollpane)
 }
 
 static void
-webkit_set_proxy (const gchar *host, guint port, const gchar *user, const gchar *pwd)
+liferea_webkit_set_proxy (const gchar *host, guint port, const gchar *user, const gchar *pwd)
 {
 	SoupURI *proxy = NULL;
 
@@ -442,13 +442,13 @@ webkit_set_proxy (const gchar *host, guint port, const gchar *user, const gchar 
 static struct
 htmlviewImpl webkitImpl = {
 	.init		= liferea_webkit_init,
-	.create		= webkit_new,
-	.write		= webkit_write_html,
-	.launch		= webkit_launch_url,
-	.zoomLevelGet	= webkit_get_zoom_level,
-	.zoomLevelSet	= webkit_change_zoom_level,
-	.scrollPagedown	= webkit_scroll_pagedown,
-	.setProxy	= webkit_set_proxy,
+	.create		= liferea_webkit_new,
+	.write		= liferea_webkit_write_html,
+	.launch		= liferea_webkit_launch_url,
+	.zoomLevelGet	= liferea_webkit_get_zoom_level,
+	.zoomLevelSet	= liferea_webkit_change_zoom_level,
+	.scrollPagedown	= liferea_webkit_scroll_pagedown,
+	.setProxy	= liferea_webkit_set_proxy,
 	.setOffLine	= NULL
 };
 
