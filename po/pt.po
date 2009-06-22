@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-19 19:14+0300\n"
+"POT-Creation-Date: 2009-06-22 14:32+0300\n"
 "PO-Revision-Date: 2009-06-04 01:08+0000\n"
 "Last-Translator: António Lima <amrlima@gmail.com>\n"
 "Language-Team: Portuguese <liferea-devel@lists.sourceforge.net>\n"
@@ -1449,10 +1449,7 @@ msgstr "Janela existente"
 msgid "New window"
 msgstr "Nova Janela"
 
-#. create tab widgets
-#: ../src/ui/ui_prefs.c:632 ../src/ui/browser_tabs.c:307
-#: ../src/ui/browser_tabs.c:310 ../src/ui/browser_tabs.c:342
-#: ../src/ui/browser_tabs.c:409
+#: ../src/ui/ui_prefs.c:632 ../src/ui/browser_tabs.c:323
 msgid "New tab"
 msgstr "Novo separador"
 
@@ -1651,25 +1648,25 @@ msgstr "Nenhum tipo de lista de fontes encontrado!"
 msgid "Source Type"
 msgstr "Tipo de Fonte"
 
-#: ../src/notification/libnotify.c:56 ../src/notification/libnotify.c:76
-#: ../src/notification/libnotify.c:143
+#: ../src/notification/libnotify.c:57 ../src/notification/libnotify.c:77
+#: ../src/notification/libnotify.c:144
 msgid "This feed does not exist anymore!"
 msgstr "Esta fonte já não existe!"
 
-#: ../src/notification/libnotify.c:116
+#: ../src/notification/libnotify.c:117
 #, c-format
 msgid "This news entry has no headline"
 msgstr "Esta entrada de notícias não possui título"
 
-#: ../src/notification/libnotify.c:121
+#: ../src/notification/libnotify.c:122
 msgid "Visit"
 msgstr "Visita"
 
-#: ../src/notification/libnotify.c:161 ../src/notification/libnotify.c:256
+#: ../src/notification/libnotify.c:162 ../src/notification/libnotify.c:256
 msgid "Open feed"
 msgstr "Abrir fonte"
 
-#: ../src/notification/libnotify.c:164 ../src/notification/libnotify.c:259
+#: ../src/notification/libnotify.c:165 ../src/notification/libnotify.c:259
 msgid "Mark all as read"
 msgstr "Ma_rcar todos como lidos"
 
