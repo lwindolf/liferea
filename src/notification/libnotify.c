@@ -44,18 +44,22 @@
 
 static gboolean supports_actions = FALSE;
 
-static void notif_libnotify_callback_open ( NotifyNotification *n, gchar *action, gpointer user_data ) {
+static void
+notif_libnotify_callback_open (NotifyNotification *n, gchar *action, gpointer user_data)
+{
+	nodePtr node_p;
+
 	g_assert(action != NULL);
 	g_assert(strcmp(action, "open") == 0);
 
-	nodePtr node_p = node_from_id(user_data);
-	
-	if(node_p)
-		ui_feedlist_select(node_p);
-	else
-		ui_show_error_box(_("This feed does not exist anymore!"));
+	node_p = node_from_id (user_data);
 
-	notify_notification_close(n, NULL);
+	if (node_p)
+		ui_feedlist_select (node_p);
+	else
+		ui_show_error_box (_("This feed does not exist anymore!"));
+
+	notify_notification_close (n, NULL);
 
 	liferea_shell_present ();
 }
@@ -63,11 +67,13 @@ static void notif_libnotify_callback_open ( NotifyNotification *n, gchar *action
 static void
 notif_libnotify_callback_mark_read (NotifyNotification *n, gchar *action, gpointer user_data)
 {
+	nodePtr node;
+
 	g_assert (action != NULL);
 	g_assert (strcmp (action, "mark_read") == 0);
 
-	nodePtr node = node_from_id (user_data);
-	
+	node = node_from_id (user_data);
+
 	if (node) {
 		feedlist_mark_all_read (node);
 		feedlist_reset_new_item_count ();
@@ -75,11 +81,13 @@ notif_libnotify_callback_mark_read (NotifyNotification *n, gchar *action, gpoint
 	} else {
 		ui_show_error_box (_("This feed does not exist anymore!"));
 	}
-	
+
 	notify_notification_close (n, NULL);
 }
 
-static void notif_libnotify_callback_show_details ( NotifyNotification *n, gchar *action, gpointer user_data ) {
+static void
+notif_libnotify_callback_show_details (NotifyNotification *n, gchar *action, gpointer user_data)
+{
 	nodePtr node_p;
 
 	GList *list_p;
@@ -93,38 +101,38 @@ static void notif_libnotify_callback_show_details ( NotifyNotification *n, gchar
 	const gchar *labelURL_p;
 
 	gint item_count = 0;
-	
-	g_assert(action != NULL);
-	g_assert(strcmp(action, "show_details") == 0);
-	node_p = node_from_id(user_data);
-	
-	if(node_p) {
+
+	g_assert (action != NULL);
+	g_assert (strcmp(action, "show_details") == 0);
+	node_p = node_from_id (user_data);
+
+	if (node_p) {
 		itemSetPtr itemSet = node_get_itemset (node_p);
 
-		labelText_now_p = g_strdup("");
+		labelText_now_p = g_strdup ("");
 
 		/* Gather the feed's headlines */
 		list_p = itemSet->ids;
 		while (list_p) {
-			item_p = item_load ( GPOINTER_TO_UINT (list_p->data));
+			item_p = item_load (GPOINTER_TO_UINT (list_p->data));
 			if (item_p->popupStatus && !item_p->readStatus) {
 				item_p->popupStatus = FALSE;
 				item_count += 1;
 
-				labelHeadline_p = g_strdup (item_get_title(item_p));
+				labelHeadline_p = g_strdup (item_get_title (item_p));
 				if (labelHeadline_p == NULL ) {
-					labelHeadline_p = g_strdup_printf (_("This news entry has no headline") );
+					labelHeadline_p = g_strdup_printf (_("This news entry has no headline"));
 				}
 
-				labelURL_p = item_get_base_url(item_p);
-				if (labelURL_p != NULL ) {
-					labelText_p = g_strdup_printf ("%s <a href='%s'>%s</a>\n", labelHeadline_p, labelURL_p, _("Visit") );
+				labelURL_p = item_get_base_url (item_p);
+				if (labelURL_p) {
+					labelText_p = g_strdup_printf ("%s <a href='%s'>%s</a>\n", labelHeadline_p, labelURL_p, _("Visit"));
 				} else {
-					labelText_p = g_strdup_printf ("%s\n", labelHeadline_p );
+					labelText_p = g_strdup_printf ("%s\n", labelHeadline_p);
 				}
 
 				labelText_prev_p = labelText_now_p;
-				labelText_now_p = g_strconcat( labelText_now_p, labelText_p, NULL);
+				labelText_now_p = g_strconcat(labelText_now_p, labelText_p, NULL);
 
 				g_free(labelHeadline_p);
 				g_free(labelText_p);
@@ -143,40 +151,39 @@ static void notif_libnotify_callback_show_details ( NotifyNotification *n, gchar
 		ui_show_error_box(_("This feed does not exist anymore!"));
 	}
 
-	notify_notification_close ( n,NULL);
-	
-	if(node_p) {
+	notify_notification_close (n, NULL);
+
+	if (node_p) {
 //		notify_notification_update ( n, node_get_title(node_p), labelText_now_p, NULL);
 //		notify_notification_clear_actions(n);
 
-		n = notify_notification_new (node_get_title(node_p), labelText_now_p, NULL, NULL);
+		n = notify_notification_new (node_get_title (node_p), labelText_now_p, NULL, NULL);
 
-		notify_notification_set_icon_from_pixbuf (n,node_get_icon(node_p));
-
+		notify_notification_set_icon_from_pixbuf (n, node_get_icon (node_p));
 		notify_notification_set_category (n, "feed");
-
-		notify_notification_set_timeout (n, NOTIFY_EXPIRES_NEVER );
+		notify_notification_set_timeout (n, NOTIFY_EXPIRES_NEVER);
 
 		if (supports_actions) {
-			notify_notification_add_action(n, "open", _("Open feed"),
+			notify_notification_add_action (n, "open", _("Open feed"),
 							(NotifyActionCallback)notif_libnotify_callback_open,
 							node_p->id, NULL);
-			notify_notification_add_action(n, "mark_read", _("Mark all as read"),
+			notify_notification_add_action (n, "mark_read", _("Mark all as read"),
 							(NotifyActionCallback)notif_libnotify_callback_mark_read,
 							node_p->id, NULL);
 		}
 
 		/* FIXME: conf_get_bool_value(SHOW_TRAY_ICON); */
 		if (!notify_notification_show (n, NULL)) {
-			fprintf(stderr, "notif_libnotify.c - failed to update notification via libnotify\n");
+			fprintf (stderr, "notif_libnotify.c - failed to update notification via libnotify\n");
 		}
 
-		g_free(labelText_now_p);
+		g_free (labelText_now_p);
 	}
 }
 
-static gboolean notif_libnotify_init(void) {
-
+static gboolean
+notif_libnotify_init (void)
+{
 	GList *caps, *c;
 
 	/* Check whether the notification daemon supports actions, per Actions
@@ -201,16 +208,18 @@ static gboolean notif_libnotify_init(void) {
 	}
 }
 
-static void notif_libnotify_deinit(void) {
+static void
+notif_libnotify_deinit (void)
+{
 	notify_uninit();
 }
 
 static void
 notif_libnotify_node_has_new_items (nodePtr node, gboolean enforced)
-{	
+{
 	itemSetPtr	itemSet;
 	GList		*iter;
-	
+
 	NotifyNotification *n;
 
 	GtkRequisition	size;
@@ -243,8 +252,8 @@ notif_libnotify_node_has_new_items (nodePtr node, gboolean enforced)
 
 	labelSummary_p = g_strdup_printf (ngettext ("%s has %d new / updated headline\n", "%s has %d new / updated headlines\n", item_count), 
 	                                  node_get_title (node), item_count);
-	n = notify_notification_new ( _("Feed Update"), labelSummary_p, NULL, NULL);
-	g_free(labelSummary_p);
+	n = notify_notification_new (_("Feed Update"), labelSummary_p, NULL, NULL);
+	g_free (labelSummary_p);
 
 	notify_notification_set_icon_from_pixbuf (n, node_get_icon (node));
 	notify_notification_set_timeout (n, NOTIFY_EXPIRES_DEFAULT);
@@ -274,11 +283,10 @@ notif_libnotify_node_has_new_items (nodePtr node, gboolean enforced)
 	if (!notify_notification_show (n, NULL))
 		g_warning ("notif_libnotify.c - failed to send notification via libnotify");
 }
-	
+
 struct notificationPlugin libnotify_plugin = {
 	"libnotify",
 	notif_libnotify_init,
 	notif_libnotify_deinit,
 	notif_libnotify_node_has_new_items,
 };
-
