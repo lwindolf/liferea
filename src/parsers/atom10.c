@@ -619,7 +619,15 @@ atom10_parse_feed_generator (xmlNodePtr cur, feedParserCtxtPtr ctxt, itemPtr ip,
 static void
 atom10_parse_feed_icon (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10ParserState *state)
 {
-	/* FIXME: Parse icon and use as a favicon? */
+	gchar *icon_uri;
+
+	icon_uri = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
+
+	if (icon_uri) {
+		debug1 (DEBUG_PARSING, "icon URI found in atom feed: %s", icon_uri);
+		ctxt->subscription->metadata = metadata_list_append (ctxt->subscription->metadata,
+								     "icon", icon_uri);
+	}
 }
 
 static void

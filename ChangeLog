@@ -84,6 +84,8 @@
 	* Implemented batch item loading into GtkTreeStore to gain
 	  performance for loading large item sets.
 	  (Lars Lindner, suggested by Marc Brinkmann)
+	* Fix SF #2810027: Use favicons from atom feeds if they provide an
+	  icon element. (Emilio Pozuelo Monfort)
 
 	* Resurrected the Albanian, Bulgarian, Chinese/Simplified,
 	  Chinese/Traditional, Dutch, Finnish, Korean, Macedonian

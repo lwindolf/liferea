@@ -23,6 +23,8 @@
 
 #include <glib.h>
 #include <gtk/gtk.h>
+
+#include "subscription.h"
 #include "update.h"
 
 /**
@@ -63,13 +65,13 @@ typedef void (*faviconUpdatedCb)(gpointer user_data);
  * feed source URL and an optional feed HTML URL. Can be used
  * for non-feed related favicon download too.
  *
- * @param id		cache id of the favicon (usually = node id)
+ * @param subscription	subscription whose icon is going to be updated
  * @param html_url	URL of a website where a favicon could be found (optional)
  * @param source_url	URL (usually the feed source) where a favicon can be found (mandatory)
  * @param options	download options 
  * @param callback	callback to triggered on success
  * @param user_data	user data to be passed to callback
  */
-void favicon_download(const gchar *id, const gchar *html_url, const gchar *source_url, const updateOptionsPtr options, faviconUpdatedCb callback, gpointer user_data);
+void favicon_download (subscriptionPtr subscription, const gchar *html_url, const gchar *source_url, const updateOptionsPtr options, faviconUpdatedCb callback, gpointer user_data);
 
 #endif

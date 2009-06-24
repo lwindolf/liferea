@@ -35,6 +35,7 @@
 #include "favicon.h"
 #include "feed.h"
 #include "html.h"
+#include "metadata.h"
 
 typedef struct faviconDownloadCtxt {
 	gchar		        *id;		/**< favicon cache id */
@@ -252,44 +253,63 @@ static gint count_slashes(const gchar *str) {
 	return slashes;
 }
 
-void favicon_download(const gchar *id, const gchar *html_url, const gchar *source_url, const updateOptionsPtr options, faviconUpdatedCb callback, gpointer user_data) {
+void
+favicon_download (subscriptionPtr subscription,
+		  const gchar *html_url,
+		  const gchar *source_url,
+		  const updateOptionsPtr options,
+		  faviconUpdatedCb callback,
+		  gpointer user_data)
+{
+	const gchar		*id;
 	faviconDownloadCtxtPtr	ctxt;
 	gchar			*tmp, *tmp2;
-	
+
 	debug_enter("favicon_download");
-	
+
+	id = subscription->node->id;
+
 	ctxt = favicon_download_ctxt_new ();
 	ctxt->id = g_strdup (id);
 	ctxt->options = update_options_copy (options);
 	ctxt->callback = callback;
 	ctxt->user_data = user_data;
-	
+
 	/*
 	 * This code tries to download from a series of URLs. If there are no
 	 * favicons, this will make five downloads, three of which will be 404
 	 * errors. Hopefully this will not cause any webservers pain because
 	 * this code should be run only once a month per feed.
 	 *
-	 * 1. --> downloading HTML of the feed url and looking for a favicon reference
-	 * 2. --> downloading HTML of root of webserver and looking for a favicon reference
-	 * 3. --> downloading favicon from the root HTML
-	 * 4. --> downloading favicon from directory of RSS feed
-	 * 5. --> downloading favicon from root of webserver of the RSS feed
+	 * 1. --> downloading favicon from the feed (e.g. <icon> tag in atom feeds)
+	 * 2. --> downloading HTML of the feed url and looking for a favicon reference
+	 * 3. --> downloading HTML of root of webserver and looking for a favicon reference
+	 * 4. --> downloading favicon from the root HTML
+	 * 5. --> downloading favicon from directory of RSS feed
+	 * 6. --> downloading favicon from root of webserver of the RSS feed
 	 */
-	  
+
 	/* In the following These URLs will be prepared here and passed as a list to 
 	   the download function that will then process in order
 	   until success or the end of the list is reached... */
 	debug1(DEBUG_UPDATE, "preparing download URLs for favicon %s...", ctxt->id);
-	
+
 	/* case 1. */
-	if(html_url) {
-		tmp = g_strstrip (g_strdup (html_url));
-		ctxt->urls = g_slist_append(ctxt->urls, tmp);
-		debug1(DEBUG_UPDATE, "(1) adding favicon search URL: %s", tmp);
+	g_print ("favicon_update, case 1: %s\n", metadata_list_get (subscription->metadata, "icon"));
+	if (metadata_list_get (subscription->metadata, "icon")) {
+		tmp = g_strstrip (g_strdup (metadata_list_get (subscription->metadata, "icon")));
+		ctxt->urls = g_slist_append (ctxt->urls, tmp);
+		debug1 (DEBUG_UPDATE, "(1) adding favicon search URL: %S", tmp);
 	}
 
 	/* case 2. */
+	if(html_url) {
+		tmp = g_strstrip (g_strdup (html_url));
+		ctxt->urls = g_slist_append(ctxt->urls, tmp);
+		debug1(DEBUG_UPDATE, "(2) adding favicon search URL: %s", tmp);
+	}
+
+	/* case 3. */
 	g_assert(source_url);
 	if(*source_url != '|') {
 		tmp = tmp2 = g_strstrip (g_strdup (source_url));
@@ -297,11 +317,11 @@ void favicon_download(const gchar *id, const gchar *html_url, const gchar *sourc
 		if(tmp) {
 			*tmp = 0;
 			ctxt->urls = g_slist_append(ctxt->urls, tmp2);
-			debug1(DEBUG_UPDATE, "(2) adding favicon search URL: %s", tmp2);
+			debug1(DEBUG_UPDATE, "(3) adding favicon search URL: %s", tmp2);
 		}
 	}
-	
-	/* case 3. */
+
+	/* case 4. */
 	if(html_url) {
 		if(2 < count_slashes(html_url)) {
 			tmp = tmp2 = g_strstrip (g_strdup (html_url));
@@ -313,15 +333,15 @@ void favicon_download(const gchar *id, const gchar *html_url, const gchar *sourc
 					tmp = tmp2;
 					tmp2 = g_strdup_printf("%s/favicon.ico", tmp);
 					ctxt->urls = g_slist_append(ctxt->urls, tmp2);
-					debug1(DEBUG_UPDATE, "(3) adding favicon source URL: %s", tmp2);
+					debug1(DEBUG_UPDATE, "(4) adding favicon source URL: %s", tmp2);
 				}
 			}
 			g_free(tmp);
 		}
 	}
-	
+
 	if(*source_url != '|' && 2 < count_slashes(source_url)) {
-		/* case 4 */
+		/* case 5 */
 		tmp = tmp2 = g_strstrip (g_strdup (source_url));
 		tmp = strrchr(tmp, '/');
 		if(tmp) {
@@ -329,11 +349,11 @@ void favicon_download(const gchar *id, const gchar *html_url, const gchar *sourc
 			tmp = tmp2;
 			tmp2 = g_strdup_printf("%s/favicon.ico", tmp);
 			ctxt->urls = g_slist_append(ctxt->urls, tmp2);
-			debug1(DEBUG_UPDATE, "(4) adding favicon source URL: %s", tmp2);
+			debug1(DEBUG_UPDATE, "(5) adding favicon source URL: %s", tmp2);
 		}
 		g_free(tmp);
-	
-		/* case 5 */
+
+		/* case 6 */
 		tmp = tmp2 = g_strstrip (g_strdup (source_url));
 		tmp = strstr(tmp, "://");
 		if(tmp) {
@@ -343,13 +363,13 @@ void favicon_download(const gchar *id, const gchar *html_url, const gchar *sourc
 				tmp = tmp2;
 				tmp2 = g_strdup_printf("%s/favicon.ico", tmp);
 				ctxt->urls = g_slist_append(ctxt->urls, tmp2);
-				debug1(DEBUG_UPDATE, "(5) adding favicon source URL: %s", tmp2);
+				debug1(DEBUG_UPDATE, "(6) adding favicon source URL: %s", tmp2);
 			}
 		}
 		g_free(tmp);
 	}
-			
+
 	favicon_download_run(ctxt);
-	
+
 	debug_exit("favicon_download");
 }
