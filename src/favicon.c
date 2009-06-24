@@ -295,7 +295,6 @@ favicon_download (subscriptionPtr subscription,
 	debug1(DEBUG_UPDATE, "preparing download URLs for favicon %s...", ctxt->id);
 
 	/* case 1. */
-	g_print ("favicon_update, case 1: %s\n", metadata_list_get (subscription->metadata, "icon"));
 	if (metadata_list_get (subscription->metadata, "icon")) {
 		tmp = g_strstrip (g_strdup (metadata_list_get (subscription->metadata, "icon")));
 		ctxt->urls = g_slist_append (ctxt->urls, tmp);
