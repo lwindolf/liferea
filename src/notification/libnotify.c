@@ -19,7 +19,7 @@
  */
  
 #ifdef HAVE_CONFIG_H
-#  include <config.h>
+#include <config.h>
 #endif
 
 #include <string.h>
@@ -31,14 +31,14 @@
 #include "common.h"
 #include "conf.h"
 #include "debug.h"
-#include "node.h"
 #include "item.h"
 #include "item_state.h"
 #include "feedlist.h"
+#include "node.h"
 #include "ui/liferea_shell.h"
+#include "ui/ui_common.h"
 #include "ui/ui_feedlist.h"
 #include "ui/ui_tray.h"
-#include "ui/ui_common.h"
 
 #include "notification/notification.h"
 
@@ -185,22 +185,18 @@ notif_libnotify_callback_show_details (NotifyNotification *n, gchar *action, gpo
 static gboolean
 notif_libnotify_init (void)
 {
-	GList *caps, *c;
+	GList *caps;
 
 	/* Check whether the notification daemon supports actions, per Actions
 	   in http://www.galago-project.org/specs/notification/0.9/x81.html */
 	if (notify_init ("liferea")) {
 		caps = notify_get_server_caps ();
-		if (caps != NULL) {
-			for (c = caps; c != NULL; c = c->next) {
-				if (g_str_equal ((char*)c->data, "actions")) {
-					supports_actions = TRUE;
-					break;
-				}
-			}
-			g_list_foreach (caps, (GFunc)g_free, NULL);
-			g_list_free (caps);
-		}
+
+		if (g_list_find_custom (caps, "actions", (GCompareFunc) strcmp))
+			supports_actions = TRUE;
+
+		g_list_foreach (caps, (GFunc)g_free, NULL);
+		g_list_free (caps);
 
 		return TRUE;
 	} else {
