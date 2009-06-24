@@ -51,6 +51,15 @@ static struct trayIcon_priv {
 
 static void ui_tray_install(void);
 
+GtkStatusIcon*
+ui_tray_get_status_icon (void)
+{
+	if (!trayIcon_priv)
+		return NULL;
+
+	return trayIcon_priv->status_icon;
+}
+
 static void
 ui_tray_tooltip_set (const gchar *message)
 {

@@ -36,6 +36,13 @@ void ui_tray_update (void);
 void ui_tray_enable (gboolean enabled);
 
 /**
+ * Get the status icon
+ *
+ * @returns the status icon, or NULL
+ */
+GtkStatusIcon* ui_tray_get_status_icon (void);
+
+/**
  * Determine number of active tray icons.
  *
  * @returns the current number of enabled systray icons
