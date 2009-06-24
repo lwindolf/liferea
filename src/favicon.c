@@ -298,7 +298,7 @@ favicon_download (subscriptionPtr subscription,
 	if (metadata_list_get (subscription->metadata, "icon")) {
 		tmp = g_strstrip (g_strdup (metadata_list_get (subscription->metadata, "icon")));
 		ctxt->urls = g_slist_append (ctxt->urls, tmp);
-		debug1 (DEBUG_UPDATE, "(1) adding favicon search URL: %S", tmp);
+		debug1 (DEBUG_UPDATE, "(1) adding favicon search URL: %s", tmp);
 	}
 
 	/* case 2. */
