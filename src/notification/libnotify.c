@@ -175,7 +175,7 @@ notif_libnotify_callback_show_details (NotifyNotification *n, gchar *action, gpo
 		notify_notification_attach_to_status_icon (n, ui_tray_get_status_icon ());
 
 		if (!notify_notification_show (n, NULL)) {
-			fprintf (stderr, "notif_libnotify.c - failed to update notification via libnotify\n");
+			g_warning ("libnotify.c - failed to update notification via libnotify\n");
 		}
 
 		g_free (labelText_now_p);
