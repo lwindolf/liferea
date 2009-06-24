@@ -172,7 +172,8 @@ notif_libnotify_callback_show_details (NotifyNotification *n, gchar *action, gpo
 							node_p->id, NULL);
 		}
 
-		/* FIXME: conf_get_bool_value(SHOW_TRAY_ICON); */
+		notify_notification_attach_to_status_icon (n, ui_tray_get_status_icon ());
+
 		if (!notify_notification_show (n, NULL)) {
 			fprintf (stderr, "notif_libnotify.c - failed to update notification via libnotify\n");
 		}
@@ -222,9 +223,6 @@ notif_libnotify_node_has_new_items (nodePtr node, gboolean enforced)
 
 	NotifyNotification *n;
 
-	GtkRequisition	size;
-	gint		x, y;
-
 	gchar		*labelSummary_p;
 	gint		item_count = 0;
 
@@ -270,15 +268,7 @@ notif_libnotify_node_has_new_items (nodePtr node, gboolean enforced)
 	}
 	notify_notification_set_category (n, "feed");
 
-	if (ui_tray_get_origin (&x, &y) == TRUE) {
-		ui_tray_size_request (&size);
-
-		x += size.width / 2;
-		y += size.height;
-
-		notify_notification_set_hint_int32 (n, "x", x);
-		notify_notification_set_hint_int32 (n, "y", y);
-	}
+	notify_notification_attach_to_status_icon (n, ui_tray_get_status_icon ());
 
 	if (!notify_notification_show (n, NULL))
 		g_warning ("notif_libnotify.c - failed to send notification via libnotify");
