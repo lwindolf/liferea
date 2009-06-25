@@ -520,7 +520,7 @@ liferea_htmlview_prepare_context_menu (LifereaHtmlView *htmlview, GtkMenu *menu,
 	g_list_free (items);
 
 	/* and now add all we want to see */
-	if (link && !liferea_htmlview_is_special_url (link)) {
+	if (link && !liferea_htmlview_is_special_url (link) && !g_str_has_prefix(link, "javascript:") && !g_str_has_prefix(link, "data:")) {
 		gchar *path;
 		
 		menu_add_option (menu, _("Launch Link In _Tab"), NULL, G_CALLBACK (on_popup_open_link_in_tab_activate), link);

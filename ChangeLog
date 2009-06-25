@@ -2,7 +2,8 @@
 
 	Version 1.6.0-rc7 (Unstable)
 
-	*
+	* Open the "Decrease/Increase Text Size" menu instead of the
+	  normal link menu on JavaScript links. (Adrian Bunk)
 
 
 2009-06-22  Adrian Bunk <bunk@users.sourceforge.net>
