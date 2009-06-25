@@ -76,6 +76,7 @@ metadata_init (void)
 	metadata_type_register ("webmaster",		METADATA_TYPE_HTML);
 	metadata_type_register ("feedgenerator",	METADATA_TYPE_HTML);
 	metadata_type_register ("imageUrl",		METADATA_TYPE_URL);
+	metadata_type_register ("icon",			METADATA_TYPE_URL);
 	metadata_type_register ("homepage",		METADATA_TYPE_URL);
 	metadata_type_register ("textInput",		METADATA_TYPE_HTML);
 	metadata_type_register ("errorReportsTo",	METADATA_TYPE_HTML);
