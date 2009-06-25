@@ -138,7 +138,7 @@ metadata_get_type (const gchar *name)
 
 	type = GPOINTER_TO_INT (g_hash_table_lookup (metadataTypes, (gpointer)name));
 	if (0 == type)
-		debug1 (DEBUG_PARSING, "unknown metadata type (%s)", name);
+		g_warning ("Unknown metadata type: %s", name);
 	
 	return type;
 }
