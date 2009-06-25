@@ -86,6 +86,8 @@
 	  (Lars Lindner, suggested by Marc Brinkmann)
 	* Fix SF #2810027: Use favicons from atom feeds if they provide an
 	  icon element. (Emilio Pozuelo Monfort)
+	* Open the "Decrease/Increase Text Size" menu instead of the
+	  normal link menu on JavaScript links. (Adrian Bunk)
 
 	* Resurrected the Albanian, Bulgarian, Chinese/Simplified,
 	  Chinese/Traditional, Dutch, Finnish, Korean, Macedonian
