@@ -138,7 +138,7 @@ metadata_get_type (const gchar *name)
 
 	type = GPOINTER_TO_INT (g_hash_table_lookup (metadataTypes, (gpointer)name));
 	if (0 == type)
-		g_warning ("Unknown metadata type: %s", name);
+		g_warning ("Unknown metadata type: %s, please report this Liferea bug!", name);
 	
 	return type;
 }
@@ -169,7 +169,7 @@ GSList * metadata_list_append(GSList *metadata, const gchar *strid, const gchar 
 			checked_data = g_strchomp (checked_data);
 			break;
 		default:
-			debug1(DEBUG_CACHE, "Unknown metadata type \"%s\", this is a program bug! Treating as HTML.", strid);
+			g_warning ("Unknown metadata type: %s, please report this Liferea bug! Treating as HTML.", strid);
 		case METADATA_TYPE_HTML:
 			/* Needs to check for proper XHTML */
 			if (xhtml_is_well_formed (data)) {
