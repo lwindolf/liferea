@@ -47,7 +47,7 @@ typedef struct NsHandler {
 } NsHandler;
 
 /**
- * Returns a list of all values of a given type from a specified metadata list.
+ * Checks whether a metadata type is registered
  *
  * @param strid		the metadata type identifier
  *
