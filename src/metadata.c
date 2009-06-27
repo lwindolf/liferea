@@ -129,6 +129,18 @@ metadata_init (void)
 	return;
 }
 
+gboolean
+metadata_is_type_registered (const gchar *strid)
+{
+	if (!metadataTypes)
+		metadata_init ();
+
+	if (g_hash_table_lookup (metadataTypes, strid))
+		return TRUE;
+	else
+		return FALSE;
+}
+
 static gint
 metadata_get_type (const gchar *name)
 {

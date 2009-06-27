@@ -46,6 +46,15 @@ typedef struct NsHandler {
 	parseChannelTagFunc	parseChannelTag;	/**< channel tag parsing method */
 } NsHandler;
 
+/**
+ * Returns a list of all values of a given type from a specified metadata list.
+ *
+ * @param strid		the metadata type identifier
+ *
+ * @returns TRUE if the metadata type is registered, otherwise FALSE
+ */
+gboolean metadata_is_type_registered (const gchar *strid);
+
 /** 
  * Appends a value to the value list of a specific metadata type 
  * Don't mix this function with metadata_list_set() !

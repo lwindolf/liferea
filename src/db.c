@@ -680,6 +680,17 @@ db_deinit (void)
 }
 
 static GSList *
+db_metadata_list_append (GSList *metadata, const char *key, const char *value)
+{
+	if (metadata_is_type_registered (key))
+		metadata = metadata_list_append (metadata, key, value);
+	else
+		debug1 (DEBUG_DB, "Trying to load unregistered metadata type %s from DB.", key);
+
+	return metadata;
+}
+
+static GSList *
 db_item_metadata_load(itemPtr item) 
 {
 	GSList		*metadata = NULL;
@@ -697,7 +708,7 @@ db_item_metadata_load(itemPtr item)
 		value = sqlite3_column_text(stmt, 1);
 		if (g_str_equal (key, "enclosure"))
 			item->hasEnclosure = TRUE;
-		metadata = metadata_list_append (metadata, key, value); 
+		metadata = db_metadata_list_append (metadata, key, value); 
 	}
 
 	return metadata;
@@ -1650,7 +1661,7 @@ db_subscription_metadata_load(const gchar *id)
 		g_error ("db_load_metadata: sqlite bind failed (error code %d)!", res);
 
 	while (sqlite3_step (stmt) == SQLITE_ROW) {
-		metadata = metadata_list_append (metadata, sqlite3_column_text(stmt, 0), 
+		metadata = db_metadata_list_append (metadata, sqlite3_column_text(stmt, 0), 
 		                                           sqlite3_column_text(stmt, 1));
 	}
 
