@@ -209,23 +209,20 @@ liferea_webkit_new_window_requested (WebKitWebView *view,
 {
 	const gchar *uri = webkit_network_request_get_uri (request);
 
-	/* We handle the request ourselves */
-	webkit_web_policy_decision_ignore (policy_decision);
-
 	if (webkit_web_navigation_action_get_button (navigation_action) == 2) {
 		/* middle-click, let's open the link in a new tab */
 		browser_tabs_add_new (uri, uri, FALSE);
-		return TRUE;
 	} else if (liferea_htmlview_handle_URL (g_object_get_data (G_OBJECT (view), "htmlview"), uri)) {
 		/* The link is to be opened externally, let's do nothing here */
-		return TRUE;
+	} else {
+		/* If the link is not to be opened in a new tab, nor externally,
+		 * it was likely a normal click on a target="_blank" link.
+		 * Let's open it in the current view to not disturb users */
+		webkit_web_view_load_uri (view, uri);
 	}
 
-	/* If the link is not to be opened in a new tab, nor externally,
-	 * it was likely a normal click on a target="_blank" link.
-	 * Let's open it in the current view to not disturb users */
-
-	webkit_web_view_load_uri (view, uri);
+	/* We handled the request ourselves */
+	webkit_web_policy_decision_ignore (policy_decision);
 	return TRUE;
 }
 
