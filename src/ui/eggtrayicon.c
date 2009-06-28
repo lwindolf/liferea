@@ -182,6 +182,9 @@ egg_tray_icon_get_orientation_property (EggTrayIcon *icon)
   int error, result;
 
   g_assert (icon->manager_window != None);
+
+  if (!GTK_IS_WIDGET (icon))
+    return;
   
   xdisplay = GDK_DISPLAY_XDISPLAY (gtk_widget_get_display (GTK_WIDGET (icon)));
 
@@ -361,6 +364,9 @@ egg_tray_icon_manager_window_destroyed (EggTrayIcon *icon)
   GdkWindow *gdkwin;
   
   g_return_if_fail (icon->manager_window != None);
+
+  if (!GTK_IS_WIDGET (icon))
+    return;
 
   gdkwin = gdk_window_lookup_for_display (gtk_widget_get_display (GTK_WIDGET (icon)),
 					  icon->manager_window);
