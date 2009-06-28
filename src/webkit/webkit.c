@@ -162,15 +162,34 @@ webkit_load_committed (WebKitWebView *view, WebKitWebFrame *frame)
 }
 
 /**
- * If a link with target="_blank" is clicked, this signal is emitted
- * (and not navigation-policy-decision-requested). It may be a bit
- * more consistent once https://bugs.webkit.org/show_bug.cgi?id=23932
- * is fixed, but for now we use this.
+ * A new window was requested. This is the case e.g. if the link
+ * has target="_blank". In that case, we don't open the link in a new
+ * tab, but do what the user requested as if it didn't have a target.
  */
-static WebKitWebView*
-webkit_create_web_view (WebKitWebView *view, WebKitWebFrame *frame)
+static gboolean
+liferea_webkit_new_window_requested (WebKitWebView *view,
+				     WebKitWebFrame *frame,
+				     WebKitNetworkRequest *request,
+				     WebKitWebNavigationAction *navigation_action,
+				     WebKitWebPolicyDecision *policy_decision)
 {
-	return view;
+	const gchar *uri = webkit_network_request_get_uri (request);
+
+	if (webkit_web_navigation_action_get_button (navigation_action) == 2) {
+		/* middle-click, let's open the link in a new tab */
+		browser_tabs_add_new (uri, uri, FALSE);
+	} else if (liferea_htmlview_handle_URL (g_object_get_data (G_OBJECT (view), "htmlview"), uri)) {
+		/* The link is to be opened externally, let's do nothing here */
+	} else {
+		/* If the link is not to be opened in a new tab, nor externally,
+		 * it was likely a normal click on a target="_blank" link.
+		 * Let's open it in the current view to not disturb users */
+		webkit_web_view_load_uri (view, uri);
+	}
+
+	/* We handled the request ourselves */
+	webkit_web_policy_decision_ignore (policy_decision);
+	return TRUE;
 }
 
 /**
@@ -312,6 +331,12 @@ webkit_new (LifereaHtmlView *htmlview)
 	);
 	g_signal_connect (
 		view,
+		"new-window-policy-decision-requested",
+		G_CALLBACK (liferea_webkit_new_window_requested),
+		view
+	);
+	g_signal_connect (
+		view,
 		"populate-popup",
 		G_CALLBACK (webkit_on_menu),
 		view
@@ -320,12 +345,6 @@ webkit_new (LifereaHtmlView *htmlview)
 		view,
 		"load-committed",
 		G_CALLBACK (webkit_load_committed),
-		view
-	);
-	g_signal_connect (
-		view,
-		"create-web-view",
-		G_CALLBACK (webkit_create_web_view),
 		view
 	);
 	g_signal_connect (
