@@ -4,8 +4,8 @@
 
 	* Open the "Decrease/Increase Text Size" menu instead of the
 	  normal link menu on JavaScript links. (Adrian Bunk)
-	* Fixes SF #2787817: Work around eggtrayicon crashes on
-	  window manager restart. (Adrian Bunk)
+	* Fixes SF #2787817, SF #2814022, Debian #525368:
+	  Work around several eggtrayicon crashes. (Adrian Bunk)
 	* Fix target="_blank" links not opening in tabs.
 	  (Emilio Pozuelo Monfort)
 
