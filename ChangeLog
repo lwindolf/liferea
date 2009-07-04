@@ -88,6 +88,8 @@
 	  icon element. (Emilio Pozuelo Monfort)
 	* Open the "Decrease/Increase Text Size" menu instead of the
 	  normal link menu on JavaScript links. (Adrian Bunk)
+	* Fixes a crash on some newsbin items.
+	  (Lars Lindner)
 
 	* Resurrected the Albanian, Bulgarian, Chinese/Simplified,
 	  Chinese/Traditional, Dutch, Finnish, Korean, Macedonian
