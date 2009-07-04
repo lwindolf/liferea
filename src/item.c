@@ -260,13 +260,15 @@ item_to_xml (itemPtr item, xmlNodePtr parentNode)
 	metadata_add_xml_nodes (item->metadata, itemNode);
 
 	nodePtr feedNode = node_from_id (item->parentNodeId);
-	feedPtr feed = (feedPtr)feedNode->data;
-	if (feed) {
-		if (!feed->ignoreComments) {
-			if (item->commentFeedId)
-				comments_to_xml (itemNode, item->commentFeedId);
-		} else {
-			xmlNewTextChild (itemNode, NULL, "commentsSuppressed", "true");
+	if (feedNode) {
+		feedPtr feed = (feedPtr)feedNode->data;
+		if (feed) {
+			if (!feed->ignoreComments) {
+				if (item->commentFeedId)
+					comments_to_xml (itemNode, item->commentFeedId);
+			} else {
+				xmlNewTextChild (itemNode, NULL, "commentsSuppressed", "true");
+			}
 		}
 	}
 }

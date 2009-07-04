@@ -8,6 +8,8 @@
 	  Work around several eggtrayicon crashes. (Adrian Bunk)
 	* Fix target="_blank" links not opening in tabs.
 	  (Emilio Pozuelo Monfort)
+	* Fixes a crash on some newsbin items without parents.
+	  (Lars Lindner)
 
 
 2009-06-22  Adrian Bunk <bunk@users.sourceforge.net>
