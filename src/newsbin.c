@@ -121,7 +121,7 @@ on_popup_copy_to_newsbin (gpointer data)
 	if(item) {
 		copy = item_copy(item);
 		copy->nodeId = newsbin->id;	/* necessary to become independent of original item */
-		copy->parentNodeId = item->nodeId;
+		copy->parentNodeId = g_strdup (item->nodeId);
 		
 		/* To avoid item doubling in vfolders we reset
 		   simple vfolder match attributes */
