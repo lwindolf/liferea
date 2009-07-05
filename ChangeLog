@@ -10,6 +10,8 @@
 	  (Emilio Pozuelo Monfort)
 	* Fixes a crash on some newsbin items without parents.
 	  (Lars Lindner)
+	* Open new windows opened by Javascript in a new tab.
+	  (Adrian Bunk)
 
 
 2009-06-22  Adrian Bunk <bunk@users.sourceforge.net>
