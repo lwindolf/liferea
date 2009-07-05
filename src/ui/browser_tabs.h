@@ -68,8 +68,10 @@ BrowserTabs * browser_tabs_create (GtkNotebook *notebook);
  * @param url	URL to be loaded in new tab (can be NULL to do nothing)
  * @param title	title of the tab to be created
  * @param activate Should the new tab be put in the foreground?
+ *
+ * @returns the newly created HTML view
  */
-void browser_tabs_add_new (const gchar *url, const gchar *title, gboolean activate);
+LifereaHtmlView * browser_tabs_add_new (const gchar *url, const gchar *title, gboolean activate);
 
 /**
  * makes the headline tab visible 

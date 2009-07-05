@@ -4,6 +4,7 @@
  * Copyright (C) 2007-2009 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2008 Lars Strojny <lars@strojny.net>
  * Copyright (C) 2009 Emilio Pozuelo Monfort <pochu27@gmail.com>
+ * Copyright (C) 2009 Adrian Bunk <bunk@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -227,6 +228,22 @@ liferea_webkit_new_window_requested (WebKitWebView *view,
 }
 
 /**
+ *  e.g. after a click on javascript:openZoom()
+ */
+static WebKitWebView*
+webkit_create_web_view (WebKitWebView *view, WebKitWebFrame *frame)
+{
+	LifereaHtmlView *htmlview;
+	GtkWidget	*scrollpane;
+	GtkWidget	*htmlwidget;
+
+	htmlview = browser_tabs_add_new (NULL, NULL, TRUE);
+	scrollpane = liferea_htmlview_get_widget (htmlview);
+	htmlwidget = gtk_bin_get_child (GTK_BIN (scrollpane));
+	return WEBKIT_WEB_VIEW (htmlwidget);
+}
+
+/**
  * WebKitWebView::populate-popup:
  * @web_view: the object on which the signal is emitted
  * @menu: the context menu
@@ -356,6 +373,12 @@ liferea_webkit_new (LifereaHtmlView *htmlview)
 		view,
 		"console-message",
 		G_CALLBACK (liferea_webkit_javascript_message),
+		view
+	);
+	g_signal_connect (
+		view,
+		"create-web-view",
+		G_CALLBACK (webkit_create_web_view),
 		view
 	);
 

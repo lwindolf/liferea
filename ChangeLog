@@ -90,6 +90,8 @@
 	  normal link menu on JavaScript links. (Adrian Bunk)
 	* Fixes a crash on some newsbin items.
 	  (Lars Lindner)
+	* Open new windows opened by Javascript in a new tab.
+	  (Adrian Bunk)
 
 	* Resurrected the Albanian, Bulgarian, Chinese/Simplified,
 	  Chinese/Traditional, Dutch, Finnish, Korean, Macedonian

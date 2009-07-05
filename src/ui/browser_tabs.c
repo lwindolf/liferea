@@ -369,7 +369,7 @@ on_htmlview_status_message (gpointer obj, gchar *url)
 
 /* single tab creation */
 
-void
+LifereaHtmlView *
 browser_tabs_add_new (const gchar *url, const gchar *title, gboolean activate)
 {
 	GtkWidget 	*widget, *label, *toolbar, *htmlframe, *image;
@@ -453,6 +453,7 @@ browser_tabs_add_new (const gchar *url, const gchar *title, gboolean activate)
 		browser_tab_history_add_location (tab, (gchar *)url);
 		liferea_htmlview_launch_URL_internal (tab->htmlview, (gchar *)url);
 	}
+	return tab->htmlview;
 }
 
 void
