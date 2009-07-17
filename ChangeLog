@@ -19,6 +19,8 @@
 	  (Lars Lindner, reported by Hubert Figuiere)
 	* Reduce memory usage by only using a WebKitWebSettings for all
 	  the htmlviews. (Emilio Pozuelo Monfort)
+	* Require WebKitGtk+ >= 1.1.10 to avoid problems with older
+	  versions. (Adrian Bunk)
 
 	* Update of Arabic translation (Khaled Hosny)
 
