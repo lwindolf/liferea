@@ -315,8 +315,6 @@ liferea_webkit_new (LifereaHtmlView *htmlview)
 
 	webkit_web_view_set_settings (view, settings);
 
-	webkit_web_view_set_full_content_zoom (view, TRUE);
-
 	gtk_container_add (GTK_CONTAINER (scrollpane), GTK_WIDGET (view));
 
 	/** Pass LifereaHtmlView into the WebKitWebView object */
