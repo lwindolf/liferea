@@ -24,8 +24,6 @@
 	  (Adrian Bunk, reported by Nathan Rogers)
 	* Filter for .opml files in OPML import/export dialogs.
 	  (Adrian Bunk)
-	* Require WebKitGtk+ >= 1.1.7 to avoid problems with older
-	  versions. (Adrian Bunk)
 	* Fixes a memory leak in the WebKit code. (Gustavo Noronha)
 	* Fixes SF #2785753: Don't search all links during feed
 	  auto discovery. (Adrian Bunk, reported by Vadim Peretokin)
@@ -97,6 +95,8 @@
 	  (Lars Lindner)
 	* Fixes SF#2789255: Crash when quitting during download.
 	  (Lars Lindner, reported by Hubert Figuiere)
+	* Require WebKitGtk+ >= 1.1.10 to avoid problems with older
+	  versions. (Adrian Bunk)
 
 	* Resurrected the Albanian, Bulgarian, Chinese/Simplified,
 	  Chinese/Traditional, Dutch, Finnish, Korean, Macedonian
