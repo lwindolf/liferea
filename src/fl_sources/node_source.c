@@ -179,7 +179,19 @@ node_source_new (nodePtr node, nodeSourceTypePtr type)
 /* source instance creation dialog */
 
 static void
-on_node_source_type_selected (GtkDialog *dialog, gint response_id, gpointer user_data)
+on_node_source_type_selected (GtkTreeSelection *selection, gpointer user_data)
+{
+	GtkTreeIter	iter;
+	GtkTreeModel	*model;
+
+	if (gtk_tree_selection_get_selected (selection, &model, &iter))
+		gtk_widget_set_sensitive (GTK_WIDGET (user_data), TRUE);
+	else
+		gtk_widget_set_sensitive (GTK_WIDGET (user_data), FALSE);
+}
+
+static void
+on_node_source_type_response (GtkDialog *dialog, gint response_id, gpointer user_data)
 {
 	GtkTreeSelection	*selection;
 	GtkTreeModel		*model;
@@ -248,8 +260,12 @@ ui_node_source_type_dialog (void)
 	                             GTK_SELECTION_SINGLE);
 
 	g_signal_connect (G_OBJECT (dialog), "response",
-			  G_CALLBACK (on_node_source_type_selected), 
+			  G_CALLBACK (on_node_source_type_response), 
 			  NULL);
+	g_signal_connect (G_OBJECT (gtk_tree_view_get_selection (GTK_TREE_VIEW (treeview))), "changed",
+	                  G_CALLBACK (on_node_source_type_selected),
+	                  liferea_dialog_lookup (dialog, "ok_button"));
+	               
 			  
 	return TRUE;
 }

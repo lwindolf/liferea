@@ -99,6 +99,8 @@
 	  versions. (Adrian Bunk)
 	* Fixes SF #2815397: Don't scale images when scaling the text.
 	  (Adrian Bunk)
+	* Fixes SF #2823359: Subscription -> New Source crashes
+	  (Lars Lindner, reported by Michal Nowak)
 
 	* Resurrected the Albanian, Bulgarian, Chinese/Simplified,
 	  Chinese/Traditional, Dutch, Finnish, Korean, Macedonian
