@@ -95,6 +95,8 @@
 	* Fixes crash when removing Google Reader node when update
 	  of one of it's subscriptions is in progress.
 	  (Lars Lindner)
+	* Fixes SF#2789255: Crash when quitting during download.
+	  (Lars Lindner, reported by Hubert Figuiere)
 
 	* Resurrected the Albanian, Bulgarian, Chinese/Simplified,
 	  Chinese/Traditional, Dutch, Finnish, Korean, Macedonian
