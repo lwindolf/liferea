@@ -671,6 +671,8 @@ update_init (void)
 void
 update_deinit (void)
 {
+	GSList	*iter = jobs;
+
 	debug_enter ("update_deinit");
 
 #ifdef USE_NM	
@@ -678,8 +680,13 @@ update_deinit (void)
 #endif	
 	network_deinit ();
 	
-	// FIXME: cancel all jobs
-	
+	/* Cancel all jobs, to avoid async callbacks accessing the GUI */
+	while (iter) {
+		updateJobPtr job = (updateJobPtr)iter->data;
+		job->callback = NULL;
+		iter = g_slist_next (iter);
+	}
+
 	g_async_queue_unref (pendingJobs);
 	g_async_queue_unref (pendingHighPrioJobs);
 	
