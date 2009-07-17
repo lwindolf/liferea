@@ -30,6 +30,48 @@
 #include "ui/browser_tabs.h"
 #include "ui/liferea_htmlview.h"
 
+static WebKitWebSettings *settings = NULL;
+
+/**
+ * HTML plugin init method
+ */
+static void
+webkit_init (void)
+{
+	gboolean disable_javascript, enable_plugins;
+
+	g_assert (!settings);
+
+	settings = webkit_web_settings_new ();
+
+	g_object_set (
+		settings,
+		"default-font-size",
+		11,
+		NULL
+	);
+	g_object_set (
+		settings,
+		"minimum-font-size",
+		7,
+		NULL
+	);
+	disable_javascript = conf_get_bool_value (DISABLE_JAVASCRIPT);
+	g_object_set (
+		settings,
+		"enable-scripts",
+		!disable_javascript,
+		NULL
+	);
+	enable_plugins = conf_get_bool_value (ENABLE_PLUGINS);
+	g_object_set (
+		settings,
+		"enable-plugins",
+		enable_plugins,
+		NULL
+	);
+}
+
 /**
  * Load HTML string into the rendering scrollpane
  *
@@ -264,7 +306,6 @@ webkit_new (LifereaHtmlView *htmlview)
 {
 	WebKitWebView *view;
 	GtkWidget *scrollpane;
-	WebKitWebSettings *settings;
 
 	scrollpane = gtk_scrolled_window_new (NULL, NULL);
 
@@ -281,34 +322,7 @@ webkit_new (LifereaHtmlView *htmlview)
 	/** Create HTML widget and pack it into the scrolled window */
 	view = WEBKIT_WEB_VIEW (webkit_web_view_new ());
 
-	settings = webkit_web_settings_new ();
-	g_object_set (
-		settings,
-		"default-font-size",
-		11,
-		NULL
-	);
-	g_object_set (
-		settings,
-		"minimum-font-size",
-		7,
-		NULL
-	);
-	g_object_set (
-		settings,
-		"enable-scripts",
-		!conf_get_bool_value (DISABLE_JAVASCRIPT),
-		NULL
-	);
-	g_object_set (
-		settings,
-		"enable-plugins",
-		conf_get_bool_value (ENABLE_PLUGINS),
-		NULL
-	);
-	
 	webkit_web_view_set_settings (view, WEBKIT_WEB_SETTINGS (settings));
-	g_object_unref (settings);
 
 	webkit_web_view_set_full_content_zoom (WEBKIT_WEB_VIEW (view), TRUE);
 
@@ -484,6 +498,7 @@ webkit_set_proxy (const gchar *host, guint port, const gchar *user, const gchar 
 
 static struct
 htmlviewImpl webkitImpl = {
+	.init		= webkit_init,
 	.create		= webkit_new,
 	.write		= webkit_write_html,
 	.launch		= webkit_launch_url,

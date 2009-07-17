@@ -17,6 +17,9 @@
 	  (Lars Lindner)
 	* Fixes SF#2789255: Crash when quitting during download.
 	  (Lars Lindner, reported by Hubert Figuiere)
+	* Reduce memory usage by only using a WebKitWebSettings for all
+	  the htmlviews. (Emilio Pozuelo Monfort)
+
 	* Update of Arabic translation (Khaled Hosny)
 
 

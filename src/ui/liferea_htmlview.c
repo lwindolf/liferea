@@ -178,7 +178,9 @@ liferea_htmlview_class_init (LifereaHtmlViewClass *klass)
 		g_cclosure_marshal_VOID__VOID,
 		G_TYPE_NONE,
 		0);
-		
+
+	htmlview_get_impl ()->init ();
+
 	g_type_class_add_private (object_class, sizeof (LifereaHtmlViewPrivate));
 }
 
