@@ -19,6 +19,8 @@
 	  (Lars Lindner, reported by Hubert Figuiere)
 	* Reduce memory usage by only using a WebKitWebSettings for all
 	  the htmlviews. (Emilio Pozuelo Monfort)
+	* Fixes SF #2823359: Subscription -> New Source crashes
+	  (Lars Lindner, reported by Michal Nowak)
 	* Require WebKitGtk+ >= 1.1.10 to avoid problems with older
 	  versions. (Adrian Bunk)
 	* Fixes SF #2815397: Don't scale images when scaling the text.
