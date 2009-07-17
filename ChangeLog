@@ -12,6 +12,9 @@
 	  (Lars Lindner)
 	* Open new windows opened by Javascript in a new tab.
 	  (Adrian Bunk)
+	* Fixes crash when removing Google Reader node when update
+	  of one of it's subscriptions is in progress.
+	  (Lars Lindner)
 	* Update of Arabic translation (Khaled Hosny)
 
 

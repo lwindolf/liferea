@@ -1,7 +1,7 @@
 /**
  * @file google_source.c  Google reader feed list source support
  * 
- * Copyright (C) 2007-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2009 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2008 Arnold Noronha <arnstein87@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -64,6 +64,8 @@ google_source_free (GoogleSourcePtr gsource)
 	if (!gsource)
 		return;
 
+	update_job_cancel_by_owner (gsource);
+	
 	g_free (gsource->sid);
 	g_queue_free (gsource->actionQueue) ;
 	g_hash_table_unref (gsource->lastTimestampMap);
