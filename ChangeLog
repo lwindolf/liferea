@@ -101,6 +101,8 @@
 	  (Adrian Bunk)
 	* Fixes SF #2823359: Subscription -> New Source crashes
 	  (Lars Lindner, reported by Michal Nowak)
+	* Fixes Debian #537295: Work around a format misdetection in
+	  item_set_description(). (Adrian Bunk)
 
 	* Resurrected the Albanian, Bulgarian, Chinese/Simplified,
 	  Chinese/Traditional, Dutch, Finnish, Korean, Macedonian
@@ -159,8 +161,6 @@
 	  before queuing it (Emilio Pozuelo Monfort)
 	* Fixes a broken feed update interval setting.
 	  (Adrian Bunk)
-	* Fixes Debian #537295: Work around a format misdetection in
-	  item_set_description(). (Adrian Bunk)
 
 	* Update of Italian translation. (Gianvito Cavasoli)
 
