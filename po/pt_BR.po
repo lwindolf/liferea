@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-02 21:47+0300\n"
-"PO-Revision-Date: 2009-06-04 19:14-0300\n"
+"POT-Creation-Date: 2009-06-22 14:32+0300\n"
+"PO-Revision-Date: 2009-07-18 18:05-0300\n"
 "Last-Translator: Leon Nardella <leon.nardela@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-l10n-br@listas.cipsga.org.br>\n"
 "MIME-Version: 1.0\n"
@@ -232,7 +232,7 @@ msgstr "%d de %b %l:%M %p"
 msgid "%b %d %Y"
 msgstr "%d de %b %Y"
 
-#: ../src/common.c:392
+#: ../src/common.c:441
 #, c-format
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "Não foi possível criar o diretório de cache \"%s\"!"
@@ -734,11 +734,11 @@ msgstr "Erro: Não há arquivo: \"%s\""
 msgid "New Search Folder"
 msgstr "Nova Pasta Virtual"
 
-#: ../src/xml.c:426
+#: ../src/xml.c:414
 msgid "[There were more errors. Output was truncated!]"
 msgstr "[Houve. A saída foi truncada!]"
 
-#: ../src/xml.c:587
+#: ../src/xml.c:575
 msgid "XML Parser: Could not parse document:\n"
 msgstr "Analisador XML: Não foi possível analisar o documento:\n"
 
@@ -793,11 +793,6 @@ msgstr "Escolher Arquivo"
 #, c-format
 msgid "<b>File Extension .%s</b>"
 msgstr "<b>Extensão de Arquivo .%s</b>"
-
-#: ../src/ui/enclosure_list_view.c:417
-#, c-format
-msgid "<b>%s</b>"
-msgstr "<b>%s</b>"
 
 #: ../src/ui/liferea_shell.c:325
 #, c-format
@@ -1061,7 +1056,7 @@ msgstr "_Novas Assinaturas..."
 msgid "Adds a subscription to the feed list."
 msgstr "Adiciona uma nova assinatura à lista de fontes de notícias."
 
-#: ../src/ui/liferea_shell.c:893 ../src/ui/ui_popup.c:285
+#: ../src/ui/liferea_shell.c:893 ../src/ui/ui_popup.c:279
 msgid "New _Folder..."
 msgstr "Nova _Pasta..."
 
@@ -1069,7 +1064,7 @@ msgstr "Nova _Pasta..."
 msgid "Adds a folder to the feed list."
 msgstr "Adiciona uma pasta à lista de fontes de notícias."
 
-#: ../src/ui/liferea_shell.c:894 ../src/ui/ui_popup.c:288
+#: ../src/ui/liferea_shell.c:894 ../src/ui/ui_popup.c:282
 msgid "New S_earch Folder..."
 msgstr "Nova Pasta Virtual..."
 
@@ -1085,7 +1080,7 @@ msgstr "Nova Fo_nte..."
 msgid "Adds a new feed list source."
 msgstr "Adicionar uma nova fonte de lista de fontes de notícias."
 
-#: ../src/ui/liferea_shell.c:896 ../src/ui/ui_popup.c:290
+#: ../src/ui/liferea_shell.c:896 ../src/ui/ui_popup.c:284
 msgid "New _News Bin..."
 msgstr "_Novo Recipiente de Notícias..."
 
@@ -1102,7 +1097,7 @@ msgid ""
 "Marks all items of the selected feed list node / in the item list as read."
 msgstr "Marca todos os itens do nó selecionado como lidos"
 
-#: ../src/ui/liferea_shell.c:902 ../src/ui/ui_popup.c:266
+#: ../src/ui/liferea_shell.c:902 ../src/ui/ui_popup.c:260
 msgid "_Update"
 msgstr "_Atualizar"
 
@@ -1169,11 +1164,11 @@ msgstr "T_rabalhar Offline"
 msgid "This option allows you to disable subscription updating."
 msgstr "Esta opção permite desabilitar a atualização de assinaturas."
 
-#: ../src/ui/liferea_shell.c:1305
+#: ../src/ui/liferea_shell.c:1308
 msgid "Liferea - Linux Feed Reader"
 msgstr "Liferea - Leitor de Fontes de Notícias do Linux"
 
-#: ../src/ui/liferea_shell.c:1307
+#: ../src/ui/liferea_shell.c:1310
 msgid ""
 "<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news "
 "feeds.</p><p>The left pane contains the list of your subscriptions. To add a "
@@ -1233,29 +1228,29 @@ msgstr "Fonte desconhecida"
 msgid "Couldn't find pixmap file: %s"
 msgstr "Não foi possível localizar o arquivo de imagem: %s"
 
-#: ../src/ui/ui_feedlist.c:307
+#: ../src/ui/ui_feedlist.c:309
 msgid "Deleting entry"
 msgstr "Apagando entrada"
 
-#: ../src/ui/ui_feedlist.c:308
+#: ../src/ui/ui_feedlist.c:310
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "Você realmente deseja excluir \"%s\" e seu conteúdo?"
 
-#: ../src/ui/ui_feedlist.c:308
+#: ../src/ui/ui_feedlist.c:310
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Você realmente deseja excluir \"%s\"?"
 
-#: ../src/ui/ui_feedlist.c:320
+#: ../src/ui/ui_feedlist.c:322
 msgid "Deletion Confirmation"
 msgstr "Confirmar Exclusão"
 
-#: ../src/ui/ui_feedlist.c:349
+#: ../src/ui/ui_feedlist.c:351
 msgid "You have to select a feed entry"
 msgstr "Você deve selecionar uma fonte de notícias"
 
-#: ../src/ui/ui_feedlist.c:356 ../src/ui/ui_feedlist.c:365
+#: ../src/ui/ui_feedlist.c:358 ../src/ui/ui_feedlist.c:367
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea está em modo offline. Não é possível atualizar."
 
@@ -1350,31 +1345,31 @@ msgstr "At_ualizar Todos"
 msgid "_Show Liferea"
 msgstr "_Exibir Liferea"
 
-#: ../src/ui/ui_popup.c:268
+#: ../src/ui/ui_popup.c:262
 msgid "_Update Folder"
 msgstr "At_ualizar Pasta"
 
-#: ../src/ui/ui_popup.c:270
+#: ../src/ui/ui_popup.c:264
 msgid "_Mark All As Read"
 msgstr "_Marcar Todos Como Lidos"
 
-#: ../src/ui/ui_popup.c:280
+#: ../src/ui/ui_popup.c:274
 msgid "_New"
 msgstr "_Nova"
 
-#: ../src/ui/ui_popup.c:282
+#: ../src/ui/ui_popup.c:276
 msgid "New _Subscription..."
 msgstr "Nova _Assinatura..."
 
-#: ../src/ui/ui_popup.c:289
+#: ../src/ui/ui_popup.c:283
 msgid "New S_ource..."
 msgstr "Nova Fo_nte..."
 
-#: ../src/ui/ui_popup.c:299
+#: ../src/ui/ui_popup.c:293
 msgid "_Delete"
 msgstr "_Excluir"
 
-#: ../src/ui/ui_popup.c:300
+#: ../src/ui/ui_popup.c:294
 msgid "_Properties..."
 msgstr "_Propriedades..."
 
@@ -1459,10 +1454,7 @@ msgstr "Janela existente"
 msgid "New window"
 msgstr "Nova Janela"
 
-#. create tab widgets
-#: ../src/ui/ui_prefs.c:632 ../src/ui/browser_tabs.c:307
-#: ../src/ui/browser_tabs.c:310 ../src/ui/browser_tabs.c:342
-#: ../src/ui/browser_tabs.c:409
+#: ../src/ui/ui_prefs.c:632 ../src/ui/browser_tabs.c:323
 msgid "New tab"
 msgstr "Nova aba"
 
@@ -1521,7 +1513,7 @@ msgstr "Nome do Script"
 msgid "No script selected!"
 msgstr "Nenhum script selecionado!"
 
-#: ../src/ui/ui_search.c:135
+#: ../src/ui/ui_search.c:142
 msgid "Create a new search feed."
 msgstr "Criar uma nova pesquisa de fontes de notícias."
 
@@ -1665,25 +1657,25 @@ msgstr "Nenhum tipo de lista de fonte de notícias encontrado!"
 msgid "Source Type"
 msgstr "Tipo de Fonte"
 
-#: ../src/notification/libnotify.c:56 ../src/notification/libnotify.c:76
-#: ../src/notification/libnotify.c:143
+#: ../src/notification/libnotify.c:57 ../src/notification/libnotify.c:77
+#: ../src/notification/libnotify.c:144
 msgid "This feed does not exist anymore!"
 msgstr "Esta fonte de notícias não existe mais!"
 
-#: ../src/notification/libnotify.c:116
+#: ../src/notification/libnotify.c:117
 #, c-format
 msgid "This news entry has no headline"
 msgstr "Esta entrada de notícias não possui manchete"
 
-#: ../src/notification/libnotify.c:121
+#: ../src/notification/libnotify.c:122
 msgid "Visit"
 msgstr "Visita"
 
-#: ../src/notification/libnotify.c:161 ../src/notification/libnotify.c:256
+#: ../src/notification/libnotify.c:162 ../src/notification/libnotify.c:256
 msgid "Open feed"
 msgstr "Abrir fonte de notícias"
 
-#: ../src/notification/libnotify.c:164 ../src/notification/libnotify.c:259
+#: ../src/notification/libnotify.c:165 ../src/notification/libnotify.c:259
 msgid "Mark all as read"
 msgstr "Ma_rcar todos como lidos"
 
@@ -2223,56 +2215,56 @@ msgid "_All Rules Must Match"
 msgstr "_Todas as regras devem ser satisfeitas"
 
 #: ../glade/liferea.glade.h:111
-msgid "_Allow Flash in Feeds."
-msgstr "_Permitir Flash nas fontes de notícias"
-
-#: ../glade/liferea.glade.h:112
 msgid "_Auto Detect (GNOME or environment)"
 msgstr "Detectar _Automaticamente (GNOME ou ambiente)"
 
-#: ../glade/liferea.glade.h:113
+#: ../glade/liferea.glade.h:112
 msgid "_Automatically download all enclosures of this feed."
 msgstr "Download _automático de todos componentes desta fonte de notícias."
 
-#: ../glade/liferea.glade.h:114
+#: ../glade/liferea.glade.h:113
 msgid "_Browse"
 msgstr "_Navegar"
 
-#: ../glade/liferea.glade.h:115
+#: ../glade/liferea.glade.h:114
 msgid "_Browser:"
 msgstr "_Navegador:"
 
-#: ../glade/liferea.glade.h:116 ../glade/new_subscription.glade.h:10
+#: ../glade/liferea.glade.h:115 ../glade/new_subscription.glade.h:10
 msgid "_Command"
 msgstr "_Comando"
 
-#: ../glade/liferea.glade.h:117
+#: ../glade/liferea.glade.h:116
 msgid "_Default cache settings"
 msgstr "Configuração pa_drão do cache"
 
-#: ../glade/liferea.glade.h:118
+#: ../glade/liferea.glade.h:117
 msgid "_Disable Javascript."
 msgstr "_Desabilitar Javascript."
 
-#: ../glade/liferea.glade.h:119
+#: ../glade/liferea.glade.h:118
 msgid "_Do this automatically for enclosures like this from now on."
 msgstr "_Faça isso automaticamente para arquivos assim de agora em diante."
 
-#: ../glade/liferea.glade.h:120
+#: ../glade/liferea.glade.h:119
 msgid "_Don't update this feed automatically."
 msgstr "_Não atualize esta fonte de notícias automaticamente."
 
-#: ../glade/liferea.glade.h:121 ../glade/new_subscription.glade.h:11
+#: ../glade/liferea.glade.h:120 ../glade/new_subscription.glade.h:11
 msgid "_Don't use proxy for download"
 msgstr "Não usar proxy para fazer _download"
 
-#: ../glade/liferea.glade.h:122
+#: ../glade/liferea.glade.h:121
 msgid "_Download using"
 msgstr "_Download usando"
 
-#: ../glade/liferea.glade.h:123
+#: ../glade/liferea.glade.h:122
 msgid "_Enable Local LAN Synchronization"
 msgstr "_Habilitar Sincronização de Rede Local"
+
+#: ../glade/liferea.glade.h:123
+msgid "_Enable browser plugins."
+msgstr "_Habilitar plugins de browser"
 
 #: ../glade/liferea.glade.h:124
 msgid "_Enforce popup notification for this subscription."
@@ -2455,6 +2447,12 @@ msgid ""
 msgstr ""
 "Digite o endereço de website para usar na pesquisa automática ou caso você "
 "conheça, o endereço exato da fonte de notícias."
+
+#~ msgid "<b>%s</b>"
+#~ msgstr "<b>%s</b>"
+
+#~ msgid "_Allow Flash in Feeds."
+#~ msgstr "_Permitir Flash nas fontes de notícias"
 
 #, fuzzy
 #~ msgid "FAILED to download enclosure: \"%s\""
