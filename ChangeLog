@@ -27,6 +27,8 @@
 	  (Adrian Bunk)
 	* Fixes Debian #537295: Work around a format misdetection in
 	  item_set_description(). (Adrian Bunk)
+	* Fixes Debian #537332: Infinite loop on 404 errors.
+	  (Emilio Pozuelo Monfort)
 
 	* Update of Arabic translation. (Khaled Hosny)
 	* Update of Brazilian Portuguese translation. (Leon Nardella)
