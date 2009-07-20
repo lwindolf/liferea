@@ -116,8 +116,9 @@ feed_parser_auto_discover (feedParserCtxtPtr ctxt)
 		
 	debug1 (DEBUG_UPDATE, "Starting feed auto discovery (%s)", subscription_get_source (ctxt->subscription));
 	
-	if ((source = html_auto_discover_feed (ctxt->data, subscription_get_source (ctxt->subscription)))) {
+	source = html_auto_discover_feed (ctxt->data, subscription_get_source (ctxt->subscription));
 
+	if (source && !g_str_equal (source, subscription_get_source (ctxt->subscription))) {
 		debug1 (DEBUG_UPDATE, "Discovered link: %s", source);
 		ctxt->failed = FALSE;
 		subscription_set_source (ctxt->subscription, source);

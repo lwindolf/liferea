@@ -103,6 +103,8 @@
 	  (Lars Lindner, reported by Michal Nowak)
 	* Fixes Debian #537295: Work around a format misdetection in
 	  item_set_description(). (Adrian Bunk)
+	* Fixes Debian #537332: Infinite loop on 404 errors.
+	  (Emilio Pozuelo Monfort)
 
 	* Resurrected the Albanian, Bulgarian, Chinese/Simplified,
 	  Chinese/Traditional, Dutch, Finnish, Korean, Macedonian
