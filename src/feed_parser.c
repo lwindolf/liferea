@@ -118,6 +118,7 @@ feed_parser_auto_discover (feedParserCtxtPtr ctxt)
 	
 	source = html_auto_discover_feed (ctxt->data, subscription_get_source (ctxt->subscription));
 
+	/* FIXME: we only need the !g_str_equal as a workaround after a 404 */
 	if (source && !g_str_equal (source, subscription_get_source (ctxt->subscription))) {
 		debug1 (DEBUG_UPDATE, "Discovered link: %s", source);
 		ctxt->failed = FALSE;
