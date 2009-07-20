@@ -106,12 +106,12 @@
 	  Chinese/Traditional, Dutch, Finnish, Korean, Macedonian
 	  and Romanian translations from older Liferea versions.
 	  (Adrian Bunk)
+	* Updated Arabic translation. (Khaled Hosny)
 	* Updated Brazilian Portuguese translation. (Leon Nardella)
 	* Updated French translation. (Vincent Lefevre)
 	* Updated Italian translation. (Gianvito Cavasoli)
 	* Updated Japanese translation. (Takeshi AIHANA)
 	* Updated Portuguese translation. (Antonio Lima)
-	* Updated Arabic translation. (Khaled Hosny)
 	* Merged updated documentation from 1.6.0 (Lars Lindner)
 
 2009-05-01  Adrian Bunk <bunk@users.sourceforge.net>
