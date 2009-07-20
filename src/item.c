@@ -132,6 +132,8 @@ item_set_description (itemPtr item, const gchar *description)
 //		isHTML = TRUE;
 	else if (strstr (description, "<a href="))
 		isHTML = TRUE;
+	else if (strstr (description, "</a>"))
+		isHTML = TRUE;
 		
 	item->description = g_strdup (description);
 	if (!isHTML)

@@ -25,6 +25,8 @@
 	  versions. (Adrian Bunk)
 	* Fixes SF #2815397: Don't scale images when scaling the text.
 	  (Adrian Bunk)
+	* Fixes Debian #537295: Work around a format misdetection in
+	  item_set_description(). (Adrian Bunk)
 
 	* Update of Arabic translation. (Khaled Hosny)
 	* Update of Brazilian Portuguese translation. (Leon Nardella)
