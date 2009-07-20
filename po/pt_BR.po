@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-06-22 14:32+0300\n"
-"PO-Revision-Date: 2009-06-04 19:14-0300\n"
+"PO-Revision-Date: 2009-07-18 18:05-0300\n"
 "Last-Translator: Leon Nardella <leon.nardela@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-l10n-br@listas.cipsga.org.br>\n"
 "MIME-Version: 1.0\n"
@@ -2264,7 +2264,7 @@ msgstr "_Habilitar Sincronização de Rede Local"
 
 #: ../glade/liferea.glade.h:123
 msgid "_Enable browser plugins."
-msgstr ""
+msgstr "_Habilitar plugins de browser"
 
 #: ../glade/liferea.glade.h:124
 msgid "_Enforce popup notification for this subscription."

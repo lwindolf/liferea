@@ -26,7 +26,8 @@
 	* Fixes SF #2815397: Don't scale images when scaling the text.
 	  (Adrian Bunk)
 
-	* Update of Arabic translation (Khaled Hosny)
+	* Update of Arabic translation. (Khaled Hosny)
+	* Update of Brazilian Portuguese translation. (Leon Nardella)
 
 
 2009-06-22  Adrian Bunk <bunk@users.sourceforge.net>
