@@ -159,11 +159,6 @@ itemview_set_displayed_node (nodePtr node)
 	/* Disable attachment icon column (will be enabled when loading first item with an enclosure) */
 	ui_itemlist_enable_encicon_column (FALSE);
 
-	if (node) {
-		ui_itemlist_enable_favicon_column (NODE_TYPE (node)->capabilities & NODE_CAPABILITY_SHOW_ITEM_FAVICONS);
-		ui_itemlist_set_sort_column (node->sortColumn, node->sortReversed);
-	}
-
 	/* 2. Reset view state */
 	itemview_clear ();
 
@@ -276,6 +271,11 @@ void
 itemview_update (void)
 {
 	ui_itemlist_update ();
+	
+	if (itemview->priv->node) {
+		ui_itemlist_enable_favicon_column (NODE_TYPE (itemview->priv->node)->capabilities & NODE_CAPABILITY_SHOW_ITEM_FAVICONS);
+		ui_itemlist_set_sort_column (itemview->priv->node->sortColumn, itemview->priv->node->sortReversed);
+	}
 	
 	if (itemview->priv->needsHTMLViewUpdate) {
 		itemview->priv->needsHTMLViewUpdate = FALSE;
