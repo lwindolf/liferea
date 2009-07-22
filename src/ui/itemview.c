@@ -31,7 +31,7 @@
 #include "vfolder.h"
 #include "ui/ui_common.h"
 #include "ui/liferea_shell.h"
-#include "ui/ui_itemlist.h"
+#include "ui/item_list_view.h"
 #include "ui/liferea_htmlview.h"
 
 /* The item view is the layer that switches item list presentations:

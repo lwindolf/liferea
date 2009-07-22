@@ -15,6 +15,7 @@ libliui_a_SOURCES = \
 	auth_dialog.c auth_dialog.h \
 	browser_tabs.c browser_tabs.h \
 	enclosure_list_view.c enclosure_list_view.h \
+	item_list_view.c item_list_view.h \
 	itemview.c itemview.h \
 	liferea_dialog.c liferea_dialog.h \
 	liferea_htmlview.c liferea_htmlview.h \
@@ -27,7 +28,6 @@ libliui_a_SOURCES = \
 	ui_dnd.c ui_dnd.h \
 	ui_feedlist.c ui_feedlist.h \
 	ui_folder.c ui_folder.h \
-	ui_itemlist.c ui_itemlist.h \
 	ui_node.c ui_node.h \
 	ui_popup.c ui_popup.h \
 	ui_prefs.c ui_prefs.h \

@@ -38,10 +38,10 @@
 #include "itemlist.h"
 #include "social.h"
 #include "ui/enclosure_list_view.h"
+#include "ui/item_list_view.h"
 #include "ui/liferea_dialog.h"
 #include "ui/liferea_shell.h"
 #include "ui/ui_common.h"
-#include "ui/ui_itemlist.h"
 #include "ui/ui_tray.h"
 #include "notification/notification.h"
 

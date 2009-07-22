@@ -1,7 +1,7 @@
 /**
  * @file itemlist.c  itemlist handling
  *
- * Copyright (C) 2004-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2009 Lars Lindner <lars.lindner@gmail.com>
  *	      
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,10 +37,10 @@
 #include "rule.h"
 #include "script.h"
 #include "vfolder.h"
+#include "ui/item_list_view.h"
 #include "ui/itemview.h"
 #include "ui/liferea_shell.h"
 #include "ui/ui_feedlist.h"
-#include "ui/ui_itemlist.h"
 #include "ui/liferea_htmlview.h"
 #include "ui/ui_node.h"
 

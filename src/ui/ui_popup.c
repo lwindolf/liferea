@@ -35,10 +35,10 @@
 #include "social.h"
 #include "vfolder.h"
 #include "ui/enclosure_list_view.h"
+#include "ui/item_list_view.h"
+#include "ui/itemview.h"
 #include "ui/liferea_shell.h"
 #include "ui/ui_feedlist.h"
-#include "ui/ui_itemlist.h"
-#include "ui/itemview.h"
 #include "ui/ui_prefs.h"
 #include "fl_sources/node_source.h"
 

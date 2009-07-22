@@ -1,5 +1,5 @@
 /**
- * @file ui_itemlist.h  presenting items in a GtkTreeView
+ * @file item_list_view.h  presenting items in a GtkTreeView
  *
  * Copyright (C) 2004-2009 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
@@ -20,8 +20,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef _UI_ITEMLIST_H
-#define _UI_ITEMLIST_H
+#ifndef _ITEM_LIST_VIEW_H
+#define _ITEM_LIST_VIEW_H
 
 #include <gtk/gtk.h>
 #include <time.h>

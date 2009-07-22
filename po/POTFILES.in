@@ -99,8 +99,8 @@ src/ui/ui_folder.c
 src/ui/ui_folder.h
 src/ui/liferea_htmlview.c
 src/ui/liferea_htmlview.h
-src/ui/ui_itemlist.c
-src/ui/ui_itemlist.h
+src/ui/item_list_view.c
+src/ui/item_list_view.h
 src/ui/liferea_shell.c
 src/ui/liferea_shell.h
 src/ui/ui_node.c

@@ -27,7 +27,7 @@
 #include "common.h"
 #include "itemlist.h"
 #include "ui/liferea_shell.h"
-#include "ui/ui_itemlist.h"
+#include "ui/item_list_view.h"
 
 /* single tab history handling */
 

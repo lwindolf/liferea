@@ -2,7 +2,7 @@
  * @file ui_shell.c  UI layout handling
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2007-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2009 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,14 +44,14 @@
 #include "ui/attention_profile_dialog.h"
 #include "ui/browser_tabs.h"
 #include "ui/itemview.h"
+#include "ui/item_list_view.h"
 #include "ui/liferea_dialog.h"
+#include "ui/search_dialog.h"
 #include "ui/ui_common.h"
 #include "ui/ui_feedlist.h"
-#include "ui/ui_itemlist.h"
 #include "ui/ui_prefs.h"
 #include "ui/ui_script.h"
 #include "ui/ui_search.h"
-#include "ui/search_dialog.h"
 #include "ui/ui_session.h"
 #include "ui/ui_tray.h"
 #include "ui/ui_update.h"

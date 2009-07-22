@@ -1,7 +1,7 @@
 /**
  * @file ui_dnd.c everything concerning DnD
  *
- * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2009 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,8 +23,8 @@
 #include "feed.h"
 #include "feedlist.h"
 #include "debug.h"
+#include "ui/item_list_view.h"
 #include "ui/ui_feedlist.h"
-#include "ui/ui_itemlist.h"
 #include "ui/ui_node.h"
 #include "ui/ui_dnd.h"
 #include "fl_sources/node_source.h"
