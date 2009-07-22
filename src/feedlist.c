@@ -201,8 +201,12 @@ feedlist_init (FeedList *fl)
 	conf_get_int_value (STARTUP_FEED_ACTION, &startup_feed_action);
 	switch (startup_feed_action) {
 		case 1: /* Update all feeds */
-			debug0 (DEBUG_UPDATE, "initial update: updating all feeds");
-			node_update_subscription (feedlist_get_root (), GUINT_TO_POINTER (0));
+			if (network_monitor_is_online ()) {
+				debug0 (DEBUG_UPDATE, "initial update: updating all feeds");		
+				node_update_subscription (feedlist_get_root (), GUINT_TO_POINTER (0));
+			} else {
+				debug0 (DEBUG_UPDATE, "initial update: prevented because we are offline");
+			}
 			break;
 		case 2:
 			debug0 (DEBUG_UPDATE, "initial update: resetting feed counter");

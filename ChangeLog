@@ -107,6 +107,8 @@
 	* Fixes Debian #537332: Infinite loop on 404 errors.
 	  (Emilio Pozuelo Monfort, reported by Vadim Peretokin
 	   and Helmut Grohne)
+	* Prevent updating all feeds on startup when offline.
+	  (Lars Lindner)
 
 	* Resurrected the Albanian, Bulgarian, Chinese/Simplified,
 	  Chinese/Traditional, Dutch, Finnish, Korean, Macedonian
