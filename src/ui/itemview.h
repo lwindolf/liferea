@@ -198,11 +198,11 @@ void itemview_set_layout (nodeViewType newMode);
 /**
  * Creates the item view singleton instance.
  *
- * @param container	parent widget
+ * @param window	parent window widget
  *
  * @returns the item view instance
  */
-ItemView * itemview_create (GtkWidget *container);
+ItemView * itemview_create (GtkWidget *window);
 
 /**
  * Returns the itemview GtkStyle. To be used by the

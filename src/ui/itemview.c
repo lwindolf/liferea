@@ -421,17 +421,18 @@ itemview_set_layout (nodeViewType newMode)
 }
 
 ItemView *
-itemview_create (GtkWidget *ilc)
+itemview_create (GtkWidget *window)
 {
 	gint zoom;
-	gchar *userDefinedDateFmt; 
+	gchar *userDefinedDateFmt;
+
 
 	/* 1. Create widgets, load preferences */
 	
 	g_object_new (ITEMVIEW_TYPE, NULL);
 	
 	itemview->priv->currentLayoutMode = NODE_VIEW_MODE_INVALID;
-	itemview->priv->itemlistContainer = ilc;
+	itemview->priv->itemlistContainer = ui_itemlist_new (window);
 	itemview->priv->itemlist = GTK_TREE_VIEW (gtk_bin_get_child (GTK_BIN (itemview->priv->itemlistContainer)));
 	conf_get_int_value (LAST_ZOOMLEVEL, &zoom);
 	itemview->priv->zoom = zoom;

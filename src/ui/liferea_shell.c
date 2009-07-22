@@ -1219,7 +1219,7 @@ liferea_shell_create (int initialState)
 	
 	debug0 (DEBUG_GUI, "Setting up item view");
 
-	shell->priv->itemview = itemview_create (ui_itemlist_new (GTK_WIDGET (shell->priv->window)));
+	shell->priv->itemview = itemview_create (GTK_WIDGET (shell->priv->window));
 	
 	/* 8.) load icons as required */
 	
