@@ -50,15 +50,16 @@ struct ItemViewPrivate {
 	gchar 		*userDefinedDateFmt;	/**< user defined date formatting string */
 	gboolean	needsHTMLViewUpdate;	/**< flag to be set when HTML rendering is to be 
 						     updated, used to delay HTML updates */
+	gboolean	hasEnclosures;		/**< TRUE if at least one item of the current itemset has an enclosure */
 						     
 	nodeViewType	viewMode;		/**< current viewing mode */
 	guint		currentLayoutMode;	/**< layout mode (3 pane, 2 pane, wide view) */
 								     
-	GtkWidget	*itemlistContainer;	/**< scrolled window holding item list tree view */
-	GtkTreeView	*itemlist;		
+	GtkWidget	*itemListViewContainer;	/**< scrolled window holding item list tree view */
+	ItemListView	*itemListView;		/**< widget instance used to present items in list mode */
 
 	EnclosureListView	*enclosureView;	/**< Enclosure list widget */
-	LifereaHtmlView		*htmlview;	/**< HTML rendering widget used for item display */
+	LifereaHtmlView		*htmlview;	/**< HTML rendering widget instance used to render single items and summaries mode */
 
 	gfloat			zoom;		/**< HTML rendering widget zoom level */
 };
@@ -130,10 +131,10 @@ itemview_class_init (ItemViewClass *klass)
 void
 itemview_clear (void) 
 {
-	ui_itemlist_clear ();
+	item_list_view_clear (itemview->priv->itemListView);
 	htmlview_clear ();
 	enclosure_list_view_hide (itemview->priv->enclosureView);
-	
+	itemview->priv->hasEnclosures = FALSE;
 	itemview->priv->needsHTMLViewUpdate = TRUE;
 }
 
@@ -154,24 +155,21 @@ itemview_set_displayed_node (nodePtr node)
 		
 	itemview->priv->node = node;
 
-	/* 1. Perform UI item list preparations ... */
-
-	/* Disable attachment icon column (will be enabled when loading first item with an enclosure) */
-	ui_itemlist_enable_encicon_column (FALSE);
-
-	/* 2. Reset view state */
+	/* 1. Reset view state */
 	itemview_clear ();
 
-	/* 3. And prepare HTML view */
+	/* 2. And prepare HTML view */
 	htmlview_set_displayed_node (node);
 }
 
 void
 itemview_add_item (itemPtr item)
 {
+	itemview->priv->hasEnclosures |= item->hasEnclosure;
+
 	if (ITEMVIEW_ALL_ITEMS != itemview->priv->mode)
 		/* add item in 3 pane mode */
-		ui_itemlist_add_item (item);
+		item_list_view_add_item (itemview->priv->itemListView, item);
 	else
 		/* force HTML update in 2 pane mode */
 		itemview->priv->needsHTMLViewUpdate = TRUE;
@@ -182,12 +180,12 @@ itemview_add_item (itemPtr item)
 void
 itemview_remove_item (itemPtr item)
 {
-	if (!ui_itemlist_contains_item (item->id))
+	if (!item_list_view_contains_id (itemview->priv->itemListView, item->id))
 		return;
 
 	if (ITEMVIEW_ALL_ITEMS != itemview->priv->mode)
 		/* remove item in 3 pane mode */
-		ui_itemlist_remove_item (item);
+		item_list_view_remove_item (itemview->priv->itemListView, item);
 	else
 		/* force HTML update in 2 pane mode */
 		itemview->priv->needsHTMLViewUpdate = TRUE;
@@ -202,7 +200,7 @@ itemview_select_item (itemPtr item)
 		
 	ivp->needsHTMLViewUpdate = TRUE;
 	
-	ui_itemlist_select (item);
+	item_list_view_select (ivp->itemListView, item);
 	htmlview_select_item (item);
 
 	if (item)
@@ -216,13 +214,13 @@ itemview_update_item (itemPtr item)
 {
 	/* Always update the GtkTreeView (bail-out done in ui_itemlist_update_item() */
 	if (ITEMVIEW_ALL_ITEMS != itemview->priv->mode)
-		ui_itemlist_update_item (item);
+		item_list_view_update_item (itemview->priv->itemListView, item);
 
 	/* Bail out if no HTML update necessary */
 	switch (itemview->priv->mode) {
 		case ITEMVIEW_ALL_ITEMS:
 			/* No HTML update needed if 2 pane mode and item not in item set */
-			if (!ui_itemlist_contains_item (item->id))
+			if (!item_list_view_contains_id (itemview->priv->itemListView, item->id))
 				return;
 			break;
 		case ITEMVIEW_SINGLE_ITEM:		
@@ -245,7 +243,7 @@ itemview_update_all_items (void)
 {
 	/* Always update the GtkTreeView (bail-out done in ui_itemlist_update_item() */
 	if (ITEMVIEW_ALL_ITEMS != itemview->priv->mode)
-		ui_itemlist_update_all_items ();
+		item_list_view_update_all_items (itemview->priv->itemListView);
 		
 	itemview->priv->needsHTMLViewUpdate = TRUE;
 	htmlview_update_all_items ();
@@ -270,11 +268,11 @@ itemview_update_node_info (nodePtr node)
 void
 itemview_update (void)
 {
-	ui_itemlist_update ();
+	item_list_view_update (itemview->priv->itemListView, itemview->priv->hasEnclosures);
 	
 	if (itemview->priv->node) {
-		ui_itemlist_enable_favicon_column (NODE_TYPE (itemview->priv->node)->capabilities & NODE_CAPABILITY_SHOW_ITEM_FAVICONS);
-		ui_itemlist_set_sort_column (itemview->priv->node->sortColumn, itemview->priv->node->sortReversed);
+		item_list_view_enable_favicon_column (itemview->priv->itemListView, NODE_TYPE (itemview->priv->node)->capabilities & NODE_CAPABILITY_SHOW_ITEM_FAVICONS);
+		item_list_view_set_sort_column (itemview->priv->itemListView, itemview->priv->node->sortColumn, itemview->priv->node->sortReversed);
 	}
 	
 	if (itemview->priv->needsHTMLViewUpdate) {
@@ -299,6 +297,28 @@ itemview_format_date (time_t date)
 	return common_format_date (date, itemview->priv->userDefinedDateFmt);
 }
 
+/* next unread selection logic */
+
+itemPtr
+itemview_find_unread_item (gulong startId) 
+{
+	itemPtr	result = NULL;
+	
+	/* Note: to select in sorting order we need to do it in the ItemListView
+	   otherwise we would have to sort the item list here... */
+
+	/* First do a scan from the start position (usually the selected 
+	   item to the end of the sorted item list) if one is given. */	
+	if (startId)
+		result = item_list_view_find_unread_item (itemview->priv->itemListView, startId);
+	
+	/* Now perform a wrap around by searching again from the top */
+	if (!result)
+		result = item_list_view_find_unread_item (itemview->priv->itemListView, 0);
+
+	return result;
+}
+
 void
 itemview_scroll (void)
 {
@@ -314,13 +334,13 @@ itemview_scroll (void)
 void
 itemview_move_cursor (int step)
 {
-	ui_common_treeview_move_cursor (itemview->priv->itemlist, step);
+	ui_common_treeview_move_cursor (item_list_view_get_widget (itemview->priv->itemListView), step);
 }
 
 void
 itemview_move_cursor_to_first (void)
 {
-	ui_common_treeview_move_cursor_to_first (itemview->priv->itemlist);
+	ui_common_treeview_move_cursor_to_first (item_list_view_get_widget (itemview->priv->itemListView));
 }
 
 static void
@@ -402,7 +422,7 @@ itemview_set_layout (nodeViewType newMode)
 	gtk_notebook_set_current_page (GTK_NOTEBOOK (liferea_shell_lookup ("itemtabs")), newMode);
 	gtk_widget_reparent (liferea_htmlview_get_widget (ivp->htmlview), liferea_shell_lookup (htmlWidgetName));
 	if (ilWidgetName)
-		gtk_widget_reparent (GTK_WIDGET (ivp->itemlistContainer), liferea_shell_lookup (ilWidgetName));
+		gtk_widget_reparent (GTK_WIDGET (ivp->itemListViewContainer), liferea_shell_lookup (ilWidgetName));
 	
 	/* Destroy previous enclosure list. */
 	if (ivp->enclosureView) {
@@ -432,8 +452,8 @@ itemview_create (GtkWidget *window)
 	g_object_new (ITEMVIEW_TYPE, NULL);
 	
 	itemview->priv->currentLayoutMode = NODE_VIEW_MODE_INVALID;
-	itemview->priv->itemlistContainer = ui_itemlist_new (window);
-	itemview->priv->itemlist = GTK_TREE_VIEW (gtk_bin_get_child (GTK_BIN (itemview->priv->itemlistContainer)));
+	itemview->priv->itemListView = item_list_view_create (window);
+	itemview->priv->itemListViewContainer = gtk_widget_get_parent (GTK_WIDGET (item_list_view_get_widget (itemview->priv->itemListView)));
 	conf_get_int_value (LAST_ZOOMLEVEL, &zoom);
 	itemview->priv->zoom = zoom;
 	conf_get_str_value (DATE_FORMAT, &userDefinedDateFmt);
@@ -441,7 +461,7 @@ itemview_create (GtkWidget *window)
 
 	/* initially we pack the item list in the normal view pane,
 	   which is later changed in itemview_set_layout() */
-	gtk_container_add (GTK_CONTAINER (liferea_shell_lookup ("normalViewItems")), itemview->priv->itemlistContainer);
+	gtk_container_add (GTK_CONTAINER (liferea_shell_lookup ("normalViewItems")), itemview->priv->itemListViewContainer);
 
 	/* 2. Sanity checks on the settings... */
 	

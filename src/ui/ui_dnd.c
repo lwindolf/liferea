@@ -191,7 +191,8 @@ ui_dnd_feed_drag_data_received (GtkTreeDragDest *drag_dest, GtkTreePath *dest, G
 			node_update_counters (newParent);
 			
 			feedlist_schedule_save ();
-			ui_itemlist_prefocus ();
+			//ui_itemlist_prefocus ();
+			g_warning("FIXME: item list prefocus!");
 		}
 	}
 						      

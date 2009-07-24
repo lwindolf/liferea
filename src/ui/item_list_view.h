@@ -23,98 +23,147 @@
 #ifndef _ITEM_LIST_VIEW_H
 #define _ITEM_LIST_VIEW_H
 
+#include <glib-object.h>
+#include <glib.h>
 #include <gtk/gtk.h>
-#include <time.h>
 
 #include "item.h"
 #include "node_view.h"
 
+/* This class realizes an GtkTreeView based item view. Instances
+   of ItemListView are managed by the ItemListView. This class hides
+   the GtkTreeView and implements performance optimizations. */
+
+G_BEGIN_DECLS
+
+#define ITEM_LIST_VIEW_TYPE		(item_list_view_get_type ())
+#define ITEM_LIST_VIEW(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), ITEM_LIST_VIEW_TYPE, ItemListView))
+#define ITEM_LIST_VIEW_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), ITEM_LIST_VIEW_TYPE, ItemListViewClass))
+#define IS_ITEM_LIST_VIEW(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), ITEM_LIST_VIEW_TYPE))
+#define IS_ITEM_LIST_VIEW_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), ITEM_LIST_VIEW_TYPE))
+
+typedef struct ItemListView		ItemListView;
+typedef struct ItemListViewClass	ItemListViewClass;
+typedef struct ItemListViewPrivate	ItemListViewPrivate;
+
+struct ItemListView
+{
+	GObject		parent;
+	
+	/*< private >*/
+	ItemListViewPrivate	*priv;
+};
+
+struct ItemListViewClass 
+{
+	GObjectClass parent_class;	
+};
+
+GType item_list_view_get_type (void);
+
 /**
- * Initializes the itemlist. For example, it creates the various
- * columns and renderers needed to show the list.
+ * Create a new ItemListView instance.
+ *
+ * @param window	parent window widget
  */
-GtkWidget* ui_itemlist_new (GtkWidget *mainwindow);
+ItemListView * item_list_view_create (GtkWidget *window);
 
 // FIXME: use GObject
 void ui_itemlist_destroy (void);
 
 /**
- * Checks wether the given id is currently displayed.
+ * Returns the GtkTreeView used by the ItemListView instance.
  *
+ * @returns a GtkTreeView
+ */
+GtkTreeView * item_list_view_get_widget (ItemListView *ilv);
+
+/**
+ * Checks wether the given id is in the ItemListView.
+ *
+ * @param ilv	the ItemListView
  * @param id	the item id
  *
- * @returns TRUE if the item is in the tree view 
+ * @returns TRUE if the item is in the ItemListView
  */
-gboolean ui_itemlist_contains_item (gulong id);
+gboolean item_list_view_contains_id (ItemListView *ilv, gulong id);
 
 /**
  * Changes the sorting type (and direction).
  *
+ * @param ilv		the ItemListView
  * @param sortType	new sort type
  * @param sortReversed	TRUE for ascending order
  */
-void ui_itemlist_set_sort_column (nodeViewSortType sortType, gboolean sortReversed);
+void item_list_view_set_sort_column (ItemListView *ilv, nodeViewSortType sortType, gboolean sortReversed);
 
 /**
- * Unselect all items in the list and scroll to top. This is typically
- * called when changing feed.
- */
-void ui_itemlist_prefocus (void);
-
-/**
- * Selects the given item (if it is in the current item list).
+ * Unselect all items in the ItemListView and scroll to top. This 
+ * is typically called when changing feed.
  *
+ * @param ilv	the ItemListView
+ */
+void item_list_view_prefocus (ItemListView *ilv);
+
+/**
+ * Selects the given item (if it is in the ItemListView).
+ *
+ * @param ilv	the ItemListView
  * @param item	the item to select
  */
-void ui_itemlist_select (itemPtr item);
+void item_list_view_select (ItemListView *ilv, itemPtr item);
 
 /**
- * Add an item to the itemlist. This method is expensive and
+ * Add an item to an ItemListView. This method is expensive and
  * is to be used only for new items that need to be inserted
  * by background updates.
  *
+ * @param ilv	the ItemListView
  * @param item	the item to add
  */
-void ui_itemlist_add_item (itemPtr item);
+void item_list_view_add_item (ItemListView *ilv, itemPtr item);
 
 /**
- * Remove an item from the itemlist. This method is expensive
+ * Remove an item from an ItemListView. This method is expensive
  * and is to be used only for items removed by background updates
  * (usually cache drops).
  *
+ * @param ilv	the ItemListView
  * @param item	the item to remove
  */
-void ui_itemlist_remove_item (itemPtr item);
+void item_list_view_remove_item (ItemListView *ilv, itemPtr item);
 
 /**
  * Enable the favicon column of the currently displayed itemlist.
  *
+ * @param ilv		the ItemListView
  * @param enabled	TRUE if column is to be visible
  */
-void ui_itemlist_enable_favicon_column (gboolean enabled);
+void item_list_view_enable_favicon_column (ItemListView *ilv, gboolean enabled);
 
 /**
- * Enable the enclosure column of the currently displayed itemlist
+ * Remove all items and resets a ItemListView.
  *
- * @param enabled	TRUE if column is to be visible
+ * @param ilv	the ItemListView
  */
-void ui_itemlist_enable_encicon_column (gboolean enabled);
+void item_list_view_clear (ItemListView *ilv);
 
 /**
- * Remove the items from the itemlist.
+ * Update the ItemListView with the newly added items. To be called
+ * after doing a batch of item_list_view_add_item() calls.
+ *
+ * @param ilv	the ItemListView
+ * @param hasEnclosures	TRUE if at least one item has an enclosure
  */
-void ui_itemlist_clear (void);
-
-/**
- * Update the item list GtkTreeView with the newly added items.
- */
-void ui_itemlist_update (void);
+void item_list_view_update (ItemListView *ilv, gboolean hasEnclosures);
 
 /**
  * When switching tabs, the horizontal scrolling sometimes gets messed
  * up. This reverses that.
+ *
+ * @param ilv	the ItemListView
  */
-void ui_itemlist_scroll_left (void);
+void item_list_view_scroll_left (ItemListView *ilv);
 
 /* item list callbacks */
 
@@ -190,14 +239,14 @@ void on_popup_remove_selected (void);
 
 /**
  * Finds and selects the next unread item starting at the given
- * item in the current item list according to the current 
- * GtkTreeView sorting order.
+ * item in a ItemListView according to the current GtkTreeView sorting order.
  *
+ * @param ilv		the ItemListView
  * @param startId	0 or the item id to start from
  *
- * @returns item if an unread item was found
+ * @returns unread item (or NULL)
  */
-itemPtr ui_itemlist_find_unread_item (gulong startId);
+itemPtr item_list_view_find_unread_item (ItemListView *ilv, gulong startId);
 
 /**
  * Searches the displayed feed and then all feeds for an unread
@@ -213,16 +262,20 @@ void on_popup_next_unread_item_selected(gpointer callback_data, guint callback_a
 void on_nextbtn_clicked(GtkButton *button, gpointer user_data);
 
 /**
- * Update a single item of the currently displayed item list.
+ * Update a single item of a ItemListView
  *
+ * @param ilv	the ItemListView
  * @param item	the item
  */
-void ui_itemlist_update_item (itemPtr item);
+void item_list_view_update_item (ItemListView *ilv, itemPtr item);
 
 /**
- * Update all items of the currently displayed item list.
+ * Update all items of the ItemListView. To be used after 
+ * initial batch loading.
+ *
+ * @param ilv	the ItemListView
  */
-void ui_itemlist_update_all_items (void);
+void item_list_view_update_all_items (ItemListView *ilv);
 
 // FIXME: the following two functions have nothing to do with the "item list"!
 

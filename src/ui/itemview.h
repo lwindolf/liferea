@@ -167,7 +167,16 @@ void itemview_display_info (const gchar *html);
  *
  * @returns newly allocated date string
  */
-gchar *	itemview_format_date(time_t date);
+gchar *	itemview_format_date (time_t date);
+
+/**
+ * Finds the next unread item.
+ *
+ * @param startId	the item id to start at (or NULL for starting at the top)
+ *
+ * @results the item found (or NULL)
+ */
+itemPtr itemview_find_unread_item (gulong startId);
 
 /**
  * Paging/skimming the item view. If possible scrolls

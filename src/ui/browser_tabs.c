@@ -147,7 +147,8 @@ on_tab_switched (GtkNotebook *notebook, GtkNotebookPage *page, guint page_num, g
 	/* needed because switching does sometimes returns to the tree 
 	   view with a very disturbing horizontal scrolling state */
 	if (0 == page_num)
-		ui_itemlist_scroll_left ();
+		g_warning ("FIXME: on_tab_switched");
+		//item_list_view_scroll_left (FIXME);
 }
 
 static void

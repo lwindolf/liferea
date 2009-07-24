@@ -56,7 +56,6 @@ static struct itemlist_priv
 	GSList	 	*filter;		/**< currently active filter rule */
 	nodePtr		currentNode;		/**< the node whose own or its child items are currently displayed */
 	gulong		selectedId;		/**< the currently selected (and displayed) item id */
-	gboolean	hasEnclosures;		/**< TRUE if at least one item of the current itemset has an enclosure */
 	
 	nodeViewType	viewMode;		/**< current viewing mode */
 	guint 		loading;		/**< if >0 prevents selection effects when loading the item list */
@@ -124,8 +123,6 @@ itemlist_duplicate_list_free (void)
 void
 itemlist_free (void)
 {
-	ui_itemlist_destroy (); 
-	
 	itemlist_filter_free ();
 	itemlist_duplicate_list_free ();
 }
@@ -214,7 +211,6 @@ itemlist_merge_item (itemPtr item)
 	if (!itemlist_filter_check_item (item))
 		return;
 		
-	itemlist_priv.hasEnclosures |= item->hasEnclosure;
 	itemlist_duplicate_list_add_item (item);
 	itemview_add_item (item);
 }
@@ -263,9 +259,6 @@ itemlist_merge_itemset (itemSetPtr itemSet)
 	/* merge items into item view */
 	itemset_foreach (itemSet, itemlist_merge_item);
 	
-	if (itemlist_priv.hasEnclosures)
-		ui_itemlist_enable_encicon_column (TRUE);
-
 	itemview_update ();
 	
 	debug_end_measurement (DEBUG_GUI, "itemlist merge");
@@ -303,7 +296,6 @@ itemlist_load (nodePtr node)
 
 	g_assert (!itemlist_priv.guids);
 	g_assert (!itemlist_priv.filter);
-	itemlist_priv.hasEnclosures = FALSE;
 	itemlist_priv.isSearchResult = FALSE;
 
 	/* 1. Filter check. Don't continue if folder is selected and 
@@ -369,33 +361,6 @@ itemlist_unload (gboolean markRead)
 	itemlist_priv.currentNode = NULL;
 }
 
-/* next unread selection logic */
-
-static itemPtr
-itemlist_find_unread_item (void) 
-{
-	itemPtr	result = NULL;
-	
-	if (!itemlist_priv.currentNode)
-		return NULL;
-
-	if (itemlist_priv.currentNode->children) {
-		feedlist_find_unread_feed (itemlist_priv.currentNode);
-		return NULL;
-	}
-
-	/* Note: to select in sorting order we need to do it in the GUI code
-	   otherwise we would have to sort the item list here... */
-	
-	if (itemlist_priv.selectedId)
-		result = ui_itemlist_find_unread_item (itemlist_priv.selectedId);
-	
-	if (!result)
-		result = ui_itemlist_find_unread_item (0);
-
-	return result;
-}
-
 void
 itemlist_select_next_unread (void) 
 {
@@ -413,7 +378,7 @@ itemlist_select_next_unread (void)
 
 	/* before scanning the feed list, we test if there is a unread 
 	   item in the currently selected feed! */
-	result = itemlist_find_unread_item ();
+	result = itemview_find_unread_item (itemlist_priv.selectedId);
 	
 	/* If none is found we continue searching in the feed list */
 	if (!result) {
@@ -426,7 +391,7 @@ itemlist_select_next_unread (void)
 			ui_feedlist_select (node);
 
 			if (NODE_VIEW_MODE_COMBINED != node_get_view_mode (node))
-				result = itemlist_find_unread_item ();	/* find first unread item */
+				result = itemview_find_unread_item (0);	/* find first unread item */
 		} else {
 			/* if we don't find a feed with unread items do nothing */
 			liferea_shell_set_status_bar (_("There are no unread items "));
@@ -665,10 +630,8 @@ itemlist_set_view_mode (guint newMode)
 		/* If there was an item selected, select it again since
 		 * itemlist_unload() unselects it.
 		 */
-		if (item && itemlist_priv.viewMode != NODE_VIEW_MODE_COMBINED) {
-			ui_itemlist_add_item (item);
-			ui_itemlist_select (item);
-		}
+		if (item && itemlist_priv.viewMode != NODE_VIEW_MODE_COMBINED)
+			itemview_select_item (item);
 	}
 
 	if (item)

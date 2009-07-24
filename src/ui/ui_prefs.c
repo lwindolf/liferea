@@ -267,15 +267,6 @@ on_folderhidereadbtn_toggled (GtkToggleButton *togglebutton, gpointer user_data)
 	if (displayedNode && IS_FOLDER (displayedNode)) {
 		itemlist_unload (FALSE);
 		itemlist_load (displayedNode);
-
-		/* After the itemlist is reloaded, no item is selected,
-		 * so we manually select the old one.
-		 */
-		if (displayedItem) {
-			ui_itemlist_add_item (displayedItem);
-			ui_itemlist_select (displayedItem);
-			item_unload (displayedItem);
-		}
 	}
 }
 
