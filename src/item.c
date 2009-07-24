@@ -87,57 +87,11 @@ item_set_title (itemPtr item, const gchar * title)
 	item->title = g_strstrip (g_strdelimit (g_strdup (title), "\r\n", ' '));
 }
 
-/**
- * The current item content merging implementation is purely size based.
- * We expect all texts to be UTF-8 more or less (but equally) HTML encoded
- * which can simply be length-compared. The longer the text the more
- * interesting content...
- */
 void
 item_set_description (itemPtr item, const gchar *description)
 {
-	gboolean	overwrite = FALSE;
-	gboolean	isHTML = FALSE;
-	
-	if (!description)
-		return;
-	
-	if (item->description) {
-		if (strlen (description) > strlen (item->description))
-			overwrite = TRUE;
-	} else {
-		/* no description yet */
-		overwrite = TRUE;
-	}
-	
-	if (!overwrite)
-		return;
-
 	g_free (item->description);
-	
-	/* We have the old text vs. HTML problem here. Many feed generators
-	   provide plain text with line breaks making everything unreadable
-	   when presented as HTML. So we do some simply HTML detection and
-	   if it fails we replace all line breaks with <br/> */
-
-	// FIXME: doesn't even work because XHTML conversion already
-	// added <div><p></p></div> wrapping...
-		   
-	// FIXME: find a better detector solution! XPath?
-	if (strstr (description, "<b>"))
-		isHTML = TRUE;
-	else if (strstr (description, "<i>"))
-		isHTML = TRUE;
-//	else if (strstr (description, "<p>"))
-//		isHTML = TRUE;
-	else if (strstr (description, "<a href="))
-		isHTML = TRUE;
-	else if (strstr (description, "</a>"))
-		isHTML = TRUE;
-		
 	item->description = g_strdup (description);
-	if (!isHTML)
-		item->description = common_strreplace (item->description, "\n", "<br/>");
 }
 
 void
