@@ -93,6 +93,9 @@
 	* SF #3203121: Add support for NM 0.9 (patch by Dan Williams)
 	* SF #3019505: Fixed drag and drop in the feed list.
 	  (Emilio Pozuelo Monfort)
+	* Fixes Debian #538250: Revert item_set_description() to the
+	  1.4 code since the HTML detection created too many false
+	  negatives. (Adrian Bunk, reported by Wouter Verhelst)
 
 	* Added Asturian translation. (Marquinos)
 	* Added Danish translation. (Joe Hansen)
