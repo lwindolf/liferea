@@ -110,6 +110,8 @@ itemview_finalize (GObject *object)
 	
 	if (priv->enclosureView)
 		g_object_unref (priv->enclosureView);
+	if (priv->itemListView)
+		g_object_unref (priv->itemListView);
 		
 	g_free (priv->userDefinedDateFmt);
 

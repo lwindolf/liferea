@@ -119,7 +119,9 @@ item_list_view_finalize (GObject *object)
 	ItemListViewPrivate *priv = ITEM_LIST_VIEW_GET_PRIVATE (object);
 
 	if (priv->item_id_to_iter)
-		g_object_unref (priv->item_id_to_iter);
+		g_hash_table_destroy (priv->item_id_to_iter);
+	if (priv->batch_itemstore)
+		g_object_unref (priv->batch_itemstore);
 
 	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -485,12 +487,6 @@ item_list_view_create (GtkWidget *window)
 		  
 	return ilv;
 }
-
-/*
-	FIXME: write destructor
-
-	g_hash_table_destroy (item_id_to_iter);
-*/
 
 /* typically called when filling the item tree view */
 void 
