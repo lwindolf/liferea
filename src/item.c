@@ -90,6 +90,13 @@ item_set_title (itemPtr item, const gchar * title)
 void
 item_set_description (itemPtr item, const gchar *description)
 {
+	if (!description)
+		return;
+
+	if (item->description)
+		if (!(strlen (description) > strlen (item->description)))
+			return;
+
 	g_free (item->description);
 	item->description = g_strdup (description);
 }
