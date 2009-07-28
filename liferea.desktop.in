@@ -1,5 +1,5 @@
 [Desktop Entry]
-_Name=Liferea Feed Reader
+_Name=Liferea
 _GenericName=Feed Reader
 _Comment=Download and view feeds
 Exec=liferea
