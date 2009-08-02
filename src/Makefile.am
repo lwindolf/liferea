@@ -75,9 +75,11 @@ liferea_LDADD =	parsers/libliparsers.a \
 
 if WITH_DBUS
 
-EXTRA_DIST = $(srcdir)/liferea_dbus.xml
+EXTRA_DIST = $(srcdir)/liferea_dbus.xml \
+		$(srcdir)/liferea-add-feed.in
 BUILT_SOURCES = dbus_wrap.c
-CLEANFILES = $(BUILT_SOURCES)
+CLEANFILES = $(BUILT_SOURCES) \
+		$(srcdir)/liferea-add-feed
 
 dbus_wrap.c: $(srcdir)/liferea_dbus.xml
 	dbus-binding-tool --mode=glib-server --prefix=liferea_dbus $(srcdir)/liferea_dbus.xml > dbus_wrap.c

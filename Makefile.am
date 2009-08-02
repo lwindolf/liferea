@@ -20,7 +20,6 @@ dtd_DATA = dtd/html.ent
 
 EXTRA_DIST = autogen.sh \
 	liferea.spec \
-	src/liferea-add-feed \
 	po/liferea.pot \
 	$(desktop_in_files) \
 	$(desktop_DATA) \

@@ -198,6 +198,7 @@ opml/Makefile
 glade/Makefile
 po/Makefile.in
 liferea.spec
+src/liferea-add-feed
 ])
 AC_OUTPUT
 
