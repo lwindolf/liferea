@@ -463,8 +463,9 @@ update_dequeue_job (gpointer user_data)
 	if (!pendingJobs)
 		return FALSE;	/* we must be in shutdown */
 		
-	if (numberOfActiveJobs >= MAX_ACTIVE_JOBS)
-		return TRUE;	/* let's continue later */
+	if (numberOfActiveJobs >= MAX_ACTIVE_JOBS) 
+		return FALSE;	/* we'll be called again when a job finishes */
+	
 
 	job = (updateJobPtr)g_async_queue_try_pop(pendingHighPrioJobs);
 
@@ -472,7 +473,7 @@ update_dequeue_job (gpointer user_data)
 		job = (updateJobPtr)g_async_queue_try_pop(pendingJobs);
 
 	if(!job)
-		return TRUE;	/* no request at the moment */
+		return FALSE;	/* no request at the moment */
 
 	numberOfActiveJobs++;
 
@@ -485,7 +486,7 @@ update_dequeue_job (gpointer user_data)
 		update_job_run (job);
 	}
 		
-	return TRUE;
+	return TRUE; /* since I got a job now, there may be more in the queue */
 }
 
 updateJobPtr
@@ -505,7 +506,7 @@ update_execute_request (gpointer owner,
 
 	if (flags & FEED_REQ_PRIORITY_HIGH) {
 		g_async_queue_push (pendingHighPrioJobs, (gpointer)job);
-		update_dequeue_job (NULL);
+		g_idle_add (update_dequeue_job, NULL);
 	} else {
 		g_async_queue_push (pendingJobs, (gpointer)job);
 	}
@@ -559,6 +560,7 @@ update_process_finished_job (updateJobPtr job)
 		update_apply_filter (job);
 		
 	g_idle_add (update_process_result_idle_cb, job);
+	g_idle_add (update_dequeue_job, NULL);
 }
 
 
@@ -567,7 +569,6 @@ update_init (void)
 {
 	pendingJobs = g_async_queue_new ();
 	pendingHighPrioJobs = g_async_queue_new ();
-	g_timeout_add (500, update_dequeue_job, NULL);	
 }
 
 void
