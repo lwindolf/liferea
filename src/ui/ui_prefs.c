@@ -42,6 +42,7 @@
 #include "ui/liferea_dialog.h"
 #include "ui/liferea_shell.h"
 #include "ui/ui_common.h"
+#include "ui/itemview.h"
 #include "ui/ui_tray.h"
 #include "notification/notification.h"
 
