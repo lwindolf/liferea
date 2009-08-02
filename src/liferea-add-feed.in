@@ -15,15 +15,9 @@ fi
 
 URL=$1
 
-if ! which dbus-send >/dev/null 2>&1; then
-	echo "Unable to locate the 'dbus-send' tool."
-	echo "You need DBUS installed!"
-	exit 1
-fi
-
 if ! pgrep -x liferea >/dev/null 2>&1; then
 	echo "Liferea is not running! You need to start it first."
 	exit 1
 fi
 
-dbus-send --session --dest=org.gnome.feed.Reader /org/gnome/feed/Reader org.gnome.feed.Reader.Subscribe "string:$URL"
+@prefix@/bin/liferea --add-feed "$URL"

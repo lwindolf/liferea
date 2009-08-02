@@ -10,6 +10,8 @@
 	* Add a --add-feed option that adds a new subscription. It
 	  can also be used while Liferea is running, and it will add
 	  the feed to the running process. (Emilio Pozuelo Monfort)
+	* Let liferea-add-feed work when there is no DBus support
+	  by using --add-feed. (Emilio Pozuelo Monfort)
 
 
 2009-08-02  Adrian Bunk <bunk@users.sourceforge.net>
