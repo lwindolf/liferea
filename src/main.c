@@ -42,6 +42,7 @@
 #include "db.h"
 #include "dbus.h"
 #include "debug.h"
+#include "feedlist.h"
 #include "itemlist.h"
 #include "script.h"
 #include "social.h"
@@ -58,6 +59,11 @@ static enum {
 	STATE_SHUTDOWN
 } runState = STATE_STARTING;
 
+enum {
+	COMMAND_0 = 0, /* 0 is not a valid command */
+	COMMAND_ADD_FEED
+};
+
 static UniqueResponse
 message_received_cb (UniqueApp         *app,
 		     UniqueCommand      command,
@@ -66,6 +72,7 @@ message_received_cb (UniqueApp         *app,
 		     gpointer           user_data)
 {
 	UniqueResponse res;
+	gchar *feed;
 
 	debug1(DEBUG_GUI, "libunique command received >>>%d<<<", command);
 
@@ -77,11 +84,18 @@ message_received_cb (UniqueApp         *app,
 			liferea_shell_present ();
 			res = UNIQUE_RESPONSE_OK;
 			break;
+		case COMMAND_ADD_FEED:
+			feed = unique_message_data_get_text (message);
+			feedlist_add_subscription (feed, NULL, NULL, 0);
+
+			res = UNIQUE_RESPONSE_OK;
+			break;
 		default:
 			g_warning ("Received unknown libunique command: >>>%d<<<", command);
 			res = UNIQUE_RESPONSE_OK;
 			break;
 	}
+
 	return res;
 }
 
@@ -161,12 +175,14 @@ int
 main (int argc, char *argv[])
 {
 	UniqueApp	*app;
+	UniqueMessageData	*msg;
 	GError		*error = NULL;
 	GOptionContext	*context;
 	GOptionGroup	*debug;
 	gulong		debug_flags = 0;
 	LifereaDBus	*dbus = NULL;
 	const gchar	*initial_state = "shown";
+	gchar		*feed = NULL;
 	int		initialState;
 	gboolean	show_tray_icon, start_in_tray;
 
@@ -180,6 +196,7 @@ main (int argc, char *argv[])
 		{ "session", 0, G_OPTION_FLAG_HIDDEN, G_OPTION_ARG_STRING, &opt_session_arg, NULL, NULL },
 #endif
 		{ "version", 'v', G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, show_version, N_("Show version information and exit"), NULL },
+		{ "add-feed", 'a', 0, G_OPTION_ARG_STRING, &feed, N_("Add a new subscription"), N_("uri") },
 		{ NULL }
 	};
 
@@ -245,10 +262,17 @@ main (int argc, char *argv[])
 	gtk_init (&argc, &argv);
 
 	/* Single instance checks */
-	app = unique_app_new ("net.sourceforge.liferea", NULL);
+	app = unique_app_new_with_commands ("net.sourceforge.liferea", NULL,
+					    "add_feed", COMMAND_ADD_FEED,
+					    NULL);
 	if (unique_app_is_running (app)) {
 		g_print ("Liferea is already running\n");
 		unique_app_send_message (app, UNIQUE_ACTIVATE, NULL);
+		if (feed) {
+			msg = unique_message_data_new ();
+			unique_message_data_set_text (msg, feed, -1);
+			unique_app_send_message (app, COMMAND_ADD_FEED, msg);
+		}
 		return 1;
 	} else {
 		g_signal_connect (app, "message-received", G_CALLBACK (message_received_cb), NULL);
@@ -332,7 +356,10 @@ main (int argc, char *argv[])
 	runState = STATE_STARTING;
 	
 	debug_end_measurement (DEBUG_DB, "startup");
-	
+
+	if (feed)
+		feedlist_add_subscription (feed, NULL, NULL, 0);
+
 	gtk_main ();
 	
 	g_object_unref (G_OBJECT (dbus));

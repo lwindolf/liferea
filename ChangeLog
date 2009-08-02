@@ -7,6 +7,9 @@
 	  (Emilio Pozuelo Monfort)
 	* Fixes a crash when adding subscriptions that needs feed
 	  auto discovery. (Arnold Noronha)
+	* Add a --add-feed option that adds a new subscription. It
+	  can also be used while Liferea is running, and it will add
+	  the feed to the running process. (Emilio Pozuelo Monfort)
 
 
 2009-08-02  Adrian Bunk <bunk@users.sourceforge.net>
