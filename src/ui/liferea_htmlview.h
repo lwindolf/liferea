@@ -110,7 +110,7 @@ void liferea_htmlview_location_changed (LifereaHtmlView *htmlview, const gchar *
 /**
  * Launches the specified URL in the external browser or handles
  * a special URL by triggering HTML generation. Otherwise returns
- * TRUE to indicate the HTML widget should launch the link.
+ * FALSE to indicate the HTML widget should launch the link.
  *
  * To enforce a launching behaviour do use
  *
@@ -125,7 +125,7 @@ void liferea_htmlview_location_changed (LifereaHtmlView *htmlview, const gchar *
  * @param htmlview	the HTML view to use
  * @param url		URL to launch
  *
- * @returns TRUE if link is to be launched by browser widget
+ * @returns FALSE if link is to be launched by browser widget
  */
 gboolean liferea_htmlview_handle_URL (LifereaHtmlView *htmlview, const gchar *url);
 
