@@ -9,7 +9,6 @@
 #include "../subscription.h"
 
 #include "../ui/ui_feedlist.h"
-#include "../ui/item_list_view.h"
 #include "../ui/ui_node.h"
 %}
  
@@ -26,5 +25,4 @@
 %include "../subscription.h"
 
 %include "../ui/ui_feedlist.h"
-%include "../ui/item_list_view.h"
 %include "../ui/ui_node.h"
