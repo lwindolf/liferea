@@ -5,6 +5,8 @@
 	* Re-fix item being unselected when opening preferences for
 	  the first time, or when (un)hiding read items from folders.
 	  (Emilio Pozuelo Monfort)
+	* Fixes a crash when adding subscriptions that needs feed
+	  auto discovery. (Arnold Noronha)
 
 
 2009-08-02  Adrian Bunk <bunk@users.sourceforge.net>
