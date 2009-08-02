@@ -204,6 +204,7 @@ subscription_process_update_result (const struct updateResult * const result, gp
 
 	/* 1. preprocessing */
 
+	g_assert (subscription->updateJob);
 	/* update the subscription URL on permanent redirects */
 	if (result->source && !g_str_equal (result->source, subscription->updateJob->request->source)) {
 		debug2 (DEBUG_UPDATE, "The URL of \"%s\" has changed permanently and was updated with \"%s\"", node_get_title(node), result->source);
@@ -226,6 +227,8 @@ subscription_process_update_result (const struct updateResult * const result, gp
 
 	subscription_update_error_status (subscription, result->httpstatus, result->returncode, result->filterErrors);
 
+	subscription->updateJob = NULL;
+
 	/* 2. call subscription type specific processing */
 	if (processing)
 		SUBSCRIPTION_TYPE (subscription)->process_update_result (subscription, result, flags);
@@ -237,7 +240,6 @@ subscription_process_update_result (const struct updateResult * const result, gp
 		subscription_update_favicon (subscription);
 	
 	/* 4. generic postprocessing */
-	subscription->updateJob = NULL;
 
 	update_state_set_lastmodified (subscription->updateState, update_state_get_lastmodified (result->updateState));
 	update_state_set_cookies (subscription->updateState, update_state_get_cookies (result->updateState));
