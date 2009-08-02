@@ -2,7 +2,9 @@
 
 	Version 1.7.1 (Unstable)
 
-	*
+	* Re-fix item being unselected when opening preferences for
+	  the first time, or when (un)hiding read items from folders.
+	  (Emilio Pozuelo Monfort)
 
 
 2009-08-02  Adrian Bunk <bunk@users.sourceforge.net>
