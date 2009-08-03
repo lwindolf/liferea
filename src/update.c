@@ -547,6 +547,7 @@ update_process_finished_job (updateJobPtr job)
 	
 	g_assert(numberOfActiveJobs > 0);
 	numberOfActiveJobs--;
+	g_idle_add (update_dequeue_job, NULL);
 
 	/* Handling abandoned requests (e.g. after feed deletion) */
 	if (job->callback == NULL) {	
@@ -560,7 +561,6 @@ update_process_finished_job (updateJobPtr job)
 		update_apply_filter (job);
 		
 	g_idle_add (update_process_result_idle_cb, job);
-	g_idle_add (update_dequeue_job, NULL);
 }
 
 
