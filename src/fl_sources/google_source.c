@@ -214,7 +214,6 @@ google_source_import (nodePtr node)
 	for (iter = node->children; iter; iter = g_slist_next(iter))
 		((nodePtr) iter->data)->subscription->type = &googleSourceFeedSubscriptionType; 
 		
-	google_source_edit_import (node->data) ;
 }
 
 static void
@@ -323,7 +322,6 @@ static void
 google_source_cleanup (nodePtr node)
 {
 	GoogleSourcePtr reader = (GoogleSourcePtr) node->data;
-	google_source_edit_export(reader);
 	google_source_free(reader);
 	node->data = NULL ;
 }

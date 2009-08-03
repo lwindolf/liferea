@@ -21,10 +21,6 @@
 #include "google_source.h"
 #include <glib.h>
 
-void google_source_edit_export (GoogleSourcePtr gsource);
-
-void google_source_edit_import (GoogleSourcePtr gsource);
-
 
 /**
  * Process the waiting edits on the edit queue. Call this if the state of

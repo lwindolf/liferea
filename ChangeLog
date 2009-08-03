@@ -15,6 +15,9 @@
 	* Changed the update queue logic which previously restricted 
 	  the number of updates to 1 per 500ms under peak loads. 
 	  (Arnold Noronha) 
+	* Removed a not-useful-enough interface to save/load
+	  GoogleSource edits to disk across Liferea sessions.
+	  (Arnold Noronha)
 
 2009-08-02  Adrian Bunk <bunk@users.sourceforge.net>
 
