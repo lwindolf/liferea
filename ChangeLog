@@ -12,7 +12,9 @@
 	  the feed to the running process. (Emilio Pozuelo Monfort)
 	* Let liferea-add-feed work when there is no DBus support
 	  by using --add-feed. (Emilio Pozuelo Monfort)
-
+	* Changed the update queue logic which previously restricted 
+	  the number of updates to 1 per 500ms under peak loads. 
+	  (Arnold Noronha) 
 
 2009-08-02  Adrian Bunk <bunk@users.sourceforge.net>
 
