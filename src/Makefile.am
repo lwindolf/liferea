@@ -78,8 +78,8 @@ if WITH_DBUS
 EXTRA_DIST = $(srcdir)/liferea_dbus.xml \
 		$(srcdir)/liferea-add-feed.in
 BUILT_SOURCES = dbus_wrap.c
-CLEANFILES = $(BUILT_SOURCES) \
-		$(srcdir)/liferea-add-feed
+CLEANFILES = $(BUILT_SOURCES)
+DISTCLEANFILES = $(srcdir)/liferea-add-feed
 
 dbus_wrap.c: $(srcdir)/liferea_dbus.xml
 	dbus-binding-tool --mode=glib-server --prefix=liferea_dbus $(srcdir)/liferea_dbus.xml > dbus_wrap.c
