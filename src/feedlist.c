@@ -156,6 +156,12 @@ feedlist_auto_update (void *data)
 	return TRUE;
 }
 
+static void
+on_network_status_changed (gpointer instance, gboolean online, gpointer data)
+{
+	if (online) feedlist_auto_update (NULL);
+}
+
 /* This method is used to initialize the node states in the feed list */
 static void
 feedlist_init_node (nodePtr node) 
@@ -219,6 +225,7 @@ feedlist_init (FeedList *fl)
 
 	/* 5. Start automatic updating */
 	feedlist->priv->autoUpdateTimer = g_timeout_add_seconds (10, feedlist_auto_update, NULL);
+	g_signal_connect (network_monitor_get (), "online-status-changed", G_CALLBACK (on_network_status_changed), NULL);
 
 	/* 6. Finally save the new feed list state */
 	feedlist->priv->loading = FALSE;
