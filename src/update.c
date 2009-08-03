@@ -506,11 +506,11 @@ update_execute_request (gpointer owner,
 
 	if (flags & FEED_REQ_PRIORITY_HIGH) {
 		g_async_queue_push (pendingHighPrioJobs, (gpointer)job);
-		g_idle_add (update_dequeue_job, NULL);
 	} else {
 		g_async_queue_push (pendingJobs, (gpointer)job);
 	}
 
+	g_idle_add (update_dequeue_job, NULL);
 	return job;
 }
 
