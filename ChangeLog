@@ -20,6 +20,9 @@
 	  (Arnold Noronha)
 	* Link directly with libgthread-2.0 and libICE,
 	  fixes linking with gold. (Adrian Bunk)
+	* Re-add grayflag.png since it is actually used.
+	  (Adrian Bunk, reported by Maik Zumstrull)
+
 
 2009-08-02  Adrian Bunk <bunk@users.sourceforge.net>
 
