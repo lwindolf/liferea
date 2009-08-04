@@ -11,7 +11,7 @@ INCLUDES = \
 if WITH_LIBNOTIFY
 
 libnotify_a_CFLAGS = $(PACKAGE_CFLAGS) $(LIBNOTIFY_CFLAGS)
-libnotify_a_SOURCES = libnotify.c notification.c
+libnotify_a_SOURCES = libnotify.c notification.c notification.h
 
 noinst_LIBRARIES = libnotify.a
 endif
