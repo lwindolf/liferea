@@ -145,8 +145,7 @@ void		item_set_source(itemPtr item, const gchar * source);
 void		item_set_id(itemPtr item, const gchar * id);
 
 /**
- * Does the opposite of item_parse_cache. Adds an XML node
- * to the given feed item list node. 
+ * Adds an XML node to the given feed item list node. 
  *
  * @param item		the item to save to cache
  * @param parentNode	the XML node to add to
