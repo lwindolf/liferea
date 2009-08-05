@@ -40,7 +40,6 @@
 #include "htmlview.h"
 #include "itemlist.h"
 #include "net_monitor.h"
-#include "notification/notification.h"
 #include "ui/attention_profile_dialog.h"
 #include "ui/browser_tabs.h"
 #include "ui/itemview.h"
