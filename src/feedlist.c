@@ -41,7 +41,6 @@
 #include "ui/ui_subscription.h"
 #include "ui/ui_tray.h"
 #include "fl_sources/node_source.h"
-#include "notification/notification.h"
 
 static void feedlist_class_init	(FeedListClass *klass);
 static void feedlist_init	(FeedList *fl);
