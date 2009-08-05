@@ -28,7 +28,8 @@
 
 notificationPluginPtr notificationPlugin = NULL;
 
-void notification_plugin_register (notificationPluginPtr plugin)
+void
+notification_plugin_register (notificationPluginPtr plugin)
 {
 	g_return_if_fail (!notificationPlugin);
 
@@ -38,6 +39,8 @@ void notification_plugin_register (notificationPluginPtr plugin)
 	g_return_if_fail ((notificationPlugin->plugin_init)());
 }
 
-void notification_node_has_new_items(nodePtr node, gboolean enforced) { 
+void
+notification_node_has_new_items(nodePtr node, gboolean enforced)
+{
 	(notificationPlugin->node_has_new_items)(node, enforced);
 }

@@ -51,10 +51,7 @@
 #include "ui/ui_session.h"
 #include "ui/liferea_shell.h"
 #include "sync/avahi_publisher.h"
-
-#ifdef HAVE_LIBNOTIFY
 #include "notification/notification.h"
-#endif
 
 static enum {
 	STATE_STARTING,
