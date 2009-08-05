@@ -40,7 +40,6 @@
 #include "fl_sources/dummy_source.h"
 #include "fl_sources/google_source.h"
 #include "fl_sources/opml_source.h"
-#include "notification/notification.h"
 
 static GSList	*nodeSourceTypes = NULL;
 
