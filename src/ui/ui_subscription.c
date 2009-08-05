@@ -298,12 +298,9 @@ on_feed_prop_filtercheck (GtkToggleButton *button,
                           gpointer user_data) 
 {
 	SubscriptionDialogPrivate *ui_data = (SubscriptionDialogPrivate *)user_data;
-	
-	gboolean filter = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(liferea_dialog_lookup(ui_data->dialog, "filterCheckbox")));
-	if(filter)
-		gtk_widget_show(liferea_dialog_lookup(ui_data->dialog, "innerfiltervbox"));
-	else
-		gtk_widget_hide(liferea_dialog_lookup(ui_data->dialog, "innerfiltervbox"));
+
+	gboolean filter = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (ui_data->dialog, "filterCheckbox")));
+	gtk_widget_set_sensitive (liferea_dialog_lookup(ui_data->dialog, "filterbox"), filter);
 }
 
 static void

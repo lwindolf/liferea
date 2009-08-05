@@ -311,7 +311,7 @@
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkHBox" id="filterbox1">
+                              <widget class="GtkHBox" id="filterbox">
                                 <property name="visible">True</property>
                                 <property name="spacing">6</property>
                                 <child>

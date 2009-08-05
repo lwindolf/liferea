@@ -26,6 +26,11 @@
 	  (Emilio Pozuelo Monfort, reported by George Sherwood)
 	* Don't ship Google and Bloglines icons, download them as with
 	  any other subscription instead. (Emilio Pozuelo Monfort)
+	* Fix advanced new subscription dialog to set the filter
+	  filechooser bar insensitive if the filter checkbox is unset.
+	  Also make the feed properties dialog not completely hide the
+	  filter filechooser, only set it insensitive if the filter
+	  checkbox is unset. (Emilio Pozuelo Monfort)
 
 
 2009-08-02  Adrian Bunk <bunk@users.sourceforge.net>
