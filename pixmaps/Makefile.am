@@ -17,8 +17,6 @@ EXTRA_DIST = \
 	technorati.png	\
 	arrow.png	\
 	fl_opml.png	\
-	fl_google.png	\
-	fl_bloglines.png \
 	newsbin.png	\
 	comments.png	\
 	bookmark.png	\

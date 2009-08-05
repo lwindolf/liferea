@@ -297,7 +297,6 @@ on_google_source_selected (GtkDialog *dialog,
 		node_source_new (node, google_source_get_type ());
 		node_set_subscription (node, subscription);
 		node->data = google_source_new (node);
-		node->icon = ui_common_create_pixbuf ("fl_google.png");
 		feedlist_node_added (node);
 		google_source_update (node);
 	}

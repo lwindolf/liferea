@@ -24,6 +24,8 @@
 	  (Adrian Bunk, reported by Maik Zumstrull)
 	* Let notification.h be shipped in tarballs.
 	  (Emilio Pozuelo Monfort, reported by George Sherwood)
+	* Don't ship Google and Bloglines icons, download them as with
+	  any other subscription instead. (Emilio Pozuelo Monfort)
 
 
 2009-08-02  Adrian Bunk <bunk@users.sourceforge.net>
