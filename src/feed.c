@@ -43,7 +43,10 @@
 #include "ui/auth_dialog.h"
 #include "ui/ui_subscription.h"
 #include "ui/ui_node.h"
+
+#ifdef HAVE_LIBNOTIFY
 #include "notification/notification.h"
+#endif
 
 feedPtr
 feed_new (void)
@@ -304,8 +307,10 @@ feed_process_update_result (subscriptionPtr subscription, const struct updateRes
 
 			liferea_shell_set_status_bar (_("\"%s\" updated..."), node_get_title (node));
 	
+#ifdef HAVE_LIBNOTIFY
 			if (!feed->preventPopup)				
 				notification_node_has_new_items (node, feed->enforcePopup);
+#endif
 		}
 				
 		feed_free_parser_ctxt (ctxt);
