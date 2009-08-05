@@ -44,7 +44,6 @@
 #include "ui/ui_common.h"
 #include "ui/itemview.h"
 #include "ui/ui_tray.h"
-#include "notification/notification.h"
 
 /* file type tree store column ids */
 enum fts_columns {
