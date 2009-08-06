@@ -240,10 +240,10 @@ opml_source_import (nodePtr node)
 
 	debug_enter ("opml_source_import");
 
-	filename = g_strdup_printf ("%s.png", NODE_SOURCE_TYPE (node)->id);
-	node->icon = ui_common_create_pixbuf (filename);
-	g_free (filename);
-	
+	/* We only ship an icon for opml, not for other sources */
+	if (g_str_equal (NODE_SOURCE_TYPE (node)->id, "fl_opml"))
+		node->icon = ui_common_create_pixbuf ("fl_opml.png");
+
 	debug1 (DEBUG_CACHE, "starting import of opml source instance (id=%s)", node->id);
 	filename = opml_source_get_feedlist (node);
 	if (g_file_test (filename, G_FILE_TEST_EXISTS)) {
