@@ -2,7 +2,8 @@
 
 	Version 1.7.2 (Unstable)
 
-	*
+	* Fixes SF #2827075: Migrate from libglade to GtkBuilder.
+	  (Hubert Figuiere and Emilio Pozuelo Monfort)
 
 
 2009-08-10  Adrian Bunk <bunk@users.sourceforge.net>

@@ -22,9 +22,9 @@
 #  include <config.h>
 #endif
 
-#include "ui/liferea_dialog.h"
+#include <gtk/gtk.h>
 
-#include <glade/glade.h>
+#include "ui/liferea_dialog.h"
 
 #include "ui/liferea_shell.h"
 
@@ -34,7 +34,7 @@ static void liferea_dialog_init		(LifereaDialog *ld);
 #define LIFEREA_DIALOG_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object), LIFEREA_DIALOG_TYPE, LifereaDialogPrivate))
 
 struct LifereaDialogPrivate {
-	GladeXML	*xml;
+	GtkBuilder *xml;
 	
 	GtkWidget	*dialog;
 };
@@ -120,7 +120,7 @@ liferea_dialog_lookup (GtkWidget *widget, const gchar *name)
 	}
 	
 	if (ld->priv->xml)
-		return glade_xml_get_widget (ld->priv->xml, name);
+		return GTK_WIDGET (gtk_builder_get_object (ld->priv->xml, name));
 		
 	return NULL;
 }
@@ -131,24 +131,39 @@ liferea_dialog_new (const gchar *filename, const gchar *name)
 {
 	LifereaDialog	*ld;
 	gchar 		*path;
-	
+
+	/* FIXME: this is so hacky... We should just load the whole file as we
+	 * did with glade, then pick the widget we're told. However GtkBuilder
+	 * doesn't cope with multiple top-level widgets in the same .ui file
+	 * yet (it will load all the widgets, which are a lot in liferea.ui, so
+	 * you end with a lot of new dialogs when you open e.g. preferences),
+	 * so we need to do this for now...
+	 * http://bugzilla.gnome.org/show_bug.cgi?id=575714
+	 */
+	gchar	*objs[] = { "adjustment1", "adjustment2", "adjustment3",
+			    "adjustment4", "adjustment5", "adjustment6",
+			    "liststore1", "liststore2", "liststore3",
+			    "liststore4", "liststore5",
+			    "refreshIntervalSpinButton", name, NULL };
+
 	ld = LIFEREA_DIALOG (g_object_new (LIFEREA_DIALOG_TYPE, NULL));
 
-	path = g_build_filename (PACKAGE_DATA_DIR, PACKAGE, filename?filename:"liferea.glade", NULL);
-	ld->priv->xml = glade_xml_new (path, name, GETTEXT_PACKAGE);
+	path = g_build_filename (PACKAGE_DATA_DIR, PACKAGE, filename?filename:"liferea.ui", NULL);
+	ld->priv->xml = gtk_builder_new ();
+	gtk_builder_add_objects_from_file (ld->priv->xml, path, objs, NULL);
 	g_free (path);
-	
+
 	g_return_val_if_fail (ld->priv->xml != NULL, NULL);
 
-	ld->priv->dialog = glade_xml_get_widget (ld->priv->xml, name);
-	glade_xml_signal_autoconnect (ld->priv->xml);
+	ld->priv->dialog = GTK_WIDGET (gtk_builder_get_object (ld->priv->xml, name));
+	gtk_builder_connect_signals (ld->priv->xml, NULL);
 	g_return_val_if_fail (ld->priv->dialog != NULL, NULL);
-	
+
 	g_object_set_data (G_OBJECT (ld->priv->dialog), "LifereaDialog", ld);
 	
 	gtk_window_set_transient_for (GTK_WINDOW (ld->priv->dialog), GTK_WINDOW (liferea_shell_lookup ("mainwindow")));
 
 	g_signal_connect_object (ld->priv->dialog, "destroy", G_CALLBACK (liferea_dialog_destroy_cb), ld, 0);
-	
+
 	return ld->priv->dialog;
 }

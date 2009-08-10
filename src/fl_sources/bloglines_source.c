@@ -65,7 +65,7 @@ ui_bloglines_source_get_account_info (void)
 {
 	GtkWidget	*dialog;
 	
-	dialog = liferea_dialog_new ("bloglines_source.glade", "bloglines_source_dialog");
+	dialog = liferea_dialog_new ("bloglines_source.ui", "bloglines_source_dialog");
 	
 	g_signal_connect (G_OBJECT (dialog), "response",
 			  G_CALLBACK (on_bloglines_source_selected), 

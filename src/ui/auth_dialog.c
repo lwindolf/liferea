@@ -169,7 +169,7 @@ auth_dialog_init (AuthDialog *ad)
 	
 	ad->priv = AUTH_DIALOG_GET_PRIVATE (ad);
 	
-	ad->priv->dialog = authdialog = liferea_dialog_new ("auth.glade", "authdialog");
+	ad->priv->dialog = authdialog = liferea_dialog_new ("auth.ui", "authdialog");
 	ad->priv->username = liferea_dialog_lookup (authdialog, "usernameEntry");
 	ad->priv->password = liferea_dialog_lookup (authdialog, "passwordEntry");
 	

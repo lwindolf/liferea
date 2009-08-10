@@ -176,11 +176,11 @@ src/sync/avahi_browser.h
 src/sync/avahi_publisher.c
 src/sync/avahi_publisher.h
 src/webkit/webkit.c
-glade/auth.glade
-glade/bloglines_source.glade
-glade/google_source.glade
-glade/liferea.glade
-glade/new_subscription.glade
-glade/node_source.glade
-glade/opml_source.glade
-glade/simple_subscription.glade
+[type: gettext/glade]glade/auth.ui
+[type: gettext/glade]glade/bloglines_source.ui
+[type: gettext/glade]glade/google_source.ui
+[type: gettext/glade]glade/liferea.ui
+[type: gettext/glade]glade/new_subscription.ui
+[type: gettext/glade]glade/node_source.ui
+[type: gettext/glade]glade/opml_source.ui
+[type: gettext/glade]glade/simple_subscription.ui

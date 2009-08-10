@@ -225,7 +225,7 @@ ui_node_source_type_dialog (void)
 	}		
 
 	/* set up the dialog */
-	dialog = liferea_dialog_new ("node_source.glade", "node_source_type_dialog");
+	dialog = liferea_dialog_new ("node_source.ui", "node_source_type_dialog");
 
 	treestore = gtk_tree_store_new (2, G_TYPE_STRING, G_TYPE_POINTER);
 	

@@ -28,7 +28,6 @@
 #include <gtk/gtk.h>
 #include <gdk/gdk.h>
 #include <gdk/gdkkeysyms.h>
-#include <glade/glade.h>
 #include <string.h>		/* strcmp() and strsep() */
 
 #include "browser.h"
@@ -64,7 +63,7 @@ static void liferea_shell_init		(LifereaShell *ls);
 #define LIFEREA_SHELL_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object), LIFEREA_SHELL_TYPE, LifereaShellPrivate))
 
 struct LifereaShellPrivate {
-	GladeXML	*xml;
+	GtkBuilder	*xml;
 
 	GtkWindow	*window;		/**< Liferea main window */
 	GtkWidget	*menubar;
@@ -146,19 +145,26 @@ liferea_shell_lookup (const gchar *name)
 	g_return_val_if_fail (shell != NULL, NULL);
 	g_return_val_if_fail (shell->priv != NULL, NULL);
 
-	return glade_xml_get_widget (shell->priv->xml, name);
+	return GTK_WIDGET (gtk_builder_get_object (shell->priv->xml, name));
 }
 
 static void
 liferea_shell_init (LifereaShell *ls)
 {
+	/* FIXME: we should only need to load mainwindow, but GtkBuilder won't
+	 * load the other required objects, so we need to do it manually...
+	 * See fixme in liferea_dialog_new()
+	 * http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=508585
+	 */
+	gchar *objs[] = { "adjustment6", "mainwindow", NULL };
 	/* globally accessible singleton */
 	g_assert (NULL == shell);
 	shell = ls;
 	
 	shell->priv = LIFEREA_SHELL_GET_PRIVATE (ls);
-	shell->priv->xml = glade_xml_new (PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "liferea.glade", "mainwindow", GETTEXT_PACKAGE);
-	glade_xml_signal_autoconnect (shell->priv->xml);
+	shell->priv->xml = gtk_builder_new ();
+	gtk_builder_add_objects_from_file (shell->priv->xml, PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "liferea.ui", objs, NULL);
+	gtk_builder_connect_signals (shell->priv->xml, NULL);
 }
 
 /**

@@ -394,7 +394,7 @@ ui_opml_source_get_source_url (void)
 {
 	GtkWidget	*dialog, *button;
 
-	dialog = liferea_dialog_new ("opml_source.glade", "opml_source_dialog");
+	dialog = liferea_dialog_new ("opml_source.ui", "opml_source_dialog");
 	button = liferea_dialog_lookup (dialog, "select_button");
 
 	g_signal_connect (G_OBJECT (dialog), "response",

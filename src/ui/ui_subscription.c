@@ -683,7 +683,7 @@ new_subscription_dialog_init (NewSubscriptionDialog *nsd)
 	GtkWidget	*newdialog;
 	
 	nsd->priv = NEW_SUBSCRIPTION_DIALOG_GET_PRIVATE (nsd);
-	nsd->priv->dialog = newdialog = liferea_dialog_new ("new_subscription.glade", "newdialog");
+	nsd->priv->dialog = newdialog = liferea_dialog_new ("new_subscription.ui", "newdialog");
 	
 	/* Setup source entry */
 	nsd->priv->sourceEntry = liferea_dialog_lookup (newdialog,"sourceEntry");
@@ -807,7 +807,7 @@ simple_subscription_dialog_init (SimpleSubscriptionDialog *ssd)
 	GtkWidget	*newdialog;
 	
 	ssd->priv = SIMPLE_SUBSCRIPTION_DIALOG_GET_PRIVATE (ssd);
-	ssd->priv->dialog = newdialog = liferea_dialog_new ("simple_subscription.glade", "simplenewdialog");
+	ssd->priv->dialog = newdialog = liferea_dialog_new ("simple_subscription.ui", "simplenewdialog");
 	
 	/* Setup source entry */
 	ssd->priv->sourceEntry = liferea_dialog_lookup (newdialog, "sourceEntry");

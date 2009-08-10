@@ -1,14 +1,14 @@
 ## Process this file with automake to produce Makefile.in
 
 gladedir = $(pkgdatadir)
-glade_DATA = liferea.glade \
-	auth.glade \
-	new_subscription.glade \
-	simple_subscription.glade \
-	bloglines_source.glade \
-	google_source.glade \
-	node_source.glade \
-	opml_source.glade
+glade_DATA = liferea.ui \
+	auth.ui \
+	new_subscription.ui \
+	simple_subscription.ui \
+	bloglines_source.ui \
+	google_source.ui \
+	node_source.ui \
+	opml_source.ui
 
 EXTRA_DIST = \
 	$(glade_DATA) \
