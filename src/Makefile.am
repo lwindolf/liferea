@@ -80,6 +80,7 @@ EXTRA_DIST = $(srcdir)/liferea_dbus.xml \
 BUILT_SOURCES = dbus_wrap.c
 CLEANFILES = $(BUILT_SOURCES)
 DISTCLEANFILES = $(srcdir)/liferea-add-feed
+AM_INSTALLCHECK_STD_OPTIONS_EXEMPT = liferea-add-feed
 
 dbus_wrap.c: $(srcdir)/liferea_dbus.xml
 	dbus-binding-tool --mode=glib-server --prefix=liferea_dbus $(srcdir)/liferea_dbus.xml > dbus_wrap.c
