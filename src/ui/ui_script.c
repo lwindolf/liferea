@@ -156,7 +156,7 @@ on_menu_show_script_manager (GtkWidget *widget, gpointer user_data)
 	hookInfoPtr		hook;
 	
 	if (!script_support_enabled ()) {
-		ui_show_error_box (_("Sorry, no scripting support available!"));
+		ui_show_error_box (_("Sorry, no scripting support available. Please recompile Liferea with LUA support."));
 		return;
 	}
 
