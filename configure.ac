@@ -9,6 +9,7 @@ AM_INIT_AUTOMAKE([1.6 foreign std-options])
 
 AC_PREREQ(2.59)
 
+AC_PROG_LIBTOOL
 IT_PROG_INTLTOOL([0.35.0])
 
 AC_PROG_CC
@@ -17,7 +18,6 @@ AC_HEADER_STDC
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 AC_SYS_LARGEFILE
-AC_PROG_RANLIB
 
 AC_ARG_ENABLE(sm,        AS_HELP_STRING([--disable-sm],[compile without X session management support]),,enable_sm=yes)
 AC_ARG_ENABLE(dbus,      AS_HELP_STRING([--disable-dbus],[compile without DBUS support]),,enable_dbus=yes)

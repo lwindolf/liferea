@@ -7,6 +7,9 @@
 	* Fixes SF #2831121: Require WebKitGTK+ >= 1.1.11 since
 	  older versions crash frequently when built with gcc 4.4.
 	  (Adrian Bunk)
+	* Go back to using libtool for getting a proper rpath with
+	  libraries in unusual locations found through pkg-config.
+	  (Adrian Bunk, reported by Leon Nardella)
 
 
 2009-08-10  Adrian Bunk <bunk@users.sourceforge.net>
