@@ -11,5 +11,4 @@ glade_DATA = liferea.ui \
 	opml_source.ui
 
 EXTRA_DIST = \
-	$(glade_DATA) \
-	liferea.gladep
+	$(glade_DATA)
