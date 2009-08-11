@@ -4,6 +4,8 @@
 
 	* Re-add grayflag.png since it is actually used.
 	  (Adrian Bunk, reported by Maik Zumstrull)
+	* Document that WebKitGTK+ 1.1.10 built with gcc 4.4
+	  crashes often. (Adrian Bunk)
 
 
 2009-07-25  Adrian Bunk <bunk@users.sourceforge.net>

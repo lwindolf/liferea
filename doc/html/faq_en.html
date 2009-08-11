@@ -59,6 +59,11 @@ programs access to the new_subscription pipe.</li>
 </ul>
 </dd>
 
+<dt>Q: Liferea with WebKitGTK+ 1.1.10 crashes frequently</dt>
+<dd>A: WebKitGTK+ 1.1.10 crashes frequently when built with gcc 4.4.
+The workaround is to either upgrade WebKitGTK+ to version 1.1.11 or newer, or to compile it with an
+older compiler (e.g. gcc 4.3 works).</dd>
+
 <dt>Q: Enclosures download with Gwget doesn't work</dt>
 <dd>A: Most likely you have Gwget 1.0.0 or 1.0.1 installed, and
 due to a temporary breakage in the dbus API of Gwget these versions
