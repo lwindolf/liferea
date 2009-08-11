@@ -61,7 +61,7 @@ GType liferea_dialog_get_type	(void);
  *
  * @returns the dialog widget
  */
-GtkWidget * liferea_dialog_new (const gchar *filename, const gchar *name);
+GtkWidget * liferea_dialog_new (const gchar *filename, gchar *name);
 
 /**
  * Helper function to look up child widgets of a dialog window.

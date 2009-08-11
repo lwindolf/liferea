@@ -127,7 +127,7 @@ liferea_dialog_lookup (GtkWidget *widget, const gchar *name)
 
 
 GtkWidget *
-liferea_dialog_new (const gchar *filename, const gchar *name) 
+liferea_dialog_new (const gchar *filename, gchar *name) 
 {
 	LifereaDialog	*ld;
 	gchar 		*path;
