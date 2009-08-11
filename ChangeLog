@@ -4,6 +4,9 @@
 
 	* Fixes SF #2827075: Migrate from libglade to GtkBuilder.
 	  (Hubert Figuiere and Emilio Pozuelo Monfort)
+	* Fixes SF #2831121: Require WebKitGTK+ >= 1.1.11 since
+	  older versions crash frequently when built with gcc 4.4.
+	  (Adrian Bunk)
 
 
 2009-08-10  Adrian Bunk <bunk@users.sourceforge.net>
