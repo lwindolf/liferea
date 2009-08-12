@@ -211,6 +211,7 @@ main (int argc, char *argv[])
 				    N_("Print debugging messages for the given topic"),
 				    &debug_flags,
 				    NULL);
+	g_option_group_set_translation_domain (debug, GETTEXT_PACKAGE);
 	g_option_group_add_entries (debug, debug_entries);
 
 	context = g_option_context_new (NULL);
