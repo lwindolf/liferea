@@ -684,6 +684,8 @@ on_remove_item_activate (GtkMenuItem *menuitem, gpointer user_data)
 {
 	itemPtr		item;
 	
+	g_assert(NULL != user_data);
+	
 	item = itemlist_get_selected ();
 	if (item) {
 		ui_common_treeview_move_cursor (ITEM_LIST_VIEW (user_data)->priv->treeview, 1);
