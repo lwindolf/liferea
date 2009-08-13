@@ -386,6 +386,7 @@ node_source_get_node_type (void)
 						  NODE_CAPABILITY_SHOW_ITEM_FAVICONS |
 						  NODE_CAPABILITY_UPDATE_CHILDS |
 						  NODE_CAPABILITY_UPDATE |
+						  NODE_CAPABILITY_UPDATE_FAVICON |
 						  NODE_CAPABILITY_ADD_CHILDS |
 						  NODE_CAPABILITY_REMOVE_CHILDS;
 		nodeType->import		= node_source_import;

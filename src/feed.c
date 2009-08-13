@@ -414,7 +414,8 @@ feed_get_node_type (void)
 { 
 	static struct nodeType nti = {
 		NODE_CAPABILITY_SHOW_UNREAD_COUNT |
-		NODE_CAPABILITY_UPDATE,
+		NODE_CAPABILITY_UPDATE |
+		NODE_CAPABILITY_UPDATE_FAVICON,
 		"feed",		/* not used, feed format ids are used instead */
 		NULL,
 		feed_import,

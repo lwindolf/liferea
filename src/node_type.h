@@ -36,7 +36,8 @@ enum {
 	NODE_CAPABILITY_SHOW_ITEM_COUNT		= (1<<8),	/**< display the absolute item count in the feed list */
 	NODE_CAPABILITY_UPDATE			= (1<<9),	/**< node type always has a subscription and can be updated */
 	NODE_CAPABILITY_UPDATE_CHILDS		= (1<<10),	/**< childs of this node type can be updated */
-	NODE_CAPABILITY_EXPORT			= (1<<11)	/**< nodes of this type can be exported safely to OPML */
+	NODE_CAPABILITY_UPDATE_FAVICON		= (1<<11),	/**< this node allows downloading a favicon */
+	NODE_CAPABILITY_EXPORT			= (1<<12)	/**< nodes of this type can be exported safely to OPML */
 };
 
 /**

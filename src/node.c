@@ -24,7 +24,6 @@
 #include "common.h"
 #include "db.h"
 #include "debug.h"
-#include "favicon.h"
 #include "feed.h"	// FIXME
 #include "feedlist.h"
 #include "folder.h"
@@ -245,11 +244,10 @@ void node_update_counters(nodePtr node) {
 	node_update_parent_counters(node->parent);
 }
 
-// FIXME: bad interface, do not imply node icons are favicons
 void
 node_update_favicon (nodePtr node)
 {
-	if (IS_FEED (node)) {
+	if (NODE_TYPE (node)->capabilities & NODE_CAPABILITY_UPDATE_FAVICON) {
 		debug1 (DEBUG_UPDATE, "favicon of node %s needs to be updated...", node->title);
 		subscription_update_favicon (node->subscription);
 	}
@@ -314,7 +312,9 @@ node_remove (nodePtr node)
 	NODE_TYPE (node)->remove (node);
 }
 
-static xmlDocPtr node_to_xml(nodePtr node) {
+static xmlDocPtr
+node_to_xml (nodePtr node)
+{
 	xmlDocPtr	doc;
 	xmlNodePtr	rootNode;
 	gchar		*tmp;
