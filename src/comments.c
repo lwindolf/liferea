@@ -119,7 +119,7 @@ comments_process_update_result (const struct updateResult * const result, gpoint
 	if (401 == result->httpstatus) { /* unauthorized */
 		commentFeed->error = g_strdup (_("Authorization Error"));
 	} else if (410 == result->httpstatus) { /* gone */
-		// FIXME: how to prevent further updates?
+		metadata_list_set (&item->metadata, "commentFeedGone", "true");
 	} else if (304 == result->httpstatus) {
 		debug1(DEBUG_UPDATE, "comment feed \"%s\" did not change", result->source);
 	} else if (result->data) {
@@ -194,6 +194,11 @@ comments_refresh (itemPtr item)
 	
 	if (!network_monitor_is_online ())
 		return;
+		
+	if (metadata_list_get (item->metadata, "commentFeedGone")) {
+		debug0 (DEBUG_UPDATE, "Comment feed returned HTTP 410. Not updating anymore!");
+		return;
+	}
 	
 	url = metadata_list_get (item->metadata, "commentFeedUri");
 	if (url) {

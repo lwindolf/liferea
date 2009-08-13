@@ -16,6 +16,8 @@
 	  node ids. (Lars Lindner)
 	* Removes the GConf option for a user defined date format.
 	  (Lars Lindner)
+	* We do not update comment feeds returning HTTP 410 anymore.
+	  (Lars Lindner)
 	* Update of French translation (Vincent Lefevre)
 
 
