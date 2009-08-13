@@ -12,6 +12,8 @@
 	  (Adrian Bunk, reported by Leon Nardella)
 	* Fixes SF #2831007: Opening enclosures by URL fails intermitantly
 	  (Lars Lindner, reported by Eric Drechsel)
+	* Fixes a unique node id check that could have caused duplicate
+	  node ids. (Lars Lindner)
 	* Update of French translation (Vincent Lefevre)
 
 

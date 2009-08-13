@@ -43,23 +43,19 @@
 
 static GHashTable *nodes = NULL;
 
-/* returns a unique node id */
-gchar * node_new_id() {
-	int		i;
-	gchar		*id, *filename;
-	gboolean	already_used;
+#define NODE_ID_LEN	7
+
+gchar *
+node_new_id (void)
+{
+	gchar *id;
 	
-	// FIXME: check DB instead!
-	id = g_new0(gchar, 10);
+	id = g_new0 (gchar, NODE_ID_LEN + 1);
 	do {
-		for(i=0;i<7;i++)
-			id[i] = (char)g_random_int_range('a', 'z');
-		id[7] = '\0';
-		
-		filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "feeds", id, NULL);
-		already_used = g_file_test(filename, G_FILE_TEST_EXISTS);
-		g_free(filename);
-	} while(already_used);
+		int i;
+		for (i = 0; i < NODE_ID_LEN; i++)
+			id[i] = (gchar)g_random_int_range ('a', 'z');
+	} while (db_node_id_exists (id));
 	
 	return id;
 }

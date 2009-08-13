@@ -39,7 +39,6 @@ void db_init(void);
  */
 void db_deinit(void);
 
-
 /* item set access (note: item sets are identified by the node id string) */
 
 /**
@@ -245,6 +244,15 @@ void db_subscription_update (subscriptionPtr subscription);
  * @param id		the node id
  */
 void db_subscription_remove (const gchar *id);
+
+/**
+ * Checks if a given node id already exists
+ *
+ * @param id		the node id to check for
+ *
+ * @returns true if the id already exists
+ */
+gboolean db_node_id_exists (const gchar *id);
 
 /**
  * Updates the given nodes properties in the DB.

@@ -99,6 +99,23 @@ db_exec (const gchar *sql)
 	sqlite3_free (err);
 }
 
+gboolean
+db_node_id_exists (const gchar *id)
+{
+	gchar		*sql;
+	sqlite3_stmt	*stmt;
+	gint		res;
+
+	sql = sqlite3_mprintf ("SELECT COUNT(*) FROM node WHERE node_id = '%s';", id);
+	db_prepare_stmt (&stmt, sql);
+	sqlite3_reset (stmt);
+	sqlite3_step (stmt);
+	res = sqlite3_column_int (stmt, 0);
+	sqlite3_finalize (stmt);
+	sqlite3_free (sql);
+	return (0 != res);
+}
+
 static gboolean
 db_table_exists (const gchar *name)
 {

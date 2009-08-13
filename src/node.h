@@ -216,11 +216,11 @@ gpointer node_get_icon(nodePtr node);
 const gchar * node_get_favicon_file(nodePtr node);
 
 /**
- * Returns a new unique node id.
+ * Returns a new unused unique node id.
  *
- * @returns new id
+ * @returns new id (to be free'd using g_free)
  */
-gchar * node_new_id(void);
+gchar * node_new_id (void);
 
 /**
  * Query the unique id string of the node.
@@ -229,7 +229,7 @@ gchar * node_new_id(void);
  *
  * @returns id string
  */
-const gchar *node_get_id(nodePtr node);
+const gchar *node_get_id (nodePtr node);
 
 /** 
  * Set the unique id string of the node.
