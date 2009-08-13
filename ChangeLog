@@ -10,6 +10,8 @@
 	* Go back to using libtool for getting a proper rpath with
 	  libraries in unusual locations found through pkg-config.
 	  (Adrian Bunk, reported by Leon Nardella)
+	* Fixes SF #2831007: Opening enclosures by URL fails intermitantly
+	  (Lars Lindner, reported by Eric Drechsel)
 	* Update of French translation (Vincent Lefevre)
 
 

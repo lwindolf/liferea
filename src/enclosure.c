@@ -265,7 +265,7 @@ enclosure_exec (gpointer data)
 {
 	encJobPtr	ejp = (encJobPtr)data;
 	GError		*error = NULL;
-	gint		status;
+	gint		status = 0;
 	gchar		*stdout_message = NULL, *stderr_message = NULL;
 	
 	/* Download is optional when just passing URLs */
