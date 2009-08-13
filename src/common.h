@@ -60,7 +60,7 @@
  *
  * @returns result value
  */
-long common_parse_long(gchar *str, long def);
+long common_parse_long (const gchar *str, long def);
 
 /**
  * Returns the cache file storage path.

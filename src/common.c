@@ -11,12 +11,6 @@
  *             Jeffrey Stedfast <fejj@helixcode.com>
  *
  *    Copyright 2000 Helix Code, Inc. (www.helixcode.com)
- * 
- * The date formatting was reused from the Evolution code base
- *
- *    Author: Chris Lahey <clahey@ximian.com
- *
- *    Copyright 2001, Ximian, Inc.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -56,12 +50,14 @@
 
 static gchar *lifereaUserPath = NULL;
 
-long common_parse_long(gchar *str, long def) {
+long
+common_parse_long (const gchar *str, long def)
+{
 	long num;
 
-	if(str == NULL)
+	if (str == NULL)
 		return def;
-	if(0 == (sscanf(str,"%ld",&num)))
+	if (0 == (sscanf (str,"%ld", &num)))
 		num = def;
 	
 	return num;
@@ -100,38 +96,43 @@ common_init_cache_path (void)
 	umask (077);
 }
 
-const gchar * common_get_cache_path(void) {
-	
-	if(!lifereaUserPath)
-		common_init_cache_path();
+const gchar *
+common_get_cache_path (void)
+{	
+	if (!lifereaUserPath)
+		common_init_cache_path ();
 		
 	return lifereaUserPath;
 }
 
-gchar * common_create_cache_filename(const gchar *folder, const gchar *filename, const gchar *extension) {
+gchar *
+common_create_cache_filename (const gchar *folder, const gchar *filename, const gchar *extension)
+{
 	gchar *result;
 
-	result = g_strdup_printf("%s" G_DIR_SEPARATOR_S "%s%s%s%s%s", common_get_cache_path(),
-	                         (folder != NULL) ? folder : "",
-	                         (folder != NULL) ? G_DIR_SEPARATOR_S : "",
-	                         filename,
-	                         (extension != NULL)? "." : "",
-	                         (extension != NULL)? extension : "");
+	result = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "%s%s%s%s%s", common_get_cache_path (),
+	                          folder ? folder : "",
+	                          folder ? G_DIR_SEPARATOR_S : "",
+	                          filename,
+	                          extension ? "." : "",
+	                          extension ? extension : "");
 
 	return result;
 }
 
 /* to correctly escape and expand URLs */
-xmlChar * common_build_url(const gchar *url, const gchar *baseURL) {
+xmlChar *
+common_build_url (const gchar *url, const gchar *baseURL)
+{
 	xmlChar	*escapedURL, *absURL, *escapedBaseURL;
 
-	escapedURL = xmlURIEscape(url);
+	escapedURL = xmlURIEscape (url);
 
-	if(NULL != baseURL) {
-		escapedBaseURL = xmlURIEscape(baseURL);	
-		absURL = xmlBuildURI(escapedURL, escapedBaseURL);
-		xmlFree(escapedURL);
-		xmlFree(escapedBaseURL);
+	if (baseURL) {
+		escapedBaseURL = xmlURIEscape (baseURL);	
+		absURL = xmlBuildURI (escapedURL, escapedBaseURL);
+		xmlFree (escapedURL);
+		xmlFree (escapedBaseURL);
 	} else {
 		absURL = escapedURL;
 	}
@@ -139,14 +140,16 @@ xmlChar * common_build_url(const gchar *url, const gchar *baseURL) {
 	return absURL;
 }
 
-const gchar * common_get_direction_mark(gchar *text) {
+const gchar *
+common_get_direction_mark (gchar *text)
+{
 	PangoDirection		pango_direction = PANGO_DIRECTION_NEUTRAL;
 	GtkTextDirection	gtk_direction;
 	
-	if(text)
-		pango_direction = pango_find_base_dir(text, -1);
+	if (text)
+		pango_direction = pango_find_base_dir (text, -1);
 		
-	switch(pango_direction) {
+	switch (pango_direction) {
 		case PANGO_DIRECTION_LTR:
 			gtk_direction = GTK_TEXT_DIR_LTR;
 			break;
@@ -154,11 +157,11 @@ const gchar * common_get_direction_mark(gchar *text) {
 			gtk_direction = GTK_TEXT_DIR_RTL;
 			break;
 		default:
-			gtk_direction = gtk_widget_get_default_direction();
+			gtk_direction = gtk_widget_get_default_direction ();
 			break;
 	}
 
-	switch(gtk_direction) {
+	switch (gtk_direction) {
 		case GTK_TEXT_DIR_RTL: 
 			return "\342\200\217"; /* U+200F RIGHT-TO-LEFT MARK */
 		case GTK_TEXT_DIR_LTR: 
@@ -170,7 +173,9 @@ const gchar * common_get_direction_mark(gchar *text) {
 
 #ifndef HAVE_STRSEP
 /* code taken from glibc-2.2.1/sysdeps/generic/strsep.c */
-char * common_strsep (char **stringp, const char *delim) {
+char *
+common_strsep (char **stringp, const char *delim)
+{
 	char *begin, *end;
 
 	begin = *stringp;
@@ -215,18 +220,20 @@ char * common_strsep (char **stringp, const char *delim) {
 
 /* Taken from gaim 24 June 2004, copyrighted by the gaim developers
    under the GPL, etc.... It was slightly modified to free the passed string */
-gchar * common_strreplace(gchar *string, const gchar *delimiter, const gchar *replacement) {
+gchar *
+common_strreplace (gchar *string, const gchar *delimiter, const gchar *replacement)
+{
 	gchar **split;
 	gchar *ret;
 
-	g_return_val_if_fail(string      != NULL, NULL);
-	g_return_val_if_fail(delimiter   != NULL, NULL);
-	g_return_val_if_fail(replacement != NULL, NULL);
+	g_return_val_if_fail (string      != NULL, NULL);
+	g_return_val_if_fail (delimiter   != NULL, NULL);
+	g_return_val_if_fail (replacement != NULL, NULL);
 
-	split = g_strsplit(string, delimiter, 0);
-	ret = g_strjoinv(replacement, split);
-	g_strfreev(split);
-	g_free(string);
+	split = g_strsplit (string, delimiter, 0);
+	ret = g_strjoinv (replacement, split);
+	g_strfreev (split);
+	g_free (string);
 
 	return ret;
 }
@@ -236,7 +243,8 @@ typedef unsigned chartype;
 /* strcasestr is Copyright (C) 1994, 1996-2000, 2004 Free Software
    Foundation, Inc.  It was taken from the GNU C Library, which is
    licenced under the GPL v2.1 or (at your option) newer version. */
-char *common_strcasestr (const char *phaystack, const char *pneedle)
+char *
+common_strcasestr (const char *phaystack, const char *pneedle)
 {
 	register const unsigned char *haystack, *needle;
 	register chartype b, c;

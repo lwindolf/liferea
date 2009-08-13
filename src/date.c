@@ -2,6 +2,7 @@
  * @file date.c date formatting routines
  * 
  * Copyright (C) 2008-2009  Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2006  Nathan J. Conrad <t98502@users.sourceforge.net>
  * 
  * The date formatting was reused from the Evolution code base
  *
