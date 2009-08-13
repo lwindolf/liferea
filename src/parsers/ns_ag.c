@@ -1,30 +1,28 @@
-/*
-   mod_aggregation support
-   
-   Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
+/**
+ * @file ns_ag.c mod_aggregation support
+ *
+ * Copyright (C) 2003-2009 Lars Lindner <lars.lindner@gmail.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
 
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
+#include "ns_ag.h"
 
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
-
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
-
+#include "date.h"
 #include "common.h"
 #include "metadata.h"
-#include "ns_ag.h"
 
 /* you can find an aggregation namespace spec at:
    http://web.resource.org/rss/1.0/modules/aggregation/
@@ -69,7 +67,7 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 		metadata_list_set (&(ctxt->item->metadata), "agSource", tmp);
 	} else if (!xmlStrcmp (BAD_CAST "timestamp", cur->name)) {
 		if (NULL != (tmp = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1))) {
-			date = common_format_date (parseISO8601Date (tmp), _("%b %d %H:%M"));
+			date = date_format (parseISO8601Date (tmp), _("%b %d %H:%M"));
 			metadata_list_set (&(ctxt->item->metadata), "agTimestamp", date);
 			g_free (date);
 			g_free (tmp);

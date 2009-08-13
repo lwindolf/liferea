@@ -159,17 +159,6 @@ void itemview_update (void);
 void itemview_display_info (const gchar *html);
 
 /**
- * Generic date formatting function. Uses either the 
- * nice formatting method to print age dependant date
- * strings or the user defined format string.
- *
- * @param date	a date to represent
- *
- * @returns newly allocated date string
- */
-gchar *	itemview_format_date (time_t date);
-
-/**
  * Finds the next unread item.
  *
  * @param startId	the item id to start at (or NULL for starting at the top)

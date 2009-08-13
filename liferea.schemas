@@ -321,32 +321,6 @@ To change the gconftool target use the - -config-source=blah option to gconftool
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/liferea/timeformat</key>
-      <applyto>/apps/liferea/timeformat</applyto>
-      <owner>liferea</owner>
-      <type>string</type>
-      <default>%D %t</default>
-      <locale name="C">
-        <short>Format string to use to show the date in the Liferea itemlist</short>
-        <long>This string controls what is displayed in the date
-	   column of the Liferea itemlist if timeformatmode is set to
-	   1. The syntax used is the syntax of strftime(2).</long>
-      </locale>
-    </schema>
-    <schema>
-      <key>/schemas/apps/liferea/timeformatmode</key>
-      <applyto>/apps/liferea/timeformatmode</applyto>
-      <owner>liferea</owner>
-      <type>int</type>
-      <default>2</default>
-      <locale name="C">
-        <short>Determines how the date is rendered in the itemview</short>
-        <long>If timeformat is set to 1, then only the time is
-	   shown. If set to 2, then both the time and date are shown. If
-	   set to 3, then the format string stored in timeformat is used.</long>
-      </locale>
-    </schema>
-    <schema>
       <key>/schemas/apps/liferea/trayicon</key>
       <applyto>/apps/liferea/trayicon</applyto>
       <owner>liferea</owner>

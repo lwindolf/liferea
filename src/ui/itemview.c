@@ -47,7 +47,6 @@ struct ItemViewPrivate {
 	gboolean	htmlOnly;		/**< TRUE if HTML only mode */
 	guint		mode;			/**< current item view mode */
 	nodePtr		node;			/**< the node whose item are displayed */
-	gchar 		*userDefinedDateFmt;	/**< user defined date formatting string */
 	gboolean	needsHTMLViewUpdate;	/**< flag to be set when HTML rendering is to be 
 						     updated, used to delay HTML updates */
 	gboolean	hasEnclosures;		/**< TRUE if at least one item of the current itemset has an enclosure */
@@ -112,8 +111,6 @@ itemview_finalize (GObject *object)
 		g_object_unref (priv->enclosureView);
 	if (priv->itemListView)
 		g_object_unref (priv->itemListView);
-		
-	g_free (priv->userDefinedDateFmt);
 
 	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -291,14 +288,6 @@ itemview_display_info (const gchar *html)
 	liferea_htmlview_write (itemview->priv->htmlview, html, NULL);
 }
 
-/* date format handling (not sure if this is the right place) */
-
-gchar *
-itemview_format_date (time_t date)
-{
-	return common_format_date (date, itemview->priv->userDefinedDateFmt);
-}
-
 /* next unread selection logic */
 
 itemPtr
@@ -446,8 +435,6 @@ ItemView *
 itemview_create (GtkWidget *window)
 {
 	gint zoom;
-	gchar *userDefinedDateFmt;
-
 
 	/* 1. Create widgets, load preferences */
 	
@@ -458,29 +445,12 @@ itemview_create (GtkWidget *window)
 	itemview->priv->itemListViewContainer = gtk_widget_get_parent (GTK_WIDGET (item_list_view_get_widget (itemview->priv->itemListView)));
 	conf_get_int_value (LAST_ZOOMLEVEL, &zoom);
 	itemview->priv->zoom = zoom;
-	conf_get_str_value (DATE_FORMAT, &userDefinedDateFmt);
-	itemview->priv->userDefinedDateFmt = userDefinedDateFmt;
 
 	/* initially we pack the item list in the normal view pane,
 	   which is later changed in itemview_set_layout() */
 	gtk_container_add (GTK_CONTAINER (liferea_shell_lookup ("normalViewItems")), itemview->priv->itemListViewContainer);
 
-	/* 2. Sanity checks on the settings... */
-	
-	/* We now have an empty string or a format string... */
-	if (itemview->priv->userDefinedDateFmt && !strlen (itemview->priv->userDefinedDateFmt)) {
-		/* It's empty and useless... */
-		g_free (itemview->priv->userDefinedDateFmt);
-		itemview->priv->userDefinedDateFmt = NULL;
-	}
-	
-	if (itemview->priv->userDefinedDateFmt) {
-		debug1 (DEBUG_GUI, "user defined date format is: >>>%s<<<", itemview->priv->userDefinedDateFmt);
-	} else {
-		debug0 (DEBUG_GUI, "using default date format");
-	}
-
-	/* 3. Prepare HTML rendering */
+	/* 2. Prepare HTML rendering */
 	htmlview_init ();
 	
 	return itemview;

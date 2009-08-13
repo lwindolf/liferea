@@ -14,6 +14,8 @@
 	  (Lars Lindner, reported by Eric Drechsel)
 	* Fixes a unique node id check that could have caused duplicate
 	  node ids. (Lars Lindner)
+	* Removes the GConf option for a user defined date format.
+	  (Lars Lindner)
 	* Update of French translation (Vincent Lefevre)
 
 

@@ -28,6 +28,7 @@ liferea_SOURCES = \
 	comments.c comments.h \
 	common.c common.h \
 	conf.c conf.h \
+	date.c date.h \
 	db.c db.h \
 	dbus.c dbus.h \
 	debug.c debug.h \

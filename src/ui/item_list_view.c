@@ -26,6 +26,7 @@
 
 #include "browser.h"
 #include "common.h"
+#include "date.h"
 #include "debug.h"
 #include "feed.h"
 #include "feedlist.h"
@@ -326,7 +327,7 @@ item_list_view_update_item (ItemListView *ilv, itemPtr item)
 	if (!item_list_view_id_to_iter (ilv, item->id, &iter))
 		return;
 	
-	time_str = (0 != item->time) ? itemview_format_date((time_t)item->time) : g_strdup ("");
+	time_str = (0 != item->time) ? date_format ((time_t)item->time, NULL) : g_strdup ("");
 
 	direction_marker = common_get_direction_mark (node_from_id (item->nodeId)->title);	
 

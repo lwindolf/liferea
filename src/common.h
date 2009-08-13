@@ -1,7 +1,7 @@
 /**
  * @file common.h common routines
  *
- * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2009 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -61,19 +61,6 @@
  * @returns result value
  */
 long common_parse_long(gchar *str, long def);
-
-/**
- * Generic date formatting function. Uses either the 
- * user defined format string, or (if date_format is NULL)
- * a formatted date string whose format string depends
- * on the time difference to today.
- *
- * @param t		the timestamp
- * @param date_format	NULL or a strptime format string (encoded in UTF-8)
- *
- * @returns a newly allocated formatted date string (encoded in UTF-8)
- */
-gchar * common_format_date(time_t date, const gchar *date_format);
 
 /**
  * Parses a ISO8601 date.

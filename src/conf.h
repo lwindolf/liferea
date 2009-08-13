@@ -43,9 +43,6 @@
 #define ENCLOSURE_DOWNLOAD_TOOL		"/apps/liferea/enclosure-download-tool"
 #define ENCLOSURE_DOWNLOAD_PATH		"/apps/liferea/enclosure-download-path"
 
-/* item list settings */
-#define DATE_FORMAT			"/apps/liferea/date-format"
-
 /* feed handling settings */
 #define DEFAULT_MAX_ITEMS		"/apps/liferea/maxitemcount"
 #define DEFAULT_UPDATE_INTERVAL		"/apps/liferea/default-update-interval"
