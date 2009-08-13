@@ -445,6 +445,8 @@ itemlist_unhide_item (itemPtr item)
 }
 
 /* functions to remove items on remove requests */
+
+/* hard unconditional item remove */
 void
 itemlist_remove_item (itemPtr item) 
 {
@@ -455,7 +457,6 @@ itemlist_remove_item (itemPtr item)
 		itemlist_set_selected (NULL);
 		itemlist_priv.deferredFilter = FALSE;
 		itemlist_priv.deferredRemove = FALSE;
-		itemview_select_item (NULL);
 	}
 
 	itemlist_duplicate_list_remove_item (item);
@@ -471,6 +472,7 @@ itemlist_remove_item (itemPtr item)
 	item_unload (item);
 }
 
+/* soft possibly delayed item remove */
 void
 itemlist_request_remove_item (itemPtr item) 
 {	

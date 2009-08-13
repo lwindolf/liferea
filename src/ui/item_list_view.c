@@ -279,6 +279,12 @@ item_list_view_remove_item (ItemListView *ilv, itemPtr item)
 	g_assert (NULL != item);
 	iter = g_hash_table_lookup (ilv->priv->item_id_to_iter, GUINT_TO_POINTER (item->id));
 	if (iter) {
+		/* Using the GtkTreeIter check if it is currently selected. If yes,
+		   scroll down by one in the sorted GtkTreeView to ensure something
+		   is selected after removing the GtkTreeIter */
+		if (gtk_tree_selection_iter_is_selected (gtk_tree_view_get_selection (ilv->priv->treeview), iter))
+			ui_common_treeview_move_cursor (ilv->priv->treeview, 1);
+	
 		gtk_tree_store_remove (GTK_TREE_STORE (gtk_tree_view_get_model (ilv->priv->treeview)), iter);
 		g_hash_table_remove (ilv->priv->item_id_to_iter, GUINT_TO_POINTER (item->id));
 	} else {
@@ -684,11 +690,8 @@ on_remove_item_activate (GtkMenuItem *menuitem, gpointer user_data)
 {
 	itemPtr		item;
 	
-	g_assert(NULL != user_data);
-	
 	item = itemlist_get_selected ();
 	if (item) {
-		ui_common_treeview_move_cursor (ITEM_LIST_VIEW (user_data)->priv->treeview, 1);
 		itemlist_remove_item (item);
 	} else {
 		liferea_shell_set_important_status_bar (_("No item has been selected"));
