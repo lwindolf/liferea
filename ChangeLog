@@ -10,6 +10,7 @@
 	* Go back to using libtool for getting a proper rpath with
 	  libraries in unusual locations found through pkg-config.
 	  (Adrian Bunk, reported by Leon Nardella)
+	* Update of French translation (Vincent Lefevre)
 
 
 2009-08-10  Adrian Bunk <bunk@users.sourceforge.net>
