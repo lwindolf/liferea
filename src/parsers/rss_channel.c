@@ -17,13 +17,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
  */
+#include "rss_channel.h"
 
 #include <string.h>
 #include <stdlib.h>
 
 #include "common.h"
-#include "rss_channel.h"
+#include "date.h"
 #include "feed_parser.h"
 #include "feedlist.h"
 #include "metadata.h"
@@ -96,7 +98,7 @@ static void parseChannel(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 		else if(!xmlStrcmp(cur->name, BAD_CAST"pubDate")) {
  			if(NULL != (tmp = (gchar *)xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1))) {
 				ctxt->subscription->metadata = metadata_list_append(ctxt->subscription->metadata, "pubDate", tmp);
-				ctxt->feed->time = parseRFC822Date(tmp);
+				ctxt->feed->time = date_parse_RFC822 (tmp);
 				g_free(tmp);
 			}
 		} 

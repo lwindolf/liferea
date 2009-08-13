@@ -1,7 +1,7 @@
 /**
  * @file ns_dc.c Dublin Core support for RSS and Atom
  *
- * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2009 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
-
-#define _XOPEN_SOURCE	600 	/* glibc2 needs this (man strptime) */
-
 #include "ns_dc.h"
+
+#include "date.h"
 #include "common.h"
 #include "metadata.h"
 
@@ -150,7 +145,7 @@ parse_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur, gboolean isFeedTag)
 	if (!isFeedTag) {
 		if (!xmlStrcmp (BAD_CAST "date", cur->name)) {
  			if (NULL != (date = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1))) {
-				i = parseISO8601Date (date);
+				i = date_parse_ISO8601 (date);
 				ctxt->item->time = i;
 				g_free (date);
 			}

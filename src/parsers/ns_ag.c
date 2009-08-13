@@ -67,7 +67,7 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 		metadata_list_set (&(ctxt->item->metadata), "agSource", tmp);
 	} else if (!xmlStrcmp (BAD_CAST "timestamp", cur->name)) {
 		if (NULL != (tmp = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1))) {
-			date = date_format (parseISO8601Date (tmp), _("%b %d %H:%M"));
+			date = date_format (date_parse_ISO8601 (tmp), _("%b %d %H:%M"));
 			metadata_list_set (&(ctxt->item->metadata), "agTimestamp", date);
 			g_free (date);
 			g_free (tmp);

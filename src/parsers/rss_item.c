@@ -1,7 +1,7 @@
 /**
  * @file rss_item.c  RSS/RDF item parsing 
  *
- * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2009 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,11 +18,13 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "rss_item.h"
+
 #include <string.h>
 
 #include "common.h"
+#include "date.h"
 #include "enclosure.h"
-#include "rss_item.h"
 #include "metadata.h"
 #include "xml.h"
 
@@ -89,7 +91,7 @@ parseRSSItem (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 		else if(!xmlStrcmp(cur->name, BAD_CAST"pubDate")) {
  			tmp = (gchar *)xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1);
 			if (tmp) {
-				ctxt->item->time = parseRFC822Date(tmp);
+				ctxt->item->time = date_parse_RFC822 (tmp);
 				g_free(tmp);
 			}
 		} 

@@ -1,5 +1,5 @@
 /**
- * @file date.h date formatting routines for Liferea
+ * @file date.h date formatting and parsing routines for Liferea
  *
  * Copyright (C) 2008-2009 Lars Lindner <lars.lindner@gmail.com>
  *
@@ -35,5 +35,26 @@
  * @returns a newly allocated formatted date string (encoded in UTF-8)
  */
 gchar * date_format (time_t date, const gchar *date_format);
+
+/**
+ * Parses a ISO8601 date.
+ *
+ * @param date		the date string to parse
+ *
+ * @returns timestamp
+ */
+time_t date_parse_ISO8601 (const gchar *date);
+
+/**
+ * Parses a RFC822 format date. This FAILS if a timezone string is
+ * specified such as EDT or EST and that timezone is in daylight
+ * savings time.
+ *
+ * @param date		the date string to parse
+ *
+ * @returns timestamp (GMT, no daylight savings time)
+ */
+time_t date_parse_RFC822 (const gchar *date);
+
 
 #endif

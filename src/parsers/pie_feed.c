@@ -1,7 +1,7 @@
 /**
  * @file pie_feed.c Atom 0.3 channel parsing
  * 
- * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2009 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,13 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
-
 #include <sys/time.h>
 #include <string.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
+
 #include "common.h"
+#include "date.h"
 #include "feed_parser.h"
 #include "feedlist.h"
 #include "pie_feed.h"
@@ -257,7 +255,7 @@ static void pie_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 				tmp = (gchar *)xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1);
 				if(tmp) {
 					ctxt->subscription->metadata = metadata_list_append(ctxt->subscription->metadata, "pubDate", tmp);
-					ctxt->feed->time = parseISO8601Date(tmp);
+					ctxt->feed->time = date_parse_ISO8601 (tmp);
 					g_free(tmp);
 				}
 
@@ -265,7 +263,7 @@ static void pie_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 				tmp = (gchar *)xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1);
 				if(tmp) {
 					ctxt->subscription->metadata = metadata_list_append(ctxt->subscription->metadata, "pubDate", tmp);
-					ctxt->feed->time = parseISO8601Date(tmp);
+					ctxt->feed->time = date_parse_ISO8601 (tmp);
 					g_free(tmp);
 				}
 

@@ -1,7 +1,7 @@
 /**
  * @file pie_entry.c  Atom0.3 entry parsing 
  *
- * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2009 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@
 #include <libxml/parser.h>
 
 #include "common.h"
+#include "date.h"
 #include "feed_parser.h"
 #include "pie_entry.h"
 #include "pie_feed.h"
@@ -105,7 +106,7 @@ itemPtr parseEntry(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 		} else if(!xmlStrcmp(cur->name, BAD_CAST"issued")) {
 			/* FIXME: is <modified> or <issued> or <created> the time tag we want to display? */
  			if(NULL != (tmp = (gchar *)xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1))) {
-				ctxt->item->time = parseISO8601Date(tmp);
+				ctxt->item->time = date_parse_ISO8601 (tmp);
 				g_free(tmp);
 			}
 		} else if(!xmlStrcmp(cur->name, BAD_CAST"content")) {

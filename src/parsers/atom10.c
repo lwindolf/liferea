@@ -22,6 +22,7 @@
 #include <string.h>
 
 #include "common.h"
+#include "date.h"
 #include "debug.h"
 #include "enclosure.h"
 #include "feed_parser.h"
@@ -413,7 +414,7 @@ atom10_parse_entry_published (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct ato
 	
 	datestr = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
 	if (datestr) {
-		ctxt->item->time = parseISO8601Date (datestr);
+		ctxt->item->time = date_parse_ISO8601 (datestr);
 		ctxt->item->metadata = metadata_list_append (ctxt->item->metadata, "pubDate", datestr);
 		g_free (datestr);
 	}
@@ -466,7 +467,7 @@ atom10_parse_entry_updated (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom1
 	datestr = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
 	/* if pubDate is already set, don't overwrite it */
 	if (datestr && !metadata_list_get(ctxt->item->metadata, "pubDate")) {
-		ctxt->item->time = parseISO8601Date (datestr);
+		ctxt->item->time = date_parse_ISO8601 (datestr);
 		ctxt->item->metadata = metadata_list_append (ctxt->item->metadata, "contentUpdateDate", datestr);
 	}
 
@@ -711,7 +712,7 @@ atom10_parse_feed_updated (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10
 	timestamp = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
 	if (timestamp) {
 		ctxt->subscription->metadata = metadata_list_append (ctxt->subscription->metadata, "contentUpdateDate", timestamp);
-		ctxt->feed->time = parseISO8601Date (timestamp);
+		ctxt->feed->time = date_parse_ISO8601 (timestamp);
 		g_free (timestamp);
 	}
 }

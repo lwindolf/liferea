@@ -63,22 +63,6 @@
 long common_parse_long(gchar *str, long def);
 
 /**
- * Parses a ISO8601 date.
- *
- * @returns timestamp
- */
-time_t	parseISO8601Date(gchar *date);
-
-/**
- * Parses a RFC822 format date. This FAILS if a timezone string is
- * specified such as EDT or EST and that timezone is in daylight
- * savings time.
- *
- * @returns timestamp (GMT, no daylight savings time)
- */
-time_t	parseRFC822Date(gchar *date);
-
-/**
  * Returns the cache file storage path.
  * Usually: ~/.liferea/
  *
