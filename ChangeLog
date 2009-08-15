@@ -8,6 +8,8 @@
 	  crashes often. (Adrian Bunk)
 	* Fixes SF #2831007: Opening enclosures by URL fails intermitantly
 	  (Lars Lindner, reported by Eric Drechsel)
+	* Fixes a crash when adding Bloglines subscriptions.
+	  (Lars Lindner)
 
 
 2009-07-25  Adrian Bunk <bunk@users.sourceforge.net>
