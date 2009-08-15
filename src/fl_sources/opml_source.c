@@ -223,6 +223,8 @@ static struct subscriptionType opmlSubscriptionType = {
 	opml_subscription_process_update_result
 };
 
+subscriptionTypePtr opml_source_get_subscription_type (void) { return &opmlSubscriptionType; }
+
 /* OPML source type implementation */
 
 static void ui_opml_source_get_source_url (void);

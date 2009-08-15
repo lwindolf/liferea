@@ -22,6 +22,7 @@
 #define _OPML_SOURCE_H
 
 #include "node.h"
+#include "subscription_type.h"
 #include "fl_sources/node_source.h"
 
 #define OPML_SOURCE_DEFAULT_TITLE _("New OPML Subscription")
@@ -76,5 +77,10 @@ void opml_source_auto_update(nodePtr node);
  * Returns OPML source type implementation info.
  */
 nodeSourceTypePtr opml_source_get_type(void);
+
+/**
+ * Returns the OPML subscription type (for reuse with Bloglines)
+ */
+subscriptionTypePtr opml_source_get_subscription_type (void);
 
 #endif

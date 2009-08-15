@@ -45,6 +45,7 @@ on_bloglines_source_selected (GtkDialog *dialog,
 
 	if (response_id == GTK_RESPONSE_OK) {
 		subscription = subscription_new ("http://rpc.bloglines.com/listsubs", NULL, NULL);
+		subscription->type = opml_source_get_subscription_type ();
 		subscription->updateOptions->username = g_strdup (gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "userEntry"))));
 		subscription->updateOptions->password = g_strdup (gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "passwordEntry"))));
 
