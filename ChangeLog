@@ -20,6 +20,8 @@
 	  (Lars Lindner)
 	* Fixes a crash when adding Bloglines subscriptions.
 	  (Lars Lindner)
+	* Fixes a crash when deleting items.
+	  (Lars Lindner)
 	* Fixes SF #2823526: Increase the width of the left column
 	  in the Script Manager.
 	  (Adrian Bunk, reported by Pavol Klačanský)
