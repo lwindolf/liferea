@@ -296,11 +296,12 @@
   </xsl:if>
 
   <!-- link cosmos search -->
-  <a class="linksearch"
-     href="liferea-link-search://{sourceId}-{nr}">
-    <img border="0" class="linksearchbtn" src="{$pixmapsDir}technorati.png"/>
-    <_span>link cosmos</_span>
-  </a>
+  <xsl:if test="source">
+    <a class="linksearch" href="liferea-link-search://{sourceId}-{nr}">
+      <img border="0" class="linksearchbtn" src="{$pixmapsDir}technorati.png"/>
+      <_span>link cosmos</_span>
+    </a>
+  </xsl:if>
 
  </td><!-- end of comment and search engine link -->
 </tr>

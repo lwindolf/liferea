@@ -25,6 +25,9 @@
 	* Fixes SF #2823526: Increase the width of the left column
 	  in the Script Manager.
 	  (Adrian Bunk, reported by Pavol Klačanský)
+	* Fixes Debian #539857: Hide link cosmos for items that don't have
+	  a valid url, instead of displaying it and crashing when clicked.
+	  (Emilio Pozuelo Monfort)
 
 	* Update of French translation (Vincent Lefevre)
 
