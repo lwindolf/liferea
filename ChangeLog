@@ -10,6 +10,9 @@
 	  (Lars Lindner, reported by Eric Drechsel)
 	* Fixes a crash when adding Bloglines subscriptions.
 	  (Lars Lindner)
+	* Fixes SF #2823526: Increase the width of the left column
+	  in the Skript Manager.
+	  (Adrian Bunk, reported by Pavol Klačanský)
 
 
 2009-07-25  Adrian Bunk <bunk@users.sourceforge.net>
