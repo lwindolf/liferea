@@ -29,7 +29,7 @@
 #include <glib.h>
 
 /*
- * Standard gettext macros (as provided by glade-2).
+ * Standard gettext macros
  */
 #ifdef ENABLE_NLS
 #  include <libintl.h>
