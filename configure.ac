@@ -5,7 +5,8 @@ AC_CANONICAL_HOST
 AC_CONFIG_SRCDIR([src/feedlist.c])
 
 AC_CONFIG_HEADERS([config.h])
-AM_INIT_AUTOMAKE([1.6 foreign std-options])
+AM_INIT_AUTOMAKE([1.11 foreign std-options])
+AM_SILENT_RULES([yes])
 
 AC_PREREQ(2.59)
 

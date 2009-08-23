@@ -28,6 +28,7 @@
 	* Fixes Debian #539857: Hide link cosmos for items that don't have
 	  a valid url, instead of displaying it and crashing when clicked.
 	  (Emilio Pozuelo Monfort, reported by Nelson A. de Oliveira)
+	* Use silent automake rules. (Adrian Bunk)
 
 	* Update of French translation (Vincent Lefevre)
 
