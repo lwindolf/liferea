@@ -39,7 +39,6 @@
 #include <sys/stat.h>
 #include <errno.h>
 #include <string.h>
-#include <locale.h>
 #include <time.h>
 #include <stdlib.h>
 #include <ctype.h>
