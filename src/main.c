@@ -29,6 +29,7 @@
 #endif
 
 #include <gtk/gtk.h>
+#include <locale.h> /* For setlocale */
 #include <unique/unique.h>
 
 #include <string.h>

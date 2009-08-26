@@ -170,7 +170,7 @@ ui_choose_file_or_dir(gchar *title, const gchar *buttonName, gboolean saving, gb
 	tuple->user_data = user_data;
 
 	button = gtk_dialog_add_button (GTK_DIALOG (dialog), buttonName, GTK_RESPONSE_ACCEPT);
-	gtk_widget_set_can_default (button, TRUE);
+	GTK_WIDGET_SET_FLAGS (button, GTK_CAN_DEFAULT);
 	gtk_widget_grab_default (button);
 
 	g_signal_connect (G_OBJECT (dialog), "response",
