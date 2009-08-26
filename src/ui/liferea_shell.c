@@ -243,7 +243,7 @@ liferea_shell_save_position (void)
 	}
 	
 	/* The following needs to be skipped when the window is not visible */
-	if (!GTK_WIDGET_VISIBLE (shell->priv->window))
+	if (!gtk_widget_get_visible (GTK_WIDGET (shell->priv->window)))
 		return;
 
 	conf_get_bool_value (LAST_WINDOW_MAXIMIZED, &last_window_maximized);
@@ -489,7 +489,7 @@ on_notebook_scroll_event_null_cb (GtkWidget *widget, GdkEventScroll *event)
 	GtkWidget* child;
 	GtkWidget* originator;
 
-	if (!notebook->cur_page)
+	if (!gtk_notebook_get_current_page (notebook))
 		return FALSE;
 
 	child = gtk_notebook_get_nth_page (notebook, gtk_notebook_get_current_page (notebook));
@@ -799,7 +799,7 @@ liferea_shell_URL_received (GtkWidget *widget, GdkDragContext *context, gint x, 
 	nodePtr		node;
 	gint		tx, ty;
 	
-	g_return_if_fail (data->data != NULL);
+	g_return_if_fail (gtk_selection_data_get_data (data) != NULL);
 		
 	mainwindow = GTK_WIDGET (liferea_shell_lookup ("mainwindow"));
 	treeview = GTK_TREE_VIEW (liferea_shell_lookup ("feedlist"));
@@ -808,9 +808,9 @@ liferea_shell_URL_received (GtkWidget *widget, GdkDragContext *context, gint x, 
 	/* x and y are relative to the main window, make them relative to the treeview */
 	g_assert (gtk_widget_translate_coordinates (mainwindow, GTK_WIDGET (treeview), x, y, &tx, &ty));
 
-	if ((data->length >= 0) && (data->format == 8)) {
-		/* extra handling to accept multiple drops */	
-		freeme = tmp1 = g_strdup (data->data);
+	if ((gtk_selection_data_get_length (data) >= 0) && (gtk_selection_data_get_format (data) == 8)) {
+		/* extra handling to accept multiple drops */
+		freeme = tmp1 = g_strdup (gtk_selection_data_get_data (data));
 		while ((tmp2 = strsep (&tmp1, "\n\r"))) {
 			if (strlen (tmp2)) {
 				/* if the drop is over a node, select it so that feedlist_add_subscription()
@@ -1386,7 +1386,7 @@ liferea_shell_present (void)
 {
 	GtkWidget *mainwindow = GTK_WIDGET (shell->priv->window);
 	
-	if ((gdk_window_get_state (mainwindow->window) & GDK_WINDOW_STATE_ICONIFIED) || !GTK_WIDGET_VISIBLE (mainwindow))
+	if ((gdk_window_get_state (gtk_widget_get_window (mainwindow)) & GDK_WINDOW_STATE_ICONIFIED) || !gtk_widget_get_visible (mainwindow))
 		liferea_shell_restore_position ();
 
 	gtk_window_present (shell->priv->window);
@@ -1397,8 +1397,8 @@ liferea_shell_toggle_visibility (void)
 {
 	GtkWidget *mainwindow = GTK_WIDGET (shell->priv->window);
 	
-	if ((gdk_window_get_state (mainwindow->window) & GDK_WINDOW_STATE_ICONIFIED) ||
-	    !GTK_WIDGET_VISIBLE (mainwindow)) {
+	if ((gdk_window_get_state (gtk_widget_get_window (mainwindow)) & GDK_WINDOW_STATE_ICONIFIED) ||
+	    !gtk_widget_get_visible (mainwindow)) {
 		liferea_shell_restore_position ();
 		gtk_window_present (shell->priv->window);
 	} else {

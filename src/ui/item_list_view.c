@@ -809,7 +809,7 @@ on_itemlist_button_press_event (GtkWidget *treeview, GdkEventButton *event, gpoi
 				if (column) {
 					/* Allow flag toggling when left clicking in the flagging column.
 					   We depend on the fact that the state column is the first!!! */
-					if (event->x <= column->width) {
+					if (event->x <= gtk_tree_view_column_get_fixed_width (column)) {
 						itemlist_toggle_flag (item);
 						result = TRUE;
 					}

@@ -180,7 +180,7 @@ ui_popup_systray_menu (GtkMenuPositionFunc func, guint button, guint32 activate_
 
 	gtk_menu_shell_append (GTK_MENU_SHELL(menu), gtk_separator_menu_item_new());
 
-	ui_popup_add_menuitem (menu, _("_Show Liferea"), on_toggle_visibility, NULL, NULL, (!(gdk_window_get_state (mainwindow->window) & GDK_WINDOW_STATE_ICONIFIED) && GTK_WIDGET_VISIBLE (mainwindow)) + UI_POPUP_ITEM_IS_TOGGLE);
+	ui_popup_add_menuitem (menu, _("_Show Liferea"), on_toggle_visibility, NULL, NULL, (!(gdk_window_get_state (gtk_widget_get_window (mainwindow)) & GDK_WINDOW_STATE_ICONIFIED) && gtk_widget_is_visible (mainwindow)) + UI_POPUP_ITEM_IS_TOGGLE);
 	ui_popup_add_menuitem (menu, _("_Quit"), on_popup_quit, NULL, GTK_STOCK_QUIT, 0);
 
 	ui_popup_menu_at_pos (menu, func, button, activate_time, user_data);
