@@ -475,7 +475,7 @@ void google_source_edit_remove_subscription (GoogleSourcePtr gsource, const gcha
 
 gboolean google_source_edit_is_in_queue (GoogleSourcePtr gsource, const gchar* guid) 
 {
-	/* this is inefficient, but works for the timebeing */
+	/* this is inefficient, but works for the time being */
 	GList *cur = gsource->actionQueue->head; 
 	for(; cur; cur = g_list_next (cur)) { 
 		GoogleSourceActionPtr action = cur->data; 
