@@ -66,6 +66,7 @@ Lars Strojny <lars@strojny.net>				Statusbar improvements
 Jon Forsberg <zzed2004@users.sf.net>			Enclosure context menu patch
 Mathie Leplatre						Option to filter feed list
 Mikel Olasagasti <mikel@olasagasti.info>		GeoRSS support
+Rupert Swarbrick <rswarbrick@users.sf.net>		OPML duplicate id fix
 
 Maintainer Credits
 ==================

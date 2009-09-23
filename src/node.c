@@ -60,16 +60,28 @@ node_new_id (void)
 	return id;
 }
 
-nodePtr node_from_id(const gchar *id) {
+nodePtr
+node_is_used_id (const gchar *id)
+{
 	nodePtr	node;
 
-	if(!id)
+	if (!id)
 		return NULL;
-		
-	g_assert(NULL != nodes);
-	node = (nodePtr)g_hash_table_lookup(nodes, id);
-	if(!node)
-		debug1(DEBUG_GUI, "Fatal: no node with id \"%s\" found!", id);
+
+	g_assert (NULL != nodes);
+	node = (nodePtr)g_hash_table_lookup (nodes, id);
+
+	return node;
+}
+
+nodePtr
+node_from_id (const gchar *id)
+{
+	nodePtr node;
+	
+	node = node_is_used_id (id);
+	if (!node)
+		debug1 (DEBUG_GUI, "Fatal: no node with id \"%s\" found!", id);
 		
 	return node;
 }

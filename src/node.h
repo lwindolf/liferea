@@ -75,14 +75,26 @@ typedef struct node {
  *
  * @returns the new node
  */
-nodePtr node_new(struct nodeType *type);
+nodePtr node_new (struct nodeType *type);
 
 /**
- * Node lookup by node id.
+ * Can be used to check wether an id is used or not.
+ *
+ * @param id	the node id to check
  *
  * @returns the node with the given id (or NULL)
  */
-nodePtr node_from_id(const gchar *id);
+nodePtr node_is_used_id (const gchar *id);
+
+/**
+ * Node lookup by node id. Will report an error if the queried
+ * id does not exist.
+ *
+ * @param id	the node id to look up
+ *
+ * @returns the node with the given id (or NULL)
+ */
+nodePtr node_from_id (const gchar *id);
 
 /**
  * Sets a nodes parent. If no parent node is given the 

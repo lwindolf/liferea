@@ -230,6 +230,15 @@ import_parse_outline (xmlNodePtr cur, nodePtr parentNode, gboolean trusted)
 	if (trusted) {
 		gchar *id = NULL;
 		id = xmlGetProp (cur, BAD_CAST"id");
+
+		/* If, for some reason, the OPML has been corrupted
+		   and there are two copies asking for a certain ID
+		   then give the second one a new ID. */
+		if (node_is_used_id (id)) {
+			xmlFree (id);
+			id = NULL;
+		}
+
 		if (id) {
 			node_set_id (node, id);
 			xmlFree (id);
