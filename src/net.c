@@ -204,6 +204,7 @@ network_init (void)
 
 	/* Initialize libsoup */
 	session = soup_session_async_new_with_options (SOUP_SESSION_USER_AGENT, useragent,
+						       SOUP_SESSION_TIMEOUT, 120,
 						       SOUP_SESSION_IDLE_TIMEOUT, 30,
 						       SOUP_SESSION_PROXY_URI, proxy,
 						       SOUP_SESSION_ADD_FEATURE, cookies,
@@ -211,6 +212,7 @@ network_init (void)
 
 	/* This session is for those cases where we are told not to use the proxy */
 	session_no_proxy = soup_session_async_new_with_options (SOUP_SESSION_USER_AGENT, useragent,
+								SOUP_SESSION_TIMEOUT, 120,
 								SOUP_SESSION_IDLE_TIMEOUT, 30,
 								SOUP_SESSION_ADD_FEATURE, cookies,
 								NULL);
@@ -218,6 +220,7 @@ network_init (void)
 	/* This session is for those cases where we need to add specific cookies, e.g. Google Reader.
 	 * Once GNOME #574571 is fixed, we will be able to use the normal session */
 	session_no_cookies = soup_session_async_new_with_options (SOUP_SESSION_USER_AGENT, useragent,
+								  SOUP_SESSION_TIMEOUT, 120,
 								  SOUP_SESSION_IDLE_TIMEOUT, 30,
 								  SOUP_SESSION_PROXY_URI, proxy,
 								  NULL);
@@ -225,6 +228,7 @@ network_init (void)
 	/* And this one is for cases where we need to use our own cookies, and bypass the proxy, e.g.
 	 * Google Reader subscription where the "ignore proxy" preference is set */
 	session_no_cookies_no_proxy = soup_session_async_new_with_options (SOUP_SESSION_USER_AGENT, useragent,
+									   SOUP_SESSION_TIMEOUT, 120,
 									   SOUP_SESSION_IDLE_TIMEOUT, 30,
 									   NULL);
 

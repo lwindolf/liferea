@@ -31,6 +31,7 @@
 	* Use silent automake rules. (Adrian Bunk)
 	* Patch #2843340: Fixes handling of duplicate ids in OPML files.
 	  (Ruper Swarbrick)
+	* Added a timeout for downloads. (Arnold Noronha)
 
 	* Update of French translation (Vincent Lefevre)
 
