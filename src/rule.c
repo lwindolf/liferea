@@ -18,16 +18,13 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
+#include "rule.h"
 
-#include <string.h> /* For strstr() */
+#include <string.h>
 
 #include "common.h"
 #include "db.h"
 #include "debug.h"
-#include "rule.h"
 
 #define ITEM_MATCH_RULE_ID		"exact"
 #define ITEM_TITLE_MATCH_RULE_ID	"exact_title"
