@@ -1,7 +1,7 @@
 /**
  * @file rule.c  DB based item matching rule handling
  *
- * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2009 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,11 +44,19 @@ typedef conditionPtr (*ruleConditionFunc)	(rulePtr rule);
 /** function type used to check in memory items */
 typedef gboolean (*ruleCheckFunc)	(rulePtr rule, itemPtr item);
    
-/* the rule function list is used to create popup menues in ui_vfolder.c */
-struct ruleInfo *ruleFunctions = NULL;
-gint nrOfRuleFunctions = 0;
+/** list of available search folder rules */
+static GSList *ruleFunctions = NULL;
 
 static void rule_init (void);
+
+GSList *
+rule_get_available_rules (void)
+{
+	if (!ruleFunctions)
+		rule_init ();
+		
+	return ruleFunctions;
+}
 
 /* rule creation */
 
@@ -58,24 +66,21 @@ rule_new (struct vfolder *vfolder,
           const gchar *value,
           gboolean additive) 
 {
-	ruleInfoPtr	ruleInfo;
-	rulePtr		rule;
-	int		i;
+	GSList		*iter;
 	
-	if (!ruleFunctions)
-		rule_init ();
-	
-	for (i = 0, ruleInfo = ruleFunctions; i < nrOfRuleFunctions; i++, ruleInfo++) 
-	{
-		if (0 == strcmp (ruleInfo->ruleId, ruleId)) 
-		{
-			rule = (rulePtr) g_new0 (struct rule, 1);
+	iter = rule_get_available_rules ();
+	while (iter) {
+		ruleInfoPtr ruleInfo = (ruleInfoPtr)iter->data;
+		if (0 == strcmp (ruleInfo->ruleId, ruleId)) {
+			rulePtr rule = (rulePtr) g_new0 (struct rule, 1);
 			rule->ruleInfo = ruleInfo;
 			rule->additive = additive;
 			rule->vp = vfolder;		
 			rule->value = common_strreplace (g_strdup (value), "'", "");	
 			return rule;
 		}
+		
+		iter = g_slist_next (iter);
 	}	
 	return NULL;
 }
@@ -339,7 +344,7 @@ rules_check_item (GSList *rules, gboolean anyMatch, itemPtr item)
 /* rule initialization */
 
 static void
-rule_add (ruleConditionFunc queryFunc,
+rule_info_add (ruleConditionFunc queryFunc,
           ruleCheckFunc checkFunc,
           const gchar *ruleId, 
           gchar *title,
@@ -347,19 +352,17 @@ rule_add (ruleConditionFunc queryFunc,
           gchar *negative,
           gboolean needsParameter)
 {
+	ruleInfoPtr	ruleInfo;
 
-	ruleFunctions = (ruleInfoPtr) g_realloc (ruleFunctions, sizeof (struct ruleInfo) * (nrOfRuleFunctions + 1));
-	if (NULL == ruleFunctions)
-		g_error("could not allocate memory!");
-		
-	ruleFunctions[nrOfRuleFunctions].ruleId = ruleId;
-	ruleFunctions[nrOfRuleFunctions].title = title;
-	ruleFunctions[nrOfRuleFunctions].positive = positive;
-	ruleFunctions[nrOfRuleFunctions].negative = negative;
-	ruleFunctions[nrOfRuleFunctions].needsParameter = needsParameter;	
-	ruleFunctions[nrOfRuleFunctions].checkFunc = checkFunc;
-	ruleFunctions[nrOfRuleFunctions].queryFunc = queryFunc;	
-	nrOfRuleFunctions++;
+	ruleInfo = (ruleInfoPtr) g_new0 (struct ruleInfo, 1);
+	ruleInfo->ruleId = ruleId;
+	ruleInfo->title = title;
+	ruleInfo->positive = positive;
+	ruleInfo->negative = negative;
+	ruleInfo->needsParameter = needsParameter;	
+	ruleInfo->checkFunc = checkFunc;
+	ruleInfo->queryFunc = queryFunc;	
+	ruleFunctions = g_slist_append (ruleFunctions, ruleInfo);
 }
 
 static void
@@ -370,15 +373,15 @@ rule_init (void)
 	/*        SQL condition builder function	in-memory check function	feedlist.opml rule id           rule menu label         positive menu option    negative menu option    has param */ 
 	/*        ========================================================================================================================================================================================*/
 	
-	rule_add (rule_condition_item_match,		NULL,				ITEM_MATCH_RULE_ID,		_("Item"),		_("does contain"),	_("does not contain"),	TRUE);
-	rule_add (rule_condition_item_title_match,	NULL,				ITEM_TITLE_MATCH_RULE_ID,	_("Item title"),	_("does contain"),	_("does not contain"),	TRUE);
-	rule_add (rule_condition_item_description_match, NULL,				ITEM_DESC_MATCH_RULE_ID,	_("Item body"),		_("does contain"),	_("does not contain"),	TRUE);
-	rule_add (rule_condition_feed_title_match,	NULL,				"feed_title",			_("Feed title"),	_("does contain"),	_("does not contain"),	TRUE);
-	rule_add (rule_condition_item_is_unread,	rule_check_item_is_unread,	"unread",			_("Read status"),	_("is unread"),		_("is read"),		FALSE);
-	rule_add (rule_condition_item_is_flagged,	rule_check_item_is_flagged,	"flagged",			_("Flag status"),	_("is flagged"),	_("is unflagged"),	FALSE);
-	rule_add (rule_condition_item_was_updated,	NULL, 				"updated",			_("Update status"),	_("was updated"),	_("was not updated"),	FALSE);
-	rule_add (rule_condition_item_has_enclosure,	NULL,				"enclosure",			_("Podcast"),		_("included"),		_("not included"),	FALSE);
-	rule_add (rule_condition_item_has_category,	NULL,				"category",			_("Category"),		_("is set"),		_("is not set"),	TRUE);
+	rule_info_add (rule_condition_item_match,		NULL,				ITEM_MATCH_RULE_ID,		_("Item"),		_("does contain"),	_("does not contain"),	TRUE);
+	rule_info_add (rule_condition_item_title_match,	NULL,				ITEM_TITLE_MATCH_RULE_ID,	_("Item title"),	_("does contain"),	_("does not contain"),	TRUE);
+	rule_info_add (rule_condition_item_description_match, NULL,				ITEM_DESC_MATCH_RULE_ID,	_("Item body"),		_("does contain"),	_("does not contain"),	TRUE);
+	rule_info_add (rule_condition_feed_title_match,	NULL,				"feed_title",			_("Feed title"),	_("does contain"),	_("does not contain"),	TRUE);
+	rule_info_add (rule_condition_item_is_unread,	rule_check_item_is_unread,	"unread",			_("Read status"),	_("is unread"),		_("is read"),		FALSE);
+	rule_info_add (rule_condition_item_is_flagged,	rule_check_item_is_flagged,	"flagged",			_("Flag status"),	_("is flagged"),	_("is unflagged"),	FALSE);
+	rule_info_add (rule_condition_item_was_updated,	NULL, 				"updated",			_("Update status"),	_("was updated"),	_("was not updated"),	FALSE);
+	rule_info_add (rule_condition_item_has_enclosure,	NULL,				"enclosure",			_("Podcast"),		_("included"),		_("not included"),	FALSE);
+	rule_info_add (rule_condition_item_has_category,	NULL,				"category",			_("Category"),		_("is set"),		_("is not set"),	TRUE);
 
 	debug_exit ("rule_init");
 }

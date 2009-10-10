@@ -1,7 +1,7 @@
 /**
  * @file rule.h  DB item match rule handling
  *
- * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2009 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,9 +46,13 @@ typedef struct rule {
 	gboolean	additive;	/* is the rule positive logic */
 } *rulePtr;
 
-/** the list of implemented rules */
-extern struct ruleInfo *ruleFunctions;
-extern gint nrOfRuleFunctions;
+/**
+ * Returns a list of rule infos. To be used for rule editor 
+ * dialog setup.
+ *
+ * @returns a list of rule infos
+ */
+GSList * rule_get_available_rules (void);
 
 /** 
  * Looks up the given rule id and sets up a new rule

@@ -142,7 +142,7 @@ rule_editor_setup_widgets (struct changeRequest *changeRequest, rulePtr rule)
 	GtkWidget	*widget;
 	ruleInfoPtr	ruleInfo;
 
-	ruleInfo = ruleFunctions + changeRequest->rule;
+	ruleInfo = g_slist_nth_data (rule_get_available_rules (), changeRequest->rule);
 	g_object_set_data (G_OBJECT (changeRequest->paramHBox), "rule", rule);
 			
 	/* remove of old widgets */
@@ -182,7 +182,7 @@ do_ruletype_changed (struct changeRequest	*changeRequest)
 		changeRequest->editor->priv->newRules = g_slist_remove (changeRequest->editor->priv->newRules, rule);
 		rule_free (rule);
 	}
-	ruleInfo = ruleFunctions + changeRequest->rule;
+	ruleInfo = g_slist_nth_data (rule_get_available_rules (), changeRequest->rule);
 	rule = rule_new (changeRequest->editor->priv->vfolder, ruleInfo->ruleId, "", TRUE);
 	changeRequest->editor->priv->newRules = g_slist_append (changeRequest->editor->priv->newRules, rule);
 	
@@ -222,20 +222,22 @@ on_ruleremove_clicked (GtkButton *button, gpointer user_data)
 void
 rule_editor_add_rule (RuleEditor *re, rulePtr rule)
 {
+	GSList			*ruleIter;
 	GtkWidget		*hbox, *hbox2, *widget;
 	GtkListStore		*store;
 	struct changeRequest	*changeRequest, *selected = NULL;
-	ruleInfoPtr		ruleInfo;
-	gint			i, active = 0;
+	gint			i = 0, active = 0;
 
 	hbox = gtk_hbox_new (FALSE, 2);	/* hbox to contain all rule widgets */
 	hbox2 = gtk_hbox_new (FALSE, 2);	/* another hbox where the rule specific widgets are added */
 		
 	/* set up the rule type selection popup */
 	store = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_POINTER);
-	for (i = 0, ruleInfo = ruleFunctions; i < nrOfRuleFunctions; i++, ruleInfo++) {
+	ruleIter = rule_get_available_rules ();
+	while (ruleIter) {
+		ruleInfoPtr ruleInfo = (ruleInfoPtr)ruleIter->data;
 		GtkTreeIter iter;
-
+		
 		/* we add a change request to each popup option */
 		changeRequest = g_new0 (struct changeRequest, 1);
 		changeRequest->paramHBox = hbox2;
@@ -255,6 +257,9 @@ rule_editor_add_rule (RuleEditor *re, rulePtr rule)
 				active = i;
 			}
 		}
+		
+		ruleIter = g_slist_next (ruleIter);
+		i++;
 	}
 	widget = gtk_combo_box_new ();
 	ui_common_setup_combo_text (GTK_COMBO_BOX (widget), 0);
