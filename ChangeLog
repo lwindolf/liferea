@@ -18,6 +18,7 @@
 	  (Emilio Pozuelo Monfort, reported by Nelson A. de Oliveira)
 	* Fixes SF #2861203: Crash when creating new search folder.
 	  (reported by Andreas Kern and larslj)
+	* Added a timeout for downloads. (Arnold Noronha)
 
 	Translations
 
