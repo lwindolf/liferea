@@ -34,6 +34,8 @@
 	* Added a timeout for downloads. (Arnold Noronha)
 	* Fixes SF #2861203: Crash when creating new search folder.
 	  (reported by Andreas Kern and larslj)
+	* Fixes SF #2873588: Error in welcome message.
+	  (reported by adiroiban)
 
 	* Update of French translation (Vincent Lefevre)
 

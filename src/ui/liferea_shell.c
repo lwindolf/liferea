@@ -1345,7 +1345,7 @@ liferea_shell_create (int initialState)
 	g_string_append (buffer,   _("<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news "
 				   "feeds.</p>"
 				   "<p>The left pane contains the list of your subscriptions. To add a "
-				   "subscription select Feeds -&gt; New Subscription. To browse the headlines "
+				   "subscription select Subscription -&gt; New Subscription. To browse the headlines "
 				   "of a feed select it in the feed list and the headlines will be loaded "
 				   "into the right pane.</p>"));
 	g_string_append (buffer,   "</td></tr></table>");
