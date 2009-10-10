@@ -198,7 +198,8 @@ on_ruletype_changed (GtkComboBox *optionmenu, gpointer user_data)
 	
 	if (gtk_combo_box_get_active_iter (optionmenu, &iter)) {
 		gtk_tree_model_get (gtk_combo_box_get_model (optionmenu), &iter, 1, &changeRequest, -1);
-		do_ruletype_changed (changeRequest);
+		if (changeRequest)
+			do_ruletype_changed (changeRequest);
 	}
 }
 

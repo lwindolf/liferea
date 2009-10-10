@@ -32,6 +32,8 @@
 	* Patch #2843340: Fixes handling of duplicate ids in OPML files.
 	  (Ruper Swarbrick)
 	* Added a timeout for downloads. (Arnold Noronha)
+	* Fixes SF #2861203: Crash when creating new search folder.
+	  (reported by Andreas Kern and larslj)
 
 	* Update of French translation (Vincent Lefevre)
 
