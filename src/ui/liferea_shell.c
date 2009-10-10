@@ -1100,9 +1100,6 @@ liferea_shell_create (int initialState)
 	g_object_new (LIFEREA_SHELL_TYPE, NULL);
 
 	shell->priv->window = GTK_WINDOW (liferea_shell_lookup ("mainwindow"));
-
-	// FIXME: do we use this anywhere?
-	gtk_widget_set_name (liferea_shell_lookup ("feedlist"), "feedlist");
 	
 	/* 2.) menu creation */
 	
