@@ -190,6 +190,9 @@ on_ruletype_changed (GtkOptionMenu *optionmenu, gpointer user_data)
 	ruleInfoPtr		ruleInfo;
 	rulePtr			rule;
 	
+	if (!changeRequest)
+		return;
+	
 	rule = g_object_get_data (G_OBJECT (changeRequest->paramHBox), "rule");
 	if (rule) {
 		changeRequest->editor->priv->newRules = g_slist_remove (changeRequest->editor->priv->newRules, rule);
