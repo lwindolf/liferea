@@ -34,9 +34,6 @@
 #define HOMEPAGE	"http://liferea.sf.net/"
 
 static SoupSession *session;
-static SoupSession *session_no_proxy;
-static SoupSession *session_no_cookies;
-static SoupSession *session_no_cookies_no_proxy;
 static SoupURI *proxy = NULL;
 
 static gchar	*proxyname = NULL;
@@ -96,9 +93,7 @@ network_process_request (const updateJobPtr const job)
 {
 	SoupMessage	*msg;
 	SoupDate	*date;
-	gboolean	no_proxy = FALSE;
-	gboolean	no_cookies = FALSE;
-	
+
 	g_assert (NULL != job->request);
 	debug1 (DEBUG_NET, "downloading %s", job->request->source);
 
@@ -147,11 +142,7 @@ network_process_request (const updateJobPtr const job)
 	if (job->request->updateState && job->request->updateState->cookies) {
 		soup_message_headers_append (msg->request_headers, "Cookie",
 		                             job->request->updateState->cookies);
-						
-		/* This might be confusing: But what we mean by setting this flag
-		   is that we do want to ignore the cookie file in ~/.liferea_1.x
-		   and pass a single cookie in the headers instead. */			
-		no_cookies = TRUE;
+		soup_message_disable_feature (msg, SOUP_TYPE_COOKIE_JAR);
 	}
 
 	/* TODO: Right now we send the msg, and if it requires authentication and
@@ -162,22 +153,12 @@ network_process_request (const updateJobPtr const job)
 	 * msg to a callback in case of 401 (see soup_message_add_status_code_handler())
 	 * displaying the dialog ourselves, and requeing the msg if we get credentials */
 
-	/* We queue the message in one session or the other depending on the global
-	 * proxy settings and whether the feed properties has the "dont use a proxy" 
-	 * checkbox enabled */
+	/* If the feed has "dont use a proxy" selected, disable the proxy for the msg */
 	if ((job->request->options && job->request->options->dontUseProxy) ||
-	    (NULL == network_get_proxy_host ()))
-		no_proxy = TRUE;
+	    (network_get_proxy_host () == NULL))
+		soup_message_disable_feature (msg, SOUP_TYPE_PROXY_RESOLVER);
 
-	if (no_proxy && no_cookies) {
-		soup_session_queue_message (session_no_cookies_no_proxy, msg, network_process_callback, job);
-	} else if (no_proxy) {
-		soup_session_queue_message (session_no_proxy, msg, network_process_callback, job);
-	} else if (no_cookies) {
-		soup_session_queue_message (session_no_cookies, msg, network_process_callback, job);
-	} else {
-		soup_session_queue_message (session, msg, network_process_callback, job);
-	}
+	soup_session_queue_message (session, msg, network_process_callback, job);
 }
 
 void
@@ -209,28 +190,6 @@ network_init (void)
 						       SOUP_SESSION_PROXY_URI, proxy,
 						       SOUP_SESSION_ADD_FEATURE, cookies,
 						       NULL);
-
-	/* This session is for those cases where we are told not to use the proxy */
-	session_no_proxy = soup_session_async_new_with_options (SOUP_SESSION_USER_AGENT, useragent,
-								SOUP_SESSION_TIMEOUT, 120,
-								SOUP_SESSION_IDLE_TIMEOUT, 30,
-								SOUP_SESSION_ADD_FEATURE, cookies,
-								NULL);
-
-	/* This session is for those cases where we need to add specific cookies, e.g. Google Reader.
-	 * Once GNOME #574571 is fixed, we will be able to use the normal session */
-	session_no_cookies = soup_session_async_new_with_options (SOUP_SESSION_USER_AGENT, useragent,
-								  SOUP_SESSION_TIMEOUT, 120,
-								  SOUP_SESSION_IDLE_TIMEOUT, 30,
-								  SOUP_SESSION_PROXY_URI, proxy,
-								  NULL);
-
-	/* And this one is for cases where we need to use our own cookies, and bypass the proxy, e.g.
-	 * Google Reader subscription where the "ignore proxy" preference is set */
-	session_no_cookies_no_proxy = soup_session_async_new_with_options (SOUP_SESSION_USER_AGENT, useragent,
-									   SOUP_SESSION_TIMEOUT, 120,
-									   SOUP_SESSION_IDLE_TIMEOUT, 30,
-									   NULL);
 
 	/* Soup debugging */
 	if (debug_level & DEBUG_NET) {
@@ -298,14 +257,10 @@ network_set_proxy (gchar *host, guint port, gchar *user, gchar *password)
 
 	/* The sessions will be NULL if we were called from conf_init() as that's called
 	 * before net_init() */
-	if (session) {
+	if (session)
 		g_object_set (session,
 			      SOUP_SESSION_PROXY_URI, newproxy,
 			      NULL);
-		g_object_set (session_no_cookies,
-			      SOUP_SESSION_PROXY_URI, newproxy,
-			      NULL);
-	}
 
 	if (proxy)
 		soup_uri_free (proxy);

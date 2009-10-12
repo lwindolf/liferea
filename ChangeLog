@@ -36,6 +36,10 @@
 	  (reported by Andreas Kern and larslj)
 	* Fixes SF #2873588: Error in welcome message.
 	  (reported by adiroiban)
+	* Use soup_message_disable_feature() to disable proxy and
+	  cookies when needed, instead of creating multiple SoupSessions,
+	  one for each use case. Require libsoup >= 2.28.0 for it.
+	  (Emilio Pozuelo Monfort)
 
 	* Update of French translation (Vincent Lefevre)
 
