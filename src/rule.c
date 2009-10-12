@@ -48,8 +48,6 @@ typedef gboolean (*ruleCheckFunc)	(rulePtr rule, itemPtr item);
 struct ruleInfo *ruleFunctions = NULL;
 gint nrOfRuleFunctions = 0;
 
-static void rule_init (void);
-
 /* rule creation */
 
 rulePtr
@@ -362,7 +360,7 @@ rule_add (ruleConditionFunc queryFunc,
 	nrOfRuleFunctions++;
 }
 
-static void
+void
 rule_init (void) 
 {
 	debug_enter ("rule_init");

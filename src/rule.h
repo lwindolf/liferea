@@ -50,6 +50,8 @@ typedef struct rule {
 extern struct ruleInfo *ruleFunctions;
 extern gint nrOfRuleFunctions;
 
+void rule_init (void);
+
 /** 
  * Looks up the given rule id and sets up a new rule
  * structure with for the given search folder and rule value 

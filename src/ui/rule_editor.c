@@ -228,9 +228,12 @@ rule_editor_add_rule (RuleEditor *re, rulePtr rule)
 	struct changeRequest	*changeRequest, *selected = NULL;
 	ruleInfoPtr		ruleInfo;
 	gint			i;
-
+	
 	hbox = gtk_hbox_new (FALSE, 2);	/* hbox to contain all rule widgets */
 	hbox2 = gtk_hbox_new (FALSE, 2);	/* another hbox where the rule specific widgets are added */
+
+	if (nrOfRuleFunctions == 0)
+		rule_init();
 		
 	/* set up the rule type selection popup */
 	menu = gtk_menu_new ();
