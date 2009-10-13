@@ -40,6 +40,9 @@
 	  cookies when needed, instead of creating multiple SoupSessions,
 	  one for each use case. Require libsoup >= 2.28.0 for it.
 	  (Emilio Pozuelo Monfort)
+	* Stop accessing GTK+ structures directly, use accessors instead
+	  in preparation for GTK+ 3.0. Require gtk+ >= 2.18.0 for it.
+	  (Emilio Pozuelo Monfort)
 
 	* Update of French translation (Vincent Lefevre)
 

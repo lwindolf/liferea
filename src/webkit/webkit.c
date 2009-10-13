@@ -447,8 +447,8 @@ liferea_webkit_scroll_pagedown (GtkWidget *scrollpane)
 	g_assert (NULL != itemview);
 	vertical_adjustment = gtk_scrolled_window_get_vadjustment (itemview);
 	old_value = gtk_adjustment_get_value (vertical_adjustment);
-	new_value = old_value + vertical_adjustment->page_increment;
-	limit = vertical_adjustment->upper - vertical_adjustment->page_size;
+	new_value = old_value + gtk_adjustment_get_page_increment (vertical_adjustment);
+	limit = gtk_adjustment_get_upper (vertical_adjustment) - gtk_adjustment_get_page_size (vertical_adjustment);
 	if (new_value > limit) {
 		new_value = limit;
 	}
