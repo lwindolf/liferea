@@ -156,7 +156,7 @@ network_process_request (const updateJobPtr const job)
 	/* If the feed has "dont use a proxy" selected, disable the proxy for the msg */
 	if ((job->request->options && job->request->options->dontUseProxy) ||
 	    (network_get_proxy_host () == NULL))
-		soup_message_disable_feature (msg, SOUP_TYPE_PROXY_RESOLVER);
+		soup_message_disable_feature (msg, SOUP_TYPE_PROXY_URI_RESOLVER);
 
 	soup_session_queue_message (session, msg, network_process_callback, job);
 }
