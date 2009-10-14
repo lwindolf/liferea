@@ -196,7 +196,7 @@ db_end_transaction (void)
 	sqlite3_free (err);
 }
 
-#define SCHEMA_TARGET_VERSION 7
+#define SCHEMA_TARGET_VERSION 8
 	
 /* opening or creation of database */
 void
@@ -205,7 +205,6 @@ db_init (void)
 	gchar		*filename;
 	gint		schemaVersion;
 	gint		res;
-	gboolean	force_async = FALSE;
 		
 	debug_enter ("db_init");
 	
@@ -215,24 +214,6 @@ open:
 	res = sqlite3_open (filename, &db);
 	if (SQLITE_OK != res)
 		debug3 (DEBUG_CACHE, "Data base file %s could not be opened (error code %d: %s)...", filename, res, sqlite3_errmsg (db));
-	
-	/* FIXME: Async sqlite access for testing purpose */
-	conf_get_bool_value (FORCE_ASYNC_SQLITE, &force_async);
-	if (force_async) {
-		GFile *src, *dst;
-		gchar *backupFilename;
-		
-		/* DB file backup */
-		backupFilename = common_create_cache_filename (NULL, "liferea", "db.backup");
-		src = g_file_new_for_path (filename);
-		dst = g_file_new_for_path (backupFilename);
-		g_file_copy (src, dst, G_FILE_COPY_OVERWRITE, NULL, NULL, NULL, NULL);
-		g_free (backupFilename);
-		
-		/* http://sqlite.org/pragma.html */
-		db_exec ("PRAGMA synchronous=0;");
-	}
-
 	g_free (filename);
 	
 	sqlite3_extended_result_codes (db, TRUE);
@@ -309,6 +290,51 @@ open:
 				 "REPLACE INTO info (name, value) VALUES ('schemaVersion',7); "
 				 "END;");
 		}
+		
+		if (db_get_schema_version () == 7) {
+			/* 1.7.1 -> 1.7.2 dropping the itemsets relation */
+			db_exec ("BEGIN; "
+			         "CREATE TEMPORARY TABLE items_backup("
+			         "   item_id, "
+			         "   title, "
+			         "   read, "
+			         "   updated, "
+			         "   popup, "
+			         "   marked, "
+			         "   source, "
+			         "   source_id, "
+			         "   valid_guid, "
+			         "   description, "
+			         "   date, "
+			         "   comment_feed_id, "
+			         "   comment); "
+			         "INSERT into items_backup SELECT ROWID, title, read, updated, popup, marked, source, source_id, valid_guid, description, date, comment_feed_id, comment FROM items; "
+			         "DROP TABLE items; "
+		                 "CREATE TABLE items ("
+		        	 "   item_id		INTEGER,"
+				 "   parent_item_id     INTEGER,"
+		        	 "   node_id		INTEGER,"
+				 "   parent_node_id     INTEGER,"
+		        	 "   title		TEXT,"
+		        	 "   read		INTEGER,"
+		        	 "   updated		INTEGER,"
+		        	 "   popup		INTEGER,"
+		        	 "   marked		INTEGER,"
+		        	 "   source		TEXT,"
+		        	 "   source_id		TEXT,"
+		        	 "   valid_guid		INTEGER,"
+		        	 "   description	TEXT,"
+		        	 "   date		INTEGER,"
+		        	 "   comment_feed_id	INTEGER,"
+				 "   comment            INTEGER,"
+				 "   PRIMARY KEY (item_id)"
+		        	 ");"
+			         "INSERT INTO items SELECT itemsets.item_id, parent_item_id, node_id, parent_node_id, title, itemsets.read, updated, popup, marked, source, source_id, valid_guid, description, date, comment_feed_id, itemsets.comment FROM items_backup JOIN itemsets ON itemsets.item_id = items_backup.item_id; "
+			         "DROP TABLE items_backup; "
+			         "DROP TABLE itemsets; "
+			         "REPLACE INTO info (name, value) VALUES ('schemaVersion',8); "
+			         "END;" );
+		}
 
 		if (SCHEMA_TARGET_VERSION != db_get_schema_version ())
 			g_error ("Fatal: DB schema migration failed! Running with --debug-db could give some hints!");
@@ -325,38 +351,29 @@ open:
 
 	/* 1. Create tables if they do not exist yet */
 	db_exec ("CREATE TABLE items ("
+        	 "   item_id		INTEGER,"
+		 "   parent_item_id     INTEGER,"
+        	 "   node_id		INTEGER,"	/* FIXME: migrate node ids to real integers */
+		 "   parent_node_id     INTEGER,"	/* FIXME: migrate node ids to real integers */
         	 "   title		TEXT,"
         	 "   read		INTEGER,"
-        	 "   new		INTEGER,"	/* FIXME: drop this deprecated column on next DB migration! */
         	 "   updated		INTEGER,"
         	 "   popup		INTEGER,"
         	 "   marked		INTEGER,"
         	 "   source		TEXT,"
         	 "   source_id		TEXT,"
         	 "   valid_guid		INTEGER,"
-        	 "   real_source_url	TEXT,"		/* FIXME: drop this deprecated column on next DB migration! */
-        	 "   real_source_title	TEXT,"		/* FIXME: drop this deprecated column on next DB migration! */
         	 "   description	TEXT,"
         	 "   date		INTEGER,"
         	 "   comment_feed_id	TEXT,"
-		 "   comment            INTEGER"
+		 "   comment            INTEGER,"
+		 "   PRIMARY KEY (item_id)"
         	 ");");
 
 	db_exec ("CREATE INDEX items_idx ON items (source_id);");
 	db_exec ("CREATE INDEX items_idx2 ON items (comment_feed_id);");
-
-	db_exec ("CREATE TABLE itemsets ("
-        	 "   item_id		INTEGER,"
-		 "   parent_item_id     INTEGER,"
-        	 "   node_id		TEXT,"
-		 "   parent_node_id     TEXT,"
-        	 "   read		INTEGER,"
-		 "   comment            INTEGER,"
-        	 "   PRIMARY KEY (item_id, node_id)"
-        	 ");");
-
-	db_exec ("CREATE INDEX itemset_idx  ON itemsets (node_id);");
-	db_exec ("CREATE INDEX itemset_idx2 ON itemsets (item_id);");
+	db_exec ("CREATE INDEX items_idx3 ON items (node_id);");
+	db_exec ("CREATE INDEX items_idx4 ON items (item_id);");
 		
 	db_exec ("CREATE TABLE metadata ("
         	 "   item_id		INTEGER,"
@@ -440,28 +457,13 @@ open:
 		gchar *sql;
 		sqlite3_stmt *stmt;
 		
-		debug0 (DEBUG_DB, "Checking for items not referenced in table 'itemsets'...");
-		db_exec ("BEGIN; "
-		         "   CREATE TEMP TABLE tmp_id ( id );"
-			 "   INSERT INTO tmp_id SELECT ROWID FROM items WHERE ROWID NOT IN (SELECT item_id FROM itemsets);"
-			 "   DELETE FROM items WHERE ROWID IN (SELECT id FROM tmp_id LIMIT 1000);"
-			 "   DROP TABLE tmp_id;"
-			 "END;");
-			 
-		debug0 (DEBUG_DB, "Checking for invalid item ids in table 'itemsets'...");
-		db_exec ("BEGIN; "
-		         "   CREATE TEMP TABLE tmp_id ( id );"
-		         "   INSERT INTO tmp_id SELECT item_id FROM itemsets WHERE item_id NOT IN (SELECT ROWID FROM items);"
-		         /* limit to 1000 items as it is very slow */
-		         "   DELETE FROM itemsets WHERE item_id IN (SELECT id FROM tmp_id LIMIT 1000);"
-		         "   DROP TABLE tmp_id;"
-			 "END;");
-
 		/* Note: do not check on subscriptions here, as non-subscription node
 		   types (e.g. news bin) do contain items too. */
 		debug0 (DEBUG_DB, "Checking for items without a feed list node...\n");
-		db_exec ("DELETE FROM itemsets WHERE comment = 0 AND node_id NOT IN "
+		db_exec ("DELETE FROM items WHERE comment = 0 AND node_id NOT IN "
 	        	 "(SELECT node_id FROM node);");
+	        	 
+	        // FIXME: clean up stale comments
 				 
 		debug0 (DEBUG_DB, "Checking for stale views not listed in feed list.");
 		sql = sqlite3_mprintf("SELECT name FROM sqlite_master WHERE type='view' AND name not in ("
@@ -484,22 +486,9 @@ open:
 		
 	/* 4. Creating triggers (after cleanup so it is not slowed down by triggers) */
 
-	db_exec ("CREATE TRIGGER item_insert INSERT ON items "
-        	 "BEGIN "
-        	 "   UPDATE itemsets SET read = new.read "
-        	 "   WHERE item_id = new.ROWID; "
-        	 "END;");
-
-	db_exec ("CREATE TRIGGER item_update UPDATE ON items "
-        	 "BEGIN "
-        	 "   UPDATE itemsets SET read = new.read "
-        	 "   WHERE item_id = new.ROWID; "
-        	 "END;");
-
 	/* This trigger does explicitely not remove comments! */
-	db_exec ("CREATE TRIGGER item_removal DELETE ON itemsets "
+	db_exec ("CREATE TRIGGER item_removal DELETE ON items "
         	 "BEGIN "
-        	 "   DELETE FROM items WHERE ROWID = old.item_id; "
 		 "   DELETE FROM metadata WHERE item_id = old.item_id; "
         	 "END;");
 		
@@ -514,64 +503,37 @@ open:
 	/* prepare statements */
 	
 	db_new_statement ("itemsetLoadStmt",
-	                  "SELECT item_id FROM itemsets WHERE node_id = ?");
+	                  "SELECT item_id FROM items WHERE node_id = ?");
 		       
 	db_new_statement ("itemsetInsertStmt",
-	                  "INSERT INTO itemsets ("
+	                  "INSERT INTO items ("
 			  "item_id,"
 			  "parent_item_id,"
 			  "node_id,"
-			  "parent_node_id,"
-			  "read,"
-			  "comment"
-			  ") VALUES (?,?,?,?,?,?)");
+			  "parent_node_id"
+			  ") VALUES (?,?,?,?)");
 	
 	db_new_statement ("itemsetReadCountStmt",
-	                  "SELECT COUNT(*) FROM itemsets "
+	                  "SELECT COUNT(*) FROM items "
 		          "WHERE read = 0 AND node_id = ?");
 	       
 	db_new_statement ("itemsetItemCountStmt",
-	                  "SELECT COUNT(*) FROM itemsets "
+	                  "SELECT COUNT(*) FROM items "
 		          "WHERE node_id = ?");
 		       
 	db_new_statement ("itemsetRemoveStmt",
-	                  "DELETE FROM itemsets WHERE item_id = ? OR parent_item_id = ?");
+	                  "DELETE FROM items WHERE item_id = ? OR parent_item_id = ?");
 			
 	db_new_statement ("itemsetRemoveAllStmt",
-	                  "DELETE FROM itemsets WHERE parent_node_id = ?");
+	                  "DELETE FROM items WHERE parent_node_id = ?");
 
 	db_new_statement ("itemsetMarkAllPopupStmt",
-	                  "UPDATE items SET popup = 0 WHERE ROWID IN "
-			  "(SELECT item_id FROM itemsets WHERE node_id = ?)");		
+	                  "UPDATE items SET popup = 0 WHERE node_id = ?");
 
 	db_new_statement ("itemLoadStmt",
 	                  "SELECT "
-	                  "items.title,"
-	                  "items.read,"
-	                  "items.new,"
-	                  "items.updated,"
-	                  "items.popup,"
-	                  "items.marked,"
-	                  "items.source,"
-	                  "items.source_id,"
-	                  "items.valid_guid,"
-	                  "items.description,"
-	                  "items.date,"
-		          "items.comment_feed_id,"
-		          "items.comment,"
-		          "itemsets.item_id,"
-			  "itemsets.parent_item_id, "
-		          "itemsets.node_id, "
-			  "itemsets.parent_node_id "
-	                  " FROM items INNER JOIN itemsets "
-	                  "ON items.ROWID = itemsets.item_id "
-	                  "WHERE items.ROWID = ?");      
-	
-	db_new_statement ("itemUpdateStmt",
-	                  "REPLACE INTO items ("
 	                  "title,"
 	                  "read,"
-	                  "new,"
 	                  "updated,"
 	                  "popup,"
 	                  "marked,"
@@ -582,19 +544,39 @@ open:
 	                  "date,"
 		          "comment_feed_id,"
 		          "comment,"
-	                  "ROWID"
-	                  ") values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+		          "item_id,"
+			  "parent_item_id, "
+		          "node_id, "
+			  "parent_node_id "
+	                  " FROM items WHERE item_id = ?");      
+	
+	db_new_statement ("itemUpdateStmt",
+	                  "REPLACE INTO items ("
+	                  "title,"
+	                  "read,"
+	                  "updated,"
+	                  "popup,"
+	                  "marked,"
+	                  "source,"
+	                  "source_id,"
+	                  "valid_guid,"
+	                  "description,"
+	                  "date,"
+		          "comment_feed_id,"
+		          "comment,"
+	                  "item_id"
+	                  ") values (?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			
 	db_new_statement ("itemStateUpdateStmt",
 			  "UPDATE items SET read=?, marked=?, updated=? "
-			  "WHERE ROWID=?");
+			  "WHERE item_id=?");
 
 	db_new_statement ("duplicatesFindStmt",
-	                  "SELECT ROWID FROM items WHERE source_id = ?");
+	                  "SELECT item_id FROM items WHERE source_id = ?");
 			 
 	db_new_statement ("duplicateNodesFindStmt",
-	                  "SELECT itemsets.node_id FROM itemsets WHERE itemsets.item_id IN "
-			  "(SELECT items.ROWID FROM items WHERE items.source_id = ?)");
+	                  "SELECT node_id FROM items WHERE item_id IN "
+			  "(SELECT item_id FROM items WHERE source_id = ?)");
 		       
 	db_new_statement ("duplicatesMarkReadStmt",
  	                  "UPDATE items SET read = 1, updated = 0 WHERE source_id = ?");
@@ -767,27 +749,26 @@ db_load_item_from_columns (sqlite3_stmt *stmt)
 	itemPtr item = item_new ();
 	
 	item->readStatus	= sqlite3_column_int (stmt, 1)?TRUE:FALSE;
-	/* newStatus isn't used anymore, FIXME: drop column on migration */
-	item->updateStatus	= sqlite3_column_int (stmt, 3)?TRUE:FALSE;
-	item->popupStatus	= sqlite3_column_int (stmt, 4)?TRUE:FALSE;
-	item->flagStatus	= sqlite3_column_int (stmt, 5)?TRUE:FALSE;
-	item->validGuid		= sqlite3_column_int (stmt, 8)?TRUE:FALSE;
-	item->time		= sqlite3_column_int (stmt, 10);
-	item->commentFeedId	= g_strdup (sqlite3_column_text (stmt, 11));
-	item->isComment		= sqlite3_column_int (stmt, 12);
-	item->id		= sqlite3_column_int (stmt, 13);
-	item->parentItemId	= sqlite3_column_int (stmt, 14);
-	item->nodeId		= g_strdup (sqlite3_column_text (stmt, 15));
-	item->parentNodeId	= g_strdup (sqlite3_column_text (stmt, 16));
+	item->updateStatus	= sqlite3_column_int (stmt, 2)?TRUE:FALSE;
+	item->popupStatus	= sqlite3_column_int (stmt, 3)?TRUE:FALSE;
+	item->flagStatus	= sqlite3_column_int (stmt, 4)?TRUE:FALSE;
+	item->validGuid		= sqlite3_column_int (stmt, 7)?TRUE:FALSE;
+	item->time		= sqlite3_column_int (stmt, 9);
+	item->commentFeedId	= g_strdup (sqlite3_column_text (stmt, 10));
+	item->isComment		= sqlite3_column_int (stmt, 11);
+	item->id		= sqlite3_column_int (stmt, 12);
+	item->parentItemId	= sqlite3_column_int (stmt, 13);
+	item->nodeId		= g_strdup (sqlite3_column_text (stmt, 14));
+	item->parentNodeId	= g_strdup (sqlite3_column_text (stmt, 15));
 
 	item->title		= g_strdup (sqlite3_column_text(stmt, 0));
-	item->sourceId		= g_strdup (sqlite3_column_text(stmt, 7));
+	item->sourceId		= g_strdup (sqlite3_column_text(stmt, 6));
 	
-	tmp = sqlite3_column_text(stmt, 6);
+	tmp = sqlite3_column_text(stmt, 5);
 	if (tmp)
 		item->source = g_strdup (tmp);
 		
-	tmp = sqlite3_column_text(stmt, 9);
+	tmp = sqlite3_column_text(stmt, 8);
 	if (tmp)
 		item->description = g_strdup (tmp);
 
@@ -865,7 +846,7 @@ db_item_set_id_cb (void *user_data,
 	g_assert(NULL != values);
 
 	if(values[0]) {
-		/* the result in *values should be MAX(ROWID),
+		/* the result in *values should be MAX(item_id),
 		   so adding one should give a unique new id */
 		item->id = 1 + atol(values[0]); 
 	} else {
@@ -885,7 +866,7 @@ db_item_set_id (itemPtr item)
 	
 	g_assert (0 == item->id);
 	
-	sql = sqlite3_mprintf ("SELECT MAX(ROWID) FROM items");
+	sql = sqlite3_mprintf ("SELECT MAX(item_id) FROM items");
 	res = sqlite3_exec (db, sql, db_item_set_id_cb, item, &err);
 	if (SQLITE_OK != res) 
 		g_warning ("Select failed (%s) SQL: %s", err, sql);
@@ -907,7 +888,7 @@ db_item_update (itemPtr item)
 	if (!item->id) {
 		db_item_set_id (item);
 
-		debug1(DEBUG_DB, "insert into table \"itemsets\": \"%s\"", item->title);	
+		debug1(DEBUG_DB, "insert into table \"items\": \"%s\"", item->title);	
 		
 		/* insert item <-> node relation */
 		stmt = db_get_statement ("itemsetInsertStmt");
@@ -915,11 +896,9 @@ db_item_update (itemPtr item)
 		sqlite3_bind_int  (stmt, 2, item->parentItemId);
 		sqlite3_bind_text (stmt, 3, item->nodeId, -1, SQLITE_TRANSIENT);
 		sqlite3_bind_text (stmt, 4, item->parentNodeId, -1, SQLITE_TRANSIENT);
-		sqlite3_bind_int  (stmt, 5, item->readStatus);
-		sqlite3_bind_int  (stmt, 6, item->isComment?1:0);
 		res = sqlite3_step (stmt);
 		if (SQLITE_DONE != res) 
-			g_warning ("Insert in \"itemsets\" table failed (error code=%d, %s)", res, sqlite3_errmsg (db));
+			g_warning ("Insert in \"items\" table failed (error code=%d, %s)", res, sqlite3_errmsg (db));
 
 	}
 
@@ -927,18 +906,17 @@ db_item_update (itemPtr item)
 	stmt = db_get_statement ("itemUpdateStmt");
 	sqlite3_bind_text (stmt, 1,  item->title, -1, SQLITE_TRANSIENT);
 	sqlite3_bind_int  (stmt, 2,  item->readStatus?1:0);
-	/* FIXME: newStatus is not used anymore, drop column on next migration */
-	sqlite3_bind_int  (stmt, 4,  item->updateStatus?1:0);
-	sqlite3_bind_int  (stmt, 5,  item->popupStatus?1:0);
-	sqlite3_bind_int  (stmt, 6,  item->flagStatus?1:0);
-	sqlite3_bind_text (stmt, 7,  item->source, -1, SQLITE_TRANSIENT);
-	sqlite3_bind_text (stmt, 8,  item->sourceId, -1, SQLITE_TRANSIENT);
-	sqlite3_bind_int  (stmt, 9,  item->validGuid?1:0);
-	sqlite3_bind_text (stmt, 10, item->description, -1, SQLITE_TRANSIENT);
-	sqlite3_bind_int  (stmt, 11, item->time);
-	sqlite3_bind_text (stmt, 12, item->commentFeedId, -1, SQLITE_TRANSIENT);
-	sqlite3_bind_int  (stmt, 13, item->isComment?1:0);
-	sqlite3_bind_int  (stmt, 14, item->id);
+	sqlite3_bind_int  (stmt, 3,  item->updateStatus?1:0);
+	sqlite3_bind_int  (stmt, 4,  item->popupStatus?1:0);
+	sqlite3_bind_int  (stmt, 5,  item->flagStatus?1:0);
+	sqlite3_bind_text (stmt, 6,  item->source, -1, SQLITE_TRANSIENT);
+	sqlite3_bind_text (stmt, 7,  item->sourceId, -1, SQLITE_TRANSIENT);
+	sqlite3_bind_int  (stmt, 8,  item->validGuid?1:0);
+	sqlite3_bind_text (stmt, 9, item->description, -1, SQLITE_TRANSIENT);
+	sqlite3_bind_int  (stmt, 10, item->time);
+	sqlite3_bind_text (stmt, 11, item->commentFeedId, -1, SQLITE_TRANSIENT);
+	sqlite3_bind_int  (stmt, 12, item->isComment?1:0);
+	sqlite3_bind_int  (stmt, 13, item->id);
 	res = sqlite3_step (stmt);
 
 	if (SQLITE_DONE != res) 
@@ -1130,7 +1108,7 @@ db_query_to_sql (guint id, const queryPtr query)
 	tables = query->tables;
 	g_return_val_if_fail (tables != 0, NULL);
 	
-	/* 1.) determine ROWID column and base table */
+	/* 1.) determine item_id column and base table */
 	if (tables & QUERY_TABLE_ITEMS) {
 		baseTable = QUERY_TABLE_ITEMS;
 		tables -= baseTable;
@@ -1142,7 +1120,7 @@ db_query_to_sql (guint id, const queryPtr query)
 	} else if (tables & QUERY_TABLE_NODE) {
 		baseTable = QUERY_TABLE_NODE;
 		tables -= baseTable;
-		from = g_strdup ("FROM itemsets INNER JOIN node ON node.node_id = itemsets.node_id ");
+		from = g_strdup ("FROM items INNER JOIN node ON node.node_id = items.node_id ");
 	} else {
 		g_warning ("Fatal: unknown table constant passed to query construction! (1)");
 		return NULL;
@@ -1153,11 +1131,11 @@ db_query_to_sql (guint id, const queryPtr query)
 	/* first add id column */
 	g_assert (query->columns & QUERY_COLUMN_ITEM_ID);
 	if (baseTable == QUERY_TABLE_ITEMS)
-		columns = g_strdup ("items.ROWID AS item_id");
+		columns = g_strdup ("items.item_id AS item_id");
 	else if (baseTable == QUERY_TABLE_METADATA)
 		columns = g_strdup ("metadata.item_id AS item_id");
 	else if (baseTable == QUERY_TABLE_NODE)
-		columns = g_strdup ("itemsets.item_id AS item_id");
+		columns = g_strdup ("items.item_id AS item_id");
 	else {
 		g_warning ("Fatal: unknown table constant passed to query construction! (2)");
 		return NULL;
@@ -1170,10 +1148,10 @@ db_query_to_sql (guint id, const queryPtr query)
 			g_free (tmp);
 		} else if (query->tables & QUERY_TABLE_NODE) {
 			tmp = columns;
-			columns = g_strdup_printf ("%s,itemsets.read AS item_read", tmp);
+			columns = g_strdup_printf ("%s,items.read AS item_read", tmp);
 			g_free (tmp);
 		} else {
-			//g_warning ("Fatal: neither items nor itemsets included in query tables!");
+			//g_warning ("Fatal: neither items nor items included in query tables!");
 		}
 	}
 	
@@ -1186,7 +1164,7 @@ db_query_to_sql (guint id, const queryPtr query)
 		tmp = join;
 		tables -= QUERY_TABLE_METADATA;
 		if (baseTable == QUERY_TABLE_ITEMS) {
-			join = g_strdup_printf ("%sINNER JOIN metadata ON items.ROWID = metadata.item_id ", join);
+			join = g_strdup_printf ("%sINNER JOIN metadata ON items.item_id = metadata.item_id ", join);
 		} else {
 			g_warning ("Fatal: unsupported merge combination: metadata + %d!", baseTable);
 			return NULL;
@@ -1197,9 +1175,9 @@ db_query_to_sql (guint id, const queryPtr query)
 		tmp = join;
 		tables -= QUERY_TABLE_NODE;
 		if (baseTable == QUERY_TABLE_ITEMS) {
-			join = g_strdup_printf ("%sINNER JOIN itemsets ON items.ROWID = itemsets.item_id INNER JOIN node ON node.node_id = itemsets.node_id ", join);
+			join = g_strdup_printf ("%sINNER JOIN node ON node.node_id = items.node_id ", join);
 		} else if (baseTable == QUERY_TABLE_METADATA) {
-			join = g_strdup_printf ("%sINNER JOIN itemsets ON itemsets.item_id = metadata.item_id INNER JOIN node ON node.node_id = itemsets.node_id ", join);
+			join = g_strdup_printf ("%sINNER JOIN items ON items.item_id = metadata.item_id INNER JOIN node ON node.node_id = items.node_id ", join);
 		} else {
 			g_warning ("Fatal: unsupported merge combination: node + %d!", baseTable);
 			return NULL;
@@ -1213,9 +1191,9 @@ db_query_to_sql (guint id, const queryPtr query)
 		if (baseTable == QUERY_TABLE_METADATA)
 			itemMatch = g_strdup_printf ("metadata.item_id=%d", id);
 		else if (baseTable == QUERY_TABLE_ITEMS)
-			itemMatch = g_strdup_printf ("items.ROWID=%d", id);
+			itemMatch = g_strdup_printf ("items.item_id=%d", id);
 		else if (baseTable == QUERY_TABLE_NODE)
-			itemMatch = g_strdup_printf ("itemsets.item_id=%d", id);
+			itemMatch = g_strdup_printf ("items.item_id=%d", id);
 		else {
 			g_warning ("Fatal: unknown table constant passed to query construction! (3)");
 			return NULL;
@@ -1270,11 +1248,11 @@ db_view_create_triggers (const gchar *id)
 	                       "BEGIN"
 			       "   UPDATE view_state SET count = ("
 			       "      (SELECT count FROM view_state WHERE node_id = '%s') -"
-			       "      (SELECT count(*) FROM view_%s WHERE item_id = new.ROWID)"
+			       "      (SELECT count(*) FROM view_%s WHERE item_id = new.item_id)"
 			       "   ) WHERE node_id = '%s';"
 			       "   UPDATE view_state SET unread = ("
 			       "      (SELECT unread FROM view_state WHERE node_id = '%s') -"
-			       "      (SELECT count(*) FROM view_%s WHERE item_id = new.ROWID AND item_read = 0)"
+			       "      (SELECT count(*) FROM view_%s WHERE item_id = new.item_id AND item_read = 0)"
 			       "   ) WHERE node_id = '%s';"
 	                       "END;", id, id, id, id, id, id, id);
 	res = sqlite3_exec (db, sql, NULL, NULL, &err);
@@ -1288,11 +1266,11 @@ db_view_create_triggers (const gchar *id)
 	                       "BEGIN"
 			       "   UPDATE view_state SET count = ("
 			       "      (SELECT count FROM view_state WHERE node_id = '%s') +"
-			       "      (SELECT count(*) FROM view_%s WHERE item_id = new.ROWID)"
+			       "      (SELECT count(*) FROM view_%s WHERE item_id = new.item_id)"
 			       "   ) WHERE node_id = '%s';"
 			       "   UPDATE view_state SET unread = ("
 			       "      (SELECT unread FROM view_state WHERE node_id = '%s') +"
-			       "      (SELECT count(*) FROM view_%s WHERE item_id = new.ROWID AND item_read = 0)"
+			       "      (SELECT count(*) FROM view_%s WHERE item_id = new.item_id AND item_read = 0)"
 			       "   ) WHERE node_id = '%s';"
 	                       "END;", id, id, id, id, id, id, id);
 	res = sqlite3_exec (db, sql, NULL, NULL, &err);
@@ -1306,11 +1284,11 @@ db_view_create_triggers (const gchar *id)
 	                       "BEGIN"
 			       "   UPDATE view_state SET count = ("
 			       "      (SELECT count FROM view_state WHERE node_id = '%s') -"
-			       "      (SELECT count(*) FROM view_%s WHERE item_id = old.ROWID)"
+			       "      (SELECT count(*) FROM view_%s WHERE item_id = old.item_id)"
 			       "   ) WHERE node_id = '%s';"
 			       "   UPDATE view_state SET unread = ("
 			       "      (SELECT unread FROM view_state WHERE node_id = '%s') -"
-			       "      (SELECT count(*) FROM view_%s WHERE item_id = old.ROWID AND item_read = 0)"
+			       "      (SELECT count(*) FROM view_%s WHERE item_id = old.item_id AND item_read = 0)"
 			       "   ) WHERE node_id = '%s';"
 	                       "END;", id, id, id, id, id, id, id);
 	res = sqlite3_exec (db, sql, NULL, NULL, &err);
@@ -1324,11 +1302,11 @@ db_view_create_triggers (const gchar *id)
 	                       "BEGIN"
 			       "   UPDATE view_state SET count = ("
 			       "      (SELECT count FROM view_state WHERE node_id = '%s') -"
-			       "      (SELECT count(*) FROM view_%s WHERE item_id = new.ROWID)"
+			       "      (SELECT count(*) FROM view_%s WHERE item_id = new.item_id)"
 			       "   ) WHERE node_id = '%s';"
 			       "   UPDATE view_state SET unread = ("
 			       "      (SELECT unread FROM view_state WHERE node_id = '%s') -"
-			       "      (SELECT count(*) FROM view_%s WHERE item_id = new.ROWID AND item_read = 0)"
+			       "      (SELECT count(*) FROM view_%s WHERE item_id = new.item_id AND item_read = 0)"
 			       "   ) WHERE node_id = '%s';"
 	                       "END;", id, id, id, id, id, id, id);
 	res = sqlite3_exec (db, sql, NULL, NULL, &err);
@@ -1342,11 +1320,11 @@ db_view_create_triggers (const gchar *id)
 	                       "BEGIN"
 			       "   UPDATE view_state SET count = ("
 			       "      (SELECT count FROM view_state WHERE node_id = '%s') +"
-			       "      (SELECT count(*) FROM view_%s WHERE item_id = new.ROWID)"
+			       "      (SELECT count(*) FROM view_%s WHERE item_id = new.item_id)"
 			       "   ) WHERE node_id = '%s';"
 			       "   UPDATE view_state SET unread = ("
 			       "      (SELECT unread FROM view_state WHERE node_id = '%s') +"
-			       "      (SELECT count(*) FROM view_%s WHERE item_id = new.ROWID AND item_read = 0)"
+			       "      (SELECT count(*) FROM view_%s WHERE item_id = new.item_id AND item_read = 0)"
 			       "   ) WHERE node_id = '%s';"
 	                       "END;", id, id, id, id, id, id, id);
 	res = sqlite3_exec (db, sql, NULL, NULL, &err);
@@ -1419,7 +1397,7 @@ db_view_create (const gchar *id, queryPtr query)
 	}
 
 	if (query->tables & QUERY_TABLE_NODE)
-		sql = sqlite3_mprintf ("CREATE VIEW view_%s AS %s AND itemsets.comment != 1", id, select);
+		sql = sqlite3_mprintf ("CREATE VIEW view_%s AS %s AND items.comment != 1", id, select);
 	else if (query->tables & QUERY_TABLE_ITEMS)
 		sql = sqlite3_mprintf ("CREATE VIEW view_%s AS %s AND items.comment != 1", id, select);
 	else

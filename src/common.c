@@ -78,7 +78,7 @@ common_init_cache_path (void)
 {
 	gchar *cachePath;
 
-	lifereaUserPath = g_build_filename (g_get_home_dir(), ".liferea_1.6", NULL);
+	lifereaUserPath = g_build_filename (g_get_home_dir(), ".liferea_1.7", NULL);
 	cachePath = g_build_filename (lifereaUserPath, "cache", NULL);
 
 	common_check_dir (g_strdup (lifereaUserPath));

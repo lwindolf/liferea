@@ -27,6 +27,7 @@ typedef enum {
 	MIGRATION_FROM_12,
 	MIGRATION_FROM_13,
 	MIGRATION_FROM_14,
+	MIGRATION_FROM_16
 } migrationMode;
 
 /**
