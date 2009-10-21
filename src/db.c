@@ -313,8 +313,8 @@ open:
 		                 "CREATE TABLE items ("
 		        	 "   item_id		INTEGER,"
 				 "   parent_item_id     INTEGER,"
-		        	 "   node_id		INTEGER,"
-				 "   parent_node_id     INTEGER,"
+		        	 "   node_id		TEXT,"
+				 "   parent_node_id     TEXT,"
 		        	 "   title		TEXT,"
 		        	 "   read		INTEGER,"
 		        	 "   updated		INTEGER,"
@@ -353,8 +353,8 @@ open:
 	db_exec ("CREATE TABLE items ("
         	 "   item_id		INTEGER,"
 		 "   parent_item_id     INTEGER,"
-        	 "   node_id		INTEGER,"	/* FIXME: migrate node ids to real integers */
-		 "   parent_node_id     INTEGER,"	/* FIXME: migrate node ids to real integers */
+        	 "   node_id		TEXT," /* FIXME: migrate node ids to real integers */
+		 "   parent_node_id     TEXT," /* FIXME: migrate node ids to real integers */
         	 "   title		TEXT,"
         	 "   read		INTEGER,"
         	 "   updated		INTEGER,"
@@ -505,14 +505,6 @@ open:
 	db_new_statement ("itemsetLoadStmt",
 	                  "SELECT item_id FROM items WHERE node_id = ?");
 		       
-	db_new_statement ("itemsetInsertStmt",
-	                  "INSERT INTO items ("
-			  "item_id,"
-			  "parent_item_id,"
-			  "node_id,"
-			  "parent_node_id"
-			  ") VALUES (?,?,?,?)");
-	
 	db_new_statement ("itemsetReadCountStmt",
 	                  "SELECT COUNT(*) FROM items "
 		          "WHERE read = 0 AND node_id = ?");
@@ -564,8 +556,11 @@ open:
 	                  "date,"
 		          "comment_feed_id,"
 		          "comment,"
-	                  "item_id"
-	                  ") values (?,?,?,?,?,?,?,?,?,?,?,?,?)");
+	                  "item_id,"
+	                  "parent_item_id,"
+	                  "node_id,"
+	                  "parent_node_id"
+	                  ") values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			
 	db_new_statement ("itemStateUpdateStmt",
 			  "UPDATE items SET read=?, marked=?, updated=? "
@@ -889,19 +884,8 @@ db_item_update (itemPtr item)
 		db_item_set_id (item);
 
 		debug1(DEBUG_DB, "insert into table \"items\": \"%s\"", item->title);	
-		
-		/* insert item <-> node relation */
-		stmt = db_get_statement ("itemsetInsertStmt");
-		sqlite3_bind_int  (stmt, 1, item->id);
-		sqlite3_bind_int  (stmt, 2, item->parentItemId);
-		sqlite3_bind_text (stmt, 3, item->nodeId, -1, SQLITE_TRANSIENT);
-		sqlite3_bind_text (stmt, 4, item->parentNodeId, -1, SQLITE_TRANSIENT);
-		res = sqlite3_step (stmt);
-		if (SQLITE_DONE != res) 
-			g_warning ("Insert in \"items\" table failed (error code=%d, %s)", res, sqlite3_errmsg (db));
-
 	}
-
+	
 	/* Update the item... */
 	stmt = db_get_statement ("itemUpdateStmt");
 	sqlite3_bind_text (stmt, 1,  item->title, -1, SQLITE_TRANSIENT);
@@ -917,6 +901,10 @@ db_item_update (itemPtr item)
 	sqlite3_bind_text (stmt, 11, item->commentFeedId, -1, SQLITE_TRANSIENT);
 	sqlite3_bind_int  (stmt, 12, item->isComment?1:0);
 	sqlite3_bind_int  (stmt, 13, item->id);
+	sqlite3_bind_int  (stmt, 14, item->parentItemId);
+	sqlite3_bind_text (stmt, 15, item->nodeId, -1, SQLITE_TRANSIENT);
+	sqlite3_bind_text (stmt, 16, item->parentNodeId, -1, SQLITE_TRANSIENT);
+
 	res = sqlite3_step (stmt);
 
 	if (SQLITE_DONE != res) 
