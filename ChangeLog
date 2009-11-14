@@ -44,6 +44,8 @@
 	  in preparation for GTK+ 3.0. Require gtk+ >= 2.18.0 for it.
 	  (Emilio Pozuelo Monfort)
 	* Simplified DB schema to avoid costly cleanup. (Lars Lindner)
+	* Patch SF #2894307: Fixes <tab> key cycling in items list.
+	  (Simon Lipp)
 
 	* Update of French translation (Vincent Lefevre)
 
