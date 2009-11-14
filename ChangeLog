@@ -19,6 +19,8 @@
 	* Fixes SF #2861203: Crash when creating new search folder.
 	  (reported by Andreas Kern and larslj)
 	* Added a timeout for downloads. (Arnold Noronha)
+	* Patch SF #2894307: Fixes <tab> key cycling in items list.
+	  (Simon Lipp)
 
 	Translations
 

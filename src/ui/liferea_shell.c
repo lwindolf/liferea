@@ -462,7 +462,7 @@ liferea_shell_do_zoom (gboolean in)
 static gboolean
 on_key_press_event_null_cb (GtkWidget *widget, GdkEventKey *event, gpointer data)
 {
-	return TRUE;
+	return FALSE;
 }
 
 static gboolean
