@@ -46,6 +46,8 @@
 	* Simplified DB schema to avoid costly cleanup. (Lars Lindner)
 	* Patch SF #2894307: Fixes <tab> key cycling in items list.
 	  (Simon Lipp)
+	* Put the next selected item on top when scrolling in the
+	  item list during Next-Unread. (patch by JustFillBug)
 
 	* Update of French translation (Vincent Lefevre)
 

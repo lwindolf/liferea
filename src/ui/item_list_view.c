@@ -723,8 +723,8 @@ item_list_view_select (ItemListView *ilv, itemPtr item)
 			itemlist_selection_changed (NULL);
 
 		path = gtk_tree_model_get_path (gtk_tree_view_get_model (treeview), &iter);
-		gtk_tree_view_scroll_to_cell (treeview, path, NULL, FALSE, 0.0, 0.0);
 		gtk_tree_view_set_cursor (treeview, path, NULL, FALSE);
+		gtk_tree_view_scroll_to_cell (treeview, path, NULL, FALSE, 0.0, 0.0);
 		gtk_tree_path_free (path);
 	} else {
 		gtk_tree_selection_unselect_all (selection);
