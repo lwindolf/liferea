@@ -18,7 +18,7 @@
 	  (Lars Lindner)
 	* We do not update comment feeds returning HTTP 410 anymore.
 	  (Lars Lindner)
-	* Fixes a crash when adding Bloglines subscriptions.
+	* Fixes SF #2897668: Crash when adding Bloglines subscriptions.
 	  (Lars Lindner)
 	* Fixes a crash when deleting items.
 	  (Lars Lindner)
