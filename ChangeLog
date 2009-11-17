@@ -8,7 +8,7 @@
 	  crashes often. (Adrian Bunk)
 	* Fixes SF #2831007: Opening enclosures by URL fails intermitantly
 	  (Lars Lindner, reported by Eric Drechsel)
-	* Fixes a crash when adding Bloglines subscriptions.
+	* Fixes SF #2897668: crash when adding Bloglines subscriptions.
 	  (Lars Lindner)
 	* Fixes SF #2823526: Increase the width of the left column
 	  in the Script Manager.
