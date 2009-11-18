@@ -49,7 +49,8 @@
 	* Put the next selected item on top when scrolling in the
 	  item list during Next-Unread. (patch by JustFillBug)
 
-	* Update of French translation (Vincent Lefevre)
+	* Updated French translation. (Vincent Lefevre)
+	* Updated Romanian translation. (Adi Roiban)
 
 
 2009-08-10  Adrian Bunk <bunk@users.sourceforge.net>
