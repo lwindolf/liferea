@@ -4887,6 +4887,7 @@ Christian Dywan
 Robin Stocker
 Gil Forcada
 Iñaki Larrañaga Murgoitio
+Adi Roiban
 </property>
     <child internal-child="vbox">
       <widget class="GtkVBox" id="dialog-vbox23">
