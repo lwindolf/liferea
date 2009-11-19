@@ -1,6 +1,6 @@
-2009-0?-??  ???
+2009-11-19  Adrian Bunk <bunk@users.sourceforge.net>
 
-	Version 1.6.1-rc1
+	Version 1.6.1
 
 	* Re-add grayflag.png since it is actually used.
 	  (Adrian Bunk, reported by Maik Zumstrull)
