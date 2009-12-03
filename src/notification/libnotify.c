@@ -43,6 +43,7 @@
 #include "notification/notification.h"
 
 static gboolean supports_actions = FALSE;
+static gboolean supports_append  = FALSE;
 
 static void
 notif_libnotify_callback_open (NotifyNotification *n, gchar *action, gpointer user_data)
@@ -194,6 +195,8 @@ notif_libnotify_init (void)
 
 		if (g_list_find_custom (caps, "actions", (GCompareFunc) strcmp))
 			supports_actions = TRUE;
+		if (g_list_find_custom (caps, "append", (GCompareFunc) strcmp)
+			supports_append = TRUE;
 
 		g_list_foreach (caps, (GFunc)g_free, NULL);
 		g_list_free (caps);
@@ -246,10 +249,15 @@ notif_libnotify_node_has_new_items (nodePtr node, gboolean enforced)
 
 	labelSummary_p = g_strdup_printf (ngettext ("%s has %d new / updated headline\n", "%s has %d new / updated headlines\n", item_count), 
 	                                  node_get_title (node), item_count);
-	n = notify_notification_new (_("Feed Update"), labelSummary_p, NULL, NULL);
+	n = notify_notification_new (_("Feed Update"), labelSummary_p, "liferea", NULL);
 	g_free (labelSummary_p);
 
-	notify_notification_set_icon_from_pixbuf (n, node_get_icon (node));
+ 	if (supports_append) {
+ 		notify_notification_set_hint_string(n, "append", "allow");
+ 	} else {
+		notify_notification_set_icon_from_pixbuf (n, node_get_icon (node));
+	}
+	
 	notify_notification_set_timeout (n, NOTIFY_EXPIRES_DEFAULT);
 	if (supports_actions) {
 		notify_notification_add_action (n, "show_details", _("Show details"),

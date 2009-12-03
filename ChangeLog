@@ -2,7 +2,8 @@
 
 	Version 1.7.3 (Unstable)
 
-	*
+	* Added patch SF #2883678: Support for notification append
+	  (patch by Ted Gould)
 
 
 2009-11-19  Adrian Bunk <bunk@users.sourceforge.net>
