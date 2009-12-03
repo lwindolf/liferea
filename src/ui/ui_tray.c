@@ -79,8 +79,8 @@ static void ui_tray_expose_cb() {
 	                NULL, trayIcon_priv->currentIcon, 0, 0, 
 			(requisition.width > TRAY_ICON_WIDTH)?(requisition.width - TRAY_ICON_WIDTH)/2 - 1:0, 
 			(requisition.height > TRAY_ICON_HEIGHT)?(requisition.height - TRAY_ICON_HEIGHT)/2 - 1:0, 
-	                gdk_pixbuf_get_height(trayIcon_priv->currentIcon),
 			gdk_pixbuf_get_width(trayIcon_priv->currentIcon), 
+	                gdk_pixbuf_get_height(trayIcon_priv->currentIcon),
 			GDK_RGB_DITHER_NONE, 0, 0);
 	
 	if(!conf_get_bool_value(SHOW_NEW_COUNT_IN_TRAY))

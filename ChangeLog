@@ -2,7 +2,8 @@
 
 	Version 1.6.2
 
-	*
+	* Fixes SF #2907915: gdk_draw_pixbuf width/height ordering
+	  (patch by Eric Work)
 
 
 2009-11-19  Adrian Bunk <bunk@users.sourceforge.net>
