@@ -195,7 +195,7 @@ notif_libnotify_init (void)
 
 		if (g_list_find_custom (caps, "actions", (GCompareFunc) strcmp))
 			supports_actions = TRUE;
-		if (g_list_find_custom (caps, "append", (GCompareFunc) strcmp)
+		if (g_list_find_custom (caps, "append", (GCompareFunc) strcmp))
 			supports_append = TRUE;
 
 		g_list_foreach (caps, (GFunc)g_free, NULL);
