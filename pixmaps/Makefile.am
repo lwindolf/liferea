@@ -8,7 +8,6 @@ EXTRA_DIST = \
 	empty.png       \
 	empty_offline.png \
 	flag.png        \
-	folder_empty.png \
 	grayflag.png    \
 	read.xpm        \
 	unread.png      \

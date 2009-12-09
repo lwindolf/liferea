@@ -32,7 +32,6 @@ enum allicons {
 	ICON_AVAILABLE_OFFLINE,
 	ICON_UNAVAILABLE,
 	ICON_DEFAULT,
-	ICON_FOLDER_EMPTY,
 	ICON_FOLDER,
 	ICON_VFOLDER,
 	ICON_NEWSBIN,
@@ -59,7 +58,7 @@ extern GdkPixbuf *icons[MAX_ICONS];	// FIXME!
 void ui_common_setup_combo_menu (GtkWidget *widget, gchar **options, GCallback callback, gint defaultValue);
 
 /**
- * Helper function to set up a combo to displau the text from
+ * Helper function to set up a combo to display the text from
  * a column of the model.
  *
  * @param combo the combo widget

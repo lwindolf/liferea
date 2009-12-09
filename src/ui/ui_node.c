@@ -119,8 +119,7 @@ ui_node_add_empty_node (GtkTreeIter *parent)
 
 	gtk_tree_store_append (feedstore, &iter, parent);
 	gtk_tree_store_set (feedstore, &iter,
-	                    FS_LABEL, _("<i>(empty)</i>"), /* FIXME: Should this be italicized? */
-	                    FS_ICON, icons[ICON_FOLDER_EMPTY],
+	                    FS_LABEL, _("(Empty)"),
 	                    FS_PTR, NULL,
 	                    FS_UNREAD, 0,
 	                    -1);

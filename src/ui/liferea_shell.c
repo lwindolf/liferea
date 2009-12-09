@@ -1238,7 +1238,6 @@ liferea_shell_create (int initialState)
 		NULL,			/* ICON_AVAILABLE_OFFLINE */
 		NULL,			/* ICON_UNAVAILABLE */
 		NULL,			/* ICON_DEFAULT */
-		NULL,			/* ICON_FOLDER_EMPTY */
 		"folder",		/* ICON_FOLDER */
 		"folder-saved-search",	/* ICON_VFOLDER */
 		NULL,			/* ICON_NEWSBIN */
@@ -1265,7 +1264,6 @@ liferea_shell_create (int initialState)
 		"available_offline.png",	/* ICON_AVAILABLE_OFFLINE */
 		NULL,			/* ICON_UNAVAILABLE */
 		"default.png",		/* ICON_DEFAULT */
-		"folder_empty.png",	/* ICON_FOLDER_EMPTY */
 		"directory.png",	/* ICON_FOLDER */
 		"vfolder.png",		/* ICON_VFOLDER */
 		"newsbin.png",		/* ICON_NEWSBIN */
