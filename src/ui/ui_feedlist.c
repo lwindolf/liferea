@@ -42,7 +42,7 @@
 #include "ui/ui_subscription.h"
 #include "fl_sources/node_source.h"
 
-GtkTreeModel		*filter;
+GtkTreeModel		*filter = NULL;
 GtkTreeStore		*feedstore = NULL;
 
 gboolean		feedlist_reduced_unread = FALSE;
