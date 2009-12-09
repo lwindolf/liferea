@@ -59,13 +59,11 @@ struct FeedListPrivate {
 	guint		saveTimer;	/**< timer id for delayed feed list saving */
 	guint		autoUpdateTimer; /**< timer id for auto update */
 
-	gboolean	loading;	/**< this flag prevents the feed list being saved before it is completely loaded */
+	gboolean	loading;	/**< prevents the feed list being saved before it is completely loaded */
 };
 
 #define ROOTNODE feedlist->priv->rootNode
 #define SELECTED feedlist->priv->selectedNode
-
-#define IS_SELECTED(node) (feedlist->priv->selectedNode == node)
 
 static GObjectClass *parent_class = NULL;
 static FeedList *feedlist = NULL;
@@ -441,7 +439,7 @@ feedlist_remove_node (nodePtr node)
 void
 feedlist_node_removed (nodePtr node)
 {
-	if (IS_SELECTED (node))
+	if (node == SELECTED)
 		feedlist_unselect ();
 		
 	/* First remove all children */
