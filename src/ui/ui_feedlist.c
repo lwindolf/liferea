@@ -135,26 +135,29 @@ ui_feedlist_key_press_cb (GtkWidget *widget, GdkEventKey *event, gpointer data)
 static gboolean
 ui_feedlist_filter_visible_function (GtkTreeModel *model, GtkTreeIter *iter, gpointer data)
 {
-	gint count;
-	nodePtr np;
+	gint	count;
+	nodePtr	node;
 
 	if (!feedlist_reduced_unread)
 		return TRUE;
 
-	gtk_tree_model_get (model, iter, FS_PTR, &np, FS_UNREAD, &count, -1);
-
-	if (np && (IS_FOLDER (np) || IS_NODE_SOURCE (np))) 
+	gtk_tree_model_get (model, iter, FS_PTR, &node, FS_UNREAD, &count, -1);
+	if (!node)
 		return FALSE;
 
-	if (0 != count)
+	if (IS_FOLDER (node) || IS_NODE_SOURCE (node))
+		return FALSE;
+
+	if (count > 0)
 		return TRUE;
-	else
-		return FALSE;
+
+	return FALSE;
 }
 
 static void
-ui_feedlist_reduce_unread (gboolean reduced) {
-	GtkTreeView		*treeview;
+ui_feedlist_reduce_unread (gboolean reduced)
+{
+	GtkTreeView	*treeview;
 
 	treeview = GTK_TREE_VIEW (liferea_shell_lookup ("feedlist"));
 
@@ -162,14 +165,13 @@ ui_feedlist_reduce_unread (gboolean reduced) {
 	conf_set_bool_value (REDUCED_FEEDLIST, reduced);
 
 	if (reduced) {
-		gtk_tree_view_set_reorderable (GTK_TREE_VIEW(treeview), FALSE);
-		gtk_tree_view_set_model (GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(filter));
-		gtk_tree_model_filter_refilter( GTK_TREE_MODEL_FILTER (filter));
-	}
-	else {
-		gtk_tree_view_set_reorderable (GTK_TREE_VIEW(treeview), TRUE);
-		gtk_tree_model_filter_refilter(GTK_TREE_MODEL_FILTER (filter));
-		gtk_tree_view_set_model (GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(feedstore));
+		gtk_tree_view_set_reorderable (treeview, FALSE);
+		gtk_tree_view_set_model (treeview, GTK_TREE_MODEL (filter));
+		gtk_tree_model_filter_refilter (GTK_TREE_MODEL_FILTER (filter));
+	} else {
+		gtk_tree_view_set_reorderable (treeview, TRUE);
+		gtk_tree_model_filter_refilter (GTK_TREE_MODEL_FILTER (filter));
+		gtk_tree_view_set_model (treeview, GTK_TREE_MODEL (feedstore));
 	}
 }
 
