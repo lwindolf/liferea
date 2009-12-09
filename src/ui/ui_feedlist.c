@@ -155,16 +155,32 @@ ui_feedlist_filter_visible_function (GtkTreeModel *model, GtkTreeIter *iter, gpo
 }
 
 static void
-ui_feedlist_reduce_unread (gboolean reduced)
+ui_feedlist_expand (nodePtr node)
+{
+	if (node->parent)
+		ui_feedlist_expand (node->parent);
+		
+	ui_node_set_expansion (node, TRUE);
+}
+
+static void
+ui_feedlist_restore_folder_expansion (nodePtr node)
+{
+	if (node->expanded)
+		ui_feedlist_expand (node);
+		
+	if (node->parent)
+		ui_feedlist_restore_folder_expansion (node->parent);
+}
+
+static void
+ui_feedlist_reduce_mode_changed ()
 {
 	GtkTreeView	*treeview;
 
 	treeview = GTK_TREE_VIEW (liferea_shell_lookup ("feedlist"));
 
-	feedlist_reduced_unread = reduced;
-	conf_set_bool_value (REDUCED_FEEDLIST, reduced);
-
-	if (reduced) {
+	if (feedlist_reduced_unread) {
 		gtk_tree_view_set_reorderable (treeview, FALSE);
 		gtk_tree_view_set_model (treeview, GTK_TREE_MODEL (filter));
 		gtk_tree_model_filter_refilter (GTK_TREE_MODEL_FILTER (filter));
@@ -172,7 +188,18 @@ ui_feedlist_reduce_unread (gboolean reduced)
 		gtk_tree_view_set_reorderable (treeview, TRUE);
 		gtk_tree_model_filter_refilter (GTK_TREE_MODEL_FILTER (filter));
 		gtk_tree_view_set_model (treeview, GTK_TREE_MODEL (feedstore));
+		
+		feedlist_foreach (ui_feedlist_restore_folder_expansion);
 	}
+}
+
+static void
+ui_feedlist_set_reduce_mode (gboolean newReduceMode)
+{
+	feedlist_reduced_unread = newReduceMode;
+	conf_set_bool_value (REDUCED_FEEDLIST, feedlist_reduced_unread);
+	ui_feedlist_reduce_mode_changed ();
+	ui_node_reload_feedlist ();
 }
 
 /* sets up the entry list store and connects it to the entry list
@@ -233,22 +260,14 @@ ui_feedlist_init (GtkTreeView *treeview)
                 	  liferea_shell_lookup ("feedlist"));
                 	  
 	conf_get_bool_value (REDUCED_FEEDLIST, &feedlist_reduced_unread);
-	ui_feedlist_reduce_unread (feedlist_reduced_unread);	/* before menu setup for reduced mode check box to be correct */
+	if (feedlist_reduced_unread)
+		ui_feedlist_reduce_mode_changed ();	/* before menu setup for reduced mode check box to be correct */
 	
 	ui_dnd_setup_feedlist (feedstore);
 	liferea_shell_update_feed_menu (TRUE, FALSE, FALSE);
 	liferea_shell_update_allitems_actions (FALSE, FALSE);
 	
 	debug_exit ("ui_feedlist_init");
-}
-
-static void
-ui_feedlist_expand_parents (nodePtr parentNode)
-{
-	if (parentNode->parent)
-		ui_feedlist_expand_parents (parentNode->parent);
-		
-	ui_node_set_expansion (parentNode, TRUE);
 }
 
 void
@@ -275,7 +294,7 @@ ui_feedlist_select (nodePtr node)
 		}
 		
 		if (node->parent)
-			ui_feedlist_expand_parents (node->parent);
+			ui_feedlist_expand (node->parent);
 
 		gtk_tree_view_scroll_to_cell (treeview, path, NULL, FALSE, 0.0, 0.0);
 		gtk_tree_view_set_cursor (treeview, path, NULL, FALSE);
@@ -419,6 +438,5 @@ on_menu_folder_new (GtkMenuItem *menuitem, gpointer user_data)
 void
 on_feedlist_reduced_activate (GtkToggleAction *menuitem, gpointer user_data)
 {
-	ui_feedlist_reduce_unread (gtk_toggle_action_get_active (menuitem));
-	ui_node_reload_feedlist ();
+	ui_feedlist_set_reduce_mode (gtk_toggle_action_get_active (menuitem));
 }

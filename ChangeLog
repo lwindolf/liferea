@@ -4,6 +4,9 @@
 
 	* Added patch SF #2883678: Support for notification append
 	  (patch by Ted Gould)
+	* Implemented folder re-expansion when switching from
+	  reduced feed list mode back to full hierarchic mode.
+	  (Lars Lindner)
 
 
 2009-11-19  Adrian Bunk <bunk@users.sourceforge.net>
