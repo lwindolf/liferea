@@ -4,6 +4,8 @@
 
 	* Fixes SF #2907915: gdk_draw_pixbuf width/height ordering
 	  (patch by Eric Work)
+	* Fixes Debian 560201: Liferea doesn't remember font size
+	  (reported by Willi Mann)
 
 
 2009-11-19  Adrian Bunk <bunk@users.sourceforge.net>

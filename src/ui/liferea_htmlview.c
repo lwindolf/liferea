@@ -393,6 +393,9 @@ liferea_htmlview_launch_URL_internal (LifereaHtmlView *htmlview, const gchar *ur
 void
 liferea_htmlview_set_zoom (LifereaHtmlView *htmlview, gfloat diff)
 {
+g_print("set zoom: %3.2lf\n", diff);
+	conf_set_int_value (LAST_ZOOMLEVEL, (gint)(100.*diff));
+
 	(htmlviewImpl->zoomLevelSet) (htmlview->priv->renderWidget, diff); 
 }
 
