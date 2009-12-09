@@ -63,21 +63,13 @@ ui_feedlist_selection_changed_cb (GtkTreeSelection *selection, gpointer data)
 	GtkTreeIter		iter;
 	GtkTreeModel		*model;
 	nodePtr			node;
-	gboolean		realNode = TRUE;
 
 	if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
 	 	gtk_tree_model_get (model, &iter, FS_PTR, &node, -1);
 
 		debug1 (DEBUG_GUI, "feed list selection changed to \"%s\"", node_get_title(node));
 
-		/* make sure thats no grouping iterator */
-		// FIXME: check based on node capabilities!!!
-		realNode = (node && (IS_FEED (node) || 
-		                     IS_NEWSBIN (node) || 
-				     IS_VFOLDER (node) || 
-				     IS_NODE_SOURCE (node)));
-		if (realNode)
-			browser_tabs_show_headlines ();
+		browser_tabs_show_headlines ();		// FIXME: emit signal to item list instead of bother the tabs manager
 		
 		/* update feed list and item list states */
 		feedlist_selection_changed (node);
