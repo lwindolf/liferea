@@ -176,14 +176,6 @@ gboolean liferea_htmlview_scroll (LifereaHtmlView *htmlview);
 void liferea_htmlview_prepare_context_menu (LifereaHtmlView *htmlview, GtkMenu *menu, gchar *link);
 
 /**
- * To be called when HTML view needs to update the proxy settings
- * of the rendering widget implementation.
- *
- * @param htmlview	the html view
- */
-void liferea_htmlview_update_proxy (LifereaHtmlView *htmlview);
-
-/**
  * To be called when HTML view needs to change the text size
  * of the rendering widget implementation.
  *
