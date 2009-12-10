@@ -133,7 +133,7 @@ network_process_request (const updateJobPtr const job)
 	    job->request->options->username &&
 	    job->request->options->password) {
 		SoupURI *uri = soup_message_get_uri (msg);
-
+		
 		soup_uri_set_user (uri, job->request->options->username);
 		soup_uri_set_password (uri, job->request->options->password);
 	}
@@ -232,6 +232,8 @@ network_get_proxy_password (void)
 	return proxypassword;
 }
 
+extern void network_monitor_proxy_changed (void);
+
 void
 network_set_proxy (gchar *host, guint port, gchar *user, gchar *password)
 {
@@ -271,9 +273,8 @@ network_set_proxy (gchar *host, guint port, gchar *user, gchar *password)
 	} else {
 		debug0 (DEBUG_NET, "proxy unset!");
 	}
-
-	// FIXME: do this differently using signals!
-	// liferea_htmlview_update_proxy ();
+	
+	network_monitor_proxy_changed ();
 }
 
 const char *

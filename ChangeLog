@@ -7,6 +7,8 @@
 	* Implemented folder re-expansion when switching from
 	  reduced feed list mode back to full hierarchic mode.
 	  (Lars Lindner)
+	* Updated proxy settings are now forwarded to the internal
+	  renderer again. (Lars Lindner)
 
 
 2009-11-19  Adrian Bunk <bunk@users.sourceforge.net>

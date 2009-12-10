@@ -178,9 +178,17 @@ liferea_htmlview_online_status_changed (NetworkMonitor *nm, gboolean online, gpo
 	LifereaHtmlView *htmlview = LIFEREA_HTMLVIEW (userdata);
 	
 	liferea_htmlview_set_online (htmlview, online);
+}
 
-	// FIXME: do this differently using signals!
-	// liferea_htmlview_update_proxy ();
+static void
+liferea_htmlview_proxy_changed (NetworkMonitor *nm, gpointer userdata)
+{
+	LifereaHtmlView *htmlview = LIFEREA_HTMLVIEW (userdata);
+
+	(RENDERER (htmlview)->setProxy) (network_get_proxy_host (),
+	                                 network_get_proxy_port (),
+	                                 network_get_proxy_username (),
+	                                 network_get_proxy_password ());
 }
 
 LifereaHtmlView *
@@ -195,6 +203,9 @@ liferea_htmlview_new (gboolean forceInternalBrowsing)
 	
 	g_signal_connect (network_monitor_get (), "online-status-changed",
 	                  G_CALLBACK (liferea_htmlview_online_status_changed),
+	                  htmlview);
+	g_signal_connect (network_monitor_get (), "proxy-changed",
+	                  G_CALLBACK (liferea_htmlview_proxy_changed),
 	                  htmlview);
 	
 	return htmlview;
@@ -381,15 +392,6 @@ gboolean
 liferea_htmlview_scroll (LifereaHtmlView *htmlview)
 {
 	return (RENDERER (htmlview)->scrollPagedown) (htmlview->priv->renderWidget);
-}
-
-void
-liferea_htmlview_update_proxy (LifereaHtmlView *htmlview)
-{
-	(RENDERER (htmlview)->setProxy) (network_get_proxy_host (),
-	                                 network_get_proxy_port (),
-	                                 network_get_proxy_username (),
-	                                 network_get_proxy_password ());
 }
 
 void
