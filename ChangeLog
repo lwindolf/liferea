@@ -9,6 +9,10 @@
 	  (Lars Lindner)
 	* Updated proxy settings are now forwarded to the internal
 	  renderer again. (Lars Lindner)
+	* Fixes SF #2872001: Allowing compilation against 
+	  NetworkManager 0.8 which decided to force 100000 packages 
+	  out there to support both "libnm-glib" and "libnm_glib".
+	  (reported by Michal Nowak)
 
 
 2009-11-19  Adrian Bunk <bunk@users.sourceforge.net>

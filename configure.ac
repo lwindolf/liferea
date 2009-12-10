@@ -163,7 +163,9 @@ dnl **************
 
 if test "x$enable_nm" = "xyes"; then
    AC_MSG_NOTICE([checking for NetworkManager])
-   PKG_CHECK_MODULES([NM], [dbus-glib-1 libnm_glib],enable_nm=yes,enable_nm=no)
+   PKG_CHECK_EXISTS([libnm-glib],
+   [ PKG_CHECK_MODULES([NM], [dbus-glib-1 libnm-glib],enable_nm=yes,enable_nm=no) ],
+   [ PKG_CHECK_MODULES([NM], [dbus-glib-1 libnm_glib],enable_nm=yes,enable_nm=no) ])
 fi
 
 if test "x$enable_nm" = "xyes"; then
