@@ -13,6 +13,8 @@
 	  NetworkManager 0.8 which decided to force 100000 packages 
 	  out there to support both "libnm-glib" and "libnm_glib".
 	  (reported by Michal Nowak)
+	* Fixes an RSS 1.1 parsing bug that caused items not to 
+	  be parsed at all (reported by Roberto Guido)
 
 	* Updated Catalan translation. (Gil Forcada)
 

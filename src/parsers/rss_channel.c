@@ -279,14 +279,16 @@ static void rss_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 				}
 				
 			} else if((!xmlStrcmp(cur->name, BAD_CAST"items"))) { /* RSS 1.1 */
-				xmlNodePtr item = cur->xmlChildrenNode;
-				while(item) {
-					if(NULL != (ctxt->item = parseRSSItem(ctxt, cur))) {
-						if(0 == ctxt->item->time)
-							ctxt->item->time = ctxt->feed->time;
-						ctxt->items = g_list_append(ctxt->items, ctxt->item);
+				xmlNodePtr itemNode = cur->xmlChildrenNode;
+				while(itemNode) {
+					if ((!xmlStrcmp(itemNode->name, BAD_CAST"item"))) {
+						if(NULL != (ctxt->item = parseRSSItem(ctxt, itemNode))) {
+							if(0 == ctxt->item->time)
+								ctxt->item->time = ctxt->feed->time;
+							ctxt->items = g_list_append(ctxt->items, ctxt->item);
+						}
 					}
-					item = item->next;
+					itemNode = itemNode->next;
 				}
 			} else if((!xmlStrcmp(cur->name, BAD_CAST"item"))) { /* RSS 1.0, 2.0 */
 				/* collect channel items */
