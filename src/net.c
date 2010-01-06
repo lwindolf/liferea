@@ -33,8 +33,7 @@
 
 #define HOMEPAGE	"http://liferea.sf.net/"
 
-static SoupSession *session;
-static SoupURI *proxy = NULL;
+static SoupSession *session = NULL;
 
 static gchar	*proxyname = NULL;
 static gchar	*proxyusername = NULL;
@@ -79,6 +78,24 @@ network_process_callback (SoupSession *session, SoupMessage *msg, gpointer user_
 	}
 
 	update_process_finished_job (job);
+}
+
+static SoupURI *
+network_get_proxy_uri (void)
+{
+	SoupURI *uri = NULL;
+	
+	if (!proxyname)
+		return uri;
+		
+	uri = soup_uri_new (NULL);
+	soup_uri_set_scheme (uri, SOUP_URI_SCHEME_HTTP);
+	soup_uri_set_host (uri, proxyname);
+	soup_uri_set_port (uri, proxyport);
+	soup_uri_set_user (uri, proxyusername);
+	soup_uri_set_password (uri, proxypassword);
+
+	return uri;
 }
 
 /* Downloads a feed specified in the request structure, returns 
@@ -158,7 +175,32 @@ network_process_request (const updateJobPtr const job)
 	    (network_get_proxy_host () == NULL))
 		soup_message_disable_feature (msg, SOUP_TYPE_PROXY_URI_RESOLVER);
 
+
+		SoupURI *newproxy = network_get_proxy_uri ();
+		
+		g_object_set (G_OBJECT (session),
+			      SOUP_SESSION_PROXY_URI, newproxy,
+			      NULL);
+
+		if (newproxy)
+			soup_uri_free (newproxy);
+
 	soup_session_queue_message (session, msg, network_process_callback, job);
+}
+
+static void
+network_authenticate (
+	SoupSession *session,
+	SoupMessage *msg,
+        SoupAuth *auth,
+	gboolean retrying,
+	gpointer data)
+{
+	if (!retrying && msg->status_code == SOUP_STATUS_PROXY_UNAUTHORIZED) {
+		soup_auth_authenticate (auth, g_strdup (proxyusername), g_strdup (proxypassword));
+	}
+	
+	// FIXME: Handle HTTP 401 too
 }
 
 void
@@ -168,6 +210,7 @@ network_init (void)
 	SoupCookieJar	*cookies;
 	gchar		*filename;
 	SoupLogger	*logger;
+	SoupURI		*proxy;
 
 	/* Set an appropriate user agent */
 	if (g_getenv ("LANG")) {
@@ -184,12 +227,17 @@ network_init (void)
 	g_free (filename);
 
 	/* Initialize libsoup */
+	proxy = network_get_proxy_uri ();
 	session = soup_session_async_new_with_options (SOUP_SESSION_USER_AGENT, useragent,
 						       SOUP_SESSION_TIMEOUT, 120,
 						       SOUP_SESSION_IDLE_TIMEOUT, 30,
 						       SOUP_SESSION_PROXY_URI, proxy,
 						       SOUP_SESSION_ADD_FEATURE, cookies,
 						       NULL);
+	if (proxy)
+		soup_uri_free (proxy);
+		
+	g_signal_connect (session, "authenticate", G_CALLBACK (network_authenticate), NULL);
 
 	/* Soup debugging */
 	if (debug_level & DEBUG_NET) {
@@ -237,8 +285,6 @@ extern void network_monitor_proxy_changed (void);
 void
 network_set_proxy (gchar *host, guint port, gchar *user, gchar *password)
 {
-	SoupURI *newproxy = NULL;
-
 	/* FIXME: make arguments const and use the SoupURI in network_get_proxy_* ? */
 	g_free (proxyname);
 	g_free (proxyusername);
@@ -248,31 +294,20 @@ network_set_proxy (gchar *host, guint port, gchar *user, gchar *password)
 	proxyusername = user;
 	proxypassword = password;
 
-	if (host) {
-		newproxy = soup_uri_new (NULL);
-		soup_uri_set_scheme (newproxy, SOUP_URI_SCHEME_HTTP);
-		soup_uri_set_host (newproxy, host);
-		soup_uri_set_port (newproxy, port);
-		soup_uri_set_user (newproxy, user);
-		soup_uri_set_password (newproxy, password);
-	}
-
 	/* The sessions will be NULL if we were called from conf_init() as that's called
 	 * before net_init() */
-	if (session)
-		g_object_set (session,
+	if (session) {
+		SoupURI *newproxy = network_get_proxy_uri ();
+		
+		g_object_set (G_OBJECT (session),
 			      SOUP_SESSION_PROXY_URI, newproxy,
 			      NULL);
 
-	if (proxy)
-		soup_uri_free (proxy);
-	proxy = newproxy;
-
-	if (proxy) {
-		debug1 (DEBUG_NET, "proxy set to %s", soup_uri_to_string (proxy, FALSE));
-	} else {
-		debug0 (DEBUG_NET, "proxy unset!");
+		if (newproxy)
+			soup_uri_free (newproxy);
 	}
+
+	debug4 (DEBUG_NET, "proxy set to http://%s:%s@%s:%d", user, password, host, port);
 	
 	network_monitor_proxy_changed ();
 }
