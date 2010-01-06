@@ -12,6 +12,8 @@
 	  (reported by Michal Nowak)
 	* Fixes an RSS 1.1 parsing bug that caused items not to 
 	  be parsed at all (reported by Roberto Guido)
+	* Fixes SF #2883971: proxy authentication doesn't work
+	  (reported by Louis White and others)
 
 	* Updated Catalan translation. (Gil Forcada)
 
