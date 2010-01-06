@@ -175,16 +175,6 @@ network_process_request (const updateJobPtr const job)
 	    (network_get_proxy_host () == NULL))
 		soup_message_disable_feature (msg, SOUP_TYPE_PROXY_URI_RESOLVER);
 
-
-		SoupURI *newproxy = network_get_proxy_uri ();
-		
-		g_object_set (G_OBJECT (session),
-			      SOUP_SESSION_PROXY_URI, newproxy,
-			      NULL);
-
-		if (newproxy)
-			soup_uri_free (newproxy);
-
 	soup_session_queue_message (session, msg, network_process_callback, job);
 }
 
