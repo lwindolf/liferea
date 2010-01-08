@@ -162,10 +162,43 @@ const gchar *	item_get_title(itemPtr item) {return item->title; }
 const gchar *	item_get_description(itemPtr item) { return item->description; }
 const gchar *	item_get_source(itemPtr item) { return item->source; }
 
+gchar *
+item_get_link (itemPtr item)
+{
+	const gchar	*src;
+	gchar		*link;
+
+	src = item_get_source (item);
+	if (!src)
+		return NULL;
+
+	/* check for relative link */
+	if (*src == '/') {
+		const gchar * base = item_get_base_url (item);
+		gchar * pos = (gchar *)base;
+		int host_url_size, i;
+
+		/* Find the third /, start of link on
+		 * site. */
+		for (i = 0; i < 3; i++) {
+			pos = strstr(pos + 1, "/");
+		}
+		host_url_size = pos - base + 1;
+
+		link = g_malloc (host_url_size + strlen(src));
+		strncpy (link, base, host_url_size - 1);
+		pos = link + host_url_size - 1;
+		strcpy (pos, src);
+	} else {
+		link = g_strdup (src);
+	}
+	
+	return link;
+}
+
 void
 item_unload (itemPtr item) 
 {
-
 	g_free (item->title);
 	g_free (item->source);
 	g_free (item->sourceId);

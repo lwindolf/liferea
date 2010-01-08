@@ -126,6 +126,15 @@ const gchar *	item_get_description(itemPtr item);
 /** Returns the source of item. */
 const gchar *	item_get_source(itemPtr item);
 
+/**
+ * Returns the resolved link for the item.
+ *
+ * @param item	the item
+ *
+ * @returns newly allocated URI to be free'd using g_free()
+ */
+gchar *	item_get_link(itemPtr item);
+
 /** Sets the item title */
 void		item_set_title(itemPtr item, const gchar * title);
 

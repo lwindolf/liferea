@@ -19,6 +19,7 @@
  */
 
 #include <string.h>
+#include <glib.h>
 
 #include "attention.h"
 #include "comments.h"
@@ -578,7 +579,10 @@ itemlist_selection_changed (itemPtr item)
 			item_set_read_state (item, TRUE);
 
 			if (node_load_link_preferred (node)) {
-				itemview_launch_URL (item_get_source (item), TRUE /* force internal */);
+				gchar* link = item_get_link (item);
+
+				itemview_launch_URL (link, TRUE /* force internal */);
+				g_free (link);
 			} else {
 				itemview_set_mode (ITEMVIEW_SINGLE_ITEM);
 				itemview_select_item (item);

@@ -17,6 +17,8 @@
 	  be parsed at all (reported by Roberto Guido)
 	* Fixes SF #2883971: proxy authentication doesn't work
 	  (reported by Louis White and others)
+	* Improves handling of feeds with relative item links.
+	  (patch by Rafael Kitover)
 
 	* Updated Catalan translation. (Gil Forcada)
 
