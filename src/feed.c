@@ -394,7 +394,6 @@ feed_free (nodePtr node)
 
 	if (feed->parseErrors)
 		g_string_free (feed->parseErrors, TRUE);
-	g_free (feed->htmlUrl);
 	g_free (feed);
 }
 

@@ -1,7 +1,7 @@
 /**
  * @file rss_item.c  RSS/RDF item parsing 
  *
- * Copyright (C) 2003-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2010 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -99,6 +99,8 @@ parseRSSItem (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 			/* RSS 0.93 allows multiple enclosures */
 			tmp = xml_get_attribute (cur, "url");
 			if (tmp) {
+				const gchar *feedURL = subscription_get_homepage (ctxt->subscription);
+				
 				gchar *type = xml_get_attribute (cur, "type");
 				gchar *lengthStr = xml_get_attribute (cur, "length");
 				gchar *enclStr = NULL;
@@ -106,12 +108,10 @@ parseRSSItem (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 				if (lengthStr)
 					length = atol (lengthStr);
 				
-				if((strstr(tmp, "://") == NULL) &&
-				   (ctxt->feed->htmlUrl != NULL) &&
-				   (ctxt->feed->htmlUrl[0] != '|') &&
-				   (strstr(ctxt->feed->htmlUrl, "://") != NULL)) {
+				if((strstr(tmp, "://") == NULL) && feedURL && (feedURL[0] != '|') &&
+				   (strstr(feedURL, "://") != NULL)) {
 					/* add base URL if necessary and possible */
-					 tmp2 = g_strdup_printf("%s/%s", ctxt->feed->htmlUrl, tmp);
+					 tmp2 = g_strdup_printf("%s/%s", feedURL, tmp);
 					 g_free(tmp);
 					 tmp = tmp2;
 				}

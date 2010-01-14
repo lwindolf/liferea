@@ -2,7 +2,7 @@
  * @file atom10.c  Atom 1.0 Parser
  * 
  * Copyright (C) 2005-2006 Nathan Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2003-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2010 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -272,11 +272,10 @@ atom10_parse_link (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10ParserSt
 	if (href) {
 		xmlChar *baseURL = xmlNodeGetBase (cur->doc, cur);
 		gchar *url, *relation, *type, *escTitle = NULL, *title;
+		const gchar *feedURL = subscription_get_homepage (ctxt->subscription);
 		
-		if (!baseURL && ctxt->feed->htmlUrl && 
-		    ctxt->feed->htmlUrl[0] != '|' &&
-		    strstr (ctxt->feed->htmlUrl, "://"))
-			baseURL = xmlStrdup (BAD_CAST (ctxt->feed->htmlUrl));
+		if (!baseURL && feedURL && feedURL[0] != '|' && strstr (feedURL, "://"))
+			baseURL = xmlStrdup (BAD_CAST (feedURL));
 		url = (gchar *)common_build_url (href, (gchar *)baseURL);
 
 		type = xml_get_ns_attribute (cur, "type", NULL);

@@ -1,7 +1,7 @@
 /**
  * @file feed.h  common feed handling interface
  * 
- * Copyright (C) 2003-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2010 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -47,15 +47,11 @@
 typedef struct feed {
 	struct feedHandler *fhp;		/**< Feed format parsing handler. */
 
-	/* feed properties that need to be saved */	// FIXME: move to metadata
-	gchar		*htmlUrl;		/**< URL of HTML version of the feed */
-
 	/* feed cache state properties */
 	gint		cacheLimit;		/**< Amount of cache to save: See the cache_limit enum */
 	gboolean	noIncremental;		/**< Do merging for this feed but drop old items */
 	
 	/* feed parsing state */
-
 	gboolean	valid;			/**< FALSE if there was an error in xml_parse_feed() */
 	GString		*parseErrors;		/**< textual description of parsing errors */
 	time_t		time;			/**< Feeds modified date */

@@ -1,7 +1,7 @@
 /**
  * @file ns_media.c  Yahoo media namespace support
  *
- * Copyright (C) 2007-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2010 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -60,20 +60,20 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
   	if (!xmlStrcmp(cur->name, BAD_CAST"content")) {
 		tmp = xml_get_attribute (cur, "url");
 		if (tmp) {
-			/* the following code is duplicated from rss_item.c! */		
+			/* the following code is duplicated from rss_item.c! */
+			const gchar *feedURL = subscription_get_homepage (ctxt->subscription);
+			
 			gchar *type = xml_get_attribute (cur, "type");
 			gchar *lengthStr = xml_get_attribute (cur, "length");
 			gchar *medium = xml_get_attribute (cur, "medium");
 			gssize length = 0;
 			if (lengthStr)
 				length = atol (lengthStr);
-					
-			if ((strstr (tmp, "://") == NULL) &&
-			    (ctxt->feed->htmlUrl != NULL) &&
-			    (ctxt->feed->htmlUrl[0] != '|') &&
-			    (strstr (ctxt->feed->htmlUrl, "://") != NULL)) {
+			
+			if ((strstr (tmp, "://") == NULL) && feedURL && (feedURL[0] != '|') &&
+			    (strstr (feedURL, "://") != NULL)) {
 				/* add base URL if necessary and possible */
-				 tmp2 = g_strdup_printf ("%s/%s", ctxt->feed->htmlUrl, tmp);
+				 tmp2 = g_strdup_printf ("%s/%s", feedURL, tmp);
 				 g_free (tmp);
 				 tmp = tmp2;
 			}
