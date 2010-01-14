@@ -19,6 +19,8 @@
 	  (reported by Louis White and others)
 	* Improves handling of feeds with relative item links.
 	  (patch by Rafael Kitover)
+	* Fixes SF #2928927: Remember sort column when sorting by 
+	  item state (patch by Andy Kittner)
 
 	* Updated Catalan translation. (Gil Forcada)
 

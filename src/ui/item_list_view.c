@@ -214,6 +214,9 @@ item_list_view_set_sort_column (ItemListView *ilv, nodeViewSortType sortType, gb
 		case NODE_VIEW_SORT_BY_PARENT:
 			sortColumn = IS_PARENT;
 			break;
+		case NODE_VIEW_SORT_BY_STATE:
+			sortColumn = IS_STATE;
+			break;
 		case NODE_VIEW_SORT_BY_TIME:
 		default:
 			sortColumn = IS_TIME;
@@ -913,6 +916,9 @@ itemlist_sort_column_changed_cb (GtkTreeSortable *treesortable, gpointer user_da
 			break;
 		case IS_LABEL:
 			nodeSort = NODE_VIEW_SORT_BY_TITLE;
+			break;
+		case IS_STATE:
+			nodeSort = NODE_VIEW_SORT_BY_STATE;
 			break;
 		case IS_PARENT:
 		case IS_SOURCE:

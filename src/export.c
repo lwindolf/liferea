@@ -78,6 +78,9 @@ export_append_node_tag (nodePtr node, gpointer userdata)
 			case NODE_VIEW_SORT_BY_PARENT:
 				xmlNewProp (childNode, BAD_CAST"sortColumn", BAD_CAST"parent");
 				break;
+			case NODE_VIEW_SORT_BY_STATE:
+				xmlNewProp (childNode, BAD_CAST"sortColumn", BAD_CAST"state");
+				break;
 		}
 
 		if (FALSE == node->sortReversed)
@@ -269,6 +272,8 @@ import_parse_outline (xmlNodePtr cur, nodePtr parentNode, gboolean trusted)
 			node->sortColumn = NODE_VIEW_SORT_BY_TITLE;
 		else if (!xmlStrcmp (sortStr, "parent"))
 			node->sortColumn = NODE_VIEW_SORT_BY_PARENT;
+		else if (!xmlStrcmp (sortStr, "state"))
+			node->sortColumn = NODE_VIEW_SORT_BY_STATE;
 		else
 			node->sortColumn = NODE_VIEW_SORT_BY_TIME;
 		xmlFree (sortStr);

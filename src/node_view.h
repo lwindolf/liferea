@@ -31,7 +31,8 @@ typedef enum {
 typedef enum {
 	NODE_VIEW_SORT_BY_TIME = 0,	/* default */
 	NODE_VIEW_SORT_BY_TITLE,
-	NODE_VIEW_SORT_BY_PARENT
+	NODE_VIEW_SORT_BY_PARENT,
+	NODE_VIEW_SORT_BY_STATE
 } nodeViewSortType;
 
 #endif
