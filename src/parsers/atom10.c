@@ -854,7 +854,7 @@ atom10_init_feed_handler (void)
 		atom10_add_ns_handler (ns_georss_get_handler ());
 	}	
 	/* prepare feed handler structure */
-	fhp->typeStr = "pie";
+	fhp->typeStr = "atom";
 	fhp->icon = ICON_AVAILABLE;
 	fhp->feedParser	= atom10_parse_feed;
 	fhp->checkFormat = atom10_format_check;

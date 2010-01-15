@@ -1,7 +1,7 @@
 /**
  * @file pie_feed.c Atom 0.3 channel parsing
  * 
- * Copyright (C) 2003-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2010 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -324,7 +324,7 @@ pie_init_feed_handler (void)
 
 
 	/* prepare feed handler structure */
-	fhp->typeStr = "pie";
+	fhp->typeStr = "atom";
 	fhp->icon = ICON_AVAILABLE;
 	fhp->feedParser	= pie_parse;
 	fhp->checkFormat = pie_format_check;

@@ -1,7 +1,7 @@
 /**
  * @file feed_parser.c  parsing of different feed formats
  * 
- * Copyright (C) 2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2008-2010 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -67,6 +67,9 @@ feed_type_str_to_fhp (const gchar *str)
 	
 	if (!str)
 		return NULL;
+		
+	if (strstr(str, "pie"))
+		return feed_type_str_to_fhp ("atom");
 
 	for(iter = feed_parsers_get_list (); iter != NULL; iter = iter->next) {
 		fhp = (feedHandlerPtr)iter->data;
