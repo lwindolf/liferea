@@ -1,7 +1,7 @@
 /**
  * @file feed.c  feed node and subscription type
  * 
- * Copyright (C) 2003-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2010 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -18,10 +18,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
 
 #include <string.h>
 
@@ -361,14 +357,11 @@ feed_remove (nodePtr node)
 static gchar *
 feed_render (nodePtr node)
 {
-	renderParamPtr	params;
 	gchar		*output = NULL;
 	xmlDocPtr	doc;
 
 	doc = feed_to_xml (node, NULL);
-	params = render_parameter_new ();
-	render_parameter_add (params, "pixmapsDir='file://" PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "'");
-	output = render_xml (doc, "feed", params);
+	output = render_xml (doc, "feed", NULL);
 	xmlFreeDoc (doc);
 
 	return output;

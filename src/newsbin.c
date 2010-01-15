@@ -1,7 +1,7 @@
 /**
  * @file newsbin.c  news bin node type implementation
  * 
- * Copyright (C) 2006-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2010 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -67,14 +67,11 @@ newsbin_remove (nodePtr node)
 static gchar *
 newsbin_render (nodePtr node)
 {
-	renderParamPtr	params;
 	gchar		*output = NULL;
 	xmlDocPtr	doc;
 
 	doc = feed_to_xml(node, NULL);
-	params = render_parameter_new();
-	render_parameter_add(params, "pixmapsDir='file://" PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "'");
-	output = render_xml(doc, "newsbin", params);
+	output = render_xml(doc, "newsbin", NULL);
 	xmlFreeDoc(doc);
 
 	return output;

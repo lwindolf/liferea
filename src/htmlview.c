@@ -228,7 +228,6 @@ htmlview_render_item (itemPtr item,
 	
 	/* do the XSLT rendering */
 	params = render_parameter_new ();
-	render_parameter_add (params, "pixmapsDir='file://" PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "'");
 	render_parameter_add (params, "baseUrl='%s'", baseUrl);
 	render_parameter_add (params, "summary='%d'", summaryMode?1:0);
 	render_parameter_add (params, "single='%d'", (viewMode == ITEMVIEW_SINGLE_ITEM)?1:0);
