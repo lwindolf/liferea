@@ -4986,19 +4986,19 @@ fail:
 }
 
 
-static int _wrap_item_get_link(lua_State* L) {
+static int _wrap_item_make_link(lua_State* L) {
   int SWIG_arg = 0;
   itemPtr arg1 = (itemPtr) 0 ;
   char *result = 0 ;
   
-  SWIG_check_num_args("item_get_link",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("item_get_link",1,"itemPtr");
+  SWIG_check_num_args("item_make_link",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("item_make_link",1,"itemPtr");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_item,0))){
-    SWIG_fail_ptr("item_get_link",1,SWIGTYPE_p_item);
+    SWIG_fail_ptr("item_make_link",1,SWIGTYPE_p_item);
   }
   
-  result = (char *)item_get_link(arg1);
+  result = (char *)item_make_link(arg1);
   lua_pushstring(L,(const char*)result); SWIG_arg++;
   return SWIG_arg;
   
@@ -8569,7 +8569,7 @@ static const struct luaL_reg swig_commands[] = {
     { "item_get_title", _wrap_item_get_title},
     { "item_get_description", _wrap_item_get_description},
     { "item_get_source", _wrap_item_get_source},
-    { "item_get_link", _wrap_item_get_link},
+    { "item_make_link", _wrap_item_make_link},
     { "item_set_title", _wrap_item_set_title},
     { "item_set_description", _wrap_item_set_description},
     { "item_set_source", _wrap_item_set_source},
