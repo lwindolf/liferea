@@ -37,7 +37,7 @@
 #include "node.h"
 #include "ui/liferea_shell.h"
 #include "ui/ui_common.h"
-#include "ui/ui_feedlist.h"
+#include "ui/feed_list_view.h"
 #include "ui/ui_tray.h"
 
 #include "notification/notification.h"
@@ -56,7 +56,7 @@ notif_libnotify_callback_open (NotifyNotification *n, gchar *action, gpointer us
 	node_p = node_from_id (user_data);
 
 	if (node_p)
-		ui_feedlist_select (node_p);
+		feed_list_view_select (node_p);
 	else
 		ui_show_error_box (_("This feed does not exist anymore!"));
 

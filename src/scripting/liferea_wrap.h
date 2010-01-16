@@ -1536,7 +1536,7 @@ static swig_module_info swig_module = {swig_types, 29, 0, 0, 0, 0};
 #include "../social.h"
 #include "../subscription.h"
 
-#include "../ui/ui_feedlist.h"
+#include "../ui/feed_list_view.h"
 #include "../ui/ui_node.h"
 
 #ifdef __cplusplus
@@ -4986,6 +4986,30 @@ fail:
 }
 
 
+static int _wrap_item_get_link(lua_State* L) {
+  int SWIG_arg = 0;
+  itemPtr arg1 = (itemPtr) 0 ;
+  char *result = 0 ;
+  
+  SWIG_check_num_args("item_get_link",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("item_get_link",1,"itemPtr");
+  
+  if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_item,0))){
+    SWIG_fail_ptr("item_get_link",1,SWIGTYPE_p_item);
+  }
+  
+  result = (char *)item_get_link(arg1);
+  lua_pushstring(L,(const char*)result); SWIG_arg++;
+  return SWIG_arg;
+  
+  if(0) SWIG_fail;
+  
+fail:
+  lua_error(L);
+  return SWIG_arg;
+}
+
+
 static int _wrap_item_set_title(lua_State* L) {
   int SWIG_arg = 0;
   itemPtr arg1 = (itemPtr) 0 ;
@@ -7777,18 +7801,18 @@ fail:
 }
 
 
-static int _wrap_ui_feedlist_select(lua_State* L) {
+static int _wrap_feed_list_view_select(lua_State* L) {
   int SWIG_arg = 0;
   nodePtr arg1 = (nodePtr) 0 ;
   
-  SWIG_check_num_args("ui_feedlist_select",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("ui_feedlist_select",1,"nodePtr");
+  SWIG_check_num_args("feed_list_view_select",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("feed_list_view_select",1,"nodePtr");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_node,0))){
-    SWIG_fail_ptr("ui_feedlist_select",1,SWIGTYPE_p_node);
+    SWIG_fail_ptr("feed_list_view_select",1,SWIGTYPE_p_node);
   }
   
-  ui_feedlist_select(arg1);
+  feed_list_view_select(arg1);
   
   return SWIG_arg;
   
@@ -7800,18 +7824,18 @@ fail:
 }
 
 
-static int _wrap_ui_feedlist_init(lua_State* L) {
+static int _wrap_feed_list_view_init(lua_State* L) {
   int SWIG_arg = 0;
   GtkTreeView *arg1 = (GtkTreeView *) 0 ;
   
-  SWIG_check_num_args("ui_feedlist_init",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("ui_feedlist_init",1,"GtkTreeView *");
+  SWIG_check_num_args("feed_list_view_init",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("feed_list_view_init",1,"GtkTreeView *");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_GtkTreeView,0))){
-    SWIG_fail_ptr("ui_feedlist_init",1,SWIGTYPE_p_GtkTreeView);
+    SWIG_fail_ptr("feed_list_view_init",1,SWIGTYPE_p_GtkTreeView);
   }
   
-  ui_feedlist_init(arg1);
+  feed_list_view_init(arg1);
   
   return SWIG_arg;
   
@@ -7823,18 +7847,18 @@ fail:
 }
 
 
-static int _wrap_ui_feedlist_delete_prompt(lua_State* L) {
+static int _wrap_feed_list_view_delete_prompt(lua_State* L) {
   int SWIG_arg = 0;
   nodePtr arg1 = (nodePtr) 0 ;
   
-  SWIG_check_num_args("ui_feedlist_delete_prompt",1,1)
-  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("ui_feedlist_delete_prompt",1,"nodePtr");
+  SWIG_check_num_args("feed_list_view_delete_prompt",1,1)
+  if(!SWIG_isptrtype(L,1)) SWIG_fail_arg("feed_list_view_delete_prompt",1,"nodePtr");
   
   if (!SWIG_IsOK(SWIG_ConvertPtr(L,1,(void**)&arg1,SWIGTYPE_p_node,0))){
-    SWIG_fail_ptr("ui_feedlist_delete_prompt",1,SWIGTYPE_p_node);
+    SWIG_fail_ptr("feed_list_view_delete_prompt",1,SWIGTYPE_p_node);
   }
   
-  ui_feedlist_delete_prompt(arg1);
+  feed_list_view_delete_prompt(arg1);
   
   return SWIG_arg;
   
@@ -8545,6 +8569,7 @@ static const struct luaL_reg swig_commands[] = {
     { "item_get_title", _wrap_item_get_title},
     { "item_get_description", _wrap_item_get_description},
     { "item_get_source", _wrap_item_get_source},
+    { "item_get_link", _wrap_item_get_link},
     { "item_set_title", _wrap_item_set_title},
     { "item_set_description", _wrap_item_set_description},
     { "item_set_source", _wrap_item_set_source},
@@ -8609,9 +8634,9 @@ static const struct luaL_reg swig_commands[] = {
     { "subscription_get_filter", _wrap_subscription_get_filter},
     { "subscription_set_filter", _wrap_subscription_set_filter},
     { "subscription_free", _wrap_subscription_free},
-    { "ui_feedlist_select", _wrap_ui_feedlist_select},
-    { "ui_feedlist_init", _wrap_ui_feedlist_init},
-    { "ui_feedlist_delete_prompt", _wrap_ui_feedlist_delete_prompt},
+    { "feed_list_view_select", _wrap_feed_list_view_select},
+    { "feed_list_view_init", _wrap_feed_list_view_init},
+    { "feed_list_view_delete_prompt", _wrap_feed_list_view_delete_prompt},
     { "on_newbtn_clicked", _wrap_on_newbtn_clicked},
     { "on_menu_delete", _wrap_on_menu_delete},
     { "on_menu_update", _wrap_on_menu_update},
