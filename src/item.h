@@ -1,7 +1,7 @@
 /**
  * @file item.h common item handling
  * 
- * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2010 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -133,7 +133,7 @@ const gchar *	item_get_source(itemPtr item);
  *
  * @returns newly allocated URI to be free'd using g_free()
  */
-gchar *	item_get_link(itemPtr item);
+gchar *	item_make_link(itemPtr item);
 
 /** Sets the item title */
 void		item_set_title(itemPtr item, const gchar * title);

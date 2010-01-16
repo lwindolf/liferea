@@ -579,7 +579,7 @@ itemlist_selection_changed (itemPtr item)
 			item_set_read_state (item, TRUE);
 
 			if (node_load_link_preferred (node)) {
-				gchar* link = item_get_link (item);
+				gchar* link = item_make_link (item);
 
 				itemview_launch_URL (link, TRUE /* force internal */);
 				g_free (link);

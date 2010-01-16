@@ -1,7 +1,7 @@
 /**
  * @file item.c common item handling
  *
- * Copyright (C) 2003-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2010 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *	      
  * This program is free software; you can redistribute it and/or modify
@@ -163,7 +163,7 @@ const gchar *	item_get_description(itemPtr item) { return item->description; }
 const gchar *	item_get_source(itemPtr item) { return item->source; }
 
 gchar *
-item_get_link (itemPtr item)
+item_make_link (itemPtr item)
 {
 	const gchar	*src;
 	gchar		*link;
