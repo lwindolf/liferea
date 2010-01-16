@@ -8,7 +8,7 @@
 #include "../social.h"
 #include "../subscription.h"
 
-#include "../ui/ui_feedlist.h"
+#include "../ui/feed_list_view.h"
 #include "../ui/ui_node.h"
 %}
  
@@ -24,5 +24,5 @@
 %include "../social.h"
 %include "../subscription.h"
 
-%include "../ui/ui_feedlist.h"
+%include "../ui/feed_list_view.h"
 %include "../ui/ui_node.h"

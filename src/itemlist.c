@@ -1,7 +1,7 @@
 /**
  * @file itemlist.c  itemlist handling
  *
- * Copyright (C) 2004-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2010 Lars Lindner <lars.lindner@gmail.com>
  *	      
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@
 #include "ui/item_list_view.h"
 #include "ui/itemview.h"
 #include "ui/liferea_shell.h"
-#include "ui/ui_feedlist.h"
+#include "ui/feed_list_view.h"
 #include "ui/liferea_htmlview.h"
 #include "ui/ui_node.h"
 
@@ -389,7 +389,7 @@ itemlist_select_next_unread (void)
 		node = feedlist_find_unread_feed (feedlist_get_root ());
 		if (node) {
 			/* load found feed */
-			ui_feedlist_select (node);
+			feed_list_view_select (node);
 
 			if (NODE_VIEW_MODE_COMBINED != node_get_view_mode (node))
 				result = itemview_find_unread_item (0);	/* find first unread item */

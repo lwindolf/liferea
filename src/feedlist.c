@@ -1,7 +1,7 @@
 /**
  * @file feedlist.c  subscriptions as an hierarchic tree
  *
- * Copyright (C) 2005-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2005-2010 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *	      
  * This program is free software; you can redistribute it and/or modify
@@ -34,9 +34,9 @@
 #include "script.h"
 #include "update.h"
 #include "vfolder.h"
+#include "ui/feed_list_view.h"
 #include "ui/itemview.h"
 #include "ui/liferea_shell.h"
-#include "ui/ui_feedlist.h"
 #include "ui/ui_node.h"
 #include "ui/ui_subscription.h"
 #include "ui/ui_tray.h"
@@ -421,7 +421,7 @@ feedlist_node_added (nodePtr node)
 
 	feedlist_node_imported (node);
 	
-	ui_feedlist_select (node);
+	feed_list_view_select (node);
 	
 	if (node->subscription)
 		script_run_for_hook (SCRIPT_HOOK_NEW_SUBSCRIPTION);
@@ -544,7 +544,7 @@ feedlist_unselect (void)
 	itemview_update ();
 		
 	itemlist_unload (FALSE /* mark all read */);
-	ui_feedlist_select (NULL);
+	feed_list_view_select (NULL);
 	liferea_shell_update_feed_menu (TRUE, FALSE, FALSE);
 	liferea_shell_update_allitems_actions (FALSE, FALSE);
 }

@@ -1,7 +1,7 @@
 /**
  * @file vfolder.c  search folder node type
  *
- * Copyright (C) 2003-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2010 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,6 @@
 #include "rule.h"
 #include "vfolder.h"
 #include "ui/ui_common.h"
-#include "ui/ui_feedlist.h"
 #include "ui/ui_node.h"
 #include "ui/search_folder_dialog.h"
 

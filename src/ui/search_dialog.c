@@ -1,7 +1,7 @@
 /**
  * @file search_dialog.c  Search engine subscription dialog
  *
- * Copyright (C) 2007-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2010 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@
 #include "ui/itemview.h"
 #include "ui/liferea_dialog.h"
 #include "ui/rule_editor.h"
-#include "ui/ui_feedlist.h"
+#include "ui/feed_list_view.h"
 
 /* shared functions */
 
@@ -53,7 +53,7 @@ search_load_results (nodePtr searchResult, const gchar *searchString)
 	nodeViewType viewMode;
 	
 	/* Clear feed and item display and load search results */
-	ui_feedlist_select (NULL);
+	feed_list_view_select (NULL);
 	itemlist_unload (FALSE);
 	
 	/* Ensure that we are in a useful viewing mode (3 paned) */

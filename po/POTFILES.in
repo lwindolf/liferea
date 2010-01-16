@@ -95,8 +95,8 @@ src/ui/liferea_dialog.h
 src/ui/ui_common.c
 src/ui/ui_dnd.c
 src/ui/ui_dnd.h
-src/ui/ui_feedlist.c
-src/ui/ui_feedlist.h
+src/ui/feed_list_view.c
+src/ui/feed_list_view.h
 src/ui/ui_folder.c
 src/ui/ui_folder.h
 src/ui/liferea_htmlview.c

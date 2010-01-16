@@ -1,7 +1,7 @@
 /**
- * @file default_source.c  default static feedlist provider
+ * @file default_source.c  default static feed list source
  * 
- * Copyright (C) 2005-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2005-2010 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -33,10 +33,6 @@
 #include "update.h"
 #include "fl_sources/default_source.h"
 #include "fl_sources/node_source.h"
-#include "ui/ui_feedlist.h"
-#include "ui/ui_node.h"
-#include "ui/ui_subscription.h"
-#include "ui/ui_tray.h"
 
 /** lock to prevent feed list saving while loading */
 static gboolean feedlistImport = FALSE;

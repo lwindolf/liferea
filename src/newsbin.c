@@ -30,9 +30,8 @@
 #include "metadata.h"
 #include "render.h"
 #include "vfolder.h"
-#include "ui/liferea_dialog.h"
-#include "ui/ui_feedlist.h"
 #include "ui/ui_node.h"
+#include "ui/liferea_dialog.h"
 
 static GtkWidget *newnewsbindialog = NULL;
 static GSList * newsbin_list = NULL;

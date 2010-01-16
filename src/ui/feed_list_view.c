@@ -1,7 +1,7 @@
 /**
- * @file ui_feedlist.c GUI feed list handling
+ * @file feed_list_view.c  the feed list in a GtkTreeView
  *
- * Copyright (C) 2004-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2010 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2005 Raphael Slinckx <raphael@slinckx.net>
  * 
@@ -20,7 +20,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#include "ui/ui_feedlist.h"
+#include "ui/feed_list_view.h"
 
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
@@ -48,7 +48,7 @@ GtkTreeStore		*feedstore = NULL;
 gboolean		feedlist_reduced_unread = FALSE;
 
 static void
-ui_feedlist_row_changed_cb (GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter)
+feed_list_view_row_changed_cb (GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter)
 {
 	nodePtr node;
 	
@@ -58,7 +58,7 @@ ui_feedlist_row_changed_cb (GtkTreeModel *model, GtkTreePath *path, GtkTreeIter 
 }
 
 static void
-ui_feedlist_selection_changed_cb (GtkTreeSelection *selection, gpointer data)
+feed_list_view_selection_changed_cb (GtkTreeSelection *selection, gpointer data)
 {
 	GtkTreeIter		iter;
 	GtkTreeModel		*model;
@@ -89,7 +89,7 @@ ui_feedlist_selection_changed_cb (GtkTreeSelection *selection, gpointer data)
 }
 
 static void
-ui_feedlist_row_activated_cb (GtkTreeView *tv, GtkTreePath *path, GtkTreeViewColumn *col, gpointer data)
+feed_list_view_row_activated_cb (GtkTreeView *tv, GtkTreePath *path, GtkTreeViewColumn *col, gpointer data)
 {
 	GtkTreeIter	iter;
 	nodePtr		node;
@@ -106,7 +106,7 @@ ui_feedlist_row_activated_cb (GtkTreeView *tv, GtkTreePath *path, GtkTreeViewCol
 }
 
 static gboolean
-ui_feedlist_key_press_cb (GtkWidget *widget, GdkEventKey *event, gpointer data)
+feed_list_view_key_press_cb (GtkWidget *widget, GdkEventKey *event, gpointer data)
 {
 	if ((event->type == GDK_KEY_PRESS) &&
 	    (event->state == 0) &&
@@ -117,7 +117,7 @@ ui_feedlist_key_press_cb (GtkWidget *widget, GdkEventKey *event, gpointer data)
 			if (event->state & GDK_SHIFT_MASK)
 				feedlist_remove_node (node);
 			else
-				ui_feedlist_delete_prompt (node);
+				feed_list_view_delete_prompt (node);
 			return TRUE;
 		}
 	}
@@ -125,7 +125,7 @@ ui_feedlist_key_press_cb (GtkWidget *widget, GdkEventKey *event, gpointer data)
 }
 
 static gboolean
-ui_feedlist_filter_visible_function (GtkTreeModel *model, GtkTreeIter *iter, gpointer data)
+feed_list_view_filter_visible_function (GtkTreeModel *model, GtkTreeIter *iter, gpointer data)
 {
 	gint	count;
 	nodePtr	node;
@@ -147,26 +147,26 @@ ui_feedlist_filter_visible_function (GtkTreeModel *model, GtkTreeIter *iter, gpo
 }
 
 static void
-ui_feedlist_expand (nodePtr node)
+feed_list_view_expand (nodePtr node)
 {
 	if (node->parent)
-		ui_feedlist_expand (node->parent);
+		feed_list_view_expand (node->parent);
 		
 	ui_node_set_expansion (node, TRUE);
 }
 
 static void
-ui_feedlist_restore_folder_expansion (nodePtr node)
+feed_list_view_restore_folder_expansion (nodePtr node)
 {
 	if (node->expanded)
-		ui_feedlist_expand (node);
+		feed_list_view_expand (node);
 		
 	if (node->parent)
-		ui_feedlist_restore_folder_expansion (node->parent);
+		feed_list_view_restore_folder_expansion (node->parent);
 }
 
 static void
-ui_feedlist_reduce_mode_changed ()
+feed_list_view_reduce_mode_changed ()
 {
 	GtkTreeView	*treeview;
 
@@ -181,30 +181,30 @@ ui_feedlist_reduce_mode_changed ()
 		gtk_tree_model_filter_refilter (GTK_TREE_MODEL_FILTER (filter));
 		gtk_tree_view_set_model (treeview, GTK_TREE_MODEL (feedstore));
 		
-		feedlist_foreach (ui_feedlist_restore_folder_expansion);
+		feedlist_foreach (feed_list_view_restore_folder_expansion);
 	}
 }
 
 static void
-ui_feedlist_set_reduce_mode (gboolean newReduceMode)
+feed_list_view_set_reduce_mode (gboolean newReduceMode)
 {
 	feedlist_reduced_unread = newReduceMode;
 	conf_set_bool_value (REDUCED_FEEDLIST, feedlist_reduced_unread);
-	ui_feedlist_reduce_mode_changed ();
+	feed_list_view_reduce_mode_changed ();
 	ui_node_reload_feedlist ();
 }
 
 /* sets up the entry list store and connects it to the entry list
    view in the main window */
 void
-ui_feedlist_init (GtkTreeView *treeview)
+feed_list_view_init (GtkTreeView *treeview)
 {
 	GtkCellRenderer		*textRenderer;
 	GtkCellRenderer		*iconRenderer;	
 	GtkTreeViewColumn 	*column;
 	GtkTreeSelection	*select;	
 	
-	debug_enter ("ui_feedlist_init");
+	debug_enter ("feed_list_view_init");
 
 	/* Set up store */
 	feedstore = gtk_tree_store_new (FS_LEN,
@@ -218,11 +218,11 @@ ui_feedlist_init (GtkTreeView *treeview)
 	/* Prepare filter */
 	filter = gtk_tree_model_filter_new (GTK_TREE_MODEL(feedstore), NULL);
 	gtk_tree_model_filter_set_visible_func (GTK_TREE_MODEL_FILTER(filter),
-	                                        ui_feedlist_filter_visible_function,
+	                                        feed_list_view_filter_visible_function,
 	                                        NULL,
 	                                        NULL);
 
-	g_signal_connect (G_OBJECT (feedstore), "row-changed", G_CALLBACK (ui_feedlist_row_changed_cb), NULL);
+	g_signal_connect (G_OBJECT (feedstore), "row-changed", G_CALLBACK (feed_list_view_row_changed_cb), NULL);
 
 	/* we only render the state and title */
 	iconRenderer = gtk_cell_renderer_pixbuf_new ();
@@ -241,29 +241,29 @@ ui_feedlist_init (GtkTreeView *treeview)
 	
 	g_object_set (textRenderer, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
 
-	g_signal_connect (G_OBJECT (treeview), "row-activated", G_CALLBACK (ui_feedlist_row_activated_cb), NULL);
-	g_signal_connect (G_OBJECT (treeview), "key-press-event", G_CALLBACK (ui_feedlist_key_press_cb), NULL);
+	g_signal_connect (G_OBJECT (treeview), "row-activated", G_CALLBACK (feed_list_view_row_activated_cb), NULL);
+	g_signal_connect (G_OBJECT (treeview), "key-press-event", G_CALLBACK (feed_list_view_key_press_cb), NULL);
 
 	select = gtk_tree_view_get_selection (treeview);
 	gtk_tree_selection_set_mode (select, GTK_SELECTION_SINGLE);
 	
 	g_signal_connect (G_OBJECT (select), "changed",
-	                  G_CALLBACK (ui_feedlist_selection_changed_cb),
+	                  G_CALLBACK (feed_list_view_selection_changed_cb),
                 	  liferea_shell_lookup ("feedlist"));
                 	  
 	conf_get_bool_value (REDUCED_FEEDLIST, &feedlist_reduced_unread);
 	if (feedlist_reduced_unread)
-		ui_feedlist_reduce_mode_changed ();	/* before menu setup for reduced mode check box to be correct */
+		feed_list_view_reduce_mode_changed ();	/* before menu setup for reduced mode check box to be correct */
 	
 	ui_dnd_setup_feedlist (feedstore);
 	liferea_shell_update_feed_menu (TRUE, FALSE, FALSE);
 	liferea_shell_update_allitems_actions (FALSE, FALSE);
 	
-	debug_exit ("ui_feedlist_init");
+	debug_exit ("feed_list_view_init");
 }
 
 void
-ui_feedlist_select (nodePtr node)
+feed_list_view_select (nodePtr node)
 {
 	GtkTreeView		*treeview;
 	GtkTreeModel		*model;
@@ -286,7 +286,7 @@ ui_feedlist_select (nodePtr node)
 		}
 		
 		if (node->parent)
-			ui_feedlist_expand (node->parent);
+			feed_list_view_expand (node->parent);
 
 		gtk_tree_view_scroll_to_cell (treeview, path, NULL, FALSE, 0.0, 0.0);
 		gtk_tree_view_set_cursor (treeview, path, NULL, FALSE);
@@ -301,7 +301,7 @@ ui_feedlist_select (nodePtr node)
 /* delete feed callbacks */
 
 static void
-ui_feedlist_delete_response_cb (GtkDialog *dialog, gint response_id, gpointer user_data)
+feed_list_view_delete_response_cb (GtkDialog *dialog, gint response_id, gpointer user_data)
 {	
 	switch (response_id) {
 		case GTK_RESPONSE_ACCEPT:
@@ -312,7 +312,7 @@ ui_feedlist_delete_response_cb (GtkDialog *dialog, gint response_id, gpointer us
 }
 
 void
-ui_feedlist_delete_prompt (nodePtr node)
+feed_list_view_delete_prompt (nodePtr node)
 {
 	GtkWidget	*dialog;
 	GtkWindow	*mainwindow;
@@ -342,7 +342,7 @@ ui_feedlist_delete_prompt (nodePtr node)
 	gtk_widget_show_all (dialog);
 
 	g_signal_connect (G_OBJECT (dialog), "response",
-	                  G_CALLBACK (ui_feedlist_delete_response_cb), node);
+	                  G_CALLBACK (feed_list_view_delete_response_cb), node);
 }
 
 void
@@ -355,7 +355,7 @@ on_menu_properties (GtkMenuItem *menuitem, gpointer user_data)
 
 void on_menu_delete(GtkWidget *widget, gpointer user_data)
 {
-	ui_feedlist_delete_prompt (feedlist_get_selected());
+	feed_list_view_delete_prompt (feedlist_get_selected());
 }
 
 static void
@@ -430,5 +430,5 @@ on_menu_folder_new (GtkMenuItem *menuitem, gpointer user_data)
 void
 on_feedlist_reduced_activate (GtkToggleAction *menuitem, gpointer user_data)
 {
-	ui_feedlist_set_reduce_mode (gtk_toggle_action_get_active (menuitem));
+	feed_list_view_set_reduce_mode (gtk_toggle_action_get_active (menuitem));
 }

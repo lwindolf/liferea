@@ -2,7 +2,7 @@
  * @file ui_shell.c  UI layout handling
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2007-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2010 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,12 +41,12 @@
 #include "net_monitor.h"
 #include "ui/attention_profile_dialog.h"
 #include "ui/browser_tabs.h"
+#include "ui/feed_list_view.h"
 #include "ui/itemview.h"
 #include "ui/item_list_view.h"
 #include "ui/liferea_dialog.h"
 #include "ui/search_dialog.h"
 #include "ui/ui_common.h"
-#include "ui/ui_feedlist.h"
 #include "ui/ui_prefs.h"
 #include "ui/ui_script.h"
 #include "ui/ui_search.h"
@@ -618,7 +618,7 @@ on_key_press_event (GtkWidget *widget, GdkEventKey *event, gpointer data)
 				case GDK_KP_Delete:
 				case GDK_Delete:
 					if (focusw == GTK_WIDGET (shell->priv->feedlistView))
-						return FALSE;	/* to be handled in ui_feedlist_key_press_cb() */
+						return FALSE;	/* to be handled in feed_list_view_key_press_cb() */
 						
 					on_remove_item_activate (NULL, NULL);
 					return TRUE;
@@ -818,8 +818,8 @@ liferea_shell_URL_received (GtkWidget *widget, GdkDragContext *context, gint x, 
 				if (gtk_tree_view_get_dest_row_at_pos (treeview, tx, ty, &path, NULL)) {
 					if (gtk_tree_model_get_iter (model, &iter, path)) {
 						gtk_tree_model_get (model, &iter, FS_PTR, &node, -1);
-						/* if node is NULL, ui_feedlist_select() will unselect the tv */
-						ui_feedlist_select (node);
+						/* if node is NULL, feed_list_view_select() will unselect the tv */
+						feed_list_view_select (node);
 					}
 					gtk_tree_path_free (path);
 				}
@@ -1204,7 +1204,7 @@ liferea_shell_create (int initialState)
 
 	debug0 (DEBUG_GUI, "Setting up feed list");
 	shell->priv->feedlistView = GTK_TREE_VIEW (liferea_shell_lookup ("feedlist"));
-	ui_feedlist_init (shell->priv->feedlistView);
+	feed_list_view_init (shell->priv->feedlistView);
 
 	/* 6.) setup menu sensivity */
 	
@@ -1321,7 +1321,7 @@ liferea_shell_create (int initialState)
 	/* force two pane mode */
 	/*   For some reason, this causes the first item to be selected and then
 	     unselected... strange. */
-	ui_feedlist_select (NULL);
+	feed_list_view_select (NULL);
 	
 	itemview_set_layout (NODE_VIEW_MODE_COMBINED);
 	
@@ -1364,7 +1364,7 @@ liferea_shell_create (int initialState)
 void
 liferea_shell_destroy (void)
 {
-	ui_feedlist_select (NULL);
+	feed_list_view_select (NULL);
 	liferea_shell_save_position ();
 	ui_tray_enable (FALSE);
 	g_object_unref (shell->priv->tabs);

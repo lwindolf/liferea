@@ -2,7 +2,7 @@
  * @file ui_node.c GUI folder handling
  * 
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2004-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2010 Lars Lindner <lars.lindner@gmail.com>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@
 #include "ui/liferea_dialog.h"
 #include "ui/liferea_shell.h"
 #include "ui/ui_common.h"
-#include "ui/ui_feedlist.h"
+#include "ui/feed_list_view.h"
 
 static GHashTable	*flIterHash = NULL;	/* hash table used for fast node id <-> tree iter lookup */
 static GtkWidget	*nodenamedialog = NULL;

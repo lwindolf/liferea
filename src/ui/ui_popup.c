@@ -1,7 +1,7 @@
 /**
  * @file ui_popup.c popup menus
  *
- * Copyright (C) 2003-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2010 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2009 Adrian Bunk <bunk@users.sourceforge.net>
  *
@@ -38,7 +38,7 @@
 #include "ui/item_list_view.h"
 #include "ui/itemview.h"
 #include "ui/liferea_shell.h"
-#include "ui/ui_feedlist.h"
+#include "ui/feed_list_view.h"
 #include "ui/ui_prefs.h"
 #include "fl_sources/node_source.h"
 
@@ -235,7 +235,7 @@ ui_popup_properties (gpointer callback_data)
 static void
 ui_popup_delete (gpointer callback_data)
 {
-	ui_feedlist_delete_prompt ((nodePtr)callback_data);
+	feed_list_view_delete_prompt ((nodePtr)callback_data);
 }
 
 /** 
@@ -355,7 +355,7 @@ on_mainfeedlist_button_press_event (GtkWidget *widget,
 			break;
 		case 3:
 			if (node) {
-				ui_feedlist_select (node);
+				feed_list_view_select (node);
 			} else {
 				/* This happens when an "empty" node or nothing (feed list root) is clicked */
 				selected = FALSE;

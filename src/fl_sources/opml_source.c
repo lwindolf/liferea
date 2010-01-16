@@ -1,7 +1,7 @@
 /**
  * @file opml_source.c  OPML Planet/Blogroll feed list source
  * 
- * Copyright (C) 2006-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2010 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,9 +32,6 @@
 #include "node.h"
 #include "xml.h"
 #include "ui/liferea_dialog.h"
-#include "ui/ui_common.h"
-#include "ui/ui_feedlist.h"
-#include "ui/ui_node.h"
 
 /** default OPML update interval = once a day */
 #define OPML_SOURCE_UPDATE_INTERVAL 60*60*24

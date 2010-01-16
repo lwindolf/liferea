@@ -1,7 +1,7 @@
 /**
- * @file ui_feedlist.h  GUI feed list handling
+ * @file feed_list_view.h  the feed list in a GtkTreeView
  * 
- * Copyright (C) 2004-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2010 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2005 Raphael Slinckx <raphael@slinckx.net>
  *
@@ -20,8 +20,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#ifndef _UI_FEEDLIST_H
-#define _UI_FEEDLIST_H
+#ifndef _FEED_LIST_VIEW_H
+#define _FEED_LIST_VIEW_H
 
 #include <gtk/gtk.h>
 #include "feed.h"
@@ -43,13 +43,13 @@ extern gboolean		feedlist_reduced_unread;
  *
  * @param node	the node to select
  */
-void ui_feedlist_select(nodePtr node);
+void feed_list_view_select(nodePtr node);
 
 /**
  * Initializes the feed list. For example, it creates the various
  * columns and renderers needed to show the list.
  */
-void ui_feedlist_init (GtkTreeView *treeview);
+void feed_list_view_init (GtkTreeView *treeview);
 
 /**
  * Prompt the user for confirmation of a folder or feed, and
@@ -59,7 +59,7 @@ void ui_feedlist_init (GtkTreeView *treeview);
  *
  * @param ptr the node to delete
  */
-void ui_feedlist_delete_prompt(nodePtr ptr);
+void feed_list_view_delete_prompt(nodePtr ptr);
 
 void on_newbtn_clicked (GtkButton *button, gpointer user_data);
 
