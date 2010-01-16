@@ -445,6 +445,11 @@ itemview_create (GtkWidget *window)
 	itemview->priv->itemListViewContainer = gtk_widget_get_parent (GTK_WIDGET (item_list_view_get_widget (itemview->priv->itemListView)));
 	conf_get_int_value (LAST_ZOOMLEVEL, &zoom);
 	itemview->priv->zoom = zoom;
+	
+	if (zoom == 0) {
+		zoom = 100;
+		conf_set_int_value (LAST_ZOOMLEVEL, zoom);
+	}
 
 	/* initially we pack the item list in the normal view pane,
 	   which is later changed in itemview_set_layout() */

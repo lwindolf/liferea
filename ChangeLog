@@ -21,6 +21,8 @@
 	  (patch by Rafael Kitover)
 	* Fixes SF #2928927: Remember sort column when sorting by 
 	  item state (patch by Andy Kittner)
+	* Readded workaround for zoom setting of zero (which
+	  prevents zooming). (patch by Rafael Kitover)
 
 	* Updated Catalan translation. (Gil Forcada)
 
