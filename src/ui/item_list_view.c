@@ -22,6 +22,7 @@
 #include "ui/item_list_view.h"
 
 #include <string.h>
+#include <glib.h>
 #include <gdk/gdkkeysyms.h>
 
 #include "browser.h"
@@ -599,8 +600,11 @@ on_popup_launchitem_selected (void)
 
 	item = itemlist_get_selected ();
 	if (item) {
-		itemview_launch_URL (item_get_source (item), FALSE);
-				       
+		gchar *link = item_make_link (item);
+
+		itemview_launch_URL (link, FALSE);
+
+		g_free (link);
 		item_unload (item);
 	} else {
 		liferea_shell_set_important_status_bar (_("No item has been selected"));
@@ -611,14 +615,15 @@ void
 on_popup_launchitem_in_tab_selected (void) 
 {
 	itemPtr		item;
-	const gchar	*link;
+	gchar           *link;
 
 	item = itemlist_get_selected ();
 	if (item) {
-		link = item_get_source (item);
-		if (link)
+		link = item_make_link (item);
+		if (link) {
 			browser_tabs_add_new (link, link, FALSE);
-		else
+			g_free (link);
+		} else
 			ui_show_error_box (_("This item has no link specified!"));
 			
 		item_unload (item);
@@ -842,8 +847,12 @@ on_popup_copy_URL_clipboard (void)
 
 	item = itemlist_get_selected ();
 	if (item) {
-		gtk_clipboard_set_text (gtk_clipboard_get (GDK_SELECTION_PRIMARY), item_get_source (item), -1);
-		gtk_clipboard_set_text (gtk_clipboard_get (GDK_SELECTION_CLIPBOARD), item_get_source (item), -1);
+		gchar *link = item_make_link (item);
+
+		gtk_clipboard_set_text (gtk_clipboard_get (GDK_SELECTION_PRIMARY), link, -1);
+		gtk_clipboard_set_text (gtk_clipboard_get (GDK_SELECTION_CLIPBOARD), link, -1);
+
+		g_free (link);
 		item_unload (item);
 	} else {
 		liferea_shell_set_important_status_bar (_("No item has been selected"));
@@ -853,16 +862,20 @@ on_popup_copy_URL_clipboard (void)
 void
 ui_itemlist_search_item_link (itemPtr item)
 {
-	gchar *url = social_get_link_search_url (item_get_source (item));
+	gchar *link = item_make_link (item);
+	gchar *url  = social_get_link_search_url (link);
 	itemview_launch_URL (url, FALSE);
+	g_free (link);
 	g_free (url);
 }
 
 void
 ui_itemlist_add_item_bookmark (itemPtr item)
 {
-	gchar *url = social_get_bookmark_url (item_get_source (item), item_get_title (item));
+	gchar *link = item_make_link (item);
+	gchar *url  = social_get_bookmark_url (link, item_get_title (item));
 	(void)browser_launch_URL_external (url);
+	g_free (link);
 	g_free (url);
 }
 
