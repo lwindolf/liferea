@@ -102,6 +102,9 @@ browser_launch_URL_external (const gchar *uri)
 		if (cmd) {
 			done = browser_execute (cmd, uri, TRUE);
 			g_free (cmd);
+		} else {
+			/* the "default" browser has no command to use the GTK launch mechanism */
+			done = gtk_show_uri (NULL, uri, 0, NULL);
 		}
 	}
 	

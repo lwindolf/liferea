@@ -72,7 +72,7 @@ static gchar *enclosure_download_tool_options[] = { "wget", "curl", "gwget", "kg
 
 static struct browser browsers[] = {
 	{
-		"gnome", N_("GNOME Default Browser"), "gnome-open %s", 
+		"default", N_("Default Browser"), NULL, /* triggering gtk_show_uri() */
 		NULL, NULL,
 		NULL, NULL,
 		NULL, NULL

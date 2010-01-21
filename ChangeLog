@@ -23,6 +23,8 @@
 	  item state (patch by Andy Kittner)
 	* Readded workaround for zoom setting of zero (which
 	  prevents zooming). (patch by Rafael Kitover)
+	* Use gtk_show_uri() instead of relying on "gnome-open".
+	  (Lars Lindner)
 
 	* Updated Catalan translation. (Gil Forcada)
 
