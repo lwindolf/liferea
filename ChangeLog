@@ -27,6 +27,8 @@
 	  (Lars Lindner)
 	* Using g_time_val_from_iso8601 instead of propietary
 	  solution we had. (Lars Lindner)
+	* Simplified pixmaps resolving as we used only one source
+	  directory anyway. (Lars Lindner)
 
 	* Updated Catalan translation. (Gil Forcada)
 

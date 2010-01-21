@@ -1,7 +1,7 @@
 /**
  * @file ui_common.h  UI helper functions
  *
- * Copyright (C) 2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2008-2010 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -119,14 +119,6 @@ void ui_choose_file (gchar *title, const gchar *buttonName, gboolean saving, fil
  * Like ui_choose_file but allows to select a directory 
  */
 void ui_choose_directory (gchar *title, const gchar *buttonName, fileChoosenCallback callback, const gchar *currentPath, gpointer user_data);
-
-/**
- * Adds a directory to the list of pixmap directories
- * to be searched when using ui_common_create_pixbuf()
- *
- * @param directory	directory path name
- */
-void ui_common_add_pixmap_directory (const gchar *directory);
 
 /**
  * Takes a filename and tries to load the image into a GdkPixbuf. 

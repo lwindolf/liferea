@@ -1227,8 +1227,6 @@ liferea_shell_create (int initialState)
 	
 	debug0 (DEBUG_GUI, "Loading icons");
 	
-	ui_common_add_pixmap_directory (PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps");
-	
 	/* first try to load icons from theme */
 	static const gchar *iconThemeNames[] = {
 		NULL,			/* ICON_READ */

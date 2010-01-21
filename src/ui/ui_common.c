@@ -1,7 +1,7 @@
 /**
  * @file ui_common.c  UI helper functions
  *
- * Copyright (C) 2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2008-2010 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2009 Hubert Figuiere <hub@figuiere.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -18,6 +18,10 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+ 
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif
 
 #include "ui/ui_common.h"
 
@@ -213,37 +217,17 @@ ui_choose_directory (gchar *title, const gchar *buttonName, fileChoosenCallback 
 	ui_choose_file_or_dir (title, buttonName, FALSE, TRUE, callback, currentPath, NULL, NULL, NULL, user_data);
 }
 
-/* The following three functions are to be used for
-   pixmap handling as provided by glade-2 in support.c */
-
-static GList *pixmaps_directories = NULL;
-
-/* Use this function to set the directory containing installed pixmaps. */
-void
-ui_common_add_pixmap_directory (const gchar *directory)
-{
-	pixmaps_directories = g_list_prepend (pixmaps_directories, g_strdup (directory));
-}
-
 /* This is an internally used function to find pixmap files. */
 static gchar *
 ui_common_find_pixmap_file (const gchar *filename)
 {
-	GList *elem;
-
-	/* We step through each of the pixmaps directory to find it. */
-	elem = pixmaps_directories;
-	while (elem) {
-		gchar *pathname = g_build_filename ((gchar*)elem->data, filename, NULL);
-		if (g_file_test (pathname, G_FILE_TEST_EXISTS))
-			return pathname;
-		g_free (pathname);
-		elem = elem->next;
-	}
+	gchar *pathname = g_build_filename (PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps", filename, NULL);
+	if (g_file_test (pathname, G_FILE_TEST_EXISTS))
+		return pathname;
+	g_free (pathname);
 	return NULL;
 }
 
-/* This is an internally used function to create pixmaps. */
 GdkPixbuf *
 ui_common_create_pixbuf (const gchar *filename)
 {
