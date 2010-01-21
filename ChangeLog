@@ -25,6 +25,8 @@
 	  prevents zooming). (patch by Rafael Kitover)
 	* Use gtk_show_uri() instead of relying on "gnome-open".
 	  (Lars Lindner)
+	* Using g_time_val_from_iso8601 instead of propietary
+	  solution we had. (Lars Lindner)
 
 	* Updated Catalan translation. (Gil Forcada)
 

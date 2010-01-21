@@ -1,7 +1,7 @@
 /**
  * @file date.c date formatting routines
  * 
- * Copyright (C) 2008-2009  Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2008-2010  Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006  Nathan J. Conrad <t98502@users.sourceforge.net>
  * 
  * The date formatting was reused from the Evolution code base
@@ -145,79 +145,11 @@ date_format (time_t date, const gchar *date_format)
 time_t
 date_parse_ISO8601 (const gchar *date)
 {
-	struct tm	tm;
-	time_t		t, t2, offset = 0;
-	gboolean	success = FALSE;
-	gchar *pos;
+	GTimeVal	tv;
 	
-	g_assert (date != NULL);
+	g_time_val_from_iso8601 (date, &tv);
 	
-	memset (&tm, 0, sizeof (struct tm));
-	
-	/* we expect at least something like "2003-08-07T15:28:19" and
-	   don't require the second fractions and the timezone info
-
-	   the most specific format:   YYYY-MM-DDThh:mm:ss.sTZD
-	 */
-	 
-	/* full specified variant */
-	pos = strptime (date, "%t%Y-%m-%dT%H:%M%t", &tm);
-	if (pos) {
-		/* Parse seconds */
-		if (*pos == ':')
-			pos++;
-		if (isdigit (pos[0]) && !isdigit (pos[1])) {
-			tm.tm_sec = pos[0] - '0';
-			pos++;
-		} else if (isdigit (pos[0]) && isdigit (pos[1])) {
-			tm.tm_sec = 10*(pos[0]-'0') + pos[1] - '0';
-			pos +=2;
-		}
-		/* Parse second fractions */
-		if (*pos == '.') {
-			while (*pos == '.' || isdigit (pos[0]))
-				pos++;
-		}
-		/* Parse timezone */
-		if (*pos == 'Z')
-			offset = 0;
-		else if ((*pos == '+' || *pos == '-') && isdigit (pos[1]) && isdigit (pos[2]) && strlen (pos) >= 3) {
-			offset = (10*(pos[1] - '0') + (pos[2] - '0')) * 60 * 60;
-			
-			if (pos[3] == ':' && isdigit (pos[4]) && isdigit (pos[5]))
-				offset +=  (10*(pos[4] - '0') + (pos[5] - '0')) * 60;
-			else if (isdigit (pos[3]) && isdigit (pos[4]))
-				offset +=  (10*(pos[3] - '0') + (pos[4] - '0')) * 60;
-			
-			offset *= (pos[0] == '+') ? 1 : -1;
-
-		}
-		success = TRUE;
-	/* only date */
-	} else if (NULL != strptime (date, "%t%Y-%m-%d", &tm)) {
-		success = TRUE;
-	}
-	/* there were others combinations too... */
-
-	if (success) {
-		if ((time_t)(-1) != (t = mktime (&tm))) {
-			/* Correct for the local timezone*/
-			struct tm tmp_tm;
-			
-			t = t - offset;
-			gmtime_r (&t, &tmp_tm);
-			t2 = mktime (&tmp_tm);
-			t = t - (t2 - t);
-			
-			return t;
-		} else {
-			debug0 (DEBUG_PARSING, "Internal error! time conversion error! mktime failed!");
-		}
-	} else {
-		debug0 (DEBUG_PARSING, "Invalid ISO8601 date format! Ignoring <dc:date> information!");
-	}
-	
-	return 0;
+	return (time_t)tv.tv_sec;
 }
 
 /* in theory, we'd need only the RFC822 timezones here
