@@ -113,8 +113,6 @@ src/ui/ui_prefs.c
 src/ui/ui_prefs.h
 src/ui/ui_script.c
 src/ui/ui_script.h
-src/ui/ui_search.c
-src/ui/ui_search.h
 src/ui/ui_session.c
 src/ui/ui_session.h
 src/ui/ui_subscription.c

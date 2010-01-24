@@ -32,7 +32,6 @@ libliui_a_SOURCES = \
 	ui_popup.c ui_popup.h \
 	ui_prefs.c ui_prefs.h \
 	ui_script.c ui_script.h \
-	ui_search.c ui_search.h \
 	ui_session.c ui_session.h \
 	ui_subscription.c ui_subscription.h \
 	ui_tray.c ui_tray.h \

@@ -49,7 +49,6 @@
 #include "ui/ui_common.h"
 #include "ui/ui_prefs.h"
 #include "ui/ui_script.h"
-#include "ui/ui_search.h"
 #include "ui/ui_session.h"
 #include "ui/ui_tray.h"
 #include "ui/ui_update.h"

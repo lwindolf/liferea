@@ -428,6 +428,12 @@ on_menu_folder_new (GtkMenuItem *menuitem, gpointer user_data)
 }
 
 void
+on_new_vfolder_activate (GtkMenuItem *menuitem, gpointer user_data)
+{
+	node_type_request_interactive_add (vfolder_get_node_type ());
+}
+
+void
 on_feedlist_reduced_activate (GtkToggleAction *menuitem, gpointer user_data)
 {
 	feed_list_view_set_reduce_mode (gtk_toggle_action_get_active (menuitem));

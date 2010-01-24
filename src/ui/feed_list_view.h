@@ -77,6 +77,7 @@ void on_menu_folder_new (GtkMenuItem *menuitem, gpointer user_data);
 
 void on_new_plugin_activate (GtkMenuItem *menuitem, gpointer user_data);
 void on_new_newsbin_activate (GtkMenuItem *menuitem, gpointer user_data);
+void on_new_vfolder_activate (GtkMenuItem *menuitem, gpointer user_data);
 
 void on_feedlist_reduced_activate (GtkToggleAction *menuitem, gpointer user_data);
 #endif
