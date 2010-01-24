@@ -853,7 +853,7 @@ liferea_shell_setup_URL_receiver (GtkWidget *widget)
 	                  G_CALLBACK (liferea_shell_URL_received), NULL);
 }
 
-static const GtkActionEntry ui_mainwindow_action_entries[] = {
+static const GtkActionEntry liferea_shell_action_entries[] = {
 	{"SubscriptionsMenu", NULL, N_("_Subscriptions")},
 	{"UpdateAll", "gtk-refresh", N_("Update _All"), "<control>A", N_("Updates all subscriptions."),
 	 G_CALLBACK(on_menu_update_all)},
@@ -898,7 +898,7 @@ static const GtkActionEntry ui_mainwindow_action_entries[] = {
 	{"ShowAbout", "gtk-about", N_("_About"), NULL, N_("Shows an about dialog."), G_CALLBACK(on_about_activate)}
 };
 
-static const GtkRadioActionEntry ui_mainwindow_view_radio_entries[] = {
+static const GtkRadioActionEntry liferea_shell_view_radio_entries[] = {
 	{"NormalView", NULL, N_("_Normal View"), NULL, N_("Set view mode to mail client mode."),
 	 0},
 	{"WideView", NULL, N_("_Wide View"), NULL, N_("Set view mode to use three vertical panes."),
@@ -907,12 +907,12 @@ static const GtkRadioActionEntry ui_mainwindow_view_radio_entries[] = {
 	 2}
 };
 
-static GtkToggleActionEntry ui_mainwindow_feedlist_toggle_entries[] = {
+static GtkToggleActionEntry liferea_shell_feedlist_toggle_entries[] = {
 	{"ReducedFeedList", NULL, N_("_Reduced Feed List"), NULL, N_("Hide feeds with no unread items."),
 	G_CALLBACK(on_feedlist_reduced_activate)}
 };
 
-static const GtkActionEntry ui_mainwindow_add_action_entries[] = {
+static const GtkActionEntry liferea_shell_add_action_entries[] = {
 	{"NewSubscription", "gtk-add", N_("_New Subscription..."), NULL, N_("Adds a subscription to the feed list."),
 	 G_CALLBACK(on_menu_feed_new)},
 	{"NewFolder", NULL, N_("New _Folder..."), NULL, N_("Adds a folder to the feed list."), G_CALLBACK(on_menu_folder_new)},
@@ -921,19 +921,19 @@ static const GtkActionEntry ui_mainwindow_add_action_entries[] = {
 	{"NewNewsBin", NULL, N_("New _News Bin..."), NULL, N_("Adds a new news bin."), G_CALLBACK(on_new_newsbin_activate)}
 };
 
-static const GtkActionEntry ui_mainwindow_feed_action_entries[] = {
+static const GtkActionEntry liferea_shell_feed_action_entries[] = {
 	{"MarkFeedAsRead", "gtk-apply", N_("_Mark Items Read"), "<control>R", N_("Marks all items of the selected feed list node / in the item list as read."), 
 	 G_CALLBACK(on_menu_allread)},
 	{"UpdateSelected", "gtk-refresh", N_("_Update"), NULL, N_("Updates the selected subscription or all subscriptions of the selected folder."),
 	 G_CALLBACK(on_menu_update)}
 };
 
-static const GtkActionEntry ui_mainwindow_read_write_action_entries[] = {
+static const GtkActionEntry liferea_shell_read_write_action_entries[] = {
 	{"Properties", "gtk-properties", N_("_Properties"), NULL, N_("Opens the property dialog for the selected subscription."), G_CALLBACK(on_menu_properties)},
 	{"DeleteSelected", "gtk-delete", N_("_Remove"), NULL, N_("Removes the selected subscription."), G_CALLBACK(on_menu_delete)}
 };
 
-static const GtkActionEntry ui_mainwindow_item_action_entries[] = {
+static const GtkActionEntry liferea_shell_item_action_entries[] = {
 	{"ToggleItemReadStatus", "gtk-apply", N_("Toggle _Read Status"), "<control>U", N_("Toggles the read status of the selected item."),
 	 G_CALLBACK(on_toggle_unread_status)},
 	{"ToggleItemFlag", NULL, N_("Toggle Item _Flag"), "<control>T", N_("Toggles the flag status of the selected item."),
@@ -944,12 +944,12 @@ static const GtkActionEntry ui_mainwindow_item_action_entries[] = {
 	 G_CALLBACK(on_popup_launchitem_selected)}
 };
 
-static const GtkToggleActionEntry ui_mainwindow_action_toggle_entries[] = {
+static const GtkToggleActionEntry liferea_shell_action_toggle_entries[] = {
 	{"ToggleOfflineMode", NULL, N_("_Work Offline"), NULL, N_("This option allows you to disable subscription updating."),
 	 G_CALLBACK(on_work_offline_activate)}
 };
 
-static const char *ui_mainwindow_ui_desc =
+static const char *liferea_shell_ui_desc =
 "<ui>"
 "  <menubar name='MainwindowMenubar'>"
 "    <menu action='SubscriptionsMenu'>"
@@ -1104,36 +1104,36 @@ liferea_shell_create (int initialState)
 
 	/* Prepare some toggle button states */	
 	conf_get_bool_value (REDUCED_FEEDLIST, &toggle);
-	ui_mainwindow_feedlist_toggle_entries[0].is_active = toggle;
+	liferea_shell_feedlist_toggle_entries[0].is_active = toggle;
 
 	ui_manager = gtk_ui_manager_new ();
 
 	shell->priv->generalActions = gtk_action_group_new ("GeneralActions");
 	gtk_action_group_set_translation_domain (shell->priv->generalActions, PACKAGE);
-	gtk_action_group_add_actions (shell->priv->generalActions, ui_mainwindow_action_entries, G_N_ELEMENTS (ui_mainwindow_action_entries), shell->priv);
-	gtk_action_group_add_toggle_actions (shell->priv->generalActions, ui_mainwindow_action_toggle_entries, G_N_ELEMENTS (ui_mainwindow_action_toggle_entries), shell->priv);
-	gtk_action_group_add_radio_actions (shell->priv->generalActions, ui_mainwindow_view_radio_entries, G_N_ELEMENTS (ui_mainwindow_view_radio_entries), itemlist_get_view_mode (), (GCallback)on_view_activate, (gpointer)TRUE);
-	gtk_action_group_add_toggle_actions (shell->priv->generalActions, ui_mainwindow_feedlist_toggle_entries, G_N_ELEMENTS (ui_mainwindow_feedlist_toggle_entries), shell->priv);
+	gtk_action_group_add_actions (shell->priv->generalActions, liferea_shell_action_entries, G_N_ELEMENTS (liferea_shell_action_entries), shell->priv);
+	gtk_action_group_add_toggle_actions (shell->priv->generalActions, liferea_shell_action_toggle_entries, G_N_ELEMENTS (liferea_shell_action_toggle_entries), shell->priv);
+	gtk_action_group_add_radio_actions (shell->priv->generalActions, liferea_shell_view_radio_entries, G_N_ELEMENTS (liferea_shell_view_radio_entries), itemlist_get_view_mode (), (GCallback)on_view_activate, (gpointer)TRUE);
+	gtk_action_group_add_toggle_actions (shell->priv->generalActions, liferea_shell_feedlist_toggle_entries, G_N_ELEMENTS (liferea_shell_feedlist_toggle_entries), shell->priv);
 	gtk_ui_manager_insert_action_group (ui_manager, shell->priv->generalActions, 0);
 
 	shell->priv->addActions = gtk_action_group_new ("AddActions");
 	gtk_action_group_set_translation_domain (shell->priv->addActions, PACKAGE);
-	gtk_action_group_add_actions (shell->priv->addActions, ui_mainwindow_add_action_entries, G_N_ELEMENTS (ui_mainwindow_add_action_entries), shell->priv);
+	gtk_action_group_add_actions (shell->priv->addActions, liferea_shell_add_action_entries, G_N_ELEMENTS (liferea_shell_add_action_entries), shell->priv);
 	gtk_ui_manager_insert_action_group (ui_manager, shell->priv->addActions, 0);
 
 	shell->priv->feedActions = gtk_action_group_new ("FeedActions");
 	gtk_action_group_set_translation_domain (shell->priv->feedActions, PACKAGE);
-	gtk_action_group_add_actions (shell->priv->feedActions, ui_mainwindow_feed_action_entries, G_N_ELEMENTS (ui_mainwindow_feed_action_entries), shell->priv);
+	gtk_action_group_add_actions (shell->priv->feedActions, liferea_shell_feed_action_entries, G_N_ELEMENTS (liferea_shell_feed_action_entries), shell->priv);
 	gtk_ui_manager_insert_action_group (ui_manager, shell->priv->feedActions, 0);
 
 	shell->priv->readWriteActions = gtk_action_group_new("ReadWriteActions");
 	gtk_action_group_set_translation_domain (shell->priv->readWriteActions, PACKAGE);
-	gtk_action_group_add_actions (shell->priv->readWriteActions, ui_mainwindow_read_write_action_entries, G_N_ELEMENTS (ui_mainwindow_read_write_action_entries), shell->priv);
+	gtk_action_group_add_actions (shell->priv->readWriteActions, liferea_shell_read_write_action_entries, G_N_ELEMENTS (liferea_shell_read_write_action_entries), shell->priv);
 	gtk_ui_manager_insert_action_group (ui_manager, shell->priv->readWriteActions, 0);
 
 	shell->priv->itemActions = gtk_action_group_new ("ItemActions");
 	gtk_action_group_set_translation_domain (shell->priv->itemActions, PACKAGE);
-	gtk_action_group_add_actions (shell->priv->itemActions, ui_mainwindow_item_action_entries, G_N_ELEMENTS (ui_mainwindow_item_action_entries), shell->priv);
+	gtk_action_group_add_actions (shell->priv->itemActions, liferea_shell_item_action_entries, G_N_ELEMENTS (liferea_shell_item_action_entries), shell->priv);
 	gtk_ui_manager_insert_action_group (ui_manager, shell->priv->itemActions, 0);
 
 	accel_group = gtk_ui_manager_get_accel_group (ui_manager);
@@ -1142,7 +1142,7 @@ liferea_shell_create (int initialState)
 
 	g_signal_connect (gtk_accel_map_get (), "changed", G_CALLBACK (on_accel_change), NULL);
 
-	if (!gtk_ui_manager_add_ui_from_string (ui_manager, ui_mainwindow_ui_desc, -1, &error))
+	if (!gtk_ui_manager_add_ui_from_string (ui_manager, liferea_shell_ui_desc, -1, &error))
 		g_error ("building menus failed: %s", error->message);
 
 	shell->priv->menubar = gtk_ui_manager_get_widget (ui_manager, "/MainwindowMenubar");
