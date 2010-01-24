@@ -1,7 +1,7 @@
 /**
  * @file ui_search.h  everything about searching
  *
- * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2010 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,15 +22,6 @@
 #define _UI_SEARCH_H
 
 #include <gtk/gtk.h>
-
-/* FIXME: all this belongs somewhere else... */
-
-/**
- * Adds available search engines to the Search menu.
- *
- * @param ui_manager	an GTK UI Manager
- */
-void ui_search_engines_setup_menu(GtkUIManager *ui_manager);
 
 // FIXME: this doesn't belong here
 void on_new_vfolder_activate(GtkMenuItem *menuitem, gpointer user_data);

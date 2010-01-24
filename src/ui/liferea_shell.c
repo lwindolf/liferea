@@ -890,7 +890,6 @@ static const GtkActionEntry ui_mainwindow_action_entries[] = {
 
 	{"SearchMenu", NULL, N_("S_earch")},
 	{"SearchFeeds", "gtk-find", N_("Search All Feeds..."), "<control>F", N_("Show the search dialog."), G_CALLBACK(on_searchbtn_clicked)},
-	{"CreateEngineSearch", NULL, N_("Search With ...")},
 
 	{"HelpMenu", NULL, N_("_Help")},
 	{"ShowHelpContents", "gtk-help", N_("_Contents"), "F1", N_("View help for this application."), G_CALLBACK(on_topics_activate)},
@@ -1007,7 +1006,6 @@ static const char *ui_mainwindow_ui_desc =
 "    </menu>"
 "    <menu action='SearchMenu'>"
 "      <menuitem action='SearchFeeds'/>"
-"      <menu action='CreateEngineSearch'/>"
 "    </menu>"
 "    <menu action='HelpMenu'>"
 "      <menuitem action='ShowHelpContents'/>"
@@ -1147,8 +1145,6 @@ liferea_shell_create (int initialState)
 
 	if (!gtk_ui_manager_add_ui_from_string (ui_manager, ui_mainwindow_ui_desc, -1, &error))
 		g_error ("building menus failed: %s", error->message);
-
-	ui_search_engines_setup_menu (ui_manager);
 
 	shell->priv->menubar = gtk_ui_manager_get_widget (ui_manager, "/MainwindowMenubar");
 	shell->priv->toolbar = gtk_ui_manager_get_widget (ui_manager, "/maintoolbar");
