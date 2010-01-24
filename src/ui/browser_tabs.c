@@ -1,7 +1,7 @@
 /**
  * @file browser_tabs.c  internal browsing using multiple tabs
  *
- * Copyright (C) 2004-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2010 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2006 Nathan Conrad <conrad@bungled.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -322,7 +322,7 @@ create_label_text (const gchar *title)
 {
 	const gchar 	*tmp;
 
-	tmp = (title && *title) ? title : _("New tab");
+	tmp = (title && *title) ? title : _("Untitled");
 
 	tmp = remove_string_prefix (tmp, "http://");
 	tmp = remove_string_prefix (tmp, "https://");
