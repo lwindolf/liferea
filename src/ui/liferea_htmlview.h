@@ -1,7 +1,7 @@
 /**
  * @file liferea_htmlview.h  Liferea embedded HTML rendering
  *
- * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2010 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -60,7 +60,7 @@ LifereaHtmlView * liferea_htmlview_new (gboolean forceInternalBrowsing);
 
 /**
  * Returns the rendering widget for a HTML view. Only
- * to be used by ui_mainwindow.c for widget reparenting.
+ * to be used by liferea_shell.c for widget reparenting.
  *
  * @param htmlview	the HTML view
  *
