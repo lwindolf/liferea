@@ -1,7 +1,7 @@
 /**
- * @file liferea.css  Liferea HTML view default stylesheet
+ * @file liferea.css  Liferea rendering stylesheet
  *
- * Copyright (C) 2004-2008 Lars Linder <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2010 Lars Linder <lars.lindner@gmail.com>
  * Copyright (C) 2004 delusional <delusional@dx13.co.uk>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -42,10 +42,8 @@
    GTK-COLOR-MID
    GTK-COLOR-BASE
    GTK-COLOR-TEXT
-   GTK-COLOR-NORMAL-LINK	(does only work with GTK 2.10+)
-   GTK-COLOR-VISITED-LINK	(does only work with GTK 2.10+)
-   
-   General note: relative positioning breaks link in GtkHTML2!
+   GTK-COLOR-NORMAL-LINK
+   GTK-COLOR-VISITED-LINK
  */
 
 body {
@@ -124,7 +122,6 @@ table.itemhead * a.itemhead {
 
 td.headleft {
 	text-align:right;
-	white-space:nowrap;	/* workaround to prevent buggy gtkhtml2 word wrappings */
 }
 
 td.headright {
@@ -313,6 +310,14 @@ span.showmore {
 	cursor:pointer;
 }
 
+del {
+	text-decoration: line-through;
+}
+
+ins {
+	text-decoration: underline;
+}
+
 /* namespace specific styles */
 div.blogchanneltitle {
 	padding-left:10px;
@@ -346,41 +351,4 @@ div.photoheader {
 	color:#GTK-COLOR-TEXT;
 }
 
-table.enclosure {
-	background:#CCC;	/* fixed color because xspf background is fixed #CCC */
-	width:100%;
-	margin:0;
-	border:0;
-	border-top:#GTK-COLOR-LIGHT solid 1px;
-	border-bottom:#GTK-COLOR-DARK solid 1px;
-}
-
-table.enclosure * td {
-	padding-left:9px;
-	overflow:hidden;
-}
-
-table.enclosure * a {
-	text-decoration:none;
-	color:black;
-}
-
-img.enclosurebtn {
-	padding-left:1px;
-	margin-left:2px;
-	margin-top:4px;
-}
-
-.enclosure * object {
-	margin-left:5px;
-	margin-top:2px;
-}
-
-del {
-	text-decoration: line-through;
-}
-
-ins {
-	text-decoration: underline;
-}
 
