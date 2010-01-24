@@ -1,3 +1,12 @@
+2010-02-??   ???
+
+	Version 1.7.4 (Unstable)
+
+	* Merged patch that fixes LP #238958: always present window
+	  on current workspace if tray icon is clicked.
+	  (patch by ?)
+
+
 2010-01-24   Lars Lindner <lars.lindner@gmail.com>
 
 	Version 1.7.3 (Unstable)
