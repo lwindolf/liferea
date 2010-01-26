@@ -1214,7 +1214,6 @@ liferea_shell_create (int initialState)
 	
 	/* first try to load icons from theme */
 	static const gchar *iconThemeNames[] = {
-		NULL,			/* ICON_READ */
 		NULL,			/* ICON_UNREAD */
 		"emblem-important",	/* ICON_FLAG */
 		NULL,			/* ICON_AVAILABLE */
@@ -1228,7 +1227,6 @@ liferea_shell_create (int initialState)
 		NULL,			/* ICON_EMPTY_OFFLINE */
 		"gtk-connect",		/* ICON_ONLINE */
 		"gtk-disconnect",	/* ICON_OFFLINE */
-		NULL,			/* ICON_UPDATED */
 		"mail-attachment",	/* ICON_ENCLOSURE */
 		NULL
 	};
@@ -1240,7 +1238,6 @@ liferea_shell_create (int initialState)
 
 	/* and then load own default icons */
 	static const gchar *iconNames[] = {
-		"read.xpm",		/* ICON_READ */
 		"unread.png",		/* ICON_UNREAD */
 		"flag.png",		/* ICON_FLAG */
 		"available.png",	/* ICON_AVAILABLE */
@@ -1254,7 +1251,6 @@ liferea_shell_create (int initialState)
 		"empty_offline.png",	/* ICON_EMPTY_OFFLINE */
 		"online.png",		/* ICON_ONLINE */
 		"offline.png",		/* ICON_OFFLINE */
-		"edit.png",		/* ICON_UPDATED */
 		"attachment.png",	/* ICON_ENCLOSURE */
 		NULL
 	};

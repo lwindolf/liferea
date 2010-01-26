@@ -332,7 +332,7 @@ item_list_view_update_item (ItemListView *ilv, itemPtr item)
 	GtkTreeIter	iter;
 	gchar		*title, *time_str;
 	const gchar 	*direction_marker;
-	guint		state_icon;
+	GdkPixbuf	*state_icon;
 	
 	if (!item_list_view_id_to_iter (ilv, item->id, &iter))
 		return;
@@ -344,9 +344,9 @@ item_list_view_update_item (ItemListView *ilv, itemPtr item)
 	title = item->title && strlen (item->title) ? item->title : _("*** No title ***");
 	title = g_strstrip (g_strdup_printf ("%s%s", direction_marker, title));
 
-	state_icon = item->flagStatus ? ICON_FLAG :
-	             !item->readStatus ? ICON_UNREAD :
-		     ICON_READ;
+	state_icon = item->flagStatus ? icons[ICON_FLAG] :
+	             !item->readStatus ? icons[ICON_UNREAD] :
+		     NULL;
 
 	if (ilv->priv->batch_mode)
 		itemstore = ilv->priv->batch_itemstore;
@@ -357,7 +357,7 @@ item_list_view_update_item (ItemListView *ilv, itemPtr item)
 	                    &iter,
 		            IS_LABEL, title,
 			    IS_TIME_STR, time_str,
-			    IS_STATEICON, icons[state_icon],
+			    IS_STATEICON, state_icon,
 			    ITEMSTORE_UNREAD, item->readStatus ? PANGO_WEIGHT_NORMAL : PANGO_WEIGHT_BOLD,
 			    -1);
 

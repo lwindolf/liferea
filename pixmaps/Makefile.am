@@ -9,11 +9,8 @@ EXTRA_DIST = \
 	empty_offline.png \
 	flag.png        \
 	grayflag.png    \
-	read.xpm        \
 	unread.png      \
 	vfolder.png     \
-	edit.png	\
-	arrow.png	\
 	fl_opml.png	\
 	newsbin.png	\
 	comments.png	\

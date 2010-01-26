@@ -25,7 +25,6 @@
 
 /* list of all icons used in Liferea */
 enum allicons {
-	ICON_READ,
 	ICON_UNREAD,
 	ICON_FLAG,
 	ICON_AVAILABLE,
@@ -39,7 +38,6 @@ enum allicons {
 	ICON_EMPTY_OFFLINE,
 	ICON_ONLINE,
 	ICON_OFFLINE,
-	ICON_UPDATED,
 	ICON_ENCLOSURE,
 	MAX_ICONS
 };
