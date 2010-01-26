@@ -1,7 +1,7 @@
 /**
  * @file auth_dialog.h  authentication support dialog
  *
- * Copyright (C) 2007-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2010 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,7 +53,8 @@ struct AuthDialogClass
 GType auth_dialog_get_type	(void);
 
 /**
- * Create a new authentication dialog.
+ * Create a new authentication dialog if there is not already one for
+ * the given subscription.
  *
  * @param subscription	the subscription whose authentication info is needed
  * @param flags		the flags for the update request after authenticating (FIXME!)

@@ -1,7 +1,7 @@
 /**
- * @file ui_auth.c authentication dialog
+ * @file ui_auth.c  authentication dialog
  *
- * Copyright (C) 2007-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2010 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@
 #include <string.h> 
 
 #include "common.h"
-#include "subscription.h"
+#include "debug.h"
 #include "ui/liferea_dialog.h"
 
 static void auth_dialog_class_init	(AuthDialogClass *klass);
@@ -79,6 +79,9 @@ auth_dialog_finalize (GObject *object)
 {
 	AuthDialog *ad = AUTH_DIALOG (object);
 	
+	if (ad->priv->subscription != NULL)
+		ad->priv->subscription->activeAuth = FALSE;
+	
 	gtk_widget_destroy (ad->priv->dialog);
 
 	G_OBJECT_CLASS (parent_class)->finalize (object);
@@ -125,7 +128,9 @@ ui_auth_dialog_load (AuthDialog *ad,
 	AuthDialogPrivate	*ui_data = ad->priv;
 	gchar			*promptStr;
 	gchar			*source = NULL;
-	xmlURIPtr		uri;	
+	xmlURIPtr		uri;
+	
+	subscription->activeAuth = TRUE;
 	
 	ui_data->subscription = subscription;
 	ui_data->flags = flags;
@@ -183,6 +188,11 @@ AuthDialog *
 ui_auth_dialog_new (subscriptionPtr subscription, gint flags) 
 {
 	AuthDialog *ad;
+	
+	if (subscription->activeAuth) {
+		debug0 (DEBUG_UPDATE, "Missing/wrong authentication. Skipping, as a dialog is already active.");
+		return NULL;
+	}
 	
 	ad = AUTH_DIALOG (g_object_new (AUTH_DIALOG_TYPE, NULL));
 	ui_auth_dialog_load(ad, subscription, flags);
