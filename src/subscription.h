@@ -1,7 +1,7 @@
 /**
  * @file subscription.h  common subscription handling interface
  * 
- * Copyright (C) 2003-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2010 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -64,6 +64,8 @@ typedef struct subscription {
 	gchar		*httpError;		/**< textual description of HTTP protocol errors */
 	gint		httpErrorCode;		/**< last HTTP error code */
 	updateStatePtr	updateState;		/**< update states (etag, last modified, cookies, last polling times...) */
+	
+	gboolean	activeAuth;		/**< TRUE if authentication in progress */
 
 	gboolean	discontinued;		/**< flag to avoid updating after HTTP 410 */
 

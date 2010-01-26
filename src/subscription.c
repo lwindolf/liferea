@@ -211,7 +211,7 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	}
 
 	if (401 == result->httpstatus) { /* unauthorized */
-		ui_auth_dialog_new (subscription, flags);
+		ui_auth_dialog_new (subscription, flags);		
 	} else if (410 == result->httpstatus) { /* gone */
 		subscription->discontinued = TRUE;
 		node->available = TRUE;
