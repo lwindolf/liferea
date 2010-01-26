@@ -1,5 +1,5 @@
 /**
- * @file ui_auth.c  authentication dialog
+ * @file auth_dialog.c  authentication dialog
  *
  * Copyright (C) 2007-2010 Lars Lindner <lars.lindner@gmail.com>
  *
@@ -121,7 +121,7 @@ on_authdialog_response (GtkDialog *dialog,
 }
 
 static void
-ui_auth_dialog_load (AuthDialog *ad,
+auth_dialog_load (AuthDialog *ad,
                      subscriptionPtr subscription,
                      gint flags)
 {
@@ -185,7 +185,7 @@ auth_dialog_init (AuthDialog *ad)
 
 
 AuthDialog *
-ui_auth_dialog_new (subscriptionPtr subscription, gint flags) 
+auth_dialog_new (subscriptionPtr subscription, gint flags) 
 {
 	AuthDialog *ad;
 	
@@ -195,6 +195,6 @@ ui_auth_dialog_new (subscriptionPtr subscription, gint flags)
 	}
 	
 	ad = AUTH_DIALOG (g_object_new (AUTH_DIALOG_TYPE, NULL));
-	ui_auth_dialog_load(ad, subscription, flags);
+	auth_dialog_load(ad, subscription, flags);
 	return ad;
 }

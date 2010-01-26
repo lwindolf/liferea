@@ -1,7 +1,7 @@
 /**
- * @file subscription.c common subscription handling
+ * @file subscription.c  common subscription handling
  * 
- * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2010 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -213,7 +213,7 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	}
 
 	if (401 == result->httpstatus) { /* unauthorized */
-		ui_auth_dialog_new (subscription, flags);
+		auth_dialog_new (subscription, flags);
 	} else if (410 == result->httpstatus) { /* gone */
 		subscription->discontinued = TRUE;
 		node->available = TRUE;

@@ -119,7 +119,7 @@ google_source_login_cb (const struct updateResult * const result, gpointer userd
 		subscription->updateError = g_strdup (_("Google Reader login failed!"));
 		gsource->loginState = GOOGLE_SOURCE_STATE_NONE;
 		
-		ui_auth_dialog_new (subscription, flags);
+		auth_dialog_new (subscription, flags);
 	}
 }
 

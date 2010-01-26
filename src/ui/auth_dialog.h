@@ -50,7 +50,7 @@ struct AuthDialogClass
 	GtkObjectClass parent_class;
 };
 
-GType auth_dialog_get_type	(void);
+GType auth_dialog_get_type (void);
 
 /**
  * Create a new authentication dialog if there is not already one for
@@ -61,7 +61,7 @@ GType auth_dialog_get_type	(void);
  *
  * @returns new dialog
  */
-AuthDialog * ui_auth_dialog_new	(subscriptionPtr subscription, gint flags);
+AuthDialog * auth_dialog_new (subscriptionPtr subscription, gint flags);
 
 G_END_DECLS
 
