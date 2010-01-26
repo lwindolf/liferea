@@ -4,7 +4,7 @@
 /**
  * Rendering stylesheet for Liferea (item view: item rendering)
  *
- * Copyright (C) 2006-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2010 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -292,14 +292,6 @@
     <a class="comments" href="{attributes/attribute[ @name = 'commentsUri' ]}">
       <img border="0" class="commentsbtn" src="{$pixmapsDir}comments.png"/>
       <_span>comments</_span>
-    </a>
-  </xsl:if>
-
-  <!-- link cosmos search -->
-  <xsl:if test="source">
-    <a class="linksearch" href="liferea-link-search://{sourceId}-{nr}">
-      <img border="0" class="linksearchbtn" src="{$pixmapsDir}technorati.png"/>
-      <_span>link cosmos</_span>
     </a>
   </xsl:if>
 
