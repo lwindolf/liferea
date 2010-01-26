@@ -57,7 +57,7 @@ GType auth_dialog_get_type (void);
  * the given subscription.
  *
  * @param subscription	the subscription whose authentication info is needed
- * @param flags		the flags for the update request after authenticating (FIXME!)
+ * @param flags		the flags for the update request after authenticating
  *
  * @returns new dialog
  */
