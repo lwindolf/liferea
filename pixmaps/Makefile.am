@@ -13,13 +13,11 @@ EXTRA_DIST = \
 	unread.png      \
 	vfolder.png     \
 	edit.png	\
-	technorati.png	\
 	arrow.png	\
 	fl_opml.png	\
 	newsbin.png	\
 	comments.png	\
-	bookmark.png	\
-	tag.png	
+	bookmark.png
 
 lifereadistpixdir = $(datadir)/$(PACKAGE)/pixmaps
 lifereadistpix_DATA = $(EXTRA_DIST)
