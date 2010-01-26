@@ -86,8 +86,6 @@ src/ui/search_engine_dialog.c
 src/ui/search_engine_dialog.h
 src/ui/search_folder_dialog.h
 src/ui/search_folder_dialog.c
-src/ui/attention_profile_dialog.c
-src/ui/attention_profile_dialog.h
 src/ui/auth_dialog.c
 src/ui/auth_dialog.h
 src/ui/liferea_dialog.c

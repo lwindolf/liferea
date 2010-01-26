@@ -10,8 +10,6 @@ noinst_LIBRARIES = libliui.a
 
 libliui_a_CFLAGS = $(PACKAGE_CFLAGS) $(DBUS_CFLAGS)
 libliui_a_SOURCES = \
-	attention_profile_dialog.c \
-	attention_profile_dialog.h \
 	auth_dialog.c auth_dialog.h \
 	browser_tabs.c browser_tabs.h \
 	enclosure_list_view.c enclosure_list_view.h \

@@ -39,7 +39,6 @@
 #include "htmlview.h"
 #include "itemlist.h"
 #include "net_monitor.h"
-#include "ui/attention_profile_dialog.h"
 #include "ui/browser_tabs.h"
 #include "ui/feed_list_view.h"
 #include "ui/itemview.h"
@@ -724,12 +723,6 @@ on_faq_activate (GtkMenuItem *menuitem, gpointer user_data)
 }
 
 static void
-on_menu_attention_profile (GtkMenuItem *menuitem, gpointer user_data)
-{
-	attention_profile_dialog_open (attention_profile_get ());
-}
-
-static void
 on_menu_quit (GtkMenuItem *menuitem, gpointer user_data)
 {
 	liferea_shutdown ();
@@ -882,8 +875,6 @@ static const GtkActionEntry liferea_shell_action_entries[] = {
 	 G_CALLBACK(on_menu_show_update_monitor)},
 	{"ShowScriptManager", NULL, N_("_Script Manager"), NULL, N_("Allows to configure and edit LUA hook scripts"),
 	 G_CALLBACK(on_menu_show_script_manager)},
-	{"ShowAttentionProfile", NULL, N_("Attention Profile"), NULL, N_("Presents statistics on your most read categories"),
-	 G_CALLBACK(on_menu_attention_profile)},
 	{"ShowPreferences", GTK_STOCK_PREFERENCES, N_("_Preferences"), NULL, N_("Edit Preferences."),
 	 G_CALLBACK(on_prefbtn_clicked)},
 
@@ -1000,7 +991,6 @@ static const char *liferea_shell_ui_desc =
 "    <menu action='ToolsMenu'>"
 "      <menuitem action='ShowUpdateMonitor'/>"
 "      <menuitem action='ShowScriptManager'/>"
-"      <menuitem action='ShowAttentionProfile'/>"
 "      <menuitem action='ShowPreferences'/>"
 "    </menu>"
 "    <menu action='SearchMenu'>"

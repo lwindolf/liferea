@@ -1,7 +1,7 @@
 /**
  * @file db.h sqlite backend 
  * 
- * Copyright (C) 2007-2008  Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2010  Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,6 @@
 
 #include <glib.h>
 
-#include "attention.h"
 #include "item.h"
 #include "itemset.h"
 #include "subscription.h"
@@ -260,20 +259,5 @@ gboolean db_node_id_exists (const gchar *id);
  * @param node		the node
  */
 void db_node_update (nodePtr node);
-
-/**
- * Saves the attention statistics of a given category.
- *
- * @param stat	category statistic info
- */
-void db_attention_stat_save (categoryStatPtr stat);
-
-/**
- * Loads attention statistics of all categories.
- *
- * @param statHash	a hash table to add all category statistics.
- * @param statList	a list to add all category statistics
- */
-void db_attention_stats_load (GHashTable **statHash, GSList **statList);
 
 #endif

@@ -1,7 +1,7 @@
 /**
  * @file db.c sqlite backend
  * 
- * Copyright (C) 2007-2009  Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2010  Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -292,7 +292,7 @@ open:
 		}
 		
 		if (db_get_schema_version () == 7) {
-			/* 1.7.1 -> 1.7.2 dropping the itemsets relation */
+			/* 1.7.1 -> 1.7.2 dropping the itemsets and attention_stats relation */
 			db_exec ("BEGIN; "
 			         "CREATE TEMPORARY TABLE items_backup("
 			         "   item_id, "
@@ -334,6 +334,8 @@ open:
 			         "DROP TABLE itemsets; "
 			         "REPLACE INTO info (name, value) VALUES ('schemaVersion',8); "
 			         "END;" );
+
+			db_exec ("DROP TABLE attention_stats");	/* this is unconditional, no checks and backups needed */
 		}
 
 		if (SCHEMA_TARGET_VERSION != db_get_schema_version ())
@@ -385,13 +387,6 @@ open:
 
 	db_exec ("CREATE INDEX metadata_idx ON metadata (item_id);");
 		
-	db_exec ("CREATE TABLE attention_stats ("
-	         "   category_id	TEXT,"
-	         "   category_name	TEXT,"
-		 "   count              INTEGER,"
-		 "   PRIMARY KEY (category_id)"
-		 ");");
-
 	db_exec ("CREATE TABLE subscription ("
         	 "   node_id            STRING,"
 		 "   source             STRING,"
@@ -632,12 +627,6 @@ open:
 	db_new_statement ("nodeUpdateStmt",
 	                  "REPLACE INTO node (node_id,parent_id,title,type,expanded,view_mode,sort_column,sort_reversed) VALUES (?,?,?,?,?,?,?,?)");
 			  
-	db_new_statement ("attentionStatsLoadStmt",
-	                  "SELECT category_id,category_name,count FROM attention_stats");
-			  
-	db_new_statement ("attentionStatUpdateStmt",
-	                  "REPLACE INTO attention_stats (category_id,category_name,count) VALUES (?,?,?)");
-
 	g_assert (sqlite3_get_autocommit (db));
 	
 	debug_exit ("db_init");
@@ -1756,51 +1745,4 @@ db_node_update (nodePtr node)
 		g_warning ("Could not update subscription info %s in DB (error code %d)!", node->id, res);
 		
 	debug_end_measurement (DEBUG_DB, "subscription_update");
-}
-
-void
-db_attention_stat_save (categoryStatPtr stat)
-{
-	sqlite3_stmt	*stmt;
-	gint		res;
-	
-	debug_start_measurement (DEBUG_DB);
-	
-	stmt = db_get_statement ("attentionStatUpdateStmt");
-	sqlite3_bind_text (stmt, 1, stat->id, -1, SQLITE_TRANSIENT);
-	sqlite3_bind_text (stmt, 2, stat->name, -1, SQLITE_TRANSIENT);
-	sqlite3_bind_int  (stmt, 3, stat->count);
-	
-	res = sqlite3_step (stmt);
-	if (SQLITE_DONE != res)
-		g_warning ("Could not save attention statistic data for category %s in DB (error code %d: %s)!", stat->name, res, sqlite3_errmsg (db));
-	
-	debug_end_measurement (DEBUG_DB, "attention_stat_save");
-}
-
-void
-db_attention_stats_load (GHashTable **statHash, GSList **statList)
-{
-	sqlite3_stmt	*stmt;
-	
-	debug_start_measurement (DEBUG_DB);
-
-	*statHash = g_hash_table_new (g_str_hash, g_str_equal);
-	stmt = db_get_statement ("attentionStatsLoadStmt");
-
-	while (sqlite3_step (stmt) == SQLITE_ROW) {
-		categoryStatPtr stat = g_new0 (struct categoryStat, 1);
-		stat->id = g_strdup (sqlite3_column_text (stmt, 0));
-		stat->name = g_strdup (sqlite3_column_text (stmt, 1));
-		stat->count = sqlite3_column_int (stmt, 2);
-		g_hash_table_insert (*statHash, stat->id, (gpointer)stat);
-		*statList = g_slist_append (*statList, (gpointer)stat);
-
-		debug3 (DEBUG_DB, "attention stat for %s (%s) = %d\n",
-		                  sqlite3_column_text(stmt, 0),
-		                  sqlite3_column_text(stmt, 1),
-		                  sqlite3_column_int(stmt, 2));
-	}
-	
-	debug_end_measurement (DEBUG_DB, "attention_stats_load");
 }
