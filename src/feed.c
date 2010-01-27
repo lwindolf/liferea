@@ -85,12 +85,6 @@ feed_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trusted)
 		feed->encAutoDownload = TRUE;
 	xmlFree (tmp);
 			
-	/* auto item link loading flag */
-	tmp = xmlGetProp (xml, BAD_CAST"loadItemLink");
-	if (tmp && !xmlStrcmp (tmp, BAD_CAST"true"))
-		feed->loadItemLink = TRUE;
-	xmlFree (tmp);
-
 	/* comment feed handling flag */
 	tmp = xmlGetProp (xml, BAD_CAST"ignoreComments");
 	if (tmp && !xmlStrcmp (tmp, BAD_CAST"true"))
@@ -150,9 +144,6 @@ feed_export (nodePtr node, xmlNodePtr xml, gboolean trusted)
 
 		if (feed->encAutoDownload)
 			xmlNewProp (xml, BAD_CAST"encAutoDownload", BAD_CAST"true");
-			
-		if (feed->loadItemLink)
-			xmlNewProp (xml, BAD_CAST"loadItemLink", BAD_CAST"true");
 			
 		if (feed->ignoreComments)
 			xmlNewProp (xml, BAD_CAST"ignoreComments", BAD_CAST"true");

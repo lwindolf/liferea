@@ -57,7 +57,6 @@ typedef struct feed {
 
 	/* feed specific behaviour settings */
 	gboolean	encAutoDownload;	/**< if TRUE do automatically download enclosures */
-	gboolean	loadItemLink;		/**< if TRUE do automatically load the item link into the HTML pane */
 	gboolean	ignoreComments;		/**< if TRUE ignore comment feeds for this feed */
 	gboolean	enforcePopup;		/**< if TRUE enforce popup notifications for this feed */
 	gboolean	preventPopup;		/**< if TRUE prevents popup notifications for this feed */

@@ -24,8 +24,6 @@
 #include "common.h"
 #include "db.h"
 #include "debug.h"
-#include "feed.h"	// FIXME
-#include "folder.h"
 #include "itemlist.h"
 #include "itemset.h"
 #include "item_state.h"
@@ -47,15 +45,10 @@ static GHashTable *nodes = NULL;	/**< node id -> node lookup table */
 nodePtr
 node_is_used_id (const gchar *id)
 {
-	nodePtr	node;
-
-	if (!id)
+	if (!id || !nodes)
 		return NULL;
 
-	g_assert (NULL != nodes);
-	node = (nodePtr)g_hash_table_lookup (nodes, id);
-
-	return node;
+	return (nodePtr)g_hash_table_lookup (nodes, id);
 }
 
 gchar *
@@ -461,15 +454,6 @@ nodeViewType
 node_get_view_mode (nodePtr node)
 {
 	return node->viewMode;
-}
-
-gboolean
-node_load_link_preferred (nodePtr node)
-{
-	if (IS_FEED (node))
-		return ((feedPtr)node->data)->loadItemLink;
-
-	return FALSE;
 }
 
 const gchar *

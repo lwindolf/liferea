@@ -2,7 +2,7 @@
  * @file export.c  OPML feed list import & export
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2004-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2010 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -85,6 +85,9 @@ export_append_node_tag (nodePtr node, gpointer userdata)
 
 		if (FALSE == node->sortReversed)
 			xmlNewProp (childNode, BAD_CAST"sortReversed", BAD_CAST"false");
+			
+		if (node->loadItemLink)
+			xmlNewProp (childNode, BAD_CAST"loadItemLink", BAD_CAST"true");
 			
 		tmp = g_strdup_printf ("%u", node_get_view_mode(node));
 		xmlNewProp (childNode, BAD_CAST"viewMode", BAD_CAST tmp);
@@ -285,6 +288,14 @@ import_parse_outline (xmlNodePtr cur, nodePtr parentNode, gboolean trusted)
 		xmlFree (sortStr);
 	}
 	
+	/* auto item link loading flag */
+	tmp = xmlGetProp (cur, BAD_CAST"loadItemLink");
+	if (tmp) {
+		if (!xmlStrcmp (tmp, BAD_CAST"true"))
+		node->loadItemLink = TRUE;
+		xmlFree (tmp);
+	}
+
 	/* viewing mode */
 	tmp = xmlGetProp (cur, BAD_CAST"twoPane");	/* migration for old setting... */
 	if (tmp) {

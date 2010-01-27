@@ -983,7 +983,6 @@ static const char *liferea_shell_ui_desc =
 "    </menu>"
 "    <menu action='ToolsMenu'>"
 "      <menuitem action='ShowUpdateMonitor'/>"
-"      <menuitem action='ShowScriptManager'/>"
 "      <menuitem action='ShowPreferences'/>"
 "    </menu>"
 "    <menu action='SearchMenu'>"

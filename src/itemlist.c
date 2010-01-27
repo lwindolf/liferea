@@ -568,7 +568,7 @@ itemlist_selection_changed (itemPtr item)
 
 			item_set_read_state (item, TRUE);
 
-			if (node_load_link_preferred (node)) {
+			if (node->loadItemLink) {
 				gchar* link = item_make_link (item);
 
 				itemview_launch_URL (link, TRUE /* force internal */);

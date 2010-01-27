@@ -1,7 +1,7 @@
 /**
  * @file node.h  hierarchic feed list node interface
  * 
- * Copyright (C) 2003-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2010 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -26,8 +26,9 @@
 #include "node_view.h"
 
 /* Liferea's GUI consists of three parts. Feed list, item list
-   and HTML view. The feed list is a view of all available
-   nodes. The feed list allows nodes of different types.
+   and HTML view. The feed list is a view of some or all available
+   nodes. The feed list allows nodes of different types defining
+   different UI behaviours.
 
    According to the node's type this interface propagates
    user interaction to the feed list node type implementation
@@ -65,6 +66,10 @@ typedef struct node {
 	nodeViewSortType	sortColumn;	/**< Node specific item view sort attribute. */
 	gboolean		sortReversed;	/**< Sort in the reverse order? */
 	
+	/* rendering behaviour of this node */
+	gboolean	loadItemLink;	/**< if TRUE do automatically load the item link into the HTML pane */
+	
+	/* current state of this node */	
 	gboolean	needsUpdate;	/**< if TRUE: the item list has changed and the nodes feed list representation needs to be updated */
 	gboolean	needsRecount;	/**< if TRUE: the number of unread/total items is currently unknown and needs recounting */
 
@@ -330,16 +335,6 @@ void node_set_view_mode(nodePtr node, nodeViewType newMode);
  * @returns viewing mode (NODE_VIEW_MODE_*)
  */
 nodeViewType node_get_view_mode(nodePtr node);
-
-/**
- * Allows to check wether an node requires to load
- * the item link or the content after selecting an item.
- *
- * @param node	the node
- *
- * @returns TRUE if the item link is to be loaded
- */
-gboolean node_load_link_preferred(nodePtr node);
 
 /**
  * Returns the base URL for the given node.
