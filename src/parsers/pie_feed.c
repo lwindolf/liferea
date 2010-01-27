@@ -18,6 +18,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "pie_feed.h"
+
 #include <sys/time.h>
 #include <string.h>
 #include <libxml/xmlmemory.h>
@@ -27,7 +29,6 @@
 #include "date.h"
 #include "feed_parser.h"
 #include "feedlist.h"
-#include "pie_feed.h"
 #include "pie_entry.h"
 #include "ns_dc.h"
 #include "metadata.h"
@@ -325,7 +326,6 @@ pie_init_feed_handler (void)
 
 	/* prepare feed handler structure */
 	fhp->typeStr = "atom";
-	fhp->icon = ICON_AVAILABLE;
 	fhp->feedParser	= pie_parse;
 	fhp->checkFormat = pie_format_check;
 	fhp->merge = TRUE;

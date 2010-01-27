@@ -31,6 +31,7 @@
 #include "folder.h"
 #include "node.h"
 #include "xml.h"
+#include "ui/icons.h"
 #include "ui/liferea_dialog.h"
 
 /** default OPML update interval = once a day */
@@ -241,7 +242,7 @@ opml_source_import (nodePtr node)
 
 	/* We only ship an icon for opml, not for other sources */
 	if (g_str_equal (NODE_SOURCE_TYPE (node)->id, "fl_opml"))
-		node->icon = ui_common_create_pixbuf ("fl_opml.png");
+		node->icon = icon_create_from_file ("fl_opml.png");
 
 	debug1 (DEBUG_CACHE, "starting import of opml source instance (id=%s)", node->id);
 	filename = opml_source_get_feedlist (node);

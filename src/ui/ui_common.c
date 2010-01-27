@@ -19,10 +19,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
  
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
-
 #include "ui/ui_common.h"
 
 #include "common.h"
@@ -215,42 +211,4 @@ void
 ui_choose_directory (gchar *title, const gchar *buttonName, fileChoosenCallback callback, const gchar *currentPath, gpointer user_data)
 {
 	ui_choose_file_or_dir (title, buttonName, FALSE, TRUE, callback, currentPath, NULL, NULL, NULL, user_data);
-}
-
-/* This is an internally used function to find pixmap files. */
-static gchar *
-ui_common_find_pixmap_file (const gchar *filename)
-{
-	gchar *pathname = g_build_filename (PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps", filename, NULL);
-	if (g_file_test (pathname, G_FILE_TEST_EXISTS))
-		return pathname;
-	g_free (pathname);
-	return NULL;
-}
-
-GdkPixbuf *
-ui_common_create_pixbuf (const gchar *filename)
-{
-	gchar *pathname = NULL;
-	GdkPixbuf *pixbuf;
-	GError *error = NULL;
-
-	if (!filename || !filename[0])
-		return NULL;
-
-	pathname = ui_common_find_pixmap_file (filename);
-
-	if (!pathname) {
-		g_warning (_("Couldn't find pixmap file: %s"), filename);
-		return NULL;
-	}
-
-	pixbuf = gdk_pixbuf_new_from_file (pathname, &error);
-	if (!pixbuf) {
-		fprintf (stderr, "Failed to load pixbuf file: %s: %s\n",
-		       pathname, error->message);
-		g_error_free (error);
-	}
-	g_free (pathname);
-	return pixbuf;
 }

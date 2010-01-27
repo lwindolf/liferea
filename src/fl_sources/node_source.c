@@ -1,7 +1,7 @@
 /**
  * @file node_source.c  generic node source provider implementation
  * 
- * Copyright (C) 2005-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2005-2010 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,6 +32,7 @@
 #include "item_state.h"
 #include "node.h"
 #include "node_type.h"
+#include "ui/icons.h"
 #include "ui/liferea_dialog.h"
 #include "ui/ui_common.h"
 #include "ui/ui_node.h"
@@ -381,7 +382,7 @@ node_source_get_node_type (void)
 		/* derive the node source node type from the folder node type */
 		nodeType = (nodeTypePtr) g_new0 (struct nodeType, 1);
 		nodeType->id			= "source";
-		nodeType->icon			= icons[ICON_DEFAULT];
+		nodeType->icon			= icon_get (ICON_DEFAULT);
 		nodeType->capabilities		= NODE_CAPABILITY_SHOW_UNREAD_COUNT |
 						  NODE_CAPABILITY_SHOW_ITEM_FAVICONS |
 						  NODE_CAPABILITY_UPDATE_CHILDS |

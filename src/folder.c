@@ -1,7 +1,7 @@
 /**
  * @file folder.c  sub folders for hierarchic node sources
  * 
- * Copyright (C) 2006-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2010 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,16 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "folder.h"
+
 #include "common.h"
 #include "debug.h"
 #include "export.h"
 #include "feedlist.h"
-#include "folder.h"
 #include "itemset.h"
 #include "node.h"
 #include "vfolder.h"
-#include "ui/ui_common.h"
+#include "ui/icons.h"
 #include "ui/ui_folder.h"
 #include "ui/ui_node.h"
 
@@ -126,7 +127,7 @@ folder_get_node_type (void)
 		ui_folder_add,
 		ui_node_rename
 	};
-	fnti.icon = icons[ICON_FOLDER];
+	fnti.icon = icon_get (ICON_FOLDER);
 
 	return &fnti; 
 }

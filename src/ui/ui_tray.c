@@ -1,7 +1,7 @@
 /**
  * @file ui_tray.c tray icon handling
  * 
- * Copyright (C) 2003-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2010 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004 Christophe Barbe <christophe.barbe@ufies.org>
  * Copyright (C) 2009 Hubert Figuiere <hub@figuiere.net>
  *
@@ -20,10 +20,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
-
 #include <math.h>
 #include <string.h>
 #include <gtk/gtk.h>
@@ -34,7 +30,7 @@
 #include "feedlist.h"
 #include "net_monitor.h"
 #include "ui/liferea_shell.h"
-#include "ui/ui_common.h"
+#include "ui/icons.h"
 #include "ui/ui_popup.h"
 #include "ui/ui_tray.h"
 
@@ -98,7 +94,7 @@ ui_tray_make_icon (void)
 	}
 
 	conf_get_bool_value (SHOW_NEW_COUNT_IN_TRAY, &show_new_count_in_tray);
-	if(!show_new_count_in_tray)
+	if (!show_new_count_in_tray)
 		return trayIcon_priv->currentIcon;
 	
 	newItems = feedlist_get_new_item_count();
@@ -170,7 +166,7 @@ ui_tray_make_icon (void)
 
 
 static void
-ui_tray_icon_set (gint newItems, GdkPixbuf *icon)
+ui_tray_icon_set (gint newItems, const GdkPixbuf *icon)
 {
 	gboolean	show_new_count_in_tray;
 
@@ -179,17 +175,17 @@ ui_tray_icon_set (gint newItems, GdkPixbuf *icon)
 	/* Having two code branches here to have real transparency
 	   at least with new count disabled... */
 	conf_get_bool_value (SHOW_NEW_COUNT_IN_TRAY, &show_new_count_in_tray);
-	if (show_new_count_in_tray) {	
-
-		trayIcon_priv->currentIcon = icon;
-
+	
+	if (show_new_count_in_tray) {
+		trayIcon_priv->currentIcon = (GdkPixbuf *)icon;
 		gtk_status_icon_set_from_pixbuf (trayIcon_priv->status_icon, ui_tray_make_icon ());
 	} else {
 		/* Skip loading icon if already displayed. */
 		if (icon == trayIcon_priv->currentIcon)
 			return;
-		trayIcon_priv->currentIcon = icon;
-		gtk_status_icon_set_from_pixbuf(trayIcon_priv->status_icon, icon);
+			
+		trayIcon_priv->currentIcon = (GdkPixbuf *)icon;
+		gtk_status_icon_set_from_pixbuf(trayIcon_priv->status_icon, trayIcon_priv->currentIcon);
 	}
 }
 
@@ -206,18 +202,10 @@ ui_tray_update (void)
 	unreadItems = feedlist_get_unread_item_count ();
 		
 	if (newItems != 0) {
-		if (network_monitor_is_online ())
-			ui_tray_icon_set (newItems, icons[ICON_AVAILABLE]);
-		else
-			ui_tray_icon_set (newItems, icons[ICON_AVAILABLE_OFFLINE]);
-			
+		ui_tray_icon_set (newItems, icon_get (network_monitor_is_online ()?ICON_AVAILABLE:ICON_AVAILABLE_OFFLINE));
 		msg = g_strdup_printf (ngettext ("%d new item", "%d new items", newItems), newItems);
 	} else {
-		if (network_monitor_is_online ())
-			ui_tray_icon_set (newItems, icons[ICON_EMPTY]);
-		else
-			ui_tray_icon_set (newItems, icons[ICON_EMPTY_OFFLINE]);
-			
+		ui_tray_icon_set (newItems, icon_get (network_monitor_is_online ()?ICON_EMPTY:ICON_EMPTY_OFFLINE));
 		msg = g_strdup (_("No new items"));
 	}
 

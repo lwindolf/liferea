@@ -23,27 +23,6 @@
 
 #include <gtk/gtk.h>
 
-/* list of all icons used in Liferea */
-enum allicons {
-	ICON_UNREAD,
-	ICON_FLAG,
-	ICON_AVAILABLE,
-	ICON_AVAILABLE_OFFLINE,
-	ICON_UNAVAILABLE,
-	ICON_DEFAULT,
-	ICON_FOLDER,
-	ICON_VFOLDER,
-	ICON_NEWSBIN,
-	ICON_EMPTY,
-	ICON_EMPTY_OFFLINE,
-	ICON_ONLINE,
-	ICON_OFFLINE,
-	ICON_ENCLOSURE,
-	MAX_ICONS
-};
-
-extern GdkPixbuf *icons[MAX_ICONS];	// FIXME!
-
 /**
  * Helper function to set up a combo box option menu.
  * To be used to initialize dialogs.
@@ -117,14 +96,5 @@ void ui_choose_file (gchar *title, const gchar *buttonName, gboolean saving, fil
  * Like ui_choose_file but allows to select a directory 
  */
 void ui_choose_directory (gchar *title, const gchar *buttonName, fileChoosenCallback callback, const gchar *currentPath, gpointer user_data);
-
-/**
- * Takes a filename and tries to load the image into a GdkPixbuf. 
- *
- * @param filename	the filename
- *
- * @returns a new pixbuf or NULL
- */
-GdkPixbuf * ui_common_create_pixbuf (const gchar *filename);
 
 #endif

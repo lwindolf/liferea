@@ -1,7 +1,7 @@
 /**
  * @file cdf_channel.c CDF channel parsing
  *
- * Copyright (C) 2003-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2010 Lars Lindner <lars.lindner@gmail.com>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,13 +23,15 @@
    things being case insensitive. Some people seem to make the tags
    capitalized, while others are like "Channel". */
 
+#include "cdf_channel.h"
+
 #include <sys/time.h>
 #include <string.h>
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
+
 #include "common.h"
 #include "feedlist.h"
-#include "cdf_channel.h"
 #include "cdf_item.h"
 #include "metadata.h"
 #include "xml.h"
@@ -181,7 +183,6 @@ feedHandlerPtr cdf_init_feed_handler(void) {
 	
 	/* prepare feed handler structure */
 	fhp->typeStr = "cdf";
-	fhp->icon = ICON_AVAILABLE;
 	fhp->feedParser	= cdf_parse;
 	fhp->checkFormat = cdf_format_check;
 	fhp->merge = TRUE;

@@ -18,6 +18,8 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+ 
+#include "atom10.h"
 
 #include <string.h>
 
@@ -44,7 +46,6 @@
 #include "metadata.h"
 #include "subscription.h"
 #include "xml.h"
-#include "atom10.h"
 
 #define ATOM10_NS BAD_CAST"http://www.w3.org/2005/Atom"
 
@@ -855,7 +856,6 @@ atom10_init_feed_handler (void)
 	}	
 	/* prepare feed handler structure */
 	fhp->typeStr = "atom";
-	fhp->icon = ICON_AVAILABLE;
 	fhp->feedParser	= atom10_parse_feed;
 	fhp->checkFormat = atom10_format_check;
 	fhp->merge = TRUE;

@@ -41,6 +41,7 @@
 #include "net_monitor.h"
 #include "ui/browser_tabs.h"
 #include "ui/feed_list_view.h"
+#include "ui/icons.h"
 #include "ui/itemview.h"
 #include "ui/item_list_view.h"
 #include "ui/liferea_dialog.h"
@@ -51,9 +52,6 @@
 #include "ui/ui_session.h"
 #include "ui/ui_tray.h"
 #include "ui/ui_update.h"
-
-/* all used icons (FIXME: evil) */
-GdkPixbuf *icons[MAX_ICONS];
 
 static void liferea_shell_class_init	(LifereaShellClass *klass);
 static void liferea_shell_init		(LifereaShell *ls);
@@ -761,11 +759,11 @@ liferea_shell_set_online_icon (gboolean online)
 
 	if (online) {
 		liferea_shell_set_status_bar (_("Liferea is now online"));
-		gtk_image_set_from_pixbuf (GTK_IMAGE (widget), icons[ICON_ONLINE]);
-		atk_object_set_name (gtk_widget_get_accessible (widget), _("Work Offline"));		
+		gtk_image_set_from_pixbuf (GTK_IMAGE (widget), (GdkPixbuf *)icon_get (ICON_ONLINE));
+		atk_object_set_name (gtk_widget_get_accessible (widget), _("Work Offline"));	
 	} else {
 		liferea_shell_set_status_bar (_("Liferea is now offline"));
-		gtk_image_set_from_pixbuf (GTK_IMAGE (widget), icons[ICON_OFFLINE]);
+		gtk_image_set_from_pixbuf (GTK_IMAGE (widget), (GdkPixbuf *)icon_get (ICON_OFFLINE));
 		atk_object_set_name (gtk_widget_get_accessible (widget), _("Work Online"));	
 	}
 	gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (gtk_action_group_get_action (shell->priv->generalActions, "ToggleOfflineMode")), !online);
@@ -1015,24 +1013,6 @@ static const char *liferea_shell_ui_desc =
 "  </toolbar>"
 "</ui>";
 
-static GdkPixbuf *
-liferea_shell_get_theme_icon (GtkIconTheme *icon_theme, const gchar *name, gint size)
-{
-	GError *error = NULL;
-	GdkPixbuf *pixbuf;
-
-	pixbuf = gtk_icon_theme_load_icon (icon_theme,
-	                                   name, /* icon name */
-	                                   size, /* size */
-	                                   0,  /* flags */
-	                                   &error);
-	if (!pixbuf) {
-		debug1(DEBUG_GUI, "Couldn't load icon: %s", error->message);
-		g_error_free (error);
-	}
-	return pixbuf;
-}
-
 static void
 liferea_shell_restore_state (void)
 {
@@ -1074,10 +1054,7 @@ liferea_shell_create (int initialState)
 	GtkUIManager	*ui_manager;
 	GtkAccelGroup	*accel_group;
 	GError		*error = NULL;	
-	GtkWidget	*widget;
-	int		i;
 	GString		*buffer;
-	GtkIconTheme	*icon_theme;
 	gboolean	show_tray_icon, toggle;
 	
 	debug_enter ("liferea_shell_create");
@@ -1212,57 +1189,9 @@ liferea_shell_create (int initialState)
 	
 	debug0 (DEBUG_GUI, "Loading icons");
 	
-	/* first try to load icons from theme */
-	static const gchar *iconThemeNames[] = {
-		NULL,			/* ICON_UNREAD */
-		"emblem-important",	/* ICON_FLAG */
-		NULL,			/* ICON_AVAILABLE */
-		NULL,			/* ICON_AVAILABLE_OFFLINE */
-		NULL,			/* ICON_UNAVAILABLE */
-		NULL,			/* ICON_DEFAULT */
-		"folder",		/* ICON_FOLDER */
-		"folder-saved-search",	/* ICON_VFOLDER */
-		NULL,			/* ICON_NEWSBIN */
-		NULL,			/* ICON_EMPTY */
-		NULL,			/* ICON_EMPTY_OFFLINE */
-		"gtk-connect",		/* ICON_ONLINE */
-		"gtk-disconnect",	/* ICON_OFFLINE */
-		"mail-attachment",	/* ICON_ENCLOSURE */
-		NULL
-	};
-
-	icon_theme = gtk_icon_theme_get_default ();
-	for (i = 0; i < MAX_ICONS; i++)
-		if (iconThemeNames[i])
-			icons[i] = liferea_shell_get_theme_icon (icon_theme, iconThemeNames[i], 16);
-
-	/* and then load own default icons */
-	static const gchar *iconNames[] = {
-		"unread.png",		/* ICON_UNREAD */
-		"flag.png",		/* ICON_FLAG */
-		"available.png",	/* ICON_AVAILABLE */
-		"available_offline.png",	/* ICON_AVAILABLE_OFFLINE */
-		NULL,			/* ICON_UNAVAILABLE */
-		"default.png",		/* ICON_DEFAULT */
-		"directory.png",	/* ICON_FOLDER */
-		"vfolder.png",		/* ICON_VFOLDER */
-		"newsbin.png",		/* ICON_NEWSBIN */
-		"empty.png",		/* ICON_EMPTY */
-		"empty_offline.png",	/* ICON_EMPTY_OFFLINE */
-		"online.png",		/* ICON_ONLINE */
-		"offline.png",		/* ICON_OFFLINE */
-		"attachment.png",	/* ICON_ENCLOSURE */
-		NULL
-	};
-
-	for (i = 0; i < MAX_ICONS; i++)
-		if (!icons[i])
-			icons[i] = ui_common_create_pixbuf (iconNames[i]);
-
-	/* set up icons that are build from stock */
-	widget = gtk_button_new ();
-	icons[ICON_UNAVAILABLE] = gtk_widget_render_icon (widget, GTK_STOCK_DIALOG_ERROR, GTK_ICON_SIZE_MENU, "");
-	gtk_widget_destroy (widget);
+	icons_load ();
+	
+	/* 9.) update all menu elements */
 	
 	liferea_shell_update_toolbar ();
 	
@@ -1286,9 +1215,9 @@ liferea_shell_create (int initialState)
 		/* Needed so that the window structure can be
 		   accessed... otherwise will GTK warning when window is
 		   shown by clicking on notification icon. */
-		// gtk_widget_realize (GTK_WIDGET (shell->priv->window));
-		// Does not work with gtkmozembed...
-		
+		   
+		/* Note: gtk_widget_realize () did not work with GtkMozEmbed
+		   therefore we use show+hide instead. */
 		gtk_widget_show (GTK_WIDGET (shell->priv->window));
 		gtk_widget_hide (GTK_WIDGET (shell->priv->window));
 	}
@@ -1401,7 +1330,8 @@ liferea_shell_get_window (void)
 	return GTK_WIDGET (shell->priv->window);
 }
 
-void liferea_shell_set_view_mode (nodeViewType newMode)
+void
+liferea_shell_set_view_mode (nodeViewType newMode)
 {
 	GtkRadioAction       *action;
 

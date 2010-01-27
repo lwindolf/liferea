@@ -74,6 +74,8 @@ src/xml.c
 src/xml.h
 src/ui/enclosure_list_view.c
 src/ui/enclosure_list_view.h
+src/ui/icons.c
+src/ui/icons.h
 src/ui/itemview.c
 src/ui/itemview.h
 src/ui/liferea_shell.c

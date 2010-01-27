@@ -19,6 +19,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "feed.h"
+
 #include <string.h>
 
 #include "conf.h"
@@ -26,7 +28,6 @@
 #include "db.h"
 #include "debug.h"
 #include "favicon.h"
-#include "feed.h"
 #include "feedlist.h"
 #include "itemlist.h"
 #include "metadata.h"
@@ -35,8 +36,9 @@
 #include "script.h"
 #include "update.h"
 #include "xml.h"
-#include "ui/liferea_shell.h"
 #include "ui/auth_dialog.h"
+#include "ui/icons.h"
+#include "ui/liferea_shell.h"
 #include "ui/ui_subscription.h"
 #include "ui/ui_node.h"
 #include "notification/notification.h"
@@ -421,7 +423,7 @@ feed_get_node_type (void)
 		feed_properties,
 		feed_free
 	};
-	nti.icon = icons[ICON_DEFAULT];
+	nti.icon = icon_get (ICON_DEFAULT);
 	
 	return &nti; 
 }

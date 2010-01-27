@@ -397,7 +397,7 @@ gpointer node_get_icon(nodePtr node) {
 	icon = node->icon;
 
 	if(!icon)
-		icon = NODE_TYPE(node)->icon;
+		icon = (gpointer) NODE_TYPE(node)->icon;
 
 	return icon;
 }

@@ -30,6 +30,7 @@
 #include "metadata.h"
 #include "render.h"
 #include "vfolder.h"
+#include "ui/icons.h"
 #include "ui/ui_node.h"
 #include "ui/liferea_dialog.h"
 
@@ -149,7 +150,7 @@ newsbin_get_node_type (void)
 		                                  NODE_CAPABILITY_SHOW_UNREAD_COUNT |
 		                                  NODE_CAPABILITY_SHOW_ITEM_COUNT;
 		nodeType->id			= "newsbin";
-		nodeType->icon			= icons[ICON_NEWSBIN];
+		nodeType->icon			= icon_get (ICON_NEWSBIN);
 		nodeType->load			= feed_get_node_type()->load;		
 		nodeType->import		= newsbin_import;
 		nodeType->export		= feed_get_node_type()->export;

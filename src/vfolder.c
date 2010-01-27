@@ -18,6 +18,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "vfolder.h"
+
 #include "common.h"
 #include "db.h"
 #include "debug.h"
@@ -26,8 +28,7 @@
 #include "itemlist.h"
 #include "node.h"
 #include "rule.h"
-#include "vfolder.h"
-#include "ui/ui_common.h"
+#include "ui/icons.h"
 #include "ui/ui_node.h"
 #include "ui/search_folder_dialog.h"
 
@@ -299,7 +300,7 @@ vfolder_get_node_type (void)
 		vfolder_properties,
 		vfolder_free
 	};
-	nti.icon = icons[ICON_VFOLDER];
+	nti.icon = icon_get (ICON_VFOLDER);
 
 	return &nti; 
 }

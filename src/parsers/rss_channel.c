@@ -1,7 +1,7 @@
 /**
  * @file rss_channel.c  some tolerant and generic RSS/RDF channel parsing
  *
- * Copyright (C) 2003-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2010 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2005-2006 Nathan Conrad <t98502@users.sourceforge.net> 
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -379,7 +379,6 @@ rss_init_feed_handler (void)
 							
 	/* prepare feed handler structure */
 	fhp->typeStr = "rss";
-	fhp->icon = ICON_AVAILABLE;
 	fhp->feedParser	= rss_parse;
 	fhp->checkFormat = rss_format_check;
 	fhp->merge = TRUE;

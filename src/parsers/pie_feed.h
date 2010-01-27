@@ -1,7 +1,7 @@
 /**
  * @file pie_feed.h Atom 0.3 feed parsing
  *
- * Copyright (C) 2003-2006 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2003-2010 Lars Lindner <lars.lindner@gmx.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@
 #define _PIE_FEED_H
 
 #include <libxml/tree.h>
-#include "feed.h"
+#include "feed_parser.h"
 
 extern GHashTable *pie_nstable;
 extern GHashTable *ns_pie_ns_uri_table;

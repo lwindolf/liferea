@@ -26,12 +26,13 @@
 #include "feedlist.h"
 #include "fl_sources/node_source.h"
 #include "folder.h"
+#include "ui/icons.h"
 #include "ui/liferea_dialog.h"
 #include "ui/liferea_shell.h"
 #include "ui/ui_common.h"
 #include "ui/feed_list_view.h"
 
-static GHashTable	*flIterHash = NULL;	/* hash table used for fast node id <-> tree iter lookup */
+static GHashTable	*flIterHash = NULL;	/**< hash table used for fast node id <-> tree iter lookup */
 static GtkWidget	*nodenamedialog = NULL;
 
 GtkTreeIter *
@@ -317,7 +318,7 @@ ui_node_update (const gchar *nodeId)
 
 	gtk_tree_store_set (feedstore, iter, FS_LABEL, label,
 	                                     FS_UNREAD, node->unreadCount,
-	                                     FS_ICON, node->available?node_get_icon (node):icons[ICON_UNAVAILABLE],
+	                                     FS_ICON, node->available?node_get_icon (node):icon_get (ICON_UNAVAILABLE),
 	                                     -1);
 	g_free (label);
 

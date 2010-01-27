@@ -1,7 +1,7 @@
 /**
- * @file item_list_view.c presenting items in a GtkTreeView
+ * @file item_list_view.c  presenting items in a GtkTreeView
  *  
- * Copyright (C) 2004-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2010 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -37,6 +37,7 @@
 #include "newsbin.h"
 #include "social.h"
 #include "ui/browser_tabs.h"
+#include "ui/icons.h"
 #include "ui/liferea_shell.h"
 #include "ui/ui_common.h"
 #include "ui/ui_popup.h"
@@ -332,7 +333,7 @@ item_list_view_update_item (ItemListView *ilv, itemPtr item)
 	GtkTreeIter	iter;
 	gchar		*title, *time_str;
 	const gchar 	*direction_marker;
-	GdkPixbuf	*state_icon;
+	const GdkPixbuf	*state_icon;
 	
 	if (!item_list_view_id_to_iter (ilv, item->id, &iter))
 		return;
@@ -344,8 +345,8 @@ item_list_view_update_item (ItemListView *ilv, itemPtr item)
 	title = item->title && strlen (item->title) ? item->title : _("*** No title ***");
 	title = g_strstrip (g_strdup_printf ("%s%s", direction_marker, title));
 
-	state_icon = item->flagStatus ? icons[ICON_FLAG] :
-	             !item->readStatus ? icons[ICON_UNREAD] :
+	state_icon = item->flagStatus ? icon_get (ICON_FLAG) :
+	             !item->readStatus ? icon_get (ICON_UNREAD) :
 		     NULL;
 
 	if (ilv->priv->batch_mode)
@@ -560,7 +561,7 @@ item_list_view_add_item_to_tree_store (ItemListView *ilv, GtkTreeStore *itemstor
 		                       IS_NR, item->id,
 				       IS_PARENT, node,
 		                       IS_FAVICON, node->icon,
-		                       IS_ENCICON, item->hasEnclosure?icons[ICON_ENCLOSURE]:NULL,
+		                       IS_ENCICON, item->hasEnclosure?icon_get (ICON_ENCLOSURE):NULL,
 				       IS_ENCLOSURE, item->hasEnclosure,
 				       IS_SOURCE, node,
 				       IS_STATE, state,
