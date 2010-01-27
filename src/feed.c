@@ -79,11 +79,6 @@ feed_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trusted)
 		feed->cacheLimit = common_parse_long (cacheLimitStr, CACHE_DEFAULT);
 	xmlFree (cacheLimitStr);
 	
-	tmp = xmlGetProp (xml, BAD_CAST"noIncremental");
-	if (tmp && !xmlStrcmp (tmp, BAD_CAST"true"))
-		feed->noIncremental = TRUE;
-	xmlFree (tmp);
-	
 	/* enclosure auto download flag */
 	tmp = xmlGetProp (xml, BAD_CAST"encAutoDownload");
 	if (tmp && !xmlStrcmp (tmp, BAD_CAST"true"))
@@ -153,9 +148,6 @@ feed_export (nodePtr node, xmlNodePtr xml, gboolean trusted)
 		if (cacheLimit)
 			xmlNewProp (xml, BAD_CAST"cacheLimit", BAD_CAST cacheLimit);
 
-		if (feed->noIncremental)
-			xmlNewProp (xml, BAD_CAST"noIncremental", BAD_CAST"true");
-			
 		if (feed->encAutoDownload)
 			xmlNewProp (xml, BAD_CAST"encAutoDownload", BAD_CAST"true");
 			

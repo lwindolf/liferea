@@ -49,7 +49,6 @@ typedef struct feed {
 
 	/* feed cache state properties */
 	gint		cacheLimit;		/**< Amount of cache to save: See the cache_limit enum */
-	gboolean	noIncremental;		/**< Do merging for this feed but drop old items */
 	
 	/* feed parsing state */
 	gboolean	valid;			/**< FALSE if there was an error in xml_parse_feed() */
