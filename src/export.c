@@ -297,13 +297,6 @@ import_parse_outline (xmlNodePtr cur, nodePtr parentNode, gboolean trusted)
 	}
 
 	/* viewing mode */
-	tmp = xmlGetProp (cur, BAD_CAST"twoPane");	/* migration for old setting... */
-	if (tmp) {
-		if(!xmlStrcmp (tmp, BAD_CAST"true"))
-			node_set_view_mode (node, 2);
-		xmlFree (tmp);
-	}
-		
 	tmp = xmlGetProp (cur, BAD_CAST"viewMode");
 	if (tmp) {
 		node_set_view_mode (node, atoi (tmp));
