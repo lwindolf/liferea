@@ -1,7 +1,7 @@
 /**
  * @file node.c  hierarchic feed list node handling
  * 
- * Copyright (C) 2003-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2010 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -40,7 +40,7 @@
 #include "ui/ui_node.h"
 #include "ui/ui_tray.h"
 
-static GHashTable *nodes = NULL;
+static GHashTable *nodes = NULL;	/**< node id -> node lookup table */
 
 #define NODE_ID_LEN	7
 
@@ -85,30 +85,33 @@ node_from_id (const gchar *id)
 	return node;
 }
 
-nodePtr node_new(nodeTypePtr type) {
+nodePtr
+node_new (nodeTypePtr type)
+{
 	nodePtr	node;
 	gchar	*id;
 	
 	g_assert (NULL != type);
 
-	node = (nodePtr)g_new0(struct node, 1);
+	node = (nodePtr)g_new0 (struct node, 1);
 	node->type = type;
 	node->sortColumn = NODE_VIEW_SORT_BY_TIME;
 	node->sortReversed = TRUE;	/* default sorting is newest date at top */
 	node->available = TRUE;
-	node_set_icon(node, NULL);	/* initialize favicon file name */
+	node_set_icon (node, NULL);	/* initialize favicon file name */
 
-	id = node_new_id();
-	node_set_id(node, id);
-	g_free(id);
+	id = node_new_id ();
+	node_set_id (node, id);
+	g_free (id);
 	
 	return node;
 }
 
-void node_set_data(nodePtr node, gpointer data) {
-
-	g_assert(NULL == node->data);
-	g_assert(NULL != node->type);
+void
+node_set_data (nodePtr node, gpointer data)
+{
+	g_assert (NULL == node->data);
+	g_assert (NULL != node->type);
 
 	node->data = data;
 }
@@ -140,7 +143,6 @@ node_update_subscription (nodePtr node, gpointer user_data)
 	node_foreach_child_data (node, node_update_subscription, user_data);
 }
 
-
 void
 node_auto_update_subscription (nodePtr node) 
 {
@@ -163,12 +165,14 @@ node_reset_update_counter (nodePtr node, GTimeVal *now)
 	node_foreach_child_data (node, node_reset_update_counter, now);
 }
 
-gboolean node_is_ancestor(nodePtr node1, nodePtr node2) {
+gboolean
+node_is_ancestor (nodePtr node1, nodePtr node2)
+{
 	nodePtr	tmp;
 
 	tmp = node2->parent;
-	while(tmp) {
-		if(node1 == tmp)
+	while (tmp) {
+		if (node1 == tmp)
 			return TRUE;
 		tmp = tmp->parent;
 	}
@@ -237,18 +241,20 @@ node_update_parent_counters (nodePtr node)
 		node_update_parent_counters (node->parent);
 }
 
-void node_update_counters(nodePtr node) {
+void
+node_update_counters(nodePtr node)
+{
 	guint old = node->unreadCount;
 
 	/* Update the node itself and its children */
-	node_calc_counters(node);
+	node_calc_counters (node);
 	
 	if (old != node->unreadCount)
 		ui_node_update (node->id);
 		
 	/* Update the unread count of the parent nodes,
 	   usually them just add all child unread counters */
-	node_update_parent_counters(node->parent);
+	node_update_parent_counters (node->parent);
 }
 
 void
@@ -344,13 +350,15 @@ node_to_xml (nodePtr node)
 	return doc;
 }
 
-gchar * node_default_render(nodePtr node) {
+gchar *
+node_default_render (nodePtr node)
+{
 	gchar		*result;
 	xmlDocPtr	doc;
 
-	doc = node_to_xml(node);
-	result = render_xml(doc, NODE_TYPE(node)->id, NULL);	
-	xmlFreeDoc(doc);
+	doc = node_to_xml (node);
+	result = render_xml (doc, NODE_TYPE(node)->id, NULL);	
+	xmlFreeDoc (doc);
 		
 	return result;
 }
@@ -372,7 +380,11 @@ node_set_title (nodePtr node, const gchar *title)
 	node->title = g_strstrip (g_strdelimit (g_strdup (title), "\r\n", ' '));
 }
 
-const gchar * node_get_title(nodePtr node) { return node->title; }
+const gchar *
+node_get_title (nodePtr node)
+{
+	return node->title;
+}
 
 void
 node_set_icon (nodePtr node, gpointer icon)
@@ -390,34 +402,41 @@ node_set_icon (nodePtr node, gpointer icon)
 }
 
 /** determines the nodes favicon or default icon */
-gpointer node_get_icon(nodePtr node) { 
-	gpointer icon;
+gpointer
+node_get_icon (nodePtr node)
+{
+	if (!node->icon)
+		return (gpointer) NODE_TYPE(node)->icon;
 
-	icon = node->icon;
-
-	if(!icon)
-		icon = (gpointer) NODE_TYPE(node)->icon;
-
-	return icon;
+	return node->icon;
 }
 
-const gchar * node_get_favicon_file(nodePtr node) { return node->iconFile; }
+const gchar *
+node_get_favicon_file (nodePtr node)
+{
+	return node->iconFile;
+}
 
-void node_set_id(nodePtr node, const gchar *id) {
-
-	if(!nodes)
+void
+node_set_id (nodePtr node, const gchar *id)
+{
+	if (!nodes)
 		nodes = g_hash_table_new(g_str_hash, g_str_equal);
 
-	if(node->id) {
-		g_hash_table_remove(nodes, node->id);
-		g_free(node->id);
+	if (node->id) {
+		g_hash_table_remove (nodes, node->id);
+		g_free (node->id);
 	}
-	node->id = g_strdup(id);
+	node->id = g_strdup (id);
 	
-	g_hash_table_insert(nodes, node->id, node);
+	g_hash_table_insert (nodes, node->id, node);
 }
 
-const gchar *node_get_id(nodePtr node) { return node->id; }
+const gchar *
+node_get_id (nodePtr node)
+{
+	return node->id;
+}
 
 gboolean
 node_set_sort_column (nodePtr node, nodeViewSortType sortColumn, gboolean reversed)
@@ -472,27 +491,29 @@ node_get_base_url(nodePtr node)
 
 /* node children iterating interface */
 
-void node_foreach_child_full(nodePtr node, gpointer func, gint params, gpointer user_data) {
+void
+node_foreach_child_full (nodePtr node, gpointer func, gint params, gpointer user_data)
+{
 	GSList		*children, *iter;
 	
-	g_assert(NULL != node);
+	g_assert (NULL != node);
 
 	/* We need to copy because func might modify the list */
-	iter = children = g_slist_copy(node->children);
-	while(iter) {
+	iter = children = g_slist_copy (node->children);
+	while (iter) {
 		nodePtr childNode = (nodePtr)iter->data;
 		
 		/* Apply the method to the child */
-		if(0 == params)
-			((nodeActionFunc)func)(childNode);
+		if (0 == params)
+			((nodeActionFunc)func) (childNode);
 		else 
-			((nodeActionDataFunc)func)(childNode, user_data);
+			((nodeActionDataFunc)func) (childNode, user_data);
 			
 		/* Never descend! */
 
-		iter = g_slist_next(iter);
+		iter = g_slist_next (iter);
 	}
 	
-	g_slist_free(children);
+	g_slist_free (children);
 }
 
