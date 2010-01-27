@@ -24,7 +24,6 @@ AC_ARG_ENABLE(sm,        AS_HELP_STRING([--disable-sm],[compile without X sessio
 AC_ARG_ENABLE(dbus,      AS_HELP_STRING([--disable-dbus],[compile without DBUS support]),,enable_dbus=yes)
 AC_ARG_ENABLE(nm,        AS_HELP_STRING([--disable-nm],[compile without NetworkManager support]),,enable_nm=yes)
 AC_ARG_ENABLE(libnotify, AS_HELP_STRING([--disable-libnotify],[don't compile the libnotify plugin]),,enable_libnotify=yes)
-AC_ARG_ENABLE(lua,       AS_HELP_STRING([--disable-lua],[don't compile with LUA scripting support]),,enable_lua=yes)
 dnl AC_ARG_ENABLE(avahi,     AS_HELP_STRING([--disable-avahi],[don't compile with AVAHI support]),,enable_avahi=yes)
 
 AC_CHECK_FUNCS([strsep])
@@ -56,24 +55,6 @@ if test "x$enable_libnotify" = "xyes"; then
 fi
 
 AM_CONDITIONAL(WITH_LIBNOTIFY, test "x$enable_libnotify" = "xyes")
-
-dnl ***
-dnl LUA
-dnl ***
-
-if test "x$enable_lua" = "xyes"; then
-   PKG_CHECK_MODULES([LUA], [lua >= 5.1],, [AC_MSG_NOTICE([No lua.pc >= 5.1 present, is there a lua5.1.pc?])
-     PKG_CHECK_MODULES([LUA], [lua5.1],,[enable_lua=no])])
-   
-   AC_SUBST(LUA_CFLAGS)
-   AC_SUBST(LUA_LIBS)
-fi
-
-if test "x$enable_lua" = "xyes"; then
-  AC_DEFINE(HAVE_LUA, 1, [Define if LUA support is enabled])
-fi
-
-AM_CONDITIONAL(WITH_LUA, test "x$enable_lua" = "xyes")
 
 dnl *****
 dnl AVAHI
@@ -182,7 +163,6 @@ src/webkit/Makefile
 src/parsers/Makefile
 src/fl_sources/Makefile
 src/notification/Makefile
-src/scripting/Makefile
 src/sync/Makefile
 src/ui/Makefile
 doc/Makefile
@@ -209,7 +189,6 @@ echo
 echo "$PACKAGE $VERSION"
 echo
 echo "Build libnotify Plugin.......... : $enable_libnotify"
-echo "Build LUA scripting Plugin ..... : $enable_lua"
 echo
 echo "Use X Session Management........ : $enable_sm"
 echo "Use DBUS........................ : $enable_dbus"

@@ -6,6 +6,7 @@
 	  on current workspace if tray icon is clicked.
 	  (patch by ?)
 	* Cleanup of default stylesheet. Removed used styles. (Lars Lindner)
+	* Permanently removed LUA scripting support. (Lars Lindner)
 
 
 2010-01-24   Lars Lindner <lars.lindner@gmail.com>

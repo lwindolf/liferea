@@ -33,7 +33,6 @@
 #include "metadata.h"
 #include "node.h"
 #include "render.h"
-#include "script.h"
 #include "update.h"
 #include "xml.h"
 #include "ui/auth_dialog.h"
@@ -312,8 +311,6 @@ feed_process_update_result (subscriptionPtr subscription, const struct updateRes
 
 		liferea_shell_set_status_bar (_("\"%s\" is not available"), node_get_title (node));
 	}
-
-	script_run_for_hook (SCRIPT_HOOK_FEED_UPDATED);
 
 	debug_exit ("feed_process_update_result");
 }

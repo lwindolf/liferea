@@ -43,7 +43,6 @@
 #include "debug.h"
 #include "feedlist.h"
 #include "itemlist.h"
-#include "script.h"
 #include "social.h"
 #include "update.h"
 #include "xml.h"
@@ -287,10 +286,6 @@ main (int argc, char *argv[])
 	/* order is important! */
 	db_init ();			/* initialize sqlite */
 	xml_init ();			/* initialize libxml2 */
-	script_init ();			/* setup scripting if supported */
-#ifdef HAVE_LUA
-	script_add_impl(&lua_script_impl);
-#endif
 #ifdef HAVE_LIBNOTIFY
 	notification_plugin_register (&libnotify_plugin);
 #endif
@@ -329,8 +324,6 @@ main (int argc, char *argv[])
 
 	liferea_shell_create (initialState);
 	g_set_prgname ("liferea");
-	
-	script_run_for_hook (SCRIPT_HOOK_STARTUP);
 	
 #ifdef USE_SM
 	/* This must be after feedlist reading because some session
@@ -378,13 +371,9 @@ on_shutdown (gpointer user_data)
 	runState = STATE_SHUTDOWN;
 
 	/* order is important ! */
-		
-	script_run_for_hook (SCRIPT_HOOK_SHUTDOWN);
-	
 	itemlist_free ();
 	update_deinit ();
 	db_deinit ();
-	script_deinit ();
 	social_free ();
 
 	liferea_shell_destroy ();

@@ -46,7 +46,6 @@
 #include "ui/search_dialog.h"
 #include "ui/ui_common.h"
 #include "ui/ui_prefs.h"
-#include "ui/ui_script.h"
 #include "ui/ui_session.h"
 #include "ui/ui_tray.h"
 #include "ui/ui_update.h"
@@ -869,8 +868,6 @@ static const GtkActionEntry liferea_shell_action_entries[] = {
 	{"ToolsMenu", NULL, N_("_Tools")},
 	{"ShowUpdateMonitor", NULL, N_("_Update Monitor"), NULL, N_("Show a list of all feeds currently in the update queue"),
 	 G_CALLBACK(on_menu_show_update_monitor)},
-	{"ShowScriptManager", NULL, N_("_Script Manager"), NULL, N_("Allows to configure and edit LUA hook scripts"),
-	 G_CALLBACK(on_menu_show_script_manager)},
 	{"ShowPreferences", GTK_STOCK_PREFERENCES, N_("_Preferences"), NULL, N_("Edit Preferences."),
 	 G_CALLBACK(on_prefbtn_clicked)},
 

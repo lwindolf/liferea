@@ -59,8 +59,6 @@ src/render.c
 src/render.h
 src/rule.c
 src/rule.h
-src/script.c
-src/script.h
 src/social.c
 src/social.h
 src/subscription.c
@@ -111,8 +109,6 @@ src/ui/ui_popup.c
 src/ui/ui_popup.h
 src/ui/ui_prefs.c
 src/ui/ui_prefs.h
-src/ui/ui_script.c
-src/ui/ui_script.h
 src/ui/ui_session.c
 src/ui/ui_session.h
 src/ui/ui_subscription.c
@@ -170,7 +166,6 @@ src/fl_sources/node_source.h
 src/notification/libnotify.c
 src/notification/notification.c
 src/notification/notification.h
-src/scripting/lua.c
 src/sync/avahi_browser.c
 src/sync/avahi_browser.h
 src/sync/avahi_publisher.c

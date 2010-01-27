@@ -35,7 +35,6 @@
 #include "metadata.h"
 #include "node.h"
 #include "rule.h"
-#include "script.h"
 #include "vfolder.h"
 #include "ui/item_list_view.h"
 #include "ui/itemview.h"
@@ -140,13 +139,7 @@ itemlist_get_selected_id (void)
 static void
 itemlist_set_selected (itemPtr item)
 {
-	if(itemlist_priv.selectedId)
-		script_run_for_hook(SCRIPT_HOOK_ITEM_UNSELECT);
-
 	itemlist_priv.selectedId = item?item->id:0;
-		
-	if(itemlist_priv.selectedId)
-		script_run_for_hook(SCRIPT_HOOK_ITEM_SELECTED);
 }
 
 nodePtr

@@ -31,7 +31,6 @@
 #include "itemlist.h"
 #include "net_monitor.h"
 #include "node.h"
-#include "script.h"
 #include "update.h"
 #include "vfolder.h"
 #include "ui/feed_list_view.h"
@@ -422,9 +421,6 @@ feedlist_node_added (nodePtr node)
 	feedlist_node_imported (node);
 	
 	feed_list_view_select (node);
-	
-	if (node->subscription)
-		script_run_for_hook (SCRIPT_HOOK_NEW_SUBSCRIPTION);
 }
 
 void
@@ -563,8 +559,6 @@ feedlist_selection_changed (nodePtr node)
 		if (0 != feedlist->priv->newCount)
 			feedlist_reset_new_item_count ();
 
-		script_run_for_hook (SCRIPT_HOOK_FEED_UNSELECT);
-
 		/* Unload visible items. */
 		itemlist_unload (TRUE);
 	
@@ -576,9 +570,6 @@ feedlist_selection_changed (nodePtr node)
 		} else {
 			itemview_clear ();
 		}
-		
-		if (SELECTED)
-			script_run_for_hook (SCRIPT_HOOK_FEED_SELECTED);
 	}
 
 	debug_exit ("feedlist_selection_changed");

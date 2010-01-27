@@ -5,7 +5,7 @@ SYNC = sync
 SYNC_LIB = sync/liblisync.a
 endif
 
-SUBDIRS = parsers notification ui fl_sources scripting $(SYNC) webkit .
+SUBDIRS = parsers notification ui fl_sources $(SYNC) webkit .
 
 AM_CPPFLAGS = \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \
@@ -55,7 +55,6 @@ liferea_SOURCES = \
 	node_view.h \
 	render.c render.h \
 	rule.c rule.h \
-	script.c script.h \
 	social.c social.h \
 	subscription.c subscription.h \
 	subscription_type.h \
@@ -84,12 +83,6 @@ AM_INSTALLCHECK_STD_OPTIONS_EXEMPT = liferea-add-feed
 
 dbus_wrap.c: $(srcdir)/liferea_dbus.xml
 	dbus-binding-tool --mode=glib-server --prefix=liferea_dbus $(srcdir)/liferea_dbus.xml > dbus_wrap.c
-
-endif
-
-if WITH_LUA
-
-liferea_LDADD += scripting/liblua.a $(LUA_LIBS)
 
 endif
 
