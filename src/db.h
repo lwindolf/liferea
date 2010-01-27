@@ -245,15 +245,6 @@ void db_subscription_update (subscriptionPtr subscription);
 void db_subscription_remove (const gchar *id);
 
 /**
- * Checks if a given node id already exists
- *
- * @param id		the node id to check for
- *
- * @returns true if the id already exists
- */
-gboolean db_node_id_exists (const gchar *id);
-
-/**
  * Updates the given nodes properties in the DB.
  *
  * @param node		the node

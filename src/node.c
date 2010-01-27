@@ -44,21 +44,6 @@ static GHashTable *nodes = NULL;	/**< node id -> node lookup table */
 
 #define NODE_ID_LEN	7
 
-gchar *
-node_new_id (void)
-{
-	gchar *id;
-	
-	id = g_new0 (gchar, NODE_ID_LEN + 1);
-	do {
-		int i;
-		for (i = 0; i < NODE_ID_LEN; i++)
-			id[i] = (gchar)g_random_int_range ('a', 'z');
-	} while (db_node_id_exists (id));
-	
-	return id;
-}
-
 nodePtr
 node_is_used_id (const gchar *id)
 {
@@ -71,6 +56,21 @@ node_is_used_id (const gchar *id)
 	node = (nodePtr)g_hash_table_lookup (nodes, id);
 
 	return node;
+}
+
+gchar *
+node_new_id (void)
+{
+	gchar *id;
+	
+	id = g_new0 (gchar, NODE_ID_LEN + 1);
+	do {
+		int i;
+		for (i = 0; i < NODE_ID_LEN; i++)
+			id[i] = (gchar)g_random_int_range ('a', 'z');
+	} while (NULL != node_is_used_id (id));
+	
+	return id;
 }
 
 nodePtr
