@@ -26,9 +26,7 @@
 #include "ui/liferea_shell.h"
 
 #include <gtk/gtk.h>
-#include <gdk/gdk.h>
 #include <gdk/gdkkeysyms.h>
-#include <string.h>		/* strcmp() and strsep() */
 
 #include "browser.h"
 #include "common.h"
@@ -271,11 +269,11 @@ liferea_shell_set_toolbar_style (const gchar *toolbar_style)
 {	
 	if (!toolbar_style) /* default to icons */
 		gtk_toolbar_set_style (GTK_TOOLBAR (shell->priv->toolbar), GTK_TOOLBAR_ICONS);
-	else if (!strcmp (toolbar_style, "text"))
+	else if (g_str_equal (toolbar_style, "text"))
 		gtk_toolbar_set_style (GTK_TOOLBAR (shell->priv->toolbar), GTK_TOOLBAR_TEXT);
-	else if (!strcmp (toolbar_style, "both"))
+	else if (g_str_equal (toolbar_style, "both"))
 		gtk_toolbar_set_style (GTK_TOOLBAR (shell->priv->toolbar), GTK_TOOLBAR_BOTH);
-	else if (!strcmp (toolbar_style, "both_horiz") || !strcmp (toolbar_style, "both-horiz") )
+	else if (g_str_equal (toolbar_style, "both_horiz") || g_str_equal (toolbar_style, "both-horiz") )
 		gtk_toolbar_set_style (GTK_TOOLBAR (shell->priv->toolbar), GTK_TOOLBAR_BOTH_HORIZ);
 	else /* default to icons */
 		gtk_toolbar_set_style (GTK_TOOLBAR (shell->priv->toolbar), GTK_TOOLBAR_ICONS);
@@ -605,7 +603,7 @@ on_key_press_event (GtkWidget *widget, GdkEventKey *event, gpointer data)
 
 		/* prevent usage of navigation keys in HTML view */
 		type = g_type_name (GTK_WIDGET_TYPE (focusw));
-		if (type && (!strcmp (type, "WebKitWebView")))
+		if (type && (g_str_equal (type, "WebKitWebView")))
 			return FALSE;
 		
 		/* check for treeview navigation */
