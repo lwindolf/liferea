@@ -25,7 +25,6 @@
 #include "db.h"
 #include "debug.h"
 #include "feed.h"	// FIXME
-#include "feedlist.h"
 #include "folder.h"
 #include "itemlist.h"
 #include "itemset.h"
