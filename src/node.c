@@ -30,7 +30,6 @@
 #include "node.h"
 #include "node_view.h"
 #include "render.h"
-#include "script.h"
 #include "update.h"
 #include "vfolder.h"
 #include "fl_sources/node_source.h"
