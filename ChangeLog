@@ -7,6 +7,8 @@
 	  (patch by ?)
 	* Cleanup of default stylesheet. Removed used styles. (Lars Lindner)
 	* Permanently removed LUA scripting support. (Lars Lindner)
+	* Allow URL dropping only in feed list to prevent unwanted
+	  selection effects in HTML view. (Lars Lindner)
 
 
 2010-01-24   Lars Lindner <lars.lindner@gmail.com>
