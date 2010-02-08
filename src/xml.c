@@ -117,7 +117,7 @@ xhtml_extract (xmlNodePtr xml, gint xhtmlMode, const gchar *defaultBase)
 				body = xhtml_find_body (oldDoc);
 	
 				/* Copy namespace from original documents root node. This is
-				   ro determine additional namespaces for item content. For
+				   to determine additional namespaces for item content. For
 				   example to handle RSS 2.0 feeds as provided by LiveJournal:
 
 				   <rss version='2.0' xmlns:lj='http://www.livejournal.org/rss/lj/1.0/'>
