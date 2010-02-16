@@ -9,6 +9,8 @@
 	* Permanently removed LUA scripting support. (Lars Lindner)
 	* Added more default feeds to be not so open source specific.
 	  (Lars Lindner)
+	* Require libsoup >= 2.28.2 to avoid bugs in older versions.
+	  (Adrian Bunk)
 
 
 2010-01-24   Lars Lindner <lars.lindner@gmail.com>

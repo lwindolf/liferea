@@ -97,7 +97,7 @@ pkg_modules="	gtk+-2.0 >= 2.18.0
 		sqlite3 >= 3.6.10
 		gmodule-2.0 >= 2.0.0
 		gthread-2.0
-		libsoup-2.4 >= 2.28.0
+		libsoup-2.4 >= 2.28.2
 		unique-1.0
 		webkit-1.0 >= 1.1.11"
 
