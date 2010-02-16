@@ -11,6 +11,8 @@
 	* Require libsoup >= 2.28.2 to avoid bugs in older versions.
 	  (Adrian Bunk)
 
+	* Updated Spanish translation. (Rodrigo Gallardo)
+
 
 2010-01-24   Lars Lindner <lars.lindner@gmail.com>
 
