@@ -4,7 +4,6 @@
 
 	* Merged patch that fixes LP #238958: always present window
 	  on current workspace if tray icon is clicked.
-	  (patch by ?)
 	* Cleanup of default stylesheet. Removed used styles. (Lars Lindner)
 	* Permanently removed LUA scripting support. (Lars Lindner)
 	* Added more default feeds to be not so open source specific.
