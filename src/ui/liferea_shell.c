@@ -773,7 +773,7 @@ liferea_shell_online_status_changed (NetworkMonitor *nm, gboolean online, gpoint
 	ui_tray_update ();
 }
 
-/* methods to receive URLs which were dropped in the feed list */
+/* methods to receive URLs which were dropped anywhere in the main window */
 static void
 liferea_shell_URL_received (GtkWidget *widget, GdkDragContext *context, gint x, gint y, GtkSelectionData *data, guint info, guint time_received)
 {
@@ -1189,7 +1189,7 @@ liferea_shell_create (int initialState)
 	
 	liferea_shell_update_toolbar ();
 	
-	liferea_shell_setup_URL_receiver (GTK_WIDGET (shell->priv->feedlistView));	/* setup URL dropping support */
+	liferea_shell_setup_URL_receiver (GTK_WIDGET (shell->priv->window));	/* setup URL dropping support */
 
 	shell->priv->feedlist = feedlist_create ();
 
