@@ -563,7 +563,7 @@ htmlviewImpl webkitImpl = {
 	.zoomLevelSet	= liferea_webkit_change_zoom_level,
 	.scrollPagedown	= liferea_webkit_scroll_pagedown,
 	.setProxy	= liferea_webkit_set_proxy,
-	.setOffLine	= NULL
+	.setOffLine	= NULL // FIXME: blocked on https://bugs.webkit.org/show_bug.cgi?id=18893
 };
 
 DECLARE_HTMLVIEW_IMPL (webkitImpl);
