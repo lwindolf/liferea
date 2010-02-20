@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include <gconf/gconf-client.h>
 #include <libsoup/soup.h>
 #include <webkit/webkit.h>
 #include <string.h>
@@ -34,12 +35,67 @@
 static WebKitWebSettings *settings = NULL;
 
 /**
+ * Update the settings object if the preferences change.
+ * This will affect all the webviews as they all use the same
+ * settings object.
+ */
+static void
+liferea_webkit_disable_javascript_cb (GConfClient *client,
+				      guint cnxn_id,
+				      GConfEntry *entry,
+				      gpointer user_data)
+{
+	GConfValue *disable_javascript;
+
+	g_return_if_fail (entry != NULL);
+
+	disable_javascript = gconf_entry_get_value (entry);
+	if (!disable_javascript || disable_javascript->type != GCONF_VALUE_BOOL)
+		return;
+
+	g_object_set (
+		settings,
+		"enable-scripts",
+		!gconf_value_get_bool (disable_javascript),
+		NULL
+	);
+}
+
+/**
+ * Update the settings object if the preferences change.
+ * This will affect all the webviews as they all use the same
+ * settings object.
+ */
+static void
+liferea_webkit_enable_plugins_cb (GConfClient *client,
+				  guint cnxn_id,
+				  GConfEntry *entry,
+				  gpointer user_data)
+{
+	GConfValue *enable_plugins;
+
+	g_return_if_fail (entry != NULL);
+
+	enable_plugins = gconf_entry_get_value (entry);
+	if (!enable_plugins || enable_plugins->type != GCONF_VALUE_BOOL)
+		return;
+
+	g_object_set (
+		settings,
+		"enable-plugins",
+		gconf_value_get_bool (enable_plugins),
+		NULL
+	);
+}
+
+/**
  * HTML plugin init method
  */
 static void
 liferea_webkit_init (void)
 {
 	gboolean disable_javascript, enable_plugins;
+	GConfClient *client;
 
 	g_assert (!settings);
 
@@ -71,6 +127,24 @@ liferea_webkit_init (void)
 		enable_plugins,
 		NULL
 	);
+
+
+	client = gconf_client_get_default ();
+
+	gconf_client_notify_add (
+		client,
+		DISABLE_JAVASCRIPT,
+		liferea_webkit_disable_javascript_cb,
+		NULL, NULL, NULL
+	);
+	gconf_client_notify_add (
+		client,
+		ENABLE_PLUGINS,
+		liferea_webkit_enable_plugins_cb,
+		NULL, NULL, NULL
+	);
+
+	g_object_unref (client);
 }
 
 /**

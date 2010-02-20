@@ -3,6 +3,9 @@
 	Version 1.7.5 (Unstable)
 
 	* Some more GTK+ GSEAL work. (Emilio Pozuelo Monfort)
+	* Make "Disable Javascript" and "Enable plugins" preferences
+	  have an effect without having to restart Liferea.
+	  (Emilio Pozuelo Monfort)
 
 
 2010-02-16   Adrian Bunk <bunk@users.sourceforge.net>
