@@ -23,8 +23,8 @@ AC_SYS_LARGEFILE
 AC_ARG_ENABLE(sm,        AS_HELP_STRING([--disable-sm],[compile without X session management support]),,enable_sm=yes)
 AC_ARG_ENABLE(dbus,      AS_HELP_STRING([--disable-dbus],[compile without DBUS support]),,enable_dbus=yes)
 AC_ARG_ENABLE(nm,        AS_HELP_STRING([--disable-nm],[compile without NetworkManager support]),,enable_nm=yes)
-AC_ARG_ENABLE(libnotify, AS_HELP_STRING([--disable-libnotify],[don't compile the libnotify plugin]),,enable_libnotify=yes)
-dnl AC_ARG_ENABLE(avahi,     AS_HELP_STRING([--disable-avahi],[don't compile with AVAHI support]),,enable_avahi=yes)
+AC_ARG_ENABLE(libnotify, AS_HELP_STRING([--disable-libnotify],[compile without libnotify support]),,enable_libnotify=yes)
+dnl AC_ARG_ENABLE(avahi,     AS_HELP_STRING([--disable-avahi],[compile without AVAHI support]),,enable_avahi=yes)
 
 AC_CHECK_FUNCS([strsep])
 
@@ -188,11 +188,10 @@ AC_OUTPUT
 echo
 echo "$PACKAGE $VERSION"
 echo
-echo "Build libnotify Plugin.......... : $enable_libnotify"
-echo
 echo "Use X Session Management........ : $enable_sm"
 echo "Use DBUS........................ : $enable_dbus"
 echo "Use NetworkManager.............. : $enable_nm"
+echo "Use libnotify................... : $enable_libnotify"
 dnl echo "AVAHI Support................... : $enable_avahi"
 echo
 eval eval echo Liferea will be installed in $bindir.
