@@ -1294,10 +1294,10 @@ liferea_shell_toggle_visibility (void)
 {
 	GtkWidget *mainwindow = GTK_WIDGET (shell->priv->window);
 	
-	if (gdk_window_get_state (mainwindow->window) & GDK_WINDOW_STATE_ICONIFIED) {
+	if (gdk_window_get_state (gtk_widget_get_window (mainwindow)) & GDK_WINDOW_STATE_ICONIFIED) {
 		/* The window is either iconified, or on another workspace */
 		/* Raise it in one click */
-		if (GTK_WIDGET_VISIBLE (mainwindow)) {
+		if (gtk_widget_get_visible (mainwindow)) {
 			liferea_shell_save_position ();
 			gtk_widget_hide (mainwindow);
 		}
@@ -1308,7 +1308,7 @@ liferea_shell_toggle_visibility (void)
 		gtk_window_deiconify (GTK_WINDOW (mainwindow));
 		gtk_window_present (GTK_WINDOW (mainwindow));
 	}
-	else if (!GTK_WIDGET_VISIBLE(mainwindow)) {
+	else if (!gtk_widget_get_visible (mainwindow)) {
 		/* The window is neither iconified nor on another workspace, but is not visible */
 		liferea_shell_restore_position ();
 		gtk_window_present (shell->priv->window);
