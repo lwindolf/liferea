@@ -20,6 +20,10 @@
  
 #include "net_monitor.h"
 
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif
+
 #ifdef USE_NM
 #include <dbus/dbus.h>
 #include <libnm_glib.h>
@@ -85,16 +89,18 @@ network_monitor_get_type (void)
 static void
 network_monitor_finalize (GObject *object)
 {
-#ifdef USE_NM	
+#ifdef USE_NM
+	NetworkMonitor *self = NETWORK_MONITOR (object);
+
 	debug0 (DEBUG_NET, "network manager: unregistering network state change callback");
-	
-	if (nm_id != 0 && nm_ctx != NULL) {
-		libnm_glib_unregister_callback (nm_ctx, nm_id);
-		libnm_glib_shutdown (nm_ctx);
-		nm_ctx = NULL;
-		nm_id = 0;
+
+	if (self->priv->nm_id != 0 && self->priv->nm_ctx != NULL) {
+		libnm_glib_unregister_callback (self->priv->nm_ctx, self->priv->nm_id);
+		libnm_glib_shutdown (self->priv->nm_ctx);
+		self->priv->nm_ctx = NULL;
+		self->priv->nm_id = 0;
 	}
-#endif	
+#endif
 	network_deinit ();
 
 	G_OBJECT_CLASS (parent_class)->finalize (object);
@@ -148,7 +154,7 @@ nm_state_changed (libnm_glib_ctx *ctx, gpointer user_data)
 	state = libnm_glib_get_network_state (ctx);
 	online = network_monitor_is_online ();
 
-	if (priv->online && state == LIBNM_NO_NETWORK_CONNECTION) {
+	if (online && state == LIBNM_NO_NETWORK_CONNECTION) {
 		debug0 (DEBUG_NET, "network manager: no network connection -> going offline");
 		network_monitor_set_online (FALSE);
 	} else if (!online && state == LIBNM_ACTIVE_NETWORK_CONNECTION) {
@@ -158,20 +164,20 @@ nm_state_changed (libnm_glib_ctx *ctx, gpointer user_data)
 }
 
 static gboolean
-nm_initialize (void)
+nm_initialize (NetworkMonitor *nm)
 {
 	debug0 (DEBUG_NET, "network manager: registering network state change callback");
-	
-	if (!nm_ctx) {
-		nm_ctx = libnm_glib_init ();
-		if (!nm_ctx) {
+
+	if (!nm->priv->nm_ctx) {
+		nm->priv->nm_ctx = libnm_glib_init ();
+		if (!nm->priv->nm_ctx) {
 			g_warning ("Could not initialize libnm.");
 			return FALSE;
-		}	
+		}
 	}
 
-	nm_id = libnm_glib_register_callback (nm_ctx, nm_state_changed, NULL, NULL);
-	
+	nm->priv->nm_id = libnm_glib_register_callback (nm->priv->nm_ctx, nm_state_changed, NULL, NULL);
+
 	return TRUE;
 }
 
@@ -226,7 +232,7 @@ network_monitor_init (NetworkMonitor *nm)
 			dbus_connection_set_exit_on_disconnect (connection, FALSE);
 
 			if (dbus_bus_name_has_owner (connection, "org.freedesktop.NetworkManager", NULL)) {
-				nm_initialize ();
+				nm_initialize (nm);
 				/* network manager will set online state right after initialization... */
 			}
 

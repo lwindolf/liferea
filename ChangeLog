@@ -6,6 +6,7 @@
 	* Make "Disable Javascript" and "Enable plugins" preferences
 	  have an effect without having to restart Liferea.
 	  (Emilio Pozuelo Monfort)
+	* Fix NetworkManager support. (Emilio Pozuelo Monfort)
 
 
 2010-02-16   Adrian Bunk <bunk@users.sourceforge.net>
