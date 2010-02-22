@@ -21,6 +21,12 @@
 	        </outline>
 	<!-- lets keep this default English block in sync over all feed lists! -->
 	<outline text="Notizie internazionali">
+		<outline text="Notizie">
+			<outline text="Ars Technica" htmlUrl="http://arstechnica.com" xmlUrl="http://feeds.arstechnica.com/arstechnica/index"/>
+			<outline text="Slashdot" htmlUrl="http://slashdot.org"  xmlUrl="http://slashdot.org/slashdot.rss" />
+			<outline text="BBC" htmlUrl="http://newsrss.bbc.co.uk/" xmlUrl="http://newsrss.bbc.co.uk/rss/newsonline_world_edition/front_page/rss.xml"/>
+			<outline text="Science" htmlUrl="http://www.sciencenews.org" xmlUrl="http://www.sciencenews.org/view/feed/type/news/name/news.rss"/>
+		</outline>
 		<outline text="Open Source">
 			<outline text="Gnomefiles" htmlUrl="http://www.gnomefiles.org/" xmlUrl="http://www.gnomefiles.org/files/gnomefiles.rdf" />
 			<outline text="GNOME Footnotes" htmlUrl="http://www.gnomedesktop.org/" xmlUrl="http://www.gnomedesktop.org/backend.php" />
@@ -31,8 +37,13 @@
 			<outline text="Slashdot" htmlUrl="http://slashdot.org"  xmlUrl="http://slashdot.org/slashdot.rss" />
 			<outline text="TuxMobil" htmlUrl="http://tuxmobil.org" xmlUrl="http://tuxmobil.org/tuxmobil_rss.rdf" />      
 		</outline>
-		<outline text="Podcast">
+		<outline text="Podcast e musica">
 			<outline text="EscapePod" htmlUrl="http://escapepod.org" xmlUrl="http://escapepod.org/podcast.xml"/>
+			<outline text="Phlow Magazine" htmlUrl="http://phlow-magazine.com/" xmlUrl="http://feed.phlow-magazine.com/phlow-magazine"/>
+			<outline text="music (for robots)" htmlUrl="http://music.for-robots.com/" xmlUrl="http://music.for-robots.com/atom.xml"/>
+		</outline>
+		<outline text="Fumetti">
+			<outline text="xkcd" htmlUrl="http://xkcd.com/" xmlUrl="http://xkcd.com/atom.xml"/>
 		</outline>
 	    </outline>
 	</outline>

@@ -1,18 +1,18 @@
 # Italian translation of Liferea.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the Liferea package.
-# Gianvito Cavasoli <janvitus@ubuntu-it.org>, 2009.
+# Gianvito Cavasoli <janvitus@ubuntu-it.org>, 2009, 2010.
 #
 #
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: liferea 1.5.x\n"
+"Project-Id-Version: liferea 1.7.x\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-06-02 21:47+0300\n"
-"PO-Revision-Date: 2009-05-30 16:46+0200\n"
+"PO-Revision-Date: 2010-02-19 13:49+0100\n"
 "Last-Translator: Gianvito Cavasoli <janvitus@ubuntu-it.org>\n"
-"Language-Team: Italian <tp@lists.linux.it>\n"
+"Language-Team: Italiana <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -28,7 +28,7 @@ msgstr "Lettore notiziari"
 
 #: ../liferea.desktop.in.h:3
 msgid "Liferea Feed Reader"
-msgstr "Liferea - Lettore notiziari"
+msgstr "Lettore notiziari Liferea"
 
 #: ../xslt/feed.xml.in.h:1
 msgid "Copyright"
@@ -64,7 +64,7 @@ msgid ""
 "value-of select=\"httpErrorCode\"/>: <xsl:value-of select=\"httpError\"/></b>"
 msgstr ""
 "L'ultimo aggiornamento di questa sottoscrizione non è riuscito.<br/"
-"><b>Codice di errore HTTP<xsl:value-of select=\"httpErrorCode\"/>: <xsl:"
+"><b>Codice di errore HTTP: <xsl:value-of select=\"httpErrorCode\"/>: <xsl:"
 "value-of select=\"httpError\"/></b>"
 
 #: ../xslt/feed.xml.in.h:9
@@ -85,7 +85,7 @@ msgstr ""
 
 #: ../xslt/feed.xml.in.h:12
 msgid "You may want to validate the feed using"
-msgstr "È possibile convalidare il notiziario in uso"
+msgstr "È possibile convalidare il notiziario usando"
 
 #: ../xslt/source.xml.in.h:2 ../xslt/folder.xml.in.h:2
 msgid "children with"
@@ -210,27 +210,27 @@ msgstr "Errore di autorizzazione"
 #. translation hint: date format for today, reorder format codes as necessary
 #: ../src/common.c:149
 msgid "Today %l:%M %p"
-msgstr "Oggi %l.%M %p"
+msgstr "Oggi %k.%M"
 
 #. translation hint: date format for yesterday, reorder format codes as necessary
 #: ../src/common.c:160
 msgid "Yesterday %l:%M %p"
-msgstr "Ieri %l.%M %p"
+msgstr "Ieri %k.%M"
 
 #. translation hint: date format for dates older than 2 days but not older than a week, reorder format codes as necessary
 #: ../src/common.c:173
 msgid "%a %l:%M %p"
-msgstr "%a %l.%M %p"
+msgstr "%a %k.%M"
 
 #. translation hint: date format for dates older than a week but from this year, reorder format codes as necessary
 #: ../src/common.c:182
 msgid "%b %d %l:%M %p"
-msgstr "%b %d %l.%M %p"
+msgstr "%d %b %k.%M"
 
 #. translation hint: date format for dates from the last years, reorder format codes as necessary
 #: ../src/common.c:185
 msgid "%b %d %Y"
-msgstr "%b %d %Y"
+msgstr "%d %b %Y"
 
 #: ../src/common.c:392
 #, c-format
@@ -243,15 +243,15 @@ msgid "\"%s\" is not a valid enclosure type config file!"
 msgstr "Il file «%s» non è una configurazione di tipo allegato valida."
 
 #: ../src/enclosure.c:278
-#, fuzzy, c-format
+#, c-format
 msgid "Enclosure download FAILED: \"%s\""
-msgstr "Terminato scaricamento dell'allegato: «%s»"
+msgstr "Scaricamento dell'allegato non riuscito: «%s»"
 
 #. just saving
 #: ../src/enclosure.c:288
 #, c-format
 msgid "Enclosure download finished: \"%s\""
-msgstr "Terminato scaricamento dell'allegato: «%s»"
+msgstr "Scaricamento dell'allegato terminato: «%s»"
 
 #: ../src/export.c:166
 #, c-format
@@ -313,7 +313,7 @@ msgid ""
 msgstr ""
 "<p>Impossibile individuare il tipo di questo notiziario. Verificare che la "
 "fonte punti davvero ad una risorsa fornita in uno dei formati supportati.</"
-"p>Analizzatore output XML:<br /><div class='xmlparseroutput'>"
+"p>Output analizzatore XML:<br /><div class='xmlparseroutput'>"
 
 #: ../src/feed.c:303
 #, c-format
@@ -332,7 +332,7 @@ msgid ""
 "support feed auto discovery."
 msgstr ""
 "L'URL che si vuole sottoscrivere punta ad una pagina web in cui il "
-"rilevamento automatico non ha trovato nessun notiziario. Probabilmente la "
+"rilevamento automatico non ha trovato alcun notiziario. Probabilmente la "
 "pagina web non supporta il rilevamento automatico di notiziari."
 
 #: ../src/feed_parser.c:165
@@ -732,7 +732,7 @@ msgstr "Nuova cartella di ricerca"
 
 #: ../src/xml.c:426
 msgid "[There were more errors. Output was truncated!]"
-msgstr "[Non si sono verificati più errori. L'output è stato troncato.]"
+msgstr "[Si sono verificati più errori. L'output è stato troncato.]"
 
 #: ../src/xml.c:587
 msgid "XML Parser: Could not parse document:\n"
@@ -855,7 +855,7 @@ msgstr "Sot_toscrizioni"
 
 #: ../src/ui/liferea_shell.c:834
 msgid "Update _All"
-msgstr "Aggiorna _tutti"
+msgstr "Aggiorna _tutto"
 
 #: ../src/ui/liferea_shell.c:834
 msgid "Updates all subscriptions."
@@ -1596,7 +1596,7 @@ msgstr "Notiziario Atom non valido: autore sconosciuto"
 
 #: ../src/parsers/ns_ag.c:72
 msgid "%b %d %H:%M"
-msgstr "%b %d %H.%M"
+msgstr "%d %b %H.%M"
 
 #: ../src/fl_sources/bloglines_source.c:80
 msgid "Bloglines"
@@ -1649,7 +1649,7 @@ msgid ""
 "Integrate blogrolls or Planets in your feed list. Liferea will automatically "
 "add and remove feeds according to the changes of the source OPML document"
 msgstr ""
-"Integrare i Blogroll oppure i Planet nell'elenco dei notiziari. Saranno "
+"Integra i Blogroll oppure i Planet nell'elenco dei notiziari. Saranno "
 "automaticamente aggiunti o rimossi notiziari in base alle modifiche della "
 "fonte del documento OPML."
 
@@ -1832,7 +1832,7 @@ msgstr "<span weight=\"bold\">Gestione cache dei notiziari</span>"
 
 #: ../glade/liferea.glade.h:17
 msgid "<span weight=\"bold\">Feed Icons (Favicons)</span>"
-msgstr "<span weight=\"bold\">Icone dei notiziari (Favicon)</span>"
+msgstr "<span weight=\"bold\">Icone dei notiziari (favicon)</span>"
 
 #: ../glade/liferea.glade.h:18
 msgid "<span weight=\"bold\">Feed Name</span>"
@@ -1975,7 +1975,7 @@ msgstr "Scaricamento allegato"
 
 #: ../glade/liferea.glade.h:53
 msgid "Downloading an enclosure of type:"
-msgstr "Scaricare un allegato di tipo:"
+msgstr "Scaricamento allegato di tipo:"
 
 #: ../glade/liferea.glade.h:54
 msgid "Enclosures"
@@ -2106,7 +2106,7 @@ msgstr "Rinomina"
 
 #: ../glade/liferea.glade.h:82
 msgid "Reuse existing script"
-msgstr "Riutilizza script esistenti"
+msgstr "Riutilizza script esistente"
 
 #: ../glade/liferea.glade.h:83
 msgid "Script Manager"
@@ -2281,7 +2281,7 @@ msgstr "A_bilitare sincronizzazione della LAN locale"
 
 #: ../glade/liferea.glade.h:124
 msgid "_Enforce popup notification for this subscription."
-msgstr "Im_porre le notifiche per questa sottoscrizione."
+msgstr "_Imporre le notifiche per questa sottoscrizione."
 
 #: ../glade/liferea.glade.h:125
 msgid "_Feed specific update interval of"
@@ -2318,7 +2318,7 @@ msgstr ""
 
 #: ../glade/liferea.glade.h:134
 msgid "_Mark downloaded items as read."
-msgstr "Se_gna articoli scaricati come letti."
+msgstr "_Segnare articoli scaricati come letti."
 
 #: ../glade/liferea.glade.h:135
 msgid "_Never do popup notification for this subscription."
@@ -2371,7 +2371,7 @@ msgstr "Nome del servi_zio"
 #: ../glade/liferea.glade.h:149
 msgid "_Show the items of all child feeds when a folder is selected."
 msgstr ""
-"Mostr_are tulle le voci dei notiziari quando una cartella è selezionata."
+"Mostr_are tutte le voci dei notiziari quando una cartella è selezionata."
 
 #: ../glade/liferea.glade.h:150
 msgid "_Skim through articles with:"
@@ -2395,7 +2395,7 @@ msgstr "Cache i_llimitata"
 
 #: ../glade/liferea.glade.h:155
 msgid "_Update all favicons now"
-msgstr "Ag_giorna tutte le Favicon ora"
+msgstr "Ag_giorna tutte le favicon ora"
 
 #: ../glade/liferea.glade.h:156
 msgid "_Use global default update interval."
@@ -2459,10 +2459,3 @@ msgid ""
 msgstr ""
 "Inserire l'indirizzo di un sito web per usare il rilevamento automatico del "
 "notiziario, oppure, se si è a conoscenza, l'indirizzo esatto del notiziario."
-
-#, fuzzy
-#~ msgid "FAILED to download enclosure: \"%s\""
-#~ msgstr "Terminato scaricamento dell'allegato: «%s»"
-
-#~ msgid "Presents statistics on your most read categories"
-#~ msgstr "Presenta delle statistiche sulle categorie più lette"
