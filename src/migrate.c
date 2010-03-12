@@ -191,7 +191,7 @@ migrate_load_from_cache (const gchar *sourceDir, const gchar *id)
 		while (cur && xmlIsBlankNode (cur))
 			cur = cur->next;
 
-		if (!xmlStrcmp (cur->name, BAD_CAST"feed")) {
+		if (cur && !xmlStrcmp (cur->name, BAD_CAST"feed")) {
 			xmlChar *version;			
 			if ((version = xmlGetProp (cur, BAD_CAST"version"))) {
 				migrateFrom10 = xmlStrcmp (BAD_CAST FEED_CACHE_VERSION, version);
