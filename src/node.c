@@ -325,7 +325,6 @@ node_to_xml (nodePtr node)
 	gchar		*tmp;
 	
 	doc = xmlNewDoc("1.0");
-	rootNode = xmlDocGetRootElement(doc);
 	rootNode = xmlNewDocNode(doc, NULL, "node", NULL);
 	xmlDocSetRootElement(doc, rootNode);
 

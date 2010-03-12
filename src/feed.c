@@ -197,7 +197,6 @@ feed_to_xml (nodePtr node, xmlNodePtr feedNode)
 	
 	if (!feedNode) {
 		doc = xmlNewDoc ("1.0");
-		feedNode = xmlDocGetRootElement (doc);
 		feedNode = xmlNewDocNode (doc, NULL, "feed", NULL);
 		xmlDocSetRootElement (doc, feedNode);
 	}
