@@ -180,14 +180,14 @@ feed_parse (feedParserCtxtPtr ctxt)
 			cur = cur->next;
 		}
 		
+		if(!cur)
+			break;
+				
 		if(!cur->name) {
 			g_string_append(ctxt->feed->parseErrors, _("Invalid XML!"));
 			break;
 		}
-		
-		if(!cur)
-			break;
-		
+
 		/* determine the syndication format and start parser */
 		GSList *handlerIter = feed_parsers_get_list ();
 		while(handlerIter) {
