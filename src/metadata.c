@@ -275,12 +275,12 @@ const gchar * metadata_list_get(GSList *metadata, const gchar *strid) {
 
 GSList * metadata_list_copy(GSList *list) {
 	GSList		*copy = NULL;
-	GSList		*list2, *iter2, *iter = list;
+	GSList		*iter2, *iter = list;
 	struct pair	*p;
 	
 	while(iter) {
 		p = (struct pair*)iter->data;
-		iter2 = list2 = p->data;
+		iter2 = p->data;
 		while(iter2) {
 			copy = metadata_list_append(copy, p->strid, iter2->data);
 			iter2 = iter2->next;
