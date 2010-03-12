@@ -255,7 +255,7 @@ atom10_parse_person_construct (xmlNodePtr cur)
 		invalid = TRUE;
 		name = g_strdup (_("Invalid Atom feed: unknown author"));
 	}
-	/* FIXME: so somthing with "invalid" flag */
+	/* FIXME: so something with "invalid" flag */
 	tmp = g_strdup_printf ("%s%s%s", name, uri?uri:"", email?email:"");
 	g_free (uri);
 	g_free (email);
