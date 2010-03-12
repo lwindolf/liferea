@@ -7,6 +7,7 @@
 	  have an effect without having to restart Liferea.
 	  (Emilio Pozuelo Monfort)
 	* Fix NetworkManager support. (Emilio Pozuelo Monfort)
+	* Code cleanups. (Fabian Keil)
 
 	* Updated Italian translation. (Gianvito Cavasoli)
 

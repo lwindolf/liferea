@@ -326,7 +326,6 @@ liferea_htmlview_handle_URL (LifereaHtmlView *htmlview, const gchar *url)
 					nodeid = strstr (url, "://");
 					if (nodeid) {
 						nodeid += 3;
-						itemnr = nodeid;
 						itemnr = strchr (nodeid, '-');
 						if (itemnr) {
 							itemPtr item;
