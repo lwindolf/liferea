@@ -489,10 +489,14 @@ gchar * common_create_cache_filename(const gchar *folder, const gchar *filename,
 
 xmlChar * common_uri_escape(const xmlChar *url) {
 	xmlChar	*result;
-
-	result = xmlURIEscape(url);
 	
-	/* workaround for libxml2 problem... */
+	/* xmlURIEscape returns NULL if spaces are in the URL, 
+	   so we need to replace them first (see SF #2965158) */
+	result = common_strreplace (g_strdup (url), " ", "+");
+
+	result = xmlURIEscape(result);
+	
+	/* workaround if escaping somehow fails... */
 	if(NULL == result)
 		result = g_strdup(url);
 

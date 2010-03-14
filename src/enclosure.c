@@ -113,7 +113,7 @@ enclosure_values_to_string (const gchar *url, const gchar *mime, gssize size, gb
 	/* There are websites out there encoding -1 as size */
 	if (size < 0)
 		size = 0;
-		
+
 	safeUrl = common_uri_escape (url);
 	result = g_strdup_printf ("enc:%s:%s:%" G_GSSIZE_FORMAT ":%s", downloaded?"1":"0", mime, size, safeUrl);
 	g_free (safeUrl);

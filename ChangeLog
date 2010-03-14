@@ -2,7 +2,8 @@
 
 	Version 1.6.4
 
-	*
+	* Fixes SF #2965158: Enclosures URLs with spaces do not work.
+	  (reported by Michael Novak)
 
 
 2010-02-22  Adrian Bunk <bunk@users.sourceforge.net>
