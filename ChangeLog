@@ -8,6 +8,7 @@
 	  (Emilio Pozuelo Monfort)
 	* Fix NetworkManager support. (Emilio Pozuelo Monfort)
 	* Code cleanups. (Fabian Keil)
+	* SF #2883678: Shorter notification messages (Ted Gould)
 
 	* Updated Italian translation. (Gianvito Cavasoli)
 

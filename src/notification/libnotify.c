@@ -247,7 +247,7 @@ notif_libnotify_node_has_new_items (nodePtr node, gboolean enforced)
 	if (item_count == 0)
 		return;
 
-	labelSummary_p = g_strdup_printf (ngettext ("%s has %d new / updated headline\n", "%s has %d new / updated headlines\n", item_count), 
+	labelSummary_p = g_strdup_printf (ngettext ("<b>%s</b> has <b>%d</b> update", "<b>%s</b> has <b>%d</b> updates", item_count), 
 	                                  node_get_title (node), item_count);
 	n = notify_notification_new (_("Feed Update"), labelSummary_p, "liferea", NULL);
 	g_free (labelSummary_p);
