@@ -115,7 +115,11 @@ enclosure_values_to_string (const gchar *url, const gchar *mime, gssize size, gb
 	if (size < 0)
 		size = 0;
 		
-	safeUrl = xmlURIEscape (url);
+	/* xmlURIEscape returns NULL if spaces are in the URL, 
+	   so we need to replace them first (see SF #2965158) */
+	safeUrl = common_strreplace (g_strdup (url), " ", "+");
+
+	safeUrl = xmlURIEscape (safeUrl);
 	result = g_strdup_printf ("enc:%s:%s:%" G_GSSIZE_FORMAT ":%s", downloaded?"1":"0", mime, size, safeUrl);
 	g_free (safeUrl);
 	

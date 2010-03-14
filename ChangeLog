@@ -8,7 +8,9 @@
 	  (Emilio Pozuelo Monfort)
 	* Fix NetworkManager support. (Emilio Pozuelo Monfort)
 	* Code cleanups. (Fabian Keil)
-	* SF #2883678: Shorter notification messages (Ted Gould)
+	* Fixes SF #2883678: Shorter notification messages (Ted Gould)
+	* Fixes SF #2965158: Enclosures URLs with spaces do not work.
+	  (reported by Michael Novak)
 
 	* Updated Italian translation. (Gianvito Cavasoli)
 
