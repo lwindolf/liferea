@@ -1,7 +1,7 @@
 /**
  * @file common.h common routines
  *
- * Copyright (C) 2003-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2010 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -81,6 +81,24 @@ const gchar *	common_get_cache_path(void);
  * @returns a newly allocated filename string
  */
 gchar * common_create_cache_filename(const gchar *folder, const gchar *filename, const gchar *extension);
+
+/**
+ * Takes an URL and returns a new string containing the escaped URL.
+ *
+ * @param url		the URL to escape
+ *
+ * @returns new escaped URL string
+ */
+xmlChar * common_uri_escape(const xmlChar *url);
+
+/**
+ * Takes an URL and returns a new string containing the unescaped URL.
+ *
+ * @param url		the URL to unescape
+ *
+ * @returns new unescaped URL string
+ */
+xmlChar * common_uri_unescape(const xmlChar *url);
 
 /** 
  * To correctly escape and expand URLs, does not touch the

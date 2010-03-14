@@ -1,7 +1,7 @@
 /**
  * @file common.c common routines for Liferea
  * 
- * Copyright (C) 2003-2009  Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2010  Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006  Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2004       Karl Soderstrom <ks@xanadunet.net>
  *
@@ -119,16 +119,40 @@ common_create_cache_filename (const gchar *folder, const gchar *filename, const 
 	return result;
 }
 
+xmlChar *
+common_uri_escape (const xmlChar *url)
+{
+	xmlChar	*result;
+	
+	/* xmlURIEscape returns NULL if spaces are in the URL, 
+	   so we need to replace them first (see SF #2965158) */
+	result = common_strreplace (g_strdup (url), " ", "+");
+
+	result = xmlURIEscape (result);
+	
+	/* workaround if escaping somehow fails... */
+	if (!result)
+		result = g_strdup (url);
+
+	return result;	
+}
+
+xmlChar *
+common_uri_unescape (const xmlChar *url)
+{
+	return xmlURIUnescapeString (url, -1, NULL);
+}
+
 /* to correctly escape and expand URLs */
 xmlChar *
 common_build_url (const gchar *url, const gchar *baseURL)
 {
 	xmlChar	*escapedURL, *absURL, *escapedBaseURL;
 
-	escapedURL = xmlURIEscape (url);
+	escapedURL = common_uri_escape (url);
 
 	if (baseURL) {
-		escapedBaseURL = xmlURIEscape (baseURL);	
+		escapedBaseURL = common_uri_escape (baseURL);	
 		absURL = xmlBuildURI (escapedURL, escapedBaseURL);
 		xmlFree (escapedURL);
 		xmlFree (escapedBaseURL);
