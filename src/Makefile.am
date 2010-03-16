@@ -16,8 +16,7 @@ AM_CPPFLAGS = \
 	$(PACKAGE_CFLAGS) \
 	$(SM_CFLAGS) \
 	$(DBUS_CFLAGS) \
-	$(NM_CFLAGS) \
-	$(GNUTLS_CFLAGS) 
+	$(NM_CFLAGS)
 
 bin_PROGRAMS = liferea
 bin_SCRIPTS = liferea-add-feed
@@ -69,7 +68,7 @@ liferea_LDADD =	parsers/libliparsers.a \
 		webkit/libwebkit.a \
 		$(SYNC_LIB) \
 		$(PACKAGE_LIBS) $(SM_LIBS) \
-		$(DBUS_LIBS) $(NM_LIBS) $(INTLLIBS) $(GNUTLS_LIBS) $(AVAHI_LIBS) \
+		$(DBUS_LIBS) $(NM_LIBS) $(INTLLIBS) $(AVAHI_LIBS) \
 		$(WEBKIT_LIBS) $(LIBNOTIFY_LIBS)
 
 if WITH_DBUS
