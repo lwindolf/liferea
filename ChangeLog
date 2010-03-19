@@ -5,6 +5,8 @@
 	* Fixes SF #2965158: Enclosures URLs with spaces do not work.
 	  (reported by Michael Novak)
 
+	* Updated Italian translation. (Gianvito Cavasoli)
+
 
 2010-02-22  Adrian Bunk <bunk@users.sourceforge.net>
 

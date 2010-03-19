@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: liferea 1.7.x\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-06-02 21:47+0300\n"
-"PO-Revision-Date: 2010-02-19 13:49+0100\n"
+"PO-Revision-Date: 2010-03-19 11:14+0100\n"
 "Last-Translator: Gianvito Cavasoli <janvitus@ubuntu-it.org>\n"
 "Language-Team: Italiana <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -63,9 +63,9 @@ msgid ""
 "The last update of this subscription failed!<br/><b>HTTP error code <xsl:"
 "value-of select=\"httpErrorCode\"/>: <xsl:value-of select=\"httpError\"/></b>"
 msgstr ""
-"L'ultimo aggiornamento di questa sottoscrizione non è riuscito.<br/"
-"><b>Codice di errore HTTP: <xsl:value-of select=\"httpErrorCode\"/>: <xsl:"
-"value-of select=\"httpError\"/></b>"
+"L'ultimo aggiornamento di questo abbonamento non è riuscito.<br/><b>Codice "
+"di errore HTTP: <xsl:value-of select=\"httpErrorCode\"/>: <xsl:value-of "
+"select=\"httpError\"/></b>"
 
 #: ../xslt/feed.xml.in.h:9
 msgid "There were errors while filtering this feed!"
@@ -331,9 +331,9 @@ msgid ""
 "discovery found no feeds on this page. Maybe this webpage just does not "
 "support feed auto discovery."
 msgstr ""
-"L'URL che si vuole sottoscrivere punta ad una pagina web in cui il "
-"rilevamento automatico non ha trovato alcun notiziario. Probabilmente la "
-"pagina web non supporta il rilevamento automatico di notiziari."
+"L'URL a cui si vuole abbonarsi punta ad una pagina web in cui il rilevamento "
+"automatico non ha trovato alcun notiziario. Probabilmente la pagina web non "
+"supporta il rilevamento automatico di notiziari."
 
 #: ../src/feed_parser.c:165
 #, c-format
@@ -544,7 +544,7 @@ msgstr "Richiesta scaduta"
 
 #: ../src/net.c:352
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
-msgstr "Risorsa non esistente. Rimuovere la sottoscrizione."
+msgstr "Risorsa non esistente. Rimuovere l'abbonamento."
 
 #: ../src/net.c:357
 msgid "There was an internal error in the update process"
@@ -657,14 +657,13 @@ msgstr "non è impostato"
 #: ../src/subscription.c:104
 #, c-format
 msgid "Subscription \"%s\" is already being updated!"
-msgstr "La sottoscrizione di «%s» è già in aggiornamento."
+msgstr "L'abbonamento di «%s» è già in aggiornamento."
 
 #: ../src/subscription.c:109
 #, c-format
 msgid ""
 "The subscription \"%s\" was discontinued. Liferea won't update it anymore!"
-msgstr ""
-"La sottoscrizione di «%s» è stata abbandonata. Non verrà più aggiornata."
+msgstr "L'abbonamento a «%s» è stato abbandonato. Non verrà più aggiornato."
 
 #: ../src/subscription.c:144
 #, c-format
@@ -676,7 +675,7 @@ msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
 msgstr ""
-"Si è verificato un problema durante la lettura di questa sottoscrizione. "
+"Si è verificato un problema durante la lettura di questo abbonamento. "
 "Controllare l'URL e l'output della console."
 
 #: ../src/subscription.c:210
@@ -851,7 +850,7 @@ msgstr "Lavora in rete"
 
 #: ../src/ui/liferea_shell.c:833
 msgid "_Subscriptions"
-msgstr "Sot_toscrizioni"
+msgstr "_Abbonamenti"
 
 #: ../src/ui/liferea_shell.c:834
 msgid "Update _All"
@@ -859,7 +858,7 @@ msgstr "Aggiorna _tutto"
 
 #: ../src/ui/liferea_shell.c:834
 msgid "Updates all subscriptions."
-msgstr "Aggiorna tutte le sottoscrizioni."
+msgstr "Aggiorna tutti gli abbonamenti."
 
 #: ../src/ui/liferea_shell.c:836
 msgid "Mark All As _Read"
@@ -867,7 +866,7 @@ msgstr "Segna tutto come _letto"
 
 #: ../src/ui/liferea_shell.c:836
 msgid "Marks read every item of every subscription."
-msgstr "Segna come letto tutti gli articoli e tutte le sottoscrizioni."
+msgstr "Segna come letto tutti gli articoli e tutti gli abbonamenti."
 
 #: ../src/ui/liferea_shell.c:838
 msgid "_Import Feed List..."
@@ -1054,11 +1053,11 @@ msgstr "Nasconde i notiziari con nessun articolo non letto."
 
 #: ../src/ui/liferea_shell.c:891
 msgid "_New Subscription..."
-msgstr "Nu_ova sottoscrizione..."
+msgstr "Nu_ovo abbonamento..."
 
 #: ../src/ui/liferea_shell.c:891
 msgid "Adds a subscription to the feed list."
-msgstr "Aggiunge una sottoscrizione all'elenco dei notiziari."
+msgstr "Aggiunge un abbonamento all'elenco dei notiziari."
 
 #: ../src/ui/liferea_shell.c:893 ../src/ui/ui_popup.c:285
 msgid "New _Folder..."
@@ -1112,8 +1111,8 @@ msgid ""
 "Updates the selected subscription or all subscriptions of the selected "
 "folder."
 msgstr ""
-"Aggiorna le sottoscrizioni selezionate o tutte le sottoscrizioni di una "
-"cartella selezionata."
+"Aggiorna gli abbonamenti selezionati o tutti gli abbonamenti di una cartella "
+"selezionata."
 
 #: ../src/ui/liferea_shell.c:907
 msgid "_Properties"
@@ -1121,7 +1120,7 @@ msgstr "Pr_oprietà"
 
 #: ../src/ui/liferea_shell.c:907
 msgid "Opens the property dialog for the selected subscription."
-msgstr "Apre il dialogo della proprietà della sottoscrizione selezionata."
+msgstr "Apre il dialogo della proprietà dell'abbonamento selezionato."
 
 #: ../src/ui/liferea_shell.c:908
 msgid "_Remove"
@@ -1129,7 +1128,7 @@ msgstr "Rimuo_vi"
 
 #: ../src/ui/liferea_shell.c:908
 msgid "Removes the selected subscription."
-msgstr "Rimuove la sottoscrizione selezionata."
+msgstr "Rimuove l'abbonamento selezionato."
 
 #: ../src/ui/liferea_shell.c:912 ../src/ui/ui_popup.c:141
 msgid "Toggle _Read Status"
@@ -1170,7 +1169,7 @@ msgstr "_Lavora fuori rete"
 #: ../src/ui/liferea_shell.c:923
 msgid "This option allows you to disable subscription updating."
 msgstr ""
-"Questa opzione consente di disabilitare l'aggiornamento delle sottoscrizioni."
+"Questa opzione consente di disabilitare l'aggiornamento degli abbonamenti."
 
 #: ../src/ui/liferea_shell.c:1305
 msgid "Liferea - Linux Feed Reader"
@@ -1185,11 +1184,11 @@ msgid ""
 "right pane.</p>"
 msgstr ""
 "<p>Benvenuti in <b>Liferea</b>, un aggregatore di notiziari in rete per il "
-"desktop.</p><p>Il pannello di sinistra contiene l'elenco delle "
-"sottoscrizioni. Per aggiungere una sottoscrizione selezionare "
-"«Sottoscrizioni» -&gt; «Nuova sottoscrizione». Per sfogliare le testate di un "
-"notiziario selezionarlo nell'elenco dei notiziari e le testate verranno "
-"caricate nel pannello di destra.</p>"
+"desktop.</p><p>Il pannello di sinistra contiene l'elenco degli abbonamenti. "
+"Per aggiungere un abbonamenti selezionare «Abbonamenti» -&gt; «Nuovo "
+"abbonamenti». Per sfogliare le testate di un notiziario selezionarlo "
+"nell'elenco dei notiziari e le testate verranno caricate nel pannello di "
+"destra.</p>"
 
 #: ../src/ui/search_dialog.c:74
 #, c-format
@@ -1282,7 +1281,7 @@ msgstr "_Copia posizione collegamento"
 
 #: ../src/ui/liferea_htmlview.c:536
 msgid "_Subscribe..."
-msgstr "Sott_oscrivi..."
+msgstr "_Abbonati..."
 
 #: ../src/ui/ui_itemlist.c:242
 msgid "*** No title ***"
@@ -1368,7 +1367,7 @@ msgstr "_Nuovo"
 
 #: ../src/ui/ui_popup.c:282
 msgid "New _Subscription..."
-msgstr "Nuova sott_oscrizione..."
+msgstr "Nuovo _abbonamento..."
 
 #: ../src/ui/ui_popup.c:289
 msgid "New S_ource..."
@@ -1607,8 +1606,8 @@ msgid ""
 "Integrate the feed list of your Bloglines account. Liferea will present your "
 "Bloglines subscription as a read-only subtree in the feed list."
 msgstr ""
-"Integrare l'elenco dei notiziari dell'account Bloglines. La sottoscrizione a "
-"Bloglines verrà presentata come una sotto-cartella solo in lettura "
+"Integrare l'elenco dei notiziari dell'account Bloglines. L'abbonamento a "
+"Bloglines verrà presentato come una sotto-cartella solo in lettura "
 "nell'elenco dei notiziari."
 
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
@@ -1620,7 +1619,7 @@ msgstr "feedlist_it.opml"
 #: ../src/fl_sources/google_source.c:248 ../glade/new_subscription.glade.h:6
 #: ../glade/simple_subscription.glade.h:5
 msgid "New Subscription"
-msgstr "Nuova sottoscrizione"
+msgstr "Nuovo abbonamento"
 
 #: ../src/fl_sources/google_source.c:117
 msgid "Google Reader login failed!"
@@ -1637,8 +1636,8 @@ msgid ""
 "reading lists."
 msgstr ""
 "Integrare l'elenco notiziari dell'account di Google Reader. Verranno "
-"presentate le sottoscrizioni di Google Reader e saranno sincronizzati "
-"l'elenco dei notiziari e le liste di lettura."
+"presentati gli abbonamenti di Google Reader e saranno sincronizzati l'elenco "
+"dei notiziari e le liste di lettura."
 
 #: ../src/fl_sources/opml_source.c:328
 msgid "Planet, BlogRoll, OPML"
@@ -1659,7 +1658,7 @@ msgstr "Scegliere file OPML"
 
 #: ../src/fl_sources/opml_source.h:27
 msgid "New OPML Subscription"
-msgstr "Nuova sottoscrizione OPML"
+msgstr "Nuovo abbonamento OPML"
 
 #: ../src/fl_sources/node_source.c:225
 msgid "No feed list source types found!"
@@ -2019,7 +2018,7 @@ msgstr "Testate"
 
 #: ../glade/liferea.glade.h:63
 msgid "Ignore _comment feeds for this subscription."
-msgstr "Ignorare i com_menti del notiziario per questa sottoscrizione."
+msgstr "Ignorare i com_menti del notiziario per questo abbonamento."
 
 #: ../glade/liferea.glade.h:65
 msgid "Liferea Homepage"
@@ -2067,10 +2066,10 @@ msgid ""
 "search engine results for the specified search string. You can keep this "
 "feed permanently and update it like any other subscription.  "
 msgstr ""
-"Nota: l'applicazione genererà una sottoscrizione di notiziario che verrà "
-"utilizzata per interrogare il motore di ricerca dei risultati per la stringa "
+"Nota: l'applicazione genererà un abbonamento di notiziario che verrà "
+"utilizzato per interrogare il motore di ricerca dei risultati per la stringa "
 "di ricerca specificata. Si può mantenere permanentemente questo notiziario e "
-"aggiornarlo come una qualunque sottoscrizione.  "
+"aggiornarlo come un qualunque abbonamento.  "
 
 #: ../glade/liferea.glade.h:74
 msgid "Online/Offline Button"
@@ -2138,7 +2137,7 @@ msgstr "Mostrare il num_ero di nuovi articoli nell'area di notifica."
 
 #: ../glade/liferea.glade.h:90
 msgid "Show a _popup window with new headlines."
-msgstr "Mostrare una finestra di notifica con le nuove testate."
+msgstr "Mostrare una finestra di _notifica con le nuove testate."
 
 #: ../glade/liferea.glade.h:91
 msgid "Show a status _icon in the notification area (system tray)."
@@ -2158,7 +2157,7 @@ msgstr ""
 
 #: ../glade/liferea.glade.h:95
 msgid "Subscription Properties"
-msgstr "Proprietà della sottoscrizione"
+msgstr "Proprietà dell'abbonamento"
 
 #: ../glade/liferea.glade.h:96
 msgid "Sync"
@@ -2281,7 +2280,7 @@ msgstr "A_bilitare sincronizzazione della LAN locale"
 
 #: ../glade/liferea.glade.h:124
 msgid "_Enforce popup notification for this subscription."
-msgstr "_Imporre le notifiche per questa sottoscrizione."
+msgstr "_Imporre le notifiche per questo abbonamento."
 
 #: ../glade/liferea.glade.h:125
 msgid "_Feed specific update interval of"
@@ -2322,7 +2321,7 @@ msgstr "_Segnare articoli scaricati come letti."
 
 #: ../glade/liferea.glade.h:135
 msgid "_Never do popup notification for this subscription."
-msgstr "Nes_suna notifica per questa sottoscrizione."
+msgstr "Nes_suna notifica per questo abbonamento."
 
 #: ../glade/liferea.glade.h:136
 msgid "_New Name:"
