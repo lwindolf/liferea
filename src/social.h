@@ -1,7 +1,7 @@
 /**
  * @file social.h  social networking integration
  * 
- * Copyright (C) 2006-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2010 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,8 @@
 
 #include <glib.h>
 
+#include "item.h"
+
 typedef struct socialSite {
 	gchar		*name;		/**< Descriptive name for HTML rendering and preferences */
 	gchar		*url;		/**< URL format string with %s for title and URL insertion */
@@ -40,6 +42,11 @@ void social_init (void);
  */
 void social_free (void);
 
+/**
+ * Change the site used for bookmarking.
+ *
+ * @param name		name of the site
+ */
 void social_set_bookmark_site (const gchar *name);
 
 /**
@@ -61,6 +68,13 @@ void social_register_bookmark_site (const gchar *name, const gchar *url, gboolea
  * @returns new URL string
  */
 gchar * social_get_bookmark_url (const gchar *link, const gchar *title);
+
+/**
+ * Add a social bookmark for the link of the given item
+ *
+ * @param item		the item
+ */
+void social_add_bookmark (const itemPtr item);
 
 /**
  * Returns the name of the currently configured social bookmarking site.

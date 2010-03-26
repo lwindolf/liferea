@@ -861,23 +861,13 @@ on_popup_copy_URL_clipboard (void)
 }
 
 void
-ui_itemlist_add_item_bookmark (itemPtr item)
-{
-	gchar *link = item_make_link (item);
-	gchar *url  = social_get_bookmark_url (link, item_get_title (item));
-	(void)browser_launch_URL_external (url);
-	g_free (link);
-	g_free (url);
-}
-
-void
 on_popup_social_bm_item_selected (void)
 {
 	itemPtr item;
 
 	item = itemlist_get_selected ();
 	if (item) {
-		ui_itemlist_add_item_bookmark (item);
+		social_add_bookmark (item);
 		item_unload (item);
 	}
 	else

@@ -18,9 +18,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "social.h"
+
+#include "browser.h"
 #include "conf.h"
 #include "debug.h"
-#include "social.h"
 
 /** list of registered bookmarking sites */
 GSList *bookmarkSites = NULL;
@@ -82,6 +84,16 @@ social_get_bookmark_url (const gchar *link, const gchar *title)
 	}
 	
 	return url;
+}
+
+void
+social_add_bookmark (const itemPtr item)
+{
+	gchar *link = item_make_link (item);
+	gchar *url  = social_get_bookmark_url (link, item_get_title (item));
+	(void)browser_launch_URL_external (url);
+	g_free (link);
+	g_free (url);
 }
 
 void

@@ -277,15 +277,6 @@ void item_list_view_update_item (ItemListView *ilv, itemPtr item);
  */
 void item_list_view_update_all_items (ItemListView *ilv);
 
-// FIXME: the following function has nothing to do with the "item list"!
-
-/**
- * Launches the configured social bookmarking site for the given item
- *
- * @param item	the item
- */
-void ui_itemlist_add_item_bookmark (itemPtr item);
-
 /**
  * Copies the selected items URL to the clipboard.
  */
