@@ -23,6 +23,26 @@
 
 #include <glib.h>
 
+/** Browser preference definition structure */
+struct browser {
+	gchar *id;			/**< Unique ID used in storing the prefs */
+	gchar *display;			/**< Name to display in the prefs */
+	gchar *defaultplace;		/**< Default command.... Use %s to specify URL. This command is called in the background. */
+	gchar *existingwin;		/**< Optional command variant for opening in existing window */
+	gchar *existingwinremote;	/**< Optional command variant for opening in existing window with remote protocol */
+	gchar *newwin;			/**< Optional command variant for opening in new window */
+	gchar *newwinremote;		/**< Optional command variant for opening in new window with remote protocol */
+	gchar *newtab;			/**< Optional command variant for opening in new tab */
+	gchar *newtabremote;		/**< Optional command variant for opening in new tab with remote protocol */
+};
+
+/**
+ * Return the list of all supported browser definitions.
+ *
+ * @returns NULL terminated array of browser definitions
+ */
+struct browser * browser_get_all (void);
+
 /**
  * Function to execute the commands needed to open up a URL with the
  * browser specified in the preferences.

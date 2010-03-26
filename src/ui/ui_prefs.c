@@ -2,7 +2,7 @@
  * @file ui_prefs.c program preferences
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2004-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2010 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2009 Hubert Figuiere <hub@figuiere.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -29,6 +29,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "browser.h"
 #include "common.h"
 #include "conf.h"
 #include "enclosure.h"
@@ -70,48 +71,6 @@ static struct enclosureDownloadTool enclosure_download_commands[] = {
 /** order must match enclosure_download_commands[] */
 static gchar *enclosure_download_tool_options[] = { "wget", "curl", "gwget", "kget", NULL };
 
-static struct browser browsers[] = {
-	{
-		"default", N_("Default Browser"), NULL, /* triggering gtk_show_uri() */
-		NULL, NULL,
-		NULL, NULL,
-		NULL, NULL
-	},
-	{
-		/* tested with SeaMonkey 1.0.6 */
-		"mozilla", "Mozilla", "mozilla %s",
-		NULL, "mozilla -remote openURL(%s)",
-		NULL, "mozilla -remote 'openURL(%s,new-window)'",
-		NULL, "mozilla -remote 'openURL(%s,new-tab)'"
-	},
-	{
-		/* tested with Firefox 1.5 and 2.0 */
-		"firefox", "Firefox","firefox \"%s\"",
-		NULL, "firefox -a firefox -remote \"openURL(%s)\"",
-		NULL, "firefox -a firefox -remote 'openURL(%s,new-window)'",
-		NULL, "firefox -a firefox -remote 'openURL(%s,new-tab)'"
-	},
-	{
-		"opera", "Opera","opera \"%s\"",
-		"opera \"%s\"", "opera -remote \"openURL(%s)\"",
-		"opera -newwindow \"%s\"", NULL,
-		"opera -newpage \"%s\"", NULL
-	},
-	{
-		"epiphany", "Epiphany","epiphany \"%s\"",
-		NULL, NULL,
-		"epiphany \"%s\"", NULL,
-		"epiphany -n \"%s\"", NULL
-	},
-	{
-		"konqueror", "Konqueror", "kfmclient openURL \"%s\"",
-		NULL, NULL,
-		NULL, NULL,
-		NULL, NULL
-	},
-	{	NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }
-};
-
 /** GConf representation of toolbar styles */
 static gchar * gui_toolbar_style_values[] = { "", "both", "both-horiz", "icons", "text", NULL };
 
@@ -147,80 +106,6 @@ static gchar * browser_skim_key_options[] = {
 	N_("<Alt> Space"),
 	NULL
 };
-
-gchar *
-prefs_get_browser_command (struct browser *browser, gboolean remote, gboolean fallback)
-{
-	gchar	*cmd = NULL;
-	gchar	*libname;
-	gint	place;
-
-	conf_get_int_value (BROWSER_PLACE, &place);
-
-	/* check for manual browser command */
-	conf_get_str_value (BROWSER_ID, &libname);
-	if (g_str_equal (libname, "manual")) {
-		/* retrieve user defined command... */
-		conf_get_str_value (BROWSER_COMMAND, &cmd);
-	} else {
-		/* non manual browser definitions... */
-		if (browser) {
-			if (remote) {
-				switch (place) {
-					case 1:
-						cmd = browser->existingwinremote;
-						break;
-					case 2:
-						cmd = browser->newwinremote;
-						break;
-					case 3:
-						cmd = browser->newtabremote;
-						break;
-				}
-			} else {
-				switch (place) {
-					case 1:
-						cmd = browser->existingwin;
-						break;
-					case 2:
-						cmd = browser->newwin;
-						break;
-					case 3:
-						cmd = browser->newtab;
-						break;
-				}
-			}
-
-			if (fallback && !cmd)	/* Default when no special mode defined */
-				cmd = browser->defaultplace;
-		}
-
-		if (fallback && !cmd)	/* Last fallback: first browser default */
-			cmd = browsers[0].defaultplace;
-	}
-	g_free (libname);
-		
-	return cmd?g_strdup (cmd):NULL;
-}
-
-struct browser *
-prefs_get_browser (void)
-{
-	gchar		*libname;
-	struct browser	*browser = NULL;
-	
-	conf_get_str_value (BROWSER_ID, &libname);
-	if (!g_str_equal (libname, "manual")) {
-		struct browser *iter;
-		for (iter = browsers; iter->id != NULL; iter++) {
-			if (g_str_equal (libname, iter->id))
-				browser = iter;
-		}
-	}
-	g_free (libname);
-
-	return browser;
-}
 
 enclosureDownloadToolPtr
 prefs_get_download_tool (void)
@@ -311,8 +196,10 @@ on_browsercmd_changed (GtkEditable *editable, gpointer user_data)
 static void
 on_browser_changed (GtkComboBox *optionmenu, gpointer user_data)
 {
-	GtkTreeIter iter;
-	gint num = -1;
+	GtkTreeIter	iter;
+	gint		num = -1;
+	struct browser	*browsers = browser_get_all();
+	
 	if (gtk_combo_box_get_active_iter (optionmenu, &iter)) {
 		gtk_tree_model_get (gtk_combo_box_get_model (optionmenu), &iter, 1, &num, -1);
 
@@ -624,7 +511,7 @@ void on_prefbtn_clicked(void) {
 
 		/* Set up browser selection popup */
 		store = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_INT);
-		for(i=0, iter = browsers; iter->id != NULL; iter++, i++) {
+		for(i=0, iter = browser_get_all (); iter->id != NULL; iter++, i++) {
 			gtk_list_store_append (store, &treeiter);
 			gtk_list_store_set (store, &treeiter, 0, _(iter->display), 1, i, -1);
 		}
@@ -777,7 +664,7 @@ void on_prefbtn_clicked(void) {
 		if(!strcmp(configuredBrowser, "manual"))
 			tmp = manual;
 		else
-			for(i=0, iter = browsers; iter->id != NULL; iter++, i++)
+			for(i=0, iter = browser_get_all (); iter->id != NULL; iter++, i++)
 				if(!strcmp(configuredBrowser, iter->id))
 					tmp = i;
 

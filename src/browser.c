@@ -1,7 +1,7 @@
 /**
- * @file browser.h  Launching different external browsers
+ * @file browser.c  Launching different external browsers
  *
- * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2010 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,9 +23,152 @@
 #include <string.h>
 
 #include "common.h"
+#include "conf.h"
 #include "debug.h"
 #include "ui/liferea_shell.h"
-#include "ui/ui_prefs.h"
+
+static struct browser browsers[] = {
+	{
+		"default", N_("Default Browser"), NULL, /* triggering gtk_show_uri() */
+		NULL, NULL,
+		NULL, NULL,
+		NULL, NULL
+	},
+	{
+		/* tested with SeaMonkey 1.0.6 */
+		"mozilla", "Mozilla", "mozilla %s",
+		NULL, "mozilla -remote openURL(%s)",
+		NULL, "mozilla -remote 'openURL(%s,new-window)'",
+		NULL, "mozilla -remote 'openURL(%s,new-tab)'"
+	},
+	{
+		/* tested with Firefox 1.5 and 2.0 */
+		"firefox", "Firefox","firefox \"%s\"",
+		NULL, "firefox -a firefox -remote \"openURL(%s)\"",
+		NULL, "firefox -a firefox -remote 'openURL(%s,new-window)'",
+		NULL, "firefox -a firefox -remote 'openURL(%s,new-tab)'"
+	},
+	{
+		"opera", "Opera","opera \"%s\"",
+		"opera \"%s\"", "opera -remote \"openURL(%s)\"",
+		"opera -newwindow \"%s\"", NULL,
+		"opera -newpage \"%s\"", NULL
+	},
+	{
+		"epiphany", "Epiphany","epiphany \"%s\"",
+		NULL, NULL,
+		"epiphany \"%s\"", NULL,
+		"epiphany -n \"%s\"", NULL
+	},
+	{
+		"konqueror", "Konqueror", "kfmclient openURL \"%s\"",
+		NULL, NULL,
+		NULL, NULL,
+		NULL, NULL
+	},
+	{	NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }
+};
+
+/**
+ * Returns a shell command format string which can be used to create
+ * a browser launch command. The string will contain exactly one %s
+ * to fill in the URL. 
+ *
+ * @param browser	browser definition (or NULL) as returned
+ *			by prefs_get_browser()
+ * @param remote	TRUE if remote command variant is requested
+ * @param fallback	TRUE if the default command is to be returned
+ *			if the specific launch type is not available.
+ *			If set to FALSE no command might be returned.
+ *
+ * @returns a newly allocated command string
+ */
+static gchar *
+browser_get_command (struct browser *browser, gboolean remote, gboolean fallback)
+{
+	gchar	*cmd = NULL;
+	gchar	*libname;
+	gint	place;
+
+	conf_get_int_value (BROWSER_PLACE, &place);
+
+	/* check for manual browser command */
+	conf_get_str_value (BROWSER_ID, &libname);
+	if (g_str_equal (libname, "manual")) {
+		/* retrieve user defined command... */
+		conf_get_str_value (BROWSER_COMMAND, &cmd);
+	} else {
+		/* non manual browser definitions... */
+		if (browser) {
+			if (remote) {
+				switch (place) {
+					case 1:
+						cmd = browser->existingwinremote;
+						break;
+					case 2:
+						cmd = browser->newwinremote;
+						break;
+					case 3:
+						cmd = browser->newtabremote;
+						break;
+				}
+			} else {
+				switch (place) {
+					case 1:
+						cmd = browser->existingwin;
+						break;
+					case 2:
+						cmd = browser->newwin;
+						break;
+					case 3:
+						cmd = browser->newtab;
+						break;
+				}
+			}
+
+			if (fallback && !cmd)	/* Default when no special mode defined */
+				cmd = browser->defaultplace;
+		}
+
+		if (fallback && !cmd)	/* Last fallback: first browser default */
+			cmd = browsers[0].defaultplace;
+	}
+	g_free (libname);
+		
+	return cmd?g_strdup (cmd):NULL;
+}
+
+/** 
+ * Returns the browser definition structure for the currently
+ * configured external browser or NULL if a user defined 
+ * browser command is defined.
+ *
+ * @returns external browser definition
+ */
+static struct browser *
+browser_get_default (void)
+{
+	gchar		*libname;
+	struct browser	*browser = NULL;
+	
+	conf_get_str_value (BROWSER_ID, &libname);
+	if (!g_str_equal (libname, "manual")) {
+		struct browser *iter;
+		for (iter = browsers; iter->id != NULL; iter++) {
+			if (g_str_equal (libname, iter->id))
+				browser = iter;
+		}
+	}
+	g_free (libname);
+
+	return browser;
+}
+
+struct browser *
+browser_get_all (void)
+{
+	return browsers;
+}
 
 static gboolean
 browser_execute (const gchar *cmd, const gchar *uri, gboolean sync)
@@ -95,10 +238,10 @@ browser_launch_URL_external (const gchar *uri)
 	
 	g_assert (uri != NULL);
 	
-	browser = prefs_get_browser ();
+	browser = browser_get_default ();
 	if (browser) {
 		/* try to execute synchronously... */
-		cmd = prefs_get_browser_command (browser, TRUE /* remote */, FALSE /* fallback */);
+		cmd = browser_get_command (browser, TRUE /* remote */, FALSE /* fallback */);
 		if (cmd) {
 			done = browser_execute (cmd, uri, TRUE);
 			g_free (cmd);
@@ -112,7 +255,7 @@ browser_launch_URL_external (const gchar *uri)
 		return TRUE;
 	
 	/* if it failed try to execute asynchronously... */		
-	cmd = prefs_get_browser_command (browser, FALSE /* remote */, TRUE /* fallback */);
+	cmd = browser_get_command (browser, FALSE /* remote */, TRUE /* fallback */);
 	if (!cmd) {
 		liferea_shell_set_important_status_bar ("Fatal: cannot retrieve browser command!");
 		g_warning ("Fatal: cannot retrieve browser command!");
