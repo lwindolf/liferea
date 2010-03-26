@@ -861,16 +861,6 @@ on_popup_copy_URL_clipboard (void)
 }
 
 void
-ui_itemlist_search_item_link (itemPtr item)
-{
-	gchar *link = item_make_link (item);
-	gchar *url  = social_get_link_search_url (link);
-	itemview_launch_URL (url, FALSE);
-	g_free (link);
-	g_free (url);
-}
-
-void
 ui_itemlist_add_item_bookmark (itemPtr item)
 {
 	gchar *link = item_make_link (item);

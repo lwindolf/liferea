@@ -1,7 +1,7 @@
 /**
  * @file item_list_view.h  presenting items in a GtkTreeView
  *
- * Copyright (C) 2004-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2010 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
  *	      
  * This library is free software; you can redistribute it and/or
@@ -277,14 +277,7 @@ void item_list_view_update_item (ItemListView *ilv, itemPtr item);
  */
 void item_list_view_update_all_items (ItemListView *ilv);
 
-// FIXME: the following two functions have nothing to do with the "item list"!
-
-/**
- * Launches the configured link search engine for the given item
- *
- * @param item	the item
- */
-void ui_itemlist_search_item_link (itemPtr item);
+// FIXME: the following function has nothing to do with the "item list"!
 
 /**
  * Launches the configured social bookmarking site for the given item

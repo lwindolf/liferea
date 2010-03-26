@@ -25,14 +25,8 @@
 /** list of registered bookmarking sites */
 GSList *bookmarkSites = NULL;
 
-/** list of registered link cosmos search sites */
-GSList *linkSearchSites = NULL;
-
 /** the currently configured bookmarking site */
 static socialSitePtr bookmarkSite = NULL;
-
-/** the currently configured link cosmos search site */
-static socialSitePtr linkSearchSite = NULL;
 
 void
 social_register_bookmark_site (const gchar *name, const gchar *url, gboolean title, gboolean titleFirst)
@@ -90,52 +84,6 @@ social_get_bookmark_url (const gchar *link, const gchar *title)
 	return url;
 }
 
-/* link cosmos search engine handling */
-
-void
-social_register_link_search_site (const gchar *name, const gchar *url)
-{
-	socialSitePtr newSite;
-
-	g_assert (name);
-	g_assert (url);	
-	newSite = g_new0 (struct socialSite, 1);
-	newSite->name = g_strdup (name);
-	newSite->url = g_strdup (url);
-	newSite->title = FALSE;		/* unused */
-	newSite->titleFirst = FALSE;	/* unused */
-
-	linkSearchSites = g_slist_append (linkSearchSites, newSite);
-}
-
-void
-social_set_link_search_site (const gchar *name)
-{
-	GSList	*iter = linkSearchSites;
-	
-	while (iter) {
-		linkSearchSite = iter->data;
-		if (g_str_equal (linkSearchSite->name, name)) {
-			conf_set_str_value (SOCIAL_LINK_SEARCH_SITE, name);
-			return;
-		}
-		iter = g_slist_next (iter);
-	}
-	
-	debug1 (DEBUG_GUI, "Unknown link cosmos search site \"%s\"!", name);
-}
-
-const gchar *
-social_get_link_search_site (void) { return linkSearchSite->name; }
-
-gchar *
-social_get_link_search_url (const gchar *link)
-{ 
-	g_assert (linkSearchSite);
-	g_assert (link);
-	return g_strdup_printf (linkSearchSite->url, link);
-}
-
 void
 social_init (void)
 {
@@ -182,17 +130,6 @@ social_init (void)
 	
 	if (!bookmarkSite)
 		social_set_bookmark_site ("del.icio.us");		/* set default if necessary */
-
-	social_register_link_search_site ("Google Blog Search", "http://blogsearch.google.com/blogsearch?q=%s");
-	social_register_link_search_site ("IceRocket",	"http://www.icerocket.com/search?tab=blog&q=%s");
-	social_register_link_search_site ("Technorati",	"http://www.technorati.com/cosmos/search.html?url=%s");
-	
-	conf_get_str_value (SOCIAL_LINK_SEARCH_SITE, &tmp);
-	social_set_link_search_site (tmp);
-	g_free (tmp);
-	
-	if (!linkSearchSite)
-		social_set_link_search_site ("Technorati");		/* set default if necessary */
 }
 
 void
@@ -211,15 +148,4 @@ social_free (void)
 	}
 	g_slist_free (bookmarkSites);
 	bookmarkSites = NULL;
-	
-	iter = linkSearchSites;
-	while (iter) {
-		site = (socialSitePtr) iter->data;
-		g_free (site->name);
-		g_free (site->url);
-		g_free (site);
-		iter = g_slist_next(iter);
-	}
-	g_slist_free (linkSearchSites);
-	linkSearchSites = NULL;
 }

@@ -35,8 +35,6 @@
 #define USER_FONT			"/apps/liferea/browser-font"
 #define DISABLE_JAVASCRIPT		"/apps/liferea/disable-javascript"
 #define SOCIAL_BM_SITE			"/apps/liferea/social-bm-site"
-#define SOCIAL_LINK_SEARCH_SITE		"/apps/liferea/social-link-search-site"
-#define SOCIAL_LINK_SEARCH_HIDE		"/apps/liferea/social-link-search-hide"
 #define ENABLE_PLUGINS			"/apps/liferea/enable-plugins"
 
 /* enclosure handling */

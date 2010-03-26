@@ -1,7 +1,7 @@
 /**
  * @file render.c  generic XSLT rendering handling
  * 
- * Copyright (C) 2006-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2010 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -58,7 +58,6 @@
    and performs CSS adaptions to the current GTK theme. */
 
 static renderParamPtr	langParams = NULL;	/* the current locale settings (for localization stylesheet) */
-static gchar		*defaultParams = NULL;	/* some default parameters (for rendering stylesheets) */
 
 static GHashTable	*stylesheets = NULL;	/* XSLT stylesheet cache */
 
@@ -67,12 +66,9 @@ render_init (void)
 {
 	gchar   	**shortlang = NULL;	/* e.g. "de" */
 	gchar		**lang = NULL;		/* e.g. "de_AT" */
-	gboolean	social_link_search_hide;
 
 	if (langParams)
 		render_parameter_free (langParams);
-	if (defaultParams)
-		g_free (defaultParams);
 
 	/* prepare localization parameters */
 	debug1 (DEBUG_HTML, "XSLT localisation: setlocale(LC_MESSAGES, NULL) reports '%s'", setlocale(LC_MESSAGES, NULL));
@@ -86,10 +82,6 @@ render_init (void)
 
 	g_strfreev (shortlang);
 	g_strfreev (lang);
-
-	/* prepare rendering default parameters */
-	conf_get_bool_value (SOCIAL_LINK_SEARCH_HIDE, &social_link_search_hide);
-	defaultParams = g_strdup_printf("search_link_enable='%s'", social_link_search_hide?"false":"true");
 
 	if (!stylesheets)
 		stylesheets = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
@@ -343,7 +335,6 @@ render_xml (xmlDocPtr doc, const gchar *xsltName, renderParamPtr paramSet)
 
 	if (!paramSet)
 		paramSet = render_parameter_new ();
-	render_parameter_add (paramSet, "%s", defaultParams);
 	render_parameter_add (paramSet, "pixmapsDir='file://" PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "'");
 
 	resDoc = xsltApplyStylesheet (xslt, doc, (const gchar **)paramSet->params);

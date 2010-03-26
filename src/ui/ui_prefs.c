@@ -56,7 +56,6 @@ enum fts_columns {
 
 extern GSList *htmlviewPlugins;
 extern GSList *bookmarkSites;	/* from social.c */
-extern GSList *linkSearchSites;	/* from social.c */
 
 static GtkWidget *prefdialog = NULL;
 
@@ -247,17 +246,6 @@ on_socialsite_changed (GtkComboBox *optionmenu, gpointer user_data)
 		gchar * site;
 		gtk_tree_model_get (gtk_combo_box_get_model (optionmenu), &iter, 0, &site, -1);
 		social_set_bookmark_site (site);
-	}
-}
-
-static void
-on_linksearchsite_changed (GtkComboBox *optionmenu, gpointer user_data)
-{
-	GtkTreeIter iter;
-	if (gtk_combo_box_get_active_iter (optionmenu, &iter)) {
-		gchar * site;
-		gtk_tree_model_get (gtk_combo_box_get_model (optionmenu), &iter, 0, &site, -1);
-		social_set_link_search_site (site);
 	}
 }
 
@@ -618,28 +606,6 @@ void on_prefbtn_clicked(void) {
 		gtk_combo_box_set_model (combo, GTK_TREE_MODEL (store));
 		ui_common_setup_combo_text (combo, 0);
 		gtk_combo_box_set_active (combo, tmp);
-		
-		/* Setup link cosmos search engine list */
-		i = 0;
-		conf_get_str_value (SOCIAL_LINK_SEARCH_SITE, &name);
-		store = gtk_list_store_new (1, G_TYPE_STRING);
-		list = linkSearchSites;
-		while (list) {
-			socialSitePtr siter = list->data;
-			if (name && !strcmp (siter->name, name))
-				tmp = i;
-			gtk_list_store_append (store, &treeiter);
-			gtk_list_store_set (store, &treeiter, 0, siter->name, -1);
-			list = g_slist_next (list);
-			i++;
-		}
-
-		combo = GTK_COMBO_BOX (liferea_dialog_lookup (prefdialog, "searchpopup"));
-		g_signal_connect (G_OBJECT (combo), "changed", G_CALLBACK (on_linksearchsite_changed), NULL);
-		gtk_combo_box_set_model (combo, GTK_TREE_MODEL (store));
-		ui_common_setup_combo_text (combo, 0);
-		gtk_combo_box_set_active (combo, tmp);
-		
 
 		/* ================== panel 4 "browser" ==================== */
 
