@@ -96,10 +96,17 @@ ui_dnd_feed_drop_possible (GtkTreeDragDest *drag_dest, GtkTreePath *dest_path, G
 	   if it is a writeable node source. */
 
 	gtk_tree_model_get (GTK_TREE_MODEL (drag_dest), &iter, FS_PTR, &node, -1);
-
-	/* never drag nodes of read-only subscription lists */
-	if (node && !(NODE_SOURCE_TYPE (node)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST))
+	if (!node)
 		return FALSE;
+
+	/* never drop into read-only subscription node sources */
+	if (NODE_SOURCE_TYPE (node)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST)
+		return FALSE;
+		
+	/* never drag folders into non-hierarchic node sources */
+// FIXME: How can we implement this=	
+//	if (IS_FOLDER() && !(NODE_SOURCE_TYPE (node)->capabilities & NODE_SOURCE_CAPABILITY_HIERARCHIC_FEEDLIST))
+//		return FALSE;
 
 	return TRUE;
 }
