@@ -601,7 +601,7 @@ on_key_press_event (GtkWidget *widget, GdkEventKey *event, gpointer data)
 			return FALSE;
 
 		/* prevent usage of navigation keys in HTML view */
-		type = g_type_name (GTK_WIDGET_TYPE (focusw));
+		type = g_type_name (G_OBJECT_TYPE (focusw));
 		if (type && (g_str_equal (type, "WebKitWebView")))
 			return FALSE;
 		
