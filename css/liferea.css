@@ -101,11 +101,7 @@ table.itemhead, table.feedhead {
 	color:#GTK-COLOR-TEXT;
 }
 
-.flagged {
-	background-color:#F77;
-}
-
-.unflagged, .feedhead {
+.itemhead, .feedhead {
 	background-color: #GTK-COLOR-MID;
 }
 
@@ -251,13 +247,6 @@ a.favicon img {
 	padding-right:15px;
 	white-space:nowrap;
 	color:#999;
-}
-
-.summaryflagged a {
-	color:red;
-}
-
-.summaryunflagged a {
 }
 
 hr.summary {
