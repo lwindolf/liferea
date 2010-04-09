@@ -13,6 +13,8 @@
 	  (reported by Michael Novak)
 	* Replace the deprecated GTK_WIDGET_TYPE with G_OBJECT_TYPE.
 	  (Adrian Bunk)
+	* Fixes SF #2981879: Unknown metadata type itemTitle
+	  (reported by stk1)
 
 	* Updated Italian translation. (Gianvito Cavasoli)
 

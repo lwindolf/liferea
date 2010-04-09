@@ -1,7 +1,7 @@
 /**
  * @file ns_dc.c Dublin Core support for RSS and Atom
  *
- * Copyright (C) 2003-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2010 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -150,6 +150,14 @@ parse_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur, gboolean isFeedTag)
 				g_free (date);
 			}
 			return;
+		}
+		
+		if(!xmlStrcmp (BAD_CAST "title", cur->name)) {
+			value = (gchar *)xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
+			if(value) {
+				item_set_title(ctxt->item, value);
+				g_free(value);
+			}
 		}
 	}
 
