@@ -93,7 +93,7 @@ icons_load (void)
 	/* first try to load icons from theme */
 	static const gchar *iconThemeNames[] = {
 		NULL,			/* ICON_UNREAD */
-		"emblem-favorite",	/* ICON_FLAG */
+		"emblem-important",	/* ICON_FLAG */
 		NULL,			/* ICON_AVAILABLE */
 		NULL,			/* ICON_AVAILABLE_OFFLINE */
 		NULL,			/* ICON_UNAVAILABLE */
