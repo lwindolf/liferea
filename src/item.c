@@ -22,8 +22,6 @@
 #include "item.h"
 
 #include <glib.h>
-#include <time.h>
-#include <stdlib.h>
 #include <string.h>
 
 #include "comments.h"
