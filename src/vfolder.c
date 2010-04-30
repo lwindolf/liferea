@@ -231,12 +231,6 @@ vfolder_export (nodePtr node,
 	debug_exit ("vfolder_export");
 }
 
-static void
-vfolder_add_existing_rule (vfolderPtr vfolder, rulePtr rule)
-{
-	vfolder->rules = g_slist_append (vfolder->rules, rule);
-}
-
 void
 vfolder_add_rule (vfolderPtr vfolder,
                   const gchar *ruleId,
@@ -247,7 +241,7 @@ vfolder_add_rule (vfolderPtr vfolder,
 	
 	rule = rule_new (vfolder, ruleId, value, additive);
 	if (rule)
-		vfolder_add_existing_rule (vfolder, rule);
+		vfolder->rules = g_slist_append (vfolder->rules, rule);
 	else
 		g_warning ("unknown search folder rule id: \"%s\"", ruleId);
 }
