@@ -32,13 +32,10 @@
 
 static sqlite3	*db = NULL;
 
-/** value structure of statements hash */ 
-typedef struct statement {
-	sqlite3_stmt	*stmt;	/** the prepared statement */
-} statement;
-
 /** hash of all prepared statements */
 static GHashTable *statements = NULL;
+
+static void db_view_remove (const gchar *id);
 
 static void
 db_prepare_stmt (sqlite3_stmt **stmt, const gchar *sql) 
@@ -59,10 +56,9 @@ db_prepare_stmt (sqlite3_stmt **stmt, const gchar *sql)
 static void
 db_new_statement (const gchar *name, const gchar *sql)
 {
-	struct statement *statement;
+	sqlite3_stmt *statement;
 	
-	statement = g_new0 (struct statement, 1);
-	db_prepare_stmt (&statement->stmt, sql);
+	db_prepare_stmt (&statement, sql);
 	
 	if (!statements)
 		statements = g_hash_table_new (g_str_hash, g_str_equal);
@@ -73,14 +69,14 @@ db_new_statement (const gchar *name, const gchar *sql)
 static sqlite3_stmt *
 db_get_statement (const gchar *name)
 {
-	struct statement *statement;
+	sqlite3_stmt *statement;
 
-	statement = (struct statement *) g_hash_table_lookup (statements, name);
+	statement = (sqlite3_stmt *) g_hash_table_lookup (statements, name);
 	if (!statement)
 		g_error ("Fatal: unknown prepared statement \"%s\" requested!", name);	
 
-	sqlite3_reset (statement->stmt);
-	return statement->stmt;
+	sqlite3_reset (statement);
+	return statement;
 }
 
 static void
@@ -321,13 +317,45 @@ open:
 			db_exec ("DROP TABLE attention_stats");	/* this is unconditional, no checks and backups needed */
 		}
 
-		if (SCHEMA_TARGET_VERSION != db_get_schema_version ())
-			g_error ("Fatal: DB schema migration failed! Running with --debug-db could give some hints!");
+		if (db_get_schema_version () == 8) {
+			gchar *sql;
+			sqlite3_stmt *stmt;
+			
+			/* 1.7.3 -> 1.7.4 change search folder handling */
+			db_exec ("BEGIN; "
+			         "DROP TABLE view_state; "
+				 "CREATE TABLE search_folder_items ("
+				 "   node_id            STRING,"
+	         		 "   item_id		INTEGER,"
+				 "   PRIMARY KEY (node_id)"
+				 ");"
+				 // FIXME: copy items in specific views into search_folder_items
+			         "REPLACE INTO info (name, value) VALUES ('schemaVersion',9); "
+			         "END;" );
+
+			debug0 (DEBUG_DB, "Removing all views.");
+			sql = sqlite3_mprintf("SELECT name FROM sqlite_master WHERE type='view';");
+			res = sqlite3_prepare_v2 (db, sql, -1, &stmt, NULL);
+			sqlite3_free (sql);
+			if (SQLITE_OK != res) {
+				debug1 (DEBUG_DB, "Could not determine views (error=%d)", res);
+			} else {
+				sqlite3_reset (stmt);
+
+					while (sqlite3_step (stmt) == SQLITE_ROW)
+					db_view_remove (sqlite3_column_text (stmt, 0) + strlen("view_"));
+			
+				sqlite3_finalize (stmt);
+			}
+		}
 
 		db_deinit ();			
 		debug0 (DEBUG_DB, "Reopening DB after migration...");
 		goto open;
 	}
+
+	if (SCHEMA_TARGET_VERSION != db_get_schema_version ())
+		g_error ("Fatal: DB schema version not up-to-date! Running with --debug-db could give some hints about the problem!");
 	
 	/* Schema creation */
 		
@@ -413,10 +441,9 @@ open:
 		 "   PRIMARY KEY (node_id)"
         	 ");");
 
-	db_exec ("CREATE TABLE view_state ("
+	db_exec ("CREATE TABLE search_folder_items ("
 	         "   node_id            STRING,"
-		 "   unread             INTEGER,"
-		 "   count              INTEGER,"
+	         "   item_id		INTEGER,"
 		 "   PRIMARY KEY (node_id)"
 		 ");");
 
@@ -431,36 +458,15 @@ open:
 		
 	/* 3. Cleanup of DB */
 
-	{
-		gchar *sql;
-		sqlite3_stmt *stmt;
-		
-		/* Note: do not check on subscriptions here, as non-subscription node
-		   types (e.g. news bin) do contain items too. */
-		debug0 (DEBUG_DB, "Checking for items without a feed list node...\n");
-		db_exec ("DELETE FROM items WHERE comment = 0 AND node_id NOT IN "
-	        	 "(SELECT node_id FROM node);");
-	        	 
-	        // FIXME: clean up stale comments
-				 
-		debug0 (DEBUG_DB, "Checking for stale views not listed in feed list.");
-		sql = sqlite3_mprintf("SELECT name FROM sqlite_master WHERE type='view' AND name not in ("
-			                      "SELECT \"view_\"||node_id FROM node WHERE type='vfolder');");
-		res = sqlite3_prepare_v2 (db, sql, -1, &stmt, NULL);
-		sqlite3_free (sql);
-		if (SQLITE_OK != res) {
-			debug1 (DEBUG_DB, "Could not check for stale views (error=%d)", res);
-		} else {
-			sqlite3_reset (stmt);
-
-				while (sqlite3_step (stmt) == SQLITE_ROW)
-				db_view_remove (sqlite3_column_text (stmt, 0) + strlen("view_"));
-				
-			sqlite3_finalize (stmt);
-		}
-	 
-		debug0 (DEBUG_DB, "DB cleanup finished. Continuing startup.");
-	}
+	/* Note: do not check on subscriptions here, as non-subscription node
+	   types (e.g. news bin) do contain items too. */
+	debug0 (DEBUG_DB, "Checking for items without a feed list node...\n");
+	db_exec ("DELETE FROM items WHERE comment = 0 AND node_id NOT IN "
+        	 "(SELECT node_id FROM node);");
+        	 
+        // FIXME: clean up stale comments
+			  
+	debug0 (DEBUG_DB, "DB cleanup finished. Continuing startup.");
 		
 	/* 4. Creating triggers (after cleanup so it is not slowed down by triggers) */
 
@@ -618,8 +624,7 @@ open:
 static void
 db_free_statements (gpointer key, gpointer value, gpointer user_data)
 {
-	sqlite3_finalize (((struct statement *)value)->stmt);
-	g_free (value);
+	sqlite3_finalize ((sqlite3_stmt *)value);
 }
 
 void
@@ -628,7 +633,7 @@ db_deinit (void)
 
 	debug_enter ("db_deinit");
 	
-	if (FALSE == sqlite3_get_autocommit(db))
+	if (FALSE == sqlite3_get_autocommit (db))
 		g_warning ("Fatal: DB not in auto-commit mode. This is a bug. Data may be lost!");
 	
 	if (statements) {
@@ -857,6 +862,8 @@ db_item_update (itemPtr item)
 
 		debug1(DEBUG_DB, "insert into table \"items\": \"%s\"", item->title);	
 	}
+
+	g_warning ("FIXME: search folder update!");
 	
 	/* Update the item... */
 	stmt = db_get_statement ("itemUpdateStmt");
@@ -898,6 +905,8 @@ db_item_state_update (itemPtr item)
 		db_item_update (item);
 		return;
 	}
+
+	g_warning ("FIXME: search folder update!");
 
 	debug_start_measurement (DEBUG_DB);
 	
@@ -1059,241 +1068,7 @@ db_itemset_get_item_count (const gchar *id)
 	return count;
 }
 
-static gchar *
-db_query_to_sql (guint id, const queryPtr query) 
-{
-	gchar		*sql, *join, *from, *columns, *itemMatch = NULL, *tmp;
-	gint		tables, baseTable = 0;
-	
-	tables = query->tables;
-	g_return_val_if_fail (tables != 0, NULL);
-	
-	/* 1.) determine item_id column and base table */
-	if (tables & QUERY_TABLE_ITEMS) {
-		baseTable = QUERY_TABLE_ITEMS;
-		tables -= baseTable;
-		from = g_strdup ("FROM items ");
-	} else if (tables & QUERY_TABLE_METADATA) {
-		baseTable = QUERY_TABLE_METADATA;
-		tables -= baseTable;
-		from = g_strdup ("FROM metadata ");
-	} else if (tables & QUERY_TABLE_NODE) {
-		baseTable = QUERY_TABLE_NODE;
-		tables -= baseTable;
-		from = g_strdup ("FROM items INNER JOIN node ON node.node_id = items.node_id ");
-	} else {
-		g_warning ("Fatal: unknown table constant passed to query construction! (1)");
-		return NULL;
-	}
-
-	/* 2.) determine select columns */
-	
-	/* first add id column */
-	g_assert (query->columns & QUERY_COLUMN_ITEM_ID);
-	if (baseTable == QUERY_TABLE_ITEMS)
-		columns = g_strdup ("items.item_id AS item_id");
-	else if (baseTable == QUERY_TABLE_METADATA)
-		columns = g_strdup ("metadata.item_id AS item_id");
-	else if (baseTable == QUERY_TABLE_NODE)
-		columns = g_strdup ("items.item_id AS item_id");
-	else {
-		g_warning ("Fatal: unknown table constant passed to query construction! (2)");
-		return NULL;
-	}
-	
-	if (query->columns & QUERY_COLUMN_ITEM_READ_STATUS) {
-		if (query->tables & QUERY_TABLE_ITEMS) {
-			tmp = columns;
-			columns = g_strdup_printf ("%s,items.read AS item_read", tmp);
-			g_free (tmp);
-		} else if (query->tables & QUERY_TABLE_NODE) {
-			tmp = columns;
-			columns = g_strdup_printf ("%s,items.read AS item_read", tmp);
-			g_free (tmp);
-		} else {
-			//g_warning ("Fatal: neither items nor items included in query tables!");
-		}
-	}
-	
-	/* 3.) join remaining tables	 */
-	join = g_strdup ("");
-	
-	/* (tables == QUERY_TABLE_ITEMS) can never happen */
-	
-	if (tables == QUERY_TABLE_METADATA) {
-		tmp = join;
-		tables -= QUERY_TABLE_METADATA;
-		if (baseTable == QUERY_TABLE_ITEMS) {
-			join = g_strdup_printf ("%sINNER JOIN metadata ON items.item_id = metadata.item_id ", join);
-		} else {
-			g_warning ("Fatal: unsupported merge combination: metadata + %d!", baseTable);
-			return NULL;
-		}
-		g_free (tmp);
-	}
-	if (tables == QUERY_TABLE_NODE) {
-		tmp = join;
-		tables -= QUERY_TABLE_NODE;
-		if (baseTable == QUERY_TABLE_ITEMS) {
-			join = g_strdup_printf ("%sINNER JOIN node ON node.node_id = items.node_id ", join);
-		} else if (baseTable == QUERY_TABLE_METADATA) {
-			join = g_strdup_printf ("%sINNER JOIN items ON items.item_id = metadata.item_id INNER JOIN node ON node.node_id = items.node_id ", join);
-		} else {
-			g_warning ("Fatal: unsupported merge combination: node + %d!", baseTable);
-			return NULL;
-		}
-		g_free (tmp);
-	}
-	g_assert (0 == tables);
-	
-	/* 4.) create SQL query */
-	if (0 != id) {
-		if (baseTable == QUERY_TABLE_METADATA)
-			itemMatch = g_strdup_printf ("metadata.item_id=%d", id);
-		else if (baseTable == QUERY_TABLE_ITEMS)
-			itemMatch = g_strdup_printf ("items.item_id=%d", id);
-		else if (baseTable == QUERY_TABLE_NODE)
-			itemMatch = g_strdup_printf ("items.item_id=%d", id);
-		else {
-			g_warning ("Fatal: unknown table constant passed to query construction! (3)");
-			return NULL;
-		}
-	}
-			
-	if (itemMatch)
-		sql = sqlite3_mprintf ("SELECT %s %s %s WHERE ((%s) AND (%s))",
-		                       columns, from, join, itemMatch, query->conditions);
-	else
-		sql = sqlite3_mprintf ("SELECT %s %s %s WHERE (%s)",
-		                       columns, from, join, query->conditions);
-				       
-	g_free (columns);
-	g_free (from);
-	g_free (join);
-	g_free (itemMatch);
-	
-	return sql;
-}
-
-gboolean
-db_item_check (guint id, const queryPtr query)
-{
-	gchar		*sql;
-	gint		res;
-	sqlite3_stmt	*itemCheckStmt;	
-
-	sql = db_query_to_sql (id, query);
-	g_return_val_if_fail (sql != NULL, FALSE);
-					       
-	db_prepare_stmt (&itemCheckStmt, sql);
-	sqlite3_reset (itemCheckStmt);
-
-	res = sqlite3_step (itemCheckStmt);
-
-	sqlite3_free (sql);
-	sqlite3_finalize (itemCheckStmt);
-	
-	return (SQLITE_ROW == res);
-}
-
-static void
-db_view_create_triggers (const gchar *id)
-{
-	gchar	*sql, *err;
-	gint	res;
-
-	/* we use REPLACE so we need to have before and after INSERT triggers... */
-	err = NULL;
-	sql = sqlite3_mprintf ("CREATE TRIGGER view_%s_insert_before BEFORE INSERT ON items "
-	                       "BEGIN"
-			       "   UPDATE view_state SET count = ("
-			       "      (SELECT count FROM view_state WHERE node_id = '%s') -"
-			       "      (SELECT count(*) FROM view_%s WHERE item_id = new.item_id)"
-			       "   ) WHERE node_id = '%s';"
-			       "   UPDATE view_state SET unread = ("
-			       "      (SELECT unread FROM view_state WHERE node_id = '%s') -"
-			       "      (SELECT count(*) FROM view_%s WHERE item_id = new.item_id AND item_read = 0)"
-			       "   ) WHERE node_id = '%s';"
-	                       "END;", id, id, id, id, id, id, id);
-	res = sqlite3_exec (db, sql, NULL, NULL, &err);
-	if (SQLITE_OK != res)
-		g_warning ("Trigger setup \"view_%s_insert_before\" failed (error code %d: %s) SQL: %s!", id, res, err, sql);
-	sqlite3_free (sql);
-	sqlite3_free (err);	
-	
-	err = NULL;
-	sql = sqlite3_mprintf ("CREATE TRIGGER view_%s_insert_after AFTER INSERT ON items "
-	                       "BEGIN"
-			       "   UPDATE view_state SET count = ("
-			       "      (SELECT count FROM view_state WHERE node_id = '%s') +"
-			       "      (SELECT count(*) FROM view_%s WHERE item_id = new.item_id)"
-			       "   ) WHERE node_id = '%s';"
-			       "   UPDATE view_state SET unread = ("
-			       "      (SELECT unread FROM view_state WHERE node_id = '%s') +"
-			       "      (SELECT count(*) FROM view_%s WHERE item_id = new.item_id AND item_read = 0)"
-			       "   ) WHERE node_id = '%s';"
-	                       "END;", id, id, id, id, id, id, id);
-	res = sqlite3_exec (db, sql, NULL, NULL, &err);
-	if (SQLITE_OK != res)
-		g_warning ("Trigger setup \"view_%s_insert_after\" failed (error code %d: %s) SQL: %s!", id, res, err, sql);
-	sqlite3_free (sql);
-	sqlite3_free (err);	
-
-	err = NULL;
-	sql = sqlite3_mprintf ("CREATE TRIGGER view_%s_delete BEFORE DELETE ON items "
-	                       "BEGIN"
-			       "   UPDATE view_state SET count = ("
-			       "      (SELECT count FROM view_state WHERE node_id = '%s') -"
-			       "      (SELECT count(*) FROM view_%s WHERE item_id = old.item_id)"
-			       "   ) WHERE node_id = '%s';"
-			       "   UPDATE view_state SET unread = ("
-			       "      (SELECT unread FROM view_state WHERE node_id = '%s') -"
-			       "      (SELECT count(*) FROM view_%s WHERE item_id = old.item_id AND item_read = 0)"
-			       "   ) WHERE node_id = '%s';"
-	                       "END;", id, id, id, id, id, id, id);
-	res = sqlite3_exec (db, sql, NULL, NULL, &err);
-	if (SQLITE_OK != res)
-		g_warning ("Trigger setup \"view_%s_delete\" failed (error code %d: %s) SQL: %s!", id, res, err, sql);
-	sqlite3_free (sql);
-	sqlite3_free (err);
-
-	err = NULL;
-	sql = sqlite3_mprintf ("CREATE TRIGGER view_%s_update_before BEFORE UPDATE ON items "
-	                       "BEGIN"
-			       "   UPDATE view_state SET count = ("
-			       "      (SELECT count FROM view_state WHERE node_id = '%s') -"
-			       "      (SELECT count(*) FROM view_%s WHERE item_id = new.item_id)"
-			       "   ) WHERE node_id = '%s';"
-			       "   UPDATE view_state SET unread = ("
-			       "      (SELECT unread FROM view_state WHERE node_id = '%s') -"
-			       "      (SELECT count(*) FROM view_%s WHERE item_id = new.item_id AND item_read = 0)"
-			       "   ) WHERE node_id = '%s';"
-	                       "END;", id, id, id, id, id, id, id);
-	res = sqlite3_exec (db, sql, NULL, NULL, &err);
-	if (SQLITE_OK != res)
-		g_warning ("Trigger setup \"view_%s_update_before\" failed (error code %d: %s) SQL: %s!", id, res, err, sql);
-	sqlite3_free (sql);
-	sqlite3_free (err);	
-
-	err = NULL;
-	sql = sqlite3_mprintf ("CREATE TRIGGER view_%s_update_after AFTER UPDATE ON items "
-	                       "BEGIN"
-			       "   UPDATE view_state SET count = ("
-			       "      (SELECT count FROM view_state WHERE node_id = '%s') +"
-			       "      (SELECT count(*) FROM view_%s WHERE item_id = new.item_id)"
-			       "   ) WHERE node_id = '%s';"
-			       "   UPDATE view_state SET unread = ("
-			       "      (SELECT unread FROM view_state WHERE node_id = '%s') +"
-			       "      (SELECT count(*) FROM view_%s WHERE item_id = new.item_id AND item_read = 0)"
-			       "   ) WHERE node_id = '%s';"
-	                       "END;", id, id, id, id, id, id, id);
-	res = sqlite3_exec (db, sql, NULL, NULL, &err);
-	if (SQLITE_OK != res)
-		g_warning ("Trigger setup \"view_%s_update_after\" failed (error code %d: %s) SQL: %s!", id, res, err, sql);
-	sqlite3_free (sql);
-	sqlite3_free (err);
-}
-
+/* This method is only used for migration from old schema versions */
 static void
 db_view_remove_triggers (const gchar *id)
 {
@@ -1341,82 +1116,8 @@ db_view_remove_triggers (const gchar *id)
 	sqlite3_free (err);	
 }
 
-void
-db_view_create (const gchar *id, queryPtr query)
-{
-	gchar		*select, *sql, *checkSql, *err = NULL;
-	sqlite3_stmt	*viewCheckStmt;
-	gint		res;
-	gboolean	exists = FALSE;
-
-	/* Prepare SQL for view creation */
-	select = db_query_to_sql (0, query);
-	if (!select) {
-		g_warning ("View query creation failed!");
-		return;
-	}
-
-	if (query->tables & QUERY_TABLE_NODE)
-		sql = sqlite3_mprintf ("CREATE VIEW view_%s AS %s AND items.comment != 1", id, select);
-	else if (query->tables & QUERY_TABLE_ITEMS)
-		sql = sqlite3_mprintf ("CREATE VIEW view_%s AS %s AND items.comment != 1", id, select);
-	else
-		sql = sqlite3_mprintf ("CREATE VIEW view_%s AS %s", id, select);
-	sqlite3_free (select);
-	
-	debug2 (DEBUG_DB, "Checking for view %s (SQL=%s)", id, sql);
-	
-	/* Check if view already exists with exactly the same SQL */
-	checkSql = sqlite3_mprintf ("SELECT sql FROM sqlite_master WHERE name = 'view_%s';", id);
-	db_prepare_stmt (&viewCheckStmt, checkSql);
-	sqlite3_reset (viewCheckStmt);
-	res = sqlite3_step (viewCheckStmt);
-	if (SQLITE_ROW == res) {
-		const gchar *currentSql = sqlite3_column_text (viewCheckStmt, 0);
-		if (currentSql) {
-			/* Note: this check only works if the above CREATE VIEW
-			   SQL statements do not end with a semicolon */
-			exists = (0 == strcmp (sql, currentSql));
-		}
-	}
-	sqlite3_finalize (viewCheckStmt);
-	sqlite3_free (checkSql);
-
-	if (SQLITE_ROW == res && !exists) {
-	
-		/* This means there is a view with the same name
-		   but not with the expected SQL query. Whatever the
-		   reason for this is we do not need it... */
-		debug1 (DEBUG_DB, "Found old view with id %s but with wrong SQL, dropping it...", id);
-		db_view_remove (id);
-	}
-
-	if (!exists) {
-		/* Create the view with the prepared SQL */
-		res = sqlite3_exec (db, sql, NULL, NULL, &err);
-		if (SQLITE_OK != res) 
-			debug2 (DEBUG_DB, "Create view failed (%s) SQL: %s", err, sql);
-		sqlite3_free (err);
-	} else {
-		debug1 (DEBUG_DB, "No need to create view %s as it already exists.", id);
-	}
-
-	sqlite3_free (sql);
-	
-	/* Unconditionally recreate the view specific triggers */
-	db_view_remove_triggers (id);
-	db_view_create_triggers (id);
-	
-	/* Initialize view counters */
-	sql = sqlite3_mprintf ("REPLACE INTO view_state (node_id, unread, count) VALUES ('%s', "
-	                       "   (SELECT count(*) FROM view_%s WHERE item_read = 0),"
-			       "   (SELECT count(*) FROM view_%s)"
-	                       ");", id, id, id); 
-	db_exec (sql);
-	sqlite3_free (sql);
-}
-
-void
+/* This method is only used for migration from old schema versions */
+static void
 db_view_remove (const gchar *id)
 {
 	gchar	*sql, *err;
@@ -1444,23 +1145,23 @@ db_view_remove (const gchar *id)
 }
 
 itemSetPtr
-db_view_load (const gchar *id) 
+db_search_folder_load (const gchar *id) 
 {
 	gchar		*sql;
 	gint		res;
 	sqlite3_stmt	*viewLoadStmt;	
 	itemSetPtr 	itemSet;
 
-	debug2 (DEBUG_DB, "loading view for node \"%s\" (thread=%p)", id, g_thread_self ());
+	debug2 (DEBUG_DB, "loading search folder node \"%s\" (thread=%p)", id, g_thread_self ());
 	
 	itemSet = g_new0 (struct itemSet, 1);
 	itemSet->nodeId = (gchar *)id;
 
-	sql = sqlite3_mprintf ("SELECT item_id FROM view_%s;", id);
+	sql = sqlite3_mprintf ("SELECT item_id FROM search_folder_items WHERE node_id = %s;", id);
 	res = sqlite3_prepare_v2 (db, sql, -1, &viewLoadStmt, NULL);
 	sqlite3_free (sql);
 	if (SQLITE_OK != res) {
-		debug2 (DEBUG_DB, "could not load view %s (error=%d)", id, res);
+		debug2 (DEBUG_DB, "could not load search folder %s (error=%d)", id, res);
 		return itemSet;
 	}
 
@@ -1472,82 +1173,28 @@ db_view_load (const gchar *id)
 
 	sqlite3_finalize (viewLoadStmt);
 	
-	debug0 (DEBUG_DB, "loading of view finished");
+	debug0 (DEBUG_DB, "loading search folder finished");
 	
 	return itemSet;
 }
 
-guint
-db_view_get_item_count (const gchar *id)
+void
+db_search_folder_remove (const gchar *id) 
 {
-	gchar		*sql;
-	sqlite3_stmt	*viewCountStmt;	
-	gint		res;
-	guint		count = 0;
+	gchar	*sql, *err;
+	gint	res;
 
-	debug_start_measurement (DEBUG_DB);
+	debug2 (DEBUG_DB, "removing search folder node \"%s\" (thread=%p)", id, g_thread_self ());
+	
+	sql = sqlite3_mprintf ("DELETE FROM search_folder_items WHERE node_id = %s;", id);
+	res = sqlite3_exec (db, sql, NULL, NULL, &err);
+	if (SQLITE_OK != res)
+		g_warning ("Removing search folder failed (%s) SQL: %s", err, sql);
 
-	sql = sqlite3_mprintf ("SELECT count FROM view_state WHERE node_id = '%s';", id);
-	res = sqlite3_prepare_v2 (db, sql, -1, &viewCountStmt, NULL);
 	sqlite3_free (sql);
-	if (SQLITE_OK != res) {
-		debug3 (DEBUG_DB, "couldn't determine view %s item count (error=%d, %s)", id, res, sqlite3_errmsg (db));
-		return 0;
-	}
+	sqlite3_free (err);
 	
-	sqlite3_reset (viewCountStmt);
-	res = sqlite3_step (viewCountStmt);
-	
-	if (SQLITE_ROW == res)
-		count = sqlite3_column_int (viewCountStmt, 0);
-	else
-		g_warning ("view item counting failed (error code=%d, %s)", res, sqlite3_errmsg (db));
-
-	sqlite3_finalize (viewCountStmt);
-	
-	debug_end_measurement (DEBUG_DB, "view item counting");
-	
-	return count;
-}
-
-guint
-db_view_get_unread_count (const gchar *id)
-{
-	gchar		*sql;
-	sqlite3_stmt	*viewCountStmt;	
-	gint		res;
-	gint		count = 0;
-
-	debug_start_measurement (DEBUG_DB);
-
-	sql = sqlite3_mprintf ("SELECT unread FROM view_state WHERE node_id = '%s';", id);
-	res = sqlite3_prepare_v2 (db, sql, -1, &viewCountStmt, NULL);
-	sqlite3_free (sql);
-	if (SQLITE_OK != res) {
-		debug2 (DEBUG_DB, "couldn't determine view %s unread count (error=%d)", id, res);
-		return 0;
-	}
-	
-	sqlite3_reset (viewCountStmt);
-	res = sqlite3_step (viewCountStmt);
-	
-	if (SQLITE_ROW == res)
-		count = sqlite3_column_int (viewCountStmt, 0);
-	else
-		g_warning ("view unread counting failed (error code=%d, %s)", res, sqlite3_errmsg (db));
-
-	sqlite3_finalize (viewCountStmt);
-	
-	/* FIXME: there is still a bug causing negative search
-	   folder count results (propably caused by search folders
-	   with more than one rule). As a workaround we check for
-	   negative values here... */
-	if (count < 0)
-		count = 0;
-	
-	debug_end_measurement (DEBUG_DB, "view unread counting");
-	
-	return (guint)count;
+	debug0 (DEBUG_DB, "removing search folder finished");
 }
 
 gboolean

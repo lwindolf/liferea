@@ -1,7 +1,7 @@
 /**
  * @file itemset.c handling sets of items
  * 
- * Copyright (C) 2005-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2005-2010 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -30,6 +30,7 @@
 #include "itemset.h"
 #include "metadata.h"
 #include "node.h"
+#include "vfolder.h"
 
 void
 itemset_foreach (itemSetPtr itemSet, itemActionFunc callback)
@@ -351,6 +352,7 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates, gbo
 			item->readStatus = TRUE;
 			
 		if (itemset_merge_item (itemSet, items, item, length, allowUpdates)) {
+			vfolder_foreach_data (vfolder_check_item, item);
 			newCount++;
 			items = g_list_prepend (items, iter->data);
 		}

@@ -1,7 +1,7 @@
 /**
- * @file rule.h  DB item match rule handling
+ * @file rule.h  item matching rules used by search folders
  *
- * Copyright (C) 2003-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2010 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,9 +33,6 @@ typedef struct ruleInfo {
 	gboolean	needsParameter;	/**< some rules may require no parameter... */
 	
 	gpointer	checkFunc;	/**< the in memory check function (or NULL) */
-	
-	gpointer	queryFunc;	/**< the query condition creation function */
-	guint		queryTables;	/**< tables necessary for the rule query */
 } *ruleInfoPtr;
 
 /** structure to store a rule instance */
@@ -66,16 +63,6 @@ GSList * rule_get_available_rules (void);
  * @returns a new rule structure
  */
 rulePtr rule_new (struct vfolder *vfolder, const gchar *ruleId, const gchar *value, gboolean additive);
-
-/**
- * Processes the given rule list and creates a DB view
- * with the given id.
- *
- * @param rules		the rule list
- * @param anyMatch	FALSE if all rules have to match
- * @param id		the view id
- */
-void rules_to_view (GSList *rules, gboolean anyMatch, const gchar *id);
 
 /**
  * Checks if the given item matches the given rules.

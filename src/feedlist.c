@@ -275,12 +275,9 @@ feedlist_is_writable (void)
 static void
 feedlist_update_node_counters (nodePtr node)
 {
-	if (node->needsRecount) {
-		if (IS_VFOLDER (node))
-			vfolder_update_counters (node);	/* simple vfolder only update */
-		else
-			node_update_counters (node);	/* update with parent propagation */
-	}
+	if (!IS_VFOLDER (node))
+		node_update_counters (node);	/* update with parent propagation */
+
 	if (node->needsUpdate)
 		ui_node_update (node->id);
 	if (node->children)
@@ -354,7 +351,6 @@ feedlist_reset_new_item_count (void)
 void
 feedlist_node_was_updated (nodePtr node, guint newCount)
 {
-	vfolder_foreach (vfolder_update_counters);			
 	node_update_counters (node);
 	feedlist_update_new_item_count (newCount);
 }

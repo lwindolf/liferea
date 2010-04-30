@@ -132,79 +132,21 @@ GSList * db_item_get_duplicates(const gchar *guid);
  */
 GSList * db_item_get_duplicate_nodes(const gchar *guid);
 
-/** Query table flags (to construct join expression for a query) */
-typedef enum {
-	QUERY_TABLE_ITEMS	= (1 << 0),
-	QUERY_TABLE_METADATA	= (1 << 1),
-	QUERY_TABLE_NODE	= (1 << 2)
-} queryTables;
-
-/** Query column flags (to construct column list) */
-typedef enum {
-	QUERY_COLUMN_ITEM_ID		= (1 << 0),
-	QUERY_COLUMN_ITEM_READ_STATUS	= (1 << 1)
-} queryColumns;
-
-/** Query info structure to be used with views and for dynamic item checks. */
-typedef struct query {
-	guint		tables;		/**< used tables, set of queryTable flags */
-	guint		columns;	/**< used columns, set of queryColumn flags */
-	
-	gchar 		*conditions;	/**< condition in SQL WHERE syntax */
-} *queryPtr;
-
 /**
- * Executes the passed matching query and checks if the
- * given item id matches the query.
+ * Returns an item set of all items for the given search folder id.
  *
- * @param id		the item id
- * @param query		query info for item check
- *
- * @returns TRUE if the item matches the query
- */
-gboolean db_item_check (guint id, const queryPtr query);
-
-/**
- * Creates a new temporary view (used for search folders)
- *
- * @param id		the view id
- * @param query		query info to construct view
- */
-void db_view_create (const gchar *id, const queryPtr query);
-
-/**
- * Removes a temparory view with the given id from the DB session
- *
- * @param id		the view id
- */
-void db_view_remove (const gchar *id);
-
-/**
- * Returns an item set of all items for the given view id.
- *
- * @param id		the view id
+ * @param id		the search folder id
  *
  * @returns a new item set (to be free'd using itemset_free())
  */
-itemSetPtr db_view_load (const gchar *id);
+itemSetPtr db_search_folder_load (const gchar *id);
 
-/** 
- * Returns the item count for the given view id.
+/**
+ * Removes the given search folder from the DB.
  *
- * @param id		the view id
- *
- * @returns the number of items in the view
+ * @param id		the search folder id
  */
-guint db_view_get_item_count (const gchar *id);
-
-/** 
- * Returns the unread item count for the given view id.
- *
- * @param id		the view id
- *
- * @returns the number of unread items in the view
- */
-guint db_view_get_unread_count (const gchar *id);
+void db_search_folder_remove (const gchar *id);
 
 /**
  * Loads the feed state for the given feed from the DB

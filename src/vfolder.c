@@ -43,6 +43,8 @@ vfolder_new (nodePtr node)
 	debug_enter ("vfolder_new");
 
 	vfolder = g_new0 (struct vfolder, 1);
+	vfolder->itemset = g_new0 (struct itemSet, 1);
+	vfolder->itemset->nodeId = node->id;
 	vfolder->node = node;
 	vfolder->anyMatch = TRUE;
 	vfolders = g_slist_append (vfolders, vfolder);
@@ -107,24 +109,19 @@ vfolder_import_rules (xmlNodePtr cur,
 static itemSetPtr
 vfolder_load (nodePtr node) 
 {
-	return db_view_load (node->id);
+	vfolderPtr vfolder = (vfolderPtr)node->data;
+
+	return vfolder->itemset;
 }
 
 void
-vfolder_update_counters (nodePtr node) 
+vfolder_update_counters (vfolderPtr vfolder) 
 {
-	vfolderPtr vfolder = (vfolderPtr)node->data;
-	
-	/* Avoid throwing a "view unread count failed (error code 101, not an error)"
-	   warning in the database when there are no rules yet. */
-	if (vfolder->rules) {
-		node->unreadCount = db_view_get_unread_count (node->id);
-		node->itemCount = db_view_get_item_count (node->id);
-	} else {
-		node->unreadCount = 0;
-		node->itemCount = 0;
-	}
-	ui_node_update (node->id);
+	/* There is no unread handling for search folders
+	   for performance reasons. So set everything to 0 
+	   here and don't bother with GUI updates... */
+	vfolder->node->unreadCount = 0;
+	vfolder->node->itemCount = 0;
 }
 
 void
@@ -132,23 +129,53 @@ vfolder_refresh (vfolderPtr vfolder)
 {
 	g_return_if_fail (NULL != vfolder->node);
 
-	if (0 != g_slist_length (vfolder->rules))
-		rules_to_view (vfolder->rules, vfolder->anyMatch, vfolder->node->id);
+	// FIXME:
 	
-	vfolder_update_counters (vfolder->node);
+	vfolder_update_counters (vfolder);
 }
 
 void
-vfolder_foreach (nodeActionFunc func)
+vfolder_foreach_data (vfolderActionDataFunc func, itemPtr item)
 {
 	GSList	*iter = vfolders;
 	
 	g_assert (NULL != func);
 	while (iter) {
 		vfolderPtr vfolder = (vfolderPtr)iter->data;
-		(*func) (vfolder->node);
+		(*func) (vfolder, item);
 		iter = g_slist_next (iter);
 	}
+}
+
+void
+vfolder_remove_item (vfolderPtr vfolder, itemPtr item)
+{
+	vfolder->itemset->ids = g_list_remove (vfolder->itemset->ids, GUINT_TO_POINTER (item->id));
+}
+
+void
+vfolder_check_item (vfolderPtr vfolder, itemPtr item)
+{
+	if (rules_check_item (vfolder->rules, vfolder->anyMatch, item))
+		vfolder->itemset->ids = g_list_append (vfolder->itemset->ids, GUINT_TO_POINTER (item->id));
+	else
+		vfolder_remove_item (vfolder, item);
+}
+
+GSList *
+vfolder_get_all_with_item_id (gulong id)
+{
+	GSList	*result = NULL;
+	GSList	*iter = vfolders;
+	
+	while (iter) {
+		vfolderPtr vfolder = (vfolderPtr)iter->data;
+		if (g_list_find (vfolder->itemset->ids, GUINT_TO_POINTER (id)))
+			result = g_slist_append (result, vfolder);
+		iter = g_slist_next (iter);
+	}
+
+	return result;
 }
 
 static void
@@ -162,8 +189,9 @@ vfolder_import (nodePtr node,
 	debug1 (DEBUG_CACHE, "import vfolder: title=%s", node_get_title (node));
 
 	vfolder = vfolder_new (node);
+	vfolder->itemset = db_search_folder_load (node->id);
+	
 	vfolder_import_rules (cur, vfolder);
-	vfolder_refresh (vfolder);
 }
 
 static void
@@ -259,7 +287,7 @@ vfolder_update_unread_count (nodePtr node)
 static void
 vfolder_remove (nodePtr node) 
 {
-	db_view_remove (node->id);
+	db_search_folder_remove (node->id);
 }
 
 static void

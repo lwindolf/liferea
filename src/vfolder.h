@@ -1,7 +1,7 @@
 /**
  * @file vfolder.h  search folder node type
  *
- * Copyright (C) 2003-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2010 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,8 @@
 #define _VFOLDER_H
 
 #include <glib.h>
+
+#include "itemset.h"
 #include "node_type.h"
 
 /* The search folder implementation of Liferea is similar to the
@@ -38,6 +40,8 @@ typedef struct vfolder {
 	GSList		*rules;		/**< list of rules of this search folder */
 	struct node	*node;		/**< the feed list node of this search folder (or NULL) */
 	gboolean	anyMatch;	/**< TRUE means only one of the rules must match for item inclusion */
+	
+	itemSetPtr	itemset;	/**< the items matching this search folder */
 } *vfolderPtr;
 
 /**
@@ -63,12 +67,44 @@ vfolderPtr vfolder_new (struct node *node);
  */
 void vfolder_add_rule (vfolderPtr vfolder, const gchar *ruleId, const gchar *value, gboolean additive);
 
+typedef void 	(*vfolderActionDataFunc)	(vfolderPtr vfolder, itemPtr item);
+
 /**
- * Method to unconditionally invoke a callback for all search folders.
+ * Method to unconditionally invoke an item callback for all search folders.
  *
  * @param func		callback
+ * @param data		the item to process
  */
-void vfolder_foreach (nodeActionFunc func);
+void vfolder_foreach_data (vfolderActionDataFunc func, itemPtr item);
+
+/**
+ * Method to remove an item from all search folders.
+ *
+ * @param vfolder	search folder
+ * @param item		the item
+ */
+void vfolder_remove_item (vfolderPtr vfolder, itemPtr item);
+
+/**
+ * Method to check if an item matches any search folder
+ * or does not match some of the search folders anymore.
+ * It will be added or deleted accordingly to the search
+ * folder item set.
+ *
+ * @param vfolder	search folder
+ * @param item		the item
+ */
+void vfolder_check_item (vfolderPtr vfolder, itemPtr item);
+
+/**
+ * Returns a list of all search folders currently matching
+ * the given item id.
+ *
+ * @param id		the item id
+ *
+ * @returns a list of vfolderPtr (to be free'd using g_slist_free())
+ */
+GSList * vfolder_get_all_with_item_id (gulong id);
 
 /**
  * Method that updates the unread and item count for the given
@@ -76,7 +112,7 @@ void vfolder_foreach (nodeActionFunc func);
  *
  * @param node		the search folder node
  */
-void vfolder_update_counters (nodePtr node);
+void vfolder_update_counters (vfolderPtr vfolder);
 
 /**
  * Method that "refreshes" the DB view according

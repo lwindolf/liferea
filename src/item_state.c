@@ -1,7 +1,7 @@
 /**
  * @file item_state.c   item state controller interface
  * 
- * Copyright (C) 2007-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2010 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,8 +57,8 @@ item_flag_state_changed (itemPtr item, gboolean newState)
 	/* 3. update item list GUI state */
 	itemlist_update_item (item);
 
-	/* 4. no update of feed list necessary... */
-	vfolder_foreach (vfolder_update_counters);
+	/* 4. check wether we must add the item to a search folder */
+	vfolder_foreach_data (vfolder_check_item, item);
 
 	/* 5. update notification statistics */
 	feedlist_reset_new_item_count ();
@@ -94,7 +94,7 @@ item_read_state_changed (itemPtr item, gboolean newState)
 	db_item_state_update (item);
 
 	/* 2. add propagate to vfolders (must happen after changing the item state) */
-	vfolder_foreach (vfolder_update_counters);
+	vfolder_foreach_data (vfolder_check_item, item);
 
 	/* 3. update item list GUI state */
 	itemlist_update_item (item);
@@ -184,9 +184,6 @@ itemset_mark_read (nodePtr node)
 		}
 		iter = g_list_next (iter);
 	}
-		
-	/* we surely have changed the search folder states... */
-	vfolder_foreach (item_state_set_recount_flag);
 }
 
 void
