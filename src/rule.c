@@ -28,10 +28,7 @@
 #define ITEM_MATCH_RULE_ID		"exact"
 #define ITEM_TITLE_MATCH_RULE_ID	"exact_title"
 #define ITEM_DESC_MATCH_RULE_ID		"exact_desc"
-
-/** function type used to check in memory items */
-typedef gboolean (*ruleCheckFunc)	(rulePtr rule, itemPtr item);
-   
+ 
 /** list of available search folder rules */
 static GSList *ruleFunctions = NULL;
 
@@ -120,28 +117,6 @@ static gboolean
 rule_check_item_category (rulePtr rule, itemPtr item)
 {
 	return FALSE; // FIXME
-}
-
-gboolean
-rules_check_item (GSList *rules, gboolean anyMatch, itemPtr item)
-{
-	gboolean	result = TRUE;
-	GSList		*iter = rules;
-
-	while (iter) {
-		rulePtr		rule = (rulePtr) iter->data;
-		ruleCheckFunc	func = rule->ruleInfo->checkFunc;
-		gboolean	ruleResult = FALSE;
-		
-		ruleResult = (*func) (rules->data, item);
-		result &= (rule->additive)?ruleResult:!ruleResult;
-		if (anyMatch && result)
-			return TRUE;
-
-		iter = g_slist_next (iter);
-	}
-
-	return result;
 }
 
 /* rule initialization */

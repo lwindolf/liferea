@@ -30,6 +30,7 @@
 #include "itemset.h"
 #include "metadata.h"
 #include "node.h"
+#include "rule.h"
 #include "vfolder.h"
 
 void
@@ -412,6 +413,28 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates, gbo
 	return newCount;
 }
 
+gboolean
+itemset_check_item (itemSetPtr itemSet, itemPtr item)
+{
+	gboolean	result = TRUE;
+	GSList		*iter = itemSet->rules;
+
+	while (iter) {
+		rulePtr		rule = (rulePtr) iter->data;
+		ruleCheckFunc	func = rule->ruleInfo->checkFunc;
+		gboolean	ruleResult = FALSE;
+		
+		ruleResult = (*func) (rule, item);
+		result &= (rule->additive)?ruleResult:!ruleResult;
+		if (itemSet->anyMatch && result)
+			return TRUE;
+
+		iter = g_slist_next (iter);
+	}
+
+	return result;
+}
+
 void
 itemset_add_rule (itemSetPtr itemSet,
                   const gchar *ruleId,
@@ -431,6 +454,9 @@ void
 itemset_free (itemSetPtr itemSet)
 {
 	GSList		*rule;
+
+	if (!itemSet)
+		return;
 	
 	rule = itemSet->rules;
 	while (rule) {

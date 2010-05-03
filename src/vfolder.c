@@ -150,7 +150,7 @@ vfolder_remove_item (vfolderPtr vfolder, itemPtr item)
 void
 vfolder_check_item (vfolderPtr vfolder, itemPtr item)
 {
-	if (rules_check_item (vfolder->itemset->rules, vfolder->itemset->anyMatch, item)) {
+	if (itemset_check_item (vfolder->itemset, item)) {
 		vfolder->itemset->ids = g_list_append (vfolder->itemset->ids, GUINT_TO_POINTER (item->id));
 	} else {
 		vfolder_remove_item (vfolder, item);

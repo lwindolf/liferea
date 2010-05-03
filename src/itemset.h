@@ -66,6 +66,15 @@ void itemset_foreach (itemSetPtr itemSet, itemActionFunc callback);
  */
 guint itemset_merge_items(itemSetPtr itemSet, GList *items, gboolean allowUpdates, gboolean markAsRead);
 
+/**
+ * Checks if the given item matches the rules of the given item set.
+ *
+ * @param itemSet	the itemSet
+ * @param item		the item
+ *
+ * @returns TRUE if the item matches the rules of the item set
+ */
+gboolean itemset_check_item (itemSetPtr itemSet, itemPtr item);
 
 /**
  * Method that creates and adds a rule to an item set. To be used

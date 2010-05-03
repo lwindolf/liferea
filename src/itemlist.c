@@ -52,7 +52,7 @@
 static struct itemlist_priv 
 {
 	GHashTable	*guids;			/**< list of GUID to avoid having duplicates in currently loaded list */
-	GSList	 	*filter;		/**< currently active filter rule */
+	itemSetPtr	filter;			/**< currently active filter rules */
 	nodePtr		currentNode;		/**< the node whose own or its child items are currently displayed */
 	gulong		selectedId;		/**< the currently selected (and displayed) item id */
 	
@@ -66,18 +66,6 @@ static struct itemlist_priv
 	gboolean	isSearchResult;		/**< TRUE if a search result is displayed */
 	gboolean	searchResultComplete;	/**< TRUE if search result merging is complete */
 } itemlist_priv;
-
-static void
-itemlist_filter_free (void)
-{
-	GSList *iter = itemlist_priv.filter;
-	while (iter) {
-		rule_free (iter->data);
-		iter = g_slist_next (iter);
-	}
-	g_slist_free (itemlist_priv.filter);
-	itemlist_priv.filter = NULL;
-}
 
 static void
 itemlist_duplicate_list_remove_item (itemPtr item)
@@ -120,7 +108,7 @@ itemlist_duplicate_list_free (void)
 void
 itemlist_free (void)
 {
-	itemlist_filter_free ();
+	itemset_free (itemlist_priv.filter);
 	itemlist_duplicate_list_free ();
 }
 
@@ -182,12 +170,12 @@ itemlist_filter_check_item (itemPtr item)
 	/* use search folder rule list in case of a search folder */
 	if (itemlist_priv.currentNode && IS_VFOLDER (itemlist_priv.currentNode)) {
 		vfolderPtr vfolder = (vfolderPtr)itemlist_priv.currentNode->data;
-		return rules_check_item (vfolder->itemset->rules, vfolder->itemset->anyMatch, item);
+		return itemset_check_item (vfolder->itemset, item);
 	}
 
 	/* apply the item list filter if available */
 	if (itemlist_priv.filter)
-		return rules_check_item (itemlist_priv.filter, TRUE /* OR logic */, item);
+		return itemset_check_item (itemlist_priv.filter, item);
 	
 	/* otherwise keep the item */
 	return TRUE;
@@ -302,8 +290,11 @@ itemlist_load (nodePtr node)
 			return;
 	
 		conf_get_bool_value (FOLDER_DISPLAY_HIDE_READ, &folder_display_hide_read);
-		if (folder_display_hide_read)
-			itemlist_priv.filter = g_slist_append (NULL, rule_new ("unread", "", TRUE));
+		if (folder_display_hide_read) {
+			itemlist_priv.filter = g_new0(struct itemSet, 1);
+			itemlist_priv.filter->anyMatch = TRUE;
+			itemset_add_rule (itemlist_priv.filter, "unread", "", TRUE);
+		}
 	} else {
 		liferea_shell_update_allitems_actions (0 != node->itemCount, 0 != node->unreadCount);
 	}
@@ -348,9 +339,9 @@ itemlist_unload (gboolean markRead)
 	}
 
 	itemlist_set_selected (NULL);
-	itemlist_filter_free ();
 	itemlist_duplicate_list_free ();
 	itemlist_priv.currentNode = NULL;
+	itemset_free (itemlist_priv.filter);
 }
 
 void

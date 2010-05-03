@@ -22,6 +22,7 @@
 #define _RULE_H
 
 #include <glib.h>
+
 #include "item.h"
 
 /** rule info structure */
@@ -32,7 +33,7 @@ typedef struct ruleInfo {
 	gchar		*negative;	/**< text for negative logic selection */
 	gboolean	needsParameter;	/**< some rules may require no parameter... */
 	
-	gpointer	checkFunc;	/**< the in memory check function (or NULL) */
+	gpointer	checkFunc;	/**< the item check function */
 } *ruleInfoPtr;
 
 /** structure to store a rule instance */
@@ -41,6 +42,9 @@ typedef struct rule {
 	ruleInfoPtr	ruleInfo;	/* info structure about rule check function */
 	gboolean	additive;	/* is the rule positive logic */
 } *rulePtr;
+
+/** function type used to check items */
+typedef gboolean (*ruleCheckFunc)	(rulePtr rule, itemPtr item);
 
 /**
  * Returns a list of rule infos. To be used for rule editor 
@@ -61,17 +65,6 @@ GSList * rule_get_available_rules (void);
  * @returns a new rule structure
  */
 rulePtr rule_new (const gchar *ruleId, const gchar *value, gboolean additive);
-
-/**
- * Checks if the given item matches the given rules.
- *
- * @param rules		the rule list
- * @param anyMatch	FALSE if all rules have to match the item
- * @param item		the item
- *
- * @returns TRUE if the item matches the rules
- */
-gboolean rules_check_item (GSList *rules, gboolean anyMatch, itemPtr item);
 
 /** 
  * Free's the given rule structure 
