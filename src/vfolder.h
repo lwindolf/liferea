@@ -37,7 +37,7 @@
 
 /** search folder data structure */
 typedef struct vfolder {
-	struct node	*node;		/**< the feed list node of this search folder (or NULL) */
+	struct node	*node;		/**< the feed list node of this search folder */
 	
 	itemSetPtr	itemset;	/**< the itemset with the rules and matching items */
 } *vfolderPtr;
