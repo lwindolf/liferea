@@ -18,6 +18,9 @@
 	* Removing red title bar for flagged headlines. This is to
 	  avoid suggesting an error situation.
 	  (suggested by Felipe Ignacio Canas Sabat)
+	* Rewrite of the search folder code. We do not use SQlite
+	  views for rule based matching anymore.
+	  (Lars Lindner)
 
 	* Updated Italian translation. (Gianvito Cavasoli)
 
