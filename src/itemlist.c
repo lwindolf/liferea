@@ -341,7 +341,9 @@ itemlist_unload (gboolean markRead)
 	itemlist_set_selected (NULL);
 	itemlist_duplicate_list_free ();
 	itemlist_priv.currentNode = NULL;
+	
 	itemset_free (itemlist_priv.filter);
+	itemlist_priv.filter = NULL;
 }
 
 void
