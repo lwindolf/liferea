@@ -26,7 +26,6 @@
 #include "feedlist.h"
 #include "itemset.h"
 #include "node.h"
-#include "vfolder.h"
 #include "ui/icons.h"
 #include "ui/ui_folder.h"
 #include "ui/ui_node.h"
@@ -82,19 +81,21 @@ folder_save (nodePtr node)
 }
 
 static void
-folder_add_child_unread_count (nodePtr node, gpointer user_data)
+folder_add_child_update_counters (nodePtr node, gpointer user_data)
 {
 	guint	*unreadCount = (guint *)user_data;
 
-	if (!IS_VFOLDER (node))
-		*unreadCount += node->unreadCount;
+	*unreadCount += node->unreadCount;
 }
 
 static void
-folder_update_unread_count(nodePtr node)
+folder_update_counters (nodePtr node)
 {
+	/* We never need a total item count for folders.
+	   Only the total unread count is interesting */
+	node->itemCount = 0;
 	node->unreadCount = 0;
-	node_foreach_child_data (node, folder_add_child_unread_count, &node->unreadCount);
+	node_foreach_child_data (node, folder_add_child_update_counters, &node->unreadCount);
 }
 
 static void
@@ -121,7 +122,7 @@ folder_get_node_type (void)
 		folder_export,
 		folder_load,
 		folder_save,
-		folder_update_unread_count,
+		folder_update_counters,
 		folder_remove,
 		node_default_render,
 		ui_folder_add,
@@ -150,7 +151,7 @@ root_get_node_type (void)
 		folder_export,
 		folder_load,
 		folder_save,
-		folder_update_unread_count,
+		folder_update_counters,
 		folder_remove,
 		node_default_render,
 		ui_folder_add,

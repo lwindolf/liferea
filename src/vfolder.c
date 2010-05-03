@@ -116,16 +116,6 @@ vfolder_load (nodePtr node)
 }
 
 void
-vfolder_update_counters (vfolderPtr vfolder) 
-{
-	/* There is no unread handling for search folders
-	   for performance reasons. So set everything to 0 
-	   here and don't bother with GUI updates... */
-	vfolder->node->unreadCount = 0;
-	vfolder->node->itemCount = 0;
-}
-
-void
 vfolder_foreach_data (vfolderActionDataFunc func, itemPtr item)
 {
 	GSList	*iter = vfolders;
@@ -252,9 +242,15 @@ vfolder_free (nodePtr node)
 static void vfolder_save (nodePtr node) { }
 
 static void
-vfolder_update_unread_count (nodePtr node) 
+vfolder_update_counters (nodePtr node) 
 {
-	g_warning("Should never be called!");
+	vfolderPtr vfolder = (vfolderPtr) node->data;
+	
+	/* There is no unread handling for search folders
+	   for performance reasons. So set everything to 0 
+	   here and don't bother with GUI updates... */
+	vfolder->node->unreadCount = 0;
+	vfolder->node->itemCount = g_list_length (vfolder->itemset->ids);
 }
 
 static void
@@ -294,7 +290,7 @@ vfolder_get_node_type (void)
 		vfolder_export,
 		vfolder_load,
 		vfolder_save,
-		vfolder_update_unread_count,
+		vfolder_update_counters,
 		vfolder_remove,
 		node_default_render,
 		vfolder_add,

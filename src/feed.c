@@ -320,7 +320,7 @@ feed_save (nodePtr node)
 }
 
 static void
-feed_update_unread_count (nodePtr node)
+feed_update_counters (nodePtr node)
 {
 	node->itemCount = db_itemset_get_item_count (node->id);
 	node->unreadCount = db_itemset_get_unread_count (node->id);
@@ -395,7 +395,7 @@ feed_get_node_type (void)
 		feed_export,
 		feed_load,
 		feed_save,
-		feed_update_unread_count,
+		feed_update_counters,
 		feed_remove,
 		feed_render,
 		feed_add,

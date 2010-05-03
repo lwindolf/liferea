@@ -91,14 +91,6 @@ void vfolder_check_item (vfolderPtr vfolder, itemPtr item);
 GSList * vfolder_get_all_with_item_id (gulong id);
 
 /**
- * Method that updates the unread and item count for the given
- * search folder node.
- *
- * @param node		the search folder node
- */
-void vfolder_update_counters (vfolderPtr vfolder);
-
-/**
  * Resets vfolder state. Drops all items from it.
  * To be called after vfolder_(add|remove)_rule().
  *
