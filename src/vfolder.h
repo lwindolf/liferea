@@ -51,6 +51,13 @@ typedef struct vfolder {
  */
 vfolderPtr vfolder_new (struct node *node);
 
+/**
+ * Method to unconditionally invoke an node callback for all search folders.
+ *
+ * @param func		callback
+ */
+void vfolder_foreach (nodeActionFunc func);
+
 typedef void 	(*vfolderActionDataFunc)	(vfolderPtr vfolder, itemPtr item);
 
 /**

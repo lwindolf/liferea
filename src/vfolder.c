@@ -116,6 +116,19 @@ vfolder_load (nodePtr node)
 }
 
 void
+vfolder_foreach (nodeActionFunc func)
+{
+	GSList	*iter = vfolders;
+	
+	g_assert (NULL != func);
+	while (iter) {
+		vfolderPtr vfolder = (vfolderPtr)iter->data;
+		(*func)(vfolder->node);
+		iter = g_slist_next (iter);		
+	}	
+}
+
+void
 vfolder_foreach_data (vfolderActionDataFunc func, itemPtr item)
 {
 	GSList	*iter = vfolders;
@@ -135,6 +148,7 @@ vfolder_remove_item (vfolderPtr vfolder, itemPtr item)
 		return;
 		
 	vfolder->itemset->ids = g_list_remove (vfolder->itemset->ids, GUINT_TO_POINTER (item->id));
+	vfolder->node->needsUpdate = TRUE;
 }
 
 void
@@ -142,6 +156,7 @@ vfolder_check_item (vfolderPtr vfolder, itemPtr item)
 {
 	if (itemset_check_item (vfolder->itemset, item)) {
 		vfolder->itemset->ids = g_list_append (vfolder->itemset->ids, GUINT_TO_POINTER (item->id));
+		vfolder->node->needsUpdate = TRUE;
 	} else {
 		vfolder_remove_item (vfolder, item);
 	}
@@ -249,8 +264,10 @@ vfolder_update_counters (nodePtr node)
 	/* There is no unread handling for search folders
 	   for performance reasons. So set everything to 0 
 	   here and don't bother with GUI updates... */
+	vfolder->node->needsUpdate = TRUE;
 	vfolder->node->unreadCount = 0;
 	vfolder->node->itemCount = g_list_length (vfolder->itemset->ids);
+	g_print("vfolder:%s -> now %u items\n", vfolder->node->title, vfolder->node->itemCount);
 }
 
 static void
@@ -282,7 +299,6 @@ vfolder_get_node_type (void)
 { 
 	static struct nodeType nti = {
 		NODE_CAPABILITY_SHOW_ITEM_FAVICONS |
-		NODE_CAPABILITY_SHOW_UNREAD_COUNT |
 		NODE_CAPABILITY_SHOW_ITEM_COUNT,
 		"vfolder",
 		NULL,

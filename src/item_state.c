@@ -59,6 +59,7 @@ item_flag_state_changed (itemPtr item, gboolean newState)
 
 	/* 4. check wether we must add the item to a search folder */
 	vfolder_foreach_data (vfolder_check_item, item);
+	vfolder_foreach (node_update_counters);
 
 	/* 5. update notification statistics */
 	feedlist_reset_new_item_count ();
@@ -95,6 +96,7 @@ item_read_state_changed (itemPtr item, gboolean newState)
 
 	/* 2. add propagate to vfolders (must happen after changing the item state) */
 	vfolder_foreach_data (vfolder_check_item, item);
+	vfolder_foreach (node_update_counters);
 
 	/* 3. update item list GUI state */
 	itemlist_update_item (item);

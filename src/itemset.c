@@ -361,6 +361,8 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates, gbo
 		iter = g_list_previous (iter);
 	}
 	g_list_free (list);
+
+	vfolder_foreach (node_update_counters);
 	
 	debug1(DEBUG_UPDATE, "added %d new items", newCount);
 	

@@ -197,11 +197,6 @@ node_free (nodePtr node)
 static void
 node_calc_counters (nodePtr node)
 {
-	/* vfolder unread counts are not interesting
-	   in the following propagation handling */
-	if (IS_VFOLDER (node))
-		return;
-
 	/* Order is important! First update all children
 	   so that hierarchical nodes (folders and feed
 	   list sources) can determine their own unread
@@ -234,19 +229,22 @@ node_update_parent_counters (nodePtr node)
 }
 
 void
-node_update_counters(nodePtr node)
+node_update_counters (nodePtr node)
 {
-	guint old = node->unreadCount;
+	guint oldUnreadCount = node->unreadCount;
+	guint oldItemCount = node->itemCount;
 
 	/* Update the node itself and its children */
 	node_calc_counters (node);
 	
-	if (old != node->unreadCount)
+	if ((oldUnreadCount != node->unreadCount) ||
+	    (oldItemCount != node->itemCount))
 		ui_node_update (node->id);
 		
 	/* Update the unread count of the parent nodes,
-	   usually them just add all child unread counters */
-	node_update_parent_counters (node->parent);
+	   usually they just add all child unread counters */
+	if (!IS_VFOLDER (node))
+		node_update_parent_counters (node->parent);
 }
 
 void

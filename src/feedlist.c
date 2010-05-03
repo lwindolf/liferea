@@ -275,8 +275,7 @@ feedlist_is_writable (void)
 static void
 feedlist_update_node_counters (nodePtr node)
 {
-	if (!IS_VFOLDER (node))
-		node_update_counters (node);	/* update with parent propagation */
+	node_update_counters (node);	/* update with parent propagation */
 
 	if (node->needsUpdate)
 		ui_node_update (node->id);
