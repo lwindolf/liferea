@@ -1,7 +1,7 @@
 /**
  * @file itemset.h  interface to handle sets of items
  * 
- * Copyright (C) 2005-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2005-2010 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -23,7 +23,9 @@
 #define _ITEMSET_H
 
 #include <libxml/tree.h>
+
 #include "item.h"
+#include "rule.h"
 
 /**
  * The itemset interface processes item list actions
@@ -32,6 +34,9 @@
  */
 
 typedef struct itemSet {
+	GSList		*rules;		/**< list of rules each item matches */
+	gboolean	anyMatch;	/**< TRUE means only one of the rules must match for item inclusion */
+	
 	GList		*ids;		/**< the list of item ids */
 	gchar		*nodeId;	/**< the feed list node id this item set belongs to */
 } *itemSetPtr;
@@ -60,6 +65,19 @@ void itemset_foreach (itemSetPtr itemSet, itemActionFunc callback);
  * @returns the number of new merged items
  */
 guint itemset_merge_items(itemSetPtr itemSet, GList *items, gboolean allowUpdates, gboolean markAsRead);
+
+
+/**
+ * Method that creates and adds a rule to an item set. To be used
+ * on loading time, when creating searches or when editing
+ * search folder properties.
+ *
+ * @param itemSet	the item set
+ * @param ruleId	id string for this rule type
+ * @param value		argument string for this rule
+ * @param additive	indicates positive or negative logic
+ */
+void itemset_add_rule (itemSetPtr itemSet, const gchar *ruleId, const gchar *value, gboolean additive);
 
 /**
  * Frees the given item set and all items it contains.

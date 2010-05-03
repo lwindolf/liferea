@@ -64,7 +64,7 @@ GType rule_editor_get_type	(void);
  *
  * @returns the dialog widget
  */
-RuleEditor * rule_editor_new (vfolderPtr vfolder);
+RuleEditor * rule_editor_new (vfolderPtr);
 
 /**
  * This method is used to add another rule to a rule editor. 

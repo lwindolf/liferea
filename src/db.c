@@ -175,7 +175,7 @@ db_end_transaction (void)
 	sqlite3_free (err);
 }
 
-#define SCHEMA_TARGET_VERSION 8
+#define SCHEMA_TARGET_VERSION 9
 	
 /* opening or creation of database */
 void
@@ -1179,17 +1179,17 @@ db_search_folder_load (const gchar *id)
 }
 
 void
-db_search_folder_remove (const gchar *id) 
+db_search_folder_reset (const gchar *id) 
 {
 	gchar	*sql, *err;
 	gint	res;
 
-	debug2 (DEBUG_DB, "removing search folder node \"%s\" (thread=%p)", id, g_thread_self ());
+	debug2 (DEBUG_DB, "resetting search folder node \"%s\" (thread=%p)", id, g_thread_self ());
 	
 	sql = sqlite3_mprintf ("DELETE FROM search_folder_items WHERE node_id = %s;", id);
 	res = sqlite3_exec (db, sql, NULL, NULL, &err);
 	if (SQLITE_OK != res)
-		g_warning ("Removing search folder failed (%s) SQL: %s", err, sql);
+		g_warning ("resetting search folder failed (%s) SQL: %s", err, sql);
 
 	sqlite3_free (sql);
 	sqlite3_free (err);

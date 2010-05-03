@@ -182,7 +182,7 @@ itemlist_filter_check_item (itemPtr item)
 	/* use search folder rule list in case of a search folder */
 	if (itemlist_priv.currentNode && IS_VFOLDER (itemlist_priv.currentNode)) {
 		vfolderPtr vfolder = (vfolderPtr)itemlist_priv.currentNode->data;
-		return rules_check_item (vfolder->rules, vfolder->anyMatch, item);
+		return rules_check_item (vfolder->itemset->rules, vfolder->itemset->anyMatch, item);
 	}
 
 	/* apply the item list filter if available */
@@ -303,7 +303,7 @@ itemlist_load (nodePtr node)
 	
 		conf_get_bool_value (FOLDER_DISPLAY_HIDE_READ, &folder_display_hide_read);
 		if (folder_display_hide_read)
-			itemlist_priv.filter = g_slist_append (NULL, rule_new (NULL, "unread", "", TRUE));
+			itemlist_priv.filter = g_slist_append (NULL, rule_new ("unread", "", TRUE));
 	} else {
 		liferea_shell_update_allitems_actions (0 != node->itemCount, 0 != node->unreadCount);
 	}
@@ -323,7 +323,8 @@ itemlist_load (nodePtr node)
 	
 	itemSet = node_get_itemset (itemlist_priv.currentNode);
 	itemlist_merge_itemset (itemSet);
-	itemset_free (itemSet);
+	if (!IS_VFOLDER (node))			/* FIXME: this is ugly! */
+		itemset_free (itemSet);
 
 	itemlist_priv.loading--;
 
@@ -442,8 +443,8 @@ void
 itemlist_remove_item (itemPtr item) 
 {
 	/* update search folder counters */
-	vfolder_foreach_data (vfolder_remove_item, (gpointer)item);
-
+	vfolder_foreach_data (vfolder_remove_item, item);
+	
 	if (itemlist_priv.selectedId == item->id) {
 		itemlist_set_selected (NULL);
 		itemlist_priv.deferredFilter = FALSE;
@@ -487,7 +488,7 @@ itemlist_remove_items (itemSetPtr itemSet, GList *items)
 	while (iter) {
 		itemPtr item = (itemPtr) iter->data;
 
-		vfolder_foreach_data (vfolder_remove_item, (gpointer)item);
+		vfolder_foreach_data (vfolder_remove_item, item);
 
 		if (itemlist_priv.selectedId != item->id) {
 			/* don't call itemlist_remove_item() here, because it's to slow */

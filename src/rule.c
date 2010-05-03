@@ -49,8 +49,7 @@ rule_get_available_rules (void)
 /* rule creation */
 
 rulePtr
-rule_new (struct vfolder *vfolder,
-          const gchar *ruleId,
+rule_new (const gchar *ruleId,
           const gchar *value,
           gboolean additive) 
 {
@@ -63,7 +62,6 @@ rule_new (struct vfolder *vfolder,
 			rulePtr rule = (rulePtr) g_new0 (struct rule, 1);
 			rule->ruleInfo = ruleInfo;
 			rule->additive = additive;
-			rule->vp = vfolder;		
 			rule->value = common_strreplace (g_strdup (value), "'", "");	
 			return rule;
 		}

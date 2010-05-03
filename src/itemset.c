@@ -352,6 +352,7 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates, gbo
 			item->readStatus = TRUE;
 			
 		if (itemset_merge_item (itemSet, items, item, length, allowUpdates)) {
+		g_print("merging item %s %lu\n", item->title, item->id);
 			vfolder_foreach_data (vfolder_check_item, item);
 			newCount++;
 			items = g_list_prepend (items, iter->data);
@@ -412,8 +413,31 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates, gbo
 }
 
 void
+itemset_add_rule (itemSetPtr itemSet,
+                  const gchar *ruleId,
+                  const gchar *value,
+                  gboolean additive)
+{
+	rulePtr		rule;
+	
+	rule = rule_new (ruleId, value, additive);
+	if (rule)
+		itemSet->rules = g_slist_append (itemSet->rules, rule);
+	else
+		g_warning ("unknown search folder rule id: \"%s\"", ruleId);
+}
+
+void
 itemset_free (itemSetPtr itemSet)
 {
+	GSList		*rule;
+	
+	rule = itemSet->rules;
+	while (rule) {
+		rule_free (rule->data);
+		rule = g_slist_next (rule);
+	}
+	g_slist_free (itemSet->rules);
 	g_list_free (itemSet->ids);
 	g_free (itemSet);
 }

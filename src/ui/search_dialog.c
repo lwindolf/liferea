@@ -181,15 +181,15 @@ on_search_dialog_response (GtkDialog *dialog, gint responseId, gpointer user_dat
 	
 	if (1 == responseId) { /* Search */
 		rule_editor_save (sd->priv->re, sd->priv->vfolder);
-		sd->priv->vfolder->anyMatch = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (sd->priv->dialog, "anyRuleRadioBtn2")));
+		sd->priv->vfolder->itemset->anyMatch = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (sd->priv->dialog, "anyRuleRadioBtn2")));
 		
-		vfolder_refresh (sd->priv->vfolder);
+		vfolder_reset (sd->priv->vfolder);
 		search_load_results (sd->priv->searchResult, NULL);
 	}
 	
 	if (2 == responseId) { /* + Search Folder */
 		rule_editor_save (sd->priv->re, sd->priv->vfolder);
-		sd->priv->vfolder->anyMatch = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (sd->priv->dialog, "anyRuleRadioBtn2")));
+		sd->priv->vfolder->itemset->anyMatch = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (sd->priv->dialog, "anyRuleRadioBtn2")));
 		
 		nodePtr node = sd->priv->searchResult;
 		sd->priv->searchResult = NULL;
@@ -222,7 +222,7 @@ search_dialog_open (const gchar *query)
 	sd->priv->dialog = liferea_dialog_new (NULL, "searchdialog");
 	
 	if (query)
-		vfolder_add_rule (sd->priv->vfolder, "exact", query, TRUE);
+		itemset_add_rule (sd->priv->vfolder->itemset, "exact", query, TRUE);
 
 	sd->priv->re = rule_editor_new (sd->priv->vfolder);
 
@@ -346,8 +346,8 @@ on_simple_search_dialog_response (GtkDialog *dialog, gint responseId, gpointer u
 		ssd->priv->vfolder = vfolder_new (ssd->priv->searchResult);
 	
 		node_set_title (ssd->priv->searchResult, searchString);
-		vfolder_add_rule (ssd->priv->vfolder, "exact", searchString, TRUE);
-		vfolder_refresh (ssd->priv->vfolder);
+		itemset_add_rule (ssd->priv->vfolder->itemset, "exact", searchString, TRUE);
+		vfolder_reset (ssd->priv->vfolder);
 
 		search_load_results (ssd->priv->searchResult, searchString);
 	}

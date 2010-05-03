@@ -45,8 +45,9 @@ vfolder_new (nodePtr node)
 	vfolder = g_new0 (struct vfolder, 1);
 	vfolder->itemset = g_new0 (struct itemSet, 1);
 	vfolder->itemset->nodeId = node->id;
+	vfolder->itemset->ids = NULL;
+	vfolder->itemset->anyMatch = TRUE;
 	vfolder->node = node;
-	vfolder->anyMatch = TRUE;
 	vfolders = g_slist_append (vfolders, vfolder);
 
 	if (!node->title)
@@ -68,9 +69,9 @@ vfolder_import_rules (xmlNodePtr cur,
 	if (matchType) {
 		/* currently we now only OR or AND'ing the rules,
 		   "any" is the value for OR'ing, "all" for AND'ing */
-		vfolder->anyMatch = (0 != xmlStrcmp (matchType, BAD_CAST"all"));
+		vfolder->itemset->anyMatch = (0 != xmlStrcmp (matchType, BAD_CAST"all"));
 	} else {
-		vfolder->anyMatch = TRUE;
+		vfolder->itemset->anyMatch = TRUE;
 	}
 	xmlFree (matchType);
 
@@ -89,9 +90,9 @@ vfolder_import_rules (xmlNodePtr cur,
 					debug2 (DEBUG_CACHE, "loading rule \"%s\" \"%s\"", ruleId, value);
 
 					if (additive && !xmlStrcmp (additive, BAD_CAST"true"))
-						vfolder_add_rule (vfolder, ruleId, value, TRUE);
+						itemset_add_rule (vfolder->itemset, ruleId, value, TRUE);
 					else
-						vfolder_add_rule (vfolder, ruleId, value, FALSE);
+						itemset_add_rule (vfolder->itemset, ruleId, value, FALSE);
 				} else {
 					g_warning ("ignoring invalid rule entry for vfolder \"%s\"...\n", node_get_title (vfolder->node));
 				}
@@ -125,16 +126,6 @@ vfolder_update_counters (vfolderPtr vfolder)
 }
 
 void
-vfolder_refresh (vfolderPtr vfolder)
-{
-	g_return_if_fail (NULL != vfolder->node);
-
-	// FIXME:
-	
-	vfolder_update_counters (vfolder);
-}
-
-void
 vfolder_foreach_data (vfolderActionDataFunc func, itemPtr item)
 {
 	GSList	*iter = vfolders;
@@ -150,16 +141,20 @@ vfolder_foreach_data (vfolderActionDataFunc func, itemPtr item)
 void
 vfolder_remove_item (vfolderPtr vfolder, itemPtr item)
 {
+	if (!vfolder->itemset->ids)
+		return;
+		
 	vfolder->itemset->ids = g_list_remove (vfolder->itemset->ids, GUINT_TO_POINTER (item->id));
 }
 
 void
 vfolder_check_item (vfolderPtr vfolder, itemPtr item)
 {
-	if (rules_check_item (vfolder->rules, vfolder->anyMatch, item))
+	if (rules_check_item (vfolder->itemset->rules, vfolder->itemset->anyMatch, item)) {
 		vfolder->itemset->ids = g_list_append (vfolder->itemset->ids, GUINT_TO_POINTER (item->id));
-	else
+	} else {
 		vfolder_remove_item (vfolder, item);
+	}
 }
 
 GSList *
@@ -208,9 +203,9 @@ vfolder_export (nodePtr node,
 	
 	g_assert (TRUE == trusted);
 	
-	xmlNewProp (cur, BAD_CAST"matchType", BAD_CAST (vfolder->anyMatch?"any":"all"));
+	xmlNewProp (cur, BAD_CAST"matchType", BAD_CAST (vfolder->itemset->anyMatch?"any":"all"));
 
-	iter = vfolder->rules;
+	iter = vfolder->itemset->rules;
 	while (iter) {
 		rule = iter->data;
 		ruleNode = xmlNewChild (cur, NULL, BAD_CAST"outline", NULL);
@@ -232,39 +227,23 @@ vfolder_export (nodePtr node,
 }
 
 void
-vfolder_add_rule (vfolderPtr vfolder,
-                  const gchar *ruleId,
-                  const gchar *value,
-                  gboolean additive)
+vfolder_reset (vfolderPtr vfolder)
 {
-	rulePtr		rule;
-	
-	rule = rule_new (vfolder, ruleId, value, additive);
-	if (rule)
-		vfolder->rules = g_slist_append (vfolder->rules, rule);
-	else
-		g_warning ("unknown search folder rule id: \"%s\"", ruleId);
+	/*g_list_free (vfolder->itemset->ids);
+	vfolder->itemset->ids = NULL;
+	db_search_folder_reset (vfolder->node->id);*/
 }
 
 static void
 vfolder_free (nodePtr node) 
 {
 	vfolderPtr	vfolder = (vfolderPtr) node->data;
-	GSList		*rule;
 
 	debug_enter ("vfolder_free");
 	
 	vfolders = g_slist_remove (vfolders, vfolder);
-	
-	/* free vfolder rules */
-	rule = vfolder->rules;
-	while (rule) {
-		rule_free (rule->data);
-		rule = g_slist_next (rule);
-	}
-	g_slist_free (vfolder->rules);
-	vfolder->rules = NULL;
-	
+	itemset_free (vfolder->itemset);
+		
 	debug_exit ("vfolder_free");
 }
 
@@ -281,7 +260,7 @@ vfolder_update_unread_count (nodePtr node)
 static void
 vfolder_remove (nodePtr node) 
 {
-	db_search_folder_remove (node->id);
+	vfolder_reset (node->data);
 }
 
 static void

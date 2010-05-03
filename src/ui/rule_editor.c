@@ -1,7 +1,7 @@
 /**
  * @file rule_editor.c  rule editing dialog functionality
  *
- * Copyright (C) 2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2008-2010 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2009 Hubert Figuiere <hub@figuiere.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -183,7 +183,7 @@ do_ruletype_changed (struct changeRequest	*changeRequest)
 		rule_free (rule);
 	}
 	ruleInfo = g_slist_nth_data (rule_get_available_rules (), changeRequest->rule);
-	rule = rule_new (changeRequest->editor->priv->vfolder, ruleInfo->ruleId, "", TRUE);
+	rule = rule_new (ruleInfo->ruleId, "", TRUE);
 	changeRequest->editor->priv->newRules = g_slist_append (changeRequest->editor->priv->newRules, rule);
 	
 	rule_editor_setup_widgets (changeRequest, rule);
@@ -276,7 +276,7 @@ rule_editor_add_rule (RuleEditor *re, rulePtr rule)
 		/* fake a rule type change to initialize parameter widgets */
 		do_ruletype_changed (selected);
 	} else {
-		rulePtr newRule = rule_new (rule->vp, rule->ruleInfo->ruleId, rule->value, rule->additive);
+		rulePtr newRule = rule_new (rule->ruleInfo->ruleId, rule->value, rule->additive);
 
 		/* set up widgets with existing rule type and value */
 		rule_editor_setup_widgets (selected, newRule);
@@ -312,7 +312,7 @@ rule_editor_new (vfolderPtr vfolder)
 	re->priv->vfolder = vfolder;	/* FIXME: why do we need this? */
 	
 	/* load rules into dialog */	
-	iter = vfolder->rules;
+	iter = vfolder->itemset->rules;
 	while (iter) {
 		rule_editor_add_rule (re, (rulePtr)(iter->data));
 		iter = g_slist_next (iter);
@@ -329,21 +329,23 @@ rule_editor_save (RuleEditor *re, vfolderPtr vfolder)
 	GSList	*iter;
 	
 	/* delete all old rules */	
-	iter = vfolder->rules;
+	iter = vfolder->itemset->rules;
 	while (iter) {
 		rule_free ((rulePtr)iter->data);
 		iter = g_slist_next (iter);
 	}
-	g_slist_free (vfolder->rules);
-	vfolder->rules = NULL;
+	g_slist_free (vfolder->itemset->rules);
+	vfolder->itemset->rules = NULL;
 	
 	/* and add all rules from editor */
 	iter = re->priv->newRules;
 	while (iter) {
 		rulePtr rule = (rulePtr)iter->data;
-		vfolder_add_rule (vfolder, rule->ruleInfo->ruleId, rule->value, rule->additive);
+		itemset_add_rule (vfolder->itemset, rule->ruleInfo->ruleId, rule->value, rule->additive);
 		iter = g_slist_next (iter);
 	}
+
+	vfolder_reset (vfolder);
 
 /* FIXME: move the following code from search_folder_dialog.c and search_dialog.c here:
 	vfolder->anyMatch = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (re->priv->anyRuleRadioBtn));	*/

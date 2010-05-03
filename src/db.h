@@ -142,11 +142,11 @@ GSList * db_item_get_duplicate_nodes(const gchar *guid);
 itemSetPtr db_search_folder_load (const gchar *id);
 
 /**
- * Removes the given search folder from the DB.
+ * Removes all items from the given search folder
  *
  * @param id		the search folder id
  */
-void db_search_folder_remove (const gchar *id);
+void db_search_folder_reset (const gchar *id);
 
 /**
  * Loads the feed state for the given feed from the DB

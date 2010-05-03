@@ -108,11 +108,11 @@ on_propdialog_response (GtkDialog *dialog, gint response_id, gpointer user_data)
 		/* save new search folder settings */
 		node_set_title (sfd->priv->node, gtk_entry_get_text (GTK_ENTRY (sfd->priv->nameEntry)));
 		rule_editor_save (sfd->priv->re, sfd->priv->vfolder);
-		sfd->priv->vfolder->anyMatch = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "anyRuleRadioBtn")));
+		sfd->priv->vfolder->itemset->anyMatch = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "anyRuleRadioBtn")));
 
 		/* update search folder */
 		itemview_clear ();
-		vfolder_refresh (sfd->priv->vfolder);
+		vfolder_reset (sfd->priv->vfolder);
 		itemlist_unload (FALSE);
 		
 		/* If we are finished editing a new search folder add it to the feed list */
@@ -157,7 +157,7 @@ search_folder_dialog_new (nodePtr node)
 	gtk_entry_set_text (GTK_ENTRY (sfd->priv->nameEntry), node_get_title (node));
 	
 	/* Set up rule match type */
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (dialog, sfd->priv->vfolder->anyMatch?"anyRuleRadioBtn":"allRuleRadioBtn")), TRUE);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (dialog, sfd->priv->vfolder->itemset->anyMatch?"anyRuleRadioBtn":"allRuleRadioBtn")), TRUE);
 	
 	/* Set up rule list vbox */
 	gtk_container_add (GTK_CONTAINER (liferea_dialog_lookup (dialog, "ruleview_vfolder_dialog")), rule_editor_get_widget (sfd->priv->re));

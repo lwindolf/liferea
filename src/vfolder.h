@@ -28,20 +28,18 @@
 
 /* The search folder implementation of Liferea is similar to the
    one in Evolution. Search folders are effectivly permanent searches.
+   
+   As Liferea realizes filtered lists of items using rule based itemsets,
+   search folders are effectively persistent rule based itemsets.
 
-   Each search folder instance is a set of rules applied to all items
-   of all other feeds (excluding other search folders). Each search
-   folder instance can be represented by a single node in the feed list. 
-   The search feature is realized using a temporary search folder.
+   GUI wise a search folder is a type of node in the subscription list.
 */
 
-/** search vfolder data structure */
+/** search folder data structure */
 typedef struct vfolder {
-	GSList		*rules;		/**< list of rules of this search folder */
 	struct node	*node;		/**< the feed list node of this search folder (or NULL) */
-	gboolean	anyMatch;	/**< TRUE means only one of the rules must match for item inclusion */
 	
-	itemSetPtr	itemset;	/**< the items matching this search folder */
+	itemSetPtr	itemset;	/**< the itemset with the rules and matching items */
 } *vfolderPtr;
 
 /**
@@ -52,20 +50,6 @@ typedef struct vfolder {
  * @returns a new search folder structure
  */
 vfolderPtr vfolder_new (struct node *node);
-
-/**
- * Method that creates and adds a rule to a search folder. To be used
- * on loading time, when creating searches or when editing
- * search folder properties.
- *  
- * vfolder_refresh() needs to called to update the item matches
- *
- * @param vfolder	search folder the rule belongs to
- * @param ruleId	id string for this rule type
- * @param value		argument string for this rule
- * @param additive	indicates positive or negative logic
- */
-void vfolder_add_rule (vfolderPtr vfolder, const gchar *ruleId, const gchar *value, gboolean additive);
 
 typedef void 	(*vfolderActionDataFunc)	(vfolderPtr vfolder, itemPtr item);
 
@@ -115,13 +99,12 @@ GSList * vfolder_get_all_with_item_id (gulong id);
 void vfolder_update_counters (vfolderPtr vfolder);
 
 /**
- * Method that "refreshes" the DB view according
- * to the search folder rules. To be called after
- * vfolder_(add|remove)_rule().
+ * Resets vfolder state. Drops all items from it.
+ * To be called after vfolder_(add|remove)_rule().
  *
- * @param vfolder	search folder to rebuild
+ * @param vfolder	search folder to reset
  */
-void vfolder_refresh (vfolderPtr vfolder);
+void vfolder_reset (vfolderPtr vfolder);
 
 /* implementation of the node type interface */
 
