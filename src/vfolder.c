@@ -154,11 +154,17 @@ vfolder_remove_item (vfolderPtr vfolder, itemPtr item)
 void
 vfolder_check_item (vfolderPtr vfolder, itemPtr item)
 {
+	gboolean found = (NULL != g_list_find (vfolder->itemset->ids, GUINT_TO_POINTER (item->id)));
+	
 	if (itemset_check_item (vfolder->itemset, item)) {
-		vfolder->itemset->ids = g_list_append (vfolder->itemset->ids, GUINT_TO_POINTER (item->id));
-		vfolder->node->needsUpdate = TRUE;
+		if (!found) {
+			vfolder->itemset->ids = g_list_append (vfolder->itemset->ids, GUINT_TO_POINTER (item->id));
+			vfolder->node->needsUpdate = TRUE;
+		}
 	} else {
-		vfolder_remove_item (vfolder, item);
+		if (found) {
+			vfolder_remove_item (vfolder, item);
+		}
 	}
 }
 
