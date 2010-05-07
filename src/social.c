@@ -162,6 +162,7 @@ social_init (void)
 	social_register_bookmark_site ("Give a Link",	"http://www.givealink.org/cgi-pub/bookmarklet/bookmarkletLogin.cgi?&uri=%s&title=%s", TRUE, FALSE);
 	social_register_bookmark_site ("Gravee",		"http://www.gravee.com/account/bookmarkpop?u=%s&t=%s", TRUE, FALSE);
 	social_register_bookmark_site ("Hyperlinkomatic","http://www.hyperlinkomatic.com/lm2/add.html?LinkTitle=%s&LinkUrl=%s", TRUE, TRUE);
+	social_register_bookmark_site ("identi.ca"	,"http://identi.ca//index.php?action=bookmarklet&status_textarea=%%E2%%80%%9C%s%%E2%%80%%9D%%20%%E2%%80%%94%%20%s", TRUE, TRUE);
 	social_register_bookmark_site ("igooi",		"http://www.igooi.com/addnewitem.aspx?self=1&noui=yes&jump=close&url=%s&title=%s", TRUE, FALSE);
 	social_register_bookmark_site ("Lilisto",	"http://lister.lilisto.com/?t=%s&l=%s", TRUE, TRUE);
 	social_register_bookmark_site ("Linkagogo",	"http://www.linkagogo.com/go/AddNoPopup?title=%s&url=%s", TRUE, TRUE);

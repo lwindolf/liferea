@@ -4,6 +4,7 @@
 
 	* Fixes SF #2965158: Enclosures URLs with spaces do not work.
 	  (reported by Michael Novak)
+	* Added identi.ca bookmarking support. (Adrian Bunk)
 
 	* Updated Italian translation. (Gianvito Cavasoli)
 
