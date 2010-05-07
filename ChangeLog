@@ -21,6 +21,7 @@
 	* Rewrite of the search folder code. We do not use SQlite
 	  views for rule based matching anymore.
 	  (Lars Lindner)
+	* Added identi.ca bookmarking support. (Adrian Bunk)
 
 	* Updated Italian translation. (Gianvito Cavasoli)
 
