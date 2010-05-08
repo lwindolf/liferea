@@ -412,6 +412,62 @@ on_item_list_view_key_press_event (GtkWidget *widget, GdkEventKey *event, gpoint
 	return FALSE;
 }
 
+static gboolean
+on_itemlist_button_press_event (GtkWidget *treeview, GdkEventButton *event, gpointer user_data)
+{
+	ItemListView		*ilv = ITEM_LIST_VIEW (user_data);
+	GtkTreeViewColumn	*column;
+	GtkTreePath		*path;
+	GtkTreeIter		iter;
+	itemPtr			item = NULL;
+	gboolean		result = FALSE;
+	
+	if (event->type != GDK_BUTTON_PRESS)
+		return FALSE;
+
+	/* avoid handling header clicks */
+	if (event->window != gtk_tree_view_get_bin_window (ilv->priv->treeview))
+		return FALSE;
+
+	if (!gtk_tree_view_get_path_at_pos (ilv->priv->treeview, (gint)event->x, (gint)event->y, &path, NULL, NULL, NULL))
+		return FALSE;
+
+	if (gtk_tree_model_get_iter (gtk_tree_view_get_model (ilv->priv->treeview), &iter, path))
+		item = item_load (item_list_view_iter_to_id (ilv, &iter));
+		
+	gtk_tree_path_free (path);
+	
+	if (item) {
+		GdkEventButton *eb = (GdkEventButton*)event; 
+		switch (eb->button) {
+			case 1:
+				column = gtk_tree_view_get_column (ilv->priv->treeview, 0);
+				if (column) {
+					/* Allow flag toggling when left clicking in the flagging column.
+					   We depend on the fact that the state column is the first!!! */
+					if (event->x <= gtk_tree_view_column_get_fixed_width (column)) {
+						itemlist_toggle_flag (item);
+						result = TRUE;
+					}
+				}
+				break;
+			case 2:
+				/* Middle mouse click toggles read status... */
+				itemlist_toggle_read_status (item);
+				result = TRUE;
+				break;
+			case 3:
+				item_list_view_select (ilv, item);
+				ui_popup_item_menu (item, eb->button, eb->time);
+				result = TRUE;
+				break;
+		}
+		item_unload (item);
+	}
+		
+	return result;
+}
+
 GtkTreeView *
 item_list_view_get_widget (ItemListView *ilv)
 {
@@ -783,62 +839,6 @@ void
 on_nextbtn_clicked (GtkButton *button, gpointer user_data)
 {
 	itemlist_select_next_unread ();
-}
-
-gboolean
-on_itemlist_button_press_event (GtkWidget *treeview, GdkEventButton *event, gpointer user_data)
-{
-	ItemListView		*ilv = ITEM_LIST_VIEW (user_data);
-	GtkTreeViewColumn	*column;
-	GtkTreePath		*path;
-	GtkTreeIter		iter;
-	itemPtr			item = NULL;
-	gboolean		result = FALSE;
-	
-	if (event->type != GDK_BUTTON_PRESS)
-		return FALSE;
-
-	/* avoid handling header clicks */
-	if (event->window != gtk_tree_view_get_bin_window (ilv->priv->treeview))
-		return FALSE;
-
-	if (!gtk_tree_view_get_path_at_pos (ilv->priv->treeview, (gint)event->x, (gint)event->y, &path, NULL, NULL, NULL))
-		return FALSE;
-
-	if (gtk_tree_model_get_iter (gtk_tree_view_get_model (ilv->priv->treeview), &iter, path))
-		item = item_load (item_list_view_iter_to_id (ilv, &iter));
-		
-	gtk_tree_path_free (path);
-	
-	if (item) {
-		GdkEventButton *eb = (GdkEventButton*)event; 
-		switch (eb->button) {
-			case 1:
-				column = gtk_tree_view_get_column (ilv->priv->treeview, 0);
-				if (column) {
-					/* Allow flag toggling when left clicking in the flagging column.
-					   We depend on the fact that the state column is the first!!! */
-					if (event->x <= gtk_tree_view_column_get_fixed_width (column)) {
-						itemlist_toggle_flag (item);
-						result = TRUE;
-					}
-				}
-				break;
-			case 2:
-				/* Middle mouse click toggles read status... */
-				itemlist_toggle_read_status (item);
-				result = TRUE;
-				break;
-			case 3:
-				item_list_view_select (ilv, item);
-				ui_popup_item_menu (item, eb->button, eb->time);
-				result = TRUE;
-				break;
-		}
-		item_unload (item);
-	}
-		
-	return result;
 }
 
 void
