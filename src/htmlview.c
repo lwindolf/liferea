@@ -215,7 +215,6 @@ htmlview_render_item (itemPtr item,
 	output = render_xml (doc, "item", params);
 	
 	/* For debugging use: xmlSaveFormatFile("/tmp/test.xml", doc, 1); */
-	xmlSaveFormatFile("/tmp/test.xml", doc, 1);
 	xmlFreeDoc (doc);
 	g_free (baseUrl);
 	
