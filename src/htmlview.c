@@ -172,32 +172,6 @@ htmlview_update_all_items (void)
 	}
 }
 
-// FIXME: bad naming -> unclear concept!
-static xmlDocPtr
-itemset_to_xml (nodePtr node) 
-{
-	xmlDocPtr 	doc;
-	xmlNodePtr 	itemSetNode;
-	
-	doc = xmlNewDoc ("1.0");
-	itemSetNode = xmlNewDocNode (doc, NULL, "itemset", NULL);
-	
-	xmlDocSetRootElement (doc, itemSetNode);
-	
-	xmlNewTextChild (itemSetNode, NULL, "favicon", node_get_favicon_file (node));
-	xmlNewTextChild (itemSetNode, NULL, "title", node_get_title (node));
-
-	if (node->subscription) {
-		if (subscription_get_source (node->subscription))
-			xmlNewTextChild (itemSetNode, NULL, "source", subscription_get_source (node->subscription));
-			
-		if (subscription_get_homepage (node->subscription))
-			xmlNewTextChild (itemSetNode, NULL, "link", subscription_get_homepage (node->subscription));
-	}
-
-	return doc;
-}
-
 static gchar *
 htmlview_render_item (itemPtr item, 
                       guint viewMode,
@@ -206,7 +180,8 @@ htmlview_render_item (itemPtr item,
 	renderParamPtr	params;
 	gchar		*output = NULL, *baseUrl = NULL;
 	nodePtr		node;
-	xmlDocPtr	doc;
+	xmlDocPtr 	doc;
+	xmlNodePtr 	xmlNode;
 
 	debug_enter ("htmlview_render_item");
 
@@ -215,14 +190,16 @@ htmlview_render_item (itemPtr item,
 	node = node_from_id (item->nodeId);
 
 	/* do the XML serialization */
-	doc = itemset_to_xml (node);
-			
+	doc = xmlNewDoc ("1.0");
+	xmlNode = xmlNewDocNode (doc, NULL, "itemset", NULL);
+	xmlDocSetRootElement (doc, xmlNode);
+				
 	item_to_xml(item, xmlDocGetRootElement (doc));
 			
 	if (IS_FEED (node)) {
 		xmlNodePtr feed;
-		feed = xmlNewChild(xmlDocGetRootElement(doc), NULL, "feed", NULL);
-		feed_to_xml(node, feed);
+		feed = xmlNewChild (xmlDocGetRootElement(doc), NULL, "feed", NULL);
+		feed_to_xml (node, feed);
 	}
 	
 	/* do the XSLT rendering */
@@ -238,6 +215,7 @@ htmlview_render_item (itemPtr item,
 	output = render_xml (doc, "item", params);
 	
 	/* For debugging use: xmlSaveFormatFile("/tmp/test.xml", doc, 1); */
+	xmlSaveFormatFile("/tmp/test.xml", doc, 1);
 	xmlFreeDoc (doc);
 	g_free (baseUrl);
 	
