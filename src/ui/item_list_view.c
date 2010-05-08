@@ -413,12 +413,12 @@ on_item_list_view_key_press_event (GtkWidget *widget, GdkEventKey *event, gpoint
 }
 
 static gboolean
-on_itemlist_button_press_event (GtkWidget *treeview, GdkEventButton *event, gpointer user_data)
+on_item_list_view_button_press_event (GtkWidget *treeview, GdkEventButton *event, gpointer user_data)
 {
 	ItemListView		*ilv = ITEM_LIST_VIEW (user_data);
-	GtkTreeViewColumn	*column;
 	GtkTreePath		*path;
 	GtkTreeIter		iter;
+	GtkTreeViewColumn	*column;
 	itemPtr			item = NULL;
 	gboolean		result = FALSE;
 	
@@ -445,7 +445,7 @@ on_itemlist_button_press_event (GtkWidget *treeview, GdkEventButton *event, gpoi
 				if (column) {
 					/* Allow flag toggling when left clicking in the flagging column.
 					   We depend on the fact that the state column is the first!!! */
-					if (event->x <= gtk_tree_view_column_get_fixed_width (column)) {
+					if (event->x <= gtk_tree_view_column_get_width (column)) {
 						itemlist_toggle_flag (item);
 						result = TRUE;
 					}
@@ -549,7 +549,7 @@ item_list_view_create (GtkWidget *window)
 	g_signal_connect (G_OBJECT (select), "changed",
 	                  G_CALLBACK (on_itemlist_selection_changed), ilv);
 	g_signal_connect ((gpointer)ilv->priv->treeview, "button_press_event",
-	                  G_CALLBACK (on_itemlist_button_press_event), ilv);
+	                  G_CALLBACK (on_item_list_view_button_press_event), ilv);
 	g_signal_connect ((gpointer)ilv->priv->treeview, "row_activated",
 	                  G_CALLBACK (on_Itemlist_row_activated), ilv);
 		  
