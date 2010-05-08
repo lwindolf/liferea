@@ -204,7 +204,7 @@ htmlview_render_item (itemPtr item,
                       gboolean summaryMode) 
 {
 	renderParamPtr	params;
-	gchar		*output = NULL, *baseUrl;
+	gchar		*output = NULL, *baseUrl = NULL;
 	nodePtr		node;
 	xmlDocPtr	doc;
 
@@ -213,7 +213,6 @@ htmlview_render_item (itemPtr item,
 	/* don't use node from htmlView_priv as this would be
 	   wrong for folders and other merged item sets */
 	node = node_from_id (item->nodeId);
-	baseUrl = common_uri_escape (node_get_base_url (node));
 
 	/* do the XML serialization */
 	doc = itemset_to_xml (node);
@@ -228,7 +227,12 @@ htmlview_render_item (itemPtr item,
 	
 	/* do the XSLT rendering */
 	params = render_parameter_new ();
-	render_parameter_add (params, "baseUrl='%s'", baseUrl);
+	
+	if (NULL != node_get_base_url (node)) {
+		baseUrl = common_uri_escape (node_get_base_url (node));
+		render_parameter_add (params, "baseUrl='%s'", baseUrl);
+	}
+	
 	render_parameter_add (params, "summary='%d'", summaryMode?1:0);
 	render_parameter_add (params, "single='%d'", (viewMode == ITEMVIEW_SINGLE_ITEM)?1:0);
 	output = render_xml (doc, "item", params);

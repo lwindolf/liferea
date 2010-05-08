@@ -123,7 +123,9 @@ xmlChar *
 common_uri_escape (const xmlChar *url)
 {
 	xmlChar	*result;
-	
+
+	g_assert (NULL != url);
+		
 	/* xmlURIEscape returns NULL if spaces are in the URL, 
 	   so we need to replace them first (see SF #2965158) */
 	result = common_strreplace (g_strdup (url), " ", "+");
