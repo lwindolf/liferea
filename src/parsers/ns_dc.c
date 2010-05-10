@@ -115,7 +115,7 @@ static const gchar * mapToFeedMetadata[] = {
 				  };
 
 static const gchar * mapToItemMetadata[] = {
-				 	"itemTitle",		/* title */ 
+				 	NULL,			/* title */ 
 					"creator",		/* creator */
 					"category",		/* subject */
 					"description",		/* description */
@@ -141,8 +141,8 @@ parse_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur, gboolean isFeedTag)
 	const gchar	*mapping;
 	gboolean	isNotEmpty;
 	
-	/* special handling for the ISO 8601 date item tags */
 	if (!isFeedTag) {
+		/* special handling for the ISO 8601 date item tags */
 		if (!xmlStrcmp (BAD_CAST "date", cur->name)) {
  			if (NULL != (date = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1))) {
 				i = date_parse_ISO8601 (date);
@@ -151,13 +151,15 @@ parse_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur, gboolean isFeedTag)
 			}
 			return;
 		}
-		
+
+		/* special handling for item titles */
 		if(!xmlStrcmp (BAD_CAST "title", cur->name)) {
 			value = (gchar *)xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
 			if(value) {
 				item_set_title(ctxt->item, value);
 				g_free(value);
 			}
+			return;
 		}
 	}
 
