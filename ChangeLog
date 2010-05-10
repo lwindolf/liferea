@@ -24,6 +24,8 @@
 	* Added identi.ca bookmarking support. (Adrian Bunk)
 	* Added copy text selection to clipboard option.
 	  (patch by Ricardo Cruz)
+	* Fixes SF #2994622: Atom author URIs not markup escaped.
+	  (reported by Ricardo Cruz)
 
 	* Updated Italian translation. (Gianvito Cavasoli)
 
