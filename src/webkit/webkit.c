@@ -493,6 +493,28 @@ liferea_webkit_change_zoom_level (GtkWidget *scrollpane, gfloat zoom_level)
 }
 
 /**
+ * Return whether text is selected
+ */
+static gboolean
+liferea_webkit_has_selection (GtkWidget *scrollpane)
+{
+	WebKitWebView *view;
+	view = WEBKIT_WEB_VIEW (gtk_bin_get_child (GTK_BIN (scrollpane)));
+	return webkit_web_view_has_selection (view);
+}
+
+/**
+ * Copy selected text to the clipboard
+ */
+static void
+liferea_webkit_copy_selection (GtkWidget *scrollpane)
+{
+	WebKitWebView *view;
+	view = WEBKIT_WEB_VIEW (gtk_bin_get_child (GTK_BIN (scrollpane)));
+	webkit_web_view_copy_clipboard (view);
+}
+
+/**
  * Return current zoom level as a float
  */
 static gfloat
@@ -561,6 +583,8 @@ htmlviewImpl webkitImpl = {
 	.launch		= liferea_webkit_launch_url,
 	.zoomLevelGet	= liferea_webkit_get_zoom_level,
 	.zoomLevelSet	= liferea_webkit_change_zoom_level,
+	.hasSelection	= liferea_webkit_has_selection,
+	.copySelection	= liferea_webkit_copy_selection,
 	.scrollPagedown	= liferea_webkit_scroll_pagedown,
 	.setProxy	= liferea_webkit_set_proxy,
 	.setOffLine	= NULL // FIXME: blocked on https://bugs.webkit.org/show_bug.cgi?id=18893

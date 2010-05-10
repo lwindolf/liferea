@@ -197,6 +197,8 @@ typedef struct htmlviewImpl {
 	void		(*launch)		(GtkWidget *widget, const gchar *url);
 	gfloat		(*zoomLevelGet)		(GtkWidget *widget);
 	void		(*zoomLevelSet)		(GtkWidget *widget, gfloat zoom);
+	gboolean	(*hasSelection)		(GtkWidget *widget);
+	void		(*copySelection)	(GtkWidget *widget);
 	gboolean	(*scrollPagedown)	(GtkWidget *widget);
 	void		(*setProxy)		(const gchar *hostname, guint port, const gchar *username, const gchar *password);
 	void		(*setOffLine)		(gboolean offline);

@@ -22,6 +22,8 @@
 	  views for rule based matching anymore.
 	  (Lars Lindner)
 	* Added identi.ca bookmarking support. (Adrian Bunk)
+	* Added copy text selection to clipboard option.
+	  (patch by Ricardo Cruz)
 
 	* Updated Italian translation. (Gianvito Cavasoli)
 

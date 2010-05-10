@@ -409,6 +409,12 @@ on_popup_launch_link_activate (GtkWidget *widget, gpointer user_data)
 }
 
 static void
+on_popup_copy_activate (GtkWidget *widget, LifereaHtmlView *htmlview)
+{
+	(RENDERER (htmlview)->copySelection) (htmlview->priv->renderWidget); 
+}
+
+static void
 on_popup_copy_url_activate (GtkWidget *widget, gpointer user_data)
 {
 	GtkClipboard *clipboard;
@@ -452,17 +458,22 @@ on_popup_social_bm_link_activate (GtkWidget *widget, gpointer user_data)
 	g_free (url);
 }
 
-static void
+static GtkWidget *
 menu_add_option (GtkMenu *menu, const gchar *label, const gchar *stock, gpointer cb, gpointer user_data)
 {
 	GtkWidget *item, *image;
 
-	image = gtk_image_new_from_stock (stock, GTK_ICON_SIZE_MENU);
-	item = gtk_image_menu_item_new_with_mnemonic (label);
-	gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item), image);
+	if (label) {
+		image = gtk_image_new_from_stock (stock, GTK_ICON_SIZE_MENU);
+		item = gtk_image_menu_item_new_with_mnemonic (label);
+		gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item), image);
+	}
+	else
+		item = gtk_image_menu_item_new_from_stock (stock, NULL);
 	g_signal_connect (item, "activate", G_CALLBACK (cb), user_data);
 	gtk_widget_show (item);
 	gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+	return item;
 }
 
 static void
@@ -503,6 +514,12 @@ liferea_htmlview_prepare_context_menu (LifereaHtmlView *htmlview, GtkMenu *menu,
 		menu_add_separator (menu);
 		menu_add_option (menu, _("_Subscribe..."), "gtk-add", G_CALLBACK (on_popup_subscribe_url_activate), link);
 	} else {
+		GtkWidget *item;
+		item = menu_add_option (menu, NULL, GTK_STOCK_COPY, G_CALLBACK (on_popup_copy_activate), htmlview);
+		if (!(RENDERER (htmlview)->hasSelection) (htmlview->priv->renderWidget)) 
+			gtk_widget_set_sensitive (item, FALSE);
+
+		menu_add_separator (menu);
 		menu_add_option (menu, _("_Increase Text Size"), "gtk-zoom-in", G_CALLBACK (on_popup_zoomin_activate), htmlview);
 		menu_add_option (menu, _("_Decrease Text Size"), "gtk-zoom-out", G_CALLBACK (on_popup_zoomout_activate), htmlview);
 	}
