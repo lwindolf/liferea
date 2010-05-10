@@ -115,7 +115,7 @@ atom10_parse_content_construct (xmlNodePtr cur, feedParserCtxtPtr ctxt)
 			xmlChar *url;
 			
 			url = common_build_url (src, baseURL);
-			ret = g_strdup_printf (_("<p><a href=\"%s\">View this item's content.</a></p>"), url);
+			ret = g_markup_printf_escaped (_("<p><a href=\"%s\">View this item's content.</a></p>"), url);
 			
 			g_free (url);
 			xmlFree (baseURL);
@@ -232,7 +232,7 @@ atom10_parse_person_construct (xmlNodePtr cur)
 					invalid = TRUE;
 				g_free(email);
 				tmp = common_utf8_fix((gchar *)xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1));
-				email = g_strdup_printf(" - <a href=\"mailto:%s\">%s</a>", tmp, tmp);
+				email = g_markup_printf_escaped (" - <a href=\"mailto:%s\">%s</a>", tmp, tmp);
 				g_free(tmp);
 			}
 			
@@ -241,7 +241,7 @@ atom10_parse_person_construct (xmlNodePtr cur)
 					invalid = TRUE;
 				g_free (uri);
 				tmp = common_utf8_fix ((gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1));
-				uri = g_strdup_printf (" (<a href=\"%s\">Website</a>)", tmp);
+				uri = g_markup_printf_escaped (" (<a href=\"%s\">Website</a>)", tmp);
 				g_free (tmp);
 			}
 		} else {
@@ -606,7 +606,7 @@ atom10_parse_feed_generator (xmlNodePtr cur, feedParserCtxtPtr ctxt, itemPtr ip,
 		}
 		uri = xml_get_ns_attribute (cur, "uri", NULL);
 		if (uri) {
-			tmp = g_strdup_printf ("<a href=\"%s\">%s</a>", uri, ret);
+			tmp = g_markup_printf_escaped ("<a href=\"%s\">%s</a>", uri, ret);
 			g_free (uri);
 			g_free (ret);
 			ret = tmp;
