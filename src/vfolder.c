@@ -273,7 +273,6 @@ vfolder_update_counters (nodePtr node)
 	vfolder->node->needsUpdate = TRUE;
 	vfolder->node->unreadCount = 0;
 	vfolder->node->itemCount = g_list_length (vfolder->itemset->ids);
-	g_print("vfolder:%s -> now %u items\n", vfolder->node->title, vfolder->node->itemCount);
 }
 
 static void
