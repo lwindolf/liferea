@@ -83,9 +83,13 @@ ui_popup_add_menuitem (GtkWidget *menu, const gchar *label, gpointer callback, g
 		gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM(item), toggle - UI_POPUP_ITEM_IS_TOGGLE);
 	} else {
 		if (icon) {
-			item = gtk_image_menu_item_new_with_label (label);
-			image = gtk_image_new_from_stock (icon, GTK_ICON_SIZE_MENU);
-			gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item), image);
+			if (label) {
+				item = gtk_image_menu_item_new_with_label (label);
+				image = gtk_image_new_from_stock (icon, GTK_ICON_SIZE_MENU);
+				gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item), image);
+			} else {
+				item = gtk_image_menu_item_new_from_stock (icon, NULL);
+			}
 		} else {
 			item = gtk_menu_item_new_with_label (label);
 		}
@@ -176,12 +180,12 @@ ui_popup_systray_menu (GtkMenuPositionFunc func, guint button, guint32 activate_
 
 	ui_popup_add_menuitem (menu, _("_Work Offline"), on_onlinebtn_clicked, NULL, NULL, (!network_monitor_is_online ()) + UI_POPUP_ITEM_IS_TOGGLE);
 	ui_popup_add_menuitem (menu, _("_Update All"), on_menu_update_all, NULL, GTK_STOCK_REFRESH, 0);
-	ui_popup_add_menuitem (menu, _("_Preferences"), on_prefbtn_clicked, NULL, GTK_STOCK_PREFERENCES, 0);
+	ui_popup_add_menuitem (menu, NULL, on_prefbtn_clicked, NULL, GTK_STOCK_PREFERENCES, 0);
 
 	gtk_menu_shell_append (GTK_MENU_SHELL(menu), gtk_separator_menu_item_new());
 
 	ui_popup_add_menuitem (menu, _("_Show Liferea"), on_toggle_visibility, NULL, NULL, (!(gdk_window_get_state (gtk_widget_get_window (mainwindow)) & GDK_WINDOW_STATE_ICONIFIED) && gtk_widget_get_visible (mainwindow)) + UI_POPUP_ITEM_IS_TOGGLE);
-	ui_popup_add_menuitem (menu, _("_Quit"), on_popup_quit, NULL, GTK_STOCK_QUIT, 0);
+	ui_popup_add_menuitem (menu, NULL, on_popup_quit, NULL, GTK_STOCK_QUIT, 0);
 
 	ui_popup_menu_at_pos (menu, func, button, activate_time, user_data);
 }
@@ -296,8 +300,8 @@ ui_popup_node_menu (nodePtr node, gboolean validSelection, guint button, guint32
 
 	if (validSelection) {
 		if (writeableFeedlist) {
-			ui_popup_add_menuitem (menu, _("_Delete"), ui_popup_delete, node, GTK_STOCK_DELETE, 0);
-			ui_popup_add_menuitem (menu, _("_Properties..."), ui_popup_properties, node, GTK_STOCK_PROPERTIES, 0);
+			ui_popup_add_menuitem (menu, NULL, ui_popup_delete, node, GTK_STOCK_DELETE, 0);
+			ui_popup_add_menuitem (menu, NULL, ui_popup_properties, node, GTK_STOCK_PROPERTIES, 0);
 		}
 	}
 
