@@ -1,7 +1,7 @@
 /**
  * @file webkit.c  WebKit browser module for Liferea
  *
- * Copyright (C) 2007-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2010 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2008 Lars Strojny <lars@strojny.net>
  * Copyright (C) 2009 Emilio Pozuelo Monfort <pochu27@gmail.com>
  * Copyright (C) 2009 Adrian Bunk <bunk@users.sourceforge.net>
@@ -500,7 +500,16 @@ liferea_webkit_has_selection (GtkWidget *scrollpane)
 {
 	WebKitWebView *view;
 	view = WEBKIT_WEB_VIEW (gtk_bin_get_child (GTK_BIN (scrollpane)));
-	return webkit_web_view_has_selection (view);
+
+	/* 
+	   Currently (libwebkit-1.0 1.2.0) this doesn't work:
+
+		return webkit_web_view_has_selection (view);
+
+	   So we use *_can_copy_clipboard() as a workaround.
+	*/
+	
+	return webkit_web_view_can_copy_clipboard (view);
 }
 
 /**
