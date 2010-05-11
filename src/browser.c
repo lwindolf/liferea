@@ -39,8 +39,11 @@ browser_execute (const gchar *cmd, const gchar *uri, gboolean sync)
 	g_assert (cmd != NULL);
 	g_assert (uri != NULL);
 
-	/* We must escape all ',' in the URL */
-	tmpUri = common_strreplace (g_strdup (uri), ",", "%2C");
+	tmpUri = g_strdup (uri);
+
+	/* If we run using a "-remote openURL()" mechanism we need to escape commata */
+	if (strstr(cmd, "openURL("))
+		tmpUri = common_strreplace (tmpUri, ",", "%2C");
 
 	/* If there is no %s in the command, then just append %s */
 	if (strstr (cmd, "%s"))
