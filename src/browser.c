@@ -184,6 +184,10 @@ browser_execute (const gchar *cmd, const gchar *uri, gboolean sync)
 
 	safeUri = common_uri_sanitize (uri);
 
+	/* If we run using a "-remote openURL()" mechanism we need to escape commata */
+	if (strstr(cmd, "openURL("))
+		safeUri = common_strreplace (safeUri, ",", "%2C");
+
 	/* If there is no %s in the command, then just append %s */
 	if (strstr (cmd, "%s"))
 		tmp = g_strdup (cmd);

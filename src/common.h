@@ -102,9 +102,9 @@ xmlChar * common_uri_unescape(const xmlChar *uri);
 
 /**
  * Takes an URI of uncertain safety (e.g. partially escaped) and
- * returns if fully escaped safe for passing on the command line
- * and in Javascript content (-remoteUrl). This means the resulting
- * URL is ensured to have no quotes, spaces or commata.
+ * returns if fully escaped safe for passing to a shell or browser. 
+ * This means the resulting URL is ensured to have no quotes, spaces 
+ * or &. Note: commata are not escaped!
  *
  * @param uri		the URI to escape
  *

@@ -28,6 +28,8 @@
 	  (reported by Ricardo Cruz)
 	* Fixes SF #2829961: spaces are no urlencoded on copy link
 	  (reported by Winston Weinert)
+	* Fixes SF #2901447: comma in link prevents launching browser
+	  (reported by Rafal Ochmanski)
 
 	* Updated Italian translation. (Gianvito Cavasoli)
 

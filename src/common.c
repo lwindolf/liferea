@@ -143,12 +143,11 @@ common_uri_sanitize (const xmlChar *uri)
 {
 	xmlChar *tmp, *result;
 	
-	/* We must escape all dangerous characters (e.g. comma and spaces)
+	/* We must escape all dangerous characters (e.g. & and spaces)
 	   in the URL. As we do not know if the URL is already escaped we
 	   simply unescape and reescape it. */
 	tmp = common_uri_unescape (uri);
 	result = common_uri_escape (tmp);
-	result = common_strreplace (result, ",", "%2C");
 	g_free (tmp);
 
 	return result;
