@@ -500,19 +500,21 @@ liferea_htmlview_prepare_context_menu (LifereaHtmlView *htmlview, GtkMenu *menu,
 
 	/* and now add all we want to see */
 	if (link && !liferea_htmlview_is_special_url (link) && !g_str_has_prefix(link, "javascript:") && !g_str_has_prefix(link, "data:")) {
-		gchar *path;
+		gchar *path, *safeLink;
+
+		safeLink = common_uri_sanitize (link);		
 		
-		menu_add_option (menu, _("Launch Link In _Tab"), NULL, G_CALLBACK (on_popup_open_link_in_tab_activate), link);
-		menu_add_option (menu, _("_Launch Link In Browser"), NULL, G_CALLBACK (on_popup_launch_link_activate), link);
+		menu_add_option (menu, _("Launch Link In _Tab"), NULL, G_CALLBACK (on_popup_open_link_in_tab_activate), safeLink);
+		menu_add_option (menu, _("_Launch Link In Browser"), NULL, G_CALLBACK (on_popup_launch_link_activate), safeLink);
 		menu_add_separator (menu);
 		
 		path = g_strdup_printf (_("_Bookmark Link at %s"), social_get_bookmark_site ());
-		menu_add_option (menu, path, NULL, on_popup_social_bm_link_activate, link);
+		menu_add_option (menu, path, NULL, on_popup_social_bm_link_activate, safeLink);
 		g_free (path);
 		
-		menu_add_option (menu, _("_Copy Link Location"), "gtk-copy", G_CALLBACK (on_popup_copy_url_activate), link);
+		menu_add_option (menu, _("_Copy Link Location"), "gtk-copy", G_CALLBACK (on_popup_copy_url_activate), safeLink);
 		menu_add_separator (menu);
-		menu_add_option (menu, _("_Subscribe..."), "gtk-add", G_CALLBACK (on_popup_subscribe_url_activate), link);
+		menu_add_option (menu, _("_Subscribe..."), "gtk-add", G_CALLBACK (on_popup_subscribe_url_activate), safeLink);
 	} else {
 		GtkWidget *item;
 		item = menu_add_option (menu, NULL, GTK_STOCK_COPY, G_CALLBACK (on_popup_copy_activate), htmlview);

@@ -26,6 +26,8 @@
 	  (patch by Ricardo Cruz)
 	* Fixes SF #2994622: Atom author URIs not markup escaped.
 	  (reported by Ricardo Cruz)
+	* Fixes SF #2829961: spaces are no urlencoded on copy link
+	  (reported by Winston Weinert)
 
 	* Updated Italian translation. (Gianvito Cavasoli)
 

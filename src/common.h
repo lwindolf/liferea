@@ -100,6 +100,18 @@ xmlChar * common_uri_escape(const xmlChar *uri);
  */
 xmlChar * common_uri_unescape(const xmlChar *uri);
 
+/**
+ * Takes an URI of uncertain safety (e.g. partially escaped) and
+ * returns if fully escaped safe for passing on the command line
+ * and in Javascript content (-remoteUrl). This means the resulting
+ * URL is ensured to have no quotes, spaces or commata.
+ *
+ * @param uri		the URI to escape
+ *
+ * @returns new escaped URI string
+ */
+xmlChar * common_uri_sanitize(const xmlChar *uri);
+
 /** 
  * To correctly escape and expand URLs, does not touch the
  * passed strings.

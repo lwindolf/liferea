@@ -174,7 +174,7 @@ static gboolean
 browser_execute (const gchar *cmd, const gchar *uri, gboolean sync)
 {
 	GError		*error = NULL;
-	gchar 		*tmpUri, *tmp, **argv, **iter;
+	gchar 		*safeUri, *tmp, **argv, **iter;
 	gint 		argc;
 	gint		status = 0;
 	gboolean 	done = FALSE;
@@ -182,8 +182,7 @@ browser_execute (const gchar *cmd, const gchar *uri, gboolean sync)
 	g_assert (cmd != NULL);
 	g_assert (uri != NULL);
 
-	/* We must escape all ',' in the URL */
-	tmpUri = common_strreplace (g_strdup (uri), ",", "%2C");
+	safeUri = common_uri_sanitize (uri);
 
 	/* If there is no %s in the command, then just append %s */
 	if (strstr (cmd, "%s"))
@@ -203,7 +202,7 @@ browser_execute (const gchar *cmd, const gchar *uri, gboolean sync)
   
 	if (argv) {
 		for (iter = argv; *iter != NULL; iter++)
-			*iter = common_strreplace (*iter, "%s", tmpUri);
+			*iter = common_strreplace (*iter, "%s", safeUri);
 	}
 
 	tmp = g_strjoinv (" ", argv);
@@ -222,7 +221,7 @@ browser_execute (const gchar *cmd, const gchar *uri, gboolean sync)
 		done = TRUE;
 	}
   
-	g_free (tmpUri);
+	g_free (safeUri);
 	g_free (tmp);
 	g_strfreev (argv);
   
