@@ -83,22 +83,22 @@ const gchar *	common_get_cache_path(void);
 gchar * common_create_cache_filename(const gchar *folder, const gchar *filename, const gchar *extension);
 
 /**
- * Takes an URL and returns a new string containing the escaped URL.
+ * Takes an URI and returns a new string containing the escaped URI.
  *
- * @param url		the URL to escape
+ * @param uri		the URI to escape
  *
- * @returns new escaped URL string
+ * @returns new escaped URI string
  */
-xmlChar * common_uri_escape(const xmlChar *url);
+xmlChar * common_uri_escape(const xmlChar *uri);
 
 /**
- * Takes an URL and returns a new string containing the unescaped URL.
+ * Takes an URI and returns a new string containing the unescaped URI.
  *
- * @param url		the URL to unescape
+ * @param uri		the URI to unescape
  *
- * @returns new unescaped URL string
+ * @returns new unescaped URI string
  */
-xmlChar * common_uri_unescape(const xmlChar *url);
+xmlChar * common_uri_unescape(const xmlChar *uri);
 
 /** 
  * To correctly escape and expand URLs, does not touch the
