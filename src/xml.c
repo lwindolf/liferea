@@ -237,6 +237,7 @@ xhtml_is_well_formed (const gchar *data)
 }
 
 static GSList *dhtml_strippers = NULL;
+static GSList *unsupported_tag_strippers = NULL;
 
 static void
 xhtml_stripper_add (GSList **strippers, const gchar *pattern)
@@ -287,6 +288,16 @@ xhtml_strip_dhtml (const gchar *html)
 	}
 	
 	return xhtml_strip (html, dhtml_strippers);
+}
+
+gchar *
+xhtml_strip_unsupported_tags (const gchar *html)
+{
+	if (!unsupported_tag_strippers) {
+		xhtml_stripper_add(&unsupported_tag_strippers, "<\\s*/?wbr[^>]*/?\\s*>");
+	}
+	
+	return xhtml_strip(html, unsupported_tag_strippers);
 }
 
 typedef struct {

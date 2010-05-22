@@ -225,6 +225,7 @@ item_to_xml (itemPtr item, xmlNodePtr parentNode)
 	xmlNodePtr	duplicatesNode;		
 	xmlNodePtr	itemNode;
 	gchar		*tmp;
+	gchar		*tmp2;
 	
 	itemNode = xmlNewChild (parentNode, NULL, "item", NULL);
 	g_return_if_fail (itemNode);
@@ -233,8 +234,10 @@ item_to_xml (itemPtr item, xmlNodePtr parentNode)
 
 	if (item_get_description (item)) {
 		tmp = xhtml_strip_dhtml (item_get_description (item));
-		xmlNewTextChild (itemNode, NULL, "description", tmp);
+		tmp2 = xhtml_strip_unsupported_tags (tmp);
+		xmlNewTextChild (itemNode, NULL, "description", tmp2);
 		g_free (tmp);
+		g_free (tmp2);
 	}
 	
 	if (item_get_source (item))

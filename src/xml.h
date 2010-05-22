@@ -1,7 +1,7 @@
 /**
  * @file xml.h  XML helper methods for Liferea
  * 
- * Copyright (C) 2003-2009  Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2010  Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006  Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -75,6 +75,16 @@ gchar * xhtml_extract (xmlNodePtr cur, gint xhtmlMode, const gchar *defaultBase)
  * @return newly allocated stripped HTML string
  */
 gchar * xhtml_strip_dhtml (const gchar *html);
+
+/**
+ * Strips HTML tags we cannot or do not want to render, which
+ * would mess up HTML rendering.
+ *
+ * @param html	some HTML content
+ *
+ * @return newly allocated stripped HTML string
+ */
+gchar * xhtml_strip_unsupported_tags (const gchar *html);
 
 /**
  * Convert the given string to proper XHTML content.

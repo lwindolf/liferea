@@ -30,6 +30,8 @@
 	  (reported by Winston Weinert)
 	* Fixes SF #2901447: comma in link prevents launching browser
 	  (reported by Rafal Ochmanski)
+	* Fixes SF #3002400: <wbr> tags makes text invisible
+	  (patch by Sergey Snitsaruk)
 
 	* Updated Italian translation. (Gianvito Cavasoli)
 
