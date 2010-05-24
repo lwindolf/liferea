@@ -23,7 +23,6 @@
 
 #include <glib.h>
 
-#include "attention.h"
 #include "item.h"
 #include "itemlist.h"
 #include "itemset.h"
@@ -307,20 +306,5 @@ void db_node_update (nodePtr node);
  * @param id		the node id
  */
 void db_node_remove (nodePtr node);
-
-/**
- * Saves the attention statistics of a given category.
- *
- * @param stat	category statistic info
- */
-void db_attention_stat_save (categoryStatPtr stat);
-
-/**
- * Loads attention statistics of all categories.
- *
- * @param statHash	a hash table to add all category statistics.
- * @param statList	a list to add all category statistics
- */
-void db_attention_stats_load (GHashTable **statHash, GSList **statList);
 
 #endif

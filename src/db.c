@@ -590,12 +590,6 @@ open:
 	db_new_statement ("nodeUpdateStmt",
 	                  "REPLACE INTO node (node_id,parent_id,title,type,expanded,view_mode,sort_column,sort_reversed) VALUES (?,?,?,?,?,?,?,?)");
 			  
-	db_new_statement ("attentionStatsLoadStmt",
-	                  "SELECT category_id,category_name,count FROM attention_stats");
-			  
-	db_new_statement ("attentionStatUpdateStmt",
-	                  "REPLACE INTO attention_stats (category_id,category_name,count) VALUES (?,?,?)");
-
 	g_assert (sqlite3_get_autocommit (db));
 	
 	debug_exit ("db_init");
@@ -1805,49 +1799,3 @@ db_node_update (nodePtr node)
 	debug_end_measurement (DEBUG_DB, "subscription_update");
 }
 
-void
-db_attention_stat_save (categoryStatPtr stat)
-{
-	sqlite3_stmt	*stmt;
-	gint		res;
-	
-	debug_start_measurement (DEBUG_DB);
-	
-	stmt = db_get_statement ("attentionStatUpdateStmt");
-	sqlite3_bind_text (stmt, 1, stat->id, -1, SQLITE_TRANSIENT);
-	sqlite3_bind_text (stmt, 2, stat->name, -1, SQLITE_TRANSIENT);
-	sqlite3_bind_int  (stmt, 3, stat->count);
-	
-	res = sqlite3_step (stmt);
-	if (SQLITE_DONE != res)
-		g_warning ("Could not save attention statistic data for category %s in DB (error code %d: %s)!", stat->name, res, sqlite3_errmsg (db));
-	
-	debug_end_measurement (DEBUG_DB, "attention_stat_save");
-}
-
-void
-db_attention_stats_load (GHashTable **statHash, GSList **statList)
-{
-	sqlite3_stmt	*stmt;
-	
-	debug_start_measurement (DEBUG_DB);
-
-	*statHash = g_hash_table_new (g_str_hash, g_str_equal);
-	stmt = db_get_statement ("attentionStatsLoadStmt");
-
-	while (sqlite3_step (stmt) == SQLITE_ROW) {
-		categoryStatPtr stat = g_new0 (struct categoryStat, 1);
-		stat->id = g_strdup (sqlite3_column_text (stmt, 0));
-		stat->name = g_strdup (sqlite3_column_text (stmt, 1));
-		stat->count = sqlite3_column_int (stmt, 2);
-		g_hash_table_insert (*statHash, stat->id, (gpointer)stat);
-		*statList = g_slist_append (*statList, (gpointer)stat);
-
-		debug3 (DEBUG_DB, "attention stat for %s (%s) = %d\n",
-		                  sqlite3_column_text(stmt, 0),
-		                  sqlite3_column_text(stmt, 1),
-		                  sqlite3_column_int(stmt, 2));
-	}
-	
-	debug_end_measurement (DEBUG_DB, "attention_stats_load");
-}
