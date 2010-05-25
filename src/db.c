@@ -187,7 +187,6 @@ db_init (void)
 		
 	debug_enter ("db_init");
 	
-open:
 	filename = common_create_cache_filename (NULL, "liferea", "db");
 	debug1 (DEBUG_DB, "Opening DB file %s...", filename);
 	res = sqlite3_open (filename, &db);
@@ -348,10 +347,6 @@ open:
 				sqlite3_finalize (stmt);
 			}
 		}
-
-		db_deinit ();			
-		debug0 (DEBUG_DB, "Reopening DB after migration...");
-		goto open;
 	}
 
 	if (SCHEMA_TARGET_VERSION != db_get_schema_version ())
