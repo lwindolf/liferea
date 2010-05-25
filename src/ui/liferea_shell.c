@@ -694,27 +694,35 @@ on_about_activate (GtkMenuItem *menuitem, gpointer user_data)
 }
 
 static void
+liferea_shell_add_html_tab (const gchar *file, const gchar *name)
+{
+	gchar *filepattern = g_strdup_printf (PACKAGE_DATA_DIR "/" PACKAGE "/doc/html/%s", file);
+	gchar *filename = common_get_localized_filename (filepattern);
+	gchar *fileuri = g_strdup_printf ("file://%s", filename);
+
+	browser_tabs_add_new (fileuri, name, TRUE);
+
+	g_free (filepattern);
+	g_free (filename);
+	g_free (fileuri);
+}
+
+static void
 on_topics_activate (GtkMenuItem *menuitem, gpointer user_data)
 {
-	gchar *filename = g_strdup_printf ("file://" PACKAGE_DATA_DIR "/" PACKAGE "/doc/html/%s", _("topics_en.html"));
-	browser_tabs_add_new (filename, _("Help Topics"), TRUE);
-	g_free (filename);
+	liferea_shell_add_html_tab ("topics_%s.html", _("Help Topics"));
 }
 
 static void
 on_quick_reference_activate (GtkMenuItem *menuitem, gpointer user_data)
 {
-	gchar *filename = g_strdup_printf ("file://" PACKAGE_DATA_DIR "/" PACKAGE "/doc/html/%s", _("reference_en.html"));
-	browser_tabs_add_new (filename, _("Quick Reference"), TRUE);
-	g_free (filename);
+	liferea_shell_add_html_tab ("reference_%s.html", _("Quick Reference"));
 }
 
 static void
 on_faq_activate (GtkMenuItem *menuitem, gpointer user_data)
 {
-	gchar *filename = g_strdup_printf ("file://" PACKAGE_DATA_DIR "/" PACKAGE "/doc/html/%s", _("faq_en.html"));
-	browser_tabs_add_new (filename, _("FAQ"), TRUE);
-	g_free (filename);
+	liferea_shell_add_html_tab ("faq_%s.html", _("FAQ"));
 }
 
 static void

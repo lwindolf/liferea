@@ -369,3 +369,24 @@ common_get_mod_time (const gchar *file)
 		return 0;
 	}
 }
+
+gchar *
+common_get_localized_filename (const gchar *str)
+{
+	const gchar *const *languages = g_get_language_names();
+	int i = 0;
+
+	while (languages[i] != NULL) {
+		gchar *filename = g_strdup_printf (str, strcmp (languages[i], "C") ? languages[i] : "en");
+
+		if (g_file_test (filename, G_FILE_TEST_IS_REGULAR))
+			return filename;
+
+		g_free (filename);
+		i++;
+	}
+
+	g_warning ("No file found for %s", str);
+
+	return NULL;
+}

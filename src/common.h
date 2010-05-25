@@ -169,4 +169,16 @@ char * common_strcasestr(const char *phaystack, const char *pneedle);
  */
 time_t common_get_mod_time(const gchar *file);
 
+/**
+ * Create a localized filename.
+ * This function tries all applicable locale names and replaces
+ * the %s in str with the first one that points to an existing file.
+ * "en" is always among the searched locale names.
+ *
+ * @param str		full path containing one %s
+ *
+ * @returns		a string with %s replaced (to be freed by the caller), or NULL
+ */
+gchar *common_get_localized_filename (const gchar *str);
+
 #endif

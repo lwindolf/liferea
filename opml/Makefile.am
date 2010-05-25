@@ -1,5 +1,5 @@
 EXTRA_DIST = \
-	feedlist.opml \
+	feedlist_en.opml \
 	feedlist_bg.opml \
 	feedlist_ca.opml \
 	feedlist_de.opml \

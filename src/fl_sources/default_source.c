@@ -102,15 +102,10 @@ default_source_import (nodePtr node)
 		/* if there is no feedlist.opml we provide a default feed list */
 		g_free (filename);
 		
-		/* "feedlist.opml" is translatable so that translators can provide a localized default feed list */
-		filename = g_build_filename (PACKAGE_DATA_DIR, PACKAGE, "opml", _("feedlist.opml"), NULL);
-		
-		/* sanity check to catch wrong filenames supplied in translations */
-		if (!g_file_test (filename, G_FILE_TEST_EXISTS)) {
-			g_warning ("Configured localized feed list \"%s\" does not exist!", filename);
-			g_free (filename);
-			filename = g_build_filename (PACKAGE_DATA_DIR, PACKAGE, "opml", "feedlist.opml", NULL);
-		}
+		filename = common_get_localized_filename (PACKAGE_DATA_DIR "/" PACKAGE "/opml/feedlist_%s.opml");
+
+		if (!filename)
+			g_error ("No default feedlist found.");
 	}
 
 	if (!import_OPML_feedlist (filename, node, FALSE, TRUE))

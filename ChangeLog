@@ -34,6 +34,7 @@
 	  (patch by Sergey Snitsaruk)
 	* Improve the UI responsiveness by using sqlite3async.
 	  (patch by Wictor Lund)
+	* Improved localization handling of filenames. (Adrian Bunk)
 
 	* Updated Chinese/Simplified translation. (Aron Xu)
 	* Updated Italian translation. (Gianvito Cavasoli)
