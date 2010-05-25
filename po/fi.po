@@ -13,10 +13,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-22 14:32+0300\n"
+"POT-Creation-Date: 2010-05-25 22:29+0300\n"
 "PO-Revision-Date: 2005-05-14 19:17+0300\n"
 "Last-Translator: Pauli Virtanen <pauli.virtanen@hut.fi>\n"
 "Language-Team: Finnish <lokalisointi-laatu@linux-aktivaattori.org>\n"
+"Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -161,7 +162,7 @@ msgstr ""
 msgid "Shared by"
 msgstr ""
 
-#: ../xslt/item.xml.in.h:13 ../glade/liferea.glade.h:92
+#: ../xslt/item.xml.in.h:13 ../glade/liferea.glade.h:91
 #, fuzzy
 msgid "Source"
 msgstr "Lähde:"
@@ -207,12 +208,12 @@ msgstr "Uusi ikkuna"
 msgid "Search Folder:"
 msgstr "Etsi:"
 
-#: ../src/browser.c:55 ../src/browser.c:75
+#: ../src/browser.c:58 ../src/browser.c:78
 #, c-format
 msgid "Browser command failed: %s"
 msgstr "Selainkomento epäonnistui: %s"
 
-#: ../src/browser.c:78
+#: ../src/browser.c:81
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "\"%s\" käynnistyy"
@@ -344,35 +345,35 @@ msgstr "\"%s\" päivitetty."
 msgid "\"%s\" is not available"
 msgstr "\"%s\" ei saatavilla"
 
-#: ../src/feed_parser.c:132
+#: ../src/feed_parser.c:133
 msgid ""
 "The URL you want Liferea to subscribe to points to a webpage and the auto "
 "discovery found no feeds on this page. Maybe this webpage just does not "
 "support feed auto discovery."
 msgstr ""
 
-#: ../src/feed_parser.c:165
+#: ../src/feed_parser.c:166
 #, fuzzy, c-format
 msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
 msgstr ""
 "<p>XML-virhe syötteen lukemisessa. Syötteen \"%s\" lataaminen ei onnistunut."
 "</p>"
 
-#: ../src/feed_parser.c:170
+#: ../src/feed_parser.c:171
 #, fuzzy
 msgid "Empty document!"
 msgstr "<p>Tyhjä asiakirja.</p>"
 
-#: ../src/feed_parser.c:179
+#: ../src/feed_parser.c:180
 #, fuzzy
 msgid "Invalid XML!"
 msgstr "<p>Virheellistä XML:ää.</p>"
 
-#: ../src/feed_parser.c:222
+#: ../src/feed_parser.c:223
 msgid "Source points to HTML document."
 msgstr ""
 
-#: ../src/feed_parser.c:225
+#: ../src/feed_parser.c:226
 msgid "Could not determine the feed type."
 msgstr ""
 
@@ -473,20 +474,20 @@ msgid "Print debugging messages for the given topic"
 msgstr ""
 "  --debug-cache    Tulosta vianjäljitysviestejä välivaraston käsittelystä"
 
-#: ../src/main.c:217
+#: ../src/main.c:218
 msgid "Liferea, the Linux Feed Reader"
 msgstr ""
 
-#: ../src/main.c:218
+#: ../src/main.c:219
 msgid "For more information, please visit http://liferea.sourceforge.net/"
 msgstr ""
 
 #. GTK theme support
-#: ../src/main.c:247 ../glade/liferea.glade.h:64
+#: ../src/main.c:248 ../glade/liferea.glade.h:63
 msgid "Liferea"
 msgstr "Liferea"
 
-#: ../src/main.c:256
+#: ../src/main.c:257
 msgid "Liferea seems to be running already!"
 msgstr ""
 
@@ -499,39 +500,39 @@ msgid ""
 msgstr ""
 
 #. Some libsoup transport errors
-#: ../src/net.c:332
+#: ../src/net.c:361
 msgid "The update request was cancelled"
 msgstr ""
 
-#: ../src/net.c:333
+#: ../src/net.c:362
 msgid "Unable to resolve destination host name"
 msgstr ""
 
-#: ../src/net.c:334
+#: ../src/net.c:363
 msgid "Unable to resolve proxy host name"
 msgstr ""
 
-#: ../src/net.c:335
+#: ../src/net.c:364
 #, fuzzy
 msgid "Unable to connect to remote host"
 msgstr "Yhteyden muodostaminen etäkoneeseen ei onnistunut"
 
-#: ../src/net.c:336
+#: ../src/net.c:365
 msgid "Unable to connect to proxy"
 msgstr ""
 
-#: ../src/net.c:337
+#: ../src/net.c:366
 msgid ""
 "A network error occurred, or the other end closed the connection unexpectedly"
 msgstr ""
 
 #. http 3xx redirection
-#: ../src/net.c:340
+#: ../src/net.c:369
 msgid "The resource moved permanently to a new location"
 msgstr ""
 
 #. http 4xx client error
-#: ../src/net.c:343
+#: ../src/net.c:372
 #, fuzzy
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
@@ -540,153 +541,153 @@ msgstr ""
 "Tämän syötteen lukemiseen ei ole lupaa. Kirjoita oikea käyttäjätunnus ja "
 "salasana syötteen ominaisuusikkunaan."
 
-#: ../src/net.c:345
+#: ../src/net.c:374
 #, fuzzy
 msgid "Payment required"
 msgstr "Maksullinen"
 
-#: ../src/net.c:346
+#: ../src/net.c:375
 msgid "You're not allowed to access this resource"
 msgstr ""
 
-#: ../src/net.c:347
+#: ../src/net.c:376
 msgid "Resource Not Found"
 msgstr "Resurssia ei löydy"
 
-#: ../src/net.c:348
+#: ../src/net.c:377
 msgid "Method Not Allowed"
 msgstr "Metodi ei ole mahdollinen"
 
-#: ../src/net.c:349
+#: ../src/net.c:378
 msgid "Not Acceptable"
 msgstr "Ei kelvollinen"
 
-#: ../src/net.c:350
+#: ../src/net.c:379
 #, fuzzy
 msgid "Proxy authentication required"
 msgstr "Välityspalvelin vaatii todennuksen"
 
-#: ../src/net.c:351
+#: ../src/net.c:380
 #, fuzzy
 msgid "Request timed out"
 msgstr "Kyselyn aikakatkaisu"
 
-#: ../src/net.c:352
+#: ../src/net.c:381
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "Resurssia ei ole olemassa. Poista syöte."
 
-#: ../src/net.c:357
+#: ../src/net.c:386
 msgid "There was an internal error in the update process"
 msgstr ""
 
-#: ../src/net.c:359
+#: ../src/net.c:388
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "Syöte ei ole käytettävissä: palvelin vaati ei-tuettua uudelleenohjausta."
 
-#: ../src/net.c:361
+#: ../src/net.c:390
 msgid "Client Error"
 msgstr "Asiakasohjelman virhe"
 
-#: ../src/net.c:363
+#: ../src/net.c:392
 msgid "Server Error"
 msgstr "Palvelimen virhe"
 
-#: ../src/net.c:365
+#: ../src/net.c:394
 #, fuzzy
 msgid "An unknown networking error happened!"
 msgstr "(tuntematon verkkovirhe tapahtui)"
 
 #. SQL condition builder function	in-memory check function	feedlist.opml rule id           rule menu label         positive menu option    negative menu option    has param
 #. ========================================================================================================================================================================================
-#: ../src/rule.c:373
+#: ../src/rule.c:371
 msgid "Item"
 msgstr "Otsikko"
 
-#: ../src/rule.c:373 ../src/rule.c:374 ../src/rule.c:375 ../src/rule.c:376
+#: ../src/rule.c:371 ../src/rule.c:372 ../src/rule.c:373 ../src/rule.c:374
 msgid "does contain"
 msgstr "sisältää"
 
-#: ../src/rule.c:373 ../src/rule.c:374 ../src/rule.c:375 ../src/rule.c:376
+#: ../src/rule.c:371 ../src/rule.c:372 ../src/rule.c:373 ../src/rule.c:374
 msgid "does not contain"
 msgstr "ei sisällä"
 
-#: ../src/rule.c:374
+#: ../src/rule.c:372
 msgid "Item title"
 msgstr "Otsikon nimi"
 
-#: ../src/rule.c:375
+#: ../src/rule.c:373
 msgid "Item body"
 msgstr "Otsikon sisältö"
 
-#: ../src/rule.c:376
+#: ../src/rule.c:374
 msgid "Feed title"
 msgstr "Syötteen nimi"
 
-#: ../src/rule.c:377
+#: ../src/rule.c:375
 msgid "Read status"
 msgstr "Luettu"
 
-#: ../src/rule.c:377
+#: ../src/rule.c:375
 msgid "is unread"
 msgstr "lukematon"
 
-#: ../src/rule.c:377
+#: ../src/rule.c:375
 msgid "is read"
 msgstr "luettu"
 
-#: ../src/rule.c:378
+#: ../src/rule.c:376
 msgid "Flag status"
 msgstr "Merkintätila"
 
-#: ../src/rule.c:378
+#: ../src/rule.c:376
 msgid "is flagged"
 msgstr "merkitty"
 
-#: ../src/rule.c:378
+#: ../src/rule.c:376
 msgid "is unflagged"
 msgstr "merkitsemätön"
 
-#: ../src/rule.c:379
+#: ../src/rule.c:377
 #, fuzzy
 msgid "Update status"
 msgstr "Luettu"
 
-#: ../src/rule.c:379
+#: ../src/rule.c:377
 #, fuzzy
 msgid "was updated"
 msgstr "\"%s\" päivitetty."
 
-#: ../src/rule.c:379
+#: ../src/rule.c:377
 #, fuzzy
 msgid "was not updated"
 msgstr "sisältö viimeksi päivitetty"
 
-#: ../src/rule.c:380
+#: ../src/rule.c:378
 msgid "Podcast"
 msgstr ""
 
-#: ../src/rule.c:380
+#: ../src/rule.c:378
 #, fuzzy
 msgid "included"
 msgstr "liitetty kuva"
 
-#: ../src/rule.c:380
+#: ../src/rule.c:378
 #, fuzzy
 msgid "not included"
 msgstr "liitetty kuva"
 
-#: ../src/rule.c:381 ../src/ui/attention_profile_dialog.c:173
+#: ../src/rule.c:379
 #, fuzzy
 msgid "Category"
 msgstr "luokka"
 
-#: ../src/rule.c:381
+#: ../src/rule.c:379
 #, fuzzy
 msgid "is set"
 msgstr "luettu"
 
-#: ../src/rule.c:381
+#: ../src/rule.c:379
 msgid "is not set"
 msgstr ""
 
@@ -968,7 +969,7 @@ msgstr ""
 msgid "_View"
 msgstr "_Näytä"
 
-#: ../src/ui/liferea_shell.c:851 ../src/ui/liferea_htmlview.c:538
+#: ../src/ui/liferea_shell.c:851 ../src/ui/liferea_htmlview.c:543
 msgid "_Increase Text Size"
 msgstr "_Kasvata tekstin kokoa"
 
@@ -976,7 +977,7 @@ msgstr "_Kasvata tekstin kokoa"
 msgid "Increases the text size of the item view."
 msgstr "Kasvattaa tekstin kokoa näkymässä."
 
-#: ../src/ui/liferea_shell.c:853 ../src/ui/liferea_htmlview.c:539
+#: ../src/ui/liferea_shell.c:853 ../src/ui/liferea_htmlview.c:544
 msgid "_Decrease Text Size"
 msgstr "_Pienennä tekstin kokoa"
 
@@ -1275,17 +1276,12 @@ msgid ""
 "folder to your feed list."
 msgstr ""
 
-#: ../src/ui/attention_profile_dialog.c:183
-#, fuzzy
-msgid "Count"
-msgstr "Lifereasta"
-
-#: ../src/ui/auth_dialog.c:157 ../glade/auth.glade.h:3
+#: ../src/ui/auth_dialog.c:162 ../glade/auth.glade.h:3
 #, no-c-format
 msgid "Enter the username and password for \"%s\" (%s):"
 msgstr "Kirjoita syötteen \"%s\" (%s) käyttäjätunnus ja salasana:"
 
-#: ../src/ui/auth_dialog.c:158
+#: ../src/ui/auth_dialog.c:163
 msgid "Unknown source"
 msgstr "Tuntematon lähde"
 
@@ -1321,27 +1317,27 @@ msgid "Liferea is in offline mode. No update possible."
 msgstr ""
 "Liferea ei ole yhteydessä verkkoon, joten päivittäminen ei ole mahdollista."
 
-#: ../src/ui/liferea_htmlview.c:526
+#: ../src/ui/liferea_htmlview.c:531
 #, fuzzy
 msgid "Launch Link In _Tab"
 msgstr "/Avaa linkki _välilehdessä"
 
-#: ../src/ui/liferea_htmlview.c:527
+#: ../src/ui/liferea_htmlview.c:532
 #, fuzzy
 msgid "_Launch Link In Browser"
 msgstr "/_Avaa linkki selaimessa"
 
-#: ../src/ui/liferea_htmlview.c:530 ../src/ui/ui_popup.c:133
+#: ../src/ui/liferea_htmlview.c:535 ../src/ui/ui_popup.c:133
 #, c-format
 msgid "_Bookmark Link at %s"
 msgstr ""
 
-#: ../src/ui/liferea_htmlview.c:534
+#: ../src/ui/liferea_htmlview.c:539
 #, fuzzy
 msgid "_Copy Link Location"
 msgstr "/_Kopioi linkki"
 
-#: ../src/ui/liferea_htmlview.c:536
+#: ../src/ui/liferea_htmlview.c:541
 #, fuzzy
 msgid "_Subscribe..."
 msgstr "/_Uusi syöte..."
@@ -1677,11 +1673,11 @@ msgstr ""
 msgid "%b %d %H:%M"
 msgstr ""
 
-#: ../src/fl_sources/bloglines_source.c:80
+#: ../src/fl_sources/bloglines_source.c:81
 msgid "Bloglines"
 msgstr ""
 
-#: ../src/fl_sources/bloglines_source.c:81
+#: ../src/fl_sources/bloglines_source.c:82
 msgid ""
 "Integrate the feed list of your Bloglines account. Liferea will present your "
 "Bloglines subscription as a read-only subtree in the feed list."
@@ -1693,51 +1689,51 @@ msgid "feedlist.opml"
 msgstr "feedlist.opml"
 
 #: ../src/fl_sources/default_source.c:180
-#: ../src/fl_sources/google_source.c:248 ../glade/new_subscription.glade.h:6
+#: ../src/fl_sources/google_source.c:250 ../glade/new_subscription.glade.h:6
 #: ../glade/simple_subscription.glade.h:5
 msgid "New Subscription"
 msgstr "Uusi syöte"
 
-#: ../src/fl_sources/google_source.c:117
+#: ../src/fl_sources/google_source.c:119
 msgid "Google Reader login failed!"
 msgstr ""
 
-#: ../src/fl_sources/google_source.c:334
+#: ../src/fl_sources/google_source.c:336
 msgid "Google Reader"
 msgstr ""
 
-#: ../src/fl_sources/google_source.c:335
+#: ../src/fl_sources/google_source.c:337
 msgid ""
 "Integrate the feed list of your Google Reader account. Liferea will present "
 "your Google Reader subscriptions, and will synchronize your feed list and "
 "reading lists."
 msgstr ""
 
-#: ../src/fl_sources/opml_source.c:328
+#: ../src/fl_sources/opml_source.c:330
 msgid "Planet, BlogRoll, OPML"
 msgstr ""
 
-#: ../src/fl_sources/opml_source.c:329
+#: ../src/fl_sources/opml_source.c:331
 msgid ""
 "Integrate blogrolls or Planets in your feed list. Liferea will automatically "
 "add and remove feeds according to the changes of the source OPML document"
 msgstr ""
 
-#: ../src/fl_sources/opml_source.c:390
+#: ../src/fl_sources/opml_source.c:392
 #, fuzzy
 msgid "Choose OPML File"
 msgstr "Valitse tiedosto"
 
-#: ../src/fl_sources/opml_source.h:27
+#: ../src/fl_sources/opml_source.h:28
 #, fuzzy
 msgid "New OPML Subscription"
 msgstr "Uusi syöte"
 
-#: ../src/fl_sources/node_source.c:225
+#: ../src/fl_sources/node_source.c:237
 msgid "No feed list source types found!"
 msgstr ""
 
-#: ../src/fl_sources/node_source.c:256
+#: ../src/fl_sources/node_source.c:268
 #, fuzzy
 msgid "Source Type"
 msgstr "Lähteen tyyppi:"
@@ -1799,11 +1795,11 @@ msgstr ""
 "Huomaa: <i>Käyttäjätunnus ja salasana tallentuvat salaamattomina Liferean "
 "syöteluetteloon.</i>"
 
-#: ../glade/auth.glade.h:5 ../glade/liferea.glade.h:106
+#: ../glade/auth.glade.h:5 ../glade/liferea.glade.h:105
 msgid "User_name:"
 msgstr "Käyttäjä_tunnus:"
 
-#: ../glade/auth.glade.h:6 ../glade/liferea.glade.h:143
+#: ../glade/auth.glade.h:6 ../glade/liferea.glade.h:142
 msgid "_Password:"
 msgstr "_Salasana:"
 
@@ -1816,7 +1812,7 @@ msgid "Please enter your Bloglines account settings."
 msgstr ""
 
 #: ../glade/bloglines_source.glade.h:3 ../glade/google_source.glade.h:3
-#: ../glade/liferea.glade.h:142
+#: ../glade/liferea.glade.h:141
 #, fuzzy
 msgid "_Password"
 msgstr "_Salasana:"
@@ -1997,128 +1993,123 @@ msgid "At _startup:"
 msgstr "_Käynnistyessä:"
 
 #: ../glade/liferea.glade.h:37
-#, fuzzy
-msgid "Attention Profile"
-msgstr "Todennus epäonnistui"
-
-#: ../glade/liferea.glade.h:38
 msgid "Auto-_load item link in configured browser when selecting articles."
 msgstr ""
 
-#: ../glade/liferea.glade.h:39
+#: ../glade/liferea.glade.h:38
 msgid "Browser"
 msgstr "Selain"
 
-#: ../glade/liferea.glade.h:40
+#: ../glade/liferea.glade.h:39
 #, fuzzy
 msgid "Cancel _All"
 msgstr "Päivitä _kaikki"
 
-#: ../glade/liferea.glade.h:41 ../glade/new_subscription.glade.h:4
+#: ../glade/liferea.glade.h:40 ../glade/new_subscription.glade.h:4
 #, fuzzy
 msgid "Convert _using:"
 msgstr "Suodatuskomento:"
 
-#: ../glade/liferea.glade.h:42
+#: ../glade/liferea.glade.h:41
 msgid ""
 "Copyright (c) 2003-2009\n"
 "The Liferea Team\n"
 msgstr ""
 
-#: ../glade/liferea.glade.h:45
+#: ../glade/liferea.glade.h:44
 msgid "Create News Bin"
 msgstr ""
 
-#: ../glade/liferea.glade.h:46
+#: ../glade/liferea.glade.h:45
 msgid "Create Search Engine Feed"
 msgstr ""
 
-#: ../glade/liferea.glade.h:47
+#: ../glade/liferea.glade.h:46
 #, fuzzy
 msgid "Create new script"
 msgstr "Lisää uusi syöte."
 
-#: ../glade/liferea.glade.h:48
+#: ../glade/liferea.glade.h:47
 msgid "Default Feed Refresh _Interval:"
 msgstr "Oletusarvoinen syötteen _päivitystaajuus:"
 
-#: ../glade/liferea.glade.h:49
+#: ../glade/liferea.glade.h:48
 #, fuzzy
 msgid "Default _number of items per feed to save:"
 msgstr "Oletusarvoisesti tallennettava otsikkojen määrä per syöte:"
 
-#: ../glade/liferea.glade.h:50
+#: ../glade/liferea.glade.h:49
 msgid "Di_sable cache"
 msgstr "_Poista välivarasto käytöstä"
 
-#: ../glade/liferea.glade.h:51
+#: ../glade/liferea.glade.h:50
 #, fuzzy
 msgid "Download"
 msgstr "Tallenna verkosta ohjelmalla"
 
-#: ../glade/liferea.glade.h:52
+#: ../glade/liferea.glade.h:51
 msgid "Downloading Enclosure"
 msgstr "Liitetiedostojen tallennus"
 
-#: ../glade/liferea.glade.h:53
+#: ../glade/liferea.glade.h:52
 msgid "Downloading an enclosure of type:"
 msgstr "Tallennetaan liitetiedostoa. Tyyppi:"
 
-#: ../glade/liferea.glade.h:54
+#: ../glade/liferea.glade.h:53
 msgid "Enclosures"
 msgstr "Liitetiedostot"
 
-#: ../glade/liferea.glade.h:55
+#: ../glade/liferea.glade.h:54
 msgid ""
 "Enter a search string Liferea should find either in a items title or in its "
 "content."
 msgstr ""
 "Kirjoita teksti, jota Liferea etsii joko uutisen otsikosta tai sisällöstä."
 
-#: ../glade/liferea.glade.h:56
+#: ../glade/liferea.glade.h:55
 #, fuzzy
 msgid "Exec Command"
 msgstr "_Komento"
 
-#: ../glade/liferea.glade.h:57
+#: ../glade/liferea.glade.h:56
 msgid "Feed _Name:"
 msgstr "Syötteen _nimi:"
 
-#: ../glade/liferea.glade.h:58
+#: ../glade/liferea.glade.h:57
 msgid "Feeds"
 msgstr "Syötteet"
 
-#: ../glade/liferea.glade.h:59
+#: ../glade/liferea.glade.h:58
 msgid "Folders"
 msgstr "Kansiot"
 
-#: ../glade/liferea.glade.h:60
+#: ../glade/liferea.glade.h:59
 msgid "GUI"
 msgstr "Käyttöliittymä"
 
-#: ../glade/liferea.glade.h:61
+#: ../glade/liferea.glade.h:60
 msgid "General"
 msgstr "Yleistä"
 
-#: ../glade/liferea.glade.h:62
+#: ../glade/liferea.glade.h:61
 msgid "Headlines"
 msgstr "Otsikot"
 
-#: ../glade/liferea.glade.h:63
+#: ../glade/liferea.glade.h:62
 #, fuzzy
 msgid "Ignore _comment feeds for this subscription."
 msgstr "Avaa valitun syötteen ominaisuusikkunan."
 
-#: ../glade/liferea.glade.h:65
+#: ../glade/liferea.glade.h:64
 #, fuzzy
 msgid "Liferea Homepage"
 msgstr "Liferea"
 
-#: ../glade/liferea.glade.h:66
+#: ../glade/liferea.glade.h:65
 msgid "Liferea Preferences"
 msgstr "Liferean asetukset"
 
-#: ../glade/liferea.glade.h:67 ../glade/new_subscription.glade.h:5
+#: ../glade/liferea.glade.h:66 ../glade/new_subscription.glade.h:5
 msgid ""
 "Liferea can use external filter plugins in order to access feeds and "
 "directories in non-supported formats.  See the documentation for more "
@@ -2127,21 +2118,21 @@ msgstr ""
 "Liferea voi lukea ei-tuettuja syötteitä käyttämällä ulkoisia "
 "suodatinliitännäisiä. Lisätietoja on Liferean käyttöohjeessa."
 
-#: ../glade/liferea.glade.h:68
+#: ../glade/liferea.glade.h:67
 msgid "Liferea is a news aggregator for GTK+"
 msgstr "Liferea on GTK+-pohjainen uutissyötteiden lukuohjelma"
 
-#: ../glade/liferea.glade.h:69
+#: ../glade/liferea.glade.h:68
 #, fuzzy
 msgid "Maximal _Number Of Result Items:"
 msgstr "Suurin tulosten määrä:"
 
-#: ../glade/liferea.glade.h:70
+#: ../glade/liferea.glade.h:69
 msgid "New Folder"
 msgstr "Uusi kansio"
 
 #. Feed update interval hint in preference dialog.
-#: ../glade/liferea.glade.h:72
+#: ../glade/liferea.glade.h:71
 #, fuzzy
 msgid ""
 "Note: <i>Please remember to set a reasonable refresh time. Usually it is a "
@@ -2152,7 +2143,7 @@ msgstr ""
 "päivityksen voi poistaa käytöstä oletusarvoisesti asettamalla taajuudeksi 0 "
 "minuuttia.</i>"
 
-#: ../glade/liferea.glade.h:73
+#: ../glade/liferea.glade.h:72
 #, fuzzy
 msgid ""
 "Note: Liferea will generate a feed subscription which is used to query the "
@@ -2163,86 +2154,86 @@ msgstr ""
 "tuloksia. Tämän syötteen voi säilyttää ja sitä voi käyttää kuten muitakin "
 "syötteitä."
 
-#: ../glade/liferea.glade.h:74
+#: ../glade/liferea.glade.h:73
 msgid "Online/Offline Button"
 msgstr ""
 
-#: ../glade/liferea.glade.h:75
+#: ../glade/liferea.glade.h:74
 msgid "Open links in Liferea's _window."
 msgstr "Avaa linkit Liferean _ikkunassa."
 
-#: ../glade/liferea.glade.h:76
+#: ../glade/liferea.glade.h:75
 msgid "Proxy"
 msgstr "Välityspalvelin"
 
-#: ../glade/liferea.glade.h:77
+#: ../glade/liferea.glade.h:76
 msgid "Proxy Pass_word:"
 msgstr "S_alasana:"
 
-#: ../glade/liferea.glade.h:78
+#: ../glade/liferea.glade.h:77
 msgid "Proxy _Host:"
 msgstr "_Konenimi:"
 
-#: ../glade/liferea.glade.h:79
+#: ../glade/liferea.glade.h:78
 msgid "Proxy _Port:"
 msgstr "_Portti:"
 
-#: ../glade/liferea.glade.h:80
+#: ../glade/liferea.glade.h:79
 msgid "Proxy _Username:"
 msgstr "K_äyttäjätunnus:"
 
-#: ../glade/liferea.glade.h:81
+#: ../glade/liferea.glade.h:80
 #, fuzzy
 msgid "Rename"
 msgstr "Vaihda kansion nimi"
 
-#: ../glade/liferea.glade.h:82
+#: ../glade/liferea.glade.h:81
 msgid "Reuse existing script"
 msgstr ""
 
-#: ../glade/liferea.glade.h:83
+#: ../glade/liferea.glade.h:82
 msgid "Script Manager"
 msgstr ""
 
-#: ../glade/liferea.glade.h:84
+#: ../glade/liferea.glade.h:83
 msgid "Search All Feeds"
 msgstr "Etsi kaikista syötteistä"
 
-#: ../glade/liferea.glade.h:85
+#: ../glade/liferea.glade.h:84
 #, fuzzy
 msgid "Search Folder Properties"
 msgstr "V-kansion ominaisuudet"
 
-#: ../glade/liferea.glade.h:86
+#: ../glade/liferea.glade.h:85
 msgid "Search _Link Cosmos with"
 msgstr ""
 
-#: ../glade/liferea.glade.h:87
+#: ../glade/liferea.glade.h:86
 #, fuzzy
 msgid "Search _Name:"
 msgstr "Syötteen _nimi:"
 
-#: ../glade/liferea.glade.h:88 ../glade/new_subscription.glade.h:7
+#: ../glade/liferea.glade.h:87 ../glade/new_subscription.glade.h:7
 msgid "Select File..."
 msgstr "Valitse tiedosto..."
 
-#: ../glade/liferea.glade.h:89
+#: ../glade/liferea.glade.h:88
 msgid "Show _number of new items in the tray icon."
 msgstr ""
 
-#: ../glade/liferea.glade.h:90
+#: ../glade/liferea.glade.h:89
 msgid "Show a _popup window with new headlines."
 msgstr "Näytä uudet otsikot sisältävä _ponnahdusikkuna."
 
-#: ../glade/liferea.glade.h:91
+#: ../glade/liferea.glade.h:90
 msgid "Show a status _icon in the notification area (system tray)."
 msgstr "Näytä _ilmaisin paneelin ilmoitusalueessa."
 
-#: ../glade/liferea.glade.h:93 ../glade/new_subscription.glade.h:8
+#: ../glade/liferea.glade.h:92 ../glade/new_subscription.glade.h:8
 msgid "Source Type:"
 msgstr "Lähteen tyyppi:"
 
-#: ../glade/liferea.glade.h:94
+#: ../glade/liferea.glade.h:93
 msgid ""
 "Starts searching for the specified text in all feeds. The search result will "
 "appear in the item list."
@@ -2250,19 +2241,19 @@ msgstr ""
 "Etsii annettua tekstiä kaikista syötteistä. Etsinnän tulokset näkyvät "
 "otsikkoluettelossa."
 
-#: ../glade/liferea.glade.h:95
+#: ../glade/liferea.glade.h:94
 msgid "Subscription Properties"
 msgstr "Syötteen ominaisuudet"
 
-#: ../glade/liferea.glade.h:96
+#: ../glade/liferea.glade.h:95
 msgid "Sync"
 msgstr ""
 
-#: ../glade/liferea.glade.h:97
+#: ../glade/liferea.glade.h:96
 msgid "T_erminate instead of minimizing to tray icon."
 msgstr ""
 
-#: ../glade/liferea.glade.h:98
+#: ../glade/liferea.glade.h:97
 msgid ""
 "The cache setting controls if the contents of feeds are saved when Liferea "
 "exits. Marked items are always saved to the cache."
@@ -2270,40 +2261,40 @@ msgstr ""
 "Välivaraston asetukset vaikuttavat siihen miten syötteiden sisältö tallentuu "
 "kun Liferea suljetaan. Merkityt otsikot tallentuvat aina."
 
-#: ../glade/liferea.glade.h:100
+#: ../glade/liferea.glade.h:99
 #, no-c-format
 msgid "This feed provider suggests an update interval of %d minutes."
 msgstr "Tämän syötteen tarjoaja suosittelee päivitystaajuudeksi %d minuuttia."
 
-#: ../glade/liferea.glade.h:101
+#: ../glade/liferea.glade.h:100
 msgid "Toolbar _button labels:"
 msgstr ""
 
-#: ../glade/liferea.glade.h:102
+#: ../glade/liferea.glade.h:101
 #, fuzzy
 msgid "Update Monitor"
 msgstr "/_Päivitä kansio"
 
-#: ../glade/liferea.glade.h:103
+#: ../glade/liferea.glade.h:102
 msgid "Use HTTP _authentication"
 msgstr "Käytä _HTTP-todennusta"
 
-#: ../glade/liferea.glade.h:104
+#: ../glade/liferea.glade.h:103
 #, fuzzy
 msgid "Use Proxy Au_thentication"
 msgstr "Välityspalvelin vaatii _todennuksen"
 
-#: ../glade/liferea.glade.h:105 ../glade/new_subscription.glade.h:9
+#: ../glade/liferea.glade.h:104 ../glade/new_subscription.glade.h:9
 #, fuzzy
 msgid "Use conversion _filter"
 msgstr "Käytä suodatinta"
 
-#: ../glade/liferea.glade.h:107
+#: ../glade/liferea.glade.h:106
 #, fuzzy
 msgid "View Headlines"
 msgstr "Näytä otsikot käyttäen"
 
-#: ../glade/liferea.glade.h:108
+#: ../glade/liferea.glade.h:107
 #, fuzzy
 msgid ""
 "What should Liferea do with this enclosure? Please enter the command you "
@@ -2314,101 +2305,101 @@ msgstr ""
 "suoritettava komento, jonka parametriksi tallentuneen tiedoston nimi "
 "annetaan:"
 
-#: ../glade/liferea.glade.h:109
+#: ../glade/liferea.glade.h:108
 msgid "_Advanced..."
 msgstr ""
 
-#: ../glade/liferea.glade.h:110
+#: ../glade/liferea.glade.h:109
 msgid "_All Rules Must Match"
 msgstr ""
 
-#: ../glade/liferea.glade.h:111
+#: ../glade/liferea.glade.h:110
 msgid "_Auto Detect (GNOME or environment)"
 msgstr ""
 
-#: ../glade/liferea.glade.h:112
+#: ../glade/liferea.glade.h:111
 msgid "_Automatically download all enclosures of this feed."
 msgstr ""
 
-#: ../glade/liferea.glade.h:113
+#: ../glade/liferea.glade.h:112
 msgid "_Browse"
 msgstr "_Selaa"
 
-#: ../glade/liferea.glade.h:114
+#: ../glade/liferea.glade.h:113
 msgid "_Browser:"
 msgstr "_Selain:"
 
-#: ../glade/liferea.glade.h:115 ../glade/new_subscription.glade.h:10
+#: ../glade/liferea.glade.h:114 ../glade/new_subscription.glade.h:10
 msgid "_Command"
 msgstr "_Komento"
 
-#: ../glade/liferea.glade.h:116
+#: ../glade/liferea.glade.h:115
 msgid "_Default cache settings"
 msgstr "O_letusarvot"
 
-#: ../glade/liferea.glade.h:117
+#: ../glade/liferea.glade.h:116
 msgid "_Disable Javascript."
 msgstr "Poista _Javascript käytöstä."
 
-#: ../glade/liferea.glade.h:118
+#: ../glade/liferea.glade.h:117
 #, fuzzy
 msgid "_Do this automatically for enclosures like this from now on."
 msgstr "_Tee näin aina jatkossa tämäntyyppisille tiedostoille."
 
-#: ../glade/liferea.glade.h:119
+#: ../glade/liferea.glade.h:118
 msgid "_Don't update this feed automatically."
 msgstr "_Älä päivitä syötettä automaattisesti."
 
-#: ../glade/liferea.glade.h:120 ../glade/new_subscription.glade.h:11
+#: ../glade/liferea.glade.h:119 ../glade/new_subscription.glade.h:11
 msgid "_Don't use proxy for download"
 msgstr ""
 
-#: ../glade/liferea.glade.h:121
+#: ../glade/liferea.glade.h:120
 #, fuzzy
 msgid "_Download using"
 msgstr "Tallenna verkosta ohjelmalla"
 
-#: ../glade/liferea.glade.h:122
+#: ../glade/liferea.glade.h:121
 msgid "_Enable Local LAN Synchronization"
 msgstr ""
 
-#: ../glade/liferea.glade.h:123
+#: ../glade/liferea.glade.h:122
 msgid "_Enable browser plugins."
 msgstr ""
 
-#: ../glade/liferea.glade.h:124
+#: ../glade/liferea.glade.h:123
 #, fuzzy
 msgid "_Enforce popup notification for this subscription."
 msgstr "Avaa valitun syötteen ominaisuusikkunan."
 
-#: ../glade/liferea.glade.h:125
+#: ../glade/liferea.glade.h:124
 msgid "_Feed specific update interval of"
 msgstr "_Syötteelle ominainen päivitystaajuus:"
 
-#: ../glade/liferea.glade.h:126
+#: ../glade/liferea.glade.h:125
 #, fuzzy
 msgid "_Folder name:"
 msgstr "Kansion nimi:"
 
-#: ../glade/liferea.glade.h:127
+#: ../glade/liferea.glade.h:126
 #, fuzzy
 msgid "_Hide read items."
 msgstr "_Seuraava lukematon otsikko"
 
-#: ../glade/liferea.glade.h:128
+#: ../glade/liferea.glade.h:127
 msgid "_Hide toolbar."
 msgstr ""
 
-#: ../glade/liferea.glade.h:129 ../glade/new_subscription.glade.h:12
+#: ../glade/liferea.glade.h:128 ../glade/new_subscription.glade.h:12
 #, fuzzy
 msgid "_Local File"
 msgstr "Paikallinen _tiedosto"
 
-#: ../glade/liferea.glade.h:130
+#: ../glade/liferea.glade.h:129
 msgid "_Manual Setting:"
 msgstr ""
 
-#: ../glade/liferea.glade.h:132
+#: ../glade/liferea.glade.h:131
 #, no-c-format
 msgid ""
 "_Manual:\n"
@@ -2417,115 +2408,115 @@ msgstr ""
 "_Muu:\n"
 "(%s vastaa URLia)"
 
-#: ../glade/liferea.glade.h:134
+#: ../glade/liferea.glade.h:133
 #, fuzzy
 msgid "_Mark downloaded items as read."
 msgstr "_Merkitse valitut luetuiksi"
 
-#: ../glade/liferea.glade.h:135
+#: ../glade/liferea.glade.h:134
 msgid "_Never do popup notification for this subscription."
 msgstr ""
 
-#: ../glade/liferea.glade.h:136
+#: ../glade/liferea.glade.h:135
 #, fuzzy
 msgid "_New Name:"
 msgstr "Syötteen _nimi:"
 
-#: ../glade/liferea.glade.h:137
+#: ../glade/liferea.glade.h:136
 msgid "_News Bin Name:"
 msgstr ""
 
-#: ../glade/liferea.glade.h:138
+#: ../glade/liferea.glade.h:137
 #, fuzzy
 msgid "_No Proxy"
 msgstr "Välityspalvelin"
 
-#: ../glade/liferea.glade.h:139
+#: ../glade/liferea.glade.h:138
 #, fuzzy
 msgid "_Number of items to save:"
 msgstr "Oletusarvoisesti tallennettava otsikkojen määrä per syöte:"
 
-#: ../glade/liferea.glade.h:140
+#: ../glade/liferea.glade.h:139
 msgid "_Open link in:"
 msgstr "_Linkkien avaus:"
 
-#: ../glade/liferea.glade.h:141
+#: ../glade/liferea.glade.h:140
 msgid "_Pass URL and do not download enclosure."
 msgstr ""
 
-#: ../glade/liferea.glade.h:144
+#: ../glade/liferea.glade.h:143
 msgid "_Post Bookmarks to"
 msgstr ""
 
-#: ../glade/liferea.glade.h:145
+#: ../glade/liferea.glade.h:144
 #, fuzzy
 msgid "_Save downloads in"
 msgstr "Tallenna kansioon"
 
-#: ../glade/liferea.glade.h:146
+#: ../glade/liferea.glade.h:145
 #, fuzzy
 msgid "_Search Folder..."
 msgstr "/Vaihda kansion _nimi..."
 
-#: ../glade/liferea.glade.h:147
+#: ../glade/liferea.glade.h:146
 #, fuzzy
 msgid "_Search for:"
 msgstr "Etsi:"
 
-#: ../glade/liferea.glade.h:148
+#: ../glade/liferea.glade.h:147
 msgid "_Service Name"
 msgstr ""
 
-#: ../glade/liferea.glade.h:149
+#: ../glade/liferea.glade.h:148
 #, fuzzy
 msgid "_Show the items of all child feeds when a folder is selected."
 msgstr ""
 "Näytä kaikkien kansion sisältämien syötteiden otsikot, kun kansio valitaan."
 
-#: ../glade/liferea.glade.h:150
+#: ../glade/liferea.glade.h:149
 #, fuzzy
 msgid "_Skim through articles with:"
 msgstr "Selaa otsikoita läpi näppäilemällä "
 
-#: ../glade/liferea.glade.h:151 ../glade/new_subscription.glade.h:13
+#: ../glade/liferea.glade.h:150 ../glade/new_subscription.glade.h:13
 #, fuzzy
 msgid "_Source:"
 msgstr "Lähde:"
 
-#: ../glade/liferea.glade.h:152
+#: ../glade/liferea.glade.h:151
 msgid "_Start in tray icon."
 msgstr ""
 
-#: ../glade/liferea.glade.h:153 ../glade/new_subscription.glade.h:14
+#: ../glade/liferea.glade.h:152 ../glade/new_subscription.glade.h:14
 msgid "_URL"
 msgstr "_URL"
 
-#: ../glade/liferea.glade.h:154
+#: ../glade/liferea.glade.h:153
 msgid "_Unlimited cache"
 msgstr "_Rajoittamaton välivarasto"
 
-#: ../glade/liferea.glade.h:155
+#: ../glade/liferea.glade.h:154
 #, fuzzy
 msgid "_Update all favicons now"
 msgstr "_Päivitä kuvakkeet nyt."
 
-#: ../glade/liferea.glade.h:156
+#: ../glade/liferea.glade.h:155
 msgid "_Use global default update interval."
 msgstr "O_letusarvoinen päivitystaajuus."
 
-#: ../glade/liferea.glade.h:157
+#: ../glade/liferea.glade.h:156
 msgid "combined view"
 msgstr ""
 
-#: ../glade/liferea.glade.h:158
+#: ../glade/liferea.glade.h:157
 msgid "enter any search string you want"
 msgstr "Kirjoita sanat joita haluat etsiä"
 
-#: ../glade/liferea.glade.h:159
+#: ../glade/liferea.glade.h:158
 msgid "normal view"
 msgstr ""
 
-#: ../glade/liferea.glade.h:160
+#: ../glade/liferea.glade.h:159
 msgid "wide view"
 msgstr ""
 
@@ -2569,6 +2560,14 @@ msgid ""
 "Enter a website location to use feed autodiscovery or in case you know it "
 "the exact feed location."
 msgstr ""
+
+#, fuzzy
+#~ msgid "Count"
+#~ msgstr "Lifereasta"
+
+#, fuzzy
+#~ msgid "Attention Profile"
+#~ msgstr "Todennus epäonnistui"
 
 #~ msgid "http://liferea.sf.net"
 #~ msgstr "http://liferea.sf.net"

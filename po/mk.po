@@ -9,10 +9,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: new\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-22 14:32+0300\n"
+"POT-Creation-Date: 2010-05-25 22:29+0300\n"
 "PO-Revision-Date: 2004-10-24 02:34+0200\n"
 "Last-Translator: Tomislav Markovski <herrera@users.sourceforge.net>\n"
 "Language-Team: Macedonian <ossm-members@hedona.on.net.mk>\n"
+"Language: mk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -68,8 +69,8 @@ msgid ""
 "The last update of this subscription failed!<br/><b>HTTP error code <xsl:"
 "value-of select=\"httpErrorCode\"/>: <xsl:value-of select=\"httpError\"/></b>"
 msgstr ""
-"Последното ажурирање на вестите беше неуспешно!<br><b>HTTP error code %d: %"
-"s</b>"
+"Последното ажурирање на вестите беше неуспешно!<br><b>HTTP error code %d: "
+"%s</b>"
 
 #: ../xslt/feed.xml.in.h:9
 #, fuzzy
@@ -159,7 +160,7 @@ msgstr ""
 msgid "Shared by"
 msgstr ""
 
-#: ../xslt/item.xml.in.h:13 ../glade/liferea.glade.h:92
+#: ../xslt/item.xml.in.h:13 ../glade/liferea.glade.h:91
 #, fuzzy
 msgid "Source"
 msgstr "Извор:"
@@ -205,12 +206,12 @@ msgstr "Нов прозорец"
 msgid "Search Folder:"
 msgstr "Барај за"
 
-#: ../src/browser.c:55 ../src/browser.c:75
+#: ../src/browser.c:58 ../src/browser.c:78
 #, c-format
 msgid "Browser command failed: %s"
 msgstr "команда за прелистувач е науспешна: \"%s\""
 
-#: ../src/browser.c:78
+#: ../src/browser.c:81
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Отворам: \"%s\""
@@ -340,34 +341,34 @@ msgstr "\"%s\" ажурирано..."
 msgid "\"%s\" is not available"
 msgstr "\"%s\" е недостапно!"
 
-#: ../src/feed_parser.c:132
+#: ../src/feed_parser.c:133
 msgid ""
 "The URL you want Liferea to subscribe to points to a webpage and the auto "
 "discovery found no feeds on this page. Maybe this webpage just does not "
 "support feed auto discovery."
 msgstr ""
 
-#: ../src/feed_parser.c:165
+#: ../src/feed_parser.c:166
 #, fuzzy, c-format
 msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
 msgstr ""
 "<p>XML грешка при читање на вестите! Веста \"%s\" не може да се вчита!</p>"
 
-#: ../src/feed_parser.c:170
+#: ../src/feed_parser.c:171
 #, fuzzy
 msgid "Empty document!"
 msgstr "<p> Празен документ!</p>"
 
-#: ../src/feed_parser.c:179
+#: ../src/feed_parser.c:180
 #, fuzzy
 msgid "Invalid XML!"
 msgstr "<p>Невалиден XML!</p>"
 
-#: ../src/feed_parser.c:222
+#: ../src/feed_parser.c:223
 msgid "Source points to HTML document."
 msgstr ""
 
-#: ../src/feed_parser.c:225
+#: ../src/feed_parser.c:226
 msgid "Could not determine the feed type."
 msgstr ""
 
@@ -464,21 +465,21 @@ msgstr "  --debug-verbose  Print verbose debugging messages"
 msgid "Print debugging messages for the given topic"
 msgstr "  --debug-cache    Print debugging messages for the cache handling"
 
-#: ../src/main.c:217
+#: ../src/main.c:218
 msgid "Liferea, the Linux Feed Reader"
 msgstr ""
 
-#: ../src/main.c:218
+#: ../src/main.c:219
 msgid "For more information, please visit http://liferea.sourceforge.net/"
 msgstr ""
 
 #. GTK theme support
-#: ../src/main.c:247 ../glade/liferea.glade.h:64
+#: ../src/main.c:248 ../glade/liferea.glade.h:63
 #, fuzzy
 msgid "Liferea"
 msgstr "Помош за Лајфри"
 
-#: ../src/main.c:256
+#: ../src/main.c:257
 msgid "Liferea seems to be running already!"
 msgstr ""
 
@@ -491,39 +492,39 @@ msgid ""
 msgstr ""
 
 #. Some libsoup transport errors
-#: ../src/net.c:332
+#: ../src/net.c:361
 msgid "The update request was cancelled"
 msgstr ""
 
-#: ../src/net.c:333
+#: ../src/net.c:362
 msgid "Unable to resolve destination host name"
 msgstr ""
 
-#: ../src/net.c:334
+#: ../src/net.c:363
 msgid "Unable to resolve proxy host name"
 msgstr ""
 
-#: ../src/net.c:335
+#: ../src/net.c:364
 #, fuzzy
 msgid "Unable to connect to remote host"
 msgstr "Грешка во поврзувањето со адресата"
 
-#: ../src/net.c:336
+#: ../src/net.c:365
 msgid "Unable to connect to proxy"
 msgstr ""
 
-#: ../src/net.c:337
+#: ../src/net.c:366
 msgid ""
 "A network error occurred, or the other end closed the connection unexpectedly"
 msgstr ""
 
 #. http 3xx redirection
-#: ../src/net.c:340
+#: ../src/net.c:369
 msgid "The resource moved permanently to a new location"
 msgstr ""
 
 #. http 4xx client error
-#: ../src/net.c:343
+#: ../src/net.c:372
 #, fuzzy
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
@@ -532,154 +533,154 @@ msgstr ""
 "Немате дозвола за преземање на овие вести. Ве молам ажурирајте го Вашето "
 "корисничко име и лозинка во прозорецот за својства на веста."
 
-#: ../src/net.c:345
+#: ../src/net.c:374
 #, fuzzy
 msgid "Payment required"
 msgstr "Потребна е уплата"
 
-#: ../src/net.c:346
+#: ../src/net.c:375
 msgid "You're not allowed to access this resource"
 msgstr ""
 
-#: ../src/net.c:347
+#: ../src/net.c:376
 msgid "Resource Not Found"
 msgstr "Нема ресурси"
 
-#: ../src/net.c:348
+#: ../src/net.c:377
 msgid "Method Not Allowed"
 msgstr "Методот не е дозволен"
 
-#: ../src/net.c:349
+#: ../src/net.c:378
 msgid "Not Acceptable"
 msgstr "Не е прифатливо"
 
-#: ../src/net.c:350
+#: ../src/net.c:379
 #, fuzzy
 msgid "Proxy authentication required"
 msgstr "Потребна е Proxy автентикација"
 
-#: ../src/net.c:351
+#: ../src/net.c:380
 #, fuzzy
 msgid "Request timed out"
 msgstr "Барањето истече"
 
-#: ../src/net.c:352
+#: ../src/net.c:381
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "Напуштено. Вестите не постојат. Ве молам избришете ја ставката!"
 
-#: ../src/net.c:357
+#: ../src/net.c:386
 msgid "There was an internal error in the update process"
 msgstr ""
 
-#: ../src/net.c:359
+#: ../src/net.c:388
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "Вестите се недостапни: Серверот сигнализираше неподдржано пренасочување!"
 
-#: ../src/net.c:361
+#: ../src/net.c:390
 msgid "Client Error"
 msgstr "Клиентска грешка"
 
-#: ../src/net.c:363
+#: ../src/net.c:392
 msgid "Server Error"
 msgstr "Грешка на опслужувачот"
 
-#: ../src/net.c:365
+#: ../src/net.c:394
 #, fuzzy
 msgid "An unknown networking error happened!"
 msgstr "(unknown error class)"
 
 #. SQL condition builder function	in-memory check function	feedlist.opml rule id           rule menu label         positive menu option    negative menu option    has param
 #. ========================================================================================================================================================================================
-#: ../src/rule.c:373
+#: ../src/rule.c:371
 msgid "Item"
 msgstr "Предмет"
 
-#: ../src/rule.c:373 ../src/rule.c:374 ../src/rule.c:375 ../src/rule.c:376
+#: ../src/rule.c:371 ../src/rule.c:372 ../src/rule.c:373 ../src/rule.c:374
 msgid "does contain"
 msgstr "содржи"
 
-#: ../src/rule.c:373 ../src/rule.c:374 ../src/rule.c:375 ../src/rule.c:376
+#: ../src/rule.c:371 ../src/rule.c:372 ../src/rule.c:373 ../src/rule.c:374
 msgid "does not contain"
 msgstr "не содржи"
 
-#: ../src/rule.c:374
+#: ../src/rule.c:372
 msgid "Item title"
 msgstr "[Наслов на предметот]"
 
-#: ../src/rule.c:375
+#: ../src/rule.c:373
 msgid "Item body"
 msgstr "Содржината на предметот"
 
-#: ../src/rule.c:376
+#: ../src/rule.c:374
 #, fuzzy
 msgid "Feed title"
 msgstr "[Наслов на предметот]"
 
-#: ../src/rule.c:377
+#: ../src/rule.c:375
 msgid "Read status"
 msgstr "Статус (не)прочитано"
 
-#: ../src/rule.c:377
+#: ../src/rule.c:375
 msgid "is unread"
 msgstr "е непрочитано"
 
-#: ../src/rule.c:377
+#: ../src/rule.c:375
 msgid "is read"
 msgstr "е прочитано"
 
-#: ../src/rule.c:378
+#: ../src/rule.c:376
 msgid "Flag status"
 msgstr "Статус на знаменце"
 
-#: ../src/rule.c:378
+#: ../src/rule.c:376
 msgid "is flagged"
 msgstr "има знаменце"
 
-#: ../src/rule.c:378
+#: ../src/rule.c:376
 msgid "is unflagged"
 msgstr "нема знаменце"
 
-#: ../src/rule.c:379
+#: ../src/rule.c:377
 #, fuzzy
 msgid "Update status"
 msgstr "Статус (не)прочитано"
 
-#: ../src/rule.c:379
+#: ../src/rule.c:377
 #, fuzzy
 msgid "was updated"
 msgstr "\"%s\" ажурирано..."
 
-#: ../src/rule.c:379
+#: ../src/rule.c:377
 #, fuzzy
 msgid "was not updated"
 msgstr "содржината е ажурирана"
 
-#: ../src/rule.c:380
+#: ../src/rule.c:378
 msgid "Podcast"
 msgstr ""
 
-#: ../src/rule.c:380
+#: ../src/rule.c:378
 #, fuzzy
 msgid "included"
 msgstr "вклучена слика"
 
-#: ../src/rule.c:380
+#: ../src/rule.c:378
 #, fuzzy
 msgid "not included"
 msgstr "вклучена слика"
 
-#: ../src/rule.c:381 ../src/ui/attention_profile_dialog.c:173
+#: ../src/rule.c:379
 #, fuzzy
 msgid "Category"
 msgstr "категорија"
 
-#: ../src/rule.c:381
+#: ../src/rule.c:379
 #, fuzzy
 msgid "is set"
 msgstr "е прочитано"
 
-#: ../src/rule.c:381
+#: ../src/rule.c:379
 msgid "is not set"
 msgstr ""
 
@@ -965,7 +966,7 @@ msgstr ""
 msgid "_View"
 msgstr "_Поглед"
 
-#: ../src/ui/liferea_shell.c:851 ../src/ui/liferea_htmlview.c:538
+#: ../src/ui/liferea_shell.c:851 ../src/ui/liferea_htmlview.c:543
 msgid "_Increase Text Size"
 msgstr "_Зголеми го текстот"
 
@@ -973,7 +974,7 @@ msgstr "_Зголеми го текстот"
 msgid "Increases the text size of the item view."
 msgstr "Го зголемуива текстот во делот за читање на вестите."
 
-#: ../src/ui/liferea_shell.c:853 ../src/ui/liferea_htmlview.c:539
+#: ../src/ui/liferea_shell.c:853 ../src/ui/liferea_htmlview.c:544
 msgid "_Decrease Text Size"
 msgstr "_Намали го текстот"
 
@@ -1274,17 +1275,12 @@ msgid ""
 "folder to your feed list."
 msgstr ""
 
-#: ../src/ui/attention_profile_dialog.c:183
-#, fuzzy
-msgid "Count"
-msgstr "За"
-
-#: ../src/ui/auth_dialog.c:157 ../glade/auth.glade.h:3
+#: ../src/ui/auth_dialog.c:162 ../glade/auth.glade.h:3
 #, no-c-format
 msgid "Enter the username and password for \"%s\" (%s):"
 msgstr "Внесете корисник и лозинка за \"%s\" (%s):"
 
-#: ../src/ui/auth_dialog.c:158
+#: ../src/ui/auth_dialog.c:163
 msgid "Unknown source"
 msgstr "Непознат извор"
 
@@ -1319,27 +1315,27 @@ msgstr "Мора да одзберете вест!"
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Лајфри е во офлајн режим. Нема можност за ажурирање."
 
-#: ../src/ui/liferea_htmlview.c:526
+#: ../src/ui/liferea_htmlview.c:531
 #, fuzzy
 msgid "Launch Link In _Tab"
 msgstr "/_Отвори во прелистувач"
 
-#: ../src/ui/liferea_htmlview.c:527
+#: ../src/ui/liferea_htmlview.c:532
 #, fuzzy
 msgid "_Launch Link In Browser"
 msgstr "/_Отвори во прелистувач"
 
-#: ../src/ui/liferea_htmlview.c:530 ../src/ui/ui_popup.c:133
+#: ../src/ui/liferea_htmlview.c:535 ../src/ui/ui_popup.c:133
 #, c-format
 msgid "_Bookmark Link at %s"
 msgstr ""
 
-#: ../src/ui/liferea_htmlview.c:534
+#: ../src/ui/liferea_htmlview.c:539
 #, fuzzy
 msgid "_Copy Link Location"
 msgstr "/_Копирај ја локацијата на врската"
 
-#: ../src/ui/liferea_htmlview.c:536
+#: ../src/ui/liferea_htmlview.c:541
 #, fuzzy
 msgid "_Subscribe..."
 msgstr "/_Претплати се..."
@@ -1677,11 +1673,11 @@ msgstr ""
 msgid "%b %d %H:%M"
 msgstr ""
 
-#: ../src/fl_sources/bloglines_source.c:80
+#: ../src/fl_sources/bloglines_source.c:81
 msgid "Bloglines"
 msgstr ""
 
-#: ../src/fl_sources/bloglines_source.c:81
+#: ../src/fl_sources/bloglines_source.c:82
 msgid ""
 "Integrate the feed list of your Bloglines account. Liferea will present your "
 "Bloglines subscription as a read-only subtree in the feed list."
@@ -1693,51 +1689,51 @@ msgid "feedlist.opml"
 msgstr "feedlist.opml"
 
 #: ../src/fl_sources/default_source.c:180
-#: ../src/fl_sources/google_source.c:248 ../glade/new_subscription.glade.h:6
+#: ../src/fl_sources/google_source.c:250 ../glade/new_subscription.glade.h:6
 #: ../glade/simple_subscription.glade.h:5
 msgid "New Subscription"
 msgstr "Нова претплата"
 
-#: ../src/fl_sources/google_source.c:117
+#: ../src/fl_sources/google_source.c:119
 msgid "Google Reader login failed!"
 msgstr ""
 
-#: ../src/fl_sources/google_source.c:334
+#: ../src/fl_sources/google_source.c:336
 msgid "Google Reader"
 msgstr ""
 
-#: ../src/fl_sources/google_source.c:335
+#: ../src/fl_sources/google_source.c:337
 msgid ""
 "Integrate the feed list of your Google Reader account. Liferea will present "
 "your Google Reader subscriptions, and will synchronize your feed list and "
 "reading lists."
 msgstr ""
 
-#: ../src/fl_sources/opml_source.c:328
+#: ../src/fl_sources/opml_source.c:330
 msgid "Planet, BlogRoll, OPML"
 msgstr ""
 
-#: ../src/fl_sources/opml_source.c:329
+#: ../src/fl_sources/opml_source.c:331
 msgid ""
 "Integrate blogrolls or Planets in your feed list. Liferea will automatically "
 "add and remove feeds according to the changes of the source OPML document"
 msgstr ""
 
-#: ../src/fl_sources/opml_source.c:390
+#: ../src/fl_sources/opml_source.c:392
 #, fuzzy
 msgid "Choose OPML File"
 msgstr "Одберете датотека"
 
-#: ../src/fl_sources/opml_source.h:27
+#: ../src/fl_sources/opml_source.h:28
 #, fuzzy
 msgid "New OPML Subscription"
 msgstr "Нова претплата"
 
-#: ../src/fl_sources/node_source.c:225
+#: ../src/fl_sources/node_source.c:237
 msgid "No feed list source types found!"
 msgstr ""
 
-#: ../src/fl_sources/node_source.c:256
+#: ../src/fl_sources/node_source.c:268
 #, fuzzy
 msgid "Source Type"
 msgstr "Тип на правило:"
@@ -1800,11 +1796,11 @@ msgstr ""
 "Забелешка: <i>Корисничкото име и лозинката ќе бидат зачувани во датотеката "
 "за листата на вести без енкрипција.</i>"
 
-#: ../glade/auth.glade.h:5 ../glade/liferea.glade.h:106
+#: ../glade/auth.glade.h:5 ../glade/liferea.glade.h:105
 msgid "User_name:"
 msgstr "Корисничко _име:"
 
-#: ../glade/auth.glade.h:6 ../glade/liferea.glade.h:143
+#: ../glade/auth.glade.h:6 ../glade/liferea.glade.h:142
 msgid "_Password:"
 msgstr "_Лозинка:"
 
@@ -1817,7 +1813,7 @@ msgid "Please enter your Bloglines account settings."
 msgstr ""
 
 #: ../glade/bloglines_source.glade.h:3 ../glade/google_source.glade.h:3
-#: ../glade/liferea.glade.h:142
+#: ../glade/liferea.glade.h:141
 #, fuzzy
 msgid "_Password"
 msgstr "_Лозинка:"
@@ -2001,131 +1997,126 @@ msgid "At _startup:"
 msgstr "На _почеток:"
 
 #: ../glade/liferea.glade.h:37
-#, fuzzy
-msgid "Attention Profile"
-msgstr "Автентификацијата не успеа"
-
-#: ../glade/liferea.glade.h:38
 msgid "Auto-_load item link in configured browser when selecting articles."
 msgstr ""
 
-#: ../glade/liferea.glade.h:39
+#: ../glade/liferea.glade.h:38
 #, fuzzy
 msgid "Browser"
 msgstr "_Прелистувач:"
 
-#: ../glade/liferea.glade.h:40
+#: ../glade/liferea.glade.h:39
 #, fuzzy
 msgid "Cancel _All"
 msgstr "_Ажурирај ги сите"
 
-#: ../glade/liferea.glade.h:41 ../glade/new_subscription.glade.h:4
+#: ../glade/liferea.glade.h:40 ../glade/new_subscription.glade.h:4
 #, fuzzy
 msgid "Convert _using:"
 msgstr "Конвертирај со:"
 
-#: ../glade/liferea.glade.h:42
+#: ../glade/liferea.glade.h:41
 msgid ""
 "Copyright (c) 2003-2009\n"
 "The Liferea Team\n"
 msgstr ""
 
-#: ../glade/liferea.glade.h:45
+#: ../glade/liferea.glade.h:44
 msgid "Create News Bin"
 msgstr ""
 
-#: ../glade/liferea.glade.h:46
+#: ../glade/liferea.glade.h:45
 msgid "Create Search Engine Feed"
 msgstr ""
 
-#: ../glade/liferea.glade.h:47
+#: ../glade/liferea.glade.h:46
 #, fuzzy
 msgid "Create new script"
 msgstr "Додај нова претплата."
 
-#: ../glade/liferea.glade.h:48
+#: ../glade/liferea.glade.h:47
 msgid "Default Feed Refresh _Interval:"
 msgstr "Стандарден _интервал за ажурирање на вестите:"
 
-#: ../glade/liferea.glade.h:49
+#: ../glade/liferea.glade.h:48
 #, fuzzy
 msgid "Default _number of items per feed to save:"
 msgstr "Стандарден број на предмети од вестите за трајно паметење:"
 
-#: ../glade/liferea.glade.h:50
+#: ../glade/liferea.glade.h:49
 msgid "Di_sable cache"
 msgstr "О_невозможи кеширање"
 
-#: ../glade/liferea.glade.h:51
+#: ../glade/liferea.glade.h:50
 msgid "Download"
 msgstr ""
 
-#: ../glade/liferea.glade.h:52
+#: ../glade/liferea.glade.h:51
 msgid "Downloading Enclosure"
 msgstr ""
 
-#: ../glade/liferea.glade.h:53
+#: ../glade/liferea.glade.h:52
 msgid "Downloading an enclosure of type:"
 msgstr ""
 
-#: ../glade/liferea.glade.h:54
+#: ../glade/liferea.glade.h:53
 msgid "Enclosures"
 msgstr ""
 
-#: ../glade/liferea.glade.h:55
+#: ../glade/liferea.glade.h:54
 msgid ""
 "Enter a search string Liferea should find either in a items title or in its "
 "content."
 msgstr ""
 
-#: ../glade/liferea.glade.h:56
+#: ../glade/liferea.glade.h:55
 #, fuzzy
 msgid "Exec Command"
 msgstr "_Команда"
 
-#: ../glade/liferea.glade.h:57
+#: ../glade/liferea.glade.h:56
 msgid "Feed _Name:"
 msgstr "Наслов на _вестите:"
 
-#: ../glade/liferea.glade.h:58
+#: ../glade/liferea.glade.h:57
 #, fuzzy
 msgid "Feeds"
 msgstr "_Вести"
 
-#: ../glade/liferea.glade.h:59
+#: ../glade/liferea.glade.h:58
 #, fuzzy
 msgid "Folders"
 msgstr "В-папка"
 
-#: ../glade/liferea.glade.h:60
+#: ../glade/liferea.glade.h:59
 msgid "GUI"
 msgstr "GUI"
 
-#: ../glade/liferea.glade.h:61
+#: ../glade/liferea.glade.h:60
 msgid "General"
 msgstr "Општо"
 
-#: ../glade/liferea.glade.h:62
+#: ../glade/liferea.glade.h:61
 #, fuzzy
 msgid "Headlines"
 msgstr "Наслов"
 
-#: ../glade/liferea.glade.h:63
+#: ../glade/liferea.glade.h:62
 #, fuzzy
 msgid "Ignore _comment feeds for this subscription."
 msgstr "Го отвора дијалогот за параметри на означените вести."
 
-#: ../glade/liferea.glade.h:65
+#: ../glade/liferea.glade.h:64
 #, fuzzy
 msgid "Liferea Homepage"
 msgstr "Помош за Лајфри"
 
-#: ../glade/liferea.glade.h:66
+#: ../glade/liferea.glade.h:65
 #, fuzzy
 msgid "Liferea Preferences"
 msgstr "Параметри на Лајфри"
 
-#: ../glade/liferea.glade.h:67 ../glade/new_subscription.glade.h:5
+#: ../glade/liferea.glade.h:66 ../glade/new_subscription.glade.h:5
 msgid ""
 "Liferea can use external filter plugins in order to access feeds and "
 "directories in non-supported formats.  See the documentation for more "
@@ -2134,21 +2125,21 @@ msgstr ""
 "Лајфри може да користи надворешни филтри за пристап кон вести во неподдржан "
 "формат. Прочитајте ја документацијата за повеќе информации."
 
-#: ../glade/liferea.glade.h:68
+#: ../glade/liferea.glade.h:67
 msgid "Liferea is a news aggregator for GTK+"
 msgstr "Лајфри е прелистувач на вести за ГТК+"
 
-#: ../glade/liferea.glade.h:69
+#: ../glade/liferea.glade.h:68
 #, fuzzy
 msgid "Maximal _Number Of Result Items:"
 msgstr "Максимален број на резултати"
 
-#: ../glade/liferea.glade.h:70
+#: ../glade/liferea.glade.h:69
 msgid "New Folder"
 msgstr "Нова папка"
 
 #. Feed update interval hint in preference dialog.
-#: ../glade/liferea.glade.h:72
+#: ../glade/liferea.glade.h:71
 #, fuzzy
 msgid ""
 "Note: <i>Please remember to set a reasonable refresh time. Usually it is a "
@@ -2158,7 +2149,7 @@ msgstr ""
 "се ажурираат вестите на секои 15 минути. Наместете 0 минути доколку не "
 "сакате автоматско ажурирање.</i>"
 
-#: ../glade/liferea.glade.h:73
+#: ../glade/liferea.glade.h:72
 #, fuzzy
 msgid ""
 "Note: Liferea will generate a feed subscription which is used to query the "
@@ -2169,108 +2160,108 @@ msgstr ""
 "Feedster results for the specified search string. You can keep this feed "
 "permanently and update it like any other subscription.  "
 
-#: ../glade/liferea.glade.h:74
+#: ../glade/liferea.glade.h:73
 msgid "Online/Offline Button"
 msgstr ""
 
-#: ../glade/liferea.glade.h:75
+#: ../glade/liferea.glade.h:74
 msgid "Open links in Liferea's _window."
 msgstr "Ги отвора _прозорците во Лајфри."
 
-#: ../glade/liferea.glade.h:76
+#: ../glade/liferea.glade.h:75
 msgid "Proxy"
 msgstr "Прокси порта"
 
-#: ../glade/liferea.glade.h:77
+#: ../glade/liferea.glade.h:76
 msgid "Proxy Pass_word:"
 msgstr "_Лозинка на прокси:"
 
-#: ../glade/liferea.glade.h:78
+#: ../glade/liferea.glade.h:77
 msgid "Proxy _Host:"
 msgstr "_Адреса на прокси:"
 
-#: ../glade/liferea.glade.h:79
+#: ../glade/liferea.glade.h:78
 msgid "Proxy _Port:"
 msgstr "Порта на _прокси:"
 
-#: ../glade/liferea.glade.h:80
+#: ../glade/liferea.glade.h:79
 msgid "Proxy _Username:"
 msgstr "Корисничко _име на прокси:"
 
-#: ../glade/liferea.glade.h:81
+#: ../glade/liferea.glade.h:80
 #, fuzzy
 msgid "Rename"
 msgstr "Преименувај папка"
 
-#: ../glade/liferea.glade.h:82
+#: ../glade/liferea.glade.h:81
 msgid "Reuse existing script"
 msgstr ""
 
-#: ../glade/liferea.glade.h:83
+#: ../glade/liferea.glade.h:82
 msgid "Script Manager"
 msgstr ""
 
-#: ../glade/liferea.glade.h:84
+#: ../glade/liferea.glade.h:83
 #, fuzzy
 msgid "Search All Feeds"
 msgstr "Барај во сите вести."
 
-#: ../glade/liferea.glade.h:85
+#: ../glade/liferea.glade.h:84
 #, fuzzy
 msgid "Search Folder Properties"
 msgstr "Својства на В-папката"
 
-#: ../glade/liferea.glade.h:86
+#: ../glade/liferea.glade.h:85
 msgid "Search _Link Cosmos with"
 msgstr ""
 
-#: ../glade/liferea.glade.h:87
+#: ../glade/liferea.glade.h:86
 #, fuzzy
 msgid "Search _Name:"
 msgstr "Наслов на _вестите:"
 
-#: ../glade/liferea.glade.h:88 ../glade/new_subscription.glade.h:7
+#: ../glade/liferea.glade.h:87 ../glade/new_subscription.glade.h:7
 msgid "Select File..."
 msgstr "Избери датотека..."
 
-#: ../glade/liferea.glade.h:89
+#: ../glade/liferea.glade.h:88
 msgid "Show _number of new items in the tray icon."
 msgstr ""
 
-#: ../glade/liferea.glade.h:90
+#: ../glade/liferea.glade.h:89
 msgid "Show a _popup window with new headlines."
 msgstr "Покажи мал _прозорец со новите наслови."
 
-#: ../glade/liferea.glade.h:91
+#: ../glade/liferea.glade.h:90
 #, fuzzy
 msgid "Show a status _icon in the notification area (system tray)."
 msgstr ""
 "Покажи икона за статус во местото за известување \n"
 "(познато како „фиока“)."
 
-#: ../glade/liferea.glade.h:93 ../glade/new_subscription.glade.h:8
+#: ../glade/liferea.glade.h:92 ../glade/new_subscription.glade.h:8
 msgid "Source Type:"
 msgstr "Тип на правило:"
 
-#: ../glade/liferea.glade.h:94
+#: ../glade/liferea.glade.h:93
 msgid ""
 "Starts searching for the specified text in all feeds. The search result will "
 "appear in the item list."
 msgstr ""
 
-#: ../glade/liferea.glade.h:95
+#: ../glade/liferea.glade.h:94
 msgid "Subscription Properties"
 msgstr "Својства на претплати"
 
-#: ../glade/liferea.glade.h:96
+#: ../glade/liferea.glade.h:95
 msgid "Sync"
 msgstr ""
 
-#: ../glade/liferea.glade.h:97
+#: ../glade/liferea.glade.h:96
 msgid "T_erminate instead of minimizing to tray icon."
 msgstr ""
 
-#: ../glade/liferea.glade.h:98
+#: ../glade/liferea.glade.h:97
 msgid ""
 "The cache setting controls if the contents of feeds are saved when Liferea "
 "exits. Marked items are always saved to the cache."
@@ -2278,140 +2269,140 @@ msgstr ""
 "Подесувањата за кешот контролираат дали содржината на вестите ќе биде "
 "зачувана при излез од Лајфри. Означените ставки се секогаш снимени во кешот."
 
-#: ../glade/liferea.glade.h:100
+#: ../glade/liferea.glade.h:99
 #, fuzzy, no-c-format
 msgid "This feed provider suggests an update interval of %d minutes."
 msgstr "Опслужувачот на овие вести сугерира време на ажурирање од %d секунди."
 
-#: ../glade/liferea.glade.h:101
+#: ../glade/liferea.glade.h:100
 msgid "Toolbar _button labels:"
 msgstr ""
 
-#: ../glade/liferea.glade.h:102
+#: ../glade/liferea.glade.h:101
 #, fuzzy
 msgid "Update Monitor"
 msgstr "/_Ажурирај"
 
-#: ../glade/liferea.glade.h:103
+#: ../glade/liferea.glade.h:102
 msgid "Use HTTP _authentication"
 msgstr "Користи HTTP _автентикација"
 
-#: ../glade/liferea.glade.h:104
+#: ../glade/liferea.glade.h:103
 #, fuzzy
 msgid "Use Proxy Au_thentication"
 msgstr "Користи прокси _автентикација"
 
-#: ../glade/liferea.glade.h:105 ../glade/new_subscription.glade.h:9
+#: ../glade/liferea.glade.h:104 ../glade/new_subscription.glade.h:9
 #, fuzzy
 msgid "Use conversion _filter"
 msgstr "Користи филтер за конверзија"
 
-#: ../glade/liferea.glade.h:107
+#: ../glade/liferea.glade.h:106
 #, fuzzy
 msgid "View Headlines"
 msgstr "Читај вести со"
 
-#: ../glade/liferea.glade.h:108
+#: ../glade/liferea.glade.h:107
 msgid ""
 "What should Liferea do with this enclosure? Please enter the command you "
 "want to be executed below. Downloaded enclosures will be supplied as an "
 "argument for this command:"
 msgstr ""
 
-#: ../glade/liferea.glade.h:109
+#: ../glade/liferea.glade.h:108
 msgid "_Advanced..."
 msgstr ""
 
-#: ../glade/liferea.glade.h:110
+#: ../glade/liferea.glade.h:109
 msgid "_All Rules Must Match"
 msgstr ""
 
-#: ../glade/liferea.glade.h:111
+#: ../glade/liferea.glade.h:110
 msgid "_Auto Detect (GNOME or environment)"
 msgstr ""
 
-#: ../glade/liferea.glade.h:112
+#: ../glade/liferea.glade.h:111
 msgid "_Automatically download all enclosures of this feed."
 msgstr ""
 
-#: ../glade/liferea.glade.h:113
+#: ../glade/liferea.glade.h:112
 #, fuzzy
 msgid "_Browse"
 msgstr "_Прелистувач:"
 
-#: ../glade/liferea.glade.h:114
+#: ../glade/liferea.glade.h:113
 msgid "_Browser:"
 msgstr "_Прелистувач:"
 
-#: ../glade/liferea.glade.h:115 ../glade/new_subscription.glade.h:10
+#: ../glade/liferea.glade.h:114 ../glade/new_subscription.glade.h:10
 msgid "_Command"
 msgstr "_Команда"
 
-#: ../glade/liferea.glade.h:116
+#: ../glade/liferea.glade.h:115
 msgid "_Default cache settings"
 msgstr "_Стандардни подесувања за кешот"
 
-#: ../glade/liferea.glade.h:117
+#: ../glade/liferea.glade.h:116
 msgid "_Disable Javascript."
 msgstr ""
 
-#: ../glade/liferea.glade.h:118
+#: ../glade/liferea.glade.h:117
 msgid "_Do this automatically for enclosures like this from now on."
 msgstr ""
 
-#: ../glade/liferea.glade.h:119
+#: ../glade/liferea.glade.h:118
 msgid "_Don't update this feed automatically."
 msgstr "_Не ги ажурирај автоматски овие вести"
 
-#: ../glade/liferea.glade.h:120 ../glade/new_subscription.glade.h:11
+#: ../glade/liferea.glade.h:119 ../glade/new_subscription.glade.h:11
 msgid "_Don't use proxy for download"
 msgstr ""
 
-#: ../glade/liferea.glade.h:121
+#: ../glade/liferea.glade.h:120
 msgid "_Download using"
 msgstr ""
 
-#: ../glade/liferea.glade.h:122
+#: ../glade/liferea.glade.h:121
 msgid "_Enable Local LAN Synchronization"
 msgstr ""
 
-#: ../glade/liferea.glade.h:123
+#: ../glade/liferea.glade.h:122
 msgid "_Enable browser plugins."
 msgstr ""
 
-#: ../glade/liferea.glade.h:124
+#: ../glade/liferea.glade.h:123
 #, fuzzy
 msgid "_Enforce popup notification for this subscription."
 msgstr "Го отвора дијалогот за параметри на означените вести."
 
-#: ../glade/liferea.glade.h:125
+#: ../glade/liferea.glade.h:124
 msgid "_Feed specific update interval of"
 msgstr "_Интервалот за ажурирање на овие вести е"
 
-#: ../glade/liferea.glade.h:126
+#: ../glade/liferea.glade.h:125
 #, fuzzy
 msgid "_Folder name:"
 msgstr "Папка:"
 
-#: ../glade/liferea.glade.h:127
+#: ../glade/liferea.glade.h:126
 #, fuzzy
 msgid "_Hide read items."
 msgstr "_Следна непрочитана вест"
 
-#: ../glade/liferea.glade.h:128
+#: ../glade/liferea.glade.h:127
 msgid "_Hide toolbar."
 msgstr ""
 
-#: ../glade/liferea.glade.h:129 ../glade/new_subscription.glade.h:12
+#: ../glade/liferea.glade.h:128 ../glade/new_subscription.glade.h:12
 #, fuzzy
 msgid "_Local File"
 msgstr "_Датотека"
 
-#: ../glade/liferea.glade.h:130
+#: ../glade/liferea.glade.h:129
 msgid "_Manual Setting:"
 msgstr ""
 
-#: ../glade/liferea.glade.h:132
+#: ../glade/liferea.glade.h:131
 #, no-c-format
 msgid ""
 "_Manual:\n"
@@ -2420,113 +2411,113 @@ msgstr ""
 "_Рачно:\n"
 "(%s за адреса)"
 
-#: ../glade/liferea.glade.h:134
+#: ../glade/liferea.glade.h:133
 #, fuzzy
 msgid "_Mark downloaded items as read."
 msgstr "/_Обележи сè како прочитанo"
 
-#: ../glade/liferea.glade.h:135
+#: ../glade/liferea.glade.h:134
 msgid "_Never do popup notification for this subscription."
 msgstr ""
 
-#: ../glade/liferea.glade.h:136
+#: ../glade/liferea.glade.h:135
 #, fuzzy
 msgid "_New Name:"
 msgstr "Наслов на _вестите:"
 
-#: ../glade/liferea.glade.h:137
+#: ../glade/liferea.glade.h:136
 msgid "_News Bin Name:"
 msgstr ""
 
-#: ../glade/liferea.glade.h:138
+#: ../glade/liferea.glade.h:137
 #, fuzzy
 msgid "_No Proxy"
 msgstr "Прокси порта"
 
-#: ../glade/liferea.glade.h:139
+#: ../glade/liferea.glade.h:138
 #, fuzzy
 msgid "_Number of items to save:"
 msgstr "Стандарден број на предмети од вестите за трајно паметење:"
 
-#: ../glade/liferea.glade.h:140
+#: ../glade/liferea.glade.h:139
 msgid "_Open link in:"
 msgstr "_Отвори ја врската во:"
 
-#: ../glade/liferea.glade.h:141
+#: ../glade/liferea.glade.h:140
 msgid "_Pass URL and do not download enclosure."
 msgstr ""
 
-#: ../glade/liferea.glade.h:144
+#: ../glade/liferea.glade.h:143
 msgid "_Post Bookmarks to"
 msgstr ""
 
-#: ../glade/liferea.glade.h:145
+#: ../glade/liferea.glade.h:144
 msgid "_Save downloads in"
 msgstr ""
 
-#: ../glade/liferea.glade.h:146
+#: ../glade/liferea.glade.h:145
 #, fuzzy
 msgid "_Search Folder..."
 msgstr "/_Преименувај папка..."
 
-#: ../glade/liferea.glade.h:147
+#: ../glade/liferea.glade.h:146
 #, fuzzy
 msgid "_Search for:"
 msgstr "Барај за"
 
-#: ../glade/liferea.glade.h:148
+#: ../glade/liferea.glade.h:147
 msgid "_Service Name"
 msgstr ""
 
-#: ../glade/liferea.glade.h:149
+#: ../glade/liferea.glade.h:148
 msgid "_Show the items of all child feeds when a folder is selected."
 msgstr ""
 
-#: ../glade/liferea.glade.h:150
+#: ../glade/liferea.glade.h:149
 #, fuzzy
 msgid "_Skim through articles with:"
 msgstr "Шетај низ вестите со "
 
-#: ../glade/liferea.glade.h:151 ../glade/new_subscription.glade.h:13
+#: ../glade/liferea.glade.h:150 ../glade/new_subscription.glade.h:13
 #, fuzzy
 msgid "_Source:"
 msgstr "Извор:"
 
-#: ../glade/liferea.glade.h:152
+#: ../glade/liferea.glade.h:151
 msgid "_Start in tray icon."
 msgstr ""
 
-#: ../glade/liferea.glade.h:153 ../glade/new_subscription.glade.h:14
+#: ../glade/liferea.glade.h:152 ../glade/new_subscription.glade.h:14
 msgid "_URL"
 msgstr "_Адреса"
 
-#: ../glade/liferea.glade.h:154
+#: ../glade/liferea.glade.h:153
 #, fuzzy
 msgid "_Unlimited cache"
 msgstr "_Неограничено кеширање"
 
-#: ../glade/liferea.glade.h:155
+#: ../glade/liferea.glade.h:154
 #, fuzzy
 msgid "_Update all favicons now"
 msgstr "Ажурирај ги сите вести"
 
-#: ../glade/liferea.glade.h:156
+#: ../glade/liferea.glade.h:155
 msgid "_Use global default update interval."
 msgstr "_Користи го стандардниот интервал за ажурирање."
 
-#: ../glade/liferea.glade.h:157
+#: ../glade/liferea.glade.h:156
 msgid "combined view"
 msgstr ""
 
-#: ../glade/liferea.glade.h:158
+#: ../glade/liferea.glade.h:157
 msgid "enter any search string you want"
 msgstr "внеси некој текст за барање"
 
-#: ../glade/liferea.glade.h:159
+#: ../glade/liferea.glade.h:158
 msgid "normal view"
 msgstr ""
 
-#: ../glade/liferea.glade.h:160
+#: ../glade/liferea.glade.h:159
 msgid "wide view"
 msgstr ""
 
@@ -2570,6 +2561,14 @@ msgid ""
 "Enter a website location to use feed autodiscovery or in case you know it "
 "the exact feed location."
 msgstr ""
+
+#, fuzzy
+#~ msgid "Count"
+#~ msgstr "За"
+
+#, fuzzy
+#~ msgid "Attention Profile"
+#~ msgstr "Автентификацијата не успеа"
 
 #, fuzzy
 #~ msgid "http://liferea.sf.net"

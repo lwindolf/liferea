@@ -18,10 +18,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 1.6.0-rc5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-22 14:32+0300\n"
+"POT-Creation-Date: 2010-05-25 22:29+0300\n"
 "PO-Revision-Date: 2009-06-16 02:48+0200\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.org>\n"
 "Language-Team: French\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -158,7 +159,7 @@ msgstr "Section"
 msgid "Shared by"
 msgstr "Partagé par"
 
-#: ../xslt/item.xml.in.h:13 ../glade/liferea.glade.h:92
+#: ../xslt/item.xml.in.h:13 ../glade/liferea.glade.h:91
 msgid "Source"
 msgstr "Source"
 
@@ -191,8 +192,9 @@ msgid ""
 "Add items to this news bin by selecting \"Copy to News Bin\" from the item "
 "list context menu."
 msgstr ""
-"Ajoutez des éléments à cette boîte à nouvelles en sélectionnant « Copier dans "
-"la boîte à nouvelles » à partir du menu contextuel de la liste des éléments."
+"Ajoutez des éléments à cette boîte à nouvelles en sélectionnant « Copier "
+"dans la boîte à nouvelles » à partir du menu contextuel de la liste des "
+"éléments."
 
 #: ../xslt/newsbin.xml.in.h:2
 msgid "News Bin:"
@@ -202,12 +204,12 @@ msgstr "Boîte à nouvelles :"
 msgid "Search Folder:"
 msgstr "Dossier de recherche :"
 
-#: ../src/browser.c:55 ../src/browser.c:75
+#: ../src/browser.c:58 ../src/browser.c:78
 #, c-format
 msgid "Browser command failed: %s"
 msgstr "La commande du navigateur a échoué : %s"
 
-#: ../src/browser.c:78
+#: ../src/browser.c:81
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Exécution de : \"%s\""
@@ -339,7 +341,7 @@ msgstr "\"%s\" mis à jour..."
 msgid "\"%s\" is not available"
 msgstr "\"%s\" n'est pas disponible"
 
-#: ../src/feed_parser.c:132
+#: ../src/feed_parser.c:133
 msgid ""
 "The URL you want Liferea to subscribe to points to a webpage and the auto "
 "discovery found no feeds on this page. Maybe this webpage just does not "
@@ -349,25 +351,25 @@ msgstr ""
 "flux n'a été découvert sur cette page. Peut-être que cette page web ne "
 "supporte pas la découverte automatique de flux."
 
-#: ../src/feed_parser.c:165
+#: ../src/feed_parser.c:166
 #, c-format
 msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
 msgstr ""
 "Erreur XML lors de la lecture du flux ! Le flux \"%s\" ne peut être chargé !"
 
-#: ../src/feed_parser.c:170
+#: ../src/feed_parser.c:171
 msgid "Empty document!"
 msgstr "Document vide !"
 
-#: ../src/feed_parser.c:179
+#: ../src/feed_parser.c:180
 msgid "Invalid XML!"
 msgstr "XML non valide !"
 
-#: ../src/feed_parser.c:222
+#: ../src/feed_parser.c:223
 msgid "Source points to HTML document."
 msgstr "La source pointe sur le document HTML."
 
-#: ../src/feed_parser.c:225
+#: ../src/feed_parser.c:226
 msgid "Could not determine the feed type."
 msgstr "Impossible de déterminer le type de flux."
 
@@ -456,21 +458,21 @@ msgstr "Affiche des messages de débuggage verbeux"
 msgid "Print debugging messages for the given topic"
 msgstr "Affiche des messages de débuggage pour le sujet donné"
 
-#: ../src/main.c:217
+#: ../src/main.c:218
 msgid "Liferea, the Linux Feed Reader"
 msgstr "Liferea, le lecteur de flux pour Linux"
 
-#: ../src/main.c:218
+#: ../src/main.c:219
 msgid "For more information, please visit http://liferea.sourceforge.net/"
 msgstr ""
 "Pour plus d'information, veuillez visiter http://liferea.sourceforge.net/"
 
 #. GTK theme support
-#: ../src/main.c:247 ../glade/liferea.glade.h:64
+#: ../src/main.c:248 ../glade/liferea.glade.h:63
 msgid "Liferea"
 msgstr "Liferea"
 
-#: ../src/main.c:256
+#: ../src/main.c:257
 msgid "Liferea seems to be running already!"
 msgstr "Liferea semble déjà être en train de tourner !"
 
@@ -487,27 +489,27 @@ msgstr ""
 "vous êtes sûr que la conversion s'est correctement effectuée !"
 
 #. Some libsoup transport errors
-#: ../src/net.c:332
+#: ../src/net.c:361
 msgid "The update request was cancelled"
 msgstr "La demande de mise à jour a été annulée"
 
-#: ../src/net.c:333
+#: ../src/net.c:362
 msgid "Unable to resolve destination host name"
 msgstr "Impossible de résoudre le nom de la machine de destination"
 
-#: ../src/net.c:334
+#: ../src/net.c:363
 msgid "Unable to resolve proxy host name"
 msgstr "Impossible de résoudre le nom de la machine proxy"
 
-#: ../src/net.c:335
+#: ../src/net.c:364
 msgid "Unable to connect to remote host"
 msgstr "Impossible de se connecter à la machine distante"
 
-#: ../src/net.c:336
+#: ../src/net.c:365
 msgid "Unable to connect to proxy"
 msgstr "Impossible de se connecter au proxy"
 
-#: ../src/net.c:337
+#: ../src/net.c:366
 msgid ""
 "A network error occurred, or the other end closed the connection unexpectedly"
 msgstr ""
@@ -515,12 +517,12 @@ msgstr ""
 "la connexion"
 
 #. http 3xx redirection
-#: ../src/net.c:340
+#: ../src/net.c:369
 msgid "The resource moved permanently to a new location"
 msgstr "La ressource a été déplacée à un autre endroit de manière permanente"
 
 #. http 4xx client error
-#: ../src/net.c:343
+#: ../src/net.c:372
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box"
@@ -529,142 +531,142 @@ msgstr ""
 "nom d'utilisateur et votre mot de passe dans la boîte de dialogue des "
 "propriétés de ce flux"
 
-#: ../src/net.c:345
+#: ../src/net.c:374
 msgid "Payment required"
 msgstr "Paiement nécessaire"
 
-#: ../src/net.c:346
+#: ../src/net.c:375
 msgid "You're not allowed to access this resource"
 msgstr "Vous n'êtes pas autorisé à accéder à cette ressource"
 
-#: ../src/net.c:347
+#: ../src/net.c:376
 msgid "Resource Not Found"
 msgstr "Ressource introuvable"
 
-#: ../src/net.c:348
+#: ../src/net.c:377
 msgid "Method Not Allowed"
 msgstr "Méthode interdite"
 
-#: ../src/net.c:349
+#: ../src/net.c:378
 msgid "Not Acceptable"
 msgstr "Non acceptable"
 
-#: ../src/net.c:350
+#: ../src/net.c:379
 msgid "Proxy authentication required"
 msgstr "Authentification par proxy exigée"
 
-#: ../src/net.c:351
+#: ../src/net.c:380
 msgid "Request timed out"
 msgstr "Délai de la requête expiré"
 
-#: ../src/net.c:352
+#: ../src/net.c:381
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "Parti. La ressource n'existe pas. Veuillez vous désabonner !"
 
-#: ../src/net.c:357
+#: ../src/net.c:386
 msgid "There was an internal error in the update process"
 msgstr "Il y a eu une erreur interne lors du traitement de la mise à jour"
 
-#: ../src/net.c:359
+#: ../src/net.c:388
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "Flux non disponible : le serveur a demandé une redirection non supportée !"
 
-#: ../src/net.c:361
+#: ../src/net.c:390
 msgid "Client Error"
 msgstr "Erreur du client"
 
-#: ../src/net.c:363
+#: ../src/net.c:392
 msgid "Server Error"
 msgstr "Erreur du serveur"
 
-#: ../src/net.c:365
+#: ../src/net.c:394
 msgid "An unknown networking error happened!"
 msgstr "Une erreur réseau inconnue s'est produite !"
 
 #. SQL condition builder function	in-memory check function	feedlist.opml rule id           rule menu label         positive menu option    negative menu option    has param
 #. ========================================================================================================================================================================================
-#: ../src/rule.c:373
+#: ../src/rule.c:371
 msgid "Item"
 msgstr "L'élément"
 
-#: ../src/rule.c:373 ../src/rule.c:374 ../src/rule.c:375 ../src/rule.c:376
+#: ../src/rule.c:371 ../src/rule.c:372 ../src/rule.c:373 ../src/rule.c:374
 msgid "does contain"
 msgstr "contient"
 
-#: ../src/rule.c:373 ../src/rule.c:374 ../src/rule.c:375 ../src/rule.c:376
+#: ../src/rule.c:371 ../src/rule.c:372 ../src/rule.c:373 ../src/rule.c:374
 msgid "does not contain"
 msgstr "ne contient pas"
 
-#: ../src/rule.c:374
+#: ../src/rule.c:372
 msgid "Item title"
 msgstr "Le titre de l'élément"
 
-#: ../src/rule.c:375
+#: ../src/rule.c:373
 msgid "Item body"
 msgstr "Le corps de l'élément"
 
-#: ../src/rule.c:376
+#: ../src/rule.c:374
 msgid "Feed title"
 msgstr "Le titre du flux"
 
-#: ../src/rule.c:377
+#: ../src/rule.c:375
 msgid "Read status"
 msgstr "Le statut lu"
 
-#: ../src/rule.c:377
+#: ../src/rule.c:375
 msgid "is unread"
 msgstr "est « non lu »"
 
-#: ../src/rule.c:377
+#: ../src/rule.c:375
 msgid "is read"
 msgstr "est « lu »"
 
-#: ../src/rule.c:378
+#: ../src/rule.c:376
 msgid "Flag status"
 msgstr "Le marqueur"
 
-#: ../src/rule.c:378
+#: ../src/rule.c:376
 msgid "is flagged"
 msgstr "est positionné"
 
-#: ../src/rule.c:378
+#: ../src/rule.c:376
 msgid "is unflagged"
 msgstr "n'est pas positionné"
 
-#: ../src/rule.c:379
+#: ../src/rule.c:377
 msgid "Update status"
 msgstr "Le statut de mise à jour"
 
-#: ../src/rule.c:379
+#: ../src/rule.c:377
 msgid "was updated"
 msgstr "a été mis à jour"
 
-#: ../src/rule.c:379
+#: ../src/rule.c:377
 msgid "was not updated"
 msgstr "n'a pas été mis à jour"
 
-#: ../src/rule.c:380
+#: ../src/rule.c:378
 msgid "Podcast"
 msgstr "Podcast"
 
-#: ../src/rule.c:380
+#: ../src/rule.c:378
 msgid "included"
 msgstr "inclus"
 
-#: ../src/rule.c:380
+#: ../src/rule.c:378
 msgid "not included"
 msgstr "non inclus"
 
-#: ../src/rule.c:381 ../src/ui/attention_profile_dialog.c:173
+#: ../src/rule.c:379
 msgid "Category"
 msgstr "Une catégorie"
 
-#: ../src/rule.c:381
+#: ../src/rule.c:379
 msgid "is set"
 msgstr "est mise"
 
-#: ../src/rule.c:381
+#: ../src/rule.c:379
 msgid "is not set"
 msgstr "n'est pas mise"
 
@@ -929,7 +931,7 @@ msgstr ""
 msgid "_View"
 msgstr "_Vue"
 
-#: ../src/ui/liferea_shell.c:851 ../src/ui/liferea_htmlview.c:538
+#: ../src/ui/liferea_shell.c:851 ../src/ui/liferea_htmlview.c:543
 msgid "_Increase Text Size"
 msgstr "_Augmenter la taille du texte"
 
@@ -937,7 +939,7 @@ msgstr "_Augmenter la taille du texte"
 msgid "Increases the text size of the item view."
 msgstr "Augmente la taille du texte dans la vue de l'élément."
 
-#: ../src/ui/liferea_shell.c:853 ../src/ui/liferea_htmlview.c:539
+#: ../src/ui/liferea_shell.c:853 ../src/ui/liferea_htmlview.c:544
 msgid "_Decrease Text Size"
 msgstr "_Réduire la taille du texte"
 
@@ -1223,16 +1225,12 @@ msgstr ""
 "dialogue pour la recherche et Liferea ajoutera un dossier de recherche à "
 "votre liste de flux."
 
-#: ../src/ui/attention_profile_dialog.c:183
-msgid "Count"
-msgstr "Nombre"
-
-#: ../src/ui/auth_dialog.c:157 ../glade/auth.glade.h:3
+#: ../src/ui/auth_dialog.c:162 ../glade/auth.glade.h:3
 #, no-c-format
 msgid "Enter the username and password for \"%s\" (%s):"
 msgstr "Entrer le nom d'utilisateur et le mot de passe pour \"%s\" (%s) :"
 
-#: ../src/ui/auth_dialog.c:158
+#: ../src/ui/auth_dialog.c:163
 msgid "Unknown source"
 msgstr "Source inconnue"
 
@@ -1269,24 +1267,24 @@ msgstr ""
 "Liferea est en mode déconnecté. Il n'est pas possible de faire de mise à "
 "jour."
 
-#: ../src/ui/liferea_htmlview.c:526
+#: ../src/ui/liferea_htmlview.c:531
 msgid "Launch Link In _Tab"
 msgstr "Ouvrir le lien dans un onglet (_tab)"
 
-#: ../src/ui/liferea_htmlview.c:527
+#: ../src/ui/liferea_htmlview.c:532
 msgid "_Launch Link In Browser"
 msgstr "_Ouvrir le lien dans le navigateur"
 
-#: ../src/ui/liferea_htmlview.c:530 ../src/ui/ui_popup.c:133
+#: ../src/ui/liferea_htmlview.c:535 ../src/ui/ui_popup.c:133
 #, c-format
 msgid "_Bookmark Link at %s"
 msgstr "_Publier le lien sur %s"
 
-#: ../src/ui/liferea_htmlview.c:534
+#: ../src/ui/liferea_htmlview.c:539
 msgid "_Copy Link Location"
 msgstr "_Copier l'adresse du lien"
 
-#: ../src/ui/liferea_htmlview.c:536
+#: ../src/ui/liferea_htmlview.c:541
 msgid "_Subscribe..."
 msgstr "S'_abonner..."
 
@@ -1598,11 +1596,11 @@ msgstr "Flux Atom invalide : auteur inconnu"
 msgid "%b %d %H:%M"
 msgstr "%d %b %H:%M"
 
-#: ../src/fl_sources/bloglines_source.c:80
+#: ../src/fl_sources/bloglines_source.c:81
 msgid "Bloglines"
 msgstr "Bloglines"
 
-#: ../src/fl_sources/bloglines_source.c:81
+#: ../src/fl_sources/bloglines_source.c:82
 msgid ""
 "Integrate the feed list of your Bloglines account. Liferea will present your "
 "Bloglines subscription as a read-only subtree in the feed list."
@@ -1617,20 +1615,20 @@ msgid "feedlist.opml"
 msgstr "feedlist_fr.opml"
 
 #: ../src/fl_sources/default_source.c:180
-#: ../src/fl_sources/google_source.c:248 ../glade/new_subscription.glade.h:6
+#: ../src/fl_sources/google_source.c:250 ../glade/new_subscription.glade.h:6
 #: ../glade/simple_subscription.glade.h:5
 msgid "New Subscription"
 msgstr "Nouvel abonnement"
 
-#: ../src/fl_sources/google_source.c:117
+#: ../src/fl_sources/google_source.c:119
 msgid "Google Reader login failed!"
 msgstr "La connexion (login) à Google Reader a échoué !"
 
-#: ../src/fl_sources/google_source.c:334
+#: ../src/fl_sources/google_source.c:336
 msgid "Google Reader"
 msgstr "Google Reader"
 
-#: ../src/fl_sources/google_source.c:335
+#: ../src/fl_sources/google_source.c:337
 msgid ""
 "Integrate the feed list of your Google Reader account. Liferea will present "
 "your Google Reader subscriptions, and will synchronize your feed list and "
@@ -1640,11 +1638,11 @@ msgstr ""
 "vos abonnements Google Reader et synchronisera votre liste de flux et listes "
 "de lecture."
 
-#: ../src/fl_sources/opml_source.c:328
+#: ../src/fl_sources/opml_source.c:330
 msgid "Planet, BlogRoll, OPML"
 msgstr "Planet, BlogRoll, OPML"
 
-#: ../src/fl_sources/opml_source.c:329
+#: ../src/fl_sources/opml_source.c:331
 msgid ""
 "Integrate blogrolls or Planets in your feed list. Liferea will automatically "
 "add and remove feeds according to the changes of the source OPML document"
@@ -1653,19 +1651,19 @@ msgstr ""
 "ou supprimera automatiquement des flux suivant les changements du document "
 "source OPML"
 
-#: ../src/fl_sources/opml_source.c:390
+#: ../src/fl_sources/opml_source.c:392
 msgid "Choose OPML File"
 msgstr "Choisir un fichier OPML"
 
-#: ../src/fl_sources/opml_source.h:27
+#: ../src/fl_sources/opml_source.h:28
 msgid "New OPML Subscription"
 msgstr "Nouvel abonnement OPML"
 
-#: ../src/fl_sources/node_source.c:225
+#: ../src/fl_sources/node_source.c:237
 msgid "No feed list source types found!"
 msgstr "Impossible de trouver un type de source de liste de flux !"
 
-#: ../src/fl_sources/node_source.c:256
+#: ../src/fl_sources/node_source.c:268
 msgid "Source Type"
 msgstr "Type de source"
 
@@ -1723,11 +1721,11 @@ msgstr ""
 "Note : <i>le nom d'utilisateur et le mot de passe seront sauvés non chiffrés "
 "dans votre liste de flux Liferea.</i>"
 
-#: ../glade/auth.glade.h:5 ../glade/liferea.glade.h:106
+#: ../glade/auth.glade.h:5 ../glade/liferea.glade.h:105
 msgid "User_name:"
 msgstr "Nom d'_utilisateur :"
 
-#: ../glade/auth.glade.h:6 ../glade/liferea.glade.h:143
+#: ../glade/auth.glade.h:6 ../glade/liferea.glade.h:142
 msgid "_Password:"
 msgstr "_Mot de passe :"
 
@@ -1740,7 +1738,7 @@ msgid "Please enter your Bloglines account settings."
 msgstr "Veuillez entrer les paramètres de votre compte Bloglines."
 
 #: ../glade/bloglines_source.glade.h:3 ../glade/google_source.glade.h:3
-#: ../glade/liferea.glade.h:142
+#: ../glade/liferea.glade.h:141
 msgid "_Password"
 msgstr "_Mot de passe"
 
@@ -1911,28 +1909,24 @@ msgid "At _startup:"
 msgstr "Au _lancement :"
 
 #: ../glade/liferea.glade.h:37
-msgid "Attention Profile"
-msgstr "Profil d'attention"
-
-#: ../glade/liferea.glade.h:38
 msgid "Auto-_load item link in configured browser when selecting articles."
 msgstr ""
 "_Chargement auto du lien assigné dans le navigateur configuré lors de la "
 "sélection des articles."
 
-#: ../glade/liferea.glade.h:39
+#: ../glade/liferea.glade.h:38
 msgid "Browser"
 msgstr "Navigateur"
 
-#: ../glade/liferea.glade.h:40
+#: ../glade/liferea.glade.h:39
 msgid "Cancel _All"
 msgstr "_Annuler le tout"
 
-#: ../glade/liferea.glade.h:41 ../glade/new_subscription.glade.h:4
+#: ../glade/liferea.glade.h:40 ../glade/new_subscription.glade.h:4
 msgid "Convert _using:"
 msgstr "Convertir _en utilisant :"
 
-#: ../glade/liferea.glade.h:42
+#: ../glade/liferea.glade.h:41
 msgid ""
 "Copyright (c) 2003-2009\n"
 "The Liferea Team\n"
@@ -1940,47 +1934,47 @@ msgstr ""
 "Copyright (c) 2003-2009\n"
 "L'équipe Liferea\n"
 
-#: ../glade/liferea.glade.h:45
+#: ../glade/liferea.glade.h:44
 msgid "Create News Bin"
 msgstr "Créer une boîte à nouvelles"
 
-#: ../glade/liferea.glade.h:46
+#: ../glade/liferea.glade.h:45
 msgid "Create Search Engine Feed"
 msgstr "Créer un flux de moteur de recherche"
 
-#: ../glade/liferea.glade.h:47
+#: ../glade/liferea.glade.h:46
 msgid "Create new script"
 msgstr "Créer un nouveau script"
 
-#: ../glade/liferea.glade.h:48
+#: ../glade/liferea.glade.h:47
 msgid "Default Feed Refresh _Interval:"
 msgstr "_Intervalle de rafraîchissement des flux par défaut :"
 
-#: ../glade/liferea.glade.h:49
+#: ../glade/liferea.glade.h:48
 msgid "Default _number of items per feed to save:"
 msgstr "_Nombre d'éléments de flux par défaut à sauvegarder :"
 
-#: ../glade/liferea.glade.h:50
+#: ../glade/liferea.glade.h:49
 msgid "Di_sable cache"
 msgstr "_Désactiver le cache"
 
-#: ../glade/liferea.glade.h:51
+#: ../glade/liferea.glade.h:50
 msgid "Download"
 msgstr "Téléchargement"
 
-#: ../glade/liferea.glade.h:52
+#: ../glade/liferea.glade.h:51
 msgid "Downloading Enclosure"
 msgstr "Téléchargement d'une annexe"
 
-#: ../glade/liferea.glade.h:53
+#: ../glade/liferea.glade.h:52
 msgid "Downloading an enclosure of type:"
 msgstr "Téléchargement d'une annexe de type :"
 
-#: ../glade/liferea.glade.h:54
+#: ../glade/liferea.glade.h:53
 msgid "Enclosures"
 msgstr "Annexes"
 
-#: ../glade/liferea.glade.h:55
+#: ../glade/liferea.glade.h:54
 msgid ""
 "Enter a search string Liferea should find either in a items title or in its "
 "content."
@@ -1988,47 +1982,47 @@ msgstr ""
 "Entrez une chaîne à rechercher que Liferea doit trouver soit dans le titre, "
 "soit dans le contenu d'un élément."
 
-#: ../glade/liferea.glade.h:56
+#: ../glade/liferea.glade.h:55
 msgid "Exec Command"
 msgstr "Commande d'exécution"
 
-#: ../glade/liferea.glade.h:57
+#: ../glade/liferea.glade.h:56
 msgid "Feed _Name:"
 msgstr "Nom du _flux :"
 
-#: ../glade/liferea.glade.h:58
+#: ../glade/liferea.glade.h:57
 msgid "Feeds"
 msgstr "Flux"
 
-#: ../glade/liferea.glade.h:59
+#: ../glade/liferea.glade.h:58
 msgid "Folders"
 msgstr "Dossiers"
 
-#: ../glade/liferea.glade.h:60
+#: ../glade/liferea.glade.h:59
 msgid "GUI"
 msgstr "Interface"
 
-#: ../glade/liferea.glade.h:61
+#: ../glade/liferea.glade.h:60
 msgid "General"
 msgstr "Général"
 
-#: ../glade/liferea.glade.h:62
+#: ../glade/liferea.glade.h:61
 msgid "Headlines"
 msgstr "Titres"
 
-#: ../glade/liferea.glade.h:63
+#: ../glade/liferea.glade.h:62
 msgid "Ignore _comment feeds for this subscription."
 msgstr "_Ignorer les flux de commentaires pour cet abonnement."
 
-#: ../glade/liferea.glade.h:65
+#: ../glade/liferea.glade.h:64
 msgid "Liferea Homepage"
 msgstr "Page d'accueil de Liferea"
 
-#: ../glade/liferea.glade.h:66
+#: ../glade/liferea.glade.h:65
 msgid "Liferea Preferences"
 msgstr "Préférences de Liferea"
 
-#: ../glade/liferea.glade.h:67 ../glade/new_subscription.glade.h:5
+#: ../glade/liferea.glade.h:66 ../glade/new_subscription.glade.h:5
 msgid ""
 "Liferea can use external filter plugins in order to access feeds and "
 "directories in non-supported formats.  See the documentation for more "
@@ -2039,20 +2033,20 @@ msgstr ""
 "des formats non supportés. Lisez la documentation pour de plus amples "
 "informations."
 
-#: ../glade/liferea.glade.h:68
+#: ../glade/liferea.glade.h:67
 msgid "Liferea is a news aggregator for GTK+"
 msgstr "Liferea est un agrégateur de nouvelles pour GTK+"
 
-#: ../glade/liferea.glade.h:69
+#: ../glade/liferea.glade.h:68
 msgid "Maximal _Number Of Result Items:"
 msgstr "Nombre _maximal de résultats :"
 
-#: ../glade/liferea.glade.h:70
+#: ../glade/liferea.glade.h:69
 msgid "New Folder"
 msgstr "Nouveau dossier"
 
 #. Feed update interval hint in preference dialog.
-#: ../glade/liferea.glade.h:72
+#: ../glade/liferea.glade.h:71
 msgid ""
 "Note: <i>Please remember to set a reasonable refresh time. Usually it is a "
 "waste of bandwidth to poll feeds more often than each hour.</i>"
@@ -2061,7 +2055,7 @@ msgstr ""
 "raisonnable. Un délai inférieur à une heure n'est généralement qu'un "
 "gaspillage de bande passante.</i>"
 
-#: ../glade/liferea.glade.h:73
+#: ../glade/liferea.glade.h:72
 msgid ""
 "Note: Liferea will generate a feed subscription which is used to query the "
 "search engine results for the specified search string. You can keep this "
@@ -2072,85 +2066,85 @@ msgstr ""
 "Vous pouvez garder ce flux définitivement et le mettre à jour comme "
 "n'importe quel autre abonnement.  "
 
-#: ../glade/liferea.glade.h:74
+#: ../glade/liferea.glade.h:73
 msgid "Online/Offline Button"
 msgstr "Bouton connecté/déconnecté"
 
-#: ../glade/liferea.glade.h:75
+#: ../glade/liferea.glade.h:74
 msgid "Open links in Liferea's _window."
 msgstr "Ouvrir les liens dans la fenêtre de _Liferea."
 
-#: ../glade/liferea.glade.h:76
+#: ../glade/liferea.glade.h:75
 msgid "Proxy"
 msgstr "Proxy"
 
-#: ../glade/liferea.glade.h:77
+#: ../glade/liferea.glade.h:76
 msgid "Proxy Pass_word:"
 msgstr "_Mot de passe pour le proxy :"
 
-#: ../glade/liferea.glade.h:78
+#: ../glade/liferea.glade.h:77
 msgid "Proxy _Host:"
 msgstr "_Hôte du proxy :"
 
-#: ../glade/liferea.glade.h:79
+#: ../glade/liferea.glade.h:78
 msgid "Proxy _Port:"
 msgstr "_Port du proxy :"
 
-#: ../glade/liferea.glade.h:80
+#: ../glade/liferea.glade.h:79
 msgid "Proxy _Username:"
 msgstr "_Nom d'utilisateur pour le proxy :"
 
-#: ../glade/liferea.glade.h:81
+#: ../glade/liferea.glade.h:80
 msgid "Rename"
 msgstr "Renommer"
 
-#: ../glade/liferea.glade.h:82
+#: ../glade/liferea.glade.h:81
 msgid "Reuse existing script"
 msgstr "Réutiliser un script existant"
 
-#: ../glade/liferea.glade.h:83
+#: ../glade/liferea.glade.h:82
 msgid "Script Manager"
 msgstr "Gestionnaire de scripts"
 
-#: ../glade/liferea.glade.h:84
+#: ../glade/liferea.glade.h:83
 msgid "Search All Feeds"
 msgstr "Chercher dans tous les flux"
 
-#: ../glade/liferea.glade.h:85
+#: ../glade/liferea.glade.h:84
 msgid "Search Folder Properties"
 msgstr "Propriétés du dossier de recherche"
 
-#: ../glade/liferea.glade.h:86
+#: ../glade/liferea.glade.h:85
 msgid "Search _Link Cosmos with"
 msgstr "_Chercher dans le link cosmos avec"
 
-#: ../glade/liferea.glade.h:87
+#: ../glade/liferea.glade.h:86
 msgid "Search _Name:"
 msgstr "Nom de la _recherche :"
 
-#: ../glade/liferea.glade.h:88 ../glade/new_subscription.glade.h:7
+#: ../glade/liferea.glade.h:87 ../glade/new_subscription.glade.h:7
 msgid "Select File..."
 msgstr "Sélectionner un fichier..."
 
-#: ../glade/liferea.glade.h:89
+#: ../glade/liferea.glade.h:88
 msgid "Show _number of new items in the tray icon."
 msgstr "_Montrer le nombre de nouveaux éléments dans l'icône."
 
-#: ../glade/liferea.glade.h:90
+#: ../glade/liferea.glade.h:89
 msgid "Show a _popup window with new headlines."
 msgstr "Afficher un _popup avec les nouveaux titres."
 
-#: ../glade/liferea.glade.h:91
+#: ../glade/liferea.glade.h:90
 msgid "Show a status _icon in the notification area (system tray)."
 msgstr ""
 "Afficher une _icône de statut dans la zone de notification (barre des "
 "tâches)."
 
-#: ../glade/liferea.glade.h:93 ../glade/new_subscription.glade.h:8
+#: ../glade/liferea.glade.h:92 ../glade/new_subscription.glade.h:8
 msgid "Source Type:"
 msgstr "Type de source :"
 
-#: ../glade/liferea.glade.h:94
+#: ../glade/liferea.glade.h:93
 msgid ""
 "Starts searching for the specified text in all feeds. The search result will "
 "appear in the item list."
@@ -2158,19 +2152,19 @@ msgstr ""
 "Débute une recherche du texte spécifié dans tous les flux. Le résultat de la "
 "recherche apparaîtra dans la liste des éléments."
 
-#: ../glade/liferea.glade.h:95
+#: ../glade/liferea.glade.h:94
 msgid "Subscription Properties"
 msgstr "Propriétés des abonnements"
 
-#: ../glade/liferea.glade.h:96
+#: ../glade/liferea.glade.h:95
 msgid "Sync"
 msgstr "Synchro"
 
-#: ../glade/liferea.glade.h:97
+#: ../glade/liferea.glade.h:96
 msgid "T_erminate instead of minimizing to tray icon."
 msgstr "_Terminer au lieu de minimiser dans l'icône."
 
-#: ../glade/liferea.glade.h:98
+#: ../glade/liferea.glade.h:97
 msgid ""
 "The cache setting controls if the contents of feeds are saved when Liferea "
 "exits. Marked items are always saved to the cache."
@@ -2179,37 +2173,37 @@ msgstr ""
 "sauvegardé à la fermeture de Liferea. Les éléments marqués sont toujours "
 "sauvegardés dans le cache."
 
-#: ../glade/liferea.glade.h:100
+#: ../glade/liferea.glade.h:99
 #, no-c-format
 msgid "This feed provider suggests an update interval of %d minutes."
 msgstr ""
 "Le fournisseur de ce flux suggère un intervalle de mise à jour de %d minutes."
 
-#: ../glade/liferea.glade.h:101
+#: ../glade/liferea.glade.h:100
 msgid "Toolbar _button labels:"
 msgstr "_Boutons de la barre d'outils :"
 
-#: ../glade/liferea.glade.h:102
+#: ../glade/liferea.glade.h:101
 msgid "Update Monitor"
 msgstr "Moniteur de mise à jour"
 
-#: ../glade/liferea.glade.h:103
+#: ../glade/liferea.glade.h:102
 msgid "Use HTTP _authentication"
 msgstr "Utiliser l'_authentification HTTP"
 
-#: ../glade/liferea.glade.h:104
+#: ../glade/liferea.glade.h:103
 msgid "Use Proxy Au_thentication"
 msgstr "Utiliser l'_authentification pour le proxy"
 
-#: ../glade/liferea.glade.h:105 ../glade/new_subscription.glade.h:9
+#: ../glade/liferea.glade.h:104 ../glade/new_subscription.glade.h:9
 msgid "Use conversion _filter"
 msgstr "Utiliser un _filtre de conversion"
 
-#: ../glade/liferea.glade.h:107
+#: ../glade/liferea.glade.h:106
 msgid "View Headlines"
 msgstr "Voir les titres"
 
-#: ../glade/liferea.glade.h:108
+#: ../glade/liferea.glade.h:107
 msgid ""
 "What should Liferea do with this enclosure? Please enter the command you "
 "want to be executed below. Downloaded enclosures will be supplied as an "
@@ -2219,97 +2213,97 @@ msgstr ""
 "commande que vous voulez exécuter. Les fichiers téléchargés seront passés en "
 "argument de cette commande :"
 
-#: ../glade/liferea.glade.h:109
+#: ../glade/liferea.glade.h:108
 msgid "_Advanced..."
 msgstr "_Avancé..."
 
-#: ../glade/liferea.glade.h:110
+#: ../glade/liferea.glade.h:109
 msgid "_All Rules Must Match"
 msgstr "_Toutes les règles doivent s'appliquer"
 
-#: ../glade/liferea.glade.h:111
+#: ../glade/liferea.glade.h:110
 msgid "_Auto Detect (GNOME or environment)"
 msgstr "_Détection automatique (GNOME ou environnement)"
 
-#: ../glade/liferea.glade.h:112
+#: ../glade/liferea.glade.h:111
 msgid "_Automatically download all enclosures of this feed."
 msgstr "_Télécharger automatiquement toutes les annexes de ce flux."
 
-#: ../glade/liferea.glade.h:113
+#: ../glade/liferea.glade.h:112
 msgid "_Browse"
 msgstr "_Parcourir"
 
-#: ../glade/liferea.glade.h:114
+#: ../glade/liferea.glade.h:113
 msgid "_Browser:"
 msgstr "_Navigateur :"
 
-#: ../glade/liferea.glade.h:115 ../glade/new_subscription.glade.h:10
+#: ../glade/liferea.glade.h:114 ../glade/new_subscription.glade.h:10
 msgid "_Command"
 msgstr "_Commande"
 
-#: ../glade/liferea.glade.h:116
+#: ../glade/liferea.glade.h:115
 msgid "_Default cache settings"
 msgstr "_Réglage du cache par défaut"
 
-#: ../glade/liferea.glade.h:117
+#: ../glade/liferea.glade.h:116
 msgid "_Disable Javascript."
 msgstr "Désactiver _Javascript."
 
-#: ../glade/liferea.glade.h:118
+#: ../glade/liferea.glade.h:117
 msgid "_Do this automatically for enclosures like this from now on."
 msgstr ""
 "_Faire ceci automatiquement pour les annexes comme celle-ci à partir de "
 "maintenant."
 
-#: ../glade/liferea.glade.h:119
+#: ../glade/liferea.glade.h:118
 msgid "_Don't update this feed automatically."
 msgstr "Ne _pas mettre à jour ce flux automatiquement."
 
-#: ../glade/liferea.glade.h:120 ../glade/new_subscription.glade.h:11
+#: ../glade/liferea.glade.h:119 ../glade/new_subscription.glade.h:11
 msgid "_Don't use proxy for download"
 msgstr "Ne _pas utiliser de proxy pour le téléchargement"
 
-#: ../glade/liferea.glade.h:121
+#: ../glade/liferea.glade.h:120
 msgid "_Download using"
 msgstr "_Télécharger en utilisant"
 
-#: ../glade/liferea.glade.h:122
+#: ../glade/liferea.glade.h:121
 msgid "_Enable Local LAN Synchronization"
 msgstr "_Activer la synchronisation avec le réseau local"
 
-#: ../glade/liferea.glade.h:123
+#: ../glade/liferea.glade.h:122
 msgid "_Enable browser plugins."
 msgstr "Activer les _greffons (plugins) du navigateur."
 
-#: ../glade/liferea.glade.h:124
+#: ../glade/liferea.glade.h:123
 msgid "_Enforce popup notification for this subscription."
 msgstr "_Forcer la notification par popup pour cet abonnement."
 
-#: ../glade/liferea.glade.h:125
+#: ../glade/liferea.glade.h:124
 msgid "_Feed specific update interval of"
 msgstr "_Intervalle de mise à jour spécifique au flux de"
 
-#: ../glade/liferea.glade.h:126
+#: ../glade/liferea.glade.h:125
 msgid "_Folder name:"
 msgstr "Nom du _dossier :"
 
-#: ../glade/liferea.glade.h:127
+#: ../glade/liferea.glade.h:126
 msgid "_Hide read items."
 msgstr "_Cacher les éléments lus."
 
-#: ../glade/liferea.glade.h:128
+#: ../glade/liferea.glade.h:127
 msgid "_Hide toolbar."
 msgstr "_Cacher la barre d'outils."
 
-#: ../glade/liferea.glade.h:129 ../glade/new_subscription.glade.h:12
+#: ../glade/liferea.glade.h:128 ../glade/new_subscription.glade.h:12
 msgid "_Local File"
 msgstr "Fichier _local"
 
-#: ../glade/liferea.glade.h:130
+#: ../glade/liferea.glade.h:129
 msgid "_Manual Setting:"
 msgstr "_Réglage manuel :"
 
-#: ../glade/liferea.glade.h:132
+#: ../glade/liferea.glade.h:131
 #, no-c-format
 msgid ""
 "_Manual:\n"
@@ -2318,106 +2312,106 @@ msgstr ""
 "_Manuel :\n"
 "(%s pour l'URL)"
 
-#: ../glade/liferea.glade.h:134
+#: ../glade/liferea.glade.h:133
 msgid "_Mark downloaded items as read."
 msgstr "_Marquer les éléments téléchargés comme lus."
 
-#: ../glade/liferea.glade.h:135
+#: ../glade/liferea.glade.h:134
 msgid "_Never do popup notification for this subscription."
 msgstr "Ne _jamais faire de notification par popup pour cet abonnement."
 
-#: ../glade/liferea.glade.h:136
+#: ../glade/liferea.glade.h:135
 msgid "_New Name:"
 msgstr "_Nouveau nom :"
 
-#: ../glade/liferea.glade.h:137
+#: ../glade/liferea.glade.h:136
 msgid "_News Bin Name:"
 msgstr "Nom de _boîte à nouvelles :"
 
-#: ../glade/liferea.glade.h:138
+#: ../glade/liferea.glade.h:137
 msgid "_No Proxy"
 msgstr "Pa_s de proxy"
 
-#: ../glade/liferea.glade.h:139
+#: ../glade/liferea.glade.h:138
 msgid "_Number of items to save:"
 msgstr "Nombre d'éléments à _sauvegarder :"
 
-#: ../glade/liferea.glade.h:140
+#: ../glade/liferea.glade.h:139
 msgid "_Open link in:"
 msgstr "_Ouvrir le lien dans :"
 
-#: ../glade/liferea.glade.h:141
+#: ../glade/liferea.glade.h:140
 msgid "_Pass URL and do not download enclosure."
 msgstr "_Passer l'URL et ne pas télécharger l'annexe."
 
-#: ../glade/liferea.glade.h:144
+#: ../glade/liferea.glade.h:143
 msgid "_Post Bookmarks to"
 msgstr "_Poster les marque-pages sur"
 
-#: ../glade/liferea.glade.h:145
+#: ../glade/liferea.glade.h:144
 msgid "_Save downloads in"
 msgstr "Sauver les téléchargements _dans"
 
-#: ../glade/liferea.glade.h:146
+#: ../glade/liferea.glade.h:145
 msgid "_Search Folder..."
 msgstr "_Dossier de recherche..."
 
-#: ../glade/liferea.glade.h:147
+#: ../glade/liferea.glade.h:146
 msgid "_Search for:"
 msgstr "_Chercher :"
 
-#: ../glade/liferea.glade.h:148
+#: ../glade/liferea.glade.h:147
 msgid "_Service Name"
 msgstr "_Nom de service"
 
-#: ../glade/liferea.glade.h:149
+#: ../glade/liferea.glade.h:148
 msgid "_Show the items of all child feeds when a folder is selected."
 msgstr ""
 "_Montrer les éléments de tous les flux enfants lorsqu'un dossier est "
 "sélectionné."
 
-#: ../glade/liferea.glade.h:150
+#: ../glade/liferea.glade.h:149
 msgid "_Skim through articles with:"
 msgstr "_Survoler les articles avec :"
 
-#: ../glade/liferea.glade.h:151 ../glade/new_subscription.glade.h:13
+#: ../glade/liferea.glade.h:150 ../glade/new_subscription.glade.h:13
 msgid "_Source:"
 msgstr "_Source :"
 
-#: ../glade/liferea.glade.h:152
+#: ../glade/liferea.glade.h:151
 msgid "_Start in tray icon."
 msgstr "_Démarrer dans l'icône de la barre des tâches."
 
-#: ../glade/liferea.glade.h:153 ../glade/new_subscription.glade.h:14
+#: ../glade/liferea.glade.h:152 ../glade/new_subscription.glade.h:14
 msgid "_URL"
 msgstr "_URL"
 
-#: ../glade/liferea.glade.h:154
+#: ../glade/liferea.glade.h:153
 msgid "_Unlimited cache"
 msgstr "_Cache illimité"
 
-#: ../glade/liferea.glade.h:155
+#: ../glade/liferea.glade.h:154
 msgid "_Update all favicons now"
 msgstr "Mettre à _jour toutes les favicons maintenant"
 
-#: ../glade/liferea.glade.h:156
+#: ../glade/liferea.glade.h:155
 msgid "_Use global default update interval."
 msgstr ""
 "_Utiliser l'intervalle de mise à jour par défaut, défini de manière globale."
 
-#: ../glade/liferea.glade.h:157
+#: ../glade/liferea.glade.h:156
 msgid "combined view"
 msgstr "vue combinée"
 
-#: ../glade/liferea.glade.h:158
+#: ../glade/liferea.glade.h:157
 msgid "enter any search string you want"
 msgstr "entrer n'importe quelle chaîne voulue"
 
-#: ../glade/liferea.glade.h:159
+#: ../glade/liferea.glade.h:158
 msgid "normal view"
 msgstr "vue normale"
 
-#: ../glade/liferea.glade.h:160
+#: ../glade/liferea.glade.h:159
 msgid "wide view"
 msgstr "vue large"
 
@@ -2463,6 +2457,12 @@ msgid ""
 msgstr ""
 "Entrez une adresse de site web à utiliser pour la découverte automatique ou, "
 "si vous la connaissez, l'adresse exacte du flux."
+
+#~ msgid "Count"
+#~ msgstr "Nombre"
+
+#~ msgid "Attention Profile"
+#~ msgstr "Profil d'attention"
 
 #~ msgid "<b>%s</b>"
 #~ msgstr "<b>%s</b>"

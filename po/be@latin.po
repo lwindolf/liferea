@@ -7,15 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.2.20\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-22 14:32+0300\n"
+"POT-Creation-Date: 2010-05-25 22:29+0300\n"
 "PO-Revision-Date: 2007-08-19 13:26+0300\n"
 "Last-Translator:  <ihar.hrachyshka@gmail.com>\n"
 "Language-Team: Belarusian Latin\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
-"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: ../liferea.desktop.in.h:1
 msgid "Download and view feeds"
@@ -147,7 +148,7 @@ msgstr "Raździeł"
 msgid "Shared by"
 msgstr ""
 
-#: ../xslt/item.xml.in.h:13 ../glade/liferea.glade.h:92
+#: ../xslt/item.xml.in.h:13 ../glade/liferea.glade.h:91
 msgid "Source"
 msgstr "Krynica"
 
@@ -191,12 +192,12 @@ msgstr "Koš navinaŭ:"
 msgid "Search Folder:"
 msgstr "Kataloh pošuku:"
 
-#: ../src/browser.c:55 ../src/browser.c:75
+#: ../src/browser.c:58 ../src/browser.c:78
 #, c-format
 msgid "Browser command failed: %s"
 msgstr "Pamyłka zahadu hartača: %s"
 
-#: ../src/browser.c:78
+#: ../src/browser.c:81
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Startujecca: \"%s\""
@@ -325,7 +326,7 @@ msgstr "\"%s\" aktualizavany..."
 msgid "\"%s\" is not available"
 msgstr "\"%s\" niedastupny"
 
-#: ../src/feed_parser.c:132
+#: ../src/feed_parser.c:133
 msgid ""
 "The URL you want Liferea to subscribe to points to a webpage and the auto "
 "discovery found no feeds on this page. Maybe this webpage just does not "
@@ -335,24 +336,24 @@ msgstr ""
 "sieciŭnuju staronku, i aŭtapošuk nie znajšoŭ kanałaŭ na hetaj staroncy. "
 "Moža, hetaja sieciŭnaja staronka nie padtrymvaje aŭtapošuku kanałaŭ."
 
-#: ../src/feed_parser.c:165
+#: ../src/feed_parser.c:166
 #, c-format
 msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
 msgstr "Pamyłka XML pry čytańni kanału! Niemahčyma zahruzić kanał \"%s\"!"
 
-#: ../src/feed_parser.c:170
+#: ../src/feed_parser.c:171
 msgid "Empty document!"
 msgstr "Pusty dakument!"
 
-#: ../src/feed_parser.c:179
+#: ../src/feed_parser.c:180
 msgid "Invalid XML!"
 msgstr "Niapravilny XML!"
 
-#: ../src/feed_parser.c:222
+#: ../src/feed_parser.c:223
 msgid "Source points to HTML document."
 msgstr "Krynica pakazvaje na dakument HTML."
 
-#: ../src/feed_parser.c:225
+#: ../src/feed_parser.c:226
 msgid "Could not determine the feed type."
 msgstr "Niemahčyma vyznačyć typ kanału."
 
@@ -462,21 +463,21 @@ msgid "Print debugging messages for the given topic"
 msgstr ""
 "  --debug-<tema>  Pakazvaj debugavyja paviedamleńni dla peŭnaj temypamiaćciu"
 
-#: ../src/main.c:217
+#: ../src/main.c:218
 #, fuzzy
 msgid "Liferea, the Linux Feed Reader"
 msgstr "Liferea - Čytač kanałaŭ dla Linuksa"
 
-#: ../src/main.c:218
+#: ../src/main.c:219
 msgid "For more information, please visit http://liferea.sourceforge.net/"
 msgstr ""
 
 #. GTK theme support
-#: ../src/main.c:247 ../glade/liferea.glade.h:64
+#: ../src/main.c:248 ../glade/liferea.glade.h:63
 msgid "Liferea"
 msgstr "Liferea"
 
-#: ../src/main.c:256
+#: ../src/main.c:257
 msgid "Liferea seems to be running already!"
 msgstr "Liferea ŭžo pracuje!"
 
@@ -493,39 +494,39 @@ msgstr ""
 "samastojna, jak tolki ŭpeŭniśsia ŭ paśpiachovaści mihracyi!"
 
 #. Some libsoup transport errors
-#: ../src/net.c:332
+#: ../src/net.c:361
 msgid "The update request was cancelled"
 msgstr ""
 
-#: ../src/net.c:333
+#: ../src/net.c:362
 msgid "Unable to resolve destination host name"
 msgstr ""
 
-#: ../src/net.c:334
+#: ../src/net.c:363
 msgid "Unable to resolve proxy host name"
 msgstr ""
 
-#: ../src/net.c:335
+#: ../src/net.c:364
 #, fuzzy
 msgid "Unable to connect to remote host"
 msgstr "Pamyłka spałučeńnia z addalenym kamputaram"
 
-#: ../src/net.c:336
+#: ../src/net.c:365
 msgid "Unable to connect to proxy"
 msgstr ""
 
-#: ../src/net.c:337
+#: ../src/net.c:366
 msgid ""
 "A network error occurred, or the other end closed the connection unexpectedly"
 msgstr ""
 
 #. http 3xx redirection
-#: ../src/net.c:340
+#: ../src/net.c:369
 msgid "The resource moved permanently to a new location"
 msgstr ""
 
 #. http 4xx client error
-#: ../src/net.c:343
+#: ../src/net.c:372
 #, fuzzy
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
@@ -534,147 +535,147 @@ msgstr ""
 "Tabie nie dazvolena čytać hety kanał. Kali łaska, aktualizuj nazvu "
 "karystalnika j parol u dyjalohavym aknie ŭłaścivaściaŭ kanału."
 
-#: ../src/net.c:345
+#: ../src/net.c:374
 #, fuzzy
 msgid "Payment required"
 msgstr "Patrabujecca apłata"
 
-#: ../src/net.c:346
+#: ../src/net.c:375
 msgid "You're not allowed to access this resource"
 msgstr ""
 
-#: ../src/net.c:347
+#: ../src/net.c:376
 msgid "Resource Not Found"
 msgstr "Resurs nia znojdzieny"
 
-#: ../src/net.c:348
+#: ../src/net.c:377
 msgid "Method Not Allowed"
 msgstr "Metad nie dazvoleny"
 
-#: ../src/net.c:349
+#: ../src/net.c:378
 msgid "Not Acceptable"
 msgstr "Nie pryjmalna"
 
-#: ../src/net.c:350
+#: ../src/net.c:379
 #, fuzzy
 msgid "Proxy authentication required"
 msgstr "Patrabujecca aŭtaryzacyja dla proxy"
 
-#: ../src/net.c:351
+#: ../src/net.c:380
 #, fuzzy
 msgid "Request timed out"
 msgstr "Skončyŭsia termin čakańnia zapytu"
 
-#: ../src/net.c:352
+#: ../src/net.c:381
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "Źnik. Resurs nie isnuje. Kali łaska, adpišysia!"
 
-#: ../src/net.c:357
+#: ../src/net.c:386
 msgid "There was an internal error in the update process"
 msgstr ""
 
-#: ../src/net.c:359
+#: ../src/net.c:388
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr "Kanał niedastupny: Server vymahaje niepadtrymanaje pieranakiravańnie!"
 
-#: ../src/net.c:361
+#: ../src/net.c:390
 msgid "Client Error"
 msgstr "Pamyłka klijenta"
 
-#: ../src/net.c:363
+#: ../src/net.c:392
 msgid "Server Error"
 msgstr "Pamyłka servera"
 
-#: ../src/net.c:365
+#: ../src/net.c:394
 #, fuzzy
 msgid "An unknown networking error happened!"
 msgstr "(adbyłasia nieviadomaja sietkavaja pamyłka)"
 
 #. SQL condition builder function	in-memory check function	feedlist.opml rule id           rule menu label         positive menu option    negative menu option    has param
 #. ========================================================================================================================================================================================
-#: ../src/rule.c:373
+#: ../src/rule.c:371
 msgid "Item"
 msgstr "Element"
 
-#: ../src/rule.c:373 ../src/rule.c:374 ../src/rule.c:375 ../src/rule.c:376
+#: ../src/rule.c:371 ../src/rule.c:372 ../src/rule.c:373 ../src/rule.c:374
 msgid "does contain"
 msgstr "źmiaščaje"
 
-#: ../src/rule.c:373 ../src/rule.c:374 ../src/rule.c:375 ../src/rule.c:376
+#: ../src/rule.c:371 ../src/rule.c:372 ../src/rule.c:373 ../src/rule.c:374
 msgid "does not contain"
 msgstr "nie źmiaščaje"
 
-#: ../src/rule.c:374
+#: ../src/rule.c:372
 msgid "Item title"
 msgstr "Zahałovak elementu"
 
-#: ../src/rule.c:375
+#: ../src/rule.c:373
 msgid "Item body"
 msgstr "Cieła elementu"
 
-#: ../src/rule.c:376
+#: ../src/rule.c:374
 msgid "Feed title"
 msgstr "Zahałovak kanału"
 
-#: ../src/rule.c:377
+#: ../src/rule.c:375
 msgid "Read status"
 msgstr "Stan pračytanaści"
 
-#: ../src/rule.c:377
+#: ../src/rule.c:375
 msgid "is unread"
 msgstr "nie pračytany"
 
-#: ../src/rule.c:377
+#: ../src/rule.c:375
 msgid "is read"
 msgstr "pračytany"
 
-#: ../src/rule.c:378
+#: ../src/rule.c:376
 msgid "Flag status"
 msgstr "Stan ściahu"
 
-#: ../src/rule.c:378
+#: ../src/rule.c:376
 msgid "is flagged"
 msgstr "zaznačany"
 
-#: ../src/rule.c:378
+#: ../src/rule.c:376
 msgid "is unflagged"
 msgstr "nie zaznačany"
 
-#: ../src/rule.c:379
+#: ../src/rule.c:377
 msgid "Update status"
 msgstr "Stan aktualizavanaści"
 
-#: ../src/rule.c:379
+#: ../src/rule.c:377
 msgid "was updated"
 msgstr "byŭ aktualizavany"
 
-#: ../src/rule.c:379
+#: ../src/rule.c:377
 msgid "was not updated"
 msgstr "nia byŭ aktualizavany"
 
-#: ../src/rule.c:380
+#: ../src/rule.c:378
 msgid "Podcast"
 msgstr "Podcast"
 
-#: ../src/rule.c:380
+#: ../src/rule.c:378
 msgid "included"
 msgstr "ułučany"
 
-#: ../src/rule.c:380
+#: ../src/rule.c:378
 msgid "not included"
 msgstr "nia ŭłučany"
 
-#: ../src/rule.c:381 ../src/ui/attention_profile_dialog.c:173
+#: ../src/rule.c:379
 #, fuzzy
 msgid "Category"
 msgstr "Stvaralnik"
 
-#: ../src/rule.c:381
+#: ../src/rule.c:379
 #, fuzzy
 msgid "is set"
 msgstr "pračytany"
 
-#: ../src/rule.c:381
+#: ../src/rule.c:379
 msgid "is not set"
 msgstr ""
 
@@ -944,7 +945,7 @@ msgstr ""
 msgid "_View"
 msgstr "_Vyhlad"
 
-#: ../src/ui/liferea_shell.c:851 ../src/ui/liferea_htmlview.c:538
+#: ../src/ui/liferea_shell.c:851 ../src/ui/liferea_htmlview.c:543
 msgid "_Increase Text Size"
 msgstr "Pa_vialič pamier tekstu"
 
@@ -952,7 +953,7 @@ msgstr "Pa_vialič pamier tekstu"
 msgid "Increases the text size of the item view."
 msgstr "Pavialičvaje pamier tekstu ŭ vyhladzie elementaŭ."
 
-#: ../src/ui/liferea_shell.c:853 ../src/ui/liferea_htmlview.c:539
+#: ../src/ui/liferea_shell.c:853 ../src/ui/liferea_htmlview.c:544
 msgid "_Decrease Text Size"
 msgstr "Pa_mienš pamier tekstu"
 
@@ -1242,17 +1243,12 @@ msgstr ""
 "kliknuć knopku \"Kataloh pošuku\" ŭ dyjalohavym aknie pošuku, i tady Liferea "
 "dadaść kataloh pošuku ŭ tvoj śpis kanałaŭ."
 
-#: ../src/ui/attention_profile_dialog.c:183
-#, fuzzy
-msgid "Count"
-msgstr "Kamentary"
-
-#: ../src/ui/auth_dialog.c:157 ../glade/auth.glade.h:3
+#: ../src/ui/auth_dialog.c:162 ../glade/auth.glade.h:3
 #, no-c-format
 msgid "Enter the username and password for \"%s\" (%s):"
 msgstr "Uviadzi nazvu karystalnika j parol dla \"%s\" (%s):"
 
-#: ../src/ui/auth_dialog.c:158
+#: ../src/ui/auth_dialog.c:163
 msgid "Unknown source"
 msgstr "Nieviadomaja krynica"
 
@@ -1287,27 +1283,27 @@ msgstr "Ty pavinny abrać zapis kanału"
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea u adłučanym režymie. Aktualizacyja niemahčymaja."
 
-#: ../src/ui/liferea_htmlview.c:526
+#: ../src/ui/liferea_htmlview.c:531
 #, fuzzy
 msgid "Launch Link In _Tab"
 msgstr "/Adčyni spasyłku ŭ _kartcy"
 
-#: ../src/ui/liferea_htmlview.c:527
+#: ../src/ui/liferea_htmlview.c:532
 #, fuzzy
 msgid "_Launch Link In Browser"
 msgstr "/_Adčyni spasyłku ŭ hartačy"
 
-#: ../src/ui/liferea_htmlview.c:530 ../src/ui/ui_popup.c:133
+#: ../src/ui/liferea_htmlview.c:535 ../src/ui/ui_popup.c:133
 #, fuzzy, c-format
 msgid "_Bookmark Link at %s"
 msgstr "/_Zrabi zakładku dla spasyłki na %s"
 
-#: ../src/ui/liferea_htmlview.c:534
+#: ../src/ui/liferea_htmlview.c:539
 #, fuzzy
 msgid "_Copy Link Location"
 msgstr "/_Skapijuj adras spasyłki"
 
-#: ../src/ui/liferea_htmlview.c:536
+#: ../src/ui/liferea_htmlview.c:541
 #, fuzzy
 msgid "_Subscribe..."
 msgstr "/_Padpišysia..."
@@ -1639,11 +1635,11 @@ msgstr "Niapravilny kanał Atom: nieviadomy aŭtar"
 msgid "%b %d %H:%M"
 msgstr "%b %d %H:%M"
 
-#: ../src/fl_sources/bloglines_source.c:80
+#: ../src/fl_sources/bloglines_source.c:81
 msgid "Bloglines"
 msgstr "Bloglines"
 
-#: ../src/fl_sources/bloglines_source.c:81
+#: ../src/fl_sources/bloglines_source.c:82
 msgid ""
 "Integrate the feed list of your Bloglines account. Liferea will present your "
 "Bloglines subscription as a read-only subtree in the feed list."
@@ -1657,20 +1653,20 @@ msgid "feedlist.opml"
 msgstr "feedlist.opml"
 
 #: ../src/fl_sources/default_source.c:180
-#: ../src/fl_sources/google_source.c:248 ../glade/new_subscription.glade.h:6
+#: ../src/fl_sources/google_source.c:250 ../glade/new_subscription.glade.h:6
 #: ../glade/simple_subscription.glade.h:5
 msgid "New Subscription"
 msgstr "Novaja padpiska"
 
-#: ../src/fl_sources/google_source.c:117
+#: ../src/fl_sources/google_source.c:119
 msgid "Google Reader login failed!"
 msgstr "Pamyłka ŭruchamleńnia kontu na Google Reader'y!"
 
-#: ../src/fl_sources/google_source.c:334
+#: ../src/fl_sources/google_source.c:336
 msgid "Google Reader"
 msgstr "Google Reader"
 
-#: ../src/fl_sources/google_source.c:335
+#: ../src/fl_sources/google_source.c:337
 #, fuzzy
 msgid ""
 "Integrate the feed list of your Google Reader account. Liferea will present "
@@ -1681,11 +1677,11 @@ msgstr ""
 "padpisku na Google Reader'y ŭ vyhladzie abaronienaha ad źmienaŭ dreva ŭ "
 "śpisie kanałaŭ."
 
-#: ../src/fl_sources/opml_source.c:328
+#: ../src/fl_sources/opml_source.c:330
 msgid "Planet, BlogRoll, OPML"
 msgstr "Planet, BlogRoll, OPML"
 
-#: ../src/fl_sources/opml_source.c:329
+#: ../src/fl_sources/opml_source.c:331
 msgid ""
 "Integrate blogrolls or Planets in your feed list. Liferea will automatically "
 "add and remove feeds according to the changes of the source OPML document"
@@ -1694,19 +1690,19 @@ msgstr ""
 "aŭtamatyčna dadavać i vydalać kanały zhodna sa źmienami kryničnaha dakumentu "
 "OPML."
 
-#: ../src/fl_sources/opml_source.c:390
+#: ../src/fl_sources/opml_source.c:392
 msgid "Choose OPML File"
 msgstr "Abiary fajł OPML"
 
-#: ../src/fl_sources/opml_source.h:27
+#: ../src/fl_sources/opml_source.h:28
 msgid "New OPML Subscription"
 msgstr "Novaja padpiska OPML"
 
-#: ../src/fl_sources/node_source.c:225
+#: ../src/fl_sources/node_source.c:237
 msgid "No feed list source types found!"
 msgstr "Typy krynic dla śpisu kanałaŭ nia znojdzienyja!"
 
-#: ../src/fl_sources/node_source.c:256
+#: ../src/fl_sources/node_source.c:268
 msgid "Source Type"
 msgstr "Typ krynicy"
 
@@ -1765,11 +1761,11 @@ msgstr ""
 "Uvaha: <i>Nazva karystalnika j parol buduć zachavanyja ŭ fajle śpisu "
 "kanałaŭ, niezašyfravanyja.</i>"
 
-#: ../glade/auth.glade.h:5 ../glade/liferea.glade.h:106
+#: ../glade/auth.glade.h:5 ../glade/liferea.glade.h:105
 msgid "User_name:"
 msgstr "_Nazva karystalnika:"
 
-#: ../glade/auth.glade.h:6 ../glade/liferea.glade.h:143
+#: ../glade/auth.glade.h:6 ../glade/liferea.glade.h:142
 msgid "_Password:"
 msgstr "_Parol:"
 
@@ -1782,7 +1778,7 @@ msgid "Please enter your Bloglines account settings."
 msgstr "Uviadzi nałady tvajho kontu na Bloglines."
 
 #: ../glade/bloglines_source.glade.h:3 ../glade/google_source.glade.h:3
-#: ../glade/liferea.glade.h:142
+#: ../glade/liferea.glade.h:141
 msgid "_Password"
 msgstr "_Parol"
 
@@ -1956,75 +1952,70 @@ msgid "At _startup:"
 msgstr "Na _pačatku:"
 
 #: ../glade/liferea.glade.h:37
-#, fuzzy
-msgid "Attention Profile"
-msgstr "Pamyłka aŭtaryzacyi"
-
-#: ../glade/liferea.glade.h:38
 msgid "Auto-_load item link in configured browser when selecting articles."
 msgstr ""
 "Aŭtamatyčna zahružaj spasyłku elementu ŭ skanfihuravanym hartačy pry vybary "
 "artykułaŭ."
 
-#: ../glade/liferea.glade.h:39
+#: ../glade/liferea.glade.h:38
 msgid "Browser"
 msgstr "Hartač"
 
-#: ../glade/liferea.glade.h:40
+#: ../glade/liferea.glade.h:39
 msgid "Cancel _All"
 msgstr "Anuluj _usie"
 
-#: ../glade/liferea.glade.h:41 ../glade/new_subscription.glade.h:4
+#: ../glade/liferea.glade.h:40 ../glade/new_subscription.glade.h:4
 msgid "Convert _using:"
 msgstr "Kanvertuj _praz:"
 
-#: ../glade/liferea.glade.h:42
+#: ../glade/liferea.glade.h:41
 msgid ""
 "Copyright (c) 2003-2009\n"
 "The Liferea Team\n"
 msgstr ""
 
-#: ../glade/liferea.glade.h:45
+#: ../glade/liferea.glade.h:44
 msgid "Create News Bin"
 msgstr "Stvary koš navinaŭ"
 
-#: ../glade/liferea.glade.h:46
+#: ../glade/liferea.glade.h:45
 msgid "Create Search Engine Feed"
 msgstr "Stvary kanał pošukavika"
 
-#: ../glade/liferea.glade.h:47
+#: ../glade/liferea.glade.h:46
 msgid "Create new script"
 msgstr "Stvary novy skrypt"
 
-#: ../glade/liferea.glade.h:48
+#: ../glade/liferea.glade.h:47
 msgid "Default Feed Refresh _Interval:"
 msgstr "Zmoŭčany _intervał aktualizacyi kanału:"
 
-#: ../glade/liferea.glade.h:49
+#: ../glade/liferea.glade.h:48
 msgid "Default _number of items per feed to save:"
 msgstr "Zmoŭčanaja _kolkaść elementaŭ na kanał dziela zapisu:"
 
-#: ../glade/liferea.glade.h:50
+#: ../glade/liferea.glade.h:49
 msgid "Di_sable cache"
 msgstr "_Adklučy padručnuju pamiać"
 
-#: ../glade/liferea.glade.h:51
+#: ../glade/liferea.glade.h:50
 msgid "Download"
 msgstr "Zahruzi"
 
-#: ../glade/liferea.glade.h:52
+#: ../glade/liferea.glade.h:51
 msgid "Downloading Enclosure"
 msgstr "Zahruzka dałučeńnia"
 
-#: ../glade/liferea.glade.h:53
+#: ../glade/liferea.glade.h:52
 msgid "Downloading an enclosure of type:"
 msgstr "Zahruzka dałučeńnia typu:"
 
-#: ../glade/liferea.glade.h:54
+#: ../glade/liferea.glade.h:53
 msgid "Enclosures"
 msgstr "Dałučeńni"
 
-#: ../glade/liferea.glade.h:55
+#: ../glade/liferea.glade.h:54
 msgid ""
 "Enter a search string Liferea should find either in a items title or in its "
 "content."
@@ -2032,49 +2023,49 @@ msgstr ""
 "Uviadzi radok pošuku, jaki Liferea musić šukać albo ŭ zahaloŭkach elementaŭ, "
 "albo ŭ ichnym źmieścivie."
 
-#: ../glade/liferea.glade.h:56
+#: ../glade/liferea.glade.h:55
 msgid "Exec Command"
 msgstr "Vykanaj zahad"
 
-#: ../glade/liferea.glade.h:57
+#: ../glade/liferea.glade.h:56
 msgid "Feed _Name:"
 msgstr "_Nazva kanału:"
 
-#: ../glade/liferea.glade.h:58
+#: ../glade/liferea.glade.h:57
 msgid "Feeds"
 msgstr "Kanały"
 
-#: ../glade/liferea.glade.h:59
+#: ../glade/liferea.glade.h:58
 msgid "Folders"
 msgstr "Katalohi"
 
-#: ../glade/liferea.glade.h:60
+#: ../glade/liferea.glade.h:59
 msgid "GUI"
 msgstr "GUI"
 
-#: ../glade/liferea.glade.h:61
+#: ../glade/liferea.glade.h:60
 msgid "General"
 msgstr "Ahulnaje"
 
-#: ../glade/liferea.glade.h:62
+#: ../glade/liferea.glade.h:61
 msgid "Headlines"
 msgstr "Zahałoŭki"
 
-#: ../glade/liferea.glade.h:63
+#: ../glade/liferea.glade.h:62
 #, fuzzy
 msgid "Ignore _comment feeds for this subscription."
 msgstr "Adčyniaje dyjalohavaje vakno ŭłaścivaściaŭ dla abranaje padpiski."
 
-#: ../glade/liferea.glade.h:65
+#: ../glade/liferea.glade.h:64
 #, fuzzy
 msgid "Liferea Homepage"
 msgstr "Hartač RSS Liferea"
 
-#: ../glade/liferea.glade.h:66
+#: ../glade/liferea.glade.h:65
 msgid "Liferea Preferences"
 msgstr "Pieravahi Liferea"
 
-#: ../glade/liferea.glade.h:67 ../glade/new_subscription.glade.h:5
+#: ../glade/liferea.glade.h:66 ../glade/new_subscription.glade.h:5
 msgid ""
 "Liferea can use external filter plugins in order to access feeds and "
 "directories in non-supported formats.  See the documentation for more "
@@ -2084,20 +2075,20 @@ msgstr ""
 "kanały j katalohi ŭ niepadtrymanym farmacie. Hladzi padrabiaźniejšyja "
 "źviestki ŭ dakumentacyi."
 
-#: ../glade/liferea.glade.h:68
+#: ../glade/liferea.glade.h:67
 msgid "Liferea is a news aggregator for GTK+"
 msgstr "Liferea - heta ahrehatar navinaŭ dziela GTK+"
 
-#: ../glade/liferea.glade.h:69
+#: ../glade/liferea.glade.h:68
 msgid "Maximal _Number Of Result Items:"
 msgstr "Maksymalnaja _kolkaść vynikovych elementaŭ:"
 
-#: ../glade/liferea.glade.h:70
+#: ../glade/liferea.glade.h:69
 msgid "New Folder"
 msgstr "Novy kataloh"
 
 #. Feed update interval hint in preference dialog.
-#: ../glade/liferea.glade.h:72
+#: ../glade/liferea.glade.h:71
 msgid ""
 "Note: <i>Please remember to set a reasonable refresh time. Usually it is a "
 "waste of bandwidth to poll feeds more often than each hour.</i>"
@@ -2106,7 +2097,7 @@ msgstr ""
 "aktualizacyjami. Zvyčajna apytvańnie kanałaŭ čaściej za raz na hadzinu "
 "źjaŭlajecca marnavańniem trafiku.</i>"
 
-#: ../glade/liferea.glade.h:73
+#: ../glade/liferea.glade.h:72
 msgid ""
 "Note: Liferea will generate a feed subscription which is used to query the "
 "search engine results for the specified search string. You can keep this "
@@ -2116,85 +2107,85 @@ msgstr ""
 "zapytańnia vynikaŭ ad pošukavika na akreśleny radok pošuku. Ty možaš pakinuć "
 "hety kanał i aktualizoŭvać jaho tak sama, jak i inšyja padpiski.  "
 
-#: ../glade/liferea.glade.h:74
+#: ../glade/liferea.glade.h:73
 msgid "Online/Offline Button"
 msgstr "Knopka źmieny spałučanaści"
 
-#: ../glade/liferea.glade.h:75
+#: ../glade/liferea.glade.h:74
 msgid "Open links in Liferea's _window."
 msgstr "Adčyniaj spasyłki ŭ _vaknie Liferea."
 
-#: ../glade/liferea.glade.h:76
+#: ../glade/liferea.glade.h:75
 msgid "Proxy"
 msgstr "Proxy"
 
-#: ../glade/liferea.glade.h:77
+#: ../glade/liferea.glade.h:76
 msgid "Proxy Pass_word:"
 msgstr "Pa_rol proxy:"
 
-#: ../glade/liferea.glade.h:78
+#: ../glade/liferea.glade.h:77
 msgid "Proxy _Host:"
 msgstr "_Host proxy:"
 
-#: ../glade/liferea.glade.h:79
+#: ../glade/liferea.glade.h:78
 msgid "Proxy _Port:"
 msgstr "_Port proxy:"
 
-#: ../glade/liferea.glade.h:80
+#: ../glade/liferea.glade.h:79
 msgid "Proxy _Username:"
 msgstr "_Nazva karystalnika proxy:"
 
-#: ../glade/liferea.glade.h:81
+#: ../glade/liferea.glade.h:80
 msgid "Rename"
 msgstr "Pieranazavi"
 
-#: ../glade/liferea.glade.h:82
+#: ../glade/liferea.glade.h:81
 msgid "Reuse existing script"
 msgstr "Znoŭ vykarystaj najaŭny skrypt"
 
-#: ../glade/liferea.glade.h:83
+#: ../glade/liferea.glade.h:82
 msgid "Script Manager"
 msgstr "Kiraŭnik skryptoŭ"
 
-#: ../glade/liferea.glade.h:84
+#: ../glade/liferea.glade.h:83
 msgid "Search All Feeds"
 msgstr "Šukaj va ŭsich kanałach"
 
-#: ../glade/liferea.glade.h:85
+#: ../glade/liferea.glade.h:84
 msgid "Search Folder Properties"
 msgstr "Ułaścivaści katalohu pošuku"
 
-#: ../glade/liferea.glade.h:86
+#: ../glade/liferea.glade.h:85
 #, fuzzy
 msgid "Search _Link Cosmos with"
 msgstr "Šukaj _spasyłku dla"
 
-#: ../glade/liferea.glade.h:87
+#: ../glade/liferea.glade.h:86
 #, fuzzy
 msgid "Search _Name:"
 msgstr "_Nazva kanału:"
 
-#: ../glade/liferea.glade.h:88 ../glade/new_subscription.glade.h:7
+#: ../glade/liferea.glade.h:87 ../glade/new_subscription.glade.h:7
 msgid "Select File..."
 msgstr "Abiary fajł..."
 
-#: ../glade/liferea.glade.h:89
+#: ../glade/liferea.glade.h:88
 msgid "Show _number of new items in the tray icon."
 msgstr "Pakazvaj _kolkaść novych elementaŭ na ikonie ŭ trai."
 
-#: ../glade/liferea.glade.h:90
+#: ../glade/liferea.glade.h:89
 msgid "Show a _popup window with new headlines."
 msgstr "Pakažy _padručnaje vakno z novymi zahałoŭkami."
 
-#: ../glade/liferea.glade.h:91
+#: ../glade/liferea.glade.h:90
 msgid "Show a status _icon in the notification area (system tray)."
 msgstr "Pakazvaj _ikonu stanu ŭ abšary nahadvańniaŭ (systemnym trai)."
 
-#: ../glade/liferea.glade.h:93 ../glade/new_subscription.glade.h:8
+#: ../glade/liferea.glade.h:92 ../glade/new_subscription.glade.h:8
 msgid "Source Type:"
 msgstr "Typ krynicy:"
 
-#: ../glade/liferea.glade.h:94
+#: ../glade/liferea.glade.h:93
 msgid ""
 "Starts searching for the specified text in all feeds. The search result will "
 "appear in the item list."
@@ -2202,19 +2193,19 @@ msgstr ""
 "Pačynaje pošuk akreślenaha tekstu va ŭsich kanałach. Vynik pošuku źjavicca ŭ "
 "śpisie elementaŭ."
 
-#: ../glade/liferea.glade.h:95
+#: ../glade/liferea.glade.h:94
 msgid "Subscription Properties"
 msgstr "Ułaścivaści padpiski"
 
-#: ../glade/liferea.glade.h:96
+#: ../glade/liferea.glade.h:95
 msgid "Sync"
 msgstr ""
 
-#: ../glade/liferea.glade.h:97
+#: ../glade/liferea.glade.h:96
 msgid "T_erminate instead of minimizing to tray icon."
 msgstr "_Zakančvaj pracu zamiest minimizacyi ŭ ikonu traju."
 
-#: ../glade/liferea.glade.h:98
+#: ../glade/liferea.glade.h:97
 msgid ""
 "The cache setting controls if the contents of feeds are saved when Liferea "
 "exits. Marked items are always saved to the cache."
@@ -2223,36 +2214,36 @@ msgstr ""
 "vychadzie Liferea. Zaznačanyja elementy zaŭsiody zapisvajucca ŭ padručnaj "
 "pamiaci."
 
-#: ../glade/liferea.glade.h:100
+#: ../glade/liferea.glade.h:99
 #, no-c-format
 msgid "This feed provider suggests an update interval of %d minutes."
 msgstr "Vydaviec hetaha kanału raić intervał aktualizacyi ŭ %d chvilin."
 
-#: ../glade/liferea.glade.h:101
+#: ../glade/liferea.glade.h:100
 msgid "Toolbar _button labels:"
 msgstr "_Etykiety knopak z paneli pryładździa:"
 
-#: ../glade/liferea.glade.h:102
+#: ../glade/liferea.glade.h:101
 msgid "Update Monitor"
 msgstr "Manitor aktualizacyj"
 
-#: ../glade/liferea.glade.h:103
+#: ../glade/liferea.glade.h:102
 msgid "Use HTTP _authentication"
 msgstr "Užyj _aŭtaryzacyju HTTP"
 
-#: ../glade/liferea.glade.h:104
+#: ../glade/liferea.glade.h:103
 msgid "Use Proxy Au_thentication"
 msgstr "Užyj _aŭtaryzacyju proxy"
 
-#: ../glade/liferea.glade.h:105 ../glade/new_subscription.glade.h:9
+#: ../glade/liferea.glade.h:104 ../glade/new_subscription.glade.h:9
 msgid "Use conversion _filter"
 msgstr "Užyj _filter kavertacyi"
 
-#: ../glade/liferea.glade.h:107
+#: ../glade/liferea.glade.h:106
 msgid "View Headlines"
 msgstr "Pakažy zahałoŭki"
 
-#: ../glade/liferea.glade.h:108
+#: ../glade/liferea.glade.h:107
 #, fuzzy
 msgid ""
 "What should Liferea do with this enclosure? Please enter the command you "
@@ -2262,98 +2253,98 @@ msgstr ""
 "Što Liferea musić zrabić z hetym dałučeńniem? Uviadzi zahad, jaki ty chočaš "
 "vykanać, nižej. Zahružany fajł budzie pieradadzieny zahadu jak arhument:"
 
-#: ../glade/liferea.glade.h:109
+#: ../glade/liferea.glade.h:108
 #, fuzzy
 msgid "_Advanced..."
 msgstr "Admysłovaje..."
 
-#: ../glade/liferea.glade.h:110
+#: ../glade/liferea.glade.h:109
 msgid "_All Rules Must Match"
 msgstr ""
 
-#: ../glade/liferea.glade.h:111
+#: ../glade/liferea.glade.h:110
 msgid "_Auto Detect (GNOME or environment)"
 msgstr "_Aŭtamatyčna vyznač (GNOME albo asiarodździe)"
 
-#: ../glade/liferea.glade.h:112
+#: ../glade/liferea.glade.h:111
 msgid "_Automatically download all enclosures of this feed."
 msgstr "_Aŭtamatyčna zahružaj usie dałučeńni dla hetaha kanału."
 
-#: ../glade/liferea.glade.h:113
+#: ../glade/liferea.glade.h:112
 msgid "_Browse"
 msgstr "_Ahladaj"
 
-#: ../glade/liferea.glade.h:114
+#: ../glade/liferea.glade.h:113
 msgid "_Browser:"
 msgstr "_Hartač:"
 
-#: ../glade/liferea.glade.h:115 ../glade/new_subscription.glade.h:10
+#: ../glade/liferea.glade.h:114 ../glade/new_subscription.glade.h:10
 msgid "_Command"
 msgstr "_Zahad"
 
-#: ../glade/liferea.glade.h:116
+#: ../glade/liferea.glade.h:115
 msgid "_Default cache settings"
 msgstr "_Zmoŭčanyja nałady padručnaj pamiaci"
 
-#: ../glade/liferea.glade.h:117
+#: ../glade/liferea.glade.h:116
 msgid "_Disable Javascript."
 msgstr "_Adklučy Javascript."
 
-#: ../glade/liferea.glade.h:118
+#: ../glade/liferea.glade.h:117
 #, fuzzy
 msgid "_Do this automatically for enclosures like this from now on."
 msgstr "_Rabi heta aŭtamatyčna nadalej dla padobnych fajłaŭ."
 
-#: ../glade/liferea.glade.h:119
+#: ../glade/liferea.glade.h:118
 msgid "_Don't update this feed automatically."
 msgstr "_Nie aktualizuj aŭtamatyčna hety kanał."
 
-#: ../glade/liferea.glade.h:120 ../glade/new_subscription.glade.h:11
+#: ../glade/liferea.glade.h:119 ../glade/new_subscription.glade.h:11
 msgid "_Don't use proxy for download"
 msgstr "_Nie ŭžyvaj proxy dziela zahruzki"
 
-#: ../glade/liferea.glade.h:121
+#: ../glade/liferea.glade.h:120
 msgid "_Download using"
 msgstr "_Zahružaj z dapamohaj"
 
-#: ../glade/liferea.glade.h:122
+#: ../glade/liferea.glade.h:121
 msgid "_Enable Local LAN Synchronization"
 msgstr ""
 
-#: ../glade/liferea.glade.h:123
+#: ../glade/liferea.glade.h:122
 msgid "_Enable browser plugins."
 msgstr ""
 
-#: ../glade/liferea.glade.h:124
+#: ../glade/liferea.glade.h:123
 #, fuzzy
 msgid "_Enforce popup notification for this subscription."
 msgstr "Adčyniaje dyjalohavaje vakno ŭłaścivaściaŭ dla abranaje padpiski."
 
-#: ../glade/liferea.glade.h:125
+#: ../glade/liferea.glade.h:124
 msgid "_Feed specific update interval of"
 msgstr "_Admysłovy intervał aktualizacyi kanału"
 
-#: ../glade/liferea.glade.h:126
+#: ../glade/liferea.glade.h:125
 msgid "_Folder name:"
 msgstr "Nazva _katalohu:"
 
-#: ../glade/liferea.glade.h:127
+#: ../glade/liferea.glade.h:126
 msgid "_Hide read items."
 msgstr "_Schavaj pračytanyja elementy."
 
-#: ../glade/liferea.glade.h:128
+#: ../glade/liferea.glade.h:127
 msgid "_Hide toolbar."
 msgstr ""
 
-#: ../glade/liferea.glade.h:129 ../glade/new_subscription.glade.h:12
+#: ../glade/liferea.glade.h:128 ../glade/new_subscription.glade.h:12
 msgid "_Local File"
 msgstr "_Lakalny fajł"
 
-#: ../glade/liferea.glade.h:130
+#: ../glade/liferea.glade.h:129
 msgid "_Manual Setting:"
 msgstr "_Admysłovaje akreśleńnie:"
 
-#: ../glade/liferea.glade.h:132
+#: ../glade/liferea.glade.h:131
 #, no-c-format
 msgid ""
 "_Manual:\n"
@@ -2362,107 +2353,107 @@ msgstr ""
 "_Admysłovy:\n"
 "(%s dziela adrasu)"
 
-#: ../glade/liferea.glade.h:134
+#: ../glade/liferea.glade.h:133
 #, fuzzy
 msgid "_Mark downloaded items as read."
 msgstr "_Zaznač abranaje jak pračytanaje"
 
-#: ../glade/liferea.glade.h:135
+#: ../glade/liferea.glade.h:134
 msgid "_Never do popup notification for this subscription."
 msgstr ""
 
-#: ../glade/liferea.glade.h:136
+#: ../glade/liferea.glade.h:135
 msgid "_New Name:"
 msgstr "_Novaja nazva:"
 
-#: ../glade/liferea.glade.h:137
+#: ../glade/liferea.glade.h:136
 msgid "_News Bin Name:"
 msgstr "_Nazva dla koša navinaŭ:"
 
-#: ../glade/liferea.glade.h:138
+#: ../glade/liferea.glade.h:137
 msgid "_No Proxy"
 msgstr "_Biaz proxy"
 
-#: ../glade/liferea.glade.h:139
+#: ../glade/liferea.glade.h:138
 #, fuzzy
 msgid "_Number of items to save:"
 msgstr "Zmoŭčanaja _kolkaść elementaŭ na kanał dziela zapisu:"
 
-#: ../glade/liferea.glade.h:140
+#: ../glade/liferea.glade.h:139
 msgid "_Open link in:"
 msgstr "_Adčyni spasyłku ŭ:"
 
-#: ../glade/liferea.glade.h:141
+#: ../glade/liferea.glade.h:140
 msgid "_Pass URL and do not download enclosure."
 msgstr ""
 
-#: ../glade/liferea.glade.h:144
+#: ../glade/liferea.glade.h:143
 msgid "_Post Bookmarks to"
 msgstr "Ź_miaści zakładki na"
 
-#: ../glade/liferea.glade.h:145
+#: ../glade/liferea.glade.h:144
 msgid "_Save downloads in"
 msgstr "_Zapisvaj zahružanaje ŭ"
 
-#: ../glade/liferea.glade.h:146
+#: ../glade/liferea.glade.h:145
 #, fuzzy
 msgid "_Search Folder..."
 msgstr "Kataloh pošuku"
 
-#: ../glade/liferea.glade.h:147
+#: ../glade/liferea.glade.h:146
 msgid "_Search for:"
 msgstr "_Šukaj:"
 
-#: ../glade/liferea.glade.h:148
+#: ../glade/liferea.glade.h:147
 #, fuzzy
 msgid "_Service Name"
 msgstr "Nazva skryptu"
 
-#: ../glade/liferea.glade.h:149
+#: ../glade/liferea.glade.h:148
 msgid "_Show the items of all child feeds when a folder is selected."
 msgstr "_Pakazvaj elementy dla ŭsich padkanałaŭ pry zaznačeńni katalohu."
 
-#: ../glade/liferea.glade.h:150
+#: ../glade/liferea.glade.h:149
 msgid "_Skim through articles with:"
 msgstr "_Pierachodź pa artykułach z:"
 
-#: ../glade/liferea.glade.h:151 ../glade/new_subscription.glade.h:13
+#: ../glade/liferea.glade.h:150 ../glade/new_subscription.glade.h:13
 msgid "_Source:"
 msgstr "_Krynica:"
 
-#: ../glade/liferea.glade.h:152
+#: ../glade/liferea.glade.h:151
 msgid "_Start in tray icon."
 msgstr ""
 
-#: ../glade/liferea.glade.h:153 ../glade/new_subscription.glade.h:14
+#: ../glade/liferea.glade.h:152 ../glade/new_subscription.glade.h:14
 msgid "_URL"
 msgstr "_Spasyłka"
 
-#: ../glade/liferea.glade.h:154
+#: ../glade/liferea.glade.h:153
 msgid "_Unlimited cache"
 msgstr "_Nieabmiežavanaja padručnaja pamiać"
 
-#: ../glade/liferea.glade.h:155
+#: ../glade/liferea.glade.h:154
 msgid "_Update all favicons now"
 msgstr "_Aktualizuj zaraz usie ikony kanałaŭ"
 
-#: ../glade/liferea.glade.h:156
+#: ../glade/liferea.glade.h:155
 msgid "_Use global default update interval."
 msgstr "_Užyj hlabalny zmoŭčany intervał aktualizacyi."
 
-#: ../glade/liferea.glade.h:157
+#: ../glade/liferea.glade.h:156
 msgid "combined view"
 msgstr "kambinavany vyhlad"
 
-#: ../glade/liferea.glade.h:158
+#: ../glade/liferea.glade.h:157
 msgid "enter any search string you want"
 msgstr "uviadzi luby radok dziela pošuku"
 
-#: ../glade/liferea.glade.h:159
+#: ../glade/liferea.glade.h:158
 msgid "normal view"
 msgstr "zvyčajny vyhlad"
 
-#: ../glade/liferea.glade.h:160
+#: ../glade/liferea.glade.h:159
 msgid "wide view"
 msgstr "šyroki vyhlad"
 
@@ -2507,6 +2498,14 @@ msgid ""
 msgstr ""
 "Uviadzi adras web-placoŭki, kab užyć aŭtamatyčny pošuk kanałaŭ, albo, kali "
 "ty viedaješ, dakładny adras kanału."
+
+#, fuzzy
+#~ msgid "Count"
+#~ msgstr "Kamentary"
+
+#, fuzzy
+#~ msgid "Attention Profile"
+#~ msgstr "Pamyłka aŭtaryzacyi"
 
 #~ msgid "<b>%s</b>"
 #~ msgstr "<b>%s</b>"

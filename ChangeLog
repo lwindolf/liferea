@@ -9,6 +9,7 @@
 	  (reported by Ricardo Cruz)
 	* Fixes SF #2901447: comma in link prevents launching browser
 	  (reported by Rafal Ochmanski)
+	* Removed the unused attention profile code. (Adrian Bunk)
 
 	* Updated Chinese/Simplified translation. (Aron Xu)
 	* Updated Italian translation. (Gianvito Cavasoli)
