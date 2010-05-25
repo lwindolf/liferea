@@ -1154,14 +1154,10 @@ db_view_remove (const gchar *id)
 	debug1 (DEBUG_DB, "Dropping view \"%s\"", id);
 	
 	db_view_remove_triggers (id);
-	
-	sql = sqlite3_mprintf ("DELETE FROM view_state WHERE node_id='%s';", id);
-	res = sqlite3_exec (db, sql, NULL, NULL, &err);
-	if (SQLITE_OK != res)
-		g_warning ("Removing view state failed (%s) SQL: %s", err, sql);
 
-	sqlite3_free (sql);
-	sqlite3_free (err);
+	/* Note: no need to remove anything from view_state, as this
+	   is dropped on schema migration and this method is only
+	   used during schema migration to remove all views. */	
 		
 	sql = sqlite3_mprintf ("DROP VIEW view_%s;", id);	
 	res = sqlite3_exec (db, sql, NULL, NULL, &err);
