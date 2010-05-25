@@ -136,7 +136,7 @@ db_get_schema_version (void)
 			 "   value	TEXT, "
 		         "   PRIMARY KEY (name) "
 		         ");");
-		return -1;
+		db_set_schema_version (-1);
 	}
 	
 	db_prepare_stmt (&stmt, "SELECT value FROM info WHERE name = 'schemaVersion'");
@@ -182,7 +182,6 @@ void
 db_init (void)
 {
 	gchar		*filename;
-	gint		schemaVersion;
 	gint		res;
 		
 	debug_enter ("db_init");
@@ -197,19 +196,18 @@ db_init (void)
 	sqlite3_extended_result_codes (db, TRUE);
 	
 	/* create info table/check versioning info */				   
-	schemaVersion = db_get_schema_version ();
-	debug1 (DEBUG_DB, "current DB schema version: %d", schemaVersion);
+	debug1 (DEBUG_DB, "current DB schema version: %d", db_get_schema_version ());
 
-	if (-1 == schemaVersion) {
+	if (-1 == db_get_schema_version ()) {
 		/* no schema version available -> first installation without tables... */
 		db_set_schema_version (SCHEMA_TARGET_VERSION);
-		schemaVersion = SCHEMA_TARGET_VERSION;	/* nothing exists yet, tables will be created below */
+		/* nothing exists yet, tables will be created below */
 	}
 
-	if (SCHEMA_TARGET_VERSION < schemaVersion)
+	if (SCHEMA_TARGET_VERSION < db_get_schema_version ())
 		g_error ("Fatal: The cache database was created by a newer version of Liferea than this one!");
 
-	if (SCHEMA_TARGET_VERSION > schemaVersion) {		
+	if (SCHEMA_TARGET_VERSION > db_get_schema_version ()) {		
 		/* do table migration */
 		if (db_get_schema_version () < 5)
 			g_error ("This version of Liferea doesn't support migrating from such an old DB file!");
