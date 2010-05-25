@@ -32,6 +32,8 @@
 	  (reported by Rafal Ochmanski)
 	* Fixes SF #3002400: <wbr> tags makes text invisible
 	  (patch by Sergey Snitsaruk)
+	* Improve the UI responsiveness by using sqlite3async.
+	  (patch by Wictor Lund)
 
 	* Updated Chinese/Simplified translation. (Aron Xu)
 	* Updated Italian translation. (Gianvito Cavasoli)

@@ -29,11 +29,15 @@
 #include "item.h"
 #include "itemset.h"
 #include "metadata.h"
+#include "sqlite3async.h"
 
 static sqlite3	*db = NULL;
 
 /** hash of all prepared statements */
 static GHashTable *statements = NULL;
+
+/** the sqlite async thread */
+static GThread *asyncthread = NULL;
 
 static void db_view_remove (const gchar *id);
 
@@ -175,6 +179,20 @@ db_end_transaction (void)
 	sqlite3_free (err);
 }
 
+static gpointer
+db_sqlite3async_thread (gpointer data)
+{
+	debug_enter ("db_sqlite3async_thread");
+	
+	sqlite3async_run ();
+
+	debug0 (DEBUG_DB, "Function sqlite3async_run() exited, returning from async thread.");
+
+	debug_exit ("db_sqlite3async_thread");
+
+	return NULL;
+}
+
 #define SCHEMA_TARGET_VERSION 9
 	
 /* opening or creation of database */
@@ -183,12 +201,24 @@ db_init (void)
 {
 	gchar		*filename;
 	gint		res;
+	GError          *error;
 		
 	debug_enter ("db_init");
 	
+	if (sqlite3async_initialize (NULL, 0) == SQLITE_OK) {	  
+		debug0 (DEBUG_DB, "sqlite3async() == SQLITE_OK, starting async thread");	  
+		asyncthread = g_thread_create (db_sqlite3async_thread, NULL, TRUE, &error);
+		if (asyncthread == NULL) {			
+			sqlite3async_shutdown ();
+			g_error ("Could not start async thread, exiting (%s)\n", error->message);
+		}		
+	} else {
+		g_error ("Could not initiate async sqlite, exiting\n");
+	}
+
 	filename = common_create_cache_filename (NULL, "liferea", "db");
 	debug1 (DEBUG_DB, "Opening DB file %s...", filename);
-	res = sqlite3_open (filename, &db);
+	res = sqlite3_open_v2 (filename, &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, SQLITEASYNC_VFSNAME);
 	if (SQLITE_OK != res)
 		debug3 (DEBUG_CACHE, "Data base file %s could not be opened (error code %d: %s)...", filename, res, sqlite3_errmsg (db));
 	g_free (filename);
@@ -640,6 +670,11 @@ db_deinit (void)
 	
 	db = NULL;
 	
+	sqlite3async_control (SQLITEASYNC_HALT, SQLITEASYNC_HALT_IDLE);
+	debug0 (DEBUG_DB, "Waiting for async thread to join...");
+	g_thread_join (asyncthread);
+	sqlite3async_shutdown ();
+		
 	debug_exit ("db_deinit");
 }
 
