@@ -35,6 +35,8 @@
 	* Improve the UI responsiveness by using sqlite3async.
 	  (patch by Wictor Lund)
 	* Improved localization handling of filenames. (Adrian Bunk)
+	* Added new DBUS method to trigger a global feed updated.
+	  (patch by Matthew Bauer)
 
 	* Updated Chinese/Simplified translation. (Aron Xu)
 	* Updated Italian translation. (Gianvito Cavasoli)

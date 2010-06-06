@@ -25,6 +25,10 @@
     <method name="GetNewItems">
       <arg name="result" type="i" direction="out" />
     </method>
+    
+    <method name="Refresh">
+      <arg name="result" type="b" direction="out" />
+    </method>
 
   </interface>
 </node>

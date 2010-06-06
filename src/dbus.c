@@ -71,6 +71,14 @@ liferea_dbus_get_new_items (LifereaDBus *self, guint *ret, GError **err)
 	return TRUE;
 }
 
+gboolean
+liferea_dbus_refresh (LifereaDBus *self, gboolean *ret, GError **err)
+{
+	node_update_subscription (feedlist_get_root (), GUINT_TO_POINTER (0));
+	*ret = TRUE;
+	return TRUE;
+}
+
 #include "dbus_wrap.c"
 
 static void liferea_dbus_init(LifereaDBus *obj) { }
