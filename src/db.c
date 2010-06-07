@@ -354,6 +354,7 @@ db_init (void)
 			/* 1.7.3 -> 1.7.4 change search folder handling */
 			db_exec ("BEGIN; "
 			         "DROP TABLE view_state; "
+			         "DROP TABLE update_state; "
 				 "CREATE TABLE search_folder_items ("
 				 "   node_id            STRING,"
 	         		 "   item_id		INTEGER,"
@@ -436,15 +437,6 @@ db_init (void)
         	 "   PRIMARY KEY (node_id)"
 		 ");");
 
-	db_exec ("CREATE TABLE update_state ("
-        	 "   node_id            STRING,"
-		 "   last_modified      STRING,"
-		 "   etag               STRING,"
-		 "   last_update        INTEGER,"
-		 "   last_favicon_update INTEGER,"
-        	 "   PRIMARY KEY (node_id)"
-		 ");");
-
 	db_exec ("CREATE TABLE subscription_metadata ("
         	 "   node_id            STRING,"
 		 "   nr                 INTEGER,"
@@ -505,7 +497,6 @@ db_init (void)
 	db_exec ("CREATE TRIGGER subscription_removal DELETE ON subscription "
         	 "BEGIN "
 		 "   DELETE FROM node WHERE node_id = old.node_id; "
-        	 "   DELETE FROM update_state WHERE node_id = old.node_id; "
 		 "   DELETE FROM subscription_metadata WHERE node_id = old.node_id; "
         	 "END;");
 
@@ -592,20 +583,6 @@ db_init (void)
 	db_new_statement ("metadataUpdateStmt",
 	                  "REPLACE INTO metadata (item_id,nr,key,value) VALUES (?,?,?,?)");
 			
-	db_new_statement ("updateStateLoadStmt",
-	                  "SELECT "
-	                  "last_modified,"
-	                  "etag,"
-	                  "last_update,"
-	                  "last_favicon_update "
-	                  "FROM update_state "
-			  "WHERE node_id = ?");
-			 
-	db_new_statement ("updateStateSaveStmt",
-	                  "REPLACE INTO update_state "
-			  "(node_id,last_modified,etag,last_update,last_favicon_update) "
-			  "VALUES (?,?,?,?,?)");
-			 
 	db_new_statement ("subscriptionUpdateStmt",
 	                  "REPLACE INTO subscription ("
 			  "node_id,"
@@ -1222,59 +1199,6 @@ db_search_folder_reset (const gchar *id)
 	sqlite3_free (err);
 	
 	debug0 (DEBUG_DB, "removing search folder finished");
-}
-
-gboolean
-db_update_state_load (const gchar *id,
-                      updateStatePtr updateState)
-{
-	sqlite3_stmt	*stmt;
-	gint		res;
-	
-	debug2 (DEBUG_DB, "loading subscription %s update state (thread=%p)", id, g_thread_self ());
-	debug_start_measurement (DEBUG_DB);	
-
-	stmt = db_get_statement ("updateStateLoadStmt");
-	sqlite3_bind_text (stmt, 1, id, -1, SQLITE_TRANSIENT);
-
-	res = sqlite3_step (stmt);
-	if (SQLITE_ROW == res) {
-		// FIXME: retrieve last modified
-		updateState->lastPoll.tv_sec		= sqlite3_column_int (stmt, 2);
-		updateState->lastFaviconPoll.tv_sec	= sqlite3_column_int (stmt, 3);
-	} else {
-		debug2 (DEBUG_DB, "Could not load update state for subscription %s (error code %d)!", id, res);
-	}
-
-	debug_end_measurement (DEBUG_DB, "update state load");
-	
-	return (SQLITE_ROW == res);
-}
-
-void
-db_update_state_save (const gchar *id,
-                      updateStatePtr updateState)
-{
-	sqlite3_stmt	*stmt;
-	gint		res;
-
-	debug2 (DEBUG_DB, "saving subscription %s update state (thread=%p)", id, g_thread_self ());
-	debug_start_measurement (DEBUG_DB);
-	
-	stmt = db_get_statement ("updateStateSaveStmt");
-	sqlite3_bind_text (stmt, 1, id, -1, SQLITE_TRANSIENT);
-
-	// FIXME: drop etag from DB and make lastModified an INTEGER
-	sqlite3_bind_text (stmt, 2, "", -1, SQLITE_TRANSIENT);
-	sqlite3_bind_text (stmt, 3, "", -1, SQLITE_TRANSIENT);
-	sqlite3_bind_int  (stmt, 4, updateState->lastPoll.tv_sec);
-	sqlite3_bind_int  (stmt, 5, updateState->lastFaviconPoll.tv_sec);
-
-	res = sqlite3_step (stmt);
-	if (SQLITE_DONE != res)
-		g_warning ("Could not save update state for subscription %s (error code %d)!", id, res);
-
-	debug_end_measurement (DEBUG_DB, "update state save");
 }
 
 static GSList *

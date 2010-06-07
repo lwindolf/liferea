@@ -149,23 +149,6 @@ itemSetPtr db_search_folder_load (const gchar *id);
 void db_search_folder_reset (const gchar *id);
 
 /**
- * Loads the feed state for the given feed from the DB
- *
- * @param id		the node id
- * @param updateState	update state structure to fill
- *
- * @returns TRUE if update state could be loaded
- */
-gboolean db_update_state_load (const gchar *id, updateStatePtr updateState);
-
-/**
- * Updates all attributes and state of the feed in the DB
- *
- * @param id		the node id
- */
-void db_update_state_save (const gchar *id, updateStatePtr updateState);
-
-/**
  * Load the metadata and update state of the given subscription.
  *
  * @param subscription	the subscription whose info to load

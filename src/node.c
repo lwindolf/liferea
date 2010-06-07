@@ -111,14 +111,18 @@ node_set_data (nodePtr node, gpointer data)
 void
 node_set_subscription (nodePtr node, subscriptionPtr subscription) 
 {
-
 	g_assert (NULL == node->subscription);
 	g_assert (NULL != node->type);
 		
 	node->subscription = subscription;
 	subscription->node = node;
 	
-	db_update_state_load (node->id, subscription->updateState);
+	/* Besides the favicon age we have no persistent 
+	   update state field, so everything else goes NULL */
+	if (node->iconFile) {
+		subscription->updateState->lastFaviconPoll.tv_sec = common_get_mod_time (node->iconFile);
+		debug2 (DEBUG_UPDATE, "Setting last favicon poll time for %s to %lu", node->id, subscription->updateState->lastFaviconPoll.tv_sec);
+	}
 }
 
 void

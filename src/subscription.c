@@ -124,7 +124,6 @@ subscription_reset_update_counter (subscriptionPtr subscription, GTimeVal *now)
 		return;
 		
 	subscription->updateState->lastPoll.tv_sec = now->tv_sec;
-	db_update_state_save (subscription->node->id, subscription->updateState);
 	debug1 (DEBUG_UPDATE, "Resetting last poll counter to %ld.", subscription->updateState->lastPoll.tv_sec);
 }
 
@@ -143,7 +142,6 @@ subscription_update_favicon (subscriptionPtr subscription)
 	debug1 (DEBUG_UPDATE, "trying to download favicon.ico for \"%s\"", node_get_title (subscription->node));
 	liferea_shell_set_status_bar (_("Updating favicon for \"%s\""), node_get_title (subscription->node));
 	g_get_current_time (&subscription->updateState->lastFaviconPoll);
-	db_update_state_save (subscription->node->id, subscription->updateState);
 	favicon_download (subscription,
 	                  node_get_base_url (subscription->node),
 			  subscription_get_source (subscription),
@@ -244,7 +242,6 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	update_state_set_lastmodified (subscription->updateState, update_state_get_lastmodified (result->updateState));
 	update_state_set_cookies (subscription->updateState, update_state_get_cookies (result->updateState));
 	g_get_current_time (&subscription->updateState->lastPoll);
-	db_update_state_save (subscription->node->id, subscription->updateState);
 	
 	itemview_update_node_info (subscription->node);
 	itemview_update ();
