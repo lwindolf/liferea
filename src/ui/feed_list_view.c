@@ -303,11 +303,9 @@ feed_list_view_select (nodePtr node)
 static void
 feed_list_view_delete_response_cb (GtkDialog *dialog, gint response_id, gpointer user_data)
 {	
-	switch (response_id) {
-		case GTK_RESPONSE_ACCEPT:
-			feedlist_remove_node ((nodePtr)user_data);
-			break;
-	}
+	if (GTK_RESPONSE_ACCEPT == response_id)
+		feedlist_remove_node ((nodePtr)user_data);
+
 	gtk_widget_destroy (GTK_WIDGET (dialog));
 }
 
