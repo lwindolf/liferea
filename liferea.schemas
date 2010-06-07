@@ -354,20 +354,6 @@ To change the gconftool target use the - -config-source=blah option to gconftool
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/liferea/updateonstartup</key>
-      <applyto>/apps/liferea/updateonstartup</applyto>
-      <owner>liferea</owner>
-      <type>bool</type>
-      <default>false</default>
-      <locale name="C">
-        <short>Force all feeds to be updated on startup.</short>
-        <long>
-	   This option forces all feeds to be updated on startup.
-	   Normally only out-dated feeds are updated.
-	</long>
-      </locale>
-    </schema>
-    <schema>
       <key>/schemas/apps/liferea/update-thread-concurrency</key>
       <applyto>/apps/liferea/update-thread-concurrency</applyto>
       <owner>liferea</owner>
