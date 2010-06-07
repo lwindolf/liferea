@@ -37,6 +37,9 @@
 	* Improved localization handling of filenames. (Adrian Bunk)
 	* Added new DBUS method to trigger a global feed updated.
 	  (patch by Matthew Bauer)
+	* Removing feed update state from DB and simplifying 
+	  startup feed update options.
+	  (Lars Lindner)
 
 	* Updated Chinese/Simplified translation. (Aron Xu)
 	* Updated Italian translation. (Gianvito Cavasoli)

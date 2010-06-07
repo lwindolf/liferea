@@ -1524,7 +1524,7 @@
                               </object>
                               <packing>
                                 <property name="expand">False</property>
-                                <property name="position">0</property>
+                                <property name="position">1</property>
                               </packing>
                             </child>
                             <child>
@@ -1538,46 +1538,23 @@
                               <packing>
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
-                                <property name="position">1</property>
+                                <property name="position">2</property>
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkHBox" id="hbox57">
+                              <object class="GtkCheckButton" id="startupactionbtn">
+                                <property name="label" translatable="yes">_Update all subscriptions at startup.</property>
                                 <property name="visible">True</property>
-                                <property name="spacing">12</property>
-                                <child>
-                                  <object class="GtkLabel" id="label142">
-                                    <property name="visible">True</property>
-                                    <property name="label" translatable="yes">At _startup:</property>
-                                    <property name="use_underline">True</property>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">False</property>
-                                    <property name="position">0</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkComboBox" id="startupActionCombo">
-                                    <property name="visible">True</property>
-                                    <property name="model">liststore4</property>
-                                    <child>
-                                      <object class="GtkCellRendererText" id="cellrenderertext4"/>
-                                      <attributes>
-                                        <attribute name="text">0</attribute>
-                                      </attributes>
-                                    </child>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">False</property>
-                                    <property name="position">1</property>
-                                  </packing>
-                                </child>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">False</property>
+                                <property name="use_underline">True</property>
+                                <property name="draw_indicator">True</property>
+                                <signal name="toggled" handler="on_startupactionbtn_toggled"/>
                               </object>
                               <packing>
+                                <property name="expand">False</property>
                                 <property name="fill">False</property>
-                                <property name="position">2</property>
+                                <property name="position">0</property>
                               </packing>
                             </child>
                           </object>

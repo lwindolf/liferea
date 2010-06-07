@@ -299,12 +299,10 @@ To change the gconftool target use the - -config-source=blah option to gconftool
       <type>int</type>
       <default>0</default>
       <locale name="C">
-        <short>Determines how feed updating works at Liferea startup</short>
-        <long>Numeric value determines how feed updating works at
-	   Liferea startup. Set to 0 to use the last poll times to
-	   "automatically" determine which feeds will be updated. Set to
-	   1 to update all feeds at startup. Set to 2 to reset all poll
-	   times at startup so that no feeds are updated at startup.</long>
+        <short>Determines if subscriptions are to be updated at startup</short>
+        <long>Numeric value determines wether Liferea shall updates
+        all subscriptions at startup (0=yes, otherwise=no). Inverse
+        logic for compatibility reasons.</long>
       </locale>
     </schema>
     <schema>

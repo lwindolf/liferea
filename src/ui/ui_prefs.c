@@ -82,13 +82,6 @@ static gchar * gui_toolbar_style_options[] = {
 	NULL
 };
 
-static gchar * startup_update_options[] = {
-	N_("Update out-dated feeds"),
-	N_("Force update of all feeds"),
-	N_("No feed update at all"),
-	NULL
-};
-
 /* Note: these update interval literal should be kept in sync with the 
    ones in ui_subscription.c! */
     
@@ -180,10 +173,11 @@ on_popupwindowsoptionbtn_clicked (GtkButton *button, gpointer user_data)
 	conf_set_bool_value (SHOW_POPUP_WINDOWS, enabled);
 }
 
-static void
-on_feed_startup_update_changed (gpointer user_data)
+void
+on_startupactionbtn_toggled (GtkButton *button, gpointer user_data)
 {
-	conf_set_int_value (STARTUP_FEED_ACTION, gtk_combo_box_get_active (GTK_COMBO_BOX (liferea_dialog_lookup (prefdialog, "startupActionCombo"))));
+	gboolean enabled = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (button));
+	conf_set_int_value (STARTUP_FEED_ACTION, enabled?0:1);
 }
 
 void
@@ -481,7 +475,7 @@ void on_prefbtn_clicked(void) {
 	int			tmp, i;
 	static int		manual;
 	struct browser		*iter;
-	gint			startup_feed_action, default_max_items;
+	gint			startup_feed_update, default_max_items;
 	gint			folder_display_mode, browse_key_setting;
 	gint			proxy_port, browser_place;
 	gint			enclosure_download_tool;
@@ -535,12 +529,9 @@ void on_prefbtn_clicked(void) {
 
 		/* ================== panel 1 "feeds" ==================== */
 
-		/* menu for feed startup update action */
-		conf_get_int_value (STARTUP_FEED_ACTION, &startup_feed_action);
-		ui_common_setup_combo_menu (liferea_dialog_lookup (prefdialog, "startupActionCombo"),
-		                            startup_update_options, 
-		                            G_CALLBACK (on_feed_startup_update_changed),
-		                            startup_feed_action);
+		/* check box for feed startup update */
+		conf_get_int_value (STARTUP_FEED_ACTION, &startup_feed_update);
+		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (prefdialog, "startupactionbtn")), (startup_feed_update == 0)); 
 
 		/* cache size setting */
 		widget = liferea_dialog_lookup (prefdialog, "itemCountBtn");
