@@ -30,6 +30,7 @@
 #include "itemset.h"
 #include "metadata.h"
 #include "sqlite3async.h"
+#include "vfolder.h"
 
 /* You can find a schema description used by this version of Liferea at:
    http://lzone.de/wiki/doku.php?id=liferea:v1.8:db_schema */
@@ -483,6 +484,10 @@ db_init (void)
         	 "(SELECT node_id FROM node);");
         	 
         // FIXME: clean up stale comments
+        
+	debug0 (DEBUG_DB, "Checking for search folder items without a feed list node...\n");
+	db_exec ("DELETE FROM search_folder_items WHERE node_id NOT IN "
+        	 "(SELECT node_id FROM node);");
 			  
 	debug0 (DEBUG_DB, "DB cleanup finished. Continuing startup.");
 		
@@ -618,6 +623,9 @@ db_init (void)
 	
 	db_new_statement ("nodeUpdateStmt",
 	                  "REPLACE INTO node (node_id,parent_id,title,type,expanded,view_mode,sort_column,sort_reversed) VALUES (?,?,?,?,?,?,?,?)");
+	                  
+	db_new_statement ("itemUpdateSearchFoldersStmt",
+	                  "REPLACE INTO search_folder_items (node_id, item_id) VALUES (?,?)");
 			  
 	g_assert (sqlite3_get_autocommit (db));
 	
@@ -854,6 +862,32 @@ db_item_set_id (itemPtr item)
 	sqlite3_free (err);
 }
 
+static void
+db_item_search_folders_update (itemPtr item)
+{
+	sqlite3_stmt	*stmt;
+	gint 		res;
+	GSList		*iter, *list;
+	
+	// FIXME: also remove from search folders
+	
+	iter = list = vfolder_get_all_with_item_id (item->id);
+	while (iter) {
+		vfolderPtr vfolder = (vfolderPtr)iter->data;
+		
+		stmt = db_get_statement ("itemUpdateSearchFoldersStmt");
+		sqlite3_bind_text (stmt, 1, vfolder->node->id, -1, SQLITE_TRANSIENT);
+		sqlite3_bind_int (stmt, 2, item->id);
+		res = sqlite3_step (stmt);
+
+		if (SQLITE_DONE != res) 
+			g_warning ("item update of search folders failed (error code=%d, %s)", res, sqlite3_errmsg (db));
+		
+		iter = g_slist_next (iter);
+	}
+	g_slist_free (iter);
+}
+
 void
 db_item_update (itemPtr item) 
 {
@@ -871,8 +905,6 @@ db_item_update (itemPtr item)
 		debug1(DEBUG_DB, "insert into table \"items\": \"%s\"", item->title);	
 	}
 
-	g_warning ("FIXME: search folder update!");
-	
 	/* Update the item... */
 	stmt = db_get_statement ("itemUpdateStmt");
 	sqlite3_bind_text (stmt, 1,  item->title, -1, SQLITE_TRANSIENT);
@@ -898,6 +930,7 @@ db_item_update (itemPtr item)
 		g_warning ("item update failed (error code=%d, %s)", res, sqlite3_errmsg (db));
 	
 	db_item_metadata_update (item);
+	db_item_search_folders_update (item);
 	
 	db_end_transaction ();
 
@@ -914,7 +947,7 @@ db_item_state_update (itemPtr item)
 		return;
 	}
 
-	g_warning ("FIXME: search folder update!");
+	db_item_search_folders_update (item);
 
 	debug_start_measurement (DEBUG_DB);
 	
