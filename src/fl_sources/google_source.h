@@ -77,15 +77,15 @@ enum  {
  * Google Reader Login api.
  * @param Email The google account email id.
  * @param Passwd The google account password.
- * @return The return data has a line "SID=xxxx" which should be stored to be
- *         used as a cookie in future requests. 
+ * @return The return data has a line "Auth=xxxx" which will be used as an
+ *         Authorization header in future requests. 
  */ 
 #define GOOGLE_READER_LOGIN_URL "https://www.google.com/accounts/ClientLogin" 
 #define GOOGLE_READER_LOGIN_POST "service=reader&Email=%s&Passwd=%s&source=liferea&continue=http://www.google.com"
 
 /**
  * Acts like a feed, indicating all the posts shared by the Google Reader
- * friends. Does not take any params, but 'sid' cookie needs to be set.
+ * friends. Does not take any params, but the Authorization header needs to be set.
  */
 #define GOOGLE_READER_BROADCAST_FRIENDS_URL "http://www.google.com/reader/atom/user/-/state/com.google/broadcast-friends" 
 

@@ -112,7 +112,7 @@ google_source_login_cb (const struct updateResult * const result, gpointer userd
 		google_source_edit_process (gsource);
 
 	} else {
-		debug0 (DEBUG_UPDATE, "google reader login failed! no SID found in result!");
+		debug0 (DEBUG_UPDATE, "google reader login failed! no Auth token found in result!");
 		subscription->node->available = FALSE;
 
 		g_free (subscription->updateError);
@@ -125,7 +125,7 @@ google_source_login_cb (const struct updateResult * const result, gpointer userd
 
 /**
  * Perform a login to Google Reader, if the login completes the 
- * GoogleSource will have a valid sid and will have loginStatus to 
+ * GoogleSource will have a valid Auth token and will have loginStatus to 
  * GOOGLE_SOURCE_LOGIN_ACTIVE.
  */
 void
