@@ -346,7 +346,7 @@ google_feed_subscription_prepare_update_request (subscriptionPtr subscription,
 		g_free (newUrl);
 		g_free (source_escaped);
 	}
-	update_state_set_cookies (request->updateState, gsource->sid);
+	update_request_set_auth_value (request, gsource->authHeaderValue);
 	return TRUE;
 }
 

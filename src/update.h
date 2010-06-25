@@ -89,6 +89,7 @@ typedef struct updateRequest {
 					     filename. Eventually, everything should be a
 					     URL. Use file:// and exec:// */
 	gchar           *postdata;      /**< HTTP POST request data (NULL for non-POST requests) */
+	gchar           *authValue;     /**< Custom value for Authorization: header */
 	updateOptionsPtr options;	/**< Update options for the request */
 	gchar		*filtercmd;	/**< Command will filter output of URL */
 	updateStatePtr	updateState;	/**< Update state of the requested object (etags, last modified...) */
@@ -195,6 +196,14 @@ void update_request_free (updateRequestPtr request);
  * @param source        the new source
  */
 void update_request_set_source(updateRequestPtr request, const gchar* source);
+
+/**
+ * Sets a custom authorization header value.
+ *
+ * @param request        the update request
+ * @param authValue      the authorization header value
+ */
+void update_request_set_auth_value(updateRequestPtr request, const gchar* authValue);
 
 /**
  * Creates a new update result for the given update request.

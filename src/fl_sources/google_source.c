@@ -66,7 +66,7 @@ google_source_free (GoogleSourcePtr gsource)
 
 	update_job_cancel_by_owner (gsource);
 	
-	g_free (gsource->sid);
+	g_free (gsource->authHeaderValue);
 	g_queue_free (gsource->actionQueue) ;
 	g_hash_table_unref (gsource->lastTimestampMap);
 	g_free (gsource);
@@ -88,21 +88,21 @@ google_source_login_cb (const struct updateResult * const result, gpointer userd
 	gchar		*tmp = NULL;
 	subscriptionPtr subscription = gsource->root->subscription;
 		
-	debug0 (DEBUG_UPDATE, "google login processing...");
+	debug1 (DEBUG_UPDATE, "google login processing... %s", result->data);
 	
-	g_assert (!gsource->sid);
+	g_assert (!gsource->authHeaderValue);
 	
 	if (result->data && result->httpstatus == 200)
-		tmp = strstr (result->data, "SID=");
+		tmp = strstr (result->data, "Auth=");
 		
 	if (tmp) {
 		gchar *ttmp = tmp; 
 		tmp = strchr (tmp, '\n');
 		if (tmp)
 			*tmp = '\0';
-		gsource->sid = g_strdup (ttmp);
+		gsource->authHeaderValue = g_strdup_printf ("GoogleLogin auth=%s", ttmp + 5);
 
-		debug1 (DEBUG_UPDATE, "google reader SID found: %s", gsource->sid);
+		debug1 (DEBUG_UPDATE, "google reader Auth token found: %s", gsource->authHeaderValue);
 		/* now that we are authenticated trigger updating to start data retrieval */
 		gsource->loginState = GOOGLE_SOURCE_STATE_ACTIVE;
 		if (!(flags & GOOGLE_SOURCE_UPDATE_ONLY_LOGIN))

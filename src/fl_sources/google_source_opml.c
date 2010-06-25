@@ -69,7 +69,6 @@ google_source_add_broadcast_subscription (GoogleSourcePtr gsource)
 		if (!node->subscription || !node->subscription->source) 
 			continue;
 		if (g_str_equal (node->subscription->source, GOOGLE_READER_BROADCAST_FRIENDS_URL)) {
-			update_state_set_cookies (node->subscription->updateState, gsource->sid);
 			return;
 		}
 		iter = g_slist_next (iter);
@@ -86,7 +85,6 @@ google_source_add_broadcast_subscription (GoogleSourcePtr gsource)
 	node_set_parent (node, gsource->root, -1);
 	feedlist_node_imported (node);
 	
-	update_state_set_cookies (node->subscription->updateState, gsource->sid);
 	subscription_update (node->subscription, FEED_REQ_RESET_TITLE | FEED_REQ_PRIORITY_HIGH);
 	subscription_update_favicon (node->subscription);
 }
@@ -147,7 +145,6 @@ google_source_merge_feed (xmlNodePtr match, gpointer user_data)
 		while (iter) {
 			node = (nodePtr)iter->data;
 			if (g_str_equal (node->subscription->source, url)) {
-				update_state_set_cookies (node->subscription->updateState, gsource->sid);
 				node->subscription->type = &googleSourceFeedSubscriptionType;
 				goto cleanup ;
 			}
@@ -164,7 +161,6 @@ google_source_merge_feed (xmlNodePtr match, gpointer user_data)
 		node_set_parent (node, gsource->root, -1);
 		feedlist_node_imported (node);
 		
-		update_state_set_cookies (node->subscription->updateState, gsource->sid);
 		/**
 		 * @todo mark the ones as read immediately after this is done
 		 * the feed as retrieved by this has the read and unread
@@ -309,9 +305,9 @@ google_source_quick_update(GoogleSourcePtr gsource)
 	updateRequestPtr request = update_request_new ();
 	request->updateState = update_state_copy (gsource->root->subscription->updateState);
 	request->options = update_options_copy (gsource->root->subscription->updateOptions);
-	update_state_set_cookies (request->updateState, gsource->sid);
 	update_request_set_source (request, GOOGLE_READER_UNREAD_COUNTS_URL);
-	
+	update_request_set_auth_value(request, gsource->authHeaderValue);
+
 	update_execute_request (gsource, request, google_source_quick_update_cb,
 				gsource, 0);
 
@@ -340,7 +336,7 @@ google_opml_subscription_prepare_update_request (subscriptionPtr subscription, s
 	
 	update_request_set_source (request, GOOGLE_READER_SUBSCRIPTION_LIST_URL);
 	
-	update_state_set_cookies (request->updateState, gsource->sid);
+	update_request_set_auth_value (request, gsource->authHeaderValue);
 	
 	return TRUE;
 }

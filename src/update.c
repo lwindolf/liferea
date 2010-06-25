@@ -135,6 +135,13 @@ update_request_set_source(updateRequestPtr request, const gchar* source)
 	request->source = g_strdup(source) ;
 }
 
+void
+update_request_set_auth_value(updateRequestPtr request, const gchar* authValue)
+{
+	g_free(request->authValue);
+	request->authValue = g_strdup(authValue);
+}
+
 updateResultPtr
 update_result_new (void)
 {

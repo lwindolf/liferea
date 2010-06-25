@@ -283,7 +283,7 @@ google_source_edit_token_cb (const struct updateResult * const result, gpointer 
 	request = update_request_new ();
 	request->updateState = update_state_copy (gsource->root->subscription->updateState);
 	request->options = update_options_copy (gsource->root->subscription->updateOptions) ;
-	update_state_set_cookies (request->updateState, gsource->sid);
+	update_request_set_auth_value (request, gsource->authHeaderValue);
 
 	if (action->actionType == EDIT_ACTION_MARK_READ || 
 	    action->actionType == EDIT_ACTION_MARK_UNREAD || 
@@ -320,7 +320,7 @@ google_source_edit_process (GoogleSourcePtr gsource)
 	request->updateState = update_state_copy (gsource->root->subscription->updateState);
 	request->options = update_options_copy (gsource->root->subscription->updateOptions);
 	request->source = g_strdup (GOOGLE_READER_TOKEN_URL);
-	update_state_set_cookies (request->updateState, gsource->sid);
+	update_request_set_auth_value(request, gsource->authHeaderValue);
 
 	update_execute_request (gsource, request, google_source_edit_token_cb, 
 	                        g_strdup(gsource->root->id), 0);
