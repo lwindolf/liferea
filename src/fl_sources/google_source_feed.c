@@ -42,7 +42,7 @@
  * as parameter.
  */
 static void
-google_source_xpath_foreach_match (gchar* expr, xmlXPathContextPtr xpathCtxt, xpathMatchFunc func, gpointer user_data) 
+google_source_xpath_foreach_match (const gchar* expr, xmlXPathContextPtr xpathCtxt, xpathMatchFunc func, gpointer user_data) 
 {
 	xmlXPathObjectPtr xpathObj = NULL;
 	xpathObj = xmlXPathEval ((xmlChar*)expr, xpathCtxt);
@@ -348,7 +348,7 @@ google_feed_subscription_prepare_update_request (subscriptionPtr subscription,
 		g_free (newUrl);
 		g_free (source_escaped);
 	}
-	update_state_set_cookies (request->updateState, gsource->sid);
+	update_request_set_auth_value (request, gsource->authHeaderValue);
 	return TRUE;
 }
 

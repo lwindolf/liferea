@@ -156,13 +156,19 @@ network_process_request (const updateJobPtr const job)
 	}
 
 	/* Set the authentication */
-	if (job->request->options &&
+	if (!job->request->authValue &&
+	    job->request->options &&
 	    job->request->options->username &&
 	    job->request->options->password) {
 		SoupURI *uri = soup_message_get_uri (msg);
 
 		soup_uri_set_user (uri, job->request->options->username);
 		soup_uri_set_password (uri, job->request->options->password);
+	}
+
+	if (job->request->authValue) {
+		soup_message_headers_append (msg->request_headers, "Authorization",
+					     job->request->authValue);
 	}
 
 	/* Add requested cookies */
