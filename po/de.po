@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Liferea 1.5.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-04-29 21:52+0300\n"
-"PO-Revision-Date: 2010-06-07 22:47+0100\n"
+"PO-Revision-Date: 2010-06-29 00:18+0100\n"
 "Last-Translator: Lars Lindner <lars.lindner@gmail.com>\n"
 "Language-Team: German\n"
 "MIME-Version: 1.0\n"
@@ -235,9 +235,9 @@ msgid "\"%s\" is not a valid enclosure type config file!"
 msgstr "\"%s\" ist keine gültige Enclosure-Typen-Datei!"
 
 #: ../src/enclosure.c:278
-#, fuzzy, c-format
+#, c-format
 msgid "Enclosure download FAILED: \"%s\""
-msgstr "Anhang fertig heruntergeladen: \"%s\""
+msgstr "Download des Anhangs ging fehl: \"%s\""
 
 #. just saving
 #: ../src/enclosure.c:288
@@ -349,9 +349,8 @@ msgid "STATE"
 msgstr "STATE"
 
 #: ../src/main.c:180
-#, fuzzy
 msgid "Show version information and exit"
-msgstr "  --version        Programmversion anzeigen"
+msgstr "Programmversion anzeigen und beenden"
 
 #: ../src/main.c:185
 msgid "Print debugging messages of all types"
@@ -374,7 +373,6 @@ msgid "Print debugging messages of all GUI functions"
 msgstr "Gibt Debug-Meldungen aller GUI-Funktionen aus."
 
 #: ../src/main.c:190
-#, fuzzy
 msgid "Enables HTML rendering debugging. Each time Liferea renders HTML output it will also dump the generated HTML into ~/.liferea_1.6/output.xhtml"
 msgstr "Aktiviert HTML-Rendering-Debugging. Bei jedem Rendern wird das HTML in ~/.liferea_1.6/output.xhtml gedumpt"
 
@@ -430,9 +428,9 @@ msgid "Liferea seems to be running already!"
 msgstr "Liferea scheint bereits zu laufen!"
 
 #: ../src/migrate.c:343
-#, fuzzy, c-format
+#, c-format
 msgid "This version of Liferea uses a new cache format and has migrated your feed cache. The cache content in %s was not deleted automatically. Please remove this directory manually once you are sure migration was successful!"
-msgstr "Diese Version von Liferea nutzt ein neues Cache-Format. Daher wurde der alte Cache-Inhalt von ~/.liferea_1.2 migriert. Diese Verzeichnis wurde aber nicht automatisch gelöscht. Bitte löschen Sie es manuell sobald sie sicher sind, daß die Migration erfolgreich war!"
+msgstr "Diese Version von Liferea nutzt ein neues Cache-Format. Daher wurde der alte Cache-Inhalt von %s migriert. Diese Verzeichnis wurde aber nicht automatisch gelöscht. Bitte löschen Sie es manuell sobald sie sicher sind, daß die Migration erfolgreich war!"
 
 #. Some libsoup transport errors
 #: ../src/net.c:328
