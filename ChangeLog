@@ -40,8 +40,8 @@
 	* Removing feed update state from DB and simplifying 
 	  startup feed update options.
 	  (Lars Lindner)
-	* Fixes broken Google Reader authentication.
-	  (Arnold Noronha)
+	* Fixes SF #3019939, Debian #586926: Broken Google Reader
+	  authentication. (Arnold Noronha)
 
 	* Updated Chinese/Simplified translation. (Aron Xu)
 	* Updated German translation. (Lars Lindner)
