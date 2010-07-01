@@ -18,8 +18,7 @@ css_DATA = \
 dtddir = $(pkgdatadir)/dtd
 dtd_DATA = dtd/html.ent
 
-EXTRA_DIST = autogen.sh \
-	liferea.spec \
+EXTRA_DIST = liferea.spec \
 	po/liferea.pot \
 	$(desktop_in_files) \
 	$(desktop_DATA) \
