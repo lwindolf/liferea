@@ -67,7 +67,7 @@ vfolder_import_rules (xmlNodePtr cur,
 	
 	matchType = xmlGetProp (cur, BAD_CAST"matchType");
 	if (matchType) {
-		/* currently we now only OR or AND'ing the rules,
+		/* currently we only OR or AND the rules,
 		   "any" is the value for OR'ing, "all" for AND'ing */
 		vfolder->itemset->anyMatch = (0 != xmlStrcmp (matchType, BAD_CAST"all"));
 	} else {
