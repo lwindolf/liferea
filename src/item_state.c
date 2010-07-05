@@ -48,20 +48,18 @@ item_set_flag_state (itemPtr item, gboolean newState)
 void
 item_flag_state_changed (itemPtr item, gboolean newState)
 {
-	/* 1. add propagate to vfolders (must happen after changing the item state) */
+	/* 1. set value in memory */	
+	item->flagStatus = newState;
+
+	/* 2. propagate to vfolders */
 	vfolder_foreach_data (vfolder_check_item, item);
 	vfolder_foreach (node_update_counters);
 
-	/* 2. save state to DB */
-	item->flagStatus = newState;
+	/* 3. save state to DB */
 	db_item_state_update (item);
 
-	/* 3. update item list GUI state */
+	/* 4. update item list GUI state */
 	itemlist_update_item (item);
-
-	/* 4. check wether we must add the item to a search folder */
-	vfolder_foreach_data (vfolder_check_item, item);
-	vfolder_foreach (node_update_counters);
 
 	/* 5. update notification statistics */
 	feedlist_reset_new_item_count ();
@@ -91,26 +89,28 @@ item_read_state_changed (itemPtr item, gboolean newState)
 
 	debug_start_measurement (DEBUG_GUI);
 
-	/* 1. add propagate to vfolders (must happen after changing the item state) */
+	/* 1. set values in memory */	
+	item->readStatus = newState;
+	item->updateStatus = FALSE;
+
+	/* 2. propagate to vfolders */
 	vfolder_foreach_data (vfolder_check_item, item);
 	vfolder_foreach (node_update_counters);
 	
-	/* 2. apply to DB */
-	item->readStatus = newState;
-	item->updateStatus = FALSE;
+	/* 3. apply to DB */
 	db_item_state_update (item);
 
-	/* 3. update item list GUI state */
+	/* 4. update item list GUI state */
 	itemlist_update_item (item);
 
-	/* 4. updated feed list unread counters */
+	/* 5. updated feed list unread counters */
 	node = node_from_id (item->nodeId);
 	node_update_counters (node);
 
-	/* 5. update notification statistics */
+	/* 6. update notification statistics */
 	feedlist_reset_new_item_count ();
 
-	/* 6. duplicate state propagation */
+	/* 7. duplicate state propagation */
 	if (item->validGuid) {
 		GSList *duplicates, *iter;
 
