@@ -158,13 +158,13 @@ vfolder_check_item (vfolderPtr vfolder, itemPtr item)
 	
 	if (itemset_check_item (vfolder->itemset, item)) {
 		if (!found) {
-			debug3 (DEBUG_VFOLDER, "Item %lu added to search folder %d (%s)", item->id, vfolder->node->id, item->title);
+			debug3 (DEBUG_VFOLDER, "Item %lu added to search folder %s (%s)", item->id, vfolder->node->title, item->title);
 			vfolder->itemset->ids = g_list_append (vfolder->itemset->ids, GUINT_TO_POINTER (item->id));
 			vfolder->node->needsUpdate = TRUE;
 		}
 	} else {
 		if (found) {
-			debug3 (DEBUG_VFOLDER, "Item %lu removed from search folder %d (%s)", item->id, vfolder->node->id, item->title);
+			debug3 (DEBUG_VFOLDER, "Item %lu removed from search folder %s (%s)", item->id, vfolder->node->title, item->title);
 			vfolder_remove_item (vfolder, item);
 		}
 	}
