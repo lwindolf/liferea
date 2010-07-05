@@ -51,6 +51,7 @@ debug_get_prefix (unsigned long flag)
 	if (flag & DEBUG_NET)		return "NET";
 	if (flag & DEBUG_DB)		return "DB";
 	if (flag & DEBUG_PERF)		return "PERF";
+	if (flag & DEBUG_VFOLDER)	return "VFOLDER";
 	return "";	
 }
 

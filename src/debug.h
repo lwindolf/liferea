@@ -36,7 +36,8 @@ typedef enum
 	DEBUG_NET		= (1<<7),
 	DEBUG_DB		= (1<<8),
 	DEBUG_PERF		= (1<<9),
-	DEBUG_VERBOSE		= (1<<10)
+	DEBUG_VFOLDER		= (1<<10),
+	DEBUG_VERBOSE		= (1<<11)
 }
 DebugFlags;
 

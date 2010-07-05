@@ -626,6 +626,9 @@ db_init (void)
 	                  
 	db_new_statement ("itemUpdateSearchFoldersStmt",
 	                  "REPLACE INTO search_folder_items (node_id, item_id) VALUES (?,?)");
+	                  
+	db_new_statement ("searchFolderLoadStmt",
+	                  "SELECT item_id FROM search_folder_items WHERE node_id = ?;");
 			  
 	g_assert (sqlite3_get_autocommit (db));
 	
@@ -870,11 +873,11 @@ db_item_search_folders_update (itemPtr item)
 	GSList		*iter, *list;
 	
 	// FIXME: also remove from search folders
-	
+
 	iter = list = vfolder_get_all_with_item_id (item->id);
 	while (iter) {
 		vfolderPtr vfolder = (vfolderPtr)iter->data;
-		
+
 		stmt = db_get_statement ("itemUpdateSearchFoldersStmt");
 		sqlite3_bind_text (stmt, 1, vfolder->node->id, -1, SQLITE_TRANSIENT);
 		sqlite3_bind_int (stmt, 2, item->id);
@@ -1184,33 +1187,26 @@ db_view_remove (const gchar *id)
 itemSetPtr
 db_search_folder_load (const gchar *id) 
 {
-	gchar		*sql;
 	gint		res;
-	sqlite3_stmt	*viewLoadStmt;	
+	sqlite3_stmt	*stmt;
 	itemSetPtr 	itemSet;
 
 	debug2 (DEBUG_DB, "loading search folder node \"%s\" (thread=%p)", id, g_thread_self ());
+
+	stmt = db_get_statement ("searchFolderLoadStmt");
+	res = sqlite3_bind_text (stmt, 1, id, -1, SQLITE_TRANSIENT);
+	if (SQLITE_OK != res)
+		g_error ("db_load_metadata: sqlite bind failed (error code %d)!", res);
 	
 	itemSet = g_new0 (struct itemSet, 1);
 	itemSet->nodeId = (gchar *)id;
 
-	sql = sqlite3_mprintf ("SELECT item_id FROM search_folder_items WHERE node_id = %s;", id);
-	res = sqlite3_prepare_v2 (db, sql, -1, &viewLoadStmt, NULL);
-	sqlite3_free (sql);
-	if (SQLITE_OK != res) {
-		debug2 (DEBUG_DB, "could not load search folder %s (error=%d)", id, res);
-		return itemSet;
+	while (sqlite3_step (stmt) == SQLITE_ROW) {
+g_print("Adding item '%d' for '%s'...\n", sqlite3_column_int (stmt, 0), id);
+		itemSet->ids = g_list_append (itemSet->ids, GUINT_TO_POINTER (sqlite3_column_int (stmt, 0)));
 	}
-
-	sqlite3_reset (viewLoadStmt);
-
-	while (sqlite3_step (viewLoadStmt) == SQLITE_ROW) {
-		itemSet->ids = g_list_append (itemSet->ids, GUINT_TO_POINTER (sqlite3_column_int (viewLoadStmt, 0)));
-	}
-
-	sqlite3_finalize (viewLoadStmt);
 	
-	debug0 (DEBUG_DB, "loading search folder finished");
+	debug1 (DEBUG_DB, "loading search folder finished (%d items)", g_list_length (itemSet->ids));
 	
 	return itemSet;
 }

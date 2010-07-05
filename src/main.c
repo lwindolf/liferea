@@ -1,7 +1,7 @@
 /**
  * @file main.c Liferea main program
  *
- * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2010 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *  
  * Some code like the command line handling was inspired by 
@@ -150,6 +150,8 @@ debug_entries_parse_callback (const gchar *option_name,
 		*debug_flags |= DEBUG_TRACE;
 	} else if (g_str_equal (option_name, "--debug-update")) {
 		*debug_flags |= DEBUG_UPDATE;
+	} else if (g_str_equal (option_name, "--debug-vfolder")) {
+		*debug_flags |= DEBUG_VFOLDER;
 	} else if (g_str_equal (option_name, "--debug-verbose")) {
 		*debug_flags |= DEBUG_VERBOSE;
 	} else {
@@ -210,6 +212,7 @@ main (int argc, char *argv[])
 		{ "debug-performance", 0, G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, debug_entries_parse_callback, N_("Print debugging messages when a function takes too long to process"), NULL },
 		{ "debug-trace", 0, G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, debug_entries_parse_callback, N_("Print debugging messages when entering/leaving functions"), NULL },
 		{ "debug-update", 0, G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, debug_entries_parse_callback, N_("Print debugging messages of the feed update processing"), NULL },
+		{ "debug-vfolder", 0, G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, debug_entries_parse_callback, N_("Print debugging messages of the search folder matching"), NULL },
 		{ "debug-verbose", 0, G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, debug_entries_parse_callback, N_("Print verbose debugging messages"), NULL },
 		{ NULL }
 	};
@@ -289,7 +292,7 @@ main (int argc, char *argv[])
 #ifdef HAVE_LIBNOTIFY
 	notification_plugin_register (&libnotify_plugin);
 #endif
-	social_init ();			/* initialized social bookmarking */
+	social_init ();			/* initialize social bookmarking */
 #ifdef USE_DBUS	
 	dbus = liferea_dbus_new ();	
 #else
