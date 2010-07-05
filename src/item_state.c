@@ -48,7 +48,9 @@ item_set_flag_state (itemPtr item, gboolean newState)
 void
 item_flag_state_changed (itemPtr item, gboolean newState)
 {
-	/* 1. No propagation because we recount search folders in step 3... */
+	/* 1. add propagate to vfolders (must happen after changing the item state) */
+	vfolder_foreach_data (vfolder_check_item, item);
+	vfolder_foreach (node_update_counters);
 
 	/* 2. save state to DB */
 	item->flagStatus = newState;
@@ -89,14 +91,14 @@ item_read_state_changed (itemPtr item, gboolean newState)
 
 	debug_start_measurement (DEBUG_GUI);
 
-	/* 1. apply to DB */
+	/* 1. add propagate to vfolders (must happen after changing the item state) */
+	vfolder_foreach_data (vfolder_check_item, item);
+	vfolder_foreach (node_update_counters);
+	
+	/* 2. apply to DB */
 	item->readStatus = newState;
 	item->updateStatus = FALSE;
 	db_item_state_update (item);
-
-	/* 2. add propagate to vfolders (must happen after changing the item state) */
-	vfolder_foreach_data (vfolder_check_item, item);
-	vfolder_foreach (node_update_counters);
 
 	/* 3. update item list GUI state */
 	itemlist_update_item (item);
