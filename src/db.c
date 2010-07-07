@@ -361,10 +361,9 @@ db_init (void)
 	         		 "   item_id		INTEGER,"
 				 "   PRIMARY KEY (node_id, item_id)"
 				 ");"
-				 // FIXME: copy items in specific views into search_folder_items
 			         "REPLACE INTO info (name, value) VALUES ('schemaVersion',9); "
 			         "END;" );
-
+			         
 			debug0 (DEBUG_DB, "Removing all views.");
 			sql = sqlite3_mprintf("SELECT name FROM sqlite_master WHERE type='view';");
 			res = sqlite3_prepare_v2 (db, sql, -1, &stmt, NULL);
@@ -374,8 +373,15 @@ db_init (void)
 			} else {
 				sqlite3_reset (stmt);
 
-					while (sqlite3_step (stmt) == SQLITE_ROW)
-					db_view_remove (sqlite3_column_text (stmt, 0) + strlen("view_"));
+					while (sqlite3_step (stmt) == SQLITE_ROW) {
+						const gchar *viewName = sqlite3_column_text (stmt, 0) + strlen("view_");
+						gchar *copySql = g_strdup_printf("INSERT INTO search_folder_items (node_id, item_id) SELECT '%s',item_id FROM view_%s;", viewName, viewName);
+						
+						db_exec (copySql);
+						db_view_remove (viewName);
+						
+						g_free (copySql);
+					}
 			
 				sqlite3_finalize (stmt);
 			}
