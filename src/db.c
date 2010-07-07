@@ -359,7 +359,7 @@ db_init (void)
 				 "CREATE TABLE search_folder_items ("
 				 "   node_id            STRING,"
 	         		 "   item_id		INTEGER,"
-				 "   PRIMARY KEY (node_id)"
+				 "   PRIMARY KEY (node_id, item_id)"
 				 ");"
 				 // FIXME: copy items in specific views into search_folder_items
 			         "REPLACE INTO info (name, value) VALUES ('schemaVersion',9); "
@@ -463,7 +463,7 @@ db_init (void)
 	db_exec ("CREATE TABLE search_folder_items ("
 	         "   node_id            STRING,"
 	         "   item_id		INTEGER,"
-		 "   PRIMARY KEY (node_id)"
+		 "   PRIMARY KEY (node_id, item_id)"
 		 ");");
 
 	db_end_transaction ();
