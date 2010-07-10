@@ -43,7 +43,9 @@
 	* Fixes SF #3019939, Debian #586926: Broken Google Reader
 	  authentication. (Arnold Noronha)
 	* Don't ship autogen.sh in release tarballs. (Adrian Bunk)
-	* Added --debug-vfolder option.
+	* Added --debug-vfolder option. (Lars Lindner)
+	* Added feature to sort feeds in a folder alphabetically.
+	  (Lars Lindner)
 
 	* Updated Chinese/Simplified translation. (Aron Xu)
 	* Updated German translation. (Lars Lindner)

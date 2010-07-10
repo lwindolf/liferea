@@ -242,6 +242,12 @@ ui_popup_delete (gpointer callback_data)
 	feed_list_view_delete_prompt ((nodePtr)callback_data);
 }
 
+static void
+ui_popup_sort_feeds (gpointer callback_data)
+{
+	feed_list_view_sort_folder ((nodePtr)callback_data);
+}
+
 /** 
  * Shows popup menus for the feed list depending on the
  * node type.
@@ -296,10 +302,16 @@ ui_popup_node_menu (nodePtr node, gboolean validSelection, guint button, guint32
 
 			gtk_menu_item_set_submenu (GTK_MENU_ITEM(item), submenu);
 		}
+		
+		if (node->children) {
+			gtk_menu_shell_append (GTK_MENU_SHELL(menu), gtk_separator_menu_item_new());
+			ui_popup_add_menuitem (menu, _("Sort Feeds"), ui_popup_sort_feeds, node, GTK_STOCK_SORT_ASCENDING, 0);
+		}
 	}
 
 	if (validSelection) {
 		if (writeableFeedlist) {
+			gtk_menu_shell_append (GTK_MENU_SHELL(menu), gtk_separator_menu_item_new());
 			ui_popup_add_menuitem (menu, NULL, ui_popup_delete, node, GTK_STOCK_DELETE, 0);
 			ui_popup_add_menuitem (menu, NULL, ui_popup_properties, node, GTK_STOCK_PROPERTIES, 0);
 		}

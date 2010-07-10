@@ -151,7 +151,7 @@ feed_list_view_expand (nodePtr node)
 {
 	if (node->parent)
 		feed_list_view_expand (node->parent);
-		
+
 	ui_node_set_expansion (node, TRUE);
 }
 
@@ -161,8 +161,7 @@ feed_list_view_restore_folder_expansion (nodePtr node)
 	if (node->expanded)
 		feed_list_view_expand (node);
 		
-	if (node->parent)
-		feed_list_view_restore_folder_expansion (node->parent);
+	node_foreach_child (node, feed_list_view_restore_folder_expansion);
 }
 
 static void
@@ -192,6 +191,24 @@ feed_list_view_set_reduce_mode (gboolean newReduceMode)
 	conf_set_bool_value (REDUCED_FEEDLIST, feedlist_reduced_unread);
 	feed_list_view_reduce_mode_changed ();
 	ui_node_reload_feedlist ();
+}
+
+static gint
+feed_list_view_sort_folder_compare (gconstpointer a, gconstpointer b)
+{
+	nodePtr n1 = (nodePtr)a;
+	nodePtr n2 = (nodePtr)b;	
+	
+	return strcmp (n1->title, n2->title);
+}
+
+void
+feed_list_view_sort_folder (nodePtr folder)
+{
+	folder->children = g_slist_sort (folder->children, feed_list_view_sort_folder_compare);
+	ui_node_reload_feedlist ();
+	feedlist_foreach (feed_list_view_restore_folder_expansion);
+	feedlist_schedule_save ();
 }
 
 /* sets up the entry list store and connects it to the entry list
