@@ -221,6 +221,23 @@ ui_node_add (nodePtr node)
 		ui_node_check_if_folder_is_empty (node->id);
 }
 
+static void
+ui_node_load_feedlist (nodePtr node)
+{
+	GSList		*iter;
+	
+	iter = node->children;
+	while (iter) {
+		node = (nodePtr)iter->data;
+		ui_node_add (node);
+		
+		if (IS_FOLDER (node) || IS_NODE_SOURCE (node))
+			ui_node_load_feedlist (node);
+
+		iter = g_slist_next(iter);
+	}
+}
+
 void
 ui_node_reload_feedlist ()
 {
@@ -233,26 +250,6 @@ ui_node_clear_feedlist ()
 {
 	gtk_tree_store_clear (feedstore);
 	g_hash_table_remove_all (flIterHash);
-}
-
-void
-ui_node_load_feedlist (nodePtr node)
-{
-	GSList		*iter;
-	
-	iter = node->children;
-	while (iter) {
-		node = (nodePtr)iter->data;
-		ui_node_add (node);
-		
-		if (IS_FOLDER (node) || IS_NODE_SOURCE (node))
-			ui_node_load_feedlist (node);
-			
-		if (node->expanded)
-			ui_node_set_expansion (node, TRUE);
-
-		iter = g_slist_next(iter);
-	}
 }
 
 void

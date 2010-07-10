@@ -58,12 +58,6 @@ void ui_node_reload_feedlist (void);
 void ui_node_clear_feedlist (void);
 
 /**
- * Add node of feedlist to UI (recursively)
- * @param node		the node to add
- */
-void ui_node_load_feedlist (nodePtr node);
-
-/**
  * Remove a node from the feedlist and free its ui_data.
  *
  * @param node	the node to free
