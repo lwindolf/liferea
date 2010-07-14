@@ -46,6 +46,8 @@
 	* Added --debug-vfolder option. (Lars Lindner)
 	* Added feature to sort feeds in a folder alphabetically.
 	  (Lars Lindner)
+	* Require WebKitGTK+ >= 1.2.2 to avoid bugs in older versions.
+	  (Adrian Bunk)
 
 	* Updated Chinese/Simplified translation. (Aron Xu)
 	* Updated German translation. (Lars Lindner)
