@@ -37,7 +37,7 @@
 	* Improved localization handling of filenames. (Adrian Bunk)
 	* Added new DBUS method to trigger a global feed updated.
 	  (patch by Matthew Bauer)
-	* Removing feed update state from DB and simplifying 
+	* Removing feed update state from DB and simplifying
 	  startup feed update options.
 	  (Lars Lindner)
 	* Fixes SF #3019939, Debian #586926: Broken Google Reader
@@ -82,17 +82,17 @@
 	  (Lars Lindner)
 	* Updated proxy settings are now forwarded to the internal
 	  renderer again. (Lars Lindner)
-	* Fixes SF #2872001: Allowing compilation against 
-	  NetworkManager 0.8 which decided to force 100000 packages 
+	* Fixes SF #2872001: Allowing compilation against
+	  NetworkManager 0.8 which decided to force 100000 packages
 	  out there to support both "libnm-glib" and "libnm_glib".
 	  (reported by Michal Nowak)
-	* Fixes an RSS 1.1 parsing bug that caused items not to 
+	* Fixes an RSS 1.1 parsing bug that caused items not to
 	  be parsed at all (reported by Roberto Guido)
 	* Fixes SF #2883971: proxy authentication doesn't work
 	  (reported by Louis White and others)
 	* Improves handling of feeds with relative item links.
 	  (patch by Rafael Kitover)
-	* Fixes SF #2928927: Remember sort column when sorting by 
+	* Fixes SF #2928927: Remember sort column when sorting by
 	  item state (patch by Andy Kittner)
 	* Readded workaround for zoom setting of zero (which
 	  prevents zooming). (patch by Rafael Kitover)
@@ -178,9 +178,9 @@
 	  the feed to the running process. (Emilio Pozuelo Monfort)
 	* Let liferea-add-feed work when there is no DBus support
 	  by using --add-feed. (Emilio Pozuelo Monfort)
-	* Changed the update queue logic which previously restricted 
-	  the number of updates to 1 per 500ms under peak loads. 
-	  (Arnold Noronha) 
+	* Changed the update queue logic which previously restricted
+	  the number of updates to 1 per 500ms under peak loads.
+	  (Arnold Noronha)
 	* Removed a not-useful-enough interface to save/load
 	  GoogleSource edits to disk across Liferea sessions.
 	  (Arnold Noronha)
@@ -342,7 +342,7 @@
 	* Fixes the handling of feeds which provide empty GUIDs.
 	  (patch from andoo)
 	* Improves timestamp handling in GtkTreeView sorting
-	  by using 64bit to cover 64bit time_t platforms. 
+	  by using 64bit to cover 64bit time_t platforms.
 	  (patch by Matthias Drochner)
 	* Fixes link display in status bar for browser tabs.
 	  (Lars Lindner, reported by Leon Nardella)
@@ -365,7 +365,7 @@
 	* Fixes feeds loosing the title on repeated auto-discovery.
 	  (Lars Lindner)
 	* Remove unnecessary timeout for GoogleSource quick updates.
-	  Also ensures you don't have to wait for long after a 
+	  Also ensures you don't have to wait for long after a
 	  suspend-resume to see updates. (Arnold Noronha)
 	* Check if an update request has been successfully created
 	  before queuing it (Emilio Pozuelo Monfort)
@@ -384,7 +384,7 @@
 	* Significant improvements in performance while updating an
 	  item in the DB. (Arnold Noronha)
 	* Require sqlite 3.6.10 for the above change.
-	* Fixed a seemingly "random" ordering of feeds in the 
+	* Fixed a seemingly "random" ordering of feeds in the
 	  Reduced Feed List mode. (Arnold Noronha)
 	* Add proxy support to the htmlview. Require WebKit 1.1.1.
 	* Fix location bar in tabs changing incorrectly with things
@@ -493,14 +493,14 @@
 	* Fixes several memory leaks. (Arnold Noronha)
 	* Rewritting README document. (Lars Lindner)
 	* Disabled unfinished AVAHI sync code. (Lars Lindner)
-	* Fixes missing folder expansion when switching reduced 
+	* Fixes missing folder expansion when switching reduced
 	  feed list mode off. (Lars Lindner)
 	* Added an autogen.sh for building from SVN.
 	  (Adrian Bunk)
 	* Disables comment feed display in 2 pane mode to prevent
 	  problems with handling multiple comment feeds.
 	  (reported by Ariel Pablo Topasso)
-	* Fixes "Open in New Tab" link launching issues when 
+	* Fixes "Open in New Tab" link launching issues when
 	  internal browsing is enabled.
 	  (Lars Lindner)
 	* Fixes crash when clicking "Cancel" in properties dialog
@@ -556,7 +556,7 @@
 	  only have the Feedburner default icon) due to much to
 	  strict HTML parsing.
 	  (patch by Emilio Pozuelo Monfort)
-	* Allow compilation against recent Webkit 1.1.0 (r39804) 
+	* Allow compilation against recent Webkit 1.1.0 (r39804)
 	  which changed the ABI. (patch by Yanko Kaneti)
 	* Fixes GTK warnings about non-zero page size spin buttons.
 	  (patch by Emilio Pozuelo Monfort)
@@ -584,7 +584,7 @@
 	  (Adrian Bunk)
 	* configure.ac: Require Gtk+ >= 2.12 (we already use features
 	  not present in previous versions). (Adrian Bunk)
-	* Fixes not working <Del> key in the feed list. 
+	* Fixes not working <Del> key in the feed list.
 	  (Lars Lindner)
 
 
@@ -677,7 +677,7 @@
 	  and Bloglines subscriptions.
 	* Fixes expansion state saving for Google Reader and
 	  Bloglines subscriptions.
-	  
+
 
 2008-06-18  Lars Lindner  <lars.lindner@gmail.com>
 
@@ -716,12 +716,12 @@
 
 	* Fixes broken update interval unit selection in
 	  subscription properties dialog. (Lars Lindner)
-	* Removing now unnecessary build dependency on gnutls. 
+	* Removing now unnecessary build dependency on gnutls.
 	  (Lars Lindner)
-	* Relicensing icons under CC-SA 3.0 to comply with Debian's 
+	* Relicensing icons under CC-SA 3.0 to comply with Debian's
 	  license requirements. (Lars Strojny)
 	* Splitting icon for "no new items" in tray and empty
-	  folder item to allow better icon theming. Added new icon 
+	  folder item to allow better icon theming. Added new icon
 	  file "folder_empty.png".
 	* Removing old unused icons "ocs.png" and "grayflag.png"
 	* Fixes broken updating feeds with local files as source.
@@ -763,8 +763,8 @@
 	* Adds Yahoo Media namespace support.
 	* Adds iTunes namespace support.
 	* Adds trackback namespace support.
-	* Replaces propietary networking client with libcurl.	
-	* Removes XSPF media player in favour of external 
+	* Replaces propietary networking client with libcurl.
+	* Removes XSPF media player in favour of external
 	  music playing solution.
 	* New option to pass enclosure URLs to external
 	  programs instead of downloading the enclosures.
@@ -792,7 +792,7 @@
 	Version 1.4-RC3 (Unstable)
 
 	* Uses correct translation domain for dynamically
-	  created dialogs now (reported by Luis Rodrigo 
+	  created dialogs now (reported by Luis Rodrigo
 	  Gallardo Cruz)
 	* Fixing AM/PM problems for US locales by reusing
 	  Evolution time formatting code (SF #1317220)
@@ -815,7 +815,7 @@
 	* Fixes missing disabling of the feed menu actions
 	  after removing a feed (reported by Luis Rodrigo
 	  Gallardo Cruz)
-	* Fixes segfault when marking folders read without 
+	* Fixes segfault when marking folders read without
 	  having the recursive item display enabled.
 	  (reported by Luis Rodrigo Gallardo Cruz)
 	* Fixes HTML formatting of parser/filter error output.
@@ -842,9 +842,9 @@
 
 
 2007-07-05  Lars Lindner  <lars.lindner@gmail.com>
-	
+
 	Version 1.4-RC1 (Unstable)
-	
+
 	* Fixes unread counting of search folders with
 	  other rules than new/flagged.
 	* Fixes enclosure actions preferences tab.
@@ -863,7 +863,7 @@
 	  to display numbers in status bar and tray icon.
 	  (Emilio Pozuelo Monfort)
 	* Reorganized main menu. No more "Program" menu
-	  and a much more logical assignment of the 
+	  and a much more logical assignment of the
 	  different menu options.
 	* Avoids updating comment feeds when offline.
 	* Reimplemented subscription metadata support.
@@ -881,12 +881,12 @@
 
 	Version 1.3.7 (Unstable)
 
-	* Improved proxy preference options. Now it is 
+	* Improved proxy preference options. Now it is
 	  possible to use no proxy even when environment
 	  $http_proxy says otherwise.
 	  (SF #1662742 reported by Mike Auty)
 	* View menu options for normal, wide and combined
-	  viewing mode are now radio buttons. 
+	  viewing mode are now radio buttons.
           (patch by Eric Anderson)
 	* New unread/new count query methods for the DBUS
 	  interface (patch by Emilio Pozuelo Monfort)
@@ -905,7 +905,7 @@
 	* Better update result processing timer, should cause
 	  less CPU usage. (patch from Arjan van de Ven)
 	* Adds a new dependency to libglade-2.0 because glade-3
-	  dropped code generation support. UI is now loaded 
+	  dropped code generation support. UI is now loaded
 	  directly from the glade XML source file.
 	* Changing sqlite3 dependency from 3.3.9 to 3.3 because
 	  the sqlite3 pkg-config file doesn't provide the minor
@@ -924,7 +924,7 @@
 	Translations
 
 	* Update of French translation from Vincent Lefevre
-	  
+
 
 2007-05-11  Lars Lindner  <lars.lindner@gmail.com>
 
@@ -933,14 +933,14 @@
 	* New scripting hook triggering when a new subscription is added.
 	* Re-added toggle read state option in context menu.
 	  (patch by Ori Avtalion)
-	* Raised sqlite3 dependency to 3.3.9 as sqlite3_prepare_v2() is 
+	* Raised sqlite3 dependency to 3.3.9 as sqlite3_prepare_v2() is
 	  not available with earlier versions. (suggested by Joseph Sacco)
 	* Fixes subscription problems when subscribing using the "New
 	  Subscription" dialog.
 	* Fixes a crash when migrating.
         * Fixes an favicon update state problem that caused
 	  continuous favicon updates.
-	  
+
 
 2007-05-06  Lars Lindner  <lars.lindner@gmail.com>
 
@@ -996,7 +996,7 @@
 	Version 1.3.0 (Unstable)
 
 	* Removes the memory usage/disk access optimization preference.
-	* Removes the internal browser module preference in favour of an 
+	* Removes the internal browser module preference in favour of an
 	  automatic priority based selection.
 	* Added comment feed support.
 
@@ -1010,7 +1010,7 @@
 	* Fixes SF #1595486: items whose base URL contained
 	  an "=" character are not to be displayed at all.
 	* Fixes SF #1617081: heavy memory leaking.
-	* Suppress unknown metadata type warnings. They are now printed at trace 
+	* Suppress unknown metadata type warnings. They are now printed at trace
 	  level only.
 	* Allow flagging by left clicking in the flag column.
 	* Simple sorting feature for the item state column.
