@@ -150,7 +150,9 @@ liferea_dialog_new (const gchar *filename, gchar *name)
 
 	path = g_build_filename (PACKAGE_DATA_DIR, PACKAGE, filename?filename:"liferea.ui", NULL);
 	ld->priv->xml = gtk_builder_new ();
-	gtk_builder_add_objects_from_file (ld->priv->xml, path, objs, NULL);
+	if (!gtk_builder_add_objects_from_file (ld->priv->xml, path, objs, NULL))
+		g_error ("Loading %s failed.", path);
+
 	g_free (path);
 
 	g_return_val_if_fail (ld->priv->xml != NULL, NULL);

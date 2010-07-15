@@ -48,6 +48,8 @@
 	  (Lars Lindner)
 	* Require WebKitGTK+ >= 1.2.2 to avoid bugs in older versions.
 	  (Adrian Bunk)
+	* Better error messages when essential files are missing under
+	  /usr/share/liferea. (Adrian Bunk)
 
 	* Updated Chinese/Simplified translation. (Aron Xu)
 	* Updated German translation. (Lars Lindner)

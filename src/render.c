@@ -277,6 +277,8 @@ render_get_css (gboolean externalCss)
 			tmp = render_set_theme_colors(tmp);
 			g_string_append(css, tmp);
 			g_free(tmp);
+		} else {
+			g_error ("Loading %s failed.", defaultStyleSheetFile);
 		}
 
 		if (g_file_get_contents(styleSheetFile, &tmp, NULL, NULL)) {

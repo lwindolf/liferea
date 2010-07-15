@@ -156,7 +156,9 @@ liferea_shell_init (LifereaShell *ls)
 	
 	shell->priv = LIFEREA_SHELL_GET_PRIVATE (ls);
 	shell->priv->xml = gtk_builder_new ();
-	gtk_builder_add_objects_from_file (shell->priv->xml, PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "liferea.ui", objs, NULL);
+	if (!gtk_builder_add_objects_from_file (shell->priv->xml, PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "liferea.ui", objs, NULL))
+		g_error ("Loading " PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S  "liferea.ui failed");
+
 	gtk_builder_connect_signals (shell->priv->xml, NULL);
 }
 
