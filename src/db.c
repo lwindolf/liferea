@@ -197,38 +197,37 @@ db_sqlite3async_thread (gpointer data)
 	return NULL;
 }
 
+/* We are opening the database twice since schema migration doesn't seem
+   to work with sqlite3async. */
+static void
+db_open (const char *zVfs)
+{
+	gchar		*filename;
+	gint		res;
+
+	filename = common_create_cache_filename (NULL, "liferea", "db");
+	debug1 (DEBUG_DB, "Opening DB file %s...", filename);
+	res = sqlite3_open_v2 (filename, &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, zVfs);
+	if (SQLITE_OK != res)
+		g_error ("Data base file %s could not be opened (error code %d: %s)...", filename, res, sqlite3_errmsg (db));
+	g_free (filename);
+
+	sqlite3_extended_result_codes (db, TRUE);
+}
+
 #define SCHEMA_TARGET_VERSION 9
-	
+
 /* opening or creation of database */
 void
 db_init (void)
 {
-	gchar		*filename;
 	gint		res;
 	GError          *error;
 		
 	debug_enter ("db_init");
-	
-	if (sqlite3async_initialize (NULL, 0) == SQLITE_OK) {	  
-		debug0 (DEBUG_DB, "sqlite3async() == SQLITE_OK, starting async thread");	  
-		asyncthread = g_thread_create (db_sqlite3async_thread, NULL, TRUE, &error);
-		if (asyncthread == NULL) {			
-			sqlite3async_shutdown ();
-			g_error ("Could not start async thread, exiting (%s)\n", error->message);
-		}		
-	} else {
-		g_error ("Could not initiate async sqlite, exiting\n");
-	}
 
-	filename = common_create_cache_filename (NULL, "liferea", "db");
-	debug1 (DEBUG_DB, "Opening DB file %s...", filename);
-	res = sqlite3_open_v2 (filename, &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, SQLITEASYNC_VFSNAME);
-	if (SQLITE_OK != res)
-		debug3 (DEBUG_CACHE, "Data base file %s could not be opened (error code %d: %s)...", filename, res, sqlite3_errmsg (db));
-	g_free (filename);
-	
-	sqlite3_extended_result_codes (db, TRUE);
-	
+	db_open (NULL);
+
 	/* create info table/check versioning info */				   
 	debug1 (DEBUG_DB, "current DB schema version: %d", db_get_schema_version ());
 
@@ -510,6 +509,21 @@ db_init (void)
 		 "   DELETE FROM node WHERE node_id = old.node_id; "
 		 "   DELETE FROM subscription_metadata WHERE node_id = old.node_id; "
         	 "END;");
+
+	sqlite3_close (db);
+
+	if (sqlite3async_initialize (NULL, 0) == SQLITE_OK) {
+		debug0 (DEBUG_DB, "sqlite3async() == SQLITE_OK, starting async thread");
+		asyncthread = g_thread_create (db_sqlite3async_thread, NULL, TRUE, &error);
+		if (asyncthread == NULL) {
+			sqlite3async_shutdown ();
+			g_error ("Could not start async thread, exiting (%s)\n", error->message);
+		}
+	} else {
+		g_error ("Could not initiate async sqlite, exiting\n");
+	}
+
+	db_open (SQLITEASYNC_VFSNAME);
 
 	/* Note: view counting triggers are set up in the view preparation code (see db_view_create()) */		
 	/* prepare statements */
