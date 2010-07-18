@@ -28,6 +28,7 @@
 #include "common.h"
 #include "date.h"
 #include "db.h"
+#include "debug.h"
 #include "metadata.h"
 #include "xml.h"
 
@@ -178,9 +179,15 @@ item_make_link (itemPtr item)
 
 		/* Find the third /, start of link on
 		 * site. */
-		for (i = 0; i < 3; i++) {
+		for (i = 0; pos && i < 3; i++) {
 			pos = strstr(pos + 1, "/");
 		}
+
+		if (!pos) {
+			debug0 (DEBUG_PARSING, "Feed contains relative link and invalid base URL");
+			return NULL;
+		}
+
 		host_url_size = pos - base + 1;
 
 		link = g_malloc (host_url_size + strlen(src));

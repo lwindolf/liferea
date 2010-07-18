@@ -50,6 +50,8 @@
 	  (Adrian Bunk)
 	* Better error messages when essential files are missing under
 	  /usr/share/liferea. (Adrian Bunk)
+	* Fixes a crash with feeds with relative item links and empty
+	  channel link. (Adrian Bunk)
 
 	* Updated Chinese/Simplified translation. (Aron Xu)
 	* Updated German translation. (Lars Lindner)
