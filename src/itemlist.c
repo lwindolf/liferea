@@ -511,7 +511,9 @@ itemlist_remove_all_items (nodePtr node)
 	itemset = db_itemset_load (node->id);
 	iter = itemset->ids;
 	while (iter) {
-		vfolder_foreach_data (vfolder_remove_item, iter->data);
+		itemPtr item = item_load ((gulong)iter->data);
+		vfolder_foreach_data (vfolder_remove_item, item);
+		item_unload (item);
 		iter = g_list_next (iter);
 	}
 	itemset_free (itemset);
