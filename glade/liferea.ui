@@ -5455,7 +5455,7 @@ Aron Xu
               <object class="GtkLabel" id="label44">
                 <property name="visible">True</property>
                 <property name="xalign">0</property>
-                <property name="label" translatable="yes">Note: Liferea will generate a feed subscription which is used to query the search engine results for the specified search string. You can keep this feed permanently and update it like any other subscription.  </property>
+                <property name="label" translatable="yes">Note: Liferea will generate a feed subscription which is used to query the search engine results for the specified search string. You can keep this feed permanently and update it like any other subscription.</property>
                 <property name="wrap">True</property>
               </object>
               <packing>

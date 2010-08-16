@@ -52,6 +52,8 @@
 	  /usr/share/liferea. (Adrian Bunk)
 	* Fixes a crash with feeds with relative item links and empty
 	  channel link. (Adrian Bunk)
+	* Fixes SF #3039421: Useless trailing spaces in litereals.
+	  (reported by Joe Hansen)
 
 	* Updated Chinese/Simplified translation. (Aron Xu)
 	* Updated German translation. (Lars Lindner)

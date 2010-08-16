@@ -379,7 +379,7 @@ itemlist_select_next_unread (void)
 				result = itemview_find_unread_item (0);	/* find first unread item */
 		} else {
 			/* if we don't find a feed with unread items do nothing */
-			liferea_shell_set_status_bar (_("There are no unread items "));
+			liferea_shell_set_status_bar (_("There are no unread items"));
 		}
 	}
 
