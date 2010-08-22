@@ -142,7 +142,7 @@ on_tab_url_entry_activate (GtkWidget *widget, gpointer user_data)
 }
 
 static void
-on_tab_switched (GtkNotebook *notebook, GtkNotebookPage *page, guint page_num, gpointer user_data)
+on_tab_switched (GtkNotebook *notebook, GtkWidget *page, guint page_num, gpointer user_data)
 {
 	/* needed because switching does sometimes returns to the tree 
 	   view with a very disturbing horizontal scrolling state */
