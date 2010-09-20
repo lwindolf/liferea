@@ -55,6 +55,8 @@
 	* Fixes SF #3039421: Useless trailing spaces in litereals.
 	  (reported by Joe Hansen)
 	* Adapt on_tab_switched() to GTK+ API change. (Adrian Bunk)
+	* Fixes SF #3067801: crash in enclosure handling
+	  (patch by Peter Oliver)
 
 	* Updated Chinese/Simplified translation. (Aron Xu)
 	* Updated German translation. (Lars Lindner)

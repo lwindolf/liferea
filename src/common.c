@@ -164,7 +164,11 @@ common_build_url (const gchar *url, const gchar *baseURL)
 	if (baseURL) {
 		escapedBaseURL = common_uri_escape (baseURL);	
 		absURL = xmlBuildURI (escapedURL, escapedBaseURL);
-		xmlFree (escapedURL);
+		if (absURL)
+			xmlFree (escapedURL);
+		else
+			absURL = escapedURL;
+		
 		xmlFree (escapedBaseURL);
 	} else {
 		absURL = escapedURL;
