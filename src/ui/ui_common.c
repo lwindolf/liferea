@@ -22,6 +22,7 @@
 #include "ui/ui_common.h"
 
 #include "common.h"
+#include "conf.h"
 #include "ui/liferea_shell.h"
 
 void
@@ -151,9 +152,15 @@ ui_choose_file_or_dir(gchar *title, const gchar *buttonName, gboolean saving, gb
 	GtkWidget			*dialog;
 	struct file_chooser_tuple	*tuple;
 	GtkWidget			*button;
+	gchar				*path = NULL;
 
 	g_assert (!(saving & directory));
 	g_assert (!(defaultFilename && !saving));
+
+	if (!currentPath)
+		conf_get_str_value (ENCLOSURE_DOWNLOAD_PATH, &path);
+	else
+		path = g_strdup (currentPath);
 
 	dialog = gtk_file_chooser_dialog_new (title, GTK_WINDOW (liferea_shell_get_window ()),
 	                                      (directory?GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER:
@@ -175,11 +182,12 @@ ui_choose_file_or_dir(gchar *title, const gchar *buttonName, gboolean saving, gb
 
 	g_signal_connect (G_OBJECT (dialog), "response",
 	                  G_CALLBACK (ui_choose_file_save_cb), tuple);
-	if (currentPath != NULL && g_file_test (currentPath, G_FILE_TEST_EXISTS)) {
-		if (directory)
-			gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), currentPath);
+	                  
+	if (path && g_file_test (path, G_FILE_TEST_EXISTS)) {
+		if (directory || defaultFilename)
+			gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), path);
 		else
-			gtk_file_chooser_set_filename (GTK_FILE_CHOOSER (dialog), currentPath);
+			gtk_file_chooser_set_filename (GTK_FILE_CHOOSER (dialog), path);
 	}
 	if (defaultFilename)
 		gtk_file_chooser_set_current_name (GTK_FILE_CHOOSER (dialog), defaultFilename);
@@ -199,6 +207,7 @@ ui_choose_file_or_dir(gchar *title, const gchar *buttonName, gboolean saving, gb
 	}
 
 	gtk_widget_show_all (dialog);
+	g_free (path);
 }
 
 void

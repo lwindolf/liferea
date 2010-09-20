@@ -57,6 +57,8 @@
 	* Adapt on_tab_switched() to GTK+ API change. (Adrian Bunk)
 	* Fixes SF #3067801: crash in enclosure handling
 	  (patch by Peter Oliver)
+	* Fixes SF #3060658: Save As Enclosure doesn't set directory.
+	  (Lars Lindner)
 
 	* Updated Chinese/Simplified translation. (Aron Xu)
 	* Updated German translation. (Lars Lindner)
