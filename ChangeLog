@@ -2,7 +2,8 @@
 
 	Version 1.6.5
 
-	*
+	* Fixes SF #3067801: crash in enclosure handling
+	  (patch by Peter Oliver)
 
 
 2010-07-01  Adrian Bunk <bunk@users.sourceforge.net>
