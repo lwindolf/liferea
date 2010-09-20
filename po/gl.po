@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: liferea 1.7.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-04-29 21:52+0300\n"
-"PO-Revision-Date: 2010-08-02 21:43+0100\n"
+"PO-Revision-Date: 2010-08-19 16:32+0100\n"
 "Last-Translator: Anxo Outeiral <bassball93@gmail.com>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
 "Language: gl\n"
@@ -406,7 +406,7 @@ msgstr "Amosa máis información nas mensaxes de depuración"
 #: ../src/main.c:210
 #: ../src/main.c:211
 msgid "Print debugging messages for the given topic"
-msgstr "Amosa mensaxes de depuración para asunto espeficado"
+msgstr "Amosa mensaxes de depuración para asunto especificado"
 
 #: ../src/main.c:217
 msgid "Liferea, the Linux Feed Reader"
@@ -772,7 +772,7 @@ msgstr "Temas de axuda"
 
 #: ../src/ui/liferea_shell.c:692
 msgid "reference_en.html"
-msgstr "reference_gl.html"
+msgstr "reference_en.html"
 
 #: ../src/ui/liferea_shell.c:693
 msgid "Quick Reference"
@@ -1381,7 +1381,7 @@ msgstr "<Alt> Expazo"
 
 #: ../src/ui/ui_prefs.c:536
 msgid "Choose download directory"
-msgstr "Escolla o cartafol de descaga"
+msgstr "Escolla o cartafol de descarga"
 
 #. This allows the user to choose their own browser by typing in the command.
 #: ../src/ui/ui_prefs.c:607
@@ -1553,7 +1553,7 @@ msgstr "Nova subscrición"
 
 #: ../src/fl_sources/google_source.c:120
 msgid "Google Reader login failed!"
-msgstr "Fallo ao iniciar a sesión do Google Reader!"
+msgstr "Fallou ao iniciar a sesión do Google Reader!"
 
 #: ../src/fl_sources/google_source.c:330
 msgid "Google Reader"
@@ -1872,11 +1872,11 @@ msgstr "Crear un novo script"
 
 #: ../glade/liferea.glade.h:48
 msgid "Default Feed Refresh _Interval:"
-msgstr "_Intervalo de actualización predefinido:"
+msgstr "_Intervalo de actualización predeterminado:"
 
 #: ../glade/liferea.glade.h:49
 msgid "Default _number of items per feed to save:"
-msgstr "_Número de artigos predefinidos a gardar por fonte:"
+msgstr "_Número de artigos predeterminados a gardar por fonte:"
 
 #: ../glade/liferea.glade.h:50
 msgid "Di_sable cache"
