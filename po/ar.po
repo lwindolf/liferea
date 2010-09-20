@@ -823,7 +823,7 @@ msgstr "حدّث كل الاشتراكات."
 
 #: ../src/ui/liferea_shell.c:858
 msgid "Mark All As _Read"
-msgstr "علّم الكل ك_مقروء"
+msgstr "علّم الكل _مقروء"
 
 #: ../src/ui/liferea_shell.c:858
 msgid "Marks read every item of every subscription."
@@ -1573,12 +1573,12 @@ msgstr "علّم الكل مقروء"
 #, c-format
 msgid "<b>%s</b> has <b>%d</b> update"
 msgid_plural "<b>%s</b> has <b>%d</b> updates"
-msgstr[0] "لا تحديثات%$2.0s في <b>%$1s</b>"
-msgstr[1] "يوجد تحديث%$2.0s في <b>%$1s</b>"
-msgstr[2] "يوجد تحديثان%$2.0s في <b>%$1s</b>"
-msgstr[3] "يوجد <b>%$2s</b> تحديثات في <b>%$1s</b>"
-msgstr[4] "يوجد <b>%$2s</b> تحديثا في <b>%$1s</b>"
-msgstr[5] "يوجد <b>%$2s</b> تحديث في <b>%$1s</b>"
+msgstr[0] "<b>لا</b> تحديثات%2$.0s في <b>%1$s</b>"
+msgstr[1] "يوجد <b>تحديث%2$.0s</b> في <b>%1$s</b>"
+msgstr[2] "يوجد <b>تحديثان%2$.0s</b> في <b>%1$s</b>"
+msgstr[3] "يوجد <b>%2$d</b> تحديثات في <b>%1$s</b>"
+msgstr[4] "يوجد <b>%2$d</b> تحديثا في <b>%1$s</b>"
+msgstr[5] "يوجد <b>%2$d</b> تحديث في <b>%1$s</b>"
 
 #: ../src/notification/libnotify.c:252
 msgid "Feed Update"
