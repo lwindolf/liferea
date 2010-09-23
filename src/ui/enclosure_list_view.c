@@ -403,7 +403,6 @@ ui_enclosure_type_setup (encTypePtr type, enclosurePtr enclosure, gchar *typestr
 	gchar		*tmp;
 
 	dialog = liferea_dialog_new (NULL, "enchandlerdialog");
-
 	if (type) {
 		typestr = type->mime?type->mime:type->extension;
 		gtk_entry_set_text (GTK_ENTRY (liferea_dialog_lookup (dialog, "enc_cmd_entry")), type->cmd);
@@ -442,6 +441,8 @@ on_popup_open_enclosure (gpointer callback_data)
 	typestr = strrchr (enclosure->url, '.');
 	if (typestr)
 		typestr = g_strdup (typestr + 1);
+	
+	/* FIXME: strip GET parameters from typestr */	
 			
 	/* if we found no extension we map to dummy type "data" */
 	if (!typestr)
