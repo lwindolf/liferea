@@ -59,6 +59,10 @@
 	  (patch by Peter Oliver)
 	* Fixes SF #3060658: Save As Enclosure doesn't set directory.
 	  (Lars Lindner)
+	* Added "Copy Link/Image Location" to HTML view
+	  (Lars Lindner)
+	* Added "Save Link/Image As" to HTML view
+	  (Lars Lindner)
 
 	* Updated Chinese/Simplified translation. (Aron Xu)
 	* Updated German translation. (Lars Lindner)

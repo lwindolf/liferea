@@ -329,20 +329,27 @@ webkit_create_web_view (WebKitWebView *view, WebKitWebFrame *frame)
 static void
 liferea_webkit_on_menu (WebKitWebView *view, GtkMenu *menu)
 {
-	LifereaHtmlView	*htmlview;
-	gchar		*selected_url;
+	LifereaHtmlView			*htmlview;
+	gchar				*imageUri = NULL;
+	gchar				*linkUri = NULL;
+	WebKitHitTestResult*		hitResult;
+	WebKitHitTestResultContext	context;
+	GdkEvent			*event;
 
+	event = gtk_get_current_event ();
+	hitResult = webkit_web_view_get_hit_test_result (view, (GdkEventButton *)event);
+	g_object_get (hitResult, "context", &context, NULL);
+
+	if (context & WEBKIT_HIT_TEST_RESULT_CONTEXT_LINK)
+		g_object_get (hitResult, "link-uri", &linkUri, NULL);
+	if (context & WEBKIT_HIT_TEST_RESULT_CONTEXT_IMAGE)
+		g_object_get (hitResult, "image-uri", &imageUri, NULL);
+	if (context & WEBKIT_HIT_TEST_RESULT_CONTEXT_MEDIA)
+		g_object_get (hitResult, "media-uri", &linkUri, NULL);		/* treat media as normal link */
+		
 	htmlview = g_object_get_data (G_OBJECT (view), "htmlview");
 	
-	selected_url = g_object_get_data (G_OBJECT (view), "selected_url");	
-
-	/* don't pass empty URLs */
-	if (selected_url && strlen (selected_url) == 0)
-		selected_url = NULL;
-	else
-		selected_url = g_strdup (selected_url);
-		
-	liferea_htmlview_prepare_context_menu (htmlview, menu, selected_url);
+	liferea_htmlview_prepare_context_menu (htmlview, menu, linkUri, imageUri);
 }
 
 /**

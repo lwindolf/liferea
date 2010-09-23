@@ -169,11 +169,12 @@ gboolean liferea_htmlview_scroll (LifereaHtmlView *htmlview);
  *
  * @param htmlview	the html view
  * @param menu		the menu to fill
- * @param link		NULL or a valid URL string if this is 
- *			to be a link context menu (to be free'd
- *			using g_free)
+ * @param linkUri	NULL or a valid URL string if this is 
+ *			to be a link context menu
+ * @param imageUri	NULL or a valid image URL if this is 
+ * 			to be an image context menu
  */
-void liferea_htmlview_prepare_context_menu (LifereaHtmlView *htmlview, GtkMenu *menu, gchar *link);
+void liferea_htmlview_prepare_context_menu (LifereaHtmlView *htmlview, GtkMenu *menu, const gchar *linkUri, const gchar *imageUri);
 
 /**
  * To be called when HTML view needs to change the text size

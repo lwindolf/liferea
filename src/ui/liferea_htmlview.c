@@ -1,7 +1,7 @@
 /**
  * @file liferea_htmlview.c  Liferea embedded HTML rendering
  *
- * Copyright (C) 2003-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2010 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net> 
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -22,12 +22,15 @@
 #include "ui/liferea_htmlview.h"
 
 #include <string.h>
+#include <sys/wait.h>
 #include <glib.h>
+
 #include "browser.h"
 #include "comments.h"
 #include "common.h"
 #include "conf.h"
 #include "debug.h"
+#include "enclosure.h"
 #include "feed.h"
 #include "feedlist.h"
 #include "itemlist.h"
@@ -39,6 +42,7 @@
 #include "ui/browser_tabs.h"
 #include "ui/liferea_shell.h"
 #include "ui/item_list_view.h"
+#include "ui/ui_common.h"
 #include "ui/ui_prefs.h"
 
 #define RENDERER(htmlview)	(htmlview->priv->impl)
@@ -430,6 +434,56 @@ on_popup_copy_url_activate (GtkWidget *widget, gpointer user_data)
 }
 
 static void
+on_save_url (const gchar *filename, gpointer user_data)
+{
+	/* FIXME: The following partially duplicates download code in enclosure.c! */
+	enclosureDownloadToolPtr tool;
+	gchar	*stdout_message = NULL, *stderr_message = NULL;
+	GError	*error = NULL;
+	gint	status = 0;
+	gchar	*uriQ, *uri = (gpointer)user_data;
+	gchar	*cmd;
+	
+	if (!filename)
+		return;
+
+	tool = prefs_get_download_tool ();
+	uriQ = g_shell_quote (uri);
+	cmd = g_strdup_printf (tool->format, filename, uriQ);
+
+	debug1 (DEBUG_UPDATE, "running download command \"%s\"", cmd);
+	g_spawn_command_line_sync (cmd, &stdout_message, &stderr_message, &status, &error);
+	
+	if ((error && (0 != error->code)) || !WIFEXITED(status) || WEXITSTATUS(status)) {
+		g_warning ("Failed to execute command \"%s\", exited: %i, status: %i, stderr: %s, stdout: %s", cmd, WIFEXITED(status), WEXITSTATUS(status), stderr_message?:"", stdout_message?:"");
+		liferea_shell_set_status_bar (_("Download FAILED: \"%s\""), uri);
+	} else {
+		liferea_shell_set_status_bar (_("Download finished."));
+	}
+	
+	if (error)
+		g_error_free (error);
+	g_free (stdout_message);
+	g_free (stderr_message);
+	g_free (cmd);
+}
+
+static void
+on_popup_save_url_activate (GtkWidget *widget, gpointer user_data)
+{
+	gchar	*uri = (gpointer)user_data;
+	gchar	*filename;
+	
+	filename = strrchr (uri, '/');
+	if (filename)
+		filename++; /* Skip the slash to find the filename */
+	else
+		filename = uri;
+	
+	ui_choose_file (_("Choose File"), GTK_STOCK_SAVE_AS, TRUE, on_save_url, NULL, filename, NULL, NULL, uri);
+}
+
+static void
 on_popup_subscribe_url_activate (GtkWidget *widget, gpointer user_data)
 {
 	feedlist_add_subscription ((gchar *)user_data, NULL, NULL, 0);
@@ -490,10 +544,13 @@ menu_add_separator (GtkMenu *menu)
 }
 
 void
-liferea_htmlview_prepare_context_menu (LifereaHtmlView *htmlview, GtkMenu *menu, gchar *link)
+liferea_htmlview_prepare_context_menu (LifereaHtmlView *htmlview, GtkMenu *menu, const gchar *linkUri, const gchar *imageUri)
 {
-	/* first drop all menu items that are provided by the browser widget (necessary for WebKit) */
 	GList *item, *items;
+	gboolean link = (linkUri != NULL);
+	gboolean image = (imageUri != NULL);
+
+	/* first drop all menu items that are provided by the browser widget (necessary for WebKit) */
 	item = items = gtk_container_get_children(GTK_CONTAINER(menu));
 	while (item) {
 		gtk_widget_destroy (GTK_WIDGET (item->data));
@@ -501,22 +558,35 @@ liferea_htmlview_prepare_context_menu (LifereaHtmlView *htmlview, GtkMenu *menu,
 	}
 	g_list_free (items);
 
+	/* do not expose internal links */
+	if (linkUri && liferea_htmlview_is_special_url (linkUri) && !g_str_has_prefix(linkUri, "javascript:") && !g_str_has_prefix(linkUri, "data:"))
+		link = FALSE;
+
 	/* and now add all we want to see */
-	if (link && !liferea_htmlview_is_special_url (link) && !g_str_has_prefix(link, "javascript:") && !g_str_has_prefix(link, "data:")) {
+	if (link) {
 		gchar *path;
-		
-		menu_add_option (menu, _("Launch Link In _Tab"), NULL, G_CALLBACK (on_popup_open_link_in_tab_activate), link);
-		menu_add_option (menu, _("_Launch Link In Browser"), NULL, G_CALLBACK (on_popup_launch_link_activate), link);
+		menu_add_option (menu, _("Launch Link In _Tab"), NULL, G_CALLBACK (on_popup_open_link_in_tab_activate), (gpointer)linkUri);
+		menu_add_option (menu, _("_Launch Link In Browser"), NULL, G_CALLBACK (on_popup_launch_link_activate), (gpointer)linkUri);
 		menu_add_separator (menu);
 		
 		path = g_strdup_printf (_("_Bookmark Link at %s"), social_get_bookmark_site ());
-		menu_add_option (menu, path, NULL, on_popup_social_bm_link_activate, link);
+		menu_add_option (menu, path, NULL, on_popup_social_bm_link_activate, (gpointer)linkUri);
 		g_free (path);
-		
-		menu_add_option (menu, _("_Copy Link Location"), "gtk-copy", G_CALLBACK (on_popup_copy_url_activate), link);
+
+		menu_add_option (menu, _("_Copy Link Location"), "gtk-copy", G_CALLBACK (on_popup_copy_url_activate), (gpointer)linkUri);
+	}
+	if (image)
+		menu_add_option (menu, _("_Copy Image Location"), "gtk-copy", G_CALLBACK (on_popup_copy_url_activate), (gpointer)imageUri);
+	if (link)
+		menu_add_option (menu, _("S_ave Link As"), "gtk-save", G_CALLBACK (on_popup_save_url_activate), (gpointer)linkUri);
+	if (image)
+		menu_add_option (menu, _("S_ave Image As"), "gtk-save", G_CALLBACK (on_popup_save_url_activate), (gpointer)imageUri);
+	if (link) {	
 		menu_add_separator (menu);
-		menu_add_option (menu, _("_Subscribe..."), "gtk-add", G_CALLBACK (on_popup_subscribe_url_activate), link);
-	} else {
+		menu_add_option (menu, _("_Subscribe..."), "gtk-add", G_CALLBACK (on_popup_subscribe_url_activate), (gpointer)linkUri);
+	}
+	
+	if(!link && !image) {
 		GtkWidget *item;
 		item = menu_add_option (menu, NULL, GTK_STOCK_COPY, G_CALLBACK (on_popup_copy_activate), htmlview);
 		if (!(RENDERER (htmlview)->hasSelection) (htmlview->priv->renderWidget)) 
