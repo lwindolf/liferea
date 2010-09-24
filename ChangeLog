@@ -63,6 +63,8 @@
 	  (Lars Lindner)
 	* Added "Save Link/Image As" to HTML view
 	  (Lars Lindner)
+	* Fixes Debian #593415: Seems to misidentify MIME type
+	  of some podcast enclosures (reported by Celejar)
 
 	* Updated Chinese/Simplified translation. (Aron Xu)
 	* Updated German translation. (Lars Lindner)
