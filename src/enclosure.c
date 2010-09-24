@@ -298,7 +298,7 @@ enclosure_exec (gpointer data)
 
 /* etp is optional, if it is missing we are in save mode */
 static void
-enclosure_download (encTypePtr type, const gchar *url, const gchar *filename)
+enclosure_download (encTypePtr type, const gchar *url, gchar *filename)
 {
 	enclosureDownloadToolPtr 	tool;
 	encJobPtr			job;
@@ -306,7 +306,7 @@ enclosure_download (encTypePtr type, const gchar *url, const gchar *filename)
 
 	/* prepare job structure */
 	job = g_new0 (struct encJob, 1);
-	job->filename = g_strdup (filename);
+	job->filename = filename;
 
 	filenameQ = g_shell_quote (filename);
 	urlQ = g_shell_quote (url);
@@ -359,6 +359,7 @@ void
 enclosure_save_as_file (encTypePtr type, const gchar *url, const gchar *filename)
 {
 	gchar	*enclusure_download_path;
+	gchar	*download_filename;
 
 	g_assert (url != NULL);
 	
@@ -371,8 +372,12 @@ enclosure_save_as_file (encTypePtr type, const gchar *url, const gchar *filename
 		else
 			filename++;
 		conf_get_str_value (ENCLOSURE_DOWNLOAD_PATH, &enclusure_download_path);
-		filename = g_build_filename (enclusure_download_path, filename, NULL);
+		download_filename = g_build_filename (enclusure_download_path, filename, NULL);
+		g_strdelimit (download_filename, "?", 0);	/* strip GET parameters */
 		g_free (enclusure_download_path);
+	} else {
+		download_filename = g_strdup (filename);
 	}
-	enclosure_download (type, url, filename);
+	
+	enclosure_download (type, url, download_filename);
 }
