@@ -450,11 +450,12 @@ on_popup_open_enclosure (gpointer callback_data)
 	if (!typestr && strrchr (enclosure->url, '/'))
 		typestr = strrchr (enclosure->url, '/');
 	
-	/* FIXME: strip GET parameters from typestr */	
-			
 	/* if we found no extension we map to dummy type "data" */
 	if (!typestr)
 		typestr = g_strdup ("data");
+		
+	/* strip GET parameters from typestr */	
+	g_strdelimit (typestr, "?", 0);
 
 	debug2 (DEBUG_CACHE, "url:%s, mime:%s", enclosure->url, enclosure->mime);
 	
