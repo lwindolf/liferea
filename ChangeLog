@@ -4,6 +4,8 @@
 
 	* Fixes SF #3067801: crash in enclosure handling
 	  (patch by Peter Oliver)
+	* Fixes Debian #593415: Seems to misidentify MIME type
+	  of some podcast enclosures (reported by Celejar)
 
 
 2010-07-01  Adrian Bunk <bunk@users.sourceforge.net>

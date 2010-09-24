@@ -473,10 +473,14 @@ on_popup_open_enclosure (gpointer callback_data)
 		iter = g_slist_next (iter);
 	}
 	
-	if (found)
+	if (found) {
 		enclosure_save_as_file (etp, enclosure->url, NULL);
-	else
-		ui_enclosure_type_setup (NULL, enclosure, typestr);
+	} else {
+		if (enclosure->mime)
+			ui_enclosure_type_setup (NULL, enclosure, enclosure->mime);
+		else
+			ui_enclosure_type_setup (NULL, enclosure, typestr);
+	}
 		
 	g_free (typestr);
 }
