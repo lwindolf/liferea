@@ -437,10 +437,14 @@ on_popup_open_enclosure (gpointer callback_data)
 
 	/* 1.) Always try to determine the file extension... */
 	
-	/* FIXME: improve this to match only '.' not followed by '/' chars */
+	/* find extension by looking for last '.' */
 	typestr = strrchr (enclosure->url, '.');
 	if (typestr)
 		typestr = g_strdup (typestr + 1);
+
+	/* handle case where there is a slash after the '.' or none at all */		
+	if (strrchr (typestr, '/'))
+		typestr = strrchr (typestr, '/');
 	
 	/* FIXME: strip GET parameters from typestr */	
 			
