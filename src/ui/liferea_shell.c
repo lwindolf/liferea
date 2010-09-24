@@ -853,7 +853,7 @@ liferea_shell_setup_URL_receiver (GtkWidget *widget)
 
 static const GtkActionEntry liferea_shell_action_entries[] = {
 	{"SubscriptionsMenu", NULL, N_("_Subscriptions")},
-	{"UpdateAll", "gtk-refresh", N_("Update _All"), "<control>A", N_("Updates all subscriptions."),
+	{"UpdateAll", "gtk-refresh", N_("Update _All"), "<control>U", N_("Updates all subscriptions."),
 	 G_CALLBACK(on_menu_update_all)},
 	{"MarkAllFeedsAsRead", "gtk-apply", N_("Mark All As _Read"), NULL, N_("Marks read every item of every subscription."),
 	 G_CALLBACK(on_menu_allfeedsread)},
@@ -928,7 +928,7 @@ static const GtkActionEntry liferea_shell_read_write_action_entries[] = {
 };
 
 static const GtkActionEntry liferea_shell_item_action_entries[] = {
-	{"ToggleItemReadStatus", "gtk-apply", N_("Toggle _Read Status"), "<control>U", N_("Toggles the read status of the selected item."),
+	{"ToggleItemReadStatus", "gtk-apply", N_("Toggle _Read Status"), "<control>M", N_("Toggles the read status of the selected item."),
 	 G_CALLBACK(on_toggle_unread_status)},
 	{"ToggleItemFlag", NULL, N_("Toggle Item _Flag"), "<control>T", N_("Toggles the flag status of the selected item."),
 	 G_CALLBACK(on_toggle_item_flag)},
