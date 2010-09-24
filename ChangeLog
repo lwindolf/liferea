@@ -6,6 +6,8 @@
 	  (patch by Peter Oliver)
 	* Fixes Debian #593415: Seems to misidentify MIME type
 	  of some podcast enclosures (reported by Celejar)
+	* Fixes SF #3012833: Ctrl-A in url bar or a text box 
+	  should select all text (reported by silly8888)
 
 
 2010-07-01  Adrian Bunk <bunk@users.sourceforge.net>
