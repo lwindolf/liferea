@@ -442,9 +442,13 @@ on_popup_open_enclosure (gpointer callback_data)
 	if (typestr)
 		typestr = g_strdup (typestr + 1);
 
-	/* handle case where there is a slash after the '.' or none at all */		
-	if (strrchr (typestr, '/'))
+	/* handle case where there is a slash after the '.' */
+	if (typestr && strrchr (typestr, '/'))
 		typestr = strrchr (typestr, '/');
+		
+	/* handle case where there is no '.' at all */
+	if (!typestr && strrchr (enclosure->url, '/'))
+		typestr = strrchr (enclosure->url, '/');
 	
 	/* FIXME: strip GET parameters from typestr */	
 			
