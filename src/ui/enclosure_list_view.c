@@ -517,7 +517,12 @@ on_popup_save_enclosure (gpointer callback_data)
 	else
 		filename = enclosure->url;
 		
+	filename = g_strdup (filename);
+	g_strdelimit (filename, "?", 0);	/* strip GET parameters */
+		
 	ui_choose_file (_("Choose File"), GTK_STOCK_SAVE_AS, TRUE, on_encsave_clicked, NULL, filename, NULL, NULL, enclosure->url);
+
+	g_free (filename);
 }
 
 void
