@@ -488,7 +488,14 @@ db_init (void)
 	db_exec ("DELETE FROM items WHERE comment = 0 AND node_id NOT IN "
         	 "(SELECT node_id FROM node);");
         	 
-        // FIXME: clean up stale comments
+        debug0 (DEBUG_DB, "Checking for comments without parent item...\n");
+	db_exec ("BEGIN; "
+	         "   CREATE TEMP TABLE tmp_id ( id );"
+	         "   INSERT INTO tmp_id SELECT item_id FROM items WHERE parent_item_id NOT IN (SELECT item_id FROM items);"
+	         /* limit to 1000 items as it is very slow */
+	         "   DELETE FROM items WHERE item_id IN (SELECT id FROM tmp_id LIMIT 1000);"
+	         "   DROP TABLE tmp_id;"
+		 "END;");
         
 	debug0 (DEBUG_DB, "Checking for search folder items without a feed list node...\n");
 	db_exec ("DELETE FROM search_folder_items WHERE node_id NOT IN "
@@ -1222,7 +1229,6 @@ db_search_folder_load (const gchar *id)
 	itemSet->nodeId = (gchar *)id;
 
 	while (sqlite3_step (stmt) == SQLITE_ROW) {
-g_print("Adding item '%d' for '%s'...\n", sqlite3_column_int (stmt, 0), id);
 		itemSet->ids = g_list_append (itemSet->ids, GUINT_TO_POINTER (sqlite3_column_int (stmt, 0)));
 	}
 	
