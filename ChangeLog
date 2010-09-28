@@ -9,6 +9,7 @@
 	* Fixes SF #3012833: Ctrl-A in url bar or a text box 
 	  should select all text (reported by silly8888)
 
+	* Added Danish translation. (Joe Hansen)
 
 2010-07-01  Adrian Bunk <bunk@users.sourceforge.net>
 
