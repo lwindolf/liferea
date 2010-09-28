@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<opml version="1.0">
+<head>
+	<title>Lista de fontes predeterminadas do Liferea</title>
+</head>
+<body>
+	<outline text="Exemplos de fontes">		
+		<outline text="Novas tecnolóxicas">
+		 	<outline text="Proxecto trasno" htmlUrl="http://trasno.net/" xmlUrl="http://www.trasno.net/feed.php"/>
+			<outline text="Código Cero" htmlUrl="http://codigocero.com/"  xmlUrl="http://codigocero.com/spip.php?page=backend" />
+			<outline text="Blogaliza" htmlUrl="http://blogaliza.org/" xmlUrl="http://blogaliza.org/RSSsoftlibr.xml"/>
+		</outline>
+		<outline text="Xornais dixitais">
+			<outline text="A nosa terra" htmlUrl="http://anosaterra.org/" xmlUrl="http://www.anosaterra.org/rss.php?p=portada"/>
+			<outline text="Galicia hoxe" htmlUrl="http://www.galiciahoxe.com/" xmlUrl="http://www.galiciahoxe.com/rss/"/>
+		</outline>
+	</outline>
+	<!-- lets keep this default English block in sync over all feed lists! -->
+	<outline text="Exemplos de fontes (inglés)">
+	      <outline text="Open Source">
+			<outline text="Gnomefiles" htmlUrl="http://www.gnomefiles.org/" xmlUrl="http://www.gnomefiles.org/files/gnomefiles.rdf" />
+			<outline text="GNOME Footnotes" htmlUrl="http://www.gnomedesktop.org/" xmlUrl="http://www.gnomedesktop.org/backend.php" />
+			<outline text="GrokLaw" htmlUrl="http://www.groklaw.net/" xmlUrl="http://www.groklaw.net/backend/GrokLaw.rdf" />
+			<outline text="Liferea Blog" htmlUrl="http://liferea.blogspot.com/" xmlUrl="http://liferea.blogspot.com/feeds/posts/default" />
+			<outline text="mozillaZine" htmlUrl="http://www.mozillazine.org/" xmlUrl="http://www.mozillazine.org/atom.xml" />
+			<outline text="Planet GNOME" htmlUrl="http://planet.gnome.org/" xmlUrl="http://planet.gnome.org/atom.xml" />	
+			<outline text="Slashdot" htmlUrl="http://slashdot.org"  xmlUrl="http://slashdot.org/slashdot.rss" />
+			<outline text="TuxMobil" htmlUrl="http://tuxmobil.org" xmlUrl="http://tuxmobil.org/tuxmobil_rss.rdf" />      
+	      </outline>	
+	</outline>
+
+	<!-- end of default block -->
+
+	<!-- the following search folders should also be in sync for all feed lists -->
+	<!-- Do only translate the @text attributes in all of the following <outline> tags! -->
+	<outline text="Non lidos" title="Non lidos" description="Novas aínda non lidas" type="vfolder" htmlUrl="" xmlUrl="vfolder">
+		<outline type="rule" text="Estado da lectura" rule="unread" value="" additive="true"/>
+	</outline>
+	<outline text="Importante" title="Importante" description="Importante" type="vfolder" htmlUrl="" xmlUrl="vfolder">
+		<outline type="rule" text="Estado do marcador" rule="flagged" value="" additive="true"/>
+	</outline>
+	<!-- end of search folder block -->
+</body>
+</opml>
