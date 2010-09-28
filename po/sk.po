@@ -1,14 +1,14 @@
-# Slovak translation of liferea.
-# Copyright (C) 2008, 2009 Free Software Foundation, Inc.
+# Slovak translation for liferea.
+# Copyright (C) 2008, 2009, 2010 Free Software Foundation, Inc.
 # This file is distributed under the same license as the liferea package.
-# Pavol Klačanský <pavol@klacansky.com>, 2008, 2009.
+# Pavol Klačanský <pavol@klacansky.com>, 2008, 2009, 2010.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: liferea-1.6.0-rc6\n"
+"Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-11-19 01:10+0200\n"
-"PO-Revision-Date: 2009-08-26 13:33+0200\n"
+"PO-Revision-Date: 2010-09-11 10:59+0200\n"
 "Last-Translator: Pavol Klačanský <pavol@klacansky.com>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
 "MIME-Version: 1.0\n"
@@ -30,7 +30,7 @@ msgstr "Liferea - čítačka kanálov"
 
 #: ../xslt/feed.xml.in.h:1
 msgid "Copyright"
-msgstr "Autorské práva"
+msgstr "Autorské právo"
 
 #: ../xslt/feed.xml.in.h:2
 msgid "Details"
@@ -82,11 +82,11 @@ msgstr ""
 
 #: ../xslt/feed.xml.in.h:12
 msgid "You may want to validate the feed using"
-msgstr ""
+msgstr "Možno chcete potvrdiť platnosť kanálu použitím"
 
 #: ../xslt/source.xml.in.h:2 ../xslt/folder.xml.in.h:2
 msgid "children with"
-msgstr ""
+msgstr "dieťa s"
 
 #: ../xslt/source.xml.in.h:3 ../xslt/folder.xml.in.h:3
 #: ../xslt/vfolder.xml.in.h:2
@@ -99,7 +99,7 @@ msgstr "Priečinok:"
 
 #: ../xslt/item.xml.in.h:1
 msgid "Also posted in"
-msgstr ""
+msgstr "Tiež poslané v"
 
 #: ../xslt/item.xml.in.h:2
 msgid "Author"
@@ -123,7 +123,7 @@ msgstr "Kanál"
 
 #: ../xslt/item.xml.in.h:7
 msgid "Filed under"
-msgstr ""
+msgstr "Zaradené pod"
 
 #: ../xslt/item.xml.in.h:8
 msgid "No comments yet."
@@ -308,6 +308,9 @@ msgid ""
 "points to a resource provided in one of the supported syndication formats!</"
 "p>XML Parser Output:<br /><div class='xmlparseroutput'>"
 msgstr ""
+"<p>Nepodarilo sa zistiť typ tohto kanálu! Prosím, skontrolujte, či zdroj"
+"naozaj ukazuje na zdroje uvedené v jednom z formátov podporovaných konzorciom!</"
+"p>Výstup XML analyzátora:<br /><div class='xmlparseroutput'>"
 
 #: ../src/feed.c:303
 #, c-format
@@ -341,7 +344,7 @@ msgstr "Neplatný XML!"
 
 #: ../src/feed_parser.c:223
 msgid "Source points to HTML document."
-msgstr ""
+msgstr "Zdroj ukazuje na HTML dokument."
 
 #: ../src/feed_parser.c:226
 msgid "Could not determine the feed type."
@@ -393,6 +396,8 @@ msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
 "will also dump the generated HTML into ~/.liferea_1.6/output.xhtml"
 msgstr ""
+"Povolí ladenie HTML vykresľovania. Zakaždým ako Liferea vykreslí HTML výstup, "
+"tak bude tiež generovaný HTML výpis do ~/.liferea_1.6/output.xhtml"
 
 #: ../src/main.c:191
 msgid "Print debugging messages of all network activity"
@@ -462,11 +467,11 @@ msgstr "Požiadavka na aktualizáciu bolas zrušená"
 
 #: ../src/net.c:337
 msgid "Unable to resolve destination host name"
-msgstr ""
+msgstr "Nepodarilo sa preložiť názov cieľového hostiteľa"
 
 #: ../src/net.c:338
 msgid "Unable to resolve proxy host name"
-msgstr ""
+msgstr "Nepodarilo sa preložiť názov proxy hostiteľa"
 
 #: ../src/net.c:339
 msgid "Unable to connect to remote host"
@@ -480,6 +485,7 @@ msgstr "Nepodarilo sa pripojiť k proxy"
 msgid ""
 "A network error occurred, or the other end closed the connection unexpectedly"
 msgstr ""
+"Vyskytla sa chyba siete, alebo druhá strana zavrela neočakávane pripojenie"
 
 #. http 3xx redirection
 #: ../src/net.c:344
@@ -681,7 +687,7 @@ msgstr "Aktualizuje sa \"%s\""
 #: ../src/update.c:268
 #, c-format
 msgid "Error opening temp file %s to use for filtering!"
-msgstr ""
+msgstr "Chyba pri otváraní dočasného súboru"
 
 #: ../src/update.c:291
 #, c-format
@@ -691,7 +697,7 @@ msgstr "%s skončil so stavom %d"
 #: ../src/update.c:297 ../src/update.c:298 ../src/update.c:410
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
-msgstr ""
+msgstr "Chyba: Nepodarilo sa otvoriť rúru \"%s\""
 
 #. FIXME: maybe setting request->returncode would be better
 #: ../src/update.c:436
@@ -710,7 +716,7 @@ msgstr "Nový priečinok hľadania"
 
 #: ../src/xml.c:414
 msgid "[There were more errors. Output was truncated!]"
-msgstr ""
+msgstr "[Je tu viac chýb. Výstup bol skrátený!]"
 
 #: ../src/xml.c:575
 msgid "XML Parser: Could not parse document:\n"
@@ -718,11 +724,11 @@ msgstr "XML parser: Nemohol byť parsovaný dokument:\n"
 
 #: ../src/ui/eggtrayicon.c:134
 msgid "Orientation"
-msgstr ""
+msgstr "Orientácia"
 
 #: ../src/ui/eggtrayicon.c:135
 msgid "The orientation of the tray."
-msgstr ""
+msgstr "Orientácia oblasti upozornení."
 
 #: ../src/ui/enclosure_list_view.c:172
 msgid "Attachments"
@@ -815,7 +821,7 @@ msgstr "Liferea je teraz pripojená"
 
 #: ../src/ui/liferea_shell.c:749
 msgid "Work Offline"
-msgstr "Pracovať odpojený"
+msgstr "Pracovať ako odpojený"
 
 #: ../src/ui/liferea_shell.c:751
 msgid "Liferea is now offline"
@@ -823,7 +829,7 @@ msgstr "Liferea je teraz odpojená"
 
 #: ../src/ui/liferea_shell.c:753
 msgid "Work Online"
-msgstr "Pracovať pripojený"
+msgstr "Pracovať ako pripojený"
 
 #: ../src/ui/liferea_shell.c:833
 msgid "_Subscriptions"
@@ -923,7 +929,7 @@ msgstr "Monitor akt_ualizácií"
 
 #: ../src/ui/liferea_shell.c:857
 msgid "Show a list of all feeds currently in the update queue"
-msgstr ""
+msgstr "Zobraziť zoznam všetkých kanálov, ktoré sú práve v rade na aktualizáciu"
 
 #: ../src/ui/liferea_shell.c:859
 msgid "_Script Manager"
@@ -931,7 +937,7 @@ msgstr "Správca _skriptov"
 
 #: ../src/ui/liferea_shell.c:859
 msgid "Allows to configure and edit LUA hook scripts"
-msgstr ""
+msgstr "Povolí nastaviť a upraviť LUA hook skripty"
 
 #: ../src/ui/liferea_shell.c:861 ../src/ui/ui_popup.c:173
 msgid "_Preferences"
@@ -1146,7 +1152,7 @@ msgstr "Táto voľba vám umožňuje zakázať aktualizáciu prihlásení."
 
 #: ../src/ui/liferea_shell.c:1308
 msgid "Liferea - Linux Feed Reader"
-msgstr "Liferea - Čitačka kanálov pre Linux"
+msgstr "Liferea - čítačka kanálov pre Linux"
 
 #: ../src/ui/liferea_shell.c:1310
 msgid ""
@@ -1574,7 +1580,8 @@ msgstr "Bloglines"
 msgid ""
 "Integrate the feed list of your Bloglines account. Liferea will present your "
 "Bloglines subscription as a read-only subtree in the feed list."
-msgstr ""
+msgstr "Integrovať zoznam kanálov vášho Bloglines účtu. Liferea bude poskytovať "
+"vaše Bloglines prihlásenie ako substrom (len na čítanie) v zozname kanálov."
 
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
 #: ../src/fl_sources/default_source.c:111
@@ -1601,6 +1608,9 @@ msgid ""
 "your Google Reader subscriptions, and will synchronize your feed list and "
 "reading lists."
 msgstr ""
+"Integrovať zoznam kanálov vášho Google Reader účtu. Liferea bude poskytovať "
+"vaše Google Reader prihlásenie a bude synchronizovať váš zoznam kanálov a "
+"zoznamy článkov."
 
 #: ../src/fl_sources/opml_source.c:330
 msgid "Planet, BlogRoll, OPML"
@@ -1611,10 +1621,12 @@ msgid ""
 "Integrate blogrolls or Planets in your feed list. Liferea will automatically "
 "add and remove feeds according to the changes of the source OPML document"
 msgstr ""
+"Integrovať blogrolls alebo Planets do vášho zoznamu kanálov. Liferea automaticky "
+"pridá a odstráni kanály podľa zmien v zdrojovom OPML dokumente"
 
 #: ../src/fl_sources/opml_source.c:392
 msgid "Choose OPML File"
-msgstr "Zvolte OPML súbor"
+msgstr "Zvoľte OPML súbor"
 
 #: ../src/fl_sources/opml_source.h:28
 msgid "New OPML Subscription"
@@ -1622,11 +1634,11 @@ msgstr "Nové OPML prihlásenie"
 
 #: ../src/fl_sources/node_source.c:237
 msgid "No feed list source types found!"
-msgstr ""
+msgstr "Neboli nájdené žiadne typy zdrojov zoznamu kanálov!"
 
 #: ../src/fl_sources/node_source.c:268
 msgid "Source Type"
-msgstr "Typ ydroja"
+msgstr "Typ zdroja"
 
 #: ../src/notification/libnotify.c:57 ../src/notification/libnotify.c:77
 #: ../src/notification/libnotify.c:144
@@ -1871,9 +1883,8 @@ msgid "At _startup:"
 msgstr "Pri _spustení:"
 
 #: ../glade/liferea.glade.h:37
-#, fuzzy
 msgid "Attention Profile"
-msgstr "Overenie zlyhalo"
+msgstr "Profil pozornosti"
 
 #: ../glade/liferea.glade.h:38
 msgid "Auto-_load item link in configured browser when selecting articles."
@@ -1898,7 +1909,7 @@ msgid ""
 "Copyright (c) 2003-2009\n"
 "The Liferea Team\n"
 msgstr ""
-"Autorské práva (c) 2003-2009\n"
+"Autorské právo (c) 2003-2009\n"
 "Tím Liferea\n"
 
 #: ../glade/liferea.glade.h:45
@@ -1907,7 +1918,7 @@ msgstr "Vytvoriť archív"
 
 #: ../glade/liferea.glade.h:46
 msgid "Create Search Engine Feed"
-msgstr ""
+msgstr "Vytvoriť kanál vyhľadávača"
 
 #: ../glade/liferea.glade.h:47
 msgid "Create new script"
@@ -1995,6 +2006,9 @@ msgid ""
 "directories in non-supported formats.  See the documentation for more "
 "information."
 msgstr ""
+"Liferea môže použiť externé filtrovacie doplnky za účelom prístupu ku kanálom a "
+"adresárom v nepodporovaných formátoch.  Pre viac informácií pozrite "
+"dokumentáciu."
 
 #: ../glade/liferea.glade.h:68
 msgid "Liferea is a news aggregator for GTK+"
@@ -2058,7 +2072,7 @@ msgstr "Premenovať"
 
 #: ../glade/liferea.glade.h:82
 msgid "Reuse existing script"
-msgstr ""
+msgstr "Znovu použiť existujúci skript"
 
 #: ../glade/liferea.glade.h:83
 msgid "Script Manager"
@@ -2150,7 +2164,7 @@ msgstr "Použiť proxy ov_erenie"
 
 #: ../glade/liferea.glade.h:105 ../glade/new_subscription.glade.h:9
 msgid "Use conversion _filter"
-msgstr ""
+msgstr "Použiť _filter konverzie"
 
 #: ../glade/liferea.glade.h:107
 msgid "View Headlines"
@@ -2202,9 +2216,8 @@ msgid "_Disable Javascript."
 msgstr "Za_kázať Javascript."
 
 #: ../glade/liferea.glade.h:118
-#, fuzzy
 msgid "_Do this automatically for enclosures like this from now on."
-msgstr "_Automaticky stiahnuť všetky prílohy tohto kanálu."
+msgstr "O_dteraz to robiť automaticky pre prílohy ako táto."
 
 #: ../glade/liferea.glade.h:119
 msgid "_Don't update this feed automatically."
@@ -2293,7 +2306,7 @@ msgstr "_Otvoriť odkaz v:"
 
 #: ../glade/liferea.glade.h:141
 msgid "_Pass URL and do not download enclosure."
-msgstr ""
+msgstr "_Predať URL a nesťahovať prílohu."
 
 #: ../glade/liferea.glade.h:144
 msgid "_Post Bookmarks to"
@@ -2365,7 +2378,7 @@ msgstr "pohľad na šírku"
 
 #: ../glade/new_subscription.glade.h:2
 msgid "<b>Download / Postprocessing</b>"
-msgstr ""
+msgstr "<b>Sťahovanie / Postprocesing</b>"
 
 #: ../glade/node_source.glade.h:1
 msgid "Select the source type you want to add..."
@@ -2405,294 +2418,3 @@ msgid ""
 msgstr ""
 "Pre automatické objavenie kanálu zadajte umiestenie webovej stránky alebo "
 "zadajte presné umiestnenie kanálu, ak ho poznáte."
-
-#~ msgid "<b>%s</b>"
-#~ msgstr "<b>%s</b>"
-
-#, fuzzy
-#~ msgid "FAILED to download enclosure: \"%s\""
-#~ msgstr "Sťahovanie prílohy dokončené: \"%s\""
-
-#, fuzzy
-#~ msgid ""
-#~ "Copyright (c) 2003-2009\n"
-#~ "Lars Lindner <lars.lindner@gmail.com> and \n"
-#~ "Nathan J. Conrad <t98502@users.sourceforge.net>\n"
-#~ msgstr ""
-#~ "Autorské práva (c) 2003-2007\n"
-#~ "Lars Lindner <lars.lindner@gmail.com> a \n"
-#~ "Nathan J. Conrad <t98502@users.sourceforge.net>\n"
-
-#~ msgid "/_Bookmark Link at %s"
-#~ msgstr "/_Záložkovať odkaz na %s"
-
-#~ msgid "/Toggle _Read Status"
-#~ msgstr "/Prepnúť stav p_rečítaný"
-
-#~ msgid "/Toggle Item _Flag"
-#~ msgstr "/Prepnúť _emblém článku"
-
-#, fuzzy
-#~ msgid "/_Preferences"
-#~ msgstr "_Predvoľby"
-
-#~ msgid "/_Quit"
-#~ msgstr "/_Koniec"
-
-#, fuzzy
-#~ msgid "/Copy Link Location"
-#~ msgstr "/_Kopírovať umiestnenie odkazu"
-
-#~ msgid "/_Update"
-#~ msgstr "/Akt_ualizovať"
-
-#~ msgid "/_New/New _Subscription..."
-#~ msgstr "/_Nový/_Nové prihlásenie..."
-
-#~ msgid "/_New/New _Folder..."
-#~ msgstr "/_Nový/Nový _priečinok..."
-
-#~ msgid "/_New/New S_earch Folder..."
-#~ msgstr "/_Nový/Nový priečinok _hľadania..."
-
-#~ msgid "/_New/New S_ource..."
-#~ msgstr "/_Nový/Nový _zdroj..."
-
-#~ msgid "/_New/New _News Bin..."
-#~ msgstr "/_Nový/Nový _archív"
-
-#~ msgid "<b>Rule</b>"
-#~ msgstr "<b>Pravidlo</b>"
-
-#~ msgid "<span color=\"blue\" underline=\"single\">Liferea Homepage</span>"
-#~ msgstr ""
-#~ "<span color=\"blue\" underline=\"single\">Domovská stránka Liferea</span>"
-
-#~ msgid ""
-#~ "Code, Patches, Debugging\n"
-#~ "\n"
-#~ "James Doherty\n"
-#~ "Jeremy Messenger\n"
-#~ "John McKnight\n"
-#~ "Tomasz Maka\n"
-#~ "Karl Soderstrom\n"
-#~ "Christophe Barbe\n"
-#~ "Juho Snellman\n"
-#~ "Roshan Revankar\n"
-#~ "Oliver Feiler\n"
-#~ "Niklas Morberg\n"
-#~ "Johannes Schlueter\n"
-#~ "Pierre Phaneuf\n"
-#~ "ahmed el-helw\n"
-#~ "James Bowes\n"
-#~ "Marc Deslauriers\n"
-#~ "Amit D. Chaudhary\n"
-#~ "Christoph Hohmann\n"
-#~ "Raphael Slinckx\n"
-#~ "Bjorn Monnens\n"
-#~ "Thomas de Grenier de Latour\n"
-#~ "Aristotle Pagaltzis\n"
-#~ "Norman Jonas\n"
-#~ "Sebastian Droege\n"
-#~ "Daniel Gryniewicz\n"
-#~ "Remi Cardona\n"
-#~ "Frederic Peters\n"
-#~ "Don Malcolm\n"
-#~ "Ed Catmur\n"
-#~ "Chris Pirillo\n"
-#~ "Eric Anderson\n"
-#~ "and many more...\n"
-#~ "\n"
-#~ "Code from other projects\n"
-#~ "\n"
-#~ "Anders Carlsson (tray icon support)\n"
-#~ "Philippe Martin, Brion Vibber (favicon support)\n"
-#~ "Jonathan Blandford (GtkTreeModelFilter)\n"
-#~ "Kristian Rietveld (GtkTreeModelFilter)\n"
-#~ "\n"
-#~ "Included Software\n"
-#~ "\n"
-#~ "Liferea uses the XSPF Web Music Player to \n"
-#~ "allow direct podcast playback. This player was \n"
-#~ "written by Fabricio Zuardi and can be found \n"
-#~ "at http://musicplayer.sourceforge.net"
-#~ msgstr ""
-#~ "Kód, záplaty, ladenie\n"
-#~ "\n"
-#~ "James Doherty\n"
-#~ "Jeremy Messenger\n"
-#~ "John McKnight\n"
-#~ "Tomasz Maka\n"
-#~ "Karl Soderstrom\n"
-#~ "Christophe Barbe\n"
-#~ "Juho Snellman\n"
-#~ "Roshan Revankar\n"
-#~ "Oliver Feiler\n"
-#~ "Niklas Morberg\n"
-#~ "Johannes Schlueter\n"
-#~ "Pierre Phaneuf\n"
-#~ "ahmed el-helw\n"
-#~ "James Bowes\n"
-#~ "Marc Deslauriers\n"
-#~ "Amit D. Chaudhary\n"
-#~ "Christoph Hohmann\n"
-#~ "Raphael Slinckx\n"
-#~ "Bjorn Monnens\n"
-#~ "Thomas de Grenier de Latour\n"
-#~ "Aristotle Pagaltzis\n"
-#~ "Norman Jonas\n"
-#~ "Sebastian Droege\n"
-#~ "Daniel Gryniewicz\n"
-#~ "Remi Cardona\n"
-#~ "Frederic Peters\n"
-#~ "Don Malcolm\n"
-#~ "Ed Catmur\n"
-#~ "Chris Pirillo\n"
-#~ "Eric Anderson\n"
-#~ "a veľa ďalších...\n"
-#~ "\n"
-#~ "Kód z ostatných projektov\n"
-#~ "\n"
-#~ "Anders Carlsson (podpora ikony v oblasti upozornení)\n"
-#~ "Philippe Martin, Brion Vibber (podpora favicont)\n"
-#~ "Jonathan Blandford (GtkTreeModelFilter)\n"
-#~ "Kristian Rietveld (GtkTreeModelFilter)\n"
-#~ "\n"
-#~ "Zahrnutý softvér\n"
-#~ "\n"
-#~ "Liferea využíva XSPF Webový prehrávač hudby \n"
-#~ "umožňuje priame prehrávanie podcastov. Tento prehrávač \n"
-#~ "napísal Fabricio Zuardi a nájdete ho \n"
-#~ "na http://musicplayer.sourceforge.net"
-
-#~ msgid "Contributors"
-#~ msgstr "Prispievatelia"
-
-#~ msgid ""
-#~ "Note: Items are added to the search folder if at least one additive rule\n"
-#~ "matches. They are removed if at least one removing rule matches."
-#~ msgstr ""
-#~ "Poznámka: Články sú pridané do priečinku vyhľadávania ak sa zhodujú\n"
-#~ "s aspoň jedným pridaným pravidlom. Odstránené sú ak sa zhodujú len\n"
-#~ "s odstráneným pravidlom."
-
-#~ msgid "Show Menu _And Toolbar"
-#~ msgstr "Zobraziť ponuku _a panel nástrojov"
-
-#~ msgid "Show _Menu Only"
-#~ msgstr "Zobraziť len po_nuku"
-
-#~ msgid "Show _Toolbar Only"
-#~ msgstr "Zobraziť len panel nás_trojov"
-
-#~ msgid "Translation"
-#~ msgstr "Preložil"
-
-#~ msgid "_Limit cache to"
-#~ msgstr "Ob_medziť cache do"
-
-#~ msgid "_Name:"
-#~ msgstr "_Názov:"
-
-#~ msgid "items."
-#~ msgstr "článkov."
-
-#~ msgid ""
-#~ "minutes\n"
-#~ "hours\n"
-#~ "days"
-#~ msgstr ""
-#~ "minút\n"
-#~ "hodín\n"
-#~ "dní"
-
-#~ msgid "search"
-#~ msgstr "hľadať"
-
-#~ msgid "Access Forbidden"
-#~ msgstr "Prístup zakázaný."
-
-#~ msgid "URL is invalid"
-#~ msgstr "URL je neplatná"
-
-#~ msgid "Unsupported network protocol"
-#~ msgstr "Nepodporovaný protokol siete"
-
-#~ msgid "Hostname could not be found"
-#~ msgstr "Názov hostiteľa nemohol byť nájdený"
-
-#~ msgid "  --help           Print this help and exit"
-#~ msgstr "  --help           Vypíše tohto pomocníka a skončí"
-
-#~ msgid "  --mainwindow-state=STATE"
-#~ msgstr "  --mainwindow-state=STAV"
-
-#~ msgid "                   Start Liferea with its main window in STATE."
-#~ msgstr "                   Spustí program Liferea s hlavným oknom v STAVE."
-
-#~ msgid "                   Possible topics are: all,cache,conf,db,gui,html"
-#~ msgstr "                   Možné témy sú: all,cache,conf,db,gui,html"
-
-#~ msgid "                   net,parsing,plugins,trace,update,verbose"
-#~ msgstr "                   net,parsing,plugins,trace,update,verbose"
-
-#~ msgid "The --mainwindow-state argument must be given a parameter.\n"
-#~ msgstr "Argumentu --mainwindow-state musí byť predaný parameter.\n"
-
-#~ msgid "The --session argument must be given a parameter.\n"
-#~ msgstr "Argumentu --session musí byť predaný parameter.\n"
-
-#~ msgid "does match"
-#~ msgstr "nachádza sa"
-
-#~ msgid "does not match"
-#~ msgstr "nenachádza sa"
-
-#~ msgid "Could not download \"%s\". Will retry in %d seconds."
-#~ msgstr "Nemohol byť stiahnutý \"%s\". Zopakuje sa za %d sekúnd."
-
-#~ msgid "This item does not have a link assigned!"
-#~ msgstr "Tento článok nemá priradený odkaz!"
-
-#~ msgid "No link selected!"
-#~ msgstr "Žiadny vybraný odkaz!"
-
-#~ msgid "http://liferea.sf.net"
-#~ msgstr "http://liferea.sf.net"
-
-#~ msgid "Updates all subscriptions. This does not update OCS directories."
-#~ msgstr "Aktualizuje všetky prihlásenia. Toto neaktualizuje OCS priečinky."
-
-#~ msgid "/_Increase Text Size"
-#~ msgstr "/Zväčš_iť veľkosť písma"
-
-#~ msgid "/_Decrease Text Size"
-#~ msgstr "/Z_menšiť veľkosť písma"
-
-#~ msgid "/Toggle _Online|Offline"
-#~ msgstr "/Prepnúť prip_ojený|odpojený"
-
-#~ msgid "/_Preferences..."
-#~ msgstr "/_Predvoľby..."
-
-#~ msgid "/_Show|Hide Window"
-#~ msgstr "/Zobraziť|_skryť okno"
-
-#~ msgid "Cookie for %s has expired!"
-#~ msgstr "Cookie pre %s vypršala!"
-
-#~ msgid ""
-#~ "The provider of this feed suggests an update interval of %d minute.The "
-#~ "provider of this feed suggests an update interval of %d minutes."
-#~ msgstr ""
-#~ "Poskytovateľ tohto kanálu odporúča interval aktualizácie každú minútu."
-#~ "Poskytovateľ tohto kanálu odporúča interval aktualizácie každých %d minút."
-
-#~ msgid ""
-#~ "%s\n"
-#~ "%d unread item%s\n"
-#~ "%d unread items"
-#~ msgstr ""
-#~ "%s\n"
-#~ "%d neprečítaný článok%s\n"
-#~ "%d neprečítaných článkov"
