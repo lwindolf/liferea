@@ -66,6 +66,7 @@
 	* Fixes Debian #593415: Seems to misidentify MIME type
 	  of some podcast enclosures (reported by Celejar)
 
+	* Added Danish translation. (Joe Hansen)
 	* Updated Chinese/Simplified translation. (Aron Xu)
 	* Updated German translation. (Lars Lindner)
 	* Updated Italian translation. (Gianvito Cavasoli)
