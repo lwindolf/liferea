@@ -4447,7 +4447,7 @@
     <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
     <property name="has_separator">False</property>
     <property name="program_name">Liferea</property>
-    <property name="copyright" translatable="yes">Copyright (c) 2003-2010
+    <property name="copyright" translatable="yes">Copyright (c) 2003-2009
 The Liferea Team
 </property>
     <property name="comments" translatable="yes">Liferea is a news aggregator for GTK+</property>
