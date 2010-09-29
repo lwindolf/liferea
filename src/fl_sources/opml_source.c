@@ -221,8 +221,6 @@ static struct subscriptionType opmlSubscriptionType = {
 	opml_subscription_process_update_result
 };
 
-subscriptionTypePtr opml_source_get_subscription_type (void) { return &opmlSubscriptionType; }
-
 /* OPML source type implementation */
 
 static void ui_opml_source_get_source_url (void);
@@ -298,13 +296,13 @@ opml_source_remove (nodePtr node)
 	g_free (filename);
 }
 
-void
+static void
 opml_source_update (nodePtr node)
 {
 	subscription_update (node->subscription, 0);  // FIXME: 0 ?
 }
 
-void
+static void
 opml_source_auto_update (nodePtr node)
 {
 	GTimeVal	now;

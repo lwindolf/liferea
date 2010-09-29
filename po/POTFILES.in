@@ -151,8 +151,6 @@ src/parsers/rss_channel.c
 src/parsers/rss_channel.h
 src/parsers/rss_item.c
 src/parsers/rss_item.h
-src/fl_sources/bloglines_source.c
-src/fl_sources/bloglines_source.h
 src/fl_sources/default_source.c
 src/fl_sources/default_source.h
 src/fl_sources/dummy_source.c
@@ -172,7 +170,6 @@ src/sync/avahi_publisher.c
 src/sync/avahi_publisher.h
 src/webkit/webkit.c
 [type: gettext/glade]glade/auth.ui
-[type: gettext/glade]glade/bloglines_source.ui
 [type: gettext/glade]glade/google_source.ui
 [type: gettext/glade]glade/liferea.ui
 [type: gettext/glade]glade/new_subscription.ui

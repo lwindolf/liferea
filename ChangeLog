@@ -65,6 +65,7 @@
 	  (Lars Lindner)
 	* Fixes Debian #593415: Seems to misidentify MIME type
 	  of some podcast enclosures (reported by Celejar)
+	* Removed the obsolete Bloglines support. (Adrian Bunk)
 
 	* Added Danish translation. (Joe Hansen)
 	* Added Galician translation. (Anxo Outeiral)
