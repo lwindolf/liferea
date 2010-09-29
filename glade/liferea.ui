@@ -384,7 +384,6 @@
     <property name="resizable">False</property>
     <property name="window_position">center</property>
     <property name="type_hint">dialog</property>
-    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox13">
         <property name="visible">True</property>
@@ -1355,7 +1354,6 @@
     <property name="window_position">center</property>
     <property name="default_width">300</property>
     <property name="type_hint">dialog</property>
-    <property name="has_separator">False</property>
     <signal name="delete_event" handler="gtk_widget_destroy" object="prefdialog"/>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox5">
@@ -1465,6 +1463,22 @@
                             <property name="visible">True</property>
                             <property name="spacing">6</property>
                             <child>
+                              <object class="GtkCheckButton" id="startupactionbtn">
+                                <property name="label" translatable="yes">_Update all subscriptions at startup.</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">False</property>
+                                <property name="use_underline">True</property>
+                                <property name="draw_indicator">True</property>
+                                <signal name="toggled" handler="on_startupactionbtn_toggled"/>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
                               <object class="GtkHBox" id="hbox68">
                                 <property name="visible">True</property>
                                 <property name="spacing">12</property>
@@ -1539,22 +1553,6 @@
                                 <property name="expand">False</property>
                                 <property name="fill">False</property>
                                 <property name="position">2</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkCheckButton" id="startupactionbtn">
-                                <property name="label" translatable="yes">_Update all subscriptions at startup.</property>
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">False</property>
-                                <property name="use_underline">True</property>
-                                <property name="draw_indicator">True</property>
-                                <signal name="toggled" handler="on_startupactionbtn_toggled"/>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">0</property>
                               </packing>
                             </child>
                           </object>
@@ -1864,6 +1862,12 @@
                                 <property name="x_options">GTK_FILL</property>
                                 <property name="y_options"></property>
                               </packing>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
                             </child>
                           </object>
                         </child>
@@ -3185,7 +3189,6 @@
     <property name="resizable">False</property>
     <property name="modal">True</property>
     <property name="type_hint">dialog</property>
-    <property name="has_separator">False</property>
     <signal name="delete_event" handler="gtk_widget_hide" object="newfolderdialog"/>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox6">
@@ -3291,7 +3294,6 @@
     <property name="resizable">False</property>
     <property name="modal">True</property>
     <property name="type_hint">dialog</property>
-    <property name="has_separator">False</property>
     <signal name="delete_event" handler="gtk_widget_hide" object="nodenamedialog"/>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox7">
@@ -3389,7 +3391,6 @@
     <property name="default_width">550</property>
     <property name="default_height">320</property>
     <property name="type_hint">dialog</property>
-    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox15">
         <property name="visible">True</property>
@@ -3612,7 +3613,6 @@
     <property name="title" translatable="yes">Downloading Enclosure</property>
     <property name="resizable">False</property>
     <property name="type_hint">dialog</property>
-    <property name="has_separator">False</property>
     <signal name="delete_event" handler="gtk_widget_destroy"/>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox16">
@@ -3791,7 +3791,6 @@
     <property name="title" translatable="yes">Search All Feeds</property>
     <property name="resizable">False</property>
     <property name="type_hint">dialog</property>
-    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox17">
         <property name="visible">True</property>
@@ -4678,7 +4677,6 @@
     <property name="resizable">False</property>
     <property name="window_position">center-on-parent</property>
     <property name="type_hint">dialog</property>
-    <property name="has_separator">False</property>
     <property name="program_name">Liferea</property>
     <property name="copyright" translatable="yes">Copyright (c) 2003-2010
 The Liferea Team
@@ -5152,7 +5150,6 @@ Joe Hansen
     <property name="default_width">500</property>
     <property name="default_height">250</property>
     <property name="type_hint">dialog</property>
-    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox26">
         <property name="visible">True</property>
