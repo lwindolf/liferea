@@ -60,27 +60,8 @@ void opml_source_export(nodePtr node);
 void opml_source_remove(nodePtr node);
 
 /**
- * Force update of the OPML source and all child subscriptions of the given node.
- *
- * @param node		the node
- */
-void opml_source_update(nodePtr node);
-
-/**
- * Request auto-update of the OPML source and all child subscriptions of the given node.
- *
- * @param node		the node
- */
-void opml_source_auto_update(nodePtr node);
-
-/**
  * Returns OPML source type implementation info.
  */
 nodeSourceTypePtr opml_source_get_type(void);
-
-/**
- * Returns the OPML subscription type (for reuse with Bloglines)
- */
-subscriptionTypePtr opml_source_get_subscription_type (void);
 
 #endif

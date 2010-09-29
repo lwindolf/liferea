@@ -4,6 +4,7 @@
 
 	* liferea.glade: Mark 2 messages as translatable that were
 	  wrongly not marked. (Adrian Bunk, reported by Yaron Sheffer)
+	* Removed the obsolete Bloglines support. (Adrian Bunk)
 
 	* Added Asturian translation. (Marquinos)
 	* Added Hebrew translation. (Yaron Sheffer)

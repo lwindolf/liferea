@@ -159,8 +159,6 @@ src/parsers/rss_channel.c
 src/parsers/rss_channel.h
 src/parsers/rss_item.c
 src/parsers/rss_item.h
-src/fl_sources/bloglines_source.c
-src/fl_sources/bloglines_source.h
 src/fl_sources/default_source.c
 src/fl_sources/default_source.h
 src/fl_sources/dummy_source.c
@@ -181,7 +179,6 @@ src/sync/avahi_publisher.c
 src/sync/avahi_publisher.h
 src/webkit/webkit.c
 glade/auth.glade
-glade/bloglines_source.glade
 glade/google_source.glade
 glade/liferea.glade
 glade/new_subscription.glade
