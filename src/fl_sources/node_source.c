@@ -56,7 +56,7 @@ node_source_type_find (const gchar *typeStr, guint capabilities)
 		iter = g_slist_next (iter);
 	}
 	
-	g_error ("Could not find source type \"%s\"\n!", typeStr);
+	g_warning ("Could not find source type \"%s\"\n!", typeStr);
 	return NULL;
 }
 
@@ -138,6 +138,11 @@ node_source_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trust
 		node_set_subscription (node, subscription_import (xml, trusted));
 	
 		type->source_import (node);	// FIXME: pass trusted flag?
+
+		if (!strcmp (typeStr, "fl_bloglines")) {
+			g_warning ("Removing obsolete Bloglines subscription.");
+			feedlist_node_removed (node);
+		}
 	} else {
 		g_warning ("No source type given for node \"%s\". Ignoring it.", node_get_title (node));
 	}	
