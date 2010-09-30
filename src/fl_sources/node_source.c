@@ -151,6 +151,11 @@ node_source_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trust
 		node_set_subscription (node, subscription_import (xml, trusted));
 	
 		type->source_import (node);	// FIXME: pass trusted flag?
+
+		if (!strcmp (typeStr, "fl_bloglines")) {
+			g_warning ("Removing obsolete Bloglines subscription.");
+			feedlist_node_removed (node);
+		}
 	} else {
 		g_warning ("No source type given for node \"%s\". Ignoring it.", node_get_title (node));
 	}	
