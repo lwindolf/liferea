@@ -56,7 +56,7 @@ node_source_type_find (const gchar *typeStr, guint capabilities)
 		iter = g_slist_next (iter);
 	}
 	
-	g_warning ("Could not find source type \"%s\"\n!", typeStr);
+	g_error ("Could not find source type \"%s\"\n!", typeStr);
 	return NULL;
 }
 
