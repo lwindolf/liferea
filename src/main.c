@@ -92,7 +92,7 @@ static void fatal_signal_handler(int sig) {
 	g_print("\nLiferea did receive signal %d (%s).\n", sig, g_strsignal(sig));
 
 	if(debug_level) {
-		g_print("You have propably triggered a program bug. I will now try to \n");
+		g_print("You have probably triggered a program bug. I will now try to \n");
 		g_print("create a backtrace which you can attach to any support requests.\n\n");
 		g_on_error_stack_trace(PACKAGE);
 	}
