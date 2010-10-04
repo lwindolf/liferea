@@ -243,7 +243,7 @@ atom10_parse_person_construct (xmlNodePtr cur)
 					invalid = TRUE;
 				g_free (uri);
 				tmp = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
-				uri = g_markup_printf_escaped (_(" (<a href=\"%s\">Website</a>)"), tmp);
+				uri = g_markup_printf_escaped (" (<a href=\"%s\">%s</a>)", tmp, _("Website"));
 				g_free (tmp);
 			}
 		} else {
