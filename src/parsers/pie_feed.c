@@ -138,7 +138,7 @@ gchar * parseAuthor(xmlNodePtr cur) {
 					
 		if (!xmlStrcmp(cur->name, BAD_CAST"url")) {
 			tmp2 = (gchar *)xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
-			tmp3 = g_strdup_printf("%s (<a href=\"%s\">Website</a>)", tmp, tmp2);
+			tmp3 = g_strdup_printf("%s (<a href=\"%s\">%s</a>)", tmp, tmp2, _("Website"));
 			g_free(tmp);
 			g_free(tmp2);
 			tmp = tmp3;
