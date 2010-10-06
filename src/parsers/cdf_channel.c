@@ -185,6 +185,5 @@ feedHandlerPtr cdf_init_feed_handler(void) {
 	fhp->typeStr = "cdf";
 	fhp->feedParser	= cdf_parse;
 	fhp->checkFormat = cdf_format_check;
-	fhp->merge = TRUE;
 	return fhp;
 }

@@ -853,7 +853,6 @@ atom10_init_feed_handler (void)
 	fhp->typeStr = "atom";
 	fhp->feedParser	= atom10_parse_feed;
 	fhp->checkFormat = atom10_format_check;
-	fhp->merge = TRUE;
 
 	return fhp;
 }

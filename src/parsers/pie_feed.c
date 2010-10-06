@@ -328,7 +328,6 @@ pie_init_feed_handler (void)
 	fhp->typeStr = "atom";
 	fhp->feedParser	= pie_parse;
 	fhp->checkFormat = pie_format_check;
-	fhp->merge = TRUE;
 
 	return fhp;
 }

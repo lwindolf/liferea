@@ -68,7 +68,6 @@ typedef struct feedHandler {
 	const gchar	*typeStr;	/**< string representation of the feed type */
 	feedParserFunc	feedParser;	/**< feed type parse function */
 	checkFormatFunc	checkFormat;	/**< Parser for the feed type*/
-	gboolean	merge;		/**< TRUE if feed type supports merging */
 } *feedHandlerPtr;
 
 /**
