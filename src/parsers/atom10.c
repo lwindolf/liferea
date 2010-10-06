@@ -108,21 +108,16 @@ atom10_parse_content_construct (xmlNodePtr cur, feedParserCtxtPtr ctxt)
 	gchar *ret = NULL;
 	
 	if (xmlHasNsProp (cur, BAD_CAST"src", NULL )) {
-		gchar *src = xml_get_ns_attribute (cur, "src", NULL);
-		
-		if (!src) {
-			ret = g_strdup (_("Liferea is unable to display this item's content."));
-		} else {
-			gchar *baseURL = (gchar *)xmlNodeGetBase (cur->doc, cur);
-			xmlChar *url;
-			
-			url = common_build_url (src, baseURL);
-			ret = g_markup_printf_escaped (_("<p><a href=\"%s\">View this item's content.</a></p>"), url);
-			
-			g_free (url);
-			xmlFree (baseURL);
-			xmlFree (src);
-		}
+		/*
+		   RFC 4287 says a feed must have a summary when there's
+		   a src attribute in the content (and the content therefore
+		   empty). We are already parsing the summary separately.
+
+		   RFC 4287 also says an entry must contain one link element
+		   with rel="alternate", so there's no point in parsing
+		   src and setting it as link.
+		*/
+		ret = NULL;
 	} else {
 		gchar *type;
 
