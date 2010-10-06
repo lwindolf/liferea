@@ -69,7 +69,6 @@ typedef struct feedHandler {
 	feedParserFunc	feedParser;	/**< feed type parse function */
 	checkFormatFunc	checkFormat;	/**< Parser for the feed type*/
 	gboolean	merge;		/**< TRUE if feed type supports merging */
-	gboolean	noXML;		/**< TRUE if feed type isn't guaranteed to be XML */
 } *feedHandlerPtr;
 
 /**
