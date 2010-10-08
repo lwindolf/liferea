@@ -2,7 +2,8 @@
 
 	Version 1.6.6
 
-	*
+	* liferea.glade: Mark 2 messages as translatable that were
+	  wrongly not marked. (Adrian Bunk, reported by Yaron Sheffer)
 
 
 2010-09-29  Adrian Bunk <bunk@users.sourceforge.net>
