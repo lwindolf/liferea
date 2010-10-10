@@ -390,6 +390,12 @@ db_init (void)
 	if (SCHEMA_TARGET_VERSION != db_get_schema_version ())
 		g_error ("Fatal: DB schema version not up-to-date! Running with --debug-db could give some hints about the problem!");
 	
+	/* Vacuuming... */
+	
+	debug_start_measurement (DEBUG_DB);
+	db_exec ("VACUUM;");
+	debug_end_measurement (DEBUG_DB, "VACUUM");
+	
 	/* Schema creation */
 		
 	debug_start_measurement (DEBUG_DB);
@@ -491,7 +497,7 @@ db_init (void)
         debug0 (DEBUG_DB, "Checking for comments without parent item...\n");
 	db_exec ("BEGIN; "
 	         "   CREATE TEMP TABLE tmp_id ( id );"
-	         "   INSERT INTO tmp_id SELECT item_id FROM items WHERE parent_item_id NOT IN (SELECT item_id FROM items);"
+	         "   INSERT INTO tmp_id SELECT item_id FROM items WHERE comment = 1 AND parent_item_id NOT IN (SELECT item_id FROM items);"
 	         /* limit to 1000 items as it is very slow */
 	         "   DELETE FROM items WHERE item_id IN (SELECT id FROM tmp_id LIMIT 1000);"
 	         "   DROP TABLE tmp_id;"
