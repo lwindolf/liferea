@@ -68,6 +68,7 @@
 	* Removed the obsolete Bloglines support. (Adrian Bunk)
 	* Also print the stacktrace when debugging is not enabled.
 	  (Adrian Bunk)
+	* Removed the outdated .spec file. (Adrian Bunk)
 
 	* Added Danish translation. (Joe Hansen)
 	* Added Galician translation. (Anxo Outeiral)

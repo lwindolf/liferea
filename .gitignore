@@ -18,7 +18,6 @@ depcomp
 install-sh
 libtool
 liferea.desktop
-liferea.spec
 ltmain.sh
 missing
 po/.intltool-merge-cache
@@ -29,3 +28,4 @@ src/dbus_wrap.c
 src/liferea
 src/liferea-add-feed
 xslt/*.xml
+

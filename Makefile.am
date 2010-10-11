@@ -18,7 +18,7 @@ css_DATA = \
 dtddir = $(pkgdatadir)/dtd
 dtd_DATA = dtd/html.ent
 
-EXTRA_DIST = liferea.spec \
+EXTRA_DIST = \
 	po/liferea.pot \
 	$(desktop_in_files) \
 	$(desktop_DATA) \
@@ -34,7 +34,6 @@ endif
 
 
 DISTCLEANFILES = \
-	liferea.spec \
 	liferea.desktop \
 	intltool-extract \
 	intltool-merge \
