@@ -10,7 +10,7 @@ Contents
    3. ............. Compiling Liferea Yourself
    3.1. ............. Dependencies
    3.2. ............. Compiling From Tarball
-   3.3. ............. Compiling From SVN
+   3.3. ............. Compiling From GIT
 
    4. ............. Contributing
    4.1. ............. No Feature Requests!
@@ -90,7 +90,7 @@ Solaris		Since 0.9.2 there are Solaris packages built
 ============================
 
 This section describes how to compile Liferea yourself. If you have
-any problems compiling the packages or from SVN don't hesitate to
+any problems compiling the packages or from GIT don't hesitate to
 contact us in IRC (see Support section) to help you with it!
 
 3.1 Dependencies
@@ -128,15 +128,15 @@ After this Liferea will be installed in /usr/local and you should be
 able to start it by calling "/usr/local/bin/liferea".
 
 
-3.3 Compiling from SVN
+3.3 Compiling from GIT
 ----------------------
 
 To anonymously check out a source copy execute this:
 
-   svn co https://svn.sourceforge.net/svnroot/liferea/trunk .
+   git clone git://liferea.git.sourceforge.net/gitroot/liferea/liferea
 
-More information about using SVN with Liferea can be found at 
-http://sourceforge.net/svn/?group_id=87005
+More information about using GIT with Liferea can be found at 
+https://sourceforge.net/scm/?type=git&group_id=87005
 
 Then build it with:
 
@@ -177,7 +177,7 @@ Here are some rules to supply patches:
 3.) Please include a ChangeLog entry in your patch.
 
 4.) Post the patch on the SourceForge patch tracker or the mailing list.
-    Please always specify with release or SVN version do you made the
+    Please always specify with release or GIT version do you made the
     patch for.
 
 If you are working on some topic feel free to contact us with any question
@@ -214,7 +214,7 @@ if you change already translated literals.
 When Liferea starts for the first time it installs a localized feed list
 if available. If this is not the case for your locale you might want to provide
 one. To check if there is one for your country have a look into the "opml"
-subdirectory in the latest release tarball or SVN.
+subdirectory in the latest release tarball or GIT.
 
 If you want to provide/update a localized feed list please follow these rules:
 
@@ -235,7 +235,7 @@ tracker.
 4.4.1. Bug Reports
 ------------------
 
-If you want to help with testing grab the latest tarball or follow SVN trunk
+If you want to help with testing grab the latest tarball or follow GIT master
 and write bug reports for any functional problem you experience. If you have
 time help with bug triaging the SF tracker. Check if you see any of the open
 bugs on your setup.
