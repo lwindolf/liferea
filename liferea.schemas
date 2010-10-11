@@ -141,21 +141,8 @@ To change the gconftool target use the - -config-source=blah option to gconftool
       <applyto>/apps/liferea/enable-fetch-retries</applyto>
       <owner>liferea</owner>
       <type>bool</type>
+      <default>true</default>
       <locale name="C">
-        <default>true</default>
-        <short>Try to refetch feeds after network errors?</short>
-        <long>If set to true, and a network error is encountered while
-        fetching a feed, Liferea will do a few more tries. This is useful
-        in case of temporary loss of network/internet connection.</long>
-      </locale>
-    </schema>
-    <schema>
-      <key>/schemas/apps/liferea/enable-fetch-retries</key>
-      <applyto>/apps/liferea/enable-fetch-retries</applyto>
-      <owner>liferea</owner>
-      <type>bool</type>
-      <locale name="C">
-        <default>true</default>
         <short>Try to refetch feeds after network errors?</short>
         <long>If set to true, and a network error is encountered while
         fetching a feed, Liferea will do a few more tries. This is useful
