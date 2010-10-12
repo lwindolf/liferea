@@ -5,6 +5,8 @@
 	* liferea.glade: Mark 2 messages as translatable that were
 	  wrongly not marked. (Adrian Bunk, reported by Yaron Sheffer)
 
+	* Added Asturian translation. (Marquinos)
+
 
 2010-09-29  Adrian Bunk <bunk@users.sourceforge.net>
 
