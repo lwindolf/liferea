@@ -6,13 +6,12 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: liferea 1.6.0-rc6\n"
+"Project-Id-Version: liferea 1.6.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-05-25 22:29+0300\n"
-"PO-Revision-Date: 2010-02-24 16:06+0800\n"
+"PO-Revision-Date: 2010-10-12 23:24+0800\n"
 "Last-Translator: Aron Xu <happyaron.xu@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
-"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -60,9 +59,7 @@ msgstr "来源："
 
 #: ../xslt/feed.xml.in.h:8
 #, fuzzy
-msgid ""
-"The last update of this subscription failed!<br/><b>HTTP error code <xsl:"
-"value-of select=\"httpErrorCode\"/>: <xsl:value-of select=\"httpError\"/></b>"
+msgid "The last update of this subscription failed!<br/><b>HTTP error code <xsl:value-of select=\"httpErrorCode\"/>: <xsl:value-of select=\"httpError\"/></b>"
 msgstr "更新此订阅失败!<br><b>HTTP 错误码 %d: %s</b>"
 
 #: ../xslt/feed.xml.in.h:9
@@ -74,9 +71,7 @@ msgid "There were errors while parsing this feed!"
 msgstr "解析此 Feed 时出现错误！"
 
 #: ../xslt/feed.xml.in.h:11
-msgid ""
-"This feed is discontinued. It's no longer available. Liferea won't update it "
-"anymore but you can still access the cached headlines."
+msgid "This feed is discontinued. It's no longer available. Liferea won't update it anymore but you can still access the cached headlines."
 msgstr "此 Feed 已失效。Liferea 将不会更新它，但是您可以继续读取暂存标题。"
 
 #: ../xslt/feed.xml.in.h:12
@@ -89,9 +84,8 @@ msgstr ""
 
 #: ../xslt/source.xml.in.h:3 ../xslt/folder.xml.in.h:3
 #: ../xslt/vfolder.xml.in.h:2
-#, fuzzy
 msgid "unread headlines"
-msgstr "标题"
+msgstr "标记未读"
 
 #: ../xslt/folder.xml.in.h:1
 msgid "Folder:"
@@ -174,9 +168,7 @@ msgid "link cosmos"
 msgstr ""
 
 #: ../xslt/newsbin.xml.in.h:1
-msgid ""
-"Add items to this news bin by selecting \"Copy to News Bin\" from the item "
-"list context menu."
+msgid "Add items to this news bin by selecting \"Copy to News Bin\" from the item list context menu."
 msgstr ""
 
 #: ../xslt/newsbin.xml.in.h:2
@@ -261,8 +253,7 @@ msgstr "读取 OPML 文件时发生 XML 错误！无法导入“%s”！"
 
 #: ../src/export.c:374 ../src/export.c:376
 #, c-format
-msgid ""
-"Empty document! OPML document \"%s\" should not be empty when importing."
+msgid "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr "空白文档！OPML 文档“%s”在导入时不应是空白文件。"
 
 #: ../src/export.c:397 ../src/export.c:399
@@ -300,10 +291,7 @@ msgstr "导出"
 
 #: ../src/feed.c:274
 #, fuzzy
-msgid ""
-"<p>Could not detect the type of this feed! Please check if the source really "
-"points to a resource provided in one of the supported syndication formats!</"
-"p>XML Parser Output:<br /><div class='xmlparseroutput'>"
+msgid "<p>Could not detect the type of this feed! Please check if the source really points to a resource provided in one of the supported syndication formats!</p>XML Parser Output:<br /><div class='xmlparseroutput'>"
 msgstr "<p>无法探测此feed类型! 请确认网址指向已支持的正确feed来源!</p>%s"
 
 #: ../src/feed.c:303
@@ -318,13 +306,8 @@ msgstr "“%s”不可用"
 
 #: ../src/feed_parser.c:133
 #, fuzzy
-msgid ""
-"The URL you want Liferea to subscribe to points to a webpage and the auto "
-"discovery found no feeds on this page. Maybe this webpage just does not "
-"support feed auto discovery."
-msgstr ""
-"<p>您让 Liferea 订阅的网址指向一个网页，但是自动发现在该页上没有找到feed。可"
-"能该页不支持feed自动发现。</p>"
+msgid "The URL you want Liferea to subscribe to points to a webpage and the auto discovery found no feeds on this page. Maybe this webpage just does not support feed auto discovery."
+msgstr "<p>您让 Liferea 订阅的网址指向一个网页，但是自动发现在该页上没有找到feed。可能该页不支持feed自动发现。</p>"
 
 #: ../src/feed_parser.c:166
 #, c-format
@@ -354,9 +337,7 @@ msgstr "没有未读条目 "
 
 #: ../src/main.c:176
 #, fuzzy
-msgid ""
-"Start Liferea with its main window in STATE. STATE may be `shown', "
-"`iconified', or `hidden'"
+msgid "Start Liferea with its main window in STATE. STATE may be `shown', `iconified', or `hidden'"
 msgstr " 状态 STATE 可以是 shown, iconified 或 hidden"
 
 #: ../src/main.c:176
@@ -388,12 +369,8 @@ msgid "Print debugging messages of all GUI functions"
 msgstr "输出所有图形界面的调试信息"
 
 #: ../src/main.c:190
-msgid ""
-"Enables HTML rendering debugging. Each time Liferea renders HTML output it "
-"will also dump the generated HTML into ~/.liferea_1.6/output.xhtml"
-msgstr ""
-"启用 HTML 渲染调试。每当 Liferea 渲染 HTML 都将其转储至 ~/.liferea_1.6/"
-"output.xhtml"
+msgid "Enables HTML rendering debugging. Each time Liferea renders HTML output it will also dump the generated HTML into ~/.liferea_1.6/output.xhtml"
+msgstr "启用 HTML 渲染调试。每当 Liferea 渲染 HTML 都将其转储至 ~/.liferea_1.6/output.xhtml"
 
 #: ../src/main.c:191
 msgid "Print debugging messages of all network activity"
@@ -446,10 +423,7 @@ msgstr "Liferea 已经运行！"
 
 #: ../src/migrate.c:339
 #, c-format
-msgid ""
-"This version of Liferea uses a new cache format and has migrated your feed "
-"cache. The cache content in %s was not deleted automatically. Please remove "
-"this directory manually once you are sure migration was successful!"
+msgid "This version of Liferea uses a new cache format and has migrated your feed cache. The cache content in %s was not deleted automatically. Please remove this directory manually once you are sure migration was successful!"
 msgstr ""
 
 #. Some libsoup transport errors
@@ -474,8 +448,7 @@ msgid "Unable to connect to proxy"
 msgstr "无法连接到代理服务器"
 
 #: ../src/net.c:366
-msgid ""
-"A network error occurred, or the other end closed the connection unexpectedly"
+msgid "A network error occurred, or the other end closed the connection unexpectedly"
 msgstr "发生网络错误，或另一端意外关闭了连接。"
 
 #. http 3xx redirection
@@ -485,9 +458,7 @@ msgstr "资源已经永久移动到新位置。"
 
 #. http 4xx client error
 #: ../src/net.c:372
-msgid ""
-"You are unauthorized to download this feed. Please update your username and "
-"password in the feed properties dialog box"
+msgid "You are unauthorized to download this feed. Please update your username and password in the feed properties dialog box"
 msgstr "您无权下载此 Feed。请在 Feed 属性对话框中更新您的帐号与密码。"
 
 #: ../src/net.c:374
@@ -635,8 +606,7 @@ msgstr "Feed “%s”已经更新!"
 
 #: ../src/subscription.c:109
 #, c-format
-msgid ""
-"The subscription \"%s\" was discontinued. Liferea won't update it anymore!"
+msgid "The subscription \"%s\" was discontinued. Liferea won't update it anymore!"
 msgstr "Feed “%s”已失效。Liferea 将不会再更新它。"
 
 #: ../src/subscription.c:144
@@ -645,9 +615,7 @@ msgid "Updating favicon for \"%s\""
 msgstr "正在更新 Feed “%s”的图标"
 
 #: ../src/subscription.c:194
-msgid ""
-"There was a problem while reading this subscription. Please check the URL "
-"and console output."
+msgid "There was a problem while reading this subscription. Please check the URL and console output."
 msgstr "读取此订阅时出现问题，请检查网址和终端输出。"
 
 #: ../src/subscription.c:210
@@ -705,7 +673,6 @@ msgid "[There were more errors. Output was truncated!]"
 msgstr "[有更多的错误，输出已被截断！]"
 
 #: ../src/xml.c:575
-#, fuzzy
 msgid "XML Parser: Could not parse document:\n"
 msgstr "XML 解析器：无法解析文档：\n"
 
@@ -887,9 +854,7 @@ msgid "_Next Unread Item"
 msgstr "下一个未读条目(_N)"
 
 #: ../src/ui/liferea_shell.c:847
-msgid ""
-"Jumps to the next unread item. If necessary selects the next feed with "
-"unread items."
+msgid "Jumps to the next unread item. If necessary selects the next feed with unread items."
 msgstr "跳到下一个未读条目，必要时会跳到下一个 Feed 中的未读条目。"
 
 #: ../src/ui/liferea_shell.c:850
@@ -953,7 +918,6 @@ msgid "Show the search dialog."
 msgstr "显示搜索对话框。"
 
 #: ../src/ui/liferea_shell.c:866
-#, fuzzy
 msgid "Search With ..."
 msgstr "使用搜索..."
 
@@ -1073,8 +1037,7 @@ msgstr "标记为已读(_M)"
 
 #: ../src/ui/liferea_shell.c:900
 #, fuzzy
-msgid ""
-"Marks all items of the selected feed list node / in the item list as read."
+msgid "Marks all items of the selected feed list node / in the item list as read."
 msgstr "标记所有选定订阅下的所有条目或选定目录下的所有订阅为已读。"
 
 #: ../src/ui/liferea_shell.c:902 ../src/ui/ui_popup.c:260
@@ -1082,9 +1045,7 @@ msgid "_Update"
 msgstr "更新(_U)"
 
 #: ../src/ui/liferea_shell.c:902
-msgid ""
-"Updates the selected subscription or all subscriptions of the selected "
-"folder."
+msgid "Updates the selected subscription or all subscriptions of the selected folder."
 msgstr "更新选定的订阅项或目录下的所有订阅项目。"
 
 #: ../src/ui/liferea_shell.c:907
@@ -1116,7 +1077,6 @@ msgid "Toggle Item _Flag"
 msgstr "切换条目标签(_F)"
 
 #: ../src/ui/liferea_shell.c:914
-#, fuzzy
 msgid "Toggles the flag status of the selected item."
 msgstr "切换选定条目的阅读状态。"
 
@@ -1149,12 +1109,7 @@ msgid "Liferea - Linux Feed Reader"
 msgstr "Liferea - Linux Feed 阅读器"
 
 #: ../src/ui/liferea_shell.c:1310
-msgid ""
-"<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news "
-"feeds.</p><p>The left pane contains the list of your subscriptions. To add a "
-"subscription select Feeds -&gt; New Subscription. To browse the headlines of "
-"a feed select it in the feed list and the headlines will be loaded into the "
-"right pane.</p>"
+msgid "<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news feeds.</p><p>The left pane contains the list of your subscriptions. To add a subscription select Feeds -&gt; New Subscription. To browse the headlines of a feed select it in the feed list and the headlines will be loaded into the right pane.</p>"
 msgstr ""
 
 #: ../src/ui/search_dialog.c:74
@@ -1171,15 +1126,8 @@ msgstr[0] "%d 个搜索结果"
 
 #: ../src/ui/search_dialog.c:85
 #, fuzzy, c-format
-msgid ""
-"The item list now contains all items matching the specified search pattern. "
-"If you want to save this search result permanently you can click the "
-"\"Search Folder\" button in the search dialog and Liferea will add a search "
-"folder to your feed list."
-msgstr ""
-"%s<h2>%d 搜索结果 \"%s\"</h2><p>现在的条目列表包括所有匹配设置搜索模式的所有"
-"条目。如果需要永久保存这些搜索结果，您可以点击搜索对话框中的虚拟目录按钮，"
-"Liferea 会把一个虚拟目录添加到您的feed列表中。</h2>"
+msgid "The item list now contains all items matching the specified search pattern. If you want to save this search result permanently you can click the \"Search Folder\" button in the search dialog and Liferea will add a search folder to your feed list."
+msgstr "%s<h2>%d 搜索结果 \"%s\"</h2><p>现在的条目列表包括所有匹配设置搜索模式的所有条目。如果需要永久保存这些搜索结果，您可以点击搜索对话框中的虚拟目录按钮，Liferea 会把一个虚拟目录添加到您的feed列表中。</h2>"
 
 #: ../src/ui/auth_dialog.c:162 ../glade/auth.glade.h:3
 #, no-c-format
@@ -1488,8 +1436,7 @@ msgstr "创建一个搜索 Feed。"
 #: ../src/ui/ui_subscription.c:456
 #, fuzzy, c-format
 msgid "The provider of this feed suggests an update interval of %d minute."
-msgid_plural ""
-"The provider of this feed suggests an update interval of %d minutes."
+msgid_plural "The provider of this feed suggests an update interval of %d minutes."
 msgstr[0] "此feed的提供者建议更新周期为 %d 分钟。"
 
 #: ../src/ui/ui_subscription.c:460
@@ -1605,9 +1552,7 @@ msgid "Bloglines"
 msgstr ""
 
 #: ../src/fl_sources/bloglines_source.c:82
-msgid ""
-"Integrate the feed list of your Bloglines account. Liferea will present your "
-"Bloglines subscription as a read-only subtree in the feed list."
+msgid "Integrate the feed list of your Bloglines account. Liferea will present your Bloglines subscription as a read-only subtree in the feed list."
 msgstr ""
 
 #. "feedlist.opml" is translatable so that translators can provide a localized default feed list
@@ -1630,10 +1575,7 @@ msgid "Google Reader"
 msgstr "Google Reader"
 
 #: ../src/fl_sources/google_source.c:337
-msgid ""
-"Integrate the feed list of your Google Reader account. Liferea will present "
-"your Google Reader subscriptions, and will synchronize your feed list and "
-"reading lists."
+msgid "Integrate the feed list of your Google Reader account. Liferea will present your Google Reader subscriptions, and will synchronize your feed list and reading lists."
 msgstr ""
 
 #: ../src/fl_sources/opml_source.c:330
@@ -1641,9 +1583,7 @@ msgid "Planet, BlogRoll, OPML"
 msgstr ""
 
 #: ../src/fl_sources/opml_source.c:331
-msgid ""
-"Integrate blogrolls or Planets in your feed list. Liferea will automatically "
-"add and remove feeds according to the changes of the source OPML document"
+msgid "Integrate blogrolls or Planets in your feed list. Liferea will automatically add and remove feeds according to the changes of the source OPML document"
 msgstr ""
 
 #: ../src/fl_sources/opml_source.c:392
@@ -1708,9 +1648,7 @@ msgid "Authentication"
 msgstr "认证"
 
 #: ../glade/auth.glade.h:4
-msgid ""
-"Note: <i>The username and password will be saved to your Liferea feedlist "
-"file without using encryption.</i>"
+msgid "Note: <i>The username and password will be saved to your Liferea feedlist file without using encryption.</i>"
 msgstr "注意：<i>帐号跟密码会以明码存于您的 Liferea Feed 列表文件中。</i>"
 
 #: ../glade/auth.glade.h:5 ../glade/liferea.glade.h:105
@@ -1801,9 +1739,7 @@ msgid "<b>text/plain</b>"
 msgstr "<b>text/plain</b>"
 
 #: ../glade/liferea.glade.h:13
-msgid ""
-"<i>This option can cause significant delays when loading folders containing "
-"many feeds.</i>"
+msgid "<i>This option can cause significant delays when loading folders containing many feeds.</i>"
 msgstr "<i>此选项可能会在载入包含大量 Feed 的目录时，导致严重的延迟。</i>"
 
 #: ../glade/liferea.glade.h:14
@@ -1916,7 +1852,7 @@ msgstr "取消全部(_A)"
 #: ../glade/liferea.glade.h:40 ../glade/new_subscription.glade.h:4
 #, fuzzy
 msgid "Convert _using:"
-msgstr "转换 用:"
+msgstr "转换用(U):"
 
 #: ../glade/liferea.glade.h:41
 msgid ""
@@ -1967,9 +1903,7 @@ msgid "Enclosures"
 msgstr "附件"
 
 #: ../glade/liferea.glade.h:54
-msgid ""
-"Enter a search string Liferea should find either in a items title or in its "
-"content."
+msgid "Enter a search string Liferea should find either in a items title or in its content."
 msgstr "输入一个让 Liferea 在条目标题或内容中寻找的搜索字符。"
 
 #: ../glade/liferea.glade.h:55
@@ -2014,13 +1948,8 @@ msgid "Liferea Preferences"
 msgstr "Liferea 首选项"
 
 #: ../glade/liferea.glade.h:66 ../glade/new_subscription.glade.h:5
-msgid ""
-"Liferea can use external filter plugins in order to access feeds and "
-"directories in non-supported formats.  See the documentation for more "
-"information."
-msgstr ""
-"Liferea 可以使用外挂过滤插件来读取不支持格式的 Feed 和目录，更多信息请查阅文"
-"档。"
+msgid "Liferea can use external filter plugins in order to access feeds and directories in non-supported formats.  See the documentation for more information."
+msgstr "Liferea 可以使用外挂过滤插件来读取不支持格式的 Feed 和目录，更多信息请查阅文档。"
 
 #: ../glade/liferea.glade.h:67
 msgid "Liferea is a news aggregator for GTK+"
@@ -2037,22 +1966,13 @@ msgstr "新目录"
 #. Feed update interval hint in preference dialog.
 #: ../glade/liferea.glade.h:71
 #, fuzzy
-msgid ""
-"Note: <i>Please remember to set a reasonable refresh time. Usually it is a "
-"waste of bandwidth to poll feeds more often than each hour.</i>"
-msgstr ""
-"注: <i>请记得输入一个合理的更新时间，不建议每 15 分钟更新一个每日更新的feed，"
-"若停用自动更新请输入周期为 0 。</i>"
+msgid "Note: <i>Please remember to set a reasonable refresh time. Usually it is a waste of bandwidth to poll feeds more often than each hour.</i>"
+msgstr "注: <i>请记得输入一个合理的更新时间，不建议每 15 分钟更新一个每日更新的feed，若停用自动更新请输入周期为 0 。</i>"
 
 #: ../glade/liferea.glade.h:72
 #, fuzzy
-msgid ""
-"Note: Liferea will generate a feed subscription which is used to query the "
-"search engine results for the specified search string. You can keep this "
-"feed permanently and update it like any other subscription.  "
-msgstr ""
-"注: Liferea 将产生一个于 Feedster 查询特定字串的feed订阅。您可以永久保留此定"
-"阅，并如同其他订阅一般更新。"
+msgid "Note: Liferea will generate a feed subscription which is used to query the search engine results for the specified search string. You can keep this feed permanently and update it like any other subscription.  "
+msgstr "注: Liferea 将产生一个于 Feedster 查询特定字串的feed订阅。您可以永久保留此定阅，并如同其他订阅一般更新。"
 
 #: ../glade/liferea.glade.h:73
 msgid "Online/Offline Button"
@@ -2131,9 +2051,7 @@ msgid "Source Type:"
 msgstr "来源类型："
 
 #: ../glade/liferea.glade.h:93
-msgid ""
-"Starts searching for the specified text in all feeds. The search result will "
-"appear in the item list."
+msgid "Starts searching for the specified text in all feeds. The search result will appear in the item list."
 msgstr "开始在所有 Feed 中搜索该文本，结果会出现在条目列表中。"
 
 #: ../glade/liferea.glade.h:94
@@ -2149,12 +2067,8 @@ msgid "T_erminate instead of minimizing to tray icon."
 msgstr "退出而不是最小化到托盘(_E)。"
 
 #: ../glade/liferea.glade.h:97
-msgid ""
-"The cache setting controls if the contents of feeds are saved when Liferea "
-"exits. Marked items are always saved to the cache."
-msgstr ""
-"缓存设置控制是否在退出 Liferea 时保存 Feed 内容，已标记的条目将总是被保存于缓"
-"存中。"
+msgid "The cache setting controls if the contents of feeds are saved when Liferea exits. Marked items are always saved to the cache."
+msgstr "缓存设置控制是否在退出 Liferea 时保存 Feed 内容，已标记的条目将总是被保存于缓存中。"
 
 #: ../glade/liferea.glade.h:99
 #, no-c-format
@@ -2188,13 +2102,8 @@ msgstr "查看标题"
 
 #: ../glade/liferea.glade.h:107
 #, fuzzy
-msgid ""
-"What should Liferea do with this enclosure? Please enter the command you "
-"want to be executed below. Downloaded enclosures will be supplied as an "
-"argument for this command:"
-msgstr ""
-"Liferea 将如何处理附件？ 请在下面键入您要执行的命令，下载的文件将作为该命令的"
-"参数："
+msgid "What should Liferea do with this enclosure? Please enter the command you want to be executed below. Downloaded enclosures will be supplied as an argument for this command:"
+msgstr "Liferea 将如何处理附件？ 请在下面键入您要执行的命令，下载的文件将作为该命令的参数："
 
 #: ../glade/liferea.glade.h:108
 msgid "_Advanced..."
@@ -2416,8 +2325,7 @@ msgid "Add OPML/Planet"
 msgstr ""
 
 #: ../glade/opml_source.glade.h:2
-msgid ""
-"Please specify a local file or an URL pointing to a valid OPML feed list."
+msgid "Please specify a local file or an URL pointing to a valid OPML feed list."
 msgstr ""
 
 #: ../glade/opml_source.glade.h:3
@@ -2433,9 +2341,7 @@ msgid "Advanced..."
 msgstr "高级..."
 
 #: ../glade/simple_subscription.glade.h:4
-msgid ""
-"Enter a website location to use feed autodiscovery or in case you know it "
-"the exact feed location."
+msgid "Enter a website location to use feed autodiscovery or in case you know it the exact feed location."
 msgstr ""
 
 #~ msgid "Count"
@@ -2457,27 +2363,16 @@ msgstr ""
 #~ msgid "Invalid ISO8601 date format! Ignoring <dc:date> information!\n"
 #~ msgstr "非法 ISO8601 日期格式! 忽略 <dc:date> 信息!\n"
 
-#~ msgid ""
-#~ "Unexpected end of character sequence or corrupt UTF-8 encoding! Some "
-#~ "characters were dropped!"
+#~ msgid "Unexpected end of character sequence or corrupt UTF-8 encoding! Some characters were dropped!"
 #~ msgstr "非预期的字符序列或错误的 UTF-8 编码! 某些字符已丢弃!"
 
-#~ msgid ""
-#~ "<p>Could not determine the feed type. Please check that it is <a href="
-#~ "\"http://feedvalidator.org\">valid</a> and in a <a href=\"http://liferea."
-#~ "sourceforge.net/supported_formats.htm\">supported format</a>.</p>"
-#~ msgstr ""
-#~ "<p>无法确定feed类型。请确定它是 <a href=\"http://feedvalidator.org\">有效"
-#~ "的feed</a>，并为 <a href=\"http://liferea.sourceforge.net/"
-#~ "supported_formats.htm\">支持的格式</a>。</p>"
+#~ msgid "<p>Could not determine the feed type. Please check that it is <a href=\"http://feedvalidator.org\">valid</a> and in a <a href=\"http://liferea.sourceforge.net/supported_formats.htm\">supported format</a>.</p>"
+#~ msgstr "<p>无法确定feed类型。请确定它是 <a href=\"http://feedvalidator.org\">有效的feed</a>，并为 <a href=\"http://liferea.sourceforge.net/supported_formats.htm\">支持的格式</a>。</p>"
 
-#~ msgid ""
-#~ "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
+#~ msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
 #~ msgstr "读入缓存文件 \"%s\"时发生错误! 无法载入缓存文件!"
 
-#~ msgid ""
-#~ "<p>XML error while parsing cache file! Feed cache file \"%s\" could not "
-#~ "be loaded!</p>"
+#~ msgid "<p>XML error while parsing cache file! Feed cache file \"%s\" could not be loaded!</p>"
 #~ msgstr "<p>解析缓存文件时发生 XML 错误! 无法载入缓存文件 \"%s\"!</p>"
 
 #~ msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
@@ -2513,12 +2408,8 @@ msgstr ""
 #~ msgid "Webserver's authentication method incompatible with Liferea"
 #~ msgstr "网站服务器的认证方法与 Lifera 不兼容"
 
-#~ msgid ""
-#~ "<br>You may want to validate the feed using <a href=\"http://"
-#~ "feedvalidator.org/check.cgi?url="
-#~ msgstr ""
-#~ "<br> 您可能需要验证该feed，使用<a href=\"http://feedvalidator.org/check."
-#~ "cgi?url="
+#~ msgid "<br>You may want to validate the feed using <a href=\"http://feedvalidator.org/check.cgi?url="
+#~ msgstr "<br> 您可能需要验证该feed，使用<a href=\"http://feedvalidator.org/check.cgi?url="
 
 #~ msgid "\">FeedValidator</a>."
 #~ msgstr "\">FeedValidator</a>。"
@@ -2532,9 +2423,7 @@ msgstr ""
 #~ msgid "Updates all subscriptions. This does not update OCS directories."
 #~ msgstr "立即更新所有订阅，不包括 OCS 目录。"
 
-#~ msgid ""
-#~ "Marks all items of the current selected subscription or all of "
-#~ "subscriptions of the selected folder as read."
+#~ msgid "Marks all items of the current selected subscription or all of subscriptions of the selected folder as read."
 #~ msgstr "标记选定订阅下的所有项目或选定目录下的所有订阅为已读。"
 
 #~ msgid "New _VFolder..."
@@ -2589,9 +2478,7 @@ msgstr ""
 #~ msgid "User defined format:"
 #~ msgstr "使用自定义格式:"
 
-#~ msgid ""
-#~ "for expert users: specify a time format string, consult the strftime() "
-#~ "manpage for the format codes"
+#~ msgid "for expert users: specify a time format string, consult the strftime() manpage for the format codes"
 #~ msgstr "为专家使用者: 指定一个特定的时间格式，请参考 strftime 手册中的格式"
 
 #~ msgid "<i>Please restart Liferea for changes to take effect.</i>"
@@ -2624,12 +2511,8 @@ msgstr ""
 #~ msgid "Show _Toolbar Only"
 #~ msgstr "仅显示工具条(_T)"
 
-#~ msgid ""
-#~ "<i>Liferea reuses the GNOME proxy settings. If you use GNOME you can "
-#~ "change these settings in the GNOME Control Center.</i>"
-#~ msgstr ""
-#~ "<i>Liferea 使用 GNOME 代理服务器设置。如果使用 GNOME，可以在 GNOME 控制中"
-#~ "心里修改这些设置。</i>"
+#~ msgid "<i>Liferea reuses the GNOME proxy settings. If you use GNOME you can change these settings in the GNOME Control Center.</i>"
+#~ msgstr "<i>Liferea 使用 GNOME 代理服务器设置。如果使用 GNOME，可以在 GNOME 控制中心里修改这些设置。</i>"
 
 #~ msgid "_Enable Proxy"
 #~ msgstr "启用代理服务器(_E)"
@@ -2652,9 +2535,7 @@ msgstr ""
 #~ msgid ""
 #~ "Note: Items are added to the vfolder if at least one additive rule\n"
 #~ "matches. They are removed if at least one removing rule matches."
-#~ msgstr ""
-#~ "注: 如果符合任一条规则，条目将加入虚拟目录中。如果符合任何一条删除规则，它"
-#~ "们将会被删除。"
+#~ msgstr "注: 如果符合任一条规则，条目将加入虚拟目录中。如果符合任何一条删除规则，它们将会被删除。"
 
 #~ msgid "Rules"
 #~ msgstr "规则"
@@ -2689,13 +2570,8 @@ msgstr ""
 #~ msgid "Liferea encountered an unknown argument: %s\n"
 #~ msgstr "Lifeare 碰到未知的参数: %s\n"
 
-#~ msgid ""
-#~ "Another copy of Liferea was found to be running. Please use it instead. "
-#~ "If there is no other copy of Liferea running, please delete the \"~/."
-#~ "liferea/lock\" lock file."
-#~ msgstr ""
-#~ "发现另外一个 Liferea 正在执行。请使用它。如果并没有其他 Liferea 执行中，请"
-#~ "删除锁文件 \"~/.liferea/lock\" 。"
+#~ msgid "Another copy of Liferea was found to be running. Please use it instead. If there is no other copy of Liferea running, please delete the \"~/.liferea/lock\" lock file."
+#~ msgstr "发现另外一个 Liferea 正在执行。请使用它。如果并没有其他 Liferea 执行中，请删除锁文件 \"~/.liferea/lock\" 。"
 
 #~ msgid "feed generator"
 #~ msgstr "feed产生器"
@@ -2784,8 +2660,7 @@ msgstr ""
 #~ msgid "A folder must be selected."
 #~ msgstr "必须选择一个目录。"
 
-#~ msgid ""
-#~ "internal error! unknown entry type! cannot display appropriate icon!\n"
+#~ msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
 #~ msgstr "内部错误! 未知入口类型! 不能显示合适的图标!\n"
 
 #~ msgid ""
@@ -2832,9 +2707,7 @@ msgstr ""
 #~ msgid "trying to load browser module %s (%s)\n"
 #~ msgstr "尝试载入浏览器模块 %s (%s)\n"
 
-#~ msgid ""
-#~ "Sorry, I was not able to load any installed browser modules! Try the --"
-#~ "debug-all option to get debug information!"
+#~ msgid "Sorry, I was not able to load any installed browser modules! Try the --debug-all option to get debug information!"
 #~ msgstr "抱歉, 无法载入任何浏览器模块! 请用 --debug-all 选项来获取调试信息!"
 
 #~ msgid "New Feed"
@@ -2850,39 +2723,8 @@ msgstr ""
 #~ msgstr "搜索所有feed。"
 
 #, fuzzy
-#~ msgid ""
-#~ "<h2>Welcome to Liferea</h2><p>The left pane contains the feed list where "
-#~ "you can add new subscriptions and select subscriptions to read their "
-#~ "headlines. The right side either displays a list of the headlines of the "
-#~ "selected subscription and a pane to view the selected headline or all "
-#~ "headlines at once if condensed mode is selected.</p><h3>Basic Actions</"
-#~ "h3><ul><li><p><b>Add Subscription</b> - Creates a new subscription in the "
-#~ "selected folder. To create a new subscription enter the feed URL or if "
-#~ "you don't know it the URL of the website which provides the feed.</p></"
-#~ "li><li><p><b>Update Subscription</b> - This will update the subscription "
-#~ "you selected. You may want to do this if you want to immediately check a "
-#~ "subscription for updates. Usually it is adequate to rely on the auto "
-#~ "updating according to the update interval of the subscription.</p></"
-#~ "li><li><p><b>Update All</b> - This will update all your subscriptions at "
-#~ "once. Again usually it is adequate to rely on the auto updating.</"
-#~ "li><li><p><b>Edit Subscription Properties</b> - Sometimes you might want "
-#~ "to change the update interval, title, authentication or caching "
-#~ "properties of a subscription.</p></li></ul><p>To learn more about Liferea "
-#~ "you should read the documentation provided in the help feed or in the <a "
-#~ "href=\"http://liferea.sourceforge.net/faq.htm\">FAQ</a> available at the "
-#~ "<a href=\"http://liferea.sf.net\">project homepage</a>.</p>"
-#~ msgstr ""
-#~ "<h2>欢迎使用 Liferea</h2><p>左面板包含了feed列表，您可以添加新的订阅，也可"
-#~ "以查看订阅的主题。右面板或者显示选定订阅的主题列表和其内容栏，或者在摘要模"
-#~ "式下的全部主题</p><h3>基本操作</h3><ul><li><p><b>添加订阅</b> - 在选定目录"
-#~ "下添加一个新的订阅。输入该feed的网址来添加这个新订阅，或者提供该feed的网站"
-#~ "地址假如您不知道它。</p></li><li><p><b>更新订阅</b> - 更新选定的订阅。您将"
-#~ "可以用它来立即查看一个订阅是否有更新。通常利用自动更新就足够了。</p></"
-#~ "li><li><p><b>更新全部</b> - 更新您全部的订阅。通常利用自动更新就足够了。</"
-#~ "li><li><p><b>编辑订阅属性</b> - 有时您可能想修改更新一个订阅的周期、标题、"
-#~ "认证或缓存属性。</p></li></ul><p>您要了解 Liferea 可以阅读帮助feed中的文档"
-#~ "或者查看<a href=\"http://liferea.sf.net\">项目主页</a>上的<a href="
-#~ "\"http://liferea.sourceforge.net/faq.htm\">FAQ</a>。</p>"
+#~ msgid "<h2>Welcome to Liferea</h2><p>The left pane contains the feed list where you can add new subscriptions and select subscriptions to read their headlines. The right side either displays a list of the headlines of the selected subscription and a pane to view the selected headline or all headlines at once if condensed mode is selected.</p><h3>Basic Actions</h3><ul><li><p><b>Add Subscription</b> - Creates a new subscription in the selected folder. To create a new subscription enter the feed URL or if you don't know it the URL of the website which provides the feed.</p></li><li><p><b>Update Subscription</b> - This will update the subscription you selected. You may want to do this if you want to immediately check a subscription for updates. Usually it is adequate to rely on the auto updating according to the update interval of the subscription.</p></li><li><p><b>Update All</b> - This will update all your subscriptions at once. Again usually it is adequate to rely on the auto updating.</li><li><p><b>Edit Subscription Properties</b> - Sometimes you might want to change the update interval, title, authentication or caching properties of a subscription.</p></li></ul><p>To learn more about Liferea you should read the documentation provided in the help feed or in the <a href=\"http://liferea.sourceforge.net/faq.htm\">FAQ</a> available at the <a href=\"http://liferea.sf.net\">project homepage</a>.</p>"
+#~ msgstr "<h2>欢迎使用 Liferea</h2><p>左面板包含了feed列表，您可以添加新的订阅，也可以查看订阅的主题。右面板或者显示选定订阅的主题列表和其内容栏，或者在摘要模式下的全部主题</p><h3>基本操作</h3><ul><li><p><b>添加订阅</b> - 在选定目录下添加一个新的订阅。输入该feed的网址来添加这个新订阅，或者提供该feed的网站地址假如您不知道它。</p></li><li><p><b>更新订阅</b> - 更新选定的订阅。您将可以用它来立即查看一个订阅是否有更新。通常利用自动更新就足够了。</p></li><li><p><b>更新全部</b> - 更新您全部的订阅。通常利用自动更新就足够了。</li><li><p><b>编辑订阅属性</b> - 有时您可能想修改更新一个订阅的周期、标题、认证或缓存属性。</p></li></ul><p>您要了解 Liferea 可以阅读帮助feed中的文档或者查看<a href=\"http://liferea.sf.net\">项目主页</a>上的<a href=\"http://liferea.sourceforge.net/faq.htm\">FAQ</a>。</p>"
 
 #~ msgid "Untitled"
 #~ msgstr "未命名"
@@ -2961,12 +2803,8 @@ msgstr ""
 #~ msgid "There were errors while parsing a feed"
 #~ msgstr "解析feed时出现错误"
 
-#~ msgid ""
-#~ "There were errors while parsing this feed. The following error occurred:"
-#~ "<br><b>%s</b>"
+#~ msgid "There were errors while parsing this feed. The following error occurred:<br><b>%s</b>"
 #~ msgstr "解析feed时出现错误，错误信息如下:<br><b>%s</b>"
 
-#~ msgid ""
-#~ "There were errors while filtering this feed. The following error occurred:"
-#~ "<br><b><pre>%s</pre></b>"
+#~ msgid "There were errors while filtering this feed. The following error occurred:<br><b><pre>%s</pre></b>"
 #~ msgstr "解析feed时出现错误，错误信息如下:<br><b><pre>%s</pre></b>"
