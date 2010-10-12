@@ -1257,6 +1257,23 @@ liferea_shell_create (int initialState)
 				   "into the right pane.</p>"));
 	g_string_append (buffer,   "</td></tr></table>");
 
+	g_string_append (buffer,   "<br/><div style='padding:6px;border:solid 1px #aaa;background:#ffa'><p><b>Important:</b> This is an unstable version to be used for testing only!</p>");
+	g_string_append (buffer,   "<p>If you run this version feel free to ask any question at #liferea on freenode.org!</p>");
+	
+	g_string_append (buffer,   "<p><b>Things currently broken:</b></p>");
+	g_string_append (buffer,   "<ul>");
+	g_string_append (buffer,   "   <li>Search Folder rebuilding</li>");
+	g_string_append (buffer,   "   <li>Searching</li>");
+	g_string_append (buffer,   "   <li>Feed list DnD</li>");
+	g_string_append (buffer,   "</ul>");
+	
+	g_string_append (buffer,   "<p><b>Other things to be done before 1.8:</b></p>");
+	g_string_append (buffer,   "<ul>");
+	g_string_append (buffer,   "   <li>...</li>");
+	g_string_append (buffer,   "</ul>");
+	
+	g_string_append (buffer,   "</div>");
+		
 	g_string_append (buffer,   "</div>");
 
 	htmlview_finish_output (buffer);
