@@ -353,7 +353,6 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates, gbo
 			item->readStatus = TRUE;
 			
 		if (itemset_merge_item (itemSet, items, item, length, allowUpdates)) {
-		g_print("merging item %s %lu\n", item->title, item->id);
 			vfolder_foreach_data (vfolder_check_item, item);
 			newCount++;
 			items = g_list_prepend (items, iter->data);
