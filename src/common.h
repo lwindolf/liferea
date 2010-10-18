@@ -124,15 +124,21 @@ xmlChar * common_uri_sanitize(const xmlChar *uri);
 xmlChar * common_build_url(const gchar *url, const gchar *baseURL);
 
 /**
- * Analyzes the given string and returns the LTR/RTL
- * setting that should be used when displaying it in
- * a GTK tree store.
+ * Analyzes the string, returns a diection setting immediately
+ * useful for insertion into HTML
  *
  * @param text		string to analyze
  *
- * @returns UTF-8 string with direction mark
+ * @returns a constant "ltr" (default) or "rtl"
  */
-const gchar * common_get_direction_mark(gchar *text);
+const gchar * common_get_text_direction(const gchar *text);
+
+/**
+ * Returns the overall directionality of the application
+ *
+ * @returns a constant "ltr" (default) or "rtl"
+ */
+const gchar * common_get_app_direction(void);
 
 #ifndef HAVE_STRSEP
 char * common_strsep(char **stringp, const char *delim);

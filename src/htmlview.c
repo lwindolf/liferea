@@ -167,6 +167,19 @@ htmlview_update_all_items (void)
 	}
 }
 
+static const gchar *
+htmlview_get_item_direction(itemPtr item)
+{
+	if (item_get_title (item))
+		return (common_get_text_direction (item_get_title (item)));
+
+	if (item_get_description (item))
+		return (common_get_text_direction (item_get_description (item)));
+
+	/* what can we do? */
+	return ("ltr");
+}
+
 static gchar *
 htmlview_render_item (itemPtr item, 
                       guint viewMode,
@@ -177,6 +190,7 @@ htmlview_render_item (itemPtr item,
 	nodePtr		node;
 	xmlDocPtr 	doc;
 	xmlNodePtr 	xmlNode;
+	const gchar     *text_direction = NULL;
 
 	debug_enter ("htmlview_render_item");
 
@@ -190,10 +204,12 @@ htmlview_render_item (itemPtr item,
 	xmlDocSetRootElement (doc, xmlNode);
 				
 	item_to_xml(item, xmlDocGetRootElement (doc));
+
+	text_direction = htmlview_get_item_direction (item);
 			
 	if (IS_FEED (node)) {
 		xmlNodePtr feed;
-		feed = xmlNewChild (xmlDocGetRootElement(doc), NULL, "feed", NULL);
+		feed = xmlNewChild (xmlDocGetRootElement (doc), NULL, "feed", NULL);
 		feed_to_xml (node, feed);
 	}
 	
@@ -207,6 +223,8 @@ htmlview_render_item (itemPtr item,
 	
 	render_parameter_add (params, "summary='%d'", summaryMode?1:0);
 	render_parameter_add (params, "single='%d'", (viewMode == ITEMVIEW_SINGLE_ITEM)?1:0);
+	render_parameter_add (params, "txtDirection='%s'", text_direction);
+	render_parameter_add (params, "appDirection='%s'", common_get_app_direction ());
 	output = render_xml (doc, "item", params);
 	
 	/* For debugging use: xmlSaveFormatFile("/tmp/test.xml", doc, 1); */

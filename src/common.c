@@ -177,35 +177,34 @@ common_build_url (const gchar *url, const gchar *baseURL)
 	return absURL;
 }
 
+/*
+ * Returns a string that can be used for the HTML "dir" attribute.
+ * Direction is taken from a string, regardless of any language tags.
+ */
 const gchar *
-common_get_direction_mark (gchar *text)
+common_get_text_direction (const gchar *text)
 {
-	PangoDirection		pango_direction = PANGO_DIRECTION_NEUTRAL;
-	GtkTextDirection	gtk_direction;
+	PangoDirection pango_direction = PANGO_DIRECTION_NEUTRAL;
 	
 	if (text)
 		pango_direction = pango_find_base_dir (text, -1);
-		
-	switch (pango_direction) {
-		case PANGO_DIRECTION_LTR:
-			gtk_direction = GTK_TEXT_DIR_LTR;
-			break;
-		case PANGO_DIRECTION_RTL:
-			gtk_direction = GTK_TEXT_DIR_RTL;
-			break;
-		default:
-			gtk_direction = gtk_widget_get_default_direction ();
-			break;
-	}
 
-	switch (gtk_direction) {
-		case GTK_TEXT_DIR_RTL: 
-			return "\342\200\217"; /* U+200F RIGHT-TO-LEFT MARK */
-		case GTK_TEXT_DIR_LTR: 
-			return "\342\200\216"; /* U+200E LEFT-TO-RIGHT MARK */
-		default:
-			return "";
-	}
+	if (pango_direction == PANGO_DIRECTION_RTL)
+		return ("rtl");
+	else
+		return ("ltr");
+}
+
+const gchar *
+common_get_app_direction (void)
+{
+	GtkTextDirection	gtk_direction;
+
+	gtk_direction = gtk_widget_get_default_direction ();
+	if (gtk_direction == GTK_TEXT_DIR_RTL)
+		return ("rtl");
+	else
+		return ("ltr");
 }
 
 #ifndef HAVE_STRSEP

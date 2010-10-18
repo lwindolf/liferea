@@ -67,7 +67,8 @@ enum is_columns {
 	IS_ENCLOSURE,		/**< Flag wether enclosure is attached or not */
 	IS_SOURCE,		/**< Source node pointer */
 	IS_STATE,		/**< Original item state (unread, flagged...) for sorting */
-	ITEMSTORE_UNREAD,	/**< Flag wether "unread" icon is to be shown */
+	ITEMSTORE_UNREAD,	/**< Flag whether "unread" icon is to be shown */
+	ITEMSTORE_ALIGN,        /**< How to align title (RTL support) */
 	ITEMSTORE_LEN		/**< Number of columns in the itemstore */
 };
 
@@ -249,7 +250,8 @@ item_list_view_create_tree_store (void)
 	                    G_TYPE_BOOLEAN,	/* IS_ENCLOSURE */
 	                    G_TYPE_POINTER,	/* IS_SOURCE */
 	                    G_TYPE_UINT,	/* IS_STATE */
-	                    G_TYPE_INT		/* ITEMSTORE_UNREAD */
+			    G_TYPE_INT,		/* ITEMSTORE_UNREAD */
+			    G_TYPE_FLOAT        /* ITEMSTORE_ALIGN */
 	);
 }
 
@@ -326,13 +328,31 @@ item_list_view_clear (ItemListView *ilv)
 	ilv->priv->batch_itemstore = item_list_view_create_tree_store ();
 }
 
+static gfloat
+item_list_title_alignment (gchar *title)
+{
+	if (!title || strlen(title) == 0)
+		return 0.;
+
+	/* debug5 (DEBUG_HTML, "title ***%s*** first bytes %02hhx%02hhx%02hhx pango %d",
+		title, title[0], title[1], title[2], pango_find_base_dir (title, -1)); */
+	int txt_direction = pango_find_base_dir (title, -1);
+  	int app_direction = gtk_widget_get_default_direction ();
+	if ((txt_direction == PANGO_DIRECTION_LTR &&
+	     app_direction == GTK_TEXT_DIR_LTR) ||
+	    (txt_direction == PANGO_DIRECTION_RTL &&
+	     app_direction == GTK_TEXT_DIR_RTL))
+		return 0.; /* same direction, regular ("left") alignment */
+	else
+		return 1.;
+}
+
 void
 item_list_view_update_item (ItemListView *ilv, itemPtr item)
 {
 	GtkTreeStore	*itemstore;
 	GtkTreeIter	iter;
 	gchar		*title, *time_str;
-	const gchar 	*direction_marker;
 	const GdkPixbuf	*state_icon;
 	
 	if (!item_list_view_id_to_iter (ilv, item->id, &iter))
@@ -340,10 +360,8 @@ item_list_view_update_item (ItemListView *ilv, itemPtr item)
 	
 	time_str = (0 != item->time) ? date_format ((time_t)item->time, NULL) : g_strdup ("");
 
-	direction_marker = common_get_direction_mark (node_from_id (item->nodeId)->title);	
-
 	title = item->title && strlen (item->title) ? item->title : _("*** No title ***");
-	title = g_strstrip (g_strdup_printf ("%s%s", direction_marker, title));
+	title = g_strstrip (g_strdup (title));
 
 	state_icon = item->flagStatus ? icon_get (ICON_FLAG) :
 	             !item->readStatus ? icon_get (ICON_UNREAD) :
@@ -353,13 +371,13 @@ item_list_view_update_item (ItemListView *ilv, itemPtr item)
 		itemstore = ilv->priv->batch_itemstore;
 	else
 		itemstore = GTK_TREE_STORE (gtk_tree_view_get_model (ilv->priv->treeview));
-		
 	gtk_tree_store_set (itemstore,
 	                    &iter,
 		            IS_LABEL, title,
 			    IS_TIME_STR, time_str,
 			    IS_STATEICON, state_icon,
 			    ITEMSTORE_UNREAD, item->readStatus ? PANGO_WEIGHT_NORMAL : PANGO_WEIGHT_BOLD,
+			    ITEMSTORE_ALIGN, item_list_title_alignment (title),
 			    -1);
 
 	g_free (time_str);
@@ -533,7 +551,8 @@ item_list_view_create (GtkWidget *window)
 	renderer = gtk_cell_renderer_text_new ();
 	column = gtk_tree_view_column_new_with_attributes (_("Headline"), renderer, 
 	                                                   "text", IS_LABEL,
-							   "weight", ITEMSTORE_UNREAD,					  
+							   "weight", ITEMSTORE_UNREAD,
+							   "xalign", ITEMSTORE_ALIGN,
 							   NULL);
 	gtk_tree_view_append_column (ilv->priv->treeview, column);
 	gtk_tree_view_column_set_sort_column_id (column, IS_LABEL);

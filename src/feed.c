@@ -335,14 +335,30 @@ feed_remove (nodePtr node)
 	db_subscription_remove (node->id);
 }
 
+static const gchar *
+feed_get_direction(nodePtr feed)
+{
+	if (node_get_title (feed))
+		return (common_get_text_direction (node_get_title (feed)));
+	else
+		return ("ltr");
+}
+
 static gchar *
 feed_render (nodePtr node)
 {
 	gchar		*output = NULL;
 	xmlDocPtr	doc;
+	renderParamPtr	params;
+	const gchar     *text_direction = NULL;
+
+	text_direction = feed_get_direction (node);
+	params = render_parameter_new ();
+	render_parameter_add (params, "appDirection='%s'", common_get_app_direction ());
+	render_parameter_add (params, "txtDirection='%s'", text_direction);
 
 	doc = feed_to_xml (node, NULL);
-	output = render_xml (doc, "feed", NULL);
+	output = render_xml (doc, "feed", params);
 	xmlFreeDoc (doc);
 
 	return output;
