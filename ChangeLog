@@ -5,6 +5,7 @@
 	* liferea.glade: Mark 2 messages as translatable that were
 	  wrongly not marked. (Adrian Bunk, reported by Yaron Sheffer)
 
+	* Added Hebrew translation. (Yaron Sheffer)
 	* Added Asturian translation. (Marquinos)
 	* Updated Chinese/Simplified translation. (Aron Xu)
 

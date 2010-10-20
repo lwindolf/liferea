@@ -1,0 +1,59 @@
+﻿<?xml version="1.0"?>
+<opml version="1.0">
+  <head>
+    <title>Liferea Default Feed List</title>
+  </head>
+  <body>
+	<outline text="ערוצים לדוגמה">
+    <outline title="ישראליים" text="ישראליים" description="ישראליים" type="folder">
+      <outline title="ynet - &#x5D7;&#x5D3;&#x5E9;&#x5D5;&#x5EA; &#x5D4;&#x5D9;&#x5D5;&#x5DD;" text="ynet - &#x5D7;&#x5D3;&#x5E9;&#x5D5;&#x5EA; &#x5D4;&#x5D9;&#x5D5;&#x5DD;" description="ynet - &#x5D7;&#x5D3;&#x5E9;&#x5D5;&#x5EA; &#x5D4;&#x5D9;&#x5D5;&#x5DD;" type="rss" xmlUrl="http://www.ynet.co.il/Integration/StoryRss2.xml" htmlUrl="http://www.ynet.co.il"/>
+      <outline title="ynet - &#x5D7;&#x5D3;&#x5E9;&#x5D5;&#x5EA; &#x5E1;&#x5E4;&#x5D5;&#x5E8;&#x5D8;" text="ynet - &#x5D7;&#x5D3;&#x5E9;&#x5D5;&#x5EA; &#x5E1;&#x5E4;&#x5D5;&#x5E8;&#x5D8;" description="ynet - &#x5D7;&#x5D3;&#x5E9;&#x5D5;&#x5EA; &#x5E1;&#x5E4;&#x5D5;&#x5E8;&#x5D8;" type="rss" xmlUrl="http://www.ynet.co.il/Integration/StoryRss3.xml" htmlUrl="http://www.ynet.co.il"/>
+      <outline title="ynet - &#x5DE;&#x5D7;&#x5E9;&#x5D1;&#x5D9;&#x5DD;" text="ynet - &#x5DE;&#x5D7;&#x5E9;&#x5D1;&#x5D9;&#x5DD;" description="ynet - &#x5DE;&#x5D7;&#x5E9;&#x5D1;&#x5D9;&#x5DD;" type="rss" xmlUrl="http://www.ynet.co.il/Integration/StoryRss544.xml" htmlUrl="http://www.ynet.co.il"/>
+      <outline title="&#x5D4;&#x5D0;&#x5E8;&#x5E5; - &#x5D3;&#x5E3; &#x5D4;&#x5D1;&#x5D9;&#x5EA;" text="&#x5D4;&#x5D0;&#x5E8;&#x5E5; - &#x5D3;&#x5E3; &#x5D4;&#x5D1;&#x5D9;&#x5EA;" description="&#x5D4;&#x5D0;&#x5E8;&#x5E5; - &#x5D3;&#x5E3; &#x5D4;&#x5D1;&#x5D9;&#x5EA;" type="rss" xmlUrl="http://www.haaretz.co.il/feed/newsRss.xml" htmlUrl="http://www.haaretz.co.il"/>
+      <outline title="&#x5D4;&#x5D0;&#x5E8;&#x5E5; - &#x5DE;&#x5D0;&#x5DE;&#x5E8;&#x5D9;&#x5DD; &#x5D5;&#x5D3;&#x5D9;&#x5E2;&#x5D5;&#x5EA;" text="&#x5D4;&#x5D0;&#x5E8;&#x5E5; - &#x5DE;&#x5D0;&#x5DE;&#x5E8;&#x5D9;&#x5DD; &#x5D5;&#x5D3;&#x5D9;&#x5E2;&#x5D5;&#x5EA;" description="&#x5D4;&#x5D0;&#x5E8;&#x5E5; - &#x5DE;&#x5D0;&#x5DE;&#x5E8;&#x5D9;&#x5DD; &#x5D5;&#x5D3;&#x5D9;&#x5E2;&#x5D5;&#x5EA;" type="rss" xmlUrl="http://www.haaretz.co.il/feed/opinionsRss.xml" htmlUrl="http://www.haaretz.co.il"/>
+      <outline title="&#x5D4;&#x5D0;&#x5E8;&#x5E5; - &#x5D1;&#x5E2;&#x5D5;&#x5DC;&#x5DD;" text="&#x5D4;&#x5D0;&#x5E8;&#x5E5; - &#x5D1;&#x5E2;&#x5D5;&#x5DC;&#x5DD;" description="&#x5D4;&#x5D0;&#x5E8;&#x5E5; - &#x5D1;&#x5E2;&#x5D5;&#x5DC;&#x5DD;" type="rss" xmlUrl="http://www.haaretz.co.il/feed/haaretz_foreignNews.xml" htmlUrl="http://www.haaretz.co.il/hasite/pages/LiArt.jhtml?contrassID=1&amp;subContrassID=1&amp;sbSubContrassID=0"/>
+      <outline title="&#x202B;&#x5D4;&#x5D9;&#x5D3;&#x5E2;&#x5DF;&#x202C;" text="&#x202B;&#x5D4;&#x5D9;&#x5D3;&#x5E2;&#x5DF;&#x202C;" description="&#x202B;&#x5D4;&#x5D9;&#x5D3;&#x5E2;&#x5DF;&#x202C;" type="rss" xmlUrl="http://www.hayadan.org.il/feed/" htmlUrl="http://www.hayadan.org.il"/>
+      <outline title="&#x5E1;&#x5D9;&#x5E4;&#x5D5;&#x5E8;&#x5D9;&#x5DD; &#x5DE;&#x5D5;&#x5D1;&#x5D9;&#x5DC;&#x5D9;&#x5DD; - &#x5D7;&#x5D3;&#x5E9;&#x5D5;&#x5EA; Google" text="&#x5E1;&#x5D9;&#x5E4;&#x5D5;&#x5E8;&#x5D9;&#x5DD; &#x5DE;&#x5D5;&#x5D1;&#x5D9;&#x5DC;&#x5D9;&#x5DD; - &#x5D7;&#x5D3;&#x5E9;&#x5D5;&#x5EA; Google" description="&#x5E1;&#x5D9;&#x5E4;&#x5D5;&#x5E8;&#x5D9;&#x5DD; &#x5DE;&#x5D5;&#x5D1;&#x5D9;&#x5DC;&#x5D9;&#x5DD; - &#x5D7;&#x5D3;&#x5E9;&#x5D5;&#x5EA; Google" type="rss" xmlUrl="http://news.google.com/news?cf=all&amp;ned=iw_il&amp;hl=iw&amp;topic=h&amp;num=3&amp;output=rss" htmlUrl="http://news.google.com/news?ned=iw_il&amp;hl=iw&amp;topic=h&amp;num=3"/>
+      <outline title="&#x5D2;&#x5DC;&#x5D5;&#x5D1;&#x5E1; - &#x5D4;&#x5D9;&#x5D9;-&#x5D8;&#x5E7; &#x5EA;&#x5E7;&#x5E9;&#x5D5;&#x5E8;&#x5EA; &#x5D5;&#x5D0;&#x5D9;&#x5E0;&#x5D8;&#x5E8;&#x5E0;&#x5D8;" text="&#x5D2;&#x5DC;&#x5D5;&#x5D1;&#x5E1; - &#x5D4;&#x5D9;&#x5D9;-&#x5D8;&#x5E7; &#x5EA;&#x5E7;&#x5E9;&#x5D5;&#x5E8;&#x5EA; &#x5D5;&#x5D0;&#x5D9;&#x5E0;&#x5D8;&#x5E8;&#x5E0;&#x5D8;" description="&#x5D2;&#x5DC;&#x5D5;&#x5D1;&#x5E1; - &#x5D4;&#x5D9;&#x5D9;-&#x5D8;&#x5E7; &#x5EA;&#x5E7;&#x5E9;&#x5D5;&#x5E8;&#x5EA; &#x5D5;&#x5D0;&#x5D9;&#x5E0;&#x5D8;&#x5E8;&#x5E0;&#x5D8;" type="rss" xmlUrl="http://www.globes.co.il/webservice/rss/rssfeeder.asmx/FeederNode?iID=594" htmlUrl="http://www.globes.co.il/news/home.aspx?fid=594"/>
+      <outline title="&#x5D5;&#x5D5;&#x5D0;&#x5DC;&#x5D4;! &#x5E2;&#x5E1;&#x5E7;&#x5D9;&#x5DD; - &#x5E2;&#x5E1;&#x5E7;&#x5D9;&#x5DD;" text="&#x5D5;&#x5D5;&#x5D0;&#x5DC;&#x5D4;! &#x5E2;&#x5E1;&#x5E7;&#x5D9;&#x5DD; - &#x5E2;&#x5E1;&#x5E7;&#x5D9;&#x5DD;" description="&#x5D5;&#x5D5;&#x5D0;&#x5DC;&#x5D4;! &#x5E2;&#x5E1;&#x5E7;&#x5D9;&#x5DD; - &#x5E2;&#x5E1;&#x5E7;&#x5D9;&#x5DD;" type="rss" xmlUrl="http://rss.walla.co.il/?w=/2/3/1/@rss" htmlUrl="http://finance.walla.co.il/"/>
+      <outline title="mako - &#x5D7;&#x5D3;&#x5E9;&#x5D5;&#x5EA; 2, &#x5EA;&#x5DB;&#x5E0;&#x5D9;&#x5D5;&#x5EA; &#x5E7;&#x5E9;&#x5EA; &#x5D5;&#x5D1;&#x5D9;&#x5E4;, &#x5DE;&#x5E9;&#x5D7;&#x5E7;&#x5D9;&#x5DD; &#x5D5;&#x5DB;&#x5DC; &#x5DE;&#x5D4; &#x5E9;&#x5DE;&#x5E2;&#x5E0;&#x5D9;&#x5D9;&#x5DF;" text="mako - &#x5D7;&#x5D3;&#x5E9;&#x5D5;&#x5EA; 2, &#x5EA;&#x5DB;&#x5E0;&#x5D9;&#x5D5;&#x5EA; &#x5E7;&#x5E9;&#x5EA; &#x5D5;&#x5D1;&#x5D9;&#x5E4;, &#x5DE;&#x5E9;&#x5D7;&#x5E7;&#x5D9;&#x5DD; &#x5D5;&#x5DB;&#x5DC; &#x5DE;&#x5D4; &#x5E9;&#x5DE;&#x5E2;&#x5E0;&#x5D9;&#x5D9;&#x5DF;" description="mako - &#x5D7;&#x5D3;&#x5E9;&#x5D5;&#x5EA; 2, &#x5EA;&#x5DB;&#x5E0;&#x5D9;&#x5D5;&#x5EA; &#x5E7;&#x5E9;&#x5EA; &#x5D5;&#x5D1;&#x5D9;&#x5E4;, &#x5DE;&#x5E9;&#x5D7;&#x5E7;&#x5D9;&#x5DD; &#x5D5;&#x5DB;&#x5DC; &#x5DE;&#x5D4; &#x5E9;&#x5DE;&#x5E2;&#x5E0;&#x5D9;&#x5D9;&#x5DF;" type="rss" xmlUrl="http://rcs.mako.co.il/rss/MainSliderRss.xml" htmlUrl="http://www.mako.co.il"/>
+      <outline title="Themarker - &#x5D7;&#x5D3;&#x5E9;&#x5D5;&#x5EA;" text="Themarker - &#x5D7;&#x5D3;&#x5E9;&#x5D5;&#x5EA;" description="Themarker - &#x5D7;&#x5D3;&#x5E9;&#x5D5;&#x5EA;" type="rss" xmlUrl="http://www.themarker.com/tmc/content/xml/rss/hpfeed.xml" htmlUrl="http://www.themarker.com"/>
+      <outline title="ONE - &#x5D7;&#x5D3;&#x5E9;&#x5D5;&#x5EA; &#x5E1;&#x5E4;&#x5D5;&#x5E8;&#x5D8;" text="ONE - &#x5D7;&#x5D3;&#x5E9;&#x5D5;&#x5EA; &#x5E1;&#x5E4;&#x5D5;&#x5E8;&#x5D8;" description="ONE - &#x5D7;&#x5D3;&#x5E9;&#x5D5;&#x5EA; &#x5E1;&#x5E4;&#x5D5;&#x5E8;&#x5D8;" type="rss" xmlUrl="http://www.one.co.il/cat/coop/xml/rss/newsfeed.aspx" htmlUrl="http://www.ONE.co.il"/>
+      <outline title="&#x5E2;&#x5DB;&#x5D1;&#x5E8; &#x5D4;&#x5E2;&#x5D9;&#x5E8;, &#x5D3;&#x5E3; &#x5D4;&#x5D1;&#x5D9;&#x5EA;" text="&#x5E2;&#x5DB;&#x5D1;&#x5E8; &#x5D4;&#x5E2;&#x5D9;&#x5E8;, &#x5D3;&#x5E3; &#x5D4;&#x5D1;&#x5D9;&#x5EA;" description="&#x5E2;&#x5DB;&#x5D1;&#x5E8; &#x5D4;&#x5E2;&#x5D9;&#x5E8;, &#x5D3;&#x5E3; &#x5D4;&#x5D1;&#x5D9;&#x5EA;" type="rss" xmlUrl="http://rss.mouse.co.il/mousehomepage" htmlUrl="http://www.mouse.co.il/"/>
+      <outline title="&#x5D4;&#x5E0;&#x5D5;&#x5E9;&#x5D0; &#x5D4;&#x5D7;&#x5DD; &#x5D1;&#x5D1;&#x5DC;&#x5D5;&#x5D2;&#x5D9;&#x5D4;" text="&#x5D4;&#x5E0;&#x5D5;&#x5E9;&#x5D0; &#x5D4;&#x5D7;&#x5DD; &#x5D1;&#x5D1;&#x5DC;&#x5D5;&#x5D2;&#x5D9;&#x5D4;" description="&#x5D4;&#x5E0;&#x5D5;&#x5E9;&#x5D0; &#x5D4;&#x5D7;&#x5DD; &#x5D1;&#x5D1;&#x5DC;&#x5D5;&#x5D2;&#x5D9;&#x5D4;" type="rss" xmlUrl="http://www.tapuz.co.il/blog/showrss.asp?typer=12" htmlUrl="http://www.tapuz.co.il/blog/"/>
+      <outline title="&#x202B;&#x5D7;&#x5D5;&#x5DE;&#x5D5;&#x5E1; &#x5DC;&#x5D4;&#x5DE;&#x5D5;&#x5E0;&#x5D9;&#x5DD;&#x202C;" text="&#x202B;&#x5D7;&#x5D5;&#x5DE;&#x5D5;&#x5E1; &#x5DC;&#x5D4;&#x5DE;&#x5D5;&#x5E0;&#x5D9;&#x5DD;&#x202C;" description="&#x202B;&#x5D7;&#x5D5;&#x5DE;&#x5D5;&#x5E1; &#x5DC;&#x5D4;&#x5DE;&#x5D5;&#x5E0;&#x5D9;&#x5DD;&#x202C;" type="rss" xmlUrl="http://humus101.com/?feed=rss2" htmlUrl="http://humus101.com"/>
+      <outline title="&#x5DE;&#x5E9;&#x5D2;&#x5D9;&#x5D7; &#x5DB;&#x5E9;&#x5E8;&#x5D5;&#x5EA; - &#x5D1;&#x5DC;&#x5D5;&#x5D2; &#x5E4;&#x5E8;&#x5DC;&#x5DE;&#x5E0;&#x5D8;&#x5E8;&#x5D9;" text="&#x5DE;&#x5E9;&#x5D2;&#x5D9;&#x5D7; &#x5DB;&#x5E9;&#x5E8;&#x5D5;&#x5EA; - &#x5D1;&#x5DC;&#x5D5;&#x5D2; &#x5E4;&#x5E8;&#x5DC;&#x5DE;&#x5E0;&#x5D8;&#x5E8;&#x5D9;" description="&#x5DE;&#x5E9;&#x5D2;&#x5D9;&#x5D7; &#x5DB;&#x5E9;&#x5E8;&#x5D5;&#x5EA; - &#x5D1;&#x5DC;&#x5D5;&#x5D2; &#x5E4;&#x5E8;&#x5DC;&#x5DE;&#x5E0;&#x5D8;&#x5E8;&#x5D9;" type="rss" xmlUrl="http://cafe.themarker.com/blog/127809/rss/" htmlUrl="http://cafe.themarker.com/blog/127809/"/>
+      <outline title="&#x5D1;&#x5DC;&#x5D9; &#x5E0;&#x5D9;&#x5E7;&#x5D5;&#x5D3; - &#x5EA;&#x5E4;&#x5D5;&#x5D6; &#x5D1;&#x5DC;&#x5D5;&#x5D2;&#x5D9;&#x5DD;" text="&#x5D1;&#x5DC;&#x5D9; &#x5E0;&#x5D9;&#x5E7;&#x5D5;&#x5D3; - &#x5EA;&#x5E4;&#x5D5;&#x5D6; &#x5D1;&#x5DC;&#x5D5;&#x5D2;&#x5D9;&#x5DD;" description="&#x5D1;&#x5DC;&#x5D9; &#x5E0;&#x5D9;&#x5E7;&#x5D5;&#x5D3; - &#x5EA;&#x5E4;&#x5D5;&#x5D6; &#x5D1;&#x5DC;&#x5D5;&#x5D2;&#x5D9;&#x5DD;" type="rss" xmlUrl="http://www.tapuz.co.il/blog/rssBlog.asp?FolderName=blinikud" htmlUrl="http://www.tapuz.co.il/blog/userBlog.asp?Blogid=60085"/>
+      <outline title="&#x5D4;&#x5D0;&#x5D9;&#x5D9;&#x5E4;&#x5D5;&#x5D3; &#x5E8;&#x5E2;&#x5D1;" text="&#x5D4;&#x5D0;&#x5D9;&#x5D9;&#x5E4;&#x5D5;&#x5D3; &#x5E8;&#x5E2;&#x5D1;" description="&#x5D4;&#x5D0;&#x5D9;&#x5D9;&#x5E4;&#x5D5;&#x5D3; &#x5E8;&#x5E2;&#x5D1;" type="rss" xmlUrl="http://nastypanda.com/?feed=rss2" htmlUrl="http://nastypanda.com"/>
+    </outline>
+ 		<!-- lets keep this default English block in sync over all feed lists! -->
+		<outline text="מהעולם">		<!-- translate this for localized feed list -->
+			<outline text="קוד פתוח">		<!-- translate this for localized feed list -->
+				<outline text="Planet Ubuntu" htmlUrl="http://planet.ubuntu.com/" xmlUrl="http://planet.ubuntu.com/rss20.xml" />
+				<outline text="The Ubuntu Fridge" htmlUrl="http://fridge.ubuntu.com/" xmlUrl="http://fridge.ubuntu.com/node/feed" />
+			<outline text="Debian Package a Day" htmlUrl="http://debaday.debian.net/" xmlUrl="http://debaday.debian.net/feed/atom/" />
+				<outline text="Gnomefiles" htmlUrl="http://www.gnomefiles.org/" xmlUrl="http://www.gnomefiles.org/files/gnomefiles.rdf" />
+				<outline text="GNOME Footnotes" htmlUrl="http://www.gnomedesktop.org/" xmlUrl="http://www.gnomedesktop.org/backend.php" />
+				<outline text="GrokLaw" htmlUrl="http://www.groklaw.net/" xmlUrl="http://www.groklaw.net/backend/GrokLaw.rdf" />
+			<outline text="Liferea Blog" htmlUrl="http://liferea.blogspot.com/" xmlUrl="http://liferea.blogspot.com/feeds/posts/default" />
+			<outline text="mozillaZine" htmlUrl="http://www.mozillazine.org/" xmlUrl="http://www.mozillazine.org/atom.xml" />
+				<outline text="Planet GNOME" htmlUrl="http://planet.gnome.org/" xmlUrl="http://planet.gnome.org/atom.xml" />	
+				<outline text="Slashdot" htmlUrl="http://slashdot.org"  xmlUrl="http://slashdot.org/slashdot.rss" />
+				<outline text="TuxMobil" htmlUrl="http://tuxmobil.org" xmlUrl="http://tuxmobil.org/tuxmobil_rss.rdf" />      
+			</outline>	
+		</outline>
+		<!-- end of default block -->
+	</outline>
+
+	<!-- the following search folders should also be in sync for all feed lists -->
+	<!-- Do only translate the @text attributes in all of the following <outline> tags! -->
+	<outline text="לא נקרא" title="לא נקרא" description="לא נקרא" type="vfolder" htmlUrl="" xmlUrl="vfolder">
+		<outline type="rule" text="Read status" rule="unread" value="" additive="true"/>
+	</outline>
+	<outline text="חשוב" title="חשוב" description="חשוב" type="vfolder" htmlUrl="" xmlUrl="vfolder">
+		<outline type="rule" text="Flag status" rule="flagged" value="" additive="true"/>
+	</outline>
+	<!-- end of search folder block -->
+
+  </body>
+</opml>
