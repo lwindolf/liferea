@@ -28,10 +28,10 @@
 #include "debug.h"
 #include "feedlist.h"
 #include "item_state.h"
+#include "json.h"
 #include "node.h"
 #include "subscription.h"
 #include "update.h"
-#include "json.h"
 #include "ui/auth_dialog.h"
 #include "ui/liferea_dialog.h"
 #include "ui/ui_common.h"
@@ -72,16 +72,43 @@ static void
 ttrss_source_login_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
 {
 	ttrssSourcePtr	source = (ttrssSourcePtr) userdata;
-	//subscriptionPtr subscription = source->root->subscription;
+	json_t		*tmp, *doc = NULL;
+	subscriptionPtr subscription = source->root->subscription;
 		
-	debug1 (DEBUG_UPDATE, "tt-rss login processing... %s", result->data);
+	debug1 (DEBUG_UPDATE, "tt-rss login processing... >>>%s<<<", result->data);
 	
 	g_assert (!source->session_id);
 	
 	if (result->data && result->httpstatus == 200) {
-		g_print ("tt-rss login result: >>>%s<<<\n", result->data);
+		if (JSON_OK == json_parse_document (&doc, result->data)) {	
+			tmp = json_find_first_label (doc, "error");
+			if (tmp)
+				g_warning ("tt-rss login failed: error '%s'!\n", tmp->child->text);
+			
+			tmp = json_find_first_label (doc, "session_id");
+			if (tmp) {
+				source->session_id = g_strdup (tmp->child->text);
+				debug1 (DEBUG_UPDATE, "Found session_id: >>>%s<<<!\n", source->session_id);		
+			} else {
+				g_warning ("No tt-rss session_id found in response!\n");
+			}
+			
+			json_free_value (&doc);
+		} else {
+			g_warning ("Invalid JSON returned on tt-rss login! >>>%s<<<", result->data);
+		}
 	} else {
 		g_print ("tt-rss login failed: HTTP %d\n", result->httpstatus);
+	}
+
+	if (source->session_id) {	
+		/* now that we are authenticated trigger updating to start data retrieval */
+		source->loginState = TTRSS_SOURCE_STATE_ACTIVE;
+		if (!(flags & TTRSS_SOURCE_UPDATE_ONLY_LOGIN))
+			subscription_update (subscription, flags);
+
+		/* process any edits waiting in queue */
+		// FIXME: ttrss_source_edit_process (gsource);
 	}
 }
 
