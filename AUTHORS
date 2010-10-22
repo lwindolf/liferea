@@ -125,7 +125,8 @@ Hebrew			Yaron Sheffer <yaronf@gmx.com>
 Code included from other projects
 =================================
 
-Evolution Team					AM/PM time formatting
+Evolution Team		AM/PM time formatting
+mjson			JSON parser
 
 If we forgot to list you here, leave us a message on
 the mailing list and we'll include your name and email!
