@@ -23,11 +23,10 @@
 
 #include "fl_sources/node_source.h"
 
-
 /**
  * A nodeSource specific for tt-rss
  */
-typedef struct TtRssSource {
+typedef struct ttrssSource {
 	nodePtr	        root;	/**< the root node in the feed list */
 	gchar           *authHeaderValue; /**< the Google Authorization token */
 	GQueue          *actionQueue;
@@ -43,7 +42,7 @@ typedef struct TtRssSource {
 	 * A timestamp when the last Quick update took place.
 	 */
 	GTimeVal        lastQuickUpdate;
-} *TtRssSourcePtr;
+} *ttrssSourcePtr;
 
  
 enum { 
@@ -90,7 +89,7 @@ enum  {
  */
 nodeSourceTypePtr ttrss_source_get_type (void);
 
-//extern struct subscriptionType ttrssSourceFeedSubscriptionType;
-//extern struct subscriptionType ttrssSourceOpmlSubscriptionType;
+extern struct subscriptionType ttrssSourceFeedSubscriptionType;
+extern struct subscriptionType ttrssSourceSubscriptionType;
 
 #endif

@@ -42,10 +42,10 @@
 #define TTRSS_SOURCE_UPDATE_INTERVAL 60*60*24
 
 /** create a google source with given node as root */ 
-static TtRssSourcePtr
+static ttrssSourcePtr
 ttrss_source_new (nodePtr node) 
 {
-	TtRssSourcePtr source = g_new0 (struct TtRssSource, 1) ;
+	ttrssSourcePtr source = g_new0 (struct ttrssSource, 1) ;
 	source->root = node; 
 	source->actionQueue = g_queue_new (); 
 	source->loginState = TTRSS_SOURCE_STATE_NONE; 
@@ -55,7 +55,7 @@ ttrss_source_new (nodePtr node)
 }
 
 static void
-ttrss_source_free (TtRssSourcePtr source) 
+ttrss_source_free (ttrssSourcePtr source) 
 {
 	if (!source)
 		return;
@@ -90,17 +90,15 @@ static void ttrss_source_deinit (void) { }
 static void
 ttrss_source_import (nodePtr node)
 {
-//	GSList *iter; 
+	GSList *iter; 
 	opml_source_import (node);
 	
-//	node->subscription->type = &googleSourceOpmlSubscriptionType;
+	node->subscription->type = &ttrssSourceSubscriptionType;
 	if (!node->data)
 		node->data = (gpointer) ttrss_source_new (node);
 
-/*	for (iter = node->children; iter; iter = g_slist_next(iter))
-		((nodePtr) iter->data)->subscription->type = &googleSourceFeedSubscriptionType; 
-*/
-	g_warning ("FIXME: ttrss_source_import(): Implement me!");		
+	for (iter = node->children; iter; iter = g_slist_next(iter))
+		((nodePtr) iter->data)->subscription->type = &ttrssSourceFeedSubscriptionType;
 }
 
 static void
@@ -136,8 +134,8 @@ ttrss_source_remove_node (nodePtr node, nodePtr child)
 
 /* GUI callbacks */
 
-/*static void
-on_google_source_selected (GtkDialog *dialog,
+static void
+on_ttrss_source_selected (GtkDialog *dialog,
                            gint response_id,
                            gpointer user_data) 
 {
@@ -145,22 +143,22 @@ on_google_source_selected (GtkDialog *dialog,
 	subscriptionPtr	subscription;
 
 	if (response_id == GTK_RESPONSE_OK) {
-		subscription = subscription_new ("http://www.google.com/reader", NULL, NULL);
+		subscription = subscription_new (gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET (dialog), "serverUrlEntry"))), NULL, NULL);
 		subscription->updateOptions->username = g_strdup (gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "userEntry"))));
 		subscription->updateOptions->password = g_strdup (gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "passwordEntry"))));
-		subscription->type = &googleSourceOpmlSubscriptionType ; 
+		subscription->type = &ttrssSourceSubscriptionType ; 
 		node = node_new (node_source_get_node_type ());
-		node_set_title (node, "Google Reader");
-		node_source_new (node, google_source_get_type ());
+		node_set_title (node, "Tiny Tiny RSS");
+		node_source_new (node, ttrss_source_get_type ());
 		node_set_subscription (node, subscription);
-		node->data = google_source_new (node);
+		node->data = ttrss_source_new (node);
 		feedlist_node_added (node);
-		google_source_update (node);
+		ttrss_source_update (node);
 	}
 
 	gtk_widget_destroy (GTK_WIDGET (dialog));
 }
-*/
+
 static void
 ui_ttrss_source_get_account_info (void)
 {
@@ -169,16 +167,15 @@ ui_ttrss_source_get_account_info (void)
 	
 	dialog = liferea_dialog_new ("ttrss_source.ui", "ttrss_source_dialog");
 	
-	g_warning ("FIXME: ui_ttrss_source_get_account_info(): Implement me!");
-/*	g_signal_connect (G_OBJECT (dialog), "response",
-			  G_CALLBACK (on_google_source_selected), 
-			  NULL);*/
+	g_signal_connect (G_OBJECT (dialog), "response",
+			  G_CALLBACK (on_ttrss_source_selected), 
+			  NULL);
 }
 
 static void
 ttrss_source_cleanup (nodePtr node)
 {
-	TtRssSourcePtr source = (TtRssSourcePtr) node->data;
+	ttrssSourcePtr source = (ttrssSourcePtr) node->data;
 	ttrss_source_free (source);
 	node->data = NULL ;
 }
