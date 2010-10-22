@@ -82,7 +82,6 @@ ttrss_source_quick_update(ttrssSourcePtr source)
 	return TRUE;
 }
 
-
 static void
 ttrss_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
 {
@@ -92,10 +91,9 @@ ttrss_subscription_process_update_result (subscriptionPtr subscription, const st
 static gboolean
 ttrss_subscription_prepare_update_request (subscriptionPtr subscription, struct updateRequest *request)
 {
-	//TtRssSourcePtr	source = (TtRssSourcePtr) subscription->node->data;
+	ttrssSourcePtr	source = (ttrssSourcePtr) subscription->node->data;
 
-	g_warning ("FIXME: ttrss_subscription_prepare_update_request(): Implement me!");	
-/*	g_assert (source);
+	g_assert (source);
 	if (source->loginState == TTRSS_SOURCE_STATE_NONE) {
 		debug0 (DEBUG_UPDATE, "TtRssSource: login");
 		ttrss_source_login (source, 0);
@@ -103,9 +101,10 @@ ttrss_subscription_prepare_update_request (subscriptionPtr subscription, struct 
 	}
 	debug1 (DEBUG_UPDATE, "updating tt-rss subscription (node id %s)", subscription->node->id);
 	
-	update_request_set_source (request, TTRSS_SUBSCRIPTION_LIST_URL);
+	g_warning ("FIXME: update tt-rss feed list!");
+	// FIXME: update_request_set_source (request, TTRSS_SUBSCRIPTION_LIST_URL);
 	
-	update_request_set_auth_value (request, gsource->authHeaderValue);*/
+	// FIXME: update_request_set_auth_value (request, source->authHeaderValue);
 	
 	return TRUE;
 }

@@ -62,12 +62,62 @@ ttrss_source_free (ttrssSourcePtr source)
 
 	update_job_cancel_by_owner (source);
 	
-	g_free (source->authHeaderValue);
+	g_free (source->session_id);
 	g_queue_free (source->actionQueue) ;
 	g_hash_table_unref (source->lastTimestampMap);
 	g_free (source);
 }
 
+static void
+ttrss_source_login_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
+{
+	ttrssSourcePtr	source = (ttrssSourcePtr) userdata;
+	//subscriptionPtr subscription = source->root->subscription;
+		
+	debug1 (DEBUG_UPDATE, "tt-rss login processing... %s", result->data);
+	
+	g_assert (!source->session_id);
+	
+	if (result->data && result->httpstatus == 200) {
+		g_print ("tt-rss login result: >>>%s<<<\n", result->data);
+	} else {
+		g_print ("tt-rss login failed: HTTP %d\n", result->httpstatus);
+	}
+}
+
+/**
+ * Perform a login to tt-rss, if the login completes the ttrssSource will 
+ * have a valid sid and will have loginStatus TTRSS_SOURCE_LOGIN_ACTIVE.
+ */
+void
+ttrss_source_login (ttrssSourcePtr source, guint32 flags) 
+{ 
+	gchar			*username, *password;
+	updateRequestPtr	request;
+	subscriptionPtr		subscription = source->root->subscription;
+	
+	if (source->loginState != TTRSS_SOURCE_STATE_NONE) {
+		/* this should not happen, as of now, we assume the session doesn't expire. */
+		debug1(DEBUG_UPDATE, "Logging in while login state is %d\n", source->loginState);
+	}
+
+	request = update_request_new ();
+
+	/* escape user and password as both are passed using an URI */
+	username = g_uri_escape_string (subscription->updateOptions->username, NULL, TRUE);
+	password = g_uri_escape_string (subscription->updateOptions->password, NULL, TRUE);
+	
+	update_request_set_source (request, g_strdup_printf (TTRSS_LOGIN_URL, subscription->source, username, password));
+
+	request->options = update_options_copy (subscription->updateOptions);
+	
+	g_free (username);
+	g_free (password);
+
+	source->loginState = TTRSS_SOURCE_STATE_IN_PROGRESS ;
+
+	update_execute_request (source, request, ttrss_source_login_cb, source, flags);
+}
 
 /* node source type implementation */
 
@@ -80,7 +130,30 @@ ttrss_source_update (nodePtr node)
 static void
 ttrss_source_auto_update (nodePtr node)
 {
-	g_warning ("FIXME: ttrss_source_auto_update(): Implement me!");
+	GTimeVal	now;
+	ttrssSourcePtr	source = (ttrssSourcePtr) node->data;
+
+	if (source->loginState == TTRSS_SOURCE_STATE_NONE) {
+		ttrss_source_update (node);
+		return;
+	}
+
+	if (source->loginState == TTRSS_SOURCE_STATE_IN_PROGRESS) 
+		return; /* the update will start automatically anyway */
+
+	g_get_current_time (&now);
+
+	/* do daily updates for the feed list and feed updates according to the default interval */
+	if (node->subscription->updateState->lastPoll.tv_sec + TTRSS_SOURCE_UPDATE_INTERVAL <= now.tv_sec) {
+		ttrss_source_update (node);
+		g_get_current_time (&source->lastQuickUpdate);
+	}
+	else if (source->lastQuickUpdate.tv_sec + TTRSS_SOURCE_QUICK_UPDATE_INTERVAL <= now.tv_sec) {
+		g_warning ("FIXME: ttrss_source_quick_update()!");
+		// FIXME: ttrss_source_quick_update (source);
+		// FIXME: google_source_edit_process (gsource);
+		g_get_current_time (&source->lastQuickUpdate);
+	}
 }
 
 static void ttrss_source_init (void) { }
@@ -200,7 +273,7 @@ static struct nodeSourceType nst = {
 	.free                = ttrss_source_cleanup,
 	.item_set_flag       = NULL, // FIXME
 	.item_mark_read      = NULL, // FIXME
-	.add_folder          = NULL, 
+	.add_folder          = NULL,
 	.add_subscription    = ttrss_source_add_subscription,
 	.remove_node         = ttrss_source_remove_node
 };

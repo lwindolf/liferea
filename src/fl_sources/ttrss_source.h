@@ -28,7 +28,7 @@
  */
 typedef struct ttrssSource {
 	nodePtr	        root;	/**< the root node in the feed list */
-	gchar           *authHeaderValue; /**< the Google Authorization token */
+	gchar           *session_id; /**< the tt-rss session id */
 	GQueue          *actionQueue;
 	int             loginState; /**< The current login state */
 
@@ -70,14 +70,14 @@ enum  {
  */
 
 /**
- * Google Reader Login api.
- * @param Email The google account email id.
- * @param Passwd The google account password.
- * @return The return data has a line "Auth=xxxx" which will be used as an
- *         Authorization header in future requests. 
+ * Tiny Tiny RSS Login API
+ *
+ * @param user		The tt-rss account id
+ * @param passwd	The tt-rss account password
+ *
+ * @return {"session_id":"xxx"} or {"error":"xxx"}
  */ 
-//#define GOOGLE_READER_LOGIN_URL "https://www.google.com/accounts/ClientLogin" 
-//#define GOOGLE_READER_LOGIN_POST "service=reader&Email=%s&Passwd=%s&source=liferea&continue=http://www.google.com"
+#define TTRSS_LOGIN_URL "%s/api/?op=login&user=%s&password=%s" 
 
 /**
  * Interval (in seconds) for doing a Quick Update. 
@@ -88,6 +88,8 @@ enum  {
  * Returns ttss source type implementation info.
  */
 nodeSourceTypePtr ttrss_source_get_type (void);
+
+void ttrss_source_login (ttrssSourcePtr source, guint32 flags);
 
 extern struct subscriptionType ttrssSourceFeedSubscriptionType;
 extern struct subscriptionType ttrssSourceSubscriptionType;
