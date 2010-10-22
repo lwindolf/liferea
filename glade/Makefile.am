@@ -7,7 +7,8 @@ glade_DATA = liferea.ui \
 	simple_subscription.ui \
 	google_source.ui \
 	node_source.ui \
-	opml_source.ui
+	opml_source.ui \
+	ttrss_source.ui
 
 EXTRA_DIST = \
 	$(glade_DATA)
