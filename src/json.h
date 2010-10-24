@@ -25,7 +25,7 @@
 #include <json-glib/json-glib.h>
 
 /**
- * Query a simple json object node for a given key.
+ * Query a simple json object node for a given string key.
  *
  * @param obj   the Json node to check
  * @param key   the key to look up
@@ -33,5 +33,25 @@
  * @returns value of the key (or NULL)
  */
 const gchar * json_get_string (JsonNode *node, const gchar *key);
+
+/**
+ * Query a simple json object node for a given numeric key.
+ *
+ * @param obj   the Json node to check
+ * @param key   the key to look up
+ *
+ * @returns value of the key (no error handling!)
+ */
+gint64 json_get_int (JsonNode *node, const gchar *key);
+
+/**
+ * Query a simple json object node for a given boolean key.
+ *
+ * @param obj   the Json node to check
+ * @param key   the key to look up
+ *
+ * @returns value of the key (no error handling!)
+ */
+gboolean json_get_bool (JsonNode *node, const gchar *key);
 
 #endif

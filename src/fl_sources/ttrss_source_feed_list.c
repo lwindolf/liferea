@@ -25,6 +25,7 @@
 #include <string.h>
 
 #include "common.h"
+#include "db.h"
 #include "debug.h"
 #include "feedlist.h"
 #include "json.h"
@@ -35,10 +36,11 @@
 #include "fl_sources/ttrss_source.h"
 
 static void
-ttrss_source_merge_feed (ttrssSourcePtr source, const gchar *url, const gchar *title)
+ttrss_source_merge_feed (ttrssSourcePtr source, const gchar *url, const gchar *title, gint64 id)
 {
-	nodePtr		node;
-	GSList		*iter;
+	nodePtr	node;
+	GSList	*iter;
+	gchar	*tmp;
 
 	/* check if node to be merged already exists */
 	iter = source->root->children;
@@ -56,6 +58,12 @@ ttrss_source_merge_feed (ttrssSourcePtr source, const gchar *url, const gchar *t
 		
 	node_set_subscription (node, subscription_new (url, NULL, NULL));
 	node->subscription->type = &ttrssSourceFeedSubscriptionType;
+	
+	/* Save tt-rss feed id which we need to fetch items... */
+	tmp = g_strdup_printf ("%lld", id);
+	metadata_list_set (&node->subscription->metadata, "ttrss-feed-id", tmp);
+	g_free (tmp);
+	
 	node_set_parent (node, source->root, -1);
 	feedlist_node_imported (node);
 		
@@ -66,6 +74,9 @@ ttrss_source_merge_feed (ttrssSourcePtr source, const gchar *url, const gchar *t
 	 */
 	subscription_update (node->subscription, FEED_REQ_RESET_TITLE | FEED_REQ_PRIORITY_HIGH);
 	subscription_update_favicon (node->subscription);
+	
+	/* Important: we must not loose the feed id! */
+	db_subscription_update (node->subscription);
 }
 
 /* source subscription type implementation */
@@ -111,7 +122,8 @@ ttrss_subscription_cb (subscriptionPtr subscription, const struct updateResult *
 				if (json_get_string (node, "feed_url")) {
 					ttrss_source_merge_feed (source, 
 					                         json_get_string (node, "feed_url"),
-					                         json_get_string (node, "title"));
+					                         json_get_string (node, "title"),
+					                         json_get_int (node, "id"));
 				}
 				iter = g_list_next (iter);
 			}

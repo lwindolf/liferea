@@ -78,6 +78,17 @@ enum  {
 #define TTRSS_SUBSCRIPTION_LIST_URL "%s/api/?op=getFeeds&sid=%s"
 
 /**
+ * Fetch tt-rss headlines for a given feed.
+ *
+ * @param sid		session id
+ * @param feed_id	tt-rss feed id
+ * @param limit		feed cache size
+ *
+ * @returns JSON feed list
+ */
+#define TTRSS_HEADLINES_URL "%s/api/?op=getHeadlines&sid=%s&feed_id=%s&limit=%d&show_content=true&view_mode=all_articles"
+
+/**
  * Returns ttss source type implementation info.
  */
 nodeSourceTypePtr ttrss_source_get_type (void);

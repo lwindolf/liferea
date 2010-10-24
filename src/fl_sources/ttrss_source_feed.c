@@ -22,41 +22,111 @@
 #include <string.h>
 
 #include "common.h"
-#include "debug.h"
-
-#include "feedlist.h"
-#include "ttrss_source.h"
-#include "subscription.h"
-#include "node.h"
-#include "metadata.h"
 #include "db.h"
-#include "item_state.h"
+#include "debug.h"
+#include "feedlist.h"
+#include "itemlist.h"
+#include "itemset.h"
+#include "json.h"
+#include "metadata.h"
+#include "subscription.h"
+
+#include "fl_sources/ttrss_source.h"
 
 static void
 ttrss_feed_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult* const result, updateFlags flags)
 {
-	g_warning ("FIXME: ttrss_feed_subscription_prepare_update_result(): Implement me!");
+	//ttrssSourcePtr source = (ttrssSourcePtr) subscription->node->data;
+	
+	if (result->data && result->httpstatus == 200) {
+		JsonParser	*parser = json_parser_new ();
+
+		if (json_parser_load_from_data (parser, result->data, -1, NULL)) {
+			JsonArray	*array = json_node_get_array (json_parser_get_root (parser));
+			GList		*iter = json_array_get_elements (array);
+			GList		*items = NULL;
+
+			/*
+			   We expect to get something like this
+			   
+			   [{"id":118,
+			     "unread":true,
+			     "marked":false,
+			     "updated":1287927675,
+			     "is_updated":false,
+			     "title":"IBM Says New ...",
+			     "link":"http:\/\/rss.slashdot.org\/~r\/Slashdot\/slashdot\/~3\/ALuhNKO3NV4\/story01.htm",
+			     "feed_id":"5",
+			     "content":"coondoggie writes ..."
+			    },
+			    {"id":117,
+			     "unread":true,
+			     "marked":false,
+			     "updated":1287923814,
+                           [...]
+                         */
+                         
+			while (iter) {
+				JsonNode *node = (JsonNode *)iter->data;
+				itemPtr item = item_new ();
+				
+				item_set_id (item, g_strdup_printf ("%lld", json_get_int (node, "id")));
+				item_set_title (item, json_get_string (node, "title"));
+				item_set_source (item, json_get_string (node, "link"));
+				item_set_description (item, json_get_string (node, "content"));
+				item->time = json_get_int (node, "updated");
+				
+				if (json_get_bool (node, "unread"))
+					item->readStatus = FALSE;
+				if (json_get_bool (node, "marked"))
+					item->flagStatus = TRUE;
+					
+				items = g_list_append (items, (gpointer)item);
+				
+				iter = g_list_next (iter);
+			}
+			
+			/* merge against feed cache */
+			if (items) {
+				itemSetPtr itemSet = node_get_itemset (subscription->node);
+				gint newCount = itemset_merge_items (itemSet, items, TRUE /* feed valid */, FALSE /* markAsRead */);
+				itemlist_merge_itemset (itemSet);
+				itemset_free (itemSet);
+
+				feedlist_node_was_updated (subscription->node, newCount);
+			}
+		}
+	}
+	g_warning ("FIXME: ttrss_feed_subscription_process_update_result(): Implement me!");
 }
 
 static gboolean
 ttrss_feed_subscription_prepare_update_request (subscriptionPtr subscription, 
                                                  struct updateRequest *request)
 {
+	nodePtr root = node_source_root_from_node (subscription->node);
+	ttrssSourcePtr source = (ttrssSourcePtr) root->data;
+	const gchar *feed_id;
+
 	debug0 (DEBUG_UPDATE, "preparing tt-rss feed subscription for update\n");
-	ttrssSourcePtr source = (ttrssSourcePtr) node_source_root_from_node (subscription->node)->data;
 	
 	g_assert(source); 
 	if (source->loginState == TTRSS_SOURCE_STATE_NONE) { 
-		subscription_update (node_source_root_from_node (subscription->node)->subscription, 0);
+		subscription_update (root->subscription, 0);
 		return FALSE;
 	}
 	
-	/* FIXME!
-	gchar* source_escaped = g_uri_escape_string(request->source, NULL, TRUE);
-	gchar* newUrl = g_strdup_printf ("http://www.google.com/reader/atom/feed/%s", source_escaped);
-	update_request_set_source (request, newUrl);
-	g_free (newUrl);
-	g_free (source_escaped);*/
+	feed_id = metadata_list_get (subscription->metadata, "ttrss-feed-id");
+	if (!feed_id) {
+		g_warning ("tt-rss feed without id! (%s)", subscription->node->title);
+		return FALSE;
+	}
+
+	update_request_set_source (request, g_strdup_printf (TTRSS_HEADLINES_URL, 
+		metadata_list_get (root->subscription->metadata, "ttrss-url"), 
+		source->session_id,
+		feed_id,
+		15 /* items to fetch */));
 
 	return TRUE;
 }

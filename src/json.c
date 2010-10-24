@@ -35,5 +35,38 @@ json_get_string (JsonNode *node, const gchar *keyName)
 		return NULL;
 	
 	return json_node_get_string (key);
+}
+
+gint64
+json_get_int (JsonNode *node, const gchar *keyName)
+{
+	JsonObject *obj;
+	JsonNode *key;
 	
+	obj = json_node_get_object(node);
+	if (!obj)
+		return 0;
+		
+	key = json_object_get_member (obj, keyName);
+	if (!key)
+		return 0;
+	
+	return json_node_get_int (key);
+}
+
+gboolean
+json_get_bool (JsonNode *node, const gchar *keyName)
+{
+	JsonObject *obj;
+	JsonNode *key;
+	
+	obj = json_node_get_object(node);
+	if (!obj)
+		return FALSE;
+		
+	key = json_object_get_member (obj, keyName);
+	if (!key)
+		return FALSE;
+	
+	return json_node_get_boolean (key);
 }
