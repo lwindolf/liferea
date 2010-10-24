@@ -46,6 +46,22 @@ typedef struct NsHandler {
 	parseChannelTagFunc	parseChannelTag;	/**< channel tag parsing method */
 } NsHandler;
 
+/** Metadata value types */
+enum {
+	METADATA_TYPE_TEXT = 1,	/**< metadata can be any character data and needs escaping */
+	METADATA_TYPE_URL = 2,	/**< metadata is an URL and guaranteed to be valid for use in XML */
+	METADATA_TYPE_HTML = 3	/**< metadata is XHTML content and valid to be embedded in XML */
+};
+
+/**
+ * Register a metadata type. This allows type specific
+ * sanity handling and detecting invalid metadata.
+ *
+ * @param name	key name
+ * @param type	key type
+ */
+void metadata_type_register (const gchar *name, gint);
+
 /**
  * Checks whether a metadata type is registered
  *

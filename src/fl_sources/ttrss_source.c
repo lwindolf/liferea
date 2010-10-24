@@ -50,7 +50,6 @@ ttrss_source_new (nodePtr node)
 	source->root = node; 
 	source->actionQueue = g_queue_new (); 
 	source->loginState = TTRSS_SOURCE_STATE_NONE; 
-	source->lastTimestampMap = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
 	
 	return source;
 }
@@ -65,7 +64,6 @@ ttrss_source_free (ttrssSourcePtr source)
 	
 	g_free (source->session_id);
 	g_queue_free (source->actionQueue) ;
-	g_hash_table_unref (source->lastTimestampMap);
 	g_free (source);
 }
 
@@ -136,7 +134,7 @@ ttrss_source_login (ttrssSourcePtr source, guint32 flags)
 	username = g_uri_escape_string (subscription->updateOptions->username, NULL, TRUE);
 	password = g_uri_escape_string (subscription->updateOptions->password, NULL, TRUE);
 	
-	update_request_set_source (request, g_strdup_printf (TTRSS_LOGIN_URL, subscription_get_homepage (subscription), username, password));
+	update_request_set_source (request, g_strdup_printf (TTRSS_LOGIN_URL, metadata_list_get (subscription->metadata, "ttrss-url"), username, password));
 
 	request->options = update_options_copy (subscription->updateOptions);
 	
@@ -153,7 +151,7 @@ ttrss_source_login (ttrssSourcePtr source, guint32 flags)
 static void
 ttrss_source_update (nodePtr node)
 {
-	subscription_update (node->subscription, 0);  // FIXME: 0 ?
+	subscription_update (node->subscription, 0);
 }
 
 static void
@@ -162,30 +160,21 @@ ttrss_source_auto_update (nodePtr node)
 	GTimeVal	now;
 	ttrssSourcePtr	source = (ttrssSourcePtr) node->data;
 
-	if (source->loginState == TTRSS_SOURCE_STATE_NONE) {
-		ttrss_source_update (node);
-		return;
-	}
-
 	if (source->loginState == TTRSS_SOURCE_STATE_IN_PROGRESS) 
 		return; /* the update will start automatically anyway */
 
 	g_get_current_time (&now);
 
-	/* do daily updates for the feed list and feed updates according to the default interval */
-	if (node->subscription->updateState->lastPoll.tv_sec + TTRSS_SOURCE_UPDATE_INTERVAL <= now.tv_sec) {
-		ttrss_source_update (node);
-		g_get_current_time (&source->lastQuickUpdate);
-	}
-	else if (source->lastQuickUpdate.tv_sec + TTRSS_SOURCE_QUICK_UPDATE_INTERVAL <= now.tv_sec) {
-		g_warning ("FIXME: ttrss_source_quick_update()!");
-		// FIXME: ttrss_source_quick_update (source);
-		// FIXME: google_source_edit_process (gsource);
-		g_get_current_time (&source->lastQuickUpdate);
-	}
+	ttrss_source_update (node);
+	// FIXME: ttrss_source_edit_process (gsource);
 }
 
-static void ttrss_source_init (void) { }
+static void
+ttrss_source_init (void)
+{
+	metadata_type_register ("ttrss-url", METADATA_TYPE_URL);
+	metadata_type_register ("ttrss-feed-id", METADATA_TYPE_TEXT);
+}
 
 static void ttrss_source_deinit (void) { }
 
@@ -263,7 +252,7 @@ on_ttrss_source_selected (GtkDialog *dialog,
 		   URL from being lost by unwanted permanent redirects on
 		   the getFeeds call, so we save it as the homepage meta
 		   data value... */
-		metadata_list_set (&subscription->metadata, "homepage", gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET (dialog), "serverUrlEntry"))));
+		metadata_list_set (&subscription->metadata, "ttrss-url", gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET (dialog), "serverUrlEntry"))));
 		
 		subscription->updateOptions->username = g_strdup (gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "userEntry"))));
 		subscription->updateOptions->password = g_strdup (gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "passwordEntry"))));
@@ -299,7 +288,7 @@ ttrss_source_cleanup (nodePtr node)
 {
 	ttrssSourcePtr source = (ttrssSourcePtr) node->data;
 	ttrss_source_free (source);
-	node->data = NULL ;
+	node->data = NULL;
 }
 
 /* node source type definition */

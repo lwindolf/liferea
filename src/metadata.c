@@ -32,13 +32,6 @@
    date values are always text values but maybe of different type depending
    on their usage type. */
 
-/** Metadata value types */
-enum {
-	METADATA_TYPE_ASCII = 1,	/**< metadata can be any character data */
-	METADATA_TYPE_URL = 2,		/**< metadata is an URL and guaranteed to be valid for use in XML */
-	METADATA_TYPE_HTML = 3		/**< metadata is XHTML content and valid to be embedded in XML */
-};
-
 static GHashTable *metadataTypes = NULL;	/**< hash table with all registered meta data types */
 
 struct pair {
@@ -46,27 +39,21 @@ struct pair {
 	GSList		*data;		/** list of metadata values */
 };
 
-static void
-metadata_type_register (const gchar *name, gint type)
-{
-	if (!metadataTypes)
-		metadataTypes = g_hash_table_new (g_str_hash, g_str_equal);
-		
-	g_hash_table_insert (metadataTypes, (gpointer)name, GINT_TO_POINTER (type));
-}
-
+/* register metadata types to check validity on adding */
 static void
 metadata_init (void)
 {
-	/* register metadata types to check validity on adding */
+	g_assert (NULL == metadataTypes);
+	
+	metadataTypes = g_hash_table_new (g_str_hash, g_str_equal);
 	
 	/* generic types */
 	metadata_type_register ("author",		METADATA_TYPE_HTML);
 	metadata_type_register ("contributor",		METADATA_TYPE_HTML);
 	metadata_type_register ("copyright",		METADATA_TYPE_HTML);
 	metadata_type_register ("language",		METADATA_TYPE_HTML);
-	metadata_type_register ("pubDate",		METADATA_TYPE_ASCII);
-	metadata_type_register ("contentUpdateDate",	METADATA_TYPE_ASCII);
+	metadata_type_register ("pubDate",		METADATA_TYPE_TEXT);
+	metadata_type_register ("contentUpdateDate",	METADATA_TYPE_TEXT);
 	metadata_type_register ("managingEditor",	METADATA_TYPE_HTML);
 	metadata_type_register ("webmaster",		METADATA_TYPE_HTML);
 	metadata_type_register ("feedgenerator",	METADATA_TYPE_HTML);
@@ -77,7 +64,7 @@ metadata_init (void)
 	metadata_type_register ("errorReportsTo",	METADATA_TYPE_HTML);
 	metadata_type_register ("feedgeneratorUri",	METADATA_TYPE_URL);
 	metadata_type_register ("category",		METADATA_TYPE_HTML);
-	metadata_type_register ("enclosure",		METADATA_TYPE_ASCII);
+	metadata_type_register ("enclosure",		METADATA_TYPE_TEXT);
 	metadata_type_register ("commentsUri",		METADATA_TYPE_URL);
 	metadata_type_register ("commentFeedUri",	METADATA_TYPE_URL);
 	metadata_type_register ("feedTitle",		METADATA_TYPE_HTML);
@@ -85,7 +72,7 @@ metadata_init (void)
 	
 	/* types for aggregation NS */
 	metadata_type_register ("agSource",		METADATA_TYPE_URL);
-	metadata_type_register ("agTimestamp",		METADATA_TYPE_ASCII);
+	metadata_type_register ("agTimestamp",		METADATA_TYPE_TEXT);
 
 	/* types for blog channel */
 	metadata_type_register ("blogChannel",		METADATA_TYPE_HTML);
@@ -119,9 +106,18 @@ metadata_init (void)
 	metadata_type_register ("related",		METADATA_TYPE_URL);
 
 	/* for georss:point */
-	metadata_type_register ("point", 		METADATA_TYPE_ASCII);
+	metadata_type_register ("point", 		METADATA_TYPE_TEXT);
 
 	return;
+}
+
+void
+metadata_type_register (const gchar *name, gint type)
+{
+	if (!metadataTypes)
+		metadata_init ();	
+	
+	g_hash_table_insert (metadataTypes, (gpointer)name, GINT_TO_POINTER (type));
 }
 
 gboolean
@@ -151,24 +147,26 @@ metadata_get_type (const gchar *name)
 	return type;
 }
 
-GSList * metadata_list_append(GSList *metadata, const gchar *strid, const gchar *data) {
+GSList *
+metadata_list_append (GSList *metadata, const gchar *strid, const gchar *data)
+{
 	GSList		*iter = metadata;
 	gchar		*tmp, *checked_data = NULL;
 	struct pair 	*p;
 	
-	if(NULL == data)
+	if (!data)
 		return metadata;
 	
 	/* lookup type and check format */
-	switch(metadata_get_type(strid)) {
-		case METADATA_TYPE_ASCII:
+	switch (metadata_get_type (strid)) {
+		case METADATA_TYPE_TEXT:
 			/* No check because renderer will process further */
-			checked_data = g_strdup(data);
+			checked_data = g_strdup (data);
 			break;
 		case METADATA_TYPE_URL:
 			/* Simple sanity check to see if it doesn't break XML */
-			if(!strchr(data, '<') && !(strchr(data, '>')) && !(strchr(data, '&'))) {
-				checked_data = g_strdup(data);
+			if (!strchr(data, '<') && !(strchr (data, '>')) && !(strchr (data, '&'))) {
+				checked_data = g_strdup (data);
 			} else {
 				checked_data = common_uri_escape (data);
 			}
@@ -177,7 +175,7 @@ GSList * metadata_list_append(GSList *metadata, const gchar *strid, const gchar 
 			checked_data = g_strchomp (checked_data);
 			break;
 		default:
-			g_warning ("Unknown metadata type: %s, please report this Liferea bug! Treating as HTML.", strid);
+			g_warning ("Unknown metadata type: %s (id=%d), please report this Liferea bug! Treating as HTML.", strid, metadata_get_type (strid));
 		case METADATA_TYPE_HTML:
 			/* Needs to check for proper XHTML */
 			if (xhtml_is_well_formed (data)) {
@@ -193,91 +191,101 @@ GSList * metadata_list_append(GSList *metadata, const gchar *strid, const gchar 
 			break;
 	}
 	
-	while(iter) {
+	while (iter) {
 		p = (struct pair*)iter->data; 
-		if(g_str_equal(p->strid, strid)) {
-			p->data = g_slist_append(p->data, checked_data);
+		if (g_str_equal (p->strid, strid)) {
+			p->data = g_slist_append (p->data, checked_data);
 			return metadata;
 		}
 		iter = iter->next;
 	}
-	p = g_new(struct pair, 1);
-	p->strid = g_strdup(strid);
-	p->data = g_slist_append(NULL, checked_data);
-	metadata = g_slist_append(metadata, p);
+	p = g_new (struct pair, 1);
+	p->strid = g_strdup (strid);
+	p->data = g_slist_append (NULL, checked_data);
+	metadata = g_slist_append (metadata, p);
 	return metadata;
 }
 
-void metadata_list_set(GSList **metadata, const gchar *strid, const gchar *data) {
+void
+metadata_list_set (GSList **metadata, const gchar *strid, const gchar *data)
+{
 	GSList	*iter = *metadata;
 	struct pair *p;
 	
-	while(iter) {
+	while (iter) {
 		p = (struct pair*)iter->data; 
-		if(g_str_equal(p->strid, strid)) {
-			if(p->data) {
+		if (g_str_equal (p->strid, strid)) {
+			if (p->data) {
 				/* exchange old value */
-				g_free(((GSList *)p->data)->data);
-				((GSList *)p->data)->data = g_strdup(data);
+				g_free (((GSList *)p->data)->data);
+				((GSList *)p->data)->data = g_strdup (data);
 			} else {
-				p->data = g_slist_append(p->data, g_strdup(data));
+				p->data = g_slist_append (p->data, g_strdup (data));
 			}
 			return;
 		}
 		iter = iter->next;
 	}
-	p = g_new(struct pair, 1);
-	p->strid = g_strdup(strid);
-	p->data = g_slist_append(NULL, g_strdup(data));
-	*metadata = g_slist_append(*metadata, p);
+	p = g_new (struct pair, 1);
+	p->strid = g_strdup (strid);
+	p->data = g_slist_append (NULL, g_strdup (data));
+	*metadata = g_slist_append (*metadata, p);
 }
 
-void metadata_list_foreach(GSList *metadata, metadataForeachFunc func, gpointer user_data) {
+void
+metadata_list_foreach (GSList *metadata, metadataForeachFunc func, gpointer user_data)
+{
 	GSList	*list = metadata;
 	guint	index = 0;
 	
-	while(list) {
+	while (list) {
 		struct pair *p = (struct pair*)list->data; 
 		GSList *values = (GSList *)p->data;
-		while(values) {
+		while (values) {
 			index++;
 			(*func)(p->strid, values->data, index, user_data);
-			values = g_slist_next(values);
+			values = g_slist_next (values);
 		}
 		list = list->next;
 	}
 }
 
-GSList * metadata_list_get_values(GSList *metadata, const gchar *strid) {
+GSList *
+metadata_list_get_values (GSList *metadata, const gchar *strid)
+{
 	GSList *list = metadata;
 	
-	while(list) {
+	while (list) {
 		struct pair *p = (struct pair*)list->data; 
-		if(g_str_equal(p->strid, strid))
+		if (g_str_equal (p->strid, strid))
 			return p->data;
 		list = list->next;
 	}
 	return NULL;
 }
 
-const gchar * metadata_list_get(GSList *metadata, const gchar *strid) {
+const gchar *
+metadata_list_get (GSList *metadata, const gchar *strid)
+{
 	GSList	*values;
 	
-	values = metadata_list_get_values(metadata, strid);
+	values = metadata_list_get_values (metadata, strid);
 	return values?values->data:NULL;
 
 }
 
-GSList * metadata_list_copy(GSList *list) {
+GSList *
+metadata_list_copy (GSList *list)
+{
 	GSList		*copy = NULL;
 	GSList		*iter2, *iter = list;
 	struct pair	*p;
 	
-	while(iter) {
+	while (iter) {
 		p = (struct pair*)iter->data;
 		iter2 = p->data;
-		while(iter2) {
-			copy = metadata_list_append(copy, p->strid, iter2->data);
+		while (iter2) {
+			copy = metadata_list_append (copy, p->strid, iter2->data);
 			iter2 = iter2->next;
 		}
 		iter = iter->next;
@@ -286,58 +294,64 @@ GSList * metadata_list_copy(GSList *list) {
 	return copy;
 }
 
-void metadata_list_free(GSList *metadata) {
+void
+metadata_list_free (GSList *metadata)
+{
 	GSList		*list2, *iter2, *iter = metadata;
 	struct pair	*p;
 	
-	while(iter != NULL) {
+	while (iter) {
 		p = (struct pair*)iter->data;
 		list2 = p->data;
 		iter2 = list2;
-		while(iter2 != NULL) {
-			g_free(iter2->data);
+		while (iter2) {
+			g_free (iter2->data);
 			iter2 = iter2->next;
 		}
-		g_slist_free(list2);
-		g_free(p->strid);
-		g_free(p);
+		g_slist_free (list2);
+		g_free (p->strid);
+		g_free (p);
 		iter = iter->next;
 	}
-	g_slist_free(metadata);
+	g_slist_free (metadata);
 }
 
-void metadata_add_xml_nodes(GSList *metadata, xmlNodePtr parentNode) {
+void
+metadata_add_xml_nodes (GSList *metadata, xmlNodePtr parentNode)
+{
 	GSList *list = metadata;
 	xmlNodePtr attribute;
-	xmlNodePtr metadataNode = xmlNewChild(parentNode, NULL, "attributes", NULL);
+	xmlNodePtr metadataNode = xmlNewChild (parentNode, NULL, "attributes", NULL);
 	
-	while(list) {
+	while (list) {
 		struct pair *p = (struct pair*)list->data; 
 		GSList *list2 = p->data;
-		while(list2) {
-			attribute = xmlNewTextChild(metadataNode, NULL, "attribute", list2->data);
-			xmlNewProp(attribute, "name", p->strid);
+		while (list2) {
+			attribute = xmlNewTextChild (metadataNode, NULL, "attribute", list2->data);
+			xmlNewProp (attribute, "name", p->strid);
 			list2 = list2->next;
 		}
 		list = list->next;
 	}
 }
 
-GSList * metadata_parse_xml_nodes(xmlNodePtr cur) {
+GSList *
+metadata_parse_xml_nodes (xmlNodePtr cur)
+{
 	xmlNodePtr	attribute = cur->xmlChildrenNode;
 	GSList 		*metadata = NULL;
 	
-	while(attribute) {
-		if(attribute->type == XML_ELEMENT_NODE &&
-		    !xmlStrcmp(attribute->name, BAD_CAST"attribute")) {
-			xmlChar *name = xmlGetProp(attribute, BAD_CAST"name");
-			if(name) {
-				gchar *value = xmlNodeListGetString(cur->doc, attribute->xmlChildrenNode, TRUE);
-				if(value) {
-					metadata = metadata_list_append(metadata, name, value);
-					xmlFree(value);
+	while (attribute) {
+		if (attribute->type == XML_ELEMENT_NODE &&
+		    !xmlStrcmp (attribute->name, BAD_CAST"attribute")) {
+			xmlChar *name = xmlGetProp (attribute, BAD_CAST"name");
+			if (name) {
+				gchar *value = xmlNodeListGetString (cur->doc, attribute->xmlChildrenNode, TRUE);
+				if (value) {
+					metadata = metadata_list_append (metadata, name, value);
+					xmlFree (value);
 				}
-				xmlFree(name);
+				xmlFree (name);
 			}
 		}
 		attribute = attribute->next;

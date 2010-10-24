@@ -31,17 +31,6 @@ typedef struct ttrssSource {
 	gchar           *session_id; /**< the tt-rss session id */
 	GQueue          *actionQueue;
 	int             loginState; /**< The current login state */
-
-	/**
-	 * A map from a subscription source to a timestamp when it was last 
-	 * updated (provided by Google).
-	 */
-	GHashTable      *lastTimestampMap; 
-
-	/**
-	 * A timestamp when the last Quick update took place.
-	 */
-	GTimeVal        lastQuickUpdate;
 } *ttrssSourcePtr;
 
  
@@ -87,11 +76,6 @@ enum  {
  * @returns JSON feed list
  */
 #define TTRSS_SUBSCRIPTION_LIST_URL "%s/api/?op=getFeeds&sid=%s"
-
-/**
- * Interval (in seconds) for doing a Quick Update. 
- */
-#define TTRSS_SOURCE_QUICK_UPDATE_INTERVAL 600  /* 10 minutes */
 
 /**
  * Returns ttss source type implementation info.

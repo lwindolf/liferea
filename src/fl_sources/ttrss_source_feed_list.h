@@ -23,10 +23,4 @@
 
 #include "fl_sources/ttrss_source.h"
 
-/*nodePtr ttrss_source_get_node_by_source(TtRssSourcePtr gsource,
-					 const gchar *source);
-
-
-gboolean ttrss_source_quick_update (TtRssSourcePtr gsource);*/
-
 #endif

@@ -42,7 +42,22 @@ static gboolean
 ttrss_feed_subscription_prepare_update_request (subscriptionPtr subscription, 
                                                  struct updateRequest *request)
 {
-	g_warning ("FIXME: ttrss_feed_subscription_prepare_update_request(): Implement me!");
+	debug0 (DEBUG_UPDATE, "preparing tt-rss feed subscription for update\n");
+	ttrssSourcePtr source = (ttrssSourcePtr) node_source_root_from_node (subscription->node)->data;
+	
+	g_assert(source); 
+	if (source->loginState == TTRSS_SOURCE_STATE_NONE) { 
+		subscription_update (node_source_root_from_node (subscription->node)->subscription, 0);
+		return FALSE;
+	}
+	
+	/* FIXME!
+	gchar* source_escaped = g_uri_escape_string(request->source, NULL, TRUE);
+	gchar* newUrl = g_strdup_printf ("http://www.google.com/reader/atom/feed/%s", source_escaped);
+	update_request_set_source (request, newUrl);
+	g_free (newUrl);
+	g_free (source_escaped);*/
+
 	return TRUE;
 }
 
