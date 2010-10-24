@@ -31,7 +31,7 @@
 #include "metadata.h"
 #include "node.h"
 #include "subscription.h"
-
+#include "fl_sources/opml_source.h"
 #include "fl_sources/ttrss_source.h"
 
 static void
@@ -81,6 +81,7 @@ ttrss_subscription_cb (subscriptionPtr subscription, const struct updateResult *
 		if (json_parser_load_from_data (parser, result->data, -1, NULL)) {
 			JsonArray	*array = json_node_get_array (json_parser_get_root (parser));
 			GList		*iter = json_array_get_elements (array);
+			GSList		*siter;
 		
 			/* We expect something like this:
 			
@@ -101,7 +102,8 @@ ttrss_subscription_cb (subscriptionPtr subscription, const struct updateResult *
 			   [...]
 			   
 			   */
-			   
+			
+			/* Add all new nodes we find */
 			while (iter) {
 				JsonNode *node = (JsonNode *)iter->data;
 				
@@ -114,7 +116,30 @@ ttrss_subscription_cb (subscriptionPtr subscription, const struct updateResult *
 				iter = g_list_next (iter);
 			}
 			
-			g_warning ("FIXME: ttrss_subscription_cb(): Implement me!");
+			/* Remove old nodes we cannot find anymore */
+			siter = source->root->children;
+			while (siter) {
+				nodePtr node = (nodePtr)siter->data;
+				gboolean found = FALSE;
+				
+				iter = json_array_get_elements (array);
+				while (iter) {
+					JsonNode *json_node = (JsonNode *)iter->data;
+					if (g_str_equal (node->subscription->source, json_get_string (json_node, "feed_url"))) {
+						found = TRUE;
+						break;
+					}
+					iter = g_list_next (iter);
+				}
+	
+				if (!found)			
+					feedlist_node_removed (node);
+				
+				siter = g_slist_next (siter);
+			}
+			
+			opml_source_export (subscription->node);	/* save new feeds to feed list */				   
+			subscription->node->available = TRUE;			
 			return;
 		} else {
 			g_warning ("Invalid JSON returned on tt-rss request! >>>%s<<<", result->data);
