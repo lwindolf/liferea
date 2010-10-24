@@ -75,9 +75,18 @@ enum  {
  * @param user		The tt-rss account id
  * @param passwd	The tt-rss account password
  *
- * @return {"session_id":"xxx"} or {"error":"xxx"}
+ * @returns {"session_id":"xxx"} or {"error":"xxx"}
  */ 
 #define TTRSS_LOGIN_URL "%s/api/?op=login&user=%s&password=%s" 
+
+/**
+ * Fetch tt-rss feed list.
+ *
+ * @param sid	session id
+ *
+ * @returns JSON feed list
+ */
+#define TTRSS_SUBSCRIPTION_LIST_URL "%s/api/?op=getFeeds&sid=%s"
 
 /**
  * Interval (in seconds) for doing a Quick Update. 

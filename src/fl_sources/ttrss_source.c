@@ -21,6 +21,8 @@
 #include "fl_sources/ttrss_source.h"
 
 #include <glib.h>
+#include <glib-object.h>
+#include <json-glib/json-glib.h>
 #include <gtk/gtk.h>
 #include <string.h>
 
@@ -28,7 +30,6 @@
 #include "debug.h"
 #include "feedlist.h"
 #include "item_state.h"
-#include "json.h"
 #include "node.h"
 #include "subscription.h"
 #include "update.h"
@@ -72,7 +73,6 @@ static void
 ttrss_source_login_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
 {
 	ttrssSourcePtr	source = (ttrssSourcePtr) userdata;
-	json_t		*tmp, *doc = NULL;
 	subscriptionPtr subscription = source->root->subscription;
 		
 	debug1 (DEBUG_UPDATE, "tt-rss login processing... >>>%s<<<", result->data);
@@ -80,20 +80,26 @@ ttrss_source_login_cb (const struct updateResult * const result, gpointer userda
 	g_assert (!source->session_id);
 	
 	if (result->data && result->httpstatus == 200) {
-		if (JSON_OK == json_parse_document (&doc, result->data)) {	
-			tmp = json_find_first_label (doc, "error");
-			if (tmp)
-				g_warning ("tt-rss login failed: error '%s'!\n", tmp->child->text);
+		JsonParser	*parser = json_parser_new ();
+		JsonObject	*obj;
+		JsonNode	*node;
+		
+		if (json_parser_load_from_data (parser, result->data, -1, NULL)) {
+			obj = json_node_get_object (json_parser_get_root (parser));
+
+			node = json_object_get_member (obj, "error");
+			if (node)		
+				g_warning ("tt-rss login failed: error '%s'!\n", json_node_get_string (node));
 			
-			tmp = json_find_first_label (doc, "session_id");
-			if (tmp) {
-				source->session_id = g_strdup (tmp->child->text);
-				debug1 (DEBUG_UPDATE, "Found session_id: >>>%s<<<!\n", source->session_id);		
+			node = json_object_get_member (obj, "session_id");
+			if (node) {
+				source->session_id = json_node_dup_string (node);
+				debug1 (DEBUG_UPDATE, "Found session_id: >>>%s<<<!\n", source->session_id);
 			} else {
 				g_warning ("No tt-rss session_id found in response!\n");
 			}
 			
-			json_free_value (&doc);
+			g_object_unref (parser);
 		} else {
 			g_warning ("Invalid JSON returned on tt-rss login! >>>%s<<<", result->data);
 		}

@@ -22,6 +22,8 @@
 #include "ttrss_source_feed_list.h"
 
 #include <glib.h>
+#include <glib-object.h>
+#include <json-glib/json-glib.h>
 #include <string.h>
 
 #include "common.h"
@@ -40,8 +42,46 @@ ttrss_subscription_cb (subscriptionPtr subscription, const struct updateResult *
 {
 	//ttrssSourcePtr	source = (ttrssSourcePtr) subscription->node->data;
 	
-	if (result->data) {
-		g_warning ("FIXME: ttrss_subscription_cb(): Implement me!");
+	if (result->data && result->httpstatus == 200) {
+		JsonParser	*parser = json_parser_new ();
+		JsonArray	*array;
+//		JsonNode	*node;
+
+		if (json_parser_load_from_data (parser, result->data, -1, NULL)) {
+			array = json_node_get_array (json_parser_get_root (parser));
+		
+			/* We expect something like this:
+			
+			[ {"feed_url":"http://feeds.arstechnica.com/arstechnica/everything", 
+			   "title":"Ars Technica", 
+			   "id":6, 
+			   "unread":20, 
+			   "has_icon":true, 
+			   "cat_id":0, 
+			   "last_updated":1287853210}, 
+			  {"feed_url":"http://rss.slashdot.org/Slashdot/slashdot", 
+			   "title":"Slashdot", 
+			   "id":5, 
+			   "unread":33, 
+			   "has_icon":true, 
+			   "cat_id":0, 
+			   "last_updated":1287853206}, 
+			   [...]
+			   */
+			   
+/*			iter = doc->child;
+			while (iter) {
+				json_t *tmp = json_find_first_label (doc, "feed_url");
+				if (tmp)
+					g_print ("child feed_url=%s\n", tmp->child->text);
+				iter = iter->next;
+			}*/
+			
+			g_warning ("FIXME: ttrss_subscription_cb(): Implement me!");
+			return;
+		} else {
+			g_warning ("Invalid JSON returned on tt-rss request! >>>%s<<<", result->data);
+		}
 	} else {
 		subscription->node->available = FALSE;
 		debug0 (DEBUG_UPDATE, "ttrss_subscription_cb(): ERROR: failed to get subscription list!\n");
@@ -100,11 +140,7 @@ ttrss_subscription_prepare_update_request (subscriptionPtr subscription, struct 
 		return FALSE;
 	}
 	debug1 (DEBUG_UPDATE, "updating tt-rss subscription (node id %s)", subscription->node->id);
-	
-	g_warning ("FIXME: update tt-rss feed list!");
-	// FIXME: update_request_set_source (request, TTRSS_SUBSCRIPTION_LIST_URL);
-	
-	// FIXME: update_request_set_auth_value (request, source->authHeaderValue);
+	update_request_set_source (request, g_strdup_printf (TTRSS_SUBSCRIPTION_LIST_URL, subscription->source, source->session_id));
 	
 	return TRUE;
 }

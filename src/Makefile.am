@@ -44,8 +44,6 @@ liferea_SOURCES = \
 	item_state.c item_state.h \
 	itemset.c itemset.h \
 	itemlist.c itemlist.h \
-	json.c json.h \
-	json_helper.c json_helper.h \
 	metadata.c metadata.h \
 	migrate.c migrate.h \
 	net.c net.h \
