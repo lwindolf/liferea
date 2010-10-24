@@ -72,15 +72,6 @@ google_source_free (GoogleSourcePtr gsource)
 	g_free (gsource);
 }
 
-nodePtr
-google_source_get_root_from_node (nodePtr node)
-{ 
-	while (node->parent->source == node->source) 
-		node = node->parent;
-		
-	return node;
-}
-
 static void
 google_source_login_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
 {
@@ -248,7 +239,7 @@ google_source_add_subscription (nodePtr node, subscriptionPtr subscription)
 	
 	node_set_title (child, _("New Subscription"));
 
-	google_source_edit_add_subscription (google_source_get_root_from_node (node)->data, subscription->source);
+	google_source_edit_add_subscription (node_source_root_from_node (node)->data, subscription->source);
 	
 	debug_exit ("google_source_add_subscription");
 	

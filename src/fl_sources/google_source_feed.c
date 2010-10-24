@@ -91,7 +91,7 @@ google_source_item_set_flag (nodePtr node, itemPtr item, gboolean newStatus)
 {
 	const gchar* sourceUrl = metadata_list_get (item->metadata, "GoogleBroadcastOrigFeed");
 	if (!sourceUrl) sourceUrl = node->subscription->source;
-	nodePtr root = google_source_get_root_from_node (node);
+	nodePtr root = node_source_root_from_node (node);
 	google_source_edit_mark_starred ((GoogleSourcePtr)root->data, item->sourceId, sourceUrl, newStatus);
 	item_flag_state_changed(item, newStatus);
 }
@@ -101,7 +101,7 @@ google_source_item_mark_read (nodePtr node, itemPtr item,
 {
 	const gchar* sourceUrl = metadata_list_get(item->metadata, "GoogleBroadcastOrigFeed");
 	if (!sourceUrl) sourceUrl = node->subscription->source;
-	nodePtr root = google_source_get_root_from_node (node);
+	nodePtr root = node_source_root_from_node (node);
 	google_source_edit_mark_read ((GoogleSourcePtr)root->data, item->sourceId, sourceUrl, newStatus);
 	item_read_state_changed(item, newStatus);
 }
@@ -192,7 +192,7 @@ google_source_load_item_from_sourceid (nodePtr node, gchar *sourceId, GHashTable
 static void
 google_source_item_retrieve_status (const xmlNodePtr entry, subscriptionPtr subscription, GHashTable *cache)
 {
-	GoogleSourcePtr gsource = (GoogleSourcePtr) google_source_get_root_from_node (subscription->node)->data ;
+	GoogleSourcePtr gsource = (GoogleSourcePtr) node_source_root_from_node (subscription->node)->data ;
 	xmlNodePtr      xml;
 	nodePtr         node = subscription->node;
 	xmlChar         *id;
@@ -330,11 +330,11 @@ google_feed_subscription_prepare_update_request (subscriptionPtr subscription,
                                                  struct updateRequest *request)
 {
 	debug0 (DEBUG_UPDATE, "preparing google reader feed subscription for update\n");
-	GoogleSourcePtr gsource = (GoogleSourcePtr) google_source_get_root_from_node (subscription->node)->data; 
+	GoogleSourcePtr gsource = (GoogleSourcePtr) node_source_root_from_node (subscription->node)->data; 
 	
 	g_assert(gsource); 
 	if (gsource->loginState == GOOGLE_SOURCE_STATE_NONE) { 
-		subscription_update (google_source_get_root_from_node (subscription->node)->subscription, 0) ;
+		subscription_update (node_source_root_from_node (subscription->node)->subscription, 0) ;
 		return FALSE;
 	}
 	debug0 (DEBUG_UPDATE, "Setting cookies for a Google Reader subscription");

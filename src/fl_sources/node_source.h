@@ -1,7 +1,7 @@
 /**
  * @file node_source.h  generic node source interface
  * 
- * Copyright (C) 2005-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2005-2010 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -183,6 +183,15 @@ typedef struct nodeSource {
 #define NODE_SOURCE_TYPE(node) ((nodeSourcePtr)(node->source))->type
 
 #define NODE_SOURCE_TYPE_DUMMY_ID "fl_dummy"
+
+/**
+ * Get the root node of a feed list source for any given child node.
+ *
+ * @param node	any child node
+ *
+ * @returns node source root node
+ */
+nodePtr node_source_root_from_node (nodePtr node);
 
 /** 
  * Scans the source type list for the root source provider.

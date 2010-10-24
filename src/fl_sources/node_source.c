@@ -44,6 +44,15 @@
 
 static GSList	*nodeSourceTypes = NULL;
 
+nodePtr
+node_source_root_from_node (nodePtr node)
+{ 
+	while (node->parent->source == node->source) 
+		node = node->parent;
+		
+	return node;
+}
+
 static nodeSourceTypePtr
 node_source_type_find (const gchar *typeStr, guint capabilities)
 {

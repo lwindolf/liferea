@@ -224,14 +224,28 @@ ttrss_source_remove (nodePtr node)
 static nodePtr
 ttrss_source_add_subscription (nodePtr node, subscriptionPtr subscription) 
 { 
-	g_warning ("FIXME: ttrss_source_add_subscription(): Implement me!");
-	return NULL;
+	debug_enter ("ttrss_source_add_subscription");
+	nodePtr child = node_new (feed_get_node_type ());
+
+	debug0 (DEBUG_UPDATE, "ttrssSource: Adding a new subscription"); 
+	node_set_data (child, feed_new ());
+
+	node_set_subscription (child, subscription);
+	child->subscription->type = &ttrssSourceFeedSubscriptionType;
+	
+	node_set_title (child, _("New Subscription"));
+
+	//ttrss_source_edit_add_subscription (node_source_root_from_node (node)->data, subscription->source);
+	
+	debug_exit ("ttrss_source_add_subscription");
+	
+	return child;
 }
 
 static void
 ttrss_source_remove_node (nodePtr node, nodePtr child) 
 { 
-	g_warning ("FIXME: ttrss_source_remove_node(): Implement me!");
+	opml_source_remove (node);
 }
 
 /* GUI callbacks */
