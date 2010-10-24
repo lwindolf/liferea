@@ -22,33 +22,65 @@
 #include "ttrss_source_feed_list.h"
 
 #include <glib.h>
-#include <glib-object.h>
-#include <json-glib/json-glib.h>
 #include <string.h>
 
 #include "common.h"
 #include "debug.h"
 #include "feedlist.h"
+#include "json.h"
 #include "metadata.h"
 #include "node.h"
 #include "subscription.h"
 
 #include "fl_sources/ttrss_source.h"
 
+static void
+ttrss_source_merge_feed (ttrssSourcePtr source, const gchar *url, const gchar *title)
+{
+	nodePtr		node;
+	GSList		*iter;
+
+	/* check if node to be merged already exists */
+	iter = source->root->children;
+	while (iter) {
+		node = (nodePtr)iter->data;
+		if (g_str_equal (node->subscription->source, url))
+			return;
+		iter = g_slist_next (iter);
+	}
+	
+	debug2 (DEBUG_UPDATE, "adding %s (%s)", title, url);
+	node = node_new (feed_get_node_type ());
+	node_set_title (node, title);
+	node_set_data (node, feed_new ());
+		
+	node_set_subscription (node, subscription_new (url, NULL, NULL));
+	node->subscription->type = &ttrssSourceFeedSubscriptionType;
+	node_set_parent (node, source->root, -1);
+	feedlist_node_imported (node);
+		
+	/**
+	 * @todo mark the ones as read immediately after this is done
+	 * the feed as retrieved by this has the read and unread
+	 * status inherently.
+	 */
+	subscription_update (node->subscription, FEED_REQ_RESET_TITLE | FEED_REQ_PRIORITY_HIGH);
+	subscription_update_favicon (node->subscription);
+}
+
 /* source subscription type implementation */
 
 static void
 ttrss_subscription_cb (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
 {
-	//ttrssSourcePtr	source = (ttrssSourcePtr) subscription->node->data;
+	ttrssSourcePtr source = (ttrssSourcePtr) subscription->node->data;
 	
 	if (result->data && result->httpstatus == 200) {
 		JsonParser	*parser = json_parser_new ();
-		JsonArray	*array;
-//		JsonNode	*node;
 
 		if (json_parser_load_from_data (parser, result->data, -1, NULL)) {
-			array = json_node_get_array (json_parser_get_root (parser));
+			JsonArray	*array = json_node_get_array (json_parser_get_root (parser));
+			GList		*iter = json_array_get_elements (array);
 		
 			/* We expect something like this:
 			
@@ -67,15 +99,20 @@ ttrss_subscription_cb (subscriptionPtr subscription, const struct updateResult *
 			   "cat_id":0, 
 			   "last_updated":1287853206}, 
 			   [...]
+			   
 			   */
 			   
-/*			iter = doc->child;
 			while (iter) {
-				json_t *tmp = json_find_first_label (doc, "feed_url");
-				if (tmp)
-					g_print ("child feed_url=%s\n", tmp->child->text);
-				iter = iter->next;
-			}*/
+				JsonNode *node = (JsonNode *)iter->data;
+				
+				/* ignore everything without a feed url */
+				if (json_get_string (node, "feed_url")) {
+					ttrss_source_merge_feed (source, 
+					                         json_get_string (node, "feed_url"),
+					                         json_get_string (node, "title"));
+				}
+				iter = g_list_next (iter);
+			}
 			
 			g_warning ("FIXME: ttrss_subscription_cb(): Implement me!");
 			return;

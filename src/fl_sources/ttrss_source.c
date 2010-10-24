@@ -21,8 +21,6 @@
 #include "fl_sources/ttrss_source.h"
 
 #include <glib.h>
-#include <glib-object.h>
-#include <json-glib/json-glib.h>
 #include <gtk/gtk.h>
 #include <string.h>
 
@@ -30,6 +28,7 @@
 #include "debug.h"
 #include "feedlist.h"
 #include "item_state.h"
+#include "json.h"
 #include "node.h"
 #include "subscription.h"
 #include "update.h"
@@ -80,20 +79,16 @@ ttrss_source_login_cb (const struct updateResult * const result, gpointer userda
 	g_assert (!source->session_id);
 	
 	if (result->data && result->httpstatus == 200) {
-		JsonParser	*parser = json_parser_new ();
-		JsonObject	*obj;
-		JsonNode	*node;
+		JsonParser *parser = json_parser_new ();
 		
 		if (json_parser_load_from_data (parser, result->data, -1, NULL)) {
-			obj = json_node_get_object (json_parser_get_root (parser));
+			JsonNode *node = json_parser_get_root (parser);
 
-			node = json_object_get_member (obj, "error");
-			if (node)		
-				g_warning ("tt-rss login failed: error '%s'!\n", json_node_get_string (node));
+			if (json_get_string (node, "error"))
+				g_warning ("tt-rss login failed: error '%s'!\n", json_get_string (node, "error"));
 			
-			node = json_object_get_member (obj, "session_id");
-			if (node) {
-				source->session_id = json_node_dup_string (node);
+			source->session_id = g_strdup (json_get_string (node, "session_id"));
+			if (source->session_id) {
 				debug1 (DEBUG_UPDATE, "Found session_id: >>>%s<<<!\n", source->session_id);
 			} else {
 				g_warning ("No tt-rss session_id found in response!\n");
