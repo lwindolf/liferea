@@ -202,7 +202,7 @@ ttrss_subscription_prepare_update_request (subscriptionPtr subscription, struct 
 		return FALSE;
 	}
 	debug1 (DEBUG_UPDATE, "updating tt-rss subscription (node id %s)", subscription->node->id);
-	update_request_set_source (request, g_strdup_printf (TTRSS_SUBSCRIPTION_LIST_URL, subscription->source, source->session_id));
+	update_request_set_source (request, g_strdup_printf (TTRSS_SUBSCRIPTION_LIST_URL, subscription_get_homepage (subscription), source->session_id));
 	
 	return TRUE;
 }

@@ -29,6 +29,7 @@
 #include "feedlist.h"
 #include "item_state.h"
 #include "json.h"
+#include "metadata.h"
 #include "node.h"
 #include "subscription.h"
 #include "update.h"
@@ -99,7 +100,7 @@ ttrss_source_login_cb (const struct updateResult * const result, gpointer userda
 			g_warning ("Invalid JSON returned on tt-rss login! >>>%s<<<", result->data);
 		}
 	} else {
-		g_print ("tt-rss login failed: HTTP %d\n", result->httpstatus);
+		g_warning ("tt-rss login failed: HTTP %d\n", result->httpstatus);
 	}
 
 	if (source->session_id) {	
@@ -135,7 +136,7 @@ ttrss_source_login (ttrssSourcePtr source, guint32 flags)
 	username = g_uri_escape_string (subscription->updateOptions->username, NULL, TRUE);
 	password = g_uri_escape_string (subscription->updateOptions->password, NULL, TRUE);
 	
-	update_request_set_source (request, g_strdup_printf (TTRSS_LOGIN_URL, subscription->source, username, password));
+	update_request_set_source (request, g_strdup_printf (TTRSS_LOGIN_URL, subscription_get_homepage (subscription), username, password));
 
 	request->options = update_options_copy (subscription->updateOptions);
 	
@@ -240,14 +241,20 @@ on_ttrss_source_selected (GtkDialog *dialog,
                            gint response_id,
                            gpointer user_data) 
 {
-	nodePtr		node;
-	subscriptionPtr	subscription;
-
 	if (response_id == GTK_RESPONSE_OK) {
-		subscription = subscription_new (gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET (dialog), "serverUrlEntry"))), NULL, NULL);
+		nodePtr		node;
+		subscriptionPtr subscription = subscription_new ("", NULL, NULL);
+		
+		/* The is a bit ugly: we need to prevent the tt-rss base
+		   URL from being lost by unwanted permanent redirects on
+		   the getFeeds call, so we save it as the homepage meta
+		   data value... */
+		metadata_list_set (&subscription->metadata, "homepage", gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET (dialog), "serverUrlEntry"))));
+		
 		subscription->updateOptions->username = g_strdup (gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "userEntry"))));
 		subscription->updateOptions->password = g_strdup (gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "passwordEntry"))));
-		subscription->type = &ttrssSourceSubscriptionType ; 
+		subscription->type = &ttrssSourceSubscriptionType;
+		
 		node = node_new (node_source_get_node_type ());
 		node_set_title (node, "Tiny Tiny RSS");
 		node_source_new (node, ttrss_source_get_type ());
