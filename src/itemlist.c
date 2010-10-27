@@ -325,8 +325,10 @@ itemlist_load (nodePtr node)
 void
 itemlist_unload (gboolean markRead) 
 {
+	/* Always clear to ensure clearing on search */
+	itemview_clear ();
+
 	if (itemlist_priv.currentNode) {
-		itemview_clear ();
 		itemview_set_displayed_node (NULL);
 		
 		/* 1. Postprocessing for previously selected node, this is necessary
