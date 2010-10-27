@@ -108,7 +108,7 @@ ttrss_source_login_cb (const struct updateResult * const result, gpointer userda
 			subscription_update (subscription, flags);
 
 		/* process any edits waiting in queue */
-		// FIXME: ttrss_source_edit_process (gsource);
+		// FIXME: ttrss_source_edit_process (source);
 	}
 }
 
@@ -166,7 +166,7 @@ ttrss_source_auto_update (nodePtr node)
 	g_get_current_time (&now);
 
 	ttrss_source_update (node);
-	// FIXME: ttrss_source_edit_process (gsource);
+	// FIXME: ttrss_source_edit_process (source);
 }
 
 static void
