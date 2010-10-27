@@ -70,6 +70,7 @@
 	  (Adrian Bunk)
 	* Removed the outdated .spec file. (Adrian Bunk)
 	* Merged patch SF #3089150: Bidi support (Yaron Sheffer)
+	* Fixes second search not clearing item list. (Lars Lindner)
 
 	* Added Asturian translation. (Marquinos)
 	* Added Danish translation. (Joe Hansen)
