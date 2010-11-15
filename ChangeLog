@@ -6,6 +6,8 @@
 	  wrongly not marked. (Adrian Bunk, reported by Yaron Sheffer)
 	* Removed the obsolete Bloglines support. (Adrian Bunk)
 	* Fixes second search not clearing item list. (Lars Lindner)
+	* Fixes SF #3019444 and #2978831: incorrect handling of
+	  HTTP 301 (patch by Solomon Peachy)
 
 	* Added Asturian translation. (Marquinos)
 	* Added Hebrew translation. (Yaron Sheffer)

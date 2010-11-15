@@ -205,7 +205,7 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	/* 1. preprocessing */
 
 	/* update the subscription URL on permanent redirects */
-	if (result->source && g_str_equal (result->source, subscription_get_source (subscription))) {
+	if ((301 == result->httpstatus) && result->source && g_str_equal (result->source, subscription_get_source (subscription))) {
 		subscription_set_source (subscription, result->source);
 		liferea_shell_set_status_bar (_("The URL of \"%s\" has changed permanently and was updated"), node_get_title(node));
 	}
