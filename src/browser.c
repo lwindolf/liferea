@@ -1,7 +1,7 @@
 /**
- * @file browser.h  Launching different external browsers
+ * @file browser.c  Launching different external browsers
  *
- * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2010 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,7 +39,10 @@ browser_execute (const gchar *cmd, const gchar *uri, gboolean sync)
 	g_assert (cmd != NULL);
 	g_assert (uri != NULL);
 
-	tmpUri = g_strdup (uri);
+	/* make sure URI characters are correctly escaped */
+	tmp = g_uri_unescape_string(uri, NULL);
+	tmpUri = g_uri_escape_string(tmp, G_URI_RESERVED_CHARS_GENERIC_DELIMITERS G_URI_RESERVED_CHARS_ALLOWED_IN_PATH, FALSE);
+	g_free(tmp);
 
 	/* If we run using a "-remote openURL()" mechanism we need to escape commata */
 	if (strstr(cmd, "openURL("))

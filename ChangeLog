@@ -10,6 +10,8 @@
 	  HTTP 301 (patch by Solomon Peachy)
 	* Merged patch SF #3109120: Only accept URI drop at 
 	  feed list (Ryan Li)
+	* Merged patch SF #3103875: Opening URLs with UTF-8
+	  characters (skazi)
 
 	* Added Asturian translation. (Marquinos)
 	* Added Hebrew translation. (Yaron Sheffer)
