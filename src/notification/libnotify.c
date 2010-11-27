@@ -158,8 +158,11 @@ notif_libnotify_callback_show_details (NotifyNotification *n, gchar *action, gpo
 //		notify_notification_update ( n, node_get_title(node_p), labelText_now_p, NULL);
 //		notify_notification_clear_actions(n);
 
+#if HAVE_LIBNOTIFY == 4
+		n = notify_notification_new (node_get_title (node_p), labelText_now_p, NULL);
+#else
 		n = notify_notification_new (node_get_title (node_p), labelText_now_p, NULL, NULL);
-
+#endif
 		notify_notification_set_icon_from_pixbuf (n, node_get_icon (node_p));
 		notify_notification_set_category (n, "feed");
 		notify_notification_set_timeout (n, NOTIFY_EXPIRES_NEVER);
@@ -173,8 +176,9 @@ notif_libnotify_callback_show_details (NotifyNotification *n, gchar *action, gpo
 							node_p->id, NULL);
 		}
 
+#if HAVE_LIBNOTIFY == 1
 		notify_notification_attach_to_status_icon (n, ui_tray_get_status_icon ());
-
+#endif
 		if (!notify_notification_show (n, NULL)) {
 			g_warning ("libnotify.c - failed to update notification via libnotify\n");
 		}
@@ -249,7 +253,11 @@ notif_libnotify_node_has_new_items (nodePtr node, gboolean enforced)
 
 	labelSummary_p = g_strdup_printf (ngettext ("<b>%s</b> has <b>%d</b> update", "<b>%s</b> has <b>%d</b> updates", item_count), 
 	                                  node_get_title (node), item_count);
+#if HAVE_LIBNOTIFY == 4
+	n = notify_notification_new (_("Feed Update"), labelSummary_p, "liferea");
+#else
 	n = notify_notification_new (_("Feed Update"), labelSummary_p, "liferea", NULL);
+#endif
 	g_free (labelSummary_p);
 
  	if (supports_append) {
@@ -271,9 +279,9 @@ notif_libnotify_node_has_new_items (nodePtr node, gboolean enforced)
 	                                node->id, NULL);
 	}
 	notify_notification_set_category (n, "feed");
-
+#if HAVE_LIBNOTIFY == 1
 	notify_notification_attach_to_status_icon (n, ui_tray_get_status_icon ());
-
+#endif
 	if (!notify_notification_show (n, NULL))
 		g_warning ("notif_libnotify.c - failed to send notification via libnotify");
 }
