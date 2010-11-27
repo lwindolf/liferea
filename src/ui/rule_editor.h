@@ -51,7 +51,7 @@ struct RuleEditor
 
 struct RuleEditorClass 
 {
-	GtkObjectClass parent_class;	
+	GObjectClass parent_class;
 };
 
 GType rule_editor_get_type	(void);

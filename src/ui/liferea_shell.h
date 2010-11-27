@@ -61,7 +61,7 @@ struct LifereaShell
 
 struct LifereaShellClass 
 {
-	GtkObjectClass parent_class;
+	GObjectClass parent_class;
 };
 
 GType liferea_shell_get_type	(void);

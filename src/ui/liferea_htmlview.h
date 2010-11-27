@@ -45,7 +45,7 @@ struct LifereaHtmlView
 
 struct LifereaHtmlViewClass 
 {
-	GtkObjectClass parent_class;
+	GObjectClass parent_class;
 };
 
 GType liferea_htmlview_get_type	(void);

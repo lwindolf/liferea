@@ -47,7 +47,7 @@ struct AuthDialog
 
 struct AuthDialogClass 
 {
-	GtkObjectClass parent_class;
+	GObjectClass parent_class;
 };
 
 GType auth_dialog_get_type (void);

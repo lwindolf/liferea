@@ -50,7 +50,7 @@ struct SearchFolderDialog
 
 struct SearchFolderDialogClass 
 {
-	GtkObjectClass parent_class;	
+	GObjectClass parent_class;
 };
 
 GType search_folder_dialog_get_type	(void);

@@ -48,7 +48,7 @@ struct SubscriptionPropDialog
 
 struct SubscriptionPropDialogClass 
 {
-	GtkObjectClass parent_class;
+	GObjectClass parent_class;
 };
 
 GType subscription_prop_dialog_get_type	(void);
@@ -83,7 +83,7 @@ struct NewSubscriptionDialog
 
 struct NewSubscriptionDialogClass 
 {
-	GtkObjectClass parent_class;
+	GObjectClass parent_class;
 };
 
 GType new_subscription_dialog_get_type	(void);
@@ -108,7 +108,7 @@ struct SimpleSubscriptionDialog
 
 struct SimpleSubscriptionDialogClass 
 {
-	GtkObjectClass parent_class;
+	GObjectClass parent_class;
 };
 
 GType simple_subscription_dialog_get_type (void);

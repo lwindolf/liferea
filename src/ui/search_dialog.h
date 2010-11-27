@@ -48,7 +48,7 @@ struct SearchDialog
 
 struct SearchDialogClass 
 {
-	GtkObjectClass parent_class;	
+	GObjectClass parent_class;
 };
 
 GType search_dialog_get_type	(void);
@@ -82,7 +82,7 @@ struct SimpleSearchDialog
 
 struct SimpleSearchDialogClass 
 {
-	GtkObjectClass parent_class;	
+	GObjectClass parent_class;
 };
 
 GType simple_search_dialog_get_type	(void);

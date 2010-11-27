@@ -48,7 +48,7 @@ struct EnclosureListView
 
 struct EnclosureListViewClass 
 {
-	GtkObjectClass parent_class;
+	GObjectClass parent_class;
 };
 
 GType enclosure_list_view_get_type	(void);

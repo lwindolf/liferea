@@ -50,7 +50,7 @@ struct BrowserTabs
 
 struct BrowserTabsClass 
 {
-	GtkObjectClass parent_class;
+	GObjectClass parent_class;
 };
 
 GType browser_tabs_get_type (void);

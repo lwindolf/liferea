@@ -48,7 +48,7 @@ struct SearchEngineDialog
 
 struct SearchEngineDialogClass 
 {
-	GtkObjectClass parent_class;	
+	GObjectClass parent_class;
 };
 
 GType search_engine_dialog_get_type	(void);

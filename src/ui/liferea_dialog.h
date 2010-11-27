@@ -48,7 +48,7 @@ struct LifereaDialog
 
 struct LifereaDialogClass 
 {
-	GtkObjectClass parent_class;	
+	GObjectClass parent_class;
 };
 
 GType liferea_dialog_get_type	(void);
