@@ -424,7 +424,8 @@ item_list_view_update (ItemListView *ilv, gboolean hasEnclosures)
 static gboolean
 on_item_list_view_key_press_event (GtkWidget *widget, GdkEventKey *event, gpointer data) 
 {
-	if ((event->type == GDK_KEY_PRESS) && (event->state == 0) && (event->keyval == GDK_Delete)) 
+	if ((event->type == GDK_KEY_PRESS) && (event->state == 0)
+	    && (event->keyval == GDK_KEY_Delete))
 		on_remove_item_activate(NULL, NULL);
 
 	return FALSE;
