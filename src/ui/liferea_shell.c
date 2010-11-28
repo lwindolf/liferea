@@ -1260,7 +1260,7 @@ liferea_shell_create (int initialState)
 	liferea_shell_update_toolbar ();
 	liferea_shell_online_status_changed (network_is_online ());
 	
-	liferea_shell_setup_URL_receiver (GTK_WIDGET (shell->priv->feedlistView));	/* setup URL dropping support */
+	liferea_shell_setup_URL_receiver (GTK_WIDGET (shell->priv->window));	/* setup URL dropping support */
 
 	shell->priv->feedlist = feedlist_create ();
 	
