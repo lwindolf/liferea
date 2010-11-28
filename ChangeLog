@@ -10,6 +10,8 @@
 	  HTTP 301 (patch by Solomon Peachy)
 	* Merged patch SF #3103875: Opening URLs with UTF-8
 	  characters (skazi)
+	* Fixes Debian #600638: Wrong number of unread items in mouse
+	  over tray icon with zh_TW locale. (Adrian Bunk)
 
 	* Added Asturian translation. (Marquinos)
 	* Added Hebrew translation. (Yaron Sheffer)
