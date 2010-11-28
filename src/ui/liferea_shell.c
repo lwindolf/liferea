@@ -798,8 +798,8 @@ liferea_shell_URL_received (GtkWidget *widget, GdkDragContext *context, gint x, 
 	
 	g_return_if_fail (gtk_selection_data_get_data (data) != NULL);
 		
-	mainwindow = GTK_WIDGET (liferea_shell_lookup ("mainwindow"));
-	treeview = GTK_TREE_VIEW (liferea_shell_lookup ("feedlist"));
+	mainwindow = GTK_WIDGET (shell->priv->window);
+	treeview = GTK_TREE_VIEW (shell->priv->feedlistView);
 	model = gtk_tree_view_get_model (treeview);
 
 	/* x and y are relative to the main window, make them relative to the treeview */
