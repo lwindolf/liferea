@@ -831,7 +831,7 @@ liferea_shell_URL_received (GtkWidget *widget, GdkDragContext *context, gint x, 
 	}
 }
 
-void
+static void
 liferea_shell_setup_URL_receiver (GtkWidget *widget)
 {
 	GtkTargetEntry target_table[] = {

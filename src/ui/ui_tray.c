@@ -253,9 +253,6 @@ static void ui_tray_install(void) {
 	g_signal_connect(trayIcon_priv->status_icon, "popup-menu",
 	                 G_CALLBACK(tray_icon_popup), NULL);
 	
-// No URL dropping support on the status icon.
-// liferea_shell_setup_URL_receiver (trayIcon_priv->eventBox);
-	
 	ui_tray_update();
 	trayIcon_priv->trayCount++;
 }

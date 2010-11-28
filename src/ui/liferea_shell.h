@@ -187,13 +187,6 @@ GtkWidget * liferea_shell_get_window (void);
 void on_onlinebtn_clicked (GtkButton *button, gpointer user_data);
 
 /**
- * Helper method to set up URL drop receiver
- *
- * @param widget	a widget that can receive URL drops
- */
-void liferea_shell_setup_URL_receiver (GtkWidget *widget);
-
-/**
  * Update the mode selection in the menu
  *
  * @param newMode	the new mode
