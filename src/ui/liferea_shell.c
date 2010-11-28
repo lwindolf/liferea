@@ -832,8 +832,9 @@ liferea_shell_URL_received (GtkWidget *widget, GdkDragContext *context, gint x, 
 }
 
 static void
-liferea_shell_setup_URL_receiver (GtkWidget *widget)
+liferea_shell_setup_URL_receiver (void)
 {
+	GtkWidget *mainwindow;
 	GtkTargetEntry target_table[] = {
 		{ "STRING",     		0, 0 },
 		{ "text/plain", 		0, 0 },
@@ -842,12 +843,14 @@ liferea_shell_setup_URL_receiver (GtkWidget *widget)
 		{ "application/x-rootwin-drop", 0, 2 }
 	};
 
+	mainwindow = GTK_WIDGET (shell->priv->window);
+
 	/* doesn't work with GTK_DEST_DEFAULT_DROP... */
-	gtk_drag_dest_set (widget, GTK_DEST_DEFAULT_ALL,
+	gtk_drag_dest_set (mainwindow, GTK_DEST_DEFAULT_ALL,
 	                   target_table, sizeof (target_table)/sizeof (target_table[0]),
 	                   GDK_ACTION_COPY | GDK_ACTION_MOVE | GDK_ACTION_LINK);
 		       
-	g_signal_connect (G_OBJECT (widget), "drag_data_received",
+	g_signal_connect (G_OBJECT (mainwindow), "drag_data_received",
 	                  G_CALLBACK (liferea_shell_URL_received), NULL);
 }
 
@@ -1199,7 +1202,7 @@ liferea_shell_create (int initialState)
 	
 	liferea_shell_update_toolbar ();
 	
-	liferea_shell_setup_URL_receiver (GTK_WIDGET (shell->priv->window));	/* setup URL dropping support */
+	liferea_shell_setup_URL_receiver ();	/* setup URL dropping support */
 
 	shell->priv->feedlist = feedlist_create ();
 
