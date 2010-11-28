@@ -1684,8 +1684,8 @@ msgid ""
 msgid_plural ""
 "%s\n"
 "%d unread items"
-msgstr[0] "%d 個未讀項目"
-msgstr[1] "%d 個未讀項目"
+msgstr[0] "%s\n%d 個未讀項目"
+msgstr[1] "%s\n%d 個未讀項目"
 
 # what's this ?
 # #: src/ui_tray.c:90

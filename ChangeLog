@@ -75,6 +75,8 @@
 	  of HTTP 301 (patch by Solomon Peachy)
 	* Added support for the new libnotify API.
 	  (Emilio Pozuelo Monfort)
+	* Fixes Debian #600638: Wrong number of unread items in mouse
+	  over tray icon with zh_TW locale. (Adrian Bunk)
 
 	* Added Asturian translation. (Marquinos)
 	* Added Danish translation. (Joe Hansen)
