@@ -73,8 +73,6 @@
 	* Fixes second search not clearing item list. (Lars Lindner)
 	* Fixes SF #3019444 and #2978831: incorrect handling
 	  of HTTP 301 (patch by Solomon Peachy)
-	* Merged patch SF #3109120: Only accept URI drop
-	  at feed list (Ryan Li)
 	* Added support for the new libnotify API.
 	  (Emilio Pozuelo Monfort)
 
