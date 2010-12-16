@@ -15,7 +15,6 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/src \
 	$(PACKAGE_CFLAGS) \
 	$(SM_CFLAGS) \
-	$(DBUS_CFLAGS) \
 	$(NM_CFLAGS)
 
 bin_PROGRAMS = liferea
@@ -70,22 +69,12 @@ liferea_LDADD =	parsers/libliparsers.a \
 		webkit/libwebkit.a \
 		$(SYNC_LIB) \
 		$(PACKAGE_LIBS) $(SM_LIBS) \
-		$(DBUS_LIBS) $(NM_LIBS) $(INTLLIBS) $(AVAHI_LIBS) \
+		$(NM_LIBS) $(INTLLIBS) $(AVAHI_LIBS) \
 		$(WEBKIT_LIBS) $(LIBNOTIFY_LIBS)
 
-if WITH_DBUS
-
-EXTRA_DIST = $(srcdir)/liferea_dbus.xml \
-		$(srcdir)/liferea-add-feed.in
-BUILT_SOURCES = dbus_wrap.c
-CLEANFILES = $(BUILT_SOURCES)
+EXTRA_DIST = $(srcdir)/liferea-add-feed.in
 DISTCLEANFILES = $(srcdir)/liferea-add-feed
 AM_INSTALLCHECK_STD_OPTIONS_EXEMPT = liferea-add-feed
-
-dbus_wrap.c: $(srcdir)/liferea_dbus.xml
-	dbus-binding-tool --mode=glib-server --prefix=liferea_dbus $(srcdir)/liferea_dbus.xml > dbus_wrap.c
-
-endif
 
 if WITH_LIBNOTIFY
 

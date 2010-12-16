@@ -5,8 +5,7 @@ AM_CPPFLAGS = \
 	-DPACKAGE_LIB_DIR=\""$(pkglibdir)"\" \
 	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
 	-I$(top_srcdir)/src \
-	$(PACKAGE_CFLAGS) \
-	$(DBUS_CFLAGS)
+	$(PACKAGE_CFLAGS)
 
 if WITH_LIBNOTIFY
 

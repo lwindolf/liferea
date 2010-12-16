@@ -2,6 +2,7 @@
  * @file dbus.c DBUS interface to control Liferea
  * 
  * Copyright (C) 2007 mooonz <mooonz@users.sourceforge.net>
+ * Copyright (C) 2010 Emilio Pozuelo Monfort <pochu27@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,20 +22,14 @@
 #ifndef __LIFEREA_DBUS_H__
 #define __LIFEREA_DBUS_H__
 
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
-
-#ifdef USE_DBUS	
-#include <dbus.h>
-#include <dbus/dbus-glib.h>
-#endif
+#include <glib-object.h>
 
 #define LF_DBUS_PATH "/org/gnome/feed/Reader"
 #define LF_DBUS_SERVICE "org.gnome.feed.Reader"
 
 typedef struct _LifereaDBus {
 	GObject parent;
+	guint owner_id;
 } LifereaDBus;
 
 typedef struct _LifereaDBusClass {

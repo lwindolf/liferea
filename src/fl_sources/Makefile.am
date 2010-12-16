@@ -5,8 +5,7 @@ AM_CPPFLAGS = \
 	-DPACKAGE_LIB_DIR=\""$(pkglibdir)"\" \
 	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
 	-I$(top_srcdir)/src \
-	$(PACKAGE_CFLAGS) \
-	$(DBUS_CFLAGS)
+	$(PACKAGE_CFLAGS)
 	
 noinst_LIBRARIES = libliflsources.a
 libliflsources_a_SOURCES = node_source.c node_source.h \
