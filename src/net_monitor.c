@@ -26,9 +26,6 @@
 #include "debug.h"
 #include "net.h"
 
-static void network_monitor_class_init	(NetworkMonitorClass *klass);
-static void network_monitor_init	(NetworkMonitor *nm);
-
 struct NetworkMonitorPrivate {
 	GDBusConnection *conn;
 	guint subscription_id;
