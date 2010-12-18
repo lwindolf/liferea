@@ -56,20 +56,20 @@ static const gchar introspection_xml[] =
 
 G_DEFINE_TYPE(LifereaDBus, liferea_dbus, G_TYPE_OBJECT)
 
-gboolean
+static gboolean
 liferea_dbus_ping (LifereaDBus *self, GError **err)
 {
 	return TRUE;
 }
 
-gboolean
+static gboolean
 liferea_dbus_set_online (LifereaDBus *self, gboolean online, GError **err)
 {
 	network_monitor_set_online (online);
 	return TRUE;
 }
 
-gboolean
+static gboolean
 liferea_dbus_subscribe (LifereaDBus *self, const gchar *url, GError **err)
 {
 	liferea_shell_present ();
@@ -77,19 +77,19 @@ liferea_dbus_subscribe (LifereaDBus *self, const gchar *url, GError **err)
 	return TRUE;
 }
 
-guint
+static guint
 liferea_dbus_get_unread_items (LifereaDBus *self, GError **err)
 {
 	return feedlist_get_unread_item_count ();
 }
 
-guint
+static guint
 liferea_dbus_get_new_items (LifereaDBus *self, GError **err)
 {
 	return feedlist_get_new_item_count ();
 }
 
-gboolean
+static gboolean
 liferea_dbus_refresh (LifereaDBus *self, GError **err)
 {
 	node_update_subscription (feedlist_get_root (), GUINT_TO_POINTER (0));
