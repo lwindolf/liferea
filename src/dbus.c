@@ -57,48 +57,42 @@ static const gchar introspection_xml[] =
 G_DEFINE_TYPE(LifereaDBus, liferea_dbus, G_TYPE_OBJECT)
 
 gboolean
-liferea_dbus_ping (LifereaDBus *self, gboolean *ret, GError **err)
+liferea_dbus_ping (LifereaDBus *self, GError **err)
 {
-	*ret = TRUE;
 	return TRUE;
 }
 
 gboolean
-liferea_dbus_set_online (LifereaDBus *self, gboolean online, gboolean *ret, GError **err)
+liferea_dbus_set_online (LifereaDBus *self, gboolean online, GError **err)
 {
 	network_monitor_set_online (online);
-	*ret = TRUE;
 	return TRUE;
 }
 
 gboolean
-liferea_dbus_subscribe (LifereaDBus *self, const gchar *url, gboolean *ret, GError **err)
+liferea_dbus_subscribe (LifereaDBus *self, const gchar *url, GError **err)
 {
 	liferea_shell_present ();
 	feedlist_add_subscription (url, NULL, NULL, 0);
-	*ret = TRUE;
 	return TRUE;
 }
 
-gboolean
-liferea_dbus_get_unread_items (LifereaDBus *self, guint *ret, GError **err)
+guint
+liferea_dbus_get_unread_items (LifereaDBus *self, GError **err)
 {
-	*ret = feedlist_get_unread_item_count ();
-	return TRUE;
+	return feedlist_get_unread_item_count ();
 }
 
-gboolean
-liferea_dbus_get_new_items (LifereaDBus *self, guint *ret, GError **err)
+guint
+liferea_dbus_get_new_items (LifereaDBus *self, GError **err)
 {
-	*ret = feedlist_get_new_item_count ();
-	return TRUE;
+	return feedlist_get_new_item_count ();
 }
 
 gboolean
-liferea_dbus_refresh (LifereaDBus *self, gboolean *ret, GError **err)
+liferea_dbus_refresh (LifereaDBus *self, GError **err)
 {
 	node_update_subscription (feedlist_get_root (), GUINT_TO_POINTER (0));
-	*ret = TRUE;
 	return TRUE;
 }
 
@@ -116,35 +110,33 @@ handle_method_call (GDBusConnection       *connection,
 	gboolean res;
 
 	if (g_str_equal (method_name, "Ping")) {
-		liferea_dbus_ping (self, &res, NULL);
+		res = liferea_dbus_ping (self, NULL);
 		g_dbus_method_invocation_return_value (invocation,
 			g_variant_new ("(b)", res));
 	} else if (g_str_equal (method_name, "SetOnline") &&
 	    g_variant_is_of_type (parameters, G_VARIANT_TYPE ("(b)"))) {
 		gboolean set_online;
 		g_variant_get (parameters, "(b)", &set_online);
-		liferea_dbus_set_online (self, set_online, &res, NULL);
+		res = liferea_dbus_set_online (self, set_online, NULL);
 		g_dbus_method_invocation_return_value (invocation,
 			g_variant_new ("(b)", res));
 	} else if (g_str_equal (method_name, "Subscribe") &&
 	    g_variant_is_of_type (parameters, G_VARIANT_TYPE ("(s)"))) {
 		const gchar *url;
 		g_variant_get (parameters, "(s)", &url);
-		liferea_dbus_subscribe (self, url, &res, NULL);
+		res = liferea_dbus_subscribe (self, url, NULL);
 		g_dbus_method_invocation_return_value (invocation,
 			g_variant_new ("(b)", res));
 	} else if (g_str_equal (method_name, "GetUnreadItems")) {
-		guint num;
-		liferea_dbus_get_unread_items (self, &num, NULL);
+		guint num = liferea_dbus_get_unread_items (self, NULL);
 		g_dbus_method_invocation_return_value (invocation,
 			g_variant_new ("(i)", num));
 	} else if (g_str_equal (method_name, "GetNewItems")) {
-		guint num;
-		liferea_dbus_get_new_items (self, &num, NULL);
+		guint num = liferea_dbus_get_new_items (self, NULL);
 		g_dbus_method_invocation_return_value (invocation,
 			g_variant_new ("(i)", num));
 	} else if (g_str_equal (method_name, "Refresh")) {
-		liferea_dbus_refresh (self, &res, NULL);
+		res = liferea_dbus_refresh (self, NULL);
 		g_dbus_method_invocation_return_value (invocation,
 			g_variant_new ("(b)", res));
 	} else {
