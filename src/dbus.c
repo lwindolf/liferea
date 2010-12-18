@@ -196,7 +196,21 @@ on_name_lost (GDBusConnection *connection,
 
 static void liferea_dbus_init(LifereaDBus *obj) { }
 
-static void liferea_dbus_class_init (LifereaDBusClass *klass) { }
+static void
+liferea_dbus_dispose (LifereaDBus *obj)
+{
+	g_bus_unown_name (obj->owner_id);
+
+	G_OBJECT_CLASS (liferea_dbus_parent_class)->dispose (G_OBJECT (obj));
+}
+
+static void
+liferea_dbus_class_init (LifereaDBusClass *klass)
+{
+	GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+
+	gobject_class->dispose = liferea_dbus_dispose;
+}
 
 LifereaDBus*
 liferea_dbus_new (void)
@@ -219,10 +233,4 @@ liferea_dbus_new (void)
 	debug_exit ("liferea_dbus_new");
 
 	return obj;
-}
-
-static void
-liferea_dbus_deinit (LifereaDBus *obj)
-{
-	g_bus_unown_name (obj->owner_id);
 }
