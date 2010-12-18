@@ -131,7 +131,7 @@ network_monitor_set_online (gboolean mode)
 	if (network_monitor->priv->online != mode) {
 		network_monitor->priv->online = mode;
 		debug1 (DEBUG_NET, "Changing online mode to %s", mode?"online":"offline");
-		g_signal_emit_by_name (network_monitor, "online-status-changed", mode);
+		g_signal_emit (network_monitor, network_monitor_signals[ONLINE_STATUS_CHANGED], 0, mode);
 	}
 }
 
@@ -150,7 +150,7 @@ network_monitor_proxy_changed (void)
 	if (!network_monitor)
 		return;
 
-	g_signal_emit_by_name (network_monitor, "proxy-changed", NULL);
+	g_signal_emit (network_monitor, network_monitor_signals[PROXY_CHANGED], 0, NULL);
 }
 
 static void
