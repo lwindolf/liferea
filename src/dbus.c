@@ -202,8 +202,6 @@ LifereaDBus*
 liferea_dbus_new (void)
 {
 	LifereaDBus *obj = NULL;
-	GError *error = NULL;
-	guint request_name_result;
 
 	debug_enter ("liferea_dbus_new");
 
