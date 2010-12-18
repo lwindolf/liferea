@@ -226,8 +226,8 @@ network_monitor_init (NetworkMonitor *nm)
 NetworkMonitor *
 network_monitor_get (void)
 {
-	if (!network_monitor)
-		network_monitor = NETWORK_MONITOR (g_object_new (NETWORK_MONITOR_TYPE, NULL));	
-		
+	if (G_UNLIKELY (!network_monitor))
+		network_monitor = NETWORK_MONITOR (g_object_new (NETWORK_MONITOR_TYPE, NULL));
+
 	return network_monitor;
 }
