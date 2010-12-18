@@ -36,6 +36,8 @@ struct NetworkMonitorPrivate {
 	gboolean		online;
 };
 
+G_DEFINE_TYPE (NetworkMonitor, network_monitor, G_TYPE_OBJECT)
+
 enum {
 	ONLINE_STATUS_CHANGED,
 	PROXY_CHANGED,
@@ -47,33 +49,6 @@ static guint network_monitor_signals[LAST_SIGNAL] = { 0 };
 static GObjectClass *parent_class = NULL;
 static NetworkMonitor *network_monitor = NULL;
 
-GType
-network_monitor_get_type (void) 
-{
-	static GType type = 0;
-
-	if (G_UNLIKELY (type == 0)) 
-	{
-		static const GTypeInfo our_info = 
-		{
-			sizeof (NetworkMonitorClass),
-			NULL, /* base_init */
-			NULL, /* base_finalize */
-			(GClassInitFunc) network_monitor_class_init,
-			NULL,
-			NULL, /* class_data */
-			sizeof (NetworkMonitor),
-			0, /* n_preallocs */
-			(GInstanceInitFunc) network_monitor_init
-		};
-
-		type = g_type_register_static (G_TYPE_OBJECT,
-					       "NetworkMonitor",
-					       &our_info, 0);
-	}
-
-	return type;
-}
 
 static void
 network_monitor_finalize (GObject *object)
