@@ -2,6 +2,7 @@
  * @file network_monitor.c  network status monitor
  *
  * Copyright (C) 2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2010 Emilio Pozuelo Monfort <pochu27@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,17 +18,10 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
- 
+
 #include "net_monitor.h"
 
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
-
-#ifdef USE_NM
-#include <dbus/dbus.h>
-#include <libnm_glib.h>
-#endif
+#include <gio/gio.h>
 
 #include "debug.h"
 #include "net.h"
@@ -35,16 +29,11 @@
 static void network_monitor_class_init	(NetworkMonitorClass *klass);
 static void network_monitor_init	(NetworkMonitor *nm);
 
-#define NETWORK_MONITOR_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object), NETWORK_MONITOR_TYPE, NetworkMonitorPrivate))
-
 struct NetworkMonitorPrivate {
+	GDBusConnection *conn;
+	guint subscription_id;
+
 	gboolean		online;
-	
-#ifdef USE_NM
-	/* State for NM support */
-	libnm_glib_ctx		*nm_ctx;
-	guint			nm_id;
-#endif
 };
 
 enum {
@@ -89,18 +78,15 @@ network_monitor_get_type (void)
 static void
 network_monitor_finalize (GObject *object)
 {
-#ifdef USE_NM
 	NetworkMonitor *self = NETWORK_MONITOR (object);
 
 	debug0 (DEBUG_NET, "network manager: unregistering network state change callback");
 
-	if (self->priv->nm_id != 0 && self->priv->nm_ctx != NULL) {
-		libnm_glib_unregister_callback (self->priv->nm_ctx, self->priv->nm_id);
-		libnm_glib_shutdown (self->priv->nm_ctx);
-		self->priv->nm_ctx = NULL;
-		self->priv->nm_id = 0;
+	if (self->priv->conn && self->priv->subscription_id) {
+		g_dbus_connection_signal_unsubscribe (self->priv->conn,
+						      self->priv->subscription_id);
 	}
-#endif
+
 	network_deinit ();
 
 	G_OBJECT_CLASS (parent_class)->finalize (object);
@@ -141,47 +127,28 @@ network_monitor_class_init (NetworkMonitorClass *klass)
 	g_type_class_add_private (object_class, sizeof (NetworkMonitorPrivate));
 }
 
-
-#ifdef USE_NM
 static void
-nm_state_changed (libnm_glib_ctx *ctx, gpointer user_data)
+on_network_state_changed_cb (GDBusConnection *connection,
+			     const gchar *sender_name,
+			     const gchar *object_path,
+			     const gchar *interface_name,
+			     const gchar *signal_name,
+			     GVariant *parameters,
+			     gpointer user_data)
 {
-	libnm_glib_state	state;
-	gboolean online;
+	gboolean online = network_monitor_is_online ();
+	guint state;
 
-	g_return_if_fail (ctx != NULL);
+	g_variant_get (parameters, "(u)", &state);
 
-	state = libnm_glib_get_network_state (ctx);
-	online = network_monitor_is_online ();
-
-	if (online && state == LIBNM_NO_NETWORK_CONNECTION) {
+	if (online && state != 3 /* NM_STATE_CONNECTED */) {
 		debug0 (DEBUG_NET, "network manager: no network connection -> going offline");
 		network_monitor_set_online (FALSE);
-	} else if (!online && state == LIBNM_ACTIVE_NETWORK_CONNECTION) {
+	} else if (!online && state == 3 /* NM_STATE_CONNECTED */) {
 		debug0 (DEBUG_NET, "network manager: active connection -> going online");
 		network_monitor_set_online (TRUE);
 	}
 }
-
-static gboolean
-nm_initialize (NetworkMonitor *nm)
-{
-	debug0 (DEBUG_NET, "network manager: registering network state change callback");
-
-	if (!nm->priv->nm_ctx) {
-		nm->priv->nm_ctx = libnm_glib_init ();
-		if (!nm->priv->nm_ctx) {
-			g_warning ("Could not initialize libnm.");
-			return FALSE;
-		}
-	}
-
-	nm->priv->nm_id = libnm_glib_register_callback (nm->priv->nm_ctx, nm_state_changed, NULL, NULL);
-
-	return TRUE;
-}
-
-#endif
 
 void
 network_monitor_set_online (gboolean mode)
@@ -198,7 +165,7 @@ network_monitor_is_online (void)
 {
 	if (!network_monitor)
 		return FALSE;
-		
+
 	return network_monitor->priv->online;
 }
 
@@ -207,39 +174,53 @@ network_monitor_proxy_changed (void)
 {
 	if (!network_monitor)
 		return;
-		
+
 	g_signal_emit_by_name (network_monitor, "proxy-changed", NULL);
+}
+
+static void
+on_bus_get_cb (GObject *source_object, GAsyncResult *result, gpointer user_data)
+{
+	NetworkMonitor *self = NETWORK_MONITOR (user_data);
+	GError *error = NULL;
+
+	self->priv->conn = g_bus_get_finish (result, &error);
+	if (!self->priv->conn) {
+		debug1 (DEBUG_NET, "Could not connect to system bus: %s", error->message);
+		g_error_free (error);
+		return;
+	}
+
+	g_dbus_connection_set_exit_on_close (self->priv->conn, FALSE);
+
+	debug0 (DEBUG_NET, "network manager: connecting to StateChanged signal");
+	self->priv->subscription_id = g_dbus_connection_signal_subscribe (self->priv->conn,
+									  "org.freedesktop.NetworkManager",
+									  "org.freedesktop.NetworkManager",
+									  "StateChanged",
+									  NULL,
+									  NULL,
+									  G_DBUS_SIGNAL_FLAGS_NONE,
+									  on_network_state_changed_cb,
+									  self,
+									  NULL);
+
+	debug1 (DEBUG_NET, "network manager: connected to StateChanged signal: %s",
+		self->priv->subscription_id ? "yes" : "no");
 }
 
 static void
 network_monitor_init (NetworkMonitor *nm)
 {
-	nm->priv = NETWORK_MONITOR_GET_PRIVATE (nm);
+	nm->priv = G_TYPE_INSTANCE_GET_PRIVATE (nm,
+						NETWORK_MONITOR_TYPE,
+						NetworkMonitorPrivate);
 	nm->priv->online = TRUE;
 
 	/* For now accessing the network monitor also sets up the network! */
 	network_init ();
-	
-	/* But it needs to be performed after the DBUS setup or else the 
-	   following won't work... */
-#ifdef USE_NM
-	{
-		DBusConnection *connection;
 
-		connection = dbus_bus_get (DBUS_BUS_SYSTEM, NULL);
-
-		if (connection) {
-			dbus_connection_set_exit_on_disconnect (connection, FALSE);
-
-			if (dbus_bus_name_has_owner (connection, "org.freedesktop.NetworkManager", NULL)) {
-				nm_initialize (nm);
-				/* network manager will set online state right after initialization... */
-			}
-
-			dbus_connection_unref(connection);
-		}
-	}
-#endif
+	g_bus_get (G_BUS_TYPE_SYSTEM, NULL, on_bus_get_cb, nm);
 }
 
 NetworkMonitor *

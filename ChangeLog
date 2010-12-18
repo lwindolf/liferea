@@ -78,6 +78,10 @@
 	* Fixes Debian #600638: Wrong number of unread items in mouse
 	  over tray icon with zh_TW locale. (Adrian Bunk)
 	* Port from dbus-glib to GDBus. (Emilio Pozuelo Monfort)
+	* Port from libnm-glib and dbus-glib to direct DBus calls using
+	  GDBus. This way we always build the NetworkManager support,
+	  and it's only used if it's running on the user's system.
+	  (Emilio Pozuelo Monfort)
 
 	* Added Asturian translation. (Marquinos)
 	* Added Danish translation. (Joe Hansen)

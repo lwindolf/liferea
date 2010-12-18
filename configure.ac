@@ -21,7 +21,6 @@ AC_PROG_MAKE_SET
 AC_SYS_LARGEFILE
 
 AC_ARG_ENABLE(sm,        AS_HELP_STRING([--disable-sm],[compile without X session management support]),,enable_sm=yes)
-AC_ARG_ENABLE(nm,        AS_HELP_STRING([--disable-nm],[compile without NetworkManager support]),,enable_nm=yes)
 AC_ARG_ENABLE(libnotify, AS_HELP_STRING([--disable-libnotify],[compile without libnotify support]),,enable_libnotify=yes)
 dnl AC_ARG_ENABLE(avahi,     AS_HELP_STRING([--disable-avahi],[compile without AVAHI support]),,enable_avahi=yes)
 
@@ -124,24 +123,6 @@ AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE], ["${GETTEXT_PACKAGE}"], [gettext domain])
 
 
-dnl **************
-dnl NetworkManager
-dnl **************
-
-if test "x$enable_nm" = "xyes"; then
-   AC_MSG_NOTICE([checking for NetworkManager])
-   PKG_CHECK_EXISTS([libnm-glib],
-   [ PKG_CHECK_MODULES([NM], [dbus-glib-1 libnm-glib],enable_nm=yes,enable_nm=no) ],
-   [ PKG_CHECK_MODULES([NM], [dbus-glib-1 libnm_glib],enable_nm=yes,enable_nm=no) ])
-fi
-
-if test "x$enable_nm" = "xyes"; then
-  AC_DEFINE(USE_NM, 1, [Define if we're using NetworkManager.])
-fi
-
-AC_SUBST(NM_CFLAGS)
-AC_SUBST(NM_LIBS)
-
 AC_CONFIG_FILES([
 Makefile
 src/Makefile
@@ -174,7 +155,6 @@ echo
 echo "$PACKAGE $VERSION"
 echo
 echo "Use X Session Management........ : $enable_sm"
-echo "Use NetworkManager.............. : $enable_nm"
 echo "Use libnotify................... : $enable_libnotify"
 dnl echo "AVAHI Support................... : $enable_avahi"
 echo

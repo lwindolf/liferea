@@ -14,8 +14,7 @@ AM_CPPFLAGS = \
 	-DBIN_DIR=\""$(bindir)"\" \
 	-I$(top_srcdir)/src \
 	$(PACKAGE_CFLAGS) \
-	$(SM_CFLAGS) \
-	$(NM_CFLAGS)
+	$(SM_CFLAGS)
 
 bin_PROGRAMS = liferea
 bin_SCRIPTS = liferea-add-feed
@@ -69,7 +68,7 @@ liferea_LDADD =	parsers/libliparsers.a \
 		webkit/libwebkit.a \
 		$(SYNC_LIB) \
 		$(PACKAGE_LIBS) $(SM_LIBS) \
-		$(NM_LIBS) $(INTLLIBS) $(AVAHI_LIBS) \
+		$(INTLLIBS) $(AVAHI_LIBS) \
 		$(WEBKIT_LIBS) $(LIBNOTIFY_LIBS)
 
 EXTRA_DIST = $(srcdir)/liferea-add-feed.in
