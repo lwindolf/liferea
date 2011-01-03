@@ -5,8 +5,7 @@ AM_CPPFLAGS = \
 	-DPACKAGE_LIB_DIR=\""$(libdir)"\" \
 	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
 	-I$(top_srcdir)/src \
-	$(PACKAGE_CFLAGS) \
-	$(DBUS_CFLAGS)
+	$(PACKAGE_CFLAGS)
 
 noinst_LIBRARIES = libliparsers.a
 

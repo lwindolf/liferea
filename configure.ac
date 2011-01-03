@@ -21,8 +21,6 @@ AC_PROG_MAKE_SET
 AC_SYS_LARGEFILE
 
 AC_ARG_ENABLE(sm,        AS_HELP_STRING([--disable-sm],[compile without X session management support]),,enable_sm=yes)
-AC_ARG_ENABLE(dbus,      AS_HELP_STRING([--disable-dbus],[compile without DBUS support]),,enable_dbus=yes)
-AC_ARG_ENABLE(nm,        AS_HELP_STRING([--disable-nm],[compile without NetworkManager support]),,enable_nm=yes)
 AC_ARG_ENABLE(libnotify, AS_HELP_STRING([--disable-libnotify],[compile without libnotify support]),,enable_libnotify=yes)
 dnl AC_ARG_ENABLE(avahi,     AS_HELP_STRING([--disable-avahi],[compile without AVAHI support]),,enable_avahi=yes)
 
@@ -94,7 +92,8 @@ fi
 AM_GCONF_SOURCE_2
 
 pkg_modules="	gtk+-2.0 >= 2.18.0
-		glib-2.0 >= 2.16.0
+		glib-2.0 >= 2.24.0
+		gio-2.0 >= 2.26.0
 		pango >= 1.4.0
 		gconf-2.0 >= 1.1.9 
 		libxml-2.0 >= 2.6.27
@@ -123,44 +122,6 @@ GETTEXT_PACKAGE=liferea
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE], ["${GETTEXT_PACKAGE}"], [gettext domain])
 
-
-dnl ****
-dnl DBUS
-dnl ****
-
-
-if test "x$enable_dbus" = "xyes"; then
-   AC_MSG_NOTICE([checking for DBUS >= 0.30])
-   PKG_CHECK_MODULES([DBUS], [dbus-1 >= 0.30 dbus-glib-1 >= 0.30],enable_dbus=yes,enable_dbus=no)
-else
-   enable_dbus=no
-fi
-
-if test "x$enable_dbus" = "xyes"; then
-  AC_DEFINE(USE_DBUS, 1, [Define if we're using DBUS.])
-fi
-
-AC_SUBST(DBUS_CFLAGS)
-AC_SUBST(DBUS_LIBS)
-AM_CONDITIONAL(WITH_DBUS, test "x$enable_dbus" = "xyes")
-
-dnl **************
-dnl NetworkManager
-dnl **************
-
-if test "x$enable_nm" = "xyes"; then
-   AC_MSG_NOTICE([checking for NetworkManager])
-   PKG_CHECK_EXISTS([libnm-glib],
-   [ PKG_CHECK_MODULES([NM], [dbus-glib-1 libnm-glib],enable_nm=yes,enable_nm=no) ],
-   [ PKG_CHECK_MODULES([NM], [dbus-glib-1 libnm_glib],enable_nm=yes,enable_nm=no) ])
-fi
-
-if test "x$enable_nm" = "xyes"; then
-  AC_DEFINE(USE_NM, 1, [Define if we're using NetworkManager.])
-fi
-
-AC_SUBST(NM_CFLAGS)
-AC_SUBST(NM_LIBS)
 
 AC_CONFIG_FILES([
 Makefile
@@ -194,8 +155,6 @@ echo
 echo "$PACKAGE $VERSION"
 echo
 echo "Use X Session Management........ : $enable_sm"
-echo "Use DBUS........................ : $enable_dbus"
-echo "Use NetworkManager.............. : $enable_nm"
 echo "Use libnotify................... : $enable_libnotify"
 dnl echo "AVAHI Support................... : $enable_avahi"
 echo

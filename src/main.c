@@ -251,10 +251,6 @@ main (int argc, char *argv[])
 	   has to be initialized before update_init() */
 	conf_init ();
 
-#ifdef USE_DBUS
-	dbus_g_thread_init ();
-#endif
-
 	/* We need to do the network initialization here to allow
 	   network-manager to be setup before gtk_init() */
 	update_init ();
@@ -291,11 +287,8 @@ main (int argc, char *argv[])
 	notification_plugin_register (&libnotify_plugin);
 #endif
 	social_init ();			/* initialize social bookmarking */
-#ifdef USE_DBUS	
-	dbus = liferea_dbus_new ();	
-#else
-	debug0 (DEBUG_GUI, "Compiled without DBUS support.");
-#endif
+
+	dbus = liferea_dbus_new ();
 
 #ifdef USE_AVAHI
 	if (conf_get_bool_value (SYNC_AVAHI_ENABLED)) {
