@@ -31,6 +31,7 @@
 #include "node_view.h"
 #include "rule.h"
 #include "vfolder.h"
+#include "ui/item_list_view.h"
 #include "ui/itemview.h"
 #include "ui/liferea_dialog.h"
 #include "ui/rule_editor.h"
@@ -38,20 +39,11 @@
 
 /* shared functions */
 
-/** 
- * Loads a search result into the item list and renders
- * some info text into the HTML view pane.
- *
- * @param searchResult		valid search result node
- * @param searchString		search text (or NULL)
- */
 static void
-search_load_results (nodePtr searchResult, const gchar *searchString)
+search_load_results (nodePtr searchResult)
 {
-	GString	*buffer;
-	itemSetPtr itemSet;
 	nodeViewType viewMode;
-	
+
 	/* Clear feed and item display and load search results */
 	feed_list_view_select (NULL);
 	itemlist_unload (FALSE);
@@ -62,35 +54,8 @@ search_load_results (nodePtr searchResult, const gchar *searchString)
 	    (NODE_VIEW_MODE_WIDE != viewMode))
 		itemview_set_layout (NODE_VIEW_MODE_NORMAL);
 		
-	itemSet = node_get_itemset (searchResult);
-	itemlist_load_search_result (itemSet);
-	itemset_free (itemSet);
-
-	buffer = g_string_new (NULL);
-	htmlview_start_output (buffer, NULL, TRUE, FALSE);
-	g_string_append_printf (buffer, "<div class='content'><h2>");
-	
-	if (searchString)
-		g_string_append_printf (buffer, ngettext("%d Search Result for \"%s\"", 
-	                                        	 "%d Search Results for \"%s\"",
-	                                        	 searchResult->itemCount),
-	                        	searchResult->itemCount, searchString);
-	else 
-		g_string_append_printf (buffer, ngettext("%d Search Result", 
-	                                        	 "%d Search Results",
-	                                        	 searchResult->itemCount),
-	                        	searchResult->itemCount);
-					
-	g_string_append_printf (buffer, "</h2><p>");
-	g_string_append_printf (buffer, _("The item list now contains all items matching the "
-	                                "specified search pattern. If you want to save this search "
-	                                "result permanently you can click the \"Search Folder\" button in "
-	                                "the search dialog and Liferea will add a search folder to your "
-	                                "feed list."));
-	g_string_append_printf (buffer, "</p></div>");
-	htmlview_finish_output (buffer);
-	itemview_display_info (buffer->str);
-	g_string_free (buffer, TRUE);
+	/* Setup async loading */
+	// FIXME: itemlist_view_add_loader (vfolder_loader_new (searchResult));
 }
 
 /* complex search dialog */
@@ -184,7 +149,7 @@ on_search_dialog_response (GtkDialog *dialog, gint responseId, gpointer user_dat
 		sd->priv->vfolder->itemset->anyMatch = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (sd->priv->dialog, "anyRuleRadioBtn2")));
 		
 		vfolder_reset (sd->priv->vfolder);
-		search_load_results (sd->priv->searchResult, NULL);
+		search_load_results (sd->priv->searchResult);
 	}
 	
 	if (2 == responseId) { /* + Search Folder */
@@ -349,7 +314,7 @@ on_simple_search_dialog_response (GtkDialog *dialog, gint responseId, gpointer u
 		itemset_add_rule (ssd->priv->vfolder->itemset, "exact", searchString, TRUE);
 		vfolder_reset (ssd->priv->vfolder);
 
-		search_load_results (ssd->priv->searchResult, searchString);
+		search_load_results (ssd->priv->searchResult);
 	}
 	
 	if (2 == responseId)	/* Advanced... */			

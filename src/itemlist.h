@@ -62,11 +62,12 @@ gulong itemlist_get_selected_id (void);
 void itemlist_merge_itemset(itemSetPtr itemSet);
 
 /**
- * Loads a search result into the item list.
+ * Loads a search result into the item list. Can be called
+ * multiple times to add more results asynchronously.
  *
  * @param itemset	the search result's itemset
  */
-void itemlist_load_search_result (itemSetPtr itemSet);
+void itemlist_add_search_result (itemSetPtr itemSet);
 
 /** 
  * Loads the passed nodes items into the item list.

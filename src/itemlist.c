@@ -246,14 +246,13 @@ itemlist_merge_itemset (itemSetPtr itemSet)
 }
 
 void
-itemlist_load_search_result (itemSetPtr itemSet)
+itemlist_add_search_result (itemSetPtr itemSet)
 {
 	itemview_set_mode (ITEMVIEW_SINGLE_ITEM);
 	
 	itemlist_priv.isSearchResult = TRUE;
 	itemlist_priv.searchResultComplete = FALSE;	/* enable result merging */
 	itemlist_merge_itemset (itemSet);	
-	itemlist_priv.searchResultComplete = TRUE;	/* disable result merging */
 }
 
 /** 
@@ -276,6 +275,7 @@ itemlist_load (nodePtr node)
 	g_assert (!itemlist_priv.guids);
 	g_assert (!itemlist_priv.filter);
 	itemlist_priv.isSearchResult = FALSE;
+	itemlist_priv.searchResultComplete = TRUE;
 
 	/* 1. Filter check. Don't continue if folder is selected and 
 	   no folder viewing is configured. If folder viewing is enabled
