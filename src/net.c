@@ -57,7 +57,7 @@ network_process_callback (SoupSession *session, SoupMessage *msg, gpointer user_
 	}
 
 	debug1 (DEBUG_NET, "download status code: %d", msg->status_code);
-	debug1 (DEBUG_NET, "source after download: >>>%s<<<\n", job->result->source);
+	debug1 (DEBUG_NET, "source after download: >>>%s<<<", job->result->source);
 
 	job->result->data = g_memdup (msg->response_body->data, msg->response_body->length+1);
 	job->result->size = (size_t)msg->response_body->length;
