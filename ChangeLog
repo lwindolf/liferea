@@ -82,6 +82,8 @@
 	  GDBus. This way we always build the NetworkManager support,
 	  and it's only used if it's running on the user's system.
 	  (Emilio Pozuelo Monfort)
+	* Removed bookmarking support for the dead Backflip.
+	  (Adrian Bunk, reported by Kenneth Lakin)
 
 	* Added Asturian translation. (Marquinos)
 	* Added Danish translation. (Joe Hansen)
