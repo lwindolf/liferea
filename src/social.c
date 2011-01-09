@@ -148,7 +148,6 @@ social_init (void)
 {
 	gchar *tmp;
 	
- 	social_register_bookmark_site ("Backflip",	"http://www.backflip.com/add_page_pop.ihtml?url=%s&title=%s", TRUE, FALSE);
 	social_register_bookmark_site ("Blinklist",	"http://www.blinklist.com/index.php?Action=Blink/addblink.php&Title=%s&Url=%s", TRUE, TRUE);
 	social_register_bookmark_site ("blogmarks",	"http://blogmarks.net/my/new.php?mini=1&title=%s&url=%s", TRUE, TRUE);
 	social_register_bookmark_site ("Buddymarks",	"http://buddymarks.com/add_bookmark.php?bookmark_title=%s&bookmark_url=%s", TRUE, TRUE);

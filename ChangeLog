@@ -12,6 +12,8 @@
 	  characters (skazi)
 	* Fixes Debian #600638: Wrong number of unread items in mouse
 	  over tray icon with zh_TW locale. (Adrian Bunk)
+	* Removed bookmarking support for the dead Backflip.
+	  (Adrian Bunk, reported by Kenneth Lakin)
 
 	* Added Asturian translation. (Marquinos)
 	* Added Hebrew translation. (Yaron Sheffer)
