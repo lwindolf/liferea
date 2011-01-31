@@ -1,7 +1,7 @@
 /**
  * @file itemview.c  viewing feed content in different presentation modes
  * 
- * Copyright (C) 2006-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2011 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -489,4 +489,32 @@ itemview_do_zoom (gboolean in)
 {
 	g_assert(itemview->priv->htmlview != NULL);
 	liferea_htmlview_do_zoom (itemview->priv->htmlview, in);
+}
+
+
+static void
+itemview_item_batch_fetched_cb (ItemLoader *il, GSList *items, gpointer user_data)
+{
+	GSList		*iter;
+
+	iter = items;
+	while (iter) {
+		itemPtr item = (itemPtr)iter->data;
+
+		itemview_add_item (item);
+		item_unload (item);
+
+		iter= g_slist_next (iter);
+	}
+
+	itemview_update();
+	g_slist_free (items);
+}
+
+void
+itemview_add_loader (ItemLoader *loader)
+{
+	g_signal_connect (G_OBJECT (loader), "item-batch-fetched", G_CALLBACK (itemview_item_batch_fetched_cb), NULL);
+
+	item_loader_start (loader);
 }

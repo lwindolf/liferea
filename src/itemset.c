@@ -1,7 +1,7 @@
 /**
  * @file itemset.c handling sets of items
  * 
- * Copyright (C) 2005-2010 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2005-2011 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -353,7 +353,7 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates, gbo
 			item->readStatus = TRUE;
 			
 		if (itemset_merge_item (itemSet, items, item, length, allowUpdates)) {
-			vfolder_foreach_data (vfolder_check_item, item);
+			vfolder_foreach_data (vfolder_merge_item, item);
 			newCount++;
 			items = g_list_prepend (items, iter->data);
 		}
@@ -434,6 +434,12 @@ itemset_check_item (itemSetPtr itemSet, itemPtr item)
 	}
 
 	return result;
+}
+
+gboolean
+itemset_has_item_id (itemSetPtr itemSet, gulong id)
+{
+	return (NULL != g_list_find (itemSet->ids, GUINT_TO_POINTER (id)));
 }
 
 void

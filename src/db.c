@@ -1,7 +1,7 @@
 /**
  * @file db.c sqlite backend
  * 
- * Copyright (C) 2007-2010  Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2011  Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -543,6 +543,9 @@ db_init (void)
 	
 	db_new_statement ("itemsetLoadStmt",
 	                  "SELECT item_id FROM items WHERE node_id = ?");
+
+	db_new_statement ("itemsetLoadOffsetStmt",
+			  "SELECT item_id FROM items WHERE item_id >= ? limit ?");
 		       
 	db_new_statement ("itemsetReadCountStmt",
 	                  "SELECT COUNT(*) FROM items "
@@ -795,6 +798,8 @@ db_load_item_from_columns (sqlite3_stmt *stmt)
 	tmp = sqlite3_column_text(stmt, 8);
 	if (tmp)
 		item->description = g_strdup (tmp);
+	else
+		item->description = g_strdup ("");
 
 	item->metadata = db_item_metadata_load (item);
 
@@ -806,16 +811,13 @@ db_itemset_load (const gchar *id)
 {
 	sqlite3_stmt	*stmt;
 	itemSetPtr 	itemSet;
-	gint		res;
 
-	debug2(DEBUG_DB, "loading itemset for node \"%s\" (thread=%p)", id, g_thread_self());
-	itemSet = g_new0(struct itemSet, 1);
+	debug1 (DEBUG_DB, "loading itemset for node \"%s\"", id);
+	itemSet = g_new0 (struct itemSet, 1);
 	itemSet->nodeId = (gchar *)id;
 
 	stmt = db_get_statement ("itemsetLoadStmt");
-	res = sqlite3_bind_text (stmt, 1, id, -1, SQLITE_TRANSIENT);
-	if (SQLITE_OK != res)
-		g_error ("db_itemset_load: sqlite bind failed (error code %d)!", res);
+	sqlite3_bind_text (stmt, 1, id, -1, SQLITE_TRANSIENT);
 
 	while (sqlite3_step (stmt) == SQLITE_ROW) {
 		itemSet->ids = g_list_append (itemSet->ids, GUINT_TO_POINTER (sqlite3_column_int (stmt, 0)));
@@ -831,25 +833,18 @@ db_item_load (gulong id)
 {
 	sqlite3_stmt	*stmt;
 	itemPtr 	item = NULL;
-	gint		res;
 
-	debug2 (DEBUG_DB, "loading item %lu (thread=%p)", id, g_thread_self ());
+	debug1 (DEBUG_DB, "loading item %lu", id);
 	debug_start_measurement (DEBUG_DB);
 	
 	stmt = db_get_statement ("itemLoadStmt");
-	res = sqlite3_bind_int (stmt, 1, id);
-	if (SQLITE_OK != res)
-		g_error ("db_item_load: sqlite bind failed (error code %d)!", res);
+	sqlite3_bind_int (stmt, 1, id);
 
 	if (sqlite3_step (stmt) == SQLITE_ROW) {
 		item = db_load_item_from_columns (stmt);
-		res = sqlite3_step (stmt);
-		/* FIXME: sometimes (after updates) we get an unexpected SQLITE_ROW here! 
-		  if(SQLITE_DONE != res)
-			g_warning("Unexpected result when retrieving single item id=%lu! (error code=%d, %s)", id, res, sqlite3_errmsg(db));
-		 */
+		sqlite3_step (stmt);
 	} else {
-		debug2 (DEBUG_DB, "Could not load item with id #%lu (error code %d)!", id, res);
+		debug1 (DEBUG_DB, "Could not load item with id %lu!", id);
 	}
 
 	debug_end_measurement (DEBUG_DB, "item load");
@@ -930,7 +925,7 @@ db_item_update (itemPtr item)
 	sqlite3_stmt	*stmt;
 	gint		res;
 	
-	debug3 (DEBUG_DB, "update of item \"%s\" (id=%lu, thread=%p)", item->title, item->id, g_thread_self());
+	debug2 (DEBUG_DB, "update of item \"%s\" (id=%lu)", item->title, item->id);
 	debug_start_measurement (DEBUG_DB);
 	
 	db_begin_transaction ();
@@ -1097,6 +1092,26 @@ db_itemset_mark_all_popup (const gchar *id)
 		g_warning ("marking all items popup failed (error code=%d, %s)", res, sqlite3_errmsg(db));
 }
 
+gboolean
+db_itemset_get (itemSetPtr itemSet, gulong id, guint limit)
+{
+	sqlite3_stmt	*stmt;
+	gboolean	success = FALSE;
+
+	debug2 (DEBUG_DB, "loading %d items starting with %lu", limit, id);
+
+	stmt = db_get_statement ("itemsetLoadOffsetStmt");
+	sqlite3_bind_int (stmt, 1, id);
+	sqlite3_bind_int (stmt, 2, limit);
+
+	while (sqlite3_step (stmt) == SQLITE_ROW) {
+		itemSet->ids = g_list_append (itemSet->ids, GUINT_TO_POINTER (sqlite3_column_int (stmt, 0)));
+		success = TRUE;
+	}
+
+	return success;
+}
+
 /* Statistics interface */
 
 guint 
@@ -1224,7 +1239,7 @@ db_search_folder_load (const gchar *id)
 	sqlite3_stmt	*stmt;
 	itemSetPtr 	itemSet;
 
-	debug2 (DEBUG_DB, "loading search folder node \"%s\" (thread=%p)", id, g_thread_self ());
+	debug1 (DEBUG_DB, "loading search folder node \"%s\"", id);
 
 	stmt = db_get_statement ("searchFolderLoadStmt");
 	res = sqlite3_bind_text (stmt, 1, id, -1, SQLITE_TRANSIENT);
@@ -1249,7 +1264,7 @@ db_search_folder_reset (const gchar *id)
 	gchar	*sql, *err;
 	gint	res;
 
-	debug2 (DEBUG_DB, "resetting search folder node \"%s\" (thread=%p)", id, g_thread_self ());
+	debug1 (DEBUG_DB, "resetting search folder node \"%s\"", id);
 	
 	sql = sqlite3_mprintf ("DELETE FROM search_folder_items WHERE node_id = %s;", id);
 	res = sqlite3_exec (db, sql, NULL, NULL, &err);
@@ -1320,7 +1335,7 @@ db_subscription_update (subscriptionPtr subscription)
 	sqlite3_stmt	*stmt;
 	gint		res;
 	
-	debug2 (DEBUG_DB, "updating subscription info %s (thread %p)", subscription->node->id, g_thread_self());
+	debug1 (DEBUG_DB, "updating subscription info %s", subscription->node->id);
 	debug_start_measurement (DEBUG_DB);
 	
 	stmt = db_get_statement ("subscriptionUpdateStmt");
@@ -1350,7 +1365,7 @@ db_subscription_remove (const gchar *id)
 	sqlite3_stmt	*stmt;
 	gint		res;
 
-	debug2 (DEBUG_DB, "removing subscription %s (thread=%p)", id, g_thread_self ());
+	debug1 (DEBUG_DB, "removing subscription %s", id);
 	debug_start_measurement (DEBUG_DB);
 	
 	stmt = db_get_statement ("subscriptionRemoveStmt");
@@ -1369,7 +1384,7 @@ db_node_update (nodePtr node)
 	sqlite3_stmt	*stmt;
 	gint		res;
 	
-	debug2 (DEBUG_DB, "updating node info %s (thread %p)", node->id, g_thread_self());
+	debug1 (DEBUG_DB, "updating node info %s", node->id);
 	debug_start_measurement (DEBUG_DB);
 	
 	stmt = db_get_statement ("nodeUpdateStmt");

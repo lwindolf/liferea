@@ -1,7 +1,7 @@
 /**
  * @file itemset.h  interface to handle sets of items
  * 
- * Copyright (C) 2005-2010 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2005-2011 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -75,6 +75,16 @@ guint itemset_merge_items(itemSetPtr itemSet, GList *items, gboolean allowUpdate
  * @returns TRUE if the item matches the rules of the item set
  */
 gboolean itemset_check_item (itemSetPtr itemSet, itemPtr item);
+
+/**
+ * Checks wether the given item id is in the given item set.
+ *
+ * @param itemSet	the itemSet
+ * @param id		the item id
+ *
+ * @returns TRUE if item id is in item set
+ */
+gboolean itemset_has_item_id (itemSetPtr itemSet, gulong id);
 
 /**
  * Method that creates and adds a rule to an item set. To be used

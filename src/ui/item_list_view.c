@@ -1,7 +1,7 @@
 /**
  * @file item_list_view.c  presenting items in a GtkTreeView
  *  
- * Copyright (C) 2004-2010 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2011 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -647,7 +647,7 @@ void
 item_list_view_add_item (ItemListView *ilv, itemPtr item)
 {
 	GtkTreeStore	*itemstore;
-	
+g_print("ilvai!\n");
 	if (ilv->priv->batch_mode) {
 		/* either merge to new unattached GtkTreeStore */
 		item_list_view_add_item_to_tree_store (ilv, ilv->priv->batch_itemstore, item);
@@ -961,3 +961,4 @@ item_list_view_scroll_left (ItemListView *ilv)
 		}
 	}
 }
+

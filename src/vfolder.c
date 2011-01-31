@@ -152,21 +152,23 @@ vfolder_remove_item (vfolderPtr vfolder, itemPtr item)
 }
 
 void
-vfolder_check_item (vfolderPtr vfolder, itemPtr item)
+vfolder_add_item (vfolderPtr vfolder, itemPtr item)
 {
-	gboolean found = (NULL != g_list_find (vfolder->itemset->ids, GUINT_TO_POINTER (item->id)));
-	
+	vfolder->itemset->ids = g_list_append (vfolder->itemset->ids, GUINT_TO_POINTER (item->id));
+	vfolder->node->needsUpdate = TRUE;
+}
+
+void
+vfolder_merge_item (vfolderPtr vfolder, itemPtr item)
+{
+	gboolean found = itemset_has_item_id (vfolder->itemset, item->id);
+
 	if (itemset_check_item (vfolder->itemset, item)) {
-		if (!found) {
-			debug3 (DEBUG_VFOLDER, "Item %lu added to search folder %s (%s)", item->id, vfolder->node->title, item->title);
-			vfolder->itemset->ids = g_list_append (vfolder->itemset->ids, GUINT_TO_POINTER (item->id));
-			vfolder->node->needsUpdate = TRUE;
-		}
+		if (!found)
+			vfolder_add_item (vfolder, item);
 	} else {
-		if (found) {
-			debug3 (DEBUG_VFOLDER, "Item %lu removed from search folder %s (%s)", item->id, vfolder->node->title, item->title);
+		if (found)
 			vfolder_remove_item (vfolder, item);
-		}
 	}
 }
 

@@ -1,7 +1,7 @@
 /**
  * @file db.h sqlite backend 
  * 
- * Copyright (C) 2007-2010  Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2011  Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,12 +31,12 @@
 /**
  * Open and initialize the DB.
  */
-void db_init(void);
+void    db_init (void);
 
 /**
  * Clean up and close the DB.
  */
-void db_deinit(void);
+void    db_deinit (void);
 
 /* item set access (note: item sets are identified by the node id string) */
 
@@ -47,14 +47,14 @@ void db_deinit(void);
  *
  * @returns a newly allocated item set, must be freed using itemset_free()
  */
-itemSetPtr	db_itemset_load(const gchar *id);
+itemSetPtr	db_itemset_load (const gchar *id);
 
 /**
  * Removes all items of the given item set from the DB.
  *
  * @param id	the node id
  */
-void		db_itemset_remove_all(const gchar *id);
+void	db_itemset_remove_all (const gchar *id);
 
 /**
  * Mass items state changing methods. Mark all items of
@@ -62,7 +62,7 @@ void		db_itemset_remove_all(const gchar *id);
  *
  * @param id	the node id
  */
-void		db_itemset_mark_all_popup(const gchar *id);
+void	db_itemset_mark_all_popup (const gchar *id);
 
 /**
  * Returns the number of unread items for the given item set.
@@ -71,7 +71,7 @@ void		db_itemset_mark_all_popup(const gchar *id);
  *
  * @returns the number of unread items
  */
-guint		db_itemset_get_unread_count(const gchar *id);
+guint	db_itemset_get_unread_count (const gchar *id);
 
 /**
  * Returns the number of items for the given item set.
@@ -80,7 +80,22 @@ guint		db_itemset_get_unread_count(const gchar *id);
  *
  * @returns the number of items
  */
-guint		db_itemset_get_item_count(const gchar *id);
+guint   db_itemset_get_item_count (const gchar *id);
+
+/**
+ * Returns a batch of items starting with the given
+ * id and no more than the given limit. If ids are not
+ * consecutive less ids than limit might be returned.
+ * 
+ * To be used for batched item loading (search folder loaders)
+ *
+ * @param itemSet       an itemset to add the items to
+ * @param id            the first id to fetch
+ * @param limit         maximum number of items to fetch
+ * 
+ * @returns FALSE if no more items to fetch
+ */
+gboolean        db_itemset_get (itemSetPtr itemSet, gulong id, guint limit);
 
 /* item access (note: items are identified by the numeric item id) */
 
@@ -139,7 +154,7 @@ GSList * db_item_get_duplicate_nodes(const gchar *guid);
  *
  * @returns a new item set (to be free'd using itemset_free())
  */
-itemSetPtr db_search_folder_load (const gchar *id);
+itemSetPtr      db_search_folder_load (const gchar *id);
 
 /**
  * Removes all items from the given search folder

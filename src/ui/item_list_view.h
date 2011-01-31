@@ -68,9 +68,6 @@ GType item_list_view_get_type (void);
  */
 ItemListView * item_list_view_create (GtkWidget *window);
 
-// FIXME: use GObject
-void ui_itemlist_destroy (void);
-
 /**
  * Returns the GtkTreeView used by the ItemListView instance.
  *

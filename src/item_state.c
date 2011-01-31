@@ -52,7 +52,7 @@ item_flag_state_changed (itemPtr item, gboolean newState)
 	item->flagStatus = newState;
 
 	/* 2. propagate to vfolders */
-	vfolder_foreach_data (vfolder_check_item, item);
+	vfolder_foreach_data (vfolder_merge_item, item);
 	vfolder_foreach (node_update_counters);
 
 	/* 3. save state to DB */
@@ -94,7 +94,7 @@ item_read_state_changed (itemPtr item, gboolean newState)
 	item->updateStatus = FALSE;
 
 	/* 2. propagate to vfolders */
-	vfolder_foreach_data (vfolder_check_item, item);
+	vfolder_foreach_data (vfolder_merge_item, item);
 	vfolder_foreach (node_update_counters);
 	
 	/* 3. apply to DB */

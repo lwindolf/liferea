@@ -39,6 +39,7 @@ liferea_SOURCES = \
 	html.c html.h \
 	htmlview.c htmlview.h \
 	item.c item.h \
+	item_loader.c item_loader.h \
 	item_state.c item_state.h \
 	itemset.c itemset.h \
 	itemlist.c itemlist.h \
@@ -60,6 +61,7 @@ liferea_SOURCES = \
 	update.c update.h \
 	main.c \
 	vfolder.c vfolder.h \
+	vfolder_loader.c vfolder_loader.h \
 	xml.c xml.h
 
 liferea_LDADD =	parsers/libliparsers.a \

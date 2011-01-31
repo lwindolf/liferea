@@ -1,7 +1,7 @@
 /**
  * @file itemview.h  viewing feed content in different presentation modes
  * 
- * Copyright (C) 2006-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2011 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@
 #include <gtk/gtk.h>
 
 #include "item.h"
+#include "item_loader.h"
 #include "itemset.h"
 #include "node.h"
 #include "ui/enclosure_list_view.h"
@@ -222,6 +223,13 @@ void itemview_launch_URL (const gchar *url, gboolean internal);
  * @param in	TRUE if zooming in, FALSE for zooming out
  */
 void itemview_do_zoom (gboolean in);
+
+/**
+ * Adding a loader for item batch loading (e.g. searches)
+ *
+ * @param loader	the loader to add to default item list view
+ */
+void itemview_add_loader (ItemLoader *loader); 
 
 G_END_DECLS
 

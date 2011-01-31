@@ -1,7 +1,7 @@
 /**
  * @file vfolder.h  search folder node type
  *
- * Copyright (C) 2003-2010 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2011 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,6 +40,9 @@ typedef struct vfolder {
 	struct node	*node;		/**< the feed list node of this search folder */
 	
 	itemSetPtr	itemset;	/**< the itemset with the rules and matching items */
+
+	gboolean	reloading;	/**< if the search folder is in async reloading */
+	gulong		maxLoadedId;	/**< when in reloading maximum scanned id so far */
 } *vfolderPtr;
 
 /**
@@ -69,7 +72,7 @@ typedef void 	(*vfolderActionDataFunc)	(vfolderPtr vfolder, itemPtr item);
 void vfolder_foreach_data (vfolderActionDataFunc func, itemPtr item);
 
 /**
- * Method to remove an item from all search folders.
+ * Method to remove an item from a search folder.
  *
  * @param vfolder	search folder
  * @param item		the item
@@ -77,15 +80,21 @@ void vfolder_foreach_data (vfolderActionDataFunc func, itemPtr item);
 void vfolder_remove_item (vfolderPtr vfolder, itemPtr item);
 
 /**
- * Method to check if an item matches any search folder
- * or does not match some of the search folders anymore.
- * It will be added or deleted accordingly to the search
- * folder item set.
+ * Method to add an item to a search folder.
  *
  * @param vfolder	search folder
  * @param item		the item
  */
-void vfolder_check_item (vfolderPtr vfolder, itemPtr item);
+void vfolder_add_item (vfolderPtr vfolder, itemPtr item);
+
+/**
+ * Method to merge an item to a search folder if
+ * it matches the search folder rules.
+ *
+ * @param vfolder	search folder
+ * @param item		the item
+ */
+void vfolder_merge_item (vfolderPtr vfolder, itemPtr item);
 
 /**
  * Returns a list of all search folders currently matching

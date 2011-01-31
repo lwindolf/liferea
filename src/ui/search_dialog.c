@@ -1,7 +1,7 @@
 /**
  * @file search_dialog.c  Search engine subscription dialog
  *
- * Copyright (C) 2007-2010 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2011 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,6 +31,7 @@
 #include "node_view.h"
 #include "rule.h"
 #include "vfolder.h"
+#include "vfolder_loader.h"
 #include "ui/item_list_view.h"
 #include "ui/itemview.h"
 #include "ui/liferea_dialog.h"
@@ -55,7 +56,7 @@ search_load_results (nodePtr searchResult)
 		itemview_set_layout (NODE_VIEW_MODE_NORMAL);
 		
 	/* Setup async loading */
-	// FIXME: itemlist_view_add_loader (vfolder_loader_new (searchResult));
+	itemview_add_loader (vfolder_loader_new (searchResult));
 }
 
 /* complex search dialog */
