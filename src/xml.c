@@ -249,6 +249,7 @@ xhtml_stripper_add (GSList **strippers, const gchar *pattern)
 	if (err) {
 		g_warning ("xhtml_strip_setup: %s\n", err->message);
 		g_error_free (err);
+		return;
 	}
 	*strippers = g_slist_append (*strippers, expr);
 }
