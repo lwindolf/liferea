@@ -314,7 +314,7 @@ item_list_view_clear (ItemListView *ilv)
 	
 	adj = gtk_tree_view_get_vadjustment (ilv->priv->treeview);
 	gtk_adjustment_set_value (adj, 0.0);
-	gtk_tree_view_set_vadjustment (ilv->priv->treeview, adj);
+	gtk_scrollable_set_vadjustment (GTK_SCROLLABLE (ilv->priv->treeview), adj);
 
 	if (itemstore)
 		gtk_tree_store_clear (itemstore);
