@@ -106,9 +106,11 @@ AC_MSG_RESULT([$with_gtk])
 case "$with_gtk" in
   2.0) GTK_API_VERSION=2
        GTK_REQUIRED=2.18.0
+       WEBKIT_SUFFIX=-1.0
        ;;
   3.0) GTK_API_VERSION=3
        GTK_REQUIRED=2.91.4
+       WEBKIT_SUFFIX=gtk-3.0
        ;;
 esac
 AC_DEFINE_UNQUOTED(GTK_API_VERSION, $GTK_API_VERSION, [Define the GTK+ API version])
@@ -125,7 +127,7 @@ pkg_modules="	gtk+-${GTK_API_VERSION}.0 >= $GTK_REQUIRED
 		gthread-2.0
 		libsoup-2.4 >= 2.28.2
 		unique-1.0
-		webkit-1.0 >= 1.2.2
+		webkit${WEBKIT_SUFFIX}
 		json-glib-1.0"
 
 PKG_CHECK_MODULES(PACKAGE, [$pkg_modules])
